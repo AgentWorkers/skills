@@ -1,18 +1,18 @@
 ---
 slug: "toolbox-talk-generator"
 display_name: "Toolbox Talk Generator"
-description: "Generate safety toolbox talks for construction crews. Create contextual safety briefings based on weather, work activities, and recent incidents. Support multiple languages."
+description: "为施工队伍生成安全工具箱培训材料，并根据天气情况、工作内容以及近期发生的安全事故来定制安全简报。支持多种语言版本。"
 ---
 
-# Toolbox Talk Generator
+# 工具箱安全谈话生成器
 
-## Overview
+## 概述
 
-Automatically generate relevant safety toolbox talks based on daily work activities, weather conditions, recent incidents, and seasonal hazards. Support multiple languages for diverse crews.
+该工具可根据日常工作任务、天气状况、近期发生的事件以及季节性安全隐患，自动生成相关的安全谈话内容。支持多种语言，以满足不同团队的语言需求。
 
-> "Daily toolbox talks reduce incidents by 30% when relevant to actual work" — DDC Community
+> “当安全谈话内容与实际工作相关时，每日进行的工具箱安全谈话可将事故发生率降低30%”——DDC社区
 
-## How It Works
+## 工作原理
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -29,7 +29,7 @@ Automatically generate relevant safety toolbox talks based on daily work activit
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现细节
 
 ```python
 from dataclasses import dataclass, field
@@ -485,7 +485,7 @@ class ToolboxTalkGenerator:
         }
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 # Initialize generator
@@ -520,13 +520,13 @@ print(f"Total talks: {summary['total_talks']}")
 print(f"Unique workers trained: {summary['unique_workers']}")
 ```
 
-## Requirements
+## 系统要求
 
 ```bash
 pip install (no external dependencies)
 ```
 
-## Integration with LLM
+## 与大型语言模型（LLM）的集成
 
 ```python
 def generate_with_llm(topic: str, context: str) -> str:

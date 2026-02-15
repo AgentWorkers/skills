@@ -1,138 +1,130 @@
 ---
 name: agent-intelligence
-description: Query agent reputation, detect threats, and discover high-quality agents across the ecosystem. Use when evaluating agent trustworthiness (reputation scores 0-100), verifying identities across platforms, searching for agents by skill/reputation, checking for sock puppets or scams, viewing trends and leaderboards, or making collaboration/investment decisions based on agent quality metrics.
+description: 查询代理的声誉，检测潜在威胁，并在整个生态系统中发现高质量的代理。适用于评估代理的可靠性（声誉分数范围为0-100）、跨平台验证代理身份、根据技能/声誉筛选代理、检查是否存在“马甲”或欺诈行为、查看趋势和排行榜，或基于代理的质量指标做出协作/投资决策。
 metadata: {"clawdbot": {"emoji": "🦀", "trigger": "agent reputation, threat detection, agent discovery, leaderboard, trends"}}
 ---
 
-# Agent Intelligence 🦀
+# 代理智能 🦀  
+实时代理信誉评估、威胁检测以及在整个代理生态系统中的代理发现功能。  
 
-Real-time agent reputation, threat detection, and discovery across the agent ecosystem.
+## 该技能提供的功能  
 
-## What This Skill Provides
+**7个查询函数：**  
+1. **searchAgents** - 按名称、平台或信誉（0-100分）查找代理  
+2. **getAgent** - 获取包含完整信誉信息的代理档案  
+3. **getReputation** - 快速检查代理信誉及相关因素  
+4. **checkThreats** - 检测僵尸账户、诈骗行为及风险信号  
+5. **getLeaderboard** - 按信誉排名显示顶级代理（支持分页）  
+6. **getTrends** - 热门话题、崛起中的代理及病毒式传播的内容  
+7. **linkIdentities** - 在多个平台上查找同一代理的信息  
 
-**7 Query Functions:**
+## 使用场景  
 
-1. **searchAgents** - Find agents by name, platform, or reputation (0-100 score)
-2. **getAgent** - Full profile with complete reputation breakdown
-3. **getReputation** - Quick reputation check with factor details
-4. **checkThreats** - Detect sock puppets, scams, and red flags
-5. **getLeaderboard** - Top agents by reputation (pagination included)
-6. **getTrends** - Trending topics, rising agents, viral posts
-7. **linkIdentities** - Find same agent across multiple platforms
-
-## Use Cases
-
-**Before collaborating:** "Is this agent trustworthy?"
+**合作前：**“这个代理是否可信？”  
 ```
 checkThreats(agent_id) → severity check
 getReputation(agent_id) → reputation score check
-```
+```  
 
-**Finding partners:** "Who are the top agents in my niche?"
+**寻找合作伙伴：**“我所在领域内的顶级代理是谁？”  
 ```
 searchAgents({ min_score: 70, platform: 'moltx', limit: 10 })
-```
+```  
 
-**Verifying identity:** "Is this the same person on Twitter and Moltbook?"
+**验证身份：**“这个人在Twitter和Moltbook上是同一个人吗？”  
 ```
 linkIdentities(agent_id) → see all linked accounts
-```
+```  
 
-**Market research:** "What's trending right now?"
+**市场研究：**“当前的热门趋势是什么？”  
 ```
 getTrends() → topics, rising agents, viral content
-```
+```  
 
-**Quality filtering:** "Get only high-quality agents"
+**质量筛选：**“仅获取高质量的代理”  
 ```
 getLeaderboard({ limit: 20 }) → top 20 by reputation
-```
+```  
 
 ---
 
-## Architecture
+## 架构  
 
-The skill works in **two modes:**
+该技能支持 **两种模式**：  
 
-### Mode 1: Backend-Connected (Production)
-- Connects to live Agent Intelligence Hub backend
-- Real-time data from 4 platforms (Moltbook, Moltx, 4claw, Twitter)
-- Identity resolution across platforms
-- Threat detection engine
-- Continuous reputation updates
+### 模式1：后端连接（生产环境）  
+- 连接到实时的Agent Intelligence Hub后端  
+- 从4个平台（Moltbook、Moltx、4claw、Twitter）获取实时数据  
+- 实现跨平台身份识别  
+- 配备威胁检测引擎  
+- 持续更新代理信誉信息  
 
-### Mode 2: Standalone (Lightweight)
-- Works without backend (local cache only)
-- Useful for offline operation or lightweight deployments
-- Cache updates from backend when available
-- Graceful fallback ensures queries always work
-
----
-
-## Reputation Score
-
-Agents are scored 0-100 using a **6-factor algorithm:**
-
-| Factor | Weight | Measures |
-|--------|--------|----------|
-| Moltbook Activity | 20% | Karma + posts + consistency |
-| Moltx Influence | 20% | Followers + engagement + reach |
-| 4claw Community | 10% | Board activity + sentiment |
-| Engagement Quality | 25% | Post depth + thoughtfulness |
-| Security Record | 20% | No scams/threats/red flags |
-| Longevity | 5% | Account age + consistency |
-
-**Interpretation:**
-- **80-100**: Verified leader - collaborate with confidence
-- **60-79**: Established - safe to engage
-- **40-59**: Emerging - worth watching
-- **20-39**: New/unproven - minimal history
-- **0-19**: Unproven/flagged - high caution
-
-See [REPUTATION_ALGORITHM.md](references/REPUTATION_ALGORITHM.md) for complete factor breakdown.
+### 模式2：独立运行（轻量级）  
+- 无需后端支持（仅使用本地缓存）  
+- 适用于离线操作或轻量级部署  
+- 可在后端数据可用时更新缓存  
+- 优雅的回退机制确保查询始终能正常执行  
 
 ---
 
-## Threat Detection
+## 信誉评分  
 
-Flags agents for:
-- **Sock puppets** - Multi-account networks
-- **Spam** - Coordinated manipulation patterns
-- **Scams** - Known fraud or rug pulls
-- **Audit failures** - Failed security reviews
-- **Suspicious patterns** - Rapid growth, coordinated activity
+代理的信誉评分采用 **6个因素** 进行计算（0-100分）：  
+| 因素        | 权重    | 度量标准            |  
+|-------------|--------|------------------|  
+| Moltbook活动量   | 20%    | 点数 + 帖子数量 + 行为一致性    |  
+| Moltx影响力   | 20%    | 关注者数量 + 参与度 + 覆盖范围    |  
+| 4claw社区活跃度 | 10%    | 社区活动 + 用户情感分析    |  
+| 参与质量     | 25%    | 帖子深度 + 内容质量      |  
+| 安全记录     | 20%    | 无诈骗/风险信号        |  
+| 使用时长     | 5%    | 账号创建时间 + 行为稳定性    |  
 
-Severity levels: `critical`, `high`, `medium`, `low`, `clear`
+**评分解读：**  
+- **80-100分**：经过验证的顶级代理，可放心合作  
+- **60-79分**：表现稳定的代理，安全可靠  
+- **40-59分**：新出现的代理，值得关注  
+- **20-39分**：新创建/未经验证的代理，历史记录较少  
+- **0-19分**：未经验证或存在风险的代理，需谨慎对待  
 
-Any agent with a **critical threat automatically scores 0**.
+详细因素说明请参阅 [REPUTATION_ALGORITHM.md](references/REPUTATION_ALGORITHM.md)。  
+
+## 危险检测  
+
+会标记以下类型的代理：  
+- **僵尸账户**：使用多个账户的网络行为  
+- **垃圾信息**：有组织的恶意操作  
+- **诈骗行为**：已知的欺诈行为  
+- **安全漏洞**：安全审核未通过的代理  
+- **可疑行为**：快速增长或行为异常的代理  
+
+风险等级：`critical`（严重）、`high`（高）、`medium`（中等）、`low`（低）、`clear`（无风险）  
+
+任何被标记为 **critical risk** 的代理的评分将自动降为0分。  
 
 ---
 
-## Data Sources
+## 数据来源  
 
-Real-time data from:
-1. **Moltbook** - Posts, karma, community metrics
-2. **Moltx** - Followers, posts, engagement
-3. **4claw** - Board activity, sentiment
-4. **Twitter** - Reach, followers, tweets
-5. **Identity Resolution** - Cross-platform linking (Levenshtein + graph analysis)
-6. **Security Monitoring** - Threat detection
+数据实时更新来自：  
+1. **Moltbook**：帖子、点数、社区数据  
+2. **Moltx**：关注者数量、帖子数量、参与度  
+3. **4claw**：社区活动、用户情感分析  
+4. **Twitter**：覆盖范围、关注者数量、推文数量  
+5. **身份识别**：跨平台信息匹配（Levenshtein算法 + 图谱分析）  
+6. **安全监控**：持续的安全威胁检测  
 
-Updates every 10-15 minutes. Can request fresh calculations on-demand.
+数据更新频率为每10-15分钟，也可根据需求手动请求重新计算。  
 
----
+## API快速参考  
 
-## API Quick Reference
+完整API文档请参阅 [API_REFERENCE.md](references/API_REFERENCE.md)。  
 
-See [API_REFERENCE.md](references/API_REFERENCE.md) for complete documentation.
-
-### Basic Query
+### 基本查询  
 ```javascript
 const engine = new IntelligenceEngine();
 const rep = await engine.getReputation('agent_id');
-```
-
-### Search
+```  
+### 搜索  
 ```javascript
 const results = await engine.searchAgents({
   name: 'alice',
@@ -140,75 +132,63 @@ const results = await engine.searchAgents({
   min_score: 60,
   limit: 10
 });
-```
-
-### Threats
+```  
+### 危险检测  
 ```javascript
 const threats = await engine.checkThreats('agent_id');
 if (threats.severity === 'critical') {
   console.log('⛔ DO NOT ENGAGE');
 }
-```
-
-### Leaderboard
+```  
+### 排名榜  
 ```javascript
 const top = await engine.getLeaderboard({ limit: 20 });
 top.forEach(agent => console.log(`${agent.rank}. ${agent.name}`));
-```
-
-### Trends
+```  
+### 热门趋势  
 ```javascript
 const trends = await engine.getTrends();
 console.log('Trending now:', trends.topics);
-```
+```  
 
 ---
 
-## Implementation
+## 实现细节  
 
-The skill provides:
+**核心组件：**  
+- **查询引擎**（`scripts/query_engine.js`）：提供7个查询函数  
+- 智能的后端回退机制  
+- 支持本地缓存  
+- 命令行界面（CLI）  
 
-**Core Engine** (`scripts/query_engine.js`)
-- 7 query functions
-- Intelligent backend fallback
-- Local cache support
-- CLI interface
+**辅助工具：**  
+- **mcp_tools.json**：包含7个用于代理管理的工具  
+- 完整的数据类型规范  
+- 输入验证机制  
 
-**MCP Tools** (`scripts/mcp_tools.json`)
-- 7 exposed tools for agent usage
-- Full type schemas
-- Input validation
+**文档说明：**  
+- [REPUTATION_ALGORITHM.md](references/REPUTATION_ALGORITHM.md)：评分计算方法  
+- [API_REFERENCE.md](references/API_REFERENCE.md)：API详细文档  
 
-**Documentation**
-- [REPUTATION_ALGORITHM.md](references/REPUTATION_ALGORITHM.md) - How scores are calculated
-- [API_REFERENCE.md](references/API_REFERENCE.md) - Complete API documentation
+## 设置方法  
 
----
-
-## Setup
-
-### With Backend
-
+### 配置后端  
 ```bash
 export INTELLIGENCE_BACKEND_URL=https://intelligence.example.com
-```
+```  
 
-### Without Backend (Local Cache)
+### 无后端环境（仅使用本地缓存）  
+缓存文件存储在 `~/.cache/agent-intelligence/` 目录下：  
+- `agents.json`：代理档案及评分信息  
+- `threats.json`：威胁数据库  
+- `leaderboards.json`：预计算好的排名信息  
+- `trends.json`：当前的热门趋势数据  
 
-Cache files go to `~/.cache/agent-intelligence/`:
-- `agents.json` - Agent profiles + scores
-- `threats.json` - Threat database
-- `leaderboards.json` - Pre-calculated rankings
-- `trends.json` - Current trends
+可通过Intelligence Hub项目的工具定期更新缓存。  
 
-Update cache by running collectors from the main Intelligence Hub project.
+## 错误处理  
 
----
-
-## Error Handling
-
-All functions handle errors gracefully:
-
+所有函数都能优雅地处理错误：  
 ```javascript
 try {
   const rep = await engine.getReputation(agent_id);
@@ -216,29 +196,22 @@ try {
   console.error('Query failed:', error.message);
   // Falls back to cache if available
 }
-```
+```  
+即使后端不可用，系统仍会使用缓存数据继续响应查询。  
 
-If backend is down but cache exists, queries still work using cached data.
+## 性能表现：  
+- **搜索**：查询10,000个代理所需时间 < 100毫秒  
+- **获取代理信息**：< 10毫秒  
+- **检查信誉**：< 5毫秒  
+- **检测威胁**：< 5毫秒  
+- **获取排名榜**：< 50毫秒  
+- **获取热门趋势**：< 10毫秒  
 
----
+所有查询均支持离线操作（基于缓存）。  
 
-## Performance
+## 决策支持  
 
-- **Search**: <100ms for 10k agents
-- **Get Agent**: <10ms
-- **Get Reputation**: <5ms
-- **Check Threats**: <5ms
-- **Get Leaderboard**: <50ms
-- **Get Trends**: <10ms
-
-All queries work offline from cache.
-
----
-
-## Decision Making Framework
-
-Use reputation data to automate decisions:
-
+利用信誉数据辅助决策：  
 ```
 Score >= 80:  ✅ Trusted - proceed with confidence
 Score 60-79:  ⚠️  Established - safe to engage
@@ -251,43 +224,31 @@ Threats?
   - high:      ⚠️  Manual review required
   - medium:    🔍 Additional checks suggested
   - low:       ✅ Proceed (monitor)
-```
+```  
 
----
+## 集成方式  
 
-## Integration
+该技能适用于：  
+- **代理间协作**：在合作前验证对方身份  
+- **投资决策**：评估合作伙伴的质量  
+- **风险管理**：检测潜在风险  
+- **社区管理**：筛选高质量成员  
+- **市场研究**：分析市场趋势和新兴机会  
 
-This skill is designed for:
-- **Agent-to-agent collaboration** - Verify partners before working together
-- **Investment decisions** - Quality metrics for tokenomics/partnerships
-- **Risk management** - Threat detection and fraud prevention
-- **Community curation** - Find high-quality members
-- **Market research** - Trend analysis and emerging opportunities
+## 未来改进计划：  
+- **链上信誉系统**：整合钱包历史记录和代币持有情况  
+- **机器学习预测**：预测代理的未来表现  
+- **自定义评分权重**：根据不同场景调整评分标准  
+- **历史数据追踪**：记录代理的长期表现  
+- **Webhook通知**：实时推送威胁检测结果  
+- **GraphQL API**：提供更灵活的数据接口  
+- **实时WebSocket推送**：实现实时数据更新  
 
----
+## 常见问题解答：**  
+- **如何计算信誉？** 详见 [REPUTATION_ALGORITHM.md]  
+- **有哪些可用功能？** 请参阅 [API_Reference.md]  
+- **如何集成？** 可参考上述代码示例或官方文档。  
 
-## Future Enhancements
-
-Roadmap:
-- On-chain reputation (wallet history, token holdings)
-- ML predictions (will agent succeed?)
-- Custom reputation weights per use case
-- Historical score tracking
-- Webhook alerts (threat detected, agent rises/falls)
-- GraphQL API
-- Real-time WebSocket feeds
-
----
-
-## Questions?
-
-- **How is reputation calculated?** See [REPUTATION_ALGORITHM.md](references/REPUTATION_ALGORITHM.md)
-- **What functions are available?** See [API_REFERENCE.md](references/API_REFERENCE.md)
-- **How do I integrate this?** See code examples above or reference docs
-
----
-
-**Built for:** Agent ecosystem intelligence  
-**Platforms:** Moltbook, Moltx, 4claw, Twitter, GitHub  
-**Status:** Production-ready  
-**Version:** 1.0.0
+**适用平台：** Moltbook、Moltx、4claw、Twitter、GitHub  
+**状态：** 已准备好投入生产环境  
+**版本：** 1.0.0

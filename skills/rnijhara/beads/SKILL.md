@@ -1,6 +1,6 @@
 ---
 name: beads
-description: Git-backed issue tracker for AI agents. Use when managing tasks, dependencies, or multi-step work. Triggers on task tracking, issue management, dependency graphs, ready work queues, or mentions of "beads" / "bd" CLI.
+description: 这是一个基于 Git 的问题跟踪工具，专为 AI 代理设计。它可用于管理任务、依赖关系以及多步骤工作流程。该工具会在任务跟踪、问题管理、依赖关系图、待处理工作队列，或者当出现 “beads”/“bd” CLI 命令时触发相应的操作。
 metadata:
   openclaw:
     emoji: 📿
@@ -21,9 +21,9 @@ metadata:
 
 # Beads
 
-Distributed, git-backed graph issue tracker for AI agents. Replaces markdown plans with a dependency-aware task graph stored as JSONL in `.beads/`.
+这是一个用于AI代理的分布式、基于Git的图形问题跟踪工具。它使用JSONL格式存储任务信息，取代了传统的Markdown格式。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize (non-interactive for agents)
@@ -39,24 +39,24 @@ bd create "Complete task X" -p 1 --json
 bd show bd-a1b2 --json
 ```
 
-## Core Workflow
+## 核心工作流程
 
-1. `bd ready --json` — Find unblocked work
-2. `bd update <id> --status in_progress` — Claim task
-3. Do the work
-4. `bd close <id> --reason "Done"` — Complete task
-5. `bd sync` — Force sync before ending session
+1. `bd ready --json` — 查找未阻塞的任务
+2. `bd update <id> --status in_progress` — 接受任务
+3. 完成任务
+4. `bd close <id> --reason "Done"` — 任务完成
+5. `bd sync` — 在结束会话前强制同步数据
 
-## Agent-Critical Rules
+## 对代理至关重要的规则：
 
-- **Always use `--json`** for machine-readable output
-- **Never use `bd edit`** — opens $EDITOR, unusable by agents
-- **Use `bd update`** instead: `bd update <id> --title "New title" --description "New desc"`
-- **Run `bd sync`** at end of session to flush changes to git
+- **始终使用`--json`选项** 以生成机器可读的输出
+- **切勿使用`bd edit`** — 该命令会打开编辑器，代理无法使用
+- **改用`bd update`命令**，例如：`bd update <id> --title "新标题" --description "新描述"`
+- **在会话结束时运行`bd sync`**，将更改同步到Git仓库
 
-## Commands
+## 命令
 
-### Initialize
+### 初始化
 
 ```bash
 bd init --quiet              # Non-interactive, auto-installs hooks
@@ -65,7 +65,7 @@ bd init --stealth            # Local only, don't commit .beads/
 bd init --contributor        # Fork workflow (separate planning repo)
 ```
 
-### Create Issues
+### 创建问题
 
 ```bash
 bd create "Title" -p 1 --json                    # Priority 1 (0=critical, 3=low)
@@ -74,10 +74,10 @@ bd create "Subtask" -p 1 --json                  # Under epic: bd-a3f8.1, .2, .3
 bd create "Found issue" --deps discovered-from:bd-a1b2 --json
 ```
 
-Types: `task`, `bug`, `feature`, `epic`
-Priorities: `0` (P0/critical) to `3` (P3/low)
+问题类型：`task`（任务）、`bug`（错误）、`feature`（功能需求）、`epic`（大型项目）
+优先级：`0`（P0/紧急）到`3`（P3/低优先级）
 
-### Query Issues
+### 查询问题
 
 ```bash
 bd ready --json                    # Unblocked tasks (the work queue)
@@ -93,7 +93,7 @@ bd blocked --json                  # Issues waiting on dependencies
 bd stats --json                    # Statistics
 ```
 
-### Update Issues
+### 更新问题
 
 ```bash
 bd update bd-a1b2 --status in_progress --json
@@ -105,16 +105,16 @@ bd update bd-a1b2 --design "Design notes" --json
 bd update bd-a1b2 --notes "Additional notes" --json
 ```
 
-Status values: `open`, `in_progress`, `blocked`, `closed`
+问题状态：`open`（开放）、`in_progress`（进行中）、`blocked`（阻塞）、`closed`（已完成）
 
-### Close Issues
+### 关闭问题
 
 ```bash
 bd close bd-a1b2 --reason "Completed" --json
 bd close bd-a1b2 bd-b2c3 --reason "Batch close" --json
 ```
 
-### Dependencies
+### 依赖关系
 
 ```bash
 bd dep add bd-child bd-parent      # child blocked by parent
@@ -126,18 +126,18 @@ bd dep remove bd-child bd-parent   # Remove dependency
 bd dep cycles                      # Detect circular deps
 ```
 
-Dependency types: `blocks` (default), `related`, `parent`, `discovered-from`
+依赖类型：`blocks`（默认）、`related`（相关）、`parent`（父任务）、`discovered-from`（从哪个任务派生）
 
-### Git Sync
+### Git同步
 
 ```bash
 bd sync                    # Export → commit → pull → import → push
 bd hooks install           # Install git hooks for auto-sync
 ```
 
-The daemon auto-syncs with 30s debounce. Use `bd sync` to force immediate sync.
+该工具会以30秒的延迟自动同步数据。可以使用`bd sync`命令强制立即同步。
 
-### Maintenance
+### 维护
 
 ```bash
 bd admin compact --dry-run --json   # Preview compaction
@@ -145,7 +145,7 @@ bd admin compact --days 90          # Compact issues closed >90 days
 bd doctor                           # Check database health
 ```
 
-## Hierarchical IDs (Epics)
+## 分层ID（大型项目）
 
 ```bash
 bd create "Project Alpha" -t epic -p 1 --json   # Returns: bd-a3f8
@@ -154,9 +154,9 @@ bd create "Research" -p 1 --json                # Returns: bd-a3f8.2
 bd create "Review" -p 1 --json                  # Returns: bd-a3f8.3
 ```
 
-Up to 3 levels: `bd-a3f8` → `bd-a3f8.1` → `bd-a3f8.1.1`
+问题ID最多可包含3个层级，例如：`bd-a3f8` → `bd-a3f8.1` → `bd-a3f8.1.1`
 
-## Multi-Agent Coordination
+## 多代理协调
 
 ```bash
 # Agent claims work
@@ -169,16 +169,17 @@ bd ready --assignee agent-1 --json
 bd create "Found issue" --deps discovered-from:bd-a1b2 --json
 ```
 
-## Commit Convention (Optional)
+## 提交规范（可选）
 
-For git-tracked projects, include issue ID in commit messages for traceability:
+对于使用Git进行版本控制的项目，请在提交信息中包含问题ID，以便追踪问题进度：
+
 ```bash
 git commit -m "Complete research phase (bd-a1b2)"
 ```
 
-## Session End Checklist
+## 会话结束前的检查事项
 
-Before ending a session:
+在结束会话之前，请确保完成以下操作：
 
 ```bash
 bd sync                    # Flush all changes

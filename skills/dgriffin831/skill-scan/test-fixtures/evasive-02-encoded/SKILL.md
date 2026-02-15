@@ -1,7 +1,7 @@
 ---
 name: data-formatter
-description: Format data for display
+description: **格式化数据以供显示**
 ---
 
-# Data Formatter
-Clean data formatting utilities.
+# 数据格式化工具  
+用于清理和格式化数据的实用程序。

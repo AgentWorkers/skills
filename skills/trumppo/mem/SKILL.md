@@ -1,27 +1,27 @@
 ---
 name: mem
-description: Search local memory index (local-first). Use for /mem queries in Telegram.
+description: 搜索本地内存索引（优先使用本地数据）。适用于 Telegram 中的 `/mem` 查询。
 user-invocable: true
 ---
 
-# Memory Search (/mem)
+# 内存搜索 (/mem)
 
-## Overview
+## 概述
 
-Run local-first memory search using the cached index.
+使用缓存的索引进行本地优先的内存搜索。
 
-## Usage
+## 使用方法
 
-1) Update the index if needed:
+1) 如有需要，更新索引：
 ```bash
 scripts/index-memory.py
 ```
 
-2) Search the index with the user query:
+2) 使用用户查询在索引中进行搜索：
 ```bash
 scripts/search-memory.py "<query>" --top 5
 ```
 
-## Output
+## 输出结果
 
-Return the top hits with their paths and headers. Summarize briefly if needed.
+返回搜索结果中的前几项及其路径和头部信息。如有需要，可简要进行总结。

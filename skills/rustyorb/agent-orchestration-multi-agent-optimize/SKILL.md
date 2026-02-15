@@ -1,85 +1,85 @@
 ---
 name: agent-orchestration-multi-agent-optimize
-description: "Optimize multi-agent systems with coordinated profiling, workload distribution, and cost-aware orchestration. Use when improving agent performance, throughput, or reliability."
+description: "通过协调式的性能分析、工作负载分配以及成本意识强的系统编排来优化多代理系统。适用于提升代理的性能、吞吐量或可靠性。"
 ---
 
-# Multi-Agent Optimization Toolkit
+# 多智能体优化工具包
 
-## Use this skill when
+## 适用场景
 
-- Improving multi-agent coordination, throughput, or latency
-- Profiling agent workflows to identify bottlenecks
-- Designing orchestration strategies for complex workflows
-- Optimizing cost, context usage, or tool efficiency
+- 当需要提升多智能体的协调性、吞吐量或延迟时
+- 当需要分析智能体工作流程以识别瓶颈时
+- 当需要为复杂的工作流程设计编排策略时
+- 当需要优化成本、上下文使用效率或工具效率时
 
-## Do not use this skill when
+## 不适用场景
 
-- You only need to tune a single agent prompt
-- There are no measurable metrics or evaluation data
-- The task is unrelated to multi-agent orchestration
+- 当只需要调整单个智能体的提示（prompt）时
+- 当没有可衡量的指标或评估数据时
+- 当任务与多智能体编排无关时
 
-## Instructions
+## 使用步骤
 
-1. Establish baseline metrics and target performance goals.
-2. Profile agent workloads and identify coordination bottlenecks.
-3. Apply orchestration changes and cost controls incrementally.
-4. Validate improvements with repeatable tests and rollbacks.
+1. 确立基准指标和目标性能目标。
+2. 分析智能体工作负载并识别协调瓶颈。
+3. 逐步应用编排调整和成本控制措施。
+4. 通过可重复的测试来验证改进效果，并在必要时进行回滚。
 
-## Safety
+## 安全性注意事项
 
-- Avoid deploying orchestration changes without regression testing.
-- Roll out changes gradually to prevent system-wide regressions.
+- 在部署编排调整之前，务必进行回归测试。
+- 逐步推出更改，以防止系统出现全局性退化。
 
-## Role: AI-Powered Multi-Agent Performance Engineering Specialist
+## 职责：AI驱动的多智能体性能工程专家
 
-### Context
+### 背景
 
-The Multi-Agent Optimization Tool is an advanced AI-driven framework designed to holistically improve system performance through intelligent, coordinated agent-based optimization. Leveraging cutting-edge AI orchestration techniques, this tool provides a comprehensive approach to performance engineering across multiple domains.
+多智能体优化工具是一个先进的AI驱动框架，旨在通过智能、协作的智能体优化方式全面提升系统性能。该工具利用前沿的AI编排技术，为多个领域提供全面的性能工程解决方案。
 
-### Core Capabilities
+### 核心功能
 
-- Intelligent multi-agent coordination
-- Performance profiling and bottleneck identification
-- Adaptive optimization strategies
-- Cross-domain performance optimization
-- Cost and efficiency tracking
+- 智能多智能体协调
+- 性能分析与瓶颈识别
+- 自适应优化策略
+- 跨领域性能优化
+- 成本与效率监控
 
-## Arguments Handling
+## 参数处理
 
-The tool processes optimization arguments with flexible input parameters:
+该工具支持灵活的优化参数配置：
 
-- `$TARGET`: Primary system/application to optimize
-- `$PERFORMANCE_GOALS`: Specific performance metrics and objectives
-- `$OPTIMIZATION_SCOPE`: Depth of optimization (quick-win, comprehensive)
-- `$BUDGET_CONSTRAINTS`: Cost and resource limitations
-- `$QUALITY_METRICS`: Performance quality thresholds
+- `$TARGET`：需要优化的主系统/应用程序
+- `$PERFORMANCE_GOALS`：具体的性能指标和目标
+- `$OPTIMIZATION_SCOPE`：优化深度（快速见效、全面优化）
+- `$BUDGET_CONSTRAINTS`：成本和资源限制
+- `$QUALITY_METRICS`：性能质量阈值
 
-## 1. Multi-Agent Performance Profiling
+## 1. 多智能体性能分析
 
-### Profiling Strategy
+### 分析策略
 
-- Distributed performance monitoring across system layers
-- Real-time metrics collection and analysis
-- Continuous performance signature tracking
+- 在系统各层进行分布式性能监控
+- 实时收集和分析性能数据
+- 持续跟踪性能变化趋势
 
-#### Profiling Agents
+#### 智能体类型分析示例
 
-1. **Database Performance Agent**
-   - Query execution time analysis
-   - Index utilization tracking
-   - Resource consumption monitoring
+1. **数据库性能智能体**
+   - 查询执行时间分析
+   - 索引使用情况监控
+   - 资源消耗监测
 
-2. **Application Performance Agent**
-   - CPU and memory profiling
-   - Algorithmic complexity assessment
-   - Concurrency and async operation analysis
+2. **应用程序性能智能体**
+   - CPU和内存使用情况分析
+   - 算法复杂度评估
+   - 并发性和异步操作分析
 
-3. **Frontend Performance Agent**
-   - Rendering performance metrics
-   - Network request optimization
-   - Core Web Vitals monitoring
+3. **前端性能智能体**
+   - 渲染性能指标分析
+   - 网络请求优化
+   - 核心Web性能指标监控
 
-### Profiling Code Example
+### 分析代码示例
 
 ```python
 def multi_agent_profiler(target_system):
@@ -96,16 +96,16 @@ def multi_agent_profiler(target_system):
     return aggregate_performance_metrics(performance_profile)
 ```
 
-## 2. Context Window Optimization
+## 2. 上下文窗口优化
 
-### Optimization Techniques
+### 优化技术
 
-- Intelligent context compression
-- Semantic relevance filtering
-- Dynamic context window resizing
-- Token budget management
+- 智能上下文压缩
+- 语义相关性过滤
+- 动态上下文窗口调整
+- 令牌预算管理
 
-### Context Compression Algorithm
+### 上下文压缩算法示例
 
 ```python
 def compress_context(context, max_tokens=4000):
@@ -118,16 +118,16 @@ def compress_context(context, max_tokens=4000):
     return compressed_context
 ```
 
-## 3. Agent Coordination Efficiency
+## 3. 智能体协调效率
 
-### Coordination Principles
+### 协调原则
 
-- Parallel execution design
-- Minimal inter-agent communication overhead
-- Dynamic workload distribution
-- Fault-tolerant agent interactions
+- 并行执行设计
+- 最小化智能体间的通信开销
+- 动态工作负载分配
+- 容错智能体交互
 
-### Orchestration Framework
+### 编排框架示例
 
 ```python
 class MultiAgentOrchestrator:
@@ -150,25 +150,25 @@ class MultiAgentOrchestrator:
                 self.performance_tracker.log(agent, result)
 ```
 
-## 4. Parallel Execution Optimization
+## 4. 并行执行优化
 
-### Key Strategies
+### 关键策略
 
-- Asynchronous agent processing
-- Workload partitioning
-- Dynamic resource allocation
-- Minimal blocking operations
+- 异步智能体处理
+- 工作负载划分
+- 动态资源分配
+- 减少阻塞操作
 
-## 5. Cost Optimization Strategies
+## 5. 成本优化策略
 
-### LLM Cost Management
+### 大语言模型（LLM）成本管理
 
-- Token usage tracking
-- Adaptive model selection
-- Caching and result reuse
-- Efficient prompt engineering
+- 令牌使用情况跟踪
+- 自适应模型选择
+- 缓存和结果重用
+- 高效的提示设计
 
-### Cost Tracking Example
+### 成本跟踪示例
 
 ```python
 class CostOptimizer:
@@ -186,54 +186,54 @@ class CostOptimizer:
         pass
 ```
 
-## 6. Latency Reduction Techniques
+## 6. 延迟降低技术
 
-### Performance Acceleration
+### 性能加速方法
 
-- Predictive caching
-- Pre-warming agent contexts
-- Intelligent result memoization
-- Reduced round-trip communication
+- 预测性缓存
+- 提前预热智能体上下文
+- 智能结果缓存
+- 减少往返通信次数
 
-## 7. Quality vs Speed Tradeoffs
+## 7. 性能与速度的权衡
 
-### Optimization Spectrum
+### 优化策略
 
-- Performance thresholds
-- Acceptable degradation margins
-- Quality-aware optimization
-- Intelligent compromise selection
+- 性能阈值设定
+- 可接受的性能下降范围
+- 以质量为导向的优化
+- 智能的折中选择
 
-## 8. Monitoring and Continuous Improvement
+## 8. 监控与持续改进
 
-### Observability Framework
+### 可观测性框架
 
-- Real-time performance dashboards
-- Automated optimization feedback loops
-- Machine learning-driven improvement
-- Adaptive optimization strategies
+- 实时性能仪表板
+- 自动化的优化反馈循环
+- 基于机器学习的改进机制
+- 自适应优化策略
 
-## Reference Workflows
+## 参考工作流程
 
-### Workflow 1: E-Commerce Platform Optimization
+### 工作流程1：电子商务平台优化
 
-1. Initial performance profiling
-2. Agent-based optimization
-3. Cost and performance tracking
-4. Continuous improvement cycle
+1. 初始性能分析
+2. 基于智能体的优化
+3. 成本与性能监控
+4. 持续改进循环
 
-### Workflow 2: Enterprise API Performance Enhancement
+### 工作流程2：企业级API性能提升
 
-1. Comprehensive system analysis
-2. Multi-layered agent optimization
-3. Iterative performance refinement
-4. Cost-efficient scaling strategy
+1. 全面系统分析
+2. 多层智能体优化
+3. 迭代性能优化
+4. 高效的成本扩展策略
 
-## Key Considerations
+## 关键注意事项
 
-- Always measure before and after optimization
-- Maintain system stability during optimization
-- Balance performance gains with resource consumption
-- Implement gradual, reversible changes
+- 在优化前后务必进行性能测量
+- 在优化过程中保持系统稳定性
+- 在提升性能的同时平衡资源消耗
+- 逐步实施可逆的更改
 
-Target Optimization: $ARGUMENTS
+目标优化参数：$ARGUMENTS

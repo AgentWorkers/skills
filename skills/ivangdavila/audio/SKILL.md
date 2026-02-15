@@ -1,34 +1,34 @@
 ---
 name: Audio
-description: Process, enhance, and convert audio files with noise removal, normalization, format conversion, transcription, and podcast workflows.
+description: 处理、增强并转换音频文件，包括去除噪音、进行音量标准化、格式转换、文字转录以及实现播客制作的工作流程。
 ---
 
-## Core Capabilities
+## 核心功能
 
-| Task | Method |
+| 任务 | 方法 |
 |------|--------|
-| Convert formats | FFmpeg (`-acodec`) |
-| Remove noise | FFmpeg filters, SoX, or dedicated tools |
-| Normalize loudness | `ffmpeg-normalize` or `-af loudnorm` |
-| Transcribe | Whisper → text, SRT, VTT |
-| Separate stems | Demucs (vocals, drums, bass, other) |
+| 转换格式 | FFmpeg (`-acodec`) |
+| 去除噪音 | FFmpeg 滤镜、SoX 或专用工具 |
+| 规范音量 | `ffmpeg-normalize` 或 `-af loudnorm` |
+| 转录文本 | 将语音文件转换为 SRT/VTT 格式 |
+| 分离音频元素 | 使用 Demucs 工具分离人声、鼓声、贝斯等 |
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Situation | Load |
+| 情况 | 参考资料 |
 |-----------|------|
-| FFmpeg commands by task | `commands.md` |
-| Loudness standards by platform | `loudness.md` |
-| Podcast production workflow | `podcast.md` |
-| Transcription workflow | `transcription.md` |
+| 按任务使用的 FFmpeg 命令 | `commands.md` |
+| 不同平台的音量标准 | `loudness.md` |
+| 播客制作流程 | `podcast.md` |
+| 转录流程 | `transcription.md` |
 
 ---
 
-## Workspace
+## 工作区
 
-Store audio projects in `~/audio/`:
+音频项目存储在 `~/audio/` 目录下：
 ```
 ~/audio/
 ├── input/        # Source files
@@ -39,46 +39,46 @@ Store audio projects in `~/audio/`:
 
 ---
 
-## Execution Pattern
+## 执行步骤
 
-1. **Clarify goal** — What format? What loudness? What platform?
-2. **Analyze source** — `ffprobe` for codec, sample rate, channels, duration
-3. **Process** — FFmpeg/SoX for transformation
-4. **Verify** — Check output plays, meets specs, sounds correct
-5. **Clean up** — Offer to delete intermediates
+1. **明确目标** — 需要转换成什么格式？音量应如何设置？目标平台是什么？
+2. **分析源文件** — 使用 `ffprobe` 查看编码器、采样率、声道数和文件时长。
+3. **进行处理** — 使用 FFmpeg 或 SoX 进行格式转换。
+4. **验证结果** — 检查输出文件是否能正常播放，是否符合要求，音质是否合格。
+5. **清理临时文件** — 提供删除中间文件的选项。
 
 ---
 
-## Common Requests → Actions
+## 常见请求与对应操作
 
-| User says | Agent does |
+| 用户需求 | 代理操作 |
 |-----------|------------|
-| "Convert to MP3" | `-acodec libmp3lame -q:a 2` |
-| "Remove background noise" | Apply highpass/lowpass or dedicated denoiser |
-| "Normalize for podcast" | `-af loudnorm=I=-16:TP=-1.5:LRA=11` |
-| "Transcribe this" | Whisper → output SRT/VTT/TXT |
-| "Extract audio from video" | `-vn -acodec copy` or re-encode |
-| "Make it smaller" | Lower bitrate: `-b:a 128k` or `-b:a 96k` |
-| "Remove vocals" | Demucs stem separation → use instrumental |
-| "Speed up 1.5x" | `-af atempo=1.5` |
+| “转换为 MP3 格式” | `-acodec libmp3lame -q:a 2` |
+| “去除背景噪音” | 应用高通/低通滤波器或专用去噪工具 |
+| “为播客调整音量” | 使用 `-af loudnorm=I=-16:TP=-1.5:LRA=11` |
+| “将语音文件转录为文本” | 将语音文件转换为 SRT/VTT/TXT 格式 |
+| “从视频中提取音频” | 使用 `-vn -acodec copy` 命令提取音频 |
+| “减小文件大小” | 降低比特率（例如：`-b:a 128k` 或 `-b:a 96k`） |
+| “分离人声” | 使用 Demucs 工具分离音频元素 |
+| “加快播放速度” | 使用 `-af atempo=1.5` 命令加快播放速度 |
 
 ---
 
-## Format Quick Reference
+## 格式简介
 
-| Format | Use Case | Quality |
+| 格式 | 适用场景 | 音质 |
 |--------|----------|---------|
-| WAV | Master, editing | Lossless |
-| FLAC | Archive, audiophile | Lossless compressed |
-| MP3 | Universal sharing | Lossy, 128-320 kbps |
-| AAC/M4A | Apple, podcasts | Lossy, efficient |
-| OGG/Opus | WhatsApp, Discord | Lossy, very efficient |
+| WAV | 音频母带、编辑用途 | 无损压缩格式 |
+| FLAC | 音频存档、音频爱好者使用 | 无损压缩格式 |
+| MP3 | 通用分享格式 | 有损压缩格式，比特率通常为 128-320 kbps |
+| AAC/M4A | Apple 设备、播客使用 | 有损压缩格式，压缩效率高 |
+| OGG/Opus | WhatsApp、Discord 使用 | 有损压缩格式，压缩效率极高 |
 
 ---
 
-## Quality Defaults
+## 音质默认设置
 
-- **Podcast:** -16 LUFS (Spotify), -19 LUFS (Apple)
-- **Music:** -14 LUFS (Spotify), -16 LUFS (Apple Music)
-- **MP3 quality:** VBR `-q:a 2` (~190 kbps) or CBR `-b:a 192k`
-- **Sample rate:** 44.1kHz for music, 48kHz for video sync
+- **播客**：-16 LUFS（Spotify），-19 LUFS（Apple）
+- **音乐**：-14 LUFS（Spotify），-16 LUFS（Apple Music）
+- **MP3 音质**：VBR 模式下比特率为 `-q:a 2`（约 190 kbps），CBR 模式下比特率为 `-b:a 192k`
+- **采样率**：音乐文件通常为 44.1kHz，视频同步时使用 48kHz

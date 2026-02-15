@@ -1,6 +1,6 @@
 ---
 name: skill-exporter
-description: Export Clawdbot skills as standalone, deployable microservices. Use when you want to dockerize a skill, deploy it to Railway or Fly.io, or create an independent API service. Generates Dockerfile, FastAPI wrapper, requirements.txt, deployment configs, and optional LLM client integration.
+description: 将 Clawdbot 的技能导出为独立的、可部署的微服务。当您希望将某个技能容器化（使用 Docker），部署到 Railway 或 Fly.io，或创建一个独立的 API 服务时，可以使用此功能。该功能会生成 Dockerfile、FastAPI 包装器、requirements.txt 文件、部署配置文件，以及可选的 LLM 客户端集成相关文件。
 license: MIT
 compatibility: Requires python3. Works with any AgentSkills-compatible agent.
 metadata:
@@ -13,11 +13,11 @@ metadata:
         - python3
 ---
 
-# Skill Exporter
+# 技能导出器（Skill Exporter）
 
-Transform Clawdbot skills into standalone, deployable microservices.
+将 Clawdbot 的技能转换为可独立部署的微服务。
 
-## Workflow
+## 工作流程
 
 ```
 Clawdbot Skill (tested & working)
@@ -29,9 +29,9 @@ Standalone Microservice
 Railway / Fly.io / Docker
 ```
 
-## Usage
+## 使用方法
 
-### Export a skill
+### 导出技能
 
 ```bash
 python3 {baseDir}/scripts/export.py \
@@ -41,30 +41,30 @@ python3 {baseDir}/scripts/export.py \
   --output ~/projects/instagram-service
 ```
 
-### Options
+### 参数选项
 
-| Flag | Description | Default |
+| 参数 | 说明 | 默认值 |
 |------|-------------|---------|
-| `--skill` | Path to skill directory | required |
-| `--target` | Deployment target: `railway`, `fly`, `docker` | `docker` |
-| `--llm` | LLM provider: `anthropic`, `openai`, `none` | `none` |
-| `--output` | Output directory | `./<skill-name>-service` |
-| `--port` | API port | `8000` |
+| `--skill` | 技能目录的路径 | 必需 |
+| `--target` | 部署目标：`railway`、`fly`、`docker` | `docker` |
+| `--llm` | LLM（大语言模型）提供商：`anthropic`、`openai`、`none` | `none` |
+| `--output` | 输出目录 | `./<技能名称>-service` |
+| `--port` | API 端口 | `8000` |
 
-### Targets
+### 部署目标
 
-**railway** — Generates `railway.json`, optimized Dockerfile, health checks
-**fly** — Generates `fly.toml`, multi-region ready
-**docker** — Generic Dockerfile, docker-compose.yml
+- **railway**：生成 `railway.json` 文件、优化的 Dockerfile 以及健康检查脚本 |
+- **fly**：生成 `fly.toml` 文件，支持多区域部署 |
+- **docker**：生成通用的 Dockerfile 和 `docker-compose.yml` 文件 |
 
-### LLM Integration
+### LLM 集成
 
-When `--llm` is set, generates `llm_client.py` with:
-- Caption/prompt generation
-- Decision making helpers
-- Rate limiting and error handling
+当设置 `--llm` 时，会生成 `llm_client.py` 文件，其中包含：
+- 标题/提示生成功能 |
+- 决策辅助工具 |
+- 速率限制和错误处理机制 |
 
-## What Gets Generated
+## 生成的内容
 
 ```
 <skill>-service/
@@ -80,15 +80,15 @@ When `--llm` is set, generates `llm_client.py` with:
     └── *.py
 ```
 
-## Requirements
+## 要求
 
-The source skill must have:
-- `SKILL.md` with valid frontmatter
-- At least one script in `scripts/`
-- Scripts should be callable (functions, not just inline code)
+源技能必须满足以下条件：
+- 包含具有有效元数据（frontmatter）的 `SKILL.md` 文件 |
+- `scripts/` 目录中至少有一个可执行的脚本 |
+- 脚本应为可调用的函数形式（而不仅仅是内联代码）
 
-## Post-Export
+## 导出后的操作
 
-1. Copy `.env.example` to `.env` and fill in secrets
-2. Test locally: `docker-compose up`
-3. Deploy: `railway up` or `fly deploy`
+1. 将 `.env.example` 文件复制到 `.env` 文件，并填写相应的配置信息 |
+2. 在本地进行测试：`docker-compose up` |
+3. 部署服务：`railway up` 或 `fly deploy`

@@ -1,189 +1,131 @@
 ---
 name: swiftui-performance-audit
-description: Audit and improve SwiftUI runtime performance from code review and architecture. Use for requests to diagnose slow rendering, janky scrolling, high CPU/memory usage, excessive view updates, or layout thrash in SwiftUI apps, and to provide guidance for user-run Instruments profiling when code review alone is insufficient.
+description: 通过代码审查和架构设计来审计并提升 SwiftUI 应用的运行性能。该方法可用于诊断以下问题：渲染速度缓慢、滚动效果不佳、CPU/内存使用过高、视图更新过于频繁，以及布局更新导致的性能问题。同时，当仅依赖代码审查时，该方法还能为用户提供的 Instruments 分析工具提供使用指导。
 ---
 
-# SwiftUI Performance Audit
+# SwiftUI 性能审计
 
-_Attribution: copied from @Dimillian’s `Dimillian/Skills` (2025-12-31)._
+## 来源：复制自 @Dimillian 的 `Dimillian/Skills`（2025-12-31）。
 
-## Overview
+## 概述
 
-Audit SwiftUI view performance end-to-end, from instrumentation and baselining to root-cause analysis and concrete remediation steps.
+本文档用于端到端地审计 SwiftUI 视图的性能，包括性能监控、基准测试、根本原因分析以及具体的修复步骤。
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-- If the user provides code, start with "Code-First Review."
-- If the user only describes symptoms, ask for minimal code/context, then do "Code-First Review."
-- If code review is inconclusive, go to "Guide the User to Profile" and ask for a trace or screenshots.
+- 如果用户提供了代码，请先进行“代码优先审查”（Code-First Review）。
+- 如果用户仅描述了问题症状，请要求用户提供最少的代码或上下文信息，然后进行“代码优先审查”。
+- 如果代码审查无法得出明确结论，请引导用户使用性能分析工具进行性能分析，并要求提供相关的数据跟踪记录或截图。
 
-## 1. Code-First Review
+## 1. 代码优先审查（Code-First Review）
 
-Collect:
-- Target view/feature code.
-- Data flow: state, environment, observable models.
-- Symptoms and reproduction steps.
+收集以下信息：
+- 目标视图/功能的代码。
+- 数据流：状态、环境、可观察模型。
+- 问题症状及重现步骤。
 
-Focus on:
-- View invalidation storms from broad state changes.
-- Unstable identity in lists (`id` churn, `UUID()` per render).
-- Heavy work in `body` (formatting, sorting, image decoding).
-- Layout thrash (deep stacks, `GeometryReader`, preference chains).
-- Large images without downsampling or resizing.
-- Over-animated hierarchies (implicit animations on large trees).
+重点关注以下问题：
+- 由于状态变化导致的视图失效问题。
+- 列表中的对象身份不稳定（每次渲染时 `id` 或 `UUID` 的频繁变化）。
+- `body` 部分执行了大量的计算任务（如格式化、排序、图像解码）。
+- 布局更新过于频繁（导致堆栈深度过大，使用 `GeometryReader` 或偏好设置链）。
+- 大尺寸图像在渲染时没有进行缩放或调整大小。
+- 高级动画层次结构（大型视图树上的隐式动画）。
 
-Provide:
-- Likely root causes with code references.
-- Suggested fixes and refactors.
-- If needed, a minimal repro or instrumentation suggestion.
+提供以下内容：
+- 可能的根本原因及对应的代码位置。
+- 建议的修复方案和代码重构方法。
+- 如有需要，提供简单的重现步骤或性能监控建议。
 
-## 2. Guide the User to Profile
+## 2. 引导用户使用性能分析工具（Guide the User to Profile）
 
-Explain how to collect data with Instruments:
-- Use the SwiftUI template in Instruments (Release build).
-- Reproduce the exact interaction (scroll, navigation, animation).
-- Capture SwiftUI timeline and Time Profiler.
-- Export or screenshot the relevant lanes and the call tree.
+解释如何使用性能分析工具收集数据：
+- 使用 SwiftUI 提供的性能分析模板（Release 版本）。
+- 重现具体的交互行为（如滚动、导航、动画等）。
+- 捕获 SwiftUI 的时间线数据及性能分析结果。
+- 导出相关的数据或截图。
 
-Ask for:
-- Trace export or screenshots of SwiftUI lanes + Time Profiler call tree.
-- Device/OS/build configuration.
+要求用户提供：
+- SwiftUI 的性能分析数据以及时间线分析中的调用树。
+- 设备/操作系统/构建版本的配置信息。
 
-## 3. Analyze and Diagnose
+## 3. 分析与诊断
 
-Prioritize likely SwiftUI culprits:
-- View invalidation storms from broad state changes.
-- Unstable identity in lists (`id` churn, `UUID()` per render).
-- Heavy work in `body` (formatting, sorting, image decoding).
-- Layout thrash (deep stacks, `GeometryReader`, preference chains).
-- Large images without downsampling or resizing.
-- Over-animated hierarchies (implicit animations on large trees).
+优先排查以下可能影响性能的问题：
+- 由于状态变化导致的视图失效问题。
+- 列表中的对象身份不稳定。
+- `body` 部分执行了大量的计算任务。
+- 布局更新过于频繁。
+- 大尺寸图像在渲染时没有进行缩放或调整大小。
+- 高级动画层次结构。
 
-Summarize findings with evidence from traces/logs.
+根据性能分析工具提供的数据总结问题原因。
 
-## 4. Remediate
+## 4. 修复问题
 
-Apply targeted fixes:
-- Narrow state scope (`@State`/`@Observable` closer to leaf views).
-- Stabilize identities for `ForEach` and lists.
-- Move heavy work out of `body` (precompute, cache, `@State`).
-- Use `equatable()` or value wrappers for expensive subtrees.
-- Downsample images before rendering.
-- Reduce layout complexity or use fixed sizing where possible.
+应用针对性的修复措施：
+- 缩小状态更新的范围（将 `@State`/`@Observable` 的作用域限制在更接近视图叶节点的部分）。
+- 稳定列表中对象的身份（避免在循环中频繁更新对象的 `id`）。
+- 将计算密集型任务移出 `body` 部分（提前计算结果、使用缓存）。
+- 对于计算成本较高的子树，使用 `equatable()` 或值包装器。
+- 在渲染前对图像进行缩放处理。
+- 尽可能简化布局结构或使用固定大小的视图元素。
 
-## Common Code Smells (and Fixes)
+## 常见的代码问题及修复方法
 
-Look for these patterns during code review.
+在代码审查过程中注意以下问题及其对应的修复方案：
 
-### Expensive formatters in `body`
+### `body` 部分存在计算成本较高的操作
 
-```swift
-var body: some View {
-    let number = NumberFormatter() // slow allocation
-    let measure = MeasurementFormatter() // slow allocation
-    Text(measure.string(from: .init(value: meters, unit: .meters)))
-}
-```
+**修复方法：**  
+在模型中缓存计算结果，或使用专门的辅助函数来处理这些操作。
 
-Prefer cached formatters in a model or a dedicated helper:
+### 计算属性执行了大量计算
 
-```swift
-final class DistanceFormatter {
-    static let shared = DistanceFormatter()
-    let number = NumberFormatter()
-    let measure = MeasurementFormatter()
-}
-```
+**修复方法：**  
+在属性值发生变化时提前计算结果并缓存。
 
-### Computed properties that do heavy work
+### 在 `body` 或 `ForEach` 中进行排序/过滤操作
 
-```swift
-var filtered: [Item] {
-    items.filter { $0.isEnabled } // runs on every body eval
-}
-```
+**修复方法：**  
+在视图更新之前先完成排序或过滤操作。
 
-Prefer precompute or cache on change:
+### 在 `ForEach` 中使用内联过滤
 
-```swift
-@State private var filtered: [Item] = []
-// update filtered when inputs change
-```
+**修复方法：**  
+使用预先过滤好的数据集，以确保对象的身份稳定。
 
-### Sorting/filtering in `body` or `ForEach`
+### 对象身份不稳定
 
-```swift
-List {
-    ForEach(items.sorted(by: sortRule)) { item in
-        Row(item)
-    }
-}
-```
+**修复方法：**  
+对于不稳定的对象，避免使用 `id: \.self`；应使用稳定的标识符。
 
-Prefer sort once before view updates:
+### 在主线程上解码图像
 
-```swift
-let sortedItems = items.sorted(by: sortRule)
-```
+**修复方法：**  
+将图像解码操作移到后台线程，并将结果存储在缓存中。
 
-### Inline filtering in `ForEach`
+### 可观察模型中的依赖关系过于复杂
 
-```swift
-ForEach(items.filter { $0.isEnabled }) { item in
-    Row(item)
-}
-```
+**修复方法：**  
+使用更细粒度的视图模型或为每个元素维护独立的状态，以减少不必要的状态更新。
 
-Prefer a prefiltered collection with stable identity.
+## 5. 验证修复效果
 
-### Unstable identity
+要求用户重新运行测试，并与基准数据对比性能指标。
+如果提供了基准数据，总结性能变化的详细情况（如 CPU 使用率、帧率下降、内存峰值等）。
 
-```swift
-ForEach(items, id: \.self) { item in
-    Row(item)
-}
-```
+## 输出结果
 
-Avoid `id: \.self` for non-stable values; use a stable ID.
+提供以下内容：
+- 简短的性能指标对比表（如有必要，可显示修改前后的数据）。
+- 按影响程度排序的主要问题列表。
+- 建议的修复方案及预估的修复工作量。
 
-### Image decoding on the main thread
+## 参考资料
 
-```swift
-Image(uiImage: UIImage(data: data)!)
-```
-
-Prefer decode/downsample off the main thread and store the result.
-
-### Broad dependencies in observable models
-
-```swift
-@Observable class Model {
-    var items: [Item] = []
-}
-
-var body: some View {
-    Row(isFavorite: model.items.contains(item))
-}
-```
-
-Prefer granular view models or per-item state to reduce update fan-out.
-
-## 5. Verify
-
-Ask the user to re-run the same capture and compare with baseline metrics.
-Summarize the delta (CPU, frame drops, memory peak) if provided.
-
-## Outputs
-
-Provide:
-- A short metrics table (before/after if available).
-- Top issues (ordered by impact).
-- Proposed fixes with estimated effort.
-
-## References
-
-Add Apple documentation and WWDC resources under `references/` as they are supplied by the user.
-- Optimizing SwiftUI performance with Instruments: `references/optimizing-swiftui-performance-instruments.md`
-- Understanding and improving SwiftUI performance: `references/understanding-improving-swiftui-performance.md`
-- Understanding hangs in your app: `references/understanding-hangs-in-your-app.md`
-- Demystify SwiftUI performance (WWDC23): `references/demystify-swiftui-performance-wwdc23.md`
+根据用户提供的资料，添加 Apple 的官方文档和 WWDC 相关资源：
+- 《使用性能分析工具优化 SwiftUI 性能》：`references/optimizing-swiftui-performance-instruments.md`
+- 《理解并提升 SwiftUI 性能》：`references/understanding-improving-swiftui-performance.md`
+- 《分析应用程序中的卡顿问题》：`references/understanding-hangs-in-your-app.md`
+- 《揭秘 SwiftUI 性能优化技巧（WWDC23）》：`references/demystify-swiftui-performance-wwdc23.md`

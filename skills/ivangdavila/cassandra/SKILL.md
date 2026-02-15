@@ -1,82 +1,80 @@
 ---
 name: Cassandra
-description: Design Cassandra tables, write efficient queries, and avoid distributed database pitfalls.
+description: 设计 Cassandra 表结构，编写高效的查询语句，并避免分布式数据库中常见的陷阱。
 metadata: {"clawdbot":{"emoji":"👁️","requires":{"anyBins":["cqlsh","nodetool"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Data Modeling Mistakes
+## 数据建模中的常见错误
 
-- Design tables around queries, not entities—denormalization is mandatory, not optional
-- One table per query pattern—Cassandra has no JOINs; duplicate data across tables
-- Partition key determines data distribution—all rows with same partition key on same node
-- Wide partitions kill performance—keep under 100MB; add time bucket to partition key if growing
+- 根据查询需求设计表结构，而不是基于实体来设计；这种情况下，数据反规范化（denormalization）是必须的，而非可选的。
+- 每个查询模式对应一个表：Cassandra 不支持 JOIN 操作，因此数据会分散在多个表中。
+- 分区键（partition key）决定了数据在节点上的分布方式：具有相同分区键的所有行会存储在同一节点上。
+- 过大的分区会导致性能下降；请将分区键的大小控制在 100MB 以内；如果数据量持续增长，可以为分区键添加时间戳字段作为分区依据。
 
-## Primary Key Traps
+## 主键相关的问题
 
-- `PRIMARY KEY (a, b, c)`: `a` is partition key, `b` and `c` are clustering columns
-- `PRIMARY KEY ((a, b), c)`: `(a, b)` together is partition key—compound partition key
-- Clustering columns define sort order within partition—query must respect this order
-- Can't query by clustering column without partition key—unlike SQL indexes
+- `PRIMARY KEY (a, b, c)`：`a` 是分区键，`b` 和 `c` 是聚类列（clustering columns）。
+- `PRIMARY KEY ((a, b), c)`：`(a, b)` 共同构成了分区键，即复合分区键。
+- 聚类列决定了数据在分区内的排序顺序；查询时必须遵循这一顺序。
+- 无法在没有分区键的情况下直接通过聚类列进行查询（这与 SQL 索引不同）。
 
-## Query Restrictions
+## 查询限制
 
-- `WHERE` must include full partition key—partial partition key fails unless `ALLOW FILTERING`
-- `ALLOW FILTERING` scans all nodes—never use in production; redesign table instead
-- Range queries only on last clustering column used—`WHERE a = ? AND b > ?` works, `WHERE a = ? AND c > ?` doesn't
-- `IN` on partition key hits multiple nodes—expensive; prefer single partition queries
+- `WHERE` 子句中必须包含完整的分区键；如果未包含完整的分区键，查询将失败（除非设置了 `ALLOW FILTERING`）。
+- `ALLOW FILTERING` 会导致所有节点都被扫描，因此在生产环境中绝对不可使用；这种情况下应重新设计表结构。
+- 范围查询（range queries）只能针对最后一个被使用的聚类列进行；例如，`WHERE a = ? AND b > ?` 可以执行，而 `WHERE a = ? AND c > ?` 则无法执行。
+- 对分区键使用 `IN` 操作会涉及多个节点，这会降低查询性能；建议使用针对单个分区的查询。
 
-## Consistency Levels
+## 一致性级别
 
-- `QUORUM` for most operations—majority of replicas; balances consistency and availability
-- `LOCAL_QUORUM` for multi-datacenter—avoids cross-DC latency
-- `ONE` for pure availability—may read stale data; fine for caches, bad for critical reads
-- Write + read consistency must overlap for strong consistency—`QUORUM` + `QUORUM` safe
+- `QUORUM`：适用于大多数操作，需要大多数副本节点的参与，能在一致性和可用性之间取得平衡。
+- `LOCAL_QUORUM`：适用于多数据中心环境，可以避免跨数据中心的延迟。
+- `ONE`：仅关注数据可用性，可能会导致读取到过时的数据；适用于缓存场景，但不适合关键数据的读取。
 
-## Tombstones (Silent Performance Killer)
+## 其他性能相关的问题
 
-- DELETE creates a tombstone, not actual deletion—tombstones persist until compaction
-- Mass deletes destroy read performance—thousands of tombstones scanned per query
-- TTL also creates tombstones—don't use short TTLs with high write volume
-- Check with `nodetool cfstats -H table`—`Tombstone` columns show problem
+- **“墓碑”（Tombstones）**：删除操作实际上并不会立即删除数据，而是会创建一个“墓碑”记录；这些记录会一直存在，直到数据被压缩。
+- 大量删除操作会严重影响读取性能（因为每次查询都需要扫描大量的“墓碑”记录）。
+- 如果写入量很大，不要使用过短的 TTL 值。
+- 可使用 `nodetool cfstats -H table` 命令检查“墓碑”记录的情况。
 
-## Batch Misuse
+## 批量操作的使用误区
 
-- UNLOGGED BATCH is not faster—use only for atomic writes to same partition
-- LOGGED BATCH for multi-partition atomicity—adds coordination overhead
-- Don't batch unrelated writes—hurts coordinator; send individual async writes
-- Batch size limit ~50KB—larger batches fail or timeout
+- **未记录的批量操作（UNLOGGED BATCH）** 并不会提高性能；仅适用于对同一分区的原子性写入操作。
+- **记录的批量操作（LOGGED BATCH）** 可保证多分区的原子性，但会增加协调开销。
+- 不要将对不同分区的写入操作合并到同一个批量中；这样会影响到协调器的性能；应分别发送异步写入请求。
+- 批量操作的大小限制约为 50KB；超过这个限制的批量操作可能会失败或超时。
 
-## Anti-Patterns
+## 应避免的编程模式
 
-- Secondary indexes on high-cardinality columns—scatter-gather query, slow
-- Secondary indexes on frequently updated columns—creates tombstones
-- `SELECT *`—always list columns; schema changes break queries
-- UUID as partition key without time component—random distribution, hot spots during bulk loads
+- 在高基数列（high-cardinality columns）上创建二级索引（secondary indexes）：这种做法会导致查询效率降低（因为需要执行分散-收集（scatter-gather）操作）。
+- 在频繁更新的列上创建二级索引：这会导致大量“墓碑”记录的产生。
+- 使用 `SELECT *` 语句时应该列出所有列；schema 的变更可能会导致查询失败。
+- 将 UUID 作为分区键且不包含时间戳字段：这会导致数据分布不均匀，从而在批量加载时产生热点。
 
-## Lightweight Transactions
+## 轻量级事务（Lightweight Transactions）
 
-- `IF NOT EXISTS` / `IF column = ?`—uses Paxos, 4x slower than normal write
-- Serial consistency for LWTs—`SERIAL` or `LOCAL_SERIAL`
-- Don't use for counters or high-frequency updates—contention kills throughput
-- Returns `[applied]` boolean—must check if operation succeeded
+- 使用 `IF NOT EXISTS` 或 `IF column = ?` 语句时，系统会使用 Paxos 协议进行数据同步，其性能比普通写入操作慢 4 倍。
+- 轻量级事务默认采用序列化一致性（serial consistency）模式（`SERIAL` 或 `LOCAL_SERIAL`）；这种模式不适合用于计数器或需要频繁更新的数据。
+- 使用轻量级事务时需要注意：返回的布尔值 `[applied]` 仅表示操作是否被执行，并不能直接判断操作是否成功。
 
-## Collections and Counters
+## 集合和计数器（Collections and Counters）
 
-- Sets/Lists/Maps stored with row—can't exceed 64KB, no pagination
-- List prepend is anti-pattern—creates tombstones; use append or Set
-- Counters require dedicated table—can't mix with regular columns
-- Counter increment is not idempotent—retry may double-count
+- 集合、列表和映射（Sets/Lists/Maps）存储在行级别，每个集合/列表/映射的大小不能超过 64KB，且不支持分页功能。
+- 在列表中添加元素时使用 `prepend` 方法是错误的做法，因为这会导致“墓碑”记录的产生；应使用 `append` 或 `Set` 方法。
+- 计数器需要单独的表来存储；不能与普通列混合使用。
+- 计数器的递增操作不是幂等的（idempotent），因此可能需要重试才能得到正确的结果。
 
-## Compaction Strategies
+## 数据压缩策略
 
-- `SizeTieredCompactionStrategy` (default)—good for write-heavy, uses more disk space
-- `LeveledCompactionStrategy`—better read latency, higher write amplification
-- `TimeWindowCompactionStrategy`—for time-series with TTL; reduces tombstone overhead
-- Wrong strategy for workload = degraded performance over time
+- `SizeTieredCompactionStrategy`（默认策略）：适用于写入操作较多的场景，但会占用更多的磁盘空间。
+- `LeveledCompactionStrategy`：读取延迟较低，但写入操作的放大效应较大。
+- `TimeWindowCompactionStrategy`：适用于具有时间戳字段的时间序列数据；可以减少“墓碑”记录的产生。
+- 如果选择了错误的压缩策略，随着时间的推移，系统性能可能会下降。
 
-## Operations
+## 其他维护和优化建议
 
-- `nodetool repair` regularly—inconsistencies accumulate without repair
-- `nodetool status` shows cluster health—UN (Up Normal) is good, DN is down
-- Schema changes propagate eventually—wait for `nodetool describecluster` to show agreement
-- Rolling restarts: one node at a time, wait for UN status before next
+- 定期使用 `nodetool repair` 命令修复数据不一致的问题；如果不进行修复，不一致性会逐渐累积。
+- 使用 `nodetool status` 命令检查集群的健康状态；`UN`（Up Normal）表示集群正常运行，`DN` 表示节点宕机。
+- Schema 的变更会逐渐传播到所有节点；请等待 `nodetool describecluster` 命令确认所有节点的状态一致后再进行后续操作。
+- 重启节点时应逐个进行；在重启下一个节点之前，请确保当前节点的状态为 `UN`。

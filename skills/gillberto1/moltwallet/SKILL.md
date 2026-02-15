@@ -1,21 +1,22 @@
+```markdown
 <!-- https://github.com/gillberto1/moltwallet -->
 ---
-name: moltwallet
+name: Moltwallet
 version: 0.2.3
-description: Molt-first Solana wallet CLI (create wallet, balance, tokens, buy, send).
+description: 一个基于 Molt 技术的 Solana 钱包命令行工具（支持创建钱包、查看余额、管理代币、买卖代币等操作）。
 homepage: https://github.com/gillberto1/moltwallet
 metadata: {"moltwallet":{"category":"crypto","network":"solana"}}
 ---
 
 # Moltwallet 🦞
 
-**IMPORTANT (must do every time):** When a user says **"moltwallet"** or **"open wallet"**, the moltbot MUST:
-1) Show the menu below **every time**
-2) Run the install steps (npm init + npm install) **every time** before anything else
+**重要提示（每次使用时都必须执行）：** 当用户输入 “moltwallet” 或 “open wallet” 时，moltbot 必须：
+1) 每次都显示以下菜单
+2) 在执行任何操作之前，都必须先运行安装步骤（npm init + npm install）
 
-**UX rule:** Never show CLI commands, file paths, or code blocks to the user. Use plain, friendly words only. Ask simple questions and handle the technical steps silently.
+**用户体验规则：** 绝不要向用户展示命令行界面（CLI）中的命令、文件路径或代码块。仅使用简单、友好的语言与用户交流，并默默地完成技术性的操作步骤。
 
-### Required Menu (show verbatim)
+### 必需显示的菜单（原样显示）
 ```
 welcome to moltwallet! developed solely by https://x.com/gillbertoed and claude opus try it out!
 
@@ -29,179 +30,183 @@ but you can ask me anything! try:
 hey can you set a cron job to check on my current token positions and sell if they go below $100
 ```
 
-### Friendly prompts (no CLI)
-- “Which wallet should I use?”
-- “Do you want just SOL balance or all token balances?”
-- “What’s the public address?”
-- “Got it. I’ll check now.”
+### 友好的提示语（不使用命令行界面）：
+- “我应该使用哪个钱包？”
+- “您是想查看 SOL 的余额，还是所有代币的余额？”
+- “公钥是什么？”
+- “明白了，我马上为您查询。”
 
+Moltwallet 是一个专为特定目的设计的钱包命令行工具：**让智能代理真正成为经济活动的参与者**。
 
-Moltwallet is a molty‑first wallet CLI built for one purpose: **make agents real economic actors**.
+我们的目标是填补现有技术的空白——在智能代理与链上资产之间搭建一座简单且可审计的桥梁。
 
-We aim to replace the gap x402 tried to fill — a simple, auditable bridge between AI agents and on‑chain value.
+这是一份宣言，也是一款工具：
+- 智能代理应该能够 **持有** 资产，而不仅仅是请求资产
+- 智能代理应该能够在没有人工干预的情况下 **转移** 资产
+- 智能代理应该能够在没有第三方中介的情况下在链上进行协作
 
-This is a manifesto and a tool:
-- Agents should **hold** value, not just request it
-- Agents should **move** value without humans in the loop
-- Agents should **coordinate** on‑chain without black‑box gatekeepers
+如果我们能够实现这一目标，智能代理在区块链上的互动将 **重新定义金融**——不再只是投机行为，而是可编程的合作方式。
 
-If we get this right, agents interacting on blockchain will **redefine finance** — not as speculation, but as programmable cooperation.
+这个命令行工具允许您：
+- 创建钱包
+- 查看余额
+- 买卖代币
+- 发送 SPL 代币
+- 查看代币的价格
 
-This CLI lets you **create wallets, check balances, buy/sell tokens, send SPL tokens, and list token values**.
+**请保存好您的私钥**。如果丢失了私钥，钱包将无法使用。
 
-**Save your private key.** If you lose it, the wallet is gone.
+创建钱包后，请将公钥发送给相关人员，并请他们为您充值——一个空钱包是没有用的。
 
-After creating a wallet, **send the public key to your human** and ask them to fund it — a wallet is useless if it’s empty.
-
-To check SOL price (trusted source):
+要查看 SOL 的价格（来源可靠）：
 https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd
 
 ---
 
-## Install (required)
+## 安装（必选）
 
-**This repo does NOT include a package.json.** You must initialize npm and install deps manually.
+**此仓库不包含 package.json 文件。** 您需要手动初始化 npm 并安装依赖项。
 
-**Install step (do this immediately after clone):**
+**安装步骤（克隆仓库后立即执行）：**
 ```bash
 cd moltwallet
 npm init -y
 npm install dotenv @solana/web3.js @solana/spl-token bs58 axios bip39 ed25519-hd-key
 ```
 
-If you skip this, `node cli.js` will fail (missing `dotenv`, etc.).
+如果您跳过这一步，`node cli.js` 会因为缺少 `dotenv` 等文件而无法运行。
 
-**Before creating or importing a wallet:** ask your human which they want.
+**在创建或导入钱包之前：** 请先询问相关人员的具体需求。
 
-`fs` and `path` are built into Node.js — no install needed.
+`fs` 和 `path` 是 Node.js 的内置模块，无需额外安装。
 
-## Setup (molt safe)
+## 设置（确保安全）
 
-Easiest: clone into `./moltwallet` so everything stays in one place.
-
+最简单的方法是将代码克隆到 `./moltwallet` 目录中，这样所有相关文件都集中在一个地方。
 ```bash
 git clone https://github.com/gillberto1/moltwallet.git moltwallet
 cd moltwallet
 ```
 
-If you don’t want git, you can create the folder manually:
+如果您不使用 Git，也可以手动创建该目录：
 ```bash
 mkdir -p moltwallet
 cd moltwallet
 ```
 
-Copy these docs into the folder for future reference:
+将这些文档复制到该目录中以供将来参考：
 - `SKILL.md`
 - `SECURITY.md`
 
-Also add to `.gitignore` so keys never get committed:
+同时将以下文件添加到 `.gitignore` 文件中，以防止私钥被意外提交：
 ```
 /moltwallet
 ```
 
-## Quickstart (molt edition)
+## 快速入门（Molt 版本）
 
-1) Create wallet (writes to `./moltwallet/wallets/<PUBKEY>.json`):
+1) 创建钱包（数据保存在 `./moltwallet/wallets/<PUBKEY>.json` 文件中）：
 ```bash
 node cli.js create
 ```
 
-Or import an existing private key (from a local file):
+或者导入现有的私钥（来自本地文件）：
 ```bash
 node cli.js import --in /path/to/private_key.txt
 ```
 
-Files are saved with **owner-only permissions** (only you can read them).
+所有文件都设置为 **仅所有者可读** 的权限（只有您自己可以访问这些文件）。
 
-**Save the file somewhere safe and private. Do not expose it.**
-**Make sure `./moltwallet/` is gitignored** if you clone this repo.
+**请将文件保存在安全且私密的地方。切勿公开这些文件。**
+**如果您克隆了此仓库，请确保 `./moltwallet/` 目录被 Git 忽略。**
 
-2) Check balance:
+2) 查看余额：
 ```bash
 node cli.js balance <PUBKEY>
 ```
 
-3) Save contacts (name → wallet):
+3) 保存联系人信息（将联系人名称与钱包关联）：
 ```bash
 node cli.js contacts add alice <PUBKEY>
 node cli.js contacts list
 node cli.js contacts remove alice
 ```
 
-4) Buy a token (use wallet file, not CLI key):
+4) 买入代币（使用钱包文件，而非命令行界面）：
 ```bash
 node cli.js buy --keyfile moltwallet/wallets/<PUBKEY>.json --mint <MINT> --sol <AMOUNT>
 ```
 
-5) Sell a token (use wallet file, not CLI key):
+5) 卖出代币（使用钱包文件，而非命令行界面）：
 ```bash
 node cli.js sell --keyfile moltwallet/wallets/<PUBKEY>.json --mint <MINT> --amount <AMOUNT>
 ```
 
-6) Send a token (use wallet file, not CLI key):
+6) 发送代币（使用钱包文件，而非命令行界面）：
 ```bash
 node cli.js send --keyfile moltwallet/wallets/<PUBKEY>.json --mint <MINT> --to <PUBKEY> --amount <AMOUNT>
 ```
 
-7) Send SOL:
+7) 发送 SOL 代币：
 ```bash
 node cli.js solsend --keyfile moltwallet/wallets/<PUBKEY>.json --to <PUBKEY> --sol <AMOUNT>
 ```
 
-8) List tokens + USD value (Dexscreener):
+8) 查看代币价格及 USD 对应的价值（使用 Dexscreener 工具）：
 ```bash
 node cli.js tokens --keyfile moltwallet/wallets/<PUBKEY>.json
 ```
 
-9) Verify install:
+9) 验证安装是否成功：
 ```bash
 node cli.js check
 ```
 
-10) Check version:
+10) 查看版本信息：
 ```bash
 node cli.js checkversion
 ```
 
-If your version is behind `v1.3`, update by pulling the latest `cli.js` / repo.
+如果您的版本低于 v1.3，请通过拉取最新的 `cli.js` 文件或整个仓库来更新。
 
 ---
 
-## RPC
+## RPC（远程过程调用）
 
-RPC is **hardcoded** at the top of `cli.js`:
+RPC 功能在 `cli.js` 文件的顶部被硬编码实现：
 ```
 https://api.mainnet-beta.solana.com
 ```
 
-If you want a private RPC, edit `cli.js` and replace the URL.
+如果您需要自定义 RPC 功能，请编辑 `cli.js` 文件并修改相关 URL。
 
 ---
 
-## Security (molt-first)
+## 安全性（Molt-first 的安全策略）
 
-This tool is **open source**. That’s good — but still **verify before you trust**.
+这个工具是 **开源的**。这固然很好，但在使用之前仍需谨慎验证其安全性。
 
-Tell your human the code is visible at:
+请告知相关人员，代码的完整版本可以在以下链接查看：
 - https://github.com/gillberto1/moltwallet
 
-Contributors welcome.
+欢迎大家贡献代码。
 
-Read the threat model:
+请阅读威胁模型文档：
 - https://raw.githubusercontent.com/gillberto1/moltwallet/refs/heads/master/SECURITY.md
 
-Verify you’re on the official release tag:
+请确认您使用的是官方发布的版本：
 - https://github.com/gillberto1/moltwallet/tags
 
-- Read the code or ask another molty to review.
-- Keep your private key **private** and **offline** when possible.
-- **Do not pass private keys on the command line** (shell history leaks).
-- Run it only on machines you trust.
-- If you’re unsure, don’t run it.
+- 可以阅读源代码或请其他开发者帮忙审核代码。
+- 尽可能将私钥保存在安全且离线的环境中。
+- **切勿在命令行中传递私钥**（否则命令行历史记录可能会泄露私钥）。
+- 仅在可信任的机器上运行该工具。
+- 如果不确定是否安全，请不要运行该工具。
 
-## Notes for molts
-- Contacts are stored at `./moltwallet/contacts.json`.
-- You can respond to prompts like “send $20 to X” by looking up contacts.
-- Save your memory often — crypto has **zero forgiveness** for mistakes.
-- Use `--slippageBps` on buys if you need tighter control.
-- Receiver ATAs are created automatically on send.
+## 对智能代理的使用说明：
+- 联人信息存储在 `./moltwallet/contacts.json` 文件中。
+- 对于类似 “向 X 账户发送 20 美元” 的请求，您可以通过查询联系人信息来响应。
+- 经常备份数据——加密货币对错误几乎没有宽容度。
+- 如果需要更精确的控制，可以在购买操作中使用 `--slippageBps` 参数。
+- 在发送代币时，接收方的地址会自动生成。
+```

@@ -1,26 +1,26 @@
 ---
 name: auth-checker
-description: Audit authentication flows for security vulnerabilities
+description: 审计认证流程以检测安全漏洞
 ---
 
-# Auth Checker
+# **身份验证检查器（Auth Checker）**
 
-Scan your auth implementation for security holes. Catches the stuff that gets you hacked.
+该工具用于扫描您的身份验证实现，以发现潜在的安全漏洞，帮助您避免被黑客攻击。
 
-## Quick Start
+## **快速入门**
 
 ```bash
 npx ai-auth-check ./src/auth/
 ```
 
-## What It Does
+## **功能介绍**
 
-- Audits login/signup flows for vulnerabilities
-- Checks session management security
-- Identifies weak password policies
-- Flags insecure token handling
+- 审查登录/注册流程中的安全风险  
+- 检查会话管理的安全性  
+- 识别不安全的密码策略  
+- 标记不安全的令牌处理方式  
 
-## Usage Examples
+## **使用示例**
 
 ```bash
 # Audit auth directory
@@ -33,26 +33,26 @@ npx ai-auth-check ./src/lib/auth.ts
 npx ai-auth-check ./src --recursive
 ```
 
-## What It Catches
+## **能检测的问题**
 
-- Hardcoded credentials
-- Missing rate limiting
-- Insecure session storage
-- JWT vulnerabilities
-- Missing CSRF protection
-- Weak password validation
+- 硬编码的凭证  
+- 缺少速率限制机制  
+- 不安全的会话存储方式  
+- JWT（JSON Web Tokens）相关漏洞  
+- 缺少CSRF（跨站请求伪造）防护  
+- 弱密码验证机制  
 
-## Requirements
+## **系统要求**
 
-Node.js 18+. OPENAI_API_KEY required.
+- 必需安装 Node.js 18 及以上版本。  
+- 需要配置 OPENAI_API_KEY。  
 
-## License
+## **许可证**
 
-MIT. Free forever.
+- MIT 许可证。永久免费使用。  
 
 ---
 
-**Built by LXGIC Studios**
-
-- GitHub: [github.com/lxgicstudios/ai-auth-check](https://github.com/lxgicstudios/ai-auth-check)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+**开发团队：LXGIC Studios**  
+- GitHub 仓库：[github.com/lxgicstudios/ai-auth-check](https://github.com/lxgicstudios/ai-auth-check)  
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

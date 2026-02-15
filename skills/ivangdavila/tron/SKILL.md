@@ -1,84 +1,85 @@
 ---
 name: TRON
-description: Assist with TRON TRX transactions, bandwidth, energy, and TRC-20 token transfers.
+description: 协助处理 TRON 的 TRX 交易、带宽管理、能量消耗以及 TRC-20 代币的转移操作。
 metadata: {"clawdbot":{"emoji":"⚡","os":["linux","darwin","win32"]}}
 ---
 
-## Resource Model (Critical)
-- TRON uses bandwidth and energy instead of gas — different from Ethereum
-- Bandwidth for simple transfers — TRX transfers and basic operations
-- Energy for smart contracts — TRC-20 tokens and dApps require energy
-- Both resources regenerate over time — or can be obtained by freezing TRX
-- Transactions fail without sufficient resources — no partial execution
+## 资源模型（关键信息）
 
-## Bandwidth
-- Free bandwidth allocation daily — ~1,500 bandwidth points per account
-- TRX transfers cost ~280 bandwidth — enough for ~5 free transfers per day
-- Bandwidth regenerates over 24 hours — used bandwidth recovers gradually
-- If bandwidth depleted, TRX is burned for transaction — more expensive than using free bandwidth
-- Check bandwidth before batch transfers — running out mid-batch wastes TRX
+- TRON 使用的是带宽和能量作为交易成本，而非以太坊的“gas”。
+- **带宽** 用于普通转账和基本操作（如 TRX 转账）。
+- **能量** 用于智能合约的执行（例如 TRC-20 代币和去中心化应用程序 dApps 的运行）。
+- 这两种资源会随着时间逐渐恢复，也可以通过“冻结 TRX”来获取。
+- 如果资源不足，交易将失败，且不会部分执行。
 
-## Energy
-- Required for TRC-20 transfers (USDT, etc.) — simple TRX doesn't need energy
-- USDT transfer costs ~65,000 energy — significant amount
-- No free energy allocation — must freeze TRX or pay
-- Energy regenerates slowly after use — 24 hours for full recovery
-- Without energy, TRX burned at high rate — can cost several TRX per transfer
+### 带宽
+- 每天为每个账户分配一定量的免费带宽（约 1,500 带宽点）。
+- 一次 TRX 转账大约消耗 280 带宽点，足以完成每天 5 次免费转账。
+- 带宽会在 24 小时内逐渐恢复；已使用的带宽会逐步被补充。
+- 如果带宽耗尽，必须使用 TRX 来完成交易，这比使用免费带宽更昂贵。
+- 在进行批量转账前请检查带宽是否充足；否则中途失败会导致 TRX 的浪费。
 
-## Freezing TRX
-- Freeze TRX 2.0: stake TRX to get bandwidth or energy — choose one per stake
-- Minimum freeze is 1 TRX — but need substantial amount for meaningful resources
-- Unfreezing takes 14 days — funds locked during unstaking period
-- Frozen TRX still counts as balance — but not spendable until unfrozen
-- Can delegate resources to other accounts — useful for managing multiple wallets
+### 能量
+- TRC-20 转账（如 USDT 转账）需要消耗能量；普通的 TRX 转账不需要能量。
+- 一次 USDT 转账大约需要 65,000 能量，这是一笔不小的费用。
+- TRON 不提供免费能量，用户必须通过“冻结 TRX”或付费来获取能量。
+- 能量在使用后需要较长时间（24 小时）才能完全恢复。
+- 如果没有足够的能量，每次转账将消耗大量 TRX。
 
-## TRC-20 Tokens (USDT)
-- TRON is major network for USDT transfers — lower fees than Ethereum
-- TRC-20 USDT is different from ERC-20 USDT — not interchangeable without bridge
-- Transfers require energy — freeze TRX or pay from balance
-- Contract interaction may need approval — similar to ERC-20 approve
-- Verify contract address — TRC-20 addresses start with T
+### 冻结 TRX
+- **TRX 2.0** 支持通过质押 TRX 来获取带宽或能量（只能选择其中一种）。
+- 最低质押量为 1 TRX，但通常需要较多的 TRX 才能获得足够的资源。
+- 解冻冻结的 TRX 需要 14 天；解冻期间资金将被锁定。
+- 冻结的 TRX 仍然计入账户余额，但在解冻前无法使用。
+- 用户可以将资源委托给其他账户，这有助于管理多个钱包。
 
-## Address Format
-- TRON addresses start with "T" — base58 encoding
-- 34 characters total — always verify full address
-- Addresses are case-sensitive — unlike Ethereum checksums
-- One address for TRX and all TRC tokens — unlike Solana's multiple accounts
+### TRC-20 代币（如 USDT）
+- TRON 是 USDT 转账的主要网络，其交易费用低于以太坊。
+- TRC-20 USDT 与 ERC-20 USDT 不同，两者之间不能直接互换（需要使用桥梁工具）。
+- TRC-20 转账需要消耗能量；用户可以选择冻结 TRX 或从账户余额中支付能量。
+- 智能合约的交互可能需要批准；过程类似于 ERC-20 的批准流程。
+- 需要验证合约地址：TRC-20 的地址以 “T” 开头。
 
-## Wallet Options
-- TronLink is most popular — browser extension and mobile
-- Ledger support via TronLink — hardware wallet integration
-- Trust Wallet supports TRON — multi-chain option
-- Klever wallet — TRON-focused option
-- Never share private key — standard security applies
+### 地址格式
+- TRON 地址以 “T” 开头，采用 Base58 编码格式。
+- 地址总长度为 34 个字符，务必核对完整的地址信息。
+- TRON 地址区分大小写，这与以太坊的地址校验规则不同。
+- 同一个地址可以用于 TRX 和所有 TRC 代币的转账，与 Solana 的多账户系统不同。
 
-## Transaction Characteristics
-- Block time ~3 seconds — fast finality
-- Transactions are free if bandwidth available — major advantage
-- Failed transactions don't consume resources — unlike Ethereum gas
-- Transaction ID (hash) for tracking — use tronscan.org
+### 钱包选项
+- **TronLink** 是最受欢迎的钱包工具，支持浏览器扩展和移动设备。
+- **Ledger** 也支持 TRON，可通过 TronLink 与硬件钱包集成。
+- **Trust Wallet** 支持 TRON，支持多链交易。
+- **Klever Wallet** 是专门针对 TRON 设计的钱包。
+- 请切勿分享私钥，确保资金安全。
 
-## Staking and Voting
-- Super Representatives (SR) produce blocks — 27 elected SRs
-- Vote with frozen TRX — 1 TRX = 1 vote (Stake 2.0)
-- Voting rewards vary by SR — some distribute rewards to voters
-- Governance participation — SRs decide on network upgrades
+### 交易特性
+- 区块确认时间约为 3 秒，交易具有快速确认的优势。
+- 如果有足够的带宽，交易是免费的（这是 TRON 的一个主要优势）。
+- 失败的交易不会消耗额外资源（与以太坊不同）。
+- 交易 ID（哈希值）可用于追踪交易记录，可访问 tronscan.org 查看。
 
-## Common Issues
-- "Out of energy" — freeze more TRX or wait for regeneration
-- "Bandwidth exceeded" — daily limit reached, wait or use TRX
-- USDT transfer expensive — didn't have energy, paid in TRX
-- "Invalid address" — check address format starts with T
-- Slow transaction — network congestion, usually resolves
+### 质押与投票
+- **超级代表（Super Representatives, SRs）** 负责生成区块；共有 27 名当选的 SRs。
+- 用户可以通过质押 TRX 来参与投票，1 TRX 等于 1 票（TRX 2.0 版本需要质押更多 TRX）。
+- 不同的 SR 会提供不同的投票奖励；部分 SR 会将奖励分配给投票者。
+- SRs 负责网络升级的决策。
 
-## Exchanges and Transfers
-- Most exchanges support TRC-20 USDT — often preferred for lower fees
-- Verify network selection — sending TRC-20 to ERC-20 address = lost funds
-- Memo/tag rarely required on TRON — unlike XRP, but verify
-- Some exchanges require minimum balance — activation fee for new accounts
+### 常见问题
+- **能量不足**：需要冻结更多 TRX 或等待能量恢复。
+- **带宽超出限制**：达到每日上限时，用户可以选择等待或使用额外的 TRX。
+- **USDT 转账费用较高**：如果没有足够的能量，用户可能需要用 TRX 来支付费用。
+- **地址无效**：请确保地址以 “T” 开头。
+- **交易速度慢**：可能是由于网络拥堵造成的，通常会自行解决。
 
-## Security
-- Private keys control everything — never share
-- TronLink permissions persist — revoke dApp connections regularly
-- Phishing sites common — always verify tronscan.org domain
-- No smart contract risk for simple transfers — but dApps can have vulnerabilities
+### 交易所与转账
+- 大多数交易所支持 TRC-20 USDT 的交易，通常费用更低。
+- 在转账前请确认目标地址是否支持 TRC-20；如果发送到不支持的地址，资金可能会丢失。
+- TRON 中很少需要填写备注或标签信息，但请务必核对地址格式。
+- 一些交易所对新账户有最低余额要求，可能需要支付激活费用。
+
+### 安全性
+- 私钥是控制账户安全的关键，切勿泄露。
+- TronLink 的权限设置会持续生效，建议定期撤销与 dApps 的连接。
+- 注意防范钓鱼网站，务必访问 tronscan.org 确认交易信息。
+- 普通转账没有智能合约相关的安全风险，但 dApps 可能存在安全漏洞。

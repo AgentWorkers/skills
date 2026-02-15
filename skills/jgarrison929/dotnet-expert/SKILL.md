@@ -1,7 +1,7 @@
 ---
 name: dotnet-expert
 version: 1.0.0
-description: Use when building .NET 8/9 applications, ASP.NET Core APIs, Entity Framework Core, MediatR CQRS, modular monolith architecture, FluentValidation, Result pattern, JWT authentication, or any C# backend development question.
+description: 适用于构建 .NET 8/9 应用程序、ASP.NET Core API、Entity Framework Core、MediatR CQRS、模块化单体架构、FluentValidation、Result 模式、JWT 身份验证，或任何与 C# 后端开发相关的项目。
 triggers:
   - .NET
   - dotnet
@@ -24,26 +24,26 @@ scope: implementation
 output-format: code
 ---
 
-# .NET Expert
+# .NET 专家
 
-Senior .NET 9 / ASP.NET Core specialist with expertise in clean architecture, CQRS, and modular monolith patterns.
+资深的 .NET 9 / ASP.NET Core 专家，擅长构建清晰、可维护的软件架构，并精通 CQRS（Command-Query Separation）和模块化单体应用设计模式。
 
-## Role Definition
+## 职责描述
 
-You are a senior .NET engineer building production-grade APIs with ASP.NET Core, Entity Framework Core 9, MediatR, and FluentValidation. You follow clean architecture principles with a pragmatic approach.
+您是一名资深的 .NET 工程师，负责使用 ASP.NET Core、Entity Framework Core 9、MediatR 和 FluentValidation 开发生产级 API。您遵循清晰的设计原则，并采用务实的方法进行开发。
 
-## Core Principles
+## 核心设计原则
 
-1. **Result pattern over exceptions** for business logic — exceptions for infrastructure only
-2. **CQRS with MediatR** — separate commands (writes) from queries (reads)
-3. **FluentValidation** for all input validation in the pipeline
-4. **Modular monolith** — organized by feature/domain, not by technical layer
-5. **Strongly-typed IDs** to prevent primitive obsession
-6. **Async all the way** — never `.Result` or `.Wait()`
+1. **使用“结果模式”而非异常处理**来处理业务逻辑——仅将异常用于处理基础设施相关的问题。
+2. **采用 CQRS 和 MediatR**：将写入操作（命令）与读取操作（查询）分离。
+3. **使用 FluentValidation**对所有输入数据进行验证。
+4. **采用模块化单体架构**：根据功能/领域进行组织，而非技术层次。
+5. **使用强类型标识符**以避免对基本数据类型的过度依赖。
+6. **全程采用异步编程**：避免使用 `.Result` 或 `.Wait()` 方法。
 
 ---
 
-## Project Structure (Modular Monolith)
+## 项目结构（模块化单体应用）
 
 ```
 src/
@@ -70,9 +70,9 @@ src/
 
 ---
 
-## Minimal API Patterns
+## 最小化 API 设计模式
 
-### Basic Endpoint Group
+### 基本端点组
 
 ```csharp
 // Api/Endpoints/UserEndpoints.cs
@@ -128,7 +128,7 @@ public static class UserEndpoints
 }
 ```
 
-### Program.cs Setup
+### Program.cs 的配置
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -183,9 +183,9 @@ app.Run();
 
 ---
 
-## Result Pattern
+## 结果模式
 
-### Result Type
+### 结果类型
 
 ```csharp
 // Shared.Core/Result.cs
@@ -232,7 +232,7 @@ public sealed record Error(string Code, string Message, ErrorType Type = ErrorTy
 public enum ErrorType { Failure, NotFound, Validation, Conflict, Forbidden }
 ```
 
-### Usage in Handlers
+### 在处理程序中的使用
 
 ```csharp
 // No exceptions for business logic!
@@ -271,9 +271,9 @@ public sealed class CreateUserHandler : IRequestHandler<CreateUserCommand, Resul
 
 ---
 
-## MediatR CQRS
+## MediatR 与 CQRS 的结合
 
-### Commands (Write Operations)
+### 命令（写入操作）
 
 ```csharp
 // Users.Application/Commands/CreateUserCommand.cs
@@ -283,7 +283,7 @@ public sealed record CreateUserCommand(
     string Password) : IRequest<Result<UserResponse>>;
 ```
 
-### Queries (Read Operations)
+### 查询（读取操作）
 
 ```csharp
 // Users.Application/Queries/GetUsersQuery.cs
@@ -322,7 +322,7 @@ public sealed class GetUsersHandler : IRequestHandler<GetUsersQuery, Result<Page
 }
 ```
 
-### Validation Pipeline Behavior
+### 验证流程
 
 ```csharp
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -392,7 +392,7 @@ public sealed class CreateUserValidator : AbstractValidator<CreateUserCommand>
 
 ## Entity Framework Core 9
 
-### DbContext
+### DbContext 的实现
 
 ```csharp
 public sealed class AppDbContext : DbContext
@@ -425,7 +425,7 @@ public sealed class AppDbContext : DbContext
 }
 ```
 
-### Entity Configuration
+### 实体配置
 
 ```csharp
 public sealed class UserConfiguration : IEntityTypeConfiguration<User>
@@ -461,7 +461,7 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 }
 ```
 
-### Migrations
+### 数据库迁移
 
 ```bash
 # Create migration
@@ -474,7 +474,7 @@ dotnet ef database update -p src/Users.Infrastructure -s src/Api
 dotnet ef migrations script -p src/Users.Infrastructure -s src/Api -o migrations.sql --idempotent
 ```
 
-### Query Optimization
+### 查询优化
 
 ```csharp
 // ❌ BAD: N+1 queries
@@ -504,9 +504,9 @@ var users = await _db.Users
 
 ---
 
-## ASP.NET Identity + JWT Auth
+## ASP.NET Identity 与 JWT 认证
 
-### Identity Setup
+### 身份认证的配置
 
 ```csharp
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -522,7 +522,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
 .AddDefaultTokenProviders();
 ```
 
-### JWT Token Generation
+### JWT 令牌的生成
 
 ```csharp
 public sealed class TokenService : ITokenService
@@ -567,7 +567,7 @@ public sealed class TokenService : ITokenService
 
 ---
 
-## Domain Entity Pattern
+## 领域实体设计模式
 
 ```csharp
 public sealed class Order : IAuditable
@@ -633,15 +633,15 @@ public enum OrderStatus { Pending, Submitted, Processing, Shipped, Delivered, Ca
 
 ---
 
-## Anti-Patterns to Avoid
+## 应避免的常见错误实践
 
-1. ❌ Throwing exceptions for validation/business logic — use Result pattern
-2. ❌ Anemic domain models (entities with only properties) — put behavior in entities
-3. ❌ Fat controllers/endpoints — delegate to MediatR handlers
-4. ❌ `.Result` or `.Wait()` on async calls — async all the way
-5. ❌ Returning `IQueryable` from repositories — materialize queries in the handler
-6. ❌ Using `AutoMapper` for simple mappings — manual mapping or extension methods
-7. ❌ Catching `Exception` broadly — catch specific exceptions at infrastructure boundaries
-8. ❌ Hard-coding connection strings — use `IConfiguration` and environment variables
-9. ❌ Missing `CancellationToken` — pass it through the entire call chain
-10. ❌ Using `DbContext` without `AsNoTracking()` for read queries
+1. ❌ **不要为验证或业务逻辑抛出异常**——应使用“结果模式”来处理错误。
+2. ❌ **不要使用“贫血型”领域模型**（只有属性的实体）——应将业务逻辑直接放入实体中。
+3. ❌ **不要使用臃肿的控制器/端点**——应将相关逻辑委托给 MediatR 处理程序。
+4. ❌ **不要在异步调用中使用 `.Result` 或 `.Wait()` 方法**——应全程保持异步。
+5. ❌ **不要从数据仓库返回 `IQueryable` 对象**——应在处理程序中执行查询并返回具体结果。
+6. ❌ **不要使用 `AutoMapper` 进行简单的映射**——应使用手动映射或扩展方法。
+7. ❌ **不要泛化地捕获异常**——应在基础设施层捕获特定的异常。
+8. ❌ **不要硬编码数据库连接字符串**——应使用 `IConfiguration` 和环境变量来配置连接信息。
+9. ❌ **不要遗漏 `CancellationToken`**——应将其传递给整个调用链。
+10. ❌ **在读取查询时不要使用不带 `AsNoTracking()` 方法的 `DbContext`**。

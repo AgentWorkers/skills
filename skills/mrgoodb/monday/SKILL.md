@@ -1,20 +1,20 @@
 ---
 name: monday
-description: Manage monday.com boards, items, and workflows via GraphQL API. Create tasks, update statuses, and automate work.
+description: 通过 GraphQL API 管理 monday.com 的看板、项目和工作流程。创建任务、更新状态，并实现工作的自动化。
 metadata: {"clawdbot":{"emoji":"📋","requires":{"env":["MONDAY_API_TOKEN"]}}}
 ---
 
 # Monday.com
 
-Work management platform.
+这是一个工作管理平台。
 
-## Environment
+## 环境配置
 
 ```bash
 export MONDAY_API_TOKEN="xxxxxxxxxx"
 ```
 
-## List Boards
+## 列表板管理
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -23,7 +23,7 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "{ boards(limit:10) { id name } }"}'
 ```
 
-## Get Board Items
+## 获取列表板项目
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -32,7 +32,7 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "{ boards(ids: [BOARD_ID]) { items_page { items { id name column_values { id text } } } } }"}'
 ```
 
-## Create Item
+## 创建项目
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -41,7 +41,7 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "mutation { create_item(board_id: BOARD_ID, item_name: \"New Task\") { id } }"}'
 ```
 
-## Update Item Column
+## 更新项目信息
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -50,7 +50,7 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "mutation { change_column_value(board_id: BOARD_ID, item_id: ITEM_ID, column_id: \"status\", value: \"{\\\"label\\\":\\\"Done\\\"}\") { id } }"}'
 ```
 
-## Add Update (Comment)
+## 添加/更新项目备注（评论）
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -59,7 +59,7 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "mutation { create_update(item_id: ITEM_ID, body: \"Task completed!\") { id } }"}'
 ```
 
-## Get User Info
+## 获取用户信息
 
 ```bash
 curl "https://api.monday.com/v2" \
@@ -68,6 +68,6 @@ curl "https://api.monday.com/v2" \
   -d '{"query": "{ me { id name email } }"}'
 ```
 
-## Links
-- Dashboard: https://monday.com
-- Docs: https://developer.monday.com/api-reference
+## 链接：
+- 仪表盘：https://monday.com
+- 文档：https://developer.monday.com/api-reference

@@ -1,49 +1,49 @@
 ---
 name: weekly-synthesis
-description: Create a comprehensive synthesis of the week's work and thinking
+description: 创建一份关于本周工作与思考的全面总结。
 version: 1.0.0
 author: theflohart
 tags: [productivity, review, synthesis, patterns]
 ---
 
-# Weekly Synthesis
+# 每周总结
 
-Create a comprehensive synthesis of the week's work and thinking.
+对本周的工作和思考进行全面的总结。
 
-## Usage
+## 使用方法
 
 ```
 /weekly-synthesis
 ```
 
-## Analysis Process
+## 分析流程
 
-1. **Gather Week's Work**
-   - All notes created this week
-   - All notes modified this week
-   - Projects that saw activity
+1. **收集本周的工作内容**
+   - 本周创建的所有笔记
+   - 本周修改的所有笔记
+   - 有进展的项目
 
-2. **Identify Patterns**
-   - Recurring themes
-   - Common challenges
-   - Breakthrough moments
-   - Energy patterns (what energized vs drained)
+2. **识别规律**
+   - 反复出现的主题
+   - 共同面临的挑战
+   - 取得突破的时刻
+   - 个人精力状态（哪些事情让精力得到提升，哪些事情让精力消耗）
 
-3. **Synthesize Learning**
-   - Key insights that emerged
-   - How thinking evolved
-   - Connections discovered
-   - Questions answered and raised
+3. **总结学习成果**
+   - 出现的关键见解
+   - 思维方式的演变
+   - 发现的关联点
+   - 已解答和提出的新问题
 
-4. **Assess Progress**
-   - Projects advanced
-   - Areas maintained
-   - Resources added
-   - Items archived
+4. **评估进展**
+   - 项目的进展情况
+   - 维护的状态
+   - 新增的资源
+   - 已归档的文件
 
-## Output Format
+## 输出格式
 
-Create a weekly synthesis note:
+创建一份每周总结笔记：
 
 ```markdown
 # Weekly Synthesis - Week of [Date]
@@ -110,9 +110,8 @@ Create a weekly synthesis note:
 - Missing connections: [identified]
 ```
 
-## Follow-up Actions
-
-- Archive completed projects
-- Clean up inbox
-- Update project status
-- Plan next week's focus
+## 后续行动
+- 归档已完成的项目
+- 清理收件箱
+- 更新项目状态
+- 规划下周的重点工作

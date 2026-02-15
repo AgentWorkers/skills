@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Video - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,9 +37,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## View a list of room compositions.
+## 查看房间组合列表
 
 `GET /room_compositions`
 
@@ -51,9 +51,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a room composition.
+## 创建房间组合
 
-Asynchronously create a room composition.
+异步创建房间组合。
 
 `POST /room_compositions`
 
@@ -65,7 +65,7 @@ Asynchronously create a room composition.
 	fmt.Printf("%+v\n", roomComposition.Data)
 ```
 
-## View a room composition.
+## 查看房间组合信息
 
 `GET /room_compositions/{room_composition_id}`
 
@@ -77,9 +77,9 @@ Asynchronously create a room composition.
 	fmt.Printf("%+v\n", roomComposition.Data)
 ```
 
-## Delete a room composition.
+## 删除房间组合
 
-Synchronously delete a room composition.
+同步删除房间组合。
 
 `DELETE /room_compositions/{room_composition_id}`
 
@@ -90,7 +90,7 @@ Synchronously delete a room composition.
 	}
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_participants`
 
@@ -102,7 +102,7 @@ Synchronously delete a room composition.
 	fmt.Printf("%+v\n", page)
 ```
 
-## View a room participant.
+## 查看房间参与者信息
 
 `GET /room_participants/{room_participant_id}`
 
@@ -114,7 +114,7 @@ Synchronously delete a room composition.
 	fmt.Printf("%+v\n", roomParticipant.Data)
 ```
 
-## View a list of room recordings.
+## 查看房间录像列表
 
 `GET /room_recordings`
 
@@ -126,7 +126,7 @@ Synchronously delete a room composition.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Delete several room recordings in a bulk.
+## 批量删除房间录像
 
 `DELETE /room_recordings`
 
@@ -138,7 +138,7 @@ Synchronously delete a room composition.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## View a room recording.
+## 查看房间录像信息
 
 `GET /room_recordings/{room_recording_id}`
 
@@ -150,9 +150,9 @@ Synchronously delete a room composition.
 	fmt.Printf("%+v\n", roomRecording.Data)
 ```
 
-## Delete a room recording.
+## 删除房间录像
 
-Synchronously delete a Room Recording.
+同步删除房间录像。
 
 `DELETE /room_recordings/{room_recording_id}`
 
@@ -163,7 +163,7 @@ Synchronously delete a Room Recording.
 	}
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /room_sessions`
 
@@ -175,7 +175,7 @@ Synchronously delete a Room Recording.
 	fmt.Printf("%+v\n", page)
 ```
 
-## View a room session.
+## 查看房间会话信息
 
 `GET /room_sessions/{room_session_id}`
 
@@ -191,9 +191,9 @@ Synchronously delete a Room Recording.
 	fmt.Printf("%+v\n", session.Data)
 ```
 
-## End a room session.
+## 结束房间会话
 
-Note: this will also kick all participants currently present in the room
+注意：此操作也会将当前在房间中的所有参与者踢出。
 
 `POST /room_sessions/{room_session_id}/actions/end`
 
@@ -205,7 +205,7 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Kick participants from a room session.
+## 将参与者踢出房间会话
 
 `POST /room_sessions/{room_session_id}/actions/kick`
 
@@ -223,7 +223,7 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Mute participants in room session.
+## 将房间中的参与者静音
 
 `POST /room_sessions/{room_session_id}/actions/mute`
 
@@ -241,7 +241,7 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Unmute participants in room session.
+## 解除房间中参与者的静音
 
 `POST /room_sessions/{room_session_id}/actions/unmute`
 
@@ -259,7 +259,7 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## View a list of room participants.
+## 查看房间参与者列表
 
 `GET /room_sessions/{room_session_id}/participants`
 
@@ -275,7 +275,7 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", page)
 ```
 
-## View a list of rooms.
+## 查看房间列表
 
 `GET /rooms`
 
@@ -287,9 +287,9 @@ Note: this will also kick all participants currently present in the room
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a room.
+## 创建房间
 
-Synchronously create a Room.
+同步创建房间。
 
 `POST /rooms`
 
@@ -301,7 +301,7 @@ Synchronously create a Room.
 	fmt.Printf("%+v\n", room.Data)
 ```
 
-## View a room.
+## 查看房间信息
 
 `GET /rooms/{room_id}`
 
@@ -317,9 +317,9 @@ Synchronously create a Room.
 	fmt.Printf("%+v\n", room.Data)
 ```
 
-## Update a room.
+## 更新房间信息
 
-Synchronously update a Room.
+同步更新房间信息。
 
 `PATCH /rooms/{room_id}`
 
@@ -335,9 +335,9 @@ Synchronously update a Room.
 	fmt.Printf("%+v\n", room.Data)
 ```
 
-## Delete a room.
+## 删除房间
 
-Synchronously delete a Room.
+同步删除房间。
 
 `DELETE /rooms/{room_id}`
 
@@ -348,9 +348,9 @@ Synchronously delete a Room.
 	}
 ```
 
-## Create Client Token to join a room.
+## 创建客户端令牌以加入房间
 
-Synchronously create an Client Token to join a Room.
+同步创建客户端令牌以加入房间。
 
 `POST /rooms/{room_id}/actions/generate_join_client_token`
 
@@ -366,11 +366,11 @@ Synchronously create an Client Token to join a Room.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Refresh Client Token to join a room.
+## 刷新客户端令牌以加入房间
 
-Synchronously refresh an Client Token to join a Room.
+同步刷新客户端令牌以加入房间。
 
-`POST /rooms/{room_id}/actions/refresh_client_token` — Required: `refresh_token`
+`POST /rooms/{room_id}/actions/refresh_client_token` — 需要参数：`refresh_token`
 
 ```go
 	response, err := client.Rooms.Actions.RefreshClientToken(
@@ -386,7 +386,7 @@ Synchronously refresh an Client Token to join a Room.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## View a list of room sessions.
+## 查看房间会话列表
 
 `GET /rooms/{room_id}/sessions`
 

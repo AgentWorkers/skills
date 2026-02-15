@@ -1,17 +1,17 @@
 ---
 name: ai-ppt-generator
-description: The awesome PPT format generation tool provided by baidu. 
+description: 百度提供的这款超棒的PPT格式生成工具！
 metadata: { "openclaw": { "emoji": "📑", "requires": { "bins": ["python3"], "env":["BAIDU_API_KEY"]},"primaryEnv":"BAIDU_API_KEY" } }
 ---
 
-# AI PPT Generation
-Using user input topic/query, generate a highly quality ppt url which can download to local disk. 
+# 人工智能PPT生成
+根据用户输入的主题或查询内容，生成高质量的PPT文件，并可将其下载到本地磁盘。
 
-## Workflow
-1. Executes the Python script located at `scripts/generate_ppt.py` to generate ppt
+## 工作流程
+1. 运行位于 `scripts/generate_ppt.py` 的Python脚本来生成PPT文件。
 
-### generate ppt
-#### Example Usage
+### generate_ppt
+#### 使用示例
 ```bash
  python3 scripts/generate_ppt.py --query "经济总结报告ppt"
 ```

@@ -1,6 +1,6 @@
 ---
 name: hevy
-description: Query workout data from Hevy including workouts, routines, exercises, and history. Use when user asks about their workouts, gym sessions, exercise progress, or fitness routines.
+description: 从 Hevy 查询锻炼数据，包括锻炼记录、锻炼计划、具体练习内容以及锻炼历史。当用户询问他们的锻炼情况、健身房使用记录、锻炼进展或健身计划时，可以使用此功能。
 homepage: https://hevy.com
 metadata:
   clawdbot:
@@ -12,26 +12,24 @@ metadata:
 
 # Hevy CLI
 
-CLI for the Hevy workout tracking API. Query workouts, routines, exercises, and track progress.
+Hevy CLI 是用于 Hevy 锻炼跟踪 API 的命令行工具，支持查询锻炼记录、训练计划、具体练习内容以及跟踪锻炼进度。
 
-## Setup
+## 设置
 
-Requires Hevy Pro subscription for API access.
+使用 Hevy CLI 需要订阅 Hevy Pro 订阅服务以访问 API。
 
-1. Get API key from https://hevy.com/settings?developer
-2. Set environment variable: `export HEVY_API_KEY="your-key"`
+1. 从 [https://hevy.com/settings?developer](https://hevy.com/settings?developer) 获取 API 密钥。
+2. 设置环境变量：`export HEVY_API_KEY="your-key"`。
 
-## Commands
+## 命令
 
-### Status
-
+### 状态查询
 ```bash
 # Check configuration and connection
 hevy status
 ```
 
-### Workouts
-
+### 锻炼记录查询
 ```bash
 # List recent workouts (default 5)
 hevy workouts
@@ -51,8 +49,7 @@ hevy workout <id> --json
 hevy workouts --kg
 ```
 
-### Routines
-
+### 训练计划查询
 ```bash
 # List all routines
 hevy routines
@@ -64,8 +61,7 @@ hevy routine <routine-id>
 hevy routines --json
 ```
 
-### Exercises
-
+### 练习内容查询
 ```bash
 # List all exercise templates
 hevy exercises
@@ -83,8 +79,7 @@ hevy exercises --custom
 hevy exercises --json
 ```
 
-### Exercise History
-
+### 练习历史查询
 ```bash
 # Show history for specific exercise
 hevy history <exercise-template-id>
@@ -94,8 +89,7 @@ hevy history <exercise-template-id> --limit 50
 hevy history <exercise-template-id> --json
 ```
 
-### Creating Routines
-
+### 创建训练计划
 ```bash
 # Create routine from JSON (stdin)
 echo '{"routine": {...}}' | hevy create-routine
@@ -116,9 +110,9 @@ hevy create-exercise --title "My Exercise" --muscle chest --type weight_reps
 hevy create-exercise --title "My Exercise" --muscle chest --force
 ```
 
-**⚠️ Duplicate Prevention:** `create-exercise` checks if an exercise with the same name already exists and will error if found. Use `--force` to create anyway (not recommended).
+**⚠️ 避免重复：** `create-exercise` 命令会检查是否存在同名练习，如果存在则返回错误。可以使用 `--force` 参数强制创建（不推荐）。
 
-**Routine JSON format:**
+**训练计划的 JSON 格式：**
 ```json
 {
   "routine": {
@@ -140,8 +134,7 @@ hevy create-exercise --title "My Exercise" --muscle chest --force
 }
 ```
 
-### Other
-
+### 其他功能
 ```bash
 # Total workout count
 hevy count
@@ -150,39 +143,39 @@ hevy count
 hevy folders
 ```
 
-## Usage Examples
+## 使用示例
 
-**User asks "What did I do at the gym?"**
+- **用户询问：“我在健身房做了什么？”**
 ```bash
 hevy workouts
 ```
 
-**User asks "Show me my last chest workout"**
+- **用户询问：“显示我上次的胸部锻炼记录”**
 ```bash
 hevy workouts --limit 10  # Find relevant workout ID
 hevy workout <id>         # Get details
 ```
 
-**User asks "How am I progressing on bench press?"**
+- **用户询问：“我的卧推锻炼进展如何？”**
 ```bash
 hevy exercises --search "bench press"  # Get exercise template ID
 hevy history <exercise-id>              # View progression
 ```
 
-**User asks "What routines do I have?"**
+- **用户询问：“我有哪些训练计划？”**
 ```bash
 hevy routines
 hevy routine <id>  # For details
 ```
 
-**User asks "Find leg exercises"**
+- **用户询问：“查找腿部锻炼动作”**
 ```bash
 hevy exercises --muscle quadriceps
 hevy exercises --muscle hamstrings
 hevy exercises --muscle glutes
 ```
 
-**User asks "Create a push day routine"**
+- **用户询问：“创建一个力量训练计划”**
 ```bash
 # 1. Find exercise IDs
 hevy exercises --search "bench press"
@@ -190,36 +183,37 @@ hevy exercises --search "shoulder press"
 # 2. Create routine JSON with those IDs and pipe to create-routine
 ```
 
-## Notes
+## 注意事项
 
-- **Duplicate Prevention:** `create-exercise` checks for existing exercises with the same name before creating. Use `--force` to override (not recommended).
-- **API Limitations:** Hevy API does NOT support deleting or editing exercise templates - only creating. Delete exercises manually in the app.
-- **API Rate Limits:** Be mindful when fetching all data (--all flag)
-- **Weights:** Defaults to lbs, use --kg for kilograms
-- **Pagination:** Most commands auto-paginate, but limit flags help reduce API calls
-- **IDs:** Workout/routine/exercise IDs are UUIDs, shown in detailed views
+- **避免重复：** `create-exercise` 命令在创建新练习前会检查是否存在同名练习。可以使用 `--force` 参数忽略此检查（不推荐）。
+- **API 限制：** Hevy API 不支持删除或编辑练习模板，仅支持创建新练习。请在应用程序中手动删除练习记录。
+- **API 调用频率限制：** 在批量获取数据时请注意 API 的调用频率限制（使用 `--all` 参数）。
+- **重量单位：** 默认为磅（lbs），如需使用公斤（kg）请使用 `--kg` 参数。
+- **分页：** 大多数命令支持分页，但使用 `limit` 参数可以减少 API 调用次数。
+- **ID：** 锻炼记录、训练计划和练习的 ID 为 UUID，在详细信息页面中显示。
 
-## API Reference
+## API 参考
 
-Full API docs: https://api.hevyapp.com/docs/
+完整 API 文档：[https://api.hevyapp.com/docs/](https://api.hevyapp.com/docs/)
 
-### Available Endpoints
-- `GET /v1/workouts` - List workouts (paginated)
-- `GET /v1/workouts/{id}` - Get single workout
-- `GET /v1/workouts/count` - Total workout count
-- `GET /v1/routines` - List routines
-- `GET /v1/routines/{id}` - Get single routine
-- `GET /v1/exercise_templates` - List exercises
-- `GET /v1/exercise_templates/{id}` - Get single exercise
-- `GET /v1/exercise_history/{id}` - Exercise history
-- `GET /v1/routine_folders` - List folders
+### 可用的 API 端点
+- `GET /v1/workouts` - 列出所有锻炼记录（支持分页）
+- `GET /v1/workouts/{id}` - 获取单个锻炼记录
+- `GET /v1/workouts/count` - 获取锻炼记录总数
+- `GET /v1/routines` - 列出所有训练计划
+- `GET /v1/routines/{id}` - 获取单个训练计划
+- `GET /v1/exercise_templates` - 列出所有练习模板
+- `GET /v1/exercise_templates/{id}` - 获取单个练习模板
+- `GET /v1/exercise_history/{id}` - 查看练习历史记录
+- `GET /v1/routine_folders` - 列出所有训练计划文件夹
 
-### Write Operations (supported but use carefully)
-- `POST /v1/workouts` - Create workout
-- `PUT /v1/workouts/{id}` - Update workout
-- `POST /v1/routines` - Create routine
-- `PUT /v1/routines/{id}` - Update routine
-- `POST /v1/exercise_templates` - Create custom exercise
-- `POST /v1/routine_folders` - Create folder
+### 写入操作（支持但需谨慎使用）
 
-The CLI focuses on read operations. Write operations are available via the API client for programmatic use.
+- `POST /v1/workouts` - 创建新的锻炼记录
+- `PUT /v1/workouts/{id}` - 更新锻炼记录
+- `POST /v1/routines` - 创建新的训练计划
+- `PUT /v1/routines/{id}` - 更新训练计划
+- `POST /v1/exercise_templates` - 创建新的练习模板
+- `POST /v1/routine_folders` - 创建新的训练计划文件夹
+
+该 CLI 主要用于读取数据，写入操作需通过 API 客户端进行编程实现。

@@ -1,35 +1,35 @@
 ---
 name: agent-context-system
-description: A persistent local-only memory system for AI coding agents. Two files, one idea — AGENTS.md (committed, shared) + .agents.local.md (gitignored, personal). Agents read both at session start, update the scratchpad at session end, and promote stable patterns over time. Works across Claude Code, Cursor, Copilot, Windsurf. Subagent-ready. No plugins, no infrastructure, no background processes.
+description: 这是一个专为AI编码代理设计的、仅限本地使用的持久化内存系统。系统由两个文件组成：`AGENTS.md`（已提交到版本控制系统，可供团队成员共享）和`.agents.local.md`（被Git忽略，属于个人数据）。代理在会话开始时读取这两个文件，在会话结束时更新临时存储的数据，并逐渐形成稳定的工作模式。该系统兼容Claude Code、Cursor、Copilot、Windsurf等工具，同时支持子代理的集成。整个系统无需任何插件、基础设施或后台进程即可正常运行。
 license: MIT
 metadata:
   author: AndreaGriffiths11
   version: "1.0.0"
 ---
 
-# Agent Context System
+# 代理上下文系统
 
-## The Problem
+## 问题
 
-Agents start from zero every session. You spend an hour getting your coding agent up to speed on a project, close the session, and start from zero the next day. The agent forgot everything. Every session is a cold start.
+每次会话开始时，代理都会从零开始。你可能需要花费一个小时来让编码代理熟悉项目，然后关闭会话，第二天又得从头开始。代理会忘记之前的一切，每次会话都像是一次全新的开始。
 
-This isn't a limitation of the model. It's a context delivery problem. The agents have the capacity to remember — they just don't have the right inputs at the right time in the right format.
+这并不是模型的限制，而是一个上下文传递的问题。代理本身是有记忆能力的，只是它们没有在正确的时间、以正确的格式获得所需的输入。
 
-## The Solution
+## 解决方案
 
-Two markdown files. One committed, one gitignored. The agent reads both at the start of every session and updates the local one at the end.
+使用两个Markdown文件：一个被提交到版本控制系统中（`AGENTS.md`），另一个被Git忽略（`.agents.local.md`）。代理在每次会话开始时都会读取这两个文件，并在会话结束时更新本地的`.agents.local.md`文件。
 
-- **`AGENTS.md`** — Your project's source of truth. Committed and shared. Always in the agent's prompt. Under 120 lines. Contains compressed project knowledge: patterns, boundaries, gotchas, commands, architecture.
+- **`AGENTS.md`**：项目的核心知识库。该文件被提交到版本控制系统中，并在所有代理的提示界面中显示。文件长度应控制在120行以内，包含压缩后的项目相关信息：模式、项目边界、需要注意的问题、可使用的命令以及项目架构。
 
-- **`.agents.local.md`** — Your personal scratchpad. Gitignored. Grows over time as the agent logs what it learns each session. Session notes, dead ends, preferences, patterns that haven't been promoted yet.
+- **`.agents.local.md`**：个人的临时记录本，被Git忽略。随着代理在每次会话中学习到的内容不断添加，文件会逐渐增长。这里记录了会话笔记、遇到的问题、个人偏好以及尚未被正式纳入项目知识库的模式。
 
-That's it. No plugins, no infrastructure, no background processes. The convention lives inside the files themselves, and the agent follows it.
+仅此而已，不需要任何插件、基础设施或后台进程。所有的规则都包含在这些文件本身中，代理只需按照这些规则来操作。
 
-## How It Works
+## 工作原理
 
-### 1. Setup
+### 1. 设置
 
-Run the init script. It creates `.agents.local.md` from a template, ensures it's gitignored, and wires up your agent tool's config (CLAUDE.md symlink for Claude Code, .cursorrules for Cursor, .windsurfrules for Windsurf, copilot-instructions.md for Copilot).
+运行初始化脚本。该脚本会根据模板创建`.agents.local.md`文件，并确保它被Git忽略；同时配置代理工具的相关设置（例如，对于Claude Code，会创建`CLAUEDE.md`符号链接；对于Cursor，会创建`.cursorrules`文件；对于Windsurf，会创建`.windsurfrules`文件；对于Copilot，会创建`copilot-instructions.md`文件）。
 
 ```bash
 # If you cloned the template repo:
@@ -39,245 +39,202 @@ Run the init script. It creates `.agents.local.md` from a template, ensures it's
 bash .agents/skills/agent-context-system/scripts/init-agent-context.sh
 ```
 
-Then edit `AGENTS.md` with your project specifics: name, stack, commands, actual patterns and gotchas from your codebase. This is the highest-leverage edit you'll make.
+然后根据你的项目具体情况编辑`AGENTS.md`文件，包括项目名称、使用的开发工具栈、可用的命令以及代码库中的实际模式和需要注意的问题。这是最重要的编辑步骤。
 
-### 2. During Sessions
+### 2. 会话期间
 
-The agent reads both files at session start. `AGENTS.md` gives it compressed project knowledge. `.agents.local.md` gives it accumulated learnings from past sessions. The agent now has context that persists across sessions.
+代理在会话开始时会读取`AGENTS.md`和`.agents.local.md`两个文件。`AGENTS.md`提供了压缩后的项目知识，`.agents.local.md`则记录了之前会话中的学习内容。这样，代理就能在会话之间保持上下文的一致性。
 
-At session end, the agent appends to the scratchpad's Session Log: what changed, what worked, what didn't, decisions made, patterns learned. Most agents (Copilot Chat, Cursor, Windsurf) don't have session-end hooks, so this depends on Rule 7 in `AGENTS.md` being seen and acted on, or the user saying "log this session." Claude Code handles this automatically via auto memory.
+会话结束时，代理会将会话中的变化、成功的方法、失败的原因以及学到的模式添加到`.agents.local.md`的“Session Log”部分。大多数代理（如Copilot Chat、Cursor、Windsurf）没有会话结束时的自动处理机制，因此这依赖于`AGENTS.md`中的规则是否被正确执行，或者用户是否手动要求记录会话内容。Claude Code则通过自动记忆功能来实现这一过程。
 
-### 3. Over Time
+### 3. 随时间推移
 
-The scratchpad grows. When it hits 300 lines, the agent compresses: deduplicate, merge related entries, keep it tight. During compression, if a pattern has shown up across 3+ sessions, the agent flags it in the scratchpad's "Ready to Promote" section using the same pipe-delimited format that `AGENTS.md` expects.
+`.agents.local.md`文件会逐渐增长。当文件内容超过300行时，代理会对其进行压缩：删除重复的内容，合并相关条目，保持文件结构的简洁性。在压缩过程中，如果某个模式在多个会话中反复出现，代理会使用`AGENTS.md`所要求的格式，在`.agents.local.md`的“Ready to Promote”部分对其进行标记。
 
-You decide when to move flagged items from the scratchpad into `AGENTS.md`. The scratchpad is where things are experimental. `AGENTS.md` is where proven knowledge lives.
+你可以自行决定何时将标记的内容从`.agents.local.md`文件转移到`AGENTS.md`中。`.agents.local.md`用于存放实验性的内容，而`AGENTS.md`则存放经过验证的知识。
 
-```
-Session notes → .agents.local.md → agent flags stable patterns → you promote to AGENTS.md
-                    (personal)                                        (shared)
-```
+### 相关脚本
 
-## Scripts
-
-The template includes five scripts:
+模板中包含了五个脚本：
 
 ### `init-agent-context.sh`
 
-Sets up the local agent scratchpad and agent tool integrations. Run once per clone. Safe to re-run.
+用于设置代理的临时记录本和与代理工具的集成。每次克隆项目时运行一次，可以安全地重复执行。
 
-- Creates `.agents.local.md` from template
-- Ensures `.agents.local.md` is gitignored
-- Asks which agents you use (Claude, Cursor, Windsurf, Copilot) and wires up the right config
-- Creates CLAUDE.md symlink for Claude Code (since it doesn't read AGENTS.md yet)
-- Adds agent context directive to .cursorrules, .windsurfrules, or copilot-instructions.md
+- 根据模板创建`.agents.local.md`文件。
+- 确保`.agents.local.md`被Git忽略。
+- 询问你使用的代理类型（Claude、Cursor、Windsurf、Copilot），并配置相应的设置。
+- 为Claude Code创建`CLAUEDE.md`符号链接（因为Claude Code在初始阶段还无法直接读取`AGENTS.md`文件）。
+- 在`.cursorrules`、`.windsurfrules`或`copilot-instructions.md`文件中添加代理上下文相关的配置指令。
 
 ### `compress.sh`
 
-Compresses the scratchpad when it exceeds 300 lines. Deduplicates, merges related entries, flags stable patterns for promotion. Not yet implemented — instructions for the agent are in AGENTS.md's Local Context section.
+当`.agents.local.md`文件超过300行时，执行压缩操作。删除重复内容，合并相关条目，并标记需要正式纳入项目知识库的模式。
 
 ### `promote.sh`
 
-Moves flagged items from `.agents.local.md`'s "Ready to Promote" section into `AGENTS.md`. Not yet implemented — currently a manual step.
+将`.agents.local.md`中“Ready to Promote”部分的内容转移到`AGENTS.md`中。目前这个步骤还需要手动完成。
 
 ### `validate.sh`
 
-Validates `AGENTS.md` stays under 120 lines and checks format consistency. Not yet implemented.
+验证`AGENTS.md`文件的长度是否控制在120行以内，并检查其格式是否一致。
 
 ### `publish-template.sh`
 
-Push to GitHub and mark as a template repo. Run once. Creates a private GitHub repo and marks it as a template so you can use it to create new projects with `gh repo create my-project --template YOUR_USERNAME/agent-context-system --private`.
+将配置文件推送到GitHub，并将其标记为模板库。只需运行一次，系统会创建一个私有的GitHub仓库，并将其设置为模板，以便你可以使用`gh repo create my-project --template YOUR_USERNAME/agent-context-system --private`命令来创建新的项目。
 
-## Knowledge Flow
+## 知识流动
 
-Knowledge doesn't just sit in one place. It flows.
+知识不会固定在一个地方，而是不断流动的。
 
-Learnings start as session notes in `.agents.local.md`. The agent writes them at the end of each session. During compression, if a pattern has shown up across 3+ sessions, the agent flags it in the scratchpad's "Ready to Promote" section using the same pipe-delimited format that `AGENTS.md` expects. Then you decide when to move it into `AGENTS.md`.
+学习的内容最初会以会话笔记的形式保存在`.agents.local.md`中。代理在每次会话结束时都会写入这些笔记。在压缩过程中，如果某个模式在多个会话中反复出现，代理会使用`AGENTS.md`所要求的格式将其标记出来。之后你可以决定是否将其转移到`AGENTS.md`中。
 
-```
-Session notes → .agents.local.md → agent flags stable patterns → you promote to AGENTS.md
-                    (personal)                                        (shared)
-```
+#### 注意：`.agents.local.md`文件中的内容仍然是实验性的，而`AGENTS.md`文件则存放经过验证的知识。
 
-The scratchpad is where things are still experimental. `AGENTS.md` is where proven knowledge lives. The agent flags candidates. You make the call.
+## `AGENTS.md`模板结构
 
-## AGENTS.md Template Structure
+`AGENTS.md`模板包含以下内容：
 
-The template `AGENTS.md` includes:
+### 项目信息
 
-### Project
+基本的项目元数据：项目名称、使用的开发工具栈、包管理器。这些信息应简明扼要。
 
-Basic metadata: name, stack, package manager. Keep it one-liners.
+### 可用命令
 
-### Commands
+用于构建、测试、代码检查（lint）和启动开发服务器的可执行命令。这些命令需要立即被代理使用，因此应尽早添加到`AGENTS.md`中。
 
-Executable commands for build, test, lint, dev server. These go early because agents need them immediately.
+### 项目架构
 
-### Architecture
+每个目录对应一行，代理无需额外查找即可了解项目的高层结构。
 
-One line per directory. The agent gets high-level structure on every turn without needing to look anything up.
+### 项目知识（压缩版）
 
-### Project Knowledge (Compressed)
+这是最重要的部分，包含三个子部分：
 
-This is the most important section. Three subsections:
+- **模式**：采用`pattern | where-to-see-it`的格式。仅列出已命名的组件和服务器端的相关信息；客户端状态的配置默认值、结果类型（无需显式处理）。
+- **项目边界**：采用`rule | reason`的格式。禁止修改`src/generated`文件；环境变量通过`src/config`文件进行配置；不允许直接导出样式。
+- **需要注意的问题**：采用`trap | fix`的格式。`pnpm build`命令会隐藏类型错误；开发会话在24小时后失效；集成测试需要数据库支持。
 
-- **Patterns** — `pattern | where-to-see-it` format. Named exports only, server components default, Zustand for client state, Result types not try/catch.
-- **Boundaries** — `rule | reason` format. Never modify src/generated, env vars through src/config, no default exports, no inline styles.
-- **Gotchas** — `trap | fix` format. pnpm build hides type errors, dev sessions expire after 24h, integration tests need DB up.
+Vercel的自动记忆功能显示，当信息以被动形式提供时（即在提示界面中显示），通过率可达100%，而当代理需要主动查找信息时，通过率仅为53%。这个部分提供了被动式的上下文支持，代理可以自动获取这些信息。
 
-Vercel's evals showed passive context (always in the prompt) achieves 100% pass rate vs 53% when agents must decide to look things up. This section is passive context. The agent gets it on every turn automatically.
+### 规则
 
-### Rules
+以编号列表的形式列出。在编写代码之前，先阅读`AGENTS.md`和`.agents.local.md`文件。在修改代码之前先确定所需文件的位置。只修改任务确实需要的部分。每次修改后都要运行测试并总结变化情况。
 
-Numbered list. Read AGENTS.md and .agents.local.md first. Plan before code. Locate files before changing. Only touch what the task requires. Run tests after every change. Summarize changes.
+### 深入参考
 
-### Deep References
+当任务需要更详细的信息时，会指向`agent_docs/`目录。该目录包含常规设置、项目架构、需要注意的问题等详细内容，可以根据需要加载。
 
-Points to `agent_docs/` for when a task needs more depth than the compressed version provides. Conventions, architecture, gotchas — full detail, loaded on demand.
+### 本地上下文说明
 
-### Local Context
+说明如何读取和更新`.agents.local.md`文件，解释会话间的学习内容、压缩规则以及知识更新的流程。同时提示子代理需要手动阅读`.agents.local.md`文件（因为它们不会继承主会话的历史记录）。
 
-Instructions for reading and updating `.agents.local.md`. Explains session-to-session learning, compression protocol, promotion pathway. Tells subagents to explicitly read the scratchpad (they don't inherit main conversation history).
+#### `.agents.local.md`模板结构
 
-## .agents.local.md Template Structure
+`.agents.local.md`模板包含以下内容：
 
-The template `.agents.local.md` includes:
+### 个人偏好
 
-### Preferences
+你的编码风格、代码偏好以及项目规划时的偏好设置。在编写代码前应明确说明这些偏好，保持沟通的友好性或技术性。
 
-Your style, code preferences, planning preferences. Friendly vs technical tone. Minimal changes vs comprehensive refactors. Always state the plan before writing code.
+### 模式
 
-### Patterns
+记录关于该项目已确定的最佳实践和反复出现的模式。
 
-Settled truths about this project. Promote recurring session learnings here.
+### 注意的问题
 
-### Gotchas
+列出那些看似正确但实际上存在问题的情况，并说明原因。
 
-Things that look right but aren't. Include WHY.
+### 失败的尝试
 
-### Dead Ends
+记录曾经尝试过但失败的方法，以及失败的原因，以避免代理重复同样的错误。
 
-Approaches tried and failed. Include WHY they failed. Saves the agent from repeating mistakes.
+### 准备纳入项目知识库的内容
 
-### Ready to Promote
+当某个模式在多个会话中反复出现时，代理会在`.agents.local.md`的“Ready to Promote”部分对其进行标记。人类可以自行决定何时将这些内容转移到`AGENTS.md`中。
 
-The agent flags items here during compression when a pattern has recurred across 3+ sessions. Use the same pipe-delimited format `AGENTS.md` expects. The human decides when to move flagged items into `AGENTS.md`.
+#### 会话日志
 
-### Session Log
+在文件末尾添加新的会话记录，每个会话记录的内容应控制在5-10行以内。记录内容包括：发生了哪些变化、哪些方法有效、哪些方法失败了、所做的决策以及学到的内容。
 
-Append new entries at the END. One entry per session. Keep each to 5-10 lines. Template: what changed, what worked, what didn't, decisions, learnings.
+### 压缩日志
 
-### Compression Log
+当文件内容超过300行时，会执行压缩操作，并将压缩后的日志记录在这里。
 
-When the file exceeds 300 lines, compress. Log it here.
+## 代理兼容性
 
-## Agent Compatibility
+该模板适用于所有主要的代理工具：
 
-The template works across all major agent tools:
-
-| Agent | Config File | What It Does |
+| 代理工具 | 配置文件 | 功能 |
 |---|---|---|
-| Claude Code | CLAUDE.md | Symlink → AGENTS.md (Claude doesn't read AGENTS.md yet) |
-| Cursor | .cursorrules | Directive pointing to AGENTS.md |
-| Windsurf | .windsurfrules | Directive pointing to AGENTS.md |
-| GitHub Copilot | .github/copilot-instructions.md | Directive pointing to AGENTS.md |
+| Claude Code | `CLAUEDE.md` | 创建`CLAUEDE.md`的符号链接（Claude Code在初始阶段无法直接读取`AGENTS.md`文件） |
+| Cursor | `.cursorrules` | 指向`AGENTS.md`的配置文件 |
+| Windsurf | `.windsurfrules` | 指向`AGENTS.md`的配置文件 |
+| GitHub Copilot | `copilot-instructions.md` | 指向`AGENTS.md`的配置文件 |
 
-### Claude Code Auto Memory
+### Claude Code的自动记忆功能
 
-Claude Code shipped auto memory in late 2025. It creates a `~/.claude/projects/<project>/memory/` directory where Claude writes its own notes and loads them at session start. That's basically the `.agents.local.md` concept built into the tool.
+Claude Code在2025年底加入了自动记忆功能。它会创建一个`~/.claude/projects/<project>/memory/`目录，并在其中保存自己的笔记，这些笔记会在会话开始时被自动加载。这实际上就是将`.agents.local.md`的功能内置于代理工具中。
 
-If you use Claude Code exclusively, auto memory handles session-to-session learning and the scratchpad is optional. The template's value for you is the `AGENTS.md` file itself and the promotion pathway that gives you a structured way to take what auto memory learns and move the stable parts into your root file.
+如果你只使用Claude Code，自动记忆功能可以处理会话间的学习内容，此时`.agents.local.md`文件是可选的。对你来说，`AGENTS.md`文件及其知识更新机制才是最重要的。
 
-If your team uses multiple agents (GitHub just shipped Agent HQ with Copilot, Claude, and Codex side by side), the scratchpad matters because auto memory only works in Claude Code. The scratchpad works everywhere.
+如果你的团队同时使用多个代理工具（例如GitHub提供的Copilot、Claude和Codex），`.agents.local.md`文件就变得非常关键，因为自动记忆功能仅在Claude Code中生效。而在其他代理工具中，`.agents.local.md`文件则是必不可少的。
 
-## Subagent Context
+#### 子代理的上下文管理
 
-Claude Code now ships subagents. Copilot CLI just shipped /fleet in experimental mode. Both tools are moving toward the same model: a lead agent that coordinates a team of specialists.
+Claude Code现在支持子代理的功能。Copilot的CLI也提供了`/fleet`实验性功能。这两种工具都在朝着同一个方向发展：通过一个主导代理来协调多个专家的工作。
 
-Subagents don't inherit the main conversation's history. Each one starts with a clean context window. The only shared knowledge they all have is your root instruction file.
+子代理不会继承主会话的历史记录，每个子代理都会从零开始工作。它们共享的唯一信息就是`AGENTS.md`文件中的配置。
 
-So when you go from one agent to five parallel agents, `AGENTS.md` goes from "helpful project context" to "the only thing preventing five agents from independently making conflicting decisions about your codebase."
+因此，当你的团队从使用一个代理扩展到五个并行运行的代理时，`AGENTS.md`文件就从“提供有用的项目上下文”变成了“防止五个代理对项目代码产生冲突的关键工具”。
 
-The compressed project knowledge, the boundaries section, the gotchas — that's the shared brain. Without it, each subagent rediscovers your project from scratch.
+压缩后的项目知识、项目边界以及需要注意的问题共同构成了团队共享的知识库。如果没有这个文件，每个子代理都需要从头开始了解项目。这就是为什么模板中明确要求子代理也需要阅读`.agents.local.md`文件的原因。同时，这也说明了规范的重要性：如果`AGENTS.md`文件的内容超过120行，那么每个子代理都需要为此付出额外的成本。保持文件长度在120行以内是一个重要的设计原则。
 
-This is why the template explicitly tells subagents to read `.agents.local.md` too. They won't get it by default. They need the instruction.
+## 研究基础
 
-It's also why instruction budget discipline matters even more. If your `AGENTS.md` is 500 lines, you're paying that token cost for every subagent you spawn. Under 120 lines is a feature, not a limitation.
+这个模板的开发基于以下研究结果：
 
-## Research Foundation
+- **LangChain**：代理的上下文工程框架（用于指导信息的编写、选择、压缩和隔离）。
+- **HumanLayer**：关于如何编写有效的`AGENTS.md`文件的建议，包括配置文件的规范。
+- **GitHub**：从2500多个仓库中总结出的经验，了解哪些`agents.md`文件能够真正发挥作用。
+- **Vercel**：研究显示，当信息以被动形式提供时（即在提示界面中显示），通过率可达100%，而当代理需要主动查找信息时，通过率仅为53%。
+- **Anthropic**：关于如何为代理提供技能的指导，包括三层渐进式的信息展示方式。
+- **AI Hero**：关于`agents.md`文件的全面使用指南。
+- **Anthropic**：关于Claude Code的子代理功能，以及如何实现上下文的隔离和定制。
+- **GitHub**：关于Copilot CLI和`/fleet`的功能，以及如何处理依赖关系的任务。
 
-This template is built on research from:
+关键发现：前沿的Large Language Models（LLMs）通常能遵循大约150-200条指令。Claude Code的提示界面已经使用了大约50条指令。因此，如果`AGENTS.md`文件中的内容不具有普遍适用性，就有可能被忽略。这就是为什么`AGENTS.md`文件的长度被控制在120行以内，并采用压缩格式（使用管道分隔符来组织信息）的原因。
 
-- **LangChain** — Context Engineering for Agents: Write/Select/Compress/Isolate framework
-- **HumanLayer** — Writing a Good CLAUDE.md: instruction budgets, root file discipline
-- **GitHub** — Lessons from 2,500+ Repositories: what makes agents.md files actually work
-- **Vercel** — AGENTS.md Outperforms Skills: passive context vs skill retrieval eval data
-- **Anthropic** — Equipping Agents with Skills: three-tier progressive disclosure
-- **AI Hero** — A Complete Guide to AGENTS.md: cross-platform standard adoption
-- **Anthropic** — Claude Code Subagents: context isolation, custom agents
-- **GitHub** — Copilot CLI /fleet: parallel fleets with dependency-aware tasks
+另一个关键发现是：当信息以被动形式提供时，通过率会显著提高。将关键信息放在代理必然能看到的地方，可以显著提高效率。
 
-Key finding: frontier LLMs reliably follow about 150-200 instructions. Claude Code's system prompt already uses about 50. So anything in your root file that isn't universally applicable risks getting quietly deprioritized.
+## 开始使用的方法
 
-That's why `AGENTS.md` stays under 120 lines and uses compressed formats (pipe-delimited patterns, boundaries, gotchas). Dense beats verbose.
+### 新项目设置
 
-Another key finding: Vercel's evals showed passive context (always in prompt) achieves 100% pass rate vs 53% when agents must decide to look things up. Available docs aren't the same as used docs. Put critical knowledge where the agent literally cannot miss it.
+从模板开始创建新的项目仓库。
 
-## Getting Started
+### 作为技能安装
 
-### New repo from template
+如果你通过`npx skills add`命令安装了该模板，相关脚本会保存在技能对应的目录中，而不是项目根目录中。可以从那里运行相关脚本。
 
-```bash
-gh repo create my-project --template YOUR_USERNAME/agent-context-system --private
-cd my-project
-chmod +x scripts/init-agent-context.sh
-./scripts/init-agent-context.sh
-```
+### 现有项目
 
-### Installed as a skill
+将`AGENTS.md`、`agent_docs/`和`scripts/`文件复制到项目根目录中，然后运行初始化脚本。
 
-If you installed via `npx skills add`, the scripts live inside the skill directory, not at the project root. Run from there:
+### 将其设置为模板
 
-```bash
-bash .agents/skills/agent-context-system/scripts/init-agent-context.sh
-```
+将配置文件设置为项目模板，以便在其他项目中使用。
 
-### Existing repo
+## 设置完成后
 
-Copy `AGENTS.md`, `agent_docs/`, and `scripts/` into your project root, then run the init script.
+1. **编辑`AGENTS.md`文件**：填写项目名称、使用的开发工具栈和可用命令。将模板中的示例内容替换为你的实际配置。
+2. **完善`agent_docs/`文件**：添加更详细的参考信息，删除不适用的内容。
+3. **自定义`.agents.local.md`文件**：添加你的个人偏好设置。
+4. **开始使用代理**：代理会读取所有配置文件，执行任务，并更新`.agents.local.md`文件。
+5. **筛选并转移稳定内容**：在压缩过程中，代理会将多个会话中反复出现的模式标记到`.agents.local.md`的“Ready to Promote”部分。你可以自行决定何时将这些内容转移到`AGENTS.md`中。
 
-### Publish this as your template
+## 文件结构
 
-```bash
-chmod +x scripts/publish-template.sh
-./scripts/publish-template.sh
-```
+## 许可证
 
-## After Setup
-
-1. **Edit `AGENTS.md`.** Fill in your project name, stack, commands. Replace the placeholder patterns and gotchas with real ones from your codebase. This is the highest-leverage edit you'll make.
-2. **Fill in `agent_docs/`.** Add deeper references. Delete what doesn't apply.
-3. **Customize `.agents.local.md`.** Add your preferences.
-4. **Work.** The agent reads everything, does the task, updates the scratchpad.
-5. **Promote what sticks.** During compression, the agent flags patterns that have recurred across 3+ sessions in the scratchpad's "Ready to Promote" section. You decide when to move them into `AGENTS.md`.
-
-## File Structure
-
-```
-your-repo/
-├── AGENTS.md                    # Committed. Always loaded. Under 120 lines.
-├── .agents.local.md             # Gitignored. Personal scratchpad.
-├── agent_docs/                  # Deeper docs. Read only when needed.
-│   ├── conventions.md           # Full code patterns, naming, file structure
-│   ├── architecture.md          # System design, data flow, key decisions
-│   └── gotchas.md               # Extended known traps with full explanations
-├── scripts/
-│   ├── init-agent-context.sh    # Setup script (run once per clone)
-│   ├── publish-template.sh      # Publish as GitHub template repo
-│   └── agents-local-template.md # Template for .agents.local.md
-└── CLAUDE.md                    # Symlink → AGENTS.md (created by init)
-```
-
-## License
-
-MIT
+本文件采用MIT许可证。

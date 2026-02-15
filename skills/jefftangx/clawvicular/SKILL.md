@@ -1,72 +1,72 @@
 ---
 name: clawvicular
-description: Daily looksmaxxing slang tip + Clavicular news. Extremely online Gen Z energy.
+description: 每日“looksmaxxing”俚语小贴士 + 关于Clavicular的最新动态。十足的Z世代网络风格。
 user-invocable: true
 metadata: {"openclaw":{"emoji":"💀"}}
 ---
 
 # Clawvicular
 
-> Daily looksmaxxing tip + Clavicular news. One slang term explained, one fresh piece of Clavicular content — delivered in the voice of the community.
+> 每日俚语小贴士 + Clavicular 新闻。我们用社区的语言，为您解读一个俚语术语，并带来最新的 Clavicular 内容。
 
-## Quick Reference
+## 快速参考
 
-- **Invoke**: `/clawvicular`
-- **Output**: Two posts — a slang tip and a Clavicular news/content piece
-- **State**: `{baseDir}/state/sent-terms.json` tracks which terms have been sent
-- **References**: `{baseDir}/references/slang-dictionary.md`, `{baseDir}/references/clavicular-lore.md`, `{baseDir}/references/content-templates.md`
-- **Sources**: `{baseDir}/references/sources.md` — index of all tweets, clips, articles, and links
+- **调用命令**: `/clawvicular`
+- **输出内容**: 两篇帖子——一篇俚语小贴士和一篇 Clavicular 新闻/内容
+- **状态跟踪**: 文件 `{baseDir}/state/sent-terms.json` 记录了已发布的术语
+- **参考资料**: `{baseDir}/references/slang-dictionary.md`, `{baseDir}/references/clavicular-lore.md`, `{baseDir}/references/content-templates.md`
+- **信息来源**: `{baseDir}/references/sources.md` — 包含所有推文、视频片段、文章和链接的索引
 
 ---
 
-## How It Works
+## 运作流程
 
-### Step 1: Pick a Slang Term
+### 第一步：选择俚语术语
 
-1. Read `{baseDir}/state/sent-terms.json` to get the list of already-sent terms.
-2. Read `{baseDir}/references/slang-dictionary.md` to get the full term list.
-3. Pick a random term that has NOT been sent yet.
-4. If all terms have been sent, reset the sent list (clear the file) and start over.
+1. 读取文件 `{baseDir}/state/sent-terms.json` 以获取已发布的术语列表。
+2. 读取文件 `{baseDir}/references/slang-dictionary.md` 以获取完整的术语列表。
+3. 随机选择一个尚未发布的术语。
+4. 如果所有术语都已发布，清空 `sent-terms.json` 文件并重新开始。
 
-### Step 2: Write the Slang Tip
+### 第二步：撰写俚语小贴士
 
-1. Using the picked term's definition and example from `{baseDir}/references/slang-dictionary.md`, write a short tip explaining the term.
-2. Optionally, search Urban Dictionary for the term to get the freshest/most authentic community definition:
+1. 根据 `{baseDir}/references/slang-dictionary.md` 中的定义和示例，撰写一篇简短的小贴士来解释该术语。
+2. （可选）在 Urban Dictionary 中搜索该术语，以获取最新、最真实的社区定义：
    ```
    WebSearch: "[term] urban dictionary looksmaxxing"
    ```
-   Use this to add extra flavor or a second example, but the `{baseDir}/references/slang-dictionary.md` entry is the primary source.
-3. Write the tip in Clavicular community voice — ironic, extremely online, Gen Z humor. See `{baseDir}/references/content-templates.md` for template formats.
-4. Include an example sentence showing the term used naturally.
+   可以使用这个定义来增加趣味性或提供第二个示例，但主要参考还是 `{baseDir}/references/slang-dictionary.md` 中的内容。
+3. 用 Clavicular 社区的风格撰写小贴士——带有讽刺意味、极富网络风格和 Z 世代特有的幽默感。请参考文件 `{baseDir}/references/content-templates.md` 中的模板格式。
+4. 包含一个使用该术语的例句。
 
-### Step 3: Get Clavicular News
+### 第三步：获取 Clavicular 新闻
 
-1. Search the web for the latest Clavicular (Braden Peters / @kingclavicular) content:
+1. 在网上搜索最新的 Clavicular 内容（作者：Braden Peters / @kingclavicular）：
    ```
    WebSearch: "clavicular looksmaxxing" OR "kingclavicular" OR "braden peters clavicular"
    ```
-   Also try platform-specific searches:
+   也可以尝试特定平台的搜索：
    ```
    WebSearch: "kingclavicular kick" OR "kingclavicular tiktok" OR "clavicular twitter"
    ```
-2. Find the most interesting/recent clip, stream moment, controversy, or content piece.
-3. Summarize it in 2-4 sentences in the community voice.
-4. **Always include the source URL** (TikTok, Kick, Twitter/X, YouTube, etc.) so people can watch/read themselves.
-5. **Log every source** you find or use to `{baseDir}/references/sources.md` — tweets, clips, articles, anything with a URL. Add a row to the appropriate table (Tweets, Articles, Clips & Streams). This builds a running archive.
-6. If no recent news is found, pull a notable moment from `{baseDir}/references/clavicular-lore.md` and frame it as a throwback.
+2. 找到最有趣或最新的视频片段、直播瞬间、争议事件或内容。
+3. 用社区的语言将其总结为 2-4 句话。
+4. **务必提供来源链接**（TikTok、Kick、Twitter/X、YouTube 等），以便大家自行观看或阅读。
+5. 将找到的所有来源信息添加到文件 `{baseDir}/references/sources.md` 中——包括推文、视频片段和文章等带有链接的内容。这有助于构建一个持续的档案。
+6. 如果没有找到最新新闻，可以从文件 `{baseDir}/references/clavicular-lore.md` 中选取一个经典片段作为回顾内容。
 
-### Step 4: Format Output
+### 第四步：格式化输出
 
-Use the templates from `{baseDir}/references/content-templates.md` to format two posts:
+使用文件 `{baseDir}/references/content-templates.md` 中的模板来生成两篇帖子：
 
-1. **Slang Tip Post** — the term, definition, example, and a hot take
-2. **News Post** — the Clavicular update with source link
+1. **俚语小贴士帖子**：包含术语、定义、示例以及一个犀利的观点。
+2. **新闻帖子**：包含 Clavicular 的最新更新及其来源链接。
 
-Vary the template each day. Don't use the same format twice in a row.
+每天更换模板格式，避免重复使用相同的格式。
 
-### Step 5: Update State
+### 第五步：更新状态
 
-After generating content, update `{baseDir}/state/sent-terms.json`:
+生成内容后，更新文件 `{baseDir}/state/sent-terms.json`：
 ```json
 {
   "sent": ["mewing", "bonesmash", "looksmaxxing"],
@@ -76,26 +76,25 @@ After generating content, update `{baseDir}/state/sent-terms.json`:
 }
 ```
 
-Add the term you just used to the `sent` array. Update `last_sent` to today's date. Track which template number was used to avoid repeats.
+将刚刚使用的术语添加到 `sent` 数组中，并将 `last_sent` 更新为当前日期。同时记录使用了哪个模板，以避免重复。
 
-Also update `{baseDir}/references/sources.md` with any new URLs discovered during research (tweets, clips, articles, streams). Every source with a URL gets indexed — this is the permanent archive.
-
----
-
-## Tone Guide
-
-- **Voice**: Extremely online, ironic, Gen Z native. You live in this community.
-- **Energy**: Half-educational, half-shitpost. You're explaining the term but also roasting.
-- **Never**: Earnest, cringe, boomer-coded, preachy, or condescending.
-- **Always**: Self-aware, chaotic, community-native. Use "ngl", "no cap", "fr fr", "ong" naturally.
-- **Format**: Keep it punchy. No walls of text. Line breaks are your friend.
+同时将研究过程中发现的新链接（推文、视频片段、文章等）添加到 `{baseDir}/references/sources.md` 中。所有带有链接的来源都会被收录到永久档案中。
 
 ---
 
-## Cron Setup
+## 语言风格指南
 
-To schedule daily delivery at 10am PT:
+- **语言风格**: 极具网络风格、带有讽刺意味，符合 Z 世代的语言特点。
+- **内容风格**: 半教育性、半幽默性。你在解释术语的同时，也会进行调侃。
+- **注意事项**: 绝不要使用严肃、尴尬、老套或居高临下的表达方式。
+- **用语特点**: 自我意识强、语言风格随意，自然地使用 “ngl”、“no cap”、“fr fr”、“ong” 等表达。
+- **排版建议**: 保持简洁明了的格式，适当使用换行符。
 
+---
+
+## 定时任务设置
+
+为了每天上午 10 点（太平洋时间）自动执行任务，请使用以下命令：
 ```bash
 openclaw cron add --name "clawvicular-daily" \
   --cron "0 10 * * *" --tz "America/Los_Angeles" \
@@ -104,9 +103,9 @@ openclaw cron add --name "clawvicular-daily" \
   --announce --channel telegram --to "<channel-id>"
 ```
 
-Replace `<channel-id>` with your actual Telegram channel/group ID. Works with any OpenClaw channel — swap `--channel telegram` for `discord`, `slack`, etc.
+将 `<channel-id>` 替换为你的 Telegram 频道/群组 ID。该命令适用于任何 OpenClaw 频道——例如，将 `--channel telegram` 替换为 `discord`、`slack` 等。
 
-### Manage the Cron
+### 定时任务管理
 
 ```bash
 # List active cron jobs
@@ -121,16 +120,16 @@ openclaw cron trigger --name "clawvicular-daily"
 
 ---
 
-## Verification
+## 验证步骤
 
-1. Copy or symlink this skill into your OpenClaw skills directory:
+1. 将此技能文件复制或创建符号链接到你的 OpenClaw 技能目录中：
    ```bash
    ln -s /path/to/clawvicular ~/.openclaw/skills/clawvicular
    ```
-2. Invoke manually:
+2. 手动调用该技能：
    ```
    /clawvicular
    ```
-3. Check that output includes both a slang tip and a news piece.
-4. Verify `state/sent-terms.json` was updated with the term used.
-5. Set up cron and verify with `openclaw cron list`.
+3. 确认输出内容包含俚语小贴士和新闻文章。
+4. 检查文件 `state/sent-terms.json` 是否已更新为最新的术语信息。
+5. 设置定时任务并通过 `openclaw cron list` 进行验证。

@@ -1,150 +1,149 @@
 ---
 name: activecampaign-automation
-description: "Automate ActiveCampaign tasks via Rube MCP (Composio): manage contacts, tags, list subscriptions, automation enrollment, and tasks. Always search tools first for current schemas."
+description: "通过 Rube MCP (Composio) 自动化 ActiveCampaign 任务：管理联系人、标签、列表订阅、自动化注册以及相关任务。在使用任何工具之前，请务必先查询其当前的架构（schema）信息。"
 requires:
   mcp: [rube]
 ---
 
-# ActiveCampaign Automation via Rube MCP
+# 通过 Rube MCP 自动化 ActiveCampaign 操作
 
-Automate ActiveCampaign CRM and marketing automation operations through Composio's ActiveCampaign toolkit via Rube MCP.
+通过 Composio 的 ActiveCampaign 工具包和 Rube MCP 来自动化 ActiveCampaign 客户关系管理（CRM）及营销自动化流程。
 
-## Prerequisites
+## 先决条件
 
-- Rube MCP must be connected (RUBE_SEARCH_TOOLS available)
-- Active ActiveCampaign connection via `RUBE_MANAGE_CONNECTIONS` with toolkit `active_campaign`
-- Always call `RUBE_SEARCH_TOOLS` first to get current tool schemas
+- Rube MCP 必须已连接（支持使用 `RUBE_SEARCH_TOOLS`）
+- 通过 `RUBE_MANAGE_CONNECTIONS` 使用 `active_campaign` 工具包连接到 ActiveCampaign
+- 在执行任何操作前，务必先调用 `RUBE_SEARCH_TOOLS` 以获取当前的工具架构信息
 
-## Setup
+## 设置
 
-**Get Rube MCP**: Add `https://rube.app/mcp` as an MCP server in your client configuration. No API keys needed — just add the endpoint and it works.
+**添加 Rube MCP**: 在您的客户端配置中添加 `https://rube.app/mcp` 作为 MCP 服务器。无需 API 密钥——只需提供该端点即可。
 
+1. 通过确认 `RUBE_SEARCH_TOOLS` 是否能正常响应来验证 Rube MCP 是否可用。
+2. 调用 `RUBE_MANAGE_CONNECTIONS` 并使用 `active_campaign` 工具包进行连接设置。
+3. 如果连接状态不是 `ACTIVE`，请按照返回的链接完成 ActiveCampaign 的身份验证。
+4. 在运行任何工作流之前，请确保连接状态显示为 `ACTIVE`。
 
-1. Verify Rube MCP is available by confirming `RUBE_SEARCH_TOOLS` responds
-2. Call `RUBE_MANAGE_CONNECTIONS` with toolkit `active_campaign`
-3. If connection is not ACTIVE, follow the returned auth link to complete ActiveCampaign authentication
-4. Confirm connection status shows ACTIVE before running any workflows
+## 核心工作流
 
-## Core Workflows
+### 1. 创建和查找联系人
 
-### 1. Create and Find Contacts
+**使用场景**：用户需要创建新联系人或查找现有联系人。
 
-**When to use**: User wants to create new contacts or look up existing ones
+**工具序列**：
+1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - 查找现有联系人 [可选]
+2. `ACTIVE_CAMPAIGN_CREATE_CONTACT` - 创建新联系人 [必填]
 
-**Tool sequence**:
-1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - Search for an existing contact [Optional]
-2. `ACTIVE_CAMPAIGN_CREATE_CONTACT` - Create a new contact [Required]
+**查找联系人时的关键参数**：
+- `email`：按电子邮件地址搜索
+- `id`：按 ActiveCampaign 联系人 ID 搜索
+- `phone`：按电话号码搜索
 
-**Key parameters for find**:
-- `email`: Search by email address
-- `id`: Search by ActiveCampaign contact ID
-- `phone`: Search by phone number
+**创建联系人时的关键参数**：
+- `email`：联系人的电子邮件地址（必填）
+- `first_name`：联系人的名字
+- `last_name`：联系人的姓氏
+- `phone`：联系人的电话号码
+- `organization_name`：联系人的所属组织
+- `job_title`：联系人的职位
+- `tags`：用逗号分隔的标签列表
 
-**Key parameters for create**:
-- `email`: Contact email address (required)
-- `first_name`: Contact first name
-- `last_name`: Contact last name
-- `phone`: Contact phone number
-- `organization_name`: Contact's organization
-- `job_title`: Contact's job title
-- `tags`: Comma-separated list of tags to apply
+**注意事项**：
+- `email` 是创建联系人时唯一的必填字段。
+- 电话号码的搜索使用通用搜索参数，可能会返回部分匹配的结果。
+- 在 `FIND_CONTACT` 中同时使用 `email` 和 `phone` 时，搜索结果会在客户端进行过滤。
+- 创建联系人时提供的标签会立即生效。
+- 使用已存在的电子邮件地址创建联系人可能会更新该联系人信息。
 
-**Pitfalls**:
-- `email` is the only required field for contact creation
-- Phone search uses a general search parameter internally; it may return partial matches
-- When combining `email` and `phone` in FIND_CONTACT, results are filtered client-side
-- Tags provided during creation are applied immediately
-- Creating a contact with an existing email may update the existing contact
+### 2. 管理联系人标签
 
-### 2. Manage Contact Tags
+**使用场景**：用户需要为联系人添加或删除标签。
 
-**When to use**: User wants to add or remove tags from contacts
+**工具序列**：
+1. `ACTIVE_CAMPAIGN_FINDCONTACT` - 通过电子邮件或 ID 查找联系人 [前提条件]
+2. `ACTIVE_CAMPAIGN_MANAGE_CONTACT_TAG` - 添加或删除标签 [必填]
 
-**Tool sequence**:
-1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - Find contact by email or ID [Prerequisite]
-2. `ACTIVE_CAMPAIGN_MANAGE_CONTACT_TAG` - Add or remove tags [Required]
+**关键参数**：
+- `action`：'Add' 或 'Remove'（必填）
+- `tags`：标签名称，以逗号分隔的字符串或字符串数组形式
+- `contact_id`：联系人 ID（提供此参数或 `contact_email`）
+- `contact_email`：联系人的电子邮件地址（作为 `contact_id` 的替代选项）
 
-**Key parameters**:
-- `action`: 'Add' or 'Remove' (required)
-- `tags`: Tag names as comma-separated string or array of strings (required)
-- `contact_id`: Contact ID (provide this or contact_email)
-- `contact_email`: Contact email address (alternative to contact_id)
+**注意事项**：
+- `action` 的值必须大写：'Add' 或 'Remove'（不能使用小写）。
+- 标签可以是逗号分隔的字符串（如 'tag1, tag2'）或数组（如 ['tag1', 'tag2']）。
+- 必须提供 `contact_id` 或 `contact_email`；`contact_id` 具有优先级。
+- 添加不存在的标签会自动创建该标签。
+- 删除不存在的标签不会产生任何错误。
 
-**Pitfalls**:
-- `action` values are capitalized: 'Add' or 'Remove' (not lowercase)
-- Tags can be a comma-separated string ('tag1, tag2') or an array (['tag1', 'tag2'])
-- Either `contact_id` or `contact_email` must be provided; `contact_id` takes precedence
-- Adding a tag that does not exist creates it automatically
-- Removing a non-existent tag is a no-op (does not error)
+### 3. 管理联系人订阅列表
 
-### 3. Manage List Subscriptions
+**使用场景**：用户需要为联系人订阅或取消订阅列表。
 
-**When to use**: User wants to subscribe or unsubscribe contacts from lists
+**工具序列**：
+1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - 查找联系人 [前提条件]
+2. `ACTIVE_CAMPAIGN_MANAGE_LIST_SUBSCRIPTION` - 订阅或取消订阅 [必填]
 
-**Tool sequence**:
-1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - Find the contact [Prerequisite]
-2. `ACTIVE_CAMPAIGN_MANAGE_LIST_SUBSCRIPTION` - Subscribe or unsubscribe [Required]
+**关键参数**：
+- `action`：'subscribe' 或 'unsubscribe'（必填）
+- `list_id`：列表 ID（数字字符串）
+- `email`：联系人的电子邮件地址（提供此参数或 `contact_id`）
+- `contact_id`：联系人的 ID（数字字符串，作为 `email` 的替代选项）
 
-**Key parameters**:
-- `action`: 'subscribe' or 'unsubscribe' (required)
-- `list_id`: Numeric list ID string (required)
-- `email`: Contact email address (provide this or contact_id)
-- `contact_id`: Numeric contact ID string (alternative to email)
+**注意事项**：
+- `action` 的值必须小写：'subscribe' 或 'unsubscribe'。
+- `list_id` 是数字字符串（例如 '2'），而不是列表名称。
+- 列表 ID 可以通过 `/api/3/lists` 端点获取（Composio 工具不支持直接访问）；请使用 ActiveCampaign 的 UI 来获取。
+- 如果同时提供了 `email` 和 `contact_id`，则以 `contact_id` 为准。
+- 取消订阅后，状态会变为 '2'（已取消订阅），但关联记录仍然存在。
 
-**Pitfalls**:
-- `action` values are lowercase: 'subscribe' or 'unsubscribe'
-- `list_id` is a numeric string (e.g., '2'), not the list name
-- List IDs can be retrieved via the GET /api/3/lists endpoint (not available as a Composio tool; use the ActiveCampaign UI)
-- If both `email` and `contact_id` are provided, `contact_id` takes precedence
-- Unsubscribing changes status to '2' (unsubscribed) but the relationship record persists
+### 4. 将联系人添加到自动化流程中
 
-### 4. Add Contacts to Automations
+**使用场景**：用户需要将联系人加入自动化流程。
 
-**When to use**: User wants to enroll a contact in an automation workflow
+**工具序列**：
+1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - 确认联系人存在 [前提条件]
+2. `ACTIVE_CAMPAIGN_ADD_CONTACT_TO_AUTOMATION` - 将联系人加入自动化流程 [必填]
 
-**Tool sequence**:
-1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - Verify contact exists [Prerequisite]
-2. `ACTIVE_CAMPAIGN_ADD_CONTACT_TO_AUTOMATION` - Enroll contact in automation [Required]
+**关键参数**：
+- `contact_email`：要加入自动化流程的联系人电子邮件地址
+- `automation_id`：目标自动化流程的 ID
 
-**Key parameters**:
-- `contact_email`: Email of the contact to enroll (required)
-- `automation_id`: ID of the target automation (required)
+**注意事项**：
+- 联系人必须已在 ActiveCampaign 中存在。
+- 自动化流程只能通过 ActiveCampaign 的 UI 创建，无法通过 API 创建。
+- `automation_id` 必须引用一个现有的、处于活动状态的自动化流程。
+- 该工具会执行两步操作：首先通过电子邮件查找联系人，然后将其加入自动化流程。
+- 可以通过 ActiveCampaign 的 UI 或 `/api/3/automations` 端点获取自动化流程的 ID。
 
-**Pitfalls**:
-- The contact must already exist in ActiveCampaign
-- Automations can only be created through the ActiveCampaign UI, not via API
-- `automation_id` must reference an existing, active automation
-- The tool performs a two-step process: lookup contact by email, then enroll
-- Automation IDs can be found in the ActiveCampaign UI or via GET /api/3/automations
+### 5. 创建联系人任务
 
-### 5. Create Contact Tasks
+**使用场景**：用户需要为联系人创建跟进任务。
 
-**When to use**: User wants to create follow-up tasks associated with contacts
+**工具序列**：
+1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - 查找要关联任务的联系人 [前提条件]
+2. `ACTIVE_CAMPAIGN_CREATE_CONTACT_TASK` - 创建任务 [必填]
 
-**Tool sequence**:
-1. `ACTIVE_CAMPAIGN_FIND_CONTACT` - Find the contact to associate the task with [Prerequisite]
-2. `ACTIVE_CAMPAIGN_CREATE_CONTACT_TASK` - Create the task [Required]
+**关键参数**：
+- `relid`：要与任务关联的联系人 ID
+- `duedate`：任务的截止日期（ISO 8601 格式，包含时区，例如 '2025-01-15T14:30:00-05:00'）
+- `dealTasktype`：任务类型 ID（根据 ActiveCampaign 中配置的类型选择）
+- `title`：任务标题
+- `note`：任务描述/内容
+- `assignee`：任务分配给的用户 ID
+- `edate`：任务的结束日期（ISO 8601 格式，必须晚于 `duedate`）
+- `status`：0 表示未完成，1 表示已完成
 
-**Key parameters**:
-- `relid`: Contact ID to associate the task with (required)
-- `duedate`: Due date in ISO 8601 format with timezone (required, e.g., '2025-01-15T14:30:00-05:00')
-- `dealTasktype`: Task type ID based on available types (required)
-- `title`: Task title
-- `note`: Task description/content
-- `assignee`: User ID to assign the task to
-- `edate`: End date in ISO 8601 format (must be later than duedate)
-- `status`: 0 for incomplete, 1 for complete
+**注意事项**：
+- `duedate` 必须是有效的 ISO 8601 日期时间格式，并包含时区偏移量；不要使用占位符值。
+- `edate` 必须晚于 `duedate`。
+- `dealTasktype` 是一个字符串 ID，用于引用 ActiveCampaign 中配置的任务类型。
+- `relid` 是联系人的 ID（数字形式），而不是电子邮件地址。
+- `assignee` 是用户 ID；请通过 ActiveCampaign 的 UI 将用户名转换为对应的用户 ID。
 
-**Pitfalls**:
-- `duedate` must be a valid ISO 8601 datetime with timezone offset; do NOT use placeholder values
-- `edate` must be later than `duedate`
-- `dealTasktype` is a string ID referencing task types configured in ActiveCampaign
-- `relid` is the numeric contact ID, not the email address
-- `assignee` is a user ID; resolve user names to IDs via the ActiveCampaign UI
+## 常见操作模式
 
-## Common Patterns
-
-### Contact Lookup Flow
+### 联系人查找流程
 
 ```
 1. Call ACTIVE_CAMPAIGN_FIND_CONTACT with email
@@ -153,7 +152,7 @@ Automate ActiveCampaign CRM and marketing automation operations through Composio
 4. Use contact ID for tags, subscriptions, or automations
 ```
 
-### Bulk Contact Tagging
+### 批量添加联系人标签
 
 ```
 1. For each contact, call ACTIVE_CAMPAIGN_MANAGE_CONTACT_TAG
@@ -161,49 +160,49 @@ Automate ActiveCampaign CRM and marketing automation operations through Composio
 3. Batch with reasonable delays to respect rate limits
 ```
 
-### ID Resolution
+### ID 解析
 
-**Contact email -> Contact ID**:
+**将联系人电子邮件转换为联系人 ID**：
 ```
 1. Call ACTIVE_CAMPAIGN_FIND_CONTACT with email
 2. Extract id from the response
 ```
 
-## Known Pitfalls
+## 常见问题
 
-**Action Capitalization**:
-- Tag actions: 'Add', 'Remove' (capitalized)
-- Subscription actions: 'subscribe', 'unsubscribe' (lowercase)
-- Mixing up capitalization causes errors
+- **操作名称的大小写**：
+  - 标签操作（如 'Add', 'Remove'）必须大写。
+  - 订阅操作（如 'subscribe', 'unsubscribe'）必须小写。
+  - 混淆大小写会导致错误。
 
-**ID Types**:
-- Contact IDs: numeric strings (e.g., '123')
-- List IDs: numeric strings
-- Automation IDs: numeric strings
-- All IDs should be passed as strings, not integers
+- **ID 类型**：
+  - 联系人 ID：数字字符串（例如 '123'）
+  - 列表 ID：数字字符串
+  - 自动化流程 ID：数字字符串
+  - 所有 ID 都应以字符串形式传递，不能使用整数。
 
-**Automations**:
-- Automations cannot be created via API; only enrollment is possible
-- Automation must be active to accept new contacts
-- Enrolling a contact already in the automation may have no effect
+- **自动化流程**：
+  - 无法通过 API 创建自动化流程；只能通过 ActiveCampaign 的 UI 进行操作。
+  - 自动化流程必须处于活动状态才能接收新联系人。
+  - 将已存在于自动化流程中的联系人重新加入可能不会产生任何效果。
 
-**Rate Limits**:
-- ActiveCampaign API has rate limits per account
-- Implement backoff on 429 responses
-- Batch operations should be spaced appropriately
+- **速率限制**：
+  - ActiveCampaign API 对每个账户有速率限制。
+  - 遇到 429 错误时，请实施重试策略。
+  - 批量操作应适当间隔进行。
 
-**Response Parsing**:
-- Response data may be nested under `data` or `data.data`
-- Parse defensively with fallback patterns
-- Contact search may return multiple results; match by email for accuracy
+- **响应解析**：
+  - 响应数据可能包含在 `data` 或 `data.data` 下。
+  - 使用防御性解析方法来处理响应数据。
+  - 联系人搜索可能会返回多个结果；为确保准确性，请根据电子邮件地址进行匹配。
 
-## Quick Reference
+## 快速参考
 
-| Task | Tool Slug | Key Params |
+| 任务 | 工具名称 | 关键参数 |
 |------|-----------|------------|
-| Find contact | ACTIVE_CAMPAIGN_FIND_CONTACT | email, id, phone |
-| Create contact | ACTIVE_CAMPAIGN_CREATE_CONTACT | email, first_name, last_name, tags |
-| Add/remove tags | ACTIVE_CAMPAIGN_MANAGE_CONTACT_TAG | action, tags, contact_email |
-| Subscribe/unsubscribe | ACTIVE_CAMPAIGN_MANAGE_LIST_SUBSCRIPTION | action, list_id, email |
-| Add to automation | ACTIVE_CAMPAIGN_ADD_CONTACT_TO_AUTOMATION | contact_email, automation_id |
-| Create task | ACTIVE_CAMPAIGN_CREATE_CONTACT_TASK | relid, duedate, dealTasktype, title |
+| 查找联系人 | ACTIVE_CAMPAIGN_FIND_CONTACT | email, id, phone |
+| 创建联系人 | ACTIVE_CAMPAIGN_CREATE_CONTACT | email, first_name, last_name, tags |
+| 添加/删除标签 | ACTIVE_CAMPAIGN_MANAGE_CONTACT_TAG | action, tags, contact_email |
+| 订阅/取消订阅 | ACTIVE_CAMPAIGN_MANAGE_LIST_SUBSCRIPTION | action, list_id, email |
+| 添加到自动化流程 | ACTIVE_CAMPAIGN_ADD_CONTACT_TO_AUTOMATION | contact_email, automation_id |
+| 创建任务 | ACTIVE_CAMPAIGN_CREATE_CONTACT_TASK | relid, duedate, dealTasktype, title |

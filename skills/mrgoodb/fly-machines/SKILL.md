@@ -1,32 +1,32 @@
 ---
 name: fly-machines
-description: Deploy and manage Fly.io Machines - create, start, stop, delete, and monitor containerized apps. Use for deploying containers, managing app instances, and orchestrating multi-tenant workloads.
+description: 部署和管理 Fly.io 机器：创建、启动、停止、删除以及监控容器化应用程序。该工具可用于部署容器、管理应用程序实例以及编排多租户工作负载。
 metadata: {"clawdbot":{"emoji":"🪰"}}
 ---
 
 # fly-machines
 
-Deploy and manage containers on Fly.io using the Machines API.
+使用 Machines API 在 Fly.io 上部署和管理容器。
 
-## Setup
+## 设置
 
-1. Get a Fly.io API token from https://fly.io/user/personal_access_tokens
-2. Store it:
+1. 从 https://fly.io/user/personal_access_tokens 获取 Fly.io API 令牌。
+2. 将其存储在以下位置：
 ```bash
 mkdir -p ~/.config/fly
 echo "your_token_here" > ~/.config/fly/token
 ```
 
-Or use environment variable:
+或者使用环境变量：
 ```bash
 export FLY_API_TOKEN="your_token_here"
 ```
 
-## API Reference
+## API 参考
 
-Base URL: `https://api.machines.dev/v1`
+基础 URL：`https://api.machines.dev/v1`
 
-All requests require:
+所有请求都需要：
 ```bash
 FLY_TOKEN=$(cat ~/.config/fly/token 2>/dev/null || echo $FLY_API_TOKEN)
 curl -H "Authorization: Bearer $FLY_TOKEN" \
@@ -34,15 +34,15 @@ curl -H "Authorization: Bearer $FLY_TOKEN" \
      "https://api.machines.dev/v1/..."
 ```
 
-## Apps Management
+## 应用管理
 
-**List all apps:**
+**列出所有应用：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps?org_slug=personal"
 ```
 
-**Create app:**
+**创建应用：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   -H "Content-Type: application/json" \
@@ -53,21 +53,21 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   }'
 ```
 
-**Get app details:**
+**获取应用详情：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app"
 ```
 
-## Machines
+## 机器
 
-**List machines in app:**
+**列出应用中的机器：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines"
 ```
 
-**Create machine:**
+**创建机器：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   -H "Content-Type: application/json" \
@@ -94,45 +94,45 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   }'
 ```
 
-**Get machine:**
+**获取机器信息：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{machine_id}"
 ```
 
-**Start machine:**
+**启动机器：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{machine_id}/start"
 ```
 
-**Stop machine:**
+**停止机器：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{machine_id}/stop"
 ```
 
-**Delete machine:**
+**删除机器：**
 ```bash
 curl -X DELETE -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{machine_id}?force=true"
 ```
 
-**Wait for state:**
+**等待机器状态变化：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{machine_id}/wait?state=started&timeout=60"
 ```
 
-## Volumes
+## 卷（Volumes）
 
-**List volumes:**
+**列出所有卷：**
 ```bash
 curl -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/volumes"
 ```
 
-**Create volume:**
+**创建卷：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   -H "Content-Type: application/json" \
@@ -144,7 +144,7 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   }'
 ```
 
-**Mount volume to machine:**
+**将卷挂载到机器上：**
 ```bash
 # Include in machine config:
 {
@@ -157,7 +157,7 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
 }
 ```
 
-## Machine Config Options
+## 机器配置选项**
 
 ```json
 {
@@ -186,22 +186,22 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
 }
 ```
 
-## Regions
+## 地区（Regions）
 
-Common regions:
-- `iad` - Ashburn, Virginia (US East)
-- `lax` - Los Angeles (US West)
-- `cdg` - Paris
-- `lhr` - London
-- `nrt` - Tokyo
-- `sin` - Singapore
-- `syd` - Sydney
+常见地区：
+- `iad` - 弗吉尼亚州阿什本（美国东部）
+- `lax` - 洛杉矶（美国西部）
+- `cdg` - 巴黎
+- `lhr` - 伦敦
+- `nrt` - 东京
+- `sin` - 新加坡
+- `syd` - 悉尼
 
-## Auto-Stop/Start
+## 自动停止/启动
 
-Machines automatically stop after idle timeout (default 5 min). They wake on incoming request (~3s cold start).
+机器在空闲一段时间后（默认为 5 分钟）会自动停止。收到请求后会立即启动（启动延迟约 3 秒）。
 
-**Disable auto-stop:**
+**禁用自动停止功能：**
 ```json
 {
   "config": {
@@ -214,9 +214,9 @@ Machines automatically stop after idle timeout (default 5 min). They wake on inc
 }
 ```
 
-## Secrets
+## 秘密信息（Secrets）
 
-**Set secret:**
+**设置秘密信息：**
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   -H "Content-Type: application/json" \
@@ -224,11 +224,11 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   -d '{"MY_SECRET": "secret_value"}'
 ```
 
-Secrets are available as environment variables to all machines.
+这些秘密信息可以作为环境变量在所有机器上使用。
 
-## Common Patterns
+## 常见用法模式
 
-### Deploy a bot instance
+### 部署机器人实例
 ```bash
 FLY_TOKEN=$(cat ~/.config/fly/token)
 APP="botspawn"
@@ -251,23 +251,23 @@ curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   }'
 ```
 
-### Scale to zero
-Machines auto-stop when idle. To wake:
+### 将资源规模缩减至零
+机器在空闲时会自动停止。如需重新启动，请执行相应操作：
 ```bash
 curl -X POST -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{id}/start"
 ```
 
-### Health check
+### 健康检查（Health Check）
 ```bash
 MACHINE=$(curl -s -H "Authorization: Bearer $FLY_TOKEN" \
   "https://api.machines.dev/v1/apps/my-app/machines/{id}")
 echo $MACHINE | jq '{state: .state, region: .region, updated: .updated_at}'
 ```
 
-## CLI Alternative
+## 命令行工具（CLI）替代方案
 
-For interactive use, the `flyctl` CLI is often easier:
+对于交互式操作，`flyctl` 命令行工具通常更为方便：
 ```bash
 # Install
 curl -L https://fly.io/install.sh | sh
@@ -285,10 +285,10 @@ fly machines list -a my-app
 fly ssh console -a my-app
 ```
 
-## Notes
+## 注意事项
 
-- Machines API is separate from the main Fly GraphQL API
-- Each machine is an independent VM (Firecracker microVM)
-- Volumes are regional and can only attach to machines in same region
-- Private networking between machines via `.internal` DNS
-- Logs: `fly logs -a my-app` or via Fly dashboard
+- Machines API 与 Fly 的主要 GraphQL API 是分开的。
+- 每台机器都是一个独立的虚拟机（使用 Firecracker 技术实现）。
+- 卷具有地域限制，只能挂载到同一地区的机器上。
+- 机器之间通过 `.internal` DNS 进行私有网络通信。
+- 日志记录：可以使用 `fly logs -a my-app` 命令查看，或通过 Fly 仪表板查看。

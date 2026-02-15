@@ -1,6 +1,6 @@
 ---
 name: token-optimizer
-description: Reduce OpenClaw AI costs by 97%. Haiku model routing, free Ollama heartbeats, prompt caching, and budget controls. Go from $1,500/month to $50/month in 5 minutes.
+description: 将 OpenClaw AI 的使用成本降低 97%：采用 Haiku 模型路由技术、免费获取 Ollama 的心跳数据（即模型运行状态信息）、实现提示信息缓存功能，并引入预算控制机制。只需 5 分钟，使用成本就能从每月 1,500 美元降至每月 50 美元。
 homepage: https://github.com/smartpeopleconnected/openclaw-token-optimizer
 triggers:
   - too expensive
@@ -23,56 +23,56 @@ triggers:
   - reduce token usage
 ---
 
-# Token Optimizer for OpenClaw
+# OpenClaw 令牌优化器
 
-Slash your AI costs from $1,500+/month to under $50/month.
+将您的人工智能成本从每月 1,500 美元以上降至每月 50 美元以下。
 
-## The Problem
+## 问题所在
 
-OpenClaw defaults prioritize capability over cost. You're burning expensive Sonnet/Opus tokens on tasks Haiku handles perfectly, paying for API heartbeats that could run free locally, and loading 50KB of context when 8KB suffices.
+OpenClaw 的设计默认更注重功能的实现而非成本控制。您在那些 Haiku 已能完美处理的任务上仍在消耗昂贵的 Sonnet/Opus 令牌；为 API 请求支付费用（而这些请求在本地完全可以免费完成）；同时，即使 8KB 的上下文数据就足够了，却仍加载了 50KB 的数据。
 
-## The Solution
+## 解决方案
 
-Four core optimizations plus powerful tooling:
+我们提供了四项核心优化措施以及强大的工具支持：
 
-### Model Routing (92% savings)
-Haiku by default, Sonnet/Opus only when needed
+### 模型路由（节省 92% 的成本）
+- 默认使用 Haiku；仅在需要时使用 Sonnet/Opus。
 
-### Multi-Provider Heartbeats (100% savings)
-Route heartbeats to Ollama, LM Studio, Groq, or disable entirely. Not locked to one provider.
+### 多供应商 API 请求（节省 100% 的成本）
+- 将 API 请求路由到 Ollama、LM Studio 或 Groq，或完全禁用这些服务；无需绑定到单一供应商。
 
-### Session Management (80% savings)
-Load 8KB instead of 50KB context
+### 会话管理（节省 80% 的成本）
+- 仅加载 8KB 的上下文数据，而非 50KB。
 
-### Caching (90% savings)
-Reuse prompts at 10% cost
+### 缓存机制（节省 90% 的成本）
+- 以极低的成本重用提示信息。
 
-### New in v1.0.8
-- **Rollback** - List and restore config backups instantly
-- **Health Check** - Quick system status in one command
-- **Diff Preview** - See exactly what changes before applying
-- **--no-color** - CI/pipeline friendly output
+### v1.0.8 的新功能：
+- **回滚**：可立即列出并恢复配置备份。
+- **健康检查**：通过一条命令快速查看系统状态。
+- **差异预览**：在应用更改前查看具体修改内容。
+- **--no-color**：适用于持续集成（CI）和管道（pipeline）环境的输出格式。
 
-## Cost Comparison
+## 成本对比
 
-| Period | Before | After |
+| 时期 | 优化前 | 优化后 |
 |--------|--------|-------|
-| Daily | $2-3 | $0.10 |
-| Monthly | $70-90 | $3-5 |
-| Yearly | $800+ | $40-60 |
+| 每日 | $2-3 | $0.10 |
+| 每月 | $70-90 | $3-5 |
+| 每年 | $800+ | $40-60 |
 
-## What's Included
+## 包含内容：
 
-- One-command optimizer with diff preview
-- Multi-provider heartbeat (Ollama, LM Studio, Groq)
-- Config rollback and health check commands
-- Ready-to-use config templates
-- SOUL.md & USER.md templates
-- Optimization rules for agent prompts
-- Verification and savings reports
-- Cross-platform CLI (Windows, macOS, Linux)
+- 一个支持差异预览的优化工具（只需一条命令即可使用）。
+- 支持多供应商 API 请求的功能。
+- 提供配置回滚和健康检查命令。
+- 预置好的配置模板。
+- SOUL.md 和 USER.md 模板。
+- 用于优化代理提示信息的规则。
+- 验证和成本节省报告。
+- 跨平台命令行界面（Windows、macOS、Linux）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install
@@ -101,7 +101,7 @@ python cli.py rollback --list
 python cli.py rollback --to <backup-file>
 ```
 
-## Configuration Generated
+## 生成的配置文件
 
 ```json
 {
@@ -122,21 +122,25 @@ python cli.py rollback --to <backup-file>
 }
 ```
 
-## Links
+## 链接：
 
 - **GitHub**: https://github.com/smartpeopleconnected/openclaw-token-optimizer
-- **Issues**: https://github.com/smartpeopleconnected/openclaw-token-optimizer/issues
+- **问题反馈**: https://github.com/smartpeopleconnected/openclaw-token-optimizer/issues
 
-## Author
+## 开发者
 
 **Smart People Connected**
 - GitHub: [@smartpeopleconnected](https://github.com/smartpeopleconnected)
-- Email: smartpeopleconnected@gmail.com
+- 电子邮件: smartpeopleconnected@gmail.com
 
-## License
+## 许可证
 
-MIT License - Free to use, modify, and distribute.
+MIT 许可证——免费使用、修改和分发。
 
 ---
 
-*5 minutes to setup. 97% cost reduction. Stop burning tokens. Start building.*
+*设置仅需 5 分钟。成本可降低 97%。停止浪费令牌，立即开始优化吧！*
+
+---
+
+（注：由于文件内容主要为技术文档，翻译时保持了原文的格式和结构，对技术术语和具体细节进行了相应的中文处理。）

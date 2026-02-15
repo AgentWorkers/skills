@@ -1,95 +1,91 @@
 ---
 name: content-recycler
-description: Transform and repurpose content across multiple platforms including Twitter, LinkedIn, Facebook, Instagram, TikTok, and email. Use when adapting long-form content for social media, creating platform-specific variations, building content calendars, or maintaining consistent messaging across channels.
+description: 将内容转换并重新用于多个平台，包括 Twitter、LinkedIn、Facebook、Instagram、TikTok 和电子邮件。在将长篇内容适配到社交媒体时使用该工具，创建针对特定平台的内容版本，制定内容发布计划，或在各个渠道之间保持信息传递的一致性。
 ---
 
-# Content Recycler
+# 内容回收器 (Content Recycler)
 
-## Overview
+## 概述
 
-Transform existing content into optimized variations for multiple platforms while maintaining brand voice and message consistency. Turn one blog post into a week's worth of social media content, newsletter copy, and cross-platform engagement.
+将现有内容转换为适用于多个平台的优化版本，同时保持品牌语言和信息的一致性。将一篇博客文章转化为适合一周使用的社交媒体内容、新闻通讯内容以及跨平台互动素材。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Long-Form to Micro-Content
+### 1. 长篇内容转换为微内容
 
-**Transform blog posts into:**
-- Twitter/X threads (280 char limits per tweet)
-- LinkedIn posts (professional tone, character optimized)
-- Facebook posts (conversational, community-focused)
-- Instagram captions (emoji-rich, hashtag-optimized)
-- TikTok/YouTube Shorts scripts (60-90 second scripts)
-- Email newsletter summaries
+**将博客文章转换为：**
+- Twitter/X 的推文（每条推文限制 280 个字符）
+- LinkedIn 的帖子（专业风格，字符数经过优化）
+- Facebook 的帖子（对话式，以社区为中心）
+- Instagram 的描述（包含大量表情符号，适合使用标签）
+- TikTok/YouTube Short 的脚本（60-90 秒）
+- 电子邮件新闻通讯的摘要
 
-**Example Request:**
-"Take this 2000-word blog post about '10 Productivity Hacks' and create: (1) A Twitter thread, (2) LinkedIn post, (3) Facebook post, (4) Instagram caption, (5) TikTok script, and (6) Email teaser."
+**示例请求：**
+“将这篇关于‘10 个提高效率的技巧’的 2000 字博客文章转换为：(1) 一条 Twitter 推文，(2) 一条 LinkedIn 帖子，(3) 一条 Facebook 帖子，(4) 一条 Instagram 描述，(5) 一段 TikTok 脚本，以及 (6) 一封电子邮件预告。”
 
-### 2. Platform-Specific Adaptation
+### 2. 平台特定优化
 
-**Optimize for each platform's unique characteristics:**
+**针对每个平台的独特特性进行优化：**
 
-**Twitter/X:**
-- Character limit: 280 per tweet
-- Thread structure for longer content
-- Hashtags: 1-3 per tweet
-- Tone: Conversational, snappy, value-focused
+**Twitter/X：**
+- 每条推文字符限制：280 个
+- 使用分页结构展示较长内容
+- 每条推文使用 1-3 个标签
+- 语气：对话式，简洁明了，注重价值传递
 
-**LinkedIn:**
-- Character limit: 3,000
-- Professional but conversational tone
-- Data and statistics perform well
-- Use line breaks and emojis strategically
+**LinkedIn：**
+- 字符限制：3,000 个
+- 专业但对话式的语气
+- 数据和统计信息效果显著
+- 战略性地使用换行和表情符号
 
-**Facebook:**
-- Character limit: 63,206
-- Conversational, community-oriented
-- Ask questions to drive engagement
-- Include images/videos
+**Facebook：**
+- 字符限制：63,206 个
+- 对话式，以社区为导向
+- 提出问题以促进互动
+- 包含图片/视频
 
-**Instagram:**
-- Character limit: 2,200
-- Emoji-heavy
-- Hashtags: 5-30 (optimal: 11)
-- Aesthetic formatting, line breaks
+**Instagram：**
+- 字符限制：2,200 个
+- 大量使用表情符号
+- 使用 5-30 个标签（最佳：11 个）
+- 注重视觉格式和换行
 
-**TikTok/Reels:**
-- Scripts: 60-90 seconds (150-250 words)
-- Hook in first 3 seconds
-- Clear CTA
-- Trending sounds/music suggestions
+**TikTok/Reels：**
+- 脚本时长：60-90 秒（150-250 字）
+- 在前 3 秒内吸引观众注意力
+- 明确的呼吁行动（CTA）
 
-### 3. Content Calendar Generation
+### 3. 内容日历生成
 
-**From single content to multi-day schedule:**
+**将单一内容转化为多天的发布计划：**
 
-Take one comprehensive piece (blog, video, guide) and generate a content calendar with:
-- Day 1: Teaser (Twitter, Instagram Story)
-- Day 2: Main content release (LinkedIn, Facebook)
-- Day 3: Follow-up thread (Twitter/X)
-- Day 4: Behind-the-scenes (Instagram, TikTok)
-- Day 5: Q&A or poll (Facebook, Instagram)
-- Day 6: Summary/stats (LinkedIn)
-- Day 7: Call-to-action/next steps (Email newsletter)
+以一篇综合性的内容（博客、视频、指南等）为基础，生成一个内容日历，包括：
+- 第 1 天：预告（Twitter、Instagram Story）
+- 第 2 天：主要内容发布（LinkedIn、Facebook）
+- 第 3 天：后续推文（Twitter/X）
+- 第 4 天：幕后花絮（Instagram、TikTok）
+- 第 5 天：问答或投票（Facebook、Instagram）
+- 第 6 天：总结/统计数据（LinkedIn）
+- 第 7 天：呼吁行动/下一步行动（电子邮件新闻通讯）
 
-**Example Request:**
-"Create a 7-day content calendar from this blog post about 'Remote Work Tips' with daily posts for Twitter, LinkedIn, Instagram, and Facebook."
+**示例请求：**
+“根据这篇关于‘远程工作技巧’的博客文章，生成一个为期 7 天的内容日历，每天发布相应的内容到 Twitter、LinkedIn、Instagram 和 Facebook。”
 
-### 4. SEO & Hashtag Optimization
+### 4. SEO 与标签优化
 
-**Generate platform-appropriate tags:**
+**生成适合每个平台的标签：**
 
-- **LinkedIn:** Tags in content, professional industry tags
-- **Instagram:** 5-30 hashtags (mix of high, medium, low volume)
-- **Twitter:** 1-3 hashtags per tweet
-- **Facebook:** Minimal hashtags, more conversational tags
-- **TikTok:** Trending sounds, challenge tags
+- **LinkedIn：** 在内容中添加标签，以及行业相关的专业标签
+- **Instagram：** 5-30 个标签（结合高、中、低活跃度的标签）
+- **Twitter：** 每条推文使用 1-3 个标签
+- **Facebook：** 使用较少的标签，更注重对话式表达
+- **TikTok：** 使用热门音乐或挑战标签
 
-**Example Request:**
-"Generate optimized hashtags for Instagram and LinkedIn for this content about 'AI in Marketing'."
+## 快速入门
 
-## Quick Start
-
-### Transform Blog to All Platforms
+### 将博客内容转换为所有平台
 
 ```python
 # Use scripts/recycle_content.py
@@ -100,7 +96,7 @@ python3 scripts/recycle_content.py \
   --format all
 ```
 
-### Create Twitter Thread
+### 创建 Twitter 推文
 
 ```python
 # Use scripts/to_twitter_thread.py
@@ -111,7 +107,7 @@ python3 scripts/to_twitter_thread.py \
   --tone conversational
 ```
 
-### Generate Content Calendar
+### 生成内容日历
 
 ```python
 # Use scripts/generate_calendar.py
@@ -122,21 +118,21 @@ python3 scripts/generate_calendar.py \
   --output calendar.md
 ```
 
-## Scripts
+## 脚本
 
 ### `recycle_content.py`
-Transform content across multiple platforms.
+将内容转换为多个平台适用的形式。
 
-**Parameters:**
-- `--input`: Input file path (required)
-- `--output-dir`: Output directory (default: ./output)
-- `--platforms`: Comma-separated platforms (twitter,linkedin,facebook,instagram,tiktok,email)
-- `--format`: Output format (all,threads,posts,captions,scripts)
-- `--tone`: Tone preference (professional,conversational,playful)
-- `--include-hashtags`: Include hashtag suggestions (true/false)
-- `--cta`: Call-to-action to include
+**参数：**
+- `--input`：输入文件路径（必需）
+- `--output-dir`：输出目录（默认：./output）
+- `--platforms`：用逗号分隔的平台（twitter,linkedin,facebook,instagram,tiktok,email）
+- `--format`：输出格式（all,threads,posts,captions,scripts）
+- `--tone`：语气偏好（professional,conversational,playful）
+- `--include-hashtags`：是否包含标签建议（true/false）
+- `--cta`：是否包含呼吁行动（Call-to-Action）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/recycle_content.py \
   --input blog_post.md \
@@ -148,16 +144,16 @@ python3 scripts/recycle_content.py \
 ```
 
 ### `to_twitter_thread.py`
-Convert long-form content to Twitter/X thread.
+将长篇内容转换为 Twitter/X 推文。
 
-**Parameters:**
-- `--input`: Input file path
-- `--max-tweets`: Maximum number of tweets (default: 10)
-- `--hashtags`: Number of hashtags per tweet (default: 2)
-- `--tone`: Tone preference (default: conversational)
-- `--include-cta`: Include CTA in final tweet
+**参数：**
+- `--input`：输入文件路径
+- `--max-tweets`：每条推文的最大数量（默认：10）
+- `--hashtags`：每条推文使用的标签数量（默认：2）
+- `--tone`：语气偏好（默认：对话式）
+- `--include-cta`：是否在最后一条推文中包含呼吁行动
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/to_twitter_thread.py \
   --input article.md \
@@ -168,16 +164,16 @@ python3 scripts/to_twitter_thread.py \
 ```
 
 ### `to_linkedin_post.py`
-Create LinkedIn-optimized post from content.
+根据内容创建适合 LinkedIn 的帖子。
 
-**Parameters:**
-- `--input`: Input file path
-- `--max-length`: Max character length (default: 3000)
-- `--tone`: Tone (professional,conversational,inspirational)
-- `--include-stats`: Include statistics/data points
-- `--formatting`: Use bolding, line breaks (true/false)
+**参数：**
+- `--input`：输入文件路径
+- `--max-length`：最大字符长度（默认：3000）
+- `--tone`：语气（专业、对话式、鼓舞人心）
+- `--include-stats`：是否包含统计数据
+- `--formatting`：是否使用加粗字体、换行（true/false）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/to_linkedin_post.py \
   --input article.md \
@@ -186,17 +182,17 @@ python3 scripts/to_linkedin_post.py \
   --formatting
 ```
 
-### `generate_calendar.py`
-Generate multi-day content calendar from source content.
+### `generate_calendar.py**
+根据源内容生成多天的内容日历。
 
-**Parameters:**
-- `--input`: Input file path
-- `--days`: Number of days (default: 7)
-- `--platforms`: Comma-separated platforms
-- `--output`: Output file
-- `--theme`: Daily themes (teaser,release,followup,behind_scenes,qa,summary,cta)
+**参数：**
+- `--input`：输入文件路径
+- `--days`：天数（默认：7）
+- `--platforms`：用逗号分隔的平台
+- `--output`：输出文件
+- `--theme`：每日主题（预告、发布、后续、幕后花絮、问答、总结、呼吁行动）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/generate_calendar.py \
   --input content.md \
@@ -206,15 +202,15 @@ python3 scripts/generate_calendar.py \
 ```
 
 ### `optimize_hashtags.py`
-Generate platform-optimized hashtags.
+生成适合每个平台的标签。
 
-**Parameters:**
-- `--input`: Input content or topic
-- `--platforms`: Target platforms (instagram,linkedin,twitter,facebook,tiktok)
-- `--count`: Number of hashtags per platform
-- `--niche`: Industry/niche (tech,marketing,finance,health,etc.)
+**参数：**
+- `--input`：输入内容或主题
+- `--platforms`：目标平台（instagram,linkedin,twitter,facebook,tiktok）
+- `--count`：每个平台使用的标签数量
+- `--niche`：行业/领域（科技、营销、金融等）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/optimize_hashtags.py \
   --input "AI in marketing automation" \
@@ -223,17 +219,17 @@ python3 scripts/optimize_hashtags.py \
   --niche marketing
 ```
 
-## Content Adaptation Guidelines
+## 内容优化指南
 
-### Twitter/X Best Practices
+### Twitter/X 的最佳实践
 
-1. **Hook immediately** - First tweet is most important
-2. **Number your threads** - 1/10, 2/10, etc.
-3. **End with CTA** - Follow, like, share, link
-4. **Use line breaks** - Every 2-3 sentences
-5. **Add relevant images** - Between tweets
+1. **立即吸引注意力** - 第一条推文最为重要
+2. **为推文编号** - 如 1/10, 2/10 等
+3. **以呼吁行动结尾** - 跟随、点赞、分享、链接
+4. **使用换行** - 每 2-3 句换一行
+5. **添加相关图片** - 在推文之间插入图片
 
-**Example Thread Structure:**
+**示例推文结构：**
 ```
 Tweet 1: Hook + what you'll learn + (1/X)
 Tweet 2-8: Main points (one key insight per tweet)
@@ -241,16 +237,16 @@ Tweet 9: Bonus tip/counterintuitive point
 Tweet 10: Summary + CTA + hashtags
 ```
 
-### LinkedIn Best Practices
+### LinkedIn 的最佳实践
 
-1. **First line matters** - 3-line hook with white space
-2. **Use line breaks** - Every 1-2 sentences
-3. **Add emojis strategically** - 1-2 per paragraph
-4. **Include data/statistics** - Numbers perform well
-5. **End with question** - Drive comments
-6. **Tag relevant people** - 3-5 max
+1. **第一行很关键** - 使用 3 行的吸引语句，并适当留白
+2. **使用换行** - 每 1-2 句换一行
+3. **策略性地使用表情符号** - 每段文字使用 1-2 个表情符号
+4. **包含数据/统计信息** - 数字信息效果显著
+5. **以问题结尾** - 促进评论
+6. **@相关人士** - 最多 @3-5 个人
 
-**Format Template:**
+**格式模板：**
 ```
 [Hook - 3 lines]
 
@@ -267,18 +263,18 @@ Tweet 10: Summary + CTA + hashtags
 #hashtags
 ```
 
-### Instagram Best Practices
+### Instagram 的最佳实践
 
-1. **Hook in first line** - Stop the scroll
-2. **Use line breaks** - Every 1-2 sentences
-3. **Emojis frequently** - But not spammy
-4. **Hashtag strategy**:
-   - 5-10: High volume
-   - 5-10: Medium volume
-   - 5-10: Niche/low volume
-5. **End with CTA** - Link in bio, save, share
+1. **在第一行吸引注意力** - 让用户不想滚动页面
+2. **使用换行** - 每 1-2 句换一行
+3. **频繁使用表情符号** - 但不要过度
+4. **标签策略**：
+   - 5-10 个高活跃度标签
+   - 5-10 个中等活跃度标签
+   - 5-10 个低活跃度标签
+5. **以呼吁行动结尾** - 在个人资料中添加链接，或保存、分享内容
 
-**Caption Template:**
+**描述模板：**
 ```
 [Hook - 2-3 lines with emojis]
 
@@ -293,23 +289,23 @@ Tweet 10: Summary + CTA + hashtags
 [Hashtags block]
 ```
 
-### Facebook Best Practices
+### Facebook 的最佳实践
 
-1. **Ask questions** - Drive engagement
-2. **Use "You" language** - Personal connection
-3. **Include media** - Image or video
-4. **Keep it conversational** - Not too promotional
-5. **Reply to comments** - Boost algorithm
+1. **提出问题** - 促进互动
+2. **使用“你”这样的称呼** - 建立个人联系
+3. **包含媒体** - 图片或视频
+4. **保持对话式** - 不要过于宣传
+5. **回复评论** - 提高算法排名
 
-### TikTok Scripts
+### TikTok 脚本
 
-1. **Hook in 3 seconds** - Value proposition
-2. **Keep it short** - 60-90 seconds
-3. **Use trends** - Music, sounds, formats
-4. **Clear CTA** - Follow, link in bio
-5. **Text overlay** - Key points on screen
+1. **在 3 秒内吸引观众** - 强调价值主张
+2. **保持简洁** - 时长 60-90 秒
+3. **使用热门元素** - 音乐、音效、格式
+4. **明确呼吁行动** - 在个人资料中添加链接
+5. **文字叠加** - 在屏幕上显示关键信息
 
-**Script Structure:**
+**脚本结构：**
 ```
 0-3s: Hook
 3-45s: Main content (3-5 points)
@@ -317,29 +313,29 @@ Tweet 10: Summary + CTA + hashtags
 55-60s: Outro
 ```
 
-## Tone Guidelines
+## 语气指南
 
-### Professional
-- LinkedIn, email newsletters
-- Data-driven, authoritative
-- "We see...", "Research shows..."
-- Avoid: Slang, excessive emojis
+### 专业风格
+- LinkedIn、电子邮件新闻通讯：
+- 以数据为基础，具有权威性
+- 使用“我们发现...”、“研究表明...”等表达
+- 避免使用俚语和过多的表情符号
 
-### Conversational
-- Twitter, Facebook
-- Personal stories, "I've found..."
-- Emojis: 1-2 per post
-- Casual but value-focused
+### 对话式风格
+- Twitter、Facebook：
+- 使用个人化的语言，如“我发现...”等
+- 每条帖子使用 1-2 个表情符号
+- 语气轻松但注重价值传递
 
-### Playful
-- Instagram, TikTok
-- Trending language, emojis
-- "Here's a secret...", "Guess what?"
-- Memes, humor when appropriate
+### 有趣风格
+- Instagram、TikTok：
+- 使用流行语言和表情符号
+- 使用“这是一个秘密...”、“你猜怎么着？”等表达
+- 适当使用表情包和幽默元素
 
-## Automation Integration
+## 自动化集成
 
-### Weekly Content Recycling Pipeline
+### 周期性内容回收流程
 
 ```bash
 # Weekly cron job - Sunday at 9 AM
@@ -351,55 +347,55 @@ Tweet 10: Summary + CTA + hashtags
   --cta "Read more at blog.example.com"
 ```
 
-### Auto-Publish to Social Media
+### 自动发布到社交媒体
 
-Integrate with social media scheduling tools:
+与社交媒体调度工具集成：
 - Buffer
 - Hootsuite
 - Later
 - SocialPilot
 
-Output from content-recycler can be piped directly to their APIs or uploaded via CSV.
+Content-Recycler 的输出可以直接通过 API 发送，或通过 CSV 文件上传。
 
-## Best Practices
+## 最佳实践
 
-### 1. Maintain Consistent Brand Voice
+### 1. 保持一致的品牌语言
 
-- Define brand voice guidelines in brand guide
-- Adapt tone, don't change message
-- Keep key phrases, mission statements consistent
+- 在品牌指南中定义品牌语言规范
+- 适应不同平台的语气，但保持信息的一致性
+- 保持关键短语和使命宣言的一致性
 
-### 2. Platform-First Thinking
+### 2. 以平台为中心的思考
 
-Don't just copy-paste. Adapt to:
-- Character limits
-- Audience expectations
-- Format conventions
-- Engagement patterns
+不要简单复制粘贴，而是根据以下因素进行优化：
+- 字符限制
+- 目标受众的期望
+- 平台的格式要求
+- 互动模式
 
-### 3. Test and Iterate
+### 3. 测试与迭代
 
-- Track engagement metrics
-- A/B test different variations
-- Learn what works on each platform
-- Refine templates based on performance
+- 跟踪互动数据
+- 对不同版本进行 A/B 测试
+- 了解每个平台的效果
+- 根据效果优化模板
 
-### 4. Timing Matters
+### 4. 发布时机很重要
 
-- **Twitter:** High engagement during work hours
-- **LinkedIn:** Best Tue-Thu, 8-10 AM
-- **Instagram:** 7-9 PM, 12-3 PM on weekends
-- **Facebook:** 1-4 PM on weekdays
-- **TikTok:** 7-11 PM, weekends
+- **Twitter：** 工作时间内的互动率较高
+- **LinkedIn：** 最佳发布时间为周二至周四上午 8-10 点
+- **Instagram：** 周末下午 7-9 点和中午 12-3 点
+- **Facebook：** 工作日中午 1-4 点
+- **TikTok：** 周末晚上 7-11 点
 
-### 5. Visual Content
+### 5. 视觉内容
 
-- Twitter: 1 image per 3 tweets
-- Instagram: Every post needs image/video
-- LinkedIn: Document carousels perform well
-- Facebook: Image or video required
-- TikTok: Video only
+- **Twitter：** 每 3 条推文使用 1 张图片
+- **Instagram：** 每条帖子都需要图片或视频
+- **LinkedIn：** 文档轮播效果良好
+- **Facebook：** 需要图片或视频
+- **TikTok：** 仅支持视频
 
 ---
 
-**Work smarter, not harder. One piece, ten platforms.**
+**更聪明地工作，而不是更辛苦地工作。一篇内容，十个平台。**

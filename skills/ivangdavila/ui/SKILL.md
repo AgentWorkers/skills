@@ -1,102 +1,101 @@
 ---
 name: UI
-description: Design clear, consistent, and visually polished user interfaces.
+description: 设计清晰、一致且视觉效果出色的用户界面。
 metadata: {"clawdbot":{"emoji":"🎨","os":["linux","darwin","win32"]}}
 ---
 
-## Visual Hierarchy
+## 视觉层次结构
 
-- One focal point per screen—eye knows where to go first
-- Size, color, weight establish importance—primary action most prominent
-- Group related elements—proximity implies relationship
-- White space is not wasted space—breathing room aids scanning
+- 每个屏幕上只有一个焦点——用户一眼就能知道该关注什么。
+- 通过大小、颜色和粗细来体现元素的重要性，主要操作应最为显眼。
+- 将相关元素分组——元素之间的间距暗示了它们之间的关系。
+- 空白并非无用的空间——适当的空白有助于用户更轻松地浏览页面。
 
-## Typography
+## 字体排版
 
-- Maximum 2-3 font families—more creates visual noise
-- Clear size scale: title > heading > body > caption—distinct steps, not gradual
-- Line height 1.4-1.6 for body text—too tight or loose hurts readability
-- Line length 45-75 characters—prevents eye fatigue
-- Left-align body text—centered only for short headings
+- 最多使用2-3种字体系列——过多的字体会导致视觉混乱。
+- 明确的字体大小层次：标题 > 标题 > 正文 > 说明文字——层次分明，而非逐渐过渡。
+- 正文行高应为1.4-1.6像素——行高过紧或过松都会影响可读性。
+- 每行文字长度应在45-75个字符之间——避免眼睛疲劳。
+- 正文文本应左对齐——只有简短的标题才需要居中显示。
 
-## Color Usage
+## 颜色使用
 
-- Primary color for primary actions—one dominant brand color
-- Semantic colors consistent: red=error, green=success, yellow=warning
-- Don't rely on color alone—add icons, text, patterns for accessibility
-- Neutral palette for most UI—color for emphasis, not everywhere
-- Test color blindness scenarios—8% of men affected
+- 用主要颜色表示主要操作——选择品牌中的一种主导颜色。
+- 使用具有语义意义的颜色：红色表示错误，绿色表示成功，黄色表示警告。
+- 不要仅依赖颜色来传达信息——还应使用图标、文本和图案来辅助理解。
+- 大多数用户界面使用中性色调——颜色仅用于强调特定部分，而非全屏使用。
+- 测试色盲用户的需求——大约8%的男性存在色盲问题。
 
-## Spacing System
+## 间距系统
 
-- Use consistent scale: 4px, 8px, 16px, 24px, 32px, 48px
-- Apply same spacing for same relationships—all card padding equal
-- More space around groups than within—visual grouping through proximity
-- Generous padding on touch targets—44px minimum for mobile
+- 使用统一的间距比例：4px、8px、16px、24px、32px、48px。
+- 对于具有相同关系的元素，应使用相同的间距——所有卡片之间的内边距应保持一致。
+- 组合元素之间的间距应大于元素内部的间距——通过间距来体现视觉上的分组效果。
+- 触控目标（如按钮）的间距应足够大——移动设备上至少为44px。
 
-## Alignment
+## 对齐方式
 
-- Grid system for consistency—8px or 4px base grid
-- Align to invisible lines—elements share edges, not scattered
-- Left edge strongest for LTR—anchor content predictably
-- Optical alignment when needed—visual center differs from mathematical
+- 使用网格系统来保持一致性——基础网格间距为8px或4px。
+- 元素应与“隐形线”对齐——这样它们才能整齐排列，而不是散乱分布。
+- 在左-to-right（LTR）语言环境中，左边缘对齐效果最佳——这样可以更稳定地定位内容。
+- 在需要时使用视觉对齐方式——视觉上的中心位置可能与数学计算的结果不同。
 
-## Component States
+## 组件状态
 
-- Default, hover, active, focus, disabled—all states designed
-- Focus state visible and clear—keyboard users need this
-- Disabled looks disabled—reduced opacity, no pointer cursor
-- Loading state replaces content—not just overlay
-- Error state in context—red border, inline message
+- 设计好组件的各种状态：默认状态、悬停状态、激活状态、聚焦状态、禁用状态。
+- 聚焦状态需要清晰可见——键盘用户尤其需要这种提示。
+- 禁用状态的组件应明显显示其禁用状态——例如降低透明度、不显示指针光标。
+- 加载中的状态应替换原有内容，而不仅仅是覆盖原有内容。
+- 错误状态要有明确的提示——例如红色边框和内联提示信息。
 
-## Icons
+## 图标
 
-- Consistent style throughout—don't mix outlined and filled
-- Recognizable at small sizes—simple shapes work better
-- Labels when meaning ambiguous—icon + text clearer than icon alone
-- Touch target larger than visual icon—44px tap area, 24px icon
+- 图标的风格应保持一致——不要混合使用轮廓线图标和实心图标。
+- 即使在较小尺寸下也能清晰可辨——简单的形状更易于识别。
+- 当图标含义不明确时，应添加文字说明——图文结合比单独使用图标更直观。
+- 触控目标的尺寸应大于图标本身——点击区域至少为44px，图标本身应为24px。
 
-## Imagery
+## 图像处理
 
-- Consistent aspect ratios—don't stretch or skew
-- Fallback for failed loads—placeholder, not broken image
-- Alt text for content images—decorative images alt=""
-- Compress appropriately—quality vs file size balance
+- 图像的纵横比应保持一致——避免拉伸或变形。
+- 当图像加载失败时，应使用占位图，而不是显示损坏的图片。
+- 为图片添加alt文本——装饰性图片的alt文本可以为空。
+- 适当压缩图片——在保证质量的同时控制文件大小。
 
-## Responsive Design
+## 响应式设计
 
-- Design for smallest screen first—enhance for larger
-- Breakpoints based on content—not arbitrary device widths
-- Touch targets larger on touch screens—hover states only on desktop
-- Consider landscape orientation—especially for tablets
+- 先为最小尺寸的屏幕进行设计——再逐步优化适用于更大尺寸的屏幕。
+- 分界点应根据实际内容来设置，而不是任意设定设备宽度。
+- 触控屏幕上的触控目标应更大——悬停效果仅在桌面设备上显示。
+- 考虑平板设备的横屏显示方式。
 
-## Dark Mode
+## 暗黑模式
 
-- Not just color inversion—redesign depth and emphasis
-- Reduce contrast slightly—pure white on black strains eyes
-- Shadows don't work same—use lighter surfaces for elevation
-- Test all states—errors, success, charts, images
-- Respect system preference—but allow override
+- 暗黑模式不仅仅是颜色反转——需要重新设计颜色和视觉效果。
+- 适当降低对比度——纯白色在黑色背景上会刺激眼睛。
+- 阴影效果在黑暗模式下可能不适用——应使用更明亮的背景来增强视觉层次感。
+- 测试所有状态下的显示效果——包括错误状态、成功状态、图表和图片。
+- 尊重用户的系统设置——但允许用户自定义黑暗模式的设置。
 
-## Motion and Animation
+## 动画和过渡效果
 
-- Duration 150-300ms for transitions—fast but perceptible
-- Ease-out for entering—starts fast, settles in
-- Ease-in for exiting—accelerates out of view
-- Consistent timing across similar interactions
-- Purpose: guide attention, show relationships, provide feedback
+- 过渡效果的持续时间应在150-300毫秒之间——既快速又易于感知。
+- 进入效果应平滑过渡——开始时快速显示，然后逐渐稳定。
+- 离开效果也应平滑过渡——逐渐淡出视野。
+- 类似交互效果的动画时间应保持一致。
+- 动画的作用是引导用户的注意力、展示元素之间的关系并提供反馈。
 
-## Design Tokens
+## 设计规范
 
-- Define tokens for colors, spacing, typography—single source of truth
-- Semantic naming: `color-error` not `color-red`
-- Enables theming and dark mode—swap token values
-- Scales with product—change once, update everywhere
+- 为颜色、间距和字体排版等设计元素定义统一的规范——避免信息混乱。
+- 使用具有语义意义的命名规则：例如使用`color-error`而不是`color-red`。
+- 这些规范支持主题配色和黑暗模式设置——只需更改规范值即可全局应用更改。
 
-## Common Mistakes
+## 常见错误
 
-- Too many font sizes—stick to the scale
-- Inconsistent spacing—creates unpolished feel
-- Low contrast text—4.5:1 minimum for accessibility
-- Buttons that don't look clickable—affordance matters
-- Different styles for same component—cards should match cards
+- 使用过多的字体大小——遵循统一的间距比例。
+- 间距不一致——会导致界面显得不专业。
+- 文字对比度过低——为了提高可访问性，文本对比度应至少为4.5:1。
+- 按钮缺乏可点击的视觉提示——交互设计中的“可点击性”非常重要。
+- 同一组件使用不同的样式——不同卡片应保持一致的设计风格。

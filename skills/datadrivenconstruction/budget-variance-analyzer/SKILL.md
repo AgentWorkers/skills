@@ -1,31 +1,30 @@
 ---
 slug: "budget-variance-analyzer"
 display_name: "Budget Variance Analyzer"
-description: "Analyze budget vs actual cost variances. Identify overruns, forecast final costs, and generate variance reports."
+description: "分析预算与实际成本之间的差异。识别超出预算的部分，预测最终成本，并生成差异报告。"
 ---
 
-# Budget Variance Analyzer
+# 预算差异分析器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Cost overruns surprise project teams:
-- Late detection of budget issues
-- No systematic variance analysis
-- Difficult to forecast final costs
-- Unclear root causes
+### 问题描述
+成本超支常常让项目团队措手不及：
+- 预算问题发现得太晚
+- 缺乏系统的差异分析机制
+- 难以预测最终成本
+- 根本原因不明确
 
-### Solution
-Systematic budget variance analysis that tracks costs against budget, identifies trends, and forecasts final project costs.
+### 解决方案
+通过系统化的预算差异分析，将实际成本与预算进行对比，识别成本趋势，并预测项目的最终成本。
 
-### Business Value
-- **Early warning** - Detect overruns early
-- **Forecasting** - Predict final costs
-- **Accountability** - Track variance causes
-- **Decision support** - Informed cost decisions
+### 商业价值
+- **早期预警**：及时发现成本超支
+- **成本预测**：准确预测最终成本
+- **责任追究**：明确成本差异的原因
+- **决策支持**：为成本决策提供依据
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from datetime import datetime, date
@@ -391,8 +390,7 @@ class BudgetVarianceAnalyzer:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize analyzer
 analyzer = BudgetVarianceAnalyzer(
@@ -414,16 +412,15 @@ summary = analyzer.calculate_summary()
 print(f"Variance: ${summary['variance']:,.0f} ({summary['variance_percent']}%)")
 ```
 
-## Common Use Cases
-
-### 1. Monthly Cost Review
+## 常见使用场景
+### 1. 月度成本审查
 ```python
 summary = analyzer.calculate_summary()
 critical = analyzer.get_critical_items()
 print(f"Items needing attention: {len(critical)}")
 ```
 
-### 2. Record Variance Cause
+### 2. 记录成本差异原因
 ```python
 analyzer.record_variance(
     item_code="03-CONC",
@@ -433,13 +430,13 @@ analyzer.record_variance(
 )
 ```
 
-### 3. Forecast Scenarios
+### 3. 预测情景分析
 ```python
 scenarios = analyzer.forecast_completion()
 for name, scenario in scenarios.items():
     print(f"{scenario.name}: ${scenario.total_forecast:,.0f}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Management
-- **Reference**: PMI Cost Management
+## 参考资源
+- **DDC手册**：第3.1章 - 成本管理
+- **参考文献**：PMI《成本管理指南》

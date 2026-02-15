@@ -1,23 +1,23 @@
-# TubeClaw - YouTube Video Analyzer
+# TubeClaw - YouTube 视频分析工具
 
-Analyze any YouTube video, extract key insights, remove fluff, and provide actionable summaries with relevant links.
+可以分析任何 YouTube 视频，提取关键信息，去除冗余内容，并提供包含相关链接的可操作性摘要。
 
-## What It Does
+## 功能介绍
 
-- 📥 Fetches YouTube video transcripts
-- 🧠 Analyzes content for key insights
-- ✂️ Removes advertising/sponsorship fluff
-- 🔗 Extracts mentioned resources/tools/links
-- 📝 Provides clean, actionable summary
+- 📥 下载 YouTube 视频的字幕
+- 🧠 分析视频内容以提取关键信息
+- ✂️ 删除广告/赞助内容
+- 🔗 提取视频中提到的资源/工具/链接
+- 📝 提供简洁、实用的内容摘要
 
-## Usage
+## 使用方法
 
-### Command Line
+### 命令行方式
 ```bash
 node analyze.js --url "https://youtube.com/watch?v=..."
 ```
 
-### Programmatic
+### 程序化方式
 ```javascript
 const { analyzeVideo } = require('./analyze');
 
@@ -27,22 +27,21 @@ console.log(result.keyPoints);
 console.log(result.resources);
 ```
 
-## Requirements
+## 系统要求
 
-- Node.js 14+
-- OpenClaw/Clawdbot with youtube-transcript skill
-- AI model access (Claude/OpenAI) for analysis
+- Node.js 14 及以上版本
+- 需要安装 OpenClaw/Clawdbot 并启用 `youtube-transcript` 插件
+- 需要访问 AI 模型（如 Claude 或 OpenAI）来进行内容分析
 
-## How It Works
+## 工作原理
 
-1. **Extract Transcript** - Uses video-transcript-downloader skill
-2. **Clean Content** - Removes ads, sponsorships, filler words
-3. **Analyze** - AI extracts key insights and topics
-4. **Find Resources** - Identifies mentioned tools, links, GitHub repos
-5. **Summarize** - Generates actionable summary
+1. **提取字幕**：使用 `video-transcript-downloader` 插件下载视频的字幕文件。
+2. **清理内容**：去除广告、赞助信息以及冗余的文字。
+3. **内容分析**：通过 AI 技术提取视频中的关键信息和主题。
+4. **查找资源**：识别视频中提到的工具、链接以及 GitHub 仓库。
+5. **生成摘要**：生成一份包含关键信息的实用性摘要。
 
-## Example Output
-
+## 示例输出
 ```json
 {
   "title": "Video Title",
@@ -63,6 +62,6 @@ console.log(result.resources);
 }
 ```
 
-## License
+## 许可证
 
-MIT - OpenClaw
+MIT 许可证 - OpenClaw

@@ -1,29 +1,29 @@
 ---
 name: llm
-description: Multi-provider LLM integration. Unified interface for OpenAI, Anthropic, Google, and local models.
+description: 多提供商大语言模型（LLM）集成：为 OpenAI、Anthropic、Google 以及本地模型提供统一的接口。
 metadata: {"clawdbot":{"emoji":"🔮","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# LLM 🔮
+# 大语言模型（LLM） 🔮
 
-Multi-provider Large Language Model integration.
+支持多提供者的大型语言模型集成。
 
-## Supported Providers
+## 支持的提供者
 
-- OpenAI (GPT-4, GPT-4o)
-- Anthropic (Claude)
-- Google (Gemini)
-- Local models (Ollama, LM Studio)
+- OpenAI（GPT-4、GPT-4o）
+- Anthropic（Claude）
+- Google（Gemini）
+- 本地模型（Ollama、LM Studio）
 
-## Features
+## 主要功能
 
-- Unified chat interface
-- Model comparison
-- Token counting
-- Cost estimation
-- Streaming responses
+- 统一的聊天界面
+- 模型比较
+- 词元计数
+- 成本估算
+- 流式响应
 
-## Usage Examples
+## 使用示例
 
 ```
 "Compare GPT-4 vs Claude on this task"

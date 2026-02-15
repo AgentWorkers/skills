@@ -1,28 +1,27 @@
 ---
 name: k8s-gen
-description: Generate Kubernetes manifests from docker-compose or descriptions. Use when deploying to K8s.
+description: 根据 `docker-compose` 文件或相关描述生成 Kubernetes 配置文件（manifests），用于将应用程序部署到 Kubernetes 集群中。
 ---
 
 # K8s Generator
 
-Translating docker-compose to Kubernetes manifests is tedious YAML shuffling. Feed in your compose file and get proper K8s manifests back.
+将 `docker-compose` 文件转换为 Kubernetes 配置文件其实是一项繁琐的工作（涉及大量的 YAML 代码编辑）。只需提供您的 `docker-compose` 文件，即可获得相应的 Kubernetes 配置文件。
 
-**One command. Zero config. Just works.**
+**仅需一个命令，无需任何额外配置，即可完成转换。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-k8s docker-compose.yml
 ```
 
-## What It Does
+## 功能概述
 
-- Converts docker-compose to Kubernetes manifests
-- Generates from plain English descriptions
-- Creates Deployments, Services, ConfigMaps
-- Handles secrets and persistent volumes
+- 将 `docker-compose` 文件转换为 Kubernetes 配置文件
+- 根据用户提供的纯文本描述自动生成相应的 Kubernetes 资源（如 Deployment、Service、ConfigMap 等）
+- 支持处理 secrets 和持久化卷（persistent volumes）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # From docker-compose
@@ -35,42 +34,42 @@ npx ai-k8s "3 replicas of a node app with redis and postgres"
 npx ai-k8s docker-compose.yml -o k8s-manifests.yml
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use namespaces** - organize your resources
-- **Set resource limits** - prevent runaway pods
-- **Add health checks** - liveness and readiness probes
-- **Use secrets properly** - don't hardcode credentials
+- **使用命名空间（namespaces）**：合理组织资源
+- **设置资源限制（resource limits）**：防止 Pod 过度消耗资源
+- **添加健康检查（health checks）**：确保 Pod 的正常运行状态
+- **正确使用 secrets**：避免将敏感信息硬编码到配置文件中
 
-## When to Use This
+## 适用场景
 
-- Migrating from docker-compose to Kubernetes
-- Setting up new K8s deployments
-- Learning Kubernetes manifest structure
-- Quick prototyping before fine-tuning
+- 从 `docker-compose` 迁移到 Kubernetes
+- 设置新的 Kubernetes 部署环境
+- 学习 Kubernetes 配置文件的结构
+- 在进行详细调整之前快速搭建原型
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。完全免费，无需注册或支付 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-k8s --help
 ```
 
-## How It Works
+## 工作原理
 
-Parses your docker-compose.yml or description, understands the services and their relationships, then generates equivalent Kubernetes resources with proper configuration.
+该工具会解析您的 `docker-compose.yml` 文件或相关描述文件，理解其中的服务及其之间的关系，然后自动生成具有正确配置的 Kubernetes 资源。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具。

@@ -1,24 +1,24 @@
 ---
 name: pocketsmith
-description: Manage PocketSmith transactions, categories, and financial data via the API
+description: 通过 API 管理 PocketSmith 的交易记录、分类以及财务数据。
 metadata: {"openclaw": {"category": "finance", "requires": {"env": ["POCKETSMITH_DEVELOPER_KEY"]}, "optional_env": ["POCKETSMITH_ALLOW_WRITES"]}}
 ---
 
-# PocketSmith Skill
+# PocketSmith 技能
 
-Manage PocketSmith transactions and categories. Supports listing, searching, creating, updating, and deleting financial data.
+用于管理 PocketSmith 的交易记录和分类信息。支持列出、搜索、创建、更新和删除财务数据。
 
-## Prerequisites
+## 先决条件
 
-Set these environment variables:
-- `POCKETSMITH_DEVELOPER_KEY` - Your PocketSmith developer key (from Settings > Security > Manage Developer Keys)
-- `POCKETSMITH_ALLOW_WRITES` - Set to `true` to enable create, update, and delete operations (disabled by default for safety)
+请设置以下环境变量：
+- `POCKETSMITH_DEVELOPER_KEY` - 您的 PocketSmith 开发者密钥（可在“设置” > “安全” > “管理开发者密钥”中获取）
+- `POCKETSMITH_ALLOW_WRITES` - 设置为 `true` 以启用创建、更新和删除操作（出于安全考虑，默认情况下此功能是禁用的）
 
-## Commands
+## 命令
 
-All commands should be run from the skill directory using `uv run pocketsmith`.
+所有命令均需在技能目录下使用 `uv run pocketsmith` 来执行。
 
-### Authentication
+### 认证
 
 ```bash
 # Check authentication status and get user info
@@ -28,7 +28,7 @@ pocketsmith auth status
 pocketsmith me
 ```
 
-### Transactions
+### 交易记录
 
 ```bash
 # Get a single transaction
@@ -64,7 +64,7 @@ pocketsmith transactions update <transaction_id> --labels "groceries,essential"
 pocketsmith transactions delete <transaction_id>
 ```
 
-### Categories
+### 分类信息
 
 ```bash
 # Get a single category
@@ -88,14 +88,14 @@ pocketsmith categories update <category_id> --colour "#00ff00"
 pocketsmith categories delete <category_id>
 ```
 
-### Labels
+### 标签
 
 ```bash
 # List all labels for a user
 pocketsmith labels list <user_id>
 ```
 
-### Budget
+### 预算管理
 
 ```bash
 # List budget for a user (per-category budget analysis)
@@ -112,33 +112,33 @@ pocketsmith budget trend <user_id> --period months --interval 1 --start-date 202
 pocketsmith budget refresh <user_id>
 ```
 
-## Transaction Filter Options
+## 交易记录过滤选项
 
-When listing transactions, these filters are available:
-- `--start-date` - Filter from date (YYYY-MM-DD)
-- `--end-date` - Filter to date (YYYY-MM-DD)
-- `--updated-since` - Only transactions updated after this datetime
-- `--uncategorised` - Only uncategorised transactions
-- `--type` - Filter by type: `debit` or `credit`
-- `--needs-review` - Only transactions needing review
-- `--search` - Search term for payee/memo
-- `--page` - Page number for pagination
+在列出交易记录时，可以使用以下过滤条件：
+- `--start-date` - 按日期过滤（格式为 YYYY-MM-DD）
+- `--end-date` - 按日期过滤（格式为 YYYY-MM-DD）
+- `--updated-since` - 仅显示在此时间之后更新的交易记录
+- `--uncategorised` - 仅显示未分类的交易记录
+- `--type` - 按交易类型过滤：`debit`（借方）或 `credit`（贷方）
+- `--needs-review` - 仅显示需要审核的交易记录
+- `--search` - 按收款人或备注内容进行搜索
+- `--page` - 分页页码
 
-## Category Options
+## 分类信息创建/更新选项
 
-When creating/updating categories:
-- `--title` - Category name
-- `--colour` - CSS hex colour (e.g., `#ff0000`)
-- `--parent-id` - Parent category ID for subcategories
-- `--no-parent` - Make category top-level (update only)
-- `--is-transfer` - Mark as transfer category (true/false)
-- `--is-bill` - Mark as bill category (true/false)
-- `--roll-up` - Roll up to parent category (true/false)
-- `--refund-behaviour` - `debit_only` or `credit_only`
+在创建或更新分类信息时，可以使用以下参数：
+- `--title` - 分类名称
+- `--colour` - CSS 十六进制颜色（例如：`#ff0000`）
+- `--parent-id` - 子分类的父分类 ID
+- `--no-parent` - 将分类设置为顶级分类（仅用于更新）
+- `--is-transfer` - 标记为转账分类（true/false）
+- `--is-bill` - 标记为账单分类（true/false）
+- `--roll-up` - 是否将分类数据汇总到父分类（true/false）
+- `--refund-behaviour` - 仅显示借方交易（`debit_only`）或仅显示贷方交易（`credit_only`）
 
-## Output Format
+## 输出格式
 
-All commands output JSON. Example transaction:
+所有命令的输出均为 JSON 格式。以下是一个交易记录的示例：
 
 ```json
 {
@@ -157,27 +157,29 @@ All commands output JSON. Example transaction:
 }
 ```
 
-## Date Format
+## 日期格式
 
-All dates use `YYYY-MM-DD` format (e.g., `2024-01-15`).
+所有日期均采用 `YYYY-MM-DD` 的格式（例如：`2024-01-15`）。
 
-## Write Protection
+## 写入保护
 
-Write operations (create, update, delete) are **disabled by default** for safety. To enable them:
+出于安全考虑，**默认情况下** 禁用写入操作（创建、更新、删除）。如需启用这些操作，请执行以下操作：
 
 ```bash
 export POCKETSMITH_ALLOW_WRITES=true
 ```
 
-Without this, write commands will fail with:
+如果不启用写入保护，执行写入命令将会失败：
 
 ```json
 {"error": "Write operations are disabled by default. Set POCKETSMITH_ALLOW_WRITES=true to enable create, update, and delete operations.", "hint": "export POCKETSMITH_ALLOW_WRITES=true"}
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Search and Categorize Transactions
+- **搜索和分类交易记录**
+- **组织分类信息**
+- **审核交易记录**
 
 ```bash
 # Find uncategorised transactions
@@ -189,10 +191,7 @@ pocketsmith transactions list-by-user 123456 --search "Netflix"
 # Categorize a transaction
 pocketsmith transactions update 789012 --category-id 456
 ```
-
-### Organize Categories
-
-```bash
+- **```bash
 # List existing categories
 pocketsmith categories list 123456
 
@@ -202,10 +201,7 @@ pocketsmith categories create 123456 --title "Streaming" --parent-id 789
 # Move a category under a different parent
 pocketsmith categories update 101112 --parent-id 789
 ```
-
-### Review Transactions
-
-```bash
+- **```bash
 # Find transactions needing review
 pocketsmith transactions list-by-user 123456 --needs-review
 

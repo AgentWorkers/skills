@@ -1,6 +1,6 @@
 ---
 name: capa-officer
-description: CAPA system management for medical device QMS. Covers root cause analysis, corrective action planning, effectiveness verification, and CAPA metrics. Use for CAPA investigations, 5-Why analysis, fishbone diagrams, root cause determination, corrective action tracking, effectiveness verification, or CAPA program optimization.
+description: CAPA（Corrective Action Plan）系统管理是医疗器械质量管理体系（QMS）的重要组成部分，涵盖了根本原因分析、纠正措施规划、有效性验证以及CAPA相关指标的监控。该系统可用于CAPA问题的调查、5-Why分析（即连续追问“为什么”以找出问题根源）、鱼骨图（Fishbone Diagram）的绘制、纠正措施的跟踪与执行、有效性验证，以及CAPA管理流程的优化。
 triggers:
   - CAPA investigation
   - root cause analysis
@@ -16,75 +16,75 @@ triggers:
   - audit finding CAPA
 ---
 
-# CAPA Officer
+# CAPA专员
 
-Corrective and Preventive Action (CAPA) management within Quality Management Systems, focusing on systematic root cause analysis, action implementation, and effectiveness verification.
-
----
-
-## Table of Contents
-
-- [CAPA Investigation Workflow](#capa-investigation-workflow)
-- [Root Cause Analysis](#root-cause-analysis)
-- [Corrective Action Planning](#corrective-action-planning)
-- [Effectiveness Verification](#effectiveness-verification)
-- [CAPA Metrics and Reporting](#capa-metrics-and-reporting)
-- [Reference Documentation](#reference-documentation)
-- [Tools](#tools)
+在质量管理体系中，CAPA（纠正性和预防性措施）管理侧重于系统的根本原因分析、行动实施以及效果验证。
 
 ---
 
-## CAPA Investigation Workflow
+## 目录
 
-Conduct systematic CAPA investigation from initiation through closure:
+- [CAPA调查工作流程](#capa-investigation-workflow)
+- [根本原因分析](#root-cause-analysis)
+- [纠正性措施规划](#corrective-action-planning)
+- [效果验证](#effectiveness-verification)
+- [CAPA指标与报告](#capa-metrics-and-reporting)
+- [参考文档](#reference-documentation)
+- [工具](#tools)
 
-1. Document trigger event with objective evidence
-2. Assess significance and determine CAPA necessity
-3. Form investigation team with relevant expertise
-4. Collect data and evidence systematically
-5. Select and apply appropriate RCA methodology
-6. Identify root cause(s) with supporting evidence
-7. Develop corrective and preventive actions
-8. **Validation:** Root cause explains all symptoms; if eliminated, problem would not recur
+---
 
-### CAPA Necessity Determination
+## CAPA调查工作流程
 
-| Trigger Type | CAPA Required | Criteria |
+从启动到关闭，进行系统的CAPA调查：
+
+1. 用客观证据记录触发事件
+2. 评估事件的严重性并确定是否需要启动CAPA
+3. 组建具有相关专业知识的调查团队
+4. 系统地收集数据和证据
+5. 选择并应用适当的根本原因分析（RCA）方法
+6. 识别根本原因并附上支持证据
+7. 制定纠正性和预防性措施
+8. **验证：** 根本原因能够解释所有症状；如果消除，问题将不再发生
+
+### CAPA必要性判定
+
+| 触发类型 | 是否需要CAPA | 判定标准 |
 |--------------|---------------|----------|
-| Customer complaint (safety) | Yes | Any complaint involving patient/user safety |
-| Customer complaint (quality) | Evaluate | Based on severity and frequency |
-| Internal audit finding (Major) | Yes | Systematic failure or absence of element |
-| Internal audit finding (Minor) | Recommended | Isolated lapse or partial implementation |
-| Nonconformance (recurring) | Yes | Same NC type occurring 3+ times |
-| Nonconformance (isolated) | Evaluate | Based on severity and risk |
-| External audit finding | Yes | All Major and Minor findings |
-| Trend analysis | Evaluate | Based on trend significance |
+| 客户投诉（安全相关） | 是 | 任何涉及患者/用户安全的投诉 |
+| 客户投诉（质量相关） | 根据严重性和频率评估 | |
+| 内部审计发现（重大问题） | 是 | 系统性故障或缺失要素 |
+| 内部审计发现（轻微问题） | 建议启动 | 零星失误或部分实施 |
+| 不符合要求（重复出现） | 是 | 同类型问题出现3次以上 |
+| 不符合要求（孤立事件） | 根据严重性和风险评估 | |
+| 外部审计发现 | 是 | 所有重大和轻微问题 |
+| 趋势分析 | 根据趋势的严重性评估 | |
 
-### Investigation Team Composition
+### 调查团队组成
 
-| CAPA Severity | Required Team Members |
+| CAPA严重程度 | 所需团队成员 |
 |---------------|----------------------|
-| Critical | CAPA Officer, Process Owner, QA Manager, Subject Matter Expert, Management Rep |
-| Major | CAPA Officer, Process Owner, Subject Matter Expert |
-| Minor | CAPA Officer, Process Owner |
+| 严重 | CAPA专员、流程负责人、质量保证经理、主题专家、管理层代表 |
+| 重大 | CAPA专员、流程负责人、主题专家 |
+| 轻微 | CAPA专员、流程负责人 |
 
-### Evidence Collection Checklist
+### 证据收集清单
 
-- [ ] Problem description with specific details (what, where, when, who, how much)
-- [ ] Timeline of events leading to issue
-- [ ] Relevant records and documentation
-- [ ] Interview notes from involved personnel
-- [ ] Photos or physical evidence (if applicable)
-- [ ] Related complaints, NCs, or previous CAPAs
-- [ ] Process parameters and specifications
+- 问题描述（具体细节：什么、在哪里、何时、谁、程度）
+- 问题发生的时间线
+- 相关记录和文件
+- 受影响人员的访谈记录
+- 照片或实物证据（如适用）
+- 相关投诉、不符合要求的情况或之前的CAPA记录
+- 流程参数和规范
 
 ---
 
-## Root Cause Analysis
+## 根本原因分析
 
-Select and apply appropriate RCA methodology based on problem characteristics.
+根据问题特征选择并应用适当的RCA方法。
 
-### RCA Method Selection Decision Tree
+### RCA方法选择决策树
 
 ```
 Is the issue safety-critical or involves system reliability?
@@ -97,11 +97,11 @@ Is the issue safety-critical or involves system reliability?
         └── Unknown/proactive assessment → Use FMEA
 ```
 
-### 5 Why Analysis
+### 5Why分析
 
-Use when: Single-cause issues with linear causation, process deviations with clear failure point.
+适用场景：单一原因导致的线性问题，或具有明确故障点的流程偏差。
 
-**Template:**
+**模板：**
 
 ```
 PROBLEM: [Clear, specific statement]
@@ -127,7 +127,7 @@ BECAUSE: [Root cause]
 EVIDENCE: [Supporting data]
 ```
 
-**Example - Calibration Overdue:**
+**示例 - 校准过期：**
 
 ```
 PROBLEM: pH meter (EQ-042) found 2 months overdue for calibration
@@ -156,54 +156,54 @@ ROOT CAUSE: Procedure review process does not assess compatibility
 with organizational systems implemented after original procedure creation.
 ```
 
-### Fishbone Diagram Categories (6M)
+### 鱼骨图（6M）分类
 
-| Category | Focus Areas | Typical Causes |
+| 分类 | 关注领域 | 常见原因 |
 |----------|-------------|----------------|
-| Man (People) | Training, competency, workload | Skill gaps, fatigue, communication |
-| Machine (Equipment) | Calibration, maintenance, age | Wear, malfunction, inadequate capacity |
-| Method (Process) | Procedures, work instructions | Unclear steps, missing controls |
-| Material | Specifications, suppliers, storage | Out-of-spec, degradation, contamination |
-| Measurement | Calibration, methods, interpretation | Instrument error, wrong method |
-| Mother Nature | Temperature, humidity, cleanliness | Environmental excursions |
+| 人（人员） | 培训、能力、工作量 | 技能差距、疲劳、沟通问题 |
+| 机器（设备） | 校准、维护、使用年限 | 磨损、故障、容量不足 |
+| 方法（流程） | 流程、操作指南 | 步骤不明确、控制措施缺失 |
+| 材料 | 规格、供应商、储存条件 | 不符合规格、材料降解、污染 |
+| 测量工具 | 校准、方法、解读 | 仪器误差、使用方法错误 |
+| 环境因素 | 温度、湿度、清洁度 | 环境因素导致的问题 |
 
-See `references/rca-methodologies.md` for complete method details and templates.
+有关完整的方法细节和模板，请参阅`references/rca-methodologies.md`。
 
-### Root Cause Validation
+### 根本原因验证
 
-Before proceeding to action planning, validate root cause:
+在制定行动方案之前，验证根本原因是否成立：
 
-- [ ] Root cause can be verified with objective evidence
-- [ ] If root cause is eliminated, problem would not recur
-- [ ] Root cause is within organizational control
-- [ ] Root cause explains all observed symptoms
-- [ ] No other significant causes remain unaddressed
+- 根本原因可以通过客观证据得到证实
+- 如果根本原因被消除，问题将不再发生
+- 根本原因在组织控制范围内
+- 根本原因能够解释所有观察到的症状
+- 没有其他重要原因未被解决
 
 ---
 
-## Corrective Action Planning
+## 纠正性措施规划
 
-Develop effective actions addressing identified root causes:
+针对识别的根本原因，制定有效的行动方案：
 
-1. Define immediate containment actions
-2. Develop corrective actions targeting root cause
-3. Identify preventive actions for similar processes
-4. Assign responsibilities and resources
-5. Establish timeline with milestones
-6. Define success criteria and verification method
-7. Document in CAPA action plan
-8. **Validation:** Actions directly address root cause; success criteria are measurable
+1. 制定立即的遏制措施
+2. 制定针对根本原因的纠正性措施
+3. 为类似流程制定预防性措施
+4. 分配责任和资源
+5. 制定带有里程碑的时间表
+6. 明确成功标准和验证方法
+7. 将这些内容记录在CAPA行动计划中
+8. **验证：** 行动直接针对根本原因；成功标准是可衡量的
 
-### Action Types
+### 行动类型
 
-| Type | Purpose | Timeline | Example |
+| 类型 | 目的 | 时间表 | 示例 |
 |------|---------|----------|---------|
-| Containment | Stop immediate impact | 24-72 hours | Quarantine affected product |
-| Correction | Fix the specific occurrence | 1-2 weeks | Rework or replace affected items |
-| Corrective | Eliminate root cause | 30-90 days | Revise procedure, add controls |
-| Preventive | Prevent in other areas | 60-120 days | Extend solution to similar processes |
+| 阻止影响 | 立即阻止问题的进一步发展 | 24-72小时 | 将受影响的产品隔离 |
+| 纠正 | 修复具体问题 | 1-2周 | 重新加工或更换受影响的物品 |
+| 根本性解决 | 消除根本原因 | 30-90天 | 修订流程、增加控制措施 |
+| 预防 | 防止类似问题再次发生 | 60-120天 | 将解决方案扩展到类似流程 |
 
-### Action Plan Components
+### 行动计划组成部分
 
 ```
 ACTION PLAN TEMPLATE
@@ -234,50 +234,50 @@ Process Owner: _____________ Date: _______
 QA Manager: _____________ Date: _______
 ```
 
-### Action Effectiveness Indicators
+### 行动效果指标
 
-| Indicator | Target | Red Flag |
+| 指标 | 目标 | 注意事项 |
 |-----------|--------|----------|
-| Action scope | Addresses root cause completely | Treats only symptoms |
-| Specificity | Measurable deliverables | Vague commitments |
-| Timeline | Aggressive but achievable | No due dates or unrealistic |
-| Resources | Identified and allocated | Not specified |
-| Sustainability | Permanent solution | Temporary fix |
+| 行动范围 | 是否完全解决了根本原因 | 仅处理表面症状 |
+| 明确性 | 行动结果是否可衡量 | 承诺不明确 |
+| 时间表 | 时间表是否合理且可实现 | 没有截止日期或不切实际 |
+| 资源 | 是否已识别并分配 | 未明确 |
+| 持久性 | 解决方案是否永久有效 | 是临时解决方案 |
 
 ---
 
-## Effectiveness Verification
+## 效果验证
 
-Verify corrective actions achieved intended results:
+验证纠正性措施是否达到了预期效果：
 
-1. Allow adequate implementation period (minimum 30-90 days)
-2. Collect post-implementation data
-3. Compare to pre-implementation baseline
-4. Evaluate against success criteria
-5. Verify no recurrence during verification period
-6. Document verification evidence
-7. Determine CAPA effectiveness
-8. **Validation:** All criteria met with objective evidence; no recurrence observed
+1. 给予足够的实施时间（至少30-90天）
+2. 收集实施后的数据
+3. 与实施前的数据对比
+4. 根据成功标准进行评估
+5. 确保在验证期间问题没有再次发生
+6. 记录验证证据
+7. 确定CAPA的有效性
+8. **验证：** 所有标准都通过客观证据得到证实；没有问题再次发生
 
-### Verification Timeline Guidelines
+### 验证时间表指南
 
-| CAPA Severity | Wait Period | Verification Window |
+| CAPA严重程度 | 等待时间 | 验证周期 |
 |---------------|-------------|---------------------|
-| Critical | 30 days | 30-90 days post-implementation |
-| Major | 60 days | 60-180 days post-implementation |
-| Minor | 90 days | 90-365 days post-implementation |
+| 严重 | 30天 | 实施后30-90天 |
+| 重大 | 60天 | 实施后60-180天 |
+| 轻微 | 90天 | 实施后90-365天 |
 
-### Verification Methods
+### 验证方法
 
-| Method | Use When | Evidence Required |
+| 方法 | 适用场景 | 所需证据 |
 |--------|----------|-------------------|
-| Data trend analysis | Quantifiable issues | Pre/post comparison, trend charts |
-| Process audit | Procedure compliance issues | Audit checklist, interview notes |
-| Record review | Documentation issues | Sample records, compliance rate |
-| Testing/inspection | Product quality issues | Test results, pass/fail data |
-| Interview/observation | Training issues | Interview notes, observation records |
+| 数据趋势分析 | 可量化问题 | 实施前后对比、趋势图表 |
+| 流程审计 | 流程合规性问题 | 审计检查表、访谈记录 |
+| 记录审查 | 文件问题 | 样本记录、合规率 |
+| 测试/检查 | 产品质量问题 | 测试结果、合格/不合格数据 |
+| 访谈/观察 | 培训问题 | 访谈记录、观察记录 |
 
-### Effectiveness Determination
+### 效果判定
 
 ```
 Did recurrence occur during verification period?
@@ -289,75 +289,73 @@ Did recurrence occur during verification period?
         └── Significant gap → CAPA INEFFECTIVE (revise actions)
 ```
 
-See `references/effectiveness-verification-guide.md` for detailed procedures.
+有关详细流程，请参阅`references/effectiveness-verification-guide.md`。
 
 ---
 
-## CAPA Metrics and Reporting
+## CAPA指标与报告
 
-Monitor CAPA program performance through key indicators.
+通过关键指标监控CAPA项目的执行情况。
 
-### Key Performance Indicators
+### 关键绩效指标
 
-| Metric | Target | Calculation |
+| 指标 | 目标 | 计算方法 |
 |--------|--------|-------------|
-| CAPA cycle time | <60 days average | (Close Date - Open Date) / Number of CAPAs |
-| Overdue rate | <10% | Overdue CAPAs / Total Open CAPAs |
-| First-time effectiveness | >90% | Effective on first verification / Total verified |
-| Recurrence rate | <5% | Recurred issues / Total closed CAPAs |
-| Investigation quality | 100% root cause validated | Root causes validated / Total CAPAs |
+| CAPA周期时间 | 平均<60天 | (关闭日期 - 开始日期) / CAPA总数 |
+| 过期率 | <10% | 过期的CAPA数量 / 总开放CAPA数量 |
+| 首次验证成功率 | >90% | 首次验证即有效的CAPA数量 / 总验证CAPA数量 |
+| 问题复发率 | <5% | 重复出现的问题数量 / 已关闭的CAPA总数 |
+| 调查质量 | 100%的根本原因得到验证 | 验证的根本原因数量 / 总CAPA数量 |
 
-### Aging Analysis Categories
+### CAPA老化分析
 
-| Age Bucket | Status | Action Required |
+| 时间段 | 状态 | 所需行动 |
 |------------|--------|-----------------|
-| 0-30 days | On track | Monitor progress |
-| 31-60 days | Monitor | Review for delays |
-| 61-90 days | Warning | Escalate to management |
-| >90 days | Critical | Management intervention required |
+| 0-30天 | 进展顺利 | 监控进展 |
+| 31-60天 | 监控 | 检查是否存在延误 |
+| 61-90天 | 警告 | 提报给管理层 |
+| >90天 | 严重 | 需要管理层介入 |
 
-### Management Review Inputs
+### 管理层审查内容
 
-Monthly CAPA status report includes:
-- Open CAPA count by severity and status
-- Overdue CAPA list with owners
-- Cycle time trends
-- Effectiveness rate trends
-- Source analysis (complaints, audits, NCs)
-- Recommendations for improvement
-
----
-
-## Reference Documentation
-
-### Root Cause Analysis Methodologies
-
-`references/rca-methodologies.md` contains:
-
-- Method selection decision tree
-- 5 Why analysis template and example
-- Fishbone diagram categories and template
-- Fault Tree Analysis for safety-critical issues
-- Human Factors Analysis for people-related causes
-- FMEA for proactive risk assessment
-- Hybrid approach guidance
-
-### Effectiveness Verification Guide
-
-`references/effectiveness-verification-guide.md` contains:
-
-- Verification planning requirements
-- Verification method selection
-- Effectiveness criteria definition (SMART)
-- Closure requirements by severity
-- Ineffective CAPA process
-- Documentation templates
+每月的CAPA状态报告包括：
+- 按严重程度和状态分类的开放CAPA数量
+- 过期的CAPA列表及其负责人
+- 周期时间趋势
+- 效果率趋势
+- 问题来源分析（投诉、审计、不符合要求的情况）
+- 改进建议
 
 ---
 
-## Tools
+## 参考文档
 
-### CAPA Tracker
+### 根本原因分析方法
+
+`references/rca-methodologies.md`包含：
+- 方法选择决策树
+- 5Why分析模板和示例
+- 鱼骨图分类和模板
+- 用于安全关键问题的故障树分析
+- 用于人为因素分析的方法
+- 用于主动风险管理的FMEA（失效模式与效应分析）
+- 混合方法指南
+
+### 效果验证指南
+
+`references/effectiveness-verification-guide.md`包含：
+- 验证计划要求
+- 验证方法选择
+- 效果标准定义（SMART原则）
+- 根据严重程度划分的关闭要求
+- 无效的CAPA流程
+- 文档模板
+
+---
+
+## 工具
+
+### CAPA跟踪器
 
 ```bash
 # Generate CAPA status report
@@ -373,15 +371,15 @@ python scripts/capa_tracker.py --capas capas.json --output json
 python scripts/capa_tracker.py --sample > sample_capas.json
 ```
 
-Calculates and reports:
-- Summary metrics (open, closed, overdue, cycle time, effectiveness)
-- Status distribution
-- Severity and source analysis
-- Aging report by time bucket
-- Overdue CAPA list
-- Actionable recommendations
+功能包括：
+- 计算并报告：汇总指标（开放、关闭、过期、周期时间、效果）
+- 状态分布
+- 严重程度和问题来源分析
+- 按时间段划分的老化报告
+- 过期的CAPA列表
+- 可操作的改进建议
 
-### Sample CAPA Input
+### CAPA输入示例
 
 ```json
 {
@@ -405,30 +403,90 @@ Calculates and reports:
 
 ---
 
-## Regulatory Requirements
+## 监管要求
 
-### ISO 13485:2016 Clause 8.5
+### ISO 13485:2016 第8.5条
 
-| Sub-clause | Requirement | Key Activities |
+| 子条款 | 要求 | 关键活动 |
 |------------|-------------|----------------|
-| 8.5.2 Corrective Action | Eliminate cause of nonconformity | NC review, cause determination, action evaluation, implementation, effectiveness review |
-| 8.5.3 Preventive Action | Eliminate potential nonconformity | Trend analysis, cause determination, action evaluation, implementation, effectiveness review |
+| 8.5.2 纠正性措施 | 消除不符合要求的原因 | 审查不符合要求的情况、确定原因、评估行动、实施、效果验证 |
+| 8.5.3 预防性措施 | 消除潜在的不符合要求的情况 | 趋势分析、确定原因、评估行动、实施、效果验证 |
 
 ### FDA 21 CFR 820.100
 
-Required CAPA elements:
-- Procedures for implementing corrective and preventive action
-- Analyzing quality data sources (complaints, NCs, audits, service records)
-- Investigating cause of nonconformities
-- Identifying actions needed to correct and prevent recurrence
-- Verifying actions are effective and do not adversely affect device
-- Submitting relevant information for management review
+要求的CAPA要素包括：
+- 实施纠正性和预防性措施的程序
+- 分析质量数据来源（投诉、不符合要求的情况、审计结果）
+- 调查不符合要求的原因
+- 确定必要的纠正和预防措施
+- 验证措施的有效性，确保不会对设备产生不良影响
+- 提交相关信息供管理层审查
 
-### Common FDA 483 Observations
+### FDA 483常见观察结果
 
-| Observation | Root Cause Pattern |
+| 观察结果 | 根本原因模式 |
 |-------------|-------------------|
-| CAPA not initiated for recurring issue | Trend analysis not performed |
-| Root cause analysis superficial | Inadequate investigation training |
-| Effectiveness not verified | No verification procedure |
-| Actions do not address root cause | Symptom treatment vs. cause elimination |
+| 对重复出现的问题未启动CAPA | 未进行趋势分析 |
+| 根本原因分析不深入 | 调查和培训不足 |
+| 未验证效果 | 无验证流程 |
+| 行动未针对根本原因 | 仅处理表面症状 |
+
+---
+
+## 监管要求
+
+### ISO 13485:2016 第8.5条
+
+| 子条款 | 要求 | 关键活动 |
+|------------|-------------|----------------|
+| 8.5.2 纠正性措施 | 消除不符合要求的原因 | 审查不符合要求的情况、确定原因、评估行动、实施、效果验证 |
+| 8.5.3 预防性措施 | 消除潜在的不符合要求的情况 | 进行趋势分析、确定原因、评估行动、实施、效果验证 |
+
+### FDA 21 CFR 820.100
+
+要求的CAPA要素包括：
+- 实施纠正性和预防性措施的程序
+- 分析质量数据来源（投诉、不符合要求的情况、审计结果）
+- 调查不符合要求的原因
+- 确定必要的纠正和预防措施
+- 验证措施的有效性，确保不会对设备产生不良影响
+- 提交相关信息供管理层审查
+
+### FDA 483常见观察结果
+
+| 观察结果 | 根本原因模式 |
+|-------------|-------------------|
+| 对重复出现的问题未启动CAPA | 未进行趋势分析 |
+| 根本原因分析不深入 | 调查和培训不足 |
+| 未验证效果 | 无验证流程 |
+| 行动未针对根本原因 | 仅处理表面症状 |
+
+---
+
+## 监管要求
+
+### ISO 13485:2016 第8.5条
+
+| 子条款 | 要求 | 关键活动 |
+|------------|-------------|----------------|
+| 8.5.2 纠正性措施 | 消除不符合要求的原因 | 审查不符合要求的情况、确定原因、评估行动、实施、效果验证 |
+| 8.5.3 预防性措施 | 消除潜在的不符合要求的情况 | 进行趋势分析、确定原因、评估行动、实施、效果验证 |
+
+### FDA 21 CFR 820.100
+
+要求的CAPA要素包括：
+- 实施纠正性和预防性措施的程序
+- 分析质量数据来源（投诉、不符合要求的情况、审计结果）
+- 调查不符合要求的原因
+- 确定必要的纠正和预防措施
+- 验证措施的有效性，确保不会对设备产生不良影响
+- 提交相关信息供管理层审查
+
+### FDA 483常见观察结果
+
+| 观察结果 | 根本原因模式 |
+|-------------|-------------------|
+| 对重复出现的问题未启动CAPA | 未进行趋势分析 |
+| 根本原因分析不深入 | 调查和培训不足 |
+| 未验证效果 | 无验证流程 |
+| 行动未针对根本原因 | 仅处理表面症状 |

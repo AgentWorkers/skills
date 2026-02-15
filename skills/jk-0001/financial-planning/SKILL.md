@@ -1,35 +1,63 @@
 ---
 name: financial-planning
-description: Plan and manage the finances of a solopreneur business. Use when creating budgets, forecasting revenue and expenses, building a P&L, planning for cash flow, setting financial targets, or preparing for financial decision-making. Covers budgeting frameworks, cash flow management, profit margins, expense tracking categories, and financial dashboards. Trigger on "financial plan", "budget my business", "cash flow planning", "P&L", "profit and loss", "financial projections", "how much do I need", "business finances", "financial forecast".
+description: **规划和管理个人创业企业的财务**  
+本指南适用于制定预算、预测收入与支出、编制损益表（P&L）、规划现金流、设定财务目标以及为财务决策做准备等场景。内容涵盖预算编制框架、现金流管理、利润率、费用跟踪分类以及财务仪表板等关键财务管理要素。  
+
+**相关关键词**：  
+财务规划（Financial Planning）、预算编制（Budgeting）、现金流管理（Cash Flow Management）、利润率（Profit Margin）、费用跟踪（Expense Tracking）、财务仪表板（Financial Dashboard）  
+
+**适用场景**：  
+- 制定企业预算  
+- 预测收入与支出  
+- 编制损益表（P&L）  
+- 规划现金流  
+- 设定财务目标  
+- 做出财务决策  
+
+**推荐使用场景**：  
+- 当您需要制定个人创业企业的财务计划时  
+- 想要预测企业的收入和支出情况时  
+- 需要编制详细的损益表时  
+- 规划企业的现金流时  
+- 设定明确的财务目标时  
+- 需要为财务决策提供依据时  
+
+**涵盖内容**：  
+- 预算编制方法与框架  
+- 现金流管理策略  
+- 利润率计算方法  
+- 费用分类与跟踪体系  
+- 实时财务数据可视化工具（财务仪表板）  
+
+**使用建议**：  
+- 结合实际情况灵活应用这些财务管理工具，以确保企业财务的稳健运行。
 ---
 
-# Financial Planning
+# 财务规划
 
-## Overview
-Most solopreneurs avoid financial planning until something goes wrong — a surprise tax bill, a month where expenses eat all revenue, or a decision made without understanding the numbers. This playbook gives you a lightweight but rigorous financial system that takes 30 minutes to set up and 15 minutes per month to maintain. No accounting degree required.
-
----
-
-## Step 1: Set Up Your Financial Reality Baseline
-
-Before planning, know where you actually stand right now.
-
-**Gather these numbers (estimate if you don't have exact figures):**
-- Monthly revenue (average of last 3 months if you have history; projected if pre-revenue)
-- Monthly fixed expenses (rent/co-working, tools/subscriptions, insurance, hosting, internet — things that don't change month to month)
-- Monthly variable expenses (marketing spend, contractor payments, per-transaction fees, travel — things that fluctuate)
-- One-time expenses coming up in the next 6 months (equipment, legal, conferences, annual subscriptions)
-- Personal income need (the minimum you need to pay yourself each month to cover personal living costs)
-
-**Write these down. This is your baseline. Everything else in this playbook builds on it.**
+## 概述
+大多数自由职业者在遇到问题之前都不会进行财务规划——比如突然收到高额的税单、某个月的支出超过了所有收入，或者在没有了解实际情况的情况下做出了决策。本指南为你提供了一个简单而严谨的财务管理系统，设置只需30分钟，每月维护也只需15分钟。无需会计学位即可使用。
 
 ---
 
-## Step 2: Build Your Monthly Budget
+## 第一步：确定你的财务现状基线
+在开始规划之前，首先要清楚自己目前的财务状况。
 
-A budget is simply: how much money do you plan to spend in each category, and how much do you plan to bring in?
+**收集以下数据（如果没有确切数字，请进行估算）：**
+- 月收入（如果有历史数据，则取过去3个月的平均值；如果尚未盈利，则进行预测）
+- 月固定支出（租金/办公空间费用、工具/订阅服务费用、保险费、托管费用、网络费用等每月不变的费用）
+- 月变动支出（营销费用、承包商付款、每笔交易的费用、差旅费用等波动较大的支出）
+- 在未来6个月内需要支付的一次性费用（设备购置、法律费用、会议费用、年度订阅费用）
+- 个人收入需求（每月至少需要支付给自己以覆盖个人生活开支的金额）
 
-**Budget structure:**
+**将这些数据记录下来。这就是你的财务基线。本指南中的所有内容都是基于此基线制定的。**
+
+---
+
+## 第二步：制定每月预算
+预算其实就是：你计划在每个类别上花费多少钱，以及你预计能收入多少钱？
+
+**预算结构：**
 
 ```
 MONTHLY BUDGET
@@ -66,18 +94,17 @@ OWNER SALARY (your pay):          $________
 NET PROFIT (retained in business):$________  (Gross Profit - Owner Salary)
 ```
 
-**Rules:**
-- Marketing budget should be 10-20% of revenue (or a fixed dollar amount if pre-revenue — treat it as an investment with expected ROI).
-- Owner salary should be set first, then expenses fit around it. If expenses + salary > revenue, something must be cut or revenue must grow.
-- Always budget a 10-15% buffer for unexpected costs. Unexpected things always happen.
+**规则：**
+- 营销预算应占收入的10-20%（如果尚未盈利，则设定一个固定的金额——将其视为一项预期有投资回报的支出）。
+- 应先确定老板的薪资，然后再根据薪资来安排其他支出。如果总支出加上薪资超过了收入，就必须削减开支或增加收入。
+- 始终为意外支出预留10-15%的缓冲资金。意外情况随时可能发生。
 
 ---
 
-## Step 3: Cash Flow Forecasting
+## 第三步：现金流预测
+纸面上的收入并不等于账户中的现金。现金流的时间安排才是维持企业运营的关键。
 
-Revenue on paper is not cash in your account. Cash flow timing is what actually keeps a business alive.
-
-**Monthly cash flow forecast (do this 3 months ahead):**
+**制定三个月后的月度现金流预测：**
 
 ```
 CASH FLOW FORECAST
@@ -89,75 +116,67 @@ Starting Cash:          $________  $________  $________
 = Ending Cash:          $________  $________  $________
 ```
 
-**Cash flow timing rules:**
-- Revenue often comes in AFTER the work is done (invoices have Net-15 or Net-30 terms). Budget for this lag.
-- Some expenses are lumpy (annual subscriptions, quarterly contractor payments). Spread these into monthly equivalents in your budget so you're not surprised.
-- Keep a cash reserve of 2-3 months of expenses. This is your runway buffer. Without it, one bad month can threaten the business.
+**现金流时间安排规则：**
+- 收入通常在完成工作之后才会到账（发票的付款期限通常是Net-15或Net-30）。在预算中要考虑到这一延迟。
+- 有些支出是定期发生的（如年度订阅费用、季度承包商付款），需要将这些支出分摊到每月的预算中，以避免意外。
+- 保持2-3个月的现金储备。这是你的资金缓冲区。如果没有这笔储备，一个糟糕的月份可能会威胁到企业的运营。
 
-**Cash flow danger signals:**
-- Ending cash drops below 1 month of expenses → urgent. Cut spending or accelerate collections immediately.
-- Revenue is growing but cash is flat → you're spending everything you earn. Examine variable expenses.
-- Revenue is lumpy (big months, dead months) → smooth it out with recurring revenue models or build a larger cash reserve.
-
----
-
-## Step 4: Set Financial Targets
-
-Targets give you something to measure against and decisions to make when you're off track.
-
-**Set targets at three horizons:**
-
-**Monthly targets:**
-- Minimum revenue to cover expenses + salary
-- Marketing spend cap
-- New customer acquisition count
-
-**Quarterly targets:**
-- Revenue growth rate (e.g., 10-15% quarter over quarter)
-- Profit margin target (aim for 30-50% net margin as a solopreneur)
-- Cash reserve target (build toward 3 months of expenses)
-
-**Annual targets:**
-- Total annual revenue
-- Total annual profit
-- Owner salary / total compensation target
-- Business milestones (launch date, customer count, revenue milestone)
-
-**When you miss a target:** Don't panic. Analyze why. Was it a bad assumption? An external factor? A controllable mistake? Adjust the plan, not just the target.
+**现金流危险信号：**
+- 期末现金余额降至低于一个月的支出 → 紧急情况。立即削减开支或加快收款。
+- 收入在增长，但现金收入持平 → 说明你把赚到的钱都花光了。检查变动较大的支出项目。
+- 收入波动较大（某些月份收入多，某些月份收入少） → 通过重复性收入模式来平衡收入，或者增加现金储备。
 
 ---
 
-## Step 5: Track Monthly (The 15-Minute Review)
+## 第四步：设定财务目标
+目标为你提供了衡量进展的依据，也能帮助你在偏离计划时做出决策。
 
-At the end of every month, spend 15 minutes on this review:
+**设定三个时间段的财务目标：**
 
-1. **Actual vs. Budget:** Compare every line in your budget to what actually happened. Where did you overspend? Underspend?
-2. **Revenue vs. Target:** Did you hit your revenue target? If not, why?
-3. **Cash position:** What's your current cash balance? Are you above or below your reserve target?
-4. **One action:** Based on this review, identify ONE financial action for next month. (e.g., "Reduce contractor spend by $500", "Raise prices on new customers", "Collect overdue invoice from Client X")
+**每月目标：**
+- 最低收入，以覆盖开支和薪资
+- 营销支出上限
+- 新客户获取数量
 
-**Tools for tracking:** A shared Google Sheet is sufficient for most solopreneurs. Dedicated tools (QuickBooks, FreshBooks, Wave) add value once revenue exceeds $5K/month or you have complex expenses. Wave is free and handles basic bookkeeping well.
+**季度目标：**
+- 收入增长率（例如，每个季度增长10-15%）
+- 利润率目标（作为自由职业者，目标应为30-50%的净利润率）
+- 现金储备目标（达到3个月的支出水平）
 
----
+**年度目标：**
+- 年总收入
+- 年总利润
+- 老板薪资/总薪酬目标
+- 企业里程碑（上线日期、客户数量、收入目标）
 
-## Step 6: Tax Planning (Integrated, Not Afterthought)
-
-Tax is an expense like any other. Budget for it monthly — not just once a year in a panic.
-
-**Solopreneur tax budget rule:** Set aside 25-30% of every revenue payment into a separate "tax savings" account. This covers:
-- Self-employment tax (Social Security + Medicare)
-- Federal and state income tax
-- Quarterly estimated tax payments (due Jan 15, Apr 15, Jun 15, Sep 15 in the US)
-
-**If you're outside the US:** Tax rules vary enormously by country. The percentage may differ but the principle is the same — set aside a fixed percentage of revenue immediately, before you spend it.
-
-**If you haven't been doing this and owe back taxes:** Calculate the total owed, divide by the months until the deadline, and set that aside each month. Do not ignore it.
+**如果未能达成目标：**不要惊慌。分析原因。是假设错误？还是外部因素？还是可以控制的失误？调整计划，而不仅仅是目标本身。**
 
 ---
 
-## Financial Planning Mistakes to Avoid
-- Treating revenue as profit. Revenue minus expenses = profit. Many solopreneurs conflate the two.
-- Not paying yourself a salary. If you don't pay yourself, you don't know if the business is actually profitable for YOU.
-- Ignoring taxes until April (or your country's equivalent). Tax surprises are the #1 financial crisis for solopreneurs.
-- Budgeting optimistically. Budget conservatively on revenue (assume less), aggressively on expenses (assume more). Positive surprises are much better than negative ones.
-- Never revisiting the budget. A budget set in January is stale by March. Update monthly.
+## 第五步：每月进行回顾（15分钟时间）
+每月结束时，花15分钟进行以下回顾：
+1. **实际支出与预算对比：** 将预算中的每一项支出与实际发生的情况进行对比。哪些项目超支了？哪些项目节省了？
+2. **收入与目标对比：** 是否达到了收入目标？如果没有，原因是什么？
+3. **现金状况：** 当前的现金余额是多少？是否高于或低于储备目标？
+4. **下一步行动：** 根据回顾结果，确定下个月的财务行动（例如：“将承包商支出减少500美元”、“提高新客户的收费标准”、“向客户X催收逾期账款”）
+
+**跟踪工具：** 对于大多数自由职业者来说，共享的Google表格就足够使用了。如果每月收入超过5000美元或支出较为复杂，可以使用专门的财务软件（如QuickBooks、FreshBooks、Wave）。Wave软件免费且能很好地处理基本账务工作。**
+
+## 第六步：税务规划（提前规划，而非事后处理）
+税务和其他支出一样，也需要每月进行预算。
+
+**自由职业者的税务规划规则：** 将每笔收入的25-30%存入一个专门的“税务储蓄”账户。这笔钱用于支付：
+- 自雇税（社会保险费+医疗保险费）
+- 联邦和州所得税
+- 每季度的预估税款（在美国分别为1月15日、4月15日、6月15日、9月15日缴纳）
+
+**如果你不在美国：** 各国的税务规则差异很大。具体比例可能有所不同，但原则是一样的——在支出之前立即预留一定比例的收入。
+
+**如果你之前没有进行税务规划并且欠税：** 计算总欠款金额，除以到付款截止日期的月数，然后每月按比例存入税款。切勿忽视这一点。**
+
+## 需避免的财务规划错误：
+- 将收入误认为是利润。收入减去支出才等于利润。许多自由职业者将这两者混为一谈。
+- 不给自己发工资。如果你不给自己发工资，就无法知道企业是否真的盈利。
+- 直到4月（或所在国家的相应时间）才处理税务问题。税务问题往往是自由职业者面临的最大财务危机。
+- 乐观地制定预算。在收入方面要保守估计，在支出方面要乐观预测（假设支出会更多）。积极的意外情况比消极的意外情况要好得多。
+- 从不重新审视预算。1月份制定的预算到3月份就已经过时了。应每月更新预算。

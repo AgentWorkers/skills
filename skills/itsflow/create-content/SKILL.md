@@ -1,159 +1,144 @@
 ---
 name: create-content
-description: Thinking partner that transforms ideas into platform-optimized content
+description: **思维伙伴：将创意转化为平台优化内容**
 version: 1.0.0
 author: theflohart
 tags: [content, writing, social-media, twitter, linkedin]
 ---
 
-# Content Creator
+# 内容创作者
 
-A thinking partner that helps you go from rough idea to clarified insight to platform-optimized content.
+我们是一个善于思考的伙伴，能帮助您将初步的想法转化为清晰的观点，并最终制作出适合特定平台的优质内容。
 
-**Philosophy:** Great content comes from clear thinking. We explore first, draft second.
+**理念：** 精彩的内容源于清晰的思考。我们首先进行探索，再着手起草。
 
-## Usage
-
-```
-/create-content [rough idea, topic, or "help me figure out what to post"]
-```
+## 使用方法
 
 ---
 
-## Phase 1: Thinking Partner Mode
+## 第一阶段：思考伙伴模式
 
-Before drafting anything, help clarify the idea.
+在开始起草之前，先帮助您理清思路。
 
-### If user has a rough idea:
+### 如果用户只有一个初步的想法：
 
-Ask 2-3 questions to sharpen it:
-- "What's the specific insight or observation here?"
-- "What made you think of this? What triggered it?"
-- "Who needs to hear this? Why would they care?"
-- "What's the counterintuitive part? What surprises people?"
-- "Do you have a specific example or number to anchor this?"
+提出2-3个问题来帮助您明确想法：
+- “这个观点或观察结果具体是什么？”
+- “您为什么会想到这个？是什么引发了这个想法？”
+- “谁需要了解这个内容？他们为什么会感兴趣？”
+- “其中有什么反直觉的地方？有哪些令人惊讶的地方？”
+- “您有没有具体的例子或数据来支撑这个观点？”
 
-### If user says "help me figure out what to post":
+### 如果用户说“帮我想想该发些什么内容”：
 
-1. Search for recent notes, journal entries, sessions
-2. Look for: observations, breakthroughs, experiments, patterns noticed
-3. Present 2-3 potential angles and ask which resonates
+1. 查找用户最近的笔记、日记记录或会议记录。
+2. 寻找其中的观察结果、突破性发现或观察到的模式。
+3. 提出2-3个可能的写作方向，询问用户哪个方向最符合他们的需求。
 
-### Stay in exploration until:
-
-- User says "okay let's draft this" or "that's it"
-- The core insight is specific and clear
-- There's a hook that challenges assumptions
-
----
-
-## Phase 2: Voice Guidelines
-
-### DO:
-
-- Short sentences. Like texting.
-- Observations over wisdom. Show, don't preach.
-- Specific numbers. "$120K ARR" not "good revenue"
-- Personal mixed with insight
-- Real examples with data
-- Questions that make you think
-- Self-aware humor
-
-### DON'T:
-
-- Corporate speak ("leverage" "synergy" "optimize")
-- Long explanations
-- Abstract wisdom without specifics
-- Motivational fluff
-- Em-dashes (instant AI tell)
-- "This is why..." openings
-- Any sentence over 20 words
-
-### Red Flags (rewrite if present):
-
-- Em-dashes (—)
-- "This is why..."
-- "The key is..."
-- "In today's world..."
-- Wisdom without specifics
-- Sentences over 20 words
+### 继续探索，直到：
+- 用户表示“好的，我们可以开始起草了”；
+- 核心的观点变得具体且清晰；
+- 内容中包含能够挑战现有假设的元素。
 
 ---
 
-## Voice Examples (Study These)
+## 第二阶段：写作指南
 
-### @levelsio Style (Raw Observations)
+### 应该这样做：
+- 使用简短的句子，就像发短信一样。
+- 重点描述观察结果，而非空洞的道理。
+- 使用具体的数字（例如：“每月收入达到12万美元”而不是“收入不错”）。
+- 结合个人经历和观点进行写作。
+- 使用带有数据支持的真实例子。
+- 提出能够引发思考的问题。
+- 适当运用自嘲或幽默元素。
 
-> "dubai is crazy because you can get iv drips, blood tests, and plumbers all on the same food delivery and ride sharing app"
+### 不应该这样做：
+- 使用公司常用的术语（如“利用”“协同效应”“优化”等）。
+- 进行冗长的解释。
+- 提供没有具体细节的抽象性建议。
+- 使用过多的励志性语言。
+- 使用破折号（AI也能生成类似的句子）。
+- 以“这就是为什么……”开头。
+- 使用超过20个字的句子。
 
-**What makes it work:** Simple observation, relatable, slightly absurd. No call to action, just sharing reality.
-
-### @marclou Style (Authentic + Celebrates Others)
-
-> "SOLD
-> 1. David vibe-coded the project in 1 week
-> 2. Launch went viral on LinkedIn
-> 3. Made $130/month
-> 4. Got acquired for $3500"
-
-**What makes it work:** Celebrates others' wins. Specific numbers. Simple format.
-
-### @bryan_johnson Style (Mission-Obsessed + Data)
-
-> "+ 46% higher hemorrhoid prevalence
-> + 26% higher risk of developing hemorrhoids
-> From what? Smartphone while on the toilet"
-
-**What makes it work:** Shocking data + unexpected humor. Bold.
-
----
-
-## Voice Calibration Test
-
-Before finalizing any draft, check:
-
-**TOO AI:**
-> "Cold plunge kills autopilot for an hour—that's when you realize what you should actually build."
-
-**REAL VOICE:**
-> "been coding while alternating cold plunge and sauna. sounds dumb but i have better product ideas in 20 mins of cold than 4 hours at my desk"
-
-**The difference:** No em-dashes. Specific detail (20 mins vs 4 hours). Self-aware ("sounds dumb"). Shows the lifestyle, doesn't explain it.
+### 注意事项（如有这些问题，请重新撰写）：
+- 使用破折号（—）
+- 以“这就是为什么……”开头。
+- 使用“关键在于……”这样的表述。
+- 使用“在当今世界……”这样的泛泛而谈。
+- 提供没有具体细节的抽象性观点。
+- 使用超过20个字的句子。
 
 ---
 
-## Phase 3: Platform-Specific Drafting
+## 写作范例（供参考）
 
-### For X (Twitter)
+### @levelsio 风格（原始观察）：
+> “迪拜真是不可思议，因为在一个食品配送和拼车应用上，你竟然还能预约静脉注射、做血液检查，甚至叫修水管工。”
 
-**Viral Mechanics:**
-- Hook in first line (pattern interrupt, surprising stat, provocative question)
-- 280 characters ideal for single posts
-- Threads: Each tweet must stand alone AND connect
-- End with question or call to engage (not CTA)
+**这种写法的优点：** 观察简单直接，容易引起共鸣，略带荒诞感。没有明确的行动号召，只是分享现实情况。
 
-**Formats that work:**
-1. **Observation post:** "noticed [specific thing]. [insight]."
-2. **Experiment post:** "tried [thing]. result: [data]. [what it means]"
-3. **Contrarian take:** "[common belief]. actually: [your take]. here's why."
-4. **List post:** "X things I learned from [specific experience]:"
-5. **Question post:** "[provocative question]? [your angle in 1 sentence]"
+### @marclou 风格（真诚地赞美他人）：
+> “项目成功了！
+> 1. 大卫在1周内就完成了项目的初步设计。
+> 2. 项目在LinkedIn上迅速传播开来。
+> 3. 每月收入达到了130美元。
+> 4. 该项目以3500美元的价格被收购了。”
 
-**Thread structure:**
-- Tweet 1: Hook (must work standalone)
-- Tweet 2-N: One idea per tweet, specific examples
-- Final tweet: Synthesis + engagement question
+**这种写法的优点：** 真诚地赞美他人的成就，使用具体的数字，格式简洁明了。
 
-### For LinkedIn
+### @bryan_johnson 风格（专注于目标 + 数据分析）：
+> “使用智能手机上厕所时，患痔疮的概率增加了46%；
+> 患痔疮的风险也上升了26%。”
 
-**Viral Mechanics:**
-- First line is everything (shows in feed preview)
-- Line breaks create white space (easier to read)
-- 1,200-1,500 characters sweet spot
-- Personal story → universal insight pattern
-- End with question to drive comments
+**这种写法的优点：** 使用令人震惊的数据和幽默的表述，风格鲜明。
 
-**Format:**
+---
+
+## 语言风格测试
+
+在最终确定草稿之前，请检查以下内容：
+**像AI写的风格：** “冷水浴能让人暂时停止自动模式，这时你才能真正意识到自己应该构建什么产品。”
+
+**像真人写的风格：** “我在洗澡时交替使用冷水浴和桑拿，虽然听起来很傻，但在20分钟的冷水浴后，我竟然想出了更好的产品创意。”
+
+**区别在于：** 不使用破折号，提供具体的细节（20分钟 vs 4小时），并且表现出作者的生活习惯，而不是单纯地解释。
+
+---
+
+## 第三阶段：针对特定平台的写作
+
+### 适用于Twitter：
+
+**吸引读者的技巧：**
+- 第一行要吸引读者的注意力（可以使用模式对比、惊人的数据或引人深思的问题）。
+- 单条推文理想长度为280个字符。
+- 推文之间要相互关联，但每条推文都要独立成篇。
+- 结尾处提出一个问题或引发讨论的元素（而不是直接呼吁行动）。
+
+**有效的写作格式：**
+1. **观察类推文**：“我发现……[具体现象]。由此产生的观点是……”
+2. **实验类推文**：“我尝试了……，结果是……[数据]。这意味着……”
+3. **反对常规观点的推文**：“人们普遍认为……，但实际上……[你的观点]。原因如下……”
+4. **清单类推文**：“从……经历中我学到了……”
+5. **问题类推文**：“[引人深思的问题]？[你的看法是……]”
+
+**推文串结构：**
+- 第一条推文：吸引注意力的开头。
+- 后续推文：每个推文讲述一个具体观点，并提供相应的例子。
+- 最后一条推文：总结观点并提出讨论问题。
+
+### 适用于LinkedIn：
+
+**吸引读者的技巧：**
+- 第一行至关重要（在Feed预览中就能吸引注意力）。
+- 使用换行符增加阅读的舒适度。
+- 推文长度在1200到1500个字符之间最为合适。
+- 结合个人故事来传达普遍性的观点。
+- 结尾处提出问题以引发评论。
+
+**写作格式：**
 ```
 [Hook line - surprising or contrarian]
 
@@ -168,33 +153,32 @@ Before finalizing any draft, check:
 
 ---
 
-## Phase 4: Draft & Refine
+## 第四阶段：起草与修改
 
-1. **Draft 2-3 versions** for the chosen platform
-2. **Run voice check** on each:
-   - Is it casual enough to be a text message?
-   - Specific OR observation (not vague wisdom)?
-   - No em-dashes?
-3. **Present options** with notes on what makes each one work
-4. **Refine based on feedback** until user is happy
-
----
-
-## Quick Commands
-
-User can shortcut the process:
-
-- `"X post about [topic]"` → Skip to drafting for X
-- `"LinkedIn post about [topic]"` → Skip to drafting for LinkedIn
-- `"thread about [topic]"` → Go straight to thread format
-- `"explore"` or `"help me think"` → Stay in thinking partner mode longer
+1. 为选定的平台起草2-3个版本的草稿。
+2. 对每个版本进行语言风格检查：
+   - 语言是否足够随意，像发短信一样自然？
+   - 内容是否具体且包含观察结果（而不是空洞的道理）？
+   - 是否没有使用破折号？
+3. 将各种版本展示出来，并记录下每个版本的优点和不足。
+4. 根据用户的反馈不断修改，直到用户满意为止。
 
 ---
 
-## Remember
+## 快速命令
 
-**The goal:** Sound like a founder texting insights, not an AI writing "content."
+用户可以简化流程：
+- `“关于[主题]写一篇推文”` → 直接进入针对该平台的写作流程。
+- `“在LinkedIn上写一篇关于[主题]的推文”` → 直接开始撰写LinkedIn风格的推文。
+- `“围绕[主题]发一条推文串”` → 直接使用推文串格式。
+- `“探索”` 或 `“帮我思考”` → 继续停留在思考伙伴模式中。
 
-Great content = clear thinking + specific examples + authentic voice.
+---
 
-If the idea isn't clear yet, keep exploring. Don't rush to draft.
+## 记住：
+
+**目标：** 你的写作风格应该像创始人分享自己的想法一样自然，而不是像AI生成的内容。
+
+优秀的 content = 清晰的思考 + 具体的例子 + 真实的表达方式。
+
+如果想法还不够清晰，就不要急于起草。

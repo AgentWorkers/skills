@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Webrtc - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,9 +31,9 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List mobile push credentials
+## 列出移动推送凭据
 
 `GET /mobile_push_credentials`
 
@@ -43,7 +43,7 @@ page = client.mobile_push_credentials.list
 puts(page)
 ```
 
-## Creates a new mobile push credential
+## 创建新的移动推送凭据
 
 `POST /mobile_push_credentials`
 
@@ -60,9 +60,9 @@ push_credential_response = client.mobile_push_credentials.create(
 puts(push_credential_response)
 ```
 
-## Retrieves a mobile push credential
+## 获取移动推送凭据
 
-Retrieves mobile push credential based on the given `push_credential_id`
+根据给定的 `push_credential_id` 获取移动推送凭据
 
 `GET /mobile_push_credentials/{push_credential_id}`
 
@@ -72,9 +72,9 @@ push_credential_response = client.mobile_push_credentials.retrieve("0ccc7b76-4df
 puts(push_credential_response)
 ```
 
-## Deletes a mobile push credential
+## 删除移动推送凭据
 
-Deletes a mobile push credential based on the given `push_credential_id`
+根据给定的 `push_credential_id` 删除移动推送凭据
 
 `DELETE /mobile_push_credentials/{push_credential_id}`
 
@@ -84,9 +84,9 @@ result = client.mobile_push_credentials.delete("0ccc7b76-4df3-4bca-a05a-3da1ecc3
 puts(result)
 ```
 
-## List all credentials
+## 列出所有凭据
 
-List all On-demand Credentials.
+列出所有的按需凭证。
 
 `GET /telephony_credentials`
 
@@ -96,11 +96,11 @@ page = client.telephony_credentials.list
 puts(page)
 ```
 
-## Create a credential
+## 创建凭据
 
-Create a credential.
+创建一个新凭据。
 
-`POST /telephony_credentials` — Required: `connection_id`
+`POST /telephony_credentials` — 必需参数：`connection_id`
 
 ```ruby
 telephony_credential = client.telephony_credentials.create(connection_id: "1234567890")
@@ -108,9 +108,9 @@ telephony_credential = client.telephony_credentials.create(connection_id: "12345
 puts(telephony_credential)
 ```
 
-## Get a credential
+## 获取凭据详情
 
-Get the details of an existing On-demand Credential.
+获取现有按需凭证的详细信息。
 
 `GET /telephony_credentials/{id}`
 
@@ -120,9 +120,9 @@ telephony_credential = client.telephony_credentials.retrieve("id")
 puts(telephony_credential)
 ```
 
-## Update a credential
+## 更新凭据
 
-Update an existing credential.
+更新现有凭据。
 
 `PATCH /telephony_credentials/{id}`
 
@@ -132,9 +132,9 @@ telephony_credential = client.telephony_credentials.update("id")
 puts(telephony_credential)
 ```
 
-## Delete a credential
+## 删除凭据
 
-Delete an existing credential.
+删除现有凭据。
 
 `DELETE /telephony_credentials/{id}`
 
@@ -144,9 +144,9 @@ telephony_credential = client.telephony_credentials.delete("id")
 puts(telephony_credential)
 ```
 
-## Create an Access Token.
+## 创建访问令牌
 
-Create an Access Token (JWT) for the credential.
+为该凭据创建一个访问令牌（JWT）。
 
 `POST /telephony_credentials/{id}/token`
 

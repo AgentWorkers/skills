@@ -1,70 +1,69 @@
 ---
 name: google-ai-usage-monitor
 version: 1.0.0
-description: Monitor Google AI Studio (Gemini API) usage, rate limits, and quota consumption with automated alerts.
+description: 监控 Google AI Studio（Gemini API）的使用情况、速率限制以及配额消耗情况，并通过自动化警报进行提醒。
 author: xiaoyaner
 ---
 
-# Google AI Usage Monitor Skill
+# Google AI 使用监控技能
 
-Monitor Google AI Studio usage to prevent quota exhaustion and optimize API consumption.
+监控 Google AI Studio 的使用情况，以防止配额耗尽并优化 API 的使用。
 
-## Supported Metrics
+## 支持的指标
 
-| Metric | Description | Alert Threshold |
+| 指标 | 描述 | 警报阈值 |
 |--------|-------------|-----------------|
-| RPM | Requests Per Minute (peak) | > 80% of limit |
-| TPM | Tokens Per Minute (peak) | > 80% of limit |
-| RPD | Requests Per Day | > 80% of limit |
+| RPM | 每分钟请求数（峰值） | 超过限制的 80% |
+| TPM | 每分钟令牌数（峰值） | 超过限制的 80% |
+| RPD | 每天请求数 | 超过限制的 80% |
 
-## Rate Limits by Tier
+## 不同等级的速率限制
 
-| Tier | Typical Limits |
+| 等级 | 典型限制 |
 |------|---------------|
-| Free | 2 RPM, 32K TPM, 50 RPD |
-| Pay-as-you-go | 10-15 RPM, 100K+ TPM, 500+ RPD |
-| Paid Tier 1 | 20 RPM, 100K TPM, 250 RPD (varies by model) |
+| 免费 | 2 RPM, 32K TPM, 50 RPD |
+| 按使用量付费 | 10-15 RPM, 100K+ TPM, 500+ RPD |
+| 支付等级 1 | 20 RPM, 100K TPM, 250 RPD（因模型而异） |
 
-Note: Actual limits vary by model and can be viewed at the usage dashboard.
+注意：实际限制因模型而异，可在使用情况仪表板上查看。
 
-## Usage Dashboard
+## 使用情况仪表板
 
 ### URL
 ```
 https://aistudio.google.com/usage?project={PROJECT_ID}&timeRange=last-28-days&tab=rate-limit
 ```
 
-### Key Elements to Extract
-- **Project name**: Which GCP project
-- **Tier**: Free / Pay-as-you-go / Paid tier X
-- **Models table**: Each row contains model name, category, RPM, TPM, RPD
-- **Time range**: Default 28 days
+### 需要提取的关键信息
+- **项目名称**：对应的 GCP 项目
+- **等级**：免费 / 按使用量付费 / 支付等级 X
+- **模型表格**：每行包含模型名称、类别、RPM、TPM、RPD
+- **时间范围**：默认为 28 天
 
-## Browser Automation
+## 浏览器自动化
 
-### Open Usage Page
+### 打开使用情况页面
 ```javascript
 // Using OpenClaw browser tool
 browser action=open targetUrl="https://aistudio.google.com/usage?project=YOUR_PROJECT_ID&timeRange=last-28-days&tab=rate-limit" profile=openclaw
 ```
 
-### Wait for Data Load
-The page loads data asynchronously. Wait for:
-1. Project dropdown shows project name (not "Loading...")
-2. Rate limits table has data rows
+### 等待数据加载
+页面会异步加载数据。请等待以下情况：
+1. 项目下拉菜单显示项目名称（而不是“Loading...”）
+2. 速率限制表格中有数据行
 
-### Parse Table Data
-Look for table rows with pattern:
+### 解析表格数据
+查找符合以下模式的表格行：
 ```
 Model Name | Category | X / Y | X / Y | X / Y | View in charts
 ```
 
-Where `X / Y` represents `used / limit`.
+其中 `X / Y` 分别代表“已使用量”和“限制量”。
 
-## Report Format
+## 报告格式
 
-### Discord Message Template
-
+### Discord 消息模板
 ```markdown
 ## 📊 Google AI Studio 用量报告
 
@@ -88,24 +87,22 @@ Where `X / Y` represents `used / limit`.
 *检查时间: {timestamp}*
 ```
 
-### Status Levels
+## 状态等级
 
-| Usage % | Status | Emoji | Action |
+| 使用量百分比 | 状态 | 表情符号 | 措施 |
 |---------|--------|-------|--------|
-| < 50% | 正常 | ✅ | Continue normally |
-| 50-80% | 需关注 | ⚠️ | Monitor more frequently |
-| > 80% | 风险预警 | 🚨 | Alert user, consider rate limiting |
+| < 50% | 正常 | ✅ | 继续正常使用 |
+| 50-80% | 需要关注 | ⚠️ | 加密监控使用情况 |
+| > 80% | 风险预警 | 🚨 | 向用户发送警报，并考虑实施速率限制 |
 
-## Alert Rules
+## 警报规则
 
-### When to Alert User
+### 何时向用户发送警报
+1. **任何指标超过 80%**：立即通过 @mention 发送警报
+2. **任何指标超过 50%**：在报告中包含警告信息
+3. **API 错误（429）**：记录速率限制的触发情况
 
-1. **Any metric > 80%**: Immediate alert with @mention
-2. **Any metric > 50%**: Include warning note in report
-3. **API errors (429)**: Track rate limit hits
-
-### Alert Message Template
-
+### 警报消息模板
 ```markdown
 🚨 **Google AI 配额预警**
 
@@ -119,10 +116,9 @@ Where `X / Y` represents `used / limit`.
 - 检查是否有异常调用
 ```
 
-## Cron Job Setup
+## Cron 作业设置
 
-### Daily Check (Recommended)
-
+### 建议每天检查一次
 ```json
 {
   "name": "Google AI 用量检查",
@@ -144,12 +140,10 @@ Where `X / Y` represents `used / limit`.
 }
 ```
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-### Configuration
-
-Add to `TOOLS.md`:
-
+### 配置
+将相关配置添加到 `TOOLS.md` 文件中：
 ```markdown
 ## Google AI Studio
 
@@ -159,35 +153,29 @@ Add to `TOOLS.md`:
 - **Check Schedule**: Daily 20:00
 ```
 
-### Heartbeat Integration
-
-Add to `HEARTBEAT.md`:
-
+### 与 Heartbeat 的集成
+将相关配置添加到 `HEARTBEAT.md` 文件中：
 ```markdown
 ## Google AI Monitoring
 - Check usage if last check > 24 hours
 - Alert if any metric > 80%
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Page Not Loading
+### 页面无法加载
+1. 确认是否使用正确的 Google 账户登录
+2. 验证项目 ID 是否正确
+3. 等待更长时间（5-10 秒）以完成异步数据加载
 
-1. Check if logged into correct Google account
-2. Verify project ID is correct
-3. Wait longer for async data load (5-10 seconds)
+### 数据显示“Loading...”状态
+项目下拉菜单可能需要一些时间才能显示完整内容。请稍后重新尝试。
 
-### Data Shows "Loading..."
+### 指标未更新
+Google 提示：“使用数据可能需要最多 15 分钟才能更新。”
 
-The project dropdown may take time to populate. Retry snapshot after a few seconds.
-
-### Metrics Not Updating
-
-Google notes: "Usage data may take up to 15 minutes to update."
-
-## References
-
-- [Google AI Studio Usage Dashboard](https://aistudio.google.com/usage)
-- [Gemini API Rate Limits](https://ai.google.dev/gemini-api/docs/rate-limits)
-- [Billing Documentation](https://ai.google.dev/gemini-api/docs/billing)
-- [Cloud Monitoring for Gemini](https://firebase.google.com/docs/ai-logic/monitoring)
+## 参考资料
+- [Google AI Studio 使用情况仪表板](https://aistudio.google.com/usage)
+- [Gemini API 速率限制](https://ai.google.dev/gemini-api/docs/rate-limits)
+- [计费文档](https://ai.google.dev/gemini-api/docs/billing)
+- [Gemini 的云监控功能](https://firebase.google.com/docs/ai-logic/monitoring)

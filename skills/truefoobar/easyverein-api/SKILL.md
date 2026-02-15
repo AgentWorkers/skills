@@ -1,32 +1,32 @@
 ---
 name: easyverein-api
-description: "Work with the easyVerein v2.0 REST API (members, contacts, events, invoices, bookings, custom fields, etc.). Use for full API coverage: endpoint discovery, auth, request/response schemas, and example cURL calls."
+description: "使用 easyVerein v2.0 的 REST API（包括成员、联系人、事件、发票、预订、自定义字段等）。该 API 提供了全面的接口功能，包括端点发现、身份验证、请求/响应数据结构以及示例 cURL 调用。"
 ---
 
 # easyVerein API (v2.0)
 
-## Quick start
-- Base URL: `https://easyverein.com/api/v2.0`
-- Auth header: `Authorization: Bearer <API_KEY>`
-- Tokens expire after 30 days; refresh via `GET /api/v2.0/refresh-token` when `tokenRefreshNeeded` appears in response headers.
-- Rate limit: **100 requests/min**.
+## 快速入门
+- 基本 URL：`https://easyverein.com/api/v2.0`
+- 认证头：`Authorization: Bearer <API_KEY>`
+- 令牌有效期为 30 天；当响应头中出现 `tokenRefreshNeeded` 时，通过 `GET /api/v2.0/refresh-token` 重新获取令牌。
+- 请求速率限制：**每分钟 100 次**。
 
-## Use the OpenAPI spec
-Read the full spec when you need endpoint details or schemas:
+## 使用 OpenAPI 规范
+如需了解端点详情或数据结构，请阅读完整规范：
 - `references/openapi-v2.json`
 
-This file contains **all endpoints**, parameters, request bodies, responses, and tags. Use it to:
-- list endpoints by tag (e.g., `member`, `contact-details`, `invoice`)
-- inspect request body schemas
-- find actions and sub-endpoints
+该文件包含了所有端点、参数、请求体、响应内容及相关标签。您可以使用它来：
+- 按标签查询端点（例如：`member`、`contact-details`、`invoice`）
+- 查看请求体数据结构
+- 查找可执行的操作及子端点
 
-## Common patterns
-- Pagination: `?limit=` (default 5, max 100)
-- Field selection: `?query={field,relation{subfield}}`
-- Excluding fields: `?query={-field}`
-- Bulk operations: `bulk-create` / `bulk-update` (supported by select endpoints)
+## 常见用法模式
+- 分页：`?limit=`（默认值 5，最大值 100）
+- 字段筛选：`?query={field,relation{subfield}}`
+- 排除某些字段：`?query={-field}`
+- 批量操作：`bulk-create` / `bulk-update`（部分端点支持批量操作）
 
-## Example cURL (template)
+## 示例 cURL （模板）
 ```bash
 curl -s \
   -H "Authorization: Bearer $EASYVEREIN_TOKEN" \
@@ -34,10 +34,10 @@ curl -s \
   "https://easyverein.com/api/v2.0/member?limit=10"
 ```
 
-## Member creation flow (important)
-1) Create `contact-details` first.
-2) Then create `member` with `emailOrUserName` and `contactDetails` reference.
+## 成员创建流程（重要提示）
+1) 首先创建 `contact-details` 数据。
+2) 然后使用 `emailOrUserName` 以及 `contactDetails` 信息创建 `member`。
 
-## Notes
-- Files must be uploaded via **PATCH** with `Content-Disposition` header.
-- Use `refresh-token` to rotate tokens; old token becomes invalid immediately.
+## 注意事项
+- 文件必须通过 `PATCH` 方法上传，并设置 `Content-Disposition` 头部字段。
+- 使用 `refresh-token` 来更新令牌；旧令牌会立即失效。

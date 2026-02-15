@@ -17,9 +17,9 @@ metadata:
 
 # Square
 
-Access the Square API with managed OAuth authentication. Process payments, manage customers, orders, catalog items, inventory, and invoices.
+通过管理的OAuth认证来访问Square API。您可以处理支付、管理客户、订单、商品目录、库存和发票等信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List locations
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/squareup/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Square API endpoint path. The gateway proxies requests to `connect.squareup.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Square API端点路径。该网关会将请求代理到 `connect_square.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Square OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Square OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Square connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Square连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,25 +140,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Locations
+### 地点
 
-#### List Locations
+#### 列出地点
 
 ```bash
 GET /squareup/v2/locations
 ```
 
-#### Get Location
+#### 获取地点信息
 
 ```bash
 GET /squareup/v2/locations/{location_id}
 ```
 
-#### Create Location
+#### 创建地点
 
 ```bash
 POST /squareup/v2/locations
@@ -178,7 +178,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Location
+#### 更新地点信息
 
 ```bash
 PUT /squareup/v2/locations/{location_id}
@@ -191,41 +191,41 @@ Content-Type: application/json
 }
 ```
 
-### Merchants
+### 商户
 
-#### Get Merchant
+#### 获取商户信息
 
 ```bash
 GET /squareup/v2/merchants/me
 ```
 
-#### List Merchants
+#### 列出商户
 
 ```bash
 GET /squareup/v2/merchants
 ```
 
-### Payments
+### 支付
 
-#### List Payments
+#### 列出支付记录
 
 ```bash
 GET /squareup/v2/payments
 ```
 
-With filters:
+支持过滤：
 
 ```bash
 GET /squareup/v2/payments?location_id={location_id}&begin_time=2026-01-01T00:00:00Z&end_time=2026-02-01T00:00:00Z
 ```
 
-#### Get Payment
+#### 获取支付信息
 
 ```bash
 GET /squareup/v2/payments/{payment_id}
 ```
 
-#### Create Payment
+#### 创建支付记录
 
 ```bash
 POST /squareup/v2/payments
@@ -242,7 +242,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Payment
+#### 更新支付记录
 
 ```bash
 PUT /squareup/v2/payments/{payment_id}
@@ -259,7 +259,7 @@ Content-Type: application/json
 }
 ```
 
-#### Complete Payment
+#### 完成支付
 
 ```bash
 POST /squareup/v2/payments/{payment_id}/complete
@@ -268,7 +268,7 @@ Content-Type: application/json
 {}
 ```
 
-#### Cancel Payment
+#### 取消支付
 
 ```bash
 POST /squareup/v2/payments/{payment_id}/cancel
@@ -277,21 +277,21 @@ Content-Type: application/json
 {}
 ```
 
-### Refunds
+### 退款
 
-#### List Refunds
+#### 列出退款记录
 
 ```bash
 GET /squareup/v2/refunds
 ```
 
-#### Get Refund
+#### 获取退款信息
 
 ```bash
 GET /squareup/v2/refunds/{refund_id}
 ```
 
-#### Create Refund
+#### 创建退款记录
 
 ```bash
 POST /squareup/v2/refunds
@@ -308,21 +308,21 @@ Content-Type: application/json
 }
 ```
 
-### Customers
+### 客户
 
-#### List Customers
+#### 列出客户信息
 
 ```bash
 GET /squareup/v2/customers
 ```
 
-#### Get Customer
+#### 获取客户信息
 
 ```bash
 GET /squareup/v2/customers/{customer_id}
 ```
 
-#### Create Customer
+#### 创建客户
 
 ```bash
 POST /squareup/v2/customers
@@ -336,7 +336,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Customer
+#### 更新客户信息
 
 ```bash
 PUT /squareup/v2/customers/{customer_id}
@@ -347,13 +347,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Customer
+#### 删除客户
 
 ```bash
 DELETE /squareup/v2/customers/{customer_id}
 ```
 
-#### Search Customers
+#### 搜索客户
 
 ```bash
 POST /squareup/v2/customers/search
@@ -370,9 +370,9 @@ Content-Type: application/json
 }
 ```
 
-### Orders
+### 订单
 
-#### Create Order
+#### 创建订单
 
 ```bash
 POST /squareup/v2/orders
@@ -396,13 +396,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Order
+#### 获取订单信息
 
 ```bash
 GET /squareup/v2/orders/{order_id}
 ```
 
-#### Update Order
+#### 更新订单信息
 
 ```bash
 PUT /squareup/v2/orders/{order_id}
@@ -417,7 +417,7 @@ Content-Type: application/json
 }
 ```
 
-#### Search Orders
+#### 搜索订单
 
 ```bash
 POST /squareup/v2/orders/search
@@ -435,7 +435,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Retrieve Orders
+#### 批量获取订单信息
 
 ```bash
 POST /squareup/v2/orders/batch-retrieve
@@ -447,27 +447,27 @@ Content-Type: application/json
 }
 ```
 
-### Catalog
+### 商品目录
 
-#### List Catalog
+#### 列出商品目录
 
 ```bash
 GET /squareup/v2/catalog/list
 ```
 
-With type filter:
+支持类型过滤：
 
 ```bash
 GET /squareup/v2/catalog/list?types=ITEM,CATEGORY
 ```
 
-#### Get Catalog Object
+#### 获取商品目录信息
 
 ```bash
 GET /squareup/v2/catalog/object/{object_id}
 ```
 
-#### Upsert Catalog Object
+#### 更新商品目录信息
 
 ```bash
 POST /squareup/v2/catalog/object
@@ -500,13 +500,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Catalog Object
+#### 删除商品目录信息
 
 ```bash
 DELETE /squareup/v2/catalog/object/{object_id}
 ```
 
-#### Batch Upsert Catalog Objects
+#### 批量更新商品目录信息
 
 ```bash
 POST /squareup/v2/catalog/batch-upsert
@@ -522,7 +522,7 @@ Content-Type: application/json
 }
 ```
 
-#### Search Catalog Objects
+#### 搜索商品目录信息
 
 ```bash
 POST /squareup/v2/catalog/search
@@ -538,21 +538,21 @@ Content-Type: application/json
 }
 ```
 
-#### Get Catalog Info
+#### 获取商品目录详情
 
 ```bash
 GET /squareup/v2/catalog/info
 ```
 
-### Inventory
+### 库存
 
-#### Retrieve Inventory Count
+#### 获取库存数量
 
 ```bash
 GET /squareup/v2/inventory/{catalog_object_id}
 ```
 
-#### Batch Retrieve Inventory Counts
+#### 批量获取库存数量
 
 ```bash
 POST /squareup/v2/inventory/counts/batch-retrieve
@@ -564,7 +564,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Change Inventory
+#### 批量修改库存信息
 
 ```bash
 POST /squareup/v2/inventory/changes/batch-create
@@ -587,27 +587,27 @@ Content-Type: application/json
 }
 ```
 
-#### Retrieve Inventory Adjustment
+#### 获取库存调整信息
 
 ```bash
 GET /squareup/v2/inventory/adjustments/{adjustment_id}
 ```
 
-### Invoices
+### 发票
 
-#### List Invoices
+#### 列出发票记录
 
 ```bash
 GET /squareup/v2/invoices?location_id={location_id}
 ```
 
-#### Get Invoice
+#### 获取发票信息
 
 ```bash
 GET /squareup/v2/invoices/{invoice_id}
 ```
 
-#### Create Invoice
+#### 创建发票
 
 ```bash
 POST /squareup/v2/invoices
@@ -632,7 +632,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Invoice
+#### 更新发票信息
 
 ```bash
 PUT /squareup/v2/invoices/{invoice_id}
@@ -652,7 +652,7 @@ Content-Type: application/json
 }
 ```
 
-#### Publish Invoice
+#### 发布发票
 
 ```bash
 POST /squareup/v2/invoices/{invoice_id}/publish
@@ -664,7 +664,7 @@ Content-Type: application/json
 }
 ```
 
-#### Cancel Invoice
+#### 取消发票
 
 ```bash
 POST /squareup/v2/invoices/{invoice_id}/cancel
@@ -675,13 +675,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Invoice
+#### 删除发票
 
 ```bash
 DELETE /squareup/v2/invoices/{invoice_id}?version=1
 ```
 
-#### Search Invoices
+#### 搜索发票记录
 
 ```bash
 POST /squareup/v2/invoices/search
@@ -697,15 +697,15 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-Square uses cursor-based pagination. List endpoints return a `cursor` field when more results exist:
+Square使用基于游标的分页机制。当存在更多结果时，列表端点会返回一个 `cursor` 字段：
 
 ```bash
 GET /squareup/v2/payments?cursor={cursor_value}
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -714,9 +714,9 @@ Response includes pagination info:
 }
 ```
 
-Continue fetching by passing the cursor value in subsequent requests until no cursor is returned.
+通过在后续请求中传递 `cursor` 值来继续获取数据，直到不再返回 `cursor`。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -745,28 +745,28 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All amounts are in the smallest currency unit (e.g., cents for USD: 1000 = $10.00)
-- IDs are alphanumeric strings
-- Timestamps are in ISO 8601 format (e.g., `2026-02-07T01:59:28.459Z`)
-- Most write operations require an `idempotency_key` to prevent duplicate operations
-- Some endpoints require specific OAuth scopes (CUSTOMERS_READ, ORDERS_READ, ITEMS_READ, INVOICES_READ, etc.)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有金额均以最小货币单位表示（例如，USD的1000表示$10.00）。
+- ID为字母数字字符串。
+- 时间戳采用ISO 8601格式（例如：`2026-02-07T01:59:28.459Z`）。
+- 大多数写入操作需要 `idempotency_key` 以防止重复操作。
+- 某些端点需要特定的OAuth权限范围（如 `CUSTOMERS_READ`、`ORDERS_READ`、`ITEMS_READ`、`INVOICES_READ`等）。
+- 重要提示：当URL包含括号时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：在将curl输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）可能在某些shell环境中无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Square connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient OAuth scopes |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Square API |
+| 400 | 未建立Square连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | OAuth权限范围不足 |
+| 404 | 资源未找到 |
+| 429 | 请求次数限制 |
+| 4xx/5xx | 来自Square API的传递错误 |
 
-### Error Response Format
+### 错误响应格式
 
 ```json
 {
@@ -780,15 +780,15 @@ data = response.json()
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -799,27 +799,26 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `squareup`. For example:
+1. 确保您的URL路径以 `squareup` 开头。例如：
+   - 正确：`https://gateway.maton.ai/squareup/v2/locations`
+   - 错误：`https://gateway.maton.ai/v2/locations`
 
-- Correct: `https://gateway.maton.ai/squareup/v2/locations`
-- Incorrect: `https://gateway.maton.ai/v2/locations`
+### 故障排除：权限范围不足
 
-### Troubleshooting: Insufficient Scopes
+如果收到 `INSUFFICIENT_SCOPES` 的错误，说明OAuth连接没有所需的权限。请创建新的连接并在OAuth认证过程中授予所有必要的权限。
 
-If you receive a 403 error with `INSUFFICIENT_SCOPES`, the OAuth connection doesn't have the required permissions. Create a new connection and ensure you grant all necessary permissions during OAuth authorization.
+## 资源
 
-## Resources
-
-- [Square API Overview](https://developer.squareup.com/docs)
-- [Square API Reference](https://developer.squareup.com/reference/square)
-- [Payments API](https://developer.squareup.com/reference/square/payments-api)
-- [Customers API](https://developer.squareup.com/reference/square/customers-api)
-- [Orders API](https://developer.squareup.com/reference/square/orders-api)
-- [Catalog API](https://developer.squareup.com/reference/square/catalog-api)
-- [Inventory API](https://developer.squareup.com/reference/square/inventory-api)
-- [Invoices API](https://developer.squareup.com/reference/square/invoices-api)
-- [Locations API](https://developer.squareup.com/reference/square/locations-api)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Square API概述](https://developer.square.com/docs)
+- [Square API参考](https://developer.square.com/reference/square)
+- [支付API](https://developer.square.com/reference/square/payments-api)
+- [客户API](https://developer.square.com/reference/square/customers-api)
+- [订单API](https://developer.square.com/reference/square/orders-api)
+- [商品目录API](https://developer.square.com/reference/square/catalog-api)
+- [库存API](https://developer.square.com/reference/square/inventory-api)
+- [发票API](https://developer.square.com/reference/square/invoices-api)
+- [地点API](https://developer.square.com/reference/square/locations-api)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

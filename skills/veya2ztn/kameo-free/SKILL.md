@@ -1,97 +1,97 @@
 ---
 name: kameo
-description: Generate expressive talking-head videos from static images using Kameo AI. Converts static avatars/portraits into dynamic 5-second videos with realistic facial expressions, lip-sync, and motion. Use when you need to bring static images to life, create AI character videos, demonstrate visual communication, or generate talking avatars from photos.
+description: 使用 Kameo AI 从静态图像生成富有表现力的头像视频。该工具可以将静态头像或肖像转换为时长为 5 秒的动态视频，这些视频包含逼真的面部表情、唇形同步以及动作效果。适用于需要让静态图像“活起来”的场景，例如制作 AI 角色视频、展示视觉沟通内容，或从照片中生成可说话的头像。
 ---
 
-# Kameo AI - Talking Head Video Generation
+# Kameo AI – 生成具有真实动作和口型的头像视频
 
-Transform static images into expressive talking-head videos with realistic motion and lip-sync.
+将静态图片转换为表情丰富、具有真实动作和口型的头像视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 scripts/generate_video.sh <image_path> <prompt> [output_file]
 ```
 
-**Example:**
+**示例：**
 ```bash
 scripts/generate_video.sh avatar.jpg "Hello, I am an AI assistant" output.mp4
 ```
 
-## What It Does
+## 功能介绍
 
-- Takes a static image (portrait/avatar)
-- Adds realistic facial motion, expressions, and lip-sync based on your prompt
-- Generates 5-second video in 9:16, 16:9, or 1:1 aspect ratio
-- Returns CDN URL instantly (processing ~10-30 seconds)
+- 接收一张静态图片（肖像/头像）
+- 根据您的提示添加真实的面部动作、表情和口型同步
+- 生成时长为5秒的视频，支持9:16、16:9或1:1的宽高比
+- 立即返回视频的CDN链接（处理时间约10-30秒）
 
-## Authentication
+## 认证
 
-Set your Kameo API key:
+设置您的Kameo API密钥：
 ```bash
 export KAMEO_API_KEY="kam_I3rdx43IymFNbfBw1c0ZbSc7o3aUfQgz8cljZA6T7fs"
 ```
 
-Or store in `~/.config/kameo/credentials.json`:
+或者将其存储在`~/.config/kameo/credentials.json`文件中：
 ```json
 {
   "api_key": "kam_I3rdx43IymFNbfBw1c0ZbSc7o3aUfQgz8cljZA6T7fs"
 }
 ```
 
-**Getting an API Key:**
+**获取API密钥：**
 
-1. Register at kameo.chat (requires email verification)
-2. Login to get JWT token
-3. Create API key via `/api/public/keys` endpoint
-4. Or use the registration helper: `scripts/register.sh`
+1. 在kameo.chat注册（需要验证邮箱）
+2. 登录以获取JWT令牌
+3. 通过`/api/public/keys`端点创建API密钥
+4. 或者使用辅助工具`scripts/register.sh`进行注册
 
-## Prompt Engineering
+## 提示设计
 
-### Basic Prompts (Simple)
+### 基本提示（简单）
 
-Just the dialogue:
+仅提供对话内容：
 ```
 "Hello, I'm here to help you today"
 "こんにちは、私はガッキーです。愛してます。"
 ```
 
-Works but results are generic.
+虽然可以生成视频，但效果较为普通。
 
-### Enhanced Prompts (Recommended)
+### 高级提示（推荐）
 
-**Format:**
+**格式：**
 ```
 [Detailed scene/environment], [person's complete appearance and expression], speaking in [tone], "[DIALOGUE]". [Camera and lighting details].
 ```
 
-**Example:**
+**示例：**
 ```
 In a bright outdoor winter setting with soft, overcast daylight, a young woman with long dark hair wearing a white knitted winter hat with ear flaps and a colorful patterned sweater stands centered in frame. She looks directly into the camera with a warm, genuine smile, her eyes crinkling with joy, speaking in a cheerful, affectionate tone, "こんにちは、私はガッキーです。愛してます。" The scene is captured in a medium close-up shot, framed at eye level. The lighting is natural and diffused from above, creating soft, even illumination.
 ```
 
-**Why Enhanced Prompts Matter:**
-- Better facial expressions matching the scene context
-- More natural motion and gestures
-- Improved lip-sync quality
-- Contextual emotional delivery
+**高级提示的重要性：**
+- 更符合场景背景的面部表情
+- 更自然的动作和手势
+- 更优质的口型同步效果
+- 更贴合情境的情感表达
 
-### Prompt Enhancement Workflow
+### 提示优化流程
 
-For best results, use vision AI to analyze the image first:
+为了获得最佳效果，请先使用视觉AI分析图片：
 
-1. Feed the image to a vision model (Gemini, GPT-4V, Claude)
-2. Ask it to describe the scene in cinematic detail
-3. Insert your dialogue into the description
-4. Use the enhanced prompt for Kameo
+1. 将图片输入到视觉模型（如Gemini、GPT-4V、Claude）中
+2. 让模型详细描述场景
+3. 将您的对话内容插入描述中
+4. 使用优化后的提示来生成视频
 
-**See:** `scripts/enhance_prompt.sh` for automated enhancement.
+**参考：`scripts/enhance_prompt.sh`以获取自动化优化功能。**
 
-## API Details
+## API详情
 
-**Base URL:** `https://api.kameo.chat/api/public`
+**基础URL：** `https://api.kameo.chat/api/public`
 
-### Generate Video
+### 生成视频
 
 ```bash
 curl -X POST https://api.kameo.chat/api/public/generate \
@@ -105,13 +105,13 @@ curl -X POST https://api.kameo.chat/api/public/generate \
   }'
 ```
 
-**Parameters:**
-- `image_base64` (required): Base64-encoded JPEG/PNG
-- `prompt` (required): Dialogue and/or scene description
-- `seconds` (optional): 5 (default) or 10
-- `aspect_ratio` (optional): "9:16" (default), "16:9", or "1:1"
+**参数：**
+- `image_base64`（必填）：Base64编码的JPEG/PNG图片
+- `prompt`（必填）：对话内容或场景描述
+- `seconds`（可选）：5秒（默认）或10秒
+- `aspect_ratio`（可选）："9:16"（默认）、"16:9"或"1:1"
 
-**Response:**
+**响应：**
 ```json
 {
   "job_id": "uuid",
@@ -122,14 +122,14 @@ curl -X POST https://api.kameo.chat/api/public/generate \
 }
 ```
 
-### Check Credits
+### 查看剩余信用
 
 ```bash
 curl -H "X-API-Key: kam_..." \
   https://api.kameo.chat/api/public/credits
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "permanent_credits": 294,
@@ -138,67 +138,63 @@ curl -H "X-API-Key: kam_..." \
 }
 ```
 
-### Pricing
+## 价格
 
-```bash
-curl https://api.kameo.chat/api/public/pricing
-```
+**费用：** 每个视频3个信用点
 
-**Cost:** 3 credits per video
+## 性能
 
-## Performance
+- **处理时间：** 8-35秒（取决于宽高比和队列情况）
+- **9:16（肖像）：** 约30-35秒
+- **16:9（横屏）：** 约15-20秒
+- **1:1（正方形）：** 约10-15秒
 
-- **Processing time:** 8-35 seconds (depends on aspect ratio and queue)
-- **9:16 (portrait):** ~30-35s
-- **16:9 (landscape):** ~15-20s  
-- **1:1 (square):** ~10-15s
+## 最佳实践
 
-## Best Practices
-
-1. **Optimize image size** - Resize large images before encoding (saves bandwidth, faster upload)
+1. **优化图片大小**：在编码前调整图片大小（节省带宽，加快上传速度）
    ```bash
    ffmpeg -i large.jpg -vf scale=720:-1 optimized.jpg
    ```
 
-2. **Use descriptive prompts** - Enhanced prompts = better results
+2. **使用详细的提示**：高级提示可生成更好的效果
 
-3. **Choose aspect ratio wisely**
-   - 9:16: Mobile/social media (TikTok, Instagram Stories)
-   - 16:9: Desktop/YouTube
-   - 1:1: Profile pictures, square posts
+3. **合理选择宽高比**
+   - 9:16：适用于移动设备/社交媒体（如TikTok、Instagram Stories）
+   - 16:9：适用于桌面/YouTube
+   - 1:1：适用于个人资料图片或正方形帖子
 
-4. **Monitor credits** - Check balance with `scripts/check_credits.sh`
+4. **监控信用点数**：使用`scripts/check_credits.sh`查看剩余信用
 
-## Limitations
+## 限制
 
-- **CDN access:** Video URLs may have time-limited access or require authentication
-- **Download:** Videos may return 403 when downloaded via curl (use browser or authenticated session)
-- **Rate limits:** 10 generations per minute
+- **CDN访问：** 视频链接可能具有时间限制或需要认证
+- **下载：** 使用curl下载视频时可能会收到403错误（建议使用浏览器或已认证的会话）
+- **使用限制：** 每分钟最多生成10个视频
 
-## Troubleshooting
+## 故障排除
 
-**"401 Unauthorized"**
-- Check your API key is set correctly
-- Verify key hasn't been revoked
+**“401未经授权”**
+- 确保API密钥设置正确
+- 验证密钥是否已被吊销
 
-**"402 Insufficient credits"**
-- Check credit balance: `scripts/check_credits.sh`
-- Need to add credits at kameo.chat
+**“402信用不足”**
+- 查看剩余信用点数：`scripts/check_credits.sh`
+- 需要在kameo.chat补充信用点数
 
-**"Timeout errors"**
-- 9:16 videos take longer (~30s)
-- Increase timeout in scripts
-- Retry if server is busy
+**“超时错误”**
+- 9:16格式的视频处理时间较长（约30秒）
+- 增加脚本中的超时设置
+- 如果服务器繁忙，请稍后重试
 
-**"403 when downloading video"**
-- CDN URLs may be time-limited
-- Try accessing in browser immediately after generation
-- Or save the base64 response if available
+**“下载视频时出现403错误”**
+- CDN链接可能具有时间限制
+- 建议在视频生成后立即通过浏览器访问
+- 或者保存生成的Base64编码内容
 
-## Use Cases
+## 应用场景
 
-- **AI character videos** - Bring bot avatars to life
-- **Social media content** - Dynamic profile videos
-- **Demos and presentations** - Talking product demos
-- **Educational content** - Video tutorials with AI presenters
-- **Multilingual content** - Same avatar speaking different languages
+- **AI角色视频**：让机器人头像动起来
+- **社交媒体内容**：动态的个人资料视频
+- **演示文稿**：带有AI演示者的产品展示
+- **教育内容**：包含AI讲解者的视频教程
+- **多语言内容**：同一个头像使用不同语言进行演讲

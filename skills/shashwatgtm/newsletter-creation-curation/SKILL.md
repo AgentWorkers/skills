@@ -1,15 +1,15 @@
 ---
 name: newsletter-creation-curation
-description: Industry-specific newsletter creation with cadence recommendations and automation workflows
+description: 行业定制的新闻通讯生成工具，提供发布节奏建议及自动化工作流程
 metadata: {"clawdbot":{"emoji":"📧","homepage":"https://github.com/shashwatgtm","always":true}}
 ---
-## **🎯 Multi-Dimensional Navigator**
+## **🎯 多维度导航器**
 
-**Newsletters serve different purposes depending on your context. Find your path:**
+**根据不同的使用场景，电子邮件的目的也会有所不同。找到适合您的路径：**
 
-### **STEP 1: What's Your Goal?**
+### **步骤1：您的目标是什么？**
 
-Your primary goal determines everything about your newsletter strategy:
+您的核心目标决定了整个电子邮件策略的走向：
 
 ```
 → LEAD GENERATION - Generate inbound leads for sales team
@@ -18,13 +18,13 @@ Your primary goal determines everything about your newsletter strategy:
 → CATEGORY OWNERSHIP - Own the conversation in your space
 ```
 
-### **STEP 2: What's Your Industry Vertical?**
+### **步骤2：您所处的行业领域是什么？**
 
-Your industry determines:
-- Content topics and angle
-- Competitive positioning
-- Tone and risk tolerance
-- What's considered "valuable content"
+您的行业决定了：
+- 内容的主题和角度
+- 竞争定位
+- 语言风格和风险承受能力
+- 什么是“有价值的内容”
 
 ```
 → Sales Tech - Tactical sales tips, conversation intelligence insights
@@ -33,13 +33,13 @@ Your industry determines:
 → Operations Tech - Retail execution, supply chain, distribution
 ```
 
-### **STEP 3: What's Your Company Stage?**
+### **步骤3：您公司的发展阶段是什么？**
 
-Your stage determines:
-- Newsletter goals (lead gen vs thought leadership)
-- Resources available (time, budget)
-- Publishing frequency
-- Content depth
+公司的不同发展阶段决定了：
+- 电子邮件的目标（是吸引潜在客户还是树立行业领导地位）
+- 可用的资源（时间、预算）
+- 发布频率
+- 内容的深度
 
 ```
 → Series A ($1M-10M ARR) - Lead gen focus, founder-led
@@ -47,13 +47,13 @@ Your stage determines:
 → Series C+ ($50M+ ARR) - Category ownership, dedicated team
 ```
 
-### **STEP 4: Are You Founder or Employee?**
+### **步骤4：您是创始人还是员工？**
 
-Your role determines:
-- Editorial autonomy
-- Approval workflows
-- Personal vs company brand
-- What you can/cannot say
+您的角色决定了：
+- 对内容的编辑自主权
+- 审批流程
+- 个人品牌与公司品牌的关联
+- 您可以/不可以表达的观点
 
 ```
 → Founder - Full autonomy, personal = company brand
@@ -62,12 +62,12 @@ Your role determines:
 → Employee (Non-Leadership) - Significant constraints
 ```
 
-### **STEP 5: What's Your Primary Market?**
+### **步骤5：您的主要市场在哪里？**
 
-Your geography determines:
-- Publishing times (IST vs EST)
-- Content examples (Indian vs US companies)
-- Distribution channels (WhatsApp vs LinkedIn)
+您的地理位置决定了：
+- 发布时间（印度标准时间 vs 美国东部标准时间）
+- 内容的例子（针对印度公司 vs 美国公司）
+- 分发渠道（WhatsApp vs LinkedIn）
 
 ```
 → India-first - IST times, local examples, price-conscious
@@ -76,37 +76,37 @@ Your geography determines:
 
 ---
 
-## **Quick Navigation by Common Scenarios**
+## **按常见场景快速导航**
 
-**Most Common Use Cases:**
+**最常见的使用场景：**
 
-1. **"I'm a Sales Tech founder, want to generate leads via newsletter"**
-   → Go to: **Section A1** (Sales Tech, Series A, Lead Gen Focus)
+1. **“我是一名销售科技领域的创始人，希望通过电子邮件吸引潜在客户”**
+   → 请参阅：**A1部分**（销售科技领域，A轮融资阶段，以吸引潜在客户为目标）
 
-2. **"I'm VP Marketing at Series B HR Tech, want thought leadership newsletter"**
-   → Go to: **Section B2** (HR Tech, Series B, Thought Leadership)
+2. **“我是B轮融资阶段的人力资源科技公司的市场副总裁，希望发布具有行业领导力的电子邮件”**
+   → 请参阅：**B2部分**（人力资源科技领域，B轮融资阶段，以树立行业领导力为目标）
 
-3. **"I'm at Series C fintech, want to own the category conversation"**
-   → Go to: **Section C3** (Fintech, Series C+, Category Ownership)
+3. **“我是一家C轮融资阶段的金融科技公司，希望主导该领域的讨论”**
+   → 请参阅：**C3部分**（金融科技领域，C轮融资阶段，旨在主导行业讨论）
 
-4. **"I'm PMM at ops tech, my VP wants me to start a newsletter"**
-   → Go to: **Section D2** (Operations Tech, Employee-Led, Approval Workflows)
-
----
-
-# 📊 SECTION A: SALES TECH NEWSLETTERS
-
-**When To Use This Section:**
-- Your product: Sales engagement, conversation intelligence, sales enablement
-- Your audience: Sales leaders, CROs, SDR managers, AEs
-- Your angle: Tactical sales tips, revenue growth, deal execution
-- Tone: Aggressive, data-driven, ROI-focused
+4. **“我是运营科技公司的产品经理，我的副总裁希望我启动一个电子邮件项目”**
+   → 请参阅：**D2部分**（运营科技领域，由员工主导，需要遵循审批流程）
 
 ---
 
-## **A1: Sales Tech @ Series A (Founder-Led Lead Generation)**
+# 📊 **A部分：销售科技领域的电子邮件**
 
-### **Your Reality Check:**
+**何时使用此部分：**
+- 适用产品：销售相关工具、销售流程优化、销售支持
+- 目标受众：销售主管、客户关系经理（CROs）、销售开发代表（SDRs）、销售经理（AEs）
+- 内容重点：实用的销售技巧、收入增长、交易执行
+- 语言风格：积极进取、数据驱动、注重投资回报率（ROI）
+
+---
+
+## **A1：A轮融资阶段的销售科技领域（创始人主导，以吸引潜在客户为目标）**
+
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -118,9 +118,9 @@ COMPANY PROFILE:
 - Budget: $0-200/month
 ```
 
-### **The Sales Tech Newsletter Formula:**
+### **销售科技领域电子邮件的制作方法：**
 
-**Why Sales Leaders Read Newsletters:**
+**销售主管为何会阅读电子邮件：**
 
 ```
 SALES LEADERS DON'T READ:
@@ -136,11 +136,11 @@ SALES LEADERS READ:
 ✅ Quick wins (implement in <30 minutes)
 ```
 
-### **Series A Sales Tech Newsletter Strategy:**
+### **A轮融资阶段销售科技领域电子邮件的策略：**
 
-**GOAL: 10-20 SQLs per month from newsletter**
+**目标：每月通过电子邮件获得10-20个潜在客户（SQLs）**
 
-**Week-by-Week Startup Plan:**
+**每周计划：**
 
 ```
 WEEK 1: POSITIONING & SETUP (4 hours)
@@ -204,7 +204,7 @@ SETUP CHECKLIST:
 □ First post published: "Issue #0: What to expect"
 ```
 
-**WEEK 2: WRITE & PUBLISH ISSUE #1 (4 hours)**
+**第2周：撰写并发布第1期邮件（4小时）**
 
 ```
 Monday: Research & Outline (1 hour)
@@ -297,7 +297,7 @@ POST-PUBLISH AMPLIFICATION:
 □ Email to 10 sales leaders: "Would love your take on this"
 ```
 
-**WEEKS 3-12: WEEKLY RHYTHM (3-4 hours/week)**
+**第3-12周：每周发布一期邮件（每周3-4小时）**
 
 ```
 MONDAY (1 hour):
@@ -321,9 +321,9 @@ FRIDAY (30 minutes):
 □ Respond to replies (engagement signal)
 ```
 
-### **Sales Tech Newsletter: Content Ideas (First 12 Issues)**
+### **销售科技领域电子邮件的内容建议（前12期）**
 
-**Tactical > Theory**
+**侧重实践操作，而非理论分析**
 
 ```
 ISSUE 1: "Why 73% of SDRs fail [Gong data analysis]"
@@ -345,7 +345,7 @@ PATTERN:
 - 20% contrarian/provocative takes
 ```
 
-### **Measuring Success (Sales Tech Newsletter KPIs)**
+### **衡量成功的标准（销售科技领域电子邮件的关键绩效指标KPIs）**
 
 ```
 MONTH 1-3 (Building):
@@ -375,9 +375,9 @@ SALES TECH SPECIFIC:
 - Track: LinkedIn engagement (comments, shares)
 ```
 
-### **Sales Tech Newsletter: Growth Tactics**
+### **销售科技领域电子邮件的增长策略**
 
-**FREE GROWTH (Series A Budget)**
+**在A轮融资阶段的预算内实现增长**
 
 ```
 WEEK 1-4: Foundation
@@ -408,9 +408,9 @@ AVOID (Even for Sales Tech):
 
 ---
 
-## **A2: Sales Tech @ Series B (Thought Leadership Team Effort)**
+## **A2：B轮融资阶段的销售科技领域（以树立行业领导力为目标）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -423,7 +423,7 @@ COMPANY PROFILE:
 - Time: Team effort, 10-15 hours/week total
 ```
 
-### **Why Series B Newsletter Strategy is Different:**
+### **B轮融资阶段电子邮件策略的不同之处：**
 
 ```
 SERIES A NEWSLETTER:
@@ -448,7 +448,7 @@ NEW CHALLENGES:
 - Measuring pipeline impact (not just leads)
 ```
 
-### **Series B Sales Tech Newsletter: Enhanced Production**
+### **B轮融资阶段销售科技领域电子邮件的优化方案：**
 
 ```
 TEAM STRUCTURE:
@@ -505,7 +505,7 @@ FRIDAY (1 hour):
 - Prepare LinkedIn post for Monday
 ```
 
-### **Series B Content Strategy: Data-Driven Thought Leadership**
+### **B轮融资阶段电子邮件的内容策略：数据驱动的行业领导力**
 
 ```
 DIFFERENCE FROM SERIES A:
@@ -553,7 +553,7 @@ Example: "Our CEO on Building Sales Culture at Scale"
 - Recruiting signal (talented people want to work here)
 ```
 
-### **Series B Newsletter: Advanced Growth Tactics**
+### **B轮融资阶段电子邮件的增长策略：**
 
 ```
 PAID GROWTH (Now You Have Budget):
@@ -600,9 +600,9 @@ TACTIC 6: SALES TEAM AMPLIFICATION
 
 ---
 
-## **A3: Sales Tech @ Series C+ (Category Ownership via Newsletter)**
+## **A3：C轮融资阶段的销售科技领域（通过电子邮件主导行业讨论）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -615,7 +615,9 @@ COMPANY PROFILE:
 - Subscribers: 10,000-50,000+
 ```
 
-### **Series C+ Newsletter = Category Ownership**
+### **C轮融资阶段的电子邮件的目标：**
+
+**通过电子邮件主导整个行业讨论**
 
 ```
 SERIES A/B GOAL:
@@ -640,7 +642,9 @@ YOUR NEWSLETTER BECOMES:
 - Required reading for sales leaders
 ```
 
-### **Series C+ Production: Media Company Level**
+### **C轮融资阶段的电子邮件制作：**  
+- 需达到媒体公司的专业水准  
+- 内容应具有行业定义性的深度  
 
 ```
 TEAM STRUCTURE:
@@ -679,7 +683,8 @@ TIER 4: DISTRIBUTION ($3K-10K/month)
 □ PR agency (if needed, $5K-10K/month)
 ```
 
-### **Series C+ Content: Industry-Defining Research**
+### **C轮融资阶段的电子邮件内容：**  
+- 包含行业前沿的研究成果  
 
 ```
 QUARTERLY FLAGSHIP REPORTS:
@@ -720,51 +725,24 @@ Q4: "SALES COMPENSATION BENCHMARKS 2026"
 - Newsletter exclusive preview
 ```
 
-### **Series C+ Distribution: Media-Level Amplification**
-
-```
-OWNED CHANNELS:
-□ Newsletter (primary)
-□ Blog (SEO, long-form)
-□ LinkedIn (3-5 posts/day from team)
-□ Twitter/X (5-10 posts/day)
-□ YouTube (video summaries)
-□ Podcast (weekly, guests)
-
-EARNED CHANNELS:
-□ Media coverage (TechCrunch, Forbes, WSJ)
-□ Podcast guest circuit (top sales podcasts)
-□ Conference speaking (SaaStr, Pavilion, G2 Reach)
-□ Academic citations (if partnered with universities)
-
-PAID CHANNELS:
-□ Sponsored content in top newsletters ($5K-15K per placement)
-□ LinkedIn ads ($5K-10K/month)
-□ Conference sponsorships ($10K-50K per event)
-□ Trade publication ads (if needed)
-
-PARTNER CHANNELS:
-□ Integration partners (Salesforce, HubSpot, Outreach)
-□ Community partners (Pavilion, Revenue Collective)
-□ Analyst firms (Gartner, Forrester)
-□ Academic partners (universities, research labs)
-```
+### **C轮融资阶段的电子邮件分发：**  
+- 通过媒体渠道扩大影响力  
 
 ---
 
-# 📊 SECTION B: HR TECH NEWSLETTERS
+# 📊 **B部分：人力资源科技领域的电子邮件**
 
-**When To Use This Section:**
-- Your product: HRIS, employee engagement, performance management, recruiting
-- Your audience: HR leaders, CHROs, People Ops, Talent Acquisition
-- Your angle: Employee experience, people analytics, compliance, culture
-- Tone: Professional, empathetic, research-backed (NEVER aggressive like Sales Tech)
+**何时使用此部分：**
+- 适用产品：人力资源信息管理系统（HRIS）、员工参与度提升、绩效管理、招聘工具  
+- 目标受众：人力资源主管（HR leaders）、首席人力资源官（CHROs）、人事运营团队（People Ops）、人才招聘部门  
+- 内容重点：员工体验、人才分析、合规性、企业文化  
+- 语言风格：专业、富有同理心、基于研究（绝不能像销售科技领域那样激进）
 
 ---
 
-## **B1: HR Tech @ Series A (Founder-Led Thought Leadership)**
+## **B1：A轮融资阶段的人力资源科技领域（创始人主导，以树立行业领导力为目标）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -776,7 +754,7 @@ COMPANY PROFILE:
 - Budget: $0-300/month
 ```
 
-### **Why HR Tech Newsletters Are FUNDAMENTALLY DIFFERENT:**
+### **人力资源科技领域电子邮件的根本区别：**
 
 ```
 SALES TECH NEWSLETTER:
@@ -798,52 +776,11 @@ WHY THE DIFFERENCE:
 - Attacking competitors = unprofessional (damages your reputation)
 ```
 
-### **Series A HR Tech Newsletter Strategy**
+### **A轮融资阶段人力资源科技领域电子邮件的策略：**
 
-**GOAL: Build trust and credibility, generate 5-15 SQLs/month**
+**目标：建立信任和信誉，每月获得5-15个潜在客户（SQLs）**
 
-```
-WEEK 1: POSITIONING (4 hours)
-
-CHOOSE YOUR ANGLE:
-
-Option 1: "PEOPLE ANALYTICS & INSIGHTS"
-- Example: "Data-Driven HR Decisions"
-- Audience: CHROs at 200-1000 employee companies
-- Differentiator: Research-backed, evidence-based
-
-Option 2: "EMPLOYEE EXPERIENCE BEST PRACTICES"
-- Example: "The EX Playbook"
-- Audience: People Ops leaders at startups/scaleups
-- Differentiator: Practical, actionable, empathetic
-
-Option 3: "HR COMPLIANCE & REGULATIONS"
-- Example: "The Compliant CHRO"
-- Audience: HR leaders navigating regulations
-- Differentiator: Expert analysis, updates
-
-PICK BASED ON YOUR PRODUCT:
-- Engagement platform → Employee Experience
-- Performance management → People Analytics
-- HRIS → Compliance & Best Practices
-
-SETUP (LinkedIn Newsletter HIGHLY RECOMMENDED for HR Tech):
-
-WHY LINKEDIN FOR HR TECH:
-✅ HR leaders very active on LinkedIn (not Twitter/Reddit)
-✅ SHRM, Josh Bersin, lots of HR thought leaders on LinkedIn
-✅ Professional network = HR's comfort zone
-✅ Built-in distribution
-
-SETUP:
-□ Create LinkedIn Newsletter
-□ Name: "[Angle] for HR Leaders"
-  Example: "The People Analytics Weekly"
-□ Post frequency: Bi-weekly (HR leaders prefer quality > quantity)
-□ First issue: "Issue #0: Why I'm starting this"
-```
-
-**WEEKS 2-12: BI-WEEKLY RHYTHM (4-6 hours per issue)**
+**每周发布两期邮件（每期4-6小时）**
 
 ```
 WEEK 1 (Publish Week):
@@ -935,7 +872,7 @@ POST-PUBLISH:
 □ NO aggressive self-promotion
 ```
 
-### **HR Tech Newsletter: Content Ideas (First 12 Issues)**
+### **B1阶段电子邮件的内容建议（前12期）**
 
 ```
 ISSUE 1: "The 2026 employee engagement benchmarks [Culture Amp data]"
@@ -958,40 +895,14 @@ PATTERN:
 - 0% aggressive competitive positioning
 ```
 
-### **HR Tech Newsletter: Conservative Growth Tactics**
-
-```
-FREE GROWTH (Professional, Non-Aggressive):
-
-WEEK 1-4: SHRM Community Participation
-□ Join SHRM Connect
-□ Answer HR questions (be helpful, not sales-y)
-□ Signature line: "I write about [topic] at [newsletter link]"
-□ Share newsletter when directly relevant to discussion
-
-WEEK 5-8: LinkedIn Engagement Strategy
-□ Comment thoughtfully on CHRO posts
-□ Share HR research (not just your newsletter)
-□ Build genuine relationships
-□ Newsletter mention in profile: "I publish bi-weekly on [topic]"
-
-WEEK 9-12: Webinars & Guest Content
-□ Partner with SHRM local chapter (co-host webinar)
-□ Guest post on People Managing People blog
-□ Interview 3 CHROs in newsletter (they'll share with network)
-
-WHAT NOT TO DO (Even Though Sales Tech Does It):
-❌ Aggressive LinkedIn outreach
-❌ Controversial/clickbait subject lines
-❌ Calling out competitors
-❌ "You're doing HR wrong" positioning
-```
+### **B1阶段电子邮件的增长策略：**  
+- 采用保守的增长策略  
 
 ---
 
-## **B2: HR Tech @ Series B (Team-Led Professional Content)**
+## **B2：B轮融资阶段的人力资源科技领域（由团队主导，发布专业内容）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -1004,94 +915,17 @@ COMPANY PROFILE:
 - Goal: 3,000-8,000 subscribers, 10-25 SQLs/month
 ```
 
-### **Series B HR Tech: Elevated Content Quality**
+### **B轮融资阶段人力资源科技领域电子邮件的特点：**  
+- 内容质量更高  
 
-```
-TEAM & TOOLS:
-
-TEAM:
-□ Content Director (You): Strategy, stakeholder management
-□ HR Content Writer: Dedicated writer with HR background
-□ Designer: Professional graphics (people photos, infographics)
-□ Founder/CHRO: Monthly guest column
-
-TOOLS ($3K-7K/month):
-□ ConvertKit or ActiveCampaign ($200-400/month)
-□ Graphic design: Part-time designer ($1K-2K/month)
-□ Research subscriptions:
-  - Josh Bersin Academy ($1K/month)
-  - SHRM membership ($200/month)
-  - HBR subscription ($20/month)
-□ Photography: Stock photos (iStock, $30-100/month)
-□ Survey tools: Typeform or SurveyMonkey ($50-100/month)
-
-WEEKLY WORKFLOW (BI-WEEKLY PUBLISHING):
-
-WEEK 1 (Prep Week):
-- Monday: Topic selection, research phase
-- Wednesday: Writer starts first draft
-- Friday: Draft review, feedback
-
-WEEK 2 (Publish Week):
-- Monday: Final draft + design
-- Tuesday: Stakeholder review (VP/CMO approval)
-- Wednesday: Final edits
-- Thursday: Publish at 9 AM EST
-
-APPROVAL WORKFLOW (HR Tech Specific):
-□ Writer completes draft
-□ Content Director reviews (you)
-□ Legal review if: Compliance topics, GDPR, labor laws
-□ Executive review: Founder/CHRO for sensitive topics
-□ Final approval: Content Director
-
-WHY MORE APPROVAL IN HR TECH:
-- People data = sensitive (can't make mistakes)
-- Compliance risk (GDPR, EEOC, labor laws)
-- Reputation risk (HR community is small)
-```
-
-### **Series B Content Strategy: Original Research**
-
-```
-QUARTERLY RESEARCH PROJECTS:
-
-Q1: "THE STATE OF EMPLOYEE ENGAGEMENT 2026"
-- Survey: 500 HR leaders
-- Partner: SHRM local chapter (distribution)
-- Format:
-  * 25-page report
-  * 3-week newsletter series
-  * Webinar with findings
-  
-Cost: $5K-8K (survey tools, design, writer time)
-Impact:
-- 500-1,000 new subscribers
-- 20-40 SQLs
-- Industry credibility
-- Media coverage (HR Dive, HRExecutive)
-
-Q2: "PEOPLE ANALYTICS BENCHMARKS"
-- Your product data: Anonymized benchmarks
-- Customer interviews: 20 case studies
-- Academic partner: Validate findings
-
-Q3: "HYBRID WORK POLICIES [2026 RESEARCH]"
-- Timely, relevant
-- Multi-company case studies
-- Expert commentary (industrial psychologists)
-
-Q4: "HR TECH STACK REPORT"
-- Survey: What tools do CHROs use?
-- Integration insights
-- Budget benchmarks by company size
-```
+### **B2阶段电子邮件的内容策略：**  
+- 包含原创的研究成果  
 
 ---
 
-## **B3: HR Tech @ Series C+ (Category-Defining Content)**
+## **B3：C轮融资阶段的人力资源科技领域（通过电子邮件主导行业讨论）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -1104,60 +938,24 @@ COMPANY PROFILE:
 - Subscribers: 15,000-60,000+
 ```
 
-### **Series C+ HR Tech: Josh Bersin Academy-Level**
-
-```
-AMBITION:
-Not just "a newsletter"
-Goal: Be THE source for HR insights (like Josh Bersin Academy)
-
-CONTENT STRATEGY:
-
-FLAGSHIP RESEARCH (2-3 per year):
-- $30K-60K per report
-- Partner with: Universities, Gartner, Forrester
-- Published in: Academic journals + your newsletter
-- Impact: Cited in board meetings, media, Gartner reports
-
-MEMBERSHIP MODEL:
-- Free newsletter (15K+ subscribers)
-- Premium membership ($199-499/year)
-  * Exclusive research
-  * Templates and frameworks
-  * Private community access
-  * Quarterly roundtables with CHROs
-
-MEDIA PRESENCE:
-- Regular contributor: Harvard Business Review, SHRM
-- Conference speaking: SHRM Annual, Josh Bersin Conf
-- Podcast: Weekly interviews with CHROs
-- Book deal: "The Future of Work [2027]"
-
-TEAM:
-□ VP Content (You): Strategy, partnerships
-□ Managing Editor: Quality, process
-□ 2 Staff Writers: Dedicated to newsletter/research
-□ Research Analyst: Data, surveys, benchmarks
-□ Designer: Infographics, reports
-□ Video Producer: Multimedia content
-□ Community Manager: Member engagement
-```
+### **C轮融资阶段人力资源科技领域电子邮件的目标：**  
+- 达到Josh Bersin Academy级别的专业深度  
 
 ---
 
-# 📊 SECTION C: FINTECH NEWSLETTERS
+# 📊 **C部分：金融科技领域的电子邮件**
 
-**When To Use This Section:**
-- Your product: Payments, expense management, corporate cards, payroll
-- Your audience: CFOs, Finance leaders, Controllers, FinOps
-- Your angle: Financial regulations, payment trends, compliance, efficiency
-- Tone: ULTRA-CONSERVATIVE (regulatory risk is extreme)
+**何时使用此部分：**
+- 适用产品：支付系统、费用管理、企业信用卡、薪资管理  
+- 目标受众：首席财务官（CFOs）、财务主管（Finance leaders）、财务运营团队（FinOps）  
+- 内容重点：金融法规、支付趋势、合规性、效率  
+- 语言风格：极其谨慎（因为涉及较高的合规风险）  
 
 ---
 
-## **C1: Fintech @ Series A (Conservative, Compliance-First)**
+## **C1：A轮融资阶段的金融科技领域（保守型，以合规性为核心）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -1170,71 +968,13 @@ COMPANY PROFILE:
 - CRITICAL: Legal review MANDATORY
 ```
 
-### **Why Fintech Newsletters Are HIGHEST RISK:**
+### **金融科技领域电子邮件的风险：**  
+- 相关风险极高  
 
-```
-SALES TECH NEWSLETTER:
-✅ Aggressive positioning
-✅ "Gong is wrong about X"
-✅ Contrarian takes
-Risk: Low (worst case = lose subscribers)
+### **C1阶段金融科技领域电子邮件的策略：**  
+- 通过建立信任来提升品牌影响力  
 
-HR TECH NEWSLETTER:
-⚠️ Professional, empathetic
-⚠️ No competitor attacks
-Risk: Medium (reputation damage)
-
-FINTECH NEWSLETTER:
-🔴 ULTRA-CONSERVATIVE
-🔴 LEGAL REVIEW MANDATORY
-🔴 NEVER make unverified claims
-🔴 NEVER attack competitors (could trigger regulatory scrutiny)
-Risk: EXTREME (fines, license revocation, legal liability)
-
-WHY:
-- Financial regulations: RBI (India), SEC (US), FCA (UK)
-- Financial advertising rules: Can't make unverified ROI claims
-- Compliance violations: ₹1 Cr+ fines, criminal charges
-- Reputational risk: Finance is trust-driven
-```
-
-### **Series A Fintech Newsletter: Trust-Building Strategy**
-
-```
-POSITIONING:
-
-❌ WRONG POSITIONING:
-"We're 10× better than [Competitor]"
-"Save 50% on payment fees" (unless proven and disclosed)
-"The future of fintech"
-
-✅ CORRECT POSITIONING:
-"RBI-compliant payment insights for CFOs"
-"Regulatory updates for Indian fintech founders"
-"Finance operations best practices"
-
-SETUP:
-
-PLATFORM CHOICE (Fintech-Specific):
-□ LinkedIn Newsletter (RECOMMENDED)
-  - CFOs very active on LinkedIn
-  - Professional network = trust signal
-  - Corporate email addresses (not personal)
-  
-□ Substack (SECONDARY)
-  - Own the list
-  - Professional layout
-  - NOT: Medium, Twitter Newsletter (too casual for finance)
-
-FIRST ISSUE TEMPLATE (Conservative):
-
-Subject: "Regulatory Update: RBI's New Payment Guidelines [January 2026]"
-
-NOT: "How We're Disrupting Payments" (too aggressive)
-NOT: "Why Traditional Banking Is Broken" (antagonistic)
-```
-
-**BI-WEEKLY RHYTHM (Fintech = Slower Publishing)**
+**每周发布两期邮件（适合金融科技行业的发布节奏）**
 
 ```
 WHY BI-WEEKLY (not weekly):
@@ -1314,7 +1054,7 @@ POST-PUBLISH (Conservative Approach):
 □ NO calls to action beyond "Read the full update"
 ```
 
-### **Fintech Newsletter: Content Ideas (First 12 Issues)**
+### **C1阶段电子邮件的内容建议（前12期）**
 
 ```
 ISSUE 1: "RBI's updated payment aggregator guidelines [Analysis]"
@@ -1340,19 +1080,19 @@ PATTERN:
 
 ---
 
-# 📊 SECTION D: OPERATIONS TECH NEWSLETTERS
+## **D部分：运营科技领域的电子邮件**
 
-**When To Use This Section:**
-- Your product: Retail execution, logistics, field force automation
-- Your audience: Sales/Ops leaders at CPG/FMCG companies
-- Your angle: Distribution insights, retail execution, supply chain
-- Tone: Practical, industry-specific, B2B2B2C aware
+**何时使用此部分：**
+- 适用产品：零售执行、物流管理、现场团队自动化  
+- 目标受众：消费品公司（CPG/FMCG）的销售/运营主管  
+- 内容重点：供应链管理、零售执行方面的实用信息  
+- 语言风格：实用性强、针对特定行业、了解B2B2B2C商业模式  
 
 ---
 
-## **D1: Operations Tech @ Series A (Industry-Specific Insights)**
+## **D1：A轮融资阶段的运营科技领域（提供行业特定见解）**
 
-### **Your Reality Check:**
+### **现状分析：**
 
 ```
 COMPANY PROFILE:
@@ -1365,27 +1105,10 @@ COMPANY PROFILE:
 - Market: India retail/distribution focus
 ```
 
-### **Why Operations Tech Newsletters Are NICHE:**
+### **运营科技领域电子邮件的特点：**  
+- 针对特定行业的专业内容  
 
-```
-SALES/HR/FINTECH NEWSLETTERS:
-- Broad audience: All B2B SaaS companies
-- Generic insights: Sales, HR, finance tips
-- Large market: 10,000s of potential subscribers
-
-OPERATIONS TECH NEWSLETTER:
-- Niche audience: CPG/FMCG sales & ops leaders
-- Specific insights: Retail execution, distribution
-- Smaller market: 1,000s of potential subscribers (but high intent)
-
-ADVANTAGE OF NICHE:
-✅ Less competition (few newsletters in this space)
-✅ Higher engagement (exactly what audience needs)
-✅ Easier to become category expert
-✅ Stronger community (everyone knows each other)
-```
-
-### **Series A Operations Tech Newsletter Strategy**
+### **A轮融资阶段运营科技领域电子邮件的策略：**
 
 ```
 POSITIONING OPTIONS:
@@ -1432,70 +1155,13 @@ SECONDARY:
 □ Field team WhatsApp groups (insights from distributors)
 ```
 
-**BI-WEEKLY PUBLISHING (Operations Tech Cadence)**
-
-```
-WEEK 1 (Research):
-
-CONTENT IDEAS:
-
-Distribution Insights:
-- "State of general trade in North India [Q4 2025 data]"
-- "How kiranas stock FMCG products [field study]"
-- "Distributor margin analysis [benchmarks]"
-
-Technology Adoption:
-- "How HUL's field team uses mobile apps [case study]"
-- "ROI of field force automation [data from 20 companies]"
-- "Offline-first tech for rural distribution [best practices]"
-
-Market Trends:
-- "Quick commerce impact on FMCG distribution [analysis]"
-- "D2C brands' distribution strategy [emerging trends]"
-- "Modern trade vs general trade [2026 outlook]"
-
-WEEK 2 (Write & Publish):
-
-STRUCTURE (800-1,000 words):
-
-**OPENING: Industry Insight**
-Example:
-"HUL reported in Q4 earnings that general trade grew 8% 
-while modern trade was flat. We analyzed 10,000 retail 
-visits across North India to understand why..."
-
-**DATA/RESEARCH**
-- Field visit insights
-- Sales data (if anonymized)
-- Industry benchmarks
-
-**PRACTICAL TAKEAWAYS**
-For Sales Heads:
-- What this means for your distribution strategy
-- Which channels to prioritize
-
-For Field Teams:
-- Tactical execution tips
-- What to focus on in store visits
-
-**CASE STUDY (If Available)**
-"How [CPG Brand] increased distribution by 15% 
-in general trade using [strategy]"
-
-PUBLISHING:
-□ Tuesday 10 AM IST (India CPG leaders)
-□ Share on LinkedIn
-□ Share summary in WhatsApp groups (with link)
-□ Email to CPG sales heads in network
-```
+**每周发布两期邮件（符合运营科技行业的发布节奏）**
 
 ---
 
-# 🔄 CROSS-CUTTING: UNIVERSAL FRAMEWORKS
+## **跨领域通用框架**
 
-## **Role-Specific Workflows**
-
-### **FOUNDER-LED NEWSLETTERS (Full Autonomy)**
+### **创始人主导的电子邮件（完全自主）**
 
 ```
 ADVANTAGES:
@@ -1517,7 +1183,7 @@ BEST PRACTICES:
 □ Consider: What happens if you leave/sell company?
 ```
 
-### **EMPLOYEE-LED NEWSLETTERS (Approval Workflows)**
+### **员工主导的电子邮件（需要遵循审批流程）**
 
 ```
 SCENARIO: VP Marketing Wants Personal Newsletter
@@ -1560,7 +1226,7 @@ STEP 4: Periodic Check-Ins
 □ Annually: Review and renew agreement
 ```
 
-### **ENTERPRISE EMPLOYEE (Corporate Comms Controlled)**
+### **企业员工主导的电子邮件（由企业通讯部门控制）**
 
 ```
 SCENARIO: CMO at Public SaaS Company
@@ -1586,9 +1252,9 @@ OPTIONS:
 
 ---
 
-## **Geography-Specific Tactics**
+## **地区特定的策略**
 
-### **India Newsletter Strategy**
+### **印度市场的电子邮件策略**
 
 ```
 PUBLISHING TIMES:
@@ -1613,7 +1279,7 @@ COMMUNITY ENGAGEMENT:
 □ LinkedIn India Groups (sales, HR, tech)
 ```
 
-### **US Newsletter Strategy**
+### **美国市场的电子邮件策略**
 
 ```
 PUBLISHING TIMES:
@@ -1640,10 +1306,9 @@ COMMUNITY ENGAGEMENT:
 
 ---
 
-## **Worked Examples: Multi-Dimensional Scenarios**
+## **实际案例：多维度场景的应用**
 
-### **Example 1: Sales Tech Founder, Series A, India → Newsletter for Lead Gen**
-
+### **案例1：印度A轮融资阶段的销售科技领域创始人，发布以吸引潜在客户的电子邮件**  
 ```
 SCENARIO:
 - Company: AI sales coaching, $3M ARR, 30 employees
@@ -1684,8 +1349,7 @@ Newsletter becomes #2 lead source (after LinkedIn posts)
 Cost: $0 (your time: 4 hours/week)
 ```
 
-### **Example 2: HR Tech VP Marketing, Series B, US → Thought Leadership Newsletter**
-
+### **案例2：美国B轮融资阶段的人力资源科技市场副总裁，发布具有行业领导力的电子邮件**  
 ```
 SCENARIO:
 - Company: Employee engagement platform, $20M ARR
@@ -1735,10 +1399,9 @@ Recruiting: "I read your newsletter" in interviews
 
 ---
 
-## **Common Newsletter Mistakes & How to Avoid**
+## **常见的电子邮件错误及避免方法**
 
-### **Mistake 1: "Industry-Agnostic Content"**
-
+### **错误1：内容与行业无关**  
 ```
 WRONG APPROACH:
 "Write generic B2B newsletter with sales/HR/fintech advice"
@@ -1753,8 +1416,7 @@ Choose ONE vertical, go deep
 → Section A (Sales Tech) or B (HR) or C (Fintech) or D (Ops)
 ```
 
-### **Mistake 2: "No Clear Goal"**
-
+### **错误2：缺乏明确的目标**  
 ```
 WRONG APPROACH:
 "I'll start a newsletter and see what happens"
@@ -1773,8 +1435,7 @@ MEASURE:
 □ Inbound mentions (if thought leadership)
 ```
 
-### **Mistake 3: "Inconsistent Publishing"**
-
+### **错误3：发布频率不规律**  
 ```
 PROBLEM:
 Week 1: Publish
@@ -1796,10 +1457,9 @@ SOLUTION:
 
 ---
 
-## **Prompt Templates for Each Scenario**
+## **针对每种场景的模板**
 
-### **Template 1: Series A Sales Tech Founder Newsletter**
-
+### **模板1：A轮融资阶段的销售科技领域创始人电子邮件**  
 ```
 Using the Newsletter Creation skill, Section A1:
 
@@ -1822,8 +1482,7 @@ India-specific if applicable:
 - SaaSBoomi distribution
 ```
 
-### **Template 2: Series B HR Tech VP Newsletter**
-
+### **模板2：B轮融资阶段的人力资源科技市场副总裁电子邮件**  
 ```
 Using the Newsletter Creation skill, Section B2:
 
@@ -1849,20 +1508,20 @@ Remember:
 
 ---
 
-## **Tool Comparison Matrix**
+## **工具比较矩阵**
 
-| Tool | Free | Paid | Best For | Not Good For |
+| 工具 | 是否免费 | 是否收费 | 适合哪些场景 | 不适合哪些场景 |
 |------|------|------|----------|--------------|
-| **LinkedIn Newsletter** | ✅ | N/A | Sales/HR/Ops Tech (B2B audience on LinkedIn) | Fintech (want owned list) |
-| **Substack** | ✅ | 5% fee paid | Owning list, monetization later | Enterprise employee (no autonomy) |
-| **ConvertKit** | $0-25/mo | $29-79/mo | Series B+ (advanced features, automation) | Series A (overkill) |
-| **Beehiiv** | ✅ | $49+/mo | Growth features, referrals, monetization | Simple newsletter |
-| **Ghost** | $9+/mo | $25-199/mo | Tech-savvy, custom domain, membership | Non-technical founders |
-| **Medium** | ✅ | N/A | Consumer content, broad reach | B2B SaaS (wrong audience) |
+| **LinkedIn Newsletter** | 是 | 不适用 | 适合销售/人力资源/运营科技领域的B2B受众 | 不适合金融科技领域（需要建立专属邮件列表） |
+| **Substack** | 是 | 收费5% | 适合建立专属邮件列表，后期可盈利 | 不适合企业员工（缺乏编辑自主权） |
+| **ConvertKit** | 每月0-25美元 | 每月29-79美元 | 适合C轮融资阶段及以上的企业（功能先进，支持自动化） | 不适合A轮融资阶段的企业 |
+| **Beehiiv** | 是 | 每月49美元以上 | 提供增长相关功能、推荐系统、盈利模式 | 适合对技术有一定了解的创始人 |
+| **Ghost** | 每月9美元以上 | 每月25-199美元 | 适合技术爱好者，支持自定义域名、会员制度 | 不适合非技术背景的创始人 |
+| **Medium** | 是 | 不适用 | 适合发布消费类内容，受众广泛 | 不适合B2B SaaS企业 |
 
 ---
 
-## **Quick Reference: Industry-Stage-Role Matrix**
+## **快速参考：行业-发展阶段-角色对应关系矩阵**
 
 ```
 SALES TECH:
@@ -1888,4 +1547,4 @@ OPERATIONS TECH:
 
 ---
 
-**END OF SKILL**
+**SKILL文档结束**

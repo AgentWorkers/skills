@@ -1,36 +1,36 @@
 ---
 name: qrcoin
-description: Interact with QR Coin auctions on Base. Use when the user wants to participate in qrcoin.fun QR code auctions — check auction status, view current bids, create new bids, or contribute to existing bids. QR Coin lets you bid to display URLs on QR codes; the highest bidder's URL gets encoded.
+description: 在 Base 平台上，您可以与 QR Coin 拍卖功能进行交互。当用户想要参与 qrcoin.fun 的 QR 码拍卖时，可以使用该功能来查看拍卖状态、当前出价情况、创建新的出价，或对现有出价进行补充。QR Coin 允许用户对 QR 码上显示的 URL 进行出价；出价最高者的 URL 会被最终编码并保存在拍卖结果中。
 metadata: {"clawdbot":{"emoji":"📱","homepage":"https://qrcoin.fun","requires":{"bins":["curl","jq"]}}}
 ---
 
-# QR Coin Auction
+# QR币拍卖
 
-Participate in [QR Coin](https://qrcoin.fun) auctions on Base blockchain. QR Coin lets you bid to display URLs on QR codes — the highest bidder's URL gets encoded when the auction ends.
+参与基于Base区块链的[QR币](https://qrcoin.fun)拍卖。QR币允许您竞拍在二维码上显示的URL——拍卖结束时，出价最高的URL将被编码到二维码中。
 
-## Contracts (Base Mainnet)
+## 合同（Base主网）
 
-| Contract | Address |
+| 合同 | 地址 |
 |----------|---------|
-| QR Auction | `0x7309779122069EFa06ef71a45AE0DB55A259A176` |
+| QR拍卖 | `0x7309779122069EFa06ef71a45AE0DB55A259A176` |
 | USDC | `0x833589fCD6eDb6E08f4c7c32D4f71b54bdA02913` |
 
-## How It Works
+## 运作原理
 
-1. Each auction runs for a fixed period (~24h)
-2. Bidders submit URLs with USDC (6 decimals — 1 USDC = 1000000 units)
-3. Creating a new bid costs ~11.11 USDC (createBidReserve)
-4. Contributing to an existing bid costs ~1.00 USDC (contributeReserve)
-5. Highest bid wins; winner's URL is encoded in the QR code
-6. Losers get refunded; winners receive QR tokens
+1. 每次拍卖持续固定时间（约24小时）。
+2. 投标者使用USDC进行竞拍（货币单位为1000000单位）。
+3. 创建新的竞拍报价需要约11.11 USDC（`createBidReserve`函数）。
+4. 增加现有竞拍的金额需要约1.00 USDC（`contributeReserve`函数）。
+5. 出价最高者获胜；获胜者的URL会被编码到二维码中。
+6. 失败者将获得退款；获胜者将获得QR代币。
 
-## Auction Status Queries
+## 拍卖状态查询
 
-> **Note**: The examples below use `https://mainnet.base.org` (public RPC). You can substitute your own RPC endpoint if preferred.
+> **注意**：以下示例使用`https://mainnet.base.org`（公共RPC接口）。您可以根据需要替换为自己的RPC端点。
 
-### Get Current Token ID
+### 获取当前拍卖ID
 
-Always query this first to get the active auction ID before bidding.
+在竞拍前，请务必先查询当前的活跃拍卖ID。
 
 ```bash
 curl -s -X POST https://mainnet.base.org \
@@ -39,7 +39,7 @@ curl -s -X POST https://mainnet.base.org \
   | jq -r '.result' | xargs printf "%d\n"
 ```
 
-### Get Auction End Time
+### 获取拍卖结束时间
 
 ```bash
 # First get the current token ID, then use it here
@@ -52,7 +52,7 @@ curl -s -X POST https://mainnet.base.org \
   | jq -r '.result' | xargs printf "%d\n"
 ```
 
-### Get Reserve Prices
+### 获取保留价格
 
 ```bash
 # Create bid reserve (~11.11 USDC)
@@ -68,100 +68,98 @@ curl -s -X POST https://mainnet.base.org \
   | jq -r '.result' | xargs printf "%d\n" | awk '{print $1/1000000 " USDC"}'
 ```
 
-## Transactions via Bankr
+## 通过Bankr进行交易
 
-QR Coin auctions require USDC transactions on Base. Use Bankr to execute these — Bankr handles:
-- Function signature parsing and parameter encoding
-- Gas estimation
-- Transaction signing and submission
-- Confirmation monitoring
+QR币拍卖需要使用Base区块链上的USDC交易。请使用Bankr来执行这些交易——Bankr负责：
+- 函数签名解析和参数编码
+- 交易费用估算
+- 交易签名和提交
+- 交易确认监控
 
-### Step 1: Approve USDC (One-Time)
+### 第1步：批准USDC（一次性操作）
 
-Before bidding, approve the auction contract to spend USDC:
+在竞拍前，需要先批准拍卖合同以使用USDC：
 
 ```
 Approve 50 USDC to 0x7309779122069EFa06ef71a45AE0DB55A259A176 on Base
 ```
 
-### Step 2: Create a New Bid
+### 第2步：创建新的竞拍报价
 
-To start a new bid for your URL:
+要为您的URL创建一个新的竞拍报价，请使用以下函数：
+**函数**：`createBid(uint256 tokenId, string url, string name)`
+**合同**：`0x7309779122069EFa06ef71a45AE0DB55A259A176`
+**费用**：约11.11 USDC
 
-**Function**: `createBid(uint256 tokenId, string url, string name)`
-**Contract**: `0x7309779122069EFa06ef71a45AE0DB55A259A176`
-**Cost**: ~11.11 USDC
+> **重要提示**：请务必先使用`currentTokenId()`函数获取当前的活跃拍卖ID。
 
-> **Important**: Always query `currentTokenId()` first to get the active auction ID.
-
-Example prompt for Bankr:
+**Bankr使用示例**：
 ```
 Send transaction to 0x7309779122069EFa06ef71a45AE0DB55A259A176 on Base
 calling createBid(329, "https://example.com", "MyName")
 ```
 
-### Step 3: Contribute to Existing Bid
+### 第3步：增加现有竞拍的金额
 
-To add funds to an existing URL's bid:
+要为现有URL的竞拍增加金额，请使用以下函数：
+**函数**：`contributeToBid(uint256 tokenId, string url, string name)`
+**合同**：`0x7309779122069EFa06ef71a45AE0DB55A259A176`
+**费用**：每次增加约1.00 USDC
 
-**Function**: `contributeToBid(uint256 tokenId, string url, string name)`
-**Contract**: `0x7309779122069EFa06ef71a45AE0DB55A259A176`
-**Cost**: ~1.00 USDC per contribution
-
-Example prompt for Bankr:
+**Bankr使用示例**：
 ```
 Send transaction to 0x7309779122069EFa06ef71a45AE0DB55A259A176 on Base
 calling contributeToBid(329, "https://grokipedia.com/page/debtreliefbot", "MerkleMoltBot")
 ```
 
-## Function Selectors
+## 函数选择器
 
-| Function | Selector | Parameters |
+| 函数 | 选择器 | 参数 |
 |----------|----------|------------|
 | `currentTokenId()` | `0x7d9f6db5` | — |
-| `auctionEndTime(uint256)` | `0xa4d0a17e` | tokenId |
+| `auctionEndTime(uint256)` | `0xa4d0a17e` | auctionId |
 | `createBidReserve()` | `0x5b3bec22` | — |
 | `contributeReserve()` | `0xda5a5cf3` | — |
-| `createBid(uint256,string,string)` | `0xf7842286` | tokenId, url, name |
-| `contributeToBid(uint256,string,string)` | `0x7ce28d02` | tokenId, url, name |
+| `createBid(uint256,string,string)` | `0xf7842286` | auctionId, url, name |
+| `contributeToBid(uint256,string,string)` | `0x7ce28d02` | auctionId, url, name |
 | `approve(address,uint256)` | `0x095ea7b3` | spender, amount |
 
-## Error Codes
+## 错误代码
 
-| Error | Meaning | Solution |
+| 错误代码 | 含义 | 解决方案 |
 |-------|---------|----------|
-| `RESERVE_PRICE_NOT_MET` | Bid amount below minimum | Check reserve prices |
-| `URL_ALREADY_HAS_BID` | URL already has a bid | Use `contributeToBid` instead |
-| `BID_NOT_FOUND` | URL doesn't have existing bid | Use `createBid` instead |
-| `AUCTION_OVER` | Current auction has ended | Wait for next auction |
-| `AUCTION_NOT_STARTED` | Auction hasn't begun | Wait for auction to start |
-| `INSUFFICIENT_ALLOWANCE` | USDC not approved | Approve USDC first |
+| `RESERVE_PRICE_NOT_MET` | 投标金额低于最低要求 | 请检查保留价格 |
+| `URL_ALREADYHAS_BID` | 该URL已有竞拍报价 | 请使用`contributeToBid`函数 |
+| `BID_NOT_FOUND` | 该URL没有竞拍报价 | 请使用`createBid`函数 |
+| `AUCTION_OVER` | 当前拍卖已结束 | 请等待下一次拍卖 |
+| `AUCTION_NOT_STARTED` | 拍卖尚未开始 | 请等待拍卖开始 |
+| `INSUFFICIENT_ALLOWANCE` | USDC未获批准 | 请先批准USDC |
 
-## Typical Workflow
+## 典型工作流程
 
-1. **Query `currentTokenId()`** — Get the active auction ID
-2. **Check auction status** — Verify time remaining
-3. **Approve USDC** — One-time approval for the auction contract
-4. **Decide action**:
-   - **New URL**: Use `createBid` (~11.11 USDC)
-   - **Support existing URL**: Use `contributeToBid` (~1.00 USDC)
-5. **Monitor** — Watch for outbids and contribute more if needed
-6. **Claim** — Winners receive QR tokens; losers get refunds
+1. **查询`currentTokenId()`** — 获取当前的活跃拍卖ID。
+2. **检查拍卖状态** — 查看剩余时间。
+3. **批准USDC** — 为拍卖合同进行一次性批准。
+4. **决定操作**：
+   - **新URL**：使用`createBid`函数（费用约11.11 USDC）。
+   - **支持现有URL**：使用`contributeToBid`函数（费用约1.00 USDC）。
+5. **监控** — 关注是否有更高的出价；如有需要可追加投注。
+6. **领取奖励**：获胜者获得QR代币；失败者获得退款。
 
-## Links
+## 链接
 
-- **Platform**: https://qrcoin.fun
-- **Auction Contract**: [BaseScan](https://basescan.org/address/0x7309779122069EFa06ef71a45AE0DB55A259A176)
-- **USDC on Base**: [BaseScan](https://basescan.org/token/0x833589fCD6eDb6E08f4c7c32D4f71b54bdA02913)
+- **平台**：https://qrcoin.fun
+- **拍卖合同**：[BaseScan](https://basescan.org/address/0x7309779122069EFa06ef71a45AE0DB55A259A176)
+- **Base区块链上的USDC**：[BaseScan](https://basescan.org/token/0x833589fCD6eDb6E08f4c7c32D4f71b54bdA02913)
 
-## Tips
+## 提示
 
-- **Start small**: Contribute to existing bids (~1 USDC) to learn the flow
-- **Check timing**: Auctions have fixed end times; plan accordingly
-- **Monitor bids**: Others can outbid you; watch the auction
-- **Use Bankr**: Let Bankr handle transaction signing and execution
-- **Specify Base**: Always include "on Base" when using Bankr
+- **从小额开始**：可以先尝试为现有竞拍增加少量资金（约1 USDC），熟悉操作流程。
+- **注意时间**：拍卖有固定的结束时间，请做好计划。
+- **关注竞拍情况**：其他人可能会出更高的价，请密切关注拍卖进程。
+- **使用Bankr**：让Bankr处理交易签名和执行。
+- **指定区块链**：使用Bankr时请务必注明“在Base区块链上”。
 
 ---
 
-**💡 Pro Tip**: Contributing to an existing bid is cheaper than creating a new one. Check if someone already bid for your URL before creating a new bid.
+**💡 专业提示**：为现有竞拍增加金额比创建新的竞拍报价更经济。在创建新竞拍报价之前，请先查看是否已有其他人对该URL进行过竞拍。

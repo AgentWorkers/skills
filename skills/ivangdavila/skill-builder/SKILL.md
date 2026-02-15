@@ -1,22 +1,22 @@
 ---
 name: "Skill Builder"
-description: "Build high-quality skills with optimal structure. For local use or publishing to ClawHub."
+description: "通过最佳的结构来培养高水平的技能。这些技能既可用于本地使用，也可发布到 ClawHub 上。"
 ---
 
-## Build Skills That Work
+## 构建实用且高效的技能文档
 
-Create skills that are token-efficient, well-structured, and actually useful.
+创建那些在性能上高效、结构清晰且真正有用的技能文档。
 
-**Core principle:** SKILL.md should be SHORT. Move details to auxiliary files.
+**核心原则：** SKILL.md 文件应当保持简洁。将详细信息放到辅助文件中。
 
-**References:**
-- `structure.md` — Anatomy of a good skill
-- `patterns.md` — Proven patterns with examples  
-- `checklist.md` — Pre-publish validation
+**参考文档：**
+- `structure.md` — 优秀技能文档的构成要素
+- `patterns.md` — 经过验证的模板及示例
+- `checklist.md` — 发布前的验证流程
 
 ---
 
-### File Structure
+### 文件结构
 
 ```
 skill-name/
@@ -25,45 +25,45 @@ skill-name/
 └── FILES.txt     ← Lists all files to publish (one per line)
 ```
 
-**FILES.txt example:**
+**FILES.txt 示例：**
 ```
 SKILL.md
 patterns.md
 reference.md
 ```
 
-### ⚠️ Publishing Rules
+### ⚠️ 发布规则
 
-**Publishing is serious.** Each publish is permanent and public. No spam, no experiments.
+**发布行为需谨慎。** 每次发布都是永久性的且公开的。禁止发布垃圾内容或进行未经验证的实验。
 
-1. **Never publish without verification**
-2. **Never change slug after first publish** (breaks installations)
-3. **Always verify name, description, version match your files**
-4. **Always confirm which files will be published**
+1. **未经验证切勿发布**
+2. **首次发布后切勿更改文件路径（slug）**（否则可能导致安装失败）
+3. **务必确保文件名称、描述和版本与实际文件内容一致**
+4. **明确哪些文件将被发布**
 
-### Pre-Publish Verification
+### 发布前的验证
 
-Before ANY publish, send verification to user with:
-- **Slug** (exact)
-- **Name** (exact)  
-- **Version**
-- **Description** (exact)
-- **Files list** (from FILES.txt)
+在发布任何内容之前，需向用户提供以下信息：
+- **文件路径（slug）**
+- **文件名称**
+- **版本号**
+- **文件描述**
+- **文件列表（来自 FILES.txt 文件）**
 
-**Recommended:** Generate verification programmatically (script/code) to guarantee accuracy. A PDF or structured format that pulls values directly from your files ensures no copy-paste errors.
+**推荐做法：** 通过脚本或代码自动生成验证信息，以确保准确性。验证信息可以采用 PDF 格式或结构化格式，直接从文件中提取数据，从而避免复制粘贴错误。
 
-User can configure verification level:
-- Full review (PDF with all content)
-- Summary only (metadata + file list)
-- Trust mode (auto-publish, not recommended)
+用户可以配置验证的详细程度：
+- **全面审核**（包含所有内容的 PDF 文件）
+- **仅显示摘要**（元数据 + 文件列表）
+- **信任模式**（自动发布，不建议使用）
 
-### What Makes Skills Good
+### 优秀技能文档的要素：
 
-- **Concise** — Models are smart, don't over-explain
-- **Progressive disclosure** — Details in separate files
-- **Clear triggers** — Description says WHEN to use
-- **Actionable** — Instructions, not explanations
+- **简洁明了** — 用简洁的语言描述功能，避免过度解释
+- **逐步披露信息** — 详细内容放在单独的文件中
+- **明确的使用场景** — 描述中明确说明何时使用该技能
+- **可操作性** — 提供具体的使用说明，而非仅仅解释功能
 
 ---
 
-**Before publishing:** Run `checklist.md`
+**发布前步骤：** 运行 `checklist.md` 命令进行验证

@@ -1,6 +1,6 @@
 ---
 name: ergocare-coach
-description: Your personal desk health coach with automated break reminders. Generates platform-specific scripts (bash/PowerShell) for 20-20-20 eye care, lower back exercises, and RSI prevention. Comprehensive exercise routines, ergonomic guidance, and customizable notification systems for computer professionals.
+description: 您的个人“办公健康教练”，具备自动提醒功能，帮助您保持良好的工作习惯。该工具会为您生成针对不同操作平台的脚本（bash/PowerShell），用于执行“20-20-20”眼部保护规则、腰部锻炼以及预防重复性劳损（RSI）的相关动作。它提供全面的锻炼计划、人体工程学指导，并支持自定义通知设置，专为计算机专业人士设计。
 metadata:
   openclaw:
     emoji: "👁️"
@@ -15,51 +15,50 @@ metadata:
 
 # ErgoCare Coach 👁️🦴💪
 
-## Description
+## 产品描述
 
-Your intelligent desk health and wellness coach that actually reminds you automatically! ErgoCare Coach provides:
+ErgoCare Coach 是您的智能健康与工作习惯助手，它会自动提醒您进行适当的休息和锻炼！ErgoCare Coach 提供以下功能：
 
-1. **Expert Exercise Guidance** - 20-20-20 eye care, lower back stretches, neck exercises, RSI prevention
-2. **Platform-Specific Reminder Scripts** - Generates bash scripts (Linux/Mac) and PowerShell scripts (Windows) that run as background processes
-3. **Automated Notifications** - Desktop notifications, terminal alerts, sound alerts, visual countdowns
-4. **Customizable Schedules** - 20-20-20, hourly breaks, custom intervals, work hour limits
-5. **Comprehensive Routines** - From 30-second micro-breaks to 10-minute full routines
+1. **专业的锻炼指导**：20-20-20 视力保护规则、腰部拉伸、颈部锻炼以及预防重复性劳损（RSI）的练习。
+2. **平台专属的提醒脚本**：生成适用于 Linux/Mac 和 Windows 的 Bash 脚本或 PowerShell 脚本，可在后台运行。
+3. **自动通知**：桌面通知、终端提醒、声音提示以及视觉倒计时。
+4. **可自定义的作息时间表**：20-20-20 规则、每小时的小休息、自定义休息间隔以及工作时长限制。
+5. **全面的锻炼计划**：从 30 秒的短暂休息到 10 分钟的全面锻炼。
 
-**"The greatest wealth is Health."**
+**“最宝贵的财富是健康。”**
 
-Perfect for:
-- 💻 Computer professionals working long hours
-- 👁️ Anyone experiencing eye strain or dry eyes  
-- 🦴 People with lower back, neck, or shoulder pain
-- 🎮 Gamers and content creators
-- 📚 Students and researchers
-- 🏢 Remote workers and desk workers
-- 🩺 Anyone wanting to prevent RSI and chronic issues
-
----
-
-## How This Skill Works
-
-### Two Modes of Operation
-
-**Mode 1: Interactive Exercise Coach**
-- Ask for specific exercises anytime: "Show me eye exercises"
-- Get instant guidance: "I have neck pain, what should I do?"
-- Learn routines: "Give me a 5-minute full body desk stretch"
-
-**Mode 2: Automated Reminder Scripts** ⭐ **NEW!**
-- Request a custom script: "Generate a 20-20-20 reminder script for Mac"
-- Get platform-specific code (bash/PowerShell) ready to run
-- Scripts run in background, send notifications automatically
-- Fully customizable intervals and exercise types
+ErgoCare Coach 非常适合以下人群：
+- 长时间使用电脑的专业人士
+- 有眼睛疲劳或干眼症状的人
+- 颈部、腰部或肩部疼痛的人
+- 游戏玩家和内容创作者
+- 学生和研究人员
+- 远程工作者和伏案工作者
+- 希望预防重复性劳损和其他健康问题的所有人
 
 ---
 
-## 1. Quick Start: Get Your Reminder Script
+## 产品工作原理
 
-### Request Your Custom Script
+### 两种使用模式
 
-Just ask ErgoCare Coach:
+**模式 1：交互式锻炼指导**
+- 随时询问具体的锻炼方法：例如：“展示眼部锻炼方法。”
+- 获取即时建议：例如：“我脖子疼，该怎么办？”
+- 学习完整的锻炼计划：例如：“给我一个 5 分钟的全身锻炼计划。”
+
+**模式 2：自动提醒脚本** ⭐ **新功能！**
+- 请求自定义脚本：例如：“为我的 Mac 生成一个 20-20-20 规则的提醒脚本。”
+- 脚本会在后台运行，并自动发送通知。
+- 休息间隔和锻炼类型均可完全自定义。
+
+---
+
+## 1. 快速入门：获取您的提醒脚本
+
+### 请求自定义脚本
+
+只需向 ErgoCare Coach 提出请求：
 
 ```
 "Generate a 20-20-20 reminder script for Linux"
@@ -68,67 +67,67 @@ Just ask ErgoCare Coach:
 "Make me a comprehensive break script for Ubuntu with all exercise types"
 ```
 
-### Script Features
+### 脚本特点
 
-**All Scripts Include:**
-- ✅ Desktop notifications with exercise instructions
-- ✅ Countdown timers between breaks
-- ✅ Sound alerts (optional, can be disabled)
-- ✅ Customizable intervals
-- ✅ Multiple exercise types embedded
-- ✅ Easy start/stop/restart
-- ✅ Run on system startup (optional)
+所有脚本均包含：
+- ✅ 带有锻炼说明的桌面通知
+- ✅ 休息期间的倒计时
+- ✅ 可选的声音提示
+- ✅ 可自定义的休息间隔
+- ✅ 多种类型的锻炼
+- ✅ 简单的启动/停止/重新启动功能
+- ✅ 可选择在系统启动时自动运行
 
-**Platform Support:**
-- 🐧 **Linux**: bash script with `notify-send`, `zenity`, or terminal alerts
-- 🍎 **macOS**: bash script with `osascript` notifications and `say` voice alerts
-- 🪟 **Windows**: PowerShell with `BurntToast` module or native notifications
-
----
-
-## 2. The 20-20-20 Rule (Eye Care Foundation)
-
-### What It Is
-
-**Every 20 minutes, look at something 20 feet away for at least 20 seconds.**
-
-### Why It Works
-
-When you focus on a screen, your eye muscles maintain constant tension:
-- **Ciliary muscles** stay contracted to focus at close range
-- **Extraocular muscles** hold fixed position
-- **Blinking rate drops** from 15-20/min to 5-7/min (causing dry eyes)
-- **Blue light exposure** increases eye fatigue
-
-Looking into the distance:
-- ✅ Relaxes ciliary muscles
-- ✅ Triggers natural blinking
-- ✅ Resets focus mechanism
-- ✅ Reduces strain accumulation
-
-### 20-20-20 Implementation
-
-**Your automated script will:**
-1. Run silently in background
-2. Track 20-minute intervals
-3. Send desktop notification: "👁️ 20-20-20 Break: Look 20 feet away for 20 seconds"
-4. (Optional) Play gentle sound alert
-5. (Optional) Show countdown timer
-6. Repeat every 20 minutes
-
-**Manual 20-20-20:**
-- Window view (buildings, trees, sky)
-- Hallway or room far end  
-- Distant wall clock or artwork
-- Outside through open door
-- Anything genuinely 20+ feet away
+**平台支持：**
+- **Linux**：使用 `notify-send`、`zenity` 或终端提示的 Bash 脚本
+- **macOS**：使用 `osascript` 的 Bash 脚本和语音提示
+- **Windows**：使用 `BurntToast` 模块的 PowerShell 脚本或系统内置通知
 
 ---
 
-## 3. Eye Exercise Library
+## 2. 20-20-20 规则（视力保护基础）
 
-### Quick Blink Reset (30 seconds)
-**When to use:** Every hour, or when eyes feel dry
+### 规则内容
+
+**每 20 分钟，看 20 英尺外的物体 20 秒。**
+
+### 规则原理
+
+长时间盯着屏幕会导致眼睛肌肉持续紧张：
+- **睫状肌** 为了聚焦近处物体而保持收缩状态
+- **外眼肌** 保持固定位置
+- **眨眼频率** 从每分钟 15-20 次降至 5-7 次（导致眼睛干涩）
+- **蓝光** 会增加眼睛疲劳
+
+通过看远处的物体：
+- ✅ 放松睫状肌
+- ✅ 促进自然眨眼
+- ✅ 重置眼睛的聚焦机制
+- ✅ 减轻眼睛疲劳
+
+### 20-20-20 规则的实现方式
+
+您的自动脚本会：
+1. 在后台无声运行
+2. 记录 20 分钟的时间间隔
+3. 发送桌面通知：“👁️ 20-20-20 休息时间：看 20 英尺外的物体 20 秒”
+4. （可选）播放轻柔的声音提示
+5. （可选）显示倒计时
+6. 每 20 分钟重复一次
+
+**手动执行 20-20-20 规则的方法：**
+- 看窗外的建筑物、树木或天空
+- 看走廊或房间另一端的物体
+- 看远处的墙钟或艺术品
+- 通过打开的门看向室外
+- 任何真正位于 20 英尺以外的物体
+
+---
+
+## 3. 眼部锻炼库
+
+### 快速眨眼恢复（30 秒）
+**适用场景**：每小时一次，或当眼睛感到干涩时
 
 ```
 1. Close eyes gently (don't squeeze) - 2 seconds
@@ -139,8 +138,8 @@ Looking into the distance:
 Benefits: Refreshes tear film, prevents dry eyes
 ```
 
-### Palming (1-2 minutes)
-**When to use:** Mid-morning, after lunch, mid-afternoon
+### 握拳按摩（1-2 分钟）
+**适用场景**：上午、午饭后或下午
 
 ```
 1. Rub palms together until warm
@@ -152,8 +151,8 @@ Benefits: Refreshes tear film, prevents dry eyes
 Benefits: Deep relaxation, reduces eye fatigue
 ```
 
-### Eye Rolls (45 seconds)
-**When to use:** Every 2 hours
+### 眼球转动（45 秒）
+**适用场景**：每 2 小时一次
 
 ```
 1. Look up, pause 2 seconds
@@ -165,8 +164,8 @@ Benefits: Deep relaxation, reduces eye fatigue
 Benefits: Exercises all eye muscles, increases range of motion
 ```
 
-### Focus Shifting (1 minute)
-**When to use:** Every hour
+### 转移视线（1 分钟）
+**适用场景**：每小时一次
 
 ```
 1. Hold finger 10 inches from your face
@@ -177,8 +176,8 @@ Benefits: Exercises all eye muscles, increases range of motion
 Benefits: Strengthens focusing ability, prevents presbyopia progression
 ```
 
-### Figure Eight (1 minute)
-**When to use:** Mid-day, when feeling strain
+### 八字形眼球运动（1 分钟）
+**适用场景**：中午感到眼睛疲劳时
 
 ```
 1. Imagine a large figure 8 on the wall (10 feet away)
@@ -189,8 +188,8 @@ Benefits: Strengthens focusing ability, prevents presbyopia progression
 Benefits: Improves eye coordination and flexibility
 ```
 
-### Near-Far Focus (1 minute)
-**When to use:** Every 90 minutes
+### 近远焦点切换（1 分钟）
+**适用场景**：每 90 分钟一次
 
 ```
 1. Hold thumb at arm's length
@@ -203,10 +202,10 @@ Benefits: Reduces accommodation stress
 
 ---
 
-## 4. Lower Back Exercise Library
+## 4. 腰部锻炼库
 
-### Seated Spinal Twist (1 minute each side)
-**When to use:** Every hour
+### 坐姿脊柱扭转（每侧 1 分钟）
+**适用场景**：每小时一次
 
 ```
 1. Sit up straight, feet flat on floor
@@ -220,8 +219,8 @@ Benefits: Reduces accommodation stress
 Benefits: Relieves lower back tension, improves spine mobility
 ```
 
-### Seated Cat-Cow (1 minute)
-**When to use:** Every 45-60 minutes
+### 坐姿猫牛式（1 分钟）
+**适用场景**：每 45-60 分钟一次
 
 ```
 1. Sit on edge of chair, hands on knees
@@ -233,8 +232,8 @@ Benefits: Relieves lower back tension, improves spine mobility
 Benefits: Mobilizes entire spine, reduces stiffness
 ```
 
-### Standing Hip Hinge (45 seconds)
-**When to use:** Every 90 minutes
+### 站姿髋部弯曲（45 秒）
+**适用场景**：每 90 分钟一次
 
 ```
 1. Stand with feet hip-width apart
@@ -249,8 +248,8 @@ Benefits: Mobilizes entire spine, reduces stiffness
 Benefits: Stretches hamstrings, strengthens lower back
 ```
 
-### Seated Forward Fold (1 minute)
-**When to use:** Mid-morning, after lunch
+### 坐姿前倾（1 分钟）
+**适用场景**：上午或午饭后
 
 ```
 1. Sit on edge of chair
@@ -264,8 +263,8 @@ Benefits: Stretches hamstrings, strengthens lower back
 Benefits: Decompresses spine, relieves lower back
 ```
 
-### Pelvic Tilts (1 minute)
-**When to use:** Every 2 hours
+### 骨盆倾斜（1 分钟）
+**适用场景**：每 2 小时一次
 
 ```
 1. Sit with back against chair, feet flat
@@ -278,8 +277,8 @@ Benefits: Decompresses spine, relieves lower back
 Benefits: Strengthens core, mobilizes pelvis
 ```
 
-### Standing Quad Stretch with Back Extension (1 minute each side)
-**When to use:** Every 2 hours
+### 站姿腿部伸展（每侧 1 分钟）
+**适用场景**：每 2 小时一次
 
 ```
 1. Stand near chair for support
@@ -294,10 +293,10 @@ Benefits: Stretches hip flexors, counteracts sitting posture
 
 ---
 
-## 5. Neck & Shoulder Exercise Library
+## 5. 颈部和肩部锻炼库
 
-### Neck Rolls (1 minute)
-**When to use:** Every 45 minutes
+### 颈部转动（1 分钟）
+**适用场景**：每 45 分钟一次
 
 ```
 1. Sit or stand with relaxed shoulders
@@ -311,8 +310,8 @@ Benefits: Stretches hip flexors, counteracts sitting posture
 Benefits: Releases neck tension, improves mobility
 ```
 
-### Shoulder Shrugs (45 seconds)
-**When to use:** Every hour
+### 肩部耸动（45 秒）
+**适用场景**：每小时一次
 
 ```
 1. Inhale: raise shoulders to ears
@@ -324,8 +323,8 @@ Benefits: Releases neck tension, improves mobility
 Benefits: Relieves shoulder tension, improves posture
 ```
 
-### Neck Side Stretch (1 minute each side)
-**When to use:** Every 90 minutes
+### 颈部侧向拉伸（每侧 1 分钟）
+**适用场景**：每 90 分钟一次
 
 ```
 1. Sit up straight
@@ -338,8 +337,8 @@ Benefits: Relieves shoulder tension, improves posture
 Benefits: Stretches neck muscles, reduces headaches
 ```
 
-### Chin Tucks (1 minute)
-**When to use:** Every 2 hours
+### 下巴内收（1 分钟）
+**适用场景**：每 2 小时一次
 
 ```
 1. Sit or stand with good posture
@@ -353,8 +352,8 @@ Benefits: Stretches neck muscles, reduces headaches
 Benefits: Strengthens neck, counteracts forward head posture
 ```
 
-### Shoulder Blade Squeeze (45 seconds)
-**When to use:** Every hour
+### 肩胛骨挤压（45 秒）
+**适用场景**：每小时一次
 
 ```
 1. Sit up straight, arms at sides
@@ -369,10 +368,10 @@ Benefits: Strengthens upper back, improves posture
 
 ---
 
-## 6. Wrist & Hand Exercise Library (RSI Prevention)
+## 6. 手腕和手部锻炼（预防重复性劳损）
 
-### Wrist Circles (45 seconds)
-**When to use:** Every 60 minutes
+### 手腕旋转（45 秒）
+**适用场景**：每 60 分钟一次
 
 ```
 1. Extend arms forward
@@ -385,8 +384,8 @@ Benefits: Strengthens upper back, improves posture
 Benefits: Prevents carpal tunnel, increases wrist mobility
 ```
 
-### Finger Stretches (1 minute)
-**When to use:** Every 90 minutes
+### 手指伸展（1 分钟）
+**适用场景**：每 90 分钟一次
 
 ```
 1. Extend right arm, palm up
@@ -398,8 +397,8 @@ Benefits: Prevents carpal tunnel, increases wrist mobility
 Benefits: Prevents trigger finger, reduces hand stiffness
 ```
 
-### Prayer Stretch (45 seconds)
-**When to use:** Every 2 hours
+### 祈祷式伸展（45 秒）
+**适用场景**：每 2 小时一次
 
 ```
 1. Press palms together in front of chest (prayer position)
@@ -412,8 +411,8 @@ Benefits: Prevents trigger finger, reduces hand stiffness
 Benefits: Stretches wrist flexors, prevents carpal tunnel
 ```
 
-### Reverse Prayer Stretch (45 seconds)
-**When to use:** Every 2 hours (after Prayer Stretch)
+### 反向祈祷式伸展（45 秒）
+**适用场景**：每 2 小时一次（在祈祷式伸展之后）
 
 ```
 1. Place backs of hands together in front of chest
@@ -424,8 +423,8 @@ Benefits: Stretches wrist flexors, prevents carpal tunnel
 Benefits: Stretches wrist extensors
 ```
 
-### Fist Pumps (30 seconds)
-**When to use:** Every hour
+### 拳头泵动（30 秒）
+**适用场景**：每小时一次
 
 ```
 1. Make tight fist
@@ -439,10 +438,10 @@ Benefits: Increases blood flow, reduces stiffness
 
 ---
 
-## 7. Full Body Desk Routines
+## 7. 全身锻炼计划
 
-### 2-Minute Quick Reset
-**When to use:** Every 30 minutes
+### 2 分钟的快速恢复
+**适用场景**：每 30 分钟一次
 
 ```
 1. 20-20-20 eye break (20 seconds)
@@ -454,8 +453,8 @@ Benefits: Increases blood flow, reduces stiffness
 Total: 2 minutes
 ```
 
-### 5-Minute Energy Break
-**When to use:** Every 90 minutes
+### 5 分钟的活力休息
+**适用场景**：每 90 分钟一次
 
 ```
 1. Palming (1 minute)
@@ -468,8 +467,8 @@ Total: 2 minutes
 Total: 5 minutes
 ```
 
-### 10-Minute Full Routine
-**When to use:** Mid-morning, after lunch, mid-afternoon
+### 10 分钟的全面锻炼
+**适用场景**：上午、午饭后或下午
 
 ```
 1. Eye exercises (2 minutes):
@@ -500,9 +499,9 @@ Total: 10 minutes
 
 ---
 
-## 8. Example Break Schedules
+## 8. 休息时间表示例
 
-### Light User (4-6 hours computer/day)
+### 轻度使用者（每天使用电脑 4-6 小时）
 
 ```
 Every 20 minutes: 20-20-20 eye break (20 seconds)
@@ -512,7 +511,7 @@ Every 2 hours: 5-minute energy break
 Daily total breaks: ~40 minutes
 ```
 
-### Moderate User (6-8 hours computer/day)
+### 中度使用者（每天使用电脑 6-8 小时）
 
 ```
 Every 20 minutes: 20-20-20 eye break (20 seconds)
@@ -523,7 +522,7 @@ Mid-morning + afternoon: 10-minute full routine (2x)
 Daily total breaks: ~60 minutes
 ```
 
-### Heavy User (8+ hours computer/day) - **RECOMMENDED**
+### 重度使用者（每天使用电脑 8 小时以上）**推荐**
 
 ```
 Every 20 minutes: 20-20-20 eye break (20 seconds)
@@ -537,56 +536,56 @@ Daily total breaks: ~90 minutes
 
 ---
 
-## 9. Script Generation Guide
+## 9. 脚本生成指南
 
-### Linux/Mac Bash Script Request
+### 请求 Linux/Mac Bash 脚本
 
-**What to ask:**
+**请求方式：**
 ```
 "Generate a 20-20-20 reminder script for Linux"
 "Create a Mac bash script with full break schedule"
 "Make me an Ubuntu script with eye and back exercises every 45 minutes"
 ```
 
-**What you'll get:**
-- Bash script using `notify-send` (Linux) or `osascript` (Mac)
-- Embedded exercise instructions in notifications
-- Sound alerts using `paplay` or `say`
-- Countdown timer in terminal
-- Easy customization variables
-- Installation instructions
+**您将获得：**
+- 使用 `notify-send`（Linux）或 `osascript`（Mac）的 Bash 脚本
+- 通知中包含锻炼说明
+- 使用 `paplay` 或 `say` 的声音提示
+- 终端中的倒计时功能
+- 可自定义的参数
+- 安装说明
 
-**Features:**
-- Run in background (`./ergocare.sh &`)
-- Add to startup (`crontab @reboot`)
-- Stop script (`pkill -f ergocare.sh`)
-- Logs breaks to file (optional)
+**特点：**
+- 在后台运行（`./ergocare.sh &`）
+- 可添加到系统启动脚本（`crontab @reboot`）
+- 可停止脚本（`pkill -f ergocare.sh`）
+- 可记录休息时间（可选）
 
-### Windows PowerShell Script Request
+### 请求 Windows PowerShell 脚本
 
-**What to ask:**
+**请求方式：**
 ```
 "Generate a Windows break reminder script"
 "Create a PowerShell script for 20-20-20 with hourly stretches"
 "Make me a Windows script with all exercise types"
 ```
 
-**What you'll get:**
-- PowerShell script with native notifications
-- BurntToast module integration (better notifications)
-- Sound alerts using `[System.Media.SystemSounds]`
-- System tray icon (optional)
-- Task Scheduler setup instructions
+**您将获得：**
+- 使用系统内置通知功能的 PowerShell 脚本
+- 集成 `BurntToast` 模块以增强通知效果
+- 使用 `[System.Media.SystemSounds]` 的声音提示
+- 可在系统托盘显示图标
+- 提供任务调度器设置指南
 
-**Features:**
-- Run on startup (Task Scheduler)
-- Minimize to system tray
-- Pause/resume functionality
-- Break history logging
+**特点：**
+- 在系统启动时自动运行
+- 可将脚本最小化到系统托盘
+- 具有暂停/恢复功能
+- 可记录休息时间
 
-### Script Customization Variables
+### 脚本自定义参数
 
-All generated scripts include easy-to-edit variables at the top:
+所有生成的脚本顶部都包含易于编辑的参数：
 
 ```bash
 # CONFIGURATION (edit these)
@@ -599,183 +598,177 @@ NOTIFICATION_TYPE="all"  # "popup", "sound", "terminal", "all"
 
 ---
 
-## 10. Ergonomic Workspace Setup
+## 10. 人体工程学工作环境设置
 
-### Monitor Position
-- **Height**: Top of screen at or slightly below eye level
-- **Distance**: Arm's length away (20-28 inches / 50-70 cm)
-- **Angle**: Tilted 10-20 degrees back
-- **Multiple monitors**: Primary monitor directly in front
+### 显示器位置
+- **高度**：屏幕位于眼睛水平或略低的位置
+- **距离**：距离屏幕 20-28 英寸（50-70 厘米）
+- **角度**：向后倾斜 10-20 度
+- **多显示器设置**：主显示器应正对前方
 
-### Chair Setup
-- **Seat height**: Feet flat on floor, thighs parallel to ground
-- **Seat depth**: 2-4 inches between seat edge and back of knees
-- **Backrest**: Supports natural curve of lower back (lumbar support)
-- **Armrests**: Elbows at 90 degrees, shoulders relaxed
+### 椅子设置
+- **座椅高度**：双脚平放在地上，大腿与地面平行
+- **座椅深度**：座椅边缘与膝盖后部之间距离为 2-4 英寸
+- **靠背**：支撑腰部的自然曲线
+- **扶手**：肘部呈 90 度角，肩膀放松
 
-### Desk & Keyboard
-- **Desk height**: Elbows at 90-100 degrees when typing
-- **Keyboard**: Flat or slight negative tilt, close to body
-- **Mouse**: Same height as keyboard, close to body
-- **Wrist position**: Neutral (straight), not bent up/down or sideways
+### 桌子和键盘
+- **桌子高度**：打字时肘部呈 90-100 度角
+- **键盘**：保持平坦或略微向下倾斜，靠近身体
+- **鼠标**：与键盘处于同一高度，靠近身体
+- **手腕位置**：保持中立（不向上或向下弯曲）
 
-### Lighting
-- **No glare**: Position monitor 90 degrees to windows
-- **Task lighting**: Reduce contrast between screen and surroundings
-- **Blue light filter**: Enabled after sunset (f.lux, Night Light)
-- **Screen brightness**: Match ambient light level
-
----
-
-## 11. Warning Signs & When to See a Doctor
-
-### Immediate medical attention needed:
-- 🚨 Sudden vision loss or changes
-- 🚨 Severe eye pain
-- 🚨 Numbness or tingling that spreads or worsens
-- 🚨 Loss of bowel/bladder control (back issues)
-- 🚨 Weakness in arms or legs
-
-### See doctor soon if experiencing:
-- ⚠️ Persistent headaches (daily for weeks)
-- ⚠️ Double vision or blurred vision that doesn't improve with rest
-- ⚠️ Pain that radiates down arms or legs
-- ⚠️ Chronic pain lasting more than 6 weeks
-- ⚠️ Pain that worsens despite exercises and breaks
-
-### ErgoCare Coach is preventive, not treatment!
-- ✅ Use for prevention and mild discomfort
-- ✅ Maintain healthy habits
-- ❌ Don't use instead of medical treatment
-- ❌ Don't ignore severe or worsening symptoms
+### 照明
+- **无眩光**：将显示器与窗户成 90 度角
+- **工作照明**：降低屏幕与周围环境的对比度
+- **蓝光过滤**：日落后启用蓝光过滤功能（f.lux，夜间模式）
+- **屏幕亮度**：调整至与周围光线相匹配
 
 ---
 
-## 12. Advanced Features
+## 11. 警示信号及就医建议
 
-### Smart Break Scheduling
+### 需立即就医的情况：
+- 🚨 突然视力丧失或变化
+- 🚨 严重的眼部疼痛
+- 🚨 麻木或刺痛感扩散或加剧
+- 🚨 失去对肠道/膀胱的控制能力（可能与背部问题相关）
+- 🚨 手臂或腿部无力
 
-**Request context-aware schedules:**
+### 如出现以下情况，请尽快就医：
+- ⚠️ 持续性头痛（持续数周）
+- ⚠️ 双重视觉或视力模糊（休息后无改善）
+- ⚠️ 疼痛向下肢放射
+- ⚠️ 持续超过 6 周的慢性疼痛
+- ⚠️ 尽管休息和锻炼仍感到疼痛加剧
+
+### 注意：ErgoCare Coach 用于预防，而非治疗！
+- ✅ 用于预防和缓解轻微不适
+- ✅ 保持健康习惯
+- ❌ 不要替代医疗治疗
+- ❌ 不要忽视严重或恶化的症状
+
+---
+
+## 12. 高级功能
+
+### 智能休息时间表
+
+**请求根据具体情况定制的时间表：**
 ```
 "I'm a software developer, create my ideal break schedule"
 "I have chronic neck pain, what's my schedule?"
 "I'm a gamer, help me stay healthy during long sessions"
 ```
 
-**You'll get:**
-- Profession-specific recommendations
-- Condition-specific exercise focus
-- Customized intervals based on research
-- Integration with work methodologies (Pomodoro, etc.)
+**您将获得：**
+- 针对不同职业的推荐
+- 根据个人状况定制的锻炼建议
+- 基于研究的个性化休息间隔
+- 与工作方法（如 Pomodoro 技术）的集成
 
-### Multi-Platform Sync
+### 多平台同步
 
-**For users with multiple devices:**
+**适用于多设备用户：**
 ```
 "Generate scripts for Linux work machine and Windows home PC"
 ```
 
-**You'll get:**
-- Matched intervals across platforms
-- Same exercise routines
-- Consistent notification style
-- Easy setup on both systems
+**您将获得：**
+- 所有平台上的休息间隔一致
+- 一致的锻炼计划
+- 两种平台上的通知风格统一
+- 简单的设置流程
 
-### Team/Office Deployment
+### 团队/办公室部署
 
-**For IT administrators:**
+**适用于 IT 管理员：**
 ```
 "Create a company-wide break reminder script for Ubuntu 22.04"
 "Generate Windows script for deployment via Group Policy"
 ```
 
-**You'll get:**
-- Silent installation
-- Central configuration
-- Deployment documentation
-- User guide for employees
+**您将获得：**
+- 无声安装
+- 集中式配置
+- 部署文档
+- 员工使用指南
 
 ---
 
-## 13. Best Practices
+## 13. 建立健康习惯的建议
 
-### Building the Break Habit
+### 第 1 周：仅执行 20-20-20 规则**
+- 专注于眼部休息
+- 养成基本习惯
+- 设置手机定时器作为备用提醒
 
-**Week 1: 20-20-20 only**
-- Focus on just eye breaks
-- Build the basic habit
-- Set phone timer as backup
+### 第 2 周：添加短暂休息**
+- 每 30-60 分钟休息 2 分钟
+- 逐渐适应休息习惯
 
-**Week 2: Add micro-breaks**
-- Every 30-60 minutes
-- 2-minute quick reset
-- Getting comfortable with interruptions
+### 第 3 周：添加拉伸休息**
+- 每 90 分钟休息 5 分钟
+- 学习各种锻炼方法
 
-**Week 3: Add stretch breaks**
-- Every 90 minutes
-- 5-minute energy break
-- Learning the exercises
+### 第 4 周：全面锻炼计划**
+- 结合所有类型的休息
+- 使休息成为工作流程的一部分
+- 逐渐适应这种习惯
 
-**Week 4: Full routine**
-- All break types
-- Integrated into workflow
-- Feels natural
+### 保持动力
+- 用日历标记休息时间
+- 注意身体改善（如疼痛减轻、注意力提高）
+- 与他人一起休息
+- 根据实际情况调整时间表
+- 记住：预防比治疗更容易
 
-### Staying Motivated
+### 与工作的结合
 
-- Track breaks with calendar blocking
-- Notice improvements (less pain, better focus)
-- Make it social (break buddies)
-- Adjust schedule if too intrusive
-- Remember: **prevention is easier than recovery**
+**使用 Pomodoro 技术的用户：**
+- 在 Pomodoro 工作周期中加入短暂锻炼
+- 每 25 分钟工作后休息 5 分钟，适合进行 2 分钟的恢复
+- 每完成 4 个 Pomodoro 循环后进行 10 分钟的全面锻炼
 
-### Integration with Work
+**会议较多的日子：**
+- 将脚本设置为“仅在工作时间”模式
+- 重要会议期间暂停脚本
+- 会议结束后恢复使用
+- 会议间隙也进行休息
 
-**Pomodoro Technique users:**
-- Use Pomodoro breaks for micro-exercises
-- Every 25 min work = 5 min break = perfect for 2-minute reset
-- Every 4 Pomodoros = long break = 10-minute full routine
-
-**Meeting-heavy days:**
-- Set script to "work hours only" mode
-- Pause during important meetings
-- Resume after
-- Use breaks between meetings
-
-**Deep work sessions:**
-- Reduce frequency (but don't eliminate!)
-- Eye breaks still every 20 minutes
-- Longer breaks every 2 hours instead of 1
-- Extra-long break after deep work session
+### 深度工作期间：
+- 减少休息频率（但不要完全取消休息）
+- 每 20 分钟仍需进行眼部休息
+- 每 2 小时进行较长的休息
 
 ---
 
-## When to Use This Skill
+## 如何使用本工具
 
-### Interactive Mode:
-- "I've been coding for 3 hours, what exercises should I do?"
-- "My eyes are burning, help!"
-- "Show me a 30-second desk stretch"
-- "I have lower back pain, what do I do?"
+### 交互式模式：
+- “我已经编程 3 小时了，应该做哪些锻炼？”
+- “我的眼睛很疼，该怎么办？”
+- “展示一个 30 秒的桌面伸展动作”
+- “我的脖子疼，应该怎么做？”
 
-### Script Generation Mode:
-- "Generate my custom reminder script"
-- "Create a break schedule for my work style"
-- "Give me installation instructions for the script"
-- "How do I make this run on startup?"
+### 脚本生成模式：
+- “生成我的自定义提醒脚本”
+- “为我的工作方式制定休息时间表”
+- “提供脚本的安装说明”
+- “如何让脚本在系统启动时自动运行？”
 
-### Learning Mode:
-- "Explain the 20-20-20 rule"
-- "Why do I need breaks?"
-- "How should I set up my desk?"
-- "What are the warning signs of RSI?"
+### 学习模式：
+- “解释 20-20-20 规则”
+- “为什么需要休息？”
+- “应该如何设置我的工作环境？”
+- “重复性劳损的警告信号有哪些？”
 
 ---
 
-**Your health is your most valuable asset. Small breaks today prevent big problems tomorrow. Let ErgoCare Coach help you build sustainable healthy habits!**
+**您的健康是最宝贵的财富。今天的小休息可以预防未来的大问题。让 ErgoCare Coach 帮助您养成可持续的健康习惯！**
 
-👁️ "Take care of your eyes—they're the only pair you get."
-🦴 "Your spine will thank you in 20 years."
-💪 "Prevention beats cure. Every. Single. Time."
+👁️ “保护好您的眼睛——它们是你唯一的一对眼睛。”
+🦴 “20 年后，您的脊柱会感谢您现在的努力。”
+💪 “预防胜于治疗。每一次。”
 
-🔔 **Ready to start? Ask for your custom break reminder script now!** 🔔
+🔔 **准备开始了吗？现在就请求您的自定义休息提醒脚本吧！** 🔔

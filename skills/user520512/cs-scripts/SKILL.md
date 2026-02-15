@@ -1,3 +1,3 @@
-# Customer Service Scripts
+# 客户服务脚本
 
-Generate context-aware CS responses.
+生成具有上下文意识的客户服务响应。

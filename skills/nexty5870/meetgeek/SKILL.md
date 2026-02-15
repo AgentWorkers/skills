@@ -1,59 +1,59 @@
 ---
 name: meetgeek
-description: Query MeetGeek meeting intelligence from CLI - list meetings, get AI summaries, transcripts, action items, and search across all your calls with natural language.
+description: 通过命令行界面（CLI）查询 MeetGeek 的会议信息：可以列出所有会议、获取 AI 生成的会议摘要、会议记录以及待办事项，并使用自然语言搜索您所有的通话记录。
 ---
 
 # MeetGeek Skill
 
-Retrieve meeting intelligence from MeetGeek - summaries, transcripts, action items, and search across calls.
+从 MeetGeek 中检索会议信息，包括会议摘要、录音文本、待办事项，并支持对会议内容进行搜索。
 
 **npm:** https://www.npmjs.com/package/meetgeek-cli  
 **GitHub:** https://github.com/nexty5870/meetgeek-cli
 
-## Installation
+## 安装
 
 ```bash
 npm install -g meetgeek-cli
 ```
 
-## Setup
+## 设置
 
 ```bash
 meetgeek auth   # Interactive API key setup
 ```
 
-Get your API key from: MeetGeek → Integrations → Public API Integration
+请从 MeetGeek 的“集成”（Integrations）→“公共 API 集成”（Public API Integration）处获取您的 API 密钥。
 
-## Commands
+## 命令
 
-### List recent meetings
+### 列出最近的会议
 ```bash
 meetgeek list
 meetgeek list --limit 20
 ```
 
-### Get meeting details
+### 获取会议详情
 ```bash
 meetgeek show <meeting-id>
 ```
 
-### Get AI summary (with action items)
+### 获取 AI 生成的会议摘要（含待办事项）
 ```bash
 meetgeek summary <meeting-id>
 ```
 
-### Get full transcript
+### 获取完整的会议录音文本
 ```bash
 meetgeek transcript <meeting-id>
 meetgeek transcript <meeting-id> -o /tmp/call.txt  # save to file
 ```
 
-### Get highlights
+### 获取会议亮点
 ```bash
 meetgeek highlights <meeting-id>
 ```
 
-### Search meetings
+### 搜索会议
 ```bash
 # Search in a specific meeting
 meetgeek ask "topic" -m <meeting-id>
@@ -62,16 +62,16 @@ meetgeek ask "topic" -m <meeting-id>
 meetgeek ask "what did we discuss about the budget"
 ```
 
-### Auth management
+### 用户认证管理
 ```bash
 meetgeek auth --show   # check API key status
 meetgeek auth          # interactive setup
 meetgeek auth --clear  # remove saved key
 ```
 
-## Usage Patterns
+## 使用示例
 
-### Find a specific call
+### 查找特定的会议
 ```bash
 # List meetings to find the one you want
 meetgeek list --limit 10
@@ -80,13 +80,13 @@ meetgeek list --limit 10
 meetgeek summary 81a6ab96-19e7-44f5-bd2b-594a91d2e44b
 ```
 
-### Get action items from a call
+### 获取会议的待办事项
 ```bash
 meetgeek summary <meeting-id>
 # Look for the "✅ Action Items" section
 ```
 
-### Find what was discussed about a topic
+### 查找关于某个主题的讨论内容
 ```bash
 # Search across all meetings
 meetgeek ask "pricing discussion"
@@ -95,18 +95,18 @@ meetgeek ask "pricing discussion"
 meetgeek ask "timeline" -m <meeting-id>
 ```
 
-### Export transcript for reference
+### 导出会议录音文本以供参考
 ```bash
 meetgeek transcript <meeting-id> -o ~/call-transcript.txt
 ```
 
-## Notes
+## 注意事项
 
-- Meeting IDs are UUIDs - the list shows first 8 chars
-- Transcripts include speaker names and timestamps
-- Summaries are AI-generated with key points + action items
-- Search is keyword-based across transcript text
+- 会议 ID 是 UUID 格式，列表中显示的是前 8 个字符。
+- 录音文本中包含发言者的姓名和时间戳。
+- 会议摘要由 AI 生成，包含关键点和待办事项。
+- 搜索功能基于录音文本中的关键词进行。
 
-## Config
+## 配置
 
-API key stored in: `~/.config/meetgeek/config.json`
+API 密钥存储在：`~/.config/meetgeek/config.json`

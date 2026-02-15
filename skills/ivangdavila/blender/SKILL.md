@@ -1,60 +1,60 @@
 ---
 name: Blender
-description: Avoid common Blender mistakes — transform application, modifier order, UV seams, and export settings for game engines.
+description: 避免Blender中常见的错误：调整应用程序的运行顺序、修改器的使用顺序、处理UV纹理的接缝问题，以及优化导出设置以适配游戏引擎的需求。
 metadata: {"clawdbot":{"emoji":"🧊","os":["linux","darwin","win32"]}}
 ---
 
-## Transforms
-- Apply scale before export — `Ctrl+A` → Scale, or objects deform in game engines
-- Apply rotation for correct orientation — especially for rigged models
-- Non-uniform scale breaks modifiers — apply scale before Mirror, Bevel, etc.
-- Reset transforms: `Alt+G/R/S` — location, rotation, scale to defaults
+## 变换操作  
+- 在导出前应用缩放：使用 `Ctrl+A` 或 “Scale” 工具；否则对象在游戏引擎中可能会出现变形。  
+- 应用旋转以确保对象的方向正确，尤其是对于已经设置好骨骼的模型。  
+- 在使用 “Mirror”（镜像）、“Bevel”（倒角）等修改器之前，应先进行非均匀缩放操作。  
+- 重置对象的变换：使用 `Alt+G/R/S` 可将对象的位置、旋转和缩放恢复到默认值。  
 
-## Object vs Edit Mode
-- Object mode transforms affect whole object — Edit mode transforms geometry only
-- Modifiers applied in Object mode — Edit mode shows base mesh
-- Selection works differently — Object selects whole, Edit selects vertices/edges/faces
-- `Tab` to toggle — most operations mode-specific
+## 对象模式与编辑模式  
+- 在对象模式下进行的变换会影响到整个对象；而在编辑模式下，变换仅影响对象的几何形状。  
+- 在对象模式下应用的修改器会在编辑模式下显示对象的原始网格。  
+- 选择方式也有所不同：对象模式下会选择整个对象，而在编辑模式下则会选择顶点、边或面。  
+- 可以使用 `Tab` 键在对象模式和编辑模式之间切换。  
 
-## Normals
-- Flipped normals = invisible faces — `Shift+N` to recalculate outside
-- Check in Viewport Overlays → Face Orientation — blue is correct, red is flipped
-- `Ctrl+Shift+N` for flip inside — useful for interior scenes
-- Smooth shading issues = bad normals — recalculate first
+## 法线  
+- 法线被翻转会导致面不可见；使用 `Shift+N` 可重新计算法线方向。  
+- 可在 “Viewport Overlays”（视口叠加）设置中检查法线的方向：蓝色表示法线正确，红色表示法线被翻转。  
+- 使用 `Ctrl+Shift+N` 可在模型内部翻转法线方向，这对于处理内部场景非常有用。  
+- 如果出现平滑着色问题，可能是由于法线数据不正确导致的，需要先重新计算法线。  
 
-## Modifiers
-- Order matters — Mirror before Subdivision, Bevel before Mirror typically
-- Apply modifiers for export — game engines don't understand Blender modifiers
-- Array + Curve = deformation issues — apply Array first, then Curve
-- Subdivision preview vs render levels — set same for consistent export
+## 修改器的使用顺序  
+- 修改器的使用顺序很重要：通常应先使用 “Mirror”（镜像）修改器，再使用 “Subdivision”（细分）修改器；同样，应先使用 “Bevel”（倒角）修改器，再使用 “Mirror” 修改器。  
+- 在导出前应先应用所有修改器，因为游戏引擎可能无法识别 Blender 中的某些修改器。  
+- 如果同时使用 “Array”（阵列）和 “Curve”（曲线）修改器，可能会导致变形问题，应先应用 “Array” 修改器，再应用 “Curve” 修改器。  
+- 为了确保导出的效果一致，应确保细分级别（Subdivision Levels）和渲染级别（Render Levels）设置相同。  
 
-## UV Unwrapping
-- Mark seams where texture can split — `Ctrl+E` → Mark Seam
-- Seams at hidden areas — under arms, behind ears, model edges
-- `U` → Unwrap after marking — Smart UV Project as fallback
-- Check UV overlap — causes baking issues, separate islands
+## UV 纹理展开  
+- 使用 `Ctrl+E` 可标记纹理可能分裂的位置（即“接缝”）。  
+- 需要标记隐藏区域的接缝，例如手臂下方、耳朵后面或模型边缘处。  
+- 使用 `U` 键展开纹理；如果标记完成后仍出现问题，可以使用 “Smart UV Project” 作为备用方案。  
+- 需检查 UV 纹理是否重叠，否则会导致烘焙问题（例如纹理重复或不均匀分布）。  
 
-## Origin Point
-- Origin affects rotation/scale pivot — `Right-click` → Set Origin
-- Origin to geometry for centered pivot — Origin to 3D Cursor for precise placement
-- Origin matters for game engine import — often should be at feet/base
+## 原点设置  
+- 原点的设置会影响对象的旋转和缩放中心。可以使用 “Right-click” → “Set Origin” 来设置原点。  
+- 如果希望对象以几何形状的中心为旋转/缩放基准，可以将原点设置为几何形状的中心；如果需要精确控制原点位置，可以将原点设置为 3D 光标的位置。  
+- 对于游戏引擎的导入，原点的设置非常重要，通常应将其设置在模型的底部或基部。  
 
-## Export for Game Engines
-- FBX or glTF for Unity/Unreal — glTF for web
-- Apply transforms on export — "Apply Scalings: FBX All" for Unity
-- Forward axis: `-Z Forward`, Up: `Y Up` for Unity — different for Unreal
-- Embed textures or pack separately — depends on workflow
+## 导出格式  
+- 对于 Unity 和 Unreal 游戏引擎，建议使用 FBX 或 glTF 格式；对于 Web 平台，建议使用 glTF 格式。  
+- 在导出前应应用相应的变换操作；例如，在 Unity 中可以使用 “Apply Scalings: FBX All” 来统一所有对象的缩放比例。  
+- 在 Unity 中，Z 轴的方向为 “-Z”，Y 轴的方向为 “Up”；在 Unreal 中则有所不同。  
+- 可以选择将纹理嵌入模型中或单独打包，具体取决于工作流程。  
 
-## Python API (bpy)
-- `bpy.context` is current state — selection, active object, mode
-- `bpy.data` is all data — access any object by name regardless of selection
-- `bpy.ops` are operators — require correct context (mode, selection)
-- Override context for operators — `{'object': obj, 'selected_objects': [obj]}`
-- Most ops need Object mode — `bpy.ops.object.mode_set(mode='OBJECT')` first
+## Python API （bpy）  
+- `bpy.context` 表示当前的状态，包括选择的内容、活动对象以及所处的编辑模式。  
+- `bpy.data` 包含所有对象的数据，可以通过对象名称直接访问任何对象。  
+- `bpy.ops` 包含各种操作命令，但需要正确的上下文（编辑模式和选择对象）。  
+- 可以通过 `{'object': obj, 'selected_objects': [obj]` 来覆盖操作命令的上下文。  
+- 大多数操作命令需要在对象模式下执行，例如 `bpy.ops.object.mode_set(mode='OBJECT')` 可将操作模式设置为对象模式。  
 
-## Common Mistakes
-- Duplicate with Alt+D creates linked copy — changes affect both, use Shift+D for independent
-- Delete vs Dissolve — Delete removes geometry, Dissolve merges (Edit mode)
-- Proportional editing left on — affects unexpected vertices, check header
-- Subdivision on high-poly crashes — start with Levels: 1, increase gradually
-- Materials not linked to object — won't export, must be assigned to faces
+## 常见错误  
+- 使用 `Alt+D` 复制对象会创建一个链接的副本，修改操作会同时影响原始对象和副本；如果需要创建独立的副本，应使用 `Shift+D`。  
+- “Delete” 和 “Dissolve” 的功能不同：`Delete` 会删除对象的所有几何数据，而 “Dissolve” 仅删除选中的几何数据（仅在编辑模式下有效）。  
+- 如果在对象上启用了比例编辑功能，修改操作可能会影响到未选中的顶点，因此请务必检查操作设置。  
+- 在高多边形模型上进行细分操作时可能会出现崩溃现象，建议从较低的细分级别（如 1）开始，然后逐渐增加细分级别。  
+- 如果材质没有正确绑定到对象上，它们将无法被导出，必须先将其分配到相应的面上。

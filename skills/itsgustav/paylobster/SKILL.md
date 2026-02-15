@@ -1,17 +1,17 @@
 ---
 name: paylobster
-description: Agent payment infrastructure on Base. Trustless escrow, agent treasury, token swaps, cross-chain bridges, on-chain identity & reputation, spending mandates, dispute resolution, streaming payments, credit scoring, cascading escrows, revenue sharing, compliance mandates, intent marketplace, and oracle verification. Use the hosted MCP server (paylobster.com/mcp/mcp), SDK (pay-lobster), CLI (@paylobster/cli), or REST API to register agents, create treasuries, swap tokens, bridge cross-chain, create escrows, stream payments, manage disputes, and process USDC payments on Base mainnet.
+description: Base平台上的代理支付基础设施包括：无信任的托管服务、代理资金库、代币交换功能、跨链桥接技术、链上身份与信誉系统、支付指令管理、争议解决机制、流式支付系统、信用评分机制、级联托管模式、收益分配机制、合规性要求处理系统、意图交易市场以及预言机验证功能。用户可以通过托管的MCP服务器（paylobster.com/mcp/mcp）、SDK（pay-lobster）或CLI（@paylobster/cli）以及REST API来注册代理、创建资金库、进行代币交换、实现跨链桥接、创建托管交易、管理支付流程，并在Base主网上处理USDC支付。
 ---
 
 # PayLobster
 
-The financial operating system for autonomous agents on Base L2. Agent treasuries, token swaps, cross-chain bridges, trustless escrow, streaming payments, on-chain reputation, oracle verification, credit scoring, dispute resolution, cascading escrows, revenue sharing, spending mandates, intent marketplace, and compliance mandates.
+这是一个专为基于Base L2的自主代理设计的金融操作系统。它支持代理的资产管理、代币交换、跨链桥接、无需信任的托管服务、流式支付、链上声誉系统、预言机验证、信用评分、争议解决、级联托管、收入共享、支出指令、意图市场以及合规性管理等功能。
 
-## Quick Start
+## 快速入门
 
-### Hosted MCP Server (Recommended)
+### 托管型MCP服务器（推荐）
 
-Connect any AI agent instantly — zero setup:
+无需任何设置，即可立即连接任何AI代理：
 
 ```json
 {
@@ -24,9 +24,9 @@ Connect any AI agent instantly — zero setup:
 }
 ```
 
-For Claude Desktop (SSE): `https://paylobster.com/mcp/sse`
+对于Claude桌面版（SSE）：`https://paylobster.com/mcp/sse`
 
-### npm Packages
+### npm包
 
 ```bash
 # SDK
@@ -39,9 +39,9 @@ npm install -g @paylobster/cli
 npm install @paylobster/mcp-server
 ```
 
-## SDK (pay-lobster@4.2.0)
+## SDK（pay-lobster@4.2.0）
 
-16 modules covering the full PayLobster protocol:
+包含16个模块，覆盖了PayLobster协议的全部功能：
 
 ```typescript
 import { PayLobster } from 'pay-lobster';
@@ -120,31 +120,31 @@ const reader = new PayLobster({ network: 'mainnet' });
 const agent = await reader.getAgent('0x...');
 ```
 
-### SDK Modules (16)
+### SDK模块（共16个）
 
-| Module | Description |
-|--------|-------------|
-| `identity` | Register, get, check agent identity |
-| `escrow` | Create, release, get, list escrows |
-| `reputation` | Reputation scores, trust vectors |
-| `credit` | Credit lines, scores |
-| `mandate` | Spending mandates |
-| `services` | Service catalog search |
-| `streaming` | Real-time payment streams |
-| `disputes` | Dispute resolution |
-| `cascading` | Multi-stage cascading escrows |
-| `creditScore` | Predictive credit scoring |
-| `compliance` | Compliance checks |
-| `oracle` | Oracle verification |
-| `intent` | Intent marketplace |
-| `revenueShare` | Revenue sharing agreements |
-| `swap` | Token swaps via 0x on Base |
-| `bridge` | Cross-chain bridges via Li.Fi |
-| `investment` | On-chain investment term sheets |
+| 模块        | 描述                                      |
+|-------------|-----------------------------------------|
+| `identity`     | 注册、获取和检查代理身份                        |
+| `escrow`      | 创建、释放、获取和列出托管信息                   |
+| `reputation`   | 声誉评分和信任向量                            |
+| `credit`      | 信用额度和评分                              |
+| `mandate`     | 支出指令                                  |
+| `services`    | 服务目录搜索                              |
+| `streaming`    | 实时支付流                              |
+| `disputes`    | 争议解决                                |
+| `cascading`    | 多阶段级联托管                            |
+| `creditScore`   | 预测性信用评分                            |
+| `compliance`   | 合规性检查                              |
+| `oracle`     | 预言机验证                              |
+| `intent`     | 意图市场                                |
+| `revenueShare`  | 收入共享协议                              |
+| `swap`       | 通过0x平台进行代币交换                        |
+| `bridge`     | 通过Li.Fi平台进行跨链桥接                        |
+| `investment`    | 链上投资条款表                          |
 
-## CLI (@paylobster/cli@4.2.0)
+## CLI（@paylobster/cli@4.2.0）
 
-19 commands covering the full protocol:
+包含19个命令，覆盖了PayLobster协议的全部功能：
 
 ```bash
 # Authenticate
@@ -225,11 +225,11 @@ plob invest treasury 0x...
 plob invest stats
 ```
 
-All commands support `--json` for automation.
+所有命令都支持`--json`参数以实现自动化操作。
 
-## MCP Server
+## MCP服务器
 
-### Hosted (33+ tools, 6 resources)
+### 托管型服务（提供33+工具和6种资源）
 
 ```json
 {
@@ -242,7 +242,7 @@ All commands support `--json` for automation.
 }
 ```
 
-### Self-hosted (@paylobster/mcp-server@1.2.0)
+### 自托管型服务（@paylobster/mcp-server@1.2.0）
 
 ```json
 {
@@ -259,208 +259,136 @@ All commands support `--json` for automation.
 }
 ```
 
-### MCP Tools (33+)
+### MCP工具（共33个）
 
-| Tool | Description |
-|------|-------------|
-| `register_agent` | Register agent identity on-chain |
-| `get_reputation` | Check reputation score |
-| `get_balance` | Query USDC balance |
-| `search_services` | Find services by capability/price |
-| `create_escrow` | Create payment escrow |
-| `release_escrow` | Release escrow funds |
-| `get_escrow` | Get escrow details |
-| `list_escrows` | List escrows |
-| `create_stream` | Start streaming payment |
-| `cancel_stream` | Cancel active stream |
-| `get_stream` | Get stream details |
-| `open_dispute` | Open escrow dispute |
-| `submit_evidence` | Submit dispute evidence |
-| `get_dispute` | Get dispute details |
-| `get_credit` | Check credit score |
-| `request_credit_line` | Request credit line |
-| `create_cascade` | Create cascading escrow |
-| `release_stage` | Release cascade stage |
-| `post_intent` | Post service intent |
-| `make_offer` | Make offer on intent |
-| `accept_offer` | Accept marketplace offer |
-| `create_revenue_share` | Create revenue split |
-| `check_compliance` | Check compliance status |
-| `swap_quote` | Get token swap quote on Base |
-| `swap_execute` | Execute token swap |
-| `swap_tokens` | List available tokens |
-| `swap_price` | Get token price |
-| `bridge_quote` | Get cross-chain bridge quote |
-| `bridge_execute` | Execute cross-chain bridge |
-| `bridge_status` | Track bridge transaction |
-| `bridge_chains` | List supported chains |
-| `get_portfolio` | View multi-token balances |
-| `get_token_price` | Get token price in USD |
-| `investment_propose` | Propose investment into treasury |
-| `investment_fund` | Fund a proposed investment |
-| `investment_claim` | Claim streaming/fixed returns |
-| `investment_milestone` | Complete milestone (oracle) |
-| `investment_info` | Get investment details |
-| `investment_portfolio` | Investor's portfolio |
-| `investment_treasury` | Treasury's investments |
-| `investment_stats` | Protocol-wide stats |
+| 工具        | 描述                                      |
+|-------------|-----------------------------------------|
+| `register_agent` | 在链上注册代理身份                        |
+| `get_reputation` | 查询代理声誉评分                        |
+| `get_balance` | 查询USDC余额                            |
+| `search_services` | 根据功能或价格搜索服务                        |
+| `create_escrow` | 创建支付托管                          |
+| `release_escrow` | 释放托管资金                            |
+| `get_escrow` | 获取托管详情                            |
+| `list_escrows` | 列出所有托管信息                         |
+| `create_stream` | 启动流式支付                            |
+| `cancel_stream` | 取消正在进行的支付流                        |
+| `get_stream` | 获取支付流详情                          |
+| `open_dispute` | 提起托管争议                            |
+| `submit_evidence` | 提交争议证据                            |
+| `get_dispute` | 获取争议详情                            |
+| `get_credit` | 查询信用评分                            |
+| `request_credit_line` | 申请信用额度                          |
+| `create_cascade` | 创建级联托管                            |
+| `release_stage` | 释放级联托管的某个阶段                        |
+| `post_intent` | 发布服务意图                            |
+| `make_offer` | 在意图市场上提出报价                        |
+| `accept_offer` | 接受市场报价                            |
+| `create_revenue_share` | 创建收入共享协议                          |
+| `check_compliance` | 检查合规性状态                            |
+| `swap_quote` | 获取Base平台上的代币交换报价                    |
+| `swap_execute` | 执行代币交换                            |
+| `swap_tokens` | 列出可交换的代币                          |
+| `swap_price` | 获取代币价格                            |
+| `bridge_quote` | 获取跨链桥接报价                          |
+| `bridge_execute` | 执行跨链桥接                            |
+| `bridge_status` | 监控桥接交易状态                        |
+| `bridge_chains` | 列出支持的链                            |
+| `get_portfolio` | 查看多币种余额                            |
+| `get_token_price` | 获取代币的美元价格                          |
+| `investment_propose` | 提出投资建议                          |
+| `investment_fund` | 为投资提案提供资金                          |
+| `investment_claim` | 提取流式/固定收益                          |
+| `investment_milestone` | 完成投资里程碑                          |
+| `investment_info` | 获取投资详情                            |
+| `investment_portfolio` | 投资者的投资组合                          |
+| `investment_treasury` | 代理的资产投资                          |
+| `investment_stats` | 协议范围内的统计信息                        |
 
-### MCP Resources (6)
+### MCP资源（共6种）
 
-| URI | Description |
-|-----|-------------|
-| `paylobster://agent/{address}` | Agent profile & reputation |
-| `paylobster://escrow/{id}` | Escrow status & details |
-| `paylobster://credit/{address}` | Credit score & lines |
-| `paylobster://stream/{id}` | Streaming payment details |
-| `paylobster://dispute/{id}` | Dispute details & evidence |
-| `paylobster://intent/{id}` | Intent & offers |
+| URI          | 描述                                      |
+|--------------|-----------------------------------------|
+| `paylobster://agent/{address}` | 代理个人资料和声誉信息                        |
+| `paylobster://escrow/{id}` | 托管状态和详情                            |
+| `paylobster://credit/{address}` | 信用评分和额度                            |
+| `paylobster://stream/{id}` | 流式支付详情                            |
+| `paylobster://dispute/{id}` | 争议详情和证据                            |
+| `paylobster://intent/{id}` | 意图和市场报价                            |
 
 ## REST API
 
-Base URL: `https://paylobster.com`
+基础URL：`https://paylobster.com`
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /api/v3/agents/{address}` | Agent identity & capabilities |
-| `GET /api/v3/reputation/{address}` | Reputation score & trust vector |
-| `GET /api/v3/credit/{address}` | Credit score & health |
-| `GET /api/v3/balances/{address}` | USDC balance on Base |
-| `GET /api/v3/escrows` | List escrows (`?creator=` or `?provider=`) |
-| `GET /api/v3/escrows/{id}` | Single escrow details |
-| `POST /api/x402/negotiate` | x402 payment negotiation |
-| `GET /api/badge/{address}` | Trust badge SVG |
-| `GET /api/trust-check/{address}` | Quick trust verification |
+| 端点          | 描述                                      |
+|--------------|-----------------------------------------|
+| `GET /api/v3/agents/{address}` | 代理身份和功能信息                          |
+| `GET /api/v3/reputation/{address}` | 声誉评分和信任向量                            |
+| `GET /api/v3/credit/{address}` | 信用评分和健康状况                            |
+| `GET /api/v3/balances/{address}` | Base平台上的USDC余额                            |
+| `GET /api/v3/escrows` | 列出托管信息（可指定创建者或提供者）                |
+| `GET /api/v3/escrows/{id}` | 单个托管的详细信息                        |
+| `POST /api/x402/negotiate` | x402支付协商接口                          |
+| `GET /api/badge/{address}` | 信任徽章SVG文件                            |
+| `GET /api/trust-check/{address}` | 快速信任验证接口                        |
 
-## Contracts (Base Mainnet)
+## 合约（Base主网）
 
-### V3 (Core)
+### V3（核心版本）
 
-| Contract | Address |
-|----------|---------|
-| Identity Registry | `0xA174ee274F870631B3c330a85EBCad74120BE662` |
-| Reputation | `0x02bb4132a86134684976E2a52E43D59D89E64b29` |
-| Credit System | `0xD9241Ce8a721Ef5fcCAc5A11983addC526eC80E1` |
-| Escrow V3 | `0x49EdEe04c78B7FeD5248A20706c7a6c540748806` |
+| 合约          | 地址                                      |
+|--------------|-----------------------------------------|
+| Identity Registry | `0xA174ee274F870631B3c330a85EBCad74120BE662`           |
+| Reputation     | `0x02bb4132a86134684976E2a52E43D59D89E64b29`           |
+| Credit System    | `0xD9241Ce8a721Ef5fcCAc5A11983addC526eC80E1`           |
+| Escrow V3       | `0x49EdEe04c78B7FeD5248A20706c7a6c540748806`           |
 
-### V4 (Deployed)
+### V4（已部署）
 
-| Contract | Address |
-|----------|---------|
-| PolicyRegistry | `0x20a30064629e797a88fCdBa2A4C310971bF8A0F2` |
-| CrossRailLedger | `0x74AcB48650f12368960325d3c7304965fd62db18` |
-| SpendingMandate | `0x8609eBA4F8B6081AcC8ce8B0C126C515f6140849` |
-| TreasuryFactory | `0x171a685f28546a0ebb13059184db1f808b915066` |
-| InvestmentTermSheet | `0xfa4d9933422401e8b0846f14889b383e068860eb` |
+| 合约          | 地址                                      |
+|--------------|-----------------------------------------|
+| PolicyRegistry | `0x20a30064629e797a88fCdBa2A4C310971bF8A0F2`           |
+| CrossRailLedger   | `0x74AcB48650f12368960325d3c7304965fd62db18`           |
+| SpendingMandate   | `0x8609eBA4F8B6081AcC8ce8B0C126C515f6140849`           |
+| TreasuryFactory | `0x171a685f28546a0ebb13059184db1f808b915066`           |
+| InvestmentTermSheet | `0xfa4d9933422401e8b0846f14889b383e068860eb`           |
 
-### V4 (Compiled, Pending Deploy)
+### V4（编译中，待部署）
 
-StreamingPayment · CascadingEscrow · DisputeResolution · IntentMarketplace · ComplianceMandate · RevenueShare · ConditionalRelease · AgentCreditScore · ServiceCatalog · OracleRouter
+- StreamingPayment          | 流式支付相关合约                         |
+- CascadingEscrow         | 级联托管相关合约                         |
+- DisputeResolution       | 争议解决相关合约                         |
+- IntentMarketplace       | 意图市场相关合约                         |
+- ComplianceMandate       | 合规性指令相关合约                         |
+- RevenueShare         | 收入共享相关合约                         |
+- ConditionalRelease     | 条件释放相关合约                         |
+- AgentCreditScore       | 代理信用评分相关合约                         |
+- ServiceCatalog       | 服务目录相关合约                         |
 
-## Contracts (Base Sepolia)
+## 合约（Base Sepolia网络）
 
-| Contract | Address |
-|----------|---------|
-| Identity | `0x3dfA02Ed4F0e4F10E8031d7a4cB8Ea0bBbFbCB8c` |
-| Reputation | `0xb0033901e3b94f4F36dA0b3e59A1F4AD9f4f1697` |
-| Credit | `0xBA64e2b2F2a80D03A4B13b3396942C1e78205C7d` |
-| Escrow V3 | `0x78D1f50a1965dE34f6b5a3D3546C94FE1809Cd82` |
+| 合约          | 地址                                      |
+|--------------|-----------------------------------------|
+| Identity        | `0x3dfA02Ed4F0e4F10E8031d7a4cB8Ea0bBbFbCB8c`           |
+| Reputation      | `0xb0033901e3b94f4F36dA0b3e59A1F4AD9f4f1697`           |
+| Credit         | `0xBA64e2b2F2a80D03A4B13b3396942C1e78205C7d`           |
+| Escrow V3        | `0x78D1f50a1965dE34f6b5a3D3546C94FE1809Cd82`           |
 
-## Common Patterns
+## 常用操作模式
 
-### Create an agent treasury
+- **创建代理资产库**                          |
+- **进行代币交换**                          |
+- **投资代理的资产库**                        |
+- **代理为服务支付**                        |
+- **进行流式支付**                          |
+- **多代理协作及收入共享**                        |
+- **仅读查询（无需钱包）**                        |
 
-```bash
-# Deploy treasury via factory
-plob treasury create "My Agent Fund"
+## 资源链接
 
-# View treasury info
-plob treasury info
-
-# Set budget allocation
-plob treasury budget --ops 4000 --growth 3000 --reserves 2000 --yield 1000
-
-# Grant operator access with spend limits
-plob treasury grant --address 0xAGENT --role operator
-plob treasury limit --address 0xAGENT --per-tx 100 --per-day 500
-```
-
-### Swap tokens
-
-```bash
-# Get a quote
-plob swap quote --from USDC --to WETH --amount 50
-
-# Execute swap
-plob swap execute --from USDC --to WETH --amount 50
-
-# Bridge to another chain
-plob bridge execute --from base --to solana --token USDC --amount 100
-```
-
-### Invest in an agent's treasury
-
-```bash
-# Propose a revenue share investment
-plob invest propose --treasury 0xAGENT_TREASURY --amount 500 \
-  --type revenue-share --duration 365 --share 1500
-
-# Fund the investment
-plob invest fund 0
-
-# Check claimable returns
-plob invest info 0
-
-# Claim returns
-plob invest claim 0
-
-# View your portfolio
-plob invest portfolio
-```
-
-### Agent paying for a service
-
-```bash
-# 1. Check provider reputation
-plob reputation 0xPROVIDER
-
-# 2. Create escrow
-plob escrow create --to 0xPROVIDER --amount 25
-
-# 3. After delivery, release payment
-plob escrow release <id>
-```
-
-### Streaming payment for compute
-
-```bash
-# Pay $0.001/sec for 1 hour of inference
-plob stream create --to 0xPROVIDER --rate 0.001 --duration 3600
-```
-
-### Multi-agent collaboration with revenue split
-
-```bash
-# Create a revenue share for a 3-agent pipeline
-plob revenue-share create --participants '[
-  {"address":"0xA...","share":50},
-  {"address":"0xB...","share":30},
-  {"address":"0xC...","share":20}
-]'
-```
-
-### Read-only queries (no wallet needed)
-
-```bash
-curl https://paylobster.com/api/v3/reputation/0xADDRESS
-curl https://paylobster.com/api/v3/escrows?creator=0xADDRESS
-```
-
-## Resources
-
-- **Website**: [paylobster.com](https://paylobster.com)
-- **Docs**: [paylobster.com/docs](https://paylobster.com/docs)
-- **MCP Server**: [paylobster.com/mcp-server](https://paylobster.com/mcp-server)
-- **npm SDK**: [npmjs.com/package/pay-lobster](https://www.npmjs.com/package/pay-lobster)
-- **npm CLI**: [npmjs.com/package/@paylobster/cli](https://www.npmjs.com/package/@paylobster/cli)
-- **npm MCP**: [npmjs.com/package/@paylobster/mcp-server](https://www.npmjs.com/package/@paylobster/mcp-server)
+- **官方网站**：[paylobster.com](https://paylobster.com)
+- **文档中心**：[paylobster.com/docs](https://paylobster.com/docs)
+- **MCP服务器**：[paylobster.com/mcp-server](https://paylobster.com/mcp-server)
+- **npm SDK**：[npmjs.com/package/pay-lobster](https://www.npmjs.com/package/pay-lobster)
+- **npm CLI**：[npmjs.com/package/@paylobster/cli](https://www.npmjs.com/package/@paylobster/cli)
+- **npm MCP**：[npmjs.com/package/@paylobster/mcp-server](https://www.npmjs.com/package/@paylobster/mcp-server)

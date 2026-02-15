@@ -1,6 +1,6 @@
 ---
 name: search-openclaw-docs
-description: MANDATORY before any openclaw.json changes. Prevents config breakage via embedded anti-patterns and correct patterns. Use when configuring OpenClaw (bindings, channels, sessions, cron, heartbeat) or troubleshooting config issues.
+description: 在修改任何 `openclaw.json` 文件之前，必须执行此操作。这可以防止由于嵌入的错误模式（anti-patterns）或正确的模式（correct patterns）而导致配置错误。在配置 OpenClaw（包括绑定（bindings）、通道（channels）、会话（sessions）、定时任务（cron）、心跳检测（heartbeat）等功能）或排查配置问题时，请使用此步骤。
 metadata:
   openclaw:
     emoji: "📚"
@@ -15,86 +15,86 @@ metadata:
     postInstall: "node scripts/docs-index.js rebuild"
 ---
 
-# OpenClaw Documentation Search + Config Patterns
+# OpenClaw 文档搜索与配置模式
 
-**MANDATORY before changing `openclaw.json`** - Embedded patterns prevent silent config breakage.
+**在修改 `openclaw.json` 之前务必遵循以下规则**：嵌入的配置模式有助于避免配置错误的发生。
 
-**Two modes:**
-1. **Embedded references** (instant) - Common config patterns with anti-patterns
-2. **Doc search** (fallback) - Full OpenClaw documentation index
+**两种搜索模式：**
+1. **嵌入式引用**（快速查找）：包含常见的配置模式及其对应的反模式（错误配置示例）。
+2. **文档搜索**（备用方式）：可查询完整的 OpenClaw 文档索引。
 
 ---
 
-## 🚨 CRITICAL: Read AGENTS.md First
+## 🚨 重要提示：请先阅读 `AGENTS.md`
 
-Before using this skill:
+在使用本功能之前，请务必先阅读 `AGENTS.md` 文件：
 
 ```bash
 cat ~/.openclaw/skills/search-openclaw-docs/AGENTS.md
 ```
 
-**Contains:**
-- Mandatory workflow for config changes
-- Decision tree (which reference to read)
-- Critical anti-patterns overview
-- When NOT to use this skill
+**`AGENTS.md` 包含以下内容：**
+- 配置更改的必备工作流程
+- 决策树（指导您应参考哪些文档）
+- 关键的反模式（错误配置的常见原因）
+- 何时不应使用本功能
 
 ---
 
-## Decision Tree
+## 决策树
 
-| Task | Action |
+| 任务 | 应采取的操作 |
 |------|--------|
-| Adding/removing agent bindings | Read `references/config-bindings.md` |
-| Enabling/disabling channels | Read `references/config-channel-management.md` |
-| Session reset tuning | Read `references/config-session-reset.md` |
-| Heartbeat configuration | Read `references/config-heartbeat.md` |
-| Cron job setup | Read `references/config-cron.md` |
-| Config broke after patch | Read `references/troubleshooting-config-breaks.md` |
-| Best practices overview | Read `references/best-practices-config.md` |
-| Migration (2026.2.9) | Read `references/migration-2026-2-9.md` |
-| Other config questions | Search docs (see below) |
+| 添加/删除代理绑定 | 阅读 `references/config-bindings.md` |
+| 启用/禁用通道 | 阅读 `references/config-channel-management.md` |
+| 会话重置设置 | 阅读 `references/config-session-reset.md` |
+| 心跳配置 | 阅读 `references/config-heartbeat.md` |
+| Cron 作业设置 | 阅读 `references/config-cron.md` |
+| 配置更新后出现问题 | 阅读 `references/troubleshooting-config-breaks.md` |
+| 配置最佳实践 | 阅读 `references/best-practices-config.md` |
+| 版本迁移（2026.2.9） | 阅读 `references/migration-2026-2-9.md` |
+| 其他配置相关问题 | 在文档中查找答案 |
 
 ---
 
-## Embedded References (8 files)
+## 嵌入式引用（共 8 个文件）
 
-**Config Patterns:**
-- `config-bindings.md` - Agent routing (CRITICAL)
-- `config-channel-management.md` - Enable/disable channels (CRITICAL)
-- `config-session-reset.md` - Session lifetime policies (HIGH)
-- `config-heartbeat.md` - Proactive monitoring (MEDIUM)
-- `config-cron.md` - Scheduled tasks (MEDIUM)
+**配置模式文档：**
+- `config-bindings.md`：代理路由配置（关键配置）
+- `config-channel-management.md`：通道的启用/禁用设置（关键配置）
+- `config-session-reset.md`：会话生命周期管理（重要配置）
+- `config-heartbeat.md`：主动监控配置（中等重要性）
+- `config-cron.md`：定时任务配置（中等重要性）
 
-**Support:**
-- `troubleshooting-config-breaks.md` - Fix broken configs (CRITICAL)
-- `best-practices-config.md` - Safe patterns (HIGH)
-- `migration-2026-2-9.md` - Version updates (MEDIUM)
+**辅助文档：**
+- `troubleshooting-config-breaks.md`：配置错误的排查方法（关键文档）
+- `best-practices-config.md`：安全的配置模式（重要文档）
+- `migration-2026-2-9.md`：版本更新指南（中等重要性）
 
-**Each reference contains:**
-- ✅ Correct pattern
-- ❌ Common anti-patterns
-- Why it breaks
-- Examples
+**每份文档都包含：**
+- ✅ 正确的配置模式
+- ❌ 常见的错误配置方式
+- 错误配置的后果
+- 配置示例
 
 ---
 
-## When to Use
+## 使用场景
 
-| Scenario | Action |
+| 情况 | 应采取的操作 |
 |----------|--------|
-| Before editing `openclaw.json` | ✅ Read relevant reference first |
-| Config changes not working | ✅ Read troubleshooting reference |
-| Learning OpenClaw config | ✅ Read best practices reference |
-| Personal memory/context | ❌ Use `memory_search` instead |
-| Supabase/database work | ❌ Use `supabase-postgres-best-practices` |
-| Next.js code patterns | ❌ Use `next-best-practices` |
+| 在修改 `openclaw.json` 之前 | ✅ 先阅读相关文档 |
+| 配置更改后出现问题 | ✅ 查阅故障排查文档 |
+| 学习 OpenClaw 的配置规则 | ✅ 阅读最佳实践文档 |
+- 仅依赖个人记忆或上下文时 | ❌ 可使用 `memory_search` 功能 |
+- 与 Supabase 或 PostgreSQL 相关的问题 | ❌ 可参考 `supabase-postgres-best-practices` 文档 |
+- Next.js 代码相关问题 | ❌ 可参考 `next-best-practices` 文档 |
 
 ---
 
-## Doc Search (Fallback)
+## 文档搜索（备用方式）
 
-For topics not in references, search full docs:
+对于未在嵌入式引用中提及的主题，您可以直接在完整文档中进行搜索：
 
 ```bash
 # Search
@@ -107,7 +107,7 @@ node ~/.openclaw/skills/search-openclaw-docs/scripts/docs-status.js
 node ~/.openclaw/skills/search-openclaw-docs/scripts/docs-index.js rebuild
 ```
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Config question
@@ -123,7 +123,7 @@ node scripts/docs-search.js "providers" --top=5
 node scripts/docs-search.js "heartbeat" --json
 ```
 
-## Output Format
+## 输出格式
 
 ```
 🔍 Query: discord only respond when mentioned
@@ -141,39 +141,24 @@ node scripts/docs-search.js "heartbeat" --json
    cat /usr/lib/node_modules/openclaw/docs/channels/discord.md
 ```
 
-## How It Works
+## 工作原理：
+- 使用 FTS5 算法对文档标题、头部内容及配置键进行关键词匹配。
+- 支持驼峰式命名（CamelCase）的术语（例如 `requireMention`）。
+- 采用 Porter 规则进行词干提取，以实现更灵活的匹配效果。
+- 完全离线操作，无需网络连接。
 
-- FTS5 keyword matching on titles, headers, config keys
-- Handles camelCase terms like `requireMention`
-- Porter stemming for flexible matching
-- No network calls - fully offline
+## 文档索引位置：
+- **索引文件**：`~/.openclaw/docs-index/openclaw-docs.sqlite`
+- **文档目录**：`/usr/lib/node_modules/openclaw/docs/`
 
-## Index Location
+索引会根据您使用的 OpenClaw 版本自动生成。
 
-- **Index**: `~/.openclaw/docs-index/openclaw-docs.sqlite`
-- **Docs**: `/usr/lib/node_modules/openclaw/docs/`
+## 故障排查：
+- **无结果或结果错误**：请检查搜索条件或检查索引文件是否完整。
 
-Index is built locally from your OpenClaw version.
+---
 
-## Troubleshooting
-
-### No results / wrong results
-
-```bash
-# 1. Check index exists
-node scripts/docs-status.js
-
-# 2. Rebuild if stale
-node scripts/docs-index.js rebuild
-
-# 3. Try exact config terms (camelCase matters)
-node scripts/docs-search.js "requireMention"
-
-# 4. Try broader terms
-node scripts/docs-search.js "discord"
-```
-
-## Integration
+## 集成方式
 
 ```javascript
 const { search } = require('./lib/search');

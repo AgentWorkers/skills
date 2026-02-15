@@ -1,6 +1,6 @@
 ---
 name: think-cog
-description: "Complex ideas need iteration, not conversation. Think → Do → Review → Repeat. CellCog completes the full loop — brainstorming, reasoning, problem-solving, strategic thinking, then executing across every modality: research, documents, visuals, data, prototypes. Like having an Alfred who doesn't just advise — he builds."
+description: "复杂的想法需要通过迭代来实现，而非仅仅靠讨论。遵循“思考 → 行动 → 审查 → 重复”的流程。CellCog 能够完成这一完整的循环：从头脑风暴、推理、问题解决到战略规划，再到通过各种方式（研究、文档编写、可视化展示、数据分析、原型制作）来执行具体任务。它就像一个真正的“智能助手”——不仅提供建议，还能真正付诸行动。"
 metadata:
   openclaw:
     emoji: "💭"
@@ -8,221 +8,190 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Think Cog - Your Alfred for Complex Ideas
+# Think Cog – 你的智能思考助手，专为复杂问题设计
 
-**Complex ideas need iteration, not conversation.** Think → Do → Review → Repeat.
+**复杂的想法需要迭代，而非仅仅讨论。** 思考 → 行动 → 回顾 → 重复。
 
-CellCog is the thinking partner that completes the full loop — reasons with you, then executes across every modality: research, documents, visuals, data, prototypes. Review real output, refine your thinking, iterate on substance. Like having an Alfred who doesn't just advise — he builds.
+CellCog 是你的智能思考伙伴，它能帮助你完成整个思考过程：与你共同分析问题，然后在研究、文档制作、可视化展示、数据收集、原型设计等多个方面提供支持。通过查看实际成果，你可以进一步完善思路，并不断优化解决方案。它就像一个不仅能提供建议，还能付诸行动的助手。
 
-For problems where you don't know the answer upfront and the solution emerges through doing, not just discussing.
-
----
-
-## Prerequisites
-
-This skill requires the `cellcog` skill for SDK setup and API calls.
-
-```bash
-clawhub install cellcog
-```
-
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**适用于那些你一开始不知道答案，而解决方案需要通过实践才能找到的问题。**
 
 ---
 
-## Why Think-Cog Exists
+## 先决条件
 
-Most CellCog skills follow a pattern: you know what you want → CellCog delivers it.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
-But some problems don't work that way:
-- You have an idea but don't know if it's possible
-- You're stuck and need a different perspective
-- The solution emerges through exploration, not execution
-- You need to reason through tradeoffs before committing
-
-**Think-cog is your worker agent for intellectual exploration.** You're the manager agent providing direction. CellCog thinks and works alongside you.
+**请先阅读关于 `cellcog` 的说明，以了解如何进行 SDK 设置。** 这个技能会向你展示它的所有功能。
 
 ---
 
-## How It Works
+## Think-Cog 的存在理由
 
-Unlike fire-and-forget tasks, think-cog is **conversational by design**:
+大多数使用 CellCog 的场景都遵循一个模式：你明确了目标，CellCog 会帮你实现它。
 
-```python
-# Start a thinking session
-result = client.create_chat(
-    prompt="I'm trying to figure out the best architecture for a real-time multiplayer game...",
-    notify_session_key="agent:main:main",
-    task_label="architecture-thinking",
-    chat_mode="agent"  # Agent mode for iterative dialogue
-)
+但有些问题并非如此：
+- 你有一个想法，但不确定是否可行；
+- 你陷入了困境，需要不同的视角；
+- 解决方案需要通过探索才能找到；
+- 在做出决定之前，你需要权衡各种因素。
 
-# CellCog will think through the problem and may ask clarifying questions
-# You respond, building on the ideas
-# The solution emerges through dialogue
-```
-
-**This is not fire-and-forget.** Think-cog expects back-and-forth conversation. Each exchange deepens understanding.
+**Think-Cog 是你的智能探索助手，而你则是负责提供方向的管理者。** CellCog 会与你一起思考并执行任务。
 
 ---
 
-## When to Use Think-Cog
+## 工作原理
 
-### Architecture & Technical Decisions
+与那些“一次性的任务”不同，Think-Cog 的设计初衷就是**鼓励双向交流**：
 
-When you're weighing tradeoffs:
-
-> "I'm building a notification system that needs to handle 10M daily users. I'm torn between:
-> 1. WebSocket connections for all users
-> 2. Server-sent events with polling fallback
-> 3. Push notifications only
-> 
-> Help me think through the tradeoffs. My team is small (3 engineers) and we're on AWS."
-
-### Business Strategy
-
-When the path forward isn't clear:
-
-> "My SaaS is growing but I'm not sure whether to:
-> - Focus on enterprise sales (fewer customers, bigger deals)
-> - Double down on self-serve (more customers, smaller ARPU)
-> 
-> Current metrics: 500 customers, $50 ARPU, 2 enterprise deals in pipeline worth $50K each.
-> 
-> Let's think through this together."
-
-### Creative Direction
-
-When you're exploring possibilities:
-
-> "I want to create a video campaign for my coffee brand but I'm not sure what angle to take. The brand is:
-> - Specialty single-origin coffee
-> - Direct trade with farmers
-> - Premium pricing ($25/bag)
-> 
-> Target audience is 25-40 professionals who care about quality.
-> 
-> Help me brainstorm directions before we commit to production."
-
-### Problem Debugging
-
-When you're stuck:
-
-> "My machine learning model keeps overfitting despite:
-> - Dropout layers
-> - Data augmentation
-> - Early stopping
-> 
-> Here's my architecture: [details]
-> 
-> Let's debug this together. What am I missing?"
-
-### Decision Making
-
-When you need structured thinking:
-
-> "I have three job offers and I'm paralyzed by the decision:
-> - Startup (lower pay, more equity, more risk)
-> - Big tech (great pay, slower growth, stable)
-> - Mid-stage scaleup (balanced, interesting problem)
-> 
-> Help me build a framework to think through this."
+**Think-Cog 并不是那种“做完就忘”的工具。** 它期待与你进行多次互动，每一次交流都能加深你对问题的理解。
 
 ---
 
-## The Think-Cog Philosophy
+## 何时使用 Think-Cog
 
-**"It's hard to know what's actually possible before you try it."**
+### 架构与技术决策
 
-This is CellCog's core insight. Complex problems rarely have obvious solutions. The best work happens when two smart entities—you and CellCog—exchange ideas, challenge assumptions, and discover answers together.
+**在权衡各种方案时：**
+> “我正在开发一个通知系统，每天需要服务 1000 万用户。我在以下几种方案之间犹豫不决：
+> 1. 为所有用户提供 WebSocket 连接；
+> 2. 通过服务器发送事件，并在无法连接时使用轮询机制；
+> 3. 仅使用推送通知。
+> 
+> 请帮我分析这些方案的优缺点。我的团队只有 3 名工程师，我们使用的是 AWS 平台。”
 
-Think of it as pair programming for thinking:
-- You provide direction and domain expertise
-- CellCog provides reasoning depth and fresh perspectives
-- Solutions emerge from the conversation
+### 商业策略
+
+**当未来方向不明确时：**
+> “我的 SaaS 业务正在增长，但我不确定应该：
+> - 专注于企业级销售（客户数量较少，但单笔交易金额较大）；
+> - 进一步发展自助服务模式（客户数量较多，但单笔收入较低）；
+> 
+> 目前的数据是：500 名客户，平均收入 50 美元，还有 2 个价值 5 万美元的企业级订单正在洽谈中。
+> 
+> 让我们一起探讨一下。”
+
+### 创意方向
+
+**在探索新的可能性时：**
+> “我想为我的咖啡品牌制作一个视频营销活动，但不知道该从哪个角度入手。这个品牌的特点是：
+> - 专营单一产地的咖啡；
+> - 直接与咖啡农合作；
+> - 定价较高（每袋 25 美元）；
+> 
+> 目标受众是关注品质的 25 至 40 岁的专业人士。
+> 
+> 在正式开始制作之前，先帮我想出一些创意方向。”
+
+### 问题调试
+
+**在遇到困难时：**
+> “尽管采用了 Dropout 层、数据增强技术和提前停止训练等方法，我的机器学习模型仍然出现过拟合现象。
+> 
+> 这是我的系统架构：[详细信息]
+> 
+> 让我们一起调试这个问题吧。我可能忽略了什么？”
+
+### 决策制定
+
+**在需要系统化思考时：**
+> “我收到了三份工作邀请，但无法做出选择：
+> - 初创公司（薪资较低，但股权较多，风险也较大）；
+> - 大型科技公司（薪资很高，但增长较慢，稳定性较好）；
+- 中型成长型企业（平衡性较好，面临有趣的问题）；
+ 
+> 请帮我建立一个思考框架来帮助决策。”
 
 ---
 
-## Chat Mode for Thinking
+## Think-Cog 的核心理念
 
-**Use `chat_mode="agent"`** for think-cog sessions.
+**“在实际尝试之前，很难知道什么才是可行的。”**
 
-Why not agent team? Agent team is designed for autonomous deep work with multiple internal passes. Think-cog is about collaborative iteration WITH you. Agent mode keeps the conversation flowing naturally.
+这是 CellCog 的核心理念。复杂问题往往没有显而易见的解决方案。最好的成果往往来自于两个人（你和 CellCog）之间的思想交流、对假设的质疑以及共同探索。
 
-The magic happens in the back-and-forth, not in autonomous processing.
-
----
-
-## Tips for Better Thinking Sessions
-
-1. **Share context generously**: The more CellCog understands your situation, the better it can think alongside you.
-
-2. **State your constraints**: Budget, timeline, team size, technical limitations—these shape what's possible.
-
-3. **Be honest about uncertainty**: "I'm not sure if X is even feasible" is a great starting point.
-
-4. **Challenge the responses**: Push back, ask "what about...", explore alternatives. Thinking improves through friction.
-
-5. **Let solutions emerge**: Don't expect the answer in the first exchange. The best insights often come in message 4 or 5.
-
-6. **Capture decisions**: When you reach clarity, summarize the conclusions. You can then use other CellCog skills to execute.
+可以把 Think-Cog 看作是一种“协作式思考”的方式：
+- 你提供方向和行业专业知识；
+- CellCog 提供深入的分析和新的视角；
+- 解决方案会在交流中逐渐浮现。
 
 ---
 
-## Think-Cog vs Other Skills
+## 使用 Think-Cog 的方式
 
-| Skill | Pattern | You Know the Output? |
+**在 Think-Cog 会话中，请使用 `chat_mode="agent"`。**
+
+**为什么不用“agent_team”模式呢？** “agent_team”模式是为自主处理任务设计的，适用于多次内部处理流程。而 Think-Cog 的目的是与你一起进行协作式迭代。使用“agent”模式可以让对话更加自然流畅。
+
+**真正的价值在于双方的互动过程，而不仅仅是自动化的处理结果。**
+
+---
+
+## 提高思考效率的小贴士：
+
+1. **充分分享背景信息**：CellCog 对你的情况了解得越透彻，就能更好地与你一起思考。
+2. **明确你的限制条件**：预算、时间表、团队规模、技术限制等都会影响最终的解决方案。
+3. **坦诚面对不确定性**：承认“我不确定某件事是否可行”是一个很好的起点。
+4. **对回答提出质疑**：提出反问，探索其他可能性。通过讨论，你的思考会变得更加深入。
+5. **让解决方案自然形成**：不要期望在第一次交流中就得到答案。最好的想法往往会在后续的交流中产生。
+6. **记录决策结果**：当你做出决定后，总结出结论。之后你可以使用其他 CellCog 功能来执行这些决策。
+
+---
+
+## Think-Cog 与其他技能的对比
+
+| 技能 | 工作模式 | 你是否需要明确最终结果？ |
 |-------|---------|---------------------|
-| research-cog | Fire-and-forget | Yes - "Give me research on X" |
-| video-cog | Fire-and-forget | Yes - "Create a video about X" |
-| docs-cog | Fire-and-forget | Yes - "Create a document for X" |
-| **think-cog** | **Conversational** | **No - "Help me figure out X"** |
+| research-cog | 一次性任务 | 是 – “帮我查找关于 X 的资料” |
+| video-cog | 一次性任务 | 是 – “为我制作关于 X 的视频” |
+| docs-cog | 一次性任务 | 是 – “为我创建关于 X 的文档” |
+| **Think-Cog** | 协作式对话 | 否 – “帮我找出关于 X 的解决方案” |
 
-Think-cog is for when you're in discovery mode. Other skills are for when you're in execution mode.
+Think-Cog 适用于探索和决策阶段，而其他技能则更适合执行阶段。
 
 ---
 
-## Example Thinking Session
+## 示例对话过程
 
-**You:**
-> "I'm building a two-sided marketplace for freelance designers. I'm stuck on the chicken-and-egg problem—how do I get designers without clients, and clients without designers?"
+**你：**
+> “我正在搭建一个面向自由设计师的双边市场平台，但遇到了一个难题：如何在没有设计师的情况下吸引客户，又如何在没有客户的情况下吸引设计师？”
 
-**CellCog:**
-> "This is the classic marketplace cold-start problem. Let me think through some approaches with you...
+**CellCog：**
+> “这是一个典型的市场平台启动初期遇到的问题。让我和你一起探讨一些解决方案……**
 > 
-> **Option 1: Supply-first (designers)**
-> - Pros: Designers are easier to acquire, content creates SEO value
-> - Cons: They'll leave if no jobs come
+> **方案 1：先提供设计师服务**
+> - 优点：更容易吸引设计师，内容有助于提升网站的搜索引擎排名；
+> - 缺点：如果没有业务，设计师可能会离开；
 > 
-> **Option 2: Demand-first (clients)**
-> - Pros: Revenue from day one, can manually fulfill initially
-> - Cons: Harder to acquire, need to deliver quality
+> **方案 2：先吸引客户**
+> - 优点：可以从第一天开始产生收入，初期可以手动匹配客户；
+> - 缺点：更难吸引设计师，需要提供高质量的服务；
 > 
-> **Option 3: Constrain the market**
-> - Focus on ONE design type (e.g., logo design only)
-> - Build liquidity in a narrow niche before expanding
+> **方案 3：聚焦某个特定领域**
+> - 专注于某一种设计服务（例如，仅提供标志设计）；
+> - 在扩大市场之前，先在一个小范围内建立用户基础；
 > 
-> What's your current thinking? And what resources do you have to invest in early growth?"
+> 你目前的想法是什么？你有哪些资源可以用于初期推广？”
 
-**You:**
-> "I have about $20K for initial marketing and can do some manual matching myself. The constrained market approach is interesting—I was thinking of going broad."
+**你：**
+> “我准备了大约 2 万美元用于初期营销，并且可以自己做一些手动匹配工作。聚焦特定领域的市场策略听起来很有吸引力，但我原本考虑的是全面展开。”
 
-**CellCog:**
-> "That $20K + your time is actually a meaningful advantage. Let me build on the constrained market idea...
+**CellCog：**
+> “这 2 万美元加上你的时间其实是一个很大的优势。让我们基于这个策略来制定计划……**
 > 
-> What if you started with:
-> - **Niche**: Startup logo design only
-> - **Supply**: Recruit 20-30 designers who specialize in startup branding (curated, not open signup)
-> - **Demand**: Target YC companies, indie hackers, ProductHunt launchers
+> “如果你先从以下方向入手会怎么样：
+> - **专注领域**：仅提供初创企业标志设计服务；
+> - **设计师来源**：招募 20 到 30 名专注于初创企业品牌设计的专家（经过筛选，不接受公开注册）；
+> - **目标客户**：初创企业、独立开发者、ProductHunt 平台的用户；
 > 
-> The manual matching you'd do becomes a feature, not a bug—'curated matches by founders who understand startups.'
+> 这样你的工作就会变成一个有针对性的服务——由了解初创企业的创始人来推荐设计师。
 > 
-> This gives you:
-> - Clear positioning
-> - Easier SEO/content ('startup logo design' vs 'design marketplace')
-> - Higher willingness to pay from funded startups
-> - Story for press/ProductHunt
+> 这样你可以：
+> - 明确自己的市场定位；
+> - 更容易获得搜索引擎优化效果（因为专注于初创企业标志设计）；
+> - 吸引到更愿意付费的初创企业客户；
+> - 为媒体或 ProductHunt 平台提供素材；
 > 
-> Thoughts? Or should we explore other niches?"
+> 你觉得怎么样？或者我们还需要探索其他领域吗？”
 
-The conversation continues, ideas refine, and eventually you arrive at a clear strategy to execute.
+通过这样的对话，你们的想法会逐渐清晰起来，最终会形成一个可行的策略。

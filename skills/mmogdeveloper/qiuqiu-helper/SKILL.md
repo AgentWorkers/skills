@@ -1,21 +1,21 @@
-# SKILL.md - Qiuqiu Helper
+# SKILL.md - Qiuqiu 辅助工具
 
-This is a multi-purpose helper skill for Jesse, designed to automate common workspace tasks.
+这是一个为 Jesse 设计的多功能辅助工具，旨在自动化常见的工作区任务。
 
-## Tools
+## 工具
 
 ### workspace_summary
-- Description: Generates a brief summary of recent changes and current status of the workspace.
-- Usage: Just call it to get a pragmatic overview.
+- 描述：生成工作区最近更改的简要总结及当前状态。
+- 使用方法：只需调用该工具即可获取实用的工作区概览。
 
 ### quick_note
-- Description: Appends a quick timestamped note to a specified file in the memory folder.
-- Parameters:
-  - content: The text to save.
-  - file: (Optional) Target filename, defaults to today's date.
+- 描述：在内存文件夹中的指定文件中添加一条带时间戳的快速备注。
+- 参数：
+  - content：要保存的文本。
+  - file：（可选）目标文件名，默认为当天的日期。
 
 ### clean_logs
-- Description: Deletes log files older than a specified number of days to save space.
-- Parameters:
-  - days: (Optional) Retention period in days, defaults to 7.
-  - path: (Optional) Directory to clean, defaults to current logs directory.
+- 描述：删除超过指定天数的日志文件以节省空间。
+- 参数：
+  - days：（可选）保留期（以天为单位），默认为 7 天。
+  - path：（可选）要清理的目录，默认为当前日志目录。

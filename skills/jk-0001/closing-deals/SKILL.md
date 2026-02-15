@@ -1,180 +1,144 @@
 ---
 name: closing-deals
-description: Close sales deals consistently as a solopreneur. Use when a prospect is at the decision stage and you need to move them to yes, when deals are stalling or going cold, when you need closing scripts or techniques, or when you want to build a repeatable process for turning proposals into signed contracts. Covers decision-stage psychology, closing techniques, stall recovery, contract-to-payment flow, and post-close relationship setup. Trigger on "how do I close a deal", "closing deals", "deal stalling", "prospect not responding", "how to get them to say yes", "close the sale", "convert proposal to client", "sales closing".
+description: 作为一名独立创业者（solopreneur），你需要持续地完成销售交易。以下内容适用于以下场景：  
+- 当潜在客户处于决策阶段，你需要促使他们做出购买决定；  
+- 当销售进程陷入停滞或出现冷场时；  
+- 当你需要使用特定的成交策略或技巧时；  
+- 当你希望建立一套可复制的流程，将销售提案转化为正式合同时。  
+
+内容涵盖：  
+- 潜在客户在决策阶段的心理特征；  
+- 成交技巧；  
+- 如何应对销售进程中的停滞情况；  
+- 从合同签订到款项支付的整个流程；  
+- 销售成交后的客户关系维护方法。  
+
+相关关键词：  
+- 如何完成交易（How to close a deal）  
+- 销售成交（Sales closing）  
+- 销售进程停滞（Deal stalling）  
+- 潜在客户未回复（Prospect not responding）  
+- 如何促使客户同意购买（How to get them to say yes）  
+- 将销售提案转化为正式合同（Convert proposal to client）
 ---
 
-# Closing Deals
+# 完成交易
 
-## Overview
-Closing is not a moment — it's the result of everything that came before it. If you did discovery well, wrote a sharp proposal, and handled objections honestly, closing feels natural, almost obvious. This playbook covers what to do at the finish line: how to move a warm prospect to a signed contract, how to recover deals that stall, and how to set up the relationship so the first day as a client is as smooth as possible.
-
----
-
-## Step 1: Recognize the Buying Signals
-
-Before you close, you need to know they're ready. Pushing a close on someone who isn't there yet damages trust. Watch for these signals:
-
-**Strong buying signals (they're likely ready):**
-- They ask about timelines, start dates, or onboarding details
-- They ask about contract or payment terms (logistics = intent)
-- They say things like "when can we get started?" or "this looks great"
-- They've stopped asking objection-type questions and are asking implementation questions
-- They've looped in another person (a finance person, a manager) — they're building internal consensus
-
-**Weak or absent signals (they're not ready yet):**
-- They go quiet for days after receiving the proposal
-- They keep asking about features or details but never move toward a decision
-- They say "let me think about it" with no specific timeline
-- They haven't responded to follow-ups
-
-**Rule:** If you see strong signals, close. If you see weak or absent signals, don't push the close — address the underlying hesitation first.
-
----
-
-## Step 2: The Close — Techniques and Scripts
-
-Closing does not have to be high-pressure. For solopreneurs, the most effective closes are calm, confident, and make the next step obvious.
-
-### Technique 1: The Assumptive Close
-Act as if the deal is happening. State the next step as if it's already agreed upon.
-
-```
-"Great — I'll get the contract drafted with the terms we discussed and 
-send it over this afternoon. Sound good?"
-```
-This works because it removes the awkward "so... do you want to do this?" moment. If they have a problem with the assumption, they'll say so — and that's useful information.
-
-### Technique 2: The Summary Close
-Recap everything you've agreed on, then name the action to finalize.
-
-```
-"To recap — we're moving forward with [scope], starting [date], at 
-$[price] with [payment terms]. I'll send the contract and first invoice 
-today. Anything you'd like to adjust before I do?"
-```
-Summaries build momentum. Hearing the terms restated — especially after a negotiation — creates a sense of forward motion.
-
-### Technique 3: The Urgency Close (Use Honestly)
-If there's a legitimate reason to act soon, state it. Do NOT manufacture fake urgency — solopreneurs live and die by trust.
-
-```
-"I want to flag — I have another project starting [date] that would 
-affect my availability. If we kick off before then, I can give this 
-my full focus. Otherwise, I'd need to push the start date to [later date]."
-```
-Only use this if it's true. Fake deadlines destroy credibility.
-
-### Technique 4: The Trial Close
-Test the waters before going for the full close. Lower the commitment, lower the resistance.
-
-```
-"Would it make sense to start with Phase 1 this week? That way you can 
-see results before committing to the full engagement."
-```
-A phased start reduces the perceived risk. Many prospects who hesitate on a large commitment will say yes to a smaller first step — and then naturally continue.
+## 概述
+完成交易并非一个简单的瞬间，而是之前所有工作的结果。如果你做好了市场调研、撰写了专业的提案，并诚实地处理了客户的异议，那么完成交易就会显得自然而然。本指南将介绍在交易最后阶段应该采取的行动：如何将潜在客户转化为签约客户、如何挽回陷入僵局的交易，以及如何建立良好的合作关系，以确保客户入职后的第一天一切顺利。
 
 ---
 
-## Step 3: Handle the "Let Me Think About It" Stall
+## 第一步：识别客户的购买信号
 
-This is the most common deal-killer for solopreneurs. "Let me think about it" usually means one of three things. Diagnose which one before responding.
+在尝试完成交易之前，你必须先确定客户是否已经准备好。如果对尚未准备好的客户强行要求完成交易，只会损害双方之间的信任。注意以下购买信号：
 
-### It means: "I have a concern I haven't voiced."
-**How to tell:** They were engaged until a specific point, then pulled back. Or they avoid committing but haven't said no.
-**Response:**
-```
-"Of course — I totally understand wanting to think it through. 
-Before you do, is there anything specific that's giving you pause? 
-I'd rather address it now than have it sit in the back of your mind."
-```
-Surface the real objection. Address it directly. Often, once it's named, it dissolves.
+**强烈的购买信号（客户可能已准备好）：**
+- 客户询问项目的时间表、开始日期或入职流程细节。
+- 客户询问合同或付款条款（这表明他们有购买的意愿）。
+- 客户表示“我们什么时候可以开始？”或“这个方案看起来很棒”。
+- 客户不再提出异议，而是开始询问实施相关的问题。
+- 客户引入了其他人员（如财务人员或经理）参与讨论——这说明他们正在内部达成共识。
 
-### It means: "The price feels high and I'm looking for permission to spend it."
-**How to tell:** They liked everything about the proposal but hesitated specifically around price or payment.
-**Response:**
-```
-"Totally fair. One thing that might help — [Company X] in a similar 
-situation saw [specific result] within [timeframe]. The $[price] paid 
-for itself in [X weeks/months]. Does that help frame it?"
-```
-Return to the ROI. Help them justify the spend internally — to themselves or to whoever they report to.
+**微弱的或没有购买信号（客户尚未准备好）：**
+- 收到提案后客户长时间保持沉默。
+- 客户不断询问产品功能或细节，但迟迟不做出决定。
+- 客户只是说“让我考虑一下”，且没有给出具体的时间表。
+- 客户没有回复你的跟进消息。
 
-### It means: "I need to compare other options."
-**How to tell:** They mentioned other vendors, or they haven't been responsive since the proposal.
-**Response:**
-```
-"Smart to compare — I'd encourage that. If it helps, I'm happy to 
-answer any specific questions that come up as you evaluate. And if 
-you'd like, I can put together a quick comparison of what to look 
-for in [this type of solution] so you're comparing apples to apples."
-```
-Don't badmouth competitors. Position yourself as the helpful advisor. Offering a "what to look for" guide keeps you in the conversation and subtly steers evaluation criteria toward your strengths.
+**规则：** 如果看到强烈的购买信号，就立即完成交易；如果看到微弱的或没有购买信号，不要强行推进交易——先解决客户内心的疑虑。
 
 ---
 
-## Step 4: Recover a Stalled Deal
+## 第二步：完成交易——技巧与策略
 
-Sometimes a deal goes cold — no response for a week or more. Here's how to bring it back without being annoying.
+完成交易并不一定需要施加高压。对于个体创业者来说，最有效的策略是保持冷静、自信，并明确下一步的行动方向。
 
-**Message 1 (Day 3-5 after last contact):**
-```
-"Hey [Name] — wanted to check in on [project/proposal]. Happy to 
-answer any questions or jump on a quick call if that would help move 
-things forward."
-```
-Simple. No pressure. Just a door left open.
+### 技巧1：假设性完成交易
+表现得好像交易已经达成一样，直接说明下一步该做什么。
 
-**Message 2 (Day 7-10, different channel if possible):**
-```
-"One thought since we last spoke — [a new insight, a relevant case 
-study, or a small piece of value]. Thought it might be useful as you 
-think through this."
-```
-Lead with value, not a nudge. This re-engages the conversation on your terms.
+**技巧说明：** 这种方法可以避免尴尬的提问：“那么……你愿意这样做吗？”如果客户对假设的内容有异议，他们会主动提出来，而这正是你需要的信息。
 
-**Message 3 (Day 14+, the breakup message):**
-```
-"Wanted to close the loop on this. I understand timing isn't always 
-right, and that's completely fine. If things change down the road, 
-I'd love to pick this up again. Best of luck either way."
-```
-The "breakup message" paradoxically has the highest response rate of the three. Giving them permission to walk away often makes them want to stay. If they don't respond, let it go — but leave the door open.
+### 技巧2：总结性完成交易
+回顾双方已经达成的一致内容，然后明确下一步需要执行的行动。
+
+**技巧说明：** 总结能增强客户的信心。在谈判结束后再次确认条款，会让客户感受到交易的推进方向。
+
+### 技巧3：适时表达紧迫感（但要真诚）
+如果有合理的理由需要尽快行动，就如实说明。切勿伪造紧迫感——个体创业者的信誉建立在信任的基础上。
+
+**技巧说明：** 只有在确实有紧迫情况时才使用这种方法。虚假的紧迫感会破坏你的信誉。
+
+### 技巧4：逐步推进交易
+在正式完成交易之前，先试探一下客户的反应。降低客户的承诺门槛，从而减少他们的抵触情绪。
+
+**技巧说明：** 分阶段推进可以降低客户的心理风险。许多对大额承诺犹豫不决的潜在客户，可能会同意先完成较小的步骤，之后再逐步跟进。
 
 ---
 
-## Step 5: Contract to Payment — The Handoff
+## 第三步：应对客户说“让我考虑一下”的情况
 
-Once they say yes, move fast and make it frictionless. Slow or confusing handoffs lose deals that are already won.
+这是个体创业者最常遇到的问题。“让我考虑一下”通常意味着以下三种情况之一。在回应之前先判断具体是哪种情况。
 
-**Checklist for the 24-48 hours after close:**
+### 情况一：“我有一个尚未表达的顾虑。”
+**判断方法：** 客户在某个阶段表现出兴趣，但随后却突然退缩；或者他们没有明确表示拒绝。
+**应对方法：** 直接找出客户的顾虑并予以解决。很多时候，一旦问题被提出，客户就会消除疑虑。
 
-- [ ] Send the contract (use a signing tool: HelloSign, DocuSign, or even a simple PDF with e-signature). Include only what's necessary — scope, price, terms, start date, payment. Don't make them read a 20-page legal document.
-- [ ] Send the first invoice (if upfront payment is required). Include clear payment instructions and a deadline.
-- [ ] Send a warm welcome message: express genuine enthusiasm, restate what happens next, and set expectations for the first week.
-- [ ] Calendar the kickoff. Even if it's a self-serve product, a brief kickoff call or onboarding email sets the tone for the relationship.
+### 情况二：“价格太高，我需要上级批准才能支付。”
+**判断方法：** 客户对提案的其他内容都很满意，但对价格或付款方式有疑虑。
+**应对方法：** 重新向客户解释投资回报率（ROI），帮助他们从内部角度说服自己或上级批准这笔支出。
 
-**Speed matters here.** Every hour between "yes" and "signed contract" is an hour where doubt can creep in. Make it easy and fast to formalize.
-
----
-
-## Step 6: Set Up for Retention and Expansion
-
-The deal isn't really "closed" until they've experienced value. Everything between signing and first value delivery is the danger zone for early churn.
-
-**First 7 days post-close:**
-- Deliver a quick win — something small that shows immediate results. This builds confidence that the larger promise will be kept.
-- Over-communicate. Send a progress update even if there's nothing new to say. Silence feels like neglect to a new client.
-- Ask one question: "Is there anything you need from me to make this work smoothly on your end?" This makes them feel like a partner, not just a customer.
-
-**First 30 days post-close:**
-- Check in once (not five times). Ask how things are going. Listen more than you talk.
-- Identify the first natural upsell or expansion opportunity — but don't pitch it yet. Plant the seed: "Once we've nailed [Phase 1], there's a natural next step that could [outcome]. We can talk about that whenever you're ready."
+### 情况三：“我需要比较其他选项。”
+**判断方法：** 客户提到了其他供应商，或者自收到提案后一直没有回应。
+**应对方法：** 不要贬低竞争对手，而是将自己定位为乐于提供帮助的顾问。可以提供一份“选购指南”，引导客户将评估标准转向你的产品优势。
 
 ---
 
-## Closing Mistakes to Avoid
-- Closing too early. If they're not ready, pushing the close creates resistance. Read the signals first.
-- Closing too late. If they ARE ready and you keep having "just one more" conversations, you're burning their momentum and giving doubt time to grow.
-- Apologizing for your price during the close. Confidence is contagious. If you believe in your price, they will too.
-- Making the contract complicated. A simple, clear contract closes faster than a thorough but dense one. Cover the essentials; save the edge cases for if and when they matter.
-- Disappearing after the signature. The close is the beginning of the relationship, not the end of the sales process. Treat it that way.
+## 第四步：挽回陷入僵局的交易
+
+有时交易会突然陷入停滞（比如一周或更长时间没有回应）。以下是重新启动对话的方法，同时避免让客户感到被骚扰。
+
+**消息1（最后一次联系后的第3-5天）：**
+**消息内容：** 简单明了，不要施加压力，只是表明你仍然愿意为他们提供服务。
+
+**消息2（第7-10天，如果可能的话，通过不同的渠道发送）：**
+**消息内容：** 强调产品的价值，而不是催促客户尽快决定。这样能重新开启对话。
+
+**消息3（第14天之后，发送“结束对话”的消息）：**
+**消息内容：** 意外地，这种“结束对话”的消息反而能获得更高的回复率。给予客户自由选择的权利往往会让客户愿意继续与你合作。如果他们仍然没有回应，那就放弃这个机会，但同时保持沟通渠道的畅通。
+
+---
+
+## 第五步：从合同签订到付款——交接流程
+
+一旦客户同意交易，就要迅速行动，确保整个流程顺畅无误。任何拖延或复杂的交接环节都可能导致已经取得的交易失败。
+
+**交易完成后的24-48小时内需要完成的事项：**
+- [ ] 发送合同（使用HelloSign、DocuSign等电子签名工具，或者简单的PDF格式）。只包含必要的内容：项目范围、价格、条款、开始日期、付款方式。避免让客户阅读长达20页的法律文件。
+- [ ] 如果需要预付款，发送第一张发票，并附上明确的付款说明和截止日期。
+- [ ] 发送热情的欢迎邮件，表达真诚的态度，重申后续流程，并明确客户入职后的期望。
+- [ ] 安排首次会议。即使产品是自助使用的，简短的电话会议或入职邮件也能为后续合作奠定良好的基础。
+
+**速度至关重要。** 从客户同意交易到签订合同之间的每一小时都可能让客户产生疑虑。因此，要确保整个流程尽可能简单快捷。
+
+## 第六步：建立客户留存和扩展关系
+
+只有当客户真正体验到产品的价值后，交易才算真正完成。从签订合同到首次提供价值的过程中，任何环节都可能让客户流失。
+
+**交易完成后的前7天：**
+- 提供一个小小的成果，让他们看到立即的效果。这会增强他们对后续服务的信心。
+- 多与客户沟通。即使没有新的进展，也要定期发送进度更新。对于新客户来说，沉默会让他们觉得被忽视。
+- 提出一个问题：“您需要我帮忙解决什么问题，以便您能顺利使用我们的服务？”这样会让客户感受到自己是你的合作伙伴，而不仅仅是消费者。
+
+**交易完成后的前30天：**
+- 至少联系一次，询问他们的使用情况，多倾听他们的反馈。
+- 寻找首次的升级或扩展机会——但此时不要直接推销。可以先暗示：“一旦我们完成了[第一阶段的工作，接下来会有自然的下一步。您随时可以讨论这个机会。”
+
+---
+
+## 需要避免的错误：
+- 过早尝试完成交易。如果客户尚未准备好，强行推进只会引发抵触。
+- 过迟完成交易。如果客户已经准备好，却还不断拖延，只会消耗他们的积极性，让疑虑不断滋生。
+- 在交易过程中为价格问题道歉。自信是重要的传染因素。如果你对自己的价格有信心，客户也会相信。
+- 使合同过于复杂。简单明了的合同比冗长复杂的合同更容易签订。只涵盖必要的内容，将特殊情况留到真正需要时再讨论。
+- 签订合同后就不再与客户联系。交易完成只是关系的开始，而不是销售过程的结束。要持续与客户保持联系。

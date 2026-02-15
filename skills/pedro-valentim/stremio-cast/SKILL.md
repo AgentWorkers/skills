@@ -1,41 +1,41 @@
 ---
 name: stremio-cast
-description: Busca conteúdo no Stremio Web e transmite para dispositivos Chromecast usando CATT e Playwright. Use para reproduzir filmes e séries diretamente do Stremio em TVs.
+description: 使用 CATT 和 Playwright 在 Stremio Web 中搜索内容，并将其传输到 Chromecast 设备上。该功能允许您直接在电视上通过 Stremio 播放电影和电视剧。
 ---
 
 # Stremio Cast
 
-Esta skill permite que o Manus automatize a interface web do Stremio para encontrar links de streaming locais e transmiti-los para um dispositivo Chromecast.
+此技能允许Manus自动化Stremio的网页界面，以查找本地的流媒体链接，并将其传输到Chromecast设备上。
 
-## Pré-requisitos
+## 先决条件
 
-Para que esta skill funcione corretamente, o ambiente deve ter:
-1. **Stremio Service** rodando localmente na porta `11470`.
-2. **Playwright** instalado para automação do navegador.
-3. **CATT (Cast All The Things)** instalado via pip para o casting.
+为了使此技能正常工作，环境需要满足以下条件：
+1. **Stremio Service** 需要在本地运行，并监听`11470`端口。
+2. **Playwright** 已安装，用于浏览器自动化。
+3. **CATT (Cast All The Things)** 已通过pip安装，用于实现流媒体传输功能。
 
-## Fluxo de Trabalho
+## 工作流程
 
-A skill executa os seguintes passos:
-1. Abre a interface web do Stremio (`app.strem.io`).
-2. Realiza a busca pelo título solicitado.
-3. Seleciona o primeiro resultado e o melhor link de stream disponível.
-4. Intercepta a URL do stream gerada pelo servidor local do Stremio (`127.0.0.1:11470`).
-5. Envia essa URL para o dispositivo Chromecast especificado usando a ferramenta `catt`.
+该技能执行以下步骤：
+1. 打开Stremio的网页界面（`app.strem.io`）。
+2. 搜索用户请求的电影或剧集名称。
+3. 选择第一个结果以及可用的最佳流媒体链接。
+4. 拦截Stremio本地服务器（`127.0.0.1:11470`）生成的流媒体URL。
+5. 使用`catt`工具将此URL发送到指定的Chromecast设备。
 
-## Uso
+## 使用方法
 
-A skill deve ser invocada quando o usuário pedir para "tocar [filme/série] no Chromecast" ou "assistir [título] na TV".
+当用户请求“在Chromecast上播放[电影/剧集]”或“在电视上观看[剧集名称]”时，应调用此技能。
 
-### Parâmetros
-- `query`: O nome do filme ou série a ser buscado.
-- `device`: (Opcional) O nome do dispositivo Chromecast. Padrão: "Living Room".
+### 参数
+- `query`：要搜索的电影或剧集名称。
+- `device`：（可选）Chromecast设备的名称。默认值为“Living Room”。
 
-### Exemplo de Comando
+### 命令示例
 ```bash
 python3 scripts/stremio_cast.py "The Matrix" "Quarto"
 ```
 
-## Notas Importantes
-- **Manutenção de Sessão**: O servidor de streaming do Stremio pode exigir que a aba do navegador permaneça aberta para continuar o download do torrent. O script fecha o navegador após iniciar o cast, mas isso pode ser ajustado se o stream cair prematuramente.
-- **Seletores CSS**: Os seletores da interface web do Stremio podem mudar. Caso a skill falhe ao clicar em elementos, verifique se os seletores em `scripts/stremio_cast.py` ainda são válidos.
+## 重要说明
+- **会话保持**：Stremio的流媒体服务器可能要求浏览器页面保持打开状态，以便继续下载文件。虽然脚本在开始流媒体传输后会关闭浏览器，但如果流媒体传输提前中断，这一设置可以进行调整。
+- **CSS选择器**：Stremio网页界面的选择器可能会发生变化。如果技能在点击元素时失败，请检查`scripts/stremio_cast.py`中的选择器是否仍然有效。

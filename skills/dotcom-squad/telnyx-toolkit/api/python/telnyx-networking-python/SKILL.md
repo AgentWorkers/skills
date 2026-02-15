@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Networking - Python
+# Telnyx 网络服务 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all Regions
+## 列出所有区域
 
-List all regions and the interfaces that region supports
+列出所有区域及其支持的接口
 
 `GET /regions`
 
@@ -44,9 +45,9 @@ regions = client.regions.list()
 print(regions.data)
 ```
 
-## List all Networks
+## 列出所有网络
 
-List all Networks.
+列出所有网络。
 
 `GET /networks`
 
@@ -56,9 +57,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a Network
+## 创建网络
 
-Create a new Network.
+创建一个新的网络。
 
 `POST /networks`
 
@@ -69,9 +70,9 @@ network = client.networks.create(
 print(network.data)
 ```
 
-## Retrieve a Network
+## 获取网络信息
 
-Retrieve a Network.
+检索网络信息。
 
 `GET /networks/{id}`
 
@@ -82,9 +83,9 @@ network = client.networks.retrieve(
 print(network.data)
 ```
 
-## Update a Network
+## 更新网络
 
-Update a Network.
+更新网络信息。
 
 `PATCH /networks/{id}`
 
@@ -96,9 +97,9 @@ network = client.networks.update(
 print(network.data)
 ```
 
-## Delete a Network
+## 删除网络
 
-Delete a Network.
+删除网络。
 
 `DELETE /networks/{id}`
 
@@ -109,7 +110,7 @@ network = client.networks.delete(
 print(network.data)
 ```
 
-## Get Default Gateway status.
+## 获取默认网关状态
 
 `GET /networks/{id}/default_gateway`
 
@@ -120,7 +121,7 @@ default_gateway = client.networks.default_gateway.retrieve(
 print(default_gateway.data)
 ```
 
-## Create Default Gateway.
+## 创建默认网关
 
 `POST /networks/{id}/default_gateway`
 
@@ -131,7 +132,7 @@ default_gateway = client.networks.default_gateway.create(
 print(default_gateway.data)
 ```
 
-## Delete Default Gateway.
+## 删除默认网关
 
 `DELETE /networks/{id}/default_gateway`
 
@@ -142,9 +143,9 @@ default_gateway = client.networks.default_gateway.delete(
 print(default_gateway.data)
 ```
 
-## List all Interfaces for a Network.
+## 列出网络的所有接口
 
-`GET /networks/{id}/network_interfaces`
+`GET /networks/{id}/networkInterfaces`
 
 ```python
 page = client.networks.list_interfaces(
@@ -154,9 +155,9 @@ page = page.data[0]
 print(page)
 ```
 
-## List all WireGuard Interfaces
+## 列出所有 WireGuard 接口
 
-List all WireGuard Interfaces.
+列出所有 WireGuard 接口。
 
 `GET /wireguard_interfaces`
 
@@ -166,9 +167,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a WireGuard Interface
+## 创建新的 WireGuard 接口
 
-Create a new WireGuard Interface.
+创建一个新的 WireGuard 接口。
 
 `POST /wireguard_interfaces`
 
@@ -179,11 +180,11 @@ wireguard_interface = client.wireguard_interfaces.create(
 print(wireguard_interface.data)
 ```
 
-## Retrieve a WireGuard Interfaces
+## 获取 WireGuard 接口信息
 
-Retrieve a WireGuard Interfaces.
+检索 WireGuard 接口信息。
 
-`GET /wireguard_interfaces/{id}`
+`GET /wireguardinterfaces/{id}`
 
 ```python
 wireguard_interface = client.wireguard_interfaces.retrieve(
@@ -192,11 +193,11 @@ wireguard_interface = client.wireguard_interfaces.retrieve(
 print(wireguard_interface.data)
 ```
 
-## Delete a WireGuard Interface
+## 删除 WireGuard 接口
 
-Delete a WireGuard Interface.
+删除 WireGuard 接口。
 
-`DELETE /wireguard_interfaces/{id}`
+`DELETE /wireguardinterfaces/{id}`
 
 ```python
 wireguard_interface = client.wireguard_interfaces.delete(
@@ -205,9 +206,9 @@ wireguard_interface = client.wireguard_interfaces.delete(
 print(wireguard_interface.data)
 ```
 
-## List all WireGuard Peers
+## 列出所有 WireGuard 对等方
 
-List all WireGuard peers.
+列出所有 WireGuard 对等方。
 
 `GET /wireguard_peers`
 
@@ -217,9 +218,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a WireGuard Peer
+## 创建新的 WireGuard 对等方
 
-Create a new WireGuard Peer.
+创建一个新的 WireGuard 对等方。
 
 `POST /wireguard_peers`
 
@@ -230,9 +231,9 @@ wireguard_peer = client.wireguard_peers.create(
 print(wireguard_peer.data)
 ```
 
-## Retrieve the WireGuard Peer
+## 获取 WireGuard 对等方信息
 
-Retrieve the WireGuard peer.
+检索 WireGuard 对等方信息。
 
 `GET /wireguard_peers/{id}`
 
@@ -243,9 +244,9 @@ wireguard_peer = client.wireguard_peers.retrieve(
 print(wireguard_peer.data)
 ```
 
-## Update the WireGuard Peer
+## 更新 WireGuard 对等方信息
 
-Update the WireGuard peer.
+更新 WireGuard 对等方信息。
 
 `PATCH /wireguard_peers/{id}`
 
@@ -256,9 +257,9 @@ wireguard_peer = client.wireguard_peers.update(
 print(wireguard_peer.data)
 ```
 
-## Delete the WireGuard Peer
+## 删除 WireGuard 对等方
 
-Delete the WireGuard peer.
+删除 WireGuard 对等方。
 
 `DELETE /wireguard_peers/{id}`
 
@@ -269,7 +270,7 @@ wireguard_peer = client.wireguard_peers.delete(
 print(wireguard_peer.data)
 ```
 
-## Retrieve Wireguard config template for Peer
+## 获取 WireGuard 对等方的配置模板
 
 `GET /wireguard_peers/{id}/config`
 
@@ -280,9 +281,9 @@ response = client.wireguard_peers.retrieve_config(
 print(response)
 ```
 
-## Get all Private Wireless Gateways
+## 获取用户所有的私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户所有的私有无线网关。
 
 `GET /private_wireless_gateways`
 
@@ -292,11 +293,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a Private Wireless Gateway
+## 创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+为已创建的网络中的 SIM 卡异步创建私有无线网关。
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`, `name`
 
 ```python
 private_wireless_gateway = client.private_wireless_gateways.create(
@@ -306,9 +307,9 @@ private_wireless_gateway = client.private_wireless_gateways.create(
 print(private_wireless_gateway.data)
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+检索私有无线网关的详细信息。
 
 `GET /private_wireless_gateways/{id}`
 
@@ -319,9 +320,9 @@ private_wireless_gateway = client.private_wireless_gateways.retrieve(
 print(private_wireless_gateway.data)
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关。
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -332,9 +333,9 @@ private_wireless_gateway = client.private_wireless_gateways.delete(
 print(private_wireless_gateway.data)
 ```
 
-## List all Public Internet Gateways
+## 列出所有公共互联网网关
 
-List all Public Internet Gateways.
+列出所有公共互联网网关。
 
 `GET /public_internet_gateways`
 
@@ -344,9 +345,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a Public Internet Gateway
+## 创建公共互联网网关
 
-Create a new Public Internet Gateway.
+创建一个新的公共互联网网关。
 
 `POST /public_internet_gateways`
 
@@ -355,9 +356,9 @@ public_internet_gateway = client.public_internet_gateways.create()
 print(public_internet_gateway.data)
 ```
 
-## Retrieve a Public Internet Gateway
+## 获取公共互联网网关信息
 
-Retrieve a Public Internet Gateway.
+检索公共互联网网关的详细信息。
 
 `GET /public_internet_gateways/{id}`
 
@@ -368,9 +369,9 @@ public_internet_gateway = client.public_internet_gateways.retrieve(
 print(public_internet_gateway.data)
 ```
 
-## Delete a Public Internet Gateway
+## 删除公共互联网网关
 
-Delete a Public Internet Gateway.
+删除公共互联网网关。
 
 `DELETE /public_internet_gateways/{id}`
 
@@ -381,9 +382,9 @@ public_internet_gateway = client.public_internet_gateways.delete(
 print(public_internet_gateway.data)
 ```
 
-## List all Virtual Cross Connects
+## 列出所有虚拟跨连接
 
-List all Virtual Cross Connects.
+列出所有虚拟跨连接。
 
 `GET /virtual_cross_connects`
 
@@ -393,9 +394,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a Virtual Cross Connect
+## 创建虚拟跨连接
 
-Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the option of creating the primary connection first and the secondary connection later.
+创建一个新的虚拟跨连接。<br /><br />对于 AWS 和 GCE，您可以先创建主连接，再创建次级连接。
 
 `POST /virtual_cross_connects`
 
@@ -406,9 +407,9 @@ virtual_cross_connect = client.virtual_cross_connects.create(
 print(virtual_cross_connect.data)
 ```
 
-## Retrieve a Virtual Cross Connect
+## 获取虚拟跨连接信息
 
-Retrieve a Virtual Cross Connect.
+检索虚拟跨连接的详细信息。
 
 `GET /virtual_cross_connects/{id}`
 
@@ -419,9 +420,9 @@ virtual_cross_connect = client.virtual_cross_connects.retrieve(
 print(virtual_cross_connect.data)
 ```
 
-## Update the Virtual Cross Connect
+## 更新虚拟跨连接
 
-Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched during the `created` state, as GCE will only inform you of your generated IP once the pending connection requested has bee...
+更新虚拟跨连接的信息。<br /><br />只有在“创建”状态下才能修改云 IP 地址；因为 GCE 会在连接请求处理完成后才会通知您生成的 IP 地址...
 
 `PATCH /virtual_cross_connects/{id}`
 
@@ -432,9 +433,9 @@ virtual_cross_connect = client.virtual_cross_connects.update(
 print(virtual_cross_connect.data)
 ```
 
-## Delete a Virtual Cross Connect
+## 删除虚拟跨连接
 
-Delete a Virtual Cross Connect.
+删除虚拟跨连接。
 
 `DELETE /virtual_cross_connects/{id}`
 
@@ -445,9 +446,9 @@ virtual_cross_connect = client.virtual_cross_connects.delete(
 print(virtual_cross_connect.data)
 ```
 
-## List Virtual Cross Connect Cloud Coverage
+## 查看虚拟跨连接的覆盖范围
 
-List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which cloud regions are available for the `location_code` your Virtual Cross Connect will be provisioned in.
+查看虚拟跨连接可使用的云区域。
 
 `GET /virtual_cross_connects/coverage`
 
@@ -457,9 +458,9 @@ page = page.data[0]
 print(page.available_bandwidth)
 ```
 
-## List all Global IPs
+## 列出所有全局 IP 地址
 
-List all Global IPs.
+列出所有全局 IP 地址。
 
 `GET /global_ips`
 
@@ -469,9 +470,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a Global IP
+## 创建全局 IP 地址
 
-Create a Global IP.
+创建一个新的全局 IP 地址。
 
 `POST /global_ips`
 
@@ -480,9 +481,9 @@ global_ip = client.global_ips.create()
 print(global_ip.data)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址信息
 
-Retrieve a Global IP.
+检索全局 IP 地址的详细信息。
 
 `GET /global_ips/{id}`
 
@@ -493,9 +494,9 @@ global_ip = client.global_ips.retrieve(
 print(global_ip.data)
 ```
 
-## Delete a Global IP
+## 删除全局 IP 地址
 
-Delete a Global IP.
+删除全局 IP 地址。
 
 `DELETE /global_ips/{id}`
 
@@ -506,7 +507,9 @@ global_ip = client.global_ips.delete(
 print(global_ip.data)
 ```
 
-## List all Global IP Allowed Ports
+## 列出所有允许使用的全局 IP 地址端口
+
+列出所有允许使用的全局 IP 地址端口。
 
 `GET /global_ip_allowed_ports`
 
@@ -515,7 +518,9 @@ global_ip_allowed_ports = client.global_ip_allowed_ports.list()
 print(global_ip_allowed_ports.data)
 ```
 
-## Global IP Assignment Health Check Metrics
+## 全局 IP 地址分配健康检查指标
+
+获取全局 IP 地址分配的健康检查指标。
 
 `GET /global_ip_assignment_health`
 
@@ -524,9 +529,9 @@ global_ip_assignment_health = client.global_ip_assignment_health.retrieve()
 print(global_ip_assignment_health.data)
 ```
 
-## List all Global IP assignments
+## 列出所有全局 IP 地址分配记录
 
-List all Global IP assignments.
+列出所有全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments`
 
@@ -536,9 +541,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a Global IP assignment
+## 创建全局 IP 地址分配记录
 
-Create a Global IP assignment.
+创建一个新的全局 IP 地址分配记录。
 
 `POST /global_ip_assignments`
 
@@ -547,9 +552,9 @@ global_ip_assignment = client.global_ip_assignments.create()
 print(global_ip_assignment.data)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址分配记录
 
-Retrieve a Global IP assignment.
+检索全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments/{id}`
 
@@ -560,9 +565,9 @@ global_ip_assignment = client.global_ip_assignments.retrieve(
 print(global_ip_assignment.data)
 ```
 
-## Update a Global IP assignment
+## 更新全局 IP 地址分配记录
 
-Update a Global IP assignment.
+更新全局 IP 地址的分配记录。
 
 `PATCH /global_ip_assignments/{id}`
 
@@ -574,9 +579,9 @@ global_ip_assignment = client.global_ip_assignments.update(
 print(global_ip_assignment.data)
 ```
 
-## Delete a Global IP assignment
+## 删除全局 IP 地址分配记录
 
-Delete a Global IP assignment.
+删除全局 IP 地址的分配记录。
 
 `DELETE /global_ip_assignments/{id}`
 
@@ -587,7 +592,9 @@ global_ip_assignment = client.global_ip_assignments.delete(
 print(global_ip_assignment.data)
 ```
 
-## Global IP Assignment Usage Metrics
+## 全局 IP 地址分配使用情况指标
+
+获取全局 IP 地址分配的使用情况指标。
 
 `GET /global_ip_assignments/usage`
 
@@ -596,9 +603,9 @@ global_ip_assignments_usage = client.global_ip_assignments_usage.retrieve()
 print(global_ip_assignments_usage.data)
 ```
 
-## List all Global IP Health check types
+## 列出所有全局 IP 地址的健康检查类型
 
-List all Global IP Health check types.
+列出所有全局 IP 地址的健康检查类型。
 
 `GET /global_ip_health_check_types`
 
@@ -607,9 +614,9 @@ global_ip_health_check_types = client.global_ip_health_check_types.list()
 print(global_ip_health_check_types.data)
 ```
 
-## List all Global IP health checks
+## 列出所有全局 IP 地址的健康检查记录
 
-List all Global IP health checks.
+列出所有全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks`
 
@@ -619,9 +626,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Create a Global IP health check
+## 创建全局 IP 地址的健康检查记录
 
-Create a Global IP health check.
+创建一个新的全局 IP 地址健康检查记录。
 
 `POST /global_ip_health_checks`
 
@@ -630,9 +637,9 @@ global_ip_health_check = client.global_ip_health_checks.create()
 print(global_ip_health_check.data)
 ```
 
-## Retrieve a Global IP health check
+## 获取全局 IP 地址的健康检查记录
 
-Retrieve a Global IP health check.
+检索全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks/{id}`
 
@@ -643,9 +650,9 @@ global_ip_health_check = client.global_ip_health_checks.retrieve(
 print(global_ip_health_check.data)
 ```
 
-## Delete a Global IP health check
+## 删除全局 IP 地址的健康检查记录
 
-Delete a Global IP health check.
+删除全局 IP 地址的健康检查记录。
 
 `DELETE /global_ip_health_checks/{id}`
 
@@ -656,7 +663,9 @@ global_ip_health_check = client.global_ip_health_checks.delete(
 print(global_ip_health_check.data)
 ```
 
-## Global IP Latency Metrics
+## 全局 IP 地址的延迟指标
+
+获取全局 IP 地址的延迟指标。
 
 `GET /global_ip_latency`
 
@@ -665,7 +674,9 @@ global_ip_latency = client.global_ip_latency.retrieve()
 print(global_ip_latency.data)
 ```
 
-## List all Global IP Protocols
+## 列出所有全局 IP 协议
+
+列出所有全局 IP 地址支持的协议。
 
 `GET /global_ip_protocols`
 
@@ -674,11 +685,14 @@ global_ip_protocols = client.global_ip_protocols.list()
 print(global_ip_protocols.data)
 ```
 
-## Global IP Usage Metrics
+## 全局 IP 地址的使用情况指标
+
+获取全局 IP 地址的使用情况指标。
 
 `GET /global_ip_usage`
 
 ```python
 global_ip_usage = client.global_ip_usage.retrieve()
 print(global_ip_usage.data)
+```
 ```

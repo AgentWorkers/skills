@@ -1,6 +1,6 @@
 ---
 name: grok-imagine
-description: Generate images via xAI's Grok Imagine API. Use when the user wants to create AI-generated images using xAI/Grok, or when OpenAI image generation is unavailable.
+description: 通过 xAI 的 Grok Imagine API 生成图像。当用户希望使用 xAI/Grok 创建 AI 生成的图像，或者当 OpenAI 的图像生成功能不可用时，可以使用此方法。
 homepage: https://docs.x.ai/docs/api-reference#image-generation
 metadata:
   {
@@ -15,15 +15,15 @@ metadata:
 
 # Grok Imagine
 
-Generate images via xAI's Grok Imagine API.
+通过 xAI 的 Grok Imagine API 生成图像。
 
-## Run
+## 运行方式
 
 ```bash
 node {baseDir}/scripts/gen.mjs --prompt "your image description"
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Basic image generation
@@ -39,27 +39,27 @@ node {baseDir}/scripts/gen.mjs --prompt "mountain landscape" --out-dir ./images
 node {baseDir}/scripts/gen.mjs --prompt "add a rainbow to the sky" --input /path/to/image.png
 ```
 
-## Models
+## 可用模型
 
-- **grok-imagine-image**: Text-to-image and image editing (default)
-- **grok-2-image**: Legacy image generation model
+- **grok-imagine-image**：文本转图像及图像编辑功能（默认模型）
+- **grok-2-image**：旧版本的图像生成模型
 
-## Parameters
+## 参数
 
-- `--prompt, -p`: Image description (required)
-- `--count, -n`: Number of images to generate (default: 1)
-- `--model, -m`: Model to use (default: grok-imagine-image)
-- `--input, -i`: Input image path for editing tasks (optional)
-- `--out-dir, -o`: Output directory (default: ./tmp/grok-imagine-<timestamp>)
+- `--prompt, -p`：图像描述（必填）
+- `--count, -n`：要生成的图像数量（默认值：1）
+- `--model, -m`：要使用的模型（默认值：grok-imagine-image）
+- `--input, -i`：用于编辑任务的输入图像路径（可选）
+- `--out-dir, -o`：输出目录（默认值：./tmp/grok-imagine-<timestamp>）
 
-## Output
+## 输出结果
 
-- Generated images saved as PNG files
-- `prompts.json` with prompt → file mapping
-- `index.html` thumbnail gallery
-- `MEDIA:` lines for OpenClaw auto-attach
+- 生成的图像将保存为 PNG 格式的文件
+- `prompts.json` 文件：包含提示信息与对应图像的映射关系
+- `index.html` 文件：包含图像的缩略图画廊
+- `MEDIA:` 文件：用于 OpenClaw 自动加载图像的元数据
 
-## API Key
+## API 密钥
 
-Set `XAI_API_KEY` environment variable, or configure in OpenClaw:
-- `skills."grok-imagine".apiKey` in `~/.openclaw/openclaw.json`
+请设置 `XAI_API_KEY` 环境变量，或在 OpenClaw 中进行配置：
+- 在 `~/.openclaw/openclaw.json` 文件中的 `skills."grok-imagine".apiKey` 配置项中设置 API 密钥

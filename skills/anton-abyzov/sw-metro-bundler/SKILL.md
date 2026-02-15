@@ -1,32 +1,32 @@
 ---
 name: metro-bundler
-description: Metro bundler configuration, optimization, and troubleshooting. Use for bundle errors, "unable to resolve module", or caching issues.
+description: Metro Bundler 的配置、优化及故障排除方法。适用于处理打包错误（如 “无法解析模块”）或缓存问题。
 ---
 
-# Metro Bundler Expert
+# Metro Bundler 专家
 
-Comprehensive expertise in React Native's Metro bundler, including configuration, optimization, custom transformers, caching strategies, and troubleshooting common bundling issues.
+在 React Native 的 Metro Bundler 方面拥有全面的专业知识，包括配置、优化、自定义转换器、缓存策略以及解决常见的打包问题。
 
-## What I Know
+## 我的专长
 
-### Metro Fundamentals
+### Metro 基础知识
 
-**What is Metro?**
-- JavaScript bundler for React Native
-- Transforms and bundles JavaScript modules
-- Handles assets (images, fonts, etc.)
-- Provides fast refresh for development
-- Generates source maps for debugging
+**什么是 Metro？**
+- React Native 的 JavaScript 打包工具
+- 负责转换和打包 JavaScript 模块
+- 管理资源文件（如图片、字体等）
+- 提供快速的开发环境刷新功能
+- 生成用于调试的源代码映射文件（source maps）
 
-**Key Concepts**
-- **Transformer**: Converts source code (TypeScript, JSX) to JavaScript
-- **Resolver**: Locates modules in the file system
-- **Serializer**: Combines modules into bundles
-- **Cache**: Speeds up subsequent builds
+**关键概念**
+- **转换器（Transformer）**：将源代码（TypeScript、JSX）转换为 JavaScript
+- **解析器（Resolver）**：在文件系统中查找模块
+- **序列化器（Serializer）**：将多个模块合并成打包文件
+- **缓存（Cache）**：加快后续构建的速度
 
-### Metro Configuration
+### Metro 配置
 
-**Basic metro.config.js**
+**基本的 `metro.config.js` 文件**
 ```javascript
 const { getDefaultConfig } = require('expo/metro-config');
 
@@ -36,7 +36,7 @@ const config = getDefaultConfig(__dirname);
 module.exports = config;
 ```
 
-**Custom Configuration**
+**自定义配置**
 ```javascript
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
@@ -97,9 +97,9 @@ const config = {
 module.exports = mergeConfig(defaultConfig, config);
 ```
 
-### Optimization Strategies
+### 优化策略
 
-**Inline Requires**
+**内联依赖项（Inline Dependencies）**
 ```javascript
 // metro.config.js
 module.exports = {
@@ -137,7 +137,7 @@ function App() {
 }
 ```
 
-**Bundle Splitting (Experimental)**
+**打包文件分割（实验性功能）**
 ```javascript
 // metro.config.js
 module.exports = {
@@ -156,7 +156,7 @@ module.exports = {
 };
 ```
 
-**Asset Optimization**
+**资源文件优化**
 ```javascript
 // metro.config.js
 module.exports = {
@@ -186,9 +186,9 @@ module.exports = {
 };
 ```
 
-### Custom Transformers
+### 自定义转换器
 
-**SVG Transformer**
+**SVG 转换器（SVG Transformer）**
 ```bash
 # Install
 npm install react-native-svg react-native-svg-transformer
@@ -212,16 +212,7 @@ config.resolver = {
 module.exports = config;
 ```
 
-```javascript
-// Usage in code
-import Logo from './assets/logo.svg';
-
-function App() {
-  return <Logo width={120} height={40} />;
-}
-```
-
-**Multiple File Extensions**
+**多文件扩展名处理（Multiple File Extensions）**
 ```javascript
 // metro.config.js
 module.exports = {
@@ -245,9 +236,9 @@ module.exports = {
 };
 ```
 
-### Caching Strategies
+### 缓存策略
 
-**Cache Management**
+**缓存管理**
 ```bash
 # Clear Metro cache
 npx react-native start --reset-cache
@@ -264,7 +255,7 @@ watchman watch-del-all
 npm run clear  # If configured in package.json
 ```
 
-**Cache Configuration**
+**缓存配置**
 ```javascript
 // metro.config.js
 const path = require('path');
@@ -289,9 +280,9 @@ module.exports = {
 };
 ```
 
-### Monorepo Setup
+### 单一仓库（Monorepo）设置
 
-**Workspaces Configuration**
+**工作区配置（Workspaces Configuration）**
 ```javascript
 // metro.config.js (in app directory)
 const path = require('path');
@@ -317,7 +308,7 @@ config.resolver.disableHierarchicalLookup = false;
 module.exports = config;
 ```
 
-**Symlink Handling**
+**符号链接处理（Symlink Handling）**
 ```javascript
 // metro.config.js
 module.exports = {
@@ -344,87 +335,32 @@ module.exports = {
 };
 ```
 
-### Common Issues & Solutions
+### 常见问题及解决方法
 
-**"Unable to resolve module"**
-```bash
-# Solution 1: Clear cache
-npx react-native start --reset-cache
+- **“无法解析模块”（“Unable to resolve module”）**
+- **“端口 8081 已被占用”（“Port 8081 already in use”）**
+- **“类型错误：Module AppRegistry 未注册为可调用模块”（“Invariant Violation: Module AppRegistry is not a registered callable module”）**
+- **“转换错误：... 语法错误”（“TransformError: ... SyntaxError”）**
 
-# Solution 2: Reinstall dependencies
-rm -rf node_modules
-npm install
+## 何时需要我的帮助
 
-# Solution 3: Check import paths
-# Ensure case-sensitive imports match file names
-import UserProfile from './userProfile';  # ❌ Wrong case
-import UserProfile from './UserProfile';  # ✅ Correct
+当您遇到以下问题时，请联系我：
+- 需要配置 Metro Bundler
+- 需要自定义转换器（如处理 SVG、图片等资源）
+- 需要优化打包文件的大小和启动时间
+- 需要设置使用 Metro 的单一仓库（monorepo）
+- 需要解决 “无法解析模块” 的错误
+- 需要有效清除 Metro 缓存
+- 需要配置源代码映射文件
+- 需要处理特定平台的文件解析问题
+- 需要调试打包性能
+- 需要自定义资源文件的处理方式
+- 需要解决端口冲突（如端口 8081 的占用问题）
+- 需要处理单一仓库中的符号链接问题
 
-# Solution 4: Add to metro.config.js
-module.exports = {
-  resolver: {
-    extraNodeModules: {
-      'my-module': path.resolve(__dirname, 'node_modules/my-module'),
-    },
-  },
-};
-```
+## 必备命令
 
-**"Port 8081 already in use"**
-```bash
-# Find and kill process
-lsof -ti:8081 | xargs kill -9
-
-# Or start on different port
-npx react-native start --port 8082
-
-# Update code to use new port
-adb reverse tcp:8082 tcp:8082  # Android
-```
-
-**"Invariant Violation: Module AppRegistry is not a registered callable module"**
-```bash
-# Clear all caches
-rm -rf $TMPDIR/react-*
-rm -rf $TMPDIR/metro-*
-watchman watch-del-all
-rm -rf node_modules
-npm install
-npx react-native start --reset-cache
-```
-
-**"TransformError: ... SyntaxError"**
-```javascript
-// Add Babel plugin to metro.config.js
-module.exports = {
-  transformer: {
-    babelTransformerPath: require.resolve('./customBabelTransformer.js'),
-  },
-};
-
-// customBabelTransformer.js
-module.exports = require('metro-react-native-babel-preset');
-```
-
-## When to Use This Skill
-
-Ask me when you need help with:
-- Configuring Metro bundler
-- Custom transformers (SVG, images, etc.)
-- Optimizing bundle size and startup time
-- Setting up monorepo with Metro
-- Troubleshooting "Unable to resolve module" errors
-- Clearing Metro cache effectively
-- Configuring source maps
-- Platform-specific file resolution
-- Debugging bundling performance
-- Custom asset handling
-- Port conflicts (8081)
-- Symlink resolution in monorepos
-
-## Essential Commands
-
-### Development
+### 开发阶段（Development）
 ```bash
 # Start Metro bundler
 npx react-native start
@@ -445,7 +381,7 @@ npx expo start
 npx expo start -c
 ```
 
-### Debugging
+### 调试阶段（Debugging）
 ```bash
 # Check Metro status
 curl http://localhost:8081/status
@@ -460,7 +396,7 @@ curl http://localhost:8081/index.map?platform=ios > bundle.map
 curl http://localhost:8081/index.bundle?platform=ios&dev=false&minify=false
 ```
 
-### Cache Management
+### 缓存管理（Cache Management）
 ```bash
 # Clear Metro cache
 rm -rf $TMPDIR/react-*
@@ -479,136 +415,26 @@ rm -rf node_modules
 npm install
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与建议
 
-### 1. Bundle Analysis
+- **1. 打包文件分析（Bundle Analysis）**：分析打包文件的大小以寻找优化机会
+- **2. 环境特定配置（Environment-Specific Configuration）**：根据不同环境进行相应的配置调整
+- **3. 自定义资源文件处理流程（Custom Asset Pipeline）**：定制资源文件的处理方式
+- **4. 预加载重要模块（Preloading Heavy Modules）**：提高应用程序的启动速度
+- **5. 提升开发性能（Improving Development Performance）**：优化开发过程中的性能表现
 
-Analyze bundle size to find optimization opportunities:
+## 与 SpecWeave 的集成
 
-```bash
-# Generate bundle with source map
-npx react-native bundle \
-  --platform ios \
-  --dev false \
-  --entry-file index.js \
-  --bundle-output ./bundle.js \
-  --sourcemap-output ./bundle.map
+- **配置管理（Configuration Management）**：在 `docs/internal/architecture/` 目录中记录 Metro 的配置信息
+- **跟踪打包文件大小的变化**：监控每次代码更新后的打包文件大小
+- **将打包优化纳入任务管理（Include Bundling Optimization in Tasks）**：将打包优化步骤纳入项目任务流程
 
-# Analyze with source-map-explorer
-npm install -g source-map-explorer
-source-map-explorer bundle.js bundle.map
-```
+**性能监控（Performance Monitoring）**
+- **设置打包文件大小的阈值**：设定合理的打包文件大小上限
+- **跟踪启动时间的改进**：记录应用程序启动时间的优化情况
+- **记录优化策略**：详细记录所采用的优化方法
 
-### 2. Environment-Specific Configuration
-
-```javascript
-// metro.config.js
-const isDev = process.env.NODE_ENV !== 'production';
-
-module.exports = {
-  transformer: {
-    minifierConfig: {
-      compress: {
-        drop_console: !isDev,  // Remove console.log in production
-      },
-    },
-  },
-
-  serializer: {
-    getModulesRunBeforeMainModule: () => [
-      // Polyfills for production
-      ...(!isDev ? [require.resolve('./polyfills.js')] : []),
-    ],
-  },
-};
-```
-
-### 3. Custom Asset Pipeline
-
-```javascript
-// metro.config.js
-module.exports = {
-  transformer: {
-    // Optimize images during bundling
-    assetPlugins: ['expo-asset/tools/hashAssetFiles'],
-  },
-
-  resolver: {
-    assetExts: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
-
-    // Custom asset resolution
-    resolveAsset: (dirPath, assetName, extension) => {
-      const basePath = `${dirPath}/${assetName}`;
-
-      // Try @2x, @3x variants
-      const variants = ['@3x', '@2x', ''];
-      for (const variant of variants) {
-        const path = `${basePath}${variant}.${extension}`;
-        if (require('fs').existsSync(path)) {
-          return path;
-        }
-      }
-
-      return null;
-    },
-  },
-};
-```
-
-### 4. Preloading Heavy Modules
-
-```javascript
-// index.js
-import { AppRegistry } from 'react-native';
-import App from './App';
-
-// Preload heavy modules
-import('./src/heavyModule').then(() => {
-  console.log('Heavy module preloaded');
-});
-
-AppRegistry.registerComponent('MyApp', () => App);
-```
-
-### 5. Development Performance Boost
-
-```javascript
-// metro.config.js
-const isDev = process.env.NODE_ENV !== 'production';
-
-module.exports = {
-  transformer: {
-    // Skip minification in dev
-    minifierPath: isDev ? undefined : require.resolve('metro-minify-terser'),
-
-    // Faster source maps in dev
-    getTransformOptions: async () => ({
-      transform: {
-        inlineRequires: !isDev,  // Only in production
-      },
-    }),
-  },
-
-  server: {
-    // Increase file watching performance
-    watchFolders: isDev ? [] : undefined,
-  },
-};
-```
-
-## Integration with SpecWeave
-
-**Configuration Management**
-- Document Metro configuration in `docs/internal/architecture/`
-- Track bundle size across increments
-- Include bundling optimization in `tasks.md`
-
-**Performance Monitoring**
-- Set bundle size thresholds
-- Track startup time improvements
-- Document optimization strategies
-
-**Troubleshooting**
-- Maintain runbook for common Metro issues
-- Document cache clearing procedures
-- Track bundling errors in increment reports
+**故障排除（Troubleshooting）**
+- **维护故障排除指南**：整理针对 Metro 常见问题的解决方案
+- **记录缓存清除步骤**：提供有效的缓存清除方法
+- **跟踪打包错误**：在代码更新报告中记录打包过程中出现的错误信息

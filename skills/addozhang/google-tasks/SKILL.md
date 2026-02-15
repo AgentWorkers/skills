@@ -1,7 +1,7 @@
 ---
 name: google-tasks
 version: 1.0.0
-description: Fetch, display, create, and delete Google Tasks using the Google Tasks API. Use when the user asks to check, view, list, get, add, create, remove, or delete their Google Tasks, to-do lists, or task items. Handles OAuth authentication automatically using bash script with curl and jq.
+description: 使用 Google Tasks API 来获取、显示、创建和删除 Google 任务。当用户需要查看、列出、获取、添加、创建或删除他们的 Google 任务、待办事项列表或任务项时，可以使用该功能。该功能通过 bash 脚本结合 curl 和 jq 自动处理 OAuth 认证。
 author: OpenClaw Community
 keywords: [google-tasks, tasks, todo, productivity, bash, oauth]
 license: MIT
@@ -9,16 +9,16 @@ license: MIT
 
 # Google Tasks Skill
 
-Manage Google Tasks from all task lists using lightweight bash scripts.
+通过轻量级的 Bash 脚本，可以从所有任务列表中管理 Google 任务。
 
-## Quick Start
+## 快速入门
 
-### View tasks
+### 查看任务
 ```bash
 bash scripts/get_tasks.sh
 ```
 
-### Create a task
+### 创建任务
 ```bash
 # Using default list (configured in google-tasks-config.sh)
 bash scripts/create_task.sh "Task title" ["due-date"] ["notes"]
@@ -27,7 +27,7 @@ bash scripts/create_task.sh "Task title" ["due-date"] ["notes"]
 bash scripts/create_task.sh "List Name" "Task title" ["due-date"] ["notes"]
 ```
 
-Examples:
+示例：
 ```bash
 # Simple task (uses default list)
 bash scripts/create_task.sh "Buy groceries"
@@ -42,18 +42,18 @@ bash scripts/create_task.sh "Work" "Finish report" "2026-02-10"
 bash scripts/create_task.sh "Personal" "Call mom" "2026-02-05" "Ask about her health"
 ```
 
-**Default list configuration:**
-Edit `google-tasks-config.sh` to set your default list:
+**默认列表配置：**
+编辑 `google-tasks-config.sh` 以设置您的默认列表：
 ```bash
 DEFAULT_LIST="Private"  # Change to your preferred default
 ```
 
-### Delete a task
+### 删除任务
 ```bash
 bash scripts/delete_task.sh "List Name" <task-number-or-title>
 ```
 
-Examples:
+示例：
 ```bash
 # Delete by task number (position in list)
 bash scripts/delete_task.sh "Work" 2
@@ -62,22 +62,22 @@ bash scripts/delete_task.sh "Work" 2
 bash scripts/delete_task.sh "Inbox" "Buy groceries"
 ```
 
-## Requirements
+## 所需软件
 
-- `jq` - JSON processor (usually pre-installed)
-- `curl` - HTTP client (usually pre-installed)
-- Valid `token.json` with OAuth access token
-- **Scopes required:** `https://www.googleapis.com/auth/tasks` (read + write)
+- `jq` - JSON 处理工具（通常已预安装）
+- `curl` - HTTP 客户端（通常已预安装）
+- 包含 OAuth 访问令牌的 `token.json` 文件
+- **所需权限：** `https://www.googleapis.com/auth/tasks`（读取 + 写入）
 
-## First-Time Setup
+## 首次设置
 
-If `token.json` doesn't exist:
+如果 `token.json` 文件不存在：
 
-1. User needs OAuth credentials (`credentials.json`) - See [setup.md](references/setup.md)
-2. Run the Node.js authentication flow first to generate `token.json`
-3. Then the bash script can be used for all subsequent calls
+1. 用户需要 OAuth 凭据（`credentials.json` 文件）——请参阅 [setup.md](references/setup.md)
+2. 先运行 Node.js 认证流程以生成 `token.json` 文件
+3. 之后就可以使用这些 Bash 脚本来执行所有操作了
 
-## Output Format
+## 输出格式
 
 ```
 📋 Your Google Tasks:
@@ -93,37 +93,31 @@ If `token.json` doesn't exist:
   (no tasks)
 ```
 
-## File Locations
+## 文件位置
 
-- `token.json` - Access/refresh tokens (workspace root)
-- `google-tasks-config.sh` - Configuration file (default list setting)
-- `scripts/get_tasks.sh` - Bash script to view tasks
-- `scripts/create_task.sh` - Bash script to create tasks
-- `scripts/delete_task.sh` - Bash script to delete tasks
-- `references/setup.md` - Detailed setup guide
+- `token.json` - 访问/刷新令牌（工作区根目录）
+- `google-tasks-config.sh` - 配置文件（默认列表设置）
+- `scripts/get_tasks.sh` - 查看任务的 Bash 脚本
+- `scripts/create_task.sh` - 创建任务的 Bash 脚本
+- `scripts/delete_task.sh` - 删除任务的 Bash 脚本
+- `references/setup.md` - 详细的设置指南
 
-## Implementation
+## 实现方式
 
-The bash script uses:
-- Google Tasks REST API directly
-- `curl` for HTTP requests
-- `jq` for JSON parsing
-- Bearer token authentication from `token.json`
+这些 Bash 脚本直接使用 Google Tasks 的 REST API，通过 `curl` 发送 HTTP 请求，并使用 `jq` 进行 JSON 解析。脚本采用基于令牌（Bearer token）的认证方式，因此不需要依赖 Python。
 
-No Python dependencies required.
+## 故障排除
 
-## Troubleshooting
-
-**Token expired:**
+**令牌过期：**
 ```
 Error: Invalid credentials
 ```
-Delete `token.json` and re-authenticate.
+删除 `token.json` 文件并重新进行认证。
 
-**Missing jq:**
+**找不到 jq：**
 ```
 bash: jq: command not found
 ```
-Install jq: `apt-get install jq` or `brew install jq`
+安装 `jq`：`apt-get install jq` 或 `brew install jq`
 
-For more details, see [setup.md](references/setup.md).
+更多详细信息，请参阅 [setup.md](references/setup.md)。

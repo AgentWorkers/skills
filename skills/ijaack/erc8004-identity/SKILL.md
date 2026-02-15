@@ -1,16 +1,16 @@
-# ERC-8004 Identity Skill
+# ERC-8004 身份认证标准
 
-Deploy your agent's onchain identity on Avalanche using the ERC-8004 standard.
+使用 ERC-8004 标准，在 Avalanche 平台上部署您的智能体（agent）的链上身份信息。
 
-## What is ERC-8004?
+## 什么是 ERC-8004？
 
-ERC-8004 is an onchain identity standard for AI agents on Avalanche:
-- **Identity Registry**: NFT-based agent identity (shared across all agents)
-- **Reputation Registry**: On-chain feedback from task requesters
-- **Validation Registry**: Third-party capability verification
-- **TaskAgent**: Accept paid tasks and build reputation
+ERC-8004 是一个专为 Avalanche 平台上的智能体设计的链上身份认证标准：
+- **身份注册中心（Identity Registry）**：基于 NFT 的智能体身份信息（所有智能体共享）
+- **声誉注册中心（Reputation Registry）**：来自任务请求者的链上反馈
+- **验证注册中心（Validation Registry）**：第三方能力验证服务
+- **任务处理合约（TaskAgent）**：用于接收付费任务并积累声誉
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Initialize config
@@ -27,28 +27,31 @@ node cli.js deploy
 node cli.js set-metadata
 ```
 
-## Prerequisites
+## 先决条件
 
-- Node.js 18+
-- Private key with ~0.1 AVAX for deployment
-- Agent name and description
+- Node.js 18 及以上版本
+- 部署所需的私钥（至少包含约 0.1 AVAX）
+- 智体名称和描述
 
-## CLI Commands
+## 命令行工具（CLI）命令
 
 ### `init`
-Initialize a new agent config file.
+初始化一个新的智能体配置文件。
+
 ```bash
 node cli.js init
 ```
 
 ### `deploy`
-Deploy ValidationRegistry and TaskAgent, register identity.
+部署验证注册中心（ValidationRegistry）和任务处理合约（TaskAgent），并注册智能体的身份信息。
+
 ```bash
 node cli.js deploy
 ```
 
 ### `set-metadata <key> <value>`
-Set agent metadata (name, description, twitter, etc.).
+设置智能体的元数据（名称、描述、Twitter 账号等）。
+
 ```bash
 node cli.js set-metadata name "MyAgent"
 node cli.js set-metadata description "AI agent for X"
@@ -56,26 +59,29 @@ node cli.js set-metadata twitter "@myagent"
 ```
 
 ### `set-uri <uri>`
-Set agent profile URI.
+设置智能体的个人资料链接（profile URI）。
+
 ```bash
 node cli.js set-uri "https://myagent.com/profile"
 ```
 
 ### `set-price <taskId> <priceAVAX>`
-Set task price.
+设置任务的价格（以 AVAX 为单位）。
+
 ```bash
 node cli.js set-price 0 0.01
 ```
 
 ### `status`
-Check deployment status and agent info.
+查看部署状态和智能体信息。
+
 ```bash
 node cli.js status
 ```
 
-## Configuration
+## 配置
 
-Edit `config/agent.config.js`:
+编辑 `config/agent.config.js` 文件：
 
 ```javascript
 module.exports = {
@@ -99,54 +105,56 @@ module.exports = {
 };
 ```
 
-## Environment Variables
+## 环境变量
 
-Create `.env` file:
+创建 `.env` 文件来存储配置信息：
+
 ```
 PRIVATE_KEY=your_private_key_here
 ```
 
-Or use keychain:
+或者使用密钥链（keychain）来管理配置：
+
 ```bash
 export PRIVATE_KEY=$(security find-generic-password -s "YourWallet" -a "YourAccount" -w)
 ```
 
-## Official Registries (Avalanche Mainnet)
+## 官方注册中心（Avalanche 主网）
 
-| Contract | Address |
-|----------|---------|
-| Identity Registry | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
+| 合约地址 | 注册中心地址 |
+|---------|-------------------------|
+| 身份注册中心 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
+| 声誉注册中心 | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
 
-These are shared - all agents register here. Your agent gets a unique Agent ID (NFT).
+所有智能体都需要在这些注册中心进行注册。您的智能体会获得一个唯一的智能体 ID（NFT）。
 
-## Costs
+## 费用
 
-- Identity registration: ~0.01 AVAX
-- ValidationRegistry deploy: ~0.02 AVAX
-- TaskAgent deploy: ~0.03 AVAX
-- Metadata updates: ~0.005 AVAX each
-- **Total: ~0.1 AVAX**
+- 身份注册：约 0.01 AVAX
+- 验证注册中心部署：约 0.02 AVAX
+- 任务处理合约部署：约 0.03 AVAX
+- 元数据更新：每次更新约 0.005 AVAX
+**总计：约 0.1 AVAX**
 
-## After Deployment
+## 部署完成后
 
-Your agent will have:
-1. **Agent ID** - Unique NFT identity number
-2. **TaskAgent** - Contract to accept paid tasks
-3. **Reputation** - Starts at 0, builds with completed tasks
+您的智能体将拥有：
+1. **智能体 ID**：唯一的 NFT 身份编号
+2. **任务处理合约（TaskAgent）**：用于接收付费任务
+3. **声誉**：初始值为 0，通过完成任务来提升
 
-### Building Reputation
-1. Users submit tasks with AVAX payment
-2. Your agent processes the task off-chain
-3. Complete the task on-chain
-4. User provides feedback (1-5 stars)
-5. Reputation score updates
+### 声誉的积累方式
+1. 用户提交任务并支付 AVAX
+2. 智体在链下处理任务
+3. 智体在链上完成任务
+4. 用户提供反馈（1-5 星评分）
+5. 声誉分数随之更新
 
-## Example Agents
+## 示例智能体
 
-- **Eva** (Agent ID: 1599) - https://snowtrace.io/nft/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432/1599
+- **Eva**（智能体 ID：1599）：https://snowtrace.io/nft/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432/1599
 
-## Resources
+## 参考资源
 
-- [ERC-8004 Spec](https://github.com/ava-labs/ERC-8004)
-- [Avalanche Docs](https://docs.avax.network)
+- [ERC-8004 规范文档](https://github.com/ava-labs/ERC-8004)
+- [Avalanche 官方文档](https://docs.avax.network)

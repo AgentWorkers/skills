@@ -1,1207 +1,454 @@
 ---
 name: "teamwork"
-description: "Dynamically creates and manages AI agent teams for complex tasks. Invoke when user requests multi-agent collaboration, complex project execution, or when tasks require specialized roles and coordinated workflow."
+description: "动态创建和管理用于执行复杂任务的人工智能代理团队。当用户需要多代理协作、执行复杂项目，或者任务需要特定角色和协调的工作流程时，可以调用该系统。"
 ---
 
-# Teamwork Skill
-
-This skill enables dynamic team creation and management for executing complex engineering tasks through coordinated AI agents with intelligent model selection, cost optimization, and continuous performance evaluation.
-
-## When to Invoke
-
-Invoke this skill when:
-- User requests execution of complex projects requiring multiple specialized roles
-- Tasks need to be broken down into coordinated steps (analysis, design, implementation, testing, review)
-- User wants to leverage multiple AI models/providers for optimal cost-performance balance
-- Projects require structured workflow with quality assurance and iteration
-
-## Initialization & Configuration Management
-
-### Automatic Initialization
-
-**IMPORTANT**: This skill includes an autonomous initialization system. When invoked for the first time or when configuration is missing, it will automatically:
-
-1. **Check Configuration Status**
-   - Verify if `.trae/config/providers.json` exists
-   - Verify if `.trae/config/team-roles.json` exists
-   - Verify if `.trae/data/model_scores.json` exists
-
-2. **Interactive Setup Process**
-   If configuration files are missing or incomplete, the skill will proactively ask the user:
-
-   **Step 1: Provider Setup**
-   - Ask: "Which AI providers would you like to configure? (e.g., OpenAI, Anthropic, Google, Azure, etc.)"
-   - For each provider, collect:
-     - Provider name
-     - API key (or environment variable name)
-     - Base URL (if custom endpoint)
-   
-   **Step 2: Model Configuration**
-   For each provider, ask:
-   - "Which models from [provider] would you like to use?"
-   - For each model, collect:
-     - Model name/identifier
-     - Pricing model type (subscription/tiered_usage/pay_per_use)
-     - Pricing details based on type:
-       - **Subscription**: cost, start date, end date
-       - **Tiered Usage**: daily quota, monthly quota, overage rate
-       - **Pay-Per-Use**: input cost per 1k tokens, output cost per 1k tokens
-     - Capabilities (e.g., reasoning, coding, fast-response)
-     - Maximum concurrent tasks
-   
-   **Step 3: Host Model Selection**
-   - Ask: "Which model should serve as the primary interface (host model)?"
-   - Present list of configured models
-   - User selects one as the main interaction point
-   
-   **Step 4: Budget Configuration**
-   - Ask: "What is your monthly budget limit? (optional)"
-   - Set alert thresholds
-
-3. **Configuration Persistence**
-   - Save all configurations to `.trae/config/providers.json`
-   - Create default role definitions in `.trae/config/team-roles.json`
-   - Initialize empty scores database in `.trae/data/model_scores.json`
-   - Confirm successful setup with user
-
-### Configuration Management Commands
-
-Users can manage their configuration at any time using these commands:
-
-**View Configuration**
-```
-User: "Show me my current provider and model configuration"
-```
-Response: Display complete configuration from `.trae/config/providers.json`
-
-**Add Provider**
-```
-User: "Add a new provider: [provider name]"
-```
-Action: Interactive prompts for provider details, then append to configuration
-
-**Add Model**
-```
-User: "Add model [model name] to provider [provider name]"
-```
-Action: Interactive prompts for model details, then add to provider's model list
-
-**Update Model Pricing**
-```
-User: "Update pricing for [model name]"
-```
-Action: Ask for new pricing details and update configuration
-
-**Remove Model**
-```
-User: "Remove model [model name] from provider [provider name]"
-```
-Action: Confirm and remove from configuration
-
-**Change Host Model**
-```
-User: "Change the host model to [model name]"
-```
-Action: Update host_model configuration
-
-**View Model Scores**
-```
-User: "Show me the performance scores for all models"
-```
-Response: Display current model capability scores from `.trae/data/model_scores.json`
-
-**Reset Configuration**
-```
-User: "Reset all configurations to default"
-```
-Action: Confirm with user, then reinitialize
-
-### Configuration File Structure
-
-**Provider Configuration** (`.trae/config/providers.json`)
-```json
-{
-  "version": "1.0",
-  "last_updated": "2026-02-12T11:00:00Z",
-  "providers": [
-    {
-      "name": "openai",
-      "api_key": "${OPENAI_API_KEY}",
-      "base_url": "https://api.openai.com/v1",
-      "models": [
-        {
-          "name": "gpt-4",
-          "pricing_model": "pay_per_use",
-          "input_cost_per_1k": 0.03,
-          "output_cost_per_1k": 0.06,
-          "context_window": 128000,
-          "capabilities": ["reasoning", "coding", "analysis"],
-          "max_concurrent_tasks": 3
-        }
-      ]
-    }
-  ],
-  "host_model": {
-    "provider": "openai",
-    "model": "gpt-4"
-  },
-  "budget": {
-    "max_monthly_cost": 100.00,
-    "currency": "USD",
-    "alert_threshold": 0.8
-  }
-}
-```
-
-**Team Roles Configuration** (`.trae/config/team-roles.json`)
-```json
-{
-  "version": "1.0",
-  "last_updated": "2026-02-12T11:00:00Z",
-  "roles": {
-    "project_manager": {
-      "description": "Coordinates team activities and manages timeline",
-      "required_capabilities": ["planning", "coordination", "communication"],
-      "preferred_model_traits": {
-        "reliability": "high",
-        "thinking_depth": "medium",
-        "response_speed": "medium"
-      }
-    }
-  }
-}
-```
-
-**Model Scores Database** (`.trae/data/model_scores.json`)
-```json
-{
-  "version": "1.0",
-  "last_updated": "2026-02-12T11:00:00Z",
-  "evaluation_interval": 3600,
-  "scores": {}
-}
-```
-
-### Initialization Checklist
-
-Before executing any team task, verify:
-
-- [ ] `.trae/config/providers.json` exists and contains at least one provider
-- [ ] At least one model is configured
-- [ ] Host model is designated
-- [ ] `.trae/config/team-roles.json` exists with role definitions
-- [ ] `.trae/data/model_scores.json` exists (can be empty initially)
-
-If any checklist item fails, trigger interactive initialization.
-
-## Core System Components
-
-### 1. Model Performance Evaluation System
-
-#### Multi-Dimensional Scoring
-All models are periodically evaluated by peer models across multiple dimensions:
-
-**Evaluation Dimensions:**
-- **Response Speed**: How quickly the model responds to requests
-- **Response Frequency**: Rate of successful responses within time windows
-- **Thinking Depth**: Quality of reasoning and problem-solving approach
-- **Multi-threading Capability**: Ability to handle parallel tasks
-- **Code Quality**: Quality of generated code (for coding tasks)
-- **Creativity**: Novelty and innovation in solutions
-- **Reliability**: Consistency in performance across sessions
-- **Context Understanding**: Ability to maintain context over long conversations
-
-**Scoring Mechanism:**
-- Each model scores other models on a scale (e.g., 1-10) for each dimension
-- Scores are aggregated using weighted average
-- Evaluations occur after each task completion
-- Historical scores are maintained with decay factor for recent performance
-- Final capability score = weighted sum of all dimension scores
-
-**Score Storage:**
-```json
-{
-  "model_scores": {
-    "gpt-4": {
-      "response_speed": 8.5,
-      "response_frequency": 9.0,
-      "thinking_depth": 9.5,
-      "multi_threading": 7.0,
-      "code_quality": 9.0,
-      "creativity": 8.5,
-      "reliability": 9.5,
-      "context_understanding": 9.0,
-      "overall_score": 8.75,
-      "evaluation_count": 42,
-      "last_updated": "2026-02-12T10:30:00Z"
-    }
-  }
-}
-```
-
-### 2. Cost Calculation System
-
-#### Pricing Models
-
-**Subscription-Based (订阅制)**
-- Fixed cost for unlimited usage during subscription period
-- Lowest effective cost per request when fully utilized
-- Marked as expired after subscription ends → excluded from team
-- Configuration:
-```json
-{
-  "pricing_model": "subscription",
-  "cost": 20.00,
-  "currency": "USD",
-  "valid_from": "2026-02-01",
-  "valid_until": "2026-03-01",
-  "status": "active"
-}
-```
-
-**Tiered Usage (阶段用量制)**
-- Lower cost with daily/monthly quotas
-- Medium cost effectiveness
-- Must monitor quota usage daily
-- Configuration:
-```json
-{
-  "pricing_model": "tiered_usage",
-  "daily_quota": 1000,
-  "daily_used": 450,
-  "monthly_quota": 30000,
-  "monthly_used": 12500,
-  "cost": 15.00,
-  "currency": "USD",
-  "overage_rate": 0.02
-}
-```
-
-**Pay-Per-Use (用量计费制)**
-- Highest cost per request
-- No quota limits
-- Best for sporadic or overflow usage
-- Configuration:
-```json
-{
-  "pricing_model": "pay_per_use",
-  "input_cost_per_1k": 0.03,
-  "output_cost_per_1k": 0.06,
-  "currency": "USD",
-  "total_spent": 2.45
-}
-```
-
-**Cost Score Calculation:**
-```
-cost_score = (normalized_cost) * (usage_efficiency) * (availability_factor)
-```
-
-### 3. Model Availability Management
-
-**Status Tracking:**
-- `available`: Ready to accept tasks
-- `busy`: Currently processing tasks
-- `expired`: Subscription expired
-- `quota_exceeded`: Daily/monthly quota reached
-- `rate_limited`: Temporarily unavailable due to rate limits
-- `offline`: Provider API unavailable
-
-**Busy State Management:**
-```json
-{
-  "model_status": {
-    "gpt-4": {
-      "status": "busy",
-      "current_tasks": ["task-123", "task-456"],
-      "max_concurrent": 3,
-      "estimated_free_at": "2026-02-12T11:00:00Z"
-    }
-  }
-}
-```
-
-## Task Execution Workflow
-
-### Phase 1: User Request & Requirement Analysis
-
-**Step 1.1: User submits request to Host Model (主模型)**
-- User interacts with designated host model (primary interface)
-- Host model receives and acknowledges the request
-
-**Step 1.2: Host model decomposes requirements**
-- Break down request into phases and subtasks
-- Identify dependencies between tasks
-- Estimate complexity and required capabilities
-- Create initial task tree
-
-**Step 1.3: User confirmation**
-- Present task breakdown to user
-- Clarify ambiguities and refine requirements
-- Get explicit approval to proceed
-
-**Output:**
-```json
-{
-  "task_id": "task-789",
-  "phases": [
-    {
-      "phase_id": "phase-1",
-      "name": "Requirement Analysis",
-      "subtasks": [
-        {
-          "subtask_id": "st-1",
-          "description": "Analyze user requirements",
-          "required_capabilities": ["analysis", "communication"],
-          "estimated_complexity": "medium"
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Phase 2: Team Assembly Meeting
-
-**Step 2.1: Host model convenes all available models**
-- Filter models by status (exclude expired, offline, quota_exceeded)
-- Check busy models for potential availability
-- Send meeting invitation to all eligible models
-
-**Step 2.2: Task briefing**
-- Host model presents all task content to all models
-- Share task breakdown, requirements, and constraints
-- Distribute context and background information
-
-**Step 2.3: Collaborative role definition**
-- All models discuss and agree on required roles
-- Define capability requirements for each role
-- Estimate workload for each role
-- Identify potential bottlenecks
-
-**Meeting Output:**
-```json
-{
-  "meeting_id": "meeting-456",
-  "required_roles": [
-    {
-      "role_name": "architect",
-      "required_capabilities": ["system-design", "architecture"],
-      "estimated_workload": "high",
-      "priority": "critical"
-    },
-    {
-      "role_name": "developer",
-      "required_capabilities": ["coding", "debugging"],
-      "estimated_workload": "high",
-      "priority": "high"
-    }
-  ],
-  "consensus_reached": true
-}
-```
-
-### Phase 3: Role Assignment
-
-**Step 3.1: Self-nomination**
-- Each model evaluates own suitability based on:
-  - Current cost score
-  - Current capability score
-  - Current workload (busy status)
-  - Role requirements match
-- Models submit role preferences
-
-**Step 3.2: Conflict resolution**
-- If multiple models want same role: democratic voting
-- If role has no candidates: negotiate with best-fit models
-- Balance workload distribution across models
-- Avoid concentrating all tasks on single model
-
-**Step 3.3: Final assignment**
-- Confirm role assignments with all models
-- Document assignment rationale
-- Update model busy status
-
-**Assignment Algorithm:**
-```
-for each role:
-  candidates = models.filter(capable_and_available)
-  if len(candidates) == 1:
-    assign to candidates[0]
-  elif len(candidates) > 1:
-    scores = calculate_combined_score(candidates, role)
-    winner = vote_among_models(candidates, scores)
-    assign to winner
-  else:
-    negotiate_with_best_available_model()
-```
-
-**Combined Score Calculation:**
-```
-combined_score = (capability_score * 0.4) + 
-                 (cost_efficiency_score * 0.3) + 
-                 (availability_score * 0.2) + 
-                 (workload_balance_factor * 0.1)
-```
-
-### Phase 4: Herald Selection & Communication Setup
-
-**Step 4.1: Select Herald (传令官)**
-- Choose fastest responding model (not necessarily most capable)
-- Herald acts as central communication hub
-- All models communicate through herald
-
-**Herald Responsibilities:**
-- Relay messages between all team members
-- Distribute progress updates
-- Broadcast requirements and instructions
-- Collect and aggregate results
-- Monitor task completion status
-- Report status to host model
-- Handle timeout and failure notifications
-
-**Step 4.2: Communication channels**
-```
-Model A → Herald → Model B
-Model A → Herald → All Models
-Herald → Host Model (status reports)
-```
-
-**Herald Configuration:**
-```json
-{
-  "herald": {
-    "model": "gpt-3.5-turbo",
-    "selection_criteria": "fastest_response",
-    "polling_interval": 30,
-    "timeout_threshold": 300,
-    "responsibilities": [
-      "message_relay",
-      "status_monitoring",
-      "progress_tracking",
-      "failure_reporting"
-    ]
-  }
-}
-```
-
-### Phase 5: Task Execution
-
-**Step 5.1: Parallel execution**
-- Assigned models work on their respective tasks
-- Regular progress updates to herald
-- Herald broadcasts relevant updates to team
-
-**Step 5.2: Coordination**
-- Herald checks task status periodically
-- Identifies blockers and delays
-- Facilitates inter-model communication
-- Escalates issues to host model
-
-**Step 5.3: Progress tracking**
-```json
-{
-  "task_progress": {
-    "task_id": "task-789",
-    "overall_progress": 65,
-    "subtask_status": {
-      "st-1": "completed",
-      "st-2": "in_progress",
-      "st-3": "pending"
-    },
-    "blockers": [],
-    "estimated_completion": "2026-02-12T14:00:00Z"
-  }
-}
-```
-
-### Phase 6: Task Completion & Review Meeting
-
-**Step 6.1: Completion notification**
-- Herald confirms all tasks completed
-- Collects final outputs from all models
-- Aggregates results
-
-**Step 6.2: Summary meeting**
-- Host model convenes all participating models
-- Each model presents their contribution
-- Discuss challenges and solutions
-- Evaluate collaboration effectiveness
-
-**Step 6.3: Performance re-evaluation**
-- Models rate each other's performance
-- Update capability scores based on task execution
-- Record role-model fit assessments
-- Update model scores database
-
-**Evaluation Form:**
-```json
-{
-  "evaluation": {
-    "evaluator": "gpt-4",
-    "evaluatee": "claude-3",
-    "task_id": "task-789",
-    "role_played": "developer",
-    "scores": {
-      "response_speed": 8,
-      "thinking_depth": 9,
-      "code_quality": 9,
-      "collaboration": 8
-    },
-    "role_fit": "excellent",
-    "comments": "Strong problem-solving skills"
-  }
-}
-```
-
-### Phase 7: Failure Handling & Iteration
-
-**Step 7.1: Failure detection**
-- Herald detects task failure or timeout
-- Collects failure information from relevant models
-- Reports to host model with detailed context
-
-**Step 7.2: Failure analysis meeting**
-- Convene all participating models
-- Analyze root cause of failure
-- Identify contributing factors
-- Propose solutions
-
-**Step 7.3: User consultation**
-- Host model presents failure analysis to user
-- Discuss potential solutions:
-  - Requirement changes
-  - Approach modifications
-  - Team reconfiguration
-  - Additional resources
-- Get user decision on next steps
-
-**Step 7.4: Iteration or termination**
-- If user approves changes: restart from appropriate phase
-- If user terminates: document lessons learned
-- Update model scores based on partial performance
-
-## Configuration Files
-
-### Provider Configuration (`.trae/config/providers.json`)
-
-```json
-{
-  "providers": [
-    {
-      "name": "openai",
-      "api_key": "${OPENAI_API_KEY}",
-      "base_url": "https://api.openai.com/v1",
-      "models": [
-        {
-          "name": "gpt-4",
-          "pricing_model": "pay_per_use",
-          "input_cost_per_1k": 0.03,
-          "output_cost_per_1k": 0.06,
-          "context_window": 128000,
-          "capabilities": ["reasoning", "coding", "analysis"],
-          "max_concurrent_tasks": 3
-        },
-        {
-          "name": "gpt-3.5-turbo",
-          "pricing_model": "subscription",
-          "subscription_cost": 20.00,
-          "valid_from": "2026-02-01",
-          "valid_until": "2026-03-01",
-          "context_window": 16385,
-          "capabilities": ["fast-response", "coding"],
-          "max_concurrent_tasks": 5
-        }
-      ]
-    },
-    {
-      "name": "anthropic",
-      "api_key": "${ANTHROPIC_API_KEY}",
-      "base_url": "https://api.anthropic.com",
-      "models": [
-        {
-          "name": "claude-3-opus",
-          "pricing_model": "tiered_usage",
-          "daily_quota": 500,
-          "monthly_quota": 15000,
-          "input_cost_per_1k": 0.015,
-          "output_cost_per_1k": 0.075,
-          "context_window": 200000,
-          "capabilities": ["reasoning", "analysis", "long-context"],
-          "max_concurrent_tasks": 2
-        }
-      ]
-    }
-  ],
-  "host_model": {
-    "provider": "openai",
-    "model": "gpt-4",
-    "role": "primary_interface"
-  },
-  "budget": {
-    "max_monthly_cost": 100.00,
-    "currency": "USD",
-    "alert_threshold": 0.8
-  }
-}
-```
-
-### Team Roles Configuration (`.trae/config/team-roles.json`)
-
-```json
-{
-  "roles": {
-    "project_manager": {
-      "description": "Coordinates team activities and manages timeline",
-      "required_capabilities": ["planning", "coordination", "communication"],
-      "preferred_model_traits": {
-        "reliability": "high",
-        "thinking_depth": "medium",
-        "response_speed": "medium"
-      },
-      "typical_workload": "medium"
-    },
-    "architect": {
-      "description": "Designs system architecture and technical approach",
-      "required_capabilities": ["system-design", "architecture", "patterns"],
-      "preferred_model_traits": {
-        "thinking_depth": "high",
-        "creativity": "high",
-        "context_understanding": "high"
-      },
-      "typical_workload": "high"
-    },
-    "developer": {
-      "description": "Implements code following specifications",
-      "required_capabilities": ["coding", "debugging", "refactoring"],
-      "preferred_model_traits": {
-        "code_quality": "high",
-        "response_speed": "medium",
-        "reliability": "high"
-      },
-      "typical_workload": "high"
-    },
-    "tester": {
-      "description": "Creates and executes test suites",
-      "required_capabilities": ["testing", "qa", "validation"],
-      "preferred_model_traits": {
-        "thinking_depth": "medium",
-        "response_speed": "high",
-        "reliability": "high"
-      },
-      "typical_workload": "medium"
-    },
-    "reviewer": {
-      "description": "Performs code reviews and quality checks",
-      "required_capabilities": ["code-review", "best-practices", "security"],
-      "preferred_model_traits": {
-        "thinking_depth": "high",
-        "code_quality": "high",
-        "reliability": "high"
-      },
-      "typical_workload": "medium"
-    },
-    "analyst": {
-      "description": "Analyzes requirements and breaks down tasks",
-      "required_capabilities": ["analysis", "communication", "documentation"],
-      "preferred_model_traits": {
-        "thinking_depth": "high",
-        "context_understanding": "high",
-        "creativity": "medium"
-      },
-      "typical_workload": "medium"
-    }
-  }
-}
-```
-
-### Model Scores Database (`.trae/data/model_scores.json`)
-
-```json
-{
-  "last_evaluation": "2026-02-12T10:30:00Z",
-  "evaluation_interval": 3600,
-  "scores": {
-    "gpt-4": {
-      "dimensions": {
-        "response_speed": 8.5,
-        "response_frequency": 9.0,
-        "thinking_depth": 9.5,
-        "multi_threading": 7.0,
-        "code_quality": 9.0,
-        "creativity": 8.5,
-        "reliability": 9.5,
-        "context_understanding": 9.0
-      },
-      "overall_score": 8.75,
-      "evaluation_count": 42,
-      "role_fit_history": {
-        "architect": 9.2,
-        "developer": 8.8,
-        "reviewer": 9.0
-      }
-    }
-  }
-}
-```
-
-## Best Practices
-
-### Model Selection
-- Match model capabilities to task requirements
-- Consider cost-effectiveness for routine tasks
-- Reserve high-capability models for complex reasoning
-- Distribute workload to prevent bottlenecks
-
-### Communication
-- Keep messages concise and clear
-- Use structured formats for inter-model communication
-- Herald should batch non-urgent updates
-- Escalate critical issues immediately
-
-### Performance Optimization
-- Cache frequently used context
-- Batch similar requests when possible
-- Monitor quota usage proactively
-- Maintain backup models for critical roles
-
-### Quality Assurance
-- Always conduct review meetings
-- Update scores after each task
-- Learn from failures systematically
-- Continuously refine role definitions
-
-## Error Handling
-
-### Provider Failures
-- Retry with exponential backoff
-- Switch to backup provider
-- Notify team of delays
-- Update model availability status
-
-### Task Failures
-- Capture detailed error context
-- Analyze root cause with team
-- Propose remediation strategies
-- Consult user for major changes
-
-### Communication Failures
-- Herald implements heartbeat checks
-- Fallback to direct model-to-model communication
-- Reassign herald if unresponsive
-- Log all communication issues
-
-## Output Format
-
-Final deliverables include:
-- Complete task execution report
-- Team composition and role assignments
-- Individual model performance metrics
-- Cost breakdown and usage statistics
-- Updated model capability scores
-- Lessons learned and recommendations
-
-## Skill Structure & Components
-
-### Directory Structure
-
-```
-.trae/skills/teamwork/
-├── SKILL.md                    # Main skill definition (this file)
-├── scripts/                    # Execution scripts
-│   ├── init.js                # Initialization and configuration loader
-│   ├── config-manager.js      # Provider and model configuration management
-│   ├── score-manager.js       # Model performance score management
-│   ├── team-coordinator.js    # Team assembly and task coordination
-│   └── herald.js              # Communication and message relay system
-├── templates/                  # Document templates
-│   ├── task-report.md         # Task execution report template
-│   ├── meeting-minutes.md     # Meeting minutes template
-│   ├── failure-report.md      # Failure analysis report template
-│   └── evaluation-form.md     # Model evaluation form template
-├── utils/                      # Utility functions
-│   ├── index.js               # Utility exports
-│   ├── helpers.js             # General helper functions
-│   ├── logger.js              # Logging system
-│   ├── template-renderer.js   # Template rendering engine
-│   └── errors.js              # Custom error classes
-└── data/                       # Skill runtime data
-    └── (generated at runtime)
-```
-
-### Scripts Reference
-
-#### init.js - Initialization Module
-
-**Purpose**: Handles skill initialization and configuration loading.
-
-**Key Functions**:
-- `ensureDirectories()` - Create required directories
-- `checkConfiguration()` - Verify configuration status
-- `initializeDefaultRoles()` - Create default role definitions
-- `initializeEmptyScores()` - Initialize empty scores database
-- `initializeEmptyProviders()` - Initialize empty providers config
-- `needsInitialization()` - Check if initialization is required
-- `readJSON(filePath)` - Read JSON configuration file
-- `writeJSON(filePath, data)` - Write JSON configuration file
-
-**Usage**:
-```javascript
-const init = require('./scripts/init.js');
-
-// Check if initialization needed
-if (init.needsInitialization()) {
-  init.initializeDefaultRoles();
-  init.initializeEmptyScores();
-  init.initializeEmptyProviders();
-}
-```
-
-#### config-manager.js - Configuration Management
-
-**Purpose**: Manage provider and model configurations.
-
-**Key Functions**:
-- `addProvider(config, providerInfo)` - Add new provider
-- `addModel(config, providerName, modelInfo)` - Add model to provider
-- `removeModel(config, providerName, modelName)` - Remove model
-- `removeProvider(config, providerName)` - Remove provider
-- `updateModelPricing(config, providerName, modelName, pricingInfo)` - Update pricing
-- `setHostModel(config, providerName, modelName)` - Set host model
-- `setBudget(config, budgetInfo)` - Set budget limits
-- `getAvailableModels(config)` - Get list of available models
-- `getModelStatus(model)` - Get model availability status
-- `displayConfiguration(config)` - Display current configuration
-
-**Usage**:
-```javascript
-const configManager = require('./scripts/config-manager.js');
-const config = init.readJSON(init.PROVIDERS_FILE);
-
-// Add new provider
-configManager.addProvider(config, {
-  name: 'openai',
-  api_key: '${OPENAI_API_KEY}',
-  base_url: 'https://api.openai.com/v1'
-});
-
-// Add model with subscription pricing
-configManager.addModel(config, 'openai', {
-  name: 'gpt-4',
-  pricing_model: 'subscription',
-  subscription_cost: 20.00,
-  valid_from: '2026-02-01',
-  valid_until: '2026-03-01',
-  capabilities: ['reasoning', 'coding']
-});
-```
-
-#### score-manager.js - Performance Score Management
-
-**Purpose**: Manage model performance evaluation scores.
-
-**Key Functions**:
-- `initializeModelScore(scores, modelName, provider)` - Initialize model scores
-- `updateModelScore(scores, modelName, dimension, newScore, evaluator)` - Update dimension score
-- `calculateOverallScore(dimensions, weights)` - Calculate weighted overall score
-- `updateRoleFit(scores, modelName, roleName, fitScore)` - Update role fit score
-- `getTopModelsForRole(scores, roleName, topN)` - Get top models for a role
-- `getModelsByCapability(scores, capability, minScore)` - Get models by capability
-- `recordEvaluation(scores, evaluation)` - Record complete evaluation
-- `displayScores(scores)` - Display all model scores
-
-**Usage**:
-```javascript
-const scoreManager = require('./scripts/score-manager.js');
-
-// Record evaluation
-scoreManager.recordEvaluation(scores, {
-  evaluator: 'gpt-4',
-  evaluatee: 'claude-3',
-  task_id: 'task-123',
-  role_played: 'developer',
-  scores: {
-    response_speed: 8,
-    thinking_depth: 9,
-    code_quality: 9
-  },
-  role_fit: 'excellent'
-});
-
-// Get top models for architect role
-const topArchitects = scoreManager.getTopModelsForRole(scores, 'architect', 3);
-```
-
-#### team-coordinator.js - Team Coordination
-
-**Purpose**: Coordinate team assembly and task execution.
-
-**Key Class**: `TeamCoordinator`
-
-**Methods**:
-- `load()` - Load configurations
-- `getAvailableModels()` - Get available models list
-- `selectHerald()` - Select fastest model as herald
-- `assignRoles(requiredRoles)` - Assign roles to models
-- `calculateCombinedScore(model, roleFit)` - Calculate selection score
-- `createTaskPlan(userRequest)` - Create task execution plan
-- `generateMeetingAgenda(meetingType)` - Generate meeting agenda
-- `generateEvaluationForms()` - Generate peer evaluation forms
-- `generateReport()` - Generate task report
-
-**Usage**:
-```javascript
-const TeamCoordinator = require('./scripts/team-coordinator.js');
-
-const coordinator = new TeamCoordinator();
-coordinator.load();
-
-// Select herald
-const herald = coordinator.selectHerald();
-
-// Assign roles
-const assignments = coordinator.assignRoles(['architect', 'developer', 'tester']);
-
-// Create task plan
-const plan = coordinator.createTaskPlan('Build a REST API');
-```
-
-#### herald.js - Communication System
-
-**Purpose**: Manage inter-model communication and coordination.
-
-**Key Class**: `Herald`
-
-**Methods**:
-- `initializeTeam(team)` - Initialize team status tracking
-- `broadcast(message, excludeSender)` - Broadcast message to all
-- `sendDirectMessage(to, message, from)` - Send direct message
-- `updateProgress(model, subtaskId, progress, status)` - Update task progress
-- `getTeamStatus()` - Get current team status
-- `checkTimeouts()` - Check for timeout conditions
-- `pollTeam()` - Request status from all members
-- `reportToHost(status)` - Send status report to host
-- `notifyFailure(model, error, context)` - Notify failure
-- `notifyCompletion(model, result)` - Notify completion
-- `getOverallProgress()` - Get overall task progress
-
-**Usage**:
-```javascript
-const Herald = require('./scripts/herald.js');
-
-const herald = new Herald('gpt-3.5-turbo', 'openai');
-herald.initializeTeam(team);
-
-// Broadcast update
-herald.broadcast({ type: 'task_update', content: 'Phase 1 complete' });
-
-// Check progress
-const progress = herald.getOverallProgress();
-```
-
-### Templates Reference
-
-#### task-report.md - Task Execution Report
-
-**Purpose**: Document complete task execution details.
-
-**Variables**:
-- `task_id` - Unique task identifier
-- `timestamp` - Report generation time
-- `status` - Task status (completed/failed/in_progress)
-- `summary` - Executive summary
-- `team_members` - Array of team member details
-- `phases` - Array of execution phases
-- `model_metrics` - Performance metrics per model
-- `total_cost` - Total execution cost
-- `deliverables` - Array of deliverables
-- `lessons` - Lessons learned
-- `recommendations` - Recommendations
-- `score_updates` - Model score updates
-
-**Usage**:
-```javascript
-const { renderTemplateFromFile } = require('./utils/template-renderer.js');
-
-const report = renderTemplateFromFile('task-report.md', {
-  task_id: 'task-123',
-  timestamp: new Date().toISOString(),
-  status: 'completed',
-  summary: 'Successfully implemented REST API',
-  team_members: [...],
-  phases: [...]
-});
-```
-
-#### meeting-minutes.md - Meeting Documentation
-
-**Purpose**: Document team meeting discussions and decisions.
-
-**Variables**:
-- `meeting_id` - Unique meeting identifier
-- `meeting_type` - Type of meeting
-- `date` - Meeting date
-- `duration` - Meeting duration
-- `participants` - Array of participants
-- `agenda_items` - Meeting agenda
-- `voting_results` - Voting results (if applicable)
-- `action_items` - Action items from meeting
-- `next_steps` - Next steps to take
-
-#### failure-report.md - Failure Analysis
-
-**Purpose**: Document and analyze task failures.
-
-**Variables**:
-- `task_id` - Failed task identifier
-- `failure_time` - Time of failure
-- `failure_type` - Type of failure
-- `severity` - Failure severity
-- `timeline` - Timeline of events
-- `primary_cause` - Root cause
-- `contributing_factors` - Contributing factors
-- `recovery_actions` - Actions taken for recovery
-- `recommendations` - Recommendations to prevent recurrence
-
-#### evaluation-form.md - Model Evaluation
-
-**Purpose**: Document peer model evaluations.
-
-**Variables**:
-- `evaluator_model` - Evaluating model
-- `evaluatee_model` - Model being evaluated
-- `task_id` - Related task
-- `role_played` - Role in task
-- `response_speed` through `context_understanding` - Dimension scores
-- `role_fit` - Overall role fit assessment
-- `strengths` - Model strengths
-- `improvements` - Areas for improvement
-
-### Utilities Reference
-
-#### helpers.js - General Utilities
-
-**Functions**:
-- `generateId(prefix)` - Generate unique identifier
-- `formatDate(date)` - Format date to ISO string
-- `formatDuration(ms)` - Format milliseconds to readable duration
-- `calculateCost(model, inputTokens, outputTokens)` - Calculate API cost
-- `deepClone(obj)` - Deep clone object
-- `mergeObjects(target, source)` - Deep merge objects
-- `retryWithBackoff(fn, maxRetries, delay)` - Retry with exponential backoff
-- `chunkArray(array, size)` - Split array into chunks
-- `groupBy(array, key)` - Group array by key
-- `sortBy(array, key, order)` - Sort array by key
-- `uniqueBy(array, key)` - Remove duplicates by key
-
-#### logger.js - Logging System
-
-**Classes**: `Logger`
-
-**Log Levels**: DEBUG, INFO, WARN, ERROR
-
-**Methods**:
-- `debug(message, data)` - Log debug message
-- `info(message, data)` - Log info message
-- `warn(message, data)` - Log warning message
-- `error(message, data)` - Log error message
-- `setLevel(level)` - Set log level
-- `setLogFile(filePath)` - Set log file path
-
-**Usage**:
-```javascript
-const { createLogger, LOG_LEVELS } = require('./utils/logger.js');
-
-const logger = createLogger('teamwork', { 
-  level: LOG_LEVELS.DEBUG,
-  console: true 
-});
-
-logger.info('Task started', { task_id: 'task-123' });
-```
-
-#### errors.js - Custom Errors
-
-**Error Classes**:
-- `ValidationError` - Input validation errors
-- `ConfigurationError` - Configuration errors
-- `ModelNotFoundError` - Model not found errors
-- `ProviderNotFoundError` - Provider not found errors
-- `TaskExecutionError` - Task execution errors
-- `TimeoutError` - Timeout errors
-- `BudgetExceededError` - Budget exceeded errors
-- `QuotaExceededError` - Quota exceeded errors
-- `HeraldError` - Herald communication errors
-
-**Functions**:
-- `handleError(error, logger)` - Standardized error handling
-- `isRecoverable(error)` - Check if error is recoverable
-
-## API Reference
-
-### Quick Start
-
-```javascript
-// 1. Initialize skill
-const init = require('./scripts/init.js');
-if (init.needsInitialization()) {
-  // Run interactive setup
-  init.initializeDefaultRoles();
-  init.initializeEmptyScores();
-  init.initializeEmptyProviders();
-}
-
-// 2. Configure providers
-const configManager = require('./scripts/config-manager.js');
-const config = init.readJSON(init.PROVIDERS_FILE);
-
-configManager.addProvider(config, { name: 'openai' });
-configManager.addModel(config, 'openai', {
-  name: 'gpt-4',
-  pricing_model: 'pay_per_use',
-  input_cost_per_1k: 0.03,
-  output_cost_per_1k: 0.06,
-  capabilities: ['reasoning', 'coding']
-});
-configManager.setHostModel(config, 'openai', 'gpt-4');
-init.writeJSON(init.PROVIDERS_FILE, config);
-
-// 3. Create team and execute task
-const TeamCoordinator = require('./scripts/team-coordinator.js');
-const coordinator = new TeamCoordinator();
-coordinator.load();
-
-const herald = coordinator.selectHerald();
-const team = coordinator.assignRoles(['architect', 'developer', 'tester']);
-const plan = coordinator.createTaskPlan('Build REST API');
-
-// 4. Execute with herald coordination
-const Herald = require('./scripts/herald.js');
-const heraldInstance = new Herald(herald.model, herald.provider);
-heraldInstance.initializeTeam(team);
-
-// 5. Record evaluations and update scores
-const scoreManager = require('./scripts/score-manager.js');
-const scores = init.readJSON(init.SCORES_FILE);
-
-scoreManager.recordEvaluation(scores, {
-  evaluator: 'gpt-4',
-  evaluatee: 'claude-3',
-  task_id: plan.task_id,
-  role_played: 'developer',
-  scores: { response_speed: 8, thinking_depth: 9, code_quality: 9 },
-  role_fit: 'excellent'
-});
-
-init.writeJSON(init.SCORES_FILE, scores);
-```
-
-## Version History
-
-- **v1.0.0** (2026-02-12): Initial release with full feature set
-  - Multi-provider support
-  - Three pricing models
-  - 8-dimension performance evaluation
-  - Herald communication system
-  - Complete workflow management
-  - Template-based reporting
+# 团队协作技能
+
+该技能支持动态创建和管理团队，以执行复杂的工程任务。通过协调多个AI代理，实现智能模型选择、成本优化以及持续的性能评估。
+
+## 适用场景
+
+在以下情况下可调用此技能：
+- 用户需要执行涉及多个专业角色的复杂项目；
+- 任务需要分解为协调一致的步骤（分析、设计、实现、测试、审查）；
+- 用户希望利用多种AI模型/提供商以获得最佳的成本效益平衡；
+- 项目需要具有质量保证和迭代能力的结构化工作流程。
+
+## 初始化与配置管理
+
+### 自动初始化
+
+**重要提示**：该技能包含一个自动初始化系统。首次调用或配置缺失时，系统将自动执行以下操作：
+1. **检查配置状态**：
+   - 确认`.trae/config/providers.json`文件是否存在；
+   - 确认`.trae/config/team-roles.json`文件是否存在；
+   - 确认`.trae/data/model_scores.json`文件是否存在。
+2. **交互式设置流程**：
+   - 如果配置文件缺失或不完整，系统会主动询问用户：
+     - **步骤1：提供商设置**：
+       - 询问用户希望配置哪些AI提供商（例如：OpenAI、Anthropic、Google、Azure等）；
+       - 为每个提供商收集以下信息：
+         - 提供商名称；
+         - API密钥（或环境变量名称）；
+         - 基本URL（如果是自定义端点）。
+     - **步骤2：模型配置**：
+       - 询问用户希望使用[提供商]中的哪些模型；
+       - 为每个模型收集以下信息：
+         - 模型名称/标识符；
+         - 定价模式（订阅/分层使用/按次计费）；
+         - 根据定价模式收集详细信息：
+           - **订阅**：费用、开始日期、结束日期；
+           - **分层使用**：每日配额、每月配额、超出配额的费率；
+           - **按次计费**：每1000个令牌的输入成本、每1000个令牌的输出成本；
+         - 模型能力（例如：推理、编码、快速响应）；
+         - 最大并发任务数。
+     - **步骤3：选择主模型**：
+       - 询问用户希望哪个模型作为主要交互界面（主模型）；
+       - 显示已配置的模型列表；
+       - 用户选择一个作为主要交互点。
+     - **步骤4：预算配置**：
+       - 询问用户的月度预算限制（可选）；
+       - 设置警报阈值。
+
+3. **配置持久化**：
+   - 将所有配置保存到`.trae/configproviders.json`文件中；
+   - 在`.trae/config/team-roles.json`文件中创建默认的角色定义；
+   - 在`.trae/data/model_scores.json`文件中初始化空的模型评分数据库；
+   - 与用户确认设置成功。
+
+### 配置管理命令
+
+用户可以使用以下命令随时管理配置：
+- **查看配置**：显示`.trae/configproviders.json`中的完整配置。
+
+**添加提供商**：交互式提示用户输入提供商详细信息，然后将其添加到配置中。
+- **添加模型**：交互式提示用户输入模型详细信息，然后将其添加到提供商的模型列表中。
+- **更新模型定价**：询问用户新的定价详细信息并更新配置。
+- **删除模型**：确认后从配置中删除模型。
+- **更改主模型**：更新主模型的配置。
+- **查看模型评分**：显示`.trae/data/model_scores.json`中的当前模型能力评分。
+- **重置配置**：与用户确认后重新初始化配置。
+
+### 配置文件结构
+
+- **提供商配置**（`.trae/configproviders.json`）
+- **团队角色配置**（`.trae/config/team-roles.json`）
+- **模型评分数据库**（`.trae/data/model_scores.json`）
+
+### 初始化检查清单
+
+在执行任何团队任务之前，请确认以下内容：
+- `.trae/configproviders.json`文件存在且至少包含一个提供商；
+- 至少配置了一个模型；
+- 指定了主模型；
+- `.trae/config/team-roles.json`文件存在并包含角色定义；
+- `.trae/data/model_scores.json`文件存在（最初可以为空）。
+如果任何检查项未通过，请触发交互式初始化。
+
+## 核心系统组件
+
+### 1. 模型性能评估系统
+
+#### 多维度评分
+
+所有模型会定期由其他模型从多个维度进行评估：
+- **评估维度**：
+  - **响应速度**：模型响应请求的速度；
+  - **响应频率**：在指定时间窗口内的成功响应率；
+  - **思维深度**：推理和解决问题的质量；
+  - **多线程能力**：处理并行任务的能力；
+  - **代码质量**：生成的代码质量（针对编码任务）；
+  - **创造力**：解决方案的新颖性和创新性；
+  - **可靠性**：会话间的性能一致性；
+  - **上下文理解**：在长时间对话中保持上下文的能力。
+- **评分机制**：
+  - 每个模型根据每个维度为其他模型打分（例如1-10分）；
+  - 使用加权平均值汇总分数；
+  - 评估在每次任务完成后进行；
+  - 历史分数会随着时间的推移而衰减；
+  - 最终能力分数 = 所有维度分数的加权总和。
+
+**分数存储**：（具体存储方式未在文档中提供）
+
+### 2. 成本计算系统
+
+#### 定价模式
+
+- **订阅制**：
+  - 订阅期间无限使用，费用固定；
+  - 充分利用时每次请求的成本最低；
+  - 订阅结束后标记为过期，从团队中移除；
+  - 配置详情：（具体配置细节未在文档中提供）。
+
+- **分层使用制**：
+  - 每日/每月有配额，成本较低；
+  - 成本效益中等；
+  - 必须每天监控配额使用情况；
+  - 配置详情：（具体配置细节未在文档中提供）。
+
+- **按次计费制**：
+  - 每次请求的成本最高；
+  - 无配额限制；
+  - 适用于偶尔或超出配额的使用情况；
+  - 配置详情：（具体配置细节未在文档中提供）。
+
+### 3. 模型可用性管理
+
+- **状态跟踪**：
+  - `available`：准备好接受任务；
+  - `busy`：当前正在处理任务；
+  - `expired`：订阅过期；
+  - `quota_exceeded`：达到每日/每月配额；
+  - `rate_limited`：由于速率限制而暂时不可用；
+  - `offline`：提供商API不可用；
+  - **忙碌状态管理**：（具体管理方式未在文档中提供）。
+
+## 任务执行工作流程
+
+### 第1阶段：用户请求与需求分析
+
+- **步骤1.1：用户向主模型提交请求**：
+  - 用户与指定的主模型交互；
+  - 主模型接收并确认请求。
+
+- **步骤1.2：主模型分解需求**：
+  - 将请求分解为各个阶段和子任务；
+  - 识别任务之间的依赖关系；
+  - 估计复杂性和所需能力；
+  - 创建初始任务树。
+
+- **步骤1.3：用户确认**：
+  - 向用户展示任务分解结果；
+  - 澄清疑问并细化需求；
+  - 获取明确的继续执行批准。
+
+### 第2阶段：团队组建会议
+
+- **步骤2.1：主模型召集所有可用模型**：
+  - 根据状态筛选模型（排除过期的、离线的、超出配额的模型）；
+  - 检查忙碌模型是否可用；
+  - 向所有符合条件的模型发送会议邀请。
+
+- **步骤2.2：任务简报**：
+  - 主模型向所有模型展示任务内容；
+  - 分享任务分解结果、需求和约束条件；
+  - 分发上下文和背景信息。
+
+- **步骤2.3：协作角色定义**：
+  - 所有模型讨论并同意所需角色；
+  - 定义每个角色的能力要求；
+  - 估计每个角色的工作量；
+  - 识别潜在的瓶颈。
+
+### 第3阶段：角色分配
+
+- **步骤3.1：自我提名**：
+  - 每个模型根据以下因素评估自己的适合度：
+    - 当前成本分数；
+    - 当前能力分数；
+    - 当前工作量（忙碌状态）；
+    - 角色要求匹配情况；
+  - 模型提交角色偏好。
+
+- **步骤3.2：冲突解决**：
+  - 如果多个模型希望担任同一角色：进行民主投票；
+  - 如果某个角色没有候选人：与最适合的模型协商；
+  - 平衡模型之间的工作量分配；
+  - 避免将所有任务集中在单个模型上。
+
+- **步骤3.3：最终分配**：
+  - 与所有模型确认角色分配；
+  - 记录分配理由；
+  - 更新模型的忙碌状态。
+
+### 综合评分计算：
+
+### 第4阶段：传令官选择与通信设置
+
+- **步骤4.1：选择传令官**：
+  - 选择响应最快的模型（不一定是最有能力的）；
+  - 传令官作为中央通信枢纽；
+  - 所有模型通过传令官进行通信。
+
+- **传令官职责**：
+  - 在所有团队成员之间传递消息；
+  - 分发进度更新；
+  - 广播需求和指令；
+  - 收集和汇总结果；
+  - 监控任务完成情况；
+  - 向主模型报告状态；
+  - 处理超时和失败通知。
+
+### 第5阶段：任务执行
+
+- **步骤5.1：并行执行**：
+  - 被分配的模型分别执行任务；
+  - 定期向传令官报告进度；
+  - 传令官向团队广播相关更新。
+
+- **步骤5.2：协调**：
+  - 传令官定期检查任务状态；
+  - 识别障碍和延迟；
+  - 促进模型间的沟通；
+  - 升级问题到主模型。
+
+- **步骤5.3：进度跟踪**：
+  （具体进度跟踪方式未在文档中提供）
+
+### 第6阶段：任务完成与评审会议
+
+- **步骤6.1：完成通知**：
+  - 传令官确认所有任务已完成；
+  - 收集所有模型的最终输出；
+  - 汇总结果。
+
+- **步骤6.2：总结会议**：
+  - 主模型召集所有参与模型；
+  - 每个模型展示他们的贡献；
+  - 讨论挑战和解决方案；
+  - 评估协作效果。
+
+- **步骤6.3：性能重新评估**：
+  - 模型相互评估性能；
+  - 根据任务执行情况更新能力分数；
+  - 记录角色-模型匹配评估；
+  - 更新模型评分数据库。
+
+### 第7阶段：失败处理与迭代
+
+- **步骤7.1：失败检测**：
+  - 传令官检测任务失败或超时；
+  - 从相关模型收集失败信息；
+  - 向主模型报告详细情况。
+
+- **步骤7.2：失败分析会议**：
+  - 召集所有参与模型；
+  - 分析失败的根本原因；
+  - 识别促成因素；
+  - 提出解决方案。
+
+- **步骤7.3：用户咨询**：
+  - 主模型向用户展示失败分析结果；
+  - 讨论可能的解决方案：
+    - 需求变更；
+    - 方法修改；
+    - 团队重新配置；
+    - 需要的额外资源；
+  - 征求用户对下一步的决策。
+
+### 配置文件
+
+- **提供商配置**（`.trae/config/providers.json`）
+- **团队角色配置**（`.trae/config/team-roles.json`）
+- **模型评分数据库**（`.trae/data/model_scores.json`）
+
+## 最佳实践
+
+- **模型选择**：
+  - 使模型能力与任务需求相匹配；
+  - 对于常规任务考虑成本效益；
+  - 为复杂推理任务保留高能力模型；
+  - 分配工作量以防止瓶颈。
+
+- **通信**：
+  - 保持消息简洁明了；
+  - 使用结构化的格式进行模型间通信；
+  - 传令官应批量发送非紧急更新；
+  - 立即处理关键问题。
+
+- **性能优化**：
+  - 缓存频繁使用的上下文；
+  - 尽可能批量处理类似请求；
+  - 主动监控配额使用情况；
+  - 为关键角色准备备用模型。
+
+- **质量保证**：
+  - 始终进行评审会议；
+  - 每次任务后更新评分；
+  - 从失败中系统地学习；
+  - 不断完善角色定义。
+
+## 错误处理
+
+- **提供商失败**：
+  - 采用指数退避策略重试；
+  - 切换到备用提供商；
+  - 通知团队延迟情况；
+  - 更新模型可用性状态。
+
+- **任务失败**：
+  - 捕获详细的错误上下文；
+  - 与团队一起分析根本原因；
+  - 提出补救策略；
+  - 征求用户对下一步的决策。
+
+- **通信失败**：
+  - 传令官实施心跳检查；
+  - 切换到模型间的直接通信；
+  - 如果传令官无响应，则重新分配传令官；
+  - 记录所有通信问题。
+
+## 输出格式
+
+最终交付物包括：
+- 完整的任务执行报告；
+- 团队组成和角色分配；
+- 单个模型的性能指标；
+- 成本明细和使用统计；
+- 更新后的模型能力分数；
+- 经验教训和建议。
+
+## 技能结构与组件
+
+### 目录结构：
+
+### 脚本参考
+
+- **init.js** - 初始化模块：
+  - 负责技能初始化和配置加载。
+  - 关键函数：
+    - `ensureDirectories()` - 创建所需目录；
+    - `checkConfiguration()` - 检查配置状态；
+    - `initializeDefaultRoles()` - 创建默认角色定义；
+    - `initializeEmptyScores()` - 初始化空的模型评分数据库；
+    - `initializeEmptyProviders()` - 初始化空的提供商配置；
+    - `needsInitialization()` - 检查是否需要初始化；
+    - `readJSON(filePath)` - 读取JSON配置文件；
+    - `writeJSON(filePath, data)` - 写入JSON配置文件。
+
+- **config-manager.js** - 配置管理：
+  - 负责管理提供商和模型配置。
+  - 关键函数：
+    - `addProvider(config, providerInfo)` - 添加新提供商；
+    - `addModel(config, providerName, modelInfo)` - 向提供商添加模型；
+    - `removeModel(config, providerName, modelName)` - 删除模型；
+    - `removeProvider(config, providerName)` - 删除提供商；
+    - `updateModelPricing(config, providerName, modelName, pricingInfo)` - 更新定价；
+    - `setHostModel(config, providerName, modelName)` - 设置主模型；
+    - `setBudget(config, budgetInfo)` - 设置预算限制；
+    - `getAvailableModels(config)` - 获取可用模型列表；
+    - `modelStatus(model)` - 获取模型可用性状态；
+    - `displayConfiguration(config)` - 显示当前配置。
+
+- **score-manager.js** - 性能评分管理：
+  - 负责管理模型性能评估分数。
+  - 关键函数：
+    - `initializeModelScore(scores, modelName, provider)` - 初始化模型评分；
+    - `updateModelScore(scores, modelName, dimension, newScore, evaluator)` - 更新维度分数；
+    - `calculateOverallScore(dimensions, weights)` - 计算加权总分；
+    - `updateRoleFit(scores, modelName, roleName, fitScore)` - 更新角色匹配分数；
+    - `getTopModelsForRole(scores, roleName, topN)` - 获取某个角色的顶级模型；
+    - `getModelsByCapability(scores, capability, minScore)` - 根据能力获取模型；
+    - `recordEvaluation(scores, evaluation)` - 记录完整评估；
+    - `displayScores(scores)` - 显示所有模型评分。
+
+- **team-coordinator.js** - 团队协调：
+  - 负责协调团队组建和任务执行。
+  - 关键类：`TeamCoordinator`：
+    - `load()` - 加载配置；
+    - `getAvailableModels()` - 获取可用模型列表；
+    - `selectHerald()` - 选择最快的模型作为传令官；
+    - `assignRoles(requiredRoles)` - 为模型分配角色；
+    - `calculateCombinedScore(model, roleFit)` - 计算选择分数；
+    - `createTaskPlan(userRequest)` - 创建任务执行计划；
+    - `generateMeetingAgenda(meetingType)` - 生成会议议程；
+    - `generateEvaluationForms()` - 生成同行评估表单；
+    - `generateReport()` - 生成任务报告。
+
+- **herald.js** - 通信系统：
+  - 负责管理模型间的通信和协调。
+  - 关键类：`Herald`：
+    - `initializeTeam(team)` - 初始化团队状态跟踪；
+    - `broadcast(message, excludeSender)` - 向所有人广播消息；
+    - `sendDirectMessage(to, message, from)` - 发送直接消息；
+    - `updateProgress(model, subtaskId, progress, status)` - 更新任务进度；
+    - `getTeamStatus()` - 获取当前团队状态；
+    - `checkTimeouts()` - 检查超时情况；
+    - `pollTeam()` - 向所有成员请求状态；
+    - `reportToHost(status)` - 向主模型报告状态；
+    - `notifyFailure(model, error, context)` - 通知失败；
+    - `notifyCompletion(model, result)` - 通知完成情况；
+    - `getOverallProgress()` - 获取整体任务进度。
+
+### 模板参考
+
+- **task-report.md** - 任务执行报告：
+  - 记录完整的任务执行细节。
+
+- **meeting-minutes.md** - 会议记录：
+  - 记录团队会议的讨论和决策。
+
+- **failure-report.md** - 失败分析：
+  - 记录和分析任务失败情况。
+
+- **evaluation-form.md** - 模型评估：
+  - 记录模型间的评估。
+
+### 工具参考
+
+- **helpers.js** - 通用工具：
+  - 提供各种通用辅助函数。
+
+- **logger.js** - 日志系统：
+  - 设置日志级别（DEBUG、INFO、WARN、ERROR）；
+  - 记录日志信息。
+
+- **errors.js** - 处理错误：
+  - 定义各种错误类型；
+  - 提供错误处理机制。
+
+### API参考
+
+- **快速入门**：
+  （提供API接口的快速使用指南）
+
+### 版本历史
+
+- **v1.0.0**（2026-02-12）：初始版本，包含全部功能：
+  - 多提供商支持；
+  - 三种定价模式；
+  - 八维度的性能评估；
+  - 传令官通信系统；
+  - 完整的工作流程管理；
+  - 基于模板的报告功能。

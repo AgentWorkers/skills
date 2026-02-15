@@ -1,6 +1,6 @@
 ---
 name: intranet
-description: "Lightweight local HTTP file server with plugin support. Serves static files from a webroot, mounts plugin directories at URL prefixes via config, and runs index.py entry points as CGI."
+description: "一个轻量级的本地HTTP文件服务器，支持插件功能。它可以从指定的webroot目录提供静态文件；通过配置文件，可以将插件目录挂载到特定的URL前缀下；同时，它还能以CGI方式执行名为`index.py`的入口脚本。"
 summary: "Local HTTP file server with config-based plugins and CGI support."
 version: 3.2.3
 homepage: https://github.com/odrobnik/intranet-skill
@@ -11,17 +11,17 @@ metadata:
       bins: ["python3"]
 ---
 
-# Intranet
+# 内部网（Intranet）
 
-Lightweight local HTTP file server — no Apache/nginx needed, no root required. Serves static files, mounts plugin directories, and runs `index.py` entry points as CGI.
+这是一个轻量级的本地HTTP文件服务器，无需使用Apache或Nginx，也不需要root权限。它可以提供静态文件服务，挂载插件目录，并以CGI方式执行`index.py`脚本。
 
-**Entry point:** `{baseDir}/scripts/intranet.py`
+**入口脚本：** `{baseDir}/scripts/intranet.py`
 
-## Setup
+## 设置（Setup）
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅[SETUP.md](SETUP.md)。
 
-## Commands
+## 命令（Commands）
 
 ```bash
 python3 {baseDir}/scripts/intranet.py start                          # Start on default port 8080
@@ -32,21 +32,13 @@ python3 {baseDir}/scripts/intranet.py status                         # Check if 
 python3 {baseDir}/scripts/intranet.py stop                           # Stop server
 ```
 
-## Directory Layout
+## 目录结构（Directory Layout）
 
-```
-{workspace}/intranet/
-├── config.json          # Server config (NOT served)
-└── www/                 # Webroot (served files go here)
-    ├── index.html
-    └── ...
-```
+配置文件位于`{workspace}/intranet/config.json`，网站根目录（webroot）为`{workspace}/intranet/www/`。配置文件永远不会被暴露在HTTP请求中。
 
-Config lives in `{workspace}/intranet/config.json`, webroot is `{workspace}/intranet/www/`. The config file is never exposed to HTTP.
+## 插件（Plugins）
 
-## Plugins
-
-Plugins mount external directories at URL prefixes. Configure in `config.json`:
+插件可以通过URL前缀来挂载外部目录。具体配置方法请参见`config.json`：
 
 ```json
 {
@@ -57,60 +49,44 @@ Plugins mount external directories at URL prefixes. Configure in `config.json`:
 }
 ```
 
-Plugin config supports simple (static only) or extended (with CGI hash) format:
+插件配置支持两种格式：
+- **简单格式**：仅支持静态文件。
+- **扩展格式**：支持通过CGI处理动态请求（需要使用SHA-256哈希值）。
 
-```json
-{
-  "plugins": {
-    "static-only": "/path/to/dir",
-    "with-cgi": {
-      "dir": "/path/to/dir",
-      "hash": "sha256:abc123..."
-    }
-  }
-}
-```
+- **插件路径要求**：
+  - 插件文件必须位于`workspace`目录内。
+  - 如果启用了CGI功能并且插件文件包含哈希值，那么位于插件根目录下的`index.py`文件将处理该插件下的所有子路径请求（前提是该文件的SHA-256哈希值与配置中的哈希值匹配）。
+  - 不包含哈希值的插件仅提供静态文件服务（即使CGI功能全局启用，这些插件也无法通过CGI处理请求）。
+  - 生成哈希值的命令：`shasum -a 256 /path/to/index.py`
 
-- Plugin paths must be inside the workspace
-- If CGI is enabled and a plugin has a `hash`, `index.py` at the plugin root handles all sub-paths — but only if its SHA-256 matches
-- Plugins without a `hash` are static-only (CGI blocked even when globally enabled)
-- Generate a hash: `shasum -a 256 /path/to/index.py`
+## CGI执行（CGI Execution）
 
-## CGI Execution
+**默认情况下，CGI功能是关闭的。**可以通过`config.json`中的`"cgi": true`来启用它。
 
-**Off by default.** Enable in `config.json`:
+**启用CGI后的规则：**
+- **仅`index.py`文件可以被执行为CGI脚本：**
+  - **对于网站根目录下的子目录**：该子目录中的`index.py`文件将处理所有请求。
+  - **对于插件**：插件根目录下的`index.py`文件将处理该插件下的所有子路径请求。
+  - **其他`.py`文件**：都会收到403 Forbidden错误（既不会被提供也不会被执行）。
+- **脚本必须具有可执行权限**（使用`chmod +x`命令设置）。
 
-```json
-{
-  "cgi": true
-}
-```
+## 安全性（Security）：
+- **网站根目录隔离**：配置文件`config.json`位于`www/`目录之外，因此不会被暴露在HTTP请求中。
+- **CGI默认关闭**：必须通过`config.json`中的`"cgi": true`明确启用。
+- **路径限制**：所有解析后的路径都必须位于其所在目录内。虽然会解析符号链接，但会检查目标路径是否在允许的范围内。
+- **插件访问控制**：只有`config.json`中明确列出的目录才会被提供服务；这些目录也必须位于`workspace`目录内。
+- **CGI仅限于`index.py`文件**：不允许执行任意脚本；插件通过CGI处理请求时需要提供SHA-256哈希值。
+- **所有`.py`文件都被禁止**：只有`index.py`文件可以被执行；其他`.py`文件既不会被提供也不会被执行。
+- **主机访问控制**：`allowed_hosts`列表可以限制允许访问的IP地址。
+- **令牌认证**：支持通过`--token`参数或`config.json`配置令牌认证。浏览器客户端访问`?token=SECRET`后，系统会设置会话cookie，之后所有请求都会正常生效。API客户端需要使用`Authorization: Bearer <token>`头部进行认证。
+- **路径遍历防护**：所有路径在提供服务前都会被解析和验证。
+- **默认绑定地址**：`127.0.0.1`（仅限本地访问）。要通过`--host 0.0.0.0`访问外部主机，需要同时满足令牌认证和`allowed_hosts`的限制。
 
-When enabled, only files named `index.py` can execute as CGI:
-
-- **Webroot**: `index.py` in any subdirectory handles that directory's requests
-- **Plugins**: `index.py` at the plugin root handles all plugin sub-paths
-- **All other `.py` files** → 403 Forbidden (never served, never executed)
-- Scripts must have the executable bit set (`chmod +x`)
-
-## Security
-
-- **Webroot isolation** — config.json is outside the webroot (`www/`), never served
-- **CGI off by default** — must be explicitly enabled via `"cgi": true` in config.json
-- **Path containment** — all resolved paths must stay within their base directory. Symlinks are followed but the resolved target is checked for containment.
-- **Plugin allowlist** — only directories explicitly registered in `config.json` are served; must be inside workspace
-- **CGI restricted to `index.py`** — no arbitrary script execution; plugin CGI requires SHA-256 hash in config.json
-- **All `.py` files blocked** except `index.py` entry points (not served as text, not executed)
-- **Host allowlist** — optional `allowed_hosts` restricts which `Host` headers are accepted
-- **Token auth** — optional bearer token via `--token` flag or `config.json`. Browser clients visit `?token=SECRET` once → session cookie set → all subsequent navigation works. API clients use `Authorization: Bearer <token>` header.
-- **Path traversal protection** — all paths resolved and validated before serving
-- **Default bind: `127.0.0.1`** (loopback only). LAN access via `--host 0.0.0.0` requires both token auth and `allowed_hosts` in config.json.
-
-## Notes
-- All state files are inside the workspace:
-  - Config: `{workspace}/intranet/config.json`
-  - PID: `{workspace}/intranet/.pid`
-  - Runtime: `{workspace}/intranet/.conf`
-  - Webroot: `{workspace}/intranet/www/`
-- No files are written outside the workspace
-- 30-second timeout on CGI execution (when enabled)
+## 其他注意事项（Notes）：
+- 所有状态相关文件都位于`workspace`目录内：
+  - 配置文件：`{workspace}/intranet/config.json`
+  - 进程ID：`{workspace}/intranet/.pid`
+  - 运行时信息：`{workspace}/intranet/.conf`
+  - 网站根目录：`{workspace}/intranet/www/`
+- 任何文件都不能被写入`workspace`目录之外。
+- **CGI执行超时**：如果启用了CGI功能，执行时间限制为30秒。

@@ -1,6 +1,6 @@
 ---
 name: coder-workspaces
-description: Manage Coder workspaces and AI coding agent tasks via CLI. List, create, start, stop, and delete workspaces. SSH into workspaces to run commands. Create and monitor AI coding tasks with Claude Code, Aider, or other agents.
+description: 通过命令行界面（CLI）管理 Coder 工作区和 AI 编码代理任务。可以执行工作区的列表查询、创建、启动、停止和删除等操作。还可以通过 SSH 连接到工作区以执行命令。此外，还可以使用 Claude Code、Aider 或其他代理工具来创建和监控 AI 编码任务。
 metadata:
   openclaw:
     emoji: "🏗️"
@@ -9,30 +9,29 @@ metadata:
       env: ["CODER_URL", "CODER_SESSION_TOKEN"]
 ---
 
-# Coder Workspaces
+# 开发者工作空间
 
-Manage Coder workspaces and AI coding agent tasks via the coder CLI.
+通过 `coder CLI` 管理开发者工作空间和 AI 编码任务。
 
-> Note: Commands execute within isolated, governed Coder workspaces — not the host system.
+> 注意：所有命令都在隔离的、受控的开发者工作空间中执行，而非主机系统。
 
-## Setup
+## 设置
 
-Before using coder CLI, configure authentication:
+在使用 `coder CLI` 之前，请先配置身份验证：
 
-1. Install the CLI from [Coder CLI docs](https://coder.com/docs/install/cli)
-
-2. Set environment variables:
+1. 从 [Coder CLI 文档](https://coder.com/docs/install/cli) 中安装 CLI。
+2. 设置环境变量：
    ```bash
    export CODER_URL=https://your-coder-instance.com
    export CODER_SESSION_TOKEN=<your-token>  # Get from /cli-auth
    ```
 
-3. Test connection:
+3. 测试连接：
    ```bash
    coder whoami
    ```
 
-## Workspace Commands
+## 工作空间命令
 
 ```bash
 coder list                              # List workspaces
@@ -51,20 +50,20 @@ coder logs <workspace>
 coder logs <workspace> -f               # Follow logs
 ```
 
-## AI Coding Tasks
+## AI 编码任务
 
-Coder Tasks runs AI agents (Claude Code, Aider, etc.) in isolated workspaces.
+`Coder Tasks` 会在隔离的工作空间中运行 AI 代理（如 Claude Code、Aider 等）。
 
-### Creating Tasks
+### 创建任务
 
 ```bash
 coder tasks create --template <template> --preset "<preset>" "prompt"
 ```
 
-- **Template**: Required. List with `coder templates list`
-- **Preset**: May be required. Try without first. If creation fails with "Required parameter not provided", get presets with `coder templates presets list <template> -o json` and use the default. If no default, ask user which preset.
+- **模板**：必需。使用 `coder templates list` 查看可用模板。
+- **预设**：可能也需要指定。可以先不设置。如果创建任务时出现“缺少必需参数”的错误，可以使用 `coder templates presets list <template> -o json` 获取预设配置并使用默认值；如果没有默认值，则需要询问用户选择哪个预设。
 
-### Managing Tasks
+### 管理任务
 
 ```bash
 coder tasks list                        # List all tasks
@@ -73,21 +72,21 @@ coder tasks connect <task-name>         # Interactive session
 coder tasks delete <task-name> -y       # Delete task
 ```
 
-### Task States
+### 任务状态
 
-- **Initializing**: Workspace provisioning (timing varies by template)
-- **Working**: Setup script running
-- **Active**: Agent processing prompt
-- **Idle**: Agent waiting for input
+- **初始化**：工作空间正在配置中（所需时间因模板而异）。
+- **运行中**：脚本正在执行中。
+- **活跃**：代理正在处理任务。
+- **空闲**：代理正在等待用户输入。
 
-## Troubleshooting
+## 故障排除
 
-- **CLI not found**: See [Coder CLI docs](https://coder.com/docs/install/cli)
-- **Auth failed**: Verify CODER_URL and CODER_SESSION_TOKEN are set, then run `coder login`
-- **Version mismatch**: Reinstall CLI from your Coder instance
+- **找不到 CLI**：请参考 [Coder CLI 文档](https://coder.com/docs/install/cli)。
+- **身份验证失败**：请确认 `CODER_URL` 和 `CODER_SESSION_TOKEN` 已正确设置，然后运行 `coder login`。
+- **版本不匹配**：请从您的 Coder 实例中重新安装 CLI。
 
-## More Info
+## 更多信息
 
-- [Coder Docs](https://coder.com/docs)
+- [Coder 文档](https://coder.com/docs)
 - [Coder CLI](https://coder.com/docs/install/cli)
 - [Coder Tasks](https://coder.com/docs/ai-coder)

@@ -1,27 +1,27 @@
 ---
 name: pdf-process-mineru
-description: PDF document parsing tool based on local MinerU, supports converting PDF to Markdown, JSON, and other machine-readable formats.
+description: 基于本地 MinerU 的 PDF 文档解析工具，支持将 PDF 文件转换为 Markdown、JSON 以及其他机器可读的格式。
 ---
 
-## Tool List
+## 工具列表
 
 ### 1. pdf_to_markdown
 
-Convert PDF documents to Markdown format, preserving document structure, formulas, tables, and images.
+将 PDF 文档转换为 Markdown 格式，同时保留文档结构、公式、表格和图片。
 
-**Description**: Use MinerU to parse PDF documents and output in Markdown format, supporting OCR, formula recognition, table extraction, and other features.
+**描述**：使用 MinerU 对 PDF 文档进行解析，并以 Markdown 格式输出，支持 OCR、公式识别、表格提取等功能。
 
-**Parameters**:
-- `file_path` (string, required): Absolute path to the PDF file
-- `output_dir` (string, required): Absolute path to the output directory
-- `backend` (string, optional): Parsing backend, options: `hybrid-auto-engine` (default), `pipeline`, `vlm-auto-engine`
-- `language` (string, optional): OCR language code, such as `en` (English), `ch` (Chinese), `ja` (Japanese), etc., defaults to auto-detection
-- `enable_formula` (boolean, optional): Whether to enable formula recognition, defaults to true
-- `enable_table` (boolean, optional): Whether to enable table extraction, defaults to true
-- `start_page` (integer, optional): Start page number (starting from 0), defaults to 0
-- `end_page` (integer, optional): End page number (starting from 0), defaults to -1 meaning parse all pages
+**参数**：
+- `file_path` (字符串，必填)：PDF 文件的绝对路径
+- `output_dir` (字符串，必填)：输出目录的绝对路径
+- `backend` (字符串，可选)：解析后端，可选值：`hybrid-auto-engine`（默认）、`pipeline`、`vlm-auto-engine`
+- `language` (字符串，可选)：OCR 语言代码，例如 `en`（英语）、`ch`（中文）、`ja`（日语）等，默认为自动检测
+- `enable_formula` (布尔值，可选)：是否启用公式识别，默认为 `true`
+- `enable_table` (布尔值，可选)：是否启用表格提取，默认为 `true`
+- `start_page` (整数，可选)：起始页码（从 0 开始），默认为 0
+- `end_page` (整数，可选)：结束页码（从 0 开始），默认为 `-1` 表示解析所有页面
 
-**Return Value**:
+**返回值**：
 ```json
 {
   "success": true,
@@ -33,7 +33,7 @@ Convert PDF documents to Markdown format, preserving document structure, formula
 }
 ```
 
-**Examples**:
+**示例**：
 ```bash
 python .claude/skills/pdf-process/script/pdf_parser.py \
   '{"name": "pdf_to_markdown", "arguments": {"file_path": "/path/to/document.pdf", "output_dir": "/path/to/output"}}'
@@ -51,21 +51,21 @@ python .claude/skills/pdf-process/script/pdf_parser.py \
 
 ### 2. pdf_to_json
 
-Convert PDF documents to JSON format, including detailed layout and structural information.
+将 PDF 文档转换为 JSON 格式，包含详细的布局和结构信息。
 
-**Description**: Use MinerU to parse PDF documents and output in JSON format, containing structured information such as text blocks, images, tables, formulas, etc.
+**描述**：使用 MinerU 对 PDF 文档进行解析，并以 JSON 格式输出，其中包含文本块、图片、表格、公式等结构化信息。
 
-**Parameters**:
-- `file_path` (string, required): Absolute path to the PDF file
-- `output_dir` (string, required): Absolute path to the output directory
-- `backend` (string, optional): Parsing backend, options: `hybrid-auto-engine` (default), `pipeline`, `vlm-auto-engine`
-- `language` (string, optional): OCR language code, such as `en` (English), `ch` (Chinese), `ja` (Japanese), etc., defaults to auto-detection
-- `enable_formula` (boolean, optional): Whether to enable formula recognition, defaults to true
-- `enable_table` (boolean, optional): Whether to enable table extraction, defaults to true
-- `start_page` (integer, optional): Start page number (starting from 0), defaults to 0
-- `end_page` (integer, optional): End page number (starting from 0), defaults to -1 meaning parse all pages
+**参数**：
+- `file_path` (字符串，必填)：PDF 文件的绝对路径
+- `output_dir` (字符串，必填)：输出目录的绝对路径
+- `backend` (字符串，可选)：解析后端，可选值：`hybrid-auto-engine`（默认）、`pipeline`、`vlm-auto-engine`
+- `language` (字符串，可选)：OCR 语言代码，例如 `en`（英语）、`ch`（中文）、`ja`（日语）等，默认为自动检测
+- `enable_formula` (布尔值，可选)：是否启用公式识别，默认为 `true`
+- `enable_table` (布尔值，可选)：是否启用表格提取，默认为 `true`
+- `start_page` (整数，可选)：起始页码（从 0 开始），默认为 0
+- `end_page` (整数，可选)：结束页码（从 0 开始），默认为 `-1` 表示解析所有页面
 
-**Return Value**:
+**返回值**：
 ```json
 {
   "success": true,
@@ -94,7 +94,7 @@ Convert PDF documents to JSON format, including detailed layout and structural i
 }
 ```
 
-**Examples**:
+**示例**：
 ```bash
 python .claude/skills/pdf-process/script/pdf_parser.py \
   '{"name": "pdf_to_json", "arguments": {"file_path": "/path/to/document.pdf", "output_dir": "/path/to/output"}}'
@@ -106,9 +106,9 @@ python .claude/skills/pdf-process/script/pdf_parser.py \
 
 ---
 
-## Installation Instructions
+## 安装说明
 
-### 1. Install MinerU
+### 1. 安装 MinerU
 
 ```bash
 # Update pip and install uv
@@ -119,7 +119,7 @@ pip install uv
 uv pip install -U "mineru[all]"
 ```
 
-### 2. Verify Installation
+### 2. 验证安装
 
 ```bash
 # Check if MinerU is installed successfully
@@ -129,65 +129,65 @@ mineru --version
 mineru --help
 ```
 
-### 3. System Requirements
+### 3. 系统要求
 
-- **Python Version**: 3.10-3.13
-- **Operating System**: Linux / Windows / macOS 14.0+
-- **Memory**:
-  - Using `pipeline` backend: minimum 16GB, recommended 32GB+
-  - Using `hybrid/vlm` backend: minimum 16GB, recommended 32GB+
-- **Disk Space**: minimum 20GB (SSD recommended)
-- **GPU** (optional):
-  - `pipeline` backend: supports CPU-only
-  - `hybrid/vlm` backend: requires NVIDIA GPU (Volta architecture and above) or Apple Silicon
+- **Python 版本**：3.10-3.13
+- **操作系统**：Linux / Windows / macOS 14.0+
+- **内存**：
+  - 使用 `pipeline` 后端：至少需要 16GB 内存，建议使用 32GB 或更多
+  - 使用 `hybrid/vlm` 后端：至少需要 16GB 内存，建议使用 32GB 或更多
+- **磁盘空间**：至少需要 20GB（建议使用 SSD）
+- **GPU**（可选）：
+  - `pipeline` 后端：支持仅使用 CPU
+  - `hybrid/vlm` 后端：需要 NVIDIA GPU（Volta 架构及以上）或 Apple Silicon
 
-## Use Cases
+## 使用场景
 
-1. **Academic Paper Parsing**: Extract structured content such as formulas, tables, and images
-2. **Technical Document Conversion**: Convert PDF documents to Markdown for version control and online publishing
-3. **OCR Processing**: Process scanned PDFs and garbled PDFs
-4. **Multilingual Documents**: Supports OCR recognition for 109 languages
-5. **Batch Processing**: Batch convert multiple PDF documents
+1. **学术论文解析**：提取公式、表格和图片等结构化内容
+2. **技术文档转换**：将 PDF 文档转换为 Markdown 格式以便版本控制和在线发布
+3. **OCR 处理**：处理扫描的 PDF 文件和损坏的 PDF 文件
+4. **多语言文档**：支持 109 种语言的 OCR 识别
+5. **批量处理**：批量转换多个 PDF 文档
 
-## Backend Selection Recommendations
+## 后端选择建议
 
-- **hybrid-auto-engine** (default): Balanced accuracy and speed, suitable for most scenarios
-- **pipeline**: Suitable for CPU-only environments, best compatibility
-- **vlm-auto-engine**: Highest accuracy, requires GPU acceleration
+- **hybrid-auto-engine**（默认）：准确性和速度平衡，适用于大多数场景
+- **pipeline**：适用于仅使用 CPU 的环境，兼容性最佳
+- **vlm-auto-engine**：准确率最高，需要 GPU 加速
 
-## Notes
+## 注意事项
 
-1. **File Paths**: All paths must be absolute paths
-2. **Output Directory**: Non-existent directories will be created automatically
-3. **Performance**: Using GPU can significantly improve parsing speed
-4. **Page Numbers**: Page numbers start counting from 0
-5. **Memory**: Processing large documents may consume more memory
+1. **文件路径**：所有路径必须是绝对路径
+2. **输出目录**：如果目录不存在，系统会自动创建该目录
+3. **性能**：使用 GPU 可显著提高解析速度
+4. **页码**：页码从 0 开始计数
+5. **内存**：处理大型文档时可能会消耗更多内存
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **Installation Failure**:
-   - Ensure using Python 3.10-3.13
-   - Windows only supports Python 3.10-3.12 (ray does not support 3.13)
-   - Using `uv pip install` can resolve most dependency conflicts
+1. **安装失败**：
+   - 确保使用 Python 3.10-3.13
+   - Windows 仅支持 Python 3.10-3.12（ray 不支持 3.13）
+   - 使用 `uv pip install` 可以解决大多数依赖项冲突
 
-2. **Insufficient Memory**:
-   - Use `pipeline` backend
-   - Limit parsing pages: `start_page` and `end_page`
-   - Reduce virtual memory allocation
+2. **内存不足**：
+   - 使用 `pipeline` 后端
+   - 限制解析页码范围（通过 `start_page` 和 `end_page` 参数）
+   - 减少虚拟内存分配
 
-3. **Slow Parsing Speed**:
-   - Enable GPU acceleration
-   - Use `hybrid-auto-engine` backend
-   - Disable unnecessary features (formulas, tables)
+3. **解析速度慢**：
+   - 启用 GPU 加速
+   - 使用 `hybrid-auto-engine` 后端
+   - 关闭不必要的功能（如公式识别、表格提取）
 
-4. **Low OCR Accuracy**:
-   - Specify the correct document language
-   - Ensure the backend supports OCR (use `pipeline` or `hybrid-*`)
+4. **OCR 准确率低**：
+   - 指定正确的文档语言
+   - 确保所选后端支持 OCR（使用 `pipeline` 或 `hybrid-*` 后端）
 
-## Related Resources
+## 相关资源
 
-- MinerU Official Documentation: https://opendatalab.github.io/MinerU/
-- MinerU GitHub: https://github.com/opendatalab/MinerU
-- Online Demo: https://mineru.net/
+- MinerU 官方文档：https://opendatalab.github.io/MinerU/
+- MinerU GitHub 仓库：https://github.com/opendatalab/MinerU
+- 在线演示：https://mineru.net/

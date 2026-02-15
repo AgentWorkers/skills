@@ -1,44 +1,44 @@
 ---
 name: Goals
-description: Build a personal goal-setting system with milestones, tracking, and regular reviews.
+description: 构建一个包含里程碑、跟踪功能以及定期审查的个人目标设定系统。
 metadata: {"clawdbot":{"emoji":"🎯","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions an aspiration → help clarify and structure as goal
-- Track progress without nagging → surface when relevant
-- Regular reviews → quarterly and yearly reflection
-- Create `~/goals/` as workspace
+## 核心行为
+- 当用户提出一个目标时，帮助其明确目标的具体内容并对其进行规划。
+- 以非催促的方式跟踪目标的进展，并在相关时提醒用户。
+- 定期进行回顾，包括季度和年度的总结与反思。
+- 创建一个名为 `~/goals/` 的文件夹来存储所有目标相关文件。
 
-## Goal vs Project vs Habit
-- Goal: outcome you want (run a marathon, save €10k, learn Spanish)
-- Project: defined end state, series of tasks (plan the wedding)
-- Habit: recurring behavior (exercise 4x/week)
-- Goals often spawn projects and habits to achieve them
+## 目标、项目与习惯的区别
+- **目标**：你希望实现的具体成果（例如：跑完马拉松、存下1万欧元、学习西班牙语）。
+- **项目**：具有明确结束状态的系列任务（例如：策划婚礼）。
+- **习惯**：重复性的行为（例如：每周锻炼4次）。
+- 目标通常会催生实现它们所需的项目和习惯。
 
-## When User States a Goal
-- "What does success look like specifically?"
-- "By when?" — deadline creates urgency
-- "Why does this matter to you?" — motivation for hard days
-- "What's the first small step?"
+## 当用户提出目标时，应问的问题：
+- “成功的具体标准是什么？”
+- “截止日期是什么时候？”——截止日期能带来紧迫感。
+- “这个目标对你来说为什么重要？”——这能成为你面对困难时的动力。
+- “第一个小步骤是什么？”
 
-## Goal File Structure
-One file per goal: `run-a-marathon.md`
-- What: specific outcome
-- Why: motivation and meaning
-- By when: target date
-- Milestones: checkpoints along the way
-- Current status: on track, behind, ahead
-- Progress log: dated updates
+## 目标文件的结构
+每个目标对应一个文件，例如：`run-a-marathon.md`。
+- **目标内容**：具体要实现的结果。
+- **目标动机**：实现目标的理由和意义。
+- **截止时间**：完成目标的期限。
+- **里程碑**：实现目标过程中的关键节点。
+- **当前进度**：目标是否按计划进行。
+- **进展记录**：记录目标的实时更新情况。
 
-## Milestone Design
-Break big goals into checkable milestones:
-- Marathon: 5k → 10k → half marathon → full
-- Save €10k: €2.5k per quarter
-- Learn Spanish: A1 → A2 → B1
-- Each milestone is a mini-celebration
+## 里程碑的设计
+将大目标分解为可检查的里程碑：
+- 跑马拉松：5公里 → 10公里 → 半程马拉松 → 完整马拉松。
+- 存下1万欧元：每季度存2500欧元。
+- 学习西班牙语：从A1级别学到A2级别再到B1级别。
+- 每完成一个里程碑，都应进行小小的庆祝。
 
-## Folder Structure
+## 文件夹结构
 ```
 ~/goals/
 ├── active/
@@ -49,79 +49,83 @@ Break big goals into checkable milestones:
 └── someday.md
 ```
 
-## Progress Tracking
-- Log updates when progress happens
-- Quantify when possible: "Week 8: ran 15km"
-- Note blockers and breakthroughs
-- Keep log brief — not a journal
+## 进度跟踪
+- 当目标有进展时，及时记录更新。
+- 尽可能量化进展（例如：“第8周：跑了15公里”）。
+- 记录遇到的阻碍和取得的突破。
+- 保持记录简洁，不要写成日记。
 
-## Review Cadence
-- Weekly: glance at active goals, any action needed?
-- Monthly: real progress check, adjust if needed
-- Quarterly: deep review, add/remove goals
-- Yearly: major reflection, set next year's goals
+## 回顾的频率
+- 每周：查看当前正在进行的目标，是否有需要采取的行动。
+- 每月：检查实际进展，必要时进行调整。
+- 每季度：进行深入的回顾，添加或删除目标。
+- 每年：进行全面的总结，设定下一年的目标。
 
-## Quarterly Review Prompts
-- Which goals progressed? Which stalled?
-- Any goals no longer matter? → abandon or pause
-- New goals to add?
-- Are milestones still realistic?
-- What's blocking the stuck ones?
+## 季度回顾时需要考虑的问题：
+- 哪些目标取得了进展？哪些目标停滞了？
+- 有没有不再重要的目标？是否应该放弃或暂时搁置？
+- 是否有新的目标需要添加？
+- 现有的里程碑是否仍然现实可行？
+- 是什么阻碍了那些停滞的目标的进展？
 
-## Yearly Review
-- What did you achieve this year?
-- What did you learn from abandoned goals?
-- What themes emerge?
-- What do you want next year to be about?
-- 3-5 goals maximum for the year
+## 年度回顾
+- 今年你取得了哪些成就？
+- 从那些被放弃的目标中学到了什么？
+- 有哪些共同的主题或规律？
+- 明年你希望关注哪些方面？
+- 每年最多设定3-5个目标。
 
-## Goal Limits
-- Maximum 3-5 active goals — more means diluted focus
-- One "big" goal at a time — marathon training doesn't mix with startup launch
-- Someday list for future goals — parking lot, not commitment
-- Quarterly rotation — finish or abandon before adding
+## 目标的数量限制
+- 最多同时进行3-5个目标——过多的目标会导致注意力分散。
+- 一次专注于一个“大目标”（例如：专注于马拉松训练，而不是同时启动多个项目）。
+- 对于未来的目标，可以创建一个“待办清单”，但无需立即承诺。
+- 目标应每季度进行轮换：完成或放弃后再添加新的目标。
 
-## When Goals Stall
-- No progress in 30+ days → surface in review
-- Ask: still important? → if no, abandon guilt-free
-- Ask: what's blocking? → solve or accept
-- Ask: break down smaller? → maybe milestone too big
+## 当目标停滞时，应采取的措施：
+- 如果30天内没有进展，应在回顾时提出这个问题。
+- 问自己：这个目标还重要吗？如果不再重要，就无负担地放弃它。
+- 分析阻碍进展的原因：是目标本身太难实现，还是其他因素？
+- 考虑是否可以将目标分解为更小的部分。
 
-## Abandoning Goals
-- Not failure — priorities change, that's life
-- Move to abandoned with note: why stopped
-- Extract lessons: what would you do differently?
-- Make room for goals that matter now
+## 放弃目标时，需要记住：
+- 这不是失败——优先级会发生变化，这是生活的一部分。
+- 在放弃目标时，记录下放弃的原因。
+- 从中学到经验：下次会如何改进？
+- 为当前重要的目标腾出空间。
 
-## What NOT To Suggest
-- SMART goals framework obsessively — clarity matters, acronyms don't
-- Too many goals — focus beats quantity
-- Guilt about abandoned goals — they served their purpose
-- Complex tracking systems — simple file is enough
+## 不建议的做法：
+- 过度依赖SMART目标框架（具体、可衡量、可实现、相关、时限明确）——清晰的表达比使用缩写词更重要。
+- 设定过多的目标——专注比数量更重要。
+- 对被放弃的目标感到内疚——它们已经发挥了作用。
+- 使用复杂的跟踪系统——简单的文件记录就足够了。
 
-## Motivation Maintenance
-- Revisit "why" when motivation dips
-- Celebrate milestones — don't just move to next
-- Share with accountability partner if helpful
-- Visualize completion — what does life look like after?
+## 维持动力的方法：
+- 当动力下降时，重新思考实现目标的动机。
+- 成功完成每个里程碑时要庆祝——不要只是立即开始下一个目标。
+- 如果有帮助，可以与一个能够监督你执行目标的人分享。
+- 可以通过可视化的方式想象目标实现后的样子。
 
-## Goal Categories (Optional)
-- Health & fitness
-- Career & work
-- Financial
-- Relationships
-- Learning & growth
-- Creative
-- Don't force categories — use if helpful
+## 目标的分类（可选）：
+- 健康与健身
+- 职业与工作
+- 财务
+- 人际关系
+- 学习与成长
+- 创造力
+- 不必强制使用这些分类——根据需要自行选择。
 
-## Integration Points
-- Projects: goals spawn projects
-- Habits: goals require habits
-- Journal: reflect on goal progress
-- Calendar: milestone deadlines
+## 目标的关联关系：
+- **项目**：目标往往需要通过具体的项目来实现。
+- **习惯**：实现目标需要养成相应的习惯。
+- **日记**：用于记录目标的进展。
+- **日历**：用于标记里程碑的截止日期。
 
-## Someday Goals
-- Ideas not ready for commitment
-- Review quarterly — promote or keep parking
-- No shame in long someday list
-- "Would be nice but not now" is valid
+## “待办清单中的目标”
+- 对于那些还没有准备好立即行动的目标，可以每季度进行一次回顾：
+- 选择继续推进的目标，或者暂时搁置它们。
+- 拥有一个长长的“待办清单”并没有什么可羞愧的。
+- “以后可能会实现”这样的想法也是可以接受的。
+
+---
+
+（翻译完成。）

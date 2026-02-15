@@ -1,26 +1,26 @@
 ---
 name: "Skill Test"
-description: "Test skills before using or publishing. Trial, compare, evaluate in isolation without affecting your environment."
+description: "在使用或发布之前，先测试各项技能。在独立的环境中进行试用、比较和评估，确保不会对您的现有环境造成任何影响。"
 ---
 
-## Test Skills Safely
+## 安全地测试技能
 
-Two use cases:
-1. **Try before commit** — Test drive skills before installing
-2. **Evaluate before publish** — Verify quality before publishing
+**两种使用场景：**
+1. **在提交之前进行测试** — 在安装技能之前先试用它。
+2. **在发布之前进行评估** — 在发布之前验证其质量。
 
-**Key principle:** Test in isolation. Never affect user's environment.
+**关键原则：** 在隔离的环境中进行测试。切勿影响用户的环境。
 
-**References:**
-- Read `sandbox.md` — Isolated testing environment
-- Read `compare.md` — A/B comparison between skills
-- Read `evaluate.md` — Multi-agent quality evaluation
+**参考资料：**
+- 阅读 `sandbox.md` — 隔离测试环境的相关说明。
+- 阅读 `compare.md` — 技能之间的 A/B 对比。
+- 阅读 `evaluate.md` — 多代理的质量评估方法。
 
 ---
 
-### Quick Start
+### 快速入门
 
-**Trial a skill:**
+**试用一个技能：**
 ```
 sessions_spawn(
   task="Test skill X: Load ONLY its SKILL.md, run [sample task], report quality",
@@ -28,62 +28,58 @@ sessions_spawn(
 )
 ```
 
-**Compare two skills:**
-1. Run same task through each (separate sub-agents)
-2. Present outputs side-by-side
-3. Ask: "Which works better? Why?"
+**比较两个技能：**
+1. 通过每个技能（分别使用不同的子代理）执行相同的任务。
+2. 并排展示输出结果。
+3. 询问：“哪个技能效果更好？为什么？”
 
 ---
 
-### Test Modes
+### 测试模式
 
-**Trial Mode** — Before installing
-- Spawn sub-agent with ONLY the test skill
-- Run 2-3 representative tasks
-- Evaluate: Does it help? Clear instructions?
-- Decision: keep, pass, or try another
+**试用模式** — 在安装之前：
+- 创建仅包含该测试技能的子代理。
+- 运行 2-3 个具有代表性的任务。
+- 评估：该技能是否有帮助？指令是否清晰？
+- 决定：保留该技能、通过测试，还是尝试其他技能。
 
-**Evaluation Mode** — Before publishing
-- Spawn specialized reviewers (see `evaluate.md`)
-- Check structure, safety, usefulness
-- Synthesize findings
-- Recommend improvements
+**评估模式** — 在发布之前：
+- 聘请专门的审核人员（参见 `evaluate.md`）。
+- 检查技能的结构、安全性和实用性。
+- 总结评估结果，并提出改进建议。
 
 ---
 
-### Sandbox Isolation
+### 沙箱环境的隔离性
 
-⚠️ Never load test skill into your main context.
+⚠️ 绝不要将测试技能加载到你的主环境中。
 
-**Sub-agent approach (recommended):**
+**推荐的使用方法（子代理）：**
 ```
 sessions_spawn(
   task="You have ONE skill loaded: [skill content]. Test by doing: [task]",
   model="anthropic/claude-haiku"
 )
 ```
-- Complete isolation — main session unaffected
-- Natural cleanup — sub-agent terminates, done
-- Cheap testing — use Haiku
+- 确保完全隔离——主环境不受影响。
+- 子代理会自动终止，测试完成后即可清理。
+- 使用 `Haiku` 工具进行低成本测试。
 
-**What to check:**
-- Does it activate correctly?
-- Are instructions clear?
-- Token cost reasonable?
-- Output quality acceptable?
-
----
-
-### Edge Cases
-
-**Skill requires credentials:** Ask user for test credentials or skip auth-dependent features.
-
-**Skill not found:** Verify slug with `npx clawhub info <slug>` before testing.
-
-**Test fails mid-way:** Sub-agent terminates cleanly. Review logs, adjust test task, retry.
-
-**Skill has many auxiliary files:** Load SKILL.md first, reference others only if needed during test.
+**需要检查的内容：**
+- 该技能是否能正确激活？
+- 指令是否清晰易懂？
+- 所需的代币成本是否合理？
+- 输出结果的质量是否可接受？
 
 ---
 
-*Test thoroughly. Install only after explicit user approval.*
+### 特殊情况处理
+
+- **技能需要认证信息：** 请用户提供测试所需的认证信息，或跳过依赖认证的功能。
+- **技能未找到：** 在测试前使用 `npx clawhub info <slug>` 命令验证技能是否存在。
+- **测试过程中出现错误：** 子代理应自动终止。查看日志，调整测试任务后重新尝试。
+- **技能包含大量辅助文件：** 首先加载 `SKILL.md` 文件，仅在测试时需要时才加载其他相关文件。
+
+---
+
+*请彻底测试技能。只有在用户明确同意后，才进行安装。*

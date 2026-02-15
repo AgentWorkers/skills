@@ -1,38 +1,38 @@
 ---
 name: jb-omnichain-ui
-description: Build omnichain UIs for Juicebox projects. Deploy to multiple chains with single payment, display unified cross-chain data.
+description: 为 Juicebox 项目构建多链用户界面（UI），实现单次支付即可部署到多个区块链上，并显示统一的跨链数据。
 ---
 
-# Juicebox V5 Omnichain UI Development
+# Juicebox V5 全链 UI 开发
 
-Build frontends that deploy and interact with Juicebox projects across multiple chains using viem and shared styles.
+使用 viem 和共享样式，构建能够部署并在多个链上与 Juicebox 项目交互的前端界面。
 
-## Philosophy
+## 开发理念
 
-> **Pay once on any chain. Deploy everywhere. Query unified data.**
+> **在任何链上支付一次，即可部署到所有地方；查询统一的数据。**
 
-### What is an Omnichain Project?
+### 什么是全链项目（Omnichain Project）？
 
-An "omnichain project" is a set of Juicebox projects deployed across multiple chains, connected via Suckers for token bridging.
+“全链项目”是指部署在多个链上的 Juicebox 项目的集合，这些项目通过 Suckers 实现代币桥接功能。
 
-**Key concept:** Project IDs cannot be coordinated across chains—each chain assigns the next available ID independently. Deploying to Ethereum might give you project #42, while Optimism gives you project #17. Suckers link these separate projects together so they function as one logical project with unified token bridging.
+**关键概念：** 项目 ID 无法在不同链之间进行协调——每个链会独立分配下一个可用的 ID。例如，在 Ethereum 上部署的项目可能被赋予 ID #42，而在 Optimism 上部署的项目可能被赋予 ID #17。Suckers 将这些独立的项目连接起来，使它们作为一个逻辑上的项目运行，并实现代币的统一桥接。
 
-Omnichain UIs enable:
-- Single-payment multi-chain deployments via Relayr
-- Unified project data across all chains via Bendystraw
-- Cross-chain token bridging visibility via Sucker Groups
+全链 UI 支持以下功能：
+- 通过 Relayr 实现单次支付即可跨多个链进行部署
+- 通过 Bendystraw 实现所有链上的项目数据统一展示
+- 通过 Sucker Groups 实现跨链代币的可见性
 
-## Tool References
+## 工具参考
 
-For complete API documentation, see:
-- `/jb-relayr` - Multi-chain transaction bundling API
-- `/jb-bendystraw` - Cross-chain data aggregation API
+有关完整的 API 文档，请参阅：
+- `/jb-relayr` - 多链交易打包 API
+- `/jb-bendystraw` - 跨链数据聚合 API
 
 ---
 
-## Quick Start
+## 快速入门
 
-### Relayr (Transactions)
+### Relayr（交易）
 
 ```javascript
 const RELAYR_API = 'https://api.relayr.ba5ed.com';
@@ -45,7 +45,7 @@ const RELAYR_API = 'https://api.relayr.ba5ed.com';
 // No API key required
 ```
 
-### Bendystraw (Data)
+### Bendystraw（数据）
 
 ```javascript
 const BENDYSTRAW_API = 'https://bendystraw.xyz/{API_KEY}/graphql';
@@ -56,9 +56,9 @@ const BENDYSTRAW_API = 'https://bendystraw.xyz/{API_KEY}/graphql';
 
 ---
 
-## Omnichain Deploy UI Template
+## 全链部署 UI 模板
 
-Complete HTML template for deploying projects to multiple chains.
+用于将项目部署到多个链的完整 HTML 模板。
 
 ```html
 <!DOCTYPE html>
@@ -387,9 +387,9 @@ Complete HTML template for deploying projects to multiple chains.
 
 ---
 
-## Omnichain Dashboard UI Template
+## 全链仪表盘 UI 模板
 
-Display unified stats across all chains using Bendystraw.
+使用 Bendystraw 在所有链上显示统一的数据统计信息。
 
 ```html
 <!DOCTYPE html>
@@ -563,9 +563,9 @@ Display unified stats across all chains using Bendystraw.
 
 ---
 
-## Server-Side Proxy
+## 服务器端代理
 
-Bendystraw requires an API key. Use a server-side proxy to keep it secret.
+Bendystraw 需要一个 API 密钥。请使用服务器端代理来保护该密钥的安全性。
 
 ### Next.js
 
@@ -608,9 +608,9 @@ app.post('/api/bendystraw', async (req, res) => {
 
 ---
 
-## Common Patterns
+## 常用开发模式
 
-### Fetch Project + Check if Omnichain
+### 获取项目信息并检查是否支持全链功能
 
 ```javascript
 async function loadProject(projectId, chainId) {
@@ -639,7 +639,7 @@ async function loadProject(projectId, chainId) {
 }
 ```
 
-### Poll After Relayr Deploy
+### 在 Relayr 部署后进行轮询
 
 ```javascript
 async function deployAndWaitForIndex(walletClient, chains, calldata) {
@@ -662,33 +662,33 @@ async function deployAndWaitForIndex(walletClient, chains, calldata) {
 
 ---
 
-## Important Limitation: Aggregate Payout Limits
+## 重要限制：聚合支付限额
 
-**Payout limits in omnichain projects are per-chain, not aggregate.**
+**全链项目中的支付限额是针对每个链单独设置的，而不是汇总的。**
 
-If you set a 10 ETH payout limit on a 4-chain project, you could potentially pay out 40 ETH total (10 ETH × 4 chains), not 10 ETH total.
+如果您为一个跨 4 个链的项目设置了 10 ETH 的支付限额，那么您最多只能支付 40 ETH（10 ETH × 4 个链），而不是 10 ETH。
 
-This is a fundamental constraint of cross-chain systems - there's no atomic way to enforce aggregate limits across chains.
+这是跨链系统的一个基本限制——目前没有方法可以跨链统一执行聚合支付限额。
 
-**See `/jb-omnichain-payout-limits` for:**
-- Why this limitation exists
-- Practical approaches (monitoring, cron automation, oracles)
-- Tradeoffs for each approach
-- Recommendations by use case
+**请参阅 `/jb-omnichain-payout-limits` 以了解：**
+- 该限制存在的原因
+- 实际可行的解决方案（监控、定时任务自动化、预言机）
+- 各种解决方案的权衡
+- 根据使用场景的建议
 
-**Quick guidance:**
-- Soft caps → Set per-chain limits that sum to ~80% of goal
-- Need automation → Use cron + Relayr to pause when threshold approached
-- Hard compliance limits → Consider single-chain only, or build oracle infrastructure
+**快速指南：**
+- **软性限制**：为每个链设置合计约为目标限额 80% 的限额
+- **需要自动化处理**：使用定时任务和 Relayr 在接近限额时暂停支付
+- **严格的合规性要求**：考虑仅在一个链上部署项目，或构建预言机基础设施
 
 ---
 
-## Related Skills
+## 相关技能
 
-- `/jb-omnichain-payout-limits` - Aggregate limit constraints and solutions
-- `/jb-suckers` - Core sucker mechanics (prepare/toRemote/claim flow)
-- `/jb-v5-currency-types` - Currency handling for cross-chain consistency
-- `/jb-relayr` - Complete Relayr API reference
-- `/jb-bendystraw` - Complete Bendystraw GraphQL reference
-- `/jb-deploy-ui` - Single-chain deployment UIs
-- `/jb-interact-ui` - Project interaction UIs
+- `/jb-omnichain-payout-limits` - 聚合支付限额的相关限制及解决方法
+- `/jb-suckers` - 核心的代币桥接机制（准备、发送、领取流程）
+- `/jb-v5-currency-types` - 用于确保跨链货币一致性的处理逻辑
+- `/jb-relayr` - Relayr 的完整 API 参考文档
+- `/jb-bendystraw` - Bendystraw 的 GraphQL 完整参考文档
+- `/jb-deploy-ui` - 单链部署 UI
+- `/jb-interact-ui` - 项目交互 UI

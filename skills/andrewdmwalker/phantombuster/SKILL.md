@@ -1,105 +1,105 @@
 ---
 name: phantombuster
-description: Control PhantomBuster automation agents via API. List agents, launch automations, get output/results, check status, and abort running agents. Use when the user needs to run LinkedIn scraping, Twitter automation, lead generation phantoms, or any PhantomBuster workflow.
+description: 通过 API 控制 PhantomBuster 自动化代理。可以列出代理、启动自动化任务、获取输出结果、检查代理状态以及中止正在运行的代理。适用于用户需要执行 LinkedIn 数据抓取、Twitter 自动化操作、潜在客户生成任务或任何 PhantomBuster 工作流程的场景。
 version: 1.0.0
 author: captmarbles
 ---
 
-# PhantomBuster Skill
+# PhantomBuster 技能
 
-Control your [PhantomBuster](https://phantombuster.com) automation agents from the command line.
+您可以通过命令行来控制您的 [PhantomBuster](https://phantombuster.com) 自动化代理。
 
-## Setup
+## 设置
 
-1. Get your API key from [Workspace Settings](https://phantombuster.com/workspace-settings)
-2. Set the environment variable:
+1. 从 [工作区设置](https://phantombuster.com/workspace-settings) 获取您的 API 密钥。
+2. 设置环境变量：
    ```bash
    export PHANTOMBUSTER_API_KEY=your-api-key-here
    ```
 
-## Usage
+## 使用方法
 
-All commands use the bundled `pb.py` script in this skill's directory.
+所有命令都使用该技能目录中提供的 `pb.py` 脚本。
 
-### List Agents
+### 列出代理
 
-See all your configured PhantomBuster agents.
+查看所有已配置的 PhantomBuster 代理。
 
 ```bash
 python3 pb.py list
 python3 pb.py list --json  # JSON output
 ```
 
-### Launch an Agent
+### 启动代理
 
-Start a phantom by ID or name.
+根据代理的 ID 或名称来启动一个代理。
 
 ```bash
 python3 pb.py launch <agent-id>
 python3 pb.py launch <agent-id> --argument '{"search": "CEO fintech"}'
 ```
 
-### Get Agent Output
+### 获取代理输出
 
-Fetch the results/output from the most recent run.
+获取最近一次运行代理的结果。
 
 ```bash
 python3 pb.py output <agent-id>
 python3 pb.py output <agent-id> --json  # Raw JSON
 ```
 
-### Check Agent Status
+### 检查代理状态
 
-See if an agent is running, finished, or errored.
+查看代理是正在运行、已完成还是出现了错误。
 
 ```bash
 python3 pb.py status <agent-id>
 ```
 
-### Abort Running Agent
+### 中止正在运行的代理
 
-Stop an agent that's currently running.
+停止当前正在运行的代理。
 
 ```bash
 python3 pb.py abort <agent-id>
 ```
 
-### Get Agent Details
+### 获取代理详细信息
 
-Full details about a specific agent.
+获取特定代理的完整详细信息。
 
 ```bash
 python3 pb.py get <agent-id>
 ```
 
-### Fetch Result Data
+### 下载结果数据
 
-Download the actual result data (CSV) from an agent's latest run.
+从代理的最新运行中下载实际的结果数据（CSV 格式）。
 
 ```bash
 python3 pb.py fetch-result <agent-id>
 python3 pb.py fetch-result <agent-id> > output.csv
 ```
 
-This downloads the `result.csv` file from the agent's S3 storage, perfect for integrating PhantomBuster data into your workflows.
+该命令会从代理的 S3 存储中下载 `result.csv` 文件，非常适合将 PhantomBuster 的数据集成到您的工作流程中。
 
-## Example Prompts
+## 示例命令
 
-- *"List my PhantomBuster agents"*
-- *"Launch my LinkedIn Sales Navigator scraper"*
-- *"Get the output from agent 12345"*
-- *"Check if my Twitter follower phantom is still running"*
-- *"Abort the currently running agent"*
+- *"列出我的 PhantomBuster 代理"
+- *"启动我的 LinkedIn Sales Navigator 抓取器"
+- *"获取代理 12345 的输出"
+- *"检查我的 Twitter 关注者抓取器是否仍在运行"
+- *"中止当前正在运行的代理"
 
-## Common Phantoms
+## 常见自动化任务
 
-PhantomBuster offers many pre-built automations:
-- **LinkedIn Sales Navigator Search** — Extract leads from searches
-- **LinkedIn Profile Scraper** — Get profile data
-- **Twitter Follower Collector** — Scrape followers
-- **Instagram Profile Scraper** — Get IG profile data
-- **Google Maps Search Export** — Extract business listings
+PhantomBuster 提供了许多预先构建的自动化任务：
+- **LinkedIn Sales Navigator 搜索** — 从搜索结果中提取潜在客户信息
+- **LinkedIn 个人资料抓取器** — 获取个人资料数据
+- **Twitter 关注者收集器** — 抓取 Twitter 关注者信息
+- **Instagram 个人资料抓取器** — 获取 Instagram 个人资料数据
+- **Google 地图搜索导出** — 提取商家信息
 
-## Rate Limits
+## 访问限制
 
-PhantomBuster has execution time limits based on your plan. The API itself is not heavily rate-limited, but agent execution consumes your plan's minutes.
+PhantomBuster 的执行时间受到您所选计划的限制。API 本身没有严格的访问限制，但代理的执行会消耗您计划中的时间。

@@ -1,27 +1,27 @@
 ---
 slug: "data-anomaly-detector"
 display_name: "Data Anomaly Detector"
-description: "Detect anomalies and outliers in construction data: unusual costs, schedule variances, productivity spikes. Statistical and ML-based detection methods."
+description: "检测建筑数据中的异常值和离群点：包括不寻常的成本、进度偏差以及生产力的突然上升。采用统计方法和基于机器学习的检测技术。"
 ---
 
-# Data Anomaly Detector for Construction
+# 建筑数据异常检测器
 
-## Overview
+## 概述
 
-Detect unusual patterns, outliers, and anomalies in construction data. Identify cost overruns, schedule delays, productivity issues, and data quality problems before they impact projects.
+本工具用于检测建筑数据中的异常模式、离群值和异常情况，以便在这些问题对项目产生影响之前及时发现成本超支、进度延误、生产效率问题以及数据质量问题。
 
-## Business Case
+## 商业价值
 
-Construction data often contains anomalies that indicate:
-- Cost estimate errors or fraud
-- Schedule logic issues
-- Productivity problems
-- Data entry mistakes
-- Equipment or material issues
+建筑数据中常常存在以下异常情况：
+- 成本估算错误或欺诈行为
+- 进度计划逻辑问题
+- 生产效率问题
+- 数据录入错误
+- 设备或材料问题
 
-Early detection prevents costly corrections and project delays.
+早期发现这些异常可以避免高昂的纠正成本和项目延误。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -471,7 +471,7 @@ class ConstructionAnomalyDetector:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -501,13 +501,13 @@ critical = [a for a in report.anomalies if a.severity == AnomalySeverity.CRITICA
 print(f"\n{len(critical)} critical anomalies require immediate attention")
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy scipy
 ```
 
-## Resources
+## 资源
 
-- **Statistical Methods**: IQR, Z-Score, Modified Z-Score
-- **Construction Benchmarks**: RSMeans, ENR indices
+- **统计方法**：四分位数间距（IQR）、Z分数、修正Z分数
+- **建筑行业基准指标**：RSMeans指数、ENR指数

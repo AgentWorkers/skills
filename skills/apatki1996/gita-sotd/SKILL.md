@@ -7,13 +7,13 @@ description: >
   Supports Sanskrit text, transliteration, and translations from multiple scholars.
 ---
 
-# Bhagavad Gita Slok of the Day
+# 每日《薄伽梵歌》经文
 
-Fetch verses from the Bhagavad Gita using the free [vedicscriptures API](https://vedicscriptures.github.io/).
+使用免费的 [vedicscriptures API](https://vedicscriptures.github.io/) 获取《薄伽梵歌》中的经文。
 
-## Usage
+## 使用方法
 
-Run the script to get a slok:
+运行脚本以获取某一段经文：
 
 ```bash
 # Daily slok (deterministic, changes each day)
@@ -32,32 +32,32 @@ python3 scripts/fetch_slok.py --translator siva
 python3 scripts/fetch_slok.py --json
 ```
 
-## Available Translators
+## 可用的翻译者
 
-- `prabhu` - A.C. Bhaktivedanta Swami Prabhupada (default)
-- `siva` - Swami Sivananda
-- `purohit` - Shri Purohit Swami
-- `gambir` - Swami Gambirananda
-- `chinmay` - Swami Chinmayananda
-- `tej` - Swami Tejomayananda (Hindi)
-- `rams` - Swami Ramsukhdas (Hindi)
-- `raman` - Sri Ramanuja
+- `prabhu` - A.C. 巴克提维丹塔·斯瓦米·普拉布普达（默认翻译者）
+- `siva` - 斯瓦米·西瓦南达
+- `purohit` - 斯里·普罗希特·斯瓦米
+- `gambir` - 斯瓦米·甘比兰南达
+- `chinmay` - 斯瓦米·钦马亚南达
+- `tej` - 斯瓦米·特乔马亚南达（印地语翻译）
+- `rams` - 斯瓦米·拉姆苏克达斯（印地语翻译）
+- `raman` - 斯里·罗摩努贾
 
-## Output Format
+## 输出格式
 
-The script outputs formatted markdown with:
+脚本会输出格式化的 Markdown 内容，包括：
 
-- Chapter and verse reference
-- Sanskrit text (optional)
-- Transliteration
-- English/Hindi translation with author attribution
+- 章节和经文编号
+- 梵文原文（可选）
+- 拼写转写
+- 英文/印地文翻译及作者信息
 
-## API Reference
+## API 参考
 
-Base URL: `https://vedicscriptures.github.io`
+基础 URL：`https://vedicscriptures.github.io`
 
-- `GET /slok/:chapter/:verse` - Get specific verse
-- `GET /chapter/:ch` - Get chapter info
-- `GET /chapters` - List all chapters
+- `GET /slok/:chapter/:verse` - 获取特定经文
+- `GET /chapter/:ch` - 获取章节信息
+- `GET /chapters` - 列出所有章节
 
-The Bhagavad Gita has 18 chapters with 700 total verses.
+《薄伽梵歌》共有 18 章，共计 700 首经文。

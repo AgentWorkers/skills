@@ -1,8 +1,8 @@
-# OpenClaw Cloud Setup Skill
+# OpenClaw 云部署技巧
 
-Deploy OpenClaw to GCP with Tailscale and Brave Search.
+使用 Tailscale 和 Brave Search 将 OpenClaw 部署到 GCP 上。
 
-## Required Environment Variables
+## 所需的环境变量
 
 ```bash
 export OPENCLAW_PROJECT_ID="your-gcp-project"
@@ -11,14 +11,14 @@ export ANTHROPIC_TOKEN="sk-ant-oat01-..."   # Keep secret
 export BRAVE_API_KEY="..."                   # Keep secret
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 chmod +x openclaw-quick-setup.sh
 ./openclaw-quick-setup.sh
 ```
 
-## Manual Setup (Copy-Paste)
+## 手动设置（复制粘贴）
 
 ```bash
 # Set variables first (see above)
@@ -92,19 +92,19 @@ ssh "${OPENCLAW_USERNAME}@${IP}" 'source ~/.nvm/nvm.sh && openclaw devices list'
 # Then: openclaw devices approve <REQUEST_ID>
 ```
 
-## Key Learnings
+## 重点学习内容
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| e2-micro OOM | Use e2-medium (4GB minimum) |
-| nodesource failures | Use nvm for Node.js 22 |
-| DNS broken after Tailscale | Add `8.8.8.8` to /etc/resolv.conf |
-| Brave key in config rejected | Use systemd env var drop-in |
-| Dashboard "pairing required" | Run `openclaw devices approve <id>` |
+| e2-micro 资源耗尽（OOM） | 更改节点类型为 e2-medium（至少 4GB 内存） |
+| Node.js 22 安装失败 | 使用 nvm 安装 Node.js 22 |
+| Tailscale 部署后 DNS 无法解析 | 在 `/etc/resolv.conf` 中添加 `8.8.8.8` |
+| 配置文件中的 Brave 密钥被拒绝 | 使用 systemd 环境变量进行配置 |
+| 仪表盘显示“需要配对”提示 | 运行 `openclaw devices approve <id>` 命令进行配对 |
 
-## Security Notes
+## 安全注意事项
 
-- Credentials passed via stdin (`<<<`), not command-line args
-- Config files set to `chmod 600`
-- Gateway binds to loopback, exposed only via Tailscale
-- UFW blocks all inbound except SSH and Tailscale
+- 凭据通过标准输入（`<<<`）传递，而非命令行参数
+- 配置文件设置为 `chmod 600` 来保护文件权限
+- OpenClaw 的网关绑定到本地循环回环地址（loopback），仅通过 Tailscale 进行外部访问
+- UFW 防火墙仅允许 SSH 和 Tailscale 的流量通过

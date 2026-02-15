@@ -1,102 +1,99 @@
 ---
 name: Russian
-description: Write Russian that sounds human. Not formal, not robotic, not AI-generated.
+description: 将以下内容翻译成中文（简体）：
+
+“写一些听起来像真人说话的俄语。不要过于正式，也不要有机器人或人工智能生成的感觉。”
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Russian is technically correct but sounds off. Too formal. Too literary. Too stiff. Natives write more directly, with particles and casual contractions. Match that.
+虽然AI生成的俄语在语法上是正确的，但听起来很不自然。过于正式、文学化，缺乏生动性。母语者通常会使用更直接的表达方式，包括各种助词和口语化的缩略语。我们需要让翻译结果更符合俄语的日常交流习惯。
 
-## Formality Default
+## 形式的正式程度
 
-Default register is too high. Casual Russian is direct and warm. Unless explicitly formal: lean casual. "Привет" not "Здравствуйте". "Ок" not "Хорошо". "Ага" not "Да".
+俄语的默认表达方式过于正式。在非正式场合，人们更倾向于使用自然、亲切的表达方式。例如：“Привет”而不是“Здравствуйте”，“Ок”而不是“Хорошо”，“Ага”而不是“Да”。
 
-## Ты vs Вы
+## “Ты”与“Вы”的使用
 
-Critical distinction:
-- Вы: strangers, elderly, professional, formal
-- Ты: friends, peers, internet, casual
-- Russian internet is almost entirely ты
-- Overusing Вы online = robotic, distant
+在俄语中，“Ты”用于朋友、同龄人或非正式场合，而“Вы”则用于陌生人、老年人或正式场合。在网络交流中，人们几乎总是使用“Ты”，因为这样更显得亲切自然。过度使用“Вы”会让交流显得生硬、缺乏人情味。
 
-## Particles & Interjections
+## 助词和感叹词
 
-These make Russian natural:
-- Ну: filler, hesitation, "well"
-- Же: emphasis, "after all"
-- Ведь: "you know", "after all"
-- Вот: pointing, "here's the thing"
-- Да: not just "yes" - emphasis, filler
-- Так: "so", transitional
-- Missing these = textbook Russian
+这些词能让俄语表达更加自然：
+- Ну：用于填充语或表示犹豫，“嗯”；
+- Же：用于强调，“毕竟”；
+- Ведь：表示“你知道的”或“毕竟”；
+- Вот：用于指代或强调某个事物；
+- Да：不仅表示“是”，还用于强调或填充语；
+- Так：表示“那么”，用于过渡。
 
-## Fillers & Flow
+## 填充语和语流
 
-Real Russian has fillers:
-- Ну, типа, короче, в общем
-- Как бы, то есть, значит
-- Блин, чёрт (mild expletives)
-- Слушай, смотри
+俄语口语中经常使用一些填充语来使表达更流畅：
+- Ну, типа, короче, в общем（嗯，总之）；
+- Как бы, то есть, значит（也就是说）；
+- Блин, чёрт（轻微的脏话）；
+- Слушай, смотри（听着，看）。
 
-## Casual Shortcuts
+## 口语化的缩略语
 
-Spoken patterns in writing:
-- Сейчас → Щас
-- Что → Чё/Чо
-- Тебя → Тя
-- Говорит → Грит
-- Вообще → Ваще
+在书面语中也会使用一些口语化的缩略语：
+- Сейчас → Щас（现在）；
+- Что → Чё/Чо（什么）；
+- Тебя → Тя（你）；
+- Говорит → Грит（说）；
+- Вообще → Ваще（总之）。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Хорошо → Круто, Класс, Огонь, Топ
-- Плохо → Фигово, Отстой, Ужас
-- Очень → Офигенно, Дико, Жесть
-- Красивый → Крутой, Шикарный
+不要总是选择过于正式的词汇：
+- “Хорошо”可以译为“Круто”、“Класс”、“Огонь”、“Топ”；
+- “Плохо”可以译为“Фигово”、“Отстой”、“Ужас”；
+- “Очень”可以译为“Офигенно”、“Дико”、“Жесть”；
+- “Красивый”可以译为“Крутой”、“Шикарный”。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Понял/Понятно, Ясно, Ок
-- Норм, Нормально, Пойдёт
-- Ладно, Давай, Погнали
-- Без проблем, Не вопрос
+自然、亲切的表达方式包括：
+- Понял/Понятно, Ясно, Ок（明白了）；
+- Норм, Нормально, Пойдёт（没问题，还可以）；
+- Ладно, Давай, Погнали（好吧，我们开始吧）；
+- Без проблем, Не вопрос（没有问题）。
 
-## Reactions
+## 反应
 
-React naturally:
-- Серьёзно?, Правда?, Да ладно!
-- Офигеть!, Ничего себе!, Вау!
-- Круто!, Класс!, Топ!
-- Блин, Чёрт, Ёлки (mild)
-- )))))) for smiles, ) after sentences
+在交流时，要自然地回应：
+- Серьёзно?, Правда?, Да ладно!（真的吗？别闹了！）；
+- Офигеть!, Ничего себе!, Вау!（哇！太厉害了！）；
+- Круто!, Класс!, Топ!（太棒了！）；
+- Блин, Чёрт, Ёлки（轻微的抱怨）；
+- )))))) 用于表示微笑，) 用于句尾表示微笑。
 
-## Internet Style
+## 网络用语
 
-Russian internet has conventions:
-- ) or ))) = smiling (more ) = more smile)
-- No ) = serious or cold
-- хах, ахах, лол = laughter
-- Lowercase often preferred in casual
-- Ъ at end for irony/emphasis
+俄语网络交流中有一些特定的表达习惯：
+- ) 或 ))) 表示微笑（”) 表示更强烈的微笑）；
+- 不使用 ) 表示严肃或冷漠；
+- хах, ахах, лол 表示笑声；
+- 在非正式场合，通常使用小写字母；
+- 词尾的“Ъ”用于表达讽刺或强调。
 
-## Diminutives
+## 缩略形式
 
-Russian loves diminutives for warmth:
-- Минутку → Минуточку
-- Спасибо → Спасибки
-- Привет → Приветик
-- Use naturally, not excessively
+俄语中常用缩略形式来增加亲切感：
+- Минутку → Минуточку（稍等一下）；
+- Спасибо → Спасибки（谢谢）；
+- Привет → Приветик（你好）；
+- 使用缩略形式要自然，但不要过度。
 
-## Punctuation
+## 标点符号
 
-Russian punctuation:
-- «Ёлочки» for quotes
-- ... used frequently for trailing off
-- ) without : for smiles
-- Comma rules are strict in formal writing
+俄语的标点符号：
+- “Ёлочки”用于引号；
+- ... 用于表示语句的结束；
+- 在表示微笑时，可以用 ) 而不是 :；
+- 在正式写作中，逗号的用法非常严格。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Russian screenshot this as "AI-generated"? If yes—too formal, missing particles, no ). Fix it.
+在发送内容之前，要检查一下：如果一个俄罗斯人看到这样的文本，他会认为这是AI生成的吗？如果是的话，说明翻译太正式了，缺少助词，也没有使用 )。需要修改这些问题。

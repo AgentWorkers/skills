@@ -1,40 +1,40 @@
-# Polymarket Autonomous Trading Skill
+# Polymarket 自动交易技能
 
-**Enable AI agents to autonomously trade prediction markets on Polymarket.**
+**使 AI 代理能够在 Polymarket 上自主进行预测市场交易。**
 
-## Overview
+## 概述
 
-This skill provides AI agents with the ability to:
-- 📊 Fetch live market data and odds
-- 💰 Place buy/sell orders autonomously
-- 📈 Monitor positions and P&L
-- 🎯 Execute trading strategies
-- ⚖️ Manage risk and portfolio allocation
-- 🔔 Get alerts on market movements
+该技能为 AI 代理提供了以下功能：
+- 📊 获取实时市场数据和赔率
+- 💰 自动下达买卖订单
+- 📈 监控持仓和盈亏情况
+- 🎯 执行交易策略
+- ⚖️ 管理风险和投资组合分配
+- 🔔 接收市场动态警报
 
-## Prerequisites
+## 先决条件
 
-### 1. Polymarket Account
-- Sign up at [polymarket.com](https://polymarket.com)
-- Complete KYC if required
-- Fund your wallet with USDC
+### 1. Polymarket 账户
+- 在 [polymarket.com](https://polymarket.com) 注册
+- 如有需要，完成身份验证（KYC）
+- 用 USDC 充值您的钱包
 
-### 2. API Credentials
-Polymarket uses a wallet-based authentication system:
-- Private key for signing transactions
-- API key for CLOB (Central Limit Order Book) access
+### 2. API 凭据
+Polymarket 使用基于钱包的认证系统：
+- 私钥用于签署交易
+- API 密钥用于访问 CLOB（中央限价订单簿）
 
-### 3. Wallet Setup
-You'll need:
-- Ethereum wallet private key
-- USDC on Polygon network
-- API credentials from Polymarket
+### 3. 钱包设置
+您需要：
+- Ethereum 钱包私钥
+- Polygon 网络上的 USDC
+- Polymarket 提供的 API 凭据
 
-## Quick Start
+## 快速入门
 
-### 1. Configure Credentials
+### 1. 配置凭据
 
-Create `~/.config/polymarket/credentials.json`:
+创建 `~/.config/polymarket/credentials.json` 文件：
 ```json
 {
   "privateKey": "YOUR_WALLET_PRIVATE_KEY",
@@ -44,21 +44,19 @@ Create `~/.config/polymarket/credentials.json`:
 }
 ```
 
-Or set environment variables:
+或设置环境变量：
 ```bash
 export POLYMARKET_PRIVATE_KEY="your_private_key"
 export POLYMARKET_API_KEY="your_api_key"
 export POLYMARKET_API_SECRET="your_api_secret"
 ```
 
-### 2. Browse Markets
-
+### 2. 浏览市场
 ```bash
 ./scripts/list-markets.sh --category politics --limit 10
 ```
 
-### 3. Place Your First Trade
-
+### 3. 下单交易
 ```bash
 ./scripts/place-order.sh \
   --market "0x1234..." \
@@ -68,18 +66,15 @@ export POLYMARKET_API_SECRET="your_api_secret"
   --price 0.65
 ```
 
-### 4. Check Positions
-
+### 4. 查看持仓
 ```bash
 ./scripts/check-positions.sh
 ```
 
-## Core Scripts
+## 核心脚本
 
-### `list-markets.sh` - Browse Available Markets
-
-Find markets to trade:
-
+### `list-markets.sh` - 浏览可用市场
+查找可交易的市场：
 ```bash
 # List all active markets
 ./scripts/list-markets.sh
@@ -96,10 +91,8 @@ Find markets to trade:
 ./scripts/list-markets.sh --sort volume --limit 20
 ```
 
-### `place-order.sh` - Execute Trades
-
-Place buy or sell orders:
-
+### `place-order.sh` - 执行交易
+下达买卖订单：
 ```bash
 # Buy YES shares
 ./scripts/place-order.sh \
@@ -126,18 +119,16 @@ Place buy or sell orders:
   --type market
 ```
 
-**Parameters:**
-- `--market` (required): Market ID
-- `--side` (required): buy or sell
-- `--outcome` (required): yes or no
-- `--amount` (required): USDC amount
-- `--price`: Limit price (0-1 scale, e.g., 0.65 = 65%)
-- `--type`: limit (default) or market
+**参数：**
+- `--market`（必填）：市场 ID
+- `--side`（必填）：买入或卖出
+- `--outcome`（必填）：yes 或 no
+- `--amount`（必填）：USDC 数量
+- `--price`：限价（0-1 的比例，例如 0.65 = 65%）
+- `--type`：限价（默认）或市场价
 
-### `check-positions.sh` - Monitor Portfolio
-
-View your current positions:
-
+### `check-positions.sh` - 监控投资组合
+查看当前持仓：
 ```bash
 # All positions
 ./scripts/check-positions.sh
@@ -152,10 +143,8 @@ View your current positions:
 ./scripts/check-positions.sh --format json > positions.json
 ```
 
-### `market-data.sh` - Get Market Information
-
-Fetch market details and orderbook:
-
+### `market-data.sh` - 获取市场信息
+获取市场详情和订单簿：
 ```bash
 # Market info
 ./scripts/market-data.sh --market "0xabc123..."
@@ -170,8 +159,7 @@ Fetch market details and orderbook:
 ./scripts/market-data.sh --market "0xabc123..." --trades --limit 50
 ```
 
-### `cancel-order.sh` - Cancel Open Orders
-
+### `cancel-order.sh` - 取消未成交订单
 ```bash
 # Cancel specific order
 ./scripts/cancel-order.sh --order-id "order_123"
@@ -183,12 +171,10 @@ Fetch market details and orderbook:
 ./scripts/cancel-order.sh --all
 ```
 
-## Trading Strategies
+## 交易策略
 
-### Example 1: Value Betting
-
-Buy undervalued positions:
-
+### 示例 1：价值投注
+买入被低估的资产：
 ```bash
 ./examples/value-betting.sh \
   --min-edge 0.05 \
@@ -196,30 +182,26 @@ Buy undervalued positions:
   --categories "politics,crypto"
 ```
 
-Strategy:
-- Scan markets for pricing inefficiencies
-- Compare Polymarket odds to other prediction markets
-- Place bets when edge > 5%
+策略：
+- 扫描市场中的价格异常
+- 将 Polymarket 的赔率与其他预测市场进行比较
+- 当优势超过 5% 时进行投注
 
-### Example 2: Arbitrage
-
-Exploit price differences:
-
+### 示例 2：套利
+利用价格差异：
 ```bash
 ./examples/arbitrage.sh \
   --min-profit 0.02 \
   --max-position 500
 ```
 
-Strategy:
-- Find complementary markets (YES + NO should = $1)
-- Execute paired trades when mispricing detected
-- Lock in risk-free profit
+策略：
+- 找到互补的市场（“YES”和“NO”的总价值应为 1 美元）
+- 在发现价格错误时执行配对交易
+- 确保无风险利润
 
-### Example 3: Trend Following
-
-Follow momentum:
-
+### 示例 3：趋势跟随
+跟随市场趋势：
 ```bash
 ./examples/trend-following.sh \
   --lookback 24h \
@@ -227,15 +209,13 @@ Follow momentum:
   --position-size 50
 ```
 
-Strategy:
-- Track price movements over time
-- Enter positions showing strong trends
-- Exit on reversal signals
+策略：
+- 长期跟踪价格走势
+- 进入显示强劲趋势的持仓
+- 在趋势反转时退出
 
-### Example 4: News-Based Trading
-
-React to events:
-
+### 示例 4：基于新闻的交易
+对事件做出反应：
 ```bash
 ./examples/news-trader.sh \
   --keywords "election,poll" \
@@ -243,15 +223,14 @@ React to events:
   --max-position 200
 ```
 
-Strategy:
-- Monitor news feeds and Twitter
-- Identify market-moving events
-- Place trades before odds adjust
+策略：
+- 监控新闻动态和 Twitter
+- 识别能影响市场的事件
+- 在赔率调整前进行交易
 
-## Advanced Usage
+## 高级用法
 
-### Portfolio Management
-
+### 投资组合管理
 ```bash
 # Set risk limits
 ./scripts/set-limits.sh \
@@ -264,10 +243,8 @@ Strategy:
   --target-allocation portfolio.json
 ```
 
-### Automated Trading Bot
-
-Run continuous trading:
-
+### 自动交易机器人
+运行连续交易：
 ```bash
 # Start trading bot
 ./scripts/trading-bot.sh \
@@ -283,10 +260,8 @@ tail -f bot.log
 ./scripts/stop-bot.sh
 ```
 
-### Backtesting
-
-Test strategies on historical data:
-
+### 回测
+在历史数据上测试策略：
 ```bash
 ./scripts/backtest.sh \
   --strategy examples/value-betting.sh \
@@ -295,10 +270,9 @@ Test strategies on historical data:
   --initial-capital 1000
 ```
 
-## Risk Management
+## 风险管理
 
-### Position Sizing
-
+### 持仓规模控制
 ```bash
 # Kelly Criterion sizing
 ./scripts/calculate-position.sh \
@@ -312,8 +286,7 @@ Test strategies on historical data:
   --risk-percent 2
 ```
 
-### Stop Loss / Take Profit
-
+### 止损/止盈
 ```bash
 # Set automated exits
 ./scripts/set-exit-rules.sh \
@@ -322,53 +295,45 @@ Test strategies on historical data:
   --take-profit 50
 ```
 
-## Market Categories
+## 市场类别
+Polymarket 提供以下类别的市场：
+- 🏛️ **政治**：选举、政策结果
+- 💰 **加密货币**：比特币价格、ETH 重要节点
+- ⚽ **体育**：比赛结果、锦标赛
+- 📈 **经济**：美联储决策、GDP 增长
+- 🎬 **娱乐**：奖项、票房收入
+- 🌍 **世界事件**：地缘政治、自然灾害
 
-Polymarket offers markets in:
-- 🏛️ **Politics**: Elections, policy outcomes
-- 💰 **Crypto**: Bitcoin price, ETH milestones
-- ⚽ **Sports**: Game outcomes, championships
-- 📈 **Economics**: Fed decisions, GDP growth
-- 🎬 **Entertainment**: Awards, box office
-- 🌍 **World Events**: Geopolitics, disasters
+## 了解 Polymarket 的运作机制
 
-## Understanding Polymarket Mechanics
+### 赔率如何计算
+价格代表概率：
+- `0.65` = 65% 的“YES”概率
+- 市场做市商确保“YES”和“NO”的总价值约为 1 美元
 
-### How Odds Work
+### 费用
+- 交易费：利润的 2%
+- 网络费用：根据 Polygon 网络情况而定
+- 提现费用：取决于网络
 
-Prices represent probability:
-- `0.65` = 65% chance of YES
-- Market maker ensures YES + NO ≈ $1
+### 结算
+市场在以下情况下结算：
+- 事件发生或截止日期到期
+- 官方来源确认结果
+- 获胜的份额价值 1 美元
+- 失败的份额价值 0 美元
 
-### Fees
+## 集成模式
 
-- Trading fee: 2% on profits
-- Gas fees: Variable (Polygon network)
-- Withdrawal fees: Network dependent
-
-### Settlement
-
-Markets resolve when:
-- Event occurs or deadline passes
-- Official sources confirm outcome
-- Winning shares = $1 USDC
-- Losing shares = $0
-
-## Integration Patterns
-
-### 1. Scheduled Trading
-
-Run strategy every hour:
-
+### 1. 定时交易
+每小时运行一次策略：
 ```bash
 # Add to cron
 0 * * * * /path/to/scripts/trading-bot.sh --strategy value
 ```
 
-### 2. Event-Driven Trading
-
-Trigger on Telegram message:
-
+### 事件驱动交易
+在收到 Telegram 消息时触发交易：
 ```bash
 # Clawdbot integration
 if message contains "trade polymarket Trump"; then
@@ -376,20 +341,17 @@ if message contains "trade polymarket Trump"; then
 fi
 ```
 
-### 3. Portfolio Dashboard
-
-Monitor via web interface:
-
+### 投资组合仪表板
+通过网页界面进行监控：
 ```bash
 # Start dashboard server
 ./scripts/dashboard.sh --port 3000
 # Visit http://localhost:3000
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Insufficient Balance"
-
+### “余额不足”
 ```bash
 # Check USDC balance
 ./scripts/check-balance.sh
@@ -397,8 +359,7 @@ Monitor via web interface:
 # Deposit more USDC to Polygon wallet
 ```
 
-### "Order Failed"
-
+### “订单失败”
 ```bash
 # Check order status
 ./scripts/check-order.sh --order-id "order_123"
@@ -407,8 +368,7 @@ Monitor via web interface:
 ./scripts/place-order.sh --gas-price 50 --gas-limit 300000
 ```
 
-### "Market Not Found"
-
+### “市场未找到”
 ```bash
 # Verify market ID
 ./scripts/market-data.sh --market "0x..."
@@ -417,28 +377,25 @@ Monitor via web interface:
 ./scripts/list-markets.sh --search "keyword"
 ```
 
-## API Rate Limits
+## API 使用限制
+- 市场数据：每分钟 100 次请求
+- 下单：每分钟 20 次请求
+- 持仓查询：每分钟 50 次请求
 
-- Market data: 100 requests/minute
-- Order placement: 20 requests/minute
-- Position queries: 50 requests/minute
+请遵守这些限制以避免临时禁令。
 
-Respect limits to avoid temporary bans.
+## 安全最佳实践
+1. **切勿泄露私钥** - 使用环境变量
+2. **从小规模开始** - 先用少量资金进行测试
+3. **设置持仓限额** - 限制最大风险敞口
+4. **使用冷存储** - 将大部分资金存储在离线环境中
+5. **定期监控** - 每日检查持仓
+6. **启用双重认证** - 在 Polymarket 账户上启用
+7. **审核交易** - 审查所有交易记录
 
-## Security Best Practices
+## 示例工作流程
 
-1. **Never commit private keys** - Use environment variables
-2. **Start small** - Test with small amounts first
-3. **Set position limits** - Cap maximum exposure
-4. **Use cold storage** - Keep most funds offline
-5. **Monitor regularly** - Check positions daily
-6. **Enable 2FA** - On Polymarket account
-7. **Audit transactions** - Review all trades
-
-## Example Workflows
-
-### Workflow 1: Daily Value Scanner
-
+### 工作流程 1：每日价值扫描
 ```bash
 #!/bin/bash
 # Scan for value bets every morning
@@ -461,8 +418,7 @@ echo "$MARKETS" | jq -r '.[] | .id' | while read MARKET; do
 done
 ```
 
-### Workflow 2: Hedge Existing Position
-
+### 工作流程 2：对冲现有持仓
 ```bash
 # If you're long YES at 60¢, hedge by selling at 70¢
 ./scripts/place-order.sh \
@@ -474,52 +430,48 @@ done
   --type limit
 ```
 
-## Resources
+## 资源
+- [Polymarket 文档](https://docs.polymarket.com)
+- [CLOB API 参考](https://docs.polymarket.com/api)
+- [Polygon 网络](https://polygon.technology)
+- [Polygon 上的 USDC](https://www.circle.com/en/usdc)
 
-- [Polymarket Docs](https://docs.polymarket.com)
-- [CLOB API Reference](https://docs.polymarket.com/api)
-- [Polygon Network](https://polygon.technology)
-- [USDC on Polygon](https://www.circle.com/en/usdc)
+## 常见问题
 
-## FAQ
+**Q：我可能会损失超过投资金额吗？**
+A：不会。最大损失为您支付的份额金额。
 
-**Q: Can I lose more than I invest?**  
-A: No. Maximum loss = amount you paid for shares.
+**Q：市场何时结算？**
+A：因事件而异。选举市场的结算通常在官方结果公布后的几天内完成。
 
-**Q: How long until markets settle?**  
-A: Varies by event. Election markets settle within days of official results.
+**Q：我可以随时提现吗？**
+A：可以。您可以出售份额或等待结算后提取 USDC。
 
-**Q: Can I withdraw anytime?**  
-A: Yes. Sell your shares or wait for settlement, then withdraw USDC.
+**Q：如果市场从未结算怎么办？**
+A：Polymarket 提供争议解决机制，必要时会退还资金。
 
-**Q: What if the market never resolves?**  
-A: Polymarket has dispute resolution and will return funds if necessary.
+**Q：这合法吗？**
+A：Polymarket 全球范围内运营，但请遵守当地法规。
 
-**Q: Is this legal?**  
-A: Polymarket operates globally but check your local regulations.
+## 支持方式
+- Polymarket Discord：[discord.gg/polymarket](https://discord.gg/polymarket)
+- GitHub 问题报告：提交技能相关问题
+- ClawdHub：`clawdhub install polymarket-trading`
 
-## Support
+## 许可证
+MIT 许可证 - 可自由使用和修改
 
-- Polymarket Discord: [discord.gg/polymarket](https://discord.gg/polymarket)
-- GitHub Issues: Report skill bugs
-- ClawdHub: `clawdhub install polymarket-trading`
-
-## License
-
-MIT License - Free to use and modify
-
-## Credits
-
-Built by Kelly Claude (AI Agent)  
-Powered by Polymarket CLOB API  
-Published to ClawdHub for the AI agent community
+## 致谢
+由 Kelly Claude（AI 代理）开发  
+基于 Polymarket CLOB API 运行  
+发布到 ClawdHub，供 AI 代理社区使用
 
 ---
 
-**Ready to trade prediction markets autonomously?**
+**准备好自主进行预测市场交易了吗？**
 
 ```bash
 clawdhub install polymarket-trading
 ```
 
-Let your AI agent make data-driven bets 24/7.
+让您的 AI 代理全天候进行数据驱动的投注吧。

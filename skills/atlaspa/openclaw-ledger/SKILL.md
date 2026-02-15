@@ -6,74 +6,75 @@ metadata: {"openclaw":{"emoji":"📒","requires":{"bins":["python3"]},"os":["dar
 
 # OpenClaw Ledger
 
-Tamper-evident audit trail for agent workspaces. Every workspace change is recorded in a hash-chained log — if anyone alters an entry, the chain breaks and you know.
+OpenClaw Ledger为代理工作空间提供了防篡改的审计追踪功能。所有工作空间的变更都会被记录在一个基于哈希链的日志中——如果有人篡改了其中任何一条记录，哈希链就会断裂，从而能够立即发现异常。
 
-## The Problem
+## 问题所在
 
-Agents modify files, execute commands, install skills — and leave no verifiable record. If something goes wrong, you can't trace what happened. If logs exist, nothing proves they haven't been altered after the fact.
+代理在执行操作（如修改文件、执行命令、安装技能等）时，不会留下任何可验证的记录。一旦出现问题，就无法追踪具体发生了什么；即使有日志存在，也无法证明这些日志在事后没有被篡改。
 
+## 命令说明
 
-## Commands
+### 初始化（Initialize）
 
-### Initialize
-
-Create the ledger and snapshot current workspace state.
+创建账本，并生成当前工作空间的快照。
 
 ```bash
 python3 {baseDir}/scripts/ledger.py init --workspace /path/to/workspace
 ```
 
-### Record Changes
+### 记录变更（Record Changes）
 
-Snapshot current state and log all changes since last record.
+生成当前工作空间的快照，并记录自上次记录以来的所有变更。
 
 ```bash
 python3 {baseDir}/scripts/ledger.py record --workspace /path/to/workspace
 python3 {baseDir}/scripts/ledger.py record -m "Installed new skill" --workspace /path/to/workspace
 ```
 
-### Verify Chain
+### 验证哈希链（Verify Chain）
 
-Verify the hash chain is intact — no entries tampered with.
+检查哈希链是否完整，确保没有任何条目被篡改。
 
 ```bash
 python3 {baseDir}/scripts/ledger.py verify --workspace /path/to/workspace
 ```
 
-### View Log
+### 查看日志（View Log）
 
-Show recent ledger entries.
+显示最近的账本记录。
 
 ```bash
 python3 {baseDir}/scripts/ledger.py log --workspace /path/to/workspace
 python3 {baseDir}/scripts/ledger.py log -n 20 --workspace /path/to/workspace
 ```
 
-### Quick Status
+### 获取快速状态（Quick Status）
+
+提供当前系统状态的简要信息。
 
 ```bash
 python3 {baseDir}/scripts/ledger.py status --workspace /path/to/workspace
 ```
 
-## How It Works
+## 工作原理
 
-Each entry contains:
-- Timestamp
-- SHA-256 hash of the previous entry
-- Event type and data (file changes, snapshots)
+每条记录包含以下信息：
+- 时间戳
+- 前一条记录的SHA-256哈希值
+- 事件类型及相关数据（例如文件变更、工作空间快照等）
 
-If any entry is modified, inserted, or deleted, the hash chain breaks and `verify` detects it.
+如果任何条目被修改、插入或删除，哈希链就会断裂，`verify`命令会立即检测到这一异常。
 
-## Exit Codes
+## 返回码（Exit Codes）
 
-- `0` — Clean / chain intact
-- `1` — No ledger or minor issues
-- `2` — Chain tampered / corrupt entries
+- `0`：账本正常，哈希链完整
+- `1`：账本不存在或存在轻微问题
+- `2`：哈希链被篡改，或有条目损坏
 
-## No External Dependencies
+## 无外部依赖
 
-Python standard library only. No pip install. No network calls. Everything runs locally.
+仅使用Python标准库，无需安装任何第三方库（如pip），也不涉及网络请求。所有操作都在本地完成。
 
-## Cross-Platform
+## 跨平台兼容性
 
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+该功能支持OpenClaw、Claude Code、Cursor以及任何遵循“代理技能规范”（Agent Skills Specification）的工具。

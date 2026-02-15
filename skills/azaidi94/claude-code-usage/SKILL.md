@@ -1,6 +1,6 @@
 ---
 name: claude-code-usage
-description: Check Claude Code OAuth usage limits (session & weekly quotas). Use when user asks about Claude Code usage, remaining limits, rate limits, or how much Claude usage they have left. Includes automated session refresh reminders and reset detection monitoring.
+description: 检查 Claude Code 的 OAuth 使用限制（会话限制和每周配额）。当用户询问 Claude Code 的使用情况、剩余限制、速率限制或他们还剩多少使用量时，可以使用此功能。该功能还包括自动会话刷新提醒以及重置检测监控。
 metadata:
   clawdbot:
     emoji: "📊"
@@ -12,18 +12,18 @@ metadata:
         - curl
 ---
 
-# Claude Code Usage
+# Claude Code 使用说明
 
-Check your Claude Code OAuth API usage limits for both session (5-hour) and weekly (7-day) windows.
+请查看您的 Claude Code OAuth API 使用限制，包括会话限制（5小时）和每周限制（7天）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd {baseDir}
 ./scripts/claude-usage.sh
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Default: show cached usage (if fresh)
@@ -39,9 +39,9 @@ cd {baseDir}
 ./scripts/claude-usage.sh --cache-ttl 300
 ```
 
-## Output
+## 输出结果
 
-**Text format** (default):
+**文本格式**（默认）：
 ```
 🦞 Claude Code Usage
 
@@ -52,7 +52,7 @@ cd {baseDir}
    Resets in: 3d 8h
 ```
 
-**JSON format** (`--json`):
+**JSON 格式**（使用 `--json` 参数）：
 ```json
 {
   "session": {
@@ -69,82 +69,82 @@ cd {baseDir}
 }
 ```
 
-## Features
+## 主要功能
 
-- 📊 **Session limit** (5-hour window) - Short-term rate limit
-- 📅 **Weekly limit** (7-day window) - Long-term rate limit
-- ⚡ **Smart caching** - 60-second cache to avoid API spam
-- 🎨 **Beautiful output** - Progress bars, emojis, color-coded status
-- 🔄 **Force refresh** - `--fresh` flag to bypass cache
-- 📤 **JSON output** - Machine-readable format
-- 🔔 **Automated monitoring** - Get notified when quotas reset
+- 📊 **会话限制**（5小时周期）——短期速率限制
+- 📅 **每周限制**（7天周期）——长期速率限制
+- ⚡ **智能缓存**——60秒缓存机制，防止 API 过度请求
+- 🎨 **美观的输出界面**——进度条、表情符号、颜色编码的状态提示
+- 🔄 **强制刷新**——使用 `--fresh` 参数可绕过缓存
+- 📤 **JSON 格式输出**——机器可读的格式
+- 🔔 **自动监控**——当配额重置时收到通知
 
-## Status Indicators
+## 状态指示器
 
-- 🟢 **Green** - 0-50% usage (healthy)
-- 🟡 **Yellow** - 51-80% usage (moderate)
-- 🔴 **Red** - 81-100% usage (high/critical)
+- 🟢 **绿色**——使用量在 0-50% 之间（正常）
+- 🟡 **黄色**——使用量在 51-80% 之间（中等）
+- 🔴 **红色**——使用量在 81-100% 之间（高/临界）
 
-## Requirements
+## 系统要求
 
-- **macOS**: Uses Keychain to access Claude Code credentials
-- **Linux**: Uses `secret-tool` for credential storage
-- **Credentials**: Must have Claude Code CLI authenticated
+- **macOS**：使用 Keychain 存储 Claude Code 凭据
+- **Linux**：使用 `secret-tool` 存储凭证
+- **凭证要求**：必须通过 Claude Code CLI 进行身份验证
 
-## How It Works
+## 工作原理
 
-1. Retrieves OAuth token from system keychain
-2. Queries `api.anthropic.com/api/oauth/usage` with OAuth bearer token
-3. Parses `five_hour` and `seven_day` utilization metrics
-4. Calculates time remaining until reset
-5. Formats output with progress bars and status indicators
-6. Caches result for 60 seconds (configurable)
+1. 从系统 Keychain 中获取 OAuth 令牌
+2. 使用 OAuth 令牌向 `api.anthropic.com/api/oauth/usage` 发送请求
+3. 解析 `five_hour` 和 `seven_day` 的使用量数据
+4. 计算配额重置前的剩余时间
+5. 以进度条和状态指示器的形式展示输出结果
+6. 结果缓存 60 秒（可配置）
 
-## Cache
+## 缓存设置
 
-Default cache: `/tmp/claude-usage-cache` (60s TTL)
+默认缓存路径：`/tmp/claude-usage-cache`（缓存有效期 60 秒）
 
-Override:
+**缓存配置修改**：
 ```bash
 CACHE_FILE=/tmp/my-cache CACHE_TTL=300 ./scripts/claude-usage.sh
 ```
 
-## Examples
+## 使用示例
 
-**Check usage before starting work:**
+**开始工作前检查使用情况：**
 ```bash
 ./scripts/claude-usage.sh --fresh
 ```
 
-**Integrate with statusline:**
+**与状态栏集成：**
 ```bash
 usage=$(./scripts/claude-usage.sh | grep "Session" | awk '{print $NF}')
 echo "Session: $usage"
 ```
 
-**Get JSON for monitoring:**
+**获取 JSON 数据以供监控：**
 ```bash
 ./scripts/claude-usage.sh --json | jq '.session.utilization'
 ```
 
-## Automated Monitoring
+## 自动监控
 
-### Session Refresh Reminders (Recommended)
+### 会话刷新提醒（推荐）
 
-Get notified exactly when your 5-hour session quota refreshes!
+当您的 5 小时会话配额即将重置时，系统会自动提醒您！
 
-**Quick Setup:**
+**快速设置步骤：**
 ```bash
 ./scripts/session-reminder.sh
 ```
 
-This creates a **self-scheduling chain** of cron jobs that:
-1. Checks your current session expiry time
-2. Schedules the next reminder for when your session refreshes
-3. Notifies you with current usage stats
-4. Auto-removes itself (the new cron takes over)
+此设置会创建一个自动调度的 cron 任务链，具体步骤如下：
+1. 检查当前会话的过期时间
+2. 安排下一次会话刷新的提醒
+3. 向您发送当前的使用量统计信息
+4. 任务完成后自动删除（新的 cron 任务会接管）
 
-**What You'll Get:**
+**您将获得：**
 ```
 🔄 Claude Code Session Status
 
@@ -156,23 +156,23 @@ Your 5-hour quota will reset soon! 🦞
 ✅ Next reminder scheduled for: Jan 22 at 01:22 AM
 ```
 
-**How It Works:**
-- Each reminder runs `claude-usage.sh` to find the exact session reset time
-- Schedules a one-time cron for that exact moment
-- Repeats every 5 hours automatically
-- Self-correcting if session times ever drift
+**工作原理：**
+- 每个提醒任务会运行 `claude-usage.sh` 脚本以获取准确的会话重置时间
+- 为该时间点安排一次性的 cron 任务
+- 每 5 小时自动重复执行一次
+- 如果会话时间发生偏差，系统会自动调整提醒时间
 
-**Benefits:**
-- ✅ Accurate to the minute
-- ✅ No manual scheduling needed
-- ✅ Adapts to your actual usage patterns
-- ✅ Minimal API calls (only when needed)
+**优势：**
+- ✅ 精确到分钟
+- ✅ 无需手动调度
+- ✅ 会根据您的实际使用情况自动调整
+- ✅ 减少不必要的 API 请求（仅在必要时调用）
 
-### Reset Detection Monitor (Alternative)
+### 配额重置检测（可选）
 
-Get automatic notifications when your Claude Code quotas reset by polling usage.
+当您的 Claude Code 配额重置时，系统会自动发送通知：
 
-**Quick Setup:**
+**快速设置步骤：**
 ```bash
 # Test once
 ./scripts/monitor-usage.sh
@@ -181,7 +181,7 @@ Get automatic notifications when your Claude Code quotas reset by polling usage.
 ./scripts/setup-monitoring.sh
 ```
 
-Or add via Clawdbot directly:
+或者通过 Clawdbot 直接配置：
 ```bash
 # Check every 30 minutes
 clawdbot cron add --cron "*/30 * * * *" \
@@ -190,7 +190,7 @@ clawdbot cron add --cron "*/30 * * * *" \
   --session isolated --deliver --channel telegram
 ```
 
-**What You'll Get:**
+**您将获得：**
 ```
 🎉 Claude Code Session Reset!
 
@@ -201,13 +201,13 @@ clawdbot cron add --cron "*/30 * * * *" \
 Fresh usage available! 🦞
 ```
 
-**How It Works:**
-1. **Monitors usage** every 30 minutes (configurable)
-2. **Detects resets** when usage drops significantly (>10% or <5%)
-3. **Sends notifications** via Telegram when resets occur
-4. **Tracks state** in `/tmp/claude-usage-state.json`
+**工作原理：**
+- **每 30 分钟检查一次使用量**（可配置）
+- **当使用量发生显著变化（>10% 或 <5%）时检测配额重置**
+- **通过 Telegram 发送通知**
+- **在 `/tmp/claude-usage-state.json` 文件中记录状态变化**
 
-**Customization:**
+**自定义设置：**
 ```bash
 # Change check interval
 clawdbot cron add --cron "*/15 * * * *" ...  # Every 15 minutes
@@ -217,31 +217,31 @@ clawdbot cron add --cron "0 * * * *" ...      # Every hour
 STATE_FILE=/path/to/state.json ./scripts/monitor-usage.sh
 ```
 
-### Which Monitoring Method?
+### 选择哪种监控方式？
 
-| Feature | Session Reminder | Reset Detection |
-|---------|-----------------|-----------------|
-| Accuracy | ✅ Exact minute | ~30min window |
-| API calls | Minimal | Every check |
-| Notification timing | Right on reset | Up to 30min delay |
-| Setup | One command | One command |
-| Maintenance | Self-scheduling | Cron runs forever |
+| 功能          | 会话提醒        | 配额重置检测        |
+|---------------|-----------------|-----------------|
+| 精确度          | ✅ 精确到分钟        | 约 30 分钟的统计窗口     |
+| API 调用次数       | 最小化          | 每次检查都会调用      |
+| 通知时间        | 配额重置时立即发送    | 最多延迟 30 分钟      |
+| 设置难度        | 仅需一条命令       | 需要配置 cron 任务     |
+| 维护成本        | 自动调度          | cron 任务持续运行      |
 
-**Recommendation:** Use **Session Reminder** for precise, real-time notifications.
+**建议：** 选择 **会话提醒** 以获得最准确、实时的通知。
 
-## Troubleshooting
+## 常见问题解决方法
 
-**No credentials found:**
-- Ensure Claude Code CLI is installed and authenticated
-- Run `claude` once to trigger OAuth flow
+**未找到凭证：**
+- 确保已安装并登录 Claude Code CLI
+- 运行 `claude` 命令以触发 OAuth 认证流程
 
-**API request failed:**
-- Check internet connection
-- Verify OAuth token hasn't expired
-- Try `--fresh` to force new request
+**API 请求失败：**
+- 检查网络连接是否正常
+- 确认 OAuth 令牌未过期
+- 尝试使用 `--fresh` 参数强制重新请求
 
-**Linux users:**
-Install `libsecret` for credential storage:
+**Linux 用户：**
+请安装 `libsecret` 以支持凭证存储：
 ```bash
 # Debian/Ubuntu
 sudo apt install libsecret-tools

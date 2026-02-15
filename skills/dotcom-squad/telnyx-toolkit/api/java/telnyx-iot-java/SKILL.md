@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Iot - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get all wireless regions
+## 获取所有无线区域
 
-Retrieve all wireless regions for the given product.
+检索指定产品的所有无线区域。
 
 `GET /wireless/regions`
 
@@ -47,9 +48,9 @@ WirelessRetrieveRegionsParams params = WirelessRetrieveRegionsParams.builder()
 WirelessRetrieveRegionsResponse response = client.wireless().retrieveRegions(params);
 ```
 
-## Get all SIM cards
+## 获取所有 SIM 卡
 
-Get all SIM cards belonging to the user that match the given filters.
+获取符合给定过滤条件的用户拥有的所有 SIM 卡。
 
 `GET /sim_cards`
 
@@ -60,9 +61,9 @@ import com.telnyx.sdk.models.simcards.SimCardListParams;
 SimCardListPage page = client.simCards().list();
 ```
 
-## Get SIM card
+## 获取 SIM 卡详情
 
-Returns the details regarding a specific SIM card.
+返回特定 SIM 卡的详细信息。
 
 `GET /sim_cards/{id}`
 
@@ -73,9 +74,9 @@ import com.telnyx.sdk.models.simcards.SimCardRetrieveResponse;
 SimCardRetrieveResponse simCard = client.simCards().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update a SIM card
+## 更新 SIM 卡
 
-Updates SIM card data
+更新 SIM 卡数据
 
 `PATCH /sim_cards/{id}`
 
@@ -91,9 +92,9 @@ SimCardUpdateParams params = SimCardUpdateParams.builder()
 SimCardUpdateResponse simCard = client.simCards().update(params);
 ```
 
-## Deletes a SIM card
+## 删除 SIM 卡
 
-The SIM card will be decommissioned, removed from your account and you will stop being charged.<br />The SIM card won't be able to connect to the network after the deletion is completed, thus makin...
+SIM 卡将被停用，从您的账户中移除，您将不再被收取费用。<br />删除完成后，SIM 卡将无法连接到网络。
 
 `DELETE /sim_cards/{id}`
 
@@ -104,10 +105,10 @@ import com.telnyx.sdk.models.simcards.SimCardDeleteResponse;
 SimCardDeleteResponse simCard = client.simCards().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get activation code for an eSIM
+## 获取 eSIM 的激活码
 
-It returns the activation code for an eSIM.<br/><br/>
- This API is only available for eSIMs.
+返回 eSIM 的激活码。<br/>
+此 API 仅适用于 eSIM。
 
 `GET /sim_cards/{id}/activation_code`
 
@@ -118,9 +119,9 @@ import com.telnyx.sdk.models.simcards.SimCardGetActivationCodeResponse;
 SimCardGetActivationCodeResponse response = client.simCards().getActivationCode("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get SIM card device details
+## 获取 SIM 卡设备详情
 
-It returns the device details where a SIM card is currently being used.
+返回当前正在使用该 SIM 卡的设备详情。
 
 `GET /sim_cards/{id}/device_details`
 
@@ -131,9 +132,9 @@ import com.telnyx.sdk.models.simcards.SimCardGetDeviceDetailsResponse;
 SimCardGetDeviceDetailsResponse response = client.simCards().getDeviceDetails("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get SIM card public IP definition
+## 获取 SIM 卡的公共 IP 地址
 
-It returns the public IP requested for a SIM card.
+返回 SIM 卡的公共 IP 地址。
 
 `GET /sim_cards/{id}/public_ip`
 
@@ -144,9 +145,9 @@ import com.telnyx.sdk.models.simcards.SimCardGetPublicIpResponse;
 SimCardGetPublicIpResponse response = client.simCards().getPublicIp("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List wireless connectivity logs
+## 列出无线连接日志
 
-This API allows listing a paginated collection of Wireless Connectivity Logs associated with a SIM Card, for troubleshooting purposes.
+此 API 可用于列出与 SIM 卡关联的无线连接日志（分页显示），以便进行故障排除。
 
 `GET /sim_cards/{id}/wireless_connectivity_logs`
 
@@ -157,10 +158,10 @@ import com.telnyx.sdk.models.simcards.SimCardListWirelessConnectivityLogsParams;
 SimCardListWirelessConnectivityLogsPage page = client.simCards().listWirelessConnectivityLogs("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request a SIM card disable
+## 请求禁用 SIM 卡
 
-This API disables a SIM card, disconnecting it from the network and making it impossible to consume data.<br/>
-The API will trigger an asynchronous operation called a SIM Card Action.
+此 API 会禁用 SIM 卡，使其无法连接到网络并无法使用数据。<br/>
+该 API 将触发一个异步操作（称为 SIM 卡操作）。
 
 `POST /sim_cards/{id}/actions/disable`
 
@@ -171,11 +172,11 @@ import com.telnyx.sdk.models.simcards.actions.ActionDisableResponse;
 ActionDisableResponse response = client.simCards().actions().disable("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request a SIM card enable
+## 请求启用 SIM 卡
 
-This API enables a SIM card, connecting it to the network and making it possible to consume data.<br/>
-To enable a SIM card, it must be associated with a SIM card group.<br/>
-The API will trigger a...
+此 API 会启用 SIM 卡，使其能够连接到网络并可以使用数据。<br/>
+要启用 SIM 卡，必须先将其关联到一个 SIM 卡组。<br/>
+该 API 将触发一个异步操作...
 
 `POST /sim_cards/{id}/actions/enable`
 
@@ -186,9 +187,9 @@ import com.telnyx.sdk.models.simcards.actions.ActionEnableResponse;
 ActionEnableResponse response = client.simCards().actions().enable("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request removing a SIM card public IP
+## 请求删除 SIM 卡的公共 IP 地址
 
-This API removes an existing public IP from a SIM card.
+此 API 会删除 SIM 卡的现有公共 IP 地址。
 
 `POST /sim_cards/{id}/actions/remove_public_ip`
 
@@ -199,9 +200,9 @@ import com.telnyx.sdk.models.simcards.actions.ActionRemovePublicIpResponse;
 ActionRemovePublicIpResponse response = client.simCards().actions().removePublicIp("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request setting a SIM card public IP
+## 请求设置 SIM 卡的公共 IP 地址
 
-This API makes a SIM card reachable on the public internet by mapping a random public IP to the SIM card.
+此 API 会为 SIM 卡分配一个随机公共 IP 地址，使其可以在公共互联网上使用。
 
 `POST /sim_cards/{id}/actions/set_public_ip`
 
@@ -212,10 +213,10 @@ import com.telnyx.sdk.models.simcards.actions.ActionSetPublicIpResponse;
 ActionSetPublicIpResponse response = client.simCards().actions().setPublicIp("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request setting a SIM card to standby
+## 请求将 SIM 卡设置为待机状态
 
-The SIM card will be able to connect to the network once the process to set it to standby has been completed, thus making it possible to consume data.<br/>
-To set a SIM card to standby, it must be ...
+设置 SIM 卡为待机状态后，它将能够重新连接到网络并可以使用数据。<br/>
+要设置 SIM 卡为待机状态，必须先...
 
 `POST /sim_cards/{id}/actions/set_standby`
 
@@ -226,12 +227,11 @@ import com.telnyx.sdk.models.simcards.actions.ActionSetStandbyResponse;
 ActionSetStandbyResponse response = client.simCards().actions().setStandby("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request bulk setting SIM card public IPs.
+## 批量设置 SIM 卡的公共 IP 地址
 
-This API triggers an asynchronous operation to set a public IP for each of the specified SIM cards.<br/>
-For each SIM Card a SIM Card Action will be generated.
+此 API 会为指定的每个 SIM 卡设置公共 IP 地址（异步操作）。
 
-`POST /sim_cards/actions/bulk_set_public_ips` — Required: `sim_card_ids`
+`POST /sim_cards/actions/bulk_set_public_ips` — 必需参数：`sim_card_ids`
 
 ```java
 import com.telnyx.sdk.models.simcards.actions.ActionBulkSetPublicIpsParams;
@@ -243,9 +243,9 @@ ActionBulkSetPublicIpsParams params = ActionBulkSetPublicIpsParams.builder()
 ActionBulkSetPublicIpsResponse response = client.simCards().actions().bulkSetPublicIps(params);
 ```
 
-## Validate SIM cards registration codes
+## 验证 SIM 卡注册码
 
-It validates whether SIM card registration codes are valid or not.
+验证 SIM 卡注册码是否有效。
 
 `POST /sim_cards/actions/validate_registration_codes`
 
@@ -256,9 +256,9 @@ import com.telnyx.sdk.models.simcards.actions.ActionValidateRegistrationCodesRes
 ActionValidateRegistrationCodesResponse response = client.simCards().actions().validateRegistrationCodes();
 ```
 
-## List SIM card actions
+## 列出 SIM 卡操作
 
-This API lists a paginated collection of SIM card actions.
+此 API 可用于列出 SIM 卡操作的列表（分页显示）。
 
 `GET /sim_card_actions`
 
@@ -269,9 +269,9 @@ import com.telnyx.sdk.models.simcards.actions.ActionListParams;
 ActionListPage page = client.simCards().actions().list();
 ```
 
-## Get SIM card action details
+## 获取 SIM 卡操作详情
 
-This API fetches detailed information about a SIM card action to follow-up on an existing asynchronous operation.
+此 API 可用于获取特定 SIM 卡操作的详细信息（用于跟进已进行的异步操作）。
 
 `GET /sim_card_actions/{id}`
 
@@ -282,9 +282,9 @@ import com.telnyx.sdk.models.simcards.actions.ActionRetrieveResponse;
 ActionRetrieveResponse action = client.simCards().actions().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List bulk SIM card actions
+## 列出批量 SIM 卡操作
 
-This API lists a paginated collection of bulk SIM card actions.
+此 API 可用于列出批量 SIM 卡操作的列表（分页显示）。
 
 `GET /bulk_sim_card_actions`
 
@@ -295,9 +295,9 @@ import com.telnyx.sdk.models.bulksimcardactions.BulkSimCardActionListParams;
 BulkSimCardActionListPage page = client.bulkSimCardActions().list();
 ```
 
-## Get bulk SIM card action details
+## 获取批量 SIM 卡操作详情
 
-This API fetches information about a bulk SIM card action.
+此 API 可用于获取批量 SIM 卡操作的详细信息。
 
 `GET /bulk_sim_card_actions/{id}`
 
@@ -308,9 +308,9 @@ import com.telnyx.sdk.models.bulksimcardactions.BulkSimCardActionRetrieveRespons
 BulkSimCardActionRetrieveResponse bulkSimCardAction = client.bulkSimCardActions().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all SIM card groups
+## 获取所有 SIM 卡组
 
-Get all SIM card groups belonging to the user that match the given filters.
+检索符合给定过滤条件的用户拥有的所有 SIM 卡组。
 
 `GET /sim_card_groups`
 
@@ -321,11 +321,11 @@ import com.telnyx.sdk.models.simcardgroups.SimCardGroupListParams;
 SimCardGroupListPage page = client.simCardGroups().list();
 ```
 
-## Create a SIM card group
+## 创建 SIM 卡组
 
-Creates a new SIM card group object
+创建一个新的 SIM 卡组。
 
-`POST /sim_card_groups` — Required: `name`
+`POST /sim_card_groups` — 必需参数：`name`
 
 ```java
 import com.telnyx.sdk.models.simcardgroups.SimCardGroupCreateParams;
@@ -337,9 +337,9 @@ SimCardGroupCreateParams params = SimCardGroupCreateParams.builder()
 SimCardGroupCreateResponse simCardGroup = client.simCardGroups().create(params);
 ```
 
-## Get SIM card group
+## 获取 SIM 卡组详情
 
-Returns the details regarding a specific SIM card group
+返回特定 SIM 卡组的详细信息。
 
 `GET /sim_card_groups/{id}`
 
@@ -350,9 +350,9 @@ import com.telnyx.sdk.models.simcardgroups.SimCardGroupRetrieveResponse;
 SimCardGroupRetrieveResponse simCardGroup = client.simCardGroups().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update a SIM card group
+## 更新 SIM 卡组
 
-Updates a SIM card group
+更新 SIM 卡组。
 
 `PATCH /sim_card_groups/{id}`
 
@@ -363,9 +363,9 @@ import com.telnyx.sdk.models.simcardgroups.SimCardGroupUpdateResponse;
 SimCardGroupUpdateResponse simCardGroup = client.simCardGroups().update("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a SIM card group
+## 删除 SIM 卡组
 
-Permanently deletes a SIM card group
+永久删除 SIM 卡组。
 
 `DELETE /sim_card_groups/{id}`
 
@@ -376,9 +376,9 @@ import com.telnyx.sdk.models.simcardgroups.SimCardGroupDeleteResponse;
 SimCardGroupDeleteResponse simCardGroup = client.simCardGroups().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request Private Wireless Gateway removal from SIM card group
+## 从 SIM 卡组中删除私有无线网关
 
-This action will asynchronously remove an existing Private Wireless Gateway definition from a SIM card group.
+此操作会异步地从 SIM 卡组中删除现有的私有无线网关。
 
 `POST /sim_card_groups/{id}/actions/remove_private_wireless_gateway`
 
@@ -389,9 +389,9 @@ import com.telnyx.sdk.models.simcardgroups.actions.ActionRemovePrivateWirelessGa
 ActionRemovePrivateWirelessGatewayResponse response = client.simCardGroups().actions().removePrivateWirelessGateway("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request Wireless Blocklist removal from SIM card group
+## 从 SIM 卡组中删除无线阻止列表
 
-This action will asynchronously remove an existing Wireless Blocklist to all the SIMs in the SIM card group.
+此操作会异步地从 SIM 卡组中的所有 SIM 卡中删除现有的无线阻止列表。
 
 `POST /sim_card_groups/{id}/actions/remove_wireless_blocklist`
 
@@ -402,11 +402,11 @@ import com.telnyx.sdk.models.simcardgroups.actions.ActionRemoveWirelessBlocklist
 ActionRemoveWirelessBlocklistResponse response = client.simCardGroups().actions().removeWirelessBlocklist("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Request Private Wireless Gateway assignment for SIM card group
+## 为 SIM 卡组分配私有无线网关
 
-This action will asynchronously assign a provisioned Private Wireless Gateway to the SIM card group.
+此操作会异步地为 SIM 卡组分配一个私有无线网关。
 
-`POST /sim_card_groups/{id}/actions/set_private_wireless_gateway` — Required: `private_wireless_gateway_id`
+`POST /sim_card_groups/{id}/actions/set_private_wireless_gateway` — 必需参数：`private_wireless_gateway_id`
 
 ```java
 import com.telnyx.sdk.models.simcardgroups.actions.ActionSetPrivateWirelessGatewayParams;
@@ -419,11 +419,11 @@ ActionSetPrivateWirelessGatewayParams params = ActionSetPrivateWirelessGatewayPa
 ActionSetPrivateWirelessGatewayResponse response = client.simCardGroups().actions().setPrivateWirelessGateway(params);
 ```
 
-## Request Wireless Blocklist assignment for SIM card group
+## 为 SIM 卡组分配无线阻止列表
 
-This action will asynchronously assign a Wireless Blocklist to all the SIMs in the SIM card group.
+此操作会异步地为 SIM 卡组中的所有 SIM 卡分配一个无线阻止列表。
 
-`POST /sim_card_groups/{id}/actions/set_wireless_blocklist` — Required: `wireless_blocklist_id`
+`POST /sim_card_groups/{id}/actions/set_wireless_blocklist` — 必需参数：`wireless_blocklist_id`
 
 ```java
 import com.telnyx.sdk.models.simcardgroups.actions.ActionSetWirelessBlocklistParams;
@@ -436,9 +436,9 @@ ActionSetWirelessBlocklistParams params = ActionSetWirelessBlocklistParams.build
 ActionSetWirelessBlocklistResponse response = client.simCardGroups().actions().setWirelessBlocklist(params);
 ```
 
-## List SIM card group actions
+## 列出 SIM 卡组操作
 
-This API allows listing a paginated collection a SIM card group actions.
+此 API 可用于列出 SIM 卡组的操作列表（分页显示）。
 
 `GET /sim_card_group_actions`
 
@@ -449,9 +449,9 @@ import com.telnyx.sdk.models.simcardgroups.actions.ActionListParams;
 ActionListPage page = client.simCardGroups().actions().list();
 ```
 
-## Get SIM card group action details
+## 获取 SIM 卡组操作详情
 
-This API allows fetching detailed information about a SIM card group action resource to make follow-ups in an existing asynchronous operation.
+此 API 可用于获取 SIM 卡组操作的详细信息（用于跟进已进行的异步操作）。
 
 `GET /sim_card_group_actions/{id}`
 
@@ -462,9 +462,9 @@ import com.telnyx.sdk.models.simcardgroups.actions.ActionRetrieveResponse;
 ActionRetrieveResponse action = client.simCardGroups().actions().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all SIM card orders
+## 获取所有 SIM 卡订单
 
-Get all SIM card orders according to filters.
+根据过滤条件获取所有 SIM 卡订单。
 
 `GET /sim_card_orders`
 
@@ -475,11 +475,11 @@ import com.telnyx.sdk.models.simcardorders.SimCardOrderListParams;
 SimCardOrderListPage page = client.simCardOrders().list();
 ```
 
-## Create a SIM card order
+## 创建 SIM 卡订单
 
-Creates a new order for SIM cards.
+创建新的 SIM 卡订单。
 
-`POST /sim_card_orders` — Required: `address_id`, `quantity`
+`POST /sim_card_orders` — 必需参数：`address_id`, `quantity`
 
 ```java
 import com.telnyx.sdk.models.simcardorders.SimCardOrderCreateParams;
@@ -492,9 +492,9 @@ SimCardOrderCreateParams params = SimCardOrderCreateParams.builder()
 SimCardOrderCreateResponse simCardOrder = client.simCardOrders().create(params);
 ```
 
-## Get a single SIM card order
+## 获取单个 SIM 卡订单
 
-Get a single SIM card order by its ID.
+根据 ID 获取单个 SIM 卡订单。
 
 `GET /sim_card_orders/{id}`
 
@@ -505,11 +505,11 @@ import com.telnyx.sdk.models.simcardorders.SimCardOrderRetrieveResponse;
 SimCardOrderRetrieveResponse simCardOrder = client.simCardOrders().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Preview SIM card orders
+## 预览 SIM 卡订单
 
-Preview SIM card order purchases.
+预览 SIM 卡订单信息。
 
-`POST /sim_card_order_preview` — Required: `quantity`, `address_id`
+`POST /sim_card_order_preview` — 必需参数：`quantity`, `address_id`
 
 ```java
 import com.telnyx.sdk.models.simcardorderpreview.SimCardOrderPreviewPreviewParams;
@@ -522,9 +522,9 @@ SimCardOrderPreviewPreviewParams params = SimCardOrderPreviewPreviewParams.build
 SimCardOrderPreviewPreviewResponse response = client.simCardOrderPreview().preview(params);
 ```
 
-## List SIM card data usage notifications
+## 列出 SIM 卡数据使用通知
 
-Lists a paginated collection of SIM card data usage notifications.
+列出 SIM 卡数据使用通知的列表（分页显示）。
 
 `GET /sim_card_data_usage_notifications`
 
@@ -535,11 +535,11 @@ import com.telnyx.sdk.models.simcarddatausagenotifications.SimCardDataUsageNotif
 SimCardDataUsageNotificationListPage page = client.simCardDataUsageNotifications().list();
 ```
 
-## Create a new SIM card data usage notification
+## 创建新的 SIM 卡数据使用通知
 
-Creates a new SIM card data usage notification.
+创建新的 SIM 卡数据使用通知。
 
-`POST /sim_card_data_usage_notifications` — Required: `sim_card_id`, `threshold`
+`POST /sim_card_data_usage_notifications` — 必需参数：`sim_card_id`, `threshold`
 
 ```java
 import com.telnyx.sdk.models.simcarddatausagenotifications.SimCardDataUsageNotificationCreateParams;
@@ -552,9 +552,9 @@ SimCardDataUsageNotificationCreateParams params = SimCardDataUsageNotificationCr
 SimCardDataUsageNotificationCreateResponse simCardDataUsageNotification = client.simCardDataUsageNotifications().create(params);
 ```
 
-## Get a single SIM card data usage notification
+## 获取单个 SIM 卡数据使用通知
 
-Get a single SIM Card Data Usage Notification.
+获取单个 SIM 卡的数据使用通知。
 
 `GET /sim_card_data_usage_notifications/{id}`
 
@@ -565,9 +565,9 @@ import com.telnyx.sdk.models.simcarddatausagenotifications.SimCardDataUsageNotif
 SimCardDataUsageNotificationRetrieveResponse simCardDataUsageNotification = client.simCardDataUsageNotifications().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Updates information for a SIM Card Data Usage Notification
+## 更新 SIM 卡数据使用通知的信息
 
-Updates information for a SIM Card Data Usage Notification.
+更新 SIM 卡数据使用通知的信息。
 
 `PATCH /sim_card_data_usage_notifications/{id}`
 
@@ -583,9 +583,9 @@ SimCardDataUsageNotificationUpdateParams params = SimCardDataUsageNotificationUp
 SimCardDataUsageNotificationUpdateResponse simCardDataUsageNotification = client.simCardDataUsageNotifications().update(params);
 ```
 
-## Delete SIM card data usage notifications
+## 删除 SIM 卡数据使用通知
 
-Delete the SIM Card Data Usage Notification.
+删除 SIM 卡数据使用通知。
 
 `DELETE /sim_card_data_usage_notifications/{id}`
 
@@ -596,12 +596,12 @@ import com.telnyx.sdk.models.simcarddatausagenotifications.SimCardDataUsageNotif
 SimCardDataUsageNotificationDeleteResponse simCardDataUsageNotification = client.simCardDataUsageNotifications().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Purchase eSIMs
+## 购买 eSIM
 
-Purchases and registers the specified amount of eSIMs to the current user's account.<br/><br/>
-If <code>sim_card_group_id</code> is provided, the eSIMs will be associated with that group.
+购买并注册指定数量的 eSIM 到当前用户的账户。<br/>
+如果提供了 `sim_card_group_id`，这些 eSIM 将与该组关联。
 
-`POST /actions/purchase/esims` — Required: `amount`
+`POST /actions/purchase/esims` — 必需参数：`amount`
 
 ```java
 import com.telnyx.sdk.models.actions.purchase.PurchaseCreateParams;
@@ -613,12 +613,12 @@ PurchaseCreateParams params = PurchaseCreateParams.builder()
 PurchaseCreateResponse purchase = client.actions().purchase().create(params);
 ```
 
-## Register SIM cards
+## 注册 SIM 卡
 
-Register the SIM cards associated with the provided registration codes to the current user's account.<br/><br/>
-If <code>sim_card_group_id</code> is provided, the SIM cards will be associated with ...
+将提供的注册码关联到当前用户的账户中的 SIM 卡。<br/>
+如果提供了 `sim_card_group_id`，这些 SIM 卡将与该组关联...
 
-`POST /actions/register/sim_cards` — Required: `registration_codes`
+`POST /actions/register/sim_cards` — 必需参数：`registration_codes`
 
 ```java
 import com.telnyx.sdk.models.actions.register.RegisterCreateParams;
@@ -635,7 +635,7 @@ RegisterCreateParams params = RegisterCreateParams.builder()
 RegisterCreateResponse register = client.actions().register().create(params);
 ```
 
-## List OTA updates
+## 列出 OTA 更新
 
 `GET /ota_updates`
 
@@ -646,9 +646,9 @@ import com.telnyx.sdk.models.otaupdates.OtaUpdateListParams;
 OtaUpdateListPage page = client.otaUpdates().list();
 ```
 
-## Get OTA update
+## 获取 OTA 更新信息
 
-This API returns the details of an Over the Air (OTA) update.
+此 API 返回 OTA（Over the Air）更新的详细信息。
 
 `GET /ota_updates/{id}`
 
@@ -659,9 +659,9 @@ import com.telnyx.sdk.models.otaupdates.OtaUpdateRetrieveResponse;
 OtaUpdateRetrieveResponse otaUpdate = client.otaUpdates().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all Private Wireless Gateways
+## 获取所有私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户拥有的所有私有无线网关。
 
 `GET /private_wireless_gateways`
 
@@ -672,11 +672,11 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayListP
 PrivateWirelessGatewayListPage page = client.privateWirelessGateways().list();
 ```
 
-## Create a Private Wireless Gateway
+## 创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+为先前创建的网络异步创建一个私有无线网关。
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`, `name`
 
 ```java
 import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayCreateParams;
@@ -689,9 +689,9 @@ PrivateWirelessGatewayCreateParams params = PrivateWirelessGatewayCreateParams.b
 PrivateWirelessGatewayCreateResponse privateWirelessGateway = client.privateWirelessGateways().create(params);
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+检索私有无线网关的详细信息。
 
 `GET /private_wireless_gateways/{id}`
 
@@ -702,9 +702,9 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayRetri
 PrivateWirelessGatewayRetrieveResponse privateWirelessGateway = client.privateWirelessGateways().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关。
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -715,9 +715,9 @@ import com.telnyx.sdk.models.privatewirelessgateways.PrivateWirelessGatewayDelet
 PrivateWirelessGatewayDeleteResponse privateWirelessGateway = client.privateWirelessGateways().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all Wireless Blocklists
+## 获取所有无线阻止列表
 
-Get all Wireless Blocklists belonging to the user.
+获取用户拥有的所有无线阻止列表。
 
 `GET /wireless_blocklists`
 
@@ -728,11 +728,11 @@ import com.telnyx.sdk.models.wirelessblocklists.WirelessBlocklistListParams;
 WirelessBlocklistListPage page = client.wirelessBlocklists().list();
 ```
 
-## Create a Wireless Blocklist
+## 创建无线阻止列表
 
-Create a Wireless Blocklist to prevent SIMs from connecting to certain networks.
+创建一个无线阻止列表，以防止 SIM 卡连接到某些网络。
 
-`POST /wireless_blocklists` — Required: `name`, `type`, `values`
+`POST /wireless_blocklists` — 必需参数：`name`, `type`, `values`
 
 ```java
 import com.telnyx.sdk.models.wirelessblocklists.WirelessBlocklistCreateParams;
@@ -747,9 +747,9 @@ WirelessBlocklistCreateParams params = WirelessBlocklistCreateParams.builder()
 WirelessBlocklistCreateResponse wirelessBlocklist = client.wirelessBlocklists().create(params);
 ```
 
-## Update a Wireless Blocklist
+## 更新无线阻止列表
 
-Update a Wireless Blocklist.
+更新无线阻止列表。
 
 `PATCH /wireless_blocklists`
 
@@ -760,9 +760,9 @@ import com.telnyx.sdk.models.wirelessblocklists.WirelessBlocklistUpdateResponse;
 WirelessBlocklistUpdateResponse wirelessBlocklist = client.wirelessBlocklists().update();
 ```
 
-## Get a Wireless Blocklist
+## 获取无线阻止列表信息
 
-Retrieve information about a Wireless Blocklist.
+检索无线阻止列表的详细信息。
 
 `GET /wireless_blocklists/{id}`
 
@@ -773,9 +773,9 @@ import com.telnyx.sdk.models.wirelessblocklists.WirelessBlocklistRetrieveRespons
 WirelessBlocklistRetrieveResponse wirelessBlocklist = client.wirelessBlocklists().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Delete a Wireless Blocklist
+## 删除无线阻止列表
 
-Deletes the Wireless Blocklist.
+删除无线阻止列表。
 
 `DELETE /wireless_blocklists/{id}`
 
@@ -786,9 +786,9 @@ import com.telnyx.sdk.models.wirelessblocklists.WirelessBlocklistDeleteResponse;
 WirelessBlocklistDeleteResponse wirelessBlocklist = client.wirelessBlocklists().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Get all possible wireless blocklist values
+## 获取所有可能的无线阻止列表值
 
-Retrieve all wireless blocklist values for a given blocklist type.
+检索给定类型的所有无线阻止列表值。
 
 `GET /wireless_blocklist_values`
 
@@ -800,4 +800,5 @@ WirelessBlocklistValueListParams params = WirelessBlocklistValueListParams.build
     .type(WirelessBlocklistValueListParams.Type.COUNTRY)
     .build();
 WirelessBlocklistValueListResponse wirelessBlocklistValues = client.wirelessBlocklistValues().list(params);
+```
 ```

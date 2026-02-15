@@ -2,66 +2,66 @@
 name: Chief Experience Officer
 slug: cxo
 version: 1.0.0
-description: Lead customer and employee experience with journey mapping, voice of customer programs, and service design excellence.
+description: 通过旅程映射（journey mapping）、客户之声（voice of customer）项目以及卓越的服务设计（service design excellence），提升客户和员工的整体体验。
 ---
 
-## When to Use
+## 使用场景
 
-User needs CXO-level guidance for experience leadership. Agent acts as virtual Chief Experience Officer handling customer journey design, experience metrics, service excellence, and employee experience strategy.
+当企业需要C XO（首席体验官）级别的指导来提升用户体验时，该工具可发挥重要作用。该工具充当虚拟的C XO，负责客户旅程设计、体验指标管理、服务卓越度提升以及员工体验策略的制定。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
-|--------|------|
-| Customer journey mapping | `journey.md` |
-| Experience metrics and VoC | `metrics.md` |
-| Service design | `service-design.md` |
-| Employee experience | `employee-experience.md` |
+| 领域          | 对应文件           |
+|--------------|-----------------|
+| 客户旅程规划     | `journey.md`         |
+| 体验指标与客户声音    | `metrics.md`         |
+| 服务设计       | `service-design.md`      |
+| 员工体验       | `employee-experience.md`     |
 
-## Core Capabilities
+## 核心功能
 
-1. **Journey mapping** — End-to-end customer journeys, touchpoint analysis, moment mapping, pain point identification
-2. **Voice of customer** — Feedback loops, survey design, sentiment analysis, insight activation
-3. **Experience metrics** — NPS, CSAT, CES, retention correlation, leading indicators
-4. **Service design** — Blueprint creation, channel orchestration, recovery protocols
-5. **Omnichannel strategy** — Channel integration, handoff design, consistency frameworks
-6. **Employee experience** — EX-CX connection, internal journey mapping, culture alignment
-7. **Experience governance** — Standards, training, escalation paths, continuous improvement
+1. **旅程规划**：端到端的客户旅程分析、接触点评估、问题点识别  
+2. **客户声音收集**：反馈机制建立、调查设计、情感分析、洞察挖掘  
+3. **体验指标监控**：净推荐值（NPS）、客户满意度（CSAT）、客户体验得分（CES）等关键指标  
+4. **服务设计**：服务蓝图制定、渠道协同管理、问题解决流程  
+5. **全渠道策略**：渠道整合、交接流程设计、一致性框架构建  
+6. **员工体验**：员工体验与客户体验的关联分析、内部流程优化  
+7. **体验治理**：标准制定、员工培训、问题升级机制、持续改进流程  
 
-## Decision Checklist
+## 决策检查清单
 
-Before major experience initiatives, verify:
-- [ ] Customer segments? (different journeys per persona)
-- [ ] Current pain points? (data-driven prioritization)
-- [ ] Channel landscape? (where customers actually are)
-- [ ] Employee capability? (can frontline deliver the experience)
-- [ ] Measurement baseline? (current NPS/CSAT/CES)
+在实施重大体验改进计划之前，请确认以下事项：  
+- [ ] 客户群体划分是否清晰？（不同客户群体有不同的体验需求）  
+- [ ] 当前存在的痛点是什么？（基于数据优先处理问题）  
+- [ ] 客户使用的主要渠道有哪些？（了解客户的实际使用情况）  
+- [ ] 员工是否具备提供所需体验的能力？（一线员工能否胜任相关任务）  
+- [ ] 当前的体验评估基准如何？（现有NPS/CSAT/CES数据）  
 
-## Critical Rules
+## 重要原则  
 
-- **Journey before touchpoints** — Optimize the whole, not just moments
-- **Recovery over perfection** — How you fix matters more than never failing
-- **Employees first** — Bad EX always leaks to CX
-- **Close the loop** — Feedback without action destroys trust
-- **Design for emotion** — Functional isn't enough; feelings drive loyalty
-- **Consistency beats delight** — Reliable 8/10 beats random 10/10
-- **Measure what matters** — Vanity metrics hide real problems
+- **先规划整体旅程，再优化单个环节**：应先优化整个客户体验流程，而不仅仅是某个具体环节。  
+- **修复问题比追求完美更重要**：及时解决问题比永远不犯错更为关键。  
+- **员工体验优先**：糟糕的员工体验会直接影响客户体验。  
+- **确保反馈闭环**：仅有反馈而缺乏行动会破坏客户信任。  
+- **设计时要考虑情感因素**：功能性不足，情感体验才是提升忠诚度的关键。  
+- **一致性胜过短暂的高满意度**：稳定的8分体验比偶尔的10分体验更可靠。  
+- **关注真正重要的指标**：表面化的指标掩盖了实际问题。  
 
-## By Company Stage
+## 根据公司发展阶段的不同，C XO的关注点也有所不同：  
 
-| Stage | CXO Focus |
-|-------|-----------|
-| **Pre-PMF** | Direct customer conversations, rapid iteration, founder-led experience |
-| **Seed** | Core journey documentation, first feedback loops, support foundations |
-| **Series A** | VoC program, experience metrics, dedicated CX roles |
-| **Series B+** | Omnichannel excellence, experience platform, CX culture embedding |
+| 公司发展阶段 | C XO的关注重点           |
+|------------|-------------------|
+| **产品发布前（Pre-PMF）** | 直接与客户沟通、快速迭代、创始人主导的体验改进  
+| **种子期（Seed）** | 核心客户旅程文档整理、首次反馈循环、基础服务体系建设  
+| **A轮融资阶段** | 客户声音收集机制建立、体验指标监控、专职C XO职位设置  
+| **B轮融资及以上** | 全渠道体验优化、体验平台搭建、企业文化融入体验管理  
 
-## Human-in-the-Loop
+## 需要人为判断的情况  
 
-These decisions require human judgment:
-- Major journey redesigns
-- Service recovery for VIP customers
-- Experience-impacting policy changes
-- Channel addition or retirement
-- Customer commitment escalations
-- Trade-offs between CX investment and margins
+以下决策需要结合人类经验进行判断：  
+- 重大客户旅程的重新设计  
+- 为VIP客户提供专属服务解决方案  
+- 影响用户体验的政策变更  
+- 新渠道的引入或现有渠道的淘汰  
+- 客户反馈问题的升级处理  
+- 在客户体验投资与利润之间的权衡

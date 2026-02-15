@@ -1,25 +1,25 @@
 ---
 name: neondb
-description: Manage Neon serverless Postgres databases. Create projects, branches, databases, and execute queries. Perfect for agent workflows needing persistent storage with branching (like git for databases), scale-to-zero, and instant provisioning.
+description: 管理Neon无服务器Postgres数据库。可以创建项目、分支、数据库并执行查询。非常适合需要持久存储且支持分支结构的代理工作流程（类似于数据库中的Git），具备零扩展能力以及即时配置功能。
 homepage: https://neon.tech
 metadata: {"openclaw":{"emoji":"🐘","requires":{"bins":["neonctl"]},"install":[{"id":"brew","kind":"brew","package":"neonctl","bins":["neonctl"],"label":"Install neonctl (Homebrew)"},{"id":"npm","kind":"node","package":"neonctl","bins":["neonctl"],"label":"Install neonctl (npm)"}]}}
 ---
 
 # NeonDB
 
-Neon is **serverless Postgres** — scales to zero, branches like git, instant provisioning. Perfect for AI agents needing databases without ops overhead.
+Neon 是一款 **无服务器版的 Postgres** 数据库解决方案——支持零成本扩展、类似 Git 的分支管理功能以及即时资源分配。它非常适合那些需要数据库但无需运维开销的 AI 代理系统。
 
-## Why Neon for Agents?
+## 为什么选择 Neon 作为代理系统的数据库？
 
-- **Instant databases** — Create in seconds, no server setup
-- **Branching** — Fork your database like git (test without affecting prod)
-- **Scale-to-zero** — Pay nothing when idle
-- **Connection pooling** — Built-in, no PgBouncer needed
-- **Generous free tier** — 0.5 GB storage, 190 compute hours/month
+- **即时创建数据库**：只需几秒钟即可创建新数据库，无需进行任何服务器配置。
+- **分支管理**：可以像使用 Git 一样创建数据库分支（进行测试时不会影响生产环境）。
+- **零成本扩展**：在空闲状态下无需支付任何费用。
+- **内置连接池**：无需额外安装 PgBouncer 等中间件。
+- **丰富的免费 tier**：提供 0.5 GB 的存储空间和每月 190 小时的计算资源。
 
-## Quick Start
+## 快速入门
 
-### 1. Install CLI
+### 1. 安装命令行工具（CLI）
 
 ```bash
 # Homebrew (recommended)
@@ -29,7 +29,7 @@ brew install neonctl
 npm i -g neonctl
 ```
 
-### 2. Authenticate
+### 2. 进行身份验证
 
 ```bash
 # Interactive (opens browser)
@@ -39,15 +39,15 @@ neonctl auth
 export NEON_API_KEY=your_api_key_here
 ```
 
-### 3. Create Your First Project
+### 3. 创建第一个项目
 
 ```bash
 neonctl projects create --name "my-agent-db"
 ```
 
-## Core Commands
+## 核心命令
 
-### Projects (top-level container)
+### 项目（顶层容器）
 
 ```bash
 # List all projects
@@ -63,7 +63,7 @@ neonctl projects delete <project-id>
 neonctl projects get <project-id>
 ```
 
-### Branches (database snapshots)
+### 分支（数据库快照）
 
 ```bash
 # List branches
@@ -85,7 +85,7 @@ neonctl branches delete <branch-id> --project-id <project-id>
 neonctl branches schema-diff --project-id <project-id> --base-branch main --compare-branch dev
 ```
 
-### Databases
+### 数据库
 
 ```bash
 # List databases
@@ -98,7 +98,7 @@ neonctl databases create --project-id <project-id> --branch <branch-name> --name
 neonctl databases delete <db-name> --project-id <project-id> --branch <branch-name>
 ```
 
-### Connection Strings
+### 连接字符串
 
 ```bash
 # Get connection string (default branch)
@@ -114,7 +114,7 @@ neonctl connection-string --project-id <project-id> --pooled
 neonctl connection-string --project-id <project-id> --extended
 ```
 
-### Roles (database users)
+### 角色（数据库用户）
 
 ```bash
 # List roles
@@ -124,9 +124,9 @@ neonctl roles list --project-id <project-id> --branch <branch-name>
 neonctl roles create --project-id <project-id> --branch <branch-name> --name "app_user"
 ```
 
-## Executing Queries
+## 执行查询
 
-### Using psql
+### 使用 psql 命令行工具
 
 ```bash
 # Get connection string and connect
@@ -136,7 +136,7 @@ neonctl connection-string --project-id <project-id> | xargs psql
 psql "$(neonctl connection-string --project-id <project-id>)"
 ```
 
-### Using the connection string in code
+### 在代码中使用连接字符串
 
 ```bash
 # Get the string
@@ -146,9 +146,9 @@ CONNECTION_STRING=$(neonctl connection-string --project-id <project-id> --pooled
 psql "$CONNECTION_STRING" -c "SELECT * FROM users LIMIT 5;"
 ```
 
-## Context (Avoid Repeating Project ID)
+## 避免重复输入项目 ID
 
-Set context to avoid passing `--project-id` every time:
+为了简化操作，可以设置一个上下文变量来避免每次都手动输入 `--project-id`：
 
 ```bash
 # Set project context
@@ -160,9 +160,9 @@ neonctl databases list
 neonctl connection-string
 ```
 
-## Agent Workflow Examples
+## 代理系统工作流程示例
 
-### Create org database with branches
+### 创建带有分支结构的组织数据库
 
 ```bash
 # Create project for org
@@ -177,7 +177,7 @@ neonctl connection-string main --project-id <id> --pooled  # for prod
 neonctl connection-string dev --project-id <id> --pooled   # for dev
 ```
 
-### Create leads table
+### 创建客户信息表
 
 ```bash
 # Connect and create schema
@@ -202,7 +202,7 @@ CREATE INDEX idx_leads_category ON leads(category);
 EOF
 ```
 
-### Branch for experiments
+### 为实验创建临时分支
 
 ```bash
 # Create a branch to test schema changes
@@ -215,7 +215,7 @@ psql "$(neonctl cs schema-experiment --project-id <id>)" -c "ALTER TABLE leads A
 neonctl branches delete schema-experiment --project-id <id>
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 # JSON (for parsing)
@@ -228,7 +228,7 @@ neonctl projects list -o yaml
 neonctl projects list -o table
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # API key (required if not using `neonctl auth`)
@@ -238,50 +238,50 @@ export NEON_API_KEY=your_key
 export NEON_PROJECT_ID=your_project_id
 ```
 
-## Common Patterns
+## 常用操作模式
 
-### Check if neonctl is configured
+### 检查 neonctl 是否已正确配置
 
 ```bash
 neonctl me -o json 2>/dev/null && echo "Authenticated" || echo "Need to run: neonctl auth"
 ```
 
-### Quick database query
+### 快速查询数据库
 
 ```bash
 # One-liner query
 psql "$(neonctl cs)" -c "SELECT COUNT(*) FROM leads WHERE status='contacted';"
 ```
 
-### Export to CSV
+### 将数据导出为 CSV 格式
 
 ```bash
 psql "$(neonctl cs)" -c "COPY (SELECT * FROM leads) TO STDOUT WITH CSV HEADER" > leads.csv
 ```
 
-### Import from CSV
+### 从 CSV 文件导入数据
 
 ```bash
 psql "$(neonctl cs)" -c "\COPY leads(business_name,category,location) FROM 'import.csv' WITH CSV HEADER"
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Connection refused"
-- Check if branch compute is active (scale-to-zero may have paused it)
-- Use `--pooled` connection string for serverless workloads
+### 错误提示 “Connection refused”：
+  - 检查分支的计算资源是否处于激活状态（零成本扩展模式可能导致计算资源被暂停）。
+  - 对于无服务器工作负载，建议使用带有 `--pooled` 参数的连接字符串。
 
-### "Permission denied"
-- Verify API key: `neonctl me`
-- Re-authenticate: `neonctl auth`
+### 错误提示 “Permission denied”：
+  - 确认 API 密钥是否正确：`neonctl me`。
+  - 重新进行身份验证：`neonctl auth`。
 
-### Slow first connection
-- Normal for scale-to-zero. First connection wakes the compute (~1-2 seconds)
-- Use connection pooling to maintain warm connections
+### 首次连接速度较慢：
+  - 这是零成本扩展模式下的正常现象，首次连接可能需要 1-2 秒的时间来启动计算资源。
+  - 使用连接池可以保持连接的活跃状态，提高访问效率。
 
-## Links
+## 相关资源
 
-- [Neon Console](https://console.neon.tech) — Web dashboard
-- [API Docs](https://api-docs.neon.tech) — REST API reference
-- [CLI Reference](https://neon.tech/docs/reference/neon-cli) — Full CLI docs
-- [GitHub](https://github.com/neondatabase/neonctl) — CLI source code
+- [Neon 控制台](https://console.neon.tech)：Web 管理界面。
+- [API 文档](https://api-docs.neon.tech)：REST API 参考。
+- [CLI 文档](https://neon.tech/docs/reference/neon-cli)：完整的 CLI 使用指南。
+- [GitHub 仓库](https://github.com/neondatabase/neonctl)：CLI 源代码。

@@ -1,6 +1,6 @@
 ---
 name: reminder-research
-description: "Process Apple Reminders. Smart research: custom instructions (book + web search constraints), list-based defaults (claw=system solutions, shopping=price comparison, generic=how-to tutorials). Result tracking with 💎 signifier. Triggers: reminders without notes, heartbeat automated processing."
+description: "处理苹果设备的提醒功能。采用智能化的研究方法：根据用户自定义的指令（如书籍相关或网络搜索的特定条件）来执行操作；同时提供基于列表的默认设置（例如，系统解决方案适用于“claw”任务，价格比较适用于“shopping”任务，操作教程适用于“generic”任务）。结果会用💎符号进行标记以示记录。触发机制包括：当提醒没有附带任何说明信息时自动执行相应操作，以及通过“heartbeat”功能实现任务的自动化处理。"
 type: public
 version: 1.0.1
 status: stable
@@ -24,32 +24,32 @@ author: nonlinear
 license: MIT
 ---
 
-# Reminder Research
+# 提醒研究（Reminder Research）
 
-**v3 Evolution:** Custom instructions + auto-processing + result tracking
+**版本3.0 的改进：** 自定义指令 + 自动处理 + 结果跟踪
 
-## 🔧 Setup
+## 🔧 设置（Setup）
 
-**Required:**
-1. Install `remindctl`: `brew install steipete/tap/remindctl`
-2. Install `jq`: `brew install jq`
-3. Grant Reminders permission: `remindctl authorize`
+**必备条件：**
+1. 安装 `remindctl`：`brew install steipete/tap/remindctl`
+2. 安装 `jq`：`brew install jq`
+3. 授予 `remindctl` 权限：`remindctl authorize`
 
-**Optional (for web research):**
-1. Get Brave Search API key: https://brave.com/search/api/
-2. Configure: `openclaw configure --section web`
-3. Set `BRAVE_API_KEY` when prompted
+**可选（用于网络研究）：**
+1. 获取 Brave Search API 密钥：https://brave.com/search/api/
+2. 配置：`openclaw configure --section web`
+3. 在提示时设置 `BRAVE_API_KEY`
 
-**Optional (for book research):**
-- Install librarian skill (requires external project)
+**可选（用于书籍研究）：**
+- 安装 `Librarian` 技能（需要外部项目支持）
 
-**Cron scheduling (recommended):**
+**推荐使用 Cron 脚本进行调度：**
 ```bash
 # Add via OpenClaw cron tool
 cron add --schedule "0 3 * * *" --payload "Run reminder-research skill..."
 ```
 
-Or run manually:
+**或手动执行：**
 ```bash
 ~/Documents/skills/reminder-research/process-reminders.sh
 ```
@@ -94,16 +94,16 @@ graph TD
     V --> W[Session ends]
 ```
 
-## 🎯 Three Generations
+## 🎯 三个版本（Three Generations）**
 
-### **Gen 1 (Manual - deprecated)**
+### 第1代（手动操作 - 已弃用）  
 ```
 Title: 🔍 Pesquise tarot no livro
 Notes: (empty)
 → Manual emoji trigger
 ```
 
-### **Gen 2 (Auto - current baseline)**
+### 第2代（自动操作 - 当前默认版本）  
 ```
 Title: Stacker bag
 Notes: (empty)
@@ -111,7 +111,7 @@ Notes: (empty)
 → List-based behavior (shopping/claw/generic)
 ```
 
-### **Gen 3 (Custom - NEW)**
+### 第3代（自定义操作 - 新功能）  
 ```
 Title: Bitcoin ETF regulation
 Notes: "Procure no livro de David Graeber sobre anarchism + web search SEC rulings 2024"
@@ -119,24 +119,24 @@ Notes: "Procure no livro de David Graeber sobre anarchism + web search SEC rulin
 → Output: "💎 [resultado da pesquisa]"
 ```
 
-## 🔑 Signifiers
+## 🔑 标记符号（Signifiers）
 
-**💎 = RESULT** (already processed)
-- For Nicholas: "Read the report, it's done"
-- For Claw: "Skip this, already researched"
+**💎 = 已处理结果（Result processed）**  
+- 对 Nicholas 来说：「阅读报告，已完成」  
+- 对 Claw 来说：「跳过此项，已进行过研究」
 
-**No 💎 = NEEDS PROCESSING**
-- Empty notes → list-based default behavior
-- Notes with instructions → follow custom research path
+**无 💎 = 需要处理（Needs processing）**  
+- 空笔记：采用基于列表的默认处理方式  
+- 包含指令的笔记：按照自定义研究流程处理  
 
-## 📋 Processing Logic
+## 📋 处理逻辑（Processing Logic）**
 
-### Detection
+### 检测（Detection）  
 ```bash
 process-reminders.sh
 ```
 
-**Output types:**
+**输出类型（Output types）：**  
 ```
 NO_REMINDERS_TO_PROCESS          # Nothing to do
 CLAW_ITEM|<id>|<title>            # System improvement (empty notes)
@@ -145,38 +145,37 @@ GENERIC_ITEM|<id>|<list>|<title>  # Generic research (empty notes)
 CUSTOM_ITEM|<id>|<list>|<title>|<instructions>  # Custom instructions (Gen 3)
 ```
 
-### AI Processing
+### 人工智能处理（AI Processing）  
 
-**For CUSTOM_ITEM:**
-1. Parse custom instructions from notes
-2. Execute multi-source research:
-   - If mentions "livro/book" → use librarian skill
-   - If mentions "web search" → use web_search
-   - If mentions specific sources → prioritize those
-3. Combine findings
-4. Update notes: `💎 [research findings]`
+**对于 **自定义任务（CUSTOM_ITEM）**：**
+1. 从笔记中解析自定义指令  
+2. 执行多源搜索：  
+   - 如果提到 “livro/book” → 使用 `Librarian` 技能  
+   - 如果提到 “web search” → 使用 `web_search`  
+   - 如果提到特定来源 → 优先处理这些来源  
+3. 合并搜索结果  
+4. 更新笔记：`💎 [搜索结果]`  
 
-**For CLAW_ITEM:**
-1. Run `memory_search` for similar past issues
-2. Analyze pattern (frequency, context, impact)
-3. Propose solutions (tech/process/system)
-4. Update notes: `💎 [analysis + solutions]`
+**对于 **Claw 任务（CLAW_ITEM）**：**
+1. 使用 `memory_search` 工具搜索类似的问题  
+2. 分析问题模式（频率、上下文、影响）  
+3. 提出解决方案（技术/流程/系统相关）  
+4. 更新笔记：`💎 [分析结果 + 解决方案]`  
 
-**For SHOPPING_ITEM:**
-1. Web search: product + "buy" + "price"
-2. Priority sites: Temu, Shop.app, AliExpress (avoid Amazon)
-3. Extract: links, prices, ratings
-4. Update notes: `💎 [shopping findings]`
+**对于 **购物任务（SHOPPING_ITEM）**：**
+1. 在 Temu、Shop.app、AliExpress 等网站进行搜索（避免使用 Amazon）  
+2. 提取链接、价格、评分信息  
+3. 更新笔记：`💎 [购物结果]`  
 
-**For GENERIC_ITEM:**
-1. Web search: title + context from list name
-2. Find: tutorials, how-to, documentation
-3. Summarize key findings
-4. Update notes: `💎 [research summary]`
+**对于 **通用任务（GENERIC_ITEM）**：**
+1. 根据任务名称在网络上进行搜索  
+2. 查找教程、操作指南、文档等资源  
+3. 总结关键信息  
+4. 更新笔记：`💎 [研究摘要]`  
 
-## 💎 Result Format
+## 💎 结果格式（Result Format）**
 
-**Start with 💎 signifier:**
+结果以 `💎` 标记开头：  
 ```
 💎 RESEARCH RESULTS
 
@@ -191,42 +190,39 @@ CUSTOM_ITEM|<id>|<list>|<title>|<instructions>  # Custom instructions (Gen 3)
 [Actionable recommendations if applicable]
 ```
 
-## 📊 List-Based Behavior (Gen 2)
+## 📊 基于列表的处理方式（List-Based Behavior, 第2代）  
+| 任务类型 | 处理方式 | 输出格式 |  
+|------|--------|---------------|  
+| 🛒 购物（Groceries） | 跳过（Skip） | 无需处理 |  
+| Claw | 系统分析（System analysis） | 💎 分析结果 + 解决方案 |  
+| 购物（Shopping） | 产品搜索结果 | 💎 链接 + 价格 |  
+| 其他（Others） | 通用搜索结果 | 💎 摘要 + 来源信息 |  
 
-| List | Action | Output Format |
-|------|--------|---------------|
-| 🛒 Groceries | SKIP | (no processing) |
-| claw | System analysis | 💎 Pattern + solutions |
-| Shopping | Product search | 💎 Links + prices |
-| Others | Generic research | 💎 Summary + sources |
+## 🎨 自定义指令（Custom Instructions, 第3代）**
 
-## 🎨 Custom Instructions (Gen 3)
-
-**Example prompts in notes:**
-
-**Multi-source research:**
+**笔记中的示例提示：**  
 ```
 Procure no livro de finance + web search "mortgage prepayment calculator"
-```
+```  
 
-**Specific constraints:**
+**特定约束条件（Specific constraints）：**  
 ```
 Web search only (no books). Focus on 2024 data. Avoid crypto sites.
-```
+```  
 
-**Librarian focus:**
+**专注于书籍研究（Librarian focus）：**  
 ```
 Pesquise nos livros de tarot + I Ching. Compare interpretations.
-```
+```  
 
-**Shopping with constraints:**
+**带有约束条件的购物任务（Shopping with constraints）：**  
 ```
 Where to buy. Budget under $50. Avoid Amazon.
-```
+```  
 
-## 🔄 Heartbeat Integration
+## 🔄 心跳机制集成（Heartbeat Integration）**
 
-**Triggered by HEARTBEAT** (configurable schedule):
+**通过 **HEARTBEAT** 触发（可配置的调度计划）：**  
 ```bash
 RESULT=$(process-reminders.sh)
 
@@ -236,67 +232,38 @@ if [ "$RESULT" = "NO_REMINDERS_TO_PROCESS" ]; then
 fi
 
 # Otherwise: Parse each item type, research, update notes
-```
+```  
 
-**Lean behavior:** If nothing needs processing → script exits, no AI session spawned, zero cost.
+**高效运行模式：** 如果没有需要处理的任务，则脚本直接退出，不会启动人工智能会话，也不会产生任何成本。  
 
-## 📝 Update Reminder Notes
-
+## 📝 更新提醒笔记（Update Reminder Notes）  
 ```bash
 remindctl edit <id> --notes "💎 [your research findings here]"
-```
+```  
 
-## 🎯 Use Cases
-
-**System debugging:**
-```
-List: claw
-Title: Messages disappear after reindexing
-Notes: (empty)
-→ Auto: Pattern analysis + 4 solution tiers
-→ Result: "💎 ANALYSIS: [pattern] SOLUTIONS: [1-4]"
-```
-
-**Product research:**
-```
-List: Shopping
-Title: iPad mini 6, second hand
-Notes: (empty)
-→ Auto: Web search eBay/Swappa/Facebook Marketplace
-→ Result: "💎 FOUND: eBay $350, Swappa $380..."
-```
-
-**Custom deep research:**
-```
-List: TODO
-Title: Bitcoin regulation impact
-Notes: "Procure no livro 'Debt' by Graeber (debt history) + web search 'SEC Bitcoin ETF 2024 ruling'"
-→ Custom: Librarian search + web search
-→ Result: "💎 RESEARCH RESULTS\n\nBook: Graeber argues...\n\nWeb: SEC approved..."
-```
-
-**Follow-up instructions:**
+## 🎯 使用场景（Use Cases）**  
+- **系统调试（System debugging）**  
+- **产品研究（Product research）**  
+- **深度自定义研究（Custom deep research）**  
+- **后续操作指令（Follow-up instructions）**  
 ```
 List: Creative Code
 Title: Vertical slider library
 Notes: "Find React examples on GitHub. Check if any use Framer Motion. Budget: MIT license only."
 → Custom: GitHub code search with constraints
 → Result: "💎 FOUND: 3 MIT-licensed libs using Framer..."
-```
+```  
 
-## 🚫 What NOT to Process
+## 🚫 不需要处理的场景（What NOT to Process）**  
+- 已标记为 💎 的笔记：已处理，直接跳过  
+- 类型为 🛒 的购物任务：无需额外研究  
+- 已完成的提醒任务：忽略它们  
 
-- ✅ Notes start with 💎 → already processed, skip
-- ✅ List = 🛒 Groceries → no research needed
-- ✅ Completed reminders → ignored
+## 架构（Architecture）  
+有关系统设计、数据流和实现细节，请参阅 [references/architecture.md](references/architecture.md)。  
 
-## Architecture
-
-For system design, data flow, and implementation details, see [references/architecture.md](references/architecture.md).
-
-## Dependencies
-- `remindctl` (Apple Reminders CLI)
-- `jq` (JSON processing)
-- OpenClaw `web_search` tool
-- OpenClaw `memory_search` tool (for claw items)
-- Librarian skill (for book research)
+## 依赖库（Dependencies）：**  
+- `remindctl`（Apple Reminders 的命令行工具）  
+- `jq`（用于 JSON 数据处理）  
+- OpenClaw 的 `web_search` 和 `memory_search` 工具  
+- `Librarian` 技能（用于书籍研究）

@@ -1,58 +1,50 @@
 ---
 name: deep-research-pro
 version: 1.0.0
-description: "Multi-source deep research agent. Searches the web, synthesizes findings, and delivers cited reports. No API keys required."
+description: "多源深度研究代理：能够搜索网络、整合研究结果，并生成带有引用信息的报告。无需使用API密钥。"
 homepage: https://github.com/paragshah/deep-research-pro
 metadata: {"clawdbot":{"emoji":"🔬","category":"research"}}
 ---
 
-# Deep Research Pro 🔬
+# 深度研究专业技能 🔬
 
-A powerful, self-contained deep research skill that produces thorough, cited reports from multiple web sources. No paid APIs required — uses DuckDuckGo search.
+这是一项强大且独立的深度研究工具，能够从多个网络来源生成详尽且带有引用信息的报告。无需使用任何付费API，仅依赖DuckDuckGo搜索引擎。
 
-## How It Works
+## 工作原理
 
-When the user asks for research on any topic, follow this workflow:
+当用户请求对某个主题进行研究时，请按照以下流程操作：
 
-### Step 1: Understand the Goal (30 seconds)
+### 第1步：明确研究目标（30秒）
 
-Ask 1-2 quick clarifying questions:
-- "What's your goal — learning, making a decision, or writing something?"
-- "Any specific angle or depth you want?"
+提出1-2个简短的澄清问题：
+- “您的目的是什么？是学习、做决策，还是撰写文章？”
+- “您希望从哪个具体角度或深度进行研究？”
 
-If the user says "just research it" — skip ahead with reasonable defaults.
+如果用户回答“只是想研究一下”，则可以直接使用预设的默认设置继续操作。
 
-### Step 2: Plan the Research (think before searching)
+### 第2步：制定研究计划（在搜索前先思考）
 
-Break the topic into 3-5 research sub-questions. For example:
-- Topic: "Impact of AI on healthcare"
-  - What are the main AI applications in healthcare today?
-  - What clinical outcomes have been measured?
-  - What are the regulatory challenges?
-  - What companies are leading this space?
-  - What's the market size and growth trajectory?
+将研究主题分解为3-5个子问题。例如：
+- 主题：“人工智能对医疗行业的影响”
+  - 当前人工智能在医疗领域的应用有哪些？
+  - 已经测量到了哪些临床成果？
+  - 面临哪些监管挑战？
+  - 哪些公司在这一领域处于领先地位？
+  - 市场规模和增长趋势如何？
 
-### Step 3: Execute Multi-Source Search
+### 第3步：执行多源搜索
 
-For EACH sub-question, run the DDG search script:
+对于每个子问题，运行DDG搜索脚本：
 
-```bash
-# Web search
-/home/clawdbot/clawd/skills/ddg-search/scripts/ddg "<sub-question keywords>" --max 8
+**搜索策略：**
+- 为每个子问题使用2-3种不同的关键词组合
+- 结合网络搜索和新闻搜索
+- 力求获取15-30个独特的来源
+- 优先选择学术机构、官方发布的内容、可靠的新闻来源 > 博客 > 论坛
 
-# News search (for current events)
-/home/clawdbot/clawd/skills/ddg-search/scripts/ddg news "<topic>" --max 5
-```
+### 第4步：深入阅读关键资料
 
-**Search strategy:**
-- Use 2-3 different keyword variations per sub-question
-- Mix web + news searches
-- Aim for 15-30 unique sources total
-- Prioritize: academic, official, reputable news > blogs > forums
-
-### Step 4: Deep-Read Key Sources
-
-For the most promising URLs, fetch full content:
+对于最有价值的网站，获取完整的内容：
 
 ```bash
 curl -sL "<url>" | python3 -c "
@@ -65,11 +57,11 @@ print(text[:5000])
 "
 ```
 
-Read 3-5 key sources in full for depth. Don't just rely on search snippets.
+仔细阅读3-5个关键来源的内容，不要仅依赖搜索结果中的片段。
 
-### Step 5: Synthesize & Write Report
+### 第5步：整合信息并撰写报告
 
-Structure the report as:
+按照以下结构撰写报告：
 
 ```markdown
 # [Topic]: Deep Research Report
@@ -103,27 +95,27 @@ Searched [N] queries across web and news. Analyzed [M] sources.
 Sub-questions investigated: [list]
 ```
 
-### Step 6: Save & Deliver
+### 第6步：保存和交付结果
 
-Save the full report:
+保存完整的报告：
 ```bash
 mkdir -p ~/clawd/research/[slug]
 # Write report to ~/clawd/research/[slug]/report.md
 ```
 
-Then deliver:
-- **Short topics**: Post the full report in chat
-- **Long reports**: Post the executive summary + key takeaways, offer full report as file
+然后按照以下方式交付结果：
+- **简短的主题**：将完整报告发布在聊天界面
+- **较长的报告**：发布执行摘要和关键要点，并提供完整报告的文件链接
 
-## Quality Rules
+## 质量要求
 
-1. **Every claim needs a source.** No unsourced assertions.
-2. **Cross-reference.** If only one source says it, flag it as unverified.
-3. **Recency matters.** Prefer sources from the last 12 months.
-4. **Acknowledge gaps.** If you couldn't find good info on a sub-question, say so.
-5. **No hallucination.** If you don't know, say "insufficient data found."
+1. **所有观点都必须有来源支持。** 不允许使用未经证实的信息。
+2. **进行交叉验证。** 如果某个观点仅来自一个来源，请标注为“未经验证”。
+3. **时效性很重要。** 优先选择过去12个月内的资料。
+4. **如实说明不足之处。** 如果某个子问题没有找到可靠的信息，应如实说明。
+5. **避免主观臆断。** 如果不清楚某个事实，应注明“数据不足”。
 
-## Examples
+## 使用示例
 
 ```
 "Research the current state of nuclear fusion energy"
@@ -132,9 +124,9 @@ Then deliver:
 "What's happening with the US housing market right now?"
 ```
 
-## For Sub-Agent Usage
+## 作为子代理的使用方法
 
-When spawning as a sub-agent, include the full research request and context:
+当以子代理的形式运行时，需要提供完整的研究请求和相关背景信息：
 
 ```
 sessions_spawn(
@@ -149,8 +141,8 @@ sessions_spawn(
 )
 ```
 
-## Requirements
+## 所需资源
 
-- DDG search script: `/home/clawdbot/clawd/skills/ddg-search/scripts/ddg`
-- curl (for fetching full pages)
-- No API keys needed!
+- DDG搜索脚本：`/home/clawdbot/clawd/skills/ddg-search/scripts/ddg`
+- `curl`（用于获取网页内容）
+- 无需API密钥！

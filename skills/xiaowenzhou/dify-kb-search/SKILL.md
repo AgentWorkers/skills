@@ -1,6 +1,6 @@
 ---
 name: dify-kb-search
-description: Search Dify Knowledge Base (Dataset) to get accurate context for RAG-enhanced answers.
+description: 在 Dify 知识库（数据集）中搜索，以获取用于 RAG（Retrieval-Augmented Generation）增强型答案的准确上下文信息。
 metadata:
   openclaw:
     requires:
@@ -23,28 +23,28 @@ commandTool: exec
 commandArgMode: json
 ---
 
-# Dify Knowledge Base Search Skill
+# Dify知识库搜索技能
 
-🔍 **Search your Dify Knowledge Base to get accurate, contextual answers**
+🔍 **在Dify知识库中搜索，以获得准确、上下文相关的答案**
 
-This skill enables AI agents to query Dify datasets for RAG (Retrieval-Augmented Generation) context retrieval. Perfect for knowledge base Q&A, documentation search, and contextual AI responses.
+此技能使AI代理能够查询Dify数据集，以实现RAG（检索增强生成，Retrieval-Augmented Generation）功能，从而获取上下文相关的信息。非常适合用于知识库问答、文档搜索以及提供上下文相关的AI响应。
 
-![Dify Knowledge Base](https://dify.ai/favicon.ico)
+![Dify知识库](https://dify.ai/favicon.ico)
 
-## ✨ Features
+## ✨ 特点
 
-- **List Knowledge Bases** - Discover all available Dify datasets
-- **Smart Search** - Query datasets with hybrid, semantic, or keyword search
-- **Auto-Discovery** - Automatically find available datasets if ID not provided
-- **Configurable Results** - Adjust top-k, search method, and reranking
-- **Error Handling** - Graceful error messages for debugging
-- **Zero Hardcoding** - All configuration via environment variables
+- **列出知识库** - 查找所有可用的Dify数据集
+- **智能搜索** - 通过混合搜索、语义搜索或关键词搜索来查询数据集
+- **自动发现** - 如果未提供ID，会自动查找可用的数据集
+- **可配置的结果** - 可调整返回结果的数量（top-k）、搜索方法和重新排序规则
+- **错误处理** - 提供友好的错误信息以便调试
+- **零编码** - 所有配置均通过环境变量完成
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### 1. Configure Environment Variables
+### 1. 配置环境变量
 
-Set up in `openclaw.json`:
+在`openclaw.json`中设置：
 
 ```json
 {
@@ -57,28 +57,28 @@ Set up in `openclaw.json`:
 }
 ```
 
-**Environment Variables:**
+**环境变量：**
 
-| Variable | Required | Default | Description |
+| 变量 | 是否必填 | 默认值 | 说明 |
 |----------|----------|---------|-------------|
-| `DIFY_API_KEY` | ✅ Yes | - | Your Dify API Key (from Settings → API) |
-| `DIFY_BASE_URL` | ❌ No | `http://localhost/v1` | Your Dify instance base URL |
+| `DIFY_API_KEY` | ✅ 是 | - | 你的Dify API密钥（来自“设置” → “API”） |
+| `DIFY_BASE_URL` | ❌ 否 | `http://localhost/v1` | 你的Dify实例基础URL |
 
-### 2. Install Dependencies
+### 2. 安装依赖项
 
 ```bash
 pip3 install requests
 ```
 
-## 🛠️ Tools
+## 🛠️ 工具
 
 ### dify_list
 
-Lists all available knowledge bases (datasets) in your Dify instance.
+列出你的Dify实例中所有可用的知识库（数据集）。
 
-**Invocation:** `dify_list` tool
+**调用方式：`dify_list` 工具**
 
-**Example Response:**
+**示例响应：**
 ```json
 {
   "status": "success",
@@ -100,35 +100,34 @@ Lists all available knowledge bases (datasets) in your Dify instance.
 }
 ```
 
-**Usage:**
+**使用方法：**
 ```json
 {}
 ```
 
 ### dify_search
 
-Searches a Dify Dataset for relevant context chunks.
+在Dify数据集中搜索相关的上下文片段。
 
-**Invocation:** `dify_search` tool (mapped to `python3 scripts/search.py`)
+**调用方式：`dify_search` 工具（映射到 `python3 scripts/search.py`）
 
-**Parameters:**
+**参数：**
 
-| Parameter | Type | Required | Default | Description |
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
 |-----------|------|----------|---------|-------------|
-| `query` | string | ✅ Yes | - | Search query or question |
-| `dataset_id` | string | ❌ No | Auto-discover | Specific dataset ID to search |
-| `top_k` | integer | ❌ No | 3 | Number of results to return |
-| `search_method` | string | ❌ No | `hybrid_search` | Search strategy |
-| `reranking_enable` | boolean | ❌ No | `false` | Enable reranking for better results |
+| `query` | 字符串 | ✅ 是 | - | 搜索查询或问题 |
+| `dataset_id` | 字符串 | ❌ 否 | 自动发现 | 要搜索的特定数据集ID |
+| `top_k` | 整数 | ❌ 否 | 3 | 返回的结果数量 |
+| `search_method` | 字符串 | ❌ 否 | `hybrid_search` | 搜索策略 |
+| `reranking_enable` | 布尔值 | ❌ 否 | `false` | 启用重新排序以获得更好的结果 |
 
-**Search Methods:**
+**搜索方法：**
 
-- `hybrid_search` - Combine semantic + keyword search (recommended)
-- `semantic_search` - Meaning-based similarity search
-- `keyword_search` - Exact keyword matching
+- `hybrid_search` - 结合语义搜索和关键词搜索（推荐）
+- `semantic_search` - 基于意义的相似性搜索
+- `keyword_search` - 精确的关键词匹配
 
-**Example Usage:**
-
+**示例用法：**
 ```json
 {
   "query": "How do I configure OpenClaw?",
@@ -145,7 +144,7 @@ Searches a Dify Dataset for relevant context chunks.
 }
 ```
 
-**Example Response:**
+**示例响应：**
 ```json
 {
   "status": "success",
@@ -169,7 +168,7 @@ Searches a Dify Dataset for relevant context chunks.
 }
 ```
 
-## 📋 Complete Workflow Example
+## 📋 完整工作流程示例
 
 ```json
 [
@@ -188,28 +187,28 @@ Searches a Dify Dataset for relevant context chunks.
 ]
 ```
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-### Common Errors
+### 常见错误
 
-| Error | Solution |
+| 错误 | 解决方案 |
 |-------|----------|
-| `Missing DIFY_API_KEY` | Set `DIFY_API_KEY` in environment variables |
-| `Connection refused` | Check `DIFY_BASE_URL` is correct and accessible |
-| `No datasets found` | Verify dataset exists in your Dify workspace |
-| `API request failed` | Check network connectivity and API key permissions |
+| `缺少DIFY_API_KEY` | 在环境变量中设置 `DIFY_API_KEY` |
+| `连接被拒绝` | 检查 `DIFY_BASE_URL` 是否正确且可访问 |
+| 未找到数据集 | 验证数据集是否存在于你的Dify工作空间中 |
+| API请求失败 | 检查网络连接和API密钥权限 |
 
-### Debug Mode
+### 调试模式
 
-Run manually to see detailed errors:
+手动运行以查看详细错误信息：
 
 ```bash
 DIFY_API_KEY=your-key python3 scripts/search.py <<< '{"query":"test"}'
 ```
 
-## 📚 Integration Tips
+## 📚 集成技巧
 
-### RAG Pipeline Integration
+### RAG流程集成
 
 ```python
 # Example: Use search results in AI response
@@ -218,9 +217,9 @@ context = "\n".join([r["content"] for r in results["results"]])
 final_prompt = f"Answer based on context:\n\n{context}\n\nQuestion: {query}"
 ```
 
-### Multiple Datasets
+### 多个数据集
 
-For searching across multiple datasets, loop through them:
+要跨多个数据集进行搜索，可以循环遍历它们：
 
 ```json
 {
@@ -229,33 +228,33 @@ For searching across multiple datasets, loop through them:
 }
 ```
 
-Then query another dataset separately.
+然后分别查询另一个数据集。
 
-## 🔒 Security
+## 🔒 安全性
 
-- **Never commit API keys** - Use environment variables or `.env` files
-- **Rotate keys regularly** - Generate new keys in Dify Settings
-- **Restrict access** - Limit API key permissions where possible
+- **切勿直接存储API密钥** - 使用环境变量或`.env`文件
+- **定期轮换密钥** - 在Dify设置中生成新的密钥
+- **限制访问** - 在可能的情况下限制API密钥的权限
 
-## 📖 Implementation Details
+## 📖 实现细节
 
-This skill uses the Dify Dataset API:
+此技能使用Dify数据集API：
 
-- **List Datasets:** `GET /v1/datasets`
-- **Search:** `POST /v1/datasets/{id}/retrieve`
+- **列出数据集：`GET /v1/datasets`
+- **搜索：`POST /v1/datasets/{id}/retrieve`
 
-For API documentation, see: https://docs.dify.ai/reference/api-reference
+有关API的详细文档，请参阅：https://docs.dify.ai/reference/api-reference
 
-## 📝 Changelog
+## 📝 更新日志
 
-**v1.1.0** (2026-02-08):
-- ✅ Added search method selection (hybrid/semantic/keyword)
-- ✅ Added reranking support
-- ✅ Auto-discovery of datasets
-- ✅ Improved error handling
-- ✅ Removed hardcoded URLs (fully configurable)
-- ✅ Added detailed logging
+**v1.1.0** (2026-02-08)：
+- ✅ 添加了搜索方法选择（混合搜索/语义搜索/关键词搜索）
+- ✅ 添加了重新排序支持
+- ✅ 自动发现数据集
+- ✅ 改进了错误处理
+- ✅ 移除了硬编码的URL（完全可配置）
+- ✅ 添加了详细的日志记录
 
-**v1.0.0** (2026-02-06):
-- Initial release
-- Basic list and search functionality
+**v1.0.0** (2026-02-06)：
+- 初始版本
+- 基本的列表和搜索功能

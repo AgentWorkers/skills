@@ -1,25 +1,25 @@
-# MintGarden Skill
+# MintGarden 技能
 
-Browse, search, and analyze Chia NFTs via the MintGarden API.
+通过 MintGarden API 浏览、搜索和分析 Chia NFT（非同质化代币）。
 
-## What It Does
+## 功能概述
 
-- Search NFTs and collections
-- View collection stats, floor prices, trading volume
-- Track NFT ownership and trade history
-- Monitor recent sales and activity
-- Get trending collections and top traders
-- Access profiles and portfolios
+- 搜索 NFT 和收藏品
+- 查看收藏品统计信息、最低售价、交易量
+- 跟踪 NFT 的所有权和交易历史
+- 监控最近的交易和活动
+- 获取热门收藏品和顶级交易者信息
+- 访问用户个人资料和投资组合
 
-## Commands
+## 命令
 
-All commands can be triggered via:
-- `/mg <command>` in Telegram
-- `/mintgarden <command>` in Telegram  
-- `mg <command>` in CLI
-- `mintgarden <command>` in CLI
+所有命令可以通过以下方式执行：
+- 在 Telegram 中输入 `/mg <命令>`
+- 在 Telegram 中输入 `/mintgarden <命令>`
+- 在 CLI（命令行接口）中输入 `mg <命令>`
+- 在 CLI 中输入 `mintgarden <命令>`
 
-### Search
+### 搜索
 
 ```bash
 /mg search <query>              # Search everything
@@ -27,7 +27,7 @@ All commands can be triggered via:
 /mg search collections "pixel"  # Search collections only
 ```
 
-### Collections
+### 收藏品
 
 ```bash
 /mg collections list            # Top collections by volume
@@ -37,7 +37,7 @@ All commands can be triggered via:
 /mg collection activity <id>    # Recent sales/transfers
 ```
 
-### NFTs
+### NFT
 
 ```bash
 /mg nft <launcher_id>           # NFT details
@@ -45,7 +45,7 @@ All commands can be triggered via:
 /mg nft offers <launcher_id>    # Active offers
 ```
 
-### Profiles
+### 个人资料
 
 ```bash
 /mg profile <username>          # Profile details
@@ -53,7 +53,7 @@ All commands can be triggered via:
 /mg profile activity <username> # User's recent activity
 ```
 
-### Events & Stats
+### 事件与统计信息
 
 ```bash
 /mg events                      # Recent global activity
@@ -64,7 +64,7 @@ All commands can be triggered via:
 /mg top traders                 # Top traders (7d)
 ```
 
-### Shortcuts
+### 快捷键
 
 ```bash
 /mg col1abc...                  # Quick collection lookup
@@ -72,9 +72,9 @@ All commands can be triggered via:
 /mg did:chia:...                # Quick profile lookup
 ```
 
-## Agent Usage
+## 用户代理使用说明
 
-When users ask about Chia NFTs, collections, or MintGarden:
+当用户询问关于 Chia NFT、收藏品或 MintGarden 的信息时：
 
 ```javascript
 const { handleCommand } = require('./skills/mintgarden');
@@ -83,15 +83,15 @@ const { handleCommand } = require('./skills/mintgarden');
 const output = await handleCommand('show me trending collections');
 ```
 
-The skill handles:
-- Command parsing and normalization
-- API calls with error handling
-- Formatted text output (CLI/Telegram friendly)
-- Pagination for large results
+该技能负责：
+- 命令解析与标准化
+- 发起 API 调用并处理错误
+- 生成格式化的文本输出（适用于 CLI 和 Telegram）
+- 对大量结果进行分页显示
 
-## API Client
+## API 客户端
 
-For custom integrations, use the API client directly:
+如需自定义集成，请直接使用 API 客户端：
 
 ```javascript
 const MintGardenAPI = require('./skills/mintgarden/lib/api');
@@ -123,7 +123,7 @@ const globalStats = await api.getGlobalStats();
 const topCollectors = await api.getTopCollectors({ period: '7d' });
 ```
 
-## Installation
+## 安装
 
 ```bash
 cd skills/mintgarden
@@ -132,78 +132,78 @@ chmod +x cli.js
 npm link  # Makes 'mg' and 'mintgarden' global
 ```
 
-## Configuration
+## 配置
 
-No API key required — MintGarden API is public.
+无需 API 密钥——MintGarden API 是公开的。
 
-Optional: Set custom base URL via environment:
+**可选设置：** 通过环境变量设置自定义基础 URL：
 
 ```bash
 export MINTGARDEN_API_URL=https://api.mintgarden.io
 ```
 
-## Output Format
+## 输出格式
 
-All commands return plain text suitable for:
-- Terminal output (CLI)
-- Telegram messages
-- Discord messages
-- WhatsApp messages
+所有命令返回的文本格式适用于：
+- 命令行终端
+- Telegram 消息
+- Discord 消息
+- WhatsApp 消息
 
-No markdown tables (for WhatsApp compatibility).
+**注意：** 为保证 WhatsApp 的兼容性，输出内容不包含 Markdown 表格格式。
 
-## Error Handling
+## 错误处理
 
-- Invalid IDs → Clear error message
-- API failures → Retry-friendly error
-- Network issues → Timeout after 30s
-- Empty results → Helpful "not found" message
+- 无效的 ID → 显示清晰的错误信息
+- API 请求失败 → 提供重试提示
+- 网络问题 → 30 秒后自动超时
+- 没有找到结果 → 显示“未找到”的提示信息
 
-## Limits
+## 限制
 
-- Default limit: 50 results per query
-- Max limit: 100 results per query
-- No rate limiting (MintGarden is generous)
-- Pagination available via API client
+- 默认每条查询返回 50 个结果
+- 最大查询结果数量为 100 个
+- 无请求速率限制（MintGarden 的设计较为宽松）
+- 可通过 API 客户端实现分页功能
 
-## Examples
+## 使用示例
 
-**Find rare NFTs in a collection:**
+- **在收藏品中查找稀有 NFT：**
 ```bash
 /mg collection nfts col1abc...
 ```
 
-**Check floor price:**
+- **查看最低售价：**
 ```bash
 /mg collection col1abc...
 ```
 
-**See what's hot:**
+- **查看热门 NFT：**
 ```bash
 /mg trending
 ```
 
-**Track a specific NFT:**
+- **跟踪特定 NFT 的交易情况：**
 ```bash
 /mg nft history nft1abc...
 ```
 
-**Monitor marketplace:**
+- **监控市场动态：**
 ```bash
 /mg events
 ```
 
-## Tips
+## 使用技巧
 
-- Use shortcuts for quick lookups (paste IDs directly)
-- Collection IDs start with `col1`
-- NFT launcher IDs start with `nft1`
-- Profile DIDs start with `did:chia:`
-- Trending updates every hour
-- Volume stats use 7-day window by default
+- 使用快捷键快速查询（直接粘贴 ID）
+- 收藏品 ID 以 `col1` 开头
+- NFT 的标识符（launcher ID）以 `nft1` 开头
+- 个人资料 ID 以 `did:chia:` 开头
+- 每小时更新一次热门收藏品列表
+- 交易量统计默认基于 7 天的数据
 
-## Support
+## 支持资源
 
-- MintGarden API: https://api.mintgarden.io/docs
-- Chia NFTs: https://mintgarden.io
-- Bug reports: File in skill repository
+- MintGarden API 文档：https://api.mintgarden.io/docs
+- Chia NFT 相关信息：https://mintgarden.io
+- 如有 bug 报告，请提交到技能的仓库中

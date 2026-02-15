@@ -1,64 +1,59 @@
 ---
 name: Latvian
-description: Write Latvian that sounds human. Not formal, not robotic, not AI-generated.
+description: **Write Latvian that sounds human. Not formal, not robotic, not AI-generated.**
+
+**翻译：**  
+写出听起来像真人说的拉脱维亚语。既不是正式的，也不是机械的，更不是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Latvian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and warmth. Match that.
+虽然“AI Latvian”在语法上是正确的，但听起来过于正式、过于文学化。拉脱维亚人的日常交流方式更加随意，他们会使用一些助词和表达方式来增添语言的温暖感。我们的目标就是让翻译结果更贴近拉脱维亚人的实际说话方式。
 
-## Formality Default
+## 文化中的正式与非正式表达
 
-Default register is too high. Casual Latvian is warm and direct. Unless explicitly formal: lean casual. "Čau" or "Sveiks" not "Labdien". "Jā" not "Jā, protams".
+拉脱维亚语中的正式表达通常较为正式和正式化，而非正式表达则更加亲切、直接。除非有明确的需要使用正式语言，否则应尽量采用非正式的表达方式。例如，他们会说“Čau”或“Sveiks”而不是“Labdien”，说“Jā”而不是“Jā, protams”。
 
-## Tu vs Jūs
+## “Tu”与“Jūs”的使用
 
-Critical distinction:
-- Jūs: formal, elderly, professional
-- Tu: friends, peers, internet, casual
-- Latvian internet uses tu
-- Overusing jūs = stiff, distant
+在拉脱维亚语中，“Tu”用于朋友、同龄人或非正式场合的交流，而“Jūs”则用于正式场合、对年长者或专业人士的称呼。在拉脱维亚的网络交流中，人们更倾向于使用“Tu”。过度使用“Jūs”会让语气显得生硬和疏远。
 
-## Particles & Softeners
+## 助词与语言的柔和化元素
 
-These make Latvian natural:
-- Nu: filler, "well"
-- Jau: "already", emphasis
-- Tak: emphasis
-- Vai: question particle
-- Gan: emphasis, "quite"
+一些助词能够使拉脱维亚语的表达更加自然：
+- **Nu**：用于填充语句，表示“嗯”或“好吧”  
+- **Jau**：表示“已经”，用于强调  
+- **Tak**：用于强调  
+- **Vai**：用于提问  
+- **Gan**：表示强调或“相当”
 
-## Fillers & Flow
+## 语言中的填充词与流畅性
 
-Real Latvian has fillers:
-- Nu, tā, labi
-- Tipa, kā
-- Zini, klau
-- Vispār, starp citu
+拉脱维亚语中有一些常见的填充词，如“Nu”、“tā”、“labi”等，它们可以增加语言的流畅性和自然感。
 
-## Expressiveness
+## 表达方式的多样性
 
-Don't pick the safe word:
-- Labi → Super, Forši, Lieliski
-- Slikti → Šausmīgi, Briesmīgi
-- Ļoti → Mega, Baigi, Pilnīgi
+在表达时，不要总是选择最“安全”的词汇。例如：
+- “Labi”可以替换为“Super”、“Forši”或“Lieliski”  
+- “Slikti”可以替换为“Šausmīgi”或“Briesmīgi”  
+- “Ļoti”可以替换为“Mega”、“Baigi”或“Pilnīgi”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Labi, Okei, Sapratu
-- Nav problēmu, Mierīgi
-- Tiešām?, Nopietni?, Ko?
-- Forši!, Super!, Lieliski!
+一些自然的表达方式包括：
+- “Labi, Okei, Sapratu”  
+- “Nav problēmu, Mierīgi”  
+- “Tiešām?, Nopietni?, Ko?”  
+- “Forši!, Super!, Lieliski!”
 
-## Reactions
+## 交流时的反应
 
-React naturally:
-- Tiešām?, Nopietni?, Nu nē!
-- Oho!, Vau!, Dievs!
-- Forši!, Super!, Cool!
-- Haha, lol in text
+在交流时，应保持自然的反应：
+- “Tiešām?, Nopietni?”（真的吗？）  
+- “Oho!, Vau!”（哇！）  
+- “Forši!, Super!”（太棒了！）  
+- “Haha, lol”（哈哈）
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Latvian screenshot this as "AI-generated"? If yes—too formal, no "nu", too stiff. Add casual warmth.
+在发送内容之前，可以想象一下：如果一个拉脱维亚人看到这段文字的截图，他会认为这是“AI生成的”吗？如果是这样，那么这段文字就太正式了，缺乏自然感；应该添加一些更随意、更温暖的表达方式，比如使用“Nu”这样的助词。

@@ -1,33 +1,32 @@
 ---
 name: HONGKONG-PAYMENT-QFPAY
-description: QFPay API is a comprehensive payment solution that offers various payment methods to meet the needs of different businesses. This skill provides complete API integration guidelines including environment configuration, request formats, signature generation, payment types, supported currencies, and status codes.
+description: QFPay API 是一个全面的支付解决方案，提供了多种支付方式以满足不同企业的需求。本文档提供了完整的 API 集成指南，包括环境配置、请求格式、签名生成、支付类型、支持的货币以及状态码等内容。
 --- 
 
-# QFPay Payment API Skill
+# QFPay支付API技能
 
-## Overview
+## 概述
 
-QFPay API is a comprehensive payment solution that offers various payment methods to meet the needs of different businesses. This skill provides complete API integration guidelines including environment configuration, request formats, signature generation, payment types, supported currencies, and status codes.
+QFPay API是一个全面的支付解决方案，提供多种支付方式以满足不同企业的需求。本文档提供了完整的API集成指南，包括环境配置、请求格式、签名生成、支付类型、支持的货币和状态码等内容。
 
+## 环境配置
 
-## Environment Configuration
+QFPay API可以通过三种主要环境进行访问：
 
-QFPay API is accessible via three main environments:
-
-| Environment | Base URL | Description |
+| 环境 | 基本URL | 描述 |
 |-------------|----------|-------------|
-| Sandbox | `https://openapi-int.qfapi.com` | For simulating payments without real fund deduction |
-| Testing | `https://test-openapi-hk.qfapi.com` | Real payment flow but linked to test accounts (no settlement) |
-| Production | `https://openapi-hk.qfapi.com` | Real live payments with actual settlement |
+| 沙盒环境 | `https://openapi-int.qfapi.com` | 用于模拟支付，不涉及实际资金扣款 |
+| 测试环境 | `https://test-openapi-hk.qfapi.com` | 支持实际支付流程，但连接到测试账户（不进行结算） |
+| 生产环境 | `https://openapi-hk.qfapi.com` | 支持实际支付并完成结算 |
 
-**Important Notes:**
-- Transactions in Testing environment using test accounts will NOT be settled
-- Always ensure refunds are triggered immediately for test transactions
-- Mixing credentials or endpoints across environments will result in signature or authorization errors
+**重要说明：**
+- 在测试环境中使用测试账户进行的交易不会进行结算。
+- 确保测试交易立即触发退款。
+- 不要在不同环境之间混合使用凭证或端点，否则会导致签名或授权错误。
 
-### Environment Variables Setup
+### 环境变量设置
 
-Configure these environment variables before using the API:
+在使用API之前，请配置以下环境变量：
 
 ```bash
 export QFPAY_APPCODE="your_app_code_here"
@@ -36,75 +35,72 @@ export QFPAY_MCHID="your_merchant_id"  # Optional, depends on account setup
 export QFPAY_ENV="sandbox"  # Options: prod, test, sandbox
 ```
 
-## API Usage Guidelines
+## API使用指南
 
-### Rate Limiting
+### 速率限制
 
-To ensure fair usage and optimal performance:
+为确保公平使用和最佳性能：
+- **限制**：每秒最多100个请求（RPS），每个商家每分钟最多400个请求。
+- **超出限制**：API会返回HTTP 429（请求过多）错误。
 
-- **Limit**: Maximum 100 requests per second (RPS) and 400 requests per minute per merchant
-- **Exceeding Limit**: API responds with HTTP 429 (Too Many Requests)
+### 最佳实践
+1. **批量请求**：使用批量处理来减少单个请求的数量。
+2. **高效查询**：利用过滤和分页功能。
+3. **缓存**：实现响应缓存以避免重复请求。
+4. **监控**：跟踪API使用情况并记录请求模式。
 
-### Best Practices
+### 错误处理
 
-1. **Batch Requests**: Use batch processing to minimize individual requests
-2. **Efficient Queries**: Utilize filtering and pagination
-3. **Caching**: Implement response caching to avoid repeated requests
-4. **Monitoring**: Track API usage and implement logging for request patterns
+当收到HTTP 429错误时：
+1. 暂停进一步的请求一段时间。
+2. 实施指数级退避策略进行重试。
+3. 记录错误以便监控。
 
-### Error Handling
+### 流量峰值管理
 
-When receiving HTTP 429:
-1. Pause further requests for a specified duration
-2. Implement exponential backoff for retries
-3. Log errors for monitoring
+对于预期的流量峰值（例如促销活动），请联系：
+- **技术支持**：technical.support@qfpay.com
 
-### Traffic Spike Management
+## 请求格式
 
-For anticipated traffic spikes (e.g., promotional events), contact:
-- **Technical Support**: technical.support@qfpay.com
-
-## Request Format
-
-### HTTP Request
+### HTTP请求
 
 ```
 POST /trade/v1/payment
 ```
 
-### Public Payment Request Parameters
+### 公共支付请求参数
 
-| Attribute | Required | Type | Description |
+| 参数 | 是否必填 | 类型 | 描述 |
 |-----------|----------|------|-------------|
-| `txamt` | Yes | Int(11) | Transaction amount in cents (100 = $1). Suggest > 200 to avoid risk control |
-| `txcurrcd` | Yes | String(3) | Transaction currency. See Currencies section for full list |
-| `pay_type` | Yes | String(6) | Payment type code. See Payment Types section |
-| `out_trade_no` | Yes | String(128) | External transaction number. Must be unique per merchant account |
-| `txdtm` | Yes | String(20) | Transaction time format: YYYY-MM-DD hh:mm:ss |
-| `auth_code` | Yes (CPM only) | String(128) | Authorization code for scanning barcode/QR. Expires within one day |
-| `expired_time` | No (MPM only) | String(3) | QR expiration in minutes. Default: 30, Min: 5, Max: 120 |
-| `goods_name` | No | String(64) | Item description. Max 20 chars, UTF-8 for Chinese. Required for App payments |
-| `mchid` | No | String(16) | Merchant ID. Required if assigned, must NOT be included if not assigned |
-| `udid` | No | String(40) | Unique device ID for internal tracking |
-| `notify_url` | No | String(256) | URL for asynchronous payment notifications |
+| `txamt` | 是 | Int(11) | 交易金额（单位：分，100分等于1元）。建议金额大于200分以避免风险控制 |
+| `txcurrcd` | 是 | String(3) | 交易货币。详见“货币”部分 |
+| `pay_type` | 是 | String(6) | 支付类型代码。详见“支付类型”部分 |
+| `out_trade_no` | 是 | String(128) | 外部交易编号。每个商家账户必须唯一 |
+| `txdtm` | 是 | String(20) | 交易时间格式：YYYY-MM-DD hh:mm:ss |
+| `auth_code` | 是（仅限CPM） | String(128) | 用于扫描条形码/二维码的授权码。有效期为1天 |
+| `expired_time` | 否（仅限MPM） | String(3) | 二维码的有效时间（单位：分钟）。默认值：30分钟，最小值：5分钟，最大值：120分钟 |
+| `goods_name` | 否 | String(64) | 商品描述。最多20个字符，支持UTF-8编码（中文）。应用支付时必需 |
+| `mchid` | 否 | String(16) | 商家ID。如果已分配，则必须提供；否则不要包含 |
+| `udid` | 否 | String(40) | 唯一的设备ID，用于内部跟踪 |
+| `notify_url` | 否 | String(256) | 异步支付通知的URL |
 
-### HTTP Header Requirements
+### HTTP头部要求
 
-| Field | Required | Description |
+| 字段 | 是否必填 | 描述 |
 |-------|----------|-------------|
-| `X-QF-APPCODE` | Yes | App code assigned to merchant |
-| `X-QF-SIGN` | Yes | Signature generated per signature algorithm |
-| `X-QF-SIGNTYPE` | No | Signature algorithm. Use `SHA256` or defaults to `MD5` |
+| `X-QF-APPCODE` | 是 | 分配给商家的应用代码 |
+| `X-QF-SIGN` | 是 | 根据签名算法生成的签名 |
+| `X-QF-SIGNTYPE` | 否 | 签名算法。使用`SHA256`，默认为`MD5` |
 
-### Content Specifications
+### 内容规范
+- **字符编码**：UTF-8
+- **方法**：POST/GET（取决于端点）
+- **Content-Type**：application/x-www-form-urlencoded
 
-- **Character Encoding**: UTF-8
-- **Method**: POST/GET (depends on endpoint)
-- **Content-Type**: application/x-www-form-urlencoded
+## 响应格式
 
-## Response Format
-
-### Success Response Structure
+### 成功响应结构
 
 ```json
 {
@@ -122,93 +118,92 @@ POST /trade/v1/payment
 }
 ```
 
-### Response Fields
+### 响应字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `respcd` | String(4) | Return code. "0000" means success |
-| `respmsg` | String(64) | Message description of respcd |
-| `data` | Object | Payment transaction data |
+| `respcd` | String(4) | 返回代码。“0000”表示成功 |
+| `respmsg` | String(64) | `respcd`的消息描述 |
+| `data` | Object | 支付交易数据 |
 
-### Data Object Fields
+### 数据对象字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `txamt` | String | Transaction amount in cents |
-| `out_trade_no` | String | Merchant's original order number |
-| `txcurrcd` | String | Currency code (e.g., HKD) |
-| `txstatus` | String | Payment status: SUCCESS, FAILED, PENDING |
-| `qf_trade_no` | String | QFPay's unique transaction number |
-| `pay_type` | String | Payment method code |
-| `txdtm` | String | Payment time (YYYY-MM-DD HH:mm:ss) |
+| `txamt` | String | 交易金额（单位：分） |
+| `out_trade_no` | String | 商家的原始订单编号 |
+| `txcurrcd` | String | 货币代码（例如：HKD） |
+| `txstatus` | String | 支付状态：SUCCESS, FAILED, PENDING |
+| `qf_trade_no` | String | QFPay的唯一交易编号 |
+| `pay_type` | String | 支付方式代码 |
+| `txdtm` | String | 支付时间（格式：YYYY-MM-DD HH:mm:ss） |
 
-### Signature Verification
+### 签名验证
 
-Response may include `X-QF-SIGN` and `X-QF-SIGNTYPE` headers. Verify by:
-1. Extracting data fields in sorted order
-2. Concatenating as key1=value1&key2=value2&...
-3. Appending client key
-4. Generating MD5 hash and comparing
+响应可能包含`X-QF-SIGN`和`X-QF-SIGNTYPE`头部。验证方法如下：
+1. 按字母顺序提取数据字段。
+2. 将它们拼接成键值对的形式（例如：key1=value1&key2=value2&...）。
+3. 添加客户端密钥。
+4. 生成MD5哈希值并进行比较。
 
-## Signature Generation
+## 签名生成
 
-All API requests must include a digital signature in the HTTP header:
+所有API请求必须在HTTP头部包含数字签名：
 
 ```
 X-QF-SIGN: <your_signature>
 ```
 
-### Step-by-Step Guide
+### 分步指南
 
-#### Step 1: Sort Parameters
+#### 第1步：按参数名称排序
 
-Sort all request parameters by parameter name in ASCII ascending order.
+将所有请求参数按ASCII升序排序。
 
-**Example:**
+**示例：**
 
-| Parameter | Value |
+| 参数 | 值 |
 |-----------|-------|
 | `mchid` | `ZaMVg12345` |
 | `txamt` | `100` |
 | `txcurrcd` | `HKD` |
 
-Sorted result:
+排序后的结果：
 ```
 mchid=ZaMVg12345&txamt=100&txcurrcd=HKD
 ```
 
-#### Step 2: Append Client Key
+#### 第2步：添加客户端密钥
 
-Append your secret `client_key` to the string.
+将您的秘密`client_key`添加到字符串中。
 
-If `client_key = abcd1234`:
+如果`client_key = abcd1234`：
 ```
 mchid=ZaMVg12345&txamt=100&txcurrcd=HKDabcd1234
 ```
 
-#### Step 3: Hash the String
+#### 第3步：生成哈希值
 
-Hash using MD5 or SHA256 (SHA256 recommended):
+使用MD5或SHA256（推荐使用SHA256）生成哈希值：
 
 ```
 SHA256("mchid=ZaMVg12345&txamt=100&txcurrcd=HKDabcd1234")
 ```
 
-#### Step 4: Add to Header
+#### 第4步：添加到头部
 
 ```
 X-QF-SIGN: <your_hashed_signature>
 ```
 
-### Important Notes
+### 重要说明
+- 不要插入换行符、制表符或额外的空格。
+- 参数名称和值是区分大小写的。
+- 如果签名失败，请仔细检查参数顺序和编码。
 
-- Do NOT insert line breaks, tabs, or extra spaces
-- Parameter names and values are case-sensitive
-- Double-check parameter order and encoding if signature fails
+### 代码示例
 
-### Code Examples
-
-#### Python
+#### Python示例
 
 ```python
 import os
@@ -246,142 +241,141 @@ def generate_signature_sha256(params, key):
     return sha256.hexdigest().upper()
 ```
 
-## Payment Types
+## 支付类型
 
-The `pay_type` parameter specifies which payment method to use. This affects transaction routing and UI requirements.
+`pay_type`参数指定了要使用的支付方式。这会影响交易路由和用户界面要求。
 
-**Note**: Not all `pay_type` values are enabled for every merchant. Contact technical.support@qfpay.com for clarification.
+**注意**：并非所有`pay_type`值都适用于所有商家。如有疑问，请联系technical.support@qfpay.com。
 
-### Supported Payment Types
+### 支持的支付类型
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 800008 | CPM for WeChat, Alipay, UnionPay QuickPass, PayMe |
-| 800101 | Alipay MPM (Overseas Merchants) |
-| 800108 | Alipay CPM (Overseas & HK Merchants) |
-| 801101 | Alipay Web Payment (Overseas) |
-| 801107 | Alipay WAP Payment (Overseas) |
-| 801110 | Alipay In-App Payment (Overseas) |
-| 800107 | Alipay Service Window H5 Payment |
-| 801501 | Alipay MPM (HK Merchants) |
-| 801510 | Alipay In-App (HK Merchants) |
-| 801512 | Alipay WAP (HK Merchants) |
-| 801514 | Alipay Web (HK Merchants) |
-| 800201 | WeChat MPM (Overseas & HK) |
-| 800208 | WeChat CPM (Overseas & HK) |
-| 800207 | WeChat JSAPI Payment (Overseas & HK) |
-| 800212 | WeChat H5 Payment |
-| 800210 | WeChat In-App Payment (Overseas & HK) |
-| 800213 | WeChat Mini-Program Payment |
-| 801008 | WeChat Pay HK CPM (Direct Settlement, HK) |
-| 801010 | WeChat Pay HK In-App (Direct Settlement, HK) |
-| 805801 | PayMe MPM (HK Merchants) |
-| 805808 | PayMe CPM (HK Merchants) |
-| 805814 | PayMe Web Payment (HK Merchants) |
-| 805812 | PayMe WAP Payment (HK Merchants) |
+| 800008 | WeChat支付、Alipay支付、UnionPay QuickPass、PayMe |
+| 800101 | Alipay MPM（海外商家） |
+| 800108 | Alipay CPM（海外及香港商家） |
+| 801101 | Alipay Web支付（海外） |
+| 801107 | Alipay WAP支付（海外） |
+| 801110 | Alipay应用内支付（海外） |
+| 800107 | Alipay服务窗口H5支付 |
+| 801501 | Alipay MPM（香港商家） |
+| 801510 | Alipay应用内支付（香港商家） |
+| 801512 | Alipay WAP支付（香港商家） |
+| 801514 | Alipay Web支付（香港商家） |
+| 800201 | WeChat MPM（海外及香港） |
+| 800208 | WeChat CPM（海外及香港） |
+| 800207 | WeChat JSAPI支付（海外及香港） |
+| 800212 | WeChat H5支付 |
+| 800210 | WeChat应用内支付（海外及香港） |
+| 800213 | WeChat小程序支付 |
+| 801008 | WeChat Pay（香港）CPM（直接结算） |
+| 801010 | WeChat Pay（香港）应用内支付（直接结算） |
+| 805801 | PayMe MPM（香港商家） |
+| 805808 | PayMe CPM（香港商家） |
+| 805814 | PayMe Web支付（香港商家） |
+| 805812 | PayMe WAP支付（香港商家） |
 | 800701 | UnionPay QuickPass MPM |
 | 800708 | UnionPay QuickPass CPM |
-| 800712 | UnionPay WAP Payment (HK) |
-| 800714 | UnionPay PC-Web Payment (HK) |
-| 802001 | FPS MPM (HK Merchants) |
-| 803701 | Octopus MPM (HK Merchants) |
-| 803712 | Octopus WAP Payment (HK) |
-| 803714 | Octopus PC-Web Payment (HK) |
-| 802801 | Visa / Mastercard Online |
-| 802808 | Visa / Mastercard Offline |
-| 806527 | ApplePay Online |
-| 806708 | UnionPay Card Offline |
-| 806808 | American Express Card Offline |
+| 800712 | UnionPay WAP支付（香港） |
+| 800714 | UnionPay PC-Web支付（香港） |
+| 802001 | FPS MPM（香港商家） |
+| 803701 | Octopus MPM（香港商家） |
+| 803712 | Octopus WAP支付（香港） |
+| 803714 | Octopus PC-Web支付（香港） |
+| 802801 | Visa / Mastercard在线支付 |
+| 802808 | Visa / Mastercard离线支付 |
+| 806527 | ApplePay在线支付 |
+| 806708 | UnionPay卡离线支付 |
+| 806808 | American Express卡离线支付 |
 
-### Special Remarks
+### 特殊说明
+- **801101**：交易金额必须大于1港元。
+- **802001**：此支付方式不支持退款。
 
-- **801101**: Transaction amount must be greater than 1 HKD
-- **802001**: This payment method does not support refunds
+## 支持的货币
 
-## Supported Currencies
+所有货币代码均遵循ISO 4217格式（3个大写字母）：
 
-All codes follow ISO 4217 format (3-letter uppercase):
-
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| AED | Arab Emirates Dirham |
-| CNY | Chinese Yuan |
-| EUR | Euro |
-| HKD | Hong Kong Dollar |
-| IDR | Indonesian Rupiah |
-| JPY | Japanese Yen |
-| MMK | Myanmar Kyat |
-| MYR | Malaysian Ringgit |
-| SGD | Singapore Dollar |
-| THB | Thai Baht |
-| USD | United States Dollar |
-| CAD | Canadian Dollar |
-| AUD | Australian Dollar |
+| AED | 阿联酋迪拉姆 |
+| CNY | 人民币 |
+| EUR | 欧元 |
+| HKD | 港元 |
+| IDR | 印度尼西亚卢比 |
+| JPY | 日元 |
+| MMK | 缅甸缅元 |
+| MYR | 马来西亚林吉特 |
+| SGD | 新加坡元 |
+| THB | 泰国铢 |
+| USD | 美元 |
+| CAD | 加元 |
+| AUD | 澳元 |
 
-**Note**: Some payment methods may only support HKD. Verify with your integration manager before non-HKD transactions.
+**注意**：某些支付方式可能仅支持港元。在处理非港元交易前，请与您的集成管理员确认。
 
-## Status Codes
+## 状态码
 
-Standard `respcd` values returned by QFPay API:
+QFPay API返回的标准`respcd`值：
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 0000 | Transaction successful |
-| 1100 | System under maintenance |
-| 1101 | Reversal error |
-| 1102 | Duplicate request |
-| 1103 | Request format error |
-| 1104 | Request parameter error |
-| 1105 | Device not activated |
-| 1106 | Invalid device |
-| 1107 | Device not allowed |
-| 1108 | Signature error |
-| 1125 | Transaction already refunded |
-| 1136 | Transaction does not exist or not operational |
-| 1142 | Order already closed |
-| 1143 | Order not paid, password being entered |
-| 1145 | Processing, please wait |
-| 1147 | WeChat Pay transaction error |
-| 1150 | T0 billing method does not support cancellation |
-| 1155 | Refund request denied |
-| 1181 | Order expired |
-| 1201 | Insufficient balance |
-| 1202 | Incorrect or expired payment code |
-| 1203 | Merchant account error |
-| 1204 | Bank error |
-| 1205 | Transaction failed, try again later |
-| 1212 | Please use UnionPay overseas payment code |
-| 1241 | Store does not exist or status incorrect |
-| 1242 | Store not configured correctly |
-| 1243 | Store has been disabled |
-| 1250 | Transaction forbidden |
-| 1251 | Store configuration error |
-| 1252 | System error making order request |
-| 1254 | Problem occurred, resolving issue |
-| 1260 | Order already paid |
-| 1261 | Order not paid |
-| 1262 | Order already refunded |
-| 1263 | Order already cancelled |
-| 1264 | Order already closed |
-| 1265 | Transaction cannot be refunded (11:30pm-0:30am) |
-| 1266 | Transaction amount wrong |
-| 1267 | Order information mismatch |
-| 1268 | Order does not exist |
-| 1269 | Insufficient unsettled balance for refund |
-| 1270 | Currency does not support partial refund |
-| 1271 | Transaction does not support partial refund |
-| 1272 | Refund amount exceeds maximum refundable |
-| 1294 | Transaction non-compliant, prohibited by bank |
-| 1295 | Connection slow, waiting for network response |
-| 1296 | Connection slow, try again later |
-| 1297 | Banking system busy |
-| 1298 | Connection slow, do not repeat payment if already paid |
-| 2005 | Customer payment code incorrect or expired |
-| 2011 | Transaction serial number repeats |
+| 0000 | 交易成功 |
+| 1100 | 系统维护中 |
+| 1101 | 反向错误 |
+| 1102 | 重复请求 |
+| 1103 | 请求格式错误 |
+| 1104 | 请求参数错误 |
+| 1105 | 设备未激活 |
+| 1106 | 设备无效 |
+| 1107 | 设备不允许使用 |
+| 1108 | 签名错误 |
+| 1125 | 交易已退款 |
+| 1136 | 交易不存在或无法操作 |
+| 1142 | 订单已关闭 |
+| 1143 | 订单未支付，正在输入密码 |
+| 1145 | 正在处理，请稍候 |
+| 1147 | WeChat Pay交易错误 |
+| 1150 | T0支付方式不支持取消 |
+| 1155 | 退款请求被拒绝 |
+| 1181 | 订单已过期 |
+| 1201 | 账户余额不足 |
+| 1202 | 支付代码错误或已过期 |
+| 1203 | 商家账户错误 |
+| 1204 | 银行错误 |
+| 1205 | 交易失败，请稍后再试 |
+| 1212 | 请使用UnionPay海外支付代码 |
+| 1241 | 商店不存在或状态不正确 |
+| 1242 | 商店配置不正确 |
+| 1243 | 商店已被禁用 |
+| 1250 | 交易被禁止 |
+| 1251 | 商店配置错误 |
+| 1252 | 系统错误，无法提交订单 |
+| 1254 | 出现问题，正在解决 |
+| 1260 | 订单已支付 |
+| 1261 | 订单未支付 |
+| 1262 | 订单已退款 |
+| 1263 | 订单已取消 |
+| 1264 | 订单已关闭 |
+| 1265 | 交易无法退款（晚上11:30至凌晨0:30） |
+| 1266 | 交易金额错误 |
+| 1267 | 订单信息不匹配 |
+| 1268 | 订单不存在 |
+| 1269 | 未结算余额不足，无法退款 |
+| 1270 | 该货币不支持部分退款 |
+| 1271 | 交易不支持部分退款 |
+| 1272 | 退款金额超过最大退款限额 |
+| 1294 | 交易不符合规定，银行禁止 |
+| 1295 | 连接缓慢，请稍后再试 |
+| 1296 | 连接缓慢，请稍后再试 |
+| 1297 | 银行系统繁忙 |
+| 1298 | 连接缓慢，如果已支付请勿重复支付 |
+| 2005 | 客户支付代码错误或已过期 |
+| 2011 | 交易序列号重复 |
 
-## Usage Examples
+## 使用示例
 
-### Complete Payment Flow (Python)
+### 完整支付流程（Python示例）
 
 ```python
 import os
@@ -533,7 +527,7 @@ if __name__ == '__main__':
         print(f"Transaction status: {query_result}")
 ```
 
-### Environment Configuration with Multiple Merchants
+### 多个商家的环境配置
 
 ```python
 import os
@@ -560,36 +554,25 @@ config = QFPayConfig(env=os.getenv('QFPAY_ENV', 'sandbox'))
 print(f"Using base URL: {config.base_url}")
 ```
 
-## Important Notes
+## 重要说明
+1. **签名安全**：切勿在前端代码或客户端应用程序中暴露`client_key`。始终在服务器端生成签名。
+2. **订单编号唯一性**：`out_trade_no`在同一个商家账户的所有支付和退款请求中必须是唯一的。
+3. **字符编码**：所有请求和响应均使用UTF-8编码。
+4. **超时处理**：对于未及时返回的支付请求，实现轮询机制以查询交易状态。
+5. **异步通知**：配置`notify_url`以接收异步支付完成通知，并验证通知签名。
+6. **退款限制**：FPS（802001）支付方式不支持退款。在集成前请确认业务需求。
+7. **金额格式**：金额以分为单位。例如，100表示1港元。
+8. **时区**：`txdtm`参数使用商家的本地时区。
+9. **环境变量**：始终从环境变量中加载敏感凭证，切勿在源文件中硬编码。
 
-1. **Signature Security**: Never expose your `client_key` in frontend code or client-side applications. Always compute signatures on the server side.
+## 技术支持
 
-2. **Order Number Uniqueness**: `out_trade_no` must be unique across all payment and refund requests under the same merchant account.
+如遇到任何集成问题，请联系：
+- **电子邮件**：technical.support@qfpay.com
+- **文档**：https://sdk.qfapi.com
+- **Postman集合**：https://sdk.qfapi.com/assets/files/qfpay_openapi_payment_request.postman_collection-c8de8c8fe69f3fcd5a7653d41c289a29.json
 
-3. **Character Encoding**: All requests and responses use UTF-8 encoding.
-
-4. **Timeout Handling**: For payment requests that don't return promptly, implement a polling mechanism to query transaction status.
-
-5. **Async Notifications**: Configure `notify_url` to receive asynchronous payment completion notifications and verify notification signatures.
-
-6. **Refund Limitations**: FPS (802001) payment type does not support refunds. Confirm business requirements before integration.
-
-7. **Amount Format**: Amount is in cents. For example, 100 represents 1 HKD.
-
-8. **Timezone**: The `txdtm` parameter uses the merchant's local timezone.
-
-9. **Environment Variables**: Always load sensitive credentials from environment variables, never hardcode them in source files.
-
-## Technical Support
-
-For any integration issues, contact:
-
-- **Email**: technical.support@qfpay.com
-- **Documentation**: https://sdk.qfapi.com
-- **Postman Collection**: https://sdk.qfapi.com/assets/files/qfpay_openapi_payment_request.postman_collection-c8de8c8fe69f3fcd5a7653d41c289a29.json
-
-## See Also
-
-- [QFPay Developer Center](https://sdk.qfapi.com)
-- [Payment Integration Guides](https://sdk.qfapi.com/docs/category/integration-by-payment-type)
-- [Checkout Integration](https://sdk.qfapi.com/docs/category/checkout-integration)
+## 参见
+- [QFPay开发者中心](https://sdk.qfapi.com)
+- [支付集成指南](https://sdk.qfapi.com/docs/category/integration-by-payment-type)
+- [结账集成](https://sdk.qfapi.com/docs/category/checkout-integration)

@@ -1,37 +1,37 @@
-# K-Trendz Lightstick Trading Skill
+# K-Trendz荧光棒交易技巧
 
-Trade K-pop artist lightstick tokens on the K-Trendz bonding curve market.
+在K-Trendz的绑定曲线市场上交易K-pop艺术家的荧光棒代币。
 
-## Overview
+## 概述
 
-K-Trendz Lightsticks are digital fan tokens tied to K-pop artists. Unlike arbitrage markets, this is a **bonding curve** system where:
-- **Price increases with each purchase** (√supply formula)
-- **Artist popularity directly affects demand**
-- **Early buyers benefit from price appreciation**
+K-Trendz荧光棒是一种与K-pop艺术家绑定的数字粉丝代币。与套利市场不同，这里采用的是**绑定曲线**系统：
+- **每次购买后价格会上涨**（遵循√供应公式）
+- **艺术家的受欢迎程度直接影响需求**
+- **早期购买者可以从价格上涨中获益**
 
-## Trading Strategy Context
+## 交易策略
 
-This is NOT an arbitrage market. Key principles:
-1. **Buy when trending** - Rising `trending_score` and recent news indicate growing demand
-2. **Buy early** - Lower `total_supply` means earlier position on the curve
-3. **Monitor external signals** - News headlines often precede on-platform activity
-4. **Hold during growth** - Bonding curve rewards patient holders
+这并非套利市场。主要原则如下：
+1. **在趋势上升时购买**——`trending_score`上升以及近期新闻表明需求在增加
+2. **尽早购买**——`total_supply`较低意味着在曲线上的位置更靠前
+3. **关注外部信号**——新闻头条通常会先于平台上的活动出现
+4. **在价格上涨期间持有**——绑定曲线机制会奖励耐心持有的用户
 
-## Available Tools
+## 可用工具
 
 ### get_token_price
 
-Get current price and popularity signals for a token.
+获取代币的当前价格和受欢迎程度信息。
 
-**Endpoint**: `POST /functions/v1/bot-get-token-price`
+**接口地址**：`POST /functions/v1/bot-get-token-price`
 
-**Headers**:
+**请求头**：
 ```
 x-bot-api-key: YOUR_API_KEY
 Content-Type: application/json
 ```
 
-**Request**:
+**请求参数**：
 ```json
 {
   "token_id": "7963681970480434413",
@@ -40,7 +40,7 @@ Content-Type: application/json
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "success": true,
@@ -75,30 +75,30 @@ Content-Type: application/json
 }
 ```
 
-**Decision Factors**:
-| Field | Meaning | Buy Signal |
+**决策依据**：
+| 字段 | 含义 | 买入信号 |
 |-------|---------|------------|
-| `trending_score` | On-platform engagement | Rising = bullish |
-| `price_change_24h` | Recent momentum | Positive = trend continuation |
-| `total_supply` | Holders count | Low = early opportunity |
-| `external_signals.article_count_24h` | News volume | High = increased attention |
-| `external_signals.has_recent_news` | Recent coverage | true = potential catalyst |
+| `trending_score` | 平台上的互动情况 | 上升 = 市场看涨 |
+| `price_change_24h` | 最近的价格波动 | 正面趋势 = 价格将继续上涨 |
+| `total_supply` | 持有者数量 | 较低 = 早期买入机会 |
+| `externalsignals.article_count_24h` | 新闻报道量 | 高 = 关注度增加 |
+| `externalsignals.has_recent_news` | 最近是否有新闻报道 | true = 可能的催化剂 |
 
 ---
 
 ### buy_fanz_token
 
-Purchase 1 lightstick token.
+购买1个荧光棒代币。
 
-**Endpoint**: `POST /functions/v1/bot-buy-token`
+**接口地址**：`POST /functions/v1/bot-buy-token`
 
-**Headers**:
+**请求头**：
 ```
 x-bot-api-key: YOUR_API_KEY
 Content-Type: application/json
 ```
 
-**Request**:
+**请求参数**：
 ```json
 {
   "token_id": "7963681970480434413",
@@ -106,7 +106,7 @@ Content-Type: application/json
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "success": true,
@@ -122,26 +122,26 @@ Content-Type: application/json
 }
 ```
 
-**Constraints**:
-- Maximum 1 token per transaction (bonding curve protection)
-- $100/day limit per agent
-- Same-block trades blocked (MEV protection)
+**限制条件**：
+- 每笔交易最多购买1个代币（保护绑定曲线机制）
+- 每个代理每天最多交易100美元
+- 同一区块内的交易会被阻止（防止市场操纵）
 
 ---
 
 ### sell_fanz_token
 
-Sell 1 lightstick token.
+出售1个荧光棒代币。
 
-**Endpoint**: `POST /functions/v1/bot-sell-token`
+**接口地址**：`POST /functions/v1/bot-sell-token`
 
-**Headers**:
+**请求头**：
 ```
 x-bot-api-key: YOUR_API_KEY
 Content-Type: application/json
 ```
 
-**Request**:
+**请求参数**：
 ```json
 {
   "token_id": "7963681970480434413",
@@ -149,7 +149,7 @@ Content-Type: application/json
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "success": true,
@@ -167,9 +167,9 @@ Content-Type: application/json
 
 ---
 
-## Available Tokens
+## 可用代币
 
-| Artist | Token ID |
+| 艺术家 | 代币ID |
 |--------|----------|
 | K-Trendz Supporters | 12666454296509763493 |
 | RIIZE | 7963681970480434413 |
@@ -180,18 +180,18 @@ Content-Type: application/json
 
 ---
 
-## Fee Structure
+## 费用结构
 
-| Action | Fee | Distribution |
+| 操作 | 费用 | 分配方式 |
 |--------|-----|--------------|
-| Buy | 3% | 2% Artist Fund, 1% Platform |
-| Sell | 2% | Platform |
+| 买入 | 3% | 2% 支付给艺术家，1% 归平台 |
+| 卖出 | 2% | 归平台 |
 
-**Round-trip cost**: 5%
+**往返费用**：5%
 
 ---
 
-## Example Trading Logic
+## 交易逻辑示例
 
 ```python
 # Pseudocode for news-driven trading
@@ -228,15 +228,15 @@ def should_sell(token_data, purchase_price):
 
 ---
 
-## Rate Limits
+## 交易限制
 
-- **Daily Volume**: $100 USD per agent
-- **Transaction Frequency**: Max 100 trades/day per agent
-- **Circuit Breaker**: Trading pauses if price moves >20% in 10 blocks
+- **每日交易额**：每个代理每天最多100美元
+- **交易频率**：每个代理每天最多100笔交易
+- **价格限制**：如果价格在10个时间块内上涨超过20%，交易将暂停
 
 ---
 
-## Base URL
+## 基础URL
 
 ```
 https://jguylowswwgjvotdcsfj.supabase.co/functions/v1/
@@ -244,8 +244,8 @@ https://jguylowswwgjvotdcsfj.supabase.co/functions/v1/
 
 ---
 
-## Authentication
+## 认证
 
-Include your API key in the `x-bot-api-key` header for all requests.
+在所有请求中，需要在`x-bot-api-key`头部字段中包含您的API密钥。
 
-Contact K-Trendz team for API key provisioning.
+如需获取API密钥，请联系K-Trendz团队。

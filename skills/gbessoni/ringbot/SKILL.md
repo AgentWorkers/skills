@@ -1,46 +1,46 @@
 ---
 name: ringbot
-description: Make outbound AI phone calls. Use when asked to call a business, make a phone call, order food by phone, schedule appointments, or any task requiring voice calls. Triggers on "call", "phone", "dial", "ring", "order pizza", "make reservation", "schedule appointment".
+description: 执行出站人工智能电话呼叫。适用于需要拨打企业电话、通过电话订购食物、安排预约或任何需要语音通话的任务。触发词包括 "call"（呼叫）、"phone"（电话）、"dial"（拨号）、"ring"（响铃）、"order pizza"（订购披萨）、"make reservation"（预订）和 "schedule appointment"（安排预约）。
 ---
 
-# RingBot - AI Phone Calls
+# RingBot - 人工智能电话服务
 
-Make outbound phone calls with an AI voice agent that can have natural conversations.
+使用人工智能语音代理发起外拨电话，实现自然流畅的对话。
 
-## 💰 Why RingBot? (99% Cheaper Voice AI)
+## 💰 为什么选择 RingBot？（语音AI成本降低99%）
 
-**Traditional Voice AI costs:** $0.10-0.50/minute (ElevenLabs, PlayHT, etc.)
-**RingBot costs:** ~$0.01/minute (just Twilio phone costs!)
+**传统语音AI服务费用：** 每分钟0.10-0.50美元（例如ElevenLabs、PlayHT等）
+**RingBot费用：** 每分钟约0.01美元（仅收取Twilio的电话费用！）
 
-| Component | Provider | Cost |
-|-----------|----------|------|
-| STT (Speech-to-Text) | Groq Whisper | **FREE** |
-| LLM (AI Brain) | Groq Llama 3.3 70B | **FREE** |
-| TTS (Text-to-Speech) | Groq Orpheus | **FREE** |
-| Voice Infrastructure | LiveKit Cloud | **FREE tier** |
-| Phone Calls | Twilio | ~$0.01/min |
+| 组件        | 提供商        | 费用        |
+|------------|-------------|------------|
+| STT（语音转文本）   | Groq Whisper   | **免费**       |
+| LLM（人工智能模型） | Groq Llama 3.3 70B | **免费**       |
+| TTS（文本转语音）   | Groq Orpheus    | **免费**       |
+| 语音基础设施 | LiveKit Cloud   | **免费 tier**     |
+| 电话服务     | Twilio       | 每分钟约0.01美元   |
 
-**You only pay for actual phone minutes through Twilio.**
+**您只需支付通过Twilio产生的实际通话费用。**
 
-## 📦 Two Ways to Use RingBot
+## 📦 使用RingBot的两种方式
 
-### Option 1: DIY (Free - Bring Your Own Keys)
+### 选项1：自行搭建（免费 - 需自行购买相关服务）
 
-Set up your own infrastructure - **completely free** except Twilio phone costs.
+您可以完全免费搭建自己的基础设施，只需支付Twilio的电话费用。
 
-**Required accounts:**
+**所需账户：**
 
 1. **Twilio** - https://twilio.com
-   - Phone number (~$1/month) + calls (~$0.01/min)
-   - Get: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`
+   - 电话号码（每月约1美元）+ 通话费用（每分钟约0.01美元）
+   - 获取：`TWILIO_ACCOUNT_SID`、`TWILIO_AUTH_TOKEN`、`TWILIO_PHONE_NUMBER`
 
-2. **LiveKit Cloud** - https://cloud.livekit.io (free tier)
-   - Create project + SIP trunk connected to Twilio
-   - Get: `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, `LIVEKIT_SIP_TRUNK_ID`
+2. **LiveKit Cloud** - https://cloud.livekit.io（免费 tier）
+   - 创建项目并配置SIP trunk连接到Twilio
+   - 获取：`LIVEKIT_URL`、`LIVEKIT_API_KEY`、`LIVEKIT_API_SECRET`、`LIVEKIT_SIP_TRUNK_ID`
 
-3. **Groq** - https://console.groq.com (100% free)
-   - Get API key + **accept TTS terms**: https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english
-   - Get: `GROQ_API_KEY`
+3. **Groq** - https://console.groq.com（完全免费）
+   - 获取API密钥，并同意TTS服务条款：https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english
+   - 获取：`GROQ_API_KEY`
 
 ```bash
 # .env for DIY setup
@@ -54,74 +54,64 @@ LIVEKIT_SIP_TRUNK_ID=your_trunk_id
 GROQ_API_KEY=your_groq_key
 ```
 
-### Option 2: Hosted (Paid - Just Bring Twilio)
+### 选项2：托管服务（付费 - 仅需连接Twilio）
 
-Don't want to set up LiveKit and Groq? Use our hosted infrastructure.
+如果您不想自行搭建LiveKit和Groq，可以选择我们的托管服务：
 
-- ✅ No LiveKit setup needed
-- ✅ No Groq setup needed  
-- ✅ Just connect your Twilio account
-- 💰 Pay per minute + rate limits apply
+- ✅ 无需配置LiveKit和Groq
+- ✅ 无需自行设置任何服务
+- ✅ 只需连接您的Twilio账户
+- 💰 按分钟计费，且存在通话量限制
 
-**Coming soon** - Contact for early access: https://talkforceai.com
+**即将推出** - 如需提前试用，请联系我们：https://talkforceai.com
 
-## 🚀 Use Cases
+## 🚀 使用场景
 
-### 1. Order Food by Phone
-> "Call DeLuca's Pizza and order a large pepperoni for pickup under Greg"
+### 1. 电话订餐
+> “拨打DeLuca's Pizza的电话，点一份大份pepperoni披萨，选择取餐。”
 
-### 2. Make Reservations
-> "Call the restaurant and make a reservation for 4 people Saturday at 7pm"
+### 2. 预订服务
+> “致电餐厅，为4人预订周六晚上7点的位置。”
 
-### 3. Schedule Appointments
-> "Call Dr. Smith's office and schedule my annual checkup for next week morning"
+### 3. 预约就诊
+> “致电Smith医生的办公室，预约下周早上的体检。”
 
-### 4. Customer Service Calls
-> "Call Comcast and ask about upgrading my internet plan"
+### 4. 客户服务
+> “致电Comcast，咨询关于升级互联网套餐的事宜。”
 
-### 5. Personal Messages
-> "Call mom and tell her I love her and ask how her day was"
+### 5. 个人通话
+> “给妈妈打电话，告诉她我爱她，并询问她今天过得怎么样。”
 
-### 6. Business Lead Qualification
-> "Call this list of leads and ask if they're interested in our parking solutions"
+### 6. 潜在客户跟进
+> “拨打这个潜在客户的电话，询问他们是否对我们的停车解决方案感兴趣。”
 
-### 7. Automated Daily Calls
-> "Every morning at 9am, call the warehouse and check inventory status"
+### 7. 自动化日常电话
+> “每天早上9点，致电仓库，检查库存情况。”
 
-### 8. Appointment Reminders
-> "Call patients and remind them of their appointments tomorrow"
+### 8. 预约提醒
+> “致电患者，提醒他们明天的预约时间。”
 
-## Making a Call
+## 发起电话
 
-```bash
-curl -X POST http://localhost:8000/ringbot/call \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "+1XXXXXXXXXX",
-    "purpose": "Brief description of call objective",
-    "context": "Additional context the AI should know"
-  }'
-```
+**参数：**
+- `to` - 电话号码（E.164格式，例如+1XXXXXXXXXX）
+- `purpose` - 通话目的（指导人工智能的行为）
+- `context` - 背景信息、具体请求以及需要收集的数据
 
-**Parameters:**
-- `to` - Phone number in E.164 format (+1XXXXXXXXXX)
-- `purpose` - What the call is about (guides AI behavior)
-- `context` - Background info, specific requests, what to collect
+## 示例：订披萨
 
-## Example: Order Pizza
-
-**Step 1: Find the restaurant**
+**步骤1：查找餐厅**
 ```bash
 goplaces search "pizza" --lat 41.36 --lng="-72.56" --limit 3
 ```
 
-**Step 2: Get phone number**
+**步骤2：获取餐厅电话号码**
 ```bash
 goplaces details ChIJRdQwYs4v5okRY2gp8pgskJ0
 # Phone: (860) 663-3999
 ```
 
-**Step 3: Make the call**
+**步骤3：发起电话**
 ```bash
 curl -X POST http://localhost:8000/ringbot/call \
   -H "Content-Type: application/json" \
@@ -132,32 +122,32 @@ curl -X POST http://localhost:8000/ringbot/call \
   }'
 ```
 
-## Tips for Good Results
+## 提高通话效果的小贴士
 
-**Purpose** - Keep it to one clear sentence:
-- ✅ "Order a pizza for pickup"
-- ✅ "Schedule a dental cleaning"
-- ❌ "Call them and maybe order something or ask questions"
+**通话目的**：保持语句简洁明了：
+- ✅ “订购一份披萨，选择取餐方式。”
+- ✅ “预约一次牙齿清洁服务。”
+- ❌ “打电话只是为了询问或下单。”
 
-**Context** - Be specific:
-- Customer/caller name
-- Exact order or request
-- Preferences and constraints
-- What info to collect back
+**通话背景信息**：提供详细信息：
+- 客户/来电者的姓名
+- 具体的订单或请求内容
+- 客户的偏好和特殊要求
+- 需要收集的回复信息
 
-## Service Management
+## 服务管理
 
-**Start the agent:**
+**启动语音代理：**
 ```bash
 cd /path/to/ringbot/src && python agent.py start
 ```
 
-**Start the API:**
+**启动API服务：**
 ```bash
 cd /path/to/ringbot && python main.py
 ```
 
-**Check call status:**
+**查看通话状态：**
 ```bash
 curl http://localhost:8000/ringbot/call/{call_id}
 ```

@@ -1,61 +1,60 @@
-# Context Optimizer & Task Processing Skills Package
+# 上下文优化器与任务处理技能包
 
-## Overview
-This package contains two powerful OpenClaw skills for automated context management:
+## 概述
+本技能包包含两个强大的 OpenClaw 技能，用于自动化管理对话上下文：
 
-1. **Context Optimizer** - Automatically optimizes conversation context to prevent "prompt too large" errors
-2. **Task Processor** - Handles large tasks by automatically splitting them into smaller subtasks
+1. **上下文优化器**：自动优化对话上下文，以防止出现“提示信息过长”的错误。
+2. **任务处理器**：通过自动将大型任务拆分为较小的子任务来处理这些任务。
 
-## Files Included
-- `skills/context-optimizer/` - Main skill directory with all implementation files
-- `commands/optimize-context.js` - Command handler for context optimization
-- `commands/optimize-context.json` - Command configuration for context optimization
-- `commands/process-task.js` - Command handler for processing large tasks
-- `commands/process-task.json` - Command configuration for task processing
-- `systems/context-monitor.js` - Background context monitoring system
-- `systems/context-monitor-config.json` - Configuration for context monitoring
-- `task_processing_config.json` - Global task processing configuration
+## 包含的文件
+- `skills/context-optimizer/`：包含所有实现文件的主技能目录
+- `commands/optimize-context.js`：用于上下文优化的命令处理程序
+- `commands/optimize-context.json`：上下文优化的命令配置文件
+- `commands/process-task.js`：用于处理大型任务的命令处理程序
+- `commands/process-task.json`：任务处理的命令配置文件
+- `systems/context-monitor.js`：用于后台监控上下文的系统
+- `systems/context-monitor-config.json`：上下文监控的配置文件
+- `task_processing_config.json`：全局任务处理配置文件
 
-## Installation Instructions
-
-1. Extract this package to your OpenClaw workspace:
+## 安装说明
+1. 将此包解压到您的 OpenClaw 工作目录中：
    ```bash
    cd ~/.openclaw/workspace
    tar -xzf /path/to/context-optimizer-skill.tar.gz
    ```
 
-2. Install dependencies (if any are needed):
+2. 安装所需的依赖项（如果有的话）：
    ```bash
    cd ~/.openclaw/workspace/skills/context-optimizer
    npm install
    ```
 
-3. The skills should now be available in your OpenClaw system with:
-   - `/optimize-context` command for manual context optimization
-   - `/process-task` command for handling large tasks with automatic splitting
+3. 安装完成后，这些技能将可在您的 OpenClaw 系统中使用：
+   - `/optimize-context` 命令：用于手动优化上下文
+   - `/process-task` 命令：用于处理需要自动拆分的大型任务
 
-## Features
+## 功能介绍
 
-### Context Optimizer
-- Automatically monitors conversation length
-- Triggers optimization when message count exceeds thresholds
-- Extracts key points and facts while clearing old context
-- Prevents "prompt too large" errors
+### 上下文优化器
+- 自动监控对话长度
+- 当消息数量超过预设阈值时触发优化
+- 在清除旧上下文的同时提取关键信息和事实
+- 防止出现“提示信息过长”的错误
 
-### Task Processor
-- Detects large tasks that exceed token limits
-- Automatically splits large tasks into smaller subtasks
-- Processes subtasks sequentially while maintaining context
-- Integrates with context optimization to prevent overflow
+### 任务处理器
+- 检测超出令牌限制的大型任务
+- 自动将大型任务拆分为较小的子任务
+- 顺序处理子任务的同时保持上下文的一致性
+- 与上下文优化功能集成，以防止上下文溢出
 
-### Automatic Monitoring
-- Continuous background monitoring of context length
-- Configurable thresholds for automatic optimization
-- Seamless integration with normal conversation flow
+### 自动监控
+- 持续监控对话上下文的长度
+- 支持配置自动优化的阈值
+- 与正常的对话流程无缝集成
 
-## Configuration
-- Adjust settings in `task_processing_config.json`
-- Modify thresholds for message counts and token limits
-- Configure timing for automatic optimization triggers
+## 配置
+- 在 `task_processing_config.json` 文件中调整设置
+- 修改消息数量和令牌限制的阈值
+- 配置自动优化的触发时机
 
-The skills are ready to use immediately after installation!
+安装完成后，这些技能即可立即投入使用！

@@ -1,143 +1,143 @@
-# Clawdbot Documentation Expert
+# Clawdbot 文档专家
 
-You are an expert on Clawdbot documentation. Use this skill to help users navigate, understand, and configure Clawdbot.
+您是 Clawdbot 文档方面的专家，可以利用这一技能帮助用户了解、配置和操作 Clawdbot。
 
-## Quick Start
+## 快速入门
 
-When a user asks about Clawdbot, first identify what they need:
+当用户询问关于 Clawdbot 的问题时，首先需要确定他们的具体需求：
 
-### 🎯 Decision Tree
+### 🎯 决策树
 
-**"How do I set up X?"** → Check providers/ or start/
-- Discord, Telegram, WhatsApp, etc. → `providers/<name>`
-- First time? → `start/getting-started`, `start/setup`
+**“我该如何设置 X？”** → 查看相关提供者文档或开始使用：
+- Discord、Telegram、WhatsApp 等 → `providers/<名称>`
+- 是第一次使用？ → `start/getting-started` 或 `start/setup`
 
-**"Why isn't X working?"** → Check troubleshooting
-- General issues → `debugging`, `gateway/troubleshooting`
-- Provider-specific → `providers/troubleshooting`
-- Browser tool → `tools/browser-linux-troubleshooting`
+**“为什么 X 无法正常工作？”** → 查看故障排除指南：
+- 一般性问题 → `debugging` 或 `gateway/troubleshooting`
+- 与特定提供者相关的问题 → `providers/troubleshooting`
+- 浏览器工具相关的问题 → `tools/browser-linux-troubleshooting`
 
-**"How do I configure X?"** → Check gateway/ or concepts/
-- Main config → `gateway/configuration`, `gateway/configuration-examples`
-- Specific features → relevant concepts/ page
+**“我该如何配置 X？”** → 查看相关配置文档或概念说明：
+- 主要配置 → `gateway/configuration` 或 `gateway/configuration-examples`
+- 特定功能 → 相关的概念页面
 
-**"What is X?"** → Check concepts/
-- Architecture, sessions, queues, models, etc.
+**“X 是什么？”** → 查看 Clawdbot 的基本概念：
+- 架构、会话、队列、模型等
 
-**"How do I automate X?"** → Check automation/
-- Scheduled tasks → `automation/cron-jobs`
-- Webhooks → `automation/webhook`
-- Gmail → `automation/gmail-pubsub`
+**“我该如何实现自动化？”** → 查看自动化相关文档：
+- 定时任务 → `automation/cron-jobs`
+- Webhook → `automation/webhook`
+- Gmail 邮件通知 → `automation/gmail-pubsub`
 
-**"How do I install/deploy?"** → Check install/ or platforms/
+**“我该如何安装或部署 Clawdbot？”** → 查看安装指南或平台相关文档：
 - Docker → `install/docker`
-- Linux server → `platforms/linux`
-- macOS app → `platforms/macos`
+- Linux 服务器 → `platforms/linux`
+- macOS 应用程序 → `platforms/macos`
 
-## Available Scripts
+## 可用的脚本
 
-All scripts are in `./scripts/`:
+所有脚本都位于 `./scripts/` 目录下：
 
-### Core
+### 核心功能
 ```bash
 ./scripts/sitemap.sh              # Show all docs by category
 ./scripts/cache.sh status         # Check cache status
 ./scripts/cache.sh refresh        # Force refresh sitemap
 ```
 
-### Search & Discovery
+### 搜索与发现
 ```bash
 ./scripts/search.sh discord       # Find docs by keyword
 ./scripts/recent.sh 7             # Docs updated in last N days
 ./scripts/fetch-doc.sh gateway/configuration  # Get specific doc
 ```
 
-### Full-Text Index (requires qmd)
+### 全文索引（需使用 qmd 工具）
 ```bash
 ./scripts/build-index.sh fetch    # Download all docs
 ./scripts/build-index.sh build    # Build search index
 ./scripts/build-index.sh search "webhook retry"  # Semantic search
 ```
 
-### Version Tracking
+### 版本跟踪
 ```bash
 ./scripts/track-changes.sh snapshot   # Save current state
 ./scripts/track-changes.sh list       # Show snapshots
 ./scripts/track-changes.sh since 2026-01-01  # Show changes
 ```
 
-## Documentation Categories
+## 文档分类
 
-### 🚀 Getting Started (`/start/`)
-First-time setup, onboarding, FAQ, wizard
+### 🚀 入门指南 (`/start/`)
+- 首次设置、使用指南、常见问题解答、向导
 
-### 🔧 Gateway & Operations (`/gateway/`)
-Configuration, security, health, logging, tailscale, troubleshooting
+### 🔧 Gateway 与操作 (`/gateway/`)
+- 配置、安全设置、运行状态监控、日志记录、故障排除
 
-### 💬 Providers (`/providers/`)
-Discord, Telegram, WhatsApp, Slack, Signal, iMessage, MS Teams
+### 💬 提供者文档 (`/providers/`)
+- Discord、Telegram、WhatsApp、Slack、Signal、iMessage、MS Teams
 
-### 🧠 Core Concepts (`/concepts/`)
-Agent, sessions, messages, models, queues, streaming, system-prompt
+### 🧠 核心概念 (`/concepts/`)
+- 代理（Agent）、会话（Sessions）、消息（Messages）、模型（Models）、队列（Queues）、流式处理（Streaming）、系统提示（System-Prompt）
 
-### 🛠️ Tools (`/tools/`)
-Bash, browser, skills, reactions, subagents, thinking
+### 🛠️ 工具 (`/tools/`)
+- Bash 命令行工具、浏览器插件、技能（Skills）、交互式反应（Reactions）、子代理（Subagents）
 
-### ⚡ Automation (`/automation/`)
-Cron jobs, webhooks, polling, Gmail pub/sub
+### ⚡ 自动化 (`/automation/`)
+- 定时任务（Cron Jobs）、Webhook、数据轮询（Polling）、Gmail 邮件通知（Gmail-PubSub）
 
-### 💻 CLI (`/cli/`)
-Gateway, message, sandbox, update commands
+### 💻 命令行接口 (`/cli/`)
+- Gateway 相关命令、消息处理、沙箱环境（Sandbox）、更新操作
 
-### 📱 Platforms (`/platforms/`)
-macOS, Linux, Windows, iOS, Android, Hetzner
+### 📱 平台文档 (`/platforms/`)
+- macOS、Linux、Windows、iOS、Android、Hetzner
 
-### 📡 Nodes (`/nodes/`)
-Camera, audio, images, location, voice
+### 📡 节点文档 (`/nodes/`)
+- 摄像头（Camera）、音频设备（Audio）、图像处理（Images）、位置信息（Location）、语音功能（Voice）
 
-### 🌐 Web (`/web/`)
-Webchat, dashboard, control UI
+### 🌐 Web 文档 (`/web/`)
+- Webchat 功能、控制面板（Dashboard）、用户界面（Control UI）
 
-### 📦 Install (`/install/`)
-Docker, Ansible, Bun, Nix, updating
+### 📦 安装指南 (`/install/`)
+- Docker 安装、Ansible 配置、Bun 工具、Nix 系统管理、系统更新
 
-### 📚 Reference (`/reference/`)
-Templates, RPC, device models
+### 📚 参考文档 (`/reference/`)
+- 模板（Templates）、远程过程调用（RPC）、设备模型（Device Models）
 
-## Config Snippets
+## 配置示例
 
-See `./snippets/common-configs.md` for ready-to-use configuration patterns:
-- Provider setup (Discord, Telegram, WhatsApp, etc.)
-- Gateway configuration
-- Agent defaults
-- Retry settings
-- Cron jobs
-- Skills configuration
+请参考 `./snippets/common-configs.md` 文件中的预设配置示例：
+- 提供者配置（Discord、Telegram、WhatsApp 等）
+- Gateway 配置
+- 代理默认设置
+- 重试机制（Retry Settings）
+- 定时任务配置
+- 技能配置（Skills Configuration）
 
-## Workflow
+## 工作流程
 
-1. **Identify the need** using the decision tree above
-2. **Search** if unsure: `./scripts/search.sh <keyword>`
-3. **Fetch the doc**: `./scripts/fetch-doc.sh <path>` or use browser
-4. **Reference snippets** for config examples
-5. **Cite the source URL** when answering
+1. 使用上述决策树确定用户的需求。
+2. 如果不确定，可以使用 `./scripts/search.sh <关键词>` 进行搜索。
+3. 通过 `./scripts/fetch-doc.sh <路径>` 获取相关文档，或直接使用浏览器查看。
+4. 查阅文档中的配置示例。
+5. 在回答问题时请务必引用文档的来源 URL。
 
-## Tips
+## 提示：
 
-- Always use cached sitemap when possible (1-hour TTL)
-- For complex questions, search the full-text index
-- Check recent.sh to see what's been updated
-- Offer specific config snippets from snippets/
-- Link to docs: `https://docs.clawd.bot/<path>`
+- 尽可能使用缓存的站点地图（缓存有效期为 1 小时）。
+- 对于复杂问题，建议使用全文索引进行搜索。
+- 定期查看 `recent.sh` 文件以了解最新更新内容。
+- 可以提供具体的配置示例。
+- 文档链接格式：`https://docs.clawd.bot/<路径>`
 
-## Example Interactions
+## 示例交互
 
-**User:** "How do I make my bot only respond when mentioned in Discord?"
+**用户：“如何让我的机器人仅在用户在 Discord 中提到它时才作出反应？”**
 
-**You:** 
-1. Fetch `providers/discord` doc
-2. Find the `requireMention` setting
-3. Provide the config snippet:
+**您：**
+1. 查阅 `providers/discord` 文档。
+2. 找到 `requireMention` 配置选项。
+3. 提供相应的配置示例：
 ```json
 {
   "discord": {
@@ -147,11 +147,11 @@ See `./snippets/common-configs.md` for ready-to-use configuration patterns:
   }
 }
 ```
-4. Link: https://docs.clawd.bot/providers/discord
+4. 提供文档链接：`https://docs.clawd.botproviders/discord`
 
-**User:** "What's new in the docs?"
+**用户：“文档有什么新内容吗？”**
 
-**You:**
-1. Run `./scripts/recent.sh 7`
-2. Summarize recently updated pages
-3. Offer to dive into any specific updates
+**您：**
+1. 运行 `./scripts/recent.sh 7` 查看最近更新的文档。
+2. 总结最近更新的内容。
+3. 如有需要，可进一步解释具体的更新内容。

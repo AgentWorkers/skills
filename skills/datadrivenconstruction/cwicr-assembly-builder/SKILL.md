@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-assembly-builder"
 display_name: "CWICR Assembly Builder"
-description: "Build cost assemblies from CWICR work items. Combine multiple items into reusable templates for common construction elements."
+description: "根据 CWICR 工作项生成构建成本汇编文件。将多个相关项目整合成可重用的模板，以便用于常见的构建元素。"
 ---
 
-# CWICR Assembly Builder
+# CWICR 组件构建器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Estimating repetitive elements requires:
-- Consistent item groupings
-- Reusable templates
-- Standard assemblies
-- Quick application
+### 问题描述
+在估算重复性工作内容时，需要以下条件：
+- 一致的项目分组方式
+- 可重用的模板
+- 标准化的组件
+- 快速的应用流程
 
-### Solution
-Build and manage assemblies of CWICR work items that can be applied as templates to speed up estimating and ensure completeness.
+### 解决方案
+构建并管理 CWICR 工作项目的组件，这些组件可以作为模板使用，以加快估算速度并确保估算的完整性。
 
-### Business Value
-- **Speed** - Apply complete assemblies quickly
-- **Consistency** - Standard item groupings
-- **Completeness** - No missed items
-- **Reusability** - Template library
+### 商业价值
+- **速度**：能够快速应用标准化的组件
+- **一致性**：统一的项目分组方式
+- **完整性**：确保没有遗漏的项目
+- **可重用性**：提供可重用的模板库
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -380,7 +380,7 @@ class CWICRAssemblyBuilder:
             json.dump(data, f, indent=2)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load CWICR data
@@ -408,9 +408,9 @@ result = builder.apply_assembly("FDN-STRIP", quantity=50)
 print(f"Total Cost: ${result['total_cost']:,.2f}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Standard Assemblies
+### 1. 标准化组件
 ```python
 builder.create_standard_assemblies()
 assemblies = builder.list_assemblies()
@@ -418,7 +418,7 @@ for a in assemblies:
     print(f"{a['code']}: ${a['cost_per_unit']:.2f}/{a['unit']}")
 ```
 
-### 2. Compare Options
+### 2. 比较选项
 ```python
 comparison = builder.compare_assemblies(
     ["WALL-STUD", "WALL-BLOCK"],
@@ -427,11 +427,11 @@ comparison = builder.compare_assemblies(
 print(comparison)
 ```
 
-### 3. Clone and Modify
+### 3. 复制与修改
 ```python
 builder.clone_assembly("SLAB-100", "SLAB-150", "Concrete Slab 150mm")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Assembly-Based Estimating
+- **DDC 书籍**: 第 3.1 章 - 基于组件的估算方法

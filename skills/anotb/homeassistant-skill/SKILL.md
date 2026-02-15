@@ -10,37 +10,37 @@ compatibility: Requires curl and jq. Network access to Home Assistant instance.
 metadata: {"author": "anotb", "version": "2.1.0", "openclaw": {"requires": {"env": ["HA_URL", "HA_TOKEN"], "bins": ["curl", "jq"]}, "primaryEnv": "HA_TOKEN"}}
 ---
 
-# Home Assistant Skill
+# Home Assistant 技能
 
-Control smart home devices via the Home Assistant REST API.
+通过 Home Assistant 的 REST API 控制智能家居设备。
 
-## Setup
+## 设置
 
-Set environment variables:
-- `HA_URL` — Your Home Assistant URL (e.g., `http://10.0.0.10:8123`)
-- `HA_TOKEN` — Long-lived access token (create in HA → Profile → Long-Lived Access Tokens)
+配置环境变量：
+- `HA_URL` — 您的 Home Assistant 主机地址（例如：`http://10.0.0.10:8123`）
+- `HA_TOKEN` — 长期有效的访问令牌（在 Home Assistant 的“配置”→“用户”→“长期访问令牌”中生成）
 
-## Safety Rules
+## 安全规则
 
-**Always confirm with the user before performing these actions:**
-- **Locks** — locking or unlocking any lock
-- **Alarm panels** — arming or disarming
-- **Garage doors** — opening or closing (`cover.*` with `device_class: garage`)
-- **Security automations** — disabling automations related to security or safety
-- **Covers** — opening or closing covers that control physical access (gates, barriers)
+**在执行以下操作前，请务必获得用户的确认：**
+- **锁具**：锁定或解锁任何锁具
+- **报警面板**：启动或关闭报警系统
+- **车库门**：打开或关闭车库门（使用 `device_class: garage`）
+- **安全自动化**：禁用与安全相关的自动化脚本
+- **遮阳帘**：打开或关闭控制物理访问的遮阳帘（如大门、屏障）
 
-Never act on security-sensitive devices without explicit user confirmation.
+在没有用户明确确认的情况下，切勿对涉及安全的设备进行任何操作。
 
-## Entity Discovery
+## 实体发现
 
-### List all entities
+### 列出所有实体
 
 ```bash
 curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[].entity_id' | sort
 ```
 
-### List entities by domain
+### 按领域列出实体
 
 ```bash
 # Switches
@@ -56,18 +56,17 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[] | select(.entity_id | startswith("sensor.")) | "\(.entity_id): \(.state) \(.attributes.unit_of_measurement // "")"'
 ```
 
-Replace the domain prefix (`switch.`, `light.`, `sensor.`, etc.) to discover entities
-in any domain.
+请根据需要替换领域前缀（如 `switch.`、`light.`、`sensor.` 等），以发现相应领域的实体。
 
-### Get single entity state
+### 获取单个实体的状态
 
 ```bash
 curl -s "$HA_URL/api/states/ENTITY_ID" -H "Authorization: Bearer $HA_TOKEN"
 ```
 
-### Area & Floor Discovery
+### 区域与楼层发现
 
-Use the template API to query areas, floors, and labels.
+使用模板 API 查询区域、楼层和标签信息。
 
 ```bash
 # List all areas
@@ -101,7 +100,7 @@ curl -s -X POST "$HA_URL/api/template" \
   -d '{"template": "{% for floor in floors() %}{{ floor }}: {{ floor_areas(floor) }}\n{% endfor %}"}'
 ```
 
-## Switches
+## 开关
 
 ```bash
 # Turn on
@@ -123,7 +122,7 @@ curl -s -X POST "$HA_URL/api/services/switch/toggle" \
   -d '{"entity_id": "switch.office_lamp"}'
 ```
 
-## Lights
+## 灯具
 
 ```bash
 # Turn on with brightness
@@ -151,7 +150,7 @@ curl -s -X POST "$HA_URL/api/services/light/turn_off" \
   -d '{"entity_id": "light.living_room"}'
 ```
 
-## Scenes
+## 场景
 
 ```bash
 curl -s -X POST "$HA_URL/api/services/scene/turn_on" \
@@ -160,7 +159,7 @@ curl -s -X POST "$HA_URL/api/services/scene/turn_on" \
   -d '{"entity_id": "scene.movie_time"}'
 ```
 
-## Scripts
+## 脚本
 
 ```bash
 # List all scripts
@@ -180,7 +179,7 @@ curl -s -X POST "$HA_URL/api/services/script/bedtime_routine" \
   -d '{"variables": {"brightness": 20, "delay_minutes": 5}}'
 ```
 
-## Automations
+## 自动化脚本
 
 ```bash
 # List all automations
@@ -206,7 +205,7 @@ curl -s -X POST "$HA_URL/api/services/automation/turn_off" \
   -d '{"entity_id": "automation.morning_routine"}'
 ```
 
-## Climate Control
+## 气候控制
 
 ```bash
 # Get thermostat state
@@ -226,9 +225,9 @@ curl -s -X POST "$HA_URL/api/services/climate/set_hvac_mode" \
   -d '{"entity_id": "climate.thermostat", "hvac_mode": "auto"}'
 ```
 
-## Covers (Blinds, Garage Doors)
+## 遮阳帘（百叶窗、车库门）
 
-**Safety:** Confirm with the user before opening/closing garage doors or gates.
+**安全提示：** 在打开/关闭车库门或大门之前，请务必获得用户的确认。
 
 ```bash
 # Open
@@ -250,9 +249,9 @@ curl -s -X POST "$HA_URL/api/services/cover/set_cover_position" \
   -d '{"entity_id": "cover.blinds", "position": 50}'
 ```
 
-## Locks
+## 锁具
 
-**Safety:** Always confirm with the user before locking/unlocking.
+**安全提示：** 在锁定/解锁锁具之前，请务必获得用户的确认。
 
 ```bash
 # Lock
@@ -268,7 +267,7 @@ curl -s -X POST "$HA_URL/api/services/lock/unlock" \
   -d '{"entity_id": "lock.front_door"}'
 ```
 
-## Fans
+## 风扇
 
 ```bash
 # Turn on
@@ -284,7 +283,7 @@ curl -s -X POST "$HA_URL/api/services/fan/turn_off" \
   -d '{"entity_id": "fan.bedroom"}'
 ```
 
-## Media Players
+## 媒体播放器
 
 ```bash
 # Play/pause
@@ -300,7 +299,7 @@ curl -s -X POST "$HA_URL/api/services/media_player/volume_set" \
   -d '{"entity_id": "media_player.living_room_tv", "volume_level": 0.5}'
 ```
 
-## Vacuum
+## 吸尘器
 
 ```bash
 # Start cleaning
@@ -316,9 +315,9 @@ curl -s -X POST "$HA_URL/api/services/vacuum/return_to_base" \
   -d '{"entity_id": "vacuum.robot"}'
 ```
 
-## Alarm Control Panel
+## 报警控制面板
 
-**Safety:** Always confirm with the user before arming/disarming.
+**安全提示：** 在启动或关闭报警系统之前，请务必获得用户的确认。
 
 ```bash
 # Arm (home mode)
@@ -334,7 +333,7 @@ curl -s -X POST "$HA_URL/api/services/alarm_control_panel/alarm_disarm" \
   -d '{"entity_id": "alarm_control_panel.home", "code": "1234"}'
 ```
 
-## Notifications
+## 通知
 
 ```bash
 # List available notification targets
@@ -354,9 +353,9 @@ curl -s -X POST "$HA_URL/api/services/notify/notify" \
   -d '{"message": "System alert", "title": "Home Assistant"}'
 ```
 
-Replace `mobile_app_phone` with the actual service name from the list command.
+请将 `mobile_app_phone` 替换为实际的服务名称。
 
-## Person & Presence
+## 人员与位置追踪
 
 ```bash
 # Who is home?
@@ -368,9 +367,9 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[] | select(.entity_id | startswith("device_tracker.")) | "\(.entity_id): \(.state)"'
 ```
 
-States: `home`, `not_home`, or a zone name.
+状态值：`home`（在家）、`not_home`（不在家）或区域名称。
 
-## Weather
+## 天气信息
 
 ```bash
 # Current weather
@@ -390,7 +389,7 @@ curl -s -X POST "$HA_URL/api/services/weather/get_forecasts" \
   -d '{"entity_id": "weather.home", "type": "hourly"}'
 ```
 
-## Input Helpers
+## 输入辅助功能
 
 ```bash
 # Toggle an input boolean
@@ -424,7 +423,7 @@ curl -s -X POST "$HA_URL/api/services/input_datetime/set_datetime" \
   -d '{"entity_id": "input_datetime.alarm_time", "time": "07:30:00"}'
 ```
 
-## Calendar
+## 日历
 
 ```bash
 # List all calendars
@@ -437,7 +436,7 @@ curl -s "$HA_URL/api/calendars/calendar.personal?start=$(date -u +%Y-%m-%dT%H:%M
   | jq '[.[] | {summary: .summary, start: .start.dateTime, end: .end.dateTime}]'
 ```
 
-## Text-to-Speech
+## 文本转语音
 
 ```bash
 curl -s -X POST "$HA_URL/api/services/tts/speak" \
@@ -446,11 +445,11 @@ curl -s -X POST "$HA_URL/api/services/tts/speak" \
   -d '{"entity_id": "tts.google_en", "media_player_entity_id": "media_player.living_room_speaker", "message": "Dinner is ready"}'
 ```
 
-Replace `tts.google_en` with your TTS entity and `media_player.living_room_speaker` with the target speaker.
+请将 `tts.google_en` 替换为您使用的文本转语音服务，将 `media_player.living_room_speaker` 替换为目标扬声器。
 
-## Call Any Service
+## 调用任意服务
 
-The general pattern for any HA service:
+调用 Home Assistant 服务的通用格式如下：
 
 ```bash
 curl -s -X POST "$HA_URL/api/services/{domain}/{service}" \
@@ -459,9 +458,9 @@ curl -s -X POST "$HA_URL/api/services/{domain}/{service}" \
   -d '{"entity_id": "domain.entity_name", ...}'
 ```
 
-### Batch operations
+### 批量操作
 
-Control multiple entities in one call by passing an array of entity IDs:
+通过传递实体 ID 的数组，一次控制多个实体：
 
 ```bash
 # Turn off all living room lights at once
@@ -471,9 +470,9 @@ curl -s -X POST "$HA_URL/api/services/light/turn_off" \
   -d '{"entity_id": ["light.living_room", "light.living_room_lamp", "light.living_room_ceiling"]}'
 ```
 
-## Error Handling
+## 错误处理
 
-### Check API connectivity
+### 检查 API 连接状态
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}" "$HA_URL/api/" \
@@ -481,7 +480,7 @@ curl -s -o /dev/null -w "%{http_code}" "$HA_URL/api/" \
 # Expect: 200
 ```
 
-### Verify entity exists before acting
+### 在执行操作前验证实体是否存在
 
 ```bash
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
@@ -490,32 +489,32 @@ HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
 # 200 = exists, 404 = not found
 ```
 
-### HTTP status codes
+### HTTP 状态码
 
-| Code | Meaning |
+| 状态码 | 含义 |
 |------|---------|
-| 200 | Success |
-| 400 | Bad request (malformed JSON or invalid service data) |
-| 401 | Unauthorized (bad or missing token) |
-| 404 | Entity or endpoint not found |
-| 405 | Method not allowed (wrong HTTP method) |
-| 503 | Home Assistant is starting up or unavailable |
+| 200 | 操作成功 |
+| 400 | 请求错误（JSON 格式不正确或服务数据无效） |
+| 401 | 未经授权（令牌错误或缺失） |
+| 404 | 实体或端点未找到 |
+| 405 | 不允许的 HTTP 方法 |
+| 503 | Home Assistant 正在启动或暂时不可用 |
 
-## Response Format
+## 响应格式
 
-Service calls return an array of state objects for affected entities:
+服务调用会返回受影响实体的状态对象数组：
 
 ```json
 [{"entity_id": "light.living_room", "state": "on", "attributes": {...}, "last_changed": "..."}]
 ```
 
-- Successful call with no state change: returns `[]` (empty array)
-- State read (`/api/states/...`): returns a single state object
-- Errors: returns `{"message": "..."}` with an HTTP error code
+- 如果操作成功且状态未发生变化：返回 `[]`（空数组）
+- 获取实体状态（例如：`/api/states/...`）：返回单个实体状态对象
+- 出现错误时：返回 `{"message": "..."` 以及相应的 HTTP 错误代码
 
-## Template Evaluation
+## 模板解析
 
-The `/api/template` endpoint evaluates Jinja2 templates server-side. Useful for computed queries.
+`/api/template` 端点会在服务器端解析 Jinja2 模板，适用于计算型查询。
 
 ```bash
 curl -s -X POST "$HA_URL/api/template" \
@@ -524,7 +523,7 @@ curl -s -X POST "$HA_URL/api/template" \
   -d '{"template": "TEMPLATE_STRING"}'
 ```
 
-### Examples
+### 示例
 
 ```bash
 # Count entities by domain
@@ -546,11 +545,11 @@ curl -s -X POST "$HA_URL/api/template" \
   -d '{"template": "{{ states | selectattr(\"state\", \"eq\", \"on\") | map(attribute=\"entity_id\") | list }}"}'
 ```
 
-Available template functions: `states()`, `is_state()`, `state_attr()`, `areas()`, `area_entities()`, `area_name()`, `floors()`, `floor_areas()`, `labels()`, `label_entities()`, `devices()`, `device_entities()`, `now()`, `relative_time()`.
+可用的模板函数包括：`states()`、`is_state()`、`state_attr()`、`areas()`、`area_entities()`、`area_name()`、`floors()`、`floor_areas()`、`labels()`、`label_entities()`、`devices()`、`device_entities()`、`now()`、`relative_time()`。
 
-## History & Logbook
+## 历史记录与日志
 
-### Entity state history
+### 实体状态历史记录
 
 ```bash
 # Last 24 hours for a specific entity
@@ -564,7 +563,7 @@ curl -s "$HA_URL/api/history/period/2025-01-15T00:00:00Z?end_time=2025-01-15T23:
   | jq '.[0]'
 ```
 
-### Logbook
+### 日志记录
 
 ```bash
 # Recent logbook entries
@@ -577,9 +576,9 @@ curl -s "$HA_URL/api/logbook?entity=light.living_room" \
   | jq '.[:10] | [.[] | {name: .name, message: .message, when: .when}]'
 ```
 
-## Dashboard Overview
+## 仪表盘概览
 
-Quick status of all active devices:
+显示所有活跃设备的快速状态信息：
 
 ```bash
 # All lights that are on
@@ -607,39 +606,39 @@ curl -s "$HA_URL/api/states" -H "Authorization: Bearer $HA_TOKEN" \
   | jq -r '.[] | select(.entity_id | startswith("person.")) | "\(.attributes.friendly_name // .entity_id): \(.state)"'
 ```
 
-## Entity Domains
+## 实体领域
 
-| Domain | Examples |
+| 领域 | 实体示例 |
 |--------|----------|
-| `switch.*` | Smart plugs, generic switches |
-| `light.*` | Lights (Hue, LIFX, etc.) |
-| `scene.*` | Pre-configured scenes |
-| `script.*` | Reusable action sequences |
-| `automation.*` | Automations |
-| `climate.*` | Thermostats, AC units |
-| `cover.*` | Blinds, garage doors, gates |
-| `lock.*` | Smart locks |
-| `fan.*` | Fans, ventilation |
-| `media_player.*` | TVs, speakers, streaming devices |
-| `vacuum.*` | Robot vacuums |
-| `alarm_control_panel.*` | Security systems |
-| `notify.*` | Notification targets |
-| `person.*` | People / presence tracking |
-| `device_tracker.*` | Device locations |
-| `weather.*` | Weather conditions and forecasts |
-| `calendar.*` | Calendar events |
-| `tts.*` | Text-to-speech engines |
-| `sensor.*` | Temperature, humidity, power, etc. |
-| `binary_sensor.*` | Motion, door/window, presence |
-| `input_boolean.*` | Virtual toggles |
-| `input_number.*` | Numeric sliders |
-| `input_select.*` | Dropdown selectors |
-| `input_text.*` | Text inputs |
-| `input_datetime.*` | Date/time inputs |
+| `switch.*` | 智能插座、通用开关 |
+| `light.*` | 灯具（Hue、LIFX 等） |
+| `scene.*` | 预配置的场景 |
+| `script.*` | 可重用的动作序列 |
+| `automation.*` | 自动化脚本 |
+| `climate.*` | 温度控制器、空调设备 |
+| `cover.*` | 遮阳帘、车库门 |
+| `lock.*` | 智能锁 |
+| `fan.*` | 风扇 |
+| `media_player.*` | 电视、扬声器、流媒体设备 |
+| `vacuum.*` | 吸尘器 |
+| `alarm_control_panel.*` | 安防系统 |
+| `notify.*` | 通知接收设备 |
+| `person.*` | 人员/位置追踪 |
+| `device_tracker.*` | 设备位置信息 |
+| `weather.*` | 天气状况与预报 |
+| `calendar.*` | 日历事件 |
+| `tts.*` | 文本转语音服务 |
+| `sensor.*` | 温度、湿度、电量等传感器数据 |
+| `binary_sensor.*` | 运动传感器、门窗传感器、人员检测 |
+| `input_boolean.*` | 布尔值输入开关 |
+| `input_number.*` | 数字滑块 |
+| `input_select.*` | 下拉选择器 |
+| `input_text.*` | 文本输入框 |
+| `input_datetime.*` | 日期/时间输入框 |
 
-## Notes
+## 注意事项
 
-- API returns JSON by default
-- Long-lived tokens don't expire — store securely
-- Test entity IDs with the list command first
-- For locks, alarms, and garage doors — always confirm actions with the user
+- API 默认返回 JSON 格式的数据
+- 长期有效的访问令牌不会过期，请妥善保管
+- 在使用前，请先用 `list` 命令测试实体 ID 是否正确
+- 对于锁具、报警系统和车库门相关的操作，务必在操作前获得用户的确认

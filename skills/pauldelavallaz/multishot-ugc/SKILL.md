@@ -21,29 +21,29 @@ description: |
   TYPICAL PIPELINE: Morpheus → multishot-ugc → select best 4 → veed-ugc each → Remotion edit
 ---
 
-# Multishot-UGC
+# 多视角UGC（Multishot-UGC）
 
-Generate 10 perspective variations of an image using ComfyDeploy's MULTISHOT-UGC workflow.
+使用ComfyDeploy的MULTISHOT-UGC工作流，可以生成一张图片的10种不同视角的变体。
 
-## Overview
+## 概述
 
-Multishot-UGC takes a single image and generates 10 different variations exploring different perspectives, angles, and compositions. These variations are designed to be used in VEED lip-sync workflows to create dynamic UGC-style promotional videos with varied camera shots.
+Multishot-UGC从一张图片生成10种不同的变体，这些变体展示了不同的视角、角度和构图。这些变体适用于VEED的口型同步工作流，用于创建具有多种镜头效果的动态UGC风格宣传视频。
 
-## API Details
+## API详情
 
-**Endpoint:** `https://api.comfydeploy.com/api/run/deployment/queue`
-**Deployment ID:** `9ccbb29a-d982-48cc-a465-bae916f2c7fd`
+**端点：** `https://api.comfydeploy.com/api/run/deployment/queue`
+**部署ID：** `9ccbb29a-d982-48cc-a465-bae916f2c7fd`
 
-## Required Inputs
+## 必需输入参数
 
-| Input | Description | Default |
-|-------|-------------|---------|
-| `input_image` | URL or path to the source image | Required |
-| `text` | Description for exploration | "Explora distintas perspectivas de esta escena" |
-| `resolution` | Output resolution | "2K" |
-| `aspect_ratio` | Output aspect ratio | "9:16" |
+| 输入参数 | 描述 | 默认值 |
+|---------|-------------|---------|
+| `input_image` | 源图片的URL或路径 | 必填 |
+| `text` | 变体生成的描述 | "探索这个场景的不同视角" |
+| `resolution` | 输出分辨率 | "2K" |
+| `aspect_ratio` | 输出宽高比 | "9:16" |
 
-## Usage
+## 使用方法
 
 ```bash
 uv run ~/.clawdbot/skills/multishot-ugc/scripts/generate.py \
@@ -54,43 +54,42 @@ uv run ~/.clawdbot/skills/multishot-ugc/scripts/generate.py \
   [--aspect-ratio 9:16|16:9|1:1|4:3|3:4]
 ```
 
-### With URL:
+### 使用URL调用：
 ```bash
 uv run ~/.clawdbot/skills/multishot-ugc/scripts/generate.py \
   --image "https://example.com/image.png" \
   --output-dir "./variations"
 ```
 
-## Output
+## 输出结果
 
-The workflow generates 10 PNG images with variations:
-- `1_00001_.png` through `10_00001_.png`
+该工作流会生成10张PNG格式的图片（文件名格式为`1_00001_.png`至`10_00001_.png`）：
 
-Each image explores a different perspective/angle of the original scene while maintaining subject identity and composition coherence.
+每张图片都展示了原始场景的不同视角或角度，同时保持了主体和构图的连贯性。
 
-## Workflow Integration
+## 工作流集成
 
-### Typical Pipeline
+### 典型流程
 
-1. **Generate hero image with Morpheus/Ad-Ready**
+1. 使用Morpheus/Ad-Ready生成主图片  
    ```bash
    uv run morpheus... --output hero.png
    ```
 
-2. **Create 10 angle variations**
+2. 生成10种不同角度的变体  
    ```bash
    uv run multishot-ugc... --image hero.png --output-dir ./shots
    ```
 
-3. **Select best variations for VEED lip-sync**
+3. 从生成的变体中选择最适合VEED口型同步的版本  
    ```bash
    # Review shots, then generate videos for chosen ones
    uv run veed-ugc... --image ./shots/3_00001_.png --brief "..."
    ```
 
-## Notes
+## 注意事项：
 
-- Source image should be high quality (at least 1K resolution)
-- Works best with images containing a clear subject/person
-- Generation takes ~2-3 minutes for 10 variations
-- All variations maintain the original aspect ratio unless specified
+- 源图片应具有高质量（至少1K分辨率）  
+- 最适合包含清晰主体或人物的图片  
+- 生成10种变体大约需要2-3分钟  
+- 除非另有指定，否则所有变体都将保持原始的宽高比

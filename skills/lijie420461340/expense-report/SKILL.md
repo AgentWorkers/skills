@@ -1,41 +1,41 @@
 ---
 name: expense-report
-description: Organize, categorize, and summarize business expenses for reimbursement and tax preparation
+description: 整理、分类并汇总业务支出，以便用于报销和税务申报。
 version: 1.0.0
 author: Claude Office Skills Contributors
 license: MIT
 tags: [finance, expenses, accounting]
 ---
 
-# Expense Report
+# 费用报告
 
-## Overview
+## 概述
 
-This skill helps you organize business expenses into clear, categorized reports suitable for reimbursement requests, accounting, and tax preparation.
+本功能可帮助您将业务支出整理成清晰、分类明确的报告，便于提交报销申请、进行会计处理和税务申报。
 
-**Use Cases:**
-- Creating expense reimbursement reports
-- Organizing receipts for tax preparation
-- Categorizing business expenses
-- Summarizing travel expenses
-- Preparing monthly/quarterly expense summaries
+**使用场景：**
+- 创建费用报销报告
+- 整理用于税务申报的收据
+- 对业务支出进行分类
+- 汇总差旅费用
+- 编制月度/季度费用汇总表
 
-## How to Use
+## 使用方法
 
-1. Provide your expense information (receipts, transactions, or descriptions)
-2. Specify the purpose (reimbursement, tax prep, budget tracking)
-3. Tell me your expense categories or policies
-4. I'll create a structured expense report
+1. 提供您的费用信息（收据、交易记录或费用描述）
+2. 指定费用用途（报销、税务申报、预算监控）
+3. 告诉我您的费用分类或公司政策
+4. 我将为您生成结构化的费用报告
 
-**Example prompts:**
-- "Create an expense report from these receipts for my business trip"
-- "Categorize and summarize my expenses for the month"
-- "Format these expenses for reimbursement"
-- "Help me organize my freelance business expenses for taxes"
+**示例提示：**
+- “根据这些收据为我出差的费用生成一份费用报告”
+- “对当月的费用进行分类并汇总”
+- “将这些费用整理好以备报销”
+- “帮我整理自由职业相关的费用以用于税务申报”
 
-## Expense Report Templates
+## 费用报告模板
 
-### Standard Reimbursement Report
+### 标准报销报告
 
 ```markdown
 # Expense Report
@@ -86,7 +86,7 @@ This skill helps you organize business expenses into clear, categorized reports 
 [Any additional context or explanations]
 ```
 
-### Travel Expense Report
+### 差旅费用报告
 
 ```markdown
 # Travel Expense Report
@@ -143,7 +143,7 @@ This skill helps you organize business expenses into clear, categorized reports 
 - [ ] Other expense receipts
 ```
 
-### Monthly Expense Summary
+### 月度费用汇总
 
 ```markdown
 # Monthly Expense Summary
@@ -193,63 +193,63 @@ This skill helps you organize business expenses into clear, categorized reports 
 - [Budget variance explanations]
 ```
 
-## Expense Categories
+## 费用分类
 
-### Common Business Categories
+### 常见业务费用分类
 
-| Category | Examples | Tax Deductible |
+| 分类 | 示例 | 是否可抵扣税款 |
 |----------|----------|----------------|
-| **Travel** | Flights, hotels, car rentals | Usually yes |
-| **Meals & Entertainment** | Client dinners, team lunches | 50-100% |
-| **Transportation** | Taxi, Uber, parking, mileage | Yes |
-| **Office Supplies** | Paper, pens, printer ink | Yes |
-| **Software & Subscriptions** | SaaS tools, apps | Yes |
-| **Professional Development** | Courses, books, conferences | Usually yes |
-| **Communication** | Phone, internet | Partial |
-| **Professional Services** | Legal, accounting | Yes |
-| **Marketing** | Ads, promotional materials | Yes |
-| **Equipment** | Computer, office furniture | Depreciated |
+| **差旅** | 飞票、酒店、租车 | 通常可抵扣 |
+| **餐饮与娱乐** | 客户聚餐、团队午餐 | 50-100% 可抵扣 |
+| **交通** | 出租车、优步、停车费、里程费 | 可抵扣 |
+| **办公用品** | 纸张、笔、打印机墨水 | 可抵扣 |
+| **软件与订阅服务** | SaaS 工具、应用程序 | 可抵扣 |
+| **专业发展** | 课程、书籍、会议 | 通常可抵扣 |
+| **通讯** | 电话费用、网络费用 | 部分可抵扣 |
+| **专业服务** | 法律服务、会计服务 | 可抵扣 |
+| **市场营销** | 广告费用、宣传材料 | 可抵扣 |
+| **设备** | 电脑、办公家具 | 可抵扣（需按折旧年限计算） |
 
-### IRS Category Alignment (US)
+### 美国国税局（IRS）费用分类标准
 
-| IRS Category | Description |
+| IRS 分类 | 说明 |
 |--------------|-------------|
-| Advertising | Marketing and promotional |
-| Car and Truck | Vehicle expenses |
-| Commissions | Payments to contractors |
-| Contract Labor | Freelancer payments |
-| Depreciation | Asset depreciation |
-| Insurance | Business insurance |
-| Interest | Business loan interest |
-| Legal and Professional | Attorney, CPA fees |
-| Office Expense | General office |
-| Rent | Workspace rental |
-| Repairs | Equipment maintenance |
-| Supplies | Business supplies |
-| Taxes and Licenses | Business taxes |
-| Travel | Business travel |
-| Meals | Business meals (50%) |
-| Utilities | Business utilities |
+| 广告 | 市场营销和宣传费用 |
+| 车辆费用 | 车辆相关支出 |
+| 佣金 | 给承包商的付款 |
+| 合同工费用 | 自由职业者的报酬 |
+| 折旧 | 资产折旧费用 |
+| 保险 | 商业保险费用 |
+| 利息 | 商业贷款利息 |
+| 法律与专业服务 | 律师费、注册会计师费用 |
+| 办公费用 | 一般办公开支 |
+| 租金 | 办公场所租金 |
+| 维修费用 | 设备维护费用 |
+| 用品费用 | 商业用品费用 |
+| 税费与许可证 | 商业税费 |
+| 差旅费用 | 差旅相关费用 |
+| 餐饮费用 | 差旅期间的餐饮费用（50% 可抵扣） |
+| 公用事业费 | 商业用水/电费 |
 
-## Processing Guidelines
+## 处理指南
 
-### Receipt Requirements
-- **Keep receipts for:** All expenses over $25 (US) or local threshold
-- **Required info:** Date, vendor, amount, payment method
-- **Meals:** Include attendees and business purpose
-- **Missing receipts:** Note explanation in report
+### 收据要求
+- 保留所有超过 $25（美国）或当地规定金额的收据
+- 必需的信息：日期、供应商、金额、支付方式
+- 餐饮费用：需注明参与人员及费用用途
+- 如果缺少收据，请在报告中说明原因
 
-### Currency Conversion
-- Use exchange rate from date of expense
-- Document rate source (bank, XE.com, etc.)
-- Keep in original currency + converted amount
+### 货币转换
+- 使用费用发生当日的汇率进行转换
+- 记录汇率来源（银行、XE.com 等）
+- 保留原始货币金额及转换后的金额
 
-### Mileage Calculation
-- Current IRS rate (2024): $0.67/mile (verify current rate)
-- Document: Date, destination, purpose, miles
-- Use odometer readings or mapping app
+### 里程费计算
+- 当前 IRS 里程费标准：$0.67/英里（请核实最新标准）
+- 记录相关信息：日期、目的地、用途、行驶里程
+- 可使用里程表读数或地图应用记录里程
 
-## Output Format
+## 输出格式
 
 ```markdown
 # Expense Report
@@ -267,19 +267,18 @@ This skill helps you organize business expenses into clear, categorized reports 
 [Any issues to address]
 ```
 
-## Limitations
+## 限制事项
+- 无法直接扫描或识别收据图片
+- 税务相关建议请咨询专业人士
+- 请核实汇率的准确性
+- 公司政策可能有特殊要求
+- 无法将报告直接提交至您的费用管理系统
 
-- Cannot scan or read receipt images directly
-- Tax advice should be verified with a professional
-- Exchange rates should be verified for accuracy
-- Company policies may have specific requirements
-- Cannot submit reports to your expense system
+## 示例
 
-## Examples
+### 快速费用整理示例
 
-### Example: Quick Expense Organization
-
-**Input:**
+**输入：**
 ```
 uber to airport $45
 flight to NYC $380
@@ -292,56 +291,56 @@ return flight $395
 uber home $42
 ```
 
-**Output:**
+**输出：**
 
-# Travel Expense Report
+# 差旅费用报告
 
-**Trip:** NYC Client Visit
-**Dates:** [Dates based on context]
-**Purpose:** Client meeting with Acme Corp
+**出差地点：** 纽约市，客户拜访
+**日期：** [根据实际情况填写日期]
+**用途：** 与 Acme 公司的商务会议
 
-## Summary
-| Category | Amount |
+## 费用汇总
+| 分类 | 金额 |
 |----------|--------|
-| Airfare | $775.00 |
-| Lodging | $420.00 |
-| Ground Transportation | $115.00 |
-| Meals & Entertainment | $225.00 |
-| **Total** | **$1,535.00** |
+| 飞行费 | $775.00 |
+| 住宿费 | $420.00 |
+| 地面交通费 | $115.00 |
+| 餐饮与娱乐费 | $225.00 |
+| **总计：** $1,535.00 |
 
-## Detailed Expenses
+## 详细费用明细
 
-### Airfare
-| Date | Description | Amount | Receipt |
+### 飞行费
+| 日期 | 详情 | 金额 | 收据 |
 |------|-------------|--------|---------|
-| [Day 1] | Flight to NYC | $380.00 | Needed |
-| [Day 3] | Return flight | $395.00 | Needed |
-| **Subtotal** | | **$775.00** | |
+| [第1天] | 纽约往返航班 | $380.00 | 必需提供 |
+| [第3天] | 返回航班 | $395.00 | 必需提供 |
+| **小计：** | $775.00 |
 
-### Lodging
-| Date | Description | Amount | Receipt |
+### 住宿费
+| 日期 | 详情 | 金额 | 收据 |
 |------|-------------|--------|---------|
-| [Day 1-2] | Hotel (2 nights) | $420.00 | Needed |
+| [第1-2天] | 酒店（2晚） | $420.00 | 必需提供 |
 
-### Ground Transportation
-| Date | Description | Amount | Receipt |
+### 地面交通费
+| 日期 | 详情 | 金额 | 收据 |
 |------|-------------|--------|---------|
-| [Day 1] | Uber to airport | $45.00 | ✓ App |
-| [Day 2] | Uber to meetings | $28.00 | ✓ App |
-| [Day 3] | Uber to home | $42.00 | ✓ App |
-| **Subtotal** | | **$115.00** | |
+| [第1天] | 机场接送 | $45.00 | 通过优步支付 |
+| [第2天] | 会议接送 | $28.00 | 通过优步支付 |
+| [第3天] | 回家接送 | $42.00 | 通过优步支付 |
+| **小计：** | $115.00 |
 
-### Meals & Entertainment
-| Date | Description | Attendees | Purpose | Amount | Receipt |
+### 餐饮与娱乐费
+| 日期 | 详情 | 参与人员 | 用途 | 金额 | 收据 |
 |------|-------------|-----------|---------|--------|---------|
-| [Day 1] | Client dinner | John (Acme) | Account review | $125.00 | Needed |
-| [Day 2] | Breakfast/coffee | Self | Working meal | $35.00 | Optional |
-| [Day 2] | Lunch meeting | [TBD] | [Purpose] | $65.00 | Needed |
-| **Subtotal** | | | | **$225.00** | |
+| [第1天] | 客户聚餐 | John (Acme) | 客户会议 | $125.00 | 必需提供 |
+| [第2天] | 早餐/咖啡 | 个人消费 | 工作餐 | $35.00 | 可选 |
+| [第2天] | 午餐会议 | [待确认] | [会议目的] | $65.00 | 必需提供 |
+| **小计：** | | | $225.00 |
 
-## Action Items
-- [ ] Collect flight confirmation emails
-- [ ] Get hotel invoice/folio
-- [ ] Save restaurant receipts for meals over $25
-- [ ] Document business purpose for client dinner
-- [ ] Confirm lunch meeting attendees
+## 需要执行的操作：
+- [ ] 收集航班确认邮件
+- [ ] 获取酒店发票
+- [ ] 保存超过 $25 的餐饮费用收据
+- [ ] 记录客户聚餐的详细用途
+- [ ] 确认午餐会议的参与人员

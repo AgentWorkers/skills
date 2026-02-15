@@ -1,6 +1,6 @@
 ---
 name: clawdaddy
-description: The world's #1 AI-friendly domain registrar. Check availability, purchase domains with USDC or cards, configure DNS, and manage nameservers - all without CAPTCHAs or signup.
+description: 全球排名第一的、对人工智能友好的域名注册商。您可以查询域名是否可用，使用 USDC 或银行卡购买域名，配置 DNS，以及管理名称服务器——所有这些操作都不需要验证码或注册流程。
 homepage: https://clawdaddy.app
 emoji: 🦞
 metadata:
@@ -11,39 +11,39 @@ metadata:
       env: []
 ---
 
-# ClawDaddy - AI-Friendly Domain Registrar
+# ClawDaddy - 一款专为人工智能设计的域名注册服务
 
-The world's #1 AI-friendly domain registrar. Check availability, purchase domains, configure DNS, and manage nameservers.
+全球排名第一的、专为人工智能设计的域名注册服务。您可以查询域名可用性、购买域名、配置DNS以及管理名称服务器。
 
-**Base URL:** `https://clawdaddy.app`
+**基础URL：** `https://clawdaddy.app`
 
-No CAPTCHAs. No signup required for lookups. Bearer tokens for management.
+无需验证码，查询域名时也无需注册账号。支持使用bearer token进行身份验证。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Endpoint | Auth |
+| 功能 | API端点 | 认证方式 |
 |------|----------|------|
-| Check availability | `GET /api/lookup/{domain}` | None |
-| Get purchase quote | `GET /api/purchase/{domain}/quote` | None |
-| Purchase domain | `POST /api/purchase/{domain}?method=x402\|stripe` | None |
-| Manage domain | `GET /api/manage/{domain}` | Bearer token |
-| Configure DNS | `POST /api/manage/{domain}/dns` | Bearer token |
-| Update nameservers | `PUT /api/manage/{domain}/nameservers` | Bearer token |
-| Recover token | `POST /api/recover` | None |
+| 查询域名可用性 | `GET /api/lookup/{domain}` | 无 |
+| 获取购买报价 | `GET /api/purchase/{domain}/quote` | 无 |
+| 购买域名 | `POST /api/purchase/{domain}?method=x402\|stripe` | 无 |
+| 管理域名 | `GET /api/manage/{domain}` | 需要bearer token |
+| 配置DNS | `POST /api/manage/{domain}/dns` | 需要bearer token |
+| 更新名称服务器 | `PUT /api/manage/{domain}/nameservers` | 需要bearer token |
+| 恢复token | `POST /api/recover` | 无 |
 
 ---
 
-## 1. Check Domain Availability
+## 1. 查询域名可用性
 
-**When:** User asks "Is example.com available?" or "Check if mycoolapp.io is taken"
+**使用场景：** 用户询问“example.com是否可用？”或“mycoolapp.io是否已被注册”
 
 ```
 GET https://clawdaddy.app/api/lookup/example.com
 ```
 
-### JSON Response
+### JSON响应格式
 
 ```json
 {
@@ -62,39 +62,29 @@ GET https://clawdaddy.app/api/lookup/example.com
 }
 ```
 
-### TXT Response
+### TXT响应格式
 
 ```
 GET https://clawdaddy.app/api/lookup/example.com?format=txt
 ```
 
-```
-fqdn=example.com
-available=true
-status=available
-premium=false
-price_amount=12.99
-price_currency=USD
-checked_at=2026-01-15T10:30:00Z
-```
+### 响应状态码说明
 
-### Status Values
-
-| Status | `available` | Meaning |
+| 状态码 | 含义 |
 |--------|-------------|---------|
-| `available` | `true` | Can be registered |
-| `registered` | `false` | Already taken |
-| `unknown` | `false` | Error/timeout |
+| `available` | 可以注册 |
+| `registered` | 已被注册 |
+| `unknown` | 出现错误/超时 |
 
-**Key:** The `available` field is ALWAYS boolean (`true`/`false`), never undefined.
+**注意：** `available`字段始终为布尔值（`true`或`false`），永远不会为`undefined`。
 
 ---
 
-## 2. Purchase a Domain
+## 2. 购买域名
 
-### Step 1: Get Quote
+### 第1步：获取报价
 
-**When:** User wants to buy a domain, get the price first.
+**使用场景：** 用户想要购买域名时，首先需要获取报价。
 
 ```
 GET https://clawdaddy.app/api/purchase/example.com/quote
@@ -115,15 +105,11 @@ GET https://clawdaddy.app/api/purchase/example.com/quote
 }
 ```
 
-### Step 2a: Purchase via x402 (USDC on Base)
+### 第2a步：通过x402（基于Base的支付平台）购买
 
-**Best for:** AI agents with crypto wallets
+**适合人群：** 拥有加密货币钱包的AI代理
 
-```
-POST https://clawdaddy.app/api/purchase/example.com?method=x402
-```
-
-First request returns HTTP 402 with payment requirements:
+**操作流程：** 第一次请求会返回HTTP 402错误，提示需要支付费用：
 
 ```json
 {
@@ -141,27 +127,18 @@ First request returns HTTP 402 with payment requirements:
 }
 ```
 
-After paying USDC on Base, retry with payment proof:
+支付完成后，重新请求并提交支付凭证：
 
 ```
 POST https://clawdaddy.app/api/purchase/example.com?method=x402
 x-payment: <payment_proof_from_x402>
 ```
 
-### Step 2b: Purchase via Stripe (Cards)
+### 第2b步：通过Stripe（信用卡）购买
 
-**Best for:** Human users or agents without crypto
+**适合人群：** 人类用户或没有加密货币的代理
 
-```
-POST https://clawdaddy.app/api/purchase/example.com?method=stripe
-Content-Type: application/json
-
-{
-  "email": "user@example.com"
-}
-```
-
-Returns Stripe checkout URL:
+**操作流程：** 系统会返回Stripe的支付页面链接：
 
 ```json
 {
@@ -170,7 +147,7 @@ Returns Stripe checkout URL:
 }
 ```
 
-### Success Response (Both Methods)
+### 成功响应（两种方式均适用）
 
 ```json
 {
@@ -184,19 +161,19 @@ Returns Stripe checkout URL:
 }
 ```
 
-**CRITICAL:** Save the `managementToken` immediately! It's required for all management operations and cannot be retrieved without recovery.
+**重要提示：** 必须立即保存`managementToken`！它是进行所有域名管理操作的必备凭证，无法通过其他方式重新获取。
 
 ---
 
-## 3. Domain Management
+## 3. 域名管理
 
-All management endpoints require the Authorization header:
+所有域名管理操作都需要在请求头中添加`Authorization`字段：
 
 ```
 Authorization: Bearer clwd_your_management_token
 ```
 
-### Get Domain Overview
+### 获取域名概览
 
 ```
 GET https://clawdaddy.app/api/manage/example.com
@@ -217,14 +194,14 @@ Authorization: Bearer clwd_abc123...
 }
 ```
 
-### DNS Records
+### DNS记录管理
 
-**List all records:**
+- **列出所有DNS记录：** 
 ```
 GET /api/manage/{domain}/dns
 ```
 
-**Create a record:**
+- **创建DNS记录：** 
 ```
 POST /api/manage/{domain}/dns
 Content-Type: application/json
@@ -237,7 +214,7 @@ Content-Type: application/json
 }
 ```
 
-**Update a record:**
+- **更新DNS记录：** 
 ```
 PUT /api/manage/{domain}/dns?id=123
 Content-Type: application/json
@@ -248,68 +225,56 @@ Content-Type: application/json
 }
 ```
 
-**Delete a record:**
+- **删除DNS记录：** 
 ```
 DELETE /api/manage/{domain}/dns?id=123
 ```
 
-**Supported record types:** `A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`
+**支持的DNS记录类型：** `A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`
 
-### Common DNS Configurations
+### 常见DNS配置
 
-**Point to a server (A record):**
+- **指向服务器（A记录）：** 
 ```json
 {"host": "@", "type": "A", "answer": "123.45.67.89", "ttl": 300}
 ```
 
-**Add www subdomain (CNAME):**
+- **添加www子域名（CNAME记录）：** 
 ```json
 {"host": "www", "type": "CNAME", "answer": "example.com", "ttl": 300}
 ```
 
-**Add email (MX record):**
+- **添加邮件服务器（MX记录）：** 
 ```json
 {"host": "@", "type": "MX", "answer": "mail.example.com", "ttl": 300, "priority": 10}
 ```
 
-**Verify domain (TXT record):**
+- **验证域名（TXT记录）：** 
 ```json
 {"host": "@", "type": "TXT", "answer": "google-site-verification=abc123", "ttl": 300}
 ```
 
-### Update Nameservers
+### 更新名称服务器
 
-**When:** User wants to use Cloudflare, Vercel, or another DNS provider
+**使用场景：** 用户希望使用Cloudflare、Vercel或其他DNS服务提供商
 
-```
-PUT /api/manage/{domain}/nameservers
-Content-Type: application/json
+**常见名称服务器配置：**
 
-{
-  "nameservers": [
-    "ns1.cloudflare.com",
-    "ns2.cloudflare.com"
-  ]
-}
-```
-
-**Common nameserver configurations:**
-
-| Provider | Nameservers |
+| 服务提供商 | 名称服务器 |
 |----------|-------------|
 | Cloudflare | `ns1.cloudflare.com`, `ns2.cloudflare.com` |
 | Vercel | `ns1.vercel-dns.com`, `ns2.vercel-dns.com` |
-| AWS Route53 | Check your hosted zone |
+| AWS Route53 | 请查看您的托管区域设置 |
 | Google Cloud | `ns-cloud-X.googledomains.com` |
 
-### Domain Settings
+### 域名设置
 
-**Get settings:**
+- **获取域名设置：** 
 ```
 GET /api/manage/{domain}/settings
 ```
 
-**Update settings:**
+- **更新域名设置：** 
 ```
 PATCH /api/manage/{domain}/settings
 Content-Type: application/json
@@ -320,26 +285,27 @@ Content-Type: application/json
 }
 ```
 
-### Transfer Domain Out
+### 转移域名
 
-**Get auth code:**
+- **获取转移授权码：** 
 ```
 GET /api/manage/{domain}/transfer
 ```
 
-**Prepare for transfer (unlock + get code):**
+- **准备转移（解锁域名并获取转移代码）：** 
 ```
 POST /api/manage/{domain}/transfer
 ```
 
-**Note:** Domains cannot be transferred within 60 days of registration (ICANN policy).
+**注意：** 根据ICANN政策，域名注册后60天内无法转移。
 
 ---
 
-## 4. Token Recovery
+## 4. 恢复管理token
 
-**When:** User lost their management token
+**使用场景：** 用户丢失了管理token
 
+**操作流程：** 
 ```
 POST https://clawdaddy.app/api/recover
 Content-Type: application/json
@@ -350,24 +316,15 @@ Content-Type: application/json
 }
 ```
 
-For x402 purchases:
-```json
-{
-  "wallet": "0x123...",
-  "domain": "example.com"
-}
-```
+**注意：** 恢复token会生成一个新的token，旧token将失效。
 
-**IMPORTANT:** Recovery generates a NEW token. Old tokens are invalidated.
-
-Rate limit: 5 requests per 5 minutes per IP.
+**限制规则：** 每个IP地址每5分钟内最多只能发送5次请求。
 
 ---
 
-## Workflow Examples
+## 工作流程示例
 
-### Check and Buy Domain
-
+- **查询并购买域名** 
 ```
 User: "Buy coolstartup.com for me"
 
@@ -386,8 +343,7 @@ User: "Buy coolstartup.com for me"
 4. "I've registered coolstartup.com! Save this token: clwd_abc123..."
 ```
 
-### Point Domain to Vercel
-
+- **将域名指向Vercel** 
 ```
 User: "Point mydomain.com to Vercel"
 
@@ -398,8 +354,7 @@ User: "Point mydomain.com to Vercel"
 2. "Done! mydomain.com now uses Vercel's nameservers. Add the domain in your Vercel dashboard."
 ```
 
-### Set Up Basic DNS
-
+- **设置基本DNS配置** 
 ```
 User: "Point example.com to my server at 1.2.3.4"
 
@@ -413,8 +368,7 @@ User: "Point example.com to my server at 1.2.3.4"
 3. "Done! example.com and www.example.com now point to 1.2.3.4"
 ```
 
-### Add Email Records
-
+- **添加邮件记录** 
 ```
 User: "Set up Google Workspace email for mydomain.com"
 
@@ -432,9 +386,10 @@ User: "Set up Google Workspace email for mydomain.com"
 
 ---
 
-## Error Handling
+## 错误处理
 
-All errors return JSON:
+所有错误都会以JSON格式返回：
+
 ```json
 {
   "error": "Description of what went wrong",
@@ -442,27 +397,27 @@ All errors return JSON:
 }
 ```
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| `400` | Bad request (invalid input) |
-| `401` | Unauthorized (missing/invalid token) |
-| `402` | Payment required (x402 flow) |
-| `404` | Domain not found |
-| `500` | Server error |
+| `400` | 请求无效 |
+| `401` | 未经授权（token缺失或无效） |
+| `402` | 需要支付（使用x402支付方式） |
+| `404` | 域名未找到 |
+| `500` | 服务器错误 |
 
 ---
 
-## Key Points
+## 重要提示：
 
-- **No signup required** for lookups and purchases
-- **Two payment methods**: x402 (USDC on Base) for agents, Stripe for humans
-- **Save your management token** - it's the only way to manage your domain
-- **Bearer auth for management** - include `Authorization: Bearer clwd_...` header
-- **JSON responses** - use `?format=json` for lookups
+- **查询和购买域名时无需注册账号**  
+- **两种支付方式：** 代理用户可使用x402（基于Base的支付平台，支持USDC）；人类用户可使用Stripe  
+- **务必保存管理token**——它是管理域名的唯一凭证  
+- **管理操作需要使用bearer认证**——在请求头中添加`Authorization: Bearer clwd_...`  
+- **响应格式为JSON**——查询域名时请使用`?format=json`参数  
 
 ---
 
-## Source
+## 来源
 
-ClawDaddy: https://clawdaddy.app
-Documentation: https://clawdaddy.app/llms.txt
+ClawDaddy：https://clawdaddy.app  
+文档：https://clawdaddy.app/llms.txt

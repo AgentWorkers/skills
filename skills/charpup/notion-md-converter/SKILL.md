@@ -1,29 +1,29 @@
-# SKILL.md - Notion Markdown Converter
+# SKILL.md – 使用 Martian 库将 Markdown 内容转换为 Notion 格式
 
-Convert Markdown content to Notion blocks using the Martian library.
+本工具使用 Martian 库将 Markdown 内容转换为 Notion 格式的块。
 
-## When to Use
+## 使用场景
 
-- Creating Notion pages from Markdown content
-- Converting journal entries, notes, or documentation
-- Batch importing Markdown files to Notion
-- Preparing formatted content for Notion databases
+- 从 Markdown 内容创建 Notion 页面  
+- 转换日记条目、笔记或文档  
+- 批量导入 Markdown 文件到 Notion  
+- 为 Notion 数据库准备格式化内容  
 
-## Installation
+## 安装  
 
 ```bash
 cd ~/.openclaw/workspace/skills/notion-md-converter
 npm install
-```
+```  
 
-Set environment variable:
+设置环境变量：  
 ```bash
 export NOTION_TOKEN="ntn_your_token_here"
-```
+```  
 
-## Usage
+## 使用方法  
 
-### Option 1: Use the Library
+### 方法 1：直接使用库  
 
 ```javascript
 const { convertMarkdownToBlocks, createNotionPageFromMarkdown } = require('./skills/notion-md-converter/src/converter');
@@ -45,9 +45,9 @@ if (success) {
   // Use blocks with Notion API
   console.log(`Converted to ${blocks.length} blocks`);
 }
-```
+```  
 
-### Option 2: Create Page Directly
+### 方法 2：直接创建页面  
 
 ```javascript
 const result = await createNotionPageFromMarkdown({
@@ -60,9 +60,9 @@ const result = await createNotionPageFromMarkdown({
 if (result.success) {
   console.log(`Created page: ${result.url}`);
 }
-```
+```  
 
-### Option 3: CLI Tool
+### 方法 3：使用 CLI 工具  
 
 ```bash
 node tools/md2notion.js \
@@ -70,49 +70,47 @@ node tools/md2notion.js \
   --title "My Page" \
   --file content.md \
   --token "ntn_xxx"
-```
+```  
 
-## Supported Markdown
+## 支持的 Markdown 格式  
 
-| Markdown | Notion Block |
-|----------|--------------|
-| `# Heading` | `heading_1` |
-| `## Heading` | `heading_2` |
-| `### Heading` | `heading_3` |
-| `**bold**` | Rich text annotation |
-| `*italic*` | Rich text annotation |
-| `` `code` `` | Inline code |
-| `- list item` | `bulleted_list_item` |
-| `1. numbered` | `numbered_list_item` |
-| `- [x] task` | `to_do` (checked) |
-| `- [ ] task` | `to_do` (unchecked) |
-| ````code```` | `code` block |
-| `> quote` | `quote` or `callout` |
-| `> [!NOTE]` | Blue callout |
-| `> [!WARNING]` | Yellow callout |
-| `> [!CAUTION]` | Red callout |
-| `\| table \|` | `table` |
+| Markdown 格式 | Notion 对应格式 |  
+|------------|-----------------|  
+| `# 标题`       | `heading_1`         |  
+| `## 标题`       | `heading_2`         |  
+| `### 标题`       | `heading_3`         |  
+| `**粗体**       | `rich_textANNOTATION`    |  
+| `*斜体*`       | `rich_textANNOTATION`    |  
+| `` `代码` ``     | `inline_code`       |  
+| `- 列表项`      | `bulleted_list_item`     |  
+| `1. 编号项`      | `numbered_list_item`     |  
+| `- [x] 任务`     | `to_do`          |  
+| `- [ ] 任务`     | `to_do`          |  
+| ````code```` | `code_block`       |  
+| `> 引用`       | `quote`           |  
+| `> [!注意]`      | `blue_callout`       |  
+| `> [!警告]`      | `yellow_callout`       |  
+| `> [!提示]`      | `red_callout`       |  
+| `\| 表格`       | `table`           |  
 
-## Error Handling
+## 错误处理  
 
-The skill handles common issues gracefully:
+本工具能优雅地处理以下常见问题：  
+- **无效的 Markdown**：返回替代的纯文本块  
+- **内容过长**：自动截断为 100 个块，并发出警告  
+- **API 错误**：返回详细的错误信息  
+- **缺少标记**：明确提示缺少 NOTION_TOKEN  
 
-- **Invalid markdown**: Returns fallback plain text block
-- **Content too long**: Auto-truncates to 100 blocks with warning
-- **API errors**: Returns detailed error message
-- **Missing token**: Clear error about NOTION_TOKEN
+## 限制  
 
-## Limitations
+- Notion API 限制：每次请求最多只能转换 100 个块  
+- 图片链接必须可公开访问  
+- 表格的格式化选项有限  
+- 超过 2 层的嵌套块会被扁平化  
 
-- Notion API limits: 100 blocks per request
-- Image URLs must be publicly accessible
-- Tables have limited formatting options
-- Nested blocks >2 levels may be flattened
+## 与 Galatea 日记系统的集成  
 
-## Integration with Journal System
-
-This skill is designed for the Galatea Journal system:
-
+本工具专为 Galatea 日记系统设计：  
 ```javascript
 // In your Journal cron or automation
 const { createNotionPageFromMarkdown } = require('./skills/notion-md-converter/src/converter');
@@ -124,19 +122,19 @@ async function createJournalEntry(date, content) {
     markdown: content
   });
 }
-```
+```  
 
-## Testing
+## 测试  
 
 ```bash
 npm test
-```
+```  
 
-## Dependencies
+## 所需依赖库  
 
-- `@tryfabric/martian`: Markdown to Notion block conversion
-- `@notionhq/client`: Official Notion API client
+- `@tryfabric/martian`：用于将 Markdown 转换为 Notion 格式的库  
+- `@notionhq/client`：官方的 Notion API 客户端  
 
-## License
+## 许可证  
 
 MIT

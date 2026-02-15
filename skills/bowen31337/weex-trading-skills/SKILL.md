@@ -1,6 +1,6 @@
 ---
 name: weex-trading
-description: WEEX Futures exchange integration. Trade USDT-M perpetual futures with up to 125x leverage on WEEX.
+description: **WEEX期货交易所集成**：您可以在WEEX平台上交易USDT-M永续期货，杠杆率最高可达125倍。
 metadata:
   emoji: "🔵"
   category: "trading"
@@ -16,31 +16,31 @@ metadata:
     - any-agent
 ---
 
-# WEEX Futures Trading 🔵
+# WEEX期货交易 🔵
 
-Open AI Agent Skill for USDT-margined perpetual futures trading on WEEX exchange. Up to 125x leverage.
+这是一个OpenAI代理技能，用于在WEEX交易所进行USDT保证金永续期货交易，支持最高125倍的杠杆。
 
-> **Open Agent Skill**: This skill is designed to work with any AI agent that supports bash/curl commands, including Claude, GPT, Gemini, LLaMA, Mistral, and other LLM-based agents.
+> **Open Agent Skill**：该技能适用于任何支持bash/curl命令的AI代理，包括Claude、GPT、Gemini、LLaMA、Mistral等基于LLM的代理。
 
-## Features
+## 主要功能
 
-- 📊 **Futures Trading** - USDT-M perpetual contracts up to 125x leverage
-- 💰 **Account Management** - Balance, positions, margin settings
-- 📈 **Market Data** - Tickers, order book, candlesticks, funding rates
-- 🎯 **Advanced Orders** - Trigger orders, TP/SL, conditional orders
-- 🤖 **AI Integration** - Log AI trading decisions
-- 🔌 **Universal Compatibility** - Works with any AI agent supporting shell commands
+- 📊 **期货交易**：支持USDT永续合约交易，杠杆最高可达125倍
+- 💰 **账户管理**：可查看账户余额、持仓情况以及调整保证金设置
+- 📈 **市场数据**：提供实时行情数据（包括股票代码、订单簿、K线图和资金费率）
+- 🎯 **高级订单**：支持触发式订单、止盈/止损订单以及条件订单
+- 🤖 **AI集成**：记录AI的交易决策过程
+- 🔌 **通用兼容性**：适用于所有支持shell命令的AI代理
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 说明 | 是否必需 |
 |----------|-------------|----------|
-| `WEEX_API_KEY` | API Key from WEEX | Yes |
-| `WEEX_API_SECRET` | API Secret | Yes |
-| `WEEX_PASSPHRASE` | API Passphrase | Yes |
-| `WEEX_BASE_URL` | API base URL | No (default: https://api-contract.weex.com) |
+| `WEEX_API_KEY` | WEEX的API密钥 | 是 |
+| `WEEX_API_SECRET` | API密钥签名 | 是 |
+| `WEEX_PASSPHRASE` | API访问密码 | 是 |
+| `WEEX_BASE_URL` | API基础URL | 否（默认值：https://api-contract.weex.com） |
 
-## Authentication
+## 认证
 
 ```bash
 API_KEY="${WEEX_API_KEY}"
@@ -62,21 +62,21 @@ generate_signature() {
 
 ---
 
-# Market Data Endpoints (No Auth)
+# 市场数据接口（无需认证）
 
-## Get Server Time
+## 获取服务器时间
 
 ```bash
 curl -s "${BASE_URL}/capi/v2/market/time" | jq '.'
 ```
 
-## Get All Contracts Info
+## 获取所有合约信息
 
 ```bash
 curl -s "${BASE_URL}/capi/v2/market/contracts" | jq '.data[] | {symbol: .symbol, baseCoin: .underlying_index, quoteCoin: .quote_currency, contractVal: .contract_val, minLeverage: .minLeverage, maxLeverage: .maxLeverage, tickSize: .tick_size, sizeIncrement: .size_increment}'
 ```
 
-## Get Single Contract Info
+## 获取单个合约信息
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -84,7 +84,7 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/contracts?symbol=${SYMBOL}" | jq '.data'
 ```
 
-## Get Ticker Price
+## 获取股票代码价格
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -92,13 +92,13 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/ticker?symbol=${SYMBOL}" | jq '.data | {symbol: .symbol, last: .last, high: .high_24h, low: .low_24h, volume: .volume_24h, markPrice: .markPrice}'
 ```
 
-## Get All Tickers
+## 获取所有股票代码
 
 ```bash
 curl -s "${BASE_URL}/capi/v2/market/tickers" | jq '.data[] | {symbol: .symbol, last: .last, change: .priceChangePercent, volume: .volume_24h}'
 ```
 
-## Get Order Book
+## 获取订单簿信息
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -106,7 +106,7 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/depth?symbol=${SYMBOL}&limit=15" | jq '.data | {asks: .asks[:5], bids: .bids[:5]}'
 ```
 
-## Get Recent Trades
+## 获取最近的交易记录
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -115,7 +115,7 @@ LIMIT="50"
 curl -s "${BASE_URL}/capi/v2/market/trades?symbol=${SYMBOL}&limit=${LIMIT}" | jq '.data[] | {time: .time, price: .price, size: .size, side: (if .isBuyerMaker then "sell" else "buy" end)}'
 ```
 
-## Get Candlestick Data
+## 获取K线图数据
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -125,7 +125,7 @@ LIMIT="100"
 curl -s "${BASE_URL}/capi/v2/market/candles?symbol=${SYMBOL}&granularity=${GRANULARITY}&limit=${LIMIT}" | jq '.data[] | {timestamp: .[0], open: .[1], high: .[2], low: .[3], close: .[4], volume: .[5]}'
 ```
 
-## Get Index Price
+## 获取指数价格
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -133,7 +133,7 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/index?symbol=${SYMBOL}" | jq '.data | {symbol: .symbol, index: .index, timestamp: .timestamp}'
 ```
 
-## Get Open Interest
+## 获取未平仓合约数量
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -141,7 +141,7 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/open_interest?symbol=${SYMBOL}" | jq '.data[] | {symbol: .symbol, openInterest: .base_volume, value: .target_volume}'
 ```
 
-## Get Current Funding Rate
+## 获取当前资金费率
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -149,7 +149,7 @@ SYMBOL="cmt_btcusdt"
 curl -s "${BASE_URL}/capi/v2/market/currentFundRate?symbol=${SYMBOL}" | jq '.data[] | {symbol: .symbol, rate: .fundingRate, nextSettlement: .timestamp}'
 ```
 
-## Get Historical Funding Rates
+## 获取历史资金费率
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -158,7 +158,7 @@ LIMIT="20"
 curl -s "${BASE_URL}/capi/v2/market/getHistoryFundRate?symbol=${SYMBOL}&limit=${LIMIT}" | jq '.data[] | {symbol: .symbol, rate: .fundingRate, settleTime: .fundingTime}'
 ```
 
-## Get Next Funding Time
+## 获取下一次资金调整时间
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -168,9 +168,9 @@ curl -s "${BASE_URL}/capi/v2/market/funding_time?symbol=${SYMBOL}" | jq '.data |
 
 ---
 
-# Account Endpoints (Auth Required)
+# 账户接口（需要认证）
 
-## Get Account Assets
+## 获取账户资产信息
 
 ```bash
 PATH_URL="/capi/v2/account/assets"
@@ -185,7 +185,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {coin: .coinName, available: .available, frozen: .frozen, equity: .equity, unrealizedPnl: .unrealizePnl}'
 ```
 
-## Get Account List with Settings
+## 获取带设置信息的账户列表
 
 ```bash
 PATH_URL="/capi/v2/account/getAccounts"
@@ -200,7 +200,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data'
 ```
 
-## Get Single Account by Coin
+## 根据货币名称获取单个账户信息
 
 ```bash
 COIN="USDT"
@@ -217,7 +217,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data'
 ```
 
-## Get User Settings
+## 获取用户设置
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -234,7 +234,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data'
 ```
 
-## Change Leverage
+## 更改杠杆比例
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -255,7 +255,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Adjust Position Margin (Isolated Only)
+## 调整持仓保证金（仅限隔离账户）
 
 ```bash
 POSITION_ID="123456789"      # Isolated position ID
@@ -275,7 +275,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Auto Margin Top-Up (Isolated Only)
+## 自动补充保证金（仅限隔离账户）
 
 ```bash
 POSITION_ID="123456789"      # Isolated position ID
@@ -295,7 +295,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Get Account Bill History
+## 获取账户账单历史
 
 ```bash
 COIN="USDT"
@@ -317,9 +317,9 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# Position Endpoints (Auth Required)
+# 持仓接口（需要认证）
 
-## Get All Positions
+## 获取所有持仓信息
 
 ```bash
 PATH_URL="/capi/v2/account/position/allPosition"
@@ -334,7 +334,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | select(.size != "0") | {symbol: .symbol, side: .side, size: .size, leverage: .leverage, unrealizedPnl: .unrealizePnl, entryPrice: .avg_cost}'
 ```
 
-## Get Single Position
+## 获取单个持仓信息
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -351,7 +351,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {symbol: .symbol, side: .side, size: .size, leverage: .leverage, unrealizedPnl: .unrealizePnl, entryPrice: .avg_cost, liquidationPrice: .liq_price}'
 ```
 
-## Change Margin Mode
+## 更改保证金模式
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -373,9 +373,9 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# Order Endpoints (Auth Required)
+# 订单接口（需要认证）
 
-## Place Market Order
+## 下单（市价单）
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -397,7 +397,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Place Limit Order
+## 下单（限价单）
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -421,7 +421,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Get Open Orders
+## 获取未成交订单
 
 ```bash
 PATH_URL="/capi/v2/order/current"
@@ -436,7 +436,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {orderId: .order_id, symbol: .symbol, side: .type, price: .price, size: .size, status: .status}'
 ```
 
-## Get Order Details
+## 获取订单详情
 
 ```bash
 ORDER_ID="1234567890"
@@ -453,7 +453,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data'
 ```
 
-## Get Order History
+## 获取订单历史记录
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -471,7 +471,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {orderId: .order_id, symbol: .symbol, side: .type, price: .price, size: .size, filledSize: .filled_qty, status: .status}'
 ```
 
-## Get Trade Fills
+## 获取交易成交信息
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -489,7 +489,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {tradeId: .trade_id, orderId: .order_id, symbol: .symbol, price: .price, size: .size, fee: .fee, time: .created_at}'
 ```
 
-## Cancel Order
+## 取消订单
 
 ```bash
 ORDER_ID="1234567890"
@@ -508,7 +508,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Cancel All Orders
+## 取消所有订单
 
 ```bash
 SYMBOL="cmt_btcusdt"    # Optional: omit to cancel all
@@ -527,7 +527,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Close All Positions
+## 平仓所有持仓
 
 ```bash
 PATH_URL="/capi/v2/order/closePositions"
@@ -546,9 +546,9 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# Trigger Order Endpoints (Auth Required)
+# 触发式订单接口（需要认证）
 
-## Place Trigger Order (Stop-Loss / Take-Profit)
+## 下单（止盈/止损订单）
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -573,7 +573,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Get Current Trigger Orders
+## 获取当前生效的触发式订单
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -590,7 +590,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {orderId: .order_id, symbol: .symbol, triggerPrice: .trigger_price, size: .size, type: .type}'
 ```
 
-## Get Trigger Order History
+## 获取触发式订单的历史记录
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -608,7 +608,7 @@ curl -s "${BASE_URL}${PATH_URL}" \
   -H "Content-Type: application/json" | jq '.data[] | {orderId: .order_id, symbol: .symbol, triggerPrice: .trigger_price, status: .status}'
 ```
 
-## Cancel Trigger Order
+## 取消触发式订单
 
 ```bash
 ORDER_ID="1234567890"
@@ -629,9 +629,9 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# TP/SL Order Endpoints (Auth Required)
+# 止盈/止损订单接口（需要认证）
 
-## Place TP/SL Order
+## 下单（止盈/止损订单）
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -655,7 +655,7 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
   -d "$BODY" | jq '.'
 ```
 
-## Modify TP/SL Order
+## 修改止盈/止损订单
 
 ```bash
 SYMBOL="cmt_btcusdt"
@@ -679,9 +679,9 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# AI Integration (Auth Required)
+# AI集成接口（需要认证）
 
-## Upload AI Trading Log
+## 上传AI交易日志
 
 ```bash
 AI_LOG="Trading decision: Buy BTC based on momentum indicators"
@@ -703,54 +703,54 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# Reference Tables
+# 参考表格
 
-## Order Types
+## 订单类型
 
-| type | Description |
+| 类型 | 说明 |
 |------|-------------|
-| `1` | Open Long (buy to open) |
-| `2` | Open Short (sell to open) |
-| `3` | Close Long (sell to close) |
-| `4` | Close Short (buy to close) |
+| `1` | 开多（买入建仓） |
+| `2` | 开空（卖出建仓） |
+| `3` | 平多（卖出平仓） |
+| `4` | 平空（买入平仓） |
 
-## Execution Types
+## 执行类型
 
-| order_type | Description |
+| order_type | 说明 |
 |------------|-------------|
-| `0` | Normal order |
-| `1` | Post-only (maker only) |
-| `2` | FOK (fill or kill) |
-| `3` | IOC (immediate or cancel) |
+| `0` | 普通订单 |
+| `1` | 仅限做市商（Post-only） |
+| `2` | FOK（立即成交或取消） |
+| `3` | IOC（立即成交或取消） |
 
-## Price Types
+## 价格类型
 
-| match_price | Description |
+| match_price | 说明 |
 |-------------|-------------|
-| `0` | Limit order |
-| `1` | Market order |
+| `0` | 限价单 |
+| `1` | 市价单 |
 
-## Margin Modes
+## 保证金模式
 
-| marginMode | Description |
+| marginMode | 说明 |
 |------------|-------------|
-| `1` | Cross margin |
-| `3` | Isolated margin |
+| `1` | 跨账户保证金 |
+| `3` | 隔离账户保证金 |
 
-## Trigger Types
+## 触发类型
 
-| trigger_type | Description |
+| trigger_type | 说明 |
 |--------------|-------------|
-| `1` | Fill price (last trade price) |
-| `2` | Mark price |
-| `3` | Index price |
+| `1` | 最后成交价 |
+| `2` | 标价 |
+| `3` | 指数价格 |
 
-## Popular Trading Pairs
+## 常见交易对
 
-| Pair | Description |
+| 对象 | 说明 |
 |------|-------------|
-| cmt_btcusdt | Bitcoin / USDT |
-| cmt_ethusdt | Ethereum / USDT |
+| cmt_btcusdt | 比特币 / USDT |
+| cmt_ethusdt | 以太坊 / USDT |
 | cmt_solusdt | Solana / USDT |
 | cmt_xrpusdt | XRP / USDT |
 | cmt_dogeusdt | Dogecoin / USDT |
@@ -758,42 +758,42 @@ curl -s -X POST "${BASE_URL}${PATH_URL}" \
 
 ---
 
-# Safety Rules
+# 安全规则
 
-1. **ALWAYS** display order details before execution
-2. **VERIFY** trading pair and quantity
-3. **CHECK** account balance before trading
-4. **WARN** about leverage risks (up to 125x)
-5. **NEVER** execute without user confirmation
-6. **CONFIRM** position closure before executing
+1. **在执行前**务必显示订单详情。
+2. **核实**交易的货币对和数量。
+3. **交易前**检查账户余额。
+4. **提醒**注意杠杆风险（最高125倍）。
+5. **未经用户确认**切勿执行任何操作。
+6. **在执行前**确认是否需要平仓持仓。
 
 ---
 
-# Error Codes
+# 错误代码
 
-| Code | Description | Solution |
+| 代码 | 说明 | 解决方案 |
 |------|-------------|----------|
-| `00000` | Success | - |
-| `40001` | Invalid parameter | Check parameter format |
-| `40101` | Invalid API key/signature | Verify credentials and timestamp |
-| `40301` | IP not whitelisted | Add IP to whitelist |
-| `42901` | Rate limit exceeded | Reduce request frequency |
-| `50001` | Internal error | Retry after delay |
+| `00000` | 成功 | - |
+| `40001` | 参数无效 | 检查参数格式 |
+| `40101` | API密钥/签名无效 | 核对凭证和时间戳 |
+| `40301` | IP地址未在白名单中 | 将IP地址添加到白名单 |
+| `42901 | 超过请求频率限制 | 减少请求频率 |
+| `50001` | 内部错误 | 延迟后重试 |
 
 ---
 
-# Rate Limits
+# 请求频率限制
 
-| Category | IP Limit | UID Limit |
+| 类别 | IP地址限制 | 用户ID限制 |
 |----------|----------|-----------|
-| Market Data | 20 req/sec | N/A |
-| Account Info | 10 req/sec | 10 req/sec |
-| Order Placement | 10 req/sec | 10 req/sec |
+| 市场数据 | 每秒20次 | 不适用 |
+| 账户信息 | 每秒10次 | 每秒10次 |
+| 下单 | 每秒10次 | 每秒10次 |
 
 ---
 
-# Additional Resources
+# 额外资源
 
-- [WEEX](https://www.weex.com)
-- Base URL: `https://api-contract.weex.com`
-- [API Reference](references/api_reference.md)
+- [WEEX官网](https://www.weex.com)
+- API基础URL：`https://api-contract.weex.com`
+- [API参考文档](references/api_reference.md)

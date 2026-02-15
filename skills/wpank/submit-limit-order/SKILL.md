@@ -13,42 +13,39 @@ allowed-tools: >-
 model: opus
 ---
 
-# Submit Limit Order
+# 提交限价单
 
-Submit a gasless UniswapX Dutch auction limit order.
+提交一个无gas费用的UniswapX荷兰式拍卖限价单。
 
-## Activation
+## 使用场景
 
-Use this skill when the user says any of:
-- "Set a limit order"
-- "Buy X at price Y"
-- "Submit a UniswapX order"
-- "Limit buy/sell"
+当用户说出以下任何指令时，可以使用此功能：
+- “设置限价单”
+- “以价格Y购买X”
+- “提交UniswapX订单”
+- “限价买入/卖出”
 
-## Input Extraction
+## 输入参数提取
 
-| Parameter | Required | Default | Source |
-|-----------|----------|---------|--------|
-| `tokenIn` | Yes | — | Token name/symbol |
-| `tokenOut` | Yes | — | Token name/symbol |
-| `amount` | Yes | — | Numeric value |
-| `chain` | No | ethereum | Chain name |
-| `limitPrice` | No | market price | Target price |
-| `expiry` | No | 5 minutes | Duration for Dutch auction decay |
+| 参数        | 是否必填 | 默认值 | 来源            |
+|------------|---------|---------|-------------------|
+| `tokenIn`     | 是       | —                | 要交易的代币名称/符号       |
+| `tokenOut`     | 是       | —                | 目标代币名称/符号       |
+| `amount`     | 是       | —                | 交易数量（数值）       |
+| `chain`      | 否       | `ethereum`       | 目标区块链名称       |
+| `limitPrice`   | 否       | 当前市场价格       | 限价单价格         |
+| `expiry`     | 否       | 5分钟             | 限价单的有效期限       |
 
-## Workflow
+## 工作流程
 
-1. **Validate inputs**: Check token allowlist, spending limits, and UniswapX support on the target chain.
+1. **验证输入**：检查目标区块链上是否支持UniswapX交易，以及用户是否有足够的交易权限。
+2. **获取当前市场价格**：调用`get_quote`函数获取参考价格。
+3. **提交订单**：调用`submit_uniswapx_order`函数，传入以下参数：
+   - `tokenIn`, `tokenOut`, `amount`, `chain`
+   - `orderType`: “dutch”（默认）或“priority”
+4. **监控订单状态**：定期调用`get_uniswapx_order_status`函数，直到订单成交、过期或被取消。
 
-2. **Get current market price**: Call `get_quote` to establish the baseline price.
-
-3. **Submit order**: Call `submit_uniswapx_order` with:
-   - tokenIn, tokenOut, amount, chain
-   - orderType: "dutch" (default) or "priority"
-
-4. **Monitor** (optional): Poll `get_uniswapx_order_status` until filled, expired, or cancelled.
-
-5. **Report**:
+## 代码示例（请参考下方代码块）
 
 ```
 Limit Order Submitted (UniswapX Dutch Auction)
@@ -63,10 +60,10 @@ Limit Order Submitted (UniswapX Dutch Auction)
   Monitoring: Will report when filled or expired.
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | User Message | Suggested Action |
-|-------|-------------|-----------------|
-| `UNISWAPX_NOT_SUPPORTED` | "UniswapX not available on [chain]." | Use supported chain or execute-swap |
-| `ORDER_EXPIRED` | "Order expired without fill." | Adjust limit price or increase expiry |
-| `SAFETY_TOKEN_NOT_ALLOWED` | "TOKEN is not on allowlist." | Add token to config |
+| 错误类型         | 用户提示信息 | 建议操作                |
+|-----------------|-----------------|----------------------|
+| `UNISWAPX_NOT_SUPPORTED` | “[chain]上不支持UniswapX交易。” | 更换支持该交易的区块链或使用其他交易方式 |
+| `ORDER_EXPIRED`     | “订单已过期但未成交。” | 调整限价单价格或延长订单有效期 |
+| `SAFETY_TOKEN_NOT_ALLOWED` | “该代币不在允许交易的列表中。” | 将该代币添加到交易配置中       |

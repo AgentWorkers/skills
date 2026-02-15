@@ -18,9 +18,9 @@ metadata:
 
 # Cal.com
 
-Access the Cal.com API with managed OAuth authentication. Create and manage event types, bookings, schedules, calendars, and webhooks.
+您可以使用托管的 OAuth 认证来访问 Cal.com API。该 API 支持创建和管理事件类型、预订、日程安排、日历以及 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get your profile
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/cal-com/v2/{resource}
 ```
 
-Replace `{resource}` with the Cal.com API endpoint path. The gateway proxies requests to `api.cal.com` and automatically injects your OAuth token.
+请将 `{resource}` 替换为 Cal.com API 的端点路径。该网关会将请求代理到 `api.cal.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Cal.com OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Cal.com OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python3 <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python3 <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python3 <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python3 <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Cal.com connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Cal.com 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python3 <<'EOF'
@@ -141,19 +141,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Profile
+### 用户资料
 
-#### Get Profile
+#### 获取用户资料
 
 ```bash
 GET /cal-com/v2/me
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -171,7 +171,7 @@ GET /cal-com/v2/me
 }
 ```
 
-#### Update Profile
+#### 更新用户资料
 
 ```bash
 PATCH /cal-com/v2/me
@@ -183,21 +183,21 @@ Content-Type: application/json
 }
 ```
 
-### Event Types
+### 事件类型
 
-#### List Event Types
+#### 列出事件类型
 
 ```bash
 GET /cal-com/v2/event-types
 ```
 
-With username filter:
+支持按用户名过滤：
 
 ```bash
 GET /cal-com/v2/event-types?username={username}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -225,13 +225,13 @@ GET /cal-com/v2/event-types?username={username}
 }
 ```
 
-#### Get Event Type
+#### 获取事件类型信息
 
 ```bash
 GET /cal-com/v2/event-types/{eventTypeId}
 ```
 
-#### Create Event Type
+#### 创建事件类型
 
 ```bash
 POST /cal-com/v2/event-types
@@ -244,12 +244,12 @@ Content-Type: application/json
 }
 ```
 
-**Required fields:**
-- `title` - Event type name
-- `slug` - URL slug (must be unique)
-- `length` - Duration in minutes
+**必填字段：**
+- `title` - 事件类型名称
+- `slug` - URL 缩写（必须唯一）
+- `length` - 事件持续时间（以分钟为单位）
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -265,7 +265,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Event Type
+#### 更新事件类型
 
 ```bash
 PATCH /cal-com/v2/event-types/{eventTypeId}
@@ -277,21 +277,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Event Type
+#### 删除事件类型
 
 ```bash
 DELETE /cal-com/v2/event-types/{eventTypeId}
 ```
 
-### Event Type Webhooks
+### 事件类型 Webhook
 
-#### List Webhooks
+#### 列出 Webhook
 
 ```bash
 GET /cal-com/v2/event-types/{eventTypeId}/webhooks
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /cal-com/v2/event-types/{eventTypeId}/webhooks
@@ -304,15 +304,28 @@ Content-Type: application/json
 }
 ```
 
-**Available triggers:** `BOOKING_CREATED`, `BOOKING_RESCHEDULED`, `BOOKING_CANCELLED`, `BOOKING_CONFIRMED`, `BOOKING_REJECTED`, `BOOKING_REQUESTED`, `BOOKING_PAYMENT_INITIATED`, `BOOKING_NO_SHOW_UPDATED`, `MEETING_ENDED`, `MEETING_STARTED`, `RECORDING_READY`, `INSTANT_MEETING`, `RECORDING_TRANSCRIPTION_GENERATED`
+**可用的触发器：**
+- `BOOKING_created`
+- `BOOKING_RESCHEDULED`
+- `BOOKING_CANCELLED`
+- `BOOKING-confirmED`
+- `BOOKING_REJECTED`
+- `BOOKING_REQUESTED`
+- `BOOKING_payment_INITIATED`
+- `BOOKING_NO_SHOW_UPDATED`
+- `MEETING_ENDED`
+- `MEETING_STARTED`
+- `RECORDING_READY`
+- `INSTANT_MEETING`
+- `RECORDING_TRANSCRIPTION_GENERATED`
 
-#### Get Webhook
+#### 获取 Webhook 信息
 
 ```bash
 GET /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
 ```
 
-#### Update Webhook
+#### 更新 Webhook
 
 ```bash
 PATCH /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
@@ -323,21 +336,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /cal-com/v2/event-types/{eventTypeId}/webhooks/{webhookId}
 ```
 
-### Bookings
+### 预订
 
-#### List Bookings
+#### 列出预订信息
 
 ```bash
 GET /cal-com/v2/bookings
 ```
 
-With filters:
+支持过滤：
 
 ```bash
 GET /cal-com/v2/bookings?status=upcoming
@@ -347,7 +360,7 @@ GET /cal-com/v2/bookings?status=accepted
 GET /cal-com/v2/bookings?take=10
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -368,13 +381,13 @@ GET /cal-com/v2/bookings?take=10
 }
 ```
 
-#### Get Booking
+#### 获取预订信息
 
 ```bash
 GET /cal-com/v2/bookings/{bookingUid}
 ```
 
-#### Create Booking
+#### 创建预订
 
 ```bash
 POST /cal-com/v2/bookings
@@ -393,15 +406,15 @@ Content-Type: application/json
 }
 ```
 
-**Required fields:**
-- `eventTypeId` - ID of the event type
-- `start` - Start time in ISO 8601 format (must be an available slot)
-- `timeZone` - Valid IANA timezone
-- `language` - Language code (e.g., "en")
-- `responses.name` - Attendee name
-- `responses.email` - Attendee email
+**必填字段：**
+- `eventTypeId` - 事件类型的 ID
+- `start` - 开始时间（ISO 8601 格式，必须是可用的时间段）
+- `timeZone` - 有效的 IANA 时区
+- `language` - 语言代码（例如：“en”）
+- `responses.name` - 参与者的姓名
+- `responses.email` - 参与者的电子邮件
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -417,7 +430,7 @@ Content-Type: application/json
 }
 ```
 
-#### Cancel Booking
+#### 取消预订
 
 ```bash
 POST /cal-com/v2/bookings/{bookingUid}/cancel
@@ -428,21 +441,21 @@ Content-Type: application/json
 }
 ```
 
-### Schedules
+### 日程安排
 
-#### Get Default Schedule
+#### 获取默认日程安排
 
 ```bash
 GET /cal-com/v2/schedules/default
 ```
 
-#### Get Schedule
+#### 获取具体日程安排
 
 ```bash
 GET /cal-com/v2/schedules/{scheduleId}
 ```
 
-#### Create Schedule
+#### 创建日程安排
 
 ```bash
 POST /cal-com/v2/schedules
@@ -455,7 +468,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -474,7 +487,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Schedule
+#### 更新日程安排
 
 ```bash
 PATCH /cal-com/v2/schedules/{scheduleId}
@@ -485,26 +498,26 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Schedule
+#### 删除日程安排
 
 ```bash
 DELETE /cal-com/v2/schedules/{scheduleId}
 ```
 
-### Availability Slots
+### 可用时间段
 
-#### Get Available Slots
+#### 获取可用时间段
 
 ```bash
 GET /cal-com/v2/slots/available?eventTypeId={eventTypeId}&startTime={startTime}&endTime={endTime}
 ```
 
-**Parameters:**
-- `eventTypeId` - Required. The event type ID
-- `startTime` - Required. Start of range (ISO 8601)
-- `endTime` - Required. End of range (ISO 8601)
+**参数：**
+- `eventTypeId` - 必填。事件类型的 ID
+- `startTime` - 范围的开始时间（ISO 8601 格式）
+- `endTime` - 范围的结束时间（ISO 8601 格式）
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -523,7 +536,7 @@ GET /cal-com/v2/slots/available?eventTypeId={eventTypeId}&startTime={startTime}&
 }
 ```
 
-#### Reserve Slot
+#### 预订时间段
 
 ```bash
 POST /cal-com/v2/slots/reserve
@@ -536,7 +549,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -544,15 +557,15 @@ Content-Type: application/json
 }
 ```
 
-### Calendars
+### 日历
 
-#### List Connected Calendars
+#### 列出关联的日历
 
 ```bash
 GET /cal-com/v2/calendars
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -570,15 +583,15 @@ GET /cal-com/v2/calendars
 }
 ```
 
-### Conferencing
+### 会议
 
-#### List Conferencing Apps
+#### 列出可用的会议应用程序
 
 ```bash
 GET /cal-com/v2/conferencing
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -592,21 +605,21 @@ GET /cal-com/v2/conferencing
 }
 ```
 
-#### Get Default Conferencing App
+#### 获取默认会议应用程序
 
 ```bash
 GET /cal-com/v2/conferencing/default
 ```
 
-### Webhooks (User-level)
+### Webhook（用户级别）
 
-#### List Webhooks
+#### 列出 Webhook
 
 ```bash
 GET /cal-com/v2/webhooks
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /cal-com/v2/webhooks
@@ -619,13 +632,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Webhook
+#### 获取 Webhook 信息
 
 ```bash
 GET /cal-com/v2/webhooks/{webhookId}
 ```
 
-#### Update Webhook
+#### 更新 Webhook
 
 ```bash
 PATCH /cal-com/v2/webhooks/{webhookId}
@@ -636,37 +649,37 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /cal-com/v2/webhooks/{webhookId}
 ```
 
-### Teams
+### 团队
 
-#### List Teams
+#### 列出团队信息
 
 ```bash
 GET /cal-com/v2/teams
 ```
 
-### Verified Resources
+### 验证过的资源
 
-#### List Verified Emails
+#### 列出已验证的电子邮件地址
 
 ```bash
 GET /cal-com/v2/verified-resources/emails
 ```
 
-## Pagination
+## 分页
 
-Bookings use cursor-based pagination with `take` and `nextCursor`:
+预订信息支持基于游标的分页，使用 `take` 和 `nextCursor`：
 
 ```bash
 GET /cal-com/v2/bookings?take=10
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -678,13 +691,13 @@ Response includes pagination info:
 }
 ```
 
-For next page:
+要查看下一页：
 
 ```bash
 GET /cal-com/v2/bookings?take=10&cursor=abc123
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -713,37 +726,37 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All times are in UTC unless a timezone is specified
-- `length` field in event types is in minutes
-- Booking creation requires an available slot - check `/v2/slots/available` first
-- Schedule working hours use minutes from midnight (540 = 9:00 AM, 1020 = 5:00 PM)
-- Days in schedules: 0 = Sunday, 1 = Monday, ... 6 = Saturday
-- The `GET /v2/schedules` endpoint may return 500 errors; use `GET /v2/schedules/{id}` instead
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 除非指定了时区，否则所有时间均以 UTC 为准。
+- 事件类型中的 `length` 字段以分钟为单位。
+- 创建预订前需要检查是否有可用的时间段（请先调用 `/v2/slots/available`）。
+- 日程安排的工作时间从午夜开始计算（例如：540 表示上午 9:00，1020 表示下午 5:00）。
+- 日程安排中的天数：0 表示星期日，1 表示星期一，依此类推。
+- `GET /v2/schedules` 端点可能会返回 500 错误；请改用 `GET /v2/schedules/{id}`。
+- 重要提示：当使用 curl 命令时，如果 URL 中包含括号，请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 curl 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Cal.com connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 409 | Conflict (duplicate resource) |
-| 429 | Rate limited |
-| 500 | Cal.com API error |
+| 400 | 未建立与 Cal.com 的连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 409 | 资源冲突（重复的资源） |
+| 429 | 使用频率受限 |
+| 500 | Cal.com API 出现错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python3 <<'EOF'
@@ -754,32 +767,30 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `cal-com`. For example:
+1. 确保您的 URL 路径以 `cal-com` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/cal-com/v2/me`
+- 错误的格式：`https://gateway.maton.ai/v2/me`
 
-- Correct: `https://gateway.maton.ai/cal-com/v2/me`
-- Incorrect: `https://gateway.maton.ai/v2/me`
+### 故障排除：创建预订失败
 
-### Troubleshooting: Booking Creation Fails
-
-1. Check available slots before creating a booking:
-
+1. 在创建预订前检查是否有可用的时间段：
 ```bash
 GET /cal-com/v2/slots/available?eventTypeId={id}&startTime=...&endTime=...
 ```
 
-2. Ensure all required fields are provided:
+2. 确保提供了所有必填字段：
    - `eventTypeId`
-   - `start` (must match an available slot)
+   - `start`（必须与可用的时间段匹配）
    - `timeZone`
    - `language`
    - `responses.name`
    - `responses.email`
 
-## Resources
+## 资源
 
-- [Cal.com API Documentation](https://cal.com/docs/api-reference/v2/introduction)
-- [Cal.com API Reference](https://cal.com/docs/api-reference/v2)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Cal.com API 文档](https://cal.com/docs/api-reference/v2/introduction)
+- [Cal.com API 参考](https://cal.com/docs/api-reference/v2)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

@@ -1,17 +1,17 @@
 ---
 name: n8n
-description: Manage n8n workflows and automations via API. Use when working with n8n workflows, executions, or automation tasks - listing workflows, activating/deactivating, checking execution status, manually triggering workflows, or debugging automation issues.
+description: 通过 API 管理 n8n 工作流和自动化任务。适用于处理 n8n 工作流、执行过程或自动化任务时，包括列出工作流、激活/停用工作流、检查执行状态、手动触发工作流以及调试自动化问题等操作。
 ---
 
-# n8n Workflow Management
+# n8n 工作流管理
 
-Interact with n8n automation platform via REST API.
+通过 REST API 与 n8n 自动化平台进行交互。
 
-## Setup
+## 设置
 
-**First-time setup:**
+**首次设置：**
 
-1. Install dependencies (virtual environment):
+1. 安装依赖项（虚拟环境）：
 
 ```bash
 cd skills/n8n-1.0.2
@@ -20,45 +20,45 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Configure environment variables in `~/.zshrc` (or `~/.bashrc`):
+2. 在 `~/.zshrc`（或 `~/.bashrc`）中配置环境变量：
 
 ```bash
 export N8N_API_KEY="your-api-key-here"
 export N8N_BASE_URL="https://your-n8n-instance.com"
 ```
 
-3. Reload shell and verify connection:
+3. 重新加载 shell 并验证连接：
 
 ```bash
 source ~/.zshrc
 ./skills/n8n-1.0.2/scripts/n8n.sh list-workflows --pretty
 ```
 
-> **Tip**: Get your API key from n8n UI: Settings → API
+> **提示**：从 n8n 用户界面获取 API 密钥：设置 → API
 
-## Quick Reference
+## 快速参考
 
-### List Workflows
+### 列出工作流
 
 ```bash
 ./scripts/n8n.sh list-workflows --pretty
 ./scripts/n8n.sh list-workflows --active true --pretty
 ```
 
-### Get Workflow Details
+### 获取工作流详情
 
 ```bash
 ./scripts/n8n.sh get-workflow --id <workflow-id> --pretty
 ```
 
-### Activate/Deactivate
+### 激活/停用工作流
 
 ```bash
 ./scripts/n8n.sh activate --id <workflow-id>
 ./scripts/n8n.sh deactivate --id <workflow-id>
 ```
 
-### Executions
+### 执行工作流
 
 ```bash
 # List recent executions
@@ -71,7 +71,7 @@ source ~/.zshrc
 ./scripts/n8n.sh list-executions --id <workflow-id> --limit 20 --pretty
 ```
 
-### Manual Execution
+### 手动执行工作流
 
 ```bash
 # Trigger workflow
@@ -83,7 +83,7 @@ source ~/.zshrc
 
 ## Python API
 
-For programmatic access:
+用于编程访问：
 
 ```python
 from scripts.n8n_api import N8nClient
@@ -108,45 +108,45 @@ execution = client.get_execution('execution-id')
 result = client.execute_workflow('workflow-id', data={'key': 'value'})
 ```
 
-## Common Tasks
+## 常见任务
 
-### Debug Failed Workflows
+### 调试失败的工作流
 
-1. List recent executions with failures
-2. Get execution details to see error
-3. Check workflow configuration
-4. Deactivate if needed
+1. 列出最近失败的执行记录
+2. 查看执行详情以了解错误原因
+3. 检查工作流配置
+4. 如有需要，停用工作流
 
-### Monitor Workflow Health
+### 监控工作流状态
 
-1. List active workflows
-2. Check recent execution status
-3. Review error patterns
+1. 列出正在运行的工作流
+2. 查看最近的执行状态
+3. 分析错误模式
 
-### Workflow Management
+### 工作流管理
 
-1. List all workflows
-2. Review active/inactive status
-3. Activate/deactivate as needed
-4. Delete old workflows
+1. 列出所有工作流
+2. 查看工作流的运行/停用状态
+3. 根据需要激活/停用工作流
+4. 删除旧的工作流
 
-## API Reference
+## API 参考
 
-For detailed API documentation, see [references/api.md](references/api.md).
+有关详细的 API 文档，请参阅 [references/api.md](references/api.md)。
 
-## Troubleshooting
+## 故障排除
 
-**Authentication error:**
+**认证错误：**
 
-- Verify N8N_API_KEY is set: `echo $N8N_API_KEY`
-- Check API key is valid in n8n UI
+- 确保已设置 `N8N_API_KEY`：`echo $N8N_API_KEY`
+- 在 n8n 用户界面中验证 API 密钥是否有效
 
-**Connection error:**
+**连接错误：**
 
-- Check N8N_BASE_URL if using custom URL
+- 如果使用自定义 URL，请检查 `N8N_BASE_URL`
 
-**Command errors:**
+**命令错误：**
 
-- Use `--pretty` flag for readable output
-- Check `--id` is provided when required
-- Validate JSON format for `--data` parameter
+- 使用 `--pretty` 标志以获得更易读的输出
+- 确保在需要时提供了 `--id` 参数
+- 验证 `--data` 参数的 JSON 格式是否正确

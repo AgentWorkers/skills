@@ -1,6 +1,6 @@
 ---
 name: url-shorten
-description: "Shorten URLs via tinyurl or bitly API"
+description: "通过 tinyurl 或 bitly API 缩短 URL"
 metadata:
   {
     "openclaw":
@@ -12,17 +12,17 @@ metadata:
   }
 ---
 
-# URL Shorten
+# URL缩短
 
-Shorten URLs via tinyurl or bitly API. Requires `BITLY_TOKEN` env var for bitly; falls back to tinyurl if not set.
+可以通过 tinyurl 或 bitly API 来缩短 URL。使用 bitly 时需要设置 `BITLY_TOKEN` 环境变量；如果未设置，则会自动回退到使用 tinyurl。
 
-## Commands
+## 命令
 
 ```bash
 # Shorten a URL (uses tinyurl by default, bitly if BITLY_TOKEN is set)
 url-shorten "https://example.com/very/long/path/to/resource"
 ```
 
-## Install
+## 安装
 
-No installation needed. `curl` is always present on the system. Optionally set `BITLY_TOKEN` environment variable to use the bitly API instead of tinyurl.
+无需安装任何软件。系统上通常已经安装了 `curl`。可以选择设置 `BITLY_TOKEN` 环境变量，以使用 bitly API 而不是 tinyurl。

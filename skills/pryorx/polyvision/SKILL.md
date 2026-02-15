@@ -1,30 +1,30 @@
 ---
 name: polyvision
-description: Analyze Polymarket prediction market wallets — get copy trading scores (1-10), P&L, win rate, risk metrics (Sharpe ratio, Sortino ratio, max drawdown), red flags, position sizing, market category performance, recent performance (7d/30d/90d), and streak analysis. Connects via MCP server or REST API. Use when evaluating whether to copy trade a Polymarket trader, comparing multiple wallets side-by-side, screening for elite prediction market performers, checking if a wallet has bot-like trading patterns or hidden losses, or researching a trader's risk profile before following their positions. Free API key, no daily limits, 6-hour result caching.
+description: 分析 Polymarket 预测市场钱包的信息：获取跟单交易评分（1-10 分）、盈亏情况、胜率、风险指标（夏普比率、索蒂诺比率、最大回撤率）、风险警示信号、持仓规模、市场类别表现、近期表现（7 天/30 天/90 天），以及交易连贯性分析。支持通过 MCP 服务器或 REST API 进行数据查询。该工具可用于评估是否应跟单某个 Polymarket 交易者、对比多个钱包的表现、筛选表现优异的交易者、检查钱包是否存在类似机器人的交易模式或隐藏的亏损风险，或在跟随其交易策略前了解其风险状况。提供免费的 API 密钥，无每日使用限制，结果缓存时长为 6 小时。
 homepage: https://polyvisionx.com
 license: MIT
 disable-model-invocation: true
 metadata: {"clawdis":{"emoji":"📊","primaryEnv":"POLYVISION_API_KEY","requires":{"env":["POLYVISION_API_KEY"]}}}
 ---
 
-# PolyVision — Polymarket Wallet Analyzer
+# PolyVision — Polymarket钱包分析工具
 
-PolyVision analyzes Polymarket prediction market wallets and returns a comprehensive trading profile: copy trading score (1-10), P&L breakdown, win rate, risk metrics (Sharpe ratio, Sortino ratio, max drawdown), position sizing consistency, market category performance, recent performance windows (7d/30d/90d), streak analysis, and red flags. Use it to evaluate whether a trader is worth copy trading, compare multiple wallets, or screen for elite performers.
+PolyVision能够分析Polymarket预测市场中的钱包，并提供全面的交易评估报告：包括跟单交易评分（1-10分）、盈亏明细、胜率、风险指标（夏普比率、索蒂诺比率、最大回撤率）、持仓规模的一致性、市场类别表现、近期表现（7天/30天/90天）、连续交易记录以及潜在的风险警示。您可以使用该工具来评估某个交易者是否适合跟单交易、比较多个钱包的表现，或者筛选出表现优秀的交易者。
 
-## When to Use
-- User mentions a Polymarket wallet address (0x...)
-- User asks about copy trading, trader evaluation, or wallet scoring
-- User wants to compare prediction market traders or screen for elite performers
-- User asks about a trader's risk profile, red flags, or trading patterns
+## 使用场景
+- 用户提供了Polymarket钱包地址（格式为0x...）
+- 用户询问关于跟单交易、交易者评估或钱包评分的信息
+- 用户希望比较不同交易者的表现或筛选出表现优异的交易者
+- 用户想了解交易者的风险状况、潜在风险或交易模式
 
-## When NOT to Use
-- General crypto price queries (not Polymarket-specific)
-- Placing trades or executing orders (PolyVision is read-only analysis)
-- Non-Polymarket wallet lookups (Ethereum DeFi, NFTs, etc.)
+## 不适用场景
+- 一般性的加密货币价格查询（非Polymarket相关）
+- 下单或执行交易操作（PolyVision仅提供分析功能）
+- 非Polymarket钱包的查询（如Ethereum DeFi、NFT等）
 
-## Setup: MCP Server (Recommended)
+## 设置：建议使用MCP服务器
 
-Add to your MCP client configuration (e.g. `claude_desktop_config.json`, Cursor, Windsurf):
+请将以下配置添加到您的MCP客户端配置文件中（例如`claude_desktop_config.json`、Cursor、Windsurf）：
 
 ```json
 {
@@ -40,9 +40,9 @@ Add to your MCP client configuration (e.g. `claude_desktop_config.json`, Cursor,
 }
 ```
 
-## Setup: Get an API Key
+## 获取API密钥
 
-Register for a free API key (no daily limits):
+您可以免费注册一个API密钥（无每日使用限制）：
 
 ```bash
 curl -X POST https://api.polyvisionx.com/v1/auth/register \
@@ -50,162 +50,139 @@ curl -X POST https://api.polyvisionx.com/v1/auth/register \
   -d '{"email": "you@example.com", "name": "My App"}'
 ```
 
-Response:
-
-```json
-{
-  "api_key": "pv_live_abc123...",
-  "key_prefix": "pv_live_abc12345",
-  "tier": "api"
-}
-```
-
-Store the key — it is shown only once and cannot be retrieved later. Set it as an environment variable:
+系统会返回一个API密钥。请注意：该密钥仅显示一次，之后无法再次获取。请将其设置为环境变量：
 
 ```bash
 export POLYVISION_API_KEY="pv_live_abc123..."
 ```
 
-## MCP Tools Reference
+## MCP工具参考
 
 ### `analyze_wallet`
 
-Run a comprehensive Polymarket wallet analysis.
+执行全面的Polymarket钱包分析：
+- **参数** | **类型** | **是否必需** | **默认值** | **说明** |
+| --- | --- | --- | --- | --- |
+| `wallet_address` | `string` | 是 | — | Ethereum钱包地址（42个字符，以`0x`开头） |
+| `mode` | `string` | 否 | `"quick"` | `"quick"`（约5秒）或`"full"`（约30-60秒，包含交易时间数据） |
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `wallet_address` | string | Yes | — | Ethereum address (42 chars, starts with `0x`) |
-| `mode` | string | No | `"quick"` | `"quick"` (~5s) or `"full"` (~30-60s with timing data) |
+**返回结果**：包含盈亏明细、胜率、风险指标、交易类别、跟单交易评分（1-10分）、风险警示和使用情况的完整分析数据。分析结果会缓存6小时，缓存命中时可立即获取结果。详细字段参考请参见`references/response-schemas.md`。
 
-**Returns:** Full analysis dict with P&L, win rate, risk metrics, categories, copy trading score (1-10), red flags, and usage info. Results are cached for 6 hours — cache hits are instant. See `references/response-schemas.md` for the complete field reference.
-
-**Timing:** Quick mode ~5s, full mode ~30-60s. Cached responses are instant.
+**耗时**：快速模式约5秒，完整模式约30-60秒。缓存后的结果可立即获取。
 
 ### `get_score`
 
-Get a compact copy-trading score for a wallet. Shares the same cache as `analyze_wallet`.
+获取钱包的跟单交易评分：
+- **参数** | **类型** | **是否必需** | **说明** |
+| --- | --- | --- | --- |
+| `wallet_address` | `string` | 是 | Ethereum钱包地址（42个字符，以`0x`开头） |
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `wallet_address` | string | Yes | Ethereum address (42 chars, starts with `0x`) |
+**返回结果**：评分（1-10分）、推荐等级（绿色/黄色/橙色/红色）、总盈亏、胜率、交易次数、夏普比率、风险警示以及使用情况。
 
-**Returns:** Score (1-10), recommendation, tier (green/yellow/orange/red), total P&L, win rate, trade count, Sharpe ratio, red flags, cache status, and usage info.
-
-**Timing:** ~5s fresh, instant if cached.
+**耗时**：约5秒；如果数据已缓存，则可立即获取结果。
 
 ### `check_quota`
 
-Check your usage statistics. Does not consume quota.
+查看您的使用统计信息。此操作不会消耗任何配额。
 
-**Parameters:** None
+**返回结果**：`{"used_today": <int>, "tier": "api" }`
 
-**Returns:** `{ "used_today": <int>, "tier": "api" }`
-
-API/MCP access has no daily limits — usage is tracked for analytics only.
+API/MCP的使用没有每日使用限制，所有数据仅用于分析目的。
 
 ### `health`
 
-Check system health.
+检查系统运行状态。
 
-**Parameters:** None
-
-**Returns:** `{ "status": "ok" }` or `{ "status": "degraded" }`
+**返回结果**：`{"status": "ok" }` 或 `{"status": "degraded" }`
 
 ### `regenerate_key`
 
-Regenerate your API key. The old key is immediately invalidated.
+重新生成您的API密钥。旧密钥将立即失效。
 
-**Parameters:** None
+**返回结果**：`{"api_key": "pv_live_...", "key_prefix": "pv_live_...", "message": "..." }`
 
-**Returns:** `{ "api_key": "pv_live_...", "key_prefix": "pv_live_...", "message": "..." }`
-
-The new key is shown only once. Update your configuration immediately.
+新密钥仅显示一次，请立即更新您的配置文件。
 
 ### `deactivate_key`
 
-Permanently deactivate your API key. This is irreversible — use `regenerate_key` instead if you need a replacement.
+永久停用您的API密钥。此操作不可逆，如需更换密钥，请使用`regenerate_key`。
 
-**Parameters:** None
+**返回结果**：`{"success": true, "message": "API key deactivated. All future requests with this key will be rejected." }`
 
-**Returns:** `{ "success": true, "message": "API key deactivated. All future requests with this key will be rejected." }`
+## 评分等级
 
-## Score Tiers
+| 评分等级 | 评分范围 | 推荐建议 | 含义 |
+| --- | --- | --- | --- |
+| 绿色 | 8.0 – 10.0 | 表现优异 | 持续盈利，风险管理良好，有良好的交易记录 |
+| 黄色 | 6.0 – 7.9 | 表现中等 | 有一定问题，需谨慎操作 |
+| 橙色 | 4.0 – 5.9 | 风险较高 | 交易结果不稳定，存在显著风险 |
+| 红色 | 0.0 – 3.9 | 不建议跟单 | 表现糟糕，存在重大风险 |
 
-| Tier | Score Range | Recommendation | Meaning |
-|------|------------|----------------|---------|
-| Green | 8.0 – 10.0 | Strong Copy | Consistently profitable, good risk management, strong track record |
-| Yellow | 6.0 – 7.9 | Moderate Copy | Decent performance with some concerns, proceed with caution |
-| Orange | 4.0 – 5.9 | Risky Copy | Mixed results, significant red flags, high risk |
-| Red | 0.0 – 3.9 | Don't Copy | Poor performance, major red flags, likely to lose money |
+## 决策参考
 
-## Decision Table
+| 用户需求 | 工具 | 模式 | 原因 |
+| --- | --- | --- | --- |
+| “我应该跟单这个交易者吗？” | `get_score` | — | 提供简单的评分和风险警示 |
+| “深入分析这个钱包” | `analyze_wallet` | `full` | 包含交易时间数据的全面分析 |
+| “快速查看钱包情况” | `analyze_wallet` | `quick` | 不包含交易时间数据的快速分析 |
+| “比较两个交易者” | `get_score`（多次调用） | 便于快速对比两个交易者的评分 |
+| “这个交易者主要关注哪些市场类别？” | `analyze_wallet` | `quick` | 分析中包含市场类别信息 |
+| “系统是否正常运行？” | `health` | — | 检查系统状态 |
+| “我进行了多少次分析？” | `check_quota` | | 查看使用统计信息（无使用限制） |
 
-| User Intent | Tool | Mode | Why |
-|-------------|------|------|-----|
-| "Should I copy this trader?" | `get_score` | — | Quick yes/no with score + red flags |
-| "Deep dive on this wallet" | `analyze_wallet` | `full` | Complete analysis with timing data |
-| "Quick check on a wallet" | `analyze_wallet` | `quick` | Full analysis without activity timing |
-| "Compare two traders" | `get_score` x2 | — | Side-by-side scores for fast comparison |
-| "What categories does this trader focus on?" | `analyze_wallet` | `quick` | Category breakdown in analysis |
-| "Is the system up?" | `health` | — | System status check |
-| "How many analyses have I run?" | `check_quota` | — | Usage stats (no limits enforced) |
+## 风险警示说明
 
-## Red Flag Reference
+风险警示以字符串列表的形式返回。各警示的含义如下：
+- **低胜率**：胜率低于40% | 风险较高 |
+- **单笔大额亏损**：单笔最大亏损超过总盈亏的50% | 中等风险 |
+- **整体亏损**：净盈亏为负 | 高风险 |
+- **交易记录不足**：已平仓的交易数量少于10笔 | 中等风险 |
+- **长期不活跃**：30天内无交易 | 低风险 |
+- **交易频率过高**：单笔交易平均持续时间少于5分钟 | 高风险 |
+- **交易速度过快**：单笔交易平均持续时间少于30分钟 | 中等风险 |
+- **隐藏亏损**：70%以上的未平仓交易处于亏损状态 | 高风险 |
+- **多数未平仓交易处于亏损状态**：50%以上的未平仓交易处于亏损状态 | 中等风险 |
+- **未发现重大风险警示**：未发现异常交易模式 | 无风险 |
 
-Red flags are returned as a list of strings. Here's what each one means:
+## REST API（备用方案）
 
-| Red Flag | Trigger | Severity |
-|----------|---------|----------|
-| Low win rate | Win rate below 40% | High |
-| Large single loss | Single worst trade exceeds 50% of total P&L | Medium |
-| Overall unprofitable | Net P&L is negative | High |
-| Limited track record | Fewer than 10 closed positions | Medium |
-| Inactive | No trades in 30+ days | Low |
-| BOT ALERT | Median trade duration under 5 minutes | High |
-| Very fast trading | Median trade duration under 30 minutes | Medium |
-| LOSS HIDING | 70%+ of open positions underwater (5+ open) | High |
-| Open positions losing | 50%+ of open positions underwater (3+ open) | Medium |
-| No major red flags detected | No concerning patterns found | None |
+对于无法使用MCP的工具，所有功能都可以通过REST接口访问：`https://api.polyvisionx.com`。大多数接口需要使用Bearer令牌进行身份验证（部分接口除外）。
 
-## REST API (Alternative)
+交互式文档和OpenAPI规范请参考：
+- **Swagger UI**：`https://api.polyvisionx.com/docs`
+- **OpenAPI JSON**：`https://api.polyvisionx.com/openapi.json`
 
-For agents that cannot use MCP, all tools are available as REST endpoints at `https://api.polyvisionx.com`. Most endpoints require Bearer token authentication (exceptions noted below).
+| 接口 | 方法 | 说明 |
+| --- | --- | --- |
+| `POST /v1/auth/register` | 注册并获取API密钥（无需认证） |
+| `GET /v1/auth/me` | 获取当前用户信息和使用统计 |
+| `POST /v1/auth/regenerate` | 重新生成API密钥 |
+| `POST /v1/auth/deactivate` | 停用API密钥 |
+| `GET /v1/analyze/{wallet_address}?mode=quick` | 执行全面钱包分析 |
+| `GET /v1/score/{wallet_address}` | 获取简洁的跟单交易评分 |
+| `GET /health` | 检查系统运行状态（无需认证） |
 
-Interactive docs and the OpenAPI spec are available at:
-- **Swagger UI:** `https://api.polyvisionx.com/docs`
-- **OpenAPI JSON:** `https://api.polyvisionx.com/openapi.json`
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `POST /v1/auth/register` | POST | Register and get an API key (no auth required) |
-| `GET /v1/auth/me` | GET | Get current user info and usage stats |
-| `POST /v1/auth/regenerate` | POST | Regenerate API key |
-| `POST /v1/auth/deactivate` | POST | Deactivate API key |
-| `GET /v1/analyze/{wallet_address}?mode=quick` | GET | Full wallet analysis |
-| `GET /v1/score/{wallet_address}` | GET | Compact copy-trading score |
-| `GET /health` | GET | Health check (no auth required) |
-
-### Example: Analyze a wallet
+### 示例：分析钱包
 
 ```bash
 curl -s https://api.polyvisionx.com/v1/analyze/0x1234...abcd?mode=quick \
   -H "Authorization: Bearer $POLYVISION_API_KEY" | jq .
 ```
 
-### Example: Get a score
+### 示例：获取评分
 
 ```bash
 curl -s https://api.polyvisionx.com/v1/score/0x1234...abcd \
   -H "Authorization: Bearer $POLYVISION_API_KEY" | jq .
 ```
 
-## Error Codes
+## 错误代码
 
-| Code | Meaning | Recovery |
-|------|---------|----------|
-| 400 | Invalid wallet address (must be 42-char hex starting with `0x`) | Fix the address format |
-| 401 | Invalid or inactive API key | Check your `POLYVISION_API_KEY` or register a new one |
-| 409 | Email already registered (registration only) | Use existing key or register with a different email |
-| 429 | Rate limited | Wait and retry — Polymarket API has upstream limits |
-| 503 | System at capacity (all analysis slots in use) | Retry in 30-60 seconds |
-| 504 | Analysis timed out | Retry — the wallet may have extensive history |
+| 代码 | 含义 | 处理方式 |
+| --- | --- | --- |
+| 400 | 钱包地址无效（必须是42个字符的十六进制地址，以`0x`开头） | 请检查地址格式 |
+| 401 | API密钥无效或已停用 | 请检查您的`POLYVISION_API_KEY`或重新注册 |
+| 409 | 该邮箱已注册（仅限注册） | 使用现有密钥或使用其他邮箱注册 |
+| 429 | 使用频率受限 | 请稍后重试（Polymarket API有使用频率限制） |
+| 503 | 系统已满载（所有分析资源已占用） | 30-60秒后重试 |
+| 504 | 分析超时 | 可能是因为钱包的交易记录过多，请稍后重试 |

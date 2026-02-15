@@ -1,68 +1,65 @@
 ---
 name: assess-risk
-description: Get an independent risk assessment for any proposed Uniswap operation — swap, LP position, bridge, or token interaction. Evaluates slippage, impermanent loss, liquidity, smart contract, and bridge risks with a clear APPROVE or VETO decision. Use when the user asks if something is safe or wants a risk evaluation.
+description: 对任何拟议的 Uniswap 操作（如交易、流动性提供者（LP）策略、跨链桥接功能或代币交互）进行独立的风险评估。该评估会涵盖滑点风险、非永久性损失风险、流动性风险、智能合约风险以及跨链桥接风险，并给出明确的“批准”（APPROVE）或“否决”（VETO）决策。当用户询问某项操作是否安全或需要风险评估时，可以使用此功能。
 model: opus
 allowed-tools: [Task(subagent_type:risk-assessor)]
 ---
 
-# Assess Risk
+# 评估风险
 
-## Overview
+## 概述
 
-Provides an independent, multi-dimensional risk assessment for any proposed Uniswap operation. Delegates to the `risk-assessor` agent, which evaluates risk across 5+ dimensions and produces a composite score with a clear APPROVE, CONDITIONAL_APPROVE, VETO, or HARD_VETO decision.
+该功能为任何提议的Uniswap操作提供独立、多维度的风险评估。它将任务委托给`risk-assessor`代理，该代理会从5个以上维度对风险进行评估，并生成一个综合评分，同时给出“批准（APPROVE）”、“有条件批准（CONDITIONAL_APPROVE）”、“否决（VETO）”或“绝对否决（HARD_VETO）”的决策。
 
-The risk-assessor is a **terminal node** — it cannot be influenced by other agents. Its assessment is independent and objective, based solely on on-chain data.
+`risk-assessor`是一个**终端节点**——它不会受到其他代理的影响。其评估结果是基于链上数据的，因此是独立且客观的。
 
-## When to Use
+## 适用场景
 
-Activate when the user asks:
+当用户提出以下问题时，应激活此功能：
+- “这笔交易安全吗？”
+- “将100 ETH兑换成USDC的风险如何？”
+- “我应该将资金投入这个流动性池（LP）吗？”
+- “将X代币兑换成Y代币的风险有多大？”
+- “将代币桥接到Base链安全吗？”
+- “使用这个代币进行流动性池操作（LP）的风险如何？”
+- “这个代币适合交易吗？”
+- “在交易前需要进行风险检查。”
 
-- "Is this trade safe?"
-- "Risk assessment for swapping 100 ETH for USDC"
-- "Should I LP in this pool?"
-- "Evaluate the risk of swapping X for Y"
-- "How risky is this pool?"
-- "Is it safe to bridge tokens to Base?"
-- "What's the risk of LPing with this token?"
-- "Check if this token is safe to trade"
-- "Risk check before I swap"
+## 参数
 
-## Parameters
+| 参数              | 是否必填 | 默认值    | 获取方式                                              |
+| ---------------------- | -------- | ---------- | ----------------------------------------------------------- |
+| operation       | 是      | —          | 用户想要执行的操作的文字描述                         |
+| riskTolerance     | 否       | “conservative”（保守）、“moderate”（中等）、“aggressive”（激进） |
 
-| Parameter      | Required | Default    | How to Extract                                              |
-| -------------- | -------- | ---------- | ----------------------------------------------------------- |
-| operation      | Yes      | —          | Natural language description of what the user wants to do   |
-| riskTolerance  | No       | moderate   | "conservative", "moderate", "aggressive"                    |
+`operation`参数的示例包括：
+- 交易操作：例如“在Ethereum网络上将100 ETH兑换成USDC”
+- 流动性池操作：例如“向WETH/USDC V3流动性池中注入5万美元（0.05%的份额）”
+- 桥接操作：例如“将10 ETH从Ethereum桥接到Base链”
+- 代币检查：例如“PEPE代币是否适合交易？”
+- 流动性池检查：例如“UNI/WETH流动性池的风险如何？”
 
-The `operation` parameter is flexible — it can be:
-- A swap: "swap 100 ETH for USDC on Ethereum"
-- An LP action: "add $50K liquidity to WETH/USDC V3 0.05%"
-- A bridge: "bridge 10 ETH from Ethereum to Base"
-- A token check: "is PEPE safe to trade?"
-- A pool check: "is the UNI/WETH pool risky?"
+## 工作流程
 
-## Workflow
+1. **解析用户请求中的操作信息**：
+   - 确定操作类型（交易、添加流动性、移除流动性、桥接或代币检查）
+   - 涉及的代币
+   - 交易金额
+   - 链路（Ethereum或其他链）
+   - 流动性池（如适用）
 
-1. **Parse the operation** from the user's request. Identify:
-   - Operation type: swap, add liquidity, remove liquidity, bridge, or token check
-   - Tokens involved
-   - Amounts
-   - Chain(s)
-   - Pool (if applicable)
+2. **委托给`risk-assessor`代理**：使用解析后的操作详情和风险容忍度调用`Task(subagent_type:risk-assessor)`。代理会从以下维度进行评估：
+   - **滑点（Slippage）**：交易规模与流动性池中的流动性之间的价格影响
+   - **非永久性损失（Impermanent Loss）**：基于代币对波动性的预期非永久性损失（仅针对流动性池操作）
+   **流动性（Liquidity）**：当前头寸是否可以平仓？总市值（TVL）与头寸规模的比例
+   **智能合约（Smart Contract）**：流动性池的运行时间、Uniswap版本以及智能合约的安全性（如V4版本）
+   **桥接（Bridge）**：桥接机制的可靠性及跨链流动性
 
-2. **Delegate to risk-assessor**: Invoke `Task(subagent_type:risk-assessor)` with the parsed operation details and risk tolerance. The agent evaluates:
+3. **以清晰的方式呈现评估结果**：包括每个维度的评分以及最终的决策。
 
-   | Dimension        | What It Checks                                              |
-   | ---------------- | ----------------------------------------------------------- |
-   | Slippage         | Price impact for the trade size vs pool liquidity            |
-   | Impermanent Loss | Expected IL based on pair volatility (LP operations only)   |
-   | Liquidity        | Can the position be exited? TVL vs position size ratio      |
-   | Smart Contract   | Pool age, Uniswap version, hook audit status (V4)           |
-   | Bridge           | Bridge mechanism reliability, liquidity (cross-chain only)  |
+## 输出格式
 
-3. **Present the assessment** clearly with per-dimension scores and a final decision.
-
-## Output Format
+### 评估结果为“批准（APPROVE）”时：
 
 ```text
 Risk Assessment
@@ -87,7 +84,7 @@ Risk Assessment
     ✓ Price impact < 10%
 ```
 
-### For a VETO:
+### 评估结果为“有条件批准（CONDITIONAL_APPROVE）”时：
 
 ```text
 Risk Assessment
@@ -117,7 +114,7 @@ Risk Assessment
     - Switch to risk tolerance "aggressive" (not recommended)
 ```
 
-### For a HARD VETO:
+### 评估结果为“否决（VETO）”时：
 
 ```text
 Risk Assessment
@@ -138,19 +135,19 @@ Risk Assessment
   Suggestion: Use "research-token SCAMTOKEN" to investigate further.
 ```
 
-## Important Notes
+## 重要说明
 
-- The risk-assessor is a **terminal, independent node**. Its assessment cannot be overridden by other agents.
-- **HARD VETO** decisions are non-negotiable — they trigger for: unverified tokens, pool TVL < $1K, price impact > 10%, bridge amount exceeding bridge liquidity.
-- This skill assesses risk but does **not execute** any operations. It's a "should I?" check before acting.
-- For LP operations, IL risk is always evaluated alongside the other dimensions.
-- When data is insufficient, the risk-assessor defaults to HIGH risk for the affected dimension rather than guessing.
+- `risk-assessor`是一个独立的终端节点，其评估结果不可被其他代理更改。
+- **绝对否决（HARD_VETO）**的决定是不可协商的，适用于以下情况：代币未经过验证、流动性池的总市值（TVL）低于1000美元、交易价格的影响超过10%，或桥接金额超过流动性池的承载能力。
+- 该功能仅用于风险评估，不执行任何操作。它仅用于提供决策建议。
+- 对于流动性池操作（LP），在评估风险时总会同时考虑非永久性损失（IL）这一维度。
+- 当数据不足时，`risk-assessor`会默认认为相关维度的风险为“高风险”，而不会进行猜测。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                                       | Suggested Action                     |
-| -------------------- | --------------------------------------------------------- | ------------------------------------ |
-| Cannot parse operation | "I need more details. What exactly are you planning?"   | Ask user to describe the operation   |
-| Token not found      | "Could not find token X."                                 | Provide contract address             |
-| Pool data unavailable| "Cannot access pool data for risk analysis."              | Try again later                      |
-| Agent unavailable    | "Risk assessor is not available."                         | Check agent configuration            |
+| 错误类型            | 显示给用户的消息                                      | 建议的操作                                      |
+| ----------------------------- | ------------------------------------------------------ | -------------------------------------- |
+| 无法解析操作信息       | “需要更多详细信息。您具体打算做什么？”                          | 要求用户详细描述操作内容                         |
+| 未找到相关代币        | “无法找到代币X。”                                      | 提供代币的合约地址                             |
+| 无法获取流动性池数据     | “无法获取流动性池数据以进行风险分析。”                         | 请稍后再试                         |
+| 代理不可用          | “风险评估代理当前不可用。”                                   | 检查代理的配置                         |

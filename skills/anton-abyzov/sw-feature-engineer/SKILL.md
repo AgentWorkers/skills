@@ -4,17 +4,17 @@ description: |
   Comprehensive feature engineering for ML pipelines: data quality assessment, feature creation, selection, transformation, and encoding. Activates for "feature engineering", "create features", "feature selection", "data preprocessing", "handle missing values", "encode categorical", "scale features", "feature importance". Ensures features are production-ready with automated validation, documentation, and integration with SpecWeave increments.
 ---
 
-# Feature Engineer
+# 特征工程（Feature Engineering）
 
-## Overview
+## 概述
 
-Feature engineering often makes the difference between mediocre and excellent ML models. This skill transforms raw data into model-ready features through systematic data quality assessment, feature creation, selection, and transformation—all integrated with SpecWeave's increment workflow.
+特征工程往往是决定机器学习（ML）模型质量的关键因素。这项技能通过系统化的数据质量评估、特征创建、特征选择和特征转换，将原始数据转化为模型可用的特征——所有这些步骤都与 SpecWeave 的增量工作流程紧密集成。
 
-## The Feature Engineering Pipeline
+## 特征工程流程
 
-### Phase 1: Data Quality Assessment
+### 第1阶段：数据质量评估
 
-**Before creating features, understand your data**:
+**在创建特征之前，必须先了解你的数据**：
 
 ```python
 from specweave import DataQualityReport
@@ -31,7 +31,7 @@ report = DataQualityReport(df, increment="0042")
 # - Duplicate detection
 ```
 
-**Quality Report Output**:
+**质量报告输出**：
 ```markdown
 # Data Quality Report
 
@@ -61,9 +61,9 @@ report = DataQualityReport(df, increment="0042")
 3. Convert data types for efficiency
 ```
 
-### Phase 2: Feature Creation
+### 第2阶段：特征创建
 
-**Create features from domain knowledge**:
+**根据领域知识来创建特征**：
 
 ```python
 from specweave import FeatureCreator
@@ -120,7 +120,7 @@ creator.save_feature_definitions(
 )
 ```
 
-**Feature Definitions** (auto-generated):
+**特征定义**（自动生成）：
 ```yaml
 # .specweave/increments/0042.../features/feature_definitions.yaml
 
@@ -148,9 +148,9 @@ features:
     description: Conversion rate (conversions / visits)
 ```
 
-### Phase 3: Feature Selection
+### 第3阶段：特征选择
 
-**Reduce dimensionality, improve performance**:
+**降低数据维度，提升模型性能**：
 
 ```python
 from specweave import FeatureSelector
@@ -189,7 +189,7 @@ selected_features = selector.get_selected_features()
 selector.generate_report()
 ```
 
-**Feature Selection Report**:
+**特征选择报告**：
 ```markdown
 # Feature Selection Report
 
@@ -217,9 +217,9 @@ selector.generate_report()
 ...
 ```
 
-### Phase 4: Feature Transformation
+### 第4阶段：特征转换
 
-**Scale, normalize, encode for model compatibility**:
+**对特征进行缩放、归一化处理，以适应模型需求**：
 
 ```python
 from specweave import FeatureTransformer
@@ -276,9 +276,9 @@ transformer.save(
 )
 ```
 
-### Phase 5: Feature Validation
+### 第5阶段：特征验证
 
-**Ensure features are production-ready**:
+**确保特征具备生产环境所需的稳定性**：
 
 ```python
 from specweave import FeatureValidator
@@ -306,7 +306,7 @@ invalid_report = validator.check_invalid_values()
 validator.generate_report()
 ```
 
-**Validation Report**:
+**验证报告**：
 ```markdown
 # Feature Validation Report
 
@@ -330,9 +330,9 @@ No infinite or NaN values detected.
 2 warnings, 0 critical issues.
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-### Automatic Feature Documentation
+### 自动化特征文档生成
 
 ```python
 # All feature engineering steps logged to increment
@@ -359,15 +359,15 @@ with track_experiment("feature-engineering-v1", increment="0042") as exp:
     exp.save_artifact("validation_report.md")
 ```
 
-### Living Docs Integration
+### 动态文档的集成
 
-After completing feature engineering:
+特征工程完成后：
 
 ```bash
 /sw:sync-docs update
 ```
 
-Updates:
+**更新流程**：
 ```markdown
 <!-- .specweave/docs/internal/architecture/feature-engineering.md -->
 
@@ -391,9 +391,9 @@ All features documented in: `.specweave/increments/0042.../features/`
 - validation_report.md: Quality checks
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Document Feature Rationale
+### 1. 记录特征选择的理由
 
 ```python
 # Bad: Create features without explanation
@@ -407,7 +407,7 @@ creator.add_interaction_feature(
 )
 ```
 
-### 2. Handle Missing Values Systematically
+### 2. 系统地处理缺失值
 
 ```python
 # Options for missing values:
@@ -425,7 +425,7 @@ creator.fill_missing(column="sensor_reading", method="ffill")
 creator.impute_with_model(column="income", model=RandomForestRegressor())
 ```
 
-### 3. Avoid Data Leakage
+### 3. 防止数据泄露
 
 ```python
 # ❌ WRONG: Fit on all data (includes test set!)
@@ -443,7 +443,7 @@ transformer.fit_transform(X_train)  # Fits
 transformer.transform(X_test)        # Only transforms
 ```
 
-### 4. Version Feature Engineering Pipeline
+### 4. 特征工程流程的版本控制
 
 ```python
 # Version features with increment
@@ -462,7 +462,7 @@ transformer_v1 = FeatureTransformer.load(
 )
 ```
 
-### 5. Test Feature Engineering on New Data
+### 5. 在新数据上测试特征工程的效果
 
 ```python
 # Before deploying, test on held-out data
@@ -481,9 +481,9 @@ if validation_report["status"] == "CRITICAL":
     raise FeatureEngineeringError("Feature engineering failed validation")
 ```
 
-## Common Feature Engineering Patterns
+## 常见的特征工程模式
 
-### Pattern 1: RFM (Recency, Frequency, Monetary)
+### 模式1：RFM（最近性、频率、金额）
 
 ```python
 # For e-commerce / customer analytics
@@ -498,7 +498,7 @@ creator.add_rfm_features(
 # - monetary: total spend
 ```
 
-### Pattern 2: Rolling Window Aggregations
+### 模式2：滚动窗口聚合
 
 ```python
 # For time series
@@ -510,7 +510,7 @@ creator.add_rolling_features(
 # Creates: daily_sales_7day_mean, daily_sales_7day_std, etc.
 ```
 
-### Pattern 3: Target Encoding (Categorical → Numerical)
+### 模式3：目标编码（将分类变量转换为数值变量）
 
 ```python
 # Encode categorical as target mean (careful: can leak!)
@@ -522,7 +522,7 @@ creator.add_target_encoding(
 # Creates: product_category_target_encoded
 ```
 
-### Pattern 4: Polynomial Features
+### 模式4：多项式特征
 
 ```python
 # For non-linear relationships
@@ -534,7 +534,7 @@ creator.add_polynomial_features(
 # Creates: age^2, income^2, age*income
 ```
 
-## Commands
+## 相关命令
 
 ```bash
 # Generate feature engineering pipeline for increment
@@ -547,20 +547,20 @@ creator.add_polynomial_features(
 /ml:feature-importance 0042
 ```
 
-## Integration with Other Skills
+## 与其他工具的集成
 
-- **ml-pipeline-orchestrator**: Task 2 is "Feature Engineering" (uses this skill)
-- **experiment-tracker**: Logs all feature engineering experiments
-- **model-evaluator**: Uses feature importance from models
-- **ml-deployment-helper**: Packages feature transformer for production
+- **ml-pipeline-orchestrator**：任务2为“特征工程”（使用该工具）
+- **experiment-tracker**：记录所有的特征工程实验
+- **model-evaluator**：利用模型计算特征的重要性
+- **ml-deployment-helper**：将特征转换工具打包以供生产环境使用
 
-## Summary
+## 总结
 
-Feature engineering is 70% of ML success. This skill ensures:
-- ✅ Systematic approach (quality → create → select → transform → validate)
-- ✅ No data leakage (train/test separation enforced)
-- ✅ Production-ready (versioned, validated, documented)
-- ✅ Reproducible (all steps tracked in increment)
-- ✅ Traceable (feature definitions in living docs)
+特征工程在机器学习项目中起着至关重要的作用。良好的特征工程能够：
+- ✅ 确保采用系统化的方法（数据质量 → 特征创建 → 特征选择 → 特征转换 → 特征验证）
+- ✅ 防止数据泄露（严格区分训练数据和测试数据）
+- 使特征具备生产环境的适用性（版本控制、验证、文档记录）
+- 保证实验结果的可重复性（所有步骤均被记录在增量开发流程中）
+- 提供可追溯性（特征定义存储在动态文档中）
 
-Good features make mediocre models great. Great features make mediocre models excellent.
+优质的特征能够让普通的模型变得出色；而优秀的特征则能让优秀的模型更加卓越。

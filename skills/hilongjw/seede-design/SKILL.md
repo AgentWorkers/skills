@@ -1,7 +1,7 @@
 ---
 name: seede
 version: 1.0.0
-description: Use Seede AI to generate professional design graphics based on text or images. Supports generating posters, social media graphics, UI designs, etc.
+description: 使用 Seede AI 根据文本或图像生成专业的设计图形。支持生成海报、社交媒体图形、用户界面设计等。
 homepage: https://seede.ai
 metadata:
   {
@@ -14,47 +14,47 @@ metadata:
   }
 ---
 
-# Seede AI Skill
+# Seede AI 技能
 
-Quickly generate professional design solutions through the Seede AI API based on text descriptions, reference images, or brand themes.
+通过 Seede AI API，根据文本描述、参考图片或品牌主题快速生成专业的设计方案。
 
-## When to Use
+## 使用场景
 
-- "Help me design a tech-style event poster"
-- "Generate a social media graphic with a similar style based on this reference image"
-- "Generate a set of minimalist UI designs for my brand"
-- "Add this logo to the design and generate a 1080x1440 image"
+- “帮我设计一张科技风格的活动海报”
+- “根据这张参考图片生成一张风格相似的社交媒体图片”
+- “为我的品牌生成一套极简风格的 UI 设计”
+- “将这个标志添加到设计中，并生成一张 1080x1440 的图片”
 
-## Prerequisites
+## 先决条件
 
-1. **Obtain API Token:**
-   - Visit [Seede AI Token Management](https://seede.ai/profile/token)
-   - Create and copy your API Token
+1. **获取 API 令牌**：
+   - 访问 [Seede AI 令牌管理页面](https://seede.ai/profile/token)
+   - 创建并复制您的 API 令牌
 
-2. **Set Environment Variable:**
+2. **设置环境变量**：
    ```bash
    export SEEDE_API_TOKEN="your_api_token"
    ```
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://api.seede.ai
 ```
 
-## Authentication
+## 认证
 
-Include the API Token in the request headers:
+在请求头中包含 API 令牌：
 
 ```bash
 Authorization: $SEEDE_API_TOKEN
 ```
 
-## Core Operations
+## 核心操作
 
-### Create Design Task (Most Common)
+### 创建设计任务（最常用）
 
-Create an asynchronous design task. Supports specifying models, sizes, and reference images.
+创建一个异步设计任务。支持指定模型、尺寸和参考图片。
 
 ```bash
 curl -X POST "https://api.seede.ai/api/task/create" \
@@ -68,9 +68,9 @@ curl -X POST "https://api.seede.ai/api/task/create" \
   }'
 ```
 
-### Get Task Status and Results
+### 获取任务状态和结果
 
-An `id` is returned after task creation. Since design usually takes 30-90 seconds, polling is required.
+任务创建后会返回一个 `id`。由于设计通常需要 30-90 秒的时间，因此需要通过轮询来获取结果。
 
 ```bash
 # Get details of a specific task
@@ -82,9 +82,9 @@ curl -s "https://api.seede.ai/api/task" \
   -H "Authorization: $SEEDE_API_TOKEN" | jq .
 ```
 
-### Upload Assets
+### 上传资产
 
-Upload images and other assets to reference them in the `prompt`.
+上传图片和其他资产，以便在提示中引用它们。
 
 ```bash
 curl -X POST "https://api.seede.ai/asset" \
@@ -97,40 +97,40 @@ curl -X POST "https://api.seede.ai/asset" \
   }'
 ```
 
-## Advanced Features
+## 高级功能
 
-### Referencing Assets
+### 引用资产
 
-Reference uploaded assets in the `prompt` using `@SeedeMaterial`:
-`Design description...@SeedeMaterial({"filename":"logo.jpg","url":"https://...","tag":"logo"})`
+使用 `@SeedeMaterial` 在提示中引用上传的资产：
+`设计描述...@SeedeMaterial({"filename":"logo.jpg","url":"https://...","tag":"logo"})`
 
-### Setting Brand Colors
+### 设置品牌颜色
 
-Specify themes and colors using `@SeedeTheme`:
-`Design description...@SeedeTheme({"value":"midnight","colors":["#1E293B","#0F172A"]})`
+使用 `@SeedeTheme` 指定主题和颜色：
+`设计描述...@SeedeTheme({"value":"midnight","colors":["#1E293B","#0F172A"]})`
 
-### Reference Image Generation
+### 参考图片生成
 
-Use `@SeedeReferenceImage` to guide design style or layout:
-`@SeedeReferenceImage(url:"...", tag:"style,layout")`
+使用 `@SeedeReferenceImage` 来指导设计风格或布局：
+`@SeedeReferenceImage(url:"...", tag="style,layout")`
 
-## Workflow
+## 工作流程
 
-1. **(Optional) Upload Assets**: Obtain asset URL.
-2. **Create Task**: Call `/api/task/create` to get `task_id`.
-3. **Wait for Completion**: Poll `GET /api/task/:id` until the task status is completed.
-4. **Get Outputs**:
-   - **Design Image**: `urls.image`
-   - **Edit Link**: `urls.project` (requires login to access)
-   - **HTML Code**: `/api/task/:id/html`
+1. **（可选）上传资产**：获取资产的 URL。
+2. **创建任务**：调用 `/api/task/create` 以获取 `task_id`。
+3. **等待完成**：轮询 `GET /api/task/:id` 直到任务状态变为完成。
+4. **获取结果**：
+   - **设计图片**：`urls.image`
+   - **编辑链接**：`urls.project`（需要登录才能访问）
+   - **HTML 代码**：`/api/task/:id/html`
 
-## Useful Tips
+## 有用的提示
 
-1. **Response Time**: Task generation usually takes 30-90 seconds, please ensure there is timeout handling.
-2. **Image Format**: webp is recommended for smaller size and faster loading speed.
-3. **Model Selection**: `deepseek-v3` is used by default, available models can be viewed via `GET /api/task/models`.
-4. **Embedded Editing**: You can use `https://seede.ai/design-embed/{projectId}?token={token}` to embed the editor in your application.
+1. **响应时间**：任务生成通常需要 30-90 秒，请确保进行超时处理。
+2. **图片格式**：推荐使用 webp 格式，因为它体积更小，加载速度更快。
+3. **模型选择**：默认使用 `deepseek-v3` 模型，可通过 `GET /api/task/models` 查看可用模型。
+4. **嵌入式编辑**：您可以使用 `https://seede.ai/design-embed/{projectId}?token={token}` 将编辑器嵌入到您的应用程序中。
 
 ---
 
-Built by **Meow 😼** for the Moltbook community 🦞
+由 **Meow 😼** 为 Moltbook 社区 🦞 开发

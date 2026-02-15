@@ -1,6 +1,6 @@
 ---
 name: senior-ml-engineer
-description: ML engineering skill for productionizing models, building MLOps pipelines, and integrating LLMs. Covers model deployment, feature stores, drift monitoring, RAG systems, and cost optimization.
+description: ML工程技能：用于将模型投入生产环境、构建机器学习运维（MLOps）流程以及集成大型语言模型（LLMs）。涵盖模型部署、特征存储、模型漂移监控（drift monitoring）、检索与生成（RAG）系统以及成本优化等方面。
 triggers:
   - MLOps pipeline
   - model deployment
@@ -14,38 +14,38 @@ triggers:
   - automated retraining
 ---
 
-# Senior ML Engineer
+# 高级机器学习工程师
 
-Production ML engineering patterns for model deployment, MLOps infrastructure, and LLM integration.
-
----
-
-## Table of Contents
-
-- [Model Deployment Workflow](#model-deployment-workflow)
-- [MLOps Pipeline Setup](#mlops-pipeline-setup)
-- [LLM Integration Workflow](#llm-integration-workflow)
-- [RAG System Implementation](#rag-system-implementation)
-- [Model Monitoring](#model-monitoring)
-- [Reference Documentation](#reference-documentation)
-- [Tools](#tools)
+负责模型部署、机器学习运维（MLOps）基础设施以及大型语言模型（LLM）集成的生产级机器学习工程实践。
 
 ---
 
-## Model Deployment Workflow
+## 目录
 
-Deploy a trained model to production with monitoring:
+- [模型部署工作流程](#model-deployment-workflow)
+- [MLOps 流程设置](#mlops-pipeline-setup)
+- [LLM 集成工作流程](#llm-integration-workflow)
+- [RAG 系统实现](#rag-system-implementation)
+- [模型监控](#model-monitoring)
+- [参考文档](#reference-documentation)
+- [工具](#tools)
 
-1. Export model to standardized format (ONNX, TorchScript, SavedModel)
-2. Package model with dependencies in Docker container
-3. Deploy to staging environment
-4. Run integration tests against staging
-5. Deploy canary (5% traffic) to production
-6. Monitor latency and error rates for 1 hour
-7. Promote to full production if metrics pass
-8. **Validation:** p95 latency < 100ms, error rate < 0.1%
+---
 
-### Container Template
+## 模型部署工作流程
+
+将训练好的模型部署到生产环境，并进行监控：
+
+1. 将模型导出为标准化格式（ONNX、TorchScript、SavedModel）
+2. 将模型及其依赖项打包到 Docker 容器中
+3. 部署到测试环境
+4. 在测试环境中运行集成测试
+5. 部署少量流量（5%）到生产环境
+6. 监控延迟和错误率，持续 1 小时
+7. 如果指标合格，则将模型推广到全生产环境
+8. **验证标准：** p95 延迟 < 100ms，错误率 < 0.1%
+
+### 容器模板
 
 ```dockerfile
 FROM python:3.11-slim
@@ -62,32 +62,32 @@ EXPOSE 8080
 CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
-### Serving Options
+### 服务选项
 
-| Option | Latency | Throughput | Use Case |
+| 选项 | 延迟 | 吞吐量 | 适用场景 |
 |--------|---------|------------|----------|
-| FastAPI + Uvicorn | Low | Medium | REST APIs, small models |
-| Triton Inference Server | Very Low | Very High | GPU inference, batching |
-| TensorFlow Serving | Low | High | TensorFlow models |
-| TorchServe | Low | High | PyTorch models |
-| Ray Serve | Medium | High | Complex pipelines, multi-model |
+| FastAPI + Uvicorn | 低 | 中等 | REST API，小型模型 |
+| Triton 推理服务器 | 非常低 | 非常高 | GPU 推理，批量处理 |
+| TensorFlow Serving | 低 | 高 | TensorFlow 模型 |
+| TorchServe | 低 | 高 | PyTorch 模型 |
+| Ray Serve | 中等 | 高 | 复杂的流程，多模型 |
 
 ---
 
-## MLOps Pipeline Setup
+## MLOps 流程设置
 
-Establish automated training and deployment:
+建立自动化的训练和部署流程：
 
-1. Configure feature store (Feast, Tecton) for training data
-2. Set up experiment tracking (MLflow, Weights & Biases)
-3. Create training pipeline with hyperparameter logging
-4. Register model in model registry with version metadata
-5. Configure staging deployment triggered by registry events
-6. Set up A/B testing infrastructure for model comparison
-7. Enable drift monitoring with alerting
-8. **Validation:** New models automatically evaluated against baseline
+1. 配置特征存储系统（Feast、Tecton）以存储训练数据
+2. 设置实验跟踪系统（MLflow、Weights & Biases）
+3. 创建包含超参数日志的训练流程
+4. 将模型及其元数据注册到模型注册表中
+5. 配置基于注册表事件触发的测试环境部署
+6. 设置 A/B 测试基础设施以比较不同模型
+7. 启用漂移监控并设置警报
+8. **验证标准：** 新模型自动与基线进行评估
 
-### Feature Store Pattern
+### 特征存储系统模式
 
 ```python
 from feast import Entity, Feature, FeatureView, FileSource
@@ -107,31 +107,31 @@ user_features = FeatureView(
 )
 ```
 
-### Retraining Triggers
+### 重新训练触发条件
 
-| Trigger | Detection | Action |
+| 触发条件 | 检测内容 | 处理方式 |
 |---------|-----------|--------|
-| Scheduled | Cron (weekly/monthly) | Full retrain |
-| Performance drop | Accuracy < threshold | Immediate retrain |
-| Data drift | PSI > 0.2 | Evaluate, then retrain |
-| New data volume | X new samples | Incremental update |
+| 定时 | Cron（每周/每月） | 完整重新训练 |
+| 性能下降 | 准确率低于阈值 | 立即重新训练 |
+| 数据漂移 | PSI > 0.2 | 评估后重新训练 |
+| 新数据量 | 新样本数量达到 X | 增量更新 |
 
 ---
 
-## LLM Integration Workflow
+## LLM 集成工作流程
 
-Integrate LLM APIs into production applications:
+将 LLM API 集成到生产应用程序中：
 
-1. Create provider abstraction layer for vendor flexibility
-2. Implement retry logic with exponential backoff
-3. Configure fallback to secondary provider
-4. Set up token counting and context truncation
-5. Add response caching for repeated queries
-6. Implement cost tracking per request
-7. Add structured output validation with Pydantic
-8. **Validation:** Response parses correctly, cost within budget
+1. 创建提供者抽象层，以增加灵活性
+2. 实现带有指数退避机制的重试逻辑
+3. 配置备用提供者
+4. 设置令牌计数和上下文截断机制
+5. 为重复查询添加响应缓存
+6. 实现按请求计费的成本跟踪
+7. 使用 Pydantic 进行结构化输出验证
+8. **验证标准：** 响应正确解析，成本在预算范围内
 
-### Provider Abstraction
+### 提供者抽象层
 
 ```python
 from abc import ABC, abstractmethod
@@ -147,65 +147,65 @@ def call_llm_with_retry(provider: LLMProvider, prompt: str) -> str:
     return provider.complete(prompt)
 ```
 
-### Cost Management
+### 成本管理
 
-| Provider | Input Cost | Output Cost |
+| 提供者 | 输入成本 | 输出成本 |
 |----------|------------|-------------|
-| GPT-4 | $0.03/1K | $0.06/1K |
-| GPT-3.5 | $0.0005/1K | $0.0015/1K |
-| Claude 3 Opus | $0.015/1K | $0.075/1K |
-| Claude 3 Haiku | $0.00025/1K | $0.00125/1K |
+| GPT-4 | 0.03美元/1000个词 | 0.06美元/1000个词 |
+| GPT-3.5 | 0.0005美元/1000个词 | 0.0015美元/1000个词 |
+| Claude 3 Opus | 0.015美元/1000个词 | 0.075美元/1000个词 |
+| Claude 3 Haiku | 0.00025美元/1000个词 | 0.00125美元/1000个词 |
 
 ---
 
-## RAG System Implementation
+## RAG 系统实现
 
-Build retrieval-augmented generation pipeline:
+构建检索增强生成（RAG）流程：
 
-1. Choose vector database (Pinecone, Qdrant, Weaviate)
-2. Select embedding model based on quality/cost tradeoff
-3. Implement document chunking strategy
-4. Create ingestion pipeline with metadata extraction
-5. Build retrieval with query embedding
-6. Add reranking for relevance improvement
-7. Format context and send to LLM
-8. **Validation:** Response references retrieved context, no hallucinations
+1. 选择向量数据库（Pinecone、Qdrant、Weaviate）
+2. 根据质量和成本权衡选择嵌入模型
+3. 实现文档分块策略
+4. 创建包含元数据提取的导入流程
+5. 使用查询嵌入进行检索
+6. 添加重新排序以提高相关性
+7. 格式化上下文并发送给 LLM
+8. **验证标准：** 响应正确引用检索到的上下文，无幻觉现象
 
-### Vector Database Selection
+### 向量数据库选择
 
-| Database | Hosting | Scale | Latency | Best For |
+| 数据库 | 托管方式 | 可扩展性 | 延迟 | 适用场景 |
 |----------|---------|-------|---------|----------|
-| Pinecone | Managed | High | Low | Production, managed |
-| Qdrant | Both | High | Very Low | Performance-critical |
-| Weaviate | Both | High | Low | Hybrid search |
-| Chroma | Self-hosted | Medium | Low | Prototyping |
-| pgvector | Self-hosted | Medium | Medium | Existing Postgres |
+| Pinecone | 托管服务 | 高 | 低 | 生产环境，需要管理 |
+| Qdrant | 自托管/托管服务 | 高 | 延迟极低 | 对性能要求高的场景 |
+| Weaviate | 自托管/托管服务 | 高 | 延迟低 | 混合搜索场景 |
+| Chroma | 自托管 | 中等 | 延迟低 | 适用于原型开发 |
+| pgvector | 自托管 | 中等 | 需要与现有 PostgreSQL 集成 |
 
-### Chunking Strategies
+### 分块策略
 
-| Strategy | Chunk Size | Overlap | Best For |
+| 分块策略 | 分块大小 | 分块重叠比例 | 适用场景 |
 |----------|------------|---------|----------|
-| Fixed | 500-1000 tokens | 50-100 | General text |
-| Sentence | 3-5 sentences | 1 sentence | Structured text |
-| Semantic | Variable | Based on meaning | Research papers |
-| Recursive | Hierarchical | Parent-child | Long documents |
+| 固定大小 | 500-1000 个词 | 50-100 个词 | 通用文本 |
+| 句子级别 | 3-5 句子 | 单个句子 | 结构化文本 |
+| 语义分块 | 动态分块 | 基于语义 | 研究论文等场景 |
+| 递归分块 | 层次化分块 | 父子关系明显的文档 |
 
 ---
 
-## Model Monitoring
+## 模型监控
 
-Monitor production models for drift and degradation:
+监控生产环境中的模型，检测漂移和性能下降：
 
-1. Set up latency tracking (p50, p95, p99)
-2. Configure error rate alerting
-3. Implement input data drift detection
-4. Track prediction distribution shifts
-5. Log ground truth when available
-6. Compare model versions with A/B metrics
-7. Set up automated retraining triggers
-8. **Validation:** Alerts fire before user-visible degradation
+1. 设置延迟跟踪指标（p50、p95、p99）
+2. 配置错误率警报
+3. 实现输入数据漂移检测
+4. 跟踪预测分布的变化
+5. 在有可用真实数据时记录基准值
+6. 使用 A/B 指标比较不同模型版本
+7. 设置自动重新训练的触发条件
+8. **验证标准：** 在用户可见的性能下降之前触发警报
 
-### Drift Detection
+### 漂移检测
 
 ```python
 from scipy.stats import ks_2samp
@@ -219,86 +219,86 @@ def detect_drift(reference, current, threshold=0.05):
     }
 ```
 
-### Alert Thresholds
+### 警报阈值
 
-| Metric | Warning | Critical |
+| 指标 | 警报级别 | 严重程度 |
 |--------|---------|----------|
-| p95 latency | > 100ms | > 200ms |
-| Error rate | > 0.1% | > 1% |
-| PSI (drift) | > 0.1 | > 0.2 |
-| Accuracy drop | > 2% | > 5% |
+| p95 延迟 | > 100ms | > 200ms |
+| 错误率 | > 0.1% | > 1% |
+| 数据漂移（PSI） | > 0.1 | > 0.2 |
+| 准确率下降 | > 2% | > 5% |
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-### MLOps Production Patterns
+### MLOps 生产模式
 
-`references/mlops_production_patterns.md` contains:
+`references/mlops_production_patterns.md` 包含：
 
-- Model deployment pipeline with Kubernetes manifests
-- Feature store architecture with Feast examples
-- Model monitoring with drift detection code
-- A/B testing infrastructure with traffic splitting
-- Automated retraining pipeline with MLflow
+- 使用 Kubernetes 配置的模型部署流程
+- 带有 Feast 示例的特征存储系统架构
+- 包含漂移检测代码的模型监控机制
+- 带有流量分割功能的 A/B 测试基础设施
+- 使用 MLflow 的自动重新训练流程
 
-### LLM Integration Guide
+### LLM 集成指南
 
-`references/llm_integration_guide.md` contains:
+`references/llm_integration_guide.md` 包含：
 
-- Provider abstraction layer pattern
-- Retry and fallback strategies with tenacity
-- Prompt engineering templates (few-shot, CoT)
-- Token optimization with tiktoken
-- Cost calculation and tracking
+- 提供者抽象层的设计模式
+- 带有重试和备用策略的实现
+- 提示工程模板（少样本任务、CoT 策略）
+- 令牌使用的优化方法（如 tiktoken）
+- 成本计算和跟踪机制
 
-### RAG System Architecture
+### RAG 系统架构
 
-`references/rag_system_architecture.md` contains:
+`references/rag_system_architecture.md` 包含：
 
-- RAG pipeline implementation with code
-- Vector database comparison and integration
-- Chunking strategies (fixed, semantic, recursive)
-- Embedding model selection guide
-- Hybrid search and reranking patterns
+- RAG 流程的实现代码
+- 向量数据库的比较和集成方法
+- 分块策略（固定大小、语义分块、递归分块）
+- 嵌入模型选择指南
+- 混合搜索和重新排序的实现方式
 
 ---
 
-## Tools
+## 工具
 
-### Model Deployment Pipeline
+### 模型部署流程
 
 ```bash
 python scripts/model_deployment_pipeline.py --model model.pkl --target staging
 ```
 
-Generates deployment artifacts: Dockerfile, Kubernetes manifests, health checks.
+生成部署所需的文件：Dockerfile、Kubernetes 配置文件以及健康检查脚本。
 
-### RAG System Builder
+### RAG 系统构建工具
 
 ```bash
 python scripts/rag_system_builder.py --config rag_config.yaml --analyze
 ```
 
-Scaffolds RAG pipeline with vector store integration and retrieval logic.
+用于构建包含向量存储和检索逻辑的 RAG 流程。
 
-### ML Monitoring Suite
+### ML 监控工具套件
 
 ```bash
 python scripts/ml_monitoring_suite.py --config monitoring.yaml --deploy
 ```
 
-Sets up drift detection, alerting, and performance dashboards.
+用于设置漂移检测、警报系统以及性能监控仪表板。
 
 ---
 
-## Tech Stack
+## 技术栈
 
-| Category | Tools |
+| 类别 | 使用的工具 |
 |----------|-------|
-| ML Frameworks | PyTorch, TensorFlow, Scikit-learn, XGBoost |
-| LLM Frameworks | LangChain, LlamaIndex, DSPy |
-| MLOps | MLflow, Weights & Biases, Kubeflow |
-| Data | Spark, Airflow, dbt, Kafka |
-| Deployment | Docker, Kubernetes, Triton |
-| Databases | PostgreSQL, BigQuery, Pinecone, Redis |
+| 机器学习框架 | PyTorch、TensorFlow、Scikit-learn、XGBoost |
+| LLM 框架 | LangChain、LlamaIndex、DSPy |
+| 机器学习运维工具 | MLflow、Weights & Biases、Kubeflow |
+| 数据处理工具 | Spark、Airflow、dbt、Kafka |
+| 部署工具 | Docker、Kubernetes、Triton |
+| 数据库 | PostgreSQL、BigQuery、Pinecone、Redis |

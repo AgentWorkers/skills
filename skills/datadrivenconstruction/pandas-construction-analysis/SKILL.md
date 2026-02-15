@@ -1,21 +1,20 @@
 ---
 slug: "pandas-construction-analysis"
 display_name: "Pandas Construction Analysis"
-description: "Comprehensive Pandas toolkit for construction data analysis. Filter, group, aggregate BIM elements, calculate quantities, merge datasets, and generate reports from structured construction data."
+description: "一个全面的Pandas工具包，用于建筑数据分析。支持过滤、分组、汇总BIM元素，计算数量，合并数据集，并从结构化的建筑数据中生成报告。"
 ---
 
-# Pandas Construction Data Analysis
+# Pandas在建筑数据分析中的应用
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.3), this skill provides comprehensive Pandas operations for construction data processing. Pandas is the Swiss Army knife for data analysts - handling everything from simple data filtering to complex aggregations across millions of rows.
+本技能基于DDC方法论（第2.3章），提供了使用Pandas进行建筑数据处理的全面操作。Pandas堪称数据分析师的“瑞士军刀”——能够处理从简单的数据过滤到对数百万行数据进行复杂聚合的各种任务。
 
-**Book Reference:** "Pandas DataFrame и LLM ChatGPT" / "Pandas DataFrame and LLM ChatGPT"
+**参考书籍**：《Pandas DataFrame与LLM ChatGPT》  
+> “通过使用Pandas，您可以管理和分析远超Excel功能的数据集。虽然Excel最多只能处理100万行数据，但Pandas可以轻松处理包含数千万行数据的数据集。”  
+—— DDC书籍，第2.3章
 
-> "Используя Pandas, вы можете управлять и анализировать наборы данных, намного превосходящие возможности Excel. В то время как Excel способен обрабатывать до 1 миллиона строк данных, Pandas может без труда работать с наборами данных, содержащими десятки миллионов строк."
-> — DDC Book, Chapter 2.3
-
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -36,9 +35,9 @@ total_volume = df['Volume'].sum()
 print(f"Total volume: {total_volume:.2f} m³")
 ```
 
-## DataFrame Fundamentals
+## DataFrame基础
 
-### Creating DataFrames
+### 创建DataFrame
 
 ```python
 import pandas as pd
@@ -62,7 +61,7 @@ df_excel = pd.read_excel("project_data.xlsx", sheet_name="Elements")
 all_sheets = pd.read_excel("project.xlsx", sheet_name=None)  # Dict of DataFrames
 ```
 
-### Data Types in Construction
+### 建筑领域中的数据类型
 
 ```python
 # Common data types for construction
@@ -83,9 +82,9 @@ df['quantity'] = df['quantity'].astype('float64')
 df['volume'] = pd.to_numeric(df['volume'], errors='coerce')
 ```
 
-## Filtering and Selection
+## 过滤与选择
 
-### Basic Filtering
+### 基本过滤
 
 ```python
 # Single condition
@@ -108,7 +107,7 @@ incomplete = df[df['Cost'].isna()]
 complete = df[df['Cost'].notna()]
 ```
 
-### Advanced Selection
+### 高级选择
 
 ```python
 # Select columns
@@ -124,9 +123,9 @@ specific_cell = df.loc[0, 'Volume_m3']      # Row and column
 subset = df.loc[0:5, ['Category', 'Volume_m3']]  # Range with columns
 ```
 
-## Grouping and Aggregation
+## 分组与聚合
 
-### GroupBy Operations
+### GroupBy操作
 
 ```python
 # Basic groupby
@@ -153,7 +152,7 @@ by_level_cat = df.groupby(['Level', 'Category']).agg({
 }).reset_index()
 ```
 
-### Pivot Tables
+### 数据透视表
 
 ```python
 # Create pivot table
@@ -178,9 +177,9 @@ pivot_detailed = pd.pivot_table(
 )
 ```
 
-## Data Transformation
+## 数据转换
 
-### Adding Calculated Columns
+### 添加计算列
 
 ```python
 # Simple calculation
@@ -203,7 +202,7 @@ df['Volume_Bin'] = pd.cut(
 )
 ```
 
-### String Operations
+### 字符串操作
 
 ```python
 # Extract from strings
@@ -219,7 +218,7 @@ df['Category'] = df['Category'].str.strip().str.lower().str.title()
 df['Material'] = df['Material'].str.replace('Reinforced Concrete', 'RC')
 ```
 
-### Date Operations
+### 日期操作
 
 ```python
 # Parse dates
@@ -238,9 +237,9 @@ df['Duration_Days'] = (df['End_Date'] - df['Start_Date']).dt.days
 recent = df[df['Start_Date'] >= '2024-01-01']
 ```
 
-## Merging and Joining
+## 合并与连接
 
-### Merge DataFrames
+### 合并DataFrame
 
 ```python
 # Elements data
@@ -266,7 +265,7 @@ merged = elements.merge(prices, on='Category', how='left')
 result = df1.merge(df2, left_on='elem_id', right_on='ElementId')
 ```
 
-### Concatenating DataFrames
+### 连接DataFrame
 
 ```python
 # Vertical concatenation (stacking)
@@ -280,9 +279,9 @@ new_elements = pd.DataFrame({'ElementId': ['E004'], 'Category': ['Beam']})
 df = pd.concat([df, new_elements], ignore_index=True)
 ```
 
-## Construction-Specific Analyses
+## 建筑领域特有的分析
 
-### Quantity Take-Off (QTO)
+### 数量统计（QTO）
 
 ```python
 def generate_qto_report(df):
@@ -305,7 +304,7 @@ qto_report = generate_qto_report(df)
 qto_report.to_excel("qto_report.xlsx")
 ```
 
-### Cost Estimation
+### 成本估算
 
 ```python
 def calculate_project_cost(elements_df, prices_df, markup=0.15):
@@ -333,7 +332,7 @@ detailed, summary, total = calculate_project_cost(elements, prices)
 print(f"Project Total: ${total:,.2f}")
 ```
 
-### Material Summary
+### 材料汇总
 
 ```python
 def material_summary(df):
@@ -350,7 +349,7 @@ def material_summary(df):
     return summary.sort_values('Volume_m3', ascending=False)
 ```
 
-### Level-by-Level Analysis
+### 分层分析
 
 ```python
 def analyze_by_level(df):
@@ -369,9 +368,9 @@ def analyze_by_level(df):
     return level_summary
 ```
 
-## Data Export
+## 数据导出
 
-### Export to Excel with Multiple Sheets
+### 导出到包含多个工作表的Excel文件
 
 ```python
 def export_to_excel_formatted(df, summary, filepath):
@@ -388,7 +387,7 @@ def export_to_excel_formatted(df, summary, filepath):
 export_to_excel_formatted(elements, qto_summary, "project_report.xlsx")
 ```
 
-### Export to CSV
+### 导出到CSV文件
 
 ```python
 # Basic export
@@ -401,7 +400,7 @@ df.to_csv("output.csv", index=False, encoding='utf-8-sig')
 df[['ElementId', 'Category', 'Volume_m3']].to_csv("volumes.csv", index=False)
 ```
 
-## Performance Tips
+## 性能优化技巧
 
 ```python
 # Use categories for string columns with few unique values
@@ -418,28 +417,28 @@ result = pd.concat([chunk[chunk['Category'] == 'Wall'] for chunk in chunks])
 print(df.memory_usage(deep=True).sum() / 1024**2, "MB")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Operation | Code |
-|-----------|------|
-| Read Excel | `pd.read_excel("file.xlsx")` |
-| Read CSV | `pd.read_csv("file.csv")` |
-| Filter rows | `df[df['Column'] == 'Value']` |
-| Select columns | `df[['Col1', 'Col2']]` |
-| Group and sum | `df.groupby('Cat')['Vol'].sum()` |
-| Pivot table | `pd.pivot_table(df, values='Vol', index='Level')` |
-| Merge | `df1.merge(df2, on='key')` |
-| Add column | `df['New'] = df['A'] * df['B']` |
-| Export Excel | `df.to_excel("out.xlsx", index=False)` |
+| 操作            | 代码                          |
+|-----------------|---------------------------|
+| 读取Excel文件       | `pd.read_excel("file.xlsx")`            |
+| 读取CSV文件       | `pd.read_csv("file.csv")`            |
+| 过滤行           | `df[df['Column'] == 'Value']`           |
+| 选择列           | `df[['Col1', 'Col2']]`             |
+| 分组并求和       | `df.groupby('Cat')['Vol'].sum()`         |
+| 数据透视表       | `pd.pivot_table(df, values='Vol', index='Level')`     |
+| 合并DataFrame       | `df1.merge(df2, on='key')`            |
+| 添加新列         | `df['New'] = df['A'] * df['B']`         |
+| 导出到Excel       | `df.to_excel("out.xlsx", index=False)`        |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.3
-- **Website**: https://datadrivenconstruction.io
-- **Pandas Docs**: https://pandas.pydata.org/docs/
+- **书籍**：Artem Boiko的《Data-Driven Construction》，第2.3章  
+- **网站**：https://datadrivenconstruction.io  
+- **Pandas官方文档**：https://pandas.pydata.org/docs/
 
-## Next Steps
+## 下一步
 
-- See `llm-data-automation` for generating Pandas code with AI
-- See `qto-report` for specialized QTO calculations
-- See `cost-estimation-resource` for detailed cost calculations
+- 可参考`llm-data-automation`了解如何利用AI生成Pandas代码  
+- 可参考`qto-report`进行专门的QTO（数量统计）计算  
+- 可参考`cost-estimation-resource`了解详细的成本计算方法

@@ -8,35 +8,30 @@ description: |
   querying, JBSwapTerminal fallback logic, and permit2 integration with correct terminal addresses.
 ---
 
-# Dynamic Terminal Selection for Juicebox V5 Payments
+# Juicebox V5 支付中的动态终端选择机制
 
-## Problem
+## 问题
 
-When paying a Juicebox V5 project, users may want to pay with tokens (e.g., USDC) that the project
-doesn't directly accept in its accounting context. Sending such payments to `JBMultiTerminal` results
-in a `JBMultiTerminal_TokenNotAccepted(token)` revert.
+在为 Juicebox V5 项目进行支付时，用户可能希望使用项目在其会计系统中不直接支持的代币（例如 USDC）进行支付。如果将此类支付发送到 `JBMultiTerminal`，将会导致 `JBMultiTerminal_TokenNotAccepted(token)` 错误。
 
-Common symptom: Transaction simulation shows "likely to fail" after permit2 signing, with the
-`TokenNotAccepted` error in Tenderly or other simulation tools.
+**常见症状**：在完成 permit2 签名后，交易模拟会显示“可能失败”，并且在 Tenderly 或其他模拟工具中会出现 `TokenNotAccepted` 错误。
 
-## Context / Trigger Conditions
+## 使用场景 / 触发条件**
 
-Apply this pattern when:
-- Building a payment UI that supports multiple tokens (ETH, USDC, etc.)
-- A project uses ETH accounting context but users want to pay with USDC
-- You see `JBMultiTerminal_TokenNotAccepted` errors in transaction simulations
-- MetaMask shows "This transaction is likely to fail" after permit2 signing
-- You need to determine which terminal to use at runtime
+在以下情况下应用此机制：
+- 构建支持多种代币（如 ETH、USDC 等）的支付界面；
+- 项目使用 ETH 作为会计系统，但用户希望使用 USDC 进行支付；
+- 在交易模拟中看到 `JBMultiTerminal_TokenNotAccepted` 错误；
+- MetaMask 在完成 permit2 签名后显示“此交易可能失败”；
+- 需要在运行时确定使用哪个支付终端。
 
-## Solution
+## 解决方案
 
-### Core Concept
+### 核心概念
 
-Query `JBDirectory.primaryTerminalOf(projectId, tokenAddress)` to discover which terminal
-accepts payments for a given token. If no terminal is registered (returns zero address),
-use `JBSwapTerminal` which automatically swaps the payment token to what the project accepts.
+通过调用 `JBDirectory.primaryTerminalOf(projectId, tokenAddress)` 来查询接受特定代币支付的终端。如果没有任何终端被注册（返回空地址），则使用 `JBSwapTerminal`，它会自动将支付代币转换为项目支持的格式。
 
-### Implementation
+### 实现方式
 
 ```typescript
 import { type PublicClient, type Address, zeroAddress } from 'viem'
@@ -110,10 +105,9 @@ async function getPaymentTerminal(
 }
 ```
 
-### Permit2 Integration
+### permit2 的集成
 
-When using permit2 for token approvals, the metadata ID computation must use the correct
-terminal address as the spender:
+在使用 permit2 进行代币审批时，元数据 ID 的计算必须使用正确的终端地址作为支付方：
 
 ```typescript
 // Permit2 metadata ID = bytes4(bytes20(terminal) ^ bytes20(keccak256("permit2")))
@@ -130,7 +124,7 @@ function computePermit2MetadataId(terminalAddress: Address): `0x${string}` {
 }
 ```
 
-### Usage in Payment Flow
+### 在支付流程中的使用方式
 
 ```typescript
 async function pay(projectId: string, amount: string, token: 'ETH' | 'USDC') {
@@ -166,16 +160,16 @@ async function pay(projectId: string, amount: string, token: 'ETH' | 'USDC') {
 }
 ```
 
-## Verification
+## 验证方法
 
-1. Query `primaryTerminalOf` for ETH → should return JBMultiTerminal address
-2. Query `primaryTerminalOf` for USDC on ETH-only project → should return zero address
-3. Use SwapTerminal when zero address returned
-4. Transaction simulation should no longer show `TokenNotAccepted` error
+1. 对于 ETH，调用 `primaryTerminalOf` 应返回 `JBMultiTerminal` 的地址；
+2. 对于仅支持 ETH 的项目，调用 `primaryTerminalOf` 应返回空地址；
+3. 如果返回空地址，则使用 `SwapTerminal`；
+4. 交易模拟不应再显示 `TokenNotAccepted` 错误。
 
-## Example
+## 示例
 
-**Scenario**: User wants to pay NANA (Project ID 1) with USDC on Base. NANA only uses ETH accounting.
+**场景**：用户希望在 Base 平台上使用 USDC 为 NANA（项目 ID 1）进行支付，但 NANA 仅支持 ETH 作为支付方式。
 
 ```typescript
 // Query: What terminal accepts USDC for NANA?
@@ -190,23 +184,23 @@ const terminal = await getPaymentTerminal(
 // The SwapTerminal will swap USDC → ETH before paying NANA
 ```
 
-## Notes
+## 注意事项
 
-- JBSwapTerminal swaps tokens via Uniswap before crediting the project
-- The swap uses TWAP pricing with slippage protection
-- Projects can explicitly register JBSwapTerminal for tokens they want to accept via swaps
-- Some projects register JBMultiTerminal for multiple tokens (e.g., both ETH and USDC)
-- Always query at runtime; terminal registrations can change
+- `JBSwapTerminal` 会在将代币记入项目账户之前通过 Uniswap 进行代币转换；
+- 该转换过程使用 TWAP 价格机制，并提供滑点保护；
+- 项目可以明确注册它们希望支持的代币对应的 `JBSwapTerminal`；
+- 有些项目会同时注册多个代币对应的 `JBMultiTerminal`（例如 ETH 和 USDC）；
+- 始终在运行时进行查询，因为终端的注册信息可能会发生变化。
 
-## Related Skills
+## 相关技能
 
-- `/jb-v5-impl` - Deep dive into terminal mechanics and payment flow internals
-- `/jb-terminal-wrapper` - Pattern for wrapping terminals with custom logic
-- `/jb-v5-api` - Core terminal interface signatures
-- `/jb-query` - Querying project state from blockchain
+- `/jb-v5-impl`：深入研究终端机制和支付流程的内部实现；
+- `/jb-terminal-wrapper`：用于封装终端功能的自定义逻辑框架；
+- `/jb-v5-api`：核心的终端接口接口；
+- `/jb-query`：用于从区块链中查询项目状态。
 
-## References
+## 参考资料
 
-- [revnet-app terminal detection](https://github.com/rev-net/revnet-app/blob/main/src/lib/paymentTerminal.ts)
-- [JBSwapTerminal implementation](https://github.com/Bananapus/nana-swap-terminal)
-- [JBDirectory contract](https://github.com/Bananapus/nana-core-v5/blob/main/src/JBDirectory.sol)
+- [revnet-app 的终端检测功能](https://github.com/rev-net/revnet-app/blob/main/src/lib/paymentTerminal.ts)
+- [JBSwapTerminal 的实现](https://github.com/Bananapus/nana-swap-terminal)
+- [JBDirectory 合同](https://github.com/Bananapus/nana-core-v5/blob/main/src/JBDirectory.sol)

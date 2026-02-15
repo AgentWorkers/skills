@@ -1,39 +1,39 @@
 ---
 name: dashlane
-description: Access passwords, secure notes, secrets and OTP codes from Dashlane vault.
+description: 从 Dashlane 保险库中访问密码、安全笔记、机密信息以及一次性密码（OTP）代码。
 homepage: https://cli.dashlane.com
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"bins":["dcli"]}}}
 ---
 
 # Dashlane CLI
 
-Access your Dashlane vault from the command line. Read-only access to passwords, secure notes, secrets and OTP codes.
+您可以通过命令行访问您的 Dashlane 保管库。该命令行工具支持对密码、安全笔记、机密信息和一次性密码（OTP）进行只读操作。
 
-## Installation
+## 安装
 
 ```bash
 brew install dashlane/tap/dashlane-cli
 ```
 
-## Authentication
+## 认证
 
-First sync to trigger authentication:
+首次同步数据以触发认证过程：
 ```bash
 dcli sync
 ```
 
-**Steps:**
-1. Enter your Dashlane email
-2. **⚠️ IMPORTANT: Open the URL shown in your browser** (device registration)
-3. Enter the code received by email
-4. Enter your Master Password
+**操作步骤：**
+1. 输入您的 Dashlane 电子邮件地址。
+2. **⚠️ 重要提示：在浏览器中打开显示的链接**（完成设备注册）。
+3. 输入通过电子邮件收到的验证码。
+4. 输入您的主密码。
 
-Check current account:
+**查看当前账户信息：**
 ```bash
 dcli accounts whoami
 ```
 
-## Get a Password
+## 获取密码
 
 ```bash
 # Search by URL or title (copies password to clipboard by default)
@@ -58,7 +58,7 @@ dcli p id=xxxxxx               # By vault ID
 dcli p url=site1 title=site2   # Multiple filters (OR)
 ```
 
-## Get a Secure Note
+## 获取安全笔记
 
 ```bash
 dcli note [filters]
@@ -72,9 +72,9 @@ dcli n title=api-keys
 dcli n my-note -o json
 ```
 
-## Get a Secret
+## 获取机密信息
 
-Dashlane secrets are a dedicated content type for sensitive data.
+Dashlane 的“机密信息”是一种专门用于存储敏感数据的文件类型。
 
 ```bash
 dcli secret [filters]
@@ -84,7 +84,7 @@ dcli secret api_keys
 dcli secret title=api_keys -o json
 ```
 
-## Other Commands
+## 其他命令
 
 ```bash
 # Sync vault manually (auto-sync every hour by default)
@@ -101,7 +101,7 @@ dcli backup
 dcli backup --directory /path/to/backup
 ```
 
-## Configuration
+## 配置
 
 ```bash
 # Save master password in OS keychain (default: true)
@@ -117,33 +117,33 @@ dcli configure user-presence --method biometrics
 dcli configure user-presence --method none
 ```
 
-## Persistence by Platform
+## 数据持久化方式
 
 ### macOS
-Master password is stored in the **Keychain** by default. Survives reboots.
+默认情况下，主密码会存储在 **Keychain** 中，因此重启后数据仍然可用。
 ```bash
 dcli configure save-master-password true
 ```
 
-### Linux (server/headless)
-No native keychain. Options:
-1. **Environment variable** (less secure, but simple):
+### Linux（服务器/无界面模式）
+Linux 系统没有内置的 Keychain 功能。可选方案如下：
+1. **环境变量**（安全性较低，但使用简单）：
    ```bash
    export DASHLANE_MASTER_PASSWORD="..."
    ```
-2. **Local encrypted file**: `save-master-password true` stores in `~/.local/share/dcli/`
-3. **External secret manager** (Vault, AWS Secrets, etc.) to inject the variable
+2. **本地加密文件**：通过设置 `save-master-password true` 将主密码保存在 `~/.local/share/dcli/` 文件中。
+3. **外部密钥管理工具**（如 Vault、AWS Secrets 等）来存储主密码。
 
-### Docker / CI
-Use the `DASHLANE_MASTER_PASSWORD` environment variable passed to the container.
+### Docker / 持续集成（CI）环境
+将 `DASHLANE_MASTER_PASSWORD` 环境变量传递给 Docker 容器。
 ```bash
 docker run -e DASHLANE_MASTER_PASSWORD="..." myimage
 ```
 
-### SSO / Passwordless
-Not supported by dcli yet — requires a classic master password.
+### 单点登录（SSO）/ 无密码登录
+目前 dcli 不支持这些功能——仍需要使用传统的主密码。
 
-## Advanced: Inject Secrets
+## 高级功能：注入机密信息
 
 ```bash
 # Inject secrets into environment variables
@@ -156,21 +156,21 @@ dcli inject < template.txt > output.txt
 dcli read "dl://vault/secret-id"
 ```
 
-## Examples
+## 示例
 
-### Get OTP for 2FA
+### 获取用于双重身份验证（2FA）的 OTP 代码
 ```bash
 dcli p github -f otp
 # Returns: 123456 (25s remaining)
 ```
 
-### SSH Keys from Vault
-Store private key in a secure note, then:
+### 从保管库中获取 SSH 密钥
+将私钥保存到安全笔记中，然后执行相应操作：
 ```bash
 dcli n SSH_KEY | ssh-add -
 ```
 
-### Scripting
+### 脚本编写
 ```bash
 # Get password for a script
 PASSWORD=$(dcli p myservice -o console)
@@ -179,11 +179,11 @@ PASSWORD=$(dcli p myservice -o console)
 dcli p myservice -o json | jq -r '.[0].password'
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **Locked?** Run `dcli sync` to unlock
-- **SSO users:** Need Chrome installed + visual interface
-- **Password-less:** Not supported yet
-- **Debug mode:** `dcli --debug <command>`
+- **账号被锁定？** 运行 `dcli sync` 命令来解锁账号。
+- **使用 SSO 的用户**：需要安装 Chrome 浏览器并使用相应的图形界面。
+- **无密码登录**：目前尚不支持。
+- **调试模式**：使用 `dcli --debug <命令>` 进行调试。
 
-Docs: https://cli.dashlane.com
+更多文档请访问：https://cli.dashlane.com

@@ -1,25 +1,26 @@
 ---
 name: meta-ad-creatives
 version: 1.0.0
-description: Track Meta (Facebook/Instagram) ad creative performance and hit rates across multiple accounts. Use when asked about creative win rates, which ads are hitting benchmarks, CPT/CPI/ROAS analysis, or comparing creative performance across accounts and time periods. Supports multiple benchmark metrics (CPT, CPI, IPM, ROAS) and currency conversion.
+description: **Track Meta (Facebook/Instagram) 广告创意的表现及点击率**  
+该工具可用于追踪多个账户中的广告创意效果及点击率。适用于需要了解广告创意的成功率、哪些广告达到了预期效果、进行 CPT（每次点击费用）、CPI（每千次展示费用）或 ROAS（投资回报率）分析，以及比较不同账户或时间段内的广告创意表现的情况。支持多种评估指标（CPT、CPI、IPM、ROAS），并支持货币转换功能。
 ---
 
-# Meta Ad Creatives
+# Meta Ad 创意内容管理
 
-Track creative performance and hit rates across multiple Meta Ads accounts.
+该功能用于跟踪多个 Meta Ad 账户的创意内容表现和点击率。
 
-## What This Skill Does
+## 功能概述
 
-- Calculate **hit rates** (% of creatives meeting performance benchmarks)
-- Track multiple metrics: **CPT** (cost per trial), **CPI** (cost per install), **IPM** (installs per mille), **ROAS**
-- Compare performance across **multiple accounts**
-- Store **historical data** for trend analysis
-- Identify **winning creatives** vs underperformers
-- Support **currency conversion** for international accounts
+- 计算创意内容的**点击率**（即达到性能基准的创意内容所占的比例）
+- 收集多种指标数据：**CPT**（每次尝试的成本）、**CPI**（每次安装的成本）、**IPM**（每千次展示的安装次数）、**ROAS**（投资回报率）
+- 比较多个账户之间的表现
+- 保存**历史数据**以供趋势分析
+- 识别表现优异的创意内容与表现不佳的创意内容
+- 支持国际账户的**货币转换**
 
-## Setup
+## 设置
 
-### 1. Environment Variables
+### 1. 环境变量
 
 ```bash
 FACEBOOK_ACCESS_TOKEN=your_token_here
@@ -27,9 +28,9 @@ FACEBOOK_APP_ID=your_app_id
 FACEBOOK_APP_SECRET=your_app_secret
 ```
 
-### 2. Accounts Configuration
+### 2. 账户配置
 
-Create `accounts_config.json`:
+创建 `accounts_config.json` 文件：
 
 ```json
 {
@@ -46,16 +47,16 @@ Create `accounts_config.json`:
 }
 ```
 
-Configuration fields:
-- `account_id`: Meta Ad Account ID (without `act_` prefix)
-- `filter`: Campaign name filter (optional)
-- `geo_filter`: Geographic filter like "US" (optional)
-- `benchmark_value`: CPT threshold for "winning" creatives
-- `benchmark_display`: Human-readable benchmark description
+配置字段：
+- `account_id`：Meta Ad 账户 ID（不含 `act_` 前缀）
+- `filter`：活动名称过滤器（可选）
+- `geo_filter`：地理过滤器（例如 “US”）（可选）
+- `benchmark_value`：表现优异的创意内容的 CPT 阈值
+- `benchmark_display`：人类可读的基准描述
 
-## Usage
+## 使用方法
 
-### Get Hit Rates for Current Month
+### 获取当月的点击率
 
 ```python
 from scripts.meta_ad_creatives import get_all_hit_rates
@@ -66,7 +67,7 @@ for account in data['accounts']:
     print(f"  {account['account_name']}: {account['hit_rate']}%")
 ```
 
-### Get Hit Rates for Previous Months
+### 获取上个月的点击率
 
 ```python
 # Last month
@@ -76,13 +77,13 @@ data = get_all_hit_rates(month_offset=-1)
 data = get_all_hit_rates(month_offset=-2)
 ```
 
-### Get All-Time Aggregated Data
+### 获取历史累计数据
 
 ```python
 data = get_all_hit_rates(all_time=True)
 ```
 
-### Get Individual Ad Performance
+### 获取单个广告的表现数据
 
 ```python
 from scripts.meta_ad_creatives import get_individual_ads
@@ -97,7 +98,7 @@ winners = get_individual_ads(account_name="ClientName", hit_only=True)
 ads = get_individual_ads(sort_by="cpt")
 ```
 
-### Monthly Comparison
+### 进行月度比较
 
 ```python
 from scripts.meta_ad_creatives import get_monthly_comparison
@@ -108,37 +109,37 @@ for month in months:
     print(f"{month['month_label']}: {month['totals']['hit_rate']}%")
 ```
 
-## Key Metrics
+## 主要指标
 
-| Metric | Description |
+| 指标 | 描述 |
 |--------|-------------|
-| Total Ads | Ads created in the period |
-| Ads with Spend | Ads that received budget |
-| Ads Hitting Benchmark | Ads meeting CPT threshold |
-| Hit Rate | % of ads meeting benchmark |
-| CPT | Cost Per Trial (spend / trials) |
+| Total Ads | 该期间创建的广告数量 |
+| Ads with Spend | 收到预算的广告数量 |
+| Ads Hitting Benchmark | 达到 CPT 阈值的广告数量 |
+| Hit Rate | 达到基准的广告所占比例 |
+| CPT | 每次尝试的成本（花费 / 尝试次数） |
 
-## Hit Rate Calculation
+## 点击率计算规则
 
-A creative "hits" the benchmark when:
-1. It has spend > $0
-2. It has trials > 0
-3. CPT < benchmark_value (e.g., $100)
+当创意内容满足以下条件时，即被视为“达到基准”：
+1. 花费大于 $0$
+2. 尝试次数大于 0$
+3. CPT 低于 `benchmark_value`（例如 $100$
 
-Hit Rate = (Ads Hitting Benchmark / Ads with Spend) × 100
+点击率 = （达到基准的广告数量 / 收到预算的广告数量）× 100%
 
-## Data Storage
+## 数据存储
 
-The skill stores historical data for trend analysis:
-- **Firestore** (default for cloud deployments)
-- **SQLite** (local fallback)
+该功能会将历史数据存储在以下数据库中以供趋势分析：
+- **Firestore**（云部署的默认选择）
+- **SQLite**（本地备份选项）
 
-Set `USE_FIRESTORE=false` to use SQLite locally.
+若需在本地使用 SQLite，请将 `USE_fireSTORE=false` 设置为 `true`。
 
-## Common Questions This Answers
+## 常见问题解答
 
-- "What's our creative hit rate this month?"
-- "Which creatives are winning for [Client]?"
-- "How does this month compare to last month?"
-- "Show me all ads that hit the benchmark"
-- "What's our all-time hit rate?"
+- “我们这个月的创意内容点击率是多少？”
+- “哪些创意内容对 [客户] 来说表现优异？”
+- “这个月与上个月相比如何？”
+- “请显示所有达到基准的广告。”
+- “我们的历史点击率是多少？”

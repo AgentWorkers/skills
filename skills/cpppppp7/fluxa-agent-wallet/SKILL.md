@@ -7,43 +7,45 @@ description: >-
   payment links, or interacting with the FluxA Agent Wallet.
 ---
 
-# FluxA Agent Wallet
+# FluxA 代理钱包
 
-FluxA Agent Wallet lets AI agents perform onchain financial operations — payments, payouts, and payment links — without managing private keys. All operations use the **CLI** (`scripts/fluxa-cli.bundle.js`).
+FluxA 代理钱包允许 AI 代理执行链上金融操作（如支付、收款以及生成支付链接），而无需管理私钥。所有操作均通过 **命令行界面（CLI）**（`scripts/fluxa-cli.bundle.js`）来完成。
 
-## Setup
+## 设置
 
-The CLI bundle is located at `scripts/fluxa-cli.bundle.js` within this skill directory. It requires Node.js v18+.
+CLI 工具包位于本技能目录下的 `scripts/fluxa-cli.bundle.js` 文件中。该工具包需要 Node.js v18 或更高版本的支持。
 
 ```bash
 node scripts/fluxa-cli.bundle.js <command> [options]
 ```
 
-All commands output JSON to stdout:
+所有命令的输出都会以 JSON 格式显示到标准输出（stdout）：
 
 ```json
 { "success": true, "data": { ... } }
 ```
 
-Or on error:
+如果发生错误，输出内容如下：
 
 ```json
 { "success": false, "error": "Error message" }
 ```
 
-Exit code `0` = success, `1` = failure.
+退出代码的含义：
+- `0`：操作成功
+- `1`：操作失败
 
-## Capabilities
+## 功能
 
-| Capability | What it does | When to use |
-|------------|-------------|-------------|
-| **x402 Payment (v3)** | Pay for APIs using the x402 protocol with intent mandates | Agent hits HTTP 402, needs to pay for API access |
-| **Payout** | Send USDC to any wallet address | Agent needs to transfer funds to a recipient |
-| **Payment Link** | Create shareable URLs to receive payments | Agent needs to charge users, create invoices, sell content |
+| 功能        | 功能描述                | 使用场景                |
+|------------|------------------|----------------------|
+| **x402 支付 (v3)** | 使用 x402 协议进行 API 支付，并需要提供授权信息 | 当代理收到 HTTP 402 错误码、需要支付 API 访问费用时使用 |
+| **收款**     | 将 USDC 转账到任意钱包地址       | 代理需要将资金转移给收款人             |
+| **生成支付链接**   | 创建可共享的支付链接           | 代理需要向用户收费、创建发票或出售内容         |
 
-## Prerequisites — Register Agent ID
+## 先决条件 — 注册代理 ID
 
-Before any operation, the agent must have an Agent ID. Register once:
+在进行任何操作之前，代理必须拥有一个代理 ID。可以通过以下方式注册代理 ID：
 
 ```bash
 node scripts/fluxa-cli.bundle.js init \
@@ -52,7 +54,7 @@ node scripts/fluxa-cli.bundle.js init \
   --client "Agent v1.0"
 ```
 
-Or pre-configure via environment variables:
+或者通过环境变量预先配置代理 ID：
 
 ```bash
 export AGENT_ID="ag_xxxxxxxxxxxx"
@@ -60,30 +62,30 @@ export AGENT_TOKEN="tok_xxxxxxxxxxxx"
 export AGENT_JWT="eyJhbGciOiJ..."
 ```
 
-Verify status:
+验证代理 ID 的状态：
 
 ```bash
 node scripts/fluxa-cli.bundle.js status
 ```
 
-The CLI automatically refreshes expired JWTs.
+CLI 会自动刷新过期的 JWT（JSON Web Tokens）。
 
-## Opening Authorization URLs (UX Pattern)
+## 打开授权链接（用户交互流程）
 
-Many operations require user authorization via a URL (mandate signing, payout approval, agent registration). When you need the user to open a URL:
+许多操作需要用户通过链接进行授权（例如授权签名、收款审批、代理注册）。当需要用户打开链接时，请按照以下步骤操作：
 
-1. **Always ask the user first** using `AskUserQuestion` tool with options:
-   - "Yes, open the link"
-   - "No, show me the URL"
+1. **首先询问用户**，使用 `AskUserQuestion` 工具并提供选项：
+   - “是的，打开链接”
+   - “不，直接显示链接”
 
-2. **If user chooses YES**: Use the `open` command to open the URL in their default browser:
+2. **如果用户选择“是”**：使用 `open` 命令在用户的默认浏览器中打开链接：
    ```bash
    open "<URL>"
    ```
 
-3. **If user chooses NO**: Display the URL and ask how they'd like to proceed.
+3. **如果用户选择“否”**：显示链接，并询问用户下一步的操作方式。
 
-**Example interaction flow:**
+**示例交互流程：**
 
 ```
 Agent: I need to open the authorization URL to sign the mandate.
@@ -95,23 +97,23 @@ Agent: *runs* open "https://agentwallet.fluxapay.xyz/onboard/intent?oid=..."
 Agent: I've opened the authorization page in your browser. Please sign the mandate, then let me know when you're done.
 ```
 
-This pattern applies to:
-- Mandate authorization (`authorizationUrl` from `mandate-create`)
-- Payout approval (`approvalUrl` from `payout`)
-- Agent registration (if manual registration is needed)
+此流程适用于以下场景：
+- 授权签名（来自 `mandate-create` 的 `authorizationUrl`）
+- 收款审批（来自 `payout` 的 `approvalUrl`）
+- 代理注册（如果需要手动注册）
 
-## Quick Decision Guide
+## 快速决策指南
 
-| I want to... | Document |
-|--------------|----------|
-| **Pay for an API** that returned HTTP 402 | [X402-PAYMENT.md](X402-PAYMENT.md) |
-| **Pay to a payment link** (agent-to-agent) | [PAYMENT-LINK.md](PAYMENT-LINK.md) — "Paying TO a Payment Link" section |
-| **Send USDC** to a wallet address | [PAYOUT.md](PAYOUT.md) |
-| **Create a payment link** to receive payments | [PAYMENT-LINK.md](PAYMENT-LINK.md) — "Create Payment Link" section |
+| 我想... | 相关文档                |
+|--------------|----------------------|
+| **为返回 HTTP 402 错误的 API 支付** | [X402-PAYMENT.md](X402-PAYMENT.md) |
+| **向支付链接付款**（代理之间） | [PAYMENT-LINK.md](PAYMENT-LINK.md) — “向支付链接付款”部分 |
+| **向钱包地址转账 USDC** | [PAYOUT.md](PAYOUT.md) |
+| **创建支付链接**以接收付款 | [PAYMENT-LINK.md](PAYMENT-LINK.md) — “创建支付链接”部分 |
 
-### Common Flow: Paying to a Payment Link
+### 常见操作流程：向支付链接付款
 
-This is a 6-step process using CLI:
+这是一个使用 CLI 完成的六步流程：
 
 ```
 1. PAYLOAD=$(curl -s <payment_link_url>)                    → Get full 402 payload JSON
@@ -122,57 +124,57 @@ This is a 6-step process using CLI:
 6. curl -H "X-Payment: <token>" <url>                       → Submit payment
 ```
 
-**Critical:** The `--payload` for `x402-v3` must be the **complete** 402 response JSON including the `accepts` array, not just extracted fields.
+**重要提示：**`x402-v3` 命令中的 `--payload` 参数必须包含完整的 402 响应 JSON 数据，而不仅仅是提取的部分字段。
 
-See [PAYMENT-LINK.md](PAYMENT-LINK.md) for the complete walkthrough with examples.
+详情请参阅 [PAYMENT-LINK.md](PAYMENT-LINK.md) 中的示例和详细说明。
 
-## Amount Format
+## 金额格式
 
-All amounts are in **smallest units** (atomic units). For USDC (6 decimals):
+所有金额均以 **最小单位**（atomic units）表示。以 USDC 为例（保留 6 位小数）：
 
-| Human-readable | Atomic units |
-|---------------|-------------|
-| 0.01 USDC | `10000` |
-| 0.10 USDC | `100000` |
-| 1.00 USDC | `1000000` |
-| 10.00 USDC | `10000000` |
+| 人类可读格式 | 原子单位（atomic units） |
+|---------------|----------------------|
+| 0.01 USDC     | `10000`                |
+| 0.10 USDC     | `100000`                |
+| 1.00 USDC     | `1000000`                |
+| 10.00 USDC     | `10000000`                |
 
-## CLI Commands Quick Reference
+## CLI 命令快速参考
 
-| Command | Required Flags | Description |
-|---------|----------------|-------------|
-| `status` | (none) | Check agent configuration |
-| `init` | `--email`, `--name` | Register agent ID |
-| `mandate-create` | `--desc`, `--amount` | Create an intent mandate |
-| `mandate-status` | `--id` | Query mandate status (NOT `--mandate`) |
-| `x402-v3` | `--mandate`, `--payload` | Execute x402 v3 payment |
-| `payout` | `--to`, `--amount`, `--id` | Create a payout |
-| `payout-status` | `--id` | Query payout status |
-| `paymentlink-create` | `--amount` | Create a payment link |
-| `paymentlink-list` | (none) | List payment links |
-| `paymentlink-get` | `--id` | Get payment link details |
-| `paymentlink-update` | `--id` | Update a payment link |
-| `paymentlink-delete` | `--id` | Delete a payment link |
-| `paymentlink-payments` | `--id` | Get payment records for a link |
+| 命令        | 必需的参数                | 功能描述                          |
+|------------|------------------|--------------------------------------|
+| `status`     | （无）                | 检查代理配置                        |
+| `init`      | `--email`, `--name`         | 注册代理 ID                         |
+| `mandate-create` | `--desc`, `--amount`         | 创建授权请求                         |
+| `mandate-status` | `--id`             | 查询授权请求的状态                   |
+| `x402-v3`     | `--mandate`, `--payload`       | 执行 x402 v3 支付请求                   |
+| `payout`     | `--to`, `--amount`, `--id`       | 创建收款请求                         |
+| `payout-status` | `--id`             | 查询收款请求的状态                   |
+| `paymentlink-create` | `--amount`           | 创建支付链接                         |
+| `paymentlink-list` | （无）                | 列出所有支付链接                         |
+| `paymentlink-get` | `--id`             | 获取支付链接的详细信息                     |
+| `paymentlink-update` | `--id`             | 更新支付链接                         |
+| `paymentlink-delete` | `--id`             | 删除支付链接                         |
+| `paymentlink-payments` | `--id`             | 获取指定链接的付款记录                     |
 
-**Common Mistakes to Avoid:**
+**常见错误及修正方式：**
 
-| Wrong | Correct |
-|-------|---------|
+| 错误表达       | 正确表达               |
+|---------------|---------------------------|
 | `mandate-create --amount 100000` | `mandate-create --desc "..." --amount 100000` |
-| `mandate-status --mandate mand_xxx` | `mandate-status --id mand_xxx` |
-| `x402-v3 --payload '{"maxAmountRequired":"100000"}'` | `x402-v3 --payload '<full 402 response with accepts array>'` |
+| `mandate-status --mandate mand_xxx` | `mandate-status --id mand_xxx`         |
+| `x402-v3 --payload '{"maxAmountRequired":"100000"}'` | `x402-v3 --payload '<完整的 402 响应 JSON，包含 accepts 数组>'` |
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
-|----------|-------------|
-| `AGENT_ID` | Pre-configured agent ID |
-| `AGENT_TOKEN` | Pre-configured agent token |
-| `AGENT_JWT` | Pre-configured agent JWT |
-| `AGENT_EMAIL` | Email for auto-registration |
-| `AGENT_NAME` | Agent name for auto-registration |
-| `CLIENT_INFO` | Client info for auto-registration |
-| `FLUXA_DATA_DIR` | Custom data directory (default: `~/.fluxa-ai-wallet-mcp`) |
-| `WALLET_API` | Wallet API base URL (default: `https://walletapi.fluxapay.xyz`) |
-| `AGENT_ID_API` | Agent ID API base URL (default: `https://agentid.fluxapay.xyz`) |
+| 变量          | 描述                        |
+|---------------|-----------------------------------------|
+| `AGENT_ID`     | 预先配置的代理 ID                   |
+| `AGENT_TOKEN`     | 预先配置的代理令牌                   |
+| `AGENT_JWT`     | 预先配置的代理 JWT                   |
+| `AGENT_EMAIL`     | 用于自动注册的代理邮箱                 |
+| `AGENT_NAME`     | 用于自动注册的代理名称                 |
+| `CLIENT_INFO`    | 用于自动注册的客户端信息                 |
+| `FLUXA_DATA_DIR`   | 自定义数据目录（默认：`~/.fluxa-ai-wallet-mcp`）     |
+| `WALLET_API`     | 钱包 API 的基础 URL                   |
+| `AGENT_ID_API`     | 代理 ID 相关 API 的基础 URL               |

@@ -1,56 +1,55 @@
 ---
 name: travel-price-drop-visa-reminder
-description: Plan travel price monitoring and visa or document reminders with safe, read-only guidance. Use when a user wants price drop alerts, travel checklists, or visa timelines without booking or payment actions.
+description: 规划旅行费用监控以及签证或相关文件的提醒服务，提供安全、只读式的指导。适用于用户希望在未进行预订或支付操作的情况下接收价格下降通知、旅行检查清单或签证办理进度提醒的场景。
 ---
 
-# Travel Price Drop and Visa Reminder
+# 旅行价格变动与签证提醒
 
-## Goal
-Create a travel monitoring plan with price thresholds and visa or document reminders.
+## 目标  
+创建一个旅行监控计划，设置价格阈值，并提供签证或相关文件的提醒服务。
 
-## Best fit
-- Use when the user wants flight or hotel price tracking.
-- Use when the user needs visa, passport, or document timelines.
-- Use when the user wants a clear reminder schedule.
+## 适用场景  
+- 当用户需要跟踪航班或酒店价格时。  
+- 当用户需要了解签证、护照或相关文件的办理时间表时。  
+- 当用户希望获得明确的提醒安排时。  
 
-## Not fit
-- Avoid when the user asks to book or pay.
-- Avoid when the user wants scraped data from restricted sites.
-- Avoid when legal or visa advice is requested.
+## 不适用场景  
+- 当用户请求进行预订或支付时。  
+- 当用户需要从受限制的网站获取数据时。  
+- 当用户需要法律或签证方面的建议时。  
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速入门指南  
+- 请参阅 `references/overview.md` 以了解工作流程和质量标准。  
+- 请参阅 `references/auth.md` 以了解访问权限和令牌处理方式。  
+- 请参阅 `references/endpoints.md` 以了解可选的集成方案和模板。  
+- 请参阅 `references/webhooks.md` 以了解异步事件处理方法。  
+- 请参阅 `references/ux.md` 以了解用户输入问题和输出格式要求。  
+- 请参阅 `references/troubleshooting.md` 以了解常见问题解决方法。  
+- 请参阅 `references/safety.md` 以了解安全与隐私保护措施。  
 
-## Required inputs
-- Origin, destination, and date range with flexibility.
-- Budget or target price thresholds.
-- Traveler nationality and passport expiry date.
-- Reminder preferences and timezone.
+## 必需输入信息  
+- 出发地、目的地及日期范围（需具备灵活性）。  
+- 预算或目标价格阈值。  
+- 旅行者的国籍及护照有效期。  
+- 提醒偏好及时区设置。  
 
-## Expected output
-- Price watch plan with thresholds and alert cadence.
-- Visa or document checklist with due dates.
-- Draft reminder messages.
-- Summary of assumptions and data sources.
+## 预期输出结果  
+- 包含价格监控阈值及提醒频率的计划。  
+- 包含签证或相关文件清单及其截止日期的提醒内容。  
+- 提醒信息的草稿模板。  
+- 对假设条件和数据来源的总结说明。  
 
-## Operational notes
-- Use only official or user-provided data sources.
-- Flag that price data can be delayed or incomplete.
-- Do not provide legal advice; cite official sources only.
+## 操作注意事项  
+- 仅使用官方数据源或用户提供的数据。  
+- 请注明价格数据可能存在延迟或不完整的情况。  
+- 请勿提供法律建议，仅引用官方信息。  
 
-## Security notes
-- Do not request payment details or account credentials.
-- Avoid sharing personal travel documents.
+## 安全注意事项  
+- 请勿索取用户的支付详情或账户凭证。  
+- 请避免分享个人的旅行文件。  
 
-## Safe mode
-- Monitor and draft reminders only.
-- No booking or payment actions.
+## 安全模式  
+- 仅执行监控和提醒功能，不涉及预订或支付操作。  
 
-## Sensitive ops
-- Booking, paying, or handling visas directly is out of scope.
+## 敏感操作  
+- 直接进行预订、支付或处理签证事宜超出了本服务的范围。

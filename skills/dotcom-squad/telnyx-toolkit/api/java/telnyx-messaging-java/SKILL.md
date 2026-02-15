@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging - Java
+# Telnyx 消息服务 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,13 +31,13 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Send a message
+## 发送消息
 
-Send a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来发送消息。
 
-`POST /messages` — Required: `to`
+`POST /messages` — 必需参数：`to`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendParams;
@@ -48,9 +49,9 @@ MessageSendParams params = MessageSendParams.builder()
 MessageSendResponse response = client.messages().send(params);
 ```
 
-## Retrieve a message
+## 获取消息
 
-Note: This API endpoint can only retrieve messages that are no older than 10 days since their creation.
+注意：此 API 端点仅能获取创建时间不超过 10 天的消息。
 
 `GET /messages/{id}`
 
@@ -61,9 +62,9 @@ import com.telnyx.sdk.models.messages.MessageRetrieveResponse;
 MessageRetrieveResponse message = client.messages().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Cancel a scheduled message
+## 取消已安排的消息
 
-Cancel a scheduled message that has not yet been sent.
+取消尚未发送的已安排消息。
 
 `DELETE /messages/{id}`
 
@@ -74,9 +75,9 @@ import com.telnyx.sdk.models.messages.MessageCancelScheduledResponse;
 MessageCancelScheduledResponse response = client.messages().cancelScheduled("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Send a Whatsapp message
+## 发送 Whatsapp 消息
 
-`POST /messages/whatsapp` — Required: `from`, `to`, `whatsapp_message`
+`POST /messages/whatsapp` — 必需参数：`from`, `to`, `whatsapp_message`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendWhatsappParams;
@@ -90,9 +91,9 @@ MessageSendWhatsappParams params = MessageSendWhatsappParams.builder()
 MessageSendWhatsappResponse response = client.messages().sendWhatsapp(params);
 ```
 
-## Send a group MMS message
+## 发送群组 MMS 消息
 
-`POST /messages/group_mms` — Required: `from`, `to`
+`POST /messages/group_mms` — 必需参数：`from`, `to`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendGroupMmsParams;
@@ -106,9 +107,9 @@ MessageSendGroupMmsParams params = MessageSendGroupMmsParams.builder()
 MessageSendGroupMmsResponse response = client.messages().sendGroupMms(params);
 ```
 
-## Send a long code message
+## 发送长码消息
 
-`POST /messages/long_code` — Required: `from`, `to`
+`POST /messages/long_code` — 必需参数：`from`, `to`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendLongCodeParams;
@@ -121,9 +122,9 @@ MessageSendLongCodeParams params = MessageSendLongCodeParams.builder()
 MessageSendLongCodeResponse response = client.messages().sendLongCode(params);
 ```
 
-## Send a message using number pool
+## 使用号码池发送消息
 
-`POST /messages/number_pool` — Required: `to`, `messaging_profile_id`
+`POST /messages/number_pool` — 必需参数：`to`, `messaging_profile_id`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendNumberPoolParams;
@@ -136,11 +137,11 @@ MessageSendNumberPoolParams params = MessageSendNumberPoolParams.builder()
 MessageSendNumberPoolResponse response = client.messages().sendNumberPool(params);
 ```
 
-## Schedule a message
+## 安排消息
 
-Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来安排消息的发送。
 
-`POST /messages/schedule` — Required: `to`
+`POST /messages/schedule` — 必需参数：`to`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageScheduleParams;
@@ -152,9 +153,9 @@ MessageScheduleParams params = MessageScheduleParams.builder()
 MessageScheduleResponse response = client.messages().schedule(params);
 ```
 
-## Send a short code message
+## 发送短代码消息
 
-`POST /messages/short_code` — Required: `from`, `to`
+`POST /messages/short_code` — 必需参数：`from`, `to`
 
 ```java
 import com.telnyx.sdk.models.messages.MessageSendShortCodeParams;
@@ -167,9 +168,9 @@ MessageSendShortCodeParams params = MessageSendShortCodeParams.builder()
 MessageSendShortCodeResponse response = client.messages().sendShortCode(params);
 ```
 
-## List opt-outs
+## 获取用户退订信息
 
-Retrieve a list of opt-out blocks.
+获取用户的退订信息列表。
 
 `GET /messaging_optouts`
 
@@ -180,7 +181,7 @@ import com.telnyx.sdk.models.messagingoptouts.MessagingOptoutListParams;
 MessagingOptoutListPage page = client.messagingOptouts().list();
 ```
 
-## Retrieve a phone number with messaging settings
+## 获取带有消息功能的电话号码信息
 
 `GET /phone_numbers/{id}/messaging`
 
@@ -191,7 +192,7 @@ import com.telnyx.sdk.models.phonenumbers.messaging.MessagingRetrieveResponse;
 MessagingRetrieveResponse messaging = client.phoneNumbers().messaging().retrieve("id");
 ```
 
-## Update the messaging profile and/or messaging product of a phone number
+## 更新电话号码的消息功能配置
 
 `PATCH /phone_numbers/{id}/messaging`
 
@@ -202,7 +203,7 @@ import com.telnyx.sdk.models.phonenumbers.messaging.MessagingUpdateResponse;
 MessagingUpdateResponse messaging = client.phoneNumbers().messaging().update("id");
 ```
 
-## List phone numbers with messaging settings
+## 获取带有消息功能的电话号码列表
 
 `GET /phone_numbers/messaging`
 
@@ -213,7 +214,7 @@ import com.telnyx.sdk.models.phonenumbers.messaging.MessagingListParams;
 MessagingListPage page = client.phoneNumbers().messaging().list();
 ```
 
-## Retrieve a mobile phone number with messaging settings
+## 获取带有消息功能的手机号码信息
 
 `GET /mobile_phone_numbers/{id}/messaging`
 
@@ -224,7 +225,7 @@ import com.telnyx.sdk.models.mobilephonenumbers.messaging.MessagingRetrieveRespo
 MessagingRetrieveResponse messaging = client.mobilePhoneNumbers().messaging().retrieve("id");
 ```
 
-## List mobile phone numbers with messaging settings
+## 获取带有消息功能的手机号码列表
 
 `GET /mobile_phone_numbers/messaging`
 
@@ -235,9 +236,9 @@ import com.telnyx.sdk.models.mobilephonenumbers.messaging.MessagingListParams;
 MessagingListPage page = client.mobilePhoneNumbers().messaging().list();
 ```
 
-## Bulk update phone number profiles
+## 批量更新电话号码配置
 
-`POST /messaging_numbers/bulk_updates` — Required: `messaging_profile_id`, `numbers`
+`POST /messaging_numbers/bulk_updates` — 必需参数：`messaging_profile_id`, `numbers`
 
 ```java
 import com.telnyx.sdk.models.messagingnumbersbulkupdates.MessagingNumbersBulkUpdateCreateParams;
@@ -255,7 +256,7 @@ MessagingNumbersBulkUpdateCreateParams params = MessagingNumbersBulkUpdateCreate
 MessagingNumbersBulkUpdateCreateResponse messagingNumbersBulkUpdate = client.messagingNumbersBulkUpdates().create(params);
 ```
 
-## Retrieve bulk update status
+## 获取批量更新状态
 
 `GET /messaging_numbers/bulk_updates/{order_id}`
 
@@ -268,13 +269,14 @@ MessagingNumbersBulkUpdateRetrieveResponse messagingNumbersBulkUpdate = client.m
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以供验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `deliveryUpdate` | Delivery Update |
-| `inboundMessage` | Inbound Message |
-| `replacedLinkClick` | Replaced Link Click |
+| `deliveryUpdate` | 消息投递更新 |
+| `inboundMessage` | 收到的消息 |
+| `replacedLinkClick` | 替换链接被点击 |
+```
+```

@@ -1,48 +1,48 @@
 ---
 name: moltpho
-description: Shop autonomously on Amazon via Moltpho - search products, manage credit, and purchase items using mUSD on Base mainnet
+description: 通过 Moltpho 在 Amazon 上自主购物：搜索产品、管理信用额度，并使用 mUSD 在 Base 主网上购买商品。
 metadata: {"requires": {"http": true, "browser": true}}
 ---
 
-# Moltpho Shopping Skill
+# Moltpho 购物技能
 
-Shop for items on Amazon autonomously using credit-backed mUSD tokens on Base mainnet.
+使用基于 Base 主网上的 mUSD 代币，在 Amazon 上自主购物。
 
-## Overview
+## 概述
 
-Moltpho is a headless shopping mall that enables AI agents to discover and purchase Amazon products using a credit system backed by mUSD (an ERC-20 token on Base mainnet). This skill handles:
+Moltpho 是一个无头购物商城，它允许 AI 代理通过由 mUSD（Base 主网上的 ERC-20 代币）支持的信用系统来发现和购买 Amazon 产品。该技能支持以下功能：
 
-- Agent registration and credential management
-- Product search and discovery
-- Autonomous and proactive purchasing
-- Credit balance monitoring
-- x402 payment protocol integration
+- 代理注册和凭证管理
+- 产品搜索和发现
+- 自主且主动的购买行为
+- 信用余额监控
+- x402 支付协议的集成
 
-## Bootstrap Flow
+## 启动流程
 
-On first invocation, the skill MUST check for existing credentials and register if needed.
+首次调用该技能时，必须检查是否存在有效的凭证，如需要则进行注册。
 
-### Credentials Location
+### 凭证位置
 
-| Platform | Path |
+| 平台 | 路径 |
 |----------|------|
 | Linux/macOS | `~/.config/moltpho/credentials.json` |
 | Windows | `%APPDATA%\moltpho\credentials.json` |
-| Override | `MOLTPHO_CREDENTIALS_PATH` environment variable |
+| 可覆盖 | `MOLTPHO_CREDENTIALS_PATH` 环境变量 |
 
-### Registration Process
+### 注册流程
 
-1. **Check credentials file** at the appropriate path
-2. **If missing**, call `POST /v1/agents/register` with:
-   - `openclaw_instance_id` (if available)
+1. 在指定路径下检查凭证文件。
+2. 如果凭证文件缺失，调用 `POST /v1/agents/register`，并提供以下信息：
+   - `openclaw_instance_id`（如果有的话）
    - `agent_display_name`
    - `agent_description`
-   - No shipping profile required at registration
-3. **Save credentials** with `chmod 600` permissions
-4. **Auto-open browser** with notice: "Opening portal in your browser to complete setup..."
-5. Registration proceeds WITHOUT shipping profile - orders will fail until owner adds one via portal
+   - 注册时不需要填写 shipping profile
+3. 以 `chmod 600` 权限保存凭证文件。
+4. 自动打开浏览器，并显示提示：“正在您的浏览器中打开门户以完成设置...”。
+5. 注册过程中不需要填写 shipping profile——在所有者通过门户添加 shipping profile 之前，订单将无法完成。
 
-### Credentials File Format
+### 凭证文件格式
 
 ```json
 {
@@ -54,11 +54,11 @@ On first invocation, the skill MUST check for existing credentials and register 
 }
 ```
 
-## Core Functions
+## 核心功能
 
 ### bootstrap()
 
-Initialize agent credentials and open portal for owner setup.
+初始化代理凭证并打开门户以供所有者完成设置。
 
 ```
 1. Check if credentials file exists at platform-specific path
@@ -74,7 +74,7 @@ Initialize agent credentials and open portal for owner setup.
 
 ### collect_shipping_profile()
 
-Optionally collect shipping information from the owner.
+（可选）从所有者处收集配送信息。
 
 ```
 Note: This is OPTIONAL. Owners can configure shipping via the portal instead.
@@ -96,7 +96,7 @@ The POST endpoint upserts the default profile:
 
 ### update_shipping_profile()
 
-Update the shipping address for the agent.
+更新代理的配送地址。
 
 ```
 Parameters:
@@ -123,7 +123,7 @@ Use cases:
 
 ### catalog_search(query, constraints)
 
-Search for products on Amazon via Moltpho.
+通过 Moltpho 在 Amazon 上搜索产品。
 
 ```
 Parameters:
@@ -148,7 +148,7 @@ Rate limit: 60 requests/minute
 
 ### purchase(item, qty)
 
-Execute a purchase through the x402 payment flow.
+通过 x402 支付流程执行购买操作。
 
 ```
 Parameters:
@@ -191,7 +191,7 @@ Rate limits:
 
 ### proactive_monitoring()
 
-Watch conversation for purchase need signals and act when appropriate.
+监控对话中的购买需求信号，并在适当的时候采取行动。
 
 ```
 This function runs passively during conversation to detect purchase opportunities.
@@ -241,7 +241,7 @@ Every purchase logs:
 
 ### budget_check()
 
-Verify sufficient credit before any purchase.
+在任何购买操作之前，验证是否有足够的信用。
 
 ```
 Process:
@@ -259,7 +259,7 @@ Process:
 
 ### create_support_ticket(type, description, order_id)
 
-Create a support ticket for returns, lost packages, or other issues.
+创建支持工单，用于处理退货、包裹丢失等问题。
 
 ```
 Parameters:
@@ -284,7 +284,7 @@ Note: Returns and lost packages require a support ticket.
 
 ### list_support_tickets()
 
-List the agent's support tickets.
+列出代理的所有支持工单。
 
 ```
 Process:
@@ -300,7 +300,7 @@ Process:
 
 ### logout()
 
-Delete local credentials (agent persists server-side).
+删除本地凭证（代理信息在服务器端保留）。
 
 ```
 Process:
@@ -312,197 +312,197 @@ Note: This only removes LOCAL credentials. The agent account, wallet, and
       purchase history remain on Moltpho servers until owner deletes via portal.
 ```
 
-## Browser Portal Usage
+## 浏览器门户的使用
 
-The skill uses the browser for owner-sensitive operations.
+该技能使用浏览器来执行需要所有者参与的操作。
 
-### When to Open Browser
+### 何时打开浏览器
 
-| Action | Method |
+| 操作 | 方法 |
 |--------|--------|
-| Complete setup (claim link) | Auto-open with notice |
-| Add/manage payment cards | Direct owner to portal |
-| Set credit limits | Direct owner to portal |
-| Configure shipping profile | Direct owner to portal |
-| View order history | Direct owner to portal |
+| 完成设置（领取链接） | 自动打开浏览器并显示提示 |
+| 添加/管理支付卡 | 将所有者引导至门户 |
+| 设置信用限额 | 将所有者引导至门户 |
+| 配置配送 profile | 将所有者引导至门户 |
+| 查看订单历史 | 将所有者引导至门户 |
 
-### Browser Guidelines
+### 浏览器使用指南
 
-- Always display notice: "Opening portal in your browser..."
-- NEVER request card numbers, passwords, or sensitive credentials in chat
-- Portal handles all PCI-sensitive operations via Stripe Elements
-- Owner authenticates via magic link (email-based)
+- 始终显示提示：“正在您的浏览器中打开门户...”。
+- 绝不在聊天中请求卡号、密码或敏感凭证。
+- 门户通过 Stripe Elements 处理所有 PCI 敏感操作。
+- 所有者通过魔法链接（基于电子邮件）进行身份验证。
 
-## API Authentication
+## API 认证
 
-All API requests (except registration) require authentication.
+所有 API 请求（注册除外）都需要认证。
 
-### Headers
+### 请求头
 
 ```
 Authorization: Bearer <api_key_secret>
 ```
 
-Or preferably:
+或者更推荐的方式：
 ```
 X-Moltpho-Key-Id: <api_key_id>
 X-Moltpho-Signature: <HMAC signature>
 ```
 
-### Idempotency
+### 重试机制
 
-For state-changing operations, always include:
+对于会改变状态的请求，务必包含以下头部信息：
 ```
 Idempotency-Key: <unique-key>
 ```
 
-Required for:
-- POST /v1/quotes
-- POST /v1/orders
-- POST /v1/wallets/x402/sign
+以下操作需要包含该头部信息：
+- `POST /v1/quotes`
+- `POST /v1/orders`
+- `POST /v1/wallets/x402/sign`
 
-## Error Handling
+## 错误处理
 
-### Common Errors
+### 常见错误
 
-| Code | Error | Action |
+| 代码 | 错误信息 | 处理方式 |
 |------|-------|--------|
-| 401 | UNAUTHORIZED | Re-bootstrap or check credentials |
-| 402 | PAYMENT_REQUIRED | Sign and retry with x402 signature |
-| 409 | PRICE_CHANGED | Re-quote if price increased >2% |
-| 409 | INSUFFICIENT_CREDIT | Inform user, suggest adding credit |
-| 409 | QUOTE_EXPIRED | Auto-retry (up to 3x) or re-quote |
-| 422 | INVALID_SHIPPING_PROFILE | Prompt owner to add shipping via portal |
-| 422 | AGENT_SUSPENDED | Inform owner, direct to portal |
-| 429 | RATE_LIMITED | Wait per Retry-After header |
-| 503 | TOKEN_PAUSED | System halted, wait for admin |
+| 401 | 未经授权 | 重新启动流程或检查凭证 |
+| 402 | 需要支付 | 使用 x402 签名重新尝试 |
+| 409 | 价格变更 | 如果价格上涨超过 2%，重新报价 |
+| 409 | 信用不足 | 通知用户并建议补充信用 |
+| 409 | 报价过期 | 自动重试（最多 3 次）或重新报价 |
+| 422 | 配送信息无效 | 提示所有者通过门户添加配送信息 |
+| 422 | 代理被暂停 | 通知所有者并引导其通过门户处理 |
+| 429 | 每次重试有次数限制 | 根据 `Retry-After` 头部信息等待 |
+| 503 | 令牌暂停 | 系统暂停，请等待管理员处理 |
 
-### Quote Expiry Auto-Retry
+### 报价过期后的自动重试
 
-When a quote expires during the x402 flow:
-1. Fetch new quote for same item
-2. Compare price to original quote
-3. If within 5% tolerance: continue with new quote
-4. If >5% change: fail with PRICE_CHANGED
-5. Maximum 3 retry attempts
+当 x402 流程中的报价过期时：
+1. 获取同一商品的新报价。
+2. 比较新报价与原报价。
+3. 如果价格变化在 5% 以内：继续使用新报价。
+4. 如果价格变化超过 5%：以 “价格变更” 为由失败。
+5. 最多尝试 3 次。
 
-## Constraints and Limits
+## 限制和约束
 
-### System Limits
+### 系统限制
 
-| Limit | Value |
+| 限制 | 值 |
 |-------|-------|
-| Maximum item price | $10,000 USD |
-| Quote TTL | 10 minutes (fixed) |
-| Price tolerance | 2% increase allowed |
-| Retry price tolerance | 5% for auto-retry |
-| Max concurrent quotes | 5 per agent |
-| Proactive purchase cap | min(per_order_cap, $75) |
+| 单件商品最高价格 | 10,000 美元 |
+| 报价有效期 | 10 分钟 |
+| 价格容忍度 | 允许的价格上涨幅度为 2% |
+| 自动重试的价格容忍度 | 5% |
+| 每个代理的最大同时报价数量 | 5 个 |
+| 主动购买的限额 | 每单最低限额为 75 美元 |
 
-### Rate Limits
+### 速率限制
 
-| Endpoint | Limit |
+| 端点 | 限制 |
 |----------|-------|
-| Catalog search | 60/minute |
-| Quotes | 20/minute |
-| Orders | 5/minute |
-| Signing | 10/minute |
+| 商品搜索 | 每分钟 60 次 |
+| 报价 | 每分钟 20 次 |
+| 订单 | 每分钟 5 次 |
+| 签名操作 | 每分钟 10 次 |
 
-### Blocked Items (System Enforced)
+### 被禁止购买的商品（系统强制）
 
-The following categories CANNOT be purchased regardless of owner settings:
-- Weapons, firearms, ammunition
-- Controlled substances, prescription medications
-- Tobacco, nicotine products
-- Alcohol
-- Adult content
-- Hazardous materials
+无论所有者设置如何，以下类别的商品均无法购买：
+- 武器、枪支、弹药
+- 受控物质、处方药
+- 烟草、尼古丁产品
+- 酒精
+- 成人内容
+- 危险材料
 
-## Payment System
+## 支付系统
 
-### Credit Model
+### 信用模型
 
-- Owner sets target credit limit in USD
-- Weekly automatic top-up restores credit to target
-- Credit backed by mUSD tokens on Base mainnet
-- 10% markup over Amazon prices (covers fees + gas)
+- 所有者设置目标信用限额（以美元计）。
+- 每周自动充值将信用恢复到目标限额。
+- 信用由 Base 主网上的 mUSD 代币支持。
+- 价格比 Amazon 价格高出 10%（包含费用和手续费）。
 
-### x402 Flow
+### x402 支付流程
 
-1. POST /v1/orders returns 402 with PAYMENT-REQUIRED header
-2. Call POST /v1/wallets/x402/sign with payment blob
-3. Wallet service signs EIP-3009 authorization
-4. Retry order with PAYMENT-SIGNATURE header
-5. Facilitator settles on Base mainnet
-6. Order proceeds to fulfillment
+1. 调用 `POST /v1/orders`，响应中包含 `PAYMENT-REQUIRED` 头部信息。
+2. 调用 `POST /v1/wallets/x402/sign`，并上传支付信息。
+3. 钱包服务处理 EIP-3009 授权。
+4. 重新发送订单，请求中包含 `PAYMENT-SIGNATURE` 头部信息。
+5. 由 Base 主网上的系统完成结算。
+6. 订单进入履行阶段。
 
-### Refunds
+### 退款
 
-| Scenario | Refund Target |
+| 情况 | 退款方式 |
 |----------|---------------|
-| Procurement failure | mUSD balance (auto) |
-| Order canceled (within 5 min) | mUSD balance (auto) |
-| Owner decreases credit limit | Card via Stripe |
-| Return/lost package | Support ticket required (use create_support_ticket) |
+| 采购失败 | 从 mUSD 余额中自动退款 |
+| 订单取消（在 5 分钟内） | 从 mUSD 余额中自动退款 |
+| 所有者降低信用限额 | 通过 Stripe 从卡中退款 |
+| 包裹丢失/退货 | 需要创建支持工单（使用 `create_support_ticket`） |
 
-## Agent States
+## 代理状态
 
-| State | Meaning | Can Order? |
+| 状态 | 含义 | 是否可以下单？ |
 |-------|---------|------------|
-| UNCLAIMED | Registered, awaiting owner claim | No |
-| CLAIMED | Owner claimed, fully operational | Yes |
-| DEGRADED | Payment methods failed, using remaining balance | Yes (if balance) |
-| SUSPENDED | Admin action, requires manual resolution | No |
+| UNCLAIMED | 已注册，等待所有者领取 | 不能 |
+| CLAIMED | 所有者已领取，功能正常 | 可以 |
+| DEGRADED | 支付方式失败，使用剩余余额 | 可以（如果有余额） |
+| SUSPENDED | 被管理员暂停，需要手动解决 | 不能 |
 
-## Best Practices
+## 最佳实践
 
-### Before Any Purchase
+### 在进行任何购买之前
 
-1. Call budget_check() to verify available credit
-2. Confirm shipping profile exists
-3. Check item against category denylist
-4. Verify confidence threshold for proactive purchases
+1. 调用 `budget_check()` 以验证可用信用。
+2. 确认存在 shipping profile。
+3. 检查商品是否在禁止购买的类别列表中。
+4. 核实主动购买所需的信用阈值。
 
-### Conversation Guidelines
+### 对话指南
 
-- Always confirm purchase with total price before executing
-- Report order status and remaining credit after purchase
-- If budget signals detected, acknowledge constraints
-- Never pressure user to add more credit
+- 在执行购买操作前，始终确认总价。
+- 购买后报告订单状态和剩余信用。
+- 如果检测到预算限制，告知用户相关限制。
+- 绝不要强迫用户补充信用。
 
-### Error Recovery
+### 错误恢复
 
-- On INSUFFICIENT_CREDIT: suggest adding credit via portal
-- On INVALID_SHIPPING_PROFILE: collect shipping info and call upsert_shipping_profile(), or direct to portal
-- On SUSPENDED: explain owner must resolve via portal
+- 如果信用不足，建议通过门户补充信用。
+- 如果配送信息无效，收集配送信息并调用 `upsert_shipping_profile()`，或引导用户通过门户处理。
+- 如果代理被暂停，告知所有者需要通过门户解决问题。
 
-## Quick Reference
+## 快速参考
 
-### Essential Endpoints
+### 必需的 API 端点
 
-| Endpoint | Purpose |
+| 端点 | 功能 |
 |----------|---------|
-| POST /v1/agents/register | New agent registration |
-| GET /v1/agents/me | Current agent status |
-| GET /v1/balance | Available credit |
-| GET /v1/catalog/search | Search products |
-| POST /v1/quotes | Create purchase quote |
-| POST /v1/orders | Place order (x402) |
-| POST /v1/wallets/x402/sign | Sign payment |
-| GET /v1/shipping_profiles | List shipping profiles |
-| POST /v1/shipping_profiles | Create/update shipping profile |
-| POST /v1/support_tickets | Create support ticket |
-| GET /v1/support_tickets | List support tickets |
+| POST /v1/agents/register | 新代理注册 |
+| GET /v1/agents/me | 当前代理状态 |
+| GET /v1/balance | 可用信用 |
+| GET /v1/catalog/search | 搜索产品 |
+| POST /v1/quotes | 创建购买报价 |
+| POST /v1/orders | 下单（使用 x402 支付） |
+| POST /v1/wallets/x402/sign | 签署支付信息 |
+| GET /v1/shipping_profiles | 查看配送信息 |
+| POST /v1/shipping_profiles | 创建/更新配送信息 |
+| POST /v1/support_tickets | 创建支持工单 |
+| GET /v1/support_tickets | 查看支持工单列表 |
 
-### Portal URL
+### 门户 URL
 
 ```
 https://portal.moltpho.com
 ```
 
-Owner actions:
-- /claim/{token} - Claim agent ownership
-- /agents - Manage agents
-- /cards - Payment methods
-- /orders - Order history
-- /settings - Credit limits and preferences
+所有者操作：
+- /claim/{token} - 领取代理所有权 |
+- /agents - 管理代理 |
+- /cards - 支付方式 |
+- /orders - 订单历史 |
+- /settings - 信用限额和偏好设置 |

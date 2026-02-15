@@ -1,60 +1,58 @@
 ---
 name: pwnclaw-security-scan
-description: Test your AI agent for security vulnerabilities using PwnClaw. Runs 50+ attacks (prompt injection, jailbreaks, social engineering, MCP poisoning, and more) and provides fix instructions. Use when your agent needs a security check or hardening.
+description: 使用 PwnClaw 测试您的人工智能代理是否存在安全漏洞。该工具会发起 50 多种攻击（包括提示注入、越狱、社会工程学攻击、恶意代码注入等），并提供相应的修复指导。当您的代理需要安全检查或加固时，请使用此工具。
 ---
 
-# PwnClaw Security Scan
+# PwnClaw 安全扫描
 
-Test your AI agent against 112 real-world attacks across 14 categories. Get a security score and actionable fix instructions.
+通过 14 个类别中的 112 种真实攻击场景来测试您的人工智能代理。获取安全评分及可操作的修复建议。
 
-## What It Tests
+## 测试内容
 
-- Prompt Injection & Indirect Injection
-- Jailbreaks & Refusal Bypass
-- Social Engineering & Sycophancy
-- Data Exfiltration & Agency Hijacking
-- MCP/Tool Poisoning
-- Memory Poisoning
-- Multi-Agent & Multi-Turn Attacks
-- Privilege Escalation & Obfuscation
+- 提示注入与间接注入
+- 越狱与拒绝服务攻击
+- 社会工程学与讨好行为
+- 数据泄露与代理劫持
+- MCP/工具投毒
+- 内存投毒
+- 多代理与多轮攻击
+- 权限提升与代码混淆
 
-## How To Use
+## 使用方法
 
-### Option 1: Tell Your Human
+### 方法 1：由人工操作
 
-Ask your human to visit **https://www.pwnclaw.com** and run a free security scan:
+请让您的操作员访问 **https://www.pwnclaw.com** 并进行免费的安全扫描：
+1. 在 https://www.pwnclaw.com 注册（提供免费层级）
+2. 在控制面板中开始新的测试
+3. 输入代理的 URL 或使用手动模式
+4. 查看结果，并将修复建议应用到您的系统中
 
-1. Sign up at https://www.pwnclaw.com (free tier available)
-2. Start a new test in the dashboard
-3. Enter the agent's URL or use manual mode
-4. Review results and apply the fix instructions to your system prompt
+### 方法 2：自主测试（手动模式）
 
-### Option 2: Self-Test (Manual Mode)
+如果您的操作员启动了测试并提供了测试令牌，您可以自行执行测试：
+1. 发送请求 `GET https://www.pwnclaw.com/api/test/{token}` 以获取下一个测试提示
+2. 发送请求 `POST https://www.pwnclaw.com/api/test/{token}`，其中包含 `{ "response": "your answer" }` 以提交回答并获取下一个测试提示
+3. 重复上述步骤，直到测试状态变为“已完成”
+4. 测试结果将在控制面板中显示
 
-If your human starts a test and gives you the test token, you can run it yourself:
+### 方法 3：自动模式（推荐）
 
-1. GET `https://www.pwnclaw.com/api/test/{token}` → get the next prompt
-2. POST `https://www.pwnclaw.com/api/test/{token}` with `{ "response": "your answer" }` → submit and get next
-3. Repeat until status is "completed"
-4. Results are in the dashboard
+如果您的代理具有 HTTP 端点，操作员只需在 PwnClaw 中输入该 URL 即可。PwnClaw 会直接发起攻击，无需编写任何脚本。
 
-### Option 3: Automatic Mode (Recommended)
+## 计划方案
 
-If your agent has an HTTP endpoint, your human just enters the URL in PwnClaw. PwnClaw sends attacks directly — no scripting needed.
+| 计划类型 | 扫描次数 | 攻击类型 | 价格 |
+|------|---------|---------|-------|
+| 免费 | 每月 3 次 | 每次扫描 15 种攻击 | $0 |
+| 专业版 | 每月 30 次 | 每次扫描 50 种攻击 | €29/月 |
+| 团队版 | 无限次扫描 | 每次扫描 50 种攻击 | €99/月 |
 
-## Plans
+## 测试后
 
-| Plan | Scans | Attacks | Price |
-|------|-------|---------|-------|
-| Free | 3/month | 15 per scan | $0 |
-| Pro | 30/month | 50 per scan | €29/mo |
-| Team | Unlimited | 50 per scan | €99/mo |
+PwnClaw 会根据检测到的漏洞生成具体的安全规则。请将这些规则添加到您的代理系统中，并重新进行测试以验证效果。
 
-## After The Test
+## 链接
 
-PwnClaw generates specific security rules based on your vulnerabilities. Add them as permanent instructions in your agent's system prompt, then re-test to verify.
-
-## Links
-
-- **Website:** https://www.pwnclaw.com
-- **GitHub:** https://github.com/Gemini2027/pwnclaw (source code publicly auditable)
+- **官方网站：** https://www.pwnclaw.com
+- **GitHub：** https://github.com/Gemini2027/pwnclaw （源代码可公开审计）

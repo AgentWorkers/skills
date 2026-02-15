@@ -1,46 +1,54 @@
 ---
 name: intellectia-stock-screener
-description: Get stock screener list data from Intellectia API (no auth) and summarize results.
+description: 从Intellectia API获取股票筛选器列表数据（无需认证），并汇总结果。
 metadata: {"openclaw":{"requires":{"bins":["curl","python3"]},"install":[{"id":"python","kind":"pip","package":"requests","bins":[],"label":"Install requests (pip)"}]}}
 ---
 
-# Intellectia Stock Screener
+# Intellectia 股票筛选器
 
-Base URL: `https://api.intellectia.ai`
+基础 URL：`https://api.intellectia.ai`
 
-## Endpoint
+## 端点
 
 - `GET /gateway/v1/stock/screener-list`
 
-Full URL:
+完整 URL：
 - `https://api.intellectia.ai/gateway/v1/stock/screener-list`
 
-## Query parameters
+## 查询参数
 
-- `symbol_type` (int): Asset type `0=stock 1=etf 2=crypto`
-- `period_type` (int): Period `0=day 1=week 2=month`
-- `trend_type` (int): Trend `0=bullish 1=bearish`
-- `profit_asc` (bool): Sort by profit ascending (`true` = small → large)
-- `market_cap` (int): Market cap filter
-  - `0=any`
-  - `1=micro <300M`
-  - `2=small 300M-2B`
-  - `3=mid 2B-10B`
-  - `4=large 10B-200B`
-  - `5=mega >200B`
-- `price` (int): Price filter
-  - `0=any`
-  - `1=<5`
-  - `2=<50`
-  - `3=>5`
-  - `4=>50`
-  - `5=5-50`
-- `page` (int): Page number (example: 1)
-- `size` (int): Page size (example: 20)
+- `symbol_type` (int)：资产类型  
+  - `0` = 股票  
+  - `1` = ETF  
+  - `2` = 加密货币  
+- `period_type` (int)：时间周期  
+  - `0` = 每日  
+  - `1` = 每周  
+  - `2` = 每月  
+- `trend_type` (int)：趋势类型  
+  - `0` = 上涨  
+  - `1` = 下跌  
+- `profit_asc` (bool)：是否按利润升序排序（`true` 表示从小到大）  
+- `market_cap` (int)：市值筛选条件  
+  - `0` = 任意  
+  - `1` = 微型（<3亿美元）  
+  - `2` = 小型（3亿–20亿美元）  
+  - `3` = 中型（20亿–100亿美元）  
+  - `4` = 大型（100亿–200亿美元）  
+  - `5` = 巨型（>200亿美元）  
+- `price` (int)：价格筛选条件  
+  - `0` = 任意  
+  - `1` = <5美元  
+  - `2` = <50美元  
+  - `3` => 5美元  
+  - `4` => 50美元  
+  - `5` = 5–50美元  
+- `page` (int)：页码（例如：1）  
+- `size` (int)：每页显示的记录数（例如：20条）
 
-## Response (200)
+## 响应（200条记录）
 
-Example response (shape):
+示例响应结构：
 
 ```json
 {
@@ -85,61 +93,61 @@ Example response (shape):
 }
 ```
 
-### Field reference
+### 字段说明
 
-Top-level:
-- `ret` (int): Status code (typically `0` means success)
-- `msg` (string): Message (empty string when OK)
-- `data` (object): Payload
+- **顶级字段**：  
+  - `ret` (int)：状态码（通常 `0` 表示成功）  
+  - `msg` (string)：消息（成功时为空字符串）  
+  - `data` (object)：数据负载  
 
-`data`:
-- `data.list` (array): Result rows
-- `data.total` (int): Total number of rows
-- `data.detail` (object): Screener metadata
+- **data**：  
+  - `data.list` (array)：结果行  
+  - `data.total` (int)：总记录数  
+  - `data.detail` (object)：筛选器元数据  
 
-Each item in `data.list`:
-- `code` (string): Full instrument code (may include exchange suffix, e.g. `BKD.N`)
-- `symbol` (string): Ticker symbol (e.g. `BKD`)
-- `symbol_type` (int): Asset type (`0=stock 1=etf 2=crypto`)
-- `name` (string): Display name
-- `logo` (string): Logo URL
-- `pre_close` (number): Previous close price
-- `price` (number): Current price
-- `change_ratio` (number): Percent change vs previous close
-- `timestamp` (string): Quote timestamp (Unix seconds)
-- `simiar_num` (int): Similarity count (as returned by API; spelling kept as-is)
-- `probability` (int): Model confidence (0-100)
-- `profit` (number): Predicted/expected return (as returned by API)
-- `klines` (array): Price series
-  - `klines[].close` (number): Close price
-  - `klines[].timestamp` (string): Unix seconds
-- `trend_list` (array): Trend comparison series
-  - `trend_list[].symbol` (string): Symbol for the series (may be empty for non-main series)
-  - `trend_list[].symbol_type` (int): Asset type
-  - `trend_list[].is_main` (bool): Whether this is the main series
-  - `trend_list[].list` (array): Time points
-    - `trend_list[].list[].change_ratio` (number): Percent change at that point
-    - `trend_list[].list[].timestamp` (string): Unix seconds
-    - `trend_list[].list[].close` (number): Close price at that point
-- `update_time` (string): Last update time (Unix seconds)
+- **data.list` 中的每条记录包含以下字段：**  
+  - `code` (string)：完整证券代码（可能包含交易所后缀，例如 `BKD.N`）  
+  - `symbol` (string)：股票代码（例如 `BKD`）  
+  - `symbol_type` (int)：资产类型  
+  - `name` (string)：显示名称  
+  - `logo` (string)：标志图片 URL  
+  - `pre_close` (number)：前收盘价  
+  - `price` (number)：当前价格  
+  - `change_ratio` (number)：相对于前收盘价的百分比变化  
+  - `timestamp` (string)：报价时间戳（Unix 秒）  
+  - `similarity_num` (int)：相似度计数（由 API 返回；保持原样）  
+  - `probability` (int)：模型置信度（0–100）  
+  - `profit` (number)：预测/预期回报（由 API 返回）  
+  - `klines` (array)：价格序列  
+    - `klines[].close` (number)：收盘价  
+    - `klines[].timestamp` (string)：时间戳（Unix 秒）  
+  - `trend_list` (array)：趋势对比序列  
+    - `trend_list[].symbol` (string)：序列对应的证券代码（非主要序列可能为空）  
+    - `trend_list[].symbol_type` (int)：资产类型  
+    - `trend_list[].is_main` (bool)：是否为主要序列  
+    - `trend_list[].list` (array)：时间点  
+      - `trend_list[].list[].change_ratio` (number)：该时间点的百分比变化  
+      - `trend_list[].list[].timestamp` (string)：时间戳（Unix 秒）  
+      - `trend_list[].list[].close` (number)：该时间点的收盘价  
+  - `update_time` (string)：最后更新时间（Unix 秒）  
 
-`data.detail`:
-- `cover_url` (string): Cover image URL
-- `name` (string): Screener title
-- `screener_type` (int): Screener type ID
-- `params` (string): Serialized params (often JSON string)
-- `desc` (string): Screener description
-- `num` (int, optional): As returned by API (may be absent)
+- **data.detail**：  
+  - `cover_url` (string)：封面图片 URL  
+  - `name` (string)：筛选器名称  
+  - `screener_type` (int)：筛选器类型 ID  
+  - `params` (string)：序列化的参数（通常为 JSON 字符串）  
+  - `desc` (string)：筛选器描述  
+  - `num` (int，可选）：由 API 返回的计数（可能不存在）
 
-## Examples
+## 示例
 
-### cURL
+### 使用 cURL 请求
 
 ```bash
 curl -sS "https://api.intellectia.ai/gateway/v1/stock/screener-list?symbol_type=0&period_type=0&trend_type=0&profit_asc=false&market_cap=0&price=0&page=1&size=20"
 ```
 
-### Python (requests)
+### 使用 Python (requests) 请求
 
 ```bash
 python3 - <<'PY'
@@ -171,7 +179,6 @@ for row in rows[:10]:
 PY
 ```
 
-## Notes
-
-- No authentication required.
-- If you see rate limits, reduce `size` and add backoff/retry in client code.
+## 注意事项：  
+- 无需身份验证。  
+- 如果遇到请求限制，请减少 `size` 值，并在客户端代码中添加重试机制。

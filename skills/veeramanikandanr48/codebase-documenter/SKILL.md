@@ -1,33 +1,33 @@
 ---
 name: codebase-documenter
-description: This skill should be used when writing documentation for codebases, including README files, architecture documentation, code comments, and API documentation. Use this skill when users request help documenting their code, creating getting-started guides, explaining project structure, or making codebases more accessible to new developers. The skill provides templates, best practices, and structured approaches for creating clear, beginner-friendly documentation.
+description: 此技能适用于编写代码库的文档，包括 README 文件、架构文档、代码注释以及 API 文档。当用户需要帮助记录他们的代码、创建入门指南、解释项目结构，或使代码库对新开发者更易于理解时，可以运用此技能。该技能提供了模板、最佳实践以及结构化的方法，以生成清晰、适合初学者的文档。
 ---
 
-# Codebase Documenter
+# 代码库文档生成工具
 
-## Overview
+## 概述
 
-This skill enables creating comprehensive, beginner-friendly documentation for codebases. It provides structured templates and best practices for writing READMEs, architecture guides, code comments, and API documentation that help new users quickly understand and contribute to projects.
+此技能能够帮助您为代码库创建全面且易于初学者理解的文档。它提供了结构化的模板和最佳实践，用于编写 README 文件、架构指南、代码注释以及 API 文档，帮助新用户快速了解项目并参与其中。
 
-## Core Principles for Beginner-Friendly Documentation
+## 为初学者编写文档的核心原则
 
-When documenting code for new users, follow these fundamental principles:
+在为新用户编写代码文档时，请遵循以下基本原则：
 
-1. **Start with the "Why"** - Explain the purpose before diving into implementation details
-2. **Use Progressive Disclosure** - Present information in layers from simple to complex
-3. **Provide Context** - Explain not just what the code does, but why it exists
-4. **Include Examples** - Show concrete usage examples for every concept
-5. **Assume No Prior Knowledge** - Define terms and avoid jargon when possible
-6. **Visual Aids** - Use diagrams, flowcharts, and file tree structures
-7. **Quick Wins** - Help users get something running within 5 minutes
+1. **从“为什么”开始** – 在深入实现细节之前，先解释代码的目的。
+2. **采用渐进式展示方式** – 从简单到复杂逐步呈现信息。
+3. **提供背景说明** – 不仅解释代码的功能，还要说明其存在的理由。
+4. **包含示例** – 为每个概念提供具体的使用示例。
+5. **假设用户没有先验知识** – 尽量避免使用专业术语。
+6. **使用可视化辅助工具** – 利用图表、流程图和文件结构图。
+7. **快速上手** – 帮助用户在5分钟内就能运行代码。
 
-## Documentation Types and When to Use Them
+## 文档类型及其适用场景
 
-### 1. README Documentation
+### 1. README 文档
 
-**When to create:** For project root directories, major feature modules, or standalone components.
+**适用场景：** 项目根目录、主要功能模块或独立组件。
 
-**Structure to follow:**
+**编写结构：**
 ```markdown
 # Project Name
 
@@ -50,18 +50,18 @@ When documenting code for new users, follow these fundamental principles:
 [Common issues and solutions]
 ```
 
-**Best practices:**
-- Lead with the project's value proposition
-- Include setup instructions that actually work (test them!)
-- Provide a visual overview of the project structure
-- Link to deeper documentation for advanced topics
-- Keep the root README focused on getting started
+**最佳实践：**
+- 首先介绍项目的价值主张。
+- 提供可实际操作的设置指南（请进行测试！）
+- 提供项目结构的可视化概览。
+- 链接到更深入的文档（针对高级主题）。
+- 保持 README 文件的重点在于帮助用户快速入门。
 
-### 2. Architecture Documentation
+### 2. 架构文档
 
-**When to create:** For projects with multiple modules, complex data flows, or non-obvious design decisions.
+**适用场景：** 包含多个模块、复杂数据流或设计决策不明确的项目。
 
-**Structure to follow:**
+**编写结构：**
 ```markdown
 # Architecture Overview
 
@@ -84,20 +84,20 @@ When documenting code for new users, follow these fundamental principles:
 [Where and how to add new features]
 ```
 
-**Best practices:**
-- Use diagrams to show system components and relationships
-- Explain the "why" behind architectural decisions
-- Document both the happy path and error handling
-- Identify boundaries between modules
-- Include visual file tree structures with annotations
+**最佳实践：**
+- 使用图表展示系统组件及其之间的关系。
+- 解释架构决策背后的理由。
+- 文档化正常流程和错误处理方式。
+- 明确模块之间的边界。
+- 包含带有注释的文件结构图。
 
-### 3. Code Comments
+### 3. 代码注释
 
-**When to create:** For complex logic, non-obvious algorithms, or code that requires context.
+**适用场景：** 复杂逻辑、不易理解的算法或需要背景说明的代码。
 
-**Annotation patterns:**
+**注释格式示例：**
 
-**Function/Method Documentation:**
+**函数/方法文档：**
 ```javascript
 /**
  * Calculates the prorated subscription cost for a partial billing period.
@@ -117,7 +117,7 @@ When documenting code for new users, follow these fundamental principles:
  */
 ```
 
-**Complex Logic Documentation:**
+**复杂逻辑文档：**
 ```python
 # Why this check exists: The API returns null for deleted users,
 # but empty string for users who never set a name. We need to
@@ -130,19 +130,18 @@ elif user_name == "":
     continue
 ```
 
-**Best practices:**
-- Explain "why" not "what" - the code shows what it does
-- Document edge cases and business logic
-- Add examples for complex functions
-- Explain parameters that aren't self-explanatory
-- Note any gotchas or counterintuitive behavior
+**最佳实践：**
+- 解释“为什么”而不是“怎么做”——代码本身已经展示了功能。
+- 文档化边缘情况和业务逻辑。
+- 为复杂函数添加示例。
+- 解释那些不显而易见的参数。
+- 提醒潜在的问题或反直觉的行为。
 
-### 4. API Documentation
+### 4. API 文档
 
-**When to create:** For any HTTP endpoints, SDK methods, or public interfaces.
+**适用场景：** 任何 HTTP 端点、SDK 方法或公共接口。
 
-**Structure to follow:**
-
+**编写结构：**
 ```markdown
 ## Endpoint Name
 
@@ -171,98 +170,92 @@ elif user_name == "":
 [Links to related operations]
 ```
 
-**Best practices:**
-- Provide working curl examples
-- Show both success and error responses
-- Explain authentication clearly
-- Document rate limits and constraints
-- Include troubleshooting for common issues
+**最佳实践：**
+- 提供可运行的 curl 示例。
+- 显示成功和错误响应。
+- 清晰解释认证流程。
+- 文档化速率限制和约束条件。
+- 包括常见问题的解决方法。
 
-## Documentation Workflow
+## 文档编写流程
 
-### Step 1: Analyze the Codebase
+### 第一步：分析代码库
 
-Before writing documentation:
+在编写文档之前：
+1. **确定入口点** – 主要文件、索引文件、应用程序初始化代码。
+2. **梳理依赖关系** – 模块之间的相互依赖关系。
+3. **识别核心概念** – 用户需要理解的关键抽象概念。
+4. **查找配置信息** – 环境设置、配置文件。
+5. **审查现有文档** – 在现有基础上进行补充，避免重复。
 
-1. **Identify entry points** - Main files, index files, app initialization
-2. **Map dependencies** - How modules relate to each other
-3. **Find core concepts** - Key abstractions users need to understand
-4. **Locate configuration** - Environment setup, config files
-5. **Review existing docs** - Build on what's there, don't duplicate
+### 第二步：选择文档类型
 
-### Step 2: Choose Documentation Type
+根据用户需求和代码库分析情况选择合适的文档类型：
+- **新项目或缺少 README 文件** → 从 README 文档开始。
+- **架构复杂或包含多个模块** → 创建架构文档。
+- **代码部分难以理解** → 添加内联代码注释。
+- **HTTP/API 端点** → 编写 API 文档。
+- **需要多种类型的文档** → 按顺序处理：README → 架构 → API → 注释。
 
-Based on user request and codebase analysis:
+### 第三步：生成文档
 
-- **New project or missing README** → Start with README documentation
-- **Complex architecture or multiple modules** → Create architecture documentation
-- **Confusing code sections** → Add inline code comments
-- **HTTP/API endpoints** → Write API documentation
-- **Multiple types needed** → Address in order: README → Architecture → API → Comments
+使用 `assets/templates/` 目录中的模板作为起点：
+- `assets/templates/README.template.md` – 用于项目 README 文件。
+- `assets/templates/ARCHITECTURE.template.md` – 用于架构文档。
+- `assets/templates/API.template.md` – 用于 API 文档。
 
-### Step 3: Generate Documentation
+根据具体代码库进行模板定制：
+1. **填写项目特定信息** – 用实际内容替换占位符。
+2. **添加具体示例** – 使用项目中的实际代码。
+3. **添加可视化辅助工具** – 创建文件结构图、图表。
+4. **测试设置步骤** – 确保设置步骤能够正常工作。
+5. **链接相关文档** – 将各个文档部分连接起来。
 
-Use the templates from `assets/templates/` as starting points:
+### 第四步：审查文档的清晰度
 
-- `assets/templates/README.template.md` - For project READMEs
-- `assets/templates/ARCHITECTURE.template.md` - For architecture docs
-- `assets/templates/API.template.md` - For API documentation
+在最终确定文档之前：
+1. **以初学者的角度阅读** – 不了解项目背景时，文档是否易于理解？
+2. **检查完整性** – 解释是否有遗漏？
+3. **验证示例** – 代码示例是否能够正常运行？
+4. **测试设置步骤** – 用户能否按照步骤进行操作？
+5. **优化结构** – 信息是否易于查找？
 
-Customize templates based on the specific codebase:
+## 文档模板
 
-1. **Fill in project-specific information** - Replace placeholders with actual content
-2. **Add concrete examples** - Use real code from the project
-3. **Include visual aids** - Create file trees, diagrams, flowcharts
-4. **Test instructions** - Verify setup steps actually work
-5. **Link related docs** - Connect documentation pieces together
+此技能提供了 `assets/templates/` 目录中的多个模板，用于生成结构化的文档：
 
-### Step 4: Review for Clarity
+### 可用的模板：
 
-Before finalizing documentation:
+- **README.template.md** – 包含快速入门、项目结构和常见任务的全面 README 文档模板。
+- **ARCHITECTURE.template.md** – 包含系统设计、数据流和设计决策的架构文档模板。
+- **API.template.md** – 包含请求/响应格式和示例的 API 端点文档模板。
+- **CODE_COMMENTS.template.md** – 包含有效内联注释的示例和格式指南。
 
-1. **Read as a beginner** - Does it make sense without project context?
-2. **Check completeness** - Are there gaps in the explanation?
-3. **Verify examples** - Do code examples actually work?
-4. **Test instructions** - Can someone follow the setup steps?
-5. **Improve structure** - Is information easy to find?
+### 使用模板的方法：
 
-## Documentation Templates
+1. 从 `assets/templates/` 目录中选择合适的模板。
+2. 根据具体项目进行定制。
+3. 添加项目特定的内容。
+4. 使用代码库中的实际代码。
+5. 删除不适用的部分。
 
-This skill includes several templates in `assets/templates/` that provide starting structures:
+## 最佳实践参考
 
-### Available Templates
+有关详细的文档编写最佳实践、样式指南和高级技巧，请参考：
+- `references/documentation_guidelines.md` – 全面的样式指南和最佳实践。
+- `references/visual_aids_guide.md` – 如何创建有效的图表和文件结构图。
 
-- **README.template.md** - Comprehensive README structure with sections for quick start, project structure, and common tasks
-- **ARCHITECTURE.template.md** - Architecture documentation template with system design, data flow, and design decisions
-- **API.template.md** - API endpoint documentation with request/response formats and examples
-- **CODE_COMMENTS.template.md** - Examples and patterns for effective inline documentation
+在以下情况下请参考这些资源：
+- 为复杂的企业代码库编写文档时。
+- 面对多个利益相关者的需求时。
+- 需要高级文档编写技巧时。
+- 在大型项目中统一文档格式时。
 
-### Using Templates
+## 常见文档编写模式
 
-1. **Read the appropriate template** from `assets/templates/`
-2. **Customize for the specific project** - Replace placeholders with actual information
-3. **Add project-specific sections** - Extend the template as needed
-4. **Include real examples** - Use actual code from the codebase
-5. **Remove irrelevant sections** - Delete parts that don't apply
+### 创建文件结构图
 
-## Best Practices Reference
-
-For detailed documentation best practices, style guidelines, and advanced patterns, refer to:
-
-- `references/documentation_guidelines.md` - Comprehensive style guide and best practices
-- `references/visual_aids_guide.md` - How to create effective diagrams and file trees
-
-Load these references when:
-- Creating documentation for complex enterprise codebases
-- Dealing with multiple stakeholder requirements
-- Needing advanced documentation patterns
-- Standardizing documentation across a large project
-
-## Common Patterns
-
-### Creating File Tree Structures
-
-File trees help new users understand project organization:
+文件结构图有助于新用户理解项目的组织结构：
 
 ```
 project-root/
@@ -277,9 +270,9 @@ project-root/
 └── package.json           # Dependencies and scripts
 ```
 
-### Explaining Complex Data Flows
+### 解释复杂的数据流
 
-Use numbered steps with diagrams:
+使用编号步骤和图表进行说明：
 
 ```
 User Request Flow:
@@ -296,9 +289,9 @@ User Request Flow:
 [5] components/UserForm.tsx (updates UI)
 ```
 
-### Documenting Design Decisions
+### 文档化设计决策
 
-Capture the "why" behind architectural choices:
+记录架构选择背后的理由：
 
 ```markdown
 ## Why We Use Redux
@@ -319,27 +312,26 @@ authentication state, shopping cart, and UI preferences.
 - Worth it for: performance, debugging, team familiarity
 ```
 
-## Output Guidelines
+## 文档输出指南
 
-When generating documentation:
+在生成文档时，请注意：
+1. **针对目标受众写作** – 根据文档的目标用户（初学者、中级用户或高级用户）调整复杂程度。
+2. **保持格式一致性** – 遵循 markdown 规范和一致的标题层次结构。
+3. **提供可运行的示例** – 测试所有代码片段和命令。
+4. **建立文档之间的链接** – 创建清晰的文档导航结构。
+5. **保持文档的可维护性** – 随着代码的更新，文档也应易于维护。
+6. **添加日期和版本信息** – 记录文档的最后更新时间。
 
-1. **Write for the target audience** - Adjust complexity based on whether documentation is for beginners, intermediate, or advanced users
-2. **Use consistent formatting** - Follow markdown conventions, consistent heading hierarchy
-3. **Provide working examples** - Test all code snippets and commands
-4. **Link between documents** - Create a documentation navigation structure
-5. **Keep it maintainable** - Documentation should be easy to update as code changes
-6. **Add dates and versions** - Note when documentation was last updated
+## 快速参考
 
-## Quick Reference
+**生成 README 文件的命令：**
+“为该项目生成一个帮助新开发者快速入门的 README 文件。”
 
-**Command to generate README:**
-"Create a README file for this project that helps new developers get started"
+**生成架构文档的命令：**
+“记录该代码库的架构，解释各个模块之间的交互方式。”
 
-**Command to document architecture:**
-"Document the architecture of this codebase, explaining how the different modules interact"
+**添加代码注释的命令：**
+“为该文件添加解释性注释，帮助新开发者理解代码逻辑。”
 
-**Command to add code comments:**
-"Add explanatory comments to this file that help new developers understand the logic"
-
-**Command to document API:**
-"Create API documentation for all the endpoints in this file"
+**生成 API 文档的命令：**
+“为该文件中的所有 API 端点生成文档。”

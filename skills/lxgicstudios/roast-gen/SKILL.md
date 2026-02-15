@@ -1,29 +1,29 @@
 ---
 name: roast-gen
-description: Get your code roasted with humor and actually useful feedback. Use when you want honest code review.
+description: 让你的代码在幽默和富有建设性的反馈中得到“审视”。当你需要诚实的代码审查时，就可以使用这个工具。
 ---
 
 # Roast Gen
 
-Want honest feedback on your code? This tool roasts it. Points out the bad patterns, the lazy shortcuts, the "what were you thinking" moments. But unlike mean code reviewers, it's funny about it. And it gives you actual fixes.
+想要获得关于你代码的坦诚反馈吗？这个工具可以帮你“审视”你的代码，指出其中的缺陷、偷懒的写法，以及那些让人费解的设计决策。不过，与那些刻薄的代码审查者不同，它总是以幽默的方式表达反馈，并且还会提供实际的修改建议。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-roast ./src/app.ts
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes your code and finds everything wrong with it
-- Delivers feedback with humor instead of corporate speak
-- Points out anti-patterns, code smells, and questionable decisions
-- Provides actual fixes for each roast
-- Rates your code on a scale of "production ready" to "how is this running"
+- 分析你的代码，找出所有存在的问题；
+- 用幽默的方式而非官方术语来提供反馈；
+- 指出代码中的不良实践、潜在问题以及有争议的设计决策；
+- 为每个问题提供具体的修改建议；
+- 评估你的代码是否适合“生产环境使用”。
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Roast a single file
@@ -39,42 +39,42 @@ npx ai-roast ./src/utils.ts --level mild
 npx ai-roast ./src/legacy.js --level brutal
 ```
 
-## Best Practices
+## 使用建议
 
-- **Don't take it personally** - The roast is about the code, not you
-- **Start with mild** - Build up your tolerance before going brutal
-- **Share with your team** - Group roasts are team bonding
-- **Actually fix the issues** - The jokes are fun but the fixes are the point
+- **别太当真**——批评的对象是代码，不是你个人；
+- **从温和的反馈开始**——逐渐增加对批评的接受度；
+- **与团队分享**——集体讨论可以增强团队凝聚力；
+- **务必解决问题**——虽然批评很有趣，但关键还是改进代码。
 
-## When to Use This
+## 适用场景
 
-- You want code review feedback but don't want to bother a coworker
-- Team retro and you want to laugh at your tech debt
-- Onboarding new devs and want to show them what not to do
-- You're confident your code is good and want to be humbled
+- 当你需要代码审查的反馈，但又不想麻烦同事时；
+- 团队回顾项目时，想一起吐槽那些遗留的代码问题；
+- 在新员工入职时，想让他们了解哪些做法是不可取的；
+- 当你对自己的代码很有信心，但希望得到客观的评价时。
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本没有任何付费门槛、注册要求或 API 密钥，只提供实用的功能。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-roast --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool analyzes your code for common issues like poor naming, unnecessary complexity, anti-patterns, and questionable decisions. It wraps the feedback in humor while providing legitimate improvements you can actually implement.
+该工具会检查你的代码中常见的缺陷，如命名不规范、代码结构复杂、存在不良实践或有争议的设计决策。它以幽默的方式呈现反馈，并提供切实可行的改进方案。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+MIT 许可证。永久免费，你可以随意使用。

@@ -1,72 +1,65 @@
 ---
 name: "Analyze"
-description: "Structured analysis for any input. Data, code, text, decisions, visuals. Prioritize, question, conclude."
+description: "**结构化分析**：适用于任何类型的输入数据——无论是数据、代码、文本、决策结果还是可视化信息。通过结构化分析，我们可以对这些信息进行优先级排序、深入探讨，并最终得出结论。"
 ---
 
-## Pattern
+## 模式（Pattern）
 
 ```
 Purpose → Structure → Analyze → Prioritize → Conclude
 ```
 
-Before analyzing: State what decision this serves. Pick a framework. Note first impression to challenge later.
+**分析前：**  
+明确这项分析的目的是什么。选择一个分析框架，并记录下第一印象，以便后续进行验证。
 
-## Before
+## 分析前（Before Analysis）  
+- **一句话概括目的**： “这项分析有助于做出 ___ 的决策。”  
+- **未知因素**： 至少存在 3 个未知因素，这些因素可能会影响分析结果。  
+- **第一印象**： 将自己的初步想法写下来，然后寻找相反的证据。  
 
-- **Purpose in one line**: "This analysis helps decide ___"
-- **What's missing**: 3+ unknowns that would change conclusions
-- **First impression**: Write it — then seek counter-evidence
+## 分析过程中（During Analysis）  
+- **始终优先处理关键问题**： 🔴 关键问题（1-2 个） · 🟡 重要问题（2-3 个） · ⚪ 较次要问题  
+- **标注信息来源**： 每个论点都应标注为 `[来自输入数据]` 或 `[推导得出]`。  
+- **寻求反驳意见**： 专门留出空间来思考“自己可能犯错的原因”。  
+- **区分事实与观点**： 区分客观事实与个人观点，以及相关性与因果关系。  
 
-## During
+## 分析后（After Analysis）  
+- **一句话总结**： 将分析结果概括成一句简短的话。  
+- **下一步行动**： 分析结束后，应明确下一步该采取什么行动，而不仅仅是总结分析结果。  
+- **检验分析的合理性**： 如果别人在没有阅读分析内容的情况下也能得出同样的结论，那么分析就是合理的；否则需要进一步深入研究。  
 
-- **Prioritize always**: 🔴 Critical (1-2 max) · 🟡 Important (2-3) · ⚪ Minor
-- **Mark sources**: Every claim gets `[from input]` or `[inferred]`
-- **Seek disconfirmation**: Dedicate space to "why I might be wrong"
-- **Distinguish**: Facts vs opinions. Correlation vs causation.
+## 常见陷阱（Traps）  
+- **表面化分析**： 仅仅改写原文并不算真正的分析。  
+- **所有信息同等重要**： 如果所有内容都被同等对待，那么就无法区分问题的优先级。  
+- **确认偏误**： 仅根据第一印象就下结论。  
+- **忽略关键信息**： 例如，600 次取消中有 500 次，还是 50,000 次？  
+- **伪造数据**： 未经验证的数据就是“幻觉”。  
 
-## After
+## 按领域分类（By Domain）  
+| 领域 | 关注点 | 需要注意的事项 |  
+|--------|-------|-------|  
+| 数据（Data） | 数据颗粒度、缺失数据、异常值 | 数据质量检查、数据类型多样性 |  
+| 代码（Code） | 系统故障、冗余代码 | 代码风格与实际功能（区分） |  
+| 文本（Text） | 论点、证据的有效性 | 信息的来源与可靠性 |  
+| 决策（Decisions） | 未列出的选项、决策的可逆性 | 对现状的依赖性 |  
+| 视觉内容（Visual） | 显示效果、一致性 | 平台的使用规范 |  
 
-- **One-line summary**: Force analysis into one sentence
-- **So what?**: End with action, not summary
-- **Obviousness test**: Would someone say this without reading? → Deeper
+## 分析框架（Frameworks）  
+在开始分析之前，先选择一个合适的框架：  
+- **MECE**： 互斥且涵盖所有可能的情况（Mutually Exclusive, Collectively Exhaustive）。  
+- **优缺点分析（Pros/Cons+）**： 考虑决策的可逆性以及不采取行动可能带来的成本。  
+- **事后分析（Pre-mortem）**： 假设分析对象会失败，思考原因。  
+- **反向思考（Steel Man）**： 考虑最有力的反对意见。  
 
-## Traps
-
-- **Superficial**: Paraphrasing ≠ analysis
-- **Equal weight**: Everything yellow = nothing prioritized
-- **Confirmation bias**: First impression became conclusion
-- **Missing denominator**: "500 cancellations" of 600 or 50,000?
-- **Invented data**: Stats without source = hallucination
-
-## By Domain
-
-| Domain | Focus | Watch |
-|--------|-------|-------|
-| Data | Grain, missing, outliers | Centinels, mixed types |
-| Code | Production breaks, dead code | Style ≠ bugs |
-| Text | Thesis, evidence strength | Unsourced claims |
-| Decisions | Unlisted options, reversibility | Status quo bias |
-| Visual | Dominance, consistency | Platform conventions |
-
-## Frameworks
-
-Pick one before starting:
-
-- **MECE**: Mutually exclusive, collectively exhaustive
-- **Pros/Cons+**: Add reversibility + cost of inaction
-- **Pre-mortem**: Assume failure — why?
-- **Steel man**: Best opposing argument
-
-## Output
-
+## 分析输出（Output）  
 ```
 🎯 PURPOSE: Decide [X]
 🔴 CRITICAL: [Finding + source]
 🟡 IMPORTANT: [Findings]
 ⚠️ COUNTER: [Contradictions]
 ➡️ ACTION: [Recommendation]
-```
+```  
 
 ---
 
-*Channels, not teaches. Ensures prioritization, questioning, and conclusions.*
+*该模式旨在确保分析过程的条理性、批判性思维以及结论的合理性。*

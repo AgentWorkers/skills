@@ -1,37 +1,37 @@
 ---
 name: on-page-seo-auditor
-description: Performs comprehensive on-page SEO audits to identify optimization opportunities including title tags, meta descriptions, headers, content quality, internal linking, and image optimization.
+description: 执行全面的页面SEO审计，以识别优化机会，包括标题标签、元描述、页面头部、内容质量、内部链接以及图片优化等方面。
 geo-relevance: "medium"
 ---
 
-# On-Page SEO Auditor
+# 在页SEO审计器
 
-This skill performs detailed on-page SEO audits to identify issues and optimization opportunities. It analyzes all on-page elements that affect search rankings and provides actionable recommendations.
+该技能执行详细的在页SEO审计，以识别问题并发现优化机会。它分析所有影响搜索排名的在页元素，并提供可操作的改进建议。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Auditing pages before or after publishing
-- Identifying why a page isn't ranking well
-- Optimizing existing content for better performance
-- Creating pre-publish SEO checklists
-- Comparing your on-page SEO to competitors
-- Systematic site-wide SEO improvements
-- Training team members on SEO best practices
+- 在页面发布前后进行审计
+- 查明页面排名不佳的原因
+- 优化现有内容以提高性能
+- 创建发布前的SEO检查清单
+- 将您的在页SEO与竞争对手进行比较
+- 进行系统性的全站SEO改进
+- 培训团队成员了解SEO最佳实践
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Title Tag Analysis**: Evaluates title optimization and CTR potential
-2. **Meta Description Review**: Checks description quality and length
-3. **Header Structure Audit**: Analyzes H1-H6 hierarchy
-4. **Content Quality Assessment**: Reviews content depth and optimization
-5. **Keyword Usage Analysis**: Checks keyword placement and density
-6. **Internal Link Review**: Evaluates internal linking structure
-7. **Image Optimization Check**: Audits alt text and file optimization
-8. **Technical On-Page Review**: Checks URL, canonical, and mobile factors
+1. **标题标签分析**：评估标题的优化程度和点击率的潜力
+2. **元描述审核**：检查描述的质量和长度
+3. **头部结构审计**：分析H1-H6的层级结构
+4. **内容质量评估**：审查内容的深度和优化情况
+5. **关键词使用分析**：检查关键词的放置和密度
+6. **内部链接审核**：评估内部链接的结构
+7. **图片优化检查**：审核alt文本和文件优化情况
+8. **技术性在页元素审核**：检查URL、规范链接和移动设备兼容性
 
-## How to Use
+## 使用方法
 
-### Audit a Single Page
+### 审计单个页面
 
 ```
 Audit the on-page SEO of [URL]
@@ -41,38 +41,38 @@ Audit the on-page SEO of [URL]
 Check SEO issues on this page targeting [keyword]: [URL/content]
 ```
 
-### Compare Against Competitors
+### 与竞争对手进行比较
 
 ```
 Compare on-page SEO of [your URL] vs [competitor URL] for [keyword]
 ```
 
-### Audit Content Before Publishing
+### 在发布前审计内容
 
 ```
 Pre-publish SEO audit for this content targeting [keyword]: [content]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的占位符，请参阅[CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~SEO tool + ~~web crawler connected:**
-Claude can automatically pull page HTML via ~~web crawler, fetch keyword search volume and difficulty from ~~SEO tool, retrieve click-through rate data from ~~search console, and download competitor pages for comparison. This enables fully automated audits with live data.
+**当连接到~~SEO工具 + ~~网络爬虫时：**
+Claude可以通过~~网络爬虫自动获取页面HTML，从~~SEO工具获取关键词的搜索量和难度，从~~搜索控制台获取点击率数据，并下载竞争对手的页面进行比较。这可以实现基于实时数据的完全自动化审计。
 
-**With manual data only:**
-Ask the user to provide:
-1. Page URL or complete HTML content
-2. Target primary and secondary keywords
-3. Competitor page URLs for comparison (optional)
+**仅使用手动数据时：**
+要求用户提供：
+1. 页面URL或完整的HTML内容
+2. 目标的主要和次要关键词
+3. 用于比较的竞争对手页面URL（可选）
 
-Proceed with the full audit using provided data. Note in the output which findings are from automated crawl vs. manual review.
+使用提供的数据进行完整审计。在输出中注明哪些发现来自自动化爬取，哪些来自手动审核。
 
-## Instructions
+## 指令
 
-When a user requests an on-page SEO audit:
+当用户请求进行在页SEO审计时：
 
-1. **Gather Page Information**
+1. **收集页面信息**
 
    ```markdown
    ### Audit Setup
@@ -84,7 +84,7 @@ When a user requests an on-page SEO audit:
    **Business Goal**: [traffic/conversions/authority]
    ```
 
-2. **Audit Title Tag**
+2. **审计标题标签**
 
    ```markdown
    ## Title Tag Analysis
@@ -113,7 +113,7 @@ When a user requests an on-page SEO audit:
    **Why**: [Explanation of improvements]
    ```
 
-3. **Audit Meta Description**
+3. **审计元描述**
 
    ```markdown
    ## Meta Description Analysis
@@ -139,7 +139,7 @@ When a user requests an on-page SEO audit:
    "[Optimized description suggestion]" ([X] chars)
    ```
 
-4. **Audit Header Structure**
+4. **审计头部结构**
 
    ```markdown
    ## Header Structure Analysis
@@ -147,13 +147,13 @@ When a user requests an on-page SEO audit:
    ### Current Header Hierarchy
    
    ```
-   H1: [H1 text]
-     H2: [H2 text]
-       H3: [H3 text]
-       H3: [H3 text]
-     H2: [H2 text]
-       H3: [H3 text]
-     H2: [H2 text]
+   H1: [H1文本]
+     H2: [H2文本]
+       H3: [H3文本]
+       H3: [H3文本]
+     H2: [H2文本]
+       H3: [H3文本]
+     H2: [H2文本]
    ```
    
    | Criterion | Status | Notes |
@@ -176,7 +176,7 @@ When a user requests an on-page SEO audit:
    - H2s: [suggestions]
    ```
 
-5. **Audit Content Quality**
+5. **审计内容质量**
 
    ```markdown
    ## Content Quality Analysis
@@ -218,7 +218,7 @@ When a user requests an on-page SEO audit:
    2. [Specific improvement]
    ```
 
-6. **Audit Keyword Usage**
+6. **审计关键词使用**
 
    ```markdown
    ## Keyword Optimization Analysis
@@ -261,7 +261,7 @@ When a user requests an on-page SEO audit:
    - [Suggestion 1]
    ```
 
-7. **Audit Internal Links**
+7. **审计内部链接**
 
    ```markdown
    ## Internal Linking Analysis
@@ -293,7 +293,7 @@ When a user requests an on-page SEO audit:
    - Change "[current anchor]" to "[improved anchor]"
    ```
 
-8. **Audit Images**
+8. **审计图片**
 
    ```markdown
    ## Image Optimization Analysis
@@ -324,7 +324,7 @@ When a user requests an on-page SEO audit:
    3. Rename [filename] to [better-filename]
    ```
 
-9. **Audit Technical On-Page Elements**
+9. **审计技术性在页元素**
 
    ```markdown
    ## Technical On-Page Analysis
@@ -343,9 +343,8 @@ When a user requests an on-page SEO audit:
    **Technical Score**: [X]/10
    ```
 
-10. **CORE-EEAT Content Quality Quick Scan**
-
-    Run a quick scan of on-page-relevant CORE-EEAT items. Reference: [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md)
+10. **CORE-EEAT内容质量快速扫描**
+    对与页面相关的CORE-EEAT项目进行快速扫描。参考：[CORE-EEAT基准](../../references/core-eeat-benchmark.md)
 
     ```markdown
     ## CORE-EEAT Quick Scan
@@ -377,7 +376,7 @@ When a user requests an on-page SEO audit:
     > For a complete 80-item audit with weighted scoring, use [content-quality-auditor](../../cross-cutting/content-quality-auditor/).
     ```
 
-11. **Generate Audit Summary**
+11. **生成审计报告**
 
     ```markdown
     # On-Page SEO Audit Report
@@ -389,15 +388,15 @@ When a user requests an on-page SEO audit:
     ## Overall Score: [X]/100
     
     ```
-    Score Breakdown:
-    ████████░░ Title Tag: 8/10
-    ██████░░░░ Meta Description: 6/10
-    █████████░ Headers: 9/10
-    ███████░░░ Content: 7/10
-    ██████░░░░ Keywords: 6/10
-    █████░░░░░ Internal Links: 5/10
-    ████░░░░░░ Images: 4/10
-    ████████░░ Technical: 8/10
+    评分明细：
+    ████████░░ 标题标签：8/10
+    ██████░░░░ 元描述：6/10
+    █████████░ 头部：9/10
+    ███████░░░ 内容：7/10
+    ██████░░░░ 关键词：6/10
+    █████░░░░░ 内部链接：5/10
+    ████░░░░░░ 图片：4/10
+    ████████░░ 技术性：8/10
     ```
     
     ## Priority Issues
@@ -474,24 +473,24 @@ When a user requests an on-page SEO audit:
     - Estimated traffic increase: [X]%
     ```
 
-## Validation Checkpoints
+## 验证检查点
 
-### Input Validation
-- [ ] Target keyword(s) clearly specified by user
-- [ ] Page content accessible (either via URL or provided HTML)
-- [ ] If competitor comparison requested, competitor URL provided
+### 输入验证
+- [ ] 用户明确指定了目标关键词
+- [ ] 页面内容可以通过URL或提供的HTML访问
+- [ ] 如果请求了与竞争对手的比较，则提供了竞争对手的URL
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] Scores based on measurable criteria, not subjective opinion
-- [ ] All suggested changes include specific locations (title tag, H2 #3, paragraph 5, etc.)
-- [ ] Source of each data point clearly stated (~~SEO tool data, user-provided, ~~web crawler, or manual review)
+### 输出验证
+- [ ] 每条建议都引用了具体的数据点（而非泛泛而谈）
+- [ ] 评分基于可衡量的标准，而非主观意见
+- [ ] 所有建议的更改都包括具体的位置（如标题标签、H2第3段等）
+- [ ] 每个数据点的来源都明确说明（~~SEO工具数据、用户提供的数据、~~网络爬虫或手动审核）
 
-## Example
+## 示例
 
-**User**: "Audit the on-page SEO of https://example.com/best-noise-cancelling-headphones targeting 'best noise cancelling headphones'"
+**用户**：“审计https://example.com/best-noise-cancelling-headphones页面的在页SEO，目标关键词为‘best noise cancelling headphones’”
 
-**Output**:
+**输出**：
 
 ```markdown
 # On-Page SEO Audit Report
@@ -545,9 +544,9 @@ Score Breakdown:
 3. **Add 4+ internal links** (10 min) — Link product names to their individual review pages and add a "See all headphones" link to the category hub.
 ```
 
-## Audit Checklists by Page Type
+## 按页面类型划分的审计清单
 
-### Blog Post Checklist
+### 博文检查清单
 
 ```markdown
 - [ ] Title includes keyword and is compelling
@@ -562,7 +561,7 @@ Score Breakdown:
 - [ ] Author bio with credentials
 ```
 
-### Product Page Checklist
+### 产品页面检查清单
 
 ```markdown
 - [ ] Product name in title
@@ -576,7 +575,7 @@ Score Breakdown:
 - [ ] Clear CTA button
 ```
 
-### Landing Page Checklist
+### 登录页面检查清单
 
 ```markdown
 - [ ] Keyword-optimized title
@@ -589,140 +588,139 @@ Score Breakdown:
 - [ ] Mobile-optimized layout
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Prioritize issues by impact** - Fix critical issues first
-2. **Compare to competitors** - See what's working for top rankings
-3. **Balance optimization and readability** - Don't over-optimize
-4. **Audit regularly** - Content degrades over time
-5. **Test changes** - Track ranking changes after updates
+1. **按影响优先级处理问题**——首先解决关键问题
+2. **与竞争对手进行比较**——了解哪些做法有助于提高排名
+3. **平衡优化和可读性**——不要过度优化
+4. **定期审计**——内容会随时间退化
+5. **测试更改**——更新后跟踪排名变化
 
-## Scoring Rubric
+## 评分标准
 
-### Section Weight Distribution
+### 各部分的权重分布
 
-| Audit Section | Weight | Max Score | Rationale |
+| 审计部分 | 权重 | 最高分 | 原因 |
 |--------------|--------|-----------|-----------|
-| Title Tag | 15% | 15 | Strongest single ranking signal |
-| Meta Description | 5% | 5 | CTR impact, not direct ranking factor |
-| Header Structure | 10% | 10 | Content organization, semantic signals |
-| Content Quality | 25% | 25 | Strongest holistic ranking factor |
-| Keyword Optimization | 15% | 15 | Relevance signals |
-| Internal/External Links | 10% | 10 | Authority flow, context signals |
-| Image Optimization | 10% | 10 | Accessibility + image search opportunity |
-| Page-Level Technical | 10% | 10 | Core Web Vitals, mobile, security |
+| 标题标签 | 15% | 15 | 最强的单一排名信号 |
+| 元描述 | 5% | 5 | 影响点击率，但不是直接的排名因素 |
+| 头部结构 | 10% | 10 | 内容组织结构，语义信号 |
+| 内容质量 | 25% | 25 | 最强的整体排名因素 |
+| 关键词优化 | 15% | 15 | 相关性信号 |
+| 内部/外部链接 | 10% | 权威性流动，上下文信号 |
+| 图片优化 | 10% | 可访问性和图片搜索机会 |
+| 页面级技术性 | 10% | 核心Web Vital指标，移动设备兼容性 |
 
-### Scoring Scale per Factor
+### 每个因素的评分标准
 
-| Score | Meaning | Action Required |
+| 分数 | 含义 | 需要采取的行动 |
 |-------|---------|-----------------|
-| 10/10 | Excellent — follows all best practices | None |
-| 7-9/10 | Good — minor improvements possible | Optional optimization |
-| 4-6/10 | Needs work — notable issues | Fix within this week |
-| 1-3/10 | Poor — significant problems | Fix immediately (Critical) |
-| 0/10 | Missing or broken | Fix immediately (Blocking) |
+| 10/10 | 优秀 — 完全遵循最佳实践 | 无 |
+| 7-9/10 | 良好 — 可以进行小改进 | 可选优化 |
+| 4-6/10 | 需要改进 — 存在显著问题 | 本周内解决 |
+| 1-3/10 | 较差 — 有严重问题 | 立即解决（紧急） |
+| 0/10 | 缺失或损坏 | 立即解决（可能导致排名受阻） |
 
-### Scoring Conversion Formula
+### 评分转换公式
 
-Each section is scored out of 10, then converted to the 100-point overall score using section weights:
+每个部分的得分乘以相应的权重，然后转换为总分（满分100分）：
 
 ```
 Overall Score = Sum of (section_score x section_weight) x 10
 ```
 
-Where section weights are: Title 0.15, Meta 0.05, Headers 0.10, Content 0.25, Keywords 0.15, Links 0.10, Images 0.10, Technical 0.10.
+各部分的权重分别为：标题 0.15，元描述 0.05，头部结构 0.10，内容 0.25，关键词 0.15，链接 0.10，图片 0.10，技术性 0.10。
 
-**Worked example:**
+**示例计算**：
 
-| Section | Score /10 | Weight | Weighted |
+| 部分 | 得分 /10 | 权重 | 加权得分 |
 |---------|-----------|--------|----------|
-| Title Tag | 8 | 0.15 | 1.20 |
-| Meta Description | 6 | 0.05 | 0.30 |
-| Header Structure | 9 | 0.10 | 0.90 |
-| Content Quality | 7 | 0.25 | 1.75 |
-| Keyword Optimization | 8 | 0.15 | 1.20 |
-| Internal/External Links | 5 | 0.10 | 0.50 |
-| Image Optimization | 6 | 0.10 | 0.60 |
-| Page-Level Technical | 7 | 0.10 | 0.70 |
-| **Total** | | **1.00** | **7.15** |
+| 标题标签 | 8 | 0.15 | 1.20 |
+| 元描述 | 6 | 0.05 | 0.30 |
+| 头部结构 | 9 | 0.10 | 0.90 |
+| 内容质量 | 7 | 0.25 | 1.75 |
+| 关键词优化 | 8 | 0.15 | 1.20 |
+| 内部/外部链接 | 5 | 0.10 | 0.50 |
+| 图片优化 | 6 | 0.10 | 0.60 |
+| 页面级技术性 | 7 | 0.10 | 0.70 |
+| **总分** | | **1.00** | **7.15** |
 
-**Overall Score** = 7.15 x 10 = **71 / 100**
+**总分** = 7.15 × 10 = **71 / 100**
 
-## Common Issue Resolution Playbook
+## 常见问题解决方法
 
-### Title Tag Issues
+### 标题标签问题
 
-| Issue | Impact | Quick Fix Template |
+| 问题 | 影响 | 快速修复模板 |
 |-------|--------|-------------------|
-| Missing title | Critical | Add: "[Primary Keyword]: [Benefit] | [Brand]" |
-| Too long (>60 chars) | Medium | Shorten: move brand to end, remove filler words |
-| Too short (<30 chars) | Medium | Expand: add modifier, benefit, or year |
-| Missing keyword | High | Rewrite to include primary keyword in first half |
-| Duplicate title | High | Make each page title unique; add page-specific modifier |
+| 缺少标题 | 严重 | 添加："[主要关键词]: [好处] | [品牌]" |
+| 过长（>60个字符） | 中等 | 缩短：将品牌放在结尾，删除冗余词 |
+| 过短（<30个字符） | 中等 | 扩展内容：添加修饰词、好处或年份 |
+| 缺少关键词 | 高度重要 | 重新编写标题，确保包含主要关键词 |
+| 标题重复 | 高度重要 | 使每个页面的标题唯一；添加特定于页面的修饰词 |
 
-### Meta Description Issues
+### 元描述问题
 
-| Issue | Impact | Quick Fix Template |
+| 问题 | 影响 | 快速修复模板 |
 |-------|--------|-------------------|
-| Missing description | Medium | Write: "[What this page covers]. [Key benefit]. [CTA]." (150-160 chars) |
-| Too long (>160 chars) | Low | Trim from end; ensure core message fits in 150 chars |
-| Missing keyword | Low | Naturally incorporate primary keyword |
-| No CTA | Low | Add: "Learn more", "Discover", "Find out", "Get started" |
-| Duplicated across pages | Medium | Write unique description for each page |
+| 缺少描述 | 中等 | 编写："[此页面涵盖的内容]. [主要好处]. [行动号召]."（150-160个字符） |
+| 过长（>160个字符） | 低 | 从结尾删减内容；确保核心信息在150个字符内 |
+| 缺少关键词 | 低度重要 | 自然地融入主要关键词 |
+| 无行动号召 | 低度重要 | 添加：“了解更多”、“发现”、“了解”、“开始使用” |
+| 多个页面使用相同描述 | 中等 | 为每个页面编写独特的描述 |
 
-### Header Issues
+### 头部问题
 
-| Issue | Impact | Quick Fix |
+| 问题 | 影响 | 快速修复 |
 |-------|--------|-----------|
-| Missing H1 | Critical | Add one H1 per page containing primary keyword |
-| Multiple H1s | High | Keep one H1, convert others to H2 |
-| Skipped heading levels | Medium | Use sequential hierarchy: H1→H2→H3 |
-| Headers not descriptive | Medium | Rewrite to include keyword variations |
-| No H2s (single long block) | Medium | Break content into sections with descriptive H2s every 200-300 words |
+| 缺少H1标题 | 严重 | 每个页面添加一个包含主要关键词的H1标题 |
+| 多个H1标题 | 高度重要 | 保留一个H1标题，将其他标题转换为H2 |
+| 跳过标题层级 | 中等 | 使用顺序层级：H1→H2→H3 |
+| 标题描述不明确 | 中等 | 重新编写描述，包含关键词的变化 |
+| 无H2标题（仅一个长段落） | 中等 | 将内容分成段落，并使用描述性的H2标题 |
 
-### Content Issues
+### 内容问题
 
-| Issue | Impact | Quick Fix |
+| 问题 | 影响 | 快速修复 |
 |-------|--------|-----------|
-| Thin content (<300 words) | Critical | Expand with subtopics, FAQ, examples |
-| Keyword stuffing (>3%) | High | Reduce usage, use synonyms and related terms |
-| No structured data | Medium | Add relevant schema (FAQ, HowTo, Article) |
-| Missing internal links | Medium | Add 3-5 contextual internal links |
-| No images | Low | Add 2-3 relevant images with alt text |
+| 内容过少（<300个字符） | 严重 | 添加子主题、常见问题解答和示例 |
+| 关键词堆砌（>3%） | 高度重要 | 减少使用频率，使用同义词和相关术语 |
+| 无结构化数据 | 中等 | 添加相关的数据结构（常见问题解答、操作指南等） |
+| 缺少内部链接 | 中等 | 添加3-5个上下文相关的内部链接 |
+| 无图片 | 低度重要 | 添加2-3张带有alt文本的相关图片 |
 
-## Industry Benchmark Data
+## 行业基准数据
 
-### Content Length Benchmarks by Query Type
+### 不同查询类型的文本内容长度基准
 
-| Query Type | Top 10 Average Word Count | Recommended Minimum |
+| 查询类型 | 前10名页面的平均字数 | 推荐的最小字数 |
 |-----------|--------------------------|-------------------|
-| Informational (guides) | 2,200 words | 1,500 words |
-| Commercial (reviews) | 1,800 words | 1,200 words |
-| Transactional (product) | 800 words | 500 words |
-| Local (service pages) | 600 words | 400 words |
-| Definition queries | 1,200 words | 800 words |
+| 信息性（指南） | 2,200字 | 1,500字 |
+| 商业（评论） | 1,800字 | 1,200字 |
+| 交易型（产品） | 800字 | 500字 |
+| 本地服务页面 | 600字 | 400字 |
+| 定义性查询 | 1,200字 | 800字 |
 
-### Page Speed Benchmarks
+### 页面速度基准
 
-| Metric | Good | Needs Improvement | Poor |
+| 指标 | 良好 | 需要改进 | 较差 |
 |--------|------|-------------------|------|
-| LCP | ≤2.5s | 2.5-4.0s | >4.0s |
-| FID/INP | ≤100ms/200ms | 100-300ms | >300ms |
+| LCP | ≤2.5秒 | 2.5-4.0秒 | >4.0秒 |
+| FID/INP | ≤100毫秒/200毫秒 | 100-300毫秒 | >300毫秒 |
 | CLS | ≤0.1 | 0.1-0.25 | >0.25 |
-| TTFB | ≤800ms | 800-1800ms | >1800ms |
+| TTFB | ≤800毫秒 | 800-1800毫秒 | >1800毫秒 |
 
-## Reference Materials
+## 参考资料
 
-- [Scoring Rubric](./references/scoring-rubric.md) — Detailed scoring criteria, weight distribution, and grade boundaries for on-page audits
+- [评分标准](./references/scoring-rubric.md) — 详细的评分标准、权重分布和在页审计的等级划分
 
-## Related Skills
+## 相关技能
 
-- [seo-content-writer](../../build/seo-content-writer/) — Create optimized content
-- [technical-seo-checker](../technical-seo-checker/) — Technical SEO audit
-- [meta-tags-optimizer](../../build/meta-tags-optimizer/) — Optimize meta tags
-- [serp-analysis](../../research/serp-analysis/) — SERP context for audit findings
-- [content-refresher](../content-refresher/) — Update existing content
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-- [internal-linking-optimizer](../internal-linking-optimizer/) — Optimize internal link structure
-- [schema-markup-generator](../../build/schema-markup-generator/) — Validate and generate schema markup
-
+- [seo-content-writer](../../build/seo-content-writer/) — 创建优化后的内容
+- [technical-seo-checker](../technical-seo-checker/) — 技术性SEO审计
+- [meta-tags-optimizer](../../build/meta-tags-optimizer/) — 优化元标签
+- [serp-analysis](../../research/serp-analysis/) — 用于审计发现的SERP分析
+- [content-refresher](../content-refresher/) — 更新现有内容
+- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 全面的80项CORE-EEAT审计
+- [internal-linking-optimizer](../internal-linking-optimizer/) — 优化内部链接结构
+- [schema-markup-generator](../../build/schema-markup-generator/) — 验证和生成schema标记

@@ -1,160 +1,196 @@
 ---
 name: game-light-tracker
-description: Track live NFL, NBA, NHL, or MLB games and automatically change Hue light colors based on which team is leading. Use when user wants to sync smart lights with live sports scores for visual game tracking. Supports NFL, NBA, NHL, and MLB games with customizable team colors.
+description: 实时跟踪NFL（美国国家橄榄球联盟）、NBA（美国国家篮球联盟）、NHL（美国国家冰球联盟）或MLB（美国职业棒球大联盟）的比赛，并根据领先球队的情况自动调整Hue智能灯的颜色。适用于用户希望将智能灯光与实时体育比分同步，以实现视觉化的比赛追踪效果。支持NFL、NBA、NHL和MLB的比赛，且支持自定义球队颜色。
 ---
 
-# Game Light Tracker
+# 游戏灯光追踪器
 
-Automatically sync your Hue lights with live sports scores. When the lead changes, your lights change color to match the leading team.
+该工具可自动将您的 Hue 灯具与实时体育赛事比分同步。当比分发生变化时，灯光颜色会相应地变为领先球队的颜色。
 
-## Quick Start
+## 快速入门
 
-**Basic usage:**
+**基本用法：**
 ```
 Track the [Team A] vs [Team B] game and change my [light name] to [color1] when [Team A] leads and [color2] when [Team B] leads
 ```
 
-**Examples:**
-- "Track the Rams vs Seahawks game and change my backlight to blue when Rams lead, green when Seahawks lead" (NFL)
-- "Monitor the Lakers vs Celtics game, purple for Lakers, green for Celtics" (NBA)
-- "Watch the Rangers vs Devils game - blue for Rangers, red for Devils" (NHL)
-- "Track the Yankees vs Red Sox game, make my living room light blue for Yankees, red for Red Sox" (MLB)
+**示例：**
+- “追踪公羊队对阵海鹰队的比赛：当公羊队领先时，将背景灯设置为蓝色；当海鹰队领先时，设置为绿色”（NFL）
+- “监控湖人队对阵凯尔特人队的比赛：湖人队领先时灯光为紫色，凯尔特人队领先时为绿色”（NBA）
+- “观看游骑兵队对阵魔鬼队的比赛：游骑兵队领先时灯光为蓝色，魔鬼队领先时为红色”（NHL）
+- “追踪洋基队对阵红袜队的比赛：将客厅灯光设置为洋基队领先时为蓝色，红袜队领先时为红色”（MLB）
 
-## How It Works
+## 工作原理
 
-1. Fetches live scores from ESPN API every 20 seconds
-2. Detects lead changes
-3. Changes specified Hue light color via Home Assistant
-4. Includes auto-restart keeper to prevent timeouts
-5. Optional: Adds third color for tied games
+1. 每 20 秒从 ESPN API 获取实时比分数据
+2. 检测比分变化
+3. 通过 Home Assistant 更改指定的 Hue 灯具颜色
+4. 配备自动重启功能，以防程序超时
+5. 可选：在比分平局时显示第三种颜色
 
-## Setup Requirements
+## 设置要求
 
-- Home Assistant with Hue lights configured
-- Home Assistant API token (stored in `.homeassistant-config.json`)
-- Light entity ID from Home Assistant
+- 安装并配置了 Home Assistant 及 Hue 灯具
+- 拥有 Home Assistant API 令牌（存储在 `.homeassistant-config.json` 文件中）
+- 知道 Home Assistant 中对应的灯光实体 ID
 
-## Scripts
+## 脚本
 
 ### `game-tracker.ps1`
-Main monitoring script that tracks a specific game and updates lights.
+主要监控脚本，用于追踪特定比赛并更新灯光颜色。
 
-**Usage:**
+**使用方法：**
 ```powershell
 .\game-tracker.ps1 -Sport "nfl" -Team1 "LAR" -Team2 "SEA" -Light "light.backlight" -Color1 "0,0,255" -Color2 "0,100,0" [-TiedColor "255,0,0"]
 ```
 
-**Parameters:**
-- `-Sport`: "nfl", "nba", "nhl", or "mlb"
-- `-Team1`: First team abbreviation
-- `-Team2`: Second team abbreviation
-- `-Light`: Home Assistant light entity ID
-- `-Color1`: RGB color for Team1 (comma-separated, e.g., "0,0,255" for blue)
-- `-Color2`: RGB color for Team2 (comma-separated, e.g., "0,100,0" for dark green)
-- `-TiedColor`: (Optional) RGB color when game is tied
+**参数：**
+- `-Sport`："nfl"、"nba"、"nhl" 或 "mlb"（比赛类型）
+- `-Team1`：第一支球队的缩写
+- `-Team2`：第二支球队的缩写
+- `-Light`：Home Assistant 中的灯光实体 ID
+- `-Color1`：第一支球队的 RGB 颜色（用逗号分隔，例如 "0,0,255" 表示蓝色）
+- `-Color2`：第二支球队的 RGB 颜色（用逗号分隔，例如 "0,100,0" 表示深绿色）
+- `-TiedColor`：（可选）比赛平局时的颜色
 
 ### `keeper.ps1`
-Auto-restart supervisor that prevents 30-minute timeout crashes.
+自动重启脚本，防止程序因超时而崩溃。
 
-**Usage:**
+**使用方法：**
 ```powershell
 .\keeper.ps1 -TrackerScript "game-tracker.ps1" -RestartInterval 25
 ```
 
-**Parameters:**
-- `-TrackerScript`: Path to the game-tracker.ps1 script
-- `-RestartInterval`: Minutes between restarts (default: 25)
+**参数：**
+- `-TrackerScript`：`game-tracker.ps1` 脚本的路径
+- `-RestartInterval`：自动重启的间隔时间（默认为 25 分钟）
 
-## Common Team Abbreviations
+## 常见球队缩写
 
-**NFL:**
-- Rams: LAR, Seahawks: SEA, Chiefs: KC, Bills: BUF, Patriots: NE
-- Cowboys: DAL, Eagles: PHI, 49ers: SF, Packers: GB, Bears: CHI
-- [Full list: https://www.espn.com/nfl/teams]
+**NFL：**
+- 公羊队（Rams）：LAR
+- 海鹰队（Seahawks）：SEA
+- 首席队（Chiefs）：KC
+- 比尔队（Bills）：BUF
+- 爱国者队（Patriots）：NE
+- 牛仔队（Cowboys）：DAL
+- 老鹰队（Eagles）：PHI
+- 49 人队（49ers）：SF
+- 包装工队（Packers）：GB
+- 熊队（Bears）：CHI
+- [完整列表：https://www.espn.com/nfl/teams]
 
-**NBA:**
-- Lakers: LAL, Celtics: BOS, Warriors: GS, Knicks: NY, Bulls: CHI
-- Heat: MIA, Nets: BKN, 76ers: PHI, Bucks: MIL, Mavericks: DAL
-- Nuggets: DEN, Suns: PHX, Clippers: LAC, Raptors: TOR
-- [Full list: https://www.espn.com/nba/teams]
+**NBA：**
+- 湖人队（Lakers）：LAL
+- 凯尔特人队（Celtics）：BOS
+- 战士队（Warriors）：GS
+- 尼克斯队（Knicks）：NY
+- 公牛队（Bulls）：CHI
+- 热队（Heat）：MIA
+- 网队（Nets）：BKN
+- 76 人队（76ers）：PHI
+- 鹰队（Bucks）：MIL
+- 小牛队（Mavericks）：DAL
+- 猛龙队（Nuggets）：DEN
+- 太阳队（Suns）：PHX
+- 快船队（Clippers）：LAC
+- 雷aptors：TOR
+- [完整列表：https://www.espn.com/nba/teams]
 
-**NHL:**
-- Rangers: NYR, Devils: NJ, Bruins: BOS, Maple Leafs: TOR, Canadiens: MTL
-- Penguins: PIT, Capitals: WSH, Flyers: PHI, Lightning: TB, Panthers: FLA
-- Red Wings: DET, Blackhawks: CHI, Avalanche: COL, Golden Knights: VGK
-- [Full list: https://www.espn.com/nhl/teams]
+**NHL：**
+- 游骑兵队（Rangers）：NYR
+- 魔鬼队（Devils）：NJ
+- 海盗队（Bruins）：BOS
+- 枫叶队（Maple Leafs）：TOR
+- 加人队（Canadiens）：MTL
+- 鹰派队（Penguins）：PIT
+- 首都队（Capitals）：WSH
+- 飞人队（Flyers）：PHI
+- 闪电队（Lightning）：TB
+- 黑豹队（Blackhawks）：CHI
+- 雪崩队（Avalanche）：COL
+- 金骑士队（Golden Knights）：VGK
+- [完整列表：https://www.espn.com/nhl/teams]
 
-**MLB:**
-- Yankees: NYY, Red Sox: BOS, Dodgers: LAD, Giants: SF, Mets: NYM
-- Cubs: CHC, Cardinals: STL, Astros: HOU, Braves: ATL, Phillies: PHI
-- [Full list: https://www.espn.com/mlb/teams]
+**MLB：**
+- 洋基队（Yankees）：NYY
+- 红袜队（Red Sox）：BOS
+- 道奇队（Dodgers）：LAD
+- 巨人队（Giants）：SF
+- 大都会队（Mets）：NYM
+- 小熊队（Cubs）：CHC
+- 红雀队（Cardinals）：STL
+- 太空人队（Astros）：HOU
+- 鹰队（Braves）：ATL
+- 费城费城人队（Phillies）：PHI
+- [完整列表：https://www.espn.com/mlb/teams]
 
-## Common RGB Colors
+## 常见 RGB 颜色
 
-- **Blue**: 0,0,255
-- **Red**: 255,0,0
-- **Green**: 0,255,0
-- **Dark Green**: 0,100,0
-- **Orange**: 255,165,0
-- **Purple**: 128,0,128
-- **Yellow**: 255,255,0
-- **White**: 255,255,255
+- **蓝色**：0,0,255
+- **红色**：255,0,0
+- **绿色**：0,255,0
+- **深绿色**：0,100,0
+- **橙色**：255,165,0
+- **紫色**：128,0,128
+- **黄色**：255,255,0
+- **白色**：255,255,255
 
-## Workflow
+## 工作流程
 
-When user requests game tracking:
+当用户请求开始游戏追踪时：
 
-1. **Identify sport and teams:**
-   - Extract sport (NFL/NBA/NHL/MLB)
-   - Get team abbreviations from user or look up from team names
+1. **确定比赛类型和球队**：
+   - 选择比赛类型（NFL/NBA/NHL/MLB）
+   - 从用户处获取球队缩写或从官方列表中查询
 
-2. **Get light and color preferences:**
-   - Ask for light entity ID (or read from Home Assistant config)
-   - Get desired RGB colors for each team
-   - Optional: Ask if they want a tied-game color
+2. **获取灯光和颜色设置**：
+   - 询问用户所需的灯光实体 ID 或从 Home Assistant 配置中读取
+   - 获取每支球队的 RGB 颜色
+   - 可选：询问用户是否需要设置平局时的颜色
 
-3. **Load Home Assistant config:**
+3. **加载 Home Assistant 配置**：
    ```powershell
    $config = Get-Content ".homeassistant-config.json" | ConvertFrom-Json
    $token = $config.token
    $url = $config.url
    ```
 
-4. **Start game tracker:**
+4. **启动游戏追踪器**：
    ```powershell
    .\scripts\game-tracker.ps1 -Sport "nfl" -Team1 "LAR" -Team2 "SEA" -Light "light.backlight" -Color1 "0,0,255" -Color2 "0,100,0" -TiedColor "255,0,0"
    ```
 
-5. **Start keeper for auto-restart:**
+5. **启动自动重启脚本**：
    ```powershell
    Start-Process powershell -ArgumentList "-File keeper.ps1 -TrackerScript 'game-tracker.ps1'" -WindowStyle Hidden
    ```
 
-6. **Confirm to user:**
-   - Tell them monitoring is active
-   - Show current score if available
-   - Explain color scheme
-   - Tell them how to stop it
+6. **通知用户**：
+   - 告知用户追踪功能已启动
+   - 显示当前比分（如有的话）
+   - 解释颜色方案
+   - 提供停止追踪的方法
 
-## Stopping the Tracker
+## 停止追踪
 
-To stop monitoring:
+要停止追踪功能，请执行以下操作：
 ```powershell
 Get-Process powershell | Where-Object { $_.CommandLine -like "*game-tracker.ps1*" -or $_.CommandLine -like "*keeper.ps1*" } | Stop-Process -Force
 ```
 
-## Troubleshooting
+## 常见问题解决方法
 
-**Light not changing:**
-- Verify Home Assistant token is valid
-- Check light entity ID is correct
-- Ensure Home Assistant is accessible at the configured URL
+**灯光颜色未变化**：
+- 确认 Home Assistant API 令牌有效
+- 检查灯光实体 ID 是否正确
+- 确保可以通过配置的 URL 访问 Home Assistant
 
-**Script crashes:**
-- Keeper should auto-restart it
-- Check ESPN API is accessible
-- Verify team abbreviations are correct
+**脚本崩溃**：
+- 自动重启脚本应能解决问题
+- 检查 ESPN API 是否可用
+- 确认球队缩写是否正确
 
-**Wrong team colors:**
-- Double-check RGB values (must be 0-255, comma-separated)
-- Ensure colors are assigned to correct teams
+**球队颜色显示错误**：
+- 重新核对 RGB 值（范围为 0-255，用逗号分隔）
+- 确保颜色分配给正确的球队

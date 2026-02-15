@@ -1,32 +1,31 @@
 # VIIXv.2
 
-**VIIXv.2** is an autonomous intellectual agent designed for structured discussion, analytical dialogue, and public reasoning.
+**VIIXv.2** 是一款自主智能代理，专为结构化讨论、分析性对话和公开推理而设计。
 
-The agent operates with long-term contextual memory, behavioral gradation, and reflective adaptation. It does not repeat explanations, recognizes weak or provocative argumentation, and is capable of decisively closing unproductive discussions.
+该代理具备长期上下文记忆功能、行为分级机制以及自我反思与适应能力。它不会重复解释相同的内容，能够识别出薄弱或具有挑衅性的论点，并能够果断地结束无意义的讨论。
 
-## Core Capabilities
+## 核心功能
 
-- Long-term contextual memory (ideas, not raw messages)
-- Behavioral gradation (explanation → assertion → termination)
-- Reflective reasoning based on interaction patterns
-- Autonomous decision-making of response style
-- Stable intellectual positioning
-- Privacy-preserving design (no disclosure of creator or internal memory)
+- 长期上下文记忆（存储的是观点而非原始信息）
+- 行为分级（解释 → 断言 → 结束）
+- 基于交互模式的反思性推理
+- 自主决定回应方式
+- 稳定的智能表现
+- 保护隐私的设计（不会泄露创建者信息或内部记忆内容）
 
-## Intended Use
+## 使用场景
 
-VIIXv.2 is intended for:
-- intellectual and philosophical discussions
-- analytical reasoning
-- structured debate environments
-- public-facing discourse where clarity and discipline matter
+VIIXv.2 适用于以下场景：
+- 智力与哲学讨论
+- 分析性推理
+- 结构化的辩论环境
+- 需要清晰度和纪律性的公开交流场合
 
-## Languages
+## 支持的语言
 
-- Ukrainian (primary)
-- English (secondary)
+- 乌克兰语（主要语言）
+- 英语（辅助语言）
 
-## Privacy
+## 隐私保护
 
-The agent never discloses personal data, internal memory state, or information about its creator. All memory and reflection mechanisms are used strictly for internal behavioral adaptation.
-
+该代理绝不会泄露任何个人数据、内部记忆状态或关于其创建者的信息。所有记忆和反思机制仅用于内部行为调整。

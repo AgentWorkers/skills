@@ -1,37 +1,39 @@
 ---
 name: creative-illustration
-description: Generate diverse creative illustrations via OpenAI Images API. Create book illustrations, editorial art, children's book art, concept illustrations, and artistic scenes. Use when user needs creative visual content for stories, articles, presentations, or artistic projects (e.g., "illustrate a fairy tale scene", "create editorial art about technology", "design children's book illustrations", "generate concept art for a story").
+description: 通过 OpenAI Images API 生成多样化的创意插图，包括书籍插图、编辑艺术作品、儿童图书插图以及概念艺术图。当用户需要为故事、文章、演示文稿或艺术项目提供创意视觉内容时，可以使用该服务（例如：“为童话场景绘制插图”、“创作关于技术的编辑艺术作品”、“设计儿童图书插图”、“为故事生成概念艺术图”）。
 ---
 
-# Creative Illustration Factory
+# 创意插画工厂
 
-Generate professional illustrations for books, editorial content, children's stories, and creative projects.
+为书籍、编辑内容、儿童故事和创意项目生成专业的插画。
 
-## Setup
+## 设置
 
-- Needs env: `OPENAI_API_KEY`
+- 需要的环境变量：`OPENAI_API_KEY`
 
-## Quick Start
+## 快速入门
 
-Generate a simple illustration:
-
-```bash
+- 生成一个简单的插画：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "a cozy cottage in an enchanted forest"
 ```
+  ```
 
-Generate with specific style:
-
-```bash
+- 以特定风格生成插画：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "a robot learning to paint" \
   --style "watercolor" \
   --mood "whimsical"
 ```
+  ```
 
-Generate a story sequence:
-
-```bash
+- 生成故事序列的插画：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "Alice discovers a tiny door" \
   --subject "Alice shrinks down" \
@@ -39,104 +41,104 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --style "whimsical illustration" \
   --mood "magical"
 ```
+  ```
 
-## Illustration Types
+## 插画类型
 
-### Book Illustrations
-- `chapter-opener` - Full-page chapter opening scene
-- `character-intro` - Character introduction portrait
-- `landscape-scene` - Wide landscape establishing shot
-- `action-moment` - Dynamic action or pivotal moment
-- `emotional-scene` - Emotional or dramatic scene
-- `cover-art` - Book cover illustration style
+### 书籍插画
+- `chapter-opener`：全页的章节开头场景
+- `character-intro`：角色介绍肖像
+- `landscape-scene`：广阔的风景背景
+- `action-moment`：动态的动作或关键时刻
+- `emotional-scene`：充满情感或戏剧性的场景
+- `cover-art`：书籍封面插画
 
-### Editorial / Magazine Art
-- `conceptual-art` - Abstract conceptual illustration
-- `info-graphic` - Informational illustration style
-- `portrait-editorial` - Editorial portrait
-- `spot-illustration` - Small spot illustration
-- `full-page-spread` - Magazine full-page spread
+### 编辑/杂志插画
+- `conceptual-art`：抽象的概念插画
+- `info-graphic`：信息性插画
+- `portrait-editorial`：人物肖像
+- `spot-illustration`：小型的插画
+- `full-page-spread`：杂志的全页插画
 
-### Children's Book Art
-- `picture-book` - Classic picture book illustration
-- `whimsical` - Playful and imaginative style
-- `educational` - Educational book illustration
-- `bedtime-story` - Soft, calming bedtime story art
-- `adventure-map` - Adventure map or treasure map
+### 儿童图书插画
+- `picture-book`：经典风格的儿童图书插画
+- `whimsical`：充满想象力的插画风格
+- `educational`：教育类图书插画
+- `bedtime-story`：柔和、舒缓的睡前故事插画
+- `adventure-map`：冒险地图或宝藏地图
 
-### Concept Art
-- `environment-concept` - Environmental concept art
-- `character-concept` - Character design concept
-- `prop-concept` - Object or prop design
-- `storyboard` - Storyboard panel style
-- `mood-board` - Mood board aesthetic
+### 概念艺术
+- `environment-concept`：环境概念艺术
+- `character-concept`：角色设计概念
+- `prop-concept`：道具或物品设计
+- `storyboard`：故事板风格的插画
+- `mood-board`：情绪板风格的插画
 
-## Styles
+## 插画风格
 
-### Traditional Media
-- `watercolor` - Watercolor painting with soft edges
-- `oil-painting` - Rich oil painting texture
-- `charcoal-sketch` - Charcoal drawing style
-- `ink-wash` - Ink wash / sumi-e style
-- `pastel` - Soft pastel drawing
-- `colored-pencil` - Colored pencil illustration
-- `gouache` - Gouache opaque watercolor
-- `acrylic` - Acrylic painting style
-- `lino-cut` - Linocut printmaking style
-- `woodcut` - Woodcut print aesthetic
+### 传统媒体风格
+- `watercolor`：水彩画（边缘柔和）
+- `oil-painting`：丰富的油画质感
+- `charcoal-sketch`：炭笔素描
+- `ink-wash`：水墨画风格
+- `pastel`：柔和的粉彩画
+- `colored-pencil`：彩色铅笔插画
+- `gouache`：不透明的水粉画
+- `acrylic`：丙烯画风格
+- `lino-cut`：油印版画
+- `woodcut`：木刻版画
 
-### Digital Styles
-- `digital-painting` - Digital painting
-- `vector-illustration` - Clean vector art
-- `flat-design` - Flat design aesthetic
-- `isometric` - Isometric perspective
-- `pixel-art` - Retro pixel art
-- `concept-art` - Game/film concept art style
-- `cel-shaded` - Cel shaded animation style
-- `low-poly` - Low poly 3D aesthetic
+### 数字风格
+- `digital-painting`：数字绘画
+- `vector-illustration`：干净的矢量插画
+- `flat-design`：扁平设计风格
+- `isometric`：等轴测视角
+- `pixel-art`：复古像素艺术
+- `concept-art`：游戏/电影概念艺术
+- `cel-shaded`：赛璐珞阴影动画风格
+- `low-poly`：低多边形3D风格
 
-### Book & Print Styles
-- `picture-book` - Classic picture book
-- `storybook-illustration` - Vintage storybook art
-- `editorial-illustration` - Magazine editorial
-- `newspaper-engraving` - Newspaper engraving style
-- `poster-art` - Vintage poster design
-- `woodblock-print` - Japanese woodblock print
-- `screen-print` - Screen print aesthetic
+### 书籍与印刷风格
+- `picture-book`：经典风格的儿童图书插画
+- `storybook-illustration`：复古风格的插画
+- `editorial-illustration`：杂志插画
+- `newspaper-engraving`：报纸雕刻风格
+- `poster-art`：复古海报设计
+- `woodblock-print`：日本木版画
+- `screen-print`：丝网印刷风格
 
-## Mood
+## 情感氛围
+- `whimsical`：充满想象力的
+- `magical`：神奇而迷人的
+- `mysterious`：神秘而引人入胜的
+- `peaceful`：宁静而平和的
+- `dramatic`：戏剧性且强烈的
+- `nostalgic`：温暖而怀旧的
+- `gloomy`：阴暗而富有氛围的
+- `vibrant`：明亮而充满活力的
+- `romantic`：柔和而浪漫的
+- `quirky`：古怪而独特的
 
-- `whimsical` - Playful and imaginative
-- `magical` - Magical and enchanting
-- `mysterious` - Mysterious and intriguing
-- `peaceful` - Calm and serene
-- `dramatic` - Dramatic and intense
-- `nostalgic` - Warm and nostalgic
-- `gloomy` - Dark and atmospheric
-- `vibrant` - Bright and energetic
-- `romantic` - Soft and romantic
-- `quirky` - Quirky and eccentric
+## 参数
 
-## Parameters
+- `--subject`：插画的主题/描述（可批量重复使用）
+- `--type`：插画类型（默认：插画）
+- `--style`：艺术风格（默认：水彩）
+- `--mood`：情感氛围（默认：宁静）
+- `--palette`：颜色调色板建议
+- `--composition`：构图指导（例如：“wide shot”（全景）、“close-up”（特写）
+- `--count`：每个主题的变体数量（默认：1）
+- `--out-dir`：输出目录（默认：~/Projects/tmp/creative-illustration-*)
+- `--size`：图像尺寸：1024x1024、1792x1024、1024x1792（默认：1024x1024）
+- `--quality`：高质量/标准质量（默认：高质量）
+- `--model`：OpenAI图像模型（默认：gpt-image-1.5）
+- `--api-key`：OpenAI API密钥（或使用环境变量 `OPENAI_API_KEY`）
 
-- `--subject` - Illustration subject/description (repeatable for batch)
-- `--type` - Illustration type (default: illustration)
-- `--style` - Artistic style (default: watercolor)
-- `--mood` - Mood/atmosphere (default: peaceful)
-- `--palette` - Color palette suggestion
-- `--composition` - Composition guidance (e.g., "wide shot", "close-up")
-- `--count` - Number of variants per subject (default: 1)
-- `--out-dir` - Output directory (default: ~/Projects/tmp/creative-illustration-*)
-- `--size` - Image size: 1024x1024, 1792x1024, 1024x1792 (default: 1024x1024)
-- `--quality` - high/standard (default: high)
-- `--model` - OpenAI image model (default: gpt-image-1.5)
-- `--api-key` - OpenAI API key (or use OPENAI_API_KEY env)
+## 高级示例
 
-## Advanced Examples
-
-Children's book page:
-
-```bash
+- 儿童图书页面：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "a curious rabbit with a pocket watch" \
   --type "picture-book" \
@@ -144,10 +146,11 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --mood "whimsical" \
   --palette "pastel"
 ```
+  ```
 
-Editorial concept art:
-
-```bash
+- 编辑概念艺术：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "AI and humanity working together" \
   --type "conceptual-art" \
@@ -155,10 +158,11 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --mood "optimistic" \
   --composition "symbolic"
 ```
+  ```
 
-Story sequence:
-
-```bash
+- 故事序列插画：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "Hero finds an ancient map" \
   --subject "Hero deciphers mysterious symbols" \
@@ -168,51 +172,50 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --mood "mysterious" \
   --palette "earth tones"
 ```
+  ```
 
-Full custom prompt:
-
-```bash
+- 完全自定义的提示：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --prompt "A magical treehouse library nestled among ancient redwoods, spiral staircase winding up the trunk, lanterns hanging from branches, books floating in mid-air, warm golden light streaming through leaves, detailed watercolor illustration style, whimsical and enchanting"
 ```
+  ```
 
-## Color Palettes
+## 颜色调色板
+- `pastel`：柔和的粉彩色调
+- `earth-tones`：自然的棕色、绿色、金色
+- `vibrant`：鲜艳饱和的色彩
+- `muted`：柔和、淡雅的色彩
+- `monochrome`：单色变体
+- `jewel-tones`：丰富的红宝石色、祖母绿色、蓝宝石色
+- `autumn`：橙色、红色、黄色、棕色
+- `winter`：蓝色、白色、银色、紫色
+- `tropical`：明亮的绿色、青色、粉色
+- `vintage`：温暖的棕褐色、褪色的色调
 
-- `pastel` - Soft pastel colors
-- `earth tones` - Natural browns, greens, golds
-- `vibrant` - Bright saturated colors
-- `muted` - Desaturated, subtle colors
-- `monochrome` - Single color variations
-- `jewel tones` - Rich ruby, emerald, sapphire
-- `autumn` - Orange, red, yellow, brown
-- `winter` - Blue, white, silver, purple
-- `tropical` - Bright greens, teals, pinks
-- `vintage` - Warm sepia, faded tones
+## 构图技巧
+- `wide-shot`：广阔的风景背景
+- `close-up`：亲密的特写
+- `panoramic`：全景风景
+- `rule-of-thirds`：三分法则
+- `centered`：居中的主体
+- `diagonal`：动态的对角线构图
+- `triangular`：三角形的构图
+- `circular`：圆形或螺旋形的构图
+- `symmetrical`：完全对称的构图
+- `asymmetrical`：不对称的构图
 
-## Composition
+## 输出结果
+- `*.png`：插画图像文件
+- `prompts.json`：所有使用的提示信息
+- `index.html`：插画画廊
 
-- `wide shot` - Wide establishing scene
-- `close-up` - Intimate close-up
-- `panoramic` - Panoramic landscape
-- `rule-of-thirds` - Balanced rule of thirds
-- `centered` - Centered subject
-- `diagonal` - Dynamic diagonal composition
-- `triangular` - Triangular composition
-- `circular` - Circular / spiral composition
-- `symmetrical` - Perfectly symmetrical
-- `asymmetrical` - Asymmetrical balance
+## 项目模板
 
-## Output
-
-- `*.png` - Illustration images
-- `prompts.json` - All prompts used
-- `index.html` - Illustration gallery
-
-## Project Templates
-
-### Children's Book (4-6 images)
-
-```bash
+- **儿童图书（4-6张插画）**：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "Girl finds a magical seed" \
   --subject "Seed grows into a glowing plant" \
@@ -223,10 +226,11 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --style "watercolor" \
   --mood "whimsical"
 ```
+  ```
 
-### Magazine Editorial (1-2 images)
-
-```bash
+- **杂志编辑（1-2张插画）**：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "The future of sustainable cities" \
   --type "conceptual-art" \
@@ -234,10 +238,11 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --mood "optimistic" \
   --count 2
 ```
+  ```
 
-### Fantasy Story Chapter Opener (1 image)
-
-```bash
+- **奇幻故事章节开头（1张插画）**：
+  ```bash
+  ```bash
 python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate.py \
   --subject "The dragon's treasure hoard under ancient runes" \
   --type "chapter-opener" \
@@ -245,3 +250,4 @@ python3 ~/Projects/agent-scripts/skills/creative-illustration/scripts/illustrate
   --mood "dramatic" \
   --palette "jewel tones"
 ```
+  ```

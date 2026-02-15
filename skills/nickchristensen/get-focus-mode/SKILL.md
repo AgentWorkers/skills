@@ -1,27 +1,27 @@
 ---
 name: get-focus-mode
-description: Get the current macOS Focus mode
+description: 获取当前的 macOS 焦点模式
 ---
 
-# Get Focus Mode
+# 获取当前激活的 macOS 专注模式
 
-Returns the name of the currently active macOS Focus mode.
+返回当前激活的 macOS 专注模式的名称。
 
-## Usage
+## 使用方法
 
 ```bash
 ~/clawd/skills/get-focus-mode/get-focus-mode.sh
 ```
 
-## Output
+## 输出结果
 
-Prints the Focus mode name to stdout:
-- "No Focus" - Focus mode is off
-- "Office" - Office focus is active
-- "Sleep" - Sleep focus is active  
-- "Do Not Disturb" - DND is active
+将专注模式的名称输出到标准输出（stdout）：
+- "No Focus" - 专注模式未启用
+- "Office" - 办公模式已激活
+- "Sleep" - 睡眠模式已激活
+- "Do Not Disturb" - 防打扰模式已激活
 
-## Requirements
+## 系统要求
 
-- macOS
-- `jq` installed
+- 必须使用 macOS 操作系统
+- 需要安装 `jq` 工具

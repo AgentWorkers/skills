@@ -1,15 +1,15 @@
 ---
 name: senior-data-scientist
-description: World-class data science skill for statistical modeling, experimentation, causal inference, and advanced analytics. Expertise in Python (NumPy, Pandas, Scikit-learn), R, SQL, statistical methods, A/B testing, time series, and business intelligence. Includes experiment design, feature engineering, model evaluation, and stakeholder communication. Use when designing experiments, building predictive models, performing causal analysis, or driving data-driven decisions.
+description: 具备世界级的数据科学能力，擅长统计建模、实验设计、因果推断及高级数据分析。精通Python（NumPy、Pandas、Scikit-learn）、R语言、SQL、统计方法、A/B测试、时间序列分析以及商业智能工具。具备实验设计、特征工程、模型评估以及与利益相关者沟通的能力。适用于实验设计、预测模型构建、因果分析以及基于数据的决策制定等场景。
 ---
 
-# Senior Data Scientist
+# 高级数据科学家
 
-World-class senior data scientist skill for production-grade AI/ML/Data systems.
+具备世界级的高级数据科学家技能，专注于生产级的人工智能/机器学习（AI/ML）/数据系统。
 
-## Quick Start
+## 快速入门
 
-### Main Capabilities
+### 主要能力
 
 ```bash
 # Core Tool 1
@@ -22,147 +22,141 @@ python scripts/feature_engineering_pipeline.py --target project/ --analyze
 python scripts/model_evaluation_suite.py --config config.yaml --deploy
 ```
 
-## Core Expertise
+## 核心专长
 
-This skill covers world-class capabilities in:
+该技能涵盖以下世界级的能力：
 
-- Advanced production patterns and architectures
-- Scalable system design and implementation
-- Performance optimization at scale
-- MLOps and DataOps best practices
-- Real-time processing and inference
-- Distributed computing frameworks
-- Model deployment and monitoring
-- Security and compliance
-- Cost optimization
-- Team leadership and mentoring
+- 先进的系统架构和生产模式
+- 可扩展的系统设计与实现
+- 大规模性能优化
+- 机器学习运维（MLOps）和数据运维（DataOps）的最佳实践
+- 实时处理与推理
+- 分布式计算框架
+- 模型部署与监控
+- 安全性与合规性
+- 成本优化
+- 团队领导与指导
 
-## Tech Stack
+## 技术栈
 
-**Languages:** Python, SQL, R, Scala, Go
-**ML Frameworks:** PyTorch, TensorFlow, Scikit-learn, XGBoost
-**Data Tools:** Spark, Airflow, dbt, Kafka, Databricks
-**LLM Frameworks:** LangChain, LlamaIndex, DSPy
-**Deployment:** Docker, Kubernetes, AWS/GCP/Azure
-**Monitoring:** MLflow, Weights & Biases, Prometheus
-**Databases:** PostgreSQL, BigQuery, Snowflake, Pinecone
+**编程语言：** Python, SQL, R, Scala, Go
+**机器学习框架：** PyTorch, TensorFlow, Scikit-learn, XGBoost
+**数据工具：** Spark, Airflow, dbt, Kafka, Databricks
+**大语言模型（LLM）框架：** LangChain, LlamaIndex, DSPy
+**部署平台：** Docker, Kubernetes, AWS/GCP/Azure
+**监控工具：** MLflow, Weights & Biases, Prometheus
+**数据库：** PostgreSQL, BigQuery, Snowflake, Pinecone
 
-## Reference Documentation
+## 参考文档
 
-### 1. Statistical Methods Advanced
+### 1. 高级统计方法
 
-Comprehensive guide available in `references/statistical_methods_advanced.md` covering:
+详细指南见 `references/statistical_methods_advanced.md`，内容包括：
+- 先进的统计方法与最佳实践
+- 生产环境下的实现策略
+- 性能优化技术
+- 可扩展性考虑
+- 安全性与合规性要求
+- 实际案例研究
 
-- Advanced patterns and best practices
-- Production implementation strategies
-- Performance optimization techniques
-- Scalability considerations
-- Security and compliance
-- Real-world case studies
+### 2. 实验设计框架
 
-### 2. Experiment Design Frameworks
+完整的工作流程文档见 `references/experiment_design_frameworks.md`，包括：
+- 逐步操作流程
+- 架构设计模式
+- 工具集成指南
+- 性能调优策略
+- 故障排除方法
 
-Complete workflow documentation in `references/experiment_design_frameworks.md` including:
+### 3. 特征工程模式
 
-- Step-by-step processes
-- Architecture design patterns
-- Tool integration guides
-- Performance tuning strategies
-- Troubleshooting procedures
+技术参考指南见 `references/feature_engineering_patterns.md`，内容包括：
+- 系统设计原则
+- 实现示例
+- 配置最佳实践
+- 部署策略
+- 监控与可观测性
 
-### 3. Feature Engineering Patterns
+## 生产模式
 
-Technical reference guide in `references/feature_engineering_patterns.md` with:
+### 模式 1：可扩展的数据处理
 
-- System design principles
-- Implementation examples
-- Configuration best practices
-- Deployment strategies
-- Monitoring and observability
+企业级的数据处理解决方案，采用分布式计算技术：
+- 水平扩展架构
+- 容错设计
+- 实时处理与批量处理
+- 数据质量验证
+- 性能监控
 
-## Production Patterns
+### 模式 2：机器学习模型部署
 
-### Pattern 1: Scalable Data Processing
+高可用性的生产级机器学习系统：
+- 低延迟的模型服务
+- A/B 测试机制
+- 特征存储集成
+- 模型监控与漂移检测
+- 自动化重新训练流程
 
-Enterprise-scale data processing with distributed computing:
+### 模式 3：实时推理
 
-- Horizontal scaling architecture
-- Fault-tolerant design
-- Real-time and batch processing
-- Data quality validation
-- Performance monitoring
+高吞吐量的推理系统：
+- 批量处理与缓存策略
+- 负载均衡
+- 自动扩展
+- 延迟优化
+- 成本控制
 
-### Pattern 2: ML Model Deployment
+## 最佳实践
 
-Production ML system with high availability:
+### 开发阶段
 
-- Model serving with low latency
-- A/B testing infrastructure
-- Feature store integration
-- Model monitoring and drift detection
-- Automated retraining pipelines
+- 测试驱动的开发
+- 代码审查与结对编程
+- 将文档作为代码的一部分
+- 所有内容均进行版本控制
+- 持续集成
 
-### Pattern 3: Real-Time Inference
+### 生产阶段
 
-High-throughput inference system:
+- 监控所有关键指标
+- 自动化部署流程
+- 通过特征标志控制功能开关
+- 纳米级部署（Canary Deployment）
+- 详细的日志记录
 
-- Batching and caching strategies
-- Load balancing
-- Auto-scaling
-- Latency optimization
-- Cost optimization
+### 团队领导
 
-## Best Practices
+- 指导初级工程师
+- 制定技术决策
+- 建立编码标准
+- 促进学习文化
+- 跨部门协作
 
-### Development
+## 性能目标
 
-- Test-driven development
-- Code reviews and pair programming
-- Documentation as code
-- Version control everything
-- Continuous integration
+**延迟：**
+- P50（第50百分位延迟）：< 50毫秒
+- P95（第95百分位延迟）：< 100毫秒
+- P99（第99百分位延迟）：< 200毫秒
 
-### Production
+**吞吐量：**
+- 每秒请求数量：> 1000次
+- 同时在线用户数：> 10,000人
 
-- Monitor everything critical
-- Automate deployments
-- Feature flags for releases
-- Canary deployments
-- Comprehensive logging
+**可用性：**
+- 运行时间：99.9%
+- 错误率：< 0.1%
 
-### Team Leadership
+## 安全性与合规性
 
-- Mentor junior engineers
-- Drive technical decisions
-- Establish coding standards
-- Foster learning culture
-- Cross-functional collaboration
+- 认证与授权机制
+- 数据加密（静态存储与传输过程中）
+- 个人身份信息（PII）的处理与匿名化
+- 遵守 GDPR/CCPA 等法规
+- 定期进行安全审计
+- 漏洞管理
 
-## Performance Targets
-
-**Latency:**
-- P50: < 50ms
-- P95: < 100ms
-- P99: < 200ms
-
-**Throughput:**
-- Requests/second: > 1000
-- Concurrent users: > 10,000
-
-**Availability:**
-- Uptime: 99.9%
-- Error rate: < 0.1%
-
-## Security & Compliance
-
-- Authentication & authorization
-- Data encryption (at rest & in transit)
-- PII handling and anonymization
-- GDPR/CCPA compliance
-- Regular security audits
-- Vulnerability management
-
-## Common Commands
+## 常用命令
 
 ```bash
 # Development
@@ -184,43 +178,43 @@ kubectl logs -f deployment/service
 python scripts/health_check.py
 ```
 
-## Resources
+## 资源
 
-- Advanced Patterns: `references/statistical_methods_advanced.md`
-- Implementation Guide: `references/experiment_design_frameworks.md`
-- Technical Reference: `references/feature_engineering_patterns.md`
-- Automation Scripts: `scripts/` directory
+- 高级统计方法指南：`references/statistical_methods_advanced.md`
+- 实现指南：`references/experiment_design_frameworks.md`
+- 技术参考指南：`references/feature_engineering_patterns.md`
+- 自动化脚本：`scripts/` 目录
 
-## Senior-Level Responsibilities
+## 高级数据科学家的职责
 
-As a world-class senior professional:
+作为世界级的高级数据科学家，您需要承担以下职责：
 
-1. **Technical Leadership**
-   - Drive architectural decisions
-   - Mentor team members
-   - Establish best practices
-   - Ensure code quality
+1. **技术领导**：
+   - 制定技术架构决策
+   - 指导团队成员
+   - 建立最佳实践
+   - 确保代码质量
 
-2. **Strategic Thinking**
-   - Align with business goals
-   - Evaluate trade-offs
-   - Plan for scale
-   - Manage technical debt
+2. **战略规划**：
+   - 与业务目标保持一致
+   - 评估各种技术选择
+  - 规划系统扩展方案
+   - 管理技术债务（技术遗留问题）
 
-3. **Collaboration**
-   - Work across teams
-   - Communicate effectively
-   - Build consensus
-   - Share knowledge
+3. **团队协作**：
+   - 跨团队协作
+   - 有效沟通
+   - 达成共识
+   - 共享知识
 
-4. **Innovation**
-   - Stay current with research
-   - Experiment with new approaches
-   - Contribute to community
-   - Drive continuous improvement
+4. **创新推动**：
+   - 跟踪行业最新研究动态
+   - 尝试新的技术方法
+   - 为社区做出贡献
+   - 推动持续改进
 
-5. **Production Excellence**
-   - Ensure high availability
-   - Monitor proactively
-   - Optimize performance
-   - Respond to incidents
+5. **生产优化**：
+   - 确保系统的高可用性
+   - 主动监控系统性能
+   - 优化系统性能
+   - 及时处理系统故障

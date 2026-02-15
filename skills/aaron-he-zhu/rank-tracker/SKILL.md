@@ -1,82 +1,84 @@
 ---
 name: rank-tracker
-description: Tracks and analyzes keyword ranking positions over time for both traditional search results and AI-generated responses. Monitors ranking changes, identifies trends, and alerts on significant movements.
+description: 跟踪并分析传统搜索结果和人工智能生成响应中关键词的排名位置随时间的变化情况。监控排名变化，识别趋势，并在出现显著变化时发出警报。
 geo-relevance: "medium"
 ---
 
-# Rank Tracker
+# 排名跟踪器
 
-This skill helps you track, analyze, and report on keyword ranking positions over time. It monitors both traditional SERP rankings and AI/GEO visibility to provide comprehensive search performance insights.
+此功能可帮助您跟踪、分析并报告关键词随时间的变化情况，包括传统搜索引擎结果页（SERP）的排名以及人工智能（AI）/地理位置（GEO）的可见性，从而提供全面的搜索性能洞察。
 
-## When to Use This Skill
+## 适用场景
 
-- Setting up ranking tracking for new campaigns
-- Monitoring keyword position changes
-- Analyzing ranking trends over time
-- Comparing rankings against competitors
-- Tracking SERP feature appearances
-- Monitoring AI Overview inclusions
-- Creating ranking reports for stakeholders
+- 为新营销活动设置排名跟踪
+- 监控关键词排名的变化
+- 分析排名趋势
+- 与竞争对手进行排名对比
+- 跟踪SERP中的特色内容
+- 监控AI相关信息的展示情况
+- 为利益相关者生成排名报告
 
-## What This Skill Does
+## 功能概述
 
-1. **Position Tracking**: Records and tracks keyword rankings
-2. **Trend Analysis**: Identifies ranking patterns over time
-3. **Movement Detection**: Flags significant position changes
-4. **Competitor Comparison**: Benchmarks against competitors
-5. **SERP Feature Tracking**: Monitors featured snippets, PAA
-6. **GEO Visibility Tracking**: Tracks AI citation appearances
-7. **Report Generation**: Creates ranking performance reports
+1. **排名跟踪**：记录并监控关键词的排名情况。
+2. **趋势分析**：识别排名随时间的变化模式。
+3. **变化检测**：标记出显著的排名变动。
+4. **竞争对手对比**：与竞争对手进行基准对比。
+5. **SERP特色内容跟踪**：监控特色片段（Featured Snippets）和PAA（Product Answer Boxes）的展示情况。
+6. **地理位置可见性跟踪**：跟踪AI相关信息的展示情况。
+7. **报告生成**：生成排名性能报告。
 
-## How to Use
+## 使用方法
 
-### Set Up Tracking
+### 设置跟踪
 
 ```
 Set up rank tracking for [domain] targeting these keywords: [keyword list]
 ```
 
-### Analyze Rankings
+### 分析排名
 
 ```
 Analyze ranking changes for [domain] over the past [time period]
 ```
 
-### Compare to Competitors
+### 与竞争对手对比
 
 ```
 Compare my rankings to [competitor] for [keywords]
 ```
 
-### Generate Reports
+### 生成报告
 
 ```
 Create a ranking report for [domain/campaign]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md)，了解工具类别的相关信息。
 
-**With ~~SEO tool + ~~search console + ~~analytics + ~~AI monitor connected:**
-Automatically pull ranking positions from ~~SEO tool, search impressions/clicks from ~~search console, traffic data from ~~analytics, and AI Overview citation tracking from ~~AI monitor. Daily automated rank checks with historical trend data.
+**当连接了以下工具时：**
+- **SEO工具**：自动获取关键词排名。
+- **搜索控制台**：获取搜索量数据。
+- **分析工具**：获取流量数据。
+- **AI监控工具**：获取AI相关信息的展示情况。
+系统会每天自动检查排名，并结合历史趋势数据进行分析。
 
-**With manual data only:**
-Ask the user to provide:
-1. Keyword ranking positions (current and historical if available)
-2. Target keyword list with search volumes
-3. Competitor domains and their ranking positions for key terms
-4. SERP feature status (featured snippets, PAA appearances)
-5. AI Overview citation data (if tracking GEO metrics)
+**仅使用手动数据时：**
+- 请用户提供以下信息：
+  - 关键词的当前及历史排名情况。
+  - 目标关键词列表及其搜索量。
+  - 竞争对手的域名及其关键词排名。
+  - SERP中的特色内容及PAA的展示情况。
+  - AI相关信息的展示数据（如需跟踪地理位置指标）。
+根据提供的数据进行分析。在报告中明确标注哪些数据来自自动收集，哪些数据来自用户提供。
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+## 使用说明
 
-## Instructions
+当用户请求排名跟踪或分析时，请按照以下步骤操作：
 
-When a user requests rank tracking or analysis:
-
-1. **Set Up Keyword Tracking**
-
+1. **设置关键词跟踪**：
    ```markdown
    ## Rank Tracking Setup
    
@@ -115,8 +117,7 @@ When a user requests rank tracking or analysis:
    | Commercial | [X] | Buying intent terms |
    ```
 
-2. **Record Current Rankings**
-
+2. **记录当前排名**：
    ```markdown
    ## Current Ranking Snapshot
    
@@ -138,11 +139,11 @@ When a user requests rank tracking or analysis:
    ### Position Distribution
    
    ```
-   Position 1:     ████████ [X] keywords
-   Position 2-3:   ██████ [X] keywords
-   Position 4-10:  ████████████████ [X] keywords
-   Position 11-20: ████████████ [X] keywords
-   Position 21+:   ██████████ [X] keywords
+   排名1：███████ [X]个关键词
+   排名2-3：█████ [X]个关键词
+   排名4-10：███████████████ [X]个关键词
+   排名11-20：███████████ [X]个关键词
+   排名21+：█████████ [X]个关键词
    ```
    
    ### Detailed Rankings
@@ -155,8 +156,7 @@ When a user requests rank tracking or analysis:
    | [kw 4] | 1 | [url] | Featured Snippet | — |
    ```
 
-3. **Analyze Ranking Changes**
-
+3. **分析排名变化**：
    ```markdown
    ## Ranking Change Analysis
    
@@ -217,8 +217,7 @@ When a user requests rank tracking or analysis:
    | [kw 1] | [pos] | [url] | [investigate/refresh] |
    ```
 
-4. **Track SERP Features**
-
+4. **跟踪SERP特色内容**：
    ```markdown
    ## SERP Feature Tracking
    
@@ -248,8 +247,7 @@ When a user requests rank tracking or analysis:
    | [Question 2] | ✅/❌ | [pos] | [action] |
    ```
 
-5. **Track GEO/AI Visibility**
-
+5. **跟踪地理位置/AI可见性**：
    ```markdown
    ## AI/GEO Visibility Tracking
    
@@ -286,8 +284,7 @@ When a user requests rank tracking or analysis:
    | [kw 2] | Yes | No | Missing quotable stats |
    ```
 
-6. **Compare Against Competitors**
-
+6. **与竞争对手对比**：
    ```markdown
    ## Competitor Ranking Comparison
    
@@ -320,8 +317,7 @@ When a user requests rank tracking or analysis:
    | [Comp 2] | [kw] | +8 positions | 🟡 Medium |
    ```
 
-7. **Generate Ranking Report**
-
+7. **生成排名报告**：
    ```markdown
    # Ranking Performance Report
    
@@ -344,11 +340,11 @@ When a user requests rank tracking or analysis:
    ## Position Distribution
    
    ```
-   Position 1:     ████████████ [X]%
-   Position 2-3:   ████████ [X]%
-   Position 4-10:  ████████████████ [X]%
-   Position 11-20: ██████████ [X]%
-   Position 21+:   ████ [X]%
+   排名1：███████████ [X]%
+   排名2-3：███████ [X]%
+   排名4-10：███████████████ [X]%
+   排名11-20：█████████ [X]%
+   排名21+： ████ [X]%
    ```
    
    ## Key Highlights
@@ -428,26 +424,25 @@ When a user requests rank tracking or analysis:
    Focus areas: [areas to monitor]
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Keywords list is complete with search volumes
-- [ ] Target domain and tracking location are specified
-- [ ] Competitor domains identified for comparison
-- [ ] Historical baseline data available or initial tracking period set
+### 输入验证：
+- 关键词列表是否完整，并包含相应的搜索量数据。
+- 是否指定了目标域名和跟踪地点。
+- 是否确定了用于对比的竞争对手域名。
+- 是否有历史基线数据或设置了初始跟踪周期。
 
-### Output Validation
-- [ ] Every metric cites its data source and collection date
-- [ ] Ranking changes include context (vs. previous period)
-- [ ] Significant movements have explanations or investigation notes
-- [ ] Source of each data point clearly stated (~~SEO tool data, ~~search console data, user-provided, or estimated)
+### 输出验证：
+- 每个指标都应明确标注数据来源和收集日期。
+- 排名变化应附有背景说明（与上一周期相比）。
+- 对于显著的排名变化，应提供原因或调查说明。
+- 明确每个数据点的来源（来自SEO工具、搜索控制台、用户提供的数据或估算值）。
 
-## Example
+## 示例
 
-**User**: "Analyze my ranking changes for the past month"
+**用户请求：**“分析我上个月的排名变化”
 
-**Output**:
-
+**输出结果：**
 ```markdown
 # Ranking Analysis: [current month, year]
 
@@ -473,102 +468,101 @@ Keywords in top 10 increased from 12 to 17 (+5)
 **Recommended**: Update your marketing automation guide with [current year] statistics and examples.
 ```
 
-## Tips for Success
+## 使用技巧
 
-1. **Track consistently** - Same time, same device, same location
-2. **Include enough keywords** - 50-200 for meaningful data
-3. **Segment by intent** - Track brand, commercial, informational separately
-4. **Monitor competitors** - Context makes your data meaningful
-5. **Track SERP features** - Position 1 without snippet may lose to position 4 with snippet
-6. **Include GEO metrics** - AI visibility increasingly important
+1. **保持一致性**：使用相同的时间、设备和地点进行跟踪。
+2. **选择足够的关键词**：至少选择50-200个关键词以获得有意义的数据。
+3. **按意图分类**：分别跟踪品牌相关、商业相关和信息类关键词。
+4. **关注竞争对手**：了解竞争对手的排名变化有助于更准确地分析自己的排名。
+5. **关注SERP特色内容**：没有特色片段的排名1可能会被有特色片段的排名4超越。
+6. **包含地理位置指标**：AI相关信息的可见性越来越重要。
 
-## Rank Change Analysis Framework
+## 排名变化分析框架
 
-### Why Rankings Move — Root Cause Taxonomy
+### 排名变化的原因
 
-| Category | Causes | Detection Method |
+| 类别 | 原因 | 检测方法 |
 |----------|--------|-----------------|
-| **Algorithm Updates** | Google core update, helpful content update, spam update | Check Google Search Status Dashboard, SEO news |
-| **Competitor Action** | New content published, content updated, new backlinks | Monitor competitor pages, SERP changes |
-| **Your Changes** | Content edit, technical change, migration | Cross-reference with deploy/change log |
-| **SERP Feature Changes** | New featured snippet, AI Overview added/removed | SERP monitoring tools |
-| **Seasonal Patterns** | Predictable demand shifts | Year-over-year comparison |
-| **Technical Issues** | Crawl errors, speed degradation, indexing problems | Search Console, crawl reports |
-| **Link Profile Changes** | Lost backlinks, new backlinks, disavow | Backlink monitoring |
+| **算法更新** | Google核心算法更新、内容更新、垃圾信息处理 | 查看Google搜索状态仪表板、SEO新闻 |
+| **竞争对手行为** | 发布新内容、内容更新、获得新链接 | 监控竞争对手的页面变化和SERP排名 |
+| **自身操作** | 内容编辑、技术调整、系统迁移 | 与部署/变更日志对照 |
+| **SERP特色内容变化** | 新特色片段的添加或删除 | 使用SERP监控工具 |
+| **季节性变化** | 需求的周期性变化 | 年度对比 |
+| **技术问题** | 爬取错误、网站速度下降、索引问题 | 使用搜索控制台和爬取报告 |
+| **链接变化** | 失去链接、获得新链接、链接被屏蔽 | 使用链接监控工具 |
 
-### Rank Change Response Protocol
+## 排名变化应对策略
 
-| Change | Timeframe | Action |
+| 变化类型 | 时间范围 | 应对措施 |
 |--------|-----------|--------|
-| Drop 1-3 positions | Wait 1-2 weeks | Monitor — may be normal fluctuation |
-| Drop 3-5 positions | Investigate within 1 week | Check for technical issues, competitor changes |
-| Drop 5-10 positions | Investigate immediately | Full diagnostic: technical, content, links |
-| Drop off page 1 | Emergency response | Comprehensive audit + recovery plan |
-| Position gained | Document and learn | What worked? Can you replicate? |
+| 排名下降1-3位 | 等待1-2周 | 可能是正常波动 |
+| 排名下降3-5位 | 在1周内进行调查 | 检查技术问题或竞争对手的变化 |
+| 排名下降5-10位 | 立即调查 | 全面诊断：技术、内容、链接方面 |
+| 从第1位跌落 | 紧急响应 | 进行全面审计并制定恢复计划 |
+| 排名上升 | 记录并分析原因 | 了解哪些因素起了作用，能否复制这些策略？ |
 
-## Position Distribution Benchmarks
+## 排名分布基准
 
-### Click-Through Rate by Position
+### 不同位置的点击率
 
-| Position | Desktop CTR | Mobile CTR | Notes |
+| 排名 | 桌面设备CTR | 移动设备CTR | 备注 |
 |----------|------------|------------|-------|
-| #1 | 31.7% | 24.0% | 10x more than position #10 |
-| #2 | 14.7% | 13.1% | ~50% drop from #1 |
-| #3 | 10.7% | 9.5% | Significant value |
-| #4 | 6.7% | 6.1% | Still above fold usually |
-| #5 | 5.1% | 4.6% | Often near fold |
-| #6 | 4.1% | 3.5% | Below fold on most devices |
-| #7 | 3.4% | 2.8% | Rapidly diminishing |
-| #8 | 2.9% | 2.3% | |
-| #9 | 2.5% | 1.9% | |
-| #10 | 2.2% | 1.6% | Bottom of page 1 |
-| #11-20 | <1.5% | <1.0% | Page 2 — minimal visibility |
+| 第1位 | 31.7% | 24.0% | 比第10位高出约10倍 |
+| 第2位 | 14.7% | 13.1% | 比第1位下降约50% |
+| 第3位 | 10.7% | 9.5% | 具有较高价值 |
+| 第4位 | 6.7% | 6.1% | 通常仍可见 |
+| 第5位 | 5.1% | 4.6% | 通常仍可见 |
+| 第6位 | 4.1% | 3.5% | 在大多数设备上不太可见 |
+| 第7位 | 3.4% | 2.8% | 下降趋势明显 |
+| 第8位 | 2.9% | 2.3% | |
+| 第9位 | 2.5% | 1.9% | |
+| 第10位 | 2.2% | 1.6% | 位于页面底部 |
+| 第11-20位 | <1.5% | <1.0% | 几乎不可见 |
 
-_Note: CTR varies significantly by query type, SERP features, and industry. These are averages._
+_注：点击率会因查询类型、SERP特色内容和行业而异。这些数据为平均值。_
 
-### CTR Impact of SERP Features
+### SERP特色内容对点击率的影响
 
-| SERP Feature Present | Effect on Organic CTR |
+| SERP特色内容 | 对自然搜索点击率的影响 |
 |---------------------|---------------------|
-| Featured Snippet (you own) | +20-30% CTR for your result |
-| Featured Snippet (competitor) | -15-25% CTR for position #1 |
-| AI Overview | -10-30% CTR for all organic results |
-| PAA boxes | -5-10% CTR for positions 3-6 |
-| Shopping results | -10-20% CTR for commercial queries |
-| Knowledge Panel | -5-15% CTR for navigational queries |
+| 自己的特色片段 | 提高结果点击率20-30% |
+| 竞争对手的特色片段 | 降低第1位结果的点击率15-25% |
+| AI相关信息 | 降低所有自然搜索结果的点击率10-30% |
+| PAA框 | 降低第3-6位结果的点击率5-10% |
+| 购物结果 | 降低商业查询的点击率10-20% |
+| 知识面板 | 降低导航类查询的点击率5-15% |
 
-## SERP Volatility Context
+## SERP波动性分析
 
-### Algorithm Update Impact Assessment
+### 算法更新的影响评估
 
-| Update Type | Typical Impact | Recovery Time | Response Strategy |
+| 更新类型 | 典型影响 | 恢复时间 | 应对策略 |
 |------------|---------------|---------------|-------------------|
-| Core update | ±20-50% traffic shifts | 3-6 months (next core update) | Improve content quality broadly |
-| Helpful Content | Content quality focused | 1-3 months | Remove/improve unhelpful content |
-| Spam update | Penalizes manipulative tactics | Varies (may require disavow) | Clean up link profile, remove spam |
-| Product Reviews | Review content specific | 1-2 months | Improve review depth and expertise |
-| Link Spam | Targets artificial links | 2-4 months | Disavow toxic links, build quality links |
+| 核心算法更新 | 流量波动±20-50% | 需要3-6个月（直到下一次核心算法更新） | 全面提升内容质量 |
+| 有用的内容 | 重点提升内容质量 | 1-3个月 | 删除/改进无用的内容 |
+| 垃圾信息处理 | 严厉打击作弊行为 | 清理链接库，移除垃圾链接 |
+| 产品评论 | 根据评论内容调整 | 1-2个月 | 提升评论的深度和专业性 |
+| 链接作弊 | 处理虚假链接 | 2-4个月 | 清除有害链接，建立高质量链接 |
 
-## Tracking Configuration Best Practices
+## 跟踪配置最佳实践
 
-| Setting | Recommendation | Why |
+| 设置项 | 建议 | 原因 |
 |---------|---------------|-----|
-| Check frequency | Daily for top 20 keywords; weekly for others | Balance accuracy vs. API costs |
-| Location settings | Match target market; track local separately | Rankings vary by location |
-| Device tracking | Track mobile AND desktop separately | Mobile rankings differ significantly |
-| Competitor tracking | Track 3-5 competitors for key terms | Context for your own movements |
-| SERP features | Track which features appear | Explain CTR changes |
-| Keyword grouping | Group by topic cluster, intent, funnel stage | Identify patterns, not just keywords |
+| 检查频率 | 前20个关键词每天检查；其他关键词每周检查 | 在准确性和API成本之间取得平衡 |
+| 地点设置 | 与目标市场匹配；分别跟踪本地排名 | 不同地区的排名可能有所不同 |
+| 设备跟踪 | 分别跟踪移动设备和桌面设备 | 移动设备的排名差异显著 |
+| 竞争对手跟踪 | 关键关键词跟踪3-5个竞争对手 | 有助于了解自身排名变化的原因 |
+| SERP特色内容 | 跟踪哪些特色内容出现 | 解释点击率的变化原因 |
+| 关键词分组 | 按主题、意图和用户转化阶段分组 | 识别规律，而不仅仅是关键词本身 |
 
-## Reference Materials
+## 参考资料
 
-- [Tracking Setup Guide](./references/tracking-setup-guide.md) — Configuration best practices, device/location settings, and SERP feature tracking setup
+- [跟踪设置指南](./references/tracking-setup-guide.md) — 配置最佳实践、设备/地点设置及SERP特色内容跟踪方法
 
-## Related Skills
+## 相关功能
 
-- [keyword-research](../../research/keyword-research/) — Find keywords to track
-- [serp-analysis](../../research/serp-analysis/) — Understand SERP composition
-- [alert-manager](../alert-manager/) — Set up ranking alerts
-- [performance-reporter](../performance-reporter/) — Comprehensive reporting
-- [memory-management](../../cross-cutting/memory-management/) — Store ranking history in project memory
-
+- [关键词研究](../../research/keyword-research/) — 选择需要跟踪的关键词
+- [SERP分析](../../research/serp-analysis/) — 了解SERP的构成 |
+- [警报管理](../alert-manager/) — 设置排名警报 |
+- [性能报告](../performance-reporter/) — 生成综合报告 |
+- [内存管理](../../cross-cutting/memory-management/) — 将排名历史数据存储在项目中

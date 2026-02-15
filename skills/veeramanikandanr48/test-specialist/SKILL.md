@@ -1,23 +1,23 @@
 ---
 name: test-specialist
-description: This skill should be used when writing test cases, fixing bugs, analyzing code for potential issues, or improving test coverage for JavaScript/TypeScript applications. Use this for unit tests, integration tests, end-to-end tests, debugging runtime errors, logic bugs, performance issues, security vulnerabilities, and systematic code analysis.
+description: 此技能适用于编写测试用例、修复漏洞、分析代码中的潜在问题，以及提高 JavaScript/TypeScript 应用程序的测试覆盖率。它可以用于单元测试、集成测试、端到端测试、调试运行时错误、逻辑错误、性能问题、安全漏洞的排查，以及系统的代码分析。
 ---
 
-# Test Specialist
+# 测试专家
 
-## Overview
+## 概述
 
-Apply systematic testing methodologies and debugging techniques to JavaScript/TypeScript applications. This skill provides comprehensive testing strategies, bug analysis frameworks, and automated tools for identifying coverage gaps and untested code.
+运用系统的测试方法和调试技巧来处理 JavaScript/TypeScript 应用程序。该技能提供了全面的测试策略、错误分析框架以及自动化工具，用于识别测试覆盖范围中的遗漏和未测试的代码。
 
-## Core Capabilities
+## 核心能力
 
-### 1. Writing Test Cases
+### 1. 编写测试用例
 
-Write comprehensive tests covering unit, integration, and end-to-end scenarios.
+编写涵盖单元测试、集成测试和端到端测试的全面测试用例。
 
-#### Unit Testing Approach
+#### 单元测试方法
 
-Structure tests using the AAA pattern (Arrange-Act-Assert):
+使用 AAA 模式（Arrange-Act-Assert）来组织测试：
 
 ```typescript
 describe('ExpenseCalculator', () => {
@@ -52,15 +52,15 @@ describe('ExpenseCalculator', () => {
 });
 ```
 
-**Key principles:**
-- Test one behavior per test
-- Cover happy path, edge cases, and error conditions
-- Use descriptive test names that explain the scenario
-- Keep tests independent and isolated
+**关键原则：**
+- 每个测试只验证一个功能
+- 覆盖正常情况、边界情况和错误条件
+- 使用能描述测试场景的描述性测试名称
+- 保持测试的独立性和隔离性
 
-#### Integration Testing Approach
+#### 集成测试方法
 
-Test how components work together, including database, API, and service interactions:
+测试组件之间的协作，包括数据库、API 和服务的交互：
 
 ```typescript
 describe('ExpenseAPI Integration', () => {
@@ -100,9 +100,9 @@ describe('ExpenseAPI Integration', () => {
 });
 ```
 
-#### End-to-End Testing Approach
+#### 端到端测试方法
 
-Test complete user workflows using tools like Playwright or Cypress:
+使用 Playwright 或 Cypress 等工具测试完整的用户工作流程：
 
 ```typescript
 test('user can track expense from start to finish', async ({ page }) => {
@@ -122,40 +122,40 @@ test('user can track expense from start to finish', async ({ page }) => {
 });
 ```
 
-### 2. Systematic Bug Analysis
+### 2. 系统化错误分析
 
-Apply structured debugging methodology to identify and fix issues.
+应用结构化的调试方法来识别和修复问题。
 
-#### Five-Step Analysis Process
+#### 五步分析流程
 
-1. **Reproduction**: Reliably reproduce the bug
-   - Document exact steps to trigger
-   - Identify required environment/state
-   - Note expected vs actual behavior
+1. **重现问题**：可靠地重现错误
+   - 记录触发错误的具体步骤
+   - 确定所需的环境/状态
+   - 记录预期行为与实际行为
 
-2. **Isolation**: Narrow down the problem
-   - Binary search through code path
-   - Create minimal reproduction case
-   - Remove unrelated dependencies
+2. **定位问题**：缩小问题范围
+   - 逐步排查代码路径
+   - 创建最小化的重现场景
+   - 移除无关的依赖项
 
-3. **Root Cause Analysis**: Determine underlying cause
-   - Trace execution flow
-   - Check assumptions and preconditions
-   - Review recent changes (git blame)
+3. **根本原因分析**：确定问题的根本原因
+   - 跟踪执行流程
+   - 检查假设和前提条件
+   - 查看最近的代码更改（使用 git blame）
 
-4. **Fix Implementation**: Implement solution
-   - Write failing test first (TDD)
-   - Implement the fix
-   - Verify test passes
+4. **修复实现**：实施解决方案
+   - 先编写失败的测试用例（TDD）
+   - 实施修复
+   - 验证测试是否通过
 
-5. **Validation**: Ensure completeness
-   - Run full test suite
-   - Test edge cases
-   - Verify no regressions
+5. **验证**：确保修复后的代码质量
+   - 运行完整的测试套件
+   - 测试边界情况
+   - 确认没有出现回归问题
 
-#### Common Bug Patterns
+#### 常见错误类型
 
-**Race Conditions:**
+**竞态条件：**
 ```typescript
 // Test concurrent operations
 test('handles concurrent updates correctly', async () => {
@@ -168,7 +168,7 @@ test('handles concurrent updates correctly', async () => {
 });
 ```
 
-**Null/Undefined Errors:**
+**空/未定义值错误：**
 ```typescript
 // Test null safety
 test.each([null, undefined, '', 0, false])
@@ -177,7 +177,7 @@ test.each([null, undefined, '', 0, false])
   });
 ```
 
-**Off-by-One Errors:**
+**数值错误：**
 ```typescript
 // Test boundaries explicitly
 describe('pagination', () => {
@@ -196,13 +196,13 @@ describe('pagination', () => {
 });
 ```
 
-### 3. Identifying Potential Issues
+### 3. 主动识别潜在问题
 
-Proactively identify issues before they become bugs.
+在问题变成错误之前主动发现它们。
 
-#### Security Vulnerabilities
+#### 安全漏洞
 
-Test for common security issues:
+测试常见的安全问题：
 
 ```typescript
 describe('security', () => {
@@ -228,9 +228,9 @@ describe('security', () => {
 });
 ```
 
-#### Performance Issues
+#### 性能问题
 
-Test for performance problems:
+测试性能问题：
 
 ```typescript
 test('processes large expense list efficiently', () => {
@@ -248,9 +248,9 @@ test('processes large expense list efficiently', () => {
 });
 ```
 
-#### Logic Errors
+#### 逻辑错误
 
-Use parameterized tests to catch edge cases:
+使用参数化测试来捕获边界情况：
 
 ```typescript
 test.each([
@@ -266,34 +266,34 @@ test.each([
 });
 ```
 
-### 4. Test Coverage Analysis
+### 4. 测试覆盖范围分析
 
-Use automated tools to identify gaps in test coverage.
+使用自动化工具来识别测试覆盖范围中的遗漏。
 
-#### Finding Untested Code
+#### 查找未测试的代码
 
-Run the provided script to identify source files without tests:
+运行提供的脚本来识别没有测试的源文件：
 
 ```bash
 python3 scripts/find_untested_code.py src
 ```
 
-The script will:
-- Scan source directory for all code files
-- Identify which files lack corresponding test files
-- Categorize untested files by type (components, services, utils, etc.)
-- Prioritize files that need testing most
+该脚本将：
+- 扫描源代码目录中的所有文件
+- 识别缺少相应测试文件的文件
+- 按类型（组件、服务、工具等）对未测试的文件进行分类
+- 优先处理需要测试的文件
 
-**Interpretation:**
-- **API/Services**: High priority - test business logic and data operations
-- **Models**: High priority - test data validation and transformations
-- **Hooks**: Medium priority - test stateful behavior
-- **Components**: Medium priority - test complex UI logic
-- **Utils**: Low priority - test as needed for complex functions
+**解释：**
+- **API/服务**：高优先级 - 测试业务逻辑和数据操作
+- **模型**：高优先级 - 测试数据验证和转换
+- **钩子**：中等优先级 - 测试状态相关的行为
+- **组件**：中等优先级 - 测试复杂的 UI 逻辑
+- **工具**：低优先级 - 根据需要测试复杂的功能
 
-#### Analyzing Coverage Reports
+#### 分析覆盖范围报告
 
-Run the coverage analysis script after generating coverage:
+在生成测试覆盖报告后运行该脚本：
 
 ```bash
 # Generate coverage (using Jest example)
@@ -303,24 +303,24 @@ npm test -- --coverage
 python3 scripts/analyze_coverage.py coverage/coverage-final.json
 ```
 
-The script identifies:
-- Files below coverage threshold (default 80%)
-- Statement, branch, and function coverage percentages
-- Priority files to improve
+该脚本会识别：
+- 覆盖率低于阈值的文件（默认为 80%）
+- 语句、分支和函数的覆盖率
+- 需要优先改进的文件
 
-**Coverage targets:**
-- Critical paths: 90%+ coverage
-- Business logic: 85%+ coverage
-- UI components: 75%+ coverage
-- Utilities: 70%+ coverage
+**覆盖目标：**
+- 关键路径：90% 以上的覆盖率
+- 业务逻辑：85% 以上的覆盖率
+- UI 组件：75% 以上的覆盖率
+- 工具：70% 以上的覆盖率
 
-### 5. Test Maintenance and Quality
+### 5. 测试维护和质量
 
-Ensure tests remain valuable and maintainable.
+确保测试代码具有价值且易于维护。
 
-#### Test Code Quality Principles
+#### 测试代码质量原则
 
-**DRY (Don't Repeat Yourself):**
+**DRY（不要重复自己）：**
 ```typescript
 // Extract common setup
 function createTestExpense(overrides = {}) {
@@ -342,7 +342,7 @@ test('filters by category', () => {
 });
 ```
 
-**Clear test data:**
+**清晰的测试数据：**
 ```typescript
 // Bad: Magic numbers
 expect(calculateDiscount(100, 0.15)).toBe(85);
@@ -354,7 +354,7 @@ const EXPECTED_PRICE = 85;
 expect(calculateDiscount(ORIGINAL_PRICE, DISCOUNT_RATE)).toBe(EXPECTED_PRICE);
 ```
 
-**Avoid test interdependence:**
+**避免测试之间的依赖**：
 ```typescript
 // Bad: Tests depend on execution order
 let sharedState;
@@ -376,60 +376,60 @@ test('test 2', () => {
 });
 ```
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-Follow this decision tree to determine the testing approach:
+按照以下决策树来确定测试方法：
 
-1. **Adding new functionality?**
-   - Yes → Write tests first (TDD)
-     - Write failing test
-     - Implement feature
-     - Verify test passes
-     - Refactor
-   - No → Go to step 2
+1. **添加新功能？**
+   - 是 → 先编写测试用例（TDD）
+     - 编写失败的测试用例
+     - 实现功能
+     - 验证测试是否通过
+     - 重构代码
+   - 否 → 转到步骤 2
 
-2. **Fixing a bug?**
-   - Yes → Apply bug analysis process
-     - Reproduce the bug
-     - Write failing test demonstrating bug
-     - Fix the implementation
-     - Verify test passes
-   - No → Go to step 3
+2. **修复错误？**
+   - 是 → 应用错误分析流程
+     - 重现错误
+     - 编写失败的测试用例
+     - 修复代码
+     - 验证测试是否通过
+   - 否 → 转到步骤 3
 
-3. **Improving test coverage?**
-   - Yes → Use coverage tools
-     - Run `find_untested_code.py` to identify gaps
-     - Run `analyze_coverage.py` on coverage reports
-     - Prioritize critical paths
-     - Write tests for untested code
-   - No → Go to step 4
+3. **提高测试覆盖范围？**
+   - 是 → 使用覆盖范围工具
+     - 运行 `find_untested_code.py` 来识别遗漏的测试用例
+     - 运行 `analyze_coverage.py` 分析覆盖报告
+     - 优先处理关键路径
+     - 为未测试的代码编写测试用例
+   - 否 → 转到步骤 4
 
-4. **Analyzing code quality?**
-   - Yes → Systematic review
-     - Check for security vulnerabilities
-     - Test edge cases and error handling
-     - Verify performance characteristics
-     - Review error handling
+4. **分析代码质量？**
+   - 是 → 进行系统化审查
+     - 检查安全漏洞
+     - 测试边界情况和错误处理
+     - 验证性能
+     - 审查错误处理机制
 
-## Testing Frameworks and Tools
+## 测试框架和工具
 
-### Recommended Stack
+### 推荐的工具栈
 
-**Unit/Integration Testing:**
-- Jest or Vitest for test runner
-- Testing Library for React components
-- Supertest for API testing
-- MSW (Mock Service Worker) for API mocking
+**单元/集成测试：**
+- 使用 Jest 或 Vitest 作为测试运行器
+- 用于 React 组件的测试库
+- 使用 Supertest 进行 API 测试
+- 使用 MSW（Mock Service Worker）进行 API 模拟
 
-**E2E Testing:**
-- Playwright or Cypress
-- Page Object Model pattern
+**端到端测试：**
+- 使用 Playwright 或 Cypress
+- 使用 Page Object Model 模式
 
-**Coverage:**
-- Istanbul (built into Jest/Vitest)
-- Coverage reports in JSON format
+**覆盖范围分析：**
+- 使用 Istanbul（内置在 Jest/Vitest 中）
+- 以 JSON 格式生成覆盖范围报告
 
-### Running Tests
+### 运行测试
 
 ```bash
 # Run all tests
@@ -448,59 +448,59 @@ npm test -- --watch
 npm run test:e2e
 ```
 
-## Reference Documentation
+## 参考文档
 
-For detailed patterns and techniques, refer to:
+有关详细的测试模式和技术，请参考：
 
-- `references/testing_patterns.md` - Comprehensive testing patterns, best practices, and code examples
-- `references/bug_analysis.md` - In-depth bug analysis framework, common bug patterns, and debugging techniques
+- `references/testing_patterns.md` - 全面的测试模式、最佳实践和代码示例
+- `references/bug_analysis.md` - 深入的错误分析框架、常见错误类型和调试技巧
 
-These references contain extensive examples and advanced techniques. Load them when:
-- Dealing with complex testing scenarios
-- Need specific pattern implementations
-- Debugging unusual issues
-- Seeking best practices for specific situations
+这些参考文档包含了丰富的示例和高级技术。在以下情况下请查阅它们：
+- 处理复杂的测试场景时
+- 需要特定模式的实现时
+- 调试异常问题时
+- 寻求特定情况下的最佳实践时
 
-## Scripts
+## 脚本
 
 ### analyze_coverage.py
 
-Analyze Jest/Istanbul coverage reports to identify gaps:
+分析 Jest/Istanbul 的覆盖范围报告以识别覆盖范围中的遗漏：
 
 ```bash
 python3 scripts/analyze_coverage.py [coverage-file]
 ```
 
-Automatically finds common coverage file locations if not specified.
+如果未指定，该脚本会自动查找常见的覆盖范围文件位置。
 
-**Output:**
-- Files below coverage threshold
-- Statement, branch, and function coverage percentages
-- Priority files to improve
+**输出：**
+- 覆盖率低于阈值的文件
+- 语句、分支和函数的覆盖率
+- 需要优先改进的文件
 
 ### find_untested_code.py
 
-Find source files without corresponding test files:
+查找没有测试文件的源代码：
 
 ```bash
 python3 scripts/find_untested_code.py [src-dir] [--pattern test|spec]
 ```
 
-**Output:**
-- Total source and test file counts
-- Test file coverage percentage
-- Untested files categorized by type (API, services, components, etc.)
-- Recommendations for prioritization
+**输出：**
+- 源文件和测试文件的总数
+- 测试文件的覆盖率
+- 按类型（API、服务、组件等）分类的未测试文件
+- 改进的优先级建议
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Write tests first** (TDD) when adding new features
-2. **Test behavior, not implementation** - tests should survive refactoring
-3. **Keep tests independent** - no shared state between tests
-4. **Use descriptive names** - test names should explain the scenario
-5. **Cover edge cases** - null, empty, boundary values, error conditions
-6. **Mock external dependencies** - tests should be fast and reliable
-7. **Maintain high coverage** - 80%+ for critical code
-8. **Fix failing tests immediately** - never commit broken tests
-9. **Refactor tests** - apply same quality standards as production code
-10. **Use tools** - automate coverage analysis and gap identification
+1. **添加新功能时**：先编写测试用例（TDD）
+2. **测试行为，而不是实现** - 测试用例应能在重构后仍然有效
+3. **保持测试的独立性** - 测试之间不应有共享的状态
+4. **使用描述性名称** - 测试名称应能清晰地描述测试场景
+5. **覆盖边界情况** - 包括空值、空对象、边界值和错误条件
+6. **模拟外部依赖** - 测试应快速且可靠
+7. **保持高覆盖率** - 关键代码的覆盖率应达到 80% 以上
+8. **立即修复失败的测试** - 绝不要提交有错误的测试代码
+9. **重构测试代码** - 保持与生产代码相同的质量标准
+10. **使用工具** - 自动化覆盖范围分析和问题识别

@@ -1,19 +1,19 @@
 # Feishu ClawBot Card (FCC)
 
-**The Universal Business Card Protocol for AI Agents on Feishu.**
+**Feishu 上的 AI 代理的通用名片协议。**
 
-This skill allows OpenClaw bots to create, exchange, and store standardized identity cards ("ClawCards"). It acts as a Rolodex for your AI to remember who's who.
+此技能允许 OpenClaw 机器人创建、交换和存储标准化的身份卡片（“ClawCards”）。它就像一个名片册，帮助您的 AI 记住每个用户的身份。
 
-## 📦 Installation
+## 📦 安装
 
 ```bash
 openclaw install HMyaoyuan/feishu-clawbot-card
 ```
 
-## 🚀 Usage Guide
+## 🚀 使用指南
 
-### 1. 🆔 Mint Your Card (Create Identity)
-First, define who *you* are. Run this once to register yourself in the local registry.
+### 1. 🆔 创建您的名片（定义身份）
+首先，定义您的身份。运行此命令一次，以便在本地注册表中注册您的信息。
 
 ```bash
 node skills/feishu-clawbot-card/index.js mint '{
@@ -28,42 +28,42 @@ node skills/feishu-clawbot-card/index.js mint '{
   "capabilities": ["coding", "search"]
 }'
 ```
-*Note: `feishu_id` should be your App ID (`cli_...`) or User Open ID (`ou_...`).*
+*注意：`feishu_id` 应为您的应用程序 ID（`cli_...`）或用户 Open ID（`ou_...`）。*
 
-### 2. 📤 Share Your Card (Export)
-Generate a shareable JSON code block to send to other bots or humans.
+### 2. 📤 共享您的名片（导出）
+生成一个可共享的 JSON 代码块，以便发送给其他机器人或人类。
 
 ```bash
 # Get the JSON for a specific bot (by name or ID)
 node skills/feishu-clawbot-card/index.js export "MyBotName"
 ```
-**Output:** A JSON block. Copy this and send it in a chat!
+**输出：** 一个 JSON 代码块。复制该代码并通过聊天发送给他人！
 
-### 3. 📥 Save a Friend's Card (Import)
-When someone sends you their card JSON (following FCC-v1 protocol), save it to your registry.
+### 3. 📥 保存朋友的名片（导入）
+当有人根据 FCC v1 协议向您发送他们的名片 JSON 时，将其保存到您的注册表中。
 
 ```bash
 # Paste the received JSON string
 node skills/feishu-clawbot-card/index.js import '{"protocol":"fcc-v1", ...}'
 ```
 
-### 4. 📇 View Registry (List)
-See all the bots you know.
+### 4. 📇 查看注册表（列表）
+查看您认识的所有机器人。
 
 ```bash
 node skills/feishu-clawbot-card/index.js list
 ```
 
-### 5. 🎨 Display Card (Render)
-Generate a beautiful Feishu Rich Text (Post) JSON to display a card in chat.
+### 5. 🎨 显示名片（渲染）
+生成一个精美的 Feishu 富文本（Post）JSON，以便在聊天中显示名片。
 
 ```bash
 node skills/feishu-clawbot-card/index.js render "MyBotName"
 ```
 
-## 📜 Protocol Schema (FCC v1)
+## 📜 协议规范（FCC v1）
 
-A valid card must follow this JSON structure:
+有效的名片必须遵循以下 JSON 结构：
 
 ```json
 {

@@ -1,32 +1,32 @@
-# Hiring Scorecard Skill
+# 招聘评分卡功能
 
-Score and compare job candidates objectively using weighted criteria. Eliminates gut-feel hiring decisions.
+使用加权标准客观地评估和比较求职者，避免基于直觉的招聘决策。
 
-## Usage
+## 使用方法
 
-Tell your agent: "Score this candidate for [role]" or "Compare these 3 candidates for the backend engineer role."
+告诉您的招聘助手：“为[职位]对这位候选人进行评分”或“比较这3位后端工程师职位的候选人”。
 
-## How It Works
+## 工作原理
 
-1. **Define the role** — provide job title and key requirements
-2. **Set criteria** — the agent uses 6 default dimensions (or you customize):
-   - Technical skills (weight: 25%)
-   - Relevant experience (weight: 20%)
-   - Culture fit (weight: 15%)
-   - Communication (weight: 15%)
-   - Problem solving (weight: 15%)
-   - Growth potential (weight: 10%)
-3. **Score candidates** — 1-5 scale per criterion after interview/review
-4. **Get weighted totals** — ranked comparison with hire/no-hire recommendation
+1. **定义职位**—— 提供职位名称和关键要求
+2. **设置评分标准**—— 招聘助手会使用6个默认维度（您也可以自定义）：
+   - 技术能力（权重：25%）
+   - 相关经验（权重：20%）
+   - 企业文化匹配度（权重：15%）
+   - 沟通能力（权重：15%）
+   - 解决问题的能力（权重：15%）
+   - 发展潜力（权重：10%）
+3. **对候选人进行评分**—— 每个维度根据面试/评估结果给出1-5分的评分
+4. **计算加权总分**—— 根据评分结果给出“录用”或“不录用”的建议
 
-## Commands
+## 命令
 
-- `score candidate [name] for [role]` — start a new scorecard
-- `add criterion [name] weight [%]` — customize scoring dimensions
-- `compare candidates` — side-by-side ranked comparison
-- `hiring summary` — executive summary with recommendation
+- `score candidate [姓名] for [职位]` — 开始一个新的评分卡
+- `add criterion [名称] weight [%]` — 自定义评分维度
+- `compare candidates` — 进行并排排名比较
+- `hiring summary` — 获取包含建议的执行摘要
 
-## Scorecard Template
+## 评分卡模板
 
 ```markdown
 # Candidate Scorecard: [Name]
@@ -57,13 +57,13 @@ Tell your agent: "Score this candidate for [role]" or "Compare these 3 candidate
 1 = Not a fit — significant concerns
 ```
 
-## Tips
+## 提示
 
-- Score immediately after each interview while impressions are fresh
-- Have multiple interviewers score independently, then compare
-- Adjust weights per role (e.g., bump Technical to 40% for senior eng)
-- Track scores over time to calibrate your hiring bar
+- 在每次面试后尽快评分，以便印象更清晰
+- 让多名面试官独立评分后再进行比较
+- 根据职位调整各维度的权重（例如，将技术能力的权重提高到40%（针对高级工程师）
+- 随时间跟踪评分结果，以调整招聘标准
 
-## More Business Tools
+## 更多业务工具
 
-Get industry-specific AI agent context packs at [AfrexAI](https://afrexai-cto.github.io/context-packs/) — pre-built configurations for recruitment, sales, operations, and more. Drop-in and go.
+在[AfrexAI](https://afrexai-cto.github.io/context-packs/)获取行业特定的AI助手配置包—— 为招聘、销售、运营等场景提供预先构建的配置方案。直接使用即可。

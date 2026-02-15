@@ -1,54 +1,54 @@
 ---
 name: snapog
-description: Generate social images and OG cards from professional templates via the SnapOG API. One API call = one pixel-perfect PNG.
+description: 通过 SnapOG API，可以使用专业模板生成社交图片和原创卡片（OG Cards）。每次 API 调用都会生成一张像素完美的 PNG 图像。
 homepage: https://snapog.dev
 metadata: {"openclaw":{"emoji":"⚡","primaryEnv":"SNAPOG_API_KEY","requires":{"env":["SNAPOG_API_KEY"]}}}
 ---
 
-# SnapOG — Social Image Generation
+# SnapOG — 社交媒体图片生成工具
 
-Generate OG images, social cards, and marketing visuals from professionally designed templates. Returns pixel-perfect PNGs in under 100ms.
+SnapOG 可以根据专业设计的模板生成原图（OG images）、社交媒体卡片（social cards）以及营销视觉素材。生成结果为像素完美的 PNG 图片，耗时不到 100 毫秒。
 
-**API Base:** `https://api.snapog.dev`
+**API 基址：** `https://api.snapog.dev`
 
-## Authentication
+## 认证
 
-All generation requests require a Bearer token. The API key is read from the `SNAPOG_API_KEY` environment variable.
+所有生成请求都需要使用 Bearer Token。API 密钥从 `SNAPOG_API_KEY` 环境变量中获取。
 
 ```
 Authorization: Bearer $SNAPOG_API_KEY
 ```
 
-Preview and template listing endpoints work without authentication.
+预览和模板列表接口无需认证即可使用。
 
-## Available Templates
+## 可用模板
 
-| Template | ID | Best For |
+| 模板 | ID | 适用场景 |
 |----------|----|----------|
-| Blog Post | `blog-post` | Blog articles, tutorials, documentation |
-| Announcement | `announcement` | Product launches, updates, releases |
-| Stats Card | `stats` | Metrics dashboards, quarterly results |
-| Quote | `quote` | Testimonials, pull quotes, social shares |
-| Product Card | `product` | SaaS products, pricing, features |
-| GitHub Repo | `github-repo` | Open source projects, repo cards |
-| Event | `event` | Conferences, meetups, webinars |
-| Changelog | `changelog` | Release notes, version updates |
-| Brand Card | `brand-card` | Company pages, docs, marketing |
-| Photo Hero | `photo-hero` | Blog headers, news, portfolios |
+| 博文文章 | `blog-post` | 博文、教程、文档 |
+| 公告 | `announcement` | 产品发布、更新信息 |
+| 统计数据 | `stats` | 统计仪表盘、季度报告 |
+| 引用 | `quote` | 客户评价、引用语、社交媒体分享 |
+| 产品介绍 | `product` | SaaS 产品、价格信息、功能介绍 |
+| GitHub 仓库 | `github-repo` | 开源项目、仓库信息 |
+| 活动 | `event` | 会议、研讨会、网络研讨会 |
+| 更新日志 | `changelog` | 版本更新信息 |
+| 品牌介绍 | `brand-card` | 公司页面、文档、营销材料 |
+| 图片标题 | `photo-hero` | 博文标题、新闻图片、作品集 |
 
-## Core Workflows
+## 核心工作流程
 
-### 1. List templates and discover parameters
+### 1. 列出模板并查看参数
 
 ```bash
 curl https://api.snapog.dev/v1/templates
 ```
 
-Returns all templates with their `paramSchema` (parameter names, types, required fields, defaults). Always call this first if the user hasn't specified a template.
+该接口会返回所有模板及其参数信息（参数名称、类型、必填字段、默认值）。如果用户未指定模板，请先调用此接口。
 
-### 2. Generate an image (POST)
+### 2. 生成图片（POST 请求）
 
-Use this for downloading images or advanced options:
+用于下载图片或使用高级选项：
 
 ```bash
 curl -X POST https://api.snapog.dev/v1/generate \
@@ -66,38 +66,38 @@ curl -X POST https://api.snapog.dev/v1/generate \
   --output og-image.png
 ```
 
-**POST body fields:**
-- `template` (string, required) — template ID
-- `params` (object, required) — template parameters
-- `width` (number) — image width in pixels (default: 1200)
-- `height` (number) — image height in pixels (default: 630)
-- `format` ("png" | "svg" | "pdf") — output format (default: png)
-- `fontFamily` (string) — any Google Font family name
-- `webhook_url` (string) — URL to POST when generation completes
+**POST 请求体字段：**
+- `template`（字符串，必填）— 模板 ID
+- `params`（对象，必填）— 模板参数
+- `width`（数字）— 图片宽度（单位：像素，默认值：1200）
+- `height`（数字）— 图片高度（单位：像素，默认值：630）
+- `format`（字符串）— 输出格式（`png` | `svg` | `pdf`，默认值：`png`）
+- `fontFamily`（字符串）— 任意 Google 字体名称
+- `webhook_url`（字符串）— 生成完成后发送的 POST 请求 URL
 
-Save the response body directly to a `.png` file. The response Content-Type is `image/png`.
+将响应体直接保存为 `.png` 文件。响应的 Content-Type 为 `image/png`。
 
-### 3. Generate via URL (GET)
+### 3. 通过 URL 生成图片（GET 请求）
 
-Use this when the user needs a URL to embed in HTML meta tags, markdown, or anywhere an image URL is needed:
+当用户需要将图片嵌入 HTML 的 `<meta>` 标签或 Markdown 文本中时，可以使用此接口：
 
 ```
 https://api.snapog.dev/v1/og/blog-post?title=Building+with+MCP&author=Taylor&tags=AI,Tools
 ```
 
-This URL itself serves the image. Parameters are query strings. Requires `Authorization` header or a signed URL.
+该 URL 本身即可直接显示图片。参数通过查询字符串传递。需要设置 `Authorization` 请求头或使用签名 URL。
 
-### 4. Preview a template (no auth needed)
+### 4. 预览模板（无需认证）
 
 ```bash
 curl https://api.snapog.dev/v1/preview/blog-post --output preview.png
 ```
 
-Renders the template with its default parameters. Useful for showing the user what a template looks like before customizing.
+使用默认参数渲染模板，方便用户在自定义前查看模板效果。
 
-### 5. Create a signed URL (for meta tags)
+### 5. 生成签名 URL（用于 `<meta>` 标签）
 
-Signed URLs let you embed images in `<meta>` tags without exposing the API key:
+签名 URL 可以让你在 `<meta>` 标签中嵌入图片，而无需暴露 API 密钥：
 
 ```bash
 curl -X POST https://api.snapog.dev/v1/sign \
@@ -110,15 +110,15 @@ curl -X POST https://api.snapog.dev/v1/sign \
   }'
 ```
 
-Returns `{ "url": "https://api.snapog.dev/v1/og/blog-post?title=...&token=..." }`. This URL works without authentication and can be placed directly in HTML:
+返回格式如下：`{"url": "https://api.snapog.dev/v1/og/blog-post?title=...&token=..."}`。此 URL 无需认证，可直接用于 HTML 中：
 
 ```html
 <meta property="og:image" content="SIGNED_URL_HERE" />
 ```
 
-### 6. Batch generate (multiple sizes)
+### 6. 批量生成图片（多种尺寸）
 
-Generate the same image in multiple sizes at once:
+可以一次性生成多种尺寸的图片：
 
 ```bash
 curl -X POST https://api.snapog.dev/v1/batch \
@@ -131,32 +131,32 @@ curl -X POST https://api.snapog.dev/v1/batch \
   }'
 ```
 
-**Size presets:** `og` (1200x630), `twitter` (1200x628), `farcaster` (1200x800), `instagram-square` (1080x1080), `instagram-story` (1080x1920), `linkedin` (1200x627), `facebook` (1200x630), `pinterest` (1000x1500).
+**支持的尺寸：** `og`（1200x630）、`twitter`（1200x628）、`farcaster`（1200x800）、`instagram-square`（1080x1080）、`instagram-story`（1080x1920）、`linkedin`（1200x627）、`facebook`（1200x630）、`pinterest`（1000x1500）。
 
-## Common Parameters
+## 常用参数
 
-Most templates accept these shared parameters:
+大多数模板支持以下通用参数：
 
-- `title` (string, required) — main heading
-- `accentColor` (color) — theme color, e.g. `#6366f1`
-- `logo` (url) — logo image URL
-- `fontFamily` (string) — any Google Font, e.g. `"Space Grotesk"`
+- `title`（字符串，必填）— 主标题
+- `accentColor`（颜色）— 主题颜色（例如：`#6366f1`）
+- `logo`（字符串）— 徽标图片 URL
+- `fontFamily`（字符串）— 任意 Google 字体名称
 
-Each template has additional specific parameters. Call `/v1/templates` to see the full schema for any template.
+每个模板还有特定的参数。调用 `/v1/templates` 可查看该模板的完整参数信息。
 
-## Tips
+## 使用建议
 
-- **Choosing a template:** Match the content type — `blog-post` for articles, `announcement` for launches, `github-repo` for OSS projects, `stats` for metrics, `quote` for testimonials.
-- **Colors:** Pass hex colors like `#6366f1`. Most templates support `accentColor` for theming.
-- **Arrays:** For `tags` and `changes`, pass as JSON arrays: `["tag1", "tag2"]`.
-- **Stats:** The `stats` template expects a JSON array: `[{"label": "Users", "value": "10K"}]`.
-- **Images:** For `logo`, `image`, `authorImage` — pass a publicly accessible URL.
-- **Output:** Default is 1200x630 PNG (standard OG image size). Use `width`/`height` to customize.
-- **Formats:** Use `"svg"` for vector output, `"pdf"` for print-ready documents.
+- **选择模板**：根据内容类型选择合适的模板，例如：`blog-post` 适用于博客文章，`announcement` 适用于产品发布，`github-repo` 适用于开源项目等。
+- **颜色**：使用十六进制颜色格式（如 `#6366f1`）进行设置。大多数模板支持 `accentColor` 参数。
+- **数组**：对于 `tags` 和 `changes` 等参数，请以 JSON 数组形式传递（例如：`["tag1", "tag2"]`）。
+- **统计数据**：`stats` 模板接收 JSON 数组格式的数据，例如：`[{"label": "Users", "value": "10K"]`。
+- **图片**：`logo`、`image`、`authorImage` 等参数请使用公开可访问的图片 URL。
+- **输出格式**：默认输出为 1200x630 像素的 PNG 图片。可通过 `width`/`height` 参数进行自定义。
+- **格式**：`svg` 用于矢量图像；`pdf` 用于打印文档。
 
-## Full API Docs
+## 完整 API 文档
 
-For the complete API reference as markdown (useful for deeper integration):
+如需完整的 API 参考文档（以 Markdown 格式），请查看：
 
 ```bash
 curl https://api.snapog.dev/v1/docs

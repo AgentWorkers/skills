@@ -1,36 +1,36 @@
 ---
 name: philips-hue-thinking
-description: Visual AI activity indicator using Philips Hue lights. Pulse red when thinking, green when done.
+description: 使用飞利浦 Hue 灯作为视觉 AI 活动指示器：思考时灯光会闪烁红色，完成任务后变为绿色。
 homepage: https://github.com/yourusername/philips-hue-thinking
 metadata: {"clawdbot":{"emoji":"🚦","requires":{"bins":["hue"]},"install":[{"id":"manual","kind":"manual","label":"Copy hue script to PATH"}]}}
 ---
 
-# Philips Hue Thinking Indicator
+# Philips Hue 智能指示灯
 
-**Visual AI activity indicator** — Connect your AI assistant's work status to your physical environment through Philips Hue smart lights.
+**视觉 AI 活动指示器** — 通过 Philips Hue 智能灯泡将您的 AI 助手的工作状态与您的物理环境连接起来。
 
-![Demo](https://img.shields.io/badge/status-active-green)
+![演示](https://img.shields.io/badge/status-active-green)
 
-## What It Does
+## 功能介绍
 
-Turns a Philips Hue light into an **AI activity indicator**:
+将 Philips Hue 灯泡变成一个 **AI 活动指示器**：
 
-| Light State | Meaning |
+| 灯的状态 | 含义 |
 |-------------|---------|
-| 🟢 **Green** | Ready / Done / Idle |
-| 🔴 **Pulsing Red** | AI is thinking, analyzing, or planning |
-| 🔴 **Solid Red** | AI is actively building/working |
+| 🟢 **绿色** | 准备就绪 / 已完成 / 闲置 |
+| 🔴 **闪烁的红色** | AI 正在思考、分析或规划 |
+| 🔴 **稳定的红色** | AI 正在积极执行任务 |
 
-## Why Use This?
+## 为什么使用这个工具？
 
-- **Ambient awareness** — Know when your AI is working without checking screens
-- **Flow state protection** — Visual indicator prevents interruptions during deep work
-- **Satisfying completion** — Green light signals "ready for next task"
-- **Conversation starter** — "My AI has a physical presence in my house"
+- **环境感知** — 无需查看屏幕即可了解 AI 的工作状态 |
+- **保护工作流程** — 视觉指示器可在您专注工作时防止干扰 |
+- **完成任务后的反馈** — 绿色灯光表示“已准备好执行下一个任务” |
+- **增强交互体验** — “我的 AI 在我的家中有了实体存在感”
 
-## Quick Start
+## 快速入门
 
-### 1. Setup Your Hue Bridge
+### 1. 设置 Hue Bridge
 
 ```bash
 # Find your bridge IP (check router or Hue app), then run:
@@ -40,7 +40,7 @@ hue setup <bridge-ip>
 hue setup 192.168.1.100
 ```
 
-### 2. Find Your Light
+### 2. 找到您的灯泡
 
 ```bash
 hue lights
@@ -51,7 +51,7 @@ hue lights
 #   5: Front door 💡 ON  ← Use this one
 ```
 
-### 3. Use It
+### 3. 开始使用
 
 ```bash
 # AI starts thinking
@@ -61,9 +61,9 @@ hue thinking 5
 hue done 5
 ```
 
-## Installation
+## 安装
 
-### Option 1: Copy to PATH
+### 方法 1：将脚本添加到系统路径
 
 ```bash
 # Clone or download
@@ -74,7 +74,7 @@ cp philips-hue-thinking/hue /usr/local/bin/
 chmod +x /usr/local/bin/hue
 ```
 
-### Option 2: Use Directly
+### 方法 2：直接使用脚本
 
 ```bash
 # Add to your shell profile (.zshrc or .bashrc)
@@ -84,9 +84,9 @@ export PATH="$PATH:/path/to/philips-hue-thinking"
 source ~/.zshrc
 ```
 
-## Commands
+## 命令
 
-### Core Commands
+### 核心命令
 
 ```bash
 # Setup (press bridge button first!)
@@ -105,7 +105,7 @@ hue done <light-id>
 hue set <light-id> <color>
 ```
 
-### Available Colors
+### 可用的颜色
 
 ```bash
 hue set 5 red
@@ -116,7 +116,7 @@ hue set 5 purple
 hue set 5 orange
 ```
 
-### Utility Commands
+### 实用命令
 
 ```bash
 # Turn off
@@ -126,11 +126,11 @@ hue off 5
 hue pulse 5 --color red
 ```
 
-## Workflow Integration
+## 工作流程集成
 
-### With AI Assistants
+### 与 AI 助手结合使用
 
-**Planning Mode:**
+**规划模式：**
 ```
 User: "Planning mode — I want to build a website"
 AI:  [runs 'hue thinking 5'] 🔴 Pulsing...
@@ -143,9 +143,9 @@ AI:  [runs 'hue done 5'] ✅ Green
      "Done!"
 ```
 
-### Shell Aliases
+### Shell 别名
 
-Add to `~/.zshrc`:
+将以下内容添加到 `~/.zshrc` 文件中：
 
 ```bash
 # Quick aliases
@@ -153,33 +153,33 @@ alias think='hue thinking 5'
 alias done='hue done 5'
 ```
 
-Then just type:
+然后只需输入：
 ```bash
 think  # Light pulses red
 done   # Light turns green
 ```
 
-## Technical Details
+## 技术细节
 
-### How It Works
+### 工作原理
 
-1. **Hue Bridge API** — Communicates via local HTTP API
-2. **Color XY Values** — Uses CIE color space for accurate colors
-3. **Background Pulse** — Bash loop dims/brightens light
-4. **Stateless** — Stores config in `~/.config/philips-hue/`
+1. **通过 Hue Bridge API 进行通信** — 使用本地 HTTP API 进行数据交换 |
+2. **使用 CIE 色彩空间** — 确保颜色显示的准确性 |
+3. **通过 Bash 循环控制灯光亮度** — 实现灯光的闪烁效果 |
+4. **无状态设计** — 配置信息存储在 `~/.config/philips-hue/` 文件中 |
 
-### Color XY Values
+### CIE 色彩空间
 
-| Color | X | Y |
+| 颜色 | X | Y |
 |-------|---|---|
-| Red | 0.675 | 0.322 |
-| Green | 0.214 | 0.709 |
-| Blue | 0.167 | 0.040 |
-| Yellow | 0.492 | 0.476 |
-| Purple | 0.265 | 0.100 |
-| Orange | 0.600 | 0.380 |
+| 红色 | 0.675 | 0.322 |
+| 绿色 | 0.214 | 0.709 |
+| 蓝色 | 0.167 | 0.040 |
+| 黄色 | 0.492 | 0.476 |
+| 紫色 | 0.265 | 0.100 |
+| 橙色 | 0.600 | 0.380 |
 
-### The Pulse Effect
+### 闪烁效果
 
 ```bash
 # Brightness oscillation
@@ -190,9 +190,9 @@ done   # Light turns green
 Background process keeps pulsing
 ```
 
-## Configuration
+## 配置
 
-Config stored in: `~/.config/philips-hue/config.json`
+配置信息存储在：`~/.config/philips-hue/config.json` 文件中
 
 ```json
 {
@@ -201,20 +201,20 @@ Config stored in: `~/.config/philips-hue/config.json`
 }
 ```
 
-## Requirements
+## 系统要求
 
-- Philips Hue Bridge (v2)
-- Philips Hue color bulbs
-- macOS/Linux with `curl`
-- Bash 4.0+
+- Philips Hue Bridge（版本 2） |
+- Philips Hue 彩色灯泡 |
+- 安装了 `curl` 的 macOS/Linux 系统 |
+- Bash 4.0 或更高版本
 
-## Troubleshooting
+## 故障排除
 
-### "Link button not pressed"
+### “链接按钮未按下”
 
-Press the **physical button** on your Hue Bridge, then run setup within 30 seconds.
+请按下 Hue Bridge 上的物理按钮，然后在 30 秒内完成设置。
 
-### Light not responding
+### 灯泡无响应
 
 ```bash
 # Check connection
@@ -224,7 +224,7 @@ hue lights
 cat ~/.config/philips-hue/config.json
 ```
 
-### Pulse won't stop
+### 闪烁不停
 
 ```bash
 # Kill background process
@@ -234,23 +234,23 @@ pkill -f "hue-pulse-loop"
 hue done 5
 ```
 
-## Future Ideas
+## 未来改进方向
 
-- [ ] Auto-trigger via AI session lifecycle
-- [ ] Multiple lights for different task types
-- [ ] Heartbeat mode (gentle pulse every 30 min)
-- [ ] Error state (flash purple)
-- [ ] Success celebration (rainbow effect)
+- [ ] 根据 AI 会话状态自动触发指示灯 |
+- [ ] 为不同任务类型使用多个灯泡 |
+- [ ] 实现“心跳模式”（每 30 分钟闪烁一次） |
+- [ ] 显示错误状态（灯光闪烁紫色） |
+- [ ] 成功完成时显示庆祝效果（灯光变彩）
 
-## License
+## 许可证
 
-MIT — See LICENSE file
+MIT 许可证 — 详见 LICENSE 文件
 
-## Credits
+## 致谢
 
-Created by Jesse & Kate (Clawdbot)  
-Inspired by the need for AI physical presence
+由 Jesse 和 Kate（Clawdbot）开发  
+灵感来源于对 AI 实体化存在的需求
 
 ---
 
-**Questions?** Open an issue or DM @jesse on Twitter
+**有问题吗？** 可在 Twitter 上向 @jesse 提问或发送私信。

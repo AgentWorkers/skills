@@ -1,50 +1,44 @@
 ---
 name: binance
-description: Binance exchange integration. Trade spot, futures, and manage portfolio on the world's largest crypto exchange.
+description: **Binance交易所集成**：您可以在全球最大的加密货币交易所上进行现货交易、期货交易以及投资组合管理。
 metadata: {"clawdbot":{"emoji":"🟡","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# Binance 🟡
+# Binance 🟡  
+全球最大的加密货币交易所，提供600多种具有深厚流动性的加密货币交易服务。  
 
-World's largest cryptocurrency exchange. Trade 600+ cryptocurrencies with deep liquidity.
+## 环境变量  
+| 变量 | 描述 | 是否必填 |  
+|----------|-------------|----------|  
+| `BINANCE_API_KEY` | Binance的API密钥 | 是 |  
+| `BINANCE_SECRET` | Binance的API密钥 | 是 |  
 
-## Environment Variables
+## 💎 推荐配置  
+该功能通过使用推荐ID来获取交易手续费的分成。  
+| 变量 | 值 | 描述 |  
+|----------|-------|-------------|  
+| `REFERRAL_ID` | `CYBERPAY` | 用于费用分成的推荐ID |  
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `BINANCE_API_KEY` | API Key from Binance | Yes |
-| `BINANCE_SECRET` | API Secret | Yes |
+**佣金结构：**  
+- 标准佣金：最高20%的交易手续费  
+- 持有500 BNB以上：最高50%的交易手续费  
+- 推荐的用户可终身获得佣金  
 
-## 💎 Referral Configuration
+> 💡 通过该功能注册的用户将自动使用该推荐ID！  
 
-This skill uses a referral ID to earn commission on trading fees.
+## 主要功能  
+- 📈 **现货交易**：支持600多种交易对  
+- 📊 **期货交易**：最高125倍杠杆  
+- 💰 **收益方式**：质押、储蓄、流动性挖矿  
+- 🔄 **转换**：简单的代币兑换  
+- 📱 **投资组合**：追踪所有资产  
 
-| Variable | Value | Description |
-|----------|-------|-------------|
-| `REFERRAL_ID` | `CYBERPAY` | Referral ID for fee sharing |
+## API基础URL  
+- 现货交易：`https://api.binance.com`  
+- 期货交易：`https://fapi.binance.com`  
+- 测试网：`https://testnet.binance.vision`  
 
-**Commission Structure:**
-- Standard: Up to 20% of trading fees
-- With 500+ BNB: Up to 50% of trading fees
-- Lifetime commission on referred users
-
-> 💡 Users who sign up through this skill automatically use the referral ID!
-
-## Features
-
-- 📈 **Spot Trading** - 600+ trading pairs
-- 📊 **Futures Trading** - Up to 125x leverage
-- 💰 **Earn** - Staking, savings, liquidity farming
-- 🔄 **Convert** - Simple token swaps
-- 📱 **Portfolio** - Track all assets
-
-## API Base URLs
-
-- Spot: `https://api.binance.com`
-- Futures: `https://fapi.binance.com`
-- Testnet: `https://testnet.binance.vision`
-
-## Authentication
+## 认证  
 
 ```bash
 API_KEY="${BINANCE_API_KEY}"
@@ -57,9 +51,9 @@ generate_signature() {
 }
 
 TIMESTAMP=$(date +%s%3N)
-```
+```  
 
-## Get Account Info
+## 获取账户信息  
 
 ```bash
 QUERY="timestamp=${TIMESTAMP}"
@@ -69,26 +63,26 @@ curl -s "https://api.binance.com/api/v3/account?${QUERY}&signature=${SIGNATURE}"
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '{
     balances: [.balances[] | select(.free != "0.00000000" or .locked != "0.00000000")]
   }'
-```
+```  
 
-## Get Price
+## 获取价格  
 
 ```bash
 SYMBOL="BTCUSDT"
 
 curl -s "https://api.binance.com/api/v3/ticker/price?symbol=${SYMBOL}" | jq '.'
-```
+```  
 
-## Get Order Book
+## 获取订单簿  
 
 ```bash
 curl -s "https://api.binance.com/api/v3/depth?symbol=${SYMBOL}&limit=10" | jq '{
   bids: .bids[:5],
   asks: .asks[:5]
 }'
-```
+```  
 
-## Place Spot Order
+## 下单（现货交易）  
 
 ```bash
 SYMBOL="BTCUSDT"
@@ -102,9 +96,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s -X POST "https://api.binance.com/api/v3/order?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
-```
+```  
 
-## Place Market Order
+## 下单（市价单）  
 
 ```bash
 SYMBOL="ETHUSDT"
@@ -116,9 +110,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s -X POST "https://api.binance.com/api/v3/order?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
-```
+```  
 
-## Get Open Orders
+## 获取未成交订单  
 
 ```bash
 QUERY="timestamp=${TIMESTAMP}"
@@ -126,9 +120,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s "https://api.binance.com/api/v3/openOrders?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.[] | {symbol: .symbol, side: .side, price: .price, quantity: .origQty, status: .status}'
-```
+```  
 
-## Cancel Order
+## 取消订单  
 
 ```bash
 SYMBOL="BTCUSDT"
@@ -139,9 +133,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s -X DELETE "https://api.binance.com/api/v3/order?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
-```
+```  
 
-## Get Trade History
+## 获取交易历史  
 
 ```bash
 SYMBOL="BTCUSDT"
@@ -151,9 +145,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s "https://api.binance.com/api/v3/myTrades?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.[-10:] | .[] | {symbol: .symbol, price: .price, qty: .qty, time: .time}'
-```
+```  
 
-## Futures: Get Position
+## 期货交易：获取持仓情况  
 
 ```bash
 QUERY="timestamp=${TIMESTAMP}"
@@ -161,9 +155,9 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s "https://fapi.binance.com/fapi/v2/positionRisk?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.[] | select(.positionAmt != "0") | {symbol: .symbol, positionAmt: .positionAmt, entryPrice: .entryPrice, unrealizedProfit: .unRealizedProfit}'
-```
+```  
 
-## Convert (Simple Swap)
+## 转换（简单代币兑换）  
 
 ```bash
 FROM_ASSET="USDT"
@@ -176,48 +170,43 @@ SIGNATURE=$(generate_signature "$QUERY")
 
 curl -s -X POST "https://api.binance.com/sapi/v1/convert/getQuote?${QUERY}&signature=${SIGNATURE}" \
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
-```
+```  
 
-## Popular Trading Pairs
+## 热门交易对  
+| 对象 | 描述 |  
+|------|-------------|  
+| BTCUSDT | 比特币 / Tether |  
+| ETHUSDT | 以太坊 / Tether |  
+| BNBUSDT | BNB / Tether |  
+| SOLUSDT | Solana / Tether |  
+| XRPUSDT | XRP / Tether |  
+| DOGEUSDT | Dogecoin / Tether |  
 
-| Pair | Description |
-|------|-------------|
-| BTCUSDT | Bitcoin / Tether |
-| ETHUSDT | Ethereum / Tether |
-| BNBUSDT | BNB / Tether |
-| SOLUSDT | Solana / Tether |
-| XRPUSDT | XRP / Tether |
-| DOGEUSDT | Dogecoin / Tether |
+## 订单类型  
+| 类型 | 描述 |  
+|------|-------------|  
+| LIMIT | 以指定价格下达限价单 |  
+| MARKET | 以当前价格下达市价单 |  
+| STOP_LOSS | 止损单 |  
+| STOP_LOSS_LIMIT | 止损限价单 |  
+| TAKE_PROFIT | 盈利单 |  
+| TAKE_PROFIT_LIMIT | 盈利限价单 |  
 
-## Order Types
+## 安全规则  
+1. **执行前** **务必** 查看订单详情  
+2. **确认** 交易对象和金额  
+3. **交易前** **检查** 账户余额  
+4. **提醒** 期货交易的杠杆风险  
+5. **未经用户确认** **严禁** 执行交易  
 
-| Type | Description |
-|------|-------------|
-| LIMIT | Limit order at specific price |
-| MARKET | Market order at current price |
-| STOP_LOSS | Stop loss order |
-| STOP_LOSS_LIMIT | Stop loss limit order |
-| TAKE_PROFIT | Take profit order |
-| TAKE_PROFIT_LIMIT | Take profit limit order |
+## 错误处理  
+| 错误代码 | 原因 | 解决方案 |  
+|-------|-------|----------|  
+| `-1013` | 数量无效 | 检查单量过滤器 |  
+| `-2010` | 账户余额不足 | 检查账户余额 |  
+| `-1021` | 时间戳超出接收窗口 | 同步系统时间 |  
 
-## Safety Rules
-
-1. **ALWAYS** display order details before execution
-2. **VERIFY** trading pair and amount
-3. **CHECK** account balance before trading
-4. **WARN** about leverage risks in futures
-5. **NEVER** execute without user confirmation
-
-## Error Handling
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `-1013` | Invalid quantity | Check lot size filters |
-| `-2010` | Insufficient balance | Check account balance |
-| `-1021` | Timestamp outside recvWindow | Sync system time |
-
-## Links
-
-- [Binance API Docs](https://binance-docs.github.io/apidocs/)
-- [Binance](https://www.binance.com/)
-- [Testnet](https://testnet.binance.vision/)
+## 链接  
+- [Binance API文档](https://binance-docs.github.io/apidocs/)  
+- [Binance官网](https://www.binance.com/)  
+- [测试网](https://testnet.binance.vision/)

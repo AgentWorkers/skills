@@ -1,13 +1,13 @@
 ---
 name: pscale-deploy-request
-description: Create, review, deploy, and revert schema changes via deploy requests. Use when deploying schema migrations to production, reviewing database changes before deployment, managing deploy request lifecycle, or reverting deployed changes. Essential for safe production schema deployments. Triggers on deploy request, schema deployment, deploy schema, review deployment, revert deployment, production migration.
+description: 通过部署请求（deploy requests）来创建、审查、部署和回滚数据库模式（schema changes）。该功能适用于将数据库模式迁移（schema migrations）部署到生产环境（production）、在部署前审查数据库变更、管理部署请求的生命周期（lifecycle），或回滚已部署的变更。对于确保生产环境中的数据库模式安全部署至关重要。相关操作包括：触发部署请求（trigger a deploy request）、部署数据库模式（deploy a schema）、审查部署结果（review the deployment）、回滚部署操作（revert a deployment），以及执行生产环境中的迁移（perform production migrations）。
 ---
 
-# pscale deploy-request
+# `pscale deploy-request`
 
-Create, review, diff, revert, and manage deploy requests for schema changes.
+用于创建、审查、比较差异、回滚以及管理数据库模式变更的部署请求。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Create deploy request from branch
@@ -32,11 +32,11 @@ pscale deploy-request close <database> <number>
 pscale deploy-request revert <database> <number>
 ```
 
-## Workflows
+## 工作流程
 
-### Complete Schema Migration (Recommended)
+### 完整的数据库模式迁移（推荐）
 
-This is the safest way to deploy schema changes to production:
+这是将模式变更部署到生产环境的最安全方式：
 
 ```bash
 # 1. Create development branch
@@ -62,7 +62,7 @@ pscale deploy-request deploy my-database 1
 pscale deploy-request show my-database 1
 ```
 
-### Review Before Deploy
+### 部署前的审查
 
 ```bash
 # List pending deploy requests
@@ -78,9 +78,9 @@ pscale deploy-request diff <database> <number>
 pscale deploy-request deploy <database> <number>
 ```
 
-### Revert Deployment
+### 回滚部署
 
-If a deployed schema change causes issues:
+如果已部署的模式变更引发了问题：
 
 ```bash
 # View deployment status
@@ -93,9 +93,9 @@ pscale deploy-request revert <database> <number>
 pscale deploy-request show <database> <number>
 ```
 
-## Decision Trees
+## 决策树
 
-### Should I deploy or close?
+### 是否应该进行部署？
 
 ```
 Deploy request ready?
@@ -105,7 +105,7 @@ Deploy request ready?
 └─ Breaking changes detected → Close, fix in branch, create new DR
 ```
 
-### Should I revert?
+### 是否应该回滚？
 
 ```
 After deployment issues?
@@ -115,15 +115,15 @@ After deployment issues?
 └─ Minor issues / non-urgent → Leave deployed, fix forward
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Deploy request creation fails
+### 部署请求创建失败
 
-**Error:** "No schema changes detected"
+**错误：**“未检测到模式变更”
 
-**Cause:** Branch schema matches production
+**原因：**分支中的模式与生产环境中的模式相同
 
-**Solution:**
+**解决方案：**
 ```bash
 # Verify schema diff exists
 pscale branch diff <database> <branch-name>
@@ -132,11 +132,11 @@ pscale branch diff <database> <branch-name>
 pscale shell <database> <branch-name>
 ```
 
-### "Cannot deploy: conflicts detected"
+### “无法部署：检测到冲突”
 
-**Cause:** Production schema changed since branch creation
+**原因：**自创建分支以来，生产环境中的模式发生了变化
 
-**Solution:**
+**解决方案：**
 ```bash
 # Close conflicting deploy request
 pscale deploy-request close <database> <number>
@@ -148,11 +148,11 @@ pscale branch refresh-schema <database> <branch-name>
 pscale deploy-request create <database> <branch-name>
 ```
 
-### Deploy fails midway
+### 部署过程中失败
 
-**Error:** Deployment started but failed
+**错误：**部署已开始但失败
 
-**Solution:**
+**解决方案：**
 ```bash
 # Check deploy request status
 pscale deploy-request show <database> <number>
@@ -163,47 +163,47 @@ pscale deploy-request revert <database> <number>
 # Contact PlanetScale support for stuck deployments
 ```
 
-### Cannot close deploy request
+### 无法关闭部署请求
 
-**Error:** "Deploy request is deployed"
+**错误：**“部署请求已部署”
 
-**Cause:** Already deployed requests cannot be closed
+**原因：**已部署的请求无法被关闭
 
-**Solution:**
+**解决方案：**
 ```bash
 # Deployed requests can only be reverted
 pscale deploy-request revert <database> <number>
 ```
 
-## Deploy Request States
+## 部署请求的状态
 
-| State | Description | Actions Available |
+| 状态 | 描述 | 可用的操作 |
 |-------|-------------|-------------------|
-| `open` | Pending deployment | deploy, close, diff, review |
-| `in_progress` | Currently deploying | (wait for completion) |
-| `complete` | Successfully deployed | revert, show |
-| `closed` | Closed without deploying | (none - read-only) |
-| `reverted` | Deployed then reverted | (none - read-only) |
+| `open` | 待部署 | 部署、关闭、比较差异、审查 |
+| `in_progress` | 正在部署中 | （等待完成） |
+| `complete` | 部署成功 | 回滚、查看 |
+| `closed` | 未进行部署即已关闭 | （无操作 - 只读） |
+| `reverted` | 先部署后回滚 | （无操作 - 只读） |
 
-## Related Skills
+## 相关技能
 
-- **pscale-branch** - Create branches for deploy requests
-- **drizzle-kit** - Generate migration SQL for schema changes
-- **gitlab-cli-skills** - GitLab MR integration (link deploy request to MR)
+- `pscale-branch` - 为部署请求创建分支
+- `drizzle-kit` - 生成用于模式变更的迁移SQL语句
+- `gitlab-cli-skills` - GitLab合并请求集成（将部署请求与合并请求关联）
 
-## Best Practices
+## 最佳实践
 
-1. **Always review diff** before deploying (`pscale deploy-request diff`)
-2. **Test schema in branch** before creating deploy request
-3. **Use descriptive names** for branches (matches MR/issue number)
-4. **Deploy during maintenance windows** for breaking changes
-5. **Have rollback plan** - know how to revert
-6. **Monitor after deployment** - watch for errors
-7. **Clean up old deploy requests** - close stale ones
+1. **在部署前务必审查差异**（使用 `pscale deploy-request diff`）
+2. **在创建部署请求之前，在分支中测试模式变更**
+3. 为分支使用描述性名称（与合并请求/问题编号相匹配）
+4. 在维护窗口期间进行部署（避免影响生产环境）
+5. 制定回滚计划（知道如何回滚）
+6. 部署后进行监控（检查是否有错误）
+7. 清理旧的部署请求（关闭过期的请求）
 
-## Automation
+## 自动化
 
-See `scripts/deploy-schema-change.sh` for complete automation:
+有关完整的自动化流程，请参阅 `scripts/deploy-schema-change.sh`：
 
 ```bash
 # Automated deploy workflow
@@ -213,9 +213,9 @@ See `scripts/deploy-schema-change.sh` for complete automation:
   --auto-approve
 ```
 
-## Integration with Drizzle
+## 与Drizzle的集成
 
-Common pattern for Drizzle ORM users:
+对于Drizzle ORM用户来说，常见的集成方式如下：
 
 ```bash
 # 1. Edit your schema.sql file
@@ -237,6 +237,6 @@ pnpm drizzle-kit introspect
 # 7. Review and apply generated schema
 ```
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete `pscale deploy-request` command reference.
+有关 `pscale deploy-request` 命令的完整参考信息，请参阅 `references/commands.md`。

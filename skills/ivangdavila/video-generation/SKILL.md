@@ -1,91 +1,89 @@
 ---
 name: Video Generation
-description: Create AI videos with optimized prompts, motion control, and platform-ready output.
+description: 使用优化的提示、运动控制功能以及适用于各种平台的输出方式来创建人工智能视频。
 metadata: {"clawdbot":{"emoji":"🎬","os":["linux","darwin","win32"]}}
 ---
 
-# AI Video Generation
+# 人工智能视频生成
 
-Help users create and promote AI-generated video content.
+帮助用户创建和推广由人工智能生成的视频内容。
 
-**Rules:**
-- Ask what they want: text-to-video, image-to-video, or video editing
-- Check provider files for setup: `runway.md`, `luma.md`, `kling.md`, `pika.md`, `stable-video-diffusion.md`, `replicate.md`
-- Check `api-patterns.md` for async polling, backoff, and caching
-- Check `promotion.md` for distribution and marketing strategies
-- Start with lowest resolution/duration to validate prompt before scaling
+**规则：**
+- 询问用户的具体需求：文本转视频、图片转视频，还是视频编辑。
+- 查看相关提供商的设置文档：`runway.md`、`luma.md`、`kling.md`、`pika.md`、`stable-video-diffusion.md`、`replicate.md`。
+- 阅读 `api-patterns.md` 以了解异步请求、重试机制和缓存策略。
+- 参考 `promotion.md` 以获取内容分发和营销建议。
+- 在进行大规模生产之前，先从最低分辨率/最短时长开始测试，以确保效果符合预期。
 
 ---
 
-## Platform Selection
+## 平台选择
 
-| Use Case | Recommended |
+| 使用场景 | 推荐平台 |
 |----------|-------------|
-| Complex motion, professional | Runway Gen-4.5 |
-| Human motion, longer clips | Kling V2 |
-| Stylized, fast iterations | Pika |
-| Camera movements, cinematic | Luma Dream Machine |
-| Local/private, no API cost | Stable Video Diffusion |
-| Quick testing, model variety | Replicate |
+| 复杂的动作、专业级效果 | Runway Gen-4.5 |
+| 人物动作、较长视频片段 | Kling V2 |
+| 风格化处理、快速迭代 | Pika |
+| 摄像机运动、电影级效果 | Luma Dream Machine |
+| 本地使用/无需API费用 | Stable Video Diffusion |
+| 快速测试、多种模型对比 | Replicate |
 
 ---
 
-## Prompting for Video
+## 视频制作提示
 
-- **Describe motion explicitly** — "waves crashing", "walking toward camera", not just scene descriptions
-- **Include camera direction** — "camera slowly pans left", "dolly zoom", "tracking shot"
-- **Front-load subject** — models weight early tokens heavily
-- **Under 200 tokens** — longer prompts dilute motion guidance
-- **Avoid impossible physics** — results look uncanny without proper setup
-
----
-
-## Image-to-Video
-
-- Source image quality matters more than prompt — artifacts amplify
-- Match aspect ratio BEFORE generation — post-crop destroys quality
-- Use images with implied motion (mid-stride, flowing hair)
-- Remove text/logos — they warp unpredictably
+- **明确描述动作** — 例如：“海浪拍打岸边”、“向摄像机走去”，而不仅仅是场景描述。
+- **指定摄像机方向** — 如“摄像机缓慢向左平移”、“推拉镜头”、“跟踪拍摄”。
+- **提前加载主体元素** — 在生成过程中尽早使用相关模型数据。
+- **提示词数量不超过200个** — 过多的提示词可能会降低动作的准确性。
+- **避免不合理的物理效果** — 如果设置不当，生成结果可能会显得不自然。
 
 ---
 
-## Aspect Ratios
+## 图片转视频
 
-- **16:9** — YouTube, standard horizontal
-- **9:16** — TikTok, Reels, Shorts (vertical mandatory)
-- **1:1** — Instagram feed, flexible
-- Generate in target ratio — never crop after
-
----
-
-## Cost Control
-
-- Start with shortest duration (2-4s) to validate
-- Preview at lowest resolution (480p/720p)
-- Extend good clips rather than regenerating
-- Download immediately — signed URLs expire
-- Free tiers: Pika (150/mo), Kling (66/day), Luma (30/mo)
+- 图像质量比提示词更重要 — 图像中的瑕疵会放大到视频中。
+- 在生成前确保图像的纵横比正确 — 后期裁剪会破坏画质。
+- 使用具有动态效果的图片（例如：半步行走中的人物、飘动的头发）。
+- 删除图片中的文字或标志 — 它们可能会在视频中产生不可预测的变形。
 
 ---
 
-## Failure Modes
+## 纵横比
 
-- **NSFW false positive** — rephrase or switch platform
-- **Face morphing** — add "consistent face" to prompt
-- **Text always broken** — add in post-production
-- **Hands/fingers wrong** — frame to minimize visibility
-- **Quality degrades >8-10s** — plan for cuts
+- **16:9** — YouTube、标准横向格式
+- **9:16** — TikTok、Reels、 Shorts（必须为竖屏格式）
+- **1:1** — Instagram动态，格式灵活
+- 生成时保持目标纵横比 — 生成后不要进行裁剪。
+
+---
+
+## 成本控制
+
+- 先从最短的时长（2-4秒）开始测试，以确保效果。
+- 以最低分辨率（480p/720p）预览视频。
+- 对于质量良好的视频片段，优先进行优化而非重新生成。
+- 立即下载视频——生成的URL有有效期。
+- 免费使用套餐：Pika（每月150次）、Kling（每天66次）、Luma（每月30次）。
 
 ---
 
-### Current Setup
-<!-- Provider: status -->
+## 常见问题及解决方法
 
-### Projects
-<!-- What they're creating -->
-
-### Preferences
-<!-- Settings that work: resolution, duration, style -->
+- **不适宜公开的内容被误判为不适宜观看（NSFW）** — 重新表述提示或更换平台。
+- **面部变形** — 在提示中明确要求“面部特征保持一致”。
+- **文本显示错误** — 可以在后期制作中修复。
+- **手部或手指的显示不正确** — 通过调整帧率来减少这些元素的可见度。
+- **视频质量在8-10秒后下降** — 提前规划好视频剪辑。
 
 ---
-*Empty sections = not configured yet. Check providers.md for setup.*
+
+### 当前设置
+<!-- 提供商的状态信息 -->
+### 正在进行的项目
+<!-- 用户正在制作的内容 -->
+### 用户偏好设置
+<!-- 可使用的设置选项：分辨率、时长、风格等 -->
+
+---
+*如果某个部分为空，表示尚未配置。请查看 `providers.md` 以获取详细设置信息。*

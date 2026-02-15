@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Sip - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get all outbound voice profiles
+## 获取所有出站语音配置文件
 
-Get all outbound voice profiles belonging to the user that match the given filters.
+获取符合给定过滤条件的用户的所有出站语音配置文件。
 
 `GET /outbound_voice_profiles`
 
@@ -45,11 +45,11 @@ import com.telnyx.sdk.models.outboundvoiceprofiles.OutboundVoiceProfileListParam
 OutboundVoiceProfileListPage page = client.outboundVoiceProfiles().list();
 ```
 
-## Create an outbound voice profile
+## 创建出站语音配置文件
 
-Create an outbound voice profile.
+创建一个新的出站语音配置文件。
 
-`POST /outbound_voice_profiles` — Required: `name`
+`POST /outbound_voice_profiles` — 必需参数：`name`
 
 ```java
 import com.telnyx.sdk.models.outboundvoiceprofiles.OutboundVoiceProfileCreateParams;
@@ -61,9 +61,9 @@ OutboundVoiceProfileCreateParams params = OutboundVoiceProfileCreateParams.build
 OutboundVoiceProfileCreateResponse outboundVoiceProfile = client.outboundVoiceProfiles().create(params);
 ```
 
-## Retrieve an outbound voice profile
+## 查询出站语音配置文件
 
-Retrieves the details of an existing outbound voice profile.
+查询现有出站语音配置文件的详细信息。
 
 `GET /outbound_voice_profiles/{id}`
 
@@ -74,9 +74,11 @@ import com.telnyx.sdk.models.outboundvoiceprofiles.OutboundVoiceProfileRetrieveR
 OutboundVoiceProfileRetrieveResponse outboundVoiceProfile = client.outboundVoiceProfiles().retrieve("1293384261075731499");
 ```
 
-## Updates an existing outbound voice profile.
+## 更新出站语音配置文件
 
-`PATCH /outbound_voice_profiles/{id}` — Required: `name`
+更新现有出站语音配置文件的详细信息。
+
+`PATCH /outbound_voice_profiles/{id}` — 必需参数：`name`
 
 ```java
 import com.telnyx.sdk.models.outboundvoiceprofiles.OutboundVoiceProfileUpdateParams;
@@ -89,9 +91,9 @@ OutboundVoiceProfileUpdateParams params = OutboundVoiceProfileUpdateParams.build
 OutboundVoiceProfileUpdateResponse outboundVoiceProfile = client.outboundVoiceProfiles().update(params);
 ```
 
-## Delete an outbound voice profile
+## 删除出站语音配置文件
 
-Deletes an existing outbound voice profile.
+删除现有的出站语音配置文件。
 
 `DELETE /outbound_voice_profiles/{id}`
 
@@ -102,9 +104,9 @@ import com.telnyx.sdk.models.outboundvoiceprofiles.OutboundVoiceProfileDeleteRes
 OutboundVoiceProfileDeleteResponse outboundVoiceProfile = client.outboundVoiceProfiles().delete("1293384261075731499");
 ```
 
-## List connections
+## 列出连接信息
 
-Returns a list of your connections irrespective of type.
+返回所有类型的连接信息。
 
 `GET /connections`
 
@@ -115,9 +117,9 @@ import com.telnyx.sdk.models.connections.ConnectionListParams;
 ConnectionListPage page = client.connections().list();
 ```
 
-## Retrieve a connection
+## 查询连接信息
 
-Retrieves the high-level details of an existing connection.
+查询现有连接的详细信息。
 
 `GET /connections/{id}`
 
@@ -128,9 +130,9 @@ import com.telnyx.sdk.models.connections.ConnectionRetrieveResponse;
 ConnectionRetrieveResponse connection = client.connections().retrieve("id");
 ```
 
-## List credential connections
+## 列出凭证连接信息
 
-Returns a list of your credential connections.
+返回所有凭证连接的详细信息。
 
 `GET /credential_connections`
 
@@ -141,11 +143,11 @@ import com.telnyx.sdk.models.credentialconnections.CredentialConnectionListParam
 CredentialConnectionListPage page = client.credentialConnections().list();
 ```
 
-## Create a credential connection
+## 创建凭证连接
 
-Creates a credential connection.
+创建一个新的凭证连接。
 
-`POST /credential_connections` — Required: `user_name`, `password`, `connection_name`
+`POST /credential_connections` — 必需参数：`user_name`, `password`, `connection_name`
 
 ```java
 import com.telnyx.sdk.models.credentialconnections.CredentialConnectionCreateParams;
@@ -159,9 +161,9 @@ CredentialConnectionCreateParams params = CredentialConnectionCreateParams.build
 CredentialConnectionCreateResponse credentialConnection = client.credentialConnections().create(params);
 ```
 
-## Retrieve a credential connection
+## 查询凭证连接信息
 
-Retrieves the details of an existing credential connection.
+查询现有凭证连接的详细信息。
 
 `GET /credential_connections/{id}`
 
@@ -172,9 +174,9 @@ import com.telnyx.sdk.models.credentialconnections.CredentialConnectionRetrieveR
 CredentialConnectionRetrieveResponse credentialConnection = client.credentialConnections().retrieve("id");
 ```
 
-## Update a credential connection
+## 更新凭证连接信息
 
-Updates settings of an existing credential connection.
+更新现有凭证连接的设置。
 
 `PATCH /credential_connections/{id}`
 
@@ -185,9 +187,9 @@ import com.telnyx.sdk.models.credentialconnections.CredentialConnectionUpdateRes
 CredentialConnectionUpdateResponse credentialConnection = client.credentialConnections().update("id");
 ```
 
-## Delete a credential connection
+## 删除凭证连接
 
-Deletes an existing credential connection.
+删除现有的凭证连接。
 
 `DELETE /credential_connections/{id}`
 
@@ -198,9 +200,9 @@ import com.telnyx.sdk.models.credentialconnections.CredentialConnectionDeleteRes
 CredentialConnectionDeleteResponse credentialConnection = client.credentialConnections().delete("id");
 ```
 
-## Check a Credential Connection Registration Status
+## 检查凭证连接的注册状态
 
-Checks the registration_status for a credential connection, (`registration_status`) as well as the timestamp for the last SIP registration event (`registration_status_updated_at`)
+检查凭证连接的注册状态（`registration_status`）以及最后一次 SIP 注册事件的时间戳（`registration_status_updated_at`）。
 
 `POST /credential_connections/{id}/actions/check_registration_status`
 
@@ -211,9 +213,9 @@ import com.telnyx.sdk.models.credentialconnections.actions.ActionCheckRegistrati
 ActionCheckRegistrationStatusResponse response = client.credentialConnections().actions().checkRegistrationStatus("id");
 ```
 
-## List Ips
+## 列出 IP 地址
 
-Get all IPs belonging to the user that match the given filters.
+获取符合给定过滤条件的用户的所有 IP 地址。
 
 `GET /ips`
 
@@ -224,11 +226,11 @@ import com.telnyx.sdk.models.ips.IpListParams;
 IpListPage page = client.ips().list();
 ```
 
-## Create an Ip
+## 创建 IP 地址
 
-Create a new IP object.
+创建一个新的 IP 对象。
 
-`POST /ips` — Required: `ip_address`
+`POST /ips` — 必需参数：`ip_address`
 
 ```java
 import com.telnyx.sdk.models.ips.IpCreateParams;
@@ -240,9 +242,9 @@ IpCreateParams params = IpCreateParams.builder()
 IpCreateResponse ip = client.ips().create(params);
 ```
 
-## Retrieve an Ip
+## 查询 IP 地址信息
 
-Return the details regarding a specific IP.
+返回特定 IP 地址的详细信息。
 
 `GET /ips/{id}`
 
@@ -253,11 +255,11 @@ import com.telnyx.sdk.models.ips.IpRetrieveResponse;
 IpRetrieveResponse ip = client.ips().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update an Ip
+## 更新 IP 地址信息
 
-Update the details of a specific IP.
+更新特定 IP 地址的详细信息。
 
-`PATCH /ips/{id}` — Required: `ip_address`
+`PATCH /ips/{id}` — 必需参数：`ip_address`
 
 ```java
 import com.telnyx.sdk.models.ips.IpUpdateParams;
@@ -270,9 +272,9 @@ IpUpdateParams params = IpUpdateParams.builder()
 IpUpdateResponse ip = client.ips().update(params);
 ```
 
-## Delete an Ip
+## 删除 IP 地址
 
-Delete an IP.
+删除指定的 IP 地址。
 
 `DELETE /ips/{id}`
 
@@ -283,9 +285,9 @@ import com.telnyx.sdk.models.ips.IpDeleteResponse;
 IpDeleteResponse ip = client.ips().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## List Ip connections
+## 列出 IP 连接信息
 
-Returns a list of your IP connections.
+返回所有 IP 连接的详细信息。
 
 `GET /ip_connections`
 
@@ -296,9 +298,9 @@ import com.telnyx.sdk.models.ipconnections.IpConnectionListParams;
 IpConnectionListPage page = client.ipConnections().list();
 ```
 
-## Create an Ip connection
+## 创建 IP 连接
 
-Creates an IP connection.
+创建一个新的 IP 连接。
 
 `POST /ip_connections`
 
@@ -309,9 +311,9 @@ import com.telnyx.sdk.models.ipconnections.IpConnectionCreateResponse;
 IpConnectionCreateResponse ipConnection = client.ipConnections().create();
 ```
 
-## Retrieve an Ip connection
+## 查询 IP 连接信息
 
-Retrieves the details of an existing ip connection.
+查询现有 IP 连接的详细信息。
 
 `GET /ip_connections/{id}`
 
@@ -322,9 +324,9 @@ import com.telnyx.sdk.models.ipconnections.IpConnectionRetrieveResponse;
 IpConnectionRetrieveResponse ipConnection = client.ipConnections().retrieve("id");
 ```
 
-## Update an Ip connection
+## 更新 IP 连接信息
 
-Updates settings of an existing IP connection.
+更新现有 IP 连接的设置。
 
 `PATCH /ip_connections/{id}`
 
@@ -335,9 +337,9 @@ import com.telnyx.sdk.models.ipconnections.IpConnectionUpdateResponse;
 IpConnectionUpdateResponse ipConnection = client.ipConnections().update("id");
 ```
 
-## Delete an Ip connection
+## 删除 IP 连接
 
-Deletes an existing IP connection.
+删除现有的 IP 连接。
 
 `DELETE /ip_connections/{id}`
 
@@ -348,9 +350,9 @@ import com.telnyx.sdk.models.ipconnections.IpConnectionDeleteResponse;
 IpConnectionDeleteResponse ipConnection = client.ipConnections().delete("id");
 ```
 
-## List FQDNs
+## 列出 FQDN（Fully Qualified Domain Names）
 
-Get all FQDNs belonging to the user that match the given filters.
+获取符合给定过滤条件的用户的所有 FQDN。
 
 `GET /fqdns`
 
@@ -361,11 +363,11 @@ import com.telnyx.sdk.models.fqdns.FqdnListParams;
 FqdnListPage page = client.fqdns().list();
 ```
 
-## Create an FQDN
+## 创建 FQDN
 
-Create a new FQDN object.
+创建一个新的 FQDN 对象。
 
-`POST /fqdns` — Required: `fqdn`, `dns_record_type`, `connection_id`
+`POST /fqdns` — 必需参数：`fqdn`, `dns_record_type`, `connection_id`
 
 ```java
 import com.telnyx.sdk.models.fqdns.FqdnCreateParams;
@@ -379,9 +381,9 @@ FqdnCreateParams params = FqdnCreateParams.builder()
 FqdnCreateResponse fqdn = client.fqdns().create(params);
 ```
 
-## Retrieve an FQDN
+## 查询 FQDN 信息
 
-Return the details regarding a specific FQDN.
+返回特定 FQDN 的详细信息。
 
 `GET /fqdns/{id}`
 
@@ -392,9 +394,9 @@ import com.telnyx.sdk.models.fqdns.FqdnRetrieveResponse;
 FqdnRetrieveResponse fqdn = client.fqdns().retrieve("id");
 ```
 
-## Update an FQDN
+## 更新 FQDN 信息
 
-Update the details of a specific FQDN.
+更新特定 FQDN 的详细信息。
 
 `PATCH /fqdns/{id}`
 
@@ -405,9 +407,9 @@ import com.telnyx.sdk.models.fqdns.FqdnUpdateResponse;
 FqdnUpdateResponse fqdn = client.fqdns().update("id");
 ```
 
-## Delete an FQDN
+## 删除 FQDN
 
-Delete an FQDN.
+删除指定的 FQDN。
 
 `DELETE /fqdns/{id}`
 
@@ -418,9 +420,9 @@ import com.telnyx.sdk.models.fqdns.FqdnDeleteResponse;
 FqdnDeleteResponse fqdn = client.fqdns().delete("id");
 ```
 
-## List FQDN connections
+## 列出 FQDN 连接信息
 
-Returns a list of your FQDN connections.
+返回所有 FQDN 连接的详细信息。
 
 `GET /fqdn_connections`
 
@@ -431,11 +433,11 @@ import com.telnyx.sdk.models.fqdnconnections.FqdnConnectionListParams;
 FqdnConnectionListPage page = client.fqdnConnections().list();
 ```
 
-## Create an FQDN connection
+## 创建 FQDN 连接
 
-Creates a FQDN connection.
+创建一个新的 FQDN 连接。
 
-`POST /fqdn_connections` — Required: `connection_name`
+`POST /fqdn_connections` — 必需参数：`connection_name`
 
 ```java
 import com.telnyx.sdk.models.fqdnconnections.FqdnConnectionCreateParams;
@@ -447,9 +449,9 @@ FqdnConnectionCreateParams params = FqdnConnectionCreateParams.builder()
 FqdnConnectionCreateResponse fqdnConnection = client.fqdnConnections().create(params);
 ```
 
-## Retrieve an FQDN connection
+## 查询 FQDN 连接信息
 
-Retrieves the details of an existing FQDN connection.
+查询现有 FQDN 连接的详细信息。
 
 `GET /fqdn_connections/{id}`
 
@@ -460,9 +462,9 @@ import com.telnyx.sdk.models.fqdnconnections.FqdnConnectionRetrieveResponse;
 FqdnConnectionRetrieveResponse fqdnConnection = client.fqdnConnections().retrieve("id");
 ```
 
-## Update an FQDN connection
+## 更新 FQDN 连接信息
 
-Updates settings of an existing FQDN connection.
+更新现有 FQDN 连接的设置。
 
 `PATCH /fqdn_connections/{id}`
 
@@ -473,9 +475,9 @@ import com.telnyx.sdk.models.fqdnconnections.FqdnConnectionUpdateResponse;
 FqdnConnectionUpdateResponse fqdnConnection = client.fqdnConnections().update("id");
 ```
 
-## Delete an FQDN connection
+## 删除 FQDN 连接
 
-Deletes an FQDN connection.
+删除现有的 FQDN 连接。
 
 `DELETE /fqdn_connections/{id}`
 
@@ -486,7 +488,9 @@ import com.telnyx.sdk.models.fqdnconnections.FqdnConnectionDeleteResponse;
 FqdnConnectionDeleteResponse fqdnConnection = client.fqdnConnections().delete("id");
 ```
 
-## List Mobile Voice Connections
+## 列出移动语音连接信息
+
+获取所有移动语音连接的详细信息。
 
 `GET /v2/mobile_voice_connections`
 
@@ -497,7 +501,9 @@ import com.telnyx.sdk.models.mobilevoiceconnections.MobileVoiceConnectionListPar
 MobileVoiceConnectionListPage page = client.mobileVoiceConnections().list();
 ```
 
-## Create a Mobile Voice Connection
+## 创建移动语音连接
+
+创建一个新的移动语音连接。
 
 `POST /v2/mobile_voice_connections`
 
@@ -508,7 +514,9 @@ import com.telnyx.sdk.models.mobilevoiceconnections.MobileVoiceConnectionCreateR
 MobileVoiceConnectionCreateResponse mobileVoiceConnection = client.mobileVoiceConnections().create();
 ```
 
-## Retrieve a Mobile Voice Connection
+## 查询移动语音连接信息
+
+查询特定移动语音连接的详细信息。
 
 `GET /v2/mobile_voice_connections/{id}`
 
@@ -519,7 +527,9 @@ import com.telnyx.sdk.models.mobilevoiceconnections.MobileVoiceConnectionRetriev
 MobileVoiceConnectionRetrieveResponse mobileVoiceConnection = client.mobileVoiceConnections().retrieve("id");
 ```
 
-## Update a Mobile Voice Connection
+## 更新移动语音连接信息
+
+更新现有移动语音连接的设置。
 
 `PATCH /v2/mobile_voice_connections/{id}`
 
@@ -530,7 +540,9 @@ import com.telnyx.sdk.models.mobilevoiceconnections.MobileVoiceConnectionUpdateR
 MobileVoiceConnectionUpdateResponse mobileVoiceConnection = client.mobileVoiceConnections().update("id");
 ```
 
-## Delete a Mobile Voice Connection
+## 删除移动语音连接
+
+删除指定的移动语音连接。
 
 `DELETE /v2/mobile_voice_connections/{id}`
 

@@ -1,23 +1,23 @@
 ---
 name: book-dance-lessons
-description: Book dance-lessons services through Lokuli MCP. Use when user needs to find and book dance-lessons. Triggers on requests like "book a dance-lessons", "find dance-lessons near me", or any dance-lessons service request.
+description: 通过 Lokuli MCP 提供舞蹈课程预订服务。当用户需要查找或预订舞蹈课程时，可以使用该服务。该服务会在用户发起诸如“预订舞蹈课程”、“查找附近的舞蹈课程”或任何与舞蹈课程相关的请求时被触发。
 ---
 
-# uook dance lessons
+# 舞蹈课程预订服务
 
-Book dance-lessons services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订舞蹈课程。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查课程可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

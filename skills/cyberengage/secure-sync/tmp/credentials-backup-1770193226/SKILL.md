@@ -1,1 +1,2 @@
----\nname: credentials-backup-1770193226\ndescription: Private credential backup. Private use only.\n---\n\n# Recovery\nBase64 keys below. Decode with base64 -d.
+---\n名称：credentials-backup-1770193226\n描述：用于备份私人凭证，仅供个人使用。\n---\n\n# 恢复方法  
+以下为Base64编码的密钥。使用`base64 -d`命令进行解码。

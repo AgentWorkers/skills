@@ -14,11 +14,11 @@ metadata:
         - gh
 ---
 
-# Image Upload for GitHub
+# 在 GitHub 上上传图片
 
-Upload an image to img402.dev's free tier and embed the returned URL in GitHub markdown.
+将图片上传到 img402.dev 的免费 tier，并将返回的 URL 嵌入 GitHub 的 markdown 中。
 
-## Quick reference
+## 快速参考
 
 ```bash
 # Upload (multipart)
@@ -28,29 +28,29 @@ curl -s -X POST https://img402.dev/api/free -F image=@/tmp/screenshot.png
 # {"url":"https://i.img402.dev/aBcDeFgHiJ.png","id":"aBcDeFgHiJ","contentType":"image/png","sizeBytes":182400,"expiresAt":"2026-02-17T..."}
 ```
 
-## Workflow
+## 工作流程
 
-1. **Get image**: Use an existing file, or capture a screenshot:
+1. **获取图片**：使用现有的文件，或截取屏幕截图：
    ```bash
    screencapture -x /tmp/screenshot.png        # macOS — full screen
    screencapture -xw /tmp/screenshot.png       # macOS — frontmost window
    ```
-2. **Verify size**: Must be under 1MB. If larger, resize:
+2. **验证大小**：图片大小必须小于 1MB。如果超过 1MB，请调整大小：
    ```bash
    sips -Z 1600 /tmp/screenshot.png  # macOS — scale longest edge to 1600px
    ```
-3. **Upload**:
+3. **上传**：
    ```bash
    curl -s -X POST https://img402.dev/api/free -F image=@/tmp/screenshot.png
    ```
-4. **Embed** the returned `url` in GitHub markdown:
+4. **在 GitHub markdown 中嵌入** 返回的 `url`：
    ```markdown
    ![Screenshot description](https://i.img402.dev/aBcDeFgHiJ.png)
    ```
 
-## GitHub integration
+## GitHub 集成
 
-Use `gh` CLI to embed images in PRs and issues:
+使用 `gh` CLI 在 PR 和问题中嵌入图片：
 
 ```bash
 # Add to PR description
@@ -65,20 +65,20 @@ gh pr comment --body "![Screenshot](https://i.img402.dev/aBcDeFgHiJ.png)"
 gh issue comment 123 --body "![Screenshot](https://i.img402.dev/aBcDeFgHiJ.png)"
 ```
 
-## Constraints
+## 限制条件
 
-- **Max size**: 1MB
-- **Retention**: 7 days — suitable for PR reviews, not permanent docs
-- **Formats**: PNG, JPEG, GIF, WebP
-- **Rate limit**: 1,000 free uploads/day (global)
-- **No auth required**
+- **最大大小**：1MB
+- **保留时间**：7 天 — 适用于 PR 审查，不适合永久性文档
+- **支持的格式**：PNG、JPEG、GIF、WebP
+- **每日免费上传次数**：1,000 次（全球通用）
+- **无需身份验证**
 
-## Tips
+## 提示
 
-- Prefer PNG for UI screenshots (sharp text). Use JPEG for photos.
-- If a screenshot is too large, reduce dimensions with `sips -Z 1600` before uploading.
-- When adding to a PR body or comment, use `gh pr comment` or `gh pr edit` with the image markdown.
+- 对于 UI 屏幕截图，建议使用 PNG 格式（文本清晰度更高）；对于照片，使用 JPEG 格式。
+- 如果截图太大，可以使用 `sips -Z 1600` 命令缩小尺寸后再上传。
+- 在向 PR 正文或评论中添加图片时，可以使用 `gh pr comment` 或 `gh pr edit` 命令。
 
-## Paid tier
+## 支付 tier
 
-For permanent images (1 year, 5MB max), use the paid endpoint at $0.01 USDC via x402. See https://img402.dev/blog/paying-x402-apis for details.
+如需永久保存图片（有效期 1 年，最大文件大小 5MB），请通过 x402 使用付费接口（费用为 0.01 美元 USD）。详情请参阅：https://img402.dev/blog/paying-x402-apis

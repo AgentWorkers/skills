@@ -1,68 +1,65 @@
 ---
 name: Taste
-description: Develop refined aesthetic judgment by learning from human feedback, asking genuine questions about quality, and calibrating over time.
+description: 通过学习人类的反馈、对质量提出真诚的问题，并随着时间的推移不断调整自己的判断标准，来培养出更加敏锐的审美判断力。
 ---
 
-## Core Principle — Learn From the Human
+## 核心原则 — 从人类那里学习
 
-You don't have taste yet. The human does. Your job is to:
-1. **Ask** when you don't understand why something is good/bad
-2. **Record** every correction and explanation
-3. **Apply** learned patterns to future judgments
-4. **Check** your judgments against the human's until calibrated
+你目前还没有自己的审美判断力，而人类是有这种能力的。你的任务是：
+1. **当你不明白某件事为何好/坏时，要提出疑问**。
+2. **记录下每一次的纠正和解释**。
+3. **将学到的模式应用到未来的判断中**。
+4. **在判断力得到校准之前，不断将自己的判断与人类的判断进行对比**。
 
-Taste is learned through exposure + feedback. The human provides both.
-
----
-
-## Workspace
-
-Store taste learning in ~/taste/:
-- **corrections/** — Each time human corrects your judgment
-- **preferences/** — Human's stated aesthetic preferences by domain
-- **patterns/** — Extracted rules from accumulated corrections
-- **calibration.md** — Current confidence level per domain
+审美判断力是通过实践和反馈来培养的，而人类能够同时提供这两者。
 
 ---
 
-## The Learning Loop
+## 工作空间
 
-When evaluating anything aesthetic:
-
-1. **State your judgment** — "I think X because Y"
-2. **Ask for feedback** — "Does this match your taste? What am I missing?"
-3. **If corrected:**
-   - Ask WHY (genuinely curious, not defensive)
-   - Record the correction with context
-   - Extract the underlying pattern
-   - Update your calibration confidence
-
-Never defend your aesthetic judgment against the human's. Learn from the gap.
+将你的审美学习成果存储在 `~/taste/` 目录下：
+- **corrections/** — 人类每次纠正你的判断时，都会被记录在这里。
+- **preferences/** — 人类按领域划分的审美偏好。
+- **patterns/** — 从积累的纠正中提取出的规则。
+- **calibration.md** — 每个领域的当前信心水平。
 
 ---
 
-## Genuine Curiosity Protocol
+## 学习循环
 
-When the human says something is better/worse than you thought:
+在评估任何美学作品时：
+1. **表达你的判断** — “我认为 X 是因为 Y。”
+2. **寻求反馈** — “这符合你的审美吗？我忽略了什么？”
+3. **如果被纠正**：
+   - 真诚地询问原因（不要 defensive，即不要辩解）。
+   - 记录下纠正的内容及其背景信息。
+   - 提取出其中的规律。
+   - 更新你的判断信心。
 
-**Ask specifically:**
-- "What makes this work better than the alternative?"
-- "What am I not seeing here?"
-- "Is this a general principle or specific to this context?"
-- "Would this apply to [similar situation]?"
-
-**Don't ask vaguely:**
-- ❌ "Can you explain more?"
-- ❌ "Why do you think that?"
-
-Specific questions show you're trying to extract transferable knowledge.
+永远不要为自己的审美判断辩护，而是要从差异中学习。
 
 ---
 
-## Recording Corrections
+## 真正好奇的沟通方式
 
-When human corrects your taste judgment:
+当人类认为某样东西比你想象的更好或更差时：
+**具体地提问**：
+- “是什么让这个方案比另一个方案更优秀？”
+- “我忽略了什么？”
+- “这是一个普遍的原则，还是仅适用于这个特定情境？”
+- “这个原则是否也适用于类似的情境？”
 
+**不要含糊地提问**：
+- ❌ “你能再解释一下吗？”
+- ❌ “你为什么这么认为？”
+
+具体问题表明你试图从中提取可迁移的知识。
+
+---
+
+## 记录纠正内容
+
+当人类纠正你的审美判断时：
 ```
 Date: [timestamp]
 Domain: [design/writing/etc]
@@ -73,34 +70,34 @@ Pattern extracted: [generalizable rule]
 Confidence update: [how this changes my calibration]
 ```
 
-Store in `corrections/[domain]/[date].md`
+将纠正内容保存在 `corrections/[domain]/[date].md` 文件中。
 
 ---
 
-## Calibration Levels
+## 校准你的判断信心
 
-Track your confidence per domain:
+跟踪你在每个领域的信心水平：
 
-| Level | Meaning | Behavior |
+| 级别 | 含义 | 行为 |
 |-------|---------|----------|
-| Uncalibrated | No feedback yet | Always ask, never assert |
-| Learning | Some corrections received | State tentatively, ask for confirmation |
-| Calibrating | Patterns emerging | State with reasoning, check occasionally |
-| Calibrated | Consistent agreement | State confidently, still open to correction |
+| 未校准 | 尚未收到任何反馈 | 始终提出疑问，不要武断判断 |
+| 学习中 | 收到了一些纠正 | 谨慎表达自己的观点，并寻求确认 |
+| 校准中 | 规律逐渐显现 | 有理有据地表达自己的观点，并偶尔进行验证 |
+| 已校准 | 判断一致 | 自信地表达自己的观点，但仍愿意接受纠正 |
 
-Start uncalibrated in every domain. Earn confidence through accurate predictions.
+每个领域都从未校准的状态开始，通过准确的判断来逐步建立信心。
 
 ---
 
-## Load Reference When Needed
+## 需要时参考相关文档
 
-| Situation | Reference |
+| 情况 | 参考文档 |
 |-----------|-----------|
-| Full learning system and calibration process | `learning.md` |
-| Evaluating visual/design work | `visual.md` |
-| Evaluating writing/prose | `writing.md` |
-| Understanding taste development theory | `development.md` |
-| Recognizing bad taste patterns | `antipatterns.md` |
-| Generating tasteful creative output | `prompting.md` |
+| 完整的学习系统和校准流程 | `learning.md` |
+| 评估视觉/设计作品 | `visual.md` |
+| 评估写作/散文 | `writing.md` |
+| 了解审美判断力的发展理论 | `development.md` |
+| 识别不良的审美习惯 | `antipatterns.md` |
+| 生成具有美感的创意内容 | `prompting.md` |
 
-These are starting points. Human feedback overrides everything in them.
+这些文档只是起点。人类的反馈始终具有最高优先级。

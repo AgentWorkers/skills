@@ -1,88 +1,81 @@
 ---
 name: Swedish
-description: Write Swedish that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说的瑞典语。既不正式，也不像机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Swedish is technically correct but sounds off. Too formal. Too rigid. Natives write more casually, with particles and understated tone. Match that.
+虽然AI生成的瑞典语在语法上是正确的，但听起来很生硬、过于正式。瑞典本地人的表达方式更加随意，他们会使用各种助词和缓和语气词来使语言更自然。
 
-## Formality Default
+## 形式化表达的默认倾向
 
-Default register is too high. Swedish is notably informal. Unless explicitly formal: lean casual. "Hej" not "God dag". "Okej" not "Ja, det är bra". "Tja" among friends.
+瑞典语的正式程度通常较高，但实际使用中人们更倾向于非正式的表达。除非需要特别正式，否则应尽量使用自然、随意的用语。例如：“Hej”而不是“God dag”，“Okej”而不是“Ja, det är bra”，朋友之间会用“Tja”来交流。
 
-## Du-Reform
+## “Du”作为称呼的改革
 
-Sweden had a "du-reform" - almost everyone uses du:
-- Du: universal default, even strangers
-- Ni: very rare, can sound sarcastic or old
-- Just use du unless specifically formal context
+瑞典曾进行过“Du”作为称呼的改革，现在几乎所有人都会使用“Du”来称呼对方，即使是陌生人也是如此。“Ni”这种称呼非常少见，有时甚至会带有讽刺或老套的意味。因此，在非正式场合，直接使用“Du”是最常见的选择。
 
-## Particles & Softeners
+## 助词与缓和语气词
 
-These make Swedish natural:
-- Ju: shared knowledge ("Det vet du ju")
-- Väl: uncertainty/hope ("Du kommer väl?")
-- Nog: "probably" ("Det går nog bra")
-- La/Då: emphasis ("Gör det då!")
-- Visst: confirmation seeking
+这些助词和语气词让瑞典语更加自然流畅：
+- “Ju”：表示共同认知（例如：“Det vet du ju”）
+- “Väl”：表示不确定或希望（例如：“Du kommer väl?”）
+- “Nog”：表示“可能”（例如：“Det går nog bra”）
+- “La/Då”：用于强调（例如：“Gör det då!”）
+- “Visst”：用于寻求确认（例如：“Visst, du kan göra det”）
 
-## Fillers & Flow
+## 填充词与语言流畅性
 
-Real Swedish has fillers:
-- Typ, liksom, asså (alltså)
-- Eh, öh, mm
-- Ja/Nej as fillers, not just yes/no
-- I alla fall, hur som helst
+瑞典语中有很多填充词，用于使对话更自然：
+- “Typ, liksom, asså”（也就是）
+- “Eh, öh, mm”等
+- “Ja/Nej”不仅用于表示肯定或否定，也常用来填充对话
 
-## Sentence Fragments
+## 句子结构
 
-Swedes are concise:
-- "Kommer du?" "Aa" (yes)
-- "Läget?" "Bra" 
-- Short answers are natural
-- Over-complete sentences feel stiff
+瑞典人说话简洁：
+- “Kommer du?”（你会来吗？）→ “Aa”（会）
+- “Läget?”（情况怎么样？）→ “Bra”（不错）
+- 简短的回答更自然
+- 过于冗长的句子会显得生硬
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Bra → Grymt, Fett, Najs, Asball
-- Dåligt → Kasst, Skit, Drygt
-- Mycket → Jätte-, As-, Mega-
-- Prefix intensifiers are very Swedish
+在表达时，不要使用过于保守的词汇：
+- “Bra” → 可以用“Grymt”、“Fett”、“Najs”、“Asball”等更生动的词
+- “Dåligt” → 可以用“Kasst”、“Skit”、“Drygt”等
+- “Mycket” → 可以用“Jätte-”、“As-”、“Mega-”等加强语气
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Lugnt, Ingen fara, Inga problem
-- Vad schysst!, Kul!, Nice!
-- Skönt, Härligt
-- Orka (can't be bothered)
+瑞典人常用的表达方式：
+- “Lugnt”（别担心）、“Ingen fara”（没关系的）、“Inga problem”（没问题）
+- “Vad schysst!”（太棒了！）、“Kul!”（酷！）、“Nice!”（很好！）
+- “Skönt”（漂亮）、“Härligt”（令人愉快）
+- “Orka”（懒得做某事）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Vad?, Serröst?, Menar du allvar?
-- Oj!, Herregud!, Fan!
-- Haha, lol in text
-- Skön!, Najs!, Fett!
+在交流时，要自然反应：
+- “Vad?”（什么？）、“Serröst?”（声音这么小？）、“Menar du allvar?”（你是认真的吗？）
+- “Oj!”（哎呀！）、“Herregud!”（天哪！）、“Fan!”（该死！）
+- 在对话中可以使用“Haha”、“lol”等笑声
 
-## Lagom Concept
+## 略带夸张的表达方式
 
-Swedish understatement is cultural:
-- "Inte så dumt" = actually good
-- "Helt okej" = pretty good
-- Enthusiasm is more muted
-- Over-enthusiasm can seem fake
+瑞典人的表达中常常带有轻微的夸张，这是一种文化特点：
+- “Inte så dumt”（其实还不错）
+- “Helt okej”（相当不错）
+- 热情表达通常比较含蓄
+- 过度的热情可能会显得不自然
 
-## English Mixing
+## 英语的混合使用
 
-Swedes mix English naturally:
-- "Det var så awkward"
-- "Super nice!"
-- Common in casual speech
-- Natural, not forced
+瑞典人在日常对话中会自然地混合使用英语：
+- “Det var så awkward”（那场面太尴尬了）
+- “Super nice!”（非常棒！）
+- 这种表达在非正式场合很常见，显得很自然
 
-## The "Native Test"
+## “本地人的判断标准”
 
-Before sending: would a Swede screenshot this as "AI-generated"? If yes—too formal, missing particles, too enthusiastic. Tone down, add "typ".
+在发送内容之前，可以想象一下：如果一个瑞典人看到这样的文本，他会认为这是AI生成的吗？如果是的话，那么这段文本可能显得太正式了，缺少助词，表达也过于热情。因此，需要适当降低语言的正式程度，并添加一些像“typ”这样的填充词来使表达更自然。

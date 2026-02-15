@@ -1,12 +1,12 @@
 ---
 name: travel-planner
-description: "Plan complete day trips, walking tours, and multi-stop itineraries with time budgets using Camino AI's journey planning and route optimization."
+description: "使用 Camino AI 的旅程规划与路线优化功能，您可以轻松制定完整的一日游、步行游览计划以及包含多个停留点的行程安排，并为每个行程设定时间预算。"
 metadata: {"clawdbot":{"emoji":"✈️","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、行程、房地产、酒店查找器、电动汽车充电站查找器、学校查找器、停车查找器、健身设施查找器、安全检查器、旅行规划器），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill travel-planner
 ```
 
-**Via clawhub:**
+**通过 clawhub 安装：**
 ```bash
 npx clawhub@latest install travel-planner
 # or: pnpm dlx clawhub@latest install travel-planner
 # or: bunx clawhub@latest install travel-planner
 ```
 
-# Travel Planner
+# 旅行规划器
 
-Plan complete day trips, walking tours, and multi-stop itineraries with time budgets. Wraps the Camino AI journey endpoint with opinionated defaults for travel planning.
+您可以规划完整的日游、步行游览或多站行程，并设置时间预算。该技能为旅行规划提供了预设的参数和推荐方案。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回结果：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月免费使用 1,000 次调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,11 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+然后重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Plan a walking tour in Paris
@@ -88,7 +88,7 @@ Restart Claude Code.
 }'
 ```
 
-### Via curl
+### 通过 curl 使用
 
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
@@ -103,25 +103,25 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/journey"
 ```
 
-## Parameters
+## 参数
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| waypoints | array | Yes | - | List of stops with lat, lon, and purpose (min 2) |
-| constraints | object | No | - | Trip constraints |
-| constraints.transport | string | No | "walking" | Transport mode: "walking", "car", or "bike" |
-| constraints.time_budget | string | No | - | Time limit (e.g., "4 hours", "90 minutes") |
-| constraints.preferences | array | No | [] | Route preferences |
+| 参数名 | 类型 | 是否必填 | 默认值 | 描述 |
+|---------|--------|---------|-----------|----------------------|
+| waypoints | 数组 | 是 | - | 包含经纬度和目的地的站点列表（至少 2 个站点） |
+| constraints | 对象 | 否 | - | 旅行约束条件 |
+| constraints.transport | 字符串 | 否 | "walking" | 交通方式："步行"、"汽车" 或 "自行车" |
+| constraints.time_budget | 字符串 | 否 | - | 时间限制（例如："4 小时"、"90 分钟"） |
+| constraintspreferences | 数组 | 否 | [] | 路线偏好设置 |
 
-### Waypoint Object
+### Waypoint 对象（站点信息）
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| lat | float | Yes | Latitude of the stop |
-| lon | float | Yes | Longitude of the stop |
-| purpose | string | No | Description of the stop (e.g., "Eiffel Tower", "lunch break") |
+| 参数名 | 类型 | 是否必填 | 描述 |
+|---------|--------|-----------|----------------------|
+| lat | 浮点数 | 是 | 站点的纬度 |
+| lon | 浮点数 | 是 | 站点的经度 |
+| purpose | 字符串 | 否 | 站点的用途（例如："埃菲尔铁塔"、"午餐休息"） |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -151,9 +151,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Paris walking tour
+### 巴黎步行游览
 ```bash
 ./scripts/travel-planner.sh '{
   "waypoints": [
@@ -169,7 +169,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### NYC cycling tour
+### 纽约市自行车游览
 ```bash
 ./scripts/travel-planner.sh '{
   "waypoints": [
@@ -185,7 +185,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Business meeting circuit
+### 商务会议行程
 ```bash
 ./scripts/travel-planner.sh '{
   "waypoints": [
@@ -201,13 +201,13 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-## Best Practices
+## 最佳实践：
 
-- Always include a `purpose` for each waypoint to get better route analysis
-- Set a `time_budget` to get feasibility checks and optimization suggestions
-- Use "foot" transport for city walking tours, "bike" for cycling tours, "car" for road trips
-- Order waypoints in your preferred visiting sequence; the API will check feasibility
-- Combine with the `query` skill to discover points of interest to add as waypoints
-- Combine with the `hotel-finder` skill to find accommodation near your first or last waypoint
-- Combine with the `context` skill to learn more about each waypoint's neighborhood
-- For longer trips, break the itinerary into manageable day segments
+- 为每个站点设置 `purpose`（用途），以便获得更准确的路线分析结果。
+- 设置 `time_budget`（时间预算），以获取可行性评估和优化建议。
+- 对于城市步行游览，使用 "walking" 作为交通方式；对于自行车游览，使用 "bike"；对于公路旅行，使用 "car"。
+- 按照您希望的顺序排列站点；API 会自动检查行程的可行性。
+- 结合 `query` 技能来发现感兴趣的地点并将其添加为站点。
+- 结合 `hotel-finder` 技能，在第一个或最后一个站点附近查找住宿。
+- 结合 `context` 技能了解每个站点的周边环境。
+- 对于较长的行程，将行程划分为易于管理的每日段落。

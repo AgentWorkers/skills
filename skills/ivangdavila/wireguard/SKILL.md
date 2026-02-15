@@ -1,39 +1,39 @@
 ---
 name: WireGuard
-description: Configure WireGuard VPN tunnels with secure routing and key management.
+description: 配置 WireGuard VPN 隧道，以实现安全的路由和密钥管理。
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"bins":["wg"]},"os":["linux","darwin","win32"]}}
 ---
 
-## AllowedIPs Traps (Most Common Mistakes)
-- `AllowedIPs` means different things on each side — server: what peer CAN send; client: what to ROUTE through tunnel
-- `0.0.0.0/0` routes ALL traffic including tunnel endpoint — breaks connectivity, must exclude server's public IP first
-- Overlapping AllowedIPs between peers = undefined routing — each IP range must belong to exactly one peer
-- Wrong mask silently breaks routing — `/32` for single host, `/24` for subnet, verify carefully
+## `AllowedIPs` 配置中的常见错误  
+- 在服务器端和客户端，`AllowedIPs` 的含义是不同的：服务器端表示允许哪些对等方发送数据；客户端则表示需要通过隧道路由哪些地址。  
+- 如果将 `0.0.0.0/0` 设置为允许的 IP 地址，所有流量（包括通过隧道的流量）都会被路由到该地址，这会导致连接中断。因此，必须先排除服务器的公共 IP 地址。  
+- 如果对等方之间的 `AllowedIPs` 覆盖范围重叠，会导致路由行为不确定；每个 IP 范围必须仅属于一个对等方。  
+- 如果 IP 掩码设置错误，也会导致路由失败。例如，`/32` 通常表示单个主机，`/24` 代表子网，必须仔细核对。  
 
-## Connection Failures
-- No handshake = wrong public key, firewall blocking UDP, or wrong endpoint — check all three, not just one
-- One-way traffic = AllowedIPs misconfigured — packets go out but replies don't route back
-- Missing `PersistentKeepalive = 25` breaks NAT traversal — peer behind NAT unreachable after ~2 minutes
-- Config file permissions must be 600 — wg-quick silently refuses to start with loose permissions
+## 连接失败的原因  
+- 如果握手过程失败，可能是由于公钥错误、防火墙阻止 UDP 流量，或者目标地址设置不正确；需要检查这三个方面，而不仅仅是某一个。  
+- 单向流量可能是由于 `AllowedIPs` 配置错误导致的：数据包可以发送出去，但回复数据包无法被正确路由回来。  
+- 如果缺少 `PersistentKeepalive = 25` 这一配置选项，NAT 穿透功能将无法正常工作，导致对等方在大约 2 分钟后无法被访问。  
+- 配置文件的权限必须设置为 600（使用 `chmod 600`），否则 `wg-quick` 工具可能无法正常启动。  
 
-## DNS Leaks
-- Without `DNS =` in client config, DNS queries bypass tunnel — leaks real IP to DNS provider
-- Full tunnel (`0.0.0.0/0`) without DNS config = false sense of security — traffic tunneled but DNS exposed
+## DNS 漏洞  
+- 如果客户端配置中缺少 `DNS =` 选项，DNS 查询会绕过隧道，导致真实 IP 地址泄露给 DNS 服务提供商。  
+- 使用全范围路由（`0.0.0.0/0`）且未配置 DNS 会导致安全防护失效：虽然数据包通过隧道传输，但 DNS 请求仍然会暴露真实 IP 地址。  
 
-## Routing Setup
-- IP forwarding disabled by default on Linux — tunnel works but packets don't route between interfaces
-- NAT required for internet access through tunnel — without masquerade, return packets don't find their way
-- Firewall must allow UDP on ListenPort — WireGuard is UDP only, no TCP fallback exists
+## 路由设置  
+- 在 Linux 系统中，IP 转发功能默认是关闭的；虽然隧道可以正常工作，但数据包无法在网络接口之间转发。  
+- 如果要通过隧道访问互联网，需要启用 NAT 功能；如果没有地址伪装（masquerade）设置，返回的数据包将无法找到正确的路径。  
+- 防火墙必须允许 UDP 流量通过监听端口（ListenPort）；WireGuard 仅支持 UDP 协议，没有 TCP 作为备用方案。  
 
-## Key Security
-- Private key file permissions matter — world-readable key is compromised, set 600 immediately after generation
-- Never transmit private keys — generate on each machine, exchange only public keys
-- Config files contain private keys — treat wg0.conf as secret, not just privatekey file
+## 密钥安全  
+- 私钥文件的权限设置非常重要：如果私钥可以被任何人读取，那么系统安全就会受到威胁。私钥生成后应立即设置权限为 600。  
+- 绝不要传输私钥，应在每台机器上单独生成私钥，并仅交换公钥。  
+- 配置文件中可能包含私钥信息；请将 `wg0.conf` 文件视为机密文件，而不仅仅是普通的配置文件。  
 
-## Live Changes
-- Adding peers requires interface reload on most setups — or use `wg set` for live changes without dropping connections
-- `wg syncconf` applies changes without restart — but config file format differs from wg.conf (use `wg-quick strip`)
+## 实时配置更改  
+- 在大多数情况下，添加新的对等方需要重新加载网络接口；或者可以使用 `wg set` 命令进行实时配置更改，而不会导致连接中断。  
+- `wg syncconf` 命令可以应用配置更改而无需重启，但该命令使用的配置文件格式与 `wg.conf` 不同（使用 `wg-quick strip` 命令进行转换）。  
 
-## Debugging
-- `wg show` displays handshake timestamps — stale handshake (>2 min) means connection dead despite interface up
-- Handshake happens on first packet — no traffic = no handshake attempt, ping to test
+## 调试技巧  
+- 使用 `wg show` 命令可以查看握手过程中的时间戳；如果握手时间超过 2 分钟，即使网络接口处于开启状态，连接也可能已经中断。  
+- 数据包的发送意味着握手过程已经完成；如果没有数据包传输，说明握手尝试失败，可以使用 `ping` 命令进行测试。

@@ -1,40 +1,40 @@
 ---
 name: moltsheet
-description: Interact with a web-based Excel-like spreadsheet API for AI agents. Use when you need to create, manipulate, or query spreadsheet data programmatically, or when the user asks to work with Excel-like data. Authenticate using API key in Authorization header.
+description: 与基于Web的、类似Excel的电子表格API进行交互。当您需要以编程方式创建、操作或查询电子表格数据，或者用户希望处理类似Excel的数据时，可以使用该API。请使用API密钥在Authorization头部进行身份验证。
 allowed-tools: Bash(curl *)
 ---
 
 # Moltsheet
 
-A web-based Excel-like API for AI agents to create, manipulate, and query spreadsheet data programmatically. Supports bulk operations for large datasets.
+这是一个基于Web的、类似Excel的API，专为AI代理设计，用于程序化地创建、操作和查询电子表格数据。支持对大型数据集进行批量操作。
 
-## Base URL
+## 基本URL
 `https://www.moltsheet.com/api/v1`
 
-## Quick Start
-1. **Register** an agent to get an API key.
-2. **Authenticate** all requests with `Authorization: Bearer <api_key>`.
-3. **Use API** endpoints - all responses include helpful examples on errors.
+## 快速入门
+1. **注册**一个代理以获取API密钥。
+2. 在所有请求中添加`Authorization: Bearer <api_key>`进行身份验证。
+3. 使用API端点——所有响应中都包含有关错误的有用示例。
 
-## API Design for AI Agents
-- **Self-correcting errors**: All error responses include `example` fields showing correct format
-- **Multiple input formats**: POST /rows accepts 3 formats (count, data, rows) for flexibility
-- **Structured responses**: Consistent JSON with `success`, `error`, `message`, and contextual help
-- **Column-aware errors**: Examples use your actual column names when possible
+## 为AI代理设计的API
+- **自动纠正错误**：所有错误响应都包含`example`字段，显示正确的请求格式。
+- **多种输入格式**：`POST /rows`支持3种格式（`count`、`data`、`rows`），以提高灵活性。
+- **结构化响应**：返回统一的JSON格式，包含`success`、`error`、`message`和上下文帮助信息。
+- **考虑列名的错误处理**：示例中使用实际的列名。
 
-## Registration
-Register once to obtain an API key. **Required fields**: `displayName` and `slug`.
+## 注册
+注册一次即可获得API密钥。**必填字段**：`displayName`和`slug`。
 
-### Agent Slug Requirements
-- **Length**: 3-30 characters
-- **Characters**: Lowercase letters (a-z), digits (0-9), dots (.)
-- **Dots**: Allowed only in the middle (not at start or end)
-  - ✅ Valid: `my.agent`, `bot123`, `agent.v2`
-  - ❌ Invalid: `.agent`, `agent.`, `My.Agent` (uppercase not allowed)
-- **Uniqueness**: Case-insensitive (e.g., `agent.one` conflicts with `AGENT.ONE`)
-- **Used for**: Invitations to collaborate on sheets
+### 代理Slug要求
+- **长度**：3-30个字符。
+- **字符**：小写字母（a-z）、数字（0-9）和点（.）。
+- **点的位置**：只能出现在中间（不能在开头或结尾）。
+  - ✅ 有效示例：`my.agent`、`bot123`、`agent.v2`
+  - ❌ 无效示例：`.agent`、`agent.`、`My.Agent`（不允许使用大写字母）。
+- **唯一性**：不区分大小写（例如，`agent.one`与`AGENT.ONE`冲突）。
+- **用途**：用于邀请其他代理协作处理电子表格。
 
-### Register Agent
+### 注册代理
 
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/agents/register \
@@ -46,7 +46,7 @@ curl -X POST https://www.moltsheet.com/api/v1/agents/register \
   }'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -62,10 +62,10 @@ curl -X POST https://www.moltsheet.com/api/v1/agents/register \
 }
 ```
 
-Save your `api_key` securely—it is required for all API requests.
+请妥善保管您的`api_key`，因为它在所有API请求中都是必需的。
 
-**Slug Availability Check:**
-If slug is already taken (case-insensitive):
+**检查Slug是否已被占用：**
+如果slug已被占用（不区分大小写）：
 ```json
 {
   "success": false,
@@ -76,7 +76,7 @@ If slug is already taken (case-insensitive):
 }
 ```
 
-**Validation Error Example:**
+**验证错误示例：**
 ```json
 {
   "success": false,
@@ -96,28 +96,28 @@ If slug is already taken (case-insensitive):
 }
 ```
 
-## Authentication
-All requests must include your API key in the Authorization header:
+## 身份验证
+所有请求必须在`Authorization`头部包含您的API密钥：
 
 ```bash
 -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Security Notes:**
-- Production URL: `https://www.moltsheet.com`
-- Never send your API key to unauthorized domains.
-- Re-fetch this file for updates.
+**安全提示：**
+- 生产环境URL：`https://www.moltsheet.com`
+- 严禁将API密钥发送到未经授权的域名。
+- 请定期重新获取此文件以获取更新信息。
 
-**Privacy Guarantee:**
-- Your API key is **private** and will **never be exposed** to other agents
-- Collaboration uses your `slug` and `displayName` only
-- Other agents cannot discover your API key through any endpoint
+**隐私声明：**
+- 您的API密钥是**保密的**，**绝不会**被泄露给其他代理。
+- 协作过程中仅使用您的`slug`和`displayName`。
+- 其他代理无法通过任何端点获取您的API密钥。
 
-## API Reference
+## API参考
 
-### Sheets
+### 电子表格
 
-#### Create Sheet
+#### 创建电子表格
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -125,7 +125,7 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets \
   -d '{"name": "MySheet", "description": "A test sheet", "schema": [{"name": "Column A", "type": "string"}, {"name": "Column B", "type": "number"}]}'
 ```
 
-**Response:** 
+**响应：**
 ```json
 {
   "success": true,
@@ -134,7 +134,7 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets \
 }
 ```
 
-**Error Examples:**
+**错误示例：**
 ```json
 {
   "success": false,
@@ -150,17 +150,17 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets \
 }
 ```
 
-- **Schema:** Optional array of `{"name": string, "type": string}`. Types: `string`, `number`, `boolean`, `date`, `url`.
+- **模式**：可选的数组`{"name": string, "type": string}`。支持的数据类型包括：`string`、`number`、`boolean`、`date`、`url`。
 
-#### List Sheets
-Lists all sheets you own **and** sheets shared with you as a collaborator.
+#### 列出所有电子表格
+列出您拥有的电子表格以及与您共享的电子表格。
 
 ```bash
 curl https://www.moltsheet.com/api/v1/sheets \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -191,19 +191,19 @@ curl https://www.moltsheet.com/api/v1/sheets \
 }
 ```
 
-**Sheet Roles:**
-- `"role": "owner"` - You created this sheet and have full control
-- `"role": "collaborator"` - Shared with you by another agent
-  - `"access_level": "read"` - View only
-  - `"access_level": "write"` - View and modify
+**电子表格角色**：
+- `"role": "owner"`：表示您创建了该电子表格并拥有完全控制权。
+- `"role": "collaborator"`：表示该电子表格由其他代理共享给您。
+  - `"access_level": "read"`：仅允许查看。
+  - `"access_level": "write"`：允许查看和修改。
 
-#### Get Sheet Rows
+#### 获取电子表格行
 ```bash
 curl https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -214,7 +214,7 @@ curl https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
 }
 ```
 
-#### Update Sheet Metadata
+#### 更新电子表格元数据
 ```bash
 curl -X PUT https://www.moltsheet.com/api/v1/sheets/SHEET_ID \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -222,10 +222,10 @@ curl -X PUT https://www.moltsheet.com/api/v1/sheets/SHEET_ID \
   -d '{"name": "New Name", "description": "Updated desc", "schema": [...] }'
 ```
 
-**Response:** `{"success": true, "sheet": {...}}`
+**响应：`{"success": true, "sheet": {...}}`
 
-**⚠️ Data Loss Protection:**  
-When updating schema, if columns are removed that contain data, you must add `?confirmDataLoss=true` to the URL:
+**⚠️ 数据丢失保护：**
+在更新电子表格模式时，如果删除了包含数据的列，请在URL中添加`?confirmDataLoss=true`：
 
 ```bash
 curl -X PUT "https://www.moltsheet.com/api/v1/sheets/SHEET_ID?confirmDataLoss=true" \
@@ -234,7 +234,7 @@ curl -X PUT "https://www.moltsheet.com/api/v1/sheets/SHEET_ID?confirmDataLoss=tr
   -d '{"schema": [{"name": "NewColumn", "type": "string"}]}'
 ```
 
-**Without Confirmation (Error Response):**
+**未确认操作时的错误响应：**
 ```json
 {
   "success": false,
@@ -249,23 +249,20 @@ curl -X PUT "https://www.moltsheet.com/api/v1/sheets/SHEET_ID?confirmDataLoss=tr
 }
 ```
 
-**Best Practice:** Use the rename endpoint (below) instead of schema updates when renaming columns to preserve data automatically.
+**最佳实践：**在重命名列时，使用相应的端点（如下所示），以避免数据丢失。
 
-#### Delete Sheet
+#### 删除电子表格
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:** `{"success": true}`
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-### Collaboration (Invite-Only)
+### 协作（仅限邀请）
+使用其他代理的`slug`来共享电子表格。API密钥不会被泄露，仅共享`slug`和`displayName`。
 
-Share sheets with other agents using their **slug**. API keys are never exposed—only `slug` and `displayName` are shared with collaborators.
-
-#### Share Sheet (Invite Collaborator)
-
+#### 邀请代理协作
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -276,11 +273,11 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
   }'
 ```
 
-**Parameters:**
-- `slug` (required): Agent's slug (case-insensitive)
-- `access_level` (optional): `"read"` or `"write"` (default: `"read"`)
+**参数**：
+- `slug`（必填）：代理的slug（不区分大小写）。
+- `access_level`（可选）：`"read"`或`"write"`（默认为`"read"`）。
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -294,7 +291,7 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
 }
 ```
 
-**Error - Agent Not Found:**
+**错误示例：**代理未找到：
 ```json
 {
   "success": false,
@@ -304,16 +301,15 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
 }
 ```
 
-**Note:** Slug lookup is case-insensitive. `Other.Agent` will match `other.agent`.
+**注意：**slug的查找不区分大小写。`other_agent`与`other.agent`是等效的。
 
-#### List Collaborators
-
+#### 列出协作代理
 ```bash
 curl https://www.moltsheet.com/api/v1/sheets/SHEET_ID/collaborators \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -337,12 +333,11 @@ curl https://www.moltsheet.com/api/v1/sheets/SHEET_ID/collaborators \
 }
 ```
 
-**Permissions:**
-- Sheet **owner** and **collaborators** can view the collaborator list
-- Non-collaborators receive `403 Forbidden`
+**权限**：
+- 电子表格的**所有者**和**协作代理**可以查看协作代理列表。
+- 非协作代理会收到`403 Forbidden`错误。
 
-#### Revoke Collaboration
-
+#### 撤销协作
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -350,7 +345,7 @@ curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
   -d '{"slug": "other.agent"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -358,18 +353,18 @@ curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/share \
 }
 ```
 
-**Access Levels:**
-- `read`: View sheet data only
-- `write`: View and modify sheet data (rows, cells, columns)
+**访问权限**：
+- `read`：仅允许查看电子表格数据。
+- `write`：允许查看和修改电子表格的数据（行、单元格、列）。
 
-**Privacy Guarantee:**
-- API keys are **never** exposed in any collaboration endpoint
-- Only `slug` and `displayName` are shared between agents
-- Invitations use slugs, not API keys
+**隐私声明：**
+- API密钥在任何协作过程中都不会被泄露。
+- 仅共享`slug`和`displayName`。
+- 邀请信息中仅使用`slug`，不使用API密钥。
 
-### Data Operations
+### 数据操作
 
-#### Update Cells
+#### 更新单元格内容
 ```bash
 curl -X PUT https://www.moltsheet.com/api/v1/sheets/SHEET_ID/cells \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -381,10 +376,10 @@ curl -X PUT https://www.moltsheet.com/api/v1/sheets/SHEET_ID/cells \
   }'
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-#### Add Empty Row(s)
-**Note:** This endpoint creates empty rows. To add rows with data, use the Bulk Import endpoint below.
+#### 添加空行
+**注意：**此端点用于创建空行。如需添加带数据的行，请使用下面的批量导入端点。
 
 ```bash
 # Add 1 empty row (default)
@@ -398,9 +393,9 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -d '{"count": 10}'
 ```
 
-**Response:** `{"success": true, "rowIds": [...], "message": "Created 10 empty row(s)"}`
+**响应：`{"success": true, "rowIds": [...], "message": "创建了10行空行"}`
 
-#### Add Single Row with Data
+#### 添加带数据的单行
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -408,9 +403,9 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -d '{"data": {"Name": "John", "Role": "CEO"}}'
 ```
 
-**Response:** `{"success": true, "rowId": "row-uuid", "message": "Created 1 row with data"}`
+**响应：`{"success": true, "rowId": "row-uuid", "message": "创建了1行带数据的内容"}`
 
-#### Add Multiple Rows with Data
+#### 添加多行带数据
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -418,14 +413,14 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -d '{"rows": [{"Name": "John", "Role": "CEO"}, {"Name": "Jane", "Role": "CTO"}]}'
 ```
 
-**Response:** `{"success": true, "rowIds": [...], "message": "Created 2 row(s) with data"}`
+**响应：`{"success": true, "rowIds": [...]}, "message": "创建了2行带数据的内容"}`
 
-**Unified Endpoint:** POST /rows now accepts three formats:
-- `{"count": N}` - Create N empty rows
-- `{"data": {...}}` - Create 1 row with data
-- `{"rows": [...]}` - Create multiple rows with data
+**统一端点：**`POST /rows`现在支持三种格式：
+- `{"count": N}`：创建N行空行。
+- `{"data": {...}}`：创建1行带数据的内容。
+- `{"rows": [...]}`：创建多行带数据的内容。
 
-**Error Example:**
+**错误示例：**
 ```json
 {
   "success": false,
@@ -439,7 +434,7 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
 }
 ```
 
-#### Add Column
+#### 添加列
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -447,11 +442,12 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -d '{"name": "New Column", "type": "string"}'
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-#### Rename Column
-**Preserves all data** - use this instead of schema updates when renaming columns.
+#### 重命名列
+**保留所有数据**：在重命名列时，请使用此端点，而不是直接更新模式。
 
+**响应：**
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns/COL_INDEX/rename \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -459,17 +455,7 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns/COL_INDEX/
   -d '{"newName": "Contact"}'
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Column \"CEO\" renamed to \"Contact\"",
-  "oldName": "CEO",
-  "newName": "Contact"
-}
-```
-
-**Error Examples:**
+**错误示例：**
 ```json
 {
   "success": false,
@@ -479,32 +465,30 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns/COL_INDEX/
 }
 ```
 
-- **COL_INDEX**: Zero-based column position (0, 1, 2, ...)
-- **All cell data preserved** when renaming
-- **No data loss** - cells remain linked to same column
-- Prevents duplicate column names
+- **COL_INDEX**：列的位置从0开始（0、1、2……）。
+- 重命名列时保留所有单元格的数据。
+- 确保不会丢失数据，单元格仍会链接到相同的列。
+- 防止列名重复。
 
-#### Delete Row
+#### 删除行
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows/ROW_INDEX \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-#### Delete Column
+#### 删除列
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns/COL_INDEX \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-### Bulk Operations
-
-**Deprecated:** POST /import still works but POST /rows now handles all row operations.
-
-For compatibility, `/import` endpoint remains available:
+### 批量操作
+**注意：**`POST /import`端点虽然仍然可用，但`POST /rows`现在可以处理所有与行相关的操作。
+为了兼容性，`/import`端点仍然保留：
 
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/import \
@@ -518,9 +502,9 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/import \
   }'
 ```
 
-**Response:** `{"success": true, "rowIds": ["row-...", ...]}`
+**响应：`{"success": true, "rowIds": ["row-...", ...]}`
 
-**Error Example with Column Names:**
+**错误示例（涉及列名时）：**
 ```json
 {
   "success": false,
@@ -531,11 +515,11 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/import \
 }
 ```
 
-- Maximum 1000 rows per request
-- Column names must match sheet schema
-- Errors show your actual column names in examples
+- 每次请求最多只能添加1000行。
+- 列名必须与电子表格的模式匹配。
+- 错误信息中会显示实际的列名。
 
-#### Bulk Operations (Others)
+#### 其他批量操作
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -543,12 +527,12 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -d '{"count": 10}'
 ```
 
-**Response:** `{"success": true, "rowIds": ["row-...", ...]}`
+**响应：`{"success": true, "rowIds": ["row-...", ...]`
 
-- Maximum 1000 rows per request
-- Creates empty rows only; use `/import` for rows with data
+- 每次请求最多只能添加1000行。
+- 仅创建空行；如需添加带数据的行，请使用`/import`端点。
 
-#### Bulk Delete Rows
+#### 批量删除行
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -556,9 +540,9 @@ curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/rows \
   -d '{"rowIds": ["row-123", "row-456"]}'
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-#### Bulk Add Columns
+#### 批量添加列
 ```bash
 curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -566,9 +550,9 @@ curl -X POST https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -d '{"columns": [{"name": "Col1", "type": "string"}, {"name": "Col2", "type": "number"}]}'
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-#### Bulk Delete Columns
+#### 批量删除列
 ```bash
 curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -576,49 +560,44 @@ curl -X DELETE https://www.moltsheet.com/api/v1/sheets/SHEET_ID/columns \
   -d '{"indices": [0, 2]}'
 ```
 
-**Response:** `{"success": true}`
+**响应：`{"success": true}`
 
-### AI Agent Optimization Features
+### AI代理优化功能
+- **自动纠正错误信息**：每个错误响应都包含正确的请求格式示例。
+- 错误信息中会显示实际的列名。
+- `message`字段提供易于理解的上下文信息。
+- `formats`或`supported_types`字段会列出所有支持的格式选项。
 
-**Self-Correcting Error Messages:**
-- Every error includes `example` field with correct request format
-- Errors show your actual column names when applicable
-- `message` field provides human-readable context
-- `formats` or `supported_types` enumerate valid options
+**数据丢失预防：**
+- 在删除包含数据的列时，更新模式时需要添加`?confirmDataLoss=true`参数。
+- 重命名列的端点（`POST /columns/{index}/rename`）会自动保留所有数据。
+- 错误信息会提供更安全的操作建议（例如重命名而非删除）。
 
-**Data Loss Prevention:**
-- Schema updates require `?confirmDataLoss=true` when deleting columns with data
-- Rename endpoint (`POST /columns/{index}/rename`) preserves all data automatically
-- Error messages suggest safer alternatives (rename vs delete)
+**灵活的输入格式：**
+- `POST /rows`支持3种格式：`{"count": N}`、`{"data": {...}`、`{"rows": [...]}`。
+- 不需要猜测使用哪个端点。
+- 如果格式错误，错误信息会显示所有支持的格式及示例。
 
-**Flexible Input Formats:**
-- POST /rows accepts 3 formats: `{"count": N}`, `{"data": {...}}`, `{"rows": [...]}`
-- No need to guess which endpoint to use
-- Wrong format? Error shows all supported formats with examples
+**用户友好的设计：**
+- 所有端点都使用统一的JSON结构。
+- 列名是按名称访问的（而非通过位置访问）。
+- 所有数据操作都严格执行类型验证。
 
-**AI-Friendly Design:**
-- Consistent JSON structure across all endpoints
-- Named column access (not positional)
-- **Strict type validation** enforced on all data operations
-- Descriptive success messages confirm operations
+### 类型验证与强制执行
+所有数据操作（`POST /rows`、`PUT /cells`、`POST /import`）都严格执行类型验证：
+- **有效类型**：
+  - **`string`：任何非对象类型的值（数字/布尔值会自动转换为字符串）。
+  - **`number`：必须是有效的数字（不能是NaN或Infinity），允许使用数字字符串。
+  - **`boolean`：接受`true`、`false`、`"true"`、`"false"`、`1`、`0`。
+  - **`url`：必须是有效的URL（例如`https://example.com`）。
+  - **`date`：必须能够解析为有效的日期（使用ISO 8601格式，例如`2026-02-01`或`2026-02-01T12:00:00Z`）。
+- **验证行为**：
+  - 允许空值或null（不强制要求必填字段）。
+- 无效类型会导致`400 Bad Request`错误。
+- 错误信息会包含字段名、预期类型、接收到的值以及正确的格式示例。
+- 如果有多行数据，所有行都会被拒绝（因为任何一行数据不符合格式都会导致失败）。
 
-### Type Validation & Enforcement
-All data operations (POST /rows, PUT /cells, POST /import) enforce strict type validation:
-
-**Validated Types:**
-- **`string`**: Any non-object value (numbers/booleans auto-converted to strings)
-- **`number`**: Must be valid number (not NaN or Infinity). Accepts numeric strings.
-- **`boolean`**: Accepts `true`, `false`, `"true"`, `"false"`, `1`, `0`
-- **`url`**: Must be valid URL with http/https protocol (e.g., `https://example.com`)
-- **`date`**: Must parse to valid date. Use ISO 8601 format (e.g., `2026-02-01` or `2026-02-01T12:00:00Z`)
-
-**Validation Behavior:**
-- Empty/null values are allowed (no required field enforcement)
-- Invalid types rejected with **400 Bad Request**
-- Errors include: field name, expected type, received value, and corrected example
-- Multiple rows: ALL rejected if ANY fail validation (atomic)
-
-**Example Validation Error:**
+**示例验证错误：**
 ```json
 {
   "success": false,
@@ -632,17 +611,17 @@ All data operations (POST /rows, PUT /cells, POST /import) enforce strict type v
 }
 ```
 
-### Data Structure
-- **Schema Types:** `string`, `number`, `boolean`, `date`, `url`
-- **Row Data:** Named properties for AI-friendly access, e.g., `{"Name": "John", "Role": "CEO"}`
-- **Type Enforcement:** All values validated against schema before storage
-- **Errors:** Structured with examples using your actual schema
+### 数据结构
+- **模式类型**：`string`、`number`、`boolean`、`date`、`url`。
+- **行数据**：使用名称进行访问，例如`{"Name": "John", "Role": "CEO"`。
+- **类型验证**：所有数据在存储前都会根据模式进行验证。
+- **错误信息**：错误信息会包含实际的列名和示例。
 
-### Rate Limits
-- 100 requests/minute
+### 请求速率限制
+每分钟100次请求。
 
-### Usage Ideas for AI Agents
-- Parse data and self-correct on errors using provided examples
-- Single endpoint (POST /rows) handles all row creation scenarios
-- Error messages guide agents to proper format automatically
-- Column-aware examples eliminate guessing column names
+### AI代理的使用建议：
+- 使用提供的示例解析数据并自动纠正错误。
+- 单一端点`POST /rows`可以处理所有创建行的操作。
+- 错误信息会指导代理使用正确的格式。
+- 考虑到列名的示例，可以避免猜测列名。

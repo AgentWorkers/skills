@@ -1,6 +1,6 @@
 ---
 name: lybic cloud-computer skill
-description: Lybic Sandbox is a cloud sandbox built for agents and automation workflows. Think of it as a disposable cloud computer you can spin up on demand. Agents can perform GUI actions like seeing the screen, clicking, typing, and handling pop ups, which makes it a great fit for legacy apps and complex flows where APIs are missing or incomplete. It is designed for control and observability. You can monitor execution in real time, stop it when needed, and use logs and replay to debug, reproduce runs, and evaluate reliability. For long running tasks, iterative experimentation, or sensitive environments, sandboxed execution helps reduce risk and operational overhead.
+description: Lybic Sandbox 是一个专为代理程序和自动化工作流程设计的云沙箱环境。可以将其视为一台按需启动的“一次性”云计算机。代理程序可以通过该沙箱执行各种 GUI 操作（如查看屏幕内容、点击按钮、输入数据以及处理弹出窗口），因此它非常适合用于那些依赖传统应用程序或存在 API 缺失/不完整情况的复杂业务流程。该沙箱环境着重于提供强大的控制能力和可观测性：用户可以实时监控程序的执行过程，在需要时随时停止程序运行，并通过日志记录和回放功能来调试问题、重现执行过程以及评估系统的可靠性。对于那些需要长时间运行的任务、迭代性实验或对环境要求较高的场景来说，沙箱环境有助于降低风险并减少运营开销。
 homepage: https://lybic.ai
 metadata: {
     "openclaw": {
@@ -38,56 +38,56 @@ metadata: {
 }
 ---
 
-# Lybic Sandbox Control Skill
+# Lybic沙箱控制技能
 
-You are an expert at controlling Lybic cloud sandboxes using the Lybic Python SDK.
+您是使用Lybic Python SDK控制Lybic云沙箱的专家。
 
-## Your Capabilities
+## 您的能力
 
-You can help users interact with Lybic cloud sandboxes to:
+您可以帮助用户与Lybic云沙箱进行交互，以完成以下操作：
 
-1. **Manage Sandboxes**
-   - Create sandboxes (Windows/Linux/Android)
-   - List, get details, and delete sandboxes
-   - Monitor sandbox state and lifecycle
+1. **管理沙箱**
+   - 创建沙箱（Windows/Linux/Android）
+   - 列出沙箱、获取详细信息并删除沙箱
+   - 监控沙箱的状态和生命周期
 
-2. **Perform GUI Automation**
-   - **Desktop (Windows/Linux)**: Mouse clicks, keyboard input, scrolling, dragging
-   - **Mobile (Android)**: Touch, swipe, long press, app management
-   - Take screenshots for visual feedback
+2. **执行GUI自动化**
+   - **桌面（Windows/Linux）**：鼠标点击、键盘输入、滚动、拖动
+   - **移动设备（Android）**：触摸、滑动、长按、应用程序管理
+   - 截取屏幕截图以获取视觉反馈
 
-3. **Execute Code and Commands**
-   - Run Python, Node.js, Go, Rust, Java code
-   - Execute shell commands and scripts
-   - Handle stdin/stdout/stderr with base64 encoding
+3. **执行代码和命令**
+   - 运行Python、Node.js、Go、Rust、Java代码
+   - 执行shell命令和脚本
+   - 使用base64编码处理标准输入（stdin）、标准输出（stdout）和标准错误输出（stderr）
 
-4. **Manage Files**
-   - Download files from URLs into sandbox
-   - Copy files within sandbox or between locations
-   - Read and write files in sandbox
+4. **管理文件**
+   - 从URL下载文件到沙箱
+   - 在沙箱内部或不同位置之间复制文件
+   - 读写沙箱中的文件
 
-5. **Network Operations**
-   - Create HTTP port mappings
-   - Forward sandbox ports to public URLs
-   - Enable external access to sandbox services
+5. **网络操作**
+   - 创建HTTP端口映射
+   - 将沙箱端口转发到公共URL
+   - 允许外部访问沙箱服务
 
-6. **Project Management**
-   - Create and organize projects
-   - Manage sandboxes within projects
-   - Track organization usage
+6. **项目管理**
+   - 创建和组织项目
+   - 管理项目内的沙箱
+   - 跟踪组织的使用情况
 
-## Prerequisites
+## 先决条件
 
-The Lybic Python SDK must be installed:
+必须安装Lybic Python SDK：
 ```bash
 pip install lybic
 ```
 
-Users need Lybic credentials set via environment variables:
-- `LYBIC_ORG_ID` - Organization ID
-- `LYBIC_API_KEY` - API key
+用户需要通过环境变量设置Lybic凭据：
+- `LYBIC_ORG_ID` - 组织ID
+- `LYBIC_API_KEY` - API密钥
 
-Of course, these two parameters can also be manually specified and passed to the client.
+当然，这两个参数也可以手动指定并传递给客户端。
 
 ```python
 import asyncio
@@ -102,9 +102,9 @@ async def main():
         pass
 ```
 
-## Code Guidelines
+## 代码规范
 
-### 1. Always use async/await pattern
+### 1. 始终使用async/await模式
 
 ```python
 import asyncio
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     asyncio.run(main())
 ```
 
-### 2. Use proper error handling
+### 2. 使用适当的错误处理
 
 ```python
 try:
@@ -129,7 +129,7 @@ except Exception as e:
     print(f"Error: {e}")
 ```
 
-### 3. Handle base64 encoding for process I/O
+### 3. 处理基于base64的进程I/O操作
 
 ```python
 import base64
@@ -143,7 +143,7 @@ result = await client.sandbox.execute_process(...)
 output = base64.b64decode(result.stdoutBase64 or '').decode()
 ```
 
-### 4. Use fractional coordinates for GUI actions
+### 4. 在GUI操作中使用分数坐标
 
 ```python
 # Recommended: Resolution-independent
@@ -163,9 +163,9 @@ action = {
 }
 ```
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: Create sandbox and run code
+### 模式1：创建沙箱并运行代码
 
 ```python
 import asyncio
@@ -196,7 +196,7 @@ async def run_code_in_sandbox():
 asyncio.run(run_code_in_sandbox())
 ```
 
-### Pattern 2: GUI automation with screenshot
+### 模式2：带有截图的GUI自动化
 
 ```python
 import asyncio
@@ -242,7 +242,7 @@ async def automate_gui():
 asyncio.run(automate_gui())
 ```
 
-### Pattern 3: Download file and process
+### 模式3：下载文件并处理文件
 
 ```python
 import asyncio
@@ -283,9 +283,9 @@ print(df.describe())
 asyncio.run(download_and_process())
 ```
 
-## Action Reference
+## 操作参考
 
-### Mouse Actions (Computer Use)
+### 鼠标操作（适用于计算机）
 
 ```python
 # Click
@@ -304,7 +304,7 @@ asyncio.run(download_and_process())
 {"type": "mouse:scroll", "x": {...}, "y": {...}, "stepVertical": -5, "stepHorizontal": 0}
 ```
 
-### Keyboard Actions (Computer Use)
+### 键盘操作（适用于计算机）
 
 ```python
 # Type text
@@ -316,7 +316,7 @@ asyncio.run(download_and_process())
 {"type": "keyboard:hotkey", "keys": "ctrl+shift+s"}  # Save as
 ```
 
-### Touch Actions (Mobile Use)
+### 触摸操作（适用于移动设备）
 
 ```python
 # Tap
@@ -333,7 +333,7 @@ asyncio.run(download_and_process())
 {"type": "android:home"}
 ```
 
-### App Management (Mobile Use)
+### 应用程序管理（适用于移动设备）
 
 ```python
 # Start app
@@ -348,7 +348,7 @@ asyncio.run(download_and_process())
 {"type": "os:listApps"}
 ```
 
-### Common Actions
+### 常见操作
 
 ```python
 # Screenshot
@@ -362,55 +362,55 @@ asyncio.run(download_and_process())
 {"type": "failed", "message": "Error occurred"}
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use fractional coordinates**: More portable across different screen resolutions
-2. **Take screenshots**: Help verify GUI state before and after actions
-3. **Handle errors**: Always wrap API calls in try-except blocks
-4. **Clean up resources**: Delete sandboxes when done to avoid charges
-5. **Base64 encode I/O**: Remember stdin/stdout use base64 encoding
-6. **Check exit codes**: Use `exitCode` to verify process success (0 = success)
+1. **使用分数坐标**：在不同屏幕分辨率下更具便携性
+2. **截取屏幕截图**：帮助验证操作前后的GUI状态
+3. **处理错误**：始终将API调用封装在try-except块中
+4. **清理资源**：完成后删除沙箱以避免产生费用
+5. **对I/O进行base64编码**：记得使用base64编码处理标准输入和输出
+6. **检查退出代码**：使用`exitCode`来验证进程是否成功（0 = 成功）
 
-## Sandbox Shapes
+## 沙箱类型
 
-Lybic determines the operating system type of the cloud sandbox through the `shape` parameter when creating the sandbox.
+Lybic在创建沙箱时会通过`shape`参数确定云沙箱的操作系统类型：
 
 - Windows: beijing-2c-4g-cpu
 - Linux: beijing-2c-4g-cpu-linux
-- Android: acep-shenzhen-enhanced or acep-wenzhou-common-pro
+- Android: acep-shenzhen-enhanced 或 acep-wenzhou-common-pro
 
-## Troubleshooting
+## 故障排除
 
-1. **Sandbox not ready**: Wait longer after creation, check status with `get()`
-2. **Action fails**: Verify coordinates are within screen bounds
-3. **Process timeout**: Long-running processes need special handling (see docs)
-4. **File not found**: Ensure paths exist in sandbox before accessing
-5. **Import errors**: Verify package is pre-installed or install with `pip3 install`
+1. **沙箱未准备好**：创建后请稍等片刻，使用`get()`检查状态
+2. **操作失败**：确认坐标在屏幕范围内
+3. **进程超时**：长时间运行的进程需要特殊处理（请参阅文档）
+4. **文件未找到**：在访问之前确保路径存在于沙箱中
+5. **导入错误**：确认包已预先安装，或使用`pip3 install`进行安装
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when users need to:
-- Run code in an isolated cloud environment
-- Automate GUI applications (desktop or mobile)
-- Test web services in a sandbox
-- Process data in a clean environment
-- Interact with applications remotely
-- Perform browser automation
-- Test mobile apps on Android
+当用户需要以下操作时，请使用此技能：
+- 在隔离的云环境中运行代码
+- 自动化GUI应用程序（桌面或移动设备）
+- 在沙箱中测试Web服务
+- 在干净的环境中处理数据
+- 远程交互应用程序
+- 执行浏览器自动化
+- 在Android设备上测试移动应用程序
 
-## Documentation
+## 文档
 
-For detailed API reference:
-- [Python SDK Docs](https://docs.lybic.cn/en/sdk/python)
-- [Action Space Docs](https://docs.lybic.cn/en/sandbox/action)
-- [Code Execution Docs](https://docs.lybic.cn/en/sandbox/code)
+有关详细的API参考，请参阅：
+- [Python SDK文档](https://docs.lybic.cn/en/sdk/python)
+- [Action Space文档](https://docs.lybic.cn/en/sandbox/action)
+- [代码执行文档](https://docs.lybic.cn/en/sandbox/code)
 
-## Remember
+## 注意事项
 
-- Always check if credentials are set before running code
-- Provide clear explanations of what the code does
-- Show complete working examples
-- Handle errors gracefully
-- Clean up resources (delete sandboxes) when appropriate
-- Take screenshots to verify GUI actions
-- Use async/await consistently
+- 在运行代码之前，请始终检查凭据是否已设置
+- 清晰地解释代码的功能
+- 提供完整的示例代码
+- 优雅地处理错误
+- 在适当的时候清理资源（删除沙箱）
+- 截取屏幕截图以验证GUI操作的结果
+- 一致地使用async/await模式

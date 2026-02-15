@@ -1,39 +1,37 @@
-# Gmail Label Manager Skill
+# Gmail 标签管理技能
 
-This skill automates the organization of unread Gmail messages by applying labels, removing unnecessary labels, and archiving emails, based on predefined patterns from **archived emails**.
+该技能通过应用标签、移除不必要的标签以及根据**已归档邮件**中的预定义模式来自动整理未读的 Gmail 邮件。
 
-## Features
+## 功能特点
 
-1. **Automated Workflow Steps:**
-    - Finds the first unread email.
-    - Identifies the appropriate label using:
-        - Dynamic analysis of labels on archived emails from the same sender.
-        - Ignores labels from emails still in the inbox.
-    - Adds the determined label(s) to the unread email.
-    - Removes irrelevant label(s) from the email. Also remove irrelevant CATEGORY labels (`CATEGORY_PERSONAL`, `CATEGORY_PROMOTIONS`, `CATEGORY_UPDATES`, `UNREAD`, etc.).
-    - Archives the email by removing the `INBOX` label.
-    - Verifies the operation to ensure all changes are applied correctly.
+1. **自动化工作流程步骤：**
+    - 找到第一封未读邮件。
+    - 根据以下方式确定合适的标签：
+        - 动态分析来自同一发件人的已归档邮件上的标签。
+        - 忽略收件箱中邮件的标签。
+    - 将选定的标签添加到未读邮件上。
+    - 移除邮件中不相关的标签（例如：`CATEGORY_PERSONAL`、`CATEGORY_PROMOTIONS`、`CATEGORY_UPDATES`、`UNREAD` 等）。
+    - 通过移除 `INBOX` 标签来将邮件归档。
+    - 验证操作以确保所有更改都已正确应用。
 
-2. **Customizable Patterns:**
-    - Dynamically learns from archived emails—no static cache required.
-    - Reduces dependency on external configurations.
-
----
-
-## Installation
-
-### Requirements:
-   - Install the `gog` CLI and authenticate it for Gmail API access.
-
-### Skill Setup:
-   - Place the skill files inside your OpenClaw workspace.
-   - Modify paths within the script for your local setup if required.
+2. **可自定义的模式：**
+    - 从已归档邮件中动态学习标签信息——无需静态缓存。
+    - 减少对外部配置的依赖。
 
 ---
 
-## Testing the Workflow
+## 安装
 
-- Run the `script.sh` manually or as part of a larger pipeline to confirm functionality before deploying automatic runs.
-- Test with a mix of labeled archived emails and unlabeled inbox emails to ensure accuracy.
+### 要求：
+   - 安装 `gog` CLI 并进行身份验证，以便访问 Gmail API。
+
+### 技能配置：
+   - 将技能文件放入您的 OpenClaw 工作区中。
+   - 如有需要，请根据您的本地环境修改脚本中的路径设置。
 
 ---
+
+## 测试工作流程
+
+- 手动运行 `script.sh`，或将其作为更大流程的一部分来测试功能，然后再进行自动运行。
+- 使用带有标签的已归档邮件和未标记的收件箱邮件进行测试，以确保准确性。

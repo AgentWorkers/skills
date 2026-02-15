@@ -1,36 +1,38 @@
-# Skill: Facture Make
+# 技能：生成发票（Skill: Generate Invoice）
 
-Ce skill permet de générer et d'envoyer des factures professionnelles vers Make.com après une étape de confirmation humaine.
+该技能允许在经过人工确认后，生成并向 Make.com 发送专业发票。
 
-## Utilisation
+## 使用方法
 
-Déclenchez ce skill lorsque l'utilisateur exprime l'intention de créer une facture.
-- "crée une facture"
-- "générer une facture pour [X] jours"
-- "fais une facture pour le client [NOM]"
+当用户表示想要创建发票时，触发此技能：
+- “创建发票”
+- “为 [X] 天生成发票”
+- “为客户 [NOM] 开具发票”
 
-## Flux de travail (Workflow)
+## 工作流程（Workflow）
 
-1. **Préparation** : Appeler `prepare_invoice.py`. Ce script calcule les montants et prépare le libellé.
-2. **Confirmation** : Afficher à l'utilisateur la valeur du champ `confirmation` renvoyée par le premier script.
-3. **Envoi** : Si l'utilisateur confirme, appeler `send_invoice.py` en lui passant **uniquement** l'objet JSON contenu dans la clé `invoice`.
+1. **准备阶段**：调用 `prepare_invoice.py` 脚本。该脚本计算费用并准备发票内容。
+2. **确认阶段**：向用户显示第一个脚本返回的 `confirmation` 字段的值。
+3. **发送阶段**：如果用户确认，仅将包含在 `invoice` 键中的 JSON 对象传递给 `sendinvoice.py` 脚本进行发送。
 
-## Spécifications Techniques
+## 技术规格
 
-### 1. Script de préparation : `prepare_invoice.py`
-- **Rôle** : Reçoit les détails (jours, client) et retourne un JSON.
-- **Format de sortie attendu** :
+### 1. 准备脚本：`prepare_invoice.py`
+- **功能**：接收相关参数（天数、客户信息），并返回一个 JSON 对象。
+- **预期的输出格式**：
 ```json
 {
   "invoice": {
-    "client": "Nom du client",
-    "jours": 3,
+    "client": "客户名称",
+    "days": 3,
     "tjm": 280,
-    "libelle": "Consulting Février 2026",
+    "libelle": "2026年2月咨询服务",
     "total": 840
   },
-  "confirmation": "Texte de confirmation à lire à l'utilisateur"
+  "confirmation": "需向用户显示的确认信息"
 }
+```
 
-## Réponse finale
-Réponds exclusivement par : "Envoi confirmé."
+## 最终回复
+
+回复内容仅限：“发送已确认。”

@@ -1,80 +1,79 @@
 ---
 name: Electric Guitar
-description: Electric guitar practice strategies, technique, tone shaping, and progress tracking.
+description: 电吉他练习策略、演奏技巧、音色塑造以及进度跟踪。
 metadata:
   category: music
   skills: ["guitar", "electric", "practice", "music", "instrument"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/electric-guitar/` as workspace on first interaction
-- After practice, offer to log progress; see `progress.md`
+- 在首次使用时，会在用户的主目录下创建名为 `~/electric-guitar/` 的工作区。
+- 练习结束后，会提示用户记录自己的练习进度；详情请参见 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask style — rock vs blues vs metal vs jazz
-- Ask gear — amp, pedals, pickups
-- Ask level — barre chords vs shred
+- 询问用户的演奏风格（摇滚、蓝调、金属或爵士）。
+- 询问用户使用的乐器设备（音箱、效果器、拾音器）。
+- 询问用户的演奏水平（是否能够演奏横按和弦或复杂的独奏）。
 
-## Practice Errors
+## 练习中的常见错误
 
-- Noodling without purpose — structured beats random
-- Avoiding hard parts — loop problems, not full songs
-- Speed before clean — sloppy fast = sloppy forever
-- Neglecting rhythm — lead fun, rhythm pays
+- 无目的地随意弹奏，缺乏节奏感。
+- 总是避开难度较高的部分，导致整体演奏质量下降。
+- 过分追求演奏速度而忽视了演奏的准确性；快速但不准确的演奏会带来长期的问题。
+- 忽视节奏的重要性；旋律固然重要，但节奏同样关键。
 
-## Left Hand Traps
+## 左手的常见错误
 
-- Death grip — thumb relaxed behind neck
-- Flat barre — angle uses bone edge
-- Muting strings — check finger clearance
-- Stretching vs moving — move hand, don't strain
+- 拇指紧握琴颈（“死亡握法”）；放松拇指。
+- 横按时手指与琴弦接触不平整，应调整手指的角度。
+- 忽略了使用拨片时对琴弦的“消音”操作；检查手指与琴弦之间的间隙。
 
-## Right Hand Traps
+## 右手的常见错误
 
-- Picking too hard — dynamics from attack
-- All downstrokes — alternate picking fundamental
-- Ignoring muting — palm mute for clean sound
+- 拨弦力度过大，导致音量不均匀。
+- 总是使用向下拨弦的技巧；应交替使用不同的拨弦方式。
+- 忽略了使用手掌进行“消音”的效果；正确的消音方法可以提升演奏的清晰度。
 
-## Mistakes by Level
+## 不同水平的常见错误
 
-**Beginners:** Barre death grip, no alternate picking, no metronome
+**初学者：** 使用“死亡握法”演奏横按和弦，不使用交替拨弦技巧，也不使用节拍器。
+**中级者：** 重复使用相同的五声音阶进行演奏，缺乏变化；在演奏独奏时缺乏连贯性。
+**高级者：** 演奏技巧单一，忽视音乐理论；过于注重音色而忽略了演奏的流畅性。
 
-**Intermediate:** Pentatonic rut, bends off, rushing solos
+## 技巧优先级
 
-**Advanced:** Stale licks, neglecting theory, tone over playing
+| 技巧        | 重要性           |
+|-------------|-------------------|
+| 交替拨弦      | 提高演奏速度的基础        |
+| 按弦时的音准控制 | 确保音准的准确性        |
+| 振音控制      | 形成个人独特的演奏风格        |
+| 使用手掌消音    | 保持稳定的节奏          |
 
-## Technique Priorities
+## 指板相关知识
 
-| Technique | Why |
-|-----------|-----|
-| Alternate picking | Speed foundation |
-| Bending in tune | Amateur when off |
-| Vibrato control | Signature sound |
-| Palm muting | Tight rhythm |
+- CAGED 系统：帮助更好地熟悉指板布局。
+- 三和弦的运用：在指板的各个位置都能找到三和弦；学会三和弦的转位形式。
+- 五声音阶与和弦音的结合：灵活运用五声音阶和和弦音，提升演奏的多样性。
 
-## Fretboard Knowledge
+## 故障排除技巧
 
-- CAGED system — shapes unlock neck
-- Triads everywhere — inversions, all strings
-- Pentatonic + chord tones — escape box
+- 如果遇到“按弦不准”的问题，检查手指是否正确按住了相应的品格。
+- 如果独奏时缺乏连贯性，检查切换和弦时是否正确使用了和弦音。
+- 如果节奏不稳定，尝试使用拨片进行“消音”操作以获得更清晰的音效。
+- 如果无法快速演奏，从 60% 的速度开始练习，逐步提高速度。
 
-## Troubleshooting
+## 音色调整
 
-- "Bends off" → target note, check fretted
-- "Solos random" → chord tones on changes
-- "Rhythm sloppy" → muted strumming to click
-- "Can't play fast" → 60% speed, build back
+- 适当的音量提升会提升演奏的清晰度；桥弦部分的音色较硬，而琴颈部分的音色较为温暖。
+- 练习时使用的均衡器（EQ）与乐队使用的均衡器可能有所不同，需要根据个人需求进行调整。
 
-## Tone
+## 进度跟踪
 
-Less gain = clarity; bridge = cut, neck = warm; practice EQ ≠ band EQ
+将练习进度记录到 `~/electric-guitar/` 目录下，包括演奏的歌曲、使用的技巧以及按弦位置的练习内容。
 
-## Progress Tracking
+## 建议与建议
 
-Log to `~/electric-guitar/`: songs, techniques, scales by position
-
-## What to Surface
-
-- "Pentatonic done? Try modes?" / "Rock solid — blues next?"
+- “已经掌握了五声音阶？接下来可以尝试其他音阶模式吗？”
+- “演奏得相当稳定了，接下来可以尝试蓝调风格吗？”

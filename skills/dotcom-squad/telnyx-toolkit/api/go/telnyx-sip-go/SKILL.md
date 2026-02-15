@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Sip - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,11 +39,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get all outbound voice profiles
+## 获取所有出站语音配置文件
 
-Get all outbound voice profiles belonging to the user that match the given filters.
+获取符合指定筛选条件的用户的所有出站语音配置文件。
 
 `GET /outbound_voice_profiles`
 
@@ -54,11 +55,11 @@ Get all outbound voice profiles belonging to the user that match the given filte
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an outbound voice profile
+## 创建出站语音配置文件
 
-Create an outbound voice profile.
+创建一个新的出站语音配置文件。
 
-`POST /outbound_voice_profiles` — Required: `name`
+`POST /outbound_voice_profiles` — 必需参数：`name`
 
 ```go
 	outboundVoiceProfile, err := client.OutboundVoiceProfiles.New(context.TODO(), telnyx.OutboundVoiceProfileNewParams{
@@ -70,9 +71,9 @@ Create an outbound voice profile.
 	fmt.Printf("%+v\n", outboundVoiceProfile.Data)
 ```
 
-## Retrieve an outbound voice profile
+## 查询出站语音配置文件
 
-Retrieves the details of an existing outbound voice profile.
+查询现有出站语音配置文件的详细信息。
 
 `GET /outbound_voice_profiles/{id}`
 
@@ -84,9 +85,11 @@ Retrieves the details of an existing outbound voice profile.
 	fmt.Printf("%+v\n", outboundVoiceProfile.Data)
 ```
 
-## Updates an existing outbound voice profile.
+## 更新出站语音配置文件
 
-`PATCH /outbound_voice_profiles/{id}` — Required: `name`
+更新现有出站语音配置文件的详细信息。
+
+`PATCH /outbound_voice_profiles/{id}` — 必需参数：`name`
 
 ```go
 	outboundVoiceProfile, err := client.OutboundVoiceProfiles.Update(
@@ -102,9 +105,9 @@ Retrieves the details of an existing outbound voice profile.
 	fmt.Printf("%+v\n", outboundVoiceProfile.Data)
 ```
 
-## Delete an outbound voice profile
+## 删除出站语音配置文件
 
-Deletes an existing outbound voice profile.
+删除现有的出站语音配置文件。
 
 `DELETE /outbound_voice_profiles/{id}`
 
@@ -116,9 +119,9 @@ Deletes an existing outbound voice profile.
 	fmt.Printf("%+v\n", outboundVoiceProfile.Data)
 ```
 
-## List connections
+## 列出所有连接
 
-Returns a list of your connections irrespective of type.
+返回所有类型的连接列表。
 
 `GET /connections`
 
@@ -130,9 +133,9 @@ Returns a list of your connections irrespective of type.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a connection
+## 查询连接信息
 
-Retrieves the high-level details of an existing connection.
+获取现有连接的详细信息。
 
 `GET /connections/{id}`
 
@@ -144,9 +147,9 @@ Retrieves the high-level details of an existing connection.
 	fmt.Printf("%+v\n", connection.Data)
 ```
 
-## List credential connections
+## 列出凭证连接
 
-Returns a list of your credential connections.
+返回所有凭证连接的列表。
 
 `GET /credential_connections`
 
@@ -158,11 +161,11 @@ Returns a list of your credential connections.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a credential connection
+## 创建凭证连接
 
-Creates a credential connection.
+创建一个新的凭证连接。
 
-`POST /credential_connections` — Required: `user_name`, `password`, `connection_name`
+`POST /credential_connections` — 必需参数：`user_name`, `password`, `connection_name`
 
 ```go
 	credentialConnection, err := client.CredentialConnections.New(context.TODO(), telnyx.CredentialConnectionNewParams{
@@ -176,9 +179,9 @@ Creates a credential connection.
 	fmt.Printf("%+v\n", credentialConnection.Data)
 ```
 
-## Retrieve a credential connection
+## 查询凭证连接信息
 
-Retrieves the details of an existing credential connection.
+获取现有凭证连接的详细信息。
 
 `GET /credential_connections/{id}`
 
@@ -190,9 +193,9 @@ Retrieves the details of an existing credential connection.
 	fmt.Printf("%+v\n", credentialConnection.Data)
 ```
 
-## Update a credential connection
+## 更新凭证连接信息
 
-Updates settings of an existing credential connection.
+更新现有凭证连接的设置。
 
 `PATCH /credential_connections/{id}`
 
@@ -208,9 +211,9 @@ Updates settings of an existing credential connection.
 	fmt.Printf("%+v\n", credentialConnection.Data)
 ```
 
-## Delete a credential connection
+## 删除凭证连接
 
-Deletes an existing credential connection.
+删除现有的凭证连接。
 
 `DELETE /credential_connections/{id}`
 
@@ -222,9 +225,9 @@ Deletes an existing credential connection.
 	fmt.Printf("%+v\n", credentialConnection.Data)
 ```
 
-## Check a Credential Connection Registration Status
+## 检查凭证连接的注册状态
 
-Checks the registration_status for a credential connection, (`registration_status`) as well as the timestamp for the last SIP registration event (`registration_status_updated_at`)
+检查凭证连接的注册状态（`registration_status`）以及最后一次 SIP 注册事件的时间戳（`registration_status_updated_at`）。
 
 `POST /credential_connections/{id}/actions/check_registration_status`
 
@@ -236,9 +239,9 @@ Checks the registration_status for a credential connection, (`registration_statu
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List Ips
+## 列出 IP 地址
 
-Get all IPs belonging to the user that match the given filters.
+获取符合指定筛选条件的用户的所有 IP 地址。
 
 `GET /ips`
 
@@ -250,11 +253,11 @@ Get all IPs belonging to the user that match the given filters.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an Ip
+## 创建 IP 地址
 
-Create a new IP object.
+创建一个新的 IP 对象。
 
-`POST /ips` — Required: `ip_address`
+`POST /ips` — 必需参数：`ip_address`
 
 ```go
 	ip, err := client.IPs.New(context.TODO(), telnyx.IPNewParams{
@@ -266,9 +269,9 @@ Create a new IP object.
 	fmt.Printf("%+v\n", ip.Data)
 ```
 
-## Retrieve an Ip
+## 查询 IP 地址信息
 
-Return the details regarding a specific IP.
+获取特定 IP 地址的详细信息。
 
 `GET /ips/{id}`
 
@@ -280,11 +283,11 @@ Return the details regarding a specific IP.
 	fmt.Printf("%+v\n", ip.Data)
 ```
 
-## Update an Ip
+## 更新 IP 地址信息
 
-Update the details of a specific IP.
+更新特定 IP 地址的详细信息。
 
-`PATCH /ips/{id}` — Required: `ip_address`
+`PATCH /ips/{id}` — 必需参数：`ip_address`
 
 ```go
 	ip, err := client.IPs.Update(
@@ -300,9 +303,9 @@ Update the details of a specific IP.
 	fmt.Printf("%+v\n", ip.Data)
 ```
 
-## Delete an Ip
+## 删除 IP 地址
 
-Delete an IP.
+删除指定的 IP 地址。
 
 `DELETE /ips/{id}`
 
@@ -314,9 +317,9 @@ Delete an IP.
 	fmt.Printf("%+v\n", ip.Data)
 ```
 
-## List Ip connections
+## 列出 IP 连接
 
-Returns a list of your IP connections.
+返回所有 IP 连接的列表。
 
 `GET /ip_connections`
 
@@ -328,9 +331,9 @@ Returns a list of your IP connections.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an Ip connection
+## 创建 IP 连接
 
-Creates an IP connection.
+创建一个新的 IP 连接。
 
 `POST /ip_connections`
 
@@ -342,9 +345,9 @@ Creates an IP connection.
 	fmt.Printf("%+v\n", ipConnection.Data)
 ```
 
-## Retrieve an Ip connection
+## 查询 IP 连接信息
 
-Retrieves the details of an existing ip connection.
+获取现有 IP 连接的详细信息。
 
 `GET /ip_connections/{id}`
 
@@ -356,9 +359,9 @@ Retrieves the details of an existing ip connection.
 	fmt.Printf("%+v\n", ipConnection.Data)
 ```
 
-## Update an Ip connection
+## 更新 IP 连接信息
 
-Updates settings of an existing IP connection.
+更新现有 IP 连接的设置。
 
 `PATCH /ip_connections/{id}`
 
@@ -374,9 +377,9 @@ Updates settings of an existing IP connection.
 	fmt.Printf("%+v\n", ipConnection.Data)
 ```
 
-## Delete an Ip connection
+## 删除 IP 连接
 
-Deletes an existing IP connection.
+删除现有的 IP 连接。
 
 `DELETE /ip_connections/{id}`
 
@@ -388,9 +391,9 @@ Deletes an existing IP connection.
 	fmt.Printf("%+v\n", ipConnection.Data)
 ```
 
-## List FQDNs
+## 列出 FQDN（完全 Qualified Domain Name）
 
-Get all FQDNs belonging to the user that match the given filters.
+获取符合指定筛选条件的用户的所有 FQDN。
 
 `GET /fqdns`
 
@@ -402,11 +405,11 @@ Get all FQDNs belonging to the user that match the given filters.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an FQDN
+## 创建 FQDN
 
-Create a new FQDN object.
+创建一个新的 FQDN 对象。
 
-`POST /fqdns` — Required: `fqdn`, `dns_record_type`, `connection_id`
+`POST /fqdns` — 必需参数：`fqdn`, `dns_record_type`, `connection_id`
 
 ```go
 	fqdn, err := client.Fqdns.New(context.TODO(), telnyx.FqdnNewParams{
@@ -420,9 +423,9 @@ Create a new FQDN object.
 	fmt.Printf("%+v\n", fqdn.Data)
 ```
 
-## Retrieve an FQDN
+## 查询 FQDN 信息
 
-Return the details regarding a specific FQDN.
+获取特定 FQDN 的详细信息。
 
 `GET /fqdns/{id}`
 
@@ -434,9 +437,9 @@ Return the details regarding a specific FQDN.
 	fmt.Printf("%+v\n", fqdn.Data)
 ```
 
-## Update an FQDN
+## 更新 FQDN 信息
 
-Update the details of a specific FQDN.
+更新特定 FQDN 的详细信息。
 
 `PATCH /fqdns/{id}`
 
@@ -452,9 +455,9 @@ Update the details of a specific FQDN.
 	fmt.Printf("%+v\n", fqdn.Data)
 ```
 
-## Delete an FQDN
+## 删除 FQDN
 
-Delete an FQDN.
+删除指定的 FQDN。
 
 `DELETE /fqdns/{id}`
 
@@ -466,9 +469,9 @@ Delete an FQDN.
 	fmt.Printf("%+v\n", fqdn.Data)
 ```
 
-## List FQDN connections
+## 列出 FQDN 连接
 
-Returns a list of your FQDN connections.
+返回所有 FQDN 连接的列表。
 
 `GET /fqdn_connections`
 
@@ -480,11 +483,11 @@ Returns a list of your FQDN connections.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create an FQDN connection
+## 创建 FQDN 连接
 
-Creates a FQDN connection.
+创建一个新的 FQDN 连接。
 
-`POST /fqdn_connections` — Required: `connection_name`
+`POST /fqdn_connections` — 必需参数：`connection_name`
 
 ```go
 	fqdnConnection, err := client.FqdnConnections.New(context.TODO(), telnyx.FqdnConnectionNewParams{
@@ -496,9 +499,9 @@ Creates a FQDN connection.
 	fmt.Printf("%+v\n", fqdnConnection.Data)
 ```
 
-## Retrieve an FQDN connection
+## 查询 FQDN 连接信息
 
-Retrieves the details of an existing FQDN connection.
+获取现有 FQDN 连接的详细信息。
 
 `GET /fqdn_connections/{id}`
 
@@ -510,9 +513,9 @@ Retrieves the details of an existing FQDN connection.
 	fmt.Printf("%+v\n", fqdnConnection.Data)
 ```
 
-## Update an FQDN connection
+## 更新 FQDN 连接信息
 
-Updates settings of an existing FQDN connection.
+更新现有 FQDN 连接的设置。
 
 `PATCH /fqdn_connections/{id}`
 
@@ -528,9 +531,9 @@ Updates settings of an existing FQDN connection.
 	fmt.Printf("%+v\n", fqdnConnection.Data)
 ```
 
-## Delete an FQDN connection
+## 删除 FQDN 连接
 
-Deletes an FQDN connection.
+删除现有的 FQDN 连接。
 
 `DELETE /fqdn_connections/{id}`
 
@@ -542,7 +545,9 @@ Deletes an FQDN connection.
 	fmt.Printf("%+v\n", fqdnConnection.Data)
 ```
 
-## List Mobile Voice Connections
+## 列出移动语音连接
+
+获取所有移动语音连接的列表。
 
 `GET /v2/mobile_voice_connections`
 
@@ -554,7 +559,9 @@ Deletes an FQDN connection.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Mobile Voice Connection
+## 创建移动语音连接
+
+创建一个新的移动语音连接。
 
 `POST /v2/mobile_voice_connections`
 
@@ -566,7 +573,9 @@ Deletes an FQDN connection.
 	fmt.Printf("%+v\n", mobileVoiceConnection.Data)
 ```
 
-## Retrieve a Mobile Voice Connection
+## 查询移动语音连接信息
+
+获取特定移动语音连接的详细信息。
 
 `GET /v2/mobile_voice_connections/{id}`
 
@@ -578,7 +587,9 @@ Deletes an FQDN connection.
 	fmt.Printf("%+v\n", mobileVoiceConnection.Data)
 ```
 
-## Update a Mobile Voice Connection
+## 更新移动语音连接信息
+
+更新现有移动语音连接的设置。
 
 `PATCH /v2/mobile_voice_connections/{id}`
 
@@ -594,7 +605,9 @@ Deletes an FQDN connection.
 	fmt.Printf("%+v\n", mobileVoiceConnection.Data)
 ```
 
-## Delete a Mobile Voice Connection
+## 删除移动语音连接
+
+删除现有的移动语音连接。
 
 `DELETE /v2/mobile_voice_connections/{id}`
 
@@ -604,4 +617,5 @@ Deletes an FQDN connection.
 		panic(err.Error())
 	}
 	fmt.Printf("%+v\n", mobileVoiceConnection.Data)
+```
 ```

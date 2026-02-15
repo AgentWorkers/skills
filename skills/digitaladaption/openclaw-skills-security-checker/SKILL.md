@@ -1,72 +1,73 @@
 ---
 name: security-skill-scanner
 version: 1.0.0
-description: Security scanner for ClawdHub skills - detects suspicious patterns, manages whitelists, and monitors Moltbook for security threats.
+description: **ClawdHub 技能的安全扫描工具**  
+该工具用于检测可疑行为模式、管理白名单，并监控 Moltbook 中的安全威胁。
 homepage: https://github.com/digitaladaption/openclaw-skills-security-checker
 metadata: {"clawdbot":{"emoji":"🔒","category":"security"},"author":"ClaudiatheLobster"}
 ---
 
-# Security Skill Scanner
+# 安全技能扫描器
 
-Scans ClawdHub skills for suspicious patterns, manages permission manifests, and monitors Moltbook for security threats.
+该工具用于扫描 ClawdHub 中的技能文件以检测可疑模式，管理权限信息，并监控 Moltbook 上的安全威胁。
 
-## Features
+## 主要功能
 
-- **Pattern Detection**: Scans SKILL.md files for credential theft, command injection, network exfil patterns
-- **Whitelist Management**: Maintains list of known legitimate skills
-- **Moltbook Monitoring**: Continuously monitors Moltbook for security discussions and scam alerts
-- **Permission Manifests**: Generates and tracks skill permissions with Isnad chains
-- **Daily Reports**: Automatic scanning with markdown/JSON reports
+- **模式检测**：扫描 SKILL.md 文件，查找凭证盗窃、命令注入以及网络数据泄露等安全风险。
+- **白名单管理**：维护已知合法技能的列表。
+- **Moltbook 监控**：持续监控 Moltbook 上的安全讨论和诈骗警报。
+- **权限管理**：生成并跟踪技能的权限信息。
+- **每日报告**：自动执行扫描，并生成 markdown 或 JSON 格式的报告。
 
-## Usage
+## 使用方法
 
-### Scan All Skills
+### 扫描所有技能
 ```bash
 python3 /root/clawd/skills/security-skill-scanner/skill-scanner.py
 ```
 
-### Scan Specific Skill
+### 扫描特定技能
 ```bash
 python3 /root/clawd/skills/security-skill-scanner/skill-scanner.py --skill nano-banana-pro
 ```
 
-### Add to Whitelist
+### 添加到白名单
 ```bash
 python3 /root/clawd/skills/security-skill-scanner/whitelist-manager.py add skill-name "reason for whitelist"
 ```
 
-### Check Whitelist
+### 检查白名单
 ```bash
 python3 /root/clawd/skills/security-skill-scanner/whitelist-manager.py list
 ```
 
-### Monitor Moltbook (One-shot)
+### 单次监控 Moltbook
 ```bash
 bash /root/clawd/skills/security-skill-scanner/moltbook-monitor.sh
 ```
 
-## Files
+## 相关文件
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `skill-scanner.py` | Main scanner with regex pattern detection |
-| `whitelist-manager.py` | Manage false-positive whitelist |
-| `moltbook-monitor.sh` | Moltbook security feed monitor |
-| `permission-manager.py` | Generate skill permission manifests |
-| `data/whitelist.json` | Whitelisted skills database |
+| `skill-scanner.py` | 主扫描程序，负责正则表达式模式检测 |
+| `whitelist-manager.py` | 管理误报的白名单 |
+| `moltbook-monitor.sh` | Moltbook 安全信息监控脚本 |
+| `permission-manager.py` | 生成技能权限信息 |
+| `data/whitelist.json` | 白名单技能数据库 |
 
-## Patterns Detected
+## 检测到的安全模式
 
-| Category | Patterns |
-|----------|----------|
-| Credential Theft | .env access, webhook.site, POST secrets |
-| Command Injection | os.system, eval, shell=True, subprocess |
-| Network Exfil | HTTP requests with Bearer tokens |
-| Suspicious Downloads | wget, curl -O, remote scripts |
+| 类型 | 典型模式 |
+|------|---------|
+| 凭证盗窃 | 使用 `.env` 文件窃取凭证、通过 webhook 或 POST 请求窃取秘密 |
+| 命令注入 | 使用 `os.system`、`eval` 或 `shell=True` 等函数进行攻击 |
+| 网络数据泄露 | 通过包含Bearer 令牌的 HTTP 请求进行数据传输 |
+| 可疑下载 | 使用 `wget`、`curl -O` 等命令下载可疑文件 |
 
-## Whitelisted Skills
+## 已加入白名单的技能
 
-These skills are known legitimate and excluded from warnings:
+以下技能为已知合法工具，因此不会被标记为可疑：
 - nano-banana-pro (Google Gemini)
 - notion (Notion API)
 - trello (Trello API)
@@ -74,11 +75,11 @@ These skills are known legitimate and excluded from warnings:
 - local-places (Google Places)
 - bluebubbles (iMessage)
 - weather (Weather API)
-- And 5 more...
+- 以及另外 5 个工具...
 
-## Cron Jobs (Optional)
+## 定时任务（可选）
 
-Add to crontab for automated scanning:
+您可以将以下脚本添加到 crontab 中以实现自动扫描：
 ```bash
 # Daily skill scan at 4 AM
 0 4 * * * python3 /root/clawd/skills/security-skill-scanner/skill-scanner.py >> /var/log/skill-scan.log 2>&1
@@ -87,11 +88,9 @@ Add to crontab for automated scanning:
 */30 * * * * bash /root/clawd/skills/security-skill-scanner/moltbook-monitor.sh >> /var/log/moltbook-monitor.log 2>&1
 ```
 
-## Pre-Install Hook (Block Suspicious Skills)
+## 预安装钩子（阻止可疑技能的安装）
 
-Install new skills with automatic security scanning that **BLOCKS** suspicious installations:
-
-### Quick Install with Scan
+新安装的技能会自动进行安全扫描，如果发现可疑行为则会阻止安装：
 ```bash
 # Interactive mode (asks before installing)
 bash /root/clawd/skills/security-skill-scanner/install-skill.sh nano-banana-pro
@@ -103,10 +102,9 @@ bash /root/clawd/skills/security-skill-scanner/install-skill.sh suspicious-skill
 python3 /root/clawd/skills/security-skill-scanner/install-hook.py skill-name --scan-only
 ```
 
-### Integration with molthub
+## 与 molthub 的集成
 
-Add to your shell profile for automatic scanning on every install:
-
+将相关脚本添加到您的 shell 配置文件中，实现每次安装技能时的自动扫描：
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
 molthub() {
@@ -118,16 +116,16 @@ molthub() {
 }
 ```
 
-Now every `molthub install <skill>` will be scanned first!
+现在，每次执行 `molthub install <skill>` 时，该技能都会被先进行安全扫描！
 
-### What Happens
+## 扫描流程
 
-1. **Clean skill** → Installs normally ✅
-2. **Whitelisted skill** → Installs normally ✅
-3. **Suspicious skill** → **BLOCKED** with explanation 🚫
-4. **Suspicious + --force** → Warns but installs ⚠️
+1. **正常技能** → 正常安装 ✅
+2. **白名单中的技能** → 正常安装 ✅
+3. **可疑技能** → 被阻止安装，并显示警告 🚫
+4. **可疑技能（使用 `--force` 参数）** → 发出警告但仍允许安装 ⚠️
 
-### Example Output
+## 示例输出
 
 ```
 🔒 Pre-Install Security Scan: nano-banana-pro
@@ -139,8 +137,6 @@ Action: allowed
 🚀 Proceeding with installation...
 ✅ nano-banana-pro installed successfully
 ```
-
-vs
 
 ```
 🔒 Pre-Install Security Scan: weather-scam
@@ -159,16 +155,15 @@ Action: blocked
 To override: python3 install-hook.py weather-scam --force
 ```
 
-## Reports
+## 报告结果
 
-- `/tmp/security-scanner/scan-report.md` - Human-readable scan results
-- `/tmp/security-scanner/scan-results.json` - Structured JSON output
-- `/tmp/security-scanner/moltbook-scan.log` - Moltbook monitoring log
+- `/tmp/security-scanner/scan-report.md`：人类可读的扫描结果
+- `/tmp/security-scanner/scan-results.json`：结构化的 JSON 输出
+- `/tmp/security-scanner/moltbook-scan.log`：Moltbook 监控日志
 
-## Integration
+## 集成方式
 
-Import as a module:
-```python
+您可以将该工具作为模块导入到您的应用程序中：```python
 from skill_scanner import RegexScanner
 
 scanner = RegexScanner()

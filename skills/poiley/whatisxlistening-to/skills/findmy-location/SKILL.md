@@ -1,47 +1,47 @@
 ---
 name: findmy-location
-description: Track a shared contact's location via Apple Find My with street-level accuracy. Returns address, city, and context (home/work/out) by reading map landmarks. Supports configurable known locations and vision fallback for unknown places.
+description: 通过 Apple Find My 功能追踪共享联系人的位置，可精确到街道级别。该功能能够根据地图上的地标信息返回联系人的地址、所在城市以及当前所处的环境（如家中、工作场所或外出地点）。同时支持配置已知的位置信息，并在未知地点时使用视觉识别技术作为备用方案。
 ---
 
-# Find My Location
+# 查找我的位置
 
-Track shared contacts via Apple Find My with street-corner accuracy.
+通过 Apple 的“查找我的设备”功能，可以高精度地追踪共享的联系人信息（精确到街道拐角）。
 
-## Requirements
+## 系统要求
 
-- **macOS** 13+ with Find My app
-- **Python** 3.9+
-- **iCloud account** signed in on your Mac (for Find My access)
-- **Location sharing** enabled from the contact you want to track
-- **peekaboo** - screen reading CLI ([GitHub](https://github.com/steipete/peekaboo))
-- **Hammerspoon** (optional) - for reliable UI clicking ([hammerspoon.org](https://www.hammerspoon.org/))
+- **macOS 13** 及更高版本，并安装了“查找我的设备”应用程序
+- **Python 3.9** 及更高版本
+- 在您的 Mac 上登录了 iCloud 账户（用于访问“查找我的设备”功能）
+- 要追踪的联系人已启用位置共享功能
+- **peekaboo** – 用于屏幕阅读的命令行工具（[GitHub](https://github.com/steipete/peekaboo)）
+- **Hammerspoon**（可选）– 用于确保点击操作的准确性（[hammerspoon.org](https://www.hammerspoon.org/)）
 
-## Prerequisites
+## 先决条件
 
-### 1. iCloud & Find My Setup
+### 1. 设置 iCloud 和“查找我的设备”
 
-Your Mac must be signed into an iCloud account with Find My enabled:
-- System Settings → Apple ID → iCloud → Find My Mac (enabled)
-- The person you want to track must share their location with this iCloud account via Find My
+您的 Mac 必须已登录 iCloud 账户，并且启用了“查找我的设备”功能：
+- 系统设置 → Apple ID → iCloud → “查找我的 Mac”（已启用）
+- 要追踪的人必须通过“查找我的设备”功能与您的 iCloud 账户共享他们的位置信息
 
-### 2. Install peekaboo
+### 2. 安装 peekaboo
 
 ```bash
 brew install steipete/tap/peekaboo
 ```
 
-Grant **Accessibility** and **Screen Recording** permissions when prompted (System Settings → Privacy & Security).
+按照提示授予 **辅助功能** 和 **屏幕录制** 权限（系统设置 → 隐私与安全）。
 
-### 3. Install Hammerspoon (optional but recommended)
+### 3. 安装 Hammerspoon（可选，但推荐）
 
-Hammerspoon provides reliable clicking that works across all apps. Without it, clicks may occasionally go to the wrong window.
+Hammerspoon 可确保在所有应用程序中点击操作的准确性。如果没有安装 Hammerspoon，点击操作可能会偶尔指向错误的窗口。
 
 ```bash
 brew install hammerspoon
 open -a Hammerspoon
 ```
 
-Add to `~/.hammerspoon/init.lua`:
+将以下代码添加到 `~/.hammerspoon/init.lua` 文件中：
 ```lua
 local server = hs.httpserver.new(false, false)
 server:setPort(9090)
@@ -56,29 +56,30 @@ end)
 server:start()
 ```
 
-Reload config (Hammerspoon menu → Reload Config), then create `~/.local/bin/hsclick`:
+重新加载配置文件（Hammerspoon 菜单 → 重新加载配置），然后创建 `~/.local/bin/hsclick` 文件：
 ```bash
 #!/bin/bash
 curl -s -X POST localhost:9090/click -d "{\"x\":$2,\"y\":$3}"
 chmod +x ~/.local/bin/hsclick
 ```
 
-## Installation
+## 安装方法
 
+#### 通过命令行安装：
 ```bash
 git clone https://github.com/poiley/findmy-location.git
 cd findmy-location
 ./install.sh
 ```
 
-Or via ClawdHub:
+#### 或者通过 ClawdHub 安装：
 ```bash
 clawdhub install findmy-location
 ```
 
-## Configuration
+## 配置
 
-Create `~/.config/findmy-location/config.json`:
+创建 `~/.config/findmy-location/config.json` 文件：
 ```json
 {
   "target": "John",
@@ -97,20 +98,20 @@ Create `~/.config/findmy-location/config.json`:
 }
 ```
 
-| Field | Description |
+| 字段 | 说明 |
 |-------|-------------|
-| `target` | Contact name to track (optional - defaults to first shared contact) |
-| `known_locations` | Array of places you want labeled with addresses |
-| `markers` | Landmarks visible on the Find My map when at that location |
+| `target` | 要追踪的联系人名称（可选，默认为第一个共享的联系人） |
+| `known_locations` | 需要标注地址的位置列表 |
+| `markers` | 在该位置时，在“查找我的设备”地图上显示的地标 |
 
-## Usage
+## 使用方法
 
 ```bash
 findmy-location          # Human-readable output
 findmy-location --json   # JSON output
 ```
 
-### Example Output
+### 示例输出
 
 ```
 123 Main St, City, ST (home) - Now
@@ -129,28 +130,28 @@ findmy-location --json   # JSON output
 }
 ```
 
-| Field | Description |
+| 字段 | 说明 |
 |-------|-------------|
-| `context` | `home`, `work`, `out`, or `unknown` |
-| `needs_vision` | If `true`, use AI vision on screenshot to read street names |
-| `screenshot` | Path to captured map image |
+| `context` | `home`（家）、`work`（工作）、`out`（外出）或 `unknown`（未知） |
+| `needs_vision` | 如果设置为 `true`，则使用 AI 技术从截图中读取街道名称 |
+| `screenshot` | 捕获的地图图片路径 |
 
-## How It Works
+## 工作原理
 
-1. Opens Find My app and selects target contact
-2. Captures map and reads accessibility data
-3. Matches visible landmarks against configured known locations
-4. Returns address and context, or flags for vision analysis
+1. 打开“查找我的设备”应用程序并选择目标联系人。
+2. 捕获地图图像并读取辅助功能相关的数据。
+3. 将地图上的地标与配置中的已知位置进行匹配。
+4. 返回地址和上下文信息，或提示是否需要使用视觉识别功能进行分析。
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Clicks go to wrong window | Install Hammerspoon (see prerequisites) |
-| "No person found" | Ensure location sharing is enabled in Find My |
-| Always shows `needs_vision: true` | Add markers for frequently visited places |
-| Permission errors | Grant peekaboo Accessibility + Screen Recording access |
+| 点击操作指向错误的窗口 | 安装 Hammerspoon（参见先决条件） |
+| 未找到目标联系人 | 确保目标联系人已启用位置共享功能 |
+| 始终显示 `needs_vision: true` | 为经常访问的位置添加地标标记 |
+| 权限问题 | 授予 peekaboo 辅助功能及屏幕录制权限 |
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

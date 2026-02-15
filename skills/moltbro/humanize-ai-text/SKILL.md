@@ -1,6 +1,6 @@
 ---
 name: humanize-ai-text
-description: Humanize AI-generated text to bypass detection. This humanizer rewrites ChatGPT, Claude, and GPT content to sound natural and pass AI detectors like GPTZero, Turnitin, and Originality.ai. Based on Wikipedia's comprehensive "Signs of AI Writing" guide. Makes robotic AI writing undetectable and human-like.
+description: 将AI生成的内容进行“人性化”处理，以规避检测。该工具能够重新编写ChatGPT、Claude和GPT生成的内容，使其听起来更加自然，从而通过GPTZero、Turnitin和Originality.ai等AI检测工具的验证。其原理基于维基百科提供的关于“AI写作特征”的详细指南，能够使机器生成的文本看起来完全像人类撰写的作品，从而难以被识别出来。
 allowed-tools:
   - Read
   - Write
@@ -9,11 +9,11 @@ allowed-tools:
   - Glob
 ---
 
-# Humanize AI Text
+# 使AI文本更自然
 
-Comprehensive CLI for detecting and transforming AI-generated text to bypass detectors. Based on [Wikipedia's Signs of AI Writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing).
+这是一个全面的命令行工具（CLI），用于检测和转换由AI生成的文本，以规避检测机制。该工具基于维基百科关于AI写作特征的描述（https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Detect AI patterns
@@ -28,47 +28,45 @@ python scripts/compare.py text.txt -o clean.txt
 
 ---
 
-## Detection Categories
+## 检测类别
 
-The analyzer checks for **16 pattern categories** from Wikipedia's guide:
+该分析工具会检查维基百科指南中列出的**16种模式**：
 
-### Critical (Immediate AI Detection)
-| Category | Examples |
+### 关键性模式（立即可检测到AI的痕迹）
+| 类别 | 例子 |
 |----------|----------|
-| Citation Bugs | `oaicite`, `turn0search`, `contentReference` |
-| Knowledge Cutoff | "as of my last training", "based on available information" |
-| Chatbot Artifacts | "I hope this helps", "Great question!", "As an AI" |
-| Markdown | `**bold**`, `## headers`, ``` code blocks ``` |
+| 引用错误 | `oaicite`, `turn0search`, `contentReference` |
+| 知识断层 | “根据我最后一次训练的结果”，“基于现有信息” |
+| 聊天机器人特征 | “希望这能有所帮助”，“非常好的问题！”，“作为一个AI” |
+| Markdown格式 | `**粗体**`, `## 标题`, ```代码块``` |
 
-### High Signal
-| Category | Examples |
+### 高度提示性模式
+| 类别 | 例子 |
 |----------|----------|
-| AI Vocabulary | delve, tapestry, landscape, pivotal, underscore, foster |
-| Significance Inflation | "serves as a testament", "pivotal moment", "indelible mark" |
-| Promotional Language | vibrant, groundbreaking, nestled, breathtaking |
-| Copula Avoidance | "serves as" instead of "is", "boasts" instead of "has" |
+| AI特有的词汇 | `devel`, `tapestry`, `landscape`, `pivotal`, `underscore`, `foster` |
+| 过度使用修饰性语言 | “作为……的证明”，“关键时刻”，“不可磨灭的印记” |
+| 过度使用宣传性语言 | “充满活力”，“开创性的”，“令人惊叹的” |
+| 避免使用连词 | 用“serves as”代替“is”，用“boasts”代替“has” |
 
-### Medium Signal
-| Category | Examples |
-|----------|----------|
-| Superficial -ing | "highlighting the importance", "fostering collaboration" |
-| Filler Phrases | "in order to", "due to the fact that", "Additionally," |
-| Vague Attributions | "experts believe", "industry reports suggest" |
-| Challenges Formula | "Despite these challenges", "Future outlook" |
+### 中等提示性模式
+| 类别 | 例子 |
+| 表面化的修饰词 | “强调……的重要性”，“促进合作” |
+| 填充性短语 | “为了……”，“由于……”，“此外” |
+| 模糊的表述 | “专家认为”，“行业报告显示” |
+| 陈词滥调 | “尽管存在这些挑战”，“未来前景” |
 
-### Style Signal
-| Category | Examples |
+### 风格特征
+| 类别 | 例子 |
 |----------|----------|
-| Curly Quotes | "" instead of "" (ChatGPT signature) |
-| Em Dash Overuse | Excessive use of — for emphasis |
-| Negative Parallelisms | "Not only... but also", "It's not just... it's" |
-| Rule of Three | Forced triplets like "innovation, inspiration, and insight" |
+| 使用引号的方式 | 使用“""”代替“''”（ChatGPT的典型特征） |
+| 过度使用破折号 | 过度使用破折号来强调 |
+| 负面的平行结构 | “不仅……而且……”，“不仅仅是……而是……” |
 
 ---
 
-## Scripts
+## 脚本
 
-### detect.py — Scan for AI Patterns
+### detect.py — 检测AI写作特征
 
 ```bash
 python scripts/detect.py essay.txt
@@ -77,13 +75,13 @@ python scripts/detect.py essay.txt -s  # score only
 echo "text" | python scripts/detect.py
 ```
 
-**Output:**
-- Issue count and word count
-- AI probability (low/medium/high/very high)
-- Breakdown by category
-- Auto-fixable patterns marked
+**输出：**
+- 问题数量和单词数量
+- AI文本的概率（低/中/高/非常高）
+- 按类别分类的统计结果
+- 可自动修复的错误会被标记出来
 
-### transform.py — Rewrite Text
+### transform.py — 重写文本
 
 ```bash
 python scripts/transform.py essay.txt
@@ -92,74 +90,74 @@ python scripts/transform.py essay.txt -a  # aggressive
 python scripts/transform.py essay.txt -q  # quiet
 ```
 
-**Auto-fixes:**
-- Citation bugs (oaicite, turn0search)
-- Markdown (**, ##, ```)
-- Chatbot sentences
-- Copula avoidance → "is/has"
-- Filler phrases → simpler forms
-- Curly → straight quotes
+**自动修复内容：**
+- 引用错误（oaicite, turn0search）
+- Markdown格式（**粗体**, `## 标题`, ```代码块```）
+- 聊天机器人特征明显的句子
+- 避免使用连词（将“is/has”替换为“serves as/has”）
+- 填充性短语替换为更简洁的形式
+- 将引号从```改为```
 
-**Aggressive (-a):**
-- Simplifies -ing clauses
-- Reduces em dashes
+**高级选项（-a）：**
+- 简化含有“-ing”的从句
+- 减少破折号的使用
 
-### compare.py — Before/After Analysis
+### compare.py — 转换前后的对比分析
 
 ```bash
 python scripts/compare.py essay.txt
 python scripts/compare.py essay.txt -a -o clean.txt
 ```
 
-Shows side-by-side detection scores before and after transformation
+显示转换前后的检测结果对比
 
 ---
 
-## Workflow
+## 工作流程
 
-1. **Scan** for detection risk:
+1. **扫描**以识别潜在的AI写作特征：
    ```bash
    python scripts/detect.py document.txt
    ```
 
-2. **Transform** with comparison:
+2. **使用该工具进行文本转换**：
    ```bash
    python scripts/compare.py document.txt -o document_v2.txt
    ```
 
-3. **Verify** improvement:
+3. **验证**改进效果：
    ```bash
    python scripts/detect.py document_v2.txt -s
    ```
 
-4. **Manual review** for AI vocabulary and promotional language (requires judgment)
+4. **人工审核**以检查是否存在AI特有的词汇或宣传性语言（需要判断）
 
 ---
 
-## AI Probability Scoring
+## AI文本概率评分
 
-| Rating | Criteria |
+| 评分标准 | 判断依据 |
 |--------|----------|
-| Very High | Citation bugs, knowledge cutoff, or chatbot artifacts present |
-| High | >30 issues OR >5% issue density |
-| Medium | >15 issues OR >2% issue density |
-| Low | <15 issues AND <2% density |
+| 非常高 | 存在引用错误、知识断层或聊天机器人特征 |
+| 高 | 问题数量超过30个或问题密度超过5% |
+| 中等 | 问题数量超过15个或问题密度超过2% |
+| 低 | 问题数量少于15个且问题密度低于2% |
 
 ---
 
-## Customizing Patterns
+## 自定义检测规则
 
-Edit `scripts/patterns.json` to add/modify:
-- `ai_vocabulary` — words to flag
-- `significance_inflation` — puffery phrases
-- `promotional_language` — marketing speak
-- `copula_avoidance` — phrase → replacement
-- `filler_replacements` — phrase → simpler form
-- `chatbot_artifacts` — phrases triggering sentence removal
+编辑 `scripts/patterns.json` 文件来添加或修改以下规则：
+- `ai_vocabulary` — 需要标记的AI词汇
+- `significance_inflation` — 过度使用的修饰性语言
+- `promotional_language` — 宣传性语言的表述
+- `copula_avoidance` — 需要替换的连词短语
+- `filler_replacements` — 需要简化的语句片段
+- `chatbot_artifacts` — 需要移除的聊天机器人特征相关的短语
 
 ---
 
-## Batch Processing
+## 批量处理
 
 ```bash
 # Scan all files
@@ -176,8 +174,8 @@ done
 
 ---
 
-## Reference
+## 参考资料
 
-Based on Wikipedia's [Signs of AI Writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), maintained by WikiProject AI Cleanup. Patterns documented from thousands of AI-generated text examples.
+该工具基于维基百科的《AI写作特征》（https://en.wikipedia.org/wiki/Wikipedia:Signs_of.AI_writing），该资料由WikiProject AI Cleanup项目维护。所有检测规则都是从数千个AI生成的文本中总结出来的。
 
-Key insight: "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
+关键点：**大型语言模型（LLMs）使用统计算法来预测接下来的内容。其生成的结果往往是统计上最有可能出现的，且适用于最广泛的情况。**

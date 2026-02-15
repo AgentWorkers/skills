@@ -1,44 +1,43 @@
 ---
 name: causal-inference
-description: Add causal reasoning to agent actions. Trigger on ANY high-level action with observable outcomes - emails, messages, calendar changes, file operations, API calls, notifications, reminders, purchases, deployments. Use for planning interventions, debugging failures, predicting outcomes, backfilling historical data for analysis, or answering "what happens if I do X?" Also trigger when reviewing past actions to understand what worked/failed and why.
+description: 为代理（agent）的操作添加因果推理功能。当任何具有可观察结果的高级操作发生时（例如：发送电子邮件、消息、修改日历、执行文件操作、调用API、接收通知、设置提醒、完成购买、进行部署等），都应触发该功能。该功能可用于规划干预措施、排查故障、预测结果、补充历史数据以供分析，或回答“如果我执行X会怎样？”这样的问题。在回顾过去的操作时，该功能也能帮助理解哪些操作成功了、哪些失败了以及原因何在。
 ---
 
-# Causal Inference
+# 因果推断（Causal Inference）
 
-A lightweight causal layer for predicting action outcomes, not by pattern-matching correlations, but by modeling interventions and counterfactuals.
+这是一个轻量级的因果推理层，用于预测行为结果。它不是通过匹配相关性来预测，而是通过建模干预措施和反事实情景来实现这一目标。
 
-## Core Invariant
+## 核心原则
 
-**Every action must be representable as an explicit intervention on a causal model, with predicted effects + uncertainty + a falsifiable audit trail.**
+**每个行为都必须能够被表示为对因果模型的一种明确干预，包括预测的效果、不确定性以及可验证的审计追踪（audit trail）。**
 
-Plans must be *causally valid*, not just plausible.
+计划必须具备“因果有效性”（causally valid），而不仅仅是看似合理（plausible）。
 
-## When to Trigger
+## 何时触发该功能
 
-**Trigger this skill on ANY high-level action**, including but not limited to:
+**在任何高级行为（high-level action）上都可以触发此功能**，包括但不限于以下领域：
 
-| Domain | Actions to Log |
+| 领域（Domain） | 需要记录的行为（Actions to Log） |
 |--------|---------------|
-| **Communication** | Send email, send message, reply, follow-up, notification, mention |
-| **Calendar** | Create/move/cancel meeting, set reminder, RSVP |
-| **Tasks** | Create/complete/defer task, set priority, assign |
-| **Files** | Create/edit/share document, commit code, deploy |
-| **Social** | Post, react, comment, share, DM |
-| **Purchases** | Order, subscribe, cancel, refund |
-| **System** | Config change, permission grant, integration setup |
+| **通信（Communication）** | 发送邮件、发送消息、回复、跟进、通知、提及（mention） |
+| **日历（Calendar）** | 创建/修改/取消会议、设置提醒、回复邀请（RSVP） |
+| **任务（Tasks）** | 创建/完成/推迟任务、设置优先级、分配任务（assign） |
+| **文件（Files）** | 创建/编辑/共享文档、提交代码（commit code）、部署（deploy） |
+| **社交（Social）** | 发布内容、互动、评论、分享、私信（DM） |
+| **购买（Purchases）** | 下单、订阅、取消、退款（cancel/refund） |
+| **系统（System）** | 配置更改、权限授予、集成设置（configuration change/permission grant/integration setup） |
 
-Also trigger when:
-- **Reviewing outcomes** — "Did that email get a reply?" → log outcome, update estimates
-- **Debugging failures** — "Why didn't this work?" → trace causal graph
-- **Backfilling history** — "Analyze my past emails/calendar" → parse logs, reconstruct actions
-- **Planning** — "Should I send now or later?" → query causal model
+此外，在以下情况下也应触发该功能：
+- **审查结果** — “那封邮件收到回复了吗？” → 记录结果并更新预估（Review outcomes → Log outcome, update estimates）
+- **调试故障** — “为什么这个操作没有成功？” → 追踪因果关系（Debug failures → Trace causal graph）
+- **补充历史数据** — “分析我过去的邮件/日历记录” → 解析日志并重建行为（Backfill history → Analyze past emails/calendars, reconstruct actions）
+- **规划** — “我现在发送还是稍后发送？” → 查询因果模型（Planning → Should I send now or later? → Query causal model）
 
-## Backfill: Bootstrap from Historical Data
+## 从历史数据中恢复信息（Backfill from Historical Data）
 
-Don't start from zero. Parse existing logs to reconstruct past actions + outcomes.
+不要从头开始。解析现有日志以重建过去的行为和结果。
 
-### Email Backfill
-
+### 邮件数据恢复（Email Backfill）
 ```bash
 # Extract sent emails with reply status
 gog gmail list --sent --after 2024-01-01 --format json > /tmp/sent_emails.json
@@ -47,8 +46,7 @@ gog gmail list --sent --after 2024-01-01 --format json > /tmp/sent_emails.json
 python3 scripts/backfill_email.py /tmp/sent_emails.json
 ```
 
-### Calendar Backfill
-
+### 日历数据恢复（Calendar Backfill）
 ```bash
 # Extract past events with attendance
 gog calendar list --after 2024-01-01 --format json > /tmp/events.json
@@ -57,16 +55,14 @@ gog calendar list --after 2024-01-01 --format json > /tmp/events.json
 python3 scripts/backfill_calendar.py /tmp/events.json
 ```
 
-### Message Backfill (WhatsApp/Discord/Slack)
-
+### 消息数据恢复（WhatsApp/Discord/Slack）
 ```bash
 # Parse message history for send/reply patterns
 wacli search --after 2024-01-01 --from me --format json > /tmp/wa_sent.json
 python3 scripts/backfill_messages.py /tmp/wa_sent.json
 ```
 
-### Generic Backfill Pattern
-
+### 通用数据恢复模式（Generic Backfill Pattern）
 ```python
 # For any historical data source:
 for record in historical_data:
@@ -82,12 +78,11 @@ for record in historical_data:
     append_to_log(action_event)
 ```
 
-## Architecture
+## 架构（Architecture）
 
-### A. Action Log (required)
+### A. 行为日志（Action Log，必备）
 
-Every executed action emits a structured event:
-
+每个执行的操作都会生成一个结构化的事件记录：
 ```json
 {
   "action": "send_followup",
@@ -102,13 +97,13 @@ Every executed action emits a structured event:
 }
 ```
 
-Store in `memory/causal/action_log.jsonl`.
+将这些记录存储在 `memory/causal/action_log.jsonl` 文件中。
 
-### B. Causal Graphs (per domain)
+### B. 因果图（Causal Graphs，按领域划分）
 
-Start with 10-30 observable variables per domain.
+每个领域从 10-30 个可观测变量开始构建因果图。
 
-**Email domain:**
+- **邮件领域（Email domain）：**
 ```
 send_time → reply_prob
 subject_style → open_rate
@@ -117,7 +112,7 @@ followup_count → reply_prob (diminishing)
 time_since_last → reply_prob
 ```
 
-**Calendar domain:**
+- **日历领域（Calendar domain）：**
 ```
 meeting_time → attendance_rate
 attendee_count → slip_risk
@@ -125,7 +120,7 @@ conflict_degree → reschedule_prob
 buffer_time → focus_quality
 ```
 
-**Messaging domain:**
+- **消息领域（Messaging domain）：**
 ```
 response_delay → conversation_continuation
 message_length → response_length
@@ -133,7 +128,7 @@ time_of_day → response_prob
 platform → response_delay
 ```
 
-**Task domain:**
+- **任务领域（Task domain）：**
 ```
 due_date_proximity → completion_prob
 priority_level → completion_speed
@@ -141,11 +136,11 @@ task_size → deferral_risk
 context_switches → error_rate
 ```
 
-Store graph definitions in `memory/causal/graphs/`.
+将因果图的定义存储在 `memory/causal/graphs/` 文件中。
 
-### C. Estimation
+### C. 估计（Estimation）
 
-For each "knob" (intervention variable), estimate treatment effects:
+对于每个干预变量（intervention variable），估计其影响效果：
 
 ```python
 # Pseudo: effect of morning vs evening sends
@@ -153,22 +148,20 @@ effect = mean(reply_prob | send_time=morning) - mean(reply_prob | send_time=even
 uncertainty = std_error(effect)
 ```
 
-Use simple regression or propensity matching first. Graduate to do-calculus when graphs are explicit and identification is needed.
+首先使用简单的回归分析或倾向匹配（propensity matching）方法。当因果图足够清晰且需要更精确的预测时，再使用微分计算（do-calculus）方法。
 
-### D. Decision Policy
+### D. 决策流程（Decision Policy）
 
-Before executing actions:
+在执行操作之前：
+1. 确定需要使用的干预变量。
+2. 查询因果模型以获取预期的结果分布。
+3. 计算预期的效用值及其不确定性范围。
+4. 如果不确定性超过阈值或预期危害超过阈值，则拒绝执行该操作或寻求用户确认。
+5. 将预测结果记录下来以供后续验证。
 
-1. Identify intervention variable(s)
-2. Query causal model for expected outcome distribution
-3. Compute expected utility + uncertainty bounds
-4. If uncertainty > threshold OR expected harm > threshold → refuse or escalate to user
-5. Log prediction for later validation
+## 工作流程（Workflow）
 
-## Workflow
-
-### On Every Action
-
+### 对于每个操作（For Every Action）：
 ```
 BEFORE executing:
 1. Log pre_state
@@ -184,8 +177,7 @@ WHEN outcome observed:
 2. Re-estimate treatment effects if enough new data
 ```
 
-### Planning an Action
-
+### 规划操作（Planning an Action）：
 ```
 1. User request → identify candidate actions
 2. For each action:
@@ -198,8 +190,7 @@ WHEN outcome observed:
 5. Observe outcome, update model
 ```
 
-### Debugging a Failure
-
+### 调试故障（Debugging a Failure）：
 ```
 1. Identify failed outcome
 2. Trace back through causal graph
@@ -211,8 +202,7 @@ WHEN outcome observed:
 6. Log counterfactual for learning
 ```
 
-## Quick Start: Bootstrap Today
-
+## 快速入门：立即开始使用（Quick Start: Bootstrap Today）：
 ```bash
 # 1. Create the infrastructure
 mkdir -p memory/causal/graphs memory/causal/estimates
@@ -243,10 +233,9 @@ python3 scripts/backfill_email.py
 python3 scripts/estimate_effect.py --treatment send_time --outcome reply_received --values morning,evening
 ```
 
-## Safety Constraints
+## 安全限制（Safety Constraints）
 
-Define "protected variables" that require explicit user approval:
-
+定义需要用户明确批准的“受保护变量”（protected variables）：
 ```yaml
 protected:
   - delete_email
@@ -259,14 +248,12 @@ thresholds:
   min_expected_utility: 0.1  # don't act if expected gain < 10%
 ```
 
-## Files
+## 文件目录（File Directories）：
+- `memory/causal/action_log.jsonl` — 所有记录的操作及其结果
+- `memory/causal/graphs/` — 各领域的因果图定义
+- `memory/causal/estimates/` — 学到的干预效果数据
+- `memory/causal/config.yaml` — 安全阈值和受保护变量设置
 
-- `memory/causal/action_log.jsonl` — all logged actions with outcomes
-- `memory/causal/graphs/` — domain-specific causal graph definitions
-- `memory/causal/estimates/` — learned treatment effects
-- `memory/causal/config.yaml` — safety thresholds and protected variables
-
-## References
-
-- See `references/do-calculus.md` for formal intervention semantics
-- See `references/estimation.md` for treatment effect estimation methods
+## 参考资料（References）：
+- 有关正式的干预语义，请参阅 `references/do-calculus.md`。
+- 有关治疗效果估计方法，请参阅 `references/estimation.md`。

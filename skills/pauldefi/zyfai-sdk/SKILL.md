@@ -1,15 +1,15 @@
 ---
 name: zyfai
-description: Earn yield on any Ethereum wallet on Base, Arbitrum, and Plasma. Use when a user wants passive DeFi yield on their funds. Deploys a non-custodial subaccount (Safe) linked to their EOA, enables automated yield optimization, and lets them deposit/withdraw anytime.
+description: 在 Base、Arbitrum 和 Plasma 平台上，您可以通过任何以太坊钱包获得收益。当用户希望其资金产生被动收益（即无需主动操作即可获得收益）时，可以使用该功能。系统会为用户部署一个非托管子账户（Safe），该账户与用户的以太坊地址（EOA，Externally Owned Account）关联，实现自动化的收益优化，并允许用户随时进行存款和取款操作。
 ---
 
-# Zyfai — Yield for Any Wallet
+# Zyfai — 适用于任何钱包的收益生成工具
 
-Turn any Ethereum wallet into a yield-generating account.
+将任何以太坊钱包转换为能够产生收益的账户。
 
-## What This Does
+## 功能介绍
 
-When a user wants to **earn yield** on their crypto, Zyfai creates a **subaccount** (Safe smart wallet) linked to their existing wallet (EOA). Funds deposited into this subaccount are automatically optimized across DeFi protocols. The user stays in full control and can withdraw anytime.
+当用户希望从其持有的加密货币中获取收益时，Zyfai会为其创建一个与现有钱包（EOA，即Externally Owned Account）关联的子账户（安全智能钱包）。存入该子账户的资金会自动在各种DeFi（去中心化金融）协议中进行优化配置。用户始终拥有完全的控制权，并可以随时提取资金。
 
 ```
 ┌─────────────────┐      ┌──────────────────────┐
@@ -22,12 +22,12 @@ When a user wants to **earn yield** on their crypto, Zyfai creates a **subaccoun
 └─────────────────┘      └──────────────────────┘
 ```
 
-**Key points:**
-- The subaccount is **owned by the user's EOA** — only they can withdraw
-- Session keys allow **automated rebalancing** but cannot withdraw to other addresses
-- Same EOA = same subaccount address across all chains
+**关键点：**
+- 子账户由用户的EOA拥有——只有用户自己才能提取资金
+- 会话密钥支持自动资金再平衡，但无法将资金提取到其他地址
+- 同一EOA在所有链上对应相同的子账户地址
 
-## The Flow
+## 使用流程
 
 ```
 1. DEPLOY    →  Create subaccount linked to user's wallet
@@ -36,31 +36,31 @@ When a user wants to **earn yield** on their crypto, Zyfai creates a **subaccoun
 4. WITHDRAW  →  Pull funds back to wallet (anytime)
 ```
 
-## Prerequisites
+## 先决条件
 
-- **API Key** from [sdk.zyf.ai](https://sdk.zyf.ai) (connect wallet to get one)
-- **Private Key** of the user's EOA (the agent must provide this)
-- **Node.js 18+**
+- 从 [sdk.zyf.ai](https://sdk.zyf.ai) 获取 **API密钥**（用于连接钱包）
+- 用户EOA的 **私钥**（必须由代理提供）
+- 确保使用 **Node.js 18+** 或更高版本的开发环境
 
 ```bash
 npm install @zyfai/sdk viem
 ```
 
-## Supported Chains
+## 支持的链
 
-| Chain    | ID    |
-|----------|-------|
-| Arbitrum | 42161 |
-| Base     | 8453  |
-| Plasma   | 9745  |
+| 链      | ID     |
+|---------|-------|
+| Arbitrum | 42161   |
+| Base     | 8453    |
+| Plasma   | 9745    |
 
-## Important: Always Use EOA Address
+## 重要提示：始终使用EOA地址
 
-When calling SDK methods, **always pass the EOA address** (the user's wallet address) as `userAddress` — never the subaccount/Safe address. The SDK derives the subaccount address automatically from the EOA.
+在调用SDK方法时，**必须使用EOA地址**（即用户的钱包地址）作为 `userAddress` 参数，切勿使用子账户的地址。SDK会自动从EOA地址生成子账户地址。
 
-## Step-by-Step
+## 步骤说明
 
-### 1. Connect to Zyfai
+### 1. 连接到Zyfai
 
 ```typescript
 import { ZyfaiSDK } from "@zyfai/sdk";
@@ -71,9 +71,9 @@ const sdk = new ZyfaiSDK({ apiKey: "your-api-key" });
 await sdk.connectAccount(privateKey, 8453); // chainId
 ```
 
-**Important:** Always use the private key that the agent has access to. The private key must correspond to the EOA you're operating on.
+**重要提示：**务必使用代理有权访问的私钥。该私钥必须与你操作的EOA地址相匹配。
 
-### 2. Deploy Subaccount
+### 2. 部署子账户
 
 ```typescript
 const userAddress = "0x..."; // User's EOA (NOT the subaccount address!)
@@ -91,11 +91,11 @@ if (!wallet.isDeployed) {
 }
 ```
 
-**Strategies:**
-- `"conservative"` — Stable yield, lower risk
-- `"aggressive"` — Higher yield, higher risk
+**策略选择：**
+- `"conservative"`（保守型）——收益稳定，风险较低
+- `"aggressive"`（激进型）——收益较高，风险也较高
 
-### 3. Enable Yield Optimization
+### 3. 启用收益优化功能
 
 ```typescript
 await sdk.createSessionKey(userAddress, chainId);
@@ -116,20 +116,20 @@ if (!user.user.hasActiveSessionKey) {
 console.log("Session key active:", user.user.hasActiveSessionKey);
 ```
 
-This allows Zyfai to rebalance funds automatically. Session keys **cannot** withdraw to arbitrary addresses — only optimize within the protocol.
+这允许Zyfai自动对资金进行再平衡。会话密钥 **仅** 用于在协议内部进行资金操作，无法将资金提取到其他地址。
 
-> **Important:** Always verify the session key is active by checking `getUserDetails().user.hasActiveSessionKey` after calling `createSessionKey`. If it returns `false`, retry the process. A session key must be active for automated yield optimization to work.
+> **重要提示：** 在调用 `createSessionKey` 后，务必通过 `getUserDetails().user.hasActiveSessionKey` 方法检查会话密钥是否处于激活状态。如果返回 `false`，请重新尝试。只有当会话密钥处于激活状态时，收益优化功能才能正常工作。
 
-### 4. Deposit Funds
+### 4. 存入资金
 
 ```typescript
 // Deposit 10 USDC (6 decimals)
 await sdk.depositFunds(userAddress, chainId, "10000000");
 ```
 
-Funds move from EOA → Subaccount and start earning yield immediately.
+资金会从用户的EOA账户转移到子账户，并立即开始产生收益。
 
-### 5. Withdraw Funds
+### 5. 提取资金
 
 ```typescript
 // Withdraw everything
@@ -139,15 +139,15 @@ await sdk.withdrawFunds(userAddress, chainId);
 await sdk.withdrawFunds(userAddress, chainId, "5000000");
 ```
 
-Funds return to the user's EOA. Withdrawals are processed asynchronously.
+资金会返回到用户的EOA账户。提取操作是异步处理的。
 
-### 6. Disconnect
+### 6. 断开连接
 
 ```typescript
 await sdk.disconnectAccount();
 ```
 
-## Complete Example
+## 完整示例
 
 ```typescript
 import { ZyfaiSDK } from "@zyfai/sdk";
@@ -209,41 +209,38 @@ async function withdrawYield(userAddress: string, privateKey: string, amount?: s
 }
 ```
 
-## API Reference
+## API参考
 
-| Method | Params | Description |
-|--------|--------|-------------|
-| `connectAccount` | `(privateKey, chainId)` | Authenticate with Zyfai |
-| `getSmartWalletAddress` | `(userAddress, chainId)` | Get subaccount address & status |
-| `deploySafe` | `(userAddress, chainId, strategy)` | Create subaccount |
-| `createSessionKey` | `(userAddress, chainId)` | Enable auto-optimization |
-| `depositFunds` | `(userAddress, chainId, amount)` | Deposit USDC (6 decimals) |
-| `withdrawFunds` | `(userAddress, chainId, amount?)` | Withdraw (all if no amount) |
-| `getPositions` | `(userAddress, chainId?)` | Get active DeFi positions |
-| `getAvailableProtocols` | `(chainId)` | Get available protocols & pools |
-| `getAPYPerStrategy` | `(crossChain?, days?, strategyType?)` | Get APY for conservative/aggressive strategies |
-| `getUserDetails` | `()` | Get authenticated user details |
-| `getOnchainEarnings` | `(walletAddress)` | Get earnings data |
-| `updateUserProfile` | `(params)` | Update strategy, protocols, splitting, cross-chain settings |
-| `registerAgentOnIdentityRegistry` | `(smartWallet, chainId)` | Register agent on ERC-8004 Identity Registry |
-| `disconnectAccount` | `()` | End session |
+| 方法        | 参数        | 描述                                      |
+|------------|------------|-----------------------------------------|
+| `connectAccount` | `(privateKey, chainId)` | 用于与Zyfai进行身份验证                   |
+| `getSmartWalletAddress` | `(userAddress, chainId)` | 获取子账户地址及状态                        |
+| `deploySafe`    | `(userAddress, chainId, strategy)` | 创建子账户                                   |
+| `createSessionKey` | `(userAddress, chainId)` | 启用自动优化功能                         |
+| `depositFunds` | `(userAddress, chainId, amount)` | 存入USDC（保留6位小数）                        |
+| `withdrawFunds` | `(userAddress, chainId, amount?)` | 提取资金（未指定金额时提取全部）                   |
+| `getPositions` | `(userAddress, chainId?)` | 获取用户的所有DeFi投资位置                    |
+| `getAvailableProtocols` | `(chainId)` | 获取可用的DeFi协议及池                         |
+| `getAPYPerStrategy` | `(crossChain?, days?, strategyType?)` | 获取不同策略的年化收益率（APY）                |
+| `getUserDetails` | `()`         | 获取已认证用户的详细信息                         |
+| `getOnchainEarnings` | `(walletAddress)` | 获取用户的链上收益数据                         |
+| `updateUserProfile` | `(params)`      | 更新用户的策略、协议、资金分配及跨链设置                 |
+| `registerAgentOnIdentityRegistry` | `(smartWallet, chainId)` | 在ERC-8004身份注册表中注册代理                    |
+| `disconnectAccount` | `()`         | 断开与Zyfai的连接                         |
 
-**Note:** All methods that take `userAddress` expect the **EOA address**, not the subaccount/Safe address.
+**注意：** 所有接受 `userAddress` 参数的方法都要求提供用户的EOA地址，而非子账户的地址。
 
-## Data Methods
+## 数据相关方法
 
 ### getPositions
 
-Get all active DeFi positions for a user across protocols. Optionally filter by chain.
+获取用户在所有DeFi协议中的所有投资位置。可选地按链进行过滤。
 
-**Parameters:**
+**参数：**
+- `userAddress` | string      | ✅         | 用户的EOA地址                         |
+- `chainId`     | SupportedChainId | ❌         | 可选：按特定链ID进行过滤                         |
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| userAddress | string | ✅ | User's EOA address |
-| chainId | SupportedChainId | ❌ | Optional: Filter by specific chain ID |
-
-**Example:**
+**示例：**
 
 ```typescript
 // Get all positions across all chains
@@ -253,7 +250,7 @@ const positions = await sdk.getPositions("0xUser...");
 const arbPositions = await sdk.getPositions("0xUser...", 42161);
 ```
 
-**Returns:**
+**返回值：**
 
 ```typescript
 interface PositionsResponse {
@@ -265,7 +262,9 @@ interface PositionsResponse {
 
 ### getAvailableProtocols
 
-Get available DeFi protocols and pools for a specific chain with APY data.
+获取指定链上可用的DeFi协议及池，并提供相应的年化收益率（APY）数据。
+
+**返回值：**
 
 ```typescript
 const protocols = await sdk.getAvailableProtocols(42161); // Arbitrum
@@ -280,18 +279,11 @@ protocols.protocols.forEach((protocol) => {
 });
 ```
 
-Returns:
-```typescript
-interface ProtocolsResponse {
-  success: boolean;
-  chainId: SupportedChainId;
-  protocols: Protocol[];
-}
-```
-
 ### getUserDetails
 
-Get current authenticated user details including smart wallet, chains, protocols, and settings. Requires SIWE authentication.
+获取当前已认证用户的详细信息，包括智能钱包信息、使用的链、投资协议及设置。需要SIWE身份验证。
+
+**返回值：**
 
 ```typescript
 await sdk.connectAccount(privateKey, chainId);
@@ -302,40 +294,11 @@ console.log("Chains:", user.user.chains);
 console.log("Has Active Session:", user.user.hasActiveSessionKey);
 ```
 
-Returns:
-```typescript
-interface UserDetailsResponse {
-  success: boolean;
-  user: {
-    id: string;
-    address: string;
-    smartWallet?: string;
-    chains: number[];
-    protocols: Protocol[];
-    hasActiveSessionKey: boolean;
-    email?: string;
-    strategy?: string;
-    telegramId?: string;
-    walletType?: string;
-    autoSelectProtocols: boolean;
-    autocompounding?: boolean;
-    omniAccount?: boolean;
-    crosschainStrategy?: boolean;
-    agentName?: string;
-    customization?: Record<string, string[]>;
-  };
-}
-```
-
 ### updateUserProfile
 
-Update the authenticated user's profile settings including strategy, protocols, splitting, and cross-chain options. Requires SIWE authentication.
+更新用户的个人资料设置，包括投资策略、协议、资金分配及跨链选项。需要SIWE身份验证。
 
-```typescript
-sdk.updateUserProfile(params: UpdateUserProfileRequest): Promise<UpdateUserProfileResponse>
-```
-
-**Parameters:**
+**参数：**
 
 ```typescript
 interface UpdateUserProfileRequest {
@@ -365,7 +328,7 @@ interface UpdateUserProfileRequest {
 }
 ```
 
-**Returns:**
+**返回值：**
 
 ```typescript
 interface UpdateUserProfileResponse {
@@ -385,7 +348,7 @@ interface UpdateUserProfileResponse {
 }
 ```
 
-**Examples:**
+**示例：**
 
 ```typescript
 // Update strategy from conservative to aggressive
@@ -415,42 +378,27 @@ console.log("Strategy:", userDetails.user.strategy);
 console.log("Splitting:", userDetails.user.splitting);
 ```
 
-> **Cross-chain strategies:** Only enable cross-chain when the user **explicitly requests** it. For cross-chain to work, **both** `crosschainStrategy` and `omniAccount` must be set to `true`. Never enable cross-chain settings by default.
+> **跨链策略：** 仅当用户 **明确请求** 时才启用跨链功能。要实现跨链操作，`crosschainStrategy` 和 `omniAccount` 两个参数都必须设置为 `true`。默认情况下，跨链功能是禁用的。
 
-```typescript
-// Enable cross-chain ONLY when explicitly requested by the user
-await sdk.updateUserProfile({
-  crosschainStrategy: true,
-  omniAccount: true,
-});
-
-// Now funds can be rebalanced across configured chains
-const user = await sdk.getUserDetails();
-console.log("Operating on chains:", user.user.chains);
-```
-
-**Notes:**
-- **Strategy:** Can be changed anytime. Subsequent rebalancing uses the new active strategy.
-- **Protocols:** Use `getAvailableProtocols(chainId)` to get valid protocol IDs before updating.
-- **Smart Splitting (minSplits = 1):** Default mode. To maximize returns, funds are automatically distributed across multiple DeFi pools — but only when beneficial. The system intelligently decides when splitting is advantageous based on current market conditions and opportunities. Funds may not split if no opportunity exists.
-- **Forced Splitting (minSplits > 1):** When `minSplits` is set to 2, 3, or 4, funds are always distributed across at least that many pools for improved risk diversification (up to 4 DeFi pools). This guarantees your funds will be split regardless of market conditions.
-- **Cross-chain:** Requires **both** `crosschainStrategy: true` AND `omniAccount: true`. Only activate when the user explicitly asks for cross-chain yield optimization. Chains are configured during initial setup and cannot be changed via this method.
-- **Auto-compounding:** Enabled by default. When `true`, yields are reinvested automatically.
-- Smart wallet address, chains, and `executorProxy` cannot be updated via this method.
+**注意事项：**
+- **投资策略：** 可以随时更改。后续的资金再平衡将使用新的策略。
+- **协议选择：** 在更新之前，请使用 `getAvailableProtocols(chainId)` 方法获取有效的协议ID。
+- **智能资金分配（minSplits = 1）：** 默认模式。系统会根据当前市场状况和机会智能分配资金到多个DeFi池中，以最大化收益。如果没有合适的投资机会，资金可能不会被分配。
+- **强制资金分配（minSplits > 1）：** 当 `minSplits` 设置为2、3或4时，资金会至少分配到4个DeFi池中，以实现更好的风险分散。无论市场状况如何，系统都会确保资金被分配。
+- **跨链功能：** 需要同时满足 `crosschainStrategy: true` 和 `omniAccount: true` 的条件。用户必须明确启用跨链功能。链的配置在初次设置时确定，之后无法通过此方法更改。
+- **自动复利：** 默认情况下启用。启用后，收益会自动再投资。
+- 智能钱包地址、使用的链及 `executorProxy` 无法通过此方法进行更改。
 
 ### getAPYPerStrategy
 
-Get global APY by strategy type (conservative or aggressive), time period, and chain configuration. Use this to compare expected returns between strategies before deploying.
+根据策略类型（保守型或激进型）、时间周期及链配置，获取相应的年化收益率（APY）。在部署新策略前，可以使用此方法比较不同策略的预期收益。
 
-**Parameters:**
+**参数：**
+- `crossChain` | boolean     | ❌         | 如果设置为 `true`，则返回跨链策略的APY；否则返回单链策略的APY       |
+- `days`    | number       | ❌         | 计算APY的时间周期（7、15、30或60天）                 |
+- `strategyType` | string      | ❌         | 投资策略类型（`conservative` 或 `aggressive`）           |
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| crossChain | boolean | ❌ | If `true`, returns APY for cross-chain strategies; if `false`, single-chain |
-| days | number | ❌ | Period over which APY is calculated. One of `7`, `15`, `30`, `60` |
-| strategyType | string | ❌ | Strategy risk profile. One of `'conservative'` or `'aggressive'` |
-
-**Example:**
+**示例：**
 
 ```typescript
 // Get 7-day APY for conservative single-chain strategy
@@ -468,7 +416,7 @@ console.log(`Conservative 30d APY: ${conservative.data[0]?.apy}%`);
 console.log(`Aggressive 30d APY: ${aggressive.data[0]?.apy}%`);
 ```
 
-**Returns:**
+**返回值：**
 
 ```typescript
 interface APYPerStrategyResponse {
@@ -487,7 +435,9 @@ interface APYPerStrategy {
 
 ### getOnchainEarnings
 
-Get onchain earnings for a wallet including total, current, and lifetime earnings.
+获取钱包的链上收益数据，包括累计收益、当前收益及总收益。
+
+**返回值：**
 
 ```typescript
 const earnings = await sdk.getOnchainEarnings(smartWalletAddress);
@@ -497,42 +447,19 @@ console.log("Current earnings:", earnings.data.currentEarnings);
 console.log("Lifetime earnings:", earnings.data.lifetimeEarnings);
 ```
 
-Returns:
-```typescript
-interface OnchainEarningsResponse {
-  success: boolean;
-  data: {
-    walletAddress: string;
-    totalEarnings: number;
-    currentEarnings: number;
-    lifetimeEarnings: number;
-    unrealizedEarnings?: number;
-    currentEarningsByChain?: Record<string, number>;
-    unrealizedEarningsByChain?: Record<string, number>;
-    lastCheckTimestamp?: string;
-  };
-}
-```
-
 ### registerAgentOnIdentityRegistry (ERC-8004)
 
-Register your Zyfai deployed agent on the Identity Registry following the ERC-8004 standard. This is used for OpenClaw agent registration. The method fetches a tokenUri containing the agent's metadata stored on IPFS, then registers it on-chain.
+根据ERC-8004标准，在身份注册表中注册你的Zyfai代理。此方法用于OpenClaw代理的注册。它会从IPFS获取代理的元数据，并将其注册到链上。
 
-**Supported Chains:**
+**支持的链：**
+- Base      | 8453       |
+- Arbitrum    | 42161      |
 
-| Chain | Chain ID |
-|-------|----------|
-| Base | 8453 |
-| Arbitrum | 42161 |
+**参数：**
+- `smartWallet` | string      | ✅         | 要注册的Zyfai智能钱包地址                     |
+- `chainId`     | SupportedChainId | ✅         | 需要注册的链ID（仅限8453或42161）                     |
 
-**Parameters:**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| smartWallet | string | ✅ | The Zyfai deployed smart wallet address to register as an agent |
-| chainId | SupportedChainId | ✅ | Chain ID (only 8453 or 42161) |
-
-**Example:**
+**示例：**
 
 ```typescript
 const sdk = new ZyfaiSDK({ apiKey: "your-api-key" });
@@ -551,7 +478,7 @@ console.log("  Chain ID:", result.chainId);
 console.log("  Smart Wallet:", result.smartWallet);
 ```
 
-**Returns:**
+**返回值：**
 
 ```typescript
 interface RegisterAgentResponse {
@@ -562,25 +489,24 @@ interface RegisterAgentResponse {
 }
 ```
 
-**How It Works:**
+**工作原理：**
 
-1. Fetches a `tokenUri` from the Zyfai API (agent metadata stored on IPFS)
-2. Encodes the `register(tokenUri)` call for the Identity Registry contract
-3. Sends the transaction from the connected wallet
-4. Waits for on-chain confirmation
+1. 从Zyfai API获取代理的元数据（存储在IPFS上）。
+2. 将 `register(tokenUri)` 请求编码后发送到身份注册表合约。
+3. 通过连接的钱包发送交易请求。
+4. 等待链上的确认结果。
 
-## Security
+## 安全性说明
 
-- **Non-custodial** — User's EOA owns the subaccount
-- **Session keys are limited** — Can rebalance, cannot withdraw elsewhere
-- **Deterministic** — Same EOA = same subaccount on every chain
+- **非托管模式**——用户的EOA拥有子账户的所有权。
+- **会话密钥的使用受到限制**——仅可用于资金再平衡，无法用于资金提取。
+- **确定性原则**——同一EOA在所有链上的子账户地址始终相同。
 
-## Troubleshooting
+## 常见问题解决方法
 
-### Subaccount address mismatch across chains
+### 不同链上的子账户地址不一致
 
-The subaccount address should be **identical** across all chains for the same EOA. If you see different addresses:
-
+对于同一EOA，所有链上的子账户地址应该 **完全相同**。如果发现地址不一致，请：
 ```typescript
 // Check addresses on both chains
 const baseWallet = await sdk.getSmartWalletAddress(userAddress, 8453);
@@ -591,26 +517,26 @@ if (baseWallet.address !== arbWallet.address) {
 }
 ```
 
-**If addresses don't match:**
-1. Try redeploying on the affected chain
-2. If the issue persists, contact support on Telegram: [@paul_zyfai](https://t.me/paul_zyfai)
+**解决方法：**
+1. 尝试在受影响的链上重新部署子账户。
+2. 如果问题仍然存在，请通过Telegram联系支持团队：[@paul_zyfai](https://t.me/paul_zyfai)
 
-### "Deposit address not found" error
+### 出现“Deposit address not found”错误
 
-This means the wallet isn't registered in the backend. Solution:
-1. Call `deploySafe()` first — even if the Safe is already deployed on-chain, this registers it with the backend
-2. Then retry `createSessionKey()`
+这表示钱包尚未在后台系统中注册。解决方法：
+1. 先调用 `deploySafe()` 方法——即使子账户已经部署在链上，此步骤也能完成注册。
+2. 然后重新尝试 `createSessionKey()` 方法。
 
-### "Invalid signature" error
+### 出现“Invalid signature”错误
 
-This typically means:
-- The private key doesn't match the EOA you're passing
-- The Safe address on-chain doesn't match what the SDK expects
+通常意味着：
+- 提供的私钥与用户的EOA地址不匹配。
+- 链上的智能钱包地址与SDK期望的地址不一致。
 
-Verify you're using the correct private key for the EOA.
+请确认你使用的私钥与用户的EOA地址相匹配。
 
-## Resources
+## 相关资源
 
-- Get API Key: [sdk.zyf.ai](https://sdk.zyf.ai)
-- Docs: [docs.zyf.ai](https://docs.zyf.ai)
-- Demo: [github.com/ondefy/zyfai-sdk-demo](https://github.com/ondefy/zyfai-sdk-demo)
+- 获取API密钥：[sdk.zyf.ai](https://sdk.zyf.ai)
+- 文档：[docs.zyf.ai](https://docs.zyf.ai)
+- 示例代码：[github.com/ondefy/zyfai-sdk-demo](https://github.com/ondefy/zyfai-sdk-demo)

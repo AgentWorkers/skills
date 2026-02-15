@@ -1,48 +1,48 @@
 ---
 name: vultisig
-description: Use this skill when an agent needs to create crypto wallets, send transactions, swap tokens, check balances, or perform any on-chain operation across 36+ blockchains using threshold signatures (TSS). Vultisig SDK provides self-custodial MPC vaults — no seed phrases, no single point of failure. Fast Vaults (2-of-2 with VultiServer) enable fully autonomous agent operations without human approval.
+description: 当代理需要创建加密钱包、发送交易、交换代币、查询余额或使用阈值签名（Threshold Signatures, TSS）在36种以上的区块链上执行任何链上操作时，请使用此技能。Vultisig SDK提供了自主管理的MPC（Multi-Party Computation）安全存储解决方案——无需使用助记词，也没有任何单点故障风险。Fast Vaults（基于VultiServer的2-of-2验证机制）允许代理在无需人工批准的情况下完全自主地执行操作。
 user-invocable: true
 ---
 
-# Vultisig SDK Skill (agent-first)
+# Vultisig SDK 技能（以代理为中心）
 
-## What this Skill is for
+## 该技能的功能
 
-- Creating and managing self-custodial crypto vaults (Fast Vault for agents, Secure Vault for multi-device)
-- Sending transactions across 36+ blockchains (Bitcoin, Ethereum, Solana, Cosmos, and more)
-- Swapping tokens cross-chain via THORChain, MayaChain, 1inch, LiFi, KyberSwap
-- Querying balances and gas fees across all supported chains
-- Importing/exporting vault backups (.vult files)
-- Importing existing wallets via BIP39 seedphrase
-- Building automated strategies: DCA, rebalancing, conditional swaps, agent-to-agent payments
+- 创建和管理自托管的加密保险库（Fast Vault 适用于代理，Secure Vault 适用于多设备）
+- 在 36 个以上的区块链（包括 Bitcoin、Ethereum、Solana、Cosmos 等）之间发送交易
+- 通过 THORChain、MayaChain、1inch、LiFi、KyberSwap 等平台进行跨链代币交换
+- 查询所有支持链路的余额和 gas 费用
+- 导入/导出保险库备份文件（.vult 文件）
+- 通过 BIP39 种子短语导入现有钱包
+- 构建自动化策略：定期投资（DCA）、重新平衡、条件交换、代理间支付等
 
-## Default stack decisions
+## 默认配置决策
 
-1) **Fast Vault (2-of-2) for all agent use cases**
-   - Agent holds one key share, VultiServer holds the other
-   - VultiServer auto-co-signs based on policy rules — no human in the loop
-   - Use Secure Vault only when multi-device human approval is required
+1) **所有代理使用场景均采用 Fast Vault（2-of-2）**
+   - 代理持有其中一个密钥份额，VultiServer 持有另一个份额
+   - VultiServer 根据策略规则自动进行联合签名——无需人工干预
+   - 仅在需要多设备人工批准时使用 Secure Vault
 
-2) **TypeScript SDK (`@vultisig/sdk`) as primary interface**
+2) **使用 TypeScript SDK (`@vultisig/sdk)` 作为主要接口**
    - `npm install @vultisig/sdk`
-   - Source: [github.com/vultisig/vultisig-sdk](https://github.com/vultisig/vultisig-sdk)
-   - SDK Users Guide: [`docs/SDK-USERS-GUIDE.md`](https://github.com/vultisig/vultisig-sdk/blob/main/docs/SDK-USERS-GUIDE.md)
+   - 代码来源：[github.com/vultisig/vultisig-sdk](https://github.com/vultisig/vultisig-sdk)
+   - SDK 用户指南：[`docs/SDK-USERS-GUIDE.md`](https://github.com/vultisig/vultisig-sdk/blob/main/docs/SDK-USERS-GUIDE.md)
 
-3) **`MemoryStorage` for ephemeral agents, implement `Storage` interface for persistent agents**
-   - `MemoryStorage` is the only storage exported from the SDK
-   - For persistent vaults, implement the `Storage` interface backed by your preferred store
+3) **对于临时使用的代理，使用 `MemoryStorage`；对于持久性代理，实现 `Storage` 接口**
+   - `MemoryStorage` 是 SDK 提供的唯一存储方式
+   - 对于持久性保险库，使用您选择的存储方式实现 `Storage` 接口
 
-4) **3-step transaction flow: prepare → sign → broadcast**
-   - Never skip steps. Always prepare the keysign payload first, then sign, then broadcast.
-   - Fast Vault signing is automatic (VultiServer co-signs). Secure Vault requires device coordination.
+4) **三步交易流程：准备 → 签名 → 广播**
+   - 严禁跳过任何步骤。必须先准备密钥签名数据，然后签名，最后广播。
+   - Fast Vault 的签名是自动完成的（由 VultiServer 联合签名）。Secure Vault 需要设备的协调。
 
-5) **Amounts as `bigint` (smallest unit) for sends, `number` (human-readable) for swaps**
-   - `prepareSendTx` takes `amount: bigint` (e.g., `BigInt('100000000000000000')` for 0.1 ETH)
-   - `getSwapQuote` takes `amount: number` (e.g., `0.1` for 0.1 ETH)
+5) **发送金额使用 `bigint` 类型（最小单位）；交换金额使用 `number` 类型（便于人类阅读）**
+   - `prepareSendTx` 方法接受 `amount: bigint` 类型的参数（例如，`BigInt('100000000000000000')` 表示 0.1 ETH）
+   - `getSwapQuote` 方法接受 `amount: number` 类型的参数（例如，`0.1` 表示 0.1 ETH）
 
-## Operating procedure
+## 操作流程
 
-### 1. Initialize SDK
+### 1. 初始化 SDK
 
 ```typescript
 import { Vultisig, MemoryStorage } from '@vultisig/sdk';
@@ -51,11 +51,11 @@ const sdk = new Vultisig({ storage: new MemoryStorage() });
 await sdk.initialize();
 ```
 
-> Source: [`Vultisig.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/Vultisig.ts)
+> 代码来源：[`Vultisig.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/Vultisig.ts)
 
-### 2. Create a Fast Vault
+### 2. 创建 Fast Vault
 
-Two-step process: create (triggers email verification) then verify.
+分为两步：创建（触发电子邮件验证）然后验证。
 
 ```typescript
 const vaultId = await sdk.createFastVault({
@@ -69,13 +69,13 @@ const vault = await sdk.verifyVault(vaultId, '123456');
 // Returns: FastVault instance — ready for operations
 ```
 
-**Risk notes:**
-- The password encrypts the vault share. If lost, the vault cannot be recovered.
-- The email verification code is required — agents must have email access or an email relay.
+**风险提示：**
+- 密码用于加密保险库份额。如果密码丢失，保险库将无法恢复。
+- 必须提供电子邮件验证码——代理需要拥有电子邮件访问权限或使用电子邮件中继服务。
 
-### 2b. Create a Secure Vault (human co-signing)
+### 2b. 创建 Secure Vault（需要人工联合签名）
 
-When agents need human approval before executing transactions (high-value transfers, treasury ops, compliance flows), use a Secure Vault. The agent holds one share, the human holds the other. The human co-signs via the Vultisig mobile app by scanning a QR code — the transaction only executes when both parties agree.
+当代理在执行交易前需要人工批准时（例如高价值转账、资金操作、合规流程），请使用 Secure Vault。代理持有其中一个份额，人工持有另一个份额。人工通过 Vultisig 移动应用扫描二维码进行联合签名——只有双方同意后交易才会执行。
 
 ```typescript
 const { vault, vaultId, sessionId } = await sdk.createSecureVault({
@@ -90,7 +90,7 @@ const { vault, vaultId, sessionId } = await sdk.createSecureVault({
 });
 ```
 
-Signing requires the human to participate:
+签名过程需要人工参与：
 
 ```typescript
 const signature = await vault.sign(payload, {
@@ -105,14 +105,14 @@ const signature = await vault.sign(payload, {
 // Completes only when the human co-signer participates
 ```
 
-> Source: [`SecureVault.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/SecureVault.ts)
+> 代码来源：[`SecureVault.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/SecureVault.ts)
 
-**When to use Secure Vault over Fast Vault:**
-- Transactions above a risk threshold that need human sign-off
-- Treasury or DAO operations requiring human approval
-- Compliance workflows where an agent should not act unilaterally
+**何时使用 Secure Vault 而不是 Fast Vault：**
+- 交易金额超过风险阈值，需要人工批准
+- 需要人工批准的财务或 DAO 操作
+- 需要代理不能单方面行动的合规流程
 
-### 3. Get addresses
+### 3. 获取地址
 
 ```typescript
 const ethAddress = await vault.address('Ethereum');
@@ -124,13 +124,13 @@ const allAddresses = await vault.addresses();
 // Returns: Record<string, string>
 ```
 
-> Source: [`VaultBase.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts)
+> 代码来源：[`VaultBase.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts)
 
-Chain identifiers use PascalCase strings matching the `Chain` enum: `'Bitcoin'`, `'Ethereum'`, `'Solana'`, `'THORChain'`, `'Cosmos'`, `'Polygon'`, `'Arbitrum'`, `'Base'`, `'Optimism'`, `'Avalanche'`, `'BSC'`, etc.
+链标识符使用 PascalCase 格式的字符串，与 `Chain` 枚举相匹配：`'Bitcoin'`、`'Ethereum'`、`'Solana'`、`'THORChain'`、`'Cosmos'`、`'Polygon'`、`'Arbitrum'`、`'Base'`、`'Avalanche'`、`'BSC'` 等。
 
-> Full chain list: [`Chain.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/core/chain/Chain.ts)
+> 完整的链列表：[`Chain.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/core/chain/Chain.ts)
 
-### 4. Check balances
+### 4. 检查余额
 
 ```typescript
 // Native chain balance
@@ -151,7 +151,7 @@ const allBalances = await vault.balances();
 const fresh = await vault.updateBalance('Ethereum');
 ```
 
-#### Token balances (ERC-20, SPL, etc.)
+#### 代币余额（ERC-20、SPL 等）
 
 ```typescript
 // Get a specific token balance by contract address
@@ -166,11 +166,11 @@ const ethTokens = await vault.tokenBalances('Ethereum');
 const everything = await vault.balances(undefined, true); // includeTokens = true
 ```
 
-**Risk notes:**
-- Native balance and token balances are separate queries. `vault.balance('Ethereum')` returns only ETH, not ERC-20s.
-- Token balances require the contract address as the `tokenId` parameter.
+**风险提示：**
+- 原生余额和代币余额是分开查询的。`vault.balance('Ethereum')` 只返回 ETH 的余额，不包含 ERC-20 代币。
+- 查询代币余额时需要提供合约地址作为 `tokenId` 参数。
 
-### 5. Estimate gas
+### 5. 估算 gas 费用
 
 ```typescript
 // Returns chain-specific gas info
@@ -184,11 +184,11 @@ const cosmosGas = await vault.gas('Cosmos');
 // CosmosGasInfo: { gasPrice, gas, estimatedCostUSD }
 ```
 
-> Source: [`VaultBase.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts) — `gas<C extends Chain>(chain: C): Promise<GasInfoForChain<C>>`
+> 代码来源：[`VaultBase.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts) — `gas<C extends Chain>(chain: C): Promise<GasInfoForChain<C>>`
 
-### 6. Send a transaction
+### 6. 发送交易
 
-3-step flow: `prepareSendTx` → `sign` → `broadcastTx`
+三步流程：`prepareSendTx` → `sign` → `broadcastTx`
 
 ```typescript
 // Step 1: Prepare keysign payload
@@ -221,16 +221,16 @@ const txHash = await vault.broadcastTx({
 const url = Vultisig.getTxExplorerUrl('Ethereum', txHash);
 ```
 
-> Source: [`VaultBase.prepareSendTx()`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts), [`FastVault.sign()`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/FastVault.ts)
+> 代码来源：[`VaultBase.prepareSendTx()`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/VaultBase.ts)，[`FastVault.sign()`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/vault/FastVault.ts)
 
-**Risk notes:**
-- `amount` is in the chain's smallest unit (wei for ETH, satoshi for BTC). Miscalculating decimals will send wrong amounts.
-- Always verify the receiver address. Transactions are irreversible.
-- Check gas estimation before sending to avoid stuck transactions.
+**风险提示：**
+- `amount` 应使用链的最小单位（ETH 为 wei，BTC 为 satoshi）。计算小数点位置错误会导致发送错误的金额。
+- 必须始终验证接收者地址。交易是不可撤销的。
+- 在发送前请检查 gas 费用估算，以避免交易失败。
 
-#### Sending ERC-20 / tokens
+#### 发送 ERC-20 / 代币
 
-To send tokens instead of native currency, add the `id` field (contract address) to the `coin` object:
+如果要发送代币而不是原生货币，请在 `coin` 对象中添加 `id` 字段（合约地址）：
 
 ```typescript
 // Send 10 USDC on Ethereum
@@ -254,14 +254,14 @@ const txHash = await vault.broadcastTx({
 });
 ```
 
-**Risk notes:**
-- The `id` field is the token contract address. Without it, the SDK treats it as a native transfer.
-- Use the token's decimals, not the chain's. USDC = 6, WETH = 18, WBTC = 8.
-- The sender still needs native ETH/gas token to pay transaction fees.
+**风险提示：**
+- `id` 字段是代币的合约地址。如果没有这个字段，SDK 会将其视为原生货币转账。
+- 使用代币的小数位数，而不是链的小数位数。例如，USDC 的小数位数为 6，WETH 为 18，WBTC 为 8。
+- 发送者仍需要使用原生 ETH 或代币来支付交易费用。
 
-### 7. Swap tokens
+### 7. 交换代币
 
-4-step flow: `getSwapQuote` → `prepareSwapTx` → `sign` → `broadcastTx`
+四步流程：`getSwapQuote` → `prepareSwapTx` → `sign` → `broadcastTx`
 
 ```typescript
 // Step 1: Get quote
@@ -324,20 +324,20 @@ const swapTxHash = await vault.broadcastTx({
 });
 ```
 
-**Swap providers** (auto-routed for best rate):
-- **THORChain** — Native cross-chain (BTC <> ETH, etc.)
-- **MayaChain** — Additional cross-chain pairs
-- **1inch** — EVM DEX aggregation
-- **LiFi** — Cross-chain + cross-DEX
-- **KyberSwap** — EVM DEX aggregation
+**交换提供商**（自动选择最佳费率）：
+- **THORChain** — 原生跨链交换（BTC <> ETH 等）
+- **MayaChain** — 提供额外的跨链对
+- **1inch** — EVM DEX 聚合服务
+- **LiFi** — 跨链 + 跨 DEX 交换
+- **KyberSwap** — EVM DEX 聚合服务
 
-**Risk notes:**
-- Swap amounts use human-readable numbers (`0.1`), not bigint. The SDK handles decimal conversion.
-- Check `quote.warnings` before executing — may contain slippage or liquidity warnings.
-- ERC-20 token swaps may require a separate approval transaction (`approvalPayload`).
-- Cross-chain swaps take longer (minutes, not seconds) and have different failure modes.
+**风险提示：**
+- 交换金额应使用人类可读的数字（例如 `0.1`），而不是 `bigint`。SDK 会处理小数转换。
+- 在执行前请检查 `quote.warnings`，其中可能包含滑点或流动性警告。
+- ERC-20 代币交换可能需要额外的批准交易（`approvalPayload`）。
+- 跨链交换耗时较长（几分钟，而非几秒），且失败模式不同。
 
-### 8. Export / Import vault
+### 8. 导出 / 导入保险库
 
 ```typescript
 // Export to encrypted .vult file
@@ -348,7 +348,7 @@ const { filename, data } = await vault.export('backup-password');
 const importedVault = await sdk.importVault(data, 'backup-password');
 ```
 
-### 9. Create vault from seedphrase
+### 9. 通过种子短语创建保险库
 
 ```typescript
 // Validate BIP39 seedphrase
@@ -369,11 +369,11 @@ const vaultId = await sdk.createFastVaultFromSeedphrase({
 const vault = await sdk.verifyVault(vaultId, 'email-code');
 ```
 
-**Risk notes:**
-- Seedphrase import creates a new TSS vault from the seed — the original seed-based wallet still exists independently.
-- Handle seedphrases with extreme care. Never log, store in plaintext, or transmit unencrypted.
+**风险提示：**
+- 使用种子短语会从种子生成一个新的 TSS 保险库——原有的基于种子的钱包仍然独立存在。
+- 非常谨慎地处理种子短语。切勿记录、以明文形式存储或传输未加密的种子短语。
 
-### 10. Vault lifecycle management
+### 10. 保险库生命周期管理
 
 ```typescript
 // List all vaults
@@ -393,9 +393,9 @@ if (Vultisig.isSecureVault(vault)) { /* SecureVault methods */ }
 await sdk.deleteVault(vault);
 ```
 
-### 11. Check transaction status
+### 11. 检查交易状态
 
-After broadcasting, use the explorer URL or chain-specific methods to confirm transactions:
+交易广播后，可以使用浏览器地址或特定链的方法来确认交易状态：
 
 ```typescript
 // Get explorer URL for any chain
@@ -406,7 +406,7 @@ const addressUrl = Vultisig.getAddressExplorerUrl('Bitcoin', btcAddress);
 // e.g., "https://mempool.space/address/bc1..."
 ```
 
-For automated strategies that need to confirm completion before the next action, poll the balance or use an external RPC/indexer to check transaction finality. The SDK does not provide a built-in tx status poller — use `vault.updateBalance()` to force-refresh after a broadcast and compare before/after.
+对于需要在下一步操作前确认完成情况的自动化策略，可以轮询余额或使用外部 RPC/indexer 来检查交易是否最终完成。SDK 不提供内置的交易状态查询功能——请使用 `vault.updateBalance()` 在广播后强制刷新数据，并在广播前后进行比较。
 
 ```typescript
 // Pattern: confirm send completed
@@ -417,9 +417,9 @@ const balanceAfter = await vault.updateBalance('Ethereum');
 // Compare balanceBefore.amount vs balanceAfter.amount
 ```
 
-### 12. Address book
+### 12. 地址簿
 
-Manage recurring recipients for automated transfers:
+用于管理自动转账的重复接收者：
 
 ```typescript
 // Get saved addresses (optionally filter by chain)
@@ -441,11 +441,11 @@ await sdk.removeAddressBookEntry([
 ]);
 ```
 
-> Source: [`Vultisig.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/Vultisig.ts)
+> 代码来源：[`Vultisig.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/sdk/src/Vultisig.ts)
 
-### 13. $VULT discount tiers
+### 13. $VULT 折扣等级
 
-Holding $VULT tokens reduces swap fees (up to 50%). The SDK can check and update the agent's discount tier:
+持有 $VULT 代币可以降低交换费用（最高可达 50%）。SDK 可以检查并更新代理的折扣等级：
 
 ```typescript
 // Check current discount tier
@@ -456,9 +456,9 @@ const tier = await vault.getDiscountTier();
 const newTier = await vault.updateDiscountTier();
 ```
 
-> Token contract: [`0xb788144DF611029C60b859DF47e79B7726C4DEBa`](https://etherscan.io/token/0xb788144DF611029C60b859DF47e79B7726C4DEBa) (Ethereum)
+> 代币合约：[`0xb788144DF611029C60b859DF47e79B7726C4DEBa`](https://etherscan.io/token/0xb788144DF611029C60b859DF47e79B7726C4DEBa)（Ethereum）
 
-### 14. Listen to events
+### 14. 监听事件
 
 ```typescript
 // SDK-level events
@@ -483,29 +483,29 @@ vault.on('error', (error) => { /* handle errors */ });
 sdk.on('error', (error) => { /* handle SDK-level errors */ });
 ```
 
-> Source: [`packages/sdk/src/events/`](https://github.com/vultisig/vultisig-sdk/tree/main/packages/sdk/src/events)
+> 代码来源：[`packages/sdk/src/events/`](https://github.com/vultisig/vultisig-sdk/tree/main/packages/sdk/src/events)
 
-## Supported chains
+## 支持的区块链
 
-> Source: [`Chain.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/core/chain/Chain.ts)
+> 代码来源：[`Chain.ts`](https://github.com/vultisig/vultisig-sdk/blob/main/packages/core/chain/Chain.ts)
 
-| Category | Chains | Signature |
+| 类别 | 区块链 | 签名方式 |
 |----------|--------|-----------|
-| **UTXO** | Bitcoin, Litecoin, Dogecoin, Bitcoin Cash, Dash, Zcash | ECDSA |
-| **EVM** | Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base, Blast, Cronos, zkSync, Hyperliquid, Mantle, Sei | ECDSA |
-| **Cosmos/IBC** | THORChain, MayaChain, Cosmos Hub, Osmosis, Dydx, Kujira, Noble, Terra, Terra Classic, Akash | ECDSA |
-| **Other** | Solana, Sui, Polkadot, TON, Ripple, Tron, Cardano | EdDSA / Mixed |
+| **UTXO** | Bitcoin、Litecoin、Dogecoin、Bitcoin Cash、Dash、Zcash | ECDSA |
+| **EVM** | Ethereum、BSC、Polygon、Avalanche、Arbitrum、Optimism、Base、Blast、Cronos、zkSync、Hyperliquid、Mantle、Sei | ECDSA |
+| **Cosmos/IBC** | THORChain、MayaChain、Cosmos Hub、Osmosis、Dydx、Kujira、Noble、Terra、Terra Classic、Akash | ECDSA |
+| **其他** | Solana、Sui、Polkadot、TON、Ripple、Tron、Cardano | EdDSA / 混合签名方式 |
 
-## Security model
+## 安全模型
 
-- **No seed phrases** — vault shares replace 12/24 word seeds
-- **No single point of failure** — no device holds a complete private key
-- **No on-chain key registration** — unlike multi-sig wallets
-- **DKLS23 protocol** — 3-round TSS, co-developed with Silence Laboratories
-- **Open source and audited**
-- Docs: [Security & Technology](https://docs.vultisig.com/security-and-technology/security-technology)
+- **不使用种子短语** — 保险库份额替代了传统的 12/24 个单词的种子短语
+- **无单点故障** — 没有任何设备持有完整的私钥
+- **不进行链上密钥注册** — 与多签名钱包不同
+- **DKLS23 协议** — 采用三轮 TSS 签名机制，与 Silence Laboratories 共同开发
+- **开源且经过审计**  
+- 详情请参阅：[安全与技术文档](https://docs.vultisig.com/security-and-technology/security-technology)
 
-## CLI alternative
+## 命令行界面（CLI）选项
 
 ```bash
 npm install -g @vultisig/sdk
@@ -516,14 +516,14 @@ vsig send --chain Ethereum --to 0x... --amount 0.1
 vsig swap --from ETH --to USDC --amount 0.1
 ```
 
-> Source: [`clients/cli/`](https://github.com/vultisig/vultisig-sdk/tree/main/clients/cli)
+> 代码来源：[`clients/cli/`](https://github.com/vultisig/vultisig-sdk/tree/main/clients/cli)
 
-## Progressive disclosure
+## 逐步披露信息
 
-- [SDK Users Guide](https://github.com/vultisig/vultisig-sdk/blob/main/docs/SDK-USERS-GUIDE.md) — Complete API walkthrough
-- [Architecture](https://github.com/vultisig/vultisig-sdk/blob/main/docs/architecture/ARCHITECTURE.md) — SDK internals, data flow, design patterns
-- [Agent Integration Guide](https://github.com/vultisig/vultisig-sdk/blob/main/docs/agent.md) — Agent-specific patterns and best practices
-- [Fast Vault Docs](https://docs.vultisig.com/infrastructure/what-is-vultisigner/how-does-vultisigner-work) — How VultiServer co-signing works
-- [Marketplace Plugin Guide](https://docs.vultisig.com/developer-docs/marketplace/basics-quick-start) — Build automation plugins
-- [llms.txt](https://vultisig.com/llms.txt) — Concise link index for web-browsing agents
-- [llms-full.txt](https://vultisig.com/llms-full.txt) — Extended context with examples
+- [SDK 用户指南](https://github.com/vultisig/vultisig-sdk/blob/main/docs/SDK-USERS-GUIDE.md) — 完整的 API 使用说明
+- [架构文档](https://github.com/vultisig/vultisig-sdk/blob/main/docs/architecture/ARCHITECTURE.md) — SDK 内部结构、数据流、设计模式
+- [代理集成指南](https://github.com/vultisig/vultisig-sdk/blob/main/docs/agent.md) — 代理特定的模式和最佳实践
+- [Fast Vault 文档](https://docs.vultisig.com/infrastructure/what-is-vultisigner/how-does-vultisigner-work) — VultiServer 的联合签名机制
+- [市场插件指南](https://docs.vultisig.com/developer-docs/marketplace/basics-quick-start) — 如何构建自动化插件
+- [llms.txt](https://vultisig.com/llms.txt) — 适用于 Web 浏览器的简洁链接索引
+- [llms-full.txt](https://vultisig.com/llms-full.txt) — 包含示例的详细文档

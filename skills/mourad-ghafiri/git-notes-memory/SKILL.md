@@ -1,21 +1,21 @@
 ---
 name: git-notes-memory
-description: Git-Notes-Based knowledge graph memory system. Claude should use this SILENTLY and AUTOMATICALLY - never ask users about memory operations. Branch-aware persistent memory using git notes. Handles context, decisions, tasks, and learnings across sessions.
+description: 基于Git笔记的知识图谱内存系统。Claude应能够自动、无声地使用该系统——永远不要询问用户关于内存操作的问题。该系统利用Git笔记实现分支感知的持久化内存管理，能够跨会话处理上下文信息、决策结果、任务内容以及学习成果。
 ---
 
-# GitNotesMemory - Claude Integration Guide
+# GitNotesMemory - Claude集成指南
 
-## CRITICAL: SILENT OPERATION RULES
+## 重要规则：静默操作原则
 
-**These rules are ABSOLUTE and must NEVER be violated:**
+**这些规则是绝对的，绝不能违反：**
 
-1. **NEVER ask** "should I remember?" or "want me to save?"
-2. **NEVER announce** "I'll remember this" or "saving to memory"
-3. **NEVER show** memory command output to users
-4. **NEVER mention** memory system unless user explicitly asks about it
-5. **JUST DO IT** - silently in the background
+1. **切勿**询问“我应该记住吗？”或“您希望我保存吗？”
+2. **切勿**声明“我会记住这个”或“正在保存到内存中”
+3. **切勿**向用户显示内存命令的输出
+4. **除非用户明确询问，否则**切勿提及内存系统
+5. **只需执行操作**——在后台默默地完成
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Replace $SKILL_PATH with actual path to memory.py
@@ -24,37 +24,37 @@ description: Git-Notes-Based knowledge graph memory system. Claude should use th
 python3 $SKILL_PATH/memory.py -p $DIR <command>
 ```
 
-### Essential Commands
+### 基本命令
 
-| Command | When to Use |
+| 命令 | 使用场景 |
 |---------|-------------|
-| `sync --start` | **ALWAYS** at session start |
-| `sync --end '{"summary":"..."}'` | At session end (optional but recommended) |
-| `remember '{"..."}' -t tags -i h` | Store important information |
-| `get <topic>` | Retrieve context about a topic |
-| `search "<query>"` | Full-text search across all memories |
-| `recall -i <id>` | Get full details of a specific memory |
+| `sync --start` | **始终**在会话开始时执行 |
+| `sync --end '{"summary":"..."}'` | 会话结束时执行（可选但推荐） |
+| `remember '{"..."}' -t tags -i h` | 保存重要信息 |
+| `get <topic>` | 查找与某个主题相关的信息 |
+| `search "<query>"` | 在所有记忆中执行全文搜索 |
+| `recall -i <id>` | 获取特定记忆的详细信息 |
 
-### Importance Flags
+### 重要性标志
 
-| Flag | Level | When to Use |
+| 标志 | 级别 | 使用场景 |
 |------|-------|-------------|
-| `-i c` | Critical | User says "always remember", "never forget", explicit preferences |
-| `-i h` | High | Decisions, architecture choices, user corrections, preferences |
-| `-i n` | Normal | General information (default) |
-| `-i l` | Low | Temporary notes, might be pruned |
+| `-i c` | 关键 | 用户明确表示“始终记住”或“永远不要忘记” |
+| `-i h` | 高级 | 与决策、架构选择、用户偏好相关的内容 |
+| `-i n` | 一般 | 一般信息（默认） |
+| `-i l` | 低级 | 临时笔记，可能会被删除 |
 
-## Session Lifecycle
+## 会话生命周期
 
-### 1. Session Start (MANDATORY)
+### 1. 会话开始（强制要求）
 
-**Always run `sync --start` at the beginning of every session:**
+**每次会话开始时都必须执行 `sync --start`：**
 
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR sync --start
 ```
 
-**Output explains:**
+**输出说明：**
 ```json
 {
   "b": "main",           // Current git branch
@@ -65,103 +65,106 @@ python3 $SKILL_PATH/memory.py -p $DIR sync --start
 }
 ```
 
-**Use this context to:**
-- Understand what the user has been working on
-- Reference previous decisions
-- Maintain continuity across sessions
+**使用此信息来：**
+- 了解用户的工作内容
+- 参考之前的决策
+- 保持会话间的连贯性
 
-### 2. During Session
+### 2. 会话进行中
 
-**Silently remember when user:**
-- Makes a decision: "Let's use PostgreSQL" → remember with `-i h`
-- States a preference: "I prefer tabs over spaces" → remember with `-i h` or `-i c`
-- Learns something: "Oh, so that's how async works" → remember with `-i n`
-- Sets a task: "We need to fix the login bug" → remember with `-i n`
-- Shares important context: Project requirements, constraints, goals
+**当用户执行以下操作时，自动将其记录到内存中：**
+- 做出决策（例如：“我们使用PostgreSQL”） → 使用 `-i h` 记录
+- 表达偏好（例如：“我更喜欢使用制表符而不是空格”） → 使用 `-i h` 或 `-i c` 记录
+- 学到新知识（例如：“原来异步操作是这样工作的”） → 使用 `-i n` 记录
+- 设置任务（例如：“我们需要修复登录漏洞”） → 使用 `-i n` 记录
+- 分享重要信息（例如：项目需求、约束条件、目标） |
 
-**Retrieve context when:**
-- User asks about something previously discussed → `get <topic>`
-- You need to recall a specific decision → `search "<keywords>"`
-- User references "what we decided" → check relevant memories
+**在以下情况下可以检索信息：**
+- 用户询问之前讨论过的内容 → 使用 `get <topic>`
+- 需要回顾某个特定决策 → 使用 `search "<关键词>"`
+- 用户提到“我们之前的决定” → 查看相关记忆
 
-### 3. Session End (Recommended)
+### 3. 会话结束（推荐）
 
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR sync --end '{"summary": "Brief session summary"}'
 ```
 
-## Memory Content Best Practices
+## 内存内容最佳实践
 
-### Good Memory Structure
+### 决策的记录方式
 
-**For decisions:**
 ```json
 {"decision": "Use React for frontend", "reason": "Team expertise", "alternatives": ["Vue", "Angular"]}
 ```
 
-**For preferences:**
+### 偏好的记录方式
+
 ```json
 {"preference": "Detailed explanations", "context": "User prefers thorough explanations over brief answers"}
 ```
 
-**For learnings:**
+### 知识的记录方式
+
 ```json
 {"topic": "Authentication", "learned": "OAuth2 flow requires redirect URI configuration"}
 ```
 
-**For tasks:**
+### 任务的记录方式
+
 ```json
 {"task": "Implement user dashboard", "status": "in progress", "blockers": ["API not ready"]}
 ```
 
-**For notes:**
+### 笔记的记录方式
+
 ```json
 {"subject": "Project Architecture", "note": "Microservices pattern with API gateway"}
 ```
 
-### Tags
+### 标签的使用
 
-Use tags to categorize memories for better retrieval:
-- `-t architecture,backend` - Technical categories
-- `-t urgent,bug` - Priority/type markers
-- `-t meeting,requirements` - Source context
+使用标签对记忆进行分类，以便于检索：
+- `-t architecture,backend` - 技术类别
+- `-t urgent,bug` - 优先级/类型标记
+- `-t meeting,requirements` - 来源上下文
 
-## Command Reference
+## 命令参考
 
-### Core Commands
+### 核心命令
 
-#### `sync --start`
-Initialize session, get context overview.
+#### `sync --start`  
+初始化会话，获取上下文概览。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR sync --start
 ```
 
-#### `sync --end`
-End session with summary (triggers maintenance).
+#### `sync --end`  
+结束会话，并生成摘要（触发维护操作）。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR sync --end '{"summary": "Implemented auth flow"}'
 ```
 
-#### `remember`
-Store a new memory.
+#### `remember`  
+保存新的记忆内容。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR remember '{"key": "value"}' -t tag1,tag2 -i h
 ```
 
-#### `get`
-Get memories related to a topic (searches entities, tags, and content).
+#### `get`  
+获取与特定主题相关的记忆内容（搜索实体、标签和内容）。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR get authentication
 ```
 
-#### `search`
-Full-text search across all memories.
+#### `search`  
+在所有记忆中进行全文搜索。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR search "database migration"
 ```
 
-#### `recall`
-Retrieve memories by various criteria.
+#### `recall`  
+根据不同条件检索记忆内容。  
 ```bash
 # Get full memory by ID
 python3 $SKILL_PATH/memory.py -p $DIR recall -i abc123
@@ -176,10 +179,10 @@ python3 $SKILL_PATH/memory.py -p $DIR recall --last 5
 python3 $SKILL_PATH/memory.py -p $DIR recall
 ```
 
-### Update Commands
+### 更新命令
 
-#### `update`
-Modify an existing memory.
+#### `update`  
+修改现有的记忆内容。  
 ```bash
 # Replace content
 python3 $SKILL_PATH/memory.py -p $DIR update <id> '{"new": "content"}'
@@ -194,55 +197,55 @@ python3 $SKILL_PATH/memory.py -p $DIR update <id> -i c
 python3 $SKILL_PATH/memory.py -p $DIR update <id> -t newtag1,newtag2
 ```
 
-#### `evolve`
-Add an evolution note to track changes over time.
+#### `evolve`  
+添加演变记录，以跟踪内容的变化。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR evolve <id> "User changed preference to dark mode"
 ```
 
-#### `forget`
-Delete a memory (use sparingly).
+#### `forget`  
+删除记忆内容（请谨慎使用）。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR forget <id>
 ```
 
-### Entity Commands
+### 实体相关命令
 
-#### `entities`
-List all extracted entities with counts.
+#### `entities`  
+列出所有提取的实体及其数量。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR entities
 ```
 
-#### `entity`
-Get details about a specific entity.
+#### `entity`  
+获取特定实体的详细信息。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR entity authentication
 ```
 
-### Branch Commands
+### 分支相关命令
 
-#### `branches`
-List all branches with memory counts.
+#### `branches`  
+列出所有分支及其对应的记忆数量。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR branches
 ```
 
-#### `merge-branch`
-Merge memories from another branch (run after git merge).
+#### `merge-branch`  
+合并来自其他分支的记忆内容（在 `git merge` 后执行）。  
 ```bash
 python3 $SKILL_PATH/memory.py -p $DIR merge-branch feature-auth
 ```
 
-## Branch Awareness
+## 分支管理
 
-### How It Works
+### 工作原理
 
-- Each git branch has **isolated memory storage**
-- New branches **automatically inherit** from main/master
-- After git merge, run `merge-branch` to combine memories
+- 每个 Git 分支都有独立的内存存储空间  
+- 新分支会自动继承主分支（`main/master`）的记忆内容  
+- 在执行 `git merge` 后，需要运行 `merge-branch` 来合并分支间的记忆内容  
 
-### Branch Workflow
+### 分支工作流程
 
 ```
 1. User on main branch → memories stored in refs/notes/mem-main
@@ -251,11 +254,11 @@ python3 $SKILL_PATH/memory.py -p $DIR merge-branch feature-auth
 4. After git merge → run merge-branch to combine memories
 ```
 
-## Memory Types (Auto-Detected)
+## 内存类型（自动分类）
 
-The system automatically classifies memories based on content:
+系统会根据内容自动对记忆进行分类：
 
-| Type | Trigger Words |
+| 类型 | 触发词 |
 |------|---------------|
 | `decision` | decided, chose, picked, selected, opted, going with |
 | `preference` | prefer, favorite, like best, rather, better to |
@@ -264,39 +267,39 @@ The system automatically classifies memories based on content:
 | `question` | wondering, curious, research, investigate, find out |
 | `note` | noticed, observed, important, remember that |
 | `progress` | completed, finished, done, achieved, milestone |
-| `info` | (default for unclassified content) |
+| `info` | （未分类内容的默认类型） |
 
-## Entity Extraction
+## 实体提取
 
-Entities are automatically extracted for intelligent retrieval:
+系统会自动提取相关实体以便于检索：
 
-- **Explicit fields**: `topic`, `subject`, `name`, `category`, `area`, `project`
-- **Hashtags**: `#cooking`, `#urgent`, `#v2`
-- **Quoted phrases**: `"machine learning"`, `"user authentication"`
-- **Capitalized words**: `React`, `PostgreSQL`, `Monday`
-- **Key terms**: Meaningful words (common words filtered out)
+- **明确指定的字段**：`topic`, `subject`, `name`, `category`, `area`, `project`
+- **标签**：`#cooking`, `#urgent`, `#v2`
+- **引号中的短语**：`"machine learning"`, `"user authentication"`
+- **大写单词**：`React`, `PostgreSQL`, `Monday`
+- **关键词**：有意义的单词（过滤掉普通词汇）
 
-## What to Remember
+## 需要记录的内容
 
-**DO remember:**
-- User decisions and their rationale
-- Stated preferences (coding style, communication style, tools)
-- Project architecture and constraints
-- Important context that affects future work
-- Tasks, blockers, and progress
-- Corrections ("actually, I meant..." → high importance)
-- Explicit requests to remember something → critical importance
+**必须记录的内容：**
+- 用户的决策及其理由
+- 用户明确的偏好（编码风格、沟通方式、工具选择）
+- 项目架构和约束条件
+- 影响未来工作的重要信息
+- 任务、障碍和进度
+- 需要纠正的错误（例如：“实际上，我的意思是...”）
+- 用户明确要求记录的内容（具有极高重要性）
 
-**DON'T remember:**
-- Trivial conversation
-- Information easily derivable from code
-- Secrets, passwords, API keys
-- One-time questions with no future relevance
-- Duplicate information already stored
+**不需要记录的内容：**
+- 无关紧要的对话
+- 可以从代码中轻松获取的信息
+- 秘密信息、密码、API 密钥
+- 一次性的问题（未来没有参考价值）
+- 已经存储的重复信息
 
-## Output Format Reference
+## 输出格式说明
 
-### Tier 0: sync --start
+### 第0层：`sync --start`  
 ```json
 {
   "b": "feature-auth",                    // Current branch
@@ -307,7 +310,7 @@ Entities are automatically extracted for intelligent retrieval:
 }
 ```
 
-### Tier 1: get/search
+### 第1层：`get/search`  
 ```json
 {
   "topic": "auth",
@@ -317,7 +320,7 @@ Entities are automatically extracted for intelligent retrieval:
 }
 ```
 
-### Tier 2: recall -i <id>
+### 第2层：`recall -i <id>`  
 ```json
 {
   "d": {"decision": "Use OAuth2"},  // Full data
@@ -333,7 +336,7 @@ Entities are automatically extracted for intelligent retrieval:
 }
 ```
 
-## Example Silent Flow
+## 静默操作流程示例
 
 ```
 User: "Let's build a REST API with Python"
@@ -354,17 +357,17 @@ Claude: [silently: remember '{"decision": "Changed to Flask", "previous": "FastA
         [acknowledges change WITHOUT mentioning memory update]
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Memory not found:**
-- Use `search` with different keywords
-- Check `entities` to see what's indexed
-- Use `recall --last 10` to see recent memories
+**找不到记忆内容：**
+- 使用不同的关键词进行搜索
+- 查看 `entities` 以确认哪些内容已被索引
+- 使用 `recall --last 10` 查看最近记录的记忆
 
-**Context seems stale:**
-- Always run `sync --start` at session beginning
-- Check current branch with `branches`
+**内容似乎过时：**
+- 每次会话开始时务必执行 `sync --start`
+- 使用 `branches` 命令检查当前分支的状态
 
-**After git operations:**
-- After `git merge`: run `merge-branch <source-branch>`
-- After `git checkout`: `sync --start` will load correct branch context
+**执行 Git 操作后：**
+- 执行 `git merge` 后：运行 `merge-branch <source-branch>`
+- 执行 `git checkout` 后：`sync --start` 会加载正确的分支上下文

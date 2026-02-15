@@ -7,19 +7,18 @@ description: |
   Output: Preview URL (https://pinme.eth.limo/#/preview/*) after successful upload.
 ---
 
-# PinMe - Zero-Config Frontend Deployment
+# PinMe – 零配置前端部署工具
 
-Deploy static websites to IPFS network with a single command. No servers, no accounts, no setup.
+只需一个命令，即可将静态网站部署到 IPFS 网络中。无需服务器、无需账户，也无需任何设置。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- User asks to "deploy", "upload", or "publish" a frontend project
-- User wants to get a preview URL for their built site
-- User mentions PinMe or IPFS deployment
-- Project has built static files (dist/, build/, out/, public/)
+当用户需要：
+- 部署、上传或发布前端项目
+- 获取已构建网站的预览地址
+- 提到 PinMe 或 IPFS 部署时
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install PinMe
@@ -32,9 +31,9 @@ pinme upload dist
 # https://pinme.eth.limo/#/preview/*
 ```
 
-## Core Workflow
+## 核心工作流程
 
-### 1. Check Prerequisites
+### 1. 检查前提条件
 ```bash
 # Check Node.js version (requires 16.13.0+)
 node --version
@@ -43,22 +42,21 @@ node --version
 pinme --version
 ```
 
-### 2. Identify Static Directory
-PinMe auto-detects directories in priority order:
+### 2. 确定静态文件目录
+PinMe 会按优先级自动检测以下目录：
+| 目录          | 使用的框架/工具         |
+|---------------|-------------------|
+| `dist/`        | Vite、Vue CLI、Angular        |
+| `build/`        | Create React App       |
+| `out/`        | Next.js（静态文件导出）       |
+| `public/`       | 静态网站文件目录        |
 
-| Directory | Framework/Tool |
-|-----------|---------------|
-| `dist/` | Vite, Vue CLI, Angular |
-| `build/` | Create React App |
-| `out/` | Next.js (static export) |
-| `public/` | Static sites |
+**验证规则：**
+- ✅ 该文件夹必须存在。
+- ✅ 必须包含 `index.html` 文件。
+- ✅ 文件夹中必须包含实际的静态文件（CSS、JS、图片等）。
 
-**Validation rules:**
-- ✅ Folder must exist
-- ✅ Must contain `index.html`
-- ✅ Must have actual static files (CSS, JS, images)
-
-### 3. Execute Deployment
+### 3. 执行部署
 ```bash
 # Deploy dist directory (most common)
 pinme upload dist
@@ -70,60 +68,56 @@ pinme upload build
 pinme upload dist --domain my-site
 ```
 
-### 4. Return Result
-Return ONLY the preview URL: `https://pinme.eth.limo/#/preview/*`
+### 4. 返回结果
+仅返回预览地址：`https://pinme.eth.limo/#/preview/*`
 
-## Commands Reference
+## 命令参考
 
-| Command | Description |
-|---------|-------------|
-| `pinme upload <dir>` | Upload static files to IPFS |
-| `pinme upload <dir> --domain <name>` | Upload + bind domain |
-| `pinme import <car-file>` | Import CAR files |
-| `pinme export <CID>` | Export IPFS content as CAR |
-| `pinme list` | Show upload history |
-| `pinme rm <hash>` | Remove files from IPFS |
-| `pinme set-appkey` | Set AppKey for authentication |
-| `pinme my-domains` | List owned domains |
-| `pinme --version` | Show version |
+| 命令            | 描述                        |
+|------------------|-----------------------------|
+| `pinme upload <目录>`    | 将静态文件上传到 IPFS                |
+| `pinme upload <目录> --domain <域名>` | 上传文件并绑定域名                |
+| `pinme import <CAR 文件>`    | 导入 CAR 文件                    |
+| `pinme export <CID>`     | 将 IPFS 内容导出为 CAR 文件            |
+| `pinme list`       | 显示上传历史记录                |
+| `pinme rm <哈希值>`     | 从 IPFS 中删除文件                |
+| `pinme set-appkey`     | 设置用于身份验证的 AppKey                |
+| `pinme my-domains`    | 查看拥有的域名                    |
+| `pinme --version`     | 显示版本信息                    |
 
-## Upload Limits
+## 上传限制
 
-| Type | Free Plan |
-|------|----------|
-| Single file | 200MB |
-| Total directory | 1GB |
+| 类型            | 免费计划                |
+|------------------|-------------------------|
+| 单个文件        | 200MB                     |
+| 整个目录        | 1GB                        |
 
-## Error Handling
+## 错误处理
 
-| Error | Solution |
-|-------|----------|
-| Node.js version too low | Upgrade to 16.13.0+ |
-| Command not found | Run `npm install -g pinme` |
-| Folder does not exist | Check path, use `ls` |
-| Upload failed | Check network, retry |
-| Authentication failed | Run `pinme set-appkey` |
+| 错误类型           | 解决方案                         |
+|------------------|-----------------------------------|
+| Node.js 版本过低       | 升级到 16.13.0 或更高版本                |
+| 命令未找到        | 运行 `npm install -g pinme`                |
+| 文件夹不存在        | 检查路径，可以使用 `ls` 命令                |
+| 上传失败          | 检查网络连接，重试                   |
+| 身份验证失败        | 运行 `pinme set-appkey`                  |
 
-## AI Execution Protocol
+## 程序化部署流程
 
-For programmatic deployment:
+1. **检查环境**：`node --version`（确保 Node.js 版本 >= 16.13.0）
+2. **安装 PinMe**：`npm install -g pinme`
+3. **检测静态文件目录**：检查 `dist/`、`build/`、`out/`、`public/`
+4. **验证文件**：确认目录中包含 `index.html`
+5. **执行部署**：`pinme upload <目录>`
+6. **返回结果**：仅返回预览地址
 
-1. **Check environment**: `node --version` (needs >=16.13.0)
-2. **Install if needed**: `npm install -g pinme`
-3. **Detect directory**: Check `dist/`, `build/`, `out/`, `public/`
-4. **Validate**: Must contain `index.html`
-5. **Execute**: `pinme upload <directory>`
-6. **Return**: Only the preview URL
+**禁止的操作：**
+- ❌ 禁止上传 `node_modules`、`.env`、`.git` 文件
+- ❌ 禁止上传源代码目录（`src/`）
+- ❌ 禁止上传配置文件（如 `package.json` 等）
+- ❌ 禁止上传不存在或为空的文件夹
 
-**Prohibited operations:**
-- ❌ Upload node_modules, .env, .git
-- ❌ Upload source directories (src/)
-- ❌ Upload config files (package.json, etc.)
-- ❌ Upload non-existent/empty folders
-
-## GitHub Actions Integration
-
-Example workflow:
+## GitHub Actions 集成示例
 
 ```yaml
 name: Deploy to PinMe
@@ -142,7 +136,7 @@ jobs:
       - run: pinme upload dist --domain "${{ secrets.DOMAIN }}"
 ```
 
-## Machine-Readable Config
+## 机器可读的配置文件
 
 ```json
 {
@@ -166,8 +160,8 @@ jobs:
 }
 ```
 
-## Resources
+## 资源链接
 
-- **Website:** https://pinme.eth.limo/
-- **GitHub:** https://github.com/glitternetwork/pinme
-- **AppKey:** https://pinme.eth.limo/ (get from dashboard)
+- **官方网站**：https://pinme.eth.limo/
+- **GitHub 仓库**：https://github.com/glitternetwork/pinme
+- **AppKey**：https://pinme.eth.limo/（可在控制面板获取）

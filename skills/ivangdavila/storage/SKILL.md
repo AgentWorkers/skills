@@ -1,69 +1,74 @@
 ---
 name: Storage
-description: Choose and architect storage systems for applications with the right tradeoffs.
+description: 为应用程序选择并设计存储系统时，需要权衡各种因素（即进行适当的取舍）。
 metadata: {"clawdbot":{"emoji":"💾","os":["linux","darwin","win32"]}}
 ---
 
-## Object vs Block vs File
+## 对象存储（Object Storage）与块存储（Block Storage）与文件存储（File Storage）的比较
 
-- Object storage (S3, R2, GCS) for immutable blobs: images, videos, backups, logs — cheap, scales infinitely, but no partial updates
-- Block storage (EBS, Persistent Disks) for databases and apps needing filesystem semantics — faster, but tied to single instance
-- Network file systems (NFS, EFS) when multiple instances need shared filesystem access — convenient but latency and cost add up
-- Default to object storage for user uploads — block storage for database files only
+- **对象存储（Object Storage）**：适用于存储不可更改的数据（如图片、视频、备份文件、日志等）。其优势在于成本低廉且可无限扩展，但无法进行部分更新。
+  - 代表产品：S3、R2、GCS。
+- **块存储（Block Storage）**：适用于需要文件系统语义的数据库和应用程序。速度较快，但数据存储在单个实例上。
+  - 代表产品：EBS（Elastic Block Store）、持久性磁盘（Persistent Disks）。
+- **网络文件系统（Network File Systems）**：当多个实例需要共享文件系统时使用。虽然使用方便，但会增加延迟和成本。
+  - **推荐使用场景**：用户上传文件时使用对象存储；数据库文件则使用块存储。
 
-## When SQL vs NoSQL
+## SQL 与 NoSQL 的选择
 
-- SQL when you need joins, transactions, or complex queries — fighting against NoSQL for relational data wastes months
-- Document stores (MongoDB, Firestore) for nested/variable schemas where you always fetch the whole document
-- Key-value (Redis, DynamoDB) for simple lookups by ID at massive scale — not for complex queries
-- Time-series databases (InfluxDB, TimescaleDB) for metrics with timestamp-based queries — regular SQL struggles with retention policies
-- Start with PostgreSQL unless you have a specific reason not to — it handles JSON, full-text search, and scales further than most assume
+- **SQL**：适用于需要连接操作（JOIN）、事务处理或复杂查询的场景。对于关系型数据，过度依赖 SQL 会导致开发效率低下。
+  - 代表产品：MySQL、PostgreSQL。
+- **NoSQL**：适用于数据结构复杂（嵌套结构或动态结构）的应用场景，通常需要一次性获取整个数据。
+  - 代表产品：MongoDB、Firestore。
+- **键值存储（Key-Value Storage）**：适用于基于 ID 的简单查询，适用于大规模数据存储，但不适合复杂查询。
+  - 代表产品：Redis、DynamoDB。
+- **时间序列数据库（Time-Series Databases）**：适用于处理带有时间戳的数据。常规 SQL 数据库在处理时间序列数据时效率较低。
+  - **推荐使用场景**：如果不存在特殊原因，优先选择 PostgreSQL，因为它支持 JSON 数据格式、全文搜索，并且扩展性优于大多数其他数据库。
 
-## Local vs Cloud Storage
+## 本地存储与云存储的比较
 
-- Local disk for ephemeral data: temp files, build artifacts, caches — assume it disappears on restart
-- Cloud storage for anything that must survive instance termination — never store user data only on local disk
-- Local SSD for databases in production — network-attached storage adds latency to every query
-- Hybrid: local cache in front of cloud storage for frequently accessed files
+- **本地存储**：适用于临时数据（如临时文件、构建生成的文件、缓存等），这些数据在系统重启后通常会丢失。
+  - **云存储**：适用于需要持久化存储的数据，尤其是那些在实例终止后仍需保留的数据。切勿将用户数据仅存储在本地磁盘上。
+- **生产环境中的数据库**：建议使用本地 SSD，因为网络连接的存储方式会增加查询延迟。
+- **混合存储方案**：对于频繁访问的文件，可以在本地缓存后再上传到云存储。
 
-## CDN Patterns
+## CDN（内容分发网络）的使用策略
 
-- Put CDN in front of static assets always — origin requests are slower and more expensive
-- Set long cache TTLs with versioned URLs (`style.abc123.css`) — cache invalidation is slow and unreliable
-- CDN for dynamic content only if latency matters more than freshness — adds complexity for marginal gains
-- Edge caching for API responses works but cache keys get tricky — start simple, add only when needed
+- **始终在静态资源前使用 CDN**：直接从源服务器请求静态资源会降低性能并增加成本。
+- **为静态资源设置较长的缓存过期时间（使用带版本号的 URL）**：这种方式缓存失效速度较慢且不可靠。
+- **仅在延迟比数据新鲜度更重要的情况下使用 CDN**：虽然能提高性能，但会增加系统复杂性。
+- **边缘缓存**：对于 API 响应可以使用边缘缓存，但缓存键的设置较为复杂，建议从简单方案开始，根据实际需求逐步扩展。
 
-## Upload Handling
+## 上传文件的处理方式
 
-- Never accept uploads directly to app server disk in production — use presigned URLs to cloud storage
-- Set file size limits at load balancer level, not just application — prevents memory exhaustion attacks
-- Generate unique keys for uploads (UUIDs) — user-provided filenames cause collisions and path traversal risks
-- Validate file types by content (magic bytes), not extension — extensions are trivially spoofed
+- **生产环境中**：切勿直接将文件上传到应用服务器的磁盘，应使用预签名的 URL 将文件上传到云存储。
+- **在负载均衡器层面设置文件大小限制**，而不仅仅是应用程序层面，以防止内存耗尽攻击。
+- **为上传的文件生成唯一键（如 UUID）**：用户提供的文件名可能导致命名冲突和路径遍历问题。
+- **通过文件内容（而非文件扩展名）来验证文件类型**：因为文件扩展名容易被伪造。
 
-## Data Locality
+## 数据的本地化存储策略
 
-- Keep compute and storage in same region — cross-region data transfer adds latency and cost
-- Replicate data to regions where users are, not where developers are
-- Multi-region storage adds complexity — single region with backups elsewhere usually sufficient
-- Database read replicas in user regions for read-heavy workloads
+- **将计算资源和存储资源部署在同一地区**：跨地区传输数据会增加延迟和成本。
+- **将数据复制到用户所在的地区**，而非开发人员所在的地区。
+- **多地区存储**：虽然会增加复杂性，但通常情况下，单个地区加异地备份就足够了。
+- **对于读密集型负载**：可以在用户所在地区设置数据库的读复制副本。
 
-## Retention and Lifecycle
+## 数据的保留策略与生命周期管理
 
-- Define retention policy before storing data — "keep everything" becomes expensive and legally risky
-- Automate deletion of temporary data — manual cleanup never happens consistently
-- Tiered storage for aging data: hot → warm → cold → archive — but check retrieval costs before archiving
-- Separate storage for logs vs business data — different retention, different compliance requirements
+- **在存储数据之前定义保留策略**：默认的“保留所有数据”策略不仅成本高昂，还存在法律风险。
+- **自动删除临时数据**：手动清理数据往往无法保证一致性。
+- **采用分层存储策略**：将数据分为热数据、温数据、冷数据和归档数据。但在归档前请先评估数据检索的成本。
+- **区分日志数据和业务数据**：两者有不同的保留要求和合规性要求。
 
-## Cost Traps
+## 避免常见的成本陷阱
 
-- Egress fees dominate cloud storage costs — calculate before choosing provider
-- Many small files cost more than few large files — batch small writes when possible
-- Minimum storage duration on cold tiers — early deletion still charges full period
-- API request costs matter at scale — millions of LIST operations add up
+- **云存储费用中，出站数据传输费用占比很高**：在选择云服务提供商前请务必计算相关费用。
+- **许多小文件的总成本可能高于少数大文件**：尽可能批量处理小文件写入操作。
+- **冷存储层应设置最短的存储期限**：即使提前删除数据，仍需支付完整存储期间的费用。
+- **大规模使用 API 时，请求成本不容忽视**：大量的 LIST 操作会显著增加成本。
 
-## Backup Strategy
+## 备份策略
 
-- 3-2-1 rule: 3 copies, 2 different media types, 1 offsite — cloud counts as one location
-- Test restores regularly — untested backups are not backups
-- Point-in-time recovery for databases — daily snapshots lose a day of data
-- Version important files — deletion or corruption often discovered late
+- **遵循“3-2-1”原则**：创建 3 份备份副本，使用 2 种不同的存储介质，并将其中 1 份存储在异地。
+- **定期测试数据恢复能力**：未经测试的备份实际上不具备备份作用。
+- **数据库数据应进行时间点恢复**：每日生成快照可能导致数据丢失一天。
+- **对重要文件进行版本控制**：文件被删除或损坏后往往难以及时发现。

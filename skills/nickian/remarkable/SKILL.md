@@ -1,27 +1,27 @@
 ---
 name: remarkable
-description: Send files and web articles to a reMarkable e-ink tablet via the reMarkable Cloud. Upload PDFs, EPUBs, or convert web articles to readable ebooks and send them to the device. Also browse and manage files on the device. Use when the user mentions reMarkable, wants to send an article or document to their e-reader, or manage reMarkable cloud files.
+description: 通过 reMarkable Cloud 将文件和网页文章发送到 reMarkable 电子墨水平板电脑。您可以上传 PDF 或 EPUB 文件，或将网页文章转换为可阅读的电子书并发送到该设备上。同时，您还可以在设备上浏览和管理文件。当用户提到 reMarkable、希望将文章或文档发送到他们的电子阅读器，或需要管理 reMarkable 云端的文件时，可以使用此功能。
 ---
 
 # reMarkable Cloud
 
-Send documents and web articles to a reMarkable tablet via the cloud API. Uses `rmapi` for cloud access.
+通过云API将文档和网页文章发送到reMarkable平板电脑。使用`rmapi`进行云访问。
 
-## Setup
+## 设置
 
-Install rmapi (Go required):
+安装`rmapi`（需要Go语言环境）：
 ```bash
 cd /tmp && git clone --depth 1 https://github.com/ddvk/rmapi.git
 cd rmapi && go build -o /usr/local/bin/rmapi .
 ```
 
-First run will prompt for a one-time code from https://my.remarkable.com/device/browser?showOtp=true
+首次运行时，系统会提示您从https://my.remarkable.com/device/browser?showOtp=true获取一次性的验证码。
 
-Python dependencies (for article conversion): `readability-lxml`, `ebooklib`, `requests`, `beautifulsoup4`, `lxml`.
+Python依赖库（用于文章转换）：`readability-lxml`、`ebooklib`、`requests`、`beautifulsoup4`、`lxml`。
 
-## Commands
+## 命令
 
-### Send a web article to the device
+### 将网页文章发送到设备
 
 ```bash
 {baseDir}/scripts/remarkable.sh send-article --url "https://example.com/article" --dir /Articles
@@ -29,9 +29,13 @@ Python dependencies (for article conversion): `readability-lxml`, `ebooklib`, `r
 {baseDir}/scripts/remarkable.sh send-article --url "https://example.com/article" --title "Custom Title" --dir /Articles
 ```
 
-Fetches article, extracts readable content, converts to EPUB (default) or PDF, uploads to reMarkable cloud. Device syncs automatically.
+- 从指定网址获取文章内容
+- 提取可阅读的内容
+- 将内容转换为EPUB或PDF格式
+- 上传到reMarkable云端
+- 设备会自动同步内容
 
-### List files
+### 列出文件
 
 ```bash
 {baseDir}/scripts/remarkable.sh ls /
@@ -39,30 +43,30 @@ Fetches article, extracts readable content, converts to EPUB (default) or PDF, u
 {baseDir}/scripts/remarkable.sh ls "/Book Notes"
 ```
 
-Output: `[f]` = file, `[d]` = directory.
+输出格式：`[f]` 表示文件，`[d]` 表示目录
 
-### Upload a file
+### 上传文件
 
 ```bash
 {baseDir}/scripts/remarkable.sh upload --file /path/to/document.pdf --dir /Books
 {baseDir}/scripts/remarkable.sh upload --file /path/to/book.epub --dir /
 ```
 
-### Create a folder
+### 创建文件夹
 
 ```bash
 {baseDir}/scripts/remarkable.sh mkdir --path /NewFolder
 ```
 
-### Search for files
+### 搜索文件
 
 ```bash
 {baseDir}/scripts/remarkable.sh find --name "article title"
 ```
 
-## Notes
+## 注意事项：
 
-- EPUB is recommended for articles — reflows nicely on e-ink
-- Device syncs automatically when connected to WiFi
-- Auth tokens are cached by rmapi at `~/.rmapi`
-- Some sites block scraping — if article fetch fails, try a different URL
+- 建议使用EPUB格式的文件，因为其在电子墨水屏上显示效果更好
+- 设备在连接到WiFi时会自动同步内容
+- `rmapi`会将认证令牌缓存到`~/.rmapi`文件夹中
+- 有些网站会阻止爬虫访问——如果文章获取失败，请尝试其他URL

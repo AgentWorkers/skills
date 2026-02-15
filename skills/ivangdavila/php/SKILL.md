@@ -1,75 +1,75 @@
 ---
 name: PHP
-description: Write solid PHP avoiding type juggling traps, array quirks, and common security pitfalls.
+description: 编写高质量的 PHP 代码时，要避免类型转换带来的陷阱、数组使用中的常见问题以及常见的安全漏洞。
 metadata: {"clawdbot":{"emoji":"🐘","requires":{"bins":["php"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Type Juggling Traps
-- `==` coerces types: `"0" == false` is true — always use `===` for strict comparison
-- `"10" == "10.0"` is true — string comparison converts to numbers if both look numeric
-- `0 == "any string"` was true before PHP 8 — still beware legacy code
-- `in_array($val, $arr)` uses loose comparison — pass `true` as third param for strict
-- `switch` uses loose comparison — use match expression in PHP 8+ for strict
+## 类型转换的陷阱  
+- `==` 会强制转换类型：`"0" == false` 的结果是 `true` — 进行严格比较时请始终使用 `===`  
+- `"10" == "10.0"` 的结果是 `true` — 如果两个值看起来都是数字，字符串比较会自动转换为数字进行比较  
+- 在 PHP 8 之前，`0 == "any string"` 的结果是 `true` — 使用旧代码时需注意这一点  
+- `in_array($val, $arr)` 使用的是宽松的比较规则 — 进行严格比较时请将第三个参数设置为 `true`  
+- `switch` 语句也使用宽松的比较规则 — 在 PHP 8 及更高版本中，建议使用 `match` 表达式进行严格比较  
 
-## Array Gotchas
-- `array_merge()` reindexes numeric keys — use `+` operator to preserve keys
-- `$arr[] = $val` appends, `$arr[0] = $val` replaces — different behaviors
-- Unset array element doesn't reindex — use `array_values()` after unset if needed
-- `empty([])` is true, `empty("0")` is true — use `count()` or `=== []` for clarity
-- `foreach` on reference: `foreach ($arr as &$val)` — unset `$val` after loop or last ref persists
+## 数组相关的注意事项  
+- `array_merge()` 会重新索引数组中的数字键 — 如果需要保留键的原有顺序，请使用 `+` 运算符  
+- `$arr[] = $val` 会向数组末尾添加元素；`$arr[0] = $val` 会替换数组中的第一个元素 — 这两种操作的行为不同  
+- 删除数组元素后键不会自动重新索引 — 如有需要，可以使用 `array_values()`  
+- `empty([])` 和 `empty("0")` 的结果都是 `true` — 为避免混淆，请使用 `count()` 或 `=== []` 来判断数组是否为空  
+- 在 `foreach` 循环中，如果使用引用传递数组元素（`foreach ($arr as &$val)`），循环结束后 `$val` 的引用可能仍然有效  
 
-## Null Handling
-- `isset()` returns false for null — use `array_key_exists()` to check if key exists
-- `??` null coalescing doesn't trigger on false or empty string — only null/undefined
-- `?->` nullsafe operator (PHP 8) — chain methods on potentially null objects
-- `$obj?->method()` returns null if obj is null — no error thrown
-- `is_null($x)` vs `$x === null` — identical, but `===` is faster
+## 空值处理  
+- `isset()` 对空值的返回结果是 `false` — 使用 `array_key_exists()` 来检查键是否存在  
+- `??` 是一个空值合并操作符，但它只对 `null` 或 `undefined` 值生效  
+- `?->` 是 PHP 8 中的空值安全操作符，允许在可能为 `null` 的对象上调用方法  
+- `$obj?->method()` 如果 `$obj` 为 `null`，该方法会返回 `null` — 但不会抛出错误  
+- `is_null($x)` 和 `$x === null` 的效果相同，但 `===` 的性能更快  
 
-## String Pitfalls
-- Double quotes interpolate: `"$var"` — single quotes literal: `'$var'`
-- Heredoc interpolates like double quotes — nowdoc (with single quote) doesn't
-- `strpos()` returns 0 for match at start — use `=== false` not `!strpos()`
-- String offset access `$str[0]` works — but `$str[-1]` only works PHP 7.1+
-- Multibyte: `strlen()` counts bytes — use `mb_strlen()` for UTF-8 char count
+## 字符串相关的陷阱  
+- 双引号用于字符串插值：`"$var"`；单引号用于字面量：`'$var'`  
+- Heredoc（Heredoc Document Style）的字符串插值方式与双引号相同；`nowdoc`（NowDoc Document Style）则不同  
+- `strpos()` 在字符串开头找到匹配项时会返回 `0` — 应使用 `=== false` 而不是 `!strpos()`  
+- 字符串索引 `$str[0]` 是有效的；`$str[-1]` 仅在 PHP 7.1 及更高版本中有效  
+- 多字节字符串：`strlen()` 计算的是字节的长度；对于 UTF-8 字符串，请使用 `mb_strlen()`  
 
-## Variable Scope
-- Functions don't see outer variables — pass explicitly or use `global` keyword
-- Closures need `use ($var)` to capture outer variables — by value unless `use (&$var)`
-- `static` in function persists value across calls — useful for caching
-- `$this` not available in static methods — use `self::` or `static::`
-- Superglobals (`$_GET`, `$_POST`) available everywhere — but don't trust them
+## 变量作用域  
+- 函数内部无法访问外部变量 — 需要显式传递变量或使用 `global` 关键字  
+- 闭包需要使用 `use ($var)` 来捕获外部变量（默认是按值传递的）；如果需要按引用传递，请使用 `use (&$var)`  
+- `static` 关键字定义的变量在函数多次调用时仍保持其值 — 非常适合用于缓存  
+- 在静态方法中无法使用 `$this` — 应使用 `self::` 或 `static::`  
+- 超全局变量（`$_GET`、`$_POST`）在脚本的任何地方都可以访问 — 但请谨慎使用它们  
 
-## OOP Quirks
-- Objects pass by reference-like handle — clone explicitly with `clone $obj`
-- `__clone()` called after shallow clone — implement for deep clone of nested objects
-- `private` not accessible in child — use `protected` for inheritance
-- `static::` late binding vs `self::` early binding — `static` respects overrides
-- Constructor not called on unserialization — implement `__wakeup()` for init
+## 面向对象编程的注意事项  
+- 对象在函数间传递时通常是通过引用传递的 — 如果需要深度克隆对象，请使用 `clone $obj`  
+- `__clone()` 方法在浅克隆后被调用 — 如果需要深度克隆嵌套对象，请实现自己的 `__clone()` 方法  
+- `private` 成员在子类中不可访问 — 如果需要继承，请使用 `protected` 成员  
+- `static::` 方法的绑定是延迟的；`self::` 方法的绑定是早期的 — `static::` 方法会尊重父类的覆盖  
+- 在反序列化过程中构造函数不会被调用 — 如果需要初始化对象，请实现 `__wakeup()` 方法  
 
-## Error Handling
-- `@` suppresses errors — avoid, makes debugging impossible
-- `try/catch` only catches exceptions — errors need `set_error_handler`
-- PHP 7+ throws `Error` for fatal — catch `Throwable` for both Error and Exception
-- `finally` always runs — even if exception thrown or return in try
-- `set_exception_handler()` for uncaught — last resort logging
+## 错误处理  
+- `@` 会抑制错误信息 — 应避免使用该操作，因为它会妨碍调试  
+- `try/catch` 仅捕获异常 — 对于其他错误，需要使用 `set_error_handler()`  
+- PHP 7 及更高版本中，致命错误会抛出 `Error` 异常；`catch` 语句可以捕获所有类型的异常（`Throwable`）  
+- `finally` 语句总是会被执行 — 即使在 `try` 块中抛出异常或返回，`finally` 语句也会执行  
+- `set_exception_handler()` 用于处理未捕获的异常 — 这是最后的错误处理手段  
 
-## Security Essentials
-- Never concatenate SQL — use prepared statements with PDO or mysqli
-- `htmlspecialchars()` output in HTML — prevents XSS, use `ENT_QUOTES`
-- Validate `$_GET`/`$_POST` before use — `filter_input()` or explicit validation
-- Session fixation: regenerate ID after login — `session_regenerate_id(true)`
-- CSRF: verify token on state-changing requests — store in session, check on submit
+## 安全性注意事项  
+- 绝不要直接拼接 SQL 语句 — 应使用 PDO 或 mysqli 的预编译语句  
+- 在输出 HTML 之前，使用 `htmlspecialchars()` 对字符串进行转义处理，以防止 XSS 攻击；同时可以使用 `ENT_QUOTES` 设置转义字符  
+- 在使用 `$GET`/`$_POST` 数据之前，务必对其进行验证 — 可以使用 `filter_input()` 或其他验证方法  
+- 登录后应重新生成会话 ID：`session_regenerate_id(true)`  
+- 防止跨站请求伪造（CSRF）：在修改会话状态的请求中验证令牌，并将其存储在会话中  
 
-## Date/Time
-- Always set timezone: `date_default_timezone_set()` — or php.ini `date.timezone`
-- `DateTime` is mutable — use `DateTimeImmutable` to avoid side effects
-- `strtotime()` relative to now or second param — "next monday" depends on current day
-- Comparing DateTime objects works with `<` `>` `==` — but `===` checks identity
-- Store UTC in database — convert to local timezone on display
+## 日期/时间相关的注意事项  
+- 始终设置时区：使用 `date_default_timezone_set()` 或 `php.ini` 中的 `date.timezone`  
+- `DateTime` 对象是可变的 — 使用 `DateTimeImmutable` 可以避免意外行为  
+- `strtotime()` 方法的第二个参数可以指定时间基准（例如 “下一个周一”）；该方法会根据当前日期计算结果  
+- 比较 `DateTime` 对象时可以使用 `<`、`>`、`==`；`===` 则用于检查两个对象是否完全相同  
+- 将 UTC 时间存储在数据库中；在显示时将其转换为本地时区  
 
-## Performance Traps
-- `count()` in loop condition recalculates — cache: `$len = count($arr)`
-- `array_push($arr, $val)` slower than `$arr[] = $val` — use `[]` for single
-- Long-running scripts: unset large variables — `gc_collect_cycles()` if needed
-- Include files: `require_once` has lookup overhead — use autoloading
-- String concatenation in loop — use array and `implode()` for many pieces
+## 性能优化技巧  
+- 在循环条件中使用 `count()` 时，结果会被重新计算 — 可以使用缓存：`$len = count($arr)`  
+- `array_push($arr, $val)` 比 `$arr[] = $val` 慢一些；对于单个元素的添加，建议使用 `$arr[] = $val`  
+- 对于运行时间较长的脚本，如果需要释放大量内存，可以使用 `gc_collect_cycle()`  
+- 包含文件时，`require_once` 会有查找开销 — 可以使用自动加载机制  
+- 在循环中进行字符串拼接时，如果字符串数量较多，建议使用数组和 `implode()` 方法来提高性能

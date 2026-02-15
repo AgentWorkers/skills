@@ -1,29 +1,29 @@
 ---
 name: cifer-sdk
-description: Implement quantum-resistant encryption using the CIFER SDK (cifer-sdk npm package). Covers SDK initialization, wallet setup, secret creation, text encryption/decryption, and file encryption/decryption on any supported chain (Ethereum, Sepolia, Ternoa). Use when the user mentions CIFER, cifer-sdk, quantum-resistant encryption, ML-KEM, secret creation, or encrypted payloads/files with blockchain.
+description: 使用 `cifer-sdk`（一个基于 Node.js 的 npm 包）实现抗量子攻击的加密功能。内容包括 SDK 的初始化、钱包的设置、密钥的生成、文本的加密/解密，以及在所有支持的区块链网络（Ethereum、Sepolia、Ternoa）上进行文件加密/解密。当用户提到 `CIFER`、`cifer-sdk`、抗量子攻击加密、ML-KEM、密钥生成或与区块链相关的加密数据/文件时，请参考本文档。
 ---
 
-# CIFER SDK — Complete Integration Guide
+# CIFER SDK — 完整集成指南
 
-## Overview
+## 概述
 
-CIFER SDK provides quantum-resistant encryption (ML-KEM-768 + AES-256-GCM) for blockchain apps. Secrets are on-chain key pairs: public key on IPFS, private key sharded across enclaves.
+CIFER SDK 为区块链应用提供了抗量子攻击的加密方案（基于 ML-KEM-768 和 AES-256-GCM 算法）。加密所需的密钥对存储在链上：公钥存储在 IPFS 上，私钥则分散存储在多个安全节点（enclaves）中。
 
-**Package**: `cifer-sdk` (npm)
-**Chains**: Ethereum Mainnet (1), Sepolia (11155111), Ternoa (752025)
-**Blackbox URL**: `https://cifer-blackbox.ternoa.dev:3010`
+**软件包**: `cifer-sdk`（npm）
+**支持的区块链网络**: Ethereum 主网（1）、Sepolia（11155111）、Ternoa（752025）
+**Blackbox 服务地址**: `https://cifer-blackbox.ternoa.dev:3010`
 
-For the full API reference, see [reference.md](reference.md).
+完整的 API 参考请参见 [reference.md](reference.md)。
 
 ---
 
-## Quick Setup
+## 快速设置
 
 ```bash
 npm install cifer-sdk ethers dotenv
 ```
 
-`package.json` must have `"type": "module"` for ESM imports.
+在 `package.json` 文件中，必须将 `"type"` 设置为 `"module"`，以便支持 ESM（ESM 是一种模块导入机制）。
 
 ```javascript
 import 'dotenv/config';
@@ -33,7 +33,7 @@ import { Wallet, JsonRpcProvider } from 'ethers';
 
 ---
 
-## Step 1: Initialize SDK
+## 第 1 步：初始化 SDK
 
 ```javascript
 const sdk = await createCiferSdk({
@@ -45,9 +45,11 @@ const controllerAddress = sdk.getControllerAddress(chainId);
 const rpcUrl = sdk.getRpcUrl(chainId);
 ```
 
-`sdk.getSupportedChainIds()` returns all available chains.
+调用 `sdk.getSupportedChainIds()` 可以获取所有支持的区块链网络列表。
 
-## Step 2: Create Wallet Signer (Server-Side)
+---
+
+## 第 2 步：创建钱包签名器（服务器端）
 
 ```javascript
 const provider = new JsonRpcProvider(rpcUrl);
@@ -60,15 +62,17 @@ const signer = {
 };
 ```
 
-For browser wallets, use the built-in adapter instead:
+对于浏览器钱包，建议使用内置的适配器进行操作：
 ```javascript
 import { Eip1193SignerAdapter } from 'cifer-sdk';
 const signer = new Eip1193SignerAdapter(window.ethereum);
 ```
 
-## Step 3: Create a Secret
+---
 
-A secret costs a fee in native token. Check balance first.
+## 第 3 步：创建密钥
+
+创建密钥需要支付一定的费用（以原生代币形式）。请先检查账户余额。
 
 ```javascript
 const fee = await keyManagement.getSecretCreationFee({
@@ -86,9 +90,11 @@ const receipt = await tx.wait();
 const secretId = keyManagement.extractSecretIdFromReceipt(receipt.logs);
 ```
 
-## Step 4: Wait for Secret Sync
+---
 
-After creation, the enclave cluster generates keys (~30-120s on mainnet).
+## 第 4 步：等待密钥同步
+
+创建密钥后，节点集群会生成相应的密钥对（在 Ethereum 主网上通常需要 30–120 秒）。
 
 ```javascript
 let ready = false;
@@ -101,7 +107,7 @@ while (!ready) {
 }
 ```
 
-Or read the full state:
+或者，您也可以直接读取当前的密钥状态：
 ```javascript
 const state = await keyManagement.getSecret(
   { chainId, controllerAddress, readClient: sdk.readClient },
@@ -110,7 +116,9 @@ const state = await keyManagement.getSecret(
 // state.owner, state.delegate, state.isSyncing, state.publicKeyCid
 ```
 
-## Step 5: Encrypt Text
+---
+
+## 第 5 步：加密文本
 
 ```javascript
 const encrypted = await blackbox.payload.encryptPayload({
@@ -124,9 +132,11 @@ const encrypted = await blackbox.payload.encryptPayload({
 // Returns: { cifer, encryptedMessage }
 ```
 
-## Step 6: Decrypt Text
+---
 
-Caller must be secret owner or delegate.
+## 第 6 步：解密文本
+
+执行解密操作的用户必须是密钥的所有者或被授权的代理。
 
 ```javascript
 const decrypted = await blackbox.payload.decryptPayload({
@@ -141,9 +151,11 @@ const decrypted = await blackbox.payload.decryptPayload({
 // Returns: { decryptedMessage }
 ```
 
-## Step 7: Encrypt File
+---
 
-File operations are async jobs. Works with `Blob` in Node.js 18+.
+## 第 7 步：加密文件
+
+文件加密操作是异步进行的，适用于 Node.js 18 及更高版本的程序，并且支持使用 `Blob` 对象。
 
 ```javascript
 import { readFile, writeFile } from 'fs/promises';
@@ -169,7 +181,9 @@ const encBlob = await blackbox.jobs.download(job.jobId, { blackboxUrl: sdk.black
 await writeFile('myfile.pdf.cifer', Buffer.from(await encBlob.arrayBuffer()));
 ```
 
-## Step 8: Decrypt File
+---
+
+## 第 8 步：解密文件
 
 ```javascript
 const encBuffer = await readFile('myfile.pdf.cifer');
@@ -194,7 +208,7 @@ await writeFile('myfile-decrypted.pdf', Buffer.from(await decBlob.arrayBuffer())
 
 ---
 
-## List Existing Secrets
+## 列出现有密钥
 
 ```javascript
 const secrets = await keyManagement.getSecretsByWallet(
@@ -205,9 +219,11 @@ const secrets = await keyManagement.getSecretsByWallet(
 // secrets.delegated: bigint[] — secrets delegated to you
 ```
 
-## Delegation
+---
 
-Set a delegate (can decrypt but not encrypt or modify):
+## 委派机制
+
+您可以设置一个代理来执行解密操作（但代理无权加密或修改密钥）：
 ```javascript
 const txIntent = keyManagement.buildSetDelegateTx({
   chainId, controllerAddress, secretId, newDelegate: '0xDelegateAddress',
@@ -215,7 +231,7 @@ const txIntent = keyManagement.buildSetDelegateTx({
 await wallet.sendTransaction({ to: txIntent.to, data: txIntent.data });
 ```
 
-Remove delegation:
+取消代理授权：
 ```javascript
 const txIntent = keyManagement.buildRemoveDelegationTx({
   chainId, controllerAddress, secretId,
@@ -224,17 +240,17 @@ const txIntent = keyManagement.buildRemoveDelegationTx({
 
 ---
 
-## Important Notes
+## 重要说明
 
-- **Minimum SDK version**: Use `cifer-sdk@0.3.1` or later. Earlier versions had incorrect function selectors.
-- **Payload size limit**: Text encryption max ~16KB (`encryptPayload`). Use file encryption for larger data.
-- **Block freshness**: The SDK auto-retries up to 3 times if the block number becomes stale.
-- **Secret sync time**: ~30-60s on Ternoa, ~60-120s on Ethereum mainnet.
-- **Auth for file download**: Encrypt job downloads need no auth. Decrypt job downloads require signer + readClient.
-- **Fee**: Secret creation requires a fee in native token (e.g. ~0.0005 ETH on mainnet). Query `getSecretCreationFee()` first.
-- **Private keys**: Never expose private keys in frontend code. Use server-side signer for Node.js.
+- **最低 SDK 版本要求**: 请使用 `cifer-sdk@0.3.1` 或更高版本。早期版本可能存在函数调用错误。
+- **数据传输限制**: 文本加密的最大长度约为 16KB（使用 `encryptPayload` 函数）。对于较大规模的数据，请使用文件加密方式。
+- **区块更新机制**: 如果区块编号过期，SDK 会自动重试最多 3 次。
+- **密钥同步时间**: 在 Ternoa 上约为 30–60 秒，在 Ethereum 主网上约为 60–120 秒。
+- **文件下载权限**: 加密文件的下载操作无需身份验证；解密文件的下载操作则需要具备签名权限（`signer`）以及 `readClient` 功能。
+- **费用**: 创建密钥需要支付费用（以原生代币计，例如在 Ethereum 主网上约为 0.0005 ETH）。请先调用 `getSecretCreationFee()` 函数查询费用详情。
+- **私钥安全**: 绝不要在前端代码中暴露私钥。对于 Node.js 环境，应使用服务器端的签名器来处理密钥操作。
 
-## Error Handling
+## 错误处理
 
 ```javascript
 import { isCiferError, isBlockStaleError } from 'cifer-sdk';
@@ -252,7 +268,9 @@ try {
 }
 ```
 
-## Complete Minimal Example
+---
+
+## 完整示例代码
 
 ```javascript
 import 'dotenv/config';

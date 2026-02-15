@@ -1,19 +1,19 @@
 ---
 name: qmd
-description: Search and retrieve markdown documents from local knowledge bases using qmd. Supports BM25 keyword search, vector semantic search, and hybrid search with LLM re-ranking. Use for querying indexed notes, documentation, meeting transcripts, and any markdown-based knowledge. Requires qmd CLI installed (bun install -g https://github.com/tobi/qmd).
+description: 使用 qmd 从本地知识库中搜索和检索 Markdown 文档。支持 BM25 关键词搜索、向量语义搜索以及结合大型语言模型（LLM）进行重新排序的混合搜索功能。适用于查询已索引的笔记、文档、会议记录以及任何基于 Markdown 的知识内容。需要先安装 qmd 命令行工具（通过 `bun install -g https://github.com/tobi/qmd` 进行安装）。
 ---
 
-# QMD - Local Markdown Search
+# QMD - 本地 Markdown 搜索工具
 
-Search and retrieve documents from locally indexed markdown knowledge bases.
+该工具用于从本地索引的 Markdown 知识库中搜索和检索文档。
 
-## Installation
+## 安装
 
 ```bash
 bun install -g https://github.com/tobi/qmd
 ```
 
-## Setup
+## 设置
 
 ```bash
 # Add a collection
@@ -23,13 +23,13 @@ qmd collection add ~/notes --name notes --mask "**/*.md"
 qmd embed
 ```
 
-## Usage Rules
+## 使用规则
 
-**Always use `--json` flag** for structured output when invoking qmd commands.
+在调用 qmd 命令时，**务必使用 `--json` 标志** 以获得结构化的输出结果。
 
-## Search Commands
+## 搜索命令
 
-### search (BM25 keyword search - fast)
+### search （基于 BM25 算法的快速关键词搜索）
 
 ```bash
 qmd search "authentication flow" --json
@@ -37,33 +37,33 @@ qmd search "error handling" --json -n 10
 qmd search "config" --json -c notes
 ```
 
-### vsearch (vector semantic search)
+### vsearch （基于向量语义的搜索）
 
 ```bash
 qmd vsearch "how does login work" --json
 qmd vsearch "authentication best practices" --json -n 20
 ```
 
-### query (hybrid with LLM re-ranking - best quality)
+### query （结合大型语言模型（LLM）进行重新排序的混合搜索方式——最高质量的结果）
 
 ```bash
 qmd query "implementing user auth" --json
 qmd query "deployment process" --json --min-score 0.5
 ```
 
-### Search Options
+### 搜索选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-n NUM` | Number of results (default: 5, or 20 with --json) |
-| `-c, --collection NAME` | Restrict to specific collection |
-| `--min-score NUM` | Minimum score threshold |
-| `--full` | Return complete document content in results |
-| `--all` | Return all matches |
+| `-n 数量` | 返回的结果数量（默认值为 5，使用 `--json` 时为 20） |
+| `-c, --collection 名称` | 限制搜索范围至特定集合 |
+| `--min-score 分数` | 最小得分阈值 |
+| `--full` | 在结果中返回完整的文档内容 |
+| `--all` | 返回所有匹配项 |
 
-## Retrieval Commands
+## 检索命令
 
-### get (single document)
+### get （获取单篇文档）
 
 ```bash
 qmd get docs/guide.md --json
@@ -71,7 +71,7 @@ qmd get "#a1b2c3" --json
 qmd get notes/meeting.md:50 -l 100 --json
 ```
 
-### multi-get (multiple documents)
+### multi-get （获取多篇文档）
 
 ```bash
 qmd multi-get "docs/*.md" --json
@@ -79,7 +79,7 @@ qmd multi-get "api.md, guide.md, #abc123" --json
 qmd multi-get "notes/**/*.md" --json --max-bytes 20480
 ```
 
-## Maintenance Commands
+## 维护命令
 
 ```bash
 qmd update              # Re-index changed files
@@ -87,22 +87,22 @@ qmd status              # Check index health
 qmd collection list     # List all collections
 ```
 
-## Search Mode Selection
+## 搜索模式选择
 
-| Mode | Speed | Quality | Best For |
+| 模式 | 速度 | 质量 | 适用场景 |
 |------|-------|---------|----------|
-| search | Fast | Good | Exact keywords, known terms |
-| vsearch | Medium | Better | Conceptual queries, synonyms |
-| query | Slow | Best | Complex questions, uncertain terms |
+| search | 快速 | 良好 | 精确的关键词、已知术语 |
+| vsearch | 中等 | 更好 | 概念性查询、同义词搜索 |
+| query | 慢速 | 最佳 | 复杂问题、不确定的术语 |
 
-**Performance note:** `vsearch` and `query` have ~1 minute cold start latency for vector initialization. Prefer `search` for interactive use.
+**性能说明：** `vsearch` 和 `query` 在初始化向量数据时会有约 1 分钟的延迟。对于交互式使用，建议选择 `search` 模式。
 
-## MCP Server
+## MCP 服务器
 
-qmd can run as an MCP server for direct integration:
+qmd 可以作为 MCP 服务器运行，以实现直接集成：
 
 ```bash
 qmd mcp
 ```
 
-Exposes tools: `qmd_search`, `qmd_vsearch`, `qmd_query`, `qmd_get`, `qmd_multi_get`, `qmd_status`
+提供的工具包括：`qmd_search`、`qmd_vsearch`、`qmd_query`、`qmd_get`、`qmd_multi_get`、`qmd_status`

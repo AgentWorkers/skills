@@ -1,10 +1,10 @@
 # Urban Sports Scanner
 
-Scannt deine Urban Sports Club Venues, zeigt Kurse mit direkten Booking-Links und kann Kurse buchen und stornieren.
+该工具可以扫描您的Urban Sports Club场馆信息，显示带有直接预订链接的课程，并支持课程的预订与取消功能。
 
-## Setup
+## 设置
 
-### 1. Python-Umgebung
+### 1. Python环境
 
 ```bash
 cd /pfad/zu/urban-sports
@@ -14,9 +14,9 @@ venv/bin/playwright install chromium
 venv/bin/playwright install-deps chromium
 ```
 
-### 2. Zugangsdaten
+### 2. 登录凭据
 
-Trage deine USC-Logindaten ein:
+请输入您的Urban Sports Club登录凭据：
 
 ```json
 {
@@ -25,19 +25,19 @@ Trage deine USC-Logindaten ein:
 }
 ```
 
-Die Datei `credentials.json` ist in `.gitignore` und wird nicht committet.
-Zugangsdaten werden nur fuer `--book`, `--cancel` und `--bookings` benoetigt.
+`credentials.json`文件被包含在`.gitignore`中，因此不会被提交到代码仓库。
+这些凭据仅用于`--book`、`--cancel`和`--bookings`命令。
 
-### 3. Venues konfigurieren
+### 3. 配置场馆信息
 
-Trage deine Venues in `config.py` ein. Die Venue-ID findest du in der URL auf urbansportsclub.com:
+请将您的场馆信息填写到`config.py`文件中。场馆ID可以在urbansportsclub.com的网址中找到：
 
 ```
 https://urbansportsclub.com/de/venues/20818
                                        ^^^^^
 ```
 
-Beispiel:
+示例：
 
 ```python
 VENUES = {
@@ -56,23 +56,27 @@ VENUES = {
 }
 ```
 
-- `name`: Anzeigename
-- `url`: Venue-Seite auf urbansportsclub.com
-- `type`: Frei waehlbar, wird im Output angezeigt
-- `keywords`: Helfen bei der Erkennung der Kursnamen im Seitentext
+- `name`：显示名称
+- `url`：场馆在urbansportsclub.com上的页面地址
+- `type`：可自由选择，会显示在输出结果中
+- `keywords`：有助于在页面文本中识别课程名称
 
-### URL-Parameter
+### URL参数
 
-Der Scanner haengt automatisch folgende Parameter an die Venue-URL an:
+该工具会自动在场馆URL中添加以下参数：
 
-- `plan_type`: Mitgliedschafts-Stufe. Bestimmt welche Kurse angezeigt werden (nur die, die mit der jeweiligen Stufe buchbar sind). Privat: 1=Essential, 2=Classic, 3=Premium, 6=Max. Firma: 1=S, 2=M, 3=L, 6=XL. Standardwert: `3`.
-- `business_type`: `b2c` (Privatmitglieder) oder `b2b` (Firmenmitglieder). Standardwert: `b2c`.
+- `plan_type`：会员等级。用于确定显示哪些课程（仅显示可预订的课程）：
+  - Private: 1=Essential, 2=Classic, 3=Premium, 6=Max
+  - Company: 1=S, 2=M, 3=L, 6=XL
+  默认值：`3`
+- `business_type`：`b2c`（个人会员）或`b2b`（企业会员）
+  默认值：`b2c`
 
-Diese Werte sind in `config.py` als `PLAN_TYPE` und `BUSINESS_TYPE` konfigurierbar.
+这些参数可以在`config.py`文件中的`PLAN_TYPE`和`BUSINESS_TYPE`字段进行配置。
 
-## Usage
+## 使用方法
 
-### Kurse scannen
+### 扫描课程
 
 ```bash
 # Alle Venues fuer heute
@@ -88,32 +92,32 @@ venv/bin/python scan.py --venue storm
 venv/bin/python scan.py --json
 ```
 
-Jeder Kurs wird mit direktem Booking-Link zurueckgegeben:
+每个课程都会附带一个直接的预订链接返回：
 ```
   07:30  STORM Cycling Berlin - Mitte    45 Min STORM Ride - Performance
          https://www.urbansportsclub.com/de/activities?class=98049323
 ```
 
-### Buchen
+### 预订课程
 
 ```bash
 venv/bin/python scan.py --book 98049323
 ```
 
-### Stornieren
+### 取消预订
 
 ```bash
 venv/bin/python scan.py --cancel 98049323
 ```
 
-### Anstehende Buchungen
+### 查看即将进行的预订
 
 ```bash
 venv/bin/python scan.py --bookings
 venv/bin/python scan.py --bookings --json
 ```
 
-## Dateien
+## 文件结构
 
 ```
 urban-sports/
@@ -126,15 +130,15 @@ urban-sports/
 └── venv/                     # Python virtualenv (nicht im Repo)
 ```
 
-## Fehlerbehebung
+## 错误处理
 
-### "Keine Venues konfiguriert"
-Trage mindestens eine Venue in `config.py` ein.
+### “未配置任何场馆”
+请在`config.py`中至少配置一个场馆。
 
-### "credentials.json nicht gefunden"
-Kopiere `credentials.example.json` nach `credentials.json` und trage deine Daten ein.
+### “未找到credentials.json”
+请将`credentials.example.json`复制到`credentials.json`文件中，并填写您的凭据信息。
 
-### Scanner findet keine Kurse
-- Prüfe ob das Datum korrekt ist (nicht in der Vergangenheit)
-- Manche Venues haben an bestimmten Tagen keine Kurse
-- Chromium-Dependencies: `venv/bin/playwright install-deps chromium`
+### 扫描器未找到课程
+- 请检查日期是否正确（不要选择过去的日期）
+- 某些场馆在特定日期可能没有课程
+- 需要安装Chromium相关依赖库：`venv/bin/playwright install-deps chromium`

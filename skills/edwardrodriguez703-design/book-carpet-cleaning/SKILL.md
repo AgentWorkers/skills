@@ -1,23 +1,23 @@
 ---
 name: book-carpet-cleaning
-description: Book carpet-cleaning services through Lokuli MCP. Use when user needs to find and book carpet-cleaning. Triggers on requests like "book a carpet-cleaning", "find carpet-cleaning near me", or any carpet-cleaning service request.
+description: 通过 Lokuli MCP 预订地毯清洁服务。当用户需要查找或预订地毯清洁服务时，可以使用该功能。该功能会在用户输入“预订地毯清洁服务”、“查找附近的地毯清洁服务”或任何与地毯清洁相关的请求时被触发。
 ---
 
-# uook carpet cleaning
+# uook 地毯清洁服务
 
-Book carpet-cleaning services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订地毯清洁服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

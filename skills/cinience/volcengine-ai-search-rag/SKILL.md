@@ -1,25 +1,25 @@
 ---
 name: volcengine-ai-search-rag
-description: Retrieval and RAG workflow on Volcengine AI stack. Use when users need embedding search, document indexing, top-k retrieval, grounding prompts, or search relevance tuning.
+description: 在 Volcengine AI 堆栈中，提供了检索（Retrieval）和 RAG（Retrieval with Answer Generation）工作流程。这些功能适用于用户需要实现嵌入式搜索、文档索引、Top-k 检索、生成相关答案（Grounding Prompts）或调整搜索相关性（Search Relevance Tuning）的场景。
 ---
 
 # volcengine-ai-search-rag
 
-Implement retrieval-first answering with explicit indexing, retrieval, and grounding stages.
+实现基于显式索引的检索优先型问答系统，包括检索和知识链接（grounding）两个阶段。
 
-## Execution Checklist
+## 执行检查清单
 
-1. Confirm corpus source and chunking strategy.
-2. Generate embeddings and build/update index.
-3. Retrieve top-k context with filters.
-4. Build grounded answer with citations to retrieved chunks.
+1. 确认语料库的来源及分块策略。
+2. 生成嵌入向量并构建/更新索引。
+3. 使用过滤器检索前 k 个相关上下文片段。
+4. 根据检索到的上下文片段生成带有引用信息的答案。
 
-## Quality Rules
+## 质量标准
 
-- Separate retrieval prompt from generation prompt.
-- Keep chunk metadata (source, timestamp, id).
-- Return confidence and fallback path if no hits.
+- 将检索提示与生成提示分开。
+- 保留每个上下文片段的元数据（来源、时间戳、ID）。
+- 如果没有找到匹配结果，返回置信度信息及备用路径。
 
-## References
+## 参考资料
 
 - `references/sources.md`

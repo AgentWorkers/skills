@@ -1,43 +1,43 @@
 ---
 name: technical-seo-checker
-description: Performs technical SEO audits covering site speed, crawlability, indexability, mobile-friendliness, security, and structured data. Identifies technical issues preventing optimal search performance.
+description: 执行技术性的SEO审计，涵盖网站速度、可爬取性、可索引性、移动设备友好性、安全性以及结构化数据等方面。识别阻碍网站获得最佳搜索效果的技术问题。
 geo-relevance: "low"
 ---
 
-# Technical SEO Checker
+# 技术性SEO检查工具
 
-This skill performs comprehensive technical SEO audits to identify issues that may prevent search engines from properly crawling, indexing, and ranking your site.
+该工具可执行全面的技术性SEO审计，以识别可能阻碍搜索引擎正确爬取、索引和排名您网站的问题。
 
-## When to Use This Skill
+## 适用场景
 
-- Launching a new website
-- Diagnosing ranking drops
-- Pre-migration SEO audits
-- Regular technical health checks
-- Identifying crawl and index issues
-- Improving site performance
-- Fixing Core Web Vitals issues
+- 新网站上线时
+- 诊断排名下降的原因
+- 迁移前的SEO审计
+- 定期进行技术健康检查
+- 识别爬取和索引问题
+- 提升网站性能
+- 修复Core Web Vitals相关问题
 
-## What This Skill Does
+## 工具功能
 
-1. **Crawlability Audit**: Checks robots.txt, sitemaps, crawl issues
-2. **Indexability Review**: Analyzes index status and blockers
-3. **Site Speed Analysis**: Evaluates Core Web Vitals and performance
-4. **Mobile-Friendliness**: Checks mobile optimization
-5. **Security Check**: Reviews HTTPS and security headers
-6. **Structured Data Audit**: Validates schema markup
-7. **URL Structure Analysis**: Reviews URL patterns and redirects
-8. **International SEO**: Checks hreflang and localization
+1. **爬取能力审计**：检查robots.txt文件、站点地图（sitemaps）以及爬取过程中遇到的问题。
+2. **可索引性审查**：分析索引状态及可能存在的障碍。
+3. **网站速度分析**：评估Core Web Vitals指标及网站性能。
+4. **移动设备友好性**：检查网站的移动优化情况。
+5. **安全性检查**：审核HTTPS设置和安全头部信息。
+6. **结构化数据审计**：验证网站中的结构化数据标记（schema markup）。
+7. **URL结构分析**：审查URL模式和重定向规则。
+8. **国际SEO**：检查网站的国际化设置（如hreflang标签和本地化内容）。
 
-## How to Use
+## 使用方法
 
-### Full Technical Audit
+### 全面技术审计
 
 ```
 Perform a technical SEO audit for [URL/domain]
 ```
 
-### Specific Issue Check
+### 针对特定问题的审计
 
 ```
 Check Core Web Vitals for [URL]
@@ -47,33 +47,33 @@ Check Core Web Vitals for [URL]
 Audit crawlability and indexability for [domain]
 ```
 
-### Pre-Migration Audit
+### 迁移前的审计
 
 ```
 Technical SEO checklist for migrating [old domain] to [new domain]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的详细信息，请参阅[CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~web crawler + ~~page speed tool + ~~CDN connected:**
-Claude can automatically crawl the entire site structure via ~~web crawler, pull Core Web Vitals and performance metrics from ~~page speed tool, analyze caching headers from ~~CDN, and fetch mobile-friendliness data. This enables comprehensive automated technical audits.
+**当连接了[网络爬虫 + 网页速度工具 + CDN]时：**
+Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度工具中获取Core Web Vitals指标和性能数据，从CDN中分析缓存信息，并收集移动设备友好性数据，从而实现全面的自动化技术审计。
 
-**With manual data only:**
-Ask the user to provide:
-1. Site URL(s) to audit
-2. PageSpeed Insights screenshots or reports
-3. robots.txt file content
-4. sitemap.xml URL or file
+**仅使用手动数据时：**
+用户需要提供以下信息：
+1. 需要审计的网站URL。
+2. PageSpeed Insights的截图或报告。
+3. robots.txt文件的内容。
+4. sitemap.xml文件的路径。
 
-Proceed with the full audit using provided data. Note in the output which findings are from automated crawl vs. manual review.
+根据提供的数据执行全面审计，并在报告中明确区分哪些发现是基于自动化爬取的结果，哪些是基于手动审查的结果。
 
-## Instructions
+## 使用说明
 
-When a user requests a technical SEO audit:
+当用户请求进行技术性SEO审计时，请按照以下步骤操作：
 
-1. **Audit Crawlability**
+1. **爬取能力审计**
 
    ```markdown
    ## Crawlability Analysis
@@ -85,7 +85,7 @@ When a user requests a technical SEO audit:
    
    **Current Content**:
    ```
-   [robots.txt content]
+   [robots.txt文件内容]
    ```
    
    | Check | Status | Notes |
@@ -147,7 +147,7 @@ When a user requests a technical SEO audit:
    **Crawlability Score**: [X]/10
    ```
 
-2. **Audit Indexability**
+2. **可索引性审计**
 
    ```markdown
    ## Indexability Analysis
@@ -194,7 +194,7 @@ When a user requests a technical SEO audit:
    **Indexability Score**: [X]/10
    ```
 
-3. **Audit Site Speed & Core Web Vitals**
+3. **网站速度与Core Web Vitals审计**
 
    ```markdown
    ## Performance Analysis
@@ -249,7 +249,7 @@ When a user requests a technical SEO audit:
    **Performance Score**: [X]/10
    ```
 
-4. **Audit Mobile-Friendliness**
+4. **移动设备友好性审计**
 
    ```markdown
    ## Mobile Optimization Analysis
@@ -287,7 +287,7 @@ When a user requests a technical SEO audit:
    **Mobile Score**: [X]/10
    ```
 
-5. **Audit Security & HTTPS**
+5. **安全性与HTTPS审计**
 
    ```markdown
    ## Security Analysis
@@ -315,7 +315,7 @@ When a user requests a technical SEO audit:
    **Security Score**: [X]/10
    ```
 
-6. **Audit URL Structure**
+6. **URL结构审计**
 
    ```markdown
    ## URL Structure Analysis
@@ -354,9 +354,9 @@ When a user requests a technical SEO audit:
    **URL Score**: [X]/10
    ```
 
-7. **Audit Structured Data**
+7. **结构化数据审计**
 
-   > **CORE-EEAT alignment**: Schema markup quality maps to O05 (Schema Markup) in the CORE-EEAT benchmark. See [content-quality-auditor](../../cross-cutting/content-quality-auditor/) for full content quality audit.
+   > **CORE-EEAT对齐性**：验证网站的结构化数据标记是否符合CORE-EEAT基准中的O05标准。有关完整的内容质量审计，请参阅[content-quality-auditor](../../cross-cutting/content-quality-auditor/)。
 
    ```markdown
    ## Structured Data Analysis
@@ -388,7 +388,7 @@ When a user requests a technical SEO audit:
    **Structured Data Score**: [X]/10
    ```
 
-8. **Audit International SEO (if applicable)**
+8. **国际SEO审计（如适用）**
 
    ```markdown
    ## International SEO Analysis
@@ -413,7 +413,7 @@ When a user requests a technical SEO audit:
    **International Score**: [X]/10
    ```
 
-9. **Generate Technical Audit Summary**
+9. **生成技术审计报告**
 
    ```markdown
    # Technical SEO Audit Report
@@ -425,14 +425,14 @@ When a user requests a technical SEO audit:
    ## Overall Technical Health: [X]/100
    
    ```
-   Score Breakdown:
-   ████████░░ Crawlability: 8/10
-   ███████░░░ Indexability: 7/10
-   █████░░░░░ Performance: 5/10
-   ████████░░ Mobile: 8/10
-   █████████░ Security: 9/10
-   ██████░░░░ URL Structure: 6/10
-   █████░░░░░ Structured Data: 5/10
+   评分结果：
+   ████████░░ 爬取能力：8/10
+   ███████░░░ 可索引性：7/10
+   █████░░░░░ 网站性能：5/10
+   ████████░░ 移动设备友好性：8/10
+   █████████░ 安全性：9/10
+   ██████░░░░ URL结构：6/10
+   █████░░░░░ 结构化数据：5/10
    ```
    
    ## Critical Issues (Fix Immediately)
@@ -488,24 +488,24 @@ When a user requests a technical SEO audit:
    - Security issues
    ```
 
-## Validation Checkpoints
+## 验证要求
 
-### Input Validation
-- [ ] Site URL or domain clearly specified
-- [ ] Access to technical data (robots.txt, sitemap, or crawl results)
-- [ ] Performance metrics available (via ~~page speed tool or screenshots)
+### 输入验证
+- 必须明确提供网站URL或域名。
+- 必须能够访问技术相关数据（如robots.txt文件、站点地图或爬取结果）。
+- 必须提供性能指标数据（可通过网页速度工具或截图获取）。
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] All issues include affected URLs or page counts
-- [ ] Performance metrics include actual numbers with units (seconds, KB, etc.)
-- [ ] Source of each data point clearly stated (~~web crawler data, ~~page speed tool, user-provided, or estimated)
+### 输出验证
+- 每条建议都应引用具体的数据来源。
+- 所有问题都应包含受影响的URL或受影响的页面数量。
+- 性能指标应包含具体的数值（如时间、文件大小等）。
+- 必须明确说明每个数据来源（网络爬虫数据、网页速度工具数据、用户提供的数据或估算值）。
 
-## Example
+## 示例
 
-**User**: "Check the technical SEO of cloudhosting.com"
+**用户请求：** “检查cloudhosting.com的技术SEO情况。”
 
-**Output**:
+**审计结果：**
 
 ```markdown
 # Technical SEO Audit Report
@@ -603,14 +603,14 @@ When a user requests a technical SEO audit:
 ## Overall Technical Health: 42/100
 
 ```
-Score Breakdown:
-█████░░░░░ Crawlability: 5/10
-██████░░░░ Indexability: 6/10
-███░░░░░░░ Performance: 3/10
-██████░░░░ Mobile: 6/10
-█████░░░░░ Security: 5/10
-██████░░░░ URL Structure: 6/10
-███░░░░░░░ Structured Data: 3/10
+评分结果：
+█████░░░░░ 爬取能力：5/10
+██████░░░░ 可索引性：6/10
+███░░░░░░ 页面性能：3/10
+██████░░░░ 移动设备友好性：6/10
+█████░░░░░ 安全性：5/10
+██████░░░░ URL结构：6/10
+███░░░░░ 结构化数据：3/10
 ```
 
 ## Priority Issues
@@ -625,7 +625,7 @@ Score Breakdown:
 3. **No Article/FAQ schema on blog posts** — Add Article schema to 48 blog posts and FAQ schema to 12 FAQ pages for rich result eligibility.
 ```
 
-## Technical SEO Checklist
+## 技术性SEO检查清单
 
 ```markdown
 ### Crawlability
@@ -663,74 +663,73 @@ Score Breakdown:
 - [ ] Internal linking is strong
 ```
 
-## Tips for Success
+## 成功使用技巧
 
-1. **Prioritize by impact** - Fix critical issues first
-2. **Monitor continuously** - Use ~~search console alerts
-3. **Test changes** - Verify fixes work before deploying widely
-4. **Document everything** - Track changes for troubleshooting
-5. **Regular audits** - Schedule quarterly technical reviews
+1. **按问题影响程度优先处理**——先解决关键问题。
+2. **持续监控**——利用搜索引擎控制台（search console）的警报功能。
+3. **测试修改效果**——在广泛部署之前验证修复措施是否有效。
+4. **详细记录所有操作**——便于后续问题排查。
+5. **定期进行审计**——安排每季度的技术审查。
 
-## Technical SEO Severity Framework
+## 技术性SEO问题严重性分级框架
 
-### Issue Classification
+### 问题分类
 
-| Severity | Impact Description | Examples | Response Time |
+| 问题严重性 | 影响描述 | 例子 | 处理时间 |
 |----------|-------------------|---------|---------------|
-| **Critical** | Prevents indexation or causes site-wide issues | Robots.txt blocking site, noindex on key pages, site-wide 500 errors | Same day |
-| **High** | Significantly impacts rankings or user experience | Slow page speed, missing hreflang, duplicate content, redirect chains | Within 1 week |
-| **Medium** | Affects specific pages or has moderate impact | Missing schema, suboptimal canonicals, thin content pages | Within 1 month |
-| **Low** | Minor optimization opportunities | Image compression, minor CLS issues, non-essential schema missing | Next quarter |
+| **严重** | 阻止网站被索引或导致全局性问题** | robots.txt文件设置错误、关键页面被设置为noindex、全站出现500错误 | 当天处理 |
+| **高** | 显著影响排名或用户体验** | 网页加载速度慢、缺少hreflang标签、内容重复、存在重定向链 | 1周内处理 |
+| **中** | 影响特定页面或造成中等程度的影响** | 缺少结构化数据标记、默认链接（canonical）设置不当、页面内容较少 | 1个月内处理 |
+| **低** | 存在较小的优化机会** | 图片压缩、轻微的CLS（Cumulative Layout Shift）问题、缺少非必要的结构化数据 | 下一季度处理 |
 
-### Technical Debt Prioritization Matrix
+## 技术性问题的优先级评估矩阵
 
-| Factor | Weight | Assessment |
+| 评估因素 | 权重 | 评分标准 |
 |--------|--------|-----------|
-| Pages affected | 30% | Site-wide > Section > Single page |
-| Revenue impact | 25% | Revenue pages > Blog > Utility pages |
-| Fix difficulty | 20% | Config change < Template change < Code rewrite |
-| Competitive impact | 15% | Competitors passing you > parity > you ahead |
-| Crawl budget waste | 10% | High waste > Moderate > Minimal |
+| 受影响的页面数量 | 30% | 全站 > 单个页面 |
+| 对收入的影响 | 25% | 收入相关的页面 > 博客页面 > 辅助性页面 |
+| 修复难度 | 20% | 配置调整 < 模板修改 < 代码重写 |
+| 竞争优势影响 | 15% | 竞争对手的表现优于你 > 与你持平 > 你优于竞争对手 |
+| 爬取效率浪费 | 10% | 严重浪费 > 中等程度 > 极小程度 |
 
-## Core Web Vitals Optimization Quick Reference
+## Core Web Vitals优化快速参考
 
-### LCP (Largest Contentful Paint) Optimization
+### LCP（Largest Contentful Paint，最大内容绘制时间）优化
 
-| Root Cause | Detection | Fix |
+| 原因 | 检测方法 | 修复方法 |
 |-----------|-----------|-----|
-| Large hero image | PageSpeed Insights | Serve WebP, resize to container, add loading="lazy" |
-| Render-blocking CSS/JS | DevTools Coverage | Defer non-critical, inline critical CSS |
-| Slow server response | TTFB >800ms | CDN, server-side caching, upgrade hosting |
-| Third-party scripts | DevTools Network | Defer/async, use facade pattern |
+| 大尺寸的标题图片 | PageSpeed Insights工具 | 服务器提供WebP格式图片、调整图片尺寸、使用loading="lazy"属性 |
+| 阻碍页面渲染的CSS/JS代码 | 开发工具（DevTools） | 延迟非关键代码的执行、将关键代码内联 |
+| 服务器响应速度慢 | 网页加载时间超过800毫秒 | 使用CDN、服务器端缓存、升级服务器 |
+| 第三方脚本 | 开发工具（DevTools） | 延迟或异步加载这些脚本、使用代理模式（facade pattern） |
 
-### CLS (Cumulative Layout Shift) Optimization
+### CLS（Cumulative Layout Shift，累积布局偏移）优化
 
-| Root Cause | Detection | Fix |
+| 原因 | 检测方法 | 修复方法 |
 |-----------|-----------|-----|
-| Images without dimensions | DevTools | Add explicit width/height attributes |
-| Ads/embeds without reserved space | Visual inspection | Set min-height on containers |
-| Web fonts causing FOUT | DevTools | font-display: swap + preload fonts |
-| Dynamic content injection | Visual inspection | Reserve space with CSS |
+| 图片没有尺寸信息 | 开发工具（DevTools） | 为图片添加明确的宽度/高度属性 |
+| 广告或嵌入内容没有预留显示空间 | 直观检查 | 为容器设置最小高度 |
+| 导致页面显示异常的Web字体 | 开发工具（DevTools） | 设置font-display属性、预加载相关字体 |
+| 动态内容的插入 | 直观检查 | 使用CSS为动态内容预留显示空间 |
 
-### INP (Interaction to Next Paint) Optimization
+### INP（Interaction to Next Paint，交互到下一次页面绘制的时间）优化
 
-| Root Cause | Detection | Fix |
+| 原因 | 检测方法 | 修复方法 |
 |-----------|-----------|-----|
-| Long JavaScript tasks | DevTools Performance | Break into smaller tasks, use requestIdleCallback |
-| Heavy event handlers | DevTools | Debounce/throttle, use passive listeners |
-| Main thread blocking | DevTools | Web workers for heavy computation |
+| 长时间的JavaScript任务 | 开发工具（DevTools） | 将任务拆分成更小的部分、使用requestIdleCallback函数 |
+| 事件处理程序占用过多系统资源 | 开发工具（DevTools） | 使用debounce或throttle函数、使用被动事件监听器 |
+| 主线程被占用 | 开发工具（DevTools） | 对计算量大的任务使用Web workers线程 |
 
-## Reference Materials
+## 参考资料
 
-- [robots.txt Reference](../../references/robots-txt-reference.md) - Syntax guide, templates, common configurations
-- [HTTP Status Codes](../../references/http-status-codes.md) - SEO impact of each status code, redirect best practices
+- [robots.txt文件参考](../../references/robots-txt-reference.md) — robots.txt文件的语法指南、模板示例、常见配置设置。
+- [HTTP状态码](../../references/http-status-codes.md) — 各HTTP状态码对SEO的影响及重定向的最佳实践。
 
-## Related Skills
+## 相关工具
 
-- [on-page-seo-auditor](../on-page-seo-auditor/) — On-page SEO audit
-- [schema-markup-generator](../../build/schema-markup-generator/) — Fix schema issues
-- [performance-reporter](../../monitor/performance-reporter/) — Monitor improvements
-- [internal-linking-optimizer](../internal-linking-optimizer/) — Fix link issues
-- [alert-manager](../../monitor/alert-manager/) — Set up alerts for technical issues found
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-
+- [on-page-seo-auditor](../on-page-seo-auditor/) — 页面内SEO审计工具。
+- [schema-markup-generator](../../build/schema-markup-generator/) — 用于修复结构化数据标记问题。
+- [performance-reporter](../../monitor/performance-reporter/) — 用于监控网站性能改进情况。
+- [internal-linking-optimizer](../internal-linking-optimizer/) — 用于修复链接问题。
+- [alert-manager](../../monitor/alert-manager/) — 用于设置技术问题的警报通知。
+- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 提供全面的80项评估内容质量工具。

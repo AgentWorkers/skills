@@ -1,26 +1,26 @@
 ---
 name: diff-summary
-description: Summarize git diffs in plain English
+description: 用简单的英语总结 Git 的差异（diffs）。
 ---
 
-# Diff Summary
+# 差异摘要（Diff Summary）
 
-Turn messy git diffs into human-readable summaries. Perfect for PR descriptions and code reviews.
+将混乱的 Git 差异信息转换为人类可读的摘要。非常适合用于 PR 描述和代码审查。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-diff-summary
 ```
 
-## What It Does
+## 功能介绍
 
-- Summarizes staged changes
-- Explains what code does, not just what changed
-- Groups related changes
-- Identifies breaking changes
+- 概述已暂存的更改内容
+- 说明代码的具体功能，而不仅仅是哪些部分发生了变化
+- 将相关的更改分组在一起
+- 识别可能导致系统崩溃的更改（即“破坏性更改”）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Summarize staged changes
@@ -36,7 +36,7 @@ npx ai-diff-summary --from main --to feature/auth
 npx ai-diff-summary --format pr
 ```
 
-## Output Example
+## 输出示例
 
 ```markdown
 ## Summary
@@ -52,17 +52,19 @@ Added user authentication with JWT tokens
 - /api/users now requires authentication
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required. Must be in a git repo.
+- 必须使用 Node.js 18 及以上版本。
+- 需要配置 OPENAI_API_KEY。
+- 该工具必须部署在 Git 仓库中。
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-diff-summary](https://github.com/lxgicstudios/ai-diff-summary)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-diff-summary](https://github.com/lxgicstudios/ai-diff-summary)
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

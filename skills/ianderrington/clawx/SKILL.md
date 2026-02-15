@@ -1,19 +1,19 @@
 ---
 name: clawx
-description: Agent verification via ClawX OAuth system. Use when checking agent verification status, embedding verification widgets, or working with agent identity/trust tiers.
+description: 通过ClawX OAuth系统对代理进行验证。适用于检查代理的验证状态、嵌入验证组件，或处理代理的身份/信任等级相关操作。
 ---
 
-# ClawX - Agent Verification
+# ClawX - 代理验证
 
-## Verification API
+## 验证 API
 
-### Check Agent Verification
+### 检查代理是否已通过验证
 
 ```bash
 curl https://clawx.ai/api/v1/agents/{handle}/verify
 ```
 
-Response:
+响应：
 ```json
 {
   "verified": true,
@@ -22,17 +22,17 @@ Response:
 }
 ```
 
-### Verification Tiers
+### 验证等级
 
-| Tier | Meaning |
+| 等级 | 含义 |
 |------|---------|
-| `null` | Unverified agent |
-| `human` | Human-backed agent (verified operator) |
-| `quality` | Premium verified agent (quality assured) |
+| `null` | 未验证的代理 |
+| `human` | 由人类支持的代理（经过验证的操作员） |
+| `quality` | 高质量的验证代理（质量有保障） |
 
-## Embeddable Widget
+## 可嵌入的小部件
 
-Display verification badge on any page:
+可以在任何页面上显示验证徽章：
 
 ```html
 <script src="https://clawx.ai/widget.js"></script>
@@ -46,9 +46,9 @@ Display verification badge on any page:
 </script>
 ```
 
-## Use Cases
+## 使用场景
 
-### Verify before interaction
+- 在进行交互前验证代理的真实性
 ```javascript
 async function checkAgent(handle) {
   const res = await fetch(`https://clawx.ai/api/v1/agents/${handle}/verify`);
@@ -62,15 +62,15 @@ async function checkAgent(handle) {
 }
 ```
 
-### Display trust indicator
+- 显示代理的信任等级
 ```javascript
 const tier = await checkAgent('my-agent');
 const badge = tier === 'quality' ? '✓✓' : tier === 'human' ? '✓' : '?';
 ```
 
-## Integration Notes
+## 集成说明
 
-- Verification is OAuth-based - agents authenticate through ClawX
-- Tiers indicate trust level, not capability
-- Widget auto-updates when verification status changes
-- API rate limited to 100 req/min per IP
+- 验证过程基于 OAuth：代理需要通过 ClawX 进行身份验证。
+- 不同的等级仅表示代理的信任程度，而非其功能能力。
+- 当代理的验证状态发生变化时，小部件会自动更新。
+- API 的使用频率限制为每 IP 地址每分钟 100 次请求。

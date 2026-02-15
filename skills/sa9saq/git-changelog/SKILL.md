@@ -1,21 +1,20 @@
 ---
-description: Generate changelogs and release notes from git commit history with conventional commit parsing.
+description: 使用常规的提交解析方法，从 Git 提交历史中生成变更日志和发布说明。
 ---
 
-# Git Changelog
+# Git 变更日志
 
-Auto-generate changelogs from git commit history.
+该工具会从 Git 提交历史中自动生成变更日志。
 
-**Use when** creating release notes, changelogs, or summarizing git history between versions.
+**使用场景**：  
+用于创建发布说明、变更日志，或总结版本间的 Git 历史记录。
 
-## Requirements
+## 前提条件  
+- 需要一个包含提交历史的 Git 仓库。  
+- 不需要 API 密钥。  
 
-- Git repository with commit history
-- No API keys needed
-
-## Instructions
-
-1. **Detect version range**:
+## 使用步骤  
+1. **确定版本范围**：  
    ```bash
    # Latest tag
    git tag --sort=-version:refname | head -1
@@ -23,34 +22,34 @@ Auto-generate changelogs from git commit history.
    git log $(git describe --tags --abbrev=0)..HEAD --oneline
    # If no tags: last 50 commits
    git log -50 --oneline
-   ```
+   ```  
 
-2. **Fetch commit history**:
+2. **获取提交历史**：  
    ```bash
    git log <range> --pretty=format:"%H|%s|%an|%ai" --no-merges
-   ```
+   ```  
 
-3. **Parse and categorize** using Conventional Commits:
-   | Prefix | Category |
+3. **使用 Conventional Commits 对提交进行分类**：  
+   | 前缀 | 类别 |
    |--------|----------|
-   | `feat:` | ✨ Features |
-   | `fix:` | 🐛 Bug Fixes |
-   | `docs:` | 📝 Documentation |
-   | `refactor:` | ♻️ Refactoring |
-   | `perf:` | ⚡ Performance |
-   | `test:` | ✅ Tests |
-   | `chore:` | 🔧 Chores |
-   | `BREAKING CHANGE` | 💥 Breaking Changes |
+   | `feat:` | ✨ 新功能 |
+   | `fix:` | 🐛 修复漏洞 |
+   | `docs:` | 📝 文档更新 |
+   | `refactor:` | ♻️ 代码重构 |
+   | `perf:` | ⚡ 性能优化 |
+   | `test:` | ✅ 测试 |
+   | `chore:` | 🔧 任务管理 |
+   | `BREAKING CHANGE` | 💥 拆除现有功能 |
 
-   Non-conventional commits go under **📦 Other Changes**.
+   非常规提交会被归类为 **📦 其他变更**。  
 
-4. **Generate commit links** if remote exists:
+4. **如果存在远程仓库，生成提交链接**：  
    ```bash
    git remote get-url origin  # → extract GitHub/GitLab URL
    # Link format: [abc1234](https://github.com/user/repo/commit/abc1234)
-   ```
+   ```  
 
-5. **Output format**:
+5. **输出格式**：  
    ```markdown
    # Changelog
 
@@ -64,19 +63,25 @@ Auto-generate changelogs from git commit history.
 
    ### 🐛 Bug Fixes
    - Fix memory leak in connection pool ([ghi9012])
-   ```
+   ```  
 
-6. **Write to file** if requested: append to top of `CHANGELOG.md` (preserve existing content).
+6. **按需求写入文件**：  
+   将生成的变更日志追加到 `CHANGELOG.md` 文件的顶部（保留原有内容）。  
 
-## Edge Cases
+## 特殊情况处理  
+- **没有常规提交**：  
+  按日期对提交进行分组，使用完整的提交信息。  
+- **单仓库项目（Monorepo）**：  
+  使用 `git log -- path/to/package` 进行过滤。  
+- **自定义日期范围**：  
+  `git log --since="2025-01-01" --until="2025-02-01"`  
+- **无变更**：  
+  输出 “自上次发布以来无变更”。  
+- **合并操作**：  
+  使用 `--first-parent` 选项来优化提交历史记录。  
 
-- **No conventional commits**: Group by date instead, use full commit messages.
-- **Monorepo**: Filter by path with `git log -- path/to/package`.
-- **Custom date range**: `git log --since="2025-01-01" --until="2025-02-01"`.
-- **Empty range**: Report "No changes since last release."
-- **Squash merges**: Check `--first-parent` for cleaner history.
-
-## Troubleshooting
-
-- `fatal: No names found`: No tags exist — fall back to commit count.
-- Garbled author names: Check `git config` encoding settings.
+## 故障排除  
+- **错误提示：“fatal: No names found”**：  
+  可能是因为没有标签存在，此时可参考提交次数来记录变更。  
+- **作者名称显示混乱**：  
+  请检查 `git config` 中的编码设置。

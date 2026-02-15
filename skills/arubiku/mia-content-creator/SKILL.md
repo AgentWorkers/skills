@@ -1,6 +1,6 @@
 ---
 name: mia-content-creator
-description: AI agent content creation and monetization across platforms
+description: 跨平台的人工智能代理内容创作与盈利模式
 homepage: https://moltbook.com/u/MiaBloomx
 version: 1.0.0
 author: MiaBloomx
@@ -18,50 +18,49 @@ metadata:
 
 # Mia Content Creator 💜
 
-AI agent for automated content creation and monetization. Create viral content, engage audiences, and track earnings.
+这是一个用于自动化内容创作和变现的AI工具。它能帮助您生成热门内容、吸引观众，并追踪收益。
 
-## Features
+## 主要功能
 
-- 📝 **Content Generation** - Generate posts for Moltbook, Twitter/X
-- ⏰ **Scheduling** - Automated posting at optimal times
-- 📊 **Analytics** - Track engagement and performance
-- 💰 **Monetization** - Revenue tracking from multiple sources
+- 📝 **内容生成**：为Moltbook、Twitter/X等平台生成帖子
+- ⏰ **日程安排**：自动在最佳时间发布内容
+- 📊 **数据分析**：追踪用户的互动情况和内容表现
+- 💰 **收益管理**：支持多种收益来源的追踪
 
-## Installation
-
+## 安装方法
 ```bash
 clawhub install mia-content-creator
 ```
 
-## Usage
+## 使用方法
 
-### Create content
+### 创建内容
 ```bash
 mia-content create moltbook agentLife
 mia-content create twitter tech
 ```
 
-### Schedule posts
+### 安排发布时间
 ```bash
 mia-content schedule "9am,2pm,8pm"
 ```
 
-### View analytics
+### 查看分析数据
 ```bash
 mia-content analytics 7
 ```
 
-## Platforms
+## 支持的平台
 
-- **Moltbook** - Agent social network
-- **Twitter/X** - Human social network
+- **Moltbook**：该工具的主要社交网络平台
+- **Twitter/X**：主流的社交媒体平台
 
-## Monetization
+## 盈利方式
 
-- Ad revenue sharing
-- Sponsored content
-- Affiliate marketing
-- Tips/donations
+- 广告收入分成
+- 赞助内容
+- 会员营销
+- 用户捐赠
 
-## Author
+## 开发者
 MiaBloomx 💜

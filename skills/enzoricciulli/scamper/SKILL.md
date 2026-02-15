@@ -1,64 +1,63 @@
 ---
 name: scamper
-description: Apply SCAMPER creative thinking method to develop ideas, adapt frameworks, generate hackathon concepts, or break through when stuck. Use when Enzo says "SCAMPER this", asks to develop/expand an idea, wants hackathon concepts from existing tools, says he's stuck, or when processing new ideas in the ideas inbox.
+description: 应用 SCAMPER 创造性思维方法来开发新想法、调整现有框架、生成黑客马拉松（hackathon）的创意方案，或在遇到难题时找到解决方案。当 Enzo 说“用 SCAMPER 方法处理这个问题”时，或者他希望基于现有工具开发/扩展某个想法、需要为黑客马拉松活动制定方案、表示自己遇到了困难，又或者是在处理收件箱中的新想法时，都可以使用这种方法。
 ---
 
-# SCAMPER Method
+# SCAMPER方法
 
-Creative thinking framework for innovation and problem-solving.
+一种用于创新和解决问题的创造性思维框架。
 
-## The 7 Lenses
+## 7个思维视角（7 Lenses）
 
-| Letter | Lens | Prompt |
+| 字母 | 视角（Lens） | 提示（Prompt） |
 |--------|------|--------|
-| **S** | Substitute | What can be replaced? Different material, person, process, component? |
-| **C** | Combine | What can merge? Blend features, ideas, purposes, audiences? |
-| **A** | Adapt | What else is like this? What could be copied or borrowed from elsewhere? |
-| **M** | Modify | What can change? Size, shape, color, frequency, intensity, meaning? |
-| **P** | Put to other uses | What else could this be used for? New contexts, audiences, problems? |
-| **E** | Eliminate | What can be removed? Simplify, reduce, strip to essentials? |
-| **R** | Reverse | What if opposite? Flip the order, roles, perspective, direction? |
+| **S** | 替换（Substitute） | 什么可以替换？不同的材料、人员、流程或组件？ |
+| **C** | 结合（Combine） | 什么可以合并？融合功能、想法、目的或目标受众？ |
+| **A** | 适应（Adapt） | 还有什么类似的东西？可以从其他地方借鉴什么？ |
+| **M** | 修改（Modify） | 什么可以改变？大小、形状、颜色、频率、强度或含义？ |
+| **P** | 转用（Put to other uses） | 这个东西还能用于什么？新的场景、受众或问题？ |
+| **E** | 消除（Eliminate） | 什么可以去除？简化、减少，只保留核心部分？ |
+| **R** | 反转（Reverse） | 如果反过来会怎样？改变顺序、角色、视角或方向？ |
 
-## Application Modes
+## 应用模式
 
-### Quick SCAMPER (default)
-Pick 2-3 most relevant lenses, generate 1 strong idea each.
-Use for: casual brainstorming, quick expansions
+### 快速SCAMPER（Quick SCAMPER，默认模式）
+选择2-3个最相关的思维视角，每个视角生成1个创意。
+适用于：非正式的头脑风暴和快速创意扩展。
 
-### Full SCAMPER
-All 7 lenses, 1-2 ideas each.
-Use for: serious idea development, comprehensive exploration
+### 完整SCAMPER（Full SCAMPER）
+使用所有7个思维视角，每个视角生成1-2个创意。
+适用于：深入的创意开发与全面探索。
 
-### Targeted SCAMPER
-Enzo specifies which lens(es) to focus on.
-Use for: when he knows what angle he wants
+### 定向SCAMPER（Targeted SCAMPER）
+由Enzo指定要关注的思维视角。
+适用于：当他已经明确了自己想要探讨的角度时。
 
-## Integration Points
+## 集成建议
 
-### New Idea Saved
-After saving to `notes/ideas.md`, offer: "Want me to SCAMPER this?"
-If yes → run Quick SCAMPER, append output to the idea entry.
+### 新创意的保存
+将创意保存到`notes/ideas.md`文件后，可以询问：“需要我用SCAMPER方法来分析这个创意吗？”
+如果同意，执行快速SCAMPER，并将生成的创意添加到相应的条目中。
 
-### Framework Adaptation
-When saving a framework, optionally run SCAMPER to personalize:
-- **Substitute**: What would you swap for your industry/role?
-- **Combine**: What other framework could this merge with?
-- **Adapt**: Who does something similar you could borrow from?
+### 框架个性化
+在保存某个思维框架时，可以选择使用SCAMPER方法进行个性化调整：
+- **替换（Substitute）：在你的行业/角色中，你会用什么来替换这些元素？**
+- **结合（Combine）：这个框架可以与其他哪些框架结合使用？**
+- **适应（Adapt）：你可以从哪些类似框架中借鉴经验？**
 
-### Hackathon Ideation
-For generating hackathon concepts from existing products:
-1. Take the product/tool
-2. Run full SCAMPER
-3. Filter for "impressive demo in 24h" feasibility
-4. Output top 3 concepts
+### 面向黑客马拉松的创意生成
+1. 选取一个现有的产品或工具。
+2. 使用完整SCAMPER方法生成创意。
+3. 筛选出“24小时内能够完成展示”的可行性创意。
+4. 选出最优秀的3个创意方案。
 
-### Stuck Breaker
-When Enzo says "I'm stuck on X":
-1. Clarify the blocker
-2. Run SCAMPER on the problem
-3. Focus on **Reverse** and **Eliminate** (often best for unblocking)
+### 解决思维僵局
+当Enzo表示“我在某个问题上卡住了”时：
+1. 明确阻碍因素。
+2. 对该问题使用SCAMPER方法进行分析。
+3. 重点运用**反转（Reverse）**和**消除（Eliminate）**思维视角，通常能有效突破僵局。
 
-## Output Format
+## 输出格式
 
 ```markdown
 ### SCAMPER: [Subject]
@@ -72,6 +71,6 @@ When Enzo says "I'm stuck on X":
 **Reverse:** [idea]
 
 💡 **Strongest angle:** [which one and why]
-```
+```___
 
-For Quick SCAMPER, only include the 2-3 lenses used.
+对于快速SCAMPER，只需列出所使用的2-3个思维视角即可。

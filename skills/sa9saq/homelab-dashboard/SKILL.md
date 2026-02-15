@@ -1,22 +1,22 @@
 ---
-description: Generate a status dashboard for self-hosted services, Docker containers, and homelab infrastructure.
+description: 为自托管服务、Docker容器以及家庭实验室基础设施生成一个状态监控仪表板。
 ---
 
-# Homelab Dashboard
+# 家庭实验室仪表板
 
-Check health and status of homelab services and infrastructure.
+用于检查家庭实验室服务及基础设施的运行状况和健康状态。
 
-**Use when** checking service status, monitoring Docker containers, or getting a homelab overview.
+**适用场景**：用于查看服务状态、监控 Docker 容器或获取家庭实验室的总体情况。
 
-## Requirements
+## 前提条件**
 
-- Linux system with standard tools (`free`, `df`, `uptime`)
-- Optional: Docker, systemd, curl
-- No API keys needed
+- 需要一个安装了标准工具（`free`、`df`、`uptime`）的 Linux 系统。
+- 可选：Docker、systemd、curl。
+- 不需要 API 密钥。
 
-## Instructions
+## 操作步骤
 
-1. **System resources**:
+1. **系统资源检查**：
    ```bash
    nproc                          # CPU cores
    uptime                         # load average
@@ -24,28 +24,28 @@ Check health and status of homelab services and infrastructure.
    df -h / /mnt/* 2>/dev/null     # disk usage (root + mounts)
    ```
 
-2. **Docker containers** (if Docker is installed):
+2. **Docker 容器检查**（如果已安装 Docker）：
    ```bash
    docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}' 2>/dev/null
    docker ps -a --filter "status=exited" --format '{{.Names}}\t{{.Status}}' 2>/dev/null
    ```
 
-3. **HTTP health checks** (if user provides URLs):
+3. **HTTP 健康检查**（如果用户提供了相应的 URL）：
    ```bash
    curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 --max-time 10 <url>
    ```
-   - 200-299: 🟢 Healthy
-   - 300-399: 🟡 Redirect
-   - 400+: 🔴 Error
-   - No response: 🔴 Down
+   - 200-299：🟢 运行正常
+   - 300-399：🟡 重定向
+   - 400+：🔴 错误
+   - 无响应：🔴 服务停止
 
-4. **Systemd services** (if specified):
+4. **systemd 服务检查**（如果指定了相关服务）：
    ```bash
    systemctl is-active <service>
    systemctl is-failed <service>  # check for failed services
    ```
 
-5. **Output format**:
+5. **输出格式**：
    ```
    🏠 Homelab Dashboard — 2025-01-15 14:30 JST
 
@@ -76,21 +76,21 @@ Check health and status of homelab services and infrastructure.
    - 🟡 /mnt/hdd disk usage at 78% — consider cleanup
    ```
 
-6. **Alert thresholds**:
-   - Disk > 85%: 🔴 Critical
-   - Disk > 70%: 🟡 Warning
-   - Memory > 90%: 🔴 Critical
-   - Load > 2× CPU cores: 🟡 Warning
-   - Any stopped container or failed service: 🔴
+6. **警报阈值**：
+   - 磁盘使用率 > 85%：🔴 严重警告
+   - 磁盘使用率 > 70%：🟡 警告
+   - 内存使用率 > 90%：🔴 严重警告
+   - 系统负载超过 CPU 核心数的 2 倍：🟡 警告
+   - 有任何停止的容器或失败的服务：🔴 严重警告
 
-## Edge Cases
+## 特殊情况处理**
 
-- **Docker not installed**: Skip container section, note it in output.
-- **Permission denied**: Some commands need sudo. Report what couldn't be checked.
-- **Remote hosts**: Use SSH (`ssh user@host "command"`) for checking remote machines.
-- **No services specified**: Run a general system check + Docker containers only.
+- **未安装 Docker**：跳过容器检查部分，并在输出中说明。
+- **权限不足**：某些命令需要 `sudo` 权限。请报告无法执行检查的操作。
+- **远程主机**：使用 SSH (`ssh 用户@主机 "命令"`) 来检查远程机器。
+- **未指定服务**：仅执行系统检查和 Docker 容器的检查。
 
-## Security Considerations
+## 安全注意事项**
 
-- Don't expose internal service URLs or IPs in shared outputs.
-- Health check URLs may contain tokens — redact them in output.
+- 不要在共享的输出中暴露内部服务 URL 或 IP 地址。
+- 健康检查 URL 可能包含敏感信息（如令牌），请在输出中对其进行屏蔽处理。

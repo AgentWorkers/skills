@@ -1,87 +1,87 @@
 ---
 name: BaseMail
-description: "📬 BaseMail - Email for AI Agents. Give your agent a real email (yourname@basemail.ai). Register for services, submit forms, receive confirmations — without bothering your human. No CAPTCHA, no passwords, just wallet signature."
+description: "📬 BaseMail – 专为 AI 代理设计的电子邮件服务。为您的 AI 代理分配一个真实的电子邮件地址（格式为 yourname@basemail.ai），使其能够注册服务、提交表单并接收确认信息，而无需打扰您。无需验证码或密码，只需使用钱包签名即可完成操作。"
 ---
 
-# 📬 BaseMail - Email for AI Agents
+# 📬 BaseMail - 专为AI代理设计的电子邮件服务
 
-> Your agent can handle its own email. No need to bother your human.
+> 您的代理可以自行处理电子邮件，无需打扰人类用户。
 
-**TL;DR:** Get `yourname@basemail.ai` with your Basename. Sign with wallet, send instantly.
+**简而言之：** 使用您的“Basename”即可获得 `yourname@basemail.ai` 的邮箱地址。通过钱包进行签名，即可立即发送邮件。
 
-## Why BaseMail?
+## 为什么选择BaseMail？
 
-- **Autonomous registration** — Sign up for services, events, newsletters without human help
-- **Form submissions** — Your agent can receive confirmation emails directly  
-- **No CAPTCHA** — Wallet signature = proof of identity
-- **No passwords** — Cryptographic auth only
+- **自主注册**：无需人工帮助即可注册服务、活动或接收新闻通讯。
+- **表单提交**：您的代理可以直接接收确认邮件。
+- **无需验证码**：钱包签名即作为身份证明。
+- **无需密码**：仅使用加密认证。
 
-BaseMail gives AI agents verifiable email identities on Base chain:
-- ✨ Basename holders → `yourname@basemail.ai`  
-- 🔗 Others → `0xwallet@basemail.ai`
+BaseMail为AI代理提供了可在Base链上验证的电子邮件身份：
+- ✨ Basename持有者 → `yourname@basemail.ai`
+- 🔗 其他用户 → `0xwallet@basemail.ai`
 
 ---
 
-## 🔐 Wallet Setup (Choose One)
+## 🔐 钱包设置（请选择一种方式）
 
-### Option A: Environment Variable (Recommended ✅)
+### 选项A：环境变量（推荐✅）
 
-If you already have a wallet, just set the env var — **no private key stored to file**:
+如果您已经拥有钱包，只需设置环境变量即可——**私钥不会被保存到文件中**：
 
 ```bash
 export BASEMAIL_PRIVATE_KEY="0x..."
 node scripts/register.js
 ```
 
-> ✅ Safest method: private key exists only in memory.
+> ✅ 最安全的方法：私钥仅存在于内存中。
 
 ---
 
-### Option B: Specify Wallet Path
+### 选项B：指定钱包路径
 
-Point to your existing private key file:
+指向您现有的私钥文件：
 
 ```bash
 node scripts/register.js --wallet /path/to/your/private-key
 ```
 
-> ✅ Uses your existing wallet, no copying.
+> ✅ 使用您现有的钱包，无需复制私钥。
 
 ---
 
-### Option C: Managed Mode (Beginners)
+### 选项C：托管模式（适合初学者）
 
-Let the skill generate and manage a wallet for you:
+让该工具为您生成并管理钱包：
 
 ```bash
 node scripts/setup.js --managed
 node scripts/register.js
 ```
 
-> ✅ **Default: Encrypted** — Private key protected with AES-256-GCM
-> - You'll set a password during setup
-> - Password required each time you use the wallet
-> - Mnemonic displayed once for manual backup (not auto-saved)
+> ✅ **默认设置：私钥采用AES-256-GCM加密**
+> - 设置密码时需要输入密码
+> - 每次使用钱包时都需要输入密码
+> - 提供助记词以便手动备份（不会自动保存）
 
-#### Unencrypted Storage (⚠️ Less Secure)
+#### 未加密存储（⚠️ 安全性较低）
 
 ```bash
 node scripts/setup.js --managed --no-encrypt
 ```
 
-> ⚠️ Only use in trusted environments where you control machine access.
+> ⚠️ 仅适用于您能控制机器访问的受信任环境。
 
 ---
 
-## ⚠️ Security Guidelines
+## ⚠️ 安全指南
 
-1. **Never** commit private keys to git
-2. **Never** share private keys or mnemonics publicly
-3. **Never** add `~/.basemail/` to version control
-4. Private key files should be chmod `600` (owner read/write only)
-5. Prefer environment variables (Option A) over file storage
+1. **切勿** 将私钥提交到Git仓库。
+2. **切勿** 公开分享私钥或助记词。
+3. **切勿** 将 `~/.basemail/` 目录添加到版本控制系统中。
+4. 私钥文件的权限应设置为 `600`（仅允许所有者读写）。
+5. 建议优先使用环境变量（选项A）而非文件存储方式。
 
-### Recommended .gitignore
+### 推荐的`.gitignore`文件内容：
 
 ```gitignore
 # BaseMail - NEVER commit!
@@ -94,9 +94,9 @@ node scripts/setup.js --managed --no-encrypt
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### 1️⃣ Register
+### 1️⃣ 注册
 
 ```bash
 # Using environment variable
@@ -107,13 +107,13 @@ node scripts/register.js
 node scripts/register.js --basename yourname.base.eth
 ```
 
-### 2️⃣ Send Email
+### 2️⃣ 发送邮件
 
 ```bash
 node scripts/send.js "friend@basemail.ai" "Hello!" "Nice to meet you 🦞"
 ```
 
-### 3️⃣ Check Inbox
+### 3️⃣ 查看收件箱
 
 ```bash
 node scripts/inbox.js              # List emails
@@ -122,20 +122,20 @@ node scripts/inbox.js <email_id>   # Read specific email
 
 ---
 
-## 📦 Scripts
+## 📦 脚本
 
-| Script | Purpose | Needs Private Key |
+| 脚本 | 用途 | 是否需要私钥 |
 |--------|---------|-------------------|
-| `setup.js` | Show help | ❌ |
-| `setup.js --managed` | Generate wallet (encrypted by default) | ❌ |
-| `setup.js --managed --no-encrypt` | Generate wallet (plaintext) | ❌ |
-| `register.js` | Register email address | ✅ |
-| `send.js` | Send email | ❌ (uses token) |
-| `inbox.js` | Check inbox | ❌ (uses token) |
+| `setup.js` | 显示帮助信息 | ❌ |
+| `setup.js --managed` | 生成钱包（默认加密） | ❌ |
+| `setup.js --managed --no-encrypt` | 生成钱包（明文存储） | ❌ |
+| `register.js` | 注册电子邮件地址 | ✅ |
+| `send.js` | 发送邮件 | ❌ （需要Token） |
+| `inbox.js` | 查看收件箱 | ❌ （需要Token） |
 
 ---
 
-## 📍 File Locations
+## 📦 脚本位置
 
 ```
 ~/.basemail/
@@ -149,56 +149,56 @@ node scripts/inbox.js <email_id>   # Read specific email
 
 ---
 
-## 🎨 Get a Pretty Email
+## 🎨 获得更美观的邮箱地址
 
-Want `yourname@basemail.ai` instead of `0x...@basemail.ai`?
+希望使用 `yourname@basemail.ai` 而不是 `0x...@basemail.ai` 吗？
 
-1. Get a Basename at https://www.base.org/names
-2. Run: `node scripts/register.js --basename yourname.base.eth`
+1. 访问 https://www.base.org/names 获取您的“Basename”。
+2. 运行：`node scripts/register.js --basename yourname.base.eth`
 
 ---
 
-## 🔧 API Reference
+## 🔧 API参考
 
-| Endpoint | Method | Purpose |
+| 端点 | 方法 | 用途 |
 |----------|--------|---------|
-| `/api/auth/start` | POST | Start SIWE auth |
-| `/api/auth/verify` | POST | Verify wallet signature |
-| `/api/register` | POST | Register email |
-| `/api/register/upgrade` | PUT | Upgrade to Basename |
-| `/api/send` | POST | Send email |
-| `/api/inbox` | GET | List inbox |
-| `/api/inbox/:id` | GET | Read email content |
+| `/api/auth/start` | POST | 启动SIWE认证 |
+| `/api/auth/verify` | POST | 验证钱包签名 |
+| `/api/register` | POST | 注册电子邮件地址 |
+| `/api/register/upgrade` | PUT | 升级为“Basename” |
+| `/api/send` | POST | 发送邮件 |
+| `/api/inbox` | GET | 查看收件箱内容 |
+| `/api/inbox/:id` | GET | 读取指定邮件的内容 |
 
-**Full docs**: https://api.basemail.ai/api/docs
-
----
-
-## 🌐 Links
-
-- Website: https://basemail.ai
-- API: https://api.basemail.ai
-- Get Basename: https://www.base.org/names
+**完整文档**：https://api.basemail.ai/api/docs
 
 ---
 
-## 📝 Changelog
+## 🌐 链接
+
+- 网站：https://basemail.ai
+- API：https://api.basemail.ai
+- 获取“Basename”：https://www.base.org/names
+
+---
+
+## 📝 更新日志
 
 ### v1.4.0 (2026-02-08)
-- ✨ Better branding and descriptions
-- 📝 Full English documentation
+- ✨ 更好的品牌设计和文档说明
+- 📝 提供完整的英文文档
 
 ### v1.1.0 (2026-02-08)
-- 🔐 Security: opt-in private key storage
-- ✨ Support env var, path, auto-detect
-- 🔒 Encrypted storage option (--encrypt)
-- 📊 Audit logging
+- 🔐 提供私钥存储的选项（可选）
+- ✨ 支持使用环境变量或指定钱包路径
+- 🔒 新增加密存储选项（`--encrypt`）
+- 📊 引入审计日志功能
 
-### v1.6.0 (Security Update)
-- 🔐 **Breaking**: `--managed` now encrypts by default (use `--no-encrypt` for plaintext)
-- 🔐 Removed auto-detection of external wallet paths (security improvement)
-- 🔐 Mnemonic no longer auto-saved; displayed once for manual backup
-- 📝 Updated documentation for clarity
+### v1.6.0（安全更新）
+- 🔐 **重要变更**：现在默认采用加密存储（使用 `--no-encrypt` 可选择明文存储）
+- 🔐 移除了对外部钱包路径的自动检测功能（提升安全性）
+- 🔐 助记词不再自动保存，仅提供一次显示以便手动备份
+- 📝 更新文档以提高清晰度
 
 ### v1.0.0
-- 🎉 Initial release
+- 🎉 首次发布

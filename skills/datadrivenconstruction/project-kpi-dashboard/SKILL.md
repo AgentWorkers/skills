@@ -1,31 +1,30 @@
 ---
 slug: "project-kpi-dashboard"
 display_name: "Project KPI Dashboard"
-description: "Create interactive KPI dashboards for construction projects. Track schedule, cost, quality, and safety metrics in real-time."
+description: "为建设项目创建交互式的关键绩效指标（KPI）仪表板，实时跟踪进度、成本、质量和安全指标。"
 ---
 
-# Project KPI Dashboard
+# 项目KPI仪表盘
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project stakeholders struggle with:
-- Scattered data across multiple systems
-- Delayed reporting on project health
-- No real-time visibility into KPIs
-- Inconsistent metric definitions
+### 问题描述
+项目相关方面临以下问题：
+- 数据分散在多个系统中
+- 项目进展报告延迟
+- 无法实时查看KPI（关键绩效指标）
+- 度量标准定义不一致
 
-### Solution
-Centralized KPI dashboard that aggregates data from multiple sources and presents key metrics with drill-down capabilities.
+### 解决方案
+通过集中式的KPI仪表盘，从多个来源汇总数据，并以可深入查看的形式展示关键指标。
 
-### Business Value
-- **Real-time visibility** - Live project health status
-- **Data-driven decisions** - Actionable insights
-- **Stakeholder alignment** - Single source of truth
-- **Early warning** - Proactive issue detection
+### 商业价值
+- **实时可见性**：实时了解项目状态
+- **数据驱动的决策**：基于数据的可操作性见解
+- **利益相关者共识**：统一的数据来源
+- **早期预警**：主动发现潜在问题
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from datetime import datetime, date, timedelta
@@ -422,8 +421,7 @@ class ProjectKPIDashboard:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date
 
@@ -460,22 +458,21 @@ summary = dashboard.get_dashboard_summary()
 print(f"Overall Health: {summary['overall_health']}")
 ```
 
-## Common Use Cases
-
-### 1. Weekly Executive Report
+## 常见使用场景
+### 1. 周度执行报告
 ```python
 df = dashboard.export_to_dataframe()
 critical = df[df['Status'] == 'critical']
 print(f"Critical KPIs requiring attention: {len(critical)}")
 ```
 
-### 2. Trend Analysis
+### 2. 趋势分析
 ```python
 # Get historical data for a metric
 spi_history = [h for h in dashboard.history if h['name'] == 'Schedule Performance Index']
 ```
 
-### 3. Multi-Project Dashboard
+### 3. 多项目仪表盘
 ```python
 projects = []
 for project_config in project_configs:
@@ -484,6 +481,6 @@ for project_config in project_configs:
     projects.append(dash.get_dashboard_summary())
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Construction Analytics
-- **Reference**: PMI Earned Value Management
+## 资源参考
+- **DDC手册**：第4.1章 - 构建分析
+- **参考文献**：PMI挣值管理（Project Management Institute Earned Value Management）

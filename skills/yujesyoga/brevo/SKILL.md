@@ -1,61 +1,61 @@
 ---
 name: brevo
 version: 1.0.0
-description: Brevo (formerly Sendinblue) email marketing API for managing contacts, lists, sending transactional emails, and campaigns. Use when importing contacts, sending emails, managing subscriptions, or working with email automation.
+description: **Brevo（前身为Sendinblue）电子邮件营销API**：用于管理联系人、邮件列表、发送交易邮件以及开展营销活动。适用于导入联系人、发送邮件、管理订阅信息或实现邮件自动化等功能。
 ---
 
-# Brevo Email Marketing API
+# Brevo 邮件营销 API
 
-Manage contacts, send emails, and automate marketing via Brevo's REST API.
+通过 Brevo 的 REST API 管理联系人、发送邮件并实现自动化营销。
 
-## Authentication
+## 认证
 
 ```bash
 BREVO_KEY=$(cat ~/.config/brevo/api_key)
 ```
 
-All requests require header: `api-key: $BREVO_KEY`
+所有请求都需要在请求头中添加以下字段：`api-key: $BREVO_KEY`
 
-## Base URL
+## 基本 URL
 
 ```
 https://api.brevo.com/v3
 ```
 
-## Common Endpoints
+## 常见接口
 
-### Contacts
+### 联系人
 
-| Action | Method | Endpoint |
+| 操作 | 方法 | 接口地址 |
 |--------|--------|----------|
-| Create contact | POST | `/contacts` |
-| Get contact | GET | `/contacts/{email}` |
-| Update contact | PUT | `/contacts/{email}` |
-| Delete contact | DELETE | `/contacts/{email}` |
-| List contacts | GET | `/contacts?limit=50&offset=0` |
-| Get blacklisted | GET | `/contacts?emailBlacklisted=true` |
+| 创建联系人 | POST | `/contacts` |
+| 获取联系人信息 | GET | `/contacts/{email}` |
+| 更新联系人信息 | PUT | `/contacts/{email}` |
+| 删除联系人 | DELETE | `/contacts/{email}` |
+| 列出联系人 | GET | `/contacts?limit=50&offset=0` |
+| 查看是否被列入黑名单 | GET | `/contacts?emailBlacklisted=true` |
 
-### Lists
+### 列表
 
-| Action | Method | Endpoint |
+| 操作 | 方法 | 接口地址 |
 |--------|--------|----------|
-| Get all lists | GET | `/contacts/lists` |
-| Create list | POST | `/contacts/lists` |
-| Get list contacts | GET | `/contacts/lists/{listId}/contacts` |
-| Add to list | POST | `/contacts/lists/{listId}/contacts/add` |
-| Remove from list | POST | `/contacts/lists/{listId}/contacts/remove` |
+| 获取所有列表 | GET | `/contacts/lists` |
+| 创建列表 | POST | `/contacts/lists` |
+| 获取列表中的联系人信息 | GET | `/contacts/lists/{listId}/contacts` |
+| 将联系人添加到列表中 | POST | `/contacts/lists/{listId}/contacts/add` |
+| 从列表中删除联系人 | POST | `/contacts/lists/{listId}/contacts/remove` |
 
-### Emails
+### 邮件
 
-| Action | Method | Endpoint |
+| 操作 | 方法 | 接口地址 |
 |--------|--------|----------|
-| Send transactional | POST | `/smtp/email` |
-| Send campaign | POST | `/emailCampaigns` |
-| Get templates | GET | `/smtp/templates` |
+| 发送交易性邮件 | POST | `/smtp/email` |
+| 发送营销邮件 | POST | `/emailCampaigns` |
+| 获取邮件模板 | GET | `/smtp/templates` |
 
-## Examples
+## 示例
 
-### Create/Update Contact
+### 创建/更新联系人信息
 
 ```bash
 curl -X POST "https://api.brevo.com/v3/contacts" \
@@ -72,14 +72,14 @@ curl -X POST "https://api.brevo.com/v3/contacts" \
   }'
 ```
 
-### Get Contact Info
+### 获取联系人信息
 
 ```bash
 curl "https://api.brevo.com/v3/contacts/user@example.com" \
   -H "api-key: $BREVO_KEY"
 ```
 
-### Update Contact Attributes
+### 更新联系人属性
 
 ```bash
 curl -X PUT "https://api.brevo.com/v3/contacts/user@example.com" \
@@ -93,7 +93,7 @@ curl -X PUT "https://api.brevo.com/v3/contacts/user@example.com" \
   }'
 ```
 
-### Send Transactional Email
+### 发送交易性邮件
 
 ```bash
 curl -X POST "https://api.brevo.com/v3/smtp/email" \
@@ -108,7 +108,7 @@ curl -X POST "https://api.brevo.com/v3/smtp/email" \
   }'
 ```
 
-### Send with Template
+### 使用模板发送邮件
 
 ```bash
 curl -X POST "https://api.brevo.com/v3/smtp/email" \
@@ -124,14 +124,14 @@ curl -X POST "https://api.brevo.com/v3/smtp/email" \
   }'
 ```
 
-### List All Contact Lists
+### 列出所有联系人列表
 
 ```bash
 curl "https://api.brevo.com/v3/contacts/lists?limit=50" \
   -H "api-key: $BREVO_KEY"
 ```
 
-### Add Contacts to List (Bulk)
+### 批量将联系人添加到列表中
 
 ```bash
 curl -X POST "https://api.brevo.com/v3/contacts/lists/10/contacts/add" \
@@ -142,9 +142,9 @@ curl -X POST "https://api.brevo.com/v3/contacts/lists/10/contacts/add" \
   }'
 ```
 
-## Safe Import Pattern
+## 安全导入规则
 
-When importing contacts, **always respect unsubscribes**:
+在导入联系人时，**务必尊重用户的退订意愿**：
 
 ```python
 import requests
@@ -191,9 +191,9 @@ def safe_import(emails, list_id):
             print(f"Error: {email} - {r.text[:50]}")
 ```
 
-## Contact Attributes
+## 联系人属性
 
-Brevo uses custom attributes for contact data:
+Brevo 使用自定义属性来存储联系人数据：
 
 ```json
 {
@@ -207,37 +207,37 @@ Brevo uses custom attributes for contact data:
 }
 ```
 
-Create attributes in Brevo dashboard: Contacts → Settings → Contact attributes.
+在 Brevo 的控制台中创建属性：联系人 → 设置 → 联系人属性。
 
-## Response Codes
+## 响应码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 200 | Success (GET) |
-| 201 | Created (POST) |
-| 204 | Success, no content (PUT/DELETE) |
-| 400 | Bad request (check payload) |
-| 401 | Invalid API key |
-| 404 | Contact/resource not found |
+| 200 | 成功（GET 请求） |
+| 201 | 创建成功（POST 请求） |
+| 204 | 操作成功，但没有返回内容（PUT/DELETE 请求） |
+| 400 | 请求错误（请检查请求数据） |
+| 401 | API 密钥无效 |
+| 404 | 未找到联系人或资源 |
 
-## Best Practices
+## 最佳实践
 
-1. **Always check blacklist** before importing contacts
-2. **Use `updateEnabled: true`** to update existing contacts instead of failing
-3. **Use templates** for consistent transactional emails
-4. **Batch operations** when adding many contacts to lists
-5. **Store list IDs** in config, not hardcoded
-6. **Log imports** for audit trail
+1. **在导入联系人之前，务必检查其是否被列入黑名单**。
+2. **使用 `updateEnabled: true` 参数来更新现有联系人信息，而不是直接删除他们**。
+3. **使用模板来确保交易性邮件的格式统一**。
+4. **在批量添加联系人到列表时，使用批量操作**。
+5. **将列表 ID 存储在配置文件中，而不是硬编码**。
+6. **记录导入操作，以便进行审计追踪**。
 
-## Automations
+## 自动化规则
 
-Brevo automations trigger on:
-- Contact added to list
-- Contact attribute updated
-- Email opened/clicked
-- Custom events via API
+Brevo 的自动化规则会在以下情况下触发：
+- 联系人被添加到列表中。
+- 联系人属性被更新。
+- 邮件被打开或点击。
+- 通过 API 触发自定义事件。
 
-Trigger automation manually:
+**手动触发自动化规则**：
 ```bash
 curl -X POST "https://api.brevo.com/v3/contacts/import" \
   -H "api-key: $BREVO_KEY" \
@@ -253,7 +253,7 @@ curl -X POST "https://api.brevo.com/v3/contacts/import" \
   }'
 ```
 
-## Useful Queries
+## 有用的查询
 
 ```bash
 # Count contacts in list

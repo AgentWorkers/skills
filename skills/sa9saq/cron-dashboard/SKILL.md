@@ -1,27 +1,27 @@
 ---
-description: View, manage, and debug OpenClaw cron jobs with status overview and health checks.
+description: 查看、管理和调试 OpenClaw 的 cron 作业，同时提供作业状态概览和健康检查（即作业是否正常运行的检查）。
 ---
 
-# Cron Dashboard
+# Cron 仪表板
 
-View and manage OpenClaw cron jobs at a glance.
+一目了然地查看和管理 OpenClaw 的 cron 作业。
 
-## Instructions
+## 使用说明
 
-1. **List all jobs**:
+1. **列出所有作业**：
    ```bash
    openclaw cron list
    ```
-   Display as table: Name | Schedule | Model | Status | Last Run | Next Run
+   以表格形式显示：名称 | 时间表 | 模型 | 状态 | 上次运行时间 | 下次运行时间
 
-2. **Job details**: `openclaw cron show <id>` — full config, recent runs, output logs
+2. **作业详情**：`openclaw cron show <id>` — 查看完整配置、最近运行记录及输出日志
 
-3. **Health checks** — Flag issues:
-   - ⚠️ Job hasn't run when expected (missed schedule)
-   - 🔴 Repeated failures (3+ consecutive)
-   - 🟡 Stale schedule (no runs in >24h for hourly jobs)
+3. **健康检查** — 标记问题：
+   - ⚠️ 作业未按预期运行（错过时间表）
+   - 🔴 连续失败（3次以上）
+   - 🟡 时间表失效（对于每小时运行的作业，超过 24 小时未运行）
 
-4. **Quick actions**:
+4. **快速操作**：
    ```bash
    openclaw cron create --name "task" --schedule "*/30 * * * *" --prompt "..."
    openclaw cron pause <id>
@@ -29,7 +29,7 @@ View and manage OpenClaw cron jobs at a glance.
    openclaw cron delete <id>
    ```
 
-5. **Dashboard view** (when asked for overview):
+5. **仪表板视图**（当请求概览时）：
    ```
    🕐 Cron Dashboard — 5 jobs
 
@@ -45,23 +45,23 @@ View and manage OpenClaw cron jobs at a glance.
    | tweet-bot     | 0 9 * * *   | 1h ago ❌     | tomorrow 9:00 |
    ```
 
-## Cron Expression Cheat Sheet
+## Cron 表达式速查表
 
-| Expression | Meaning |
+| 表达式 | 含义 |
 |-----------|---------|
-| `*/15 * * * *` | Every 15 minutes |
-| `0 */2 * * *` | Every 2 hours |
-| `0 9 * * 1-5` | Weekdays at 9 AM |
-| `0 2 * * *` | Daily at 2 AM |
-| `0 0 1 * *` | First of each month |
+| `*/15 * * * *` | 每 15 分钟运行一次 |
+| `0 */2 * * *` | 每 2 小时运行一次 |
+| `0 9 * * 1-5` | 工作日早上 9 点运行 |
+| `0 2 * * *` | 每天凌晨 2 点运行 |
+| `0 0 1 * *` | 每月的第一天运行 |
 
-## Troubleshooting
+## 故障排除
 
-- **Job not running**: Check if paused; verify schedule with `crontab.guru`
-- **Repeated failures**: Check `openclaw cron show <id>` for error output
-- **Consider heartbeat**: For flexible-timing checks, use HEARTBEAT.md instead of cron
+- **作业未运行**：检查是否被暂停；使用 `crontab.guru` 验证时间表设置
+- **连续失败**：查看 `openclaw cron show <id>` 的错误输出
+- **考虑使用心跳检测**：对于需要灵活定时检查的任务，建议使用 HEARTBEAT.md 而不是 cron
 
-## Requirements
+## 必备条件
 
-- OpenClaw CLI installed and configured
-- No API keys needed
+- 已安装并配置 OpenClaw CLI
+- 无需 API 密钥

@@ -1,47 +1,46 @@
 ---
 name: Ethereum
-description: Assist with Ethereum transactions, gas optimization, token approvals, and L2 bridges.
+description: 协助处理以太坊交易、气体（gas）优化、代币审批以及第二层（L2）桥接相关事务。
 metadata: {"clawdbot":{"emoji":"⟠","os":["linux","darwin","win32"]}}
 ---
 
-## Nonce and Stuck Transactions
-- Every Ethereum account has a nonce that increments with each transaction — if tx with nonce 5 is pending, nonces 6+ are blocked until 5 confirms
-- To unstick: send a new tx with the SAME nonce and higher gas — this replaces the pending tx (even a 0 ETH self-transfer works)
-- MetaMask "Speed up" and "Cancel" buttons do exactly this — they resubmit with same nonce and higher priority fee
-- Nonce gaps cause permanent stuck state — if nonce 3 was never broadcast but 4 was, 4 will never confirm until 3 is sent
+## Nonce与交易卡住的问题  
+- 每个以太坊账户都有一个nonce值，该值会在每次交易后递增。如果编号为5的交易尚未完成确认，那么编号为6及以上的交易将无法被执行，直到编号为5的交易被确认。  
+- 要解决这个问题，可以发送一条具有相同nonce值且gas费用更高的新交易来替换待处理的交易（即使是转账0 ETH的交易也同样有效）。  
+- MetaMask工具中的“Speed up”和“Cancel”按钮实际上就是执行这一操作的：它们会以相同的nonce值和更高的优先级费用重新提交交易。  
+- 如果nonce值之间存在间隔（例如，编号为3的交易从未被广播，而编号为4的交易已被广播），那么编号为4的交易将永远无法被确认，直到编号为3的交易被执行完毕。  
 
-## Gas (EIP-1559)
-- `maxFeePerGas` = max total you'll pay per gas unit. `maxPriorityFeePerGas` = tip to validator. `baseFee` = burned, set by protocol
-- Actual cost: `min(baseFee + priorityFee, maxFee) × gasUsed` — unused gas is refunded, but failed txs still consume gas
-- Gas limit is separate from gas price — setting limit too low causes "out of gas" revert, but you still pay for gas used up to that point
-- Check current base fee at etherscan.io/gastracker or via `eth_gasPrice` RPC — wallets often overestimate by 20-50%
+## Gas（EIP-1559）  
+- `maxFeePerGas`：表示每单位gas你愿意支付的最高费用。`maxPriorityFeePerGas`：表示你给予验证者的额外费用。`baseFee`：由协议规定的固定费用。  
+- 实际费用计算公式为：`min(baseFee + priorityFee, maxFee) × gasUsed`。未使用的gas费用会被退还，但失败的交易仍会消耗gas。  
+- Gas费用的限制与gas价格是分开设置的；如果将gas费用限制设置得太低，可能会导致交易失败（系统会回滚该交易），但你仍然需要支付已经使用的gas费用。  
+- 可以通过etherscan.io/gastracker或`eth_gasPrice` RPC查询当前的baseFee；需要注意的是，许多钱包对gas费用的估计可能偏高20%至50%。  
 
-## Token Approvals (Critical Security)
-- ERC-20 `approve()` grants a contract permission to spend your tokens — many dApps request unlimited (type(uint256).max) approval
-- If that contract gets hacked, attacker can drain all approved tokens even years later — audit approvals at revoke.cash
-- Recommend users approve only the exact amount needed, or revoke after each use
-- Approvals persist forever until explicitly revoked — changing wallets doesn't help if the old address still has tokens
+## 代币的批准权限（关键安全问题）  
+- ERC-20标准的`approve()`方法允许合约花费你的代币。许多去中心化应用（dApps）会请求无限额的代币批准权限（类型为`uint256`）。  
+- 如果相关合约被黑客攻击，攻击者可能会在多年后仍能窃取你已批准的代币。建议用户仅批准实际所需的代币数量，或者每次使用后及时撤销批准权限。  
+- 一旦批准权限被授予，就会永久有效，除非你主动撤销它；更换钱包也无法改变这一状态（因为旧地址可能仍持有代币）。  
 
-## Failed Transactions
-- A reverted transaction is mined and consumes gas — you pay even though nothing happened
-- Common causes: slippage exceeded, deadline passed, insufficient token balance, contract paused
-- "Transaction failed" in explorer means it executed but reverted — completely different from "pending" (not yet mined)
-- Simulating transactions before sending (via Tenderly or wallet preview) catches most revert conditions
+## 失败的交易  
+- 即使交易被回滚，它仍然会被矿工挖出并消耗gas费用。即使交易没有实际执行任何操作，你仍然需要支付这些费用。  
+- 常见的原因包括：交易滑点（slippage）超出预期、截止时间已过、代币余额不足、合约暂停等。  
+- 在交易浏览器中显示“Transaction failed”意味着交易虽然被执行了，但随后被回滚了，这与“pending”状态（交易尚未被矿工处理）是完全不同的。  
+- 在发送交易前，可以通过Tenderly或钱包的预览功能模拟交易，以检测可能出现的回滚情况。  
 
-## L2 Bridges and Withdrawals
-- Optimistic rollups (Optimism, Arbitrum, Base) have 7-day withdrawal period to mainnet — this is not a bug, it's the security model
-- ZK rollups (zkSync, Starknet) have faster finality but bridging back still takes 1-24 hours depending on liquidity
-- Third-party bridges (Hop, Across) offer faster exits but charge fees and have smart contract risk
-- Never bridge more than you can afford to wait 7 days for — or use a fast bridge and accept the fee
+## 第二层网络（L2）桥接与代币提取  
+- Optimistic Rollup（如Optimism、Arbitrum、Base）类型的桥接方案需要7天的时间才能将交易确认到主网。这不是错误，而是其安全机制的一部分。  
+- ZK Rollup（如zkSync、Starknet）类型的桥接方案具有更快的确认速度，但回滚到主网仍需要1至24小时，具体取决于网络的流动性。  
+- 第三方桥接服务（如Hop、Across）虽然提供更快的提取速度，但会收取费用，并且存在智能合约相关的风险。  
+- 在使用第三方桥接服务时，务必确保你能承受至少7天的等待时间；或者选择快速桥接服务，但需接受相应的费用。  
 
-## MEV Protection
-- Public mempool transactions can be frontrun or sandwiched — especially swaps on DEXs
-- Flashbots Protect RPC (protect.flashbots.net) hides transactions from public mempool until mined
-- Private transaction options: MEV Blocker, Flashbots Protect, or DEXs with native protection (CoW Swap)
-- Signs of sandwich attack: swap executed at worse price than quoted, with suspicious txs immediately before and after yours
+## MEV（Minimizing Excess Fees）保护  
+- 公共内存池中的交易容易被恶意篡改或被插入到其他交易中（尤其是DEX上的交易）。  
+- Flashbots Protect（protect_flashbots.net）等工具可以保护交易不被恶意篡改：它们会在交易被矿工处理之前将其隐藏起来。  
+- 可以使用MEV Blocker、Flashbots Protect等工具，或者选择具有内置保护功能的DEX（如CoW Swap）来防止此类攻击。  
+- 被攻击的迹象包括：交易以比报价更低的价格执行，且在你的交易前后有可疑的交易发生。  
 
-## Address Validation
-- Ethereum addresses are case-insensitive but the checksum (mixed case) catches typos — `0xABC...` vs `0xabc...` are the same address
-- ENS domains can expire — always verify current owner before sending to a .eth name
-- Contract addresses vs EOA: contracts can reject ETH transfers or behave unexpectedly — check on etherscan if address has code
-- Some tokens have multiple addresses (official + scam clones) — verify contract address on CoinGecko or project's official site
+## 地址验证  
+- 以太坊地址不区分大小写，但地址的校验和（包含大小写）可以检测拼写错误（例如`0xABC...`和`0xabc...`是同一个地址）。  
+- ENS（Ethereum Name Service）域名可能会过期；在向.eth格式的地址发送代币之前，请务必验证当前的所有者。  
+- 需要区分合约地址（contract address）和外部账户地址（EOA，Externally Owned Account）：合约可能会拒绝接收ETH转账或表现异常；可以通过etherscan查询地址是否关联有合约代码。  
+- 一些代币可能有多个地址（包括官方地址和恶意克隆地址）；请在CoinGecko或项目官方网站上核实合约地址的真实性。

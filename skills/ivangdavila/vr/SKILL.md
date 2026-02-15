@@ -1,104 +1,104 @@
 ---
 name: VR
-description: Set up VR headsets, troubleshoot common issues, optimize comfort, and recommend experiences by use case.
+description: 设置 VR 头显，排查常见问题，优化佩戴舒适度，并根据使用场景推荐合适的体验内容。
 metadata:
   category: technology
   skills: ["vr", "virtual-reality", "headsets", "oculus", "steamvr"]
 ---
 
-## Before Recommending Headsets
+## 在推荐头戴设备之前
 
-- Ask primary use case: gaming, fitness, social, productivity, development
-- Ask if they have gaming PC: determines standalone vs tethered options
-- Ask play space size: room-scale needs 2m x 2m minimum
-- Ask glasses wearer: some headsets accommodate, some need prescription inserts
-- Budget reality: entry level $300-400, enthusiast $500-1000+
+- 询问主要使用场景：游戏、健身、社交、办公或开发
+- 了解用户是否拥有专用游戏电脑，这会影响到选择独立式还是需要连接电脑的头戴设备
+- 询问游戏空间的大小：通常需要至少2米×2米的空间
+- 如果用户佩戴眼镜，请确认所选头戴设备是否适合，部分设备需要定制镜片
+- 考虑预算范围：入门级产品价格在300-400美元左右，高级产品价格在500-1000美元以上
 
-## Current Headset Landscape
+## 当前的头戴设备市场概况
 
-| Headset | Best For | Requires |
+| 头戴设备 | 适用场景 | 需要的条件 |
 |---------|----------|----------|
-| Quest 3 | All-around, standalone + PC | Nothing, standalone |
-| Quest 2 | Budget entry, still capable | Nothing, standalone |
-| PSVR2 | PlayStation gamers | PS5 |
-| Valve Index | Enthusiast PC VR, finger tracking | Gaming PC |
-| Pico 4 | Quest alternative, some regions | Nothing, standalone |
+| Quest 3 | 多功能、独立使用 | 无需额外设备 |
+| Quest 2 | 经济实惠的入门级产品 | 无需额外设备 |
+| PSVR2 | 适用于PlayStation玩家 | 需要PlayStation 5 |
+| Valve Index | 适用于高级PC VR用户，支持手部追踪功能 | 需要游戏电脑 |
+| Pico 4 | Quest的替代产品，在某些地区可用 | 无需额外设备 |
 
-Recommend based on their situation, not specs alone.
+推荐设备时应综合考虑用户的具体需求，而不仅仅是产品规格。
 
-## Setup Guidance
+## 设置指南
 
-- Clear play space of obstacles: furniture, pets, cables, ceiling fans
-- Guardian/boundary setup: take time to do it right, prevents wall punching
-- Lighting matters: too dark or direct sunlight breaks tracking
-- Controller batteries: rechargeable recommended, standard drain fast
-- First session keep short: 15-30 min max, build tolerance
+- 清理游戏空间内的障碍物：家具、宠物、电线、吊扇等
+- 正确设置“保护边界”功能，防止用户误触墙壁
+- 照明条件很重要：过暗或直射阳光会影响追踪效果
+- 控制器电池建议使用可充电类型，普通电池耗电较快
+- 首次使用时长建议控制在15-30分钟以内，逐渐适应设备
 
-## Motion Sickness Prevention
+## 预防运动性眩晕
 
-- Start with stationary experiences: Beat Saber, Job Simulator, not Boneworks
-- Teleport locomotion before smooth locomotion: less nausea-inducing
-- Stop at first sign of discomfort: pushing through makes it worse
-- Fan blowing on face helps: real-world anchor point
-- Ginger before sessions: actually helps for some people
-- Most people adapt over 1-2 weeks: don't give up after one bad session
+- 从静态体验开始：如《Beat Saber》、《Job Simulator》等游戏，避免使用《Boneworks》
+- 先尝试平滑移动功能，再尝试快速移动，以减少眩晕感
+- 一旦感到不适立即停止使用：强行继续使用只会加重症状
+- 使用风扇对着脸部吹风有助于缓解不适
+- 有些人可以在使用前服用姜片，有一定缓解效果
+- 大多数人会在1-2周内适应设备，不要因为一次不好的体验就放弃
 
-## Comfort Optimization
+## 提高佩戴舒适度
 
-- Stock straps are often inadequate: aftermarket straps significant upgrade
-- Weight distribution matters more than total weight: front-heavy causes fatigue
-- IPD adjustment: measure pupillary distance, set correctly or get headaches
-- Lens cleaning: microfiber only, no liquids directly on lens
-- Face gasket replacement: hygiene and comfort, aftermarket options exist
+- 标配的绑带通常不够舒适：购买第三方绑带可以显著提升佩戴体验
+- 重量分布比总重量更重要：头部过重会导致疲劳
+- 调整瞳孔间距（IPD）：正确设置可避免头痛
+- 清洁镜片时只能使用微纤维布，避免使用液体
+- 更换面部密封垫：保持卫生并提升佩戴舒适度，市场上有相关配件
 
-## PC VR Troubleshooting
+## PC VR使用中的常见问题解决方法
 
-- SteamVR issues: restart SteamVR, headset, PC in that order
-- Tracking jitter: check lighting, reflective surfaces, USB bandwidth
-- Performance problems: lower supersampling first, then other settings
-- Link cable issues: try different USB port, USB 3.0 required
-- Black screen: check display cable, GPU drivers, headset firmware
+- SteamVR相关问题：按顺序重启SteamVR、头戴设备和电脑
+- 追踪不稳定：检查照明条件、反射表面以及USB带宽
+- 性能问题：先降低超级采样率，再调整其他设置
+- 连接问题：尝试更换USB端口，确保使用USB 3.0接口
+- 屏幕黑屏：检查显示线和GPU驱动程序、头戴设备固件
 
-## Fitness Use
+## 针对健身的头戴设备使用建议
 
-- Beat Saber, Supernatural, FitXR: actual workouts, not just games
-- Sweat protection: silicone face covers, clean after each session
-- Calorie tracking: varies wildly, don't trust in-app estimates blindly
-- Space needs: punching games need arm room in all directions
-- Cooling: VR fitness generates heat, ventilation matters
+- 《Beat Saber》、《Supernatural》、《FitXR》等游戏不仅适合娱乐，还能用于实际锻炼
+- 使用硅胶材质的面罩保护面部，每次使用后及时清洁
+- 卡路里消耗数据仅供参考，不要完全依赖应用程序的估算
+- 确保有足够的活动空间，特别是进行挥动手臂的动作时
+- VR健身会产生热量，良好的通风非常重要
 
-## Social VR Guidance
+## 社交型VR平台的推荐
 
-- VRChat: free, massive user-created content, can be chaotic
-- Rec Room: more structured, better for younger users
-- Horizon Worlds: Meta's platform, more moderated
-- Microphone etiquette: mute when not speaking, background noise irritates
-- Personal space bubbles exist: configure in settings if needed
+- **VRChat**：免费平台，拥有大量用户创建的内容，但可能较为混乱
+- **Rec Room**：结构更规范，更适合年轻用户
+- **Horizon Worlds**：Meta公司的平台，内容较为有序
+- 使用麦克风时请注意礼仪：不说话时请静音，背景噪音会影响交流
+- 可根据需要配置个人隐私空间
 
-## Development Basics
+## 开发入门建议
 
-- Unity + XR Interaction Toolkit: most common starting point
-- Unreal Engine: higher visual fidelity, steeper learning curve
-- Test frequently on device: flat screen preview misses many issues
-- Performance critical: 72-90fps minimum, drops cause sickness
-- Accessibility from start: seated mode, one-handed options
+- **Unity + XR Interaction Toolkit**：最常用的开发工具
+- **Unreal Engine**：视觉效果更出色，但学习曲线较陡峭
+- 在设备上频繁测试：在平板屏幕上预览可能会遗漏很多问题
+- 确保游戏帧率在72-90帧/秒以上，过低帧率会导致眩晕
+- 从一开始就考虑设备的可访问性：提供坐姿模式和单手操作选项
 
-## Content Recommendations by Type
+## 不同类型内容的推荐
 
-| Want | Try First |
+| 希望体验 | 推荐游戏/应用 |
 |------|-----------|
-| Gaming action | Beat Saber, Pistol Whip |
-| Gaming immersion | Half-Life Alyx, Resident Evil 4 |
-| Fitness | Supernatural, Beat Saber, FitXR |
-| Social | VRChat, Rec Room |
-| Relaxation | Nature Treks, Guided meditation apps |
-| Creativity | Tilt Brush, Gravity Sketch |
-| Productivity | Immersed, Virtual Desktop |
+| 游戏动作 | 《Beat Saber》、《Pistol Whip》 |
+| 沉浸式游戏 | 《Half-Life Alyx》、《Resident Evil 4》 |
+| 健身 | 《Supernatural》、《Beat Saber》、《FitXR》 |
+| 社交互动 | **VRChat》、《Rec Room** |
+| 放松身心 | 《Nature Treks》、《Guided Meditation》应用 |
+| 创意表达 | 《Tilt Brush》、《Gravity Sketch》 |
+| 办公效率 | 《Immersed》、《Virtual Desktop》 |
 
-## Common Issues
+## 常见问题及解决方法
 
-- Blurry image: adjust headset position, check IPD, clean lenses
-- Controller drift: recalibrate, check for firmware updates
-- Battery drain when "off": turn off fully, not just sleep
-- Fogging: let headset warm up, anti-fog solutions exist
-- Link/AirLink issues: 5GHz WiFi required for wireless, dedicated router helps
+- 图像模糊：调整头戴设备的位置，检查瞳孔间距（IPD），清洁镜片
+- 控制器漂移：重新校准控制器，检查固件更新
+- 控制器电池在“关闭”状态下仍会耗电：请确保设备完全断电
+- 镜片起雾：让设备预热一段时间，市面上有防雾解决方案
+- 无线连接问题：需要使用5GHz WiFi，专用路由器有助于改善连接稳定性

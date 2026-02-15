@@ -1,56 +1,56 @@
 ---
 name: smart-home-energy-saver
-description: Analyze home energy usage and propose safe, read-only automation plans for savings. Use when a user wants Home Assistant energy insights, optimization ideas, or draft automation YAML without directly controlling devices.
+description: 分析家庭能源使用情况，并提出安全、仅限读取的自动化方案以帮助节省能源。适用于用户希望了解Home Assistant的能源使用数据、获取优化建议，或起草自动化脚本（YAML格式），但无需直接控制设备的情况。
 ---
 
-# Smart Home Energy Saver
+# 智能家居节能助手
 
-## Goal
-Provide energy-saving recommendations and draft automations without changing device states.
+## 目标
+在不改变设备状态的情况下，提供节能建议并生成自动化脚本。
 
-## Best fit
-- Use when the user has Home Assistant energy and device data.
-- Use when the user wants schedule recommendations and savings estimates.
-- Use when the user wants draft automation YAML for review.
+## 适用场景
+- 当用户拥有 Home Assistant 的能源使用数据和设备信息时使用。
+- 当用户希望获取定时节能建议及节能效果预估时使用。
+- 当用户需要查看自动化脚本的 YAML 代码以供审核时使用。
 
-## Not fit
-- Avoid when the user asks to apply automations automatically.
-- Avoid when critical systems are involved without safety review.
-- Avoid when data sources are missing or unreliable.
+## 不适用场景
+- 当用户要求自动执行自动化脚本时请避免使用。
+- 当涉及关键系统且未经安全评估时请避免使用。
+- 当数据来源缺失或不可靠时请避免使用。
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速入门指南
+- 请参阅 `references/overview.md` 以了解工作流程和质量标准。
+- 请参阅 `references/auth.md` 以了解访问权限和令牌管理的相关信息。
+- 请参阅 `references/endpoints.md` 以了解可选的集成方案和模板。
+- 请参阅 `references/webhooks.md` 以了解异步事件处理的方法。
+- 请参阅 `references/ux.md` 以了解数据输入格式和输出格式的要求。
+- 请参阅 `references/troubleshooting.md` 以了解常见问题的解决方法。
+- 请参阅 `references/safety.md` 以了解安全性和隐私保护措施。
 
-## Required inputs
-- Home Assistant instance info and read-only token (if used).
-- List of controllable devices and comfort constraints.
-- Energy tariff schedule and target savings goals.
-- Preferred operating hours and exceptions.
+## 必需输入的信息
+- Home Assistant 实例信息及（如需使用）只读令牌。
+- 可控制设备的列表及用户的舒适度要求。
+- 能源费用计费计划及目标节能目标。
+- 用户偏好的运行时间表及例外情况。
 
-## Expected output
-- Energy usage summary and top savings opportunities.
-- Draft automation YAML snippets with explanations.
-- Estimated impact ranges and assumptions.
-- Manual checklist for safe rollout.
+## 预期输出结果
+- 能源使用情况总结及主要的节能潜力。
+- 带有说明的自动化脚本 YAML 代码片段。
+- 节能效果的预估范围及相关假设。
+- 安全部署的手动检查清单。
 
-## Operational notes
-- Only propose automations; never apply changes.
-- Respect comfort and safety constraints.
-- Flag any automation that could affect safety or accessibility.
+## 操作注意事项
+- 仅提供自动化建议，绝不直接执行任何更改。
+- 遵守用户的舒适度和安全要求。
+- 对可能影响安全或使用体验的自动化方案需特别标注。
 
-## Security notes
-- Keep tokens in environment variables if provided.
-- Avoid exposing home addresses or device identifiers in outputs.
+## 安全提示
+- 如果提供了令牌，请将其存储在环境变量中。
+- 避免在输出结果中泄露家庭地址或设备标识信息。
 
-## Safe mode
-- Read-only analysis and draft automation files only.
-- No live device control or configuration updates.
+## 安全模式
+- 仅支持读取分析数据及生成自动化脚本。
+- 不允许对设备进行实时控制或配置更新。
 
-## Sensitive ops
-- Applying automations or controlling devices is out of scope.
+## 特殊操作说明
+- 自动执行自动化脚本或直接控制设备不在本工具的适用范围内。

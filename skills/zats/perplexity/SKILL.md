@@ -1,32 +1,32 @@
 ---
 name: perplexity
-description: Search the web with AI-powered answers via Perplexity API. Returns grounded responses with citations. Supports batch queries.
+description: 通过 Perplexity API，利用人工智能技术搜索网页并获取带有引用的答案。支持批量查询功能。
 homepage: https://docs.perplexity.ai
 metadata: {"clawdbot":{"emoji":"🔮","requires":{"bins":["node"],"env":["PERPLEXITY_API_KEY"]},"primaryEnv":"PERPLEXITY_API_KEY"}}
 ---
 
-# Perplexity Search
+# Perplexity 搜索
 
-AI-powered web search that returns grounded answers with citations.
+这是一个基于人工智能的网页搜索工具，能够提供带有引用依据的准确答案。
 
-## Search
+## 搜索
 
-Single query:
-```bash
+- 单个查询：
+  ```bash
 node {baseDir}/scripts/search.mjs "what's happening in AI today"
 ```
 
-Multiple queries (batch):
-```bash
+- 多个查询（批量）：
+  ```bash
 node {baseDir}/scripts/search.mjs "What is Perplexity?" "Latest AI news" "Best coffee in NYC"
 ```
 
-## Options
+## 选项
 
-- `--json`: Output raw JSON response
+- `--json`：输出原始的 JSON 响应
 
-## Notes
+## 注意事项
 
-- Requires `PERPLEXITY_API_KEY` environment variable
-- Responses include citations when available
-- Batch queries are processed in a single API call
+- 需要设置 `PERPLEXITY_API_KEY` 环境变量
+- 当可用时，搜索结果会包含引用信息
+- 批量查询会通过一次 API 调用进行处理

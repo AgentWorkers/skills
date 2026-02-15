@@ -1,10 +1,10 @@
-# Document Creator with Auto-Upload SophNet
+# 自动上传到SophNet的文档创建工具
 
-## Description
+## 描述
 
-An integrated document creation skill that supports creating Word documents (DOCX) and PowerPoint presentations (PPTX), with automatic upload to OSS and URL return.
+这是一个集成的文档创建功能，支持生成Word文档（DOCX）和PowerPoint演示文稿（PPTX），并能够自动将生成的文档上传到开源软件仓库（OSS），同时返回文档的URL。
 
-## Usage
+## 使用方法
 
 ```bash
 # Create document using skill
@@ -14,22 +14,22 @@ openclaw document-creator /path/to/your/file.txt
 # In OpenClaw session: Create document /path/to/file.png
 ```
 
-## Configuration Requirements
+## 配置要求
 
-- Set `SOPH_API_KEY` environment variable
-- Or configure sophnet API key in OpenClaw config file
+- 设置 `SOPH_API_KEY` 环境变量
+- 或者在OpenClaw的配置文件中配置SophNet的API密钥
 
-## Supported Parameters
+## 支持的参数
 
-- `file_path`: Local file path to upload (required)
+- `file_path`：要上传的本地文件路径（必需）
 
-## Return Value
+## 返回值
 
-- Success: Returns signed URL string
-- Failure: Throws exception with error message
+- 成功：返回带有签名信息的URL字符串
+- 失败：抛出异常并显示错误信息
 
-## Dependencies
+## 依赖项
 
-- Python 3.7+
-- requests library
-- OpenClaw config access permission
+- Python 3.7及以上版本
+- requests库
+- OpenClaw的配置文件及相应的访问权限

@@ -1,15 +1,15 @@
 ---
 name: git-essentials
-description: Essential Git commands and workflows for version control, branching, and collaboration.
+description: Git的基本命令和工作流程，用于版本控制、分支管理和协作。
 homepage: https://git-scm.com/
 metadata: {"clawdbot":{"emoji":"🌳","requires":{"bins":["git"]}}}
 ---
 
-# Git Essentials
+# Git基础
 
-Essential Git commands for version control and collaboration.
+Git是用于版本控制和协作的核心工具。以下是一些必备的Git命令。
 
-## Initial Setup
+## 初始设置
 
 ```bash
 # Configure user
@@ -24,9 +24,9 @@ git clone https://github.com/user/repo.git
 git clone https://github.com/user/repo.git custom-name
 ```
 
-## Basic Workflow
+## 基本工作流程
 
-### Staging and committing
+### 将文件添加到暂存区（Staging Area）并提交（Committing）
 ```bash
 # Check status
 git status
@@ -47,7 +47,7 @@ git commit --amend -m "New message"
 git commit --amend --no-edit  # Keep message
 ```
 
-### Viewing changes
+### 查看文件更改（Viewing Changes）
 ```bash
 # Show unstaged changes
 git diff
@@ -62,9 +62,9 @@ git diff file.txt
 git diff commit1 commit2
 ```
 
-## Branching & Merging
+## 分支（Branching）与合并（Merging）
 
-### Branch management
+### 分支管理（Branch Management）
 ```bash
 # List branches
 git branch
@@ -89,7 +89,7 @@ git branch -D branch-name  # Force delete
 git branch -m old-name new-name
 ```
 
-### Merging
+### 合并（Merging）
 ```bash
 # Merge branch into current
 git merge feature-name
@@ -104,9 +104,9 @@ git merge --abort
 git diff --name-only --diff-filter=U
 ```
 
-## Remote Operations
+## 远程仓库操作（Remote Operations）
 
-### Managing remotes
+### 管理远程仓库（Managing Remotes）
 ```bash
 # List remotes
 git remote -v
@@ -121,7 +121,7 @@ git remote set-url origin https://github.com/user/new-repo.git
 git remote remove origin
 ```
 
-### Syncing with remote
+### 与远程仓库同步（Syncing with Remotes）
 ```bash
 # Fetch from remote
 git fetch origin
@@ -142,9 +142,9 @@ git push -u origin branch-name
 git push --force-with-lease
 ```
 
-## History & Logs
+## 版本历史与日志（Version History & Logs）
 
-### Viewing history
+### 查看版本历史（Viewing Version History）
 ```bash
 # Show commit history
 git log
@@ -169,7 +169,7 @@ git log --until="2024-01-01"
 git log -- file.txt
 ```
 
-### Searching history
+### 搜索版本历史（Searching Version History）
 ```bash
 # Search commit messages
 git log --grep="bug fix"
@@ -186,9 +186,9 @@ git bisect bad
 git bisect good commit-hash
 ```
 
-## Undoing Changes
+## 撤销更改（Undoing Changes）
 
-### Working directory
+### 工作目录（Working Directory）
 ```bash
 # Discard changes in file
 git restore file.txt
@@ -198,7 +198,7 @@ git checkout -- file.txt  # Old way
 git restore .
 ```
 
-### Staging area
+### 暂存区（Staging Area）
 ```bash
 # Unstage file
 git restore --staged file.txt
@@ -208,7 +208,7 @@ git reset HEAD file.txt  # Old way
 git reset
 ```
 
-### Commits
+### 提交（Committing）
 ```bash
 # Undo last commit (keep changes)
 git reset --soft HEAD~1
@@ -223,8 +223,7 @@ git revert commit-hash
 git reset --hard commit-hash
 ```
 
-## Stashing
-
+## 隐藏文件（Stashing Files）
 ```bash
 # Stash changes
 git stash
@@ -251,8 +250,7 @@ git stash drop stash@{0}
 git stash clear
 ```
 
-## Rebasing
-
+## 重新基线（Rebasing）
 ```bash
 # Rebase current branch
 git rebase main
@@ -270,8 +268,7 @@ git rebase --skip
 git rebase --abort
 ```
 
-## Tags
-
+## 标签（Tags）
 ```bash
 # List tags
 git tag
@@ -296,9 +293,9 @@ git tag -d v1.0.0
 git push origin --delete v1.0.0
 ```
 
-## Advanced Operations
+## 高级操作
 
-### Cherry-pick
+### 选择性地应用更改（Cherry-Picking）
 ```bash
 # Apply specific commit
 git cherry-pick commit-hash
@@ -307,7 +304,7 @@ git cherry-pick commit-hash
 git cherry-pick -n commit-hash
 ```
 
-### Submodules
+### 子模块（Submodules）
 ```bash
 # Add submodule
 git submodule add https://github.com/user/repo.git path/
@@ -322,7 +319,7 @@ git submodule update
 git clone --recursive https://github.com/user/repo.git
 ```
 
-### Clean
+### 清理工作目录（Cleaning the Working Directory）
 ```bash
 # Preview files to be deleted
 git clean -n
@@ -337,9 +334,9 @@ git clean -fd
 git clean -fdx
 ```
 
-## Common Workflows
+## 常见工作流程
 
-**Feature branch workflow:**
+**特性分支工作流程（Feature Branch Workflow）：**
 ```bash
 git checkout -b feature/new-feature
 # Make changes
@@ -352,7 +349,7 @@ git pull
 git branch -d feature/new-feature
 ```
 
-**Hotfix workflow:**
+**热修复工作流程（Hotfix Workflow）：**
 ```bash
 git checkout main
 git pull
@@ -364,7 +361,7 @@ git push -u origin hotfix/critical-bug
 git checkout main && git pull
 ```
 
-**Syncing fork:**
+**同步分支（Syncing Forks）：**
 ```bash
 git remote add upstream https://github.com/original/repo.git
 git fetch upstream
@@ -373,9 +370,9 @@ git merge upstream/main
 git push origin main
 ```
 
-## Useful Aliases
+## 有用的别名（Useful Aliases）
 
-Add to `~/.gitconfig`:
+可以将这些别名添加到`~/.gitconfig`文件中：
 ```ini
 [alias]
     st = status
@@ -388,44 +385,44 @@ Add to `~/.gitconfig`:
     amend = commit --amend --no-edit
 ```
 
-## Tips
+## 提示与技巧
 
-- Commit often, perfect later (interactive rebase)
-- Write meaningful commit messages
-- Use `.gitignore` for files to exclude
-- Never force push to shared branches
-- Pull before starting work
-- Use feature branches, not main
-- Rebase feature branches before merging
-- Use `--force-with-lease` instead of `--force`
+- 经常提交代码，后期再优化（使用交互式重新基线功能）
+- 编写有意义的提交信息
+- 使用`.gitignore`文件排除不需要跟踪的文件
+- 绝不要强制推送代码到共享分支
+- 在开始工作前先拉取最新的代码
+- 使用特性分支而不是主分支进行开发
+- 在合并特性分支之前先进行重新基线操作
+- 使用`--force-with-lease`代替`--force`进行强制推送
 
-## Common Issues
+## 常见问题与解决方法
 
-**Undo accidental commit:**
+**撤销意外提交的更改（Undoing Accidental Commits）：**
 ```bash
 git reset --soft HEAD~1
 ```
 
-**Recover deleted branch:**
+**恢复被删除的分支（Recovering Deleted Branches）：**
 ```bash
 git reflog
 git checkout -b branch-name <commit-hash>
 ```
 
-**Fix wrong commit message:**
+**修改错误的提交信息（Correcting Incorrect Commit Messages）：**
 ```bash
 git commit --amend -m "Correct message"
 ```
 
-**Resolve merge conflicts:**
+**解决合并冲突（Resolving Merge Conflicts）：**
 ```bash
 # Edit files to resolve conflicts
 git add resolved-files
 git commit  # Or git merge --continue
 ```
 
-## Documentation
+## 文档资源
 
-Official docs: https://git-scm.com/doc
-Pro Git book: https://git-scm.com/book
-Visual Git guide: https://marklodato.github.io/visual-git-guide/
+官方文档：https://git-scm.com/doc
+《Pro Git》书籍：https://git-scm.com/book
+《Visual Git Guide》：https://marklodato.github.io/visual-git-guide/

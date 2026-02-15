@@ -1,11 +1,11 @@
 ---
 name: glab-deploy-key
-description: Manage SSH deploy keys for GitLab projects including add, list, and delete operations. Use when setting up deploy keys for CI/CD, managing read-only access, or configuring deployment authentication. Triggers on deploy key, SSH key, deployment key, read-only access.
+description: 管理 GitLab 项目的 SSH 部署密钥，包括添加、列出和删除操作。这些功能适用于配置持续集成/持续部署（CI/CD）所需的部署密钥、管理只读访问权限，或配置部署认证。相关操作会触发对部署密钥、SSH 密钥或只读访问权限的相应处理。
 ---
 
 # glab deploy-key
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Manage SSH deploy keys for GitLab projects including add, list, and
     -R --repo                 Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab deploy-key --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 的完整输出，请参阅 [references/commands.md](references/commands.md)。

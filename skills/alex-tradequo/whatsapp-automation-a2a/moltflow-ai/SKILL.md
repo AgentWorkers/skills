@@ -1,6 +1,6 @@
 ---
 name: moltflow-ai
-description: "AI-powered WhatsApp features: auto-replies, voice transcription, RAG knowledge base, and style profiles. Use when: ai reply, transcribe voice, knowledge base, upload document, train style, learn mode."
+description: "AI驱动的WhatsApp功能：自动回复、语音转录、RAG知识库以及样式配置。使用场景包括：自动回复、语音转录、知识库查询、文档上传、样式训练以及学习模式。"
 source: "MoltFlow Team"
 version: "2.1.0"
 risk: safe
@@ -10,474 +10,209 @@ primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
 
-> **MoltFlow** -- WhatsApp Business automation for teams. Connect, monitor, and automate WhatsApp at scale.
-> [Save up to 17% with yearly billing](https://molt.waiflow.app/checkout?plan=free) -- Free tier available, no credit card required.
+**MoltFlow**——专为团队设计的WhatsApp Business自动化工具。支持大规模连接、监控和自动化WhatsApp消息处理。  
+**年费订阅可节省高达17%的费用**（[点击此处查看详情](https://molt.waiflow.app/checkout?plan=free）；提供免费试用计划，无需信用卡。  
 
-# MoltFlow AI Features
+# MoltFlow的AI功能  
 
-AI-powered capabilities for WhatsApp automation: voice transcription, RAG knowledge base, style profile learning, and intelligent reply generation.
+MoltFlow具备基于AI的自动化功能，包括语音转录、RAG（Retrieval, Augmentation, and Generation）知识库、风格分析以及智能回复生成等。  
 
-## When to Use
+## 使用场景  
 
-- "Transcribe a voice message" or "convert audio to text"
-- "Upload a document to knowledge base" or "ingest PDF"
-- "Search knowledge base" or "find in documents"
-- "Train style profile" or "learn my writing style"
-- "Generate an AI reply" or "auto-reply to customer"
-- "Preview AI response" or "test reply generation"
-- "List knowledge sources" or "delete document"
+- **语音转录**：将WhatsApp语音消息转换为文本。  
+- **知识库管理**：上传文档到知识库或从中搜索信息。  
+- **回复生成**：利用AI生成合适的回复。  
+- **风格训练**：根据聊天历史数据训练AI以匹配您的写作风格。  
 
-## Prerequisites
+## 前提条件  
 
-1. **MOLTFLOW_API_KEY** -- Generate from the [MoltFlow Dashboard](https://molt.waiflow.app) under Settings > API Keys
-2. **Pro plan or higher** ($29.90/mo) -- AI features are not available on the Starter plan
-3. Base URL: `https://apiv2.waiflow.app/api/v2`
-4. All AI endpoints are under the `/ai` prefix
+1. **MOLTFLOW_API_KEY**：需在[MoltFlow控制台](https://molt.waiflow.app)的“设置”>“API密钥”中生成。  
+2. **至少需使用Pro计划（每月29.90美元）**；Starter计划不支持AI功能。  
+3. 基础URL：`https://apiv2.waiflow.app/api/v2`  
+4. 所有AI相关接口前缀均为`/ai`。  
 
-## Required API Key Scopes
+## 所需API权限  
 
-| Scope | Access |
-|-------|--------|
-| `ai` | `read/manage` |
+| 权限范围 | 访问内容 |
+|---------|---------|-------------------|
+| `ai` | `读取/管理`数据 |
 
-> **Chat History Access**: Reading chat history requires explicit tenant opt-in.
-> Enable at **Settings > Account > Data Access** before using chat-related features.
-> Sending messages does NOT require this consent — only reading history.
+**注意：**  
+- **聊天记录访问**：需用户明确授权。请在“设置”>“账户”>“数据访问”中启用该功能。  
+- **发送消息**无需授权，仅读取聊天记录需授权。  
 
-## Authentication
+## 认证方式  
 
-Every request must include one of:
-
+所有请求必须包含以下认证信息之一：  
 ```
 Authorization: Bearer <jwt_token>
-```
-
-or
-
+```  
+或  
 ```
 X-API-Key: <your_api_key>
-```
+```  
 
 ---
 
-## Voice Transcription
+## **语音转录**  
+使用Whisper AI技术将WhatsApp语音消息转录为文本。转录过程通过Celery后台进程异步执行。  
 
-Transcribe WhatsApp voice messages using Whisper AI. Transcription runs asynchronously via a Celery worker.
+| 方法 | 接口地址 | 功能描述 |
+|------|---------|-------------------|
+| POST | `/ai/voice/transcribe` | 提交语音消息进行转录 |
+| GET | `/ai/voice/status/{task_id}` | 查看转录任务状态 |
+| GET | `/ai/messages/{message_id}/transcript` | 获取消息的转录结果 |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/ai/voice/transcribe` | Queue a voice message for transcription |
-| GET | `/ai/voice/status/{task_id}` | Check transcription task status |
-| GET | `/ai/messages/{message_id}/transcript` | Get the transcript for a message |
+### 提交转录任务  
+**POST** `/ai/voice/transcribe`  
 
-### Queue Transcription
+**响应状态**：`200 OK`  
 
-**POST** `/ai/voice/transcribe`
-
-```json
-{
-  "message_id": "msg-uuid-..."
-}
-```
-
-**Response** `200 OK`:
-
-```json
-{
-  "task_id": "celery-task-id-...",
-  "message_id": "msg-uuid-...",
-  "status": "queued"
-}
-```
-
-### Check Status
-
-**GET** `/ai/voice/status/{task_id}`
-
-```json
-{
-  "task_id": "celery-task-id-...",
-  "status": "completed",
-  "result": {
-    "transcript": "Hello, I wanted to ask about...",
-    "language": "en",
-    "confidence": 0.95
-  }
-}
-```
-
-Status values: `queued`, `processing`, `completed`, `failed`
-
-### Get Transcript
-
-**GET** `/ai/messages/{message_id}/transcript`
-
-```json
-{
-  "message_id": "msg-uuid-...",
-  "transcript": "Hello, I wanted to ask about...",
-  "language": "en",
-  "confidence": 0.95,
-  "transcribed_at": "2026-02-11T10:05:00Z"
-}
-```
+### 查看转录结果  
+**GET** `/ai/messages/{message_id}/transcript`  
 
 ---
 
-## RAG Knowledge Base
+## **RAG知识库**  
+上传文档以构建可搜索的知识库。AI在生成回复时会参考这些文档内容。  
 
-Upload documents to build a searchable knowledge base. The AI uses this context when generating replies, providing accurate answers grounded in your business data.
+| 方法 | 接口地址 | 功能描述 |
+|------|---------|-------------------|
+| POST | `/ai/knowledge/ingest` | 上传并索引文档 |
+| POST | `/ai/knowledge/search` | 在文档中执行语义搜索 |
+| GET | `/ai/knowledge/sources` | 列出所有已索引的文档 |
+| DELETE | `/ai/knowledge/{source_id}` | 删除文档 |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/ai/knowledge/ingest` | Upload and index a document |
-| POST | `/ai/knowledge/search` | Semantic search across documents |
-| GET | `/ai/knowledge/sources` | List all indexed documents |
-| DELETE | `/ai/knowledge/{source_id}` | Delete a document |
+### 上传文档  
+**POST** `/ai/knowledge/ingest`（使用multipart/form-data格式）  
+**文件要求**：PDF或TXT格式（文件大小不超过100MB）  
 
-### Upload Document
+**响应状态**：`200 OK`  
 
-**POST** `/ai/knowledge/ingest` (multipart/form-data)
+**支持的文件类型**：`application/pdf`、`text/plain`  
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `file` | File | PDF or TXT file (max 100MB) |
+### 搜索知识库  
+**POST** `/ai/knowledge/search`  
 
-**Response** `200 OK`:
+**响应状态**：`200 OK`  
 
-```json
-{
-  "id": "src-uuid-...",
-  "name": "product-catalog.pdf",
-  "source_type": "application/pdf",
-  "chunk_count": 47,
-  "status": "indexed",
-  "task_id": "celery-task-id-..."
-}
-```
+### 列出文档  
+**GET** `/ai/knowledge/sources`  
 
-Supported file types: `application/pdf`, `text/plain` (`.pdf`, `.txt`)
+**文档状态**：`processing`（处理中）、`indexed`（已索引）、`failed`（上传失败）  
 
-### Search Knowledge Base
-
-**POST** `/ai/knowledge/search`
-
-```json
-{
-  "query": "What is the return policy?",
-  "top_k": 5
-}
-```
-
-**Response** `200 OK`:
-
-```json
-{
-  "query": "What is the return policy?",
-  "results": [
-    {
-      "source_id": "src-uuid-...",
-      "content_type": "application/pdf",
-      "content_preview": "Our return policy allows returns within 30 days...",
-      "metadata": {"page": 12, "chunk": 3},
-      "similarity": 0.92
-    }
-  ],
-  "count": 1
-}
-```
-
-Optional filters:
-
-```json
-{
-  "query": "shipping costs",
-  "filters": {"source_type": "application/pdf"},
-  "top_k": 10
-}
-```
-
-### List Documents
-
-**GET** `/ai/knowledge/sources`
-
-```json
-[
-  {
-    "id": "src-uuid-...",
-    "name": "product-catalog.pdf",
-    "source_type": "application/pdf",
-    "chunk_count": 47,
-    "status": "indexed",
-    "created_at": "2026-02-11T09:00:00Z",
-    "indexed_at": "2026-02-11T09:02:00Z"
-  }
-]
-```
-
-Document status values: `processing`, `indexed`, `failed`
-
-### Delete Document
-
-**DELETE** `/ai/knowledge/{source_id}` -- Returns `204 No Content`
+### 删除文档  
+**DELETE** `/ai/knowledge/{source_id}`  
+**响应状态**：`204 No Content`  
 
 ---
 
-## Style Profiles (Learn Mode)
+## **风格分析（学习模式）**  
+通过分析特定聊天的历史记录来训练AI以匹配您的写作风格。风格配置可针对单个聊天或所有消息进行设置。AI会在生成回复时自动选择最合适的风格。  
 
-Train the AI to match your writing style by analyzing your message history from specific chats. Style profiles can be scoped to individual conversations (per-chat) or trained across all messages (general profile). The AI auto-selects the best matching profile when generating replies.
+| 方法 | 接口地址 | 功能描述 |
+|------|---------|-------------------|
+| POST | `/ai/style/train` | 开始训练风格配置 |
+| GET | `/ai/style/status/{task_id}` | 查看训练进度 |
+| GET | `/ai/style/profile` | 获取当前风格配置 |
+| GET | `/ai/style/profiles` | 查看所有风格配置 |
+| DELETE | `/ai/style/profile/{profile_id}` | 删除风格配置 |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/ai/style/train` | Start training a style profile |
-| GET | `/ai/style/status/{task_id}` | Check training status |
-| GET | `/ai/style/profile` | Get a style profile |
-| GET | `/ai/style/profiles` | List all style profiles |
-| DELETE | `/ai/style/profile/{profile_id}` | Delete a style profile |
+### 训练风格配置  
+**POST** `/ai/style/train`  
 
-### Train Style Profile
+**必填参数**：  
+- `contact_id`（可选）：聊天ID（用于指定训练范围；如使用默认值`wa_chat_id`）  
+- `session_id`（可选）：会话ID（用于限定训练范围）  
+- `wa_chat_id`（可选）：WhatsApp聊天ID（用于指定训练范围；如需通用风格配置可省略）  
+- `name`（可选）：配置名称（如“Sales”、“Support”等）  
 
-**POST** `/ai/style/train`
+**注意**：省略`session_id`和`wa_chat_id`可训练通用风格配置。  
 
-```json
-{
-  "session_id": "session-uuid-...",
-  "wa_chat_id": "5511999999999@c.us",
-  "name": "Sales"
-}
-```
+**训练状态**：`200 OK`  
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `contact_id` | string | No | Legacy — use `wa_chat_id` instead |
-| `session_id` | UUID | No | Session to scope training to |
-| `wa_chat_id` | string | No | Chat to scope training to (WhatsApp JID). Omit for general profile |
-| `name` | string | No | Profile name (e.g., "Sales", "Support", "Family") |
+**查看风格配置**：  
+**GET** `/ai/style/profile?contact_id=5511999999999@c.us`  
 
-**Note:** Omit both `session_id` and `wa_chat_id` to train a general profile from all messages.
+**列出所有风格配置**：  
+**GET** `/ai/style/profiles`  
 
-**Response** `200 OK`:
-
-```json
-{
-  "task_id": "celery-task-id-...",
-  "tenant_id": "tenant-uuid-...",
-  "contact_id": "5511999999999@c.us",
-  "status": "queued"
-}
-```
-
-Training runs asynchronously. Check progress with the status endpoint.
-
-### Get Style Profile
-
-**GET** `/ai/style/profile?contact_id=5511999999999@c.us`
-
-```json
-{
-  "id": "profile-uuid-...",
-  "tenant_id": "tenant-uuid-...",
-  "contact_id": "5511999999999@c.us",
-  "name": "Sales",
-  "session_id": "session-uuid-...",
-  "wa_chat_id": "5511999999999@c.us",
-  "features": {
-    "avg_sentence_length": 12.5,
-    "formality_score": 0.7,
-    "emoji_frequency": 0.15,
-    "vocabulary_richness": 0.82
-  },
-  "sample_count": 150,
-  "last_trained_at": "2026-02-11T09:30:00Z"
-}
-```
-
-### List All Profiles
-
-**GET** `/ai/style/profiles`
-
-```json
-[
-  {
-    "id": "profile-uuid-1",
-    "tenant_id": "tenant-uuid-...",
-    "name": "Sales",
-    "session_id": "session-uuid-...",
-    "wa_chat_id": "5511999999999@c.us",
-    "features": { "formality_score": 0.7 },
-    "sample_count": 150,
-    "last_trained_at": "2026-02-11T09:30:00Z"
-  },
-  {
-    "id": "profile-uuid-2",
-    "tenant_id": "tenant-uuid-...",
-    "name": "General",
-    "session_id": null,
-    "wa_chat_id": null,
-    "features": { "formality_score": 0.5 },
-    "sample_count": 420,
-    "last_trained_at": "2026-02-11T10:00:00Z"
-  }
-]
-```
-
-### Delete Profile
-
-**DELETE** `/ai/style/profile/{profile_id}` -- Returns `204 No Content`
+**删除风格配置**：  
+**DELETE** `/ai/style/profile/{profile_id}`  
+**响应状态**：`204 No Content`  
 
 ---
 
-## AI Reply Generation
+## **AI回复生成**  
+利用RAG知识和风格配置生成智能回复。AI会综合考虑聊天历史、知识库内容及您的沟通风格。  
 
-Generate intelligent reply suggestions using RAG context and style profiles. The AI considers conversation history, knowledge base content, and your communication style.
+| 方法 | 接口地址 | 功能描述 |
+|------|---------|-------------------|
+| POST | `/ai/generate-reply` | 生成回复建议 |
+| GET | `/ai/preview` | 预览生成的回复（不计入使用量） |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/ai/generate-reply` | Generate a reply suggestion |
-| GET | `/ai/preview` | Preview a reply without tracking usage |
+**生成回复**：  
+**POST** `/ai/generate-reply`  
 
-### Generate Reply
+**响应状态**：`200 OK`  
 
-**POST** `/ai/generate-reply`
+**参数说明**：  
+- `contact_id`：联系人的WhatsApp ID。  
+- `context`：聊天上下文或客户问题（最多2000个字符）。  
+- `use_rag`：是否包含知识库内容。  
+- `apply_style`：是否应用训练好的风格配置。  
+- `profile_id`：可选的特定风格配置ID（可跳过自动选择）。  
+- `session_id`：会话ID（用于确定风格配置）。  
+- `approved`：是否需要用户确认回复。  
 
-```json
-{
-  "contact_id": "5511999999999@c.us",
-  "context": "Customer asks: Do you offer international shipping?",
-  "use_rag": true,
-  "apply_style": true,
-  "profile_id": "profile-uuid-...",
-  "session_id": "session-uuid-..."
-}
-```
+**预览回复**：  
+**GET** `/ai/preview?contact_id=5511999999999@c.us&context=What+are+your+hours&use_rag=true&apply_style=true`  
+（与`generate-reply`接口返回相同格式，但不计入使用量。）  
 
-**Response** `200 OK`:
-
-```json
-{
-  "reply": "Yes, we ship internationally to over 50 countries! Shipping typically takes 7-14 business days. You can find our full shipping policy on our website.",
-  "rag_sources": ["product-catalog.pdf"],
-  "style_applied": true,
-  "model": "gpt-4o-mini",
-  "tokens_used": 245,
-  "requires_approval": false
-}
-```
-
-### Parameters
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `contact_id` | string | required | WhatsApp JID of the contact |
-| `context` | string | required | Conversation context or customer question (max 2000 chars) |
-| `use_rag` | boolean | `true` | Include knowledge base context in generation |
-| `apply_style` | boolean | `true` | Apply trained style profile to response |
-| `profile_id` | UUID | `null` | Specific style profile to use (skips auto-selection cascade) |
-| `session_id` | UUID | `null` | Session for cascade profile resolution |
-| `approved` | boolean | `false` | Set `true` to confirm an approval-required reply |
-
-**Note:** If `profile_id` is omitted and `apply_style` is true, the API auto-selects the best profile using the cascade: exact chat match → session-level → tenant-level general → no style.
-
-### Preview Reply
-
-**GET** `/ai/preview?contact_id=5511999999999@c.us&context=What+are+your+hours&use_rag=true&apply_style=true`
-
-Same response format as `generate-reply`, but does not count toward usage metrics.
-
-### Safety Features
-
-AI reply generation includes built-in safety:
-
-- **Input sanitization** -- Detects and blocks prompt injection attempts
-- **Intent verification** -- Flags ambiguous or high-risk intents for confirmation
-- **Output filtering** -- Screens generated content for PII, secrets, and policy violations
-- **Content policy** -- Tenant-configurable rules (see moltflow-a2a skill)
+## 安全机制  
+MoltFlow的AI回复生成功能包含以下安全措施：  
+- **输入验证**：检测并阻止恶意输入。  
+- **意图验证**：对可疑或高风险意图进行确认。  
+- **内容过滤**：检查生成内容是否包含个人身份信息（PII）或违反政策的内容。  
+- **内容策略**：支持用户自定义的安全规则（详情见[moltflow-a2a技能文档]。  
 
 ---
 
-## Examples
+## 示例操作  
 
-### Upload a knowledge base document
-
-```bash
-curl -X POST https://apiv2.waiflow.app/api/v2/ai/knowledge/ingest \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -F "file=@product-catalog.pdf"
-```
-
-### Generate an AI reply using RAG
-
-```bash
-curl -X POST https://apiv2.waiflow.app/api/v2/ai/generate-reply \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contact_id": "5511999999999@c.us",
-    "context": "Customer asks: What is your return policy?",
-    "use_rag": true,
-    "apply_style": true
-  }'
-```
-
-### Generate reply with specific profile
-
-```bash
-curl -X POST https://apiv2.waiflow.app/api/v2/ai/generate-reply \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contact_id": "5511999999999@c.us",
-    "context": "Customer asks: What is your return policy?",
-    "use_rag": true,
-    "apply_style": true,
-    "profile_id": "profile-uuid-..."
-  }'
-```
-
-### Train a style profile
-
-```bash
-curl -X POST https://apiv2.waiflow.app/api/v2/ai/style/train \
-  -H "X-API-Key: $MOLTFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "session_id": "session-uuid-...",
-    "wa_chat_id": "5511999999999@c.us",
-    "name": "Sales"
-  }'
-```
+- **上传文档到知识库**  
+- **使用RAG生成回复**  
+- **根据特定风格生成回复**  
+- **训练风格配置**  
 
 ---
 
-## Plan Requirements
-
-| Feature | Starter | Pro ($29.90/mo) | Business ($69.90/mo) |
-|---------|---------|-----------------|------------|
-| Voice Transcription | -- | Yes | Yes |
-| RAG Knowledge Base | -- | Yes (10 docs) | Yes (unlimited) |
-| Style Profiles | -- | Yes (3 profiles) | Yes (unlimited) |
-| AI Reply Generation | -- | Yes | Yes |
-
----
-
-## Error Responses
-
-| Status | Meaning |
-|--------|---------|
-| 400 | Bad request (invalid input, unsupported file type) |
-| 401 | Unauthorized (missing or invalid auth) |
-| 403 | Forbidden (feature requires Pro plan or higher) |
-| 404 | Resource not found (message, document, profile) |
-| 413 | File too large (exceeds 100MB limit) |
-| 429 | Rate limited |
+## 计划费用对比  
+| 功能 | Starter计划 | Pro计划（每月29.90美元） | Business计划（每月69.90美元） |
+|------|------------------|--------------------------------------|
+| 语音转录 | - | 支持 | 支持 |
+| RAG知识库 | - | 支持（最多10份文档） | 支持（无限制） |
+| 风格分析 | - | 支持（最多3个配置） | 支持（无限制） |
+| AI回复生成 | - | 支持 | 支持 |
 
 ---
 
-## Related Skills
+## 错误代码及含义  
+| 状态码 | 含义 |  
+|------|---------|-------------------|
+| 400 | 请求无效（输入错误或文件格式不支持） |
+| 401 | 未经授权（缺少或无效的认证信息） |
+| 403 | 该功能仅限Pro计划及以上版本使用 |  
+| 404 | 资源未找到（消息、文档或配置文件缺失） |
+| 413 | 文件过大（超过100MB限制） |
+| 429 | 日使用量达到上限 |  
 
-- **moltflow** -- Core API: sessions, messaging, groups, labels, webhooks
-- **moltflow-outreach** -- Bulk Send, Scheduled Messages, Custom Groups
-- **moltflow-leads** -- Lead detection, pipeline tracking, bulk operations, CSV/JSON export
-- **moltflow-a2a** -- Agent-to-Agent protocol, encrypted messaging, content policy
-- **moltflow-reviews** -- Review collection and testimonial management
-- **moltflow-admin** -- Platform administration, user management, plan configuration
+---
+
+## 相关服务  
+- **moltflow**：核心API，支持会话管理、消息发送、群组管理等功能。  
+- **moltflow-outreach**：批量发送消息、定时发送、自定义群组管理。  
+- **moltflow-leads**：潜在客户识别、流程跟踪、数据导出（CSV/JSON格式）。  
+- **moltflow-a2a**：支持代理间加密通信和内容策略管理。  
+- **moltflow-reviews**：评论收集与评价管理工具。  
+- **moltflow-admin**：平台管理、用户管理及计划配置工具。

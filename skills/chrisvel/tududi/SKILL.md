@@ -1,38 +1,38 @@
 ---
 name: tududi
-description: Manage tasks, projects, and notes in tududi (self-hosted task manager). Use for todo lists, task management, project organization.
+description: 在 tududi（一个自托管的任务管理器）中，您可以管理任务、项目和笔记。它适用于创建待办事项列表、进行任务管理以及项目组织。
 ---
 
-# tududi Task Management
+# tududi 任务管理
 
-## Configuration
+## 配置
 
-Uses environment variables (set in `openclaw.json` under `skills.entries.tududi.env`):
-- `TUDUDI_URL` - Base URL (e.g., `http://localhost:3004`)
-- `TUDUDI_API_TOKEN` - API token from tududi Settings → API Tokens
+使用环境变量（在 `openclaw.json` 的 `skills.entries.tududi.env` 下设置）：
+- `TUDUDI_URL` - 基本 URL（例如：`http://localhost:3004`）
+- `TUDUDI_API_TOKEN` - 从 tududi 设置 → API Tokens 中获取的 API 令牌
 
-## Authentication
+## 认证
 
-All API calls require the header:
+所有 API 调用都需要在请求头中包含以下字段：
 ```
 Authorization: Bearer $TUDUDI_API_TOKEN
 ```
 
-## API Route Convention
+## API 路由规范
 
-- **Plural nouns** (`/tasks`, `/projects`, `/inbox`) for **GET** (list)
-- **Singular nouns** (`/task`, `/project`) for **POST/PUT/DELETE** (create/update/delete)
-- Use **UID** (not numeric ID) for update/delete operations
+- **复数名词**（如 `/tasks`、`/projects`、`/inbox`）用于 **GET** 操作（列出任务）
+- **单数名词**（如 `/task`、`/project`）用于 **POST/PUT/DELETE** 操作（创建/更新/删除任务）
+- 在更新/删除操作中使用 **UID**（而非数字 ID）作为标识
 
-## Common Operations
+## 常见操作
 
-### List tasks
+### 列出任务
 ```bash
 curl -s $TUDUDI_URL/api/v1/tasks \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN"
 ```
 
-### Create a task
+### 创建任务
 ```bash
 curl -s -X POST $TUDUDI_URL/api/v1/task \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN" \
@@ -40,10 +40,10 @@ curl -s -X POST $TUDUDI_URL/api/v1/task \
   -d '{"name": "Task title", "due_date": "2026-02-10", "priority": 2, "project_id": 1, "tags": [{"name": "bug"}]}'
 ```
 
-Priority: 1 (low) to 4 (urgent)
-Tags: `[{"name": "tagname"}, ...]`
+优先级：1（较低）到 4（紧急）
+标签：`[{"name": "tagname"}, ...]`
 
-### Update a task
+### 更新任务
 ```bash
 curl -s -X PATCH $TUDUDI_URL/api/v1/task/{uid} \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN" \
@@ -51,22 +51,22 @@ curl -s -X PATCH $TUDUDI_URL/api/v1/task/{uid} \
   -d '{"status": 1, "tags": [{"name": "bug"}]}'
 ```
 
-Status: 0=not_started, 1=in_progress, 2=completed, 6=archived
-Tags: `[{"name": "tagname"}, ...]`
+状态：0=未开始，1=进行中，2=已完成，6=已归档
+标签：`[{"name": "tagname"}, ...]`
 
-### Delete a task
+### 删除任务
 ```bash
 curl -s -X DELETE $TUDUDI_URL/api/v1/task/{uid} \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN"
 ```
 
-### List projects
+### 列出项目
 ```bash
 curl -s $TUDUDI_URL/api/v1/projects \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN"
 ```
 
-### Create project
+### 创建项目
 ```bash
 curl -s -X POST $TUDUDI_URL/api/v1/project \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN" \
@@ -74,7 +74,7 @@ curl -s -X POST $TUDUDI_URL/api/v1/project \
   -d '{"name": "Project name"}'
 ```
 
-### Inbox
+### 收件箱
 ```bash
 # List inbox items
 curl -s $TUDUDI_URL/api/v1/inbox \
@@ -85,23 +85,24 @@ curl -s -X DELETE $TUDUDI_URL/api/v1/inbox/{uid} \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN"
 ```
 
-### Tags
+### 标签
 ```bash
 curl -s $TUDUDI_URL/api/v1/tags \
   -H "Authorization: Bearer $TUDUDI_API_TOKEN"
 ```
 
-## Task Statuses
-- `not_started`
-- `in_progress`
-- `completed`
-- `archived`
+## 任务状态
+- 未开始
+- 进行中
+- 已完成
+- 已归档
 
-## Filters
-- `$TUDUDI_URL/api/v1/tasks?filter=today` - Due today
-- `$TUDUDI_URL/api/v1/tasks?filter=upcoming` - Future tasks
-- `$TUDUDI_URL/api/v1/tasks?filter=someday` - No due date
-- `$TUDUDI_URL/api/v1/tasks?project_id={id}` - By project
+## 过滤条件
+- `$TUDUDI_URL/api/v1/tasks?filter=today` - 今日到期的任务
+- `$TUDUDI_URL/api/v1/tasks?filter=upcoming` - 未来到期的任务
+- `$TUDUDI_URL/api/v1/tasks?filter=someday` - 无到期时间的任务
+- `$TUDUDI_URL/api/v1/tasks?project_id={id}` - 按项目筛选任务
 
-## API Docs
-Swagger UI available at `$TUDUDI_URL/swagger` (requires login)
+## API 文档
+
+Swagger UI 可在 `$TUDUDI_URLswagger` 查看（需要登录）

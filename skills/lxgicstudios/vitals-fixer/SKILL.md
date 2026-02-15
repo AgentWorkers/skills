@@ -1,29 +1,29 @@
 ---
 name: vitals-fixer
-description: Fix Core Web Vitals issues with AI guidance. Use when your Lighthouse scores need improvement.
+description: 使用 AI 指导来解决 Core Web Vitals 相关的问题。当您的 Lighthouse 评分需要提升时，请采用此方法。
 ---
 
-# Core Web Vitals Fixer
+# 核心网页健康指标修复工具（Core Web Vitals Fixer）
 
-Your Lighthouse scores are red. This tool tells you exactly why and how to fix it. LCP, FID, CLS. all the acronyms, all the solutions. No more guessing at performance problems.
+您的 Lighthouse 评估结果显示为红色（表示存在性能问题）。该工具会详细说明问题原因及修复方法，涵盖 LCP（加载时间）、FID（首次交互时间）、CLS（内容加载完成时间）等关键指标，并提供具体的解决方案。再也不用对性能问题进行猜测了。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-core-vitals ./src
 ```
 
-## What It Does
+## 工具功能
 
-- Analyzes your code for Core Web Vitals issues
-- Identifies LCP bottlenecks like render-blocking resources
-- Finds CLS causes like images without dimensions
-- Spots FID problems from heavy JavaScript execution
-- Provides specific code changes, not just generic advice
+- 分析您的代码，找出影响网页健康指标的问题；
+- 识别导致 LCP 延迟的瓶颈（如阻塞页面渲染的资源）；
+- 找出导致 CLS 问题的原因（如缺少尺寸信息的图片）；
+- 发现由于 JavaScript 执行缓慢而引起的 FID 问题；
+- 提供具体的代码修改建议，而不仅仅是泛泛而谈的优化建议。
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Full project analysis
@@ -42,42 +42,42 @@ npx ai-core-vitals ./src --prioritize
 npx ai-core-vitals ./src -o vitals-report.md
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Fix LCP first** - It's the biggest impact on perceived performance
-- **Measure before and after** - Run Lighthouse to validate your fixes
-- **Don't trust dev mode** - Production builds behave differently. Test both
-- **Focus on the biggest wins** - One large image fix beats ten micro-optimizations
+- **优先修复 LCP**：它对用户感知的性能影响最大；
+- **修复前后进行测试**：使用 Lighthouse 验证修复效果；
+- **不要依赖开发模式（dev mode）**：生产环境的代码运行方式可能与开发环境不同，务必进行双重测试；
+- **专注于能带来显著提升的优化**：修复一张大图片的效果可能比进行十次微调更好。
 
-## When to Use This
+## 适用场景
 
-- Failed a Core Web Vitals assessment on Search Console
-- Preparing for a Lighthouse audit
-- Client complains the site feels slow
-- Building performance regression tests
+- 在 Search Console 的核心网页健康指标评估中未通过；
+- 准备接受 Lighthouse 的性能审计；
+- 客户反馈网站加载速度较慢；
+- 需要构建性能回归测试。
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包（LXGIC Dev Toolkit）的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本完全无付费门槛、无需注册，也无需使用 API 密钥，只需使用命令行工具即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-core-vitals --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool scans your source files for patterns known to hurt Web Vitals. It identifies specific issues like unoptimized images, missing preloads, layout-shifting elements, and heavy bundle imports. AI correlates these findings with your actual code to suggest targeted fixes.
+该工具会扫描您的源代码，查找可能影响网页健康指标的问题（如未优化的图片、缺失的预加载资源、导致布局变化的元素以及体积过大的代码包）。通过人工智能技术，将这些问题与实际代码关联起来，从而提出针对性的修复建议。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

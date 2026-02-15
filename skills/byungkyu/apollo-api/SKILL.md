@@ -15,9 +15,9 @@ metadata:
 
 # Apollo
 
-Access the Apollo.io API with managed OAuth authentication. Search people and organizations, enrich contacts, and manage your sales pipeline.
+您可以使用托管的 OAuth 认证来访问 Apollo.io API。该 API 可用于搜索人员和组织、丰富联系人信息以及管理销售流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Search for people at a company
@@ -30,39 +30,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/apollo/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Apollo API endpoint path. The gateway proxies requests to `api.apollo.io` and automatically injects your API key.
+请将 `{native-api-path}` 替换为实际的 Apollo API 端点路径。该网关会将请求代理到 `api.apollo.io` 并自动插入您的 API 密钥。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Apollo connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Apollo 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -73,7 +73,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -86,7 +86,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -97,7 +97,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -112,9 +112,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -125,9 +125,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Apollo connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Apollo 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,13 +140,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略该字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### People
+### 人员
 
-#### Search People
+#### 搜索人员
 
 ```bash
 POST /apollo/v1/mixed_people/api_search
@@ -159,7 +159,7 @@ Content-Type: application/json
 }
 ```
 
-#### Enrich Person by Email
+#### 通过电子邮件丰富人员信息
 
 ```bash
 POST /apollo/v1/people/match
@@ -170,7 +170,7 @@ Content-Type: application/json
 }
 ```
 
-#### Enrich Person by LinkedIn
+#### 通过 LinkedIn 丰富人员信息
 
 ```bash
 POST /apollo/v1/people/match
@@ -181,9 +181,9 @@ Content-Type: application/json
 }
 ```
 
-### Organizations
+### 组织
 
-#### Search Organizations
+#### 搜索组织
 
 ```bash
 POST /apollo/v1/organizations/search
@@ -196,7 +196,7 @@ Content-Type: application/json
 }
 ```
 
-#### Enrich Organization
+#### 丰富组织信息
 
 ```bash
 POST /apollo/v1/organizations/enrich
@@ -207,9 +207,9 @@ Content-Type: application/json
 }
 ```
 
-### Contacts
+### 联系人
 
-#### Search Contacts
+#### 搜索联系人
 
 ```bash
 POST /apollo/v1/contacts/search
@@ -221,7 +221,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /apollo/v1/contacts
@@ -235,7 +235,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PUT /apollo/v1/contacts/{contactId}
@@ -246,9 +246,9 @@ Content-Type: application/json
 }
 ```
 
-### Accounts
+### 账户
 
-#### Search Accounts
+#### 搜索账户
 
 ```bash
 POST /apollo/v1/accounts/search
@@ -260,7 +260,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Account
+#### 创建账户
 
 ```bash
 POST /apollo/v1/accounts
@@ -272,9 +272,9 @@ Content-Type: application/json
 }
 ```
 
-### Sequences
+### 序列
 
-#### Search Sequences
+#### 搜索序列
 
 ```bash
 POST /apollo/v1/emailer_campaigns/search
@@ -286,7 +286,7 @@ Content-Type: application/json
 }
 ```
 
-#### Add Contact to Sequence
+#### 将联系人添加到序列中
 
 ```bash
 POST /apollo/v1/emailer_campaigns/{campaignId}/add_contact_ids
@@ -297,24 +297,24 @@ Content-Type: application/json
 }
 ```
 
-### Labels
+### 标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /apollo/v1/labels
 ```
 
-## Search Filters
+## 搜索过滤器
 
-Common search parameters:
-- `q_organization_name` - Company name
-- `q_person_title` - Job title
-- `person_locations` - Array of locations
-- `organization_num_employees_ranges` - Employee count ranges
-- `q_keywords` - General keyword search
+常见的搜索参数：
+- `q_organization_name` - 公司名称
+- `q_person_title` - 职位
+- `person_locations` - 地点数组
+- `organization_num_employees_ranges` - 员工数量范围
+- `q_keywords` - 通用关键词搜索
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -348,33 +348,33 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Pagination uses `page` and `per_page` in POST body
-- Most list endpoints use POST with `/search` suffix
-- Email enrichment consumes credits
-- `people/search` and `mixed_people/search` are deprecated - use `mixed_people/api_search`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 分页使用 POST 请求中的 `page` 和 `per_page` 参数。
+- 大多数列表端点使用带有 `/search` 后缀的 POST 请求。
+- 通过电子邮件丰富联系人信息会消耗信用额度。
+- `people/search` 和 `mixed_people/search` 已被弃用，请使用 `mixed_people/api_search`。
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Apollo connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Apollo API |
+| 400 | 未找到 Apollo 连接 |
+| 401 | API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Apollo API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -385,21 +385,20 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `apollo`. For example:
+1. 确保您的 URL 路径以 `apollo` 开头。例如：
+- 正确：`https://gateway.maton.ai/apollo/v1/mixed_people/api_search`
+- 错误：`https://gateway.maton.ai/v1/mixed_people/api_search`
 
-- Correct: `https://gateway.maton.ai/apollo/v1/mixed_people/api_search`
-- Incorrect: `https://gateway.maton.ai/v1/mixed_people/api_search`
+## 资源
 
-## Resources
-
-- [Apollo API Overview](https://docs.apollo.io/reference/introduction)
-- [Search People](https://docs.apollo.io/reference/people-api-search.md)
-- [Enrich Person](https://docs.apollo.io/reference/people-enrichment.md)
-- [Search Organizations](https://docs.apollo.io/reference/organization-search.md)
-- [Enrich Organization](https://docs.apollo.io/reference/organization-enrichment.md)
-- [Create Contact](https://docs.apollo.io/reference/create-a-contact.md)
-- [LLM Reference](https://docs.apollo.io/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Apollo API 概述](https://docs.apollo.io/reference/introduction)
+- [搜索人员](https://docs.apollo.io/reference/people-api-search.md)
+- [丰富人员信息](https://docs.apollo.io/reference/people-enrichment.md)
+- [搜索组织](https://docs.apollo.io/reference/organization-search.md)
+- [丰富组织信息](https://docs.apollo.io/reference/organization-enrichment.md)
+- [创建联系人](https://docs.apollo.io/reference/create-a-contact.md)
+- [LLM 参考](https://docs.apollo.io/llms.txt)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

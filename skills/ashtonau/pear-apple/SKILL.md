@@ -1,6 +1,6 @@
 ---
 name: pear-apple
-description: iCloud Calendar, Reminders & Contacts via Pear. Manage events, reminders, contacts, daily briefings, and AI scheduling. 27 tools for Apple iCloud via CalDAV/CardDAV.
+description: 通过 Pear 管理 iCloud 日历、提醒事项和联系人。您可以查看事件、提醒事项、联系人信息，以及每日简报；同时还能利用 AI 功能进行日程安排。Pear 支持通过 CalDAV/CardDAV 协议与 Apple iCloud 进行数据同步，提供了共计 27 种工具来帮助您更高效地管理您的 iCloud 数据。
 homepage: https://pearmcp.com
 metadata:
   openclaw:
@@ -13,208 +13,206 @@ metadata:
         - pearmcp.com
 ---
 
-# Pear — iCloud Integration
+# Pear — iCloud集成
 
-Pear provides read/write access to iCloud Calendar, Reminders, and Contacts through 27 MCP tools. All tools are prefixed with `pear_` and communicate with iCloud via CalDAV/CardDAV protocols.
+Pear提供了通过27个MCP工具访问iCloud日历、提醒事项和联系人的功能。所有这些工具的前缀都是`pear_`，并且它们通过CalDAV/CardDAV协议与iCloud进行通信。
 
-## When to Use
+## 使用场景
 
-**Activate this skill when the user wants to:**
-- Check their schedule, upcoming events, or daily agenda
-- Create, update, or delete calendar events
-- Manage reminders or to-do lists
-- Look up, create, or update contacts
-- Find free time slots or schedule meetings
-- Get a daily briefing of events and tasks
-- Check availability for a specific time
-- Work with contact groups
-- Perform bulk operations on events, reminders, or contacts
+**当用户需要以下操作时，请激活此功能：**
+- 查看日程安排、即将发生的事件或每日计划
+- 创建、更新或删除日历事件
+- 管理提醒事项或待办事项列表
+- 查找、创建或更新联系人信息
+- 寻找空闲时间或安排会议
+- 获取每日事件和任务的概览
+- 查看特定时间的可用性
+- 管理联系人组
+- 对事件、提醒事项或联系人执行批量操作
 
-**Activation triggers:**
-- "What's on my calendar", "my schedule", "upcoming events"
-- "Remind me to", "add a reminder", "my tasks", "to-do"
-- "Find contact", "add a contact", "phone number for"
-- "Schedule a meeting", "find a time", "when am I free"
-- "Daily briefing", "what's today look like"
-- "Birthday", "anniversaries"
+**激活触发词：**
+- “我的日历里有什么？”、“我的日程安排”、“即将发生的事件”
+- “提醒我...”、“添加提醒”、“我的任务”、“待办事项”
+- “查找联系人”、“添加联系人”、“联系人的电话号码”
+- “安排会议”、“找到时间”、“我什么时候有空”
+- “每日简报”、“今天有什么安排”
+- “生日”、“纪念日”
 
-**Do NOT activate for:**
-- Apple Notes (not supported — CalDAV only)
-- Apple Mail or iMessage
-- iCloud Drive or file storage
-- Apple Music, Photos, or other non-PIM services
-- Local macOS Calendar.app scripting (Pear works cross-platform via API)
+**不适用的场景：**
+- Apple Notes（不支持——仅支持CalDAV）
+- Apple Mail或iMessage
+- iCloud Drive或文件存储
+- Apple Music、照片或其他非PIM服务
+- 本地macOS的Calendar.app脚本（Pear通过API实现跨平台功能）
 
-## Prerequisites
+## 先决条件
 
-**Required Environment Variable:**
-- `PEAR_API_KEY` — Your Pear API key (format: `pear_sk_...`)
-  - Sign up at [pearmcp.com](https://pearmcp.com)
-  - Generate an API key from the dashboard
-  - Connect your iCloud account (requires an [app-specific password](https://support.apple.com/en-us/102654))
+**必需的环境变量：**
+- `PEAR_API_KEY` — 您的Pear API密钥（格式：`pear_sk_...`）
+  - 在[pearmcp.com](https://pearmcp.com)注册
+  - 从控制面板生成API密钥
+  - 连接您的iCloud账户（需要[应用程序特定的密码](https://support.apple.com/en-us/102654))
 
-**Optional:**
-- `PEAR_MCP_URL` — Custom endpoint URL (defaults to `https://pearmcp.com/api/mcp`)
+**可选：**
+- `PEAR_MCP_URL` — 自定义端点URL（默认为`https://pearmcp.com/api/mcp`）
 
-## Tool Reference
+## 工具参考
 
-### Events (8 tools)
+### 事件（8个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_list_calendars` | List all iCloud calendars (including read-only subscriptions) |
-| `pear_list_events` | List events in a time range, with pagination and calendar filtering |
-| `pear_search_events` | Search events by title or description within a date range |
-| `pear_create_event` | Create an event with optional recurrence, alarms, attendees, and location |
-| `pear_update_event` | Update an existing event's properties |
-| `pear_delete_event` | Delete an event by filename |
-| `pear_find_free_slots` | Find available time slots of a given duration |
-| `pear_check_availability` | Check if a specific time slot is free, returns conflicts |
+| `pear_list_calendars` | 列出所有iCloud日历（包括只读订阅日历） |
+| `pear_list_events` | 在指定时间范围内列出事件，并支持分页和日历过滤 |
+| `pear_search_events` | 根据标题或描述在指定日期范围内搜索事件 |
+| `pear_create_event` | 创建事件，可设置重复频率、提醒、参与者和位置 |
+| `pear_update_event` | 更新现有事件的属性 |
+| `pear_delete_event` | 通过文件名删除事件 |
+| `pear_find_free_slots` | 查找指定持续时间的空闲时间段 |
+| `pear_check_availability` | 检查特定时间段是否可用，并返回冲突信息 |
 
-### Reminders (4 tools)
+### 提醒事项（4个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_list_reminders` | List reminders with optional list filtering, includes completed toggle |
-| `pear_create_reminder` | Create a reminder with optional due date, priority (1=high, 5=med, 9=low), and notes |
-| `pear_update_reminder` | Update a reminder's properties |
-| `pear_complete_reminder` | Mark a reminder as completed |
+| `pear_list_reminders` | 列出提醒事项，支持列表过滤，包括完成状态的标记 |
+| `pear_create_reminder` | 创建提醒事项，可设置截止日期、优先级（1=高，5=中，9=低）和备注 |
+| `pear_update_reminder` | 更新提醒事项的属性 |
+| `pear_complete_reminder` | 将提醒事项标记为已完成 |
 
-### Contacts (9 tools)
+### 联系人（9个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_list_contacts` | List all contacts with full vCard data (phones, emails, addresses, birthdays) |
-| `pear_search_contacts` | Search by name, email, phone, or organization |
-| `pear_create_contact` | Create a contact with full vCard support including photo |
-| `pear_update_contact` | Update contact fields (merges with existing data) |
-| `pear_delete_contact` | Delete a contact |
-| `pear_list_contact_groups` | List all contact groups with member counts |
-| `pear_create_contact_group` | Create a new contact group |
-| `pear_add_contact_to_group` | Add a contact to a group by name or email |
-| `pear_update_contact_photo` | Update a contact's photo (Base64, data URI, or external URL) |
+| `pear_list_contacts` | 列出所有联系人及其完整的vCard信息（包括电话、电子邮件、地址、生日） |
+| `pear_search_contacts` | 按名称、电子邮件、电话或组织单位搜索联系人 |
+| `pear_create_contact` | 创建联系人，支持完整的vCard信息（包括照片） |
+| `pear_update_contact` | 更新联系人信息（会与现有数据合并） |
+| `pear_delete_contact` | 删除联系人 |
+| `pear_list_contact_groups` | 列出所有联系人组及其成员数量 |
+| `pear_create_contact_group` | 创建新的联系人组 |
+| `pear_add_contact_to_group` | 按名称或电子邮件将联系人添加到组中 |
+| `pear_update_contact_photo` | 更新联系人的照片（支持Base64、数据URI或外部URL）
 
-### Briefing (1 tool)
+### 每日简报（1个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_get_daily_briefing` | Get today's events and pending reminders in one call. Enriches attendees with contact data. |
+| `pear_get_daily_briefing` | 一次性获取当天的事件和待办提醒事项，并自动添加联系人详细信息 |
 
-### Scheduling (1 tool)
+### 安排会议（1个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_find_best_time` | AI-scored optimal meeting slots. Considers work hours, time-of-day preference, day-of-week preference, buffer time, and reminder deadlines. |
+| `pear_find_best_time` | 通过人工智能评分推荐最佳会议时间，考虑工作时间、时间偏好、工作日偏好、缓冲时间和提醒截止日期 |
 
-### Batch Operations (4 tools)
+### 批量操作（4个工具）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `pear_create_events_batch` | Create up to 50 events in one call |
-| `pear_create_reminders_batch` | Create up to 50 reminders in one call |
-| `pear_create_contacts_batch` | Create up to 50 contacts in one call |
-| `pear_delete_contacts_batch` | Delete up to 50 contacts in one call |
+| `pear_create_events_batch` | 一次性创建最多50个事件 |
+| `pear_create_reminders_batch` | 一次性创建最多50个提醒事项 |
+| `pear_create_contacts_batch` | 一次性创建最多50个联系人 |
+| `pear_delete_contacts_batch` | 一次性删除最多50个联系人 |
 
-## Workflow Guidelines
+## 工作流程指南
 
-### Dates and Times
+### 日期和时间
 
-- **Always use ISO 8601 format**: `2025-06-15T14:30:00Z` or `2025-06-15T14:30:00+10:00`
-- **Timezone parameter**: Pass `timezone` (IANA format like `America/New_York` or `Australia/Sydney`) for user-friendly display times
-- **All-day events**: Set `isAllDay: true` and use date-only format `2025-06-15`
-- **Date ranges**: `pear_list_events` requires a `timeRange` object: `{ start: "...", end: "..." }`
+- **始终使用ISO 8601格式**：`2025-06-15T14:30:00Z` 或 `2025-06-15T14:30:00+10:00`
+- **时区参数**：传递`timezone`（IANA格式，例如`America/New_York`或`Australia/Sydney`）以获得用户友好的显示时间
+- **全天事件**：设置`isAllDay: true`并使用仅日期格式`2025-06-15`
+- **日期范围**：`pear_list_events`需要`timeRange`对象：`{ start: "...", end: "..." }`
 
-### Creating Events
+### 创建事件
 
-When creating events, follow this pattern:
+创建事件时，请遵循以下规则：
+1. 如果用户未指定日历，省略`calendarName`——Pear会自动选择默认日历
+2. 对于重复事件，使用`recurrence`对象：`{ frequency: "WEEKLY", interval: 1, count: 10 }`
+3. 对于参与者，可以传递名称——Pear会自动从用户联系人中匹配
+4. 使用`idempotencyKey`进行重试，以防止事件重复
+5. 提醒设置使用`{ action: "display", trigger: 15 }`表示15分钟后提醒
 
-1. If the user doesn't specify a calendar, omit `calendarName` — Pear auto-selects the default
-2. For recurring events, use the `recurrence` object: `{ frequency: "WEEKLY", interval: 1, count: 10 }`
-3. For attendees, you can pass names — Pear resolves them against the user's contacts automatically
-4. Use `idempotencyKey` when retrying to prevent duplicate events
-5. Alarms use minutes before: `{ action: "display", trigger: 15 }` for a 15-minute reminder
+### 寻找会议时间
 
-### Finding Meeting Times
+在安排会议时，建议使用`pear_find_best_time`而非`pear_find_free_slots`：
+- `pear_find_best_time`会考虑工作时间、偏好设置和现有安排，返回最佳时间
+- 传递`preferences`进行自定义：`{ timeOfDay: "morning", focusTime: true, workHoursStart: 9, workHoursEnd: 17 }`
+- `pear_find_free_slots`仅返回原始的空闲时间段，不进行评分
 
-For scheduling, prefer `pear_find_best_time` over `pear_find_free_slots`:
+### 提醒事项
 
-- `pear_find_best_time` returns AI-scored slots considering work hours, preferences, and existing commitments
-- Pass `preferences` to customize: `{ timeOfDay: "morning", focusTime: true, workHoursStart: 9, workHoursEnd: 17 }`
-- `pear_find_free_slots` is simpler — just returns raw available slots without scoring
+- 提醒事项通过CalDAV（VTODO协议）访问——基本操作（标题、截止日期、优先级、备注）均可正常使用。但Apple提醒事项的某些高级功能（如子任务、标签、智能列表和基于位置的提醒）无法通过CalDAV实现
+- 优先级值：`1` = 高，`5` = 中，`9` = 低，`0` = 无
+- 要仅列出未完成的提醒事项，使用`includeCompleted: false`（默认值）
+- 如果使用`listName`且列表中不存在提醒事项，系统会自动创建提醒列表
 
-### Reminders
+### 联系人
 
-- Reminders are accessed via CalDAV (VTODO protocol) — basic operations work well (title, due date, priority, notes, completion). Modern Apple Reminders features like subtasks, tags, smart lists, and location-based reminders are not available via CalDAV.
-- Priority values: `1` = high, `5` = medium, `9` = low, `0` = none
-- To list only incomplete reminders, use `includeCompleted: false` (default)
-- Reminder lists are auto-created if they don't exist when using `listName`
+- `pear_update_contact`会合并联系人信息——不会删除您未提供的字段
+- 生日格式：`YYYY-MM-DD`表示完整日期，`--MM-DD`表示年份未知
+- 电话/电子邮件可以是一个字符串或数组形式
+- 联系人照片支持Base64或数据URI格式
 
-### Contacts
+### 虚拟生日
 
-- `pear_update_contact` merges fields — it won't erase data you don't include in the update
-- Birthday format: `YYYY-MM-DD` for full date, `--MM-DD` for year-unknown
-- Phone/email can be a single string or an array for multiple entries
-- Contact photos accept Base64 or data URI format
+Pear会根据联系人的生日字段生成全天事件。这些事件会显示在“生日”日历中。这是一个合成功能——Apple的原生日日历不通过CalDAV提供
 
-### Virtual Birthdays
+### 每日简报
 
-Pear generates all-day birthday events from contact birthday fields. These appear as events on a "Birthdays" calendar when listing events. This is a synthesized feature — Apple's native Birthdays calendar is not exposed via CalDAV.
+`pear_get_daily_briefing`是向用户提供概览的最有效方式：
+- 一次性获取当天的事件和待办提醒事项
+- 自动添加联系人详细信息（姓名、电子邮件、电话）
+- 传递`timezone`以获取正确的日期范围
+- 传递`date`以获取其他日期的简报
 
-### Daily Briefing
+## 安全性与确认
 
-`pear_get_daily_briefing` is the most efficient way to give the user an overview:
-- Returns today's events + pending reminders in a single call
-- Automatically enriches event attendees with contact details (name, email, phone)
-- Pass `timezone` for correct day boundaries
-- Pass `date` to get a briefing for a different day
+### 需要谨慎的操作
 
-## Safety & Confirmation
-
-### Actions Requiring Care
-
-| Action | Risk | Guidance |
+| 操作 | 风险 | 指导建议 |
 |--------|------|----------|
-| `pear_delete_event` | Removes event permanently | Confirm event title and date with user before deleting |
-| `pear_delete_contact` | Removes contact permanently | Always confirm — show contact name first |
-| `pear_delete_contacts_batch` | Bulk delete up to 50 contacts | Require explicit user confirmation with count |
-| `pear_update_event` | Overwrites event fields | Summarize changes before applying |
-| `pear_complete_reminder` | Marks as done | Safe — can be undone by updating `completed: false` |
-| Batch create operations | Creates up to 50 items | Confirm count and summarize before executing |
+| `pear_delete_event` | 永久删除事件 | 删除前请与用户确认事件标题和日期 |
+| `pear_delete_contact` | 永久删除联系人 | 必须先显示联系人姓名再确认 |
+| `pear_delete_contacts_batch` | 批量删除最多50个联系人 | 需要用户明确确认 |
+| `pear_update_event` | 覆盖事件字段 | 应在应用更改前总结修改内容 |
+| `pear_complete_reminder` | 将提醒事项标记为已完成 | 可通过将`completed`设置为`false`来撤销 |
+| 批量创建操作 | 一次创建最多50个条目 | 执行前请确认数量并总结内容 |
 
-### Data Safety
+### 数据安全
 
-- **Read operations are always safe** — listing, searching, and briefings have no side effects
-- **Updates merge, not replace** — `pear_update_contact` preserves fields you don't mention
-- **Batch operations are rate-limited** — chunks of 5 with 200ms delays, no need to throttle manually
-- **Never expose the user's `PEAR_API_KEY`** — treat it as a secret
+- **读取操作始终安全**——列出、搜索和简报不会产生副作用 |
+- **更新操作会合并数据，而非替换**——`pear_update_contact`会保留您未指定的字段 |
+- **批量操作有速率限制**——每次操作最多5条，间隔200毫秒，无需手动限制 |
+- **切勿泄露用户的`PEAR_API_KEY`**——将其视为机密信息
 
-## Error Handling
+## 错误处理
 
-| Error Code | Meaning | What to Do |
+| 错误代码 | 含义 | 应对措施 |
 |------------|---------|------------|
-| `-32001` | Missing or invalid API key | Check `PEAR_API_KEY` is set correctly |
-| `-32602` | Invalid parameters | Check parameter names and types against tool reference |
-| `-32603` | Server error | Retry once, then report to user |
-| `404` on event/reminder | Item not found | The filename may have changed — re-list to get current filenames |
-| Calendar is read-only | Cannot modify subscription calendars | List calendars first to check which are writable |
+| `-32001` | API密钥缺失或无效 | 确保`PEAR_API_KEY`设置正确 |
+| `-32602` | 参数无效 | 根据工具参考检查参数名称和类型 |
+| `-32603` | 服务器错误 | 重试一次，然后向用户报告 |
+| `404`（事件/提醒事项未找到） | 项目可能已更改——重新列出以获取当前文件名 |
+| 日历为只读 | 无法修改订阅日历 | 先列出日历以确认哪些日历可写入 |
 
-## Common Patterns
+## 常见操作模式
 
-### Error Recovery (Idempotency)
+### 错误恢复（幂等性）
 ```
 Event creation failed mid-request or timed out:
 → Retry pear_create_event with the same idempotencyKey
 → Pear deduplicates — no double-booking even if the first request succeeded silently
 ```
 
-### Morning Briefing
+### 每日晨间简报
 ```
 User: "What's on my plate today?"
 → Call pear_get_daily_briefing with timezone
 → Summarize events chronologically, then pending reminders
 ```
 
-### Schedule a Meeting
+### 安排会议
 ```
 User: "Find time for a 1-hour meeting this week"
 → Call pear_find_best_time with durationMinutes: 60 and this week's range
@@ -222,30 +220,30 @@ User: "Find time for a 1-hour meeting this week"
 → On user selection, call pear_create_event
 ```
 
-### Quick Reminder
+### 快速创建提醒
 ```
 User: "Remind me to call the dentist tomorrow"
 → Call pear_create_reminder with title and dueDate set to tomorrow
 ```
 
-### Contact Lookup
+### 查找联系人
 ```
 User: "What's Sarah's phone number?"
 → Call pear_search_contacts with query: "Sarah"
 → Return matching contacts with phone numbers
 ```
 
-### Bulk Event Creation
+### 批量创建事件
 ```
 User: "Add these 5 meetings to my calendar"
 → Call pear_create_events_batch with all events in one request
 → Summarize results (created count, any failures)
 ```
 
-## References
+## 参考资料
 
-- [Pear Documentation](https://pearmcp.com/docs)
-- [Apple App-Specific Passwords](https://support.apple.com/en-us/102654)
-- [CalDAV Protocol (RFC 4791)](https://www.rfc-editor.org/rfc/rfc4791)
-- [CardDAV Protocol (RFC 6352)](https://www.rfc-editor.org/rfc/rfc6352)
-- [IANA Timezone Database](https://www.iana.org/time-zones)
+- [Pear文档](https://pearmcp.com/docs)
+- [Apple应用程序特定密码](https://support.apple.com/en-us/102654)
+- [CalDAV协议（RFC 4791）](https://www.rfc-editor.org/rfc/rfc4791)
+- [CardDAV协议（RFC 6352）](https://www.rfc-editor.org/rfc/rfc6352)
+- [IANA时区数据库](https://www.iana.org/time-zones)

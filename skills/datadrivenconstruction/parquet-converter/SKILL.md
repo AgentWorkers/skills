@@ -1,25 +1,24 @@
 ---
 slug: "parquet-converter"
 display_name: "Parquet Converter"
-description: "Convert construction data to/from Parquet format. Optimize storage, enable fast queries, and integrate with data lakehouses."
+description: "将建筑数据转换为 Parquet 格式，或从 Parquet 格式转换回原始数据格式。优化存储性能，实现快速查询，并将其集成到数据湖仓中。"
 ---
 
-# Parquet Converter
+# Parquet 转换器
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Data storage and processing challenges:
-- Large CSV files are slow to process
-- Inefficient storage of typed data
-- Column-oriented queries are slow
-- Incompatible with modern data platforms
+### 问题描述
+数据存储与处理面临的挑战：
+- 大型 CSV 文件的处理速度较慢
+- 类型化数据的存储效率低下
+- 列式查询的性能不佳
+- 与现代数据平台不兼容
 
-### Solution
-Convert construction data to Parquet format for efficient columnar storage, faster queries, and compatibility with data lakehouses.
+### 解决方案
+将建筑数据转换为 Parquet 格式，以实现高效的列式存储、更快的查询速度以及与数据湖的兼容性。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional, Union
@@ -441,8 +440,7 @@ class ParquetConverter:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Create converter
 converter = ParquetConverter("Project Data Migration")
@@ -460,9 +458,9 @@ print(f"Compression ratio: {result.compression_ratio}x")
 print(f"Size: {result.original_size_mb}MB -> {result.parquet_size_mb}MB")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Excel to Parquet
+### 1. 将 Excel 文件转换为 Parquet 格式
 ```python
 result = converter.excel_to_parquet(
     "project_data.xlsx",
@@ -471,7 +469,7 @@ result = converter.excel_to_parquet(
 )
 ```
 
-### 2. Query Parquet
+### 2. 查询 Parquet 文件
 ```python
 # Select specific columns with filter
 df = converter.query_parquet(
@@ -481,14 +479,14 @@ df = converter.query_parquet(
 )
 ```
 
-### 3. Get File Info
+### 3. 获取文件信息
 ```python
 info = converter.get_parquet_info("costs.parquet")
 print(f"Rows: {info['num_rows']}")
 print(f"Columns: {info['columns']}")
 ```
 
-### 4. Merge Files
+### 4. 合并文件
 ```python
 result = converter.merge_parquet_files(
     ["costs_2023.parquet", "costs_2024.parquet"],
@@ -496,8 +494,8 @@ result = converter.merge_parquet_files(
 )
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.4 - Modern Data Technologies
-- **Apache Parquet**: https://parquet.apache.org/
-- **PyArrow**: https://arrow.apache.org/docs/python/
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC 书籍**：第 4.4 章 - 现代数据技术
+- **Apache Parquet**：https://parquet.apache.org/
+- **PyArrow**：https://arrow.apache.org/docs/python/
+- **官方网站**：https://datadrivenconstruction.io

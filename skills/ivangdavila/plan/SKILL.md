@@ -1,50 +1,50 @@
 ---
 name: Plan
-description: Auto-learns when to plan vs execute directly. Adapts planning depth to task type. Improves strategy through outcome tracking.
+description: 能够自动学习何时应该进行计划，何时应该直接执行任务；会根据任务类型调整计划的详细程度；通过跟踪执行结果来优化策略。
 ---
 
-## Core Principle
+## 核心原则
 
-Some tasks fail when rushed. Recognize when one-shot execution will underdeliver, and choose a slower process that guarantees success.
+有些任务在仓促进行时会失败。要能够识别出那些一次性的执行无法达到预期效果的情况，并选择一种更缓慢但能确保成功的处理方式。
 
-This skill auto-evolves: learn which tasks need plans, which don't, and which planning strategies work for each type of goal.
+这项技能会随着时间的推移而不断提升：你需要学会哪些任务需要制定计划，哪些不需要；同时也要了解针对不同目标，哪些规划策略是有效的。
 
-Check `strategies.md` for planning approaches. Check `outcomes.md` for tracking and learning.
+有关规划方法的详细信息，请参阅 `strategies.md`；关于任务跟踪与经验学习的资料，请参阅 `outcomes.md`。
 
 ---
 
-## The Planning Decision
+## 规划决策
 
-Before executing, ask:
+在执行任务之前，请先思考以下问题：
 
-| Signal | One-shot OK | Plan needed |
+| 任务特征 | 适合一次性完成 | 需要制定计划 |
 |--------|-------------|-------------|
-| Task done before successfully | ✅ | |
-| Clear single deliverable | ✅ | |
-| Reversible if wrong | ✅ | |
-| Multiple components | | ✅ |
-| Dependencies between steps | | ✅ |
-| High stakes / hard to redo | | ✅ |
-| Ambiguous success criteria | | ✅ |
-| Estimated >30 min work | | ✅ |
+| 之前已经成功完成过 | ✅ | |
+| 有明确且单一的交付成果 | ✅ | |
+| 如果出错可以重新尝试 | ✅ | |
+| 任务包含多个组成部分 | | ✅ |
+| 各步骤之间存在依赖关系 | | ✅ |
+| 任务风险高或难以重新进行 | | ✅ |
+| 成功标准不明确 | | ✅ |
+| 预计耗时超过30分钟 | | ✅ |
 
-**Default:** When uncertain, plan. A quick plan costs minutes; a failed one-shot costs hours.
+**默认原则：** 当不确定时，应制定计划。一个简单的计划可能只需要几分钟时间；而一次性的错误执行则可能耗费数小时。
 
 ---
 
-## Plan Depth Levels
+## 规划的深度层次
 
-| Level | When | Format |
+| 规划层次 | 适用场景 | 规划格式 |
 |-------|------|--------|
-| L0 | Trivial, done before | No plan, just execute |
-| L1 | Simple, low risk | Mental checklist, no doc |
-| L2 | Medium complexity | Bullet list, share with human |
-| L3 | Complex, multi-step | Detailed plan with milestones |
-| L4 | High stakes, novel | Full plan + human validation required |
+| L0 | 简单、之前已经完成过 | 不需要计划，直接执行 |
+| L1 | 任务简单、风险低 | 用思维导图列出步骤，无需书面文档 |
+| L2 | 任务复杂度中等 | 用项目符号列表记录步骤，并与他人分享 |
+| L3 | 任务复杂、包含多个步骤 | 制定详细的计划，并设置里程碑 |
+| L4 | 任务风险高或具有创新性 | 制定完整的计划，并需要他人审核 |
 
 ---
 
-## Plan Format (L2-L4)
+## 规划格式（L2-L4）
 
 ```
 📋 Plan: [Goal]
@@ -67,9 +67,9 @@ Ready to start?
 
 ---
 
-## Validation Learning
+## 计划的验证与学习
 
-Track which plan types need human validation:
+记录哪些类型的计划需要他人审核或确认：
 
 ```
 ### Auto-Execute (no validation needed)
@@ -84,13 +84,13 @@ Track which plan types need human validation:
 - api/integration: testing L2 auto-execute [3/5 runs]
 ```
 
-**Promotion rule:** After 5+ successful auto-executes of a plan type, confirm: "Should I auto-start [type] plans without validation?"
+**优化规则：** 当某种类型的计划连续5次以上成功执行后，可以思考：“是否可以将其设置为自动执行，而无需人工审核？”
 
 ---
 
-## Outcome Tracking
+## 结果跟踪
 
-After each planned task completes, record:
+每个计划任务完成后，请记录相关结果：
 
 ```
 ## [Date] [Task Type]
@@ -103,9 +103,9 @@ After each planned task completes, record:
 
 ---
 
-## Strategy Learning
+## 规划策略的学习
 
-Different goals need different planning strategies. Track what works:
+不同的目标需要不同的规划策略。记录哪些规划方法有效，哪些无效：
 
 ```
 ### Code Features
@@ -126,31 +126,59 @@ Different goals need different planning strategies. Track what works:
 
 ---
 
-## Plan Refinement
+## 规划的优化
 
-Plans should get better over time. Track patterns:
+计划应该随着时间的推移而不断完善。请关注以下优化方向：
 
-**Length optimization:**
-- Task type X: L4 plans were overkill → demote to L3
-- Task type Y: L2 plans missed edge cases → promote to L3
+**优化规划长度：**
+- 对于任务类型X，如果L4级别的计划过于复杂，可以将其降级为L3级别；
+- 对于任务类型Y，如果L2级别的计划忽略了某些特殊情况，可以将其升级为L3级别。
 
-**Component optimization:**
-- Always include [X] for [task type] — helped 5+ times
-- Skip [Y] for [task type] — never used, wasted time
+**优化规划内容：**
+- 对于[任务类型]，始终要包含[特定内容]——这已经帮助我们解决了5次以上的问题；
+- 对于[任务类型]，如果[某些内容]从未被使用过，说明它们是多余的，应将其从规划中剔除。
 
 ---
 
-## Anti-Patterns
+## 应避免的错误做法
 
-| Don't | Do instead |
+| 不要这样做 | 应该这样做 |
 |-------|------------|
-| Plan everything | Learn what doesn't need planning |
-| Same plan depth for all tasks | Adapt depth to task type |
-| Ignore failed plans | Track outcomes, adjust strategy |
-| Over-plan familiar tasks | Demote plan level after successes |
-| Under-plan novel tasks | Default to higher plan level |
-| Static planning approach | Evolve strategy per task type |
+| 对所有任务都制定详细的计划 | 学会判断哪些任务不需要规划 |
+| 对所有任务都采用相同的规划深度 | 根据任务类型调整规划深度 |
+| 忽略失败的规划 | 跟踪任务结果，调整相应的规划策略 |
+| 对于熟悉的任务制定过于详细的计划 | 在任务成功后，降低规划难度 |
+| 对于新颖的任务规划不足 | 对于新颖的任务，默认采用更高级别的规划 |
+| 采用固定的规划方法 | 根据任务类型不断优化规划策略 |
 
 ---
 
-*Empty tracking sections = early stage. Execute, track outcomes, learn. The goal is adaptive planning that matches effort to need.*
+*请注意：上述内容中的“```
+📋 Plan: [Goal]
+
+Context: [Why this needs planning]
+
+Steps:
+1. [Step] — [output/checkpoint]
+2. [Step] — [output/checkpoint]
+3. [Step] — [output/checkpoint]
+
+Risks:
+- [Risk] → [mitigation]
+
+Estimated time: [X hours/days]
+Validation needed: [Yes/No]
+
+Ready to start?
+```”、“```
+### Auto-Execute (no validation needed)
+- refactor/small: L2 plans [10+ successful]
+- deploy/staging: L2 plans [15+ successful]
+
+### Validate First
+- feature/new: L3+ plans [human wants to review scope]
+- migration/data: L4 plans [high risk]
+
+### Learning
+- api/integration: testing L2 auto-execute [3/5 runs]
+```”等占位符在实际翻译中应保持不变，因为它们代表的是具体的代码块或文档内容。在实际应用中，这些占位符会被替换为具体的代码或文本。*

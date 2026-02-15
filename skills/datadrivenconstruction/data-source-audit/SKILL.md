@@ -1,36 +1,36 @@
 ---
 slug: "data-source-audit"
 display_name: "Data Source Audit"
-description: "Comprehensive audit of all construction data sources and systems. Map data flows, identify silos, assess quality, and create integration roadmap."
+description: "对所有建筑数据源和系统进行全面审计。梳理数据流，识别数据孤岛（即数据无法共享或重复存储的情况），评估数据质量，并制定数据整合的路线图。"
 ---
 
-# Data Source Audit for Construction
+# 建筑行业的数据源审计
 
-## Overview
+## 概述
 
-Perform comprehensive audits of construction data sources to identify silos, map data flows, assess quality, and plan integration strategies. Essential for digital transformation and data-driven construction initiatives.
+对建筑行业的数据源进行全面审计，以识别数据孤岛、梳理数据流、评估数据质量，并制定数据集成策略。这是推动数字化转型和数据驱动的建筑工程项目的重要步骤。
 
-## Business Case
+## 商业价值
 
-Construction organizations typically have 10-50+ data sources:
-- Project management systems
-- Estimating software
-- Scheduling tools
-- Accounting/ERP systems
-- BIM platforms
-- Document management systems
-- Field apps
-- Spreadsheets
+建筑企业通常拥有10到50多个数据源，包括：
+- 项目管理系统
+- 估算软件
+- 计划调度工具
+- 会计/ERP系统
+- BIM平台
+- 文档管理系统
+- 现场应用程序
+- 电子表格
 
-> **Note:** This skill is vendor-agnostic and works with any data source. Product names mentioned elsewhere in examples are trademarks of their respective owners.
+> **注意：**本技能与具体供应商无关，适用于任何类型的数据源。示例中提到的产品名称均为其各自所有者的商标。
 
-This skill helps:
-- Discover all data sources
-- Map data flows and dependencies
-- Identify integration opportunities
-- Prioritize data improvement efforts
+本技能有助于：
+- 完整识别所有数据源
+- 理清数据流及其相互依赖关系
+- 发现数据集成的机会
+- 优先安排数据优化工作
 
-## Technical Implementation
+## 技术实现方式
 
 ```python
 from dataclasses import dataclass, field
@@ -453,7 +453,7 @@ class DataSourceAuditor:
         return recommendations
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 # Initialize auditor
@@ -518,9 +518,9 @@ catalog = auditor.create_data_catalog()
 catalog.to_excel("data_catalog.xlsx", index=False)
 ```
 
-## Survey Template
+## 调查模板
 
-Use this survey to discover data sources across the organization:
+使用此调查问卷来了解企业内部的所有数据源：
 
 ```yaml
 System Survey:
@@ -541,8 +541,7 @@ System Survey:
   - integrations: "What other systems does it connect to?"
 ```
 
-## Resources
-
-- **DAMA DMBOK**: Data Management Body of Knowledge
-- **Data Governance Frameworks**: DCAM, EDM Council
-- **Integration Patterns**: Enterprise Integration Patterns book
+## 参考资源
+- **DAMA DMBOK**（数据管理知识体系）
+- **数据治理框架**：DCAM、EDM Council等
+- **集成模式**：《企业集成模式》一书

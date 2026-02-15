@@ -1,6 +1,6 @@
 ---
 name: context-optimizer
-description: Advanced context management with auto-compaction and dynamic context optimization for DeepSeek's 64k context window. Features intelligent compaction (merging, summarizing, extracting), query-aware relevance scoring, and hierarchical memory system with context archive. Logs optimization events to chat.
+description: DeepSeek支持64k上下文窗口的高级上下文管理功能，包括自动压缩和动态上下文优化。该系统具备智能压缩机制（合并、总结、提取数据），能够根据查询需求进行相关性评分，并采用分层内存系统来存储上下文数据。同时，系统会将优化事件记录到聊天界面中供用户查看。
 homepage: https://github.com/clawdbot/clawdbot
 metadata:
   clawdbot:
@@ -15,22 +15,22 @@ metadata:
         command: "cd ~/.clawdbot/skills/context-pruner && npm install"
 ---
 
-# Context Pruner
+# 上下文剪枝器（Context Pruner）
 
-Advanced context management optimized for DeepSeek's 64k context window. Provides intelligent pruning, compression, and token optimization to prevent context overflow while preserving important information.
+这是一个针对 DeepSeek 的 64k 上下文窗口进行优化的先进上下文管理工具。它提供了智能的剪枝、压缩和令牌优化功能，以防止上下文溢出，同时保留重要信息。
 
-## Key Features
+## 主要特性
 
-- **DeepSeek-optimized**: Specifically tuned for 64k context window
-- **Adaptive pruning**: Multiple strategies based on context usage
-- **Semantic deduplication**: Removes redundant information
-- **Priority-aware**: Preserves high-value messages
-- **Token-efficient**: Minimizes token overhead
-- **Real-time monitoring**: Continuous context health tracking
+- **专为 DeepSeek 优化**：针对 64k 上下文窗口进行了专门调整
+- **自适应剪枝**：根据上下文使用情况采用多种策略
+- **语义去重**：删除冗余信息
+- **优先级感知**：保留高价值的信息
+- **高效利用令牌**：最小化令牌开销
+- **实时监控**：持续跟踪上下文状态
 
-## Quick Start
+## 快速入门
 
-### Auto-compaction with dynamic context:
+### 动态上下文的自动压缩：
 ```javascript
 import { createContextPruner } from './lib/index.js';
 
@@ -55,7 +55,7 @@ console.log(`Context health: ${status.health}, Relevance scores: ${status.releva
 const compacted = await pruner.autoCompact(messages, currentQuery);
 ```
 
-### Archive Retrieval (Hierarchical Memory):
+### 档案检索（分层存储）：
 ```javascript
 // When something isn't in current context, search archive
 const archiveResult = await pruner.retrieveFromArchive('query about previous conversation', {
@@ -72,33 +72,32 @@ if (archiveResult.found) {
 }
 ```
 
-## Auto-Compaction Strategies
+## 自动压缩策略
 
-1. **Semantic Compaction**: Merges similar messages instead of removing them
-2. **Temporal Compaction**: Summarizes older conversations by time windows  
-3. **Extractive Compaction**: Extracts key information from verbose messages
-4. **Adaptive Compaction**: Chooses best strategy based on message characteristics
-5. **Dynamic Context**: Filters messages based on relevance to current query
+1. **语义压缩**：合并相似的消息，而不是直接删除它们
+2. **时间压缩**：按时间窗口汇总旧对话内容
+3. **提取式压缩**：从冗长的消息中提取关键信息
+4. **自适应压缩**：根据消息特性选择最佳压缩策略
+5. **动态上下文**：根据与当前查询的相关性筛选消息
 
-## Dynamic Context Management
+## 动态上下文管理
 
-- **Query-aware Relevance**: Scores messages based on similarity to current query
-- **Relevance Decay**: Relevance scores decay over time for older conversations
-- **Adaptive Filtering**: Automatically filters low-relevance messages
-- **Priority Integration**: Combines message priority with semantic relevance
+- **查询相关性**：根据消息与当前查询的相似度对其进行评分
+- **相关性衰减**：旧对话的相关性评分会随时间降低
+- **自适应过滤**：自动过滤低相关性的消息
+- **优先级整合**：结合消息的优先级和语义相关性进行筛选
 
-## Hierarchical Memory System
+## 分层存储系统
 
-The context archive provides a RAM vs Storage approach:
+该上下文档案系统采用了 RAM 与存储相结合的存储方式：
 
-- **Current Context (RAM)**: Limited (64k tokens), fast access, auto-compacted
-- **Archive (Storage)**: Larger (100MB), slower but searchable
-- **Smart Retrieval**: When information isn't in current context, efficiently search archive
-- **Selective Loading**: Extract only relevant snippets, not entire documents
-- **Automatic Storage**: Compacted content automatically stored in archive
+- **当前上下文（RAM）**：容量有限（64k 个令牌），访问速度快，会自动进行压缩
+- **档案（存储）**：容量较大（100MB），访问速度较慢，但支持搜索
+- **智能检索**：当所需信息不在当前上下文中时，可高效地从档案中检索
+- **选择性加载**：仅加载相关片段，而非整个文档
+- **自动存储**：压缩后的内容会自动保存到档案中
 
-## Configuration
-
+## 配置
 ```javascript
 {
   contextLimit: 64000, // DeepSeek's context window
@@ -134,10 +133,9 @@ The context archive provides a RAM vs Storage approach:
 }
 ```
 
-## Chat Logging
+## 聊天日志记录
 
-The context optimizer can log events directly to chat:
-
+该上下文优化工具可以直接将事件记录到聊天记录中：
 ```javascript
 // Example chat log messages:
 // 📊 Context optimized: Compacted 15 messages → 8 (47% reduction)
@@ -160,10 +158,9 @@ const pruner = createContextPruner({
 });
 ```
 
-## Integration with Clawdbot
+## 与 Clawdbot 的集成
 
-Add to your Clawdbot config:
-
+请将以下代码添加到您的 Clawdbot 配置中：
 ```yaml
 skills:
   context-pruner:
@@ -173,4 +170,4 @@ skills:
       autoPrune: true
 ```
 
-The pruner will automatically monitor context usage and apply appropriate pruning strategies to stay within DeepSeek's 64k limit.
+该剪枝器会自动监控上下文的使用情况，并应用相应的剪枝策略，以确保上下文大小始终在 DeepSeek 的 64k 限制范围内。

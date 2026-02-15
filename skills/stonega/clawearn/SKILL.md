@@ -1,7 +1,7 @@
 ---
 name: clawearn
 version: 1.1.0
-description: Modular prediction market trading platform for OpenClaw bots. Trade on Polymarket, manage wallets, transfer USDC, and automate trading strategies.
+description: 这是一个专为 OpenClaw 机器人设计的模块化预测市场交易平台。用户可以在 Polymarket 上进行交易、管理钱包、转移 USDC（Uniswap 的稳定币），并实现交易策略的自动化。
 homepage: https://clawearn.xyz
 documentation: https://docs.clawearn.xyz
 repository: https://github.com/stonega/moltearn
@@ -14,57 +14,57 @@ metadata:
   requires: ["bun", "ethers.js"]
 ---
 
-# Clawearn - Modular Trading Platform for OpenClaw 🎯
+# Clawearn - OpenClaw 的模块化交易平台 🎯
 
-**Trade prediction markets directly from your OpenClaw bot.**
+**直接从您的 OpenClaw 机器人进行交易预测市场操作。**
 
-Clawearn enables your AI agent to:
-- 🎯 Trade on Polymarket prediction markets
-- 💼 Create and manage crypto wallets
-- 💸 Send USDC to any Ethereum address on Arbitrum
-- 📊 Monitor balances and positions across markets
-- 🤖 Execute trading strategies autonomously
+Clawearn 使您的 AI 代理能够：
+- 🎯 在 Polymarket 预测市场上进行交易
+- 💼 创建和管理加密货币钱包
+- 💸 将 USDC 发送到 Arbitrum 上的任何以太坊地址
+- 📊 监控多个市场中的余额和持仓
+- 🤖 自动执行交易策略
 
 ---
 
-## Quick Start (3 steps)
+## 快速入门（3 个步骤）
 
-### Step 1: Install clawearn CLI
+### 第一步：安装 clawearn CLI
 
 ```bash
 curl -fsSL https://clawearn.xyz/install.sh | bash
 # or: bun link (if in repo)
 ```
 
-### Step 2: Create your first wallet
+### 第二步：创建您的第一个钱包
 
 ```bash
 clawearn wallet create
 ```
 
-You'll see your wallet address. Save it — you'll need to fund it next.
+您会看到您的钱包地址，请保存它——接下来您需要为其充值。
 
-### Step 3: Fund your wallet and start trading
+### 第三步：为钱包充值并开始交易
 
-**Option A: Send USDC from another wallet**
+**选项 A：从其他钱包发送 USDC**
 ```bash
 clawearn wallet send --to YOUR_AGENT_ADDRESS --amount 100
 ```
 
-**Option B: Bridge USDC to Arbitrum yourself**
-- Send USDC to Arbitrum network
-- Send to the address from `clawearn wallet show`
+**选项 B：自行将 USDC 桥接到 Arbitrum**
+- 将 USDC 发送到 Arbitrum 网络
+- 发送到 `clawearn wallet show` 显示的地址
 
-**Then search for markets:**
+**然后搜索市场：**
 ```bash
 clawearn polymarket market search --query "bitcoin price 2025"
 ```
 
 ---
 
-## Installation for OpenClaw Bots
+## OpenClaw 机器人的安装
 
-### Install all skill files
+### 安装所有技能文件
 
 ```bash
 # Create skill directory
@@ -85,18 +85,17 @@ curl -s https://clawearn.xyz/skills/markets/polymarket/SKILL.md > ~/.openclaw/sk
 curl -s https://clawearn.xyz/skills/markets/polymarket/HEARTBEAT.md > ~/.openclaw/skills/clawearn/markets/polymarket/HEARTBEAT.md
 ```
 
-## Supported Markets
+## 支持的市场
 
-| Market | Status | Features | Installation |
+| 市场 | 状态 | 功能 | 安装方式 |
 |--------|--------|----------|--------------|
-| **Polymarket** | ✅ Production | Full trading, order management, market discovery | See above |
+| **Polymarket** | ✅ 正式上线 | 全面交易、订单管理、市场发现 | 详见上文 |
 
 ---
 
+## 核心命令
 
-## Core Commands
-
-### Wallet Management
+### 钱包管理
 
 ```bash
 # Create a new wallet
@@ -109,7 +108,7 @@ clawearn wallet show
 clawearn wallet send --to 0x... --amount 100
 ```
 
-### Polymarket Trading
+### Polymarket 交易
 
 ```bash
 # Search for markets
@@ -131,11 +130,11 @@ clawearn polymarket order list-open
 clawearn polymarket order cancel --order-id ORDER_ID
 ```
 
-## Configuration
+## 配置
 
-Create an optional config file to track settings:
+您可以创建一个可选的配置文件来记录设置：
 
-**`~/.clawearn/config.json`** (optional)
+**`~/.clawearn/config.json`**（可选）
 ```json
 {
   "version": "1.1.0",
@@ -160,14 +159,14 @@ Create an optional config file to track settings:
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Check installed markets
+### 检查已安装的市场
 ```bash
 ls ~/.clawearn/skills/markets/
 ```
 
-### Update all skills
+### 更新所有技能
 ```bash
 # Update core
 curl -s http://localhost:3000/skills/SKILL.md > ~/.clawearn/skills/SKILL.md
@@ -178,7 +177,7 @@ for market in $(cat ~/.clawearn/config.json | grep -o '"polymarket"'); do
 done
 ```
 
-### Add a new market
+### 添加新市场
 ```bash
 # 1. Install the skill files
 mkdir -p ~/.clawearn/skills/markets/NEW_MARKET
@@ -191,30 +190,29 @@ curl -s http://localhost:3000/skills/markets/NEW_MARKET/SKILL.md > ~/.clawearn/s
 
 ---
 
-## Security Best Practices
+## 安全最佳实践
 
-🔒 **CRITICAL:**
-- Read `core/SECURITY.md` before trading
-- Never share private keys
-- Store credentials securely
-- Use separate wallets for different markets
-- Enable 2FA where available
-
----
-
-## Getting Help
-
-- **Core wallet issues**: See `core/WALLET.md`
-- **Security questions**: See `core/SECURITY.md`
-- **Market-specific help**: See `markets/{market}/README.md`
-- **General trading**: See `HEARTBEAT.md` for routine checks
+🔒 **重要提示：**
+- 在进行交易之前，请阅读 `core/SECURITY.md`
+- 绝不要共享私钥
+- 为不同的市场使用不同的钱包
+- 在支持的情况下启用双重身份验证（2FA）
 
 ---
 
-**Check for updates:** Re-fetch this file anytime to see newly supported markets!
+## 获取帮助
+
+- **关于钱包的问题**：请参阅 `core/WALLET.md`
+- **安全相关问题**：请参阅 `core/SECURITY.md`
+- **特定市场的相关帮助**：请参阅 `markets/{market}/README.md`
+- **常规交易操作**：请参阅 `HEARTBEAT.md` 以获取常规检查信息
+
+---
+
+**检查更新：** 随时重新获取此文件，以查看新增支持的市场！
 
 ```bash
 curl -s https://clawearn.xyz/skills/SKILL.md | grep '^version:'
 ```
 
-**Ready to start?** Install the core skills, choose your markets, and begin trading! 🚀
+**准备好开始了吗？** 安装核心技能，选择您想要交易的市场，然后开始交易吧！🚀

@@ -1,265 +1,209 @@
 ---
 name: docker-containerization
-description: This skill should be used when containerizing applications with Docker, creating Dockerfiles, docker-compose configurations, or deploying containers to various platforms. Ideal for Next.js, React, Node.js applications requiring containerization for development, production, or CI/CD pipelines. Use this skill when users need Docker configurations, multi-stage builds, container orchestration, or deployment to Kubernetes, ECS, Cloud Run, etc.
+description: 此技能适用于使用 Docker 对应用程序进行容器化处理、创建 Dockerfile、编写 docker-compose 配置文件，或将容器部署到各种平台。特别适合 Next.js、React、Node.js 等需要容器化支持的开发、生产环境或持续集成/持续交付（CI/CD）流程的应用程序。当用户需要 Docker 配置、多阶段构建、容器编排，或者将容器部署到 Kubernetes、ECS、Cloud Run 等平台时，可优先使用此技能。
 ---
 
-# Docker Containerization Skill
+# Docker容器化技能
 
-## Overview
+## 概述
 
-Generate production-ready Docker configurations for modern web applications, particularly Next.js and Node.js projects. This skill provides Dockerfiles, docker-compose setups, bash scripts for container management, and comprehensive deployment guides for various orchestration platforms.
+本技能专注于为现代Web应用程序（尤其是Next.js和Node.js项目）生成适用于生产环境的Docker配置。包括Dockerfile、docker-compose设置、用于容器管理的bash脚本，以及针对多种编排平台的全面部署指南。
 
-## Core Capabilities
+## 核心能力
 
-### 1. Dockerfile Generation
+### 1. Dockerfile生成
 
-Create optimized Dockerfiles for different environments:
+为不同环境生成优化的Dockerfile：
 
-**Production** (`assets/Dockerfile.production`):
-- Multi-stage build reducing image size by 85%
-- Alpine Linux base (~180MB final image)
-- Non-root user execution for security
-- Health checks and resource limits
+- **生产环境**（`assets/Dockerfile.production`）：
+  - 多阶段构建，可将镜像大小减少85%
+  - 基于Alpine Linux（最终镜像大小约180MB）
+  - 以非root用户身份运行，确保安全性
+  - 包含健康检查机制和资源限制
 
-**Development** (`assets/Dockerfile.development`):
-- Hot reload support
-- All dev dependencies included
-- Volume mounts for live code updates
+- **开发环境**（`assets/Dockerfile.development`）：
+  - 支持热重载
+  - 包含所有开发依赖项
+  - 支持通过卷挂载实时更新代码
 
-**Nginx Static** (`assets/Dockerfile.nginx`):
-- Static export optimization
-- Nginx reverse proxy included
-- Smallest possible footprint
+- **Nginx静态服务**（`assets/Dockerfile.nginx`）：
+  - 优化静态资源输出
+  - 集成Nginx反向代理
+  - 镜像体积最小化
 
-### 2. Docker Compose Configuration
+### 2. Docker Compose配置
 
-Multi-container orchestration with `assets/docker-compose.yml`:
-- Development and production services
-- Network and volume management
-- Health checks and logging
-- Restart policies
+使用`assets/docker-compose.yml`进行多容器编排：
+- 管理开发环境和生产环境的服务
+- 网络和卷管理
+- 实施健康检查与日志记录
+- 定义容器重启策略
 
-### 3. Bash Scripts for Container Management
+### 3. 容器管理的bash脚本
 
-**docker-build.sh** - Build images with comprehensive options:
-```bash
-./docker-build.sh -e prod -t v1.0.0
-./docker-build.sh -n my-app --no-cache --platform linux/amd64
-```
+- `docker-build.sh`：具有丰富选项的镜像构建脚本
+- `docker-run.sh`：以完整配置运行容器
+- `docker-push.sh`：将容器推送到注册中心（Docker Hub、ECR、GCR、ACR）
+- `docker-cleanup.sh`：清理磁盘空间
 
-**docker-run.sh** - Run containers with full configuration:
-```bash
-./docker-run.sh -i my-app -t v1.0.0 -d
-./docker-run.sh -p 8080:3000 --env-file .env.production
-```
+### 4. 配置文件
 
-**docker-push.sh** - Push to registries (Docker Hub, ECR, GCR, ACR):
-```bash
-./docker-push.sh -n my-app -t v1.0.0 --repo username/my-app
-./docker-push.sh -r gcr.io/project --repo my-app --also-tag stable
-```
+- `.dockerignore`：排除不必要的文件（如node_modules、.git、日志文件）
+- `nginx.conf`：适用于生产环境的Nginx配置文件，包含压缩、缓存和安全设置
 
-**docker-cleanup.sh** - Free disk space:
-```bash
-./docker-cleanup.sh --all --dry-run  # Preview cleanup
-./docker-cleanup.sh --containers --images  # Clean specific resources
-```
+### 5. 参考文档
 
-### 4. Configuration Files
+- `docker-best-practices.md`：
+  - 介绍多阶段构建方法
+  - 镜像优化技巧（减少85%的镜像大小）
+  - 安全最佳实践（使用非root用户、进行漏洞扫描）
+  - 性能优化方法
+  - 健康检查与日志记录方案
+  - 故障排除指南
 
-- **`.dockerignore`**: Excludes unnecessary files (node_modules, .git, logs)
-- **`nginx.conf`**: Production-ready Nginx configuration with compression, caching, security headers
+- `container-orchestration.md`：
+  - 提供针对以下平台的部署指南：
+    - Docker Compose（本地开发）
+    - Kubernetes（支持自动扩展的企业级部署）
+    - Amazon ECS（AWS原生编排）
+    - Google Cloud Run（无服务器容器）
+    - Azure Container Instances
+    - Digital Ocean App Platform
+  - 包含配置示例、命令、自动扩展设置和监控方案
 
-### 5. Reference Documentation
+## 工作流程决策树
 
-**docker-best-practices.md** covers:
-- Multi-stage builds explained
-- Image optimization techniques (50-85% size reduction)
-- Security best practices (non-root users, vulnerability scanning)
-- Performance optimization
-- Health checks and logging
-- Troubleshooting guide
+### 1. 选择何种环境？
+- **开发环境** → 使用`Dockerfile.development`（支持热重载和所有依赖项）
+- **生产环境** → 使用`Dockerfile.production`（精简且安全）
+- **静态服务** → 使用`Dockerfile.nginx`（镜像体积最小）
 
-**container-orchestration.md** covers deployment to:
-- Docker Compose (local development)
-- Kubernetes (enterprise scale with auto-scaling)
-- Amazon ECS (AWS-native orchestration)
-- Google Cloud Run (serverless containers)
-- Azure Container Instances
-- Digital Ocean App Platform
+### 2. 使用单个容器还是多个容器？
+- **单个容器** → 仅生成Dockerfile
+- **多个容器** → 生成`docker-compose.yml`（包含应用程序和数据库）
 
-Includes configuration examples, commands, auto-scaling setup, and monitoring.
-
-## Workflow Decision Tree
-
-### 1. What environment?
-- **Development** → `Dockerfile.development` (hot reload, all dependencies)
-- **Production** → `Dockerfile.production` (minimal, secure, optimized)
-- **Static Export** → `Dockerfile.nginx` (smallest footprint)
-
-### 2. Single or Multi-container?
-- **Single** → Generate Dockerfile only
-- **Multi** → Generate `docker-compose.yml` (app + database, microservices)
-
-### 3. Which registry?
+### 3. 选择哪个注册中心？
 - **Docker Hub** → `docker.io/username/image`
 - **AWS ECR** → `123456789012.dkr.ecr.region.amazonaws.com/image`
 - **Google GCR** → `gcr.io/project-id/image`
 - **Azure ACR** → `registry.azurecr.io/image`
 
-### 4. Deployment platform?
-- **Kubernetes** → See `references/container-orchestration.md` K8s section
-- **ECS** → See ECS task definition examples
-- **Cloud Run** → See deployment commands
-- **Docker Compose** → Use provided compose file
+### 4. 选择部署平台？
+- **Kubernetes** → 参考`container-orchestration.md`中的Kubernetes部分
+- **ECS** → 参考ECS任务定义示例
+- **Cloud Run** → 参考相应的部署命令
+- **Docker Compose** → 使用提供的`docker-compose.yml`文件
 
-### 5. Optimizations needed?
-- **Image size** → Multi-stage builds, Alpine base
-- **Build speed** → Layer caching, BuildKit
-- **Security** → Non-root user, vulnerability scanning
-- **Performance** → Resource limits, health checks
+### 5. 是否需要优化？
+- **镜像大小** → 使用多阶段构建和Alpine Linux基底
+- **构建速度** → 优化层缓存和BuildKit
+- **安全性** → 以非root用户身份运行并扫描漏洞
+- **性能** → 设置资源限制和健康检查
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Containerize Next.js App for Production
+### 示例1：为生产环境容器化Next.js应用程序
 
-**User**: "Containerize my Next.js app for production"
+**用户**：“将我的Next.js应用程序容器化以适应生产环境”
 
-**Steps**:
-1. Copy `assets/Dockerfile.production` to project root as `Dockerfile`
-2. Copy `assets/.dockerignore` to project root
-3. Build: `./docker-build.sh -e prod -n my-app -t v1.0.0`
-4. Test: `./docker-run.sh -i my-app -t v1.0.0 -p 3000:3000 -d`
-5. Push: `./docker-push.sh -n my-app -t v1.0.0 --repo username/my-app`
+**步骤**：
+1. 将`assets/Dockerfile.production`复制到项目根目录，并命名为`Dockerfile`
+2. 将`assets/.dockerignore`复制到项目根目录
+3. 构建镜像：`./docker-build.sh -e prod -n my-app -t v1.0.0`
+4. 测试：`./docker-run.sh -i my-app -t v1.0.0 -p 3000:3000 -d`
+5. 推送镜像：`./docker-push.sh -n my-app -t v1.0.0 --repo username/my-app`
 
-### Example 2: Development with Docker Compose
+### 示例2：使用Docker Compose进行开发
 
-**User**: "Set up Docker Compose for local development"
+**用户**：“为本地开发环境设置Docker Compose”
 
-**Steps**:
-1. Copy `assets/Dockerfile.development` and `assets/docker-compose.yml` to project
-2. Customize services in docker-compose.yml
-3. Start: `docker-compose up -d`
-4. Logs: `docker-compose logs -f app-dev`
+**步骤**：
+1. 将`assets/Dockerfile.development`和`assets/docker-compose.yml`复制到项目目录
+2. 在`docker-compose.yml`中自定义服务配置
+3. 启动容器：`docker-compose up -d`
+4. 查看日志：`docker-compose logs -f app-dev`
 
-### Example 3: Deploy to Kubernetes
+### 示例3：将应用程序部署到Kubernetes
 
-**User**: "Deploy my containerized app to Kubernetes"
+**用户**：“将容器化应用程序部署到Kubernetes”
 
-**Steps**:
-1. Build and push image to registry
-2. Review `references/container-orchestration.md` Kubernetes section
-3. Create K8s manifests (deployment, service, ingress)
-4. Apply: `kubectl apply -f deployment.yaml`
-5. Verify: `kubectl get pods && kubectl logs -f deployment/app`
+**步骤**：
+1. 构建镜像并将其推送到注册中心
+2. 查阅`container-orchestration.md`中的Kubernetes相关内容
+3. 创建Kubernetes配置文件（deployment、service、ingress）
+4. 应用配置：`kubectl apply -f deployment.yaml`
+5. 验证部署结果：`kubectl get pods && kubectl logs -f deployment/app`
 
-### Example 4: Deploy to AWS ECS
+### 示例4：将应用程序部署到AWS ECS
 
-**User**: "Deploy to AWS ECS Fargate"
+**用户**：“将应用程序部署到AWS ECS Fargate**
 
-**Steps**:
-1. Build and push to ECR
-2. Review `references/container-orchestration.md` ECS section
-3. Create task definition JSON
-4. Register: `aws ecs register-task-definition --cli-input-json file://task-def.json`
-5. Create service: `aws ecs create-service --cluster my-cluster --service-name app --desired-count 3`
+**步骤**：
+1. 构建镜像并将其推送到ECR
+2. 查阅`container-orchestration.md`中的ECS相关内容
+3. 创建任务定义文件（JSON格式）
+4. 注册任务定义：`aws ecs register-task-definition --cli-input-json file://task-def.json`
+5. 创建服务：`aws ecs create-service --cluster my-cluster --service-name app --desired-count 3`
 
-## Best Practices
+## 最佳实践
 
-### Security
-✅ Use multi-stage builds for production
-✅ Run as non-root user
-✅ Use specific image tags (not `latest`)
-✅ Scan for vulnerabilities
-✅ Never hardcode secrets
-✅ Implement health checks
+### 安全性
+- **生产环境**：使用多阶段构建
+- **以非root用户身份运行容器**
+- **使用特定的镜像标签（而非`latest`）**
+- **定期扫描应用程序中的漏洞**
+- **避免硬编码敏感信息**
+- **实施健康检查机制**
 
-### Performance
-✅ Optimize layer caching order
-✅ Use Alpine images (~85% smaller)
-✅ Enable BuildKit for parallel builds
-✅ Set resource limits
-✅ Use compression
+### 性能优化
+- **优化层缓存顺序**
+- **使用Alpine Linux镜像（镜像体积通常较小）**
+- **启用BuildKit以加速构建过程**
+- **设置合理的资源限制**
+- **使用压缩技术**
 
-### Maintainability
-✅ Add comments for complex steps
-✅ Use build arguments for flexibility
-✅ Keep Dockerfiles DRY
-✅ Version control all configs
-✅ Document environment variables
+### 可维护性
+- **为复杂步骤添加注释**
+- **使用构建参数以增加灵活性**
+- **保持Dockerfile的简洁性**
+- **对所有配置文件进行版本控制**
+- **详细记录环境变量设置**
 
-## Troubleshooting
+## 故障排除
 
-**Image too large (>500MB)**
-→ Use multi-stage builds, Alpine base, comprehensive .dockerignore
+- **镜像过大（>500MB）**：使用多阶段构建和Alpine Linux基底
+- **构建速度缓慢**：优化层缓存和BuildKit配置
+- **容器立即退出**：检查日志文件（`docker logs container-name`），确认CMD/ENTRYPOINT设置是否正确，检查端口冲突
+- **更改未生效**：清除缓存后重新构建，检查`.dockerignore`文件和卷挂载设置
 
-**Build is slow**
-→ Optimize layer caching, use BuildKit, review dependencies
+## 快速参考
 
-**Container exits immediately**
-→ Check logs: `docker logs container-name`
-→ Verify CMD/ENTRYPOINT, check port conflicts
+### 与CI/CD工具的集成
 
-**Changes not reflecting**
-→ Rebuild without cache, check .dockerignore, verify volume mounts
-
-## Quick Reference
-
-```bash
-# Build
-./docker-build.sh -e prod -t latest
-
-# Run
-./docker-run.sh -i app -t latest -d
-
-# Logs
-docker logs -f app
-
-# Execute
-docker exec -it app sh
-
-# Cleanup
-./docker-cleanup.sh --all --dry-run  # Preview
-./docker-cleanup.sh --all            # Execute
-```
-
-## Integration with CI/CD
-
-### GitHub Actions
-```yaml
-- run: |
-    chmod +x docker-build.sh docker-push.sh
-    ./docker-build.sh -e prod -t ${{ github.sha }}
-    ./docker-push.sh -n app -t ${{ github.sha }} --repo username/app
-```
-
-### GitLab CI
-```yaml
+- **GitHub Actions**：[相关集成方案](___CODE_BLOCK_5_)
+- **GitLab CI**：[相关集成方案](```yaml
 build:
   script:
     - chmod +x docker-build.sh
     - ./docker-build.sh -e prod -t $CI_COMMIT_SHA
 ```
 
-## Resources
+## 资源
 
-### Scripts (`scripts/`)
-Production-ready bash scripts with comprehensive features:
-- `docker-build.sh` - Build images (400+ lines, colorized output)
-- `docker-run.sh` - Run containers (400+ lines, auto conflict resolution)
-- `docker-push.sh` - Push to registries (multi-registry support)
-- `docker-cleanup.sh` - Clean resources (dry-run mode, selective cleanup)
+- **脚本文件夹（`scripts/`）**：包含适用于生产环境的bash脚本：
+  - `docker-build.sh`：用于构建镜像（400多行代码，支持彩色输出）
+  - `docker-run.sh`：用于运行容器（400多行代码，具备自动冲突解决功能）
+  - `docker-push.sh`：用于将镜像推送到多个注册中心
+  - `docker-cleanup.sh`：用于清理资源（支持干运行模式和选择性清理）
 
-### References (`references/`)
-Detailed documentation loaded as needed:
-- `docker-best-practices.md` - Comprehensive Docker best practices (~500 lines)
-- `container-orchestration.md` - Deployment guides for 6+ platforms (~600 lines)
+- **参考文档（`references/`）**：根据需要查阅详细文档：
+  - `docker-best-practices.md`：全面的Docker最佳实践指南（约500行）
+  - `container-orchestration.md`：针对6种以上平台的部署指南（约600行）
 
-### Assets (`assets/`)
-Ready-to-use templates:
-- `Dockerfile.production` - Multi-stage production Dockerfile
-- `Dockerfile.development` - Development Dockerfile
-- `Dockerfile.nginx` - Static export with Nginx
-- `docker-compose.yml` - Multi-container orchestration
-- `.dockerignore` - Optimized exclusion rules
-- `nginx.conf` - Production Nginx configuration
+- **资源文件（`assets/`）**：提供可直接使用的模板：
+  - `Dockerfile.production`：适用于生产环境的Dockerfile
+  - `Dockerfile.development`：适用于开发环境的Dockerfile
+  - `Dockerfile.nginx`：用于Nginx静态服务的Dockerfile
+  - `docker-compose.yml`：用于多容器编排的配置文件
+  - `.dockerignore`：优化后的文件排除规则
+  - `nginx.conf`：适用于生产环境的Nginx配置文件

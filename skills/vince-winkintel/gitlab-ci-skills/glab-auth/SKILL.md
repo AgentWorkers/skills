@@ -1,42 +1,43 @@
 ---
 name: glab-auth
-description: Use when setting up or managing GitLab CLI (glab) authentication. Covers login, logout, status, docker helper, and related auth commands.
+description: **用途：**  
+用于设置或管理 GitLab CLI（glab）的认证。涵盖登录、登出、状态查询、Docker 辅助工具以及相关的认证命令。
 ---
 
 # glab auth
 
-Manage glab’s authentication state.
+用于管理 glab 的认证状态。
 
-## When to use
+## 使用场景
 
-- Setting up GitLab CLI auth for the first time
-- Updating or switching accounts
-- Checking auth status
-- Configuring Docker auth helper for GitLab registry
+- 首次设置 GitLab CLI 的认证信息
+- 更新或切换账户
+- 检查认证状态
+- 配置用于 GitLab 注册表的 Docker 认证辅助工具
 
-## Quick start
+## 快速入门
 
-1) Login:
+1) 登录：
 ```bash
 glab auth login
 ```
 
-2) Check status:
+2) 检查状态：
 ```bash
 glab auth status
 ```
 
-3) Logout:
+3) 注销：
 ```bash
 glab auth logout
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for subcommand details and usage notes:
-- `login`
-- `logout`
-- `status`
-- `configure-docker`
-- `docker-helper`
-- `dpop-gen`
+有关子命令的详细信息和使用说明，请参阅 [references/commands.md](references/commands.md)：
+- `login`：登录
+- `logout`：注销
+- `status`：检查状态
+- `configure-docker`：配置 Docker 认证
+- `docker-helper`：配置 Docker 认证辅助工具
+- `dpop-gen`：生成 DPOP 令牌

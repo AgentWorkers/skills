@@ -1,6 +1,6 @@
 ---
 name: audit-website
-description: Audit websites for SEO, performance, security, technical, content, and 15 other issue cateories with 230+ rules using the squirrelscan CLI. Returns LLM-optimized reports with health scores, broken links, meta tag analysis, and actionable recommendations. Use to discover and asses website or webapp issues and health.
+description: 使用 squirrelscan CLI 对网站进行审计，涵盖 SEO、性能、安全、技术、内容等 15 个方面的问题，共计 230 多条审计规则。该工具会生成经过 LLM（Large Language Model）优化的报告，其中包含网站的健康状况评分、失效链接信息、元标签分析结果以及可操作的改进建议。通过这些报告，您可以发现并评估网站或 Web 应用程序存在的问题及其整体健康状况。
 license: See LICENSE file in repository root
 compatibility: Requires squirrel CLI installed and accessible in PATH
 metadata:
@@ -9,93 +9,92 @@ metadata:
 allowed-tools: Bash(squirrel:*) Read Edit Grep Glob
 ---
 
-# Website Audit Skill
+# 网站审计技能
 
-Audit websites for SEO, technical, content, performance and security issues using the squirrelscan cli.
+使用`squirrelscan`命令行工具（CLI）对网站进行SEO、技术、内容、性能和安全性方面的审计。
 
-squirrelscan provides a cli tool squirrel - available for macos, windows and linux. It carries out extensive website auditing
-by emulating a browser, search crawler, and analyzing the website's structure and content against over 230+ rules.
+`squirrelscan`提供了一个名为`squirrel`的CLI工具，支持macOS、Windows和Linux系统。该工具通过模拟浏览器和搜索引擎爬虫来执行全面的网站审计，并根据230多项规则分析网站的结构和内容。
 
-It will provide you a list of issues as well as suggestions on how to fix them.
+审计完成后，它会列出存在的问题以及相应的修复建议。
 
-## Links 
+## 链接
 
-* squirrelscan website is at [https://squirrelscan.com](https://squirrelscan.com)
-* documentation (including rule references) are at [docs.squirrelscan.com](https://docs.squirrelscan.com)
+- `squirrelscan`的官方网站：[https://squirrelscan.com](https://squirrelscan.com)
+- 文档（包括规则参考）：[docs.squirrelscan.com](https://docs.squirrelscan.com)
 
-You can look up the docs for any rule with this template:
+你可以使用以下模板查找任何规则的详细信息：
 
+```bash
 https://docs.squirrelscan.com/rules/{rule_category}/{rule_id}
+```
 
-example:
-
+**示例：**  
+```bash
 https://docs.squirrelscan.com/rules/links/external-links
+```
 
-## What This Skill Does
+## 该技能的功能
 
-This skill enables AI agents to audit websites for over 230 rules in 21 categories, including:
+该技能使AI代理能够根据21个类别中的230多项规则对网站进行审计，具体包括：
 
-- **SEO issues**: Meta tags, titles, descriptions, canonical URLs, Open Graph tags
-- **Technical problems**: Broken links, redirect chains, page speed, mobile-friendliness
-- **Performance**: Page load time, resource usage, caching
-- **Content quality**: Heading structure, image alt text, content analysis
-- **Security**: Leaked secrets, HTTPS usage, security headers, mixed content
-- **Accessibility**: Alt text, color contrast, keyboard navigation
-- **Usability**: Form validation, error handling, user flow
-- **Links**: Checks for broken internal and external links
-- **E-E-A-T**: Expertise, Experience, Authority, Trustworthiness
-- **User Experience**: User flow, error handling, form validation
-- **Mobile**: Checks for mobile-friendliness, responsive design, touch-friendly elements
-- **Crawlability**: Checks for crawlability, robots.txt, sitemap.xml and more
-- **Schema**: Schema.org markup, structured data, rich snippets
-- **Legal**: Compliance with legal requirements, privacy policies, terms of service
-- **Social**: Open graph, twitter cards and validating schemas, snippets etc.
-- **Url Structure**: Length, hyphens, keywords
-- **Keywords**: Keyword stuffing 
-- **Content**: Content structure, headings
-- **Images**: Alt text, color contrast, image size, image format
-- **Local SEO**: NAP consistency, geo metadata
-- **Video**: VideoObject schema, accessibility
+- **SEO问题**：元标签、标题、描述、规范URL、Open Graph标签
+- **技术问题**：失效链接、重定向链、页面速度、移动设备兼容性
+- **性能**：页面加载时间、资源使用情况、缓存
+- **内容质量**：标题结构、图片alt文本、内容分析
+- **安全性**：泄露的敏感信息、HTTPS使用情况、安全头部信息、混合内容
+- **可访问性**：alt文本、颜色对比度、键盘导航
+- **可用性**：表单验证、错误处理、用户流程
+- **链接**：检查内部和外部链接的有效性
+- **E-E-A-T**（专家性、经验、权威性、可信度）
+- **用户体验**：用户流程、错误处理、表单验证
+- **移动设备**：检查移动设备兼容性、响应式设计、触控友好性
+- **可爬取性**：检查可爬取性、robots.txt文件、sitemap.xml文件等
+- **Schema**：Schema.org标记、结构化数据、丰富片段
+- **法律合规性**：遵守法律要求、隐私政策、服务条款
+- **社交媒体**：Open Graph标签、Twitter卡片、schema验证等
+- **URL结构**：URL长度、连字符使用、关键词
+- **关键词**：关键词填充
+- **内容**：内容结构、标题
+- **图片**：alt文本、颜色对比度、图片大小、图片格式
+- **本地SEO**：NAP一致性、地理元数据
+- **视频**：VideoObject标记、可访问性
 
-and more
+审计过程会爬取网站，根据审计规则分析每个页面，并生成一份详细的报告，内容包括：
+- **整体健康评分（0-100分）**
+- **类别细分（核心SEO、技术SEO、内容、安全）**
+- **受影响URL的具体问题**
+- **失效链接检测**
+- **可操作的修复建议**
+- 规则分为错误、警告和通知三个级别，并且每个规则都有一个1到10的等级
 
-The audit crawls the website, analyzes each page against audit rules, and returns a comprehensive report with:
-- Overall health score (0-100)
-- Category breakdowns (core SEO, technical SEO, content, security)
-- Specific issues with affected URLs
-- Broken link detection
-- Actionable recommendations
-- Rules have levels of error, warning and notice and also have a rank between 1 and 10
+## 适用场景
 
-## When to Use
+当你需要执行以下操作时，可以使用该技能：
+- 分析网站的健康状况
+- 调试技术SEO问题
+- 修复上述所有问题
+- 检查失效链接
+- 验证元标签和结构化数据
+- 生成网站审计报告
+- 比较修改前后的网站健康状况
+- 提高网站性能、可访问性、SEO效果和安全性等
 
-Use this skill when you need to:
+建议定期重新审计，以确保网站始终保持良好的状态。
 
-- Analyze a website's health
-- Debug technical SEO issues
-- Fix all of the issues mentioned above
-- Check for broken links
-- Validate meta tags and structured data
-- Generate site audit reports
-- Compare site health before/after changes
-- Improve website performance, accessibility, SEO, security and more.
+## 先决条件
 
-You should re-audit as often as possible to ensure your website remains healthy and performs well. 
+使用该技能需要安装`squirrel` CLI，并确保它已添加到系统的`PATH`环境变量中。
 
-## Prerequisites
+**安装方式：** [squirrelscan.com/download](https://squirrelscan.com/download)
 
-This skill requires the squirrel CLI installed and in PATH.
-
-**Install:** [squirrelscan.com/download](https://squirrelscan.com/download)
-
-**Verify:**
+**验证安装：**  
 ```bash
 squirrel --version
 ```
 
-## Setup
+## 设置
 
-Run `squirrel init` to create a `squirrel.toml` config in the current directory. If none exists, create one and specify a project name:
+运行`squirrel init`命令在当前目录下创建一个`squirrel.toml`配置文件。如果文件不存在，则创建一个并指定项目名称：
 
 ```bash
 squirrel init -n my-project
@@ -103,48 +102,42 @@ squirrel init -n my-project
 squirrel init -n my-project --force
 ```
 
-## Usage
+## 使用方法
 
-### Intro
+### 简介
 
-There are three processes that you can run and they're all cached in the local project database:
+你可以执行三个主要的操作，这些操作的结果都会被缓存到本地项目数据库中：
+- `crawl`：用于执行爬取或刷新爬取任务，或继续已进行的爬取
+- `analyze`：用于分析爬取结果
+- `report`：用于生成所需格式的报告（如LLM、文本、控制台、HTML等）
 
-- crawl - subcommand to run a crawl or refresh, continue a crawl
-- analyze - subcommand to analyze the crawl results
-- report - subcommand to generate a report in desired format (llm, text, console, html etc.)
-
-the 'audit' command is a wrapper around these three processes and runs them sequentially:
+`audit`命令是这三个操作的封装，会按顺序执行它们：
 
 ```bash
 squirrel audit https://example.com --format llm
 ```
 
-YOU SHOULD always prefer format option llm - it was made for you and provides an exhaustive and compact output format.
+**推荐使用`llm`格式**：这种格式专为审计设计，输出既全面又简洁。
 
-FIRST SCAN should be a surface scan, which is a quick and shallow scan of the website to gather basic information about the website, such as its structure, content, and technology stack. This scan can be done quickly and without impacting the website's performance.
+**首次扫描**应该是**表面扫描**，即快速且浅层的扫描，用于收集关于网站的基本信息（如结构、内容和技术栈）。这种扫描不会对网站性能产生影响。
 
-SECOND SCAN should be a deep scan, which is a thorough and detailed scan of the website to gather more information about the website, such as its security, performance, and accessibility. This scan can take longer and may impact the website's performance.
+**第二次扫描**应该是**深度扫描**，会对网站进行彻底且详细的分析，以获取更多信息（如安全性、性能和可访问性）。这种扫描可能需要更多时间，并可能对网站性能产生影响。
 
-If the user doesn't provide a website to audit, ask which URL they'd like audited.
+如果用户没有提供具体的网站地址，可以询问他们希望审计哪个URL。
 
-You should PREFER to audit live websites - only there do we get a TRUE representation of the website and performance or rendering issuers. 
+**建议审计实时网站**——只有实时网站才能真实反映网站的实际情况和性能问题。
 
-If you have both local and live websites to audit, prompt the user to choose which one to audit and SUGGEST they choose live.
+如果你需要审计本地网站和实时网站，应提示用户选择目标网站，并建议他们选择实时网站。
 
-You can apply fixes from an audit on the live site against the local code.
+你可以将审计结果中的修复建议应用到实时网站上。
 
-When planning scope tasks so they can run concurrently as sub-agents to speed up fixes. 
+在规划审计任务时，可以考虑让多个代理同时执行，以加快修复速度。在实施修复后，需要验证代码是否仍然能够通过项目中的所有检查。
 
-When implementing fixes take advantage of subagents to speed up implementation of fixes.
+### 基本工作流程
 
-After applying fixes, verify the code still builds and passes any existing checks in the project.
-
-### Basic Workflow
-
-The audit process is two steps:
-
-1. **Run the audit** (saves to database, shows console output)
-2. **Export report** in desired format
+审计过程分为两个步骤：
+1. **执行审计**（将结果保存到数据库，并在控制台显示输出）
+2. **导出报告**（选择所需的格式）
 
 ```bash
 # Step 1: Run audit (default: console output)
@@ -154,9 +147,9 @@ squirrel audit https://example.com
 squirrel report <audit-id> --format llm
 ```
 
-### Regression Diffs
+### 回归差异检测
 
-When you need to detect regressions between audits, use diff mode:
+当需要检测审计结果之间的变化时，可以使用`diff`模式：
 
 ```bash
 # Compare current report against a baseline audit ID
@@ -166,245 +159,215 @@ squirrel report --diff <audit-id> --format llm
 squirrel report --regression-since example.com --format llm
 ```
 
-Diff mode supports `console`, `text`, `json`, `llm`, and `markdown`. `html` and `xml` are not supported.
+`diff`模式支持`console`、`text`、`json`、`llm`和`markdown`格式。`html`和`xml`格式不支持。
 
-### Running Audits
+### 运行审计
 
-When running an audit:
+执行审计时：
+1. **展示审计结果**：向用户展示审计结果和评分
+2. **提出修复建议**：列出可修复的问题，并在用户确认后进行修复
+3. **并行处理已批准的修复**：使用代理来批量修改内容（如alt文本、标题、描述）
+4. **迭代处理**：修复一批问题 → 重新审计 → 展示结果 → 提出下一批问题
+5. **暂停以供审核**：对于失效链接、结构变化或存在疑问的问题，需要用户进行审核
+6. **展示修改前后的对比**：每次修复后展示评分对比结果
 
-1. **Present the report** - show the user the audit results and score
-2. **Propose fixes** - list the issues you can fix and ask the user to confirm before making changes
-3. **Parallelize approved fixes** - use subagents for bulk content edits (alt text, headings, descriptions)
-4. **Iterate** - fix batch → re-audit → present results → propose next batch
-5. **Pause for judgment** - broken links, structural changes, and anything ambiguous should be flagged for user review
-6. **Show before/after** - present score comparison after each fix batch
+- **迭代流程**：修复一批问题后，重新审计，直到达到目标评分（通常为85分以上），或者只剩下需要人工判断的问题（例如：“这个链接是否应该删除？”）
+- **平等对待所有修复**：代码修改和内容修改同样重要。
+- **并行处理内容修复**：对于涉及多个文件的修复，可以创建多个代理来同时处理：
+  - 例如：7个文件需要添加alt文本 → 创建1-2个代理来处理
+  - 例如：30个文件有标题问题 → 创建代理来批量处理
+- **完成标准**：
+  - 所有错误都已修复
+  - 所有警告都已修复（或记录为需要人工审核）
+  - 重新审计确认改进效果
+  - 向用户展示修改前后的对比结果
 
-- **Iteration Loop**: After fixing a batch of issues, re-audit and continue fixing until:
-  - Score reaches target (typically 85+), OR
-  - Only issues requiring human judgment remain (e.g., "should this link be removed?")
+修复完成后，询问用户是否需要查看修改内容。
 
-- **Treat all fixes equally**: Code changes and content changes are equally important.
+### 评分标准
 
-- **Parallelize content fixes**: For issues affecting multiple files:
-  - Spawn subagents to fix in parallel
-  - Example: 7 files need alt text → spawn 1-2 agents to fix all
-  - Example: 30 files have heading issues → spawn agents to batch edit
-
-- **Completion criteria**:
-  - ✅ All errors fixed
-  - ✅ All warnings fixed (or documented as requiring human review)
-  - ✅ Re-audit confirms improvements
-  - ✅ Before/after comparison shown to user
-
-After fixes are applied, ask the user if they'd like to review the changes.
-
-### Score Targets
-
-| Starting Score | Target Score | Expected Work |
+| 起始评分 | 目标评分 | 需要完成的工作 |
 |----------------|--------------|---------------|
-| < 50 (Grade F) | 75+ (Grade C) | Major fixes |
-| 50-70 (Grade D) | 85+ (Grade B) | Moderate fixes |
-| 70-85 (Grade C) | 90+ (Grade A) | Polish |
-| > 85 (Grade B+) | 95+ | Fine-tuning |
+| < 50（F级） | 75+（C级） | 需要重大修复 |
+| 50-70（D级） | 85+（B级） | 需要中等程度的修复 |
+| 70-85（C级） | 90+（A级） | 需要细微调整 |
+| > 85（B+级） | 95+ | 需要进一步优化 |
 
-A site is only considered COMPLETE and FIXED when scores are above 95 (Grade A) with coverage set to FULL (--coverage full).
+只有当评分达到95分（A级）且覆盖范围设置为`FULL`时，才能认为网站已经完成并修复完毕。
 
-### Issue Categories
+### 问题分类
 
-| Category | Fix Approach | Parallelizable |
+| 问题类别 | 修复方法 | 是否可以并行处理 |
 |----------|--------------|----------------|
-| Meta tags/titles | Edit page components or metadata | No |
-| Structured data | Add JSON-LD to page templates | No |
-| Missing H1/headings | Edit page components + content files | Yes (content) |
-| Image alt text | Edit content files | Yes |
-| Heading hierarchy | Edit content files | Yes |
-| Short descriptions | Edit content frontmatter | Yes |
-| HTTP→HTTPS links | Find and replace in content | Yes |
-| Broken links | Manual review (flag for user) | No |
+| 元标签/标题 | 修改页面组件或元数据 | 不支持并行处理 |
+| 结构化数据 | 在页面模板中添加JSON-LD | 不支持并行处理 |
+| 缺失的H1标题 | 修改页面组件和内容文件 | 支持并行处理 |
+| 图片alt文本 | 修改内容文件 | 支持并行处理 |
+| 标题层级 | 修改内容文件 | 支持并行处理 |
+| 简短描述 | 修改内容前置内容 | 支持并行处理 |
+| HTTP→HTTPS链接 | 在内容中查找并替换链接 | 支持并行处理 |
+| 失效链接 | 需要用户手动审核 | 不支持并行处理 |
 
-**For parallelizable fixes**: Spawn subagents with specific file assignments.
+**对于可以并行处理的修复**：为每个需要修复的文件创建相应的代理。
 
-### Content File Fixes
+### 内容文件修复
 
-Many issues require editing content files. These are equally important as code fixes:
+许多问题需要修改内容文件，这些修复与代码修复同样重要：
+- **图片alt文本**：为图片添加描述性alt文本
+- **标题层级**：修复缺失的标题层级
+- **元描述**：扩展内容前置内容中的描述
+- **HTTP链接**：将不安全的链接更新为HTTPS链接
 
-- **Image alt text**: Add descriptive alt text to images
-- **Heading hierarchy**: Fix skipped heading levels
-- **Meta descriptions**: Extend short descriptions in frontmatter
-- **HTTP links**: Update insecure links to HTTPS
+### 使用代理并行处理修复
 
-### Parallelizing Fixes with Subagents
+用户批准一批修复建议后，可以使用代理来并行执行修复：
+- **先征得用户同意**：在创建代理之前，务必确认要修复的具体内容
+- 每个代理负责处理3-5个相同类型的文件
+- 只处理独立的文件（避免处理共享组件或配置文件）
+- 在一条消息中创建多个代理以并行执行修复任务
 
-When the user approves a batch of fixes, you can use subagents to apply them in parallel:
+### 高级选项
 
-- **Ask the user first** — always confirm which fixes to apply before spawning subagents
-- Group 3-5 files per subagent for the same fix type
-- Only parallelize independent files (no shared components or config)
-- Spawn multiple subagents in a single message for concurrent execution
-
-### Advanced Options
-
-Audit more pages:
-
+- 审计更多页面：  
 ```bash
 squirrel audit https://example.com --max-pages 200
 ```
 
-Force fresh crawl (ignore cache):
-
+- 强制重新爬取（忽略缓存）：  
 ```bash
 squirrel audit https://example.com --refresh
 ```
 
-Resume interrupted crawl:
-
+- 恢复中断的爬取：  
 ```bash
 squirrel audit https://example.com --resume
 ```
 
-Verbose output for debugging:
-
+- 详细输出（用于调试）：  
 ```bash
 squirrel audit https://example.com --verbose
 ```
 
-## Common Options
+## 常用选项
 
-### Audit Command Options
+### 审计命令选项
 
-| Option | Alias | Description | Default |
+| 选项 | 别名 | 描述 | 默认值 |
 |--------|-------|-------------|---------|
-| `--format <fmt>` | `-f <fmt>` | Output format: console, text, json, html, markdown, llm | console |
-| `--coverage <mode>` | `-C <mode>` | Coverage mode: quick, surface, full | surface |
-| `--max-pages <n>` | `-m <n>` | Maximum pages to crawl (max 5000) | varies by coverage |
-| `--output <path>` | `-o <path>` | Output file path | - |
-| `--refresh` | `-r` | Ignore cache, fetch all pages fresh | false |
-| `--resume` | - | Resume interrupted crawl | false |
-| `--verbose` | `-v` | Verbose output | false |
-| `--debug` | - | Debug logging | false |
-| `--trace` | - | Enable performance tracing | false |
-| `--project-name <name>` | `-n <name>` | Override project name | from config |
+| `--format <fmt>` | `-f <fmt>` | 输出格式：控制台、文本、JSON、HTML、Markdown、LLM | 控制台 |
+| `--coverage <mode>` | `-C <mode>` | 覆盖范围模式：快速、表面、全面 | 表面 |
+| `--max-pages <n>` | `-m <n>` | 最大爬取页数（最多5000页） | 根据覆盖范围而定 |
+| `--output <path>` | `-o <path>` | 输出文件路径 | - |
+| `--refresh` | `-r` | 忽略缓存，重新获取所有页面 | 不推荐 |
+| `--resume` | - | 恢复中断的爬取 | 不推荐 |
+| `--verbose` | `-v` | 详细输出 | 不推荐 |
+| `--debug` | - | 开启调试日志 | 不推荐 |
+| `--trace` | - | 启用性能跟踪 | 不推荐 |
+| `--project-name <name>` | `-n <name>` | 覆盖项目名称 | 可从配置文件中设置 |
 
-### Coverage Modes
+### 覆盖范围模式
 
-Choose a coverage mode based on your audit needs:
-
-| Mode | Default Pages | Behavior | Use Case |
+根据审计需求选择合适的覆盖范围模式：
+| 模式 | 默认页数 | 行为 | 使用场景 |
 |------|---------------|----------|----------|
-| `quick` | 25 | Seed + sitemaps only, no link discovery | CI checks, fast health check |
-| `surface` | 100 | One sample per URL pattern | General audits (default) |
-| `full` | 500 | Crawl everything up to limit | Deep analysis |
+| `quick` | 25 | 仅爬取种子页面和sitemaps，不检测链接 | 用于持续集成（CI）检查和快速健康检查 |
+| `surface` | 100 | 每个URL模式只爬取一个样本 | 通用审计（默认） |
+| `full` | 500 | 爬取所有页面 | 深度分析 |
 
-**Surface mode is smart** - it detects URL patterns like `/blog/{slug}` or `/products/{id}` and only crawls one sample per pattern. This makes it efficient for sites with many similar pages (blogs, e-commerce).
+**表面模式**非常高效**——它会检测如`/blog/{slug}`或`/products/{id}`这样的URL模式，并仅爬取每个模式的一个样本。这种模式适用于页面结构相似的网站（如博客或电子商务网站）。
 
-```bash
-# Quick health check (25 pages, no link discovery)
-squirrel audit https://example.com -C quick --format llm
+**每种模式的适用场景：**
+- `quick`：适用于持续集成管道、日常健康检查、监控
+- `surface`：适用于大多数常规审计，能高效覆盖独特模板
+- `full`：适用于项目发布前进行全面分析
 
-# Default surface audit (100 pages, pattern sampling)
-squirrel audit https://example.com --format llm
+### 报告命令选项
 
-# Full comprehensive audit (500 pages)
-squirrel audit https://example.com -C full --format llm
-
-# Override page limit for any mode
-squirrel audit https://example.com -C surface -m 200 --format llm
-```
-
-**When to use each mode:**
-- `quick`: CI pipelines, daily health checks, monitoring
-- `surface`: Most audits - covers unique templates efficiently
-- `full`: Before launches, comprehensive analysis, deep dives
-
-### Report Command Options
-
-| Option | Alias | Description |
+| 选项 | 别名 | 描述 |
 |--------|-------|-------------|
-| `--list` | `-l` | List recent audits |
-| `--severity <level>` | - | Filter by severity: error, warning, all |
-| `--category <cats>` | - | Filter by categories (comma-separated) |
-| `--format <fmt>` | `-f <fmt>` | Output format: console, text, json, html, markdown, xml, llm |
-| `--output <path>` | `-o <path>` | Output file path |
-| `--input <path>` | `-i <path>` | Load from JSON file (fallback mode) |
+| `--list` | `-l` | 列出最近的审计结果 |
+| `--severity <level>` | - | 按严重程度过滤：错误、警告、全部 |
+| `--category <cats>` | - | 按类别过滤（用逗号分隔） |
+| `--format <fmt>` | `-f <fmt>` | 输出格式：控制台、文本、JSON、HTML、Markdown、XML、LLM |
+| `--output <path>` | `-o <path>` | 输出文件路径 |
+| `--input <path>` | `-i <path>` | 从JSON文件加载数据（备用方式） |
 
-### Config Subcommands
+### 配置相关命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `config show` | Show current config |
-| `config set <key> <value>` | Set config value |
-| `config path` | Show config file path |
-| `config validate` | Validate config file |
+| `config show` | 显示当前配置 |
+| `config set <key> <value>` | 设置配置值 |
+| `config path` | 显示配置文件路径 |
+| `config validate` | 验证配置文件 |
 
-### Other Commands
+### 其他命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `squirrel feedback` | Send feedback to squirrelscan team |
-| `squirrel skills install` | Install Claude Code skill |
-| `squirrel skills update` | Update Claude Code skill |
+| `squirrel feedback` | 向`squirrelscan`团队发送反馈 |
+| `squirrel skills install` | 安装Claude Code技能 |
+| `squirrel skills update` | 更新Claude Code技能 |
 
-### Self Commands
+### 自管理命令
 
-Self-management commands under `squirrel self`:
-
-| Command | Description |
+`squirrel self`下的自我管理命令：
+| 命令 | 描述 |
 |---------|-------------|
-| `self install` | Bootstrap local installation |
-| `self update` | Check and apply updates |
-| `self completion` | Generate shell completions |
-| `self doctor` | Run health checks |
-| `self version` | Show version information |
-| `self settings` | Manage CLI settings |
-| `self uninstall` | Remove squirrel from the system |
+| `self install` | 初始化本地安装 |
+| `self update` | 检查并应用更新 |
+| `self completion` | 生成Shell命令补全提示 |
+| `self doctor` | 运行健康检查 |
+| `self version` | 显示版本信息 |
+| `self settings` | 管理CLI设置 |
+| `self uninstall` | 从系统中卸载`squirrel` |
 
-## Output Formats
+## 输出格式
 
-### Console Output (default)
+### 控制台输出（默认）
 
-The `audit` command shows human-readable console output by default with colored output and progress indicators.
+`audit`命令默认以人类可读的控制台输出格式显示结果，包含颜色编码和进度指示。
 
-### LLM Format
+### LLM格式
 
-To get LLM-optimized output, use the `report` command with `--format llm`:
+若想获得优化后的LLM格式输出，可以使用`report`命令并指定`--format llm`：
 
 ```bash
 squirrel report <audit-id> --format llm
 ```
 
-The LLM format is a compact XML/text hybrid optimized for token efficiency (40% smaller than verbose XML):
+LLM格式是一种紧凑的XML/文本混合格式，旨在提高效率（比详细输出格式节省40%的字符空间）：
+- **总结**：整体健康评分和关键指标
+- **问题分类**：按审计规则类别分组（核心SEO、技术、内容、安全）
+- **失效链接**：列出失效的外部和内部链接
+- **修复建议**：按优先级排列的修复事项
 
-- **Summary**: Overall health score and key metrics
-- **Issues by Category**: Grouped by audit rule category (core SEO, technical, content, security)
-- **Broken Links**: List of broken external and internal links
-- **Recommendations**: Prioritized action items with fix suggestions
+详细格式规范请参考[OUTPUT-FORMAT.md](references/OUTPUT-FORMAT.md)。
 
-See [OUTPUT-FORMAT.md](references/OUTPUT-FORMAT.md) for detailed format specification.
+## 示例
 
-## Examples
-
-### Example 1: Quick Site Audit with LLM Output
+### 示例1：使用LLM格式的快速网站审计
 
 ```bash
 # User asks: "Check squirrelscan.com for SEO issues"
 squirrel audit https://squirrelscan.com --format llm
 ```
 
-### Example 2: Deep Audit for Large Site
+### 示例2：大型网站的深度审计
 
 ```bash
 # User asks: "Do a thorough audit of my blog with up to 500 pages"
 squirrel audit https://myblog.com --max-pages 500 --format llm
 ```
 
-### Example 3: Fresh Audit After Changes
+### 示例3：修改后的重新审计
 
 ```bash
 # User asks: "Re-audit the site and ignore cached results"
 squirrel audit https://example.com --refresh --format llm
 ```
 
-### Example 4: Two-Step Workflow (Reuse Previous Audit)
+### 示例4：两步审计流程（复用之前的审计结果）
 
 ```bash
 # First run an audit
@@ -415,36 +378,35 @@ squirrel audit https://example.com
 squirrel report a1b2c3d4 --format llm
 ```
 
-## Output
+## 输出
 
-On completion give the user a summary of all of the changes you made.
+审计完成后，向用户展示所有所做的修改。
 
-## Troubleshooting
+## 故障排除
 
-### squirrel command not found
+### 错误：`squirrel command not found`
 
-If you see this error, squirrel is not installed or not in your PATH.
+如果出现此错误，说明`squirrel`未安装或未添加到`PATH`环境变量中。
+**解决方法：**
+1. 安装`squirrel`：[squirrelscan.com/download](https://squirrelscan.com/download)
+2. 确保`~/.local/bin`在`PATH`中。
+3. 运行`squirrel --version`验证安装是否成功。
 
-**Solution:**
-1. Install squirrel: [squirrelscan.com/download](https://squirrelscan.com/download)
-2. Ensure `~/.local/bin` is in PATH
-3. Verify: `squirrel --version`
+### 权限问题
 
-### Permission denied
+如果`squirrel`不可执行，可能是权限问题。重新安装`squirrel`（从[https://squirrelscan.com/download]下载）即可解决。
 
-If squirrel is not executable, ensure the binary has execute permissions. Reinstalling from [squirrelscan.com/download](https://squirrelscan.com/download) will fix this.
+### 爬取超时或性能缓慢
 
-### Crawl timeout or slow performance
-
-For very large sites, the audit may take several minutes. Use `--verbose` to see progress:
+对于非常大的网站，审计过程可能需要几分钟。可以使用`--verbose`选项查看进度：
 
 ```bash
 squirrel audit https://example.com --format llm --verbose
 ```
 
-### Invalid URL
+### 无效URL
 
-Ensure the URL includes the protocol (http:// or https://):
+确保URL包含协议（`http://`或`https://`）：
 
 ```bash
 # ✗ Wrong
@@ -454,17 +416,17 @@ squirrel audit example.com
 squirrel audit https://example.com
 ```
 
-## How It Works
+## 工作原理
 
-1. **Crawl**: Discovers and fetches pages starting from the base URL
-2. **Analyze**: Runs audit rules on each page
-3. **External Links**: Checks external links for availability
-4. **Report**: Generates LLM-optimized report with findings
+1. **爬取**：从指定URL开始爬取所有页面。
+2. **分析**：对每个页面应用审计规则。
+3. **检查外部链接**：验证外部链接的有效性。
+4. **生成报告**：生成优化后的报告。
 
-The audit is stored in a local database and can be retrieved later with `squirrel report` commands.
+审计结果会保存在本地数据库中，可以使用`squirrel report`命令查看。
 
-## Additional Resources
+## 额外资源
 
-- **Output Format Reference**: [OUTPUT-FORMAT.md](references/OUTPUT-FORMAT.md)
-- **squirrelscan Documentation**: https://docs.squirrelscan.com
-- **CLI Help**: `squirrel audit --help`
+- **输出格式参考**：[OUTPUT-FORMAT.md](references/OUTPUT-FORMAT.md)
+- **squirrelscan官方文档**：[https://docs.squirrelscan.com]
+- **CLI帮助文档**：`squirrel audit --help`

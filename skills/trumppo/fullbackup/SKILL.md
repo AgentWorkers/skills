@@ -1,22 +1,22 @@
 ---
 name: fullbackup
-description: Create a full local backup of the OpenClaw workspace and configuration using the existing backup-local.sh script. Use for /fullbackup in Telegram or when the user asks for a complete local backup.
+description: 使用现有的 `backup-local.sh` 脚本，为 OpenClaw 工作区和配置创建一个完整的本地备份。该备份文件可用于 Telegram 中的 `/fullbackup` 功能，或在用户请求完整本地备份时使用。
 ---
 
-# Full Backup (local archive)
+# 完整备份（本地存档）
 
-## Overview
-Run the local full-backup script and store the archive in `/root/.openclaw/backups`.
+## 概述
+运行本地完整备份脚本，并将生成的存档文件存储在 `/root/.openclaw/backups` 目录下。
 
-## Quick start
-Run the bundled wrapper:
+## 快速开始
+运行随附的封装脚本：
 ```bash
 bash /root/.openclaw/workspace/skills/fullbackup/scripts/full-backup.sh
 ```
 
-## Output
-Print the archive path and size.
+## 输出
+输出存档文件的路径和大小。
 
-## Notes
-- The backup script already applies safe exclusions (caches/logs).
-- Do not delete older archives.
+## 注意事项
+- 备份脚本会自动排除一些不需要备份的文件（如缓存文件和日志文件）。
+- 请勿删除旧的备份文件。

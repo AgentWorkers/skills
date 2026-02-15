@@ -1,31 +1,32 @@
 ---
 name: tax-planning
-description: Plan and manage taxes effectively as a solopreneur to minimize liability and avoid penalties. Use when understanding tax obligations, quarterly estimated taxes, deductions, S-Corp election, or year-end tax strategy. Covers tax basics by entity type, estimated tax payments, deduction optimization, and when to hire a CPA. Not professional tax advice — consult a CPA for your specific situation. Trigger on "taxes", "tax planning", "quarterly taxes", "tax deductions", "S-Corp", "tax strategy", "estimated taxes", "reduce taxes".
+description: 作为一名自由职业者（solopreneur），你需要有效地规划和管理税务，以尽量减少税务责任并避免罚款。本内容适用于了解税务义务、季度预缴税款、税收减免、选择S型公司（S-Corp）结构或制定年终税务策略的情况。它涵盖了不同类型企业（如S型公司）的税务基础知识、预缴税款的支付方式、税收减免的优化方法，以及何时需要聘请注册会计师（CPA）。请注意，本内容仅提供一般性建议，并非专业税务咨询；对于你的具体税务问题，请务必咨询注册会计师。
+
+关键词：税务规划、季度预缴税款、税收减免、S型公司、税务策略、减少税务负担。
 ---
 
-# Tax Planning
+# 税务规划
 
-## Overview
-Taxes are one of the biggest expenses for solopreneurs. Without planning, you'll overpay or face penalties. With planning, you can legally minimize your tax burden and keep more of what you earn. This playbook covers tax fundamentals, quarterly payments, deductions, and strategic decisions like S-Corp election. **Disclaimer: This is educational content, not professional tax advice. Consult a CPA for your specific situation.**
+## 概述
+对于独立创业者来说，税收是最大的开支之一。如果不进行规划，你可能会多缴税款或面临罚款。通过合理的税务规划，你可以合法地降低税收负担，从而保留更多的收入。本指南涵盖了税务基础知识、季度税款缴纳、可抵扣项目以及诸如选择S型公司（S-Corp）等战略决策。**免责声明：本内容仅用于教育目的，并非专业税务建议。请根据你的具体情况咨询注册会计师（CPA）。**
 
 ---
 
-## Step 1: Understand Your Tax Obligations (U.S.)
+## 第一步：了解你的税务义务（美国）
 
-As a solopreneur, you pay multiple types of taxes. Know what you owe.
+作为独立创业者，你需要缴纳多种类型的税款。了解自己应缴纳的税款种类。
 
-**Tax types:**
-
-| Tax Type | What It Is | Rate | When You Pay |
+**税款类型：**
+| 税款类型 | 定义 | 税率 | 缴纳时间 |
 |---|---|---|---|
-| **Income Tax** | Federal tax on profit | 10-37% (marginal brackets) | Quarterly estimated + April 15 |
-| **Self-Employment Tax** | Social Security + Medicare | 15.3% on net earnings | Quarterly estimated + April 15 |
-| **State Income Tax** | State tax on profit (if applicable) | 0-13% (varies by state) | Quarterly estimated + state deadline |
-| **Sales Tax** (if selling physical goods) | Tax on sales to customers | Varies by state | Monthly or quarterly |
+| **所得税** | 对利润征收的联邦税 | 10-37%（根据收入档次划分） | 每季度预估 + 4月15日 |
+| **自雇税** | 包括社会保障费和医疗保险费 | 对净收入的15.3% | 每季度预估 + 4月15日 |
+| **州所得税** | 对利润征收的州税（如适用） | 0-13%（因州而异） | 每季度预估 + 各州规定的截止日期 |
+| **销售税**（如果销售实物商品） | 对客户销售的货物征收的税 | 各州税率不同 | 每月或每季度 |
 
-**Total effective tax rate for solopreneurs:** 25-40% of profit (depending on income level and state).
+**独立创业者的实际税率：** 利润的25-40%（取决于收入水平和所在州）。
 
-**Example:**
+**示例：**
 ```
 Net Profit: $100,000
 Federal Income Tax (~22%): $22,000
@@ -34,58 +35,51 @@ State Income Tax (~5%): $5,000
 Total Tax: $42,300 (42% effective rate)
 ```
 
-**Rule:** Set aside 30% of every payment you receive for taxes. Transfer it to a separate savings account immediately.
+**规则：** 将收到的每一笔款项的30%预留作为税款，并立即转入一个专门的储蓄账户。**
 
 ---
 
-## Step 2: Make Quarterly Estimated Tax Payments
+## 第二步：进行季度预估税款缴纳
 
-If you're self-employed, you don't have an employer withholding taxes. You must pay quarterly.
+如果你是自雇人士，雇主不会为你预扣税款，因此你需要自行缴纳季度税款。
 
-**Quarterly tax deadlines (U.S.):**
-- Q1: April 15
-- Q2: June 15
-- Q3: September 15
-- Q4: January 15 (following year)
+**美国的季度税款截止日期：**
+- 第一季度：4月15日
+- 第二季度：6月15日
+- 第三季度：9月15日
+- 第四季度：次年1月15日
 
-**How much to pay each quarter:**
+**每季度应缴纳的税款金额：**
 ```
 Estimated Annual Profit × Effective Tax Rate / 4
 ```
 
-Example:
-```
-Expected profit: $100,000
-Effective rate: 30%
-Quarterly payment: $100,000 × 0.30 / 4 = $7,500
-```
+**缴纳方式：**
+- 联邦税款：通过IRS Direct Pay（irs.gov/payments）或EFTPS支付
+- 州税款：访问所在州的税务网站进行缴纳
 
-**How to pay:**
-- Federal: IRS Direct Pay (irs.gov/payments) or EFTPS
-- State: Your state's tax website
+**未按时缴纳季度税款的处罚：**
+- 美国国税局（IRS）会收取滞纳金（每年约为应缴税款的5-6%）
+- “安全港规则”：如果你支付了上一年度税款总额的100%（如果年收入超过15万美元，则需支付110%），即使当年缴纳不足也能避免罚款
 
-**Penalties for not paying quarterly:**
-- IRS charges underpayment penalties (~5-6% annually on what you owe)
-- Safe harbor rule: If you pay 100% of last year's tax liability (110% if income > $150K), you avoid penalties even if you underpay this year
-
-**Rule:** Pay quarterly even if it's an estimate. Better to overpay slightly and get a refund than underpay and face penalties.
+**规则：** 即使只是预估金额，也要按时缴纳季度税款。宁可多交一点税款以获得退税，也不要因少交而面临罚款。**
 
 ---
 
-## Step 3: Maximize Your Tax Deductions
+## 第三步：最大化税务抵扣
 
-Deductions reduce your taxable income. More deductions = less tax owed.
+税务抵扣可以减少应纳税额。抵扣项目越多，所需缴纳的税款就越少。
 
-**Top deductions for solopreneurs (U.S.):**
+**美国独立创业者的主要抵扣项目：**
 
-### 1. Home Office Deduction
-If you have a dedicated space for business, you can deduct a portion of rent/mortgage, utilities, insurance.
+### 1. 办公室费用抵扣
+如果你有专门用于工作的空间，可以抵扣部分租金/房贷、水电费、保险费等。
 
-**Two methods:**
-- **Simplified:** $5/sq ft (max 300 sq ft = $1,500/year)
-- **Actual expenses:** (Home office sq ft / Total home sq ft) × Total home expenses
+**两种抵扣方法：**
+- **简化方法：** 每平方英尺5美元（最多300平方英尺，每年最高1,500美元）
+- **实际费用法：** （办公空间面积 / 总房屋面积）× 总房屋费用
 
-Example:
+**示例：**
 ```
 Office: 150 sq ft
 Home: 1,500 sq ft
@@ -93,75 +87,72 @@ Home expenses (rent + utilities): $24,000/year
 Deduction: (150/1,500) × $24,000 = $2,400
 ```
 
-**Requirements:**
-- Space must be used EXCLUSIVELY for business (no dual-purpose rooms)
-- Must be your principal place of business
+**要求：**
+- 该空间必须专门用于工作（不能用于其他用途）
+- 必须是你的主要办公地点
 
-### 2. Business Equipment and Supplies
-- Computers, monitors, desks, chairs
-- Software subscriptions (Notion, Adobe, hosting, domain)
-- Office supplies (pens, paper, printer)
+### 2. 商业设备和用品
+- 电脑、显示器、办公桌、椅子
+- 软件订阅服务（如Notion、Adobe、托管服务、域名）
+- 办公用品（笔、纸、打印机）
 
-**Section 179 deduction:** Deduct full cost of equipment in year purchased (up to ~$1M), rather than depreciating over years.
+**第179条抵扣规定：** 可在购买当年全额抵扣设备费用（最高约100万美元），无需逐年折旧。
 
-### 3. Vehicle and Mileage
-If you drive for business (client meetings, site visits, errands):
-- **Standard mileage rate:** $0.67/mile (2024 rate — check current year)
-- **Actual expenses:** Track gas, maintenance, insurance, depreciation (complex, requires detailed records)
+### 3. 车辆和里程费用
+如果你因工作需要开车（如客户会议、现场访问、办事等）：
+- **标准里程费率：** 每英里0.67美元（2024年标准费率——请查看当年最新规定）
+- **实际费用：** 记录汽油费、维护费、保险费、折旧费（流程较为复杂，需要详细记录）
 
-**Recommendation:** Use standard mileage (simpler). Track with app (MileIQ, Everlance).
+**建议：** 使用标准里程费率（更简单）。可以使用MileIQ或Everlance等应用程序进行记录。
 
-**Not deductible:** Commuting from home to office.
+**不可抵扣的项目：** 从家到办公室的通勤费用。
 
-### 4. Professional Services
-- CPA / tax preparation fees
-- Lawyer fees (contracts, legal advice)
-- Business consultants or coaches
+### 4. 专业服务费用
+- 注册会计师（CPA）/税务准备费用
+- 律师费（合同、法律咨询）
+- 商业顾问或培训费用
 
-### 5. Marketing and Advertising
-- Paid ads (Google, Facebook, LinkedIn)
-- Website costs (hosting, domain, design)
-- Content creation (copywriters, designers, video editors)
+### 5. 市场营销和广告费用
+- 付费广告（如Google、Facebook、LinkedIn）
+- 网站费用（托管、域名、设计）
+- 内容创作费用（文案撰写、设计师、视频编辑）
 
-### 6. Business Travel and Meals
-- **Travel:** 100% deductible (flights, hotels for business trips)
-- **Meals:** 50% deductible (business meals with clients or networking)
+### 6. 商业差旅和餐饮费用
+- **差旅费用：** 100%可抵扣（商务出差相关的机票和酒店费用）
+- **餐饮费用：** 50%可抵扣（与客户或建立人脉相关的商务餐饮）
 
-**Rule:** Keep receipts and note the business purpose.
+**规则：** 保留所有费用收据，并注明用途。
 
-### 7. Education and Training
-- Courses, books, conferences related to your business
-- Must improve skills for current business (not for entering a new field)
+### 7. 教育和培训费用
+- 与业务相关的课程、书籍、会议费用
+- 必须是为了提升当前业务的技能（而非为了进入新领域）
 
-### 8. Contractor and Employee Payments
-- Payments to contractors (if you issue 1099s)
-- Payroll expenses (if you have employees)
+### 8. 合同工和员工费用
+- 向合同工支付的费用（如果你为他们开具1099表格）
+- 如果有员工，还需支付工资相关费用
 
-### 9. Health Insurance (if self-employed)
-- 100% of health insurance premiums deductible (for you and family)
-- Deducted on personal return (Form 1040), not business return
+### 9. 健康保险费用（如果是自雇人士）
+- 个人和家庭的健康保险保费可全额抵扣
+- 在个人纳税申报表（Form 1040）中抵扣，不在商业纳税申报表中抵扣
 
-### 10. Retirement Contributions
-- Solo 401(k): Contribute up to $23,000 (2024 limit) + 25% of net earnings (total max ~$69,000)
-- SEP-IRA: Contribute up to 25% of net earnings (max ~$69,000)
+### 10. 退休金缴纳
+- Solo 401(k)计划：每年最高可缴纳23,000美元（2024年上限），外加净收入的25%（总上限约69,000美元）
+- SEP-IRA计划：每年最高可缴纳净收入的25%（总上限约69,000美元）
 
-**Why this matters:** Reduces taxable income AND builds retirement savings.
+**这样做的好处：** 可以减少应纳税额，并有助于积累退休金。**
 
 ---
 
-## Step 4: Decide If You Should Elect S-Corp Status
+## 第四步：决定是否选择S型公司（S-Corp）资格
 
-If your profit is > $80-100K/year, S-Corp election can save you thousands on self-employment tax.
+如果你的年收入超过8万至10万美元，选择S型公司可以节省大量自雇税。
 
-**How S-Corp saves money:**
+**S型公司的优势：**
+作为独资经营者或普通有限责任公司（LLC），你需要对全部利润缴纳15.3%的自雇税。而选择S型公司后：
+1. 你可以给自己发放“合理”的工资（需缴纳工资税）
+2. 剩余利润作为“分配款”发放（无需缴纳自雇税）
 
-As a sole proprietor or default LLC, you pay 15.3% self-employment tax on ALL profit.
-
-As an S-Corp, you:
-1. Pay yourself a "reasonable salary" (subject to payroll taxes)
-2. Take remaining profit as "distributions" (NOT subject to self-employment tax)
-
-**Example:**
+**示例：**
 ```
 Profit: $150,000
 
@@ -177,95 +168,93 @@ S-CORP:
 SAVINGS: $22,950 - $12,240 = $10,710/year
 ```
 
-**S-Corp downsides:**
-- Requires payroll setup (payroll provider ~$500-1,500/year)
-- More paperwork (payroll taxes, quarterly filings)
-- Must pay yourself a "reasonable salary" (can't pay $20K salary on $150K profit — IRS will challenge it)
+**S型公司的缺点：**
+- 需要设置工资体系（每年费用约500至1,500美元）
+- 纸务工作更多（需处理工资税和季度申报）
+- 必须给自己发放“合理”的工资（如果利润为15万美元却发放2万美元的工资，IRS可能会提出质疑）
 
-**When to elect S-Corp:**
-- Profit > $80-100K/year (savings outweigh the extra costs)
-- You're willing to run payroll
+**何时选择S型公司：**
+- 年收入超过8万至10万美元（节省的费用超过额外成本）
+- 你愿意处理工资相关事务
 
-**When NOT to elect S-Corp:**
-- Profit < $60K/year (savings too small to justify extra work)
-- You're just starting out (wait until profit is consistent)
+**何时不适合选择S型公司：**
+- 年收入低于6万美元（节省的费用不足以抵消额外的手续成本）
+- 你刚刚创业（等到收入稳定后再考虑）
 
-**How to elect:** File Form 2553 with IRS. Must be done by March 15 of the year you want it to take effect (or within 75 days of forming your LLC).
+**如何选择：** 向IRS提交Form 2553表格。必须在希望生效的年度的3月15日之前完成（或在成立LLC后的75天内完成）。
 
-**Rule:** Talk to a CPA before electing S-Corp. They'll help you determine if it's worth it and set up payroll.
-
----
-
-## Step 5: Year-End Tax Planning (October-December)
-
-The last 3 months of the year are critical for tax planning.
-
-**Year-end tax checklist:**
-
-### October: Project Your Tax Liability
-- [ ] Calculate expected profit for the year (revenue - expenses so far + projected Q4)
-- [ ] Estimate total tax owed (federal + state + self-employment)
-- [ ] Check if you've paid enough in quarterly taxes
-- [ ] If underpaid, make a larger Q4 payment (Jan 15 deadline)
-
-### November: Accelerate Deductions (if profitable)
-If you're having a profitable year and want to reduce taxes:
-- [ ] Buy equipment or software you were planning to buy in January (deduct in current year)
-- [ ] Pay annual subscriptions early (if you're cash-method taxpayer)
-- [ ] Make retirement contributions (Solo 401k or SEP-IRA)
-- [ ] Prepay business expenses (insurance, rent) if it makes sense
-
-**Caution:** Don't buy things you don't need just for the tax deduction. A deduction saves you 25-40% of the expense — you still spent the full amount.
-
-### December: Defer Income (if needed)
-If you're having a very high-income year and want to spread it out:
-- [ ] Delay invoicing until January (so payment hits next year)
-- [ ] Defer year-end bonuses or distributions until January
-
-**When to defer:** If you're in a high tax bracket this year but expect lower income next year.
-
-### January: File Taxes (or Hire a CPA)
-- [ ] Generate P&L for the year (from accounting software)
-- [ ] Compile receipts for major expenses
-- [ ] Hand off to CPA, or use tax software (TurboTax, TaxAct)
-- [ ] File by April 15 (or request extension to October 15)
+**规则：** 在选择S型公司之前，请咨询注册会计师。他们可以帮助你判断是否值得，并协助设置工资体系。**
 
 ---
 
-## Step 6: Work with a CPA
+## 第五步：年末税务规划（10月至12月）
 
-**When to hire a CPA:**
-- Revenue > $50K/year (DIY becomes risky)
-- Considering S-Corp election
-- Multiple income streams or complex business structure
-- Audited or received an IRS notice
+每年的最后三个月对税务规划至关重要。
 
-**What a CPA does:**
-- Prepares and files your tax return
-- Advises on deductions and tax strategy
-- Helps with S-Corp election and payroll setup
-- Represents you if audited
+**年末税务检查清单：**
 
-**Cost:** $500-2,000/year for basic tax prep. More for complex situations or year-round advisory.
+### 10月：预估税务负担
+- [ ] 计算年度预期利润（截至目前的收入 - 支出 + 预计的第四季度收入）
+- [ ] 估算总税款（联邦税 + 州税 + 自雇税）
+- [ ] 检查是否已足额缴纳季度税款
+- [ ] 如果缴纳不足，需在第四季度补缴（截止日期为1月15日）
 
-**How to find a good CPA:**
-- Ask other solopreneurs for referrals
-- Look for CPAs who specialize in small business / self-employed
-- Interview 2-3 before choosing (ask about their experience with solopreneurs)
+### 11月：加速抵扣（如果盈利）
+如果你当年盈利且希望减少税款：
+- [ ] 购买计划在一月份购买的设备或软件（在当年进行抵扣）
+- [ ] 提前支付年度订阅费用（如果你采用现金结算方式）
+- [ ] 缴纳退休金（Solo 401(k)或SEP-IRA）
+- [ ] 如果合理，提前支付商业费用（如保险费、租金）
 
-**Red flags:**
-- CPA who promises huge refunds or "too-good-to-be-true" deductions
-- CPA who doesn't ask detailed questions about your business
-- CPA who doesn't respond to emails/calls promptly
+**注意：** 不要仅仅为了抵扣而购买不必要的物品。虽然抵扣可以节省25-40%的费用，但你仍然需要支付实际支出。
 
-**Rule:** A good CPA pays for themselves in tax savings and peace of mind.
+### 12月：推迟收入确认（如有必要）
+如果你当年收入较高，希望分散纳税负担：
+- [ ] 将发票开具时间推迟到次年
+- [ ] 将年终奖金或分配款推迟到次年发放
+
+**何时推迟：** 如果你当年处于高税率档次，但预计明年收入会降低。
+
+### 1月：提交纳税申报表（或聘请注册会计师）
+- [ ] 从会计软件中生成年度损益表
+- [ ] 收集主要费用的收据
+- [ ] 将相关资料交给注册会计师，或使用税务软件（如TurboTax、TaxAct）进行申报
+- [ ] 在4月15日前完成申报（或申请延期至10月15日）
 
 ---
 
-## Tax Planning Mistakes to Avoid
-- **Not setting aside money for taxes.** Tax bills hit hard in April if you haven't saved. Set aside 30% of every payment.
-- **Missing quarterly estimated tax payments.** Underpayment penalties add up. Pay quarterly even if it's an estimate.
-- **Deducting personal expenses as business expenses.** IRS audits this heavily. Only deduct legitimate business expenses.
-- **Not tracking mileage or receipts.** If audited, you need proof. Track everything.
-- **Electing S-Corp too early.** If profit < $80K, S-Corp adds complexity without enough savings.
-- **Doing your own taxes when you shouldn't.** Past $50K revenue, the risk of mistakes is too high. Hire a CPA.
+## 第六步：聘请注册会计师（CPA）
+
+**何时需要聘请注册会计师：**
+- 年收入超过5万美元（自行处理税务风险较大）
+- 考虑选择S型公司
+- 有多个收入来源或业务结构复杂
+- 正在接受审计或收到IRS通知
+
+**注册会计师的作用：**
+- 准备并提交纳税申报表
+- 提供关于抵扣和税务策略的建议
+- 协助选择S型公司和设置工资体系
+- 在接受审计时代表你处理相关事务
+
+**费用：** 基本税务服务每年费用为500至2,000美元。复杂情况或需要全年咨询的服务费用更高。
+
+**如何找到优秀的注册会计师：**
+- 向其他独立创业者咨询推荐
+- 寻找专门从事小型企业/独立创业者税务服务的注册会计师
+- 面试2-3位注册会计师后再做决定（询问他们处理独立创业者业务的经验）
+
+**需要注意的事项：**
+- 承诺高额退税或提供“过于理想”的抵扣项目的注册会计师
+- 不询问你业务细节的注册会计师
+- 不及时回复邮件或电话的注册会计师
+
+**规则：** 一位优秀的注册会计师能通过节省税款和提供安心服务来证明自己的价值。**
+
+## 需避免的税务规划错误：
+- **不预留税款。** 如果没有提前预留税款，4月份的税款负担会很重。每收到一笔款项，应预留30%作为税款。
+- **错过季度税款缴纳。** 滞纳金会累积。即使只是预估金额，也要按时缴纳季度税款。
+- **将个人开支误列为商业开支。** 美国国税局会严格审查这一点。只能抵扣真实的商业开支。
+- **不记录里程或收据。** 如果接受审计，你需要提供相关证据。所有费用都必须有记录。
+- **过早选择S型公司。** 如果年收入低于8万美元，选择S型公司只会增加复杂性，而节省的税款不多。
+- **本应聘请注册会计师却自行处理税务。** 当年收入超过5万美元时，自行处理税务的风险较高。

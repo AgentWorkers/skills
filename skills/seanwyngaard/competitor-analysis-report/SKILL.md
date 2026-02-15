@@ -1,15 +1,15 @@
 ---
 name: competitor-analysis-report
-description: Generate structured competitive analysis reports with feature comparisons, pricing analysis, SWOT, and strategic recommendations. Use when analyzing competitors, creating market research reports, or delivering competitive intelligence for clients.
+description: 生成结构化的竞争分析报告，内容包括功能对比、价格分析、SWOT分析以及战略建议。这些报告可用于分析竞争对手、撰写市场研究报告或为客户提供竞争情报。
 argument-hint: "[business-or-product] [competitor1] [competitor2] [competitor3]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 
-# Competitor Analysis Report
+# 竞争对手分析报告
 
-Generate professional, client-ready competitive analysis reports. Researches competitors, compares features and pricing, performs SWOT analysis, and delivers actionable recommendations.
+本工具可生成专业的、适合客户使用的竞争对手分析报告。报告内容包括对竞争对手的研究、功能与定价的对比、SWOT分析以及具有实际操作意义的建议。
 
-## How to Use
+## 使用方法
 
 ```
 /competitor-analysis-report "Notion" "Obsidian" "Coda" "Roam Research"
@@ -17,28 +17,28 @@ Generate professional, client-ready competitive analysis reports. Researches com
 /competitor-analysis-report brief.txt
 ```
 
-- `$ARGUMENTS[0]` = The primary business/product being analyzed (client's product or a focus company)
-- Remaining arguments = 2-5 competitors to analyze
+- `$ARGUMENTS[0]`：需要分析的主要业务/产品（可以是客户的产品或目标公司）
+- 其余参数：2-5个需要分析的竞争对手
 
-## Report Generation Process
+## 报告生成流程
 
-### Step 1: Research Each Competitor
+### 第一步：研究每个竞争对手
 
-For each company/product, gather:
-- **Product overview**: What they do, who they serve
-- **Features**: Core features and capabilities
-- **Pricing**: Plans, tiers, free tier availability
-- **Target audience**: Who they market to
-- **Positioning**: How they describe themselves (tagline, value prop)
-- **Strengths**: What they're known for
-- **Weaknesses**: Common complaints, gaps, negative reviews
-- **Recent changes**: New features, pricing changes, pivots
+对于每个公司/产品，收集以下信息：
+- **产品概述**：该公司的业务范围及目标客户群体
+- **功能**：核心功能与能力
+- **定价**：定价方案、价格层级及免费试用选项
+- **目标受众**：市场定位
+- **市场定位**：公司的自我描述（标语、价值主张）
+- **优势**：公司的核心竞争力
+- **劣势**：常见的反馈、存在的不足或负面评价
+- **近期变化**：新功能、价格调整或业务方向调整
 
-Use web search and publicly available information only.
+请仅使用网络搜索和公开可获取的信息进行调研。
 
-### Step 2: Generate the Report
+### 第二步：生成报告
 
-Structure the report as follows:
+报告的结构如下：
 
 ```markdown
 # Competitive Analysis Report
@@ -115,18 +115,17 @@ For each competitor:
 ## Market Positioning Map
 
 ```
-                    HIGH PRICE
+                    高价          │
+          企业级        │    高端版
+          [竞争对手3]     │    [您]
                         │
-          Enterprise    │    Premium
-          [Comp 3]      │    [Comp 1]
+   低价          ─────────────────┼───────────────── 高价
+   功能          │              功能
                         │
-   LOW ─────────────────┼───────────────── HIGH
-   FEATURES             │              FEATURES
+          经济型        │    最高性价比
+          [竞争对手2]     │    [您]
                         │
-          Budget        │    Best Value
-          [Comp 2]      │    [You]
-                        │
-                    LOW PRICE
+                    低价          │
 ```
 
 ---
@@ -167,9 +166,9 @@ For each competitor:
 - Competitor screenshots/examples (described, not included)
 ```
 
-### Step 3: Output
+### 第三步：输出报告
 
-Save to `output/competitor-analysis/`:
+将生成的报告保存到 `output/competitor-analysis/` 目录下：
 
 ```
 output/competitor-analysis/
@@ -179,19 +178,18 @@ output/competitor-analysis/
   feature-matrix.csv           # Spreadsheet-ready comparison
 ```
 
-The HTML version should have:
-- Professional styling (clean typography, tables with borders)
-- Print-friendly layout
-- Table of contents with anchor links
-- Page breaks between major sections
+HTML版本的报告应具备以下特点：
+- 专业的排版（清晰的字体、带边框的表格）
+- 适合打印的布局
+- 带有锚链接的目录
+- 主要章节之间有分页
 
-## Quality Standards
-
-- [ ] All data points are from publicly available sources
-- [ ] Feature comparison covers at least 10 features
-- [ ] Pricing is current and accurate
-- [ ] SWOT analysis has at least 3 points per quadrant
-- [ ] Recommendations are specific and actionable (not generic advice)
-- [ ] Executive summary can stand alone (client can forward to their boss)
-- [ ] No speculation presented as fact — clearly label assumptions
-- [ ] Report is professional enough to present to stakeholders
+## 质量标准
+- 所有数据均来自公开来源
+- 功能对比至少涵盖10个关键方面
+- 定价信息最新且准确
+- SWOT分析每个方面至少包含3个要点
+- 建议具体且具有可操作性（避免泛泛而谈）
+- 执行摘要可独立使用（客户可将其直接发送给上级）
+- 不将猜测内容当作事实呈现——明确标注假设内容
+- 报告格式专业，适合向利益相关者展示

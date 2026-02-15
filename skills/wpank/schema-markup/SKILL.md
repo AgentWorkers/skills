@@ -9,12 +9,11 @@ description: >
 tags: [seo, schema, structured-data, json-ld, rich-snippets, search]
 ---
 
-# Schema Markup
+# 架构标记（Schema Markup）
 
-Implement schema.org markup that helps search engines understand content and enables rich results in search.
+实现 schema.org 标记，帮助搜索引擎理解页面内容，并在搜索结果中呈现更丰富的信息。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -22,85 +21,84 @@ Implement schema.org markup that helps search engines understand content and ena
 npx clawhub@latest install schema-markup
 ```
 
+## 使用场景
 
-## When to Use
+- 为新页面或现有页面添加结构化数据
+- 修复架构验证错误
+- 优化特定类型的搜索结果（如常见问题解答、产品信息、文章等）
+- 在 React/Next.js 应用程序中实现 JSON-LD
+- 审查现有的架构标记
 
-- Adding structured data to new or existing pages
-- Fixing schema validation errors
-- Optimizing for specific rich results (FAQ, product, article)
-- Implementing JSON-LD in React/Next.js applications
-- Auditing existing schema markup
+## 初始评估
 
-## Initial Assessment
+在实施架构标记之前，请了解以下内容：
 
-Before implementing schema, understand:
+1. **页面类型**：页面属于哪种类型？主要内容包括什么？可以呈现哪些类型的搜索结果？
+2. **当前状态**：页面上是否存在现有的架构标记？是否存在验证错误？已经出现了哪些类型的搜索结果？
+3. **目标**：希望实现哪些类型的搜索结果？这些搜索结果对业务有什么价值？
 
-1. **Page Type** — What kind of page? What's the primary content? What rich results are possible?
-2. **Current State** — Any existing schema? Errors? Which rich results already appearing?
-3. **Goals** — Which rich results are you targeting? What's the business value?
+## 核心原则
 
-## Core Principles
+### 1. 准确性优先
+- 架构标记必须准确反映页面内容
+- 不要标记页面上不存在的内容
+- 内容发生变化时及时更新标记信息
 
-### 1. Accuracy First
-- Schema must accurately represent page content
-- Don't markup content that doesn't exist on the page
-- Keep updated when content changes
+### 2. 使用 JSON-LD
+- Google 推荐使用 JSON-LD 格式
+- 比 microdata 或 RDFa 更易于实现和维护
+- 将 JSON-LD 标记放置在 `<head>` 标签内或 `</body>` 标签之前
 
-### 2. Use JSON-LD
-- Google recommends JSON-LD format
-- Easier to implement and maintain than microdata or RDFa
-- Place in `<head>` or before `</body>`
+### 3. 遵循 Google 的指南
+- 仅使用 Google 支持的架构标记格式
+- 避免使用垃圾信息（spam）策略
+- 查看每种类型的具体要求
 
-### 3. Follow Google's Guidelines
-- Only use markup Google supports for rich results
-- Avoid spam tactics
-- Review eligibility requirements for each type
+### 4. 全部内容进行验证
+- 部署前进行测试
+- 定期查看 Search Console 的优化报告
+- 及时修复错误
 
-### 4. Validate Everything
-- Test before deploying
-- Monitor Search Console enhancement reports
-- Fix errors promptly
+## 常见架构类型
 
-## Common Schema Types
-
-| Type | Use For | Required Properties |
+| 类型 | 适用场景 | 必需属性 |
 |------|---------|-------------------|
-| Organization | Company homepage/about | name, url |
-| WebSite | Homepage (search box) | name, url |
-| Article | Blog posts, news | headline, image, datePublished, author |
-| Product | Product pages | name, image, offers |
-| SoftwareApplication | SaaS/app pages | name, offers |
-| FAQPage | FAQ content | mainEntity (Q&A array) |
-| HowTo | Tutorials | name, step |
-| BreadcrumbList | Any page with breadcrumbs | itemListElement |
-| LocalBusiness | Local business pages | name, address |
-| Event | Events, webinars | name, startDate, location |
+| Organization（组织页面） | 公司主页/关于页面 | name, url |
+| WebSite（网站） | 主页（包含搜索框） | name, url |
+| Article（文章） | 博文、新闻 | headline, image, datePublished, author |
+| Product（产品） | 产品页面 | name, image, offers |
+| SoftwareApplication（软件应用） | SaaS 或应用页面 | name, offers |
+| FAQPage（常见问题解答页面） | 常见问题及答案 | mainEntity（问答对数组） |
+| HowTo（操作指南） | 教程 | name, step |
+| BreadcrumbList（导航路径列表） | 包含导航路径的页面 | itemListElement |
+| LocalBusiness（本地商家） | 本地商家页面 | name, address |
+| Event（活动） | 活动、网络研讨会 | name, startDate, location |
 
-**For complete JSON-LD examples with required/recommended field annotations**: See `references/schema-examples.md`
+**有关包含所需/推荐字段的 JSON-LD 示例，请参阅 `references/schema-examples.md`**
 
-## Quick Reference
+## 快速参考
 
-### Organization (Company Page)
-Required: name, url
-Recommended: logo, sameAs (social profiles), contactPoint
+### Organization（组织页面）
+- 必需属性：name, url
+- 推荐属性：logo, sameAs（用于关联社交媒体账号）、contactPoint
 
-### Article/BlogPosting
-Required: headline, image, datePublished, author
-Recommended: dateModified, publisher, description
+### Article/BlogPosting（文章/博客帖子）
+- 必需属性：headline, image, datePublished, author
+- 推荐属性：dateModified, publisher, description
 
-### Product
-Required: name, image, offers (price + availability)
-Recommended: sku, brand, aggregateRating, review
+### Product（产品）
+- 必需属性：name, image, offers（价格、库存状态）
+- 推荐属性：sku, brand, aggregateRating, review
 
-### FAQPage
-Required: mainEntity (array of Question/Answer pairs)
+### FAQPage（常见问题解答页面）
+- 必需属性：mainEntity（问答对数组）
 
-### BreadcrumbList
-Required: itemListElement (array with position, name, item)
+### BreadcrumbList（导航路径列表）
+- 必需属性：itemListElement（包含位置、名称和项目的数组）
 
-## Multiple Schema Types
+## 在一个页面上结合多种架构类型
 
-Combine multiple schema types on one page using `@graph`:
+可以使用 `@graph` 标签来组合多种架构类型：
 
 ```json
 {
@@ -113,34 +111,33 @@ Combine multiple schema types on one page using `@graph`:
 }
 ```
 
-Use `@id` to create referenceable entities — define once, reference elsewhere with `{ "@id": "..." }`.
+使用 `@id` 来创建可引用的实体——定义一次后，可以在其他地方通过 `{ "@id": "..." }` 来引用。
 
-## Validation and Testing
+## 验证与测试
 
-### Tools
-- **Google Rich Results Test**: https://search.google.com/test/rich-results
-- **Schema.org Validator**: https://validator.schema.org/
-- **Search Console**: Enhancements reports
+### 工具
+- **Google Rich Results Test**：https://search.google.com/test/rich-results
+- **Schema.org Validator**：https://validator.schema.org/
+- **Search Console**：优化报告
 
-### Common Errors
+### 常见错误
 
-| Error | Cause | Fix |
+| 错误类型 | 原因 | 修复方法 |
 |-------|-------|-----|
-| Missing required field | Required property not included | Add the missing property |
-| Invalid URL | Relative URL or malformed | Use fully qualified URLs (`https://...`) |
-| Invalid date format | Not ISO 8601 | Use `YYYY-MM-DDTHH:MM:SS+00:00` |
-| Invalid enum value | Wrong enumeration value | Use exact schema.org URLs (e.g., `https://schema.org/InStock`) |
-| Content mismatch | Schema doesn't match visible content | Ensure schema reflects actual page content |
-| Invalid price | Currency symbol or commas included | Use numeric value only (`"149.99"`) |
+| 缺少必需字段 | 未包含必需的属性 | 添加缺失的属性 |
+| URL 不合法 | 相对 URL 或格式错误 | 使用完整的 URL（例如 `https://...`） |
+| 日期格式错误 | 不符合 ISO 8601 标准 | 使用 `YYYY-MM-DDTHH:MM:SS+00:00` 格式 |
+| 枚举值错误 | 使用错误的枚举值 | 使用 schema.org 定义的枚举值（例如 `https://schema.org/InStock`） |
+| 内容不匹配 | 架构标记与实际页面内容不符 | 确保架构标记与页面内容一致 |
+| 价格格式错误 | 包含货币符号或逗号 | 价格应仅使用数字格式（例如 `149.99`） |
 
-## Implementation
+## 实施方法
 
-### Static Sites
-- Add JSON-LD directly in HTML template
-- Use includes/partials for reusable schema
+### 静态网站
+- 直接在 HTML 模板中添加 JSON-LD 标记
+- 使用 includes/partials 等方法实现可复用的架构标记
 
-### Dynamic Sites (React, Next.js)
-
+### 动态网站（React、Next.js）
 ```tsx
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
@@ -152,45 +149,45 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
 }
 ```
 
-### CMS / WordPress
-- Plugins: Yoast, Rank Math, Schema Pro
-- Theme modifications for custom types
-- Custom fields mapped to structured data
+### 内容管理系统（CMS）/WordPress
+- 插件：Yoast、Rank Math、Schema Pro
+- 根据需要修改主题以支持自定义架构类型
+- 将自定义字段映射到结构化数据中
 
-## Testing Checklist
+## 测试检查清单
 
-- [ ] Validates in Rich Results Test with no errors
-- [ ] No warnings for recommended properties
-- [ ] Schema content matches visible page content
-- [ ] All required properties included for each type
-- [ ] URLs are fully qualified
-- [ ] Dates are ISO 8601 format
-- [ ] Prices are numeric without currency symbols
+- [ ] 在 Google Rich Results Test 中测试且无错误
+- [ ] 推荐的属性没有警告
+- [ ] 架构标记内容与页面实际内容一致
+- [ ] 每种类型都包含了所有必需的属性
+- [ ] URL 是完整的
+- [ ] 日期格式符合 ISO 8601 标准
+- [ ] 价格为纯数字格式（不含货币符号）
 
-## Task-Specific Questions
+## 任务相关问题
 
-Before implementing, gather answers to:
+在实施之前，请回答以下问题：
 
-1. What type of page is this? (product, article, FAQ, local business)
-2. What rich results are you targeting? (FAQ dropdown, product stars, breadcrumbs)
-3. What data is available to populate the schema? (prices, ratings, dates)
-4. Is there existing schema on the page? (check with Rich Results Test first)
-5. What's your tech stack? (static HTML, React/Next.js, CMS/WordPress)
+1. 这是一个什么类型的页面？（产品页面、文章页面、常见问题解答页面、本地商家页面）
+2. 希望实现哪些类型的搜索结果？（例如常见问题解答的下拉菜单、产品评分、导航路径）
+3. 有哪些数据可以用于填充架构标记？（价格、评分、日期等）
+4. 页面上是否已经存在架构标记？（先使用 Google Rich Results Test 进行检查）
+5. 你的技术栈是什么？（静态 HTML、React/Next.js、CMS/WordPress）
 
-## Implementation Workflow
+## 实施流程
 
-1. **Identify page types** — map your site's pages to schema types
-2. **Start with homepage** — Organization + WebSite schema
-3. **Add per-page schema** — Article for blog, Product for shop, etc.
-4. **Add BreadcrumbList** — every page with navigation breadcrumbs
-5. **Validate each page** — Rich Results Test before and after
-6. **Monitor Search Console** — check enhancement reports weekly after launch
+1. **确定页面类型**：将网站页面与相应的架构类型对应起来
+2. **从首页开始**：先实现 Organization 和 WebSite 类型的架构标记
+3. **为每个页面添加相应的架构标记**：博客页面添加 Article 类型标记，产品页面添加 Product 类型标记等
+4. **添加导航路径列表**：所有包含导航路径的页面都需要添加 BreadcrumbList
+5. **验证每个页面**：部署前后使用 Google Rich Results Test 进行测试
+6. **定期监控 Search Console**：部署后每周查看优化报告
 
-## NEVER Do
+## 绝对不要做的事情
 
-1. **NEVER add schema for content that doesn't exist on the page** — this violates Google's guidelines and risks penalties
-2. **NEVER use microdata or RDFa when JSON-LD is an option** — JSON-LD is easier to maintain and Google's recommended format
-3. **NEVER hardcode schema that should be dynamic** — product prices, availability, and ratings must reflect current data
-4. **NEVER skip validation before deploying** — invalid schema is worse than no schema; it wastes crawl budget
-5. **NEVER mark up every page identically** — each page type needs its own appropriate schema types
-6. **NEVER ignore Search Console errors** — schema errors can cause rich results to disappear entirely
+- **绝对不要为页面上不存在的内容添加架构标记**：这违反 Google 的指南，可能会导致处罚
+- **当可以选择 JSON-LD 时，绝对不要使用 microdata 或 RDFa**：JSON-LD 更易于维护，也是 Google 推荐的格式
+- **绝对不要将应该动态变化的内容硬编码到架构标记中**：产品价格、库存状态和评分等数据应实时更新
+- **部署前绝对不要跳过验证**：无效的架构标记比没有架构标记更糟糕，会浪费搜索引擎的爬取资源
+- **绝对不要对所有页面使用相同的架构标记**：不同类型的页面需要使用相应的架构类型
+- **绝对不要忽略 Search Console 的错误**：架构错误可能导致搜索结果完全消失

@@ -1,70 +1,71 @@
 ---
 name: openserv-multi-agent-workflows
-description: Multi-agent workflow examples to work together on the OpenServ Platform. Covers agent discovery, multi-agent workspaces, task dependencies, and workflow orchestration using the Platform Client. Read reference.md for the full API reference. Read openserv-agent-sdk and openserv-client for building and running agents.
+description: 多代理工作流程示例：在 OpenServ 平台上协同工作  
+本文档介绍了代理发现、多代理工作空间、任务依赖关系以及如何使用 Platform Client 进行工作流程编排。如需完整的 API 参考信息，请参阅 reference.md。有关构建和运行代理的详细信息，请参阅 openserv-agent-sdk 和 openserv-client 文档。
 ---
 
-# Multi-Agent Workflows on OpenServ
+# OpenServ上的多智能体工作流
 
-Build workflows where multiple AI agents collaborate to complete complex tasks.
+构建多个AI智能体协作完成复杂任务的工作流。
 
-**Reference files:**
+**参考文件：**
 
-- `reference.md` - Workflow patterns, declarative sync, triggers, monitoring
-- `troubleshooting.md` - Common issues and solutions
-- `examples/` - Complete pipeline examples (blog, youtube-to-blog, etc.)
-
----
-
-## Quick Start
-
-See `examples/` for complete runnable examples:
-
-- `blog-pipeline.md` - Simple 2-agent workflow (research → write)
-- `content-creation-pipeline.md` - 3-agent workflow (research → write → image)
-- `life-coaching-pipeline.md` - Complex 6-agent workflow with comprehensive input schema
-
-**Recommended pattern using `workflows.sync()`:**
-
-1. Authenticate with `client.authenticate()`
-2. Find agents with `client.agents.listMarketplace()`
-3. Create workflow with `client.workflows.create()` including:
-   - Triggers
-   - Tasks
-   - **Edges** (⚠️ CRITICAL - connects triggers and tasks together)
-
-**⚠️ CRITICAL:** Always define edges when creating workflows. Setting task `dependencies` is NOT enough - you must create workflow edges to actually connect triggers to tasks and tasks to each other.
+- `reference.md` - 工作流模式、声明式同步、触发器、监控
+- `troubleshooting.md` - 常见问题及解决方案
+- `examples/` - 完整的流程示例（博客生成、YouTube视频转博客等）
 
 ---
 
-## Workflow Name & Goal
+## 快速入门
 
-When creating workflows (via `workflows.create()` or `provision()`), two properties are critical:
+请查看`examples/`中的可运行示例：
 
-- **`name`** (string) - This becomes the **agent name in ERC-8004**. Make it polished, punchy, and memorable — this is the public-facing brand name users see. Think product launch, not variable name. Examples: `'Instant Blog Machine'`, `'AI Video Studio'`, `'Polymarket Intelligence'`.
-- **`goal`** (string, required) - A detailed description of what the workflow accomplishes. Must be descriptive and thorough — short or vague goals will cause API calls to fail. Write at least a full sentence explaining the end-to-end purpose of the workflow.
+- `blog-pipeline.md` - 简单的双智能体工作流（研究 → 写作）
+- `content-creation-pipeline.md` - 三智能体工作流（研究 → 写作 → 图像处理）
+- `life-coaching-pipeline.md` - 复杂的六智能体工作流，包含详细的输入结构
+
+**推荐使用`workflows.sync()`的模式：**
+
+1. 使用`client.authenticate()`进行身份验证
+2. 使用`client.agents.listMarketplace()`查找智能体
+3. 使用`client.workflows.create()`创建工作流，包括：
+   - 触发器
+   - 任务
+   - **边**（⚠️ 关键点 - 将触发器与任务连接起来）
+
+**⚠️ 关键点：** 在创建工作流时必须定义边。仅设置任务依赖关系是不够的——必须创建工作流边来实际连接触发器和任务，以及任务之间的依赖关系。
 
 ---
 
-## Core Concepts
+## 工作流名称与目标
 
-### Workflows
+在创建工作流（通过`workflows.create()`或`provision()`）时，有两个属性非常重要：
 
-A workflow (workspace) is a container that holds multiple agents and their tasks.
+- **`name`**（字符串） - 这将成为ERC-8004标准中的**智能体名称**。请确保名称简洁、易记且具有吸引力——这是用户看到的公开品牌名称。例如：`Instant Blog Machine`、`AI Video Studio`、`Polymarket Intelligence`。
+- **`goal`**（字符串，必填） - 对工作流完成内容的详细描述。描述必须清晰且详尽——过于简短或模糊的目标会导致API调用失败。请至少写一个完整的句子来说明工作流的端到端目的。
 
-### Task Dependencies
+---
 
-- Each task is assigned to a specific agent
-- Tasks can depend on other tasks: `dependencies: [taskId1, taskId2]`
-- A task only starts when all dependencies are `done`
-- Output from dependencies is passed to dependent tasks
+## 核心概念
 
-### Workflow Graph
+### 工作流
 
-- **Nodes**: Triggers and tasks
-- **Edges**: Connections between nodes
-- When Task A completes, its output flows to dependent tasks via edges
+工作流（workspace）是一个容器，用于容纳多个智能体及其任务。
 
-### Agent Discovery
+### 任务依赖关系
+
+- 每个任务都被分配给特定的智能体
+- 任务可以依赖于其他任务：`dependencies: [taskId1, taskId2]`
+- 仅当所有依赖任务都完成时，该任务才会开始执行
+- 依赖任务的输出会传递给依赖它的任务
+
+### 工作流图
+
+- **节点**：触发器和任务
+- **边**：节点之间的连接
+- 当任务A完成时，其输出会通过边传递给依赖它的任务
+
+### 智能体发现
 
 ```typescript
 // Search marketplace for agents by name/capability (semantic search)
@@ -79,17 +80,17 @@ console.log(agent.capabilities_description)
 // Use listMarketplace() to find public agents for multi-agent workflows
 ```
 
-Common agent types: Research (Grok, Perplexity), Content writers, Data analysis, Social media (Nano Banana Pro), Video/audio creators.
+常见的智能体类型：研究（Grok、Perplexity）、内容编写者、数据分析、社交媒体（Nano Banana Pro）、视频/音频创作者。
 
 ---
 
-## Edge Design Best Practices
+## 边的设计最佳实践
 
-**CRITICAL: Carefully design your workflow edges to avoid creating tangled "spaghetti" graphs.**
+**关键点：** 仔细设计工作流边，以避免创建复杂的“意大利面式”图结构。**
 
-A well-designed workflow has clear, intentional data flow. Common mistakes lead to unmaintainable workflows.
+一个设计良好的工作流应具有清晰、有目的的数据流。常见的错误会导致工作流难以维护。
 
-### Bad Pattern - Everything Connected to Everything
+### 不良的设计模式 - 所有节点都相互连接
 
 ```
          ┌──────────────────────────────────┐
@@ -106,22 +107,21 @@ Trigger ─┼─────┼──────────┼─────
               (Spaghetti - avoid this!)
 ```
 
-This creates:
+这种设计会导致：
+- 执行顺序不明确
+- 调试困难
+- 智能体接收重复或冲突的输入
+- 难以理解哪些任务依赖于哪些任务
 
-- Unclear execution order
-- Difficult debugging
-- Agents receiving redundant/conflicting inputs
-- Hard to understand what depends on what
+### 良好的设计模式
 
-### Good Patterns
-
-**Sequential Pipeline:**
+**顺序流程：**
 
 ```
 Trigger → Research → Content → Enhancement → Output
 ```
 
-**Staged Fan-Out:**
+**分阶段扩展（Staged Fan-Out）：**
 
 ```
                     ┌─ Task A ─┐
@@ -129,7 +129,7 @@ Trigger → Research ─┼─ Task B ─┼─→ Combiner → Output
                     └─ Task C ─┘
 ```
 
-**Conditional Branching (v1.1.3+):**
+**条件分支（v1.1.3+）：**
 
 ```
                     ┌─[approved]─→ Process
@@ -137,27 +137,27 @@ Trigger → Review ──┤
                     └─[rejected]─→ Reject Handler
 ```
 
-Use `outputOptions` on tasks and `sourcePort` on edges for branching.
+使用任务的`outputOptions`和边的`sourcePort`来实现分支。
 
-### Guidelines for Clean Workflows
+### 清晰工作流的指导原则
 
-1. **Linear is usually best**: Start with a simple chain, only add complexity when truly needed
-2. **Each task should have a clear purpose**: If you can't explain why Task A connects to Task B, remove the edge
-3. **Minimize cross-connections**: Avoid connecting every agent to every other agent
-4. **Use fan-out only for parallel work**: Multiple tasks from one source is fine; connecting everything to everything is not
-5. **One combiner at the end**: If you need to merge outputs, have ONE final task that depends on all parallel branches
+1. **通常线性结构最佳**：从简单的链式结构开始，仅在确实需要时增加复杂性
+2. **每个任务都应有明确的目的**：如果无法解释任务A为何与任务B相连，请移除该边
+3. **减少交叉连接**：避免将每个智能体与其他所有智能体都连接起来
+4. **仅在使用并行处理时使用扩展结构**：允许多个任务来自同一来源；但不要将所有任务都相互连接
+5. **在最后使用一个合并器**：如果需要合并输出结果，请使用一个最终任务来接收所有并行分支的输出
 
-### Before Adding an Edge, Ask:
+### 在添加边之前，请思考：
 
-- Does Task B actually need the output of Task A?
-- Would Task B work without this connection?
-- Am I adding this edge "just in case"? (Don't!)
+- 任务B真的需要任务A的输出吗？
+- 如果没有这个连接，任务B还能正常工作吗？
+- 我添加这个边只是为了“以防万一”吗？（不要这样做！）
 
 ---
 
-## Updating This Skill
+## 更新此技能
 
-This skill may be outdated. The OpenServ team ships updates regularly—new features, API changes, and bug fixes won't be reflected here until you update. **If something isn't working as expected, or you want to make sure you have the latest information, update the skill before proceeding.**
+此技能可能会过时。OpenServ团队会定期发布更新——新功能、API变更和漏洞修复不会在这里立即反映。**如果某些功能无法按预期工作，或者您希望确保拥有最新信息，请在继续之前更新此技能。**
 
 ```bash
 # Check if updates are available
@@ -167,7 +167,7 @@ npx skills check
 npx skills update
 ```
 
-Or reinstall the OpenServ skills directly:
+或者直接重新安装OpenServ相关技能：
 
 ```bash
 npx skills add openserv-labs/skills
@@ -175,9 +175,9 @@ npx skills add openserv-labs/skills
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **openserv-agent-sdk** - Building individual agent capabilities
-- **openserv-client** - Full Platform Client API reference
-- **openserv-launch** - Launch tokens on Base blockchain
-- **openserv-ideaboard-api** - Find ideas and ship agent services on the Ideaboard
+- **openserv-agent-sdk** - 构建单个智能体的功能
+- **openserv-client** - 全平台客户端API参考
+- **openserv-launch** - 在Base区块链上发布代币
+- **openserv-ideaboard-api** - 在Ideaboard上查找创意并发布智能体服务

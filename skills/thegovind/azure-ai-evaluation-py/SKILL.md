@@ -8,9 +8,9 @@ package: azure-ai-evaluation
 
 # Azure AI Evaluation SDK for Python
 
-Assess generative AI application performance with built-in and custom evaluators.
+使用内置和自定义的评估工具来评估生成式AI应用程序的性能。
 
-## Installation
+## 安装
 
 ```bash
 pip install azure-ai-evaluation
@@ -19,7 +19,7 @@ pip install azure-ai-evaluation
 pip install azure-ai-evaluation[remote]
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # For AI-assisted evaluators
@@ -31,9 +31,9 @@ AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
 AIPROJECT_CONNECTION_STRING=<your-connection-string>
 ```
 
-## Built-in Evaluators
+## 内置评估工具
 
-### Quality Evaluators (AI-Assisted)
+### 质量评估工具（AI辅助型）
 
 ```python
 from azure.ai.evaluation import (
@@ -57,7 +57,7 @@ relevance = RelevanceEvaluator(model_config)
 coherence = CoherenceEvaluator(model_config)
 ```
 
-### Quality Evaluators (NLP-based)
+### 质量评估工具（基于自然语言处理）
 
 ```python
 from azure.ai.evaluation import (
@@ -73,7 +73,7 @@ rouge = RougeScoreEvaluator()
 bleu = BleuScoreEvaluator()
 ```
 
-### Safety Evaluators
+### 安全评估工具
 
 ```python
 from azure.ai.evaluation import (
@@ -89,7 +89,7 @@ violence = ViolenceEvaluator(azure_ai_project=project_scope)
 sexual = SexualEvaluator(azure_ai_project=project_scope)
 ```
 
-## Single Row Evaluation
+## 单行评估
 
 ```python
 from azure.ai.evaluation import GroundednessEvaluator
@@ -106,7 +106,7 @@ print(f"Groundedness score: {result['groundedness']}")
 print(f"Reason: {result['groundedness_reason']}")
 ```
 
-## Batch Evaluation with evaluate()
+## 使用 `evaluate()` 进行批量评估
 
 ```python
 from azure.ai.evaluation import evaluate
@@ -132,7 +132,7 @@ result = evaluate(
 print(result["metrics"])
 ```
 
-## Composite Evaluators
+## 综合评估工具
 
 ```python
 from azure.ai.evaluation import QAEvaluator, ContentSafetyEvaluator
@@ -152,7 +152,7 @@ result = evaluate(
 )
 ```
 
-## Evaluate Application Target
+## 评估应用程序目标
 
 ```python
 from azure.ai.evaluation import evaluate
@@ -176,9 +176,9 @@ result = evaluate(
 )
 ```
 
-## Custom Evaluators
+## 自定义评估工具
 
-### Code-Based
+### 基于代码的评估工具
 
 ```python
 from azure.ai.evaluation import evaluator
@@ -194,7 +194,7 @@ result = evaluate(
 )
 ```
 
-### Prompt-Based
+### 基于提示的评估工具
 
 ```python
 from azure.ai.evaluation import PromptChatTarget
@@ -209,7 +209,7 @@ class CustomEvaluator:
         return {"custom_score": int(result)}
 ```
 
-## Log to Foundry Project
+## 将结果记录到Foundry项目中
 
 ```python
 from azure.ai.projects import AIProjectClient
@@ -229,39 +229,39 @@ result = evaluate(
 print(f"View results: {result['studio_url']}")
 ```
 
-## Evaluator Reference
+## 评估工具参考
 
-| Evaluator | Type | Metrics |
-|-----------|------|---------|
-| `GroundednessEvaluator` | AI | groundedness (1-5) |
-| `RelevanceEvaluator` | AI | relevance (1-5) |
-| `CoherenceEvaluator` | AI | coherence (1-5) |
-| `FluencyEvaluator` | AI | fluency (1-5) |
-| `SimilarityEvaluator` | AI | similarity (1-5) |
-| `RetrievalEvaluator` | AI | retrieval (1-5) |
-| `F1ScoreEvaluator` | NLP | f1_score (0-1) |
-| `RougeScoreEvaluator` | NLP | rouge scores |
-| `ViolenceEvaluator` | Safety | violence (0-7) |
-| `SexualEvaluator` | Safety | sexual (0-7) |
-| `SelfHarmEvaluator` | Safety | self_harm (0-7) |
-| `HateUnfairnessEvaluator` | Safety | hate_unfairness (0-7) |
-| `QAEvaluator` | Composite | All quality metrics |
-| `ContentSafetyEvaluator` | Composite | All safety metrics |
+| 评估工具 | 类型 | 指标          |
+|-----------|------|--------------|
+| `GroundednessEvaluator` | AI   | 信息真实性（1-5分）   |
+| `RelevanceEvaluator` | AI   | 相关性（1-5分）     |
+| `CoherenceEvaluator` | AI   | 逻辑连贯性（1-5分）   |
+| `FluencyEvaluator` | AI   | 表达流畅性（1-5分）   |
+| `SimilarityEvaluator` | AI   | 相似度（1-5分）     |
+| `RetrievalEvaluator` | AI   | 文本检索能力（1-5分）   |
+| `F1ScoreEvaluator` | NLP   | F1分数（0-1）      |
+| `RougeScoreEvaluator` | NLP   | Rouge分数       |
+| `ViolenceEvaluator` | 安全性 | 暴力内容（0-7分）    |
+| `SexualEvaluator` | 安全性 | 性相关内容（0-7分）    |
+| `SelfHarmEvaluator` | 安全性 | 自伤行为（0-7分）    |
+| `HateUnfairnessEvaluator` | 安全性 | 恶意与不公平内容（0-7分） |
+| `QAEvaluator` | 综合型 | 所有质量指标     |
+| `ContentSafetyEvaluator` | 综合型 | 所有安全性指标     |
 
-## Best Practices
+## 最佳实践
 
-1. **Use composite evaluators** for comprehensive assessment
-2. **Map columns correctly** — mismatched columns cause silent failures
-3. **Log to Foundry** for tracking and comparison across runs
-4. **Create custom evaluators** for domain-specific metrics
-5. **Use NLP evaluators** when you have ground truth answers
-6. **Safety evaluators require** Azure AI project scope
-7. **Batch evaluation** is more efficient than single-row loops
+1. **使用综合评估工具** 进行全面评估。
+2. **正确映射数据列** — 数据列不匹配会导致评估失败。
+3. **将结果记录到Foundry项目中**，以便跟踪和比较不同运行结果。
+4. **为特定领域创建自定义评估工具**。
+5. **在有真实答案的情况下使用基于自然语言处理的评估工具**。
+6. **使用安全性评估工具** 需要Azure AI项目的权限。
+7. **批量评估** 比单行评估更高效。
 
-## Reference Files
+## 参考文件
 
-| File | Contents |
-|------|----------|
-| [references/built-in-evaluators.md](references/built-in-evaluators.md) | Detailed patterns for AI-assisted, NLP-based, and Safety evaluators with configuration tables |
-| [references/custom-evaluators.md](references/custom-evaluators.md) | Creating code-based and prompt-based custom evaluators, testing patterns |
-| [scripts/run_batch_evaluation.py](scripts/run_batch_evaluation.py) | CLI tool for running batch evaluations with quality, safety, and custom evaluators |
+| 文件 | 内容          |
+|------|--------------|
+| [references/built-in-evaluators.md](references/built-in-evaluators.md) | AI辅助型、基于自然语言处理和安全性评估工具的详细说明及配置表 |
+| [references/custom-evaluators.md](references/custom-evaluators.md) | 如何创建基于代码和提示的自定义评估工具及测试方法 |
+| [scripts/run_batch_evaluation.py](scripts/run_batch_evaluation.py) | 用于运行批量评估的CLI工具（包括质量、安全性和自定义评估） |

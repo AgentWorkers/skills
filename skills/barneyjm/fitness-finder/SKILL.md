@@ -1,12 +1,12 @@
 ---
 name: fitness-finder
-description: "Search for gyms, yoga studios, swimming pools, and sports facilities using Camino AI's location intelligence with AI-powered ranking."
+description: "使用 Camino AI 的位置智能功能，可以搜索健身房、瑜伽馆、游泳池和体育设施，并结合 AI 提供的排名系统对这些场所进行排序。"
 metadata: {"clawdbot":{"emoji":"💪","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点信息、设施关系、上下文信息、路线规划、旅行规划、房地产信息、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill fitness-finder
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install fitness-finder
 # or: pnpm dlx clawhub@latest install fitness-finder
 # or: bunx clawhub@latest install fitness-finder
 ```
 
-# Gym & Fitness Finder
+# 健身房与健身设施查找
 
-Search for gyms, yoga studios, swimming pools, and sports facilities near any location. Uses OpenStreetMap data with AI-powered ranking to find the most relevant fitness options.
+您可以搜索任何地点附近的健身房、瑜伽馆、游泳池和体育设施。该技能利用 OpenStreetMap 数据，并通过人工智能算法对搜索结果进行排序，以找到最相关的健身场所。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）**：您可以获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月 1,000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,12 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+重新启动 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
-
+### 通过 Shell 脚本使用
 ```bash
 # Find gyms and fitness centers nearby
 ./scripts/fitness-finder.sh '{"lat": 40.7589, "lon": -73.9851}'
@@ -70,24 +69,23 @@ Restart Claude Code.
 ./scripts/fitness-finder.sh '{"query": "swimming pools in Chicago", "limit": 10}'
 ```
 
-### Via curl
-
+### 通过 curl 命令使用
 ```bash
 curl -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/query?query=gyms+yoga+studios+fitness+centers&lat=40.7589&lon=-73.9851&radius=1500&rank=true"
 ```
 
-## Parameters
+## 参数说明
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| query | string | No | "gyms yoga studios fitness centers" | Search query (override for specific facility types) |
-| lat | float | No | - | Latitude for search center. AI generates if omitted for known locations. |
-| lon | float | No | - | Longitude for search center. AI generates if omitted for known locations. |
-| radius | int | No | 1500 | Search radius in meters |
-| limit | int | No | 15 | Maximum results (1-100) |
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
+|---------|-------|---------|-----------|
+| query    | string | 否       | "gyms yoga studios fitness centers" | 搜索查询（可指定具体设施类型） |
+| lat     | float   | 否       | -          | 搜索中心的纬度；如地点已知，系统会自动计算 |
+| lon     | float   | 否       | -          | 搜索中心的经度；如地点已知，系统会自动计算 |
+| radius   | int    | 否       | 1500        | 搜索半径（单位：米） |
+| limit    | int    | 否       | 15          | 最大返回结果数量（1-100） |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -113,28 +111,27 @@ curl -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Find yoga studios
+### 查找瑜伽馆
 ```bash
 ./scripts/fitness-finder.sh '{"query": "yoga studios", "lat": 30.2672, "lon": -97.7431}'
 ```
 
-### Find gyms near a hotel
+### 在酒店附近查找健身房
 ```bash
 ./scripts/fitness-finder.sh '{"query": "gyms and fitness centers near Times Square", "radius": 1000}'
 ```
 
-### Find sports facilities
+### 查找体育设施
 ```bash
 ./scripts/fitness-finder.sh '{"query": "tennis courts and sports facilities", "lat": 34.0522, "lon": -118.2437, "radius": 3000}'
 ```
 
-## Best Practices
+## 最佳使用建议：
 
-- Use specific facility types in the query for targeted results (e.g., "yoga studios", "CrossFit gyms", "swimming pools")
-- Use 1500m radius for urban areas, increase to 3000m for suburban locations
-- Combine with the `route` skill to calculate walking or cycling times to the gym
-- Combine with the `real-estate` skill when evaluating a neighborhood's fitness options
-- Combine with the `relationship` skill to compare distances between multiple facilities
-- For travelers, combine with `hotel-finder` to find lodging near fitness facilities
+- 在查询中指定具体的设施类型，以获得更精确的结果（例如：`yoga studios`、`CrossFit gyms`、`swimming pools`）
+- 在城市地区使用 1500 米的搜索半径，在郊区地区可扩大到 3000 米
+- 结合 `route` 技能计算前往健身房的步行或骑行时间
+- 在评估某个社区的健身设施时，可结合 `real-estate` 技能
+- 对于旅行者而言，可结合 `hotel-finder` 技能在健身设施附近寻找住宿

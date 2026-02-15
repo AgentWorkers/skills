@@ -1,36 +1,38 @@
 ---
 name: claude-cost-cli
-description: Query Claude API usage and cost reports from the command line. Secure macOS Keychain storage for Admin API key. Table/JSON output.
+description: **从命令行查询 Claude API 的使用情况和费用报告**  
+**管理员 API 密钥的安全存储（使用 macOS Keychain）**  
+**输出格式为表格或 JSON。**
 metadata: {"clawdbot":{"emoji":"📊","os":["macos"],"requires":{"bins":["claude-cost","node"]},"install":[{"id":"npm","kind":"shell","command":"npm install -g claude-cost-cli","bins":["claude-cost"],"label":"Install claude-cost-cli via npm"}],"source":"https://github.com/cyberash-dev/claude-cost-cli"}}
 ---
 
 # claude-cost-cli
 
-A CLI for querying Anthropic Admin API usage and cost data. Requires an Admin API key (`sk-ant-admin...`) from Claude Console → Settings → Admin Keys. Credentials are stored in macOS Keychain.
+这是一个用于查询Anthropic Admin API使用情况和费用数据的命令行工具（CLI）。需要从Claude控制台的“设置”（Settings）→“管理密钥”（Admin Keys）中获取Admin API密钥（格式为`sk-ant-admin...`）。该密钥会存储在macOS的Keychain中。
 
-## Installation
+## 安装
 
-Requires Node.js >= 18 and macOS. The package is fully open source under the MIT license: https://github.com/cyberash-dev/claude-cost-cli
+要求安装Node.js版本≥18，并且操作系统为macOS。该工具完全开源，遵循MIT许可证：https://github.com/cyberash-dev/claude-cost-cli
 
 ```bash
 npm install -g claude-cost-cli
 ```
 
-The npm package is published with provenance attestation, linking each release to its source commit via GitHub Actions. You can verify the published contents before installing:
+该npm包附带了来源验证信息，通过GitHub Actions将每个版本与其对应的源代码提交链接起来。您可以在安装前验证已发布的包内容：
 ```bash
 npm pack claude-cost-cli --dry-run
 ```
 
-Install from source (if you prefer to audit the code before running):
+如果您希望在运行前审核代码，也可以选择从源代码进行安装：
 ```bash
 git clone https://github.com/cyberash-dev/claude-cost-cli.git
 cd claude-cost-cli
 npm install && npm run build && npm link
 ```
 
-After installation the `claude-cost` command is available globally.
+安装完成后，`claude-cost`命令将在全局环境中可用。
 
-## Quick Start
+## 快速入门
 
 ```bash
 claude-cost config set-key     # Interactive prompt: enter Admin API key (masked)
@@ -39,99 +41,83 @@ claude-cost cost               # Cost breakdown for the last 7 days
 claude-cost cost --sum         # Total spend for the last 7 days
 ```
 
-## API Key Management
+## API密钥管理
 
-Store API key (interactive masked prompt, validates `sk-ant-admin` prefix):
+- **存储API密钥**：通过交互式提示输入密钥（系统会自动验证密钥前缀是否为`sk-ant-admin`）：
 ```bash
 claude-cost config set-key
 ```
 
-Show stored key (masked):
+- **查看已存储的密钥**：可以查看存储在Keychain中的API密钥：
 ```bash
 claude-cost config show
 ```
 
-Remove key from Keychain:
+- **从Keychain中删除密钥**：
 ```bash
 claude-cost config remove-key
 ```
 
-## Usage Reports
+## 使用报告
 
-```bash
-claude-cost usage                                    # Last 7 days, daily, grouped by model
-claude-cost usage --period 30d                       # Last 30 days
-claude-cost usage --from 2026-01-01 --to 2026-01-31 # Custom date range
-claude-cost usage --model claude-sonnet-4            # Filter by model
-claude-cost usage --api-keys apikey_01Rj,apikey_02Xz # Filter by API key IDs
-claude-cost usage --group-by model,api_key_id        # Group by multiple dimensions
-claude-cost usage --bucket 1h                        # Hourly granularity (1d, 1h, 1m)
-```
-
-JSON output (for scripting):
+查询结果以JSON格式输出（便于脚本处理）：
 ```bash
 claude-cost usage --json
 claude-cost usage --period 30d --json
 ```
 
-Output columns: Date, Model, Input Tokens, Cached Tokens, Output Tokens, Web Searches.
+输出列包括：日期（Date）、模型（Model）、输入令牌数（Input Tokens）、缓存令牌数（Cached Tokens）、输出令牌数（Output Tokens）以及网络搜索次数（Web Searches）。
 
-## Cost Reports
+## 费用报告
 
-```bash
-claude-cost cost                                           # Last 7 days, grouped by description
-claude-cost cost --period 30d                              # Last 30 days
-claude-cost cost --from 2026-01-01 --to 2026-01-31        # Custom date range
-claude-cost cost --group-by workspace_id,description       # Group by workspace and description
-claude-cost cost --sum                                     # Total cost only
-```
-
-JSON output (for scripting):
+查询结果同样以JSON格式输出（便于脚本处理）：
 ```bash
 claude-cost cost --json
 claude-cost cost --sum --json
 ```
 
-Output columns: Date, Description, Model, Amount (USD), Token Type, Tier.
+输出列包括：日期（Date）、费用描述（Description）、模型（Model）、费用金额（Amount，单位：USD）、令牌类型（Token Type）以及费用等级（Tier）。
 
-## Flag Reference
+## 命令行参数说明
 
-### `usage`
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--from <date>` | Start date (YYYY-MM-DD or ISO) | 7 days ago |
-| `--to <date>` | End date (YYYY-MM-DD or ISO) | now |
-| `--period <days>` | Shorthand period (7d, 30d, 90d) | 7d |
-| `--model <models>` | Filter by model(s), comma-separated | all |
-| `--api-keys <ids>` | Filter by API key ID(s), comma-separated | all |
-| `--group-by <fields>` | Group by model, api_key_id, workspace_id, service_tier | model |
-| `--bucket <width>` | Bucket width: 1d, 1h, 1m | 1d |
-| `--json` | Output as JSON | false |
+### `usage` 参数
 
-### `cost`
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--from <date>` | Start date (YYYY-MM-DD or ISO) | 7 days ago |
-| `--to <date>` | End date (YYYY-MM-DD or ISO) | now |
-| `--period <days>` | Shorthand period (7d, 30d, 90d) | 7d |
-| `--group-by <fields>` | Group by workspace_id, description | description |
-| `--sum` | Output total cost only | false |
-| `--json` | Output as JSON | false |
+| 参数          | 描述                        | 默认值         |
+|--------------|----------------------------|-------------------|
+| `--from <date>`    | 开始日期（格式：YYYY-MM-DD或ISO）            | 7天前             |
+| `--to <date>`    | 结束日期（格式：YYYY-MM-DD或ISO）            | 当前时间           |
+| `--period <days>`   | 时间周期（7天、30天、90天）                | 7天               |
+| `--model <models>`   | 按模型筛选（用逗号分隔）                | 所有模型             |
+| `--api-keys <ids>`   | 按API密钥ID筛选（用逗号分隔）                | 所有API密钥             |
+| `--group-by <fields>` | 按模型、API密钥ID或工作区ID分组           | 模型               |
+| `--bucket <width>`    | 数据显示周期（1天、1小时、1分钟）             | 1天               |
+| `--json`       | 以JSON格式输出结果                   | 否                |
 
-## Security and Data Storage
+### `cost` 参数
 
-The following properties are by design and can be verified in the source code:
+| 参数          | 描述                        | 默认值         |
+|--------------|----------------------------|-------------------|
+| `--from <date>`    | 开始日期（格式：YYYY-MM-DD或ISO）            | 7天前             |
+| `--to <date>`    | 结束日期（格式：YYYY-MM-DD或ISO）            | 当前时间           |
+| `--period <days>`   | 时间周期（7天、30天、90天）                | 7天               |
+| `--group-by <fields>` | 按工作区ID或费用描述分组               | 工作区ID/费用描述         |
+| `--sum`       | 仅输出总费用                     | 否                |
+| `--json`       | 以JSON格式输出结果                   | 否                |
 
-- **Admin API key**: stored exclusively in macOS Keychain (service: `claude-cost-cli`). By design, never written to disk in plaintext. See [`src/infrastructure/keychain-credential-store.ts`](https://github.com/cyberash-dev/claude-cost-cli/blob/main/src/infrastructure/keychain-credential-store.ts) for the implementation.
-- **No config files**: all settings are passed via CLI flags. Nothing is stored on disk besides the Keychain entry.
-- **Network**: by design, the API key is only sent to `api.anthropic.com` over HTTPS. No other outbound connections are made. See [`src/infrastructure/anthropic-usage-repository.ts`](https://github.com/cyberash-dev/claude-cost-cli/blob/main/src/infrastructure/anthropic-usage-repository.ts) and [`src/infrastructure/anthropic-cost-repository.ts`](https://github.com/cyberash-dev/claude-cost-cli/blob/main/src/infrastructure/anthropic-cost-repository.ts).
-- **Scope**: the Admin API key grants read-only access to organization usage and cost data. It cannot modify billing, create API keys, or access conversation content. This is a property of the [Anthropic Admin API](https://platform.claude.com/docs/en/build-with-claude/usage-cost-api), not just this CLI.
-- **No caching**: query results are not cached or persisted to disk. The CLI writes output to stdout only.
+## 安全性与数据存储
 
-## API Reference
+以下安全措施已在源代码中得到实现：
 
-This CLI wraps the Anthropic Admin API:
-- Usage: `GET /v1/organizations/usage_report/messages`
-- Cost: `GET /v1/organizations/cost_report`
+- **Admin API密钥**：仅存储在macOS的Keychain中（服务名称：`claude-cost-cli`）。根据设计，该密钥绝不会以明文形式保存在磁盘上。具体实现细节请参见[`src/infrastructure/keychain-credential-store.ts`](https://github.com/cyberash-dev/claude-cost-cli/blob/main/src/infrastructure/keychain-credential-store.ts)。
+- **无配置文件**：所有设置均通过命令行参数传递；除Keychain中的密钥信息外，没有任何数据会保存在磁盘上。
+- **网络连接**：API密钥仅通过HTTPS发送到`api.anthropic.com`，不会建立其他外部连接。详细实现请参见[`src/infrastructure/anthropic-usage-repository.ts`](https://github.com/cyberash-dev/claude-cost-cli/blob/main/src/infrastructure/anthropic-usage-repository.ts)`和[`src/infrastructure/anthropic-cost-repository.ts`)。
+- **权限限制**：Admin API密钥仅具有读取组织使用情况和费用数据的权限，无法修改账单信息、创建新的API密钥或访问对话内容。这是Anthropic Admin API的默认设置（https://platform.claude.com/docs/en/build-with-claude/usage-cost-api），而非该CLI工具的特有功能。
+- **无缓存机制**：查询结果不会被缓存或保存到磁盘上；CLI工具会将输出直接写入标准输出（stdout）。
 
-Documentation: https://platform.claude.com/docs/en/build-with-claude/usage-cost-api
+## API参考
+
+该CLI工具调用了Anthropic Admin API的以下接口：
+- 使用情况查询：`GET /v1/organizations/usage_report/messages`
+- 费用查询：`GET /v1/organizations/cost_report`
+
+更多文档请参考：https://platform.claude.com/docs/en/build-with-claude/usage-cost-api

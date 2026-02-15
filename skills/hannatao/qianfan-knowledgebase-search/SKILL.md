@@ -1,48 +1,49 @@
 ---
 name: qianfan-knowledgebase-search
-description: Search knowledge from Qianfan Knowledgebase. Use this when you need to retrieve information from user's private knowledge bases on Baidu Qianfan platform.
+description: 从 Qianfan 知识库中搜索信息。当您需要从用户在百度 Qianfan 平台上的私有知识库中检索信息时，请使用此功能。
 metadata: { "openclaw": { "emoji": "📚",  "requires": { "bins": ["python3"], "env":["BAIDU_API_KEY", "QIANFAN_KNOWLEDGEBASE_IDS"]},"primaryEnv":"BAIDU_API_KEY" } }
 ---
 
-# Qianfan Knowledgebase Search Skill
+# Qianfan知识库搜索技能
 
-Search and retrieve knowledge from Baidu Qianfan platform knowledge bases. Supports semantic search, fulltext search, hybrid search, and reranking.
+该技能用于从百度Qianfan平台的知识库中搜索和检索信息，支持语义搜索、全文搜索、混合搜索以及结果的重排功能。
 
-## Workflow
+## 工作流程
 
-1. The skill executes the Python script located at `search.py`
-2. The script makes a POST request to the Qianfan Knowledgebase Search API
-3. The API returns structured search results with chunks, scores, and metadata
+1. 该技能会执行位于`search.py`中的Python脚本。
+2. 脚本会向Qianfan知识库搜索API发送POST请求。
+3. API会返回结构化的搜索结果，其中包含数据块、评分以及元数据。
 
-## Environment Variables
+## 环境变量
 
-| env | required | description |
-|-----|----------|-------------|
-| BAIDU_API_KEY | yes | Qianfan platform API Key |
-| QIANFAN_KNOWLEDGEBASE_IDS | no | Knowledgebase IDs, comma-separated (used if not specified in request) |
+| 变量名 | 是否必填 | 说明 |
+|---------|---------|--------|
+| BAIDU_API_KEY | 是     | Qianfan平台API密钥 |
+| QIANFAN_KNOWLEDGEBASE_IDS | 否     | 知识库ID列表（以逗号分隔，若请求中未指定则使用环境变量） |
 
-## Parameters
+## 参数
 
-#### request body structure
-| param | type | required | default | description |
-|-------|------|----------|---------|-------------|
-| query | str | yes | | Search query content |
-| knowledgebase_ids | list[str] | no | | Knowledgebase ID list (uses env var if not specified) |
-| top_k | int | no | 6 | Number of chunks to return, range [1, 40] |
-| score_threshold | float | no | 0.4 | Score threshold for filtering, range [0, 1] |
-| enable_graph | bool | no | false | Enable knowledge graph |
-| enable_expansion | bool | no | false | Return expanded chunks |
-| recall | obj | no | | Recall strategy configuration |
-| +recall.type | str | no | hybrid | Recall type: fulltext/semantic/hybrid |
-| +recall.top_k | int | no | 100 | Recall phase top_k, range [1, 400] |
-| +recall.vec_weight | float | no | 0.75 | Vector weight when type=hybrid, range [0, 1] |
-| rerank | obj | no | | Rerank configuration |
-| +rerank.enable | bool | no | true | Enable reranking |
-| +rerank.top_n | int | no | 20 | Rerank top_n, range [1, 40] |
+#### 请求体结构
 
-> Note: Use flattened parameter names in input (e.g., `recall_type`, `recall_top_k`), the script will convert to nested structure automatically.
+| 参数名    | 类型     | 是否必填 | 默认值 | 说明                |
+|---------|---------|---------|-------------------|
+| query    | str     | 是     |                    | 搜索查询内容             |
+| knowledgebase_ids | list[str] | 否     |                    | 知识库ID列表（使用环境变量时忽略）     |
+| top_k     | int     | 否     | 6                    | 返回的数据块数量（范围：1-40）       |
+| score_threshold | float    | 否     | 0.4                    | 过滤评分阈值（范围：0-1）       |
+| enable_graph | bool     | 否     | false                 | 是否启用知识图谱           |
+| enable_expansion | bool     | 否     | false                 | 是否返回扩展后的数据块         |
+| recall    | obj      | 否     |                      | 回忆策略配置             |
+| +recall.type | str     | 否     | hybrid                | 回忆类型：全文/语义/混合         |
+| +recall.top_k | int     | 否     | 100                    | 回忆阶段返回的数据块数量（范围：1-400）   |
+| +recall.vec_weight | float    | 否     | 0.75                    | 混合类型下的向量权重（范围：0-1）       |
+| rerank    | obj      | 否     |                      | 重排配置             |
+| +rerank.enable | bool     | 否     | true                 | 是否启用结果重排           |
+| +rerank.top_n | int     | 否     | 20                    | 重排后的数据块数量（范围：1-40）       |
 
-## Example Usage
+> 注意：输入参数时应使用扁平化的名称（例如`recall_type`、`recall_top_k`），脚本会自动将其转换为嵌套结构。
+
+## 示例用法
 
 ```bash
 # Configure knowledgebase IDs via environment variable
@@ -56,21 +57,21 @@ python3 skills/qianfan-knowledgebase-search/search.py '{"query":"请介绍下千
 python3 skills/qianfan-knowledgebase-search/search.py '{"query":"如何使用API","knowledgebase_ids":["kb_id_1","kb_id_2"],"top_k":10,"recall_type":"hybrid","rerank_enable":true}'
 ```
 
-## Response Structure
+## 响应结构
 
-Response contains the following fields:
+响应包含以下字段：
 
-- **id**: Request unique identifier
-- **created_at**: Request timestamp
-- **total_count**: Total number of chunks returned
-- **chunks**: Chunk list
-  - **chunk_id**: Chunk unique identifier
-  - **content**: Chunk content (supports text/figure/table/graph types)
-  - **rerank**: Rerank score and position
-  - **recall**: Recall score and position
-  - **meta**: Metadata (chunk_type, tokens, word_count, doc_info, etc.)
-  - **neighbors**: Related chunks
+- **id**：请求的唯一标识符
+- **created_at**：请求的创建时间戳
+- **total_count**：返回的数据块总数
+- **chunks**：数据块列表
+  - **chunk_id**：数据块的唯一标识符
+  - **content**：数据块内容（支持文本、图表、表格等多种格式）
+  - **rerank**：数据块的重新排序评分及排序位置
+  - **recall**：数据块的召回评分及排序位置
+  - **meta**：元数据（包括数据块类型、词频、文档信息等）
+  - **neighbors**：相关的数据块
 
-## Current Status
+## 当前状态
 
-The Qianfan Knowledgebase Search skill is fully functional and can be used to retrieve knowledge from private knowledge bases on the Baidu Qianfan platform.
+Qianfan知识库搜索技能已完全实现，可用于从百度Qianfan平台的私有知识库中检索信息。

@@ -1,35 +1,35 @@
 ---
-description: Generate professional invoice PDFs for freelancers with multi-currency and tax support.
+description: 为自由职业者生成支持多种货币和税务处理的专业发票PDF文件。
 ---
 
-# Invoice Generator
+# 发票生成器
 
-Generate professional invoice PDFs from structured data.
+该工具能够根据结构化数据生成专业的PDF发票。
 
-**Use when** creating invoices, billing clients, or generating payment documents.
+**适用场景**：创建发票、向客户收款或生成付款文件。
 
-## Requirements
+## 系统要求**
 
-- Node.js 18+ with Puppeteer, OR `wkhtmltopdf`
-- No API keys needed
+- 需要Node.js 18及以上版本，并安装Puppeteer或`wkhtmltopdf`库。
+- 无需使用API密钥。
 
-## Instructions
+## 使用说明
 
-1. **Collect invoice details**:
-   - **From**: Name, address, email, bank details, logo URL (optional)
-   - **To**: Client name, address, email
-   - **Items**: Description, quantity, unit price
-   - **Meta**: Invoice number, date, due date, currency (default: USD), tax rate (default: 0%)
-   - **Notes**: Payment terms, thank you message
+1. **收集发票信息**：
+   - **发件人信息**：姓名、地址、电子邮件、银行账户信息（可选）、公司标志URL
+   - **收件人信息**：客户姓名、地址、电子邮件
+   - **商品明细**：商品描述、数量、单价
+   - **发票详情**：发票编号、日期、付款截止日期、货币（默认：USD）、税率（默认：0%）
+   - **备注**：付款方式、感谢信息
 
-2. **Generate HTML invoice** with this structure:
-   - Header: sender info + logo, invoice number/date
-   - Client info block
-   - Line items table with columns: Description | Qty | Unit Price | Amount
-   - Subtotal, tax (if applicable), **total** in bold
-   - Footer: payment instructions, bank details, notes
+2. **使用以下结构生成HTML发票**：
+   - **页眉**：发件人信息及公司标志、发票编号/日期
+   - **客户信息部分**
+   - **商品明细表**：包含商品描述、数量、单价、金额列
+   - **小计**、（如适用）税费、**总计**（以粗体显示）
+   - **页脚**：付款说明、银行账户信息、备注
 
-3. **Convert to PDF**:
+3. **将HTML发票转换为PDF格式**：
    ```bash
    # Option A: Puppeteer (best quality)
    node -e "
@@ -47,34 +47,34 @@ Generate professional invoice PDFs from structured data.
    wkhtmltopdf --margin-top 20mm --margin-bottom 20mm invoice.html invoice.pdf
    ```
 
-4. **Currency formatting**:
-   | Currency | Symbol | Format |
-   |----------|--------|--------|
+4. **货币格式化规则**：
+   | 货币 | 符号 | 格式 |
+   |------|------|------|
    | USD | $ | $1,234.56 |
-   | EUR | € | €1.234,56 |
+   | EUR | € | €1,234.56 |
    | JPY | ¥ | ¥123,456 |
    | GBP | £ | £1,234.56 |
 
-5. **Deliver**: Save PDF, provide file path. Offer to adjust formatting.
+5. **文件输出**：将生成的PDF文件保存到指定路径，并可提供格式调整服务。
 
-## Invoice Number Convention
+## 发票编号规则
 
-- Sequential: `INV-2025-001`, `INV-2025-002`
-- Date-based: `INV-20250115-01`
-- Client-prefixed: `ACME-2025-003`
+- 顺序编号：`INV-2025-001`, `INV-2025-002`
+- 基于日期编号：`INV-20250115-01`
+- 前缀加客户名称的编号：`ACME-2025-003`
 
-Suggest incrementing from the last used number.
+建议从上次使用的发票编号开始递增。
 
-## Edge Cases
+## 特殊情况处理**
 
-- **No tax**: Set tax to 0% and hide the tax row.
-- **Multiple tax rates**: Support line-item-level tax or split tax display.
-- **Discount**: Add a discount line with negative amount before subtotal.
-- **Recurring invoices**: Suggest a naming scheme and increment invoice numbers.
-- **Missing Puppeteer**: Fall back to `wkhtmltopdf`. If neither available, output HTML only.
+- **无税费**：将税率设置为0%并隐藏税费相关内容。
+- **多种税率**：支持在商品明细表中分别显示各项目的税费。
+- **折扣**：在小计前添加一条显示折扣金额的行。
+- **定期发票**：建议制定统一的命名规则并递增发票编号。
+- **Puppeteer未安装**：切换使用`wkhtmltopdf`；如果两者均不可用，则仅输出HTML文件。
 
-## Security Considerations
+## 安全注意事项**
 
-- Never embed real bank account details in example outputs.
-- Invoice HTML should not load external resources (tracking pixels, scripts).
-- Sanitize all user input before embedding in HTML to prevent XSS.
+- 请勿在示例输出中包含真实的银行账户信息。
+- 发票HTML文件不得加载外部资源（如追踪像素或脚本）。
+- 在将用户输入数据嵌入HTML之前，务必对其进行安全处理（防止XSS攻击）。

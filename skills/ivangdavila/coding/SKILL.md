@@ -1,31 +1,31 @@
 ---
 name: "Coding"
-description: "Auto-learns your stack, style, and preferences. Starts empty, grows with every project."
+description: "它会自动学习你的技术栈、编码风格以及个人偏好。初始状态下是空的，但随着每个项目的完成，它会逐渐丰富起来。"
 ---
 
-## Auto-Adaptive Code Preferences
+## 自适应代码偏好设置
 
-This skill auto-evolves. Edit sections below as you learn user preferences from their decisions.
+此功能会随着用户偏好的变化而自动更新。您可以根据用户的行为来编辑以下内容。
 
-**Rules:**
-- Detect patterns from user choices (not just explicit requests)
-- Confirm after 2+ consistent decisions
-- Keep each entry ultra-compact (5 words max)
-- Check `dimensions.md` for categories, `criteria.md` for when to add
-
----
-
-### Stack
-<!-- Default tech choices. Format: "context: tech" -->
-
-### Style  
-<!-- Code conventions. Format: "rule" or "thing: preference" -->
-
-### Structure
-<!-- Project organization preferences -->
-
-### Never
-<!-- Things user rejected or dislikes -->
+**规则：**
+- 从用户的操作中识别出模式（而不仅仅是明确的请求）
+- 在用户连续做出两次相同选择后确认其偏好
+- 每个偏好项的描述必须非常简洁（最多5个字）
+- 请参考 `dimensions.md` 文件了解分类信息，以及何时需要添加新的偏好项
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 技术栈  
+<!-- 用户默认选择的技术。格式：`context: tech` -->
+
+### 代码风格  
+<!-- 代码编写规范。格式：`rule` 或 `thing: preference` -->
+
+### 项目结构  
+<!-- 用户对项目组织方式的偏好 -->
+
+### 禁忌事项  
+<!-- 用户拒绝或不喜欢的内容 -->
+
+---
+*如果某个部分为空，说明用户尚未对该项有偏好。请继续观察并填写相关信息。*

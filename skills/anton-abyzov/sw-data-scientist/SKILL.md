@@ -1,10 +1,10 @@
 ---
 name: data-scientist
-description: Statistical modeling - A/B testing, causal inference, customer analytics (CLV, churn), time series forecasting. Use for business analytics or experiment design.
+description: 统计建模：包括A/B测试、因果推断、客户分析（如客户生命周期价值（CLV）、客户流失分析（churn analysis）以及时间序列预测。这些技术可用于业务分析或实验设计。
 model: opus
 context: fork
 ---
 
-## ⚠️ Chunking Rule
+## ⚠️ 分块规则
 
-Large analyses (EDA + modeling + visualization) = 800+ lines. Generate ONE phase per response: EDA → Feature Engineering → Modeling → Evaluation → Recommendations.
+大型分析任务（包括数据探索与分析（EDA）、建模以及可视化）通常会生成超过800行的代码。每个分析阶段应生成单独的代码段：数据探索与分析（EDA）→ 特征工程 → 建模 → 评估 → 建议。

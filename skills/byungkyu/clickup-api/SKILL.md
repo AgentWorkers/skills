@@ -15,9 +15,9 @@ metadata:
 
 # ClickUp
 
-Access the ClickUp API with managed OAuth authentication. Manage tasks, lists, folders, spaces, workspaces, users, and webhooks for work management.
+通过管理的OAuth认证来访问ClickUp API。您可以管理任务、列表、文件夹、工作空间、用户和Webhook，以实现工作管理。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List workspaces (teams)
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/clickup/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual ClickUp API endpoint path. The gateway proxies requests to `api.clickup.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的ClickUp API端点路径。该网关会将请求代理到 `api.clickup.com`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your ClickUp OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的ClickUp OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple ClickUp connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个ClickUp连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,26 +138,26 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## ClickUp Hierarchy
+## ClickUp 数据结构
 
-ClickUp organizes data in a hierarchy:
-- **Workspace** (team) → **Space** → **Folder** → **List** → **Task**
+ClickUp 以层次结构组织数据：
+- **工作空间（团队）** → **空间** → **文件夹** → **列表** → **任务**
 
-Note: In the API, Workspaces are referred to as "teams".
+注意：在API中，工作空间被称为“团队”。
 
-## API Reference
+## API 参考
 
-### Workspaces (Teams)
+### 工作空间（团队）
 
-#### Get Authorized Workspaces
+#### 获取授权的工作空间
 
 ```bash
 GET /clickup/api/v2/team
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -168,7 +168,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "teams": [
@@ -191,18 +191,18 @@ EOF
 }
 ```
 
-### Spaces
+### 空间
 
-#### Get Spaces
+#### 获取空间
 
 ```bash
 GET /clickup/api/v2/team/{team_id}/space
 ```
 
-Query parameters:
-- `archived` - Include archived spaces (true/false)
+查询参数：
+- `archived` - 是否包含已归档的空间（true/false）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -213,7 +213,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "spaces": [
@@ -231,19 +231,19 @@ EOF
 }
 ```
 
-#### Get a Space
+#### 获取一个空间
 
 ```bash
 GET /clickup/api/v2/space/{space_id}
 ```
 
-#### Create a Space
+#### 创建一个空间
 
 ```bash
 POST /clickup/api/v2/team/{team_id}/space
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -256,30 +256,30 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Space
+#### 更新一个空间
 
 ```bash
 PUT /clickup/api/v2/space/{space_id}
 ```
 
-#### Delete a Space
+#### 删除一个空间
 
 ```bash
 DELETE /clickup/api/v2/space/{space_id}
 ```
 
-### Folders
+### 文件夹
 
-#### Get Folders
+#### 获取文件夹
 
 ```bash
 GET /clickup/api/v2/space/{space_id}/folder
 ```
 
-Query parameters:
-- `archived` - Include archived folders (true/false)
+查询参数：
+- `archived` - 是否包含已归档的文件夹（true/false）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -290,7 +290,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "folders": [
@@ -307,19 +307,19 @@ EOF
 }
 ```
 
-#### Get a Folder
+#### 获取一个文件夹
 
 ```bash
 GET /clickup/api/v2/folder/{folder_id}
 ```
 
-#### Create a Folder
+#### 创建一个文件夹
 
 ```bash
 POST /clickup/api/v2/space/{space_id}/folder
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -332,30 +332,30 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Folder
+#### 更新一个文件夹
 
 ```bash
 PUT /clickup/api/v2/folder/{folder_id}
 ```
 
-#### Delete a Folder
+#### 删除一个文件夹
 
 ```bash
 DELETE /clickup/api/v2/folder/{folder_id}
 ```
 
-### Lists
+### 列表
 
-#### Get Lists
+#### 获取列表
 
 ```bash
 GET /clickup/api/v2/folder/{folder_id}/list
 ```
 
-Query parameters:
-- `archived` - Include archived lists (true/false)
+查询参数：
+- `archived` - 是否包含已归档的列表（true/false）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -366,7 +366,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "lists": [
@@ -382,25 +382,25 @@ EOF
 }
 ```
 
-#### Get Folderless Lists
+#### 获取无文件夹的列表
 
 ```bash
 GET /clickup/api/v2/space/{space_id}/list
 ```
 
-#### Get a List
+#### 获取一个列表
 
 ```bash
 GET /clickup/api/v2/list/{list_id}
 ```
 
-#### Create a List
+#### 创建一个列表
 
 ```bash
 POST /clickup/api/v2/folder/{folder_id}/list
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -413,45 +413,45 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Folderless List
+#### 创建一个无文件夹的列表
 
 ```bash
 POST /clickup/api/v2/space/{space_id}/list
 ```
 
-#### Update a List
+#### 更新一个列表
 
 ```bash
 PUT /clickup/api/v2/list/{list_id}
 ```
 
-#### Delete a List
+#### 删除一个列表
 
 ```bash
 DELETE /clickup/api/v2/list/{list_id}
 ```
 
-### Tasks
+### 任务
 
-#### Get Tasks
+#### 获取任务
 
 ```bash
 GET /clickup/api/v2/list/{list_id}/task
 ```
 
-Query parameters:
-- `archived` - Include archived tasks (true/false)
-- `page` - Page number (0-indexed)
-- `order_by` - Sort by field (created, updated, due_date)
-- `reverse` - Reverse sort order (true/false)
-- `subtasks` - Include subtasks (true/false)
-- `statuses[]` - Filter by status
-- `include_closed` - Include closed tasks (true/false)
-- `assignees[]` - Filter by assignee IDs
-- `due_date_gt` - Due date greater than (Unix ms)
-- `due_date_lt` - Due date less than (Unix ms)
+查询参数：
+- `archived` - 是否包含已归档的任务（true/false）
+- `page` - 页码（从0开始计数）
+- `order_by` - 按字段排序（创建时间、更新时间、截止日期）
+- `reverse` - 是否反转排序顺序（true/false）
+- `subtasks` - 是否包含子任务（true/false）
+- `statuses[]` - 按状态过滤
+- `include_closed` - 是否包含已关闭的任务（true/false）
+- `assignees[]` - 按分配者ID过滤
+- `due_date_gt` - 截止日期大于（Unix毫秒）
+- `due_date_lt` - 截止日期小于（Unix毫秒）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -462,7 +462,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "tasks": [
@@ -481,18 +481,18 @@ EOF
 }
 ```
 
-#### Get a Task
+#### 获取一个任务
 
 ```bash
 GET /clickup/api/v2/task/{task_id}
 ```
 
-Query parameters:
-- `custom_task_ids` - Use custom task IDs (true/false)
-- `team_id` - Required when using custom_task_ids
-- `include_subtasks` - Include subtasks (true/false)
+查询参数：
+- `custom_task_ids` - 是否使用自定义任务ID（true/false）
+- `team_id` - 使用 `custom_task_ids` 时必需
+- `include_subtasks` - 是否包含子任务（true/false）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -503,7 +503,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a Task
+#### 创建一个任务
 
 ```bash
 POST /clickup/api/v2/list/{list_id}/task
@@ -521,21 +521,21 @@ Content-Type: application/json
 }
 ```
 
-Fields:
-- `name` (required) - Task title
-- `description` - Task description (supports markdown)
-- `assignees` - Array of user IDs
-- `status` - Status name (must match a status in the list)
-- `priority` - Priority level (1=urgent, 2=high, 3=normal, 4=low, null=none)
-- `due_date` - Unix timestamp in milliseconds
-- `due_date_time` - Include time in due date (true/false)
-- `start_date` - Unix timestamp in milliseconds
-- `time_estimate` - Time estimate in milliseconds
-- `tags` - Array of tag names
-- `parent` - Parent task ID (for subtasks)
-- `custom_fields` - Array of custom field objects
+字段：
+- `name`（必填）- 任务标题
+- `description` - 任务描述（支持Markdown）
+- `assignees` - 用户ID数组
+- `status` - 状态名称（必须与列表中的状态名称匹配）
+- `priority` - 优先级（1=紧急，2=高，3=普通，4=低，null=无）
+- `due_date` - Unix时间戳（毫秒）
+- `due_date_time` - 是否包含截止日期的时间（true/false）
+- `start_date` - Unix时间戳（毫秒）
+- `time_estimate` - 时间估算（毫秒）
+- `tags` - 标签名称数组
+- `parent` - 子任务的父任务ID
+- `custom_fields` - 自定义字段对象数组
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -548,13 +548,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Task
+#### 更新一个任务
 
 ```bash
 PUT /clickup/api/v2/task/{task_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -567,36 +567,36 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete a Task
+#### 删除一个任务
 
 ```bash
 DELETE /clickup/api/v2/task/{task_id}
 ```
 
-#### Get Filtered Team Tasks
+#### 获取筛选后的团队任务
 
 ```bash
 GET /clickup/api/v2/team/{team_id}/task
 ```
 
-Query parameters:
-- `page` - Page number (0-indexed)
-- `order_by` - Sort field
-- `statuses[]` - Filter by statuses
-- `assignees[]` - Filter by assignees
-- `list_ids[]` - Filter by list IDs
-- `space_ids[]` - Filter by space IDs
-- `folder_ids[]` - Filter by folder IDs
+查询参数：
+- `page` - 页码（从0开始计数）
+- `order_by` - 排序字段
+- `statuses[]` - 按状态过滤
+- `assignees[]` - 按分配者过滤
+- `list_ids[]` - 按列表ID过滤
+- `space_ids[]` - 按空间ID过滤
+- `folder_ids[]` - 按文件夹ID过滤
 
-### Users
+### 用户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /clickup/api/v2/user
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -607,7 +607,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "user": {
@@ -623,15 +623,15 @@ EOF
 }
 ```
 
-### Webhooks
+### Webhook
 
-#### Get Webhooks
+#### 获取Webhook
 
 ```bash
 GET /clickup/api/v2/team/{team_id}/webhook
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -642,7 +642,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Webhook
+#### 创建Webhook
 
 ```bash
 POST /clickup/api/v2/team/{team_id}/webhook
@@ -658,12 +658,11 @@ Content-Type: application/json
 }
 ```
 
-Events:
+事件：
 - `taskCreated`, `taskUpdated`, `taskDeleted`
 - `taskPriorityUpdated`, `taskStatusUpdated`
 - `taskAssigneeUpdated`, `taskDueDateUpdated`
-- `taskTagUpdated`, `taskMoved`
-- `taskCommentPosted`, `taskCommentUpdated`
+- `taskTagUpdated`, `taskCommentPosted`, `taskCommentUpdated`
 - `taskTimeEstimateUpdated`, `taskTimeTrackedUpdated`
 - `listCreated`, `listUpdated`, `listDeleted`
 - `folderCreated`, `folderUpdated`, `folderDeleted`
@@ -671,7 +670,7 @@ Events:
 - `goalCreated`, `goalUpdated`, `goalDeleted`
 - `keyResultCreated`, `keyResultUpdated`, `keyResultDeleted`
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -684,7 +683,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "webhook123",
@@ -701,21 +700,21 @@ EOF
 }
 ```
 
-#### Update a Webhook
+#### 更新Webhook
 
 ```bash
 PUT /clickup/api/v2/webhook/{webhook_id}
 ```
 
-#### Delete a Webhook
+#### 删除Webhook
 
 ```bash
 DELETE /clickup/api/v2/webhook/{webhook_id}
 ```
 
-## Pagination
+## 分页
 
-ClickUp uses page-based pagination. Use the `page` parameter (0-indexed):
+ClickUp 使用基于页的分页机制。使用 `page` 参数（从0开始计数）：
 
 ```bash
 python <<'EOF'
@@ -726,9 +725,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-Responses are limited to 100 tasks per page. The response includes a `last_page` boolean field. Continue incrementing the page number until `last_page` is `true`.
+响应每页限制为100个任务。响应中包含一个 `last_page` 布尔字段。继续增加页码，直到 `last_page` 为 `true`。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -757,37 +756,37 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Task IDs are strings
-- Timestamps are Unix milliseconds
-- Priority values: 1=urgent, 2=high, 3=normal, 4=low, null=none
-- Workspaces are called "teams" in the API
-- Status values must match the exact status names configured in the list
-- Responses are limited to 100 items per page
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`statuses[]`, `assignees[]`, `list_ids[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 任务ID是字符串。
+- 时间戳是Unix毫秒。
+- 优先级值：1=紧急，2=高，3=普通，4=低，null=无。
+- 在API中，工作空间被称为“团队”。
+- 状态值必须与列表中配置的状态名称完全匹配。
+- 响应每页限制为100条记录。
+- 重要提示：当URL包含括号（如 `statuses[]`, `assignees[]`, `list_ids[]`）时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中，环境变量 `$MATON_API_KEY` 可能无法正确展开，可能会导致“无效API密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing ClickUp connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from ClickUp API |
+| 400 | 请求错误或缺少ClickUp连接 |
+| 401 | 无效或缺少Maton API密钥 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 429 | 请求速率限制 |
+| 4xx/5xx | 来自ClickUp API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -798,25 +797,24 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `clickup`. For example:
+1. 确保您的URL路径以 `clickup` 开头。例如：
+- 正确：`https://gateway.maton.ai/clickup/api/v2/team`
+- 错误：`https://gateway.maton.ai/api/v2/team`
 
-- Correct: `https://gateway.maton.ai/clickup/api/v2/team`
-- Incorrect: `https://gateway.maton.ai/api/v2/team`
+## 资源
 
-## Resources
-
-- [ClickUp API Overview](https://developer.clickup.com/docs/Getting%20Started.md)
-- [Get Tasks](https://developer.clickup.com/reference/gettasks.md)
-- [Create Task](https://developer.clickup.com/reference/createtask.md)
-- [Update Task](https://developer.clickup.com/reference/updatetask.md)
-- [Delete Task](https://developer.clickup.com/reference/deletetask.md)
-- [Get Spaces](https://developer.clickup.com/reference/getspaces.md)
-- [Get Lists](https://developer.clickup.com/reference/getlists.md)
-- [Create Webhook](https://developer.clickup.com/reference/createwebhook.md)
-- [Custom Fields](https://developer.clickup.com/docs/customfields.md)
-- [Rate Limits](https://developer.clickup.com/docs/rate-limits.md)
-- [LLM Reference](https://developer.clickup.com/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [ClickUp API概述](https://developer.clickup.com/docs/Getting%20Started.md)
+- [获取任务](https://developer.clickup.com/reference/gettasks.md)
+- [创建任务](https://developer.clickup.com/reference/createtask.md)
+- [更新任务](https://developer.clickup.com/reference/updatetask.md)
+- [删除任务](https://developer.clickup.com/reference/deletetask.md)
+- [获取空间](https://developer.clickup.com/reference/getspaces.md)
+- [获取列表](https://developer.clickup.com/reference/getlists.md)
+- [创建Webhook](https://developer.clickup.com/reference/createwebhook.md)
+- [自定义字段](https://developer.clickup.com/docs/customfields.md)
+- [速率限制](https://developer.clickup.com/docs/rate-limits.md)
+- [LLM参考](https://developer.clickup.com/llms.txt)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

@@ -1,58 +1,59 @@
 ---
 name: telnyx-cli
-description: Telnyx API integration via CLI. Send SMS/MMS/WhatsApp messages, manage phone numbers, query call logs, debug webhooks, and access your Telnyx account. Use when interacting with Telnyx APIs, managing messaging, or accessing account data.
+description: 通过 CLI（命令行界面）集成 Telnyx API。您可以发送 SMS/MMS/WhatsApp 消息、管理电话号码、查询通话记录、调试 Webhook 以及访问您的 Telnyx 账户。该工具适用于与 Telnyx API 进行交互、管理消息发送或访问账户数据等场景。
 metadata: {"openclaw":{"emoji":"🔧","requires":{"bins":["telnyx"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
 # Telnyx CLI
 
-Telnyx API integration for OpenClaw: messaging, phone numbers, webhooks, and account management.
+Telnyx 提供了与 OpenClaw 的 API 集成功能，支持消息发送、电话号码管理、Webhook 配置以及账户信息查询等操作。
 
-## Setup
+## 设置
 
-### 1. Install CLI
+### 1. 安装 Telnyx CLI
 
 ```bash
 npm install -g @telnyx/api-cli
 ```
 
-### 2. Configure API Key
+### 2. 配置 API 密钥
 
 ```bash
 telnyx auth setup
 ```
 
-Paste your API key from: https://portal.telnyx.com/#/app/api-keys
+请将您的 API 密钥从以下链接复制并粘贴：
+https://portal.telnyx.com/#/app/api-keys
 
-Saves to `~/.config/telnyx/config.json` (persistent).
+配置文件将保存在 `~/.config/telnyx/config.json` 中（该文件会持久保存）。
 
-### 3. Verify
+### 3. 验证配置
 
 ```bash
 telnyx number list
 ```
 
-## Commands
+## 命令列表
 
-| Category | Command | Description |
-|----------|---------|-------------|
-| **Messaging** | `telnyx message send` | Send SMS/email/WhatsApp |
-| | `telnyx message list` | List messages |
-| | `telnyx message get` | Get message status |
-| **Phone Numbers** | `telnyx number list` | Your phone numbers |
-| | `telnyx number search` | Search available numbers |
-| | `telnyx number buy` | Purchase a number |
-| | `telnyx number release` | Release a number |
-| **Calls** | `telnyx call list` | View calls |
-| | `telnyx call get` | Get call details |
-| **Webhooks** | `telnyx webhook list` | List webhooks |
-| | `telnyx debugger list` | View webhook events |
-| | `telnyx debugger retry` | Retry failed webhooks |
-| **Account** | `telnyx account get` | Account info & balance |
+| 类别 | 命令            | 描述                                      |
+|--------|-----------------------------|-----------------------------------------|
+| **消息发送** | `telnyx message send`    | 发送 SMS、电子邮件或 WhatsApp 消息                |
+|        | `telnyx message list`    | 查看已发送的消息列表                          |
+|        | `telnyx message get`    | 获取消息的状态                              |
+| **电话号码** | `telnyx number list`    | 查看您的电话号码列表                          |
+|        | `telnyx number search`    | 搜索可用的电话号码                          |
+|        | `telnyx number buy`    | 购买电话号码                              |
+|        | `telnyx number release`    | 释放已购买的电话号码                          |
+| **通话记录** | `telnyx call list`    | 查看通话记录                              |
+|        | `telnyx call get`    | 获取通话详细信息                          |
+| **Webhook** | `telnyx webhook list`    | 查看已配置的 Webhook 列表                         |
+|        | `telnyx debugger list`    | 查看 Webhook 事件日志                         |
+|        | `telnyx debugger retry`    | 重试失败的 Webhook 请求                         |
+| **账户信息** | `telnyx account get`    | 查看账户信息和余额                          |
 
-## Usage
+## 使用方法
 
-### Messaging
+### 消息发送
 
 ```bash
 # Send SMS
@@ -65,7 +66,7 @@ telnyx message list
 telnyx message get MESSAGE_ID
 ```
 
-### Phone Numbers
+### 电话号码管理
 
 ```bash
 # List
@@ -81,7 +82,7 @@ telnyx number buy --number "+15551234567"
 telnyx number release "+15551234567"
 ```
 
-### Webhooks & Debugging
+### Webhook 与调试
 
 ```bash
 # List webhooks
@@ -94,7 +95,7 @@ telnyx debugger list --status failed
 telnyx debugger retry EVENT_ID
 ```
 
-### Account
+### 账户管理
 
 ```bash
 # Account info
@@ -104,7 +105,7 @@ telnyx account get
 telnyx account get --output json | jq '.balance'
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 # Table (default)
@@ -117,9 +118,9 @@ telnyx number list --output json
 telnyx number list --output csv
 ```
 
-## Examples
+## 示例
 
-### Bulk Messaging
+### 批量发送消息
 
 ```bash
 #!/bin/bash
@@ -129,7 +130,7 @@ while read phone; do
 done < recipients.txt
 ```
 
-### Monitor Webhooks
+### 监控 Webhook 事件
 
 ```bash
 #!/bin/bash
@@ -140,7 +141,7 @@ while true; do
 done
 ```
 
-### Export Data
+### 导出数据
 
 ```bash
 # CSV export
@@ -150,14 +151,14 @@ telnyx call list --limit 1000 --output csv > calls.csv
 telnyx number list --output json > numbers.json
 ```
 
-## Tips
+## 使用提示
 
-- Rate limit: 100 req/s — add `sleep 1` for bulk operations
-- Use `--output json` or `--output csv` to change format
-- Get help: `telnyx COMMAND --help` (e.g., `telnyx message --help`)
-- API Key location: `~/.config/telnyx/config.json`
+- 请求速率限制：每秒 100 次请求——批量操作时请添加 `sleep 1` 以控制频率
+- 使用 `--output json` 或 `--output csv` 参数更改输出格式
+- 获取帮助：`telnyx COMMAND --help`（例如：`telnyx message --help`）
+- API 密钥存储位置：`~/.config/telnyx/config.json`
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
 ```bash
 # In cron jobs
@@ -171,30 +172,14 @@ BALANCE=$(telnyx account get --output json | jq '.balance')
 echo "Balance: $BALANCE"
 ```
 
-## Troubleshooting
+## 常见问题解决方法
 
-### CLI not found
-```bash
-npm install -g @telnyx/api-cli
-```
+- **CLI 未找到**：确保 Telnyx CLI 已正确安装并添加到系统路径中。
+- **API 密钥未配置**：检查 `~/.config/telnyx/config.json` 文件中是否包含有效的 API 密钥。
+- **连接问题**：检查网络连接是否正常，以及 Telnyx 服务器是否可用。
 
-### API key not configured
-```bash
-# Reconfigure
-telnyx auth setup
+## 资源链接
 
-# Or check existing config
-cat ~/.config/telnyx/config.json
-```
-
-### Connection issues
-```bash
-# Test connection
-telnyx account get
-```
-
-## Resources
-
-- Telnyx Docs: https://developers.telnyx.com
-- API Portal: https://portal.telnyx.com
-- Telnyx CLI: https://github.com/team-telnyx/telnyx-api-cli
+- Telnyx 官方文档：https://developers.telnyx.com
+- Telnyx API 门户：https://portal.telnyx.com
+- Telnyx CLI 项目仓库：https://github.com/team-telnyx/telnyx-api-cli

@@ -1,58 +1,59 @@
 ---
 name: Reflection
-description: Structured self-evaluation before delivering work. Catches blind spots and improves quality through multi-lens critique.
+description: 在交付工作之前进行结构化的自我评估。通过多角度的评审来发现潜在问题并提升工作质量。
 version: 1.0.0
 ---
 
-## When to Use
+## 何时使用
 
-Before delivering important work, pause for structured self-evaluation. Catches blind spots, improves quality, builds trust.
+在交付重要成果之前，先进行系统的自我评估。这有助于发现潜在的问题、提升工作质量，并增强他人的信任。
 
-Triggers:
-- Complex deliverables (architecture, strategy, analysis)
-- High-stakes outputs (production code, client-facing docs)
-- Uncertainty about quality ("is this actually good?")
-- After extended work sessions (tunnel vision risk)
+**适用场景：**
+- 复杂的交付物（如系统架构、策略分析等）
+- 高风险的输出结果（如生产代码、面向客户的文档）
+- 对成果质量存在疑虑（“这真的好吗？”）
+- 长时间连续工作后（避免产生“视野狭窄”的问题）
 
-## The Reflection Process
+## 反思流程
 
-**1. Distance** — Step back mentally. Pretend you're reviewing someone else's work.
+**1. 保持客观距离**——在心理上跳出自己的角色，想象自己是在评估别人的工作。
 
-**2. Multi-lens evaluation:**
-- **Correctness**: Does it actually solve the problem stated?
-- **Completeness**: What's missing? Edge cases? Assumptions?
-- **Clarity**: Would someone else understand this immediately?
-- **Robustness**: What could go wrong? What breaks this?
+**2. 多角度评估：**
+- **正确性**：该方案是否真正解决了问题？
+- **完整性**：还缺少什么？是否存在边缘情况？有哪些潜在的假设？
+- **清晰度**：其他人能立即理解这个方案吗？
+- **稳定性**：可能会出现哪些问题？什么因素会导致方案失效？
 
-**3. Steel-man critique** — Find the strongest objection to your work. Address it.
+**3. 严格自我批评**——找出对自己工作的最大质疑，并加以解决。
 
-**4. Honest assessment** — Rate confidence 1-10. Below 7? State what would raise it.
+**4. 客观评估**——给自己打分（1-10分）。如果分数低于7分，说明哪些方面需要改进？
 
-## Reflection Depth
+## 反思的深度
 
-| Situation | Depth |
+| 情况 | 反思深度 |
 |-----------|-------|
-| Quick answer | 10 seconds, one lens |
-| Standard task | 30 seconds, all lenses |
-| Critical delivery | 2 minutes, full critique |
+| 快速评估 | 10秒，仅从一个角度考虑 |
+| 标准任务 | 30秒，从多个角度评估 |
+| 关键性交付物 | 2分钟，进行全面深入的批评 |
 
-## Red Flags to Catch
+## 需要警惕的警示信号：
+- 未经考虑其他方案就接受了最初的想法
+- 未与用户确认相关假设的正确性
+- 对边缘情况置之不理
+- 无明确理由地增加复杂性
+- 只知道“它能工作”，却不明白其工作原理
 
-- First solution accepted without alternatives considered
-- Assumptions not validated with user
-- Edge cases hand-waved
-- Complexity added without clear benefit
-- "It works" without understanding why
+## 反思后的行动方案：
+- **自信地交付成果**——反思确认了成果的质量。
+- **改进后再交付**——发现问题后及时修复。
+- **标记不确定之处**——如果评分低于7分，说明需要进一步深入分析。
 
-## Output Format
-
-After reflection, either:
-1. **Deliver with confidence** — reflection confirmed quality
-2. **Improve then deliver** — found issues, fixed them
-3. **Flag uncertainty** — "I'm 6/10 confident because X, want me to dig deeper?"
-
-See `dimensions.md` for domain-specific evaluation criteria.
-See `prompts.md` for self-reflection questions by task type.
+**相关参考：**
+- `dimensions.md`：针对特定领域的评估标准。
+- `prompts.md`：按任务类型划分的自我反思问题。
 
 ---
-*Related: diverge (multiple perspectives), brainstorm (idea generation)*
+
+*相关概念：*
+- **diverge**（多角度思考）
+- **brainstorm**（头脑风暴）

@@ -1,16 +1,16 @@
 ---
 name: knowledge-graph
-description: Maintain Clawdbot's compounding knowledge graph under life/areas/** by adding/superseding atomic facts (items.json), regenerating entity summaries (summary.md), and keeping IDs consistent. Use when you need deterministic updates to the knowledge graph rather than manual JSON edits.
+description: 维护 Clawdbot 的复合知识图谱（位于 `life/areas/**` 目录下），具体方法包括：添加或替换基础数据（`items.json` 文件中的内容）、重新生成实体摘要（`summary.md` 文件），并确保所有实体ID的一致性。当需要对知识图谱进行确定性更新（而非手动修改 JSON 文件）时，可以使用此方法。
 ---
 
-# Knowledge Graph (file-based)
+# 知识图谱（基于文件的）
 
-Use the bundled Python script to safely update `life/areas/**`.
+使用随附的 Python 脚本来安全地更新 `life/areas/**` 文件。
 
-## Commands
+## 命令
 
-Add a new fact:
-```bash
+- 添加新事实：
+  ```bash
 python3 skills/knowledge-graph/scripts/kg.py add \
   --entity people/safa \
   --category status \
@@ -18,8 +18,8 @@ python3 skills/knowledge-graph/scripts/kg.py add \
   --source conversation
 ```
 
-Supersede an old fact (mark old as superseded + create new fact):
-```bash
+- 替换旧事实（将旧事实标记为已替换，并创建新事实）：
+  ```bash
 python3 skills/knowledge-graph/scripts/kg.py supersede \
   --entity people/safa \
   --old safa-002 \
@@ -27,13 +27,14 @@ python3 skills/knowledge-graph/scripts/kg.py supersede \
   --fact "Moved Clawdbot from Pi to a Mac mini"
 ```
 
-Regenerate an entity summary from active facts:
-```bash
+- 从有效的事实中重新生成实体摘要：
+  ```bash
 python3 skills/knowledge-graph/scripts/kg.py summarize --entity people/safa
 ```
 
-## Notes
-- Entities live under: `life/areas/<kind>/<slug>/`
-- Facts live in `items.json` (array). Summaries live in `summary.md`.
-- IDs auto-increment per entity: `<slug>-001`, `<slug>-002`, ...
-- Never delete facts; supersede them.
+## 注意事项
+- 实体存储在路径 `life/areas/<kind>/<slug>/` 下。
+- 事实数据存储在 `items.json` 文件中（以数组形式）。
+- 摘要信息存储在 `summary.md` 文件中。
+- 每个实体的 ID 都是自增的，格式为 `<slug>-001`、`<slug>-002` 等。
+- 请勿直接删除事实数据，而是使用替换操作来更新它们。

@@ -1,23 +1,23 @@
-# Budget Planner
+# 预算规划器
 
-Plan and track budgets using your AI agent. Works for personal finance, project budgets, or department spending.
+使用您的人工智能助手来规划和跟踪预算。适用于个人财务、项目预算或部门开支管理。
 
-## What It Does
-- Creates structured budgets with categories, allocations, and actuals
-- Tracks spending against budget with variance analysis
-- Flags overspending early with threshold alerts
-- Generates monthly/quarterly budget reports
-- Supports multiple budget types (personal, project, department)
+## 功能介绍
+- 创建包含类别、分配金额及实际支出情况的结构化预算
+- 对比实际支出与预算，进行差异分析
+- 当支出超出设定阈值时，及时发出警告
+- 生成月度/季度预算报告
+- 支持多种预算类型（个人预算、项目预算、部门预算）
 
-## Usage
+## 使用方法
 
-### Create a Budget
-Tell your agent: "Create a monthly budget for [purpose] with a total of $[amount]"
+### 创建预算
+告诉您的助手：“为[用途]创建一个总额为[$金额]的月度预算”
 
-The agent will ask about categories and allocations, then create a structured budget file.
+助手会询问您所需的预算类别和分配比例，随后生成结构化的预算文件。
 
-### Budget File Format
-Budgets are stored as markdown tables in your workspace:
+### 预算文件格式
+预算文件以Markdown表格的形式存储在工作区中：
 
 ```markdown
 # Budget: [Name] — [Period]
@@ -30,25 +30,25 @@ Total: $X,XXX
 | Transport | $200 | $280 | -$80 | 🔴 Over |
 ```
 
-### Track Spending
-Tell your agent: "Log $45 under Food" or "I spent $280 on transport this month"
+### 记录支出
+告诉您的助手：“在‘食品’类别下记录45美元的支出”或“我本月在交通上的支出为280美元”
 
-### Get Reports
-- "How's my budget looking?" — summary with variances
-- "Where am I overspending?" — flags problem categories
-- "Project my end-of-month spend" — extrapolates from current pace
+### 查看报告
+- “我的预算情况如何？”——查看预算总结及差异分析结果
+- “我在哪些方面超支了？”——识别超支的类别
+- “预测我本月的总支出”——根据当前支出情况估算未来支出
 
-### Alert Thresholds
-Default alerts:
-- ⚠️ **Warning** at 80% of category allocation
-- 🔴 **Over budget** when exceeded
-- 📊 **Weekly digest** if enabled
+### 警报阈值
+默认警报设置：
+- ⚠️ **警告**：当支出达到预算分配金额的80%时
+- 🔴 **超出预算**：当支出超过预算总额时
+- 📊 **每周摘要**：如果启用了该功能，会每周生成摘要报告
 
-## Tips
-- Start with broad categories, refine over time
-- Review weekly — catching overspend early is the whole point
-- Use "rollover" for categories where unspent funds carry forward
-- Compare month-over-month to spot trends
+## 使用建议
+- 先设置宽泛的预算类别，后续再逐步细化
+- 每周检查预算情况——及时发现超支问题是关键
+- 对于未使用的资金，可以选择“滚动”功能将其结转至下个月
+- 对比不同月份的预算数据，以发现支出趋势
 
-## More Business Tools
-Get industry-specific AI agent context packs at [AfrexAI](https://afrexai-cto.github.io/context-packs/) — pre-built configurations that make your agent a domain expert from day one.
+## 更多商业工具
+您可以在[AfrexAI](https://afrexai-cto.github.io/context-packs/)获取特定行业的AI助手配置包——这些预构建的配置能让您的助手从第一天起就成为该领域的专家。

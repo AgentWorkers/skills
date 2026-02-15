@@ -1,38 +1,38 @@
 ---
 name: model-router
-description: A comprehensive AI model routing system that automatically selects the optimal model for any task. Set up multiple AI providers (Anthropic, OpenAI, Gemini, Moonshot, Z.ai, GLM) with secure API key storage, then route tasks to the best model based on task type, complexity, and cost optimization. Includes interactive setup wizard, task classification, and cost-effective delegation patterns. Use when you need "use X model for this", "switch model", "optimal model", "which model should I use", or to balance quality vs cost across multiple AI providers.
+description: 这是一个全面的人工智能模型路由系统，能够自动为任何任务选择最优的模型。该系统支持配置多个AI提供商（Anthropic、OpenAI、Gemini、Moonshot、Z.ai、GLM），并具备安全的API密钥存储功能。它可以根据任务类型、复杂度以及成本优化等因素，将任务路由到最合适的模型。系统还提供了交互式的设置向导、任务分类功能以及经济高效的模型调度机制。适用于需要根据具体需求选择特定模型、切换模型、确定最优模型，或在多个AI提供商之间平衡模型质量和成本的情况。
 version: 1.1.0
 ---
 
-# Model Router
+# 模型路由器
 
-**Intelligent AI model routing across multiple providers for optimal cost-performance balance.**
+**一种智能的AI模型路由系统，可在多个提供商之间进行选择，以实现最佳的成本性能平衡。**
 
-Automatically select the best model for any task based on complexity, type, and your preferences. Support for 6 major AI providers with secure API key management and interactive configuration.
+该系统能够根据任务的复杂性、类型以及您的偏好，自动为您选择最合适的模型。支持6大主流AI提供商，并提供安全的API密钥管理及交互式配置功能。
 
-## 🎯 What It Does
+## 🎯 主要功能
 
-- **Analyzes tasks** and classifies them by type (coding, research, creative, simple, etc.)
-- **Routes to optimal models** from your configured providers
-- **Optimizes costs** by using cheaper models for simple tasks
-- **Secures API keys** with file permissions (600) and isolated storage
-- **Provides recommendations** with confidence scoring and reasoning
+- **任务分析**：按类型（编码、研究、创意等）对任务进行分类。
+- **路由选择**：从您配置的提供商中选择最适合的模型。
+- **成本优化**：对于简单任务，使用成本更低的模型。
+- **API密钥保护**：通过文件权限（600个权限级别）和隔离存储来保护API密钥。
+- **推荐机制**：提供带有置信度评分和理由的模型推荐。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Step 1: Run the Setup Wizard
+### 第一步：运行设置向导
 
 ```bash
 cd skills/model-router
 python3 scripts/setup-wizard.py
 ```
 
-The wizard will guide you through:
-1. **Provider setup** - Add your API keys (Anthropic, OpenAI, Gemini, etc.)
-2. **Task mappings** - Choose which model for each task type
-3. **Preferences** - Set cost optimization level
+向导将引导您完成以下步骤：
+1. **提供商设置**：添加您的API密钥（Anthropic、OpenAI、Gemini等）。
+2. **任务映射**：为每种任务类型选择相应的模型。
+3. **偏好设置**：设置成本优化级别。
 
-### Step 2: Use the Classifier
+### 第二步：使用分类器
 
 ```bash
 # Get model recommendation for a task
@@ -45,7 +45,7 @@ python3 scripts/classify_task.py "Build a React authentication system"
 # Reasoning: Matched 2 keywords: build, system
 ```
 
-### Step 3: Route Tasks with Sessions
+### 第三步：通过会话路由任务
 
 ```bash
 # Spawn with recommended model
@@ -55,75 +55,75 @@ sessions_spawn --task "Debug this memory leak" --model claude-sonnet
 sessions_spawn --task "What's the weather?" --model haiku
 ```
 
-## 📊 Supported Providers
+## 📊 支持的提供商
 
-| Provider | Models | Best For | Key Format |
+| 提供商 | 模型 | 适用场景 | 密钥格式 |
 |----------|--------|----------|------------|
-| **Anthropic** | claude-opus-4-5, claude-sonnet-4-5, claude-haiku-4-5 | Coding, reasoning, creative | `sk-ant-...` |
-| **OpenAI** | gpt-4o, gpt-4o-mini, o1-mini, o1-preview | Tools, deep reasoning | `sk-proj-...` |
-| **Gemini** | gemini-2.0-flash, gemini-1.5-pro, gemini-1.5-flash | Multimodal, huge context (2M) | `AIza...` |
-| **Moonshot** | moonshot-v1-8k/32k/128k | Chinese language | `sk-...` |
-| **Z.ai** | glm-4.5-air, glm-4.7 | Cheapest, fast | Various |
-| **GLM** | glm-4-flash, glm-4-plus, glm-4-0520 | Chinese, coding | `ID.secret` |
+| **Anthropic** | claude-opus-4-5, claude-sonnet-4-5, claude-haiku-4-5 | 编码、推理、创意任务 | `sk-ant-...` |
+| **OpenAI** | gpt-4o, gpt-4o-mini, o1-mini, o1-preview | 工具类任务、深度推理 | `sk-proj-...` |
+| **Gemini** | gemini-2.0-flash, gemini-1.5-pro, gemini-1.5-flash | 多模态任务、大容量上下文（200万词） | `AIza...` |
+| **Moonshot** | moonshot-v1-8k/32k/128k | 中文处理 | `sk-...` |
+| **Z.ai** | glm-4.5-air, glm-4.7 | 成本最低、响应迅速 | 多种任务类型 |
+| **GLM** | glm-4-flash, glm-4-plus, glm-4-0520 | 中文处理、编码任务 | `ID.secret` |
 
-## 🎛️ Task Type Mappings
+## 🎛️ 任务类型映射
 
-Default routing (customizable via wizard):
+默认路由规则（可通过向导进行自定义）：
 
-| Task Type | Default Model | Why |
+| 任务类型 | 默认模型 | 选择理由 |
 |-----------|---------------|-----|
-| `simple` | glm-4.5-air | Fastest, cheapest for quick queries |
-| `coding` | claude-sonnet-4-5 | Excellent code understanding |
-| `research` | claude-sonnet-4-5 | Balanced depth and speed |
-| `creative` | claude-opus-4-5 | Maximum creativity |
-| `math` | o1-mini | Specialized reasoning |
-| `vision` | gemini-1.5-flash | Fast multimodal |
-| `chinese` | glm-4.7 | Optimized for Chinese |
-| `long_context` | gemini-1.5-pro | Up to 2M tokens |
+| `简单` | glm-4.5-air | 快速响应、成本最低 |
+| `编码` | claude-sonnet-4-5 | 优秀的代码理解能力 |
+| `研究` | claude-sonnet-4-5 | 平衡了深度和速度 |
+| `创意** | claude-opus-4-5 | 最高的创造力 |
+| `数学** | o1-mini | 专业的推理能力 |
+| `视觉` | gemini-1.5-flash | 快速的多模态处理 |
+| `中文` | glm-4.7 | 专为中文任务优化 |
+| `长文本` | gemini-1.5-pro | 最大支持200万词上下文 |
 
-## 💰 Cost Optimization
+## 💰 成本优化
 
-### Aggressive Mode
-Always uses the cheapest capable model:
-- Simple → glm-4.5-air (~10% cost)
-- Coding → claude-haiku-4-5 (~25% cost)
-- Research → claude-sonnet-4-5 (~50% cost)
+### **激进模式**
+始终使用成本最低的可用模型：
+- 简单任务 → glm-4.5-air（成本约10%）
+- 编码任务 → claude-haiku-4-5（成本约25%）
+- 研究任务 → claude-sonnet-4-5（成本约50%）
 
-**Savings:** 50-90% compared to always using premium models
+**节省成本**：相比始终使用高级模型，可节省50-90%的费用。
 
-### Balanced Mode (Default)
-Considers cost vs quality:
-- Simple tasks → Cheap models
-- Critical tasks → Premium models
-- Automatic escalation if cheap model fails
+### **平衡模式（默认）**
+综合考虑成本和质量：
+- 简单任务 → 使用低成本模型
+- 关键任务 → 使用高级模型
+- 如果低成本模型无法完成任务，则自动升级到高级模型。
 
-### Quality Mode
-Always uses the best model regardless of cost
+### **高质量模式**
+无论成本如何，始终使用最佳模型。
 
-## 🔒 Security
+## 🔒 安全性
 
-### API Key Storage
+### API密钥存储
 ```
 ~/.model-router/
 ├── config.json       # Model mappings (chmod 600)
 └── .api-keys         # API keys (chmod 600)
 ```
 
-**Features:**
-- File permissions restricted to owner (600)
-- Isolated from version control
-- Encrypted at rest (via OS filesystem encryption)
-- Never logged or printed
+**安全特性**：
+- 仅允许所有者访问API密钥（权限级别600）。
+- 密钥存储与版本控制系统分离。
+- 密钥在存储过程中经过加密（操作系统文件系统加密）。
+- 密钥信息从不被记录或打印。
 
-### Best Practices
-1. **Never commit** `.api-keys` to version control
-2. **Use environment variables** for production deployments
-3. **Rotate keys** regularly via the wizard
-4. **Audit access** with `ls -la ~/.model-router/`
+### 最佳实践
+1. **切勿将`.api-keys`文件提交到版本控制系统**。
+2. **在生产环境中使用环境变量**来存储密钥。
+3. **定期通过向导更换密钥**。
+4. **使用`ls -la ~/.model-router/`命令检查访问权限**。
 
-## 📖 Usage Examples
+## 📖 使用示例
 
-### Example 1: Cost-Optimized Workflow
+### 示例1：成本优化的工作流程
 
 ```bash
 # Classify task first
@@ -136,7 +136,7 @@ sessions_spawn --task "Extract prices" --model glm-4.5-air
 sessions_spawn --task "Analyze price trends" --model claude-sonnet
 ```
 
-### Example 2: Progressive Escalation
+### 示例2：逐步升级模型
 
 ```bash
 # Try cheap model first (60s timeout)
@@ -146,7 +146,7 @@ sessions_spawn --task "Fix this bug" --model glm-4.5-air --runTimeoutSeconds 60
 sessions_spawn --task "Fix complex architecture bug" --model claude-opus
 ```
 
-### Example 3: Parallel Processing
+### 示例3：并行处理任务
 
 ```bash
 # Batch simple tasks in parallel with cheap model
@@ -156,14 +156,14 @@ sessions_spawn --task "Summarize doc C" --model glm-4.5-air &
 wait
 ```
 
-### Example 4: Multimodal with Gemini
+### 示例4：使用Gemini进行多模态任务
 
 ```bash
 # Vision task with 2M token context
 sessions_spawn --task "Analyze these 100 images" --model gemini-1.5-pro
 ```
 
-## 🛠️ Configuration Files
+## 🛠️ 配置文件
 
 ### `~/.model-router/config.json`
 ```json
@@ -200,84 +200,81 @@ OPENAI_API_KEY=sk-proj-...
 GEMINI_API_KEY=AIza...
 ```
 
-## 🔄 Version 1.1 Changes
+## 🔄 1.1版本更新
 
-### New Features
-- ✅ **Interactive setup wizard** for guided configuration
-- ✅ **Secure API key storage** with file permissions
-- ✅ **Task-to-model mapping** customization
-- ✅ **Multi-provider support** (6 providers)
-- ✅ **Cost optimization levels** (aggressive/balanced/quality)
+### 新功能
+- ✅ 提供交互式设置向导，帮助您完成配置。
+- ✅ 使用文件权限保护API密钥。
+- ✅ 可自定义任务与模型的映射关系。
+- ✅ 支持多个提供商（6个）。
+- ✅ 提供多种成本优化级别（激进/平衡/高质量）。
 
-### Improvements
-- ✅ Better task classification with confidence scores
-- ✅ Provider-specific model recommendations
-- ✅ Enhanced security with isolated storage
-- ✅ Comprehensive documentation
+### 优化点
+- ✅ 任务分类更加准确，附带置信度评分。
+- ✅ 根据提供商提供个性化的模型推荐。
+- ✅ 加强了安全性，采用隔离存储机制。
+- ✅ 提供了全面的文档说明。
 
-### Migration from 1.0
-Run the setup wizard to reconfigure:
+### 从1.0版本升级
+只需运行设置向导即可重新配置系统。
+
+## 📚 命令参考
+
+### 设置向导
 ```bash
 python3 scripts/setup-wizard.py
 ```
+用于交互式配置提供商、任务映射和偏好设置。
 
-## 📚 Command Reference
-
-### Setup Wizard
-```bash
-python3 scripts/setup-wizard.py
-```
-Interactive configuration of providers, mappings, and preferences.
-
-### Task Classifier
+### 任务分类器
 ```bash
 python3 scripts/classify_task.py "your task description"
 python3 scripts/classify_task.py "your task" --format json
 ```
-Get model recommendation with reasoning.
+根据任务类型推荐合适的模型，并提供推理结果。
 
-### List Models
+### 模型列表
 ```bash
 python3 scripts/setup-wizard.py --list
 ```
-Show all available models and their status.
+显示所有可用模型及其状态。
 
-## 🤝 Integration with Other Skills
+## 🤝 与其他工具的集成
 
-| Skill | Integration |
+| 工具 | 集成方式 |
 |-------|-------------|
-| **model-usage** | Track cost per provider to optimize routing |
-| **sessions_spawn** | Primary tool for model delegation |
-| **session_status** | Check current model and usage |
+| **model-usage** | 跟踪每个提供商的成本，优化路由选择 |
+| **sessions_spawn** | 用于模型调用的主要工具 |
+| **session_status** | 查看当前使用的模型及使用情况 |
 
-## ⚡ Performance Tips
+## ⚡ 性能建议
 
-1. **Start simple** - Try cheap models first
-2. **Batch tasks** - Combine multiple simple tasks
-3. **Use cleanup** - Delete sessions after one-off tasks
-4. **Set timeouts** - Prevent runaway sub-agents
-5. **Monitor usage** - Track costs per provider
+1. **从简单任务开始**：先尝试使用低成本模型。
+2. **批量处理任务**：将多个简单任务合并处理。
+3. **任务完成后清理会话**：删除已完成的任务会话。
+4. **设置超时机制**：防止某些任务长时间运行导致系统资源耗尽。
+5. **监控使用情况**：定期检查每个提供商的成本消耗。
 
-## 🐛 Troubleshooting
+## 🐛 故障排除
 
-### "No suitable model found"
-- Run setup wizard to configure providers
-- Check API keys are valid
-- Verify permissions on `.api-keys` file
+### “未找到合适的模型”
+- 运行设置向导以配置提供商信息。
+- 确认API密钥有效。
+- 检查`.api-keys`文件的权限设置是否正确。
 
-### "Module not found"
+### “模块未找到”
 ```bash
 pip3 install -r requirements.txt  # if needed
 ```
 
-### Wrong model selected
-1. Customize task mappings via wizard
-2. Use explicit model in `sessions_spawn --model`
-3. Adjust cost optimization preference
+### 选错了模型
+1. 通过向导自定义任务映射关系。
+2. 在`sessions_spawn`命令中明确指定所需模型。
+3. 调整成本优化设置。
 
-## 📖 Additional Resources
+## 📖 额外资源
 
-- **Provider Docs:**
+- **提供商文档**：
   - [Anthropic](https://docs.anthropic.com)
   - [OpenAI](https://platform.openai.com/docs)
   - [Gemini](https://ai.google.dev/docs)
@@ -285,5 +282,5 @@ pip3 install -r requirements.txt  # if needed
   - [Z.ai](https://api.z.ai/docs)
   - [GLM](https://open.bigmodel.cn/dev/api)
 
-- **Setup:** Run `python3 scripts/setup-wizard.py`
-- **Support:** Check `references/` folder for detailed guides
+- **安装指南**：运行`python3 scripts/setup-wizard.py`。
+- **支持文档**：请查看`references/`文件夹中的详细指南。

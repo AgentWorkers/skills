@@ -1,36 +1,36 @@
 ---
 name: x-apify
 version: 1.0.3
-description: Fetch X/Twitter data via Apify actors. Search tweets, get user profiles, retrieve specific tweets with replies. Features local caching to save API costs. Works from any IP via Apify's proxy infrastructure.
+description: 通过 Apify 的代理服务来获取 X/Twitter 的数据。支持搜索推文、获取用户资料以及检索带有回复的特定推文。系统具备本地缓存功能，以降低 API 调用的成本。用户可以通过 Apify 的代理基础设施从任意 IP 地址访问该服务。
 tags: [twitter, x, apify, tweets, social-media, search, scraping, caching]
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"APIFY_API_TOKEN":{"required":true,"description":"Apify API token from https://console.apify.com/account/integrations"},"APIFY_ACTOR_ID":{"required":false,"default":"quacker~twitter-scraper","description":"Apify actor ID to use (default: quacker~twitter-scraper)"},"X_APIFY_CACHE_DIR":{"required":false,"description":"Custom cache directory (default: .cache/ in skill dir)"}}}}}
 ---
 
 # x-apify
 
-Fetch X/Twitter data via Apify API (search tweets, user profiles, specific tweets).
+通过 Apify API 获取 X/Twitter 数据（搜索推文、用户资料、特定推文）。
 
-## Why Apify?
+## 为什么选择 Apify？
 
-X/Twitter's official API is expensive and restrictive. Apify provides reliable access to public tweet data through its actor ecosystem, with residential proxy support.
+X/Twitter 的官方 API 使用成本较高且限制较多。Apify 通过其演员（actor）生态系统提供了对公开推文数据的可靠访问，并支持使用本地代理。
 
-## Free Tier
+## 免费 tier
 
-- **$5/month free credits** (no credit card required)
-- Cost varies by actor usage
-- Perfect for personal use
+- **每月 5 美元的免费额度**（无需信用卡）
+- 费用根据演员的使用情况而变化
+- 非常适合个人使用
 
-## Links
+## 链接
 
-- [Apify Pricing](https://apify.com/pricing)
-- [Get API Key](https://console.apify.com/account/integrations)
-- [Twitter Scraper Actor](https://apify.com/quacker/twitter-scraper)
+- [Apify 定价](https://apify.com/pricing)
+- [获取 API 密钥](https://console.apify.com/account/integrations)
+- [Twitter Scraper 演员](https://apify.com/quacker/twitter-scraper)
 
-## Setup
+## 设置
 
-1. Create free Apify account: https://apify.com/
-2. Get your API token: https://console.apify.com/account/integrations
-3. Set environment variable:
+1. 创建免费的 Apify 账户：https://apify.com/
+2. 获取您的 API 令牌：https://console.apify.com/account/integrations
+3. 设置环境变量：
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
@@ -40,9 +40,9 @@ export APIFY_API_TOKEN="apify_api_YOUR_TOKEN_HERE"
 echo 'APIFY_API_TOKEN=apify_api_YOUR_TOKEN_HERE' >> .env
 ```
 
-## Usage
+## 使用方法
 
-### Search Tweets
+### 搜索推文
 
 ```bash
 # Search for tweets containing keywords
@@ -55,7 +55,7 @@ python3 scripts/fetch_tweets.py --search "#AI #MachineLearning"
 python3 scripts/fetch_tweets.py --search "OpenAI" --max-results 10
 ```
 
-### User Profiles
+### 用户资料
 
 ```bash
 # Get tweets from a specific user
@@ -65,7 +65,7 @@ python3 scripts/fetch_tweets.py --user "elonmusk"
 python3 scripts/fetch_tweets.py --user "OpenAI,AnthropicAI"
 ```
 
-### Specific Tweet
+### 特定推文
 
 ```bash
 # Get a specific tweet and its replies
@@ -75,7 +75,7 @@ python3 scripts/fetch_tweets.py --url "https://x.com/user/status/123456789"
 python3 scripts/fetch_tweets.py --url "https://twitter.com/user/status/123456789"
 ```
 
-### Output Formats
+### 输出格式
 
 ```bash
 # JSON output (default)
@@ -88,9 +88,9 @@ python3 scripts/fetch_tweets.py --search "query" --format summary
 python3 scripts/fetch_tweets.py --search "query" --output results.json
 ```
 
-### Caching
+### 缓存
 
-Tweets are cached locally by default to save API costs.
+默认情况下，推文会本地缓存以节省 API 费用。
 
 ```bash
 # First request: fetches from Apify (costs credits)
@@ -110,16 +110,16 @@ python3 scripts/fetch_tweets.py --cache-stats
 python3 scripts/fetch_tweets.py --clear-cache
 ```
 
-Cache TTL:
-- Search results: 1 hour
-- User profiles: 24 hours
-- Specific tweets: 24 hours
+缓存过期时间：
+- 搜索结果：1 小时
+- 用户资料：24 小时
+- 特定推文：24 小时
 
-Cache location: `.cache/` in skill directory (override with `X_APIFY_CACHE_DIR` env var)
+缓存位置：`skill` 目录下的 `.cache/` 文件夹（可通过 `X_APIFY_CACHE_DIR` 环境变量进行自定义）
 
-## Output Examples
+## 输出示例
 
-### JSON Format
+### JSON 格式
 
 ```json
 {
@@ -143,7 +143,7 @@ Cache location: `.cache/` in skill directory (override with `X_APIFY_CACHE_DIR` 
 }
 ```
 
-### Summary Format
+### 摘要格式
 
 ```
 === X/Twitter Search Results ===
@@ -162,16 +162,16 @@ https://x.com/techreporter/status/1234567890
 ...
 ```
 
-## Error Handling
+## 错误处理
 
-The script handles common errors:
-- Invalid search query
-- User not found
-- Tweet not found
-- API quota exceeded
-- Network errors
+该脚本可以处理以下常见错误：
+- 无效的搜索查询
+- 未找到用户
+- 未找到推文
+- API 配额超出
+- 网络错误
 
-## Metadata
+## 元数据
 
 ```yaml
 metadata:

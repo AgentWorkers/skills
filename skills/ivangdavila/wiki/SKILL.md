@@ -1,6 +1,6 @@
 ---
 name: Wiki
-description: "Build wikis people actually read — structure pages, cross-link, and keep content fresh."
+description: "构建真正有人会阅读的维基页面——合理组织页面结构、建立相互链接，并确保内容始终保持更新。"
 emoji: 📚
 os: all
 tags: [documentation, knowledge-base, content-management]
@@ -8,45 +8,45 @@ author: ClawHub
 version: 1.0
 ---
 
-# Wiki Creation and Maintenance
+# 维基创建与维护
 
-## Page Structure Requirements
+## 页面结构要求
 
-- **Every page needs:** clear title, one-sentence summary, last-updated date
-- **Use consistent templates** across all pages (same sections, same order)
-- **Keep pages focused:** one topic per page, split when exceeding ~500 words
-- **Include Getting Started page** that maps the entire wiki structure
+- **每个页面都需要**：清晰的标题、一句话的摘要以及最后更新日期。
+- **在所有页面中使用统一的模板**（相同的章节结构、相同的顺序）。
+- **保持页面内容的专注性**：每个页面只讨论一个主题；如果内容超过约500字，应拆分为多个页面。
+- **提供“入门指南”页面**，以展示整个维基的结构。
 
-## Writing Guidelines
+## 编写指南
 
-- **Write for zero-context readers** — never assume prior knowledge
-- **Write procedures as numbered steps,** not paragraphs
-- **Include examples and diagrams** wherever possible — wikis without examples are just glossaries
-- **Mark uncertain content explicitly** — use "[needs verification]" or "[outdated]" tags
+- **为完全没有背景知识的读者编写内容**——永远不要假设读者已经了解相关知识。
+- **将操作步骤以编号的形式呈现**，而不是以段落的形式。
+- **尽可能包含示例和图表**——没有示例的维基只是简单的术语表而已。
+- **明确标注不确定的内容**——使用“[需要验证]”或“[已过时]”等标签。
 
-## Linking and Organization
+## 链接与组织
 
-- **Cross-link aggressively** — every mention of another concept should link to its page
-- **Use categories/tags** for discoverability beyond the link graph
-- **Create redirect pages** when renaming — never break existing links
-- **Maintain link integrity** when restructuring content
+- **积极创建交叉链接**——每当提到其他概念时，都应链接到该概念的页面。
+- **使用分类/标签**来提高内容的可发现性。
+- **在页面重命名时创建重定向页面**——切勿破坏现有的链接。
+- **在重构内容时保持链接的完整性**。
 
-## Content Maintenance
+## 内容维护
 
-- **When updating information,** update ALL pages that reference it (grep for mentions)
-- **Maintain a changelog** or "recently updated" page for team visibility
-- **Regular content audits** — mark outdated information before it misleads
-- **Enforce consistent formatting** across all contributors
+- **更新信息时**，需要更新所有引用该信息的页面（使用grep工具查找相关引用）。
+- **维护变更日志或“最近更新”页面**，以便团队成员了解更新情况。
+- **定期进行内容审核**——在信息过时之前及时标记出来，避免误导用户。
+- **确保所有贡献者使用一致的格式**。
 
-## Quality Control
+## 质量控制
 
-- **Review new pages** for template compliance and link accuracy
-- **Periodic cleanup** of orphaned pages and broken internal links
-- **Version control** for tracking changes and reverting mistakes
-- **Backup strategy** for content preservation and disaster recovery
+- **审核新页面**，确保其符合模板要求且链接正确。
+- **定期清理孤立页面和失效的内部链接**。
+- **使用版本控制**来跟踪更改并防止错误发生。
+- **制定备份策略**，以保护内容并应对潜在的灾难性情况。
 
-## Success Metrics
+## 成功指标
 
-- **Easy navigation** — users can find information in <3 clicks
-- **Self-contained pages** — each page answers its topic completely
-- **Fresh content** — regular updates keep information current and valuable
+- **易于导航**——用户能够在3次点击内找到所需信息。
+- **页面内容完整**——每个页面都能完整地解答其主题。
+- **内容更新及时**——定期更新确保信息的准确性和时效性。

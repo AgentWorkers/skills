@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Streaming - Go
+# Telnyx 语音流媒体 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,13 +39,12 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化完成。
 
-## Forking start
+## 启动分叉流媒体
 
-Call forking allows you to stream the media from a call to a specific target in realtime.
-
-`POST /calls/{call_control_id}/actions/fork_start`
+`POST /calls/{call_control_id}/actions/fork_start`  
+（用于将通话中的媒体内容实时传输到指定目标。）
 
 ```go
 	response, err := client.Calls.Actions.StartForking(
@@ -58,11 +58,10 @@ Call forking allows you to stream the media from a call to a specific target in 
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Forking stop
+## 停止分叉流媒体
 
-Stop forking a call.
-
-`POST /calls/{call_control_id}/actions/fork_stop`
+`POST /calls/{call_control_id}/actions/fork_stop`  
+（用于停止分叉流媒体功能。）
 
 ```go
 	response, err := client.Calls.Actions.StopForking(
@@ -76,11 +75,10 @@ Stop forking a call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Streaming start
+## 启动流媒体传输
 
-Start streaming the media from a call to a specific WebSocket address or Dialogflow connection in near-realtime.
-
-`POST /calls/{call_control_id}/actions/streaming_start`
+`POST /calls/{call_control_id}/actions/streaming_start`  
+（用于将通话中的媒体内容以接近实时的方式传输到指定的 WebSocket 地址或 Dialogflow 连接。）
 
 ```go
 	response, err := client.Calls.Actions.StartStreaming(
@@ -94,11 +92,10 @@ Start streaming the media from a call to a specific WebSocket address or Dialogf
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Streaming stop
+## 停止流媒体传输
 
-Stop streaming a call to a WebSocket.
-
-`POST /calls/{call_control_id}/actions/streaming_stop`
+`POST /calls/{call_control_id}/actions/streaming_stop`  
+（用于停止向 WebSocket 的媒体传输。）
 
 ```go
 	response, err := client.Calls.Actions.StopStreaming(
@@ -112,11 +109,10 @@ Stop streaming a call to a WebSocket.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Transcription start
+## 启动实时转录
 
-Start real-time transcription.
-
-`POST /calls/{call_control_id}/actions/transcription_start`
+`POST /calls/{call_control_id}/actions/transcription_start`  
+（用于启动实时转录功能。）
 
 ```go
 	response, err := client.Calls.Actions.StartTranscription(
@@ -132,11 +128,10 @@ Start real-time transcription.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Transcription stop
+## 停止实时转录
 
-Stop real-time transcription.
-
-`POST /calls/{call_control_id}/actions/transcription_stop`
+`POST /calls/{call_control_id}/actions/transcription_stop`  
+（用于停止实时转录功能。）
 
 ```go
 	response, err := client.Calls.Actions.StopTranscription(
@@ -152,16 +147,19 @@ Stop real-time transcription.
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL：
+所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callForkStarted` | Call Fork Started |
-| `callForkStopped` | Call Fork Stopped |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `transcription` | Transcription |
+| `callForkStarted` | 分叉流媒体功能已启动 |
+| `callForkStopped` | 分叉流媒体功能已停止 |
+| `callStreamingStarted` | 流媒体传输已启动 |
+| `callStreamingStopped` | 流媒体传输已停止 |
+| `callStreamingFailed` | 流媒体传输失败 |
+| `transcription` | 实时转录功能已启动 |
+| `transcriptionStopped` | 实时转录功能已停止 |
+```
+```

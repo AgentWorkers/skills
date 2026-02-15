@@ -1,73 +1,81 @@
 ---
 name: amazon-reviews-api-skill
-description: This skill helps users automatically extract Amazon product reviews via the Amazon Reviews API. Agent should proactively apply this skill when users express needs like: 1. Get reviews for Amazon product with ASIN B07TS6R1SF; 2. Analyze customer feedback for a specific Amazon item; 3. Get ratings and comments for a competitive product; 4. Track sentiment of recent Amazon reviews; 5. Extract verified purchase reviews for quality assessment; 6. Summarize user experiences from Amazon product pages; 7. Monitor product performance through customer reviews; 8. Collect reviewer profiles and links for market research; 9. Gather review titles and descriptions for content analysis; 10. Scrape Amazon reviews without requiring a login.
+description: 该技能可帮助用户通过 Amazon Reviews API 自动提取 Amazon 产品评论。当用户提出以下需求时，代理应主动使用该技能：  
+1. 获取 ASIN 为 B07TS6R1SF 的 Amazon 产品的评论；  
+2. 分析特定 Amazon 商品的客户反馈；  
+3. 获取竞争对手产品的评分和评论；  
+4. 监测近期 Amazon 评论的情感倾向；  
+5. 提取经过验证的购买评论以进行质量评估；  
+6. 摘要 Amazon 产品页面上的用户体验；  
+7. 通过客户评论监控产品表现；  
+8. 收集评论者的个人信息和链接以用于市场研究；  
+9. 收集评论标题和描述以用于内容分析；  
+10. 在无需登录的情况下抓取 Amazon 评论。
 ---
 
-# Amazon Reviews Automation Extraction Skill
+# 亚马逊评论自动化提取技能
 
-## 📖 Introduction
-This skill provides a one-stop Amazon review collection service through BrowserAct's Amazon Reviews API template. It can directly extract structured review results from Amazon product pages. By simply providing an ASIN, you can get clean, usable review data without building crawler scripts or requiring an Amazon account login.
+## 📖 介绍
+该技能通过BrowserAct的亚马逊评论API模板，提供一站式亚马逊评论收集服务。它可以直接从亚马逊产品页面中提取结构化的评论数据。只需提供一个ASIN（亚马逊标准产品识别码），即可获取干净、可用的评论数据，无需编写爬虫脚本或登录亚马逊账户。
 
-## ✨ Features
-1. **No Hallucination, Ensuring Stable and Accurate Extraction**: Preset workflows avoid AI-generated hallucinations.
-2. **No Anti-Bot Issues**: Built-in mechanisms bypass reCAPTCHA and other verification challenges.
-3. **No IP Restrictions or Geofencing**: Breaks through regional IP limits to ensure stable global access.
-4. **Agile Execution**: Tasks run faster than pure AI-driven browser automation solutions.
-5. **High Cost-Efficiency**: Significantly reduces data acquisition costs compared to token-heavy AI schemes.
+## ✨ 特点
+1. **无虚假评论，确保提取的评论稳定且准确**：预设的工作流程避免了人工智能生成的虚假评论。
+2. **无反机器人机制**：内置机制可绕过reCAPTCHA等验证挑战。
+3. **无IP限制或地理屏蔽**：突破区域IP限制，确保全球范围内的稳定访问。
+4. **执行速度快**：相比纯AI驱动的浏览器自动化解决方案，执行速度更快。
+5. **高成本效益**：与依赖大量API令牌的AI方案相比，显著降低了数据采集成本。
 
-## 🔑 API Key Setup Flow
-Before running, you must check for the `BROWSERACT_API_KEY` environment variable. If it's not set, do not take other actions; instead, request and wait for the user to provide it.
-**Agent must inform the user**:
-> "Since you haven't configured the BrowserAct API Key, please go to the [BrowserAct Console](https://www.browseract.com/reception/integrations) to get your Key and provide it to me here."
+## 🔑 API密钥设置流程
+在运行之前，必须检查`BROWSERACT_API_KEY`环境变量是否已设置。如果未设置，请不要执行其他操作，而是请求用户提供该密钥。
+**代理应告知用户**：
+> “由于您尚未配置BrowserAct API密钥，请前往[BrowserAct控制台](https://www.browseract.com/reception/integrations)获取密钥，并在此处提供给我。”
 
-## 🛠️ Input Parameters
-When calling the script, the Agent should flexibly configure parameters based on user needs:
+## 🛠️ 输入参数
+在调用脚本时，代理应根据用户需求灵活配置参数：
 
-1. **ASIN (Amazon Standard Identification Number)**
-   - **Type**: `string`
-   - **Description**: The unique identifier for the product on Amazon.
-   - **Example**: `B07TS6R1SF`, `B08N5WRWJ6`
+1. **ASIN（亚马逊标准产品识别码）**
+   - **类型**：`string`
+   - **描述**：产品在亚马逊上的唯一标识符。
+   - **示例**：`B07TS6R1SF`、`B08N5WRWJ6`
 
-## 🚀 Usage (Recommended)
-The Agent should execute the following standalone script to "get results in one line":
+## 🚀 使用方法（推荐）
+代理应执行以下独立脚本以“一次性获取结果”：
 
 ```bash
 # Example call
 python -u ./scripts/amazon_reviews_api.py "ASIN_HERE"
 ```
 
-### ⏳ Runtime Monitoring
-Since this task involves automated browser operations, it may take several minutes. The script will **continuously output status logs with timestamps** (e.g., `[14:30:05] Task Status: running`).
-**Agent Note**:
-- Keep monitoring the terminal output while waiting for results.
-- As long as the terminal is outputting new status logs, the task is running normally; do not misjudge it as stuck or unresponsive.
-- Only consider retrying if the status remains unchanged for a long time or the script stops outputting without returning results.
+### ⏳ 运行时监控
+由于此任务涉及自动化浏览器操作，可能需要几分钟时间。脚本会**持续输出带有时间戳的状态日志**（例如：`[14:30:05] 任务状态：正在运行`）。
+**代理注意事项**：
+- 在等待结果时，请持续监控终端输出。
+- 只要终端仍在输出新的状态日志，说明任务正在正常运行；不要误判为卡住或无响应。
+- 仅当状态长时间不变或脚本停止输出且未返回结果时，才考虑重新尝试。
 
-## 📊 Output Data
-After successful execution, the script will parse and print results directly from the API response. Each review item includes:
-- `Commentator`: Reviewer's name
-- `Commenter profile link`: Link to the reviewer's profile
-- `Rating`: Star rating
-- `reviewTitle`: Headline of the review
-- `review Description`: Full text of the review
-- `Published at`: Date the review was published
-- `Country`: Reviewer's country
-- `Variant`: Product variant info (if available)
-- `Is Verified`: Whether it's a verified purchase
+## 📊 输出数据
+成功执行后，脚本将直接从API响应中解析并打印结果。每条评论包含以下信息：
+- `评论者`：评论者的姓名
+- `评论者个人资料链接`：评论者个人资料的链接
+- **评分**：星级评分
+- `评论标题`：评论的标题
+- **评论内容**：评论的完整文本
+- **发布时间**：评论的发布日期
+- **国家**：评论者的国家
+- **产品变体**：产品变体信息（如有的话）
+- **是否已验证**：评论是否来自已验证的购买
 
-## ⚠️ Error Handling & Retry
-If an error occurs (e.g., network issues or task failure), follow this logic:
+## ⚠️ 错误处理与重试
+如果发生错误（例如网络问题或任务失败），请按照以下步骤处理：
+1. **检查输出**：
+   - 如果输出包含“Invalid authorization”，说明API密钥无效或已过期。**不要重试**；引导用户检查并提供正确的API密钥。
+   - 如果输出中不包含“Invalid authorization”，但任务仍然失败（例如以“Error:”开头或返回空结果），代理应**自动尝试重新执行**脚本一次。
+2. **重试限制**：
+   - 自动重试仅限于**一次**。如果第二次尝试仍然失败，请停止并向用户报告具体错误。
 
-1. **Check Output**:
-   - If output contains `"Invalid authorization"`, the API Key is invalid or expired. **Do not retry**; guide the user to check and provide a correct API Key.
-   - If output does **not** contain `"Invalid authorization"` but the task fails (e.g., starts with `Error:` or returns empty results), the Agent should **automatically try to re-execute** the script once.
-
-2. **Retry Limit**:
-   - Automatic retry is limited to **once**. If the second attempt fails, stop and report the specific error to the user.
-
-## 🌟 Typical Use Cases
-1. **Competitor Analysis**: Extract reviews for competitors' products to understand their strengths and weaknesses.
-2. **Product Feedback**: Summarize feedback for your own products to identify areas for improvement.
-3. **Market Research**: Collect data on customer preferences and common complaints in a specific category.
-4. **Sentiment Monitoring**: Monitor recent reviews to detect shifts in customer sentiment.
-5. **QA Insights**: Use customer reviews to identify potential quality issues or bugs.
+## 🌟 典型使用场景
+1. **竞争对手分析**：提取竞争对手产品的评论，以了解其优缺点。
+2. **产品反馈**：汇总自家产品的反馈，找出改进方向。
+3. **市场研究**：收集特定类别的客户偏好和常见投诉信息。
+4. **情感监控**：监控近期评论，以检测客户情绪的变化。
+5. **质量保证洞察**：利用客户评论识别潜在的质量问题或漏洞。

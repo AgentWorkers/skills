@@ -1,168 +1,168 @@
 ---
 name: deep-research
-description: Comprehensive research framework that combines web search, content analysis, source verification, and iterative investigation to conduct in-depth research on any topic. Use when you need to perform thorough research with multiple sources, cross-validation, and structured findings.
+description: 这是一个综合性的研究框架，它结合了网络搜索、内容分析、信息来源验证以及迭代性调查方法，能够对任何主题进行深入研究。当你需要通过多种来源进行彻底的研究、进行交叉验证，并获得结构化的研究结果时，可以使用这个框架。
 ---
 
-# Deep Research Framework
+# 深度研究框架
 
-## Overview
+## 概述
 
-The Deep Research skill provides a systematic approach to conducting thorough investigations on any topic. It combines multiple tools and methodologies to gather, analyze, verify, and synthesize information.
+“深度研究”技能提供了一种系统化的方法，用于对任何主题进行彻底的调查。它结合了多种工具和方法论，以收集、分析、验证和整合信息。
 
-## Core Components
+## 核心组件
 
-### 1. Research Planning
-- Define research objectives
-- Identify key questions
-- Establish search criteria
-- Determine validation requirements
+### 1. 研究规划
+- 明确研究目标
+- 确定关键问题
+- 制定搜索标准
+- 确定验证要求
 
-### 2. Information Gathering
-- Multi-source web search
-- Content extraction from various formats
-- Source diversity verification
-- Temporal relevance assessment
+### 2. 信息收集
+- 多源网络搜索
+- 从各种格式中提取内容
+- 验证信息来源的多样性
+- 评估信息的时间相关性
 
-### 3. Analysis & Synthesis
-- Cross-reference multiple sources
-- Identify patterns and contradictions
-- Evaluate source credibility
-- Organize findings systematically
+### 3. 分析与整合
+- 交叉引用多个来源
+- 识别模式和矛盾之处
+- 评估信息来源的可信度
+- 系统地整理研究结果
 
-### 4. Validation & Verification
-- Fact-checking against authoritative sources
-- Cross-validation of claims
-- Identify potential biases
-- Assess information reliability
+### 4. 验证与确认
+- 根据权威来源进行事实核查
+- 对各种观点进行交叉验证
+- 识别潜在的偏见
+- 评估信息的可靠性
 
-## Research Workflow
+## 研究工作流程
 
-### Phase 1: Initial Investigation
-1. **Topic Analysis**
-   - Clarify research scope
-   - Identify key concepts and terms
-   - Define specific questions to answer
+### 第一阶段：初步调查
+1. **主题分析**
+   - 明确研究范围
+   - 识别关键概念和术语
+   - 确定需要回答的具体问题
 
-2. **Broad Search**
-   - Use `web_search` to identify major sources
-   - Gather diverse perspectives
-   - Map the landscape of available information
+2. **广泛搜索**
+   - 使用 `web_search` 查找主要信息来源
+   - 收集多样化的观点
+   - 绘制现有信息的概览图
 
-3. **Source Prioritization**
-   - Rank sources by authority and relevance
-   - Identify primary vs. secondary sources
-   - Note publication dates and context
+3. **来源优先级排序**
+   - 根据来源的权威性和相关性对信息来源进行排序
+   - 区分主要来源和次要来源
+   - 记录出版日期和背景信息
 
-### Phase 2: Deep Dive
-1. **Detailed Content Extraction**
-   - Use `web_fetch` to retrieve full articles/pages
-   - Extract key information systematically
-   - Maintain source attribution
+### 第二阶段：深入研究
+1. **详细内容提取**
+   - 使用 `web_fetch` 获取完整文章或页面
+   - 系统地提取关键信息
+   - 保持对信息来源的引用
 
-2. **Cross-Reference Analysis**
-   - Compare claims across multiple sources
-   - Identify agreements and disagreements
-   - Note inconsistencies for further investigation
+2. **交叉引用分析**
+   - 比较多个来源的观点
+   - 识别一致性和分歧
+   - 记录不一致之处以供进一步调查
 
-3. **Expert Sources**
-   - Seek academic papers, expert opinions
-   - Look for peer-reviewed sources
-   - Identify recognized authorities on the topic
+3. **专家来源**
+   - 查找学术论文和专家意见
+   - 寻找经过同行评审的资料
+   - 识别该领域的权威专家
 
-### Phase 3: Synthesis & Validation
-1. **Pattern Recognition**
-   - Identify consistent themes across sources
-   - Highlight areas of disagreement
-   - Note gaps in available information
+### 第三阶段：整合与验证
+1. **模式识别**
+   - 识别不同来源中的共同主题
+   - 强调存在分歧的领域
+   - 注意信息中的空白之处
 
-2. **Fact Verification**
-   - Cross-check claims against authoritative sources
-   - Verify dates, statistics, and attributions
-   - Identify potential misinformation
+2. **事实核查**
+   - 根据权威来源对各种观点进行核查
+   - 验证日期、数据和引用来源的准确性
+   - 识别可能的错误信息
 
-3. **Bias Assessment**
-   - Evaluate source objectivity
-   - Identify potential conflicts of interest
-   - Consider temporal context of information
+3. **偏见评估**
+   - 评估信息来源的客观性
+   - 识别潜在的利益冲突
+   - 考虑信息的时间背景
 
-### Phase 4: Report Generation
-1. **Structured Summary**
-   - Executive summary of key findings
-   - Detailed findings organized by theme
-   - Supporting evidence for each claim
+### 第四阶段：报告生成
+1. **结构化总结**
+   - 关键发现的执行摘要
+   - 按主题分类的详细发现
+   - 每个观点的支持证据
 
-2. **Source Evaluation**
-   - Assessment of source credibility
-   - Identification of limitations
-   - Confidence levels for different claims
+2. **来源评估**
+   - 评估信息来源的可信度
+   - 识别研究的局限性
+   - 对不同观点的信心程度进行评估
 
-3. **Remaining Questions**
-   - Areas requiring further investigation
-   - Conflicting information needing resolution
-   - Gaps in current knowledge
+3. **剩余问题**
+   - 需要进一步调查的领域
+   - 需要解决的矛盾信息
+   - 当前知识中的空白之处
 
-## Tools Integration
+## 工具集成
 
-### Web Research
-- `web_search`: Initial broad search to identify sources
-- `web_fetch`: Retrieve detailed content from specific URLs
-- `browser`: For complex sites or when web_fetch fails
+### 网络研究
+- `web_search`：用于初步搜索信息来源
+- `web-fetch`：从特定网址获取详细内容
+- `browser`：用于处理复杂的网站或当 `web_fetch` 失败时使用
 
-### Content Processing
-- `read`: Process downloaded content or documents
-- `write`: Create structured research notes
-- `edit`: Refine and organize findings
+### 内容处理
+- `read`：处理下载的内容或文档
+- `write`：创建结构化的研究笔记
+- `edit`：完善和整理研究结果
 
-### Memory & Organization
-- `memory_get` / `memory_search`: Reference previous research
-- `write`: Create persistent research records
-- Structured file organization for findings
+### 记忆与组织
+- `memory_get` / `memory_search`：查询之前的研究记录
+- `write`：创建持久的研究记录
+- 以结构化的方式组织研究结果文件
 
-## Research Quality Standards
+## 研究质量标准
 
-### Source Diversity
-- Include multiple perspectives on controversial topics
-- Balance popular and academic sources
-- Include international viewpoints when relevant
-- Seek primary sources when possible
+### 来源多样性
+- 对有争议的主题包含多种观点
+- 平衡流行媒体和学术来源
+- 在适当的情况下包含国际观点
+- 尽可能使用原始来源
 
-### Temporal Relevance
-- Prioritize recent information for fast-changing topics
-- Consider historical context for trend analysis
-- Note when information was published
-- Flag potentially outdated information
+### 时间相关性
+- 对于变化迅速的主题，优先考虑最新的信息
+- 考虑历史背景以进行分析趋势
+- 记录信息的发布时间
+- 标记可能过时的信息
 
-### Authority Assessment
-- Prioritize peer-reviewed academic sources
-- Consider author credentials and institutional affiliation
-- Check for potential conflicts of interest
-- Verify organizational reputation
+### 权威性评估
+- 优先考虑经过同行评审的学术来源
+- 考虑作者的资历和所属机构
+- 检查潜在的利益冲突
+- 验证机构的声誉
 
-## Iterative Research Approach
+## 迭代研究方法
 
-### Cycle 1: General Overview
-- Broad search to understand the topic landscape
-- Identify key terms, concepts, and stakeholders
-- Establish initial research questions
+### 第一循环：总体了解
+- 进行广泛搜索以了解主题背景
+- 识别关键术语、概念和相关利益方
+- 制定初步的研究问题
 
-### Cycle 2: Focused Investigation
-- Targeted searches based on initial findings
-- Deep dive into specific aspects
-- Begin synthesis of information
+### 第二循环：针对性研究
+- 根据初步发现进行有针对性的搜索
+- 深入研究特定方面
+- 开始整合信息
 
-### Cycle 3: Validation & Refinement
-- Verify key claims across multiple sources
-- Resolve contradictions
-- Refine understanding based on evidence
+### 第三循环：验证与完善
+- 在多个来源中验证关键观点
+- 解决矛盾之处
+- 根据证据完善理解
 
-### Cycle 4: Synthesis & Reporting
-- Combine findings into coherent narrative
-- Identify remaining uncertainties
-- Prepare final research report
+### 第四循环：整合与报告撰写
+- 将研究结果整合成连贯的叙述
+- 识别剩余的不确定性
+- 准备最终的研究报告
 
-## Output Structure
+## 输出结构
 
-### Research Report Template
+### 研究报告模板
 ```
 # [Research Topic] - Deep Research Report
 
@@ -194,32 +194,31 @@ The Deep Research skill provides a systematic approach to conducting thorough in
 [Questions requiring additional investigation]
 ```
 
-## Use Cases
+## 使用场景
 
-### Academic Research
-- Literature reviews
-- Topic exploration
-- Source verification
+### 学术研究
+- 文献综述
+- 主题探索
+- 来源验证
 
-### Business Intelligence
-- Market analysis
-- Competitive research
-- Technology trends
+### 商业智能
+- 市场分析
+- 竞争研究
+- 技术趋势分析
 
-### Fact Checking
-- Claim verification
-- Misinformation identification
-- Source credibility assessment
+### 事实核查
+- 观点验证
+- 错误信息识别
+- 来源可信度评估
 
-### Personal Learning
-- Deep topic exploration
-- Concept clarification
-- Question resolution
+### 个人学习
+- 深入探索主题
+- 概念澄清
+- 解决疑问
 
-## Quality Assurance
-
-- Always verify critical claims against multiple sources
-- Flag information that seems unreliable
-- Maintain skepticism toward sensational claims
-- Prioritize authoritative sources over anonymous ones
-- Document all sources for verification purposes
+## 质量保证
+- 始终根据多个来源验证关键观点
+- 标记看似不可靠的信息
+- 对耸人听闻的观点保持怀疑态度
+- 优先考虑权威来源而非匿名来源
+- 记录所有信息来源以备核查

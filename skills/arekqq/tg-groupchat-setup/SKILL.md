@@ -9,64 +9,62 @@ description: >
 
 ---
 
-# Telegram Group Chat Setup
+# Telegram群组聊天设置
 
-Automate the configuration needed for a MoltBot agent to work in a Telegram group.
+本技能用于自动化配置MoltBot代理在Telegram群组中的运行。
 
-## What this skill does
+## 功能说明
 
-1. Adds a Telegram group to the gateway allowlist with `requireMention: true`
-2. Configures `groupAllowFrom` with specified user IDs / @usernames
-3. Auto-detects the bot's name and @username via the Telegram Bot API
-4. Sets `mentionPatterns` so the bot responds to its name and @username
-5. Applies the config patch and restarts the gateway
+1. 将Telegram群组添加到网关的允许列表中，并设置`requireMention: true`。
+2. 配置`groupAllowFrom`，指定允许发送消息的用户ID或@用户名。
+3. 通过Telegram Bot API自动检测机器人的名称和@用户名。
+4. 设置`mentionPatterns`，使机器人能够响应其名称和@用户名的提及。
+5. 应用配置更改并重启网关。
 
-## Prerequisites (manual steps)
+## 先决条件（手动步骤）
 
-Before running this skill, the user must:
+在运行此技能之前，用户需要完成以下操作：
+1. **创建Telegram群组**，并将机器人添加到该群组中。
+2. 在@BotFather中禁用隐私模式：
+   进入`/mybots` → 选择机器人 → 机器人设置 → 群组隐私 → 关闭隐私模式
+   （详情请参阅`references/telegram-privacy-mode.md`）
+3. 知道群组的ID（Telegram群组的ID为负数）。
+4. 知道被允许触发机器人的用户ID或@用户名。
 
-1. **Create the Telegram group** and **add the bot** to it
-2. **Disable privacy mode** in @BotFather:
-   `/mybots` → select bot → Bot Settings → Group Privacy → Turn off
-   (See `references/telegram-privacy-mode.md` for details)
-3. Know the **group ID** (negative number for Telegram groups)
-4. Know the **user IDs or @usernames** of people allowed to trigger the bot
+## 使用方法
 
-## Usage
+用户需要提供以下信息：
+- `group_id`：Telegram群组的ID（例如：`-1001234567890`）
+- `allowed_users`：可以触发机器人的Telegram用户ID或@用户名列表
 
-The user provides:
-- `group_id`: Telegram group ID (e.g., `-1001234567890`)
-- `allowed_users`: List of Telegram user IDs or @usernames who can trigger the bot
+示例命令：
+> “在我的Telegram群组`-1001234567890`中设置机器人。允许用户`123456789`和`@some_user`向我发送消息。”
 
-Example prompt:
-> "Set up my bot in Telegram group -1001234567890. Allow users 123456789 and @some_user to ping me."
+## 实现步骤
 
-## Implementation Steps
+### 第1步：检测机器人信息
 
-### Step 1: Detect bot info
-
-Run the detection script to get the bot's name and username:
+运行检测脚本以获取机器人的名称和@用户名：
 
 ```bash
 bash skills/groupchat-setup/scripts/detect_bot_info.sh
 ```
 
-This reads the bot token from the gateway config and returns the bot's `name` and `username`.
-If the script is unavailable, extract the bot token from `channels.telegram.botToken` in the
-gateway config and call `https://api.telegram.org/bot<TOKEN>/getMe`.
+该脚本从网关配置中读取机器人令牌，并返回机器人的`name`和`username`。
+如果脚本不可用，则从网关配置的`channelsTelegram.botToken`中提取机器人令牌，并调用`https://api.telegram.org/bot<TOKEN>/getMe`来获取这些信息。
 
-### Step 2: Build mention patterns
+### 第2步：构建提及模式
 
-From the detected bot info, construct mention patterns:
-- `@<username>` (e.g., `@my_awesome_bot`)
-- `<name>` lowercase (e.g., `mybot`)
-- `@<name>` lowercase (e.g., `@mybot`)
+根据检测到的机器人信息，构建提及模式：
+- `@<username>`（例如：`@my_awesome_bot`）
+- `<name>`（小写形式）（例如：`mybot`）
+- `@<name>`（小写形式）（例如：`@mybot`）
 
-Remove duplicates. Patterns are case-insensitive regexes.
+去除重复项。这些模式是区分大小写的正则表达式。
 
-### Step 3: Apply config patch
+### 第3步：应用配置更改
 
-Use the `gateway` tool with `action: "config.patch"` to apply:
+使用`gateway`工具，执行`action: "config.patch"`命令来应用配置更改：
 
 ```json
 {
@@ -88,20 +86,18 @@ Use the `gateway` tool with `action: "config.patch"` to apply:
 }
 ```
 
-**Important:** If `groupAllowFrom` or `mentionPatterns` already have values, merge them
-(do not overwrite). Read the current config first with `gateway action: "config.get"`,
-merge arrays, then patch.
+**注意：** 如果`groupAllowFrom`或`mentionPatterns`已有值，请将其合并（不要覆盖原有值）。首先使用`gateway action: "config.get"`读取当前配置，合并数组后再进行更新。
 
-### Step 4: Confirm
+### 第4步：确认设置
 
-After the gateway restarts, send a test message to the group confirming the setup:
+网关重启后，向群组发送测试消息以确认设置是否成功：
 
-> "✅ Bot configured for this group! I'll respond when someone mentions my name. Allowed users: [list]."
+> “✅ 机器人已配置完成！当有人提及我的名称时，我会做出响应。允许发送消息的用户：[列表]。”
 
-## Notes
+## 注意事项
 
-- `requireMention: true` means the bot only responds when explicitly mentioned — it won't spam every message.
-- `groupAllowFrom` restricts which senders can trigger the bot. Without it, messages from unknown senders may be dropped.
-- `groupPolicy: "allowlist"` is the Telegram default — only explicitly listed groups are active.
-- Privacy mode is a Telegram-side setting that cannot be changed via API. The user must do this in @BotFather.
-- For multi-bot groups (e.g., two MoltBot agents), each bot must run this setup independently on its own gateway.
+- `requireMention: true`表示机器人仅在被明确提及时才会响应，不会对所有消息进行响应。
+- `groupAllowFrom`限制了可以触发机器人的发送者。如果没有设置此选项，来自未知发送者的消息可能会被忽略。
+- `groupPolicy: "allowlist"`是Telegram的默认设置——只有明确列出的群组才会被允许。
+- 隐私模式是Telegram端面的设置，无法通过API更改。用户需要在@BotFather中进行配置。
+- 对于包含多个机器人的群组（例如两个MoltBot代理），每个机器人都需要在其自己的网关上独立执行此设置。

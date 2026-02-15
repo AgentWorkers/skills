@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Twitter/X Thread Creation
+# 在 Twitter/X 上创建高互动性的主题帖
 
-Write high-engagement Twitter/X threads via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具来创建高互动性的 Twitter/X 主题帖。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,20 +25,20 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Character Limits
+## 字符限制
 
-| Element | Limit |
+| 元素 | 限制 |
 |---------|-------|
-| Tweet text | 280 characters (free), 25,000 (Premium) |
-| Thread length | No limit (10-15 tweets is sweet spot) |
-| Image alt text | 1,000 characters |
-| Quote tweet addition | 280 characters |
-| Reply | 280 characters |
-| Display name | 50 characters |
+| 推文文本 | 280 个字符（免费账户），25,000 个字符（高级账户） |
+| 主题帖长度 | 无限制（10-15 条推文为最佳） |
+| 图片说明文字 | 1,000 个字符 |
+| 引用推文 | 280 个字符 |
+| 回复 | 280 个字符 |
+| 显示名称 | 50 个字符 |
 
-## Thread Structure
+## 主题帖结构
 
-### The Anatomy
+### 主题帖的构成
 
 ```
 Tweet 1 (Hook):     Bold claim + "thread 🧵"
@@ -48,18 +48,18 @@ Tweet 10:           Summary or biggest takeaway
 Tweet 11:           CTA (follow, retweet, bookmark)
 ```
 
-### Tweet 1: The Hook
+### 第一条推文：吸引读者的内容
 
-This tweet lives or dies alone in the timeline. It must work WITHOUT the thread.
+这条推文可以独立存在于时间线上，也可以作为主题帖的开篇。无论哪种情况，它都必须能够独立吸引读者的注意力。
 
-| Hook Type | Template |
+| 推文类型 | 模板 |
 |-----------|----------|
-| I did X + result | "I analyzed 1,000 [things]. Here's what I found:" |
-| Number + list | "10 [topic] tips that [benefit]:" |
-| Contrarian | "Unpopular opinion: [bold take]" |
-| Story opener | "In 2019, I [dramatic event]. Here's what happened:" |
-| How-to promise | "How to [achieve outcome] (step by step):" |
-| Surprising fact | "[Stat that seems wrong]. Let me explain:" |
+| “我做了 X 并得到了结果” | “我分析了 1,000 个数据。以下是我的发现：” |
+| “10 个 [主题] 的技巧” | “[好处]：” |
+| “与众不同的观点” | “ unpopular opinion: [引人注目的观点]” |
+| “故事开头” | “2019 年，我经历了 [重大事件]。以下是详细经过：” |
+| “操作指南” | “如何 [达成目标]（分步说明）：” |
+| “令人惊讶的事实” | “[看似错误的统计数据]。让我来解释一下：” |
 
 ```bash
 # Post hook tweet
@@ -68,16 +68,16 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-### Content Tweets (3-9)
+### 后续推文（3-9 条）
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| One idea per tweet | Clarity and retweetability |
-| Number them (1/, 2/, etc.) | Progress signal, easy to reference |
-| Each tweet should stand alone | People share individual tweets |
-| Lead with the insight | Don't bury the point |
-| Use line breaks | Visual breathing room |
-| Include examples | Abstract → concrete |
+| 每条推文只包含一个观点 | 有助于清晰表达和便于转发 |
+| 推文编号（1/、2/ 等） | 便于读者追踪进度 |
+| 每条推文都应独立成篇 | 读者更愿意分享单条推文 |
+| 首先提出核心观点 | 避免让读者迷失重点 |
+| 使用换行符 | 使内容更易阅读 |
+| 包含示例 | 从抽象到具体 |
 
 ```bash
 # Content tweet with visual
@@ -86,7 +86,7 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-### Closing Tweet
+### 结尾推文
 
 ```bash
 # CTA tweet
@@ -95,9 +95,9 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Formatting Rules
+## 格式规则
 
-### Tweet Formatting
+### 推文格式
 
 ```
 ❌ Dense:
@@ -115,38 +115,30 @@ infsh app run x/post-create --input '{
 No shortcuts."
 ```
 
-### Symbols for Lists
+### 列表符号的使用
 
-| Symbol | Use For |
+| 符号 | 用途 |
 |--------|---------|
-| → | Steps, actions, directions |
-| • | Bullet points, lists |
-| — | Asides, attributions |
-| ✅ | Do's, positives |
-| ❌ | Don'ts, negatives |
-| 1/ 2/ 3/ | Numbered thread tweets |
+| → | 表示步骤、动作或方向 |
+| • | 用于列出项目 |
+| — | 用于插入补充说明或引用 |
+| ✅ | 表示正确做法或优点 |
+| ❌ | 表示错误做法或缺点 |
+| 1/ 2/ 3/ | 用于编号推文 |
 
-### Line Break Strategy
+### 换行策略
 
-```
-Short sentence.
-                    ← blank line
-Short sentence.
-                    ← blank line
-Punchline.
-```
+换行符有助于控制阅读节奏和强调重点内容。
 
-Line breaks create **pacing**. Use them to control reading speed and emphasis.
+## 主题帖中的媒体元素
 
-## Media in Threads
+### 何时添加图片
 
-### When to Add Images
-
-| Tweet Position | Image Type | Purpose |
+| 推文位置 | 图片类型 | 目的 |
 |---------------|-----------|---------|
-| Hook (tweet 1) | Eye-catching graphic | Stop the scroll |
-| Key points | Screenshots, examples | Evidence |
-| Summary | Infographic | Shareable recap |
+| 开篇推文 | 吸引眼球的图片 | 阻止用户继续滚动 |
+| 关键内容 | 屏幕截图、示例 | 作为证据 |
+| 总结推文 | 信息图 | 便于分享的总结内容 |
 
 ```bash
 # Generate thread header image
@@ -161,18 +153,18 @@ infsh app run infsh/agent-browser --input '{
 }'
 ```
 
-### Image Specs
+### 图片规格
 
-| Format | Dimensions | Max Size |
+| 格式 | 尺寸 | 最大文件大小 |
 |--------|-----------|----------|
-| Single image | 1200 x 675 (16:9) recommended | 5 MB |
-| Two images | 700 x 800 each | 5 MB each |
-| Four images | 600 x 600 each | 5 MB each |
-| GIF | 1280 x 1080 max | 15 MB |
+| 单张图片 | 推荐尺寸为 1200 x 675（16:9） | 最大 5 MB |
+| 两张图片 | 每张 700 x 800 | 每张 5 MB |
+| 四张图片 | 每张 600 x 600 | 每张 5 MB |
+| GIF 图片 | 最大尺寸为 1280 x 1080 | 最大 15 MB |
 
-## Thread Types
+## 主题帖类型
 
-### Educational
+### 教育类主题帖
 
 ```
 1/ [Topic] explained simply:
@@ -184,7 +176,7 @@ infsh app run infsh/agent-browser --input '{
 11/ CTA
 ```
 
-### Story/Journey
+### 故事/经历分享
 
 ```
 1/ [Dramatic opener]
@@ -196,7 +188,7 @@ infsh app run infsh/agent-browser --input '{
 11/ CTA
 ```
 
-### Curation/List
+### 信息整理/列表展示
 
 ```
 1/ [Number] [things] every [audience] needs:
@@ -204,7 +196,7 @@ infsh app run infsh/agent-browser --input '{
 11/ CTA
 ```
 
-### Teardown/Analysis
+### 分析/解读
 
 ```
 1/ I analyzed [thing]. Here's what I found:
@@ -215,18 +207,18 @@ infsh app run infsh/agent-browser --input '{
 11/ CTA
 ```
 
-## Engagement Strategy
+## 提高互动性的策略
 
-| Action | Timing | Why |
+| 行动 | 时间 | 原因 |
 |--------|--------|-----|
-| Post hook tweet | Peak hours (8-10 AM, 12-1 PM your audience's TZ) | Maximum initial visibility |
-| Reply-chain the thread | Immediately after hook | Complete the thread |
-| Pin the thread | Right after posting | Visitors see your best work |
-| Engage with replies | First 60 minutes | Algorithm boost |
-| Quote-tweet highlight | Next day | Second wave of visibility |
-| Repost hook | 1-2 weeks later | Catch new followers |
+| 发布开篇推文 | 在目标受众的活跃时段（早上 8-10 点或中午 12-1 点） | 最大化初始曝光率 |
+| 通过回复串联主题帖 | 在发布开篇推文后立即回复 | 完成整个主题帖的内容 |
+| 固定主题帖 | 发布后立即固定主题帖的位置 | 让访客能够看到你的最佳内容 |
+| 与回复互动 | 在发布后的 60 分钟内 | 提高平台的算法排名 |
+| 引用推文 | 第二天 | 提高再次曝光的机会 |
+| 重新发布开篇推文 | 1-2 周后 | 吸引新粉丝 |
 
-## Repurposing to Thread
+## 如何将其他内容转化为主题帖
 
 ```bash
 # Research source material
@@ -240,21 +232,21 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Weak hook tweet | Thread dies at tweet 1 | Use hook formulas — bold, specific, curiosity-driving |
-| Too many tweets (20+) | Readers drop off after 10-12 | Sweet spot is 8-12 tweets |
-| Multiple ideas per tweet | Confusing, not retweetable | One idea = one tweet |
-| No numbers on tweets | Hard to follow, no progress signal | Always number: 1/, 2/, 3/ |
-| No images | Threads with images get 2x engagement | Add visuals to hook + key points |
-| Thread only (no standalone) | Miss the non-thread audience | Post standalone tweets too, not just threads |
-| No CTA at the end | Missed follow/engagement opportunity | Always ask to RT, follow, bookmark |
-| Posting at wrong time | Low initial engagement kills reach | Post during your audience's peak hours |
-| Wall of text tweets | Nobody reads dense tweets | Line breaks, symbols, short sentences |
+| 开篇推文缺乏吸引力 | 主题帖在第一条推文后就无人关注 | 使用引人注目的开头语句 |
+| 推文过多（20 条以上） | 读者会在第 10-12 条推文后失去兴趣 | 最佳数量为 8-12 条 |
+| 每条推文包含多个观点 | 造成混淆且不易转发 | 每条推文只包含一个观点 |
+| 推文没有编号 | 读者难以跟随进度 | 必须编号（1/、2/、3/ 等） |
+| 没有图片 | 有图片的主题帖互动性更高 | 在开篇和关键内容处添加图片 |
+| 只发布主题帖（不发布独立推文） | 会错过非主题帖形式的读者 | 也要发布独立推文 |
+| 结尾没有呼吁行动的提示 | 错过引导读者转发的机会 | 必须要求读者转发、关注或收藏 |
+| 发布时间不当 | 活跃时段之外发布会导致互动率低 | 在目标受众的活跃时段发布 |
+| 推文内容过于冗长 | 读者难以阅读 | 使用换行符、符号和简短句子 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@linkedin-content
@@ -262,4 +254,4 @@ npx skills add inferencesh/skills@content-repurposing
 npx skills add inferencesh/skills@social-media-carousel
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用工具：`infsh app list`

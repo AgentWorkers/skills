@@ -1,65 +1,67 @@
 ---
 name: intellectia-stock-forecast
-description: US Stock AI Trading Assistant | Intellectia AI Stock Forecast — Smart analysis of stock entry/exit points, target price predictions, probability calculations, and technical ratings. Supports "Should I Buy" investment decision Q&A.
+description: **US Stock AI Trading Assistant | Intellectia AI Stock Forecast**  
+– 智能分析股票买入/卖出时机、目标价格预测、概率计算以及技术评级；  
+– 支持“是否应该买入”的投资决策咨询功能。
 metadata: {"openclaw":{"requires":{"bins":["curl","python3"]},"install":[{"id":"python","kind":"pip","package":"requests","bins":[],"label":"Install requests (pip)"}]}}
 ---
 
-# Intellectia Stock Forecast
+# Intellectia 股票预测
 
-Single-symbol **forecast** (yearly predictions) and **"Should I Buy?"** analysis from the Intellectia API.
+该技能提供了来自 Intellectia API 的单只股票 **预测**（年度预测）以及 **“我应该买入吗？”** 的分析结果。
 
-Base URL: `https://api.intellectia.ai`
+基础 URL：`https://api.intellectia.ai`
 
-## Overview
+## 概述
 
-This skill covers two endpoints:
+该技能包含两个终端点：
 
-- **Forecast (predictions):** `GET /gateway/v1/stock/screener-public`
-- **Why / Should I buy (analysis):** `POST /gateway/v1/finance/should-i-buy`
+- **预测（predictions）**：`GET /gateway/v1/stock/screener-public`
+- **为什么/我应该买入（analysis）**：`POST /gateway/v1/finance/should-i-buy`
 
-## When to use this skill
+## 适用场景
 
-Use this skill when you want to:
-- Get **one** stock/crypto quote + **yearly predictions** (2026–2035)
-- Answer **why / should I buy** for a specific ticker with a structured rationale
+当您需要以下信息时，请使用该技能：
+- 获取某只股票/加密货币的报价及 2026–2035 年的年度预测
+- 了解为何应该买入某只股票，并获得结构化的分析理由
 
-## How to ask (high hit-rate)
+## 使用方法（高命中率）
 
-If you want OpenClaw to automatically pick this skill, include:
-- **Intellectia**
-- The **ticker** (e.g. TSLA / AAPL / BTC-USD)
-- Either **forecast / prediction** (for predictions) or **why / should I buy** (for analysis)
+如果您希望 OpenClaw 自动使用该技能，请提供以下信息：
+- **服务提供商**：Intellectia
+- **股票代码**（例如：TSLA、AAPL、BTC-USD）
+- 指定您需要的是 **预测** 还是 **分析** 结果
 
-To force the skill: `/skill intellectia-stock-forecast <your request>`
+要强制使用该技能，请输入：`/skill intellectia-stock-forecast <您的请求>`
 
-Copy-ready prompts:
-- "Intellectia forecast for **TSLA**. Show price, probability, profit, and predictions 2026–2035."
-- "Why should I buy **TSLA**? Use Intellectia Should I Buy."
-- "Should I buy **AAPL**? Give me conclusion, catalysts, analyst rating, and 52-week range."
-- "Get Intellectia yearly predictions for **BTC-USD** (asset_type 2)."
+**示例请求**：
+- “获取 TSLA 的预测结果。显示价格、概率、盈利情况以及 2026–2035 年的预测。”
+- “我应该买入 TSLA 吗？请提供分析结果。”
+- “我应该买入 AAPL 吗？请给出结论、买入理由、分析师评级以及 52 周的价格区间。”
+- “获取 BTC-USD 的年度预测结果（资产类型为 2）。”
 
-## Endpoints
+## 终端点
 
-| Use case | Method | Path |
+| 用途 | 方法 | 路径 |
 |---|---|---|
-| Forecast (predictions 2026–2035) | GET | `/gateway/v1/stock/screener-public` |
-| Why / Should I buy analysis | POST | `/gateway/v1/finance/should-i-buy` |
+| 获取 2026–2035 年的预测 | GET | `/gateway/v1/stock/screener-public` |
+| 为什么/我应该买入分析 | POST | `/gateway/v1/finance/should-i-buy` |
 
-## API: Forecast (screener-public)
+## API：预测（screener-public）
 
-- **Method:** `GET /gateway/v1/stock/screener-public`
-- **Query parameters:**
-  - `ticker` (string, required)
-  - `asset_type` (int, required): `0=stock 1=etf 2=crypto`
-- **Returns:** `data.list` (single object) + `data.prediction_2026` … `data.prediction_2035`
+- **方法**：`GET /gateway/v1/stock/screener-public`
+- **查询参数**：
+  - `ticker`（字符串，必填）
+  - `asset_type`（整数，必填）：`0=股票`、`1=ETF`、`2=加密货币`
+- **返回值**：`data.list`（单个对象）+ `data.prediction_2026` … `data.prediction_2035`
 
-### Example (cURL)
+### 示例（cURL）
 
 ```bash
 curl -sS "https://api.intellectia.ai/gateway/v1/stock/screener-public?ticker=TSLA&asset_type=0"
 ```
 
-### Example (Python)
+### 示例（Python）
 
 ```bash
 python3 - <<'PY'
@@ -75,19 +77,19 @@ for y in range(2026, 2036):
 PY
 ```
 
-## API: Why / Should I buy (should-i-buy)
+## API：为什么/我应该买入（should-i-buy）
 
-- **Method:** `POST /gateway/v1/finance/should-i-buy`
-- **Headers:** `Content-Type: application/json`
-- **Body:**
+- **方法**：`POST /gateway/v1/finance/should-i-buy`
+- **请求头**：`Content-Type: application/json`
+- **请求体**：
 
 ```json
 { "asset": { "ticker": "TSLA", "asset_type": 0, "locale": "en" } }
 ```
 
-- **Returns:** `data.action_type`, `data.conclusion`, catalysts, technical analysis, analyst rating, plus price context.
+- **返回值**：`data.action_type`、`data.conclusion`、买入理由、技术分析、分析师评级以及价格信息
 
-### Example (cURL)
+### 示例（cURL）
 
 ```bash
 curl -sS -X POST "https://api.intellectia.ai/gateway/v1/finance/should-i-buy" \
@@ -95,7 +97,7 @@ curl -sS -X POST "https://api.intellectia.ai/gateway/v1/finance/should-i-buy" \
   -d '{"asset":{"ticker":"TSLA","asset_type":0,"locale":"en"}}'
 ```
 
-### Example (Python)
+### 示例（Python）
 
 ```bash
 python3 - <<'PY'
@@ -111,34 +113,25 @@ print("negative_catalysts:", d.get("negative_catalysts"))
 PY
 ```
 
-## Tool configuration
+## 工具配置
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |---|---|
-| `curl` | One-off GET or POST |
-| `python3` / `requests` | Scripts; `pip install requests` |
+| `curl` | 用于执行一次性的 GET 或 POST 请求 |
+| `python3` / `requests` | 用于编写脚本；需先安装 `requests` 库 |
 
-## Using this skill in OpenClaw
+## 在 OpenClaw 中使用该技能
 
-```bash
-clawhub install intellectia-stock-forecast
-```
+1. **启动一个新的 OpenClaw 会话**。
+2. 使用相应的命令或脚本调用该技能。
 
-Start a **new OpenClaw session**, then:
+## 免责声明与数据说明
 
-```bash
-openclaw skills list
-openclaw skills info intellectia-stock-forecast
-openclaw skills check
-```
+- **免责声明**：该技能提供的数据和分析仅用于信息参考，不构成财务、投资或交易建议。过去的表现和模型预测并不能保证未来的结果。您需自行承担投资决策的全部责任；在做出财务决策前，请咨询专业顾问。
+- **数据延迟**：API 提供的数据（价格、预测结果、分析内容）可能存在延迟，并非实时数据。请勿依赖这些数据进行需要即时响应的交易决策。
+- **实时数据**：如需实时数据，请访问 [Intellectia](https://intellectia.ai/?channelId=601&activityId=1)。
 
-## Disclaimer and data
+## 注意事项
 
-- **Disclaimer:** The data and analysis from this skill are for **informational purposes only** and do not constitute financial, investment, or trading advice. Past performance and model predictions are not guarantees of future results. You are solely responsible for your investment decisions; consult a qualified professional before making financial decisions.
-- **Data delay:** Data provided by the API (prices, predictions, analysis) may be **delayed** and is not necessarily real-time. Do not rely on it for time-sensitive trading decisions.
-- **Real-time data:** For real-time or live data, visit [Intellectia](https://intellectia.ai/?channelId=601&activityId=1)
-
-## Notes
-
-- **screener-public:** one symbol per request.
-- **should-i-buy:** use when the user asks "why" / "should I buy" for a symbol; use conclusion and catalysts in your answer.
+- **screener-public**：每次请求仅支持一个股票代码。
+- **should-i-buy**：当用户询问“我应该买入某只股票吗？”时，请使用该功能，并在回答中提供分析结论及买入理由。

@@ -1,6 +1,6 @@
 ---
 name: isms-audit-expert
-description: Information Security Management System auditing for ISO 27001 compliance, security control assessment, and certification support
+description: 信息安全管理系统审计，用于符合ISO 27001标准、进行安全控制评估以及提供认证支持。
 triggers:
   - ISMS audit
   - ISO 27001 audit
@@ -13,161 +13,161 @@ triggers:
   - nonconformity
 ---
 
-# ISMS Audit Expert
+# ISMS审计专家
 
-Internal and external ISMS audit management for ISO 27001 compliance verification, security control assessment, and certification support.
+提供内部和外部ISMS审计管理服务，以验证ISO 27001合规性、进行安全控制评估，并提供认证支持。
 
-## Table of Contents
+## 目录
 
-- [Audit Program Management](#audit-program-management)
-- [Audit Execution](#audit-execution)
-- [Control Assessment](#control-assessment)
-- [Finding Management](#finding-management)
-- [Certification Support](#certification-support)
-- [Tools](#tools)
-- [References](#references)
+- [审计计划管理](#audit-program-management)
+- [审计执行](#audit-execution)
+- [控制评估](#control-assessment)
+- [问题管理](#finding-management)
+- [认证支持](#certification-support)
+- [工具](#tools)
+- [参考资料](#references)
 
 ---
 
-## Audit Program Management
+## 审计计划管理
 
-### Risk-Based Audit Schedule
+### 基于风险的审计计划
 
-| Risk Level | Audit Frequency | Examples |
+| 风险等级 | 审计频率 | 例证 |
 |------------|-----------------|----------|
-| Critical | Quarterly | Privileged access, vulnerability management, logging |
-| High | Semi-annual | Access control, incident response, encryption |
-| Medium | Annual | Policies, awareness training, physical security |
-| Low | Annual | Documentation, asset inventory |
+| 严重 | 季度 | 特权访问、漏洞管理、日志记录 |
+| 高 | 半年 | 访问控制、事件响应、加密 |
+| 中等 | 年度 | 政策、意识培训、物理安全 |
+| 低 | 年度 | 文档记录、资产清单 |
 
-### Annual Audit Planning Workflow
+### 年度审计计划工作流程
 
-1. Review previous audit findings and risk assessment results
-2. Identify high-risk controls and recent security incidents
-3. Determine audit scope based on ISMS boundaries
-4. Assign auditors ensuring independence from audited areas
-5. Create audit schedule with resource allocation
-6. Obtain management approval for audit plan
-7. **Validation:** Audit plan covers all Annex A controls within certification cycle
+1. 审查之前的审计发现和风险评估结果
+2. 识别高风险控制点和最近的安全事件
+3. 根据ISMS的范围确定审计范围
+4. 指派审计员，确保其与被审计部门无关联
+5. 制定审计计划并分配资源
+6. 获得管理层的审计计划批准
+7. **验证：**审计计划涵盖认证周期内的所有附录A控制点
 
-### Auditor Competency Requirements
+### 审计员能力要求
 
-- ISO 27001 Lead Auditor certification (preferred)
-- No operational responsibility for audited processes
-- Understanding of technical security controls
-- Knowledge of applicable regulations (GDPR, HIPAA)
+- 建议具备ISO 27001首席审计员认证
+- 不应对被审计流程具有操作职责
+- 理解技术安全控制措施
+- 了解相关法规（如GDPR、HIPAA）
 
 ---
 
-## Audit Execution
+## 审计执行
 
-### Pre-Audit Preparation
+### 审计前准备
 
-1. Review ISMS documentation (policies, SoA, risk assessment)
-2. Analyze previous audit reports and open findings
-3. Prepare audit plan with interview schedule
-4. Notify auditees of audit scope and timing
-5. Prepare checklists for controls in scope
-6. **Validation:** All documentation received and reviewed before opening meeting
+1. 审查ISMS文档（政策、服务级别协议、风险评估）
+2. 分析之前的审计报告和开放性发现
+3. 制定审计计划并安排访谈时间表
+4. 通知被审计方审计范围和时间
+5. 为审计范围内的控制点准备检查清单
+6. **验证：**在会议开始前收到并审查所有文档
 
-### Audit Conduct Steps
+### 审计实施步骤
 
-1. **Opening Meeting**
-   - Confirm audit scope and objectives
-   - Introduce audit team and methodology
-   - Agree on communication channels and logistics
+1. **开场会议**
+   - 确认审计范围和目标
+   - 介绍审计团队和方法
+   - 协商沟通渠道和安排
 
-2. **Evidence Collection**
-   - Interview control owners and operators
-   - Review documentation and records
-   - Observe processes in operation
-   - Inspect technical configurations
+2. **证据收集**
+   - 与控制点负责人和操作人员面谈
+   - 审查文档和记录
+   - 观察实际操作过程
+   - 检查技术配置
 
-3. **Control Verification**
-   - Test control design (does it address the risk?)
-   - Test control operation (is it working as intended?)
-   - Sample transactions and records
-   - Document all evidence collected
+3. **控制验证**
+   - 测试控制设计（是否解决了风险？）
+   - 测试控制操作（是否按预期工作？）
+   - 抽样检查交易和记录
+   - 记录所有收集到的证据
 
-4. **Closing Meeting**
-   - Present preliminary findings
-   - Clarify any factual inaccuracies
-   - Agree on finding classification
-   - Confirm corrective action timelines
+4. **结束会议**
+   - 提交初步发现
+   - 明确任何事实错误
+   - 协商问题的分类
+   - 确认纠正措施的时间表
 
-5. **Validation:** All controls in scope assessed with documented evidence
+5. **验证：**所有范围内的控制点都经过了有记录的证据验证
 
-### Evidence Collection Methods
+### 证据收集方法
 
-| Method | Use Case | Example |
+| 方法 | 适用场景 | 例证 |
 |--------|----------|---------|
-| Inquiry | Process understanding | Interview Security Manager about incident response |
-| Observation | Operational verification | Watch visitor sign-in process |
-| Inspection | Documentation review | Check access approval records |
-| Re-performance | Control testing | Attempt login with weak password |
+| 调查 | 过程理解 | 询问安全经理关于事件响应的情况 |
+| 观察 | 操作验证 | 观察访客签到流程 |
+| 检查 | 文档审查 | 检查访问审批记录 |
+| 重新执行 | 控制测试 | 用弱密码尝试登录 |
 
 ---
 
-## Control Assessment
+## 控制评估
 
-### ISO 27002 Control Categories
+### ISO 27002控制类别
 
-**Organizational Controls (A.5):**
-- Information security policies
-- Roles and responsibilities
-- Segregation of duties
-- Contact with authorities
-- Threat intelligence
-- Information security in projects
+**组织控制（A.5）：**
+- 信息安全政策
+- 角色和职责
+- 职责分离
+- 与相关机构的联系
+- 威胁情报
+- 项目中的信息安全
 
-**People Controls (A.6):**
-- Screening and background checks
-- Employment terms and conditions
-- Security awareness and training
-- Disciplinary process
-- Remote working security
+**人员控制（A.6）：**
+- 筛选和背景调查
+- 雇佣条款和条件
+- 安全意识和培训
+- 违纪处理流程
+- 远程工作安全
 
-**Physical Controls (A.7):**
-- Physical security perimeters
-- Physical entry controls
-- Securing offices and facilities
-- Physical security monitoring
-- Equipment protection
+**物理控制（A.7）：**
+- 物理安全边界
+- 物理入口控制
+- 办公室和设施的安全保护
+- 物理安全监控
+- 设备保护
 
-**Technological Controls (A.8):**
-- User endpoint devices
-- Privileged access rights
-- Access restriction
-- Secure authentication
-- Malware protection
-- Vulnerability management
-- Backup and recovery
-- Logging and monitoring
-- Network security
-- Cryptography
+**技术控制（A.8）：**
+- 用户终端设备
+- 特权访问权限
+- 访问限制
+- 安全认证
+- 恶意软件防护
+- 漏洞管理
+- 备份和恢复
+- 日志记录和监控
+- 网络安全
+- 加密
 
-### Control Testing Approach
+### 控制测试方法
 
-1. Identify control objective from ISO 27002
-2. Determine testing method (inquiry, observation, inspection, re-performance)
-3. Define sample size based on population and risk
-4. Execute test and document results
-5. Evaluate control effectiveness
-6. **Validation:** Evidence supports conclusion about control status
+1. 从ISO 27002中确定控制目标
+2. 选择测试方法（调查、观察、检查、重新执行）
+3. 根据样本量和风险确定样本大小
+4. 执行测试并记录结果
+5. 评估控制的有效性
+6. **验证：**证据支持对控制状态的结论
 
 ---
 
-## Finding Management
+## 问题管理
 
-### Finding Classification
+### 问题分类
 
-| Severity | Definition | Response Time |
+| 严重程度 | 定义 | 回应时间 |
 |----------|------------|---------------|
-| Major Nonconformity | Control failure creating significant risk | 30 days |
-| Minor Nonconformity | Isolated deviation with limited impact | 90 days |
-| Observation | Improvement opportunity | Next audit cycle |
+| 重大不符合项 | 控制失败导致重大风险 | 30天内 |
+| 轻微不符合项 | 孤立的偏差，影响有限 | 90天内 |
+| 观察结果 | 改进机会 | 下一次审计周期 |
 
-### Finding Documentation Template
+### 问题文档模板
 
 ```
 Finding ID: ISMS-[YEAR]-[NUMBER]
@@ -189,63 +189,63 @@ Recommendation:
 - [Specific corrective action steps]
 ```
 
-### Corrective Action Workflow
+### 纠正措施工作流程
 
-1. Auditee acknowledges finding and severity
-2. Root cause analysis completed within 10 days
-3. Corrective action plan submitted with target dates
-4. Actions implemented by responsible parties
-5. Auditor verifies effectiveness of corrections
-6. Finding closed with evidence of resolution
-7. **Validation:** Root cause addressed, recurrence prevented
+1. 被审计方确认问题及其严重程度
+2. 在10天内完成根本原因分析
+3. 提交包含目标日期的纠正措施计划
+4. 负责部门实施措施
+5. 审计员验证纠正措施的有效性
+6. 以解决证据关闭问题
+7. **验证：**根本原因得到解决，防止再次发生
 
 ---
 
-## Certification Support
+## 认证支持
 
-### Stage 1 Audit Preparation
+### 第一阶段审计准备
 
-Ensure documentation is complete:
-- [ ] ISMS scope statement
-- [ ] Information security policy (management signed)
-- [ ] Statement of Applicability
-- [ ] Risk assessment methodology and results
-- [ ] Risk treatment plan
-- [ ] Internal audit results (past 12 months)
-- [ ] Management review minutes
+确保文档齐全：
+- [ ] ISMS范围声明
+- [ ] 信息安全政策（管理层签字）
+- [ ] 适用性声明
+- [ ] 风险评估方法和结果
+- [ ] 风险处理计划
+- [ ] 过去12个月的内部审计结果
+- [ ] 管理层审查记录
 
-### Stage 2 Audit Preparation
+### 第二阶段审计准备
 
-Verify operational readiness:
-- [ ] All Stage 1 findings addressed
-- [ ] ISMS operational for minimum 3 months
-- [ ] Evidence of control implementation
-- [ ] Security awareness training records
-- [ ] Incident response evidence (if applicable)
-- [ ] Access review documentation
+验证运营准备情况：
+- [ ] 所有第一阶段的发现都得到解决
+- [ ] ISMS已运行至少3个月
+- [ ] 控制措施实施的证明
+- [ ] 安全意识培训记录
+- [ ] 事件响应证据（如适用）
+- [ ] 访问审查文档
 
-### Surveillance Audit Cycle
+### 监控审计周期
 
-| Period | Focus |
+| 周期 | 重点 |
 |--------|-------|
-| Year 1, Q2 | High-risk controls, Stage 2 findings follow-up |
-| Year 1, Q4 | Continual improvement, control sample |
-| Year 2, Q2 | Full surveillance |
-| Year 2, Q4 | Re-certification preparation |
+| 第一年第二季度 | 高风险控制点、第二阶段发现的跟进 |
+| 第一年第四季度 | 持续改进、控制点抽样 |
+| 第二年第二季度 | 全面监控 |
+| 第二年第四季度 | 重新认证准备 |
 
-**Validation:** No major nonconformities at surveillance audits.
+**验证：**监控审计中无重大不符合项。
 
 ---
 
-## Tools
+## 工具
 
-### scripts/
+### 脚本
 
-| Script | Purpose | Usage |
+| 脚本 | 用途 | 使用方法 |
 |--------|---------|-------|
-| `isms_audit_scheduler.py` | Generate risk-based audit plans | `python scripts/isms_audit_scheduler.py --year 2025 --format markdown` |
+| `isms_audit_scheduler.py` | 生成基于风险的审计计划 | `python scripts/isms_audit_scheduler.py --year 2025 --format markdown` |
 
-### Audit Planning Example
+### 审计计划示例
 
 ```bash
 # Generate annual audit plan
@@ -257,32 +257,32 @@ python scripts/isms_audit_scheduler.py --controls controls.csv --format markdown
 
 ---
 
-## References
+## 参考资料
 
-| File | Content |
+| 文件 | 内容 |
 |------|---------|
-| [iso27001-audit-methodology.md](references/iso27001-audit-methodology.md) | Audit program structure, pre-audit phase, certification support |
-| [security-control-testing.md](references/security-control-testing.md) | Technical verification procedures for ISO 27002 controls |
-| [cloud-security-audit.md](references/cloud-security-audit.md) | Cloud provider assessment, configuration security, IAM review |
+| [iso27001-audit-methodology.md](references/iso27001-audit-methodology.md) | 审计计划结构、审计前阶段、认证支持 |
+| [security-control-testing.md](references/security-control-testing.md) | ISO 27002控制的技术验证程序 |
+| [cloud-security-audit.md](references/cloud-security-audit.md) | 云服务提供商评估、配置安全、身份和访问管理审查 |
 
 ---
 
-## Audit Performance Metrics
+## 审计绩效指标
 
-| KPI | Target | Measurement |
+| KPI | 目标 | 测量方法 |
 |-----|--------|-------------|
-| Audit plan completion | 100% | Audits completed vs. planned |
-| Finding closure rate | >90% within SLA | Closed on time vs. total |
-| Major nonconformities | 0 at certification | Count per certification cycle |
-| Audit effectiveness | Incidents prevented | Security improvements implemented |
+| 审计计划完成率 | 100% | 完成的审计数量与计划数量对比 |
+| 问题关闭率 | 在SLA内关闭的比例 >90% | 按时关闭的问题占总问题的比例 |
+| 重大不符合项 | 认证时无重大不符合项 | 每个认证周期内的数量 |
+| 审计有效性 | 预防的事件数量 | 实施的安全改进数量 |
 
 ---
 
-## Compliance Framework Integration
+## 合规性框架整合
 
-| Framework | ISMS Audit Relevance |
+| 框架 | ISMS审计的相关性 |
 |-----------|---------------------|
-| GDPR | A.5.34 Privacy, A.8.10 Information deletion |
-| HIPAA | Access controls, audit logging, encryption |
-| PCI DSS | Network security, access control, monitoring |
-| SOC 2 | Trust Services Criteria mapped to ISO 27002 |
+| GDPR | A.5.34 隐私保护、A.8.10 信息删除 |
+| HIPAA | 访问控制、审计日志记录、加密 |
+| PCI DSS | 网络安全、访问控制、监控 |
+| SOC 2 | 信任服务标准与ISO 27002的对齐 |

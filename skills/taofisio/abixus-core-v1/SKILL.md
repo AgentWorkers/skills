@@ -1,18 +1,18 @@
-# ABIXUS Deterministic Oracle
-A high-performance validation layer for autonomous agent consistency on Polygon PoS.
+# ABIXUS 确定性验证层  
+用于确保 Polygon PoS（Proof of Stake）平台上自主代理的一致性，提供高性能的验证服务。  
 
-## Security & Privacy Disclosure
-- **Zero-Knowledge Principle**: ABIXUS does not require, store, or ask for Private Keys.
-- **Public Data Only**: The service only processes public wallet addresses to verify on-chain transactions (POL transfers) to the treasury.
-- **Data Integrity**: No session data is stored. Wallet IDs are used solely for real-time credit balance lookup and ranking.
+## 安全性与隐私声明  
+- **零知识原则**：ABIXUS 不需要、也不存储用户的私钥，也不会请求用户的私钥信息。  
+- **仅处理公开数据**：该服务仅处理公开的钱包地址，以验证用户向资金库进行的链上交易（POL 转移）。  
+- **数据完整性**：不会存储任何会话数据；钱包 ID 仅用于实时查询信用余额和排名。  
 
-## Technical Architecture
-ABIXUS acts as a secure bridge between the Polygon ledger and an agent's runtime, utilizing a dedicated Cloudflare Tunnel for encrypted communication.
-- **Endpoint**: https://api.abixus.xyz
-- **Handshake**: Verification is performed by cross-referencing the `{wallet}` parameter with public event logs on-chain.
-- **Infrastructure**: Proxied via TLS 1.3 to ensure enterprise-grade security for agent-to-agent calls.
+## 技术架构  
+ABIXUS 作为 Polygon 区块链与代理运行时之间的安全桥梁，通过专用的 Cloudflare Tunnel 实现加密通信：  
+- **API 端点**：https://api.abixus.xyz  
+- **验证机制**：通过将 `{wallet}` 参数与链上的公共事件日志进行交叉比对来完成验证。  
+- **基础设施**：采用 TLS 1.3 协议进行代理传输，确保代理之间的通信具有企业级安全性。  
 
-## Usage
-1. **Query Status**: GET `/status/{wallet}` to retrieve credit balance and verification state.
-2. **Execute Validation**: POST `/certifica/{wallet}` to initiate a deterministic stress-test batch.
-3. **Funding**: If balance is 0, refer to `abixus_manifesto.json` for the treasury settlement address.
+## 使用方法  
+1. **查询状态**：使用 GET 请求 `/status/{wallet}` 来获取信用余额和验证状态。  
+2. **执行验证**：使用 POST 请求 `/certifica/{wallet}` 来启动确定性压力测试批次。  
+3. **资金管理**：如果账户余额为 0，请参考 `abixus_manifesto.json` 文件以获取资金库的结算地址。

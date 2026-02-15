@@ -1,21 +1,21 @@
 ---
-description: Diagnose Wi-Fi issues with signal analysis, channel scanning, speed tests, and DNS checks.
+description: 通过信号分析、频道扫描、速度测试和DNS检查来诊断Wi-Fi问题。
 ---
 
-# Wi-Fi Diagnostics
+# Wi-Fi 诊断
 
-Diagnose Wi-Fi connectivity issues with signal analysis, channel scanning, and speed tests.
+通过信号分析、频道扫描和速度测试来诊断 Wi-Fi 连接问题。
 
-## Requirements
+## 所需系统
 
-- Linux with `nmcli`, `iwconfig`, or `iw`
-- `curl` for speed tests
-- Optional: `dig` for DNS diagnostics
-- Some commands require `sudo` for wireless scanning
+- 安装了 `nmcli`, `iwconfig` 或 `iw` 的 Linux 系统
+- 用于速度测试的 `curl` 工具
+- 可选：用于 DNS 诊断的 `dig` 工具
+- 某些命令在无线扫描时需要 `sudo` 权限
 
-## Instructions
+## 操作步骤
 
-### Connection info
+### 连接信息
 ```bash
 # Current network details
 nmcli -t -f active,ssid,signal,chan,freq,bssid dev wifi | grep '^yes'
@@ -28,7 +28,7 @@ ip route | grep default
 ip addr show | grep 'inet '
 ```
 
-### Channel scan
+### 频道扫描
 ```bash
 # Nearby networks (may need sudo)
 nmcli dev wifi list
@@ -38,7 +38,7 @@ nmcli -t -f chan,signal dev wifi list | sort -t: -k1 -n | \
   awk -F: '{ch[$1]++; sig[$1]+=$2} END{for(c in ch) printf "Ch %s: %d networks, avg signal %d%%\n", c, ch[c], sig[c]/ch[c]}'
 ```
 
-### Speed test (no dependencies)
+### 速度测试（无需额外依赖）
 ```bash
 # Download test (~10MB)
 curl -o /dev/null -s -w "Download: %{speed_download} bytes/sec (%{time_total}s)\n" https://speed.cloudflare.com/__down?bytes=10000000
@@ -47,14 +47,14 @@ curl -o /dev/null -s -w "Download: %{speed_download} bytes/sec (%{time_total}s)\
 dd if=/dev/zero bs=1M count=10 2>/dev/null | curl -X POST -d @- -s -w "Upload: %{speed_upload} bytes/sec\n" https://speed.cloudflare.com/__up
 ```
 
-### DNS diagnostics
+### DNS 诊断
 ```bash
 dig google.com | grep "Query time"
 ping -c 5 8.8.8.8 | tail -1
 ping -c 5 1.1.1.1 | tail -1
 ```
 
-### Output format
+### 输出格式
 ```
 ## 📶 Wi-Fi Diagnostics — <timestamp>
 
@@ -73,16 +73,16 @@ ping -c 5 1.1.1.1 | tail -1
 **Thresholds**: Signal: 🟢>60% 🟡30-60% 🔴<30% | Speed: 🟢>25Mbps 🟡>5Mbps 🔴<5Mbps
 ```
 
-## Edge Cases
+## 特殊情况
 
-- **No Wi-Fi adapter**: Detect with `iw dev`. Report if no wireless interface found.
-- **Ethernet only**: Note that diagnostics apply to Wi-Fi only — ethernet has different tools.
-- **5GHz vs 2.4GHz**: Report which band is in use. Channel recommendations differ per band.
-- **VPN active**: Speed tests may be affected by VPN. Note if a VPN interface is detected.
-- **nmcli unavailable**: Fall back to `iwconfig` and `iw`.
+- **没有 Wi-Fi 适配器**：使用 `iw dev` 命令进行检测。如果未找到无线接口，请报告该情况。
+- **仅使用以太网**：请注意，这些诊断工具仅适用于 Wi-Fi，以太网需要使用其他工具进行诊断。
+- **5GHz 与 2.4GHz**：报告当前使用的频段。不同频段的频道推荐方案也有所不同。
+- **启用 VPN**：VPN 可能会影响速度测试结果。如果检测到 VPN 接口，请予以说明。
+- **`nmcli` 无法使用**：此时请切换到使用 `iwconfig` 和 `iw` 命令进行操作。
 
-## Security
+## 安全注意事项
 
-- Speed tests send data to external servers (Cloudflare) — fine for diagnostics.
-- Wi-Fi scan reveals nearby network names — don't share in public contexts.
-- Never expose Wi-Fi passwords in diagnostic output.
+- 速度测试会将数据发送到外部服务器（例如 Cloudflare）——这对于诊断目的来说是安全的。
+- Wi-Fi 扫描会显示附近网络的信息——请勿在公共场合分享这些信息。
+- 绝不要在诊断输出中显示 Wi-Fi 密码。

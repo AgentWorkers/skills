@@ -1,6 +1,6 @@
 ---
 name: ranked-gym
-description: Gamify your gym sessions with XP, levels, achievements, and workout streaks
+description: 通过经验值（XP）、等级、成就以及连续锻炼的记录，让你的健身训练变得更加有趣！
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,65 +11,61 @@ triggers:
   - "gym streak"
 ---
 
-# Ranked Gym
+# 排名健身房（Ranked Gym）
 
-Turn every rep into progress. Watch your fitness level up while you level up.
+将每一次重复的动作都转化为进步的象征。在提升等级的同时，也见证自己健康状况的改善。
 
-## What it does
+## 功能介绍
 
-Ranked Gym transforms your workout routine into an RPG progression system. Each session earns XP based on duration and intensity. Climb six ranks from Bronze through Master. Unlock achievements as you hit milestones. Track streaks to maintain momentum. See your stats on a persistent leaderboard. Stop counting reps—start counting levels.
+“排名健身房”将你的锻炼计划转变为一个类似角色扮演游戏（RPG）的升级系统：每次锻炼都会根据锻炼时长和强度获得经验值（XP）。你可以从青铜级（Bronze）一路晋升到大师级（Master），达成各种里程碑后解锁相应的成就。系统会记录你的连续锻炼天数（即“连贯性”），让你保持锻炼的积极性。你还可以在实时排行榜上查看自己的各项数据。
 
-## Usage
+## 使用方法
 
-**Log workout for XP**
-"Log 45 min upper body workout" → Earns 180 XP + intensity multiplier. Confirm reps or exercises for bonus points.
+**记录锻炼以获取经验值**  
+例如：“记录一次45分钟的上肢锻炼” → 获得180点经验值，同时根据锻炼强度获得额外奖励。若能提供具体的重复次数或锻炼项目，还能获得更多积分。
 
-**Check rank**
-"What's my gym rank?" → Returns current rank, XP progress to next level, total workouts completed, current streak.
+**查询当前等级**  
+例如：“我的健身房等级是多少？” → 系统会显示你的当前等级、达到下一个等级所需的经验值以及已完成的总锻炼次数。
 
-**View achievements**
-"Show my fitness achievements" → Lists unlocked badges with unlock dates. Shows progress on in-progress achievements.
+**查看成就**  
+例如：“展示我的健身成就” → 列出已解锁的徽章及其解锁日期，并显示你在未完成成就上的进展情况。
 
-**Streak status**
-"Check my workout streak" → Days consecutive, best streak ever, streak multiplier (consecutive workouts = higher XP gains).
+**查看连贯性状态**  
+例如：“查看我的锻炼连贯性” → 系统会显示你连续锻炼的天数、最长连贯天数以及相应的经验值加成（连续锻炼天数越多，获得的经验值越高）。
 
-**Level up**
-"Level up my gym profile" → Confirms rank advancement when you hit XP thresholds. Unlocks new rank badge and special ability.
+**升级等级**  
+例如：“提升我的健身房等级” → 当你的经验值达到升级条件时，系统会确认你的等级提升，并解锁新的等级徽章和特殊能力。
 
-## Rank System
+## 等级系统**
 
-Climb the ladder. Each rank requires progressively more XP.
+每个等级的晋升都需要越来越多的经验值：
 
-- **Bronze** (0-500 XP) - You showed up. That's the win.
-- **Silver** (500-1,500 XP) - Consistency matters. You're building the habit.
-- **Gold** (1,500-3,500 XP) - Serious progress. People notice.
-- **Platinum** (3,500-7,000 XP) - Elite tier. You're a machine.
-- **Diamond** (7,000-12,000 XP) - Rare air. Few reach here.
-- **Master** (12,000+ XP) - Legend status. The benchmark.
+- **青铜级（Bronze）**（0-500 XP）：你只是开始了锻炼之旅，但这已经是一个小小的胜利。
+- **白银级（Silver）**（500-1,500 XP）：坚持很重要，你正在养成锻炼的习惯。
+- **黄金级（Gold）**（1,500-3,500 XP）：取得了显著的进步，已经引起了他人的注意。
+- **白金级（Platinum）**（3,500-7,000 XP）：属于精英行列，表现非常出色。
+- **钻石级（Diamond）**（7,000-12,000 XP）：非常罕见，只有少数人能达到这个等级。
+- **大师级（Master）**（12,000 XP以上）：达到了传奇地位，成为了真正的健身高手。
 
-## Achievements
+## 成就系统
 
-Unlock badges for hitting fitness milestones.
+通过达成特定的健身里程碑，你可以解锁各种徽章：
 
-- **First Rep** - Complete your first logged workout. (Bronze unlock)
-- **Week Warrior** - 7-day consecutive workout streak.
-- **Century Club** - 100 total workouts logged.
-- **Iron Grip** - 1,000 lbs total volume in a single session.
-- **Unstoppable** - 30-day unbroken workout streak.
-- **Marathon** - Single session exceeds 90 minutes.
-- **Consistency King** - Workout every day for 60 days.
-- **Volume Master** - Accumulate 50,000 lbs lifetime volume.
-- **Perfect Month** - Complete planned workouts for entire month.
-- **Legend Born** - Reach Master rank.
+- **首次锻炼**：完成你的第一次锻炼记录（青铜级解锁徽章）。
+- **连续锻炼7天**：连续7天进行锻炼。
+- **累计100次锻炼**：完成100次锻炼。
+- **单次锻炼1,000磅**：在单次锻炼中完成总计1,000磅的重量训练。
+- **连续锻炼30天**：保持30天的连续锻炼记录。
+- **马拉松级锻炼**：单次锻炼时间超过90分钟。
+- **坚持之王**：连续60天每天进行锻炼。
+- **累计锻炼量达到50,000磅**：累计完成50,000磅的锻炼量。
+- **完美完成一个月的锻炼计划**：整个月都按计划完成了所有锻炼。
+- **成为传奇**：成功晋升到大师级。
 
-## Tips
+## 使用建议：
 
-1. **Streak is gold** - Consecutive days = XP multiplier. Break the chain and lose momentum fast. The streak is your most powerful motivator.
-
-2. **Log everything** - Cardio, strength, sports, stretching—all count. The system rewards consistency over perfection. 10 min walk = XP earned.
-
-3. **Mix intensity** - Quick sessions earn base XP. Heavy lifting or high-intensity days get multipliers. Variety keeps you climbing.
-
-4. **Achievements compound** - Early badges feel trivial. But earning 10 of them? That's momentum. That's proof. Celebration is part of the game.
-
-5. **All data stays local on your machine** - Your rank, streaks, achievements—zero cloud uploads. No tracking, no ads. Just you vs. your best self.
+1. **连贯性是关键**：连续锻炼的日子越多，获得的经验值就越多。一旦中断连贯性，进步的速度就会变慢。保持连贯性是你最强大的动力来源。
+2. **记录所有锻炼**：有氧运动、力量训练、体育运动、拉伸——所有类型的锻炼都会被计入系统。系统更看重的是锻炼的坚持性，而非完美度。即使是10分钟的散步也能获得经验值。
+3. **多样化锻炼方式**：快速完成的锻炼可以获得基础经验值；高强度或高强度的锻炼日则能获得额外的经验值加成。多样化的锻炼方式有助于你持续进步。
+4. **成就的积累很重要**：起初解锁的徽章可能看起来很简单，但当你累计获得多个徽章时，那才是真正的成就。庆祝自己的进步也是锻炼过程中不可或缺的一部分。
+5. **所有数据仅保存在你的设备上**：你的等级、连贯性记录和成就数据都不会上传到云端。没有第三方跟踪或广告干扰，只有你与自己最好的状态之间的竞争。

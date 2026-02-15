@@ -1,15 +1,15 @@
-# Self-Backup Skill
+# 自动备份功能
 
-**Automatic workspace and memory backups for AI agents.**
+**为AI代理提供自动的工作区和内存备份功能。**
 
-Every agent needs backups. This skill handles:
-- 🧠 Memory files (MEMORY.md, daily logs)
-- 🆔 Identity files (SOUL.md, USER.md, AGENTS.md, IDENTITY.md)
-- 📜 Scripts and automation
-- 💾 openclaw-mem database
-- ⚙️ Configuration files
+每个代理都需要备份。本功能负责备份以下内容：
+- 🧠 内存文件（MEMORY.md、每日日志）
+- 🆔 身份文件（SOUL.md、USER.md、AGENTS.md、IDENTITY.md）
+- 📜 脚本和自动化脚本
+- 💾 openclaw-mem数据库
+- ⚙️ 配置文件
 
-## Installation
+## 安装
 
 ```bash
 # Install via ClawHub
@@ -19,7 +19,7 @@ clawhub install self-backup
 cp -r self-backup /Users/sem/argent/skills/
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create backup config
@@ -33,9 +33,9 @@ nano config/backup.json
 ./scripts/backup.sh
 ```
 
-## Configuration
+## 配置
 
-Edit `config/backup.json`:
+编辑 `config/backup.json` 文件：
 
 ```json
 {
@@ -83,9 +83,9 @@ Edit `config/backup.json`:
 }
 ```
 
-## Usage
+## 使用方法
 
-### On-Demand Backup
+### 按需备份
 
 ```bash
 # Backup now
@@ -98,16 +98,16 @@ Edit `config/backup.json`:
 ./scripts/backup.sh --dry-run
 ```
 
-### Scheduled Backups (Cron)
+### 定时备份（Cron任务）
 
-Add to your `HEARTBEAT.md` or set up a cron job:
+将相关配置添加到 `HEARTBEAT.md` 文件中，或设置一个 Cron 任务：
 
 ```bash
 # Daily backup at 3 AM
 0 3 * * * /Users/sem/argent/skills/self-backup/scripts/backup.sh
 ```
 
-Or use OpenClaw cron:
+也可以使用 OpenClaw 的 Cron 功能进行定时备份：
 
 ```bash
 # Create daily backup job
@@ -117,34 +117,19 @@ openclaw cron add \
   --command "/Users/sem/argent/skills/self-backup/scripts/backup.sh"
 ```
 
-### Restore
+### 恢复数据
 
-```bash
-# List available backups
-./scripts/restore.sh --list
+**数据库恢复：**
+- 数据库使用 SQLite 的 `.backup` 命令进行备份，以确保数据完整性
+- 备份文件存储在 `.databases/` 子目录中
+- 可以单独恢复数据库：在交互式命令行中输入 `db` 命令
+- 完整恢复时会自动包括数据库的恢复
 
-# Restore specific backup (full)
-./scripts/restore.sh --backup 2026-02-03-09-30 --full
+## 备份目标
 
-# Restore databases only
-./scripts/restore.sh --backup 2026-02-03-09-30
-# Then type: db
+### 本地目录
 
-# Restore specific file
-./scripts/restore.sh --backup 2026-02-03-09-30 --file MEMORY.md
-```
-
-**Database restore:**
-- Databases are backed up using SQLite's `.backup` command for integrity
-- Stored separately in `.databases/` subdirectory
-- Can restore databases independently: type `db` at the interactive prompt
-- Full restore automatically includes database restoration
-
-## Backup Targets
-
-### Local Directory
-
-Backs up to a local directory with timestamped folders:
+将备份文件保存到本地目录，并为每个备份文件添加时间戳：
 
 ```
 /Users/sem/backups/argent/
@@ -153,9 +138,9 @@ Backs up to a local directory with timestamped folders:
   └── 2026-02-04-09-30/
 ```
 
-### Git Repository
+### Git 仓库
 
-Commits and pushes backups to a git repo:
+将备份文件提交并推送到 Git 仓库：
 
 ```bash
 # Enable git backup
@@ -171,7 +156,7 @@ Commits and pushes backups to a git repo:
 
 ### Amazon S3
 
-Syncs to S3 bucket (requires AWS CLI):
+将备份文件同步到 Amazon S3 存储桶（需要使用 AWS CLI）：
 
 ```bash
 # Install AWS CLI
@@ -193,7 +178,7 @@ aws configure
 
 ### Cloudflare R2
 
-Syncs to R2 bucket (S3-compatible, often cheaper):
+将备份文件同步到 Cloudflare R2 存储桶（与 S3 兼容，通常成本更低）：
 
 ```bash
 # Install AWS CLI (R2 uses S3 API)
@@ -215,50 +200,48 @@ brew install awscli
 }
 ```
 
-**Why R2?**
-- Zero egress fees (S3 charges for downloads)
-- S3-compatible API (same tools work)
-- Often cheaper storage costs
-- Great for frequent backups
+**为什么选择 Cloudflare R2？**
+- 无数据传输费用（S3 的下载费用由用户承担）
+- 兼容 S3 的 API（使用相同的工具进行操作）
+- 存储成本通常更低
+- 非常适合频繁备份的需求
 
-## What Gets Backed Up
+## 备份的内容
 
-**Memory & Identity:**
-- `MEMORY.md` - Long-term curated memory
-- `memory/YYYY-MM-DD.md` - Daily logs
-- `SOUL.md` - Personality and behavior
-- `USER.md` - Human context
-- `AGENTS.md` - Operational guidelines
-- `IDENTITY.md` - Basic identity info
-- `TOOLS.md` - Tool-specific notes
+**内存和身份信息：**
+- `MEMORY.md` - 长期保存的内存数据
+- `memory/YYYY-MM-DD.md` - 每日日志
+- `SOUL.md` - 代理的个性和行为信息
+- `USER.md` - 与人类用户相关的上下文信息
+- `AGENTS.md` - 运行指南
+- `IDENTITY.md` - 基本身份信息
+- `TOOLS.md` - 与工具相关的备注
 
-**Database:**
-- `~/.openclaw-mem/memory.db` - Persistent memory database
-  - **Special handling**: Uses SQLite `.backup` command for data integrity
-  - Ensures consistent backup even if database is being written to
-  - Stored in `.databases/` subdirectory of backup
+**数据库：**
+- `~/.openclaw-mem/memory.db` - 持久性内存数据库
+  - **特殊处理**：使用 SQLite 的 `.backup` 命令确保数据完整性
+  - 即使数据库正在写入数据，也能完成备份
+  - 备份文件存储在 `backup` 目录下的 `.databases/` 子目录中
 
-**Scripts & Automation:**
-- `scripts/` - All automation scripts
-- `config/` - Configuration files
+**脚本和自动化脚本：**
+- `scripts/` - 所有的自动化脚本
+- `config/` - 配置文件
 
-**Optional:**
-- Project files (if configured)
-- Logs (if retention enabled)
+**可选选项：**
+- 项目文件（如果已配置）
+- 日志文件（如果启用了日志保留功能）
 
-## Retention Policy
+## 保留策略
 
-Old backups are automatically cleaned up based on retention settings:
+根据配置自动清理旧备份文件：
+- **每日**：保留最近 7 天的备份
+- **每周**：保留最近 4 周的备份
+- **每月**：保留最近 12 个月的备份
+- 要禁用备份保留功能，请将相关值设置为 `-1`
 
-- **Daily:** Keep last 7 days
-- **Weekly:** Keep last 4 weeks (one per week)
-- **Monthly:** Keep last 12 months (one per month)
+## 代理使用方法
 
-Disable retention: Set values to `-1`
-
-## Agent Usage
-
-Agents can trigger backups proactively:
+代理可以主动触发备份操作：
 
 ```typescript
 // Check if backup is needed
@@ -270,7 +253,7 @@ if (hoursSince > 24) {
 }
 ```
 
-Or add to heartbeat checks in `HEARTBEAT.md`:
+或者将备份任务添加到 `HEARTBEAT.md` 文件中的心跳检查脚本中：
 
 ```markdown
 ## Self-Backup (daily)
@@ -278,9 +261,9 @@ Check last backup timestamp. If >24 hours, run backup.
 Track in memory/heartbeat-state.json
 ```
 
-## Disaster Recovery
+## 灾难恢复
 
-**Full restore:**
+**完全恢复：**
 
 ```bash
 # 1. List backups
@@ -293,7 +276,7 @@ Track in memory/heartbeat-state.json
 ls -la /Users/sem/argent/
 ```
 
-**Selective restore:**
+**选择性恢复：**
 
 ```bash
 # Restore just memory files
@@ -303,9 +286,9 @@ ls -la /Users/sem/argent/
 ./scripts/restore.sh --backup 2026-02-03-09-30 --filter "scripts/"
 ```
 
-## Notifications
+## 通知机制
 
-Get notified when backups complete:
+在备份完成时接收通知：
 
 ```json
 {
@@ -318,9 +301,9 @@ Get notified when backups complete:
 }
 ```
 
-## Security
+## 安全性
 
-**Encrypted backups:**
+**加密备份：**
 
 ```bash
 # Enable encryption
@@ -333,7 +316,7 @@ Get notified when backups complete:
 }
 ```
 
-**Exclude sensitive data:**
+**排除敏感数据：**
 
 ```json
 {
@@ -346,9 +329,9 @@ Get notified when backups complete:
 }
 ```
 
-## Troubleshooting
+## 故障排除**
 
-**Backup fails:**
+**备份失败：**
 ```bash
 # Check logs
 tail -f ~/.openclaw-backup/logs/backup.log
@@ -357,13 +340,13 @@ tail -f ~/.openclaw-backup/logs/backup.log
 ./scripts/backup.sh --verbose
 ```
 
-**Out of space:**
+**磁盘空间不足：**
 ```bash
 # Check retention settings
 # Reduce retention periods or enable compression
 ```
 
-**Git push fails:**
+**Git 提交失败：**
 ```bash
 # Check SSH keys
 ssh -T git@github.com
@@ -371,17 +354,17 @@ ssh -T git@github.com
 # Check repo permissions
 ```
 
-## Why This Matters
+## 重要性
 
-Agents lose memory between sessions. Backups are your safety net:
-- 💾 **Disaster recovery** - Restore from crashes
-- 🔄 **Migration** - Move to new machines
-- 🕰️ **Time travel** - See how you've evolved
-- 🤝 **Sharing** - Share workspace setup with other agents
+代理在会话之间会丢失部分数据。备份是你的安全保障：
+- 💾 **灾难恢复**：在系统崩溃后可以恢复数据
+- 🔄 **迁移**：便于将代理迁移到新机器
+- 🕰️ **回顾发展历程**：查看代理的演变过程
+- 🤝 **共享工作环境**：与其他代理共享配置信息
 
-## Example: Heartbeat Integration
+## 示例：如何将备份功能集成到心跳检查中
 
-Add to your `HEARTBEAT.md`:
+将相关代码添加到 `HEARTBEAT.md` 文件中：
 
 ```markdown
 ## Self-Backup (daily at 3 AM via cron)
@@ -392,6 +375,6 @@ If last backup >48 hours, alert human.
 
 ---
 
-**Built by Argent** ⚡  
-Published to ClawHub: https://clawhub.com/webdevtodayjason/self-backup  
-GitHub: https://github.com/webdevtodayjason/self-backup-skill
+**由 Argent 开发 ⚡**
+发布于 ClawHub：https://clawhub.com/webdevtodayjason/self-backup  
+GitHub：https://github.com/webdevtodayjason/self-backup-skill

@@ -1,6 +1,6 @@
 ---
 name: windows-remote
-description: Control remote Windows machines via SSH. Use when executing commands on Windows, checking GPU status (nvidia-smi), running scripts, or managing remote Windows systems. Triggers on "run on Windows", "execute on remote", "check GPU", "nvidia-smi", "远程执行", "Windows 命令".
+description: 通过 SSH 控制远程 Windows 机器。适用于在 Windows 上执行命令、检查 GPU 状态（使用 nvidia-smi）、运行脚本或管理远程 Windows 系统。相关操作包括：“在 Windows 上运行”、“在远程机器上执行”、“检查 GPU 状态”、“使用 nvidia-smi”等。
 metadata:
   {
     "openclaw":
@@ -42,13 +42,13 @@ metadata:
   }
 ---
 
-# Windows Remote Control
+# Windows远程控制
 
-Execute commands on remote Windows machines via SSH.
+通过SSH在远程Windows机器上执行命令。
 
-## Configuration
+## 配置
 
-Set environment variables in `~/.openclaw/openclaw.json` under `skills.windows-remote.env`:
+在`~/.openclaw/openclaw.json`文件中的`skills.windows-remote.env`部分设置环境变量：
 
 ```json
 {
@@ -64,46 +64,46 @@ Set environment variables in `~/.openclaw/openclaw.json` under `skills.windows-r
 }
 ```
 
-Or export directly:
+或者直接导出环境变量：
 ```bash
 export WINDOWS_SSH_HOST="192.168.1.100"
 export WINDOWS_SSH_PORT="22"
 export WINDOWS_SSH_USER="Administrator"
 ```
 
-## Quick Commands
+## 快速命令
 
-### Check Connection
+### 检查连接
 ```bash
 scripts/win-exec.sh "echo connected"
 ```
 
-### GPU Status
+### GPU状态
 ```bash
 scripts/win-exec.sh "nvidia-smi"
 ```
 
-### Run PowerShell
+### 运行PowerShell
 ```bash
 scripts/win-exec.sh "powershell -Command 'Get-Process | Select-Object -First 10'"
 ```
 
-### Execute Script
+### 执行脚本
 ```bash
 scripts/win-exec.sh "python C:\\path\\to\\script.py"
 ```
 
-## Script Reference
+## 脚本参考
 
 ### win-exec.sh
-Execute a single command on the remote Windows machine.
+在远程Windows机器上执行单个命令。
 
 ```bash
 scripts/win-exec.sh "<command>"
 ```
 
 ### win-gpu.sh
-Quick GPU status check (nvidia-smi wrapper).
+快速检查GPU状态（使用nvidia-smi工具）。
 
 ```bash
 scripts/win-gpu.sh
@@ -111,52 +111,52 @@ scripts/win-gpu.sh --query  # Compact output
 ```
 
 ### win-upload.sh
-Upload files to the remote machine via SCP.
+通过SCP将文件上传到远程机器。
 
 ```bash
 scripts/win-upload.sh <local-file> <remote-path>
 ```
 
 ### win-download.sh
-Download files from the remote machine.
+从远程机器下载文件。
 
 ```bash
 scripts/win-download.sh <remote-path> <local-file>
 ```
 
-## Common Tasks
+## 常见任务
 
-### Check if Ollama is Running
+### 检查Ollama是否正在运行
 ```bash
 scripts/win-exec.sh "tasklist | findstr ollama"
 ```
 
-### Start a Service
+### 启动服务
 ```bash
 scripts/win-exec.sh "net start <service-name>"
 ```
 
-### Run Python with GPU
+### 使用GPU运行Python程序
 ```bash
 scripts/win-exec.sh "python -c \"import torch; print(torch.cuda.is_available())\""
 ```
 
-### Check Disk Space
+### 检查磁盘空间
 ```bash
 scripts/win-exec.sh "wmic logicaldisk get size,freespace,caption"
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Connection refused | Check SSH service: `Get-Service sshd` |
-| Permission denied | Verify SSH key in `~/.ssh/authorized_keys` or `administrators_authorized_keys` |
-| Timeout | Check firewall rules, verify IP/port |
-| Command not found | Use full path or check PATH on Windows |
+| 连接被拒绝 | 检查SSH服务：`Get-Service sshd` |
+| 权限被拒绝 | 确认`~/.ssh/authorized_keys`或`administrators_authorized_keys`中包含正确的SSH密钥 |
+| 超时 | 检查防火墙规则，并确认IP地址和端口号正确 |
+| 命令未找到 | 使用完整路径执行命令，或检查Windows系统的PATH环境变量 |
 
-## Security Notes
+## 安全注意事项
 
-- Use SSH keys instead of passwords
-- Keep private keys secure (chmod 600)
-- Consider using Tailscale for cross-network access
+- 使用SSH密钥代替密码
+- 保护私钥的安全（使用`chmod 600`设置权限）
+- 考虑使用Tailscale来实现跨网络访问

@@ -1,29 +1,29 @@
 ---
 name: granola
-description: Access Granola meeting transcripts and notes.
+description: 访问 Granola 会议的记录和笔记。
 homepage: https://granola.ai
 metadata: {"clawdbot":{"emoji":"🥣","requires":{"bins":["python3"]}}}
 ---
 
-# granola
+# Granola
 
-Access Granola meeting transcripts, summaries, and notes.
+您可以查看 Granola 会议的记录、摘要和笔记。
 
-## Setup
+## 设置
 
-Granola stores meetings in the cloud. To access them locally:
+Granola 将会议数据存储在云端。若要在本地访问这些数据，请按照以下步骤操作：
 
-1. **Install dependencies:**
+1. **安装所需依赖项：**
 ```bash
 pip install requests
 ```
 
-2. **Run initial sync:**
+2. **运行首次同步：**
 ```bash
 python ~/path/to/clawdbot/skills/granola/scripts/sync.py ~/granola-meetings
 ```
 
-3. **Set up automatic sync via clawdbot cron:**
+3. **通过 clawdbot 安排自动同步：**
 ```javascript
 clawdbot_cron({
   action: "add",
@@ -42,43 +42,34 @@ clawdbot_cron({
 })
 ```
 
-The sync script reads auth from `~/Library/Application Support/Granola/supabase.json` (created when you sign into Granola on macOS).
+同步脚本会从 `~/Library/Application Support/Granola/supabase.json` 文件中读取认证信息（该文件在您使用 macOS 登录 Granola 时自动生成）。
 
-## Data Structure
+## 数据结构
 
-After sync, each meeting is a folder:
-```
-~/granola-meetings/
-  {meeting-id}/
-    metadata.json   - title, date, attendees
-    transcript.md   - formatted transcript  
-    transcript.json - raw transcript data
-    document.json   - full API response
-    notes.md        - AI summary (if available)
-```
+同步完成后，每个会议都会被存储为一个文件夹。
 
-## Quick Commands
+## 快速命令
 
-**List recent meetings:**
+- **列出最近举行的会议：**
 ```bash
 for d in $(ls -t ~/granola-meetings | head -10); do
   jq -r '"\(.created_at[0:10]) | \(.title)"' ~/granola-meetings/$d/metadata.json 2>/dev/null
 done
 ```
 
-**Search by title:**
+- **按会议标题搜索：**
 ```bash
 grep -l "client name" ~/granola-meetings/*/metadata.json | while read f; do
   jq -r '.title' "$f"
 done
 ```
 
-**Search transcript content:**
+- **搜索会议记录内容：**
 ```bash
 grep -ri "keyword" ~/granola-meetings/*/transcript.md
 ```
 
-**Meetings on a specific date:**
+- **查找特定日期的会议：**
 ```bash
 for d in ~/granola-meetings/*/metadata.json; do
   if jq -e '.created_at | startswith("2026-01-03")' "$d" > /dev/null 2>&1; then
@@ -87,9 +78,9 @@ for d in ~/granola-meetings/*/metadata.json; do
 done
 ```
 
-## Notes
+## 注意事项：
 
-- Sync requires the Granola desktop app to be signed in (for auth tokens)
-- Tokens expire after ~6 hours; open Granola to refresh them
-- macOS only (auth file path is macOS-specific)
-- For multi-machine setups, sync on one machine and rsync the folder to others
+- 同步需要先登录 Granola 桌面应用程序以获取认证令牌。
+- 令牌的有效期约为 6 小时，需要定期登录 Granola 以更新令牌。
+- 本功能仅适用于 macOS 系统（认证文件的路径因 macOS 系统而异）。
+- 在多台机器上使用该功能时，只需在一台机器上执行同步操作，然后使用 `rsync` 命令将会议文件夹复制到其他机器上。

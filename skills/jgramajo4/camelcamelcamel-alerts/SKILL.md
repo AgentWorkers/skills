@@ -1,19 +1,19 @@
 ---
 name: camelcamelcamel-alerts
-description: Monitor CamelCamelCamel price drop alerts via RSS and send Telegram notifications when items go on sale. Use when setting up automatic price tracking for Amazon products with CamelCamelCamel price alerts.
+description: 通过 RSS 监控 CamelCamelCamel 的价格下降警报，并在商品打折时发送 Telegram 通知。适用于为 Amazon 产品设置自动价格跟踪功能并使用 CamelCamelCamel 的价格警报系统的情况。
 ---
 
-# CamelCamelCamel Alerts
+# CamelCamelCamel 价格监控提醒
 
-Automatically monitor your CamelCamelCamel RSS feed for Amazon price drops and get notified on Telegram.
+自动监控 CamelCamelCamel 的 RSS 源，以便在亚马逊商品价格下降时通过 Telegram 收到通知。
 
-## Quick Start
+## 快速入门
 
-1. **Get your RSS feed URL** from CamelCamelCamel:
-   - Go to https://camelcamelcamel.com/ and set up price alerts
-   - Get your personal RSS feed URL (format: `https://camelcamelcamel.com/alerts/YOUR_UNIQUE_ID.xml`)
+1. **获取您的 RSS 源 URL**：
+   - 访问 https://camelcamelcamel.com/ 并设置价格提醒
+   - 获取您的个人 RSS 源 URL（格式：`https://camelcamelcamel.com/alerts/YOUR_UNIQUE_ID.xml`）
 
-2. **Create a cron job** with YOUR feed URL (not someone else's!):
+2. **创建一个 cron 任务**，使用您的 RSS 源 URL（请确保使用的是您自己的 URL！）：
 
 ```bash
 cron add \
@@ -25,50 +25,50 @@ cron add \
   }'
 ```
 
-**Important**: Replace `YOUR_UNIQUE_ID` with your own feed ID from step 1. Each person needs their own feed URL!
+**重要提示**：请将 `YOUR_UNIQUE_ID` 替换为第一步中获得的唯一 ID。每个人都需要自己的 RSS 源 URL！
 
-3. **Clawdbot will**:
-   - Fetch your feed every 4 hours
-   - Detect new price alerts
-   - Send you Telegram notifications
+3. **Clawdbot 将会**：
+   - 每 4 小时获取一次您的 RSS 源数据
+   - 检测新的价格提醒
+   - 通过 Telegram 向您发送通知
 
-## How It Works
+## 工作原理
 
-The skill uses two components:
+该功能依赖于两个组件：
 
 ### `scripts/fetch_rss.py`
-- Fetches your CamelCamelCamel RSS feed
-- Parses price alert items
-- Compares against local cache to find new alerts
-- Outputs JSON with new items detected
-- Caches item hashes to avoid duplicate notifications
+- 获取 CamelCamelCamel 的 RSS 源数据
+- 解析价格提醒信息
+- 与本地缓存进行对比，找出新的提醒
+- 输出包含新检测到的信息的 JSON 文件
+- 将提醒的哈希值缓存起来，以避免重复通知
 
-### Cron Integration
-- Runs on a schedule you define
-- Triggers fetch_rss.py
-- Can be configured to run hourly, every 4 hours, daily, etc.
+### Cron 任务集成
+- 按照您设定的时间表运行
+- 触发 `fetch_rss.py` 脚本
+- 可以配置为每小时、每 4 小时、每天等频率运行
 
-## Setup & Configuration
+## 设置与配置
 
-**See [SETUP.md](references/SETUP.md)** for:
-- How to get your CamelCamelCamel RSS feed URL
-- Step-by-step cron configuration
-- Customizing check frequency
-- Cache management
-- Troubleshooting
+请参阅 [SETUP.md](references/SETUP.md) 以了解以下内容：
+- 如何获取 CamelCamelCamel 的 RSS 源 URL
+- Cron 任务的详细配置步骤
+- 自定义检查频率
+- 缓存管理
+- 故障排除
 
-## Alert Cache
+## 提醒缓存
 
-The script maintains a cache at `/tmp/camelcamelcamel/cache.json` to track which alerts have been notified. This prevents duplicate notifications.
+该脚本在 `/tmp/camelcamelcamel/cache.json` 文件中维护一个缓存，用于记录已接收到的通知，从而避免重复通知。
 
-**Clear the cache** to re-test notifications:
+**清除缓存** 可以重新触发通知：
 ```bash
 rm /tmp/camelcamelcamel/cache.json
 ```
 
-## Notification Format
+## 通知格式
 
-When a new price drop is detected, you'll receive a Telegram message like:
+当检测到新的价格下降时，您会收到如下格式的 Telegram 消息：
 
 ```
 🛒 *Price Alert*
@@ -82,42 +82,35 @@ Last checked: [timestamp]
 View on Amazon: [link]
 ```
 
-## Customization
+## 自定义设置
 
-### Check Frequency
+### 检查频率
 
-Adjust the cron schedule (6th parameter in the `schedule` field):
-- `0 * * * *` → every hour
-- `0 */4 * * *` → every 4 hours (default)
-- `0 */6 * * *` → every 6 hours
-- `0 0 * * *` → daily
+调整 Cron 任务的调度时间（`schedule` 字段中的第六个参数）：
+- `0 * * * *` → 每小时
+- `0 */4 * * *` → 每 4 小时（默认值）
+- `0 */6 * * *` → 每 6 小时
+- `0 0 * * *` → 每天
 
-### Message Format
+### 消息格式
 
-Edit `scripts/notify.sh` to customize the Telegram message layout and emoji.
+编辑 `scripts/notify.sh` 文件以自定义 Telegram 消息的格式和表情符号。
 
-## Technical Details
+## 技术细节
 
-- **Language**: Python 3 (built-in libraries only)
-- **Cache**: JSON file at `/tmp/camelcamelcamel/cache.json`
-- **Feed Format**: Standard RSS/XML
-- **Dependencies**: None beyond Python standard library
-- **Timeout**: 10 seconds per feed fetch
+- **编程语言**：Python 3（仅使用内置库）
+- **缓存**：`/tmp/camelcamelcamel/cache.json` 文件
+- **数据源格式**：标准 RSS/XML 格式
+- **依赖项**：除了 Python 标准库外，无需额外依赖
+- **每次请求的超时时间**：10 秒
 
-## Troubleshooting
+## 故障排除
 
-If you're not receiving notifications:
+如果您没有收到通知，请尝试以下步骤：
+1. **验证 RSS 源 URL** 是否能在浏览器中正常访问
+2. **检查 cron 任务是否已正确设置**：使用 `cron list` 命令查看
+3. **手动测试**：尝试手动触发通知
+4. **清除缓存** 以重置系统设置
+5. **确认 Telegram 已在 Clawdbot 中正确配置**
 
-1. **Verify the feed URL** works in your browser
-2. **Check the cron job** exists: `cron list`
-3. **Test manually**:
-   ```bash
-   python3 scripts/fetch_rss.py <YOUR_FEED_URL> /tmp/camelcamelcamel
-   ```
-4. **Clear the cache** to reset:
-   ```bash
-   rm /tmp/camelcamelcamel/cache.json
-   ```
-5. **Check Telegram** is configured in Clawdbot
-
-See [SETUP.md](references/SETUP.md) for more details.
+更多详细信息，请参阅 [SETUP.md](references/SETUP.md)。

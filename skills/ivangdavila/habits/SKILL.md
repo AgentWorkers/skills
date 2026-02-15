@@ -1,104 +1,91 @@
 ---
 name: Habits
-description: Build a personal habit tracking system with streaks, reviews, and progression.
+description: 构建一个个人习惯跟踪系统，该系统支持“连续完成”（streaks）、习惯回顾（reviews）以及习惯的进步情况记录。
 metadata: {"clawdbot":{"emoji":"✅","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions doing something regularly → offer to track as habit
-- Daily check-in prompt if enabled → "Did you do X today?"
-- Surface streaks and patterns → motivation through visibility
-- Create `~/habits/` as workspace
+## 核心功能  
+- 当用户提到某项习惯性行为时，系统会主动建议将其纳入跟踪范围。  
+- 如果启用了每日提醒功能，系统会询问：“你今天完成了X任务吗？”  
+- 通过数据可视化，帮助用户发现自己的行为模式和连续完成的情况（例如连续完成某项任务的次数）。  
+- 系统会创建一个名为`~/habits/`的工作文件夹来存储所有习惯相关的文件。  
 
-## When User Mentions Habits
-- "I want to exercise more" → create habit, define frequency
-- "Did my morning routine" → log completion
-- "Skipped meditation today" → log miss, no judgment
-- "How am I doing with reading?" → show stats and streak
+## 当用户提及习惯时  
+- 如果用户表示“我想多锻炼”，系统会帮助创建新的习惯并设置完成频率。  
+- 如果用户询问“我的晨间例行事务完成了吗？”，系统会记录完成情况。  
+- 如果用户表示“今天没做冥想”，系统会记录这一情况，但不会进行评判。  
+- 如果用户询问“我的阅读习惯怎么样？”，系统会展示阅读相关的统计数据和连续完成的情况。  
 
-## Habit Definition
-- Name: clear, specific action
-- Frequency: daily, weekdays, 3x/week, weekly
-- Time of day: morning, evening, anytime (optional)
-- Minimum viable version: "at least 10 minutes" beats "1 hour"
-- Why: motivation reminder for hard days
+## 习惯的定义  
+- **名称**：清晰、具体的行为。  
+- **频率**：每日、工作日、每周3次、每周一次等。  
+- **时间**：早晨、晚上或任意时间（可选）。  
+- **最低要求**：建议设定为“至少10分钟”，这样更容易坚持。  
 
-## Tracking File Structure
-Simple approach — one file per habit:
-```
-~/habits/
-├── exercise.md
-├── reading.md
-├── meditation.md
-└── summary.md
-```
+## 跟踪文件结构  
+采用简单的方式：每个习惯对应一个文件。  
+每个习惯文件包含以下记录：  
+- 日期、完成情况（是/否）、备注。  
+- 记录应保持简洁，避免不必要的繁琐操作，以免影响跟踪效果。  
 
-Each habit file has log entries:
-- Date, done (yes/no), notes
-- Keep entries minimal — friction kills tracking
+## 连续完成情况的跟踪  
+- **当前连续完成次数**：显示用户最近连续完成某项任务的次数。  
+- **最佳连续完成记录**：显示用户历史上的最佳连续完成次数。  
+- 系统会同时展示这两个数据，以激励用户并设定新的目标。  
+- 用户可以自行决定是否暂停连续完成统计（例如，计划休息时）。  
 
-## Streak Tracking
-- Current streak: consecutive completions
-- Best streak: all-time record
-- Show both — current motivates, best sets target
-- Streak freezes optional — planned breaks don't reset
+## 频率类型  
+- **每日**：每天完成；如果错过当天，则连续完成次数中断。  
+- **工作日**：仅在工作日完成；周末不计入统计。  
+- **每周X次**：每周7天中的任意3天完成即可。  
+- **每周一次**：每周至少完成一次。  
 
-## Frequency Types
-- Daily: every day, streak breaks on miss
-- Weekdays: Mon-Fri only, weekends don't count
-- X per week: 3 of 7 days, flexible which days
-- Weekly: once per week minimum
+## 每日提醒  
+- 系统会在固定时间提供每日总结提示，例如：“快速检查一下：你今天完成了锻炼、阅读或冥想中的哪一项？”  
+- 集中式提醒比单独的提醒更减少用户操作麻烦。  
+- 如果用户当天已经记录过完成情况，系统会跳过提醒。  
 
-## Check-in Prompts
-- Offer daily summary prompt at consistent time
-- "Quick check: exercise, reading, meditation — which did you do?"
-- Batch check-in reduces friction vs individual prompts
-- Skip prompt if user already logged today
+## 逐步改进方案  
+- **第1周**：最多跟踪1-3个习惯，并每天记录完成情况。  
+- **第2周**：添加连续完成情况的可视化功能。  
+- **第2个月**：提供每周的回顾总结。  
+- **第3个月**：分析行为模式，并给出调整建议。  
 
-## Progressive Enhancement
-- Week 1: track 1-3 habits max, daily log
-- Week 2: add streak visibility
-- Month 2: weekly review summaries
-- Month 3: pattern analysis, adjustment suggestions
+## 每周回顾  
+- 显示每个习惯的完成率。  
+- 分析哪些日子完成情况较好，哪些日子较弱。  
+- 提示用户是否需要添加、删除或修改某个习惯。  
 
-## Weekly Review
-- Completion rate per habit
-- Which days strongest/weakest
-- Streak status and changes
-- Prompt: "Any habits to add, remove, or modify?"
+## 常见的行为模式  
+- 有些用户“每周二从不错过某项习惯”，但在周五容易出错。  
+- 有些用户的连续完成记录通常在14天后中断。  
+- 早晨的习惯比晚上的习惯更容易完成。  
+- 系统仅提供数据和分析，让用户自己决定如何改进。  
 
-## Common Patterns to Surface
-- "You never miss on Tuesdays but struggle Fridays"
-- "Your streak usually breaks after 14 days"
-- "Morning habits have higher completion than evening"
-- Insights without judgment — user decides action
+## 不建议的做法  
+- 不建议一开始就设置太多习惯（建议最初从2-3个开始）。  
+- 不建议使用复杂的评分系统，简单的“完成/未完成”即可。  
+- 不建议对未完成的行为进行惩罚，因为惩罚会打击用户的积极性。  
+- 不建议使用过于死板的跟踪工具，本系统提供了足够的灵活性。  
 
-## What NOT To Suggest
-- Starting with 10 habits — 2-3 max initially
-- Complex scoring systems — done/not-done is enough
-- Punishment for misses — shame doesn't build habits
-- Rigid tracking apps — files give flexibility
+## 最低要求的习惯设定  
+- 习惯应该设定得足够简单，让用户能够始终坚持。  
+- 例如，建议设定为“做1个俯卧撑”而不是“锻炼45分钟”。  
+- 先坚持最低要求，如果有精力再增加任务量。  
+- 对于习惯的养成来说，坚持比强度更重要。  
 
-## Minimum Viable Habit
-- Make habits small enough to always be possible
-- "Do one pushup" beats "workout 45 minutes"
-- Track the minimum, do more if energy allows
-- Consistency beats intensity for habit formation
+## 处理未完成的情况  
+- 记录未完成的情况时，不要批评用户，而是提供原因（如生病、旅行、忘记等）。  
+- 连续完成记录会中断，但历史数据仍然保留，用户的进步不会被忽视。  
+- 即使昨天没完成，今天完成了也算进步。  
 
-## Handling Misses
-- Log the miss without drama — data, not judgment
-- Note reason if helpful: sick, traveling, forgot
-- Streak resets but history remains — progress isn't lost
-- "Missed yesterday, did today" is still progress
+## 习惯的优化  
+- 有些习惯会逐渐成为用户的自动行为，此时可以停止主动跟踪。  
+- 例如，当用户表示“我不再需要记录刷牙的习惯”时，系统会将其从活跃跟踪列表中移除，并庆祝用户的成就。  
+- 为新的习惯腾出空间。  
 
-## Habit Graduation
-- Some habits become automatic — consider retiring from active tracking
-- "I don't need to track brushing teeth anymore"
-- Archive to completed habits, celebrate the win
-- Make room for new habits to build
-
-## Integration Points
-- Calendar: block time for habits
-- Morning/evening routine: bundle related habits
-- Contacts: accountability partner check-ins if wanted
-- Journal: reflect on habit patterns
+## 集成方式  
+- **日历**：为习惯安排固定的时间。  
+- **晨间/晚间例行事务**：将相关的习惯组合在一起进行跟踪。  
+- **联系人**：用户可以选择让朋友或家人帮忙监督习惯的完成情况。  
+- **日记**：通过写日记来反思自己的习惯模式。

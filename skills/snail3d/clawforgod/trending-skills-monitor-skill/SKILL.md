@@ -1,15 +1,15 @@
 ---
 name: trending-skills-monitor
-description: Track and discover trending, new, and recently updated skills from ClawdHub. Filter by interests (3D printing, coding, automation, etc.), category, or search keywords. Get daily/weekly reports or enable watch mode for continuous monitoring.
+description: 跟踪并发现来自ClawdHub的热门技能、新技能以及最近更新的技能。您可以根据兴趣（如3D打印、编程、自动化等）、类别或关键词进行筛选。还可以选择接收每日/每周的报告，或启用监控模式以实现持续关注。
 ---
 
-# Trending Skills Monitor
+# 流行技能监控器
 
-Discover what's new and hot in the Clawdbot skill ecosystem. Track trending skills, new releases, recent updates, and filter by your interests.
+发现Clawdbot技能生态系统中最新和最热门的技能。跟踪热门技能、新发布的技能以及最近的更新，并根据您的兴趣进行筛选。
 
-## Quick Start
+## 快速入门
 
-### Basic Usage
+### 基本使用
 
 ```bash
 # Check this week's trending skills
@@ -28,7 +28,7 @@ trending-skills-monitor --top 10
 trending-skills-monitor --watch --interval 3600
 ```
 
-### Output Example
+### 输出示例
 
 ```
 🔥 Trending Skills Report
@@ -60,48 +60,48 @@ trending-skills-monitor --watch --interval 3600
 📊 Total skills: 28
 ```
 
-## Features
+## 功能
 
-### 1. Track New Skills
-- Discover skills released in the last X days (configurable)
-- Shows download count, description, and creation date
-- Helps you stay updated with the latest releases
+### 1. 跟踪新技能
+- 发现过去X天内发布的技能（可配置）
+- 显示下载次数、描述和创建日期
+- 帮助您随时了解最新发布的内容
 
-### 2. Trending Analysis
-- Most installed/downloaded community favorites
-- Ranked by install count or downloads
-- Includes rating and category info
-- Helps identify proven, popular tools
+### 2. 流行趋势分析
+- 最受社区欢迎的安装/下载量最高的技能
+- 按安装次数或下载次数排名
+- 包含评分和类别信息
+- 帮助您识别经过验证的、受欢迎的工具
 
-### 3. Monitor Updates
-- Track recently updated skills
-- See version changes and changelogs
-- Know when your favorite skills get improvements
-- Avoid missing important feature releases
+### 3. 监控更新
+- 跟踪最近更新的技能
+- 查看版本变更和更新日志
+- 知道您喜欢的技能何时得到了改进
+- 避免错过重要的功能更新
 
-### 4. Smart Filtering
-- Filter by interests: `--interests "3D printing, coding"`
-- Filter by category: `--category "automation"`
-- Combined filtering for precise results
-- Fuzzy keyword matching on descriptions
+### 4. 智能筛选
+- 按兴趣筛选：`--interests "3D打印, 编程"`
+- 按类别筛选：`--category "自动化"`
+- 综合筛选以获得精确结果
+- 对描述进行模糊关键词匹配
 
-### 5. Watch Mode
-- Continuous monitoring of ClawdHub
-- Configurable check interval
-- New skill discovery notifications
-- Helps you catch trends early
+### 5. 监控模式
+- 持续监控ClawdHub
+- 可配置的检查间隔
+- 新技能发现通知
+- 帮助您尽早捕捉趋势
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Weekly Trend Report
+### 示例1：每周趋势报告
 
 ```bash
 trending-skills-monitor --days 7
 ```
 
-Gets all new skills from the last 7 days, trending skills, and recent updates.
+获取过去7天的所有新技能、热门技能以及最近的更新。
 
-### Example 2: Focus on Your Interests
+### 示例2：关注您的兴趣
 
 ```bash
 trending-skills-monitor \
@@ -110,9 +110,9 @@ trending-skills-monitor \
   --format markdown
 ```
 
-Filters results to skills matching "automation" or "data processing" from the last 2 weeks, outputs as markdown.
+筛选出过去2周内与“自动化”或“数据处理”相关的技能，并以Markdown格式输出。
 
-### Example 3: Top Skills in a Category
+### 示例3：某个类别中的顶级技能
 
 ```bash
 trending-skills-monitor \
@@ -121,9 +121,9 @@ trending-skills-monitor \
   --sort rating
 ```
 
-Shows top 5 IoT skills sorted by rating.
+显示按评分排序的前5个物联网（IoT）技能。
 
-### Example 4: Watch Mode with Email Reports
+### 示例4：带有电子邮件报告的监控模式
 
 ```bash
 # Run in background, check every 6 hours
@@ -136,9 +136,9 @@ trending-skills-monitor \
 # Then pipe to email or Telegram
 ```
 
-### Example 5: Track Your Favorite Skills
+### 示例5：跟踪您喜欢的技能
 
-Create a config file and check daily:
+创建一个配置文件并每天检查：
 
 ```bash
 # config.json
@@ -152,9 +152,9 @@ Create a config file and check daily:
 trending-skills-monitor --config config.json --format json
 ```
 
-## Command Reference
+## 命令参考
 
-### Global Options
+### 全局选项
 
 ```
 --days N              Look back N days for new/updated skills (default: 7)
@@ -170,7 +170,7 @@ trending-skills-monitor --config config.json --format json
 --help                Show this help message
 ```
 
-### Examples
+### 示例
 
 ```bash
 # New skills from last 30 days
@@ -199,24 +199,24 @@ trending-skills-monitor \
   --sort rating
 ```
 
-## Output Formats
+## 输出格式
 
-### Text Format (Default)
+### 文本格式（默认）
 
-Plain text with emojis, organized in sections:
-- ✨ NEW RELEASES
-- 🔝 COMMUNITY FAVORITES
-- 🔄 RECENT UPDATES
+包含表情符号的纯文本，按章节组织：
+- ✨ 新发布
+- 🔝 社区热门技能
+- 🔄 最新更新
 
-Great for terminal viewing and quick scanning.
+非常适合在终端查看和快速浏览。
 
-### Markdown Format
+### Markdown格式
 
 ```bash
 trending-skills-monitor --format markdown
 ```
 
-Output:
+输出：
 ```markdown
 # 🔥 Trending Skills Report
 
@@ -229,15 +229,15 @@ Listen for HTTP webhooks in Clawdbot...
 📥 345 installs | ⭐ 4.9 | 📊 1,234 downloads
 ```
 
-Good for documentation, reports, and posting to channels.
+适合编写文档、生成报告以及发布到渠道。
 
-### JSON Format
+### JSON格式
 
 ```bash
 trending-skills-monitor --format json
 ```
 
-Structured data for programmatic processing:
+结构化数据，适用于程序化处理：
 
 ```json
 {
@@ -269,11 +269,11 @@ Structured data for programmatic processing:
 }
 ```
 
-Perfect for integration with other tools and automation.
+非常适合与其他工具和自动化系统集成。
 
-## Configuration Files
+## 配置文件
 
-Create a JSON config file to save your preferences:
+创建一个JSON配置文件来保存您的偏好设置：
 
 ```json
 {
@@ -290,24 +290,24 @@ Create a JSON config file to save your preferences:
 }
 ```
 
-Use it:
+使用方法：
 
 ```bash
 trending-skills-monitor --config my-config.json
 ```
 
-## Smart Filtering
+## 智能筛选
 
-The skill uses intelligent keyword matching:
+该工具使用智能关键词匹配功能：
 
-### Interest Matching
-- **Exact word match**: "coding" matches "coding-tutorials"
-- **Substring match**: "3d" matches "3d-printing" or "3d-model-viewer"
-- **Fuzzy matching**: "3D printing" matches skills with "3D-printing", "3d printing", "3d-print"
-- **Description search**: Searches skill descriptions, tags, and metadata
+### 兴趣匹配
+- **精确匹配**：`coding` 与 `coding-tutorials` 匹配
+- **子字符串匹配**：`3d` 与 `3d-printing` 或 `3d-model-viewer` 匹配
+- **模糊匹配**：`3D printing` 与包含“3D打印”、“3d-printing”或“3d-print”关键词的技能匹配
+- **描述搜索**：搜索技能的描述、标签和元数据
 
-### Category Matching
-Built-in category aliases for common terms:
+### 类别匹配
+为常见术语提供了内置的类别别名：
 
 ```
 automation      → "automate", "workflow", "robot", "task"
@@ -320,9 +320,9 @@ communication   → "telegram", "slack", "email", "discord"
 media           → "image", "video", "audio", "photo"
 ```
 
-## Watch Mode
+## 监控模式
 
-Continuously monitor ClawdHub for new and trending skills:
+持续监控ClawdHub上的新技能和热门技能：
 
 ```bash
 # Check every 30 minutes
@@ -335,15 +335,15 @@ trending-skills-monitor \
   --interests "security, automation"
 ```
 
-Watch mode:
-- Runs indefinitely, checking at specified interval
-- Compares with previous check to find new skills
-- Shows notifications when new skills are discovered
-- Useful for cron jobs or systemd timers
+监控模式：
+- 无限期运行，按指定间隔进行检查
+- 与上一次检查结果进行比较以发现新技能
+- 发现新技能时显示通知
+- 适用于cron作业或systemd定时器
 
-### Integration with Notifications
+### 与通知系统的集成
 
-Watch mode output to Telegram:
+将监控模式的结果发送到Telegram：
 
 ```bash
 # Assuming you have a message utility
@@ -351,9 +351,9 @@ trending-skills-monitor --format markdown | \
   message send --channel "alerts" --text "$(cat -)"
 ```
 
-## Integration Examples
+## 集成示例
 
-### Daily Digest Script
+### 每日摘要脚本
 
 ```bash
 #!/bin/bash
@@ -368,14 +368,14 @@ trending-skills-monitor \
 cat /tmp/skills-today.md
 ```
 
-Run daily via cron:
+通过cron每天运行：
 
 ```bash
 # Add to crontab
 0 9 * * * /usr/local/bin/skills-digest.sh
 ```
 
-### Slack Integration
+### Slack集成
 
 ```bash
 #!/bin/bash
@@ -397,9 +397,9 @@ curl -X POST https://hooks.slack.com/services/YOUR/WEBHOOK \
   }"
 ```
 
-### Filter to Dashboard
+### 筛选到仪表板
 
-Parse JSON output and filter:
+解析JSON输出并进行筛选：
 
 ```bash
 # Get only highly-rated new skills
@@ -407,39 +407,39 @@ trending-skills-monitor --format json | \
   jq '.new_skills | map(select(.rating >= 4.5))'
 ```
 
-## Architecture
+## 架构
 
-### Components
+### 组件
 
-**trending-skills-monitor** (CLI)
-- Entry point, argument parsing
-- Routes to main monitoring script
+**trending-skills-monitor**（CLI）
+- 入口点，参数解析
+- 路由到主监控脚本
 
 **scripts/monitor.py**
-- Main orchestrator
-- Fetches data, applies filters, formats output
-- Handles watch mode logic
+- 主协调脚本
+- 获取数据、应用筛选条件、格式化输出
+- 处理监控模式逻辑
 
 **scripts/clawdhub_api.py**
-- Communicates with ClawdHub API
-- Fallback to mock data for testing
-- Caches responses
+- 与ClawdHub API通信
+- 测试时使用模拟数据作为备用
+- 缓存响应
 
 **scripts/filter_engine.py**
-- Intelligent filtering by interests and categories
-- Fuzzy keyword matching
-- Category alias mapping
+- 根据兴趣和类别进行智能筛选
+- 模糊关键词匹配
+- 类别别名映射
 
 **scripts/formatter.py**
-- Formats output (text, JSON, markdown)
-- Different views (ranked, compact, detailed)
+- 格式化输出（文本、JSON、Markdown）
+- 提供不同的视图（排名、简洁版、详细版）
 
 **scripts/cache.py**
-- Simple file-based caching
-- Configurable TTL (time-to-live)
-- Watch mode state tracking
+- 简单的基于文件的缓存机制
+- 可配置的缓存有效期（TTL）
+- 监控模式状态跟踪
 
-### Data Flow
+### 数据流
 
 ```
 CLI args
@@ -455,9 +455,9 @@ Formatter → Format output
 Print results
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 # ClawdHub API configuration
@@ -465,33 +465,33 @@ export CLAWDHUB_API_URL="https://hub.clawdbot.com/api/v1"
 export CLAWDHUB_API_KEY="your-api-key-here"
 ```
 
-### Cache Location
+### 缓存位置
 
-Cache files stored at: `~/.cache/trending-skills-monitor/`
+缓存文件存储在：`~/.cache/trending-skills-monitor/`
 
-Clear cache:
+清除缓存：
 
 ```bash
 rm -rf ~/.cache/trending-skills-monitor/
 ```
 
-## Requirements
+## 需求
 
-### System Dependencies
-- Python 3.7+
-- requests library (`pip install requests`)
+### 系统依赖
+- Python 3.7及以上版本
+- requests库（`pip install requests`）
 
-### API Requirements
-- ClawdHub API access (will work with mock data for testing)
-- Optional: API key for authenticated requests
+### API要求
+- 需要访问ClawdHub API（测试时可以使用模拟数据）
+- 可选：用于身份验证的API密钥
 
-### Network
-- Internet connection to ClawdHub
-- Graceful fallback to mock data if unavailable
+### 网络
+- 需要连接到ClawdHub
+- 如果无法连接，则自动切换到模拟数据
 
-## Troubleshooting
+## 故障排除
 
-### No results returned
+### 未返回结果
 
 ```bash
 # Debug with verbose output
@@ -504,16 +504,16 @@ trending-skills-monitor --interests "automation" --verbose
 trending-skills-monitor --days 30
 ```
 
-### API errors
+### API错误
 
-If you see API errors but want to test:
+如果您看到API错误但希望继续测试：
 
 ```bash
 # Will use mock data
 CLAWDHUB_API_URL="http://invalid" trending-skills-monitor
 ```
 
-### Watch mode not detecting new skills
+### 监控模式未检测到新技能
 
 ```bash
 # Check cache status
@@ -526,33 +526,33 @@ rm ~/.cache/trending-skills-monitor/*
 trending-skills-monitor --watch --verbose
 ```
 
-## Future Enhancements
+## 未来改进计划
 
-Planned features:
-- [ ] Webhook notifications (Telegram, Discord, Slack)
-- [ ] Scheduled reports (daily/weekly emails)
-- [ ] Skill recommendations based on installed skills
-- [ ] Comparison tracking ("Skills similar to X")
-- [ ] Rating/review aggregation from users
-- [ ] Export to calendar (upcoming skill releases)
-- [ ] AI-powered skill summaries
-- [ ] Skill dependency tracking
+计划中的功能：
+- [ ] Webhook通知（Telegram、Discord、Slack）
+- [ ] 定期报告（每日/每周电子邮件）
+- [ ] 基于已安装技能的技能推荐
+- [ ] 技能对比功能（“类似于X的技能”）
+- [ ] 用户评分/评论汇总
+- [ ] 导出到日历（即将发布的技能）
+- [ ] 基于AI的技能摘要
+- [ ] 技能依赖关系跟踪
 
-## Scripts Reference
+## 脚本参考
 
-The skill includes these Python scripts:
+该工具包含以下Python脚本：
 
-- **monitor.py** - Main orchestrator (10KB)
-- **clawdhub_api.py** - API client (8KB)
-- **filter_engine.py** - Filtering logic (6KB)
-- **formatter.py** - Output formatting (6KB)
-- **cache.py** - Caching layer (2KB)
+- **monitor.py** - 主协调脚本（10KB）
+- **clawdhub_api.py** - API客户端（8KB）
+- **filter_engine.py** - 筛选逻辑（6KB）
+- **formatter.py** - 输出格式化脚本（6KB）
+- **cache.py** - 缓存脚本（2KB）
 
-## License & Support
+## 许可证与支持
 
-Part of the Clawdbot ecosystem. For issues or suggestions, check the ClawdHub repository.
+该工具属于Clawdbot生态系统的一部分。如有问题或建议，请查看ClawdHub仓库。
 
 ---
 
-**Last Updated:** 2026-01-29
-**Version:** 1.0.0
+**最后更新时间：** 2026-01-29
+**版本：** 1.0.0

@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 本文档由 Telnyx OpenAPI 规范自动生成，请勿修改。 -->
 
-# Telnyx Storage - Ruby
+# Telnyx 存储服务 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 配置
 
 ```ruby
 require "telnyx"
@@ -30,12 +30,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## Create Presigned Object URL
+## 创建预签名对象 URL
 
-Returns a timed and authenticated URL to download (GET) or upload (PUT) an object.
-
+用于下载（GET）或上传（PUT）对象。  
 `POST /storage/buckets/{bucketName}/{objectName}/presigned_url`
 
 ```ruby
@@ -44,10 +43,9 @@ response = client.storage.buckets.create_presigned_url("", bucket_name: "")
 puts(response)
 ```
 
-## Get Bucket SSL Certificate
+## 获取桶的 SSL 证书
 
-Returns the stored certificate detail of a bucket, if applicable.
-
+（如适用）返回桶的 SSL 证书详细信息。  
 `GET /storage/buckets/{bucketName}/ssl_certificate`
 
 ```ruby
@@ -56,10 +54,9 @@ ssl_certificate = client.storage.buckets.ssl_certificate.retrieve("")
 puts(ssl_certificate)
 ```
 
-## Add SSL Certificate
+## 添加 SSL 证书
 
-Uploads an SSL certificate and its matching secret so that you can use Telnyx's storage as your CDN.
-
+上传 SSL 证书及其对应的密钥，以便将 Telnyx 的存储服务用作 CDN。  
 `PUT /storage/buckets/{bucketName}/ssl_certificate`
 
 ```ruby
@@ -68,22 +65,14 @@ ssl_certificate = client.storage.buckets.ssl_certificate.create("")
 puts(ssl_certificate)
 ```
 
-## Remove SSL Certificate
+## 删除 SSL 证书
 
-Deletes an SSL certificate and its matching secret.
-
+删除 SSL 证书及其对应的密钥。  
 `DELETE /storage/buckets/{bucketName}/ssl_certificate`
 
-```ruby
-ssl_certificate = client.storage.buckets.ssl_certificate.delete("")
+## 获取 API 使用情况
 
-puts(ssl_certificate)
-```
-
-## Get API Usage
-
-Returns the detail on API usage on a bucket of a particular time period, group by method category.
-
+按方法类别统计指定时间段的 API 使用情况。  
 `GET /storage/buckets/{bucketName}/usage/api`
 
 ```ruby
@@ -95,10 +84,9 @@ response = client.storage.buckets.usage.get_api_usage(
 puts(response)
 ```
 
-## Get Bucket Usage
+## 获取桶的使用情况
 
-Returns the amount of storage space and number of files a bucket takes up.
-
+返回桶的存储空间大小和文件数量。  
 `GET /storage/buckets/{bucketName}/usage/storage`
 
 ```ruby
@@ -107,8 +95,9 @@ response = client.storage.buckets.usage.get_bucket_usage("")
 puts(response)
 ```
 
-## List Migration Source coverage
+## 列出迁移源覆盖范围  
 
+显示所有迁移源的覆盖范围。  
 `GET /storage/migration_source_coverage`
 
 ```ruby
@@ -117,8 +106,9 @@ response = client.storage.list_migration_source_coverage
 puts(response)
 ```
 
-## List all Migration Sources
+## 列出所有迁移源  
 
+显示所有可用的迁移源。  
 `GET /storage/migration_sources`
 
 ```ruby
@@ -127,11 +117,10 @@ migration_sources = client.storage.migration_sources.list
 puts(migration_sources)
 ```
 
-## Create a Migration Source
+## 创建迁移源  
 
-Create a source from which data can be migrated from.
-
-`POST /storage/migration_sources` — Required: `provider`, `provider_auth`, `bucket_name`
+创建一个用于数据迁移的源。  
+`POST /storage/migration_sources` — 必需参数：`provider`, `provider_auth`, `bucket_name`
 
 ```ruby
 migration_source = client.storage.migration_sources.create(bucket_name: "bucket_name", provider: :aws, provider_auth: {})
@@ -139,8 +128,9 @@ migration_source = client.storage.migration_sources.create(bucket_name: "bucket_
 puts(migration_source)
 ```
 
-## Get a Migration Source
+## 获取迁移源信息  
 
+获取特定迁移源的详细信息。  
 `GET /storage/migration_sources/{id}`
 
 ```ruby
@@ -149,8 +139,9 @@ migration_source = client.storage.migration_sources.retrieve("")
 puts(migration_source)
 ```
 
-## Delete a Migration Source
+## 删除迁移源  
 
+删除指定的迁移源。  
 `DELETE /storage/migration_sources/{id}`
 
 ```ruby
@@ -159,8 +150,9 @@ migration_source = client.storage.migration_sources.delete("")
 puts(migration_source)
 ```
 
-## List all Migrations
+## 列出所有迁移记录  
 
+显示所有已完成的迁移操作。  
 `GET /storage/migrations`
 
 ```ruby
@@ -169,11 +161,10 @@ migrations = client.storage.migrations.list
 puts(migrations)
 ```
 
-## Create a Migration
+## 创建数据迁移  
 
-Initiate a migration of data from an external provider into Telnyx Cloud Storage.
-
-`POST /storage/migrations` — Required: `source_id`, `target_bucket_name`, `target_region`
+启动从外部提供商到 Telnyx 云存储的数据迁移。  
+`POST /storage/migrations` — 必需参数：`source_id`, `target_bucket_name`, `target_region`
 
 ```ruby
 migration = client.storage.migrations.create(
@@ -185,8 +176,9 @@ migration = client.storage.migrations.create(
 puts(migration)
 ```
 
-## Get a Migration
+## 获取迁移记录  
 
+获取特定迁移的详细信息。  
 `GET /storage/migrations/{id}`
 
 ```ruby
@@ -195,8 +187,9 @@ migration = client.storage.migrations.retrieve("")
 puts(migration)
 ```
 
-## Stop a Migration
+## 停止迁移  
 
+停止正在进行的迁移操作。  
 `POST /storage/migrations/{id}/actions/stop`
 
 ```ruby

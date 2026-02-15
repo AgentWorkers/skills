@@ -1,3 +1,3 @@
-# SEO Writer
+# SEO 写作工具
 
-Generate SEO-optimized content.
+生成经过 SEO 优化的内容。

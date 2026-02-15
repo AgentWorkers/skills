@@ -1,6 +1,6 @@
 ---
 name: olympic-alert
-description: 올림픽 경기 알림. 경기 10분 전 알림 발송, 일정 관리(추가/삭제), 중계 링크 포함. 2026 밀라노 동계올림픽 한국팀 기본 설정 포함.
+description: 奥运会赛事通知：在比赛开始前10分钟发送提醒信息，支持赛事日程的添加/删除功能，并提供赛事转播链接。系统已预置2026年米兰冬季奥运会的韩国国家队相关设置。
 metadata:
   openclaw:
     requires:
@@ -13,25 +13,21 @@ metadata:
       - 밀라노
 ---
 
-# Olympic Alert Skill
+# Olympic Alert Skill  
+该技能会在奥运会比赛开始前10分钟发送通知，同时包含韩国队的比赛信息作为默认设置。  
 
-올림픽 경기 알림을 10분 전에 발송합니다. 한국팀 경기 기본 설정 포함.
+## 所包含的文件  
+| 文件 | 说明 |  
+|------|------|  
+| `SKILL.md` | 本文档 |  
+| `scripts/check_olympic.py` | 主要脚本（Python 3.6+，仅使用标准库） |  
+| `scripts/events.json` | 比赛日程数据（2026年米兰冬奥会韩国队的默认值） |  
 
-## 포함 파일
+## 所需依赖环境  
+- Python 3.6+（仅使用标准库，无需额外安装包）  
 
-| 파일 | 설명 |
-|------|------|
-| `SKILL.md` | 이 문서 |
-| `scripts/check_olympic.py` | 메인 스크립트 (Python 3.6+, 표준 라이브러리만 사용) |
-| `scripts/events.json` | 경기 일정 데이터 (2026 밀라노 동계올림픽 한국팀 기본값) |
-
-## 의존성
-- Python 3.6+ (표준 라이브러리만 사용, 추가 패키지 불필요)
-
-## 사용법
-
-스킬 디렉토리 기준 상대경로로 실행합니다:
-
+## 使用方法  
+请在技能目录的相对路径下执行该脚本：  
 ```bash
 SKILL_DIR="<workspace>/skills/olympic-alert"
 
@@ -46,14 +42,11 @@ python3 "$SKILL_DIR/scripts/check_olympic.py" add "2026-02-15 14:00" "🏒 쇼�
 
 # 경기 삭제 (이름 패턴 매칭)
 python3 "$SKILL_DIR/scripts/check_olympic.py" remove "준결승"
-```
+```  
 
-## 설정
-
-### events.json
-
-`scripts/events.json` 파일에서 경기 일정 관리:
-
+## 设置  
+### events.json  
+在 `scripts/events.json` 文件中管理比赛日程：  
 ```json
 {
   "country": "Korea",
@@ -66,44 +59,27 @@ python3 "$SKILL_DIR/scripts/check_olympic.py" remove "준결승"
     {"time": "2026-02-10 18:00", "name": "🏒 쇼트트랙", "athletes": "최민정"}
   ]
 }
-```
+```  
 
-### 상태 파일
+### 状态文件  
+`~/.config/olympic-alert/state.json` — 用于记录通知发送情况（防止重复通知）  
 
-`~/.config/olympic-alert/state.json` — 알림 발송 기록 (중복 방지)
+## HEARTBEAT.md 设置  
+（相关设置内容请参考 `HEARTBEAT.md` 文件）  
 
-## HEARTBEAT.md 설정
+## 日程更新  
+根据预赛结果调整日程：  
+- 如果队伍晋级：使用 `add` 命令添加半决赛/决赛的比赛信息；  
+- 如果队伍淘汰：使用 `remove` 命令删除相应的比赛记录；  
+- 也可以直接编辑 `events.json` 文件。  
 
-```markdown
-## 올림픽 경기 알림 (every heartbeat)
-On each heartbeat:
-1. Run `python3 <skill_dir>/scripts/check_olympic.py`
-2. If output is not "알림 없음" → 사용자에게 알림 전송
-```
+## 通知示例  
+（通知内容示例请参考 `CODE_BLOCK_3`）  
 
-## 일정 업데이트
+## 适用于其他国家/赛事  
+通过修改 `events.json` 文件中的 `country`、`flag`、`links`、`events` 等字段，即可将该技能应用于其他国家或赛事。  
 
-예선 결과에 따라 일정 변경 필요:
-- 진출 시: `add` 명령으로 준결승/결승 추가
-- 탈락 시: `remove` 명령으로 해당 경기 삭제
-- 또는 `events.json` 직접 편집
-
-## 알림 예시
-
-```
-🇰🇷 30분 후
-🏒 쇼트트랙 여자1500m 결승
-👤 최민정 3연속 금 도전
-
-📺 네이버 스포츠 | 치지직
-```
-
-## 다른 국가/대회 적용
-
-`events.json`의 `country`, `flag`, `links`, `events`를 수정하여 다른 국가나 대회에 적용 가능.
-
-## 문의 / Feedback
-
-버그 리포트, 기능 요청, 피드백은 아래로 보내주세요.
-- Email: contact@garibong.dev
-- Developer: Garibong Labs (가리봉랩스)
+## 问题咨询/反馈  
+如需报告错误、提出功能请求或提供反馈，请发送邮件至：  
+- Email: contact@garibong.dev  
+- 开发者：Garibong Labs（가리봉랩스）

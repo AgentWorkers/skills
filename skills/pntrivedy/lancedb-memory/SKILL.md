@@ -1,8 +1,7 @@
+```python
 #!/usr/bin/env python3
 """
-LanceDB integration for long-term memory management.
-Provides vector search and semantic memory capabilities.
-"""
+LanceDB集成用于长期记忆管理，提供向量搜索和语义记忆功能。"""
 
 import os
 import json
@@ -12,19 +11,19 @@ from typing import List, Dict, Any, Optional
 from pathlib import Path
 
 class LanceMemoryDB:
-    """LanceDB wrapper for long-term memory storage and retrieval."""
-    
+    """LanceDB的封装类，用于长期记忆的存储和检索。"""
+
     def __init__(self, db_path: str = "/Users/prerak/clawd/memory/lancedb"):
         self.db_path = Path(db_path)
         self.db_path.mkdir(parents=True, exist_ok=True)
         self.db = lancedb.connect(self.db_path)
         
-        # Ensure memory table exists
+        # 确保记忆表存在
         if "memory" not in self.db.table_names():
             self._create_memory_table()
     
     def _create_memory_table(self):
-        """Create the memory table with appropriate schema."""
+        """创建记忆表并设置相应的表结构。"""
         schema = [
             {"name": "id", "type": "int", "nullable": False},
             {"name": "timestamp", "type": "timestamp", "nullable": False},
@@ -39,14 +38,14 @@ class LanceMemoryDB:
     
     def add_memory(self, content: str, category: str = "general", tags: List[str] = None, 
                    importance: int = 5, metadata: Dict[str, Any] = None) -> int:
-        """Add a new memory entry."""
+        """添加新的记忆记录。"""
         table = self.db.open_table("memory")
         
-        # Get next ID
+        # 获取下一个可用ID
         max_id = table.to_pandas()["id"].max() if len(table) > 0 else 0
         new_id = max_id + 1
         
-        # Insert new memory
+        # 插入新记录
         memory_data = {
             "id": new_id,
             "timestamp": datetime.now(),
@@ -61,37 +60,37 @@ class LanceMemoryDB:
         return new_id
     
     def search_memories(self, query: str, category: str = None, limit: int = 10) -> List[Dict]:
-        """Search memories using vector similarity."""
+        """使用向量相似性进行记忆搜索。"""
         table = self.db.open_table("memory")
         
-        # Build filter
+        # 构建搜索条件
         where_clause = []
         if category:
             where_clause.append(f"category = '{category}'")
         
         filter_expr = " AND ".join(where_clause) if where_clause else None
         
-        # Vector search
+        # 执行向量搜索
         results = table.vector_search(query).limit(limit).where(filter_expr).to_list()
         
         return results
     
     def get_memories_by_category(self, category: str, limit: int = 50) -> List[Dict]:
-        """Get memories by category."""
+        """按类别获取记忆记录。"""
         table = self.db.open_table("memory")
         df = table.to_pandas()
         filtered = df[df["category"] == category].head(limit)
         return filtered.to_dict("records")
     
     def get_memory_by_id(self, memory_id: int) -> Optional[Dict]:
-        """Get a specific memory by ID."""
+        """通过ID获取特定的记忆记录。"""
         table = self.db.open_table("memory")
         df = table.to_pandas()
         result = df[df["id"] == memory_id]
         return result.to_dict("records")[0] if len(result) > 0 else None
     
     def update_memory(self, memory_id: int, **kwargs) -> bool:
-        """Update a memory entry."""
+        """更新记忆记录。"""
         table = self.db.open_table("memory")
         
         valid_fields = ["content", "category", "tags", "importance", "metadata"]
@@ -100,28 +99,28 @@ class LanceMemoryDB:
         if not updates:
             return False
         
-        # Convert to proper types for LanceDB
+        # 将参数转换为LanceDB支持的格式
         if "tags" in updates and isinstance(updates["tags"], list):
-            updates["tags"] = str(updates["tags"]).replace("'", '"')
+            updates["tags"] = str(updates["tags"].replace("'", '"")
         
         table.update(updates, where=f"id = {memory_id}")
         return True
     
     def delete_memory(self, memory_id: int) -> bool:
-        """Delete a memory entry."""
+        """删除记忆记录。"""
         table = self.db.open_table("memory")
         current_count = len(table)
         table.delete(f"id = {memory_id}")
         return len(table) < current_count
     
     def get_all_categories(self) -> List[str]:
-        """Get all unique categories."""
+        """获取所有唯一的类别。"""
         table = self.db.open_table("memory")
         df = table.to_pandas()
         return df["category"].dropna().unique().tolist()
     
     def get_memory_stats(self) -> Dict[str, Any]:
-        """Get statistics about memory storage."""
+        """获取记忆存储的统计信息。"""
         table = self.db.open_table("memory")
         df = table.to_pandas()
         
@@ -135,44 +134,45 @@ class LanceMemoryDB:
             }
         }
 
-# Global instance
+# 全局实例
 lancedb_memory = LanceMemoryDB()
 
 def add_memory(content: str, category: str = "general", tags: List[str] = None, 
                importance: int = 5, metadata: Dict[str, Any] = None) -> int:
-    """Add a memory to the LanceDB store."""
+    """将记忆记录添加到LanceDB中。"""
     return lancedb_memory.add_memory(content, category, tags, importance, metadata)
 
 def search_memories(query: str, category: str = None, limit: int = 10) -> List[Dict]:
-    """Search memories using semantic similarity."""
+    """使用语义相似性搜索记忆记录。"""
     return lancedb_memory.search_memories(query, category, limit)
 
 def get_memories_by_category(category: str, limit: int = 50) -> List[Dict]:
-    """Get memories by category."""
+    """按类别获取记忆记录。"""
     return lancedb_memory.get_memories_by_category(category, limit)
 
 def get_memory_stats() -> Dict[str, Any]:
-    """Get memory storage statistics."""
+    """获取记忆存储的统计信息。"""
     return lancedb_memory.get_memory_stats()
 
-# Example usage
+# 示例用法
 if __name__ == "__main__":
-    # Test the database
-    print("Testing LanceDB memory integration...")
+    # 测试数据库功能
+    print("测试LanceDB的记忆管理集成...")
     
-    # Add a test memory
+    # 添加一条测试记忆记录
     test_id = add_memory(
-        content="This is a test memory for LanceDB integration",
+        content="这是一条用于测试LanceDB集成的记忆记录",
         category="test",
         tags=["lancedb", "integration", "test"],
         importance=8
     )
-    print(f"Added memory with ID: {test_id}")
+    print(f"添加的记忆记录的ID为：{test_id}")
     
-    # Search for memories
+    # 搜索记忆记录
     results = search_memories("test memory")
-    print(f"Search results: {len(results)} memories found")
+    print(f"搜索结果：找到{len(results)}条记忆记录")
     
-    # Get stats
+    # 获取记忆记录的统计信息
     stats = get_memory_stats()
-    print(f"Memory stats: {stats}")
+    print(f"记忆记录的统计信息：{stats}")
+```

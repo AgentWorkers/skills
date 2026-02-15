@@ -1,32 +1,32 @@
 ---
 slug: "safety-inspection"
 display_name: "Safety Inspection"
-description: "Digital safety inspection system for construction sites. Checklists, hazard tracking, incident reporting, and compliance documentation."
+description: "施工现场的数字化安全检查系统：包括检查清单、危险源追踪、事故报告以及合规性文档管理功能。"
 ---
 
-# Safety Inspection System for Construction
+# 建筑安全检查系统
 
-Comprehensive digital safety management system for construction sites with inspection checklists, hazard tracking, and incident reporting.
+这是一个针对建筑工地的全面数字化安全管理系统，具备检查清单、危险源追踪和事故报告功能。
 
-## Business Case
+## 商业案例
 
-**Problem**: Paper-based safety management leads to:
-- Incomplete inspections (20-30% of items skipped)
-- Lost documentation
-- Delayed incident reporting
-- Difficulty tracking corrective actions
-- Compliance audit failures
+**问题**：基于纸质的安全管理方式存在以下问题：
+- 检查不全面（有20-30%的项被遗漏）
+- 文档丢失
+- 事故报告延迟
+- 难以追踪整改措施
+- 合规性审核失败
 
-**Solution**: Digital system that:
-- Enforces complete checklist completion
-- Photos attached to each finding
-- Instant notifications for hazards
-- Tracks corrective actions to closure
-- Generates compliance reports
+**解决方案**：该数字化系统能够：
+- 确保检查清单的完整填写
+- 为每个发现的问题附上照片
+- 对危险源立即发出通知
+- 追踪整改措施的落实情况直至完成
+- 生成合规性报告
 
-**ROI**: 40% reduction in recordable incidents, 100% audit compliance
+**投资回报率（ROI）**：可记录的事故数量减少40%，合规性审核通过率达到100%。
 
-## Safety Inspection Types
+## 安全检查类型
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -55,7 +55,7 @@ Comprehensive digital safety management system for construction sites with inspe
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Data Structure
+## 数据结构
 
 ```python
 from dataclasses import dataclass, field
@@ -143,7 +143,7 @@ class Incident:
     days_restricted: int = 0
 ```
 
-## Python Implementation
+## Python实现
 
 ```python
 import pandas as pd
@@ -609,7 +609,7 @@ if __name__ == "__main__":
     print(safety.generate_daily_safety_report())
 ```
 
-## Mobile App Integration
+## 移动应用集成
 
 ```yaml
 # Telegram bot for field safety inspections
@@ -639,4 +639,4 @@ commands:
 
 ---
 
-*"Safety is not a priority - it's a value. Priorities change, values don't."*
+“安全并非优先事项，而是一种价值观。优先事项可能会改变，但价值观永远不会改变。”

@@ -16,37 +16,36 @@ description: |
   - View today's due reminders
 ---
 
-# To Do List (Mac)
+# 待办事项列表（Mac）
 
-## ⚠️ System Requirements
+## ⚠️ 系统要求
 
-**This skill is macOS-only**, requiring the native Reminders app. It will not work on non-Mac systems.
+本功能仅适用于 macOS，需要使用原生的 Reminders 应用程序。在非 Mac 系统上无法使用。
 
-## Feature Overview
+## 功能概述
 
-This skill bridges macOS Reminders via AppleScript, supporting full reminder lifecycle management:
+本功能通过 AppleScript 与 macOS 的 Reminders 应用程序进行交互，支持完整的待办事项管理流程：
 
-| Feature | Command |
-|---------|---------|
-| Add reminder | `todo add` |
-| List reminders | `todo list` |
-| Mark complete | `todo complete` |
-| Unmark complete | `todo uncomplete` |
-| Delete reminder | `todo delete` |
-| Search reminders | `todo search` |
-| View lists | `todo lists` |
-| Create list | `todo create-list` |
-| Today's reminders | `todo today` |
+| 功能 | 命令                |
+|---------|-------------------|
+| 添加待办事项 | `todo add`           |
+| 查看待办事项列表 | `todo list`          |
+| 标记为已完成 | `todo complete`        |
+| 取消标记为已完成 | `todo uncomplete`       |
+| 删除待办事项 | `todo delete`          |
+| 搜索待办事项 | `todo search`         |
+| 创建待办事项列表 | `todo create-list`       |
+| 查看今日待办事项 | `todo today`         |
 
-## Usage
+## 使用方法
 
-All operations are executed via the `scripts/todo.sh` script:
+所有操作均通过 `scripts/todo.sh` 脚本执行：
 
 ```bash
 ./scripts/todo.sh <action> [args...]
 ```
 
-### 1. Add Reminder
+### 1. 添加待办事项
 
 ```bash
 # Basic usage
@@ -65,13 +64,13 @@ All operations are executed via the `scripts/todo.sh` script:
 ./scripts/todo.sh add "Important meeting" "Client call" "2025-02-05 10:00" "Work" 1 ""
 ```
 
-**Priority levels:**
-- `0` = No priority
-- `1` = High (🔴)
-- `5` = Medium (🟡)
-- `9` = Low (🔵)
+**优先级等级：**
+- `0` = 无优先级
+- `1` = 高（🔴）
+- `5` = 中等（🟡）
+- `9` = 低（🔵）
 
-### 2. List Reminders
+### 2. 查看待办事项列表
 
 ```bash
 # List incomplete reminders from default list
@@ -87,7 +86,7 @@ All operations are executed via the `scripts/todo.sh` script:
 ./scripts/todo.sh list "Work" true
 ```
 
-### 3. Mark Complete/Uncomplete
+### 3. 标记为已完成/未完成
 
 ```bash
 # Mark complete (supports fuzzy matching)
@@ -97,23 +96,23 @@ All operations are executed via the `scripts/todo.sh` script:
 ./scripts/todo.sh uncomplete "Buy milk"
 ```
 
-### 4. Delete Reminder
+### 4. 删除待办事项
 
 ```bash
 # Delete reminder (supports fuzzy matching)
 ./scripts/todo.sh delete "Buy milk"
 ```
 
-⚠️ Deletion is irreversible. Use with caution.
+⚠️ 删除操作是不可逆的，请谨慎使用。
 
-### 5. Search Reminders
+### 5. 搜索待办事项
 
 ```bash
 # Search by keyword in title or content
 ./scripts/todo.sh search "meeting"
 ```
 
-### 6. Manage Lists
+### 6. 管理待办事项列表
 
 ```bash
 # View all lists with stats
@@ -123,14 +122,14 @@ All operations are executed via the `scripts/todo.sh` script:
 ./scripts/todo.sh create-list "Study Plan"
 ```
 
-### 7. Today's Due Reminders
+### 7. 查看今日的待办事项
 
 ```bash
 # View today's incomplete due reminders
 ./scripts/todo.sh today
 ```
 
-## Full Example Workflow
+## 完整的使用流程示例
 
 ```bash
 # 1. Create a work list
@@ -151,19 +150,17 @@ All operations are executed via the `scripts/todo.sh` script:
 ./scripts/todo.sh today
 ```
 
-## User Interaction Tips
+## 用户交互提示
 
-When users want to manage todos:
+当用户需要管理待办事项时：
+1. **明确用户需求** - 询问用户想要执行的具体操作（添加、查看、完成等）。
+2. **提供快捷方式** - 对于常见的操作（如“提醒我……”），可以直接使用 `todo add` 命令。
+3. **显示操作结果** - 显示操作结果和当前待办事项列表的状态。
+4. **支持模糊匹配** - 在完成、删除或搜索时支持模糊匹配。
 
-1. **Clarify intent** - Ask what they want to do (add, view, complete, etc.)
-2. **Offer shortcuts** - For common actions like "remind me to...", directly call add
-3. **Show results** - Display operation results and current list status
-4. **Support fuzzy matching** - complete/delete/search all support fuzzy matching
-
-## Notes
-
-1. **Date format** - Supports natural formats like "2025-02-05", "Feb 5, 2025", "tomorrow"
-2. **Fuzzy matching** - complete/delete/search use contains matching, no need for full titles
-3. **Permissions** - macOS may request permission to control Reminders on first run, click Allow
-4. **Sync** - Changes sync to iCloud and appear on other Apple devices
-5. **Recurring reminders** - Due to AppleScript limitations, complex recurring settings should be configured manually in the app
+## 注意事项：
+1. **日期格式** - 支持自然格式，如 “2025-02-05”、“2025年2月5日” 或 “明天”。
+2. **模糊匹配** - 在完成、删除或搜索时，输入部分内容即可匹配到相关待办事项，无需输入完整标题。
+3. **权限** - 首次运行时，macOS 可能会请求权限以控制 Reminders 应用程序，请点击 “允许”。
+4. **同步** - 所有更改会同步到 iCloud，并在其他 Apple 设备上显示。
+5. **重复性待办事项** - 由于 AppleScript 的限制，复杂的重复性设置需要手动在应用程序中进行配置。

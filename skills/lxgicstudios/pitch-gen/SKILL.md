@@ -1,29 +1,29 @@
 ---
 name: pitch-gen
-description: Generate startup pitch deck content with AI. Use when building investor decks or startup presentations.
+description: 使用人工智能生成创业演示文稿内容。适用于制作投资者推介材料或创业演示文稿。
 ---
 
-# Pitch Gen
+# 演讲稿生成工具
 
-Need to pitch investors but staring at a blank deck? This tool generates pitch deck content. Problem statements, market sizing, business models, competitive analysis. All the slides that take forever to write.
+需要向投资者展示你的创业想法，但面对空白的演示文稿却不知从何下手？这个工具可以帮你生成完整的演讲稿内容，包括问题描述、市场规模分析、商业模式、竞争分析等所有必要的幻灯片。所有这些内容通常都需要花费大量时间来撰写。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-pitch "AI-powered code review platform for teams"
 ```
 
-## What It Does
+## 工具功能
 
-- Generates full pitch deck content from a single idea description
-- Creates problem/solution slides with compelling narratives
-- Builds market size estimates with TAM/SAM/SOM breakdowns
-- Writes competitive positioning and moat analysis
-- Produces business model and go-to-market slides
+- 根据你的创业想法生成完整的演讲稿内容
+- 制作具有吸引力的问题/解决方案幻灯片
+- 提供市场规模估算（包括TAM/SAM/SOM等细分数据）
+- 编写关于公司竞争优势和市场壁垒的分析
+- 生成商业模式和市场推广策略相关的幻灯片
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate pitch content from an idea
@@ -36,42 +36,42 @@ npx ai-pitch "B2B SaaS for inventory management" --format markdown
 npx ai-pitch "mobile app for pet owners" --sections problem,solution,market
 ```
 
-## Best Practices
+## 使用建议
 
-- **Be specific about your idea** - "AI code review" is vague. "AI code review for security vulnerabilities in fintech" gives much better output.
-- **Add context about your target market** - The tool can't read your mind about who you're selling to.
-- **Use this as a starting point** - The output is a first draft. Your unique insights make it compelling.
-- **Run multiple times** - Different runs give different angles. Pick the best bits from each.
+- **明确你的创业想法**：例如，“AI代码审查”这个描述比较模糊；而“针对金融科技领域的AI代码安全漏洞审查”则能生成更具体的内容。
+- **提供目标市场的详细信息**：该工具无法自动判断你的产品面向哪些客户。
+- **将此工具作为起点**：生成的文档只是一个初稿，你需要结合自己的见解和数据进行完善。
+- **多次运行工具**：多次运行可以获取不同的分析结果，从中挑选最合适的部分。
 
-## When to Use This
+## 适用场景
 
-- Building your first pitch deck and don't know where to start
-- Need to quickly prototype how an idea would pitch to investors
-- Want a structure to fill in with your own research and data
-- Brainstorming how to position your startup against competitors
+- 当你在准备第一份演讲稿时不知道从何开始
+- 需要快速原型化你的创业想法以向投资者展示
+- 希望有一个框架来填充你自己的调研数据和信息
+- 在头脑风暴中确定如何与竞争对手区分开来
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+LXGIC Studios提供了110多种免费开发者工具，这个工具就是其中之一。免费版本无需支付费用、无需注册，也不需要API密钥，直接使用即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。
 
 ```bash
 npx ai-pitch --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool takes your startup idea and runs it through a structured prompt that covers standard pitch deck sections. It uses GPT to generate investor-ready copy for each slide, following patterns from successful pitch decks.
+该工具会根据你的创业想法，通过结构化的提示生成演讲稿的各个部分。它利用GPT技术，参考成功的演讲稿模板，为每张幻灯片生成适合投资者的文本内容。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具。

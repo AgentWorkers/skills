@@ -1,56 +1,56 @@
-# Price Monitor
+# 价格监控器
 
-Surveille les prix de produits sur des sites e-commerce et alerte quand ils baissent.
+该工具用于监控电子商务网站上的商品价格，并在价格下降时发出警报。
 
-## Usage
+## 使用方法
 
 ```bash
 python skills/price-monitor/scripts/monitor.py <command> [options]
 ```
 
-## Commands
+## 命令
 
-| Commande | Description |
+| 命令 | 描述 |
 |---|---|
-| `add <url> [--name "Nom"] [--target-price 50]` | Ajouter un produit à surveiller |
-| `list` | Lister les produits surveillés |
-| `check [--all] [id]` | Vérifier les prix (un ou tous) |
-| `remove <id>` | Supprimer un produit |
-| `history <id>` | Historique des prix d'un produit |
-| `alerts` | Voir les alertes de baisse de prix |
+| `add <url> [--name "商品名称"] [--target-price 50]` | 添加商品到监控列表 |
+| `list` | 显示所有被监控的商品 |
+| `check [--all] [id]` | 检查单个或所有商品的价格 |
+| `remove <id>` | 从监控列表中删除商品 |
+| `history <id>` | 查看商品的价格历史记录 |
+| `alerts` | 查看价格下降的警报信息 |
 
-## Options globales
+## 全局选项
 
-- `--json` — Output JSON au lieu du texte formaté
+- `--json` — 以 JSON 格式输出结果（而非文本格式）
 
-## Sites supportés
+## 支持的网站
 
-- **Amazon.fr** — `a-offscreen`, `data-a-color="price"`
-- **Fnac.com** — meta tags, `f-priceBox-price`
-- **Cdiscount** — `c-product__price`, itemprop
-- **Boulanger** — `class="price"`, itemprop
-- **Générique** — og:price → JSON-LD → itemprop → regex €
+- **Amazon.fr** — 使用 `a-offscreen` 和 `data-a-color="price"` 标签 |
+- **Fnac.com** — 使用 `meta tags` 和 `f-priceBox-price` 标签 |
+- **Cdiscount** — 使用 `c-product__price` 和 `itemprop` 标签 |
+- **Boulanger** — 使用 `class="price"` 和 `itemprop` 标签 |
+- **其他网站** — 使用 `og:price` 标签（通过 JSON-LD 和 `itemprop` 提取价格信息）
 
-## Extracteur générique (ordre de priorité)
+## 价格提取规则（优先级顺序）
 
 1. `<meta property="og:price:amount">`
-2. JSON-LD schema.org (`"price":"XX.XX"`)
+2. JSON-LD 标签（例如：`"price":"XX.XX"`）
 3. `itemprop="price"`
-4. Regex fallback sur patterns `XX,XX €`
+4. 如果以上方法不可用，使用正则表达式 `XX,XX €` 来提取价格信息
 
-## Alertes
+## 价格警报规则
 
-- **Prix cible atteint** : prix actuel ≤ target-price → 🎯
-- **Baisse > 5%** par rapport au dernier check → 🔥
-- Format : `Amazon PS5 : 449€ → 399€ (-11%) 🔥`
+- **价格达到目标价格**：当前价格 ≤ 目标价格 → 显示警告图标（🎯）
+- **价格下降超过 5%**：显示警告信息（🔥）
+- 警报格式示例：`Amazon PS5：原价 449€ → 现价 399€（降价 11%）🔥`
 
-## Stockage
+## 数据存储
 
-- `~/.price-monitor/products.json` — Liste des produits
-- `~/.price-monitor/history/<id>.json` — Historique par produit
-- `~/.price-monitor/alerts.json` — Alertes enregistrées
+- `~/.price-monitor/products.json`：存储所有被监控的商品列表 |
+- `~/.price-monitor/history/<id>.json`：存储每个商品的价格历史记录 |
+- `~/.price-monitor/alerts.json`：存储所有已记录的价格下降警报 |
 
-## Exemples
+## 使用示例
 
 ```bash
 # Ajouter un produit
@@ -66,9 +66,9 @@ python monitor.py history abc12345
 python monitor.py --json alerts
 ```
 
-## Technique
+## 技术实现
 
-- Python stdlib uniquement (urllib, json, re)
-- User-Agent Chrome réaliste
-- Timeout 10s par requête
-- Voir `references/extractors.md` pour ajouter des sites
+- 仅使用 Python 标准库（`urllib`, `json`, `re`）
+- 使用真实的 Chrome 用户代理 |
+- 每个请求的超时时间为 10 秒 |
+- 如需添加更多网站的支持，请参考 `references/extractors.md` 文档。

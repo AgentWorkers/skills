@@ -1,18 +1,18 @@
 ---
 name: protonmail
-description: Read, search, and scan ProtonMail via IMAP bridge (Proton Bridge or hydroxide). Includes daily digest for important emails.
+description: 通过 IMAP 桥接（Proton Bridge 或 Hydroxide）读取、搜索和扫描 ProtonMail 中的邮件。同时提供重要邮件的每日汇总。
 metadata: {"clawdbot":{"emoji":"📧","requires":{"bins":["python3"]}}}
 ---
 
-# ProtonMail Skill
+# ProtonMail 使用技巧
 
-Access ProtonMail via IMAP using either:
-- **Proton Bridge** (official, recommended)
-- **hydroxide** (third-party, headless)
+您可以通过 IMAP 访问 ProtonMail，具体方法如下：
+- **Proton Bridge**（官方推荐方案）
+- **hydroxide**（第三方工具，无界面版本）
 
-## Setup
+## 设置
 
-### Option 1: Proton Bridge (Docker)
+### 方案 1：Proton Bridge（使用 Docker）
 
 ```bash
 # Pull and run
@@ -27,7 +27,7 @@ docker run --rm -it -v protonmail:/root shenxn/protonmail-bridge init
 # Then: login → enter credentials → info (shows bridge password) → exit
 ```
 
-### Option 2: hydroxide (Headless)
+### 方案 2：hydroxide（无界面版本）
 
 ```bash
 # Install
@@ -41,9 +41,9 @@ cd hydroxide && go build ./cmd/hydroxide
 ./hydroxide serve
 ```
 
-## Configuration
+## 配置
 
-Create config file at `~/.config/protonmail-bridge/config.env`:
+在 `~/.config/protonmail-bridge/config.env` 文件中创建配置文件：
 
 ```bash
 PROTONMAIL_HOST=127.0.0.1
@@ -52,9 +52,9 @@ PROTONMAIL_USER=your@email.com
 PROTONMAIL_PASS=your-bridge-password
 ```
 
-Or set environment variables directly.
+或者直接设置环境变量。
 
-## Usage
+## 使用方法
 
 ```bash
 # List mailboxes
@@ -73,17 +73,17 @@ protonmail.py search "keyword"
 protonmail.py read 123
 ```
 
-## Daily Scan
+## 日常扫描
 
-The `daily-scan.py` script identifies important emails based on:
-- Important senders (banks, government, schools)
-- Urgent keywords (DE/EN/NL)
+`daily-scan.py` 脚本会根据以下条件识别重要邮件：
+- 来信人信息（银行、政府机构、学校）
+- 紧急关键词（DE/EN/NL）
 
-Configure important patterns in the script or via environment variables.
+您可以在脚本中配置相应的规则，或者通过环境变量来设置这些条件。
 
-## Sieve Filters (ProtonMail)
+## ProtonMail 的 Sieve 过滤器
 
-Recommended Sieve filter for auto-sorting:
+推荐使用的 Sieve 过滤器用于自动分类邮件：
 
 ```sieve
 require ["fileinto", "imap4flags"];

@@ -1,29 +1,28 @@
 ---
 name: answeroverflow
-description: Search indexed Discord community discussions via Answer Overflow. Find solutions to coding problems, library issues, and community Q&A that only exist in Discord conversations.
+description: 通过 Answer Overflow 搜索索引在 Discord 社区中的讨论。您可以在这里找到针对编程问题、库使用问题以及社区问答的解决方案，这些内容仅存在于 Discord 的对话中。
 ---
 
-# Answer Overflow Skill
+# Answer Overflow 技能
 
-Search indexed Discord community discussions via Answer Overflow. Great for finding solutions to coding problems, library issues, and community Q&A.
+通过 Answer Overflow 搜索已索引的 Discord 社区讨论。非常适合查找编程问题、库相关问题的解决方案以及社区问答的答案。
 
-## What is Answer Overflow?
+## 什么是 Answer Overflow？
 
-Answer Overflow indexes public Discord support channels and makes them searchable via Google and direct API access. Perfect for finding answers that only exist in Discord conversations.
+Answer Overflow 对公开的 Discord 支持频道进行索引，并允许通过 Google 或直接 API 访问这些频道。非常适合查找仅存在于 Discord 对话中的答案。
 
-## Quick Search
+## 快速搜索
 
-Use web_search to find Answer Overflow results:
+使用 `web_search` 来查找 Answer Overflow 的结果：
 ```bash
 # Search for a topic (Answer Overflow results often appear in Google)
 web_search "site:answeroverflow.com prisma connection pooling"
 ```
 
-## Fetching Thread Content
+## 获取帖子内容
 
-### Markdown URLs
-Add `/m/` prefix or `.md` suffix to get markdown-formatted content:
-
+### Markdown 格式的内容
+在 URL 前添加 `/m/` 前缀或在文件名后添加 `.md` 后缀，即可获取 Markdown 格式的内容：
 ```
 # Standard URL
 https://www.answeroverflow.com/m/1234567890123456789
@@ -32,35 +31,31 @@ https://www.answeroverflow.com/m/1234567890123456789
 https://www.answeroverflow.com/m/1234567890123456789.md
 ```
 
-### Using web_fetch
-```bash
-# Fetch a thread in markdown format
-web_fetch url="https://www.answeroverflow.com/m/<message-id>"
-```
+### 使用 `web_fetch`
 
-### Accept Header
-When making requests, the API checks for `Accept: text/markdown` header to return markdown format.
+### 请求头
+在发送请求时，API 会检查 `Accept: text/markdown` 请求头，以返回 Markdown 格式的内容。
 
-## MCP Server (Reference)
+## MCP 服务器（参考）
 
-Answer Overflow has an MCP server at `https://www.answeroverflow.com/mcp` with these tools:
+Answer Overflow 拥有一个名为 MCP 的服务器，地址为 `https://www.answeroverflow.com/mcp`，提供了以下工具：
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `search_answeroverflow` | Search across all indexed Discord communities. Can filter by server or channel ID. |
-| `search_servers` | Discover Discord servers indexed on Answer Overflow. Returns server IDs for filtered searching. |
-| `get_thread_messages` | Get all messages from a specific thread/discussion. |
-| `find_similar_threads` | Find threads similar to a given thread. |
+| `search_answeroverflow` | 在所有已索引的 Discord 社区中搜索。可以按服务器或频道 ID 进行过滤。 |
+| `search_servers` | 查找在 Answer Overflow 上被索引的 Discord 服务器，并返回服务器 ID 以供进一步搜索。 |
+| `get_thread_messages` | 获取特定帖子/讨论的所有消息。 |
+| `find_similar_threads` | 查找与给定帖子相似的帖子。 |
 
-## URL Patterns
+## URL 模式
 
-| Pattern | Example |
+| 模式 | 示例 |
 |---------|---------|
-| Thread | `https://www.answeroverflow.com/m/<message-id>` |
-| Server | `https://www.answeroverflow.com/c/<server-slug>` |
-| Channel | `https://www.answeroverflow.com/c/<server-slug>/<channel-slug>` |
+| 帖子 | `https://www.answeroverflow.com/m/<message-id>` |
+| 服务器 | `https://www.answeroverflow.com/c/<server-slug>` |
+| 频道 | `https://www.answeroverflow.com/c/<server-slug>/<channel-slug>` |
 
-## Common Searches
+## 常见搜索词
 
 ```bash
 # Find Discord.js help
@@ -73,16 +68,16 @@ web_search "site:answeroverflow.com nextjs app router error"
 web_search "site:answeroverflow.com prisma many-to-many"
 ```
 
-## Tips
+## 提示
 
-- Results are real Discord conversations, so context may be informal
-- Threads often have back-and-forth discussion before the solution
-- Check the server/channel name to understand the context (e.g., official support vs community)
-- Many open source projects index their Discord support channels here
+- 结果来自真实的 Discord 对话，因此内容可能较为随意（非正式）。
+- 许多帖子在给出解决方案之前会有来回的讨论。
+- 请查看服务器/频道名称以了解上下文（例如，官方支持频道与社区频道）。
+- 许多开源项目都会在这里索引他们的 Discord 支持频道。
 
-## Links
+## 链接
 
-- **Website:** https://www.answeroverflow.com
-- **Docs:** https://docs.answeroverflow.com
-- **MCP:** https://www.answeroverflow.com/mcp
-- **Discord:** https://discord.answeroverflow.com
+- **官方网站：** https://www.answeroverflow.com
+- **文档：** https://docs.answeroverflow.com
+- **MCP：** https://www.answeroverflow.com/mcp
+- **Discord：** https://discord.answeroverflow.com

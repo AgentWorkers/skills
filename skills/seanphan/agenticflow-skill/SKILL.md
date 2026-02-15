@@ -1,73 +1,73 @@
 ---
 name: agenticflow-skills
-description: Comprehensive guide for building AI workflows, agents, and workforce systems with AgenticFlow. Use when designing workflows with various node types, configuring single agents, or orchestrating workforce collaboration patterns.
+description: 使用 AgenticFlow 构建 AI 工作流程、智能代理和劳动力系统的综合指南。适用于设计包含多种节点类型的工作流程、配置单个智能代理，或协调劳动力协作模式的情况。
 license: MIT
 ---
 
-# AgenticFlow Skills
+# AgenticFlow 技能
 
-AgenticFlow is a platform for building AI-powered automation workflows, intelligent agents, and workforce systems.
+AgenticFlow 是一个用于构建基于人工智能的自动化工作流程、智能代理和劳动力系统的平台。
 
-## Quick Navigation
+## 快速导航
 
-| Topic | When to Use | Reference |
+| 主题 | 使用场景 | 参考文档 |
 |-------|-------------|-----------|
-| **Workflow** | Building automation flows with nodes | [workflow/overview.md](./reference/workflow/overview.md) |
-| **Agent** | Creating single intelligent agents | [reference/agent/overview.md](./reference/agent/overview.md) |
-| **Workforce** | Orchestrating multiple agents | [reference/workforce/overview.md](./reference/workforce/overview.md) |
+| **工作流程** | 使用节点构建自动化流程 | [workflow/overview.md](./reference/workflow/overview.md) |
+| **代理** | 创建单个智能代理 | [reference/agent/overview.md](./reference/agent/overview.md) |
+| **劳动力系统** | 协调多个代理以完成任务 | [reference/workforce/overview.md](./reference/workforce/overview.md) |
 
 ---
 
-## Workflow
+## 工作流程
 
-Workflows are linear automation pipelines composed of sequential nodes. Each node performs a specific action.
+工作流程是由顺序排列的节点组成的线性自动化管道。每个节点执行特定的操作。
 
-| Guide | Description |
+| 文档 | 说明 |
 |-------|-------------|
-| [overview.md](./reference/workflow/overview.md) | Core concepts, schemas, execution model |
-| [how-to-build.md](./reference/workflow/how-to-build.md) | Step-by-step build guide |
-| [how-to-run.md](./reference/workflow/how-to-run.md) | Execute workflows and handle results |
-| [node-types.md](./reference/workflow/node-types.md) | Node type schemas and discovery |
-| [connections.md](./reference/workflow/connections.md) | Connection providers and setup |
+| [overview.md](./reference/workflow/overview.md) | 核心概念、架构、执行模型 |
+| [how-to-build.md](./reference/workflow/how-to-build.md) | 分步构建指南 |
+| [how-to-run.md](./reference/workflow/how-to-run.md) | 运行工作流程并处理结果 |
+| [node-types.md](./reference/workflow/node-types.md) | 节点类型及发现机制 |
+| [connections.md](./reference/workflow/connections.md) | 连接提供者及设置 |
 
-### Node Types Overview
+### 节点类型概述
 
-| Category | Example Node Types | Purpose |
+| 类别 | 示例节点类型 | 用途 |
 |----------|-------------------|---------|
-| **AI/LLM** | `claude_ask`, `openai_chat`, `gemini` | AI model calls, text generation |
-| **Image Generation** | `generate_image`, `dall_e` | Create images from prompts |
-| **Data Processing** | `json_parse`, `text_transform` | Transform and manipulate data |
-| **Integrations** | `slack_send`, `gmail`, `notion` | Connect to 300+ external services (MCPs) |
-| **API Calls** | `http_request`, `webhook` | HTTP requests and webhooks |
-| **File Operations** | `file_upload`, `pdf_parse` | Upload, download, process files |
+| **AI/大语言模型** | `claude_ask`, `openai_chat`, `gemini` | 调用 AI 模型、生成文本 |
+| **图像生成** | `generate_image`, `dall_e` | 根据提示生成图像 |
+| **数据处理** | `json_parse`, `text_transform` | 转换和处理数据 |
+| **集成** | `slack_send`, `gmail`, `notion` | 连接到 300 多个外部服务 |
+| **API 调用** | `http_request`, `webhook` | 发送 HTTP 请求和使用 Webhook |
+| **文件操作** | `file_upload`, `pdf_parse` | 上传、下载和处理文件 |
 
-> **Note**: Workflows in AgenticFlow are **linear and sequential** - nodes execute top to bottom with no branching or loops.
-
----
-
-## Agent
-
-An Agent is an AI entity with specific capabilities, tools, and a defined persona.
-
-**To learn about agent configuration, load:** [reference/agent/overview.md](./reference/agent/overview.md)
+> **注意**：AgenticFlow 中的工作流程是 **线性的且按顺序执行**——节点从上到下执行，没有分支或循环。
 
 ---
 
-## Workforce
+## 代理
 
-Workforce systems coordinate multiple agents to solve complex tasks collaboratively.
+代理是一个具有特定能力、工具和明确角色的 AI 实体。
 
-**To understand orchestration patterns, load:** [reference/workforce/overview.md](./reference/workforce/overview.md)
-
-### Common Patterns
-
-- **Supervisor** - One agent delegates to specialists
-- **Swarm** - Agents self-organize dynamically
-- **Pipeline** - Sequential agent handoffs
-- **Debate** - Agents discuss to reach consensus
+**要了解代理配置，请阅读：** [reference/agent/overview.md](./reference/agent/overview.md)
 
 ---
 
-## Glossary
+## 劳动力系统
 
-For terminology and definitions, see [reference/glossary.md](./reference/glossary.md).
+劳动力系统协调多个代理协同完成复杂任务。
+
+**要了解协调模式，请阅读：** [reference/workforce/overview.md](./reference/workforce/overview.md)
+
+### 常见模式
+
+- **监督者**：一个代理将任务分配给专家代理 |
+- **群体**：代理们自动进行协作 |
+- **流水线**：代理之间依次传递任务 |
+- **讨论**：代理们通过讨论达成共识 |
+
+---
+
+## 术语表
+
+有关术语和定义，请参阅 [reference/glossary.md](./reference/glossary.md)。

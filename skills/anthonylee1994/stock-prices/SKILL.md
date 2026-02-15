@@ -1,30 +1,30 @@
 ---
 name: stock-prices
-description: Query real-time stock prices and market data using the Stock Prices API. Use when fetching stock quotes, analyzing market data, or working with symbols like AAPL, NVDA, GOOGL, or any ticker symbols.
+description: 使用“Stock Prices API”查询实时股票价格和市场数据。该API适用于获取股票报价、分析市场数据，或处理如AAPL、NVDA、GOOGL等股票代码。
 ---
 
-# Stock Prices API Skill
+# 股票价格 API 技能
 
-This skill helps you work with the Stock Prices API to fetch real-time market data and stock quotes.
+此技能可帮助您使用股票价格 API 获取实时市场数据和股票报价。
 
-## API Endpoint
+## API 端点
 
-**Base URL**: `https://stock-prices.on99.app`
+**基础 URL**: `https://stock-prices.on99.app`
 
-**Primary Endpoint**: `/quotes?symbols={SYMBOLS}`
+**主要端点**: `/quotes?symbols={SYMBOLS}`
 
-## Quick Start
+## 快速入门
 
-Fetch stock quotes for one or more symbols:
+获取一个或多个股票代码的报价：
 
 ```bash
 curl "https://stock-prices.on99.app/quotes?symbols=NVDA"
 curl "https://stock-prices.on99.app/quotes?symbols=AAPL,GOOGL,MSFT"
 ```
 
-## Response Format
+## 响应格式
 
-The API returns JSON with the following structure:
+API 返回的 JSON 数据结构如下：
 
 ```json
 {
@@ -47,36 +47,36 @@ The API returns JSON with the following structure:
 }
 ```
 
-## Available Data Fields
+## 可用的数据字段
 
-| Field                    | Type              | Description                           |
+| 字段                    | 类型              | 描述                           |
 | ------------------------ | ----------------- | ------------------------------------- |
-| `symbol`                 | string            | Stock ticker symbol                   |
-| `currentPrice`           | number            | Current trading price                 |
-| `change`                 | number            | Price change from previous close      |
-| `percentChange`          | number            | Percentage change from previous close |
-| `highPrice`              | number            | Day's high price                      |
-| `lowPrice`               | number            | Day's low price                       |
-| `openPrice`              | number            | Opening price                         |
-| `previousClosePrice`     | number            | Previous day's closing price          |
-| `preMarketPrice`         | number            | Pre-market trading price              |
-| `preMarketChange`        | number            | Pre-market price change               |
-| `preMarketTime`          | string (ISO 8601) | Pre-market data timestamp             |
-| `preMarketChangePercent` | number            | Pre-market percentage change          |
+| `symbol`                 | 字符串            | 股票代码                           |
+| `currentPrice`           | 数字            | 当前交易价格                         |
+| `change`                 | 数字            | 相较前一收盘价的涨跌幅度                |
+| `percentChange`          | 数字            | 相较前一收盘价的百分比涨跌                |
+| `highPrice`              | 数字            | 当日最高价格                         |
+| `lowPrice`               | 数字            | 当日最低价格                         |
+| `openPrice`              | 数字            | 开盘价格                         |
+| `previousClosePrice`     | 数字            | 前一交易日收盘价格                     |
+| `preMarketPrice`         | 数字            | 预盘交易价格                         |
+| `preMarketChange`        | 数字            | 预盘价格涨跌幅度                     |
+| `preMarketTime`          | 字符串 (ISO 8601) | 预盘数据时间戳                     |
+| `preMarketChangePercent` | 数字            | 预盘价格百分比涨跌                   |
 
-## Usage Guidelines
+## 使用指南
 
-### Multiple Symbols
+### 多个股票代码
 
-Query multiple stocks by separating symbols with commas (max 50):
+通过用逗号分隔股票代码来查询多个股票（最多 50 个）：
 
 ```bash
 curl "https://stock-prices.on99.app/quotes?symbols=AAPL,GOOGL,MSFT,TSLA,AMZN"
 ```
 
-### Error Handling
+### 错误处理
 
-Always check for valid responses:
+始终检查响应是否有效：
 
 ```typescript
 const response = await fetch("https://stock-prices.on99.app/quotes?symbols=NVDA");
@@ -88,9 +88,9 @@ if (data.quotes && data.quotes.length > 0) {
 }
 ```
 
-### Price Analysis
+### 价格分析
 
-Calculate common metrics:
+计算常见指标：
 
 ```typescript
 // Determine if stock is up or down
@@ -104,9 +104,9 @@ const rangePct = ((quote.highPrice - quote.lowPrice) / quote.lowPrice) * 100;
 const vsOpen = quote.currentPrice - quote.openPrice;
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Price Monitoring
+### 1. 价格监控
 
 ```typescript
 async function checkPrice(symbol: string) {
@@ -122,7 +122,7 @@ async function checkPrice(symbol: string) {
 }
 ```
 
-### 2. Portfolio Tracking
+### 2. 投资组合跟踪
 
 ```typescript
 async function getPortfolio(symbols: string[]) {
@@ -138,7 +138,7 @@ async function getPortfolio(symbols: string[]) {
 }
 ```
 
-### 3. Market Summary
+### 3. 市场总结
 
 ```typescript
 async function marketSummary(symbols: string[]) {
@@ -157,35 +157,35 @@ async function marketSummary(symbols: string[]) {
 }
 ```
 
-## Popular Stock Symbols
+## 热门股票代码
 
-### Tech Giants (FAANG+)
+### 科技巨头（FAANG+）
 
-- `AAPL` - Apple
-- `GOOGL` - Alphabet (Google)
-- `META` - Meta (Facebook)
-- `AMZN` - Amazon
-- `NFLX` - Netflix
-- `MSFT` - Microsoft
+- `AAPL` - 苹果
+- `GOOGL` - 谷歌
+- `META` - 脸书
+- `AMZN` - 亚马逊
+- `NFLX` - 纳斯达克
+- `MSFT` - 微软
 
-### High-Profile Stocks
+### 高关注度股票
 
-- `NVDA` - NVIDIA
-- `TSLA` - Tesla
-- `AMD` - Advanced Micro Devices
-- `INTC` - Intel
-- `ORCL` - Oracle
+- `NVDA` - 英伟达
+- `TSLA` - 特斯拉
+- `AMD` - 高通
+- `INTC` - 英特尔
+- `ORCL` | 甲骨文
 
-### Indices
+### 指数
 
-- `^GSPC` - S&P 500
-- `^DJI` - Dow Jones
-- `^IXIC` - NASDAQ
+- `^GSPC` - 标普 500 指数
+- `^DJI` - 道琼斯指数
+- `^IXIC` - 纳斯达克指数
 
-## Notes
+## 注意事项
 
-- All prices are in USD
-- Data updates in real-time during market hours
-- Pre-market and after-hours data is available
-- Timestamps are in ISO 8601 format (UTC)
-- Maximum 50 symbols per request
+- 所有价格均以美元计
+- 市场交易时段内数据实时更新
+- 提供预盘和盘后数据
+- 时间戳采用 ISO 8601 格式（UTC）
+- 每次请求最多支持 50 个股票代码

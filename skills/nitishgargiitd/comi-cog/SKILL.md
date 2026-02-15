@@ -1,6 +1,6 @@
 ---
 name: comi-cog
-description: Comic and manga creation powered by CellCog. Create comics, manga, webtoons, graphic novels, comic strips, visual storytelling, sequential art, character consistency. AI-powered comic creator.
+description: 由 CellCog 提供支持的漫画和 manga 创作工具。支持创作漫画、 manga、网络漫画（webtoons）、图像小说（graphic novels）、连环画（comic strips）以及视觉叙事作品，同时确保角色设计的统一性。这是一款基于人工智能技术的漫画创作工具。
 metadata:
   openclaw:
     emoji: "📚"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Comi Cog - Comics & Manga Powered by CellCog
+# Comi Cog – 由 CellCog 提供支持的漫画与动画创作工具
 
-Create visual stories with AI - from manga pages to webtoons to comic strips with consistent characters.
+利用人工智能创作视觉故事，从漫画页面到网络漫画，再到连环画，所有角色都能保持一致的外观。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能文档** 以了解 SDK 的安装方法。该文档会展示该工具的强大功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,227 +38,206 @@ result = client.create_chat(
 
 ---
 
-## Why Comi-Cog is Complex Work
+## 为何 Comi-Cog 是一项复杂的任务
 
-Comics are one of the most demanding creative outputs:
+漫画是一种对创意要求极高的艺术形式：
 
-- **Character Consistency**: Same character must look identical across dozens of panels
-- **Visual Storytelling**: Every panel needs composition, flow, and meaning
-- **Sequential Art**: Panels must read naturally, guide the eye, create rhythm
-- **Text Integration**: Speech bubbles, sound effects, narration boxes
-- **Style Coherence**: Art style must stay consistent throughout
+- **角色一致性**：同一个角色在数十个画面中必须保持一致的外观。
+- **视觉叙事**：每个画面都需要精心构图、合理的布局和明确的意义。
+- **序列艺术**：画面的排列方式必须自然流畅，引导读者的视线并营造节奏感。
+- **文本融合**：包括对话框、音效和旁白等内容。
+- **风格统一**：整个作品的绘画风格必须保持一致。
 
-This is complex work. CellCog excels here because it maintains context across panels and pages, ensuring your characters look like themselves in every frame.
-
----
-
-## What Comics You Can Create
-
-### Manga Pages
-
-Japanese-style sequential art:
-
-- **Action Manga**: "Create a fight scene manga page with dynamic movement"
-- **Slice of Life**: "Make a cozy manga page of friends at a café"
-- **Shonen Style**: "Create an intense rivalry moment between two characters"
-- **Romance**: "Make a confession scene in shoujo manga style"
-
-**Example prompt:**
-> "Create a manga page (4 panels):
-> 
-> Scene: Hero confronts the villain for the first time
-> 
-> Panel 1: Wide shot - hero enters dark throne room
-> Panel 2: Close-up - villain's smirk from shadow
-> Panel 3: Dramatic - villain stands, revealing full design
-> Panel 4: Reaction - hero's determined expression
-> 
-> Style: Dark fantasy shonen (like Berserk meets Demon Slayer)
-> Include: Speed lines, dramatic shadows, Japanese SFX
-> 
-> Characters:
-> - Hero: Young warrior, silver hair, scar across eye, armored
-> - Villain: Elegant, long black hair, flowing robes, unsettling beauty"
-
-### Webtoon Episodes
-
-Vertical scrolling format:
-
-- **Vertical Strips**: "Create a webtoon episode in vertical scroll format"
-- **Cliffhangers**: "Make a webtoon ending that hooks readers"
-- **Romance Webtoon**: "Create a sweet moment between the leads"
-- **Action Webtoon**: "Design a chase scene for vertical reading"
-
-**Example prompt:**
-> "Create a webtoon episode (vertical format, 8-10 panels):
-> 
-> Story: Fantasy romance - a witch and a knight meet for the first time
-> 
-> Flow:
-> - Knight lost in enchanted forest
-> - Discovers cottage covered in flowers
-> - Meets the witch (comedic first impression - she's not what he expected)
-> - End on her mysterious smile
-> 
-> Style: Soft colors, romantic fantasy, clean line art
-> Format: Vertical webtoon (panels flow downward)"
-
-### Comic Strips
-
-Newspaper-style short form:
-
-- **Daily Strips**: "Create a 4-panel comic strip about office life"
-- **Gag Comics**: "Make a 3-panel joke about cats"
-- **Webcomic Style**: "Create a comic strip in the style of xkcd"
-- **Sunday Comics**: "Design a larger format weekend comic strip"
-
-**Example prompt:**
-> "Create a 4-panel comic strip:
-> 
-> Setup: Programmer finally fixes a bug
-> Punchline: Creates three new ones in the process
-> 
-> Style: Clean, simple, relatable (like Dilbert meets modern tech humor)
-> 
-> Include expressions that sell the emotional journey:
-> Panel 1: Frustration
-> Panel 2: Determination
-> Panel 3: Triumph
-> Panel 4: Dawning horror"
-
-### Graphic Novel Pages
-
-Full-format sequential art:
-
-- **Chapter Pages**: "Create the opening page of a graphic novel chapter"
-- **Splash Pages**: "Design a dramatic full-page spread"
-- **Dialogue Scenes**: "Make a character conversation page with interesting staging"
-- **Action Sequences**: "Create a two-page action spread"
+Comi-Cog 在这些方面表现出色，因为它能够确保角色在每个画面中都保持原有的形象和特征。
 
 ---
 
-## Character Consistency
+## 可以创作的漫画类型
 
-The magic of comi-cog: **your characters stay consistent**.
+### 日式漫画（Manga Pages）
 
-When you describe a character, CellCog maintains their appearance across all panels:
+- **动作漫画**：创作一个充满动态场面的战斗场景。
+- **日常生活漫画**：描绘朋友在咖啡馆里的温馨场景。
+- **少年漫画**：刻画两个角色之间的激烈竞争。
+- **恋爱漫画**：以少女漫画的风格呈现一个告白场景。
 
-**Good character description:**
-> "Character - Luna:
-> - Age: Early 20s, petite build
-> - Hair: Long silver hair with bangs, usually in a braid
-> - Eyes: Large, purple, expressive
-> - Outfit: Dark blue witch robes with star embroidery
-> - Distinguishing: Small mole under left eye, always wears moon earring
-> - Expression range: Usually serious but has a warm smile"
+**示例提示：**
+> “创作一个 4 个画面的漫画页面：
+> 
+> 场景：主角首次与反派对峙。
+> 
+> 第 1 页：全景镜头——主角走进昏暗的王座室。
+> 第 2 页：特写镜头——反派在阴影中露出狞笑。
+> 第 3 页：戏剧性场景——反派站起身来，露出完整的形象。
+> 第 4 页：主角的表情充满决心。
+> 
+> 风格：暗黑奇幻风格的少年漫画（类似《剑风传奇》与《鬼灭之刃》的结合）。
+> **要求包含**：动态的线条、戏剧性的阴影效果以及日式风格的音效。
+> 
+> 角色描述：
+> - 主角：年轻战士，银色头发，眼睛上有一道伤疤，身着盔甲。
+- 反派：优雅的形象，黑色长发，穿着飘逸的长袍，散发出令人不安的魅力。
 
-**What this enables:**
-- Same face structure across all panels
-- Consistent outfit details
-- Recognizable from any angle
-- Emotional range while staying "her"
+### 网络漫画（Webtoons）
+
+- **垂直滚动格式**：创作一个适合垂直滚动的漫画章节。
+- **悬念式结局**：设计一个能吸引读者的悬念式结局。
+- **恋爱类网络漫画**：描绘主角之间的甜蜜瞬间。
+- **动作类网络漫画**：设计一个适合垂直阅读的动作场景。
+
+**示例提示：**
+> “创作一个 8-10 个画面的网络漫画章节：
+> 
+> 故事：奇幻爱情故事——一位女巫与一位骑士初次相遇。
+> 
+> 故事流程：
+> - 骑士在魔法森林中迷路。
+- 发现一间开满鲜花的小屋。
+- 遇见女巫（第一印象很有趣——她与他想象中的完全不同）。
+- 以她神秘的微笑作为结局。
+> 
+> 风格：柔和的色彩，浪漫的奇幻风格，线条简洁明了。
+> **格式**：垂直滚动的网络漫画。
+
+### 连环画（Comic Strips）
+
+- **报纸风格的短篇漫画**：创作一个关于办公室生活的 4 个画面的连环画。
+- **搞笑漫画**：创作一个关于猫的 3 个画面的幽默故事。
+- **Webcomic 风格**：模仿 xkcd 的风格创作连环画。
+- **周末漫画**：设计一个格式较大的周末连环画。
+
+**示例提示：**
+> “创作一个 4 个画面的连环画：
+> 
+> 背景：程序员终于修复了一个错误。
+- 搞笑点：在这个过程中又引发了三个新的错误。
+> 
+> 风格：简洁明了，易于理解（类似《呆伯特》中的幽默风格）。
+> 
+> **通过表情传达情感变化**：
+> 第 1 页：沮丧的表情。
+> 第 2 页：下定决心的表情。
+> 第 3 页：胜利的表情。
+> 第 4 页：逐渐浮现的恐惧感。
+
+### 图形小说（Graphic Novels）
+
+- **章节页面**：创作图形小说某一章的开场页面。
+- **大幅插图**：设计一个充满戏剧性的全页插图。
+- **对话场景**：设计一个具有独特场景安排的对话画面。
+- **动作场景**：创作一个需要两页来呈现的动作场景。
 
 ---
 
-## Comic Styles
+## 角色一致性
 
-| Style | Characteristics | Best For |
+Comi-Cog 的核心优势在于能够确保角色的外观在所有画面中保持一致：
+
+**优秀的角色描述示例：**
+> “角色：Luna：
+> - 年龄：二十出头，身材娇小。
+- 头发：长银色头发，留着刘海，通常扎成辫子。
+- 眼睛：大而紫色的眼睛，充满表情力。
+- 服装：深蓝色的女巫长袍，上面绣着星星图案。
+- 特征：左眼下方有一个小痣，总是戴着月亮形状的耳环。
+- 表情变化：通常严肃，但偶尔会露出温暖的微笑。”
+
+**这样做的优点：**
+- 所有画面中的角色面部结构保持一致。
+- 服装细节统一。
+- 无论从哪个角度都能辨认出该角色。
+- 能够准确传达角色的情绪变化。
+
+---
+
+## 漫画风格
+
+| 风格 | 特点 | 适合创作类型 |
 |-------|-----------------|----------|
-| **Manga** | Expressive eyes, speed lines, screen tones | Action, romance, drama |
-| **American Comics** | Bold lines, dynamic poses, vivid colors | Superheroes, action |
-| **Webtoon** | Clean lines, soft colors, vertical flow | Romance, slice of life |
-| **Indie/Alt** | Unique art styles, experimental | Personal stories, art comics |
-| **Webcomic** | Simple, expressive, quick read | Humor, daily updates |
-| **Graphic Novel** | Detailed, painterly, cinematic | Literary, mature themes |
+| **漫画（Manga）** | 表情丰富的眼睛，动态的线条，鲜明的画面色调 | 动作、爱情、剧情类作品。 |
+| **美国漫画（American Comics）** | 粗犷的线条，动态的姿势，鲜艳的色彩 | 超级英雄、动作类作品。 |
+| **网络漫画（Webtoons）** | 简洁的线条，柔和的色彩，垂直滚动格式 | 恋爱、日常生活类作品。 |
+| **独立/另类漫画（Indie/Alt Comics）** | 独特的绘画风格，实验性的内容 | 个人故事、艺术类漫画。 |
+| **Webcomic** | 简单明了的画风，适合快速阅读 | 幽默类作品，每日更新。 |
+| **图形小说（Graphic Novels）** | 绘画风格细腻，具有电影般的视觉效果 | 文学性强的作品，适合成熟读者。 |
 
 ---
 
-## Page Layouts
+## 页面布局
 
-Request specific layouts:
-
-| Layout | Panels | Use Case |
-|--------|--------|----------|
-| **Grid** | 4-6 equal panels | Steady pacing, dialogue |
-| **Asymmetric** | Mixed sizes | Emphasis and flow |
-| **Splash** | Full page | Dramatic moments |
-| **Spread** | Two pages | Epic reveals |
-| **Vertical** | Scrolling format | Webtoons |
+- **网格布局（Grid Layout）**：4-6 个大小相同的画面，适合保持稳定的叙事节奏和对话展示。
+- **非对称布局（Asymmetric Layout）**：不同大小的画面，用于突出重点和引导读者的视线。
+- **大幅插图（Splash Page）**：全页插图，适合表现戏剧性场景。
+- **双页插图（Spread Layout）**：两个页面连在一起，适合展示宏大的场景。
+- **垂直布局（Vertical Layout）**：适合垂直滚动的漫画格式。
 
 ---
 
-## Chat Mode for Comics
+## 漫画创作时的聊天模式
 
-| Scenario | Recommended Mode |
-|----------|------------------|
-| Single pages, comic strips, character designs | `"agent"` |
-| Multi-page sequences, full episodes, complex narratives | `"agent team"` |
+- **适用场景**：
+  - 单个页面、连环画或角色设计：使用 `"agent"` 模式。
+  - 多页序列、完整章节或复杂的叙事内容：使用 `"agent team"` 模式。
 
-**Use `"agent"` for most comic work.** Individual pages and strips execute well in agent mode.
+**建议使用 `"agent"` 模式来处理大多数漫画创作任务**。单个页面和连环画使用 `"agent"` 模式效果最佳。
 
-**Use `"agent team"` for narrative complexity** - full webtoon episodes, multi-page fight sequences, or when you need story and art direction working together.
-
----
-
-## Example Prompts
-
-**Action manga page:**
-> "Create a manga page - the hero's power awakens:
-> 
-> 5 panels:
-> 1. Hero on knees, defeated, rain falling
-> 2. Close-up: tear falls, mixes with rain
-> 3. Memory flash: people they're fighting for
-> 4. Eyes snap open - now glowing
-> 5. Full panel: standing, energy swirling, clothes/hair flowing upward
-> 
-> Style: Shonen manga, heavy contrast, speed lines
-> Mood: Despair transforming to determination
-> 
-> Hero design: Teen boy, spiky black hair, torn school uniform"
-
-**Webtoon romance moment:**
-> "Create a vertical webtoon sequence (6 panels):
-> 
-> Scene: First accidental hand touch
-> 
-> 1. Both reaching for same book on shelf
-> 2. Hands touch - close-up
-> 3. Both freeze - side by side reaction
-> 4. Eye contact - soft blush on both
-> 5. Both quickly pull away, embarrassed
-> 6. Walking opposite directions, both smiling to themselves
-> 
-> Style: Soft, pastel colors, gentle line work
-> 
-> Characters:
-> - She: Long dark hair, glasses, oversized sweater
-> - He: Messy light brown hair, tall, kind eyes"
-
-**Comic strip:**
-> "Create a 4-panel comic strip about a cat:
-> 
-> Joke: Cat demands food. Human gives food. Cat doesn't eat it, just wanted attention.
-> 
-> Panel 1: Cat screaming at empty bowl
-> Panel 2: Human rushing to fill it
-> Panel 3: Cat walks away from full bowl
-> Panel 4: Cat sitting on human's laptop, satisfied
-> 
-> Style: Simple, cute, expressive faces"
+**在需要处理复杂叙事内容时**（如完整的网络漫画章节、多页的动作场景），请使用 `"agent team"` 模式，以便更好地协调故事和艺术设计。
 
 ---
 
-## Tips for Better Comics
+## 示例提示
 
-1. **Describe characters thoroughly**: The more detail on character design, the better consistency.
+**动作漫画页面：**
+> “创作一个漫画页面，展现主角的力量觉醒：**
+> 
+> 5 个画面：
+> 1. 主角跪在地上，显得战败，雨水倾泻而下。
+> 2. 特写镜头：一滴眼泪从主角眼中落下，与雨水混在一起。
+> 3. 回忆闪回：他们为之奋斗的目标。
+> 4. 主角的眼睛猛地睁开，光芒四射。
+> 5. 全页画面：主角站起身来，周围能量涌动，衣服和头发随风飘扬。
+> 
+> 风格：少年漫画风格，对比强烈，使用动态的线条。
+> **氛围**：从绝望到决心的转变。
+> 
+> **角色设计：** 青少年，黑色短发，穿着破旧的校服。
 
-2. **Specify panel layout**: "4 panels in a grid" vs "large panel top, 3 small below" changes everything.
+**网络漫画中的恋爱场景：**
+> “创作一个 6 个画面的垂直滚动漫画章节：**
+> 
+> 场景：两人第一次偶然触碰。
+> 
+> 1. 两人同时伸手去拿书架上的同一本书。
+> 2. 手指触碰到一起——特写镜头。
+> 3. 两人同时僵住，面露尴尬的表情。
+> 4. 目光交汇——两人的脸颊都泛起了红晕。
+> 5. 两人迅速拉开距离，各自微笑着离开。
+> 
+> 风格：柔和的色彩，线条细腻。
+> 
+> **角色描述：**
+> - 她：长发黑色，戴着眼镜，穿着宽松的毛衣。
+- 他：浅棕色的头发，身材高大，眼神温柔。
 
-3. **Include emotions**: Tell us what characters are feeling in each panel.
+**连环画：**
+> “创作一个关于猫的 4 个画面的连环画：**
+> 
+> 搞笑内容：猫索要食物，人类给了食物，但猫并没有吃，只是想引起注意。
+> 
+> 第 1 页：猫对着空碗尖叫。
+> 第 2 页：人类急忙去添食物。
+> 第 3 页：猫从装满食物的碗旁走开。
+> 第 4 页：猫坐在人类的笔记本电脑上，显得很满足。
+> 
+> **风格：** 简单明了，画面充满可爱感。
 
-4. **Think about flow**: Where does the reader's eye go? Composition matters.
+---
 
-5. **Sound effects matter**: "Include SFX for the punch" adds manga authenticity.
+## 创作更出色漫画的技巧：
 
-6. **Reference real comics**: "Like One Piece style" or "Saga vibes" gives clear direction.
+1. **详细描述角色**：角色设计的细节越丰富，画面的一致性就越高。
+2. **指定页面布局**：例如“4 个画面采用网格布局”或“上面一个大画面，下面三个小画面”，这些细节会直接影响最终效果。
+3. **表达角色的情感**：在每个画面中都要明确表现出角色的感受。
+4. **考虑画面的布局**：读者的视线应该如何流动？合理的构图非常重要。
+5. **音效的运用**：为关键场景添加音效可以增强漫画的真实感。
+6. **参考现有的漫画作品**：指定“类似《海贼王》的风格”或“《进击的巨人》的氛围”，可以为创作提供明确的方向。

@@ -1,36 +1,35 @@
 ---
 name: crawl4ai
-description: AI-powered web scraping framework for extracting structured data from websites. Use when Codex needs to crawl, scrape, or extract data from web pages using AI-powered parsing, handle dynamic content, or work with complex HTML structures.
+description: 这是一个基于人工智能（AI）的网页抓取框架，用于从网站中提取结构化数据。当 Codex 需要使用 AI 技术来爬取、解析网页内容、提取数据，或者处理动态内容以及复杂的 HTML 结构时，可以选用该框架。
 ---
 
 # Crawl4ai
 
-## Overview
+## 概述
 
-Crawl4ai is an AI-powered web scraping framework designed to extract structured data from websites efficiently. It combines traditional HTML parsing with AI to handle dynamic content, extract text intelligently, and clean and structure data from complex web pages.
+Crawl4ai 是一个基于人工智能的网页抓取框架，旨在高效地从网站中提取结构化数据。它结合了传统的 HTML 解析技术和人工智能，能够处理动态内容，智能地提取文本，并从复杂的网页中清洗和整理数据。
 
-## When to Use This Skill
+## 适用场景
 
-Use when Codex needs to:
-- Extract structured data from web pages (products, articles, forms, tables, etc.)
-- Scrape websites with dynamic content or complex JavaScript
-- Clean and normalize extracted data from various HTML structures
-- Work with APIs or web services that return HTML
-- Handle CORS limitations by scraping directly
-- Process web content at scale with reliability
+当 Codex 需要执行以下操作时，可以使用 Crawl4ai：
+- 从网页中提取结构化数据（如产品信息、文章内容、表单数据、表格数据等）
+- 抓取包含动态内容或复杂 JavaScript 代码的网站
+- 清理并规范从不同 HTML 结构中提取的数据
+- 与返回 HTML 数据的 API 或 Web 服务进行交互
+- 直接抓取数据以规避 CORS（跨源资源共享）限制
+- 可靠地大规模处理网页内容
 
-**Trigger phrases:**
-- "Extract data from this website"
-- "Scrape this page for [specific data]"
-- "Parse this HTML"
-- "Get data from [URL]"
-- "Extract structured information from [website]"
-- "Scrape [website] for [data type]"
-- "Web scrape [URL]"
+**常用指令：**
+- “从这个网站中提取数据”
+- “从 [URL] 页面中抓取 [特定类型的数据]”
+- “解析这个 HTML 文件”
+- “从 [URL] 获取数据”
+- “从 [网站] 中提取结构化信息”
+- “从 [网站] 抓取 [数据类型]”
 
-## Quick Start
+## 快速入门
 
-### Basic Usage
+### 基本用法
 
 ```python
 from crawl4ai import AsyncWebCrawler, BrowserMode
@@ -45,7 +44,7 @@ async def scrape_page(url):
         return result.markdown, result.clean_html
 ```
 
-### Extracting Structured Data
+### 提取结构化数据
 
 ```python
 from crawl4ai import AsyncWebCrawler, JsonModeScreener
@@ -71,11 +70,11 @@ async def extract_products(url):
         return products
 ```
 
-## Common Tasks
+## 常见任务
 
-### Web Scraping Basics
+### 网页抓取基础
 
-**Scenario:** User wants to scrape a website for all article titles.
+**场景：** 用户希望从网站中抓取所有文章的标题。
 
 ```python
 from crawl4ai import AsyncWebCrawler
@@ -93,11 +92,11 @@ async def scrape_articles(url):
         return titles
 ```
 
-**Trigger:** "Scrape this site for article titles" or "Get all titles from [URL]"
+**指令示例：** “从这个网站中抓取文章标题” 或 “从 [URL] 获取所有文章标题”
 
-### Dynamic Content Handling
+### 动态内容处理
 
-**Scenario:** Website loads data via JavaScript.
+**场景：** 网站通过 JavaScript 加载数据。
 
 ```python
 from crawl4ai import AsyncWebCrawler
@@ -114,11 +113,11 @@ async def scrape_dynamic_site(url):
         return result.markdown
 ```
 
-**Trigger:** "Scrape this dynamic website" or "This page needs JavaScript to load data"
+**指令示例：** “抓取这个动态更新的网站” 或 “这个页面需要通过 JavaScript 来加载数据”
 
-### Structured Data Extraction
+### 结构化数据提取
 
-**Scenario:** Extract specific fields like prices, descriptions, etc.
+**场景：** 提取特定的字段（如价格、描述等）。
 
 ```python
 from crawl4ai import AsyncWebCrawler
@@ -140,11 +139,11 @@ async def extract_product_details(url):
         return result.extracted_content
 ```
 
-**Trigger:** "Extract product details from this page" or "Get price and name from [URL]"
+**指令示例：** “从这个页面中提取产品详情” 或 “从 [URL] 获取价格和名称”
 
-### HTML Cleaning and Parsing
+### HTML 清理与解析
 
-**Scenario:** Clean messy HTML and extract clean text.
+**场景：** 清理杂乱的 HTML 代码并提取纯净的文本。
 
 ```python
 from crawl4ai import AsyncWebCrawler
@@ -161,11 +160,11 @@ async def clean_and_parse(url):
         return clean_text
 ```
 
-**Trigger:** "Clean this HTML" or "Extract main content from this page"
+**指令示例：** “清理这个 HTML 文件” 或 “从这个页面中提取主要内容”
 
-## Advanced Features
+## 高级功能
 
-### Custom JavaScript Injection
+### 自定义 JavaScript 注入
 
 ```python
 async def custom_scrape(url, custom_js):
@@ -178,7 +177,7 @@ async def custom_scrape(url, custom_js):
         return result.extracted_content
 ```
 
-### Session Management
+### 会话管理
 
 ```python
 from crawl4ai import AsyncWebCrawler
@@ -200,16 +199,16 @@ async def multi_page_scrape(base_url, urls):
         return results
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always check if the site allows scraping** - Respect robots.txt and terms of service
-2. **Use appropriate delays** - Add delays between requests to avoid overwhelming servers
-3. **Handle errors gracefully** - Implement retry logic and error handling
-4. **Be selective with data** - Extract only what you need, don't dump entire pages
-5. **Store data reliably** - Save extracted data in structured formats (JSON, CSV)
-6. **Clean URLs** - Handle redirects and malformed URLs
+1. **始终检查网站是否允许抓取** – 遵守 robots.txt 文件和服务条款
+2. **设置适当的延迟** – 在请求之间添加延迟，以避免服务器负担过重
+3. **优雅地处理错误** – 实现重试机制和错误处理
+4. **有选择地提取数据** – 只提取所需的数据，避免下载整个页面
+5. **可靠地存储数据** – 将提取的数据保存为结构化格式（如 JSON、CSV）
+6. **清理 URL** – 处理重定向和格式错误的 URL
 
-## Error Handling
+## 错误处理
 
 ```python
 async def robust_scrape(url):
@@ -229,27 +228,26 @@ async def robust_scrape(url):
         return None, None
 ```
 
-## Output Formats
+## 输出格式
 
-Crawl4ai supports multiple output formats:
+Crawl4ai 支持多种输出格式：
+- **Markdown**：简洁易读的文本（`result.markdown`）
+- **清洗后的 HTML**：结构化且格式整齐的 HTML（`result.clean_html`）
+- **提取的内容**：结构化的 JSON 数据（`result.extracted_content`）
+- **截图**：页面的可视化展示（`result.screenshot`）
+- **链接**：页面上所有的链接（`result-links`）
 
-- **Markdown**: Clean, readable text (`result.markdown`)
-- **Clean HTML**: Structured, cleaned HTML (`result.clean_html`)
-- **Extracted Content**: Structured JSON data (`result.extracted_content`)
-- **Screenshot**: Visual representation (`result.screenshot`)
-- **Links**: All links found on page (`result.links`)
+## 资源
 
-## Resources
+### 脚本/
+- 用于常见抓取操作的 Python 脚本：
+  - `scrape_single_page.py`：基本抓取工具
+  - `scrape_multiple_pages.py`：分页批量抓取
+  - `extract_from_html.py`：HTML 解析辅助工具
+  - `clean_html.py`：HTML 清理工具
 
-### scripts/
-Python scripts for common crawling operations:
-- `scrape_single_page.py` - Basic scraping utility
-- `scrape_multiple_pages.py` - Batch scraping with pagination
-- `extract_from_html.py` - HTML parsing helper
-- `clean_html.py` - HTML cleaning utility
-
-### references/
-Documentation and examples:
-- `api_reference.md` - Complete API documentation
-- `examples.md` - Common use cases and patterns
-- `error_handling.md` - Troubleshooting guide
+### 参考资料/
+- **文档和示例：**
+  - `api_reference.md`：完整的 API 文档
+  - `examples.md`：常见用例和最佳实践
+  - `error_handling.md`：故障排除指南

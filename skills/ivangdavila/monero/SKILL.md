@@ -1,84 +1,84 @@
 ---
 name: Monero
-description: Assist with Monero XMR transactions, privacy features, wallet management, and security practices.
+description: 协助处理Monero（XMR）的交易、隐私保护功能、钱包管理以及安全实践。
 metadata: {"clawdbot":{"emoji":"🔒","os":["linux","darwin","win32"]}}
 ---
 
-## Privacy by Default
-- All transactions are private — sender, receiver, and amount hidden by default
-- Ring signatures hide sender — your transaction mixed with decoys
-- Stealth addresses hide receiver — one-time addresses for each transaction
-- RingCT hides amounts — transaction values encrypted
-- No transparent mode — unlike Zcash, privacy isn't optional
+## 默认隐私保护
+- 所有交易均为私密交易——默认情况下，发送者、接收者和交易金额都会被隐藏。
+- Ring签名技术会隐藏发送者的身份——你的交易信息会被混入其他交易中以保护隐私。
+- 隐形地址（Stealth Addresses）用于隐藏接收者的信息——每次交易都会使用一个一次性地址。
+- RingCT技术会对交易金额进行加密处理。
+- Monero不提供“透明模式”——与Zcash不同，隐私保护是强制性的，不可选择。
 
-## Address Types
-- Standard addresses start with "4" — 95 characters long
-- Subaddresses start with "8" — recommended for receiving, unlinkable to main address
-- Integrated addresses include payment ID — for exchanges, starts with "4"
-- Never reuse addresses — generate new subaddress for each transaction
+## 地址类型
+- 标准地址以“4”开头——长度为95个字符。
+- 子地址（Subaddresses）以“8”开头——推荐用于接收交易，且与主地址无法关联。
+- 集成地址（Integrated Addresses）包含交易ID——适用于交易所，同样以“4”开头。
+- 切勿重复使用地址——每次交易都应生成新的子地址。
 
-## Transaction Characteristics
-- Confirmations take ~2 minutes per block — 10 confirmations recommended for security
-- Transactions are larger than Bitcoin — more data for privacy features
-- Fees based on transaction size — typically $0.01-0.05
-- No RBF — can't speed up stuck transactions
-- Unlock time: 10 blocks — funds locked for ~20 minutes after receiving
+## 交易特性
+- 每个区块的交易确认时间约为2分钟——为确保安全性，建议进行10次确认。
+- Monero的交易数据量比比特币更多，这有助于实现更高级的隐私保护功能。
+- 费用根据交易金额计算——通常在0.01至0.05美元之间。
+- Monero不支持“重复支付”（RBF）机制——因此无法通过重复支付来加速交易处理。
+- 资金解冻时间：需要等待10个区块确认——即收到资金后大约20分钟才会解锁。
 
-## Wallet Types
-- Monero GUI — official desktop wallet, full or remote node
-- Monero CLI — power users, scripting
-- Feather Wallet — lightweight desktop, recommended for most users
-- Cake Wallet — mobile, iOS and Android
-- Hardware: Ledger supports XMR — via Monero GUI or Feather
+## 钱包类型
+- Monero GUI钱包：官方桌面钱包，支持完整节点或远程节点模式。
+- Monero CLI钱包：适合高级用户，支持脚本编程。
+- Feather钱包：轻量级桌面钱包，适合大多数用户。
+- Cake钱包：移动钱包，支持iOS和Android平台。
+- 硬件钱包：Ledger支持Monero，可通过Monero GUI或Feather钱包进行管理。
 
-## Node Considerations
-- Running own node = maximum privacy — no one sees your queries
-- Remote nodes see your IP and query patterns — use Tor for privacy
-- Trusted remote nodes: community-maintained lists exist
-- Node sync takes days — hundreds of GB storage required
-- Pruned nodes save space — ~50GB vs ~150GB+ for full
+## 节点运行注意事项
+- 运行自己的节点可以最大程度地保护隐私——没有人能够看到你的交易请求。
+- 远程节点会记录你的IP地址和交易模式——建议使用Tor网络来增强隐私保护。
+- 可信赖的远程节点列表由社区维护。
+- 节点同步需要几天时间——需要数百GB的存储空间。
+- 剪枝（Pruning）机制可以节省存储空间——剪枝后的节点大小约为50GB，而完整节点则需要约150GB以上。
 
-## View Keys and Audit
-- View key allows seeing incoming transactions — but not outgoing or balances
-- Useful for accounting without spending access
-- Proving payments requires tx key — generated per transaction
-- No public explorer can track you — unlike Bitcoin
+## 密钥查看与审计
+- 查看密钥可以查看收到的交易信息，但无法查看发出的交易或账户余额。
+- 这对于进行账务管理非常有用（无需访问交易明细）。
+- 证明交易完成需要使用交易密钥——该密钥是每次交易自动生成的。
+- 与比特币不同，没有任何公共交易浏览器能够追踪你的交易记录。
 
-## Exchange Considerations
-- Some exchanges delisted XMR — regulatory pressure
-- KuCoin, Kraken, others still support — verify current status
-- Withdrawals may require extra confirmations — exchanges are cautious
-- No memo/tag needed — address only
-- Atomic swaps available — decentralized BTC-XMR swaps
+## 交易所相关注意事项
+- 一些交易所已停止支持Monero交易——受到监管压力。
+- KuCoin、Kraken等交易所仍支持Monero交易——请核实当前的交易状态。
+- 提现可能需要额外的确认次数——交易所会采取谨慎措施。
+- 提现时无需提供备注或标签——只需提供接收地址即可。
+- 支持原子交换（Atomic Swaps）——实现去中心化的BTC与Monero之间的交易转换。
 
-## Mining
-- CPU mineable by design — ASIC resistant RandomX algorithm
-- Solo mining possible — GUI has built-in miner
-- Pool mining for consistent rewards — many pools available
-- P2Pool for decentralized mining — no pool operator trust needed
+## 挖矿
+- Monero支持CPU挖矿——采用抗ASIC矿机的RandomX算法。
+- 可以单独挖矿——Monero GUI钱包内置了挖矿工具。
+- 可以加入矿池进行挖矿以获得稳定收益——有许多矿池可供选择。
+- P2Pool模式支持去中心化挖矿——无需信任矿池运营商。
 
-## Common Issues
-- "Wallet not synced" — wait for blockchain sync to complete
-- Balance shows 0 — wallet scanning blockchain, be patient
-- "Unlock time" — received funds locked for 10 blocks
-- Transaction stuck — wait, Monero doesn't have RBF
-- "Daemon not connected" — node connection issue, check settings
+## 常见问题及解决方法
+- “钱包未同步”：请等待区块链同步完成。
+- 账户余额显示为0：可能是钱包正在扫描区块链数据，请耐心等待。
+- “解冻时间”：收到的资金需要等待10个区块确认后才能解锁。
+- 交易卡住：Monero不支持重复支付机制，因此无需担心交易失败。
+- “守护进程未连接”：可能是节点连接问题，请检查设置。
 
-## Security Best Practices
-- Use subaddresses — main address should rarely be shared
-- Run own node or use Tor — remote nodes see your IP
-- Verify wallet software — download from getmonero.org only
-- Hardware wallet for large amounts — Ledger integration available
-- Keep seed phrase offline — standard crypto security
+## 安全最佳实践
+- 尽量使用子地址——主地址应尽量避免被公开。
+- 运行自己的节点或使用Tor网络——远程节点会看到你的IP地址。
+- 请确保使用的钱包软件是官方发布的版本——仅从getmonero.org下载。
+- 对于大额交易，建议使用硬件钱包（如Ledger）。
+- 将助记词（Seed Phrase）保存在离线环境中——这是标准的安全措施。
 
-## Payment Verification
-- Provide tx key + tx ID + recipient address — proves payment
-- Receiver can verify without revealing their view key
-- Block explorers can't verify — privacy preserved
-- Useful for disputes — cryptographic proof of payment
+## 支付验证
+- 提供交易密钥（tx key）、交易ID（tx ID）和接收者地址即可完成支付验证。
+- 接收者无需公开自己的密钥即可验证交易。
+- 区块浏览器无法查看交易详情——从而保护了用户的隐私。
+- 这对于处理交易纠纷非常有用——提供了加密的支付证明。
 
-## Regulatory Awareness
-- Banned or restricted in some jurisdictions — check local laws
-- Some exchanges refuse XMR — regulatory compliance
-- Travel rule compliance impossible — by design
-- Not illegal in most countries — but scrutinized
+## 监管相关注意事项
+- 在某些地区，Monero可能被禁止或受到限制——请遵守当地法律法规。
+- 一些交易所因监管原因不再支持Monero交易。
+- 由于设计上的原因，Monero无法满足某些旅行相关的交易需求。
+- 在大多数国家，Monero并不违法——但仍会受到监管机构的审查。

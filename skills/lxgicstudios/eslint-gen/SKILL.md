@@ -1,29 +1,29 @@
 ---
 name: eslint-gen
-description: Generate ESLint config from your codebase patterns. Use when setting up linting.
+description: 根据您代码库中的模式生成 ESLint 配置文件。在设置代码检查（linting）时可以使用该配置文件。
 ---
 
-# ESLint Config Generator
+# ESLint 配置生成器
 
-Stop copying ESLint configs from other projects. This tool scans your actual codebase and generates a config that matches how you already write code.
+不要再从其他项目中复制 ESLint 配置文件了。这个工具会扫描你的实际代码库，并生成一个与你编码风格相匹配的配置文件。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需手动配置。**  
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-eslint-config .
 ```
 
-## What It Does
+## 功能概述
 
-- Scans your existing code to detect patterns and conventions
-- Generates .eslintrc that matches your actual style
-- Handles TypeScript, React, Vue, and Node.js projects
-- Sets up proper parser and plugin configurations
-- Avoids rules that would flag your existing code
+- 扫描你的现有代码，以检测代码中的模式和约定
+- 生成与你的编码风格相匹配的 `.eslintrc` 配置文件
+- 支持 TypeScript、React、Vue 和 Node.js 项目
+- 自动配置解析器和插件设置
+- 避免那些会标记你的现有代码为错误的规则
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Analyze and generate for current project
@@ -36,42 +36,42 @@ npx ai-eslint-config . --strict
 npx ai-eslint-config . -o .eslintrc.json
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Run on clean code first** - Generate config after your codebase is in a good state
-- **Review the rules** - AI picks sensible defaults but you know your team's preferences
-- **Extend don't override** - Use extends for shared configs, customize only what you need
-- **Add incrementally** - Start lenient, tighten rules over time
+- **先在代码质量良好的状态下运行该工具**：在代码库达到标准状态后再生成配置文件
+- **审查规则**：虽然 AI 会推荐合理的默认设置，但你需要了解团队的编码习惯
+- **扩展而非覆盖**：使用 `extends` 语句来继承现有配置，仅自定义需要的部分
+- **逐步添加规则**：开始时设置较宽松的规则，随着时间逐步严格化
 
-## When to Use This
+## 适用场景
 
-- Starting a new project and need linting fast
-- Standardizing code style across a team
-- Migrating from TSLint or other deprecated linters
-- Learning ESLint rules through real examples
+- 新项目启动时需要快速进行代码检查
+- 在团队中统一代码风格
+- 从 TSLint 或其他过时的代码检查工具迁移
+- 通过实际示例学习 ESLint 规则
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本无需支付费用、无需注册，也无需 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-eslint-config --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool uses glob patterns to find source files, analyzes code style patterns like semicolons, quotes, and spacing, then generates an ESLint config that codifies those patterns into enforceable rules.
+该工具使用通配符模式来查找源文件，分析代码中的样式规范（如分号、引号和空格的使用），然后生成一个将这些规范转化为可执行规则的 ESLint 配置文件。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+MIT 许可证。永久免费使用，你可以随意使用该工具。

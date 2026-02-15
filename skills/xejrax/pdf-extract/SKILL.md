@@ -1,6 +1,6 @@
 ---
 name: pdf-extract
-description: "Extract text from PDF files for LLM processing"
+description: "从 PDF 文件中提取文本以供大型语言模型（LLM）处理"
 metadata:
   {
     "openclaw":
@@ -21,11 +21,11 @@ metadata:
   }
 ---
 
-# PDF Extract
+# PDF提取
 
-Extract text from PDF files for LLM processing. Uses `pdftotext` from the poppler-utils package to convert PDF documents into plain text.
+从PDF文件中提取文本以供大型语言模型（LLM）处理。使用`poppler-utils`包中的`pdftotext`工具将PDF文档转换为纯文本。
 
-## Commands
+## 命令
 
 ```bash
 # Extract all text from a PDF
@@ -35,7 +35,7 @@ pdf-extract "document.pdf"
 pdf-extract "document.pdf" --pages 1-5
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install poppler-utils

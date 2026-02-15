@@ -1,6 +1,6 @@
 ---
 name: bodyweight-fitness
-description: Expert guidance for this skill.
+description: 关于这项技能的专家指导。
 version: 1.0.0
 tags: [hobby,lifestyle]
 author: OpenWork
@@ -11,16 +11,14 @@ metadata:
       env: []
 ---
 
-# ubodyweight fitness
+# ubodyweight fitness  
+专家指导与培训  
 
-Expert guidance and training.
+## 功能  
+- 最佳实践  
+- 技巧与策略  
+- 练习练习  
 
-## Capabilities
-
-- Best practices
-- Tips and strategies
-- Practice exercises
-
-## Usage
-Help with this skill
-Tips and guidance
+## 使用方法  
+- 帮助提升这项技能  
+- 提供技巧与指导

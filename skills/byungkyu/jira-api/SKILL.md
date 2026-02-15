@@ -15,9 +15,9 @@ metadata:
 
 # Jira
 
-Access the Jira Cloud API with managed OAuth authentication. Search issues with JQL, create and manage issues, and automate workflows.
+您可以使用托管的 OAuth 认证来访问 Jira Cloud API。可以通过 JQL 搜索问题、创建和管理问题，并自动化工作流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # First, get your cloud ID
@@ -37,23 +37,23 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/jira/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Jira API endpoint path. The gateway proxies requests to `api.atlassian.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Jira API 端点路径。该网关会将请求代理到 `api.atlassian.com` 并自动插入您的 OAuth 令牌。
 
-## Getting Cloud ID
+## 获取 Cloud ID
 
-Jira Cloud requires a cloud ID. Get it first:
+Jira Cloud 需要一个 Cloud ID。请先获取它：
 
 ```bash
 GET /jira/oauth/token/accessible-resources
 ```
 
-Response:
+响应：
 
 ```json
 [{
@@ -63,31 +63,31 @@ Response:
 }]
 ```
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Jira OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Jira OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -111,7 +111,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -122,7 +122,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -137,9 +137,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -150,9 +150,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Jira connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Jira 连接，请使用 `Maton-Connection` 标头指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -164,39 +164,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Projects
+### 项目
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/project
 ```
 
-#### Get Project
+#### 获取项目
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/project/{projectKeyOrId}
 ```
 
-### Issues
+### 问题
 
-#### Search Issues (JQL)
+#### 搜索问题（JQL）
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/search/jql?jql=project%3DKEY%20order%20by%20created%20DESC&maxResults=20&fields=summary,status,assignee
 ```
 
-#### Get Issue
+#### 获取问题
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
 ```
 
-#### Create Issue
+#### 创建问题
 
 ```bash
 POST /jira/ex/jira/{cloudId}/rest/api/3/issue
@@ -211,7 +211,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Issue
+#### 更新问题
 
 ```bash
 PUT /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
@@ -224,13 +224,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Issue
+#### 删除问题
 
 ```bash
 DELETE /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}
 ```
 
-#### Assign Issue
+#### 分配问题
 
 ```bash
 PUT /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/assignee
@@ -241,15 +241,15 @@ Content-Type: application/json
 }
 ```
 
-### Transitions
+### 问题状态转换
 
-#### Get Transitions
+#### 获取问题状态转换记录
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions
 ```
 
-#### Transition Issue (change status)
+#### 更改问题状态
 
 ```bash
 POST /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/transitions
@@ -260,15 +260,15 @@ Content-Type: application/json
 }
 ```
 
-### Comments
+### 评论
 
-#### Get Comments
+#### 获取评论
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment
 ```
 
-#### Add Comment
+#### 添加评论
 
 ```bash
 POST /jira/ex/jira/{cloudId}/rest/api/3/issue/{issueIdOrKey}/comment
@@ -283,41 +283,41 @@ Content-Type: application/json
 }
 ```
 
-### Users
+### 用户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/myself
 ```
 
-#### Search Users
+#### 搜索用户
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/user/search?query=john
 ```
 
-### Metadata
+### 元数据
 
-#### List Issue Types
+#### 列出问题类型
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/issuetype
 ```
 
-#### List Priorities
+#### 列出问题优先级
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/priority
 ```
 
-#### List Statuses
+#### 列出问题状态
 
 ```bash
 GET /jira/ex/jira/{cloudId}/rest/api/3/status
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -361,34 +361,34 @@ issues = requests.get(
 ).json()
 ```
 
-## Notes
+## 注意事项
 
-- Always fetch cloud ID first using `/oauth/token/accessible-resources`
-- JQL queries must be bounded (e.g., `project=KEY`)
-- Use URL encoding for JQL query parameters
-- Update, Delete, Transition return HTTP 204 on success
-- Agile API requires additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 请始终先使用 `/oauth/token/accessible-resources` 获取 Cloud ID。
+- JQL 查询必须具有明确的边界（例如：`project=KEY`）。
+- 对 JQL 查询参数使用 URL 编码。
+- 更新、删除和状态转换操作成功时返回 HTTP 204 状态码。
+- Agile API 需要额外的 OAuth 权限范围。如果您收到权限范围错误，请通过 support@maton.ai 联系 Maton 支持团队，提供所需的操作、API 以及您的使用场景。
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 命令可以禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 Shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致“无效 API 密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Jira connection or invalid JQL |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Jira API |
+| 400 | 未找到 Jira 连接或 JQL 无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Jira API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -399,20 +399,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `jira`. For example:
+1. 确保您的 URL 路径以 `jira` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/jira/ex/jira/{cloudId}/rest/api/3/project`
+- 错误的格式：`https://gateway.maton.ai/ex/jira/{cloudId}/rest/api/3/project`
 
-- Correct: `https://gateway.maton.ai/jira/ex/jira/{cloudId}/rest/api/3/project`
-- Incorrect: `https://gateway.maton.ai/ex/jira/{cloudId}/rest/api/3/project`
+## 资源
 
-## Resources
-
-- [Jira API Introduction](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
-- [Search Issues (JQL)](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get)
-- [Get Issue](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get)
-- [Create Issue](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post)
-- [Transition Issue](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-post)
-- [JQL Reference](https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Jira API 简介](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
+- [使用 JQL 搜索问题](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get)
+- [获取问题详情](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get)
+- [创建问题](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post)
+- [更改问题状态](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-transitions-post)
+- [JQL 参考文档](https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

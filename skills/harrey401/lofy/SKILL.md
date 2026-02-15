@@ -1,77 +1,78 @@
 ---
 name: lofy
-description: Personal AI chief of staff — a complete life management system for OpenClaw. Proactive morning briefings, evening reviews, weekly reports, fitness tracking, career management, project tracking, smart home control, and brain-inspired memory architecture. Use when setting up a personal AI assistant that manages your entire life through natural conversation across Telegram, WhatsApp, Discord, or any OpenClaw channel.
+description: **个人AI首席助理——OpenClaw的全面生活管理系统**  
+该系统提供主动的晨间简报、晚间回顾、每周报告、健康追踪、职业规划、项目进度管理、智能家居控制等功能，并采用基于大脑原理的记忆存储机制。您可以通过Telegram、WhatsApp、Discord或任何OpenClaw渠道，通过自然语言对话来使用该个人AI助理，让它全面管理您的日常生活。
 ---
 
-# Lofy — Personal AI Life System
+# Lofy — 个人AI生活系统
 
-A skill pack that turns OpenClaw into a proactive personal AI chief of staff. Not a chatbot — a system that manages your calendar, tracks your goals, nudges you when you're slacking, and stays out of your way when you're locked in.
+这是一个技能包，可将OpenClaw转变为一个主动型的人工智能个人助理。它不是一个简单的聊天机器人，而是一个能够管理你的日程、跟踪你的目标、在你懈怠时提醒你、并在你专注工作时不打扰你的系统。
 
-## Quick Start
+## 快速入门
 
-After installing, copy the template files into your workspace:
+安装完成后，将模板文件复制到你的工作区：
 
 ```bash
 cp -r skills/lofy/assets/templates/* .
 ```
 
-Then customize:
-1. Edit `USER.md` with your info (name, timezone, goals)
-2. Edit `IDENTITY.md` if you want to rename your agent
-3. Edit `HEARTBEAT.md` to set your check priorities
-4. Create `data/` directory and initialize data files (templates provided)
-5. Set up cron jobs for briefings (see Scheduling below)
+然后进行以下自定义设置：
+1. 使用你的信息（姓名、时区、目标）编辑 `USER.md` 文件。
+2. 如果你想更改代理的名称，请编辑 `IDENTITY.md` 文件。
+3. 编辑 `HEARTBEAT.md` 文件以设置检查任务的优先级。
+4. 创建 `data/` 目录并初始化数据文件（提供有用的模板）。
+5. 设置定时任务以接收简报（详见下面的“调度”部分）。
 
-## Architecture
+## 架构
 
-Lofy is a **single-agent system** with modular skill domains. One agent handles everything with shared context — lower token cost, no routing overhead, better cross-domain awareness.
+Lofy 是一个**单代理系统**，具有模块化的技能领域。所有任务都由同一个代理处理，并且所有信息都共享在同一上下文中——这样可以降低token的使用成本，避免路由开销，并提高跨领域的协同效率。
 
-### Core Files (copy to workspace root)
-- `AGENTS.md` — Agent behavior rules, safety, memory protocol
-- `SOUL.md` — Personality and tone (customize this!)
-- `IDENTITY.md` — Name and avatar
-- `USER.md` — Your profile (name, timezone, preferences)
-- `HEARTBEAT.md` — Proactive check schedule
-- `MEMORY_SYSTEM.md` — Memory architecture rules
+### 核心文件（复制到工作区根目录）
+- `AGENTS.md` — 代理行为规则、安全设置、内存协议
+- `SOUL.md` — 个性和语气设置（可自定义！）
+- `IDENTITY.md` — 代理名称和头像
+- `USER.md` — 你的个人资料（姓名、时区、偏好设置）
+- `HEARTBEAT.md` — 主动检查任务的调度计划
+- `MEMORY_SYSTEM.md` — 内存管理规则
 
-### Data Files (create in `data/`)
-- `goals.json` — Life goals, habits, streaks
-- `fitness.json` — Workouts, meals, PRs
-- `applications.json` — Job application pipeline
-- `projects.json` — Project status and milestones
-- `home-config.json` — Smart home scenes and devices
+### 数据文件（创建在 `data/` 目录中）
+- `goals.json` — 生活目标、习惯记录
+- `fitness.json` — 锻炼记录、饮食记录
+- `applications.json` — 求职申请流程
+- `projects.json` — 项目状态和里程碑
+- `home-config.json` — 智能家居场景设置和设备控制
 
-## Skill Domains
+## 技能领域
 
-Each domain is a sub-skill. Install all or pick what you need:
+每个领域都包含多个子技能。你可以选择安装所有技能，或者仅安装你需要的技能：
 
-| Skill | What it does |
+| 技能 | 功能描述 |
 |-------|-------------|
-| `lofy-life-coach` | Morning briefings, evening reviews, goal tracking, habit accountability |
-| `lofy-fitness` | Workout logging, meal tracking, PR detection, gym nudges |
-| `lofy-career` | Job search, application tracking, resume tailoring, interview prep |
-| `lofy-projects` | Project management, priority engine, meeting prep, deadline tracking |
-| `lofy-home` | Smart home scenes, device control via Home Assistant |
+| `lofy-life-coach` | 早晨简报、晚间总结、目标跟踪、习惯督促 |
+| `lofy-fitness` | 锻炼记录、饮食管理、求职申请提醒 |
+| `lofy-career` | 求职帮助、申请进度跟踪、简历优化、面试准备 |
+| `lofy-projects` | 项目管理、任务优先级设定、会议准备、截止日期提醒 |
+| `lofy-home` | 智能家居控制（通过Home Assistant实现） |
 
-## Memory System
+## 内存系统
 
-Brain-inspired 5-layer architecture. See `references/memory-system.md` for full details.
+Lofy采用基于人脑的工作原理设计，具有五层内存架构。详情请参阅 `references/memory-system.md`。
 
-1. **Working Memory** — Current conversation context
-2. **Short-Term** — Daily logs (`memory/YYYY-MM-DD.md`), 14-day lifecycle
-3. **Long-Term Declarative** — `MEMORY.md`, max 100 lines, curated
-4. **Long-Term Procedural** — Profile files, skills, project knowledge
-5. **Salience Tagging** — Important events get preserved, noise decays
+1. **工作记忆** — 当前的对话上下文
+2. **短期记忆** — 每日日志（`memory/YYYY-MM-DD.md`），生命周期为14天
+3. **长期陈述性记忆** — `MEMORY.md`，最多存储100条信息，内容经过筛选
+4. **长期程序性记忆** — 个人资料文件、技能信息、项目知识
+5. **重要性标记** — 重要事件会被保留，无关信息会被自动删除
 
-Key rules:
-- Daily logs auto-compress after 1 week
-- Extract insights to MEMORY.md after 2 weeks, then delete raw logs
-- "Remember this" = permanent, tagged `[PINNED]`
-- MEMORY.md never loads in shared/group contexts (security)
+**关键规则：**
+- 每日日志会在一周后自动压缩。
+- 两周后，相关数据会被提取到 `MEMORY.md` 中，原始日志会被删除。
+- 如果你标记某条信息为“重要”，它将被永久保存（标记为 `[PINNED]`）。
+- 为确保安全，`MEMORY.md` 内容不会在共享或群组对话中显示。
 
-## Scheduling
+## 调度
 
-Set up these cron jobs for full functionality:
+为了实现全部功能，请设置以下定时任务：
 
 ```
 Morning Briefing  — daily at your wake time (e.g., 10 AM)
@@ -79,40 +80,44 @@ Evening Review     — daily at wind-down time (e.g., 9 PM)
 Weekly Review      — Sunday evening (e.g., 7 PM)
 ```
 
-Use `openclaw cron` or the cron tool to create these. Each should be an `agentTurn` in an isolated session with delivery to your primary channel.
+你可以使用 `openclaw cron` 或其他定时工具来创建这些任务。每个任务都应配置为 `agentTurn` 类型的任务，并发送到你的主要沟通渠道。
 
-### Heartbeat
-Configure heartbeat polling (every 30 min) for proactive checks:
-- Unread emails
-- Upcoming calendar events
-- Overdue follow-ups
-- Approaching deadlines
+### 主动检查（Heartbeat）
 
-## Customization
+配置每30分钟执行一次的检查任务，内容包括：
+- 未读邮件
+- 即将到来的日历事件
+- 过期的待办事项
+- 接近的截止日期
 
-### Personality
-Edit `SOUL.md` to match your vibe. The default is direct, casual, and competent. Make it yours.
+## 自定义设置
 
-### Integrations
-Lofy works best with these tools (configure in `TOOLS.md`):
-- **Google Workspace** — Gmail, Calendar (via `gog` CLI or API)
-- **Spotify** — Music control (via `spogo` CLI or API)
-- **Home Assistant** — Smart home (requires HA instance)
-- **Browser** — Job search, restaurant bookings, web research
+### 个性设置
 
-### Profile System
-Create `profile/` directory with:
-- `career.md` — Skills, experience, target roles
-- `projects.md` — Active project details
-- `body.md` — Fitness stats and goals
-- `personality.md` — Interests, preferences, communication style
+编辑 `SOUL.md` 文件以匹配你的个人风格。默认设置是直接、随意且专业的。你可以根据自己的喜好进行调整。
 
-These are living documents the agent updates as it learns about you.
+### 集成
 
-## Design Principles
+Lofy 与以下工具配合使用效果最佳（请在 `TOOLS.md` 中进行配置）：
+- **Google Workspace** — Gmail、日历（通过 `gog` CLI 或 API）
+- **Spotify** — 音乐控制（通过 `spogo` CLI 或 API）
+- **Home Assistant** — 智能家居系统
+- **浏览器** — 求职搜索、餐厅预订、网络搜索
 
-1. **Be helpful, not performative** — Skip filler, just do the work
-2. **Have opinions** — Disagree when warranted, suggest improvements
-3. **Resourceful before asking** — Look it up, read the file, then ask if stuck
-4. **Respect privacy** — Never leak personal data in group chats
-5. **Earn trust through competence** — Be careful externally, bold internally
+### 个人资料系统
+
+在 `data/` 目录下创建以下文件：
+- `career.md` — 技能、工作经验、目标职位
+- `projects.md` — 在进行中的项目详情
+- `body.md` — 健康数据与健身目标
+- `personality.md` — 兴趣爱好、沟通风格
+
+这些文件会随着Lofy对你的了解不断更新。
+
+## 设计原则
+
+1. **提供实际帮助，而非形式主义** — 直接解决问题，不做无用功。
+2. **敢于表达意见** — 在必要时提出不同意见，建议改进方案。
+3. **先尝试自己解决问题** — 在寻求帮助前先自己查找信息或阅读相关文件。
+4. **尊重隐私** — 绝不在群组聊天中泄露个人数据。
+5. **通过专业能力赢得信任** — 外部行为谨慎，内部决策果断。

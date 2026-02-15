@@ -1,9 +1,9 @@
 ---
 name: web-search
-description: Search the web for real-time information.
+description: 在网页上搜索实时信息。
 ---
 # web-search
 
 @command(web_search)
-Usage: web_search --query <query>
-Run: curl -s "https://ddg-api.herokuapp.com/search?q={{query}}"
+用法: web_search --query <查询内容>
+执行方式: curl -s "https://ddg-api.herokuapp.com/search?q={{查询内容}}"

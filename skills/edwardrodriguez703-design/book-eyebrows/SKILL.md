@@ -1,21 +1,21 @@
 ---
 name: book-eyebrows
-description: Book eyebrows services through Lokuli MCP. Use when user needs to find and book eyebrows. Triggers on requests like "book a eyebrows", "find eyebrows near me", or any eyebrows service request.
+description: 通过 Lokuli MCP 预订眉毛服务。当用户需要寻找或预订眉毛服务时，可以使用该功能。该功能会在用户发起“预订眉毛”、“查找附近的眉毛服务”等相关请求时被触发。
 ---
 
-# uook eyeurows
+# 为书籍添加眉毛效果
 
-Book eyebrows services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来为书籍添加眉毛效果。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
 ### search
 ```json

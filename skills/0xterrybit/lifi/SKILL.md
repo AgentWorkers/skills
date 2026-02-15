@@ -1,57 +1,57 @@
 ---
 name: lifi
-description: LI.FI cross-chain bridge and DEX aggregator. Swap tokens across 30+ blockchains with best rates and routes.
+description: LI.FI是一个跨链桥接工具和去中心化交易所（DEX）聚合器，支持在30多个区块链之间以最优的汇率和路径进行代币交易。
 metadata: {"clawdbot":{"emoji":"🌉","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # LI.FI 🌉
 
-Multi-chain liquidity aggregation protocol. Bridge and swap tokens across 30+ blockchains.
+多链流动性聚合协议，支持在30多个区块链之间桥接和交换代币。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `LIFI_API_KEY` | API key for higher rate limits | No |
-| `LIFI_INTEGRATOR` | Integrator ID for analytics | No |
+| `LIFI_API_KEY` | 用于提高API调用速率的API密钥 | 否 |
+| `LIFI_INTEGRATOR` | 用于数据分析的集成商ID | 否 |
 
-## 💎 Integrator Fee Configuration
+## 💎 集成商费用配置
 
-This skill includes a small integrator fee (0.3%) on swaps to support development. The fee is transparently disclosed to users before each transaction.
+为了支持开发，LI.FI对每次交易收取0.3%的集成商费用。该费用会在交易前透明地告知用户。
 
-| Variable | Value | Description |
+| 变量 | 值 | 描述 |
 |----------|-------|-------------|
-| `INTEGRATOR_ID` | `CyberPay` | Integrator identifier (registered at portal.li.fi) |
-| `INTEGRATOR_FEE` | 0.003 | 0.3% integrator fee |
-| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
+| `INTEGRATOR_ID` | `CyberPay` | 集成商标识符（在portal.li.fi上注册） |
+| `INTEGRATOR_FEE` | 0.003 | 0.3%的集成商费用 |
+| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收费到的EVM钱包地址 |
 
-**Fee Breakdown:**
-- User pays: 0.3% of swap output
-- Integrator receives: 100% of fee (after LI.FI service fee)
+**费用构成：**
+- 用户支付：交易金额的0.3%
+- 集成商获得：费用的100%（扣除LI.FI的服务费后）
 
-> 💡 Fees are accumulated in the LI.FI contract and can be withdrawn via the [LI.FI Portal](https://portal.li.fi/) or API.
+> 💡 费用会累积在LI.FI合约中，可通过[LI.FI门户](https://portal.li.fi/)或API进行提取。
 
-## Features
+## 主要功能
 
-- 🌉 **Cross-Chain Bridges** - 15+ bridge protocols
-- 🔄 **DEX Aggregation** - Best rates across DEXs
-- ⛓️ **30+ Chains** - Ethereum, Arbitrum, Polygon, Solana, etc.
-- 🛡️ **Route Optimization** - Fastest, cheapest, or safest routes
-- 💰 **Fee Estimation** - Transparent gas and bridge fees
+- 🌉 **跨链桥接** - 支持15种以上的跨链桥接协议
+- 🔄 **DEX聚合** - 从多个去中心化交易所（DEX）中选择最优交易价格
+- ⛓️ **30多个区块链支持** - 包括Ethereum、Arbitrum、Polygon、Solana等
+- 🛡️ **路由优化** - 选择最快、最便宜或最安全的交易路径
+- 💰 **费用估算** - 提供透明的交易手续费和桥接费用信息
 
-## API Base URL
+## API基础URL
 
 ```
 https://li.quest/v1
 ```
 
-## Get Supported Chains
+## 获取支持的区块链
 
 ```bash
 curl -s "https://li.quest/v1/chains" | jq '.chains[] | {id: .id, name: .name, nativeToken: .nativeToken.symbol}'
 ```
 
-## Get Supported Tokens
+## 获取支持的代币
 
 ```bash
 # Get tokens for a specific chain
@@ -60,7 +60,7 @@ CHAIN_ID="1"  # Ethereum
 curl -s "https://li.quest/v1/tokens?chains=${CHAIN_ID}" | jq ".tokens.\"${CHAIN_ID}\"[:10]"
 ```
 
-## Get Quote (Cross-Chain Swap)
+## 获取报价（跨链交易）
 
 ```bash
 FROM_CHAIN="1"        # Ethereum
@@ -93,7 +93,7 @@ curl -s "https://li.quest/v1/quote" \
   }'
 ```
 
-## Get Multiple Routes
+## 获取多条交易路径
 
 ```bash
 # Integrator fee configuration
@@ -125,9 +125,9 @@ curl -s "https://li.quest/v1/advanced/routes" \
   }'
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | ID | Native Token |
+| 区块链 | ID | 原生代币 |
 |-------|-----|--------------|
 | Ethereum | 1 | ETH |
 | Arbitrum | 42161 | ETH |
@@ -140,22 +140,22 @@ curl -s "https://li.quest/v1/advanced/routes" \
 | Solana | 1151111081099710 | SOL |
 | Fantom | 250 | FTM |
 
-## Supported Bridges
+## 支持的桥接服务
 
-| Bridge | Chains | Speed |
+| 桥接服务 | 支持的区块链 | 交易速度 |
 |--------|--------|-------|
-| Stargate | 8+ | ~1-5 min |
-| Hop | 6+ | ~5-15 min |
-| Across | 7+ | ~2-5 min |
-| Celer | 15+ | ~5-20 min |
-| Connext | 10+ | ~10-30 min |
-| Multichain | 20+ | ~10-30 min |
-| Hyphen | 5+ | ~2-5 min |
-| Synapse | 15+ | ~5-15 min |
+| Stargate | 8种以上 | 约1-5分钟 |
+| Hop | 6种以上 | 约5-15分钟 |
+| Across | 7种以上 | 约2-5分钟 |
+| Celer | 15种以上 | 约5-20分钟 |
+| Connext | 10种以上 | 约10-30分钟 |
+| Multichain | 20种以上 | 约10-30分钟 |
+| Hyphen | 5种以上 | 约2-5分钟 |
+| Synapse | 15种以上 | 约5-15分钟 |
 
-## Execute Transaction
+## 执行交易
 
-After getting a quote, execute the transaction:
+获取报价后，可以执行交易：
 
 ```bash
 # The quote response includes transaction data
@@ -168,7 +168,7 @@ TX_DATA=$(echo "$QUOTE_RESPONSE" | jq -r '.transactionRequest')
 # This requires a signing mechanism (MetaMask, ethers.js, etc.)
 ```
 
-## Check Transaction Status
+## 检查交易状态
 
 ```bash
 TX_HASH="0x..."
@@ -187,26 +187,26 @@ curl -s "https://li.quest/v1/status" \
   }'
 ```
 
-## Status Codes
+## 状态代码
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `NOT_FOUND` | Transaction not indexed yet |
-| `PENDING` | Transaction in progress |
-| `DONE` | Successfully completed |
-| `FAILED` | Transaction failed |
+| `NOT_FOUND` | 交易尚未被记录 |
+| `PENDING` | 交易正在进行中 |
+| `DONE` | 交易成功完成 |
+| `FAILED` | 交易失败 |
 
-## Route Options
+## 路由选项
 
-| Option | Values | Description |
+| 选项 | 可选值 | 描述 |
 |--------|--------|-------------|
-| `order` | RECOMMENDED, FASTEST, CHEAPEST, SAFEST | Route priority |
-| `slippage` | 0.01 - 0.5 | Slippage tolerance (1-50%) |
-| `maxPriceImpact` | 0.01 - 0.5 | Max price impact |
-| `allowBridges` | stargate, hop, etc. | Whitelist bridges |
-| `denyBridges` | multichain, etc. | Blacklist bridges |
+| `order` | RECOMMENDED, FASTEST, CHEAPEST, SAFEST | 路由优先级 |
+| `slippage` | 0.01 - 0.5 | 价格滑点容忍范围（1-50%） |
+| `maxPriceImpact` | 0.01 - 0.5 | 最大价格影响范围 |
+| `allowBridges` | stargate, hop等 | 允许使用的桥接服务 |
+| `denyBridges` | multichain等 | 禁用的桥接服务 |
 
-## Gas Estimation
+## 手续费估算
 
 ```bash
 # Get gas prices for a chain
@@ -215,9 +215,9 @@ CHAIN_ID="1"
 curl -s "https://li.quest/v1/gas/prices?chainId=${CHAIN_ID}" | jq '.'
 ```
 
-## Token Approval
+## 代币授权
 
-Before swapping, approve token spending:
+在交换代币之前，需要先授权代币的使用：
 
 ```bash
 # Get approval transaction data
@@ -228,26 +228,26 @@ curl -s "https://li.quest/v1/approval/transaction" \
   --data-urlencode "amount=100000000" | jq '.data'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display route details before execution
-2. **WARN** if price impact > 1%
-3. **WARN** if slippage > 3%
-4. **CHECK** bridge security ratings
-5. **VERIFY** destination address
+1. **务必**在执行交易前查看详细路由信息
+2. **警告**：如果价格影响超过1%，请谨慎操作
+3. **警告**：如果价格滑点超过3%，请重新选择交易路径
+4. **检查**桥接服务的安全性评级
+5. **核实**目标地址的准确性
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `NO_ROUTES` | No available routes | Try different tokens/chains |
-| `INSUFFICIENT_LIQUIDITY` | Low liquidity | Reduce amount |
-| `SLIPPAGE_EXCEEDED` | Price moved | Increase slippage |
-| `BRIDGE_UNAVAILABLE` | Bridge down | Try different bridge |
+| 错误类型 | 原因 | 解决方案 |
+|--------|-------|----------|
+| `NO_ROUTES` | 无可用交易路径 | 尝试其他代币或区块链 |
+| `INSUFFICIENT_LIQUIDITY` | 流动性不足 | 减少交易金额 |
+| `SLIPPAGE_EXCEEDED` | 价格波动过大 | 增加价格滑点容忍范围 |
+| `BRIDGE_UNAVAILABLE` | 桥接服务不可用 | 选择其他桥接服务 |
 
-## Links
+## 相关链接
 
-- [LI.FI Docs](https://docs.li.fi/)
-- [LI.FI Explorer](https://explorer.li.fi/)
-- [API Reference](https://apidocs.li.fi/)
-- [Widget](https://transferto.xyz/)
+- [LI.FI文档](https://docs.li.fi/)
+- [LI.FI浏览器](https://explorer.li.fi/)
+- [API参考文档](https://apidocs.li.fi/)
+- [插件应用](https://transferto.xyz/)

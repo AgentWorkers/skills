@@ -15,9 +15,9 @@ metadata:
 
 # Asana
 
-Access the Asana API with managed OAuth authentication. Manage tasks, projects, workspaces, users, and webhooks for work management.
+您可以使用受管理的OAuth认证来访问Asana API，从而管理任务、项目、工作空间、用户以及用于工作管理的Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 python <<'EOF'
@@ -28,39 +28,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/asana/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Asana API endpoint path. The gateway proxies requests to `app.asana.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Asana API端点路径。该网关会将请求代理到 `app.asana.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Asana OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Asana OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -71,7 +71,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -84,7 +84,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -95,7 +95,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -110,9 +110,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -123,9 +123,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Asana connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Asana连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -137,26 +137,26 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Tasks
+### 任务
 
-#### Get Multiple Tasks
+#### 获取多个任务
 
 ```bash
 GET /asana/api/1.0/tasks
 ```
 
-Query parameters:
-- `project` - Project GID to filter tasks
-- `assignee` - User GID or "me" for assigned tasks
-- `workspace` - Workspace GID (required if no project specified)
-- `completed_since` - ISO 8601 date to filter tasks completed after this date
-- `opt_fields` - Comma-separated list of fields to include
+查询参数：
+- `project` - 项目GID（用于过滤任务）
+- `assignee` - 用户GID或“me”（用于获取已分配的任务）
+- `workspace` - 工作空间GID（如果未指定项目，则必需）
+- `completed_since` - ISO 8601格式的日期（用于过滤在此日期之后完成的任务）
+- `opt_fields` - 以逗号分隔的字段列表（需要返回的字段）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -167,7 +167,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -181,13 +181,13 @@ EOF
 }
 ```
 
-#### Get a Task
+#### 获取单个任务
 
 ```bash
 GET /asana/api/1.0/tasks/{task_gid}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -198,7 +198,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create a Task
+#### 创建任务
 
 ```bash
 POST /asana/api/1.0/tasks
@@ -215,7 +215,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -228,13 +228,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Task
+#### 更新任务
 
 ```bash
 PUT /asana/api/1.0/tasks/{task_gid}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -247,25 +247,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete a Task
+#### 删除任务
 
 ```bash
 DELETE /asana/api/1.0/tasks/{task_gid}
 ```
 
-#### Get Tasks from a Project
+#### 从项目中获取任务
 
 ```bash
 GET /asana/api/1.0/projects/{project_gid}/tasks
 ```
 
-#### Get Subtasks
+#### 获取子任务
 
 ```bash
 GET /asana/api/1.0/tasks/{task_gid}/subtasks
 ```
 
-#### Create Subtask
+#### 创建子任务
 
 ```bash
 POST /asana/api/1.0/tasks/{task_gid}/subtasks
@@ -280,34 +280,34 @@ Content-Type: application/json
 }
 ```
 
-#### Search Tasks (Premium)
+#### 搜索任务（需Asana Premium订阅）
 
-**Note:** This endpoint requires an Asana Premium subscription.
+**注意：** 此端点需要Asana Premium订阅。
 
 ```bash
 GET /asana/api/1.0/workspaces/{workspace_gid}/tasks/search
 ```
 
-Query parameters:
-- `text` - Text to search for
-- `assignee.any` - Filter by assignees
-- `projects.any` - Filter by projects
-- `completed` - Filter by completion status
+查询参数：
+- `text` - 要搜索的文本
+- `assignee.any` - 按分配者过滤
+- `projects.any` - 按项目过滤
+- `completed` - 按完成状态过滤
 
-### Projects
+### 项目
 
-#### Get Multiple Projects
+#### 获取多个项目
 
 ```bash
 GET /asana/api/1.0/projects
 ```
 
-Query parameters:
-- `workspace` - Workspace GID
-- `team` - Team GID
-- `opt_fields` - Comma-separated list of fields
+查询参数：
+- `workspace` - 工作空间GID
+- `team` - 团队GID
+- `opt_fields` - 以逗号分隔的字段列表
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -318,7 +318,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -335,19 +335,19 @@ EOF
 }
 ```
 
-#### Get a Project
+#### 获取单个项目
 
 ```bash
 GET /asana/api/1.0/projects/{project_gid}
 ```
 
-#### Create a Project
+#### 创建项目
 
 ```bash
 POST /asana/api/1.0/projects
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -360,27 +360,27 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update a Project
+#### 更新项目
 
 ```bash
 PUT /asana/api/1.0/projects/{project_gid}
 ```
 
-#### Delete a Project
+#### 删除项目
 
 ```bash
 DELETE /asana/api/1.0/projects/{project_gid}
 ```
 
-### Workspaces
+### 工作空间
 
-#### Get Multiple Workspaces
+#### 获取多个工作空间
 
 ```bash
 GET /asana/api/1.0/workspaces
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -391,7 +391,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -404,42 +404,42 @@ EOF
 }
 ```
 
-#### Get a Workspace
+#### 获取单个工作空间
 
 ```bash
 GET /asana/api/1.0/workspaces/{workspace_gid}
 ```
 
-#### Update a Workspace
+#### 更新工作空间
 
 ```bash
 PUT /asana/api/1.0/workspaces/{workspace_gid}
 ```
 
-#### Add User to Workspace
+#### 将用户添加到工作空间
 
 ```bash
 POST /asana/api/1.0/workspaces/{workspace_gid}/addUser
 ```
 
-#### Remove User from Workspace
+#### 从工作空间中移除用户
 
 ```bash
 POST /asana/api/1.0/workspaces/{workspace_gid}/removeUser
 ```
 
-### Users
+### 用户
 
-#### Get Multiple Users
+#### 获取多个用户
 
 ```bash
 GET /asana/api/1.0/users
 ```
 
-Query parameters:
-- `workspace` - Workspace GID to filter users
+查询参数：
+- `workspace` - 工作空间GID（用于过滤用户）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -450,7 +450,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -463,43 +463,43 @@ EOF
 }
 ```
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /asana/api/1.0/users/me
 ```
 
-#### Get a User
+#### 获取单个用户
 
 ```bash
 GET /asana/api/1.0/users/{user_gid}
 ```
 
-#### Get Users in a Team
+#### 获取团队中的用户
 
 ```bash
 GET /asana/api/1.0/teams/{team_gid}/users
 ```
 
-#### Get Users in a Workspace
+#### 获取工作空间中的用户
 
 ```bash
 GET /asana/api/1.0/workspaces/{workspace_gid}/users
 ```
 
-### Webhooks
+### Webhook
 
-#### Get Multiple Webhooks
+#### 获取多个Webhook
 
 ```bash
 GET /asana/api/1.0/webhooks
 ```
 
-Query parameters:
-- `workspace` - Workspace GID (required)
-- `resource` - Resource GID to filter by
+查询参数：
+- `workspace` - 工作空间GID（必需）
+- `resource` - 资源GID（用于过滤）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -510,9 +510,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Webhook
+#### 创建Webhook
 
-**Note:** Asana verifies the target URL is reachable and responds with a 200 status during webhook creation.
+**注意：** Asana会验证目标URL是否可访问，并在创建Webhook时返回200状态码。
 
 ```bash
 POST /asana/api/1.0/webhooks
@@ -533,7 +533,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -546,7 +546,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -561,29 +561,29 @@ EOF
 }
 ```
 
-#### Get a Webhook
+#### 获取Webhook信息
 
 ```bash
 GET /asana/api/1.0/webhooks/{webhook_gid}
 ```
 
-#### Update a Webhook
+#### 更新Webhook
 
 ```bash
 PUT /asana/api/1.0/webhooks/{webhook_gid}
 ```
 
-#### Delete a Webhook
+#### 删除Webhook
 
 ```bash
 DELETE /asana/api/1.0/webhooks/{webhook_gid}
 ```
 
-Returns `200 OK` with empty data on success.
+成功时返回 `200 OK` 且数据为空。
 
-## Pagination
+## 分页
 
-Asana uses cursor-based pagination. Use `offset` for pagination:
+Asana使用基于游标的分页机制。使用 `offset` 参数进行分页：
 
 ```bash
 python <<'EOF'
@@ -594,7 +594,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-Response includes `next_page` when more results exist:
+当存在更多结果时，响应中会包含 `next_page`：
 
 ```json
 {
@@ -607,7 +607,7 @@ Response includes `next_page` when more results exist:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -637,36 +637,36 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Resource IDs (GIDs) are strings
-- Timestamps are in ISO 8601 format
-- Use `opt_fields` to specify which fields to return
-- Workspaces are the highest-level organizational unit
-- Organizations are specialized workspaces representing companies
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 资源ID（GID）为字符串形式。
+- 时间戳采用ISO 8601格式。
+- 使用 `opt_fields` 参数指定需要返回的字段。
+- 工作空间是最高级别的组织单位。
+- 组织是代表公司的专用工作空间。
+- **重要提示：** 当使用curl命令时，如果URL包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以禁用全局解析。
+- **重要提示：** 当将curl输出传递给 `jq` 或其他命令时，在某些Shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析，可能会导致“无效API密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing Asana connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Asana API |
+| 400 | 请求错误或未建立Asana连接 |
+| 401 | API密钥无效或缺失 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自Asana API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -677,17 +677,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `asana`. For example:
+1. 确保您的URL路径以 `asana` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/asana/api/1.0/tasks`
+- 错误格式：`https://gateway.maton.ai/api/1.0/tasks`
 
-- Correct: `https://gateway.maton.ai/asana/api/1.0/tasks`
-- Incorrect: `https://gateway.maton.ai/api/1.0/tasks`
+## 资源
 
-## Resources
-
-- [Asana API Documentation](https://developers.asana.com)
-- [API Reference](https://developers.asana.com/reference)
-- [LLM Reference](https://developers.asana.com/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Asana API文档](https://developers.asana.com)
+- [API参考](https://developers.asana.com/reference)
+- [LLM参考](https://developers.asana.com/llms.txt)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

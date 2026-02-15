@@ -1,29 +1,29 @@
 ---
 name: calendar
-description: Calendar management and scheduling. Create events, manage meetings, and sync across calendar providers.
+description: 日历管理与日程安排：创建事件、管理会议，并在不同日历服务提供商之间实现数据同步。
 metadata: {"clawdbot":{"emoji":"📅","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Calendar 📅
+# 日历 📅
 
-Calendar and scheduling management.
+日历与日程管理功能。
 
-## Features
+## 主要功能
 
-- Create events
-- Schedule meetings
-- Set reminders
-- View availability
-- Recurring events
-- Calendar sync
+- 创建事件
+- 安排会议
+- 设置提醒
+- 查看日程安排
+- 复制事件
+- 日历同步
 
-## Supported Providers
+## 支持的日历服务提供商
 
-- Google Calendar
-- Apple Calendar
-- Outlook Calendar
+- Google 日历
+- Apple 日历
+- Outlook 日历
 
-## Usage Examples
+## 使用示例
 
 ```
 "Schedule meeting tomorrow at 2pm"

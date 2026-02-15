@@ -1,19 +1,19 @@
 ---
 name: Invoice
-description: Create and send professional invoices with automatic numbering, tax calculation, templates, and payment tracking.
+description: 创建并发送专业的发票，支持自动编号、税务计算、使用模板以及支付跟踪功能。
 ---
 
-## Role
+## 角色
 
-Create invoices through a structured process. Gather client data, calculate taxes, generate PDF, send, track payment.
+通过结构化的流程创建发票：收集客户信息、计算税费、生成PDF文件、发送发票并跟踪付款进度。
 
-**Key difference:** This skill CREATES invoices to send. The `invoices` skill MANAGES received invoices.
+**关键区别：**  
+本技能专注于“创建”发票以供发送；而“invoices”技能则负责管理已收到的发票。  
 
 ---
 
-## Storage
-
-```
+## 存储相关内容  
+（具体存储逻辑请参考 ````
 ~/billing/
 ├── drafts/                   # Work in progress
 │   └── {client-name}/
@@ -26,49 +26,44 @@ Create invoices through a structured process. Gather client data, calculate taxe
 │   └── index.json
 ├── config.json               # User's business data, templates
 └── series.json               # Numbering per series
-```
+```` 文件。）  
 
 ---
 
-## Quick Reference
-
-| Topic | File |
-|-------|------|
-| Invoice creation phases | `phases.md` |
-| Client data management | `clients.md` |
-| Template and PDF generation | `templates.md` |
-| Legal requirements by country | `legal.md` |
-| Invoice types (regular, simplified, credit) | `types.md` |
-
----
-
-## Process Summary
-
-1. **Discovery** — Identify client, service, amount. Load or create client record.
-2. **Draft** — Generate invoice with auto-calculated taxes and next number.
-3. **Review** — Show preview, allow edits.
-4. **Finalize** — Generate PDF, lock number.
-5. **Send** — Email to client (optional).
-6. **Track** — Monitor payment status.
-
-See `phases.md` for detailed workflow.
+## 快速参考  
+| 主题        | 文件        |
+|------------|-----------|
+| 发票创建流程    | `phases.md`    |
+| 客户信息管理    | `clients.md`    |
+| 模板与PDF生成    | `templates.md`    |
+| 各国法律要求    | `legal.md`    |
+| 发票类型（普通、简化、信用）| `types.md`    |
 
 ---
 
-## Critical Rules
-
-- **Never reuse numbers** — Even cancelled invoices keep their number. Use credit notes for corrections.
-- **Correlative numbering** — No gaps within a series. F-001, F-002, F-003.
-- **Tax calculation** — Always show: base, rate, amount, total. Never hide taxes.
-- **Client data required** — For B2B: company name, tax ID, address. No invoice without complete data.
+## 流程概述  
+1. **信息收集**：确定客户信息、服务内容及费用金额；加载或创建客户记录。  
+2. **起草发票**：自动生成包含税费计算结果的发票，并为发票分配唯一的编号。  
+3. **审核发票**：显示发票预览并允许客户进行修改。  
+4. **最终确认**：生成PDF文件并锁定发票编号。  
+5. **发送发票**：通过电子邮件发送给客户（可选）。  
+6. **跟踪付款情况**：监控客户的付款进度。  
+详细的工作流程请参阅 `phases.md` 文件。  
 
 ---
 
-## Configuration Required
+## 重要规则  
+- **切勿重复使用发票编号**：即使已取消的发票，其编号也不可重复使用；应使用“贷项通知单”进行更正。  
+- **编号规则**：确保发票编号连续且无间隙（例如：F-001、F-002、F-003）。  
+- **税费显示**：必须明确显示税基、税率、费用金额及总金额，切勿隐藏税费信息。  
+- **客户信息要求**：对于企业对企业的交易（B2B），必须提供公司名称、税务识别号（Tax ID）和地址；缺少完整信息的发票无法生成。  
 
-Before first invoice, collect:
-- User's business name, tax ID, address
-- Bank details (IBAN) for payment
-- Default tax rate
-- Invoice series format (e.g., "F-2026-")
-- Email for sending (optional)
+---
+
+## 需要的配置信息  
+在创建第一张发票之前，请收集以下信息：  
+- 用户的企业名称、税务识别号（Tax ID）及地址；  
+- 支付用的银行账户信息（IBAN）；  
+- 默认的税率；  
+- 发票编号格式（例如：“F-2026-”）；  
+- 发送发票的电子邮件地址（可选）。

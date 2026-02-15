@@ -2,7 +2,7 @@
 name: Vision Sandbox
 slug: vision-sandbox
 version: 1.1.0
-description: Agentic Vision via Gemini's native Code Execution sandbox. Use for spatial grounding, visual math, and UI auditing.
+description: 通过 Gemini 的原生代码执行沙箱实现“代理视觉”（Agentic Vision）功能。该功能可用于空间定位（spatial grounding）、视觉计算（visual math）以及用户界面（UI）审计（UI auditing）。
 metadata:
   openclaw:
     emoji: "🔭"
@@ -14,43 +14,43 @@ metadata:
 
 # Vision Sandbox 🔭
 
-Leverage Gemini's native code execution to analyze images with high precision. The model writes and runs Python code in a Google-hosted sandbox to verify visual data, perfect for UI auditing, spatial grounding, and visual reasoning.
+利用 Gemini 的原生代码执行功能，以高精度分析图像。该模型在 Google 托管的沙箱环境中编写和运行 Python 代码，用于验证视觉数据，非常适合进行用户界面（UI）审计、空间定位以及视觉推理。
 
-## Installation
+## 安装
 
 ```bash
 clawhub install vision-sandbox
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 uv run vision-sandbox --image "path/to/image.png" --prompt "Identify all buttons and provide [x, y] coordinates."
 ```
 
-## Pattern Library
+## 模式库
 
-### 📍 Spatial Grounding
-Ask the model to find specific items and return coordinates.
-* **Prompt:** "Locate the 'Submit' button in this screenshot. Use code execution to verify its center point and return the [x, y] coordinates in a [0, 1000] scale."
+### 📍 空间定位
+要求模型找到特定对象并返回其坐标。
+* **提示语：**“在这张截图中找到‘Submit’按钮。使用代码执行功能验证其中心点，并以 [0, 1000] 的比例返回 [x, y] 坐标。”
 
-### 🧮 Visual Math
-Ask the model to count or calculate based on the image.
-* **Prompt:** "Count the number of items in the list. Use Python to sum their values if prices are visible."
+### 🧮 视觉计算
+要求模型根据图像进行计数或计算。
+* **提示语：**“计算列表中的项目数量。如果价格信息可见，请使用 Python 对这些价格进行求和。”
 
-### 🖥️ UI Audit
-Check layout and readability.
-* **Prompt:** "Check if the header text overlaps with any icons. Use the sandbox to calculate the bounding box intersections."
+### 🖥️ UI 审计
+检查布局和可读性。
+* **提示语：**“检查标题文本是否与任何图标重叠。使用沙箱功能计算边界框的交集。”
 
-### 🖐️ Counting & Logic
-Solve visual counting tasks with code verification.
-* **Prompt:** "Count the number of fingers on this hand. Use code execution to identify the bounding box for each finger and return the total count."
+### 🖐️ 计数与逻辑
+通过代码验证来解决视觉计数任务。
+* **提示语：**“数一数这只手上有多少根手指。使用代码执行功能为每根手指确定边界框，并返回总数。”
 
-## Integration with OpenCode
-This skill is designed to provide **Visual Grounding** for automated coding agents like OpenCode.
-- **Step 1:** Use `vision-sandbox` to extract UI metadata (coordinates, sizes, colors).
-- **Step 2:** Pass the JSON output to OpenCode to generate or fix CSS/HTML.
+## 与 OpenCode 的集成
+此技能专为自动化编码工具（如 OpenCode）提供 **视觉定位** 功能：
+- **步骤 1：** 使用 `vision-sandbox` 提取 UI 元数据（坐标、大小、颜色）。
+- **步骤 2：** 将 JSON 输出结果传递给 OpenCode，以生成或修改 CSS/HTML 代码。
 
-## Configuration
-- **GEMINI_API_KEY**: Required environment variable.
-- **Model**: Defaults to `gemini-3-flash-preview`.
+## 配置参数
+- **GEMINI_API_KEY**：必需的环境变量。
+- **模型**：默认值为 `gemini-3-flash-preview`。

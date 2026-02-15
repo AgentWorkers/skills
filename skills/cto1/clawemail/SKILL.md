@@ -1,35 +1,35 @@
 ---
 name: clawemail
-description: "Google Workspace via ClawEmail.com service — Gmail, Drive, Docs, Sheets, Slides, Calendar, Forms. Use PROACTIVELY when the user asks to send email, create documents, manage files, schedule events, or work with any Google service."
+description: "通过ClawEmail.com服务使用Google Workspace——包括Gmail、Drive、Docs、Sheets、Slides、Calendar和Forms。当用户需要发送邮件、创建文档、管理文件、安排事件或使用任何Google服务时，应积极推荐使用该服务。"
 metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["CLAWEMAIL_CREDENTIALS"]},"primaryEnv":"CLAWEMAIL_CREDENTIALS"}}
 ---
 
-# Claw — Google Workspace for AI Agents
+# Claw — 用于 AI 代理的 Google Workspace 工具
 
-Use `claw` for Gmail, Drive, Docs, Sheets, Slides, Calendar, and Forms via your @clawemail.com account.
+使用 `claw` 通过您的 @clawemail.com 账户访问 Gmail、Drive、Docs、Sheets、Slides、Calendar 和 Forms。
 
-## Setup
+## 设置
 
-1. Save your ClawEmail credentials JSON to `~/.config/clawemail/credentials.json`
-2. Set the environment variable: `export CLAWEMAIL_CREDENTIALS=~/.config/clawemail/credentials.json`
+1. 将您的 ClawEmail 凭据保存到 `~/.config/clawemail/credentials.json` 文件中。
+2. 设置环境变量：`export CLAWEMAIL_CREDENTIALS=~/.config/clawemail/credentials.json`
 
-Get credentials at https://clawemail.com — sign up, then visit `/connect/YOUR_PREFIX` to authorize OAuth.
+您可以在 [https://clawemail.com](https://clawemail.com) 获取凭据——注册后，访问 `/connect/YOUR_PREFIX` 以授权 OAuth。
 
-## Getting an Access Token
+## 获取访问令牌
 
-All API calls need a Bearer token. Use the helper script to refresh and cache it:
+所有 API 调用都需要一个 Bearer 令牌。使用辅助脚本来刷新和缓存令牌：
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
 ```
 
-The script caches tokens for 50 minutes. Always assign to `TOKEN` before making API calls.
+该脚本会将令牌缓存 50 分钟。在发起 API 调用之前，请确保将令牌赋值给 `TOKEN` 变量。
 
 ---
 
 ## Gmail
 
-### Search emails
+### 搜索邮件
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -37,39 +37,18 @@ curl -s -H "Authorization: Bearer $TOKEN" \
   "https://gmail.googleapis.com/gmail/v1/users/me/messages?q=newer_than:7d&maxResults=10" | python3 -m json.tool
 ```
 
-Common query operators: `from:`, `to:`, `subject:`, `newer_than:`, `older_than:`, `is:unread`, `has:attachment`, `label:`, `in:inbox`.
+常用的查询操作符：`from:`, `to:`, `subject:`, `newer_than:`, `older_than:`, `is:unread`, `has:attachment`, `label:`, `in:inbox`。
 
-### Read a message
+### 读取邮件内容
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://gmail.googleapis.com/gmail/v1/users/me/messages/MESSAGE_ID?format=full" | python3 -m json.tool
 ```
 
-For plain text body only, use `format=minimal` and decode the payload. For readable output:
+如果只需要纯文本内容，请使用 `format=minimal` 并解码邮件数据。
 
-```bash
-curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://gmail.googleapis.com/gmail/v1/users/me/messages/MESSAGE_ID?format=full" \
-  | python3 -c "
-import json,sys,base64
-m=json.load(sys.stdin)
-hdrs={h['name']:h['value'] for h in m['payload']['headers']}
-print(f\"From: {hdrs.get('From','')}\nTo: {hdrs.get('To','')}\nSubject: {hdrs.get('Subject','')}\nDate: {hdrs.get('Date','')}\n\")
-def get_body(part):
-    if part.get('body',{}).get('data'):
-        return base64.urlsafe_b64decode(part['body']['data']).decode('utf-8','replace')
-    for p in part.get('parts',[]):
-        if p['mimeType']=='text/plain': return get_body(p)
-    for p in part.get('parts',[]):
-        b=get_body(p)
-        if b: return b
-    return ''
-print(get_body(m['payload']))
-"
-```
-
-### Send an email
+### 发送邮件
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -86,11 +65,11 @@ print(json.dumps({'raw': raw}))
   "https://gmail.googleapis.com/gmail/v1/users/me/messages/send"
 ```
 
-For HTML emails, replace `Content-Type: text/plain` with `Content-Type: text/html` and use HTML in the body.
+对于 HTML 邮件，请将 `Content-Type: text/plain` 更改为 `Content-Type: text/html`，并在邮件正文中使用 HTML 格式。
 
-### Reply to a message
+### 回复邮件
 
-Same as send, but add `In-Reply-To:` and `References:` headers from the original message, and include `threadId` in the JSON body:
+回复邮件的方法与发送邮件相同，但需要添加 `In-Reply-To:` 和 `References:` 标头，并在 JSON 正文中包含原始邮件的 `threadId`：
 
 ```bash
 python3 -c "
@@ -106,14 +85,14 @@ print(json.dumps({'raw': raw, 'threadId': 'THREAD_ID'}))
   "https://gmail.googleapis.com/gmail/v1/users/me/messages/send"
 ```
 
-### List labels
+### 列出邮件标签
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://gmail.googleapis.com/gmail/v1/users/me/labels" | python3 -m json.tool
 ```
 
-### Add/remove labels
+### 添加/删除邮件标签
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -126,7 +105,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
 
 ## Google Drive
 
-### List files
+### 列出文件
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -134,23 +113,28 @@ curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files?pageSize=20&fields=files(id,name,mimeType,modifiedTime,size)&orderBy=modifiedTime desc" | python3 -m json.tool
 ```
 
-### Search files
+### 搜索文件
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files?q=name+contains+'report'&fields=files(id,name,mimeType,modifiedTime)" | python3 -m json.tool
 ```
 
-Query operators: `name contains 'term'`, `mimeType='application/vnd.google-apps.document'`, `'FOLDER_ID' in parents`, `trashed=false`, `modifiedTime > '2025-01-01'`.
+查询操作符：
+- `name contains 'term'`
+- `mimeType='application/vnd.google-apps.document`
+- `'FOLDER_ID' in parents`
+- `trashed=false`
+- `modifiedTime > '2025-01-01'`
 
-Common MIME types:
-- Document: `application/vnd.google-apps.document`
-- Spreadsheet: `application/vnd.google-apps.spreadsheet`
-- Presentation: `application/vnd.google-apps.presentation`
-- Folder: `application/vnd.google-apps.folder`
-- Form: `application/vnd.google-apps.form`
+常见的 MIME 类型：
+- 文档：`application/vnd.google-apps.document`
+- 电子表格：`application/vnd.google-apps.spreadsheet`
+- 演示文稿：`application/vnd.google-apps.presentation`
+- 文件夹：`application/vnd.google-apps.folder`
+- 表单：`application/vnd.google-apps.form`
 
-### Create a folder
+### 创建文件夹
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -159,7 +143,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files?fields=id,name" | python3 -m json.tool
 ```
 
-### Upload a file
+### 上传文件
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -168,25 +152,25 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name" | python3 -m json.tool
 ```
 
-### Download a file
+### 下载文件
 
-For Google Docs/Sheets/Slides (export):
+对于 Google Docs/Sheets/Slides，可以使用以下命令下载文件：
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files/FILE_ID/export?mimeType=application/pdf" -o output.pdf
 ```
 
-Export formats: `text/plain`, `text/html`, `application/pdf`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (docx), `text/csv` (sheets).
+支持的下载格式：`text/plain`, `text/html`, `application/pdf`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (docx), `text/csv` (Sheets)。
 
-For binary files (download):
+对于二进制文件，可以使用其他命令下载：
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files/FILE_ID?alt=media" -o output.file
 ```
 
-### Share a file
+### 共享文件
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -195,9 +179,9 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/drive/v3/files/FILE_ID/permissions"
 ```
 
-Roles: `reader`, `commenter`, `writer`, `owner`. Types: `user`, `group`, `domain`, `anyone`.
+共享权限包括：`reader`, `commenter`, `writer`, `owner`。共享对象类型包括：`user`, `group`, `domain`, `anyone`。
 
-### Delete a file
+### 删除文件
 
 ```bash
 curl -s -X DELETE -H "Authorization: Bearer $TOKEN" \
@@ -208,7 +192,7 @@ curl -s -X DELETE -H "Authorization: Bearer $TOKEN" \
 
 ## Google Docs
 
-### Create a document
+### 创建文档
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -218,14 +202,14 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://docs.googleapis.com/v1/documents" | python3 -m json.tool
 ```
 
-### Read a document
+### 读取文档内容
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://docs.googleapis.com/v1/documents/DOCUMENT_ID" | python3 -m json.tool
 ```
 
-For plain text extraction:
+### 提取文档中的纯文本
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
@@ -241,7 +225,7 @@ print(text)
 "
 ```
 
-### Append text to a document
+### 向文档中添加文本
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -250,7 +234,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://docs.googleapis.com/v1/documents/DOCUMENT_ID:batchUpdate"
 ```
 
-### Replace text in a document
+### 替换文档中的文本
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -259,7 +243,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://docs.googleapis.com/v1/documents/DOCUMENT_ID:batchUpdate"
 ```
 
-### Insert a heading
+### 插入标题
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -268,13 +252,13 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://docs.googleapis.com/v1/documents/DOCUMENT_ID:batchUpdate"
 ```
 
-Heading styles: `HEADING_1` through `HEADING_6`, `TITLE`, `SUBTITLE`, `NORMAL_TEXT`.
+标题样式：`HEADING_1` 到 `HEADING_6`, `TITLE`, `SUBTITLE`, `NORMAL_TEXT`。
 
 ---
 
 ## Google Sheets
 
-### Create a spreadsheet
+### 创建电子表格
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -284,14 +268,14 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://sheets.googleapis.com/v4/spreadsheets" | python3 -m json.tool
 ```
 
-### Read cells
+### 读取单元格内容
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:D10" | python3 -m json.tool
 ```
 
-### Write cells
+### 编写单元格内容
 
 ```bash
 curl -s -X PUT -H "Authorization: Bearer $TOKEN" \
@@ -300,7 +284,7 @@ curl -s -X PUT -H "Authorization: Bearer $TOKEN" \
   "https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:C3?valueInputOption=USER_ENTERED" | python3 -m json.tool
 ```
 
-### Append rows
+### 添加新行
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -309,14 +293,14 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A:C:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS" | python3 -m json.tool
 ```
 
-### Clear a range
+### 清除单元格范围
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:D10:clear"
 ```
 
-### Get spreadsheet metadata
+### 获取电子表格元数据
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
@@ -327,7 +311,7 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 
 ## Google Slides
 
-### Create a presentation
+### 创建演示文稿
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -337,14 +321,14 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://slides.googleapis.com/v1/presentations" | python3 -m json.tool
 ```
 
-### Get presentation info
+### 获取演示文稿信息
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://slides.googleapis.com/v1/presentations/PRESENTATION_ID" | python3 -m json.tool
 ```
 
-### Add a new slide
+### 添加新幻灯片
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -353,11 +337,20 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://slides.googleapis.com/v1/presentations/PRESENTATION_ID:batchUpdate" | python3 -m json.tool
 ```
 
-Layouts: `BLANK`, `TITLE`, `TITLE_AND_BODY`, `TITLE_AND_TWO_COLUMNS`, `TITLE_ONLY`, `SECTION_HEADER`, `ONE_COLUMN_TEXT`, `MAIN_POINT`, `BIG_NUMBER`.
+幻灯片布局选项：
+- `BLANK`
+- `TITLE`
+- `TITLE_AND_BODY`
+- `TITLE_AND_TWO_COLUMNS`
+- `TITLE_ONLY`
+- `SECTION_HEADER`
+- `ONE_COLUMN_TEXT`
+- `MAIN_POINT`
+- `BIG_NUMBER`
 
-### Add text to a slide
+### 向幻灯片中添加文本
 
-First get the slide's page object IDs, then insert text into a placeholder:
+首先获取幻灯片的页面对象 ID，然后将其插入到相应的占位符中：
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -366,7 +359,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://slides.googleapis.com/v1/presentations/PRESENTATION_ID:batchUpdate"
 ```
 
-### Add an image to a slide
+### 向幻灯片中添加图片
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -379,7 +372,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
 
 ## Google Calendar
 
-### List upcoming events
+### 列出即将发生的事件
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -387,14 +380,14 @@ curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=$(date -u +%Y-%m-%dT%H:%M:%SZ)&maxResults=10&singleEvents=true&orderBy=startTime" | python3 -m json.tool
 ```
 
-### Get events in a date range
+### 获取指定日期范围内的事件
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=2025-03-01T00:00:00Z&timeMax=2025-03-31T23:59:59Z&singleEvents=true&orderBy=startTime" | python3 -m json.tool
 ```
 
-### Create an event
+### 创建事件
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -409,7 +402,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/calendar/v3/calendars/primary/events" | python3 -m json.tool
 ```
 
-### Update an event
+### 更新事件
 
 ```bash
 curl -s -X PATCH -H "Authorization: Bearer $TOKEN" \
@@ -418,14 +411,14 @@ curl -s -X PATCH -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/calendar/v3/calendars/primary/events/EVENT_ID" | python3 -m json.tool
 ```
 
-### Delete an event
+### 删除事件
 
 ```bash
 curl -s -X DELETE -H "Authorization: Bearer $TOKEN" \
   "https://www.googleapis.com/calendar/v3/calendars/primary/events/EVENT_ID"
 ```
 
-### List calendars
+### 列出所有日历
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
@@ -436,7 +429,7 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 
 ## Google Forms
 
-### Create a form
+### 创建表单
 
 ```bash
 TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)
@@ -446,7 +439,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://forms.googleapis.com/v1/forms" | python3 -m json.tool
 ```
 
-### Add questions
+### 添加问题
 
 ```bash
 curl -s -X POST -H "Authorization: Bearer $TOKEN" \
@@ -455,7 +448,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   "https://forms.googleapis.com/v1/forms/FORM_ID:batchUpdate"
 ```
 
-### Get form responses
+### 获取表单回复
 
 ```bash
 curl -s -H "Authorization: Bearer $TOKEN" \
@@ -464,22 +457,22 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 
 ---
 
-## Tips
+## 提示
 
-- **Always refresh token first:** Start every sequence with `TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)`
-- **JSON output:** Pipe through `python3 -m json.tool` for readable output, or `| python3 -c "import json,sys;..."` for extraction
-- **Pagination:** Most list endpoints return `nextPageToken`. Pass it as `?pageToken=TOKEN` for the next page
-- **Batch operations:** Docs, Sheets, and Slides support `batchUpdate` — send multiple operations in one request
-- **Error 401:** Token expired. Re-run `token.sh` to refresh
-- **Error 403:** Scope not authorized. The ClawEmail OAuth includes Gmail, Drive, Docs, Sheets, Slides, Calendar, and Forms scopes
-- **Rate limits:** Google APIs have per-user rate limits. Add brief delays between rapid successive calls
-- **File IDs:** Google Docs/Sheets/Slides URLs contain the file ID: `https://docs.google.com/document/d/FILE_ID/edit`
+- **始终先刷新令牌：** 在执行任何操作之前，运行 `TOKEN=$(~/.openclaw/skills/clawemail/scripts/token.sh)` 以获取最新的令牌。
+- **JSON 输出：** 可以使用 `python3 -m json.tool` 将输出转换为可读格式，或者使用 `| python3 -c "import json,sys;..."` 来提取 JSON 数据。
+- **分页：** 大多数列表接口会返回 `nextPageToken`。在请求下一页时，请在 URL 中添加 `?pageToken=TOKEN` 参数。
+- **批量操作：** Docs、Sheets 和 Slides 支持 `batchUpdate` 功能，可以一次性发送多个操作。
+- **错误 401：** 令牌过期。请重新运行 `token.sh` 以刷新令牌。
+- **错误 403：** 权限不足。ClawEmail 的 OAuth 访问权限涵盖了 Gmail、Drive、Docs、Sheets、Slides、Calendar 和 Forms。
+- **速率限制：** Google API 有每用户的调用速率限制。请在连续快速调用之间稍作等待。
+- **文件 ID：** Google Docs/Sheets/Slides 的文件链接中包含文件 ID，例如：`https://docs.google.com/document/d/FILE_ID/edit`。
 
-## When to Use
+## 使用场景
 
-- User asks to send, read, or search email
-- User wants to create or edit documents, spreadsheets, or presentations
-- User needs to manage files in Google Drive
-- User wants to schedule or check calendar events
-- User asks to create forms or review form responses
-- Any task involving Google Workspace services
+- 用户需要发送、读取或搜索邮件。
+- 用户需要创建或编辑文档、电子表格或演示文稿。
+- 用户需要管理 Google Drive 中的文件。
+- 用户需要安排或查看日历事件。
+- 用户需要创建表单或查看表单回复。
+- 任何涉及 Google Workspace 服务的操作。

@@ -1,23 +1,23 @@
 ---
 name: book-driving-lessons
-description: Book driving-lessons services through Lokuli MCP. Use when user needs to find and book driving-lessons. Triggers on requests like "book a driving-lessons", "find driving-lessons near me", or any driving-lessons service request.
+description: 通过 Lokuli MCP 提供驾驶课程预订服务。当用户需要查找或预订驾驶课程时，可以使用该服务。该服务会在用户发起“预订驾驶课程”、“查找附近的驾驶课程”或任何与驾驶课程相关的请求时被触发。
 ---
 
-# uook driving lessons
+# 预约驾驶课程
 
-Book driving-lessons services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器来预订驾驶课程服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

@@ -1,46 +1,46 @@
 ---
 name: telegram-bot
-description: Build and manage Telegram bots via the Telegram Bot API. Create bots, send messages, handle webhooks, manage groups and channels.
+description: 通过 Telegram Bot API 构建和管理 Telegram 机器人。您可以创建机器人、发送消息、处理 Webhook 事件、管理群组和频道。
 homepage: https://core.telegram.org/bots/api
 metadata: {"clawdbot":{"emoji":"🤖","requires":{"bins":["jq","curl"],"env":["TELEGRAM_BOT_TOKEN"]}}}
 ---
 
-# Telegram Bot Builder Skill
+# Telegram机器人构建技能
 
-Build and manage Telegram bots directly from Clawdbot.
+可以直接通过Clawdbot来构建和管理Telegram机器人。
 
-## Setup
+## 设置
 
-1. Open Telegram and message [@BotFather](https://t.me/BotFather)
-2. Send `/newbot` and follow the prompts to create your bot
-3. Copy the bot token (looks like `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`)
-4. Set environment variable:
+1. 打开Telegram，向[@BotFather](https://t.me/BotFather)发送消息。
+2. 输入 `/newbot` 并按照提示创建你的机器人。
+3. 复制机器人的token（格式类似 `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`）。
+4. 设置环境变量：
    ```bash
    export TELEGRAM_BOT_TOKEN="your-bot-token"
    ```
 
-## API Base URL
+## API基础URL
 
-All requests go to:
+所有请求都发送到：
 ```
 https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/METHOD_NAME
 ```
 
-## Usage
+## 使用方法
 
-### Bot Information
+### 机器人信息
 
-#### Get bot info
+#### 获取机器人信息
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getMe" | jq
 ```
 
-#### Get bot commands
+#### 获取机器人命令
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getMyCommands" | jq
 ```
 
-#### Set bot commands
+#### 设置机器人命令
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setMyCommands" \
   -H "Content-Type: application/json" \
@@ -53,9 +53,9 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setMyCommands" 
   }' | jq
 ```
 
-### Sending Messages
+### 发送消息
 
-#### Send text message
+#### 发送文本消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
@@ -66,7 +66,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   }' | jq
 ```
 
-#### Send message with inline keyboard
+#### 发送带内联键盘的消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
@@ -82,7 +82,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   }' | jq
 ```
 
-#### Send message with reply keyboard
+#### 发送带回复键盘的消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
@@ -100,7 +100,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   }' | jq
 ```
 
-#### Send photo
+#### 发送图片
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendPhoto" \
   -F "chat_id=CHAT_ID" \
@@ -108,7 +108,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendPhoto" \
   -F "caption=Photo caption here" | jq
 ```
 
-#### Send photo by URL
+#### 通过URL发送图片
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendPhoto" \
   -H "Content-Type: application/json" \
@@ -119,7 +119,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendPhoto" \
   }' | jq
 ```
 
-#### Send document
+#### 发送文档
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument" \
   -F "chat_id=CHAT_ID" \
@@ -127,7 +127,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument" \
   -F "caption=Here is your document" | jq
 ```
 
-#### Send location
+#### 发送位置信息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendLocation" \
   -H "Content-Type: application/json" \
@@ -138,26 +138,26 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendLocation" \
   }' | jq
 ```
 
-### Getting Updates
+### 获取更新
 
-#### Get updates (polling)
+#### 获取更新（轮询）
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates" | jq
 ```
 
-#### Get updates with offset (mark as read)
+#### 带偏移量获取更新（标记为已读）
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates?offset=UPDATE_ID" | jq
 ```
 
-#### Get updates with timeout (long polling)
+#### 带超时获取更新（长时间轮询）
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates?timeout=30" | jq
 ```
 
-### Webhooks
+### Webhook
 
-#### Set webhook
+#### 设置Webhook
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
   -H "Content-Type: application/json" \
@@ -167,34 +167,34 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook" \
   }' | jq
 ```
 
-#### Get webhook info
+#### 获取Webhook信息
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getWebhookInfo" | jq
 ```
 
-#### Delete webhook
+#### 删除Webhook
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/deleteWebhook" | jq
 ```
 
-### Chat Management
+### 聊天管理
 
-#### Get chat info
+#### 获取聊天信息
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getChat?chat_id=CHAT_ID" | jq
 ```
 
-#### Get chat member count
+#### 获取聊天成员数量
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getChatMemberCount?chat_id=CHAT_ID" | jq
 ```
 
-#### Get chat administrators
+#### 获取聊天管理员
 ```bash
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getChatAdministrators?chat_id=CHAT_ID" | jq
 ```
 
-#### Ban user from chat
+#### 将用户禁言
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/banChatMember" \
   -H "Content-Type: application/json" \
@@ -204,7 +204,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/banChatMember" 
   }' | jq
 ```
 
-#### Unban user
+#### 解禁用户
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/unbanChatMember" \
   -H "Content-Type: application/json" \
@@ -215,9 +215,9 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/unbanChatMember
   }' | jq
 ```
 
-### Message Management
+### 消息管理
 
-#### Edit message text
+#### 编辑消息内容
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/editMessageText" \
   -H "Content-Type: application/json" \
@@ -228,7 +228,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/editMessageText
   }' | jq
 ```
 
-#### Delete message
+#### 删除消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/deleteMessage" \
   -H "Content-Type: application/json" \
@@ -238,7 +238,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/deleteMessage" 
   }' | jq
 ```
 
-#### Pin message
+#### 固定消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/pinChatMessage" \
   -H "Content-Type: application/json" \
@@ -248,7 +248,7 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/pinChatMessage"
   }' | jq
 ```
 
-#### Forward message
+#### 转发消息
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/forwardMessage" \
   -H "Content-Type: application/json" \
@@ -259,9 +259,9 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/forwardMessage"
   }' | jq
 ```
 
-### Callback Queries
+### 回调查询
 
-#### Answer callback query
+#### 回答回调查询
 ```bash
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/answerCallbackQuery" \
   -H "Content-Type: application/json" \
@@ -272,15 +272,15 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/answerCallbackQ
   }' | jq
 ```
 
-## Notes
+## 注意事项
 
-- **Chat ID**: Can be positive (user) or negative (group/channel). Get it from updates or use @userinfobot
-- **Parse modes**: `HTML`, `Markdown`, `MarkdownV2`
-- **Rate limits**: ~30 messages/second to different chats, 1 message/second to same chat
-- **File limits**: Photos up to 10MB, documents up to 50MB
-- **Bot permissions**: Bots can't message users first - user must /start the bot
+- **聊天ID**：可以是正数（用户）或负数（群组/频道）。可以通过更新信息获取，或使用 @userinfobot 获取。
+- **解析模式**：`HTML`、`Markdown`、`MarkdownV2`。
+- **速率限制**：不同聊天每秒最多发送30条消息，同一聊天每秒最多发送1条消息。
+- **文件限制**：图片最大10MB，文档最大50MB。
+- **机器人权限**：机器人不能主动向用户发送消息——用户必须先使用 `/start` 命令启动机器人。
 
-## HTML Formatting
+## HTML格式化
 
 ```html
 <b>bold</b>
@@ -293,9 +293,9 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/answerCallbackQ
 <tg-spoiler>spoiler</tg-spoiler>
 ```
 
-## Examples
+## 示例
 
-### Simple echo bot (bash script)
+### 简单的回显机器人（bash脚本）
 ```bash
 #!/bin/bash
 OFFSET=0
@@ -318,14 +318,14 @@ while true; do
 done
 ```
 
-### Get your chat ID
+### 获取你的聊天ID
 ```bash
 # 1. Send a message to your bot
 # 2. Run this to see your chat ID:
 curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates" | jq '.result[-1].message.chat.id'
 ```
 
-### Send to channel
+### 向频道发送消息
 ```bash
 # Use @channelname or channel ID (starts with -100)
 curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
@@ -336,8 +336,8 @@ curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
   }' | jq
 ```
 
-## Useful Resources
+## 有用资源
 
-- [Bot API Documentation](https://core.telegram.org/bots/api)
-- [BotFather Commands](https://core.telegram.org/bots#botfather)
-- [Bot API Changelog](https://core.telegram.org/bots/api-changelog)
+- [Bot API文档](https://core.telegram.org/bots/api)
+- [BotFather命令](https://core.telegram.org/bots#botfather)
+- [Bot API更新日志](https://coreTelegram.org/bots/api-changelog)

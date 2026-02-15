@@ -1,31 +1,30 @@
 ---
 slug: "change-order-processor"
 display_name: "Change Order Processor"
-description: "Process and manage construction change orders. Track costs, approvals, and impact on schedule and budget."
+description: "处理和管理施工变更订单。跟踪成本、审批情况以及对进度和预算的影响。"
 ---
 
-# Change Order Processor
+# 变更订单处理系统
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Change orders cause project disruption:
-- Delayed processing affects cash flow
-- Unclear cost impact
-- Lost documentation
-- Schedule impacts not tracked
+### 问题描述
+变更订单会导致项目中断：
+- 处理延迟会影响现金流
+- 成本影响不明确
+- 文档丢失
+- 项目进度的变化未得到跟踪
 
-### Solution
-Streamlined change order processing with cost analysis, approval workflow, and impact tracking.
+### 解决方案
+通过成本分析、审批流程和影响跟踪来简化变更订单的处理流程。
 
-### Business Value
-- **Faster processing** - Reduce approval cycle time
-- **Cost control** - Accurate change pricing
-- **Documentation** - Complete audit trail
-- **Impact visibility** - Schedule and budget effects
+### 商业价值
+- **处理速度加快**：缩短审批周期
+- **成本控制**：确保变更费用的准确性
+- **文档记录**：提供完整的审计追踪
+- **影响可见性**：清晰展示变更对项目进度和预算的影响
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from datetime import datetime, date, timedelta
@@ -372,8 +371,7 @@ class ChangeOrderProcessor:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize processor
 processor = ChangeOrderProcessor(
@@ -400,26 +398,26 @@ processor.set_schedule_impact(co.co_number, days=5)
 processor.submit_for_review(co.co_number)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Process Approval
+### 1. 处理审批流程
 ```python
 processor.submit_for_approval(co.co_number, "Reviewer", "Cost verified")
 processor.approve_change_order(co.co_number, "Owner Rep", "Owner", "Approved per request")
 ```
 
-### 2. Get Summary
+### 2. 获取变更摘要
 ```python
 summary = processor.get_summary()
 print(f"Contract value: ${summary['current_contract']:,.0f}")
 print(f"Change %: {summary['change_percent']}%")
 ```
 
-### 3. Export Log
+### 3. 导出日志
 ```python
 processor.export_log("change_order_log.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Management
-- **Reference**: AIA Document G701
+## 参考资源
+- **DDC手册**：第3.1章 - 成本管理
+- **参考文献**：AIA文件G701

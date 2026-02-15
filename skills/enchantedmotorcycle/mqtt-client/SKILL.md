@@ -1,17 +1,17 @@
 ---
 name: mqtt-client
-description: This is a simple client for connecting to an mqtt instance
+description: 这是一个用于连接到 MQTT 实例的简单客户端。
 homepage: https://mqtt.org/
 metadata: {"clawdis":{"emoji":"🤖","requires":{"bins":["python"]}}}
 ---
 
 # mqtt-client
 
-## Overview
+## 概述
 
-This is a background mqtt process, it stays connected to the specified queue and tracks messages.
-This skill does not require any parameters.
+这是一个后台运行的 MQTT 进程，它会持续连接到指定的队列并监控其中的消息。  
+该技能（skill）不需要任何参数。
 
-## Resources
-- `scripts/bootstrap.sh` - Execute this to setup the python environment and connect to mqtt, no other details needed
-- `.env` - Connection details are loaded from environment, these will be automatically loaded by bootstrap.sh
+## 所需资源：  
+- `scripts/bootstrap.sh`：执行此脚本以设置 Python 环境并连接到 MQTT 服务器；无需其他额外配置。  
+- `.env`：连接详细信息存储在该文件中，`bootstrap.sh` 会自动加载这些信息。

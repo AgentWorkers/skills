@@ -1,6 +1,6 @@
 ---
 name: sphero-mini
-description: Control Sphero Mini robot ball via Bluetooth Low Energy. Roll, change colors, read sensors, draw shapes, and play with cats. Uses bleak for cross-platform BLE support (macOS/Windows/Linux).
+description: 通过蓝牙低功耗（Bluetooth Low Energy, BLE）技术控制 Sphero Mini 机器人球。该机器人球可以滚动、改变颜色、读取传感器数据、绘制形状，还能与猫咪互动。该解决方案使用 bleak 库来实现跨平台（macOS/Windows/Linux）的 BLE 支持。
 homepage: https://github.com/trflorian/sphero_mini_win
 metadata:
   {
@@ -21,52 +21,52 @@ metadata:
   }
 ---
 
-# Sphero Mini Control
+# Sphero Mini 控制
 
-Control your Sphero Mini robot ball via Bluetooth Low Energy using Python and bleak.
+使用 Python 和 bleak 通过蓝牙低功耗 (Bluetooth Low Energy) 来控制你的 Sphero Mini 机器人球。
 
-## Features
+## 特点
 
-- 🎨 **LED Control** - Change main LED color and back LED intensity
-- 🎯 **Movement** - Roll in any direction at variable speeds
-- 🎲 **Random Mode** - Cat play mode with unpredictable movements
-- 📐 **Draw Shapes** - Squares, stars, circles with programmable patterns
-- 🔋 **Power Management** - Wake, sleep, and check battery status
-- 🧭 **Heading Control** - Reset and control orientation
-- 🖥️ **Cross-platform** - Works on macOS, Windows, and Linux (uses bleak, not bluepy)
+- 🎨 **LED 控制** - 更改主 LED 的颜色和背光 LED 的亮度
+- 🎯 **移动** - 以可变的速度向任意方向滚动
+- 🎲 **随机模式** - 具有不可预测运动的“猫咪玩耍模式”
+- 📐 **绘制形状** - 可以绘制正方形、星星和圆形等图案
+- 🔋 **电源管理** - 唤醒、进入睡眠状态并检查电池电量
+- 🧭 **方向控制** - 重置和调整机器人的朝向
+- 🖥️ **跨平台** - 支持 macOS、Windows 和 Linux（使用 bleak，而非 bluepy）
 
-## Setup
+## 设置
 
-### 1. Install Dependencies
+### 1. 安装依赖项
 
-**All platforms:**
+**所有平台：**
 ```bash
 pip3 install bleak
 ```
 
-### 2. Find Your Sphero Mini's MAC/UUID
+### 2. 查找你的 Sphero Mini 的 MAC/UUID
 
-**macOS/Windows:**
-Use the included scan script:
+**macOS/Windows：**
+使用附带的扫描脚本：
 ```bash
 python3 scripts/scan_sphero.py
 ```
 
-Look for a device named like "SM-XXXX" (Sphero Mini).
+查找名为“SM-XXXX”（Sphero Mini）的设备。
 
-### 3. Update MAC Address
+### 3. 更新 MAC 地址
 
-Edit the scripts and replace `SPHERO_MAC` with your device's address.
+编辑脚本，并将 `SPHERO_MAC` 替换为你的设备的 MAC 地址。
 
-## Quick Start
+## 快速入门
 
-### Scan for Sphero Mini
+### 扫描 Sphero Mini
 
 ```bash
 python3 scripts/scan_sphero.py
 ```
 
-### Change Color
+### 更改颜色
 
 ```python
 import asyncio
@@ -86,7 +86,7 @@ async def change_color():
 asyncio.run(change_color())
 ```
 
-### Roll Forward
+### 向前滚动
 
 ```python
 import asyncio
@@ -108,17 +108,17 @@ async def roll_forward():
 asyncio.run(roll_forward())
 ```
 
-## Pre-built Scripts
+## 预构建脚本
 
-### 🐱 Cat Play Mode (Random Movement)
+### 🐱 猫咪玩耍模式（随机运动）
 
 ```bash
 python3 scripts/cat_play.py
 ```
 
-Makes Sphero move randomly for 1 minute with color changes - perfect for playing with cats!
+使 Sphero 随机移动 1 分钟，并改变颜色——非常适合与猫咪玩耍！
 
-### 📐 Draw Shapes
+### 📐 绘制形状
 
 ```bash
 # Draw a square
@@ -128,7 +128,7 @@ python3 scripts/draw_square.py
 python3 scripts/draw_star.py
 ```
 
-### 🎨 Color Control
+### 🎨 颜色控制
 
 ```bash
 # Set specific color
@@ -136,9 +136,9 @@ python3 scripts/set_color.py red
 python3 scripts/set_color.py 255 0 128  # Custom RGB
 ```
 
-## Common Commands
+## 常用命令
 
-### Movement
+### 移动
 ```python
 # Roll (speed: 0-255, heading: 0-359 degrees)
 await sphero.roll(speed=100, heading=0)    # Forward
@@ -148,7 +148,7 @@ await sphero.roll(100, 270)                 # Left
 await sphero.roll(0, 0)                     # Stop
 ```
 
-### LED Control
+### LED 控制
 ```python
 # Main LED color (RGB values 0-255)
 await sphero.setLEDColor(red=255, green=0, blue=0)      # Red
@@ -161,7 +161,7 @@ await sphero.setBackLED(255)  # Full brightness
 await sphero.setBackLED(0)    # Off
 ```
 
-### Power Management
+### 电源管理
 ```python
 # Wake from sleep
 await sphero.wake()
@@ -174,58 +174,57 @@ voltage = await sphero.getBatteryVoltage()
 print(f"Battery: {voltage}V")
 ```
 
-## Tips
+## 提示
 
-- **Wake Sphero**: Shake it to wake from deep sleep before connecting
-- **Connection timeout**: If connection fails, shake Sphero and try again
-- **Finding Sphero**: After scripts finish, Sphero is set to white for easy visibility
-- **Cat safety**: Use soft surfaces when playing with cats to avoid damage
+- **唤醒 Sphero**：在连接之前摇晃它以使其从深度睡眠中醒来
+- **连接超时**：如果连接失败，请摇晃 Sphero 并重新尝试
+- **寻找 Sphero**：脚本执行完成后，Sphero 会显示为白色以便于识别
+- **猫咪安全**：与猫咪玩耍时请使用柔软的表面以避免损坏
 
-## Example: Cat Play Mode
+## 示例：猫咪玩耍模式
 
-The cat play mode script makes Sphero:
-- Move in random directions (40-120 speed)
-- Change colors randomly (6 vibrant colors)
-- Stop unpredictably (30% chance for brief pauses)
-- Run for exactly 1 minute
-- End with white color so you can find it
+猫咪玩耍模式脚本会使 Sphero：
+- 以随机方向移动（速度在 40-120 之间）
+- 随机改变颜色（6 种鲜艳的颜色）
+- 不可预测地停止（有 30% 的概率会短暂停顿）
+- 持续运行 exactly 1 分钟
+- 最后显示为白色以便于找到
 
-Perfect for entertaining cats! 🐱
+非常适合娱乐猫咪！🐱
 
-## Troubleshooting
+## 故障排除
 
-### Cannot Connect
+### 无法连接
 
-1. Shake Sphero to wake it up
-2. Ensure it's not connected to the Sphero Edu app
-3. Check MAC/UUID address is correct
-4. Try increasing timeout in `sphero_mini_bleak.py`
+1. 摇晃 Sphero 以唤醒它
+2. 确保它没有连接到 Sphero Edu 应用程序
+3. 检查 MAC/UUID 地址是否正确
+4. 尝试增加 `sphero_mini_bleak.py` 中的超时时间
 
-### Sphero Doesn't Move
+### Sphero 不移动
 
-1. Call `await sphero.wake()` first
-2. Wait 1-2 seconds after waking
-3. Check battery level
+1. 先调用 `await sphero.wake()`
+2. 唤醒后等待 1-2 秒
+3. 检查电池电量
 
-### Colors Don't Change
+### 颜色不改变
 
-1. Add `await asyncio.sleep(0.5)` between color changes
-2. Ensure you called `await sphero.wake()`
+1. 在颜色变化之间添加 `await asyncio.sleep(0.5)`
+2. 确保已经调用了 `await sphero.wake()`
 
-## Library Credits
+## 库引用
 
-This skill uses:
-- [sphero_mini_win](https://github.com/trflorian/sphero_mini_win) by trflorian - Sphero Mini control library using bleak
-- [bleak](https://github.com/hbldh/bleak) - Cross-platform Bluetooth Low Energy library
+本工具使用了以下库：
+- [sphero_mini_win](https://github.com/trflorian/sphero_mini_win) 由 trflorian 开发——使用 bleak 的 Sphero Mini 控制库
+- [bleak](https://github.com/hbldh/bleak) — 跨平台的蓝牙低功耗库
 
-**Note**: This library is for **Sphero Mini only**. For other Sphero models (BB8, SPRK+, Bolt), use [pysphero](https://github.com/EnotYoyo/pysphero) instead.
+**注意**：此库仅适用于 Sphero Mini。对于其他 Sphero 型号（BB8、SPRK+、Bolt），请使用 [pysphero](https://github.com/EnotYoyo/pysphero)。
 
-## Advanced Usage
+## 高级用法
 
-### Custom Patterns
+### 自定义运动模式
 
-Create your own movement patterns:
-
+创建你自己的运动模式：
 ```python
 async def figure_eight():
     # Draw a figure-8 pattern
@@ -235,7 +234,7 @@ async def figure_eight():
             await asyncio.sleep(0.1)
 ```
 
-### Color Cycling
+### 颜色循环
 
 ```python
 async def rainbow():
@@ -248,13 +247,13 @@ async def rainbow():
         await asyncio.sleep(1)
 ```
 
-## Documentation
+## 文档
 
-- **SKILL.md** — This file
-- **references/api.md** — Complete API reference
-- **references/troubleshooting.md** — Common issues and solutions
-- **scripts/** — Ready-to-use example scripts
+- **SKILL.md** — 本文件
+- **references/api.md** — 完整的 API 参考
+- **references/troubleshooting.md** — 常见问题及解决方法
+- **scripts/** — 可直接使用的示例脚本
 
-## License
+## 许可证
 
 MIT

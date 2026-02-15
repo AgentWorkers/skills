@@ -1,24 +1,24 @@
 ---
 name: polymarket-analysis
-description: Analyze Polymarket prediction markets for trading edges. Pair Cost arbitrage, whale tracking, sentiment analysis, momentum signals, user profile tracking. No execution.
+description: 分析 Polymarket 的预测市场以寻找交易机会：包括成本套利、大户行为追踪、市场情绪分析、趋势信号以及用户行为监测。请注意，本功能不涉及交易执行。
 version: 2.1.0
 ---
 
-# Polymarket Analysis
+# Polymarket 分析
 
-Identify trading advantages in Polymarket prediction markets through multi-modal analysis.
+通过多模态分析，识别 Polymarket 预测市场中的交易机会。
 
-**Scope:** Analysis and opportunity identification only. No trade execution.
+**范围：** 仅用于分析和机会识别，不涉及交易执行。
 
-## Modes
+## 模式
 
-| Mode | Description | Reference |
+| 模式 | 描述 | 参考文档 |
 |------|-------------|-----------|
-| **Analyze** | One-time market analysis | This file |
-| **Monitor** | 24/7 market monitoring | `references/market-monitoring-setup.md` |
-| **Profile** | Track user wallet positions | `scripts/fetch-polymarket-user-profile.py` |
+| **分析** | 一次性市场分析 | 本文件 |
+| **监控** | 24/7 市场监控 | `references/market-monitoring-setup.md` |
+| **用户资料** | 跟踪用户钱包持仓 | `scripts/fetch-polymarket-user-profile.py` |
 
-## Scripts
+## 脚本
 
 ```bash
 # Monitor market for alerts
@@ -28,52 +28,52 @@ python3 scripts/monitor-polymarket-market.py <market_url_or_id>
 python3 scripts/fetch-polymarket-user-profile.py <wallet_address> [--trades] [--pnl]
 ```
 
-## Quick Start
+## 快速入门
 
-### Market Analysis
-1. Get market URL from user
-2. Fetch via `https://gamma-api.polymarket.com/markets?slug={slug}`
-3. Run multi-strategy analysis
+### 市场分析
+1. 从用户处获取市场 URL。
+2. 通过 `https://gamma-api.polymarket.com/markets?slug={slug}` 获取市场数据。
+3. 运行多策略分析。
 
-### User Profile
+### 用户资料
 ```bash
 # From profile URL: polymarket.com/profile/0x...
 python3 scripts/fetch-polymarket-user-profile.py 0x7845bc5e15bc9c41be5ac0725e68a16ec02b51b5
 ```
 
-## Core Strategies
+## 核心策略
 
-| Strategy | Description | Reference |
+| 策略 | 描述 | 参考文档 |
 |----------|-------------|-----------|
-| Pair Cost Arbitrage | YES+NO < $1.00 | `references/pair-cost-arbitrage.md` |
-| Momentum | RSI, MA signals | `references/momentum-analysis.md` |
-| Whale Tracking | Large trades | `references/whale-tracking.md` |
-| Sentiment | News/social | `references/sentiment-analysis.md` |
+| 对冲套利 | 当价格差小于 $1.00 时执行 | `references/pair-cost-arbitrage.md` |
+| 动量策略 | 基于 RSI、MA 指标 | `references/momentum-analysis.md` |
+| 大额交易追踪 | 监测大额交易 | `references/whale-tracking.md` |
+| 情感分析 | 分析市场情绪（新闻/社交媒体数据） | `references/sentiment-analysis.md` |
 
-## Alert Thresholds
+## 警报阈值
 
-| Event | Threshold |
+| 事件 | 阈值 |
 |-------|-----------|
-| Price change | ±5% in 1h |
-| Large trade | >$5,000 |
-| Pair cost | <$0.98 |
-| Volume spike | >2x avg |
+| 价格变动 | 1 小时内价格变动 ±5% |
+| 大额交易 | 交易金额 > $5,000 |
+| 对冲套利机会 | 对冲套利价格差 < $0.98 |
+| 交易量激增 | 交易量超过平均值 2 倍 |
 
-## APIs
+## API
 
-| API | Base URL | Use |
+| API | 基本 URL | 使用方式 |
 |-----|----------|-----|
-| Gamma | `gamma-api.polymarket.com` | Markets, prices |
-| Data | `data-api.polymarket.com` | User positions, trades, P&L |
-| CLOB | `clob.polymarket.com` | Order books, trading |
+| Gamma | `gamma-api.polymarket.com` | 市场数据、价格信息 |
+| Data | `data-api.polymarket.com` | 用户持仓、交易记录、盈亏情况 |
+| CLOB | `clob.polymarket.com` | 订单簿、交易数据 |
 
-See `references/polymarket-api.md` for full endpoint reference.
+详细 API 接口信息请参阅 `references/polymarket-api.md`。
 
-## References
+## 参考文献
 
-- `references/polymarket-api.md` - API endpoints (Gamma, Data, CLOB)
-- `references/market-monitoring-setup.md` - 24/7 cron monitoring
-- `references/pair-cost-arbitrage.md` - Arbitrage detection
-- `references/momentum-analysis.md` - Technical analysis
-- `references/whale-tracking.md` - Smart money tracking
-- `references/sentiment-analysis.md` - Sentiment aggregation
+- `references/polymarket-api.md` - API 接口（Gamma、Data、CLOB）
+- `references/market-monitoring-setup.md` - 24/7 市场监控设置
+- `references/pair-cost-arbitrage.md` - 对冲套利策略
+- `references/momentum-analysis.md` - 动量分析策略
+- `references/whale-tracking.md` - 大额交易追踪
+- `references/sentiment-analysis.md` - 市场情绪分析

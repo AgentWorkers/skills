@@ -1,22 +1,22 @@
 ---
 name: mlx-whisper
 version: 1.0.0
-description: Local speech-to-text with MLX Whisper (Apple Silicon optimized, no API key).
+description: 使用 MLX Whisper 实现本地语音转文本功能（针对 Apple Silicon 优化，无需 API 密钥）。
 homepage: https://github.com/ml-explore/mlx-examples/tree/main/whisper
 metadata: {"clawdbot":{"emoji":"🍎","requires":{"bins":["mlx_whisper"]},"install":[{"id":"pip","kind":"pip","package":"mlx-whisper","bins":["mlx_whisper"],"label":"Install mlx-whisper (pip)"}]}}
 ---
 
 # MLX Whisper
 
-Local speech-to-text using Apple MLX, optimized for Apple Silicon Macs.
+这是一个使用 Apple MLX 技术实现的本地语音转文本工具，专为 Apple Silicon Mac 电脑优化设计。
 
-## Quick Start
+## 快速入门
 
 ```bash
 mlx_whisper /path/to/audio.mp3 --model mlx-community/whisper-large-v3-turbo
 ```
 
-## Common Usage
+## 常见用法
 
 ```bash
 # Transcribe to text file
@@ -32,19 +32,19 @@ mlx_whisper video.mp4 -f srt -o ./subs
 mlx_whisper foreign.mp3 --task translate
 ```
 
-## Models (download on first use)
+## 模型（首次使用时需要下载）
 
-| Model | Size | Speed | Quality |
-|-------|------|-------|---------|
-| mlx-community/whisper-tiny | ~75MB | Fastest | Basic |
-| mlx-community/whisper-base | ~140MB | Fast | Good |
-| mlx-community/whisper-small | ~470MB | Medium | Better |
-| mlx-community/whisper-medium | ~1.5GB | Slower | Great |
-| mlx-community/whisper-large-v3 | ~3GB | Slowest | Best |
-| mlx-community/whisper-large-v3-turbo | ~1.6GB | Fast | Excellent (Recommended) |
+| 模型 | 大小 | 转换速度 | 转换质量 |
+|-------|------|---------|---------|
+| mlx-community/whisper-tiny | 约 75MB | 最快 | 基础质量 |
+| mlx-community/whisper-base | 约 140MB | 快速 | 良好质量 |
+| mlx-community/whisper-small | 约 470MB | 中等质量 | 更佳效果 |
+| mlx-community/whisper-medium | 约 1.5GB | 转换速度稍慢 | 优秀质量 |
+| mlx-community/whisper-large-v3 | 约 3GB | 转换速度最慢 | 最佳质量 |
+| mlx-community/whisper-large-v3-turbo | 约 1.6GB | 转换速度较快 | 极佳质量（推荐使用） |
 
-## Notes
+## 注意事项
 
-- Requires Apple Silicon Mac (M1/M2/M3/M4)
-- Models cache to `~/.cache/huggingface/`
-- Default model is `mlx-community/whisper-tiny`; use `--model mlx-community/whisper-large-v3-turbo` for best results
+- 仅支持运行在 Apple Silicon Mac（M1/M2/M3/M4）上。
+- 所有模型数据会被缓存到 `~/.cache/huggingface/` 目录中。
+- 默认使用的模型是 `mlx-community/whisper-tiny`；如需最佳效果，请使用 `--model mlx-community/whisper-large-v3-turbo` 参数。

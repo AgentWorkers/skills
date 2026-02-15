@@ -1,37 +1,37 @@
 ---
 name: proxy-status
-description: Check status of Proxy payment intents and transactions. Usage: /proxy-status [intent-id] or /proxy-status to see all recent.
+description: 检查代理支付意图（Proxy payment intents）和交易（transactions）的状态。使用方法：`/proxy-status [intent-id]` 或 `/proxy-status` 可查看所有最近的记录。
 disable-model-invocation: true
 argument-hint: "[intent-id or blank for all]"
 ---
 
-# Check Payment Status
+# 检查支付状态
 
-View status of payment intents and transactions.
+查看支付请求（payment intents）和交易（transactions）的状态。
 
-## Usage
+## 使用方法
 
 ```
 /proxy-status              # Show all recent intents
 /proxy-status int_abc123   # Show specific intent
 ```
 
-## Instructions
+## 使用说明
 
-### If $ARGUMENTS has intent ID:
+### 如果 `$ARGUMENTS` 包含请求 ID（intent ID）：
 ```
 Call: proxy.intents.get { intentId: "$ARGUMENTS" }
 Show: status, merchant, amount, created time
 If card issued: proxy.transactions.list_for_card
 ```
 
-### If $ARGUMENTS is empty:
+### 如果 `$ARGUMENTS` 为空：
 ```
 Call: proxy.intents.list
 Group by status and display:
 ```
 
-## Output Format
+## 输出格式
 
 ```
 📊 Payment Status
@@ -52,14 +52,14 @@ Group by status and display:
   ...
 ```
 
-## Status Legend
+## 状态说明
 
-| Status | Icon | Meaning |
+| 状态 | 图标 | 含义 |
 |--------|------|---------|
-| pending | 🟢 | Card ready |
-| pending_approval | ⏳ | Needs approval |
-| card_issued | 💳 | Card active |
-| matched | ✅ | Transaction completed |
-| mismatched | ⚠️ | Amount/merchant mismatch |
-| rejected | ❌ | Approval denied |
-| expired | ⏰ | Intent expired |
+| 待处理 | 🟢 | 卡片已准备好（Card ready） |
+| 待审批 | ⏳ | 需要审批 |
+| 卡片已发放 | 💳 | 卡片已激活（Card active） |
+| 交易成功 | ✅ | 交易已完成 |
+| 信息不匹配 | ⚠️ | 金额或商家信息不一致 |
+| 被拒绝 | ❌ | 审批被拒绝 |
+| 已过期 | ⏰ | 请求已过期 |

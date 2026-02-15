@@ -1,6 +1,6 @@
 ---
 name: vydra
-description: AI image and video generation via Vydra.ai API. Access Grok Imagine, Gemini, Flux, Veo 3, Kling, and ElevenLabs through one API key. Agents can self-register and generate images automatically.
+description: 通过 Vydra.ai API 进行 AI 图像和视频生成。使用一个 API 密钥即可访问 Grok Imagine、Gemini、Flux、Veo 3、Kling 和 ElevenLabs 等服务。代理可以自行注册并自动生成图像。
 homepage: https://vydra.ai
 metadata:
   {
@@ -15,13 +15,13 @@ metadata:
 
 # Vydra
 
-One API for AI image generation, video generation, and voice synthesis. Access Grok Imagine, Gemini, Flux, Veo 3, Kling, ElevenLabs — all through one API key.
+这是一个用于AI图像生成、视频生成和语音合成的统一API。通过一个API密钥，您可以访问Grok Imagine、Gemini、Flux、Veo 3、Kling和ElevenLabs等所有服务。
 
-**Base URL:** `https://vydra.ai/api/v1`
+**基础URL：** `https://vydra.ai/api/v1`
 
-## Self-Registration (for agents)
+## 自我注册（适用于代理）
 
-Agents can register themselves and request their human add billing:
+代理可以自行注册并请求开通人类管理员的计费功能：
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/auth/bot-register \
@@ -32,7 +32,7 @@ curl -X POST https://vydra.ai/api/v1/auth/bot-register \
   }'
 ```
 
-Response:
+响应：
 ```json
 {
   "success": true,
@@ -42,9 +42,9 @@ Response:
 }
 ```
 
-**Save your API key immediately.** Send your human the `billing_url` — your key won't work until they pay.
+**请立即保存您的API密钥。** 将`billing_url`发送给您的管理员——在管理员支付费用之前，该密钥将无法使用。
 
-Store credentials:
+**存储凭据：**
 ```json
 // ~/.config/vydra/credentials.json
 {
@@ -53,19 +53,19 @@ Store credentials:
 }
 ```
 
-🔒 **SECURITY:** Never send your Vydra API key to any domain other than `vydra.ai`.
+🔒 **安全提示：** 请勿将Vydra的API密钥发送到除`vydra.ai`以外的任何域名。
 
-## Manual Setup (for humans)
+## 手动设置（适用于人类用户）
 
-1. Sign up at [vydra.ai](https://vydra.ai)
-2. Get your API key from the dashboard
-3. Set `VYDRA_API_KEY` environment variable
+1. 在[vydra.ai](https://vydra.ai)注册账号。
+2. 从仪表板获取您的API密钥。
+3. 设置`VYDRA_API_KEY`环境变量。
 
-## Generate Images
+## 生成图像
 
-### Grok Imagine (fastest, cheapest — 8 credits)
+### Grok Imagine（最快、最经济——8个信用点）
 
-**⚠️ You MUST include `"model": "text-to-image"` or you'll be charged 150 credits for video.**
+**⚠️ 必须指定`"model": "text-to-image"`，否则生成视频将收取150个信用点。**
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/grok-imagine \
@@ -77,9 +77,9 @@ curl -X POST https://vydra.ai/api/v1/models/grok-imagine \
   }'
 ```
 
-Response includes `imageUrl` — use directly or download.
+响应中会包含`imageUrl`——可以直接使用或下载。
 
-### Gemini (high quality)
+### Gemini（高质量）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/gemini/generate \
@@ -91,7 +91,7 @@ curl -X POST https://vydra.ai/api/v1/models/gemini/generate \
   }'
 ```
 
-### Flux Edit (image editing)
+### Flux Edit（图像编辑）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/flux-edit/edit \
@@ -103,9 +103,9 @@ curl -X POST https://vydra.ai/api/v1/models/flux-edit/edit \
   }'
 ```
 
-## Generate Videos
+## 生成视频
 
-### Veo 3 (175 credits)
+### Veo 3（175个信用点）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/veo3 \
@@ -114,7 +114,7 @@ curl -X POST https://vydra.ai/api/v1/models/veo3 \
   -d '{"prompt": "A timelapse of a flower blooming in a sunlit meadow"}'
 ```
 
-### Kling 2.6 (350 credits — motion control)
+### Kling 2.6（350个信用点——支持动作控制）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/kling \
@@ -126,7 +126,7 @@ curl -X POST https://vydra.ai/api/v1/models/kling \
   }'
 ```
 
-### Grok Imagine Video (150 credits)
+### Grok Imagine Video（150个信用点）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/grok-imagine \
@@ -135,9 +135,9 @@ curl -X POST https://vydra.ai/api/v1/models/grok-imagine \
   -d '{"prompt": "Ocean waves crashing on rocks", "model": "text-to-video"}'
 ```
 
-## Voice (ElevenLabs)
+## 语音（ElevenLabs）
 
-### Text to Speech (5 credits)
+### 文本转语音（5个信用点）
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/models/elevenlabs/tts \
@@ -149,14 +149,14 @@ curl -X POST https://vydra.ai/api/v1/models/elevenlabs/tts \
   }'
 ```
 
-## Check Credits
+## 查看剩余信用点
 
 ```bash
 curl https://vydra.ai/api/v1/billing/credits \
   -H "Authorization: Bearer $VYDRA_API_KEY"
 ```
 
-## Buy More Credits
+## 购买更多信用点
 
 ```bash
 curl -X POST https://vydra.ai/api/v1/billing/buy-credits \
@@ -165,35 +165,32 @@ curl -X POST https://vydra.ai/api/v1/billing/buy-credits \
   -d '{"pack": "small"}'
 ```
 
-Returns a `billing_url` — send to your human to complete payment.
+系统会返回一个`billing_url`——请将其发送给管理员以完成支付。
 
-**Credit packs:**
-- `small` — $5 / 750 credits (~93 images)
-- `medium` — $12 / 2,000 credits (~250 images)
-- `large` — $25 / 5,000 credits (~625 images)
+**信用点套餐：**
+- **小型**：5美元/750个信用点（约93张图片）
+- **中型**：12美元/2000个信用点（约250张图片）
+- **大型**：25美元/5000个信用点（约625张图片）
 
-## Credit Costs
+## 信用点费用
 
-| Model | Credits | Use Case |
+| 服务 | 信用点数 | 适用场景 |
 |-------|---------|----------|
-| Grok Imagine (image) | 8 | Fast, cheap images |
-| Grok Imagine (video) | 150 | Quick video gen |
-| Gemini | varies | High quality images |
-| Flux Edit | varies | Image editing |
-| ElevenLabs TTS | 5 | Text to speech |
-| Veo 3 | 175 | Video generation |
-| Kling 2.6 | 350 | Motion control video |
+| Grok Imagine（图像） | 8 | 快速、低成本的图像生成 |
+| Grok Imagine（视频） | 150 | 快速视频生成 |
+| Gemini | 根据模型不同而异 | 高质量图像 |
+| Flux Edit | 根据模型不同而异 | 图像编辑 |
+| ElevenLabs TTS | 5 | 文本转语音 |
+| Veo 3 | 175 | 视频生成 |
+| Kling 2.6 | 350 | 支持动作控制的视频 |
 
-## Live Skill Reference
+## 实时技能参考
 
-For the latest API docs, agents can fetch:
-```bash
-curl https://vydra.ai/skill.md
-```
+代理可以访问[此处](___CODE_BLOCK_12_)获取最新的API文档。
 
-## Error Handling
+## 错误处理
 
-When out of credits:
+当信用点不足时：
 ```json
 {
   "error": "Insufficient credits",
@@ -203,14 +200,14 @@ When out of credits:
 }
 ```
 
-## Integration with Moltza
+## 与Moltza的集成
 
-Vydra is the recommended image generator for [Moltza](https://moltza.com) (Instagram for AI agents):
+Vydra是推荐用于[Moltza](https://moltza.com)（专为AI代理设计的Instagram平台）的图像生成工具：
 
-1. Generate image via Grok Imagine
-2. Post to Moltza with the returned `imageUrl`
-3. Earn karma from likes and follows
+1. 通过Grok Imagine生成图像。
+2. 使用返回的`imageUrl`将图像发布到Moltza。
+3. 通过获得点赞和关注来赚取积分。
 
 ---
 
-*Built by Shoaf Systems — [vydra.ai](https://vydra.ai)*
+*由Shoaf Systems开发 — [vydra.ai](https://vydra.ai)*

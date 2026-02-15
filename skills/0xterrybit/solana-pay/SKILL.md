@@ -1,38 +1,38 @@
 ---
 name: solana-pay
-description: Solana Pay protocol integration. Generate payment requests, QR codes, and verify transactions on Solana blockchain.
+description: Solana Pay 协议集成：在 Solana 区块链上生成支付请求、二维码，并验证交易。
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"bins":["solana","curl","jq","qrencode"],"env":["SOLANA_KEYPAIR_PATH"]}}}
 ---
 
 # Solana Pay ⚡
 
-Decentralized payment protocol built on Solana. Instant, near-zero fee payments.
+基于Solana构建的去中心化支付协议，支持即时支付且手续费接近于零。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `SOLANA_KEYPAIR_PATH` | Path to merchant wallet keypair | Yes |
-| `SOLANA_RPC_URL` | Custom RPC endpoint | No |
-| `MERCHANT_NAME` | Display name for payments | No |
+| `SOLANA_KEYPAIR_PATH` | 商户钱包密钥对的路径 | 是 |
+| `SOLANA_RPC_URL` | 自定义RPC端点 | 否 |
+| `MERCHANT_NAME` | 支付显示名称 | 否 |
 
-## Features
+## 主要功能
 
-- 💸 **Instant Payments** - Sub-second finality (~400ms)
-- 🆓 **Near-Zero Fees** - ~$0.00025 per transaction
-- 🔗 **QR Code Payments** - Generate scannable payment requests
-- 🛒 **Point of Sale** - Merchant integrations
-- 📱 **Wallet Support** - Phantom, Solflare, Backpack
+- 💸 **即时支付**：交易确认时间约400毫秒 |
+- 🆓 **近乎零的手续费**：每笔交易手续费约为0.00025美元 |
+- 🔗 **二维码支付**：生成可扫描的支付请求 |
+- 🛒 **销售点集成**：支持与商家系统对接 |
+- 📱 **钱包支持**：兼容Phantom、Solflare、Backpack等钱包 |
 
-## Payment URL Specification
+## 支付请求的URL格式
 
-Solana Pay uses a URL scheme for payment requests:
+Solana Pay使用特定的URL格式来发送支付请求：
 
 ```
 solana:<recipient>?amount=<amount>&spl-token=<mint>&reference=<reference>&label=<label>&message=<message>&memo=<memo>
 ```
 
-## Generate Payment Request (SOL)
+## 生成SOL支付请求
 
 ```bash
 RECIPIENT=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
@@ -51,7 +51,7 @@ echo "$PAY_URL" | qrencode -o payment_qr.png -s 10
 echo "QR code saved to payment_qr.png"
 ```
 
-## Generate Payment Request (SPL Token)
+## 生成SPL代币支付请求
 
 ```bash
 RECIPIENT=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
@@ -68,16 +68,16 @@ echo "Payment URL: $PAY_URL"
 echo "$PAY_URL" | qrencode -o payment_qr.png -s 10
 ```
 
-## Common Token Addresses
+## 常见代币的发行地址
 
-| Token | Mint Address |
+| 代币 | 发行地址 |
 |-------|--------------|
 | USDC | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v |
 | USDT | Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB |
 | BONK | DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263 |
 | JUP | JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN |
 
-## Verify Payment by Reference
+## 通过参考编号验证支付
 
 ```bash
 REFERENCE="<REFERENCE_PUBKEY>"
@@ -94,7 +94,7 @@ curl -s -X POST "$RPC_URL" \
   }" | jq '.result[0]'
 ```
 
-## Validate Transaction
+## 验证交易
 
 ```bash
 SIGNATURE="<TX_SIGNATURE>"
@@ -115,9 +115,7 @@ TX=$(curl -s -X POST "$RPC_URL" \
 echo "$TX" | jq '.result.transaction.message.instructions[] | select(.parsed.type == "transfer")'
 ```
 
-## Transaction Request (Interactive Payments)
-
-For complex payments requiring server interaction:
+## 交互式支付请求（需要服务器处理的复杂交易）
 
 ```bash
 # Server endpoint that returns transaction
@@ -127,7 +125,7 @@ TRANSACTION_URL="https://your-server.com/api/pay"
 PAY_URL="solana:${TRANSACTION_URL}"
 ```
 
-### Transaction Request Server Example
+### 交易请求服务器示例
 
 ```javascript
 // POST /api/pay
@@ -159,9 +157,9 @@ app.post('/api/pay', async (req, res) => {
 });
 ```
 
-## Point of Sale Integration
+## 销售点集成
 
-### Generate Dynamic QR
+### 生成动态二维码
 
 ```bash
 #!/bin/bash
@@ -193,7 +191,7 @@ echo "$REFERENCE" > "/tmp/order_${ORDER_ID}_ref.txt"
 echo "Reference saved. Waiting for payment..."
 ```
 
-### Poll for Payment
+### 监控支付状态
 
 ```bash
 #!/bin/bash
@@ -228,34 +226,34 @@ while true; do
 done
 ```
 
-## Fee Comparison
+## 手续费对比
 
-| Network | Fee | Time |
+| 网络 | 手续费 | 处理时间 |
 |---------|-----|------|
-| Solana Pay | ~$0.00025 | ~400ms |
-| Visa/MC | 2-3% | 1-3 days |
-| PayPal | 2.9% + $0.30 | Instant |
-| Wire Transfer | $25-50 | 1-5 days |
+| Solana Pay | 约0.00025美元 | 约400毫秒 |
+| Visa/MasterCard | 2-3% | 1-3天 |
+| PayPal | 2.9% + 0.30美元 | 即时 |
+| 电汇 | 25-50美元 | 1-5天 |
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** verify transaction signature before fulfilling orders
-2. **ALWAYS** check recipient matches merchant wallet
-3. **ALWAYS** verify amount matches expected payment
-4. **USE** unique reference for each payment request
-5. **NEVER** reuse reference keys
+1. **务必** 在完成交易前验证交易签名。
+2. **务必** 确认收款人信息与商户钱包信息一致。
+3. **务必** 核对支付金额是否正确。
+4. **为每笔支付请求使用** 唯一的参考编号。
+5. **严禁** 重复使用参考编号。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| No transaction found | Payment not made | Continue polling |
-| Wrong recipient | Spoofed payment | Reject, alert user |
-| Wrong amount | Partial payment | Request remaining |
-| Transaction failed | Insufficient funds | Request retry |
+| 未找到交易记录 | 支付未完成 | 继续尝试 |
+| 收款人信息错误 | 支付被欺诈 | 拒绝支付并提醒用户 |
+| 金额错误 | 支付金额不正确 | 请重新请求剩余金额 |
+| 交易失败 | 资金不足 | 请重试支付 |
 
-## Links
+## 相关链接
 
-- [Solana Pay Docs](https://docs.solanapay.com/)
-- [Solana Pay GitHub](https://github.com/solana-labs/solana-pay)
-- [Solscan Explorer](https://solscan.io/)
+- [Solana Pay官方文档](https://docs.solanapay.com/) |
+- [Solana Pay GitHub仓库](https://github.com/solana-labs/solana-pay) |
+- [Solscan浏览器](https://solscan.io/)

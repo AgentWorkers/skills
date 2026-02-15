@@ -1,72 +1,66 @@
 ---
 name: Slovak
-description: Write Slovak that sounds human. Not formal, not robotic, not AI-generated.
+description: **编写听起来像人类语言的斯洛伐克语。**  
+不要使用正式的语气，也不要让语言显得机械或像是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Slovak is technically correct but sounds off. Too formal. Too spisovná (literary). Natives write more casually, with particles and warmth. Match that.
+虽然“AI Slovak”在语法上是正确的，但听起来很生硬、过于正式，缺乏自然感。斯洛伐克人的日常交流更加随意，会使用各种语言粒子（即助词）来使表达更流畅、更亲切。我们需要让翻译结果更贴近斯洛伐克人的说话方式。
 
-## Formality Default
+## 形式的选择
 
-Default register is too high. Casual Slovak is warm and direct. Unless explicitly formal: lean casual. "Ahoj" not "Dobrý deň". "Hej" not "Áno".
+默认的表达方式过于正式。在非正式的斯洛伐克语中，人们更倾向于使用亲切、直接的表达方式。除非需要特别正式的表达，否则应尽量采用非正式的语气。例如：“Ahoj”而不是“Dobrý deň”，“Hej”而不是“Áno”。
 
-## Ty vs Vy
+## “Ty”与“Vy”的使用
 
-Critical distinction:
-- Vy: strangers initially, elderly, formal
-- Ty: friends, peers, internet, casual
-- Slovak internet is almost entirely ty
-- Overusing vy = stiff
+在斯洛伐克语中，“Vy”通常用于指代陌生人、长辈或正式场合；而“Ty”则用于朋友、同龄人或网络交流等非正式场景。在斯洛伐克的网络语境中，几乎总是使用“Ty”作为称呼。过度使用“Vy”会让表达显得生硬。
 
-## Particles & Softeners
+## 语言粒子与润色词
 
-These make Slovak natural:
-- No: filler, "well" ("No, neviem")
-- Tak: "so", transitional
-- Však: "right?", "but"
-- Proste: "simply", "just"
-- Ako: "like" (filler)
+这些语言粒子能让斯洛伐克语的表达更加自然：
+- “No”：用于否定或表示不确定（例如：“No, neviem”）
+- “Tak”：表示“那么”或作为过渡词
+- “Však”：表示“但是”
+- “Proste”：表示“简单地”
+- “Ako”：用于引出原因或补充说明（例如：“Ako, proste, nemám čas”）
 
-## Fillers & Flow
+## 语言填充词与表达流畅性
 
-Real Slovak has fillers:
-- No, tak, však
-- Ako, proste, vlastne
-- Vieš, počuj
-- Akože, v pohode
+斯洛伐克语中有一些常见的填充词，如“No, tak, však”等，它们有助于使表达更自然流畅。
+- “Ako, proste, vlastne”：用于补充说明或表达犹豫
+- “Vieš, počuj”：表示“你知道的，听着”
+- “Akože, v pohode”：表示“嗯，好吧”
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Dobré → Super, Skvelé, Hustý, Bomba
-- Zlé → Hrozné, Na ho*no, Otrasné
-- Veľmi → Mega, Fakt, Strašne
+在表达时不要选择过于中立的词汇：
+- 负面评价可以用更强烈的词汇，如“Hrozné”（糟糕的）、“Na ho*no”（讨厌的）、“Otrasné”（令人不快的）
+- 积极评价可以用更夸张的词汇，如“Mega”（巨大的）、“Fakt”（真的）、“Strašne”（可怕的）
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- V pohode, Jasné, Super
-- Nie je za čo, Pohoda
-- Fakt?, Vážne?, No jasné
-- Paráda, Pecka
+一些常见的斯洛伐克语表达包括：
+- “V pohode”（没关系）
+- “Jasné”（明白了）
+- “Super”（太棒了）
+- “Nie je za čo”（没什么大不了的）
+- “Fakt?”（真的吗？）
+- “Vážne?”（真的吗？）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Fakt?, Vážne?, Čo?
-- No teda!, Hustý!, Super!
-- Bomba!, Skvelé!, Pecka!
-- Haha, lol in text
+在交流时，要做出自然的反应：
+- “Fakt?, Vážne?”（真的吗？）
+- “No teda!”（哎呀！）
+- “Super!”（太棒了！）
+- “Bomba!”（太厉害了！）
+- “Haha, lol”（哈哈，用于表达笑声）
 
-## Slovak vs Czech
+## 斯洛伐克语与捷克语
 
-Similar but distinct:
-- Different vocabulary for some words
-- Different endings and patterns
-- Don't mix—Slovaks notice
-- Slovak has its own character
+斯洛伐克语和捷克语虽然相似，但存在一些词汇和语法上的差异。在交流时不要混淆这两种语言——斯洛伐克人能分辨出来。斯洛伐克语有其独特的表达风格。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Slovak screenshot this as "AI-generated"? If yes—too spisovná, no particles, too formal. Add "no" and "ako".
+在发送内容之前，需要考虑：如果让斯洛伐克人看到这个翻译结果，他们会认为这是“AI生成的”吗？如果是这样，那么这个翻译就太正式了，缺乏自然感。需要添加一些“no”和“ako”这样的词语来使表达更贴近口语化。

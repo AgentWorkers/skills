@@ -1,15 +1,15 @@
 ---
 name: newman
-description: Automated API testing with Postman collections via Newman CLI. Use when user requests API testing, collection execution, automated testing, CI/CD integration, or mentions "Postman", "Newman", "API tests", "run collection", or "automated testing".
+description: 使用 Newman CLI 通过 Postman 集合进行自动化 API 测试。适用于用户请求 API 测试、集合执行、自动化测试、CI/CD 集成，或提及“Postman”、“Newman”、“API 测试”、“运行集合”或“自动化测试”的场景。
 ---
 
-# Newman - Postman CLI Runner
+# Newman – Postman 命令行运行器
 
-Newman is the command-line Collection Runner for Postman. Run and test Postman collections directly from the command line with powerful reporting, environment management, and CI/CD integration.
+Newman 是一个用于 Postman 的命令行工具，允许您直接从命令行运行和测试 Postman 集合。它具备强大的报告功能、环境管理功能以及与持续集成（CI）/持续交付（CD）系统的集成能力。
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 # Global install (recommended)
@@ -22,7 +22,7 @@ npm install --save-dev newman
 newman --version
 ```
 
-### Basic Execution
+### 基本使用
 
 ```bash
 # Run collection
@@ -38,20 +38,20 @@ newman run collection.json -g globals.json
 newman run collection.json -e env.json -g globals.json -d data.csv
 ```
 
-## Core Workflows
+## 核心工作流程
 
-### 1. Export from Postman Desktop
+### 1. 从 Postman 桌面应用导出数据
 
-**In Postman:**
-1. Collections → Click "..." → Export
-2. Choose "Collection v2.1" (recommended)
-3. Save as `collection.json`
+**在 Postman 中：**
+1. 选择“Collections” → 点击“...” → 选择“Export”
+2. 选择“Collection v2.1”（推荐格式）
+3. 将文件保存为 `collection.json`
 
-**Environment:**
-1. Environments → Click "..." → Export
-2. Save as `environment.json`
+**环境配置：**
+1. 选择“Environments” → 点击“...” → 选择“Export”
+2. 将文件保存为 `environment.json`
 
-### 2. Run Tests
+### 2. 运行测试
 
 ```bash
 # Basic run
@@ -67,21 +67,21 @@ newman run collection.json --bail
 newman run collection.json --timeout-request 30000
 ```
 
-### 3. Data-Driven Testing
+### 3. 基于数据的测试
 
-**CSV format:**
+**数据格式：CSV**
 ```csv
 username,password
 user1,pass1
 user2,pass2
 ```
 
-**Run:**
+**运行方式：**
 ```bash
 newman run collection.json -d test_data.csv --iteration-count 2
 ```
 
-### 4. Reporters
+### 4. 报告生成
 
 ```bash
 # CLI only (default)
@@ -103,11 +103,10 @@ newman run collection.json --reporters cli,html,json,junit \
   --reporter-junit-export ./reports/newman.xml
 ```
 
-### 5. Security Best Practices
+### 5. 安全最佳实践
 
-**❌ NEVER hardcode secrets in collections!**
-
-Use environment variables:
+**❌ **切勿在集合中硬编码敏感信息！**  
+建议使用环境变量来存储敏感数据：
 
 ```bash
 # Export sensitive vars
@@ -121,7 +120,7 @@ newman run collection.json -e environment.json
 newman run collection.json --env-var "API_KEY=secret" --env-var "DB_PASSWORD=pass"
 ```
 
-**In Postman collection tests:**
+**在 Postman 集合测试中：**
 ```javascript
 // Use {{API_KEY}} in requests
 pm.request.headers.add({key: 'Authorization', value: `Bearer {{API_KEY}}`});
@@ -130,7 +129,7 @@ pm.request.headers.add({key: 'Authorization', value: `Bearer {{API_KEY}}`});
 const apiKey = pm.environment.get("API_KEY");
 ```
 
-**Environment file (environment.json):**
+**环境配置文件（environment.json）：**
 ```json
 {
   "name": "Production",
@@ -141,15 +140,15 @@ const apiKey = pm.environment.get("API_KEY");
 }
 ```
 
-Newman will replace `{{$processEnvironment.API_KEY}}` with the environment variable.
+Newman 会自动将 `{{$processEnvironment.API_KEY}}` 替换为对应的环境变量值。
 
-## Common Use Cases
+## 常见使用场景
 
-### CI/CD Integration
+### 持续集成/持续交付（CI/CD）集成
 
-See `references/ci-cd-examples.md` for GitHub Actions, GitLab CI, and Jenkins examples.
+请参考 `references/ci-cd-examples.md`，了解如何将 Newman 与 GitHub Actions、GitLab CI 和 Jenkins 等工具集成。
 
-### Automated Regression Testing
+### 自动化回归测试
 
 ```bash
 #!/bin/bash
@@ -170,7 +169,7 @@ newman run collections/api-tests.json \
 echo "Tests completed. Report: ./test-results/newman.html"
 ```
 
-### Load Testing
+### 负载测试
 
 ```bash
 # Run with high iteration count
@@ -182,7 +181,7 @@ newman run collection.json \
   --reporter-json-export load-test-results.json
 ```
 
-### Parallel Execution
+### 并行执行
 
 ```bash
 # Install parallel runner
@@ -194,18 +193,18 @@ newman-parallel -c collection1.json,collection2.json,collection3.json \
   --reporters cli,html
 ```
 
-## Advanced Features
+## 高级功能
 
-### Custom Scripts
+### 自定义脚本
 
-**Pre-request Script (in Postman):**
+**请求前脚本（在 Postman 中配置）：**
 ```javascript
 // Generate dynamic values
 pm.environment.set("timestamp", Date.now());
 pm.environment.set("nonce", Math.random().toString(36).substring(7));
 ```
 
-**Test Script (in Postman):**
+**测试脚本（在 Postman 中配置）：**
 ```javascript
 // Status code check
 pm.test("Status is 200", function() {
@@ -227,7 +226,7 @@ pm.test("Response time < 500ms", function() {
 pm.environment.set("user_token", pm.response.json().token);
 ```
 
-### SSL/TLS Configuration
+### SSL/TLS 配置
 
 ```bash
 # Disable SSL verification (dev only!)
@@ -243,67 +242,46 @@ newman run collection.json \
   --ssl-client-passphrase "secret"
 ```
 
-### Error Handling
+### 错误处理
 
-```bash
-# Continue on errors
-newman run collection.json --suppress-exit-code
+**集合未找到：**
+- 使用绝对路径：`newman run /full/path/to/collection.json`
+- 检查文件权限：`ls -la collection.json`
 
-# Fail fast
-newman run collection.json --bail
+**环境变量未加载：**
+- 验证语法：`{{$processEnvironment.VAR_NAME}}`
+- 查看变量值：`echo $VAR_NAME`
+- 可以使用 `--env-var` 参数作为备用方案
 
-# Custom error handling in wrapper
-#!/bin/bash
-newman run collection.json -e env.json
-EXIT_CODE=$?
+**超时错误：**
+- 增加超时时间：`--timeout-request 60000`（60 秒）
+- 检查网络连接是否正常
+- 确认 API 端点是否可访问
 
-if [ $EXIT_CODE -ne 0 ]; then
-    echo "Tests failed! Exit code: $EXIT_CODE"
-    # Send alert, rollback deployment, etc.
-    exit 1
-fi
-```
+**SSL 错误：**
+- 开发环境：暂时使用 `--insecure` 参数
+- 生产环境：添加 CA 证书：`--ssl-extra-ca-certs`
 
-## Troubleshooting
+**内存问题（处理大型集合）：**
+- 减少测试迭代次数
+- 将集合拆分为更小的部分
+- 增加 Node.js 的内存分配：`NODE_OPTIONS=--max-old-space-size=4096 newman run ...`
 
-**Collection not found:**
-- Use absolute paths: `newman run /full/path/to/collection.json`
-- Check file permissions: `ls -la collection.json`
+## 最佳实践
 
-**Environment variables not loading:**
-- Verify syntax: `{{$processEnvironment.VAR_NAME}}`
-- Check export: `echo $VAR_NAME`
-- Use `--env-var` flag as fallback
+1. **版本控制**：将集合和环境配置文件存储在 Git 中。
+2. **环境分离**：为开发、测试和生产环境分别配置不同的文件。
+3. **敏感信息管理**：使用环境变量，切勿将敏感信息直接提交到代码库。
+4. **文件命名规范**：使用描述性强的文件名。
+5. **测试原子性**：每个测试用例应只验证一个具体的功能。
+6. **添加断言**：为每个请求添加详细的测试逻辑。
+7. **文档编写**：利用 Postman 的描述功能来提供测试背景信息。
+8. **集成到 CI 流程**：在每次提交（PR）时自动运行 Newman。
+9. **报告生成**：保留 HTML 报告以供后续分析。
+10. **设置合理的超时时间**：根据生产环境的实际需求设置合适的超时值。
 
-**Timeout errors:**
-- Increase timeout: `--timeout-request 60000` (60s)
-- Check network connectivity
-- Verify API endpoint is reachable
+## 参考资料
 
-**SSL errors:**
-- Development: Use `--insecure` temporarily
-- Production: Add CA cert with `--ssl-extra-ca-certs`
-
-**Memory issues (large collections):**
-- Reduce iteration count
-- Split collection into smaller parts
-- Increase Node heap: `NODE_OPTIONS=--max-old-space-size=4096 newman run ...`
-
-## Best Practices
-
-1. **Version Control**: Store collections and environments in Git
-2. **Environment Separation**: Separate files for dev/staging/prod
-3. **Secret Management**: Use environment variables, never commit secrets
-4. **Meaningful Names**: Use descriptive collection and folder names
-5. **Test Atomicity**: Each request should test one specific thing
-6. **Assertions**: Add comprehensive test scripts to every request
-7. **Documentation**: Use Postman descriptions for context
-8. **CI Integration**: Run Newman in CI pipeline for every PR
-9. **Reports**: Archive HTML reports for historical analysis
-10. **Timeouts**: Set reasonable timeout values for production APIs
-
-## References
-
-- **CI/CD Examples**: See `references/ci-cd-examples.md`
-- **Advanced Patterns**: See `references/advanced-patterns.md`
-- **Official Docs**: https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/
+- **CI/CD 集成示例**：请参阅 `references/ci-cd-examples.md`。
+- **高级使用技巧**：请参阅 `references/advanced-patterns.md`。
+- **官方文档**：https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/

@@ -1,7 +1,7 @@
 ---
 slug: ticktick-linux
 name: ticktick-linux
-description: Manage TickTick tasks (add, list, complete) via the local `tickrs` CLI.
+description: 通过本地的 `tickrs` CLI 命令行工具来管理 TickTick 任务（包括添加、查看列表以及标记任务为已完成）。
 metadata:
   openclaw:
     requires:
@@ -12,23 +12,23 @@ metadata:
 
 # TickTick
 
-Manage tasks in TickTick.
+用于管理TickTick中的任务。
 
-**Prerequisite**:
-You must authenticate the CLI first by running:
+**先决条件**：
+您需要先运行以下命令来认证CLI：
 `~/.cargo/bin/tickrs init`
 
-## Tools
+## 工具
 
 ### `ticktick_list`
 
-List tasks from the default project (Inbox) or a specific project.
+列出默认项目（收件箱）或特定项目中的任务。
 
-- **Parameters**:
-  - `project` (string, optional): Project name to filter by.
-  - `status` (string, optional): Filter by status (`incomplete` [default], `complete`).
+- **参数**：
+  - `project`（字符串，可选）：用于过滤的项目名称。
+  - `status`（字符串，可选）：根据状态进行过滤（`incomplete` [默认值]，`complete`）。
 
-- **Command**:
+- **命令**：
   ```bash
   /home/david/.cargo/bin/tickrs task list --json \
     {{#if project}}--project-name "{{project}}"{{/if}} \
@@ -37,16 +37,16 @@ List tasks from the default project (Inbox) or a specific project.
 
 ### `ticktick_create`
 
-Create a new task.
+创建一个新的任务。
 
-- **Parameters**:
-  - `title` (string, required): The task title.
-  - `content` (string, optional): Description or notes.
-  - `date` (string, optional): Natural language date (e.g., "today", "tomorrow at 5pm", "next friday").
-  - `project` (string, optional): Project name to add to.
-  - `priority` (string, optional): `none`, `low`, `medium`, `high`.
+- **参数**：
+  - `title`（字符串，必填）：任务标题。
+  - `content`（字符串，可选）：任务描述或备注。
+  - `date`（字符串，可选）：自然语言格式的日期（例如：“今天”，“明天下午5点”，“下周五”）。
+  - `project`（字符串，可选）：要添加任务的项目名称。
+  - `priority`（字符串，可选）：`none`，`low`，`medium`，`high`。
 
-- **Command**:
+- **命令**：
   ```bash
   /home/david/.cargo/bin/tickrs task create --json \
     --title "{{title}}" \
@@ -58,21 +58,21 @@ Create a new task.
 
 ### `ticktick_complete`
 
-Mark a task as complete by ID (get ID from `ticktick_list`).
+通过ID将任务标记为已完成（ID可以从`ticktick_list`中获取）。
 
-- **Parameters**:
-  - `id` (string, required): The Task ID.
+- **参数**：
+  - `id`（字符串，必填）：任务ID。
 
-- **Command**:
+- **命令**：
   ```bash
   /home/david/.cargo/bin/tickrs task complete "{{id}}" --json
   ```
 
 ### `ticktick_projects`
 
-List all projects.
+列出所有项目。
 
-- **Command**:
+- **命令**：
   ```bash
   /home/david/.cargo/bin/tickrs project list --json
   ```

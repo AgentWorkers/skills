@@ -5,13 +5,13 @@ description: |
   트리거: 3D 모델링, 에셋 변환, 스프라이트 시트, 리깅, Mixamo, FBX/glTF 변환, 프로시저럴 에셋 생성 관련 요청.
 ---
 
-# Blender Headless Game Asset Pipeline
+# Blender 无头游戏资产处理流程
 
-게임 개발에 필요한 3D 에셋 제작/가공을 Blender Python API(bpy)로 자동화하는 스킬.
+本技能利用 Blender 的 Python API (bpy) 自动化游戏开发所需的 3D 资产的创建与处理流程。
 
-## 설치
+## 安装
 
-### Linux (MiniPC / 서버)
+### Linux (迷你PC / 服务器)
 ```bash
 # Snap (권장 — 최신 버전)
 sudo snap install blender --classic
@@ -34,15 +34,15 @@ brew install --cask blender
 # CLI 경로: /Applications/Blender.app/Contents/MacOS/Blender
 ```
 
-### 설치 확인
+### 安装确认
 ```bash
 blender --version
 blender -b --python-expr "import bpy; print('bpy OK:', bpy.app.version_string)"
 ```
 
-## 헤드리스 실행 패턴
+## 无头模式运行方式
 
-### 기본 구조
+### 基本架构
 ```bash
 # 스크립트 실행 (새 씬)
 blender -b --python script.py
@@ -60,7 +60,7 @@ blender --factory-startup -b --python script.py
 blender -b --addons "rigify,io_scene_gltf2" --python script.py
 ```
 
-### 인자 순서 중요!
+### 参数顺序很重要！
 ```bash
 # ✅ 올바름: blend 로드 → 출력 설정 → 렌더
 blender -b scene.blend -o /tmp/output -F PNG -f 1
@@ -69,7 +69,7 @@ blender -b scene.blend -o /tmp/output -F PNG -f 1
 blender -b -o /tmp/output scene.blend -f 1
 ```
 
-### GPU 렌더링 (headless)
+### GPU 渲染（无头模式）
 ```python
 # gpu_setup.py — headless에서 GPU 활성화
 import bpy
@@ -84,9 +84,9 @@ bpy.context.scene.cycles.device = 'GPU'
 blender -b scene.blend -E CYCLES -P gpu_setup.py -f 1 -- --cycles-device CUDA
 ```
 
-## 스크립트 사용법
+## 脚本使用方法
 
-### 1. 포맷 변환 (convert_format.py)
+### 1. 格式转换 (convert_format.py)
 ```bash
 # FBX → glTF
 blender -b --python scripts/convert_format.py -- \
@@ -106,7 +106,7 @@ blender -b --python scripts/convert_format.py -- \
   --input-ext .fbx --format GLB
 ```
 
-### 2. 스프라이트 시트 렌더링 (render_sprite_sheet.py)
+### 2. 精灵图渲染 (render_sprite_sheet.py)
 ```bash
 # 8방향 스프라이트 시트
 blender -b character.blend --python scripts/render_sprite_sheet.py -- \
@@ -121,7 +121,7 @@ blender -b character.blend --python scripts/render_sprite_sheet.py -- \
   --angles 4 --size 64 --animated --output sprites/anim_sheet.png
 ```
 
-### 3. 프로시저럴 소품 생성 (procedural_props.py)
+### 3. 程序化材质生成 (procedural_props.py)
 ```bash
 # 나무 생성
 blender -b --python scripts/procedural_props.py -- \
@@ -140,7 +140,7 @@ blender -b --python scripts/procedural_props.py -- \
   --type building --floors 3 --style medieval --output props/building.glb
 ```
 
-### 4. 간단한 리깅 (simple_rig.py)
+### 4. 简单绑定 (simple_rig.py)
 ```bash
 # Rigify 메타리그로 자동 리깅
 blender -b character.blend --python scripts/simple_rig.py -- \
@@ -152,7 +152,7 @@ blender -b character.blend --python scripts/simple_rig.py -- \
   --output rigged_simple.blend
 ```
 
-### 5. Mixamo 임포트 (mixamo_import.py)
+### 5. 导入 Mixamo 数据 (mixamo_import.py)
 ```bash
 # 단일 Mixamo FBX 임포트 + glTF 변환
 blender -b --python scripts/mixamo_import.py -- \
@@ -169,9 +169,9 @@ blender -b --python scripts/mixamo_import.py -- \
   --output character_nla.blend
 ```
 
-## 워크플로우
+## 工作流程
 
-### 워크플로우 1: Mixamo → Blender → 게임엔진
+### 工作流程 1: Mixamo → Blender → 游戏引擎
 ```
 1. Mixamo에서 캐릭터 리깅 + 애니메이션 다운로드 (FBX)
 2. mixamo_import.py로 Blender에 임포트 (스케일/회전 보정)
@@ -180,7 +180,7 @@ blender -b --python scripts/mixamo_import.py -- \
 5. 게임엔진(Godot/Unity)에서 임포트
 ```
 
-### 워크플로우 2: 프로시저럴 에셋 → 스프라이트 시트
+### 工作流程 2: 程序化资产 → 精灵图
 ```
 1. procedural_props.py로 3D 에셋 생성
 2. 또는 기존 .blend 파일의 모델 사용
@@ -188,7 +188,7 @@ blender -b --python scripts/mixamo_import.py -- \
 4. 2D 게임에서 스프라이트 시트 사용
 ```
 
-### 워크플로우 3: 에셋 배치 파이프라인
+### 资产批量处理流程
 ```bash
 #!/bin/bash
 # batch_pipeline.sh — 전체 파이프라인 자동화
@@ -210,9 +210,9 @@ for blend in "$OUTPUT_DIR"/models/*.glb; do
 done
 ```
 
-## MiniPC에서 실행 (nodes.run)
+## 在迷你PC上运行 (nodes.run)
 
-### Clawdbot에서 MiniPC로 실행
+### 从 Clawdbot 向迷你PC 运行脚本
 ```
 # nodes.run으로 Blender 스크립트 실행
 nodes.run(node="MiniPC", command=[
@@ -222,7 +222,7 @@ nodes.run(node="MiniPC", command=[
 ])
 ```
 
-### MiniPC에 Blender 설치
+### 在迷你PC上安装 Blender
 ```bash
 # MiniPC SSH 접속 후
 sudo snap install blender --classic
@@ -233,7 +233,7 @@ tar xf blender-4.4.0-linux-x64.tar.xz
 echo 'export PATH="$HOME/blender-4.4.0-linux-x64:$PATH"' >> ~/.bashrc
 ```
 
-### 파일 전송
+### 文件传输
 ```bash
 # MiniPC → 맥스튜디오 (HTTP 서버)
 # MiniPC에서:
@@ -242,37 +242,37 @@ cd /output/dir && python3 -m http.server 9877
 curl -O http://<MINIPC_IP>:9877/output_file.glb
 ```
 
-## 제한사항 / 주의사항
+## 限制与注意事项
 
-### 렌더링 엔진
-| 엔진 | Headless 지원 | GPU 필요 | 비고 |
-|------|:---:|:---:|------|
-| **Cycles** | ✅ 완전 지원 | 선택 | CPU/GPU 모두 가능. 기본 선택. |
-| **EEVEE** | ⚠️ Linux만 | 필수 | Linux 3.4+ GPU 필수. macOS/Windows headless 불가. |
-| **Workbench** | ⚠️ Linux만 | 필수 | EEVEE와 같은 제한. |
+### 渲染引擎
+| 渲染引擎 | 是否支持无头模式 | 是否需要 GPU | 备注 |
+|------|:----------------:|-------------:|---------|
+| **Cycles** | ✅ 完全支持 | 可选 | 支持 CPU 和 GPU，默认选择。 |
+| **EEVEE** | ⚠️ 仅支持 Linux | 必需 | 仅限 Linux 3.4 及更高版本，且需要 GPU；macOS/Windows 不支持无头模式。 |
+| **Workbench** | ⚠️ 仅支持 Linux | 必需 | 与 EEVEE 有相同限制。 |
 
-### 알려진 제한
-- **EEVEE headless**: Linux + GPU + display 환경 필요. `Xvfb`로 가상 디스플레이 생성 가능:
+### 常见限制：
+- **EEVEE 无头模式**：需要 Linux 环境及 GPU，并配置虚拟显示（可使用 `Xvfb`）：
   ```bash
   sudo apt install xvfb
   xvfb-run blender -b scene.blend -E BLENDER_EEVEE -f 1
   ```
-- **GPU 자동 감지 안 됨**: headless 모드에서 GPU를 수동으로 활성화해야 함 (위 gpu_setup.py 참조)
-- **bpy 단일 임포트**: Python에서 `import bpy`는 프로세스당 한 번만 가능. 여러 작업은 서브프로세스로 분리.
-- **메모리**: 복잡한 씬은 상당한 RAM 필요. MiniPC(8GB)에서는 로우폴리 위주.
-- **Grease Pencil**: headless GPU 없는 환경에서 렌더 불가.
-- **Snap 경로**: snap으로 설치 시 `pip install` 경로가 제한적. 추가 패키지 필요 시 tarball 설치 권장.
-- **Blender 버전 호환**: bpy API는 버전 간 변경 가능. 스크립트는 Blender 4.x 기준.
+- **GPU 无法自动检测**：在无头模式下需手动激活 GPU（详见 `gpu_setup.py` 文件）。
+- **bpy 的导入限制**：Python 中的 `import bpy` 每个进程只能执行一次；多任务需通过子进程分离。
+- **内存需求**：复杂场景需要大量内存；建议在配置较低的迷你PC（8GB 内存）上使用低多边形模型。
+- **Grease Pencil**：在没有 GPU 的环境中无法使用。
+- **Snap 安装路径**：使用 Snap 安装时，`pip install` 的路径可能受限；建议使用 tarball 文件进行安装。
+- **Blender 版本兼容性**：bpy API 可能因 Blender 版本不同而有所变化；本脚本基于 Blender 4.x 编写。
 
-### 성능 팁
-- `--factory-startup`: 불필요한 사용자 설정 로드 방지
-- `--threads N`: CPU 스레드 수 지정 (0 = 전체)
-- 로우폴리 에셋은 Cycles보다 Workbench가 빠름
-- 배치 작업은 xargs/parallel로 병렬화 가능
+### 性能优化建议：
+- 使用 `--factory-startup` 选项避免加载不必要的用户设置。
+- 通过 `--threads N` 指定 CPU 线程数（0 表示全部使用）。
+- 对于低多边形模型，Workbench 的渲染速度通常比 Cycles 更快。
+- 可使用 `xargs/parallel` 命令并行化批量处理任务。
 
-## 레퍼런스
+## 参考资料
 
-- [references/bpy-api.md](references/bpy-api.md) — Blender Python API 핵심 레퍼런스
-- [references/rigging.md](references/rigging.md) — 리깅 가이드 (Rigify, Mixamo)
-- [references/procedural.md](references/procedural.md) — 프로시저럴 모델링 패턴
-- [references/rendering.md](references/rendering.md) — 스프라이트 시트/렌더링 가이드
+- [references/bpy-api.md](references/bpy-api.md) — Blender Python API 的核心参考文档
+- [references/rigging.md](references/rigging.md) — 绑定指南（Rigify、Mixamo）
+- [references/procedural.md](references/procedural.md) — 程序化建模方法
+- [references/rendering.md](references/rendering.md) — 精灵图渲染指南

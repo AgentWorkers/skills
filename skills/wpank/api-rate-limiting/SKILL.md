@@ -1,26 +1,26 @@
 ---
 name: rate-limiting
 model: standard
-description: Rate limiting algorithms, implementation strategies, HTTP conventions, tiered limits, distributed patterns, and client-side handling. Use when protecting APIs from abuse, implementing usage tiers, or configuring gateway-level throttling.
+description: 限速算法、实现策略、HTTP规范、分层限速机制、分布式处理模式以及客户端处理方式。这些技术可用于保护API免受滥用、实现不同的使用等级（如免费/高级用户），或配置网关级别的流量控制。
 ---
 
-# Rate Limiting Patterns
+# 限流模式
 
-## Algorithms
+## 算法
 
-| Algorithm | Accuracy | Burst Handling | Best For |
+| 算法 | 准确率 | 突发处理 | 适用场景 |
 |-----------|----------|----------------|----------|
-| **Token Bucket** | High | Allows controlled bursts | API rate limiting, traffic shaping |
-| **Leaky Bucket** | High | Smooths bursts entirely | Steady-rate processing, queues |
-| **Fixed Window** | Low | Allows edge bursts (2x) | Simple use cases, prototyping |
-| **Sliding Window Log** | Very High | Precise control | Strict compliance, billing-critical |
-| **Sliding Window Counter** | High | Good approximation | **Production APIs — best tradeoff** |
+| **令牌桶（Token Bucket）** | 高 | 允许控制突发流量 | API限流、流量整形 |
+| **漏桶（Leaky Bucket）** | 高 | 完全平滑突发流量 | 稳定速率处理、排队场景 |
+| **固定窗口（Fixed Window）** | 低 | 允许短暂的高峰流量（最高两倍） | 简单使用场景、原型设计 |
+| **滑动窗口日志（Sliding Window Log）** | 非常高 | 精确控制 | 需要严格合规性的场景、计费关键场景 |
+| **滑动窗口计数器（Sliding Window Counter）** | 高 | 较好的折中方案 | **生产环境API** |
 
-**Fixed window problem:** A user sends the full limit at 11:59 and again at 12:01, doubling the effective rate. Sliding window fixes this.
+**固定窗口问题：** 用户在11:59和12:01同时发送大量请求，导致实际请求率翻倍。滑动窗口可以解决这个问题。
 
-### Token Bucket
+### 令牌桶（Token Bucket）
 
-Bucket holds tokens up to capacity. Tokens refill at a fixed rate. Each request consumes one.
+令牌桶最多存储一定数量的令牌，令牌以固定速率补充。每个请求会消耗一个令牌。
 
 ```python
 class TokenBucket:
@@ -41,9 +41,9 @@ class TokenBucket:
         return False
 ```
 
-### Sliding Window Counter
+### 滑动窗口计数器（Sliding Window Counter）
 
-Hybrid of fixed window and sliding window log — weights the previous window's count by overlap percentage:
+结合了固定窗口和滑动窗口日志的机制，根据窗口重叠比例来计算当前请求量：
 
 ```python
 def sliding_window_allow(key: str, limit: int, window_sec: int) -> bool:
@@ -63,22 +63,22 @@ def sliding_window_allow(key: str, limit: int, window_sec: int) -> bool:
 
 ---
 
-## Implementation Options
+## 实现选项
 
-| Approach | Scope | Best For |
+| 方法 | 适用范围 | 适用场景 |
 |----------|-------|----------|
-| **In-memory** | Single server | Zero latency, no dependencies |
-| **Redis** (`INCR` + `EXPIRE`) | Distributed | **Multi-instance deployments** |
-| **API Gateway** | Edge | No code, built-in dashboards |
-| **Middleware** | Per-service | Fine-grained per-user/endpoint control |
+| **内存限制（In-memory）** | 单个服务器 | 零延迟、无依赖性 |
+| **Redis**（`INCR` + `EXPIRE`） | 分布式系统 | **多实例部署** |
+| **API网关（API Gateway）** | 边缘节点 | 无需编写代码，内置监控面板 |
+| **中间件（Middleware）** | 按服务级别控制 | 提供细粒度的用户/端点控制 |
 
-Use gateway-level limiting as outer defense + application-level for fine-grained control.
+建议在网关层面设置全局限流规则，并在应用层面实现更细粒度的控制。
 
 ---
 
-## HTTP Headers
+## HTTP头部信息
 
-Always return rate limit info, even on successful requests:
+即使在请求成功的情况下，也必须返回限流相关信息：
 
 ```
 RateLimit-Limit: 1000
@@ -87,14 +87,16 @@ RateLimit-Reset: 1625097600
 Retry-After: 30
 ```
 
-| Header | When to Include |
+| 头部字段 | 返回时机 |
 |--------|-----------------|
-| `RateLimit-Limit` | Every response |
-| `RateLimit-Remaining` | Every response |
-| `RateLimit-Reset` | Every response |
-| `Retry-After` | 429 responses only |
+| `RateLimit-Limit` | 每个响应 |
+| `RateLimit-Remaining` | 每个响应 |
+| `RateLimit-Reset` | 每个响应 |
+| `Retry-After` | 仅在返回429状态码时返回 |
 
-### 429 Response Body
+### 429状态码响应
+
+当请求超过限流限制时，应返回429状态码，而不是500或503：
 
 ```json
 {
@@ -108,36 +110,34 @@ Retry-After: 30
 }
 ```
 
-Never return `500` or `503` for rate limiting — `429` is the correct status code.
-
 ---
 
-## Rate Limit Tiers
+## 限流级别
 
-Apply limits at multiple granularities:
+可以设置不同粒度的限流规则：
 
-| Scope | Key | Example Limit | Purpose |
+| 适用范围 | 限流键 | 示例限值 | 目的 |
 |-------|-----|---------------|---------|
-| **Per-IP** | Client IP | 100 req/min | Abuse prevention |
-| **Per-User** | User ID | 1000 req/hr | Fair usage |
-| **Per-API-Key** | API key | 5000 req/hr | Service-to-service |
-| **Per-Endpoint** | Route + key | 60 req/min on `/search` | Protect expensive ops |
+| **按IP限制** | 客户端IP | 每分钟100次请求 | 防止滥用 |
+| **按用户限制** | 用户ID | 每小时1000次请求 | 公平使用 |
+| **按API密钥限制** | API密钥 | 每小时5000次请求 | 服务间通信 |
+| **按端点限制** | 路由+密钥 | `/search`接口每分钟60次请求 | 保护资源密集型操作 |
 
-**Tiered pricing:**
+**分层定价方案：**
 
-| Tier | Rate Limit | Burst | Cost |
+| 级别 | 限流次数 | 突发次数 | 费用 |
 |------|-----------|-------|------|
-| Free | 100 req/hr | 10 | $0 |
-| Pro | 5,000 req/hr | 100 | $49/mo |
-| Enterprise | 100,000 req/hr | 2,000 | Custom |
+| 免费 | 每小时100次请求 | 10次 | $0 |
+| 专业版 | 每小时5000次请求 | 100次 | $49/月 |
+| 企业版 | 每小时100,000次请求 | 2,000次 | 自定义 |
 
-Evaluate from most specific to least specific: per-endpoint > per-user > per-IP.
+建议从最具体的限制级别开始设置：按端点 > 按用户 > 按IP。
 
 ---
 
-## Distributed Rate Limiting
+## 分布式限流
 
-Redis-based pattern for consistent limiting across instances:
+基于Redis的分布式限流方案，确保所有实例的限流规则一致：
 
 ```python
 def redis_rate_limit(redis, key: str, limit: int, window: int) -> bool:
@@ -150,7 +150,7 @@ def redis_rate_limit(redis, key: str, limit: int, window: int) -> bool:
     return results[0] <= limit
 ```
 
-**Atomic Lua script** (prevents race conditions):
+**原子Lua脚本**（防止竞态条件）：
 
 ```lua
 local key = KEYS[1]
@@ -163,13 +163,13 @@ end
 return current <= limit and 1 or 0
 ```
 
-Never do separate GET then SET — the gap allows overcount.
+请避免先执行`GET`操作再执行`SET`操作，因为这可能导致计数错误。
 
 ---
 
-## API Gateway Configuration
+## API网关配置
 
-**NGINX:**
+**NGINX**：
 
 ```nginx
 http {
@@ -183,7 +183,7 @@ http {
 }
 ```
 
-**Kong:**
+**Kong**：
 
 ```yaml
 plugins:
@@ -197,9 +197,9 @@ plugins:
 
 ---
 
-## Client-Side Handling
+## 客户端处理
 
-Clients must handle `429` gracefully:
+客户端必须正确处理429状态码：
 
 ```typescript
 async function fetchWithRetry(url: string, maxRetries = 3): Promise<Response> {
@@ -217,44 +217,43 @@ async function fetchWithRetry(url: string, maxRetries = 3): Promise<Response> {
 }
 ```
 
-- Always respect `Retry-After` when present
-- Use exponential backoff with jitter when absent
-- Implement request queuing for batch operations
+- 当`Retry-After`头部字段存在时，必须遵守其规定的重试间隔；
+- 如果该字段不存在，应使用指数级退避策略；
+- 对批量请求进行排队处理。
 
 ---
 
-## Monitoring
+## 监控指标
 
-Track these metrics:
+需要监控以下指标：
 
-- **Rate limit hit rate** — % of requests returning 429 (alert if >5% sustained)
-- **Near-limit warnings** — requests where remaining < 10% of limit
-- **Top offenders** — keys/IPs hitting limits most frequently
-- **Limit headroom** — how close normal traffic is to the ceiling
-- **False positives** — legitimate users being rate limited
+- **限流命中率**：返回429状态码的请求比例（持续超过5%时触发警报）；
+- **接近限流阈值的通知**：剩余请求量低于限值10%的请求；
+- **频繁违规的来源**：最常超出限流的IP或用户；
+- **限流余量**：正常流量与上限的差距；
+- **误判情况**：合法用户被错误地限制了请求。
 
 ---
 
-## Anti-Patterns
+## 避免的错误做法
 
-| Anti-Pattern | Fix |
+| 错误做法 | 应对措施 |
 |-------------|-----|
-| **Application-only limiting** | Always combine with infrastructure-level limits |
-| **No retry guidance** | Always include `Retry-After` header on 429 |
-| **Inconsistent limits** | Same endpoint, same limits across services |
-| **No burst allowance** | Allow controlled bursts for legitimate traffic |
-| **Silent dropping** | Always return 429 so clients can distinguish from errors |
-| **Global single counter** | Per-endpoint counters to protect expensive operations |
-| **Hard-coded limits** | Use configuration, not code constants |
+| **仅在应用层面实施限流** | 必须结合基础设施层面的限流策略 |
+| **不提供重试提示** | 在返回429状态码时必须包含`Retry-After`头部字段 |
+| **不同服务使用相同的限流规则** | 同一端点在不同服务中应使用不同的限流策略 |
+| **禁止突发流量** | 应允许合法流量出现短暂的高峰 |
+| **直接返回429状态码而不做任何提示** | 客户端需要知道请求被限制了 |
+| **使用硬编码的限值** | 应通过配置文件设置限值，而非代码常量 |
 
 ---
 
-## NEVER Do
+**绝对禁止的行为：**
 
-1. **NEVER rate limit health check endpoints** — monitoring systems will false-alarm
-2. **NEVER use client-supplied identifiers as sole rate limit key** — trivially spoofed
-3. **NEVER return `200 OK` when rate limiting** — clients must know they were throttled
-4. **NEVER set limits without measuring actual traffic first** — you'll block legitimate users or set limits too high to matter
-5. **NEVER share counters across unrelated tenants** — noisy neighbor problem
-6. **NEVER skip rate limiting on internal APIs** — misbehaving internal services can take down shared infrastructure
-7. **NEVER implement rate limiting without logging** — you need visibility to tune limits and detect abuse
+1. **绝对禁止对健康检查接口实施限流**——这会导致监控系统误报；
+2. **绝对禁止仅使用客户端提供的标识符作为限流依据**——这些标识符容易被伪造；
+3. **在实施限流时绝对禁止返回200状态码**——客户端需要知道自己的请求被限制了；
+4. **在未测量实际流量的情况下设置限值**——这可能会误封合法用户或设置过高的限值；
+5. **绝对禁止在不同租户之间共享限流计数器**——这可能导致相邻租户之间的干扰；
+6. **绝对禁止对内部API实施限流**——异常的内部服务可能会影响整个系统的稳定性；
+7. **实施限流时绝对禁止不进行日志记录**——日志记录对于调整限值和检测滥用行为至关重要。

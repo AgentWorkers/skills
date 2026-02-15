@@ -1,86 +1,85 @@
 ---
 name: Cardano
-description: Assist with Cardano ADA transactions, staking, native tokens, and UTxO model.
+description: 协助处理 Cardano（ADA）的交易、质押（staking）操作、原生代币（native tokens）以及未花费交易输出（UTxO, Unspent Transaction Outputs）的相关事务。
 metadata: {"clawdbot":{"emoji":"₳","os":["linux","darwin","win32"]}}
 ---
 
-## UTxO Model (Critical Difference)
-- Cardano uses UTxO like Bitcoin, not accounts like Ethereum — each transaction consumes and creates outputs
-- Wallet balance is sum of all UTxOs — not a single account balance
-- Transaction fees depend on size — more inputs/outputs = higher fee
-- Change outputs created automatically — transactions consume full UTxOs and return change
-- Minimum UTxO value required — can't create outputs below threshold (currently ~1 ADA)
+## UTxO模型（关键区别）  
+- Cardano与比特币类似，使用UTxO（Unspent Transaction Outputs，未花费的交易输出）模型，而非以太坊的账户模型；每笔交易都会消耗并创建新的UTxO。  
+- 钱包余额等于所有UTxO的总价值，而非单个账户的余额。  
+- 交易费用取决于交易中的输入/输出数量：输入/输出越多，费用越高。  
+- 交易产生的“找零”（change）是自动计算的；交易会消耗整个UTxO，并返回相应的找零金额。  
+- 存在最低UTxO价值要求：无法创建价值低于最低阈值的UTxO（目前约为1 ADA）。  
 
-## Transaction Characteristics
-- Transactions are deterministic — you know exact fee before submitting
-- No failed transactions that consume fees — if it fails, no fee charged
-- Multi-asset transactions native — send ADA and tokens in same transaction
-- Metadata can be attached — up to 16KB of arbitrary data
+## 交易特性  
+- 交易结果是确定的：在提交交易之前即可知道确切的费用。  
+- 任何消耗了费用的交易都不会失败，因此也不会产生费用。  
+- 支持多资产交易：可以在同一笔交易中发送ADA和代币。  
+- 可以附加元数据：最多可附加16KB的任意数据。  
 
-## Native Tokens
-- Tokens are first-class citizens — not smart contracts, native protocol support
-- Minting requires policy script — defines who can mint/burn and when
-- Tokens must be sent with minimum ADA — tokens can't exist alone in UTxO
-- Policy ID identifies the token — verify policy ID for authenticity
-- Burning requires same policy script — time-locked policies can't burn after deadline
+## 原生代币  
+- 代币是Cardano系统中的核心组成部分，属于“一级公民”（first-class citizens）；它们不是智能合约，而是由Cardano原生协议支持的。  
+- 发行代币需要特定的政策脚本（policy script），该脚本定义了谁有权发行或销毁代币以及何时执行这些操作。  
+- 发送代币时必须至少包含一定数量的ADA；单独的UTxO中不能包含代币。  
+- 每个代币都有一个唯一的“政策ID”（policy ID），用于验证其真实性。  
+- 销毁代币同样需要相应的政策脚本；受时间限制的政策在截止日期后无法被销毁。  
 
-## Staking
-- Non-custodial staking — ADA stays in your wallet, fully liquid
-- Delegate to stake pools — no minimum, no lockup
-- Rewards every epoch (5 days) — automatic, no claiming required
-- First rewards appear after 15-20 days — registration and reward delay
-- Pool saturation affects rewards — overly popular pools give diminishing returns
+## 质押（Staking）  
+- Cardano采用非托管式质押机制：用户无需将ADA托管给第三方机构，ADA始终保留在用户的钱包中，具有高度流动性。  
+- 用户可以将ADA委托给质押池（stake pools）进行质押；没有最低委托数量限制，也没有质押期限。  
+- 每个“时代”（epoch，约5天）都会发放奖励，无需用户主动申请。  
+- 首次奖励通常在质押15-20天后发放；注册和奖励之间存在延迟。  
+- 质押池的饱和度会影响奖励金额：过于受欢迎的质押池可能会降低用户的收益。  
 
-## Choosing Stake Pools
-- Pool margin is operator's cut — lower isn't always better, quality matters
-- Fixed cost (340 ADA minimum) taken before margin — affects small delegators more
-- Pledge shows operator commitment — higher pledge often indicates reliability
-- Check pool uptime and block production — missed blocks mean missed rewards
-- Avoid pools near saturation — rewards decrease above saturation point
+## 选择质押池  
+- 质押池的“佣金”（margin）由运营方收取；佣金越低并不一定越好，质量才是关键。  
+- 在扣除佣金之前，会先收取固定的费用（最低340 ADA），这对小额委托者影响较大。  
+- 运营方提供的质押承诺（pledge）反映了其可靠性：较高的质押金额通常意味着更可靠的质押服务。  
+- 请检查质押池的运行状态和区块生成情况：如果质押池未能按时生成区块，用户将无法获得奖励。  
+- 应避免选择接近饱和状态的质押池，因为饱和度过高会导致奖励减少。  
 
-## Wallets
-- Daedalus is full node wallet — downloads entire blockchain, most secure
-- Yoroi is light wallet — faster, browser extension available
-- Hardware wallet support — Ledger and Trezor via compatible software
-- 15 or 24 word seed phrases — don't mix formats between wallets
-- Staking key separate from spending key — can stake without exposing full access
+## 钱包  
+- **Daedalus**是全节点钱包，会下载整个区块链数据，因此安全性最高。  
+- **Yoroi**是轻量级钱包，使用浏览器扩展程序即可使用。  
+- 支持硬件钱包（如Ledger和Trezor），只需通过兼容的软件进行连接。  
+- 钱包需要15个或24个单词的助记词（seed phrase）进行身份验证；不同钱包之间不要使用不同的助记词格式。  
+- 质押密钥与消费密钥分开管理，这样用户可以在不暴露全部账户信息的情况下进行质押操作。  
 
-## Smart Contracts (Plutus)
-- eUTxO model extends UTxO with data and scripts — different from Ethereum EVM
-- Transactions must be built off-chain — then submitted to chain
-- Deterministic execution — same inputs always produce same outputs
-- Higher collateral requirements — locked ADA returned if transaction succeeds
-- Script size affects fees — optimize for smaller scripts
+## 智能合约（Plutus）  
+- Cardano的智能合约基于eUTxO模型，该模型在UTxO的基础上增加了数据和脚本功能，与以太坊的EVM（Ethereum Virtual Machine）有所不同。  
+- 智能合约的交易必须先在链下构建，然后再提交到链上执行。  
+- 智能合约的执行结果是确定的：相同的输入总是会产生相同的输出结果。  
+- 智能合约的执行需要额外的抵押品（collateral）；如果交易成功，抵押品会被返还给用户。  
+- 脚本的大小会影响交易费用，因此应尽量优化脚本以减少费用开销。  
 
-## Common Transaction Issues
-- "Insufficient funds for fee" — need more ADA than just transfer amount
-- "Minimum UTxO not met" — output too small, must include more ADA
-- "UTxO too fragmented" — many small UTxOs, consolidate with self-transfer
-- "Collateral required" — smart contract interaction needs collateral UTxO
-- "Transaction too large" — too many inputs, split into multiple transactions
+## 常见交易问题  
+- “费用不足”：实际所需的ADA数量应超过转账金额。  
+- “未达到最低UTxO要求”：生成的UTxO价值过低，需要添加更多ADA。  
+- “UTxO过于碎片化”：如果UTxO数量过多，可以通过自转账（self-transfer）进行合并。  
+- “需要抵押品”：某些智能合约操作需要特定的UTxO作为抵押。  
+- “交易过大”：如果交易包含太多输入，可能需要拆分为多笔交易来处理。  
 
-## Network and Epochs
-- Epoch is 5 days — staking rewards and protocol updates follow epoch boundaries
-- Slot every 1 second — blocks approximately every 20 seconds
-- Hard forks via Hard Fork Combinator — seamless upgrades without chain splits
-- Testnet (preprod, preview) for development — free test ADA from faucets
+## 网络与时代（Network and Epochs）  
+- 一个“时代”持续5天，质押奖励和协议更新都会按照这个周期进行。  
+- 每1秒会生成一个区块，大约每20秒完成一次交易确认。  
+- 通过“硬分叉组合器”（Hard Fork Combinator）实现无缝升级，避免链分叉。  
+- 提供测试网（Testnet）供开发者进行测试；测试网提供免费的ADA测试币。  
 
-## Security
-- Seed phrase is everything — never share, never enter online
-- Verify transaction details on hardware wallet screen — software can lie
-- Check policy IDs for tokens — scam tokens can have same name as legitimate ones
-- DApp connections don't expose seed — only public key and signing requests
-- Stake pool changes take effect after epoch boundary — not instant
+## 安全性  
+- 助记词是保护用户账户安全的关键：切勿与他人分享，也切勿在网络上输入助记词。  
+- 请在硬件钱包的屏幕上核对交易详情，因为软件可能会显示错误信息。  
+- 需要验证代币的“政策ID”；诈骗代币可能与合法代币具有相同的名称。  
+- DApp连接不会暴露用户的助记词信息，仅传输公钥和签名请求。  
+- 质押池的变更会在下一个时代开始时生效，不会立即生效。  
 
-## NFTs and Metadata
-- NFTs are native tokens with quantity 1 — no special contract needed
-- CIP-25 standard for NFT metadata — JSON metadata with image links
-- Metadata stored on-chain — permanent and verifiable
-- IPFS commonly used for images — verify IPFS pinning is permanent
-- jpg.store, cnft.io for marketplace — verify NFT policies before buying
+## NFTs与元数据  
+- NFT是Cardano的原生代币，每个NFT的数量固定为1个。  
+- NFT的元数据遵循CIP-25标准，采用JSON格式并包含图片链接。  
+- 元数据存储在链上，具有永久性和可验证性。  
+- 常使用IPFS（InterPlanetary File System）来存储图片；购买NFT前请验证图片的存储情况。  
 
-## Governance
-- Voltaire era introducing on-chain governance — ADA holders vote on proposals
-- Project Catalyst for treasury funding — community-voted grants
-- Constitutional Committee, DReps — delegated representation coming
-- Staking and governance participation can overlap — same ADA, different roles
+## 治理机制  
+- **Voltaire时代**将引入基于链上的治理机制：ADA持有者可以对提案进行投票。  
+- **Project Catalyst**负责管理项目资金，资金来源由社区投票决定。  
+- 即将推出“宪法委员会”（Constitutional Committee）和“DReps”（Delegated Representatives）等治理机构。  
+- 质押行为和治理参与可以同时进行；用户可以使用同一份ADA担任不同的治理角色。

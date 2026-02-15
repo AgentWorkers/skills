@@ -1,15 +1,15 @@
 ---
 name: aws-cost-expert
-description: AWS cost optimization - EC2 Reserved Instances, Savings Plans, Spot, Lambda optimization, Cost Explorer, Trusted Advisor.
+description: AWS成本优化：EC2预留实例、节省计划（Savings Plans）、按需实例（Spot Instances）、Lambda函数优化、成本管理工具（Cost Explorer）以及可信顾问（Trusted Advisor）。
 ---
 
-# AWS Cost Optimization Expert
+# AWS 成本优化专家
 
-Deep expertise in AWS-specific cost optimization strategies and services.
+在 AWS 特定的成本优化策略和服务方面拥有深厚的专业知识。
 
-## AWS Cost Management Services
+## AWS 成本管理服务
 
-### 1. Cost Explorer
+### 1. 成本探索器 (Cost Explorer)
 ```bash
 # Get monthly costs by service
 aws ce get-cost-and-usage \
@@ -27,7 +27,7 @@ aws ce get-cost-and-usage \
   --group-by Type=INSTANCE_TYPE
 ```
 
-### 2. AWS Budgets
+### 2. AWS 预算 (AWS Budgets)
 ```yaml
 Budget Configuration:
   - Monthly budget: $30,000
@@ -42,7 +42,7 @@ Actions:
   - Email C-level executives
 ```
 
-### 3. Compute Optimizer
+### 3. 计算优化器 (Compute Optimizer)
 ```bash
 # Get EC2 right-sizing recommendations
 aws compute-optimizer get-ec2-instance-recommendations \
@@ -52,7 +52,7 @@ aws compute-optimizer get-ec2-instance-recommendations \
 aws compute-optimizer get-lambda-function-recommendations
 ```
 
-### 4. Trusted Advisor
+### 可信赖顾问 (Trusted Advisor)
 ```bash
 # Get cost optimization checks
 aws support describe-trusted-advisor-checks \
@@ -64,9 +64,9 @@ aws support describe-trusted-advisor-check-result \
   --check-id <check-id>
 ```
 
-## EC2 Cost Optimization
+## EC2 成本优化
 
-### Savings Plans vs Reserved Instances
+### 节省计划 vs 预留实例 (Savings Plans vs Reserved Instances)
 ```typescript
 interface Comparison {
   option: string;
@@ -115,7 +115,7 @@ const options: Comparison[] = [
 ];
 ```
 
-### Graviton Instances (ARM)
+### Graviton 实例 (ARM)
 ```yaml
 Benefits:
   - 20% better price/performance vs x86
@@ -134,9 +134,9 @@ Compatibility:
   - Not for: Windows, x86-only software
 ```
 
-## Lambda Cost Optimization
+## Lambda 成本优化
 
-### Power Tuning
+### 性能调优 (Power Tuning)
 ```typescript
 // Use AWS Lambda Power Tuning tool
 // https://github.com/alexcasalboni/aws-lambda-power-tuning
@@ -157,7 +157,7 @@ const result: PowerTuningResult = {
 };
 ```
 
-### Lambda Cost Optimization Checklist
+### Lambda 成本优化检查清单 (Lambda Cost Optimization Checklist)
 ```yaml
 Memory Optimization:
   - ✅ Run power tuning for all production functions
@@ -175,9 +175,9 @@ Invocation:
   - ✅ Use Step Functions for orchestration (not nested Lambdas)
 ```
 
-## S3 Cost Optimization
+## S3 成本优化
 
-### Intelligent-Tiering
+### 智能分层 (Intelligent-Tiering)
 ```yaml
 Automatic Cost Optimization:
   - Frequent Access tier (default)
@@ -195,7 +195,7 @@ Best for:
   - Long-term storage with occasional access
 ```
 
-### Lifecycle Policy Example
+### 生命周期策略示例 (Lifecycle Policy Example)
 ```json
 {
   "Rules": [
@@ -221,9 +221,9 @@ Best for:
 }
 ```
 
-## RDS Cost Optimization
+## RDS 成本优化
 
-### Reserved Instance vs Aurora Serverless
+### 预留实例 vs Aurora 无服务器版 (Reserved Instance vs Aurora Serverless)
 ```typescript
 interface DBCostComparison {
   option: string;
@@ -258,7 +258,7 @@ const comparison: DBCostComparison[] = [
 ];
 ```
 
-### RDS Storage Optimization
+### RDS 存储优化 (RDS Storage Optimization)
 ```yaml
 Storage Types:
   gp2 (General Purpose SSD):
@@ -280,9 +280,9 @@ Storage Types:
 Migration: gp2 → gp3 saves 30% with no performance impact
 ```
 
-## DynamoDB Cost Optimization
+## DynamoDB 成本优化
 
-### On-Demand vs Provisioned
+### 按需存储 vs 预配存储 (On-Demand vs Provisioned Storage)
 ```typescript
 // Decision matrix
 function chooseBillingMode(usage: UsagePattern): string {
@@ -311,7 +311,7 @@ function chooseBillingMode(usage: UsagePattern): string {
 }
 ```
 
-### Reserved Capacity
+### 预留容量 (Reserved Capacity)
 ```yaml
 Savings: 53-76% discount
 Commitment: 1 year
@@ -325,9 +325,9 @@ Cost Comparison (100 WCU):
 Best for: Predictable write-heavy workloads
 ```
 
-## Cost Anomaly Detection
+## 成本异常检测
 
-### Setup
+### 设置 (Setup)
 ```bash
 # Create anomaly monitor
 aws ce create-anomaly-monitor \
@@ -338,7 +338,7 @@ aws ce create-anomaly-subscription \
   --anomaly-subscription Name=ProductionAlerts,MonitorArnList=arn:aws:ce::123456789012:anomalymonitor/abc123,Subscribers=[{Address=team@example.com,Type=EMAIL}],Threshold=100
 ```
 
-### Anomaly Patterns
+### 异常模式 (Anomaly Patterns)
 ```yaml
 Common Anomalies:
   - Unexpected EC2 instance launches (compromised credentials)
@@ -353,9 +353,9 @@ Alert Thresholds:
   - Total cost: > 10% above monthly forecast
 ```
 
-## Tagging Strategy for Cost Allocation
+## 用于成本分配的标签策略 (Tagging Strategy for Cost Allocation)
 
-### Tag Policy
+### 标签策略 (Tag Policy)
 ```yaml
 Required Tags (enforced via AWS Config):
   Environment: [prod, staging, dev, test]
@@ -371,7 +371,7 @@ Auto-Tagging:
   - Lambda: Environment variables → tags
 ```
 
-### Cost Allocation Tags
+### 成本分配标签 (Cost Allocation Tags)
 ```bash
 # Activate cost allocation tags
 aws ce update-cost-allocation-tags-status \
@@ -385,9 +385,9 @@ aws ce get-cost-and-usage \
   --group-by Type=TAG,Key=Environment
 ```
 
-## AWS-Specific Best Practices
+## AWS 特定的最佳实践
 
-### Multi-Account Strategy
+### 多账户策略 (Multi-Account Strategy)
 ```yaml
 Organization Structure:
   - Management account (billing only)
@@ -404,7 +404,7 @@ Benefits:
   - Clear cost attribution
 ```
 
-### AWS Free Tier Monitoring
+### AWS 免费 tier 监控 (AWS Free Tier Monitoring)
 ```bash
 # Set up budget for free tier limits
 aws budgets create-budget \
@@ -413,4 +413,4 @@ aws budgets create-budget \
   --notifications-with-subscribers file://free-tier-alerts.json
 ```
 
-Optimize AWS costs like a cloud financial engineer!
+像云财务工程师一样优化 AWS 成本！

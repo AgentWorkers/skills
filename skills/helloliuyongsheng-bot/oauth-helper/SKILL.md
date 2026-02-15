@@ -11,13 +11,13 @@ description: |
   - Handle account selection and consent pages automatically
 ---
 
-# OAuth Helper
+# OAuth辅助工具
 
-Automate OAuth login with Telegram confirmation. Supports 7 major providers.
+该工具支持通过Telegram进行OAuth登录自动化处理，目前支持7种主要的OAuth提供商。
 
-## Supported Providers
+## 支持的提供商
 
-| Provider | Status | Detection Domain |
+| 提供商 | 状态 | 检测域名 |
 |----------|--------|------------------|
 | Google | ✅ | accounts.google.com |
 | Apple | ✅ | appleid.apple.com |
@@ -27,16 +27,16 @@ Automate OAuth login with Telegram confirmation. Supports 7 major providers.
 | WeChat | ✅ | open.weixin.qq.com |
 | QQ | ✅ | graph.qq.com |
 
-## Prerequisites
+## 先决条件
 
-1. Clawd browser logged into the OAuth providers (one-time setup)
-2. Telegram channel configured
+1. 已在Clawd浏览器中登录相应的OAuth提供商（需完成一次设置）。
+2. 已配置Telegram频道。
 
-## Core Workflow
+## 核心工作流程
 
-### Flow A: Login Page with Multiple OAuth Options
+### 流程A：包含多种OAuth选项的登录页面
 
-When user requests to login to a website:
+当用户请求登录网站时：
 
 ```
 1. Open website login page
@@ -52,9 +52,9 @@ When user requests to login to a website:
 6. Enter Flow B
 ```
 
-### Flow B: OAuth Authorization Page
+### 流程B：OAuth授权页面
 
-When on an OAuth provider's page:
+当用户进入OAuth提供商的页面时：
 
 ```
 1. Detect OAuth page type (by URL)
@@ -66,7 +66,7 @@ When on an OAuth provider's page:
 7. Send: "✅ Login successful!"
 ```
 
-## Detection Patterns
+## 检测规则
 
 ### Google
 ```
@@ -122,7 +122,7 @@ URL patterns:
 - ui.ptlogin2.qq.com
 ```
 
-## Click Sequences by Provider
+## 不同提供商的点击顺序
 
 ### Google
 ```
@@ -183,23 +183,23 @@ Password mode:
   - Login: input#login_button
 ```
 
-## OAuth Button Detection
+## OAuth按钮的识别方法
 
-Scan login pages for these selectors:
+在登录页面中查找以下元素：
 
-| Provider | Selectors | Common Text |
+| 提供商 | 识别元素 | 常见文本 |
 |----------|-----------|-------------|
-| Google | `[data-provider="google"]`, `.google-btn` | "Continue with Google" |
-| Apple | `[data-provider="apple"]`, `.apple-btn` | "Sign in with Apple" |
-| Microsoft | `[data-provider="microsoft"]` | "Sign in with Microsoft" |
-| GitHub | `[data-provider="github"]` | "Continue with GitHub" |
-| Discord | `[data-provider="discord"]` | "Login with Discord" |
-| WeChat | `.wechat-btn`, `img[src*="wechat"]` | "WeChat Login" |
-| QQ | `.qq-btn`, `img[src*="qq"]` | "QQ Login" |
+| Google | `[data-provider="google"]`, `.google-btn` | “使用Google登录” |
+| Apple | `[data-provider="apple"]`, `.apple-btn` | “使用Apple登录” |
+| Microsoft | `[data-provider="microsoft"]` | “使用Microsoft登录” |
+| GitHub | `[data-provider="github"]` | “使用GitHub登录” |
+| Discord | `[data-provider="discord"]` | “使用Discord登录” |
+| WeChat | `.wechat-btn`, `img[src*="wechat"]` | “微信登录” |
+| QQ | `.qq-btn`, `img[src*="qq"]` | “QQ登录” |
 
-## One-Time Setup
+## 一次设置流程
 
-Login to each provider in clawd browser:
+在Clawd浏览器中登录每个提供商：
 
 ```bash
 # Google
@@ -220,14 +220,14 @@ browser action=navigate profile=clawd url=https://discord.com/login
 # WeChat/QQ - Use QR scan, no pre-login needed
 ```
 
-## Error Handling
+## 错误处理
 
-- No "yes" reply → Cancel and notify user
-- 2FA required → Prompt user to enter code manually
-- QR timeout → Re-screenshot new QR code
-- Login failed → Screenshot and send to user for debugging
+- 如果用户没有给出“同意”回复 → 取消操作并通知用户。
+- 如果需要两步验证（2FA） → 提示用户手动输入验证码。
+- 如果二维码无法识别 → 重新扫描二维码。
+- 如果登录失败 → 生成截图并发送给用户以协助调试。
 
-## Usage Example
+## 使用示例
 
 ```
 User: Login to Kaggle for me
@@ -249,6 +249,6 @@ Agent:
 10. Send: "✅ Logged into Kaggle!"
 ```
 
-## Version History
+## 版本历史
 
-- v1.0.0 - Initial release with 7 OAuth providers
+- v1.0.0 - 首次发布，支持7种OAuth提供商。

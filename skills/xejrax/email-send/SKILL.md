@@ -1,6 +1,6 @@
 ---
 name: email-send
-description: "Send a quick email via SMTP using `msmtp` without opening a full mail client."
+description: "使用 `msmtp` 通过 SMTP 快速发送一封电子邮件，而无需打开完整的邮件客户端。"
 metadata:
   {
     "openclaw":
@@ -21,31 +21,31 @@ metadata:
   }
 ---
 
-# Email Send Skill
+# 发送电子邮件功能
 
-Send a quick email via SMTP without opening the full himalaya client. Requires `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` env vars.
+无需打开完整的Himalaya客户端，即可通过SMTP快速发送电子邮件。该功能需要`SMTP_HOST`、`SMTP_PORT`、`SMTP_USER`、`SMTP_PASS`这些环境变量。
 
-## Sending Email
+## 发送电子邮件
 
-Send a basic email:
+发送一条简单的电子邮件：
 
 ```bash
 echo "Meeting at 3pm tomorrow." | msmtp recipient@example.com
 ```
 
-Send with subject and headers:
+发送带有主题和头部的电子邮件：
 
 ```bash
 printf "To: recipient@example.com\nSubject: Quick update\n\nHey, the deploy is done." | msmtp recipient@example.com
 ```
 
-## Options
+## 选项
 
-- `--cc` -- carbon copy recipients
-- `--bcc` -- blind carbon copy recipients
-- `--attach <file>` -- attach a file
+- `--cc`：抄送收件人
+- `--bcc`：密件抄送收件人
+- `--attach <file>`：附加文件
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install msmtp

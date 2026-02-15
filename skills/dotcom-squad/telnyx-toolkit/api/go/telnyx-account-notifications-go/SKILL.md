@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Notifications - Go
+# Telnyx 账户通知 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List notification channels
+## 列出通知渠道
 
-List notification channels.
+列出所有通知渠道。
 
 `GET /notification_channels`
 
@@ -53,9 +53,9 @@ List notification channels.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a notification channel
+## 创建通知渠道
 
-Create a notification channel.
+创建一个新的通知渠道。
 
 `POST /notification_channels`
 
@@ -67,9 +67,9 @@ Create a notification channel.
 	fmt.Printf("%+v\n", notificationChannel.Data)
 ```
 
-## Get a notification channel
+## 获取通知渠道信息
 
-Get a notification channel.
+获取指定通知渠道的详细信息。
 
 `GET /notification_channels/{id}`
 
@@ -81,9 +81,9 @@ Get a notification channel.
 	fmt.Printf("%+v\n", notificationChannel.Data)
 ```
 
-## Update a notification channel
+## 更新通知渠道
 
-Update a notification channel.
+更新通知渠道的配置。
 
 `PATCH /notification_channels/{id}`
 
@@ -101,9 +101,9 @@ Update a notification channel.
 	fmt.Printf("%+v\n", notificationChannel.Data)
 ```
 
-## Delete a notification channel
+## 删除通知渠道
 
-Delete a notification channel.
+删除指定的通知渠道。
 
 `DELETE /notification_channels/{id}`
 
@@ -115,9 +115,9 @@ Delete a notification channel.
 	fmt.Printf("%+v\n", notificationChannel.Data)
 ```
 
-## List all Notifications Events Conditions
+## 列出所有通知事件条件
 
-Returns a list of your notifications events conditions.
+返回所有通知事件的条件设置。
 
 `GET /notification_event_conditions`
 
@@ -129,9 +129,9 @@ Returns a list of your notifications events conditions.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List all Notifications Events
+## 列出所有通知事件
 
-Returns a list of your notifications events.
+返回所有已发生的通知事件。
 
 `GET /notification_events`
 
@@ -143,9 +143,9 @@ Returns a list of your notifications events.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List all Notifications Profiles
+## 列出所有通知配置文件
 
-Returns a list of your notifications profiles.
+列出所有通知配置文件。
 
 `GET /notification_profiles`
 
@@ -157,9 +157,9 @@ Returns a list of your notifications profiles.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a notification profile
+## 创建通知配置文件
 
-Create a notification profile.
+创建一个新的通知配置文件。
 
 `POST /notification_profiles`
 
@@ -171,9 +171,9 @@ Create a notification profile.
 	fmt.Printf("%+v\n", notificationProfile.Data)
 ```
 
-## Get a notification profile
+## 获取通知配置文件信息
 
-Get a notification profile.
+获取指定通知配置文件的详细信息。
 
 `GET /notification_profiles/{id}`
 
@@ -185,9 +185,9 @@ Get a notification profile.
 	fmt.Printf("%+v\n", notificationProfile.Data)
 ```
 
-## Update a notification profile
+## 更新通知配置文件
 
-Update a notification profile.
+更新通知配置文件的设置。
 
 `PATCH /notification_profiles/{id}`
 
@@ -205,9 +205,9 @@ Update a notification profile.
 	fmt.Printf("%+v\n", notificationProfile.Data)
 ```
 
-## Delete a notification profile
+## 删除通知配置文件
 
-Delete a notification profile.
+删除指定的通知配置文件。
 
 `DELETE /notification_profiles/{id}`
 
@@ -219,9 +219,9 @@ Delete a notification profile.
 	fmt.Printf("%+v\n", notificationProfile.Data)
 ```
 
-## List notification settings
+## 查看通知设置
 
-List notification settings.
+查看所有通知相关的设置。
 
 `GET /notification_settings`
 
@@ -233,9 +233,9 @@ List notification settings.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Add a Notification Setting
+## 添加通知设置
 
-Add a notification setting.
+添加一个新的通知设置。
 
 `POST /notification_settings`
 
@@ -247,9 +247,9 @@ Add a notification setting.
 	fmt.Printf("%+v\n", notificationSetting.Data)
 ```
 
-## Get a notification setting
+## 获取通知设置信息
 
-Get a notification setting.
+获取指定通知设置的详细信息。
 
 `GET /notification_settings/{id}`
 
@@ -261,9 +261,9 @@ Get a notification setting.
 	fmt.Printf("%+v\n", notificationSetting.Data)
 ```
 
-## Delete a notification setting
+## 删除通知设置
 
-Delete a notification setting.
+删除指定的通知设置。
 
 `DELETE /notification_settings/{id}`
 

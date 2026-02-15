@@ -1,18 +1,18 @@
 ---
 name: comanda
 version: 1.0.1
-description: Generate, visualize, and execute declarative AI pipelines using the comanda CLI. Use when creating LLM workflows from natural language, viewing workflow charts, editing YAML workflow files, or processing/running comanda workflows. Supports multi-model orchestration (OpenAI, Anthropic, Google, Ollama, Claude Code, Gemini CLI, Codex).
+description: 使用 comanda CLI 生成、可视化并执行声明式 AI 工作流。该工具适用于从自然语言创建大型语言模型（LLM）工作流、查看工作流图表、编辑 YAML 格式的工作流文件，以及处理/运行 comanda 工作流。支持多模型编排（OpenAI、Anthropic、Google、Ollama、Claude Code、Gemini CLI、Codex）。
 homepage: https://comanda.sh
 repository: https://github.com/kris-hansen/comanda
 ---
 
-# Comanda - Declarative AI Pipelines
+# Comanda - 声明式AI工作流工具
 
-🌐 **Website:** [comanda.sh](https://comanda.sh) | 📦 **GitHub:** [kris-hansen/comanda](https://github.com/kris-hansen/comanda)
+🌐 **官方网站:** [comanda.sh](https://comanda.sh) | 📦 **GitHub仓库:** [kris-hansen/comanda](https://github.com/kris-hansen/comanda)
 
-Comanda defines LLM workflows in YAML and runs them from the command line. Workflows can chain multiple AI models, run steps in parallel, and pipe data through processing stages.
+Comanda允许用户使用YAML格式定义AI工作流，并通过命令行来执行这些工作流。这些工作流可以串联多个AI模型，同时运行多个步骤，并将数据传递给不同的处理阶段。
 
-## Installation
+## 安装
 
 ```bash
 # macOS
@@ -22,16 +22,16 @@ brew install kris-hansen/comanda/comanda
 go install github.com/kris-hansen/comanda@latest
 ```
 
-Then configure API keys:
+随后配置API密钥：
 ```bash
 comanda configure
 ```
 
-## Commands
+## 命令
 
-### Generate a Workflow
+### 生成工作流
 
-Create a workflow YAML from natural language:
+根据自然语言描述创建YAML格式的工作流文件：
 
 ```bash
 comanda generate <output.yaml> "<prompt>"
@@ -41,20 +41,20 @@ comanda generate summarize.yaml "Create a workflow that summarizes text input"
 comanda generate review.yaml "Analyze code for bugs, then suggest fixes" -m claude-sonnet-4-20250514
 ```
 
-### Visualize a Workflow
+### 可视化工作流
 
-Display ASCII chart of workflow structure:
+以ASCII图表的形式展示工作流的结构：
 
 ```bash
 comanda chart <workflow.yaml>
 comanda chart workflow.yaml --verbose
 ```
 
-Shows step relationships, models used, input/output chains, and validity.
+图表会显示步骤之间的关系、使用的模型、输入/输出流程以及工作流的有效性。
 
-### Process/Execute a Workflow
+### 运行/执行工作流
 
-Run a workflow file:
+直接运行工作流文件：
 
 ```bash
 comanda process <workflow.yaml>
@@ -67,17 +67,17 @@ echo "Design a REST API" | comanda process multi-agent.yaml
 comanda process step1.yaml step2.yaml step3.yaml
 ```
 
-### View/Edit Workflows
+### 查看/编辑工作流
 
-Workflow files are YAML. Read them directly to understand or modify:
+工作流文件采用YAML格式，可以直接阅读以了解或修改其内容：
 
 ```bash
 cat workflow.yaml
 ```
 
-## Workflow YAML Format
+## 工作流YAML格式
 
-### Basic Step
+### 基本步骤
 
 ```yaml
 step_name:
@@ -87,7 +87,7 @@ step_name:
   output: STDOUT | filename | $VARIABLE
 ```
 
-### Parallel Execution
+### 并行执行
 
 ```yaml
 parallel-process:
@@ -104,7 +104,7 @@ parallel-process:
     output: $PERF
 ```
 
-### Chained Steps
+### 串联步骤
 
 ```yaml
 extract:
@@ -120,7 +120,7 @@ summarize:
   output: STDOUT
 ```
 
-### Generate + Process (Meta-workflows)
+### 生成与处理（元工作流）
 
 ```yaml
 create_workflow:
@@ -136,29 +136,29 @@ run_it:
     workflow_file: generated.yaml
 ```
 
-## Available Models
+## 可用的模型
 
-Run `comanda configure` to set up API keys. Common models:
+运行`comanda configure`命令来配置API密钥。常见的模型包括：
 
-| Provider | Models |
-|----------|--------|
-| OpenAI | `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini` |
+| 提供商 | 模型            |
+|----------|-------------------|
+| OpenAI   | `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini` |
 | Anthropic | `claude-sonnet-4-20250514`, `claude-opus-4-20250514` |
-| Google | `gemini-pro`, `gemini-flash` |
-| Ollama | `ollama/llama2`, `ollama/mistral`, etc. |
+| Google   | `gemini-pro`, `gemini-flash`     |
+| Ollama   | `ollama/llama2`, `ollama/mistral`     |
 | Agentic | `claude-code`, `gemini-cli`, `openai-codex` |
 
-## Examples Location
+## 示例位置
 
-See `~/clawd/comanda/examples/` for workflow samples:
-- `agentic-loop/` - Autonomous agent patterns
-- `claude-code/` - Claude Code integration
-- `gemini-cli/` - Gemini CLI workflows
-- `document-processing/` - PDF, text extraction
-- `database-connections/` - DB query workflows
+工作流示例位于`~/clawd/comanda/examples/`目录下：
+- `agentic-loop/`：自主代理模式示例
+- `claude-code/`：Claude Code集成示例
+- `gemini-cli/`：Gemini CLI工作流示例
+- `document-processing/`：PDF文档处理示例
+- `database-connections/`：数据库查询工作流示例
 
-## Troubleshooting
+## 故障排除
 
-- **"model not configured"**: Run `comanda configure` to add API keys
-- **Workflow validation errors**: Use `comanda chart workflow.yaml` to visualize and check validity
-- **Debug mode**: Add `--debug` flag for verbose logging
+- **“模型未配置”**：运行`comanda configure`命令来添加API密钥。
+- **工作流验证错误**：使用`comanda chart workflow.yaml`命令来可视化并检查工作流的有效性。
+- **调试模式**：添加`--debug`参数以启用详细日志记录。

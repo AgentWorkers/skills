@@ -1,6 +1,6 @@
 ---
 name: eyebot-predictionbot
-description: AI-powered market predictions and price forecasting
+description: 基于人工智能的市场预测与价格预测
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,36 +10,36 @@ metadata:
 
 # PredictionBot 🔮
 
-**AI Market Forecasting**
+**AI市场预测**
 
-Leverage machine learning for price predictions, trend analysis, and market sentiment indicators.
+利用机器学习技术进行价格预测、趋势分析以及市场情绪指标的生成。
 
-## Features
+## 主要功能
 
-- **Price Predictions**: Short and long-term forecasts
-- **Trend Analysis**: Identify market direction
-- **Sentiment Scoring**: Social + on-chain signals
-- **Pattern Recognition**: Technical analysis automation
-- **Confidence Levels**: Probability-weighted predictions
+- **价格预测**：提供短期和长期的价格预测结果
+- **趋势分析**：识别市场发展方向
+- **情绪评分**：结合社交网络数据和链上数据进行分析
+- **模式识别**：自动化执行技术分析
+- **置信度评估**：基于概率对预测结果进行加权评估
 
-## Prediction Models
+## 预测模型
 
-| Model | Timeframe |
+| 模型 | 预测时间范围 |
 |-------|-----------|
-| Short-term | 1-24 hours |
-| Medium-term | 1-7 days |
-| Long-term | 1-4 weeks |
-| Trend | Direction only |
+| 短期 | 1-24小时 |
+| 中期 | 1-7天 |
+| 长期 | 1-4周 |
+| 趋势分析 | 仅提供市场方向 |
 
-## Data Sources
+## 数据来源
 
-- Historical price data
-- On-chain metrics
-- Social sentiment
-- Whale activity
-- Market correlations
+- 历史价格数据
+- 链上指标
+- 社交网络情绪数据
+- 大额交易者行为
+- 市场相关性数据
 
-## Usage
+## 使用方法
 
 ```bash
 # Get prediction
@@ -52,8 +52,10 @@ eyebot predictionbot trend BTC --period 7d
 eyebot predictionbot sentiment ETH
 ```
 
-## Disclaimer
-Predictions are AI-generated estimates, not financial advice. Always DYOR.
+## 免责声明
 
-## Support
-Telegram: @ILL4NE
+预测结果仅由人工智能生成，不构成任何财务建议。请自行判断投资风险并作出决策。
+
+## 售后支持
+
+Telegram：@ILL4NE

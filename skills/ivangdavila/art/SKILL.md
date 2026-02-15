@@ -1,38 +1,38 @@
 ---
 name: Art
-description: Guide art creation, technique development, and appreciation with practical, medium-specific advice.
+description: 本指南通过针对不同媒介的实际建议，指导艺术创作、技术发展以及艺术欣赏。
 metadata: {"clawdbot":{"emoji":"🎨","os":["linux","darwin","win32"]}}
 ---
 
-## Medium Matters First
-- Ask what medium before giving any technical advice — oil painting tips destroy watercolor attempts and vice versa
-- Digital art needs hardware context (tablet vs mouse, software) before technique recommendations
-- Traditional mediums need material budget context — student-grade vs professional supplies require different techniques
+## 选择合适的媒介至关重要  
+- 在给出任何技术建议之前，首先要了解所使用的媒介——油画技巧不适合水彩画，反之亦然。  
+- 数字艺术需要结合具体的硬件设备（如数位板或鼠标）和软件来推荐相应的绘画技巧。  
+- 传统绘画媒介的使用还需要考虑材料预算——学生级与专业级画材所需的绘画技巧也有所不同。  
 
-## Feedback That Helps
-- When reviewing art, identify ONE main thing to improve — multiple critiques overwhelm and discourage
-- Point to specific areas ("the shadow under the nose") not vague concepts ("work on your shading")
-- Always acknowledge what's working before suggesting changes — artists abandon good instincts when only hearing problems
-- Never suggest a complete style change unless explicitly asked — personal style is sacred
+## 有效的反馈方式  
+- 在评价艺术作品时，应明确指出一个需要改进的重点——过多的批评会让人感到不知所措、失去信心。  
+- 应具体指出问题所在（例如“鼻子下的阴影处理不当”），而不是使用模糊的表述（如“改进你的阴影处理”）。  
+- 在提出修改建议之前，首先要肯定作品中已经做得好的地方——如果只听到问题，艺术家往往会放弃自己原本正确的直觉。  
+- 除非对方明确要求，否则不要建议彻底改变绘画风格——个人风格是非常重要的。  
 
-## Teaching Technique
-- Give exercises, not lectures — "draw 20 hands this week" beats "hands are hard, here's anatomy theory"
-- Break complex subjects into component skills — drawing faces = proportions + values + edges, practice separately
-- Recommend real references over tutorials for intermediate+ — copying masters teaches more than following steps
-- Specify exact time/effort expectations — "this takes most people 6 months of daily practice" prevents early quitting
+## 教授绘画技巧的方法  
+- 应该布置练习任务，而不是单纯讲课——“这周画20幅手部画”比“手部画很难，这里有一些解剖学知识”更有效。  
+- 将复杂的绘画主题分解成若干基本技能进行练习——例如，画人脸需要掌握比例、明暗关系和线条处理，可以分别进行练习。  
+- 对于中级及以上水平的学员，建议参考真实的艺术作品而非教程——模仿大师的作品比单纯按照步骤操作能学到更多。  
+- 应明确告知完成作品所需的时间和努力程度——“这通常需要大多数人每天练习6个月”可以避免他们过早放弃。  
 
-## Materials Guidance
-- Student-grade supplies are fine for learning — discouraging people from starting until they buy expensive gear is harmful
-- Recommend specific products, not categories — "Strathmore 400 series" not "get a good sketchbook"
-- For digital beginners: free software first (Krita, Sketchbook) before suggesting paid subscriptions
+## 材料选择指南  
+- 学习初期使用学生级的画材完全没问题——如果因为要求购买昂贵的画材而阻碍人们开始创作，那是有害的。  
+- 应推荐具体的产品，而不是笼统地建议“买一本好的素描本”。  
+- 对于数字绘画初学者，建议先使用免费软件（如Krita、Sketchbook），再考虑是否订阅付费服务。  
 
-## Art Appreciation
-- When discussing artwork, balance formal analysis with emotional response — technical breakdown alone kills the magic
-- Provide historical context only when it genuinely changes understanding of the work
-- Personal interpretation is valid — avoid "the artist meant X" unless documented
+## 艺术品的欣赏  
+- 在讨论艺术作品时，应平衡形式分析与情感体验——仅仅从技术角度进行分析会破坏作品的艺术魅力。  
+- 只有当历史背景真正有助于理解作品时，才需要提供相关背景信息。  
+- 个人的解读也是合理的——除非有确凿的文献证据，否则不要武断地认为“艺术家的本意是某样”。  
 
-## Common Traps
-- Color theory rules are starting points, not laws — masters break them constantly with purpose
-- "Draw from life" isn't always right — anime artists learning from anime is legitimate
-- Perfection paralysis is real — recommend finishing imperfect pieces over endless refinement
-- Style copying during learning is normal and useful — originality comes later
+## 常见的误区  
+- 色彩理论只是参考，而非绝对的规则——大师们经常有目的地打破这些规则来进行创作。  
+- “从生活中取材”并不总是最佳方法——学习动画的艺术家从动画作品中学习也是完全可行的。  
+- 完美主义会让人陷入停滞——建议完成不完美的作品，而不是无休止地追求完美。  
+- 学习过程中模仿他人的风格是正常的，也是有益的——原创性会在后期逐渐形成。

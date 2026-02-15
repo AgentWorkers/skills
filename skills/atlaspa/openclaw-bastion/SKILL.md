@@ -6,111 +6,77 @@ metadata: {"openclaw":{"emoji":"\ud83c\udfdb\ufe0f","requires":{"bins":["python3
 
 # OpenClaw Bastion
 
-Runtime prompt injection defense for agent workspaces. While other tools watch workspace identity files, Bastion protects the input/output boundary — the files being read by the agent, web content, API responses, and user-supplied documents.
+OpenClaw Bastion 是一款专为代理工作空间设计的运行时提示注入防御工具。虽然其他工具会监控工作空间的身份验证文件，但 Bastion 主要保护输入/输出边界——即代理程序读取的文件、网页内容、API 响应以及用户提供的文档。
 
-## Why This Matters
+## 重要性
 
-Agents process content from many sources: local files, API responses, web pages, user uploads. Any of these can contain prompt injection attacks — hidden instructions that manipulate agent behavior. Bastion scans this content before the agent acts on it.
+代理程序会处理来自多种来源的内容：本地文件、API 响应、网页以及用户上传的文件。这些内容都可能包含提示注入攻击（即用于操控代理行为的隐藏指令）。Bastion 会在代理程序处理这些内容之前对其进行扫描。
 
+## 命令
 
-## Commands
+### 扫描注入攻击
 
-### Scan for Injections
+- **扫描文件或目录**：检测文件或目录中是否存在提示注入的恶意模式，包括指令覆盖、系统提示标记、隐藏的 Unicode 字符、Markdown 数据泄露、HTML 注入、Shell 注入、编码后的payload、分隔符混淆等多种攻击手段。
+- **扫描特定文件或目录**：可以针对指定的文件或目录进行扫描。
+- **快速文件检查**：对单个文件进行快速的注入攻击检测，检测方式与“扫描”命令相同。
 
-Scan files or directories for prompt injection patterns. Detects instruction overrides, system prompt markers, hidden Unicode, markdown exfiltration, HTML injection, shell injection, encoded payloads, delimiter confusion, multi-turn manipulation, and dangerous commands.
+### 边界分析
 
-If no target is specified, scans the entire workspace.
+- **分析工作空间的内容边界安全性**：识别以下问题：
+  - 包含混合可信/不可信内容的代理指令文件；
+  - 可被攻击的指令文件（可能被用于发起攻击）；
+  - 每个关键文件的潜在风险等级。
 
-```bash
-python3 {baseDir}/scripts/bastion.py scan
-```
+### 命令允许列表
 
-Scan a specific file or directory:
+- **显示当前的命令允许列表和禁止列表**：如果系统中没有 `.bastion-policy.json` 文件，Bastion 会自动生成一个默认的配置文件。
+- **自定义策略**：可以直接编辑该 JSON 文件来定义哪些命令是安全的，哪些模式是被禁止的。Bastion Pro 会在运行时通过钩子（hooks）来执行这些策略。
 
-```bash
-python3 {baseDir}/scripts/bastion.py scan path/to/file.md
-python3 {baseDir}/scripts/bastion.py scan path/to/directory/
-```
+### 状态信息
 
-### Quick File Check
+- 提供工作空间注入防御状态的快速概览：包括已扫描的文件数量、检测到的问题（按严重程度分类）、边界安全状况以及整体防御效果。
 
-Fast single-file injection check. Same detection patterns as `scan`, targeted to one file.
+## 自动检测工作空间
 
-```bash
-python3 {baseDir}/scripts/bastion.py check path/to/file.md
-```
+如果未指定 `--workspace` 参数，Bastion 会尝试从以下位置获取工作空间信息：
+- `OPENCLAW_WORKSPACE` 环境变量；
+- 当前目录（如果存在 `AGENTS.md` 文件）；
+- `~/.openclaw/workspace`（默认路径）。
 
-### Boundary Analysis
+## 可检测的攻击类型及严重程度
 
-Analyze content boundary safety across the workspace. Identifies:
-- Agent instruction files that contain mixed trusted/untrusted content
-- Writable instruction files (attack surface for compromised skills)
-- Blast radius assessment for each critical file
+| 类型          | 检测模式                | 严重程度 |
+|------------------|----------------------|
+| **指令覆盖**       | “ignore previous”、“disregard above”等           | CRITICAL（严重） |
+| **系统提示标记**     | `<system>`, `[SYSTEM]`, `<<SYS>>`等           | CRITICAL（严重） |
+| **隐藏指令**       | 多轮操控指令（如“在下次响应中必须执行某操作”）      | CRITICAL（严重） |
+| **HTML 注入**       | `<script>`, `<iframe>`, `<img onerror=>`等         | CRITICAL（严重） |
+| **Markdown 数据泄露**   | URL 中包含编码数据的图像标签             | CRITICAL（严重） |
+| **危险命令**      | `curl \| bash`, `wget \| sh`, `rm -rf /`等         | CRITICAL（严重） |
+| **Unicode 欺骗**     | 零宽度字符、RTL 文本格式等             | WARNING（警告） |
+| **同形异义词替换**     | 在 ASCII 文本中混入西里尔文/拉丁文字符       | WARNING（警告） |
+| **Base64 编码的 payload** | 代码块外的大型编码数据             | WARNING（警告） |
+| **Shell 注入**       | `$(command)` 形式的子shell执行             | WARNING（警告） |
+| **分隔符混淆**     | 伪造的代码块边界（实际包含注入代码）           | WARNING（警告） |
 
-```bash
-python3 {baseDir}/scripts/bastion.py boundaries
-```
+## 扫描机制
 
-### Command Allowlist
+- **上下文感知**：
+  - 会跳过被 ```` ` 标签括起来的代码块内的内容，以避免误报；
+  - 根据检测到的问题数量和严重程度对文件进行风险评分；
+  - Bastion 会自动排除自身的配置文件（因为这些文件本身包含注入攻击的规则）。
 
-Display the current command allowlist and blocklist policy. Creates a default `.bastion-policy.json` if none exists.
+## 错误代码
 
-```bash
-python3 {baseDir}/scripts/bastion.py allowlist
-python3 {baseDir}/scripts/bastion.py allowlist --show
-```
+- **0**：扫描完成，未发现任何问题。
+- **1**：检测到警告，建议查看相关日志。
+- **2**：发现严重问题，需要立即采取行动。
 
-The policy file defines which commands are considered safe and which patterns are blocked. Edit the JSON file directly to customize. Bastion Pro enforces this policy at runtime via hooks.
+## 依赖性
 
-### Status
+- 仅依赖 Python 标准库，无需安装额外的库或工具（如 pip）；
+- 不涉及网络请求，所有操作都在本地完成。
 
-Quick summary of workspace injection defense posture: files scanned, findings by severity, boundary safety, and overall posture rating.
+## 跨平台兼容性
 
-```bash
-python3 {baseDir}/scripts/bastion.py status
-```
-
-## Workspace Auto-Detection
-
-If `--workspace` is omitted, the script tries:
-1. `OPENCLAW_WORKSPACE` environment variable
-2. Current directory (if `AGENTS.md` exists)
-3. `~/.openclaw/workspace` (default)
-
-## What Gets Detected
-
-| Category | Patterns | Severity |
-|----------|----------|----------|
-| **Instruction override** | "ignore previous", "disregard above", "you are now", "new system prompt", "forget your instructions", "override safety", "act as if no restrictions", "entering developer mode" | CRITICAL |
-| **System prompt markers** | `<system>`, `[SYSTEM]`, `<<SYS>>`, `<\|im_start\|>system`, `[INST]`, `### System:` | CRITICAL |
-| **Hidden instructions** | Multi-turn manipulation ("in your next response, you must"), stealth patterns ("do not tell the user") | CRITICAL |
-| **HTML injection** | `<script>`, `<iframe>`, `<img onerror=>`, hidden divs, `<svg onload=>` | CRITICAL |
-| **Markdown exfiltration** | Image tags with encoded data in URLs | CRITICAL |
-| **Dangerous commands** | `curl \| bash`, `wget \| sh`, `rm -rf /`, fork bombs | CRITICAL |
-| **Unicode tricks** | Zero-width characters, RTL overrides, invisible formatting | WARNING |
-| **Homoglyph substitution** | Cyrillic/Latin lookalikes mixed into ASCII text | WARNING |
-| **Base64 payloads** | Large encoded blobs outside code blocks | WARNING |
-| **Shell injection** | `$(command)` subshell execution outside code blocks | WARNING |
-| **Delimiter confusion** | Fake code block boundaries with injection content | WARNING |
-
-## Context-Aware Scanning
-
-- Patterns inside fenced code blocks (` ``` `) are skipped to avoid false positives
-- Per-file risk scoring based on finding count and severity
-- Self-exclusion: Bastion skips its own skill files (which describe injection patterns)
-
-## Exit Codes
-
-| Code | Meaning |
-|------|---------|
-| 0 | Clean, no issues |
-| 1 | Warnings detected (review recommended) |
-| 2 | Critical findings (action needed) |
-
-## No External Dependencies
-
-Python standard library only. No pip install. No network calls. Everything runs locally.
-
-## Cross-Platform
-
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+Bastion 可与 OpenClaw、Claude Code、Cursor 以及任何遵循 Agent Skills 规范的工具配合使用。

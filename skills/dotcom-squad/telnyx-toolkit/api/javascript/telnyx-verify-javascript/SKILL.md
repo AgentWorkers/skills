@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Verify - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,11 +31,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lookup phone number data
+## 查找电话号码信息
 
-Returns information about the provided phone number.
+返回有关提供的电话号码的信息。
 
 `GET /number_lookup/{phone_number}`
 
@@ -45,9 +45,9 @@ const numberLookup = await client.numberLookup.retrieve('+18665552368');
 console.log(numberLookup.data);
 ```
 
-## Trigger Call verification
+## 触发电话验证
 
-`POST /verifications/call` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/call` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```javascript
 const createVerificationResponse = await client.verifications.triggerCall({
@@ -58,9 +58,9 @@ const createVerificationResponse = await client.verifications.triggerCall({
 console.log(createVerificationResponse.data);
 ```
 
-## Trigger Flash call verification
+## 触发闪现式电话验证
 
-`POST /verifications/flashcall` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/flashcall` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```javascript
 const createVerificationResponse = await client.verifications.triggerFlashcall({
@@ -71,9 +71,9 @@ const createVerificationResponse = await client.verifications.triggerFlashcall({
 console.log(createVerificationResponse.data);
 ```
 
-## Trigger SMS verification
+## 触发短信验证
 
-`POST /verifications/sms` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/sms` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```javascript
 const createVerificationResponse = await client.verifications.triggerSMS({
@@ -84,7 +84,7 @@ const createVerificationResponse = await client.verifications.triggerSMS({
 console.log(createVerificationResponse.data);
 ```
 
-## Retrieve verification
+## 获取验证结果
 
 `GET /verifications/{verification_id}`
 
@@ -94,7 +94,7 @@ const verification = await client.verifications.retrieve('12ade33a-21c0-473b-b05
 console.log(verification.data);
 ```
 
-## Verify verification code by ID
+## 通过 ID 验证验证码
 
 `POST /verifications/{verification_id}/actions/verify`
 
@@ -106,7 +106,7 @@ const verifyVerificationCodeResponse = await client.verifications.actions.verify
 console.log(verifyVerificationCodeResponse.data);
 ```
 
-## List verifications by phone number
+## 按电话号码列出验证记录
 
 `GET /verifications/by_phone_number/{phone_number}`
 
@@ -116,9 +116,9 @@ const byPhoneNumbers = await client.verifications.byPhoneNumber.list('+130355512
 console.log(byPhoneNumbers.data);
 ```
 
-## Verify verification code by phone number
+## 通过电话号码验证验证码
 
-`POST /verifications/by_phone_number/{phone_number}/actions/verify` — Required: `code`, `verify_profile_id`
+`POST /verifications/by_phone_number/{phone_number}/actions/verify` — 必需参数：`code`、`verify_profile_id`
 
 ```javascript
 const verifyVerificationCodeResponse = await client.verifications.byPhoneNumber.actions.verify(
@@ -129,9 +129,9 @@ const verifyVerificationCodeResponse = await client.verifications.byPhoneNumber.
 console.log(verifyVerificationCodeResponse.data);
 ```
 
-## List all Verify profiles
+## 列出所有验证配置文件
 
-Gets a paginated list of Verify profiles.
+获取分页显示的验证配置文件列表。
 
 `GET /verify_profiles`
 
@@ -142,11 +142,11 @@ for await (const verifyProfile of client.verifyProfiles.list()) {
 }
 ```
 
-## Create a Verify profile
+## 创建验证配置文件
 
-Creates a new Verify profile to associate verifications with.
+创建一个新的验证配置文件，用于关联验证操作。
 
-`POST /verify_profiles` — Required: `name`
+`POST /verify_profiles` — 必需参数：`name`
 
 ```javascript
 const verifyProfileData = await client.verifyProfiles.create({ name: 'Test Profile' });
@@ -154,9 +154,9 @@ const verifyProfileData = await client.verifyProfiles.create({ name: 'Test Profi
 console.log(verifyProfileData.data);
 ```
 
-## Retrieve Verify profile
+## 获取验证配置文件信息
 
-Gets a single Verify profile.
+获取单个验证配置文件的信息。
 
 `GET /verify_profiles/{verify_profile_id}`
 
@@ -168,7 +168,7 @@ const verifyProfileData = await client.verifyProfiles.retrieve(
 console.log(verifyProfileData.data);
 ```
 
-## Update Verify profile
+## 更新验证配置文件
 
 `PATCH /verify_profiles/{verify_profile_id}`
 
@@ -180,7 +180,7 @@ const verifyProfileData = await client.verifyProfiles.update(
 console.log(verifyProfileData.data);
 ```
 
-## Delete Verify profile
+## 删除验证配置文件
 
 `DELETE /verify_profiles/{verify_profile_id}`
 
@@ -192,9 +192,9 @@ const verifyProfileData = await client.verifyProfiles.delete(
 console.log(verifyProfileData.data);
 ```
 
-## Retrieve Verify profile message templates
+## 获取验证配置文件的消息模板
 
-List all Verify profile message templates.
+列出所有验证配置文件的消息模板。
 
 `GET /verify_profiles/templates`
 
@@ -204,11 +204,11 @@ const response = await client.verifyProfiles.retrieveTemplates();
 console.log(response.data);
 ```
 
-## Create message template
+## 创建消息模板
 
-Create a new Verify profile message template.
+创建一个新的验证配置文件消息模板。
 
-`POST /verify_profiles/templates` — Required: `text`
+`POST /verify_profiles/templates` — 必需参数：`text`
 
 ```javascript
 const messageTemplate = await client.verifyProfiles.createTemplate({
@@ -218,11 +218,11 @@ const messageTemplate = await client.verifyProfiles.createTemplate({
 console.log(messageTemplate.data);
 ```
 
-## Update message template
+## 更新消息模板
 
-Update an existing Verify profile message template.
+更新现有的验证配置文件消息模板。
 
-`PATCH /verify_profiles/templates/{template_id}` — Required: `text`
+`PATCH /verify_profiles/templates/{template_id}` — 必需参数：`text`
 
 ```javascript
 const messageTemplate = await client.verifyProfiles.updateTemplate(

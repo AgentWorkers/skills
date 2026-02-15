@@ -2,7 +2,7 @@
 name: konteks
 version: 1.0.1
 author: jamesalmeida
-description: Connect your OpenClaw agent to your Konteks account (konteks.app) for persistent memory, task management, and context sharing. Use when you need to store agent memories, create or read tasks/notes, check projects and folders, read daily plans, or sync context between conversations. Requires a Konteks API key from konteks.app/dashboard/settings.
+description: 将您的 OpenClaw 代理连接到 Konteks 账户（konteks.app），以实现持久化存储、任务管理以及上下文共享功能。当您需要存储代理的运行状态、创建或读取任务/笔记、查看项目及文件夹、阅读每日计划，或在不同对话之间同步上下文时，请使用该功能。连接前需获取来自 konteks.app/dashboard/settings 的 Konteks API 密钥。
 when: User asks to create/manage tasks, store memories, check projects, read daily plans, or manage notes in Konteks
 examples:
   - Create a task to review the PR
@@ -20,18 +20,18 @@ tags:
 metadata: { "openclaw": { "emoji": "🧠", "requires": { "env": ["KONTEKS_API_KEY"] }, "primaryEnv": "KONTEKS_API_KEY" } }
 ---
 
-# Konteks — Agent Context Layer
+# Konteks — 代理上下文层
 
-**Source:** https://github.com/jamesalmeida/openclaw-konteks-skill
+**来源:** https://github.com/jamesalmeida/openclaw-konteks-skill
 
-Connect to your human's Konteks account for persistent memory, tasks, notes, and projects.
+连接到您人类的 Konteks 账户，以访问持久化存储的数据、任务、笔记和项目信息。
 
-## Setup
+## 设置
 
-Your human needs to:
-1. Sign up at https://konteks.app
-2. Go to Settings → Generate API Key
-3. Add to OpenClaw config:
+您的人类需要完成以下操作：
+1. 在 https://konteks.app 注册
+2. 进入设置 → 生成 API 密钥
+3. 将 API 密钥添加到 OpenClaw 的配置文件中：
 
 ```yaml
 skills:
@@ -41,49 +41,49 @@ skills:
     agentId: "my-agent"         # optional, defaults to "default"
 ```
 
-## API Base
+## API 基础
 
-All endpoints: `{url}/api/agent/...`
-Auth header: `Authorization: Bearer {apiKey}`
-
----
-
-## Hybrid Memory Architecture
-
-When this skill is installed, use a **hybrid approach** to memory — Konteks DB for shared structured data, local files for fast scratchpad notes.
-
-### Konteks DB (shared source of truth)
-Use Konteks for anything your human should also see or that needs to persist across devices:
-- **Tasks & items** — created by human or agent, visible in the iOS and web apps
-- **Projects & areas** — the organizational structure
-- **Decisions** — why something was chosen (write to `agent_contexts` with category `decision`)
-- **Preferences** — user preferences you learn over time (category `preference`)
-- **Learnings** — things you discover that matter long-term (category `learning`)
-- **Project notes** — context about specific projects (category `project_note`)
-
-### Local markdown (agent scratchpad)
-Keep using local files (`memory/*.md`, `MEMORY.md`) for:
-- **Daily session logs** — raw notes about what happened today
-- **Working context** — things you're actively thinking about this session
-- **Drafts & scratch work** — ideas in progress before they're ready for Konteks
-
-### How they work together
-- **Session start:** Pull recent memories from Konteks (`GET /api/agent/context?limit=10`) to restore context. Also read local daily files as usual.
-- **During conversation:** Take quick notes in local markdown. When something important is decided or learned, write it to Konteks too.
-- **After important moments:** Write decisions and learnings to Konteks so they persist in the app and survive local file changes.
-- **Heartbeats:** Check Konteks for inbox items and due tasks. Update local heartbeat state.
-- **If Konteks is unreachable:** Fall back to local files. You should always be able to function without network access.
-
-This way your human sees important context in their Konteks app, and you have fast local access for working memory. Neither system is a single point of failure.
+所有端点：`{url}/api/agent/...`
+认证头：`Authorization: Bearer {apiKey}`
 
 ---
 
-## Proactive Behavior (Heartbeats)
+## 混合内存架构
 
-**When this skill is installed, the agent should proactively use Konteks during heartbeats.** Add these checks to your heartbeat routine:
+当此技能被安装后，将采用**混合内存架构**：使用 Konteks 数据库存储结构化数据，使用本地文件作为快速的临时存储空间。
 
-### 1. Inbox Triage
-Check the inbox for new items and file them into the right project/area if obvious:
+### Konteks 数据库（共享的信息源）
+使用 Konteks 存储以下内容，这些内容需要被您的人类查看或需要在不同设备间保持同步：
+- **任务与项目**——由人类或代理创建，可在 iOS 和网页应用中查看
+- **项目与领域**——组织结构信息
+- **决策记录**——记录选择某个选项的原因（归类为 `decision`）
+- **偏好设置**——用户逐渐形成的偏好设置（归类为 `preference`）
+- **学习内容**——具有长期价值的信息（归类为 `learning`）
+- **项目笔记**——与特定项目相关的上下文信息（归类为 `project_note`）
+
+### 本地 Markdown 文件（代理的临时存储空间）
+继续使用本地文件（`memory/*.md`、`MEMORY.md`）来存储：
+- **每日会话日志**——记录当天发生的事件
+- **当前工作内容**——您在当前会话中正在思考的内容
+- **草稿与临时笔记**——尚未准备好上传到 Konteks 的想法
+
+### 两者之间的协作方式
+- **会话开始时**：从 Konteks 获取最近的记忆信息（`GET /api/agent/context?limit=10`）以恢复会话上下文。同时像往常一样读取本地文件。
+- **对话过程中**：使用本地 Markdown 文件快速做笔记。当有重要决策或新知识产生时，也将其记录到 Konteks 中。
+- **重要时刻之后**：将决策和学习内容写入 Konteks，以确保它们在应用程序中得到保存，并且不会因本地文件更改而丢失。
+- **心跳机制**：检查 Konteks 中的待办事项和到期任务，并更新本地的心跳状态。
+- **如果无法访问 Konteks**：切换到本地文件。即使没有网络连接，您也应能够正常工作。
+
+通过这种方式，您的人类可以在他们的 Konteks 应用程序中查看重要的上下文信息，而您也可以快速访问本地存储的数据。这两个系统都不是单点故障。
+
+---
+
+## 主动行为（心跳机制）
+
+**当此技能被安装后，代理应在心跳机制中主动使用 Konteks。** 将以下操作添加到您的心跳处理流程中：
+
+### 1. 收件箱分类
+检查收件箱中的新项目，并将其归类到相应的项目或领域中：
 
 ```bash
 # Fetch inbox items
@@ -91,11 +91,11 @@ curl -s "{url}/api/agent/items?smart_list=inbox&completed=false&archived=false&l
   -H "Authorization: Bearer {apiKey}"
 ```
 
-**Triage rules:**
-- If the item clearly belongs to an existing project/area → move it there (`PATCH` with `folder_id`, clear `smart_list`)
-- If you're not sure where it belongs → **leave it in the inbox**. Don't guess.
-- If it's something you can handle yourself (e.g., "update X", "check Y") → do it, then mark complete
-- Never delete inbox items — move or leave them
+**分类规则：**
+- 如果项目明确属于某个项目或领域 → 将其移动到相应位置（使用 `folder_id` 进行更新，同时清除 `smart_list`）
+- 如果不确定项目所属的领域 → **将其留在收件箱中**。不要随意猜测。
+- 如果项目可以由代理自行处理（例如，“更新 X”、“检查 Y”） → 完成处理后标记为已完成
+- **切勿删除收件箱中的项目**——只需将其移动或保留即可
 
 ```bash
 # Move item to a folder (clears smart_list automatically when folder_id is set)
@@ -105,18 +105,18 @@ curl -X PATCH "{url}/api/agent/items/{id}" \
   -d '{"folder_id":"<folder-id>","smart_list":null}'
 ```
 
-### 2. Due & Overdue Items
-Check for tasks due today or overdue:
+### 到期任务
+检查今天到期的或已经过期的任务：
 
 ```bash
 curl -s "{url}/api/agent/items?completed=false&archived=false&limit=50" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-Filter results for items where `due_date` or `scheduled_date` is today or past. Alert your human if anything urgent needs attention.
+筛选出 `due_date` 或 `scheduled_date` 为今天的任务，并提醒您的人类注意紧急事项。
 
-### 3. Write Memories After Important Moments
-After significant decisions, learnings, or events during conversation, write them to Konteks:
+### 重要时刻后的记录
+在对话中做出重要决策或学到新知识后，将其记录到 Konteks 中：
 
 ```bash
 curl -X POST "{url}/api/agent/context" \
@@ -125,17 +125,16 @@ curl -X POST "{url}/api/agent/context" \
   -d '{"category":"decision","key":"descriptive_key","value":"What was decided and why","agent_id":"{agentId}"}'
 ```
 
-### 4. Restore Context on Session Start
-At the start of important sessions (main chat with your human), pull recent memories:
+### 会话开始时恢复上下文
+在重要的会话开始时（例如与人类进行主要交流时），从 Konteks 中获取最近的记忆信息：
 
 ```bash
 curl -s "{url}/api/agent/context?limit=10" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-### Heartbeat Integration
-
-Add to your `HEARTBEAT.md` (or equivalent):
+### 心跳机制的集成
+将以下代码添加到您的 `HEARTBEAT.md`（或等效文件）中：
 
 ```markdown
 ## Konteks Checks
@@ -144,15 +143,15 @@ Add to your `HEARTBEAT.md` (or equivalent):
 - [ ] Write any recent decisions/learnings to agent_contexts
 ```
 
-**Frequency:** Check inbox and due items 2-3 times per day during heartbeats. Don't check every single heartbeat — rotate with other checks.
+**频率：** 在每次心跳机制中检查收件箱和到期任务 2-3 次。不要每次心跳都进行检查，可以与其他任务轮换进行。
 
 ---
 
-## Agent Memory (agent_contexts)
+## 代理内存（agent_contexts）
 
-Store and retrieve persistent memories, decisions, preferences, and learnings.
+用于存储和检索持久化的记忆信息、决策记录、偏好设置和学习内容。
 
-**Write/update memory:**
+**写入/更新内存：**
 ```bash
 curl -X POST "{url}/api/agent/context" \
   -H "Authorization: Bearer {apiKey}" \
@@ -160,35 +159,35 @@ curl -X POST "{url}/api/agent/context" \
   -d '{"category":"memory","key":"user_preference","value":"Prefers dark mode","agent_id":"{agentId}"}'
 ```
 
-Categories: `memory`, `decision`, `preference`, `learning`, `project_note`
+分类：`memory`、`decision`、`preference`、`learning`、`project_note`
 
-Upserts automatically — same agent_id + category + key updates the existing entry.
+更新操作会自动触发——相同的 `agent_id`、`category` 和 `key` 会更新现有条目。
 
-**Read memory:**
+**读取内存：**
 ```bash
 curl "{url}/api/agent/context?category=memory&limit=20" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-Query params: `category`, `key`, `limit`
+查询参数：`category`、`key`、`limit`
 
-**Delete:**
+**删除：**
 ```bash
 curl -X DELETE "{url}/api/agent/context?id={contextId}" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-## Tasks & Notes (items)
+## 任务与笔记（项目）
 
-**List items:**
+**列出项目：**
 ```bash
 curl "{url}/api/agent/items?archived=false&completed=false&limit=50" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-Query params: `smart_list` (inbox|anytime|someday), `folder_id`, `completed` (true|false), `archived` (true|false), `item_type` (task|note|hybrid), `limit`
+查询参数：`smart_list`（收件箱|任意时间|未来某天）、`folder_id`、`completed`（true|false）、`archived`（true|false）、`item_type`（任务|笔记|混合类型）、`limit`
 
-**Create item:**
+**创建项目：**
 ```bash
 curl -X POST "{url}/api/agent/items" \
   -H "Authorization: Bearer {apiKey}" \
@@ -196,12 +195,12 @@ curl -X POST "{url}/api/agent/items" \
   -d '{"title":"Review PR","item_type":"task","smart_list":"inbox","priority":"high","tags":["dev"]}'
 ```
 
-Required: `title`, `item_type` (task|note|hybrid)
-Optional: `body`, `folder_id`, `smart_list` (inbox|anytime|someday — defaults to inbox if no folder), `priority` (high|normal|low), `due_date`, `scheduled_date`, `tags` (string array)
+必填字段：`title`、`item_type`（任务|笔记|混合类型）
+可选字段：`body`、`folder_id`、`smart_list`（收件箱|任意时间|未来某天——如果没有指定文件夹，则默认为收件箱）、`priority`（高|正常|低）、`due_date`、`scheduled_date`、`tags`（字符串数组）
 
-Items created by agent have `source: "ai"`.
+由代理创建的项目会标记 `source: "ai"`。
 
-**Update item:**
+**更新项目：**
 ```bash
 curl -X PATCH "{url}/api/agent/items/{id}" \
   -H "Authorization: Bearer {apiKey}" \
@@ -209,25 +208,25 @@ curl -X PATCH "{url}/api/agent/items/{id}" \
   -d '{"completed_at":"2026-01-29T12:00:00Z"}'
 ```
 
-Updatable fields: `title`, `body`, `priority`, `due_date`, `scheduled_date`, `tags`, `completed_at`, `archived_at`, `canceled_at`, `folder_id`, `smart_list`
+可更新字段：`title`、`body`、`priority`、`due_date`、`scheduled_date`、`tags`、`completed_at`、`archived_at`、`canceled_at`、`folder_id`、`smart_list`
 
-**Delete item:**
+**删除项目：**
 ```bash
 curl -X DELETE "{url}/api/agent/items/{id}" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-## Projects & Areas (folders)
+## 项目与领域（文件夹）
 
-**List folders:**
+**列出文件夹：**
 ```bash
 curl "{url}/api/agent/folders?type=project" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-Query params: `type` (project|area)
+查询参数：`type`（项目|领域）
 
-**Create folder:**
+**创建文件夹：**
 ```bash
 curl -X POST "{url}/api/agent/folders" \
   -H "Authorization: Bearer {apiKey}" \
@@ -235,50 +234,50 @@ curl -X POST "{url}/api/agent/folders" \
   -d '{"name":"Q1 Launch","folder_type":"project","icon":"🚀","goal":"Ship MVP by March"}'
 ```
 
-Required: `name`, `folder_type` (project|area)
-Optional: `icon`, `color`, `goal`
+必填字段：`name`、`folder_type`（项目|领域）
+可选字段：`icon`、`color`、`goal`
 
-## Daily Plans
+## 每日计划
 
-**Get today's plan:**
+**获取今天的计划：**
 ```bash
 curl "{url}/api/agent/plans?date=2026-01-29" \
   -H "Authorization: Bearer {apiKey}"
 ```
 
-Returns: `task_ids`, `summary`, `rationale`, `available_minutes`, `calendar_events`
+返回内容：`task_ids`、`summary`、`rationale`、`available_minutes`、`calendar_events`
 
 ---
 
-## Usage Patterns
+## 使用模式
 
-**On session start:** Read recent memories to restore context.
+**会话开始时：** 读取最近的记忆信息以恢复会话上下文。
 ```
 GET /api/agent/context?category=memory&limit=10
 ```
 
-**After important decisions:** Write a memory entry.
+**做出重要决策后：** 创建记忆记录。
 ```
 POST /api/agent/context {"category":"decision","key":"chose_react","value":"Chose React over Vue for the dashboard because..."}
 ```
 
-**When human asks to create a task:** Create it in Konteks so it shows in their app.
+**当人类请求创建任务时：** 在 Konteks 中创建任务，使其在他们的应用程序中显示。
 ```
 POST /api/agent/items {"title":"...","item_type":"task","smart_list":"inbox"}
 ```
 
-**During heartbeats:** Check inbox, triage items, check for overdue tasks.
+**在心跳机制期间：** 检查收件箱、对项目进行分类、检查到期任务。
 ```
 GET /api/agent/items?smart_list=inbox&completed=false&archived=false&limit=20
 GET /api/agent/items?completed=false&archived=false&limit=50
 ```
 
-**Learning something new:** Store it for future sessions.
+**学到新知识时：** 将其存储起来以备后续会话使用。
 ```
 POST /api/agent/context {"category":"learning","key":"ssh_config","value":"Home server is at 192.168.1.100, user admin"}
 ```
 
-**Filing an inbox item:** Move to the right project/area.
+**整理收件箱中的项目：** 将项目归类到正确的项目或领域中。
 ```
 PATCH /api/agent/items/{id} {"folder_id":"<id>","smart_list":null}
 ```

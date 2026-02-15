@@ -1,6 +1,6 @@
 ---
 name: clawback
-description: Mirror congressional stock trades with automated broker execution and risk management
+description: 通过自动化经纪商执行系统来镜像国会的股票交易行为，并实现风险管理。
 version: 1.0.0
 author: dayne
 metadata:
@@ -21,30 +21,30 @@ metadata:
 
 # ClawBack
 
-**Mirror congressional stock trades with automated broker execution**
+**通过自动化经纪商执行功能，追踪国会议员的股票交易**
 
-ClawBack tracks stock trades disclosed by members of Congress (House and Senate) and executes scaled positions in your brokerage account. Built on the premise that congressional leaders consistently outperform the market due to informational advantages.
+ClawBack 跟踪国会议员（众议院和参议院）披露的股票交易，并在您的经纪账户中执行相应的交易。该工具基于这样一个前提：由于信息优势，国会议员通常能够获得优于市场的投资回报。
 
-## Features
+## 主要功能
 
-- **Real-time disclosure tracking** from official House Clerk and Senate eFD sources
-- **Automated trade execution** via broker API (E*TRADE adapter included)
-- **Smart position sizing** - scales trades to your account size
-- **Trailing stop-losses** - lock in profits, limit losses
-- **Risk management** - drawdown limits, consecutive loss protection
-- **Telegram notifications** - get alerts for new trades and stop-losses
-- **Backtesting engine** - test strategies on historical data
+- **实时数据追踪**：从众议院书记员和参议院的官方电子文件（eFD）来源获取数据
+- **自动化交易执行**：通过经纪商的 API 进行交易（包含 E*TRADE 适配器）
+- **智能仓位管理**：根据您的账户规模自动调整交易量
+- **动态止损机制**：锁定利润、限制损失
+- **风险管理**：设置止损限额、防止连续亏损
+- **Telegram 通知**：接收新交易和止损事件的提醒
+- **回测引擎**：使用历史数据测试交易策略
 
-## Performance (Backtest Results)
+## 性能（回测结果）
 
-| Strategy | Win Rate | Return | Sharpe |
-|----------|----------|--------|--------|
-| 3-day delay, 30-day hold | 42.9% | +6.2% | 0.39 |
-| 9-day delay, 90-day hold | 57.1% | +4.7% | 0.22 |
+| 交易策略 | 胜率 | 收益率 | 夏普比率 |
+|---------|--------|---------|---------|
+| 延迟 3 天、持有 30 天 | 42.9% | +6.2% | 0.39 |
+| 延迟 9 天、持有 90 天 | 57.1% | +4.7% | 0.22 |
 
-Congressional leaders have outperformed the S&P 500 by 47% annually according to NBER research.
+根据 NBER 的研究，国会议员的年均投资回报比标准普尔 500 指数高出 47%。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Clone and setup
@@ -64,9 +64,9 @@ python3 src/main.py interactive
 ./scripts/setup_cron.sh
 ```
 
-## Configuration
+## 配置
 
-ClawBack reads secrets from environment variables or `config/secrets.json`:
+ClawBack 从环境变量或 `config/secrets.json` 文件中读取配置信息：
 
 ```json
 {
@@ -78,17 +78,17 @@ ClawBack reads secrets from environment variables or `config/secrets.json`:
 }
 ```
 
-### Supported Brokers
+### 支持的经纪商
 
-ClawBack uses an adapter pattern for broker integration. Each broker implements a common interface defined in `broker_adapter.py`.
+ClawBack 采用适配器模式与各种经纪商集成。每个经纪商都实现了 `broker_adapter.py` 中定义的通用接口：
 
-| Broker | Adapter | Status |
-|--------|---------|--------|
-| E*TRADE | `etrade_adapter.py` | Supported |
-| Schwab | `schwab_adapter.py` | Planned |
-| Fidelity | `fidelity_adapter.py` | Planned |
+| 经纪商 | 适配器 | 支持状态 |
+|--------|---------|---------|
+| E*TRADE | `etrade_adapter.py` | 已支持 |
+| Schwab | `schwab_adapter.py` | 计划中 |
+| Fidelity | `fidelity_adapter.py` | 计划中 |
 
-To specify which broker to use, set `broker.adapter` in your config:
+要指定使用的经纪商，请在配置文件中设置 `broker.adapter`：
 
 ```json
 {
@@ -102,20 +102,20 @@ To specify which broker to use, set `broker.adapter` in your config:
 }
 ```
 
-## Data Sources
+## 数据来源
 
-All data is scraped directly from official government sources:
+所有数据均直接从官方政府渠道获取：
 
-| Source | Data | Method |
-|--------|------|--------|
-| House Clerk | House PTR filings | PDF parsing |
-| Senate eFD | Senate PTR filings | Selenium scraping |
+| 数据来源 | 数据类型 | 获取方式 |
+|---------|---------|---------|
+| 众议院书记员 | 众议院股票交易记录（PTR 文件） | PDF 文件解析 |
+| 参议院电子文件（eFD） | 参议院股票交易记录（PTR 文件） | Selenium 爬虫技术 |
 
-No third-party APIs required for congressional data.
+获取国会议员交易数据无需使用第三方 API。
 
-## Strategy Settings
+## 交易策略设置
 
-Edit `config/config.json` to customize:
+请编辑 `config/config.json` 文件以自定义交易策略：
 
 ```json
 {
@@ -134,7 +134,7 @@ Edit `config/config.json` to customize:
 }
 ```
 
-## Commands
+## 命令行操作
 
 ```bash
 # Interactive mode
@@ -150,7 +150,7 @@ python3 src/main.py schedule 24
 python3 src/backtester.py
 ```
 
-## Cron Automation
+## 定时任务自动化
 
 ```bash
 # Install cron jobs
@@ -162,7 +162,7 @@ python3 src/backtester.py
 ./scripts/run_bot.sh full     # Both
 ```
 
-## Architecture
+## 系统架构
 
 ```
 clawback/
@@ -184,14 +184,14 @@ clawback/
     └── trading.db           # SQLite database
 ```
 
-## Risk Disclaimer
+## 风险声明
 
-This software is for educational purposes only. Trading stocks involves substantial risk of loss. Past performance of congressional trades does not guarantee future results. The authors are not financial advisors. Use at your own risk.
+本软件仅用于教育目的。股票交易存在较高的风险，可能导致损失。过去国会议员的交易表现并不能保证未来的收益。作者并非财务顾问，使用本软件需自行承担风险。
 
-## License
+## 许可证
 
-MIT License - See LICENSE file
+采用 MIT 许可证——详见 LICENSE 文件
 
 ---
 
-*Built with ClawBack for the OpenClaw community*
+*专为 OpenClaw 社区开发*

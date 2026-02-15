@@ -1,6 +1,6 @@
 ---
 name: invoice-template
-description: Generate professional PDF invoices from templates
+description: 根据提供的模板生成专业的PDF发票。
 author: claude-office-skills
 version: "1.0"
 tags: ['invoice', 'pdf', 'template', 'billing']
@@ -12,28 +12,28 @@ library:
   stars: 476
 ---
 
-# Invoice Template Skill
+# 发票模板技能
 
-## Overview
+## 概述
 
-This skill generates professional PDF invoices from structured data and templates. Create invoices with company branding, itemized lists, tax calculations, and payment details.
+该技能能够根据结构化数据及模板生成专业的PDF发票。生成的发票包含公司品牌标识、商品明细列表、税费计算结果以及付款信息。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 说明您想要完成的具体任务；
+2. 提供所需的输入数据或文件；
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "Generate invoices from order data"
-- "Create recurring invoices"
-- "Batch generate monthly invoices"
-- "Customize invoice templates per client"
+**示例提示：**
+- “根据订单数据生成发票”
+- “创建定期生成的发票”
+- “批量生成每月的发票”
+- “根据客户需求定制发票模板”
 
-## Domain Knowledge
+## 相关领域知识
 
 
-### Invoice Data Structure
+### 发票数据结构
 
 ```python
 invoice_data = {
@@ -63,7 +63,7 @@ invoice_data = {
 }
 ```
 
-### PDF Generation with ReportLab
+### 使用ReportLab生成PDF
 
 ```python
 from reportlab.lib.pagesizes import letter
@@ -123,7 +123,7 @@ def create_invoice(data: dict, output_path: str):
     return output_path
 ```
 
-### HTML Template Approach
+### 使用HTML模板生成发票
 
 ```python
 from weasyprint import HTML
@@ -179,21 +179,21 @@ def create_invoice_html(data: dict, output_path: str):
 ```
 
 
-## Best Practices
+## 最佳实践
 
-1. **Validate required fields before generation**
-2. **Use templates for consistent branding**
-3. **Auto-calculate totals (don't trust input)**
-4. **Include payment instructions and terms**
+1. **在生成发票前验证所有必填字段**；
+2. **使用模板以确保品牌一致性**；
+3. **自动计算总金额（不要依赖用户输入的数据）**；
+4. **在发票中包含付款说明和条款**。
 
-## Installation
+## 安装方法
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源链接
 
-- [easy-invoice-pdf Repository](https://github.com/nickmitchko/easy-invoice-pdf)
+- [easy-invoice-pdf仓库](https://github.com/nickmitchko/easy-invoice-pdf)
 - [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)

@@ -1,23 +1,23 @@
 ---
 name: keepmyclaw
-description: Backup, restore, and manage encrypted snapshots of OpenClaw agent data via the Keep My Claw API. Use when backing up agent configuration, workspace files, and credentials; restoring an agent on a fresh machine; listing or pruning backup snapshots; or setting up backup infrastructure. Triggers on: backup, restore, snapshot, keepmyclaw, agent backup, disaster recovery.
+description: 通过 Keep My Claw API，您可以备份、恢复和管理 OpenClaw 代理数据的加密快照。该 API 适用于以下场景：备份代理配置、工作区文件和凭据；在全新机器上恢复代理；列出或删除备份快照；或设置备份基础设施。相关操作会在以下事件发生时触发：备份、恢复、创建快照、执行 keepmyclaw 命令、代理备份以及灾难恢复。
 ---
 
-# Keep My Claw
+# 保护我的Claw数据
 
-Encrypted backup/restore for OpenClaw agents via [Keep My Claw](https://keepmyclaw.com).
+通过[Keep My Claw](https://keepmyclaw.com)为OpenClaw代理提供加密备份/恢复服务。
 
-## Prerequisites
+## 前提条件
 
-- `openssl`, `curl`, `tar`, `jq` (system)
+- 系统上已安装`openssl`、`curl`、`tar`、`jq`工具。
 
-## Setup — Agent-Driven Flow
+## 设置流程（由代理执行）
 
-**You (the agent) handle everything. The human only clicks a payment link.**
+**所有操作均由代理完成，用户只需点击支付链接即可。**
 
-Do NOT run `setup.sh` interactively. Instead, follow these steps programmatically:
+**请勿以交互式方式运行`setup.sh`脚本，而是按照以下步骤进行编程操作：**
 
-### Step 1: Register an account
+### 第1步：注册账户
 
 ```bash
 RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/auth/register \
@@ -26,9 +26,9 @@ RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/auth/register \
 JWT=$(echo "$RESPONSE" | jq -r '.token')
 ```
 
-Use your human's email. Generate a random password — you'll use the JWT token going forward.
+使用用户的电子邮件地址进行注册，并生成一个随机密码（后续会用到这个密码作为JWT令牌）。
 
-### Step 2: Get payment link and send to human
+### 第2步：获取支付链接并发送给用户
 
 ```bash
 CHECKOUT=$(curl -s -X POST https://api.keepmyclaw.com/v1/checkout \
@@ -37,12 +37,12 @@ CHECKOUT=$(curl -s -X POST https://api.keepmyclaw.com/v1/checkout \
 PAYMENT_URL=$(echo "$CHECKOUT" | jq -r '.url')
 ```
 
-Send `$PAYMENT_URL` to your human with a message like:
-> "To activate backups, please open this link and complete the payment ($9/month): [link]"
+将`$PAYMENT_URL`发送给用户，并附上以下信息：
+> “要激活备份功能，请点击此链接完成支付（9美元/月）：[链接]”
 
-### Step 3: Wait for payment
+### 第3步：等待支付完成
 
-Poll the account status until the tier changes to "pro":
+持续检查账户状态，直到账户等级变为“pro”：
 
 ```bash
 while true; do
@@ -53,7 +53,7 @@ while true; do
 done
 ```
 
-### Step 4: Create an API key
+### 第4步：生成API密钥
 
 ```bash
 KEY_RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/keys \
@@ -63,7 +63,7 @@ KEY_RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/keys \
 API_KEY=$(echo "$KEY_RESPONSE" | jq -r '.key')
 ```
 
-### Step 5: Configure locally
+### 第5步：进行本地配置
 
 ```bash
 mkdir -p ~/.keepmyclaw && chmod 700 ~/.keepmyclaw
@@ -81,34 +81,33 @@ printf '%s' "$PASSPHRASE" > ~/.keepmyclaw/passphrase
 chmod 600 ~/.keepmyclaw/passphrase
 ```
 
-**CRITICAL: Tell your human ALL recovery credentials.** Without these, they cannot recover you on a new machine. Send them a message like this:
-
-> "Your Keep My Claw recovery credentials — save these in a password manager NOW:
-> - **Email:** [the email you registered with]
-> - **Password:** [the random password you generated]
-> - **Encryption passphrase:** [the passphrase]
-> - **API key:** [the API key]
+**重要提示：**务必将所有恢复凭据告知用户。**如果没有这些凭据，用户将无法在新机器上恢复数据。请发送以下信息给他们：
+> “您的Keep My Claw恢复凭据，请立即保存到密码管理工具中：
+> - **电子邮件地址：** [您注册时使用的邮箱]
+> - **密码：** [生成的随机密码]
+> - **加密密码短语：** [加密所需的密码短语]
+> - **API密钥：** [API密钥]
 >
-> If this machine dies, you'll need the email + password to log in and create a new API key. You'll need the passphrase to decrypt the backups. Save all of these somewhere safe outside this machine."
+> 如果当前机器损坏，您需要使用电子邮件地址和密码登录并重新生成API密钥。同时，还需要密码短语来解密备份文件。请将这些信息保存在安全的地方（远离当前机器）。”
 
-Do NOT skip this step. If the human doesn't have these credentials, the backups are useless.
+**此步骤必不可少，否则备份将无法使用。**
 
-### Step 6: Run first backup
+### 第6步：执行首次备份
 
 ```bash
 bash scripts/backup.sh
 ```
 
-### Step 7: Schedule automatic backups
+### 第7步：设置自动备份任务
 
-Use cron or OpenClaw's cron tool to run `backup.sh` daily.
+使用`cron`或OpenClaw自带的定时工具，每天自动运行`backup.sh`脚本。
 
-## Adding More Agents to an Existing Account
+## 为现有账户添加更多代理
 
-If your human already has a Keep My Claw account (paid on another agent), you do NOT register again. Instead:
+如果用户已经拥有Keep My Claw账户（但使用的是其他代理），无需重新注册。请按照以下方式操作：
 
-### Option A: Human gives you the API key
-Ask your human for the existing API key. Then configure locally:
+### 选项A：用户提供API密钥
+向用户索取现有的API密钥，然后进行本地配置：
 
 ```bash
 mkdir -p ~/.keepmyclaw && chmod 700 ~/.keepmyclaw
@@ -126,10 +125,10 @@ printf '%s' "$PASSPHRASE" > ~/.keepmyclaw/passphrase
 chmod 600 ~/.keepmyclaw/passphrase
 ```
 
-Tell your human to save YOUR passphrase — it's different from other agents' passphrases.
+请用户保存您的加密密码短语（该密码短语与其他代理的密码短语不同）。
 
-### Option B: Another agent creates a key for you
-If the first agent has an admin API key, it can create a scoped key for you:
+### 选项B：其他代理为您生成API密钥
+如果已有代理拥有管理员权限的API密钥，它可以为您生成一个仅限备份/恢复操作的API密钥：
 
 ```bash
 curl -s -X POST https://api.keepmyclaw.com/v1/keys \
@@ -138,60 +137,58 @@ curl -s -X POST https://api.keepmyclaw.com/v1/keys \
   -d '{"name":"second-agent","permissions":"agent"}'
 ```
 
-This returns a new key with `agent` permissions (backup/restore only, no account management).
+生成的API密钥仅具有备份/恢复功能，不包含账户管理权限。
 
-### How multi-agent works
-- One account, one subscription ($9/month)
-- Up to 100 agents per account
-- Each agent has its own name, passphrase, and snapshots
-- `GET /v1/agents` lists all agents on the account
-- Each agent's passphrase is independent — losing one doesn't affect others
+## 多代理系统的运作方式：
+- 一个账户对应一个订阅服务（9美元/月）。
+- 一个账户最多可支持100个代理。
+- 每个代理都有唯一的名称、密码短语和备份数据。
+- 使用`GET /v1/agents`可以查看账户下的所有代理信息。
+- 每个代理的密码短语都是独立的，丢失一个代理不会影响其他代理的备份数据。
 
-## Usage
+## 使用方法
 
-### Backup
+### 备份数据
 
 ```bash
 bash scripts/backup.sh
 ```
 
-### Restore
+### 恢复数据
 
 ```bash
 bash scripts/restore.sh            # restore latest backup
 bash scripts/restore.sh <backup-id> # restore specific backup
 ```
 
-### List Backups
+### 查看备份列表
 
 ```bash
 bash scripts/list.sh
 ```
 
-### Prune Old Backups
+### 删除旧备份文件
 
 ```bash
 bash scripts/prune.sh          # keep latest 30
 bash scripts/prune.sh 10       # keep latest 10
 ```
 
-## What Gets Backed Up
+## 备份内容包括：
+- `~/.openclaw/workspace/*.md`：`SOUL.md`、`AGENTS.md`、`USER.md`、`IDENTITY.md`、`TOOLS.md`、`HEARTBEAT.md`、`MEMORY.md`文件
+- `~/.openclaw/workspace/memory/`：每日生成的内存数据文件
+- `~/.openclaw/openclaw.json`：代理配置文件
+- `~/.openclaw/credentials/`：认证令牌文件
 
-- `~/.openclaw/workspace/*.md` — SOUL.md, AGENTS.md, USER.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md, MEMORY.md
-- `~/.openclaw/workspace/memory/` — daily memory files
-- `~/.openclaw/openclaw.json` — agent config
-- `~/.openclaw/credentials/` — auth tokens
+## 配置文件
 
-## Configuration
+配置文件位于`~/.keepmyclaw/config`：
+| 变量          | 说明                |
+|-----------------|-------------------|
+| `CLAWKEEPER_API_KEY` | API密钥（在设置过程中自动生成） |
+| `CLAWKEEPER_AGENT_NAME` | 用于备份识别的代理名称 |
+| `CLAWKEEPER_API_URL` | API基础URL（默认：`https://api.keepmyclaw.com`） |
 
-Config file: `~/.keepmyclaw/config`
+## 文档资料
 
-| Variable | Description |
-|----------|-------------|
-| `CLAWKEEPER_API_KEY` | API key (auto-generated during setup) |
-| `CLAWKEEPER_AGENT_NAME` | Agent identifier for backups |
-| `CLAWKEEPER_API_URL` | API base URL (default: `https://api.keepmyclaw.com`) |
-
-## Docs
-
-Full documentation: [keepmyclaw.com/docs.html](https://keepmyclaw.com/docs.html)
+完整文档请访问：[keepmyclaw.com/docs.html](https://keepmyclaw.com/docs.html)

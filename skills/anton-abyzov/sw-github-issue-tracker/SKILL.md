@@ -1,28 +1,28 @@
 ---
 name: github-issue-tracker
-description: Task-level GitHub issue tracking for fine-grained progress visibility via comments, checklists, and labels. Use when tracking detailed task progress in GitHub, managing team collaboration on specific tasks, or tracking blocking issues. Enables per-task updates and discussions.
+description: 基于任务的GitHub问题跟踪系统，通过评论、检查清单和标签实现详细的进度可视化。适用于在GitHub上跟踪任务进度、管理团队对特定任务的协作，或处理阻碍项目进展的问题。该系统支持针对每个任务进行更新和讨论。
 ---
 
-# GitHub Issue Tracker - Task-Level Progress Tracking
+# GitHub 问题跟踪器 - 任务级进度跟踪
 
-**Purpose**: Provide fine-grained task-level visibility in GitHub issues for detailed progress tracking and team collaboration.
+**用途**：在 GitHub 问题中提供细粒度的任务级可见性，以便进行详细的进度跟踪和团队协作。
 
-**When to Use**:
-- Detailed progress tracking (per-task updates)
-- Team collaboration on specific tasks
-- Task assignments via GitHub
-- Blocking issue tracking
-- Task-level comments and discussions
+**使用场景**：
+- 详细进度跟踪（每个任务的更新）
+- 团队对特定任务的协作
+- 通过 GitHub 分配任务
+- 阻塞问题跟踪
+- 任务级的评论和讨论
 
-**Integration**: Works with `github-sync` skill and `/sw:github:*` commands
+**集成**：与 `github-sync` 插件以及 `/sw:github:*` 命令兼容
 
 ---
 
-## How Task Tracking Works
+## 任务跟踪的工作原理
 
-### 1. Task Checklist in GitHub Issue
+### 1. GitHub 问题中的任务清单
 
-When creating an increment issue, automatically add task checklist:
+在创建新问题时，会自动添加任务清单：
 
 ```markdown
 ## Tasks
@@ -42,15 +42,15 @@ When creating an increment issue, automatically add task checklist:
 ...
 ```
 
-**Features**:
-- Clickable checkboxes (GitHub native)
-- Time estimates in parentheses
-- Assignees via @mentions
-- Organized by phase/week
+**特性**：
+- 可点击的复选框（GitHub 内置）
+- 时间估算（以括号形式显示）
+- 通过 @提及分配任务
+- 按阶段/周进行组织
 
-### 2. Per-Task Comments
+### 2. 每个任务的评论
 
-After each task completion, post detailed comment:
+任务完成后，发布详细的评论：
 
 ```markdown
 ### ✅ Task Completed: T-007
@@ -83,34 +83,34 @@ After each task completion, post detailed comment:
 🤖 Posted by SpecWeave at 2025-10-30 14:30:00
 ```
 
-**Benefits**:
-- Detailed change log per task
-- Time tracking (estimated vs actual)
-- File change summary
-- Test status
-- Context for code reviewers
+**好处**：
+- 每个任务的详细变更记录
+- 时间跟踪（估算时间与实际时间对比）
+- 文件变更摘要
+- 测试状态
+- 为代码审阅者提供上下文信息
 
-### 3. Task Assignments
+### 3. 任务分配
 
-Assign tasks to team members via GitHub:
+通过 GitHub 将任务分配给团队成员：
 
-**Method 1: Task checklist with @mentions**
+**方法 1：使用 @提及分配任务**
 ```markdown
 - [ ] T-015: Create test suite (8h) @qa-engineer
 ```
 
-**Method 2: Issue comments**
+**方法 2：在问题中添加评论**
 ```
 @developer1 Can you take T-003 and T-004 this week?
 ```
 
-**Method 3: GitHub Projects**
-- Drag tasks to columns (To Do, In Progress, Done)
-- Auto-sync with increment status
+**方法 3：使用 GitHub 项目**
+- 将任务拖放到不同的列中（待办、进行中、已完成）
+- 任务状态会自动同步
 
-### 4. Blocking Issues
+### 4. 阻塞问题
 
-Track dependencies and blockers:
+跟踪依赖关系和阻塞因素：
 
 ```markdown
 ### 🚨 Blocked: T-020
@@ -129,9 +129,9 @@ Track dependencies and blockers:
 
 ---
 
-## Configuration
+## 配置
 
-Enable task-level tracking in `.specweave/config.yaml`:
+在 `.specweave/config.yaml` 文件中启用任务级跟踪：
 
 ```yaml
 plugins:
@@ -166,15 +166,15 @@ plugins:
 
 ---
 
-## Commands
+## 命令
 
-### Check Task Status
+### 检查任务状态
 
 ```bash
 /sw:github:status 0004
 ```
 
-Output:
+输出：
 ```
 GitHub Issue: #130
 Status: Open (In Progress)
@@ -193,43 +193,43 @@ Week 1: Foundation
 ⏸️ T-009: Implement Copilot compiler (Pending)
 ```
 
-### Sync Task Checklist
+### 同步任务清单
 
 ```bash
 /sw:github:sync 0004 --tasks
 ```
 
-Updates GitHub issue checklist to match current increment progress.
+将 GitHub 问题中的任务清单更新为当前任务的进度。
 
-### Comment on Task
+### 在任务上添加评论
 
 ```bash
 /sw:github:comment 0004 T-008 "Cursor adapter completed, moving to testing phase"
 ```
 
-Posts custom comment to GitHub issue for specific task.
+在 GitHub 问题中为特定任务发布自定义评论。
 
 ---
 
-## GitHub Labels for Tasks
+## 任务的 GitHub 标签
 
-Automatically apply labels based on task status:
+根据任务状态自动应用标签：
 
-| Label | When Applied | Purpose |
+| 标签 | 应用时机 | 用途 |
 |-------|--------------|---------|
-| `in-progress` | First task starts | Increment is actively being worked on |
-| `testing` | Implementation tasks done | Ready for QA |
-| `blocked` | Task marked as blocked | Needs attention |
-| `review-requested` | PR created | Code review needed |
-| `ready-for-merge` | Review approved | Can be merged |
+| `in-progress` | 任务开始时 | 任务正在积极处理中 |
+| `testing` | 实现任务完成 | 准备进行质量测试 |
+| `blocked` | 任务被标记为阻塞 | 需要关注 |
+| `review-requested` | 创建了 Pull Request（PR） | 需要代码审阅 |
+| `ready-for-merge` | 审阅通过 | 可以合并 |
 
 ---
 
-## Team Collaboration Patterns
+## 团队协作模式
 
-### Pattern 1: Daily Standups via GitHub
+### 模式 1：通过 GitHub 进行每日站会
 
-Team members comment on tasks with daily updates:
+团队成员在问题中添加评论，更新每日进度：
 
 ```markdown
 **@developer1** on T-008:
@@ -243,9 +243,9 @@ Today: Testing sync workflow
 Blockers: Waiting for #130 review
 ```
 
-### Pattern 2: Code Review Integration
+### 模式 2：代码审阅集成
 
-Link PRs to tasks:
+将 PR 链接到相关任务：
 
 ```markdown
 ### T-007: Claude plugin installer
@@ -266,9 +266,9 @@ Link PRs to tasks:
 - [ ] No security issues
 ```
 
-### Pattern 3: Task Handoff
+### 模式 3：任务交接
 
-Transfer task ownership:
+转移任务的所有权：
 
 ```markdown
 @developer1 → @developer2 (T-015)
@@ -286,11 +286,11 @@ Transfer task ownership:
 
 ---
 
-## Time Tracking
+## 时间跟踪
 
-### Automatic Time Tracking
+### 自动时间跟踪
 
-Track time spent on tasks:
+跟踪在任务上花费的时间：
 
 ```yaml
 # .specweave/increments/0004-plugin-architecture/.metadata.yaml
@@ -303,15 +303,15 @@ tasks:
     assignee: developer2
 ```
 
-### Time Reports
+### 时间报告
 
-Generate time reports:
+生成时间报告：
 
 ```bash
 /sw:github:time-report 0004
 ```
 
-Output:
+输出：
 ```
 Time Report: Increment 0004
 
@@ -334,27 +334,27 @@ Pace: On track (4% ahead of schedule)
 
 ---
 
-## GitHub Projects Integration
+## 与 GitHub 项目的集成
 
-### Automated Kanban Board
+### 自动化的看板
 
-Sync increment tasks with GitHub Projects:
+将任务与 GitHub 项目同步：
 
-**Board Columns**:
-1. **Backlog**: Pending tasks
-2. **Ready**: Tasks ready to start
-3. **In Progress**: Currently being worked on
-4. **Review**: PRs open, needs review
-5. **Done**: Completed tasks
+**看板列**：
+1. **待办事项**：待处理的任务
+2. **准备中**：可以开始的任务
+3. **进行中**：当前正在处理的任务
+4. **审阅中**：打开的 PR，需要审阅
+5. **已完成**：已完成的任务
 
-**Auto-Move Rules**:
-- Task starts → Move to "In Progress"
-- PR created → Move to "Review"
-- PR merged → Move to "Done"
+**自动移动规则**：
+- 任务开始 → 移动到“进行中”
+- 创建 PR → 移动到“审阅中”
+- PR 合并 → 移动到“已完成”
 
-### Milestone Tracking
+### 里程碑跟踪
 
-Link increments to GitHub Milestones:
+将任务与 GitHub 里程碑关联：
 
 ```yaml
 # .specweave/config.yaml
@@ -369,15 +369,15 @@ plugins:
           due_date: 2025-11-30
 ```
 
-GitHub Milestone view shows progress across multiple increments.
+GitHub 里程碑视图可以显示多个任务的进度。
 
 ---
 
-## Advanced Features
+## 高级功能
 
-### Task Dependencies
+### 任务依赖关系
 
-Define task dependencies in `tasks.md`:
+在 `tasks.md` 文件中定义任务依赖关系：
 
 ```markdown
 ### T-008: Implement Cursor compiler
@@ -388,11 +388,11 @@ Define task dependencies in `tasks.md`:
 **Description**: ...
 ```
 
-SpecWeave enforces dependency order and warns if attempting blocked task.
+SpecWeave 会确保依赖关系的正确顺序，并在尝试处理被阻塞的任务时发出警告。
 
-### Subtasks
+### 子任务
 
-Break complex tasks into subtasks:
+将复杂任务分解为子任务：
 
 ```markdown
 ### T-014: Implement github-sync skill (8h)
@@ -405,11 +405,11 @@ Break complex tasks into subtasks:
 - [ ] T-014.5: Write tests (1h)
 ```
 
-Subtasks appear as nested checkboxes in GitHub issue.
+子任务会以嵌套复选框的形式显示在 GitHub 问题中。
 
-### External Issue Links
+### 外部问题链接
 
-Reference external blocking issues:
+引用外部阻塞问题：
 
 ```markdown
 ### T-020: Kubernetes plugin
@@ -425,27 +425,27 @@ Reference external blocking issues:
 
 ---
 
-## Notifications
+## 通知
 
-### Task Assignment Notifications
+### 任务分配通知
 
-GitHub automatically notifies assignees:
+GitHub 会自动通知任务分配者：
 
 ```
 @developer1 you were assigned T-015 in #130
 ```
 
-### Blocking Notifications
+### 阻塞通知
 
-Notify blocked task assignees when blocker resolves:
+当阻塞问题得到解决时，通知被阻塞任务的分配者：
 
 ```
 @developer2 Task T-020 is unblocked (#127 was closed)
 ```
 
-### Deadline Reminders
+### 截止日期提醒
 
-Warn when tasks are behind schedule:
+当任务进度落后时发出警告：
 
 ```
 ⚠️ T-008 is 2 days overdue (estimated: 2 days, actual: 4 days)
@@ -453,45 +453,45 @@ Warn when tasks are behind schedule:
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-**Checklist not updating?**
-- Verify `update_checklist: true` in config
-- Check GitHub API permissions (repo write access)
-- Manually sync: `/sw:github:sync 0004 --tasks`
+**清单未更新？**
+- 确认配置文件中的 `update_checklist: true` 是否设置正确
+- 检查 GitHub API 权限（仓库写入权限）
+- 手动同步：`/sw:github:sync 0004 --tasks`
 
-**Comments not posting?**
-- Check `post_task_comments: true`
-- Verify GitHub CLI authenticated: `gh auth status`
-- Check rate limits: `gh api rate_limit`
+**评论未发布？**
+- 检查 `post_task_comments: true` 是否启用
+- 确认是否已通过 GitHub CLI 进行身份验证：`gh auth status`
+- 检查 API 使用率限制：`gh api rate_limit`
 
-**Time tracking inaccurate?**
-- Verify task timestamps in `.metadata.yaml`
-- Check for manual edits to metadata
-- Re-sync: `/sw:github:sync 0004 --force`
-
----
-
-## Best Practices
-
-1. **Keep Tasks Atomic**: Each task should be completable in one work session (2-8 hours)
-2. **Update Checklists Daily**: Sync progress at least once per day
-3. **Use Assignees**: Assign tasks to specific developers for accountability
-4. **Track Blockers**: Immediately flag blocking issues for visibility
-5. **Link PRs**: Always reference task ID in PR title (`T-007: Add plugin support`)
-6. **Comment Context**: Add context comments when handing off tasks
-7. **Review Time Estimates**: Adjust estimates based on actual time tracked
+**时间跟踪不准确？**
+- 检查 `.metadata.yaml` 文件中的任务时间戳
+- 检查元数据是否被手动修改
+- 重新同步：`/sw:github:sync 0004 --force`
 
 ---
 
-## Related
+## 最佳实践
 
-- **github-sync**: High-level increment ↔ issue synchronization
-- **github-manager agent**: AI agent for GitHub operations
-- **Commands**: All `/sw:github:*` commands
+1. **保持任务的可完成性**：每个任务应在一次工作会话（2-8 小时）内完成
+2. **每日更新清单**：至少每天同步一次进度
+3. **指定任务负责人**：为任务分配具体的开发人员以确保责任明确
+4. **标记阻塞问题**：立即标记阻塞问题以便及时处理
+5. **链接 PR**：在 PR 标题中始终引用任务 ID（例如：`T-007：添加插件支持`）
+6. **添加上下文评论**：在交接任务时提供详细说明
+7. **调整时间估算**：根据实际花费的时间调整估算时间
 
 ---
 
-**Version**: 1.0.0
-**Plugin**: specweave-github
-**Last Updated**: 2025-10-30
+## 相关工具
+
+- **github-sync**：用于高层次的问题与任务同步
+- **github-manager agent**：用于管理 GitHub 操作的 AI 工具
+- **命令**：所有 `/sw:github:*` 命令
+
+---
+
+**版本**：1.0.0
+**插件**：specweave-github
+**最后更新时间**：2025-10-30

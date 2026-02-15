@@ -1,38 +1,38 @@
 ---
 name: institutional-flow-tracker
-description: Use this skill to track institutional investor ownership changes and portfolio flows using 13F filings data. Analyzes hedge funds, mutual funds, and other institutional holders to identify stocks with significant smart money accumulation or distribution. Helps discover stocks before major moves by following where sophisticated investors are deploying capital.
+description: 使用这项技能，可以通过13F文件数据来追踪机构投资者的持股变化和资金流向。该技能会分析对冲基金、共同基金及其他机构投资者，以识别那些出现大量资金流入或流出的股票。通过追踪这些 sophisticated investors（精明投资者）的资本投向，可以帮助投资者在股票出现重大波动之前发现潜在的投资机会。
 ---
 
-# Institutional Flow Tracker
+# 机构资金流动追踪器
 
-## Overview
+## 概述
 
-This skill tracks institutional investor activity through 13F SEC filings to identify "smart money" flows into and out of stocks. By analyzing quarterly changes in institutional ownership, you can discover stocks that sophisticated investors are accumulating before major price moves, or identify potential risks when institutions are reducing positions.
+该工具通过分析13F SEC文件来追踪机构投资者的活动，以识别资金流入和流出股票的“聪明资金”（即具有专业投资能力的机构投资者）。通过分析机构投资者持股情况的季度变化，您可以发现那些在股价大幅波动前被资深投资者大量买入的股票，或者在机构投资者减少持股时识别潜在风险。
 
-**Key Insight:** Institutional investors (hedge funds, pension funds, mutual funds) manage trillions of dollars and conduct extensive research. Their collective buying/selling patterns often precede significant price movements by 1-3 quarters.
+**关键洞察：** 机构投资者（对冲基金、养老基金、共同基金）管理着数万亿美元的资产，并进行广泛的研究。他们的集体买卖行为通常会在股价大幅波动前1-3个季度出现。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Validating investment ideas (checking if smart money agrees with your thesis)
-- Discovering new opportunities (finding stocks institutions are accumulating)
-- Risk assessment (identifying stocks institutions are exiting)
-- Portfolio monitoring (tracking institutional support for your holdings)
-- Following specific investors (tracking Warren Buffett, Cathie Wood, etc.)
-- Sector rotation analysis (identifying where institutions are rotating capital)
+在以下情况下使用该工具：
+- 验证投资思路（检查“聪明资金”是否与您的观点一致）
+- 发现新的投资机会（寻找机构投资者正在买入的股票）
+- 风险评估（识别机构投资者正在卖出的股票）
+- 投资组合监控（跟踪机构投资者对您所持股票的支持情况）
+- 跟踪特定投资者（例如沃伦·巴菲特、凯西·伍德等）
+- 行业轮动分析（识别机构投资者正在转移资金的行业）
 
-**Do NOT use when:**
-- Seeking real-time intraday signals (13F data has 45-day reporting lag)
-- Analyzing micro-cap stocks (<$100M market cap with limited institutional interest)
-- Looking for short-term trading signals (<3 months horizon)
+**不适用场景：**
+- 寻求实时盘中交易信号（13F数据的报告周期为45天）
+- 分析市值低于1亿美元的微型股票（这类股票通常不受机构投资者关注）
+- 寻找短期交易信号（投资周期少于3个月）
 
-## Data Sources & Requirements
+## 数据来源与要求
 
-### Required: FMP API Key
+### 必需条件：FMP API密钥
 
-This skill uses Financial Modeling Prep (FMP) API to access 13F filing data:
+该工具使用Financial Modeling Prep (FMP) API来获取13F文件数据：
 
-**Setup:**
+**设置步骤：**
 ```bash
 # Set environment variable (preferred)
 export FMP_API_KEY=your_key_here
@@ -41,38 +41,38 @@ export FMP_API_KEY=your_key_here
 python3 scripts/track_institutional_flow.py --api-key YOUR_KEY
 ```
 
-**API Tier Requirements:**
-- **Free Tier:** 250 requests/day (sufficient for analyzing 20-30 stocks quarterly)
-- **Paid Tiers:** Higher limits for extensive screening
+**API层级要求：**
+- **免费层级：** 每天250次请求（足以分析20-30只股票）
+- **付费层级：** 提供更高的请求次数限制，适用于更广泛的筛选
 
-**13F Filing Schedule:**
-- Filed quarterly within 45 days after quarter end
-- Q1 (Jan-Mar): Filed by mid-May
-- Q2 (Apr-Jun): Filed by mid-August
-- Q3 (Jul-Sep): Filed by mid-November
-- Q4 (Oct-Dec): Filed by mid-February
+**13F文件提交时间表：**
+- 每季度在季度末后的45天内提交
+- 第一季度（1月至3月）：5月中旬前提交
+- 第二季度（4月至6月）：8月中旬前提交
+- 第三季度（7月至9月）：11月中旬前提交
+- 第四季度（10月至12月）：2月中旬前提交
 
-## Analysis Workflow
+## 分析流程
 
-### Step 1: Identify Stocks with Significant Institutional Changes
+### 第一步：识别机构投资者持股变化显著的股票
 
-Execute the main screening script to find stocks with notable institutional activity:
+执行主要筛选脚本，找出机构投资者活动显著的股票：
 
-**Quick scan (top 50 stocks by institutional change):**
+**快速扫描（按机构投资者持股变化排名前50的股票）：**
 ```bash
 python3 institutional-flow-tracker/scripts/track_institutional_flow.py \
   --top 50 \
   --min-change-percent 10
 ```
 
-**Sector-focused scan:**
+**行业聚焦扫描：**
 ```bash
 python3 institutional-flow-tracker/scripts/track_institutional_flow.py \
   --sector Technology \
   --min-institutions 20
 ```
 
-**Custom screening:**
+**自定义筛选：**
 ```bash
 python3 institutional-flow-tracker/scripts/track_institutional_flow.py \
   --min-market-cap 2000000000 \
@@ -81,40 +81,40 @@ python3 institutional-flow-tracker/scripts/track_institutional_flow.py \
   --output institutional_flow_results.json
 ```
 
-**Output includes:**
-- Stock ticker and company name
-- Current institutional ownership % (of shares outstanding)
-- Quarter-over-quarter change in shares held
-- Number of institutions holding
-- Change in number of institutions (new buyers vs sellers)
-- Top institutional holders
-- Aggregate dollar value change
+**输出内容包括：**
+- 股票代码和公司名称
+- 当前机构投资者持股百分比（占流通股的比例）
+- 季度间的持股变化
+- 持有该股票的机构投资者数量
+- 机构投资者的增减数量
+- 主要的机构投资者持有者
+- 总持股价值的变动
 
-### Step 2: Deep Dive on Specific Stocks
+### 第二步：深入分析特定股票
 
-For detailed analysis of a specific stock's institutional ownership:
+对特定股票的机构投资者持股情况进行分析：
 
 ```bash
 python3 institutional-flow-tracker/scripts/analyze_single_stock.py AAPL
 ```
 
-**This generates:**
-- Historical institutional ownership trend (8 quarters)
-- List of all institutional holders with position changes
-- Concentration analysis (top 10 holders' % of total institutional ownership)
-- New positions vs increased vs decreased vs closed positions
-- Quarterly flow chart (net shares added/removed)
-- Comparison to sector average institutional ownership
+**分析结果包括：**
+- 过去8个季度的机构投资者持股趋势
+- 所有持有机构投资者的名单及持股变化
+- 持有比例最高的10家机构投资者
+- 新增持股、增持持股、减持持股的情况
+- 季度内的净增减持股情况
+- 与行业平均持股水平的对比
 
-**Key metrics to evaluate:**
-- **Ownership %:** Higher institutional ownership (>70%) = more stability but limited upside
-- **Ownership Trend:** Rising ownership = bullish, falling = bearish
-- **Concentration:** High concentration (top 10 > 50%) = risk if they sell
-- **Quality of Holders:** Presence of quality long-term investors (Berkshire, Fidelity) vs momentum funds
+**关键评估指标：**
+- **持股百分比：** 机构投资者持股比例较高（>70%）= 更稳定的表现，但上涨空间有限
+- **持股趋势：** 持股比例上升 = 看涨信号；下降 = 看跌信号
+- **集中度：** 高集中度（前10家机构投资者持有超过50%）= 如果他们卖出，可能带来风险
+- **投资者质量：** 是否包含优质长期投资者（如伯克希尔·哈撒韦、富达等）或投机性基金
 
-### Step 3: Track Specific Institutional Investors
+### 第三步：追踪特定机构投资者的投资组合
 
-Follow the portfolio moves of specific hedge funds or investment firms:
+跟踪特定对冲基金或投资公司的投资组合变动：
 
 ```bash
 # Track Warren Buffett's Berkshire Hathaway
@@ -128,201 +128,195 @@ python3 institutional-flow-tracker/scripts/track_institution_portfolio.py \
   --name "ARK Investment Management"
 ```
 
-**CIK (Central Index Key) lookup:**
-- Search at: https://www.sec.gov/cgi-bin/browse-edgar
-- Or use FMP API institutional search
+**CIK（中央索引键）查询：**
+- 在以下网址查询：https://www.sec.gov/cgi-bin/browse-edgar
+- 或使用FMP API进行机构投资者查询
 
-**Analysis output:**
-- Current portfolio holdings (top 50 positions)
-- New positions added this quarter
-- Positions completely sold
-- Largest increases/decreases in existing positions
-- Portfolio concentration and sector allocation changes
-- Historical performance of their top picks
+**分析结果包括：**
+- 当前投资组合持仓（前50只股票）
+- 本季度新增的持仓
+- 完全卖出的持仓
+- 持有量最大的增减情况
+- 投资组合的集中度及行业分配变化
+- 他们精选股票的历史表现
 
-### Step 4: Interpretation and Action
+### 第四步：解读与行动
 
-Read the references for interpretation guidance:
-- `references/13f_filings_guide.md` - Understanding 13F data and limitations
-- `references/institutional_investor_types.md` - Different investor types and their strategies
-- `references/interpretation_framework.md` - How to interpret institutional flow signals
+请参考以下文档以获取解读指南：
+- `references/13f_filings_guide.md` - 了解13F数据及其局限性
+- `references/institutional_investor_types.md` - 不同类型机构投资者及其策略
+- `references/interpretation_framework.md` - 如何解读机构投资者资金流动信号
 
-**Signal Strength Framework:**
+**信号强度框架：**
 
-**Strong Bullish (Consider buying):**
-- Institutional ownership increasing >15% QoQ
-- Number of institutions increasing >10%
-- Quality long-term investors adding positions
-- Low current ownership (<40%) with room to grow
-- Accumulation happening across multiple quarters
+**强烈看涨（考虑买入）：**
+- 机构投资者持股比例环比增加超过15%
+- 持有机构投资者数量增加超过10%
+- 优质长期投资者增持持股
+- 当前持股比例较低（<40%），且有增长空间
+- 多个季度持续出现增持行为
 
-**Moderate Bullish:**
-- Institutional ownership increasing 5-15% QoQ
-- Mix of new buyers and sellers, net positive
-- Current ownership 40-70%
+**中性：**
+- 持股比例变化较小（<5%）
+- 买卖双方数量相当
+- 机构投资者基础稳定
 
-**Neutral:**
-- Minimal change in ownership (<5%)
-- Similar number of buyers and sellers
-- Stable institutional base
+**适度看跌：**
+- 机构投资者持股比例环比下降5-15%
+- 卖方数量多于买方
+- 持股比例较高（>80%），限制新买家进入
 
-**Moderate Bearish:**
-- Institutional ownership decreasing 5-15% QoQ
-- More sellers than buyers
-- High ownership (>80%) limiting new buyers
+**强烈看跌（考虑卖出/避免买入）：**
+- 机构投资者持股比例环比下降超过15%
+- 持有机构投资者数量减少超过10%
+- 优质投资者开始卖出持股
+- 多个季度持续出现减持行为
+- 高集中度（主要持有者卖出大量持股）
 
-**Strong Bearish (Consider selling/avoiding):**
-- Institutional ownership decreasing >15% QoQ
-- Number of institutions decreasing >10%
-- Quality investors exiting positions
-- Distribution happening across multiple quarters
-- Concentration risk (top holder selling large position)
+### 第五步：投资组合应用
 
-### Step 5: Portfolio Application
+**对于新股票：**
+1. 对您的投资标的进行机构投资者分析
+2. 查看是否有机构投资者也在买入的确认信号
+3. 如果出现强烈看跌信号，重新考虑投资策略或减少持股规模
+4. 如果出现强烈看涨信号，增强投资信心
 
-**For new positions:**
-1. Run institutional analysis on your stock idea
-2. Look for confirmation (institutions also accumulating)
-3. If strong bearish signals, reconsider or reduce position size
-4. If strong bullish signals, gain confidence in thesis
+**对于现有股票：**
+1. 在13F文件提交截止日期后进行季度回顾
+2. 监控机构投资者的减持情况（作为早期预警信号）
+3. 如果机构投资者开始减持，重新评估投资策略
+4. 如果普遍出现机构投资者减持，考虑减少持股
 
-**For existing holdings:**
-1. Quarterly review after 13F filing deadlines
-2. Monitor for distribution (early warning system)
-3. If institutions are exiting, re-evaluate your thesis
-4. Consider trimming if widespread institutional selling
+**筛选流程整合：**
+1. 使用价值股息筛选器或其他筛选工具找到候选股票
+2. 对候选股票运行机构资金流动追踪器
+3. 优先选择机构投资者持续增持的股票
+4. 避免机构投资者持续减持的股票
 
-**Screening workflow integration:**
-1. Use Value Dividend Screener or other screeners to find candidates
-2. Run Institutional Flow Tracker on top candidates
-3. Prioritize stocks with institutional accumulation
-4. Avoid stocks with institutional distribution
+## 输出格式
 
-## Output Format
+所有分析结果将以结构化的Markdown格式保存在仓库根目录下：
 
-All analysis generates structured markdown reports saved to repository root:
+**文件命名规则：`institutional_flow_analysis_<股票代码/主题>_<日期>.md`
 
-**Filename convention:** `institutional_flow_analysis_<TICKER/THEME>_<DATE>.md`
+**报告内容：**
+1. 执行摘要（主要发现）
+2. 机构投资者持股趋势（当前与历史对比）
+3. 主要持有者及持股变化
+4. 新买家与卖家情况
+5. 集中度分析
+6. 解读与建议
+7. 数据来源与时间戳
 
-**Report sections:**
-1. Executive Summary (key findings)
-2. Institutional Ownership Trend (current vs historical)
-3. Top Holders and Changes
-4. New Buyers vs Sellers
-5. Concentration Analysis
-6. Interpretation and Recommendations
-7. Data Sources and Timestamp
+## 限制与注意事项
 
-## Limitations and Caveats
+**数据延迟：**
+- 13F文件的报告周期为45天
+- 提交日期后股票持仓情况可能发生变化
+- 该工具仅作为确认信号使用，而非预测工具
 
-**Data Lag:**
-- 13F filings have 45-day reporting delay
-- Positions may have changed since filing date
-- Use as confirming indicator, not leading signal
+**覆盖范围：**
+- 仅要求管理资产超过1亿美元的机构投资者提交文件
+- 不包括个人投资者和小型基金
+- 国际机构投资者可能不提交13F文件
 
-**Coverage:**
-- Only institutions managing >$100M are required to file
-- Excludes individual investors and smaller funds
-- International institutions may not file 13F
+**报告规则：**
+- 仅报告长期股票持仓（不包括空头头寸、期权、债券）
+- 数据基于季度末的持股情况
+- 部分持仓可能属于保密信息（报告延迟）
 
-**Reporting Rules:**
-- Only long equity positions reported (no shorts, options, bonds)
-- Holdings as of quarter-end snapshot
-- Some positions may be confidential (delayed reporting)
+**解读注意事项：**
+- 相关性≠因果关系（即使机构投资者买入，股票价格也可能下跌）
+- 需结合整体市场环境和基本面进行分析
+- 结合技术分析和其他工具使用
 
-**Interpretation:**
-- Correlation ≠ causation (stocks can fall despite institutional buying)
-- Consider overall market environment and fundamentals
-- Combine with technical analysis and other skills
+## 高级应用场景**
 
-## Advanced Use Cases
+**内部人士与机构投资者联合分析：**
+- 寻找同时受到内部人士和机构投资者买入的股票
+- 当两者观点一致时，该信号更为可靠
 
-**Insider + Institutional Combo:**
-- Look for stocks where both insiders AND institutions are buying
-- Particularly powerful signal when aligned
+**行业轮动检测：**
+- 跟踪各行业的机构投资者资金流动情况
+- 在价格变动之前发现行业轮动趋势
 
-**Sector Rotation Detection:**
-- Track aggregate institutional flows by sector
-- Identify early rotation trends before they appear in price
+**逆势投资策略：**
+- 寻找机构投资者正在卖出的优质股票（可能具有投资价值）
+- 需要具备强烈的基本面判断力
 
-**Contrarian Plays:**
-- Find quality stocks institutions are selling (potential value)
-- Requires strong fundamental conviction
+**聪明资金验证：**
+- 在进行重大投资决策前，确认“聪明资金”的看法
+- 增强投资信心或发现被忽视的风险
 
-**Smart Money Validation:**
-- Before major position, check if smart money agrees
-- Gain confidence or find overlooked risks
+## 参考资料**
 
-## References
+`references/`文件夹包含以下详细指南：
+- **13f_filings_guide.md** - 13F SEC文件的全面指南，包括文件内容、报告要求及数据质量注意事项
+- **institutional_investor_types.md** - 不同类型的机构投资者（对冲基金、共同基金、养老基金等）及其投资策略
+- **interpretation_framework.md** - 机构投资者持股变化的详细解读框架、信号质量评估方法及与其他分析方法的结合方式
 
-The `references/` folder contains detailed guides:
-
-- **13f_filings_guide.md** - Comprehensive guide to 13F SEC filings, what they include, reporting requirements, and data quality considerations
-- **institutional_investor_types.md** - Different types of institutional investors (hedge funds, mutual funds, pension funds, etc.), their typical strategies, and how to interpret their moves
-- **interpretation_framework.md** - Detailed framework for interpreting institutional ownership changes, signal quality assessment, and integration with other analysis
-
-## Script Parameters
+## 脚本参数
 
 ### track_institutional_flow.py
 
-Main screening script for finding stocks with significant institutional changes.
+用于查找机构投资者持股变化显著股票的主要筛选脚本。
 
-**Required:**
-- `--api-key`: FMP API key (or set FMP_API_KEY environment variable)
+**必需参数：**
+- `--api-key`：FMP API密钥（或设置环境变量FMP_API_KEY）
 
-**Optional:**
-- `--top N`: Return top N stocks by institutional change (default: 50)
-- `--min-change-percent X`: Minimum % change in institutional ownership (default: 10)
-- `--min-market-cap X`: Minimum market cap in dollars (default: 1B)
-- `--sector NAME`: Filter by specific sector
-- `--min-institutions N`: Minimum number of institutional holders (default: 10)
-- `--output FILE`: Output JSON file path (default: institutional_flow_results.json)
-- `--sort-by FIELD`: Sort by 'ownership_change', 'institution_count_change', 'dollar_value_change'
+**可选参数：**
+- `--top N`：按机构投资者持股变化排名前N的股票（默认：50只）
+- `--min-change-percent X`：机构投资者持股变化的最低百分比（默认：10%）
+- `--min-market-cap X`：最低市值（以美元计，默认：10亿美元）
+- `--sector NAME`：按特定行业筛选
+- `--min-institutions N`：最低持有机构投资者数量（默认：10家）
+- `--output FILE`：输出JSON文件路径（默认：institutional_flow_results.json）
+- `--sort-by FIELD`：按“ownership_change”、“institution_count_change”、“dollar_value_change”排序
 
 ### analyze_single_stock.py
 
-Deep dive analysis on a specific stock's institutional ownership.
+用于深入分析特定股票的机构投资者持股情况。
 
-**Required:**
-- Ticker symbol (positional argument)
-- `--api-key`: FMP API key (or set FMP_API_KEY environment variable)
+**必需参数：**
+- 股票代码（用于指定分析的股票）
+- `--api-key`：FMP API密钥（或设置环境变量FMP_API_KEY）
 
-**Optional:**
-- `--quarters N`: Number of quarters to analyze (default: 8, i.e., 2 years)
-- `--output FILE`: Output markdown report path
-- `--compare-to TICKER`: Compare institutional ownership to another stock
+**可选参数：**
+- `--quarters N`：分析的季度数量（默认：8个季度，即2年）
+- `--output FILE`：输出Markdown报告路径
+- `--compare-to TICKER`：与另一只股票的机构投资者持股情况进行对比
 
 ### track_institution_portfolio.py
 
-Track a specific institutional investor's portfolio changes.
+用于追踪特定机构投资者的投资组合变动。
 
-**Required:**
-- `--cik CIK`: Central Index Key of the institution
-- `--name NAME`: Institution name for report
-- `--api-key`: FMP API key (or set FMP_API_KEY environment variable)
+**必需参数：**
+- `--cik CIK`：该机构的中央索引键
+- `--name NAME`：报告中的机构名称
+- `--api-key`：FMP API密钥（或设置环境变量FMP_API_KEY`
 
-**Optional:**
-- `--top N`: Show top N holdings (default: 50)
-- `--min-position-value X`: Minimum position value to include (default: 10M)
-- `--output FILE`: Output markdown report path
+**可选参数：**
+- `--top N`：显示前N只股票
+- `--min-position-value X`：包含的最低持股价值（默认：1000万美元）
+- `--output FILE`：输出Markdown报告路径
 
-## Integration with Other Skills
+## 与其他工具的整合**
 
-**Value Dividend Screener + Institutional Flow:**
+- **价值股息筛选器 + 机构资金流动追踪：**
 ```
 1. Run Value Dividend Screener to find candidates
 2. For each candidate, check institutional flow
 3. Prioritize stocks with rising institutional ownership
 ```
 
-**US Stock Analysis + Institutional Flow:**
+- **美国股票分析 + 机构资金流动追踪：**
 ```
 1. Run comprehensive fundamental analysis
 2. Validate with institutional ownership trends
 3. If institutions are selling, investigate why
 ```
 
-**Portfolio Manager + Institutional Flow:**
+- **投资组合管理器 + 机构资金流动追踪：**
 ```
 1. Fetch current portfolio via Alpaca
 2. Run institutional analysis on each holding
@@ -330,28 +324,28 @@ Track a specific institutional investor's portfolio changes.
 4. Consider rebalancing away from distribution
 ```
 
-**Technical Analyst + Institutional Flow:**
+- **技术分析师 + 机构资金流动追踪：**
 ```
 1. Identify technical setup (e.g., breakout)
 2. Check if institutional buying confirms
 3. Higher conviction if both align
 ```
 
-## Best Practices
+## 最佳实践**
 
-1. **Quarterly Reviews:** Set calendar reminders for 13F filing deadlines
-2. **Multi-Quarter Trends:** Look for sustained trends (3+ quarters), not one-time changes
-3. **Quality Over Quantity:** Berkshire adding > 100 small funds adding
-4. **Context Matters:** Rising ownership in a falling stock may be value investors catching a falling knife
-5. **Combine Signals:** Never use institutional flow in isolation
-6. **Update Your Data:** Re-run analysis each quarter as new 13Fs are filed
+1. **定期回顾：** 设置提醒，确保在13F文件提交截止日期前进行回顾
+2. **多季度趋势分析：** 关注持续的趋势（3个及以上季度），而非一次性变化
+3. **质量优先于数量：** 伯克希尔·哈撒韦增持的股票数量超过100只小型基金增持的股票
+4. **考虑背景：** 在股价下跌时机构投资者增持可能是价值投资者在逢低买入
+5. **综合分析信号：** 不要单独依赖机构资金流动信号
+6. **更新数据：** 每季度重新运行分析，以获取最新的13F文件数据
 
-## Support & Resources
+## 支持与资源**
 
-- FMP API Documentation: https://financialmodelingprep.com/developer/docs
-- SEC 13F Filings Database: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=13F
-- Institutional Investor Database: https://whalewisdom.com (free tier available)
+- FMP API文档：https://financialmodelingprep.com/developer/docs
+- SEC 13F文件数据库：https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=13F
+- 机构投资者数据库：https://whalewisdom.com（提供免费访问）
 
 ---
 
-**Note:** This skill is designed for long-term investors (3-12 month horizon). For short-term trading, combine with technical analysis and other momentum indicators.
+**注意：** 该工具适用于长期投资者（投资周期为3-12个月）。对于短期交易，建议结合技术分析和其他 momentum 指标使用。

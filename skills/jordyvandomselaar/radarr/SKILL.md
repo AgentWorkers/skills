@@ -1,17 +1,17 @@
 ---
 name: radarr
 version: 1.0.1
-description: Search and add movies to Radarr. Supports collections, search-on-add option.
+description: 在 Radarr 中搜索并添加电影。支持创建电影收藏，以及在选择添加电影时直接进行搜索的功能。
 metadata: {"clawdbot":{"emoji":"🎬","requires":{"bins":["curl","jq"]}}}
 ---
 
 # Radarr
 
-Add movies to your Radarr library with collection support.
+通过集合功能将电影添加到您的 Radarr 图书库中。
 
-## Setup
+## 设置
 
-Create `~/.clawdbot/credentials/radarr/config.json`:
+创建 `~/.clawdbot/credentials/radarr/config.json` 文件：
 ```json
 {
   "url": "http://localhost:7878",
@@ -19,53 +19,53 @@ Create `~/.clawdbot/credentials/radarr/config.json`:
   "defaultQualityProfile": 1
 }
 ```
-- `defaultQualityProfile`: Quality profile ID (run `config` to see options)
+- `defaultQualityProfile`：质量配置文件的 ID（运行 `config` 命令可查看可用选项）
 
-## Workflow
+## 工作流程
 
-1. **Search**: `search "Movie Name"` - returns numbered list
-2. **Present results with TMDB links** - always show clickable links
-3. **Check**: User picks a number
-4. **Collection prompt**: If movie is part of collection, ask user
-5. **Add**: Add movie or full collection
+1. **搜索**：输入 “电影名称” 进行搜索 - 返回编号列表
+2. **显示结果并附上 TMDB 链接** - 确保链接可点击
+3. **选择结果**：用户从列表中选择一个电影编号
+4. **检查集合状态**：如果该电影属于某个集合，系统会询问用户是否将其添加到该集合中
+5. **添加电影**：单独添加电影或整个集合
 
-## Important
-- **Always include TMDB links** when presenting search results to user
-- Format: `[Title (Year)](https://themoviedb.org/movie/ID)`
-- Uses `defaultQualityProfile` from config; can override per-add
+## 重要提示：
+- 在向用户展示搜索结果时，**务必包含 TMDB 链接**。
+- 链接格式：`[电影名称 (年份)](https://themoviedb.org/movie/ID)`
+- 系统使用配置文件中的 `defaultQualityProfile`；用户也可以在添加电影时进行自定义设置
 
-## Commands
+## 命令
 
-### Search for movies
+### 搜索电影
 ```bash
 bash scripts/radarr.sh search "Inception"
 ```
 
-### Check if movie exists in library
+### 检查电影是否存在于库中
 ```bash
 bash scripts/radarr.sh exists <tmdbId>
 ```
 
-### Add a movie (searches immediately by default)
+### 添加电影（默认情况下会立即执行搜索）
 ```bash
 bash scripts/radarr.sh add <tmdbId>           # searches right away
 bash scripts/radarr.sh add <tmdbId> --no-search  # don't search
 ```
 
-### Add full collection (searches immediately by default)
+### 添加整个集合（默认情况下会立即执行搜索）
 ```bash
 bash scripts/radarr.sh add-collection <collectionTmdbId>
 bash scripts/radarr.sh add-collection <collectionTmdbId> --no-search
 ```
 
-### Remove a movie
+### 删除电影
 ```bash
 bash scripts/radarr.sh remove <tmdbId>              # keep files
 bash scripts/radarr.sh remove <tmdbId> --delete-files  # delete files too
 ```
-**Always ask user if they want to delete files when removing!**
+**删除电影前请务必询问用户是否确认删除！**
 
-### Get root folders & quality profiles (for config)
+### 获取根文件夹和质量配置文件（用于配置）
 ```bash
 bash scripts/radarr.sh config
 ```

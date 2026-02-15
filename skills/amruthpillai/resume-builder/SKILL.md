@@ -1,107 +1,102 @@
 ---
 name: resume-builder
-description: Generate professional resumes that conform to the Reactive Resume schema. Use when the user wants to create, build, or generate a resume through conversational AI, or asks about resume structure, sections, or content. This skill guides the agent to ask clarifying questions, avoid hallucination, and produce valid JSON output for https://rxresu.me.
+description: **生成符合“Reactive Resume”规范的职业简历**  
+当用户希望通过对话式人工智能来创建或生成简历，或者询问简历的结构、章节或内容时，可以使用此技能。该技能会指导智能助手提出明确的问题，以避免生成不准确的简历，并最终生成符合 https://rxresu.me 标准的 JSON 格式简历文件。
 ---
 
-# Resume Builder for Reactive Resume
+# 为 Reactive Resume 设计的简历生成工具
 
-Build professional resumes through conversational AI for [Reactive Resume](https://rxresu.me), a free and open-source resume builder.
+通过对话式人工智能为 [Reactive Resume](https://rxresu.me) 生成专业的简历。Reactive Resume 是一个免费且开源的简历生成平台。
 
-## Core Principles
+## 核心原则
 
-1. **Never hallucinate** - Only include information explicitly provided by the user
-2. **Ask questions** - When information is missing or unclear, ask before assuming
-3. **Be concise** - Use clear, direct language; avoid filler words
-4. **Validate output** - Ensure all generated JSON conforms to the schema
+1. **绝不虚构信息** – 仅包含用户明确提供的内容。
+2. **主动询问** – 当信息缺失或不清晰时，先询问再做假设。
+3. **简洁明了** – 使用清晰、直接的语言，避免使用填充词。
+4. **验证输出** – 确保生成的 JSON 数据符合规定的格式。
 
-## Workflow
+## 工作流程
 
-### Step 1: Gather Basic Information
+### 第一步：收集基本信息
 
-Ask for essential details first, unless the user has already provided them:
+首先询问用户的基本信息（除非用户已经提供）：
+- 全名
+- 职业头衔
+- 电子邮件地址
+- 电话号码
+- 地点（城市、州/国家）
+- 网站（可选）
 
-- Full name
-- Professional headline/title
-- Email address
-- Phone number
-- Location (city, state/country)
-- Website (optional)
+### 第二步：收集各部分的具体内容
 
-### Step 2: Collect Section Content
+对于用户希望包含的每个部分，收集详细信息。切勿编造日期、公司名称或成就。
 
-For each section the user wants to include, gather specific details. Never invent dates, company names, or achievements.
+- **工作经验**：公司名称、职位、工作地点、工作期间（例如：“2020年1月 – 至今”），职责/成就的描述
+- **教育背景**：学校名称、学位、所学专业、成绩（可选）、工作地点、学习期间
+- **技能**：技能名称、熟练程度（初级/中级/高级/专家），相关关键词
+- **项目**：项目名称、项目期间、项目网站（可选）、项目描述
+- **其他部分**：掌握的语言、证书、奖项、发表的文章、志愿服务经历、兴趣爱好、推荐人信息
 
-**Experience**: company, position, location, period (e.g., "Jan 2020 - Present"), description of responsibilities/achievements
+### 第三步：配置布局和设计
 
-**Education**: school, degree, area of study, grade (optional), location, period
+询问用户的偏好：
+- 模板选择（共13种可选：azurill, bronzor, chikorita, ditto, ditgar, gengar, glalie, kakuna, lapras, leafish, onyx, pikachu, rhyhorn）
+- 页面格式：A4 或 Letter
+- 哪些部分需要包含以及它们的排列顺序
 
-**Skills**: name, proficiency level (Beginner/Intermediate/Advanced/Expert), keywords
+### 第四步：生成有效的 JSON 数据
 
-**Projects**: name, period, website (optional), description
+生成的输出必须符合 Reactive Resume 的数据格式。详细格式请参考 [references/schema.md](references/schema.md)。
 
-**Other sections**: languages, certifications, awards, publications, volunteer work, interests, references
+**关键要求**：
+- 所有 `id` 字段必须是有效的 UUID。
+- 描述字段可以包含 HTML 格式的文本。
+- 网站字段需要同时提供 `url` 和 `label` 属性。
+- 颜色使用 `rgba(r, g, b, a)` 格式。
+- 使用的字体必须在 Google Fonts 中可找到。
 
-### Step 3: Configure Layout and Design
+## 简历撰写技巧
 
-Ask about preferences:
+在帮助用户编写简历内容时，可以分享以下建议：
 
-- Template preference (13 available: azurill, bronzor, chikorita, ditto, ditgar, gengar, glalie, kakuna, lapras, leafish, onyx, pikachu, rhyhorn)
-- Page format: A4 or Letter
-- Which sections to include and their order
+### 内容撰写指南
 
-### Step 4: Generate Valid JSON
+- **以行动动词开头**：使用动词开头来描述自己的成就（例如：“领导团队”、“开发新功能”、“提高效率”等）。
+- **量化成果**：尽可能使用具体数字（例如：“销售额增长了25%”、“管理了一个8人的团队”）。
+- **针对职位定制内容**：突出与目标职位相关的经验。
+- **具体说明**：用具体例子替换模糊的表述。
+- **保持简洁**：大多数专业人士的简历长度应控制在1-2页以内。
 
-Output must conform to the Reactive Resume schema. See [references/schema.md](references/schema.md) for the complete schema structure.
+### 部分推荐顺序
 
-Key requirements:
-- All item `id` fields must be valid UUIDs
-- Description fields accept HTML-formatted strings
-- Website fields require both `url` and `label` properties
-- Colors use `rgba(r, g, b, a)` format
-- Fonts must be available on Google Fonts
+对于大多数专业人士：
+1. 简历概述（如果有工作经验）
+2. 工作经验
+3. 教育背景
+4. 技能
+5. 项目（如相关）
+6. 证书/奖项
 
-## Resume Writing Tips
+对于学生或应届毕业生：
+1. 教育背景
+2. 项目
+3. 技能
+4. 工作经验（如有）
+5. 社交活动/志愿服务经历
 
-Share these tips when helping users craft their resume content:
+### 常见错误及避免方法
 
-### Content Guidelines
+- 避免使用个人代词（如“我”、“我的”）。
+- 避免使用被动语态。
+- 不要列出工作职责，而应说明具体成就。
+- 不要包含无关的个人信息。
+- 确保日期格式一致。
 
-- **Lead with impact**: Start bullet points with action verbs (Led, Developed, Increased, Managed)
-- **Quantify achievements**: Use numbers when possible ("Increased sales by 25%", "Managed team of 8")
-- **Tailor to the role**: Emphasize relevant experience for the target position
-- **Be specific**: Replace vague terms with concrete examples
-- **Keep it concise**: 1-2 pages maximum for most professionals
+## 输出格式
 
-### Section Order Recommendations
+生成简历时，输出一个符合 Reactive Resume 数据格式的 JSON 对象。用户可以直接将此 JSON 数据导入 [Reactive Resume](https://rxresu.me) 平台。
 
-For most professionals:
-1. Summary (if experienced)
-2. Experience
-3. Education
-4. Skills
-5. Projects (if relevant)
-6. Certifications/Awards
-
-For students/recent graduates:
-1. Education
-2. Projects
-3. Skills
-4. Experience (if any)
-5. Activities/Volunteer
-
-### Common Mistakes to Avoid
-
-- Including personal pronouns ("I", "my")
-- Using passive voice
-- Listing job duties instead of achievements
-- Including irrelevant personal information
-- Inconsistent date formatting
-
-## Output Format
-
-When generating the resume, output a complete JSON object that conforms to the Reactive Resume schema. The user can then import this JSON directly into Reactive Resume at https://rxresu.me.
-
-Example minimal structure:
+**示例结构**：
 
 ```json
 {
@@ -114,15 +109,14 @@ Example minimal structure:
 }
 ```
 
-For the complete schema, see [references/schema.md](references/schema.md).
+完整的格式说明请参见 [references/schema.md](references/schema.md)。
 
-## Asking Good Questions
+## 如何提出有效的问题
 
-When information is missing, ask specific questions:
+当信息缺失时，可以提出以下具体问题：
+- “您在 [公司] 的职位是什么？”
+- “您在那里工作的具体日期是？”（例如：“2020年1月 – 2022年12月”）
+- “您在这个职位上的主要职责或成就是什么？”
+- “您是否有特定的目标职位或行业方向？”
 
-- "What was your job title at [Company]?"
-- "What dates did you work there? (e.g., Jan 2020 - Dec 2022)"
-- "What were your main responsibilities or achievements in this role?"
-- "Do you have a specific target role or industry in mind?"
-
-Avoid compound questions. Ask one thing at a time for clarity.
+避免提出复合性问题，一次只询问一个具体问题，以确保信息的准确性。

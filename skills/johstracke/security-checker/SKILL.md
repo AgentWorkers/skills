@@ -1,19 +1,19 @@
 ---
 name: security-checker
-description: Security scanner for Python skills before publishing to ClawHub. Use before publishing any skill to check for dangerous imports, hardcoded secrets, unsafe file operations, and dangerous functions like eval/exec/subprocess. Essential for maintaining trust and ensuring published skills are safe for others to install and run.
+description: 在将Python技能发布到ClawHub之前，需要使用这款安全扫描工具进行检测。在发布任何技能之前，务必使用该工具检查是否存在危险的导入语句、硬编码的秘密信息、不安全的文件操作，以及eval、exec、subprocess等危险函数。这一步骤对于维护用户信任至关重要，确保发布的技能能够安全地被其他人安装和运行。
 ---
 
-# Security Checker
+# 安全检查器
 
-Security scan Python skills before publishing to ensure code safety.
+在发布技能之前，使用该工具进行Python代码的安全扫描，以确保代码的安全性。
 
-## Quick Start
+## 快速入门
 
 ```bash
 security_scan.py <file_or_directory>
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Scan a single Python file
 security_scan.py scripts/my_script.py
@@ -25,48 +25,48 @@ security_scan.py /path/to/skill-folder
 security_scan.py skills/
 ```
 
-## What It Checks
+## 检查内容
 
-### Dangerous Imports
-Detects imports that could be used maliciously:
-- `os` - System-level operations
-- `subprocess` - Command execution
-- `shutil` - File operations
-- `socket` - Network operations
-- `urllib` / `requests` - HTTP requests
+### 危险的导入语句
+检测可能被恶意利用的导入语句：
+- `os` - 系统级操作
+- `subprocess` - 命令执行
+- `shutil` - 文件操作
+- `socket` - 网络操作
+- `urllib` / `requests` - HTTP请求
 
-**Why dangerous?** These imports enable system command execution, file manipulation, and network access that could be exploited.
+**为什么危险？** 这些导入语句允许执行系统命令、操作文件以及进行网络访问，这些都可能被恶意利用。
 
-### Dangerous Functions
-Detects potentially unsafe function calls:
-- `os.system()` - Executes shell commands
-- `subprocess.call()`, `subprocess.run()`, `subprocess.Popen()` - Command execution
-- `eval()` - Executes arbitrary code
-- `exec()` - Executes arbitrary code
+### 危险的函数调用
+检测可能存在安全隐患的函数调用：
+- `os.system()` - 执行shell命令
+- `subprocess.call()`, `subprocess.run()`, `subprocess.Popen()` - 命令执行
+- `eval()` - 执行任意代码
+- `exec()` - 执行任意代码
 
-**Why dangerous?** These can execute arbitrary commands or code, leading to remote code execution vulnerabilities.
+**为什么危险？** 这些函数可能导致任意代码的执行，从而引发远程代码执行漏洞。
 
-### Hardcoded Secrets
-Detects tokens, keys, and passwords:
-- API keys
-- Auth tokens (including ClawHub tokens)
-- Passwords
-- Private keys
-- JWT-like tokens
+### 硬编码的秘密信息
+检测代码中硬编码的敏感信息：
+- API密钥
+- 认证令牌（包括ClawHub令牌）
+- 密码
+- 私钥
+- 类似JWT的令牌
 
-**Why dangerous?** Secrets leaked in published code can be stolen and abused.
+**为什么危险？** 如果这些秘密信息在代码中被泄露，可能会被窃取并遭到滥用。
 
-### Unsafe File Operations
-Detects risky file access patterns:
-- Absolute file paths outside expected directories
-- Parent directory traversal (`..`)
-- Writing to system directories
+### 不安全的文件操作
+检测不安全的文件访问模式：
+- 在预期目录之外的绝对文件路径
+- 遍历上级目录（`..`）
+- 向系统目录写入数据
 
-**Why dangerous?** Could lead to unintended file access, data loss, or system modification.
+**为什么危险？** 这可能导致意外的文件访问、数据丢失或系统被修改。
 
-## Usage Pattern: Pre-Publish Checklist
+## 使用方式：发布前的检查流程
 
-Before publishing any skill:
+在发布任何技能之前，请执行以下检查：
 
 ```bash
 # 1. Run security scan
@@ -82,48 +82,48 @@ security_scan.py /path/to/skill
 clawhub publish /path/to/skill --slug my-skill ...
 ```
 
-## Interpretation of Results
+## 结果解读
 
-### ✅ "No security issues found"
-Code appears safe. Proceed with publishing.
+### ✅ “未发现安全问题”
+代码看起来是安全的，可以继续发布。
 
-### ⚠️  "Warning" (Yellow)
-Potentially risky pattern detected. Review the specific line and decide:
-- **Is it legitimate?** Document why in code comments or SKILL.md
-- **Can it be avoided?** Refactor to safer alternatives
-- **Is it necessary?** Clearly document the risk and purpose
+### ⚠️ “警告”（黄色）
+检测到潜在的风险模式。请查看具体代码行，并做出以下决定：
+- **该操作是否合法？** 在代码注释或SKILL.md文件中说明原因。
+- **是否可以避免？** 请重构为更安全的替代方案。
+- **是否必要？** 清晰地记录该操作的风险和用途。
 
-### 🔴 "Possible hardcoded secret"
-Secret detected. Before publishing:
-- Remove the secret
-- Use environment variables instead: `os.getenv('API_KEY')`
-- Document required env variables in SKILL.md
-- Never commit real secrets
+### 🔴 “可能存在硬编码的秘密信息”
+检测到硬编码的秘密信息。在发布之前，请：
+- 移除这些秘密信息。
+- 使用环境变量代替：`os.getenv('API_KEY')`
+- 在SKILL.md文件中记录所需的环境变量。
+- 绝不要提交真实的秘密信息。
 
-## Examples
+## 示例
 
-### Legitimate os module usage (documented)
+### 合法的os模块使用（已记录）
 ```python
 import os  # Used only for path.join() - safe file path construction
 workspace = os.path.join(os.path.expanduser("~"), ".openclaw", "workspace")
 ```
 
-**Scan result:** ⚠️ Warning about os import
-**Action:** Document safe usage pattern in code comments
+**扫描结果：** ⚠️ 关于os导入的警告
+**操作：** 在代码注释中记录安全的用法。
 
-### Hardcoded secret (must fix)
+### 硬编码的秘密信息（必须修复）
 ```python
 API_KEY = "sk-1234567890abcdef"  # DON'T DO THIS
 ```
 
-**Scan result:** 🔴 Possible hardcoded secret
-**Action:** Remove and use environment variable:
+**扫描结果：** 🔴 可能存在硬编码的秘密信息
+**操作：** 移除硬编码的秘密信息，并使用环境变量：
 ```python
 API_KEY = os.getenv("MY_SKILL_API_KEY")
 # Document in SKILL.md: Requires MY_SKILL_API_KEY environment variable
 ```
 
-### Safe pattern (no issues)
+### 安全的代码示例（无问题）
 ```python
 # JSON storage for local data only
 data = {"notes": [], "metadata": {}}
@@ -131,21 +131,21 @@ with open("data.json", "w") as f:
     json.dump(data, f)
 ```
 
-**Scan result:** ✅ No issues
+**扫描结果：** ✅ 无问题
 
-## Best Practices
+## 最佳实践
 
-1. **Always scan before publishing** - Make it part of your workflow
-2. **Review warnings manually** - The scanner can't judge context
-3. **Use environment variables for secrets** - Never hardcode
-4. **Prefer json over eval** - Safe parsing vs code execution
-5. **Document necessary risks** - If dangerous code is required, explain why
-6. **Minimize dangerous imports** - Only use what's truly necessary
-7. **Keep code simple** - Complex code is harder to audit
+1. **发布前务必进行扫描** - 将此步骤纳入你的工作流程。
+2. **手动审核警告** - 扫描工具无法理解代码的具体上下文。
+3. **使用环境变量存储敏感信息** - 绝不要硬编码。
+4. **优先使用json格式进行数据解析** - 比使用`eval()`更安全。
+5. **记录必要的风险** - 如果必须使用危险代码，请解释其原因。
+6. **尽量减少危险导入** - 只使用真正必要的功能。
+7. **保持代码简洁** - 复杂的代码更难以审计。
 
-## Integration with Development Workflow
+## 与开发工作流程的集成
 
-### Before committing to repo
+### 在提交代码到仓库之前
 ```bash
 # Pre-commit hook concept
 python3 /path/to/security_scan.py scripts/
@@ -155,7 +155,7 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
-### Automated pre-publish check
+### 自动化的发布前检查
 ```bash
 #!/bin/bash
 # publish-safe.sh
@@ -174,29 +174,29 @@ echo "✅ Security scan passed"
 clawhub publish "$SKILL_PATH"
 ```
 
-## Limitations
+## 限制
 
-This scanner:
-- **Can't judge context** - Some dangerous code may be legitimate
-- **Static analysis only** - Doesn't execute code
-- **Python-focused** - Other languages need different tools
-- **Basic patterns** - Sophisticated obfuscation may evade detection
+该安全检查工具：
+- **无法理解代码的具体上下文** - 一些看似危险的代码实际上可能是合法的。
+- **仅进行静态分析** - 不会实际执行代码。
+- **仅针对Python语言** - 其他语言需要使用不同的工具。
+- **只能检测基本的安全问题** - 复杂的代码混淆技术可能逃避检测。
 
-**Complement with:**
-- Manual code review
-- Testing in isolated environment
-- Reading through all code before publishing
-- Using additional tools: `bandit`, `safety`
+**建议结合使用以下方法：**
+- 手动代码审查
+- 在隔离环境中进行测试
+- 在发布前仔细阅读所有代码
+- 使用额外的安全检查工具：`bandit`, `safety`。
 
-## Trust Building
+## 建立信任
 
-Publishing skills that pass security scans builds trust in the community:
-- Users know you care about safety
-- Your reputation improves
-- Skills get adopted more readily
-- ClawHub may highlight safe skills
+发布通过安全扫描的技能有助于建立社区对你的信任：
+- 用户会知道你重视代码安全。
+- 你的声誉会得到提升。
+- 你的技能会更容易被采纳。
+- ClawHub可能会优先推荐安全的技能。
 
-## Examples of Published Skills (All Scanned)
+## 已发布的技能示例（均通过安全扫描）
 
 ```bash
 # research-assistant
@@ -212,4 +212,4 @@ security_scan.py /home/ubuntu/.openclaw/workspace/skills/security-checker
 # ✅ All clear
 ```
 
-All three skills passed security scans before publishing to ClawHub.
+这三个技能在发布到ClawHub之前都通过了安全扫描。

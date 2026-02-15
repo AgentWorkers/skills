@@ -1,69 +1,69 @@
 ---
 name: Python
-description: Write reliable Python avoiding mutable defaults, import traps, and common runtime surprises.
+description: 编写可靠的 Python 代码时，应避免使用可变的默认值、导入陷阱（import errors）以及常见的运行时问题。
 metadata: {"clawdbot":{"emoji":"🐍","requires":{"bins":["python3"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Mutable Default Arguments
-- `def f(items=[])` shares list across all calls — use `items=None` then `items = items or []`
-- Same for dicts, sets, any mutable — default evaluated once at definition, not per call
-- Class attributes with mutables shared across instances — define in `__init__` instead
+## 可变默认参数  
+- 当使用 `def f(items=[])` 时，列表会在所有调用中共享；如果需要避免这种情况，应使用 `items=None`，然后通过 `items = items or []` 来重新赋值。  
+- 字典、集合以及其他可变对象也是如此：它们的默认值仅在定义时被计算一次，而不会在每次调用时重新计算。  
+- 如果类属性是可变的，并且需要在所有实例间共享，应将其定义在 `__init__` 方法中。  
 
-## Import Traps
-- Circular imports fail silently or partially — import inside function to break cycle
-- `from module import *` pollutes namespace — explicit imports always
-- Relative imports require package context — `python -m package.module` not `python module.py`
-- Import order matters for monkey patching — patch before target module imports patched module
-- `__init__.py` runs on package import — keep it minimal
+## 导入相关问题  
+- 循环导入（即导入某个模块后又导入该模块的子模块）可能会导致程序默默失败或部分失败；为了避免这种情况，应在函数内部进行导入。  
+- 使用 `from module import *` 会污染命名空间，因此应尽量使用显式的导入语句。  
+- 相对导入需要指定包的上下文；正确的导入方式是 `python -m package.module`，而不是 `python module.py`。  
+- 导入顺序对于“猴子补丁”（monkey patching）操作很重要：必须在目标模块导入被修改的模块之前进行补丁操作。  
+- `__init__.py` 文件会在包被导入时执行，因此应尽量保持其内容简洁。  
 
-## Scope Gotchas
-- `UnboundLocalError` when assigning to variable that exists in outer scope — use `nonlocal` or `global`
-- List comprehension has own scope, but loop variable leaks in Python 2 — not 3
-- `except Exception as e` — `e` is deleted after except block in Python 3
-- Default argument values bound at definition — closure over loop variable captures final value
+## 作用域相关问题  
+- 当尝试将变量赋值给外部作用域中的变量时，可能会引发 `UnboundLocalError`；此时可以使用 `nonlocal` 或 `global` 关键字。  
+- 列表推导式有自己的作用域；在 Python 2 中，循环变量可能会泄漏到外部作用域，但在 Python 3 中不会。  
+- 在 Python 3 中，`except Exception as e` 语句执行完毕后，`e` 变量会被销毁。  
+- 默认参数的值在定义时就被绑定；因此，循环变量在列表推导式中使用的默认值会捕获到最后一次赋值的值。  
 
-## String Pitfalls
-- `is` vs `==`: `is` checks identity, `==` checks equality — `"a" * 100 is "a" * 100` may be False
-- f-strings evaluate at runtime — `f"{obj}"` calls `__str__` each time
-- `str.split()` vs `str.split(' ')` — no arg splits on any whitespace and removes empties
-- Unicode normalization: `'café' != 'café'` if composed differently — use `unicodedata.normalize()`
+## 字符串相关问题  
+- `is` 和 `==` 的区别：`is` 检查对象的身份，`==` 检查对象的内容是否相等；例如，`"a" * 100` 和 `"a" * 100` 的结果可能是不同的（`False`）。  
+- f-strings（格式化字符串）会在运行时进行求值；每次使用 `f"{obj}"` 时都会调用对象的 `__str__` 方法。  
+- `str.split()` 和 `str.split(' ')` 的区别：`str.split(' ')` 会分割所有空白字符，并且会删除空字符串。  
+- 对于 Unicode 字符串，需要使用 `unicodedata.normalize()` 来确保正确的比较结果。  
 
-## Iteration Traps
-- Modifying list while iterating skips elements — iterate over copy: `for x in list(items):`
-- Dictionary size change during iteration raises RuntimeError — copy keys: `for k in list(d.keys()):`
-- Generator exhausted after one iteration — can't reuse, recreate or use `itertools.tee`
-- `range()` doesn't include end — `range(5)` is 0,1,2,3,4
+## 迭代相关问题  
+- 在迭代列表时修改列表会导致某些元素被跳过；为了避免这种情况，应创建列表的副本再进行迭代：`for x in list(items):`  
+- 在迭代过程中修改字典的大小会引发 `RuntimeError`；为了避免这个问题，应先复制字典的键：`for k in list(d.keys()):`  
+- 生成器在迭代一次后可能会被耗尽；此时不能重新使用生成器，可以考虑使用 `itertools.tee` 来创建多个生成器实例。  
+- `range()` 函数返回的序列不包含结束值；例如，`range(5)` 返回的是 0, 1, 2, 3, 4。  
 
-## Class Gotchas
-- `__init__` is not constructor — `__new__` creates instance, `__init__` initializes
-- Method resolution order (MRO) in multiple inheritance — use `super()` correctly or break chain
-- `@property` makes attribute read-only unless you add setter
-- `__slots__` breaks `__dict__` and dynamic attributes — can't add new attributes
-- Mutable class attribute shared by all instances — each instance modifying same list
+## 类相关问题  
+- `__init__` 方法并不是构造函数；`__new__` 方法用于创建实例，`__init__` 方法用于初始化实例。  
+- 在多重继承中，方法解析的顺序（MRO）可能会影响方法的调用；正确使用 `super()` 可以避免错误。  
+- 使用 `@property` 可以将属性设置为只读；如果需要添加设置器，也需要同时添加 `setter` 方法。  
+- 使用 `__slots__` 可以限制类的属性数量；如果添加新的属性，可能会破坏 `__dict__` 的结构。  
+- 如果类属性是可变的，所有实例会共享这个属性；因此，对某个属性的修改会影响所有实例。  
 
-## Exception Handling
-- Bare `except:` catches `SystemExit` and `KeyboardInterrupt` — use `except Exception:`
-- `except A, B:` is syntax error in Python 3 — use `except (A, B):`
-- Exception chaining: `raise NewError() from original` preserves context
-- `finally` runs even on return — return in finally overrides try's return
-- `else` in try/except runs only if no exception — often clearer than flag variable
+## 异常处理相关问题  
+- 单纯的 `except:` 语句会捕获 `SystemExit` 和 `KeyboardInterrupt`；为了更通用地处理异常，应使用 `except Exception:`。  
+- 在 Python 3 中，`except A, B:` 是语法错误；正确的写法是 `except (A, B):`。  
+- 异常链（exception chaining）可以用来优雅地处理异常；例如，`raise NewError() from original` 可以保留原始异常的上下文。  
+- `finally` 语句即使在 `return` 语句之后也会执行；在 `finally` 语句中返回值会覆盖 `try` 块中的返回值。  
+- `try/except` 结构中的 `else` 语句只有在没有抛出异常时才会执行；这通常比使用标志变量更清晰。  
 
-## Numeric Surprises
-- `0.1 + 0.2 != 0.3` — floating point, use `decimal.Decimal` for money
-- Integer division: `//` always floors toward negative infinity — `-7 // 2` is -4, not -3
-- `bool` is subclass of `int` — `True + True == 2`
-- Large integers have no overflow — but operations get slow
-- `is` fails for large integers — only small ints (-5 to 256) are cached
+## 数值相关问题  
+- 在浮点数运算中，`0.1 + 0.2` 的结果可能不等于 `0.3`；处理货币金额时建议使用 `decimal.Decimal` 类。  
+- 整数除法使用 `//` 运算符时，结果总是向下取整；例如，`-7 // 2` 的结果是 -4 而不是 -3。  
+- `bool` 类是 `int` 的子类；因此，`True + True` 的结果是 `2`。  
+- 大整数没有溢出问题，但相应的运算可能会变得很慢。  
+- 对于较大的整数，`is` 操作可能会失效；只有较小的整数（-5 到 256）会被缓存。  
 
-## File and I/O
-- `open()` without context manager leaks file handles — always use `with open():`
-- Default encoding is platform-dependent — always specify `encoding='utf-8'`
-- `read()` loads entire file to memory — use `readline()` or iterate for large files
-- Binary mode `'rb'` required for non-text — Windows line endings differ in text mode
+## 文件和 I/O 操作相关问题  
+- 如果不使用上下文管理器，`open()` 函数可能会导致文件句柄泄漏；始终使用 `with open():` 来打开文件。  
+- 文件的默认编码方式取决于操作系统；建议始终指定 `encoding='utf-8'`。  
+- `read()` 方法会将整个文件内容加载到内存中；对于大文件，建议使用 `readline()` 或迭代方式读取数据。  
+- 对于非文本文件，需要使用二进制模式（`'rb'`）；在文本模式下，Windows 和其他操作系统的行终止符可能不同。  
 
-## Concurrency
-- GIL prevents true parallel Python threads — use multiprocessing for CPU-bound
-- Threading still useful for I/O-bound — network, file operations release GIL
-- `async/await` is not threading — single-threaded cooperative multitasking
-- `multiprocessing` shares nothing by default — use Queue or Manager for communication
-- Daemon threads killed abruptly on exit — may corrupt data
+## 并发相关问题  
+- Python 的全局解释器锁（GIL）限制了真正的并行线程；对于 CPU 密集型任务，应使用 `multiprocessing` 模块。  
+- 对于 I/O 密集型任务，多线程仍然很有用；因为 I/O 操作会释放 GIL，从而允许多线程同时执行。  
+- `async/await` 并不是真正的多线程技术，而是基于协作的单线程编程模型。  
+- `multiprocessing` 模块默认不会共享任何资源；需要使用 `Queue` 或 `Manager` 来实现线程间的通信。  
+- 如果守护线程在程序退出时被突然终止，可能会导致数据损坏。

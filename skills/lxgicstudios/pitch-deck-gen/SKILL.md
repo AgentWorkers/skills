@@ -1,28 +1,28 @@
 ---
 name: pitch-gen
-description: Generate startup pitch deck content. Use when fundraising or presenting.
+description: 生成启动演示文稿（pitch deck）的内容。适用于筹款或产品展示场合。
 ---
 
-# Pitch Generator
+# 项目生成器（Pitch Generator）
 
-Writing pitch decks is painful. Describe your startup and get structured pitch content covering problem, solution, market, and ask.
+撰写商业提案（pitch decks）是一件非常繁琐的工作。使用这个工具，您可以轻松地描述自己的初创公司，并生成结构化好的提案内容，涵盖问题、解决方案、市场情况以及融资需求。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-pitch "AI-powered code review tool for teams"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete pitch deck content
-- Covers problem, solution, market size, competition
-- Structures the narrative flow
-- Outputs markdown ready for slides
+- 生成完整的商业提案内容
+- 涵盖问题、解决方案、市场规模以及市场竞争情况
+- 整理提案的叙述结构
+- 输出适合用于幻灯片的Markdown格式内容
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate pitch content
@@ -32,42 +32,42 @@ npx ai-pitch "AI-powered code review tool for teams"
 npx ai-pitch "marketplace for freelance designers" -o deck.md
 ```
 
-## Best Practices
+## 使用建议
 
-- **Lead with the problem** - make investors feel the pain
-- **Show traction** - numbers matter more than features
-- **Know your market size** - TAM, SAM, SOM
-- **Be specific about the ask** - how much, for what
+- **首先说明问题**：让投资者感受到问题的紧迫性
+- **展示实际进展**：数据比功能本身更重要
+- **了解市场规模**：明确总市场容量（TAM）、服务市场容量（SAM）和目标市场容量（SOM）
+- **明确融资需求**：具体说明需要多少资金以及用于什么目的
 
-## When to Use This
+## 适用场景
 
-- Preparing for investor meetings
-- Creating demo day presentations
-- Structuring your story
-- Getting a starting point to refine
+- 准备投资者会议
+- 制作产品演示日（demo day）的演示文稿
+- 整理公司的业务故事
+- 作为进一步完善的起点
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于LXGIC开发工具包（LXGIC Dev Toolkit）的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发工具之一。免费版本无需支付费用、无需注册，也不需要API密钥。这些工具都能直接使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。运行时需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-pitch --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your startup description and generates structured pitch content following proven frameworks. The AI understands what investors look for and structures the narrative accordingly.
+该工具根据您的初创公司描述，使用经过验证的框架生成结构化的提案内容。AI能够理解投资者关注的重点，并据此整理提案的叙述结构。
 
-## License
+## 许可协议
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。您可以自由使用该工具。

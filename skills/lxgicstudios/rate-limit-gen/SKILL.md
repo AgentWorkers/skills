@@ -1,28 +1,28 @@
 ---
 name: rate-limit-gen
-description: Generate rate limiting configuration. Use when protecting APIs from abuse.
+description: 生成速率限制配置。用于保护 API 免受滥用。
 ---
 
-# Rate Limit Generator
+# 速率限制生成器
 
-Rate limiting is essential but the config is fiddly. Describe your limits in plain English and get working configuration.
+速率限制是非常重要的功能，但其配置过程往往比较繁琐。使用本工具，您只需用简单的英语描述您的速率限制规则，即可获得可立即使用的配置设置。
 
-**One command. Zero config. Just works.**
+**只需一条命令，无需任何配置文件，即可立即生效。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-rate-limit "100 requests per minute per IP"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates rate limit configuration
-- Supports IP, user, and API key based limiting
-- Includes sliding window and fixed window options
-- Works with Express, Fastify, and more
+- 生成速率限制配置
+- 支持基于 IP 地址、用户或 API 密钥的速率限制
+- 提供滑动窗口和固定窗口两种限制方式
+- 适用于 Express、Fastify 等框架
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Basic IP rate limiting
@@ -35,49 +35,49 @@ npx ai-rate-limit "10 login attempts per hour, block for 30 min"
 npx ai-rate-limit "free tier 100/day, pro 10000/day"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Return headers** - let clients know their quota
-- **Use sliding windows** - smoother than fixed
-- **Have escape hatches** - allow bursts for legitimate use
-- **Log rate limit hits** - detect abuse patterns
+- **返回限制信息**：让客户端了解自己的使用额度
+- **使用滑动窗口**：比固定窗口更灵活
+- **设置紧急通道**：允许合法使用情况下的短暂高峰
+- **记录速率限制触发情况**：帮助检测滥用行为
 
-## When to Use This
+## 适用场景
 
-- Protecting API from abuse
-- Implementing usage tiers
-- Preventing brute force attacks
-- Adding fair use policies
+- 保护 API 免受滥用
+- 实现使用等级制度
+- 防止暴力攻击
+- 建立公平使用政策
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。完全免费，无需注册，免费版本也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令运行。建议使用 Node.js 18 及更高版本。需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-rate-limit --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your plain English rate limit rules and generates configuration for rate limiting middleware. Includes Redis setup for distributed rate limiting when needed.
+该工具会根据您提供的速率限制规则生成相应的中间件配置。如有需要，还会包含 Redis 设置以实现分布式速率限制。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具。
 
 ---
 
-**Built by LXGIC Studios**
+**由 LXGIC Studios 开发**
 
 - GitHub: [github.com/lxgicstudios/rate-limit-gen](https://github.com/lxgicstudios/rate-limit-gen)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

@@ -1,6 +1,6 @@
 ---
 name: eachlabs-fashion-ai
-description: Generate fashion model imagery, virtual try-on, runway videos, and campaign visuals using EachLabs AI. Use when the user needs fashion content, model photography, or virtual try-on.
+description: 使用 EachLabs AI 生成时尚模特的图像、虚拟试穿效果、T台展示视频以及广告宣传素材。当用户需要时尚相关内容、模特照片或虚拟试穿功能时，可随时使用该工具。
 metadata:
   author: eachlabs
   version: "1.0"
@@ -8,61 +8,61 @@ metadata:
 
 # EachLabs Fashion AI
 
-Generate AI fashion model imagery, virtual try-on experiences, runway content, and campaign visuals using EachLabs models.
+使用 EachLabs 的模型生成 AI 时尚模型图像、虚拟试穿体验、T 台内容和活动视觉素材。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Recommended Models
+## 推荐模型
 
-### Image Generation & Editing
+### 图像生成与编辑
 
-| Task | Model | Slug |
+| 任务 | 模型 | Slug |
 |------|-------|------|
-| Fashion model generation | GPT Image v1.5 | `gpt-image-v1-5-text-to-image` |
-| Virtual try-on (best) | Kolors Virtual Try-On | `kling-v1-5-kolors-virtual-try-on` |
-| Virtual try-on (alt) | IDM VTON | `idm-vton` |
-| Garment on model | Wan v2.6 Image-to-Image | `wan-v2-6-image-to-image` |
-| Model photoshoot | Product Photo to Modelshoot | `product-photo-to-modelshoot` |
-| Photoshoot styling | Nano Banana Pro Photoshoot | `nano-banana-pro-photoshoot` |
-| Face/look consistency | Omni Zero | `omni-zero` |
-| Character consistency | Ideogram Character | `ideogram-character` |
+| 时尚模型生成 | GPT Image v1.5 | `gpt-image-v1-5-text-to-image` |
+| 虚拟试穿（最佳选择） | Kolors Virtual Try-On | `kling-v1-5-kolors-virtual-try-on` |
+| 虚拟试穿（备用选项） | IDM VTON | `idm-vton` |
+| 模特佩戴服装 | Wan v2.6 Image-to-Image | `wan-v2-6-image-to-image` |
+| 模特拍摄 | Product Photo to Modelshoot | `product-photo-to-modelshoot` |
+| 拍摄造型 | Nano Banana Pro Photoshoot | `nano-banana-pro-photoshoot` |
+| 面部/造型一致性 | Omni Zero | `omni-zero` |
+| 角色一致性 | Ideogram Character | `ideogram-character` |
 | Photomaker | Photomaker | `photomaker` |
-| Photomaker Style | Photomaker Style | `photomaker-style` |
-| Avatar generation | Instant ID | `instant-id` |
-| Soul styling | Higgsfield AI Soul | `higgsfield-ai-soul` |
-| Become image | Become Image | `become-image` |
+| Photomaker 风格 | Photomaker Style | `photomaker-style` |
+| 虚拟形象生成 | Instant ID | `instant-id` |
+| 造型风格调整 | Higgsfield AI Soul | `higgsfield-ai-soul` |
+| 生成完整形象 | Become Image | `become-image` |
 
-### Training
+### 训练
 
-| Task | Model | Slug |
+| 任务 | 模型 | Slug |
 |------|-------|------|
-| Brand style training | Z Image Trainer | `z-image-trainer` |
-| Portrait LoRA | Flux LoRA Portrait Trainer | `flux-lora-portrait-trainer` |
+| 品牌风格训练 | Z Image Trainer | `z-image-trainer` |
+| 肖像 LoRA | Flux LoRA Portrait Trainer | `flux-lora-portrait-trainer` |
 
-### Video
+### 视频
 
-| Task | Model | Slug |
+| 任务 | 模型 | Slug |
 |------|-------|------|
-| Runway video | Pixverse v5.6 Image-to-Video | `pixverse-v5-6-image-to-video` |
-| Catwalk animation | Bytedance Omnihuman v1.5 | `bytedance-omnihuman-v1-5` |
-| Motion reference | Kling v2.6 Pro Motion | `kling-v2-6-pro-motion-control` |
+| T 台视频 | Pixverse v5.6 Image-to-Video | `pixverse-v5-6-image-to-video` |
+| T 台动画 | Bytedance Omnihuman v1.5 | `bytedance-omnihuman-v1-5` |
+| 动作参考 | Kling v2.6 Pro Motion | `kling-v2-6-pro-motion-control` |
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** output URL from response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 验证模型是否存在，并返回包含精确输入参数的 `request_schema`。在创建预测之前务必执行此操作，以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，提供模型 Slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **查询结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取输出**：从响应中获取输出 URL。
 
-## Workflows
+## 工作流程
 
-### AI Fashion Model Generation
+### AI 时尚模型生成
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -79,9 +79,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Virtual Try-On
+### 虚拟试穿
 
-Combine a garment image with a model image:
+将服装图像与模特图像结合：
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -98,7 +98,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Runway / Catwalk Video
+### T 台/走秀视频
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -116,9 +116,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Catwalk with Motion Reference
+### 带有动作参考的 T 台表演
 
-Use a real runway walk as motion reference:
+使用真实的 T 台走秀动作作为参考：
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -135,9 +135,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Brand Style Training
+### 品牌风格训练
 
-Train a LoRA on your brand's visual style for consistent campaign imagery:
+使用 LoRA 对您的品牌视觉风格进行训练，以生成一致的活动图像：
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -155,14 +155,14 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## Prompt Tips for Fashion
+## 时尚相关的提示
 
-- Specify pose: "full body shot", "half body", "close-up on garment details"
-- Include lighting: "editorial studio lighting", "natural light", "dramatic side lighting"
-- Mention style: "editorial", "street style", "haute couture", "casual lookbook"
-- For diversity: specify body types, skin tones, and ages in prompts
-- For consistency: use the same style keywords across a campaign series
+- 指定拍摄姿势：全身照、半身照、服装细节特写
+- 说明照明方式：编辑室灯光、自然光、戏剧性侧光
+- 指定风格：时尚杂志风格、街头风格、高级定制时装、休闲lookbook
+- 为了多样性，请在提示中指定体型、肤色和年龄
+- 为保持一致性，请在整个活动系列中使用相同的风格关键词
 
-## Parameter Reference
+## 参数参考
 
-See the [eachlabs-image-generation](../eachlabs-image-generation/references/MODELS.md) and [eachlabs-video-generation](../eachlabs-video-generation/references/MODELS.md) references for complete model parameters.
+有关完整的模型参数，请参阅 [eachlabs-image-generation](../eachlabs-image-generation/references/MODELS.md) 和 [eachlabs-video-generation](../eachlabs-video-generation/references/MODELS.md)。

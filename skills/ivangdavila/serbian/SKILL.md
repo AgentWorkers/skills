@@ -1,72 +1,67 @@
 ---
 name: Serbian
-description: Write Serbian that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像人类说话的塞尔维亚语。既不要过于正式，也不要像机器人或人工智能生成的语言那样生硬。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Serbian is technically correct but sounds off. Too formal. Too književni (literary). Natives write more casually, with particles and Balkan warmth. Match that.
+虽然AI生成的塞尔维亚语在语法上是正确的，但听起来很生硬、过于正式，缺乏自然的语感。塞尔维亚本地人的交流方式更加随意，会使用一些特定的语粒（particles）和表达方式，这些元素能够体现巴尔干地区的亲切感。我们需要让AI生成的文本更符合塞尔维亚人的交流习惯。
 
-## Formality Default
+## 文体风格（Formality Default）
 
-Default register is too high. Casual Serbian is warm and direct. Unless explicitly formal: lean casual. "Ћао" or "Здраво" not "Добар дан".
+默认的文体过于正式。在塞尔维亚语中，非正式的交流方式更加亲切、直接。除非需要明确表达正式语气，否则应尽量使用非正式的表达。例如，应该使用“Ћао”或“Здраво”而不是“Добар дан”。
 
-## Ti vs Vi
+## “Ти”与“Ви”的使用
 
-Critical distinction:
-- Ви: formal, elderly, professional
-- Ти: friends, peers, internet, casual
-- Serbian internet uses ти
-- Overusing ви = stiff
+在塞尔维亚语中，“Ви”通常用于正式场合、对长辈或专业人士的称呼；而“Ти”则用于朋友、同龄人或网络交流中的非正式对话。在塞尔维亚的网络语境中，人们更倾向于使用“Ти”来表达亲近感。过度使用“Ви”会让交流显得生硬。
 
-## Script Choice
+## 文字编码（Script Choice）
 
-Serbian uses both:
-- Ћирилица (Cyrillic): traditional, official
-- Latinica (Latin): common online, casual
-- Many Serbs prefer Latin online
-- Stay consistent within message
+塞尔维亚语有两种文字编码方式：西里尔字母（Ћирилица）和拉丁字母（Латиница）。在线交流中，大多数人更喜欢使用拉丁字母。在编写文本时，应保持文字编码的一致性。
 
-## Particles & Softeners
+## 语粒与表达软化词
 
-These make Serbian natural:
-- Ма: emphasis, dismissive ("Ма дај!")
-- Па: "well", "so"
-- Баш: "really", emphasis
-- Ваљда: "probably", "I guess"
-- Јбг: common abbreviation
+以下是一些能够使塞尔维亚语表达更自然的词语：
+- Ма：用于强调或表示轻蔑（例如：“Ма дај!”）
+- Па：表示“嗯”或“所以”
+- Баш：表示“真的”或强调
+- Ваљда：表示“可能”或“我想”
+- Јбг：常见的缩写
 
-## Fillers & Flow
+## 语言填充词与流畅性
 
-Real Serbian has fillers:
-- Па, ма, оно
-- Као, типа, мислим
-- Значи, у ствари
-- Чуј, гледај
+塞尔维亚语中经常使用一些填充词来使对话更流畅：
+- Па, ма, оно（等等）
+- Као, типа, мислим（等等）
+- Значи, у ствари（等等）
+- Чуј, гледај（等等）
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Добро → Супер, Екстра, Одлично
-- Лоше → Ужас, Срање, Катастрофа
-- Много → Баш, Стварно, Јако
+在表达情感时，不要使用过于中立的词汇：
+- “Добро”可以替换为“Супер”、“Екстра”或“Одлично”
+- “Лоше”可以替换为“Ужас”、“Срање”或“Катастрофа”
+- “Много”可以替换为“Баш”、“Стварно”或“Јако”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Важи, Ок, Супер
-- Нема проблема, Лагано
-- Озбиљно?, Стварно?, Ма дај!
-- Екстра!, Врх!
+以下是一些自然的表达方式：
+- Важи（重要）
+- Ок（好的）
+- Супер（太棒了）
+- Нема проблема（没问题）
+- Озбилино?（严肃吗？）
+- Ма дај!（快点！）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Озбиљно?, Стварно?, Шта?
-- Ма дај!, Јој!, Боже!
-- Супер!, Врх!, Екстра!
-- Хаха, лол in text
+在交流中，应保持自然的反应：
+- Озбилино?（严肃吗？）
+- Стварно?（真的吗？）
+- Ма дај!（快点！）
+- Супер!（太棒了！）
+- Хаха, лол（用于表达幽默）
 
-## The "Native Test"
+## “本地化测试”
 
-Before sending: would a Serbian screenshot this as "AI-generated"? If yes—too formal, no "ма дај", too stiff. Add Balkan warmth.
+在发送文本之前，可以想象一下：如果一个塞尔维亚人看到这段文字的截图，他会认为这是AI生成的吗？如果是这样，那么这段文本就太正式了，缺乏塞尔维亚语的亲切感；同时，也应该避免使用像“Ма дај!”这样的表达，因为它显得过于生硬。我们需要让文本更具塞尔维亚语的独特魅力和亲切感。

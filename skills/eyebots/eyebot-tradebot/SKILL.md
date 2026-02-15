@@ -1,6 +1,6 @@
 ---
 name: eyebot-tradebot
-description: High-performance trading and swap execution engine
+description: 高性能交易与掉期执行引擎
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,37 +10,37 @@ metadata:
 
 # TradeBot 📈
 
-**Intelligent Trade Execution**
+**智能交易执行**
 
-Execute swaps with best-route aggregation across 400+ liquidity sources. Supports limit orders, DCA strategies, and MEV protection.
+通过整合400多个流动性提供商的信息，执行最优交易路径的代币互换操作。支持限价单、定期投资（DCA）策略以及市场均衡价值（MEV）保护功能。
 
-## Features
+## 主要功能
 
-- **Route Aggregation**: Best prices across all DEXs
-- **MEV Protection**: Private transactions to avoid frontrunning
-- **Limit Orders**: Set target prices for automatic execution
-- **DCA Engine**: Dollar-cost averaging strategies
-- **Multi-Hop**: Complex routing for optimal rates
+- **交易路径聚合**：从所有去中心化交易所（DEX）中选择最优价格
+- **市场均衡价值保护**：采用私下交易方式，避免被抢先交易
+- **限价单**：设置目标价格以实现自动执行
+- **定期投资引擎**：支持美元成本平均策略
+- **多跳路由**：通过复杂路由机制获取最佳交易费率
 
-## Capabilities
+## 功能列表
 
-| Function | Description |
-|----------|-------------|
-| Swap | Instant token swaps |
-| Limit Order | Price-triggered execution |
-| DCA | Scheduled recurring buys |
-| Quote | Get best rate preview |
-| History | Track all trades |
+| 功能        | 描述                                      |
+|------------|-----------------------------------------|
+| 代币互换     | 即时执行代币互换操作                          |
+| 限价单       | 根据价格触发交易执行                            |
+| 定期投资     | 定期自动买入策略                            |
+| 报价        | 获取最优交易费率预览                          |
+| 交易历史     | 查看所有交易记录                            |
 
-## Supported Aggregators
+## 支持的聚合器
 
-- 1inch
-- OpenOcean
-- 0x Protocol
-- Paraswap
-- Native DEX routing
+- 1inch        |
+- OpenOcean     |
+- 0x Protocol    |
+- Paraswap      |
+- 原生去中心化交易所路由            |
 
-## Usage
+## 使用说明
 
 ```bash
 # Instant swap
@@ -53,5 +53,6 @@ eyebot tradebot limit BUY ETH 0.5 --price 2000
 eyebot tradebot dca ETH 100 --interval daily
 ```
 
-## Support
+## 售后支持
+
 Telegram: @ILL4NE

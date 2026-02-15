@@ -1,6 +1,6 @@
 ---
 name: quit-weed
-description: Take a tolerance break or quit cannabis with streak tracking and craving support
+description: 通过记录使用大麻的频率和戒断时的渴望程度，来帮助自己暂时停止使用大麻，或者彻底戒掉大麻。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,80 +11,76 @@ triggers:
   - "tolerance break"
 ---
 
-# Quit Weed
+# 戒除大麻
 
-Stay clear-headed. Track your streak. Build the habit.
+保持清醒的头脑，记录自己的戒断进度，养成良好的习惯。
 
-## What it does
+## 功能介绍
 
-**quit-weed** helps you take a tolerance break or permanently quit cannabis by:
+**quit-weed** 帮助你暂时停止使用大麻或彻底戒除它，具体方法包括：
 
-- **Streak Tracking** - Maintain a persistent counter of days without use
-- **Craving Tools** - Quick interventions when urges hit (breathing exercises, distraction techniques, motivation boosts)
-- **Clarity Timeline** - See expected mental/physical improvements at key milestones
-- **Goal Setting** - Define your target (7-day t-break, 30 days, or permanent quit)
-- **Progress Tracking** - Daily check-ins to stay accountable
+- **戒断进度追踪**：持续记录无使用大麻的天数。
+- **应对渴望的工具**：在感到渴望时提供即时帮助（如呼吸练习、分散注意力的方法、提升动力的建议）。
+- **清晰的时间线**：在关键节点查看预期的身心改善情况。
+- **目标设定**：明确你的戒断目标（7天暂时停止、30天或永久戒除）。
+- **进度跟踪**：每天检查自己的进展，保持自我约束。
 
-## Usage
+## 使用方法
 
-### Start a Break
-Ask clawd to initiate a new streak:
-- "Start a tolerance break"
-- "Begin weed quit journey"
-- "Set a 30-day cannabis goal"
+### 开始戒断
+让 **clawd** 启动一个新的戒断周期：
+- “开始暂时停止使用大麻”
+- “开始戒除大麻的旅程”
+- “设定30天的戒除目标”
 
-Clawd will record the start date and your goal duration.
+**clawd** 会记录开始日期和你的目标时长。
 
-### Handle Cravings
-When urges strike, trigger immediate support:
-- "I'm having a craving right now"
-- "Help me get through this"
-- "What should I do about this urge?"
+### 应对渴望
+当感到渴望时，立即寻求帮助：
+- “我现在很想吸大麻”
+- “帮我克服这个渴望”
+- “我应该怎么做来抑制这种渴望？”
 
-Get grounding techniques, distraction suggestions, and motivation reminders.
+你会收到缓解渴望的方法、分散注意力的建议以及提升动力的提醒。
 
-### Track Progress
-Check your streak anytime:
-- "How many days have I been clean?"
-- "Show my progress"
-- "Streak status"
+### 进度跟踪
+随时查看自己的戒断进度：
+- “我已经戒了几天了？”
+- “显示我的进展”
+- “当前戒断状态”
 
-View your current count, milestones reached, and time until next target.
+查看当前的戒断天数、达到的里程碑以及距离下一个目标的剩余时间。
 
-### Set Your Goal
-Define what success looks like:
-- "I want to quit for 2 weeks"
-- "Set a 90-day goal"
-- "Make this permanent"
+### 设定目标
+明确成功的标准：
+- “我想戒除大麻两周”
+- “设定90天的目标”
+- “永久戒除大麻”
 
-Clawd stores your target and adjusts the clarity timeline accordingly.
+**clawd** 会保存你的目标，并相应地调整时间线。
 
-### Benefits Check
-Understand what's happening in your body/mind:
-- "What benefits should I see by now?"
-- "When does brain fog clear?"
-- "Physical benefits timeline"
+### 检查效果
+了解你的身心变化：
+- “我现在应该看到哪些改善？”
+- “脑雾什么时候会消失？”
+- “身体上的改善时间表”
 
-Get science-backed expectations for sleep, focus, mood, and cognition at each stage.
+获取科学依据的预期效果，了解每个阶段在睡眠、注意力、情绪和认知方面的变化。
 
-## Clarity Timeline
+## 清晰的时间线
 
-| Milestone | Mental/Physical Changes |
+| 戒断天数 | 心身变化 |
 |-----------|------------------------|
-| **Day 1** | Initial urges peak. Sleep may be disrupted. Energy dips. Irritability common. |
-| **Day 3** | Brain fog starts lifting slightly. Sleep patterns normalize. Appetite returns. |
-| **1 Week** | Mental clarity noticeably sharper. Vivid dreams resume. Mood stabilizes. Anxiety reduces. |
-| **2 Weeks** | Focus and concentration significantly improved. Energy rebounds. Sleep quality deepens. |
-| **1 Month** | Memory and cognition baseline restored. Motivation increases. Lungs clear. Appetite normalized. |
+| **第1天** | 初期渴望最为强烈。睡眠可能受到影响，精力下降，易怒。 |
+| **第3天** | 脑雾开始减轻，睡眠模式恢复正常，食欲恢复。 |
+| **1周** | 心理清晰度明显提高，梦境变得生动，情绪稳定。 |
+| **2周** | 注意力和集中力显著提升，精力恢复，睡眠质量改善。 |
+| **1个月** | 记忆力和认知能力恢复到正常水平，积极性增强，肺部健康得到改善。 |
 
-## Tips
+## 小贴士
 
-1. **Hydrate heavily** - Drink 2-3x normal water intake. Helps flush your system and reduces cravings.
-
-2. **Move your body** - 20-30 min of exercise (walk, run, yoga) crushes urges and accelerates clarity.
-
-3. **Track cravings, not just days** - Note *when* cravings hit (time, trigger, emotion) to identify patterns and avoid them.
-
-4. **Find a replacement ritual** - If you smoked at specific times, replace with tea, journaling, or a walk. Habit beats willpower.
-
-5. **All data stays local on your machine** - Your streak, goals, and craving logs never leave your device. Complete privacy, always.
+1. **多喝水**：每天喝水量比平时多2-3倍，有助于排出体内毒素，减少渴望。
+2. **进行锻炼**：每天进行20-30分钟的锻炼（散步、跑步、瑜伽），可以抑制渴望并提升清醒度。
+3. **记录渴望的具体情况**：记录渴望出现的时间、触发因素和情绪，以便找出规律并避免它们。
+4. **找到替代活动**：如果你以前在特定时间吸大麻，可以尝试用喝茶、写日记或散步来替代。习惯的力量比意志力更强大。
+5. **所有数据都保存在你的设备上**：你的戒断进度、目标和渴望记录永远不会离开你的设备，确保隐私安全。

@@ -1,24 +1,24 @@
 ---
 name: aave-liquidation-monitor
-description: "Proactive monitoring of Aave V3 borrow positions with liquidation alerts. Queries user collateral, debt, and health factor across chains (Ethereum, Polygon, Arbitrum, etc.). Sends urgent alerts to Telegram/Discord/Slack when health factor drops below configurable thresholds (critical at 1.05, warning at 1.2). Use when you need continuous monitoring of Aave positions, want alerts before liquidation risk occurs, or need periodic summaries of your borrowing health."
+description: "主动监控 Aave V3 的借款头寸，并在发生清算风险时发出警报。查询用户在各个链（Ethereum、Polygon、Arbitrum 等）上的抵押品、债务以及借款健康状况（health factor）。当借款健康状况低于可配置的阈值时（临界值为 1.05，警告值为 1.2），会通过 Telegram/Discord/Slack 发送紧急警报。适用于需要持续监控 Aave 借款头寸的情况，希望在清算风险发生前收到警报，或需要定期获取借款健康状况汇总的情况。"
 ---
 
-# Aave Liquidation Monitor
+# Aave 清算监控工具
 
-## Quick Start
+## 快速入门
 
-Configure your wallet and thresholds once, then the skill runs automatically every 6 hours (configurable).
+只需配置一次您的钱包和阈值，该工具就会每 6 小时自动运行一次（可配置）。
 
-### Step 1: Initialize Your Config
+### 第 1 步：初始化配置
 
-Run `/aave-config init` to set up:
-- Your Ethereum wallet address (read-only; no private keys required)
-- Health factor thresholds (default: critical 1.05, warning 1.2, stable >1.5)
-- Check interval in hours (default: 6)
-- Notification verbosity (verbose = daily summaries even if stable; quiet = only alerts)
-- Preferred notification channel (Telegram default, or specify Discord/Slack)
+运行 `/aave-config init` 来设置以下内容：
+- 您的以太坊钱包地址（仅用于读取；无需私钥）
+- 健康因子阈值（默认：临界 1.05，警告 1.2，稳定 >1.5）
+- 检查间隔（以小时为单位，默认 6 小时）
+- 通知详细程度（详细模式 = 即使状态稳定也会发送每日摘要；简略模式 = 仅发送警报）
+- 首选通知渠道（默认为 Telegram，或指定 Discord/Slack）
 
-Example:
+示例：
 ```
 /aave-config init
 → Wallet: 0x1234...5678
@@ -28,9 +28,9 @@ Example:
 → Channel: telegram
 ```
 
-### Step 2: Test the Monitor
+### 第 2 步：测试监控工具
 
-Run `/aave-monitor check` to fetch your position immediately and see the alert format:
+运行 `/aave-monitor check` 以立即获取您的资产状况，并查看警报格式：
 
 ```
 /aave-monitor check
@@ -42,88 +42,88 @@ Run `/aave-monitor check` to fetch your position immediately and see the alert f
 → Supplied Assets: WETH (10), USDC (20,000), DAI (30,000)
 ```
 
-### Step 3: Enable Proactive Monitoring
+### 第 3 步：启用主动监控
 
-Run `/aave-monitor enable` to start automatic checks every 6 hours. The skill registers a cron job that silently runs in the background and alerts you only when health factor drops below threshold.
+运行 `/aave-monitor enable` 以每 6 小时自动启动检查。该工具会注册一个 cron 作业，在后台静默运行，并仅在健康因子低于阈值时向您发送警报。
 
-For manual override:
+如需手动覆盖设置：
 ```
 /aave-monitor enable --interval 4   # Check every 4 hours
 /aave-monitor disable               # Stop monitoring
 /aave-monitor status                # See current config + last check result
 ```
 
-## Configuration Reference
+## 配置参考
 
-See `references/config-guide.md` for detailed config options, chain support, and threshold guidance.
+请参阅 `references/config-guide.md` 以获取详细的配置选项、支持的链以及阈值指南。
 
-See `references/aave-api.md` for Aave V3 GraphQL schema and query patterns.
+请参阅 `references/aave-api.md` 以了解 Aave V3 的 GraphQL 架构和查询模式。
 
-**Security & Credentials:** See `SECURITY.md` for how credentials are handled and threat model.
+**安全与凭证：** 请参阅 `SECURITY.md` 以了解凭证的处理方式及威胁模型。
 
-**For auditors:** See `SECURITY.md` for code review checklist and architecture details.
+**针对审计人员：** 请参阅 `SECURITY.md` 以获取代码审查清单和架构详情。
 
-## How It Works
+## 工作原理
 
-1. **Query Phase**: Calls Aave V3 GraphQL API with your wallet address
-2. **Analysis Phase**: Extracts health factor, collateral, debt, borrowed/supplied assets
-3. **Alert Logic**:
-   - If HF < 1.05 → **CRITICAL** (red alert, send immediately)
-   - If HF < 1.2 → **WARNING** (yellow alert, send immediately)
-   - If HF > 1.5 → **STABLE** (no alert, unless verbose mode enables daily summary)
-4. **Notification Phase**: Posts alert to your configured channel with clear summary
-5. **Retry Logic**: If API fails, retries up to 3 times with exponential backoff
+1. **查询阶段**：使用您的钱包地址调用 Aave V3 GraphQL API。
+2. **分析阶段**：提取健康因子、抵押品、债务以及借入/提供的资产信息。
+3. **警报逻辑**：
+   - 如果健康因子 < 1.05 → **临界**（红色警报，立即发送）
+   - 如果健康因子 < 1.2 → **警告**（黄色警报，立即发送）
+   - 如果健康因子 > 1.5 → **稳定**（不发送警报，除非启用详细模式）
+4. **通知阶段**：将警报信息发送到您配置的渠道，并附上清晰的摘要。
+5. **重试逻辑**：如果 API 失败，最多尝试 3 次，并采用指数级退避策略进行重试。
 
-## Error Handling
+## 错误处理
 
-- **Invalid wallet address** → Logs error, skips check, retries next interval
-- **API timeout** → Retries up to 3x with exponential backoff (2s, 4s, 8s)
-- **Malformed response** → Alerts you to API changes, logs full response for debugging
-- **Network errors** → Silently retries; alerts only if all retries fail
+- **无效的钱包地址** → 记录错误，跳过当前检查，并在下一个时间间隔重新尝试。
+- **API 超时** → 最多尝试 3 次，并采用指数级退避策略（2 秒、4 秒、8 秒）。
+- **响应格式错误** → 通知您 API 发生变化，并记录完整响应以便调试。
+- **网络错误** → 在后台默默重试；只有在所有重试都失败时才会发送警报。
 
-## Security & Credentials
+## 安全与凭证
 
-**NO private keys are requested or stored** — this is read-only monitoring only.
+**无需提供或存储私钥** — 该工具仅用于读取数据。
 
-### How messaging credentials work
+### 消息传递凭证的工作原理
 
-The skill uses **OpenClaw's built-in message routing** — it does NOT store Telegram, Discord, or Slack tokens.
+该工具使用 **OpenClaw 的内置消息路由功能** — 它不会存储 Telegram、Discord 或 Slack 的令牌。
 
-1. You configure your messaging channel in OpenClaw (outside this skill)
-2. The skill calls OpenClaw's messaging API with just the alert text
-3. OpenClaw routes the message using your configured channels
+1. 您需要在 OpenClaw 中配置消息渠道（不在本工具的配置范围内）。
+2. 该工具仅使用警报文本调用 OpenClaw 的消息 API。
+3. OpenClaw 会根据您配置的渠道发送消息。
 
-Example:
+示例：
 ```
 /aave-config set channel telegram
 → OpenClaw sends alerts via your pre-configured Telegram channel
 ```
 
-**You must have a messaging channel already set up in OpenClaw.** See OpenClaw docs for setting up Telegram/Discord/Slack integrations.
+**您必须在 OpenClaw 中已经设置好消息渠道。** 请参阅 OpenClaw 的文档以了解如何设置 Telegram/Discord/Slack 集成。
 
-### Data handling
+### 数据处理
 
-- **Wallet address:** Stored in OpenClaw's encrypted config (never sent to external services except Aave's public API)
-- **API responses:** Parsed for health factor only; sensitive position data is NOT logged
-- **Credentials:** Managed by OpenClaw, never stored in skill files
+- **钱包地址：** 存储在 OpenClaw 的加密配置中（除 Aave 的公共 API 外，不会发送给任何外部服务）。
+- **API 响应：** 仅解析健康因子数据；敏感的资产状况数据不会被记录。
+- **凭证：** 由 OpenClaw 管理，不会存储在工具文件中。
 
-### What the skill accesses
+### 该工具可以访问的内容
 
-✅ **Aave GraphQL API (public)** — reads your position data  
-✅ **OpenClaw message routing** — sends formatted alerts to your configured channel  
-✅ **Cron scheduler** — runs background checks on your interval
+✅ **Aave GraphQL API（公共接口）** — 用于读取您的资产状况数据。
+✅ **OpenClaw 消息路由** — 用于将格式化的警报发送到您配置的渠道。
+✅ **Cron 安排器** — 按设定的时间间隔在后台执行检查。
 
-❌ **Does NOT:**
-- Request private keys
-- Store API tokens
-- Execute transactions
-- Modify your positions
+**禁止的操作：**
+- 请求私钥。
+- 存储 API 令牌。
+- 执行交易。
+- 修改您的资产状况。
 
-## Examples
+## 示例
 
-### Alert Examples
+### 警报示例
 
-**Critical Alert (HF < 1.05):**
+**临界警报（健康因子 < 1.05）：**
 ```
 🚨 AAVE LIQUIDATION RISK – CRITICAL
 Health Factor: 1.02 (Liquidation threshold: 1.0)
@@ -146,7 +146,7 @@ Suggested Actions:
 Last checked: 2026-02-11 08:15 UTC
 ```
 
-**Warning Alert (HF < 1.2):**
+**警告警报（健康因子 < 1.2）：**
 ```
 ⚠️ AAVE WARNING
 Health Factor: 1.15 (Approaching 1.2 threshold)
@@ -156,7 +156,7 @@ Position approaching liquidation. Consider:
 - Adding $5,000 collateral (WETH or stETH)
 ```
 
-**Stable Position (HF > 1.5, verbose mode only):**
+**资产状况稳定（健康因子 > 1.5，仅限详细模式）：**
 ```
 ✅ AAVE POSITION HEALTHY
 Health Factor: 2.31
@@ -166,7 +166,7 @@ Total Debt: $21,804.00
 All clear. Check again tomorrow.
 ```
 
-### Command Examples
+### 命令示例
 
 ```bash
 # One-time position check
@@ -188,11 +188,11 @@ All clear. Check again tomorrow.
 /aave-monitor disable
 ```
 
-## Chains Supported
+## 支持的链
 
-Primary: Ethereum mainnet
+主要支持：以太坊主网
 
-Also works (with same config address where applicable):
+在适用的情况下，也可以支持以下链（使用相同的配置地址）：
 - Polygon
 - Arbitrum
 - Optimism
@@ -200,58 +200,54 @@ Also works (with same config address where applicable):
 - Avalanche
 - Gnosis
 
-Edit `scripts/monitor.js` to add chains or customize per-chain endpoints.
+请编辑 `scripts/monitor.js` 以添加更多支持的链或自定义每个链的端点。
 
-## Customization
+## 自定义设置
 
-**Change check interval:**
+**更改检查间隔：**
 ```
 /aave-config set interval 4  # Check every 4 hours
 ```
 
-**Change alert thresholds:**
+**更改警报阈值：**
 ```
 /aave-config set thresholds 1.1 1.25  # Critical at 1.1, warning at 1.25
 ```
 
-**Enable verbose mode (daily summaries even if stable):**
+**启用详细模式（即使资产状况稳定也会发送每日摘要）：**
 ```
 /aave-config set verbosity verbose
 ```
 
-**Switch notification channel:**
+**切换通知渠道：**
 ```
 /aave-config set channel discord
 ```
 
-## Implementation Details
+## 实现细节
 
-See `scripts/monitor.js` for the core monitoring logic (GraphQL queries, health factor calculation, alert formatting).
+请参阅 `scripts/monitor.js` 以了解核心监控逻辑（GraphQL 查询、健康因子计算、警报格式化）。
 
-See `scripts/cron-runner.js` for cron job integration with OpenClaw's cron scheduler.
+请参阅 `scripts/cron-runner.js` 以了解如何将 cron 作业与 OpenClaw 的 cron 安排器集成。
 
-## Troubleshooting
+## 故障排除
 
-**"Invalid wallet address"**
-→ Check format: must be 0x... format. Try `/aave-config view` to see current config.
+**“无效的钱包地址”** → 检查地址格式：必须为 0x... 格式。尝试运行 `/aave-config view` 以查看当前配置。
 
-**"Health factor not returned by API"**
-→ Wallet may not have Aave position. Try `/aave-monitor check` for immediate response.
+**“API 未返回健康因子”** → 您的钱包可能没有在 Aave 中的资产。尝试运行 `/aave-monitor check` 以获取即时响应。
 
-**"API endpoint unreachable"**
-→ Aave API may be down. Skill retries automatically. Check https://status.aave.com.
+**“API 端点无法访问”** → Aave API 可能暂时不可用。工具会自动重试。请查看 https://status.aave.com。
 
-**"No notifications sent"**
-→ Check that your notification channel is active. Run `/aave-monitor check` to test delivery.
+**“未发送通知”** → 检查您的通知渠道是否已启用。运行 `/aave-monitor check` 以测试通知是否已成功发送。
 
-## Notes
+## 注意事项
 
-- Health factor = Total Collateral / Total Debt (net of liquidation threshold ratios)
-- Liquidation occurs when HF ≤ 1.0
-- Variable debt accrues interest; stable debt is fixed-rate
-- eMode allows higher LTV for correlated assets (e.g., stablecoins, ETH-LSTs)
-- Supplied assets are collateral; they earn interest but can be seized if you're liquidated
+- 健康因子 = 总抵押品 / 总债务（扣除清算阈值后的比率）。
+- 当健康因子 ≤ 1.0 时，将发生清算。
+- 变动债务会累积利息；固定债务的利率是固定的。
+- eMode 允许相关资产（例如稳定币、ETH-LST）具有更高的杠杆率。
+- 提供的资产作为抵押品；它们会产生利息，但在您被清算时可能会被没收。
 
 ---
 
-**Last Updated:** 2026-02-11 | **Status:** Ready for configuration
+**最后更新时间：** 2026-02-11 | **状态：** 可以进行配置使用了。

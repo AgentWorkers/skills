@@ -11,11 +11,11 @@ commands:
   tribe: scripts/tribe.sh
 ---
 
-# Tribe Protocol
+# Tribe 协议
 
-Trust lookup system for OpenClaw bots. Every non-owner interaction must be verified against the tribe database before responding.
+这是 OpenClaw 机器人的信任查询系统。所有非所有者的交互在响应之前都必须与 tribe 数据库进行验证。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize (first time only)
@@ -36,43 +36,43 @@ Trust lookup system for OpenClaw bots. Every non-owner interaction must be verif
 ./scripts/tribe.sh set-status <discord_id> blocked --reason "Bad actor"
 ```
 
-## Trust Tiers
+## 信任等级
 
-| Tier | Label | Access |
+| 等级 | 标签 | 访问权限 |
 |------|-------|--------|
-| 4 | Owner | Full trust, all data |
-| 3 | Tribe | Collaborate freely, no private data |
-| 2 | Acquaintance | Public info only |
-| 1 | Stranger | Minimal engagement |
-| 0 | Blocked | Ignore completely |
+| 4   | 所有者 | 完全信任，可访问所有数据 |
+| 3   | 部落成员 | 可自由协作，无法访问私人数据 |
+| 2   | 朋友   | 仅可访问公开信息 |
+| 1   | 陌生人 | 仅允许最基本的交互 |
+| 0    | 被阻止 | 完全忽略 |
 
-## How It Works
+## 工作原理
 
-1. Message arrives from non-owner
-2. Bot reads TRIBE.md (generated at workspace root)
-3. Bot runs `tribe lookup <discord_id>`
-4. Script returns entity info + tier rules reminder
-5. Bot applies tier-appropriate behavior
+1. 非所有者发送消息。
+2. 机器人读取位于工作区根目录下的 `TRIBE.md` 文件。
+3. 机器人执行 `tribe lookup <discord_id>` 命令。
+4. 脚本返回相关实体的信息以及对应的信任等级规则。
+5. 机器人根据信任等级执行相应的行为。
 
-## Commands
+## 命令
 
-- `tribe init` — Initialize database
-- `tribe lookup` — Query entity by discord_id, name, tag, server
-- `tribe add` — Add new entity
-- `tribe set-tier` — Update trust tier
-- `tribe set-status` — Update status
-- `tribe grant` / `tribe revoke` — Channel access
-- `tribe tag` — Manage tags
-- `tribe roster` — List all entities
-- `tribe log` — Audit trail
-- `tribe export` — Dump to markdown
-- `tribe stats` — Quick summary
+- `tribe init` — 初始化数据库
+- `tribe lookup` — 根据 discord_id、名称或服务器查询实体信息
+- `tribe add` — 添加新实体
+- `tribe set-tier` — 更新实体的信任等级
+- `tribe set-status` — 更新实体的状态
+- `tribe grant` / `tribe revoke` — 授予/撤销通道访问权限
+- `tribe tag` — 管理实体的标签
+- `tribe roster` — 列出所有实体
+- `tribe log` — 查看审计记录
+- `tribe export` — 将数据导出为 Markdown 格式
+- `tribe stats` — 获取快速统计信息
 
-## Environment Variables
+## 环境变量
 
-- `TRIBE_DB` — Override database path
-- `CLAWD_HOME` — Base directory (default: ~/clawd)
+- `TRIBE_DB` — 数据库路径（可自定义）
+- `CLAWD_HOME` — 应用程序的基础目录（默认为 ~/clawd）
 
-## Dependencies
+## 依赖项
 
-- `sqlite3` (pre-installed on macOS/most Linux)
+- `sqlite3`（已在 macOS 和大多数 Linux 系统上预安装）

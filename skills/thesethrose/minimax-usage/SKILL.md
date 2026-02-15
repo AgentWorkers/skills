@@ -1,31 +1,31 @@
 ---
 name: minimax-usage
-description: Monitor Minimax Coding Plan usage to stay within API limits. Fetches current usage stats and provides status alerts.
+description: 监控 Minimax Coding Plan 的使用情况，确保其使用量在 API 的限制范围内。该工具会获取当前的使用统计数据，并在超出限制时发出状态警报。
 metadata: {"clawdbot":{"emoji":"📊"}}
 ---
 
-# Minimax Usage Skill
+# Minimax 使用技巧
 
-Monitor Minimax Coding Plan usage to stay within limits.
+监控 Minimax 编码计划的使用情况，以确保使用量在规定的范围内。
 
-## Setup
+## 设置
 
-Create a `.env` file in the same directory as the script:
+在脚本所在的目录中创建一个 `.env` 文件：
 
 ```bash
 MINIMAX_CODING_API_KEY=your_api_key_here
 MINIMAX_GROUP_ID=your_group_id_here
 ```
 
-Get your GroupId from: https://platform.minimax.io/user-center/basic-information (under "Basic Information")
+从以下链接获取您的 GroupId：https://platform.minimax.io/user-center/basic-information（在“基本信息”部分）
 
-## Usage
+## 使用方法
 
 ```bash
 ./minimax-usage.sh
 ```
 
-## Output Example
+## 输出示例
 
 ```
 🔍 Checking Minimax Coding Plan usage...
@@ -39,14 +39,14 @@ Get your GroupId from: https://platform.minimax.io/user-center/basic-information
 💚 GREEN: 17% used. Plenty of buffer.
 ```
 
-## API Details
+## API 详情
 
-**Endpoint:**
+**端点：**
 ```
 GET https://platform.minimax.io/v1/api/openplatform/coding_plan/remains?GroupId={GROUP_ID}
 ```
 
-**Required Headers:**
+**必需的请求头：**
 ```
 accept: application/json, text/plain, */*
 authorization: Bearer {MINIMAX_CODING_API_KEY}
@@ -54,15 +54,15 @@ referer: https://platform.minimax.io/user-center/payment/coding-plan
 user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36
 ```
 
-## Limits
+## 使用限制
 
-| Metric | Value |
+| 指标 | 值 |
 |--------|-------|
-| Reset window | 5 hours (dynamic) |
-| Max target | 60% usage |
-| 1 prompt ≈ | 15 model calls |
+| 重置窗口 | 5 小时（动态调整） |
+| 最大使用量 | 60% |
+| 每条提示信息大约对应 | 15 次模型调用 |
 
-## Notes
+## 注意事项
 
-- Coding Plan API key is **exclusive** to this plan (not interchangeable with standard API keys)
-- Usage from 5+ hours ago is automatically released from the count
+- 编码计划 API 密钥是专为此计划设计的（不能与标准 API 密钥互换） |
+- 5 小时之前的使用量会自动从统计中清除。

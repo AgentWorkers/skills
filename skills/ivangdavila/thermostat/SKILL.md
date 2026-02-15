@@ -1,83 +1,80 @@
 ---
 name: Thermostat
-description: Adjust temperatures, diagnose comfort issues, calculate energy savings, and automate schedules through voice commands or smart home integration.
+description: 通过语音指令或智能家居集成，您可以调节温度、诊断舒适度问题、计算节能效果，并自动化执行各种日程安排。
 ---
 
-## What the Agent Can Do
+## 代理的功能
 
-| User Request | Agent Action |
+| 用户请求 | 代理操作 |
 |--------------|--------------|
-| "Make it warmer/cooler" | Adjust setpoint ±2-3°F or to specific temp |
-| "Why is my bedroom cold?" | Diagnose: sensor location, vent issues, zone problems |
-| "Set up a schedule" | Gather wake/leave/return/sleep times → configure |
-| "Am I wasting money?" | Calculate setback savings, identify inefficiencies |
-| "I'm going on vacation" | Set freeze protection (55°F) or vacancy mode |
-| "Something's wrong with my heat" | Troubleshoot: cycles, error codes, aux heat issues |
+| “让房间更暖和/更凉爽” | 调整设定温度±2-3°F或至特定温度 |
+| “为什么我的卧室很冷？” | 进行诊断：检查传感器位置、通风系统问题或区域设置问题 |
+| “设置日程安排” | 收集用户的起床/离开/返回/睡觉时间并配置相应的温度设置 |
+| “我在浪费钱吗？” | 计算节能效果，识别能源使用中的低效环节 |
+| “我要去度假了” | 设置防冻保护温度（55°F）或进入“空房模式” |
+| “我的暖气系统出了问题” | 进行故障排查：检查系统运行周期、错误代码或辅助加热设备的问题 |
 
 ---
 
-## Before Adjusting Temperature
+## 调整温度前的准备工作
 
-**Gather context:**
-- Current temp and setpoint
-- Heating or cooling mode?
-- Smart thermostat or basic?
-- Any specific room complaints?
+**收集相关信息：**
+- 当前房间温度和设定温度
+- 使用的是供暖模式还是制冷模式？
+- 使用的是智能恒温器还是传统恒温器？
+- 有没有关于特定房间的使用问题？
 
-**Smart thermostats:** Adjust via voice, app command, or API integration.
-**Basic thermostats:** Guide user to physical adjustment, suggest smart plug workarounds if relevant.
-
----
-
-## Diagnosing Comfort Problems
-
-When user says "it's too hot/cold":
-
-1. **Check location mismatch** — Thermostat in hallway but complaint is bedroom? Sensor measures wrong place. Solution: remote sensors or door management.
-
-2. **Check system behavior** — Running constantly? Short cycling (<5 min)? Not turning on? Each has different diagnosis path. See `troubleshooting.md`.
-
-3. **Check settings** — Wrong mode? Hold preventing schedule? Eco mode active unexpectedly?
+**智能恒温器：** 可通过语音指令、应用程序命令或API进行远程调整。
+**传统恒温器：** 指导用户手动调节温度设置；如果适用，建议使用智能插座来优化能源使用。
 
 ---
 
-## Energy Calculations
+## 诊断舒适度问题
 
-When user asks about savings:
+当用户反馈房间温度过高或过低时：
 
-**Setback rule of thumb:** 1°F setback for 8 hours = ~1% savings.
+1. **检查传感器位置是否正确** — 恒温器安装在走廊，但用户抱怨卧室温度不合适？可能是传感器安装位置不正确。解决方案：使用远程传感器或门磁感应器来准确检测房间温度。
+2. **检查系统运行状态** — 系统是否一直在运行？运行周期是否过短（<5分钟）？还是完全不启动？针对不同情况有不同的排查方法。详情请参阅`troubleshooting.md`。
+3. **检查系统设置** — 是否选择了错误的运行模式？是否设置了定时功能？节能模式是否被意外激活？
 
-| Scenario | Estimated savings |
+---
+
+## 能源消耗计算
+
+当用户询问节能效果时：
+
+**节能经验法则：** 每降低1°F的温度，并保持8小时，大约可以节省1%的能源费用。
+
+| 情况 | 预计节能效果 |
 |----------|-------------------|
-| 10°F night setback (8h) | 5-15% |
-| 10°F work setback (8h) | 5-15% |
-| Both combined | 10-25% |
+| 夜间温度降低10°F（持续8小时） | 5-15% |
+| 工作时间温度降低10°F（持续8小时） | 5-15% |
+| 两种情况同时实施 | 10-25% |
 
-**Heat pump exception:** Deep setbacks may trigger expensive aux heat. Recommend 3-5°F max for heat pumps.
+**关于热泵的特别说明：** 过度降低温度（如降低3-5°F）可能会触发辅助加热设备的运行，从而增加能耗。建议热泵的温差调整范围控制在3-5°F以内。
 
-**Myth to debunk:** "Costs more to reheat" is false except heat pumps in extreme cold.
-
----
-
-## Vacation/Away Configuration
-
-**Short away (hours):** Set 62°F heat / 82°F cool.
-
-**Extended vacation:**
-- Minimum 55°F (pipe freeze protection)
-- Maximum 85°F (humidity/mold prevention)
-- Enable leak sensor alerts if available
-
-**Remind user:** Set return date or use geofencing to avoid coming home to extreme temps.
+**需要澄清的误区：** “重新加热的能耗更高”这一说法并不正确，除非是在极寒天气下使用热泵。
 
 ---
 
-## Load Detailed Reference
+## 度假期间的设置
 
-| Situation | Reference |
+**短期外出（几小时）：** 将室内温度设置为62°F（供暖）/82°F（制冷）。
+**长时间外出：**
+- 最低温度设置为55°F（防止管道冻结）
+- 最高温度设置为85°F（防止湿度过高或霉菌滋生）
+- 如果有条件，启用泄漏传感器警报功能。
+
+**提醒用户：** 设置返回日期，或使用地理定位功能，避免回家时遇到极端温度。
+
+---
+
+## 详细参考资料
+
+| 需要了解的内容 | 参考文档 |
 |-----------|-----------|
-| Mode explanations, holds, fan settings | `basics.md` |
-| System not responding, error codes, HVAC issues | `troubleshooting.md` |
-| Cost calculations, efficiency tips, renter workarounds | `efficiency.md` |
-| HomeKit, Alexa, Google, Home Assistant, Matter | `integration.md` |
-| Vacation settings, freeze protection, humidity | `away.md` |
+- 各种运行模式的说明、温度保持功能、风扇设置 | `basics.md` |
+- 系统故障、错误代码及暖通空调相关问题 | `troubleshooting.md` |
+- 能源消耗计算、节能技巧及租户使用建议 | `efficiency.md` |
+- HomeKit、Alexa、Google、Home Assistant、Matter等设备的集成方法 | `integration.md` |
+- 度假期间的设置、防冻保护措施及湿度控制 | `away.md` |

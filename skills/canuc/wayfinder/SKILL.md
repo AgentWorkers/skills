@@ -1,16 +1,16 @@
 ---
 name: wayfinder
-description: DeFi trading, yield strategies, and portfolio management via the Wayfinder Paths CLI (`poetry run wayfinder`). Use when the user wants to check balances, swap tokens, bridge assets, trade perps, trade prediction markets (Polymarket), run automated yield strategies (stablecoin yield, basis trading, Moonwell loops, HyperLend, Boros HYPE), manage wallets, discover DeFi pools, look up token metadata, manage LP positions (Uniswap V3 / ProjectX), or execute one-off DeFi scripts. Supports Ethereum, Base, Arbitrum, Polygon, BSC, Avalanche, Plasma, and HyperEVM via protocol adapters.
+description: 通过 Wayfinder Paths CLI (`poetry run wayfinder`) 进行去中心化金融（DeFi）交易、收益策略管理以及投资组合管理。适用于用户需要查询账户余额、交换代币、跨链资产转移、交易衍生品（perps）、参与预测市场交易（如 Polymarket）、运行自动化收益策略（如稳定币收益策略、基础交易策略、Moonwell 循环、HyperLend、Boros HYPE 等）、管理钱包、查找代币元数据、管理流动性池（Uniswap V3 / ProjectX）或执行一次性 DeFi 脚本的场景。该工具支持通过协议适配器与 Ethereum、Base、Arbitrum、Polygon、BSC、Avalanche、Plasma 和 HyperEVM 等区块链平台进行交互。
 metadata: {"openclaw":{"emoji":"🧭","homepage":"https://github.com/WayfinderFoundation/wayfinder-paths-sdk","requires":{"bins":["poetry"]},"install":[{"id":"brew","kind":"brew","formula":"poetry","bins":["poetry"],"label":"Install poetry"}]}}
 ---
 
 # Wayfinder
 
-DeFi trading, yield strategies, and portfolio management powered by [poetry run wayfinder Paths](https://github.com/WayfinderFoundation/wayfinder-paths-sdk).
+Wayfinder是一个基于[poetry run wayfinder Paths](https://github.com/WayfinderFoundation/wayfinder-paths-sdk)框架的DeFi交易、收益策略和投资组合管理工具。
 
-## Pre-Flight Check
+## 预运行检查
 
-Before running any commands, verify that poetry run wayfinder Paths is installed and reachable:
+在运行任何命令之前，请确认已经安装了poetry run wayfinder Paths，并且可以正常访问它：
 
 ```bash
 # SDK location (override by setting WAYFINDER_SDK_PATH)
@@ -42,15 +42,15 @@ fi
 echo "poetry run wayfinder Paths is installed and ready."
 ```
 
-If either check fails, follow the **First-Time Setup** instructions below before proceeding.
+如果任何检查失败，请按照以下**首次设置**说明进行操作，然后再继续。
 
-## Quick Start
+## 快速入门
 
-### First-Time Setup
+### 首次设置
 
-**Important:** The SDK must be installed from GitHub via `git clone`. Do NOT install from PyPI (`pip install wayfinder-paths` will not work).
+**重要提示：**必须通过`git clone`从GitHub下载SDK。**切勿通过PyPI（`pip install wayfinder-paths`）来安装。
 
-**Before starting:** You need a Wayfinder API key (format: `wk_...`). Get one at **https://strategies.wayfinder.ai**. The guided setup will prompt you for this key.
+**开始之前：**您需要一个Wayfinder API密钥（格式：`wk_...`）。可以在**https://strategies_wayfinder.ai**获取该密钥。引导式设置会提示您输入这个密钥。
 
 ```bash
 # Clone wayfinder-paths-sdk from GitHub (required — do NOT pip install)
@@ -67,13 +67,13 @@ poetry install
 python3 scripts/setup.py
 ```
 
-**Wallet security:**
-- **NEVER output private keys or seed phrases into the conversation.** These are secrets — they must stay on the machine, never in chat.
-- For a long-running bot, prefer a seed phrase stored in your backend/secret manager rather than generating random wallets on the server.
-- On first-time setup, the user should retrieve the seed phrase directly from their machine or secret manager. Only offer to display the seed phrase if the user explicitly confirms they cannot access the machine to retrieve it themselves.
-- See `references/setup.md` for detailed wallet setup instructions.
+**钱包安全提示：**
+- **切勿在对话中泄露私钥或种子短语。**这些是敏感信息，必须保存在本地机器上，切勿通过聊天传递。
+- 对于长期运行的机器人，建议将种子短语存储在后端/秘密管理器中，而不是在服务器上生成随机钱包。
+- 在首次设置时，用户应直接从自己的机器或秘密管理器中获取种子短语。只有当用户明确表示无法自行获取时，才提供显示种子短语的功能。
+- 有关详细的钱包设置说明，请参阅`references/setup.md`。
 
-### Verify Setup
+### 验证设置
 
 ```bash
 export WAYFINDER_SDK_PATH="${WAYFINDER_SDK_PATH:-$HOME/wayfinder-paths-sdk}"
@@ -84,33 +84,33 @@ poetry run wayfinder resource wayfinder://wallets
 poetry run wayfinder resource wayfinder://balances/main
 ```
 
-## Command Reference
+## 命令参考
 
-All commands should be run from `$WAYFINDER_SDK_PATH` and require `WAYFINDER_CONFIG_PATH` (default: `$WAYFINDER_SDK_PATH/config.json`). All responses return `{"ok": true, "result": {...}}` on success or `{"ok": false, "error": {"code": "...", "message": "..."}}` on failure.
+所有命令都应在 `$WAYFINDER_SDK_PATH` 下执行，并且需要 `WAYFINDER_CONFIG_PATH`（默认值为 `$WAYFINDER_SDK_PATH/config.json`）。成功时，所有响应都会返回 `{"ok": true, "result": {...}`；失败时，则返回 `{"ok": false, "error": {"code": "...", "message": "..."}`。
 
 ---
 
-### `resource` — Read MCP resources by URI
+### `resource` — 通过URI读取MCP资源
 
-Read-only access to adapters, strategies, wallets, balances, tokens, and Hyperliquid market data via URI-based resources. Use `--list` to see all available resources and templates.
+通过基于URI的资源，可以读取适配器、策略、钱包、余额、代币和Hyperliquid市场的数据。使用 `--list` 可以查看所有可用的资源和模板。
 
-**Asset/data sourcing rule:** When the user asks you to look up token/pool/market/protocol data, first use Wayfinder’s adapter/strategy discovery resources (`poetry run wayfinder resource wayfinder://adapters`, `wayfinder://adapters/{name}`, `wayfinder://strategies`, `wayfinder://tokens/*`). Only fall back to other methods if Wayfinder doesn’t expose the required data or the user explicitly asks.
+**资产/数据来源规则：**当用户请求查询代币/池/市场/协议数据时，首先使用Wayfinder的适配器/策略发现资源（`poetry run wayfinder resource wayfinder://adapters`、`wayfinder://adapters/{name}`、`wayfinder://strategies`、`wayfinder://tokens/*`）。只有在Wayfinder无法提供所需数据或用户明确请求时，才使用其他方法。
 
 ```bash
 # List all available resources and templates
 poetry run wayfinder resource --list
 ```
 
-#### Static Resources
+#### 静态资源
 
-| URI | Description |
+| URI | 描述 |
 |-----|-------------|
-| `wayfinder://adapters` | List all adapters with capabilities |
-| `wayfinder://strategies` | List all strategies with adapter dependencies |
-| `wayfinder://wallets` | List all configured wallets |
-| `wayfinder://hyperliquid/prices` | All Hyperliquid mid prices |
-| `wayfinder://hyperliquid/markets` | Perp market metadata, funding rates, and asset contexts |
-| `wayfinder://hyperliquid/spot-assets` | Spot asset metadata |
+| `wayfinder://adapters` | 列出所有适配器的功能 |
+| `wayfinder://strategies` | 列出所有策略及其依赖的适配器 |
+| `wayfinder://wallets` | 列出所有配置的钱包 |
+| `wayfinder://hyperliquid/prices` | 所有Hyperliquid的中间价 |
+| `wayfinder://hyperliquid/markets` | Perp市场的元数据、融资率和资产上下文 |
+| `wayfinder://hyperliquid/spot-assets` | Perp市场的资产元数据 |
 
 ```bash
 poetry run wayfinder resource wayfinder://adapters
@@ -121,24 +121,20 @@ poetry run wayfinder resource wayfinder://hyperliquid/markets
 poetry run wayfinder resource wayfinder://hyperliquid/spot-assets
 ```
 
-#### Resource Templates
+#### 资源模板
 
-| URI Template | Description |
+| URI模板 | 描述 |
 |--------------|-------------|
-| `wayfinder://adapters/{name}` | Describe a single adapter (e.g. `moonwell_adapter`) |
-| `wayfinder://strategies/{name}` | Describe a single strategy (e.g. `stablecoin_yield_strategy`) |
-| `wayfinder://wallets/{label}` | Get a single wallet by label |
-| `wayfinder://balances/{label}` | Enriched multi-chain balances for a wallet |
-| `wayfinder://activity/{label}` | Recent transaction activity for a wallet |
-| `wayfinder://tokens/search/{chain_code}/{query}` | **Fuzzy token search** (hits `/tokens/fuzzy/`) — ALWAYS use this first |
-| `wayfinder://tokens/resolve/{query}` | Resolve a token by known ID (hits `/tokens/detail/`) — only use with IDs from search |
-| `wayfinder://tokens/gas/{chain_code}` | **Native gas token** for a chain (ETH, HYPE) — use for native tokens |
-| `wayfinder://hyperliquid/{label}/state` | Perp positions + PnL for a wallet |
-| `wayfinder://hyperliquid/{label}/spot` | Spot balances on Hyperliquid for a wallet |
-| `wayfinder://hyperliquid/prices/{coin}` | Mid price for a single coin |
-| `wayfinder://hyperliquid/book/{coin}` | Order book for a coin |
-
-**Token lookup order — always search or use gas endpoint first:**
+| `wayfinder://adapters/{name}` | 描述单个适配器（例如 `moonwell_adapter`） |
+| `wayfinder://strategies/{name}` | 描述单个策略（例如 `stablecoin_yield_strategy`） |
+| `wayfinder://wallets/{label}` | 根据标签获取单个钱包 |
+| `wayfinder://balances/{label}` | 获取钱包的跨链余额 |
+| `wayfinder://activity/{label}` | 获取钱包的最新交易活动 |
+| `wayfinder://tokens/search/{chain_code}/{query}` | **模糊查询代币**（查询结果位于 `/tokens/fuzzy/`）——始终优先使用此方法 |
+| `wayfinder://tokens/resolve/{query}` | 根据已知ID解析代币（查询结果位于 `/tokens/detail/`）——仅在使用ID时使用 |
+| `wayfinder://tokens/gas/{chain_code}` | 指定链路的**原生气体代币**（例如ETH、HYPE）——用于原生代币 |
+| `wayfinder://hyperliquid/{label}/state` | 获取钱包在Hyperliquid上的Perp头寸和利润与损失（PnL） |
+| `wayfinder://hyperliquid/perp` | 获取钱包在Hyperliquid上的现货余额 |
 
 ```bash
 # 1. For native gas tokens (ETH, HYPE): use the gas endpoint
@@ -155,41 +151,29 @@ poetry run wayfinder resource wayfinder://tokens/search/ethereum/weth
 poetry run wayfinder resource wayfinder://tokens/resolve/usd-coin-base
 ```
 
-```bash
-poetry run wayfinder resource wayfinder://adapters/moonwell_adapter
-poetry run wayfinder resource wayfinder://strategies/stablecoin_yield_strategy
-poetry run wayfinder resource wayfinder://wallets/main
-poetry run wayfinder resource wayfinder://balances/main
-poetry run wayfinder resource wayfinder://activity/main
-poetry run wayfinder resource wayfinder://hyperliquid/main/state
-poetry run wayfinder resource wayfinder://hyperliquid/main/spot
-poetry run wayfinder resource wayfinder://hyperliquid/prices/ETH
-poetry run wayfinder resource wayfinder://hyperliquid/book/ETH
-```
-
 ---
 
-### `wallets` — Manage wallets and discover positions
+### `wallets` — 管理钱包和发现头寸
 
-Create, annotate, and discover cross-protocol positions. Use `resource wayfinder://wallets` to list wallets and `resource wayfinder://wallets/{label}` to get a single wallet.
+创建、注释和发现跨协议的头寸。使用 `resource wayfinder://wallets` 列出钱包，使用 `resource wayfinder://wallets/{label}` 获取单个钱包。
 
-| Parameter | Type | Required | Default | Notes |
+| 参数 | 类型 | 是否必填 | 默认值 | 备注 |
 |-----------|------|----------|---------|-------|
-| `action` | `"create"` \| `"annotate"` \| `"discover_portfolio"` | **Yes** | — | — |
-| `label` | string | **create** | — | Must be non-empty; duplicate labels are idempotent |
-| `wallet_label` | string | **annotate, discover_portfolio** | — | Or use `wallet_address` |
-| `wallet_address` | string | No | — | Alternative to `wallet_label` |
-| `protocol` | string | **annotate** | — | Protocol name for annotation |
-| `annotate_action` | string | **annotate** | — | Action being annotated |
-| `tool` | string | **annotate** | — | Tool name for annotation |
-| `status` | string | **annotate** | — | Status for annotation |
-| `chain_id` | string | No | — | — |
-| `details` | string (JSON) | No | — | Extra metadata for annotation |
-| `protocols` | string (JSON) | No | — | Filter `discover_portfolio` to specific protocols |
-| `parallel` | bool | No | `false` | **Required if querying >= 3 protocols** without a `protocols` filter |
-| `include_zero_positions` | bool | No | `false` | Include empty positions in portfolio |
+| `action` | `"create"` \| `"annotate"` \| `"discover_portfolio"` | **是** | — | — |
+| `label` | 字符串 | **create** | — | 必须非空；重复的标签具有幂等性 |
+| `wallet_label` | 字符串 | **annotate, discover_portfolio** | — | 或使用 `wallet_address` |
+| `wallet_address` | 字符串 | 否 | — | `wallet_label` 的替代选项 |
+| `protocol` | 字符串 | **annotate** | — | 注释时使用的协议名称 |
+| `annotate_action` | 字符串 | **annotate** | — | 注释时使用的操作 |
+| `tool` | 字符串 | **annotate** | — | 注释时使用的工具名称 |
+| `status` | 字符串 | **annotate** | — | 注释时使用的状态 |
+| `chain_id` | 字符串 | 否 | — | — |
+| `details` | 字符串（JSON） | 否 | — | 用于注释的额外元数据 |
+| `protocols` | 字符串（JSON） | 否 | — | 用于过滤 `discover_portfolio` 的特定协议 |
+| `parallel` | 布尔值 | 否 | `false` | **如果在没有 `protocols` 过滤器的情况下查询多个协议，则必须设置为`true` |
+| `include_zero_positions` | 布尔值 | 否 | `false` | 是否在投资组合中包含空头寸 |
 
-Supported protocols for `discover_portfolio`: `hyperliquid`, `hyperlend`, `moonwell`, `boros`, `pendle`.
+`discover_portfolio` 支持的协议：`hyperliquid`、`hyperlend`、`moonwell`、`boros`、`pendle`。
 
 ```bash
 poetry run wayfinder wallets --action create --label my_new_strategy
@@ -197,768 +181,142 @@ poetry run wayfinder wallets --action discover_portfolio --wallet_label main --p
 poetry run wayfinder wallets --action discover_portfolio --wallet_label main --protocols '["hyperliquid","moonwell"]'
 ```
 
-**Validations:**
-- `create`: `label` must be non-empty. Duplicate labels return the existing wallet (idempotent).
-- `annotate`/`discover_portfolio`: must resolve a wallet address from `wallet_label` or `wallet_address`.
-- `annotate`: all of `protocol`, `annotate_action`, `tool`, `status` are required.
-- `discover_portfolio` with >= 3 protocols requires `parallel=true` or an explicit `protocols` filter (returns `requires_confirmation` otherwise).
+**验证规则：**
+- `create`：`label` 必须非空。重复的标签会返回现有的钱包（具有幂等性）。
+- `annotate`/`discover_portfolio`：必须从 `wallet_label` 或 `wallet_address` 中解析出钱包地址。
+- `annotate`：`protocol`、`annotate_action`、`tool`、`status` 都是必填项。
+- 使用 `discover_portfolio` 时，如果查询的协议数量大于或等于3个，则必须设置 `parallel=true`，或者明确指定 `protocols` 过滤器（否则会显示 `requiresconfirmation`）。
 
 ---
 
-### `quote_swap` — Get a swap/bridge quote (read-only)
+### `quote_swap` — 获取交换/桥接报价（只读）
 
-Returns a quote for swapping or bridging tokens. No on-chain effects.
+返回用于交换或桥接代币的报价。此操作不会对链上产生任何影响。
 
-| Parameter | Type | Required | Default | Notes |
+| 参数 | 类型 | 是否必填 | 默认值 | 备注 |
 |-----------|------|----------|---------|-------|
-| `wallet_label` | string | **Yes** | — | Must resolve to a wallet with an address |
-| `from_token` | string | **Yes** | — | Token ID from search results (e.g. `usd-coin-base`). **Always search first** — do not guess. |
-| `to_token` | string | **Yes** | — | Token ID from search results. **Always search first.** |
-| `amount` | string | **Yes** | — | Human-readable amount (e.g. `"500"`). Must be positive, Decimal-parseable, and > 0 after scaling to token decimals |
-| `slippage_bps` | int | No | `50` | Slippage tolerance in basis points (50 = 0.5%) |
-| `recipient` | string | No | — | Defaults to sender address |
-| `include_calldata` | bool | No | `false` | Include raw calldata in response |
+| `wallet_label` | 字符串 | **是** | — | 必须能够解析为钱包地址 |
+| `from_token` | 字符串 | **是** | — | 来自搜索结果的代币ID（例如 `usd-coin-base`）。**始终先进行搜索** |
+| `to_token` | 字符串 | **是** | — | 来自搜索结果的代币ID。**始终先进行搜索** |
+| `amount` | 字符串 | **是** | — | 可读的金额（例如 `"500"`）。金额必须是正数，且能够被转换为十进制后大于0 |
+| `slippage_bps` | 整数 | 否 | **滑动率（以基点为单位）** | 默认值为50（相当于0.5%） |
+| `recipient` | 字符串 | 否 | — | 默认为发送者地址 |
+| `include_calldata` | 布尔值 | 否 | **是否在响应中包含原始calldata** |
 
-**Always resolve token IDs before calling quote_swap.** Run `poetry run wayfinder resource wayfinder://tokens/search/<chain>/<symbol>` for each token first, then use the exact ID from the result. Do not pass raw symbols or guessed `symbol-chain` strings — they may resolve incorrectly or fail.
+**在调用 `quote_swap` 之前，**务必先使用 `poetry run wayfinder resource wayfinder://tokens/search/<chain>/<symbol>` 查找每个代币的ID。**不要使用原始的符号或猜测的 `symbol-chain` 字符串——它们可能会导致错误的解析结果。**
 
-**Note:** Native gas tokens (e.g., unwrapped ETH) may fail in swaps with `from_token_address: null`. Use the wrapped ERC20 version instead (e.g., WETH). Search for it: `resource wayfinder://tokens/search/<chain>/weth`.
+**注意：**对于原生气体代币（例如未包装的ETH），使用 `from_token_address: null` 可能会导致交换失败。请使用包装后的ERC20版本（例如 `WETH`）。搜索方法为：`resource wayfinder://tokens/search/<chain>/weth`。
 
-**Bridging to a new chain for the first time:** the wallet needs **native gas on the destination chain** before it can do anything. Bridge the native gas token (e.g. ETH) to the destination chain first, then bridge or swap for the target token. Use the native token IDs from the supported-chains table below (e.g. `ethereum-base` for ETH on Base).
-- Use the native token IDs from the supported-chains table below when bridging gas (e.g. `ethereum-base` for ETH on Base, `plasma-plasma` for PLASMA on Plasma).
+**首次桥接到新链路时：**在执行任何操作之前，目标链路上必须要有**原生气体**。首先将原生气体代币（例如ETH）桥接到目标链路上，然后再进行桥接或交换目标代币。请使用下表中的原生代币ID（例如，对于Base链路上的ETH使用 `ethereum-base`）。
 
-```bash
-poetry run wayfinder quote_swap --wallet_label main --from_token usd-coin-base --to_token ethereum-base --amount 500
-poetry run wayfinder quote_swap --wallet_label main --from_token "USDC-base" --to_token "ETH-base" --amount 1000 --slippage_bps 100
-```
+---`
 
-**Errors:** `not_found` (wallet), `invalid_wallet`, `token_error`, `invalid_token` (missing chain_id/address), `invalid_amount`, `quote_error`.
+### 错误代码
+
+- `not_found`（钱包未找到）
+- `invalid_wallet`（钱包无效）
+- `token_error`（代币错误）
+- `invalid_token`（缺少链ID/地址）
+- `invalid_amount`（金额无效）
+- `quote_error`（报价错误）
 
 ---
 
-### `execute` — Execute on-chain transactions
+### `execute` — 在链上执行交易
 
-Execute swaps, token sends, or Hyperliquid deposits. **This broadcasts transactions** and can move real funds.
+执行交换、代币发送或Hyperliquid存款操作。**这些操作会广播交易**，并可能涉及实际的资金转移。
 
-| Parameter | Type | Required | Default | Notes |
+| 参数 | 类型 | 是否必填 | 默认值 | 备注 |
 |-----------|------|----------|---------|-------|
-| `kind` | `swap` \| `send` \| `hyperliquid_deposit` | **Yes** | — | Operation type |
-| `wallet_label` | string | **Yes** | — | Must resolve to a wallet with private key |
-| `amount` | string | **Yes** | — | Human-readable amount (e.g. `"500"`) |
-| `from_token` | string | **swap** | — | Source token ID. **Always search first.** |
-| `to_token` | string | **swap** | — | Destination token ID. **Always search first.** |
-| `slippage_bps` | int | No | `50` | Swap only; basis points |
-| `deadline_seconds` | int | No | `300` | Swap only |
-| `recipient` | string | **send** | — | Recipient address |
-| `token` | string | **send** | — | Token ID (or `"native"` with `chain_id`). **Always search first.** |
-| `chain_id` | string | No | — | Required for `send` when `token="native"` |
-| `force` | flag | No | `false` | Do not rely on this as a “dry-run vs live” gate. Treat `execute` as live and require explicit user confirmation before calling it. |
+| `kind` | `swap` \| `send` \| `hyperliquid_deposit` | **是** | — | 操作类型 |
+| `wallet_label` | 字符串 | **是** | — | 必须能够解析为具有私钥的钱包 |
+| `amount` | 字符串 | **是** | — | 可读的金额（例如 `"500"`） |
+| `from_token` | 字符串 | **swap** | — | 来源代币ID。**始终先进行搜索** |
+| `to_token` | 字符串 | **swap** | — | 目标代币ID。**始终先进行搜索** |
+| `slippage_bps` | 整数 | 否 | **滑动率（以基点为单位）** | 默认值为50 |
+| `deadline_seconds` | 整数 | 否 | **swap` 操作的截止时间（以秒为单位） | 默认值为300秒 |
+| `recipient` | 字符串 | **send** | — | 收件人地址 |
+| `token` | 字符串 | **send** | — | 代币ID（当 `token="native" 时使用） | **始终先进行搜索** |
+| `chain_id` | 字符串 | 否 | **send` 选项时需要** | |
 
-**Hyperliquid deposit validations (critical):**
-- Amount **must be >= 5 USDC** (deposits below 5 are lost on the bridge).
-- Hard-codes: token = Arbitrum USDC, recipient = `HYPERLIQUID_BRIDGE_ADDRESS`, chain = Arbitrum (42161).
+**Hyperliquid存款的验证规则：**
+- 金额 **必须大于或等于5 USDC**（低于5 USDC的存款将在桥接过程中丢失）。
+- 硬编码规则：`token = Arbitrum USDC`，`recipient = `HYPERLIQUID_BRIDGE_ADDRESS`，`chain = Arbitrum`（42161）。
 
-**Additional runtime validations:**
-- Wallet must have both `address` and `private_key_hex`.
-- Token resolution must succeed (chain_id + token address required).
-- Swap quotes must return a `best_quote` with `calldata`.
-- For USDT-style tokens, a zero-allowance reset transaction is sent before approval.
-
-```bash
-# Swap
-poetry run wayfinder execute --kind swap --wallet_label main --from_token usd-coin-base --to_token ethereum-base --amount 500
-
-# Send tokens
-poetry run wayfinder execute --kind send --wallet_label main --token usd-coin-base --recipient 0x... --amount 100
-
-# Hyperliquid deposit (min 5 USDC)
-poetry run wayfinder execute --kind hyperliquid_deposit --wallet_label main --amount 100
-```
+**其他运行时验证规则：**
+- 钱包必须同时具有 `address` 和 `private_key_hex`。
+- 代币解析必须成功（需要 `chain_id` 和 `token_address`）。
+- 交换报价必须返回包含 `calldata` 的 `best_quote`。
+- 对于USDT风格的代币，在批准之前会发送一个零允许额度的重置交易。
 
 ---
 
-### `hyperliquid` — Wait for Hyperliquid deposits/withdrawals
+### `hyperliquid` — 等待Hyperliquid上的存款/取款完成
 
-Wait for deposits or withdrawals to settle on Hyperliquid. For read-only queries (user state, prices, order books), use the `resource` command with Hyperliquid URIs.
+等待Hyperliquid上的存款或取款操作完成。对于只读查询（用户状态、价格、订单簿等），可以使用 `resource` 命令和Hyperliquid的URI。
 
-| Parameter | Type | Required | Default | Notes |
+---`
+
+### `hyperliquid_execute` — Hyperliquid交易操作
+
+放置/取消订单、更新杠杆率以及提取USDC。**这些操作是实时的**，可以执行真实的交易或转移资金。
+
+| 参数 | 类型 | 是否必填 | 默认值 | 备注 |
 |-----------|------|----------|---------|-------|
-| `action` | `"wait_for_deposit"` \| `"wait_for_withdrawal"` | **Yes** | — | — |
-| `wallet_label` | string | No | — | Or use `wallet_address` |
-| `wallet_address` | string | No | — | Alternative to `wallet_label` |
-| `expected_increase` | string | No | — | Expected USDC increase for deposit |
-| `timeout_s` | int | No | `120` | Timeout for `wait_for_deposit` |
-| `poll_interval_s` | int | No | `5` | Poll interval for wait actions |
-| `lookback_s` | int | No | `5` | For `wait_for_withdrawal` |
-| `max_poll_time_s` | int | No | `900` | Max wait for `wait_for_withdrawal` (15 min) |
+| `action` | `place_order` \| `cancel_order` \| `update_leverage` \| `withdraw` \| `spot_to_perp_transfer` \| `perp_to_spot_transfer` | **是** | — | — |
+| `wallet_label` | 字符串 | **是** | — | 必须能够解析为具有私钥的钱包 |
+| `coin` | 字符串 | **place_order, cancel_order, update_leverage` | — | 或使用 `asset_id`（会自动去除 `-perp`/`_perp` 后缀） |
+| `asset_id` | 字符串 | 否 | — | 直接的资产ID（`coin` 的替代选项） |
+| `is_spot` | 字符串 | 否 | **place_order` 时必须指定 | |
+| `order_type` | `market` \| `limit` | 否 | `market` | — |
+| `is_buy` | 字符串 | **place_order` 时必须指定 | |
+| `size` | 字符串 | 否 | **与 `usd_amount` 搭配使用** | |
+| `usd_amount` | 字符串 | **usd_amount` 时必须指定 | |
+| `usd_amount_kind` | 字符串 | **当使用 `usd_amount` 时` | — | `usd_amount_kind` 的用途 |
+| `leverage` | 字符串 | **当 `usd_amount_kind=margin` 时` | **update_leverage` 时必须指定** | |
+| `price` | 字符串 | **limit order` 时必须指定 | |
+| `slippage` | 浮点数 | 否 | **limit order` 时必须指定 | | 最大为0.01 |
+| `reduce_only` | 布尔值 | 否 | `--reduce_only` / `--no-reduce_only` | |
 
-```bash
-poetry run wayfinder hyperliquid --action wait_for_deposit --wallet_label main --expected_increase 100
-poetry run wayfinder hyperliquid --action wait_for_withdrawal --wallet_label main
-```
-
-**Read-only queries via resources:**
-
-```bash
-# Perp positions + PnL
-poetry run wayfinder resource wayfinder://hyperliquid/main/state
-
-# Spot balances
-poetry run wayfinder resource wayfinder://hyperliquid/main/spot
-
-# All mid prices
-poetry run wayfinder resource wayfinder://hyperliquid/prices
-
-# Single coin price
-poetry run wayfinder resource wayfinder://hyperliquid/prices/ETH
-
-# Market metadata + funding rates
-poetry run wayfinder resource wayfinder://hyperliquid/markets
-
-# Spot asset metadata
-poetry run wayfinder resource wayfinder://hyperliquid/spot-assets
-
-# Order book
-poetry run wayfinder resource wayfinder://hyperliquid/book/ETH
-```
+**`place_order` 的关键验证规则：**
+- 必须指定 `size` 或 `usd_amount` 中的一个（不能同时指定两个）。
+- 如果使用了 `usd_amount`，则必须指定 `usd_amount_kind`。
+- 如果使用 `usd_amount_kind=margin`，则必须指定 `leverage`。
+- `limit order` 需要 `price` 大于0。
 
 ---
 
-### `hyperliquid_execute` — Hyperliquid trading operations
+### `polymarket` — Polymarket市场及相关操作
 
-Place/cancel orders, update leverage, and withdraw USDC. **These operations are live** and can place real orders / move real funds.
+提供对Polymarket市场、价格、订单簿和用户状态的只读访问。
 
-| Parameter | Type | Required | Default | Notes |
+**可交易性过滤条件：**一个市场可能“存在”但不可交易。可以通过 `enableOrderBook`、`acceptingOrders`、`active`、`closed != true` 和非空的 `clobTokenIds` 来过滤市场。
+
+---`
+
+### `polymarket_execute` — Polymarket执行操作
+
+执行Polymarket操作（包括桥接和交易）。**此命令是实时的（不允许进行模拟测试）**。
+
+| 参数 | 类型 | 是否必填 | 默认值 | 备注 |
 |-----------|------|----------|---------|-------|
-| `action` | `place_order` \| `cancel_order` \| `update_leverage` \| `withdraw` \| `spot_to_perp_transfer` \| `perp_to_spot_transfer` | **Yes** | — | — |
-| `wallet_label` | string | **Yes** | — | Must resolve to wallet with private key |
-| `coin` | string | **place_order, cancel_order, update_leverage** | — | Or use `asset_id`. Strips `-perp`/`_perp` suffixes automatically |
-| `asset_id` | string | No | — | Direct asset ID (alternative to `coin`) |
-| `is_spot` | string | No | — | `true` for spot orders, `false` for perp. **Must be explicit for place_order.** |
-| `order_type` | `market` \| `limit` | No | `market` | — |
-| `is_buy` | string | **place_order** | — | `true` or `false` |
-| `size` | string | No | — | **Mutually exclusive with `usd_amount`**; coin units |
-| `usd_amount` | string | No | — | **Mutually exclusive with `size`**; USD amount |
-| `usd_amount_kind` | string | **when `usd_amount` is used** | — | `notional` or `margin` |
-| `leverage` | string | **when `usd_amount_kind=margin`; update_leverage** | — | Must be positive |
-| `price` | string | **limit orders** | — | Must be positive |
-| `slippage` | float | No | `0.01` | Market orders only; 0–0.25 (25% cap) |
-| `reduce_only` | flag | No | `false` | `--reduce_only` / `--no-reduce_only` |
-| `cloid` | string | No | — | Client order ID |
-| `order_id` | string | **cancel_order** | — | Or use `cancel_cloid` |
-| `cancel_cloid` | string | No | — | Alternative to `order_id` for cancel |
-| `is_cross` | flag | No | `true` | `--is_cross` / `--no-is_cross` |
-| `amount_usdc` | string | **withdraw, transfers** | — | USDC amount for withdraw or transfers |
-| `builder_fee_tenths_bp` | string | No | — | Falls back to config default |
-| `force` | flag | No | `false` | Do not rely on this as a “dry-run vs live” gate. Treat `hyperliquid_execute` as live and require explicit user confirmation before calling it. |
-
-**Key validations for `place_order`:**
-- Exactly one of `size` or `usd_amount` (not both, not neither).
-- If `usd_amount` is used, `usd_amount_kind` is required.
-- If `usd_amount_kind=margin`, then `leverage` is required.
-- Limit orders require `price` > 0.
-- After lot-size rounding, size must still be > 0.
-- Builder fee is mandatory (auto-configured; approval is auto-submitted if needed).
-
-```bash
-# Market buy
-poetry run wayfinder hyperliquid_execute --action place_order --wallet_label main --coin ETH --is_buy true --usd_amount 200 --usd_amount_kind margin --leverage 5
-
-# Spot buy
-poetry run wayfinder hyperliquid_execute --action place_order --wallet_label main --coin HYPE --is_spot true --is_buy true --usd_amount 20
-
-# Limit sell
-poetry run wayfinder hyperliquid_execute --action place_order --wallet_label main --coin ETH --is_buy false --size 0.1 --price 4000 --order_type limit
-
-# Close position (reduce-only)
-poetry run wayfinder hyperliquid_execute --action place_order --wallet_label main --coin ETH --is_buy false --size 0.5 --reduce_only
-
-# Update leverage
-poetry run wayfinder hyperliquid_execute --action update_leverage --wallet_label main --coin ETH --leverage 5
-
-# Cancel order
-poetry run wayfinder hyperliquid_execute --action cancel_order --wallet_label main --coin ETH --order_id 12345
-
-# Withdraw USDC
-poetry run wayfinder hyperliquid_execute --action withdraw --wallet_label main --amount_usdc 100
-
-# Transfer USDC between spot and perp wallets
-poetry run wayfinder hyperliquid_execute --action spot_to_perp_transfer --wallet_label main --amount_usdc 50
-poetry run wayfinder hyperliquid_execute --action perp_to_spot_transfer --wallet_label main --amount_usdc 50
-```
-
----
-
-### `polymarket` — Polymarket market + account reads
-
-Read-only access to Polymarket markets, prices, order books, and user status.
-
-**Tradability filter:** a market can be “found” but not tradable. Filter for `enableOrderBook`, `acceptingOrders`, `active`, `closed != true`, and non-empty `clobTokenIds`.
-
-| Parameter | Type | Required | Default | Notes |
-|-----------|------|----------|---------|-------|
-| `action` | `status` \| `search` \| `trending` \| `get_market` \| `get_event` \| `price` \| `order_book` \| `price_history` \| `bridge_status` \| `open_orders` | **Yes** | — | — |
-| `wallet_label` | string | No | — | Resolves `account` from config; required for `open_orders` |
-| `wallet_address` | string | No | — | Alternative to `wallet_label` for account-based reads |
-| `account` | string | No | — | Direct account address (alternative to wallet inputs) |
-| `include_orders` | bool | No | `true` | `status` only |
-| `include_activity` | bool | No | `false` | `status` only |
-| `activity_limit` | int | No | `50` | `status` only |
-| `include_trades` | bool | No | `false` | `status` only |
-| `trades_limit` | int | No | `50` | `status` only |
-| `positions_limit` | int | No | `500` | `status` only |
-| `max_positions_pages` | int | No | `10` | `status` only |
-| `query` | string | **search** | — | Query string for fuzzy market search |
-| `limit` | int | No | `10` | `search`, `trending` |
-| `page` | int | No | `1` | `search` |
-| `keep_closed_markets` | bool | No | `false` | `search` |
-| `rerank` | bool | No | `true` | `search` |
-| `offset` | int | No | `0` | `trending` |
-| `market_slug` | string | **get_market** | — | Market slug |
-| `event_slug` | string | **get_event** | — | Event slug |
-| `token_id` | string | **price, order_book, price_history** | — | Polymarket CLOB token id (optional for `open_orders` filter) |
-| `side` | `BUY` \| `SELL` | No | `BUY` | `price` only |
-| `interval` | string | No | `"1d"` | `price_history` only |
-| `start_ts` | int | No | — | `price_history` only (unix seconds) |
-| `end_ts` | int | No | — | `price_history` only (unix seconds) |
-| `fidelity` | int | No | — | `price_history` only |
-
-**Action-specific requirements:**
-- `status`, `bridge_status`: require an `account` (via `--account`, `--wallet_address`, or `--wallet_label`).
-- `open_orders`: requires `--wallet_label` and a wallet with `private_key_hex` in `config.json` (Level-2 auth). Optional: `--token_id` to filter.
-
-```bash
-# Search markets
-poetry run wayfinder polymarket --action search --query "bitcoin above 100k" --limit 5
-
-# User status (positions + balances)
-poetry run wayfinder polymarket --action status --wallet_label main
-
-# CLOB order book
-poetry run wayfinder polymarket --action order_book --token_id 123456
-```
-
----
-
-### `polymarket_execute` — Polymarket execution (bridge + orders)
-
-Execute Polymarket actions (bridging and trading). **This command is live (no dry-run flag).**
-
-| Parameter | Type | Required | Default | Notes |
-|-----------|------|----------|---------|-------|
-| `action` | `bridge_deposit` \| `bridge_withdraw` \| `buy` \| `sell` \| `close_position` \| `place_limit_order` \| `cancel_order` \| `redeem_positions` | **Yes** | — | — |
-| `wallet_label` | string | **Yes** | — | Wallet must include `address` and `private_key_hex` in config |
-| `from_chain_id` | int | No | `137` | `bridge_deposit` only |
-| `from_token_address` | string | No | Polygon USDC | `bridge_deposit` only |
-| `amount` | float | **bridge_deposit** | — | Amount of USDC to deposit |
-| `recipient_address` | string | No | sender | `bridge_deposit` only |
-| `amount_usdce` | float | **bridge_withdraw** | — | Amount of USDC.e to withdraw |
-| `to_chain_id` | int | No | `137` | `bridge_withdraw` only |
-| `to_token_address` | string | No | Polygon USDC | `bridge_withdraw` only |
-| `recipient_addr` | string | No | sender | `bridge_withdraw` only |
-| `token_decimals` | int | No | `6` | Bridge token decimals |
-| `market_slug` | string | No | — | Used by `buy`, `sell`, `close_position` |
-| `outcome` | string \| int | No | `"YES"` | Used with `market_slug` (e.g. `YES`/`NO`) |
-| `token_id` | string | No | — | Alternative to `market_slug` for `buy`, `sell`, `place_limit_order` |
-| `amount_usdc` | float | **buy** | — | Buy amount in USDC |
-| `shares` | float | **sell** | — | Shares to sell |
-| `side` | `BUY` \| `SELL` | No | `BUY` | `place_limit_order` only |
-| `price` | float | **place_limit_order** | — | Limit price (0–1) |
-| `size` | float | **place_limit_order** | — | Order size (shares) |
-| `post_only` | bool | No | `false` | `place_limit_order` only |
-| `order_id` | string | **cancel_order** | — | — |
-| `condition_id` | string | **redeem_positions** | — | Required for `redeem_positions`; also accepted by `close_position` as a fallback |
-
-**Approvals + API creds:** handled automatically before order placement (idempotent).
-
-**Collateral:** Polymarket CLOB trading collateral is **USDC.e on Polygon**, not native Polygon USDC. Use `bridge_deposit` / `bridge_withdraw` to convert. These methods prefer a fast on-chain BRAP swap on Polygon when possible (sender == recipient); otherwise they fall back to the Polymarket Bridge service (`method: "polymarket_bridge"` in the result) and you can monitor via `polymarket --action bridge_status`.
-
-**Trade semantics:**
-- `buy` uses `amount_usdc` as **collateral ($) to spend**
-- `sell` uses `shares` as **shares to sell**
-
-**Always require explicit user confirmation before running `polymarket_execute`.**
-
-```bash
-# Bridge USDC -> USDC.e collateral (Polymarket)
-poetry run wayfinder polymarket_execute --action bridge_deposit --wallet_label main --amount 10
-
-# Buy shares by market slug + outcome
-poetry run wayfinder polymarket_execute --action buy --wallet_label main --market_slug "some-market-slug" --outcome YES --amount_usdc 2
-
-# Close a position (sells full size; resolves token_id from market slug)
-poetry run wayfinder polymarket_execute --action close_position --wallet_label main --market_slug "some-market-slug" --outcome YES
-```
-
----
-
-### `run_strategy` — Strategy lifecycle management
-
-Run strategy actions: check status, analyze, quote, deposit, update, withdraw, or exit.
-
-| Parameter | Type | Required | Default | Notes |
-|-----------|------|----------|---------|-------|
-| `strategy` | string | **Yes** | — | Strategy directory name; must have `manifest.yaml` |
-| `action` | `status` \| `analyze` \| `snapshot` \| `policy` \| `quote` \| `deposit` \| `update` \| `withdraw` \| `exit` | **Yes** | — | — |
-| `amount_usdc` | float | No | `1000.0` | **Read-only analysis:** hypothetical deposit for `analyze`, `snapshot`, `quote` |
-| `amount` | string | No | — | Generic amount parameter (strategy-specific) |
-| `main_token_amount` | string | **deposit** | — | **Actual deposit:** amount of strategy's deposit token |
-| `gas_token_amount` | float | No | `0.0` | **Actual deposit:** optional gas token amount |
-
-**Amount parameter rules:**
-- **For read-only analysis** (`analyze`, `snapshot`, `quote`): use `--amount_usdc`
-- **For actual deposits** (`deposit`): use `--main_token_amount` (required) + optionally `--gas_token_amount`
-- The deposit token varies by strategy (USDC on Base for stablecoin_yield, USDC on Arbitrum for boros_hype, etc.)
-
-```bash
-poetry run wayfinder resource wayfinder://strategies
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action status
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action analyze --amount_usdc 100
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action quote --amount_usdc 100
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action deposit --main_token_amount 100 --gas_token_amount 0.01
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action update
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action withdraw
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action exit
-```
-
-**Errors:** `invalid_request` (empty strategy), `not_found` (missing manifest), `not_supported` (strategy lacks the method), `strategy_error` (runtime exception).
-
-**Note:** `withdraw` liquidates positions but funds stay in the strategy wallet. `exit` transfers funds from the strategy wallet back to the main wallet. These are separate steps.
-
----
-
-### `run_script` — Execute sandboxed Python scripts
-
-Run a local Python script in a subprocess. Scripts must live inside the runs directory (`$WAYFINDER_RUNS_DIR` or `.wayfinder_runs/`).
-
-| Parameter | Type | Required | Default | Notes |
-|-----------|------|----------|---------|-------|
-| `script_path` | string | **Yes** | — | Must be `.py`, must exist, **must be inside the runs directory** |
-| `args` | string | No | — | Arguments passed to the script (JSON list) |
-| `timeout_s` | int | No | `600` | Clamped to min 1 second |
-| `env` | string | No | — | Additional env vars for subprocess (JSON object) |
-| `wallet_label` | string | No | — | For profile annotation |
-| `force` | flag | No | `false` | Do not rely on this as a “dry-run vs live” gate. Prefer implementing `--dry-run` / `--force` inside your script and passing it via `--args`. |
-
-**Validations:**
-- Script path must resolve to inside the runs directory (sandboxed — no arbitrary file execution).
-- Must be a `.py` file.
-- Must exist on disk.
-- Output is truncated to 20,000 chars.
-
-```bash
-# Recommended: implement --dry-run / --force in your script and pass it via --args
-poetry run wayfinder run_script --script_path .wayfinder_runs/my_flow.py --args '["--dry-run"]' --wallet_label main
-poetry run wayfinder run_script --script_path .wayfinder_runs/my_flow.py --args '["--force"]' --wallet_label main
-
-# With timeout
-poetry run wayfinder run_script --script_path .wayfinder_runs/my_flow.py --wallet_label main --timeout_s 120
-```
-
----
-
-## Config Structure
-
-Config is loaded from `$WAYFINDER_CONFIG_PATH` (default: `$WAYFINDER_SDK_PATH/config.json`).
-
-```json
-{
-  "system": {
-    "api_base_url": "https://strategies.wayfinder.ai/api/v1",
-    "api_key": "wk_..."
-  },
-  "strategy": {
-    "rpc_urls": {
-      "1": ["https://eth.llamarpc.com"],
-      "42161": ["https://arb1.arbitrum.io/rpc"],
-      "8453": ["https://mainnet.base.org"],
-      "999": ["https://rpc.hyperliquid.xyz/evm"]
-    }
-  },
-  "wallets": [
-    {
-      "label": "main",
-      "address": "0x...",
-      "private_key_hex": "0x..."
-    }
-  ],
-  "ccxt": {
-    "aster": { "apiKey": "", "secret": "" },
-    "binance": { "apiKey": "", "secret": "" }
-  }
-}
-```
-
-- `system.api_key` falls back to `$WAYFINDER_API_KEY` env var.
-- Most write operations require a wallet entry with `address` + `private_key_hex`.
-
-## Available Strategies
-
-| Strategy | Status | Chain | Token | Risk | Description |
-|----------|--------|-------|-------|------|-------------|
-| `basis_trading_strategy` | stable | Hyperliquid | USDC | Medium | Delta-neutral funding rate capture with matched spot/perp positions |
-| `boros_hype_strategy` | stable | Arbitrum + HyperEVM + Hyperliquid | HYPE/USDC | Medium | Multi-leg HYPE yield with fixed-rate funding lock via Boros |
-| `hyperlend_stable_yield_strategy` | stable | HyperEVM | USDT0 | Low | Stablecoin yield optimization on HyperLend with rotation policy |
-| `moonwell_wsteth_loop_strategy` | stable | Base | USDC/WETH/wstETH | Medium-High | Leveraged wstETH carry trade via Moonwell looping |
-| `stablecoin_yield_strategy` | wip | Base | USDC | Low | Auto-rotates across best stablecoin pools on Base |
-| `projectx_thbill_usdc_strategy` | wip | HyperEVM | THBILL/USDC | Medium | Concentrated liquidity market making on ProjectX (V3 fork) |
-
-**Reference**: [references/strategies.md](references/strategies.md)
-
-## Available Adapters
-
-| Adapter | Protocol | Capabilities |
-|---------|----------|-------------|
-| `balance_adapter` | EVM wallets | `balance.read`, `transfer.main_to_strategy`, `transfer.strategy_to_main`, `transfer.send` |
-| `boros_adapter` | Boros (Arbitrum) | `market.read`, `market.quote`, `position.open`, `position.close`, `collateral.deposit`, `collateral.withdraw` |
-| `brap_adapter` | Cross-chain swaps | `swap.quote`, `swap.execute`, `swap.compare_routes`, `bridge.quote`, `gas.estimate` |
-| `ccxt_adapter` | Centralized exchanges (CCXT) | `exchange.factory` |
-| `hyperlend_adapter` | HyperLend (HyperEVM) | `market.stable_markets`, `market.assets_view`, `market.rate_history`, `lending.lend`, `lending.unlend` |
-| `hyperliquid_adapter` | Hyperliquid DEX | `market.read`, `market.meta`, `market.funding`, `market.candles`, `market.orderbook`, `order.execute`, `order.cancel`, `position.manage`, `transfer`, `withdraw` |
-| `ledger_adapter` | Local bookkeeping | `ledger.read`, `ledger.record`, `ledger.snapshot` |
-| `moonwell_adapter` | Moonwell (Base) | `lending.lend`, `lending.unlend`, `lending.borrow`, `lending.repay`, `collateral.set`, `collateral.remove`, `rewards.claim`, `position.read`, `market.apy`, `market.collateral_factor` |
-| `multicall_adapter` | EVM batch calls | `multicall.aggregate` |
-| `pendle_adapter` | Pendle | `pendle.markets.read`, `pendle.market.snapshot`, `pendle.swap.quote`, `pendle.swap.execute`, `pendle.convert.quote`, `pendle.positions.database`, and more |
-| `polymarket_adapter` | Polymarket | `market.read`, `market.search`, `market.orderbook`, `market.candles`, `position.read`, `order.execute`, `order.cancel`, `bridge.deposit`, `bridge.withdraw` |
-| `pool_adapter` | DeFi Llama | `pool.read`, `pool.discover` |
-| `projectx_adapter` | ProjectX (V3 fork) | `projectx.pool.overview`, `projectx.positions.list`, `projectx.liquidity.mint`, `projectx.liquidity.increase`, `projectx.liquidity.decrease`, `projectx.fees.collect`, `projectx.swap.exact_in` |
-| `token_adapter` | Token metadata | `token.read`, `token.price`, `token.gas` |
-| `uniswap_adapter` | Uniswap V3 | `uniswap.liquidity.add`, `uniswap.liquidity.increase`, `uniswap.liquidity.remove`, `uniswap.fees.collect`, `uniswap.position.get`, `uniswap.positions.list`, `uniswap.fees.uncollected`, `uniswap.pool.get` |
-
-**Reference**: [references/adapters.md](references/adapters.md)
-
-## Token ID Format — ALWAYS SEARCH FIRST
-
-**CRITICAL: NEVER guess or construct token IDs.** Always look up the correct token using the appropriate endpoint before using it in any command.
-
-**Three token endpoints — know which to use:**
-- **`tokens/search`** → fuzzy search (hits `/blockchain/tokens/fuzzy/`) — **always use this first for ERC20 tokens**
-- **`tokens/resolve`** → exact lookup (hits `/blockchain/tokens/detail/`) — only use with an ID you got from search
-- **`tokens/gas`** → native gas tokens (hits `/blockchain/tokens/gas/`) — **use for ETH, HYPE, and other native tokens**
-
-Token IDs use `<coingecko_id>-<chain_code>` format (NOT symbol-chain):
-- `usd-coin-base` (USDC on Base) — NOT `usdc-base`
-- `ethereum-arbitrum` (ETH on Arbitrum) — NOT `ETH-arbitrum`
-- `usdt0-arbitrum` (USDT on Arbitrum) — NOT `USDT-arbitrum`
-- `hyperliquid-hyperevm` (HYPE on HyperEVM) — NOT `HYPE-hyperevm`
-
-**You cannot reliably guess coingecko IDs from token symbols.** For example, ETH's coingecko ID is `ethereum`, USDC's is `usd-coin`, HYPE's is `hyperliquid`. These are not derivable from the symbol alone.
-
-**Native gas tokens** are best discovered via `tokens/gas/<chain_code>`. Use the table below as a convenient reference, but prefer `tokens/gas` when in doubt.
-
-Valid chain codes (common): `ethereum`, `base`, `arbitrum`, `polygon`, `bsc`, `avalanche`, `plasma`, `hyperevm`. Note: `mainnet` is NOT a valid chain code — use `ethereum` instead.
-
-### Supported chains
-
-| Chain | ID | Code | Symbol | Native token ID |
-|------|----|------|--------|-----------------|
-| Ethereum | 1 | `ethereum` | ETH | `ethereum-ethereum` |
-| Base | 8453 | `base` | ETH | `ethereum-base` |
-| Arbitrum | 42161 | `arbitrum` | ETH | `ethereum-arbitrum` |
-| Polygon | 137 | `polygon` | POL | `polygon-ecosystem-token-polygon` |
-| BSC | 56 | `bsc` | BNB | `binancecoin-bsc` |
-| Avalanche | 43114 | `avalanche` | AVAX | `avalanche-avalanche` |
-| Plasma | 9745 | `plasma` | PLASMA | `plasma-plasma` |
-| HyperEVM | 999 | `hyperevm` | HYPE | `hyperliquid-hyperevm` |
-
-**Before every swap, send, or token operation:**
-```bash
-# For native gas tokens (ETH, HYPE):
-poetry run wayfinder resource wayfinder://tokens/gas/<chain_code>
-
-# For ERC20 tokens — REQUIRED: fuzzy search first
-poetry run wayfinder resource wayfinder://tokens/search/<chain_code>/<symbol>
-# Then use the exact token ID from the search result
-```
-
-## Sizing for Perp Orders
-
-When a user says "$X at Yx leverage", clarify:
-- `--usd_amount_kind margin` = $X is collateral (notional = X * leverage)
-- `--usd_amount_kind notional` = $X is position size
-
-`--usd_amount` and `--size` are mutually exclusive. When using `--usd_amount` with `--usd_amount_kind margin`, `--leverage` is required.
-
-## Safety
-
-- **NEVER output private keys or seed phrases into the conversation.** These are secrets that must stay on the machine. Only offer to display a seed phrase if the user explicitly confirms they cannot access the machine to retrieve it themselves.
-- **Execution commands are live.** Require explicit user confirmation before running `execute`, `hyperliquid_execute`, `polymarket_execute`, or any script that broadcasts transactions.
-- **NEVER guess or fabricate token IDs.** Before any token operation (swap, send, quote, balance check):
-  - For **native gas tokens** (ETH, HYPE): use `poetry run wayfinder resource wayfinder://tokens/gas/<chain_code>`
-  - For **ERC20 tokens**: use `poetry run wayfinder resource wayfinder://tokens/search/<chain_code>/<query>` (fuzzy search) and use the exact token ID from the result
-  - Do not construct IDs by combining symbols with chain names — the coingecko ID is unpredictable. Do not call `tokens/resolve` with a guessed ID — it hits a different API than search.
-- **Bridging to a new chain (first time):** bridge native gas to the destination chain first (use the supported-chains table or `tokens/gas/<chain_code>`), then bridge/swap for the target asset.
-- Start with small test amounts.
-- Withdraw and exit are separate steps: `withdraw` liquidates positions, `exit` transfers funds home.
-- **Hyperliquid deposits must be >= 5 USDC** — amounts below 5 are lost on the bridge.
-- Market order slippage is capped at 25% (`--slippage 0.25`).
-- Scripts are sandboxed to the runs directory — no arbitrary file execution.
-
-## Common Workflows
-
-### Check Before Trading
-
-```bash
-poetry run wayfinder resource wayfinder://balances/main
-# ALWAYS look up tokens first — never guess IDs
-poetry run wayfinder resource wayfinder://tokens/search/base/usdc   # Search for USDC → get token ID from result
-poetry run wayfinder resource wayfinder://tokens/gas/base            # Get native ETH on Base
-# Use the exact token IDs from the lookup results
-poetry run wayfinder resource wayfinder://hyperliquid/prices/ETH
-poetry run wayfinder quote_swap --wallet_label main --from_token usd-coin-base --to_token ethereum-base --amount 1000
-```
-
-### Deploy a Strategy
-
-```bash
-poetry run wayfinder resource wayfinder://strategies
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action status
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action deposit --main_token_amount 100 --gas_token_amount 0.01
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action update
-```
-
-### Open a Hyperliquid Position
-
-```bash
-poetry run wayfinder resource wayfinder://hyperliquid/main/state
-poetry run wayfinder hyperliquid_execute --action update_leverage --wallet_label main --coin ETH --leverage 5
-poetry run wayfinder hyperliquid_execute --action place_order --wallet_label main --coin ETH --is_buy true --usd_amount 200 --usd_amount_kind margin --leverage 5
-```
-
-### Wind Down Everything
-
-```bash
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action withdraw
-poetry run wayfinder run_strategy --strategy stablecoin_yield_strategy --action exit
-```
-
-## Custom Scripts via the Coding Interface
-
-**For any operation that goes beyond a single CLI command, you SHOULD write a custom Python script.** The `wayfinder-paths-sdk` provides a full coding interface — use it whenever you need multi-step flows, conditional logic, batched operations, or protocol combinations.
-
-### When to Write a Script
-
-- **Multi-step atomic flows** — operations that must succeed together
-- **Custom logic** — conditional execution based on market state
-- **Batched operations** — multiple protocol interactions in sequence
-- **Protocol combinations** — bridging multiple adapters in one flow
-- **Complex calculations** — position sizing, rebalancing, PnL analysis
-- **Anything the user asks that isn't a single CLI call**
-
-### Script Location
-
-All generated scripts **must** be saved to `.wayfinder_runs/` inside the SDK directory:
-
-```
-$WAYFINDER_SDK_PATH/.wayfinder_runs/my_script.py
-```
-
-This directory is sandboxed — `run_script` only executes scripts inside it. Create it if it doesn't exist:
-
-```bash
-mkdir -p "$WAYFINDER_SDK_PATH/.wayfinder_runs"
-```
-
-### Referencing the SDK Source
-
-Before writing any script, **pull the detailed reference docs** for the adapter or strategy you're working with. The SDK ships comprehensive skill docs covering method signatures, gotchas, unit conventions, and execution patterns.
-
-**Use the reference script** (bash or PowerShell):
-
-```bash
-# List available topics
-./wayfinder/scripts/pull-sdk-ref.sh --list
-
-# Pull docs for specific adapters (supports multiple topics)
-./wayfinder/scripts/pull-sdk-ref.sh moonwell
-./wayfinder/scripts/pull-sdk-ref.sh boros hyperliquid
-./wayfinder/scripts/pull-sdk-ref.sh strategies
-
-# Pull everything
-./wayfinder/scripts/pull-sdk-ref.sh --all
-
-# Check the pinned SDK version
-./wayfinder/scripts/pull-sdk-ref.sh --version
-
-# Override with a specific commit
-./wayfinder/scripts/pull-sdk-ref.sh --commit abc123 moonwell
-```
-
-```powershell
-# Windows
-.\wayfinder\scripts\pull-sdk-ref.ps1 moonwell
-.\wayfinder\scripts\pull-sdk-ref.ps1 -All
-.\wayfinder\scripts\pull-sdk-ref.ps1 -Version
-.\wayfinder\scripts\pull-sdk-ref.ps1 -Commit abc123 moonwell
-```
-
-**Available topics:** `strategies`, `setup`, `boros`, `brap`, `hyperlend`, `hyperliquid`, `polymarket`, `moonwell`, `pendle`, `uniswap`, `projectx`, `data`
-
-The SDK ref is tracked in `wayfinder/sdk-version.md` (default: `main`). The pull script checks out that ref when reading docs, then restores the SDK to its previous state.
-
-**Always run this before writing a script** — the docs cover critical details like:
-- Exact method signatures and required parameters
-- Unit conventions (raw base units vs human-readable, wei vs native)
-- Gotchas (e.g., `unlend()` takes mToken amounts not underlying, withdrawal cooldowns, funding sign conventions)
-- Execution patterns and safety rails
-- Token/contract addresses
-
-You can also read the adapter source code directly:
-
-```
-$WAYFINDER_SDK_PATH/wayfinder_paths/adapters/          # All adapter implementations
-$WAYFINDER_SDK_PATH/wayfinder_paths/mcp/scripting.py   # get_adapter() helper
-$WAYFINDER_SDK_PATH/wayfinder_paths/strategies/        # Strategy implementations
-```
-
-### Quick Start
-
-```python
-#!/usr/bin/env python3
-import asyncio
-from wayfinder_paths.mcp.scripting import get_adapter
-from wayfinder_paths.adapters.moonwell_adapter import MoonwellAdapter
-
-async def main():
-    adapter = get_adapter(MoonwellAdapter, "main")  # Auto-wires config + signing
-    success, result = await adapter.lend(mtoken="0x...", amount=100_000_000)
-    print(f"Result: {result}" if success else f"Error: {result}")
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-### Testing Workflow
-
-**Always test before live execution.** Follow this workflow:
-
-1. **Write** the script to `.wayfinder_runs/`
-2. **Safe run** — run the script in a non-fund-moving mode first (recommended: implement `--dry-run` / `--force` in your script and pass it via `--args`):
-   ```bash
-   cd "$WAYFINDER_SDK_PATH"
-   poetry run wayfinder run_script --script_path .wayfinder_runs/my_script.py --args '["--dry-run"]' --wallet_label main
-   ```
-3. **Review** the output. Verify the operations, amounts, and addresses are correct.
-4. **Live execution** — only after confirming the safe run looks right, run with `--force`:
-   ```bash
-   poetry run wayfinder run_script --script_path .wayfinder_runs/my_script.py --args '["--force"]' --wallet_label main
-   ```
-
-**Never skip the safe-run step for scripts that move funds.**
-
-**Reference**: [references/coding-interface.md](references/coding-interface.md) — Full adapter API reference, examples, and patterns
-
-## Protocol References
-
-- [references/setup.md](references/setup.md) — First-time setup, configuration, and wallet management
-- [references/strategies.md](references/strategies.md) — Strategy details, parameters, and workflows
-- [references/adapters.md](references/adapters.md) — Adapter capabilities and method signatures
-- [references/coding-interface.md](references/coding-interface.md) — Custom Python scripting with adapters
-- [references/hyperliquid.md](references/hyperliquid.md) — Hyperliquid trading, deposits, funding
-- [references/polymarket.md](references/polymarket.md) — Polymarket markets, bridging, and trading
-- [references/ccxt.md](references/ccxt.md) — Centralized exchanges (Aster/Binance/etc.) via CCXT (use carefully)
-- [references/moonwell.md](references/moonwell.md) — Moonwell lending, mToken addresses, gotchas
-- [references/pendle.md](references/pendle.md) — Pendle PT/YT markets, swap execution
-- [references/boros.md](references/boros.md) — Boros fixed-rate markets, rate locking
-- [references/uniswap.md](references/uniswap.md) — Uniswap V3 LP positions and fee collection
-- [references/projectx.md](references/projectx.md) — ProjectX (V3 fork) LP positions, swaps, and strategy notes
-- [references/tokens-and-pools.md](references/tokens-and-pools.md) — Token IDs, pool discovery, balance reads
-- [references/hyperlend.md](references/hyperlend.md) — HyperLend lending, supply/withdraw flows
-
-## Error Handling
-
-All errors return structured JSON: `{"ok": false, "error": {"code": "...", "message": "...", "details": ...}}`.
-
-### Error Categories
-
-#### Validation Errors — bad input, fixable by the caller
-
-| Error Code | Meaning | Common Causes | User-Facing Guidance |
-|------------|---------|---------------|----------------------|
-| `invalid_request` | Missing or invalid required parameters | Omitted `action`, empty `strategy`, missing `token_id` for balance query | Tell the user which parameter is missing and show the correct command format |
-| `invalid_wallet` | Wallet missing `address` or `private_key_hex` | Wallet label exists but entry is incomplete; read-only wallet used for execution | Ask the user to check their config.json wallet entry has both fields |
-| `invalid_token` | Token resolution failed — missing `chain_id` or contract `address` after lookup | Typo in token ID, token not indexed, ambiguous symbol without chain qualifier | Suggest running `resource wayfinder://tokens/search/<chain>/<query>` and show the closest matches |
-| `invalid_amount` | Amount not parseable, not positive, or zero after decimal scaling | Non-numeric string, negative value, amount like `0.000000001` that rounds to 0 for a low-decimal token | Show the parsed value and the token's decimals so the user understands the rounding |
-
-#### Resource Errors — something doesn't exist
-
-| Error Code | Meaning | Common Causes | User-Facing Guidance |
-|------------|---------|---------------|----------------------|
-| `not_found` | Directory, manifest, wallet, or resource not found | Strategy name typo, adapter not installed, wallet label doesn't match config | List available resources (`resource wayfinder://strategies`) so the user can pick the right name |
-| `not_supported` | Strategy does not implement the requested action | Calling `withdraw` on a strategy that only supports `status`/`deposit` | Show which actions the strategy does support (from its manifest) |
-| `requires_confirmation` | Operation needs explicit user confirmation before proceeding | `discover_portfolio` across >= 3 protocols without `--parallel` flag | Explain the operation scope and ask the user to confirm or pass `--parallel` |
-
-#### API & Integration Errors — upstream service failures
-
-| Error Code | Meaning | Common Causes | User-Facing Guidance |
-|------------|---------|---------------|----------------------|
-| `token_error` | Token adapter API call failed | Wayfinder API down, network timeout, invalid API key | Check API key validity; retry after a moment; show the raw error message from details |
-| `quote_error` | Swap/bridge quote generation failed | No liquidity for pair, amount too small for routing, bridge route unavailable | Suggest trying a different amount, checking if the pair is supported, or using a different route |
-| `balance_error` | Balance query failed | RPC node down, rate-limited, invalid chain_id | Retry; if persistent, check RPC URL configuration |
-| `activity_error` | Activity/transaction history query failed | Indexer lag, unsupported chain for activity | Inform user the history service may be temporarily unavailable |
-| `price_error` | Price lookup failed | Token not priced by CoinGecko, API rate limit | Note that the token may be too new or illiquid for price data; balances are still valid without prices |
-
-#### Execution Errors — on-chain failures
-
-| Error Code | Meaning | Common Causes | User-Facing Guidance |
-|------------|---------|---------------|----------------------|
-| `executor_error` | On-chain transaction failed | Insufficient gas, contract revert, nonce conflict, allowance issue | Show the revert reason if available; check gas balance; for USDT-style tokens, mention the zero-allowance reset |
-| `strategy_error` | Strategy runtime exception | Unhandled edge case in strategy code, external dependency failure mid-execution | Show the exception message; suggest checking `status` before retrying |
-
-### Error Details Object
-
-The `details` field varies by error code and may contain:
-
-| Field | Present On | Description |
-|-------|-----------|-------------|
-| `parameter` | `invalid_request` | The specific parameter that failed validation |
-| `wallet_label` | `invalid_wallet`, `not_found` | The wallet label that was looked up |
-| `query` | `invalid_token` | The token query that failed resolution |
-| `candidates` | `invalid_token` | Fuzzy match candidates when available |
-| `raw_amount` | `invalid_amount` | The original amount string provided |
-| `scaled_amount` | `invalid_amount` | The amount after decimal scaling (shows why it became zero) |
-| `decimals` | `invalid_amount` | Token decimals used for scaling |
-| `tx_hash` | `executor_error` | Transaction hash if the tx was submitted before failing |
-| `revert_reason` | `executor_error` | Decoded revert reason from the contract |
-| `strategy` | `strategy_error`, `not_supported` | Strategy name |
-| `supported_actions` | `not_supported` | List of actions the strategy does implement |
-| `protocols` | `requires_confirmation` | The protocols that would be queried |
-| `upstream_error` | `token_error`, `quote_error`, `balance_error`, `activity_error`, `price_error` | Raw error message from the upstream service |
-
-### Presenting Errors to Users
-
-When an error is returned, follow this pattern:
-
-1. **Translate the code** — don't show raw error codes. Map to plain language (e.g., `invalid_token` -> "I couldn't find that token").
-2. **Include the actionable fix** — every error above has a recovery path. Always tell the user what to do next.
-3. **Show relevant details** — if `details.candidates` exists, list the closest token matches. If `details.revert_reason` exists, explain what the contract rejected.
-4. **Offer to retry** — for transient errors (`token_error`, `balance_error`, `quote_error`, `activity_error`, `price_error`), offer to retry. For validation errors, show the corrected command.
-
-### Common User-Facing Issues
-
-| Symptom | Error Code | Resolution |
-|---------|-----------|------------|
-| "Missing config" | `not_found` | Run setup or create `config.json` manually |
-| "strategy_wallet not configured" | `invalid_wallet` | Add wallet with matching label to config.json |
-| "Minimum deposit" | `invalid_amount` | Check strategy minimum requirements (e.g., Hyperliquid >= 5 USDC) |
-| "Insufficient gas" | `executor_error` | Fund wallet with native gas token for the target chain |
-| "Token not found" | `invalid_token` | Use `resource wayfinder://tokens/search/<chain>/<query>` to find the correct coingecko ID |
-| "No quote available" | `quote_error` | Try a different amount, check pair liquidity, or use an alternative route |
-| "Nonce too low" | `executor_error` | A previous transaction is pending; wait or speed it up |
-| "Allowance reset needed" | `executor_error` | For USDT-style tokens, the CLI auto-resets allowance — retry if it was a transient RPC issue |
-| "Rate limited" | `token_error` / `balance_error` | Wait a few seconds and retry the request |
-
-## Best Practices
-
-### Security
-1. Never share private keys or commit config.json
-2. Start with small test amounts
-3. Use dedicated wallets per strategy for isolation
-4. Verify addresses before large transfers
-5. Use stop losses for leverage trading
-
-### Trading
-1. Always quote before executing swaps
-2. Specify chain for lesser-known tokens
-3. Consider gas costs (use Base for small amounts)
-4. Check balance before trades
-5. Use limit orders for better prices on Hyperliquid
+| `action` | `bridge_deposit` \| `bridge_withdraw` \| `buy` \| `sell` \| `close_position` \| `place_limit_order` \| `cancel_order` \| `redeem_positions` | **是** | — | — |
+| `wallet_label` | 字符串 | **是** | — | 钱包配置中必须包含 `address` 和 `private_key_hex` |
+| `from_chain_id` | 整数 | 否 | `137` | 仅用于 `bridge_deposit` |
+| `from_token_address` | 字符串 | 否 | Polygon的USDC地址 | 仅用于 `bridge_deposit` |
+| `amount` | 浮点数 | **bridge_deposit` 时使用** | 需要存款的USDC金额 |
+| `recipient_address` | 字符串 | 否 | 发送者地址 | 仅用于 `bridge_withdraw` |
+| `amount_usdce` | 浮点数 | **bridge_withdraw` 时使用** | 需要提取的USDC.e金额 |
+| `to_chain_id` | 整数 | 否 | `137` | 仅用于 `bridge_withdraw` |
+| `to_token_address` | 字符串 | 否 | 发送者地址 | 仅用于 `bridge_withdraw` |
+| `token_decimals` | 整数 | 否 | **bridge_withdraw` 时使用的桥接代币小数位数 | |
+| `market_slug` | 字符串 | **bridge_withdraw` 时使用** | 市场slug |
+| `outcome` | 字符串 | `yes` | `bridge_withdraw` 时使用 | （例如 `YES`/`NO` 表示成功或失败） |
+
+**执行操作前的注意事项：**
+- `place_order` 时必须指定 `size` 或 `usd_amount` 中的一个（不能同时指定两个）。
+- 如果使用了 `usd_amount`，则必须指定 `usd_amount_kind`。
+- 如果使用了 `usd_amount_kind=margin`，则必须指定 `leverage`。
+- `limit order` 时 `price` 必须大于0。
+- 在进行批量调整后，`size` 仍然必须大于0。
+- 构建费用是强制性的（会自动提交；如果需要，系统会自动处理提交）。

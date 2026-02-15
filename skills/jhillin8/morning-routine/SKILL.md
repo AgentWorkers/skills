@@ -1,6 +1,6 @@
 ---
 name: morning-routine
-description: Build a powerful morning routine with habit checklists, timing, and streak tracking
+description: 通过习惯检查清单、时间管理以及连续完成任务（“streak tracking”）来打造一个高效的早晨日常流程。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,82 +11,82 @@ triggers:
   - "morning habits"
 ---
 
-# Morning Routine
+# 早晨例行程序
 
-Win your morning, win your day.
+掌控好早晨，就能掌控好一整天。
 
-## What it does
+## 功能介绍
 
-The Morning Routine skill transforms your first hours into a structured, trackable system that compounds over time.
+“早晨例行程序”这一功能将你早晨的几个小时转化为一个有条理、可追踪的系统，这种系统会随着时间的推移逐渐积累效果：
 
-- **Habit Checklists**: Define your core morning habits and check them off as you complete them
-- **Timing Tracking**: See how long each habit takes and when you typically finish your routine
-- **Streak Tracking**: Build momentum with daily streak counts—watch your consistency grow
-- **Adaptation Suggestions**: Get insights on which habits stick and which ones need adjustment based on your data
+- **习惯检查清单**：定义你核心的早晨习惯，并在完成这些习惯后将其标记为已完成。
+- **时间记录**：查看每个习惯所需的时间以及你通常完成整个例行程序的具体时间。
+- **连续完成习惯的记录**：通过每日记录连续完成习惯的次数来保持动力——观察你的坚持程度如何提升。
+- **调整建议**：根据数据分析，了解哪些习惯能够持续养成，哪些需要调整。
 
-## Usage
+## 使用方法
 
-**Start routine**
+**开始例行程序**
 ```
 "start my morning routine"
 "begin my routine"
 "morning routine go"
 ```
-Launches your checklist. Clawd guides you through each habit with timing reminders.
+启动你的习惯检查清单。Clawd 会通过时间提醒引导你完成每个习惯。
 
-**Check off habit**
+**标记习惯完成**
 ```
 "I did meditation"
 "hydration complete"
 "movement done"
 "planning finished"
 ```
-Mark individual habits as complete. Clawd tracks completion time and logs the action.
+将每个习惯标记为已完成。Clawd 会记录完成时间并保存相关操作。
 
-**Routine status**
+**例行程序状态**
 ```
 "how's my routine"
 "what's left"
 "routine progress"
 "show me what's next"
 ```
-Get a real-time snapshot of your current routine—how many habits done, how many remaining.
+实时查看你当前的例行程序状态——完成了多少习惯，还剩下多少。
 
-**Modify routine**
+**修改例行程序**
 ```
 "add yoga to my routine"
 "remove morning news"
 "change routine"
 "swap habit"
 ```
-Customize habits on the fly. Clawd saves changes and adapts your checklist immediately.
+随时自定义你的习惯。Clawd 会保存你的更改并立即更新检查清单。
 
-**Review streak**
+**查看连续完成习惯的情况**
 ```
 "show my streak"
 "how many days"
 "consistency report"
 "routine history"
 ```
-See your current streak, longest streak, and consistency metrics over time.
+查看你当前的连续完成习惯次数、最长的连续完成记录以及各项坚持指标。
 
-## Common Elements
+## 常见要素
 
-Most powerful morning routines include these components:
+最有效的早晨例行程序通常包含以下组成部分：
 
-- **Wake time**: Consistent wake time creates a foundation for everything else
-- **Hydration**: Glass of water first thing activates your system
-- **Movement**: 10-20 mins of stretching, walking, or exercise
-- **Mindfulness**: Meditation, journaling, or breathing practice
-- **Planning**: Review your day and set 3 key priorities
-- **No phone**: Keep your phone off until after your core routine
+- **起床时间**：固定的起床时间能为其他所有活动打下基础。
+- **补水**：起床后先喝一杯水，帮助身体恢复活力。
+- **运动**：进行10-20分钟的伸展、散步或锻炼。
+- **正念练习**：冥想、写日记或呼吸练习。
+- **计划安排**：回顾当天的任务并设定3个关键优先事项。
+- **远离手机**：在完成核心例行程序之前不要使用手机。
 
-Build your routine from these blocks. Start with 2-3 habits. Add more as they stick.
+你可以根据这些要素来构建自己的早晨例行程序。先从2-3个习惯开始，随着习惯的养成再逐步增加。
 
-## Tips
+## 小贴士
 
-- **Consistency matters more than perfection.** 5 days of 80% routine beats 2 days of 100%. Streaks are built on showing up, not perfection.
-- **Stack habits together.** Brush teeth → drink water → meditate creates a trigger chain. Each habit pulls the next one.
-- **Time your routine.** Know how long it actually takes. Build buffer time so you're not rushed—rushed mornings cascade into rushed days.
-- **Review weekly, not daily.** Check your streaks and adaptation data once per week. Daily obsessing kills momentum.
-- **All data stays local on your machine.** Your routine data never leaves your device. No cloud sync, no tracking, no third parties—just you and your habits.
+- **坚持比完美更重要**：连续5天坚持80%的例行程序，比偶尔坚持100%的效果更好。连续完成习惯的关键在于坚持，而非完美。
+- **将习惯串联起来**：例如：刷牙 → 喝水 → 冥想。这样的顺序能形成一种习惯间的联动效应。
+- **记录例行程序的实际耗时**：了解完成整个例行程序所需的具体时间，并预留足够的缓冲时间，避免匆忙。匆忙的早晨往往会引发一整天的仓促。
+- **每周进行一次回顾**：每周检查一次你的连续完成习惯次数和调整建议。每天过度关注这些数据反而会削弱动力。
+- **所有数据都保存在本地设备上**：你的例行程序数据不会被上传到云端，也不会与第三方共享——只属于你和你的习惯。

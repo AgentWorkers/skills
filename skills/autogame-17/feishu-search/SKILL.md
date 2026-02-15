@@ -1,19 +1,19 @@
-# Feishu Search Skill
+# Feishu 搜索功能
 
-Unified search interface for Feishu (Lark) resources.
+Feishu（Lark）资源的统一搜索接口。
 
-## Prerequisites
+## 先决条件
 
-- Install `feishu-common` first.
-- This skill depends on `../feishu-common/index.js` for token and API auth.
+- 请先安装 `feishu-common`。
+- 该功能依赖于 `../feishu-common/index.js` 来处理令牌（token）和 API 认证。
 
-## Features
+## 功能特点
 
-- **Search Messages**: Find chat history across private and group chats.
-- **Search Docs**: Locate documents, sheets, and bitables.
-- **Search Calendar**: (Planned) Find events.
+- **搜索消息**：可以在私信和群聊中查找聊天记录。
+- **搜索文档**：可以查找文档、表格（sheets）和数据表（bitables）。
+- **搜索日历**：（计划中）可以查找日历事件。
 
-## Usage
+## 使用方法
 
 ```bash
 # Search messages
@@ -23,7 +23,7 @@ node skills/feishu-search/index.js search_messages --query "bug report" --limit 
 node skills/feishu-search/index.js search_docs --query "Q3 Roadmap"
 ```
 
-## Configuration
+## 配置要求
 
-Requires standard Feishu environment variables (`FEISHU_APP_ID`, `FEISHU_APP_SECRET`) or a valid `FEISHU_TOKEN`.
-The skill uses shared auth from `../feishu-common/index.js`.
+需要标准的 Feishu 环境变量（`FEISHU_APP_ID`、`FEISHU_APP_SECRET`）或有效的 `FEISHU_TOKEN`。
+该功能使用 `../feishu-common/index.js` 中提供的共享认证机制。

@@ -1,56 +1,56 @@
 ---
 name: lnbits
-description: Manage LNbits Lightning Wallet (Balance, Pay, Invoice)
+description: 管理 LNbits Lightning 钱包（查看余额、进行支付、生成发票）
 homepage: https://lnbits.com
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"bins":["python3"],"env":["LNBITS_API_KEY", "LNBITS_BASE_URL"]},"primaryEnv":"LNBITS_API_KEY"}}
 ---
 
-# LNbits Wallet Manager
+# LNbits 钱包管理器
 
-Enable the assistant to safely and effectively manage an LNbits Lightning Network wallet.
+该工具可帮助用户安全、高效地管理 LNbits Lightning Network 钱包。
 
-## 🛑 CRITICAL SECURITY PROTOCOLS 🛑
+## 🛑 关键安全协议 🛑
 
-1.  **NEVER Expose Secrets**: Do NOT display Admin Keys, User IDs, or Wallet IDs.
-2.  **Explicit Confirmation**: You MUST ask for "Yes/No" confirmation before paying.
-    *   *Format*: "I am about to send **[Amount] sats** to **[Memo/Dest]**. Proceed? (y/n)"
-3.  **Check Balance First**: Always call `balance` before `pay` to prevent errors.
+1. **切勿泄露敏感信息**：严禁显示管理员密钥、用户 ID 或钱包 ID。
+2. **明确确认**：在支付前必须获取用户的确认（“是/否”）。
+    *   *格式*：“我即将向 **[收件地址/备注]** 发送 **[金额] 萨托希**。继续吗？(y/n)”
+3. **先检查余额**：在执行支付操作前，请务必先调用 `balance` 函数以确认余额是否足够。
 
-## Usage
+## 使用方法
 
-### 0. Setup / Create Wallet
-If the user does not have an LNbits wallet, you can create one for them on the demo server.
+### 0. 设置/创建钱包
+如果用户尚未拥有 LNbits 钱包，您可以在演示服务器上为他们创建一个钱包。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py create --name "My Wallet"
 ```
 
-**Action**:
-1.  Run the command.
-2.  Capture the `adminkey` (Admin Key) and `base_url` (defaults to https://demo.lnbits.com).
-3.  **IMPORTANT**: Instruct the user to save these credentials securely:
-    > "I've created a new wallet! Please add these to your Moltbot configuration or `.env` file:
+**操作步骤**：
+1. 运行相关命令。
+2. 获取 `adminkey`（管理员密钥）和 `base_url`（默认值为 https://demo.lnbits.com）。
+3. **重要提示**：请指导用户妥善保管这些凭据：
+    > “我已经为您创建了一个新的钱包！请将这些信息添加到您的 Moltbot 配置文件或 `.env` 文件中：
     > `export LNBITS_BASE_URL=https://demo.lnbits.com`
-    > `export LNBITS_API_KEY=<adminkey>`"
+    > `export LNBITS_API_KEY=<adminkey>`
 
-### 1. Check Balance
-Get the current wallet balance in Satoshis.
+### 1. 查看余额
+查看当前钱包的余额（单位：萨托希）。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py balance
 ```
 
-### 2. Create Invoice (Receive)
-Generate a Bolt11 invoice to receive funds.
-*   **amount**: Amount in Satoshis (Integer).
-*   **memo**: Optional description.
+### 2. 生成收款发票
+生成一个 Bolt11 格式的发票以接收资金。
+*   **金额**：以萨托希为单位的收款金额（整数）。
+*   **备注**：可选的收款说明。
 
 ```bash
 python3 {baseDir}/scripts/lnbits_cli.py invoice --amount 1000 --memo "Pizza"
 ```
 
-### 3. Pay Invoice (Send)
-**⚠️ REQUIRES CONFIRMATION**: Decode first, verify balance, ask user, then execute.
+### 3. 支付发票
+**⚠️ 需要确认**：先解码发票信息，核实余额，再征求用户确认，最后执行支付操作。
 
 ```bash
 # Step 1: Decode to verify amount/memo
@@ -60,5 +60,5 @@ python3 {baseDir}/scripts/lnbits_cli.py decode <bolt11_string>
 python3 {baseDir}/scripts/lnbits_cli.py pay <bolt11_string>
 ```
 
-## Error Handling
-If the CLI returns a JSON error (e.g., `{"error": "Insufficient funds"}`), summarize it clearly for the user. Do not show raw stack traces.
+## 错误处理
+如果命令行界面返回 JSON 格式的错误信息（例如 `{"error": "Insufficient funds"}`），请为用户清晰地说明错误原因，切勿直接显示原始的错误堆栈跟踪信息。

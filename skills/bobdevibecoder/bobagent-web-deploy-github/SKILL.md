@@ -1,25 +1,25 @@
 ---
 name: web-deploy-github
-description: Create and deploy single-page static websites to GitHub Pages with autonomous workflow. Use when building portfolio sites, CV pages, landing pages, or any static web project that needs GitHub Pages deployment. Handles complete workflow from project initialization to live deployment with GitHub Actions automation.
+description: 使用自动化工作流程，将单页静态网站创建并部署到 GitHub Pages 上。适用于构建作品集网站、个人简历页面、登录页面，或任何需要通过 GitHub Pages 进行部署的静态网站项目。该流程涵盖了从项目初始化到通过 GitHub Actions 实现自动部署的整个过程。
 ---
 
-# Web Deploy GitHub Pages
+# 在 GitHub Pages 上进行 Web 部署
 
-## Overview
+## 概述
 
-This skill enables autonomous creation and deployment of static websites to GitHub Pages. It follows a complete workflow from project structure initialization through automatic deployment via GitHub Actions, optimized for single-page applications, portfolios, and landing pages.
+本技能支持自主创建并将静态网站部署到 GitHub Pages。它遵循一个完整的工作流程，从项目结构初始化开始，通过 GitHub Actions 自动完成部署，特别适用于单页应用、作品集和登录页面的构建。
 
-## Core Workflow
+## 核心工作流程
 
-### 1. Project Initialization
+### 1. 项目初始化
 
-Create the project structure:
+创建项目结构：
 
 ```bash
 bash scripts/init_project.sh <project-name>
 ```
 
-This creates:
+这将创建：
 ```
 project-name/
 ├── index.html
@@ -31,114 +31,114 @@ project-name/
         └── deploy.yml
 ```
 
-### 2. Development
+### 2. 开发
 
-Build the website following these principles:
-- **Single-page first**: Optimize for one-page layouts unless multiple pages explicitly required
-- **Autonomous generation**: Generate complete, production-ready code without placeholders
-- **Modern design**: Use modern CSS (flexbox, grid), responsive design, clean aesthetics
-- **No dependencies**: Pure HTML/CSS/JS when possible, CDN links if frameworks needed
+遵循以下原则开发网站：
+- **优先考虑单页布局**：除非明确需要多个页面，否则应优化为单页布局。
+- **自动生成代码**：生成完整的、可直接用于生产的代码，避免使用占位符。
+- **现代设计**：使用现代 CSS（如 flexbox、grid）、响应式设计以及简洁的视觉风格。
+- **无依赖项**：尽可能使用纯 HTML/CSS/JS；如果需要框架，则使用 CDN 链接。
 
-Use templates from `assets/templates/` as starting points:
-- `base-html/` - Minimal HTML5 boilerplate
-- `portfolio/` - Portfolio/CV template with sections
-- `landing/` - Landing page with hero and CTA
+使用 `assets/templates/` 目录下的模板作为起点：
+- `base-html/` - 最基本的 HTML5 模板
+- `portfolio/` - 作品集/简历模板，包含相应的分页结构
+- `landing/` - 登录页面模板，包含标题栏和呼叫行动（CTA）按钮
 
-### 3. GitHub Repository Setup
+### 3. 设置 GitHub 仓库
 
 ```bash
 bash scripts/deploy_github_pages.sh <project-name> <github-username>
 ```
 
-This script:
-1. Initializes git repository
-2. Creates GitHub repository via GitHub CLI
-3. Configures GitHub Pages settings
-4. Pushes initial commit
-5. Triggers first deployment
+此脚本会执行以下操作：
+1. 初始化 Git 仓库。
+2. 通过 GitHub CLI 创建 GitHub 仓库。
+3. 配置 GitHub Pages 的相关设置。
+4. 提交初始代码。
+5. 触发首次部署。
 
-### 4. Deployment
+### 4. 部署
 
-GitHub Actions automatically deploys on push to main branch. The workflow:
-- Checks out code
-- Deploys to `gh-pages` branch
-- Makes site live at `https://<username>.github.io/<project-name>/`
+每当向 `main` 分支推送代码时，GitHub Actions 会自动执行部署流程：
+- 检查代码。
+- 将代码部署到 `gh-pages` 分支。
+- 使网站在 `https://<username>.github.io/<project-name>/` 上上线。
 
-## Architecture Guidelines
+## 架构指南
 
-### HTML Structure
-- Semantic HTML5 elements
-- Meta tags for SEO and social sharing
-- Responsive viewport configuration
-- Favicon and icons
+### HTML 结构
+- 使用语义化的 HTML5 元素。
+- 添加用于 SEO 和社交分享的元标签。
+- 配置响应式视口。
+- 添加网站图标（favicon）。
 
-### CSS Design
-- Mobile-first responsive design
-- CSS variables for theming
-- Flexbox/Grid for layouts
-- Smooth transitions and animations
-- Dark mode support when appropriate
+### CSS 设计
+- 采用以移动设备为先的响应式设计。
+- 使用 CSS 变量进行主题设置。
+- 使用 flexbox 或 grid 进行布局设计。
+- 实现平滑的过渡效果和动画效果。
+- 在适当的情况下支持暗模式。
 
 ### JavaScript
-- Vanilla JS preferred
-- Progressive enhancement
-- Event delegation
-- No console errors
+- 优先使用原生 JavaScript。
+- 采用渐进式增强（progressive enhancement）技术。
+- 使用事件委托（event delegation）机制。
+- 确保代码中没有控制台错误。
 
-### Performance
-- Optimized images
-- Minified assets for production
-- Lazy loading where appropriate
-- Fast initial load time
+### 性能优化
+- 优化图片大小。
+- 对生产环境中的资源进行压缩。
+- 在适当的位置实现懒加载（lazy loading）。
+- 确保网站有快速的初始加载速度。
 
-## Quick Examples
+## 快速示例
 
-### Example 1: Portfolio CV Site
-**User request:** "Crée-moi un site portfolio CV"
+### 示例 1：作品集/简历网站
+**用户需求：** “为我创建一个作品集/简历网站。”
 
-**Action:**
-1. Run `init_project.sh portfolio-cv`
-2. Use `assets/templates/portfolio/` as base
-3. Generate complete HTML with sections: Hero, About, Skills, Projects, Contact
-4. Deploy with `deploy_github_pages.sh portfolio-cv username`
+**操作步骤：**
+1. 运行 `init_project.sh portfolio-cv` 命令。
+2. 以 `assets/templates/portfolio/` 作为基础模板。
+3. 生成包含标题栏、关于信息、技能、项目列表和联系信息的完整 HTML 页面。
+4. 使用 `deploy_github_pages.sh portfolio-cv <username>` 命令进行部署。
 
-### Example 2: Landing Page
-**User request:** "Fais-moi une landing page pour mon app"
+### 示例 2：登录页面
+**用户需求：** “为我的应用创建一个登录页面。”
 
-**Action:**
-1. Run `init_project.sh app-landing`
-2. Use `assets/templates/landing/` as base
-3. Generate with Hero, Features, Pricing, CTA
-4. Deploy with `deploy_github_pages.sh app-landing username`
+**操作步骤：**
+1. 运行 `init_project.sh app-landing` 命令。
+2. 以 `assets/templates/landing/` 作为基础模板。
+3. 生成包含标题栏、功能介绍、价格信息和呼叫行动按钮的页面。
+4. 使用 `deploy_github_pages.sh app-landing <username>` 命令进行部署。
 
-## Troubleshooting
+## 故障排除
 
-### GitHub Pages Not Deploying
-- Check repository Settings → Pages → Source is set to `gh-pages` branch
-- Verify GitHub Actions workflow ran successfully
-- Check DNS propagation (can take 5-10 minutes)
+### GitHub Pages 无法部署
+- 检查仓库设置 → “Pages” → 确保 “Source” 设置为 `gh-pages` 分支。
+- 确认 GitHub Actions 工作流程已成功执行。
+- 检查 DNS 设置的传播情况（可能需要 5-10 分钟）。
 
-### Permission Errors
-- Ensure `gh` CLI is authenticated: `gh auth status`
-- Check repository permissions on GitHub
+### 权限问题
+- 确保已登录 GitHub CLI：运行 `gh auth status` 命令。
+- 检查 GitHub 仓库的权限设置。
 
-### Build Failures
-- Review Actions logs in repository
-- Verify `.github/workflows/deploy.yml` syntax
-- Check file paths and references
+### 构建失败
+- 查看仓库中的 GitHub Actions 日志。
+- 检查 `.github/workflows/deploy.yml` 文件的语法是否正确。
+- 确认文件路径和引用是否正确。
 
-## Resources
+## 资源
 
 ### scripts/
-- `init_project.sh` - Initialize project structure
-- `deploy_github_pages.sh` - Deploy to GitHub Pages
+- `init_project.sh`：用于初始化项目结构。
+- `deploy_github_pages.sh`：用于将代码部署到 GitHub Pages。
 
 ### references/
-- `workflow.md` - Detailed workflow documentation
-- `design-patterns.md` - Design best practices
+- `workflow.md`：详细的工作流程文档。
+- `design-patterns.md`：设计最佳实践指南。
 
 ### assets/
-- `templates/base-html/` - Minimal HTML5 boilerplate
-- `templates/portfolio/` - Portfolio/CV template
-- `templates/landing/` - Landing page template
-- `.github/workflows/deploy.yml` - GitHub Actions workflow template
+- `templates/base-html/`：基本的 HTML5 模板。
+- `templates/portfolio/`：作品集/简历模板。
+- `templates/landing/`：登录页面模板。
+- `.github/workflows/deploy.yml`：GitHub Actions 的工作流程配置文件。

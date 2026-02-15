@@ -8,9 +8,9 @@ description: >
 
 # irail-cli
 
-CLI for Belgian railways (NMBS/SNCB) via [iRail API](https://api.irail.be/). No authentication required.
+这是一个用于查询比利时铁路（NMBS/SNCB）信息的命令行工具（CLI），通过 [iRail API](https://api.irail.be/) 进行数据交互。无需进行身份验证。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Station departures
@@ -23,29 +23,31 @@ irail connections Brugge Leuven
 irail disturbances
 ```
 
-## Authentication
+## 身份验证
 
-**None required.** iRail API is public and free to use.
+**无需身份验证。** iRail API 是公开且免费使用的。
 
-## Core Rules
+## 核心规则
 
-1. **Always use `--json`** when parsing output programmatically
-2. **Station names are flexible** - accepts partial matches, quotes for multi-word
-3. **Time format** - HH:MM (24-hour), date format YYYY-MM-DD
-4. **Language options** - nl, fr, en, de (default: nl)
+1. **在程序化解析输出时，务必使用 `--json` 参数。**
+2. **车站名称具有灵活性**——支持部分匹配；多词名称需要用引号括起来。
+3. **时间格式**：HH:MM（24小时制）；日期格式：YYYY-MM-DD。
+4. **语言选项**：nl（荷兰语）、fr（法语）、en（英语）、de（德语）（默认为 nl）。
 
-## Output Formats
+## 输出格式
 
-| Flag | Format | Use case |
+| 标志 | 格式 | 用途 |
 |------|--------|----------|
-| (default) | Table | User-facing with colors |
-| `--json` | JSON | Agent parsing, scripting |
+| （默认） | 表格形式 | 适合用户查看，包含颜色提示 |
+| `--json` | JSON 格式 | 适用于代理程序解析或脚本编写 |
 
-Colors indicate: red = delays, yellow = platform changes.
+颜色说明：
+- 红色：列车延误
+- 黄色：列车更换站台
 
-## Workflows
+## 工作流程
 
-### Liveboard (Departures/Arrivals)
+### 实时信息（列车到发时间）
 
 ```bash
 # Departures from station
@@ -65,7 +67,7 @@ irail liveboard Brugge --json
 irail liveboard Brugge --lang en
 ```
 
-### Connections (Route Planning)
+### 路线规划（查询换乘信息）
 
 ```bash
 # Find routes
@@ -84,7 +86,7 @@ irail connections Brugge Leuven --results 10
 irail connections Brugge Leuven --json
 ```
 
-### Stations
+### 车站信息
 
 ```bash
 # List all stations
@@ -98,7 +100,7 @@ irail stations --search gent
 irail stations --json
 ```
 
-### Vehicle (Train Info)
+### 列车信息
 
 ```bash
 # Show train information
@@ -111,7 +113,7 @@ irail vehicle IC1832 --stops
 irail vehicle IC1832 --json
 ```
 
-### Composition (Train Cars)
+### 列车编组
 
 ```bash
 # Show train composition (seats, amenities)
@@ -122,7 +124,7 @@ irail composition IC1832
 irail composition S51507 --json
 ```
 
-### Disturbances
+### 服务中断情况
 
 ```bash
 # All current disruptions
@@ -138,7 +140,7 @@ irail disturbances --type disturbance
 irail disturbances --json
 ```
 
-## Scripting Examples
+## 脚本示例
 
 ```bash
 # Get next train to destination
@@ -157,63 +159,63 @@ irail liveboard Brugge --json | jq -r '.[0].platform'
 irail disturbances --json | jq -r '.[].title'
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 说明 |
 |----------|-------------|
-| `IRAIL_LANG` | Default language (nl, fr, en, de) |
-| `IRAIL_JSON` | Default to JSON output |
-| `NO_COLOR` | Disable colored output |
+| `IRAIL_LANG` | 默认语言（nl, fr, en, de） |
+| `IRAIL_JSON` | 默认输出格式为 JSON |
+| `NO_COLOR` | 禁用颜色显示 |
 
-## Language Options
+## 语言选项
 
-| Code | Language |
+| 代码 | 语言 |
 |------|----------|
-| `nl` | Dutch (default) |
-| `fr` | French |
-| `en` | English |
-| `de` | German |
+| `nl` | 荷兰语（默认） |
+| `fr` | 法语 |
+| `en` | 英语 |
+| `de` | 德语 |
 
 ```bash
 irail liveboard Brugge --lang fr
 irail connections Brugge Leuven --lang en
 ```
 
-## Command Reference
+## 命令参考
 
-| Command | Description |
+| 命令 | 说明 |
 |---------|-------------|
-| `liveboard` | Station departures/arrivals |
-| `connections` | Route planning between stations |
-| `stations` | List/search stations |
-| `vehicle` | Train information and stops |
-| `composition` | Train car composition |
-| `disturbances` | Service disruptions |
-| `completion` | Shell completions |
+| `liveboard` | 查看车站的列车到发时间 |
+| `connections` | 查询两站之间的路线信息 |
+| `stations` | 列出/搜索车站 |
+| `vehicle` | 获取列车信息及停靠站 |
+| `composition` | 查看列车车厢编组 |
+| `disturbances` | 查看服务中断情况 |
+| `completion` | 提供 Shell 命令的补全功能 |
 
-## Common Patterns
+## 常见用法
 
-### Check if train is delayed
+### 检查列车是否延误
 
 ```bash
 irail vehicle IC1832 --json | jq '.delay // 0'
 ```
 
-### Get connection with transfers
+### 查询包含换乘的路线
 
 ```bash
 irail connections Brugge Leuven --json | jq '.[0].vias | length'
 ```
 
-### Find direct trains only
+### 查找仅有的直达列车
 
 ```bash
 irail connections Brugge Leuven --json | jq '[.[] | select(.vias == null or (.vias | length) == 0)]'
 ```
 
-## Guidelines
+## 使用指南
 
-- No authentication needed - API is public
-- Be mindful of API usage in loops - add delays between requests
-- Station names are case-insensitive and support partial matching
-- Delay values are in seconds (divide by 60 for minutes)
+- 无需身份验证，API 是公开的。
+- 在循环中使用 API 时请注意控制请求频率（避免频繁请求导致延迟）。
+- 车站名称不区分大小写，支持部分匹配。
+- 延误时间以秒为单位（需除以 60 转换为分钟）。

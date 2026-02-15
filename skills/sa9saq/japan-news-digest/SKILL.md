@@ -1,42 +1,42 @@
 ---
-description: Fetch and summarize top Japanese news into a categorized, digestible daily digest.
+description: 从日本的新闻来源中获取并汇总最热门的新闻，将其整理成每日分类、易于阅读的新闻摘要。
 ---
 
-# Japan News Digest
+# 日本新闻摘要
 
-Fetch, categorize, and summarize top Japanese news.
+该功能用于获取、分类并总结日本的热门新闻。
 
-**Use when** user asks for Japanese news, daily digest, or what's happening in Japan.
+**适用场景**：当用户请求日本新闻、每日新闻摘要或了解日本当前发生的事情时。
 
-**Triggers**: "Japan news", "日本のニュース", "news digest", "today's news Japan"
+**触发词**："Japan news", "日本のニュース", "news digest", "today's news Japan"
 
-## Requirements
+## 功能要求
 
-- `web_search` and `web_fetch` tool access
-- No API keys needed
+- 需要使用 `web_search` 和 `web_fetch` 工具
+- 无需 API 密钥
 
-## Instructions
+## 使用步骤
 
-1. **Fetch news** — Run 2-3 searches:
+1. **获取新闻**：执行 2-3 次搜索：
    ```
    web_search("Japan news today", country="JP", count=10)
    web_search("日本 ニュース 今日", search_lang="ja", count=10)
    ```
-   For specific topics:
-   - Tech/AI: `"日本 AI テクノロジー 最新"`
-   - Business: `"日本 経済 ビジネス"`
-   - Politics: `"日本 政治 国会"`
+   - 对于特定主题：
+     - 科技/人工智能：`"日本 AI テクノロジー 最新"`
+     - 商业：`"日本 経済 ビジネス"`
+     - 政治：`"日本 政治 国会"`
+   
+2. **使用 `web_fetch` 阅读值得关注的文章**：挑选出 5-8 篇最有趣或最重要的文章。
 
-2. **Read promising articles** with `web_fetch` — pick 5-8 most interesting/important articles.
+3. **分类新闻**：
+   - 🏛️ 政治与社会
+   - 💰 商业与经济
+   - 🤖 科技与人工智能
+   - 🌏 国际事务
+   - 🎌 文化与娱乐
 
-3. **Categorize**:
-   - 🏛️ Politics & Society
-   - 💰 Business & Economy
-   - 🤖 Technology & AI
-   - 🌏 International
-   - 🎌 Culture & Entertainment
-
-4. **Output format**:
+4. **输出格式**：
    ```
    ## 📰 Japan News Digest
    **Date:** YYYY-MM-DD
@@ -58,19 +58,19 @@ Fetch, categorize, and summarize top Japanese news.
    *Sources: NHK, 日経, 朝日, Reuters Japan*
    ```
 
-5. **Optional**: Save to `~/news-digests/YYYY-MM-DD.md` if requested.
+5. **可选**：如用户要求，可将新闻摘要保存到 `~/news-digests/YYYY-MM-DD.md` 文件中。
 
-## Guidelines
+## 使用指南
 
-- Default language: **Japanese summaries**. Switch to English on request.
-- Prioritize relevance tags: 🔥 breaking > 📌 important > 💡 interesting
-- Always attribute sources
-- Don't extract paywalled content — summarize from available preview text
-- Include 5-8 articles per digest (not too long, not too short)
+- 默认输出语言为日语摘要；如需英文摘要，请另行指定。
+- 根据相关性对文章进行排序：🔥 紧急新闻 > 📌 重要新闻 > 💡 有趣新闻
+- 必须注明文章来源
+- 不得提取需要付费才能阅读的内容，仅从可预览的文本中进行总结
+- 每份新闻摘要包含 5-8 篇文章（篇幅适中）
 
-## Edge Cases
+## 特殊情况处理
 
-- **No major news**: Include trending topics or interesting features instead.
-- **Duplicate stories**: Merge coverage from multiple sources, cite all.
-- **English-only request**: Search with English queries and summarize in English.
-- **Specific topic request**: Focus search and categories on that topic only.
+- **没有重要新闻**：可包含热门话题或有趣的专题内容。
+- **存在重复文章**：合并多个来源的报道，并注明所有出处。
+- **用户请求英文摘要**：使用英文查询并生成英文摘要。
+- **用户指定特定主题**：仅搜索和展示该主题的相关内容。

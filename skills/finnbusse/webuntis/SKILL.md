@@ -1,39 +1,38 @@
 ---
 name: webuntis
-description: Read-only access to Untis/WebUntis student timetables. Use when you need to fetch or summarize a student's current schedule (today/this week/date range), upcoming lessons, rooms, teachers, or substitutions from a WebUntis instance.
+description: 仅限读取 Untis/WebUntis 学生时间表的权限。当您需要从 WebUntis 系统中获取或汇总学生的当前课程安排（今日/本周/指定日期范围）、即将进行的课程、上课教室、授课教师或代课教师信息时，可以使用此权限。
 ---
 
-# WebUntis (Untis) timetable
+# WebUntis（Untis）课程表
 
-Use the bundled script to log in and fetch the timetable via JSON-RPC.
+使用随附的脚本通过 JSON-RPC 进行登录并获取课程表信息。
 
-## Security / credentials
+## 安全/凭证
 
-- **Do not** ask the user to paste passwords into chat.
-- Prefer a **dedicated read-only student account** if the school allows it.
-- Credentials must be provided via environment variables (or injected securely by the operator).
+- **切勿** 要求用户在聊天中输入密码。
+- 如果学校允许，建议使用**专用的只读学生账户**。
+- 凭证必须通过环境变量提供（或由操作员安全地注入）。
 
-Single profile:
-  - `WEBUNTIS_BASE_URL` (e.g. `https://xyz.webuntis.com`)
-  - `WEBUNTIS_SCHOOL` (school name / key used by WebUntis)
+**单个账户：**
+  - `WEBUNTIS_BASE_URL`（例如：`https://xyz.webuntis.com`）
+  - `WEBUNTIS_SCHOOL`（学校名称/WebUntis 使用的标识符）
   - `WEBUNTIS_USER`
   - `WEBUNTIS_PASS`
-  - Optional: `WEBUNTIS_ELEMENT_TYPE` (default `5` = student)
-  - Optional: `WEBUNTIS_ELEMENT_ID` (if auto-detect fails)
+  - 可选：`WEBUNTIS_ELEMENT_TYPE`（默认值为 `5`，表示学生）
+  - 可选：`WEBUNTIS_ELEMENT_ID`（在自动检测失败时使用）
 
-Multiple profiles (parallel):
-  - Set `WEBUNTIS_PROFILE=<name>` or pass `--profile <name>`
-  - Provide env vars prefixed by the profile name, e.g. for profile `cdg`:
+**多个账户（并行使用）：**
+  - 设置 `WEBUNTIS_PROFILE=<名称>` 或使用 `--profile <名称>` 参数
+  - 为每个账户设置相应的环境变量，例如对于名为 `cdg` 的账户：
     - `WEBUNTIS_CDG_BASE_URL`
     - `WEBUNTIS_CDG_SCHOOL`
     - `WEBUNTIS_CDG_USER`
     - `WEBUNTIS_CDG_PASS`
-    - optional: `WEBUNTIS_CDG_ELEMENT_TYPE`, `WEBUNTIS_CDG_ELEMENT_ID`
+    - 可选：`WEBUNTIS_CDG_ELEMENT_TYPE`、`WEBUNTIS_CDG_ELEMENT_ID`
 
-## Quick commands (exec)
+## 快速命令（执行）
 
-Today:
-
+**查看今日课程：**
 ```bash
 cd skills/webuntis/scripts
 ./webuntis.py today
@@ -42,26 +41,23 @@ cd skills/webuntis/scripts
 ./webuntis.py --profile cdg today
 ```
 
-Range:
-
+**查看指定时间范围内的课程：**
 ```bash
 cd skills/webuntis/scripts
 ./webuntis.py range 2026-02-10 2026-02-14
 ```
 
-## Troubleshooting
+## 故障排除**
 
-If you get "Could not determine element-id":
+如果出现“无法确定元素 ID”的错误：
+1) 执行脚本一次并记录错误信息。
+2) 添加 `WEBUNTIS_ELEMENT_ID=<数字>` 参数后重新尝试。
 
-1) Run once and capture the error.
-2) Add `WEBUNTIS_ELEMENT_ID=<number>` and retry.
+如果认证失败：
+- 确认 `WEBUNTIS_BASE_URL` 是否正确对应您的学校。
+- 确认 `WEBUNTIS_SCHOOL` 是否与 WebUntis 使用的学校标识符一致。
 
-If auth fails:
+## 输出结果
 
-- Verify `WEBUNTIS_BASE_URL` is correct for your school.
-- Verify `WEBUNTIS_SCHOOL` matches the school key used by WebUntis.
-
-## Output
-
-The script prints one line per lesson/event:
-`YYYY-MM-DD HH:MM-HH:MM · <subject> · Raum <room> · bei <teacher>`
+脚本会为每节课/活动输出一行信息：
+`YYYY-MM-DD HH:MM-HH:MM · <科目> · 教室 <房间> · 教师 <教师姓名>`

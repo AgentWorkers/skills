@@ -1,24 +1,24 @@
 ---
 name: Fanvue
-description: Manage content, chats, subscribers, and earnings on the Fanvue creator platform via OAuth 2.0 API.
+description: 通过 OAuth 2.0 API，在 Fanvue 创作者平台上管理内容、聊天记录、订阅者以及收益。
 ---
 
-# Fanvue API Skill
+# Fanvue API 技能
 
-Integrate with the Fanvue creator platform to manage chats, posts, subscribers, earnings insights, and media content.
+集成 Fanvue 创建者平台，以管理聊天记录、帖子、订阅者、收益数据以及媒体内容。
 
-## Prerequisites
+## 先决条件
 
-### 1. Create an OAuth Application
+### 1. 创建 OAuth 应用程序
 
-1. Go to the [Fanvue Developer Portal](https://fanvue.com/developers/apps)
-2. Create a new OAuth application
-3. Note your **Client ID** and **Client Secret**
-4. Configure your **Redirect URI** (e.g., `https://your-app.com/callback`)
+1. 访问 [Fanvue 开发者门户](https://fanvue.com/developers/apps)
+2. 创建一个新的 OAuth 应用程序
+3. 记下您的 **客户端 ID** 和 **客户端密钥**
+4. 配置您的 **重定向 URI**（例如：`https://your-app.com/callback`）
 
-### 2. Environment Variables
+### 2. 环境变量
 
-Set these environment variables:
+设置以下环境变量：
 
 ```bash
 FANVUE_CLIENT_ID=your_client_id
@@ -28,36 +28,36 @@ FANVUE_REDIRECT_URI=https://your-app.com/callback
 
 ---
 
-## Authentication
+## 认证
 
-Fanvue uses **OAuth 2.0 with PKCE** (Proof Key for Code Exchange). All API requests require:
+Fanvue 使用 **OAuth 2.0 with PKCE**（代码交换证明密钥）。所有 API 请求都需要：
 
-- **Authorization Header**: `Bearer <access_token>`
-- **API Version Header**: `X-Fanvue-API-Version: 2025-06-26`
+- **授权头**：`Bearer <access_token>`
+- **API 版本头**：`X-Fanvue-API-Version: 2025-06-26`
 
-### OAuth Scopes
+### OAuth 权限范围
 
-Request these scopes based on your needs:
+根据您的需求请求以下权限范围：
 
-| Scope | Access |
+| 权限范围 | 访问权限 |
 |-------|--------|
-| `openid` | OpenID Connect authentication |
-| `offline_access` | Refresh token support |
-| `offline` | Offline access |
-| `read:self` | Read authenticated user profile |
-| `read:chat` | Read chat conversations |
-| `write:chat` | Send messages, update chats |
-| `read:post` | Read posts |
-| `write:post` | Create posts |
-| `read:creator` | Read subscriber/follower data |
-| `read:media` | Read media vault |
-| `write:tracking_links` | Manage campaign links |
-| `read:insights` | Read earnings/analytics (creator accounts) |
-| `read:subscribers` | Read subscriber lists (creator accounts) |
+| `openid` | OpenID Connect 认证 |
+| `offline_access` | 刷新令牌支持 |
+| `offline` | 离线访问 |
+| `read:self` | 读取已认证用户信息 |
+| `read:chat` | 读取聊天记录 |
+| `write:chat` | 发送消息、更新聊天内容 |
+| `read:post` | 读取帖子 |
+| `write:post` | 创建帖子 |
+| `read:creator` | 读取订阅者/关注者信息 |
+| `read:media` | 读取媒体内容 |
+| `write:tracking_links` | 管理活动链接 |
+| `read:insights` | 读取收益/分析数据（仅限创建者账户） |
+| `read:subscribers` | 读取订阅者列表（仅限创建者账户） |
 
-> **Note**: Some endpoints (subscribers, insights, earnings) require a **creator account** and may need additional scopes not listed in the public documentation.
+> **注意**：某些端点（如订阅者、收益数据）需要 **创建者账户**，并且可能需要文档中未列出的额外权限范围。
 
-### Quick Auth Flow
+### 快速认证流程
 
 ```typescript
 import { randomBytes, createHash } from 'crypto';
@@ -102,11 +102,11 @@ const tokens = await tokenResponse.json();
 
 ---
 
-## API Base URL
+## API 基本 URL
 
-All API requests go to: `https://api.fanvue.com`
+所有 API 请求的地址为：`https://api.fanvue.com`
 
-### Standard Request Headers
+### 标准请求头
 
 ```typescript
 const headers = {
@@ -118,13 +118,13 @@ const headers = {
 
 ---
 
-## Agent Automation
+## 代理自动化
 
-These workflows are designed for AI agents automating Fanvue creator accounts.
+这些工作流程专为自动化 Fanvue 创建者账户的 AI 代理设计。
 
-### Accessing Images (with Signed URLs)
+### 访问图片（使用签名 URL）
 
-The basic `/media` endpoint only returns metadata. To get actual viewable URLs, use the `variants` query parameter:
+基本的 `/media` 端点仅返回元数据。要获取可查看的图片 URL，请使用 `variants` 查询参数：
 
 ```typescript
 // Step 1: List all media
@@ -145,12 +145,12 @@ const { variants } = await media.json();
 // ]
 ```
 
-**Variant Types:**
-- `main` - Full resolution original
-- `thumbnail` - Optimized preview (smaller)
-- `blurred` - Censored version for teasers
+**图片类型：**
+- `main` - 全分辨率原图
+- `thumbnail` - 优化后的预览图（较小尺寸）
+- `blurred` - 用于预告的模糊版本
 
-### Creating a Post with Media
+### 创建包含媒体的帖子
 
 ```typescript
 // Step 1: Have existing media UUIDs from vault
@@ -171,13 +171,13 @@ const response = await fetch('https://api.fanvue.com/posts', {
 });
 ```
 
-**Audience Options:**
-| Value | Who Can See |
+**受众选项：**
+| 值 | 可查看者 |
 |-------|-------------|
-| `subscribers` | Paid subscribers only |
-| `followers-and-subscribers` | Both free followers and subscribers |
+| `subscribers` | 仅限付费订阅者 |
+| `followers-and-subscribers` | 免费关注者和订阅者均可查看 |
 
-### Sending Messages with Media
+### 发送包含媒体的消息
 
 ```typescript
 // Get subscriber list for decision making
@@ -211,9 +211,9 @@ await fetch('https://api.fanvue.com/chat-messages/mass', {
 });
 ```
 
-### Agent Decision Context
+### 代理决策上下文
 
-For effective automation, gather this context:
+为了实现有效的自动化，请收集以下上下文信息：
 
 ```typescript
 interface AutomationContext {
@@ -251,24 +251,23 @@ interface AutomationContext {
 
 ---
 
-## Core Operations
+## 核心操作
 
-
-### Get Current User
+### 获取当前用户信息
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/users/me', { headers });
 const user = await response.json();
 ```
 
-### List Chats
+### 列出聊天记录
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/chats', { headers });
 const { data, pagination } = await response.json();
 ```
 
-### Send a Message
+### 发送消息
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/chat-messages', {
@@ -281,7 +280,7 @@ const response = await fetch('https://api.fanvue.com/chat-messages', {
 });
 ```
 
-### Create a Post
+### 创建帖子
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/posts', {
@@ -294,14 +293,14 @@ const response = await fetch('https://api.fanvue.com/posts', {
 });
 ```
 
-### Get Earnings
+### 获取收益数据
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/insights/get-earnings', { headers });
 const earnings = await response.json();
 ```
 
-### List Subscribers
+### 列出订阅者
 
 ```typescript
 const response = await fetch('https://api.fanvue.com/creators/list-subscribers', { headers });
@@ -310,15 +309,15 @@ const { data } = await response.json();
 
 ---
 
-## API Reference
+## API 参考
 
-See [api-reference.md](./api-reference.md) for the complete endpoint documentation.
+请参阅 [api-reference.md](./api-reference.md) 以获取完整的端点文档。
 
 ---
 
-## Token Refresh
+## 令牌刷新
 
-Access tokens expire. Use the refresh token to get new ones:
+访问令牌会过期。使用刷新令牌来获取新的令牌：
 
 ```typescript
 const response = await fetch('https://auth.fanvue.com/oauth2/token', {
@@ -337,24 +336,24 @@ const newTokens = await response.json();
 
 ---
 
-## Error Handling
+## 错误处理
 
-Common HTTP status codes:
+常见的 HTTP 状态码：
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| `200` | Success |
-| `400` | Bad request - check your parameters |
-| `401` | Unauthorized - token expired or invalid |
-| `403` | Forbidden - missing required scope |
-| `404` | Resource not found |
-| `429` | Rate limited - slow down requests |
+| `200` | 成功 |
+| `400` | 请求错误 - 请检查参数 |
+| `401` | 未经授权 - 令牌过期或无效 |
+| `403` | 禁止访问 - 缺少必要的权限范围 |
+| `404` | 资源未找到 |
+| `429` | 请求频率限制 - 请降低请求速率 |
 
 ---
 
-## Resources
+## 资源
 
-- [Fanvue API Documentation](https://api.fanvue.com/docs)
-- [OAuth 2.0 Guide](https://api.fanvue.com/docs/authentication/quick-start)
-- [Developer Portal](https://fanvue.com/developers/apps)
-- [Fanvue App Starter Kit](https://github.com/fanvue/fanvue-app-starter)
+- [Fanvue API 文档](https://api.fanvue.com/docs)
+- [OAuth 2.0 指南](https://api.fanvue.com/docs/authentication/quick-start)
+- [开发者门户](https://fanvue.com/developers/apps)
+- [Fanvue 应用启动包](https://github.com/fanvue/fanvue-app-starter)

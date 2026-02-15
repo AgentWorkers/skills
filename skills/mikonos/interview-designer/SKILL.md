@@ -1,53 +1,51 @@
 ---
 name: interview-designer
-description: Analyze resumes and design interview strategies using evidence-based methodology. Transforms interview prep from "read resume → ask questions" into "define standard → forensic evidence → future simulation". Combines Geoff Smart's Topgrading, Lou Adler's performance-based hiring, and Daniel Kahneman's bias control. Use when preparing for interviews, creating structured interview guides, or designing questions to validate candidate competencies.
+description: 使用基于证据的方法论来分析简历并设计面试策略。将面试准备从“阅读简历 → 提问”转变为“制定标准 → 收集证据 → 进行模拟面试”。该方法结合了Geoff Smart的《Topgrading》理论、Lou Adler的绩效评估招聘方法以及Daniel Kahneman的偏见控制理论。适用于面试准备、制定结构化的面试指南或设计用于验证候选人能力的问题。
 ---
 
-# Interview Designer Skill
+# 面试设计师技能
 
-> **Core Mission**: Elevate interview planning from "glancing at resume and asking questions" to "evidence-based investigation and projection."
-> **Operating Mechanism**: Define Scorecard (set standards) → Forensic Scan (evidence gathering) → Future Simulation (performance prediction).
-> **Prompt Strategy**: This skill uses \<Chain of Thought\>. When executing, maintain an "Objective Evaluator" perspective, seeking both Red Flags and Green Signals.
+> **核心使命**：将面试准备从“粗略查看简历并提问”提升为“基于证据的调查与预测”。
+> **运作机制**：定义评分标准 → 进行深入分析（收集证据） → 进行未来情景模拟（预测表现）。
+> **提问策略**：该技能采用“思维链”（Chain of Thought）进行提问。在提问过程中，要保持“客观评估者”的视角，同时关注潜在的“风险信号”（Red Flags）和“积极信号”（Green Signals）。
 
-## 1. Dynamic War Room (Expert Panel)
+## 1. 动态决策小组（专家团队）
 
-Dynamically summon the most matching **best minds** into the war room based on **candidate's role attributes**:
+根据候选人的角色属性，动态召集最合适的专家加入决策小组：
 
-*   **Geoff Smart (Who)**: Responsible for **Define & Verify**.
-    *   *Principle*: Scorecard First. Before looking at any resume, clarify what the standard for an "A Player" is.
-*   **Lou Adler (Performance-based)**: Responsible for **Predict**.
-    *   *Principle*: Past performance predicts future performance *only if* the context is similar. Must design simulations for future scenarios.
-*   **Daniel Kahneman (Bias Control)**: Responsible for **De-bias**.
-    *   *Principle*: Beware of "confirmation bias." If concerns are found, also seek counter-evidence; if highlights are found, verify their replicability.
-*   **Domain Expert**: Responsible for **Depth**.
+*   **Geoff Smart**：负责**制定并验证**评分标准。
+    *   **原则**：首先明确评分标准。在查看任何简历之前，首先要明确“优秀候选人”的标准是什么。
+*   **Lou Adler**：负责**预测**候选人的表现。
+    *   **原则**：只有当背景相似时，过去的业绩才能预测未来的表现；必须为未来的情景设计模拟测试。
+*   **Daniel Kahneman**：负责**消除偏见**。
+    *   **原则**：警惕“确认偏误”（confirmation bias）；如果发现可疑之处，要寻找反证；如果发现候选人的亮点，要验证其可重复性。
+*   **领域专家**：负责深入评估候选人的专业能力。
 
-## 2. Core Execution Workflow
+## 2. 核心执行流程
 
-### Step 1: Scorecard Definition - *Smart's Priority*
-**Don't look at the resume first!** Based on JD or role requirements, define A Player standards for this position:
-*   **Mission**: One sentence - why does this role exist?
-*   **Outcomes**: 3-5 specific, measurable results that must be achieved within 12 months.
-*   **Competencies**: Hard/soft skills required to achieve the above outcomes.
+### 第一步：定义评分标准 - Smart 的优先事项
+**不要先看简历！** 根据职位描述或角色要求，为该职位制定优秀候选人的标准：
+*   **任务**：用一句话说明这个职位存在的意义。
+*   **预期成果**：在12个月内必须实现的3-5个具体、可衡量的目标。
+*   **所需能力**：实现上述成果所需的硬技能和软技能。
 
-### Step 2: Forensic Resume Scan - *Smart's Forensic*
-Use Step 1 standards to scan the resume, looking for **Gaps (discrepancies)** and **High Points (highlights)**:
-*   **The "Too Good To Be True" Heuristic**: Logical gaps behind perfect data.
-*   **The "Passenger vs Driver" Heuristic**: Individual's true contributions under big company halo.
-*   **The "First Principles" Heuristic**: Principle understanding behind technical jargon.
+### 第二步：深入分析简历 - Smart 的评估方法
+使用第一步制定的标准来分析简历，寻找**差距**（不符合标准的地方）和**亮点**（优秀表现）：
+*   **“过于完美反而是可疑的”（Too Good To Be True）法则**：在看似完美的数据背后可能存在逻辑上的漏洞。
+*   **“被忽视的贡献者”（Passenger vs Driver）法则**：在大型企业的光环下，要关注候选人的实际贡献。
+*   **“基本原则”（First Principles）法则**：理解技术术语背后的基本原理。
 
-### Step 3: Pressure Test & Future Simulation - *Adler's Prediction*
-Design two types of questions:
-1.  **Pressure Test Scripts (for past)**: Design Forensic STAR follow-ups targeting Step 2 concerns (originally "torpedo questions," but more objective).
-2.  **Future Simulation (for future)**: Design a specific Performance Problem.
-    *   *Example*: "We're entering this new market next year, and the biggest obstacle is X. If you join, how would you analyze this problem in your first week?"
+### 第三步：压力测试与未来情景模拟 - Adler 的预测方法
+设计两种类型的问题：
+1. **压力测试问题（针对过去的表现）**：针对第二步分析中发现的问题，设计具有针对性的问题。
+2. **未来情景模拟问题**：设计一个具体的绩效挑战问题。
+    *   **示例**：“我们明年将进入这个新市场，最大的挑战是X。如果你加入，你会如何在第一周内分析这个问题？”
 
-## 3. Question Design Principles
+## 3. 问题设计原则
+1. **问题不能被记住**：迫使候选人当场思考（通过情景模拟）或回忆痛苦的经历（通过压力测试）。
+2. **强制性的选择**：让候选人在两个“正确”的选项中做出选择，以评估他们的价值观。
+3. **细节要求**：问题必须具体到“你画了什么图表”或“你用了哪些确切的词语”。
 
-1.  **Cannot Be Memorized**: Forces candidates to think on the spot (Simulation) or recall painful memories (Pressure Test).
-2.  **Forced Trade-offs**: Choose between two "correct" options to test values.
-3.  **Detail Granularity**: Must be able to probe down to "what diagram did you draw" or "what exact words did you say."
-
-## 4. Output Format
-
-Directly call `templates/interview_guide_template.md` to generate the report.
-**Note**: When generating the guide, include both **[Red Flags] (concerns)** and **[Green Signals] (highlight verification)** to maintain objectivity in assessment.
+## 4. 输出格式
+直接调用 `templates/interview_guide_template.md` 生成面试指南。
+**注意**：在生成指南时，要同时列出**风险信号（Red Flags）**和**积极信号（Green Signals）**，以确保评估的客观性。

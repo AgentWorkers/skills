@@ -1,6 +1,6 @@
 ---
 name: image-ocr
-description: "Extract text from images using Tesseract OCR"
+description: "使用 Tesseract OCR 从图像中提取文本"
 metadata:
   {
     "openclaw":
@@ -21,11 +21,11 @@ metadata:
   }
 ---
 
-# Image OCR
+# 图像OCR
 
-Extract text from images using Tesseract OCR. Supports multiple languages and image formats including PNG, JPEG, TIFF, and BMP.
+使用Tesseract OCR从图像中提取文本。支持多种语言和图像格式，包括PNG、JPEG、TIFF和BMP。
 
-## Commands
+## 命令
 
 ```bash
 # Extract text from an image (default: English)
@@ -35,7 +35,7 @@ image-ocr "screenshot.png"
 image-ocr "document.jpg" --lang eng
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install tesseract

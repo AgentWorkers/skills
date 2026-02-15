@@ -1,6 +1,6 @@
 ---
 name: html-to-ppt
-description: Convert HTML/Markdown to PowerPoint presentations using Marp
+description: 使用 Marp 将 HTML/Markdown 文件转换为 PowerPoint 演示文稿
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, marp, markdown, html, slides]
@@ -12,29 +12,29 @@ library:
   stars: 3.1k
 ---
 
-# HTML/Markdown to PowerPoint Skill
+# 将Markdown或HTML转换为PowerPoint的技能
 
-## Overview
+## 概述
 
-This skill enables conversion from Markdown or HTML to professional PowerPoint presentations using **Marp** (Markdown Presentation Ecosystem). Create beautiful, consistent slides using simple Markdown syntax with CSS-based themes.
+该技能利用**Marp**（Markdown Presentation Ecosystem）工具，能够将Markdown或HTML内容转换为专业的PowerPoint演示文稿。通过简单的Markdown语法以及基于CSS的主题，您可以轻松创建美观且结构统一的幻灯片。
 
-## How to Use
+## 使用方法
 
-1. Provide Markdown content structured for slides
-2. Optionally specify a theme or custom styling
-3. I'll convert it to PowerPoint, PDF, or HTML slides
+1. 提供用于制作幻灯片的Markdown内容。
+2. （可选）指定主题或自定义样式。
+3. Marp会将内容转换为PowerPoint、PDF或HTML格式的幻灯片。
 
-**Example prompts:**
-- "Convert this markdown to a PowerPoint presentation"
-- "Create slides from this outline using Marp"
-- "Turn my notes into a presentation with the gaia theme"
-- "Generate a PDF slide deck from this markdown"
+**示例指令：**
+- “将这段Markdown内容转换为PowerPoint演示文稿。”
+- “使用Marp根据这个大纲生成幻灯片。”
+- “用‘gaia’主题将我的笔记制作成演示文稿。”
+- “从这段Markdown内容生成PDF格式的幻灯片。”
 
-## Domain Knowledge
+## 相关知识
 
-### Marp Fundamentals
+### Marp基础
 
-Marp uses a simple syntax where `---` separates slides:
+Marp使用简单的语法来组织幻灯片，其中`---`用于分隔不同的幻灯片内容：
 
 ```markdown
 ---
@@ -53,7 +53,7 @@ Content for first slide
 Content for second slide
 ```
 
-### Command Line Usage
+### 命令行使用方法
 
 ```bash
 # Convert to PowerPoint
@@ -69,9 +69,9 @@ marp slides.md -o presentation.html
 marp slides.md --theme gaia -o presentation.pptx
 ```
 
-### Slide Structure
+### 幻灯片结构
 
-#### Basic Slide
+#### 基础幻灯片
 ```markdown
 ---
 marp: true
@@ -84,7 +84,7 @@ marp: true
 - Bullet point 3
 ```
 
-#### Title Slide
+#### 标题幻灯片
 ```markdown
 ---
 marp: true
@@ -100,8 +100,7 @@ Author Name
 Date
 ```
 
-### Frontmatter Options
-
+### 前言部分（Frontmatter）的设置选项
 ```yaml
 ---
 marp: true
@@ -115,9 +114,9 @@ backgroundImage: url('bg.png')
 ---
 ```
 
-### Themes
+### 主题
 
-#### Built-in Themes
+#### 内置主题
 ```markdown
 ---
 marp: true
@@ -135,7 +134,7 @@ theme: uncover   # Bold, presentation-focused
 ---
 ```
 
-#### Theme Classes
+#### 主题样式（Theme Classes）
 ```markdown
 ---
 marp: true
@@ -150,9 +149,9 @@ class: invert   # Inverted colors
 ---
 ```
 
-### Formatting
+### 格式化
 
-#### Text Styling
+#### 文本样式
 ```markdown
 # Heading 1
 ## Heading 2
@@ -164,7 +163,7 @@ class: invert   # Inverted colors
 > Blockquote for emphasis
 ```
 
-#### Lists
+#### 列表
 ```markdown
 - Unordered item
 - Another item
@@ -175,7 +174,7 @@ class: invert   # Inverted colors
    1. Nested numbered
 ```
 
-#### Code Blocks
+#### 代码块
 ```markdown
 # Code Example
 
@@ -185,7 +184,7 @@ def hello():
 \`\`\`
 ```
 
-#### Tables
+#### 表格
 ```markdown
 | Feature | Status |
 |---------|--------|
@@ -194,21 +193,21 @@ def hello():
 | Images  | ✅     |
 ```
 
-### Images
+#### 图片
 
-#### Basic Image
+#### 基本图片
 ```markdown
 ![](image.png)
 ```
 
-#### Sized Image
+#### 定制大小的图片
 ```markdown
 ![width:500px](image.png)
 ![height:300px](image.png)
 ![width:80%](image.png)
 ```
 
-#### Background Image
+#### 背景图片
 ```markdown
 ---
 marp: true
@@ -218,9 +217,9 @@ backgroundImage: url('background.jpg')
 # Slide with Background
 ```
 
-### Advanced Layout
+### 高级布局
 
-#### Two Columns
+#### 双列布局
 ```markdown
 ---
 marp: true
@@ -252,7 +251,7 @@ style: |
 </div>
 ```
 
-#### Split Background
+#### 分割背景
 ```markdown
 ---
 marp: true
@@ -278,9 +277,9 @@ _backgroundImage: linear-gradient(to right, #4a90a4, #4a90a4 50%, white 50%)
 </div>
 ```
 
-### Directives
+### 语法指令
 
-#### Local Directives (per slide)
+#### 本地指令（针对单个幻灯片）
 ```markdown
 ---
 marp: true
@@ -295,7 +294,7 @@ _paginate: false
 # Special Slide
 ```
 
-#### Scoped Styles
+#### 局部样式设置
 ```markdown
 ---
 marp: true
@@ -310,8 +309,7 @@ h1 {
 # This Title is Red
 ```
 
-### Python Integration
-
+### 与Python的集成
 ```python
 import subprocess
 import tempfile
@@ -358,7 +356,6 @@ markdown_to_pptx(md, 'presentation.pptx')
 ```
 
 ### Node.js/marp-cli API
-
 ```javascript
 const { marpCli } = require('@marp-team/marp-cli');
 
@@ -368,17 +365,17 @@ marpCli(['slides.md', '-o', 'output.pptx']).then(exitCode => {
 });
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **One Idea Per Slide**: Keep slides focused
-2. **Use Visual Hierarchy**: Consistent heading levels
-3. **Limit Text**: 6 bullets max per slide
-4. **Include Images**: Visual content enhances retention
-5. **Test Output**: Preview before final export
+1. **每个幻灯片只包含一个主要信息**：保持幻灯片的简洁性。
+2. **使用清晰的层次结构**：确保标题层级的一致性。
+3. **限制文本量**：每个幻灯片最多使用6个项目符号。
+4. **添加图片**：视觉内容有助于提高记忆效果。
+5. **预览输出**：在最终导出前先查看预览效果。
 
-## Common Patterns
+## 常见用法
 
-### Presentation Generator
+### 演示文稿生成工具
 ```python
 def create_presentation(title, sections, output_path, theme='gaia'):
     """Generate presentation from structured data."""
@@ -423,7 +420,7 @@ Questions?
     return markdown_to_pptx(md_content, output_path, theme)
 ```
 
-### Batch Slide Generation
+### 批量生成幻灯片
 ```python
 def generate_report_slides(data_list, template, output_dir):
     """Generate multiple presentations from data."""
@@ -435,9 +432,9 @@ def generate_report_slides(data_list, template, output_dir):
         markdown_to_pptx(content, output_path)
 ```
 
-## Examples
+## 示例
 
-### Example 1: Tech Presentation
+### 示例1：技术演示文稿
 ```markdown
 ---
 marp: true
@@ -469,7 +466,7 @@ January 2024
 
 All requests require an API key:
 
-```http
+```
 Authorization: Bearer YOUR_API_KEY
 ```
 
@@ -493,12 +490,12 @@ Authorization: Bearer YOUR_API_KEY
 
 # Error Handling
 
-```json
+```
 {
   "error": {
     "code": "VALIDATION_ERROR",
-    "message": "Invalid email format",
-    "details": ["email must be valid"]
+    "message": "无效的电子邮件格式",
+    "details": ["电子邮件必须有效"]
   }
 }
 ```
@@ -512,7 +509,7 @@ Authorization: Bearer YOUR_API_KEY
 api-support@company.com
 ```
 
-### Example 2: Business Pitch
+### 示例2：商业提案
 ```python
 def create_pitch_deck(company_data):
     """Generate investor pitch deck."""
@@ -613,15 +610,15 @@ md_content = create_pitch_deck(pitch_data)
 markdown_to_pptx(md_content, 'pitch_deck.pptx', theme='uncover')
 ```
 
-## Limitations
+## 限制事项
 
-- Complex animations not supported
-- Some PowerPoint-specific features unavailable
-- Custom fonts require CSS configuration
-- Video embedding limited
-- Speaker notes have basic support
+- 不支持复杂的动画效果。
+- 部分PowerPoint特有的功能无法使用。
+- 自定义字体需要通过CSS进行配置。
+- 视频嵌入功能有限。
+- 演讲者备注的支持较为基础。
 
-## Installation
+## 安装方法
 
 ```bash
 # Using npm
@@ -634,9 +631,9 @@ brew install marp-cli
 marp --version
 ```
 
-## Resources
+## 资源链接
 
-- [Marp Documentation](https://marp.app/)
-- [Marp CLI GitHub](https://github.com/marp-team/marp-cli)
-- [Marpit Framework](https://marpit.marp.app/)
-- [Theme CSS Guide](https://marpit.marp.app/theme-css)
+- [Marp官方文档](https://marp.app/)
+- [Marp CLI的GitHub仓库](https://github.com/marp-team/marp-cli)
+- [Marpit框架](https://marpit.marp.app/)
+- [主题CSS样式指南](https://marpit.marp.app/theme-css)

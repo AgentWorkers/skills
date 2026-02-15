@@ -1,6 +1,6 @@
 ---
 name: george
-description: "Automate George online banking (Erste Bank / Sparkasse Austria): login/logout, list accounts, and fetch transactions via Playwright."
+description: "使用 Playwright 自动化 George 在线银行（Erste Bank / Sparkasse Austria）的操作：登录/登出、查看账户信息以及查询交易记录。"
 summary: "George banking automation: login, accounts, transactions."
 version: 1.4.1
 homepage: https://github.com/odrobnik/george-skill
@@ -12,17 +12,17 @@ metadata:
       python: ["playwright"]
 ---
 
-# George Banking Automation
+# George银行自动化
 
-Fetch current account balances, stock portfolio, and transactions for all account types (checking, savings, depots) in JSON format for automatic processing. Uses Playwright to automate George (Erste Bank / Sparkasse Austria).
+该脚本用于获取所有账户类型（支票账户、储蓄账户、定期存款账户）的当前账户余额、股票投资组合及交易记录，并以JSON格式输出，以便进行自动化处理。它利用Playwright框架来自动化与George银行（Erste Bank / Sparkasse Austria）的交互。
 
-**Entry point:** `{baseDir}/scripts/george.py`
+**入口文件：** `{baseDir}/scripts/george.py`
 
-## Setup
+## 设置
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅[SETUP.md](SETUP.md)。
 
-## Commands
+## 命令
 
 ```bash
 python3 {baseDir}/scripts/george.py login
@@ -31,14 +31,14 @@ python3 {baseDir}/scripts/george.py accounts
 python3 {baseDir}/scripts/george.py transactions --account <id|iban> --from YYYY-MM-DD --until YYYY-MM-DD
 ```
 
-## Recommended Flow
+## 推荐的操作流程
 
 ```
 login → accounts → transactions → portfolio → logout
 ```
 
-Always call `logout` after completing all operations to clear the stored browser session (cookies, local storage, Playwright profile). This minimizes persistent auth state on disk.
+完成所有操作后，请务必调用`logout`命令，以清除浏览器会话中存储的数据（包括cookie、本地存储以及Playwright的相关配置信息）。这样可以减少持久化认证状态对系统造成的影响。
 
-## Notes
-- Session state stored in `{workspace}/george/` with restrictive permissions (dirs `700`, files `600`).
-- Ephemeral exports default to `/tmp/openclaw/george` (override with `OPENCLAW_TMP`).
+## 注意事项：
+- 会话状态存储在`{workspace}/george/`目录下，该目录具有严格的权限设置（目录权限为700，文件权限为600）。
+- 暂时性的数据输出默认存储在`/tmp/openclaw/george`目录中（可通过`OPENCLAW_TMP`环境变量进行覆盖）。

@@ -1,19 +1,30 @@
 ---
 name: monkeytype-tracker
-description: Track and analyze Monkeytype typing statistics with improvement tips. Use when user mentions "monkeytype", "typing stats", "typing speed", "WPM", "typing practice", "typing progress", or wants to check their typing performance. Features on-demand stats, test history analysis, personal bests, progress comparison, leaderboard lookup, and optional automated reports. Requires user's Monkeytype ApeKey for API access.
+description: **使用 Monkeytype 追踪和分析打字统计数据，并提供改进建议。**  
+当用户提到“monkeytype”、“打字统计”、“打字速度”、“WPM（每分钟输入字数）”、“打字练习”或希望检查自己的打字表现时，可以使用该工具。  
+该工具提供以下功能：  
+- 按需查看统计数据  
+- 测试历史分析  
+- 个人最佳记录  
+- 进度对比  
+- 排行榜查询  
+- 可选的自动生成报告  
+
+**使用说明：**  
+需要用户提供自己的 Monkeytype ApeKey 以访问 API。
 ---
 
 # Monkeytype Tracker
 
-Track your Monkeytype typing statistics and get personalized improvement tips.
+跟踪您的Monkeytype打字统计数据，并获得个性化的改进建议。
 
-## Pre-Flight Check (ALWAYS DO THIS FIRST)
+## 预启动检查（务必首先执行）
 
-Before running ANY command, check if setup is complete:
+在运行任何命令之前，请检查设置是否已完成：
 
-**Security Priority:**
-1. **Environment variable** (most secure): `MONKEYTYPE_APE_KEY`
-2. **Config file fallback**: `~/.openclaw/workspace/config/monkeytype.json`
+**安全优先级：**
+1. **环境变量**（最安全的方式）：`MONKEYTYPE_APE_KEY`
+2. **配置文件备用路径**：`~/.openclaw/workspace/config/monkeytype.json`
 
 ```python
 # Check environment variable first
@@ -23,15 +34,15 @@ if not ape_key:
     config_path = Path.home() / ".openclaw" / "workspace" / "config" / "monkeytype.json"
 ```
 
-**If no env var AND no config:** → Run Setup Flow (Step 1)
-**If apeKey exists but API returns 471 "inactive":** → Tell user to activate the key (checkbox)
-**If apeKey works:** → Proceed with command
+**如果不存在环境变量且没有配置文件** → 运行设置流程（步骤1）
+**如果`apeKey`存在但API返回471“无效”** → 告知用户激活该密钥（勾选相应的复选框）
+**如果`apeKey`有效** → 继续执行命令
 
-## Setup Flow (3 Steps)
+## 设置流程（3个步骤）
 
-### Step 1: Get ApeKey
+### 步骤1：获取ApeKey
 
-Send this message:
+发送以下消息：
 
 ```
 Hey! 👋 I see you want to track your Monkeytype stats. I'll need your API key to get started.
@@ -64,8 +75,8 @@ With this content:
 Then just say "monkeytype stats" and I'll take it from there!
 ```
 
-After receiving key:
-1. Save to `~/.openclaw/workspace/config/monkeytype.json`:
+收到密钥后：
+1. 将密钥保存到`~/.openclaw/workspace/config/monkeytype.json`文件中：
 ```json
 {
   "apeKey": "USER_KEY_HERE",
@@ -76,13 +87,13 @@ After receiving key:
   }
 }
 ```
-2. **Test the key immediately** by running `python scripts/monkeytype_stats.py stats`
-3. If 471 error → Key is inactive, ask user to check the checkbox
-4. If success → Proceed to Step 2
+2. **立即测试密钥**，运行`python scripts/monkeytype_stats.py stats`
+3. 如果出现471错误 → 密钥无效，请让用户检查复选框是否已勾选
+4. 如果成功 → 进入步骤2
 
-### Step 2: Verify & Ask Automation Preferences
+### 步骤2：验证并询问自动化偏好设置
 
-After key verification succeeds, send:
+密钥验证成功后，发送以下消息：
 
 ```
 Got it! Key saved and verified ✅
@@ -103,14 +114,14 @@ Now, would you like automated reports?
 ⏰ What time should I send reports? (default: 8pm)
 ```
 
-### Step 3: Finalize Setup
+### 步骤3：完成设置
 
-After user chooses options:
-1. Update config with preferences
-2. Create cron jobs if automations enabled:
-   - Daily: `0 {hour} * * *` with name `monkeytype-daily-report`
-   - Weekly: `0 {hour} * * 0` with name `monkeytype-weekly-report`
-3. Send completion message:
+用户选择好偏好设置后：
+1. 使用这些设置更新配置文件
+2. 如果启用了自动化功能，创建cron作业：
+   - 每日：`0 {小时} * * *`，作业名称为`monkeytype-daily-report`
+   - 每周：`0 {小时} * * 0`，作业名称为`monkeytype-weekly-report`
+3. 发送完成通知：
 
 ```
 🎉 **You're all set!**
@@ -128,65 +139,61 @@ After user chooses options:
 Happy typing! May your WPM be ever higher 🚀⌨️
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | User Message |
-|-------|--------------|
-| No config file | "Looks like Monkeytype isn't set up yet. Let me help you get started! 🔑" → Start Setup Flow |
-| No apeKey in config | Same as above |
-| API 471 "inactive" | "Your API key is inactive. Go to Monkeytype → Account Settings → Ape Keys and check the checkbox next to your key to activate it ✅" |
-| API 401 "unauthorized" | "Your API key seems invalid. Let's set up a new one." → Start Setup Flow |
-| API rate limit | "Hit the API rate limit. Try again in a minute ⏳" |
-| Network error | "Couldn't reach Monkeytype servers. Check your connection and try again." |
+| 错误类型 | 用户提示 |
+|---------|-----------|
+| 未找到配置文件 | “看起来Monkeytype尚未设置完成。让我帮助您开始使用吧！ 🔑” → 开始设置流程 |
+| 配置文件中不存在`apeKey` | 同上 |
+| API返回471“无效” | “您的API密钥无效。请前往Monkeytype → 账户设置 → Ape Keys，勾选密钥旁边的复选框以激活它 ✅” |
+| API返回401“未经授权” | “您的API密钥似乎无效。让我们为您重新生成一个。” → 开始设置流程 |
+| API请求次数达到上限 | “API请求次数达到上限。请稍后重试 ⏳” |
+| 网络错误 | “无法连接到Monkeytype服务器。请检查网络连接后重试。”
 
-## Commands
+## 命令
 
-### Fetch Stats
-**Triggers**: "show my monkeytype stats", "how's my typing", "typing stats"
+### 获取统计数据
+**触发条件**：“显示我的Monkeytype统计数据”、“我的打字情况如何”、“查看打字统计”
+1. 执行预启动检查（见上文）
+2. 运行：`python scripts/monkeytype_stats.py stats`
+3. 用表情符号美化输出结果
 
-1. Pre-flight check (see above)
-2. Run: `python scripts/monkeytype_stats.py stats`
-3. Format output nicely with emojis
+### 最近的打字记录与分析
+**触发条件**：“分析我的近期打字情况”、“我最近的打字表现如何”
+1. 执行预启动检查
+2. 运行：`python scripts/monkeytype_stats.py history --limit 50`
+3. 分析输出结果并提供2-3条改进建议
 
-### Recent History & Analysis
-**Triggers**: "analyze my recent typing", "how have I been typing lately"
+### 进度比较
+**触发条件**：“比较我的打字进度”、“我的打字能力是否有提升”
+1. 执行预启动检查
+2. 运行：`python scripts/monkeytype_stats.py compare`
 
-1. Pre-flight check
-2. Run: `python scripts/monkeytype_stats.py history --limit 50`
-3. Analyze output and provide 2-3 improvement tips
+### 查看排行榜
+**触发条件**：“查看Monkeytype排行榜”、“我的排名是多少”
+1. 执行预启动检查
+2. 运行：`python scripts/monkeytype_stats.py leaderboard [--mode time] [--mode2 60]`
 
-### Progress Comparison
-**Triggers**: "compare my typing progress", "am I improving"
+## 改进建议逻辑
 
-1. Pre-flight check
-2. Run: `python scripts/monkeytype_stats.py compare`
+在获取统计数据后，根据以下情况提供改进建议：
 
-### Leaderboard Lookup
-**Triggers**: "monkeytype leaderboard", "where do I rank"
+| 问题 | 建议 |
+|------|------|
+| 标准差（STDDev）> 15 | “注重打字的一致性——放慢打字速度，争取每次测试的准确率达到95%以上” |
+| 准确率< 95% | “提高准确率有助于提升打字速度。继续练习，直到准确率稳定在95%以上” |
+| 60秒内的打字次数远少于30次 | “发现耐力不足。多练习长时间的单次打字测试以提高耐力” |
+| 打字测试次数较少 | “多练习才能更快进步。建议每天进行5-10次测试” |
+| 连续打字记录中断 | “保持一致性很重要！尽量每天都能进行一些打字练习” |
 
-1. Pre-flight check
-2. Run: `python scripts/monkeytype_stats.py leaderboard [--mode time] [--mode2 60]`
+## API相关说明
 
-## Improvement Tips Logic
+- 基本URL：`https://api.monkeytype.com`
+- 认证头：`Authorization: ApeKey {key}`
+- 请求限制：全局每分钟30次请求；结果端点每天30次请求
+- 尽可能将结果缓存到本地
 
-After fetching stats, analyze and provide tips based on:
+## 相关文件
 
-| Issue | Tip |
-|-------|-----|
-| StdDev > 15 | "Focus on consistency — slow down and aim for 95%+ accuracy every test" |
-| Accuracy < 95% | "Accuracy builds speed. Slow down until you hit 95%+ consistently" |
-| 60s << 30s PB | "Stamina gap detected. Practice longer tests to build endurance" |
-| Low test count | "More practice = faster progress. Aim for 5-10 tests daily" |
-| Streak broken | "Consistency matters! Try to type a bit every day" |
-
-## API Notes
-
-- Base URL: `https://api.monkeytype.com`
-- Auth header: `Authorization: ApeKey {key}`
-- Rate limits: 30 req/min global, 30/day for results endpoint
-- Cache results locally when possible
-
-## Files
-
-- `~/.openclaw/workspace/config/monkeytype.json`: User config
-- `scripts/monkeytype_stats.py`: Main stats fetcher script
+- `~/.openclaw/workspace/config/monkeytype.json`：用户配置文件
+- `scripts/monkeytype_stats.py`：主要的数据获取脚本

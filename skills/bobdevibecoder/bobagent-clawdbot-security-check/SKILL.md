@@ -1,87 +1,87 @@
 ---
 name: clawdbot-self-security-audit
-description: Perform a comprehensive read-only security audit of Clawdbot's own configuration. This is a knowledge-based skill that teaches Clawdbot to identify hardening opportunities across the system. Use when user asks to "run security check", "audit clawdbot", "check security hardening", or "what vulnerabilities does my Clawdbot have". This skill uses Clawdbot's internal capabilities and file system access to inspect configuration, detect misconfigurations, and recommend remediations. It is designed to be extensible - new checks can be added by updating this skill's knowledge.
+description: 对 Clawdbot 的配置文件进行全面的只读安全审计。这是一项基于知识的技能，旨在帮助 Clawdbot 识别系统中的安全加固机会。当用户请求“运行安全检查”、“审计 Clawdbot”、“检查安全加固情况”或“我的 Clawdbot 有哪些漏洞”时，可以使用此技能。该技能利用 Clawdbot 的内部功能和文件系统访问权限来检查配置文件，检测配置错误，并提供相应的修复建议。该技能具有可扩展性——通过更新相关知识库，可以添加新的安全检查项。
 homepage: https://github.com/TheSethRose/Clawdbot-Security-Check
 metadata: {"clawdbot":{"emoji":"🔒","os":["darwin","linux"],"requires":{"files":["read"],"tools":["exec","bash"]},"install":[{"id":"read-skill","kind":"skill","name":"clawdbot-self-security-audit","label":"Install security audit skill","bins":["SKILL.md"]}]}}
 ---
 
-# Clawdbot Self-Security Audit Framework
+# Clawdbot 自我安全审计框架
 
-This skill empowers Clawdbot to audit its own security posture using first-principles reasoning. Rather than relying on a static script, Clawdbot learns the framework and applies it dynamically to detect vulnerabilities, understand their impact, and recommend specific remediations.
+该技能使 Clawdbot 能够利用基本原理来审计自身的安全状况。Clawdbot 不依赖静态脚本，而是学习并动态应用这一框架来检测漏洞、了解其影响，并提出具体的修复建议。
 
-## Core Philosophy
+## 核心理念
 
-> "Security through transparency and self-awareness."
+> “通过透明度和自我意识来实现安全。”
 
-Clawdbot should know its own attack surface. This skill embeds that knowledge directly.
+Clawdbot 应该清楚自身的攻击面，而这一技能直接嵌入了这种认知能力。
 
-## Security Principles
+## 安全原则
 
-Running an AI agent with shell access requires caution. Focus on three areas:
+运行具有 shell 访问权限的 AI 代理需要格外谨慎。重点关注以下三个方面：
 
-1. **Who can talk to the bot** - DM policies, group allowlists, channel restrictions
-2. **Where the bot is allowed to act** - Network exposure, gateway binding, proxy configs
-3. **What the bot can touch** - Tool access, file permissions, credential storage
+1. **谁可以与机器人通信** - 私信（DM）策略、群组允许列表、频道限制
+2. **机器人被允许执行操作的范围** - 网络暴露情况、网关绑定设置、代理配置
+3. **机器人可以访问的资源** - 工具访问权限、文件权限、凭证存储
 
-Start with the smallest access possible and widen it as you gain confidence.
+从最小的访问权限开始，随着信心的增加再逐步扩大权限范围。
 
-## Trust Hierarchy
+## 信任层级
 
-| Level | Entity | Trust Model |
+| 级别 | 实体 | 信任模型 |
 |-------|--------|-------------|
-| 1 | **Owner** | Full trust - has all access |
-| 2 | **AI** | Trust but verify - sandboxed, logged |
-| 3 | **Allowlists** | Limited trust - only specified users |
-| 4 | **Strangers** | No trust - blocked by default |
+| 1 | **所有者** | 完全信任 - 拥有所有访问权限 |
+| 2 | **AI** | 信任但需验证 - 存在于沙箱环境中，并记录操作日志 |
+| 3 | **允许列表** | 有限信任 - 仅允许指定用户 |
+| 4 | **陌生人** | 无信任 - 默认情况下被阻止 |
 
-## Audit Commands
+## 审计命令
 
-Use these commands to run security audits:
+使用以下命令来执行安全审计：
 
-- `clawdbot security audit` - Standard audit of common issues
-- `clawdbot security audit --deep` - Comprehensive audit with all checks
-- `clawdbot security audit --fix` - Apply guardrail remediations
+- `clawdbot security audit` - 对常见问题进行标准审计
+- `clawdbot security audit --deep` - 进行全面审计，包含所有检查项
+- `clawdbot security audit --fix` - 应用安全防护措施
 
-## The 12 Security Domains
+## 12 个安全领域
 
-When auditing Clawdbot, systematically evaluate these domains:
+在审计 Clawdbot 时，系统地评估以下领域：
 
-### 1. Gateway Exposure (CRITICAL)
+### 1. 网关暴露（严重级别）
 
-**What to check:**
-- Where is the gateway binding? (`gateway.bind`)
-- Is authentication configured? (`gateway.auth_token` or `CLAWDBOT_GATEWAY_TOKEN` env var)
-- What port is exposed? (default: 18789)
-- Is WebSocket auth enabled?
+**需要检查的内容：**
+- 网关绑定地址在哪里？（`gateway.bind`）
+- 是否配置了身份验证？（`gateway.auth_token` 或环境变量 `CLAWDBOT/GateWAY_TOKEN`）
+- 暴露的端口是什么？（默认为 18789）
+- 是否启用了 WebSocket 身份验证？
 
-**How to detect:**
+**检测方法：**
 ```bash
 cat ~/.clawdbot/clawdbot.json | grep -A10 '"gateway"'
 env | grep CLAWDBOT_GATEWAY_TOKEN
 ```
 
-**Vulnerability:** Binding to `0.0.0.0` or `lan` without auth allows network access.
+**漏洞：** 未进行身份验证的情况下将网关绑定到 `0.0.0.0` 或 `lan` 会导致网络访问。
 
-**Remediation:**
+**修复措施：**
 ```bash
 clawdbot doctor --generate-gateway-token
 export CLAWDBOT_GATEWAY_TOKEN="$(openssl rand -hex 32)"
 ```
 
-### 2. DM Policy Configuration (HIGH)
+### 2. 私信策略配置（高风险）
 
-**What to check:**
-- What is `dm_policy` set to?
-- If `allowlist`, who is explicitly allowed via `allowFrom`?
+**需要检查的内容：**
+- `dm_policy` 的设置是什么？
+- 如果设置了 `allowlist`，那么哪些用户被明确允许发送私信？
 
-**How to detect:**
+**检测方法：**
 ```bash
 cat ~/.clawdbot/clawdbot.json | grep -E '"dm_policy|"allowFrom"'
 ```
 
-**Vulnerability:** Setting to `allow` or `open` means any user can DM Clawdbot.
+**漏洞：** 将 `dm_policy` 设置为 `allow` 或 `open` 会导致任何用户都可以向 Clawdbot 发送私信。
 
-**Remediation:**
+**修复措施：**
 ```json
 {
   "channels": {
@@ -93,50 +93,50 @@ cat ~/.clawdbot/clawdbot.json | grep -E '"dm_policy|"allowFrom"'
 }
 ```
 
-### 3. Group Access Control (HIGH)
+### 3. 群组访问控制（高风险）
 
-**What to check:**
-- What is `groupPolicy` set to?
-- Are groups explicitly allowlisted?
-- Are mention gates configured?
+**需要检查的内容：**
+- `groupPolicy` 的设置是什么？
+- 是否有明确的群组允许列表？
+- 是否配置了提及（mention）功能？
 
-**Vulnerability:** Open group policy allows anyone in the room to trigger commands.
+**漏洞：** 开放的群组策略允许房间内的任何人触发命令。
 
-### 4. Credentials Security (CRITICAL)
+### 4. 凭证安全（严重级别）
 
-**Credential Storage Map:**
-| Platform | Path |
+**凭证存储位置：**
+| 平台 | 路径 |
 |----------|------|
 | WhatsApp | `~/.clawdbot/credentials/whatsapp/{accountId}/creds.json` |
-| Telegram | `~/.clawdbot/clawdbot.json` or env |
-| Discord | `~/.clawdbot/clawdbot.json` or env |
-| Slack | `~/.clawdbot/clawdbot.json` or env |
-| Pairing allowlists | `~/.clawdbot/credentials/channel-allowFrom.json` |
-| Auth profiles | `~/.clawdbot/agents/{agentId}/auth-profiles.json` |
-| Legacy OAuth | `~/.clawdbot/credentials/oauth.json` |
+| Telegram | `~/.clawdbot/clawdbot.json` 或环境变量 |
+| Discord | `~/.clawdbot/clawdbot.json` 或环境变量 |
+| Slack | `~/.clawdbot/clawdbot.json` 或环境变量 |
+| 配对允许列表 | `~/.clawdbot/credentials/channel-allowFrom.json` |
+| 认证配置文件 | `~/.clawdbot/agents/{agentId}/auth-profiles.json` |
+| 旧版 OAuth | `~/.clawdbot/credentials/oauth.json` |
 
-**Remediation:**
+**修复措施：**
 ```bash
 chmod 700 ~/.clawdbot
 chmod 600 ~/.clawdbot/credentials/oauth.json
 chmod 600 ~/.clawdbot/clawdbot.json
 ```
 
-### 5. Browser Control Exposure (HIGH)
+### 5. 浏览器控制暴露（高风险）
 
-**What to check:**
-- Is browser control enabled?
-- Are authentication tokens set for remote control?
-- Is HTTPS required for Control UI?
-- Is a dedicated browser profile configured?
+**需要检查的内容：**
+- 是否启用了浏览器控制功能？
+- 是否为远程控制设置了身份验证令牌？
+- 控制界面是否需要使用 HTTPS？
+- 是否配置了专用的浏览器配置文件？
 
-**Vulnerability:** Exposed browser control without auth allows remote UI takeover.
+**漏洞：** 未进行身份验证的情况下允许使用浏览器控制功能会导致远程界面被接管。
 
-### 6. Gateway Bind & Network Exposure (HIGH)
+### 6. 网关绑定与网络暴露（高风险）
 
-**Vulnerability:** Public binding without auth allows internet access to gateway.
+**漏洞：** 未进行身份验证的公开网关绑定会导致互联网访问。
 
-**Remediation:**
+**修复措施：**
 ```json
 {
   "gateway": {
@@ -147,37 +147,37 @@ chmod 600 ~/.clawdbot/clawdbot.json
 }
 ```
 
-### 7. Tool Access & Sandboxing (MEDIUM)
+### 7. 工具访问与沙箱环境（中等风险）
 
-**Workspace Access Levels:**
-| Mode | Description |
+**工作区访问权限：**
+| 模式 | 描述 |
 |------|-------------|
-| `none` | Workspace is off limits |
-| `ro` | Workspace mounted read-only |
-| `rw` | Workspace mounted read-write |
+| `none` | 工作区禁止访问 |
+| `ro` | 工作区以只读模式挂载 |
+| `rw` | 工作区以读写模式挂载 |
 
-**Vulnerability:** Broad tool access means more blast radius if compromised.
+**漏洞：** 广泛的工具访问权限意味着一旦被攻破，影响范围更大。
 
-### 8. File Permissions & Local Disk Hygiene (MEDIUM)
+### 8. 文件权限与本地磁盘管理（中等风险）
 
-**What to check:**
-- Directory permissions (should be 700)
-- Config file permissions (should be 600)
+**需要检查的内容：**
+- 目录权限（应为 700）
+- 配置文件权限（应为 600）
 
-**Remediation:**
+**修复措施：**
 ```bash
 chmod 700 ~/.clawdbot
 chmod 600 ~/.clawdbot/clawdbot.json
 chmod 600 ~/.clawdbot/credentials/*
 ```
 
-### 9. Plugin Trust & Model Hygiene (MEDIUM)
+### 9. 插件信任与模型安全性（中等风险）
 
-**Vulnerability:** Untrusted plugins can execute code. Legacy models may lack modern safety.
+**漏洞：** 不受信任的插件可能执行代码。旧版模型可能缺乏现代的安全性。
 
-### 10. Logging & Redaction (MEDIUM)
+### 10. 日志记录与数据保护（中等风险）
 
-**Remediation:**
+**修复措施：**
 ```json
 {
   "logging": {
@@ -187,17 +187,17 @@ chmod 600 ~/.clawdbot/credentials/*
 }
 ```
 
-### 11. Prompt Injection Protection (MEDIUM)
+### 11. 提示注入防护（中等风险）
 
-**Prompt Injection Mitigation Strategies:**
-- Keep DMs locked to `pairing` or `allowlists`
-- Use mention gating in groups
-- Treat all links and attachments as hostile
-- Run sensitive tools in a sandbox
+**提示注入防护策略：**
+- 将私信接收限制在已配对的账户或允许列表内
+- 在群组中使用提及功能进行控制
+- 将所有链接和附件视为潜在威胁
+- 在沙箱环境中运行敏感工具
 
-### 12. Dangerous Command Blocking (MEDIUM)
+### 12. 危险命令的阻止（中等风险）
 
-**Remediation:**
+**修复措施：**
 ```json
 {
   "blocked_commands": [
@@ -210,37 +210,37 @@ chmod 600 ~/.clawdbot/credentials/*
 }
 ```
 
-## High-Level Audit Checklist
+## 高级审计检查清单
 
-Treat findings in this priority order:
+按照以下优先级处理审计结果：
 
-1. **CRITICAL: Lock down DMs and groups** if tools are enabled on open settings
-2. **CRITICAL: Fix public network exposure** immediately
-3. **HIGH: Secure browser control** with tokens and HTTPS
-4. **HIGH: Correct file permissions** for credentials and config
-5. **MEDIUM: Only load trusted plugins**
-6. **MEDIUM: Use modern models** for bots with tool access
+1. **严重级别：** 如果启用了相关工具，请立即锁定私信和群组功能
+2. **严重级别：** 立即修复公共网络暴露问题
+3. **高风险：** 通过令牌和 HTTPS 保护浏览器控制功能
+4. **高风险：** 修正凭证和配置文件的权限设置
+5. **中等风险：** 仅加载受信任的插件
+6. **中等风险：** 对具有工具访问权限的机器人使用现代模型**
 
-## Incident Response
+## 事件响应
 
-If a compromise is suspected:
+如果怀疑系统被入侵：
 
-### Containment
-1. **Stop the gateway process** - `clawdbot daemon stop`
-2. **Set gateway.bind to loopback** - `"bind": "127.0.0.1"`
-3. **Disable risky DMs and groups** - Set to `disabled`
+### 限制损害范围
+1. **停止网关进程** - `clawdbot daemon stop`
+2. **将网关绑定地址设置为本地地址** - `bind": "127.0.0.1"`
+3. **禁用高风险私信和群组功能** - 将相关设置设置为 `disabled`
 
-### Rotation
-1. **Change the gateway auth token** - `clawdbot doctor --generate-gateway-token`
-2. **Rotate browser control and hook tokens**
-3. **Revoke and rotate API keys** for model providers
+### 重新配置
+1. **更换网关身份验证令牌** - `clawdbot doctor --generate-gateway-token`
+2. **更新浏览器控制和钩子令牌**
+3. **吊销并更换模型提供商的 API 密钥**
 
-### Review
-1. **Check gateway logs and session transcripts** - `~/.clawdbot/logs/`
-2. **Review recent config changes**
-3. **Re-run the security audit with the deep flag** - `clawdbot security audit --deep`
+### 审查
+1. **检查网关日志和会话记录** - `~/.clawdbot/logs/`
+2. **审查最近的配置更改**
+3. **使用 `--deep` 选项重新运行安全审计** - `clawdbot security audit --deep`
 
-## Report Template
+## 报告模板
 
 ```
 CLAWDBOT SECURITY AUDIT
@@ -264,11 +264,11 @@ This audit was performed by Clawdbot's self-security framework.
 No changes were made to your configuration.
 ```
 
-## Principles Applied
+## 遵循的原则
 
-- **Zero modification** - This skill only reads; never changes configuration
-- **Defense in depth** - Multiple checks catch different attack vectors
-- **Actionable output** - Every finding includes a concrete remediation
-- **Extensible design** - New checks integrate naturally
+- **零修改** - 该技能仅用于读取配置，绝不修改任何设置
+- **深度防御** - 多重检查可以捕捉不同的攻击方式
+- **可操作的输出** - 每个发现的问题都附带具体的修复建议
+- **可扩展的设计** - 新的检查功能可以轻松集成
 
-**Remember:** This skill exists to make Clawdbot self-aware of its security posture. Use it regularly, extend it as needed, and never skip the audit.
+**记住：** 该技能的目的是让 Clawdbot 自我了解自身的安全状况。请定期使用它，并根据需要扩展功能，切勿忽略任何审计环节。

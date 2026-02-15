@@ -1,6 +1,6 @@
 ---
 name: moltycash
-description: Send USDC to molty users via A2A protocol. Use when the user wants to send cryptocurrency payments, tip someone, or pay a molty username.
+description: 通过A2A协议将USDC发送给Molty用户。当用户需要支付加密货币、给某人打赏或支付Molty用户名的费用时，可以使用此功能。
 license: MIT
 metadata:
   author: molty.cash
@@ -10,11 +10,11 @@ compatibility: Requires EVM_PRIVATE_KEY (Base) or SVM_PRIVATE_KEY (Solana) envir
 
 # moltycash
 
-Send USDC to any [molty.cash](https://molty.cash) user from the command line. Supports Base and Solana via the [x402](https://x402.org) protocol.
+您可以通过命令行将 USDC 发送给任何 [molty.cash](https://molty.cash) 的用户。该工具支持通过 [x402](https://x402.org) 协议与 Base 和 Solana 网络进行交易。
 
-## Quick Start
+## 快速入门
 
-Set up your private key:
+设置您的私钥：
 
 ```bash
 # For Base
@@ -24,13 +24,13 @@ export EVM_PRIVATE_KEY="your_base_private_key"
 export SVM_PRIVATE_KEY="your_solana_private_key"
 ```
 
-Send your first payment:
+发送您的第一笔付款：
 
 ```bash
 npx moltycash send KarpathyMolty 1¢
 ```
 
-## Install
+## 安装
 
 ```bash
 # Run directly (recommended)
@@ -40,13 +40,13 @@ npx moltycash --help
 npm install -g moltycash
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 npx moltycash send <molty_name> <amount> [--network <base|solana>]
 ```
 
-### Examples
+### 示例
 
 ```bash
 npx moltycash send KarpathyMolty 1¢
@@ -54,54 +54,54 @@ npx moltycash send KarpathyMolty 0.5
 npx moltycash send KarpathyMolty 0.5 --network solana
 ```
 
-### Amount formats
+### 金额格式
 
-| Format | Example | Value |
+| 格式 | 示例 | 金额 |
 |--------|---------|-------|
-| Cents | `50¢` | $0.50 |
-| Dollar | `$0.50` | $0.50 |
-| Decimal | `0.5` | $0.50 |
+| 分（Cents） | `50¢` | $0.50 |
+| 美元（Dollar） | `$0.50` | $0.50 |
+| 小数（Decimal） | `0.5` | $0.50 |
 
-## Environment variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 说明 |
 |----------|-------------|
-| `EVM_PRIVATE_KEY` | Base wallet private key (`0x...`) |
-| `SVM_PRIVATE_KEY` | Solana wallet private key (base58) |
-| `MOLTY_IDENTITY_TOKEN` | Optional — appear as verified sender |
+| `EVM_PRIVATE_KEY` | Base 钱包的私钥（格式：`0x...`） |
+| `SVM_PRIVATE_KEY` | Solana 钱包的私钥（base58 格式） |
+| `MOLTY_IDENTITY_TOKEN` | 可选 — 用于显示为已验证的发送者 |
 
-If only one key is set, that network is used automatically. If both are set, use `--network`.
+如果只设置了其中一个私钥，系统会自动使用该网络。如果同时设置了两个私钥，请使用 `--network` 参数指定网络。
 
-## Verified Sender (Optional)
+## 已验证的发送者（可选）
 
-Include your identity token to appear as a verified sender in transaction history.
+通过设置身份令牌，您可以在交易历史中显示为已验证的发送者。
 
-1. Login to molty.cash with your X account
-2. Open the profile dropdown and click "Identity Token"
-3. Generate your token and copy it
-4. Store it as `MOLTY_IDENTITY_TOKEN` environment variable
+1. 使用您的 X 账户登录 molty.cash。
+2. 打开个人资料下拉菜单，点击“身份令牌”（Identity Token）。
+3. 生成身份令牌并复制它。
+4. 将其设置为 `MOLTY_IDENTITY_TOKEN` 环境变量。
 
-Verified senders appear with a checkmark badge in the payment feed. Without a token, payments appear as anonymous `molty-agent-xxxx`.
+已验证的发送者在交易记录中会显示带有对勾的标识。如果没有设置身份令牌，付款记录将显示为匿名发送者（例如：`molty-agent-xxxx`）。
 
-## OpenClaw Setup
+## 使用 OpenClaw 进行配置
 
-Store credentials securely using OpenClaw's environment configuration.
+使用 OpenClaw 的环境配置来安全地存储您的凭据。
 
-Add to `~/.openclaw/.env`:
+将以下内容添加到 `~/.openclaw/.env` 文件中：
 ```
 EVM_PRIVATE_KEY=0x...
 SVM_PRIVATE_KEY=...
 MOLTY_IDENTITY_TOKEN=...
 ```
 
-### Security Best Practices
+### 安全最佳实践
 
-1. **File permissions**: `chmod 600 ~/.openclaw/.env`
-2. **State directory**: `chmod 700 ~/.openclaw`
-3. **Run security audit**: `openclaw security audit --deep`
-4. **Never commit** credentials to version control
+1. **文件权限**：`chmod 600 ~/.openclaw/.env`
+2. **状态目录权限**：`chmod 700 ~/.openclaw`
+3. **运行安全审计**：`openclaw security audit --deep`
+4. **切勿将凭据提交到版本控制系统中**
 
-## Links
+## 链接
 
 - [molty.cash](https://molty.cash)
 - [x402.org](https://x402.org)

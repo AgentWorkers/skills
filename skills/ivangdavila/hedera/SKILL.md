@@ -1,80 +1,80 @@
 ---
 name: Hedera
-description: Assist with Hedera HBAR transactions, account creation, token service, and consensus features.
+description: 协助处理Hedera HBAR交易、账户创建、代币服务以及共识机制相关功能。
 metadata: {"clawdbot":{"emoji":"ℏ","os":["linux","darwin","win32"]}}
 ---
 
-## Account Model (Critical Difference)
-- Hedera accounts must be created before receiving funds — unlike Bitcoin/Ethereum, addresses don't exist until created
-- Account creation costs HBAR — someone must fund the initial creation
-- Account IDs are numeric (0.0.12345) — not cryptographic hashes like other chains
-- Memo field available on accounts — can store small amounts of data
-- Accounts can be deleted to recover balance — but requires all tokens and associations removed first
+## 账户模型（关键区别）  
+- 在接收资金之前，必须先创建Hedera账户——与比特币/以太坊不同，这些链上的地址是在创建账户后才会生成的。  
+- 创建账户需要支付HBAR费用——必须有人为账户的初始创建提供资金。  
+- 账户ID是数字格式（例如0.0.12345），而不是像其他区块链那样的加密哈希值。  
+- 账户包含“Memo”字段，可以存储少量数据。  
+- 可以删除账户以恢复余额，但需要先移除所有关联的代币和信息。  
 
-## Account Creation
-- New users need someone to create their account — can't just generate address and receive
-- Exchanges create accounts on withdrawal — but self-custody requires creation first
-- HashPack and other wallets offer account creation — may require payment or sponsor
-- Testnet accounts free to create — use for development and testing
+## 账户创建  
+- 新用户需要他人帮助创建账户——不能仅生成地址后直接接收资金。  
+- 交易所在用户提款时可以创建账户，但实现自我托管功能的前提是用户必须先自行创建账户。  
+- HashPack等钱包也提供账户创建服务，可能需要支付费用或找到赞助者。  
+- 测试网上的账户可以免费创建，适用于开发和测试用途。  
 
-## Transaction Fees
-- Fees are extremely low and predictable — typically $0.0001 or less
-- Fees paid in HBAR only — no gas token complexity
-- Transaction fees set by network, not auction — no priority fee bidding
-- Scheduled transactions cost extra — pay for scheduling plus execution
+## 交易费用  
+- 交易费用极低且可预测——通常为0.0001美元或更低。  
+- 费用仅以HBAR支付，无需使用额外的Gas代币。  
+- 交易费用由网络自行设定，不通过拍卖方式确定；也没有优先级费用竞争机制。  
+- 预定交易需要额外付费——包括安排时间和执行费用。  
 
-## Token Service (HTS)
-- Native token support without smart contracts — create tokens via Hedera Token Service
-- Token association required before receiving — must explicitly associate with token ID
-- Association costs small HBAR fee — limits spam tokens
-- Fungible and NFT tokens supported natively — no need for custom contracts
-- Token admin keys control supply, freeze, wipe — verify token permissions before trusting
+## 代币服务（HTS）  
+- 支持原生代币，无需智能合约——可通过Hedera Token Service创建代币。  
+- 在接收代币之前，必须先将其与账户关联起来。  
+- 关联代币的费用较低（少量HBAR），有助于防止代币滥用。  
+- 支持可互换代币（Fungible Tokens）和非同质化代币（NFTs），无需自定义合约。  
+- 代币管理权限由管理员控制（如冻结或删除代币），接收代币前需验证权限。  
 
-## Memo Field
-- Transactions can include memo — used for exchange deposits like destination tags
-- Memo is public and permanent — don't include sensitive data
-- Some services require specific memo format — verify before sending
-- Max memo size is 100 bytes — keep it short
+## Memo字段  
+- 交易中可以包含Memo字段——用于指定交易目的等信息（类似XRP的“目的地标签”）。  
+- Memo字段是公开且永久保存的，请勿包含敏感数据。  
+- 部分服务对Memo字段的格式有特定要求，请在发送前进行验证。  
+- Memo字段的最大长度为100字节，应保持简洁。  
 
-## Consensus and Finality
-- Transactions finalize in 3-5 seconds — no waiting for confirmations
-- Hashgraph consensus provides ordering guarantees — no MEV or frontrunning possible
-- Fair ordering prevents manipulation — transactions processed in order received
-- Mirror nodes provide historical data — main network doesn't store full history
+## 共识机制与交易确认  
+- 交易在3-5秒内完成确认，无需等待多个确认。  
+- Hashgraph共识机制确保交易按顺序处理，防止恶意操纵（如MEV攻击或抢先交易）。  
+- 交易按接收顺序执行，确保公平性。  
+- 镜像节点提供历史数据，主网络不存储全部交易记录。  
 
-## Smart Contracts
-- Hedera supports Solidity smart contracts — EVM compatible
-- Contracts interact with native HTS tokens — best of both worlds
-- Contract deployment costs more than simple transactions — plan accordingly
-- State storage costs ongoing rent — unused contracts still cost
+## 智能合约  
+- Hedera支持Solidity智能合约，兼容EVM虚拟机。  
+- 智能合约可以与原生HTS代币交互，兼具两种技术的优势。  
+- 部署智能合约的费用高于普通交易，请做好相应预算。  
+- 合约的状态存储需要持续付费（类似租金），未使用的合约也会产生费用。  
 
-## Staking
-- Native staking to nodes — no minimum, no lockup
-- Rewards paid automatically every 24 hours — no claiming needed
-- Staking doesn't transfer funds — HBAR stays in your account
-- Choosing a node affects decentralization — spread stakes across nodes
+## 质押机制  
+- 支持节点质押——没有最低质押要求，也没有锁定期限。  
+- 每24小时自动发放奖励，无需手动申请。  
+- 质押过程不会转移资金，HBAR仍保留在用户的账户中。  
+- 选择不同的质押节点会影响系统的去中心化程度——建议将质押分散到多个节点上。  
 
-## Keys and Security
-- Accounts can have multiple keys — threshold signatures supported
-- Key rotation possible without changing account ID — update keys if compromised
-- Different key types: Ed25519, ECDSA (secp256k1) — affects wallet compatibility
-- Admin keys on tokens can freeze/wipe holdings — check before acquiring tokens
+## 密钥与安全性  
+- 账户可以拥有多个密钥，支持阈值签名机制。  
+- 密钥可以更换而无需更改账户ID；如果密钥被泄露，可及时更新。  
+- 提供多种密钥类型（Ed25519、ECDSA（secp256k1）——不同密钥类型可能影响钱包的兼容性。  
+- 代币的管理员权限可以冻结或删除用户的代币持有量，请在获取代币前仔细确认。  
 
-## Common Issues
-- "INSUFFICIENT_PAYER_BALANCE" — need more HBAR for fees
-- "INVALID_ACCOUNT_ID" — account doesn't exist, needs creation
-- "TOKEN_NOT_ASSOCIATED" — must associate with token before receiving
-- "INSUFFICIENT_TX_FEE" — rare, fee estimate was too low
-- "ACCOUNT_FROZEN_FOR_TOKEN" — token admin has frozen transfers
+## 常见问题  
+- “INSUFFICIENT_PAYER_BALANCE”：账户余额不足，无法支付交易费用。  
+- “INVALID_ACCOUNT_ID”：账户不存在，需要先创建账户。  
+- “TOKEN_NOT_ASSOCIATED”：接收代币前必须先将其与账户关联。  
+- “INSUFFICIENT_TX_FEE”：交易费用估计过低。  
+- “ACCOUNT_FROZEN_FOR_TOKEN”：代币管理员已冻结相关交易。  
 
-## Exchanges and Transfers
-- Most major exchanges support HBAR — verify account ID format (0.0.xxxxx)
-- Memo often required for exchange deposits — critical like XRP destination tags
-- Account ID is not a wallet address — don't confuse with Ethereum-style addresses
-- Verify recipient account exists before sending — non-existent accounts reject transfers
+## 交易所与转账  
+- 大多数主要交易所支持HBAR交易；请验证账户ID的格式（例如0.0.xxxxx）。  
+- 交易所转账通常需要提供Memo字段（类似XRP的“目的地标签”）。  
+- 账户ID与钱包地址不同，请不要混淆。  
+- 发送前请确认接收方账户是否存在，不存在的账户会拒绝转账请求。  
 
-## Network Services
-- Hedera Consensus Service (HCS) — ordered message logging
-- Hedera File Service (HFS) — store larger data on network
-- Mirror nodes for queries — don't query mainnet for historical data
-- SDKs available for major languages — JavaScript, Java, Go, Python
+## 网络服务  
+- Hedera提供Hedera Consensus Service（HCS）用于有序记录交易信息。  
+- Hedera File Service（HFS）用于在网络中存储大型文件。  
+- 镜像节点用于查询历史数据，无需访问主网络。  
+- 提供多种编程语言的SDK（JavaScript、Java、Go、Python等）。

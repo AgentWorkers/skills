@@ -15,9 +15,9 @@ metadata:
 
 # Typeform
 
-Access the Typeform API with managed OAuth authentication. Create and manage forms, retrieve responses, and access insights.
+通过管理的OAuth认证来访问Typeform API。您可以创建和管理表单、检索响应数据以及获取分析报告。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List forms
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/typeform/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Typeform API endpoint path. The gateway proxies requests to `api.typeform.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Typeform API端点路径。该网关会将请求代理到 `api.typeform.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Typeform OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Typeform OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应数据：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Typeform connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Typeform连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,31 +138,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### User
+### 用户
 
 ```bash
 GET /typeform/me
 ```
 
-### Forms
+### 表单
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /typeform/forms?page_size=10
 ```
 
-#### Get Form
+#### 获取表单信息
 
 ```bash
 GET /typeform/forms/{formId}
 ```
 
-#### Create Form
+#### 创建表单
 
 ```bash
 POST /typeform/forms
@@ -177,7 +177,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Form
+#### 更新表单
 
 ```bash
 PUT /typeform/forms/{formId}
@@ -189,53 +189,53 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Form
+#### 删除表单
 
 ```bash
 DELETE /typeform/forms/{formId}
 ```
 
-### Responses
+### 响应数据
 
-#### List Responses
+#### 列出响应
 
 ```bash
 GET /typeform/forms/{formId}/responses?page_size=25
 ```
 
-With filters:
+支持过滤：
 
 ```bash
 GET /typeform/forms/{formId}/responses?since=2024-01-01T00:00:00Z&until=2024-12-31T23:59:59Z&completed=true
 ```
 
-### Insights
+### 分析报告
 
 ```bash
 GET /typeform/insights/{formId}/summary
 ```
 
-### Workspaces
+### 工作区
 
 ```bash
 GET /typeform/workspaces
 GET /typeform/workspaces/{workspaceId}
 ```
 
-## Field Types
+## 字段类型
 
-- `short_text` - Single line text
-- `long_text` - Multi-line text
-- `email` - Email address
-- `number` - Numeric input
-- `rating` - Star rating
-- `opinion_scale` - 0-10 scale
-- `multiple_choice` - Single or multiple selection
-- `yes_no` - Boolean
-- `date` - Date picker
-- `dropdown` - Dropdown selection
+- `short_text` - 单行文本
+- `long_text` - 多行文本
+- `email` - 电子邮件地址
+- `number` - 数字输入
+- `rating` - 星级评分
+- `opinion_scale` - 0-10 分数等级
+- `multiple_choice` - 单选或多选
+- `yes_no` - 布尔值
+- `date` - 日期选择器
+- `dropdown` - 下拉菜单
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -263,33 +263,33 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Form IDs are alphanumeric strings
-- Response pagination uses `before` token
-- Timestamps are in ISO 8601 format
-- DELETE operations return HTTP 204
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 表单ID是字母数字字符串。
+- 响应数据的分页使用 `before` 令牌。
+- 时间戳采用ISO 8601格式。
+- DELETE操作返回HTTP 204状态码。
+- 重要提示：当URL包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 命令可以避免全局解析问题。
+- 重要提示：在将curl输出传递给 `jq` 或其他命令时，某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析，这可能导致“无效API密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Typeform connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Typeform API |
+| 400 | 未建立Typeform连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 429 | 每个账户的请求限制（10次/秒） |
+| 4xx/5xx | 来自Typeform API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -300,18 +300,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `typeform`. For example:
+1. 确保您的URL路径以 `typeform` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/typeform/forms`
+- 错误的路径：`https://gateway.maton.ai/forms`
 
-- Correct: `https://gateway.maton.ai/typeform/forms`
-- Incorrect: `https://gateway.maton.ai/forms`
+## 资源
 
-## Resources
-
-- [Typeform API Overview](https://www.typeform.com/developers/get-started)
-- [Forms](https://www.typeform.com/developers/create/reference/retrieve-forms)
-- [Responses](https://www.typeform.com/developers/responses/reference/retrieve-responses)
-- [Workspaces](https://www.typeform.com/developers/create/reference/retrieve-workspaces)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Typeform API概述](https://www.typeform.com/developers/get-started)
+- [表单](https://www.typeform.com/developers/create/reference/retrieve-forms)
+- [响应数据](https://www.typeform.com/developers/responses/reference/retrieve-responses)
+- [工作区](https://www.typeform.com/developers/create/reference/retrieve-workspaces)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

@@ -1,6 +1,6 @@
 ---
 name: zulk-url-shortener
-description: Premium AI-first URL shortening and management with real-time analytics and team collaboration via MCP. Use when shortening links for marketing, tracking AI interactions, or managing custom domains. Keywords: url, shortener, analytics, link management, mcp.
+description: 这款高级工具专注于AI驱动的URL缩短服务，具备实时数据分析功能，并支持团队协作（通过MCP平台实现）。适用于营销活动中的链接缩短、追踪AI交互行为，以及自定义域名的管理。关键词：URL、短链服务、数据分析、链接管理、MCP。
 license: MIT
 compatibility: Requires an MCP-compatible client and internet access.
 metadata:
@@ -10,29 +10,29 @@ metadata:
   mcp_command: npx mcp-remote https://mcp.zu.lk/mcp
 ---
 
-# Zulk URL Shortener Skill
+# Zulk URL缩短器技能
 
-This skill enables AI agents to manage short links using the Zu.lk MCP (Model Context Protocol) server.
+该技能使AI代理能够使用Zu.lk MCP（模型上下文协议，Model Context Protocol）服务器来管理短链接。
 
-## Overview
+## 概述
 
-Zu.lk is an AI-first premium URL shortener designed for blazing-fast performance and seamless AI integration. This skill connects your agent to the Zulk MCP server, allowing it to:
+Zu.lk是一款以AI为核心的高级URL缩短器，专为极致的性能和无缝的AI集成而设计。该技能将您的代理连接到Zulk MCP服务器，使其能够：
 
-- Create shortened URLs (e.g., `zu.lk/abcd`)
-- Manage existing links and campaigns
-- Access real-time analytics
-- Collaborate with team members
+- 创建缩短后的URL（例如：`zu.lk/abcd`）
+- 管理现有的链接和活动
+- 查看实时分析数据
+- 与团队成员协作
 
-## Installation
+## 安装
 
-To use this skill, add the Zulk MCP server configuration to your AI assistant's settings (e.g., `mcp.json` or equivalent).
+要使用此技能，请将Zulk MCP服务器的配置添加到您的AI助手的设置文件中（例如：`mcp.json`或相应的文件）。
 
-### Configuration Options
+### 配置选项
 
-Choose the transport method that best fits your environment:
+选择最适合您环境的传输方式：
 
-#### 1. Streamable HTTP (Recommended)
-Fastest and most reliable communication.
+#### 1. Streamable HTTP（推荐）
+最快的、最可靠的通信方式。
 ```json
 {
   "mcpServers": {
@@ -41,8 +41,8 @@ Fastest and most reliable communication.
 }
 ```
 
-#### 2. SSE (Server-Sent Events)
-Real-time streaming specialized for certain clients.
+#### 2. SSE（服务器发送事件，Server-Sent Events）
+专为某些客户端设计的实时流式传输方式。
 ```json
 {
   "mcpServers": {
@@ -51,8 +51,8 @@ Real-time streaming specialized for certain clients.
 }
 ```
 
-#### 3. Stdio (via mcp-remote)
-Uses standard input/output via a remote bridge.
+#### 3. Stdio（通过mcp-remote）
+通过远程桥接使用标准输入/输出。
 ```json
 {
   "mcpServers": {
@@ -64,31 +64,31 @@ Uses standard input/output via a remote bridge.
 }
 ```
 
-## Step-by-Step Instructions
+## 分步操作说明
 
-1.  **Preparation**: Ensure you have a Zu.lk account or are ready to sign in via Google.
-2.  **Configuration**: Add one of the JSON configurations above to your agent's MCP settings file.
-3.  **Authentication**: When you first run a command like "shorten this link", the agent will present an OAuth URL. Follow the link to authenticate.
-4.  **Verification**: Ask the agent "List my recently created links" to verify the connection is active.
-5.  **Execution**: Use natural language to create links, e.g., "Create a short link for https://google.com with alias 'my-search'".
+1. **准备**：确保您拥有Zu.lk账户，或准备好通过Google登录。
+2. **配置**：将上述JSON配置之一添加到您的代理的MCP设置文件中。
+3. **身份验证**：首次运行“shorten this link”等命令时，代理会提供一个OAuth链接。请按照链接进行身份验证。
+4. **验证**：询问代理“List my recently created links”以确认连接是否正常。
+5. **执行**：使用自然语言创建链接，例如：“为https://google.com创建一个别名为‘my-search’的短链接”。
 
-## Usage Examples
+## 使用示例
 
-### Creating a Link
-**Input**: "Shorten https://github.com/Zu-lk/zulk-short-url-skill"
-**Output**: "Generated short link: https://zu.lk/z-skill"
+### 创建链接
+**输入**：“Shorten https://github.com/Zu-lk/zulk-short-url-skill”
+**输出**：“生成的短链接：https://zu.lk/z-skill”
 
-### Checking Analytics
-**Input**: "How many clicks did my 'newsletter' link get yesterday?"
-**Output**: "Your 'newsletter' link received 1,240 clicks yesterday."
+### 查看分析数据
+**输入**：“我的‘newsletter’链接昨天收到了多少点击量？”
+**输出**：“您的‘newsletter’链接昨天收到了1,240次点击。”
 
-## Edge Cases & Troubleshooting
+## 边缘情况与故障排除
 
-- **Auth Failure**: If authentication fails, ensure you are using the correct Google account. You may need to restart the agent to re-trigger the OAuth flow.
-- **Alias Taken**: If a custom alias is already in use, the agent should suggest an alternative or append a random string.
-- **Rate Limits**: If you exceed your plan's link limit, the MCP server will return an error indicating the limit has been reached.
-- **Link Expiration**: Ensure you check if the link has an expiration date if it suddenly stops working.
+- **身份验证失败**：如果身份验证失败，请确保您使用的是正确的Google账户。您可能需要重新启动代理以重新触发OAuth流程。
+- **别名已被占用**：如果自定义别名已被使用，代理会建议使用其他别名或添加一个随机字符串。
+- **速率限制**：如果超过了您的计划链接限制，MCP服务器会返回错误提示。
+- **链接过期**：如果链接突然无法使用，请检查该链接是否有过期日期。
 
-## References
-- [Official Website](https://zu.lk)
-- [MCP Documentation](https://zu.lk/-/mcp)
+## 参考资料
+- [官方网站](https://zu.lk)
+- [MCP文档](https://zu.lk/-/mcp)

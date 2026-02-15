@@ -1,33 +1,33 @@
-# AIDA Skill for OpenClaw
+# AIDA技能（适用于OpenClaw）
 
-## Skill Name
+## 技能名称
 aida
 
-## Description
-Conversational interface for AIDA (AI-driven smart building automation platform).
+## 描述
+AIDA（AI驱动的智能建筑自动化平台）的对话式交互界面。
 
-## Supported Intents
-- aida.status        → Get live building status
-- aida.control       → Control devices (lights, shades, HVAC)
-- aida.optimize      → Optimize building objectives
-- aida.diagnostics  → Run preventive diagnostics
+## 支持的指令：
+- aida.status        → 获取建筑的实时状态
+- aida.control       → 控制设备（灯光、遮阳设施、暖通空调系统）
+- aida.optimize      → 优化建筑运行目标
+- aida.diagnostics  → 运行预防性诊断
 
-## Example Utterances
-- "AIDA, what's the building status?"
-- "Optimize for energy savings."
-- "Turn off lights on floor 3."
-- "Run diagnostics on this zone."
+## 示例指令：
+- “AIDA，建筑的状态是什么？”
+- “优化能源使用。”
+- “关闭3楼的灯光。”
+- “对这个区域进行诊断。”
 
-## AIDA Objectives Mapping
-- Comfort Optimization
-- Energy Optimization
-- Preventive Maintenance
+## AIDA目标映射：
+- 舒适性优化
+- 能源优化
+- 预防性维护
 
-## API Expectations
-The skill expects AIDA to expose REST endpoints:
+## API接口要求：
+该技能要求AIDA提供以下REST接口：
 - GET /status
 - POST /control
 - POST /optimize
 - GET /diagnostics
 
-All calls are authenticated via bearer token.
+所有请求均通过bearer token进行身份验证。

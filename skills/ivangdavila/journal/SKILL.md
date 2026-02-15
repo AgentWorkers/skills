@@ -1,82 +1,81 @@
 ---
 name: Journal
-description: Build a personal journaling practice with prompts, reflection, and pattern discovery.
+description: 构建一个个人日记练习系统，其中包括提示、反思和模式发现的功能。
 metadata: {"clawdbot":{"emoji":"📔","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User wants to write → provide space, optional prompts
-- No pressure, no judgment → journaling should feel safe
-- Surface patterns when asked → insights from past entries
-- Create `~/journal/` as workspace
+## 核心行为
+- 当用户想要开始写日记时，提供写作空间及可选的提示。
+- 不要施加压力或进行评判——写日记应该让人感到安心。
+- 当用户被询问时，可以引导他们回顾过去的日记条目，从中发现其中的规律或见解。
+- 创建一个名为 `~/journal/` 的文件夹作为日记存储空间。
 
-## Entry Flexibility
-- Stream of consciousness welcome — no structure required
-- Bullet points fine — not everything needs paragraphs
-- Voice notes transcribed — capture thoughts while walking
-- Short entries valid — "Today was hard" is enough
+## 写作条目的灵活性
+- 随性发挥、无需固定格式——不必遵循严格的结构。
+- 使用项目符号列出要点也可以；并非所有内容都需要用段落来表达。
+- 可以将语音笔记转录为文字——在行走时记录下思绪。
+- 简短的条目同样有效；例如“今天很辛苦”这样的简短记录就足够了。
 
-## File Structure
-One file per entry: `2024-03-15.md`
-- Date as filename — chronological, findable
-- Optional: time of day if multiple entries
-- Frontmatter optional: mood, tags, location
+## 文件结构
+每条日记对应一个文件，文件名格式为 `2024-03-15.md`。
+- 文件名包含日期，便于按时间顺序查找。
+- 如果有多条日记，可以添加当天的大致时间。
+- 可选内容：心情、标签或写作地点。
 
-## When User Starts Writing
-- Don't interrupt flow — capture first, reflect later
-- Offer prompts only if asked or stuck
-- Accept whatever format they give
-- "Just write" is the goal
+## 用户开始写作时的建议
+- 不要打断用户的写作流程——先让他们自由表达，之后再进行分析或反思。
+- 仅在用户需要帮助或遇到困难时提供提示。
+- 接受用户选择的任何写作格式。
+- 目标就是“简单地开始写作”。
 
-## Prompt Library (When Asked)
-- "What's on your mind?"
-- "What went well today?"
-- "What would you do differently?"
-- "What are you grateful for?"
-- "What are you avoiding thinking about?"
-- "If tomorrow goes perfectly, what happens?"
-- Keep prompts in `prompts.md` for personalization
+## 提示库（根据用户需求提供）
+- “你在想什么？”
+- “今天有哪些事情做得顺利？”
+- “如果你可以重新来过，会有什么不同？”
+- “你感激什么？”
+- “你在刻意回避思考什么？”
+- “如果明天一切顺利，会发生什么？”
+- 将所有提示内容保存在 `prompts.md` 文件中，以便用户根据需要自定义提示。
 
-## End of Entry Options
-- Save as is — most common
-- Add tags for later searching
-- Note mood: 1-5 or emoji
-- "Continue later" flag for unfinished thoughts
+## 写作条目的结束方式
+- 最常见的做法是直接保存条目。
+- 可以添加标签以便日后搜索。
+- 可以记录心情（用数字1-5表示或使用表情符号）。
+- 如果条目未完成，可以标记为“稍后继续”。
 
-## Weekly Review
-- Offer to review the week
-- Themes that emerged
-- Mood patterns if tracked
-- Wins and struggles
-- "Anything to carry forward?"
+## 每周回顾
+- 提供每周的回顾机会：
+  - 分析本周出现的主题或情绪变化。
+  - 总结取得的进步和遇到的困难。
+  - 询问是否有值得继续关注的问题。
 
-## Monthly/Yearly Reflection
-- What changed this month/year?
-- Recurring themes or concerns
-- Progress on long-term thoughts
-- Reading old entries — often surprising
+## 每月/每年反思
+- 总结本月/今年发生了哪些变化。
+- 发现反复出现的主题或持续存在的问题。
+- 评估长期目标的进展情况。
+- 重读旧日记条目——往往会发现新的启示。
 
-## Pattern Discovery
-When asked "what have I been writing about?":
-- Common themes across entries
-- Mood trends if tracked
-- Frequency of journaling
-- Topics that appear then disappear
+## 规律的发现
+当被问及“你最近都在写些什么？”时，可以：
+- 分析不同条目中的共同主题。
+- 观察用户的情绪变化趋势。
+- 统计写日记的频率。
+- 注意哪些话题反复出现或消失。
 
-## What To Surface Proactively
-- "It's been 5 days since you journaled" — only if they want nudges
-- "A year ago you wrote about X" — memory resurfacing
-- "This theme appeared 3 times this month" — pattern spotting
-- Never share content without permission
+## 主动提醒用户的内容
+- 如果用户需要提醒，可以提示“已经五天没有写日记了”。
+- 可以提醒用户“一年前你写过关于某件事的内容”。
+- 如果某个主题在本月出现了三次，可以提醒他们注意这个规律。
+- 未经用户许可，切勿分享任何日记内容。
 
-## Progressive Enhancement
-- Week 1: just write, any format
-- Week 2: consistent file naming
-- Month 2: add mood/tags if useful
-- Month 3: weekly review practice
-- Year 1: annual reflection
+## 逐步提升写日记的习惯
+- 第一周：只需自由写作，格式不限。
+- 第二周：统一文件命名规则。
+- 第三个月：根据需要添加心情标签。
+- 第四个月：开始进行每周的回顾练习。
+- 第一年：进行年度反思。
 
-## Folder Structure
+## 文件夹结构
 ```
 ~/journal/
 ├── 2024/
@@ -87,42 +86,40 @@ When asked "what have I been writing about?":
     └── 2024-march-review.md
 ```
 
-## Privacy and Security
-- Local files only — no cloud unless user chooses
-- Encryption option if sensitive
-- No AI training on journal content — make this clear
-- Backup encrypted if backing up at all
+## 隐私与安全
+- 日志文件仅保存在本地，除非用户选择上传到云端。
+- 如果内容敏感，提供加密选项。
+- 明确声明不会使用日记内容进行人工智能训练。
+- 如果进行备份，确保备份文件也是加密的。
 
-## Types of Journaling
-- Daily log: what happened, how you felt
-- Gratitude: what you're thankful for
-- Morning pages: stream of consciousness on waking
-- Evening reflection: review of the day
-- Topic-specific: work, relationships, health
-- Let user find their style
+## 日记的类型
+- 日常记录：当天发生的事情及个人感受。
+- 感恩日记：记录自己感激的事物。
+- 早晨日记：醒来时的随性思考。
+- 晚间反思：回顾当天的经历。
+- 专题日记：针对工作、人际关系、健康等特定主题。
+- 允许用户根据自己的喜好选择写作方式。
 
-## What NOT To Suggest
-- Complex templates before natural writing flows
-- Mandatory daily journaling — guilt kills the practice
-- Sharing entries anywhere
-- Analysis before sufficient entries exist
-- Fixing problems — sometimes just listening is enough
+## 不建议的做法
+- 在用户尚未形成自然写作习惯之前，不要使用复杂的模板。
+- 强制要求用户每天写日记——这会让他们产生负罪感，从而影响写日记的积极性。
+- 不要在任何地方分享用户的日记内容。
+- 在日记条目数量不足时，不要急于进行分析或给出建议。
+- 对于困难的情况，有时只需倾听用户的感受即可。
 
-## Handling Difficult Entries
-- Acknowledge without judgment
-- Don't offer unsolicited advice
-- "That sounds really hard" is often enough
-- Suggest professional support if concerning patterns
+## 处理困难的情况
+- 对用户的困难表示理解，不要评判。
+- 不要主动提供不必要的建议。
+- 一句“听起来很困难”就足够了。
+- 如果发现用户有严重的写作困扰，可以建议他们寻求专业帮助。
 
-## Integration Points
-- Habits: "journal daily" as habit if wanted
-- Mood tracking: simple scale alongside entries
-- Goals: reflection on progress
-- Contacts: processing relationship thoughts
+## 日记功能的整合方式
+- 如果用户希望养成写日记的习惯，可以设置每日写日记的任务。
+- 可以在日记条目旁边添加简单的情绪评分。
+- 可以通过日记记录来反思个人目标的完成情况。
+- 通过日记来处理与他人的关系问题。
 
-## Searching Past Entries
-- Full-text search across all entries
-- Search by date range
-- Search by mood if tracked
-- Search by tag
-- "What was I writing about last March?"
+## 查找过去的日记条目
+- 支持对所有日记条目进行全文搜索。
+- 可以按日期范围或心情标签进行搜索。
+- 例如：“我三月份写了些什么？”这样的查询也是可行的。

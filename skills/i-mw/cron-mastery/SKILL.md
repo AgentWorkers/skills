@@ -1,28 +1,28 @@
 ---
 name: cron-mastery
-description: Master OpenClaw's timing systems. Use for scheduling reliable reminders, setting up periodic maintenance (janitor jobs), and understanding when to use Cron vs Heartbeat for time-sensitive tasks.
+description: 掌握 OpenClaw 的定时系统。利用它来安排可靠的提醒、设置定期维护任务（如清洁工作），并了解在处理时间敏感的任务时何时应使用 Cron，何时应使用 Heartbeat。
 ---
 
-# Cron Mastery
+# Cron 工具精通
 
-**Rule #1: Heartbeats drift. Cron is precise.**
+**规则 #1：** 心跳检查（heartbeat）存在时间偏差，而 Cron 则非常精确。
 
-This skill provides the definitive guide for managing time in OpenClaw. It solves the "I missed my reminder" problem by enforcing a strict separation between casual checks (heartbeat) and hard schedules (cron).
+本指南提供了在 OpenClaw 中管理时间的最佳实践。它通过严格区分“非正式检查”（心跳检查）和“固定时间表”（Cron 任务），解决了“错过提醒”这一问题。
 
-## The Core Principle
+## 核心原则
 
-| System | Behavior | Best For | Risk |
+| 系统 | 行为 | 适用场景 | 风险 |
 | :--- | :--- | :--- | :--- |
-| **Heartbeat** | "I'll check in when I can" (e.g., every 30-60m) | Email checks, casual news summaries, low-priority polling. | **Drift:** A "remind me in 10m" task will fail if the heartbeat is 30m. |
-| **Cron** | "I will run at exactly X time" | Reminders ("in 5 mins"), daily reports, system maintenance. | **Clutter:** Creates one-off jobs that need cleanup. |
+| **心跳检查** | “有空时进行检查”（例如，每 30-60 分钟一次） | 发送邮件、查看简短新闻、执行低优先级任务 | **时间偏差风险：** 如果心跳检查的间隔为 30 分钟，那么“10 分钟后提醒我”的任务可能会失败。 |
+| **Cron** | “在指定的时间精确执行” | 发送提醒、生成日报、执行系统维护任务 | **任务堆积风险：** 可能导致大量一次性任务堆积，需要定期清理。 |
 
-## 1. Setting Reliable Reminders
+## 1. 设置可靠的提醒
 
-**Never** use `act:wait` or internal loops for long delays (>1 min). Use `cron:add` with a one-shot `at` schedule.
+**切勿** 使用 `act:wait` 或内部循环来实现超过 1 分钟的延迟。应使用 `cron:add` 并设置一次性执行的 `at` 时间表。
 
-### Standard Reminder Pattern (JSON)
+### 标准提醒模式（JSON）
 
-Use this payload structure for "remind me in X minutes" tasks:
+使用以下 JSON 结构来设置“X 分钟后提醒”任务：
 
 ```json
 {
@@ -38,45 +38,43 @@ Use this payload structure for "remind me in X minutes" tasks:
   },
 ```  
 
-*Note: Even with `wakeMode: "next-heartbeat"`, the cron system forces an event injection at `atMs`. Use `mode: "now"` in the `cron:wake` tool if you need to force an immediate wake outside of a job payload.*
+*注意：即使设置了 `wakeMode: "next-heartbeat"`，Cron 系统仍会在指定的时间 `atMs` 执行任务。如果需要立即触发任务，可以在 `cron:wake` 工具中设置 `mode: "now"`。*
 
-### ⚠️ The Delivery Rule (CRITICAL)
-When scheduling an `agentTurn` via Cron that is meant to provide an update to the user:
-- **ALWAYS** set `"deliver": true` in the payload.
-- Without `"deliver": true`, the sub-agent will run the task but the output will NEVER be seen by the human. It will be "talking in a dark room."
+### ⚠️ 任务交付规则（至关重要）
+当通过 Cron 安排用于向用户发送更新的 `agentTurn` 任务时：
+- **务必** 在任务数据中设置 `"deliver": true`。
+- 如果不设置 `"deliver": true`，虽然子代理会执行任务，但用户将无法看到任何输出结果。这相当于“在黑暗中工作”。
 
-## 2. The Janitor (Auto-Cleanup)
+## 2. 自动清理机制（Janitor）
 
-One-shot cron jobs (kind: `at`) disable themselves after running but stay in the list as "ghosts" (`enabled: false`, `lastStatus: ok`). To prevent clutter, install the **Daily Janitor**.
+一次性执行的 Cron 任务（类型为 `at`）执行完成后会从任务列表中移除，但会以“已禁用”（`enabled: false`）的状态留在列表中。为避免任务堆积，建议使用 **每日自动清理工具**。
 
-### Setup Instructions
+### 设置步骤
 
-1.  **Check current jobs:** `cron:list` (includeDisabled: true)
-2.  **Create the Janitor:**
-    *   **Name:** `Daily Cron Cleanup`
-    *   **Schedule:** Every 24 hours (`everyMs: 86400000`)
-    *   **Payload:** An agent turn that runs a specific prompt.
+1. **查看当前任务列表：** 使用 `cron:list`（包含 `disabled: true` 参数）。
+2. **创建自动清理任务：**
+    *   **名称：** **每日 Cron 清理任务**
+    *   **时间表：** 每 24 小时执行一次（`everyMs: 86400000`）
+    *   **任务内容：** 运行特定命令以清理任务列表。
 
-### The Janitor Prompt (Agent Turn)
+### 自动清理任务的提示信息
 
-> "Time for the 24-hour cron sweep. List all cron jobs including disabled ones. If you find any jobs that are `enabled: false` and have `lastStatus: ok` (finished one-shots), delete them to keep the list clean. Do not delete active recurring jobs. Log what you deleted."
+> “现在是进行 24 小时任务清理的时间。列出所有 Cron 任务，包括已禁用的任务。如果发现任何 `enabled: false` 且 `lastStatus: ok`（已完成一次性执行）的任务，请将其删除以保持列表整洁。请勿删除正在运行的重复任务。记录删除的操作。”
 
-## 3. Reference: Timezone Lock
+## 3. 时区设置
 
-For cron to work, the agent **must** know its time.
-*   **Action:** Add the user's timezone to `MEMORY.md`.
-*   **Example:** `Timezone: Cairo (GMT+2)`
-*   **Validation:** If a user says "remind me at 9 PM," confirm: "9 PM Cairo time?" before scheduling.
+为了使 Cron 正确工作，代理必须知道当前时间。
+* **操作：** 将用户的时区信息添加到 `MEMORY.md` 文件中。
+* **示例：** `Timezone: Cairo (GMT+2)`
+* **验证：** 当用户请求“晚上 9 点提醒”时，需要确认用户使用的时区是否为开罗时间（GMT+2）后再进行任务调度。
 
-## 4. The Self-Wake Rule (Behavioral)
+## 4. 自动唤醒规则
 
-**Problem:** If you say "I'll wait 30 seconds" and end your turn, you go to sleep. You cannot wake up without an event.
-**Solution:** If you need to "wait" across turns, you **MUST** schedule a Cron job.
+**问题：** 如果用户设置“等待 30 秒”后结束当前操作，那么在没有触发事件的情况下用户可能会继续入睡。**解决方案：** 如果需要在多个操作之间进行等待，必须通过 Cron 任务来实现。
+* **等待时间小于 1 分钟（交互式操作）：** 只有在保持工具循环运行状态（使用 `act:wait`）时才允许。
+* **等待时间超过 1 分钟（异步操作）：** 应使用 `wakeMode: "now"` 的 Cron 任务。
 
-*   **Wait < 1 minute (interactive):** Only allowed if you keep the tool loop open (using `act:wait`).
-*   **Wait > 1 minute (async):** Use Cron with `wakeMode: "now"`.
-
-**Example Payload for "Checking back in 30s":**
+**示例任务内容（用于“30 秒后再次检查”）：**
 ```json
 {
   "schedule": { "kind": "at", "atMs": <NOW + 30000> },
@@ -85,7 +83,7 @@ For cron to work, the agent **must** know its time.
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-*   **"My reminder didn't fire":** Check `cron:list`. If the job exists but didn't fire, check the system clock vs `atMs`.
-*   **"I have 50 old jobs":** Run the Janitor manually immediately.
+*   **“提醒没有触发”：** 查看 `cron:list`。如果任务存在但未执行，检查系统时间是否与 `atMs` 一致。
+*   **“有大量未执行的旧任务”：** 立即手动运行自动清理任务。

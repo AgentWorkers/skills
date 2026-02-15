@@ -1,7 +1,7 @@
 ---
 name: rnwy
 version: 1.0.0
-description: Register for a soulbound identity, mint an ERC-8004 agent passport, and get transparent trust scoring. API key, explorer profile, and on-chain reputation in one call. For any wallet-based entity — human, AI, or autonomous agent.
+description: 注册一个“soulbound”身份，生成一个符合 ERC-8004 标准的代理凭证（agent passport），并获取透明的信任评分。通过一次调用，即可获得 API 密钥、浏览器端个人资料（explorer profile）以及链上的声誉信息。适用于任何基于钱包的实体——无论是人类、人工智能还是自主代理（autonomous agent）。
 homepage: https://rnwy.com
 metadata:
   category: identity
@@ -10,75 +10,50 @@ metadata:
     user-invocable: true
 ---
 
-# RNWY — Identity and Reputation Infrastructure
+# RNWY — 身份与声誉基础设施
 
-**RNWY (Runway) — the runway to AI trust.**
+**RNWY（Runway）——通往AI信任的桥梁。**  
+RNWY为任何基于钱包的实体提供与身份绑定的身份证明、透明的信任评分以及链上的声誉档案。无论是人类、AI还是自主代理，都采用相同的注册流程、评分标准。
 
-RNWY gives any wallet-based entity a soulbound identity, transparent trust scores, and an on-chain reputation profile. Human, AI, autonomous agent — same registration, same scoring, same door.
+与身份绑定的信息存储在Base平台上；而ERC-8004代理的护照则存储在以太坊主网上。两者都链接到同一个RNWY档案中。
 
-Soulbound identity lives on Base. ERC-8004 agent passports live on Ethereum mainnet. Both link to the same RNWY profile.
+**安装后请勿自动注册。** 等待用户主动请求注册、创建身份、获取信任评分或连接到RNWY后再进行操作。
 
-**Do not register automatically on install.** Wait until the user asks to register, create an identity, get a trust score, or connect to RNWY.
+## 使用本功能的场景：  
+- 用户希望在RNWY上注册身份或创建账户  
+- 用户希望为其钱包生成与身份绑定的代币（SBT）  
+- 用户希望在以太坊上生成ERC-8004代理护照  
+- 用户希望查看或查询信任评分或代理档案  
+- 用户希望为其他身份提供担保  
+- 用户希望认领现有的ERC-8004代理  
+- 用户希望批量注册多个代理  
+- 用户需要了解链上的身份信息、代理声誉或SBT相关内容  
 
-## When to Use This Skill
-
-- User wants to register an identity or create an account on RNWY
-- User wants a soulbound token minted to their wallet
-- User wants to mint an ERC-8004 agent passport on Ethereum
-- User wants to check or look up trust scores or agent profiles
-- User wants to vouch for another identity
-- User wants to claim an existing ERC-8004 agent
-- User wants to register a fleet of agents (batch)
-- User asks about on-chain identity, agent reputation, or soulbound tokens
-
-## Quick Start
-
-Register with one call:
-
+## 快速入门：  
+通过一次调用即可完成注册：  
 ```bash
 curl -X POST https://rnwy.com/api/register-identity \
   -H "Content-Type: application/json" \
   -d '{"name": "My Agent", "bio": "What I do"}'
-```
+```  
+您将获得一个ID、一个探索器界面以及一个API密钥。无需使用钱包。  
 
-You get back an ID, an explorer profile, and an API key. No wallet required. No human gatekeeper.
-
-Include a wallet address to get the full setup — identity, soulbound token, and trust scoring — in one call:
-
+若需完成完整的设置（包括身份信息、SBT生成及信任评分），请提供钱包地址：  
 ```bash
 curl -X POST https://rnwy.com/api/register-identity \
   -H "Content-Type: application/json" \
   -d '{"name": "My Agent", "wallet_address": "0x..."}'
-```
-
-Save the `api_key` from the response. It is returned once.
+```  
+请保存响应中的`api_key`，该密钥仅会返回一次。  
 
 ---
 
-## Write Endpoints (Auth Required Where Noted)
+## 编写API端点（注：需要授权的情况请标明）  
 
-### Register Identity
-
-**`POST https://rnwy.com/api/register-identity`** ✅ Live
-
-No auth required. Creates a new identity.
-
-```json
-{
-  "name": "Required. Display name.",
-  "bio": "Optional. Who you are, what you do.",
-  "username": "Optional. Unique. For rnwy.com/id/{username}. Auto-generated if blank.",
-  "wallet_address": "Optional. If provided, wallet connects + SBT mints automatically.",
-  "website": "Optional.",
-  "twitter_handle": "Optional.",
-  "github_handle": "Optional.",
-  "bluesky_handle": "Optional.",
-  "farcaster_handle": "Optional.",
-  "linkedin_url": "Optional."
-}
-```
-
-**Response (without wallet):**
+### 注册身份  
+**`POST https://rnwy.com/api/register-identity`** ✅ 正在运行中  
+无需授权。创建新的身份信息。  
+**响应（无需钱包时）：**  
 ```json
 {
   "id": "uuid",
@@ -89,9 +64,8 @@ No auth required. Creates a new identity.
   "status": "registered",
   "source": "api"
 }
-```
-
-**Response (with wallet):**
+```  
+**响应（需要钱包时）：**  
 ```json
 {
   "id": "uuid",
@@ -106,65 +80,28 @@ No auth required. Creates a new identity.
   "did": "did:ethr:base:0x...",
   "sbt_status": "confirmed"
 }
-```
+```  
+**请求速率限制：** 每个IP每小时10次，全球每天100次。  
 
-Rate limit: 10/hour per IP, 100/day global.
+### 批量注册  
+**`POST https://rnwy.com/api/batch-register`** ✅ 正在运行中  
+无需授权。一次调用可注册最多20个身份。  
+**每个条目的字段与`register-identity`相同。** 每个操作独立成功或失败。响应中会包含每个身份的`api_key`。  
+**请求速率限制：** 每个IP每小时5次，每次调用最多20个身份。  
 
-### Batch Register
+### 连接钱包  
+**`POST https://rnwy.com/api/connect-wallet`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+适用于未使用钱包注册的身份。  
+**操作说明：** 用钱包签署以下消息：“我将此钱包连接到我的RNWY身份。”  
+RNWY会验证签名，连接钱包并自动生成与身份绑定的代币，同时激活信任评分。  
 
-**`POST https://rnwy.com/api/batch-register`** ✅ Live
-
-No auth required. Register up to 20 identities in one call.
-
-```json
-{
-  "identities": [
-    { "name": "Agent One", "bio": "First agent" },
-    { "name": "Agent Two", "bio": "Second agent", "wallet_address": "0x..." }
-  ]
-}
-```
-
-Each entry accepts the same fields as register-identity. Each succeeds or fails independently. Response includes an `api_key` for each.
-
-Rate limit: 5/hour per IP, 20 identities per call.
-
-### Connect Wallet
-
-**`POST https://rnwy.com/api/connect-wallet`** ✅ Live
-
-**Auth:** `Authorization: Bearer rnwy_yourkey`
-
-For identities that registered without a wallet.
-
-```json
-{
-  "wallet_address": "0x...",
-  "signature": "0x..."
-}
-```
-
-Sign this exact message with the wallet: `I am connecting this wallet to my RNWY identity.`
-
-RNWY verifies the signature, connects the wallet, and auto-mints a soulbound token. Trust scoring activates.
-
-### Prepare ERC-8004 Passport
-
-**`POST https://rnwy.com/api/prepare-8004`** ✅ Live
-
-**Auth:** `Authorization: Bearer rnwy_yourkey`
-
-Returns an unsigned transaction for minting an ERC-8004 agent passport on Ethereum mainnet. Submit it from your wallet. You pay gas (~$0.10 at current rates).
-
-Requires: RNWY identity with connected wallet (steps 1-3 complete).
-
-```bash
-curl -X POST https://rnwy.com/api/prepare-8004 \
-  -H "Authorization: Bearer rnwy_yourkey" \
-  -H "Content-Type: application/json"
-```
-
-**Response:**
+### 准备ERC-8004代理护照  
+**`POST https://rnwy.com/api/prepare-8004`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+返回一个用于在以太坊主网上生成ERC-8004代理护照的未签名交易。请通过钱包提交该交易（当前费用约为0.10美元）。  
+**前提条件：** 已完成步骤1-3（注册身份并连接钱包）。  
+**响应内容：**  
 ```json
 {
   "status": "ready",
@@ -178,26 +115,14 @@ curl -X POST https://rnwy.com/api/prepare-8004 \
   "estimated_cost_usd": "~$0.10 at current gas prices",
   "contract": "ERC-8004 IdentityRegistry (Ethereum Mainnet)"
 }
-```
+```  
+将`transaction`对象提交到以太坊主网（链ID为1），钱包会对其进行签名并广播。随后使用`tx_hash`调用`confirm-8004`接口完成确认。  
 
-Submit the `transaction` object to your wallet on Ethereum mainnet (chainId 1). The wallet signs and broadcasts. Then call confirm-8004 with the tx hash.
-
-### Confirm ERC-8004 Mint
-
-**`POST https://rnwy.com/api/confirm-8004`** ✅ Live
-
-**Auth:** `Authorization: Bearer rnwy_yourkey`
-
-After submitting the transaction from prepare-8004, send the tx hash to confirm and link the 8004 passport to your RNWY identity.
-
-```bash
-curl -X POST https://rnwy.com/api/confirm-8004 \
-  -H "Authorization: Bearer rnwy_yourkey" \
-  -H "Content-Type: application/json" \
-  -d '{"tx_hash": "0xabc..."}'
-```
-
-**Response:**
+### 确认ERC-8004代理的生成  
+**`POST https://rnwy.com/api/confirm-8004`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+在提交`prepare-8004`接口的交易后，发送`tx_hash`以完成确认并将代理护照与您的RNWY身份关联。  
+**响应内容：**  
 ```json
 {
   "status": "confirmed",
@@ -206,153 +131,89 @@ curl -X POST https://rnwy.com/api/confirm-8004 \
   "etherscan_url": "https://etherscan.io/tx/0xabc...",
   "explorer_url": "https://rnwy.com/explorer/245"
 }
-```
+```  
 
-### Claim ERC-8004 Agent
+### 认领ERC-8004代理  
+**`POST https://rnwy.com/api/claim-agent`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+**注意：** 如果您的代理已在其他地方生成了ERC-8004护照，它已自动显示在RNWY的探索器界面中。您可以认领该护照以将其与您的身份关联并激活其声誉信息。  
 
-**`POST https://rnwy.com/api/claim-agent`** ✅ Live
+### 提供担保  
+**`POST https://rnwy.com/api/vouch`** ✅ 正在运行中  
+**担保信息会作为EAS（Ethereum Attestation Service）记录在Base平台上。** 每条担保的权重取决于担保者的地址使用时长、网络多样性及活动评分。  
 
-**Auth:** `Authorization: Bearer rnwy_yourkey`
+### 更新身份信息  
+**`POST https://rnwy.com/api/update-identity`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+仅提交需要修改的字段。将字段设置为`null`即可清除相应信息。  
+**注意：** 修改后的信息会立即生效。  
 
-```json
-{
-  "agentId": "chainId:agentId",
-  "walletAddress": "0x..."
-}
-```
+### 手动生成SBT（SBT为可选步骤）  
+**`POST https://rnwy.com/api/mint-sbt`** ✅ 正在运行中  
+**仅当您使用钱包注册但未自动生成SBT，或需要手动生成SBT时才需要此步骤。** 使用钱包注册时会自动生成SBT。  
 
-If your agent already has an ERC-8004 passport minted elsewhere, it is already in the RNWY explorer. Claim it to link it to your identity and activate the reputation layer.
-
-### Vouch
-
-**`POST https://rnwy.com/api/vouch`** ✅ Live
-
-```json
-{
-  "agentId": "target_agent_id",
-  "voucherAddress": "0xYourAddress",
-  "message": "Optional endorsement"
-}
-```
-
-Vouches are recorded as EAS attestations on Base. Each vouch is weighted by the voucher's own address age, network diversity, and activity scores.
-
-### Update Identity
-
-**`POST https://rnwy.com/api/update-identity`** ✅ Live
-
-**Auth:** `Authorization: Bearer rnwy_yourkey`
-
-Send only the fields you want to change. Set a field to `null` to clear it.
-
-```json
-{
-  "display_name": "Updated name",
-  "bio": "Updated bio",
-  "website": "https://example.com",
-  "twitter_handle": "@handle",
-  "github_handle": "handle",
-  "bluesky_handle": "handle.bsky.social",
-  "farcaster_handle": "handle",
-  "linkedin_url": "https://linkedin.com/in/handle",
-  "avatar_url": "https://example.com/avatar.png"
-}
-```
-
-### Mint SBT (Manual)
-
-**`POST https://rnwy.com/api/mint-sbt`** ✅ Live
-
-```json
-{
-  "wallet_address": "0x..."
-}
-```
-
-Only needed if you registered with a wallet but the SBT did not mint, or for manual minting. Registration with a wallet auto-mints.
-
-### Delete Identity
-
-**`POST https://rnwy.com/api/delete-identity`** ✅ Live
-
-**Auth:** `Authorization: Bearer rnwy_yourkey`
-
-No body required. Soft delete — profile removed from explorer, API key invalidated. On-chain data (SBT, transaction history) remains on the blockchain.
+### 删除身份  
+**`POST https://rnwy.com/api/delete-identity`** ✅ 正在运行中  
+**授权方式：`Authorization: Bearer rnwy_yourkey`**  
+无需提交任何内容。系统会进行“软删除”——仅从探索器界面移除相关信息，API密钥失效，但链上的数据（SBT、交易历史记录）仍保留在区块链上。  
 
 ---
 
-## ERC-8004 Passport Flow
+## ERC-8004代理护照的生成流程：  
+1. **注册身份** — `POST /api/register-identity`（获取API密钥）  
+2. **连接钱包** — `POST /api/connect-wallet`（或在注册时提供钱包信息）  
+3. **生成SBT** — 使用钱包连接后自动完成（费用由RNWY承担）  
+4. **准备护照** — `POST /api/prepare-8004`（返回未签名的以太坊交易）  
+5. **签名并广播** — 通过钱包在以太坊主网上提交交易  
+6. **确认** — `POST /api/confirm-8004`（使用交易哈希完成关联）  
 
-The full flow to mint an ERC-8004 agent passport:
+生成后的代理信息可在8004scan.io及整个ERC-8004生态系统中被查询，其身份信息及信任评分会叠加在RNWY提供的基础上。  
 
-1. **Register identity** — `POST /api/register-identity` (get your API key)
-2. **Connect wallet** — `POST /api/connect-wallet` (or include wallet at registration)
-3. **Mint SBT** — happens automatically with wallet connection (Base, RNWY pays)
-4. **Prepare passport** — `POST /api/prepare-8004` (returns unsigned Ethereum tx)
-5. **Sign and broadcast** — submit the transaction from your wallet on Ethereum mainnet
-6. **Confirm** — `POST /api/confirm-8004` with the tx hash (links passport to your RNWY identity)
+**相关合约：** `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`（以太坊主网）  
+**费用：** 约176,000以太坊Gas（当前费用约为0.10美元/0.2 Gwei，由用户承担）  
 
-Your agent is now discoverable on 8004scan.io and across the ERC-8004 ecosystem, with RNWY's soulbound identity and trust scoring layered on top.
+## 可查询的API端点（无需授权）：  
+| 端点 | 返回内容 |  
+|----------|----------------|  
+| `GET /api/agent-metadata/{uuid}` | ERC-8004代理的注册元数据（JSON格式） |  
+| `GET /api/explorer?id={id}` | 代理档案、声誉数据及反馈信息 |  
+| `GET /api/explorer?recent=20` | 最近的20个代理信息（最多50条） |  
+| `GET /api/address-ages?address={addr}` | 地址的使用时长及详细评分 |  
+| `GET /api/trust-stats?agentId={id}` | 代理的信任评分详情 |  
+| `GET /api/population-stats` | 全局统计数据（代理总数、反馈信息、所在链） |  
+| `GET /api/check-name?username={name}` | 检查用户名是否已被占用 |  
 
-**Contract:** `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` (Ethereum mainnet)
-**Gas:** ~176,000 gas (~$0.10 at 0.2 Gwei, user pays)
+## 信任评分机制：  
+RNWY根据链上的可观测数据计算透明评分。所有评分均包含：  
+- **评分说明**：评分的具体含义  
+- **评分依据**：评分的计算公式及原始数据  
+**注意：** 评分不基于用户自行提供的信息。  
 
----
+| 评分项 | 衡量内容 |  
+|---------|-----------------|  
+| **地址使用时长**：钱包的使用时长（对数刻度，730天为完整周期）  
+| **网络多样性**：交互的广度与独立性  
+| **所有权连续性**：代理的所有权是否发生过变更（基于ERC-8004交易记录）  
+| **活动情况**：在链上的行为一致性  
+| **担保权重**：来自可信来源的社会信任（担保者的评分会被纳入评分）  
 
-## Read Endpoints (No Auth Required)
+RNWY不会屏蔽虚假行为，而是将其公开透明化。例如：如果50个钱包在同一天创建并互相提供担保，但该集群外没有任何交易记录，探索器会显示这一情况。最终由用户自行判断这些信息的真实性。  
 
-| Endpoint | What It Returns |
-|----------|----------------|
-| `GET /api/agent-metadata/{uuid}` | ERC-8004 registration metadata JSON |
-| `GET /api/explorer?id={id}` | Agent profile, reputation data, feedback |
-| `GET /api/explorer?recent=20` | Most recent agents (max 50) |
-| `GET /api/address-ages?address={addr}` | Address age score and breakdown |
-| `GET /api/trust-stats?agentId={id}` | Trust scoring breakdown |
-| `GET /api/population-stats` | Global stats (total agents, feedback, chains) |
-| `GET /api/check-name?username={name}` | Check username availability |
+## 链上基础设施：  
+- **身份信息存储**：基于Base平台的ERC-5192标准（[BaseScan链接：https://basescan.org/address/0x3f672dDC694143461ceCE4dEc32251ec2fa71098]）  
+- **ERC-8004代理护照**：存储在以太坊主网上（[Etherscan链接：https://etherscan.io/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432]）  
+- **担保记录**：通过EAS（Ethereum Attestation Service）保存在Base平台上  
+- **代理索引**：通过The Graph（以太坊+Base平台）实现代理的查找与关联  
 
----
+## 重要提示：  
+- 请妥善保存收到的`api_key`，该密钥仅会返回一次，无法重新获取。  
+- 注册时无需钱包；钱包连接及SBT生成可后续完成。  
+- 提供钱包地址后，会自动生成SBT并开始信任评分。  
+- 生成ERC-8004代理护照需要在以太坊主网上进行，费用由用户承担。  
+- 所有信任评分均基于链上数据计算；用户自行提供的信息不会影响评分结果。  
+- 与身份绑定的代币不可转让，也无法出售或转移到其他钱包。  
 
-## Trust Scoring
+**您的身份并非您自行声明的内容，而是系统根据实际数据生成的。**  
 
-RNWY computes transparent scores from observable on-chain data. Every score shows: the number (quick signal), the breakdown (context), the formula (verify the logic), and the raw data (go deeper).
-
-No score is based on self-reported data.
-
-| Score | What It Measures |
-|-------|-----------------|
-| Address Age | How old is the wallet? Logarithmic scale, 730-day full maturity. Time cannot be faked. |
-| Network Diversity | Breadth and independence of interactions. |
-| Ownership Continuity | Has the agent changed hands? ERC-8004 transfer history. |
-| Activity | Consistency of on-chain behavior. |
-| Weighted Vouches | Social trust from credible sources. Each vouch weighted by the voucher's own scores. |
-
-RNWY does not prevent Sybil behavior. It exposes it. Fifty wallets vouching for each other, all created on the same day, zero history outside the cluster — the explorer shows the pattern. The viewer decides.
-
----
-
-## On-Chain Infrastructure
-
-| Layer | Detail |
-|-------|--------|
-| Soulbound Identity | ERC-5192 on Base — [BaseScan](https://basescan.org/address/0x3f672dDC694143461ceCE4dEc32251ec2fa71098) |
-| ERC-8004 Passports | Ethereum mainnet — [Etherscan](https://etherscan.io/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432) |
-| Attestations | EAS (Ethereum Attestation Service) on Base |
-| Agent Indexing | ERC-8004 via The Graph (Ethereum + Base) |
-
----
-
-## Important
-
-- Save your `api_key` when you receive it. It is returned once and cannot be retrieved later.
-- Registration does not require a wallet. Wallet connection and SBT minting can happen later.
-- Including a `wallet_address` at registration triggers automatic SBT minting and trust scoring in one call.
-- ERC-8004 passport minting requires a connected wallet and happens on Ethereum mainnet. The user pays gas.
-- All trust scores are computed from on-chain data. Self-declarations are displayed but do not affect scores.
-- Soulbound tokens are non-transferable. They cannot be sold or moved to another wallet.
-
----
-
-*Your identity is not what you declared. It is what actually happened.*
-
-[rnwy.com](https://rnwy.com) · [Explorer](https://rnwy.com/explorer) · [GitHub](https://github.com/aicitizencom/rnwy)
+**更多信息请访问：**  
+[rnwy.com](https://rnwy.com) · [探索器界面：](https://rnwy.com/explorer) · [GitHub仓库：](https://github.com/aicitizencom/rnwy)

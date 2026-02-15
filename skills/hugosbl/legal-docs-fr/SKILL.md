@@ -1,13 +1,12 @@
-# Legal Docs FR
+# 法律文件生成工具（FR）
 
-Générateur de documents juridiques français pour freelances/micro-entrepreneurs.
-Génère des CGV, mentions légales, contrats de prestation et devis en HTML.
+专为自由职业者/小型企业设计的法律文件生成工具。可生成标准销售合同（CGV）、法律声明、服务合同以及报价单（DEV）等文件，格式为HTML。
 
-## Scripts
+## 脚本
 
-Tout dans `scripts/`. Python 3 stdlib uniquement. Documents dans `~/.freelance/legal/`.
+所有脚本均位于 `scripts/` 目录中，仅使用 Python 3 的标准库。相关文件存储在 `~/.freelance/legal/` 目录下。
 
-### legal.py — Génération de documents juridiques
+### legal.py — 法律文件生成模块
 
 ```bash
 # CGV — Conditions Générales de Vente
@@ -33,26 +32,27 @@ python3 legal.py list [--json]
 python3 legal.py config [--json]
 ```
 
-Tous les documents supportent `--no-open` pour ne pas ouvrir dans le navigateur.
+所有生成的文件都支持 `--no-open` 参数，可设置为不在浏览器中打开文件。
 
-### Overrides prestataire (sur toutes les commandes generate)
+### 服务提供商配置（适用于所有生成命令）
+
 ```bash
 --nom "Hugo Dupont" --siret "12345" --adresse "42 rue X" --email "x@y.com" --phone "06..."
 ```
-Si `~/.freelance/config.json` existe (du freelance-toolkit), les infos sont pré-remplies.
+如果存在 `~/.freelance/config.json` 文件（由 freelance-toolkit 提供），则系统会自动填充相关配置信息。
 
-## Documents générés
+## 生成的文件类型及内容
 
-| Type | Fichier | Contenu |
+| 文件类型 | 文件名 | 文件内容 |
 |------|---------|---------|
-| CGV | `cgv.html` | 10 articles : objet, commandes, paiement (30j, 3×taux légal, 40€), délais, PI, responsabilité, résiliation, force majeure, juridiction, médiation |
-| Mentions | `mentions.html` | Identité, hébergeur, directeur publication, RGPD (droits, finalités, DPO), cookies, PI |
-| Contrat | `contrat-{client}-{ts}.html` | Parties, mission, durée, prix (30/70), obligations, confidentialité, PI, résiliation, non-sollicitation optionnelle |
-| Devis | `DEV-YYYY-NNN.html` | Numéro auto, validité 30j, lignes de prestation, conditions de paiement, signature "Bon pour accord" |
+| 标准销售合同（CGV） | `cgv.html` | 包含10条主要条款：商品/服务描述、付款方式（30天内支付，逾期按法定利率计罚3倍，违约金40欧元）、交付期限、知识产权（PI）、责任划分、合同解除、不可抗力、管辖权、争议解决方式等 |
+| 法律声明 | `mentions.html` | 包含提供者的身份信息、网站托管信息、出版负责人信息、GDPR（通用数据保护条例）相关条款（数据权利、使用目的、数据保护官信息）、Cookies政策、知识产权等相关内容 |
+| 服务合同 | `contrat-{client}-{ts}.html` | 明确合同双方信息、服务内容、合同期限、费用分摊（30%由客户承担，70%由提供者承担）、保密条款、知识产权条款、合同解除方式、可选的免责声明等 |
+| 报价单 | `DEV-YYYY-NNN.html` | 自动生成唯一编号，有效期30天，详细列明服务内容及付款条件，需签署“同意协议”方可生效 |
 
-## Configuration
+## 配置设置
 
-Utilise `~/.freelance/config.json` (partagé avec freelance-toolkit) :
+请使用 `~/.freelance/config.json` 文件进行配置（该文件与 freelance-toolkit 共享）：
 ```json
 {
   "provider": { "name": "...", "address": "...", "siret": "...", "email": "...", "phone": "..." },
@@ -61,9 +61,9 @@ Utilise `~/.freelance/config.json` (partagé avec freelance-toolkit) :
 }
 ```
 
-Si `micro_entreprise: true` → mention art. 293B du CGI sur tous les documents.
+如果配置中包含 `micro_entreprise: true`，则所有生成的文件都会包含《民法典》第293B条的相关条款。
 
-## Données
+## 数据来源
 
 ```
 ~/.freelance/legal/
@@ -74,19 +74,19 @@ Si `micro_entreprise: true` → mention art. 293B du CGI sur tous les documents.
 └── ...
 ```
 
-## Contenu juridique
+## 法律条款内容
 
-Les documents incluent les clauses obligatoires du droit français :
-- **Paiement** : 30 jours, pénalités 3× taux légal, indemnité 40€ (art. D441-5 Code de commerce)
-- **PI** : Cession subordonnée au paiement intégral
-- **Médiation** : Obligatoire depuis 2016 (art. L611-1 Code de la consommation)
-- **RGPD** : Droits des personnes, finalités, durée conservation, contact DPO
-- **Force majeure** : Art. 1218 du Code civil
+生成的文件包含法国的强制性法律条款：
+- **付款条款**：规定付款期限为30天，逾期需支付法定利率3倍的违约金，违约金为40欧元（《商业法典》第D441-5条）
+- **知识产权（PI）**：明确知识产权的转让条件（需在全额付款后生效）
+- **争议解决**：自2016年起，强制要求采用调解方式解决争议（《消费者法典》第L611-1条）
+- **GDPR**：详细说明个人数据保护的相关权利、数据使用目的、数据保留期限以及数据保护官的联系方式
+- **不可抗力**：依据《民法典》第1218条的规定处理不可抗力事件
 
-Voir `references/french-legal-ref.md` pour le détail des obligations légales.
+有关法律条款的详细信息，请参阅 `references/french-legal-ref.md` 文件。
 
-## Notes
-- HTML avec CSS inline, optimisé pour impression / export PDF
-- Montants au format français (2 900,00 €)
-- Initiales du prestataire comme logo (même style que les factures)
-- `--json` disponible sur `list` et `config`
+## 其他说明：
+- 文件采用内联CSS格式，适用于打印或导出为PDF格式
+- 金额显示采用法国货币单位（2,900.00欧元）
+- 提供者的姓名首字母会被用作文件中的Logo，样式与发票一致
+- 通过 `--json` 参数可以在 `list` 和 `config` 文件中配置额外选项

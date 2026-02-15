@@ -1,24 +1,24 @@
 ---
 name: salesforce
-description: "Query and manage Salesforce CRM data via the Salesforce CLI (`sf`). Run SOQL/SOSL queries, inspect object schemas, create/update/delete records, bulk import/export, execute Apex, deploy metadata, and make raw REST API calls."
+description: "通过 Salesforce CLI (`sf`) 查询和管理 Salesforce CRM 数据。可以执行 SOQL/SOSL 查询、查看对象结构、创建/更新/删除记录、批量导入/导出数据、运行 Apex 代码、部署元数据以及发起原始的 REST API 调用。"
 homepage: https://developer.salesforce.com/tools/salesforcecli
 metadata: {"clawdbot":{"emoji":"☁️","requires":{"bins":["sf"]},"install":[{"id":"npm","kind":"node","package":"@salesforce/cli","bins":["sf"],"label":"Install Salesforce CLI (npm)"}]}}
 ---
 
-# Salesforce Skill
+# Salesforce 技能
 
-Use the Salesforce CLI (`sf`) to interact with Salesforce orgs. The CLI must be authenticated before use. Always add `--json` for structured output.
+使用 Salesforce CLI（`sf`）与 Salesforce 组织进行交互。在使用 CLI 之前，必须先进行身份验证。始终添加 `--json` 选项以获得结构化的输出。
 
-If the `sf` binary is not available, install it via npm (`npm install -g @salesforce/cli`) or download it from https://developer.salesforce.com/tools/salesforcecli. After installing, authenticate immediately with `sf org login web` to connect to a Salesforce org.
+如果 `sf` 可执行文件不可用，可以通过 npm（`npm install -g @salesforce/cli`）进行安装，或从 https://developer.salesforce.com/tools/salesforcecli 下载。安装完成后，立即使用 `sf org login web` 进行身份验证，以连接到 Salesforce 组织。
 
-## Authentication and Org Management
+## 身份验证和组织管理
 
-### Log in (opens browser)
+### 登录（打开浏览器）
 ```bash
 sf org login web --alias my-org
 ```
 
-Other login methods:
+其他登录方法：
 ```bash
 # JWT-based login (CI/automation)
 sf org login jwt --client-id <consumer-key> --jwt-key-file server.key --username user@example.com --alias my-org
@@ -30,7 +30,7 @@ sf org login access-token --instance-url https://mycompany.my.salesforce.com
 sf org login sfdx-url --sfdx-url-file authUrl.txt --alias my-org
 ```
 
-### Manage orgs
+### 管理组织
 ```bash
 # List all authenticated orgs
 sf org list --json
@@ -52,7 +52,7 @@ sf org open --target-org my-org
 sf org logout --target-org my-org
 ```
 
-### Configuration and aliases
+### 配置和别名
 ```bash
 # Set default target org
 sf config set target-org my-org
@@ -70,9 +70,9 @@ sf alias set prod=user@example.com
 sf alias list
 ```
 
-## Querying Data (SOQL)
+## 数据查询（SOQL）
 
-Standard SOQL queries via the default API:
+通过默认 API 进行标准 SOQL 查询：
 ```bash
 # Basic query
 sf data query --query "SELECT Id, Name, Email FROM Contact LIMIT 10" --json
@@ -111,15 +111,15 @@ sf data query --query "SELECT Id, Name, Email FROM Contact" --result-format csv 
 sf data query --query "SELECT Id, Name FROM Account" --target-org my-org --json
 ```
 
-For queries returning more than 10,000 records, use Bulk API instead:
+对于返回超过 10,000 条记录的查询，请使用批量 API（Bulk API）：
 ```bash
 sf data export bulk --query "SELECT Id, Name, Email FROM Contact" --output-file contacts.csv --result-format csv --wait 10
 sf data export bulk --query "SELECT Id, Name FROM Account" --output-file accounts.json --result-format json --wait 10
 ```
 
-## Text Search (SOSL)
+## 文本搜索（SOSL）
 
-SOSL searches across multiple objects at once:
+SOSL 可同时搜索多个对象：
 ```bash
 # Search for text across objects
 sf data search --query "FIND {John Smith} IN ALL FIELDS RETURNING Contact(Name, Email), Lead(Name, Email)" --json
@@ -134,9 +134,9 @@ sf data search --file search.sosl --json
 sf data search --query "FIND {test} RETURNING Contact(Name)" --result-format csv
 ```
 
-## Single Record Operations
+## 单条记录操作
 
-### Get a record
+### 获取记录
 ```bash
 # By record ID
 sf data get record --sobject Contact --record-id 003XXXXXXXXXXXX --json
@@ -148,7 +148,7 @@ sf data get record --sobject Account --where "Name=Acme" --json
 sf data get record --sobject Account --where "Name='Universal Containers' Phone='(123) 456-7890'" --json
 ```
 
-### Create a record (confirm with user first)
+### 创建记录（先获得用户确认）
 ```bash
 sf data create record --sobject Contact --values "FirstName='Jane' LastName='Doe' Email='jane@example.com'" --json
 
@@ -158,7 +158,7 @@ sf data create record --sobject Account --values "Name='New Company' Website=www
 sf data create record --sobject TraceFlag --use-tooling-api --values "DebugLevelId=7dl... LogType=CLASS_TRACING" --json
 ```
 
-### Update a record (confirm with user first)
+### 更新记录（先获得用户确认）
 ```bash
 # By ID
 sf data update record --sobject Contact --record-id 003XXXXXXXXXXXX --values "Email='updated@example.com'" --json
@@ -170,7 +170,7 @@ sf data update record --sobject Account --where "Name='Old Acme'" --values "Name
 sf data update record --sobject Account --record-id 001XXXXXXXXXXXX --values "Name='Acme III' Website=www.example.com" --json
 ```
 
-### Delete a record (require explicit user confirmation)
+### 删除记录（需要用户明确确认）
 ```bash
 # By ID
 sf data delete record --sobject Account --record-id 001XXXXXXXXXXXX --json
@@ -179,11 +179,11 @@ sf data delete record --sobject Account --record-id 001XXXXXXXXXXXX --json
 sf data delete record --sobject Account --where "Name=Acme" --json
 ```
 
-## Bulk Data Operations (Bulk API 2.0)
+## 批量数据操作（Bulk API 2.0）
 
-For large datasets (thousands to millions of records):
+对于大量数据集（数千到数百万条记录）：
 
-### Bulk export
+### 批量导出
 ```bash
 # Export to CSV
 sf data export bulk --query "SELECT Id, Name, Email FROM Contact" --output-file contacts.csv --result-format csv --wait 10
@@ -198,7 +198,7 @@ sf data export bulk --query "SELECT Id, Name FROM Account" --output-file account
 sf data export resume --job-id 750XXXXXXXXXXXX --json
 ```
 
-### Bulk import
+### 批量导入
 ```bash
 # Import from CSV
 sf data import bulk --file accounts.csv --sobject Account --wait 10
@@ -207,18 +207,18 @@ sf data import bulk --file accounts.csv --sobject Account --wait 10
 sf data import resume --job-id 750XXXXXXXXXXXX --json
 ```
 
-### Bulk upsert
+### 批量插入/更新（Bulk Upsert）
 ```bash
 sf data upsert bulk --file contacts.csv --sobject Contact --external-id Email --wait 10
 ```
 
-### Bulk delete
+### 批量删除
 ```bash
 # Delete records listed in CSV (CSV must have an Id column)
 sf data delete bulk --file records-to-delete.csv --sobject Contact --wait 10
 ```
 
-### Tree export/import (for related records)
+### 树状数据导出/导入（针对关联记录）
 ```bash
 # Export with relationships into JSON tree format
 sf data export tree --query "SELECT Id, Name, (SELECT Name, Email FROM Contacts) FROM Account" --json
@@ -233,8 +233,7 @@ sf data import tree --files Account.json,Contact.json
 sf data import tree --plan Account-Contact-plan.json
 ```
 
-## Schema Inspection
-
+## 模式检查
 ```bash
 # Describe an object (fields, relationships, picklist values)
 sf sobject describe --sobject Account --json
@@ -255,8 +254,7 @@ sf sobject list --sobject custom --json
 sf sobject list --sobject standard --json
 ```
 
-## Execute Apex Code
-
+## 执行 Apex 代码
 ```bash
 # Execute Apex from a file
 sf apex run --file script.apex --json
@@ -275,9 +273,9 @@ sf apex list log --json
 sf apex get log --log-id 07LXXXXXXXXXXXX
 ```
 
-## REST API (Advanced)
+## REST API（高级用法）
 
-Make arbitrary authenticated REST API calls:
+执行任意经过身份验证的 REST API 调用：
 ```bash
 # GET request
 sf api request rest 'services/data/v62.0/limits' --json
@@ -301,8 +299,7 @@ sf api request rest '/services/data/v62.0/limits' --header 'Accept: application/
 sf api request rest '/services/data/v62.0/limits' --stream-to-file limits.json
 ```
 
-## Metadata Deployment and Retrieval
-
+## 元数据部署与检索
 ```bash
 # Deploy metadata to an org
 sf project deploy start --source-dir force-app --json
@@ -323,8 +320,7 @@ sf project generate --name my-project
 sf project list ignored --json
 ```
 
-## Diagnostics
-
+## 日志诊断
 ```bash
 # Run CLI diagnostics
 sf doctor
@@ -336,8 +332,7 @@ sf version
 sf whatsnew
 ```
 
-## Common SOQL Patterns
-
+## 常见 SOQL 模式
 ```sql
 -- Count records
 SELECT COUNT() FROM Contact WHERE AccountId = '001XXXXXXXXXXXX'
@@ -358,16 +353,16 @@ SELECT Id, Who.Name, Who.Type FROM Task WHERE Who.Type = 'Contact'
 SELECT Id, Name, Amount FROM Opportunity WHERE Amount > 10000 AND StageName != 'Closed Lost' AND CloseDate = THIS_QUARTER
 ```
 
-## Guardrails
+## 安全规范
 
-- **Always use `--json`** for structured, parseable output.
-- **Never create, update, or delete records** without explicit user confirmation. Describe the operation and ask before executing.
-- **Never delete records** unless the user explicitly requests it and confirms the specific record(s).
-- **Never bulk delete or bulk import** without user reviewing the file/query and confirming.
-- Use `LIMIT` on queries to avoid excessive data. Start with `LIMIT 10` and increase if the user needs more.
-- For queries over 10,000 records, use `sf data export bulk` instead of `sf data query`.
-- When the user asks to "find" or "search" a single object, use SOQL `WHERE ... LIKE '%term%'`. When searching across multiple objects, use SOSL via `sf data search`.
-- Use `--target-org <alias>` when the user has multiple orgs; ask which org if ambiguous.
-- If authentication fails or a session expires, guide the user through `sf org login web`.
-- Bulk API 2.0 has SOQL limitations (no aggregate functions like `COUNT()`). Use standard `sf data query` for those.
-- When describing objects (`sf sobject describe`), the JSON output can be very large. Summarize the key fields, required fields, and relationships for the user rather than dumping the raw output.
+- **始终使用 `--json` 选项** 以获得结构化、可解析的输出。
+- **未经用户明确确认，切勿创建、更新或删除记录**。在执行操作前，请先说明操作内容并征求用户同意。
+- **除非用户明确请求并确认具体记录，否则切勿删除记录**。
+- **在用户未审核文件/查询内容并确认之前，切勿执行批量删除或批量导入操作**。
+- 在查询中使用 `LIMIT` 限制返回的数据量。初始值设为 `LIMIT 10`，如需更多数据再增加限制。
+- 对于超过 10,000 条记录的查询，请使用 `sf data export bulk` 而不是 `sf data query`。
+- 当用户需要“查找”或“搜索”单个对象时，使用 SOQL 的 `WHERE ... LIKE '%term%'`。当需要在多个对象中搜索时，使用 `sf data search`。
+- 如果用户拥有多个组织，请使用 `--target-org <alias>` 选项；如有疑问，请询问用户具体使用哪个组织。
+- 如果身份验证失败或会话过期，请引导用户重新登录（使用 `sf org login web`）。
+- Batch API 2.0 有一些 SOQL 限制（例如不支持 `COUNT()` 等聚合函数），此时请使用标准的 `sf data query`。
+- 在描述对象（`sf sobject describe`）时，JSON 输出可能非常庞大。应为用户总结关键字段、必填字段及对象之间的关系，而不是直接输出原始数据。

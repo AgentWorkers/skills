@@ -1,6 +1,7 @@
 ---
 name: pdf-text-extractor
-description: Extract text from PDFs with OCR support. Perfect for digitizing documents, processing invoices, or analyzing content. Zero dependencies required.
+description: **使用OCR技术从PDF文件中提取文本。**  
+非常适合用于文档数字化、发票处理或内容分析。完全无需依赖任何外部库或工具。
 metadata:
   {
     "openclaw":
@@ -14,55 +15,55 @@ metadata:
   }
 ---
 
-# PDF-Text-Extractor - Extract Text from PDFs
+# PDF-Text-Extractor - 从PDF文件中提取文本
 
-**Vernox Utility Skill - Perfect for document digitization.**
+**Vernox实用工具技能 - 非常适合文档数字化。**
 
-## Overview
+## 概述
 
-PDF-Text-Extractor is a zero-dependency tool for extracting text content from PDF files. Supports both embedded text extraction (for text-based PDFs) and OCR (for scanned documents).
+PDF-Text-Extractor是一款完全独立于外部库的工具，用于从PDF文件中提取文本内容。它支持从基于文本的PDF文件中提取文本，也支持从扫描文档中提取文本（通过OCR技术）。
 
-## Features
+## 特点
 
-### ✅ Text Extraction
-- Extract text from PDFs without external tools
-- Support for both text-based and scanned PDFs
-- Preserve document structure and formatting
-- Fast extraction (milliseconds for text-based)
+### ✅ 文本提取
+- 无需外部工具即可从PDF文件中提取文本
+- 支持基于文本的PDF文件和扫描文档
+- 保留文档结构和格式
+- 提取速度快（对于基于文本的PDF文件，仅需几毫秒）
 
-### ✅ OCR Support
-- Use Tesseract.js for scanned documents
-- Support multiple languages (English, Spanish, French, German)
-- Configurable OCR quality/speed
-- Fallback to text extraction when possible
+### ✅ OCR支持
+- 对于扫描文档，使用Tesseract.js进行OCR处理
+- 支持多种语言（英语、西班牙语、法语、德语）
+- 可配置OCR的质量和速度
+- 在可能的情况下，优先使用文本提取方式
 
-### ✅ Batch Processing
-- Process multiple PDFs at once
-- Batch extraction for document workflows
-- Progress tracking for large files
-- Error handling and retry logic
+### ✅ 批量处理
+- 可同时处理多个PDF文件
+- 适用于文档处理工作流程
+- 大文件的处理过程中提供进度跟踪
+- 具有错误处理和重试机制
 
-### ✅ Output Options
-- Plain text output
-- JSON output with metadata
-- Markdown conversion
-- HTML output (preserving links)
+### ✅ 输出选项
+- 纯文本输出
+- 带元数据的JSON输出
+- Markdown格式转换
+- HTML输出（保留链接）
 
-### ✅ Utility Features
-- Page-by-page extraction
-- Character/word counting
-- Language detection
-- Metadata extraction (author, title, creation date)
+### ✅ 实用功能
+- 逐页提取文本
+- 统计字符数/单词数
+- 语言检测
+- 提取元数据（作者、标题、创建日期）
 
-## Installation
+## 安装
 
 ```bash
 clawhub install pdf-text-extractor
 ```
 
-## Quick Start
+## 快速入门
 
-### Extract Text from PDF
+### 从PDF文件中提取文本
 
 ```javascript
 const result = await extractText({
@@ -79,7 +80,7 @@ console.log(`Pages: ${result.pages}`);
 console.log(`Words: ${result.wordCount}`);
 ```
 
-### Batch Extract Multiple PDFs
+### 批量提取多个PDF文件
 
 ```javascript
 const results = await extractBatch({
@@ -97,7 +98,7 @@ const results = await extractBatch({
 console.log(`Extracted ${results.length} PDFs`);
 ```
 
-### Extract with OCR
+### 使用OCR提取文本
 
 ```javascript
 const result = await extractText({
@@ -112,149 +113,150 @@ const result = await extractText({
 // OCR will be used (scanned document detected)
 ```
 
-## Tool Functions
+## 工具函数
 
 ### `extractText`
-Extract text content from a single PDF file.
+从单个PDF文件中提取文本内容。
 
-**Parameters:**
-- `pdfPath` (string, required): Path to PDF file
-- `options` (object, optional): Extraction options
+**参数：**
+- `pdfPath` (string, 必需): PDF文件的路径
+- `options` (object, 可选): 提取选项
   - `outputFormat` (string): 'text' | 'json' | 'markdown' | 'html'
-  - `ocr` (boolean): Enable OCR for scanned docs
-  - `language` (string): OCR language code ('eng', 'spa', 'fra', 'deu')
-  - `preserveFormatting` (boolean): Keep headings/structure
-  - `minConfidence` (number): Minimum OCR confidence score (0-100)
+  - `ocr` (boolean): 是否对扫描文档启用OCR
+  - `language` (string): OCR语言代码 ('eng', 'spa', 'fra', 'deu')
+  - `preserveFormatting` (boolean): 是否保留标题/结构
+  - `minConfidence` (number): 最小OCR置信度得分（0-100）
 
-**Returns:**
-- `text` (string): Extracted text content
-- `pages` (number): Number of pages processed
-- `wordCount` (number): Total word count
-- `charCount` (number): Total character count
-- `language` (string): Detected language
-- `metadata` (object): PDF metadata (title, author, creation date)
-- `method` (string): 'text' or 'ocr' (extraction method)
+**返回值：**
+- `text` (string): 提取的文本内容
+- `pages` (number): 处理的页数
+- `wordCount` (number): 总单词数
+- `charCount` (number): 总字符数
+- `language` (string): 检测到的语言
+- `metadata` (object): PDF元数据（标题、作者、创建日期）
+- `method` (string): 'text' 或 'ocr'（提取方法）
 
 ### `extractBatch`
-Extract text from multiple PDF files at once.
+同时从多个PDF文件中提取文本。
 
-**Parameters:**
-- `pdfFiles` (array, required): Array of PDF file paths
-- `options` (object, optional): Same as extractText
+**参数：**
+- `pdfFiles` (array, 必需): PDF文件路径数组
+- `options` (object, 可选): 与extractText相同
 
-**Returns:**
-- `results` (array): Array of extraction results
-- `totalPages` (number): Total pages across all PDFs
-- `successCount` (number): Successfully extracted
-- `failureCount` (number): Failed extractions
-- `errors` (array): Error details for failures
+**返回值：**
+- `results` (array): 提取结果数组
+- `totalPages` (number): 所有PDF文件的总页数
+- `successCount` (number): 成功提取的文件数量
+- `failureCount` (number): 失败的提取次数
+- `errors` (array): 失败的错误详情
 
 ### `countWords`
-Count words in extracted text.
+统计提取文本中的单词数量。
 
-**Parameters:**
-- `text` (string, required): Text to count
-- `options` (object, optional):
-  - `minWordLength` (number): Minimum characters per word (default: 3)
-  - `excludeNumbers` (boolean): Don't count numbers as words
-  - `countByPage` (boolean): Return word count per page
+**参数：**
+- `text` (string, 必需): 需要统计的文本
+- `options` (object, 可选):
+  - `minWordLength` (number): 单词的最小字符数（默认：3）
+  - `excludeNumbers` (boolean): 不将数字计入单词
+  - `countByPage` (boolean): 按页统计单词数
 
-**Returns:**
-- `wordCount` (number): Total word count
-- `charCount` (number): Total character count
-- `pageCounts` (array): Word count per page
-- `averageWordsPerPage` (number): Average words per page
+**返回值：**
+- `wordCount` (number): 总单词数
+- `charCount` (number): 总字符数
+- `pageCounts` (array): 每页的单词数
+- `averageWordsPerPage` (number): 每页的平均单词数
 
 ### `detectLanguage`
-Detect the language of extracted text.
+检测提取文本的语言。
 
-**Parameters:**
-- `text` (string, required): Text to analyze
-- `minConfidence` (number): Minimum confidence for detection
+**参数：**
+- `text` (string, 必需): 需要分析的文本
+- `minConfidence` (number): 检测的最低置信度
 
-**Returns:**
-- `language` (string): Detected language code
-- `languageName` (string): Full language name
-- `confidence` (number): Confidence score (0-100)
+**返回值：**
+- `language` (string): 检测到的语言代码
+- `languageName` (string): 完整的语言名称
+- `confidence` (number): 置信度得分（0-100）
 
-## Use Cases
+## 使用场景
 
-### Document Digitization
-- Convert paper documents to digital text
-- Process invoices and receipts
-- Digitize contracts and agreements
-- Archive physical documents
+### 文档数字化
+- 将纸质文档转换为数字文本
+- 处理发票和收据
+- 将合同和协议数字化
+- 归档纸质文档
 
-### Content Analysis
-- Extract text for analysis tools
-- Prepare content for LLM processing
-- Clean up scanned documents
-- Parse PDF-based reports
+### 内容分析
+- 为分析工具提取文本
+- 为大型语言模型（LLM）准备数据
+- 清理扫描文档
+- 解析基于PDF的报告
 
-### Data Extraction
-- Extract data from PDF reports
-- Parse tables from PDFs
-- Pull structured data
-- Automate document workflows
+### 数据提取
+- 从PDF报告中提取数据
+- 从PDF中解析表格
+- 提取结构化数据
+- 自动化文档处理流程
 
-### Text Processing
-- Prepare content for translation
-- Clean up OCR output
-- Extract specific sections
-- Search within PDF content
+### 文本处理
+- 为翻译准备文本
+- 清理OCR输出结果
+- 提取特定部分
+- 在PDF内容中搜索
 
-## Performance
+## 性能
 
-### Text-Based PDFs
-- **Speed:** ~100ms for 10-page PDF
-- **Accuracy:** 100% (exact text)
-- **Memory:** ~10MB for typical document
+### 基于文本的PDF文件
+- **速度：** 10页PDF文件大约需要100毫秒
+- **准确性：** 100%（完全准确）
+- **内存占用：** 典型文档大约10MB
 
-### OCR Processing
-- **Speed:** ~1-3s per page (high quality)
-- **Accuracy:** 85-95% (depends on scan quality)
-- **Memory:** ~50-100MB peak during OCR
+### OCR处理
+- **速度：** 每页大约1-3秒（高质量）
+- **准确性：** 85-95%（取决于扫描质量）
+- **内存占用：** OCR处理期间峰值约为50-100MB
 
-## Technical Details
+## 技术细节
 
-### PDF Parsing
-- Uses native PDF.js library
-- Extracts text layer directly (no OCR needed)
-- Preserves document structure
-- Handles password-protected PDFs
+### PDF解析
+- 使用原生的PDF.js库
+- 直接提取文本层（无需OCR）
+- 保留文档结构
+- 支持加密的PDF文件
 
-### OCR Engine
-- Tesseract.js under the hood
-- Supports 100+ languages
-- Adjustable quality/speed tradeoff
-- Confidence scoring for accuracy
+### OCR引擎
+- 使用Tesseract.js
+- 支持100多种语言
+- 可调节质量和速度
+- 提供置信度评分以评估准确性
 
-### Dependencies
-- **ZERO external dependencies**
-- Uses Node.js built-in modules only
-- PDF.js included in skill
-- Tesseract.js bundled
+### 依赖项
+- **完全不依赖外部库**
+- 仅使用Node.js内置模块
+- 工具中包含PDF.js
+- Tesseract.js已打包在内
 
-## Error Handling
+## 错误处理
 
-### Invalid PDF
-- Clear error message
-- Suggest fix (check file format)
-- Skip to next file in batch
+### 无效的PDF文件
+- 显示清晰的错误信息
+- 提供修复建议（检查文件格式）
+- 在批量处理中跳过该文件
 
-### OCR Failure
-- Report confidence score
-- Suggest rescan at higher quality
-- Fallback to basic extraction
+### OCR失败
+- 显示置信度得分
+- 建议使用更高质量的扫描
+- 退而使用基本的文本提取方式
 
-### Memory Issues
-- Stream processing for large files
-- Progress reporting
-- Graceful degradation
+### 内存问题
+- 对于大文件采用流处理方式
+- 提供进度报告
+- 稳定地处理系统资源不足的情况
 
-## Configuration
+## 配置
 
-### Edit `config.json`:
+### 编辑`config.json`：
+
 ```json
 {
   "ocr": {
@@ -275,16 +277,18 @@ Detect the language of extracted text.
 }
 ```
 
-## Examples
+## 示例
 
-### Extract from Invoice
+### 从发票中提取文本
+
 ```javascript
 const invoice = await extractText('./invoice.pdf');
 console.log(invoice.text);
 // "INVOICE #12345 Date: 2026-02-04..."
 ```
 
-### Extract from Scanned Contract
+### 从扫描的合同中提取文本
+
 ```javascript
 const contract = await extractText('./scanned-contract.pdf', {
   ocr: true,
@@ -295,7 +299,8 @@ console.log(contract.text);
 // "AGREEMENT This contract between..."
 ```
 
-### Batch Process Documents
+### 批量处理文档
+
 ```javascript
 const docs = await extractBatch([
   './doc1.pdf',
@@ -306,51 +311,50 @@ const docs = await extractBatch([
 console.log(`Processed ${docs.successCount}/${docs.results.length} documents`);
 ```
 
-## Troubleshooting
+## 故障排除
 
-### OCR Not Working
-- Check if PDF is truly scanned (not text-based)
-- Try different quality settings (low/medium/high)
-- Ensure language matches document
-- Check image quality of scan
+### OCR无法工作
+- 检查PDF文件是否真正为扫描文件（而非基于文本的文件）
+- 尝试不同的质量设置（低/中/高）
+- 确保设置的语言与文档匹配
+- 检查扫描图像的质量
 
-### Extraction Returns Empty
-- PDF may be image-only
-- OCR failed with low confidence
-- Try different language setting
+### 提取结果为空
+- PDF文件可能仅包含图像
+- OCR识别失败（置信度较低）
+- 尝试不同的语言设置
 
-### Slow Processing
-- Large PDF takes longer
-- Reduce quality for speed
-- Process in smaller batches
+### 处理速度慢
+- 大文件处理时间较长
+- 降低质量以提高处理速度
+- 分批处理文件
 
-## Tips
+## 提示
 
-### Best Results
-- Use text-based PDFs when possible (faster, 100% accurate)
-- High-quality scans for OCR (300 DPI+)
-- Clean background before scanning
-- Use correct language setting
+### 最佳效果
+- 尽量使用基于文本的PDF文件（速度更快，100%准确）
+- 对于OCR处理，使用高质量扫描（300 DPI以上）
+- 扫描前清理背景
+- 使用正确的语言设置
 
-### Performance Optimization
-- Batch processing for multiple files
-- Disable OCR for text-based PDFs
-- Lower OCR quality for speed when acceptable
+### 性能优化
+- 对多个文件进行批量处理
+- 对于基于文本的PDF文件，禁用OCR功能
+- 在可接受的情况下，降低OCR的质量以提高速度
 
-## Roadmap
+## 发展计划
+- [ ] 支持PDF/A格式
+- [ ] 高级OCR预处理
+- [ ] 从OCR中提取表格数据
+- [ ] 手写文字的OCR识别
+- [ ] 提取PDF表单中的数据
+- [ ] 批量语言检测
+- [ ] 可视化置信度评分
 
-- [ ] PDF/A support
-- [ ] Advanced OCR pre-processing
-- [ ] Table extraction from OCR
-- [ ] Handwriting OCR
-- [ ] PDF form field extraction
-- [ ] Batch language detection
-- [ ] Confidence scoring visualization
-
-## License
+## 许可证
 
 MIT
 
 ---
 
-**Extract text from PDFs. Fast, accurate, zero dependencies.** 🔮
+**从PDF文件中快速、准确地提取文本。完全不依赖外部库。** 🔮

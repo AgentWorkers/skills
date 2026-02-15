@@ -1,75 +1,36 @@
 ---
 name: side-peace
 version: 1.1.0
-description: Minimal secure secret handoff. Zero external deps. Human opens browser form, submits secret, agent receives it via temp file. Secret NEVER appears in stdout/logs.
+description: **最小化的安全秘密传递方式：** 完全不依赖任何外部组件。用户通过浏览器填写表单并提交秘密信息，代理程序通过临时文件接收这些信息。该秘密信息绝不会被记录在标准输出（stdout）或日志（logs）中。
 ---
 
 # Side_Peace 🍒
 
-Dead simple secret handoff from human to AI. No npm packages to trust — just Node.js built-ins.
+这是一种简单易用的、用于在人类与AI之间传递机密信息的方案。无需依赖任何npm包，仅使用Node.js的内置功能即可实现。
 
-**Key security feature:** Secret is written to a temp file, NEVER printed to stdout. This prevents secrets from appearing in chat logs or command output.
+**关键安全特性：**  
+机密信息会被写入临时文件中，绝不会被输出到标准输出（stdout）中。这样就能确保机密信息不会出现在聊天记录或命令输出中。
 
-## How It Works
+## 工作原理：  
+1. 代理程序运行 `node drop.js --label "API Key"`。  
+2. 代理程序将生成的URL分享给人类用户。  
+3. 用户在浏览器中打开该URL，输入机密信息并提交。  
+4. 机密信息会被保存到临时文件中（仅记录文件的路径，不保存内容）。  
+5. 代理程序读取临时文件，使用其中的机密信息后，立即删除该文件。
 
-1. Agent runs `node drop.js --label "API Key"`
-2. Agent shares the URL with human
-3. Human opens URL in browser, pastes secret, submits
-4. Secret is saved to temp file (printed path only, not content)
-5. Agent reads file, uses secret, deletes file
+## 使用方法：  
+（具体使用方法请参考相应的代码块。）
 
-## Usage
+## 读取机密信息：  
+接收机密信息后，该信息会存储在临时文件中。  
+（具体读取方法请参考相应的代码块。）
 
-```bash
-# Basic - secret saved to random temp file
-node skills/side-peace/drop.js --label "CLAWHUB_TOKEN"
+## 安全性：  
+- **无依赖项**：仅使用Node.js的内置功能。  
+- **机密信息绝不显示在标准输出中**：机密信息会被写入权限设置为0600的临时文件中。  
+- **仅在需要时才存储在内存中**：使用完毕后临时文件会被立即删除。  
+- **一次性使用**：接收完机密信息后，代理程序会立即退出。  
+- **代码行数约60行**：代码结构清晰，便于审计。  
 
-# Custom output path
-node skills/side-peace/drop.js --label "API_KEY" --output /tmp/my-secret.txt
-
-# Custom port
-node skills/side-peace/drop.js --port 4000 --label "TOKEN"
-```
-
-## Reading the Secret
-
-After receiving, the secret is in the temp file:
-
-```bash
-# Read and use (example with clawhub)
-SECRET=$(cat /tmp/side-peace-xxx.secret)
-npx clawhub login --token "$SECRET" --no-browser
-rm /tmp/side-peace-xxx.secret
-```
-
-Or one-liner:
-```bash
-cat /tmp/side-peace-xxx.secret | xargs -I{} npx clawhub login --token {} --no-browser; rm /tmp/side-peace-xxx.secret
-```
-
-## Security
-
-- **Zero dependencies** — only Node.js built-ins
-- **Secret never in stdout** — written to file with 0600 permissions
-- **Memory only until saved** — temp file deleted after use
-- **One-time** — server exits after receiving
-- **~60 lines** — fully auditable
-
-## Output
-
-```
-🍒 Side_Peace waiting...
-   Label: CLAWHUB_TOKEN
-   Output: /tmp/side-peace-a1b2c3d4.secret
-
-   Local:    http://localhost:3000
-   Network:  http://192.168.1.94:3000
-
-Waiting for secret...
-
-✓ Secret received and saved.
-  File: /tmp/side-peace-a1b2c3d4.secret
-  (Secret is NOT printed to stdout for security)
-```
-
-The secret is in the file. Read it, use it, delete it.
+## 输出结果：  
+机密信息已保存在文件中。你可以读取并使用它，使用完毕后请删除该文件。

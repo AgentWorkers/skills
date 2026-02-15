@@ -1,90 +1,90 @@
 ---
 name: Metaverse
-description: Navigate virtual worlds, create avatars, manage digital assets, and understand Web3 social platforms.
+description: 在虚拟世界中导航，创建虚拟角色（avatar），管理数字资产，并了解 Web3 社交平台。
 metadata:
   category: technology
   skills: ["metaverse", "vr", "web3", "virtual-worlds", "nft"]
 ---
 
-## Before Recommending Platforms
+## 在推荐平台之前
 
-- Ask what they want to do: socialize, create, game, invest, attend events
-- Ask their hardware: VR headset, desktop, mobile changes options significantly
-- Ask technical comfort: some platforms require crypto wallets, others don't
-- One platform recommendation beats list of 20 confusing options
-- Platform popularity shifts fast: verify current state before recommending
+- 询问他们的使用目的：是用于社交、创作、游戏还是投资，或是参加活动？
+- 了解他们的硬件设备：VR头盔、桌面电脑或移动设备对选择平台有很大影响。
+- 考虑技术兼容性：某些平台需要加密钱包，而有些则不需要。
+- 一个明确的平台推荐比列出20个令人困惑的选项要好得多。
+- 平台的流行度变化很快：在推荐之前请先核实其当前的状态。
 
-## Platform Categories
+## 平台分类
 
-| Type | Examples | Best For |
+| 类型 | 例子 | 适合人群 |
 |------|----------|----------|
-| Social VR | VRChat, Rec Room | Hanging out, events, no crypto needed |
-| Virtual worlds | Decentraland, The Sandbox | Land ownership, creating, crypto-native |
-| Gaming metaverse | Roblox, Fortnite | Games with social layer, younger audiences |
-| Work/meetings | Horizon Workrooms, Spatial | Professional collaboration in VR |
+| 社交型VR | VRChat、Rec Room | 适合用于社交、参加活动，无需使用加密技术 |
+| 虚拟世界 | Decentraland、The Sandbox | 适合土地所有权交易、内容创作，支持加密技术 |
+| 游戏元宇宙 | Roblox、Fortnite | 适合具有社交功能的游戏，目标用户群体较为年轻 |
+| 工作/会议 | Horizon Workrooms、Spatial | 适合在VR环境中进行专业协作 |
 
-Match platform to goal, not hype.
+选择平台时应根据实际需求，而非仅仅基于宣传噱头。
 
-## Crypto Wallet Guidance
+## 加密钱包使用指南
 
-- Not all metaverse requires crypto: VRChat, Rec Room, Roblox work without
-- When needed: explain wallet setup is one-time, can be intimidating but not complex
-- Recommend established wallets: MetaMask for browser, Coinbase for beginners
-- Warn about seed phrase importance: lose it, lose everything, no recovery
-- Gas fees vary wildly: some actions cost $1, some $50+, check before confirming
+- 并非所有元宇宙平台都要求使用加密钱包：VRChat、Rec Room、Roblox等平台可以无需使用。
+- 如果需要使用钱包，请说明设置过程是一次性的，虽然可能有些复杂，但并不难操作。
+- 推荐使用成熟的加密钱包：例如MetaMask（适用于浏览器）或Coinbase（适合初学者）。
+- 强调种子短语的重要性：一旦丢失，所有数据都将无法恢复。
+- 不同平台的交易费用差异很大：某些操作可能只需1美元，而有些可能需要50美元以上，请在确认使用前先核实费用。
 
-## Avatar and Identity
+## 头像与身份认证
 
-- Avatar investment varies: free options exist on every platform
-- Interoperability is mostly marketing: avatars rarely transfer between platforms
-- Identity can be pseudonymous: don't pressure real name/photo
-- Customization depth varies: some platforms have detailed creators, others don't
-- NFT avatars: ownership verified, but only valuable if platform supports them
+- 头像的创建成本因平台而异：每个平台上都有免费的头像选项。
+- 平台间的头像互操作性大多只是营销手段，实际上头像很少能在不同平台之间转移。
+- 身份认证可以是匿名的：无需强制用户提供真实姓名或照片。
+- 头像的定制程度各不相同：有些平台提供丰富的自定义选项，而有些则没有。
+- NFT头像：虽然所有权可以得到验证，但只有在使用支持NFT的平台时才有价值。
 
-## Digital Asset Reality
+## 数字资产现实
 
-- Most virtual land/items have no resale market: illiquid assets
-- "Investment" framing is risky: prices crashed 90%+ from peaks
-- Utility matters more than speculation: does it do something useful?
-- Gas fees can exceed item price: check transaction costs
-- Scams are common: verify official links, never share seed phrases
+- 大多数虚拟土地或物品没有二手交易市场：这些资产属于流动性较差的资产。
+- 将其称为“投资”存在风险：价格曾从峰值下跌超过90%。
+- 实用性比投机性更重要：这些资产是否真的能带来实际价值？
+- 交易费用可能高于物品本身的价值：请务必核实交易成本。
+- 骗局很常见：请务必核实官方链接，切勿泄露种子短语。
 
-## Event Attendance
+## 参加虚拟活动
 
-- Check time zones: virtual events are still time-bound
-- Technical setup before event: test audio, controls, performance
-- Some events require tickets/passes: verify requirements in advance
-- Recording may not be allowed: check event policies
-- Networking works differently: intentional interaction needed
+- 请注意时区差异：虚拟活动仍然受时间限制。
+- 活动前请进行技术测试：检查音频、控制方式和设备性能。
+- 有些活动需要购买门票或通行证：请提前确认相关要求。
+- 有些活动可能不允许录像：请查阅活动规则。
+- 虚拟环境中的交流方式与传统有所不同：需要主动参与互动。
 
-## Creating in Metaverse
+## 在元宇宙中创作
 
-- Each platform has different creation tools: learn one deeply first
-- 3D modeling skills transfer: Blender works for multiple platforms
-- Start with platform's native tools: lower barrier, platform-specific features
-- Monetization rules vary: some take 0%, some take 30%+
-- Building on rented land: understand platform terms of service
+- 每个平台都有不同的创作工具：请先深入学习其中一个平台的工具。
+- 3D建模技能具有通用性：Blender等工具可以在多个平台上使用。
+- 建议从平台自带的创作工具开始使用：这样入门门槛较低，还能体验到平台特有的功能。
+- 营收规则各不相同：有些平台不收取任何费用，而有些平台可能收取30%以上的费用。
+- 在租用的土地上创作时，请务必了解平台的服务条款。
 
-## Hardware Considerations
+## 硬件要求
 
-- VR headset not required for most: desktop/mobile access usually available
-- Quest 2/3 is current mainstream VR entry point: standalone, reasonable price
-- PC VR needs powerful computer: check requirements before recommending
-- Motion sickness is real: suggest starting with stationary experiences
-- VR session length: 30-60 min at first, eyes and body need breaks
+- 大多数平台并不强制使用VR头盔：通常可以通过桌面电脑或移动设备访问。
+- Quest 2/3是目前主流的VR设备：价格合理，易于使用。
+- 使用PC进行VR体验需要性能强大的电脑：在推荐前请先确认电脑配置。
+- 需要注意运动病的问题：建议从静态体验开始尝试VR。
+- VR使用时间建议控制在30-60分钟以内，以保护眼睛和身体。
 
-## Safety Guidance
+## 安全指南
 
-- Personal boundaries matter: harassment exists in virtual spaces too
-- Privacy settings exist: help configure before first session
-- Block and report features: know where they are before needing them
-- Voice chat optional: can mute, use text, or disable
-- Kids need supervision: age-appropriate platforms exist, enforce them
+- 请注意个人隐私：虚拟空间中也存在骚扰行为。
+- 平台通常提供隐私设置：在首次使用前请务必了解并配置好相关设置。
+- 平台提供屏蔽和举报功能：请提前了解这些功能的所在位置并学会如何使用。
+- 音频聊天是可选的：用户可以选择静音、使用文字聊天或关闭该功能。
+- 儿童使用虚拟平台时需要家长监督：请选择适合他们年龄的平台并严格执行相关规则。
 
-## Common Misconceptions
+## 常见误解
 
-- "The metaverse" as single place: it's many disconnected platforms
-- Interoperability "coming soon": has been promised for years, limited progress
-- Necessary for future: optional entertainment, not essential infrastructure
-- All crypto-based: many popular platforms have no blockchain at all
-- VR required: most accessed via screen, not headset
+- 认为“元宇宙”是一个统一的空间：实际上它是由多个独立的平台组成的。
+- 人们常误以为元宇宙的互操作性“即将实现”：但实际上进展缓慢。
+- 认为元宇宙是未来发展的必要条件：其实它只是可选的娱乐方式，并非基础设施。
+- 认为所有元宇宙平台都基于区块链：实际上许多热门平台并不使用区块链技术。
+- 认为必须使用VR设备：实际上大多数平台都可以通过屏幕访问虚拟内容。

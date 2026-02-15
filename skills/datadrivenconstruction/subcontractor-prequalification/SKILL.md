@@ -1,12 +1,12 @@
 ---
 slug: "subcontractor-prequalification"
 display_name: "Subcontractor Prequalification"
-description: "Prequalify subcontractors based on safety, financial, and performance criteria."
+description: "根据安全、财务和绩效标准对分包商进行预筛选。"
 ---
 
-# Subcontractor Prequalification
+# 供应商预审
 
-## Technical Implementation
+## 技术实施
 
 ```python
 import pandas as pd
@@ -132,7 +132,7 @@ class SubcontractorPrequalification:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 prequal = SubcontractorPrequalification("Office Tower")
@@ -149,5 +149,5 @@ prequal.score_application(app.app_id, {
 qualified = prequal.get_qualified("Electrical")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.4 - Procurement
+## 资源
+- **DDC手册**：第3.4章 - 采购流程

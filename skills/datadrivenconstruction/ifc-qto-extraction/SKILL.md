@@ -1,29 +1,33 @@
 ---
 name: "ifc-qto-extraction"
-description: "Extract quantities from IFC/Revit models for quantity takeoff. Uses DDC converters to get element counts, areas, volumes, lengths with grouping and reporting."
+description: "从 IFC/Revit 模型中提取用于数量统计的数据。使用 DDC（Design Data Code）转换器来获取元素的数量、面积、体积以及长度，并支持数据的分组和报告功能。"
 ---
 
-# IFC Quantity Takeoff Extraction
+# IFC数量提取功能
 
-Extract structured quantity data from BIM models (IFC, Revit) for cost estimation, material ordering, and progress tracking.
+从BIM模型（IFC、Revit）中提取结构化数量数据，用于成本估算、材料采购和进度跟踪。
 
-## Business Case
+## 商业案例
 
-**Problem**: Manual quantity takeoff is:
-- Time-consuming (40-80 hours for medium project)
-- Error-prone (human counting mistakes)
-- Not repeatable (changes require full rework)
-- Disconnected from design (no live updates)
+**问题**：
+- 手动数量统计：
+  - 耗时较长（中等规模项目需40-80小时）
+  - 容易出错（人为计数错误）
+  - 不具重复性（任何更改都需要重新统计）
+  - 与设计脱节（无法实时更新）
 
-**Solution**: Automated QTO from BIM that:
-- Extracts all quantities in minutes
-- Groups by type, level, zone
-- Updates instantly with model changes
-- Exports to Excel for pricing
+**解决方案**：
+- 通过自动化工具从BIM模型中提取数量数据：
+  - 几分钟内完成所有数量的提取
+  - 按类型、层级、区域进行分类
+  - 随模型变化实时更新数据
+  - 导出至Excel文件以供定价使用
 
-**ROI**: 90% reduction in QTO time, near-zero counting errors
+**投资回报率（ROI）**：
+- 数量统计时间减少90%
+- 计数错误率接近于零
 
-## DDC Tools Used
+## 使用的DDC工具
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -57,9 +61,9 @@ Extract structured quantity data from BIM models (IFC, Revit) for cost estimatio
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## CLI Commands
+## 命令行界面（CLI）命令
 
-### Revit to Excel (with BBox for volumes)
+### 将Revit数据导出至Excel（包含体积信息）
 
 ```bash
 # Basic extraction
@@ -72,7 +76,7 @@ RvtExporter.exe "C:\Models\Building.rvt" complete bbox
 RvtExporter.exe "C:\Models\Building.rvt" complete bbox schedule
 ```
 
-### IFC to Excel
+### 将IFC数据导出至Excel
 
 ```bash
 # Extract IFC data
@@ -81,14 +85,14 @@ IfcExporter.exe "C:\Models\Building.ifc"
 # Output: Building.xlsx with all IFC entities
 ```
 
-### DWG to Excel (2D areas)
+### 将DWG数据导出至Excel（2D面积信息）
 
 ```bash
 # Extract DWG blocks and areas
 DwgExporter.exe "C:\Drawings\FloorPlan.dwg"
 ```
 
-## Python Implementation
+## Python实现方式
 
 ```python
 import pandas as pd
@@ -514,7 +518,7 @@ if __name__ == "__main__":
     print(f"Concrete Volume: {result['concrete']['total_volume_m3']:.2f} m³")
 ```
 
-## n8n Workflow Integration
+## 与n8n工作流的集成
 
 ```yaml
 name: BIM QTO Extraction
@@ -566,15 +570,15 @@ steps:
       path: "={{$json.output_path}}"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Model Quality**: Ensure BIM model has proper levels and types assigned
-2. **Units**: Verify model units match expected output units
-3. **Categories**: Use consistent category naming for grouping
-4. **Updates**: Re-run QTO after design changes
-5. **Validation**: Cross-check totals against manual spot checks
+1. **模型质量**：确保BIM模型中已正确分配层级和类型。
+2. **单位**：验证模型单位与预期输出单位一致。
+3. **分类**：使用统一的分类名称进行数据分组。
+4. **更新**：在设计更改后重新执行数量统计。
+5. **验证**：将统计结果与手动检查结果进行交叉核对。
 
-## Common Quantity Formulas
+## 常用数量计算公式
 
 ```python
 # Concrete formwork area (approximate)
@@ -592,4 +596,4 @@ ceiling_area = floor_area * 0.95  # typical ratio
 
 ---
 
-*"Measure twice, cut once. Or better yet, measure automatically from the model."*
+“量两次，剪一次；更好的做法是直接从模型中自动获取数据。”

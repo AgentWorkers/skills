@@ -1,14 +1,14 @@
 ---
 name: datadog
-description: Monitor infrastructure and applications via Datadog API. Query metrics, manage dashboards, and create alerts.
+description: 通过 Datadog API 监控基础设施和应用程序。查询指标数据、管理仪表板，并设置警报。
 metadata: {"clawdbot":{"emoji":"🐕","requires":{"env":["DD_API_KEY","DD_APP_KEY"]}}}
 ---
 
 # Datadog
 
-Infrastructure monitoring.
+基础设施监控工具。
 
-## Environment
+## 环境配置
 
 ```bash
 export DD_API_KEY="xxxxxxxxxx"
@@ -16,7 +16,7 @@ export DD_APP_KEY="xxxxxxxxxx"
 export DD_SITE="datadoghq.com"  # or datadoghq.eu, us3.datadoghq.com, etc.
 ```
 
-## Submit Metrics
+## 提交指标数据
 
 ```bash
 curl -X POST "https://api.$DD_SITE/api/v2/series" \
@@ -32,7 +32,7 @@ curl -X POST "https://api.$DD_SITE/api/v2/series" \
   }'
 ```
 
-## Query Metrics
+## 查询指标数据
 
 ```bash
 curl "https://api.$DD_SITE/api/v1/query?from=$(date -d '1 hour ago' +%s)&to=$(date +%s)&query=avg:system.cpu.user{*}" \
@@ -40,7 +40,7 @@ curl "https://api.$DD_SITE/api/v1/query?from=$(date -d '1 hour ago' +%s)&to=$(da
   -H "DD-APPLICATION-KEY: $DD_APP_KEY"
 ```
 
-## List Monitors
+## 列出监控项
 
 ```bash
 curl "https://api.$DD_SITE/api/v1/monitor" \
@@ -48,7 +48,7 @@ curl "https://api.$DD_SITE/api/v1/monitor" \
   -H "DD-APPLICATION-KEY: $DD_APP_KEY"
 ```
 
-## Create Monitor
+## 创建监控项
 
 ```bash
 curl -X POST "https://api.$DD_SITE/api/v1/monitor" \
@@ -63,7 +63,7 @@ curl -X POST "https://api.$DD_SITE/api/v1/monitor" \
   }'
 ```
 
-## Send Event
+## 发送事件
 
 ```bash
 curl -X POST "https://api.$DD_SITE/api/v1/events" \
@@ -72,7 +72,7 @@ curl -X POST "https://api.$DD_SITE/api/v1/events" \
   -d '{"title": "Deployment", "text": "Deployed v1.2.3", "tags": ["env:prod"]}'
 ```
 
-## List Dashboards
+## 列出仪表板
 
 ```bash
 curl "https://api.$DD_SITE/api/v1/dashboard" \
@@ -80,6 +80,6 @@ curl "https://api.$DD_SITE/api/v1/dashboard" \
   -H "DD-APPLICATION-KEY: $DD_APP_KEY"
 ```
 
-## Links
-- Dashboard: https://app.datadoghq.com
-- Docs: https://docs.datadoghq.com/api
+## 链接：
+- 仪表板：https://app.datadoghq.com
+- 文档：https://docs.datadoghq.com/api

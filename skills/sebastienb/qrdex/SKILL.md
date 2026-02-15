@@ -1,30 +1,30 @@
 ---
 name: qrdex
-description: Create, manage, and track QR codes using the QRdex.io REST API. Use when working with QR code generation, URL shortening with QR codes, WiFi QR codes, email/SMS/WhatsApp QR codes, scan tracking, or any QRdex.io operations. Supports all QR types (url, email, telephone, sms, whatsapp, wifi) with customizable colors and shapes.
+description: 使用 QRdex.io 的 REST API 来创建、管理和跟踪二维码。适用于需要生成二维码、通过二维码缩短 URL、生成用于 WiFi 连接的二维码、生成用于电子邮件/短信/WhatsApp 的二维码、进行扫描追踪，或执行任何与 QRdex.io 相关的操作的场景。该 API 支持所有类型的二维码（URL、电子邮件、电话号码、短信、WhatsApp），并且允许自定义二维码的颜色和形状。
 ---
 
 # QRdex
 
-Manage QR codes via the QRdex.io REST API.
+通过 QRdex.io 的 REST API 管理二维码。
 
-## Setup
+## 设置
 
-Set the API key as an environment variable:
+将 API 密钥设置为环境变量：
 
 ```bash
 export QRDEX_API_KEY="your-api-key"
 ```
 
-Get a key from: QRdex.io → Team Settings → API section.
-API access requires Growth plan or above.
+从以下地址获取密钥：QRdex.io → 团队设置 → API 部分。
+API 访问需要 Growth 计划或更高级别的权限。
 
-## Quick Reference
+## 快速参考
 
-Base URL: `https://qrdex.io/api/v1`
+基础 URL：`https://qrdex.io/api/v1`
 
-All requests require `Authorization: Bearer $QRDEX_API_KEY` and `Content-Type: application/json`.
+所有请求都需要包含 `Authorization: Bearer $QRDEX_API_KEY` 和 `Content-Type: application/json`。
 
-### Create a QR Code
+### 创建二维码
 
 ```bash
 curl -X POST https://qrdex.io/api/v1/qr_codes \
@@ -39,34 +39,34 @@ curl -X POST https://qrdex.io/api/v1/qr_codes \
   }'
 ```
 
-### QR Types and Required Fields
+### 二维码类型及必填字段
 
-| Type | Required Fields |
+| 类型 | 必填字段 |
 |------|----------------|
 | `url` | `url` |
-| `email` | `email_address` (optional: `email_subject`, `message`) |
+| `email` | `email_address`（可选：`email_subject`, `message`） |
 | `telephone` | `telephone_number` |
-| `sms` | `telephone_number` (optional: `message`) |
-| `whatsapp` | `telephone_number` (optional: `message`) |
-| `wifi` | `wifi_ssid` (optional: `wifi_encryption`, `wifi_password`, `wifi_hidden`) |
+| `sms` | `telephone_number`（可选：`message`） |
+| `whatsapp` | `telephone_number`（可选：`message`） |
+| `wifi` | `wifi_ssid`（可选：`wifi_encryption`, `wifi_password`, `wifi_hidden`） |
 
-### Common Optional Fields
+### 常见可选字段
 
-- `foreground_color` — hex color (default: `#000000`)
-- `background_color` — hex color (default: `#FFFFFF`)
-- `shape` — QR code shape (default: `rounded`)
-- `track_scans` — enable scan tracking (default: `true`)
+- `foreground_color` — 十六进制颜色（默认：`#000000`）
+- `background_color` — 十六进制颜色（默认：`#FFFFFF`）
+- `shape` — 二维码形状（默认：`rounded`）
+- `track_scans` — 启用扫描跟踪（默认：`true`）
 
-### List QR Codes
+### 列出二维码
 
 ```bash
 curl https://qrdex.io/api/v1/qr_codes \
   -H "Authorization: Bearer $QRDEX_API_KEY"
 ```
 
-Query params: `page`, `per_page` (max 100), `qr_type` filter.
+查询参数：`page`, `per_page`（最多 100 条），`qr_type`（筛选条件）。
 
-### Get / Update / Delete
+### 获取 / 更新 / 删除二维码
 
 ```bash
 # Get
@@ -82,18 +82,18 @@ curl -X PATCH https://qrdex.io/api/v1/qr_codes/:id \
 curl -X DELETE https://qrdex.io/api/v1/qr_codes/:id -H "Authorization: Bearer $QRDEX_API_KEY"
 ```
 
-### Download QR Image (SVG)
+### 下载二维码图片（SVG 格式）
 
 ```bash
 curl https://qrdex.io/api/v1/qr_codes/:id/image \
   -H "Authorization: Bearer $QRDEX_API_KEY" -o qr.svg
 ```
 
-Returns `image/svg+xml`. Use the `image_url` field from any QR code response directly in `<img>` tags.
+返回的文件格式为 `image/svg+xml`。可以直接使用任何二维码响应中的 `image_url` 字段来插入 `<img>` 标签中。
 
-## Using the Python Script
+## 使用 Python 脚本
 
-For programmatic use, use `scripts/qrdex_api.py`:
+如需编程使用，请使用 `scripts/qrdex_api.py`：
 
 ```bash
 # Set API key
@@ -121,14 +121,14 @@ python scripts/qrdex_api.py delete 123
 python scripts/qrdex_api.py image 123 -o qr.svg
 ```
 
-## Error Handling
+## 错误处理
 
-- `401` — Invalid/missing API key
-- `403` — No permission
-- `404` — QR code not found or belongs to different team
-- `422` — Validation error or plan limit reached
-- `429` — Rate limited (100 req/min per key). Check `X-RateLimit-Remaining` header.
+- `401` — API 密钥无效或缺失
+- `403` — 无权限
+- `404` — 二维码未找到或属于其他团队
+- `422` — 验证错误或达到计划使用限制
+- `429` — 每个密钥的请求速率限制（每分钟 100 次）。请查看 `X-RateLimit-Remaining` 标头。
 
-## API Reference
+## API 参考
 
-For full field descriptions and response schemas, see `references/API_REFERENCE.md`.
+有关所有字段的详细描述和响应格式，请参阅 `references/API_REFERENCE.md`。

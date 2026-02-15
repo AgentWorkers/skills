@@ -1,69 +1,54 @@
 ---
-description: Track work time per project with start/stop timers and generate productivity reports.
+description: 使用开始/停止计时器记录每个项目的工作时间，并生成生产力报告。
 ---
 
-# Time Tracker
+# 时间跟踪器
 
-Track work time per project using local JSONL files with start/stop commands.
+使用本工具，您可以通过本地 JSONL 文件来记录每个项目的工作时间，并通过相应的开始/停止命令来控制计时过程。
 
-## Requirements
+## 使用要求
 
-- File system access for `~/.time-tracker/`
-- No external services or API keys needed
+- 需要能够访问 `~/.time-tracker/` 目录。
+- 无需使用任何外部服务或 API 密钥。
 
-## Instructions
+## 使用说明
 
-### Commands
+### 命令
 
-| Command | Description |
+| 命令 | 功能 |
 |---------|-------------|
-| `start <project> [task]` | Start a timer for a project/task |
-| `stop` | Stop the current timer and record entry |
-| `status` | Show current running timer |
-| `report [today\|week\|month]` | Generate time report |
-| `list projects` | List all tracked projects |
-| `delete <entry-id>` | Delete a specific entry |
+| `start <项目> [任务]` | 为指定的项目/任务开始计时 |
+| `stop` | 停止当前的计时并记录相关数据 |
+| `status` | 显示当前正在运行的计时任务 |
+| `report [今天\|本周\|本月]` | 生成时间报告 |
+| `list projects` | 列出所有被跟踪的项目 |
+| `delete <条目ID>` | 删除指定的计时记录 |
 
-### Data storage
+### 数据存储方式
 
-- **Entries**: `~/.time-tracker/entries.jsonl` (one JSON per line)
-  ```json
-  {"id": "uuid", "project": "webapp", "task": "frontend", "start": "2025-01-15T09:00:00+09:00", "end": "2025-01-15T11:30:00+09:00", "minutes": 150}
-  ```
-- **Current timer**: `~/.time-tracker/current.json`
-  ```json
-  {"project": "webapp", "task": "frontend", "start": "2025-01-15T09:00:00+09:00"}
-  ```
+- **计时记录**：存储在 `~/.time-tracker/entries.jsonl` 文件中（每条记录占一行 JSON 数据）。
+- **当前计时状态**：存储在 `~/.time-tracker/current.json` 文件中。
 
-### Report format
+### 报告格式
 
-```
-## ⏱️ Time Report — Week of 2025-01-13
+（报告格式的具体内容请参考相关文档或示例文件。）
 
-| Project | Task | Hours | Sessions |
-|---------|------|-------|----------|
-| webapp | frontend | 8.5h | 4 |
-| webapp | backend | 3.0h | 2 |
-| blog | writing | 2.5h | 3 |
-| **Total** | | **14.0h** | **9** |
+### 实现细节
 
-### Daily Breakdown
-- Mon: 4.5h | Tue: 3.0h | Wed: 2.5h | Thu: 4.0h | Fri: 0h
-```
+- 如果 `~/.time-tracker/` 目录不存在，请先创建它。
+- 使用 `date -Iseconds` 命令生成时间戳。
+- 计算工作时间（分钟）的方法是：`(结束时间 - 开始时间) / 60`。
+- 计时记录会以 JSONL 格式保存，方便使用 `jq` 或 Python 等工具进行解析。
 
-### Implementation
+## 特殊情况处理
 
-Create `~/.time-tracker/` directory if it doesn't exist. Use `date -Iseconds` for timestamps. Calculate minutes as `(end - start) / 60`. Append entries to JSONL file for easy parsing with `jq` or Python.
+- **忘记停止计时**：如果在下次执行 `start` 命令时 `current.json` 文件已经存在，系统会发出警告，并询问用户是希望自动停止之前的计时记录还是忽略它。
+- **跨越午夜的情况**：如果计时从 23:00 开始并在 01:00 结束，计时时间为 2 小时，不会显示为负数。
+- **时区变更**：所有时间都会附带时区偏移信息（ISO 8601 格式），显示时区信息时需要进行转换。
+- **没有计时记录的情况**：会显示 “无记录” 而不是空表格。
+- **同时进行多个计时任务**：一次只能进行一个计时任务。在开始新的计时任务之前，必须先停止当前的计时任务。
 
-## Edge Cases
+## 安全性
 
-- **Forgot to stop**: If `current.json` exists on next `start`, warn and ask: stop previous (auto-calculate) or discard?
-- **Midnight crossing**: A timer started at 23:00 and stopped at 01:00 = 2 hours, not negative.
-- **Timezone changes**: Store all times with timezone offset (ISO 8601). Convert for display.
-- **Empty report period**: Show "No entries" rather than an empty table.
-- **Concurrent timers**: Only one timer at a time. Stop the current one before starting a new one.
-
-## Security
-
-- Time data is stored locally — no external transmission.
-- Project/task names may reveal client work — keep `~/.time-tracker/` private.
+- 时间数据仅存储在本地，不会被传输到外部。
+- 项目/任务的名称可能会暴露用户的实际工作内容，请确保 `~/.time-tracker/` 目录的访问权限受到限制。

@@ -1,16 +1,16 @@
 ---
 slug: "capacity-planning"
 display_name: "Capacity Planning"
-description: "Plan organizational capacity for construction projects. Forecast resource needs, identify capacity gaps, and support strategic planning for project pursuit and staffing."
+description: "为建设项目规划组织能力。预测资源需求，识别能力缺口，并为项目的推进和人员配置提供战略规划支持。"
 ---
 
-# Capacity Planning
+# 容量规划
 
-## Overview
+## 概述
 
-Strategic capacity planning for construction organizations. Forecast resource requirements based on project pipeline, identify capacity constraints, optimize staffing levels, and support go/no-go decisions on new project pursuits.
+为建筑组织提供战略性的容量规划服务。根据项目进度预测资源需求，识别容量限制，优化人员配置水平，并为新项目的可行性决策提供支持。
 
-## Capacity Planning Framework
+## 容量规划框架
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -38,7 +38,7 @@ Strategic capacity planning for construction organizations. Forecast resource re
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -489,7 +489,7 @@ class CapacityPlanner:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -551,7 +551,7 @@ print(f"Critical gaps: {len([g for g in forecast.gaps if g.severity == 'critical
 print(planner.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

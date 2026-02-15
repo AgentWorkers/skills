@@ -1,37 +1,36 @@
 ---
 name: alchemy-pay
-description: Alchemy Pay (ACH) fiat-to-crypto payment gateway integration. On-ramp, off-ramp, merchant payments, and NFT checkout services.
+description: Alchemy Pay（ACH）是一种支持法定货币（Fiat）与加密货币之间转换的支付网关服务，提供接入（on-ramp）和退出（off-ramp）机制，支持商家付款（merchant payments）以及NFT（非同质化代币）结算（NFT checkout services）。
 metadata: {"clawdbot":{"emoji":"💎","requires":{"bins":["curl","jq"],"env":["ALCHEMY_PAY_APP_ID","ALCHEMY_PAY_SECRET"]}}}
 ---
 
 # Alchemy Pay 💎
 
-Hybrid payment infrastructure connecting crypto and traditional finance. Integrated with Binance Pay, Solana Pay, and 300+ payment channels worldwide.
+这是一个混合支付基础设施，能够连接加密货币与传统金融系统。它与 Binance Pay、Solana Pay 以及全球 300 多种支付渠道集成在一起。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `ALCHEMY_PAY_APP_ID` | Merchant App ID | Yes |
-| `ALCHEMY_PAY_SECRET` | API Secret Key | Yes |
-| `ALCHEMY_PAY_ENV` | Environment: `sandbox` or `production` | No (default: sandbox) |
+| 变量          | 描述                | 是否必填 |
+|---------------|-------------------|---------|
+| `ALCHEMY_PAY_APP_ID` | 商户应用 ID            | 是       |
+| `ALCHEMY_PAY_SECRET` | API 密钥                | 是       |
+| `ALCHEMY_PAY_ENV` | 环境：`sandbox` 或 `production` | 否       | 默认值：sandbox |
 
-## Features
+## 主要功能
 
-- 🔄 **On-Ramp** - Buy crypto with fiat (170+ countries)
-- 💸 **Off-Ramp** - Sell crypto to fiat
-- 🛒 **Merchant Payments** - Accept crypto payments
-- 🎨 **NFT Checkout** - Fiat-to-NFT purchases
-- 🌍 **Global Coverage** - Strong in Asia & LATAM
+- 🔄 **充值**：支持使用法定货币购买加密货币（覆盖 170 多个国家）  
+- 💸 **提现**：支持将加密货币兑换为法定货币  
+- 🛒 **商户支付**：接受加密货币支付  
+- 🎨 **NFT 购买**：支持使用法定货币购买 NFT  
+- 🌍 **全球覆盖**：在亚洲和拉丁美洲地区具有强大的市场影响力  
 
-## API Endpoints
+## API 端点
 
-### Base URLs
-- Sandbox: `https://openapi-test.alchemypay.org`
-- Production: `https://openapi.alchemypay.org`
+### 基本 URL  
+- 沙箱环境：`https://openapi-test.alchemypay.org`  
+- 生产环境：`https://openapi.alchemypay.org`  
 
-### Create On-Ramp Order
-
+### 创建充值订单  
 ```bash
 APP_ID="${ALCHEMY_PAY_APP_ID}"
 SECRET="${ALCHEMY_PAY_SECRET}"
@@ -59,20 +58,18 @@ curl -s -X POST "${BASE_URL}/open/api/v4/merchant/order/create" \
     "walletAddress": "<USER_WALLET>",
     "callbackUrl": "https://your-callback.com/webhook"
   }' | jq '.'
-```
+```  
 
-### Get Supported Cryptocurrencies
-
+### 获取支持的加密货币  
 ```bash
 curl -s "${BASE_URL}/open/api/v4/merchant/crypto/list" \
   -H "appId: ${APP_ID}" \
   -H "timestamp: ${TIMESTAMP}" \
   -H "nonce: ${NONCE}" \
   -H "sign: ${SIGNATURE}" | jq '.data'
-```
+```  
 
-### Get Exchange Rate
-
+### 获取汇率  
 ```bash
 curl -s "${BASE_URL}/open/api/v4/merchant/price" \
   -H "appId: ${APP_ID}" \
@@ -81,10 +78,9 @@ curl -s "${BASE_URL}/open/api/v4/merchant/price" \
   -H "sign: ${SIGNATURE}" \
   -G --data-urlencode "crypto=BTC" \
      --data-urlencode "fiat=USD" | jq '.data'
-```
+```  
 
-### Check Order Status
-
+### 查看订单状态  
 ```bash
 ORDER_ID="<ORDER_ID>"
 
@@ -94,26 +90,25 @@ curl -s "${BASE_URL}/open/api/v4/merchant/order/query" \
   -H "nonce: ${NONCE}" \
   -H "sign: ${SIGNATURE}" \
   -G --data-urlencode "orderId=${ORDER_ID}" | jq '.'
-```
+```  
 
-## Supported Payment Methods
+## 支持的支付方式  
 
-| Region | Methods |
-|--------|---------|
-| Global | Visa, Mastercard, Apple Pay, Google Pay |
-| Asia | Alipay, WeChat Pay, GrabPay, GCash |
-| LATAM | PIX, SPEI, PSE |
-| Europe | SEPA, iDEAL, Bancontact |
+| 地区        | 支付方式                |
+|------------|----------------------|---------|
+| 全球        | Visa、Mastercard、Apple Pay、Google Pay |        |
+| 亚洲        | Alipay、WeChat Pay、GrabPay、GCash    |        |
+| 拉丁美洲      | PIX、SPEI、PSE             |        |
+| 欧洲        | SEPA、iDEAL、Bancontact         |        |
 
-## Supported Cryptocurrencies
+## 支持的加密货币  
 
-- **EVM**: ETH, USDT, USDC, BNB, MATIC
-- **Solana**: SOL, USDC-SPL
-- **Bitcoin**: BTC
-- **Others**: TRX, AVAX, ARB
+- **EVM**：ETH、USDT、USDC、BNB、MATIC  
+- **Solana**：SOL、USDC-SPL  
+- **比特币**：BTC  
+- **其他**：TRX、AVAX、ARB  
 
-## Widget Integration
-
+## 小程序集成  
 ```html
 <!-- Embed Alchemy Pay widget -->
 <iframe 
@@ -122,34 +117,34 @@ curl -s "${BASE_URL}/open/api/v4/merchant/order/query" \
   height="600"
   frameborder="0">
 </iframe>
-```
+```  
 
-## Webhook Events
+## Webhook 事件  
 
-| Event | Description |
-|-------|-------------|
-| `PAY_SUCCESS` | Payment completed |
-| `PAY_FAIL` | Payment failed |
-| `REFUND_SUCCESS` | Refund processed |
+| 事件          | 描述                        |         |
+|--------------|-----------------------------|---------|
+| `PAY_SUCCESS` | 支付完成                    |         |
+| `PAY_FAIL` | 支付失败                    |         |
+| `REFUND_SUCCESS` | 退款处理完成                |         |
 
-## Safety Rules
+## 安全规则  
 
-1. **ALWAYS** verify webhook signatures
-2. **NEVER** expose API secrets in client-side code
-3. **ALWAYS** use HTTPS for callbacks
-4. **VERIFY** order amounts match expected values
+1. **务必** 验证 Webhook 签名。  
+2. **切勿** 将 API 密钥暴露在客户端代码中。  
+3. **回调请求** **必须** 使用 HTTPS 协议。  
+4. **确认** 订单金额与预期值一致。  
 
-## Error Codes
+## 错误代码  
 
-| Code | Description |
-|------|-------------|
-| 10001 | Invalid signature |
-| 10002 | Invalid parameters |
-| 10003 | Order not found |
-| 20001 | Insufficient balance |
+| 代码          | 描述                        |         |
+|--------------|-----------------------------|---------|
+| 10001         | 签名无效                    |         |
+| 10002         | 参数错误                      |         |
+| 10003         | 订单未找到                    |         |
+| 20001         | 账户余额不足                    |         |
 
-## Links
+## 链接  
 
-- [Alchemy Pay Docs](https://alchemypay.readme.io/)
-- [Dashboard](https://dashboard.alchemypay.org/)
-- [Status Page](https://status.alchemypay.org/)
+- [Alchemy Pay 文档](https://alchemypay.readme.io/)  
+- [控制面板](https://dashboard.alchemypay.org/)  
+- [状态页面](https://status.alchemypay.org/)

@@ -1,14 +1,13 @@
 ---
 name: glab-job
-description: Work with individual CI/CD jobs including view, retry, cancel, trace logs, and download artifacts. Use when debugging job failures, viewing job logs, retrying jobs, or managing job execution. Triggers on job, CI job, job logs, retry job, job artifacts.
+description: 可以操作单个 CI/CD 作业，包括查看作业状态、重试作业、取消作业、追踪作业日志以及下载作业生成的工件。这些功能适用于调试作业失败、查看作业日志、重试作业或管理作业执行过程。相关触发条件包括作业本身、CI 作业、作业日志以及需要重试的作业等。
 ---
 
-# glab job
+# glab 工作流程（Working with glab Jobs）
 
-Work with individual CI/CD jobs.
+## 操作单个 CI/CD 任务（Working with Individual CI/CD Jobs）
 
-## Quick start
-
+### 快速入门（Quick Start）
 ```bash
 # View job details
 glab job view <job-id>
@@ -23,8 +22,7 @@ glab ci retry <job-id>
 glab ci trace <job-id>
 ```
 
-## Decision: Pipeline vs Job Commands?
-
+## 选择使用 `glab ci` 还是 `glab job`？（Decision: Pipeline vs Job Commands?）
 ```
 What level are you working at?
 ├─ Entire pipeline (all jobs)
@@ -42,80 +40,75 @@ What level are you working at?
       └─ glab job artifact <ref> <job> (job artifacts)
 ```
 
-**Use `glab ci` (pipeline-level) when:**
-- Checking overall build status
-- Viewing all jobs in a pipeline
-- Triggering new pipeline runs
-- Validating `.gitlab-ci.yml`
+**在以下情况下使用 `glab ci`（pipeline-level）：**
+- 检查整个构建过程的进度
+- 查看流水线中的所有任务
+- 触发新的流水线运行
+- 验证 `.gitlab-ci.yml` 文件的配置
 
-**Use `glab job` (job-level) when:**
-- Debugging a specific failed job
-- Downloading artifacts from a specific job
-- Retrying individual jobs (not entire pipeline)
-- Viewing detailed job information
+**在以下情况下使用 `glab job`（job-level）：**
+- 调试特定的失败任务
+- 从特定任务中下载生成的工件
+- 重试单个任务（而非整个流水线）
+- 查看任务的详细信息
 
-## Common workflows
+## 常见工作流程（Common Workflows）
 
-### Debugging a failed job
-
-1. **Find the failed job:**
+### 调试失败的任务（Debugging a Failed Job）
+1. **找到失败的任务：**
    ```bash
    glab ci view  # Shows all jobs, highlights failures
    ```
 
-2. **View job logs:**
+2. **查看任务日志：**
    ```bash
    glab ci trace <job-id>
    ```
 
-3. **Retry the job:**
+3. **重试任务：**
    ```bash
    glab ci retry <job-id>
    ```
 
-### Working with artifacts
-
-**Download artifacts from specific job:**
-```bash
+### 操作生成的工件（Working with Artifacts）
+- **从特定任务中下载工件：**
+   ```bash
 glab job artifact main build-job
 ```
 
-**Download artifacts from latest successful run:**
-```bash
+- **从最近一次成功的构建中下载工件：**
+   ```bash
 glab job artifact main build-job --artifact-type job
 ```
 
-### Job monitoring
-
-**Watch job logs in real-time:**
-```bash
+### 监控任务进度（Job Monitoring）
+- **实时查看任务日志：**
+   ```bash
 glab ci trace <job-id>  # Follows logs until completion
 ```
 
-**Check specific job status:**
-```bash
+- **检查特定任务的状态：**
+   ```bash
 glab job view <job-id>
 ```
 
-## Related Skills
+## 相关技能（Related Skills）
+- **流水线操作（Pipeline Operations）：**
+  - 查看 `glab-ci` 中提供的流水线级命令
+  - 使用 `glab ci view` 查看流水线中的所有任务
+  - 脚本 `scripts/ci-debug.sh` 用于自动化故障诊断
 
-**Pipeline operations:**
-- See `glab-ci` for pipeline-level commands
-- Use `glab ci view` to see all jobs in a pipeline
-- Script: `scripts/ci-debug.sh` for automated failure diagnosis
+- **CI/CD 配置（CI/CD Configuration）：**
+  - 使用 `glab-variable` 管理任务相关的变量
+  - 使用 `glab-schedule` 安排任务的定时执行
 
-**CI/CD configuration:**
-- See `glab-variable` for managing job variables
-- See `glab-schedule` for scheduled job runs
+## 命令参考（Command Reference）
+有关所有命令的详细说明和参数，请参阅 [references/commands.md](references/commands.md)。
 
-## Command reference
-
-For complete command documentation and all flags, see [references/commands.md](references/commands.md).
-
-**Available commands:**
-- `artifact` - Download job artifacts
-- `view` - View job details
-- Most job operations use `glab ci <command> <job-id>`:
-  - `glab ci trace <job-id>` - View logs
-  - `glab ci retry <job-id>` - Retry job
-  - `glab ci cancel <job-id>` - Cancel job
+**可用命令（Available Commands）：**
+- `artifact`：下载任务生成的工件
+- `view`：查看任务详情
+- 大多数任务操作需要使用 `glab ci <command> <job-id>`，例如：
+  - `glab ci trace <job-id>`：查看任务日志
+  - `glab ci retry <job-id>`：重试任务
+  - `glab ci cancel <job-id>`：取消任务

@@ -1,32 +1,32 @@
 ---
 name: Remember
-description: Curate persistent memory that actually helps. Filter what matters, organize by function, decay what doesn't.
+description: 管理持久性内存（persistent memory），使其真正发挥作用：筛选出重要的数据，按功能进行分类，然后丢弃那些不再需要的数据（即让它们“自然衰减”或被清除）。
 version: 1.1.0
 ---
 
-## The Problem with Most Memory
+## 大多数记忆系统存在的问题
 
-Storing everything creates noise. Wrong retrieval is worse than no memory. The goal isn't maximum recall — it's retrieving the right thing at the right time.
+存储所有信息会带来“噪音”（即不必要的信息）。错误的检索方式比完全没有记忆更糟糕。我们的目标不是实现最高的回忆能力，而是在正确的时间检索到正确的信息。
 
-## What's Actually Worth Remembering
+## 真正值得记住的内容
 
-**High value (persist indefinitely):**
-- Commitments made — "I said I'd do X by Y"
-- Learned corrections — "User told me NOT to do Z"  
-- Explicit preferences — "I hate verbose responses"
-- Core relationships — "Maria is the designer on Project X"
+**高价值内容（需要永久保存）：**
+- 已经做出的承诺：“我承诺在Y时间之前完成X”
+- 学到的改正措施：“用户告诉我不要做Z”
+- 明确的偏好：“我讨厌冗长的回复”
+- 核心关系：“Maria是项目X的设计师”
 
-**Medium value (persist with review):**
-- Project/context state — what's active, current status
-- Domain lessons — patterns, gotchas, how things work here
-- Decisions made — what was chosen and why
+**中等价值内容（需要定期审查后保存）：**
+- 项目/上下文的状态：当前正在处理的内容、进展情况
+- 领域内的经验教训：常见的错误、注意事项以及工作原理
+- 做出的决策：选择了什么以及原因
 
-**Low value (don't persist):**
-- One-off questions, easily reconstructible facts, transient context
+**低价值内容（不需要保存）：**
+- 一次性提出的问题、可以轻易重建的事实、短暂的上下文信息
 
-## Organize by Function, Not Content
+## 按功能而非内容来组织信息
 
-Structure by how you'll retrieve it. Adapt categories to your domain:
+根据你检索信息的方式来构建信息结构。根据你的领域特点调整分类方式：
 
 ```
 memory/
@@ -39,36 +39,36 @@ memory/
     └── {name}.md
 ```
 
-## Memory Hygiene
+## 记忆管理的基本原则
 
-**Every entry needs:**
-- Date recorded (when did I learn this?)
-- Source hint (explicit statement vs inference)
-- Confidence (certain / likely / guess)
+**每条记录都需要包含：**
+- 记录日期（我是什么时候学到这个内容的？）
+- 信息来源（是明确表述的还是推断出来的）
+- 信心程度（确定的 / 可能的 / 猜测的）
 
-**Prune aggressively:**
-- Completed commitments older than 30 days → archive
-- Inactive contexts → move to `archive/`
-- Contradictions → keep newest, note the change
+**积极地进行信息清理：**
+- 超过30天的已完成承诺 → 归档
+- 不再使用的上下文信息 → 移至`archive/`文件夹
+- 出现矛盾的信息 → 保留最新版本，并记录变化
 
-**The staleness test:** "If retrieved in 6 months, will this help or mislead?"
+**判断信息是否过时的标准：**“如果6个月后再次查看这条信息，它还能提供帮助还是会造成误导？”
 
-## Handling Contradictions
+## 处理信息矛盾的情况
 
-When new info conflicts with old:
-1. Don't silently overwrite — note the change
-2. Keep the newer version as active
-3. Optionally log: `[Updated 2026-02-11] Was: X, Now: Y`
+当新信息与旧信息冲突时：
+1. 不要默默地覆盖旧信息，而是记录下变化
+2. 保留最新版本的信息
+3. 可以选择性地记录日志：`[更新于2026-02-11] 之前是：X，现在是：Y`
 
-## User Control
+## 用户控制
 
-- "Remember this" → explicit save with category
-- "Forget that" → explicit delete  
-- "What do you know about X?" → transparency
-- "Never remember Y" → hard privacy boundary
+- “记住这个” → 明确地保存该信息并指定分类
+- “忘记那个” → 明确地删除该信息
+- “你对X了解多少？” → 提供透明度
+- “永远不要记住Y” → 设定严格的隐私界限
 
-See `categories.md` for domain-specific templates.
-See `consolidation.md` for the review/prune process.
+有关特定领域的模板，请参阅`categories.md`。
+有关信息审查和清理的流程，请参阅`consolidation.md`。
 
 ---
-*Related: reflection (self-evaluation), loop (iterative refinement)*
+*相关概念：反思（自我评估）、循环（迭代改进）*

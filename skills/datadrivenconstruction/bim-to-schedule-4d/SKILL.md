@@ -1,12 +1,12 @@
 ---
 slug: "bim-to-schedule-4d"
 display_name: "BIM To Schedule 4D"
-description: "Link BIM elements to schedule activities for 4D simulation. Visualize construction sequence over time."
+description: "将 BIM 元素与计划活动关联起来，以便进行 4D 模拟。可以直观地查看施工过程中的时间顺序变化。"
 ---
 
-# BIM to Schedule 4D Integration
+# BIM与Schedule 4D的集成
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -172,7 +172,7 @@ class BIMSchedule4D:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 bim4d = BIMSchedule4D("Office Tower")
@@ -197,5 +197,5 @@ summary = bim4d.get_link_summary()
 print(f"Link coverage: {summary['link_coverage']}%")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.3 - 4D BIM
+## 资源
+- **DDC手册**：第3.3章 - 4D BIM

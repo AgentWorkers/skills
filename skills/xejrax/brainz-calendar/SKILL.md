@@ -1,6 +1,6 @@
 ---
 name: calendar
-description: "Manage Google Calendar events using `gcalcli`. Create, list, and delete calendar events from the CLI."
+description: "使用 `gcalcli` 管理 Google 日历事件。可以通过命令行界面（CLI）创建、列出和删除日历事件。"
 metadata:
   {
     "openclaw":
@@ -21,35 +21,35 @@ metadata:
   }
 ---
 
-# Calendar Skill
+# 日历功能
 
-Use `gcalcli` to interact with Google Calendar. Requires `GOOGLE_CALENDAR_API_KEY` (or `CALDAV_URL`/`CALDAV_USER`/`CALDAV_PASS` for CalDAV).
+使用 `gcalcli` 与 Google 日历进行交互。需要 `GOOGLE_CALENDAR_API_KEY`（或使用 CalDAV 协议的 `CALDAV_URL`/`CALDAV_USER`/`CALDAV_PASS`）。
 
-## Listing Events
+## 列出事件
 
-List upcoming events in a date range:
+列出指定日期范围内的即将发生的事件：
 
 ```bash
 gcalcli agenda "2026-02-03" "2026-02-10"
 ```
 
-## Creating Events
+## 创建事件
 
-Add a new calendar event:
+添加一个新的日历事件：
 
 ```bash
 gcalcli add --title "Team sync" --when "2026-02-04 10:00" --duration 30
 ```
 
-## Deleting Events
+## 删除事件
 
-Delete an event by search term:
+通过搜索关键词删除事件：
 
 ```bash
 gcalcli delete "Team sync"
 ```
 
-## Install
+## 安装
 
 ```bash
 pip install gcalcli

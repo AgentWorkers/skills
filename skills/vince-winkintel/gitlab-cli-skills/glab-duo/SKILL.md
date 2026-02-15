@@ -1,11 +1,11 @@
 ---
 name: glab-duo
-description: Interact with GitLab Duo AI assistant for code suggestions and chat. Use when accessing AI-powered code assistance, getting code suggestions, or chatting with GitLab Duo. Triggers on Duo, AI assistant, code suggestions, AI chat.
+description: 与 GitLab Duo 的 AI 助手进行交互，以获取代码建议或进行聊天。适用于需要使用 AI 功能来辅助编写代码、获取代码建议或与 GitLab Duo 进行交流的场景。触发条件包括：使用 GitLab Duo、与 AI 助手交互、接收代码建议或进行 AI 相关的聊天。
 ---
 
 # glab duo
 
-## Overview
+## 概述
 
 ```
 
@@ -29,12 +29,12 @@ description: Interact with GitLab Duo AI assistant for code suggestions and chat
     -h --help               Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab duo --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

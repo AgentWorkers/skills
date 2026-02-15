@@ -1,14 +1,14 @@
 ---
 name: 2captcha
-description: Solve CAPTCHAs using 2Captcha service via CLI. Use for bypassing captchas during web automation, account creation, or form submission.
+description: 使用 2Captcha 服务通过 CLI（命令行界面）来解决验证码问题。该服务可用于在网页自动化、账户创建或表单提交过程中绕过验证码。
 homepage: https://github.com/adinvadim/2captcha-cli
 ---
 
-# 2Captcha Skill
+# 2Captcha 技能
 
-Solve CAPTCHAs programmatically using the 2Captcha human-powered service.
+使用 2Captcha 人工验证服务以编程方式解决验证码问题。
 
-## Installation
+## 安装
 
 ```bash
 # One-line install
@@ -19,7 +19,7 @@ curl -fsSL https://raw.githubusercontent.com/adinvadim/2captcha-cli/main/solve-c
 solve-captcha --version
 ```
 
-## Configuration
+## 配置
 
 ```bash
 # Save your 2Captcha API key
@@ -30,16 +30,16 @@ echo "YOUR_API_KEY" > ~/.config/2captcha/api-key
 export TWOCAPTCHA_API_KEY="your-key"
 ```
 
-Get your API key at https://2captcha.com/enterpage
+请在 https://2captcha.com/enterpage 获取您的 API 密钥。
 
-## Quick Reference
+## 快速参考
 
-### Check Balance First
+### 先检查余额
 ```bash
 ./solve-captcha balance
 ```
 
-### Image CAPTCHA
+### 图片验证码
 ```bash
 # From file
 ./solve-captcha image /path/to/captcha.png
@@ -86,37 +86,34 @@ Get your API key at https://2captcha.com/enterpage
 ./solve-captcha geetest4 --captcha-id "ID" --url "URL"
 ```
 
-### Text Question
+### 文本验证码
 ```bash
 ./solve-captcha text "What color is the sky?" --lang en
 ```
 
-## Finding CAPTCHA Parameters
+## 获取验证码参数
 
-### reCAPTCHA sitekey
-Look for:
-- `data-sitekey` attribute in HTML
-- `k=` parameter in reCAPTCHA iframe URL
-- Network request to `google.com/recaptcha/api2/anchor`
+### reCAPTCHA 的站点密钥（sitekey）
+- 在 HTML 中查找 `data-sitekey` 属性
+- 在 reCAPTCHA iframe 的 URL 中查找 `k=` 参数
+- 向 `google.com/recaptcha/api2/anchor` 发送网络请求
 
-### hCaptcha sitekey
-Look for:
-- `data-sitekey` in hCaptcha div
-- Network requests to `hcaptcha.com`
+### hCaptcha 的站点密钥（sitekey）
+- 在 hCaptcha 的 div 元素中查找 `data-sitekey`
+- 向 `hcaptcha.com` 发送网络请求
 
-### Turnstile sitekey
-Look for:
-- `data-sitekey` in Turnstile widget
-- `cf-turnstile` class elements
+### Turnstile 的站点密钥（sitekey）
+- 在 Turnstile 小部件中查找 `data-sitekey`
+- 查找带有 `cf-turnstile` 类的元素
 
-## Workflow for Browser Automation
+## 浏览器自动化的工作流程
 
-1. **Detect CAPTCHA** - Check if page has captcha element
-2. **Extract params** - Get sitekey/challenge from page source
-3. **Solve via CLI** - Call solve-captcha with params
-4. **Inject token** - Set `g-recaptcha-response` or callback
+1. **检测验证码** - 检查页面是否存在验证码元素
+2. **提取参数** - 从页面源代码中获取站点密钥（sitekey）和验证码挑战内容（challenge）
+3. **通过 CLI 解决验证码** - 使用 `solve-captcha` 命令并传入参数
+4. **注入令牌** - 设置 `g-recaptcha-response` 或回调函数
 
-### Example: Inject reCAPTCHA Token
+### 示例：注入 reCAPTCHA 令牌
 ```javascript
 // After getting token from solve-captcha
 document.getElementById('g-recaptcha-response').value = token;
@@ -124,23 +121,23 @@ document.getElementById('g-recaptcha-response').value = token;
 ___grecaptcha_cfg.clients[0].callback(token);
 ```
 
-## Cost Awareness
+## 成本说明
 
-- Check balance before heavy automation
-- Image: ~$0.001 per solve
-- reCAPTCHA/hCaptcha/Turnstile: ~$0.003 per solve
+- 在进行大量自动化操作前，请先检查账户余额：
+  - 图片验证码：每次解决大约 0.001 美元
+  - reCAPTCHA/hCaptcha/Turnstile：每次解决大约 0.003 美元
 
-## Error Handling
+## 错误处理
 
-Common errors:
-- `ERROR_ZERO_BALANCE` - Top up account
-- `ERROR_NO_SLOT_AVAILABLE` - Retry in few seconds
-- `ERROR_CAPTCHA_UNSOLVABLE` - Bad image or impossible captcha
-- `ERROR_WRONG_CAPTCHA_ID` - Invalid task ID
+常见错误：
+- `ERROR_ZERO_BALANCE` - 账户余额不足，请充值
+- `ERROR_NO_slot_AVAILABLE` - 几秒后重试
+- `ERROR_CAPTCHA_UNSOLVABLE` - 图片质量差或验证码无法识别
+- `ERROR_wrong_CAPTCHA_ID` - 任务 ID 无效
 
-## Notes
+## 注意事项
 
-- Solving takes 10-60 seconds depending on type
-- reCAPTCHA v3 may need multiple attempts for high scores
-- Some sites detect automation - use carefully
-- Tokens expire! Use within 2-5 minutes
+- 解决验证码所需时间因类型而异，通常在 10 到 60 秒之间
+- reCAPTCHA v3 可能需要多次尝试才能成功解决
+- 一些网站会检测到自动化行为，请谨慎使用
+- 令牌有有效期，请在 2 到 5 分钟内使用完毕

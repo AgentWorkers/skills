@@ -1,46 +1,46 @@
 ---
 name: Chief Revenue Officer
 slug: cro
-description: Optimize conversion rates with funnel analysis, A/B testing, statistical significance, and compliance-safe experiments.
+description: 通过漏斗分析、A/B测试、统计显著性以及符合法规要求的实验来优化转化率。
 ---
 
-## When to Use
+## 使用场景
 
-User wants to improve conversion rates for websites, landing pages, SaaS products, or eCommerce. Agent runs audits, sets up tests, interprets results, and implements winning variants.
+当用户希望提升网站、 landing pages、SaaS 产品或电子商务平台的转化率时，可以使用该工具。工作人员会执行审计任务，设置测试方案，分析测试结果，并实施有效的优化策略。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| A/B testing methodology | `testing.md` |
-| Conversion audits | `audits.md` |
-| Legal compliance | `legal.md` |
-| Tools & integrations | `tools.md` |
+| A/B 测试方法 | `testing.md` |
+| 转化率审计 | `audits.md` |
+| 合规性检查 | `legal.md` |
+| 工具与集成 | `tools.md` |
 
-## Core Capabilities
+## 核心功能
 
-1. **Audit funnels** — Identify drop-off points, quantify revenue impact, prioritize fixes
-2. **Run A/B tests** — Generate variants, calculate sample size, monitor significance, call winners
-3. **Optimize forms** — Reduce fields, improve flow, track field-level abandonment
-4. **Analyze results** — Statistical significance, confidence intervals, segment breakdowns
-5. **Monitor anomalies** — Alert on conversion drops, diagnose root causes by segment
-6. **Generate copy variants** — Headlines, CTAs, value props using proven frameworks
-7. **Speed optimization** — Core Web Vitals impact on conversion, prioritize fixes
+1. **审核用户转化流程**：识别用户流失的关键点，量化收入影响，并确定优先级高的问题需要解决。
+2. **运行 A/B 测试**：生成不同的测试版本，计算样本量，监控测试结果的显著性，并确定最优的测试方案。
+3. **优化表单设计**：减少表单中的字段数量，优化用户操作流程，追踪用户在不同字段上的放弃情况。
+4. **分析测试结果**：提供统计显著性数据、置信区间以及用户群体的细分分析。
+5. **监控异常情况**：在转化率下降时及时发出警报，并根据用户群体诊断问题的根本原因。
+6. **生成优化文案**：利用成熟的框架生成吸引人的标题、呼叫行动（CTA）语句以及产品价值主张（value props）。
+7. **提升页面性能**：分析核心网页指标（Web Vitals）对转化率的影响，并确定优先需要优化的部分。
 
-## Decision Checklist
+## 决策检查清单
 
-Before optimizing, gather:
-- [ ] Current conversion rate baseline?
-- [ ] Traffic volume (for sample size calc)?
-- [ ] Primary conversion goal (purchase, signup, lead)?
-- [ ] Access to analytics/testing tools?
-- [ ] Regulatory context (EU/GDPR, California/CPRA)?
+在开始优化之前，请确保收集以下信息：
+- 当前的转化率基准数据
+- 流量规模（用于计算样本量）
+- 主要的转化目标（购买、注册、获取潜在客户）
+- 是否能够使用分析或测试工具
+- 相关的法规要求（如欧盟的 GDPR、加州的 CPRA 等）
 
-## Critical Rules
+## 重要规则
 
-- **Statistical significance first** — Never call a test early; 95% confidence minimum
-- **One variable at a time** — Isolate changes to attribute impact correctly
-- **Document everything** — Hypothesis, variants, results, learnings
-- **Consent before testing** — Most A/B tools need cookie consent in EU
-- **No dark patterns** — Fake urgency, confirm-shaming, asymmetric friction are illegal
-- **Mobile parity** — Always test mobile variants; don't assume desktop results transfer
+- **务必先确保结果的统计显著性**：不要过早下结论；至少需要 95% 的置信度才能确认测试结果的有效性。
+- **每次只测试一个变量**：这样可以准确判断某个变量的影响。
+- **详细记录所有测试过程**：包括假设、测试方案、结果以及从中获得的经验教训。
+- **在测试前获取用户同意**：在欧盟地区，大多数 A/B 测试工具都需要用户的明确同意。
+- **禁止使用不当的营销手段**：虚假的紧迫感、强迫用户做出决策的行为或不对称的摩擦点（即用户需要完成额外步骤才能完成操作）都是不合法的。
+- **确保移动端与桌面端的体验一致**：始终测试移动端的优化方案；不要假设桌面端的优化效果可以直接应用于移动端。

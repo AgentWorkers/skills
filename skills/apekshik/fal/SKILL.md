@@ -1,36 +1,36 @@
 ---
 name: fal
 version: 1.0.1
-description: Search, explore, and run fal.ai generative AI models (image generation, video, audio, 3D). Use when user wants to generate images, videos, or other media with AI models.
+description: 搜索、探索并运行 fal.ai 的生成式 AI 模型（包括图像生成、视频生成、音频生成和 3D 模型）。当用户需要使用 AI 模型来生成图像、视频或其他媒体内容时，可以使用该功能。
 allowed-tools: Bash(curl *), Bash(jq *), Bash(mkdir *), Read, Write
 argument-hint: "<command> [model_id] [--param value]"
 ---
 
-# fal.ai Model API Skill
+# fal.ai 模型 API 功能
 
-Run 1000+ generative AI models on fal.ai.
+在 fal.ai 上运行 1000 多个生成式 AI 模型。
 
-## Arguments
+## 参数
 
-- **Command:** `$0` (search | schema | run | status | result | upload)
-- **Arg 1:** `$1` (model_id, search query, or file path)
-- **Arg 2+:** `$2`, `$3`, etc. (additional parameters)
-- **All args:** `$ARGUMENTS`
+- **命令:** `$0` (search | schema | run | status | result | upload)
+- **参数 1:** `$1` (model_id, 搜索查询或文件路径)
+- **参数 2+:** `$2`, `$3`, 等 (其他参数)
+- **所有参数:** `$ARGUMENTS`
 
-## Session Output
+## 会话输出
 
-Save generated files to session folder:
+将生成的文件保存到会话文件夹中：
 ```bash
 mkdir -p ~/.fal/sessions/${CLAUDE_SESSION_ID}
 ```
 
-Downloaded images/videos go to: `~/.fal/sessions/${CLAUDE_SESSION_ID}/`
+下载的图片/视频将被保存到：`~/.fal/sessions/${CLAUDE_SESSION_ID}/`
 
 ---
 
-## Authentication
+## 认证
 
-Requires `FAL_KEY` environment variable. If requests fail with 401, tell user:
+需要 `FAL_KEY` 环境变量。如果请求失败并返回 401 错误，请告知用户：
 ```
 Get an API key from https://fal.ai/dashboard/keys
 Then: export FAL_KEY="your-key-here"
@@ -38,52 +38,52 @@ Then: export FAL_KEY="your-key-here"
 
 ---
 
-## Command: `$0`
+## 命令: `$0`
 
-### If $0 = "search"
+### 如果 $0 = "search"
 
-Search for models matching `$1`:
+搜索与 `$1` 匹配的模型：
 
 ```bash
 curl -s "https://api.fal.ai/v1/models?q=$1&limit=15" \
   -H "Authorization: Key $FAL_KEY" | jq -r '.models[] | "• \(.endpoint_id) — \(.metadata.display_name) [\(.metadata.category)]"'
 ```
 
-For category search, use:
+进行类别搜索时，请使用：
 ```bash
 curl -s "https://api.fal.ai/v1/models?category=$1&limit=15" \
   -H "Authorization: Key $FAL_KEY" | jq -r '.models[] | "• \(.endpoint_id) — \(.metadata.display_name)"'
 ```
 
-Categories: `text-to-image`, `image-to-video`, `text-to-video`, `image-to-3d`, `training`, `speech-to-text`, `text-to-speech`
+可用类别：`text-to-image` (文本转图像), `image-to-video` (图像转视频), `text-to-3d` (文本转 3D), `training` (训练), `speech-to-text` (语音转文本), `text-to-speech` (语音转文本)
 
 ---
 
-### If $0 = "schema"
+## 命令: `$0 = "schema"
 
-Get input schema for model `$1`:
+获取模型 `$1` 的输入格式：
 
 ```bash
 curl -s "https://api.fal.ai/v1/models?endpoint_id=$1&expand=openapi-3.0" \
   -H "Authorization: Key $FAL_KEY" | jq '.models[0].openapi.components.schemas.Input.properties'
 ```
 
-Show required vs optional fields to help user understand what inputs are needed.
+显示必填字段和可选字段，以帮助用户了解所需输入内容。
 
 ---
 
-### If $0 = "run"
+## 命令: `$0 = "run"
 
-Run model `$1` with parameters from remaining arguments.
+使用剩余参数运行模型 `$1`。
 
-**Step 1: Parse parameters**
-Extract `--key value` pairs from `$ARGUMENTS` after the model_id to build JSON payload.
+**步骤 1：解析参数**
+从 `$ARGUMENTS` 中提取模型 ID 后的 `--key value` 对，并构建 JSON 数据包。
 
-Example: `/fal run fal-ai/flux-2 --prompt "a cat" --image_size landscape_16_9`
-→ Model: `fal-ai/flux-2`
-→ Payload: `{"prompt": "a cat", "image_size": "landscape_16_9"}`
+示例：`/fal run fal-ai/flux-2 --prompt "a cat" --image_size landscape_16_9`
+→ 模型：`fal-ai/flux-2`
+→ 数据包：`{"prompt": "a cat", "image_size": "landscape_16_9"}`
 
-**Step 2: Submit to queue**
+**步骤 2：提交到队列**
 ```bash
 curl -s -X POST "https://queue.fal.run/$1" \
   -H "Authorization: Key $FAL_KEY" \
@@ -91,7 +91,7 @@ curl -s -X POST "https://queue.fal.run/$1" \
   -d '<JSON_PAYLOAD>'
 ```
 
-**Step 3: Poll until complete**
+**步骤 3：等待任务完成**
 ```bash
 # Get request_id from response, then poll:
 while true; do
@@ -104,7 +104,7 @@ while true; do
 done
 ```
 
-**Step 4: Get result and save**
+**步骤 4：获取结果并保存**
 ```bash
 # Fetch result
 RESULT=$(curl -s "https://queue.fal.run/$1/requests/$REQUEST_ID" \
@@ -120,9 +120,9 @@ mkdir -p ~/.fal/sessions/${CLAUDE_SESSION_ID}
 
 ---
 
-### If $0 = "status"
+## 命令: `$0 = "status"
 
-Check status of request `$2` for model `$1`:
+检查模型 `$1` 的请求状态：
 
 ```bash
 curl -s "https://queue.fal.run/$1/requests/$2/status?logs=1" \
@@ -131,9 +131,9 @@ curl -s "https://queue.fal.run/$1/requests/$2/status?logs=1" \
 
 ---
 
-### If $0 = "result"
+## 命令: `$0 = "result"
 
-Get result of completed request `$2` for model `$1`:
+获取模型 `$1` 的请求结果：
 
 ```bash
 curl -s "https://queue.fal.run/$1/requests/$2" \
@@ -142,9 +142,9 @@ curl -s "https://queue.fal.run/$1/requests/$2" \
 
 ---
 
-### If $0 = "upload"
+## 命令: `$0 = "upload"
 
-Upload file `$1` to fal CDN:
+将文件 `$1` 上传到 fal CDN：
 
 ```bash
 curl -s -X POST "https://fal.run/fal-ai/storage/upload" \
@@ -152,27 +152,29 @@ curl -s -X POST "https://fal.run/fal-ai/storage/upload" \
   -F "file=@$1"
 ```
 
-Returns URL to use in model requests.
+返回用于模型请求的 URL。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-**Popular models:**
-- `fal-ai/flux-2` — Fast text-to-image
-- `fal-ai/flux-2-pro` — High quality text-to-image
-- `fal-ai/kling-video/v2/image-to-video` — Image to video
-- `fal-ai/minimax/video-01/image-to-video` — Image to video
-- `fal-ai/whisper` — Speech to text
+**常用模型：**
+- `fal-ai/flux-2` — 快速文本转图像
+- `fal-ai/flux-2-pro` — 高质量文本转图像
+- `fal-ai/kling-video/v2/image-to-video` — 图像转视频
+- `fal-ai/minimax/video-01/image-to-video` — 图像转视频
+- `fal-ai/whisper` — 语音转文本
 
-**Common parameters for text-to-image:**
-- `--prompt "description"` — What to generate
-- `--image_size landscape_16_9` — Aspect ratio (square, portrait_4_3, landscape_16_9)
-- `--num_images 1` — Number of images
+**文本转图像的常用参数：**
+- `--prompt "description"` — 生成内容
+- `--image_size landscape_16_9` — 长宽比（正方形, portrait_4_3, landscape_16_9）
+- `--num_images 1` — 生成图像的数量
 
-**Example invocations:**
-- `/fal search video` — Find video models
-- `/fal schema fal-ai/flux-2` — See input options
-- `/fal run fal-ai/flux-2 --prompt "a sunset over mountains"`
-- `/fal status fal-ai/flux-2 abc-123`
-- `/fal upload ./photo.png`
+**示例用法：**
+- `/fal search video` — 查找视频模型
+- `/fal schema fal-ai/flux-2` — 查看输入选项
+- `/fal run fal-ai/flux-2 --prompt "a sunset over mountains"` — 运行模型并指定提示
+- `/fal status fal-ai/flux-2 abc-123` — 查看模型状态
+- `/fal upload ./photo.png` — 上传图片到 fal.ai
+
+---

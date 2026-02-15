@@ -1,74 +1,78 @@
 ---
 name: Article
-description: Create compelling articles using journalistic standards and engagement optimization for maximum reader impact.
+description: 使用新闻业的写作标准和互动性优化策略来创作引人入胜的文章，以最大限度地提升读者的阅读体验。
 ---
 
-## Lead Hook Formula
+## 引入式钩子公式（Lead Hook Formula）
 
-Deploy opening patterns that immediately capture attention:
-- **Question hook**: "What if everything you know about X is wrong?"
-- **Statistic hook**: "83% of professionals make this critical mistake daily"
-- **Scene hook**: "At 3:47 AM, the alarm changed everything"
-- **Conflict hook**: "The billion-dollar industry nobody talks about"
+使用能够立即吸引读者注意力的开头方式：
+- **问题式钩子**：“如果你对X的所有认知都是错误的，会怎样？”
+- **统计数据式钩子**：“83%的专业人士每天都会犯这个关键错误”
+- **场景式钩子**：“凌晨3点47分，一个警报改变了这一切”
+- **冲突式钩子**：“这个价值数十亿美元的行业却鲜有人提及”
 
-First sentence maximum: 25 words. Include core information within first 100 words.
+首句话的字数应控制在25个词以内。在前100个词中包含核心信息。
 
-## Source Hierarchy Standards
+## 来源层次标准（Source Hierarchy Standards）
 
-Apply journalism credibility levels:
-- **Primary sources (minimum 60%)**: Direct witnesses, original documents, participants
-- **Expert sources (20-30%)**: Verified credentials and relevant authority
-- **Secondary sources (maximum 20%)**: Studies, reports, other journalism
+遵循新闻报道的可信度原则：
+- **第一手资料（至少60%）**：直接目击者、原始文件、参与者
+- **专家意见（20-30%）**：经过验证的资质和相关权威
+- **第二手资料（最多20%）**：研究报告、其他新闻作品
 
-Quote attribution format: "Statement," said Source Name, title/organization.
-Anonymous sources only when information unavailable elsewhere—include anonymity reason.
+引用格式：**“某人表示”，“来源名称”，“标题/机构”。
 
-## Fact-Checking Protocol
+只有在其他地方无法获取信息时才使用匿名来源——并说明匿名的原因。
 
-Implement three-layer verification system:
-1. **Source credibility**: Check credentials, conflicts of interest, publication history
-2. **Information accuracy**: Cross-reference with 2+ independent sources
-3. **Context integrity**: Verify quotes not taken out of context
+## 事实核查协议（Fact-Checking Protocol）
 
-Red-flag indicators requiring additional verification:
-- Superlatives ("first ever", "unprecedented")
-- Convenient statistics supporting source's position
-- Claims that seem too good/bad to be true
+实施三层验证体系：
+1. **来源可信度**：检查资质、利益冲突、出版历史
+2. **信息准确性**：与两个以上独立来源进行交叉核对
+3. **上下文完整性**：确保引用内容未被断章取义
 
-## Readability Optimization Targets
+需要进一步核查的警示信号：
+- 使用极端词汇（如“史上首次”、“前所未有”）
+- 为支持来源观点而提供的看似合理的统计数据
+- 难以置信的陈述
 
-Calibrate complexity for audience:
-- **General public**: Flesch-Kincaid Grade Level 6-8, sentence average 15-20 words
-- **Professional audience**: Grade Level 9-12, sentence average 18-25 words
-- **Technical audience**: Grade Level 13-16, sentence average 20-30 words
+## 可读性优化目标（Readability Optimization Targets）
 
-Jargon limits: <5% for general public, <15% for professionals, unlimited for technical (with definitions).
+根据受众群体调整内容的复杂性：
+- **普通读者**：Flesch-Kincaid阅读难度等级6-8级，句子平均长度15-20个词
+- **专业读者**：Flesch-Kincaid阅读难度等级9-12级，句子平均长度18-25个词
+- **技术读者**：Flesch-Kincaid阅读难度等级13-16级，句子平均长度20-30个词
 
-## Engagement Structure Rules
+术语使用限制：
+- 普通读者：术语使用比例<5%
+- 专业人士：术语使用比例<15%
+- 技术类内容：术语使用比例无限制（需提供定义）
 
-Maintain attention using systematic placement:
-- **Subheadings**: Every 150-200 words for digital, 300-400 for print
-- **Quotes**: Every 3-4 paragraphs, vary length (5-25 words)
-- **Paragraph length**: 2-3 sentences average, never exceed 5 sentences
-- **Lists/bullets**: Every 500-700 words for digital content
+## 互动结构规则（Engagement Structure Rules）
 
-Transition patterns: "Moreover", "However", "Meanwhile", "As a result" for logical flow.
+通过系统化的排版方式保持读者的兴趣：
+- **小标题**：数字媒体中每150-200字使用一个，印刷媒体中每300-400字使用一个
+- **引用**：每3-4段内容中插入一次引用，长度控制在5-25个词之间
+- **段落长度**：平均每段2-3句话，最长不超过5句话
+- **列表/项目符号**：数字媒体中每500-700字使用一次
 
-## SEO Integration Without Compromise
+使用过渡词（如“此外”、“然而”、“同时”、“因此”）来保持文章的逻辑连贯性。
 
-Optimize search visibility naturally:
-- **Primary keyword density**: 1-2% of total word count, natural placement only
-- **Header hierarchy**: H2 every 300-500 words, H3 for subsections
-- **Meta elements**: Title 50-60 characters, description 150-160 characters
-- **External links**: 2-3 authoritative sources per 1000 words
+## 不影响可读性的SEO整合（SEO Integration Without Compromise）
 
-Content-first principle: Write complete article, then optimize through natural revision.
+自然地优化搜索排名：
+- **关键词密度**：总词数的1-2%，仅通过自然的方式使用关键词
+- **标题层次**：每300-500字使用一个H2标题，子部分使用H3标题
+- **元标签**：标题长度50-60个字符，描述长度150-160个字符
+- **外部链接**：每1000字内容插入2-3个权威来源的链接
 
-## Publication Voice Adaptation
+**内容优先原则**：先撰写完整的文章，再通过自然修改进行优化。
 
-Adjust tone for platform requirements:
-- **News reporting**: Objective stance, minimal opinion, multiple perspectives
-- **Opinion pieces**: Clear position statement, evidence-based arguments, counterpoint acknowledgment
-- **Feature writing**: Narrative elements allowed, character development, scene-setting
+## 根据平台需求调整写作风格（Publication Voice Adaptation）
 
-Active voice minimum: 70% of sentences. Passive voice only for emphasis or unknown subjects.
+根据平台特点调整写作风格：
+- **新闻报道**：保持客观立场，尽量减少主观意见，多角度呈现事实
+- **观点文章**：明确表达观点，提供基于证据的论据，并承认不同意见
+- **专题报道**：允许使用叙事元素、人物描写和场景描绘
+
+**主动语态的使用**：至少70%的句子使用主动语态；被动语态仅用于强调或描述未知主体。

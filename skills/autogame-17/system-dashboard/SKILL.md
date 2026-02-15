@@ -1,30 +1,29 @@
-# System Dashboard
+# 系统仪表板
 
-Generates and sends a comprehensive system status dashboard to Feishu.
-Consolidates metrics from OS, Logs, Evolver, and Cron into a single view.
+该工具会生成一份全面的系统状态仪表板，并将其发送至 Feishu。它将来自操作系统、日志系统、Evolver 和 Cron 的各项指标整合到一个统一的视图界面中。
 
-## Features
+## 主要功能
 
-- **System Health:** CPU load, Memory usage, Disk space, Uptime.
-- **Log Analysis:** Recent error counts from `memory/logs/`.
-- **Evolver Status:** Last run status, success rate (from `memory/events.jsonl`).
-- **Cron Jobs:** Count of active/inactive jobs.
-- **Skill Health:** Total skills vs broken skills.
+- **系统健康状况**：CPU 使用率、内存利用率、磁盘空间使用情况以及系统运行时间。
+- **日志分析**：`memory/logs/` 目录中最近的错误记录数量。
+- **Evolver 状态**：上一次运行的状态及成功率（数据来源：`memory/events.jsonl`）。
+- **Cron 任务**：活跃/未活跃的 Cron 任务数量。
+- **技能状态**：总技能数量与出现故障的技能数量。
 
-## Usage
+## 使用方法
 
 ```bash
 node skills/system-dashboard/index.js
 ```
 
-## Options
+## 配置选项
 
-- `--target <id>`: Feishu User/Group ID (optional, defaults to configured master).
-- `--days <n>`: Look back N days for log analysis (default: 1).
+- `--target <id>`：Feishu 用户/组 ID（可选，默认使用配置的主用户/组）。
+- `--days <n>`：查看过去 N 天的日志记录（默认值：1 天）。
 
-## Output
+## 输出结果
 
-Sends a Feishu Card with a color-coded header:
-- **Green:** All systems nominal.
-- **Orange:** Warnings (high load, disk > 80%, minor errors).
-- **Red:** Critical (disk > 90%, major errors, evolver failure).
+工具会生成一张 Feishu 仪表板卡片，其中包含颜色编码的提示信息：
+- **绿色**：所有系统运行正常。
+- **橙色**：存在警告（CPU 使用率过高、磁盘空间使用率超过 80%、出现轻微错误）。
+- **红色**：系统处于严重故障状态（磁盘空间使用率超过 90%、出现重大错误或 Evolver 故障）。

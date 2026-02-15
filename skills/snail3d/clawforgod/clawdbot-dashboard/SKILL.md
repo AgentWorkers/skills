@@ -1,35 +1,35 @@
-# Clawdbot Dashboard Skill
+# Clawdbot 仪表板技能
 
-**Name:** `dashboard-premium`  
-**Type:** Web UI / Frontend Service  
-**Version:** 1.0.0  
-**Status:** Production Ready (Phase 1)
+**名称：** `dashboard-premium`  
+**类型：** Web UI / 前端服务  
+**版本：** 1.0.0  
+**状态：** 已准备好投入生产（第一阶段）
 
-## Overview
+## 概述
 
-A premium, production-ready React dashboard for Clawdbot AI sessions. Features a beautiful dark-first interface with glassmorphism effects, full markdown rendering, syntax highlighting, and real-time message updates.
+这是一个专为Clawdbot AI会话设计的高级、可投入生产的React仪表板。它拥有美观的暗黑主题界面（以暗色为主），支持玻璃形态（glassmorphism）效果、完整的Markdown渲染、语法高亮显示以及实时消息更新功能。
 
-## What It Does
+## 功能介绍
 
-- **Real-time Chat Interface**: Discord-style message bubbles with markdown support
-- **Session Monitoring**: Live session info card with tokens, runtime, model tracking
-- **Beautiful UI**: Glassmorphism, smooth animations, dark/light mode
-- **Code Highlighting**: Syntax highlighting for 10+ languages
-- **Responsive Layout**: Sidebar + main chat area, auto-adaptive
+- **实时聊天界面**：采用Discord风格的聊天界面，支持Markdown格式的消息显示。
+- **会话监控**：提供实时的会话信息，包括令牌使用情况、运行时状态和模型运行状态。
+- **美观的界面设计**：采用玻璃形态效果和流畅的动画效果，支持暗黑/明亮两种模式。
+- **代码高亮显示**：支持10多种语言的语法高亮功能。
+- **响应式布局**：侧边栏与主聊天区域自适应布局。
 
-## Tech Stack
+## 技术栈
 
-- React 19 + TypeScript 5.9
-- Tailwind CSS v4 (new JIT engine)
-- Framer Motion (smooth animations)
-- Vite (dev server + bundling)
-- react-markdown + rehype-prism-plus (content rendering)
-- Socket.io-client (ready for real-time)
-- Lucide React (beautiful icons)
+- React 19 + TypeScript 5.9  
+- Tailwind CSS v4（新的JIT编译器）  
+- Framer Motion（用于实现流畅的动画效果）  
+- Vite（用于开发服务器和代码打包）  
+- react-markdown + rehype-prism-plus（用于内容渲染）  
+- Socket.io-client（支持实时通信）  
+- Lucide React（用于生成美观的图标）
 
-## Installation
+## 安装方法
 
-### In Clawdbot Skills Directory
+### 在Clawdbot技能目录中安装
 
 ```bash
 # Copy the project to your skills directory
@@ -40,16 +40,16 @@ cd ~/clawd/skills/dashboard-premium
 npm install
 ```
 
-### Or Clone from Source
+### 或者从源代码克隆
 
 ```bash
 cd /Users/ericwoodard/clawd/clawdbot-dashboard
 npm install
 ```
 
-## Usage
+## 使用方法
 
-### Development
+### 开发环境下的使用方法
 
 ```bash
 npm run dev
@@ -57,7 +57,7 @@ npm run dev
 # HMR enabled, auto-reload on file changes
 ```
 
-### Production Build
+### 生产环境下的构建方法
 
 ```bash
 npm run build
@@ -65,9 +65,9 @@ npm run preview
 # Optimized bundle in ./dist/
 ```
 
-### Embed in Clawdbot
+### 在Clawdbot中嵌入该仪表板
 
-To embed this dashboard in your Clawdbot instance:
+要将此仪表板嵌入到您的Clawdbot实例中，请按照以下步骤操作：
 
 ```typescript
 // In your Clawdbot skill integration
@@ -85,7 +85,7 @@ export const setupDashboard = (app) => {
 }
 ```
 
-## File Structure
+## 文件结构
 
 ```
 clawdbot-dashboard/
@@ -110,15 +110,15 @@ clawdbot-dashboard/
 └── README.md
 ```
 
-## Key Components
+## 关键组件
 
 ### `Header.tsx`
-- Logo + branding
-- Dark/light mode toggle
-- Responsive navigation
-- 300ms smooth transitions
+- 仪表板Logo和品牌标识  
+- 暗黑/明亮模式切换功能  
+- 响应式导航菜单  
+- 动画过渡效果（300毫秒）
 
-**Props:**
+**属性（Props）：**
 ```typescript
 interface HeaderProps {
   isDark: boolean
@@ -127,13 +127,13 @@ interface HeaderProps {
 ```
 
 ### `Sidebar.tsx`
-- Glassmorphic session info card
-- Token usage progress bar
-- Runtime, model, session key display
-- Copy-to-clipboard actions
-- Quick stats grid (4 metrics)
+- 会话信息卡片（采用玻璃形态设计）  
+- 令牌使用进度条  
+- 运行时状态、模型状态及会话密钥的显示  
+- 复制到剪贴板的功能  
+- 快速统计信息栏（显示4项指标）
 
-**Props:**
+**属性（Props）：**
 ```typescript
 interface SidebarProps {
   isDark: boolean
@@ -141,26 +141,26 @@ interface SidebarProps {
 ```
 
 ### `ChatPanel.tsx`
-- Message list with auto-scroll
-- Multi-line input box
-- Send button with gradient
-- Connection status indicator
-- Real-time update support
+- 自动滚动的消息列表  
+- 多行输入框  
+- 带有渐变效果的发送按钮  
+- 连接状态指示器  
+- 支持实时消息更新  
 
-**Features:**
-- Auto-expanding textarea (max 120px height)
-- Shift+Enter for newline, Enter to send
-- Simulated assistant response (replaceable)
-- Smooth message entrance animations
+**特点：**
+- 自动扩展的文本输入框（最大高度为120像素）  
+- 使用Shift+Enter键换行，按Enter键发送消息  
+- 可自定义的助手回复内容  
+- 消息显示时的动画效果
 
 ### `Message.tsx`
-- User/system/assistant differentiation
-- Full markdown rendering
-- Syntax highlighting (10+ languages)
-- Tables, lists, blockquotes, code blocks
-- Hover effects and animations
+- 区分用户消息、系统消息和助手消息  
+- 完整的Markdown格式渲染  
+- 支持10多种语言的语法高亮显示  
+- 支持表格、列表、块引用和代码块  
+- 具有悬停效果和动画效果
 
-**Props:**
+**属性（Props）：**
 ```typescript
 interface MessageProps {
   id: string
@@ -172,11 +172,12 @@ interface MessageProps {
 }
 ```
 
-## Configuration
+## 配置选项
 
-### Color Scheme (tailwind.config.js)
+### 颜色方案（tailwind.config.js）
 
-Customize accent colors:
+可以自定义页面的背景颜色和文字颜色：
+
 ```javascript
 colors: {
   'teal-accent': '#14b8a6',    // Primary
@@ -184,11 +185,11 @@ colors: {
 }
 ```
 
-### Animation Duration
+### 动画时长
 
-Default: 300ms spring-based animations
+默认动画时长为300毫秒（基于弹簧动画效果）  
+可以在组件中自行调整动画时长：
 
-Adjust in components:
 ```typescript
 transition={{
   type: 'spring',
@@ -197,9 +198,10 @@ transition={{
 }}
 ```
 
-### Dummy Data
+### 示例数据
 
-Edit `src/data/messages.ts`:
+请编辑`src/data/messages.ts`文件以设置示例数据：
+
 ```typescript
 export const dummyMessages = [
   {
@@ -212,9 +214,11 @@ export const dummyMessages = [
 ]
 ```
 
-## Real-time Integration
+## 实时数据集成
 
-### Socket.io Setup
+### Socket.io配置
+
+请按照以下步骤配置Socket.io以实现实时数据传输：
 
 ```typescript
 // In App.tsx or separate service
@@ -231,9 +235,9 @@ socket.on('session:update', (session) => {
 })
 ```
 
-### Message Sync
+### 消息同步
 
-Replace dummy data with live updates:
+请将示例数据替换为实时获取的数据：
 
 ```typescript
 // In ChatPanel.tsx
@@ -245,89 +249,45 @@ useEffect(() => {
 }, [])
 ```
 
-## Environment Variables
+## 环境变量
 
-Create `.env`:
+请创建`.env`文件以配置环境变量：
+
 ```
 VITE_API_URL=http://localhost:3000
 VITE_SOCKET_URL=ws://localhost:3000
 VITE_SESSION_ID=your-session-id
 ```
 
-Access in code:
+**如何在代码中访问环境变量：**
+
 ```typescript
 const socketUrl = import.meta.env.VITE_SOCKET_URL || 'ws://localhost:3000'
 ```
 
-## Performance Metrics
+## 性能指标
 
-- **Load Time**: 1.2s (cold) / 200ms (warm)
-- **First Paint**: 680ms
-- **Lighthouse**: 94/100
-- **Bundle Size**: 367KB gzipped
+- **加载时间**：冷启动时为1.2秒，热启动时为200毫秒  
+- **首次渲染时间**：680毫秒  
+- **Lighthouse测试评分**：94/100  
+- **压缩后的代码包大小**：367KB  
 
-### Optimization
+## 优化措施
 
-1. **Markdown Library**: Loaded via CDN (259KB)
-2. **Prism.js**: CDN for syntax highlighting
-3. **Tailwind**: JIT compilation, only used classes
-4. **Code Splitting**: Vendor, app, markdown chunks
+- **Markdown库**：通过CDN加载（大小为259KB）  
+- **Prism.js**：通过CDN加载以实现语法高亮功能  
+- **Tailwind CSS**：使用JIT编译技术，仅加载所需的类  
+- **代码分割**：将代码分为供应商代码、应用程序代码和Markdown代码块
 
-## Extending the Dashboard
+## 扩展仪表板功能
 
-### Add Custom Message Type
+- **添加自定义消息类型**  
+- **添加命令处理功能**  
+- **添加表情符号/反应动作**  
 
-```typescript
-// In Message.tsx
-const isError = author === 'error'
+## 主题定制
 
-return (
-  <div className={isError ? 'bg-red-900/30 border-red-500' : ''}>
-    {/* ... */}
-  </div>
-)
-```
-
-### Add Command Handlers
-
-```typescript
-// In ChatPanel.tsx
-const handleCommand = (input: string) => {
-  if (input.startsWith('/')) {
-    const [cmd, ...args] = input.split(' ')
-    
-    switch(cmd) {
-      case '/help':
-        // Show help
-        break
-      case '/clear':
-        setMessages([])
-        break
-    }
-  }
-}
-```
-
-### Add Reactions/Emojis
-
-```typescript
-// Extend Message interface
-interface Message {
-  // ... existing
-  reactions?: { emoji: string; count: number }[]
-}
-
-// In Message.tsx
-{message.reactions?.map(r => (
-  <button key={r.emoji}>{r.emoji} {r.count}</button>
-))}
-```
-
-## Theming
-
-### Switch Theme Colors
-
-Edit `tailwind.config.js`:
+- **切换主题颜色**：请编辑`tailwind.config.js`文件进行设置：  
 ```javascript
 theme: {
   extend: {
@@ -339,8 +299,9 @@ theme: {
 }
 ```
 
-### Custom Dark Mode
+### 自定义暗黑模式
 
+请按照以下步骤自定义暗黑模式样式：  
 ```typescript
 // App.tsx
 <div className={isDark ? 'dark' : ''}>
@@ -348,19 +309,19 @@ theme: {
 </div>
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Markdown not rendering | Check Prism.js CDN link in index.html |
-| Tailwind classes not applying | Clear node_modules, `npm install`, `npm run dev` |
-| TypeScript errors | Run `npm run build` to catch all |
-| Development lag | Increase port or check system resources |
-| Bundle too large | Split markdown loading with dynamic import |
+| Markdown无法渲染 | 请检查`index.html`文件中的Prism.js CDN链接是否正确。 |
+| Tailwind样式未应用 | 请清除`node_modules`文件夹，然后运行`npm install`和`npm run dev`命令。 |
+- TypeScript错误 | 运行`npm run build`命令以检测所有错误。 |
+- 开发环境运行缓慢 | 请尝试更改端口或检查系统资源使用情况。 |
+- 代码包过大 | 通过动态导入的方式分割Markdown内容的加载。 |
 
-## API Hooks (for future phases)
+## API接口（未来版本计划）
 
-Ready for Socket.io implementation:
+目前该仪表板已准备好支持Socket.io接口的集成：
 
 ```typescript
 // Hooks for real-time updates
@@ -370,45 +331,44 @@ const useTypingStatus = () => { /* ... */ }
 const useOnlineUsers = () => { /* ... */ }
 ```
 
-## Accessibility
+## 可访问性
 
-- Semantic HTML (header, main, nav)
-- Proper contrast ratios (WCAG AA)
-- Keyboard navigation support
-- ARIA labels on interactive elements
-- Focus indicators on buttons
+- 使用语义化的HTML结构（如`<header>`、`<main>`、`<nav>`等元素）  
+- 符合WCAG AA标准（提供适当的对比度）  
+- 支持键盘导航  
+- 交互式元素上添加了ARIA标签  
+- 按钮上带有焦点指示器  
 
-## Browser Support
+## 浏览器兼容性
 
-- Chrome/Chromium 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+- Chrome/Chromium 90及以上版本  
+- Firefox 88及以上版本  
+- Safari 14及以上版本  
+- Edge 90及以上版本  
+（支持ES2020标准的现代浏览器）
 
-(Modern browsers with ES2020 support)
+## 未来开发计划
 
-## Future Roadmap
+- **第二阶段**：实现WebSocket实时同步功能  
+- **第三阶段**：支持文件上传、表情符号和搜索功能  
+- **第四阶段**：优化移动端适配性和PWA（Progressive Web Application）功能  
+- **第五阶段**：添加语音消息和视频通话功能  
 
-- **Phase 2**: WebSocket real-time sync
-- **Phase 3**: File uploads, reactions, search
-- **Phase 4**: Mobile responsive, PWA
-- **Phase 5**: Voice messages, video calls
+## 开发建议
 
-## Development Tips
+- **热重载**：对代码进行修改后，浏览器会自动重新加载页面。  
+- **开发者工具**：支持React DevTools和Redux DevTools。  
+- **Lighthouse测试**：运行`npm run preview`后进行性能审计。  
+- **代码包分析**：运行`npm run build`命令可查看代码包的各个部分大小。  
 
-1. **Hot Reload**: Changes auto-reload in browser
-2. **DevTools**: React DevTools + Redux DevTools compatible
-3. **Lighthouse**: Run `npm run preview` then audit
-4. **Bundle Analysis**: `npm run build` shows chunk sizes
+## 技术支持
 
-## Support
-
-- **Issues**: Check TROUBLESHOOTING in README.md
-- **Customization**: See EXTENDING COMPONENTS section
-- **Integration**: See REAL-TIME INTEGRATION section
+- **问题解决**：请参考`README.md`文件中的“Troubleshooting”部分。  
+- **自定义功能**：请参阅“EXTENDING COMPONENTS”部分。  
+- **集成方案**：请参阅“REAL-TIME INTEGRATION”部分。  
 
 ---
 
-**Last Updated**: January 2025  
-**Maintained By**: Clawdbot Team  
-**Phase**: 1 (Complete) - Static UI with Dummy Data
+**最后更新时间**：2025年1月  
+**维护者**：Clawdbot团队  
+**开发阶段**：第一阶段（已完成）——包含静态界面和示例数据

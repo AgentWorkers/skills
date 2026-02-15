@@ -1,194 +1,179 @@
 ---
 name: gizmolab-tools
-description: Use GizmoLab's free blockchain developer tools at tools.gizmolab.io and Web3 UI components at ui.gizmolab.io. Ethereum tools include Contract UI interaction, Transaction Decoder, ENS Lookup, and Burner Wallet. Solana tools include Token Creation, Token Minting, Token Snapshots, and Token Swaps. Web3 UI components include Abstract Gasless NFT Mint, Chain Selector, Crypto Product Card, NFT Mint Card, NFT Portfolio, LiFi Widget, and Polymarket Widget. Use when building dApps, interacting with smart contracts, or performing blockchain operations.
+description: 您可以在 [tools.gizmolab.io](http://tools.gizmolab.io) 上使用 GizmoLab 提供的免费区块链开发工具，在 [ui.gizmolab.io](http://ui.gizmolab.io) 上找到 Web3 UI 组件。Ethereum 相关的工具包括 Contract UI（用于与智能合约交互）、Transaction Decoder（用于解析交易数据）、ENS Lookup（用于查询以太坊名称服务中的地址信息）以及 Burner Wallet（用于销毁代币）。Solana 相关的工具包括 Token Creation（用于创建代币）、Token Minting（用于铸造代币）、Token Snapshots（用于生成代币快照）以及 Token Swaps（用于进行代币交易）。这些工具和组件适用于构建去中心化应用程序（dApps）、与智能合约进行交互或执行区块链操作。
 ---
 
-# GizmoLab Tools & UI
+# GizmoLab 工具与用户界面 (Tools & UI)
 
-**Tools:** https://tools.gizmolab.io/ - Free blockchain developer tools
-**UI Library:** https://ui.gizmolab.io/ - Web3 component library
+**工具 (Tools):** https://tools.gizmolab.io/ – 免费的区块链开发者工具  
+**用户界面库 (UI Library):** https://ui.gizmolab.io/ – Web3 组件库  
 
-## Available Tools
+## 可用工具 (Available Tools)  
 
-### Ethereum Tools
+### Ethereum 工具 (Ethereum Tools)  
 
-| Tool | URL | Purpose |
-|------|-----|---------|
-| Contracts UI | `/ethereum/contracts/ui` | Interact with any smart contract (read/write) |
-| Transaction Decoder | `/ethereum/converters/transaction-decoder` | Decode raw transaction data |
-| ENS Lookup | `/ethereum/ens/lookup` | Resolve ENS names to addresses |
-| Burner Wallet | `/ethereum/wallets/burner` | Generate temporary wallets |
+| 工具 | URL | 功能 |  
+|------|-----|---------|  
+| 合同界面 (Contracts UI) | `/ethereum/contracts/ui` | 与任何智能合约交互（读写）  
+| 交易解码器 (Transaction Decoder) | `/ethereum/converters/transaction-decoder` | 解码原始交易数据  
+| ENS 查询 (ENS Lookup) | `/ethereum/ens/lookup` | 将 ENS 名称解析为地址  
+| 燃烧钱包 (Burner Wallet) | `/ethereum/wallets/burner` | 生成临时钱包  
 
-### Solana Tools
+### Solana 工具 (Solana Tools)  
 
-| Tool | URL | Purpose |
-|------|-----|---------|
-| Create Token | `/solana/token/create` | Create new SPL tokens |
-| Mint Token | `/solana/token/mint` | Mint tokens to addresses |
-| Token Snapshot | `/solana/token/snapshot/token` | Snapshot token holders |
-| Swap | `/solana/swap` | Swap tokens via Jupiter |
+| 工具 | URL | 功能 |  
+|------|-----|---------|  
+| 创建代币 (Create Token) | `/solana/token/create` | 创建新的 SPL 代币  
+| 铸造代币 (Mint Token) | `/solana/token/mint` | 向指定地址铸造代币  
+| 代币快照 (Token Snapshot) | `/solana/token/snapshot/token` | 获取代币持有者信息  
+| 交易对换 (Swap) | `/solana/swap` | 通过 Jupiter 进行代币交易  
 
-## Usage
+## 使用方法 (Usage)  
 
-All tools are web-based. Use the `browser` tool to interact:
+所有工具均为基于 Web 的。可以使用浏览器直接访问这些工具进行操作。  
 
-### Example: ENS Lookup
-
+### 示例：ENS 查询 (Example: ENS Lookup)  
 ```
 1. browser action=open targetUrl="https://tools.gizmolab.io/ethereum/ens/lookup"
 2. browser action=snapshot  
 3. Find the ENS input field, type the name
 4. Click lookup/resolve button
 5. browser action=snapshot to see result
-```
+```  
 
-### Example: Transaction Decoder
-
+### 示例：交易解码器 (Example: Transaction Decoder)  
 ```
 1. browser action=open targetUrl="https://tools.gizmolab.io/ethereum/converters/transaction-decoder"
 2. browser action=snapshot
 3. Paste raw transaction hex into input
 4. Click decode button
 5. browser action=snapshot to see decoded data
-```
+```  
 
-### Example: Create Solana Token
-
+### 示例：创建 Solana 代币 (Example: Create Solana Token)  
 ```
 1. browser action=open targetUrl="https://tools.gizmolab.io/solana/token/create"
 2. browser action=snapshot
 3. Connect wallet when prompted
 4. Fill token details (name, symbol, decimals, supply)
 5. Click create and confirm transaction
-```
+```  
 
-## Tool Details
+## 工具详情 (Tool Details)  
 
-### Contracts UI
-- Enter contract address + ABI
-- Select network (Mainnet, Goerli, Sepolia, etc.)
-- Read contract state or write transactions
-- Supports any EVM-compatible contract
+### 合同界面 (Contracts UI)  
+- 输入合约地址和 ABI  
+- 选择网络（Mainnet、Goerli、Sepolia 等）  
+- 读取合约状态或执行交易  
+- 支持所有兼容 EVM 的合约  
 
-### Transaction Decoder
-- Input: Raw transaction hex (0x...)
-- Output: Decoded function call, parameters, values
-- Works with any transaction data
+### 交易解码器 (Transaction Decoder)  
+- 输入：原始交易十六进制数据（0x...）  
+- 输出：解码后的函数调用、参数及返回值  
+- 可处理任何类型的交易数据  
 
-### ENS Lookup
-- Forward lookup: ENS name → Ethereum address
-- Reverse lookup: Address → ENS name
-- Shows resolver, registrant, expiry
+### ENS 查询 (ENS Lookup)  
+- 正向查询：ENS 名称 → Ethereum 地址  
+- 反向查询：地址 → ENS 名称  
+- 显示解析器、注册者及合约有效期  
 
-### Burner Wallet
-- Generates random private key + address
-- Use for testing only
-- Never use for real funds
+### 燃烧钱包 (Burner Wallet)  
+- 生成随机私钥和地址  
+- 仅用于测试  
+- 严禁用于实际资金操作  
 
-### Solana Token Create
-- Creates new SPL token
-- Set name, symbol, decimals, initial supply
-- Upload token image/metadata
-- Requires wallet connection (Phantom, Solflare)
+### Solana 代币创建 (Solana Token Create)  
+- 创建新的 SPL 代币  
+- 设置代币名称、符号、小数位数及初始发行量  
+- 上传代币图片/元数据  
+- 需要连接钱包（推荐使用 Phantom 或 Solflare）  
 
-### Solana Token Mint
-- Mint additional tokens
-- Enter token address + amount
-- Must be token authority
+### Solana 代币铸造 (Solana Token Mint)  
+- 铸造额外代币  
+- 输入代币地址和铸造数量  
+- 用户需具有代币管理权限  
 
-### Solana Token Snapshot
-- Get list of all token holders
-- Export as CSV
-- Shows balances at current slot
+### Solana 代币快照 (Solana Token Snapshot)  
+- 获取所有代币持有者列表  
+- 导出为 CSV 文件  
+- 显示当前时间点的代币余额  
 
-### Solana Swap
-- Jupiter-powered swaps
-- Best price routing
-- Connect wallet to execute
+### Solana 交易对换 (Solana Swap)  
+- 通过 Jupiter 平台进行代币交易  
+- 自动匹配最优交易价格  
+- 需要连接钱包才能执行交易  
 
-## Networks Supported
+## 支持的网络 (Supported Networks)  
+**Ethereum:** Mainnet、Goerli、Sepolia、Base、Polygon、Arbitrum、Optimism、Avalanche、BNB Chain  
+**Solana:** Mainnet、Devnet  
 
-**Ethereum:** Mainnet, Goerli, Sepolia, Base, Polygon, Arbitrum, Optimism, Avalanche, BNB Chain
-
-**Solana:** Mainnet, Devnet
-
-## Tips
-
-- For contract interactions, have the ABI ready (get from Etherscan)
-- Transaction decoder works offline - no network needed
-- Burner wallets are ephemeral - save keys if needed
-- Solana tools require a connected wallet (Phantom recommended)
+## 提示 (Tips)  
+- 进行合约交互前，请准备好 ABI（可从 Etherscan 获取）  
+- 交易解码器可离线使用（无需网络连接）  
+- 燃烧钱包为临时账户，请在需要时保存私钥  
+- Solana 工具需连接钱包（推荐使用 Phantom）  
 
 ---
 
-# GizmoLab UI - Web3 Component Library
+# GizmoLab 用户界面 – Web3 组件库 (GizmoLab UI – Web3 Component Library)  
+全栈 Web3 组件，用于构建去中心化应用（dApps）：https://ui.gizmolab.io/  
 
-Full-stack Web3 components for building dApps at https://ui.gizmolab.io/
+## 可用组件 (Available Components)  
 
-## Available Components
+| 组件 | URL | 功能 |  
+|-----------|-----|---------|  
+| 无 gas 费用 NFT 铸造组件 (Abstract Gasless NFT Mint) | `/components/abstract-gasless-nft-mint` | 无需 gas 费用即可铸造 NFT  
+| 抽象登录组件 (Abstract Sign In) | `/components/abstract-sign-in` | 使用 Abstract Global Wallet 登录  
+| 链路选择器组件 (Chain Selector) | `/components/chain-selector` | 用于切换区块链网络的弹出窗口  
+| 加密产品卡片组件 (Crypto Product Card) | `/components/crypto-product-card` | 支持使用加密货币支付或自定义 ERC20 产品信息  
+| NFT 铸造卡片组件 (NFT Mint Card) | `/components/nft-mint-card` | 集成智能合约的 NFT 铸造功能  
+| NFT 投资组合组件 (NFT Portfolio) | `/components/nft-portfolio` | 查看 NFT 持有情况  
+| LiFi 小部件 (LiFi Widget) | `/components/lifi-widget` | 支持跨链桥接和交易  
+| Polymarket 小部件 (Polymarket Widget) | `/components/polymarket-widget` | 支持预测市场交易  
 
-| Component | URL | Purpose |
-|-----------|-----|---------|
-| Abstract Gasless NFT Mint | `/components/abstract-gasless-nft-mint` | Mint NFTs without gas fees using account abstraction |
-| Abstract Sign In | `/components/abstract-sign-in` | Sign in with Abstract Global Wallet |
-| Chain Selector | `/components/chain-selector` | Header popover to switch blockchain networks |
-| Crypto Product Card | `/components/crypto-product-card` | Pay-with-crypto or custom ERC20 product card |
-| NFT Mint Card | `/components/nft-mint-card` | Mint NFTs with smart contract integration |
-| NFT Portfolio | `/components/nft-portfolio` | Dashboard to view NFT holdings |
-| LiFi Widget | `/components/lifi-widget` | Cross-chain bridging and swapping |
-| Polymarket Widget | `/components/polymarket-widget` | Prediction market trading widget |
+## 安装指南 (Installation Guides)  
+详细安装指南请访问：https://ui.gizmolab.io/docs/  
+- **安装 Abstract Global Wallet**：设置账户抽象层  
+- **安装 Next.js 14**：配置 Next.js 项目  
+- **安装 Dynamic**：实现动态钱包集成  
+- **安装 Shadcn UI**：配置 Shadcn 用户界面  
+- **部署 EVM 合约**：部署智能合约  
 
-## Installation Guides
+## 组件使用方法 (Using Components)  
 
-Available at https://ui.gizmolab.io/docs/:
-
-- **Install Abstract Global Wallet** - Account abstraction setup
-- **Install Next.js 14** - Next.js project setup
-- **Install Dynamic** - Dynamic wallet integration
-- **Install Shadcn UI** - Shadcn UI setup
-- **Deploy EVM Contract** - Smart contract deployment
-
-## Using Components
-
-### 1. Browse Components
-
+### 1. 浏览组件 (Browse Components)  
 ```
 browser action=open targetUrl="https://ui.gizmolab.io/components"
 browser action=snapshot
-```
+```  
 
-### 2. View Component Details
+### 2. 查看组件详情 (View Component Details)  
+每个组件页面包含：  
+- 实时预览/演示  
+- 安装说明  
+- 可复制的代码片段  
+- 属性/配置选项  
 
-Each component page includes:
-- Live preview/demo
-- Installation instructions
-- Code snippets (copy-paste ready)
-- Props/configuration options
-
-### 3. Example: Add NFT Mint Card
-
+### 3. 示例：添加 NFT 铸造卡片 (Example: Add NFT Mint Card)  
 ```
 1. Go to /components/nft-mint-card
 2. Copy the installation command
 3. Copy the component code
 4. Configure with your contract address
 5. Import and use in your dApp
-```
+```  
 
-## Tech Stack
+## 技术栈 (Tech Stack)  
+组件基于以下技术构建：  
+- **React / Next.js 14**  
+- **Shadcn UI**（基于 Tailwind CSS）  
+- **Wagmi / Viem**（用于 Ethereum 交互）  
+- **账户抽象层（Account Abstraction）**  
 
-Components are built with:
-- **React / Next.js 14**
-- **Shadcn UI** (Tailwind-based)
-- **Wagmi / Viem** (Ethereum)
-- **Account Abstraction** support
+## 测试环境 (Playground)  
+可在：https://ui.gizmolab.io/playground 实时测试组件功能  
 
-## Playground
-
-Test components live at https://ui.gizmolab.io/playground
-
-## Custom Development
-
-For custom Web3 components or dApp development:
-- Book a call: https://calendly.com/gizmolab/30min
-- Contact: https://gizmolab.io/contact
+## 定制开发 (Custom Development)  
+如需定制 Web3 组件或开发去中心化应用，请：  
+- 预约咨询：https://calendly.com/gizmolab/30min  
+- 联系我们：https://gizmolab.io/contact

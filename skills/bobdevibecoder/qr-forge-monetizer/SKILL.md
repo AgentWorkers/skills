@@ -1,108 +1,107 @@
-# QR Forge Monetization Skill
+# QR Forge 的盈利策略
 
-## Overview
-QR Forge is ALREADY BUILT and deployed. This skill focuses on monetizing the existing product.
+## 概述
+QR Forge 已经开发完成并部署上线。本策略专注于如何通过现有产品实现盈利。
 
-## Current State
-- **Location**: `/home/milad/.openclaw/workspace/qr-forge/`
-- **Stack**: Next.js + Supabase
-- **Status**: Has `.next` folder (built), likely deployed to Vercel
-- **Features**: QR code generation (basic)
+## 当前状态
+- **项目位置**：`/home/milad/.openclaw/workspace/qr-forge/`
+- **技术栈**：Next.js + Supabase
+- **开发状态**：已生成 `.next` 文件（代码构建完成），可能已部署到 Vercel 服务器
+- **主要功能**：二维码生成（基础功能）
 
-## Market Opportunity
+## 市场机会
 
-### Search Volume Data
-| Keyword | Monthly Searches | Competition |
+### 关键词搜索量数据
+| 关键词 | 每月搜索量 | 竞争程度 |
 |---------|------------------|-------------|
-| qr code generator | 100,000+ | High |
-| free qr code | 50,000+ | High |
-| qr code maker | 30,000+ | Medium |
-| custom qr code | 20,000+ | Medium |
-| qr code api | 5,000+ | Low |
-| bulk qr codes | 3,000+ | Low |
+| 二维码生成器 | 100,000+ | 竞争激烈 |
+| 免费二维码生成器 | 50,000+ | 竞争激烈 |
+| 二维码制作工具 | 30,000+ | 中等竞争 |
+| 定制二维码 | 20,000+ | 中等竞争 |
+| 二维码 API | 5,000+ | 竞争较小 |
+| 大批量二维码生成 | 3,000+ | 竞争较小 |
 
-### Competitive Landscape
-- **QRCode Monkey**: Free, ad-supported
-- **QR Code Generator (qr-code-generator.com)**: Freemium, $5-15/month
-- **Beaconstac**: Enterprise, $49-99/month
-- **QRStuff**: Freemium, $15/month
+### 竞争格局
+- **QRCode Monkey**：免费服务，依赖广告盈利
+- **QR Code Generator (qr-code-generator.com)**：免费/付费模式，每月 5-15 美元
+- **Beaconstac**：企业级服务，每月 49-99 美元
+- **QRStuff**：免费/付费模式，每月 15 美元
 
-### Your Edge
-- Privacy-focused (no tracking)
-- Clean UI
-- API access at lower price point
-- Built on modern stack (fast)
+### 产品优势
+- 注重用户隐私（无数据追踪）
+- 界面设计简洁易用
+- 提供低成本的 API 接口
+- 采用现代技术栈（运行速度快）
 
-## Monetization Strategy
+## 盈利策略
 
-### Tier Structure
+### 价格层级
 
-#### Free Tier
-- 10 QR codes per day
-- Basic styles (black/white)
-- Standard resolution (300x300)
-- No analytics
-- Watermark "Made with QRForge"
+#### 免费层级
+- 每天可生成 10 个二维码
+- 支持基本样式（黑白）
+- 标准分辨率（300x300）
+- 不提供分析功能
+- 二维码上带有 “使用 QRForge 制作” 的水印
 
-#### Pro Tier - $9/month
-- Unlimited QR codes
-- Custom colors and gradients
-- Logo embedding
-- High resolution (up to 2000x2000)
-- Basic analytics (scan counts)
-- No watermark
-- Priority support
+#### 专业层级（每月 9 美元）
+- 无限制二维码生成
+- 支持自定义颜色和渐变效果
+- 可嵌入公司 logo
+- 高分辨率输出（最高 2000x2000）
+- 提供基本扫描数据统计
+- 二维码上无水印
+- 提供优先技术支持
 
-#### API Tier - $29/month
-- Everything in Pro
-- REST API access
-- 10,000 API calls/month
-- Webhook notifications
-- Bulk generation (up to 1000 at once)
-- SVG/PNG/PDF export
+#### API 层级（每月 29 美元）
+- 具备专业层级所有功能
+- 提供 REST API 接口
+- 每月允许 10,000 次 API 调用
+- 支持 Webhook 通知
+- 支持批量二维码生成（一次最多 1000 个）
+- 支持 SVG/PNG/PDF 格式导出
 
-#### Enterprise - $99/month
-- Everything in API
-- 100,000 API calls/month
-- Custom domain QR tracking
-- Team accounts (5 seats)
-- SLA guarantee
-- Dedicated support
+#### 企业层级（每月 99 美元）
+- 具备 API 层级所有功能
+- 每月允许 100,000 次 API 调用
+- 支持自定义域名下的二维码追踪功能
+- 提供团队账户（最多 5 个用户）
+- 提供服务水平协议（SLA）保障
+- 提供专属技术支持
 
-## Implementation Checklist
+## 实施计划
 
-### Phase 1: Payment Integration (Week 1)
-- [ ] Set up Stripe account
-- [ ] Install Stripe npm package
-- [ ] Create pricing page
-- [ ] Implement subscription webhooks
-- [ ] Add user authentication (if not present)
-- [ ] Create subscription management UI
+### 第一阶段：支付集成（第 1 周）
+- [ ] 注册 Stripe 账户
+- [ ] 安装 Stripe 的 npm 包
+- [ ] 创建定价页面
+- [ ] 实现订阅相关的 Webhook 功能
+- [ ] 如果尚未实现，添加用户认证机制
+- [ ] 创建订阅管理界面
 
-### Phase 2: Feature Gating (Week 2)
-- [ ] Implement usage tracking (codes generated)
-- [ ] Add daily limit for free tier
-- [ ] Gate premium features behind paywall
-- [ ] Add watermark to free tier
-- [ ] Build upgrade prompts
+### 第二阶段：功能限制（第 2 周）
+- [ ] 实现二维码使用量的追踪功能
+- [ ] 为免费层级设置每日使用量限制
+- [ ] 将高级功能设置为付费内容
+- [ ] 在免费层级中添加水印
+- [ ] 设计升级提示界面
 
-### Phase 3: Premium Features (Week 3-4)
-- [ ] Custom colors/gradients
-- [ ] Logo embedding
-- [ ] High-resolution export
-- [ ] Basic scan analytics
-- [ ] API endpoint creation
-- [ ] API key management
+### 第三阶段：高级功能开发（第 3-4 周）
+- [ ] 支持自定义颜色和渐变效果
+- [ ] 支持 logo 嵌入功能
+- [ ] 提供高分辨率二维码输出
+- [ ] 提供基本扫描数据分析功能
+- [ ] 创建 API 接口端点
+- [ ] 实现 API 密钥管理功能
 
-### Phase 4: Growth (Ongoing)
-- [ ] SEO optimization
-- [ ] Blog content
-- [ ] Directory submissions
-- [ ] Affiliate program
+### 第四阶段：持续发展（长期进行）
+- [ ] 优化产品 SEO 排名
+- [ ] 撰写相关博客文章
+- [ ] 将产品信息提交到行业目录（如 Product Hunt、AlternativeTo、Capterra、SaaSHub、BetaList）
 
-## Technical Implementation
+## 技术实现细节
 
-### Stripe Integration
+### Stripe 集成
 ```javascript
 // pages/api/create-checkout-session.js
 import Stripe from 'stripe';
@@ -124,7 +123,7 @@ export default async function handler(req, res) {
 }
 ```
 
-### Usage Tracking (Supabase)
+### 使用量追踪（使用 Supabase 实现）
 ```sql
 -- Add to Supabase
 CREATE TABLE usage (
@@ -147,7 +146,7 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-### Feature Gating
+### 功能限制机制
 ```javascript
 // lib/features.js
 export const PLAN_LIMITS = {
@@ -184,24 +183,24 @@ export function canUseFeature(user, feature) {
 }
 ```
 
-## SEO Strategy
+## SEO 策略
 
-### Target Keywords
-1. "free qr code generator" (main page)
-2. "qr code generator with logo" (feature page)
-3. "bulk qr code generator" (feature page)
-4. "qr code api" (API docs page)
-5. "qr code for business" (use case page)
+### 目标关键词
+1. “免费二维码生成器”（首页）
+2. “带 logo 的二维码生成器”（功能页面）
+3. “批量二维码生成工具”（功能页面）
+4. “二维码 API”（API 文档页面）
+5. “企业用二维码”（应用场景页面）
 
-### Content Pages to Create
-- `/blog/how-to-create-qr-code` (tutorial)
-- `/blog/qr-code-best-practices` (guide)
-- `/blog/qr-code-for-restaurants` (use case)
-- `/blog/qr-code-for-business-cards` (use case)
-- `/use-cases/marketing` (industry page)
-- `/use-cases/events` (industry page)
+### 需要创建的博客文章
+- `/blog/how-to-create-qr-code`（教程）
+- `/blog/qr-code-best-practices`（使用指南）
+- `/blog/qr-code-for-restaurants`（餐厅应用场景）
+- `/blog/qr-code-for-business-cards`（商业卡片应用场景）
+- `/use-cases/marketing`（营销领域应用场景）
+- `/use-cases/events`（活动场景）
 
-### Directory Submissions
+### 产品信息提交渠道
 - Product Hunt
 - AlternativeTo
 - G2
@@ -209,16 +208,16 @@ export function canUseFeature(user, feature) {
 - SaaSHub
 - BetaList
 
-## Marketing Strategy
+## 营销策略
 
-### Launch Sequence
-1. **Day 1**: Product Hunt launch
-2. **Day 2-7**: Respond to comments, gather feedback
-3. **Week 2**: Reddit posts (r/sideproject, r/webdev)
-4. **Week 3**: Indie Hackers case study
-5. **Week 4**: First blog posts go live
+### 发布计划
+1. **第 1 天**：在 Product Hunt 平台上发布产品信息
+2. **第 2-7 天**：回复用户评论，收集反馈
+3. **第 2 周**：在 Reddit 的 r/sideproject 和 r/webdev 子版块发布相关帖子
+4. **第 3 周**：在 Indie Hackers 平台上分享项目案例
+5. **第 4 周**：发布首批博客文章
 
-### Reddit Post (r/SideProject)
+### Reddit 发布内容示例（r/SideProject）
 ```
 Title: I built a privacy-focused QR code generator - would love feedback
 
@@ -245,57 +244,57 @@ Link: [qr-forge.vercel.app]
 Thanks!
 ```
 
-## Revenue Projections
+## 收入预测
 
-### Month 1 (Launch)
-- 1,000 visitors
-- 20 free signups
-- 2 Pro conversions (10%)
-- **Revenue: $18**
+### 第 1 个月（产品发布初期）
+- 预计访问量：1,000 人
+- 免费注册用户：20 人
+- 转换为专业用户：2 人（转化率 10%）
+- 收入：18 美元
 
-### Month 3 (Traction)
-- 5,000 visitors/month
-- 200 free users
-- 20 Pro subscribers
-- 2 API subscribers
-- **MRR: $238**
+### 第 3 个月（产品稳定期）
+- 预计访问量：5,000 人
+- 免费用户：200 人
+- 专业用户：20 人
+- API 使用者：2 人
+- 月收入：238 美元
 
-### Month 6 (Growth)
-- 15,000 visitors/month
-- 1,000 free users
-- 80 Pro subscribers
-- 10 API subscribers
-- 1 Enterprise
-- **MRR: $1,109**
+### 第 6 个月（产品成长期）
+- 预计访问量：15,000 人
+- 免费用户：1,000 人
+- 专业用户：20 人
+- API 使用者：10 人
+- 企业级用户：1 人
+- 月收入：1,109 美元
 
-### Month 12 (Established)
-- 50,000 visitors/month
-- 5,000 free users
-- 300 Pro subscribers
-- 50 API subscribers
-- 5 Enterprise
-- **MRR: $4,645**
+### 第 12 个月（产品成熟期）
+- 预计访问量：50,000 人
+- 免费用户：5,000 人
+- 专业用户：300 人
+- API 使用者：50 人
+- 企业级用户：5 家
+- 月收入：4,645 美元
 
-## Bot Tasks
+## 日常运营任务
 
-### Daily
-- [ ] Check Stripe for new subscriptions
-- [ ] Monitor error logs
-- [ ] Respond to support emails
+### 日常任务
+- [ ] 每日检查 Stripe 的订阅信息
+- [ ] 监控系统错误日志
+- [ ] 回复用户支持请求
 
-### Weekly
-- [ ] Publish 1 blog post
-- [ ] Share on social media
-- [ ] Check competitor updates
+### 周期性任务
+- [ ] 每周发布 1 篇博客文章
+- [ ] 在社交媒体上分享产品信息
+- [ ] 关注竞争对手的动态
 
-### Monthly
-- [ ] Analyze conversion funnel
-- [ ] A/B test pricing/features
-- [ ] Update feature roadmap
-- [ ] Send newsletter to users
+### 月度任务
+- [ ] 分析用户转化路径
+- [ ] 对价格和功能进行 A/B 测试
+- [ ] 更新产品功能规划
+- [ ] 向用户发送新闻通讯
 
-## Files in This Skill
-- `SKILL.md` - This documentation
-- `metrics.json` - Revenue and usage tracking
-- `content-ideas.json` - Blog post queue
-- `seo-keywords.json` - Target keywords and rankings
+## 相关文件
+- `SKILL.md`：本文档
+- `metrics.json`：收入和使用量统计数据
+- `content-ideas.json`：博客文章创作计划
+- `seo-keywords.json`：目标关键词及排名数据

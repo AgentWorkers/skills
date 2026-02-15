@@ -1,79 +1,78 @@
-# SEO Optimizer Pro
+# SEO优化大师（SEO Optimizer Pro）
 
-**AI-powered SEO content optimization for both Google ranking and AI search (AEO).**
+**基于AI的SEO内容优化工具，适用于谷歌排名和AI搜索（AEO）**
 
-Analyze and optimize content with Claude AI for search visibility across traditional Google results and emerging AI search platforms (ChatGPT, Google AI Overviews, Claude, etc).
-
----
-
-## 🚀 Why This Skill?
-
-### Problem Statement
-SEO optimization requires balancing multiple objectives:
-- Content must rank on Google with proper technical SEO
-- AI search optimization (AEO) is a new frontier—getting cited in ChatGPT, Google AI Overviews, Claude responses
-- Manual analysis of readability, keyword density, heading structure is time-consuming
-- Unclear what will actually impact rankings vs. what's just best practice
-- Need both technical optimization AND compelling AI-optimized content
-
-### The Solution
-Analyze and optimize content using Claude AI combined with technical SEO audits. Get specific recommendations for both traditional Google ranking AND emerging AI search visibility.
-
-### Why This Matters
-- **AI Search is Growing**: ChatGPT, Google AI Overviews, Claude are becoming major discovery channels
-- **2026 Trend**: Quality content with proper structure ranks better in both systems
-- **Data-Driven**: Real recommendations based on actual SEO metrics, not just generic advice
-- **Dual Optimization**: One analysis optimizes for both Google AND AI search platforms
+利用Claude AI分析并优化内容，提升在传统谷歌搜索结果以及新兴AI搜索平台（如ChatGPT、Google AI Overviews、Claude等）中的可见性。
 
 ---
 
-## ✨ What You Get
+## 🚀 为什么需要这个技能？
 
-### Comprehensive SEO Analysis
-Every analysis includes:
-- 📊 **Readability Score** - Flesch-Kincaid grade level and readability metrics
-- 🔑 **Keyword Analysis** - Density tracking and natural integration suggestions
-- 📐 **Content Structure** - Heading hierarchy, paragraph length, word count
-- 🎯 **Technical SEO** - Meta tags, link analysis, structured data
-- 🤖 **AI Search Optimization** - Recommendations for ChatGPT citations, AI Overviews
+### 问题背景
+SEO优化需要平衡多个目标：
+- 内容必须通过技术性SEO在谷歌上获得良好的排名
+- AI搜索优化（AEO）是一个新的领域——让内容被ChatGPT、Google AI Overviews、Claude等AI系统引用
+- 手动分析可读性、关键词密度和标题结构非常耗时
+- 不清楚哪些因素真正影响排名，哪些只是最佳实践
+- 需要同时进行技术优化和吸引人的AI优化内容
 
-### Multi-Model AI Integration
-Works with multiple AI models for flexibility:
-- **Claude 4.5 Series** - Highest quality reasoning (Opus, Sonnet, Haiku)
-- **GPT-5.2 Series** - Advanced reasoning (Pro, Thinking, Instant)
-- **Gemini 2.5/3.0** - Fast & efficient analysis
-- **Llama 3.2/3.3** - Open-source alternative
-- **Mistral Large** - High-performance model
+### 解决方案
+结合Claude AI和技术性SEO审计来分析和优化内容，为传统谷歌排名和新兴AI搜索平台的可见性提供具体建议。
 
-Features:
-- **Title Optimization** - SEO-friendly titles (40-60 chars)
-- **Meta Descriptions** - Auto-generated descriptions (150-160 chars)
-- **H1 Suggestions** - Optimized heading tags
-- **Key Points Expansion** - What topics to expand for better coverage
-- **Keyword Integration** - Natural ways to incorporate target keywords
-- **Internal Linking Ideas** - Strategic internal linking opportunities
-
-### Answer Engine Optimization (AEO)
-Five specific recommendations to:
-- Get your content featured in AI search results
-- Appear as cited sources in ChatGPT, Google AI Overviews, Claude
-- Optimize for question-answer format (how AI searches work)
-- Build authority signals that AI systems recognize
-- Structure content for AI comprehension and citation
-
-### Technical Metrics
-Analyze:
-- Word count and content length
-- Sentence and paragraph structure
-- Keyword density by target keyword
-- Heading structure (H1, H2, H3...)
-- Readability (Flesch-Kincaid grade)
-- Link analysis (internal/external)
-- Content organization
+### 重要性
+- **AI搜索正在崛起**：ChatGPT、Google AI Overviews、Claude正成为主要的发现渠道
+- **2026年的趋势**：结构良好的高质量内容在两种系统中都能获得更好的排名
+- **数据驱动**：基于实际的SEO指标提供建议，而不仅仅是通用建议
+- **双重优化**：一次分析即可优化谷歌和AI搜索平台
 
 ---
 
-## 📊 Real-World Example
+## ✨ 你将获得什么
+
+### 全面的SEO分析
+每次分析包括：
+- 📊 **可读性评分** - Flesch-Kincaid等级和可读性指标
+- 🔑 **关键词分析** - 关键词密度跟踪和自然融入建议
+- 📐 **内容结构** - 标题层次结构、段落长度、字数
+- 🎯 **技术性SEO** - 元标签、链接分析、结构化数据
+- 🤖 **AI搜索优化** - 为ChatGPT引用和AI Overviews提供的建议
+
+### 多模型AI集成
+支持多种AI模型，灵活选择：
+- **Claude 4.5系列** - 最高级别的推理能力（Opus、Sonnet、Haiku）
+- **GPT-5.2系列** - 高级推理能力（Pro、Thinking、Instant）
+- **Gemini 2.5/3.0** - 快速高效的分析
+- **Llama 3.2/3.3** - 开源替代模型
+- **Mistral Large** - 高性能模型
+
+功能包括：
+- **标题优化** - 适合SEO的标题（40-60个字符）
+- **元描述** - 自动生成的描述（150-160个字符）
+- **H1标题建议** - 优化的标题标签
+- **关键点扩展** - 需要扩展的主题以获得更好的覆盖范围
+- **关键词整合** - 自然融入目标关键词的方式
+- **内部链接建议** - 战略性的内部链接机会
+
+### 答案引擎优化（AEO）
+提供五项具体建议，帮助你的内容：
+- 在AI搜索结果中脱颖而出
+- 被ChatGPT、Google AI Overviews、Claude等引用
+- 优化问答格式（符合AI搜索的提问方式）
+- 建立AI系统认可的权威信号
+- 优化内容以便AI理解和引用
+
+### 技术指标
+分析以下方面：
+- 字数和内容长度
+- 句子和段落结构
+- 按目标关键词划分的关键词密度
+- 标题结构（H1、H2、H3等）
+- 可读性（Flesch-Kincaid等级）
+- 链接分析（内部/外部）
+
+---
+
+## 📊 实际案例
 
 ```
 ANALYZING: Blog post about "Cloud Storage Solutions"
@@ -135,52 +134,52 @@ enhancing structure for AI readability, adding comparison tables.
 
 ---
 
-## Use Cases
+## 使用场景
 
-### Content Marketing
-- Optimize blog posts for both Google and AI search
-- Ensure content gets cited in ChatGPT, Google AI Overviews
-- A/B test content structure recommendations
-- Scale content optimization across multiple writers
+### 内容营销
+- 优化博客文章，以适应谷歌和AI搜索
+- 确保内容被ChatGPT、Google AI Overviews引用
+- 对内容结构进行A/B测试
+- 在多个作者之间推广内容优化
 
-### SEO Professionals
-- Audit client websites for optimization opportunities
-- Provide data-driven recommendations with impact estimates
-- Build optimization reports with specific, actionable steps
-- Track progress across multiple keyword targets
+### SEO专业人士
+- 审查客户网站，寻找优化机会
+- 提供基于数据的建议，并附带影响估算
+- 制作包含具体可操作步骤的优化报告
+- 跟踪多个关键词目标的进展
 
-### Product Documentation
-- Optimize docs for both search and AI assistant discovery
-- Ensure technical content appears in AI search results
-- Improve readability scores for accessibility
-- Structure docs for AI system comprehension
+### 产品文档
+- 优化文档，以便在搜索和AI助手中被发现
+- 确保技术内容出现在AI搜索结果中
+- 提高可读性评分，便于访问
+- 优化文档结构，以便AI系统理解
 
-### E-Commerce
-- Optimize product descriptions for Google Shopping and AI search
-- Improve category page rankings with strategic content
-- Enhance FAQ sections for AEO visibility
-- Increase organic traffic from emerging AI search channels
+### 电子商务
+- 优化产品描述，以适应谷歌购物和AI搜索
+- 通过策略性内容提升分类页的排名
+- 增强FAQ部分的AI搜索可见性
+- 从新兴AI搜索渠道增加自然流量
 
-### News & Publishing
-- Optimize articles for news search and AI citations
-- Improve readability for different audience levels
-- Structure content for AI system extraction and citation
-- Track SEO performance metrics over time
+### 新闻与出版
+- 优化文章，以便在新闻搜索和AI引用中脱颖而出
+- 提高不同受众群体的可读性
+- 优化内容结构，以便AI系统提取和引用
+- 随时间跟踪SEO性能指标
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### 1. Access the Skill
-Available for free on ClawhHub - no subscription required
+### 1. 获取该技能
+在ClawhHub上免费提供，无需订阅
 
-### 2. Set Up
-Ensure you have:
-- Your Anthropic API key configured
-- Content to analyze (HTML or plain text)
-- Target keywords (optional but recommended)
+### 2. 设置
+确保你已配置：
+- Anthropic API密钥
+- 需要分析的内容（HTML或纯文本）
+- 目标关键词（可选，但推荐）
 
-### 3. Python Usage
+### 3. Python使用方法
 
 ```python
 from skills.seo_optimizer import SEOOptimizer
@@ -219,8 +218,8 @@ for i, rec in enumerate(results.aeo_recommendations, 1):
     print(f"{i}. {rec}")
 ```
 
-**Supported Models:**
-- `claude-opus-4-5-20251101` (Recommended)
+**支持的模型：**
+- `claude-opus-4-5-20251101`（推荐）
 - `claude-sonnet-4-5-20250929`
 - `claude-haiku-4-5-20251001`
 - `gpt-5.2-pro`
@@ -233,7 +232,7 @@ for i, rec in enumerate(results.aeo_recommendations, 1):
 - `llama-3.2-90b`
 - `mistral-large-2501`
 
-### 4. CLI Usage
+### 4. CLI使用方法
 
 ```bash
 # Analyze a file
@@ -248,238 +247,234 @@ seo-optimizer aeo "content.html" --keywords "topic-1" "topic-2"
 
 ---
 
-## 🤖 AI Search Optimization (AEO) Deep Dive
+## 🤖 AI搜索优化（AEO）深入解读
 
-### What is AEO?
-Answer Engine Optimization is the practice of optimizing content to appear in AI-generated search results and as cited sources in AI chatbots (ChatGPT, Google AI Overviews, Claude, Perplexity, etc).
+### 什么是AEO？
+答案引擎优化（AEO）是指优化内容，使其出现在AI生成的搜索结果中，并被AI聊天机器人（如ChatGPT、Google AI Overviews、Claude等）引用。
 
-### Why AEO Matters
-- **ChatGPT** can cite your content in responses (if properly formatted)
-- **Google AI Overviews** pull information from highly-relevant, authoritative sources
-- **Claude** and other AI systems prioritize structured, clear information
-- **2026 Reality**: AI search is becoming a primary discovery channel alongside Google
+### AEO的重要性
+- **ChatGPT** 可以在回答中引用你的内容（如果格式正确）
+- **Google AI Overviews** 会从高度相关、权威的来源中提取信息
+- **Claude** 和其他AI系统更重视结构化、清晰的信息
+- **2026年的现实**：AI搜索正成为与谷歌并列的主要发现渠道
 
-### AEO Best Practices (From Analysis)
+### AEO最佳实践（来自分析）
+**1. 为AI理解优化结构**
+- 使用清晰的标题层次（H1 → H2 → H3）
+- 将内容分成逻辑段落
+- 大量使用列表和项目符号
+- AI系统更易于理解结构化内容
 
-**1. Structure for AI Comprehension**
-- Use clear heading hierarchy (H1 → H2 → H3)
-- Break content into logical sections
-- Use lists and bullet points liberally
-- AI systems parse structured content better
+**2. 直接回答格式**
+- 首先直接回答主要问题
+- 提供详细解释
+- 包含支持证据/来源
+- 与人类提问方式相匹配
 
-**2. Direct Answers Format**
-- Start with direct answer to the main question
-- Support with detailed explanation
-- Include supporting evidence/sources
-- Match how humans ask questions
+**3. 结构化数据**
+- 问答格式的FAQ架构
+- 产品页面的产品架构
+- 公司信息的组织架构
+- Schema.org标记帮助AI系统理解上下文
 
-**3. Structured Data**
-- FAQ schema for Q&A format
-- Product schema for product pages
-- Organization schema for company info
-- Schema.org markup helps AI systems understand context
+**4. 权威信号**
+- 链接到权威来源
+- 引用同行评审的研究
+- 包含作者资质
+- AI系统会识别并引用权威来源
 
-**4. Authority Signals**
-- Link to authoritative sources
-- Cite peer-reviewed research
-- Include author credentials
-- AI systems recognize and cite authoritative sources
-
-**5. Comparison Tables**
-- Structured comparisons get cited in AI responses
-- Use tables for side-by-side information
-- Include pros/cons lists
-- AI systems extract and cite these directly
-
----
-
-## 🔒 Security & Privacy
-
-### Data Handling
-- ✅ Content analyzed in-memory only
-- ✅ Not stored or transmitted to external servers
-- ✅ Claude API processes via encrypted HTTPS
-- ✅ Analysis results stored locally only
-
-### API Keys
-- ✅ API keys stored in environment variables
-- ✅ Never logged or exposed
-- ✅ Each provider uses their official API
-- ✅ Zero-knowledge architecture
-
-### Compliance
-- ✅ GDPR compliant (no data storage)
-- ✅ CCPA compliant (no data collection)
-- ✅ Works with proprietary content
-- ✅ No third-party data sharing
+**5. 对比表**
+- 结构化的对比内容会在AI回答中被引用
+- 使用表格展示并列信息
+- 包含优缺点列表
+- AI系统会直接提取和引用这些内容
 
 ---
 
-## ❓ FAQ
+## 🔒 安全性与隐私
+### 数据处理
+- ✅ 内容仅在内存中分析
+- ✅ 不存储或传输到外部服务器
+- ✅ Claude API通过加密的HTTPS处理
+- ✅ 分析结果仅存储在本地
 
-**Q: How do you calculate readability score?**
-A: We use the Flesch-Kincaid grade level formula and convert it to a 0-100 scale. Higher scores = easier to read.
+### API密钥
+- ✅ API密钥存储在环境变量中
+- ✅ 从不记录或公开
+- ✅ 使用每个提供商的官方API
+- ✅ 零知识架构
 
-**Q: Are these recommendations guaranteed to improve rankings?**
-A: No ranking is guaranteed, but these suggestions are based on proven SEO factors. Impact varies by industry, competition, and current content quality.
+### 合规性
+- ✅ 遵守GDPR（不存储数据）
+- ✅ 遵守CCPA（不收集数据）
+- **适用于专有内容**
+- **不共享第三方数据**
 
-**Q: What's the difference between SEO and AEO?**
-A: SEO optimizes for Google's algorithm. AEO optimizes for AI chatbots that generate responses. They overlap significantly—good content for humans is usually good for both.
+## ❓ 常见问题
 
-**Q: Can I use this for languages other than English?**
-A: The readability analysis is English-optimized, but keyword analysis and Claude suggestions work for any language.
+**Q：如何计算可读性评分？**
+A：我们使用Flesch-Kincaid等级公式，并将其转换为0-100的评分。分数越高，内容越易阅读。
 
-**Q: How long should content be?**
-A: It depends on topic complexity. Generally: 300+ words minimum, 1000+ for comprehensive coverage, 2000+ for pillar/authority pages.
+**Q：这些建议一定能提高排名吗？**
+A：不能保证排名，但这些建议基于经过验证的SEO因素。效果因行业、竞争情况和当前内容质量而异。
 
-**Q: What if I have a very long document?**
-A: The skill analyzes the first 2000 characters by default. For longer documents, split into sections and analyze each separately.
+**Q：SEO和AEO有什么区别？**
+A：SEO针对谷歌的算法进行优化。AEO针对生成回答的AI聊天机器人进行优化。两者有显著重叠——对人类有吸引力的内容通常也对AI有吸引力。
 
-**Q: Does this check technical SEO like page speed?**
-A: This skill focuses on content optimization. For technical SEO (speed, mobile, crawlability), use tools like Google PageSpeed Insights.
+**Q：这个工具支持英语以外的语言吗？**
+A：可读性分析是针对英语优化的，但关键词分析和Claude的建议适用于任何语言。
 
-**Q: Can I optimize for multiple keywords at once?**
-A: Yes! Pass a list of target keywords. We'll analyze density for each and provide keyword-specific recommendations.
+**Q：内容应该有多长？**
+A：取决于主题的复杂性。一般来说：至少300个单词，全面覆盖需要1000个单词以上，权威页面需要2000个单词以上。
 
-**Q: How accurate is the AEO scoring?**
-A: AEO is still evolving. Our recommendations are based on 2026 best practices from AI search optimization research.
+**Q：如果我有很长的文档怎么办？**
+A：该工具默认分析前2000个字符。对于更长的文档，可以分成多个部分分别分析。
 
-**Q: Does this skill generate SEO content from scratch?**
-A: No, this skill analyzes and optimizes existing content. To generate new content, use other AI writing tools first.
+**Q：这个工具会检查技术性SEO（如页面速度）吗？**
+A：该工具专注于内容优化。对于技术性SEO（速度、移动设备适应性、可爬取性），请使用Google PageSpeed Insights等工具。
 
----
+**Q：可以同时优化多个关键词吗？**
+A：可以！提供目标关键词列表，我们会分析每个关键词的密度并给出具体建议。
 
-## 🗺️ Roadmap
+**Q：AEO评分的准确性如何？**
+A：AEO仍在发展中。我们的建议基于2026年的AI搜索优化研究最佳实践。
 
-### ✅ Current Release (v1.0.0)
-- Content readability analysis
-- Keyword density tracking
-- Technical SEO audit
-- Claude AI optimization suggestions
-- AEO-specific recommendations
-- Real-time impact estimation
-
-### 🚧 Coming Soon (v1.1.0)
-- **Competitor analysis** - Compare your content to top 5 Google results
-- **Bulk analysis** - Analyze 10+ pages in one run
-- **Historical tracking** - Track optimization progress over time
-- **Recommendation automation** - Apply suggestions automatically
-- **Export formats** - PDF reports, JSON data, CSV analysis
-
-### 🔮 Future (v1.2+)
-- **Multi-language support** - Full support for 20+ languages
-- **Schema generation** - Auto-generate JSON-LD schema
-- **Link analysis** - Deep internal/external link auditing
-- **Content gap analysis** - Identify missing topics in your content
-- **Slack integration** - Run analyses from Slack
-- **Team dashboards** - Shared workspace with multiple users
-- **Historical analytics** - Track how content performs over time
+**Q：这个工具可以从头生成SEO内容吗？**
+A：不可以，该工具仅分析和优化现有内容。如需生成新内容，请使用其他AI写作工具。
 
 ---
 
-## 📚 Resources
+## 🗺️ 路线图
 
-### Documentation
-- 📖 **Full Guide**: https://docs.unisai.vercel.app/seo-optimizer
-- 💡 **Tutorials**: https://docs.unisai.vercel.app/seo-optimizer/tutorials
-- 🎓 **AEO Course**: https://docs.unisai.vercel.app/seo-optimizer/aeo-guide
+### ✅ 当前版本（v1.0.0）
+- 内容可读性分析
+- 关键词密度跟踪
+- 技术性SEO审计
+- Claude AI优化建议
+- AEO特定建议
+- 实时影响估算
 
-### Community
-- 💬 **Slack Community**: https://slack.unisai.vercel.app
-- 📧 **Email Support**: support@unisai.vercel.app
-- 🐛 **Bug Reports**: https://github.com/unisai/seo-optimizer/issues
-- ⭐ **Feature Requests**: https://slack.unisai.vercel.app
+### 🚧 即将推出（v1.1.0）
+- **竞争对手分析** - 将你的内容与谷歌前5名结果进行比较
+- **批量分析** - 一次分析10多页
+- **历史跟踪** - 随时间跟踪优化进展
+- **建议自动化** - 自动应用建议
+- **导出格式** - PDF报告、JSON数据、CSV分析
 
-### Contact
-- Email: support@unisai.vercel.app
-- Slack: https://slack.unisai.vercel.app
-- Website: https://unisai.vercel.app
-
----
-
-## 📄 License & Terms
-
-This skill is **free and open to all users** on ClawhHub.
-
-### ✅ You CAN:
-- Use the skill for free, unlimited times
-- Analyze unlimited content
-- Export optimization reports
-- Use for commercial purposes
-- Use for personal and business projects
-
-### ❌ You CANNOT:
-- Redistribute or resell the skill
-- Modify the source code without permission
-- Reverse engineer the skill
-
-**Full Terms**: See [LICENSE.md](LICENSE.md)
+### 🔮 未来版本（v1.2+）
+- **多语言支持** - 支持20多种语言
+- **结构化数据生成** - 自动生成JSON-LD架构
+- **链接分析** - 深度内部/外部链接审计
+- **内容差距分析** - 识别内容中的缺失主题
+- **Slack集成** - 从Slack运行分析
+- **团队仪表板** - 多用户共享工作空间
+- **历史分析** - 跟踪内容随时间的表现
 
 ---
 
-## 🚀 Get Started
+## 📚 资源
 
-1. Access this free skill on ClawhHub (no subscription needed)
-2. Set your Anthropic API key
-3. Analyze your first piece of content
-4. Review recommendations and implement
+### 文档
+- 📖 **完整指南**：https://docs.unisai.vercel.app/seo-optimizer
+- 💡 **教程**：https://docs.unisai.vercel.app/seo-optimizer/tutorials
+- 🎓 **AEO课程**：https://docs.unisai.vercel.app/seo-optimizer/aeo-guide
+
+### 社区
+- 💬 **Slack社区**：https://slack.unisai.vercel.app
+- 📧 **电子邮件支持**：support@unisai.vercel.app
+- 🐛 **问题报告**：https://github.com/unisai/seo-optimizer/issues
+- ⭐ **功能请求**：https://slack.unisai.vercel.app
+
+### 联系方式
+- 电子邮件：support@unisai.vercel.app
+- Slack：https://slack.unisai.vercel.app
+- 网站：https://unisai.vercel.app
 
 ---
 
-## 🏷️ Tags
+## 📄 许可与条款
 
-**Primary**: seo, content-optimization, aeo, ai-search, copywriting
+该技能在ClawhHub上对所有用户**免费且开放**。
 
-**Categories**: seo-tools, content-analysis, marketing-tech, ai-optimization
+### ✅ 你可以：
+- 免费无限次使用该技能
+- 分析无限内容
+- 导出优化报告
+- 用于商业目的
+- 用于个人和商业项目
 
-**Features**: keyword-analysis, readability-scoring, meta-tag-generation, technical-seo, ai-search-optimization
+### ❌ 你不能：
+- 重新分发或转售该技能
+- 未经许可修改源代码
+- 反向工程该技能
+
+**完整条款**：请参阅[LICENSE.md]
 
 ---
 
-## 📝 Changelog
+## 🚀 开始使用
+
+1. 在ClawhHub上免费获取该技能（无需订阅）
+2. 设置你的Anthropic API密钥
+3. 分析你的第一篇内容
+4. 查看建议并实施
+
+---
+
+## 🏷️ 标签
+
+**主要标签**：seo、内容优化、aeo、ai搜索、文案写作
+
+**分类**：seo工具、内容分析、营销技术、ai优化
+
+**特性**：关键词分析、可读性评分、元标签生成、技术SEO、ai搜索优化
+
+---
+
+## 📝 更新日志
 
 ### [1.1.0] - 2026-02-02
 
-#### ✨ Multi-Model Support
-- **Claude 4.5 Series** - Opus, Sonnet, Haiku models
-- **GPT-5.2 Series** - Pro, Thinking, Instant variants
-- **Gemini 2.5/3.0** - Google's latest models
-- **Llama 3.2/3.3** - Meta's open-source models
-- **Mistral Large** - Mistral AI's flagship model
-- **Model Selection** - Choose your preferred AI model for analysis
+#### ✨ 多模型支持
+- **Claude 4.5系列** - Opus、Sonnet、Haiku模型
+- **GPT-5.2系列** - Pro、Thinking、Instant变体
+- **Gemini 2.5/3.0** - Google的最新模型
+- **Llama 3.2/3.3** - Meta的开源模型
+- **Mistral Large** - Mistral AI的旗舰模型
+- **模型选择** - 选择你喜欢的AI模型进行分析
 
-#### 🔧 Technical Improvements
-- Model-agnostic architecture for flexibility
-- Support for 12+ leading AI models
-- Dynamic model validation
-- Improved API compatibility
+#### 🔧 技术改进
+- 兼容多种AI模型的架构
+- 支持12种以上领先的AI模型
+- 动态模型验证
+- 改进的API兼容性
 
 ### [1.0.0] - 2026-02-02
 
-#### ✨ Initial Release
-- **Content Analysis** - Readability, word count, paragraph structure
-- **Keyword Tracking** - Density analysis for target keywords
-- **Technical SEO** - Heading structure, link analysis, meta tags
-- **AI Integration** - AI-powered title, description, H1 suggestions
-- **AEO Optimization** - 5 specific recommendations for AI search visibility
-- **Impact Estimation** - Predicted ranking improvement from optimizations
-- **Beautiful Reports** - Formatted analysis with clear recommendations
+#### ✨ 初始版本
+- **内容分析** - 可读性、字数、段落结构
+- **关键词跟踪** - 目标关键词的密度分析
+- **技术性SEO** - 标题结构、链接分析、元标签
+- **AI集成** - 由AI生成的标题、描述、H1建议
+- **AEO优化** - 五项具体的AI搜索可见性建议
+- **影响估算** - 预测优化后的排名提升
+- **美观的报告** - 格式化的分析结果，包含明确建议
 
-#### 🎨 2026 Update
-- Current 2026 models and pricing
-- Professional, technical tone
-- Focus on AEO (Answer Engine Optimization)
+#### 🎨 2026年更新
+- 使用2026年的最新模型和定价
+- 专业的技术风格
+- 专注于AEO（答案引擎优化）
 
-#### 🔒 Security & IP Protection
-- IP watermark: `PROPRIETARY_SKILL_SEO_OPTIMIZER_2026`
-- Zero data storage
-- HTTPS-only API communication
-- Environment variable security
+#### 🔒 安全性与IP保护
+- IP水印：`PROPRIETARY_SKILL_SEO_OPTIMIZER_2026`
+- 零数据存储
+- 仅通过HTTPS进行API通信
+- 环境变量安全保护
 
 ---
 
-**Last Updated**: February 2, 2026
-**Current Version**: 1.0.0
-**Status**: Active & Maintained
+**最后更新时间**：2026年2月2日
+**当前版本**：1.0.0
+**状态**：活跃且持续维护
 
-© 2026 UniAI. All rights reserved.
+© 2026 UniAI。保留所有权利。

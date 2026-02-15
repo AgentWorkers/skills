@@ -1,24 +1,24 @@
 ---
 name: fizzy-cli
-description: Manage Fizzy Kanban boards, cards, comments, tags, and steps via a TypeScript CLI using a Personal Access Token. Use when you want to create or manage Fizzy cards from the terminal, or integrate Fizzy automation into Clawdbot workflows.
+description: 通过 TypeScript CLI 和个人访问令牌（Personal Access Token）来管理 Fizzy Kanban 任务板、卡片、评论、标签以及各个步骤。当您需要从终端创建或管理 Fizzy 卡片，或者将 Fizzy 的自动化功能集成到 Clawdbot 工作流程中时，可以使用此工具。
 ---
 
 # Fizzy CLI
 
-This repo contains a standalone CLI.
+该仓库包含一个独立的命令行工具（CLI）。
 
-## Install
+## 安装
 
 ```bash
 npm i -g @emredoganer/fizzy-cli
 ```
 
-## Auth
+## 认证
 
-Generate a Personal Access Token in Fizzy:
+在 Fizzy 中生成一个个人访问令牌：
 
 ```bash
 fizzy auth login
 ```
 
-(You will be prompted for your token.)
+（系统会提示您输入令牌。）

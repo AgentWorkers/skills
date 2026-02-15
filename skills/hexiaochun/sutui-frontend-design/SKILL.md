@@ -1,42 +1,41 @@
 ---
 name: frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
+description: **创建具有独特设计风格且符合生产标准的前端界面**  
+当用户需要构建网页组件、页面、海报或应用程序时（例如网站、登录页面、仪表板、React组件、HTML/CSS布局，或对任何网页用户界面进行样式设计/美化），请运用这一技能。生成的代码和用户界面设计应具备创意性和专业性，同时避免使用通用的人工智能生成的设计风格。
 license: Complete terms in LICENSE.txt
 ---
 
-This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
+本技能指南旨在指导开发具有独特性、符合生产级标准的前端界面，避免使用那些千篇一律的、缺乏个性的“AI生成”美学风格。在实现代码时，需格外注重美学细节和创意选择。
 
-The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
+用户会提供前端的具体需求，包括需要构建的组件、页面、应用程序或界面类型。这些需求可能涵盖界面的用途、目标用户群体或技术限制等方面的信息。
 
-## Design Thinking
+## 设计思维
 
-Before coding, understand the context and commit to a BOLD aesthetic direction:
-- **Purpose**: What problem does this interface solve? Who uses it?
-- **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
-- **Constraints**: Technical requirements (framework, performance, accessibility).
-- **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+在开始编码之前，首先要理解项目的背景，并明确一个大胆的美学方向：
+- **用途**：这个界面旨在解决什么问题？它将服务于哪些用户？
+- **风格**：从多种风格中选择一个：极简主义、极繁主义、复古未来主义、自然有机风格、奢华精致风格、趣味玩具风格、杂志风格、原始粗犷风格、艺术装饰风格、几何风格、柔和淡雅风格、工业实用风格等。这些风格可以作为设计灵感，但最终的设计必须忠实于所选的美学方向。
+- **技术限制**：需要考虑框架、性能和可访问性等方面的技术要求。
+- **差异化**：这个界面有哪些令人难忘的独特之处？是什么让用户会记住它？
 
-**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+**关键点**：明确一个清晰的设计概念，并精确地将其付诸实践。无论是极繁主义还是极简主义，关键都在于设计的意图和执行的力度，而不仅仅是表面的繁简程度。
 
-Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
-- Production-grade and functional
-- Visually striking and memorable
-- Cohesive with a clear aesthetic point-of-view
-- Meticulously refined in every detail
+接下来，实现符合以下要求的前端代码（使用HTML/CSS/JS、React、Vue等技术）：
+- 代码必须达到生产级标准，具备实际功能。
+- 在视觉上具有冲击力且令人印象深刻。
+- 整体设计需保持一致的美学风格。
+- 每个细节都经过精心打磨。
 
-## Frontend Aesthetics Guidelines
+## 前端美学指南
 
-Focus on:
-- **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
-- **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
-- **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
-- **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
-- **Backgrounds & Visual Details**: Create atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, and grain overlays.
+重点关注以下方面：
+- **字体设计**：选择美观、独特且富有特色的字体。避免使用像Arial和Inter这样的通用字体，而是选择能够提升界面美感的独特字体。将一种醒目的显示字体与一种精致的正文字体搭配使用。
+- **色彩与主题**：确保色彩搭配协调统一。使用CSS变量来保持一致性。使用鲜明对比的主色调往往比均匀分布的色彩方案更有效。
+- **动态效果**：利用动画来实现视觉效果和微交互。优先考虑仅通过CSS实现的动画效果；在React项目中，可适当使用Motion库。重点关注那些能够产生强烈视觉冲击力的瞬间，例如通过延迟加载来逐步展示页面内容，这样的设计比分散的微交互更令人愉悦。同时，要设计出能够引发用户兴趣的滚动效果和悬停状态。
+- **空间布局**：尝试非对称的布局、元素重叠、对角线方向的视觉流动、打破常规的网格结构，以及合理的负空间设计（即保留足够的空白区域）或控制元素密度。
+- **背景与视觉细节**：通过添加符合整体美学的背景效果和视觉细节来营造氛围和深度。可以使用渐变网格、噪声纹理、几何图案、分层透明度、戏剧性的阴影效果、装饰性的边框、自定义光标以及特殊的纹理效果等创意元素。
 
-NEVER use generic AI-generated aesthetics like overused font families (Inter, Roboto, Arial, system fonts), cliched color schemes (particularly purple gradients on white backgrounds), predictable layouts and component patterns, and cookie-cutter design that lacks context-specific character.
+**绝对禁止**：使用那些千篇一律的AI生成的美学元素，例如过度使用的字体系列（如Inter、Roboto、Arial、系统默认字体）、陈腐的色彩搭配（尤其是白色背景上的紫色渐变）、缺乏上下文特色的固定布局和组件样式。设计应具有独特性，避免重复使用常见的设计元素（例如“Space Grotesk”这样的风格）。
 
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
+**重要提示**：设计工作的复杂程度应与所追求的美学愿景相匹配。极繁主义的设计需要复杂的代码和丰富的动画效果；而极简主义或精致的设计则需要克制、精确的布局、精致的字体选择以及对细节的细致把控。真正的优雅体现在对设计愿景的出色执行上。
 
-**IMPORTANT**: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
-
-Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
+请记住：Claude具备出色的创造力。不要拘泥于传统思维，勇于突破常规，全身心投入到独特的设计理念中，展现出真正出色的设计成果。

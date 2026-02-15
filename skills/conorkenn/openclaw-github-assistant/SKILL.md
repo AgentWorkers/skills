@@ -1,6 +1,6 @@
 ---
 name: github
-description: Query and manage GitHub repositories - list repos, check CI status, create issues, search repos, and view recent activity.
+description: 查询和管理 GitHub 仓库：列出仓库、检查持续集成（CI）状态、创建问题、搜索仓库以及查看最近的活动。
 metadata:
   openclaw:
     emoji: "🐙"
@@ -13,23 +13,23 @@ metadata:
         - github.username
 ---
 
-# GitHub Integration Skill
+# GitHub 集成技能
 
-Query and manage GitHub repositories directly from your AI assistant.
+您可以直接通过 AI 助手查询和管理 GitHub 仓库。
 
-## Capabilities
+## 功能
 
-| Capability | Description |
+| 功能 | 描述 |
 |------------|-------------|
-| `list_repos` | List your repositories with filters |
-| `get_repo` | Get detailed info about a specific repo |
-| `check_ci_status` | Check CI/CD pipeline status |
-| `create_issue` | Create a new issue in a repo |
-| `create_repo` | Create a new repository |
-| `search_repos` | Search your repositories |
-| `get_recent_activity` | Get recent commits |
+| `list_repos` | 使用过滤器列出您的仓库 |
+| `get_repo` | 获取特定仓库的详细信息 |
+| `check_ci_status` | 检查 CI/CD 管道状态 |
+| `create_issue` | 在仓库中创建新问题 |
+| `create_repo` | 创建新仓库 |
+| `search_repos` | 搜索您的仓库 |
+| `get_recent_activity` | 获取最近的提交记录 |
 
-## Usage
+## 使用方法
 
 ```
 You: List my Python repos
@@ -42,30 +42,30 @@ You: Create an issue about the bug
 Bot: [creates the issue]
 ```
 
-## Setup
+## 设置
 
-### 1. Generate GitHub Personal Access Token
+### 1. 生成 GitHub 个人访问令牌
 
-1. Go to https://github.com/settings/tokens
-2. Click "Generate new token (classic)"
-3. Name: `openclaw-github-skill`
-4. Scopes: `repo` (required), `read:user` (optional)
-5. Copy the token
+1. 访问 https://github.com/settings/tokens
+2. 点击 “Generate new token (classic)”
+3. 输入令牌名称：`openclaw-github-skill`
+4. 选择权限范围：`repo`（必需），`read:user`（可选）
+5. 复制令牌
 
-### 2. Configure Credentials
+### 2. 配置凭据
 
-**Option A: Environment Variables (Recommended)**
+**选项 A：环境变量（推荐）**
 
-Set environment variables before starting OpenClaw:
+在启动 OpenClaw 之前设置环境变量：
 
 ```bash
 export GITHUB_TOKEN="ghp_your_token_here"
 export GITHUB_USERNAME="your_github_username"
 ```
 
-**Option B: OpenClaw Config**
+**选项 B：OpenClaw 配置**
 
-Add to `~/.openclaw/openclaw.json`:
+将以下配置添加到 `~/.openclaw/openclaw.json` 文件中：
 
 ```json
 {
@@ -76,33 +76,33 @@ Add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-### 3. Restart OpenClaw
+### 3. 重启 OpenClaw
 
 ```bash
 openclaw gateway restart
 ```
 
-## Security Notes
+## 安全注意事项
 
-⚠️ **Protect Your Token:**
+⚠️ **保护您的令牌：**
 
-- Never commit your token to git or share it publicly
-- Use the minimal required scopes (`repo` for private repos, `public_repo` for public-only)
-- Rotate your token if you suspect it was compromised
-- Consider using a secrets manager for production use
+- 绝不要将令牌提交到 Git 或公开分享
+- 仅使用最低限度的权限范围（私有仓库使用 `repo`，公共仓库使用 `public_repo`）
+- 如果怀疑令牌被泄露，请立即更换令牌
+- 在生产环境中考虑使用 secrets manager 管理令牌
 
-⚠️ **Best Practices:**
+⚠️ **最佳实践：**
 
-- Don't store tokens in shell profiles (~/.zshrc) on shared machines
-- For local development, environment variables are acceptable
-- For production, use your platform's secret/credential store
+- 不要在共享机器上的 shell 配置文件（如 `~/.zshrc`）中存储令牌
+- 本地开发时可以使用环境变量
+- 在生产环境中，使用平台的 secrets/credential 管理工具
 
-## Rate Limits
+## 速率限制
 
-- Unauthenticated requests: 60/hour
-- Authenticated requests: 5,000/hour
+- 未认证请求：每小时 60 次
+- 认证请求：每小时 5,000 次
 
-## Requirements
+## 先决条件
 
-- OpenClaw gateway running
-- GitHub Personal Access Token with appropriate scopes
+- OpenClaw 代理已运行
+- 拥有具有适当权限范围的 GitHub 个人访问令牌

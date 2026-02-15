@@ -1,46 +1,46 @@
 ---
 name: council
-description: Council Chamber orchestration with Memory Bridge. Single session, multiple personas, structured deliberation.
+description: 使用 Memory Bridge 进行议会厅（Council Chamber）的协调工作：单次会议，多个参与者，结构化的讨论流程。
 metadata: {"clawdbot":{"emoji":"🏛️","requires":{"bins":["sqlite3"]},"features":{"memory_bridge":true,"chamber_pattern":true}}}
 ---
 
-# Council - Chamber Orchestration Pattern
+# **理事会-会议室协调模式（Council-Chamber Orchestration Pattern）**
 
-Instead of spawning separate agent silos, create a **Council Chamber** where multiple expert personas deliberate in a single session with cross-pollination and unified transcript.
+与其创建多个独立的代理（agent）模块，不如建立一个**理事会会议室（Council Chamber）**，让多位专家在同一会议中共同讨论，实现观点的交流与整合，并生成统一的会议记录。
 
-## Prerequisites
+## **前提条件**
 
-- SQLite3 (member database)
-- Graphiti service (Memory Bridge)
-- Clawdbot gateway (sessions_spawn)
+- SQLite3（成员数据库）
+- Graphiti服务（用于数据传输）
+- Clawdbot网关（用于会话管理）
 
-## Setup
+## **设置步骤**
 
-Initialize council database:
+初始化理事会数据库：
 ```bash
 bash command:"{baseDir}/init-db.sh"
 ```
 
-## 🏛️ The Chamber Pattern
+## **🏛️ 会议室模式（The Chamber Pattern）**
 
-**Traditional Approach** (Silos):
-- Spawn 3 separate agents
-- Each analyzes independently
-- No cross-pollination
-- Fragmented output
+**传统模式（独立代理）：**
+- 创建3个独立的代理模块
+- 每个模块独立进行分析
+- 无观点交流
+- 输出结果分散且不统一
 
-**Chamber Approach** (Meeting Room):
-- Single agent session
-- Moderates multiple personas
-- Structured turn-taking
-- Unified deliberation transcript
+**会议室模式：**
+- 通过单一代理模块管理会议
+- 多位专家轮流发言
+- 会议过程有明确的轮次安排
+- 生成统一的会议记录
 
-## Tools
+## **工具**
 
-### council_chamber
-Start a Council Chamber session (recommended).
+### `council_chamber`  
+用于启动理事会会议室会话（推荐使用）。
 
-**Usage:**
+**使用方法：**
 ```bash
 bash command:"
 TOPIC='YOUR_TOPIC'
@@ -50,25 +50,25 @@ MEMBERS='architect,analyst,security'
 "
 ```
 
-**What it does**:
-1. Fetches Graphiti context (Memory Bridge)
-2. Loads member personas from database
-3. Constructs chamber task with turn structure
-4. Creates session record
-5. Outputs task for sessions_spawn
+**功能：**
+1. 从Graphiti服务获取会议背景信息
+2. 从数据库中加载参会专家的信息
+3. 构建会议的结构和轮次安排
+4. 生成会议记录
+5. 将会议记录传递给`sessions_spawn`模块进行处理
 
-### council_list_members
-List all registered members.
+### `council_list_members`  
+列出所有注册的成员。
 
-**Usage:**
+**使用方法：**
 ```bash
 bash command:"sqlite3 -header -column ~/.clawdbot/council.db 'SELECT id, name, role FROM council_members'"
 ```
 
-### council_add_member
-Register new member.
+### `council_add_member`  
+用于注册新成员。
 
-**Usage:**
+**使用方法：**
 ```bash
 bash command:"
 sqlite3 ~/.clawdbot/council.db \"
@@ -77,36 +77,34 @@ VALUES ('MEMBER_ID', 'NAME', 'ROLE', 'SYSTEM_MESSAGE', 'EXPERTISE');
 \""
 ```
 
-## Chamber Session Structure
+## **会议室会议结构**
 
-**3-Turn Deliberation**:
+**三轮讨论流程：**
 
-1. **Turn 1: Initial Analysis**
-   - Each persona provides their perspective
-   - Distinct voices maintained
+1. **第一轮：初步分析**  
+   - 每位专家阐述自己的观点  
+   - 保持各自的观点独立性
 
-2. **Turn 2: Cross-Pollination**
-   - Members critique each other's points
-   - Real-time responses
-   - Healthy debate
+2. **第二轮：观点交流**  
+   - 成员之间互相评论和反馈  
+   - 实时互动，促进讨论深入  
 
-3. **Turn 3: Synthesis**
-   - Find common ground
-   - Resolve disagreements
-   - Executive Summary for user
+3. **第三轮：总结归纳**  
+   - 寻找共识  
+   - 解决分歧  
+   - 为使用者提供会议总结
 
-## Default Members
+## **默认成员列表**
 
-| ID | Name | Role |
+| ID | 名称 | 角色 |
 |----|------|------|
-| architect | System Architect | Technical Design |
-| analyst | Technical Analyst | Research & Analysis |
-| security | Security Officer | Risk Assessment |
-| designer | UX Designer | User Experience |
-| strategist | Business Strategist | ROI & Strategy |
+| architect | 系统架构师 | 负责技术设计 |
+| analyst | 技术分析师 | 负责研究与分析 |
+| security | 安全专家 | 负责风险评估 |
+| designer | 用户体验设计师 | 负责用户体验设计 |
+| strategist | 商业策略师 | 负责投资回报与战略规划 |
 
-## Example
-
+## **示例**  
 ```bash
 # User: "Start council on Salesforce integration"
 council_chamber topic:"Salesforce Integration" members:"architect,strategist"
@@ -118,8 +116,8 @@ council_chamber topic:"Salesforce Integration" members:"architect,strategist"
 # ✅ Chamber Task ready for sessions_spawn
 ```
 
-**Benefits**:
-- ✅ Cross-pollination (members respond to each other)
-- ✅ Single transcript (one .jsonl file)
-- ✅ Shared context (Memory Bridge loaded once)
-- ✅ Structured output (3-turn deliberation)
+**优势：**
+- ✅ 观点交流（成员之间可以相互回应）
+- ✅ 统一的会议记录（保存在一个.jsonl文件中）
+- 共享的会议背景信息（通过Graphiti服务一次性加载）
+- 结构化的讨论流程（分为三轮）

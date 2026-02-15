@@ -1,26 +1,26 @@
 ---
 name: snapshot-test
-description: Generate Jest snapshot tests for components
+description: 为组件生成Jest快照测试
 ---
 
-# Snapshot Test Generator
+# 快照测试生成器（Snapshot Test Generator）
 
-Point it at your components, get snapshot tests. Covers common states and props.
+将此工具应用于您的组件，即可生成相应的快照测试。该工具能够覆盖组件的常见状态和属性。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-snapshot-test ./src/components/Button.tsx
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates Jest snapshot tests
-- Covers default and edge cases
-- Tests different prop combinations
-- Handles async components
+- 生成 Jest 快照测试
+- 测试组件的默认状态及边界情况
+- 检查各种属性组合
+- 支持异步组件的测试
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate for a component
@@ -33,7 +33,7 @@ npx ai-snapshot-test ./src/components/
 npx ai-snapshot-test ./components --runner vitest
 ```
 
-## Output Example
+## 输出示例
 
 ```typescript
 describe('Button', () => {
@@ -49,25 +49,26 @@ describe('Button', () => {
 });
 ```
 
-## Test Cases Generated
+## 生成的测试用例包括：
 
-- Default props
-- Required prop variations
-- Edge cases (empty, null)
-- Loading/error states
-- Different sizes/variants
+- 默认属性
+- 必需属性的各种取值
+- 边界情况（空值、null）
+- 组件的加载/错误状态
+- 不同的组件尺寸/变体
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- Node.js 18.0 或更高版本
+- 需要配置 OPENAI_API_KEY
 
-## License
+## 许可证
 
-MIT. Free forever.
+- MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-snapshot-test](https://github.com/lxgicstudios/ai-snapshot-test)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-snapshot-test](https://github.com/lxgicstudios/ai-snapshot-test)
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

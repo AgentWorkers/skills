@@ -1,28 +1,29 @@
 ---
 name: middleware-gen
-description: Generate Express middleware from plain English. Use when building API middleware.
+description: **从纯文本生成 Express 中间件**  
+在构建 API 中间件时可以使用这种方法。
 ---
 
-# Middleware Generator
+# 中间件生成器
 
-Writing middleware means handling edge cases, async errors, and weird Express patterns. Describe what you need and get production-ready middleware.
+编写中间件意味着需要处理边缘情况、异步错误以及复杂的 Express 模式。只需描述您的需求，即可获得可用于生产环境的中间件。
 
-**One command. Zero config. Just works.**
+**一个命令，零配置，立即可用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-middleware "rate limit 100 req/min per IP"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates Express middleware from descriptions
-- Handles rate limiting, auth, logging, and more
-- Includes proper error handling
-- TypeScript support built in
+- 根据您的描述生成符合 Express 标准的中间件
+- 支持速率限制、身份验证、日志记录等功能
+- 内置了完善的错误处理机制
+- 支持 TypeScript 语言
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Rate limiting
@@ -38,42 +39,42 @@ npx ai-middleware "request logging with response time" -o logger.ts -t
 npx ai-middleware "validate API key from header"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Order matters** - put auth before route handlers
-- **Handle errors** - don't let middleware crash the server
-- **Keep it focused** - one middleware, one job
-- **Test thoroughly** - middleware affects every request
+- **顺序很重要**：请在路由处理函数之前添加身份验证中间件
+- **妥善处理错误**：避免中间件导致服务器崩溃
+- **专注单一功能**：每个中间件应只负责一项任务
+- **进行全面测试**：中间件会影响到每一个请求
 
-## When to Use This
+## 适用场景
 
-- Adding new middleware to an API
-- Need common patterns like rate limiting
-- Learning middleware best practices
-- Prototyping API features quickly
+- 为 API 添加新的中间件
+- 需要实现常见的功能（如速率限制）
+- 学习中间件的最佳实践
+- 快速原型化 API 功能
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册账号，也不需要 API 密钥。这些工具都能直接使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-middleware --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your plain English description and generates Express-compatible middleware code. The AI knows common patterns and includes proper async handling, error handling, and TypeScript types.
+该工具会根据您提供的纯文本描述生成符合 Express 标准的中间件代码。它能够识别常见的开发模式，并自动实现异步处理、错误处理以及 TypeScript 类型定义。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

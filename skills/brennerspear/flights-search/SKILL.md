@@ -1,27 +1,27 @@
 ---
 name: flights
-description: Search flights via Google Flights. Find nonstop/connecting flights, filter by time and cabin class, get booking links.
+description: 通过 Google Flights 搜索航班。可以查找直飞/中转航班，根据时间和舱位等级进行筛选，并获取预订链接。
 ---
 
-# Flight Search
+# 航班搜索
 
-Search real-time flight schedules and prices via Google Flights data.
+通过 Google Flights 数据实时查询航班时刻表和价格。
 
-## Prerequisites
+## 先决条件
 
 ```bash
 pip install fast-flights
 ```
 
-The `flights-search` CLI is installed at `~/.local/bin/flights-search`.
+`flights-search` CLI 已安装在 `~/.local/bin/flights-search` 目录下。
 
-## CLI Usage
+## CLI 使用方法
 
 ```bash
 flights-search <origin> <destination> <date> [options]
 ```
 
-### Examples
+### 示例
 
 ```bash
 # Basic search (auto-shows fewest stops available)
@@ -51,26 +51,26 @@ flights-search YYZ EWR 2026-02-06 --passengers 2
 flights-search YYZ EWR 2026-02-06 --all-stops
 ```
 
-### Options
+### 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--nonstop` | Force nonstop only |
-| `--all-stops` | Show all flights regardless of stops |
-| `--after HH` | Depart after hour (24h format) |
-| `--before HH` | Depart before hour (24h format) |
-| `--class` | Cabin: economy, premium, business, first |
-| `--passengers N` | Number of travelers |
-| `--link` | Print Google Flights URL |
+| `--nonstop` | 仅显示直飞航班 |
+| `--all-stops` | 无论中途停靠多少次，都显示所有航班 |
+| `--after HH` | 在指定时间（24小时格式）之后出发的航班 |
+| `--before HH` | 在指定时间（24小时格式）之前出发的航班 |
+| `--class` | 航班舱位：经济舱、高级经济舱、商务舱、头等舱 |
+| `--passengers N` | 乘客人数 |
+| `--link` | 打印 Google Flights 的完整链接 |
 
-## Default Behavior
+## 默认行为
 
-By default, the CLI shows only flights with the **minimum stops available**:
-- If nonstops exist → shows only nonstops
-- If no nonstops → shows only 1-stop flights
-- Use `--all-stops` to see everything
+默认情况下，CLI 仅显示**中途停留次数最少的航班**：
+- 如果有直飞航班 → 仅显示直飞航班
+- 如果没有直飞航班 → 仅显示中途停留一次的航班
+- 使用 `--all-stops` 可以查看所有航班信息
 
-## Output
+## 输出结果
 
 ```
 Depart                       Arrive                       Airline         Price      Duration
@@ -81,13 +81,13 @@ Depart                       Arrive                       Airline         Price 
 2 nonstop flight(s) found.
 ```
 
-## Data Source
+## 数据来源
 
-Uses Google Flights data via the `fast-flights` library (reverse-engineered protobuf API). No API key required.
+通过 `fast-flights` 库（基于 Google Flights 的反向工程 protobuf API）获取数据。无需 API 密钥。
 
-## Notes
+## 注意事项
 
-- Date format: `YYYY-MM-DD`
-- Airport codes: Standard IATA codes (JFK, LAX, YYZ, etc.)
-- Prices are in USD
-- Times shown in local airport timezone
+- 日期格式：`YYYY-MM-DD`
+- 机场代码：标准 IATA 代码（如 JFK、LAX、YYZ 等）
+- 价格以美元（USD）显示
+- 时间显示为当地机场的时区

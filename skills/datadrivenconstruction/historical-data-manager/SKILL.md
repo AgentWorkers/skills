@@ -1,34 +1,33 @@
 ---
 slug: "historical-data-manager"
 display_name: "Historical Data Manager"
-description: "Extract, clean, and organize legacy construction data from archives. Migrate historical project data, cost records, and schedules into modern formats."
+description: "从档案中提取、清洗并整理旧的施工数据。将历史项目数据、成本记录和进度计划迁移到现代格式中。"
 ---
 
-# Historical Data Manager for Construction
+# 建筑行业历史数据管理工具
 
-## Overview
+## 概述
 
-Manage legacy construction data from archives, old systems, and historical records. Extract, clean, normalize, and migrate data into modern formats for analysis and benchmarking.
+该工具用于管理来自档案、旧系统和历史记录的遗留建筑数据。它能够提取、清洗、规范这些数据，并将其转换为现代格式，以便进行分析和基准测试。
 
-## Business Case
+## 商业价值
 
-Construction companies accumulate decades of project data in various formats:
-- Paper records scanned to PDF
-- Legacy database exports (Access, dBase, FoxPro)
-- Old spreadsheet formats (Lotus 1-2-3, early Excel)
-- Proprietary software exports
-- Project closeout documentation
+建筑公司积累了数十年的项目数据，这些数据存储在多种格式中：
+- 扫描成PDF格式的纸质记录
+- 旧数据库导出的数据（如Access、dBase、FoxPro）
+- 旧版本的电子表格格式（如Lotus 1-2-3、早期版本的Excel）
+- 专有软件导出的数据
+- 项目收尾文档
 
-This skill helps extract value from historical data for:
-- Cost benchmarking and trending
-- Productivity analysis over time
-- Risk pattern identification
-- Estimating improvement
+该工具可以帮助从历史数据中提取有价值的信息，用于：
+- 成本基准测试与趋势分析
+- 随时间变化的生产力分析
+- 风险模式的识别
+- 估算改进空间
 
-## Technical Implementation
+## 技术实现
 
-### Historical Data Extractor
-
+### 历史数据提取器
 ```python
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
@@ -311,8 +310,7 @@ class HistoricalDataManager:
         return "\n".join(report)
 ```
 
-### Legacy System Connectors
-
+### 旧系统连接器
 ```python
 class LegacySystemConnector:
     """Connect to various legacy construction systems."""
@@ -375,8 +373,7 @@ class LegacySystemConnector:
         pass
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize manager
 manager = HistoricalDataManager('/archive/projects')
@@ -404,21 +401,20 @@ print(report)
 normalized_costs.to_excel('historical_costs_normalized.xlsx', index=False)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-1. **Cost Benchmarking**: Normalize historical costs for comparison
-2. **Productivity Analysis**: Track labor productivity over time
-3. **Risk Identification**: Find patterns in historical project issues
-4. **Estimating Calibration**: Improve estimates with historical data
+1. **成本基准测试**：对历史成本进行标准化处理以便对比
+2. **生产力分析**：追踪不同时期的劳动生产率
+3. **风险识别**：分析历史项目中的问题模式
+4. **估算优化**：利用历史数据改进估算结果
 
-## Dependencies
-
+## 依赖项
 ```bash
 pip install pandas openpyxl xlrd pyodbc
 ```
 
-## Resources
+## 资源
 
-- **RSMeans Historical Cost Index**: For cost escalation
-- **ENR Construction Cost Index**: Alternative escalation source
-- **Legacy Format Documentation**: Vendor-specific export formats
+- **RSMeans历史成本指数**：用于成本上涨趋势分析
+- **ENR建筑成本指数**：另一种成本上涨参考指标
+- **旧格式文档**：供应商提供的数据导出格式说明

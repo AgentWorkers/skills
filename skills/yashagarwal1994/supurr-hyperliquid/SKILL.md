@@ -1,678 +1,398 @@
 ---
 name: supurr
-description: Backtest, deploy, and monitor trading bots on Hyperliquid. Supports Grid, DCA, and Spot-Perp Arbitrage strategies across Native Perps, Spot markets (USDC/USDH), and HIP-3 sub-DEXes.
+description: 在Hyperliquid平台上，您可以回测、部署并监控交易机器人。这些机器人支持网格交易（Grid Trading）、定期定额投资（DCA）以及现货-远期（Spot-Perp）套利策略，适用于原生远期合约（Native Perps）、现货市场（USDC/USDH）以及HIP-3子交易平台（HIP-3 sub-DEXes）。
 ---
 
-# Supurr CLI — Complete Command Reference
+# Supurr CLI — 完整命令参考
 
-> **For LLMs**: This is the authoritative reference. Use exact syntax. Config files are in `~/.supurr/configs/`.
+> **针对大型语言模型（LLMs）**：本文档为权威参考资料，请严格使用指定语法。配置文件存储在 `~/.supurr/configs/` 目录下。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Command                | Purpose                       |
+| 命令                | 功能                          |
 | ---------------------- | ----------------------------- |
-| `supurr init`          | Setup wallet credentials      |
-| `supurr whoami`        | Show current wallet           |
-| `supurr new grid`      | Generate grid strategy config |
-| `supurr new arb`       | Generate spot-perp arb config |
-| `supurr new dca`       | Generate DCA strategy config  |
-| `supurr configs`       | List saved configs            |
-| `supurr config <name>` | View config details           |
-| `supurr backtest`      | Run historical simulation     |
-| `supurr deploy`        | Deploy bot to production      |
-| `supurr monitor`       | View active bots              |
-| `supurr history`       | View historical bot sessions  |
-| `supurr stop`          | Stop a running bot (signed)   |
-| `supurr prices`        | Debug price data              |
-| `supurr update`        | Update CLI to latest          |
+| `supurr init`          | 设置钱包凭证                      |
+| `supurr whoami`        | 显示当前钱包信息                   |
+| `supurr new grid`      | 生成网格策略配置                   |
+| `supurr new arb`       | 生成现货-远期套利策略配置             |
+| `supurr new dca`       | 生成定期定额投资（DCA）策略配置           |
+| `supurr configs`       | 列出已保存的配置文件                   |
+| `supurr config <name>`     | 查看指定配置文件的详细信息             |
+| `supurr backtest`      | 运行历史回测                        |
+| `supurr deploy`        | 将机器人部署到生产环境                   |
+| `supurr monitor`       | 查看活跃中的机器人                     |
+| `supurr history`       | 查看机器人的历史交易记录                 |
+| `supurr stop`          | 停止正在运行的机器人                     |
+| `supurr prices`        | 调试价格数据                       |
+| `supurr update`        | 将 CLI 更新至最新版本                   |
 
 ---
 
-## Global Options
-
-```bash
-supurr --help              # Show all commands
-supurr --version, -V       # Show CLI version
-supurr -d, --debug         # Enable debug logging (any command)
-```
+## 全局选项
 
 ---
 
-## 1. `supurr init` — Credential Setup
 
-```bash
-# Interactive
-supurr init
+## 1. `supurr init` — 凭证设置
 
-# Non-interactive
-supurr init --address 0x... --api-wallet 0x...
+---
 
-# Overwrite existing
-supurr init --force
-```
 
-| Option                | Description                    |
+| 选项                | 描述                          |
 | --------------------- | ------------------------------ |
-| `-f, --force`         | Overwrite existing credentials |
-| `--address <address>` | Wallet address (0x...)         |
-| `--api-wallet <key>`  | API wallet private key         |
+| `-f, --force`         | 覆盖现有凭证                     |
+| `--address <地址>`     | 钱包地址                         |
+| `--api-wallet <密钥>`    | API 钱包私钥                        |
 
 ---
 
-## 2. `supurr whoami` — Show Identity
-
-```bash
-supurr whoami    # Shows: Address + masked key
-```
+## 2. `supurr whoami` — 显示用户身份
 
 ---
 
-## 3. `supurr new <strategy>` — Config Generator
 
-Supports three strategies: `grid`, `arb`, `dca`.
+## 3. `supurr new <策略>` — 配置生成器
 
-```bash
-supurr new grid [options]   # Grid trading
-supurr new arb [options]    # Spot-perp arbitrage
-supurr new dca [options]    # Dollar-cost averaging
-```
+支持三种策略：`grid`（网格策略）、`arb`（套利策略）和 `dca`（定期定额投资策略）。
 
 ---
 
-### 3a. `supurr new grid` — Grid Strategy
 
-#### Market Types
+### 3a. `supurr new grid` — 网格策略
 
-| Type     | Quote    | Requires  | Example                                 |
+#### 市场类型
+
+| 市场类型 | 对价货币 | 必需参数 | 示例                                      |
 | -------- | -------- | --------- | --------------------------------------- |
-| `native` | USDC     | —         | `--asset BTC`                           |
-| `spot`   | Variable | `--quote` | `--asset HYPE --type spot --quote USDC` |
-| `hip3`   | Per-DEX  | `--dex`   | `--asset BTC --type hip3 --dex hyna`    |
+| `native` | USDC     |         | `--asset BTC`                           |
+| `spot`   | 可变     | `--quote` | `--asset HYPE --type spot --quote USDC`         |
+| `hip3`   | 远期交易所 | `--dex`   | `--asset BTC --type hip3 --dex hyna`           |
 
-#### Grid Options
+#### 网格策略选项
 
-| Option                  | Default       | Description                                    |
+| 选项                | 默认值       | 描述                                      |
 | ----------------------- | ------------- | ---------------------------------------------- |
-| `-a, --asset <symbol>`  | `BTC`         | Base asset (BTC, ETH, HYPE, etc.)              |
-| `-o, --output <file>`   | `config.json` | Output filename                                |
-| `--type <type>`         | `native`      | Market type: native, spot, hip3                |
-| `--dex <dex>`           | —             | **Required for hip3**: hyna, xyz, km, vntl     |
-| `--quote <quote>`       | —             | **Required for spot**: USDC, USDE, USDT0, USDH |
-| `--mode <mode>`         | `long`        | Grid mode: long, short, neutral                |
-| `--levels <n>`          | `20`          | Number of grid levels                          |
-| `--start-price <price>` | —             | Grid start price                               |
-| `--end-price <price>`   | —             | Grid end price                                 |
-| `--investment <amount>` | `1000`        | Max investment in quote currency               |
-| `--leverage <n>`        | `2`           | Leverage (1 for spot)                          |
-| `--testnet`             | false         | Use Hyperliquid testnet                        |
+| `-a, --asset <符号>`   | 基础资产       | （例如：BTC, ETH, HYPE）                         |
+| `-o, --output <文件>`   | 输出文件名                     | （例如：config.json）                         |
+| `--type <类型>`       | 市场类型     | （例如：native, spot, hip3）                     |
+| `--dex <交易所>`    |          | （仅限 hip3 策略）                   |
+| `--quote <对价货币>`    |         | （仅限现货策略）                         |
+| `--mode <模式>`       | 交易模式     | （long: 买入；short: 卖出；neutral: 中立）         |
+| `--levels <数量>`     | 网格层级数                   | （例如：20）                         |
+| `--start-price <起始价格>` | 起始交易价格                   |
+| `--end-price <结束价格>` | 结束交易价格                   |
+| `--investment <金额>` | 单次交易金额                   | （单位：对价货币）                         |
+| `--leverage <杠杆`     | 杠杆倍数                     | （例如：2）                         |
+| `--testnet`       | 是否使用测试网络         | （true: 测试网络；false: 生产网络）         |
 
-#### Grid Examples
+#### 网格策略示例
 
-```bash
-# Native Perp (BTC-USDC)
-supurr new grid --asset BTC --levels 4 --start-price 88000 --end-price 92000 --investment 100 --leverage 20
 
-# USDC Spot (HYPE/USDC)
-supurr new grid --asset HYPE --type spot --quote USDC --levels 3 --start-price 29 --end-price 32 --investment 100
+#### HIP-3 远期交易所示例
 
-# Non-USDC Spot (HYPE/USDH)
-supurr new grid --asset HYPE --type spot --quote USDH --levels 3 --start-price 29 --end-price 32 --investment 100
-
-# HIP-3 (hyna:BTC)
-supurr new grid --asset BTC --type hip3 --dex hyna --levels 4 --start-price 88000 --end-price 92000 --investment 100 --leverage 20
-```
-
-#### HIP-3 DEXes
-
-| DEX    | Quote | Assets                              |
+| 交易所    | 对价货币 | 可交易资产                        |
 | ------ | ----- | ----------------------------------- |
-| `hyna` | USDE  | Crypto perps (BTC, ETH, HYPE, etc.) |
-| `xyz`  | USDE  | Stocks (AAPL, TSLA, etc.)           |
-| `km`   | USDT  | Kinetiq Markets                     |
-| `vntl` | USDE  | AI/tech tokens                      |
+| `hyna` | USDE     | BTC、ETH、HYPE 等加密货币           |
+| `xyz`  | USDE     | AAPL、TSLA 等股票                     |
+| `km`   | USDT     | Kinetiq Markets                   |
+| `vntl` | USDE     | AI/科技相关代币                     |
 
 ---
 
-### 3b. `supurr new arb` — Spot-Perp Arbitrage Strategy
+### 3b. `supurr new arb` — 现货-远期套利策略
 
-Generates a config that simultaneously trades the **spot** and **perp** legs of the same asset, capturing spread differentials.
+生成用于同时交易同一资产的现货（spot）和远期（perp）合约的配置文件。该策略利用价格差异进行套利。
 
-> **Market Constraint**: Only assets that have **both** a spot token AND a perp market on Hyperliquid are eligible. The CLI auto-resolves the spot counterpart.
+> **市场限制**：仅适用于在 Hyperliquid 平台上同时拥有现货和对价合约的资产。CLI 会自动匹配相应的现货合约。
 
-#### Spot Resolution Logic
+#### 现货合约标识规则
 
-Hyperliquid spot tokens for major assets use a `U`-prefix naming convention:
+Hyperliquid 平台的主要现货合约采用 `U` 前缀进行命名：
 
-| You pass `--asset` | CLI resolves spot token | Spot pair  | Perp pair  |
-| ------------------ | ----------------------- | ---------- | ---------- |
-| `BTC`              | `UBTC`                  | UBTC/USDC  | BTC perp   |
-| `ETH`              | `UETH`                  | UETH/USDC  | ETH perp   |
-| `SOL`              | `USOL`                  | USOL/USDC  | SOL perp   |
-| `ENA`              | `UENA`                  | UENA/USDC  | ENA perp   |
-| `WLD`              | `UWLD`                  | UWLD/USDC  | WLD perp   |
-| `MON`              | `UMON`                  | UMON/USDC  | MON perp   |
-| `MEGA`             | `UMEGA`                 | UMEGA/USDC | MEGA perp  |
-| `ZEC`              | `UZEC`                  | UZEC/USDC  | ZEC perp   |
-| `XPL`              | `UXPL`                  | UXPL/USDC  | XPL perp   |
-| `PUMP`             | `UPUMP`                 | UPUMP/USDC | PUMP perp  |
-| `HYPE`             | `HYPE` (exact name)     | HYPE/USDC  | HYPE perp  |
-| `TRUMP`            | `TRUMP` (exact name)    | TRUMP/USDC | TRUMP perp |
-| `PURR`             | `PURR` (exact name)     | PURR/USDC  | PURR perp  |
-| `BERA`             | `BERA` (exact name)     | BERA/USDC  | BERA perp  |
+- 例如：输入 `--asset BTC` 时，CLI 会自动识别为 `UBTC/USDC`（现货合约）。
 
-Resolution order: try `U{ASSET}` first → fallback to exact name → fail if neither exists.
+#### 套利策略选项
 
-> **⚠️ U-prefix Hazard**: Do NOT pass asset names that already start with `U` (e.g., `UNIT`). The CLI will prepend another `U` and look for `UUNIT`, which doesn't exist. Always use the **perp ticker name** (e.g., `BTC`, not `UBTC`).
-
-#### Arb Options
-
-| Option                 | Default            | Description                                  |
+| 选项                | 默认值            | 描述                                      |
 | ---------------------- | ------------------ | -------------------------------------------- |
-| `-a, --asset <symbol>` | `BTC`              | Perp asset name (BTC, ETH, HYPE, etc.)       |
-| `--amount <usdc>`      | `100`              | Order amount in USDC per leg                 |
-| `--leverage <n>`       | `1`                | Leverage for perp leg                        |
-| `--open-spread <pct>`  | `0.003`            | Min opening spread (0.003 = 0.3%)            |
-| `--close-spread <pct>` | `-0.001`           | Min closing spread (-0.001 = -0.1%)          |
-| `--slippage <pct>`     | `0.001`            | Slippage buffer for both legs (0.001 = 0.1%) |
-| `-o, --output <file>`  | `{asset}-arb.json` | Output filename                              |
-| `--testnet`            | false              | Use Hyperliquid testnet                      |
+| `-a, --asset <符号>`   | 套利资产名称                     | （例如：BTC）                         |
+| `--amount <金额>`      | 每笔交易的金额（单位：USDC）                   |
+| `--leverage <杠杆>`     | 套利交易的杠杆倍数                     |
+| `--open-spread <点差>`     | 开仓最小点差                         |
+| `--close-spread <点差>`     | 平仓最小点差                         |
+| `--slippage <滑点`     | 交易滑点                         |
+| `-o, --output <文件>`   | 输出文件名                         |
+| `--testnet`       | 是否使用测试网络                     |
 
-#### Arb Examples
+#### 套利策略示例
 
-```bash
-# BTC spot-perp arb (default $100/leg)
-supurr new arb --asset BTC
 
-# HYPE arb with $50 per leg, 2x leverage on perp
-supurr new arb --asset HYPE --amount 50 --leverage 2
+#### DCA 策略
 
-# ETH arb with tighter spreads
-supurr new arb --asset ETH --open-spread 0.002 --close-spread -0.0005 --slippage 0.0005
-
-# SOL arb on testnet
-supurr new arb --asset SOL --testnet
-```
-
-> **Balance Requirement**: Arb bots require USDC balance in **both** Spot and Perps wallets on Hyperliquid, since the bot trades on both sides simultaneously.
+生成定期定额投资（DCA）策略的配置文件。该策略会根据价格波动分阶段开仓，并在达到预设条件时平仓。
 
 ---
 
-### 3c. `supurr new dca` — DCA Strategy
 
-Generates a Dollar-Cost Averaging config that opens positions in steps when price deviates, then takes profit on the averaged entry.
-
-#### DCA Options
-
-| Option                       | Default       | Description                                        |
-| ---------------------------- | ------------- | -------------------------------------------------- |
-| `-a, --asset <symbol>`       | `BTC`         | Base asset                                         |
-| `--mode <mode>`              | `long`        | Direction: long or short                           |
-| `--type <type>`              | `native`      | Market type: native, spot, hip3                    |
-| `--trigger-price <price>`    | `100000`      | Price to trigger base order                        |
-| `--base-order <size>`        | `0.001`       | Base order size in base asset                      |
-| `--dca-order <size>`         | `0.001`       | DCA order size in base asset                       |
-| `--max-orders <n>`           | `5`           | Max number of DCA orders                           |
-| `--size-multiplier <x>`      | `2.0`         | Size multiplier per DCA step                       |
-| `--deviation <pct>`          | `0.01`        | Price deviation % to trigger first DCA (0.01 = 1%) |
-| `--deviation-multiplier <x>` | `1.0`         | Deviation multiplier for subsequent steps          |
-| `--take-profit <pct>`        | `0.02`        | Take profit % from avg entry (0.02 = 2%)           |
-| `--stop-loss <pnl>`          | —             | Optional stop loss as absolute PnL threshold       |
-| `--leverage <n>`             | `2`           | Leverage (1 for spot)                              |
-| `--restart`                  | false         | Restart cycle after take profit                    |
-| `--cooldown <secs>`          | `60`          | Cooldown between cycles in seconds                 |
-| `-o, --output <file>`        | `config.json` | Output filename                                    |
-| `--testnet`                  | false         | Use Hyperliquid testnet                            |
-
-#### DCA Examples
-
-```bash
-# BTC DCA long, trigger at $95k
-supurr new dca --asset BTC --trigger-price 95000
-
-# ETH DCA short with custom deviation
-supurr new dca --asset ETH --mode short --deviation 0.02
-
-# HYPE DCA with auto-restart
-supurr new dca --asset HYPE --restart --cooldown 120 --take-profit 0.03
-
-# DCA on spot market
-supurr new dca --asset HYPE --type spot --quote USDC --trigger-price 25
-```
+## 4. `supurr configs` — 列出已保存的配置文件
 
 ---
 
-## 4. `supurr configs` — List Saved Configs
 
-```bash
-supurr configs    # Lists all configs in ~/.supurr/configs/
-```
-
-**Output:**
-
-```
-📁 Configs (/Users/you/.supurr/configs):
-  btc-grid.json         grid     BTC-USDC
-  hype-usdc-spot.json   grid     HYPE-USDC
-  hyna-btc.json         grid     BTC-USDE
-```
+## 5. `supurr config <名称>` — 查看配置文件
 
 ---
 
-## 5. `supurr config <name>` — View Config
 
-```bash
-supurr config btc-grid        # View btc-grid.json
-supurr config btc-grid.json   # Same
-```
+## 6. `supurr backtest` — 运行历史回测
 
----
+### 命令语法
 
-## 6. `supurr backtest` — Run Backtest
 
-### Syntax
+### 参数说明
 
-```bash
-supurr backtest -c <config> [options]
-```
+| 参数                | 描述                          |
+| ---------------------- | ---------------------------------------- |
+| `-c, --config <文件>`     | 需要的参数：配置文件路径                   |
+| `-s, --start <日期>`     | 开始日期（格式：YYYY-MM-DD）                   |
+| `-e, --end <日期>`     | 结束日期（格式：YYYY-MM-DD）                   |
+| `-p, --prices <文件>`     | 使用本地价格数据文件                     |
+| `-o, --output <文件>`     | 将结果保存为 JSON 文件                   |
+| `--no-cache`       | 禁用价格数据缓存                     |
 
-### Options
+### 回测示例
 
-| Option                | Description                              |
-| --------------------- | ---------------------------------------- |
-| `-c, --config <file>` | **Required.** Config file (name or path) |
-| `-s, --start <date>`  | Start date (YYYY-MM-DD)                  |
-| `-e, --end <date>`    | End date (YYYY-MM-DD)                    |
-| `-p, --prices <file>` | Use local prices file                    |
-| `-o, --output <file>` | Save results to JSON                     |
-| `--no-cache`          | Disable price caching                    |
 
-### Examples
+### 归档数据可用性
 
-```bash
-# By config name (looks in ~/.supurr/configs/)
-supurr backtest -c btc-grid.json -s 2026-01-28 -e 2026-02-01
-
-# By full path
-supurr backtest -c ~/.supurr/configs/btc-grid.json -s 2026-01-28 -e 2026-02-01
-
-# Save results
-supurr backtest -c btc-grid.json -s 2026-01-28 -e 2026-02-01 -o results.json
-```
-
-### Archive Data Availability
-
-| Dex           | Asset Format           | Example            |
+| 交易所          | 资产类型          | 数据格式                         |
 | ------------- | ---------------------- | ------------------ |
-| `hyperliquid` | `BTC`, `HYPE`          | Native perp + Spot |
-| `hyna`        | `hyna:BTC`, `hyna:ETH` | HIP-3 DEX          |
+| `hyperliquid`       | BTC、HYPE       | 原生资产的对价合约数据                   |
+| `hyna`          | hyna:BTC、hyna:ETH    | HIP-3 交易所的数据                   |
 
-> **Note**: Archive data available from 2026-01-28 onwards.
->
-> **Important**: Backtests use Supurr's price archive (tick-level) or a user-provided prices file (`-p`). Do **not** use Hyperliquid Info API mids/candles for backtests; they don't provide tick-level historical data and will produce inaccurate results.
+> **注意**：归档数据自 2026-01-28 日起可用。
+> **重要提示**：回测应使用 Supurr 的价格归档数据（包含逐笔交易数据），或用户提供的价格文件（使用参数 `-p`）。**切勿** 使用 Hyperliquid 的 Info API 获取数据，因为后者不提供逐笔交易数据，可能导致结果不准确。
 
 ---
 
-## 7. `supurr deploy` — Deploy Bot
+## 7. `supurr deploy` — 部署机器人
 
-```bash
-supurr deploy -c <config> [-s <address> | -v <address>]
-```
+---
 
-| Option                       | Description                                             |
+
+| 选项                | 描述                          |
 | ---------------------------- | ------------------------------------------------------- |
-| `-c, --config <file>`        | **Required.** Config file (name or path)                |
-| `-s, --subaccount <address>` | Trade from a subaccount (validates master ownership)    |
-| `-v, --vault <address>`      | Trade from a vault (validates you are the vault leader) |
+| `-c, --config <文件>`     | 需要的参数：配置文件路径                   |
+| `-s, --subaccount <地址>`     | 通过子账户进行交易（验证账户所有权）             |
+| `-v, --vault <地址>`     | 通过资金池进行交易（验证用户是否为资金池管理者）             |
 
-> **Subaccount vs Vault:**
+> **子账户与资金池的区别**：
 >
-> - **Subaccount** = personal trading account under your master wallet. Verified via `subAccounts` API (checks `master` field).
-> - **Vault** = shared investment pool you manage. Verified via `vaultDetails` API (checks `leader` field).
-> - Both set `vault_address` in the bot config on success.
-> - **Cannot use both** `--subaccount` and `--vault` simultaneously.
+> - **子账户**：隶属于主钱包的个人交易账户，通过 `subAccounts` API 验证所有权。
+> - **资金池**：由用户管理的共享投资池，通过 `vaultDetails` API 验证所有权。
+> - 成功部署后，需在机器人配置中设置 `vault_address`。
+> **注意**：不能同时使用 `--subaccount` 和 `--vault` 选项。
 
-### Examples
+### 部署示例
 
-```bash
-# Deploy from main wallet
-supurr deploy -c btc-grid.json
 
-# Deploy from subaccount
-supurr deploy -c btc-grid.json -s 0x804e57d7baeca937d4b30d3cbe017f8d73c21f1b
+## 常见问题及解决方法
 
-# Deploy from vault (you must be the vault leader)
-supurr deploy -c config.json --vault 0xdc89f67e74098dd93a1476f7da79747f71ccb5d9
-
-# HL: prefix is auto-stripped (copy-paste from Hyperliquid UI)
-supurr deploy -c config.json -s HL:0x804e57d7baeca937d4b30d3cbe017f8d73c21f1b
-```
-
-**Output:**
-
-```
-✔ Loaded config for grid strategy
-✔ Subaccount verified: 0x804e57d7...
-✔ Bot deployed successfully!
-📦 Deployment Details
-  Bot ID:       217
-  Pod Name:     bot-217
-  Bot Type:     grid
-  Market:       BTC-USDC
-```
-
-### Gotchas
-
-| Issue                        | Solution                                                                   |
+| 问题                        | 解决方案                                      |
 | ---------------------------- | -------------------------------------------------------------------------- |
-| `HL:` prefix in address      | Auto-stripped — safe to paste from Hyperliquid explorer                    |
-| "Subaccount not owned"       | Ensure the subaccount's `master` matches your `supurr whoami` address      |
-| "Vault not found"            | Check the vault address exists on the correct network (mainnet vs testnet) |
-| "Vault leader mismatch"      | Only the vault leader can deploy — check `vaultDetails` API                |
-| `subAccounts` returns `null` | Normal — means no subaccounts exist for that address                       |
+| 地址前缀 `HL:`         | 会自动去除前缀 `HL`，直接从 Hyperliquid 探索器复制地址即可     |
+| “子账户未被授权”       | 确保子账户的 `master` 地址与 `supurr whoami` 显示的地址一致     |
+| “找不到资金池”       | 检查资金池地址是否存在于正确的网络（主网络或测试网络）     |
+| “资金池管理者不一致”     | 只有资金池管理者才能进行部署操作             |
+| `subAccounts` 返回 `null`     | 表示该地址没有关联的子账户                   |
 
 ---
 
-## 8. `supurr monitor` — View Active Bots
+## 8. `supurr monitor` — 查看活跃中的机器人
 
-### Syntax
+### 命令语法
 
-```bash
-supurr monitor [options]
-```
 
-### Options
+### 参数说明
 
-| Option                   | Description                    |
+| 选项                | 描述                          |
 | ------------------------ | ------------------------------ |
-| `-w, --wallet <address>` | Filter by wallet address       |
-| `--watch`                | Live mode (refreshes every 2s) |
+| `-w, --wallet <地址>`     | 按钱包地址筛选机器人                     |
+| `--watch`           | 实时显示模式（每 2 秒更新一次）                   |
 
-### Examples
+### 显示列
 
-```bash
-supurr monitor                 # List all active bots
-supurr monitor --watch         # Live monitoring (Ctrl+C to exit)
-supurr monitor -w 0x1234...    # Filter by wallet
-```
-
-**Output Columns:**
-
-- **ID** — Bot identifier
-- **Type** — Strategy (grid, dca, mm, arb)
-- **Market** — Trading pair (BTC-USDC, HYPE-USDH)
-- **Position** — Size + direction (L=Long, S=Short)
-- **PnL** — Total profit/loss
+- **ID**：机器人标识符
+- **类型**：策略类型（grid、dca、mm、arb）
+- **市场**：交易对（例如：BTC-USDC）
+- **持仓**：持仓数量及方向（L: 买入；S: 卖出）
+- **损益**：总利润/损失
 
 ---
 
-## 9. `supurr history` — View Bot History
+## 9. `supurr history` — 查看机器人历史记录
 
-```bash
-supurr history             # Show last 20 bot sessions
-supurr history -n 50       # Show last 50 bot sessions
-```
+### 命令语法
 
-| Option                | Default | Description            |
-| --------------------- | ------- | ---------------------- |
-| `-n, --limit <count>` | `20`    | Number of bots to show |
 
-**Output Columns:**
+### 参数说明
 
-- **ID** — Bot identifier
-- **Market** — Trading pair (from `config.markets[0]`)
-- **Type** — Strategy (grid, dca, mm, arb)
-- **PnL** — Total profit/loss (realized + unrealized)
-- **Stop Reason** — Why the bot stopped (`shutdown:graceful` → "User stopped the bot Successfully")
+| 选项                | 默认值         | 描述                                      |
+| --------------------- | ---------------------- |
+| `-n, --limit <数量>`     | 显示的机器人数量                         |
 
----
+### 显示列
 
-## 10. `supurr stop` — Stop Bot (Signature Auth)
-
-Signs `Stop <bot-id>` with your API wallet private key (EIP-191 personal_sign) and sends the signature to the bot API.
-
-```bash
-supurr stop              # Interactive - select from list
-supurr stop --id 217     # Stop specific bot by ID
-```
-
-| Option          | Description                            |
-| --------------- | -------------------------------------- |
-| `--id <bot_id>` | Bot ID to stop (from `supurr monitor`) |
-
-> **Crypto:** Uses `@noble/curves/secp256k1` + `@noble/hashes/sha3` (pure JS, no native deps). Signature format: `0x{r}{s}{v}` (65 bytes).
+- **ID**：机器人标识符
+- **市场**：交易对
+- **类型**：策略类型
+- **损益**：总利润/损失（已实现和未实现的）
 
 ---
 
-## 11. `supurr prices` — Debug Price Data
+## 10. `supurr stop` — 停止机器人（需要 API 密钥）
 
-```bash
-supurr prices -a BTC                     # Fetch BTC prices (7 days)
-supurr prices -a hyna:BTC --dex hyna     # HIP-3 prices
-supurr prices -a HYPE -s 2026-01-28      # From specific date
-```
+使用您的 API 钱包私钥（EIP-191）签署 `Stop <机器人 ID>` 并发送签名到机器人 API。
 
-| Option                 | Description                     |
+### 命令语法
+
+
+### 参数说明
+
+| 参数                | 描述                                      |
+| ---------------------- | -------------------------------------- |
+| `--id <机器人 ID>`     | 需要停止的机器人 ID                         |
+
+> **注意**：签名格式为 `0x{r}{s}{v}`（65 字节），使用 `@noble/curves/secp256k1` 和 `@noble/hashes/sha3` 进行签名计算。
+
+---
+
+## 11. `supurr prices` — 调试价格数据
+
+### 命令语法
+
+
+### 参数说明
+
+| 选项                | 描述                          |
 | ---------------------- | ------------------------------- |
-| `-a, --asset <symbol>` | **Required.** Asset symbol      |
-| `--dex <dex>`          | DEX name (default: hyperliquid) |
-| `-s, --start <date>`   | Start date                      |
-| `-e, --end <date>`     | End date                        |
-| `--no-cache`           | Disable caching                 |
+| `-a, --asset <符号>`     | 需要查询的资产符号                     |
+| `--dex <交易所>`     | 交易所名称（默认：hyperliquid）                   |
+| `-s, --start <日期>`     | 开始查询的日期                         |
+| `-e, --end <日期>`     | 结束查询的日期                         |
+| `--no-cache`       | 禁用价格数据缓存                         |
 
 ---
 
-## 12. `supurr update` — Self-Update
-
-```bash
-supurr update    # Check and install latest version
-```
+## 12. `supurr update` — 自动更新 CLI
 
 ---
 
-## Complete Workflows
+## 完整工作流程
 
-### Workflow 1: Grid — Backtest → Deploy → Monitor
-
-```bash
-# 1. Initialize (first time only)
-supurr init --address 0x... --api-wallet 0x...
-
-# 2. Create config
-supurr new grid --asset BTC --levels 4 --start-price 88000 --end-price 92000 --investment 100 --leverage 20 --output btc-grid.json
-
-# 3. Backtest
-supurr backtest -c btc-grid.json -s 2026-01-28 -e 2026-02-01
-
-# 4. Deploy
-supurr deploy -c btc-grid.json
-
-# 5. Monitor
-supurr monitor --watch
-
-# 6. Stop when done
-supurr stop --id <bot_id>
-```
-
-### Workflow 2: Arb — Setup → Deploy → Monitor
-
-```bash
-# 1. Initialize
-supurr init --address 0x... --api-wallet 0x...
-
-# 2. Generate arb config (auto-resolves spot counterpart)
-supurr new arb --asset BTC --amount 200 --leverage 1 --output btc-arb.json
-
-# 3. Review the generated config
-supurr config btc-arb
-
-# 4. Ensure USDC balance in BOTH Spot and Perps wallets on Hyperliquid
-
-# 5. Deploy
-supurr deploy -c btc-arb.json
-
-# 6. Monitor
-supurr monitor --watch
-```
-
-### Workflow 3: DCA — Configure → Deploy
-
-```bash
-# 1. Create DCA config
-supurr new dca --asset BTC --trigger-price 95000 --base-order 0.001 --max-orders 5 --take-profit 0.02 --output btc-dca.json
-
-# 2. Deploy
-supurr deploy -c btc-dca.json
-
-# 3. Monitor
-supurr monitor --watch
-```
-
-### Workflow 4: Test All Market Types
-
-```bash
-# Native Perp
-supurr new grid --asset BTC --output native-btc.json
-supurr backtest -c native-btc.json -s 2026-01-28 -e 2026-02-01
-
-# USDC Spot
-supurr new grid --asset HYPE --type spot --quote USDC --output hype-usdc.json
-supurr backtest -c hype-usdc.json -s 2026-01-30 -e 2026-01-31
-
-# Non-USDC Spot
-supurr new grid --asset HYPE --type spot --quote USDH --output hype-usdh.json
-supurr backtest -c hype-usdh.json -s 2026-01-30 -e 2026-01-31
-
-# HIP-3
-supurr new grid --asset BTC --type hip3 --dex hyna --output hyna-btc.json
-supurr backtest -c hyna-btc.json -s 2026-01-28 -e 2026-02-01
-```
+### 工作流程 1：网格策略 → 回测 → 部署 → 监控
 
 ---
 
-## Config Storage
-
-```
-~/.supurr/
-├── credentials.json      # { address, private_key }
-├── configs/              # Saved bot configs
-│   ├── btc-grid.json
-│   ├── hype-usdc.json
-│   └── ...
-└── cache/                # Price data cache
-    └── hyperliquid/
-        ├── BTC/
-        └── HYPE/
-```
+### 工作流程 2：套利策略 → 配置 → 部署 → 监控
 
 ---
 
-## API Endpoints Used
-
-| Purpose       | Endpoint                                      | Auth              |
-| ------------- | --------------------------------------------- | ----------------- |
-| Bot Deploy    | `POST /bots/create/<wallet>`                  | —                 |
-| Active Bots   | `GET /dashboard/active_bots`                  | —                 |
-| Bot History   | `GET /dashboard/user_bots/<address>` (Python) | —                 |
-| Stop Bot      | `POST /bots/<bot_id>/stop` (Node)             | EIP-191 signature |
-| Price Data    | `GET /prices?dex=X&asset=Y&start_time=Z`      | —                 |
-| Price Archive | `GET /{dex}/{asset}/{date}.json`              | —                 |
+### 工作流程 3：定期定额投资策略 → 配置 → 部署
 
 ---
 
-## Troubleshooting
-
-| Issue                     | Solution                                                         |
-| ------------------------- | ---------------------------------------------------------------- |
-| "Config not found"        | Use `supurr configs` to list available configs                   |
-| "No credentials"          | Run `supurr init` first                                          |
-| "0 prices fetched"        | Check date range (data from 2026-01-28+)                         |
-| "API wallet not valid"    | Register API wallet on Hyperliquid first                         |
-| HIP-3 backtest fails      | Use format `--dex hyna --asset BTC`                              |
-| "No spot market found"    | Asset has no spot counterpart — arb not available for this asset |
-| Arb asset starts with `U` | Use the perp name (e.g., `BTC` not `UBTC`) — CLI adds `U` prefix |
+### 工作流程 4：测试所有市场类型
 
 ---
 
-# Appendix: Hyperliquid Info API
+## 配置文件存储位置
 
-> **Backtesting note**: This appendix is for live metadata and user state lookups. It is **not** a source of tick-level historical data for `supurr backtest`.
+---
 
-> **Get address via**: `supurr whoami` — returns the configured wallet address.
+## 使用的 API 端点
 
-All endpoints use `POST https://api.hyperliquid.xyz/info` with `Content-Type: application/json`.
+| 功能                | 对应 API 端点                        | 认证方式                          |
+| ---------------------- | --------------------------------------------- | ---------------------- |
+| 部署机器人           | `POST /bots/create/<钱包>`                   | ----------------------- |
+| 查看活跃机器人         | `GET /dashboard/active_bots`                   | ----------------------- |
+| 查看机器人历史记录       | `GET /dashboard/user_bots/<地址>`         | ----------------------- |
+| 停止机器人           | `POST /bots/<机器人 ID>/stop`                   | ----------------------- |
+| 获取价格数据         | `GET /prices?dex=X&asset=Y&start_time=Z`          | ----------------------- |
+| 获取价格归档         | `GET /{交易所}/{资产}/{日期}.json`         | ----------------------- |
 
-## Market Data (No Address Required)
+## 故障排除
 
-| Query            | Request Body                         |
+| 常见问题            | 解决方案                                      |
+| ------------------------- | ------------------------------------------ |
+| “配置文件未找到”         | 使用 `supurr configs` 命令列出所有可用配置文件           |
+| “无法获取价格数据”       | 先运行 `supurr init` 命令设置凭证                 |
+| “未获取到价格数据”       | 确保查询日期在 2026-01-28 之后                 |
+| “API 钱包无效”         | 先在 Hyperliquid 平台上注册 API 钱包                 |
+| HIP-3 套利策略回测失败     | 使用正确的参数格式（例如：`--dex hyna --asset BTC`）           |
+| “未找到现货市场”       | 某资产没有现货合约，因此无法使用套利策略           |
+| 套利资产名称以 `U` 开头       | 使用对应的远期合约名称（例如：`BTC` 而非 `UBTC`）           |
+
+---
+
+# 附录：Hyperliquid Info API
+
+> **回测说明**：此附录用于获取实时元数据和用户账户信息，**不** 提供用于回测的逐笔交易数据。
+> **获取地址的方法**：使用 `supurr whoami` 命令可获取配置的钱包地址。
+> 所有 API 请求均使用 `POST https://api.hyperliquid.xyz/info`，请求头设置为 `Content-Type: application/json`。
+
+## 市场数据（无需提供地址）
+
+| 请求类型            | 请求内容                                      |
 | ---------------- | ------------------------------------ |
-| All Mid Prices   | `{"type": "allMids"}`                |
-| Sub-DEX Prices   | `{"type": "allMids", "dex": "hyna"}` |
-| Perp Metadata    | `{"type": "metaAndAssetCtxs"}`       |
-| Spot Metadata    | `{"type": "spotMeta"}`               |
-| L2 Order Book    | `{"type": "l2Book", "coin": "BTC"}`  |
-| List HIP-3 DEXes | `{"type": "perpDexs"}`               |
+| 获取所有中间价         | `{"type": "allMids"}`                   |
+| 获取特定交易所的价格     | `{"type": "allMids", "dex": "hyna"}`           |
+| 获取远期合约元数据       | `{"type": "metaAndAssetCtxs"}`               |
+| 获取现货合约元数据       | `{"type": "spotMeta"}`                   |
+| 获取二级市场订单簿       | `{"type": "l2Book", "coin": "BTC"}`             |
+| 获取 HIP-3 交易所列表     | `{"type": "perpDexs"}`                   |
 
-## User Data (Address Required)
+## 用户数据（需要提供地址）
 
-| Query           | Request Body                                                                   |
-| --------------- | ------------------------------------------------------------------------------ |
-| Perp Positions  | `{"type": "clearinghouseState", "user": "0x..."}`                              |
-| Spot Balances   | `{"type": "spotClearinghouseState", "user": "0x..."}`                          |
-| Open Orders     | `{"type": "openOrders", "user": "0x..."}`                                      |
-| Order History   | `{"type": "historicalOrders", "user": "0x..."}`                                |
-| Trade Fills     | `{"type": "userFills", "user": "0x...", "aggregateByTime": true}`              |
-| Funding History | `{"type": "userFunding", "user": "0x...", "startTime": <ts>, "endTime": <ts>}` |
-| Sub-Accounts    | `{"type": "subAccounts", "user": "0x..."}`                                     |
-| Vault Details   | `{"type": "vaultDetails", "vaultAddress": "0x..."}`                            |
+| 请求类型            | 请求内容                                      |
+| ---------------- | ------------------------------------ |
+| 获取远期合约持仓信息     | `{"type": "clearinghouseState", "user": "0x..."}`         |
+| 获取现货账户余额       | `{"type": "spotClearinghouseState", "user": "0x..."}`         |
+| 获取未成交订单         | `{"type": "openOrders", "user": "0x..."}`         |
+| 获取交易历史记录       | `{"type": "historicalOrders", "user": "0x..."}`         |
+| 获取资金流动记录       | `{"type": "userFunding", "user": "0x...", "startTime": <时间>, "endTime": <时间>` |         |
+| 获取子账户信息       | `{"type": "subAccounts", "user": "0x..."}`         |
+| 获取资金池信息       | `{"type": "vaultDetails", "vaultAddress": "0x..."}`         |
 
-## HIP-3 Sub-DEXes
+## HIP-3 交易所列表
 
-| DEX    | Quote | Assets                        |
-| ------ | ----- | ----------------------------- |
-| `hyna` | USDE  | Crypto perps (BTC, ETH, HYPE) |
-| `xyz`  | USDE  | Stocks (AAPL, TSLA, NVDA)     |
-| `vntl` | USDE  | AI/tech tokens                |
-| `km`   | USDT  | Kinetiq Markets               |
-| `cash` | USDC  | Tech stocks                   |
+| 交易所          | 对价货币 | 可交易资产                        |
+| ------------ | ----- | ----------------------------------- |
+| `hyna`          | USDE     | BTC、ETH、HYPE 等加密货币                   |
+| `xyz`          | USDE     | AAPL、TSLA 等股票                     |
+| `km`          | USDT     | Kinetiq Markets                   |
+| `vntl`          | USDT     | AI/科技相关代币                     |
+| `cash`          | USDC     | 技术相关股票                     |
 
-## TypeScript Helper
-
-```typescript
-const HL = "https://api.hyperliquid.xyz/info";
-
-async function query<T>(body: object): Promise<T> {
-  const res = await fetch(HL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return res.json();
-}
-
-// Examples
-const mids = await query({ type: "allMids" });
-const positions = await query({ type: "clearinghouseState", user: "0x..." });
-const spotBal = await query({ type: "spotClearinghouseState", user: "0x..." });
-const dexes = await query({ type: "perpDexs" });
-```
-
-## Common Hazards
-
-| Issue                   | Solution                                          |
-| ----------------------- | ------------------------------------------------- |
-| `szDecimals` truncation | Truncate qty to `szDecimals` before submit        |
-| HIP-3 price prefix      | Sub-DEX prices keyed as `hyna:BTC`, not `BTC`     |
-| Sub-DEX asset index     | Use local index from DEX's `universe`, not global |
-| Fill limits             | `userFills` max 2000 — paginate with time ranges  |
+## TypeScript 辅助文件
 
 ---
 
-## Tutorials
+## 常见问题及解决方法
 
-Step-by-step deployment guides with parameter selection advice and practical tips:
+| 问题                        | 解决方案                                      |
+| ------------------------- | -------------------------------------------------------------------------- |
+| 数量精度问题         | 在提交数据前将数值截断到指定小数位数           |
+| HIP-3 价格前缀问题       | 使用正确的交易所名称（例如：`hyna:BTC` 而非 `BTC`）         |
+| 交易所资产索引问题       | 使用交易所提供的本地索引                   |
+| 数据量限制           | `userFills` 每次请求最多返回 2000 条数据           |
 
-- [Grid Bot Tutorial](tutorials/grid.md) — Range trading with buy/sell grids
-- [Arb Bot Tutorial](tutorials/arb.md) — Market-neutral spot-perp arbitrage
-- [DCA Bot Tutorial](tutorials/dca.md) — Dollar-cost averaging with auto-restart
+---
+
+## 教程
+
+- [网格策略机器人教程](tutorials/grid.md)：介绍基于价格范围的网格交易策略
+- [套利策略机器人教程](tutorials/arb.md)：介绍市场中性套利策略
+- [定期定额投资机器人教程](tutorials/dca.md)：介绍定期定额投资策略及自动重启机制

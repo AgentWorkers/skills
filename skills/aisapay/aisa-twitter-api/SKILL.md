@@ -1,53 +1,52 @@
 ---
 name: Twitter Command Center (Search + Post)
-description: "Search X (Twitter) in real time, extract relevant posts, and publish tweets/replies instantly—perfect for social listening, engagement, and rapid content ops."
+description: "实时搜索 X（Twitter）平台上的内容，提取相关帖子，并立即发布推文或回复——非常适合用于社交监听、用户互动以及快速的内容管理。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"🐦","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
 # OpenClaw Twitter 🐦
 
-**Twitter/X data access and automation for autonomous agents. Powered by AIsa.**
+**专为自主代理设计的Twitter/X数据访问与自动化工具。由AIsa提供支持。**
 
-One API key. Full Twitter intelligence.
+只需一个API密钥，即可全面获取Twitter的所有功能。
 
-## 🔥 What Can You Do?
+## 🔥 您能做什么？
 
-### Monitor Influencers
+### 监控影响者
 ```
 "Get Elon Musk's latest tweets and notify me of any AI-related posts"
 ```
 
-### Track Trends
+### 跟踪趋势
 ```
 "What's trending on Twitter worldwide right now?"
 ```
 
-### Social Listening
+### 社交监听
 ```
 "Search for tweets mentioning our product and analyze sentiment"
 ```
 
-### Automated Engagement
+### 自动互动
 ```
 "Like and retweet posts from @OpenAI that mention GPT-5"
 ```
 
-### Competitor Intel
+### 竞争对手分析
 ```
 "Monitor @anthropic and @GoogleAI - alert me on new announcements"
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 export AISA_API_KEY="your-key"
 ```
 
-## Core Capabilities
+## 核心功能
 
-### Read Operations (No Login Required)
-
+### 读取数据（无需登录）
 ```bash
 # Get user info
 curl "https://api.aisa.one/apis/v1/twitter/user/info?userName=elonmusk" \
@@ -86,9 +85,8 @@ curl "https://api.aisa.one/apis/v1/twitter/user/user_followings?userName=elonmus
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Write Operations (Requires Login)
-
-> ⚠️ **Warning**: Posting requires account login. Use responsibly to avoid rate limits or account suspension.
+### 写入数据（需要登录）
+> ⚠️ **警告**：发布内容需要登录账户。请谨慎使用，以避免触发速率限制或导致账户被暂停。
 
 ```bash
 # Step 1: Login first (async, check status after)
@@ -126,8 +124,7 @@ curl -X POST "https://api.aisa.one/apis/v1/twitter/update_profile_v3" \
   -d '{"user_name":"myaccount","name":"New Name","bio":"New bio"}'
 ```
 
-## Python Client
-
+## Python客户端
 ```bash
 # User operations
 python3 {baseDir}/scripts/twitter_client.py user-info --username elonmusk
@@ -147,39 +144,39 @@ python3 {baseDir}/scripts/twitter_client.py like --username myaccount --tweet-id
 python3 {baseDir}/scripts/twitter_client.py retweet --username myaccount --tweet-id 1234567890
 ```
 
-## API Endpoints Reference
+## API端点参考
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/twitter/user/info` | GET | Get user profile |
-| `/twitter/user/user_last_tweet` | GET | Get user's recent tweets |
-| `/twitter/user/user_followers` | GET | Get user followers |
-| `/twitter/user/user_followings` | GET | Get user followings |
-| `/twitter/user/search_user` | GET | Search users by keyword |
-| `/twitter/tweet/advanced_search` | GET | Advanced tweet search |
-| `/twitter/tweet/tweetById` | GET | Get tweets by IDs |
-| `/twitter/trends` | GET | Get trending topics |
-| `/twitter/user_login_v3` | POST | Login to account |
-| `/twitter/send_tweet_v3` | POST | Send a tweet |
-| `/twitter/like_tweet_v3` | POST | Like a tweet |
-| `/twitter/retweet_v3` | POST | Retweet |
+| `/twitter/user/info` | GET | 获取用户信息 |
+| `/twitter/user/user_last_tweet` | GET | 获取用户的最新推文 |
+| `/twitter/user/user_followers` | GET | 获取用户的关注者 |
+| `/twitter/user/user_followings` | GET | 获取用户关注的对象 |
+| `/twitter/user/search_user` | GET | 通过关键词搜索用户 |
+| `/twitter/tweet/advanced_search` | GET | 高级推文搜索 |
+| `/twitter/tweet/tweetById` | GET | 通过ID获取推文 |
+| `/twitter/trends` | GET | 获取热门话题 |
+| `/twitter/user_login_v3` | POST | 登录账户 |
+| `/twitter/send_tweet_v3` | POST | 发布推文 |
+| `/twitter/like_tweet_v3` | POST | 点赞推文 |
+| `/twitter/retweet_v3` | POST | 转发推文 |
 
-## Pricing
+## 价格
 
-| API | Cost |
+| API | 费用 |
 |-----|------|
-| Twitter read query | ~$0.0004 |
-| Twitter post/like/retweet | ~$0.001 |
+| Twitter数据读取 | 约0.0004美元 |
+| Twitter内容发布/点赞/转发 | 约0.001美元 |
 
-Every response includes `usage.cost` and `usage.credits_remaining`.
+每个响应都会包含`usage.cost`和`usage.credits_remaining`信息。
 
-## Get Started
+## 开始使用
 
-1. Sign up at [aisa.one](https://aisa.one)
-2. Get your API key
-3. Add credits (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
+1. 在[aisa.one](https://aisa.one)注册账号。
+2. 获取您的API密钥。
+3. 购买相应的信用额度（按需付费）。
+4. 设置环境变量：`export AISA_API_KEY="您的API密钥"`。
 
-## Full API Reference
+## 完整API参考
 
-See [API Reference](https://aisa.mintlify.app/api-reference/introduction) for complete endpoint documentation.
+请访问[API参考文档](https://aisa.mintlify.app/api-reference/introduction)以获取完整的端点说明。

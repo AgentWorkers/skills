@@ -1,53 +1,53 @@
 ---
 name: handling-transactions
-description: Token transactions and wallet integration for XMTP agents. Use when sending USDC, creating transaction requests, or handling transaction confirmations. Triggers on USDC transfer, wallet calls, or transaction reference.
+description: XMTP代理的令牌交易和钱包集成功能。适用于发送USDC、创建交易请求或处理交易确认等场景。该功能会在USDC转账、钱包操作或交易引用发生时被触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP transactions
+# XMTP交易
 
-Send and receive token transactions using wallet_sendCalls (EIP-5792) specification.
+使用`wallet_sendCalls`（EIP-5792）规范发送和接收代币交易。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Sending USDC or other tokens
-- Creating transaction requests
-- Handling transaction confirmations
-- Checking token balances
-- Working with smart contract wallets
+在以下情况下请参考这些指南：
+- 发送USDC或其他代币
+- 创建交易请求
+- 处理交易确认
+- 检查代币余额
+- 使用智能合约钱包
 
-## Rule categories by priority
+## 规则类别（按优先级排序）
 
-| Priority | Category | Impact | Prefix |
+| 优先级 | 类别 | 影响程度 | 前缀 |
 |----------|----------|--------|--------|
-| 1 | Send | CRITICAL | `send-` |
-| 2 | Receive | CRITICAL | `receive-` |
-| 3 | Balance | HIGH | `balance-` |
+| 1 | 发送 | 关键 | `send-` |
+| 2 | 接收 | 关键 | `receive-` |
+| 3 | 余额 | 高 | `balance-` |
 
-## Quick reference
+## 快速参考
 
-### Send (CRITICAL)
-- `send-usdc-transfer` - Create USDC transfer requests
-- `send-wallet-calls` - Send wallet_sendCalls messages
+### 发送（关键）
+- `send-usdc-transfer` - 创建USDC转账请求
+- `send-wallet-calls` - 发送`wallet_sendCalls`消息
 
-### Receive (CRITICAL)
-- `receive-transaction-reference` - Handle transaction confirmations
+### 接收（关键）
+- `receive-transaction-reference` - 处理交易确认
 
-### Balance (HIGH)
-- `balance-check` - Check USDC balance
+### 余额（高）
+- `balance-check` - 检查USDC余额
 
-## Supported networks
+## 支持的网络
 
-| Network | Chain ID | USDC Address |
+| 网络 | 链路ID | USDC地址 |
 |---------|----------|--------------|
 | Base Sepolia | 84532 | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
 | Base Mainnet | 8453 | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 
-## Quick start
+## 快速入门
 
 ```typescript
 import { validHex } from "@xmtp/agent-sdk";
@@ -65,9 +65,9 @@ const calls = createUSDCTransferCalls(
 await ctx.conversation.sendWalletSendCalls(calls);
 ```
 
-## Implementation snippets
+## 实现示例
 
-**USDC token config:**
+**USDC代币配置：**
 
 ```typescript
 const USDC_TOKENS: Record<string, { address: string; decimals: number }> = {
@@ -76,7 +76,7 @@ const USDC_TOKENS: Record<string, { address: string; decimals: number }> = {
 };
 ```
 
-**Get USDC balance:**
+**获取USDC余额：**
 
 ```typescript
 import { createPublicClient, formatUnits, http } from "viem";
@@ -98,7 +98,7 @@ const getUSDCBalance = async (networkId: string, address: HexString): Promise<st
 };
 ```
 
-**Create USDC transfer calls:**
+**创建USDC转账请求：**
 
 ```typescript
 import { toHex } from "viem";
@@ -117,13 +117,12 @@ const createUSDCTransferCalls = (
 };
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+如需详细说明，请阅读相应的规则文件：
 
 ```
 rules/send-usdc-transfer.md
 rules/receive-transaction-reference.md
 rules/balance-check.md
 ```
-

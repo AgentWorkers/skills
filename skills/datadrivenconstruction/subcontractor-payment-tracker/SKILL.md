@@ -1,24 +1,24 @@
 ---
 slug: "subcontractor-payment-tracker"
 display_name: "Subcontractor Payment Tracker"
-description: "Track subcontractor payments, lien waivers, and compliance. Manage payment schedules and documentation."
+description: "跟踪分包商的付款情况、放弃留置权的协议以及合规性要求。管理付款计划和相关文件。"
 ---
 
-# Subcontractor Payment Tracker
+# 分包商付款追踪系统
 
-## Business Case
+## 商业需求
 
-### Problem Statement
-Subcontractor payments require careful management:
-- Complex payment schedules
-- Lien waiver tracking
-- Compliance documentation
-- Cash flow coordination
+### 问题描述
+分包商的付款管理需要格外谨慎：
+- 付款计划复杂
+- 需要跟踪放弃留置权的协议
+- 需要生成合规性相关文件
+- 需要协调现金流
 
-### Solution
-Comprehensive subcontractor payment tracking with lien waiver management, compliance monitoring, and payment scheduling.
+### 解决方案
+提供全面的分包商付款追踪服务，包括放弃留置权的管理、合规性监控以及付款计划的制定。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -264,7 +264,7 @@ class SubcontractorPaymentTracker:
         return output_path
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 tracker = SubcontractorPaymentTracker("Office Tower")
@@ -291,5 +291,5 @@ tracker.attach_lien_waiver(payment.payment_id, sub.sub_id,
                           WaiverType.UNCONDITIONAL_PROGRESS, date.today(), 50000)
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Management
+## 参考资源
+- **DDC手册**：第3.1章 - 成本管理

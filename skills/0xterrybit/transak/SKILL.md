@@ -1,53 +1,46 @@
 ---
 name: transak
-description: Transak fiat-to-crypto on-ramp for Web3. Buy and sell crypto with 100+ payment methods across 170+ countries.
+description: Web3的法定货币到加密货币的转换服务：支持170多个国家中的100多种支付方式，用于买卖加密货币。
 metadata: {"clawdbot":{"emoji":"🚀","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# Transak 🚀
+# Transak 🚀  
+Web3支付基础设施，支持600多个DeFi、NFT和钱包项目之间的法币转换（Fiat on/off-ramp服务）。  
 
-Web3 payment infrastructure. Fiat on/off-ramp trusted by 600+ DeFi, NFT, and wallet projects.
+## 环境变量  
+| 变量 | 描述 | 是否必填 |  
+|---------|-------------|---------|  
+| `TRANSAK_API_KEY` | API密钥 | 是 |  
+| `TRANSAK_SECRET` | Webhook的密钥 | 否 |  
+| `TRANSAK_ENV` | 环境（STAGING或PRODUCTION） | 否 |  
 
-## Environment Variables
+## 主要功能  
+- 🌍 **覆盖170多个国家**  
+- 💳 **支持100多种支付方式**：信用卡、银行转账、移动支付  
+- ⛓️ **兼容75多种区块链**：EVM、Solana、Bitcoin等  
+- 🔄 **法币转换功能**：可将加密货币兑换为法币  
+- 🎨 **NFT购买**：直接支持NFT交易  
+- 🔌 **插件SDK**：易于集成到应用程序中  
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `TRANSAK_API_KEY` | API Key | Yes |
-| `TRANSAK_SECRET` | Secret for webhooks | No |
-| `TRANSAK_ENV` | `STAGING` or `PRODUCTION` | No |
+## API基础URL  
+- 测试环境：`https://api-stg.transak.com`  
+- 生产环境：`https://api.transak.com`  
 
-## Features
-
-- 🌍 **170+ Countries** - Global coverage
-- 💳 **100+ Payment Methods** - Cards, bank, mobile
-- ⛓️ **75+ Blockchains** - EVM, Solana, Bitcoin, etc.
-- 🔄 **Off-Ramp** - Sell crypto to fiat
-- 🎨 **NFT Checkout** - Direct NFT purchases
-- 🔌 **Widget SDK** - Easy integration
-
-## API Base URLs
-
-- Staging: `https://api-stg.transak.com`
-- Production: `https://api.transak.com`
-
-## Get Supported Cryptocurrencies
-
+## 支持的加密货币  
 ```bash
 API_KEY="${TRANSAK_API_KEY}"
 ENV="${TRANSAK_ENV:-STAGING}"
 [[ "$ENV" == "PRODUCTION" ]] && BASE_URL="https://api.transak.com" || BASE_URL="https://api-stg.transak.com"
 
 curl -s "${BASE_URL}/api/v2/currencies/crypto-currencies" | jq '.response[:10] | .[] | {symbol: .symbol, name: .name, network: .network.name}'
-```
+```  
 
-## Get Supported Fiat Currencies
-
+## 支持的法币  
 ```bash
 curl -s "${BASE_URL}/api/v2/currencies/fiat-currencies" | jq '.response[:10] | .[] | {symbol: .symbol, name: .name, paymentOptions: .paymentOptions}'
-```
+```  
 
-## Get Price Quote
-
+## 获取价格报价  
 ```bash
 FIAT="USD"
 CRYPTO="ETH"
@@ -68,10 +61,9 @@ curl -s "${BASE_URL}/api/v2/currencies/price" \
     totalFee: .response.totalFee,
     conversionPrice: .response.conversionPrice
   }'
-```
+```  
 
-## Generate Widget URL
-
+## 生成插件URL  
 ```bash
 API_KEY="${TRANSAK_API_KEY}"
 WALLET_ADDRESS="<USER_WALLET>"
@@ -90,10 +82,9 @@ WIDGET_URL+="&fiatCurrency=${FIAT_CURRENCY}"
 WIDGET_URL+="&productsAvailed=BUY"
 
 echo "Widget URL: $WIDGET_URL"
-```
+```  
 
-## Get Order Status
-
+## 查看订单状态  
 ```bash
 ORDER_ID="<ORDER_ID>"
 
@@ -104,52 +95,48 @@ curl -s "${BASE_URL}/api/v2/partners/order/${ORDER_ID}" \
     transactionHash: .response.transactionHash,
     walletAddress: .response.walletAddress
   }'
-```
+```  
 
-## Supported Networks
+## 支持的网络  
+| 网络 | ID | 支持的代币 |  
+|---------|-----|--------|  
+| Ethereum | ethereum | ETH、USDT、USDC、DAI |  
+| Polygon | polygon | MATIC、USDT、USDC |  
+| Arbitrum | arbitrum | ETH、ARB、USDC |  
+| Optimism | optimism | ETH、OP、USDC |  
+| BSC | bsc | BNB、BUSD、USDT |  
+| Solana | solana | SOL、USDC |  
+| Avalanche | avaxcchain | AVAX、USDC |  
+| Base | base | ETH、USDC |  
+| Bitcoin | bitcoin | BTC |  
 
-| Network | ID | Tokens |
-|---------|-----|--------|
-| Ethereum | ethereum | ETH, USDT, USDC, DAI |
-| Polygon | polygon | MATIC, USDT, USDC |
-| Arbitrum | arbitrum | ETH, ARB, USDC |
-| Optimism | optimism | ETH, OP, USDC |
-| BSC | bsc | BNB, BUSD, USDT |
-| Solana | solana | SOL, USDC |
-| Avalanche | avaxcchain | AVAX, USDC |
-| Base | base | ETH, USDC |
-| Bitcoin | bitcoin | BTC |
+## 支付方式  
+| 支付方式 | 支持地区 | 处理速度 |  
+|---------|---------|---------|  
+| 信用卡/借记卡 | 全球 | 即时 |  
+| Apple Pay | 全球 | 即时 |  
+| Google Pay | 全球 | 即时 |  
+| 银行转账 | 全球 | 1-3天 |  
+| SEPA | 欧洲 | 1-2天 |  
+| PIX | 巴西 | 即时 |  
+| UPI | 印度 | 即时 |  
+| GCash | 菲律宾 | 即时 |  
+| GrabPay | 东南亚 | 即时 |  
 
-## Payment Methods
+## 订单状态代码  
+| 状态 | 说明 |  
+|---------|-------------|---------|  
+| `AWAITING_payment_FROM_USER` | 等待用户付款 |  
+| `PAYMENT_DONE_MARKED_BY_USER` | 用户已提交付款 |  
+| `PROCESSING` | 正在处理订单 |  
+| `PENDING_DELIVERY_FROM_TRANSAK` | 正在发送加密货币 |  
+| `COMPLETED` | 订单已完成 |  
+| `CANCELLED` | 订单已取消 |  
+| `FAILED` | 订单失败 |  
+| `REFUNDED` | 退款完成 |  
+| `EXPIRED` | 订单已过期 |  
 
-| Method | Regions | Speed |
-|--------|---------|-------|
-| Credit/Debit Card | Global | Instant |
-| Apple Pay | Global | Instant |
-| Google Pay | Global | Instant |
-| Bank Transfer | Global | 1-3 days |
-| SEPA | Europe | 1-2 days |
-| PIX | Brazil | Instant |
-| UPI | India | Instant |
-| GCash | Philippines | Instant |
-| GrabPay | SEA | Instant |
-
-## Order Status Codes
-
-| Status | Description |
-|--------|-------------|
-| `AWAITING_PAYMENT_FROM_USER` | Waiting for payment |
-| `PAYMENT_DONE_MARKED_BY_USER` | Payment submitted |
-| `PROCESSING` | Processing order |
-| `PENDING_DELIVERY_FROM_TRANSAK` | Sending crypto |
-| `COMPLETED` | Order completed |
-| `CANCELLED` | Order cancelled |
-| `FAILED` | Order failed |
-| `REFUNDED` | Payment refunded |
-| `EXPIRED` | Order expired |
-
-## Webhook Events
-
+## Webhook事件  
 ```bash
 # Webhook payload
 {
@@ -163,10 +150,9 @@ curl -s "${BASE_URL}/api/v2/partners/order/${ORDER_ID}" \
     "walletAddress": "0x..."
   }
 }
-```
+```  
 
-## Verify Webhook
-
+## 验证Webhook  
 ```bash
 verify_webhook() {
   local payload="$1"
@@ -176,10 +162,9 @@ verify_webhook() {
   
   [[ "$signature" == "$expected" ]]
 }
-```
+```  
 
-## Widget Customization
-
+## 插件定制  
 ```bash
 # Additional widget parameters
 WIDGET_URL+="&themeColor=0066FF"           # Custom color
@@ -187,26 +172,23 @@ WIDGET_URL+="&hideMenu=true"               # Hide menu
 WIDGET_URL+="&disableWalletAddressForm=true"  # Lock wallet
 WIDGET_URL+="&exchangeScreenTitle=Buy%20Crypto"  # Custom title
 WIDGET_URL+="&defaultPaymentMethod=credit_debit_card"
-```
+```  
 
-## Safety Rules
+## 安全规则  
+1. **务必验证** Webhook签名。  
+2. **切勿** 在客户端暴露API密钥。  
+3. **在完成交易前** 需要检查订单状态。  
+4. **验证** 支付钱包地址的合法性。  
 
-1. **VERIFY** webhook signatures
-2. **NEVER** expose API keys client-side
-3. **CHECK** order status before fulfilling
-4. **VALIDATE** wallet addresses
+## 错误处理  
+| 错误类型 | 原因 | 解决方案 |  
+|---------|---------|---------|  
+| `INVALID_API_KEY` | API密钥无效 | 请检查凭证。  
+| `UNSUPPORTED_crypto` | 该货币不受支持 | 请查看支持的货币列表。  
+| `AMOUNT_TOO_LOW` | 金额过低 | 请增加金额。  
+| `AMOUNT_TOO_HIGH` | 金额过高 | 请降低金额。  
 
-## Error Handling
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `INVALID_API_KEY` | Bad API key | Check credentials |
-| `UNSUPPORTED_CRYPTO` | Currency unavailable | Check supported list |
-| `AMOUNT_TOO_LOW` | Below minimum | Increase amount |
-| `AMOUNT_TOO_HIGH` | Above maximum | Decrease amount |
-
-## Links
-
-- [Transak Docs](https://docs.transak.com/)
-- [Dashboard](https://dashboard.transak.com/)
-- [Widget Demo](https://global.transak.com/)
+## 链接  
+- [Transak文档](https://docs.transak.com/)  
+- [控制面板](https://dashboard.transak.com/)  
+- [插件演示](https://global.transak.com/)

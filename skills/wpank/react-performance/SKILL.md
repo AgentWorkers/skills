@@ -9,32 +9,30 @@ description:
 version: "1.0"
 ---
 
-# React Performance Patterns
+# React 性能优化模式
 
-Performance optimization guide for React and Next.js applications. Patterns
-across 7 categories, prioritized by impact. Detailed examples in `references/`.
+本文档为 React 和 Next.js 应用程序的性能优化指南，涵盖了 7 个方面的优化策略，并根据其影响程度进行了优先级排序。详细示例请参见 `references/` 目录。
 
-## When to Apply
+## 适用场景
 
-- Writing new React components or Next.js pages
-- Implementing data fetching (client or server-side)
-- Reviewing or refactoring for performance
-- Optimizing bundle size or load times
+- 编写新的 React 组件或 Next.js 页面
+- 实现数据获取（客户端或服务器端）
+- 优化性能或进行代码重构
+- 减小打包大小或提升加载速度
 
-## Categories by Priority
+## 按优先级分类的优化策略
 
-| # | Category             | Impact     |
-|---|----------------------|------------|
-| 1 | Async / Waterfalls   | CRITICAL   |
-| 2 | Bundle Size          | CRITICAL   |
-| 3 | Server Components    | HIGH       |
-| 4 | Re-renders           | MEDIUM     |
-| 5 | Rendering            | MEDIUM     |
-| 6 | Client-Side Data     | MEDIUM     |
-| 7 | JS Performance       | LOW-MEDIUM |
+| 优先级 | 分类                | 影响程度    |
+|-------|------------------|-----------|
+| 1     | 异步处理 / 流式操作        | 关键        |
+| 2     | 打包大小              | 关键        |
+| 3     | 服务器端组件            | 高度重要    |
+| 4     | 重新渲染              | 中等程度    |
+| 5     | 绘制性能              | 中等程度    |
+| 6     | 客户端数据获取          | 中等程度    |
+| 7     | JavaScript 性能          | 低至中等程度 |
 
-
-## Installation
+## 安装工具
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -45,11 +43,11 @@ npx clawhub@latest install react-performance
 
 ---
 
-## 1. Async — Eliminating Waterfalls (CRITICAL)
+## 1. 异步处理 — 消除流式操作（关键）
 
-### Parallelize independent operations
+### 并行执行独立操作
 
-Sequential awaits are the single biggest performance mistake in React apps.
+在 React 应用中，顺序执行 `await` 语句是导致性能问题的主要原因。
 
 ```typescript
 // BAD — sequential, 3 round trips
@@ -63,9 +61,9 @@ const [user, posts, comments] = await Promise.all([
 ])
 ```
 
-### Defer await until needed
+### 将 `await` 语句放在实际使用数据的地方
 
-Move `await` into branches where the value is actually used.
+将 `await` 语句移到需要使用数据的地方。
 
 ```typescript
 // BAD — blocks both branches
@@ -82,9 +80,9 @@ async function handle(userId: string, skip: boolean) {
 }
 ```
 
-### Strategic Suspense boundaries
+### 战略性地控制渲染时机
 
-Show layout immediately while data-dependent sections load independently.
+在数据依赖的部分加载完成之前，先显示页面布局。
 
 ```tsx
 // BAD — entire page blocked
@@ -109,15 +107,15 @@ async function DataDisplay() {
 }
 ```
 
-Share a promise across components with `use()` to avoid duplicate fetches.
+使用 `use()` 在多个组件之间共享 Promise，避免重复请求数据。
 
 ---
 
-## 2. Bundle Size (CRITICAL)
+## 2. 打包大小（关键）
 
-### Avoid barrel file imports
+### 避免使用“桶式”导入（barrel imports）
 
-Barrel files load thousands of unused modules. Direct imports save 200-800ms.
+“桶式”导入会加载大量未使用的模块，导致打包体积过大。直接导入可以节省 200–800 毫秒的加载时间。
 
 ```tsx
 // BAD — loads 1,583 modules
@@ -129,11 +127,9 @@ import X from 'lucide-react/dist/esm/icons/x'
 import Menu from 'lucide-react/dist/esm/icons/menu'
 ```
 
-Next.js 13.5+: use `experimental.optimizePackageImports` in config.
-Commonly affected: `lucide-react`, `@mui/material`, `react-icons`, `@radix-ui`,
-`lodash`, `date-fns`.
+在 Next.js 13.5 及更高版本中，可以在配置文件中启用 `experimental.optimizePackageImports` 选项。受影响的常用库包括：`lucide-react`、`@mui/material`、`react-icons`、`@radix-ui`、`lodash`、`date-fns`。
 
-### Dynamic imports for heavy components
+### 对于大型组件，使用动态导入
 
 ```tsx
 import dynamic from 'next/dynamic'
@@ -143,12 +139,11 @@ const MonacoEditor = dynamic(
 )
 ```
 
-### Defer non-critical third-party libraries
+### 延迟加载非必要的第三方库
 
-Analytics, logging, error tracking — load after hydration with `dynamic()` and
-`{ ssr: false }`.
+分析工具、日志记录、错误跟踪等功能可以在页面加载完成后（使用 `dynamic()` 和 `{ ssr: false }`）再加载。
 
-### Preload on user intent
+### 根据用户操作预加载相关内容
 
 ```tsx
 const preload = () => { void import('./monaco-editor') }
@@ -157,11 +152,11 @@ const preload = () => { void import('./monaco-editor') }
 
 ---
 
-## 3. Server Components (HIGH)
+## 3. 服务器端组件（高度重要）
 
-### Minimize serialization at RSC boundaries
+### 在服务器与客户端之间仅传递实际需要的数据
 
-Only pass fields the client actually uses across the server/client boundary.
+只传递客户端真正需要的数据。
 
 ```tsx
 // BAD — serializes all 50 user fields
@@ -171,9 +166,9 @@ return <Profile user={user} />
 return <Profile name={user.name} />
 ```
 
-### Parallel data fetching with composition
+### 使用组合式编程并行处理数据获取
 
-RSC execute sequentially within a tree. Restructure to parallelize.
+在服务器端，数据获取操作通常是顺序执行的；可以通过重构代码实现并行处理。
 
 ```tsx
 // BAD — Sidebar waits for header fetch
@@ -188,22 +183,17 @@ async function Sidebar() { return <nav>{(await fetchSidebarItems()).map(renderIt
 export default function Page() { return <div><Header /><Sidebar /></div> }
 ```
 
-### React.cache() for per-request deduplication
+### 使用 `React.cache()` 避免重复计算
 
-```typescript
-import { cache } from 'react'
-export const getCurrentUser = cache(async () => {
-  const session = await auth()
-  if (!session?.user?.id) return null
-  return await db.user.findUnique({ where: { id: session.user.id } })
-})
-```
+`React.cache()` 可以根据请求内容避免重复计算。
 
-Use primitive args (not inline objects) — `React.cache()` uses `Object.is`.
-Next.js auto-deduplicates `fetch`, but `React.cache()` is needed for DB queries,
-auth checks, and computations.
+### 使用基本类型参数（而非对象）
 
-### after() for non-blocking operations
+`React.cache()` 会通过 `Object.is()` 来判断参数是否已经缓存过。
+
+Next.js 会自动处理 `fetch` 请求的重复计算，但对于数据库查询、身份验证和计算操作，仍需要手动使用 `React.cache()`。
+
+### 使用 `after()` 实现非阻塞操作
 
 ```tsx
 import { after } from 'next/server'
@@ -216,9 +206,9 @@ export async function POST(request: Request) {
 
 ---
 
-## 4. Re-render Optimization (MEDIUM)
+## 4. 重新渲染优化（中等程度）
 
-### Derive state during render — not in effects
+### 在渲染过程中计算状态，而非在副作用中计算
 
 ```tsx
 // BAD — redundant state + effect
@@ -229,7 +219,7 @@ useEffect(() => { setFullName(first + ' ' + last) }, [first, last])
 const fullName = first + ' ' + last
 ```
 
-### Functional setState for stable callbacks
+### 对于稳定的回调函数，使用函数式 `setState`
 
 ```tsx
 // BAD — recreated on every items change
@@ -243,9 +233,9 @@ const addItem = useCallback((item: Item) => {
 }, [])
 ```
 
-### Defer state reads to usage point
+### 将状态读取操作延迟到实际使用的时候
 
-Don't subscribe to dynamic state if you only read it in callbacks.
+如果只在回调函数中读取状态，就不要订阅状态变化。
 
 ```tsx
 // BAD — re-renders on every searchParams change
@@ -259,7 +249,7 @@ const handleShare = () => {
 }
 ```
 
-### Lazy state initialization
+### 拖动式初始化状态
 
 ```tsx
 // BAD — JSON.parse runs every render
@@ -269,7 +259,7 @@ const [settings] = useState(JSON.parse(localStorage.getItem('s') || '{}'))
 const [settings] = useState(() => JSON.parse(localStorage.getItem('s') || '{}'))
 ```
 
-### Subscribe to derived booleans
+### 对于非紧急的更新，使用条件渲染
 
 ```tsx
 // BAD — re-renders on every pixel
@@ -279,17 +269,7 @@ const width = useWindowWidth(); const isMobile = width < 768
 const isMobile = useMediaQuery('(max-width: 767px)')
 ```
 
-### Transitions for non-urgent updates
-
-```tsx
-// BAD — blocks UI on scroll
-const handler = () => setScrollY(window.scrollY)
-
-// GOOD — non-blocking
-const handler = () => startTransition(() => setScrollY(window.scrollY))
-```
-
-### Extract expensive work into memoized components
+### 将耗时的操作提取到缓存组件中
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {
@@ -302,24 +282,23 @@ function Profile({ user, loading }: Props) {
 }
 ```
 
-Note: React Compiler makes manual `memo()`/`useMemo()` unnecessary.
+注意：React 编译器会自动处理部分缓存逻辑，因此通常不需要手动使用 `memo()` 或 `useMemo()`。
 
 ---
 
-## 5. Rendering Performance (MEDIUM)
+## 5. 绘制性能（中等程度）
 
-### CSS content-visibility for long lists
+### 对于长列表，利用 CSS 的内容可见性优化
 
-For 1000 items, browser skips ~990 off-screen (10x faster initial render).
+对于包含 1000 个元素的列表，浏览器会自动省略屏幕外的 990 个元素，从而显著提升初始渲染速度。
 
 ```css
 .list-item { content-visibility: auto; contain-intrinsic-size: 0 80px; }
 ```
 
-### Hoist static JSX outside components
+### 将静态 JSX 提前提取到组件外部
 
-Avoids re-creation, especially for large SVG nodes. React Compiler does this
-automatically.
+这样可以避免不必要的重新渲染，尤其是对于大型 SVG 元素。React 编译器会自动处理这部分优化。
 
 ```tsx
 const skeleton = <div className="skeleton" />
@@ -328,9 +307,9 @@ function Container() { return <div>{loading && skeleton}</div> }
 
 ---
 
-## 6. Client-Side Data (MEDIUM)
+## 6. 客户端数据获取（中等程度）
 
-### SWR for deduplication and caching
+### 使用 SWR（Server-side Rendering）进行数据去重和缓存
 
 ```tsx
 // BAD — each instance fetches independently
@@ -342,9 +321,9 @@ const { data: users } = useSWR('/api/users', fetcher)
 
 ---
 
-## 7. JS Performance (LOW-MEDIUM)
+## 7. JavaScript 性能（低至中等程度）
 
-### Set/Map for O(1) lookups
+### 使用 `Set` 或 `Map` 数据结构以实现 O(1) 的查找效率
 
 ```typescript
 // BAD — O(n)
@@ -354,7 +333,7 @@ const allowedSet = new Set(allowed)
 items.filter(i => allowedSet.has(i.id))
 ```
 
-### Combine array iterations
+### 合并数组遍历操作
 
 ```typescript
 // BAD — 3 passes
@@ -365,15 +344,14 @@ const a: User[] = [], t: User[] = []
 for (const u of users) { if (u.isAdmin) a.push(u); if (u.isTester) t.push(u) }
 ```
 
-**Also:** early returns, cache property access in loops, hoist RegExp outside
-loops, prefer `for...of` for hot paths.
+**另外：** 尽量提前返回结果，循环中缓存属性访问，将正则表达式提取到循环外部，对于高频访问的部分优先使用 `for...of` 循环。
 
 ---
 
-## Quick Decision Guide
+## 快速决策指南
 
-1. **Slow page load?** → Bundle size (2), then async waterfalls (1)
-2. **Sluggish interactions?** → Re-renders (4), then JS perf (7)
-3. **Server page slow?** → RSC serialization & parallel fetching (3)
-4. **Client data stale/slow?** → SWR (6)
-5. **Long lists janky?** → content-visibility (5)
+- **页面加载缓慢？** → 首先检查打包大小（2），然后优化异步处理（1）
+- **交互响应迟缓？** → 优化重新渲染（4），接着优化 JavaScript 性能（7）
+- **服务器端页面响应慢？** → 优化服务器端数据序列化和并行数据获取（3）
+- **客户端数据更新不及时或速度慢？** → 使用 SWR（6）
+- **长列表显示效果不佳？** → 优化 CSS 的内容可见性（5）

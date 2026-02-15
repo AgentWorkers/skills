@@ -40,26 +40,26 @@ metadata:
 
 # 🧭 Voyage AI Skill
 
-Uses the `vai` CLI ([voyageai-cli](https://github.com/mrlynn/voyageai-cli)) for Voyage AI embeddings, reranking, and MongoDB Atlas Vector Search. Pure Node.js — no Python required.
+该工具使用 `vai` 命令行界面（[voyageai-cli](https://github.com/mrlynn/voyageai-cli)）来处理 Voyage AI 的嵌入、重新排序功能以及 MongoDB Atlas 的向量搜索功能。完全基于 Node.js 开发，无需使用 Python。
 
-## Setup
+## 设置
 
 ```bash
 npm install -g voyageai-cli
 ```
 
-### Environment Variables
+### 环境变量
 
-| Variable | Required For | Description |
+| 变量 | 必需条件 | 说明 |
 |----------|-------------|-------------|
-| `VOYAGE_API_KEY` | embed, rerank, store, search, similarity, ingest, ping | Model API key from MongoDB Atlas |
-| `MONGODB_URI` | store, search, index, ingest, ping (optional) | Atlas connection string |
+| `VOYAGE_API_KEY` | embed, rerank, store, search, similarity, ingest, ping | 来自 MongoDB Atlas 的模型 API 密钥 |
+| `MONGODB_URI` | store, search, index, ingest, ping （可选） | Atlas 连接字符串 |
 
-Get your API key: **MongoDB Atlas → AI Models → Create model API key**
+获取您的 API 密钥：**MongoDB Atlas → AI Models → 创建模型 API 密钥**
 
-## Command Reference (14 commands)
+## 命令参考（共 14 条命令）
 
-### embed — Generate embeddings
+### embed — 生成嵌入向量
 
 ```bash
 vai embed "What is MongoDB?"
@@ -69,14 +69,14 @@ cat texts.txt | vai embed
 vai embed "hello" --output-format array
 ```
 
-### rerank — Rerank documents
+### rerank — 重新排序文档
 
 ```bash
 vai rerank --query "database performance" --documents "MongoDB is fast" "SQL is relational"
 vai rerank --query "best database" --documents-file candidates.json --top-k 3
 ```
 
-### store — Embed and store in Atlas
+### store — 将数据嵌入并存储到 Atlas 中
 
 ```bash
 vai store --db mydb --collection docs --field embedding \
@@ -87,7 +87,7 @@ vai store --db mydb --collection docs --field embedding \
 vai store --db mydb --collection docs --field embedding --file documents.jsonl
 ```
 
-### search — Vector search
+### search — 执行向量搜索
 
 ```bash
 vai search --query "cloud database" --db mydb --collection docs \
@@ -98,7 +98,7 @@ vai search --query "performance" --db mydb --collection docs \
   --index vector_index --field embedding --filter '{"category": "guides"}' --limit 5
 ```
 
-### index — Manage vector search indexes
+### index — 管理向量搜索索引
 
 ```bash
 vai index create --db mydb --collection docs --field embedding \
@@ -107,7 +107,7 @@ vai index list --db mydb --collection docs
 vai index delete --db mydb --collection docs --index-name my_index
 ```
 
-### models — List available models
+### models — 列出可用的模型
 
 ```bash
 vai models
@@ -116,14 +116,14 @@ vai models --type reranking
 vai models --json
 ```
 
-### ping — Test connectivity
+### ping — 测试连接是否正常
 
 ```bash
 vai ping
 vai ping --json
 ```
 
-### config — Manage persistent configuration
+### config — 管理配置信息
 
 ```bash
 vai config set api-key "pa-your-key"
@@ -134,7 +134,7 @@ vai config path
 vai config reset
 ```
 
-### demo — Interactive guided walkthrough
+### demo — 交互式引导式操作流程
 
 ```bash
 vai demo
@@ -143,7 +143,7 @@ vai demo --skip-pipeline
 vai demo --keep
 ```
 
-### explain — Learn about AI concepts
+### explain — 了解 AI 相关概念
 
 ```bash
 vai explain                      # List all topics
@@ -160,7 +160,7 @@ vai explain api-access
 vai explain batch-processing
 ```
 
-### similarity — Compare text similarity
+### similarity — 比较文本的相似度
 
 ```bash
 vai similarity "MongoDB is a document database" "MongoDB Atlas is a cloud database"
@@ -169,7 +169,7 @@ vai similarity --file1 doc1.txt --file2 doc2.txt
 vai similarity "text A" "text B" --json
 ```
 
-### ingest — Bulk import with progress
+### ingest — 批量导入数据并显示进度
 
 ```bash
 vai ingest --file corpus.jsonl --db myapp --collection docs --field embedding
@@ -179,7 +179,7 @@ vai ingest --file corpus.jsonl --db myapp --collection docs --field embedding \
 vai ingest --file corpus.jsonl --db myapp --collection docs --field embedding --dry-run
 ```
 
-### completions — Shell completion scripts
+### completions — 提供 Shell 自动补全功能
 
 ```bash
 vai completions bash    # Output bash completion script
@@ -192,7 +192,7 @@ vai completions bash >> ~/.bashrc && source ~/.bashrc
 vai completions zsh > ~/.zsh/completions/_vai
 ```
 
-### help — Display help
+### help — 显示帮助信息
 
 ```bash
 vai help
@@ -200,9 +200,9 @@ vai help embed
 vai embed --help
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Embed → Store → Search Pipeline
+### 嵌入 → 存储 → 搜索流程
 
 ```bash
 # 1. Store documents
@@ -219,7 +219,7 @@ vai search --query "how does cloud database work" \
   --db myapp --collection articles --index article_search --field embedding
 ```
 
-### Two-Stage Retrieval (Embed + Rerank)
+### 两阶段检索流程（嵌入 + 重新排序）
 
 ```bash
 # 1. Get candidates via vector search
@@ -230,7 +230,7 @@ vai search --query "database scaling" --db myapp --collection articles \
 vai rerank --query "database scaling" --documents-file candidates.json --top-k 5
 ```
 
-### Bulk Ingest Pipeline
+### 批量导入数据流程
 
 ```bash
 # 1. Validate data (dry run)
@@ -244,14 +244,14 @@ vai index create --db myapp --collection docs --field embedding \
   --dimensions 1024 --similarity cosine
 ```
 
-## Global Flags
+## 全局参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `--json` | Machine-readable JSON output |
-| `--quiet` | Suppress non-essential output |
+| `--json` | 以机器可读的 JSON 格式输出结果 |
+| `--quiet` | 抑制非必要的输出信息 |
 
-## References
+## 参考资料
 
-- [Model Catalog](references/models.md) — All models with pricing and specs
-- [Vector Search Patterns](references/vector-search.md) — Atlas Vector Search integration guide
+- [模型目录](references/models.md) — 所有模型及其价格和规格信息 |
+- [向量搜索指南](references/vector-search.md) — MongoDB Atlas 的向量搜索集成说明

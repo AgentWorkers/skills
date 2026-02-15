@@ -1,16 +1,16 @@
 ---
 name: ansible
-description: "Infrastructure automation with Ansible. Use for server provisioning, configuration management, application deployment, and multi-host orchestration. Includes playbooks for OpenClaw VPS setup, security hardening, and common server configurations."
+description: "使用 Ansible 实现基础设施自动化。它可以用于服务器配置、应用程序部署以及多主机协调管理。其中包含了用于 OpenClaw VPS 设置、安全加固以及常见服务器配置的 playbook（脚本）。"
 metadata: {"openclaw":{"requires":{"bins":["ansible","ansible-playbook"]},"install":[{"id":"ansible","kind":"pip","package":"ansible","bins":["ansible","ansible-playbook"],"label":"Install Ansible (pip)"}]}}
 ---
 
-# Ansible Skill
+# Ansible 技能
 
-Infrastructure as Code automation for server provisioning, configuration management, and orchestration.
+Ansible 是一种用于服务器配置管理、自动化部署和流程编排的工具，它实现了基础设施即代码（Infrastructure as Code）的理念。
 
-## Quick Start
+## 快速入门
 
-### Prerequisites
+### 先决条件
 
 ```bash
 # Install Ansible
@@ -23,7 +23,7 @@ brew install ansible
 ansible --version
 ```
 
-### Run Your First Playbook
+### 运行你的第一个 Playbook
 
 ```bash
 # Test connection
@@ -39,7 +39,7 @@ ansible-playbook -i inventory/hosts.yml playbooks/site.yml --check
 ansible-playbook -i inventory/hosts.yml playbooks/site.yml --tags "security,nodejs"
 ```
 
-## Directory Structure
+## 目录结构
 
 ```
 skills/ansible/
@@ -62,11 +62,11 @@ skills/ansible/
     └── troubleshooting.md
 ```
 
-## Core Concepts
+## 核心概念
 
-### Inventory
+### Inventory（清单）
 
-Define your hosts in `inventory/hosts.yml`:
+在 `inventory/hosts.yml` 文件中定义你的主机：
 
 ```yaml
 all:
@@ -87,9 +87,9 @@ all:
         eva:
 ```
 
-### Playbooks
+### Playbook（剧本）
 
-Entry points for automation:
+自动化任务的入口点：
 
 ```yaml
 # playbooks/site.yml - Master playbook
@@ -109,9 +109,9 @@ Entry points for automation:
     - openclaw
 ```
 
-### Roles
+### Role（角色）
 
-Reusable, modular configurations:
+可重用的、模块化的配置配置：
 
 ```yaml
 # roles/common/tasks/main.yml
@@ -134,38 +134,38 @@ Reusable, modular configurations:
     state: present
 ```
 
-## Included Roles
+## 包含的角色
 
-### 1. common
-Base system configuration:
-- System updates
-- Essential packages
-- Timezone configuration
-- User creation with SSH keys
+### 1. common（通用角色）
+- 基础系统配置：
+  - 系统更新
+  - 必需软件包的安装
+  - 时区设置
+  - 创建带有 SSH 密钥的用户
 
-### 2. security
-Hardening following CIS benchmarks:
-- SSH hardening (key-only, no root)
-- fail2ban for brute-force protection
-- UFW firewall configuration
-- Automatic security updates
+### 2. security（安全角色）
+  - 根据 CIS 标准进行系统加固：
+    - SSH 安全配置（仅使用密钥登录，禁止 root 用户登录）
+    - 使用 fail2ban 防止暴力登录尝试
+    - 配置 UFW 防火墙
+    - 自动更新系统安全补丁
 
-### 3. nodejs
-Node.js installation via NodeSource:
-- Configurable version (default: 22.x LTS)
-- npm global packages
-- pm2 process manager (optional)
+### 3. nodejs（Node.js 角色）
+  - 通过 NodeSource 安装 Node.js：
+    - 可配置的版本（默认为 22.x LTS）
+    - 安装全局 npm 包
+    - 使用 pm2 进程管理器（可选）
 
-### 4. openclaw
-Complete OpenClaw setup:
-- Node.js (via nodejs role)
-- OpenClaw npm installation
-- Systemd service
-- Configuration file setup
+### 4. openclaw（OpenClaw 角色）
+  - 完整的 OpenClaw 配置：
+    - 安装 Node.js
+    - 安装 OpenClaw 的 npm 包
+    - 配置 systemd 服务
+    - 设置配置文件
 
-## Usage Patterns
+## 使用模式
 
-### Pattern 1: New VPS Setup (OpenClaw)
+### 模式 1：新 VPS 的设置（包含 OpenClaw）
 
 ```bash
 # 1. Add host to inventory
@@ -188,7 +188,7 @@ ansible-playbook -i inventory/hosts.yml playbooks/openclaw-vps.yml \
 # ansible_ssh_private_key_file: ~/.ssh/id_ed25519
 ```
 
-### Pattern 2: Security Hardening Only
+### 模式 2：仅进行安全加固
 
 ```bash
 ansible-playbook -i inventory/hosts.yml playbooks/security.yml \
@@ -196,7 +196,7 @@ ansible-playbook -i inventory/hosts.yml playbooks/security.yml \
   --tags "ssh,firewall"
 ```
 
-### Pattern 3: Rolling Updates
+### 模式 3：滚动更新
 
 ```bash
 # Update one server at a time
@@ -204,7 +204,7 @@ ansible-playbook -i inventory/hosts.yml playbooks/update.yml \
   --serial 1
 ```
 
-### Pattern 4: Ad-hoc Commands
+### 模式 4：执行特定命令
 
 ```bash
 # Check disk space on all servers
@@ -217,9 +217,9 @@ ansible openclaw -i inventory/hosts.yml -m systemd -a "name=openclaw state=resta
 ansible all -i inventory/hosts.yml -m copy -a "src=./file.txt dest=/tmp/"
 ```
 
-## Variables & Secrets
+## 变量与秘密信息
 
-### Group Variables
+### Group Variables（组变量）
 
 ```yaml
 # inventory/group_vars/all.yml
@@ -242,7 +242,7 @@ security_ufw_allowed_ports:
 nodejs_version: "22.x"
 ```
 
-### Vault for Secrets
+### 使用 Vault 存储秘密信息
 
 ```bash
 # Create encrypted vars file
@@ -258,7 +258,7 @@ ansible-playbook site.yml --ask-vault-pass
 ansible-playbook site.yml --vault-password-file ~/.vault_pass
 ```
 
-Vault file structure:
+Vault 文件结构：
 ```yaml
 # inventory/group_vars/all/vault.yml
 ---
@@ -269,28 +269,28 @@ vault_deploy_ssh_key: |
   -----END OPENSSH PRIVATE KEY-----
 ```
 
-## Common Modules
+## 常用模块
 
-| Module | Purpose | Example |
-|--------|---------|---------|
-| `apt` | Package management (Debian) | `apt: name=nginx state=present` |
-| `yum` | Package management (RHEL) | `yum: name=nginx state=present` |
-| `copy` | Copy files | `copy: src=file dest=/path/` |
-| `template` | Template files (Jinja2) | `template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf` |
-| `file` | File/directory management | `file: path=/dir state=directory mode=0755` |
-| `user` | User management | `user: name=asdbot groups=sudo shell=/bin/bash` |
-| `authorized_key` | SSH keys | `authorized_key: user=asdbot key="{{ ssh_key }}"` |
-| `systemd` | Service management | `systemd: name=nginx state=started enabled=yes` |
-| `ufw` | Firewall (Ubuntu) | `ufw: rule=allow port=22 proto=tcp` |
-| `lineinfile` | Edit single line | `lineinfile: path=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no'` |
-| `git` | Clone repos | `git: repo=https://github.com/x/y.git dest=/opt/y` |
-| `npm` | npm packages | `npm: name=openclaw global=yes` |
-| `command` | Run command | `command: /opt/script.sh` |
-| `shell` | Run shell command | `shell: cat /etc/passwd \| grep root` |
+| 模块        | 用途                        | 示例                                      |
+|-------------|-----------------------------------------|-----------------------------------------|
+| `apt`       | Debian 系统的包管理                | `apt: name=nginx state=present`                   |
+| `yum`       | RHEL 系统的包管理                | `yum: name=nginx state=present`                   |
+| `copy`      | 复制文件                      | `copy: src=file dest=/path/`                        |
+| `template`    | 使用 Jinja2 模板进行文件生成            | `template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf`         |
+| `file`      | 文件/目录操作                    | `file: path=/dir state=directory mode=0755`                |
+| `user`      | 用户管理                      | `user: name=asdbot groups=sudo shell=/bin/bash`               |
+| `authorized_key` | SSH 密钥管理                  | `authorized_key: user=asdbot key="{{ ssh_key }}"               |
+| `systemd`     | systemd 服务管理                | `systemd: name=nginx state=started enabled=yes`            |
+| `ufw`       | Ubuntu 系统的防火墙管理            | `ufw: rule=allow port=22 proto=tcp`                   |
+| `lineinfile`    | 修改 `/etc/ssh/sshd_config` 文件            | `lineinfile: path=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no'` |
+| `git`       | 从 Git 仓库克隆代码                | `git: repo=https://github.com/x/y.git dest=/opt/y`              |
+| `npm`       | 安装 npm 包                    | `npm: name=openclaw global=yes`                     |
+| `command`     | 运行命令                      | `command: /opt/script.sh`                         |
+| `shell`      | 执行 shell 命令                    | `shell: cat /etc/passwd \| grep root`                     |
 
-## Best Practices
+## 最佳实践
 
-### 1. Always Name Tasks
+### 1. 为任务命名
 ```yaml
 # Good
 - name: Install nginx web server
@@ -302,7 +302,7 @@ vault_deploy_ssh_key: |
 - apt: name=nginx
 ```
 
-### 2. Use FQCN (Fully Qualified Collection Names)
+### 2. 使用完全限定的集合名称（FQCN）
 ```yaml
 # Good
 - ansible.builtin.apt:
@@ -313,7 +313,7 @@ vault_deploy_ssh_key: |
     name: nginx
 ```
 
-### 3. Explicit State
+### 明确指定任务的状态
 ```yaml
 # Good - explicit state
 - ansible.builtin.apt:
@@ -325,8 +325,9 @@ vault_deploy_ssh_key: |
     name: nginx
 ```
 
-### 4. Idempotency
-Write tasks that can run multiple times safely:
+### 3. 保证任务的可重复执行性
+编写可以安全地多次运行的任务：
+
 ```yaml
 # Good - idempotent
 - name: Ensure config line exists
@@ -340,7 +341,7 @@ Write tasks that can run multiple times safely:
   ansible.builtin.shell: echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
 ```
 
-### 5. Use Handlers for Restarts
+### 4. 使用处理程序来处理重启操作
 ```yaml
 # tasks/main.yml
 - name: Update SSH config
@@ -356,7 +357,7 @@ Write tasks that can run multiple times safely:
     state: restarted
 ```
 
-### 6. Tags for Selective Runs
+### 5. 使用标签进行选择性执行任务
 ```yaml
 - name: Security tasks
   ansible.builtin.include_tasks: security.yml
@@ -367,9 +368,9 @@ Write tasks that can run multiple times safely:
   tags: [deploy, app]
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Connection Issues
+### 连接问题
 
 ```bash
 # Test SSH connection manually
@@ -382,22 +383,17 @@ ansible host -i inventory -m ping -vvv
 ansible-inventory -i inventory --list
 ```
 
-### Common Errors
+### 常见错误
 
-**"Permission denied"**
-- Check SSH key permissions: `chmod 600 ~/.ssh/id_*`
-- Verify user has sudo access
-- Add `become: yes` to playbook
+- **“Permission denied”**：检查 SSH 密钥权限：`chmod 600 ~/.ssh/id_*`
+- 确保用户具有 sudo 权限
+- 在 playbook 中添加 `become: yes` 选项
 
-**"Host key verification failed"**
-- Add to ansible.cfg: `host_key_checking = False`
-- Or add host key: `ssh-keyscan -H host >> ~/.ssh/known_hosts`
+- **“Host key verification failed”**：在 `ansible.cfg` 中设置 `host_key_checking = False`；或使用 `ssh-keyscan -H host >> ~/.ssh/known_hosts` 添加主机密钥
 
-**"Module not found"**
-- Use FQCN: `ansible.builtin.apt` instead of `apt`
-- Install collection: `ansible-galaxy collection install community.general`
+- **“Module not found”**：使用完全限定的集合名称（FQCN），例如 `ansible.builtin.apt` 而不是 `apt`；通过 `ansible-galaxy collection install community.general` 安装相关模块
 
-### Debugging Playbooks
+### 调试 Playbook
 
 ```bash
 # Verbose output
@@ -415,9 +411,9 @@ ansible-playbook site.yml --start-at-task="Install nginx"
 ansible-playbook site.yml --check --diff
 ```
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-### From OpenClaw Agent
+### 从 OpenClaw 代理进行集成
 
 ```bash
 # Run playbook via exec tool
@@ -427,28 +423,20 @@ exec command="ansible-playbook -i skills/ansible/inventory/hosts.yml skills/ansi
 exec command="ansible eva -i skills/ansible/inventory/hosts.yml -m shell -a 'systemctl status openclaw'"
 ```
 
-### Storing Credentials
+### 存储凭据
 
-Use OpenClaw's Vaultwarden integration:
-```bash
-# Get password from vault cache
-PASSWORD=$(.secrets/get-secret.sh "VPS - Eva")
+- 可以使用 OpenClaw 的 Vaultwarden 功能来存储凭据；
+- 更好的做法是使用 Ansible Vault，并通过 `--ask-vault-pass` 参数来获取凭据。
 
-# Use in ansible (not recommended - use ansible-vault instead)
-ansible-playbook site.yml -e "ansible_ssh_pass=$PASSWORD"
-```
+## 参考资料
 
-Better: Store in Ansible Vault and use `--ask-vault-pass`.
+- `references/best-practices.md` - 详细的最佳实践指南
+- `references/modules-cheatsheet.md` - 常用模块快速参考
+- `references/troubleshooting.md` - 扩展的故障排除指南
 
-## References
+## 外部资源
 
-- `references/best-practices.md` - Detailed best practices guide
-- `references/modules-cheatsheet.md` - Common modules quick reference
-- `references/troubleshooting.md` - Extended troubleshooting guide
-
-## External Resources
-
-- [Ansible Documentation](https://docs.ansible.com/)
-- [Ansible Galaxy](https://galaxy.ansible.com/) - Community roles
-- [geerlingguy roles](https://github.com/geerlingguy?tab=repositories&q=ansible-role) - High quality roles
-- [Ansible for DevOps](https://www.ansiblefordevops.com/) - Book by Jeff Geerling
+- [Ansible 官方文档](https://docs.ansible.com/)
+- [Ansible Galaxy](https://galaxy.ansible.com/) - 社区提供的角色库
+- [geerlingguy 的角色库](https://github.com/geerlingguy?tab=repositories&q=ansible-role) - 高质量的 Ansible 角色资源
+- [《Ansible for DevOps》](https://www.ansiblefordevops.com/) - Jeff Geerling 著的书籍

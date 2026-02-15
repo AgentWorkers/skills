@@ -1,6 +1,6 @@
 ---
 name: youtube-factory
-description: Generate complete YouTube videos from a single prompt - script, voiceover, stock footage, captions, thumbnail. Self-contained, no external modules. 100% free tools.
+description: 根据单个提示生成完整的 YouTube 视频：包括脚本、旁白、素材片段、字幕以及缩略图。整个过程完全独立，无需使用任何外部模块。所有工具均为免费。
 version: 1.1.0
 author: Mayank8290
 homepage: https://github.com/Mayank8290/openclaw-video-skills
@@ -10,24 +10,24 @@ metadata: { "openclaw": { "requires": { "bins": ["ffmpeg", "edge-tts"], "env": [
 
 # YouTube Factory
 
-Generate complete YouTube videos from a single prompt. Script, voiceover, stock footage, captions, thumbnail - all automated.
+该工具能够根据用户提供的单一提示自动生成完整的YouTube视频，包括脚本、旁白、素材片段、字幕和缩略图——所有步骤均为自动化完成。
 
-**100% FREE tools** - No expensive APIs required.
+**100% 免费工具**——无需使用任何昂贵的API。
 
-> **Love this skill?** Support the creator and help keep it free: **[Buy Me a Coffee](https://buymeacoffee.com/mayank8290)**
+> **喜欢这个工具吗？** 请支持创作者，帮助我们保持其免费：**[请为我买杯咖啡](https://buymeacoffee.com/mayank8290)**
 
-## What This Skill Does
+## 该工具的功能
 
-Turn any topic into a publish-ready YouTube video:
+可以将任何主题转化为适合发布的YouTube视频：
 
-1. **Script Generation** - Uses your LLM to write engaging scripts
-2. **Voiceover** - Free Microsoft Edge TTS (natural-sounding voices)
-3. **Stock Footage** - Auto-fetches relevant B-roll from Pexels (free)
-4. **Video Assembly** - FFmpeg combines everything seamlessly
-5. **Captions** - Styled subtitles burned into video
-6. **Thumbnail** - Auto-generated clickable thumbnail
+1. **脚本生成**：利用大型语言模型（LLM）编写引人入胜的脚本。
+2. **旁白**：使用免费的Microsoft Edge TTS服务（提供自然发音的配音）。
+3. **素材片段**：自动从Pexels网站获取相关的背景视频（完全免费）。
+4. **视频剪辑**：使用FFmpeg将所有元素无缝整合在一起。
+5. **字幕**：为视频添加风格化的字幕。
+6. **缩略图**：自动生成可点击的缩略图。
 
-## Quick Start
+## 快速入门
 
 ```
 Create a YouTube video about "5 Morning Habits of Successful People"
@@ -41,53 +41,53 @@ Make a faceless YouTube video:
 - Voice: Professional male
 ```
 
-## Commands
+## 命令
 
-### Generate Full Video
+### 生成完整视频
 ```
 /youtube-factory [topic]
 ```
-Creates complete video with all elements.
+生成包含所有元素的完整视频。
 
-### Script Only
+### 仅生成脚本
 ```
 /youtube-factory script [topic] --length [minutes]
 ```
-Just generates the script for review/editing.
+仅生成脚本，供用户审核或编辑。
 
-### Custom Voice
+### 自定义旁白
 ```
 /youtube-factory [topic] --voice [voice-name]
 ```
 
-Available free voices:
-- `en-US-ChristopherNeural` - Male, professional (default)
-- `en-US-JennyNeural` - Female, friendly
-- `en-US-GuyNeural` - Male, casual
-- `en-US-AriaNeural` - Female, news anchor
-- `en-GB-SoniaNeural` - British female
-- `en-AU-NatashaNeural` - Australian female
+提供的免费旁白声音：
+- `en-US-ChristopherNeural` – 男性，专业风格（默认）
+- `en-US-JennyNeural` – 女性，亲切风格
+- `en-US-GuyNeural` – 男性，休闲风格
+- `en-US-AriaNeural` – 女性，新闻播报风格
+- `en-GB-SoniaNeural` – 英国女性
+- `en-AU-NatashaNeural` – 澳大利亚女性
 
-### Video Styles
+### 视频风格
 ```
 /youtube-factory [topic] --style [style]
 ```
 
-Styles:
-- `documentary` - Serious, informative (default)
-- `listicle` - "Top 10" format with clear sections
-- `tutorial` - Step-by-step instructional
-- `story` - Narrative/storytelling format
+可选的视频风格：
+- **纪录片**：严肃、信息丰富的风格（默认）
+- **列表文章**：采用“Top 10”格式，结构清晰
+- **教程**：分步骤的教学视频
+- **故事**：叙事式的视频内容
 
-### Shorts Mode (Vertical 9:16)
+### 短视频模式（9:16比例）
 ```
 /youtube-factory [topic] --shorts
 ```
-Creates 60-second vertical video for YouTube Shorts, TikTok, Reels.
+生成适合YouTube Shorts、TikTok和Reels平台的60秒竖版视频。
 
-## Output Files
+## 输出文件
 
-After generation, you'll find in `~/Videos/OpenClaw/`:
+生成完成后，视频文件将保存在 `~/Videos/OpenClaw/` 目录下：
 
 ```
 your-video-title/
@@ -99,13 +99,13 @@ your-video-title/
 └── metadata.json      # Title, description, tags
 ```
 
-## Requirements
+## 使用要求
 
-- Free Pexels API key (get at https://pexels.com/api)
-- FFmpeg installed (`brew install ffmpeg`)
-- Edge TTS (`pip install edge-tts`)
+- 需要免费的Pexels API密钥（获取地址：https://pexels.com/api）
+- 确保已安装FFmpeg（命令：`brew install ffmpeg`）
+- 安装Edge TTS插件（命令：`pip install edge-tts`）
 
-## Setup
+## 设置指南
 
 ```bash
 # Install dependencies
@@ -116,49 +116,31 @@ pip install edge-tts pillow python-dotenv requests
 echo "PEXELS_API_KEY=your_key" >> ~/.openclaw-video-skills/config.env
 ```
 
-## Monetization
+## 盈利方式
 
-| Method | Potential |
+| 盈利方式 | 潜在收益 |
 |--------|-----------|
-| Fiverr/Upwork service | $200-500/video |
-| Monthly retainer | $1,500-3,000/client |
-| Your own channels | $2,000-10,000/mo AdSense |
-| Sell this skill | $50-150 on ClawHub |
+| Fiverr/Upwork服务 | 每个视频200-500美元 |
+| 月度固定费用 | 每个客户1,500-3,000美元 |
+| 自己的YouTube频道 | 每月通过AdSense收入2,000-10,000美元 |
+| 在ClawHub上出售该技能 | 每个技能50-150美元 |
 
-## Examples
+## 使用示例
 
-### Faceless Finance Channel
-```
-Create a 10-minute YouTube video about "The Psychology of Money"
-Style: Documentary
-Include 5 key lessons
-Professional male voice
-```
-
-### Quick Shorts
-```
-Make a YouTube Short about a surprising fact about sleep
-```
-
-### Tutorial Content
-```
-Generate a tutorial video:
-Topic: How to Start Investing with $100
-Length: 12 minutes
-Style: Tutorial with clear steps
-Voice: Friendly female
-```
+- **Faceless Finance频道**  
+- **快速短视频**  
+- **教程内容**  
 
 ---
 
-## Support This Project
+## 支持本项目
 
-If this skill saved you time or made you money, consider buying me a coffee!
+如果这个工具为您节省了时间或带来了收入，请考虑请我喝杯咖啡！
 
-**[Buy Me a Coffee](https://buymeacoffee.com/mayank8290)**
+**[请为我买杯咖啡](https://buymeacoffee.com/mayank8290)**
 
-Every coffee helps me build more free tools for the community.
+每一杯咖啡都能帮助我为社区开发更多免费工具。
 
 ---
 
-Built for OpenClaw | 100% Free Tools | [Support the Creator](https://buymeacoffee.com/mayank8290)
+专为OpenClaw平台开发 | 100% 免费工具 | [支持创作者](https://buymeacoffee.com/mayank8290)

@@ -1,93 +1,92 @@
 ---
 name: Prisma
-description: Write efficient Prisma queries, design schemas, and avoid common ORM pitfalls.
+description: 编写高效的 Prisma 查询语句，设计合理的数据库模式（schemas），并避免常见的对象关系映射（ORM）使用误区。
 metadata:
   category: database
   skills: ["prisma", "orm", "database", "typescript", "nodejs"]
 ---
 
-## Schema Design Traps
+## 架构设计中的常见陷阱
 
-- `@default(cuid())` over `@default(uuid())` for IDs—shorter, URL-safe, still unique
-- `@updatedAt` doesn't update on nested writes—must touch parent record explicitly
-- Implicit many-to-many creates join table you can't customize—use explicit for extra fields
-- `@unique` on nullable field allows multiple NULLs—intended behavior but often surprising
-- Enum changes require migration—can't add values without downtime unless using String
+- 在ID字段上使用`@default(cuid())`而非`@default(uuid())`：虽然更短、更适合URL，但仍然具有唯一性。
+- `@.updated`在嵌套写入操作中不会自动更新；需要显式修改父记录才能触发更新。
+- 隐式的多对多关系会自动生成关联表，且无法自定义；如果需要额外的字段，应显式定义关联关系。
+- 对于可为空的字段使用`@unique`约束时，允许多个`NULL`值；这种行为虽然符合预期，但可能会引起误解。
+- 枚举类型的更改需要执行数据库迁移；除非使用字符串类型，否则无法在不停机的情况下添加新值。
 
-## Query Patterns I Forget
+## 我常忘记的查询模式
 
-- `findUniqueOrThrow` / `findFirstOrThrow`—cleaner than null check after findUnique
-- `createMany` skips hooks and returns count only—use `create` in loop if you need records back
-- `upsert` requires unique field in where—can't upsert on non-unique compound conditions
-- `connectOrCreate` in nested writes—avoids separate existence check
-- `select` and `include` are mutually exclusive—can't mix; use nested select inside include
+- `findUniqueOrThrow`和`findFirstOrThrow`：比在`findUnique`之后再进行空值检查更简洁。
+- `createMany`方法会跳过某些钩子操作，并仅返回记录的数量；如果需要获取完整的记录，应使用`create`方法并循环调用它。
+- `upsert`操作需要`where`子句中的字段具有唯一性；如果条件不唯一，则无法执行`upsert`操作。
+- 在嵌套写入操作中使用`connectOrCreate`方法可以避免重复检查记录是否存在。
+- `select`和`include`是互斥的，不能同时使用；如果需要在查询中包含关联记录，应使用嵌套的`select`语句。
 
-## N+1 Query Prevention
+## 如何避免N+1查询问题
 
-- Default queries don't include relations—every access triggers new query
-- `include` everything you'll access—check logs for unexpected queries
-- Middleware can't see includes—adding includes in middleware doesn't help
-- `findMany` + `include` better than loop of `findUnique`—single query vs N queries
-- Dataloader pattern for GraphQL resolvers—Prisma doesn't batch automatically
+- 默认的查询操作不会自动包含关联记录；每次访问数据时都会触发新的查询。
+- 应将所有可能被访问的记录都包含在查询中；通过日志监控来发现意外的查询行为。
+- 中间件无法识别`include`操作；在中间件中添加`include`语句并无实际效果。
+- 使用`findMany`结合`include`比使用循环调用`findUnique`更高效；这样可以减少查询次数，提高性能。
+- 对于GraphQL解析器，可以使用`DataLoader`模式；Prisma不会自动批量处理查询请求。
 
-## Transaction Gotchas
+## 事务处理中的注意事项
 
-- `$transaction([])` array syntax rolls back all on any failure—use for atomic operations
-- Interactive transactions `$transaction(async (tx) => {})` hold connection—keep short
-- Default 5s timeout on interactive transactions—increase for long operations
-- Nested writes are already transactional—don't wrap single create with relations in transaction
-- `$transaction` doesn't retry on conflict—implement retry logic for optimistic locking
+- `$transaction([])`数组语法意味着一旦发生错误，所有操作都会被回滚；适用于原子性操作。
+- 交互式事务使用`$transaction(async (tx) => {})`来管理事务；请保持事务代码简洁。
+- 交互式事务的默认超时时间为5秒；对于耗时较长的操作，应适当延长超时时间。
+- 嵌套写入操作本身已经是事务性的；因此不需要为单个创建操作加上关联记录的操作再额外开启事务。
+- `$transaction`方法在遇到冲突时不会自动重试；对于乐观锁机制，需要实现重试逻辑。
 
-## Type Safety Gaps
+## 类型安全方面的问题
 
-- `include` result type doesn't narrow—TypeScript thinks relations might be undefined
-- Raw queries return `unknown[]`—need manual type assertion or Prisma.$queryRaw<Type>
-- JSON fields are `JsonValue`—cast needed; consider using typed JSON libraries
-- `Prisma.validator` for reusable query fragments with correct types
-- Return types of `$executeRaw` is count—not the affected rows
+- 使用`include`操作后，返回的结果类型可能包含关联记录；TypeScript可能认为这些记录是未定义的。
+- 原生查询返回的数组可能是`unknown[]`类型；需要手动进行类型断言，或者使用`Prisma.$queryRaw<Type>`来明确类型。
+- JSON字段默认为`JsonValue`类型；需要进行类型转换；可以考虑使用支持类型安全的JSON库。
+- 使用`Prisma.validator`来确保查询片段的类型正确。
+- `$executeRaw`方法的返回值是查询结果的数量，而不是受影响的行数。
 
-## Migration Issues
+## 数据库迁移相关的问题
 
-- `prisma db push` for prototyping—`prisma migrate dev` for version control
-- `db push` can drop data silently—never use in production
-- Shadow database required for `migrate dev`—needs create permission or separate DB
-- Renaming field = drop + create by default—use `@map` to keep data
-- Large table migrations lock table—consider running raw SQL with concurrent indexes
+- 使用`prisma db push`进行原型开发；使用`prisma migrate dev`进行版本控制。
+- `db push`操作可能会在后台删除数据；切勿在生产环境中使用该命令。
+- 使用`migrate dev`时需要创建一个“影子数据库”（shadow database）；执行迁移操作需要相应的权限或单独的数据库实例。
+- 更改字段名通常会导致数据丢失；应使用`@map`操作来保留原有数据。
+- 对于大型表格的迁移操作，可能会导致数据库锁定；可以考虑使用带有并发索引的原始SQL语句。
 
-## Performance Traps
+## 性能优化方面的陷阱
 
-- `findMany` without `take` can return millions—always paginate
-- `count()` scans table—expensive on large tables; consider approximate or cached counts
-- `include` with large relations loads everything—use cursor pagination for big lists
-- Relation counts: `_count: { select: { posts: true } }`—single query, not N+1
-- `orderBy` on non-indexed field = slow—ensure indexes match sort patterns
+- 使用`findMany`方法时如果没有指定`take`参数，可能会返回大量数据；应始终使用分页功能。
+- `count()`方法会扫描整个表格；对于大型表格来说效率较低；可以考虑使用近似计数或缓存计数结果。
+- 当关联关系较多时，使用`include`操作会加载所有数据；对于大量数据，应使用游标进行分页。
+- 计算关联记录的数量时，可以使用`_count: { select: { posts: true } }`这样的查询语句；这样可以避免多次查询。
 
-## Raw Query Patterns
+## 原生查询的相关注意事项
 
-- `$queryRaw` for reads, `$executeRaw` for writes—different return types
-- Use `Prisma.sql` template for safe interpolation—never string concatenation
-- Raw queries bypass Prisma hooks and middleware—intentional but easy to forget
-- `$queryRawUnsafe` exists but name is a warning—use only for dynamic column names
-- Raw results use database column names—not Prisma field names if `@map` used
+- 使用`$queryRaw`进行读取操作，`$executeRaw`进行写入操作；两者返回的结果类型不同。
+- 使用`Prisma.sql`模板进行查询操作，以确保查询语句的安全性；避免直接字符串拼接。
+- 原生查询会绕过Prisma的钩子和中间件；虽然这是有意的设计，但容易被忽略。
+- `$queryRawUnsafe`方法存在，但其名称具有警告性；仅应在处理动态列名时使用。
+- 如果使用了`@map`操作，查询结果应使用数据库的列名，而不是Prisma定义的字段名。
 
-## Connection Management
+## 连接管理方面的注意事项
 
-- Default pool size 5—too low for production; set `connection_limit` in URL
-- PlanetScale/serverless needs `?pool_timeout=0`—prevents connection exhaustion
-- `$disconnect()` in scripts and tests—lambda/serverless should manage differently
-- Prisma Accelerate or Data Proxy for edge/serverless—direct DB connections don't scale
+- 默认的连接池大小为5；对于生产环境来说这个值太小；可以通过URL参数设置`connection_limit`来调整连接池的大小。
+- 在使用PlanetScale或Serverless架构时，需要设置`?pool_timeout=0`以避免连接池耗尽。
+- 在脚本和测试环境中应使用`$disconnect()`方法来断开数据库连接；Lambda函数或Serverless环境中的连接管理方式有所不同。
+- 对于边缘计算或Serverless环境，可以考虑使用Prisma Accelerate或Data Proxy来优化数据库连接。
 
-## Middleware Patterns
+## 中间件相关的注意事项
 
-- Soft delete via middleware: intercept `delete`, convert to `update`—but `deleteMany` needs handling
-- Audit logging: `$use` captures all queries—but adds latency to every operation
-- Middleware runs in order added—earlier middleware sees raw params
-- Can't modify `include` in middleware—transform happens before middleware
+- 通过中间件实现软删除功能：拦截`delete`操作并将其转换为`update`操作；但是`deleteMany`操作需要特殊处理。
+- 日志审计功能`$use`会记录所有查询操作；不过这会增加每次操作的延迟。
+- 中间件的执行顺序是按照添加的顺序进行的；因此较早添加的中间件会接收到原始的查询参数。
+- 无法在中间件中修改`include`操作的参数；参数转换会在中间件执行之前完成。
 
-## Common Mistakes
+## 常见错误
 
-- Forgetting `await`—Prisma returns promises; queries don't execute without await
-- `update` without where = error—unlike some ORMs, Prisma requires explicit where
-- Decimal fields return strings—Prisma Decimal type, not JavaScript number
-- `@relation` names must match—cryptic error if they don't
-- Schema drift: production differs from migrations—run `prisma migrate deploy` in CI
+- 忘记使用`await`关键字；Prisma返回的是Promise对象；不使用`await`会导致查询无法正常执行。
+- 使用`update`方法时如果没有指定`where`条件，会导致错误；与某些ORM不同，Prisma要求必须提供明确的`where`条件。
+- Decimal类型的字段在Prisma中返回的是字符串；请注意Prisma中的Decimal类型与JavaScript中的数字类型不同。
+- 关联关系的名称必须保持一致；如果名称不一致，会导致错误。
+- 架构在开发环境和生产环境之间可能存在差异；应在持续集成（CI）过程中执行`prisma migrate deploy`命令来确保架构的一致性。

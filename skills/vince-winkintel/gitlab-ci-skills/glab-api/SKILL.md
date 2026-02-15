@@ -1,11 +1,12 @@
 ---
 name: glab-api
-description: Use when working with glab api commands.
+description: **使用说明：**  
+在操作 glab API 命令时，请参考以下说明。
 ---
 
-# glab api
+# glab API
 
-## Overview
+## 概述
 
 ```
 
@@ -134,12 +135,12 @@ description: Use when working with glab api commands.
     --silent        Do not print the response body.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab api --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

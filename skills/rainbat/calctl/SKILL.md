@@ -1,24 +1,24 @@
 ---
 name: calctl
-description: Manage Apple Calendar events via icalBuddy + AppleScript CLI
+description: 通过 icalBuddy 和 AppleScript CLI 管理 Apple 日历事件
 ---
 
-# calctl - Apple Calendar CLI
+# calctl - Apple 日历命令行工具
 
-Manage Apple Calendar from the command line using icalBuddy (fast reads) and AppleScript (writes).
+使用 icalBuddy（用于快速读取日历数据）和 AppleScript（用于写入日历数据）从命令行管理 Apple 日历。
 
-**Requirements:** `brew install ical-buddy`
+**安装要求：** `brew install ical-buddy`
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `calctl calendars` | List all calendars |
-| `calctl show [filter]` | Show events (today, tomorrow, week, YYYY-MM-DD) |
-| `calctl add <title>` | Create a new event |
-| `calctl search <query>` | Search events by title (next 30 days) |
+| `calctl calendars` | 列出所有日历 |
+| `calctl show [过滤条件]` | 显示事件（今日、明日、本周、YYYY-MM-DD） |
+| `calctl add <标题>` | 创建新事件 |
+| `calctl search <查询条件>` | 按标题搜索事件（最近 30 天内） |
 
-## Examples
+## 示例
 
 ```bash
 # List calendars
@@ -52,22 +52,22 @@ calctl add "Project Review" --date 2026-01-22 --time 15:00 --notes "Bring quarte
 calctl search "meeting"
 ```
 
-## Options for `add`
+## `add` 命令的选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `-c, --calendar <name>` | Calendar to add event to | Privat |
-| `-d, --date <YYYY-MM-DD>` | Event date | today |
-| `-t, --time <HH:MM>` | Start time | 09:00 |
-| `-e, --end <HH:MM>` | End time | 1 hour after start |
-| `-n, --notes <text>` | Event notes | none |
-| `--all-day` | Create all-day event | false |
+| `-c, --calendar <日历名称>` | 要向其中添加事件的日历 | Privat |
+| `-d, --date <YYYY-MM-DD>` | 事件日期 | 今日 |
+| `-t, --time <HH:MM>` | 开始时间 | 09:00 |
+| `-e, --end <HH:MM>` | 结束时间 | 开始时间后 1 小时 |
+| `-n, --notes <文本>` | 事件备注 | 无 |
+| `--all-day` | 创建全天事件 | false |
 
-## Available Calendars
+## 可用的日历
 
-Common calendars on this system:
-- Privat (personal)
-- Work
+本系统中常见的日历包括：
+- Privat（个人日历）
+- Work（工作日历）
 - Familien Kalender
 - rainbat solutions GmbH
 - TimeTrack

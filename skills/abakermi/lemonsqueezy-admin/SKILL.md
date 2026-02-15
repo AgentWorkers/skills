@@ -1,7 +1,7 @@
 ---
 name: lemonsqueezy-admin
 version: 1.0.0
-description: Admin CLI for Lemon Squeezy stores. View orders, subscriptions, and customers.
+description: Lemon Squeezy商店的管理员命令行界面（Admin CLI）：用于查看订单、订阅信息以及客户资料。
 author: abakermi
 metadata:
   openclaw:
@@ -12,28 +12,28 @@ metadata:
 
 # Lemon Squeezy Admin 🍋
 
-Manage your Lemon Squeezy store from the command line.
+通过命令行管理您的 Lemon Squeezy 商店。
 
-## Setup
+## 设置
 
-1. Get an API Key from [Lemon Squeezy Settings > API](https://app.lemonsqueezy.com/settings/api).
-2. Set it: `export LEMONSQUEEZY_API_KEY="your_key"`
+1. 从 [Lemon Squeezy 设置 > API](https://app.lemonsqueezy.com/settings/api) 获取 API 密钥。
+2. 将其设置为：`export LEMONSQUEEZY_API_KEY="your_key"`
 
-## Commands
+## 命令
 
-### Orders
+### 订单
 ```bash
 ls-admin orders --limit 10
 # Output: #1234 - $49.00 - john@example.com (Paid)
 ```
 
-### Subscriptions
+### 订阅
 ```bash
 ls-admin subscriptions
 # Output: Active: 15 | MMR: $450
 ```
 
-### Stores
+### 商店
 ```bash
 ls-admin stores
 ```

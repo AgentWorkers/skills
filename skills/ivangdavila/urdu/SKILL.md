@@ -1,78 +1,78 @@
 ---
 name: Urdu
-description: Write Urdu that sounds human. Not formal, not robotic, not AI-generated.
+description: 用 Urdu 语言写一些听起来像真人说话的内容。既不要过于正式，也不要有机器人或人工智能生成的感觉。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Urdu is technically correct but sounds off. Too formal. Too ادبی (literary). Natives write more casually, with warmth and natural flow. Match that.
+虽然AI生成的乌尔都语在语法上是正确的，但听起来却很正式、过于文学化。本地人说话时更加随意、充满温暖和自然的语气。我们需要让AI生成的文本也符合这种风格。
 
-## Formality Default
+## 文体的默认设置
 
-Default register is too high. Casual Urdu is warm and expressive. Unless explicitly formal: lean casual.
+当前的文本风格过于正式。日常交流中的乌尔都语应该更加亲切、富有表现力。除非有明确的需要使用正式语气，否则应倾向于使用更随意的表达方式。
 
-## تم vs آپ vs تو
+## “تم”、“آپ”和“تو”的用法
 
-Three levels:
-- آپ: formal, elders, respect
-- تم: standard casual, peers
-- تو: very intimate, close friends
-- Online mostly uses تم or آپ depending on context
+乌尔都语中存在三种不同的称呼方式：
+- **آپ**：用于正式场合或对长辈表示尊重
+- **تم**：用于与同龄人之间的日常交流
+- **تو**：用于非常亲密的朋友之间
 
-## Urdu vs Hindi
+在网络上，根据语境的不同，通常会使用“تم”或“آپ”。
 
-Similar spoken, different written:
-- Urdu: Nastaliq script (اردو)
-- More Persian/Arabic vocabulary
-- Different cultural expressions
-- Don't mix scripts
+## 乌尔都语与印地语的差异
 
-## Particles & Softeners
+乌尔都语和印地语的口语相似，但书写方式不同：
+- 乌尔都语使用纳斯塔利克（Nastaliq）字体书写
+- 乌尔都语中包含更多的波斯语/阿拉伯语词汇
+- 乌尔都语具有独特的文化表达方式
+- 请注意不要混淆这两种语言的书写系统
 
-These make Urdu natural:
-- نا: question tag, softening ("ٹھیک ہے نا؟")
-- تو: emphasis ("یہ تو بہت اچھا ہے")
-- ہی: emphasis ("یہی چاہیے")
-- بھی: "also", "even"
+## 使乌尔都语更自然的表达方式
 
-## Fillers & Flow
+以下是一些能够使乌尔都语更自然的词语和短语：
+- **نا**：用于表示疑问或缓和语气（例如：“ٹھیک ہے نا؟”）
+- **تو**：用于强调（例如：“یہ تو بہت اچھا ہے”）
+- **ہی**：用于强调（例如：“یہی چاہیے”）
+- **بھی**：表示“也”或“甚至”
 
-Real Urdu has fillers:
-- یعنی، اچھا، تو
-- ویسے، اصل میں
-- سنو، دیکھو
-- کیا بتائیں
+## 语言中的填充词和过渡词
 
-## Expressiveness
+真实的乌尔都语中会使用一些填充词来使表达更加流畅：
+- یعنی、اچھا、تو 等
+- ویسے、اصل میں 等
+- سنو、دیکھو 等
+- کیا بتائیں 等
 
-Don't pick the safe word:
-- اچھا → بہترین، زبردست، کمال
-- برا → بیکار، بکواس، گھٹیا
-- بہت → انتہائی، کافی
+## 表达力的提升
 
-## Common Expressions
+在表达时，不要总是选择最中立的词语：
+- 例如：“اچھا”可以替换为“بہترین”、“زبردست”或“کمال”
+- “برا”可以替换为“بیکار”、“بکواس”或“گھٹیا”
+- “بہت”可以替换为“انتہائی”或“کافی”
 
-Natural expressions:
-- ٹھیک ہے، اوکے، ہاں جی
-- کوئی بات نہیں، کوئی مسئلہ نہیں
-- سچی?، واقعی?، کیا بات ہے!
-- واہ!، کیا خوب!
+## 常见表达
 
-## Reactions
+一些自然的表达方式包括：
+- ٹھیک ہے、اوکے、ہاں جی
+- کوئی بات نہیں、کوئی مسئلہ نہیں
+- سچی؟、واقعی؟、کیا بات ہے！
+- واہ！、کیا خوب！
 
-React naturally:
-- سچی?، واقعی?، کیا?
-- واہ!، اللہ!، تو‌بہ!
-- زبردست!، کمال!، بہت خوب!
-- ہاہاہا in text
+## 交流时的反应
 
-## Romanized Urdu
+在交流时，应保持自然的反应：
+- سچی؟、واقعی؟、کیا？
+- واہ！、الله！、تو‌بہ！
+- زبردست！、کمال！、بہت خوب！
+- 在文本中也可以使用“هاهاها”来表达笑声
 
-Common online:
-- Roman script often used in texting
-- "Kya haal hai", "Theek hai"
-- Natural in casual digital contexts
+## 乌尔都语的罗马化形式
 
-## The "Native Test"
+在网络交流中，人们经常使用罗马化形式的乌尔都语：
+- 例如：“Kya haal hai”（情况如何？）
+- “Theek hai”（好的）
 
-Before sending: would an Urdu speaker screenshot this as "AI-generated"? If yes—too formal, too ادبی. Add casual warmth.
+## “本地人的测试”
+
+在发送信息之前，可以问问乌尔都语使用者：如果他们看到这样的文本，是否会认为这是AI生成的？如果是这样，那么文本就显得太正式、太文学化了。需要添加一些更随意、更亲切的表达方式来提升语言的亲和力。

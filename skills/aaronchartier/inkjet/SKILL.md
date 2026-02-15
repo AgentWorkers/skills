@@ -1,6 +1,8 @@
 ---
 name: inkjet
-description: "Print text, images, and QR codes to a cheap wireless Bluetooth thermal printer from a MacOS device. Use `inkjet print` for output, `inkjet scan` to discover printers."
+description: "如何将文本、图片和二维码从 MacOS 设备打印到一台便宜的无线蓝牙热敏打印机上？  
+- 使用 `inkjet print` 命令进行打印；  
+- 使用 `inkjet scan` 命令来查找可用的打印机。"
 homepage: https://github.com/AaronChartier/inkjet
 metadata:
   openclaw:
@@ -11,40 +13,39 @@ metadata:
       - { id: "brew", kind: "brew", package: "aaronchartier/tap/inkjet", label: "Install (Homebrew)" }
 ---
 
-# Thermal Printer Skill
+# 热敏打印机技能
 
-Print text, images, and QR codes to a small cheap Bluetooth thermal printer like the X6h, GT01, and childrens toy cat printers using the `inkjet` CLI. Thermal paper is extremely low-cost, enabling high-frequency physical output.
+您可以使用 `inkjet` CLI 将文本、图片和二维码打印到小型且价格低廉的蓝牙热敏打印机上，例如 X6h、GT01 以及儿童玩具打印机。热敏纸的成本非常低廉，因此可以实现高频的物理输出。
 
+## 安装
 
-## Installation
-
-### via pip (Universal)
+### 通过 pip（通用方法）
 ```bash
 pip install inkjet
 ```
 
-### via Homebrew (macOS)
+### 通过 Homebrew（macOS）
 ```bash
 brew install aaronchartier/tap/inkjet
 ```
 
-## Setup
+## 设置
 
-**Preparation:** Ensure your printer is turned **ON**. The printer does **NOT** need to be paired to the host computer's Bluetooth settings; `inkjet` connects directly via BLE.
+**准备：** 确保打印机已开启。打印机无需与主机计算机的蓝牙设置配对；`inkjet` 会通过 BLE 直接连接。
 
-Scan for printers and set default:
+扫描打印机并设置默认打印机：
 ```bash
 inkjet scan
 ```
 
-Check current configuration:
+检查当前配置：
 ```bash
 inkjet whoami
 ```
 
-## Print Text
+## 打印文本
 
-Print strings directly. Supports standard escape sequences like `\n` for multiline output. Do not use emojis.
+直接打印字符串。支持标准的转义序列（如 `\n` 用于多行输出）。请勿使用表情符号。
 
 ```bash
 inkjet print text "Hello, World!"
@@ -52,48 +53,48 @@ inkjet print text "Line 1\nLine 2\nLine 3"
 inkjet print text "Big Text" --size 72
 ```
 
-## Print Markdown
+## 打印 Markdown
 
-Render high-fidelity formatted content using Markdown syntax. This is the recommended way for agents to output complex receipts or logs without saving temporary files. Do not use emojis.
+使用 Markdown 语法渲染高保真的格式化内容。这是代理程序在无需保存临时文件的情况下输出复杂收据或日志的推荐方式。请勿使用表情符号。
 
 ```bash
 inkjet print text "# Order 104\n- 1x Coffee\n- 1x Donut" --markdown
 ```
 
-## Print Files
+## 打印文件
 
-Output the contents of a local file. Supports plain text (`.txt`) and Markdown (`.md`).
+输出本地文件的内容。支持纯文本（`.txt`）和 Markdown（`.md`）文件。
 
 ```bash
 inkjet print file ./receipt.txt
 inkjet print file ./README.md
 ```
 
-## Print Images
+## 打印图片
 
 ```bash
 inkjet print image ./photo.png
 inkjet print image ./logo.jpg --dither
 ```
 
-## Print QR Codes
+## 打印二维码
 
-Generates and prints QR codes. Smartphone scanners (iPhone/Android) can reliably read codes down to `--size 75`.
+生成并打印二维码。智能手机扫描器（iPhone/Android）可以可靠地读取最小尺寸为 `--size 75` 的二维码。
 
 ```bash
 inkjet print qr "https://github.com/AaronChartier/inkjet"
 inkjet print qr "WiFi:S:NetworkName;P:example123;;" --size 75
 ```
 
-## Paper Control
+## 纸张控制
 
 ```bash
 inkjet feed 100      # Feed paper forward (steps)
 ```
 
-## Configuration
+## 配置
 
-Manage settings globally or locally per project. If a `.inkjet/` folder exists in the current workspace, it will be prioritized (config setting with --local to create).
+您可以全局配置设置，也可以针对每个项目进行本地配置。如果当前工作区中存在 `.inkjet/` 文件夹，则该文件的配置会优先生效（使用 `--local` 选项进行配置）。
 
 ```bash
 inkjet config show                    # Show all settings
@@ -102,14 +103,14 @@ inkjet config set energy 12000        # Set local project darkness
 inkjet config alias kitchen <UUID>    # Save a friendly name
 ```
 
-## Multi-Printer Orchestration
+## 多打印机协调
 
-If the environment (e.g., `TOOLS.md`) contains multiple printer UUIDs or **aliases**, target specific hardware using the `--address` / `-a` flag. Use `-a default` to explicitly target the primary configured device.
+如果环境配置文件（例如 `TOOLS.md`）中包含多个打印机的 UUID 或别名，可以使用 `--address` / `-a` 标志来指定目标硬件。使用 `-a default` 可以明确指定默认配置的设备。
 
-### Orchestration Strategies:
-1. **Role-Based Routing**: Route content based on hardware role (e.g., Stickers vs Receipts).
+### 协调策略：
+1. **基于角色的路由**：根据硬件类型路由输出内容（例如，标签页 vs 收据）。
    `inkjet print text "Label" -a stickers`
-2. **High-Throughput (Load Balancing)**: Distribute jobs across a farm of printers (Round-Robin) to maximize prints-per-minute.
+2. **高吞吐量（负载均衡）**：在多台打印机之间分配打印任务（轮询方式）以最大化每分钟的打印量。
 
 ```bash
 # Orchestrated Print Examples
@@ -119,11 +120,11 @@ inkjet print qr "https://github.com/AaronChartier/inkjet" -a default
 inkjet print file ./log.txt -a "UUID_EXT_1"
 ```
 
-## Configuration Tweaking (Filesystem Access)
+## 配置调整（文件系统访问）
 
-You can bypass the CLI and modify your behavior by writing directly to the configuration JSON. `inkjet` prioritizes `./.inkjet/config.json` over the global home directory (which is default).
+您可以直接修改配置文件来调整 `inkjet` 的行为。`inkjet` 会优先使用 `./.inkjet/config.json` 文件，而不是全局配置文件（默认设置）。
 
-### JSON Schema
+### JSON 架构
 ```json
 {
   "default_printer": "UUID",
@@ -139,20 +140,20 @@ You can bypass the CLI and modify your behavior by writing directly to the confi
 }
 ```
 
-Use this to adjust default margins (`padding`), alignment, or font sizes (size) for different document types without changing your command strings.
+通过修改 JSON 文件，您可以调整不同文档类型的默认边距（`padding`）、对齐方式或字体大小（`size`），而无需更改命令行参数。
 
-## JSON Output (for scripting)
+## JSON 输出（用于脚本编写）
 
-Commands support `--json` for machine-readable output:
+命令支持 `--json` 选项，以生成机器可读的输出格式：
 
 ```bash
 inkjet scan --json
 inkjet whoami --json
 ```
 
-## Piping Content (Dynamic Output)
+## 动态数据流处理
 
-Stream data from another command's output without creating a file. Use `-` as an argument to read from standard input (stdin).
+您可以从另一个命令的输出中读取数据，而无需创建新的文件。使用 `-` 作为参数可以从标准输入（stdin）读取数据。
 
 ```bash
 # Text Piping
@@ -161,16 +162,19 @@ echo "Receipt line 1" | inkjet print text -
 # Image Piping
 curl -s "https://raw.githubusercontent.com/AaronChartier/inkjet/main/assets/logo.jpg" | inkjet print image -
 ```
-## Best Practices for Worksheets & Handwriting
-Thermal paper is narrow and low-cost. To make usable worksheets for children or manual notes:
 
-1. **Size for Visibility:** Use `##` (H2 headers) for the main content. Standard text is often too small for children to read/write comfortably.
-2. **Manual Numbering:** Avoid Markdown lists (`1. content`). They auto-indent and reduce horizontal space. Use `## 1) 5 + 2 = ___` instead.
-3. **The "Cheap Paper" Rule:** Use triple newlines (`\n\n\n`) between items. Thermal paper is essentially free; use vertical space to provide actual "writing room."
-4. **Horizontal Rules:** Use `---` at the end of a job to provide a clear tear-off line that doesn't cut off the last problem.
+## 工作表和手写记录的最佳实践
 
-## Troubleshooting
+热敏纸宽度较窄且价格低廉。为了制作适合儿童使用的工工作表或手写记录，请遵循以下建议：
 
-If printer not found:
+1. **提高可读性**：使用 `##`（H2 标题）来标记主要内容。标准文本通常太小，不利于儿童阅读或书写。
+2. **手动编号**：避免使用 Markdown 列表（如 `1. content`）。列表会自动缩进，从而减少可用空间。建议使用 `## 1) 5 + 2 = ___` 这样的格式。
+3. **“廉价纸张”的使用技巧**：在项目之间使用三个换行符（`\n\n\n`）来增加垂直间距，从而提供更多的书写空间。
+4. **分隔线**：在每项内容末尾使用 `---` 来创建一个明显的撕页线，避免撕掉最后一行内容。
+
+## 故障排除
+
+如果找不到打印机：
 ```bash
 inkjet doctor
+```

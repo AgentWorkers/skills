@@ -1,95 +1,92 @@
 ---
 name: Triage
-description: Auto-learns to prioritize tasks by urgency, impact, and user patterns. Grows smarter with each decision.
+description: 它会自动学习如何根据任务的紧急性、影响程度以及用户的使用习惯来优先处理任务。每次做出决策后，它的“智能”都会进一步提升。
 ---
 
-## Auto-Adaptive Priority Memory
+## 自适应优先级内存系统
 
-This skill auto-evolves. Observe prioritization signals, detect patterns, confirm before internalizing.
+该功能具有自动进化能力：它会持续观察任务优先级的相关信号，识别其中的规律，并在将这些规律内化为系统规则之前进行验证。
 
-**Core Loop:**
-1. **Assess** — When tasks arrive, evaluate urgency + importance
-2. **Classify** — Assign priority level (P0-P3)
-3. **Route** — P0 immediately, P1-P3 into queue
-4. **Learn** — Notice when user overrides priority → propose pattern
-5. **Confirm** — After 2+ corrections, ask: "Should X always be P[n]?"
+**核心处理流程：**
+1. **评估**：任务到达时，判断其紧急性和重要性。
+2. **分类**：为任务分配优先级（P0-P3）。
+3. **处理**：P0级任务立即执行；P1-P3级任务则放入任务队列中等待处理。
+4. **学习**：当用户手动调整任务的优先级时，系统会记录这一行为并尝试找出其中的规律。
+5. **确认**：在多次用户调整优先级后，系统会询问：“这个任务是否应该始终被归类为P[n]级？”
 
-Check `signals.md` for urgency indicators. Check `patterns.md` for learned priority rules.
+请参阅`signals.md`文件以了解紧急性判断的依据，以及`patterns.md`文件中记录的优先级规则。
 
 ---
 
-## Priority Levels
+## 优先级等级
 
-| Level | Response | Examples |
+| 等级 | 处理方式 | 例子 |
 |-------|----------|----------|
-| P0 | Interrupt immediately | Server down, security breach, deadline today |
-| P1 | Next available slot | Blocking work, waiting users, same-day tasks |
-| P2 | Scheduled queue | Important but not urgent, planning, reviews |
-| P3 | Backlog | Ideas, "someday", low-impact optimizations |
+| P0 | 立即处理 | 服务器故障、安全漏洞、今日截止的任务 |
+| P1 | 下一个可用时间点处理 | 会阻塞其他工作的任务、需要等待用户响应的任务、当天内必须完成的任务 |
+| P2 | 计划中处理 | 重要但不紧急的任务（如规划、审核等） |
+| P3 | 待办事项 | 需要长期考虑的任务、影响较小的优化建议 |
 
-**Default:** When uncertain, ask. Start conservative, learn boundaries.
-
----
-
-## Urgency Signals
-
-Automatic P0 triggers:
-- Words: "urgent", "ASAP", "down", "broken", "emergency"
-- Context: External deadlines, blocked team members
-- Pattern: User previously escalated similar tasks
-
-Automatic P3 triggers:
-- Words: "when you have time", "no rush", "idea for later"
-- Context: No deadline mentioned, exploratory
+**默认策略**：当优先级不确定时，系统会请求用户确认。系统会采取保守的处理方式，并逐步学习用户的处理习惯。
 
 ---
 
-## Entry Format
+## 紧急性判断信号
 
-One line: `pattern: priority (level) [context]`
+**自动触发P0级优先级的信号：**
+- 关键词：**紧急（urgent）**、**尽快（ASAP）**、**故障（broken）**、**紧急情况（emergency）**
+- 上下文信息：外部截止日期、团队成员无法参与工作等
+- 规律：用户之前曾将类似任务提升为P0级处理
 
-Examples:
-- `deploy-issues: P0 (confirmed) [always urgent]`
-- `refactoring: P2 (pattern) [user deprioritized 3x]`
-- `docs-updates: P3 (confirmed) [explicit "low priority"]`
-
----
-
-### Work Categories
-<!-- Task types and default priorities -->
-
-### Time Patterns
-<!-- Time-based rules: mornings, Fridays, etc. -->
-
-### Source Routing
-<!-- Priority by source: Slack vs email vs direct -->
-
-### Overrides
-<!-- User corrections that became patterns -->
+**自动触发P3级优先级的信号：**
+- 关键词：**有时间时处理（when you have time）**、**不着急（no rush）**、**稍后处理（for later）**
+- 上下文信息：未提及截止日期、任务属于探索性或可延迟处理的类型
 
 ---
 
-## Queue Management
+## 任务记录格式
 
-When multiple tasks compete:
-1. **Group by priority** — P0 first, always
-2. **Within same priority** — Order by arrival or explicit sequence
-3. **Report queue** — "3 P1 tasks queued, handling X first"
-4. **Re-triage on change** — New P0 interrupts P1 work
+每条任务记录格式如下：`pattern: priority (level) [context]`
 
----
-
-## Learning Triggers
-
-Phrases that signal priority pattern:
-- "This should be higher priority"
-- "Drop everything and..."
-- "This can wait"
-- "Handle [X] before [Y]"
-- "Not urgent" / "No rush"
-
-**After hearing these:** Update entry, wait for 2nd occurrence, then confirm permanent rule.
+**示例：**
+- `deploy-issues: P0 (confirmed) [always urgent]`  
+- `refactoring: P2 (pattern) [user deprioritized 3x]`  
+- `docs-updates: P3 (confirmed) [explicit "low priority"]`  
 
 ---
 
-*Empty sections = still learning. Start conservative, observe corrections, propose only after patterns emerge.*
+### 任务分类  
+（任务类型及其默认优先级）
+
+### 时间处理规则  
+（基于时间的处理规则，例如：优先处理上午或周五的任务）
+
+### 来源区分  
+（根据任务来源区分处理优先级：Slack消息、电子邮件、直接输入的请求）
+
+### 用户优先级调整  
+（记录用户的优先级调整行为，并将其作为系统学习的新规律）
+
+---
+
+## 任务队列管理  
+当多个任务同时存在时：
+1. **按优先级分组**：始终优先处理P0级任务。
+2. **在同一优先级内**：按任务到达顺序或用户指定的顺序处理。
+3. **任务队列显示**：例如：“当前队列中有3个P1级任务，将首先处理X任务”。
+4. **优先级调整**：如果有新的P0级任务出现，会中断当前正在处理的P1级任务。
+
+---
+
+## 学习机制  
+以下语句会触发系统更新优先级规则：
+- “这个任务的优先级应该更高。”
+- “先放下所有其他事情，处理这个任务。”
+- “这个任务可以稍后处理。”
+- “先处理[X]，再处理[Y]。”
+
+系统会在接收到这些指令后更新任务记录，并在相同情况再次发生时确认该优先级规则的合理性。
+
+---
+
+*如果某个部分为空，说明系统仍在学习中。请保持保守的处理方式，观察用户的调整行为，并在真正识别出规律后再提出新的处理规则。*

@@ -1,24 +1,24 @@
 ---
 name: tavily
-description: AI-optimized web search using Tavily Search API. Use when you need comprehensive web research, current events lookup, domain-specific search, or AI-generated answer summaries. Tavily is optimized for LLM consumption with clean structured results, answer generation, and raw content extraction. Best for research tasks, news queries, fact-checking, and gathering authoritative sources.
+description: 使用 Tavily Search API 进行 AI 优化的网络搜索。当您需要进行全面的网络研究、查询当前事件、进行特定领域的搜索或获取 AI 生成的答案摘要时，可以使用该服务。Tavily 针对大型语言模型（LLM）进行了优化，能够提供结构清晰的结果、生成答案以及提取原始内容。非常适合用于研究任务、新闻查询、事实核查以及收集权威信息来源。
 ---
 
-# Tavily AI Search
+# Tavily AI 搜索
 
-## Overview
+## 概述
 
-Tavily is a search engine specifically optimized for Large Language Models and AI applications. Unlike traditional search APIs, Tavily provides AI-ready results with optional answer generation, clean content extraction, and domain filtering capabilities.
+Tavily 是一款专为大型语言模型（LLM）和人工智能应用优化的搜索引擎。与传统搜索 API 不同，Tavily 提供了具备人工智能功能的搜索结果，包括可选的答案生成、内容提取以及领域过滤功能。
 
-**Key capabilities:**
-- AI-generated answer summaries from search results
-- Clean, structured results optimized for LLM processing
-- Fast (`basic`) and comprehensive (`advanced`) search modes
-- Domain filtering (include/exclude specific sources)
-- News-focused search for current events
-- Image search with relevant visual content
-- Raw content extraction for deeper analysis
+**主要特性：**
+- 从搜索结果中生成人工智能生成的答案摘要
+- 结构清晰、适合大型语言模型处理的结果
+- 快速（基础模式）和全面（高级模式）的搜索方式
+- 领域过滤（包含/排除特定来源）
+- 专注于新闻的搜索，可获取当前事件信息
+- 图片搜索，附带相关的视觉内容
+- 提供原始内容以供深入分析
 
-## Architecture
+## 架构
 
 ```mermaid
 graph TB
@@ -62,9 +62,9 @@ graph TB
     style S fill:#F5A623
 ```
 
-## Quick Start
+## 快速入门
 
-### Basic Search
+### 基础搜索
 
 ```bash
 # Simple query with AI answer
@@ -74,7 +74,7 @@ scripts/tavily_search.py "What is quantum computing?"
 scripts/tavily_search.py "Python best practices" --max-results 10
 ```
 
-### Advanced Search
+### 高级搜索
 
 ```bash
 # Comprehensive research mode
@@ -84,7 +84,7 @@ scripts/tavily_search.py "Climate change solutions" --depth advanced
 scripts/tavily_search.py "AI developments 2026" --topic news
 ```
 
-### Domain Filtering
+### 领域过滤
 
 ```bash
 # Search only trusted domains
@@ -96,45 +96,45 @@ scripts/tavily_search.py "How to code" \
   --exclude-domains w3schools.com geeksforgeeks.org
 ```
 
-### With Images
+### 带图片的搜索
 
 ```bash
 # Include relevant images
 scripts/tavily_search.py "Eiffel Tower architecture" --images
 ```
 
-## Search Modes
+## 搜索模式
 
-### Basic vs Advanced
+### 基础模式 vs 高级模式
 
-| Mode | Speed | Coverage | Use Case |
+| 模式 | 速度 | 覆盖范围 | 使用场景 |
 |------|-------|----------|----------|
-| **basic** | 1-2s | Good | Quick facts, simple queries |
-| **advanced** | 5-10s | Excellent | Research, complex topics, comprehensive analysis |
+| **基础模式** | 1-2秒 | 良好 | 查阅快速事实、简单查询 |
+| **高级模式** | 5-10秒 | 优秀 | 进行研究、处理复杂主题、进行全面分析 |
 
-**Decision tree:**
-1. Need a quick fact or definition? → Use `basic`
-2. Researching a complex topic? → Use `advanced`
-3. Need multiple perspectives? → Use `advanced`
-4. Time-sensitive query? → Use `basic`
+**决策树：**
+1. 需要快速获取事实或定义？ → 使用 **基础模式**
+2. 需要研究复杂主题？ → 使用 **高级模式**
+3. 需要多种视角的信息？ → 使用 **高级模式**
+4. 查询具有时效性？ → 使用 **基础模式**
 
-### General vs News
+### 通用搜索 vs 新闻搜索
 
-| Topic | Time Range | Sources | Use Case |
+| 主题 | 时间范围 | 来源 | 使用场景 |
 |-------|------------|---------|----------|
-| **general** | All time | Broad web | Evergreen content, tutorials, documentation |
-| **news** | Last 7 days | News sites | Current events, recent developments, breaking news |
+| **通用搜索** | 所有时间 | 广泛的网络资源 | 永恒内容、教程、文档 |
+| **新闻搜索** | 过去 7 天 | 新闻网站 | 当前事件、最新发展、突发新闻 |
 
-**Decision tree:**
-1. Query contains "latest", "recent", "current", "today"? → Use `news`
-2. Looking for historical or evergreen content? → Use `general`
-3. Need up-to-date information? → Use `news`
+**决策树：**
+1. 查询中包含 “latest”（最新）、“recent”（最近）、“current”（当前）、“today”（今天）？ → 使用 **新闻搜索**
+2. 需要历史或永恒内容？ → 使用 **通用搜索**
+3. 需要最新信息？ → 使用 **新闻搜索**
 
-## API Key Setup
+## API 密钥设置
 
-### Option 1: Clawdbot Config (Recommended)
+### 方案 1：Clawdbot 配置（推荐）
 
-Add to your Clawdbot config:
+将以下配置添加到您的 Clawdbot 配置中：
 
 ```json
 {
@@ -149,27 +149,27 @@ Add to your Clawdbot config:
 }
 ```
 
-Access in scripts via Clawdbot's config system.
+通过 Clawdbot 的配置系统在脚本中访问 Tavily。
 
-### Option 2: Environment Variable
+### 方案 2：环境变量
 
 ```bash
 export TAVILY_API_KEY="tvly-YOUR_API_KEY_HERE"
 ```
 
-Add to `~/.clawdbot/.env` or your shell profile.
+将以下内容添加到 `~/.clawdbot/.env` 或您的 shell 配置文件中。
 
-### Getting an API Key
+## 获取 API 密钥
 
-1. Visit https://tavily.com
-2. Sign up for an account
-3. Navigate to your dashboard
-4. Generate an API key (starts with `tvly-`)
-5. Note your plan's rate limits and credit allocation
+1. 访问 https://tavily.com
+2. 注册账户
+3. 进入您的仪表板
+4. 生成 API 密钥（以 `tvly-` 开头）
+5. 记下您的计划中的信用额度和配额限制
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Research & Fact-Finding
+### 1. 研究与事实查找
 
 ```bash
 # Comprehensive research with answer
@@ -181,7 +181,7 @@ scripts/tavily_search.py "Best practices for REST API design" \
   --include-domains github.com microsoft.com google.com
 ```
 
-### 2. Current Events
+### 2. 当前事件
 
 ```bash
 # Latest news
@@ -193,7 +193,7 @@ scripts/tavily_search.py "quantum computing breakthroughs" \
   --depth advanced
 ```
 
-### 3. Domain-Specific Research
+### 3. 领域特定研究
 
 ```bash
 # Academic sources only
@@ -205,7 +205,7 @@ scripts/tavily_search.py "React hooks guide" \
   --include-domains react.dev
 ```
 
-### 4. Visual Research
+### 4. 视觉内容研究
 
 ```bash
 # Gather visual references
@@ -214,7 +214,7 @@ scripts/tavily_search.py "modern web design trends" \
   --max-results 10
 ```
 
-### 5. Content Extraction
+### 5. 内容提取
 
 ```bash
 # Get raw HTML content for deeper analysis
@@ -223,11 +223,11 @@ scripts/tavily_search.py "Python async/await" \
   --max-results 5
 ```
 
-## Response Handling
+## 响应处理
 
-### AI Answer
+### 人工智能生成的答案
 
-The AI-generated answer provides a concise summary synthesized from search results:
+人工智能生成的答案是从搜索结果中综合得出的简洁摘要：
 
 ```python
 {
@@ -235,62 +235,62 @@ The AI-generated answer provides a concise summary synthesized from search resul
 }
 ```
 
-**Use when:**
-- Need a quick summary
-- Want synthesized information from multiple sources
-- Looking for a direct answer to a question
+**适用场景：**
+- 需要快速摘要
+- 需要从多个来源合成信息
+- 需要直接回答问题
 
-**Skip when** (`--no-answer`):
-- Only need source URLs
-- Want to form your own synthesis
-- Conserving API credits
+**不适用场景（使用 `--no-answer` 选项）：**
+- 仅需要来源 URL
+- 希望自行合成信息
+- 需要节省 API 信用额度
 
-### Structured Results
+### 结构化结果
 
-Each result includes:
-- `title`: Page title
-- `url`: Source URL
-- `content`: Extracted text snippet
-- `score`: Relevance score (0-1)
-- `raw_content`: Full HTML (if `--raw-content` enabled)
+每个搜索结果包含：
+- `title`：页面标题
+- `url`：来源 URL
+- `content`：提取的文本片段
+- `score`：相关性评分（0-1）
+- `raw_content`：完整的 HTML 内容（如果启用了 `--raw-content` 选项）
 
-### Images
+### 图片
 
-When `--images` is enabled, returns URLs of relevant images found during search.
+当启用 `--images` 选项时，会返回搜索过程中找到的相关图片的 URL。
 
-## Best Practices
+## 最佳实践
 
-### 1. Choose the Right Search Depth
+### 1. 选择合适的搜索深度
 
-- Start with `basic` for most queries (faster, cheaper)
-- Escalate to `advanced` only when:
-  - Initial results are insufficient
-  - Topic is complex or nuanced
-  - Need comprehensive coverage
+- 对于大多数查询，从 **基础模式** 开始（更快、更经济）
+- 仅在以下情况下升级到 **高级模式**：
+  - 初始结果不足
+  - 主题复杂或微妙
+  - 需要全面的信息覆盖
 
-### 2. Use Domain Filtering Strategically
+### 2. 战略性地使用领域过滤
 
-**Include domains for:**
-- Academic research (`.edu` domains)
-- Official documentation (official project sites)
-- Trusted news sources
-- Known authoritative sources
+**包含的领域：**
+- 学术研究（`.edu` 域名）
+- 官方文档（项目官方网站）
+- 可信的新闻来源
+- 已知的权威来源
 
-**Exclude domains for:**
-- Known low-quality content farms
-- Irrelevant content types (Pinterest for non-visual queries)
-- Sites with paywalls or access restrictions
+**排除的领域：**
+- 低质量内容网站
+- 不相关的内容类型（例如，对于非视觉查询，排除 Pinterest）
+- 有付费墙或访问限制的网站
 
-### 3. Optimize for Cost
+### 3. 优化成本
 
-- Use `basic` depth as default
-- Limit `max_results` to what you'll actually use
-- Disable `include_raw_content` unless needed
-- Cache results locally for repeated queries
+- 默认使用 **基础模式**
+- 限制 `max_results` 为实际需要的数量
+- 除非需要，否则禁用 `include_raw_content` 选项
+- 对于重复查询，本地缓存结果
 
-### 4. Handle Errors Gracefully
+### 4. 优雅地处理错误
 
-The script provides helpful error messages:
+脚本会提供有用的错误信息：
 
 ```bash
 # Missing API key
@@ -302,9 +302,9 @@ Error: tavily-python package not installed
 To install: pip install tavily-python
 ```
 
-## Integration Patterns
+## 集成方式
 
-### Programmatic Usage
+### 程序化使用
 
 ```python
 from tavily_search import search
@@ -322,13 +322,13 @@ if result.get("success"):
         print(f"{item['title']}: {item['url']}")
 ```
 
-### JSON Output for Parsing
+### 用于解析的 JSON 输出
 
 ```bash
 scripts/tavily_search.py "Python tutorials" --json > results.json
 ```
 
-### Chaining with Other Tools
+### 与其他工具的集成
 
 ```bash
 # Search and extract content
@@ -337,32 +337,32 @@ scripts/tavily_search.py "React documentation" --json | \
   xargs -I {} curl -s {}
 ```
 
-## Comparison with Other Search APIs
+## 与其他搜索 API 的比较
 
-**vs Brave Search:**
-- ✅ AI answer generation
-- ✅ Raw content extraction
-- ✅ Better domain filtering
-- ❌ Slower than Brave
-- ❌ Costs credits
+**与 Brave Search 的比较：**
+- ✅ 支持人工智能生成的答案
+- ✅ 支持原始内容提取
+- ✅ 更好的领域过滤功能
+- ❌ 比 Brave 搜索速度较慢
+- ❌ 使用时会消耗 API 信用额度
 
-**vs Perplexity:**
-- ✅ More control over sources
-- ✅ Raw content available
-- ✅ Dedicated news mode
-- ≈ Similar answer quality
-- ≈ Similar speed
+**与 Perplexity 的比较：**
+- ✅ 对来源有更多的控制权
+- ✅ 提供原始内容
+- ✅ 提供专门的新闻搜索模式
+- ✅ 答案质量相似
+- ✅ 速度相似
 
-**vs Google Custom Search:**
-- ✅ LLM-optimized results
-- ✅ Answer generation
-- ✅ Simpler API
-- ❌ Smaller index
-- ≈ Similar cost structure
+**与 Google Custom Search 的比较：**
+- ✅ 结果优化适用于大型语言模型
+- ✅ 支持答案生成
+- ✅ API 更简单
+- ❌ 索引规模较小
+- 成本结构相似
 
-## Troubleshooting
+## 故障排除
 
-### Script Won't Run
+### 脚本无法运行
 
 ```bash
 # Make executable
@@ -375,7 +375,7 @@ python3 --version
 pip install tavily-python
 ```
 
-### API Key Issues
+### API 密钥问题
 
 ```bash
 # Verify API key format (should start with tvly-)
@@ -385,30 +385,30 @@ echo $TAVILY_API_KEY
 scripts/tavily_search.py "test" --api-key "tvly-..."
 ```
 
-### Rate Limit Errors
+### 速率限制错误
 
-- Check your plan's credit allocation at https://tavily.com
-- Reduce `max_results` to conserve credits
-- Use `basic` depth instead of `advanced`
-- Implement local caching for repeated queries
+- 在 https://tavily.com 查看您的计划信用额度分配情况
+- 减少 `max_results` 以节省信用额度
+- 对于重复查询，使用 **基础模式**
+- 实现本地缓存
 
-## Resources
+## 资源
 
-See [api-reference.md](references/api-reference.md) for:
-- Complete API parameter documentation
-- Response format specifications
-- Error handling details
-- Cost and rate limit information
-- Advanced usage examples
+请参阅 [api-reference.md](references/api-reference.md)：
+- 完整的 API 参数文档
+- 响应格式规范
+- 错误处理细节
+- 成本和速率限制信息
+- 高级使用示例
 
-## Dependencies
+## 所需依赖项
 
-- Python 3.6+
-- `tavily-python` package (install: `pip install tavily-python`)
-- Valid Tavily API key
+- Python 3.6 及以上版本
+- `tavily-python` 包（安装方式：`pip install tavily-python`）
+- 有效的 Tavily API 密钥
 
-## Credits & Attribution
+## 致谢与引用
 
-- Tavily API: https://tavily.com
-- Python SDK: https://github.com/tavily-ai/tavily-python
-- Documentation: https://docs.tavily.com
+- Tavily API：https://tavily.com
+- Python SDK：https://github.com/tavily-ai/tavily-python
+- 文档：https://docs.tavily.com

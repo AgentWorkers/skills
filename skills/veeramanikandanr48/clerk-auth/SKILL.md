@@ -5,697 +5,280 @@ description: |
 user-invocable: true
 ---
 
-# Clerk Auth - Breaking Changes & Error Prevention Guide
+# Clerk Auth - 变更说明与错误预防指南
 
-**Package Versions**: @clerk/nextjs@6.36.7, @clerk/backend@2.29.2, @clerk/clerk-react@5.59.2, @clerk/testing@1.13.26
-**Breaking Changes**: Nov 2025 - API version 2025-11-10, Oct 2024 - Next.js v6 async auth()
-**Last Updated**: 2026-01-09
+## 包版本：
+@clerk/nextjs@6.36.7, @clerk/backend@2.29.2, @clerk/clerk-react@5.59.2, @clerk/testing@1.13.26
 
----
+### 变更说明：
+- 2025年11月：API版本更新至2025-11-10
+- 2024年10月：Next.js v6中的`async auth()`方法引入
 
-## What's New (Dec 2025 - Jan 2026)
-
-### 1. API Keys Beta (Dec 11, 2025) - NEW ✨
-
-User-scoped and organization-scoped API keys for your application. Zero-code UI component.
-
-```typescript
-// 1. Add the component for self-service API key management
-import { APIKeys } from '@clerk/nextjs'
-
-export default function SettingsPage() {
-  return (
-    <div>
-      <h2>API Keys</h2>
-      <APIKeys />  {/* Full CRUD UI for user's API keys */}
-    </div>
-  )
-}
-```
-
-**Backend Verification:**
-```typescript
-import { verifyToken } from '@clerk/backend'
-
-// API keys are verified like session tokens
-const { data, error } = await verifyToken(apiKey, {
-  secretKey: process.env.CLERK_SECRET_KEY,
-  authorizedParties: ['https://yourdomain.com'],
-})
-
-// Check token type
-if (data?.tokenType === 'api_key') {
-  // Handle API key auth
-}
-```
-
-**clerkMiddleware Token Types:**
-```typescript
-// v6.36.0+: Middleware can distinguish token types
-clerkMiddleware((auth, req) => {
-  const { userId, tokenType } = auth()
-
-  if (tokenType === 'api_key') {
-    // API key auth - programmatic access
-  } else if (tokenType === 'session_token') {
-    // Regular session - web UI access
-  }
-})
-```
-
-**Pricing (Beta = Free):**
-- Creation: $0.001/key
-- Verification: $0.0001/verification
-
-### 2. Next.js 16: proxy.ts Middleware Filename (Dec 2025)
-
-**⚠️ BREAKING**: Next.js 16 changed middleware filename due to critical security vulnerability (CVE disclosed March 2025).
-
-**Background**: The March 2025 vulnerability (affecting Next.js 11.1.4-15.2.2) allowed attackers to completely bypass middleware-based authorization by adding a single HTTP header: `x-middleware-subrequest: true`. This affected all auth libraries (NextAuth, Clerk, custom solutions).
-
-**Why the Rename**: The `middleware.ts` → `proxy.ts` change isn't just cosmetic - it's Next.js signaling that middleware-first security patterns are dangerous. Future auth implementations should not rely solely on middleware for authorization.
-
-```
-Next.js 15 and earlier: middleware.ts
-Next.js 16+:            proxy.ts
-```
-
-**Correct Setup for Next.js 16:**
-```typescript
-// src/proxy.ts (NOT middleware.ts!)
-import { clerkMiddleware } from '@clerk/nextjs/server'
-
-export default clerkMiddleware()
-
-export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
-  ],
-}
-```
-
-**Minimum Version**: @clerk/nextjs@6.35.0+ required for Next.js 16 (fixes Turbopack build errors and cache invalidation on sign-out).
-
-### 3. Force Password Reset (Dec 19, 2025)
-
-Administrators can mark passwords as compromised and force reset:
-
-```typescript
-import { clerkClient } from '@clerk/backend'
-
-// Force password reset for a user
-await clerkClient.users.updateUser(userId, {
-  passwordDigest: 'compromised',  // Triggers reset on next sign-in
-})
-```
-
-### 4. Organization Reports & Filters (Dec 15-17, 2025)
-
-Dashboard now includes org creation metrics and filtering by name/slug/date.
+## 最后更新时间：2026年1月9日
 
 ---
 
-## API Version 2025-11-10 Breaking Changes
+## 2025年12月至2026年1月的新增功能
 
-### 1. API Version 2025-11-10 (Nov 10, 2025) - BREAKING CHANGES ⚠️
+### 1. API密钥（测试版）（2025年12月11日） - 新功能 ✨
+- 为应用程序提供用户级和组织级API密钥
+- 支持零代码UI组件
 
-**Affects:** Applications using Clerk Billing/Commerce APIs
+### 后端验证：
+### clerkMiddleware的令牌类型：
+### 定价（测试版 = 免费）：
+- 创建密钥：0.001美元/个
+- 验证：0.0001美元/次
 
-**Critical Changes:**
-- **Endpoint URLs:** `/commerce/` → `/billing/` (30+ endpoints)
-  ```
-  GET /v1/commerce/plans → GET /v1/billing/plans
-  GET /v1/commerce/statements → GET /v1/billing/statements
-  POST /v1/me/commerce/checkouts → POST /v1/me/billing/checkouts
-  ```
+### 2. Next.js 16：`proxy.ts`中间件文件名变更（2025年12月）
+**⚠️ 重要变更**：由于2025年3月发现的安全漏洞，Next.js 16的中间件文件名已更改
 
-- **Field Terminology:** `payment_source` → `payment_method`
-  ```typescript
-  // OLD (deprecated)
-  { payment_source_id: "...", payment_source: {...} }
+### Next.js 16的正确配置：
+### 最低版本要求：
+@clerk/nextjs@6.35.0或更高版本（修复Turbopack构建错误和登出时的缓存失效问题）
 
-  // NEW (required)
-  { payment_method_id: "...", payment_method: {...} }
-  ```
+### 3. 强制密码重置（2025年12月19日）
+管理员可以标记密码为已泄露，并强制用户重置密码
 
-- **Removed Fields:** Plans responses no longer include:
-  - `amount`, `amount_formatted` (use `fee.amount` instead)
-  - `currency`, `currency_symbol` (use fee objects)
-  - `payer_type` (use `for_payer_type`)
-  - `annual_monthly_amount`, `annual_amount`
-
-- **Removed Endpoints:**
-  - Invoices endpoint (use statements)
-  - Products endpoint
-
-- **Null Handling:** Explicit rules - `null` means "doesn't exist", omitted means "not asserting existence"
-
-**Migration:** Update SDK to v6.35.0+ which includes support for API version 2025-11-10.
-
-**Official Guide:** https://clerk.com/docs/guides/development/upgrading/upgrade-guides/2025-11-10
-
-### 2. Next.js v6 Async auth() (Oct 2024) - BREAKING CHANGE ⚠️
-
-**Affects:** All Next.js Server Components using `auth()`
-
-```typescript
-// ❌ OLD (v5 - synchronous)
-const { userId } = auth()
-
-// ✅ NEW (v6 - asynchronous)
-const { userId } = await auth()
-```
-
-**Also affects:** `auth.protect()` is now async in middleware
-
-```typescript
-// ❌ OLD (v5)
-auth.protect()
-
-// ✅ NEW (v6)
-await auth.protect()
-```
-
-**Compatibility:** Next.js 15, 16 supported. Static rendering by default.
-
-### 3. PKCE Support for Custom OAuth (Nov 12, 2025)
-
-Custom OIDC providers and social connections now support PKCE (Proof Key for Code Exchange) for enhanced security in native/mobile applications where client secrets cannot be safely stored.
-
-**Use case:** Mobile apps, native apps, public clients that can't securely store secrets.
-
-### 4. Client Trust: Credential Stuffing Defense (Nov 14, 2025)
-
-Automatic secondary authentication when users sign in from unrecognized devices:
-- Activates for users with valid passwords but no 2FA
-- No configuration required
-- Included in all Clerk plans
-
-**How it works:** Clerk automatically prompts for additional verification (email code, backup code) when detecting sign-in from new device.
-
-### 5. Next.js 16 Support (Nov 2025)
-
-**@clerk/nextjs v6.35.2+** includes cache invalidation improvements for Next.js 16 during sign-out.
+### 4. 组织报告与筛选功能（2025年12月15日至17日）
+- 仪表板新增组织创建指标，并支持按名称/slug/日期进行筛选
 
 ---
 
-## Critical Patterns & Error Prevention
+## API版本2025-11-10的变更说明
 
-### Next.js v6: Async auth() Helper
+### 1. API版本2025-11-10（2025年11月10日） - 重要变更 ⚠️
+- 影响使用Clerk Billing/Commerce API的应用程序
+- **端点URL**：`/commerce/` → `/billing/`（30多个端点）
+- **字段术语**：`payment_source` → `payment_method`
+- **移除的字段**：`amount`, `amountformatted`（使用`fee.amount`代替）
+- **移除的端点**：`invoices`端点，`Products`端点
+- **空值处理**：`null`表示“不存在”，省略表示“未声明存在”
 
-**Pattern:**
-```typescript
-import { auth } from '@clerk/nextjs/server'
+### 迁移说明：
+- 需将SDK更新至v6.35.0或更高版本，以支持API版本2025-11-10
 
-export default async function Page() {
-  const { userId } = await auth()  // ← Must await
+### Next.js v6中的`async auth()`方法（2024年10月） - 重要变更 ⚠️
+- 影响所有使用`auth()`方法的Next.js服务器组件
 
-  if (!userId) {
-    return <div>Unauthorized</div>
-  }
-
-  return <div>User ID: {userId}</div>
-}
-```
-
-### Cloudflare Workers: authorizedParties (CSRF Prevention)
-
-**CRITICAL:** Always set `authorizedParties` to prevent CSRF attacks
-
-```typescript
-import { verifyToken } from '@clerk/backend'
-
-const { data, error } = await verifyToken(token, {
-  secretKey: c.env.CLERK_SECRET_KEY,
-  // REQUIRED: Prevent CSRF attacks
-  authorizedParties: ['https://yourdomain.com'],
-})
-```
-
-**Why:** Without `authorizedParties`, attackers can use valid tokens from other domains.
-
-**Source:** https://clerk.com/docs/reference/backend/verify-token
+### Next.js 16的支持（2025年11月）
+@clerk/nextjs v6.35.2或更高版本为Next.js 16提供了缓存失效的改进功能
 
 ---
 
-## clerkMiddleware() Configuration
+## 关键模式与错误预防
 
-### Route Protection Patterns
+### Next.js v6：`async auth()`辅助函数
+### Cloudflare Workers：`authorizedParties`（防止CSRF攻击）
+**务必设置`authorizedParties`以防止CSRF攻击**
 
-```typescript
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-
-// Define protected routes
-const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/api/private(.*)',
-])
-
-const isAdminRoute = createRouteMatcher(['/admin(.*)'])
-
-export default clerkMiddleware(async (auth, req) => {
-  // Protect routes
-  if (isProtectedRoute(req)) {
-    await auth.protect()  // Redirects unauthenticated users
-  }
-
-  // Require specific permissions
-  if (isAdminRoute(req)) {
-    await auth.protect({
-      role: 'org:admin',  // Requires organization admin role
-    })
-  }
-})
-```
-
-### All Middleware Options
-
-| Option | Type | Description |
+### clerkMiddleware()配置
+### 路由保护模式
+### 所有中间件选项：
+| 选项 | 类型 | 描述 |
 |--------|------|-------------|
-| `debug` | `boolean` | Enable debug logging |
-| `jwtKey` | `string` | JWKS public key for networkless verification |
-| `clockSkewInMs` | `number` | Token time variance (default: 5000ms) |
-| `organizationSyncOptions` | `object` | URL-based org activation |
-| `signInUrl` | `string` | Custom sign-in URL |
-| `signUpUrl` | `string` | Custom sign-up URL |
+| `debug` | `boolean` | 启用调试日志记录 |
+| `jwtKey` | `string` | 用于无网络验证的JWKS公钥 |
+| `clockSkewInMs` | `number` | 令牌时间偏差（默认值：5000毫秒） |
+| `organizationSyncOptions` | `object` | 基于URL的组织激活 |
+| `signInUrl` | `string` | 自定义登录URL |
+| `signUpUrl` | `string` | 自定义注册URL |
 
-### Organization Sync (URL-based Org Activation)
-
-**⚠️ Next.js Only**: This feature currently only works with `clerkMiddleware()` in Next.js. It does NOT work with `authenticateRequest()` in other runtimes (Cloudflare Workers, Express, etc.) due to `Sec-Fetch-Dest` header checks.
-
-**Source**: [GitHub Issue #7178](https://github.com/clerk/javascript/issues/7178)
-
-```typescript
-clerkMiddleware({
-  organizationSyncOptions: {
-    organizationPatterns: ['/orgs/:slug', '/orgs/:slug/(.*)'],
-    personalAccountPatterns: ['/personal', '/personal/(.*)'],
-  },
-})
-```
+### 组织同步（基于URL的组织激活）
+**仅适用于Next.js**：此功能目前仅与`clerkMiddleware()`配合使用。由于`Sec-Fetch-Dest`头的检查，它不适用于其他运行时环境（如Cloudflare Workers、Express等）。
 
 ---
 
-## Webhooks
-
-### Webhook Verification
-
-```typescript
-import { Webhook } from 'svix'
-
-export async function POST(req: Request) {
-  const payload = await req.text()
-  const headers = {
-    'svix-id': req.headers.get('svix-id')!,
-    'svix-timestamp': req.headers.get('svix-timestamp')!,
-    'svix-signature': req.headers.get('svix-signature')!,
-  }
-
-  const wh = new Webhook(process.env.CLERK_WEBHOOK_SIGNING_SECRET!)
-
-  try {
-    const event = wh.verify(payload, headers)
-    // Process event
-    return Response.json({ success: true })
-  } catch (err) {
-    return Response.json({ error: 'Invalid signature' }, { status: 400 })
-  }
-}
-```
-
-### Common Event Types
-
-| Event | Trigger |
+## Webhook验证
+### 常见事件类型：
+| 事件 | 触发条件 |
 |-------|---------|
-| `user.created` | New user signs up |
-| `user.updated` | User profile changes |
-| `user.deleted` | User account deleted |
-| `session.created` | New sign-in |
-| `session.ended` | Sign-out |
-| `organization.created` | New org created |
-| `organization.membership.created` | User joins org |
+| `user-created` | 新用户注册 |
+| `user.updated` | 用户资料更新 |
+| `userdeleted` | 用户账户删除 |
+| `session-created` | 新会话创建 |
+| `session.ended` | 登出 |
+| `organization-created` | 新组织创建 |
+| `organization-membership-created` | 用户加入组织 |
 
-**⚠️ Important:** Webhook routes must be PUBLIC (no auth). Add to middleware exclude list:
-
-```typescript
-const isPublicRoute = createRouteMatcher([
-  '/api/webhooks/clerk(.*)',  // Clerk webhooks are public
-])
-
-clerkMiddleware((auth, req) => {
-  if (!isPublicRoute(req)) {
-    auth.protect()
-  }
-})
-```
+### Webhook路由注意事项：
+- Webhook路由必须设置为公共访问（无需身份验证）
 
 ---
 
-## UI Components Quick Reference
-
-| Component | Purpose |
+## UI组件快速参考
+| 组件 | 用途 |
 |-----------|---------|
-| `<SignIn />` | Full sign-in flow |
-| `<SignUp />` | Full sign-up flow |
-| `<SignInButton />` | Trigger sign-in modal |
-| `<SignUpButton />` | Trigger sign-up modal |
-| `<SignedIn>` | Render only when authenticated |
-| `<SignedOut>` | Render only when unauthenticated |
-| `<UserButton />` | User menu with sign-out |
-| `<UserProfile />` | Full profile management |
-| `<OrganizationSwitcher />` | Switch between orgs |
-| `<OrganizationProfile />` | Org settings |
-| `<CreateOrganization />` | Create new org |
-| `<APIKeys />` | API key management (NEW) |
+| `<SignIn />` | 完整的登录流程 |
+| `<SignUp />` | 完整的注册流程 |
+| `<SignInButton />` | 触发登录弹窗 |
+| `<SignUpButton />` | 触发注册弹窗 |
+| `<SignedIn>` | 仅在用户登录时显示 |
+| `<SignedOut>` | 仅在用户未登录时显示 |
+| `<UserButton />` | 用户菜单，包含登出选项 |
+| `<UserProfile />` | 完整的用户资料管理 |
+| `<OrganizationSwitcher />` | 在不同组织间切换 |
+| `<OrganizationProfile />` | 组织设置 |
+| `<CreateOrganization />` | 创建新组织 |
+| `<APIKeys />` | API密钥管理（新功能） |
 
 ### React Hooks
-
-| Hook | Returns |
+| Hook | 返回值 |
 |------|---------|
-| `useAuth()` | `{ userId, sessionId, isLoaded, isSignedIn, getToken }` |
+| `useAuth()` | `{userId, sessionId, isLoaded, isSignedIn, getToken }` |
 | `useUser()` | `{ user, isLoaded, isSignedIn }` |
-| `useClerk()` | Clerk instance with methods |
-| `useSession()` | Current session object |
-| `useOrganization()` | Current org context |
-| `useOrganizationList()` | All user's orgs |
+| `useClerk()` | 提供Clerk实例及相关方法 |
+| `useSession()` | 当前会话对象 |
+| `useOrganization()` | 当前组织上下文 |
+| `useOrganizationList()` | 用户所属的所有组织 |
 
 ---
 
-## JWT Templates - Size Limits & Shortcodes
+## JWT模板 - 大小限制与简写代码
 
-### JWT Size Limitation: 1.2KB for Custom Claims ⚠️
+### JWT大小限制：
+- 自定义声明的最大大小为1.2KB
 
-**Problem**: Browser cookies limited to 4KB. Clerk's default claims consume ~2.8KB, leaving **1.2KB for custom claims**.
+### 开发注意事项：
+- 在Vite开发模式下测试自定义JWT声明时，可能会遇到“431 Request Header Fields Too Large”错误。这是由于Clerk的握手令牌在URL中的长度超过了Vite的8KB限制。请参考[问题#11](#issue-11-431-request-header-fields-too-large-vite-dev-mode)获取解决方案。
 
-**⚠️ Development Note**: When testing custom JWT claims in Vite dev mode, you may encounter **"431 Request Header Fields Too Large"** error. This is caused by Clerk's handshake token in the URL exceeding Vite's 8KB limit. See [Issue #11](#issue-11-431-request-header-fields-too-large-vite-dev-mode) for solution.
+### 最佳实践：
+- 将大型数据存储在数据库中，仅在JWT中包含标识符/角色信息。
 
-**Solution:**
-```json
-// ✅ GOOD: Minimal claims
-{
-  "user_id": "{{user.id}}",
-  "email": "{{user.primary_email_address}}",
-  "role": "{{user.public_metadata.role}}"
-}
-
-// ❌ BAD: Exceeds limit
-{
-  "bio": "{{user.public_metadata.bio}}",  // 6KB field
-  "all_metadata": "{{user.public_metadata}}"  // Entire object
-}
-```
-
-**Best Practice**: Store large data in database, include only identifiers/roles in JWT.
-
-### Available Shortcodes Reference
-
-| Category | Shortcodes | Example |
+### 可用的简写代码：
+| 类别 | 简写代码 | 例子 |
 |----------|-----------|---------|
-| **User ID & Name** | `{{user.id}}`, `{{user.first_name}}`, `{{user.last_name}}`, `{{user.full_name}}` | `"John Doe"` |
-| **Contact** | `{{user.primary_email_address}}`, `{{user.primary_phone_address}}` | `"john@example.com"` |
-| **Profile** | `{{user.image_url}}`, `{{user.username}}`, `{{user.created_at}}` | `"https://..."` |
-| **Verification** | `{{user.email_verified}}`, `{{user.phone_number_verified}}` | `true` |
-| **Metadata** | `{{user.public_metadata}}`, `{{user.public_metadata.FIELD}}` | `{"role": "admin"}` |
-| **Organization** | `org_id`, `org_slug`, `org_role` (in sessionClaims) | `"org:admin"` |
-
-**Advanced Features:**
-- **String Interpolation**: `"{{user.last_name}} {{user.first_name}}"`
-- **Conditional Fallbacks**: `"{{user.public_metadata.role || 'user'}}"`
-- **Nested Metadata**: `"{{user.public_metadata.profile.interests}}"`
-
-**Official Docs**: https://clerk.com/docs/guides/sessions/jwt-templates
+| **用户ID与姓名** | `{{user.id}}`, `{{user.first_name}}`, `{{user.last_name}}`, `{{user.full_name}}` | `"John Doe"` |
+| **联系方式** | `{{user.primary_email_address}}`, `{{user.primary_phone_address}}` | `"john@example.com"` |
+| **个人资料** | `{{user.image_url}}`, `{{user.username}}`, `{{user.created_at}}` | `"https://..."` |
+| **验证状态** | `{{user.email_verified}}`, `{{user.phone_number_verified}}` | `true` |
+| **元数据** | `{{user.public_metadata}}`, `{{user.public_metadata.field}}` | `{"role": "admin"}` |
+| **组织信息** | `org_id`, `org_slug`, `org_role` | `"org:admin"` |
 
 ---
 
-## Testing with Clerk
+## 使用Clerk进行测试
 
-### Test Credentials (Fixed OTP: 424242)
+- 测试凭据（已修复OTP问题）
+- 测试电话号码（已修复短信发送问题）
+- 生成的会话令牌有效期为60秒
 
-**Test Emails** (no emails sent, fixed OTP):
-```
-john+clerk_test@example.com
-jane+clerk_test@gmail.com
-```
+### 使用Playwright进行端到端测试：
+- 安装`@clerk/testing`以自动管理测试令牌
 
-**Test Phone Numbers** (no SMS sent, fixed OTP):
-```
-+12015550100
-+19735550133
-```
+## 已知问题的预防措施
 
-**Fixed OTP Code**: `424242` (works for all test credentials)
+本文档预防了15个已记录的问题：
 
-### Generate Session Tokens (60-second lifetime)
+### 问题#1：Clerk密钥缺失
+- **错误**：“缺少Clerk密钥或API密钥”
+- **预防措施**：务必在`.env.local`文件中设置密钥，或通过`wrangler secret put`配置
 
-**Script** (`scripts/generate-session-token.js`):
-```bash
-# Generate token
-CLERK_SECRET_KEY=sk_test_... node scripts/generate-session-token.js
+### 问题#2：API密钥与Secret Key的替换
+- **错误**：“apiKey已过时，请使用secretKey”
+- **预防措施**：在所有调用中将`apiKey`替换为`secretKey`
 
-# Create new test user
-CLERK_SECRET_KEY=sk_test_... node scripts/generate-session-token.js --create-user
+### 问题#3：JWKS缓存竞争条件
+- **错误**：“无法获取JWK”
+- **预防措施**：使用@clerk/backend@2.17.2或更高版本的SDK
 
-# Auto-refresh token every 50 seconds
-CLERK_SECRET_KEY=sk_test_... node scripts/generate-session-token.js --refresh
-```
+### 问题#4：`authorizedParties`缺失（CSRF攻击）
+- **错误**：虽然没有显示错误，但存在CSRF风险
+- **预防措施**：始终设置`authorizedParties: ['https://yourdomain.com']`
 
-**Manual Flow**:
-1. Create user: `POST /v1/users`
-2. Create session: `POST /v1/sessions`
-3. Generate token: `POST /v1/sessions/{session_id}/tokens`
-4. Use in header: `Authorization: Bearer <token>`
+### 问题#5：导入路径变更
+- **错误**：“无法找到模块”
+- **预防措施**：更新Core 2的导入路径
 
-### E2E Testing with Playwright
+### 问题#6：JWT大小超出限制
+- **错误**：令牌大小超过限制
+- **预防措施**：确保自定义声明的大小在1.2KB以内
 
-Install `@clerk/testing` for automatic Testing Token management:
+### 问题#7：API版本v1已过时
+- **错误**：“API版本v1已过时”
+- **预防措施**：使用最新版本的SDK（API版本2025-11-10）
 
-```bash
-npm install -D @clerk/testing
-```
+### 问题#8：ClerkProvider JSX组件使用错误
+- **错误**：“无法作为JSX组件使用”
+- **预防措施**：确保使用与React 19兼容的@clerk/clerk-react@5.59.2+
 
-**Global Setup** (`global.setup.ts`):
-```typescript
-import { clerkSetup } from '@clerk/testing/playwright'
-import { test as setup } from '@playwright/test'
+### 问题#9：`async auth()`辅助函数的混淆
+- **错误**：“auth()不是一个函数”
+- **预防措施**：始终使用`await`：`const { userId } = await auth()`
 
-setup('global setup', async ({}) => {
-  await clerkSetup()
-})
-```
+### 问题#10：环境变量配置错误
+- **错误**：“缺少可发布的密钥”或密钥泄露
+- **预防措施**：使用正确的前缀（`NEXT_PUBLIC_`, `VITE_`），切勿直接提交密钥
 
-**Test File** (`auth.spec.ts`):
-```typescript
-import { setupClerkTestingToken } from '@clerk/testing/playwright'
-import { test } from '@playwright/test'
+### 问题#11：Vite开发模式下的请求头字段过大
+- **错误**：在登录时出现“431 Request Header Fields Too Large”错误
+- **原因**：Clerk的`__clerk_handshake`令牌在URL中的长度超过了Vite的8KB限制
+- **预防措施**：
+  - 在`package.json`中添加相关配置
+  - 清除浏览器缓存，重新登录
 
-test('sign up', async ({ page }) => {
-  await setupClerkTestingToken({ page })
+### 问题#12：用户类型不匹配
+- **原因**：`useUser()`和`currentUser()`返回的对象属性不同
+- **预防措施**：仅使用共享的属性，或为客户端和服务器环境分别编写辅助函数
 
-  await page.goto('/sign-up')
-  await page.fill('input[name="emailAddress"]', 'test+clerk_test@example.com')
-  await page.fill('input[name="password"]', 'TestPassword123!')
-  await page.click('button[type="submit"]')
+### 问题#13：使用多种`acceptsToken`类型导致的错误
+- **原因**：使用`authenticateRequest()`时，如果同时指定多种`acceptsToken`类型，可能会引发错误
+- **预防措施**：升级至@clerk/backend@2.29.2或更高版本
 
-  // Verify with fixed OTP
-  await page.fill('input[name="code"]', '424242')
-  await page.click('button[type="submit"]')
+### 问题#14：`deriveUrlFromHeaders`在格式错误的URL下导致服务器崩溃
+- **原因**：内部`deriveUrlFromHeaders()`函数在处理格式错误的URL时会导致服务器崩溃
+- **预防措施**：升级至@clerk/backend@2.29.0或更高版本
 
-  await expect(page).toHaveURL('/dashboard')
-})
-```
-
-**Official Docs**: https://clerk.com/docs/guides/development/testing/overview
+### 问题#15：`treatPendingAsSignedOut`选项的用途
+- **说明**：此选项用于处理特殊情况
+- **用法**：设置`treatPendingAsSignedOut: false`以将待处理的会话视为已登录状态
 
 ---
 
-## Known Issues Prevention
+## 生产环境注意事项
 
-This skill prevents **15 documented issues**:
-
-### Issue #1: Missing Clerk Secret Key
-**Error**: "Missing Clerk Secret Key or API Key"
-**Source**: https://stackoverflow.com/questions/77620604
-**Prevention**: Always set in `.env.local` or via `wrangler secret put`
-
-### Issue #2: API Key → Secret Key Migration
-**Error**: "apiKey is deprecated, use secretKey"
-**Source**: https://clerk.com/docs/upgrade-guides/core-2/backend
-**Prevention**: Replace `apiKey` with `secretKey` in all calls
-
-### Issue #3: JWKS Cache Race Condition
-**Error**: "No JWK available"
-**Source**: https://github.com/clerk/javascript/blob/main/packages/backend/CHANGELOG.md
-**Prevention**: Use @clerk/backend@2.17.2 or later (fixed)
-
-### Issue #4: Missing authorizedParties (CSRF)
-**Error**: No error, but CSRF vulnerability
-**Source**: https://clerk.com/docs/reference/backend/verify-token
-**Prevention**: Always set `authorizedParties: ['https://yourdomain.com']`
-
-### Issue #5: Import Path Changes (Core 2)
-**Error**: "Cannot find module"
-**Source**: https://clerk.com/docs/upgrade-guides/core-2/backend
-**Prevention**: Update import paths for Core 2
-
-### Issue #6: JWT Size Limit Exceeded
-**Error**: Token exceeds size limit
-**Source**: https://clerk.com/docs/backend-requests/making/custom-session-token
-**Prevention**: Keep custom claims under 1.2KB
-
-### Issue #7: Deprecated API Version v1
-**Error**: "API version v1 is deprecated"
-**Source**: https://clerk.com/docs/upgrade-guides/core-2/backend
-**Prevention**: Use latest SDK versions (API v2025-11-10)
-
-### Issue #8: ClerkProvider JSX Component Error
-**Error**: "cannot be used as a JSX component"
-**Source**: https://stackoverflow.com/questions/79265537
-**Prevention**: Ensure React 19 compatibility with @clerk/clerk-react@5.59.2+
-
-### Issue #9: Async auth() Helper Confusion
-**Error**: "auth() is not a function"
-**Source**: https://clerk.com/changelog/2024-10-22-clerk-nextjs-v6
-**Prevention**: Always await: `const { userId } = await auth()`
-
-### Issue #10: Environment Variable Misconfiguration
-**Error**: "Missing Publishable Key" or secret leaked
-**Prevention**: Use correct prefixes (`NEXT_PUBLIC_`, `VITE_`), never commit secrets
-
-### Issue #11: 431 Request Header Fields Too Large (Vite Dev Mode)
-**Error**: "431 Request Header Fields Too Large" when signing in
-**Source**: Common in Vite dev mode when testing custom JWT claims
-**Cause**: Clerk's `__clerk_handshake` token in URL exceeds Vite's 8KB header limit
-**Prevention**:
-
-Add to `package.json`:
-```json
-{
-  "scripts": {
-    "dev": "NODE_OPTIONS='--max-http-header-size=32768' vite"
-  }
-}
-```
-
-**Temporary Workaround**: Clear browser cache, sign out, sign back in
-
-**Why**: Clerk dev tokens are larger than production; custom JWT claims increase handshake token size
-
-**Note**: This is different from Issue #6 (session token size). Issue #6 is about cookies (1.2KB), this is about URL parameters in dev mode (8KB → 32KB).
-
-### Issue #12: User Type Mismatch (useUser vs currentUser)
-**Error**: TypeScript errors when sharing user utilities across client/server
-**Source**: [GitHub Issue #2176](https://github.com/clerk/javascript/issues/2176)
-**Why It Happens**: `useUser()` returns `UserResource` (client-side) with different properties than `currentUser()` returns `User` (server-side). Client has `fullName`, `primaryEmailAddress` object; server has `primaryEmailAddressId` and `privateMetadata` instead.
-**Prevention**: Use shared properties only, or create separate utility functions for client vs server contexts.
-
-```typescript
-// ✅ CORRECT: Use properties that exist in both
-const primaryEmailAddress = user.emailAddresses.find(
-  ({ id }) => id === user.primaryEmailAddressId
-)
-
-// ✅ CORRECT: Separate types
-type ClientUser = ReturnType<typeof useUser>['user']
-type ServerUser = Awaited<ReturnType<typeof currentUser>>
-```
-
-### Issue #13: Multiple acceptsToken Types Causes token-type-mismatch
-**Error**: "token-type-mismatch" when using `authenticateRequest()` with multiple token types
-**Source**: [GitHub Issue #7520](https://github.com/clerk/javascript/issues/7520)
-**Why It Happens**: When using `authenticateRequest()` with multiple `acceptsToken` values (e.g., `['session_token', 'api_key']`), Clerk incorrectly throws token-type-mismatch error.
-**Prevention**: Upgrade to @clerk/backend@2.29.2+ (fix available in snapshot, releasing soon).
-
-```typescript
-// This now works in @clerk/backend@2.29.2+
-const result = await authenticateRequest(request, {
-  acceptsToken: ['session_token', 'api_key'],  // Fixed!
-})
-```
-
-### Issue #14: deriveUrlFromHeaders Server Crash on Malformed URLs
-**Error**: Server crashes with URL parsing error
-**Source**: [GitHub Issue #7275](https://github.com/clerk/javascript/issues/7275)
-**Why It Happens**: Internal `deriveUrlFromHeaders()` function performs unsafe URL parsing and crashes the entire server when receiving malformed URLs in headers (e.g., `x-forwarded-host: 'example.com[invalid]'`). This is a denial-of-service vulnerability.
-**Prevention**: Upgrade to @clerk/backend@2.29.0+ (fixed).
-
-### Issue #15: treatPendingAsSignedOut Option for Pending Sessions
-**Error**: None - optional parameter for edge case handling
-**Source**: [Changelog @clerk/nextjs@6.32.0](https://github.com/clerk/javascript/blob/main/packages/nextjs/CHANGELOG.md#6320)
-**Why It Exists**: Sessions can have a `pending` status during certain flows (e.g., credential stuffing defense secondary auth). By default, pending sessions are treated as signed-out (user is null).
-**Usage**: Set `treatPendingAsSignedOut: false` to treat pending as signed-in (available in @clerk/nextjs@6.32.0+).
-
-```typescript
-// Default: pending = signed out
-const user = await currentUser()  // null if status is 'pending'
-
-// Treat pending as signed in
-const user = await currentUser({ treatPendingAsSignedOut: false })  // defined if pending
-```
+- **服务可用性与可靠性**：
+- 2025年5月至6月期间，Clerk因Google Cloud Platform（GCP）故障导致三次重大服务中断。2025年6月26日的故障持续了45分钟（UTC时间6:16-7:01），影响了所有Clerk用户。
+- **缓解策略**：
+  - 监控[Clerk状态](https://status.clerk.com)以获取实时更新
+  - 在Clerk API不可用时实现优雅降级
+  - 尽可能在本地缓存认证令牌
+  - 对于现有会话，使用`jwtKey`进行无网络验证
 
 ---
 
-## Production Considerations
-
-### Service Availability & Reliability
-
-**Context**: Clerk experienced 3 major service disruptions in May-June 2025 attributed to Google Cloud Platform (GCP) outages. The June 26, 2025 outage lasted 45 minutes (6:16-7:01 UTC) and affected all Clerk customers.
-
-**Source**: [Clerk Postmortem: June 26, 2025](https://clerk.com/blog/postmortem-jun-26-2025-service-outage)
-
-**Mitigation Strategies**:
-- Monitor [Clerk Status](https://status.clerk.com) for real-time updates
-- Implement graceful degradation when Clerk API is unavailable
-- Cache auth tokens locally where possible
-- For existing sessions, use `jwtKey` option for networkless verification:
-
-```typescript
-clerkMiddleware({
-  jwtKey: process.env.CLERK_JWT_KEY,  // Allows offline token verification
-})
-```
-
-**Note**: During total outage, no new sessions can be created (auth requires Clerk API). However, existing sessions can continue working if you verify JWTs locally with `jwtKey`. Clerk committed to exploring multi-cloud redundancy to reduce single-vendor dependency risk.
+## 官方文档：
+- **Clerk文档**：https://clerk.com/docs
+- **Next.js指南**：https://clerk.com/docs/references/nextjs/overview
+- **React指南**：https://clerk.com/docs/references/react/overview
+- **后端SDK**：https://clerk.com/docs/reference/backend/overview
+- **JWT模板**：https://clerk.com/docs/guides/sessions/jwt-templates
+- **API版本2025-11-10升级指南**：https://clerk.com/docs/guides/development/upgrading/upgrade-guides/2025-11-10
+- **测试指南**：https://clerk.com/docs/guides/development/testing/overview
 
 ---
 
-## Official Documentation
+## 包版本（2025年11月22日最新版本）：
+---
 
-- **Clerk Docs**: https://clerk.com/docs
-- **Next.js Guide**: https://clerk.com/docs/references/nextjs/overview
-- **React Guide**: https://clerk.com/docs/references/react/overview
-- **Backend SDK**: https://clerk.com/docs/reference/backend/overview
-- **JWT Templates**: https://clerk.com/docs/guides/sessions/jwt-templates
-- **API Version 2025-11-10 Upgrade**: https://clerk.com/docs/guides/development/upgrading/upgrade-guides/2025-11-10
-- **Testing Guide**: https://clerk.com/docs/guides/development/testing/overview
-- **Context7 Library ID**: `/clerk/clerk-docs`
+## 令牌效率：
+- 未使用本文档中的优化措施时：约6,500个令牌
+- 使用本文档中的优化措施后：约3,200个令牌
+- **节省的令牌数量**：约51%（约3,300个令牌）
+
+## 预防的错误：
+- 15个已记录的问题及其对应的解决方案
+- **关键价值**：API密钥（测试版）、Next.js 16的`proxy.ts`（包含2025年3月的安全漏洞修复）、`clerkMiddleware()`选项、Webhook功能、组件参考、API版本2025-11-10的变更说明、JWT大小限制、用户类型不匹配问题以及生产环境注意事项
 
 ---
 
-## Package Versions
-
-**Latest (Nov 22, 2025):**
-```json
-{
-  "dependencies": {
-    "@clerk/nextjs": "^6.36.7",
-    "@clerk/clerk-react": "^5.59.2",
-    "@clerk/backend": "^2.29.2",
-    "@clerk/testing": "^1.13.26"
-  }
-}
-```
+**最后验证时间**：2026年1月20日
+**技能版本**：3.1.0
+**变更内容**：
+- 新增了4个已知问题（问题#12-15）
+- 扩展了`proxy.ts`部分的描述，包括2025年3月的安全漏洞信息
+- 添加了生产环境注意事项（包括GCP故障的应对策略）
 
 ---
 
-**Token Efficiency**:
-- **Without skill**: ~6,500 tokens (setup tutorials, JWT templates, testing setup, webhooks, production considerations)
-- **With skill**: ~3,200 tokens (breaking changes + critical patterns + error prevention + production guidance)
-- **Savings**: ~51% (~3,300 tokens)
-
-**Errors prevented**: 15 documented issues with exact solutions
-**Key value**: API Keys beta, Next.js 16 proxy.ts (with March 2025 CVE context), clerkMiddleware() options, webhooks, component reference, API 2025-11-10 breaking changes, JWT size limits, user type mismatches, production considerations (GCP outages, jwtKey offline verification)
-
----
-
-**Last verified**: 2026-01-20 | **Skill version**: 3.1.0 | **Changes**: Added 4 new Known Issues (#12-15: user type mismatch, acceptsToken type mismatch, deriveUrlFromHeaders crash, treatPendingAsSignedOut option), expanded proxy.ts section with March 2025 CVE security context, added Production Considerations section (GCP outages + mitigation), added organizationSyncOptions Next.js-only limitation note, updated minimum version requirements for Next.js 16 (6.35.0+).
+通过遵循这些指南和最佳实践，您可以确保Clerk服务的稳定性和安全性。

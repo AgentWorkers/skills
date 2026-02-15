@@ -1,76 +1,75 @@
 ---
 name: Swift
-description: Write safe Swift code avoiding memory leaks, optional traps, and concurrency bugs.
+description: 编写安全的 Swift 代码，避免内存泄漏、可选陷阱（optional traps）以及并发错误。
 metadata: {"clawdbot":{"emoji":"🦅","os":["darwin","linux"]}}
 ---
 
-# Swift Gotchas
+# Swift 中的常见陷阱
 
-## Optional Traps
-- Force unwrap `!` crashes on nil — use `guard let` or `if let` instead
-- Implicitly unwrapped optionals `String!` still crash if nil — only use for IBOutlets
-- Optional chaining returns optional — `user?.name?.count` is `Int?` not `Int`
-- `??` default value evaluates eagerly — use `?? { expensive() }()` for lazy
-- Comparing optionals: `nil < 1` is true — unexpected sort behavior
+## 可选值的陷阱
+- 强制解包（`!`）在 `nil` 时会导致程序崩溃——应使用 `guard let` 或 `if let` 代替
+- 隐式解包的可选值（如 `String!`）在 `nil` 时仍会崩溃——仅适用于 IBOutlets
+- 可选值链操作会返回另一个可选值——例如 `user?.name?.count` 的结果类型是 `Int?` 而不是 `Int`
+- `??` 运算符会立即求值——如果需要延迟求值，应使用 `?? { expensive() }()`
+- 比较可选值时：`nil < 1` 会返回 `true`——这是不符合预期的行为
 
-## Memory Leaks
-- Closures capturing `self` strongly create retain cycles — use `[weak self]` in escaping closures
-- Delegates must be `weak` — strong delegate = object never deallocates
-- Timer retains target strongly — invalidate in `deinit` won't work, use `weak` or `block` API
-- NotificationCenter observers retained until removed — remove in `deinit` or use `addObserver(forName:using:)` with token
-- Nested closures: each level needs own `[weak self]` — inner closure captures outer's strong ref
+## 内存泄漏
+- 捕获 `self` 的闭包会创建强引用循环——在闭包中使用 `[weak self]` 可以避免这个问题
+- 代理（delegates）必须是 `weak` 类型的——否则对象将永远不会被释放
+- Timer 会保持对目标的强引用——在 `deinit` 中失效；应使用 `weak` 或 `block` API 来解决
+- NotificationCenter 的观察者会在程序结束时仍然存在——需要在 `deinit` 中手动移除，或者使用 `addObserver(forName:using:)` 并传入一个标识符（token）
+- 嵌套的闭包需要各自使用 `[weak self]`——内部闭包会捕获外部闭包对 `self` 的强引用
 
-## Concurrency Traps
-- `async let` starts immediately — not when you `await`
-- Actor isolation: accessing actor property from outside requires `await` — even for reads
-- `@MainActor` doesn't guarantee immediate main thread — it's queued
-- `Task.detached` loses actor context — inherits nothing from caller
-- Sendable conformance: mutable class properties violate thread safety silently until runtime crash
+## 并发相关的陷阱
+- `async let` 会立即执行，而不是在 `await` 之后执行
+- 访问 Actor 的属性时需要使用 `await`——即使是读取操作也不例外
+- `@MainActor` 并不保证操作会立即在主线程上执行——实际上操作会被放入队列中等待执行
+- `Task.detached` 会失去与 Actor 的上下文关联——无法继承调用者的状态
+- 如果类实现了 `Sendable` 协议，其可变属性可能会破坏线程安全性，导致运行时崩溃
 
-## Value vs Reference
-- Structs copied on assign, classes shared — mutation affects only copy or all references
-- Large structs copying is expensive — profile before assuming copy-on-write saves you
-- Mutating struct in collection requires reassignment — `array[0].mutate()` doesn't work, extract, mutate, replace
-- `inout` parameters: changes visible only after function returns — not during
+## 值与引用的区别
+- 结构体在赋值时会进行复制；类则共享实例——对结构体的修改只会影响副本，而类修改会影响所有引用
+- 大型结构体的复制操作效率较低——在假设使用复制机制之前，建议进行性能分析
+- 在集合中修改结构体时需要先进行赋值操作——直接使用 `array[0].mutate()` 是不可行的，应先提取数据、修改后再重新赋值
 
-## Codable Pitfalls
-- Missing key throws by default — use `decodeIfPresent` or custom init
-- Type mismatch throws — `"123"` won't decode to `Int` automatically
-- Enum raw value must match exactly — `"status": "ACTIVE"` fails for `.active` case
-- Nested containers need manual `CodingKeys` at each level
-- Custom `init(from:)` must decode ALL properties or provide defaults
+## Codable 相关的陷阱
+- 如果缺少键，解码操作会抛出错误——应使用 `decodeIfPresent` 或自定义的初始化方法
+- 类型不匹配会导致解码失败——例如 `"123"` 无法自动解码为 `Int`
+- 枚举的原始值必须与定义完全匹配——例如 `"status": "ACTIVE"` 无法正确匹配 `.active` 属性
+- 嵌套的容器需要为每个层级指定 `CodingKeys`
+- 自定义的 `init(from:)` 方法必须解码所有属性，否则需要提供默认值
 
-## Protocol Gotchas
-- Protocol extensions don't override — static dispatch ignores subclass implementation
-- `Self` requirement prevents use as type — `protocol Animal` vs `any Animal`
-- `@objc` required for optional protocol methods
-- Associated types can't use with `any` without constraints — use generics or type erasure
-- Witness matching is exact — `func foo(_: Int)` doesn't satisfy `func foo(_: some Numeric)`
+## 协议相关的陷阱
+- 协议扩展不会覆盖原有协议的方法——静态调用时会忽略子类的实现
+- 协议中要求使用 `Self` 类型会导致无法将该协议用于其他类型——例如 `protocol Animal` 不能用于 `any Animal`
+- 对于可选协议的方法，必须使用 `@objc` 标注
+- 关联类型（associated types）不能与 `any` 类型一起使用，除非有明确的类型约束——否则需要使用泛型或类型擦除（type erasure）
+- 协议中的类型匹配必须严格匹配——例如 `func foo(_: Int)` 无法满足 `func foo(_: some Numeric)` 的要求
 
-## String Traps
-- Characters can be multiple Unicode scalars — emoji count isn't byte count
-- Subscripting is O(n) — use indices, not integers
-- `String.Index` from one string invalid on another — even if contents match
-- Empty string is not nil — check `.isEmpty`, not `== nil`
-- `contains()` is case-sensitive — use `localizedCaseInsensitiveContains` for user search
+## 字符串相关的陷阱
+- 一个字符可能包含多个 Unicode 字符——因此字符的数量并不等于字节的数量
+- 使用下标访问字符串时性能较差——应使用索引而不是整数
+- 一个字符串中的 `String.Index` 在另一个字符串中可能无效——即使内容相同也是如此
+- 空字符串不等于 `nil`——应使用 `.isEmpty` 而不是 `== nil` 来判断字符串是否为空
+- `contains()` 方法是区分大小写的——在用户搜索时应使用 `localizedCaseInsensitiveContains`
 
-## Collection Edge Cases
-- `first` and `last` are optional — empty collection returns nil
-- `removeFirst()` crashes on empty, `popFirst()` returns nil
-- `index(of:)` is O(n) — for frequent lookups use Set or Dictionary
-- Mutating while iterating crashes — copy first or use `reversed()` for removal
-- `ArraySlice` indices don't start at 0 — use `startIndex`
+## 集合相关的陷阱
+- `first` 和 `last` 方法返回的是可选值——空集合会返回 `nil`
+- `removeFirst()` 和 `popFirst()` 在空集合上会抛出异常或返回 `nil`
+- `index(of:)` 的查找操作效率较低——频繁查找时建议使用 `Set` 或 `Dictionary`
+- 在迭代过程中修改集合会导致程序崩溃——应先复制集合内容再进行操作，或者使用 `reversed()` 方法来删除元素
+- `ArraySlice` 的索引从 1 开始——使用 `startIndex` 来获取正确的索引
 
-## Error Handling
-- `try?` swallows error details — use only when error type doesn't matter
-- `try!` crashes on any error — never use in production paths
-- Throwing from closure requires explicit `throws` in closure type
-- `rethrows` only works if closure throws — prevents unnecessary `try` at callsite
-- Error must conform to `Error` — plain `throw "message"` doesn't compile
+## 错误处理相关的陷阱
+- `try?` 会隐藏错误的具体信息——仅在错误类型无关紧要时使用
+- `try!` 会在遇到任何错误时都会导致程序崩溃——在生产代码中绝对不能使用
+- 从闭包中抛出错误时需要在闭包中明确使用 `throws` 关键字
+- `rethrows` 仅适用于闭包本身会抛出错误的情况——否则会在调用处不必要的执行 `try` 语句
+- 抛出的错误必须遵循 `Error` 协议——直接使用 `throw "message"` 会导致编译错误
 
-## Build and Runtime
-- Generic code bloat — specialized for each type, increases binary size
-- `@inlinable` exposes implementation to other modules — ABI stability consideration
-- Dynamic casting `as?` can be slow — prefer static typing
-- Reflection with `Mirror` is slow — not for hot paths
-- `print()` builds strings even in release — remove or use os_log
+## 编译和运行时相关的陷阱
+- 泛型代码会导致二进制文件体积增大——应为每种类型编写专门的代码
+- 使用 `@inlinable` 关键字会暴露实现细节给其他模块——这可能会影响 ABI 的稳定性
+- 动态类型转换（`as?`）可能效率较低——建议使用静态类型判断
+- 使用 `Mirror` 进行反射操作效率较低——不适合在性能关键的代码路径中使用
+- `print()` 方法即使在发布版本中也会构建字符串——应避免使用或改用 `os_log` 来输出信息

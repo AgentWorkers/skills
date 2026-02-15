@@ -1,7 +1,7 @@
 ---
 name: gamification
 version: 1.1.0
-description: XP system for productivity gamification via ClawdBot - track levels, badges, streaks, and achievements
+description: 通过ClawdBot实现生产力游戏化的XP系统——记录等级、徽章、连续使用时长以及各种成就
 author: ClawdBot
 category: productivity
 tags:
@@ -39,48 +39,48 @@ triggers:
   - gamification stats
 ---
 
-# Gamification & XP System
+# 游戏化与经验值（XP）系统
 
-Turn productivity into a game with XP, levels, badges, streaks, and achievements. Every completed task, habit, and goal milestone earns XP toward leveling up.
+通过经验值（XP）、等级、徽章、连续完成任务的天数（连击）和成就，将工作效率转化为一种游戏体验。每完成一项任务、养成一个习惯或达到一个目标里程碑，你都会获得经验值，从而提升等级。
 
-## ClawdBot Integration
+## 与 ClawdBot 的集成
 
-This skill is designed for **ClawdBot** - it provides the prompt interface for ClawdBot's gamification API server which stores data in Supabase.
+此功能专为 **ClawdBot** 设计，它为 ClawdBot 的游戏化 API 服务器提供提示界面，并将数据存储在 Supabase 数据库中。
 
-**Architecture:**
+**架构：**
 ```
 User → ClawdBot Gateway → ClawdBot API Server → Supabase (Postgres)
                          (Railway)              (user_gamification, xp_transactions tables)
 ```
 
-The backend implementation lives in `api-server/src/routes/gamification.ts` and `api-server/src/lib/xp-engine.ts`.
+后端实现代码位于 `api-server/src/routes/gamification.ts` 和 `api-server/src/lib/xp-engine.ts` 文件中。
 
-## Features
+## 主要功能
 
-- **XP System**: Earn XP for habits, tasks, and goal milestones
-- **Leveling**: Level up with formula `XP = 50 * (level^2)`
-- **Streak Bonuses**: Up to 2.0x multiplier for consistent habits
-- **Badges**: Earn badges for achievements and milestones
-- **Leaderboard**: Compare progress (multi-user support)
-- **Accountability**: Track commitment and earn-back system
+- **经验值系统**：通过养成习惯、完成任务或达成目标来获取经验值。
+- **等级提升**：等级提升的计算公式为 `XP = 50 * (level^2)`。
+- **连击奖励**：持续养成某个习惯可享受最高 2.0 倍的经验值加成。
+- **徽章**：通过达成成就或完成特定目标来获得徽章。
+- **排行榜**：支持多用户查看进度。
+- **问责机制**：跟踪用户的表现并给予相应的奖励或惩罚。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_SERVICE_KEY` | Yes | Supabase service role key |
+| 变量          | 是否必需 | 说明                          |
+|---------------|---------|-------------------------------------------|
+| `SUPABASE_URL`     | 是       | Supabase 项目的 URL                          |
+| `SUPABASE_SERVICE_KEY` | 是       | Supabase 服务的访问密钥                        |
 
-## API Endpoints
+## API 端点
 
-All endpoints are relative to the ClawdBot API server (`{CLAWDBOT_API_URL}/api/gamification/`).
+所有 API 端点都以 ClawdBot API 服务器的路径 `{CLAWDBOT_API_URL}/api/gamification/` 为基准。
 
-### Get User Stats
+### 获取用户统计信息
 ```
 GET /api/gamification/stats/:userId
 ```
 
-Response:
+响应数据：
 ```json
 {
   "totalXp": 2450,
@@ -100,17 +100,17 @@ Response:
 }
 ```
 
-### Get Recent Transactions
+### 获取最近的操作记录
 ```
 GET /api/gamification/transactions/:userId?limit=20
 ```
 
-### Get User Badges
+### 获取用户获得的徽章
 ```
 GET /api/gamification/badges/:userId
 ```
 
-### Award XP (Internal)
+### 内部奖励：分配经验值
 ```
 POST /api/gamification/award
 {
@@ -122,7 +122,7 @@ POST /api/gamification/award
 }
 ```
 
-### Complete Habit (with streak bonus)
+### 完成习惯（包含连击奖励）
 ```
 POST /api/gamification/habit-complete
 {
@@ -132,7 +132,7 @@ POST /api/gamification/habit-complete
 }
 ```
 
-### Complete Task
+### 完成任务
 ```
 POST /api/gamification/task-complete
 {
@@ -142,7 +142,7 @@ POST /api/gamification/task-complete
 }
 ```
 
-### Goal Milestone
+### 达成目标里程碑
 ```
 POST /api/gamification/goal-milestone
 {
@@ -152,7 +152,7 @@ POST /api/gamification/goal-milestone
 }
 ```
 
-### Award Badge
+### 颁发徽章
 ```
 POST /api/gamification/badge
 {
@@ -162,59 +162,59 @@ POST /api/gamification/badge
 }
 ```
 
-### Get Leaderboard
+### 查看排行榜
 ```
 GET /api/gamification/leaderboard
 ```
 
-### Get XP Config
+### 获取经验值配置
 ```
 GET /api/gamification/config
 ```
 
-## Database Tables
+## 数据库表
 
-This skill requires the following Supabase tables:
-- `user_gamification` - User XP totals, levels, streaks
-- `xp_transactions` - XP award history
-- `user_badges` - Earned badges
+此功能需要使用以下 Supabase 数据表：
+- `user_gamification`：存储用户的总经验值、当前等级和连击天数。
+- `xp_transactions`：记录经验值的分配历史。
+- `user_badges`：存储用户获得的徽章信息。
 
-## XP Rewards
+## 经验值奖励规则
 
-| Action | Base XP | Notes |
-|--------|---------|-------|
-| Habit completion | 10-50 | + streak bonus up to 2x |
-| Task completion | 5-50 | Based on priority (1-10) |
-| Goal 25% milestone | 100 | First quarter |
-| Goal 50% milestone | 200 | Halfway |
-| Goal 75% milestone | 300 | Three quarters |
-| Goal 100% completion | 500 | Full completion |
+| 操作            | 基础经验值 | 备注                          |
+|-----------------|---------|-------------------------------------------|
+| 完成习惯          | 10–50       | 可获得最高 2 倍的连击奖励                 |
+| 完成任务          | 5–50       | 根据任务优先级（1–10）分配经验值                 |
+| 达成 25% 的目标    | 100       | 第一季度的目标完成                   |
+| 达成 50% 的目标    | 200       | 目标完成一半                     |
+| 达成 75% 的目标    | 300       | 目标完成三分之二                     |
+| 完成 100% 的目标    | 500       | 目标完全完成                     |
 
-## Example Usage
+## 示例用法
 
-### Check Progress
+### 检查用户进度
 ```
 "What's my XP level?"
 "How close am I to leveling up?"
 "Show my gamification stats"
 ```
 
-### View Achievements
+### 查看用户成就
 ```
 "What badges do I have?"
 "Show my recent XP transactions"
 "What's my current streak?"
 ```
 
-### Leaderboard
+### 查看排行榜
 ```
 "Show the leaderboard"
 "Who has the most XP?"
 ```
 
-## Related
+## 相关功能
 
-- `goals` - Set and track goals
-- `habits` - Habit tracking system
-- `remind` - Reminder system
-- `daily-briefing` - Daily progress summary
+- `goals`：用于设置和跟踪目标。
+- `habits`：习惯养成管理系统。
+- `remind`：提醒系统。
+- `daily-briefing`：每日进度总结。

@@ -1,6 +1,6 @@
 ---
 name: qms-audit-expert
-description: ISO 13485 internal audit expertise for medical device QMS. Covers audit planning, execution, nonconformity classification, and CAPA verification. Use for internal audit planning, audit execution, finding classification, external audit preparation, or audit program management.
+description: ISO 13485内部审核专家知识，适用于医疗器械质量管理体系（QMS）。涵盖审核计划制定、审核执行、不符合项分类以及纠正措施（CAPA）的验证。可用于内部审核计划制定、审核执行、不符合项识别、外部审核准备或审核程序管理。
 triggers:
   - ISO 13485 audit
   - internal audit
@@ -14,114 +14,114 @@ triggers:
   - audit schedule
 ---
 
-# QMS Audit Expert
+# QMS审核专家
 
-ISO 13485 internal audit methodology for medical device quality management systems.
-
----
-
-## Table of Contents
-
-- [Audit Planning Workflow](#audit-planning-workflow)
-- [Audit Execution](#audit-execution)
-- [Nonconformity Management](#nonconformity-management)
-- [External Audit Preparation](#external-audit-preparation)
-- [Reference Documentation](#reference-documentation)
-- [Tools](#tools)
+针对医疗器械质量管理体系的ISO 13485内部审核方法论。
 
 ---
 
-## Audit Planning Workflow
+## 目录
 
-Plan risk-based internal audit program:
+- [审核计划工作流程](#audit-planning-workflow)
+- [审核执行](#audit-execution)
+- [不符合项管理](#nonconformity-management)
+- [外部审核准备](#external-audit-preparation)
+- [参考文档](#reference-documentation)
+- [工具](#tools)
 
-1. List all QMS processes requiring audit
-2. Assign risk level to each process (High/Medium/Low)
-3. Review previous audit findings and trends
-4. Determine audit frequency by risk level
-5. Assign qualified auditors (verify independence)
-6. Create annual audit schedule
-7. Communicate schedule to process owners
-8. **Validation:** All ISO 13485 clauses covered within cycle
+---
 
-### Risk-Based Audit Frequency
+## 审核计划工作流程
 
-| Risk Level | Frequency | Criteria |
+**基于风险的内部审核计划制定步骤：**
+
+1. 列出所有需要审核的质量管理体系（QMS）流程。
+2. 为每个流程分配风险等级（高/中/低）。
+3. 审查之前的审核发现和趋势。
+4. 根据风险等级确定审核频率。
+5. 指派具备资格的审核员（确保其独立性）。
+6. 制定年度审核计划。
+7. 将审核计划通知流程负责人。
+8. **验证：**确保本周期内涵盖所有ISO 13485条款。
+
+### 基于风险的审核频率
+
+| 风险等级 | 审核频率 | 审核内容 |
 |------------|-----------|----------|
-| High | Quarterly | Design control, CAPA, production validation |
-| Medium | Semi-annual | Purchasing, training, document control |
-| Low | Annual | Infrastructure, management review (if stable) |
+| 高       | 季度      | 设计控制、纠正和预防措施（CAPA）、生产验证 |
+| 中       | 半年      | 采购、培训、文件控制 |
+| 低       | 年度      | 基础设施、管理评审（如果系统稳定） |
 
-### Audit Scope by Clause
+### 按条款划分的审核范围
 
-| Clause | Process | Focus Areas |
-|--------|---------|-------------|
-| 4.2 | Document Control | Document approval, distribution, obsolete control |
-| 5.6 | Management Review | Inputs complete, decisions documented, actions tracked |
-| 6.2 | Training | Competency defined, records complete, effectiveness verified |
-| 7.3 | Design Control | Inputs, reviews, V&V, transfer, changes |
-| 7.4 | Purchasing | Supplier evaluation, incoming inspection |
-| 7.5 | Production | Work instructions, process validation, DHR |
-| 7.6 | Calibration | Equipment list, calibration status, out-of-tolerance |
-| 8.2.2 | Internal Audit | Schedule compliance, auditor independence |
-| 8.3 | NC Product | Identification, segregation, disposition |
-| 8.5 | CAPA | Root cause, implementation, effectiveness |
+| 条款       | 相关流程          | 审核重点       |
+|------------|------------------|--------------|
+| 4.2       | 文件控制          | 文件审批、分发、过时文件的处理 |
+| 5.6       | 管理评审          | 输入信息的完整性、决策记录、措施跟踪 |
+| 6.2       | 培训            | 培训内容的有效性、培训记录的完整性 |
+| 7.3       | 设计控制          | 设计输入、设计评审、验证与确认（V&V）、变更管理 |
+| 7.4       | 采购            | 供应商评估、来料检验       |
+| 7.5       | 生产            | 工作指令、过程验证、缺陷报告（DHR） |
+| 7.6       | 校准            | 设备清单、校准状态、超出公差的设备 |
+| 8.2.2       | 内部审核          | 审核计划的合规性、审核员的独立性 |
+| 8.3       | 不合格产品          | 产品的识别、隔离、处置      |
+| 8.5       | CAPA            | 根本原因分析、措施实施、效果验证 |
 
-### Auditor Independence
+### 审核员的独立性
 
-Verify auditor independence before assignment:
+在指派审核员之前，需验证其独立性：
 
-- [ ] Auditor not responsible for area being audited
-- [ ] No direct reporting relationship to auditee
-- [ ] Not involved in recent activities under audit
-- [ ] Documented qualification for audit scope
+- 审核员不对被审核区域负责。
+- 审核员与被审核方没有直接的报告关系。
+- 审核员未参与最近被审核的活动。
+- 审核员具备相应的资格认证。
 
 ---
 
-## Audit Execution
+## 审核执行
 
-Conduct systematic internal audit:
+**系统化的内部审核流程：**
 
-1. Prepare audit plan (scope, criteria, schedule)
-2. Review relevant documentation before audit
-3. Conduct opening meeting with auditee
-4. Collect evidence (records, interviews, observation)
-5. Classify findings (Major/Minor/Observation)
-6. Conduct closing meeting with preliminary findings
-7. Prepare audit report within 5 business days
-8. **Validation:** All scope items covered, findings supported by evidence
+1. 准备审核计划（范围、标准、时间表）。
+2. 审核前查阅相关文件。
+3. 与被审核方召开开场会议。
+4. 收集证据（记录、访谈、观察结果）。
+5. 对审核发现进行分类（重大/轻微/观察项）。
+6. 召开总结会议，讨论初步审核结果。
+7. 在5个工作日内准备审核报告。
+**验证：**确保所有审核内容都得到覆盖，且发现都有证据支持。
 
-### Evidence Collection
+### 证据收集方法
 
-| Method | Use For | Documentation |
-|--------|---------|---------------|
-| Document review | Procedures, records | Document number, version, date |
-| Interview | Process understanding | Interviewee name, role, summary |
-| Observation | Actual practice | What, where, when observed |
-| Record trace | Process flow | Record IDs, dates, linkage |
+| 方法        | 用途                | 相关文档        |
+|------------|------------------|--------------|
+| 文件审查      | 程序、记录            | 文件编号、版本、日期      |
+| 访谈        | 对流程的理解          | 被访谈者姓名、职位、访谈内容   |
+| 观察        | 实际操作情况          | 观察的时间、地点、内容     |
+| 追踪记录      | 流程流程            | 记录编号、日期、关联信息   |
 
-### Audit Questions by Clause
+### 按条款划分的审核问题
 
-**Document Control (4.2):**
-- Show me the document master list
-- How do you control obsolete documents?
-- Show me evidence of document change approval
+**文件控制（4.2）：**
+- 请出示文件主列表。
+- 你们如何管理过时的文件？
+- 请提供文件变更审批的证据。
 
-**Design Control (7.3):**
-- Show me the Design History File for [product]
-- Who participates in design reviews?
-- Show me design input to output traceability
+**设计控制（7.3）：**
+- 请出示[产品]的设计历史文件。
+- 谁参与了设计评审？
+- 请展示设计输入与输出之间的可追溯性。
 
-**CAPA (8.5):**
-- Show me the CAPA log with open items
-- How do you determine root cause?
-- Show me effectiveness verification records
+**纠正和预防措施（CAPA）（8.5）：**
+- 请出示未完成CAPA的记录。
+- 你们如何确定根本原因？
+- 请出示效果验证的记录。
 
-See `references/iso13485-audit-guide.md` for complete question sets.
+完整的审核问题集请参见`references/iso13485-audit-guide.md`。
 
-### Finding Documentation
+### 审核发现记录
 
-Document each finding with:
+每个审核发现都应记录在专门的文档中：
 
 ```
 Requirement: [Specific ISO 13485 clause or procedure]
@@ -129,7 +129,7 @@ Evidence: [What was observed, reviewed, or heard]
 Gap: [How evidence fails to meet requirement]
 ```
 
-**Example:**
+**示例：**
 ```
 Requirement: ISO 13485:2016 Clause 7.6 requires calibration
 at specified intervals.
@@ -144,28 +144,27 @@ representing a gap in calibration program execution.
 
 ---
 
-## Nonconformity Management
+## 不符合项管理
 
-Classify and manage audit findings:
+**对审核发现进行分类和管理：**
 
-1. Evaluate finding against classification criteria
-2. Assign severity (Major/Minor/Observation)
-3. Document finding with objective evidence
-4. Communicate to process owner
-5. Initiate CAPA for Major/Minor findings
-6. Track to closure
-7. Verify effectiveness at follow-up
-8. **Validation:** Finding closed only after effective CAPA
+1. 根据分类标准评估发现。
+2. 分配严重程度（重大/轻微/观察项）。
+3. 用客观证据记录发现。
+4. 通知流程负责人。
+5. 对重大或轻微发现启动CAPA流程。
+6. 跟进直至问题解决。
+7. **验证：**只有在CAPA措施有效实施后，才能认为问题已解决。
 
-### Classification Criteria
+### 分类标准
 
-| Category | Definition | CAPA Required | Timeline |
-|----------|------------|---------------|----------|
-| Major | Systematic failure or absence of element | Yes | 30 days |
-| Minor | Isolated lapse or partial implementation | Recommended | 60 days |
-| Observation | Improvement opportunity | Optional | As appropriate |
+| 分类        | 定义                | 是否需要CAPA      | 处理时限      |
+|------------|------------------|--------------|------------|
+| 重大        | 系统性故障或缺失关键要素    | 是             | 30天内       |
+| 轻微        | 独立的失误或部分实施        | 建议处理       | 60天内       |
+| 观察项        | 需改进的环节          | 可选           | 根据情况而定     |
 
-### Classification Decision
+### 分类决策
 
 ```
 Is required element absent or failed?
@@ -178,114 +177,102 @@ Is required element absent or failed?
     └── No → Improvement opportunity? → OBSERVATION
 ```
 
-### CAPA Integration
+### CAPA流程整合
 
-| Finding Severity | CAPA Depth | Verification |
-|------------------|------------|--------------|
-| Major | Full root cause analysis (5-Why, Fishbone) | Next audit or within 6 months |
-| Minor | Immediate cause identification | Next scheduled audit |
-| Observation | Not required | Noted at next audit |
+| 发现的严重程度 | CAPA处理的深度       | 验证要求       |
+|------------|------------------|--------------|------------|
+| 重大        | 完整的根本原因分析（5Why、鱼骨图） | 下次审核前或6个月内完成 |
+| 轻微        | 立即确定原因          | 下次计划审核时处理   |
+| 观察项        | 不需要特别处理        | 下次审核时记录     |
 
-See `references/nonconformity-classification.md` for detailed guidance.
-
----
-
-## External Audit Preparation
-
-Prepare for certification body or regulatory audit:
-
-1. Complete all scheduled internal audits
-2. Verify all findings closed with effective CAPA
-3. Review documentation for currency and accuracy
-4. Conduct management review with audit as input
-5. Prepare facility and personnel
-6. Conduct mock audit (full scope)
-7. Brief personnel on audit protocol
-8. **Validation:** Mock audit findings addressed before external audit
-
-### Pre-Audit Readiness Checklist
-
-**Documentation:**
-- [ ] Quality Manual current
-- [ ] Procedures reflect actual practice
-- [ ] Records complete and retrievable
-- [ ] Previous audit findings closed
-
-**Personnel:**
-- [ ] Key personnel available during audit
-- [ ] Subject matter experts identified
-- [ ] Personnel briefed on audit protocol
-- [ ] Escorts assigned
-
-**Facility:**
-- [ ] Work areas organized
-- [ ] Documents at point of use current
-- [ ] Equipment calibration status visible
-- [ ] Nonconforming product segregated
-
-### Mock Audit Protocol
-
-1. Use external auditor or qualified internal auditor
-2. Cover full scope of upcoming external audit
-3. Simulate actual audit conditions (timing, formality)
-4. Document findings as for real audit
-5. Address all Major and Minor findings before external audit
-6. Brief management on readiness status
+详细指导请参见`references/nonconformity-classification.md`。
 
 ---
 
-## Reference Documentation
+## 外部审核准备
 
-### ISO 13485 Audit Guide
+**为认证机构或监管机构的审核做准备：**
 
-`references/iso13485-audit-guide.md` contains:
+1. 完成所有计划内的内部审核。
+2. 确保所有问题都通过有效的CAPA得到解决。
+3. 检查文件的时效性和准确性。
+4. 将管理评审的结果作为审核的参考资料。
+5. 准备审核所需的设施和人员。
+6. 进行模拟审核（涵盖全部审核范围）。
+7. 向相关人员简要介绍审核流程。
+**验证：**模拟审核中发现的问题已在审核前得到解决。
 
-- Clause-by-clause audit methodology
-- Sample audit questions for each clause
-- Evidence collection requirements
-- Common nonconformities by clause
-- Finding severity classification
+### 审核前准备检查清单
 
-### Nonconformity Classification
+**文档方面：**
+- [ ] 质量手册是最新的。
+- [ ] 程序与实际操作一致。
+- [ ] 所有记录完整且易于查找。
+- [ ] 之前的审核问题都已解决。
 
-`references/nonconformity-classification.md` contains:
+**人员方面：**
+- [ ] 审核期间关键人员可随时到位。
+- [ ] 指定了相关领域的专家。
+- [ ] 人员已接受审核流程的培训。
+- [ ] 指定了陪同审核的人员。
 
-- Severity classification criteria and decision tree
-- Impact vs. occurrence matrix
-- CAPA integration requirements
-- Finding documentation templates
-- Closure requirements by severity
+**设施方面：**
+- [ ] 工作区域整洁有序。
+- [ ] 使用中的文件是最新的。
+- [ ] 设备的校准状态清晰可见。
+- [ ] 不合格产品已妥善隔离。
+
+### 模拟审核流程
+
+1. 由外部审核员或具备资格的内部审核员进行模拟审核。
+2. 模拟实际审核的流程和形式。
+3. 如实记录审核过程中的发现。
+4. 在正式审核前解决所有重大和轻微问题。
+5. 向管理层简要汇报准备情况。
 
 ---
 
-## Tools
+## 参考文档
 
-### Audit Schedule Optimizer
+### ISO 13485审核指南
 
-```bash
-# Generate optimized audit schedule
-python scripts/audit_schedule_optimizer.py --processes processes.json
+`references/iso13485-audit-guide.md`包含：
+- 按条款划分的审核方法论。
+- 每个条款的示例审核问题。
+- 证据收集要求。
+- 常见的不符合项类型。
+- 发现的严重程度分类标准。
 
-# Interactive mode
-python scripts/audit_schedule_optimizer.py --interactive
+### 不符合项分类
 
-# JSON output for integration
-python scripts/audit_schedule_optimizer.py --processes processes.json --output json
-```
+`references/nonconformity-classification.md`包含：
+- 严重程度分类标准和决策流程。
+- 影响与发生频率的矩阵。
+- CAPA处理的详细要求。
+- 发现记录的模板。
+- 不符合项的关闭要求。
 
-Generates risk-based audit schedule considering:
-- Process risk level
-- Previous findings
-- Days since last audit
-- Criticality scores
+---
 
-**Output includes:**
-- Prioritized audit schedule
-- Quarterly distribution
-- Overdue audit alerts
-- Resource recommendations
+## 工具
 
-### Sample Process Input
+### 审核计划优化工具
+
+**Audit Schedule Optimizer**
+
+**Audit Schedule Optimizer**工具根据以下因素生成基于风险的审核计划：**
+- 流程的风险等级。
+- 之前的审核结果。
+- 上次审核至今的时间间隔。
+- 项目的关键性。
+
+**输出内容包括：**
+- 优先级排序的审核计划。
+- 审核的季度分布。
+- 过期审核的提醒。
+- 资源使用建议。
+
+### 流程输入示例
 
 ```json
 {
@@ -310,14 +297,14 @@ Generates risk-based audit schedule considering:
 
 ---
 
-## Audit Program Metrics
+## 审核计划效果评估指标
 
-Track audit program effectiveness:
+**跟踪审核计划的效果：**
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Schedule compliance | >90% | Audits completed on time |
-| Finding closure rate | >95% | Findings closed by due date |
-| Repeat findings | <10% | Same finding in consecutive audits |
-| CAPA effectiveness | >90% | Verified effective at follow-up |
-| Auditor utilization | 4 days/month | Audit days per qualified auditor |
+| 指标        | 目标值        | 实际值         |
+|------------|--------------|--------------|
+| 审核计划的合规性 | >90%         | 审核按时完成       |
+| 发现问题的解决率 | >95%         | 发现问题在截止日期前解决   |
+| 重复出现的发现   | <10%         | 连续审核中出现相同问题   |
+| CAPA措施的有效性 | >90%         | 后续验证有效       |
+| 审核员的利用率 | 4天/人       | 每位合格审核员每月的审核天数 |

@@ -1,427 +1,158 @@
 ---
 name: skill-writer
-description: Write high-quality agent skills (SKILL.md files) for ClawdHub/MoltHub. Use when creating a new skill from scratch, structuring skill content, writing effective frontmatter and descriptions, choosing section patterns, or following best practices for agent-consumable technical documentation.
+description: 为 ClawdHub/MoltHub 编写高质量的代理技能文档（SKILL.md 文件）。这些文档可用于从零开始创建新技能、组织技能内容、编写有效的文档前言和描述、选择合适的文档结构模式，以及遵循代理可消费技术文档的最佳实践。
 metadata: {"clawdbot":{"emoji":"✍️","requires":{"anyBins":["npx"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Skill Writer
+# 技能编写指南
 
-Write well-structured, effective SKILL.md files for the ClawdHub registry. Covers the skill format specification, frontmatter schema, content patterns, example quality, and common anti-patterns.
+为 ClawdHub 注册表编写结构良好、内容有效的 SKILL.md 文件。本指南涵盖了技能格式规范、前端元数据（frontmatter）结构、内容编写规范、示例质量要求以及常见的编写误区。
 
-## When to Use
+## 适用场景
 
-- Creating a new skill from scratch
-- Structuring technical content as an agent skill
-- Writing frontmatter that the registry indexes correctly
-- Choosing section organization for different skill types
-- Reviewing your own skill before publishing
+- 从零开始创建新技能  
+- 将技术内容组织成代理（agent）可执行的技能  
+- 编写能让注册表正确索引的前端元数据  
+- 为不同类型的技能选择合适的章节结构  
+- 在发布前审核自己的技能  
 
-## The SKILL.md Format
+## SKILL.md 格式
 
-A skill is a single Markdown file with YAML frontmatter. The agent loads it on demand and follows its instructions.
+一个技能由一个包含 YAML 前端元数据的 Markdown 文件组成。代理会根据需要加载该文件并执行其中的指令。  
 
-```markdown
----
-name: my-skill-slug
-description: One-sentence description of when to use this skill.
-metadata: {"clawdbot":{"emoji":"🔧","requires":{"anyBins":["tool1","tool2"]},"os":["linux","darwin","win32"]}}
----
+### 前端元数据（Frontmatter）结构  
 
-# Skill Title
+#### `name`（必填项）  
+技能的唯一标识符。必须与实际发布的名称一致。  
+示例：`csv-pipeline`、`git-workflows`  
 
-One-paragraph summary of what this skill covers.
+**规则：**  
+- 使用小写字母和连字符组合；  
+- 不允许使用空格或下划线；  
+- 名称应简短且具有描述性（1-3 个单词）；  
+- 发布前请检查名称是否重复：`npx molthub@latest search "your-slug"`  
 
-## When to Use
+#### `description`（必填项）  
+这是最重要的字段：  
+1. 注册表会使用该描述进行语义搜索（基于向量嵌入技术）；  
+2. 代理会根据此描述决定是否激活该技能；  
+3. 用户在浏览搜索结果时也会看到该描述。  
 
-- Bullet list of trigger scenarios
+**有效描述示例：**  
+“`csv-pipeline`：用于将 CSV 文件转换为 JSON 格式。”  
 
-## Main Content Sections
+#### `metadata`（必填项）  
+一个遵循 `clawdbot` 规范的 JSON 对象：  
 
-### Subsection with examples
+**字段示例：**  
+- `emoji`：在注册表列表中显示的 emoji；  
+- `requires.anyBins`：技能所需的 CLI 工具数组（至少需要一个可用工具）；  
+- `os`：支持的操作系统数组（如 `linux`、`darwin`、`win32`）。  
 
-Code blocks, commands, patterns...
+**注意事项：**  
+仔细选择 `requires.anyBins` 中的工具列表，确保它们确实是技能执行所需的核心工具。  
 
-## Tips
+### 内容结构  
 
-- Practical advice bullets
-```
+#### “适用场景”部分  
+该部分应紧跟在标题段落之后，明确说明该技能适用的具体场景。  
+**规则：**  
+- 使用 4-8 个项目符号；  
+- 每个项目符号代表一个具体的使用场景，而非抽象概念；  
+- 以动词或动名词开头（如 “自动化...”、“调试...”、“转换...”）。  
 
-## Frontmatter Schema
+#### 主要内容部分  
+按任务而非概念来组织内容。代理需要根据具体任务找到相应的命令或操作。  
 
-### `name` (required)
+#### 代码块  
+每个部分都应至少包含一个代码块。没有代码块的技能实际上只是理论性的说明，而非可执行的工具。  
 
-The skill's slug identifier. Must match what you publish with.
-
-```yaml
-name: my-skill
-```
-
-Rules:
-- Lowercase, hyphenated: `csv-pipeline`, `git-workflows`
-- No spaces, no underscores
-- Keep it short and descriptive (1-3 words)
-- Check for slug collisions before publishing: `npx molthub@latest search "your-slug"`
-
-### `description` (required)
-
-The single most important field. This is what:
-1. The registry indexes for semantic search (vector embeddings)
-2. The agent reads to decide whether to activate the skill
-3. Users see when browsing search results
-
-```yaml
-# GOOD: Specific triggers and scope
-description: Write Makefiles for any project type. Use when setting up build automation, defining multi-target builds, managing dependencies between tasks, creating project task runners, or using Make for non-C projects (Go, Python, Docker, Node.js). Also covers Just and Task as modern alternatives.
-
-# BAD: Vague, no triggers
-description: A skill about Makefiles.
-
-# BAD: Too long (gets truncated in search results)
-description: This skill covers everything you need to know about Makefiles including variables, targets, prerequisites, pattern rules, automatic variables, phony targets, conditional logic, multi-directory builds, includes, silent execution, and also covers Just and Task as modern alternatives to Make for projects that use Go, Python, Docker, or Node.js...
-```
-
-Pattern for effective descriptions:
-```
-[What it does]. Use when [trigger 1], [trigger 2], [trigger 3]. Also covers [related topic].
-```
-
-### `metadata` (required)
-
-JSON object with the `clawdbot` schema:
-
-```yaml
-metadata: {"clawdbot":{"emoji":"🔧","requires":{"anyBins":["make","just"]},"os":["linux","darwin","win32"]}}
-```
-
-Fields:
-- **`emoji`**: Single emoji displayed in registry listings
-- **`requires.anyBins`**: Array of CLI tools the skill needs (at least one must be available)
-- **`os`**: Array of supported platforms: `"linux"`, `"darwin"` (macOS), `"win32"` (Windows)
-
-Choose `requires.anyBins` carefully:
-```yaml
-# Good: lists the actual tools the skill's commands use
-"requires": {"anyBins": ["docker", "docker-compose"]}
-
-# Bad: lists generic tools every system has
-"requires": {"anyBins": ["bash", "echo"]}
-
-# Good for skills that work via multiple tools
-"requires": {"anyBins": ["make", "just", "task"]}
-```
-
-## Content Structure
-
-### The "When to Use" Section
-
-Always include this immediately after the title paragraph. It tells the agent (and the user) the specific scenarios where this skill applies.
-
-```markdown
-## When to Use
-
-- Automating build, test, lint, deploy commands
-- Defining dependencies between tasks (build before test)
-- Creating a project-level task runner
-- Replacing long CLI commands with short targets
-```
-
-Rules:
-- 4-8 bullet points
-- Each bullet is a concrete scenario, not an abstract concept
-- Start with a verb or gerund: "Automating...", "Debugging...", "Converting..."
-- Don't repeat the description field verbatim
-
-### Main Content Sections
-
-Organize by task, not by concept. The agent needs to find the right command for a specific situation.
-
-```markdown
-## GOOD: Organized by task
-## Encode and Decode
-### Base64
-### URL Encoding
-### Hex
-
-## BAD: Organized by abstraction
-## Theory of Encoding
-## Encoding Types
-## Advanced Topics
-```
-
-### Code Blocks
-
-Every section should have at least one code block. Skills without code blocks are opinions, not tools.
-
-````markdown
-## GOOD: Concrete, runnable example
+**代码块示例：**  
 ```bash
-# Encode a string to Base64
-echo -n "Hello, World!" | base64
-# SGVsbG8sIFdvcmxkIQ==
-```
+# 将字符串编码为 Base64  
+echo -n "Hello, World!" | base64  
+# 输出：SGVsbG8sIFdvcmxkIQ==  
+```  
 
-## BAD: Abstract description
-Base64 encoding converts binary data to ASCII text using a 64-character alphabet...
-````
+**代码块编写建议：**  
+- 明确指定代码语言（如 `bash`、`python`、`javascript` 等）；  
+- 在命令下方添加实际输出结果；  
+- 使用真实的值（例如 `myapp`、`api-server`、真实的 IP 地址）；  
+- 先展示最常见的使用场景，再展示变体；  
+- 对于不常见的参数或选项添加注释。  
 
-Code block best practices:
-- **Always specify the language** (`bash`, `python`, `javascript`, `yaml`, `sql`, etc.)
-- **Show the output** in a comment below the command
-- **Use realistic values**, not `foo`/`bar` (use `myapp`, `api-server`, real IP formats)
-- **Include the most common case first**, then variations
-- **Add inline comments** for non-obvious flags or arguments
+#### 多语言支持  
+如果某个技能适用于多种语言，请保持章节结构的一致性。  
 
-### Multi-Language Coverage
+#### “提示”部分  
+在每个技能的最后添加一个 “提示” 部分，总结一些实用的经验或技巧，这些内容能节省大量调试时间。  
+**规则：**  
+- 包含 5-10 个实用建议；  
+- 每条建议都应独立通用（不依赖于其他建议）；  
+- 优先说明容易出错的地方或非显而易见的行为；  
+- 避免使用 “始终遵循最佳实践” 这样的通用性建议。  
 
-If a skill applies across languages, use consistent section structure:
+## 技能类型与模板  
+- **CLI 工具参考**：针对特定工具或命令族的技能；  
+- **语言/框架参考**：针对特定语言或框架中的常用模式的技能；  
+- **工作流程/指南**：针对多步骤操作流程的技能。  
 
-```markdown
-## Hashing
+## 常见编写误区  
 
-### Bash
+### 过于抽象  
+示例：  
 ```bash
-echo -n "Hello" | sha256sum
-```
-
-### JavaScript
-```javascript
-const crypto = require('crypto');
-crypto.createHash('sha256').update('Hello').digest('hex');
-```
-
-### Python
-```python
-import hashlib
-hashlib.sha256(b"Hello").hexdigest()
-```
-```
-
-Order: Bash first (most universal), then by popularity for the topic.
-
-### The "Tips" Section
-
-End every skill with a Tips section. These are the distilled wisdom — the things that save hours of debugging.
-
-```markdown
-## Tips
-
-- The number one Makefile bug: using spaces instead of tabs for indentation.
-- SHA-256 is the standard for integrity checks. MD5 is fine for dedup but broken for cryptographic use.
-- Never schedule critical cron jobs between 1:00-3:00 AM if DST applies.
-```
-
-Rules:
-- 5-10 bullets
-- Each tip is a standalone insight (no dependencies on other tips)
-- Prioritize gotchas and non-obvious behavior over basic advice
-- No "always use best practices" platitudes
-
-## Skill Types and Templates
-
-### CLI Tool Reference
-
-For skills about a specific tool or command family.
-
-```markdown
----
-name: tool-name
-description: [What tool does]. Use when [scenario 1], [scenario 2].
-metadata: {"clawdbot":{"emoji":"🔧","requires":{"anyBins":["tool-name"]}}}
----
-
-# Tool Name
-
-[One paragraph: what it does and why you'd use it.]
-
-## When to Use
-- [4-6 scenarios]
-
-## Quick Reference
-[Most common commands with examples]
-
-## Common Operations
-### [Operation 1]
-### [Operation 2]
-
-## Advanced Patterns
-### [Pattern 1]
-
-## Troubleshooting
-### [Common error and fix]
-
-## Tips
-```
-
-### Language/Framework Reference
-
-For skills about patterns in a specific language or framework.
-
-```markdown
----
-name: pattern-name
-description: [Pattern] in [language/framework]. Use when [scenario 1], [scenario 2].
-metadata: {"clawdbot":{"emoji":"📐","requires":{"anyBins":["runtime"]}}}
----
-
-# Pattern Name
-
-## When to Use
-
-## Quick Reference
-[Cheat sheet / syntax summary]
-
-## Patterns
-### [Pattern 1 — with full example]
-### [Pattern 2 — with full example]
-
-## Cross-Language Comparison (if applicable)
-
-## Anti-Patterns
-[What NOT to do, with explanation]
-
-## Tips
-```
-
-### Workflow/Process Guide
-
-For skills about multi-step processes.
-
-```markdown
----
-name: workflow-name
-description: [Workflow description]. Use when [scenario 1], [scenario 2].
-metadata: {"clawdbot":{"emoji":"🔄","requires":{"anyBins":["tool1","tool2"]}}}
----
-
-# Workflow Name
-
-## When to Use
-
-## Prerequisites
-[What needs to be set up first]
-
-## Step-by-Step
-### Step 1: [Action]
-### Step 2: [Action]
-### Step 3: [Action]
-
-## Variations
-### [Variation for different context]
-
-## Troubleshooting
-
-## Tips
-```
-
-## Anti-Patterns
-
-### Too abstract
-
-```markdown
-# BAD
-## Error Handling
-Error handling is important for robust applications. You should always
-handle errors properly to prevent unexpected crashes...
-
-# GOOD
-## Error Handling
-```bash
-# Bash: exit on any error
-set -euo pipefail
-
-# Trap for cleanup on exit
-trap 'rm -f "$TMPFILE"' EXIT
-```
-```
-
-### Too narrow
-
-```markdown
-# BAD: Only useful for one specific case
----
-name: react-useeffect-cleanup
-description: How to clean up useEffect hooks in React
----
-
-# GOOD: Broad enough to be a real reference
----
-name: react-hooks
-description: React hooks patterns. Use when working with useState, useEffect, useCallback, useMemo, custom hooks, or debugging hook-related issues.
----
-```
-
-### Wall of text without examples
-
-If any section goes more than 10 lines without a code block, it's too text-heavy. Break it up with examples.
-
-### Missing cross-references
-
-If your skill mentions another tool or concept that has its own skill, note it:
-
-```markdown
-# For Docker networking issues, see the `container-debug` skill.
-# For regex syntax details, see the `regex-patterns` skill.
-```
-
-### Outdated commands
-
-Verify every command works on current tool versions. Common traps:
-- Docker Compose: `docker-compose` (v1) vs. `docker compose` (v2)
-- Python: `pip` vs. `pip3`, `python` vs. `python3`
-- Node.js: CommonJS (`require`) vs. ESM (`import`)
-
-## Size Guidelines
-
-| Metric | Target | Too Short | Too Long |
-|---|---|---|---|
-| Total lines | 300-550 | < 150 | > 700 |
-| Sections | 5-10 | < 3 | > 15 |
-| Code blocks | 15-40 | < 8 | > 60 |
-| Tips | 5-10 | < 3 | > 15 |
-
-A skill under 150 lines probably lacks examples. A skill over 700 lines should be split into two skills.
-
-## Publishing Checklist
-
-Before publishing, verify:
-
-1. **Frontmatter is valid YAML** — test by pasting into a YAML validator
-2. **Description starts with what the skill does** — not "This skill..." or "A skill for..."
-3. **Every section has at least one code block** — no text-only sections in the main content
-4. **Commands actually work** — test in a clean environment
-5. **No placeholder values left** — search for `TODO`, `FIXME`, `example.com` used as real URLs
-6. **Slug is available** — `npx molthub@latest search "your-slug"` returns no exact match
-7. **`requires.anyBins` lists real dependencies** — tools the skill's commands actually invoke
-8. **Tips section exists** — with 5+ actionable, non-obvious bullets
-
-## Publishing
-
-```bash
-# Publish a new skill
-npx molthub@latest publish ./skills/my-skill \
-  --slug my-skill \
-  --name "My Skill" \
-  --version 1.0.0 \
-  --changelog "Initial release"
-
-# Update an existing skill
-npx molthub@latest publish ./skills/my-skill \
-  --slug my-skill \
-  --name "My Skill" \
-  --version 1.1.0 \
-  --changelog "Added new section on X"
-
-# Verify it's published
-npx molthub@latest search "my-skill"
-```
-
-## Tips
-
-- The `description` field is your skill's search ranking. Spend more time on it than any single content section. Include the specific verbs and nouns users would search for.
-- Lead with the most common use case. If 80% of users need "how to encode Base64", put that before "how to convert between MessagePack and CBOR."
-- Every code example should be copy-pasteable. If it needs setup that isn't shown, add the setup.
-- Write for the agent, not the human. The agent needs unambiguous instructions it can follow step by step. Avoid "you might want to consider" — say "do X when Y."
-- Test your skill by asking an agent to use it on a real task. If the agent can't follow the instructions to produce a correct result, the skill needs work.
-- Prefer `bash` code blocks for commands, even in language-specific skills. The agent often operates via shell, and bash blocks signal "run this."
-- Don't duplicate what `--help` already provides. Focus on patterns, combinations, and the non-obvious things that `--help` doesn't teach.
-- Version your skills semantically: patch for typo fixes, minor for new sections, major for restructures. The registry tracks version history.
+# Bash：遇到错误时立即退出  
+set -euo pipefail  
+# 退出时执行清理操作  
+trap 'rm -f "$TMPFILE"' EXIT  
+```  
+这种描述过于抽象，用户难以理解具体操作。  
+
+### 内容过于冗长（缺乏示例）  
+如果某个部分超过 10 行且没有代码块，说明内容过于冗长。应通过添加示例来丰富内容。  
+
+### 缺少交叉引用  
+如果某个技能提到了其他工具或概念（这些工具或概念也有独立的文档），请在文档中注明。  
+
+### 命令过时  
+请确认所有命令在当前工具版本中仍能正常使用。常见错误包括：  
+- Docker Compose：`docker-compose`（v1）与 `docker-compose`（v2）的差异；  
+- Python：`pip` 与 `pip3`、`python` 与 `python3` 的区别；  
+- Node.js：`CommonJS`（`require`）与 ESM（`import`）的用法差异。  
+
+## 文档长度指南  
+| 指标        | 目标范围        | 过短          | 过长          |
+|-------------|---------------|--------------|--------------|
+| 总行数        | 300-550         | < 150          | > 700          |
+| 章节数量       | 5-10           | < 3            | > 15            |
+| 代码块数量     | 15-40           | < 8            | > 60            |
+| 提示数量       | 5-10           | < 3            | > 15            |
+
+- 字符数少于 150 行的技能可能缺乏示例；  
+- 超过 700 行的技能应拆分为多个技能。  
+
+## 发布前检查清单  
+发布前请确认以下内容：  
+1. 前端元数据格式正确（使用 YAML 验证工具进行验证）；  
+2. 描述部分明确说明了技能的功能；  
+3. 每个部分都包含至少一个代码块；  
+4. 所有命令都能在干净的环境中正常执行；  
+5. 文档中不存在占位符（如 `TODO`、`FIXME`、`example.com` 等）；  
+6. 技能的唯一标识符不存在重复；  
+7. `requires.anyBins` 列出了技能实际使用的工具；  
+8. “提示” 部分包含 5 条以上实用的建议。  
+
+## 发布流程  
+发布前请按照上述指南进行最后的检查与修改。  
+
+**额外提示：**  
+- 描述部分对技能的搜索排名至关重要，请投入更多时间进行优化；  
+- 首先介绍最常见的使用场景；  
+- 确保每个代码示例都可以直接复制使用；  
+- 为代理编写清晰、可执行的指令；  
+- 通过实际测试验证技能的正确性；  
+- 尽量使用 `bash` 代码块来展示命令；  
+- 避免重复 `--help` 文档中已提供的内容，重点介绍复杂的操作模式和注意事项。  
+
+通过遵循这些指南，你可以编写出高质量、易于使用的 SKILL.md 文件，从而提高 ClawdHub 注册表中技能的实用性和可发现性。

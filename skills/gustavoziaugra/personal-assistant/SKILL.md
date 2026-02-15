@@ -1,17 +1,15 @@
 ---
 name: personal-assistant
-description: Personal daily briefing and productivity assistant. Generates morning briefings with priorities, habits, and self-care reminders. Use when starting your day, planning tasks, or maintaining daily routines and personal development. A minimalist personal productivity skill focused on you.
+description: 个人每日简报与生产力辅助工具。可生成包含优先事项、日常习惯及自我护理提醒的晨间简报。适用于开始新的一天、规划任务、维护日常作息或促进个人成长时使用。这是一款以用户为中心的极简主义个人生产力工具。
 ---
 
-# Personal Assistant
+# 个人助理
 
-## Overview / Visão Geral
+## 概述
 
-Generate personalized daily briefings with morning motivation, priorities, habit tracking, and evening reflection. Focus on productivity and well-being with minimal complexity.
+生成个性化的每日简报，内容包括早晨的激励信息、优先事项、习惯跟踪以及晚上的反思。以最简单的方式帮助您提升工作效率和幸福感。
 
-Gerencie briefings diários personalizados com motivação matinal, prioridades, hábitos e reflexão noturna. Foque em produtividade e bem-estar com complexidade mínima.
-
-## Quick Start / Início Rápido
+## 快速入门
 
 ```bash
 # Generate daily briefing
@@ -21,84 +19,50 @@ python3 scripts/daily_briefing.py --location Columbus --summary
 python3 scripts/daily_briefing.py --output daily_briefing.json
 ```
 
-## Workflow / Fluxo de Trabalho
+## 工作流程
 
-### Morning Routine / Rotina Matinal
+### 早晨例行程序
 
-Start your day with a structured briefing:
+以结构化的简报开始新的一天：
+1. **激励**：以积极的态度和明确的目标开始一天
+2. **天气**：查看当天的天气状况
+3. **优先事项**：确定当天的前三项任务
+4. **习惯**：记录当天的目标
 
-1. **Motivation:** Positive start with intention / Motivação: começo positivo com intenção
-2. **Weather:** Check conditions for the day / Clima: verifique condições do dia
-3. **Priorities:** Set top 3 tasks / Prioridades: defina top 3 tarefas
-4. **Habits:** Track daily goals / Hábitos: acompanhe metas diárias
+### 白天工作期间
 
-### During the Day / Durante o Dia
+将简报作为参考：
+- 查看优先事项列表
+- 标记已完成的习惯
+- 适当休息并保持水分摄入
 
-Use briefing as your reference:
-- Check priorities list / Verifique lista de prioridades
-- Mark completed habits / Marque hábitos completados
-- Take breaks and stay hydrated / Faça pausas e mantenha-se hidratado
+### 晚上回顾
 
-### Evening Review / Revisão Noturna
+通过反思结束一天：
+- 我今天完成了什么？
+- 我对什么心存感激？
+- 我有哪些可以改进的地方？
+- 确定明天的优先事项
 
-End your day with reflection:
-- What did I accomplish? / O que eu conquistei?
-- What am I grateful for? / Pelo que eu sou grato?
-- What could I improve? / O que eu poderia melhorar?
-- Set tomorrow's priority / Defina prioridade de amanhã
+## 使用方法
 
-## Usage / Uso
-
-### Generate Briefing / Gerar Briefing
+### 生成简报
 
 ```bash
 python3 scripts/daily_briefing.py --location Columbus --summary
 ```
 
-Output:
+### 参数
 
-```
-📋 Daily Briefing - 2026-02-11 (Wednesday)
+| 参数 | 描述 | 默认值 |
+|-----------|-------------|-------------|
+| `--location` | 你的城市 | Columbus | `--location Miami` |
+| `--output` | 输出文件 | daily_briefing.json | `--output briefing.json` |
+| `--summary` | 打印可读的输出 | false | `--summary` |
 
-🌅 Good Morning!
-Start your day with focus and intention.
+## 日常自动化
 
-🌡 Weather Check
-Check the weather in Columbus before heading out.
-
-🎯 Today's Focus
-Top 3 priorities:
-1. _____________________________
-2. _____________________________
-3. _____________________________
-
-✅ Daily Habits
-☐ Morning routine
-☐ Hydration goals
-☐ Learning time
-☐ Evening review
-
-💚 Self-Care
-Remember to take breaks and stay hydrated.
-
-🌙 Evening Review
-1. What did I accomplish today?
-2. What am I grateful for?
-3. What could I have done better?
-4. Tomorrow's top priority?
-```
-
-### Parameters / Parâmetros
-
-| Parameter | Description | Descrição | Default |
-|-----------|-------------|-------------|----------|
-| `--location` | Your city / Sua cidade | Columbus | `--location Miami` |
-| `--output` | Output file / Arquivo de saída | daily_briefing.json | `--output briefing.json` |
-| `--summary` | Print readable output / Imprimir saída legível | false | `--summary` |
-
-## Daily Automation / Automação Diária
-
-Set up morning briefings with OpenClaw cron:
+使用 OpenClaw 的 cron 任务设置早晨的简报：
 
 ```bash
 # Every day at 7 AM
@@ -108,7 +72,7 @@ openclaw cron add \
   --message "Generate my daily briefing"
 ```
 
-Or manually:
+或者手动设置：
 
 ```bash
 # Morning (7 AM)
@@ -118,9 +82,9 @@ python3 scripts/daily_briefing.py --location Columbus --summary
 python3 scripts/daily_briefing.py --location Columbus --summary
 ```
 
-## Output Format / Formato de Saída
+## 输出格式
 
-### JSON Structure
+### JSON 结构
 
 ```json
 {
@@ -138,158 +102,126 @@ python3 scripts/daily_briefing.py --location Columbus --summary
 }
 ```
 
-## Key Sections / Seções Principais
+## 主要部分
 
-### 🌅 Morning Motivation / Motivação Matinal
-Positive start to your day with focus and intention.
+### 🌅 早晨激励
+以专注和明确的目标开始新的一天。
 
-Começo positivo do seu dia com foco e intenção.
+### 🎯 今日重点
+列出当天的前三项优先事项，并留出空间记录你的个人任务。
 
-### 🎯 Today's Focus / Foco do Dia
-Top 3 priorities with space for your own tasks.
+### ✅ 日常习惯
+跟踪有助于个人成长的日常目标。
 
-Top 3 prioridades com espaço para suas tarefas.
+### 💚 自我关怀
+提供关于水分摄入、休息和工作生活平衡的提醒。
 
-### ✅ Daily Habits / Hábitos Diários
-Track recurring daily goals for personal development.
+### 🌙 晚上反思
+通过结构化的问题进行自我反思，促进成长和感恩。
 
-Acompanhe metas recorrentes para desenvolvimento pessoal.
+## 功能特点
 
-### 💚 Self-Care / Autocuidado
-Reminders for hydration, breaks, and work-life balance.
+- **简单快捷**：操作简单且效率高
+- **人类可读的输出**：输出内容易于理解
+- **带表情符号的章节**：章节中包含表情符号
+- **地理位置感知**：根据用户位置调整内容
+- **JSON 导出**：支持导出 JSON 文件以用于自动化
+- **区分工作日**：区分工作日和周末的内容
 
-Lembretes para hidratação, pausas e equilíbrio vida-trabalho.
+## 工作原理
 
-### 🌙 Evening Reflection / Reflexão Noturna
-Structured reflection questions for growth and gratitude.
+1. **获取当前日期和位置**：获取当前日期和用户位置
+2. **创建主要部分**：生成五个核心部分
+3. **格式化输出**：输出内容便于阅读
+4. **导出为 JSON**：支持导出 JSON 文件以便集成到其他系统中
 
-Reflexão estruturada para crescimento e gratidão.
+## 使用场景
 
-## Features / Funcionalidades
+### 个人效率提升
 
-- ✅ Simple and fast / Simples e rápido
-- 📝 Human-readable output / Saída legível para humanos
-- 🎨 Emoji-enhanced sections / Seções com emojis
-- 🌍 Location-aware / Consciente de localização
-- 💾 JSON export for automation / Exportação JSON para automação
-- 📅 Weekday-aware / Consciente do dia da semana
+每天早晨通过结构化的简报来明确目标和优先事项。
 
-## How It Works / Como Funciona
+### 个人成长
 
-1. **Date & Location:** Gets current date and your location / Obtém data atual e sua localização
-2. **Section Generation:** Creates 5 key sections / Cria 5 seções principais
-3. **Formatting:** Structures output for easy reading / Estrutura saída para leitura fácil
-4. **Saving:** Exports to JSON for integrations / Exporta para JSON para integrações
+利用习惯跟踪和晚上反思来增强自我意识和促进个人成长。
 
-## Use Cases / Casos de Uso
+### 远程工作
 
-### Personal Productivity / Produtividade Pessoal
+在家工作时，通过简报和休息时间来保持工作秩序和自我关怀。
 
-Start each morning with a structured briefing to set focus and priorities.
+### 心理健康
 
-Comece cada manhã com um briefing estruturado para definir foco e prioridades.
+通过定期提醒保持水分摄入和休息，关注自己的身心健康。
 
-### Personal Development / Desenvolvimento Pessoal
+## 设计理念
 
-Use habit tracking and evening reflection to build self-awareness and growth.
+本工具遵循以下高效工作原则：
+- 专注于重要的事情
+- 简单胜过复杂
+- 一致性比强度更重要
+- 重视进步，而非完美
 
-Use rastreamento de hábitos e reflexão noturna para construir autoconsciência e crescimento.
-
-### Remote Work / Trabalho Remoto
-
-Maintain structure and self-care while working from home with briefings and breaks.
-
-Mantenha estrutura e autocuidado enquanto trabalha de casa com briefings e pausas.
-
-### Well-being / Bem-Estar
-
-Stay mindful of self-care with regular hydration and break reminders.
-
-Mantenha-se consciente do autocuidado com lembretes regulares de hidratação e pausas.
-
-## Philosophy / Filosofia
-
-This skill follows minimal productivity principles:
-- Focus on what matters / Foque no que importa
-- Simple over complex / Simples sobre complexo
-- Consistency > intensity / Consistência > intensidade
-- Progress, not perfection / Progresso, não perfeição
-
-## Resources / Recursos
+## 资源
 
 ### scripts/daily_briefing.py
-Main script that generates daily briefings with all sections.
-
-Script principal que gera briefings diários com todas as seções.
+生成包含所有部分的每日简报的主要脚本。
 
 ### references/productivity.md
-Tips and techniques for personal productivity and habit formation.
+关于个人效率和习惯养成的技巧与建议。
 
-Dicas e técnicas para produtividade pessoal e formação de hábitos.
+## 依赖项
 
-## Dependencies / Dependências
+**无**：仅使用 Python 标准库，无需外部依赖。
 
-**None!** / **Nenhuma!**
+## 使用建议
 
-Uses only Python standard library - no external dependencies required.
+### 早晨例行程序
 
-Usa apenas biblioteca padrão do Python - sem dependências externas necessárias.
+- 喝咖啡时阅读简报
+- 前一晚填写优先事项
+- 保持简单——最多设置 3 个优先事项
 
-## Tips / Dicas
+### 晚上例行程序
 
-### Morning Routine / Rotina Matinal
+- 花 5 分钟进行反思
+- 记下明天的优先事项
+- 每天练习感恩
 
-- Read your briefing while having coffee / Leia seu briefing enquanto toma café
-- Fill in priorities the night before / Preencha prioridades na noite anterior
-- Keep it simple - max 3 priorities / Mantenha simples - máx 3 prioridades
+### 建立习惯
 
-### Evening Routine / Rotina Noturna
+- 从 1-2 个习惯开始
+- 注重持续性的养成，而非一次性完成
+- 使用 ☐/☑ 标记习惯的完成情况
 
-- Spend 5 minutes on reflection / Gaste 5 minutos na reflexão
-- Write down tomorrow's priority / Anote a prioridade de amanhã
-- Practice gratitude daily / Pratique gratidão diariamente
+## 自定义
 
-### Building Habits / Construindo Hábitos
+### 添加新章节
 
-- Start with 1-2 habits / Comece com 1-2 hábitos
-- Focus on consistency, not intensity / Foque na consistência, não na intensidade
-- Track visually (use ☐/☑) / Acompanhe visualmente (use ☐/☑)
+编辑 `scripts/daily_briefing.py` 并将其添加到 `generate_briefing()` 函数中。
 
-## Customization / Personalização
+### 修改章节内容
 
-### Adding New Sections / Adicionando Novas Seções
+每个章节都包含标题、内容和类型，可根据需要进行自定义。
 
-Edit `scripts/daily_briefing.py` and add to the `generate_briefing()` function.
+## 许可证
 
-Edite `scripts/daily_briefing.py` e adicione à função `generate_briefing()`.
+MIT 许可证：可自由用于个人和商业用途。
 
-### Modifying Sections / Modificando Seções
+## 致谢
 
-Each section has: title, content, type. Customize as needed.
+本工具由 **Gustavo (GustavoZiaugra)** 使用 OpenClaw 开发。
 
-Cada seção tem: título, conteúdo, tipo. Personalize conforme necessário.
-
-## License / Licença
-
-MIT License - Use freely for personal and commercial purposes.
-Licença MIT - Use livremente para fins pessoais e comerciais.
-
-## Credits / Créditos
-
-Created by **Gustavo (GustavoZiaugra)** with OpenClaw
-Criado por **Gustavo (GustavoZiaugra)** com OpenClaw
-
-- Simple productivity framework / Framework de produtividade simples
-- Personal well-being focus / Foque em bem-estar pessoal
-- Minimal and functional approach / Abordagem minimalista e funcional
+- 一个简单的效率提升工具
+- 注重个人心理健康
+- 采用极简且实用的设计理念
 
 ---
 
-**Find this and more OpenClaw skills at ClawHub.com**
-**Encontre este e mais skills do OpenClaw em ClawHub.com**
+**更多 OpenClaw 工具请访问 ClawHub.com**
+**更多 OpenClaw 工具请访问 ClawHub.com**
 
-⭐ **Star this repository if you find it useful!**
-**⭐ Dê uma estrela neste repositório se você achar útil!**
+⭐ **如果您觉得这个工具有用，请给它点赞！**
+⭐ **如果您觉得这个工具有用，请给它点赞！**
 
-📋 **Your personal assistant, just for you.**
-📋 **Seu assistente pessoal, só para você.**
+📋 **这是专为您准备的个人助理。**
+📋 **这是专为您准备的个人助理。**

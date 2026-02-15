@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Product Photography
+# 人工智能产品摄影
 
-Generate professional product photography via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具生成专业的产品摄影图片。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,19 +26,19 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## Available Models
+## 可用模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| FLUX Dev | `falai/flux-dev` | High quality, detailed |
-| FLUX Schnell | `falai/flux-schnell` | Fast iterations |
-| Imagen 3 | `google/imagen-3` | Photorealistic |
-| Grok | `xai/grok-imagine-image` | Creative variations |
-| Seedream | `bytedance/seedream-3-0` | Commercial quality |
+| FLUX Dev | `falai/flux-dev` | 高质量、细节丰富 |
+| FLUX Schnell | `falai/flux-schnell` | 快速迭代 |
+| Imagen 3 | `google/imagen-3` | 真实感强 |
+| Grok | `xai/grok-imagine-image` | 创意风格 |
+| Seedream | `bytedance/seedream-3-0` | 商业级质量 |
 
-## Product Photography Styles
+## 产品摄影风格
 
-### Studio White Background
+### 摄影棚白背景
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -46,7 +46,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Lifestyle Context
+### 生活方式场景
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -54,7 +54,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Hero Shot
+### 产品特写（Hero Shot）
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -62,7 +62,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Flat Lay
+### 平铺展示（Flat Lay）
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -70,7 +70,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### In-Use / Action
+### 使用中/动态场景（In-Use / Action）
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -78,9 +78,9 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## Product Categories
+## 产品类别
 
-### Electronics
+### 电子产品
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -88,7 +88,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Fashion / Apparel
+### 服装/服饰
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -96,7 +96,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Beauty / Cosmetics
+### 美容/化妆品
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -104,7 +104,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Food & Beverage
+### 食品与饮料
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -112,7 +112,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Home & Furniture
+### 家居与家具
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -120,7 +120,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Jewelry
+### 珠宝
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -128,9 +128,9 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## Lighting Techniques
+## 照明技巧
 
-### Soft Studio Light
+### 柔和的摄影棚灯光
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -138,7 +138,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Dramatic / Rim Light
+### 戏剧性灯光/边缘光
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -146,7 +146,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Natural Window Light
+### 自然窗光
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -154,7 +154,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Hard Light / High Contrast
+### 强烈光线/高对比度
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -162,9 +162,9 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## E-Commerce Templates
+## 电子商务模板
 
-### Amazon Main Image
+### Amazon 主图片
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -172,7 +172,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Amazon Lifestyle Image
+### Amazon 生活方式图片
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -180,7 +180,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Shopify Hero
+### Shopify 产品特写
 
 ```bash
 infsh app run falai/flux-dev --input '{
@@ -188,7 +188,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-## Batch Generation
+## 批量生成
 
 ```bash
 # Generate multiple angles
@@ -202,7 +202,7 @@ for angle in "${ANGLES[@]}"; do
 done
 ```
 
-## Post-Processing Workflow
+## 后期处理流程
 
 ```bash
 # 1. Generate base product image
@@ -222,13 +222,13 @@ infsh app run falai/birefnet --input '{
 }' > cutout.json
 ```
 
-## Prompt Formula
+## 生成提示语（Prompt Formula）
 
 ```
 [Product Type] + [Setting/Background] + [Lighting] + [Style] + [Technical]
 ```
 
-### Examples
+### 示例图片
 
 ```
 "Wireless earbuds on white marble surface, soft studio lighting, Apple advertising style, 8K, sharp focus"
@@ -238,16 +238,16 @@ infsh app run falai/birefnet --input '{
 "Skincare bottle with water droplets, spa setting with stones, natural lighting, luxury beauty brand style"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Consistent style** - Match brand aesthetic across all images
-2. **High resolution** - Use quality models, upscale if needed
-3. **Multiple angles** - Generate front, side, detail views
-4. **Context matters** - Lifestyle images convert better than plain white
-5. **Props and staging** - Add relevant props for visual interest
-6. **Lighting consistency** - Same lighting style across product line
+1. **保持风格一致** - 所有图片都要符合品牌美学风格。
+2. **高分辨率** - 使用高质量的模型，必要时进行图像放大处理。
+3. **多角度拍摄** - 生成正面、侧面和细节图片。
+4. **场景的重要性** - 与生活场景相关的图片效果更好。
+5. **道具与场景布置** - 添加相关的道具以增加视觉趣味性。
+6. **照明一致性** - 所有产品的照明风格要保持一致。
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Image generation models
@@ -266,4 +266,4 @@ npx skills add inference-sh/agent-skills@background-removal
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all image apps: `infsh app list --category image`
+查看所有图像生成工具：`infsh app list --category image`

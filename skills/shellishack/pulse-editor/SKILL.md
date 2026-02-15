@@ -1,98 +1,94 @@
 ---
 name: Pulse Editor Vibe Dev Flow
-description: Generate and build Pulse Apps using the Vibe Dev Flow API. Use this skill when the user wants to create, update, or generate code for Pulse Editor applications.
+description: 使用 Vibe Dev Flow API 生成和构建 Pulse 应用程序。当用户需要创建、更新或生成 Pulse Editor 应用程序的代码时，可以使用此技能。
 ---
 
-## Overview
+## 概述
 
-This skill enables you to interact with the Pulse Editor Vibe Dev Flow API to generate, build, and publish Pulse Apps using cloud-based AI coding agents. The API uses Server-Sent Events (SSE) streaming to provide real-time progress updates.
+此技能允许您与 Pulse Editor Vibe Dev Flow API 进行交互，使用基于云的 AI 编码代理来生成、构建和发布 Pulse 应用程序。该 API 通过 Server-Sent Events (SSE) 流式传输来提供实时的进度更新。
 
-## Why Use This Skill
+## 为何使用此技能
 
-This skill provides significant advantages for AI agents:
+对于 AI 代理而言，此技能具有显著的优势：
 
-- **No Local Code Generation Required**: Instead of generating code locally on the user's machine, agents can offload code generation to Pulse Editor's cloud-based vibe coding service. This eliminates the need for local build tools, dependencies, or development environments.
+- **无需本地代码生成**：代理可以将代码生成任务卸载到 Pulse Editor 的基于云的编码服务中，而无需在用户的机器上进行本地代码生成。这消除了对本地构建工具、依赖项或开发环境的需求。
+- **内置版本控制**：每个应用程序的生成都会自动进行版本标记。代理可以通过指定 `appId` 和 `version` 来更新现有应用程序，从而无需手动管理版本即可轻松进行迭代。
+- **即时部署**：应用程序在生成后会立即自动构建并发布。无需单独的构建或部署步骤——用户可以在生成完成后立即获得可用的应用程序 URL。
+- **并行应用程序生成**：代理可以通过并发调用 API 来同时生成多个应用程序。这非常适合需要创建多个微服务、生成多个相关应用程序或批量生成不同用途的应用程序的场景。
+- **无状态且可扩展**：由于所有代码生成都在云端完成，代理保持轻量级，并且可以水平扩展，无需担心本地资源限制。
 
-- **Built-in Version Control**: Every app generation is automatically versioned. Agents can update existing apps by specifying `appId` and `version`, making it easy to iterate on applications without manual version management.
+## 重要提示：长时间运行的任务
 
-- **Instant Deployment**: Apps are automatically built and published immediately after generation. No separate build or deploy steps needed—users get a live, working app URL as soon as generation completes.
+**此 API 调用是一个长时间运行的操作。** Vibe Dev Flow 会执行多个步骤，包括工作区创建、AI 代码生成、构建和发布。
 
-- **Parallel App Generation**: Agents can generate multiple apps simultaneously by making concurrent API calls. This is ideal for scenarios where an agent needs to scaffold several microservices, create multiple related applications, or batch-generate apps for different purposes—all at the same time.
+- **预计耗时**：通常为 2-5 分钟，但复杂的应用程序可能需要更长时间。
+- **超时阈值**：除非请求超过 **10 分钟**，否则不要超时。
+- **SSE 流式传输**：在整个过程中连接保持打开状态。**即使有一段时间没有收到 SSE 消息，只要连接保持打开，请求也不会停滞或卡住**。请等待流式传输结束或达到 10 分钟的超时时间。
+- **令牌效率**：代理应在请求体中使用 `"streamUpdatePolicy": "artifactOnly"` 仅接收最终的成果输出，从而显著减少输入令牌的使用。但如果一段时间没有收到消息，也不会被视为卡住。
 
-- **Stateless & Scalable**: Since all code generation happens in the cloud, agents remain lightweight and can scale horizontally without worrying about local resource constraints.
+## 何时使用此技能
 
-## Important: Long-Running Task
+当用户希望执行以下操作时，请使用此技能：
 
-**This API call is a long-running operation.** The Vibe Dev Flow performs multiple steps including workspace creation, AI code generation, building, and publishing. 
+- 根据描述或提示创建新的 Pulse 应用程序
+- 为现有的 Pulse 应用程序添加新功能
+- 为 Pulse Editor 应用程序生成代码
+- 构建并发布 Pulse 应用程序
 
-- **Expected duration**: Typically 2-5 minutes, but complex apps may take longer
-- **Timeout threshold**: Do NOT time out the request unless it exceeds **10 minutes**
-- **SSE streaming**: The connection stays open throughout the process. **Even if no SSE messages are received for a period, the request is NOT stalled or stuck as long as the connection remains open.** Wait for the stream to end or the 10-minute timeout.
-- **Token efficiency**: Agents should use `"streamUpdatePolicy": "artifactOnly"` in the request body to receive only the final artifact output, significantly reducing input tokens. But it won't count as being stuck if no messages are received for a while.
+## API 认证
 
-## When to Use This Skill
+Pulse Editor API 需要 API 密钥进行认证。用户可以通过以下方式获取 API 密钥：
 
-Use this skill when the user wants to:
+1. 在 https://pulse-editor.com/ 注册或登录
+2. 进入账户设置中的 **开发者** 部分
+3. （如需要）在 https://pulse-editor.com/beta 请求测试版访问权限
+4. 从开发者部分创建并复制 API 密钥
 
-- Create a new Pulse App from a description or prompt
-- Update an existing Pulse App with new features
-- Generate code for a Pulse Editor application
-- Build and publish a Pulse App
-
-## API Authentication
-
-The Pulse Editor API requires an API key for authentication. Users can obtain their API key by:
-
-1. Signing up or logging in at https://pulse-editor.com/
-2. Going to the **developer** section under account settings
-3. Requesting beta access at https://pulse-editor.com/beta (if needed)
-4. Creating and copying the API key from the developer section
-
-The API key should be passed in the `Authorization` header as a Bearer token:
+API 密钥应作为 Bearer 令牌放在 `Authorization` 标头中：
 
 ```
 Authorization: Bearer your_api_key_here
 ```
 
-## API Endpoint
+## API 端点
 
 **POST** `https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/generate-code/v2/generate`
 
-### Request Headers
+### 请求头
 
-| Header          | Required | Description                            |
+| 标头          | 是否必需 | 描述                            |
 | --------------- | -------- | -------------------------------------- |
-| `Authorization` | Yes      | Bearer token with Pulse Editor API key |
-| `Content-Type`  | Yes      | `application/json`                     |
-| `Accept`        | Yes      | `text/event-stream`                    |
+| `Authorization` | 是      | 带有 Pulse Editor API 密钥的 Bearer 令牌 |
+| `Content-Type`  | 是      | `application/json`                     |
+| `Accept`        | 是      | `text/event-stream`                    |
 
-### Request Body Parameters
+### 请求体参数
 
-| Parameter | Type   | Required | Description                                                                                | Example                                       |
-| --------- | ------ | -------- | ------------------------------------------------------------------------------------------ | --------------------------------------------- |
-| `prompt`  | string | Yes      | The user prompt instructing the Vibe coding agent                                          | `"Create a todo app with auth and dark mode"` |
-| `appName` | string | No       | Friendly display name for the app                                                          | `"My Todo App"`                               |
-| `appId`   | string | No       | Unique identifier of an existing app to update. If not provided, a new app will be created | `"my_app_x7k9q2"`                             |
-| `version` | string | No       | Version identifier of an existing app. If not provided, defaults to latest version         | `"0.0.1"`                                     |
-| `streamUpdatePolicy` | string | No | Set to `"artifactOnly"` to receive only the final artifact output (recommended for agents to save tokens) | `"artifactOnly"` |
+| 参数          | 类型     | 是否必需 | 描述                                                                                          | 示例                                                         |
+| -------------- | -------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `prompt`     | string   | 是      | 用户提供给 Vibe 编码代理的提示                                      | `"创建一个带有身份验证和暗黑模式的待办事项应用程序"`                         |
+| `appName`     | string   | 否       | 应用程序的友好显示名称                                      | `"我的待办事项应用程序"`                                      |
+| `appId`     | string   | 否       | 要更新的现有应用程序的唯一标识符。如果未提供，则创建新应用程序         | `"my_app_x7k9q2"`                                      |
+| `version`     | string   | 否       | 现有应用程序的版本标识符。如果未提供，则使用最新版本                         | `"0.0.1"`                                      |
+| `streamUpdatePolicy` | string   | 否       | 设置为 `"artifactOnly"` 仅接收最终的成果输出（建议代理使用，以节省令牌）         | `"artifactOnly"`                                      |
 
-### Response
+### 响应
 
-The response is a Server-Sent Events (SSE) stream. Each event contains a JSON-encoded message. Messages are separated by `\n\n`.
+响应是一个 Server-Sent Events (SSE) 流式传输。每个事件包含一条 JSON 编码的消息。消息之间用 `\n\n` 分隔。
 
-Each SSE message is formatted as:
+每个 SSE 消息的格式如下：
 
 ```
 data: <JSON>
 ```
 
-followed by a blank line.
+后面跟着一个空行。
 
-#### Message Types
+#### 消息类型
 
-There are two message types:
+有两种消息类型：
 
-**Creation Message** - A new message in the stream:
+**创建消息** - 流中的新消息：
 
 ```json
 {
@@ -107,7 +103,7 @@ There are two message types:
 }
 ```
 
-**Update Message** - Delta update to an existing message:
+**更新消息** - 对现有消息的增量更新：
 
 ```json
 {
@@ -121,18 +117,18 @@ There are two message types:
 }
 ```
 
-#### Data Types
+#### 数据类型
 
-| Type              | Description                            |
+| 类型              | 描述                            |
 | ----------------- | -------------------------------------- |
-| `text`            | Text output from the agent             |
-| `toolCall`       | Tool invocation by the agent           |
-| `toolResult`     | Result from a tool execution           |
-| `artifactOutput` | Final artifact with published app info |
+| `text`            | 来自代理的文本输出                         |
+| `toolCall`       | 代理调用的工具                         |
+| `toolResult`     | 工具执行的结果                         |
+| `artifactOutput` | 已发布应用程序的最终成果                   |
 
-#### Artifact Output Format
+#### 成果输出格式
 
-When the generation completes, an `artifactOutput` message contains:
+当生成完成后，`artifactOutput` 消息将包含：
 
 ```json
 {
@@ -143,18 +139,18 @@ When the generation completes, an `artifactOutput` message contains:
 }
 ```
 
-### Response Status Codes
+### 响应状态码
 
-| Code | Description                                  |
+| 代码 | 描述                                  |
 | ---- | -------------------------------------------- |
-| 200  | Streaming SSE with progress and final result |
-| 400  | Bad request - invalid parameters             |
-| 401  | Unauthorized - invalid or missing API key    |
-| 500  | Server error                                 |
+| 200  | 提供进度信息和最终结果的 SSE 流式传输                 |
+| 400  | 请求无效 - 参数错误                         |
+| 401  | 未经授权 - API 密钥无效或缺失                   |
+| 500  | 服务器错误                             |
 
-## Example Usage
+## 示例用法
 
-### cURL Example
+### cURL 示例
 
 ```bash
 curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/generate-code/v2/generate' \
@@ -167,7 +163,7 @@ curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/gener
   }'
 ```
 
-### Python Example
+### Python 示例
 
 ```python
 import requests
@@ -219,7 +215,7 @@ for chunk in response.iter_content(chunk_size=None, decode_unicode=True):
             print(f"Published: {result.get('publishedAppLink')}")
 ```
 
-### JavaScript/Node.js Example
+### JavaScript/Node.js 示例
 
 ```javascript
 const response = await fetch(
@@ -280,26 +276,9 @@ while (true) {
 }
 ```
 
-### Updating an Existing App
+### 更新现有应用程序
 
-To update an existing app, include the `appId` and optionally the `version`:
-
-```bash
-curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/generate-code/v2/generate' \
-  -H 'Content-Type: application/json' \
-  -H 'Accept: text/event-stream' \
-  -H 'Authorization: Bearer your_api_key_here' \
-  -d '{
-    "prompt": "Add a calendar view to display tasks by date",
-    "appName": "My Todo App",
-    "appId": "my_app_x7k9q2",
-    "version": "0.0.1"
-  }'
-```
-
-### Updating an Existing App
-
-To update an existing app, include the `appId` and optionally the `version`:
+要更新现有应用程序，请包含 `appId`，可选地还包括 `version`：
 
 ```bash
 curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/generate-code/v2/generate' \
@@ -314,30 +293,47 @@ curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/gener
   }'
 ```
 
-## Best Practices
+### 更新现有应用程序
 
-1. **Clear Prompts**: Provide detailed, specific prompts describing what you want the app to do
-2. **Handle SSE Properly**: Process the streaming response in real-time for progress updates
-3. **Error Handling**: Implement proper error handling for 400, 401, and 500 responses
-4. **API Key Security**: Never hardcode API keys; use environment variables or secure storage
-5. **Versioning**: When updating apps, specify the version to ensure you're building on the correct base
+要更新现有应用程序，请包含 `appId`，可选地还包括 `version`：
 
-## Troubleshooting
+```bash
+curl -L 'https://pulse-editor.com/api/server-function/vibe_dev_flow/latest/generate-code/v2/generate' \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: text/event-stream' \
+  -H 'Authorization: Bearer your_api_key_here' \
+  -d '{
+    "prompt": "Add a calendar view to display tasks by date",
+    "appName": "My Todo App",
+    "appId": "my_app_x7k9q2",
+    "version": "0.0.1"
+  }'
+```
 
-| Issue            | Solution                                            |
+## 最佳实践
+
+1. **提供明确的提示**：提供详细、具体的提示，说明您希望应用程序执行的功能。
+2. **正确处理 SSE**：实时处理流式响应以获取进度更新。
+3. **错误处理**：为 400、401 和 500 状态码实现适当的错误处理。
+4. **API 密钥安全**：切勿将 API 密钥硬编码；使用环境变量或安全存储方式。
+5. **版本控制**：在更新应用程序时，指定版本号以确保基于正确的版本进行构建。
+
+## 故障排除
+
+| 问题            | 解决方案                                            |
 | ---------------- | --------------------------------------------------- |
-| 401 Unauthorized | Verify your API key is correct and has beta access  |
-| No SSE events    | Ensure `Accept: text/event-stream` header is set    |
-| App not updating | Verify the `appId` exists and you have access to it |
+| 401 未经授权       | 确认您的 API 密钥正确且具有测试版访问权限                   |
+| 未收到 SSE 消息       | 确保设置了 `Accept: text/event-stream` 标头                   |
+| 应用程序未更新       | 确认 `appId` 存在并且您可以访问它                         |
 
-## Included Examples
+## 包含的示例
 
-This skill includes a ready-to-run Python example in the `examples/` folder:
+此技能在 `examples/` 文件夹中包含了一个可运行的 Python 示例：
 
-- **`examples/generate_app.py`** - Complete Python script demonstrating SSE streaming with the Vibe Dev Flow API
-- **`examples/generate_app.js`** - Complete Node.js script demonstrating SSE streaming with the Vibe Dev Flow API
+- **`examples/generate_app.py`** - 完整的 Python 脚本，演示了如何使用 Vibe Dev Flow API 进行 SSE 流式传输
+- **`examples/generate_app.js`** - 完整的 Node.js 脚本，演示了如何使用 Vibe Dev Flow API 进行 SSE 流式传输
 
-To run the example Python script:
+要运行示例 Python 脚本，请执行以下操作：
 
 ```bash
 # Set your API key
@@ -351,7 +347,7 @@ pip install requests
 python examples/generate_app.py
 ```
 
-To run the example Node.js script:
+要运行示例 Node.js 脚本，请执行以下操作：
 
 ```bash
 # Set your API key
@@ -363,10 +359,10 @@ npm install node-fetch
 node examples/generate_app.js
 ```
 
-## Resources
+## 资源
 
-- [Pulse Editor Documentation](https://docs.pulse-editor.com/)
-- [API Reference](https://docs.pulse-editor.com/api-reference)
-- [Get API Key](https://docs.pulse-editor.com/api-reference/get-pulse-editor-api-key)
-- [Discord Community](https://discord.com/invite/s6J54HFxQp)
+- [Pulse Editor 文档](https://docs.pulse-editor.com/)
+- [API 参考](https://docs.pulse-editor.com/api-reference)
+- [获取 API 密钥](https://docs.pulse-editor.com/api-reference/get-pulse-editor-api-key)
+- [Discord 社区](https://discord.com/invite/s6J54HFxQp)
 - [GitHub](https://github.com/ClayPulse/pulse-editor)

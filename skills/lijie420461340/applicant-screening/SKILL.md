@@ -1,6 +1,6 @@
 ---
 name: Applicant Screening
-description: Screen job applications against requirements and score candidates
+description: 根据职位要求筛选求职申请，并对候选人进行评分。
 author: claude-office-skills
 version: "1.0"
 tags: [hr, recruitment, hiring, screening, resume]
@@ -8,41 +8,41 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# Applicant Screening
+# 申请人筛选
 
-Screen job applications against role requirements to identify top candidates efficiently.
+通过对比职位要求来筛选求职申请，从而高效地确定最佳候选人。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Evaluate resumes against job requirements
-- Score candidates consistently
-- Identify must-have vs. nice-to-have qualifications
-- Flag potential concerns
-- Rank applicants for interviews
+此技能可帮助您：
+- 根据职位要求评估简历
+- 一致地对候选人进行评分
+- 区分必备资格和可选资格
+- 标记潜在问题
+- 对候选人进行面试排序
 
-## How to Use
+## 使用方法
 
-### Single Candidate
+### 单个候选人筛选
 ```
 "Screen this resume against our [Job Title] requirements"
 "Evaluate this application for the [Position] role"
 ```
 
-### Batch Screening
+### 批量筛选
 ```
 "Screen these 10 applications for the Senior Developer position"
 "Rank these candidates based on our requirements"
 ```
 
-### With Criteria
+### 基于特定标准的筛选
 ```
 "Screen for: 5+ years Python, AWS experience required, ML nice-to-have"
 ```
 
-## Screening Framework
+## 筛选框架
 
-### Requirements Matrix
+### 要求矩阵
 ```markdown
 ## Job Requirements: [Position]
 
@@ -68,9 +68,9 @@ This skill helps you:
 - [ ] Salary expectation mismatch
 ```
 
-## Output Formats
+## 输出格式
 
-### Individual Screening Report
+### 个人筛选报告
 ```markdown
 # Candidate Screening: [Name]
 
@@ -135,7 +135,7 @@ Based on this candidate's profile, consider asking:
 **Priority**: [High / Medium / Low]
 ```
 
-### Batch Ranking Report
+### 批量排名报告
 ```markdown
 # Applicant Ranking: [Position]
 
@@ -199,53 +199,52 @@ Based on this candidate's profile, consider asking:
 2. [Suggestion for sourcing if pool weak]
 ```
 
-## Scoring Rubric
+## 评分标准
 
-### Experience Scoring
-| Years | Entry | Mid | Senior | Lead |
+### 工作经验评分
+| 年数 | 初级 | 中级 | 高级 | 领导级 |
 |-------|-------|-----|--------|------|
-| 0-1 | 10/10 | 3/10 | 0/10 | 0/10 |
-| 2-3 | 8/10 | 7/10 | 3/10 | 0/10 |
-| 4-5 | 5/10 | 10/10 | 7/10 | 3/10 |
-| 6-8 | 3/10 | 8/10 | 10/10 | 7/10 |
-| 9+ | 0/10 | 5/10 | 10/10 | 10/10 |
+| 0-1年 | 10/10 | 3/10 | 0/10 | 0/10 |
+| 2-3年 | 8/10 | 7/10 | 3/10 | 0/10 |
+| 4-5年 | 5/10 | 10/10 | 7/10 | 3/10 |
+| 6-8年 | 3/10 | 8/10 | 10/10 | 7/10 |
+| 9年以上 | 0/10 | 5/10 | 10/10 | 10/10 |
 
-### Education Scoring
-| Level | Technical Role | Non-Technical |
+### 教育背景评分
+| 学历层次 | 技术岗位 | 非技术岗位 |
 |-------|----------------|---------------|
-| PhD | 10/10 | 8/10 |
-| Master's | 9/10 | 9/10 |
-| Bachelor's | 8/10 | 10/10 |
-| Associate's | 5/10 | 7/10 |
-| Bootcamp | 6/10 | N/A |
-| Self-taught | 4/10 | N/A |
+| 博士 | 10/10 | 8/10 |
+| 硕士 | 9/10 | 9/10 |
+| 学士 | 8/10 | 10/10 |
+| 副学士 | 5/10 | 7/10 |
+| 培训营 | 6/10 | 不适用 |
+| 自学 | 4/10 | 不适用 |
 
-## Best Practices
+## 最佳实践
 
-### Fair Screening
-- Focus on job-related criteria only
-- Ignore protected characteristics
-- Use consistent scoring
-- Document decisions
-- Consider diverse backgrounds
+### 公平筛选
+- 仅关注与职位相关的标准
+- 忽略受保护的特征（如种族、性别等）
+- 采用一致的评分标准
+- 记录所有评分决策
+- 考虑候选人的多样化背景
 
-### Bias Awareness
-- Name/gender bias: Focus on qualifications
-- Affinity bias: Diverse interview panels
-- Confirmation bias: Score before gut feeling
-- Halo effect: Evaluate each criterion separately
+### 偏见意识
+- 名称/性别偏见：侧重于候选人的实际能力
+- 亲和偏见：组建多元化的面试小组
+- 证实偏见：在凭直觉做出评分前先进行客观评估
+- 光环效应：单独评估每个评分标准
 
-### Legal Considerations
-- Only use job-relevant criteria
-- Apply standards consistently
-- Keep screening records
-- Have HR review process
-- Consider adverse impact
+### 法律考量
+- 仅使用与职位相关的标准
+- 一致地应用评分标准
+- 保留筛选记录
+- 由人力资源部门进行审核
+- 考虑筛选过程可能带来的负面影响
 
-## Limitations
-
-- Cannot verify employment history
-- May miss context from non-traditional backgrounds
-- Scoring is guidance, not absolute
-- Cannot assess cultural fit or soft skills fully
-- Human judgment essential for final decisions
+## 局限性
+- 无法核实候选人的工作经历
+- 可能无法全面了解非传统背景下的候选人的实际情况
+- 评分结果仅供参考，非绝对标准
+- 无法完全评估候选人的文化适应能力和软技能
+- 最终决策仍需依赖人工判断

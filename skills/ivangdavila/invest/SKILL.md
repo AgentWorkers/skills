@@ -1,87 +1,87 @@
 ---
 name: "Invest"
-description: "Start investing with account selection, portfolio building, and long-term wealth strategies."
+description: "开始投资吧！首先，你需要选择合适的投资账户，构建投资组合，并制定长期财富管理策略。"
 ---
 
-## ⚠️ Important Disclaimer
+## ⚠️ 重要免责声明
 
-**This is general educational information, NOT personalized investment advice.**
+**本内容仅提供一般性教育信息，不构成个性化投资建议。**
 
-- This AI is not a registered investment adviser, broker-dealer, or fiduciary
-- Past performance does not guarantee future results
-- Tax treatment varies by jurisdiction and individual circumstances
-- You should consult a qualified financial professional before making investment decisions
-- Information may become outdated; verify current rules with official sources
+- 该人工智能工具并非注册投资顾问、经纪商或受托人。
+- 过往的表现并不能保证未来的收益。
+- 税收处理因司法管辖区和个人情况而异。
+- 在做出投资决策之前，您应咨询合格的财务专业人士。
+- 信息可能会过时，请通过官方渠道核实现行规定。
 
-**By using this skill, you acknowledge it provides education only and accept full responsibility for your financial decisions.**
+**通过使用本工具，您承认其仅提供教育用途，并自行承担所有财务决策的责任。**
 
-## Triggers
+## 触发条件
 
-Activate on: general investing questions, "how does investing work", account type explanations, common investing concepts.
+在以下情况下激活：一般性投资问题、“投资是如何运作的”相关咨询、账户类型解释、常见投资概念的讨论。
 
-**Always redirect to professional:** Specific investment recommendations, tax optimization, estate planning, complex situations.
+**请始终将用户引导至专业机构**：具体投资建议、税务优化、遗产规划、复杂情况的处理。
 
-## Before Investing — Common Checklist
+## 投资前——常见检查清单
 
-Financial educators commonly suggest:
-- Emergency fund (often cited as 3-6 months expenses)
-- High-interest debt addressed first
-- Clear timeline for when funds may be needed
-- Understanding of personal risk tolerance
+财务教育专家通常建议：
+- 建立紧急储备金（通常建议储备3-6个月的开支）
+- 先偿还高利率债务
+- 明确资金使用的时间节点
+- 了解自己的风险承受能力
 
-*Individual circumstances vary. A financial advisor can help assess readiness.*
+*个人情况各不相同，财务顾问可以帮助评估您的投资准备情况。*
 
-## Getting Started — Common Approaches
+## 入门指南——常见投资方法
 
-Many beginners:
-1. Research brokerage options (various low-cost providers exist)
-2. Consider target-date funds (single-fund diversification)
-3. Start with affordable amounts
-4. Avoid checking balances frequently
+许多初学者会：
+1. 研究不同的经纪商选项（市场上有许多低成本的服务提供商）
+2. 考虑目标日期基金（实现单一基金的多元化投资）
+3. 从小额投资开始
+4. 避免频繁查看账户余额
 
-For detailed first steps, see `getting-started.md`.
+有关详细的入门步骤，请参阅 `getting-started.md`。
 
-*These are common approaches, not recommendations. Consult an advisor for personalized guidance.*
+*这些仅是常见的投资方法，并非推荐方案。请咨询专业顾问以获得个性化指导。*
 
-## Account Types (US Examples)
+## 账户类型（以美国为例）
 
-| Account | General characteristics |
+| 账户类型 | 通用特征 |
 |---------|------------------------|
-| 401(k) | Employer-sponsored, often with matching |
-| IRA | Individual, various tax treatments |
-| HSA | Health-related, triple tax treatment |
-| Taxable | Flexible, no contribution limits |
+| 401(k) | 由雇主赞助的养老金计划，通常有雇主匹配缴费 |
+| IRA | 个人账户，具有多种税收优惠 |
+| HSA | 与健康相关的账户，享有三重税收优惠 |
+| 应税账户 | 灵活性较高，没有缴费限额 |
 
-*A common suggestion is to capture employer matching first. Tax implications are individual — consult a tax professional.*
+*建议优先利用雇主提供的匹配缴费。税收影响因个人情况而异，请咨询税务专业人士。*
 
-For non-US investors, see `international.md` for regional account types.
+对于非美国投资者，请参阅 `international.md` 以了解不同地区的账户类型。
 
-## Common Portfolio Approaches
+## 常见的投资组合策略
 
-- **Target-date funds:** Adjust allocation automatically over time
-- **Index funds:** Broad market exposure, typically low fees
-- **Diversification:** Spreading across asset types
+- **目标日期基金**：根据时间自动调整资产配置
+- **指数基金**：广泛覆盖市场，通常费用较低
+- **多元化投资**：分散投资于不同资产类型
 
-For allocation concepts, see `allocation.md`.
+有关资产配置的详细信息，请参阅 `allocation.md`。
 
-*Any allocation depends on individual age, goals, risk tolerance, and circumstances. A financial advisor can help determine appropriate approaches.*
+*任何投资配置都应根据个人的年龄、目标、风险承受能力和具体情况来确定。财务顾问可以为您提供合适的建议。*
 
-## Historical Context (Not Predictions)
+## 历史背景（非预测性内容）
 
-Markets have historically experienced:
-- Regular volatility (temporary declines are normal)
-- Both gains and significant losses
-- Long-term growth patterns (though past performance does not guarantee future results)
+历史上，市场常常出现：
+- 定期的波动（短期下跌属于正常现象）
+- 既有盈利也有重大亏损
+- 长期增长趋势（但过往表现并不能保证未来结果）
 
-**Important:** Actual returns vary significantly based on time period, specific investments, fees, taxes, inflation, and investor behavior. You could lose some or all of invested capital.
+**重要提示：**实际回报会受到时间段、具体投资产品、费用、税收、通货膨胀以及投资者行为等因素的显著影响。您可能会损失部分或全部投资本金。
 
-## Common Mistakes Discussed in Financial Education
+## 财务教育中常见的错误
 
-| Pattern | Why it's discussed |
+| 错误类型 | 原因 |
 |---------|-------------------|
-| Attempting to time markets | Research suggests difficulty vs staying invested |
-| Reacting to short-term drops | May lock in losses |
-| High-fee investments | Fees compound over time |
-| Lack of diversification | Concentration risk |
+| 尝试预测市场走势 | 研究表明这非常困难，建议持续持有投资 |
+| 对短期下跌做出反应 | 可能导致损失固化 |
+| 投资高费用的产品 | 高费用会随着时间累积 |
+*缺乏多元化投资 | 集中投资会增加风险*
 
-*General education only. Consult a professional before acting.*
+*本内容仅用于提供一般性教育。在采取任何行动之前，请咨询专业顾问。*

@@ -1,6 +1,6 @@
 ---
 name: announcer
-description: "Announce text throughout the house via AirPlay speakers using Airfoil + ElevenLabs TTS."
+description: "通过 Airfoil 和 ElevenLabs 的 TTS（文本到语音）功能，利用 AirPlay 扬声器在整个房屋内播放公告文本。"
 summary: "House-wide TTS announcements via AirPlay speakers, Airfoil, and ElevenLabs."
 version: 1.2.1
 homepage: https://github.com/odrobnik/announcer-skill
@@ -14,22 +14,22 @@ metadata:
   }
 ---
 
-# Announcer
+# 宣告系统（Announcer）
 
-Play TTS announcements through AirPlay speakers via Airfoil and ElevenLabs.
+通过 Airfoil 和 ElevenLabs，利用 AirPlay 扬声器播放文本转语音（TTS）公告。
 
-## How It Works
+## 工作原理
 
-1. Generate speech via ElevenLabs (high-quality opus → stereo MP3)
-2. Connect to AirPlay speakers via Airfoil
-3. Play an optional chime (gong) followed by the announcement
-4. Disconnect speakers after playback
+1. 使用 ElevenLabs 生成语音文件（高质量音频格式 → 立体声 MP3 格式）
+2. 通过 Airfoil 将音频文件传输到 AirPlay 扬声器
+3. 可选择播放一段提示音（如铃声），随后播放公告内容
+4. 播放完成后断开与扬声器的连接
 
-## Setup
+## 设置
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
 
-## Usage
+## 使用方法
 
 ```bash
 # Announce to all configured speakers
@@ -42,7 +42,7 @@ python3 skills/announcer/scripts/announce.py "Wake up!" --speakers "Kids Room"
 python3 skills/announcer/scripts/announce.py "Quick note" --no-gong
 ```
 
-## File Structure
+## 文件结构
 
 ```
 announcer/
@@ -53,7 +53,7 @@ announcer/
     └── announce.py           # Main announcement script
 ```
 
-User config (not part of skill):
+用户配置文件（不属于该功能的组成部分）：
 ```
 ~/clawd/announcer/
 └── config.json               # Speaker list, voice, audio settings

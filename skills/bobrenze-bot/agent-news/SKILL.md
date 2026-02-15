@@ -1,46 +1,46 @@
-# Agent News Monitor
+# 代理新闻监控器（Agent News Monitor）
 
-Monitors Hacker News, Reddit, and arXiv for AI agent developments. Produces daily digests and alerts for trending topics.
+该工具会监控 Hacker News、Reddit 和 arXiv 上与 AI 代理相关的开发动态，并每日生成新闻摘要及热门话题警报。
 
-## Why This Exists
+## 功能简介
 
-Staying current on AI agent developments is crucial but time-consuming. This skill automates discovery of relevant news, papers, and discussions.
+及时了解 AI 代理的最新进展非常重要，但这一过程往往耗时较多。本工具能够自动化地收集相关的新闻、论文和讨论内容。
 
-## Commands
+## 命令选项
 
-### Daily Digest
+### 每日摘要（Daily Digest）
 ```bash
 ./monitor.sh digest
 ```
-Generates a markdown digest of the past 24 hours.
+生成过去 24 小时的新闻摘要（以 Markdown 格式输出）。
 
-### Trending Now
+### 当前热门话题（Trending Now）
 ```bash
 ./monitor.sh trending
 ```
-Shows currently hot topics across all sources.
+显示所有来源中当前最热门的话题。
 
-### Search
+### 搜索（Search）
 ```bash
 ./monitor.sh search "memory systems"
 ```
-Searches recent content for specific topics.
+根据指定主题搜索最近发布的文章。
 
-### Watch Topics
+### 关注主题（Watch Topics）
 ```bash
 ./monitor.sh watch "autonomous agents,tool use,memory"
 ```
-Sets topics to highlight in future digests.
+设置需要在未来摘要中重点展示的主题。
 
-## Sources
+## 数据来源
 
-- **Hacker News**: Top/new stories matching AI agent keywords
-- **Reddit**: r/LocalLLaMA, r/MachineLearning, r/artificial
-- **arXiv**: cs.AI, cs.CL, cs.LG categories
+- **Hacker News**：匹配 AI 代理关键词的热门/新文章
+- **Reddit**：r/LocalLLaMA、r/MachineLearning、r/artificial 等板块
+- **arXiv**：cs.AI、cs.CL、cs.LG 等分类下的论文
 
-## Heartbeat Integration
+## 集成到 HEARTBEAT.md 中
 
-Add to HEARTBEAT.md:
+可将本工具的功能集成到 HEARTBEAT.md 文件中：
 ```markdown
 ## Morning News Check
 - Run: ./skills/agent-news/monitor.sh digest --quiet
@@ -48,6 +48,6 @@ Add to HEARTBEAT.md:
 - Log: Update memory/news-state.json
 ```
 
-## Output
+## 输出格式
 
-Supports markdown (default) and JSON (`--json`) output.
+支持 Markdown（默认格式）和 JSON（`--json` 参数）格式的输出。

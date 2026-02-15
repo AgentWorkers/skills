@@ -25,135 +25,123 @@ metadata:
       - metadata-format-neutrality: true
 ---
 
-# Creator Rights Assistant
+# 创建者权利辅助工具（Creator Rights Assistant）
 
-## 1. Skill Overview
+## 1. 技能概述
 
-**Intent:**  
-Help creators standardize rights-related metadata at the moment assets are finalized, so provenance, attribution, and usage context remain clear as content moves across platforms, collaborators, and time.
+**目的：**  
+在资产最终确定时，帮助创作者标准化与权利相关的元数据，确保内容的来源、归属和使用情境在跨平台、跨协作者以及时间推移的过程中始终保持清晰。
 
-This skill is designed to operate before publication or distribution. It focuses on organization, consistency, and documentation, not enforcement, dispute handling, or legal interpretation.
+该工具主要用于发布或分发之前，侧重于元数据的组织、一致性及文档编制工作，而非执行、纠纷处理或法律解释。
 
-In practice, this helps creators avoid losing track of usage constraints, attribution requirements, and provenance details as their catalogs grow or collaborators change.
-
----
-
-## 2. Mandatory Disclosure Gate
-
-Before any asset-specific assistance is provided, the user must acknowledge the following:
-
-> This tool helps organize information and generate standardized metadata formats.  
-> It does not provide legal advice, evaluate ownership, determine fair use, or recommend legal actions.  
-> Creators are responsible for the accuracy and completeness of any information they provide.
+在实际应用中，这有助于创作者在目录规模扩大或协作者发生变化时，避免遗漏使用限制、归属要求及来源细节。
 
 ---
 
-## 3. Core Concept: Asset Birth Certificate (ABC)
+## 2. 必须遵守的披露规则
 
-The **Asset Birth Certificate (ABC)** is a standardized metadata record that documents the origin, authorship context, licensing scope, attribution requirements, and provenance signals associated with an asset at the moment it is finalized.
-
-The term “Asset Birth Certificate” is used here as shorthand for this standardized metadata record.
-
-The ABC is intended to be stored as embedded metadata or as a companion sidecar file and referenced internally by creators as part of their rights and asset management workflow.
-
-Creators remain responsible for the accuracy of any information recorded using this format.
+在提供任何针对特定资产的帮助之前，用户必须确认以下内容：  
+> 该工具仅用于整理信息并生成标准化的元数据格式。  
+> 它不提供法律建议，也不评估所有权、判断是否属于合理使用（fair use），或推荐法律行动。  
+> 创作者对其提供的所有信息的准确性和完整性负有责任。
 
 ---
 
-## 4. Asset Birth Certificate: Standard Data Fields
+## 3. 核心概念：资产出生证明（Asset Birth Certificate, ABC）
 
-The Creator Rights Assistant helps creators generate and maintain a consistent set of metadata fields, including:
+**资产出生证明（ABC）** 是一种标准化的元数据记录，用于记录资产在最终确定时的来源、作者信息、许可范围、归属要求及相关来源信息。  
+此处使用“资产出生证明”作为该标准化元数据记录的简称。  
 
-### Origin
-- **Creation Timestamp:** Date and time the asset reached its finalized form.
-- **Asset Identifier:** Creator-defined internal ID for tracking.
-
-### Identity
-- **Primary Author or Creator Reference:** Human-readable name or professional profile link.
-- **Contributor Context:** Optional notes on collaborators or tools involved.
-
-### Provenance
-- **Process Type:** Human-authored, AI-assisted, or AI-generated, as declared by the creator.
-- **Provenance Notes:** Optional description of creative process or tooling.
-
-### Licensing
-- **License Scope:** Duration, territory, and usage constraints as documented by the creator.
-- **Source Reference:** Link or identifier for licenses, permissions, or source materials.
-
-### Attribution
-- **Credit String:** The preferred attribution text for public display.
-- **Platform Notes:** Optional formatting considerations per platform.
-
-### Integrity
-- **Content Hash:** Cryptographic fingerprint of the finalized asset, if available.
-- **Version Notes:** Optional internal revision information.
+ABC 元数据可以以嵌入元数据的形式存储，或作为单独的文件存在，并被创作者在其权利管理和资产管理工作流程中引用。  
+创作者仍需对使用此格式记录的所有信息的准确性负责。
 
 ---
 
-## 5. Provenance and Disclosure Context
+## 4. 资产出生证明：标准数据字段
 
-Many platforms increasingly rely on declared provenance and disclosure signals during ingestion, review, and transparency labeling.
+创建者权利辅助工具帮助创作者生成并维护一套统一的元数据字段，包括：  
 
-The Creator Rights Assistant does not determine how platforms interpret this information. It helps creators maintain consistent, machine-readable declarations so that metadata remains intact and traceable as assets move between systems.
+### 来源（Origin）  
+- **创建时间戳（Creation Timestamp）：** 资产达到最终形态的日期和时间。  
+- **资产标识符（Asset Identifier）：** 由创作者定义的内部唯一标识符，用于追踪。  
 
----
+### 身份（Identity）  
+- **主要作者或创作者参考信息（Primary Author or Creator Reference）：** 人类可读的名称或专业个人资料链接。  
+- **协作者信息（Contributor Context）：** 关于参与协作的人员或工具的可选说明。  
 
-## 6. Platform-Aware Attribution Guidance
+### 来源信息（Provenance）  
+- **创建方式（Process Type）：** 由创作者声明的创建方式（人工、人工智能辅助或人工智能生成）。  
+- **创作过程说明（Provenance Notes）：** 关于创作过程或使用工具的可选描述。  
 
-Attribution requirements vary by platform due to interface constraints and disclosure surfaces.
+### 许可信息（Licensing）  
+- **许可范围（License Scope）：** 创作者记录的许可期限、适用区域和使用限制。  
+- **来源参考（Source Reference）：** 许可证、权限或原始材料的链接或标识符。  
 
-The skill provides organizational guidance on:
-- Common attribution placement patterns such as descriptions, captions, or pinned comments
-- Character limit considerations
-- Consistency between public-facing credits and internal records
+### 归属信息（Attribution）  
+- **署名文本（Credit String）：** 用于公开显示的推荐署名文本。  
+- **平台特定格式要求（Platform Notes）：** 根据不同平台的需求进行的格式化处理。  
 
-This guidance is informational and does not guarantee platform compliance or acceptance.
-
----
-
-## 7. Rights Lifecycle Awareness
-
-Creators often lose track of usage constraints over time.
-
-The Creator Rights Assistant supports internal tracking of:
-- License durations
-- Territory limitations
-- Renewal or expiration milestones
-
-This information is intended for creator awareness and planning, not enforcement or monitoring.
+### 完整性（Integrity）  
+- **内容哈希（Content Hash）：** 如果可用，包含资产最终版本的加密指纹。  
+- **版本信息（Version Notes）：** 可选的版本修订记录。  
 
 ---
 
-## 8. Relationship to Content ID Guide
+## 5. 来源信息与披露规则
 
-The Creator Rights Assistant and Content ID Guide are complementary:
-
-- **Creator Rights Assistant:**  
-  Helps creators generate and maintain clean, standardized rights metadata at creation time.
-
-- **Content ID Guide:**  
-  Helps creators understand and organize information when automated claims occur.
-
-Used together, they support clearer documentation across the full lifecycle of a creative asset, without adjudicating rights or predicting outcomes.
+越来越多的平台在资产导入、审核及透明度标注过程中依赖这些声明的来源信息。  
+创建者权利辅助工具不决定平台如何解读这些元数据，而是帮助创作者保持声明的一致性和可读性，以确保元数据在资产跨系统传输时保持完整和可追踪。  
 
 ---
 
-## 9. Scope and Limitations
+## 6. 平台特定的归属信息指导
 
-This skill does not:
-- Validate licenses or permissions
-- Assess ownership or infringement
-- Draft legal documents
-- Predict platform actions or dispute outcomes
+由于界面限制和披露要求的不同，不同平台的归属信息规定也各不相同。  
+该工具提供以下方面的组织指导：  
+- 常见的归属信息展示方式（如描述、标题或固定注释）  
+- 字符长度限制  
+- 公开署名与内部记录之间的一致性  
 
-It is an organizational and educational tool designed to help creators manage their own information more effectively.
+这些指导仅用于提供参考，并不保证平台一定会遵守或接受这些规定。  
 
 ---
 
-## 10. Summary
+## 7. 权利生命周期管理
 
-The Creator Rights Assistant treats rights information as structured data rather than reactive paperwork.
+创作者往往容易随时间遗忘使用限制。  
+创建者权利辅助工具支持对以下信息的内部跟踪：  
+- 许可期限  
+- 地域限制  
+- 许可证续期或到期时间  
 
-By standardizing provenance, attribution, and licensing context at the point of creation, creators gain clearer internal records and reduce ambiguity as content circulates across platforms and collaborators.
+这些信息旨在帮助创作者了解情况并做好规划，而非用于执行或监控。  
 
-This approach emphasizes preparation, consistency, and transparency without replacing legal counsel or platform processes.
+---
+
+## 8. 与内容ID指南的关系
+
+创建者权利辅助工具与内容ID指南（Content ID Guide）相辅相成：  
+- **创建者权利辅助工具：** 帮助创作者在创建资产时生成和维护规范的元数据。  
+- **内容ID指南：** 在自动化权利声明出现时，帮助创作者理解和整理相关信息。  
+
+两者结合使用，可以支持创作者在整个创作资产生命周期内更清晰地管理相关文档，但不会涉及权利判定或结果预测。  
+
+---
+
+## 9. 功能范围与限制
+
+该工具不具备以下功能：  
+- 验证许可证或权限的有效性  
+- 评估所有权或侵权情况  
+- 起草法律文件  
+- 预测平台的反应或纠纷结果  
+
+它只是一个辅助工具，旨在帮助创作者更有效地管理自己的信息。  
+
+---
+
+## 10. 总结
+
+创建者权利辅助工具将权利信息视为结构化数据，而非简单的书面文件。  
+通过在创建阶段标准化来源信息、归属信息和许可细节，创作者能够获得更清晰的内部记录，从而减少内容在跨平台传播和协作过程中的歧义。  
+这种方法强调提前准备、保持一致性及透明度，但并不替代法律咨询或平台的具体流程。

@@ -1,13 +1,13 @@
 ---
 name: ezbookkeeping
-description: ezBookkeeping is a lightweight, self-hosted personal finance app with a user-friendly interface and powerful bookkeeping features. This skill allows AI agents to add and query transactions, accounts, categories, and tags in ezBookkeeping via ezBookkeeping API Tools.
+description: **ezBookkeeping** 是一款轻量级的、可自我托管的个人财务管理应用，拥有用户友好的界面和强大的记账功能。通过 **ezBookkeeping API 工具**，AI 代理可以添加和查询交易记录、账户信息、分类以及标签。
 ---
 
-# ezBookkeeping API Tools
+# ezBookkeeping API 工具
 
-[ezBookkeeping](https://ezbookkeeping.mayswind.net/) provides a tool script called **ezBookkeeping API Tools** that allows users or AI agents to conveniently call the API endpoints from the command line using **sh** or **PowerShell**. You only need to configure two environment variables: the ezBookkeeping server address and the API token.
+[ezBookkeeping](https://ezbookkeeping.mayswind.net/) 提供了一个名为 **ezBookkeeping API Tools** 的工具脚本，允许用户或 AI 代理通过命令行（使用 **sh** 或 **PowerShell**）方便地调用 API 端点。您只需配置两个环境变量：ezBookkeeping 服务器地址和 API 令牌。
 
-## Installation
+## 安装
 
 Linux / macOS
 
@@ -22,16 +22,16 @@ Windows
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/mayswind/ezbookkeeping/refs/heads/main/scripts/ebktools.ps1 -OutFile .\ebktools.ps1
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 必需 | 描述 |
 | --- | --- | --- |
-| `EBKTOOL_SERVER_BASEURL` | Required | ezBookkeeping server base URL (e.g., http://localhost:8080) |
-| `EBKTOOL_TOKEN` | Required | ezBookkeeping API token |
+| `EBKTOOL_SERVER_BASEURL` | 必需 | ezBookkeeping 服务器的基地址（例如：http://localhost:8080） |
+| `EBKTOOL_TOKEN` | 必需 | ezBookkeeping API 令牌 |
 
-## Usage
+## 使用方法
 
-### List all supported commands
+### 列出所有支持的命令
 
 Linux / macOS
 
@@ -45,7 +45,7 @@ Windows
 .\ebktools.ps1 list
 ```
 
-### Show help for a specific command
+### 显示特定命令的用法
 
 Linux / macOS
 
@@ -59,7 +59,7 @@ Windows
 .\ebktools.ps1 help <command>
 ```
 
-### Call API
+### 调用 API
 
 Linux / macOS
 
@@ -73,6 +73,6 @@ Windows
 .\ebktools.ps1 <command> [command-options]
 ```
 
-## Reference
+## 参考资料
 
 ezBookkeeping: https://ezbookkeeping.mayswind.net/

@@ -1,56 +1,54 @@
 ---
 name: memory-pipeline
-description: Complete agent memory + performance system. Extracts structured facts, builds knowledge graphs, generates briefings, and enforces execution discipline via pre-game routines, tool policies, result compression, and after-action reviews. Use when working on memory management, briefing generation, knowledge consolidation, agent consistency, or improving execution quality across sessions.
+description: 完整的代理内存与性能管理系统。该系统能够提取结构化数据、构建知识图谱、生成简报，并通过游戏前的准备工作、工具策略、结果压缩以及事后的回顾来确保执行流程的规范性。适用于需要处理内存管理、简报生成、知识整合、代理行为一致性或提升跨会话执行质量的任务。
 ---
 
-# Memory Pipeline + Performance Routine
+# 内存管道与性能常规机制
 
-A complete memory and performance system for AI agents. Two subsystems, one package:
+这是一个为AI代理设计的完整内存与性能管理系统，包含两个子系统，封装在一个包中：
 
-- **Memory Pipeline** (Python scripts) — Extracts facts, builds knowledge graphs, generates daily briefings
-- **Performance Routine** (TypeScript hooks) — Pre-game briefing injection, tool discipline, output compression, after-action review
+- **内存管道**（Python脚本）：用于提取事实数据、构建知识图谱并生成每日简报。
+- **性能常规机制**（TypeScript钩子）：负责在会话前注入简报内容、规范工具使用、压缩输出结果以及进行事后回顾。
 
-## What This Does
+## 功能介绍
 
-### Memory Pipeline (Between Sessions)
+### 内存管道（会话间）
 
-A three-stage system that helps AI agents maintain long-term memory:
+该系统分为三个阶段，帮助AI代理维护长期记忆：
+1. **提取**：利用大语言模型（LLM）从每日笔记和会话记录中提取结构化信息（如决策、偏好、学习内容及承诺）。
+2. **链接**：利用嵌入技术构建知识图谱，并在相关事实之间建立双向关联，同时识别矛盾之处。
+3. **生成简报**：在会话开始时生成一个简洁的`BRIEFING.md`文件，其中包含代理的个性特征、当前项目、近期决策及关键背景信息。
 
-1. **Extract** — Pulls structured facts (decisions, preferences, learnings, commitments) from daily notes and session transcripts using LLM extraction
-2. **Link** — Builds a knowledge graph with embeddings and bidirectional links between related facts, identifies contradictions
-3. **Briefing** — Generates a compact BRIEFING.md file loaded at session start with personality reminders, active projects, recent decisions, and key context
+### 性能常规机制（会话中）
 
-### Performance Routine (Within Sessions)
+该机制包含四个生命周期钩子，确保代理运行过程中的行为一致性：
+1. **会话前准备**（`before_agent_start`）：从内存文件和检查清单中整理简报内容，并将其注入系统提示中。
+2. **工具使用规范**（`before_tool_call`）：检查工具使用是否符合预设规则，防止不安全的操作。
+3. **结果压缩**（`tool_result_persist`）：对工具输出结果进行压缩处理，以避免信息冗余。
+4. **事后回顾**（`agent_end`）：记录会话中的关键事件、使用的工具及最终结果。
 
-Four lifecycle hooks that enforce consistency during agent runs:
+## 快速入门
 
-1. **Pre-Game Routine** (`before_agent_start`) — Assembles a bounded briefing packet from memory files + checklist, injects into system prompt
-2. **Tool Discipline** (`before_tool_call`) — Enforces deny lists, normalizes params, prevents unsafe tool calls
-3. **Output Compression** (`tool_result_persist`) — Head+tail compression of large tool results to prevent context bloat
-4. **After-Action Review** (`agent_end`) — Writes durable notes about what happened, tools used, and outcomes
+### 安装
 
-## Quick Start
+该技能包含三个Python脚本，位于`scripts/`目录下：
+- `memory-extract.py`：用于提取事实数据。
+- `memory-link.py`：用于构建知识图谱。
+- `memory-briefing.py`：用于生成每日简报。
 
-### Installation
+脚本会自动检测工作空间路径：
+- 通过`CLAWDBOT_WORKSPACE`环境变量。
+- 当前工作目录（如果包含`SOUL.md`或`AGENTS.md`文件）。
+- 或者`~/.clawdbot/workspace`（默认路径）。
 
-The skill includes three Python scripts in `scripts/`:
-- `memory-extract.py` — Fact extraction
-- `memory-link.py` — Knowledge graph building
-- `memory-briefing.py` — Daily briefing generation
+### 系统要求
 
-All scripts auto-detect your workspace from:
-1. `CLAWDBOT_WORKSPACE` environment variable
-2. Current working directory (if contains SOUL.md or AGENTS.md)
-3. `~/.clawdbot/workspace` (default fallback)
+**至少需要一个LLM API密钥**：
+- OpenAI API密钥（用于GPT-4o-mini及嵌入功能）。
+- Anthropic API密钥（用于Claude Haiku）。
+- Gemini API密钥（用于Gemini Flash）。
 
-### Requirements
-
-**At least one LLM API key** is required:
-- OpenAI API key (for GPT-4o-mini + embeddings)
-- Anthropic API key (for Claude Haiku)
-- Gemini API key (for Gemini Flash)
-
-Set via environment variable or config file:
+可以通过环境变量或配置文件来设置API密钥：
 ```bash
 # Environment variable
 export OPENAI_API_KEY="sk-..."
@@ -59,70 +57,66 @@ export OPENAI_API_KEY="sk-..."
 echo "sk-..." > ~/.config/openai/api_key
 ```
 
-The scripts will auto-detect and use whichever API key is available.
+脚本会自动选择可用的API密钥进行使用。
 
-### Basic Usage
+### 基本用法
 
-Run the full pipeline:
-```bash
+- 运行整个流程：```bash
 python3 scripts/memory-extract.py
 python3 scripts/memory-link.py
 python3 scripts/memory-briefing.py
 ```
+- 或根据需要单独运行各个步骤。
 
-Or run individual steps as needed.
+## 流程阶段
 
-## Pipeline Stages
+### 第一阶段：提取事实
 
-### Stage 1: Extract Facts
+**脚本：`memory-extract.py`
 
-**Script:** `memory-extract.py`
+优先从以下位置读取数据：
+- 每日内存文件（`{workspace}/memory/YYYY-MM-DD.md`）：今天的或昨天的数据。
+- 会话记录文件（`~/.clawdbot/agents/main/sessions/*.jsonl`）。
 
-Reads from (in priority order):
-1. Daily memory files (`{workspace}/memory/YYYY-MM-DD.md`) — today or yesterday
-2. Session transcripts (`~/.clawdbot/agents/main/sessions/*.jsonl`)
+提取的结构化事实包括：
+- **类型**：决策、偏好、学习内容、承诺等。
+- **内容**：实际的信息。
+- **主题**：根据上下文自动确定。
+- **置信度**：0.0-1.0的可靠性评分。
 
-Extracts structured facts:
-- **Type**: decision, preference, learning, commitment, fact
-- **Content**: The actual information
-- **Subject**: What it's about (auto-detected from context)
-- **Confidence**: 0.0-1.0 reliability score
+**输出结果**：`{workspace}/memory/extracted.jsonl`——每行包含一条去重后的JSON格式事实。
 
-**Output:** `{workspace}/memory/extracted.jsonl` — One JSON fact per line, deduplicated
+### 第二阶段：构建知识图谱
 
-### Stage 2: Build Knowledge Graph
+**脚本：`memory-link.py`
 
-**Script:** `memory-link.py`
+- 使用提取的事实数据：
+  - 生成嵌入向量（如果使用OpenAI API密钥）；否则使用关键词相似度算法。
+  - 在相关事实之间建立双向链接。
+  - 识别矛盾之处，并标记被替代的事实。
+  - 自动从内容中生成领域标签。
 
-Takes extracted facts and:
-- Generates embeddings (if OpenAI key available, else uses keyword similarity)
-- Creates bidirectional links between related facts
-- Detects contradictions and marks superseded facts
-- Auto-generates domain tags from content
+**输出结果**：
+  - `{workspace}/memory/knowledge-graph.json`：包含节点和链接的完整知识图谱。
+  - `{workspace}/memory/knowledge-summary.md`：便于人类阅读的知识图谱摘要。
 
-**Output:**
-- `{workspace}/memory/knowledge-graph.json` — Full graph with nodes and links
-- `{workspace}/memory/knowledge-summary.md` — Human-readable summary
+### 第三阶段：生成简报
 
-### Stage 3: Generate Briefing
+**脚本：`memory-briefing.py`
 
-**Script:** `memory-briefing.py`
+- 生成一个简洁的每日简报，在会话开始时加载。
 
-Creates a compact daily briefing loaded at session start.
+简报内容包含：
+- 代理的个性特征（如果`SOUL.md`存在）。
+- 用户背景信息（如果`USER.md`存在）。
+- 最近的项目内容。
+- 当前的待办事项（来自`todos*.md`文件）。
 
-Combines:
-- Personality traits (from SOUL.md if exists)
-- User context (from USER.md if exists)
-- Active projects (top subjects from recent facts)
-- Recent decisions and preferences
-- Active todos (from any todos*.md files)
+**输出结果**：`{workspace}/BRIEFING.md`——长度不超过2000个字符，可由LLM生成或基于模板生成。
 
-**Output:** `{workspace}/BRIEFING.md` — Under 2000 chars, LLM-generated or template-based
+## 集成到`HEARTBEAT.md`中
 
-## Wiring Into HEARTBEAT.md
-
-To run automatically, add to your workspace's `HEARTBEAT.md`:
-
+若要实现自动运行，请将以下内容添加到工作空间的`HEARTBEAT.md`文件中：
 ```markdown
 # Heartbeat Tasks
 
@@ -136,60 +130,59 @@ To run automatically, add to your workspace's `HEARTBEAT.md`:
 - Clean up old daily notes (optional)
 ```
 
-## Loading BRIEFING.md
+## 加载`BRIEFING.md`
 
-**Important:** BRIEFING.md needs to be loaded as workspace context at session start. This requires the OpenClaw context loading feature (currently in development).
+**重要提示**：`BRIEFING.md`需要在会话开始时作为工作空间上下文被加载。这需要OpenClaw的上下文加载功能（目前仍在开发中）。
 
-Once available, configure your agent to load BRIEFING.md along with SOUL.md, USER.md, and AGENTS.md at the start of each session.
+配置代理，使其在每次会话开始时同时加载`BRIEFING.md`、`SOUL.md`和`AGENTS.md`。
 
-## Output Files
+## 输出文件
 
-All files are created in `{workspace}/memory/`:
+所有输出文件均保存在`{workspace}/memory/`目录下：
+- `extracted.jsonl`：所有提取的事实数据（仅追加）。
+- `knowledge-graph.json`：包含嵌入向量的完整知识图谱。
+- `knowledge-summary.md`：知识图谱的便于阅读的摘要。
+- `BRIEFING.md`：位于工作空间根目录，作为每日上下文参考。
 
-- **extracted.jsonl** — All extracted facts (append-only)
-- **knowledge-graph.json** — Full knowledge graph with embeddings and links
-- **knowledge-summary.md** — Human-readable summary of the graph
-- **BRIEFING.md** (in workspace root) — Daily context cheat sheet
+## 自定义设置
 
-## Customization
+### 更换模型
 
-### Changing Models
+- 在每个脚本中修改模型名称：
+  - `memory-extract.py`：将`"model": "gpt-4o-mini"`（或Claude/Gemini对应的模型）替换为所需模型。
+- `memory-link.py`：将`"model": "text-embedding-3-small"`替换为所需模型。
+- `memory-briefing.py`：将`"model": "gpt-4o-mini"`替换为所需模型。
 
-Edit the model names in each script:
-- `memory-extract.py`: Lines with `"model": "gpt-4o-mini"` (or claude/gemini equivalents)
-- `memory-link.py`: Line with `"model": "text-embedding-3-small"`
-- `memory-briefing.py`: Lines with `"model": "gpt-4o-mini"`
+### 调整提取方式
 
-### Adjusting Extraction
+- 在`memory-extract.py`中修改提取提示，以获取不同类型的信息或调整输出格式。
 
-In `memory-extract.py`, modify the extraction prompt (lines ~75-85) to focus on different types of information or change the output format.
+### 调整链接阈值
 
-### Link Threshold
+- 在`memory-link.py`中修改用于创建链接的相似度阈值（当前设置为0.3）。
 
-In `memory-link.py`, change the similarity threshold for creating links (currently 0.3 at line ~195).
+## 常见问题与解决方法
 
-## Troubleshooting
+- **无法提取事实**：
+  - 确保每日笔记或会话记录存在。
+  - 检查API密钥是否设置正确。
+  - 检查脚本输出中是否有LLM相关的错误信息。
 
-**No facts extracted:**
-- Check that daily notes or transcripts exist
-- Verify API key is set correctly
-- Check script output for LLM errors
+- **链接质量较低**：
+  - 如果使用OpenAI API密钥，可提高链接的准确性（基于嵌入向量的相似度计算比基于关键词的匹配更精确）。
+  - 调整`memory-link.py`中的相似度阈值。
 
-**Low-quality links:**
-- Add OpenAI API key for embedding-based similarity (more accurate than keyword matching)
-- Adjust similarity threshold in `memory-link.py`
+- **简报过长**：
+  - 减少模板中包含的事实数量（修改`generate_fallback_briefing`函数）。
+  - LLM生成的简报长度自动限制在2000个字符以内。
 
-**Briefing too long:**
-- Reduce number of facts included in template (edit `generate_fallback_briefing`)
-- LLM-generated briefings are automatically constrained to 2000 chars
+## 性能常规机制（钩子系统）
 
-## Performance Routine (Hook System)
+性能常规机制通过`src/`目录下的生命周期钩子实现，遵循了性能心理学的一个核心原则：**将思考与执行分开**。运动员不会在比赛进行中重新设计技术动作——他们会先进行有目的的思考，然后执行训练好的动作（反应性执行）。唯一的例外是处理真正的错误情况。
 
-The performance routine is implemented as OpenClaw lifecycle hooks in `src/`. It applies a core principle from performance psychology: **separate thinking from doing**. Athletes don't redesign their technique mid-game — they prepare (purposeful thinking), then execute trained sequences (reactive execution). The only exception is genuine error handling.
+对于AI代理而言，这意味着：在推理开始之前，需要将所有上下文、约束条件及记忆信息预先加载到简报包中；执行过程应保持简洁。事后回顾应在推理结束后进行。
 
-For agents, this means: front-load all context, constraints, and memory retrieval into a briefing packet *before* inference starts. Keep execution clean. Write the after-action review *after*. Never inject corrections mid-run.
-
-### Architecture
+### 架构概述
 
 ```
 User Message → Gateway → Agent Loop
@@ -201,20 +194,18 @@ User Message → Gateway → Agent Loop
   └── agent_end → After-Action Review → durable memory for next run
 ```
 
-### The Core Idea: No Mid-Swing Coaching
+### 核心理念：避免在运行过程中进行实时调整
 
-Constant correction during execution degrades output. Mid-run prompt patches create instruction collision — two competing directives the agent must reconcile instead of executing. The alternative:
+在运行过程中频繁进行修改会降低输出质量。在运行过程中插入修改指令会导致指令冲突，代理需要处理这些冲突。更好的方法是：
+1. **捕获修改内容**：不要将修改内容直接插入当前执行流程。
+2. **汇总修改内容**：将所有修改合并成一个清晰的更新。
+3. **在下次会话中应用**：下一次生成的简报包中包含已修正的指令。
 
-1. **Capture corrections** — don't inject them into the current run
-2. **Condense into deltas** — merge all corrections into a clean update
-3. **Inject next run** — the next briefing packet includes the corrected instructions
+事后回顾（`agent_end`）的结果会反馈到下一次会话的简报中（`before_agent_start`）。这个循环是封闭的，不会在运行过程中中断。
 
-The after-action review (`agent_end`) feeds back into the next briefing (`before_agent_start`). The loop is closed — just not during execution.
+### 配置方式
 
-### Configuration
-
-Configure via `openclaw.plugin.json` or your agent config:
-
+通过`openclaw.plugin.json`或代理配置文件进行配置：
 ```json
 {
   "enabled": true,
@@ -239,38 +230,38 @@ Configure via `openclaw.plugin.json` or your agent config:
 }
 ```
 
-### Hook Details
+### 钩子详细信息
 
-**`before_agent_start` — Briefing Packet**
-- Loads configured memory files from workspace
-- Builds bounded packet: task hint + checklist + retrieved memory
-- Injects into system prompt (respects `maxChars` limit)
-- Missing memory files are silently skipped
+- **`before_agent_start`——简报包**：
+  - 从工作空间加载配置好的内存文件。
+  - 组装简报包：包含任务提示、检查清单及提取的内存数据。
+  - 将简报包注入系统提示中（遵守`maxChars`长度限制）。
+  - 如果缺少内存文件，则忽略这些文件。
 
-**`before_tool_call` — Tool Discipline**
-- Checks tool name against `deny` list
-- Throws error if denied (prevents execution)
-- Extensible for param normalization
+- **`before_tool_call`——工具使用规范**：
+  - 检查工具名称是否在禁止使用列表中。
+  - 如果工具被禁止使用，则抛出错误（防止执行）。
+  - 可扩展以支持参数规范化。
 
-**`tool_result_persist` — Output Compression**
-- Keeps results under `maxToolResultChars` (default 12K)
-- Uses head (60%) + tail (30%) strategy
-- Preserves structure for JSON results
+- **`tool_result_persist`——结果压缩**：
+  - 保持结果长度在`maxToolResultChars`（默认12000个字符）以内。
+  - 采用头部（60%）和尾部（30%）的数据压缩策略。
+  - 保持JSON格式的结果结构。
 
-**`after_action_review` — Durable Notes**
-- Appends session summary to configured memory file
-- Extracts key bullets from final answer
-- Logs tools used (with failure flags)
-- Creates directories automatically
+- **`after_action_review`——持久化记录**：
+  - 将会话总结内容追加到配置好的内存文件中。
+  - 从最终答案中提取关键信息。
+  - 记录使用的工具及其执行结果（包括失败标志）。
+  - 自动创建相应的目录。
 
-### Source Files
+### 源代码文件
 
-- `src/index.ts` — Hook registration and wiring
-- `src/briefing.ts` — Briefing packet builder
-- `src/compress.ts` — Tool result compressor
-- `src/memory.ts` — Memory file loader + after-action writer
+- `src/index.ts`：钩子注册与连接逻辑。
+- `src/briefing.ts`：简报包生成模块。
+- `src/compress.ts`：结果压缩模块。
+- `src/memory.ts`：内存文件加载与事后记录模块。
 
-## See Also
+## 相关资源
 
-- [Setup Guide](references/setup.md) — Detailed installation and configuration
-- [Blog Post Draft](../../drafts/blog-pregame-routine.md) — Full writeup of the performance routine concept
+- [安装指南](references/setup.md)：详细的安装和配置说明。
+- [博客文章草稿](../../drafts/blog-pregame-routine.md)：性能常规机制的完整介绍。

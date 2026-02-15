@@ -1,39 +1,39 @@
 ---
 name: exa-plus
 version: 1.0.0
-description: Neural web search via Exa AI. Search people, companies, news, research, code. Supports deep search, domain filters, date ranges.
+description: 通过 Exa AI 实现的神经网络搜索功能。可以搜索个人、公司、新闻、研究资料以及代码。支持深度搜索、领域筛选和日期范围限定。
 metadata: {"clawdbot":{"emoji":"🧠","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Exa - Neural Web Search
+# Exa - 神经网络搜索工具
 
-Powerful AI-powered search with LinkedIn, news, research papers, and more.
+这是一个强大的、基于人工智能的搜索工具，可以查询 LinkedIn、新闻、研究论文等资源。
 
-## Setup
+## 设置
 
-Create `~/.clawdbot/credentials/exa/config.json`:
+创建文件 `~/.clawdbot/credentials/exa/config.json`：
 ```json
 {"apiKey": "your-exa-api-key"}
 ```
 
-## Commands
+## 命令
 
-### General Search
+### 常规搜索
 ```bash
 bash scripts/search.sh "query" [options]
 ```
 
-Options (as env vars):
-- `NUM=10` - Number of results (max 100)
-- `TYPE=auto` - Search type: auto, neural, fast, deep
-- `CATEGORY=` - Category: news, company, people, research paper, github, tweet, pdf, financial report
-- `DOMAINS=` - Include domains (comma-separated)
-- `EXCLUDE=` - Exclude domains (comma-separated)
-- `SINCE=` - Published after (ISO date)
-- `UNTIL=` - Published before (ISO date)
-- `LOCATION=NL` - User location (country code)
+可选参数（作为环境变量）：
+- `NUM=10` - 搜索结果数量（最多 100 条）
+- `TYPE=auto` - 搜索类型：自动、神经网络、快速、深度
+- `CATEGORY=` - 分类：新闻、公司、人物、研究论文、GitHub 代码、推文、PDF 文件、财务报告
+- `DOMAINS=` - 需要包含的域名（用逗号分隔）
+- `EXCLUDE=` - 需要排除的域名（用逗号分隔）
+- `SINCE=` - 发布时间（ISO 格式）
+- `UNTIL=` - 发布时间（ISO 格式）
+- `LOCATION=NL` - 用户位置（国家代码）
 
-### Examples
+### 示例
 
 ```bash
 # Basic search
@@ -58,8 +58,8 @@ TYPE=deep bash scripts/search.sh "climate change solutions"
 CATEGORY=news SINCE="2026-01-01" bash scripts/search.sh "tech layoffs"
 ```
 
-### Get Content
-Extract full text from URLs:
+### 获取内容
+从 URL 中提取完整文本：
 ```bash
 bash scripts/content.sh "url1" "url2"
 ```

@@ -1,15 +1,15 @@
 ---
 name: gram
-description: Instagram CLI for viewing feeds, posts, profiles, and engagement via cookies.
+description: Instagram CLI：通过Cookie查看动态、帖子、个人资料以及用户互动情况。
 homepage: https://github.com/arein/gram
 metadata: {"clawdbot":{"emoji":"📸","requires":{"bins":["gram"]},"install":[{"id":"npm","kind":"node","package":"@cyberdrk/gram","bins":["gram"],"label":"Install gram (npm)"}]}}
 ---
 
 # gram 📸
 
-Instagram CLI using REST/GraphQL API + cookie auth.
+这是一个使用 REST/GraphQL API 以及基于 Cookie 的认证机制的 Instagram 命令行工具（CLI）。
 
-## Install
+## 安装
 
 ```bash
 # npm/pnpm/bun
@@ -19,17 +19,15 @@ npm install -g @cyberdrk/gram
 bunx @cyberdrk/gram whoami
 ```
 
-## Authentication
+## 认证
 
-`gram` uses cookie-based auth from your Instagram web session.
+`gram` 通过 Instagram 的 Web 会话中的 Cookie 来实现认证。
 
-Use `--session-id`, `--csrf-token`, and `--ds-user-id` to pass cookies directly, or `--cookie-source` for browser cookies.
+你可以使用 `--session-id`、`--csrf-token` 和 `--ds-user-id` 直接传递 Cookie，或者使用 `--cookie-source` 来指定 Cookie 的来源（例如浏览器）。运行 `gram check` 命令可以查看当前使用的 Cookie 来源。对于 Arc/Brave 浏览器，可以使用 `--chrome-profile-dir <path>` 参数来指定 Chrome 配置文件的路径。
 
-Run `gram check` to see which source is active. For Arc/Brave, use `--chrome-profile-dir <path>`.
+## 命令
 
-## Commands
-
-### Account & Auth
+### 账户与认证相关操作
 
 ```bash
 gram whoami                    # Show logged-in account
@@ -37,7 +35,7 @@ gram check                     # Show credential sources
 gram query-ids --refresh       # Refresh GraphQL query ID cache
 ```
 
-### Reading Posts
+### 阅读帖子
 
 ```bash
 gram post <shortcode-or-url>   # View a post
@@ -46,14 +44,14 @@ gram comments <shortcode> -n 20 # View comments on a post
 gram likers <shortcode>        # View users who liked a post
 ```
 
-### Feeds
+### 查看动态流（Feeds）
 
 ```bash
 gram feed -n 20                # Home feed
 gram explore -n 20             # Explore/discover feed
 ```
 
-### User Profiles
+### 查看用户资料
 
 ```bash
 gram user <username>           # View user profile
@@ -63,7 +61,7 @@ gram following [username]      # Users someone follows (defaults to you)
 gram followers [username]      # Someone's followers (defaults to you)
 ```
 
-### Search
+### 搜索
 
 ```bash
 gram search "query"            # Search users, hashtags, places
@@ -72,7 +70,7 @@ gram search "nyc" --type places
 gram search "#photography" --type hashtags
 ```
 
-### Engagement Actions
+### 互动操作（Engagement Actions）
 
 ```bash
 gram like <shortcode>          # Like a post
@@ -84,7 +82,7 @@ gram follow <username>         # Follow a user
 gram unfollow <username>       # Unfollow a user
 ```
 
-## Output Options
+## 输出选项
 
 ```bash
 --json          # JSON output
@@ -94,7 +92,7 @@ gram unfollow <username>       # Unfollow a user
 --no-color      # Disable ANSI colors (or set NO_COLOR=1)
 ```
 
-## Global Options
+## 全局配置选项
 
 ```bash
 --session-id <token>           # Instagram sessionid cookie
@@ -108,9 +106,9 @@ gram unfollow <username>       # Unfollow a user
 --cookie-timeout <ms>          # Cookie extraction timeout
 ```
 
-## Config File
+## 配置文件
 
-`~/.config/gram/config.json5` (global) or `./.gramrc.json5` (project):
+配置文件位于 `~/.config/gram/config.json5`（全局配置）或 `./.gramrc.json5`（项目级配置）：
 
 ```json5
 {
@@ -120,26 +118,26 @@ gram unfollow <username>       # Unfollow a user
 }
 ```
 
-Environment variables: `GRAM_TIMEOUT_MS`, `GRAM_COOKIE_TIMEOUT_MS`
+环境变量：`GRAM_TIMEOUT_MS`、`GRAM COOKIE_TIMEOUT_MS`
 
-## Troubleshooting
+## 故障排除
 
-### Query IDs stale (404 errors)
+### 查询 ID 过期（导致 404 错误）
 ```bash
 gram query-ids --refresh
 ```
 
-### Cookie extraction fails
-- Check browser is logged into Instagram
-- Try different `--cookie-source`
-- For Arc/Brave: use `--chrome-profile-dir`
-- Provide cookies manually: `--session-id`, `--csrf-token`, `--ds-user-id`
+### 提取 Cookie 失败
+- 确保浏览器已登录 Instagram
+- 尝试使用不同的 `--cookie-source` 参数
+- 对于 Arc/Brave 浏览器，请使用 `--chrome-profile-dir` 参数
+- 可以手动提供 Cookie：`--session-id`、`--csrf-token`、`--ds-user-id`
 
-### User-agent mismatch errors
-- The CLI uses desktop user-agent by default
-- If your session was created on mobile, it may fail
-- Create a new session by logging in via desktop browser
+### 用户代理不匹配错误
+- 该 CLI 默认使用桌面浏览器的用户代理
+- 如果你的会话是在移动设备上创建的，可能会导致问题
+- 请通过桌面浏览器重新登录以创建新的会话
 
 ---
 
-**TL;DR**: View feeds, profiles, search, and engage with Instagram via CLI. 📸
+**简而言之**：通过这个 CLI，你可以查看 Instagram 的动态流、用户资料、进行搜索以及与其他用户互动。📸

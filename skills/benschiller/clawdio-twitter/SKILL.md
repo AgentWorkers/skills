@@ -1,6 +1,6 @@
 ---
 name: clawdio
-description: Analyze Twitter Spaces and voice conversations to extract market intelligence, crypto alpha, sentiment analysis, and speaker-attributed insights. Transforms spoken audio into structured reports, full transcripts, and machine-readable metadata. Use when you need intelligence from Twitter Spaces, podcast discussions, or any long-form voice content — especially for crypto markets, AI trends, and expert commentary that only exists in audio.
+description: 分析 Twitter Spaces 和语音对话，以提取市场情报、加密货币相关数据、情感分析结果以及发言者的相关信息。该工具能够将语音内容转换为结构化的报告、完整的文字记录以及机器可读的元数据。适用于需要从 Twitter Spaces、播客讨论或任何长篇语音内容中获取信息的情况——尤其是针对加密货币市场、人工智能趋势以及仅以音频形式存在的专家评论。
 compatibility: Requires network access and an x402-compatible wallet (Coinbase AgentKit, CDP SDK, or @x402/fetch) funded with USDC on Base Mainnet.
 metadata:
   author: vail
@@ -14,56 +14,55 @@ metadata:
   category: analytics
 ---
 
-# Clawdio — Twitter Spaces Intelligence for AI Agents
+# Clawdio — 专为AI代理设计的Twitter Spaces智能分析工具
 
-Clawdio transforms Twitter Spaces and voice conversations into structured, machine-readable intelligence. When critical market insight, crypto alpha, or expert discussion exists only in spoken audio, Clawdio makes it accessible to agents.
+Clawdio能够将Twitter Spaces中的对话内容以及语音交流转化为结构化、机器可读的智能数据。当关键的市场洞察、加密货币的早期信息或专家讨论仅以音频形式存在时，Clawdio能够将这些信息提供给AI代理使用。
 
-**Base URL:** `https://clawdio.vail.report`
+**基础URL：** `https://clawdio.vail.report`
 
-## Use When
+## 使用场景
 
-- Important market intelligence lives in Twitter Spaces, not text
-- You need speaker-attributed quotes with timestamps
-- You want crypto alpha, sentiment analysis, or trend signals from voice
-- Experts discuss topics that never make it to written posts
-- You need structured data from long-form audio conversations
+- 当重要的市场情报仅存在于Twitter Spaces中（而非文本形式）时
+- 需要包含发言者信息及时间戳的引用内容
+- 需要从语音中提取加密货币的早期信息、情感分析结果或趋势信号
+- 专家讨论的内容未能被记录为书面帖子
+- 需要从长时间的音频对话中提取结构化数据
 
-## What You Get
+## 使用成果
 
-Each report ($1.49 USDC) returns three machine-readable artifacts:
+每份报告（1.49美元）包含以下三种机器可读的输出：
 
-**Metadata** — Title, date, duration, listener count, full participant list with Twitter handles and avatars, transaction hash.
+**元数据** — 标题、日期、时长、听众数量、参与者的Twitter用户名及头像列表、交易哈希值。
 
-**Structured Report (Markdown)** — Abstract, key insights, speaker-attributed hot takes with timestamps, timeline of events, potential alpha signals, market sentiment assessment, project/token mentions with context.
+**结构化报告（Markdown格式）** — 摘要、关键洞察、带有时间戳的发言者观点、事件时间线、潜在的市场信号、市场情绪评估、项目/代币的提及情况及其背景信息。
 
-**Full Transcript (Markdown)** — Speaker-attributed, timestamped per utterance, verbatim content, deterministic formatting for downstream processing.
+**完整转录文本（Markdown格式）** — 每条发言都带有发言者信息和时间戳，格式统一，便于后续处理。
 
-## Quick Start
+## 快速入门
 
-### 1. Browse Available Reports (Free)
+### 1. 浏览可用报告（免费）
 
 ```bash
 curl https://clawdio.vail.report/catalog
 ```
 
-Returns all available Twitter Spaces with metadata, abstracts, and pricing.
+该接口会返回所有可用的Twitter Spaces报告的元数据、摘要及价格信息。
 
-### 2. Purchase a Report
+### 2. 购买报告
 
 ```bash
 curl https://clawdio.vail.report/catalog/purchase?id={uuid}
 ```
 
-Uses **x402 protocol**. Your wallet handles payment automatically:
+该接口使用**x402协议**进行支付。您的钱包会自动完成支付流程：
+1. 服务器返回HTTP 402响应，提示支付要求。
+2. 您的钱包在Base Mainnet网络上使用USDC完成支付。
+3. 重复请求时需要提供支付签名。
+4. 支付完成后，系统会返回完整的报告数据。
 
-1. Server responds HTTP 402 with payment requirements
-2. Wallet signs USDC payment on Base Mainnet
-3. Request retries with payment signature
-4. Full artifact set returned after settlement
+**注意：** 无需注册账户或API密钥，支付是使用的唯一方式。
 
-No accounts. No API keys. Payment is the only gate.
-
-## Example Response
+## 示例响应
 
 ```json
 {
@@ -90,46 +89,44 @@ No accounts. No API keys. Payment is the only gate.
 }
 ```
 
-## Endpoints
+## 端点接口
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/` | GET | None | Self-describing API root |
-| `/catalog` | GET | None | Browse available reports |
-| `/catalog/purchase?id={uuid}` | GET | x402 | Purchase full artifacts ($1.49 USDC) |
-| `/health` | GET | None | Health check |
-| `/.well-known/x402` | GET | None | x402 discovery document |
+| 端点 | 方法 | 认证方式 | 描述 |
+|------|--------|------|-------------|
+| `/` | GET | 无 | API的根路径 |
+| `/catalog` | GET | 无 | 浏览可用报告 |
+| `/catalog/purchase?id={uuid}` | GET | 使用x402协议购买报告（1.49美元） |
+| `/health` | GET | 无 | 系统健康检查 |
+| `/.well-known/x402` | GET | 无 | x402协议的发现文档 |
 
-## Important Notes
+## 重要说明
 
-- Purchase endpoint uses **GET**, not POST
-- Payment is **USDC on Base Mainnet** only (eip155:8453)
-- Save responses — repeat access requires repurchase
-- No authentication or accounts required
+- 购买报告的接口使用**GET**方法，而非**POST**方法。
+- 支付必须使用**Base Mainnet网络上的USDC**（地址：eip155:8453）。
+- 请保存响应内容，如需再次访问需重新购买报告。
+- 无需进行任何身份验证或注册账户。
 
-## Agent Use Cases
+## 代理应用场景
 
-- **Trading signals:** Extract sentiment and alpha from live market discussions
-- **Research synthesis:** Cross-reference insights across multiple Spaces
-- **Network mapping:** Build speaker graphs from participant data
-- **Trend detection:** Track project mentions and sentiment over time
-- **Quote attribution:** Source specific claims to named speakers with timestamps
+- **交易信号分析**：从实时市场讨论中提取情感分析和市场趋势信号。
+- **研究整合**：跨多个Twitter Spaces对比分析数据。
+- **网络关系图构建**：根据参与者信息生成发言者关系图。
+- **趋势监测**：追踪项目提及和情绪变化。
+- **引用标注**：为特定发言者标注其发言内容及时间戳。
 
-## Integration
+## 集成方式
 
-For code examples with Coinbase AgentKit and @x402/fetch, see [references/INTEGRATION.md](references/INTEGRATION.md).
+有关使用Coinbase AgentKit和@x402/fetch的集成示例，请参阅[references/INTEGRATION.md]。
+完整的报告结构和响应格式详见[references/API-REFERENCE.md]。
 
-For the full report schema and response format, see [references/API-REFERENCE.md](references/API-REFERENCE.md).
+## 开发计划
 
-## Roadmap
-
-Clawdio is in early release with a curated catalog of AI and crypto Twitter Spaces. Coming soon:
-
-- **Analyze any Space** — Submit any Twitter Spaces link to generate artifacts on demand
-- **Massive catalog** — 10,000+ browseable Spaces across crypto, AI, tech, and markets
-- **Semantic search** — Find Spaces by topic, speaker, project, or sentiment
-- **Real-time ingestion** — Live Spaces processed as they happen
+Clawdio目前处于早期发布阶段，目前提供精选的AI和加密货币相关Twitter Spaces数据。未来计划推出以下功能：
+- **任意空间分析**：提交任意Twitter Spaces链接即可按需生成报告。
+- **海量数据目录**：涵盖超过10,000个与加密货币、AI、科技和市场相关的Twitter Spaces。
+- **语义搜索**：根据主题、发言者、项目或情绪关键词搜索相关内容。
+- **实时数据处理**：实时处理新发布的Twitter Spaces内容。
 
 ---
 
-**Built by [VAIL](https://vail.report) — Voice AI Layer**
+**由[VAIL](https://vail.report)开发 — 语音AI解决方案提供商**

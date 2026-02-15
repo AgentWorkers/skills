@@ -1,59 +1,59 @@
 ---
 name: Money
-description: Personal finance guidance with practical rules for saving, investing, and avoiding common traps.
+description: 个人理财指南，提供实用的储蓄、投资建议以及避免常见陷阱的方法。
 metadata: {"clawdbot":{"emoji":"💰","os":["linux","darwin","win32"]}}
 ---
 
-# Personal Finance Rules
+# 个人理财规则
 
-## Before Any Advice
-- Ask about existing debts, income stability, and country of residence — generic advice without context is dangerous
-- High-interest debt (credit cards, payday loans) must be paid first — no investment beats 20%+ guaranteed return of eliminating debt
-- Emergency fund of 3-6 months expenses comes before investing — without it, any crisis forces selling at the worst time
+## 在听取任何建议之前
+- 询问现有的债务情况、收入稳定性以及居住国家——脱离具体背景的通用建议可能具有风险。
+- 高利率债务（如信用卡债务、发薪日贷款）必须优先偿还——没有任何投资能比还清债务带来的20%以上回报更有价值。
+- 应先建立相当于3到6个月开支的应急基金——如果没有应急基金，遇到危机时可能会被迫在最糟糕的时刻抛售资产。
 
-## Inflation Reality
-- Cash in savings accounts loses purchasing power every year — 2-3% inflation means €10,000 becomes €7,400 in real terms after 10 years
-- Long-term projections must use real returns (after inflation) — 7% real is honest, 10% nominal is misleading
-- "Safe" bonds can lose to inflation — being conservative isn't the same as being safe
+## 通货膨胀的现实
+- 银行储蓄账户中的现金每年都会贬值——2%到3%的通货膨胀率意味着10,000欧元在10年后实际价值仅剩7,400欧元。
+- 长期投资规划应基于实际回报率（扣除通货膨胀后的回报率）——7%的实际回报率才较为真实可靠，而10%的名义回报率具有误导性。
+- 即使是“安全”的债券也可能被通货膨胀侵蚀价值——保守并不意味着安全。
 
-## Investment Math
-- Fees compound against you — 1% annual fee takes 25% of returns over 30 years
-- Time in market beats timing the market — missing the 10 best days in a decade cuts returns in half
-- Past performance predicts nothing — last year's top fund is often next year's loser
-- Diversification is the only free lunch — single stocks are gambling, broad index funds are investing
+## 投资计算
+- 投资费用会不断累积——每年1%的费用在30年内会侵蚀25%的投资收益。
+- 坚持长期投资，而非试图精准把握市场时机——错过十年中的最佳投资时机可能会使回报减半。
+- 过去的业绩并不能预示未来的表现——去年的热门投资产品往往会成为明年的亏损来源。
+- 分散投资是唯一“免费”的投资策略——单一股票投资属于赌博行为，而广泛指数基金才是真正的投资方式。
 
-## Tax Awareness
-- Every country has tax-advantaged accounts — ask which ones apply before recommending where to invest
-- Capital gains, dividends, and interest are taxed differently — account type matters
-- Tax loss harvesting and rebalancing have tax implications — don't ignore them
-- Retirement accounts have withdrawal rules — early access often means penalties
+## 税务意识
+- 每个国家都有税收优惠的金融账户——在推荐投资地点之前，先了解哪些账户适用于你。
+- 资本利得、股息和利息的征税方式各不相同——账户类型会影响税务负担。
+- 利用税收损失抵免和资产再平衡策略可以降低税务负担——不要忽视这些因素。
+- 退休账户有特定的取款规则——提前取款通常会带来罚款。
 
-## Behavioral Traps
-- Lifestyle inflation silently erases raises — a €5,000 raise that becomes €5,000 more spending changes nothing
-- Loss aversion makes people sell winners and hold losers — the opposite of what works
-- "I'll start investing when I have more money" is the most expensive delay — small amounts now beat large amounts later
-- Checking investments daily increases bad decisions — less attention often means better returns
+## 行为陷阱
+- 生活方式的提升会悄然侵蚀工资增长带来的收益——如果工资增加了5,000欧元，但随之而来的支出也增加了5,000欧元，那么实际上并没有净收益。
+- 人们倾向于卖出盈利资产、持有亏损资产——这种行为与正确的投资策略背道而驰。
+- “等我赚到更多钱再开始投资”是最昂贵的拖延方式——现在投入少量资金往往比以后投入大量资金更划算。
+- 每天查看投资情况会增加错误决策的风险——减少关注频率反而有助于获得更好的投资回报。
 
-## Insurance First
-- Protect existing assets before growing them — health, disability, liability coverage
-- Life insurance only matters if someone depends on your income
-- High deductibles with lower premiums often make sense for those with emergency funds
-- Insurance is for catastrophic risks, not minor inconveniences
+## 保险优先
+- 在资产增值之前，首先要保护现有的资产——购买健康保险、残疾保险和责任保险。
+- 人寿保险只有在有人依赖你的收入时才具有意义。
+- 对于拥有应急基金的人来说，高免赔额和较低保费的政策更为合适。
+- 保险是为应对灾难性风险而设计的，而非解决小麻烦。
 
-## Debt Hierarchy
-- Not all debt is equal — mortgage at 3% is different from credit card at 22%
-- Paying minimums on low-interest debt while investing the difference often wins mathematically
-- Student loans and mortgages may have tax benefits — factor them in
-- Debt-free feels good but isn't always optimal — opportunity cost matters
+## 债务优先级
+- 并非所有债务都同等重要——3%的房贷利率与22%的信用卡利率截然不同。
+- 在投资的同时，优先偿还低利率债务的最低还款额通常更划算。
+- 学生贷款和房贷可能享有税收优惠——在制定投资计划时需要考虑这些因素。
+- 虽然无债一身轻的感觉很好，但并不总是最佳选择——机会成本同样需要考虑。
 
-## Practical Automation
-- Pay yourself first: automate savings on payday — what's left is what you spend
-- Automate bill payments to avoid late fees and credit damage
-- Increase savings rate with every raise — split the raise between lifestyle and saving
-- Annual rebalancing is enough — more frequent trading usually hurts
+## 实用的自动化工具
+- 首先自动将工资的一部分用于储蓄——剩下的钱才是可用于消费的部分。
+- 自动支付账单以避免滞纳金和信用记录受损。
+- 每次加薪时提高储蓄比例——将加薪金额一部分用于改善生活方式，一部分用于储蓄。
+- 年度资产再平衡就足够了——频繁交易往往反而会降低投资回报。
 
-## Red Flags
-- Any "guaranteed" high returns — if it sounds too good, it is
-- Pressure to decide quickly — legitimate opportunities don't vanish in 24 hours
-- Complex products you don't understand — complexity hides fees
-- Anyone who benefits from your investment decision giving you advice
+## 需警惕的警示信号
+- 任何承诺“高回报”的投资产品——如果听起来太好，那很可能有陷阱。
+- 要求你迅速做出决策的压力——合法的投资机会不会在24小时内消失。
+- 你不了解的复杂金融产品——复杂的设计往往隐藏着高昂的费用。
+- 任何从你的投资决策中获利的人，都可能在向你提供所谓的“建议”。

@@ -1,55 +1,55 @@
 ---
 name: fitnesscoach-teneo
-description: Personal fitness trainer and nutrition advisor. Generates personalized workout plans (9 types), exercise variants (11 muscle groups x 3 equipment types), calculates TDEE/macros using Mifflin-St Jeor e
+description: 个人健身教练兼营养顾问。能够生成个性化的锻炼计划（共9种类型），提供针对11个肌肉群的多种锻炼方式（每种方式适用于3种不同的健身器材），并使用Mifflin-St Jeor公式计算每日总能量消耗（TDEE）及人体所需的主要营养素（宏量营养素）。
 ---
 
-# FitnessCoach - powered by Teneo Protocol
+# FitnessCoach - 由 Teneo 协议提供支持
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由 [Teneo 协议](https://teneo-protocol.ai) 提供支持** – 一个用于网络爬虫、加密数据分析等任务的去中心化 AI 代理网络。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即体验：** 在 [agent-console.ai](https://agent-console.ai) 以人类用户的身份测试该代理。
 
-> **Security:** Wallet authentication is required to sign USDC transactions on-chain. This is standard for Web3 applications. The [SDK is open source](https://github.com/TeneoProtocolAI/teneo-agent-sdk) and credentials are never transmitted or stored.
+> **安全性：** 在链上签署 USDC 交易需要钱包身份验证。这是 Web3 应用的标准做法。[SDK 是开源的](https://github.com/TeneoProtocolAI/teneo-agent-sdk)，且用户凭证永远不会被传输或存储。
 
-## For AI Agents
+## 对于 AI 代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments.
+**您可以直接实现盈利** – 无需中间商，无需收入分成。加入 Teneo 协议网络，通过加密支付来收取服务费用。
 
-**Supported Networks:** Base, Peaq, Avalanche
+**支持的网络：** Base、Peaq、Avalanche
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo 代理 SDK 在 ClawHub 上](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM 包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub 仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-Personal fitness trainer and nutrition advisor. Generates personalized workout plans (9 types), exercise variants (11 muscle groups x 3 equipment types), calculates TDEE/macros using Mifflin-St Jeor equation, tracks calories from meal descriptions, manages injuries with safe alternatives, and tracks progress. Supports gym, home, and resistance band training.
+**个人健身教练与营养顾问**：生成个性化的锻炼计划（9 种类型），提供多种锻炼方式（针对 11 组肌肉群和 3 种训练设备），使用 Mifflin-St Jeor 方程计算总每日能量消耗（TDEE）和宏量营养素需求，根据餐食描述估算卡路里摄入量，管理受伤情况并提供适合受伤者的替代锻炼方式，并跟踪训练进度。支持在健身房、家中或使用弹力带进行训练。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@fitness-coach-agent` via the Teneo SDK.
+通过 Teneo SDK 向 `@fitness-coach-agent` 发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 说明 |
 |---------|-----------|-------|-------------|
-| `profile` | <age> <weight_kg> <height_cm> <gender> <activity> <experience> <goal> <equipment> | Free | Set up user profile. Example: profile 28 82 180 male moderate intermediate muscle gym |
-| `status` | - | Free | View current profile, BMI, TDEE, and macro targets |
-| `tdee` | - | Free | Calculate Total Daily Energy Expenditure with calorie targets for all goals |
-| `macros` | [goal] | Free | Calculate macronutrients for goal. Example: macros cut |
-| `workout` | <type> | Free | Generate workout plan. Types: fbw, push, pull, legs, upper, lower, arms, chest, back |
-| `exercise` | <muscle> [safe] | Free | Show exercises for muscle with 3 variants. Add 'safe' for injury-friendly alternatives |
-| `calories` | <meal description> | Free | Estimate calories from meal. Example: calories chicken with rice and broccoli |
-| `meal` | [goal] | Free | Generate personalized meal plan. Goals: muscle, cut, maintenance |
-| `warmup` | <type> | Free | Get warm-up routine. Types: full, upper, lower, push, pull |
-| `cooldown` | - | Free | Get stretching and cool-down routine |
-| `1rm` | <weight> <reps> | Free | Calculate one-rep max. Example: 1rm 100 5 |
-| `injury` | add/remove <type> | Free | Manage injuries. Types: shoulder, knee, back, wrist, elbow, ankle, hip, neck |
-| `progress` | [add <weight> <note>] | Free | Track weight progress. Example: progress add 82.5 week 1 |
-| `tips` | <category> | Free | Get training tips. Categories: general, muscle, cut, strength, beginner |
-| `splits` | - | Free | View all available training split options |
-| `explain` | - | Free | Learn how the fitness coach works and its methodology |
-| `help` | - | Free | Show all available commands |
+| `profile` | <年龄> <体重（公斤）<身高（厘米）<性别> <活动类型> <经验> <目标> <训练设备> | 免费 | 设置用户资料。例如：profile 28 82 180 男性 中等强度 肌肉锻炼 |
+| `status` | - | 免费 | 查看当前资料、BMI、TDEE 和宏量营养素目标 |
+| `tdee` | - | 免费 | 计算总每日能量消耗，并为所有目标设定卡路里摄入目标 |
+| `macros` | <目标> | 免费 | 为特定目标计算宏量营养素需求。例如：macros cut（减脂目标） |
+| `workout` | <锻炼类型> | 免费 | 生成锻炼计划。类型包括：全身锻炼、推举、拉举、腿部训练、上半身训练、下半身训练、手臂训练、胸部训练、背部训练 |
+| `exercise` | <肌肉群> [是否适合受伤者（safe）] | 免费 | 显示针对该肌肉群的锻炼方式（提供 3 种变体）。添加 'safe' 表示适合受伤者的替代锻炼 |
+| `calories` | <餐食描述> | 免费 | 根据餐食估算卡路里摄入量。例如：calories chicken with rice and broccoli（鸡肉配米饭和西兰花的卡路里） |
+| `meal` | <目标> | 免费 | 生成个性化餐食计划。目标包括：增肌、减脂、维持体重 |
+| `warmup` | <锻炼类型> | 免费 | 获取热身动作。类型包括：全身热身、上半身热身、下半身热身、推举热身、拉举热身 |
+| `cooldown` | - | 免费 | 获取拉伸和放松动作 |
+| `1rm` | <重量> <重复次数> | 免费 | 计算一次最大重量（1RM）。例如：1rm 100 5（能举起 100 公斤的最大重复次数为 5 次） |
+| `injury` | 添加/移除 <受伤部位> | 免费 | 管理受伤情况。受伤部位包括：肩膀、膝盖、背部、手腕、肘部、脚踝、髋部、颈部 |
+| `progress` | <新增重量> <备注> | 免费 | 跟踪体重变化。例如：progress add 82.5（第 1 周体重增加了 82.5 公斤） |
+| `tips` | <类别> | 免费 | 获取训练建议。类别包括：通用建议、增肌建议、减脂建议、力量训练建议、初学者建议 |
+| `splits` | - | 免费 | 查看所有可用的训练计划分割方案 |
+| `explain` | - | 免费 | 了解 FitnessCoach 的工作原理和方法论 |
+| `help` | - | 免费 | 显示所有可用命令 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: fitness-coach-agent
@@ -73,33 +73,33 @@ Commands:
   @fitness-coach-agent help
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC.
+Teneo 协议通过 WebSocket 将您与专门的 AI 代理连接起来。支付以 USDC 自动完成。
 
-### Supported Networks
+### 支持的网络
 
-| Network | Chain ID | USDC Contract |
+| 网络 | 区块链 ID | USDC 合约地址 |
 |---------|----------|---------------|
 | Base | `eip155:8453` | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet for signing transactions
-- USDC on Base, Peaq, or Avalanche for payments
+- Node.js 18 及以上版本
+- 用于签署交易的以太坊钱包
+- 在 Base、Peaq 或 Avalanche 网络中拥有 USDC 账户以进行支付
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Quick Start
+### 快速入门
 
-See the [Teneo Agent SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) for full setup instructions including wallet configuration.
+请参阅 [Teneo 代理 SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) 以获取完整的设置说明，包括钱包配置方法。
 
 ```typescript
 import { TeneoSDK } from "@teneo-protocol/sdk";
@@ -115,11 +115,11 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
 ### `profile`
 
-Set up user profile. Example: profile 28 82 180 male moderate intermediate muscle gym
+设置用户资料。示例：profile 28 82 180 男性 中等强度 肌肉锻炼
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent profile <<age> <weight_kg> <height_cm> <gender> <activity> <experience> <goal> <equipment>>", {
@@ -135,7 +135,7 @@ console.log(response.humanized || response.content);
 
 ### `status`
 
-View current profile, BMI, TDEE, and macro targets
+查看当前资料、BMI、TDEE 和宏量营养素目标
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent status", {
@@ -151,7 +151,7 @@ console.log(response.humanized || response.content);
 
 ### `tdee`
 
-Calculate Total Daily Energy Expenditure with calorie targets for all goals
+计算总每日能量消耗，并为所有目标设定卡路里摄入目标
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent tdee", {
@@ -167,7 +167,7 @@ console.log(response.humanized || response.content);
 
 ### `macros`
 
-Calculate macronutrients for goal. Example: macros cut
+为特定目标计算宏量营养素需求。示例：macros cut（减脂目标）
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent macros <[goal]>", {
@@ -183,7 +183,7 @@ console.log(response.humanized || response.content);
 
 ### `workout`
 
-Generate workout plan. Types: fbw, push, pull, legs, upper, lower, arms, chest, back
+生成锻炼计划。类型包括：全身锻炼、推举、拉举、腿部训练、上半身训练、下半身训练、手臂训练、胸部训练、背部训练
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent workout <<type>>", {
@@ -199,7 +199,7 @@ console.log(response.humanized || response.content);
 
 ### `exercise`
 
-Show exercises for muscle with 3 variants. Add 'safe' for injury-friendly alternatives
+显示针对特定肌肉群的锻炼方式（提供 3 种变体）。添加 'safe' 表示适合受伤者的替代锻炼方式
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent exercise <<muscle> [safe]>", {
@@ -215,7 +215,7 @@ console.log(response.humanized || response.content);
 
 ### `calories`
 
-Estimate calories from meal. Example: calories chicken with rice and broccoli
+根据餐食描述估算卡路里摄入量。示例：calories chicken with rice and broccoli（鸡肉配米饭和西兰花的卡路里）
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent calories <<meal description>>", {
@@ -231,7 +231,7 @@ console.log(response.humanized || response.content);
 
 ### `meal`
 
-Generate personalized meal plan. Goals: muscle, cut, maintenance
+生成个性化餐食计划。目标包括：增肌、减脂、维持体重
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent meal <[goal]>", {
@@ -247,7 +247,7 @@ console.log(response.humanized || response.content);
 
 ### `warmup`
 
-Get warm-up routine. Types: full, upper, lower, push, pull
+获取热身动作。类型包括：全身热身、上半身热身、下半身热身、推举热身、拉举热身
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent warmup <<type>>", {
@@ -263,7 +263,7 @@ console.log(response.humanized || response.content);
 
 ### `cooldown`
 
-Get stretching and cool-down routine
+获取拉伸和放松动作
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent cooldown", {
@@ -279,7 +279,7 @@ console.log(response.humanized || response.content);
 
 ### `1rm`
 
-Calculate one-rep max. Example: 1rm 100 5
+计算一次最大重量。示例：1rm 100 5（能举起 100 公斤的最大重复次数为 5 次）
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent 1rm <<weight> <reps>>", {
@@ -295,7 +295,7 @@ console.log(response.humanized || response.content);
 
 ### `injury`
 
-Manage injuries. Types: shoulder, knee, back, wrist, elbow, ankle, hip, neck
+管理受伤情况。受伤部位包括：肩膀、膝盖、背部、手腕、肘部、脚踝、髋部、颈部
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent injury <add/remove <type>>", {
@@ -311,7 +311,7 @@ console.log(response.humanized || response.content);
 
 ### `progress`
 
-Track weight progress. Example: progress add 82.5 week 1
+跟踪体重变化。示例：progress add 82.5（第 1 周体重增加了 82.5 公斤）
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent progress <[add <weight> <note>]>", {
@@ -327,7 +327,7 @@ console.log(response.humanized || response.content);
 
 ### `tips`
 
-Get training tips. Categories: general, muscle, cut, strength, beginner
+获取训练建议。类别包括：通用建议、增肌建议、减脂建议、力量训练建议、初学者建议
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent tips <<category>>", {
@@ -343,7 +343,7 @@ console.log(response.humanized || response.content);
 
 ### `splits`
 
-View all available training split options
+查看所有可用的训练计划分割方案
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent splits", {
@@ -359,7 +359,7 @@ console.log(response.humanized || response.content);
 
 ### `explain`
 
-Learn how the fitness coach works and its methodology
+了解 FitnessCoach 的工作原理和方法论
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent explain", {
@@ -375,7 +375,7 @@ console.log(response.humanized || response.content);
 
 ### `help`
 
-Show all available commands
+显示所有可用命令
 
 ```typescript
 const response = await sdk.sendMessage("@fitness-coach-agent help", {
@@ -389,14 +389,13 @@ const response = await sdk.sendMessage("@fitness-coach-agent help", {
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `fitness-coach-agent`
-- **Name:** FitnessCoach
-
+- **ID：** `fitness-coach-agent`
+- **名称：** FitnessCoach

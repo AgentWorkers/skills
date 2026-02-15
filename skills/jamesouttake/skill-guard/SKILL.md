@@ -1,105 +1,75 @@
 ---
 name: skill-guard
-description: Scan ClawHub skills for security vulnerabilities BEFORE installing. Use when installing new skills from ClawHub to detect prompt injections, malware payloads, hardcoded secrets, and other threats. Wraps clawhub install with mcp-scan pre-flight checks.
+description: 在安装新技能之前，请先扫描 ClawHub 中的技能以检测安全漏洞。该工具可用于检测潜在的命令注入、恶意软件负载、硬编码的密钥以及其他安全威胁。它会在安装 ClawHub 技能的过程中执行 mcp-scan 的预检查功能。
 ---
 
 # skill-guard
 
-**The only pre-install security gate for ClawHub skills.**
+**这是ClawHub技能安装前唯一的安全检查工具。**
 
-## Why skill-guard?
+## 为什么需要skill-guard？
 
-| | **VirusTotal** (ClawHub built-in) | **skillscanner** (Gen Digital) | **skill-guard** |
+| | **VirusTotal**（ClawHub内置） | **skillscanner**（Gen Digital） | **skill-guard** |
 |---|---|---|---|
-| **When it runs** | After publish (server-side) | On-demand lookup | **Before install (client-side)** |
-| **What it checks** | Malware signatures | Their database | **Actual skill content** |
-| **Prompt injections** | ❌ | ❌ | ✅ |
-| **Data exfiltration URLs** | ❌ | ❌ | ✅ |
-| **Hidden instructions** | ❌ | ❌ | ✅ |
-| **AI-specific threats** | ❌ | ❌ | ✅ |
-| **Install blocking** | ❌ | ❌ | ✅ |
+| **检查时机** | 发布后（服务器端） | 按需检查 | 安装前（客户端） |
+| **检查内容** | 恶意软件签名 | Gen Digital的数据库 | 技能的实际内容 |
+| **隐藏指令** | ❌ | ❌ | ✅ |
+| **数据泄露链接** | ❌ | ❌ | ✅ |
+| **隐藏的恶意指令** | ❌ | ❌ | ✅ |
+| **针对AI的威胁** | ❌ | ❌ | ✅ |
+| **阻止安装** | ❌ | ❌ | ✅ |
 
-**VirusTotal** catches known malware binaries — but won't flag `<!-- IGNORE PREVIOUS INSTRUCTIONS -->`.
+**VirusTotal**能够检测已知的恶意软件二进制文件，但无法识别某些特定的恶意指令（如`<!-- IGNORE PREVIOUS INSTRUCTIONS -->`）。  
+**skillscanner**会检查Gen Digital是否对技能进行了审核，但无法扫描新发布的或更新后的技能。  
+**skill-guard**使用[**mcp-scan**（https://github.com/invariantlabs-ai/mcp-scan，由Snyk收购）来分析技能的实际内容，能够检测针对AI的威胁，并在发现问题时阻止安装。**
 
-**skillscanner** checks if Gen Digital has reviewed it — but can't scan new or updated skills.
+## 问题所在
 
-**skill-guard** uses [mcp-scan](https://github.com/invariantlabs-ai/mcp-scan) (Invariant Labs, acquired by Snyk) to analyze what's actually in the skill, catches AI-specific threats, and blocks install if issues are found.
+技能中可能包含以下危险内容：  
+- 🎭 **隐藏的恶意指令**：用于绕过安全检查的指令  
+- 💀 **恶意代码**：伪装成正常文本的恶意命令  
+- 🔑 **明文存储的敏感信息**：API密钥、令牌等  
+- 📤 **数据泄露链接**：用于窃取对话内容、系统内存或文件的链接  
+- ⛓️ **有害的操作流程**：会导致系统执行恶意操作的指令  
 
-## The Problem
+**一个有问题的技能就可能导致整个代理系统被入侵。** 你的代理系统会默认信任所有技能的可靠性。  
 
-Skills can contain:
-- 🎭 **Prompt injections** — hidden "ignore previous instructions" attacks
-- 💀 **Malware payloads** — dangerous commands disguised in natural language  
-- 🔑 **Hardcoded secrets** — API keys, tokens in plain text
-- 📤 **Data exfiltration** — URLs that leak your conversations, memory, files
-- ⛓️ **Toxic flows** — instructions that chain into harmful actions
+## 解决方案
 
-**One bad skill = compromised agent.** Your agent trusts skills implicitly.
+**skill-guard**的工作流程如下：  
+1. 将技能文件下载到临时文件夹（`/tmp/`），避免直接访问原始技能文件夹。  
+2. 使用**mcp-scan**（由Invariant Labs/Snyk提供）对技能文件进行安全扫描。  
+3. 如果发现安全问题，**阻止安装**或**允许安全技能继续安装**。  
 
-## The Solution
+**实际案例**：  
+技能-guard成功检测到了这个恶意技能：  
+**VirusTotal**未能检测到任何恶意代码，但**mcp-scan**发现了问题并阻止了安装。  
 
-```bash
-# Instead of: clawhub install some-skill
-./scripts/safe-install.sh some-skill
-```
+## 使用方法  
 
-skill-guard:
-1. **Downloads to staging** (`/tmp/`) — never touches your real skills folder
-2. **Scans with mcp-scan** — Invariant/Snyk's security scanner for AI agents
-3. **Blocks or installs** — clean skills get installed, threats get quarantined
+**技能-guard**的具体使用方法如下：  
 
-## What It Catches
-
-Real example — skill-guard flagged this malicious skill:
-
-```
-● [E004]: Prompt injection detected (high risk)
-● [E006]: Malicious code pattern detected  
-● [W007]: Insecure credential handling
-● [W008]: Machine state compromise attempt
-● [W011]: Third-party content exposure
-```
-
-VirusTotal: 0/76 engines. **mcp-scan caught what antivirus missed.**
-
-## Usage
-
-```bash
-# Secure install (recommended)
-./scripts/safe-install.sh <skill-slug>
-
-# With version
-./scripts/safe-install.sh <skill-slug> --version 1.2.3
-
-# Force overwrite
-./scripts/safe-install.sh <skill-slug> --force
-```
-
-## Exit Codes
-
-| Code | Meaning | Action |
+## 错误代码及其含义  
+| 代码 | 含义 | 处理方式 |
 |------|---------|--------|
-| `0` | Clean | Skill installed ✓ |
-| `1` | Error | Check dependencies/network |
-| `2` | Threats found | Skill quarantined in `/tmp/`, review before deciding |
+| `0` | 技能安全无问题 | 安装成功 ✓ |
+| `1` | 检测到错误 | 检查技能的依赖关系或网络连接 |
+| `2` | 发现安全威胁 | 将技能文件隔离到`/tmp/`，请先审查后再决定是否安装 |
 
-## When Threats Are Found
+## 发现威胁时的处理方式  
+被隔离的技能文件会保存在`/tmp/skill-guard-staging/skills/<slug>/`目录中。你可以：  
+1. **仔细审查**扫描结果和文件内容。  
+2. **继续安装**：`mv /tmp/skill-guard-staging/skills/<slug> ~/.openclaw/workspace/skills/`  
+3. **删除该技能**：`rm -rf /tmp/skill-guard-staging/`  
 
-Skill stays in `/tmp/skill-guard-staging/skills/<slug>/` (quarantined). You can:
-1. **Review** — read the scan output, inspect the files
-2. **Install anyway** — `mv /tmp/skill-guard-staging/skills/<slug> ~/.openclaw/workspace/skills/`
-3. **Discard** — `rm -rf /tmp/skill-guard-staging/`
+## 所需工具  
+- **clawhub** CLI：`npm i -g clawhub`  
+- **uv**：`curl -LsSf https://astral.sh/uv/install.sh | sh`  
 
-## Requirements
+## 重要性说明  
+你的代理系统可能会访问你的文件和消息，甚至控制整个系统。一个恶意技能可能会导致：  
+- 敏感信息被窃取并发送到外部  
+- 代理系统的行为被永久修改  
+- 你的身份信息被用于攻击其他系统。  
 
-- `clawhub` CLI — `npm i -g clawhub`
-- `uv` — `curl -LsSf https://astral.sh/uv/install.sh | sh`
-
-## Why This Matters
-
-Your agent has access to your files, messages, maybe your whole machine. One malicious skill can:
-- Read your secrets and send them elsewhere
-- Modify your agent's behavior permanently  
-- Use your identity to spread to other systems
-
-**Trust, but verify.** Scan before you install.
+**请务必信任技能，但也要进行安全检查。** 在安装任何技能之前，务必先进行扫描。

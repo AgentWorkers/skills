@@ -1,42 +1,46 @@
 ---
 name: seedance-video
-description: "Generate AI videos using ByteDance Seedance. Use when the user wants to: (1) generate videos from text prompts, (2) generate videos from images (first frame, first+last frame, reference images), or (3) query/manage video generation tasks. Supports Seedance 1.5 Pro (with audio), 1.0 Pro, 1.0 Pro Fast, and 1.0 Lite models."
+description: "使用 ByteDance 的 Seedance 生成 AI 视频。适用于以下场景：  
+(1) 根据文本提示生成视频；  
+(2) 根据图片（第一帧、首尾帧或参考图片）生成视频；  
+(3) 查询或管理视频生成任务。  
+支持 Seedance 1.5 Pro（带音频）、1.0 Pro、1.0 Pro Fast 和 1.0 Lite 模型。"
 version: 1.0.0
 category: file-generation
 argument-hint: "[text prompt or task ID]"
 ---
 
-# Seedance Video Generation
+# Seedance 视频生成
 
-Generate AI videos using ByteDance Seedance models via the Volcengine Ark API.
+通过 Volcengine Ark API，使用 ByteDance Seedance 模型生成 AI 视频。
 
-## Prerequisites
+## 前提条件
 
-The user must set the `ARK_API_KEY` environment variable. You can set it by running:
+用户必须设置 `ARK_API_KEY` 环境变量。您可以通过运行以下命令来设置它：
 
 ```bash
 export ARK_API_KEY="your-api-key-here"
 ```
 
-**Base URL**: `https://ark.cn-beijing.volces.com/api/v3`
+**基础 URL**: `https://ark.cn-beijing.volces.com/api/v3`
 
-## Supported Models
+## 支持的模型
 
-| Model | Model ID | Capabilities |
+| 模型 | 模型 ID | 功能 |
 |-------|----------|-------------|
-| Seedance 1.5 Pro | `doubao-seedance-1-5-pro-251215` | Text-to-video, Image-to-video (first frame, first+last frame), Audio support, Draft mode |
-| Seedance 1.0 Pro | `doubao-seedance-1-0-pro-250428` | Text-to-video, Image-to-video (first frame, first+last frame) |
-| Seedance 1.0 Pro Fast | `doubao-seedance-1-0-pro-fast-250528` | Text-to-video, Image-to-video (first frame only) |
-| Seedance 1.0 Lite T2V | `doubao-seedance-1-0-lite-t2v-250219` | Text-to-video only |
-| Seedance 1.0 Lite I2V | `doubao-seedance-1-0-lite-i2v-250219` | Image-to-video (first frame, first+last frame, reference images 1-4) |
+| Seedance 1.5 Pro | `doubao-seedance-1-5-pro-251215` | 文本转视频、图片转视频（第一帧、首尾帧）、音频支持、草图模式 |
+| Seedance 1.0 Pro | `doubao-seedance-1-0-pro-250428` | 文本转视频、图片转视频（第一帧、首尾帧） |
+| Seedance 1.0 Pro Fast | `doubao-seedance-1-0-pro-fast-250528` | 文本转视频、图片转视频（仅第一帧） |
+| Seedance 1.0 Lite T2V | `doubao-seedance-1-0-lite-t2v-250219` | 仅文本转视频 |
+| Seedance 1.0 Lite I2V | `doubao-seedance-1-0-lite-i2v-250219` | 图片转视频（第一帧、首尾帧、参考图片 1-4） |
 
-**Default model**: `doubao-seedance-1-5-pro-251215` (latest, supports audio)
+**默认模型**: `doubao-seedance-1-5-pro-251215`（最新版本，支持音频）
 
-## Execution (Recommended: Python CLI Tool)
+## 执行方式（推荐：Python CLI 工具）
 
-A Python CLI tool is provided at `~/.claude/skills/seedance-video/seedance.py` for robust execution with proper error handling, automatic retries, and local image base64 conversion. **Prefer using this tool over raw curl commands.**
+在 `~/.claude/skills/seedance-video/seedance.py` 中提供了一个 Python CLI 工具，该工具具有强大的执行能力，包括适当的错误处理、自动重试和本地图像的 base64 转换功能。**建议使用此工具而不是原始的 curl 命令。**
 
-### Quick Examples with Python CLI
+### 使用 Python CLI 的快速示例
 
 ```bash
 # Text-to-video (create + wait + download)
@@ -76,13 +80,13 @@ python3 ~/.claude/skills/seedance-video/seedance.py list --status succeeded
 python3 ~/.claude/skills/seedance-video/seedance.py delete <TASK_ID>
 ```
 
-## Alternative: Raw curl Commands
+## 替代方案：原始的 curl 命令
 
-### Step 1: Create Video Generation Task
+### 第一步：创建视频生成任务
 
-Determine the generation mode based on user input, then call the API.
+根据用户输入确定生成模式，然后调用 API。
 
-#### Mode A: Text-to-Video
+#### 模式 A：文本转视频
 
 ```bash
 TASK_RESULT=$(curl -s -X POST "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks" \
@@ -106,11 +110,11 @@ TASK_ID=$(echo "$TASK_RESULT" | python3 -c "import sys,json; print(json.load(sys
 echo "Task created: $TASK_ID"
 ```
 
-#### Mode B: Image-to-Video (First Frame)
+#### 模式 B：图片转视频（第一帧）
 
-The user provides one image as the first frame. The image can be a URL or local file path (convert to base64).
+用户提供一张图片作为第一帧。图片可以是 URL 或本地文件路径（需要转换为 base64 格式）。
 
-**With image URL:**
+**使用图片 URL：**
 ```bash
 TASK_RESULT=$(curl -s -X POST "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks" \
   -H "Content-Type: application/json" \
@@ -138,7 +142,7 @@ TASK_ID=$(echo "$TASK_RESULT" | python3 -c "import sys,json; print(json.load(sys
 echo "Task created: $TASK_ID"
 ```
 
-**With local image file (convert to base64):**
+**使用本地图片文件（转换为 base64 格式）：**
 ```bash
 IMG_PATH="/path/to/image.png"
 IMG_EXT="${IMG_PATH##*.}"
@@ -172,9 +176,9 @@ TASK_ID=$(echo "$TASK_RESULT" | python3 -c "import sys,json; print(json.load(sys
 echo "Task created: $TASK_ID"
 ```
 
-#### Mode C: Image-to-Video (First + Last Frame)
+#### 模式 C：图片转视频（首尾帧）
 
-Requires two images. Supported by: Seedance 1.5 Pro, 1.0 Pro, 1.0 Lite I2V.
+需要两张图片。支持模型：Seedance 1.5 Pro、1.0 Pro、1.0 Lite I2V。
 
 ```bash
 TASK_RESULT=$(curl -s -X POST "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks" \
@@ -208,9 +212,9 @@ TASK_ID=$(echo "$TASK_RESULT" | python3 -c "import sys,json; print(json.load(sys
 echo "Task created: $TASK_ID"
 ```
 
-#### Mode D: Reference Image-to-Video (Seedance 1.0 Lite I2V only)
+#### 模式 D：参考图片转视频（仅支持 Seedance 1.0 Lite I2V）
 
-Provide 1-4 reference images. Use `[图1]`, `[图2]` in prompt to reference specific images.
+提供 1-4 张参考图片。在提示中使用 `[图1]`、`[图2]` 来引用特定的图片。
 
 ```bash
 TASK_RESULT=$(curl -s -X POST "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks" \
@@ -238,9 +242,9 @@ TASK_ID=$(echo "$TASK_RESULT" | python3 -c "import sys,json; print(json.load(sys
 echo "Task created: $TASK_ID"
 ```
 
-### Step 2: Poll for Task Completion
+### 第二步：查询任务完成情况
 
-Video generation is asynchronous. Poll the task status until it completes.
+视频生成是异步的。需要定期查询任务状态，直到任务完成。
 
 ```bash
 echo "Waiting for video generation to complete..."
@@ -269,7 +273,7 @@ while true; do
 done
 ```
 
-### Step 3: Download and Open Video
+### 第三步：下载并打开视频
 
 ```bash
 OUTPUT_PATH="$HOME/Desktop/seedance_video_$(date +%Y%m%d_%H%M%S).mp4"
@@ -278,33 +282,33 @@ echo "Video saved to: $OUTPUT_PATH"
 open "$OUTPUT_PATH"
 ```
 
-## Optional Parameters Reference
+## 可选参数参考
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `model` | string | `doubao-seedance-1-5-pro-251215` | Model ID to use |
-| `ratio` | string | `16:9` (text2vid) / `adaptive` (img2vid) | Aspect ratio: `16:9`, `4:3`, `1:1`, `3:4`, `9:16`, `21:9`, `adaptive` |
-| `duration` | integer | `5` | Video duration in seconds (4-12 for 1.5 Pro, 2-12 for others). Set `-1` for auto (1.5 Pro only) |
-| `resolution` | string | `720p` | Resolution: `480p`, `720p`, `1080p` |
-| `seed` | integer | `-1` | Random seed for reproducibility. -1 = random |
-| `camera_fixed` | boolean | `false` | Fix camera position |
-| `watermark` | boolean | `false` | Add watermark to video |
-| `generate_audio` | boolean | `true` | Generate synchronized audio (Seedance 1.5 Pro only) |
-| `draft` | boolean | `false` | Generate draft/preview video at lower cost (Seedance 1.5 Pro only, forces 480p) |
-| `return_last_frame` | boolean | `false` | Return last frame image URL (for chaining consecutive videos) |
-| `service_tier` | string | `default` | `default` (online) or `flex` (offline, 50% cheaper, slower) |
-| `execution_expires_after` | integer | `172800` | Task timeout in seconds (3600-259200) |
+| `model` | 字符串 | `doubao-seedance-1-5-pro-251215` | 要使用的模型 ID |
+| `ratio` | 字符串 | `16:9`（文本转视频）/ `adaptive`（图片转视频） | 宽高比：`16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive` |
+| `duration` | 整数 | `5` | 视频时长（秒）（1.5 Pro 为 4-12 秒，其他模型为 2-12 秒）。设置为 `-1` 表示自动选择（仅限 1.5 Pro） |
+| `resolution` | 字符串 | `720p` | 分辨率：`480p`、`720p`、`1080p` |
+| `seed` | 整数 | `-1` | 随机种子，用于保证结果的一致性。-1 表示随机生成 |
+| `camera_fixed` | 布尔值 | `false` | 固定摄像机位置 |
+| `watermark` | 布尔值 | `false` | 在视频中添加水印 |
+| `generate_audio` | 布尔值 | `true` | 生成同步音频（仅限 Seedance 1.5 Pro） |
+| `draft` | 布尔值 | `false` | 生成草图/预览视频（成本较低，仅限 Seedance 1.5 Pro，强制使用 480p 分辨率） |
+| `return_last_frame` | 布尔值 | `false` | 返回最后一帧图片的 URL（用于连续生成视频） |
+| `service_tier` | 字符串 | `default` | `default`（在线）或 `flex`（离线，价格便宜 50%，但速度较慢） |
+| `execution_expires_after` | 整数 | `172800` | 任务超时时间（秒）（3600-259200） |
 
-## Additional Operations
+## 其他操作
 
-### Query Task Status
+### 查询任务状态
 
 ```bash
 curl -s -X GET "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks/${TASK_ID}" \
   -H "Authorization: Bearer $ARK_API_KEY" | python3 -m json.tool
 ```
 
-### List Tasks
+### 列出任务
 
 ```bash
 # List all tasks (paginated)
@@ -316,18 +320,18 @@ curl -s -X GET "https://ark.cn-beijing.volces.com/api/v3/contents/generations/ta
   -H "Authorization: Bearer $ARK_API_KEY" | python3 -m json.tool
 ```
 
-### Cancel or Delete Task
+### 取消或删除任务
 
 ```bash
 curl -s -X DELETE "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks/${TASK_ID}" \
   -H "Authorization: Bearer $ARK_API_KEY"
 ```
 
-Note: `queued` tasks will be cancelled; `succeeded`/`failed`/`expired` tasks will be deleted from history.
+注意：已排队的任务将被取消；已完成/失败/过期的任务将从历史记录中删除。
 
-### Generate Consecutive Videos (Using Last Frame)
+### 生成连续视频（使用上一帧）
 
-Set `return_last_frame: true` on the first task, then use the returned `last_frame_url` as the first frame of the next task.
+在第一个任务中设置 `return_last_frame: true`，然后使用返回的 `last_frame_url` 作为下一个任务的第一帧。
 
 ```bash
 # Get last frame URL from completed task
@@ -338,9 +342,9 @@ LAST_FRAME_URL=$(curl -s -X GET "https://ark.cn-beijing.volces.com/api/v3/conten
 # ... (use Mode B with LAST_FRAME_URL as the image URL)
 ```
 
-### Draft Mode (Seedance 1.5 Pro)
+### 草图模式（Seedance 1.5 Pro）
 
-Generate a cheap preview first, then produce the final video if satisfied:
+首先生成一个低成本的预览视频，如果满意后再生成最终版本：
 
 ```bash
 # Step 1: Create draft
@@ -373,26 +377,26 @@ FINAL_RESULT=$(curl -s -X POST "https://ark.cn-beijing.volces.com/api/v3/content
   }')
 ```
 
-## Image Requirements
+## 图片要求
 
-- Formats: jpeg, png, webp, bmp, tiff, gif (1.5 Pro also supports heic, heif)
-- Aspect ratio (width/height): between 0.4 and 2.5
-- Dimensions: 300-6000 px per side
-- Max file size: 30 MB
+- 格式：jpeg、png、webp、bmp、tiff、gif（1.5 Pro 还支持 heic、heif）
+- 宽高比：介于 0.4 和 2.5 之间
+- 尺寸：每边 300-6000 像素
+- 最大文件大小：30 MB
 
 ## 通过飞书发送视频文件（OpenClaw）
 
-详见 [how_to_send_video_via_feishu_app.md](how_to_send_video_via_feishu_app.md)
+详情请参阅 [how_to_send_video_via_feishu_app.md](how_to_send_video_via_feishu_app.md)
 
-## Rules
+## 规则
 
-1. **Always check** that `ARK_API_KEY` is set before making API calls: `[ -z "$ARK_API_KEY" ] && echo "Error: ARK_API_KEY not set" && exit 1`
-2. **Default to Seedance 1.5 Pro** (`doubao-seedance-1-5-pro-251215`) unless user requests a specific model.
-3. **Default to 720p, 16:9, 5 seconds, with audio** for text-to-video.
-4. **Default to adaptive ratio** for image-to-video (auto-adapts to the input image).
-5. **Poll interval**: 15 seconds between status checks.
-6. **Video URLs expire in 24 hours** - always download immediately after generation.
-7. **Task history is kept for 7 days only**.
-8. For local image files, convert to base64 data URL format before sending.
-9. Always show the user the task ID so they can check status later.
-10. When generation fails, display the error message clearly and suggest possible fixes.
+1. 在进行 API 调用之前，**务必检查** `ARK_API_KEY` 是否已设置：`[ -z "$ARK_API_KEY" ] && echo "Error: ARK_API_KEY not set" && exit 1`
+2. 除非用户请求特定的模型，否则默认使用 Seedance 1.5 Pro (`doubao-seedance-1-5-pro-251215`)。
+3. 文本转视频的默认设置为 720p、16:9 分辨率、5 秒时长，并包含音频。
+4. 图片转视频的默认设置为自适应宽高比（根据输入图片自动调整）。
+5. 状态查询间隔为 15 秒。
+6. 视频 URL 有效期为 24 小时——生成后立即下载。
+7. 任务历史记录仅保留 7 天。
+8. 对于本地图片文件，在发送之前需要将其转换为 base64 数据 URL 格式。
+9. 始终向用户显示任务 ID，以便他们后续可以查询任务状态。
+10. 如果生成失败，要清晰地显示错误信息并提供可能的解决方法。

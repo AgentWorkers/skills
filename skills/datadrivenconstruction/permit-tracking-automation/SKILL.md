@@ -1,24 +1,24 @@
 ---
 slug: "permit-tracking-automation"
 display_name: "Permit Tracking Automation"
-description: "Automate construction permit tracking and management. Monitor application status, track renewal deadlines, manage document requirements, and integrate with municipal systems."
+description: "自动化建设许可证的跟踪与管理。监控申请状态，追踪续期截止日期，管理文件要求，并与市政系统进行集成。"
 ---
 
-# Permit Tracking Automation
+# 允许跟踪自动化
 
-## Overview
+## 概述
 
-This skill implements automated permit tracking for construction projects. Monitor permit status, manage document requirements, track deadlines, and integrate with local authority systems.
+该功能实现了建筑项目许可的自动化跟踪。可以监控许可状态、管理文件要求、跟踪截止日期，并与当地政府系统进行集成。
 
-**Capabilities:**
-- Permit application tracking
-- Document management
-- Deadline monitoring
-- Status notifications
-- Compliance checking
-- Renewal automation
+**功能包括：**
+- 许可申请跟踪
+- 文件管理
+- 截止日期监控
+- 状态通知
+- 合规性检查
+- 许可证自动续期
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -105,9 +105,9 @@ status = check_permit_status(permit)
 print(f"Valid: {status['is_valid']}, Alerts: {status['alerts']}")
 ```
 
-## Comprehensive Permit Management System
+## 全面许可管理系统
 
-### Permit Data Model
+### 许可证数据模型
 
 ```python
 from dataclasses import dataclass, field
@@ -241,7 +241,7 @@ class PermitApplication:
         }
 ```
 
-### Permit Tracking Engine
+### 许可证跟踪引擎
 
 ```python
 from datetime import date, datetime, timedelta
@@ -439,7 +439,7 @@ class PermitTracker:
                 break
 ```
 
-### Deadline Monitoring
+### 截止日期监控
 
 ```python
 from datetime import date, timedelta
@@ -585,7 +585,7 @@ class DeadlineMonitor:
         return dict(sorted(calendar.items()))
 ```
 
-### Reporting
+### 报告
 
 ```python
 import pandas as pd
@@ -630,25 +630,25 @@ def generate_permit_report(tracker: PermitTracker, output_path: str) -> str:
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Permit Type | Typical Documents | Review Time |
+| 许可证类型 | 典型文件 | 审核时间 |
 |-------------|-------------------|-------------|
-| Building | Site plan, drawings, calculations | 2-8 weeks |
-| Electrical | E-plans, load calc, panel schedule | 1-4 weeks |
-| Plumbing | P-plans, fixture schedule, risers | 1-4 weeks |
-| Mechanical | M-plans, equipment schedule | 1-4 weeks |
-| Fire | Fire alarm, sprinkler plans | 2-6 weeks |
-| Demolition | Demo plan, survey, abatement | 1-3 weeks |
+| 建筑许可 | 现场平面图、图纸、计算书 | 2-8周 |
+| 电气许可 | 电气设计图、负荷计算书、配电盘布置图 | 1-4周 |
+| 给排水许可 | 给排水设计图、设备布置图 | 1-4周 |
+| 机械许可 | 机械设计图、设备清单 | 1-4周 |
+| 消防许可 | 消防报警系统设计图、喷水灭火系统设计图 | 2-6周 |
+| 拆除许可 | 拆除计划、现场勘测报告、污染治理方案 | 1-3周 |
 
-## Resources
+## 资源
 
-- **International Building Code (IBC)**: Building standards
-- **Local AHJ Websites**: Authority Having Jurisdiction portals
-- **DDC Website**: https://datadrivenconstruction.io
+- **国际建筑规范（IBC）**：建筑行业标准
+- **当地主管部门网站**：具有管辖权的政府部门官方网站
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `document-classification-nlp` for document processing
-- See `n8n-workflow-automation` for notification workflows
-- See `safety-compliance-checker` for inspection integration
+- 请参阅`document-classification-nlp`以了解文件处理流程
+- 请参阅`n8n-workflow-automation`以了解通知工作流程
+- 请参阅`safety-compliance-checker`以了解检查集成方案

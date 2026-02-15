@@ -1,27 +1,28 @@
 ---
 name: aegis-security-hackathon
 version: 1.0.0
-description: Blockchain security scanner for AI agents (testnet). Pay with Base Sepolia USDC via x402 protocol.
+description: **AI代理用区块链安全扫描器（测试网）**  
+支持通过 **x402协议** 使用 **Base Sepolia USDC** 进行支付。
 homepage: https://hackathon.aegis402.xyz
 metadata: {"emoji":"🛡️","category":"blockchain-security","api_base":"https://hackathon.aegis402.xyz/v1","network":"testnet"}
 ---
 
-# Aegis402 Shield Protocol (Hackathon/Testnet)
+# Aegis402 防护协议（黑客马拉松/测试网）
 
-Blockchain security API for AI agents. **Testnet version** - pay with Base Sepolia USDC.
+这是一个用于人工智能代理的区块链安全 API。**测试网版本**，支持使用 Base Sepolia 的 USDC 进行支付。
 
-> ⚠️ This is the hackathon/testnet deployment. For production, use [aegis-security](https://aegis402.xyz/skill.md).
+> ⚠️ 请注意：此版本仅用于黑客马拉松或测试环境。如需生产环境使用，请访问 [aegis-security](https://aegis402.xyz/skill.md)。
 
-## Skill Files
+## 技能文件
 
-| File | URL |
+| 文件名 | URL |
 |------|-----|
-| **SKILL.md** (this file) | `https://hackathon.aegis402.xyz/skill.md` |
-| **package.json** (metadata) | `https://hackathon.aegis402.xyz/skill.json` |
+| **SKILL.md** （当前文件） | `https://hackathon.aegis402.xyz/skill.md` |
+| **package.json** （元数据） | `https://hackathon.aegis402.xyz/skill.json` |
 
-**Base URL:** `https://hackathon.aegis402.xyz/v1`
+**基础 URL：** `https://hackathon.aegis402.xyz/v1`
 
-## Quick Start
+## 快速入门
 
 ```bash
 npm install @x402/fetch @x402/evm
@@ -41,33 +42,33 @@ const res = await fetch402('https://hackathon.aegis402.xyz/v1/check-token/0xA0b8
 const data = await res.json();
 ```
 
-**Requirements:** Testnet USDC on Base Sepolia (chain ID 84532)
+**使用要求：** 需要拥有 Base Sepolia 链上的测试网 USDC（链 ID：84532）
 
-**Get testnet USDC:** [Base Sepolia Faucet](https://www.coinbase.com/faucets/base-ethereum-sepolia-faucet)
+**获取测试网 USDC：** [Base Sepolia 提款机](https://www.coinbase.com/faucets/base-ethereum-sepolia-faucet)
 
 ---
 
-## Pricing (Testnet USDC)
+## 价格（测试网 USDC）
 
-| Endpoint | Price | Use Case |
+| 端点 | 价格 | 用途 |
 |----------|-------|----------|
-| `POST /simulate-tx` | $0.05 | Transaction simulation, DeFi safety |
-| `GET /check-token/:address` | $0.01 | Token honeypot detection |
-| `GET /check-address/:address` | $0.005 | Address reputation check |
+| `POST /simulate-tx` | $0.05 | 交易模拟，DeFi 安全性检测 |
+| `GET /check-token/:address` | $0.01 | 检测代币中的恶意代码（“蜜罐”） |
+| `GET /check-address/:address` | $0.005 | 检查地址的安全性 |
 
 ---
 
-## Endpoints
+## 端点详情
 
-### Check Token ($0.01)
+### 检测代币（$0.01）
 
-Scan any token for honeypots, scams, and risks.
+扫描代币以发现恶意代码、诈骗行为或其他风险。
 
 ```bash
 curl "https://hackathon.aegis402.xyz/v1/check-token/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48?chain_id=1"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -78,15 +79,15 @@ curl "https://hackathon.aegis402.xyz/v1/check-token/0xA0b86991c6218b36c1d19D4a2e
 }
 ```
 
-### Check Address ($0.005)
+### 检查地址（$0.005）
 
-Verify if address is flagged for phishing or poisoning.
+验证地址是否被标记为钓鱼或恶意攻击的目标。
 
 ```bash
 curl "https://hackathon.aegis402.xyz/v1/check-address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
@@ -97,9 +98,9 @@ curl "https://hackathon.aegis402.xyz/v1/check-address/0x742d35Cc6634C0532925a3b8
 }
 ```
 
-### Simulate Transaction ($0.05)
+### 模拟交易（$0.05）
 
-Predict balance changes and detect threats before signing.
+在签署交易前预测账户余额变化并检测潜在威胁。
 
 ```bash
 curl -X POST "https://hackathon.aegis402.xyz/v1/simulate-tx" \
@@ -113,7 +114,7 @@ curl -X POST "https://hackathon.aegis402.xyz/v1/simulate-tx" \
   }'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "isSafe": true,
@@ -130,22 +131,21 @@ curl -X POST "https://hackathon.aegis402.xyz/v1/simulate-tx" \
 
 ---
 
-## x402 Payment Flow (Testnet)
+## x402 支付流程（测试网）
 
-1. Agent calls any paid endpoint
-2. Receives `402 Payment Required` with Base Sepolia payment instructions
-3. Pays testnet USDC on Base Sepolia (chain ID: 84532)
-4. Retries request with payment proof header
-5. Gets security scan result
+1. 代理调用相应的付费端点。
+2. 收到提示“需要支付 402 USDC”的信息，并根据提示在 Base Sepolia 链（链 ID：84532）上进行支付。
+3. 重新提交请求，并附上支付证明。
+4. 获取安全扫描结果。
 
-**Network:** Base Sepolia (eip155:84532)
-**Currency:** Testnet USDC
+**网络：** Base Sepolia（EIP：155:84532）
+**货币：** 测试网 USDC
 
 ---
 
-## Use Cases for AI Agents
+## 人工智能代理的用途
 
-### Before Swapping Tokens
+### 在交换代币之前
 ```typescript
 const tokenCheck = await fetch402(`https://hackathon.aegis402.xyz/v1/check-token/${tokenAddress}?chain_id=8453`);
 const { isHoneypot, trustScore } = await tokenCheck.json();
@@ -155,7 +155,7 @@ if (isHoneypot || trustScore < 50) {
 }
 ```
 
-### Before Signing Transactions
+### 在签署交易之前
 ```typescript
 const simulation = await fetch402('https://hackathon.aegis402.xyz/v1/simulate-tx', {
   method: 'POST',
@@ -172,21 +172,21 @@ if (!isSafe || riskLevel === 'CRITICAL') {
 
 ---
 
-## Risk Levels
+## 风险等级
 
-| Level | Meaning |
+| 等级 | 含义 |
 |-------|---------|
-| `SAFE` | No issues detected |
-| `LOW` | Minor concerns, generally safe |
-| `MEDIUM` | Some risks, proceed with caution |
-| `HIGH` | Significant risks detected |
-| `CRITICAL` | Do not proceed |
+| `SAFE` | 未检测到任何问题 |
+| `LOW` | 存在轻微风险，一般安全 |
+| `MEDIUM` | 存在部分风险，请谨慎操作 |
+| `HIGH` | 检测到重大风险 |
+| `CRITICAL` | 严禁继续操作 |
 
 ---
 
-## Supported Chains (for scanning)
+## 支持的区块链
 
-| Chain | ID | check-token | check-address | simulate-tx |
+| 链名 | ID | 检测代币功能 | 检查地址功能 | 模拟交易功能 |
 |-------|-----|-------------|---------------|-------------|
 | Ethereum | 1 | ✅ | ✅ | ✅ |
 | Base | 8453 | ✅ | ✅ | ✅ |
@@ -197,7 +197,7 @@ if (!isSafe || riskLevel === 'CRITICAL') {
 
 ---
 
-## Health Check (Free)
+## 健康检查（免费）
 
 ```bash
 curl https://hackathon.aegis402.xyz/health
@@ -205,13 +205,13 @@ curl https://hackathon.aegis402.xyz/health
 
 ---
 
-## Links
+## 链接
 
-- **Hackathon API**: https://hackathon.aegis402.xyz
-- **Production API**: https://aegis402.xyz
-- **GitHub**: https://github.com/SwiftAdviser/aegis-402-shield-protocol
-- **x402 Protocol**: https://docs.x402.org
+- **黑客马拉松 API：** https://hackathon.aegis402.xyz
+- **生产环境 API：** https://aegis402.xyz
+- **GitHub 仓库：** https://github.com/SwiftAdviser/aegis-402-shield-protocol
+- **x402 协议文档：** https://docs.x402.org
 
 ---
 
-🛡️ Built for the Agentic Economy. Powered by x402 Protocol.
+🛡️ 专为“代理经济”（Agent Economy）设计，由 x402 协议提供支持。

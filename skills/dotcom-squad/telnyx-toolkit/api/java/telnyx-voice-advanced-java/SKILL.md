@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice Advanced - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,13 +31,13 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Update client state
+## 更新客户端状态
 
-Updates client state
+更新客户端状态：
 
-`PUT /calls/{call_control_id}/actions/client_state_update` — Required: `client_state`
+`PUT /calls/{call_control_id}/actions/client_state_update` — 必需参数：`client_state`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionUpdateClientStateParams;
@@ -49,11 +50,11 @@ ActionUpdateClientStateParams params = ActionUpdateClientStateParams.builder()
 ActionUpdateClientStateResponse response = client.calls().actions().updateClientState(params);
 ```
 
-## SIP Refer a call
+## SIP 转接呼叫
 
-Initiate a SIP Refer on a Call Control call.
+在呼叫控制过程中发起 SIP 转接：
 
-`POST /calls/{call_control_id}/actions/refer` — Required: `sip_address`
+`POST /calls/{call_control_id}/actions/refer` — 必需参数：`sip_address`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionReferParams;
@@ -66,11 +67,11 @@ ActionReferParams params = ActionReferParams.builder()
 ActionReferResponse response = client.calls().actions().refer(params);
 ```
 
-## Send DTMF
+## 发送 DTMF 音调
 
-Sends DTMF tones from this leg.
+从当前通话链路发送 DTMF 音调：
 
-`POST /calls/{call_control_id}/actions/send_dtmf` — Required: `digits`
+`POST /calls/{call_control_id}/actions/send_dtmf` — 必需参数：`digits`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionSendDtmfParams;
@@ -83,9 +84,9 @@ ActionSendDtmfParams params = ActionSendDtmfParams.builder()
 ActionSendDtmfResponse response = client.calls().actions().sendDtmf(params);
 ```
 
-## SIPREC start
+## 启动 SIPREC 会话
 
-Start siprec session to configured in SIPREC connector SRS.
+启动在 SIPREC 连接器中配置的 SIPREC 会话：
 
 `POST /calls/{call_control_id}/actions/siprec_start`
 
@@ -96,9 +97,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStartSiprecResponse;
 ActionStartSiprecResponse response = client.calls().actions().startSiprec("call_control_id");
 ```
 
-## SIPREC stop
+## 停止 SIPREC 会话
 
-Stop SIPREC session.
+停止 SIPREC 会话：
 
 `POST /calls/{call_control_id}/actions/siprec_stop`
 
@@ -109,7 +110,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStopSiprecResponse;
 ActionStopSiprecResponse response = client.calls().actions().stopSiprec("call_control_id");
 ```
 
-## Noise Suppression Start (BETA)
+## 启用噪声抑制（测试版）
+
+启用噪声抑制功能：
 
 `POST /calls/{call_control_id}/actions/suppression_start`
 
@@ -120,7 +123,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStartNoiseSuppressionResponse;
 ActionStartNoiseSuppressionResponse response = client.calls().actions().startNoiseSuppression("call_control_id");
 ```
 
-## Noise Suppression Stop (BETA)
+## 停用噪声抑制（测试版）
+
+停用噪声抑制功能：
 
 `POST /calls/{call_control_id}/actions/suppression_stop`
 
@@ -131,11 +136,11 @@ import com.telnyx.sdk.models.calls.actions.ActionStopNoiseSuppressionResponse;
 ActionStopNoiseSuppressionResponse response = client.calls().actions().stopNoiseSuppression("call_control_id");
 ```
 
-## Switch supervisor role
+## 切换监督者角色
 
-Switch the supervisor role for a bridged call.
+切换桥接呼叫的监督者角色：
 
-`POST /calls/{call_control_id}/actions/switch_supervisor_role` — Required: `role`
+`POST /calls/{call_control_id}/actions/switch_supervisor_role` — 必需参数：`role`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionSwitchSupervisorRoleParams;
@@ -150,16 +155,16 @@ ActionSwitchSupervisorRoleResponse response = client.calls().actions().switchSup
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 webhook 事件会被发送到您配置的 webhook URL。所有 webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callReferStarted` | Call Refer Started |
-| `callReferCompleted` | Call Refer Completed |
-| `callReferFailed` | Call Refer Failed |
-| `callSiprecStarted` | Call Siprec Started |
-| `callSiprecStopped` | Call Siprec Stopped |
-| `callSiprecFailed` | Call Siprec Failed |
+| `callReferStarted` | 转接呼叫开始 |
+| `callReferCompleted` | 转接呼叫完成 |
+| `callReferFailed` | 转接呼叫失败 |
+| `callSiprecStarted` | SIPREC 会话开始 |
+| `callSiprecStopped` | SIPREC 会话停止 |
+| `callSiprecFailed` | SIPREC 会话失败 |
+```

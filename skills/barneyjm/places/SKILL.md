@@ -1,12 +1,12 @@
 ---
 name: places
-description: "Locate places using flexible query formats - free-form search or structured address components. Returns coordinates, addresses, and optional street-level photos. Use for geocoding addresses or finding specific named places."
+description: "使用灵活的查询格式来定位地点——支持自由形式的搜索或结构化的地址信息。查询结果包括坐标、地址以及可选的街道级照片。该功能可用于地址的地理编码或查找特定的名称地点。"
 metadata: {"clawdbot":{"emoji":"📌","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 的位置智能套件。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅行规划、房地产信息、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划器），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,34 +16,34 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill places
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install places
 # or: pnpm dlx clawhub@latest install places
 # or: bunx clawhub@latest install places
 ```
 
-# Places - Flexible Place Lookup
+### 地点 - 灵活的地点查询
 
-Locate places using free-form queries or structured address components. Supports geocoding, place lookup, and optional street-level imagery.
+您可以使用自由形式的查询或结构化的地址信息来查找地点。该技能支持地理编码、地点查询，并提供可选的街道级图像。
 
-## Places vs Query
+## 地点与查询的对比
 
-| Feature | `/places` | `/query` |
+| 功能 | `/places` | `/query` |
 |---------|-----------|----------|
-| Method | POST | GET |
-| Input | Free-form OR structured address | Natural language with context |
-| Coordinates | Returns them (geocoding) | Can auto-generate for search center |
-| AI Ranking | No | Yes |
-| Photos | Optional street-level imagery | No |
-| Best For | "Eiffel Tower", address lookup | "quiet cafes near Times Square" |
+| 方法 | POST | GET |
+| 输入 | 自由形式或结构化地址 | 带有上下文的自然语言查询 |
+| 坐标 | 可通过地理编码获取 | 可自动生成搜索中心坐标 |
+| 人工智能排名 | 不支持 | 支持 |
+| 照片 | 可选（街道级图像） | 不支持 |
+| 适用场景 | 例如：查询“埃菲尔铁塔”或地址信息 | 例如：查找“时代广场附近的安静咖啡馆” |
 
-**Use `/places`** for geocoding addresses or finding specific named places.
-**Use `/query`** for natural language queries with AI ranking.
+- 使用 `/places` 进行地址的地理编码或特定地点的查询。
+- 使用 `/query` 进行带有人工智能排名的自然语言查询。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -51,13 +51,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月 1,000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -67,11 +67,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+然后重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Free-form search for a landmark
@@ -87,9 +87,9 @@ Restart Claude Code.
 ./scripts/places.sh '{"city": "San Francisco", "state": "California", "limit": 5}'
 ```
 
-### Via curl (direct API calls)
+### 通过 curl（直接 API 调用）
 
-The skill is named `places` but calls the `/search` API endpoint. For direct API calls:
+该技能的名称是 `places`，但实际上它调用了 `/search` API 端点。以下是直接使用 curl 进行 API 调用的示例：
 
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
@@ -98,26 +98,26 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/search"
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| query | string | No* | - | Free-form search (e.g., "Eiffel Tower", "Central Park") |
-| amenity | string | No | - | Amenity/POI type |
-| street | string | No | - | Street name and number |
-| city | string | No | - | City name |
-| county | string | No | - | County name |
-| state | string | No | - | State or province |
-| country | string | No | - | Country name or code |
-| postalcode | string | No | - | Postal/ZIP code |
-| limit | int | No | 10 | Maximum results (1-50) |
-| include_photos | bool | No | false | Include street-level imagery |
-| photo_radius | int | No | 100 | Photo search radius in meters (10-500) |
-| mode | string | No | "basic" | "basic" or "advanced" search depth |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+|---------|------|----------|---------|-------------|
+| query | 字符串 | 否 | - | 自由形式的搜索内容（例如：“埃菲尔铁塔”或“中央公园”） |
+| amenity | 字符串 | 否 | - | 地点类型（如餐厅、酒店等） |
+| street | 字符串 | 否 | - | 街道名称和门牌号 |
+| city | 字符串 | 否 | - | 城市名称 |
+| county | 字符串 | 否 | - | 县份名称 |
+| state | 字符串 | 否 | - | 州或省份名称 |
+| country | 字符串 | 否 | - | 国家名称或代码 |
+| postalcode | 字符串 | 否 | - | 邮政编码 |
+| limit | 整数 | 否 | 10 | 最大返回结果数量（1-50） |
+| include_photos | 布尔值 | 否 | false | 是否包含街道级图像 |
+| photo_radius | 整数 | 否 | 100 | 照片搜索半径（单位：米，范围 10-500） |
+| mode | 字符串 | 否 | "basic" | "advanced"（搜索模式，影响返回数据的详细程度） |
 
-*Either `query` or at least one address component is required.
+*必须提供 `query` 参数或至少一个地址相关的参数。*
 
-## Response Format
+## 响应格式
 
 ```json
 [
@@ -147,32 +147,32 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 ]
 ```
 
-## Examples
+## 示例
 
-### Geocode an address
+- **对地址进行地理编码**：
 ```bash
 ./scripts/places.sh '{"street": "350 Fifth Avenue", "city": "New York", "state": "NY"}'
 ```
 
-### Find a landmark with photos
+- **查找带有照片的地标**：
 ```bash
 ./scripts/places.sh '{"query": "Statue of Liberty", "include_photos": true, "photo_radius": 200}'
 ```
 
-### Search by postal code
+- **按邮政编码搜索**：
 ```bash
 ./scripts/places.sh '{"postalcode": "90210", "country": "USA"}'
 ```
 
-### Advanced mode for richer data
+- **高级模式（获取更详细的数据）**：
 ```bash
 ./scripts/places.sh '{"query": "Times Square", "mode": "advanced", "include_photos": true}'
 ```
 
-## Best Practices
+## 最佳实践：
 
-- Use `query` for landmarks, POIs, and well-known places
-- Use structured address fields for precise geocoding
-- Enable `include_photos` when you need visual context
-- Use `mode: "advanced"` for web-enriched place data
-- Combine address components for more accurate results
+- 对于地标、兴趣点（POI）或知名地点，使用 `query` 参数进行查询。
+- 使用结构化的地址信息进行精确的地理编码。
+- 当需要查看地点的视觉信息时，启用 `include_photos` 选项。
+- 使用 `mode: "advanced"` 以获取更丰富的数据。
+- 结合使用地址的各个组成部分，以获得更准确的结果。

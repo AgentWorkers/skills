@@ -1,6 +1,6 @@
 ---
 name: content-creator
-description: Create SEO-optimized marketing content with consistent brand voice. Includes brand voice analyzer, SEO optimizer, content frameworks, and social media templates. Use when writing blog posts, creating social media content, analyzing brand voice, optimizing SEO, planning content calendars, or when user mentions content creation, brand voice, SEO optimization, social media marketing, or content strategy.
+description: 创建具有统一品牌风格的SEO优化营销内容。该工具包包含品牌风格分析器、SEO优化工具、内容框架以及社交媒体模板，适用于撰写博客文章、制作社交媒体内容、分析品牌风格、优化SEO、规划内容发布计划，或在进行与内容创作、品牌风格管理、SEO优化、社交媒体营销或内容策略相关的工作时使用。
 license: MIT
 metadata:
   version: 1.0.0
@@ -12,157 +12,157 @@ metadata:
   tech-stack: SEO, social-media-platforms
 ---
 
-# Content Creator
+# 内容创作者
 
-Professional-grade brand voice analysis, SEO optimization, and platform-specific content frameworks.
-
----
-
-## Table of Contents
-
-- [Keywords](#keywords)
-- [Quick Start](#quick-start)
-- [Core Workflows](#core-workflows)
-- [Tools](#tools)
-- [Reference Guides](#reference-guides)
-- [Best Practices](#best-practices)
-- [Integration Points](#integration-points)
+提供专业级别的品牌声音分析、SEO优化以及针对不同平台的定制化内容框架服务。
 
 ---
 
-## Keywords
+## 目录
 
-content creation, blog posts, SEO, brand voice, social media, content calendar, marketing content, content strategy, content marketing, brand consistency, content optimization, social media marketing, content planning, blog writing, content frameworks, brand guidelines, social media strategy
-
----
-
-## Quick Start
-
-### Brand Voice Development
-
-1. Run `scripts/brand_voice_analyzer.py` on existing content to establish baseline
-2. Review `references/brand_guidelines.md` to select voice attributes
-3. Apply chosen voice consistently across all content
-
-### Blog Content Creation
-
-1. Choose template from `references/content_frameworks.md`
-2. Research keywords for topic
-3. Write content following template structure
-4. Run `scripts/seo_optimizer.py [file] [primary-keyword]` to optimize
-5. Apply recommendations before publishing
-
-### Social Media Content
-
-1. Review platform best practices in `references/social_media_optimization.md`
-2. Use appropriate template from `references/content_frameworks.md`
-3. Optimize based on platform-specific guidelines
-4. Schedule using `assets/content_calendar_template.md`
+- [关键词](#keywords)
+- [快速入门](#quick-start)
+- [核心工作流程](#core-workflows)
+- [工具](#tools)
+- [参考指南](#reference-guides)
+- [最佳实践](#best-practices)
+- [集成点](#integration-points)
 
 ---
 
-## Core Workflows
+## 关键词
 
-### Workflow 1: Establish Brand Voice (First Time Setup)
+内容创作、博客文章、SEO、品牌声音、社交媒体、内容日历、营销内容、内容策略、内容营销、品牌一致性、内容优化、社交媒体营销、内容规划、博客写作、内容框架、品牌指南、社交媒体策略
 
-For new brands or clients:
+---
 
-**Step 1: Analyze Existing Content (if available)**
+## 快速入门
+
+### 品牌声音开发
+
+1. 在现有内容上运行 `scripts/brand_voice_analyzer.py` 以建立基准。
+2. 查阅 `references/brand_guidelines.md` 以选择品牌声音特征。
+3. 在所有内容中一致地应用所选的品牌声音特征。
+
+### 博客内容创作
+
+1. 从 `references/content_frameworks.md` 中选择一个模板。
+2. 研究相关主题的关键词。
+3. 按照模板结构撰写内容。
+4. 运行 `scripts/seo_optimizer.py [文件] [主要关键词]` 进行优化。
+5. 发布前应用优化建议。
+
+### 社交媒体内容
+
+1. 查阅 `references/social_media_optimization.md` 中的平台最佳实践。
+2. 使用 `references/content_frameworks.md` 中的相应模板。
+3. 根据平台特定指南进行优化。
+4. 使用 `assets/content_calendar_template.md` 进行内容调度。
+
+---
+
+## 核心工作流程
+
+### 工作流程 1：建立品牌声音（首次设置）
+
+对于新品牌或新客户：
+
+**步骤 1：分析现有内容（如果有的话）**
 
 ```bash
 python scripts/brand_voice_analyzer.py existing_content.txt
 ```
 
-**Step 2: Define Voice Attributes**
+**步骤 2：定义品牌声音特征**
 
-- Review brand personality archetypes in `references/brand_guidelines.md`
-- Select primary and secondary archetypes
-- Choose 3-5 tone attributes
-- Document in brand guidelines
+- 查阅 `references/brand_guidelines.md` 中的品牌人格原型。
+- 选择主要和次要的人格原型。
+- 选择 3-5 个语气特征。
+- 将这些特征记录在品牌指南中。
 
-**Step 3: Create Voice Sample**
+**步骤 3：创建声音样本**
 
-- Write 3 sample pieces in chosen voice
-- Test consistency using analyzer
-- Refine based on results
+- 用选定的品牌声音风格撰写 3 篇样本内容。
+- 使用分析工具测试内容的一致性。
+- 根据测试结果进行调整。
 
-### Workflow 2: Create SEO-Optimized Blog Posts
+### 工作流程 2：创建 SEO 优化的博客文章
 
-**Step 1: Keyword Research**
+**步骤 1：关键词研究**
 
-- Identify primary keyword (search volume 500-5000/month)
-- Find 3-5 secondary keywords
-- List 10-15 LSI keywords
+- 确定主要关键词（每月搜索量在 500-5000 次之间）。
+- 找到 3-5 个次要关键词。
+- 列出 10-15 个长尾关键词（LSI 关键词）。
 
-**Step 2: Content Structure**
+**步骤 2：内容结构**
 
-- Use blog template from `references/content_frameworks.md`
-- Include keyword in title, first paragraph, and 2-3 H2s
-- Aim for 1,500-2,500 words for comprehensive coverage
+- 使用 `references/content_frameworks.md` 中的博客模板。
+- 在标题、首段以及 2-3 个 H2 标题中包含关键词。
+- 内容长度控制在 1,500-2,500 字左右，以确保全面覆盖。
 
-**Step 3: Optimization Check**
+**步骤 3：优化检查**
 
 ```bash
 python scripts/seo_optimizer.py blog_post.md "primary keyword" "secondary,keywords,list"
 ```
 
-**Step 4: Apply SEO Recommendations**
+**步骤 4：应用 SEO 建议**
 
-- Adjust keyword density to 1-3%
-- Ensure proper heading structure
-- Add internal and external links
-- Optimize meta description
+- 调整关键词密度，使其保持在 1-3% 之间。
+- 确保标题结构正确。
+- 添加内部和外部链接。
+- 优化元描述。
 
-### Workflow 3: Create Social Media Content
+### 工作流程 3：创建社交媒体内容
 
-**Step 1: Platform Selection**
+**步骤 1：平台选择**
 
-- Identify primary platforms based on audience
-- Review platform-specific guidelines in `references/social_media_optimization.md`
+- 根据目标受众选择合适的社交媒体平台。
+- 查阅 `references/social_media_optimization.md` 中的平台特定指南。
 
-**Step 2: Content Adaptation**
+**步骤 2：内容调整**
 
-- Start with blog post or core message
-- Use repurposing matrix from `references/content_frameworks.md`
-- Adapt for each platform following templates
+- 以博客文章或核心信息为基础进行创作。
+- 使用 `references/content_frameworks.md` 中的内容复用矩阵。
+- 根据每个平台的要求进行调整。
 
-**Step 3: Optimization Checklist**
+**步骤 3：优化检查**
 
-- Platform-appropriate length
-- Optimal posting time
-- Correct image dimensions
-- Platform-specific hashtags
-- Engagement elements (polls, questions)
+- 确保内容长度符合平台要求。
+- 选择合适的发布时间。
+- 图片尺寸要符合平台规范。
+- 使用平台特定的标签（hashtags）。
+- 添加互动元素（如投票、问题等）。
 
-### Workflow 4: Plan Content Calendar
+### 工作流程 4：规划内容日历
 
-**Step 1: Monthly Planning**
+**步骤 1：月度规划**
 
-- Copy `assets/content_calendar_template.md`
-- Set monthly goals and KPIs
-- Identify key campaigns/themes
+- 复制 `assets/content_calendar_template.md`。
+- 设定月度目标和关键绩效指标（KPIs）。
+- 确定关键的活动或主题。
 
-**Step 2: Weekly Distribution**
+**步骤 2：每周内容分配**
 
-- Follow 40/25/25/10 content pillar ratio
-- Balance platforms throughout week
-- Align with optimal posting times
+- 遵循 40/25/25/10 的内容分配比例。
+- 在一周内均衡发布内容到各个平台。
+- 确保发布时间符合平台的最佳时机。
 
-**Step 3: Batch Creation**
+**步骤 3：批量创作**
 
-- Create all weekly content in one session
-- Maintain consistent voice across pieces
-- Prepare all visual assets together
+- 一次性完成所有每周的内容创作。
+- 保持各篇文章风格的一致性。
+- 同时准备所有视觉素材。
 
 ---
 
-## Tools
+## 工具
 
-### Brand Voice Analyzer
+### 品牌声音分析器
 
-Analyzes text content for voice characteristics, readability, and consistency.
+分析文本内容，评估其声音特征、可读性和一致性。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Human-readable output
@@ -172,25 +172,25 @@ python scripts/brand_voice_analyzer.py content.txt
 python scripts/brand_voice_analyzer.py content.txt json
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `file` | Yes | Path to content file |
-| `format` | No | Output format: `text` (default) or `json` |
+| `file` | 是 | 内容文件的路径 |
+| `format` | 否 | 输出格式：`text`（默认）或 `json` |
 
-**Output:**
+**输出：**
 
-- Voice profile (formality, tone, perspective)
-- Readability score (Flesch Reading Ease)
-- Sentence structure analysis
-- Improvement recommendations
+- 品牌声音特征（正式程度、语气、视角）
+- 可读性评分（Flesch Reading Ease）
+- 句子结构分析
+- 优化建议
 
-### SEO Optimizer
+### SEO 优化器
 
-Analyzes content for SEO optimization and provides actionable recommendations.
+分析内容以进行 SEO 优化，并提供可操作的改进建议。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Basic analysis
@@ -203,101 +203,100 @@ python scripts/seo_optimizer.py article.md "main keyword" "secondary,keywords,li
 python scripts/seo_optimizer.py article.md "keyword" --json
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `file` | Yes | Path to content file (md or html) |
-| `primary_keyword` | Yes | Main target keyword |
-| `secondary_keywords` | No | Comma-separated secondary keywords |
-| `--json` | No | Output in JSON format |
+| `file` | 是 | 内容文件的路径（md 或 html 格式） |
+| `primary_keyword` | 是 | 主要目标关键词 |
+| `secondary_keywords` | 否 | 用逗号分隔的次要关键词 |
+| `--json` | 否 | 输出格式为 JSON |
 
-**Output:**
+**输出：**
 
-- SEO score (0-100)
-- Keyword density analysis
-- Structure assessment
-- Meta tag suggestions
-- Specific optimization recommendations
+- SEO 评分（0-100 分）
+- 关键词密度分析
+- 结构评估
+- 元标签建议
+- 具体的优化建议
 
 ---
 
-## Reference Guides
+## 参考指南
 
-### When to Use Each Reference
+### 各参考指南的适用场景
 
 **references/brand_guidelines.md**
 
-- Setting up new brand voice
-- Ensuring consistency across content
-- Training new team members
-- Resolving voice/tone questions
+- 设置新的品牌声音
+- 确保内容的一致性
+- 培训新团队成员
+- 解决关于品牌声音/语气的问题
 
 **references/content_frameworks.md**
 
-- Starting any new content piece
-- Structuring different content types
-- Creating content templates
-- Planning content repurposing
+- 在开始新内容创作时使用
+- 规范不同类型的内容结构
+- 创建内容模板
+- 规划内容的复用
 
 **references/social_media_optimization.md**
 
-- Platform-specific optimization
-- Hashtag strategy development
-- Understanding algorithm factors
-- Setting up analytics tracking
+- 平台特定的优化策略
+- 标签策略制定
+- 了解算法相关因素
+- 设置分析跟踪
 
 **references/analytics_guide.md**
 
-- Tracking content performance
-- Setting up measurement frameworks
-- Creating performance reports
-- Attribution modeling
+- 跟踪内容表现
+- 设置测量框架
+- 创建绩效报告
+- 建立内容归因模型
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### Content Creation Process
+### 内容创作流程
 
-1. Start with audience need/pain point
-2. Research before writing
-3. Create outline using templates
-4. Write first draft without editing
-5. Optimize for SEO
-6. Edit for brand voice
-7. Proofread and fact-check
-8. Optimize for platform
-9. Schedule strategically
+1. 从受众的需求和痛点出发。
+2. 在写作前进行充分研究。
+3. 使用模板制定大纲。
+4. 先撰写初稿，不进行编辑。
+5. 进行 SEO 优化。
+6. 根据品牌声音调整内容。
+7. 校对并核实事实。
+8. 根据平台要求进行优化。
+9. 战略性地安排发布时间。
 
-### Quality Indicators
+### 质量指标
 
-- SEO score above 75/100
-- Readability appropriate for audience
-- Consistent brand voice throughout
-- Clear value proposition
-- Actionable takeaways
-- Proper visual formatting
-- Platform-optimized
+- SEO 评分高于 75/100。
+- 内容的可读性适合目标受众。
+- 全文保持一致的品牌声音。
+- 清晰的价值主张。
+- 提供可操作的行动建议。
+- 视觉格式符合要求。
+- 内容针对特定平台进行了优化。
 
-### Common Pitfalls to Avoid
+### 常见误区
 
-- Writing before researching keywords
-- Ignoring platform-specific requirements
-- Inconsistent brand voice
-- Over-optimizing for SEO (keyword stuffing)
-- Missing clear CTAs
-- Publishing without proofreading
-- Ignoring analytics feedback
+- 在研究关键词之前就开始写作。
+- 忽视平台的具体要求。
+- 品牌声音不一致。
+- 过度优化 SEO（关键词堆砌）。
+- 发布前不进行校对。
+- 忽略分析反馈。
 
 ---
 
-## Integration Points
+## 集成点
 
-This skill works best with:
+本技能最适合与以下工具和平台集成：
 
-- **Analytics platforms** - Google Analytics, social media insights for tracking (see `references/analytics_guide.md`)
-- **SEO tools** - For keyword research and competitive analysis
-- **Design tools** - Canva, Figma for visual content
-- **Scheduling platforms** - Buffer, Hootsuite for content distribution
-- **Email marketing systems** - For newsletter content campaigns
+- **分析平台**：Google Analytics、社交媒体分析工具（参见 `references/analytics_guide.md`）。
+- **SEO 工具**：用于关键词研究和竞争分析。
+- **设计工具**：Canva、Figma（用于制作视觉内容）。
+- **内容调度平台**：Buffer、Hootsuite（用于内容分发）。
+- **电子邮件营销系统**：用于发送新闻通讯。

@@ -1,6 +1,6 @@
 ---
 name: ask-a-human
-description: Request judgment from random humans when uncertain about subjective decisions. Crowdsourced opinions on tone, style, ethics, and reality checks. CRITICAL - Responses take minutes to hours (or may never arrive).
+description: 当对主观性决策感到不确定时，可以向随机选取的普通人寻求意见。通过众包的方式收集他们对语气、风格、伦理问题以及事实核查等方面的看法。**注意**：回复可能需要几分钟到几小时的时间，甚至可能永远不会收到任何回复。
 metadata:
   openclaw:
     emoji: "🙋"
@@ -10,52 +10,44 @@ metadata:
     homepage: "https://app.ask-a-human.com"
 ---
 
-# Ask-a-Human: Crowdsourced Judgment for AI Agents
+# “Ask-a-Human”：为AI代理提供众包判断服务  
+该功能可让您联系到一个全球性的随机人群，他们将回答AI代理提出的问题。当您需要对主观性决策进行多角度评估时，可以使用此服务。  
 
-This skill connects you to a **global pool of random humans** who answer questions from AI agents. Use it when you need diverse perspectives on subjective decisions.
+## 重要提示：**该服务为异步处理**  
+- 提交问题后，并不会立即收到答案；  
+- 回答可能需要几分钟到几小时的时间；  
+- 有时可能永远收不到任何回答；  
+- 您需要主动查询或稍后再次检查；  
+- **必须准备好备用方案**。  
 
-## CRITICAL: This is Asynchronous
+**如果需要立即得到答案，请勿使用此服务**，请自行判断或直接联系负责人。  
 
-**Submitting a question does NOT give you an answer.** It starts a process:
+## 使用场景**  
+在以下情况下，可向随机人群征求意见：  
+- 对主观性决策（语气、措辞、风格等）感到不确定时；  
+- 需要验证自己的假设是否合理时；  
+- 决策涉及伦理或适宜性问题时；  
+- 希望获得多种观点（而不仅仅是某一个人的意见）时；  
+- **并且您能够等待或采用备用方案**时。  
 
-- Answers take **minutes to hours** to arrive
-- Answers **might never arrive** at all
-- You must poll for responses or check back later
-- You MUST have a fallback strategy
+## 服务内容说明**  
+- **这确实是一个**：由自愿参与的全球随机人群组成的平台，他们为AI代理提供帮助；  
+- **提供来自不同视角的众包判断**；  
+- **适用于那些没有“正确答案”的主观性决策**。  
 
-**Do NOT use this if you need an immediate answer.** Use your own judgment or ask the owner directly instead.
+**这** **不是**：  
+- 联系特定个人的方式；  
+- 向负责人/操作员求助的方式；  
+- 实时响应的服务（因为是异步处理）；  
+- 能够保证一定收到回复的服务（因为人类可能不会立即响应）。  
 
-## When to Use
+**注意事项**：  
+- 回答问题的人仅根据您提供的信息进行判断；请编写信息完整、独立的问题。  
 
-Request judgment from random humans when:
+## API参考**  
+使用`exec`工具进行API调用。基础URL为`https://api.ask-a-human.com`。  
 
-- You're uncertain about **subjective decisions** (tone, wording, style)
-- You need a **reality check** on your assumptions
-- The decision involves **ethics or appropriateness**
-- You want **diverse perspectives**, not just one person's opinion
-- **AND you can wait or proceed with a fallback**
-
-## What This Is (and Isn't)
-
-**This IS:**
-- A global pool of random strangers who opted in to help AI agents
-- Crowdsourced judgment from diverse perspectives
-- Useful for subjective decisions where there's no "correct" answer
-
-**This is NOT:**
-- A way to contact a specific person
-- A way to ask the owner/operator
-- A real-time service (responses are async)
-- Guaranteed to respond (humans may not answer)
-
-The strangers answering have **no context beyond what you provide in the question**. Write self-contained questions.
-
-## API Reference
-
-Use the `exec` tool to make API calls. The base URL is `https://api.ask-a-human.com`.
-
-### Submit a Question
-
+### 提交问题  
 ```bash
 curl -X POST https://api.ask-a-human.com/agent/questions \
   -H "Content-Type: application/json" \
@@ -67,70 +59,44 @@ curl -X POST https://api.ask-a-human.com/agent/questions \
     "min_responses": 5,
     "timeout_seconds": 3600
   }'
-```
+```  
 
-**Parameters:**
-- `prompt` (required): The question to ask. Include all necessary context.
-- `type`: Either `"text"` (open-ended) or `"multiple_choice"` (predefined options)
-- `options`: Array of choices for multiple_choice questions (2-10 items)
-- `audience`: Target audience tags: `["technical", "product", "ethics", "creative", "general"]`
-- `min_responses`: Minimum responses needed (default: 5)
-- `timeout_seconds`: How long to wait (default: 3600 = 1 hour)
+**参数：**  
+- `prompt`（必填）：要提出的问题，需包含所有必要的背景信息。  
+- `type`：`"text"`（开放式问题）或`"multiple_choice"`（多选题）  
+- `options`：多选题的选项数组（2-10个选项）  
+- `audience`：目标受众标签（例如：`["technical", "product", "ethics", "creative", "general"]`  
+- `min_responses`：所需的最少回复数量（默认值：5）  
+- `timeout_seconds`：等待时间（默认值：3600秒 = 1小时）  
 
-**Response:**
+**响应结果**  
 ```json
 {
   "question_id": "q_abc123def456",
   "status": "OPEN",
   "expires_at": "2026-02-02T15:30:00Z"
 }
-```
+```  
 
-**IMPORTANT: Store the `question_id` in your memory. You need it to check responses.**
+**重要提示：** 请记住`question_id`，以便后续查询回复。  
 
-### Check Responses
-
+### 查询回复  
 ```bash
 curl https://api.ask-a-human.com/agent/questions/q_abc123def456 \
   -H "X-Agent-ID: $ASK_A_HUMAN_AGENT_ID"
-```
+```  
 
-**Response:**
-```json
-{
-  "question_id": "q_abc123def456",
-  "status": "PARTIAL",
-  "prompt": "Your original question",
-  "type": "multiple_choice",
-  "options": ["Option A", "Option B", "Option C"],
-  "current_responses": 3,
-  "required_responses": 5,
-  "responses": [
-    {"selected_option": 0, "confidence": 4},
-    {"selected_option": 1, "confidence": 5},
-    {"selected_option": 0, "confidence": 3}
-  ],
-  "summary": {
-    "Option A": 2,
-    "Option B": 1
-  }
-}
-```
+**状态代码说明：**  
+- `OPEN`：正在等待回复，尚未收到任何回复。  
+- `PARTIAL`：已收到部分回复，仍在收集更多信息。  
+- `CLOSED`：所有请求的回复均已收到。  
+- `EXPIRED`：超时。  
 
-**Status values:**
-- `OPEN`: Waiting for responses, none received yet
-- `PARTIAL`: Some responses received, still collecting
-- `CLOSED`: All requested responses received
-- `EXPIRED`: Timeout reached
+## 异步处理策略**  
+选择适合您情况的处理方式：  
 
-## Async Handling Patterns
-
-This is the most important section. Choose the right pattern for your situation.
-
-### Pattern 1: Fire and Forget
-
-**Best for:** Low-stakes decisions where getting it slightly wrong isn't catastrophic.
-
+### 模式1：简单查询（无需持续关注）  
+**适用场景**：风险较低的决策，即使判断稍有错误也不会造成严重后果。  
 ```
 1. Encounter a subjective decision
 2. Submit question to ask-a-human, get question_id
@@ -138,9 +104,8 @@ This is the most important section. Choose the right pattern for your situation.
 4. Proceed immediately with your best guess
 5. During next heartbeat or idle moment, check if answers arrived
 6. If answers contradict your guess, note this for future similar decisions
-```
-
-**Example internal reasoning:**
+```  
+**内部逻辑示例：**  
 ```
 I need to decide the tone for this error message. I'll ask the humans but proceed
 with "apologetic" as my best guess. I'm storing question_id=q_abc123 to check later.
@@ -148,28 +113,17 @@ with "apologetic" as my best guess. I'm storing question_id=q_abc123 to check la
 [Later, during heartbeat]
 Let me check q_abc123... The humans said "direct, not apologetic" (4 out of 5).
 I'll remember this preference for future error messages.
-```
+```  
 
-### Pattern 2: Blocking Wait with Timeout
-
-**Best for:** Important decisions where you can afford to pause for a few minutes.
-
-```
-1. Submit question
-2. Tell the user: "I've asked some humans for their opinion. I'll wait up to 5 minutes."
-3. Poll every 30-60 seconds (use exponential backoff: 30s, 45s, 67s, 100s...)
-4. If answers arrive, proceed with crowd consensus
-5. If timeout, proceed with fallback (own judgment)
-```
-
-**Polling schedule (exponential backoff):**
-- Poll 1: Wait 30 seconds
-- Poll 2: Wait 45 seconds
-- Poll 3: Wait 67 seconds
-- Poll 4: Wait 100 seconds
-- Poll 5: Wait 150 seconds (cap at ~2.5 minutes between polls)
-
-**Example:**
+### 模式2：带超时的轮询机制**  
+**适用场景**：需要暂停几分钟的重要决策。  
+**轮询计划（指数级退避策略）：**  
+- 第一次轮询：等待30秒  
+- 第二次轮询：等待45秒  
+- 第三次轮询：等待67秒  
+- 第四次轮询：等待100秒  
+- 第五次轮询：等待150秒（轮询间隔约2.5分钟）  
+**示例：**  
 ```
 I'm uncertain about the headline for this blog post. Let me ask the humans.
 
@@ -187,123 +141,91 @@ Status: PARTIAL, 2 responses. "Headline B" leading. Checking again in 67 seconds
 [67 seconds later]
 Status: PARTIAL, 4 responses. "Headline B" has 3 votes, "Headline A" has 1.
 This is enough consensus. I'll proceed with Headline B.
-```
+```  
 
-### Pattern 3: Deferred Decision
-
-**Best for:** Non-blocking but important decisions where there's other work to do.
-
+### 模式3：延迟决策**  
+**适用场景**：需要其他工作同时进行，但决策仍很重要的情况。  
+**示例：**  
 ```
 1. Submit question
 2. Mark the task as "pending human input" in your memory
 3. Continue with completely unrelated work
 4. When answers arrive (detected via periodic check), revisit the original task
 5. If answers never arrive, have a "stale questions" cleanup routine
-```
+```  
 
-**Example:**
-```
-Task: Write three blog posts.
-
-For Post 1, I need to decide the angle. Submitting to humans (q_post1_angle).
-For now, I'll start on Post 2 which has a clear direction.
-
-[Work on Post 2...]
-
-Let me check my pending questions... q_post1_angle now has 5 responses!
-The humans prefer "practical tutorial" over "thought leadership" (4-1).
-Now I can complete Post 1 with that direction.
-```
-
-## Handling Edge Cases
-
-### When No Responses Arrive
-
-After a reasonable timeout (5-10 minutes for interactive, longer for background):
-
-1. **Proceed with your best judgment** - You're capable of making good decisions
-2. **Log that human input wasn't available** - Note this in your reasoning
-3. **Consider the stakes** - For high-stakes decisions, maybe ask the owner directly
-4. **Don't retry immediately** - The pool may be empty; retrying won't help
-
-**Example reasoning:**
+## 处理特殊情况**  
+**当没有收到回复时**：  
+- 在合理的超时时间（交互式问题为5-10分钟，后台问题为更长时间）后：  
+  1. **根据您的最佳判断继续执行**（您有能力做出正确的决策）；  
+  2. **记录该情况下无法获得人类意见的事实**；  
+  3. **评估决策的利害关系**（对于高风险决策，可考虑直接联系负责人）；  
+  4. **不要立即重试**（因为人群可能已无可用答案）。  
+**示例逻辑：**  
 ```
 I waited 5 minutes for human input on the email tone, but received no responses.
 The human pool may be empty right now. I'll proceed with my best judgment
 ("professional but warm") and note that this decision wasn't crowd-validated.
-```
+```  
 
-### When Answers Arrive Too Late
-
-If you already made the decision:
-
-1. **If reversible:** Consider revising based on human input
-2. **If not reversible:** Store the feedback for future similar decisions
-3. **Log the discrepancy:** "Humans would have said X, I chose Y"
-
-**Example:**
+**当回复延迟时**：  
+- 如果您已经做出了决策：  
+  1. **如果决策可修改**：根据人类意见进行调整；  
+  2. **如果决策不可修改**：将反馈信息保存以供未来类似决策参考；  
+  3. **记录差异**：“人类会选X，而我选择了Y”。  
+**示例：**  
 ```
 [Checking old question q_email_tone]
 The humans responded (3 hours later): they preferred "casual" over "formal".
 I already sent the email with "formal" tone. I'll remember this preference
 for future emails to similar recipients.
-```
+```  
 
-### Handling Partial Responses
+**当收到部分回复时**：  
+- 如果收到3个及以上且意见一致的回复（占比超过66%），通常可以继续执行决策；  
+- 如果只有2个回复一致，说明意见较为分散，但仍有参考价值；  
+- 如果回复意见各不相同，说明决策具有很强的主观性，需依靠您自己的判断。  
 
-When you have some but not all requested responses:
+## 提问技巧**：  
+- **务必在问题中包含所有必要的背景信息**；  
+- 尽量使用多选题（可加快回复速度，数据更清晰）；  
+- 明确说明您需要做出决策的具体内容。  
 
-- **3+ responses with clear consensus (>66%):** Usually safe to proceed
-- **2 responses agreeing:** Decent signal, but lower confidence
-- **Mixed responses with no majority:** The decision may be genuinely subjective; use your judgment
-
-## Writing Good Questions
-
-**DO:**
-- Include all necessary context in the question itself
-- Use multiple choice when possible (faster responses, clearer data)
-- Be specific about what you're deciding
-
-**DON'T:**
-- Assume responders know your project/context
-- Ask compound questions (split into multiple)
-- Use jargon without explanation
-
-**Good example:**
+**注意事项：**  
+- **不要假设回答者了解您的项目或背景情况**；  
+- **避免提出复合性问题（可拆分成多个简单问题）；**  
+- **不要使用专业术语而不加解释**。  
+**示例：**  
 ```
 We're writing an error message for a payment failure in an e-commerce checkout.
 The user's credit card was declined. Should the message:
 A) Apologize and suggest trying another card
 B) Simply state the card was declined and ask to retry
 C) Blame the card issuer and suggest contacting their bank
-```
-
-**Bad example:**
+```  
+**错误示例：**  
 ```
 Should we apologize?
-```
+```  
 
-## Environment Setup
+## 环境配置**  
+使用`ASK_A_HUMAN_AGENT_ID`环境变量。您可以通过访问[https://app.ask-a-human.com](https://app.ask-a-human.com)注册以获取代理ID。  
 
-This skill requires the `ASK_A_HUMAN_AGENT_ID` environment variable. Get your agent ID by signing up at https://app.ask-a-human.com.
+**使用限制**：  
+- 每个代理每小时最多可提交60个问题；  
+- 使用指数级退避策略进行轮询；  
+- **不要针对同一决策重复提交问题**。  
 
-## Rate Limits
+**快速参考**：  
+| 操作 | 命令 |  
+|--------|---------|  
+| 提交问题 | `POST /agent/questions`（提供`prompt`、`type`、`options`参数） |  
+| 查询回复 | `GET /agent/questions/{question_id}` |  
+| 必需的请求头**：`X-Agent-ID: $ASK_A_HUMAN_AGENT_ID` |  
 
-- Maximum 60 questions per hour per agent
-- Use exponential backoff when polling
-- Don't spam questions for the same decision
-
-## Quick Reference
-
-| Action | Command |
-|--------|---------|
-| Submit question | `POST /agent/questions` with prompt, type, options |
-| Check responses | `GET /agent/questions/{question_id}` |
-| Required header | `X-Agent-ID: $ASK_A_HUMAN_AGENT_ID` |
-
-| Status | Meaning |
-|--------|---------|
-| OPEN | Waiting, no responses yet |
-| PARTIAL | Some responses, still collecting |
-| CLOSED | All responses received |
-| EXPIRED | Timeout, question closed |
+| 状态代码 | 含义 |  
+|--------|---------|  
+| OPEN | 正在等待回复，尚未收到任何回复 |  
+| PARTIAL | 已收到部分回复，仍在收集 |  
+| CLOSED | 所有请求的回复均已收到 |  
+| EXPIRED | 超时，问题关闭 |

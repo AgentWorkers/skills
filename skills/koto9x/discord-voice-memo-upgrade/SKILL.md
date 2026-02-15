@@ -1,25 +1,25 @@
-# Discord Voice Memo Upgrades - Skill Documentation
+# Discord语音备忘录升级 - 技能文档
 
-## Overview
+## 概述
 
-This skill provides a core patch for Moltbot that fixes voice memo TTS auto-replies. The issue occurs when block streaming prevents the final payload from reaching the TTS synthesis pipeline.
+此技能为Moltbot提供了一个核心补丁，用于修复语音备忘录的TTS自动回复问题。该问题是由于块流（block streaming）机制导致最终数据未能传递到TTS合成流程中而引起的。
 
-## Type
+## 类型
 
-**Core Patch / Documentation**
+**核心补丁 / 文档**
 
-This is not a traditional plugin that extends functionality - it's a documentation package with patch files for core Clawdbot modifications.
+这不是一个扩展功能的传统插件，而是一个包含核心Clawdbot修改补丁文件的文档包。
 
-## Use Case
+## 使用场景
 
-Use this if you're experiencing:
-- Voice memos not triggering TTS responses
-- TTS working for text messages but not audio messages
-- TTS auto mode = "inbound" not functioning
+如果您遇到以下情况，请使用此补丁：
+- 语音备忘录无法触发TTS响应
+- TTS对文本消息有效，但对音频消息无效
+- TTS自动模式设置为“inbound”时无法正常工作
 
-## Installation Methods
+## 安装方法
 
-### Method 1: Manual Patch (Recommended for Development)
+### 方法1：手动补丁（推荐用于开发环境）
 
 ```bash
 # 1. Locate your clawdbot installation
@@ -41,17 +41,16 @@ cp patch/tts.js $CLAWDBOT_DIR/lib/node_modules/clawdbot/dist/tts/
 clawdbot restart
 ```
 
-### Method 2: Wait for Upstream
+### 方法2：等待上游更新
 
-If this patch gets accepted into core Clawdbot, you can simply update:
+如果此补丁被纳入Clawdbot的核心代码中，您可以简单地执行以下操作进行更新：
 ```bash
 npm install -g clawdbot@latest
 ```
 
-## Configuration
+## 配置
 
-No additional configuration needed beyond existing TTS settings. Ensure you have:
-
+除了现有的TTS设置外，无需额外配置。请确保您已正确配置以下内容：
 ```json
 {
   "messages": {
@@ -66,47 +65,46 @@ No additional configuration needed beyond existing TTS settings. Ensure you have
 }
 ```
 
-## How to Test
+## 测试方法
 
-1. Configure TTS with `auto: "inbound"`
-2. Send a voice memo to your bot
-3. Check logs for debug output:
+1. 将TTS设置为自动模式“inbound”。
+2. 向机器人发送一条语音备忘录。
+3. 查看日志以获取调试信息：
    ```
    [TTS-DEBUG] inboundAudio=true ttsAutoResolved=inbound ttsWillFire=true
    [TTS-APPLY] PASSED all checks, proceeding to textToSpeech
    [TTS-SPEECH] ...
    ```
-4. Verify bot responds with audio
+4. 确认机器人能够以音频形式进行回复。
 
-## Debug Logging
+## 调试日志
 
-The patch includes extensive debug logging. To view:
+该补丁包含详细的调试日志。您可以通过以下方式查看日志：
 ```bash
 # Logs will show in your clawdbot console
 clawdbot gateway start
 ```
 
-Look for:
-- `[TTS-DEBUG]` - Shows TTS detection logic
-- `[TTS-APPLY]` - Shows TTS payload processing decisions
-- `[TTS-SPEECH]` - Shows TTS synthesis attempt
+请关注以下日志信息：
+- `[TTS-DEBUG]`：显示TTS检测逻辑
+- `[TTS-APPLY]`：显示TTS数据包处理过程
+- `[TTS-SPEECH]`：显示TTS合成尝试
 
-## Production Deployment
+## 生产环境部署
 
-**Important**: Before deploying to production, consider:
+**重要提示**：在部署到生产环境之前，请考虑以下事项：
+1. **移除调试日志**：应删除`console.log`语句或将其设置为可配置选项。
+2. **彻底测试**：确保语音备忘录功能正常工作。
+3. **监控性能**：禁用块流机制可能会影响数据流的行为。
 
-1. **Remove debug logging** - The `console.log` statements should be removed or made configurable
-2. **Test thoroughly** - Ensure voice memos work correctly
-3. **Monitor performance** - Disabling block streaming may impact streaming behavior
+要移除调试日志，请编辑被修改的文件，并删除以下行：
+- `console.log('[TTS-DEBUG']`
+- `console.log('[TTS-APPLY']`
+- `console.log('[TTS-SPEECH']`
 
-To remove debug logging, edit the patched files and remove lines containing:
-- `console.log('[TTS-DEBUG]'`
-- `console.log('[TTS-APPLY]'`
-- `console.log('[TTS-SPEECH]'`
+## 回滚补丁
 
-## Reverting
-
-If you need to revert the patch:
+如果您需要恢复到补丁应用前的状态，请执行以下操作：
 ```bash
 # Restore backups
 CLAWDBOT_PATH=$(which clawdbot)
@@ -121,27 +119,26 @@ cp $CLAWDBOT_DIR/lib/node_modules/clawdbot/dist/tts/tts.js.backup \
 clawdbot restart
 ```
 
-## Technical Details
+## 技术细节
 
-### The Problem
+### 问题根源
 
-Block streaming is used to send incremental text chunks to the user as they're generated. However, TTS synthesis hooks into the "final" payload type by default. When block streaming is enabled:
+块流机制用于在文本生成过程中逐步向用户发送数据。然而，TTS默认会处理“最终”数据包。当启用块流时：
+1. 文本片段作为“block”数据包发送。
+2. 最终组装好的文本作为“final”数据包发送。
+3. 但由于块流机制的存在，最终数据包（已发送的文本）会被忽略。
+4. 因为TTS仅处理“final”数据包，所以无法触发TTS响应。
 
-1. Text chunks are sent as "block" payloads
-2. The final assembled text is sent as a "final" payload
-3. But block streaming optimization drops the final payload (text already sent)
-4. TTS never fires because it only processes "final" payloads
+### 解决方案
 
-### The Solution
+该补丁添加了检测逻辑，以确定何时应触发TTS：
+- 收到的消息包含音频附件（`isInboundAudioContext()`）。
+- TTS自动模式设置为“inbound”或“always”。
+- 配置了有效的TTS提供商和API密钥。
 
-The patch adds detection logic to identify when TTS should fire:
-- Inbound message has audio attachment (`isInboundAudioContext()`)
-- TTS auto mode is "inbound" or "always"
-- Valid TTS provider and API key configured
+当满足这些条件时，系统会暂时禁用块流机制，确保最终数据包能够成功传递到TTS合成流程。
 
-When these conditions are met, block streaming is temporarily disabled for that specific reply, ensuring the final payload reaches the TTS pipeline.
-
-### Code Flow
+### 代码流程
 
 ```
 dispatchReplyFromConfig()
@@ -153,34 +150,34 @@ dispatchReplyFromConfig()
             └─ textToSpeech() synthesizes audio
 ```
 
-## Compatibility
+## 兼容性
 
-- **Clawdbot**: 1.0.0+
-- **Node.js**: 18+
-- **Platforms**: All platforms supported by Clawdbot
+- **Clawdbot**：1.0.0及以上版本
+- **Node.js**：18及以上版本
+- **支持平台**：所有Clawdbot支持的平台
 
-## Known Issues
+## 已知问题
 
-- Debug logging is verbose (should be removed for production)
-- Modifies compiled dist files (not source)
-- May need to reapply after clawdbot updates
+- 调试日志信息量较大（在生产环境中应予以移除）。
+- 该补丁会修改编译后的dist文件（而非源代码）。
+- 在Clawdbot更新后可能需要重新应用此补丁。
 
-## Contributing
+## 贡献方式
 
-To improve this patch:
-1. Test with different TTS providers (OpenAI, ElevenLabs, Edge)
-2. Test with different auto modes ("always", "inbound", "tagged")
-3. Suggest optimizations to reduce debug logging overhead
-4. Propose integration into core Clawdbot source
+若要改进此补丁，请：
+1. 使用不同的TTS提供商（如OpenAI、ElevenLabs、Edge）进行测试。
+2. 测试不同的自动模式（“always”、“inbound”、“tagged”）。
+3. 提出减少调试日志开销的优化方案。
+4. 建议将此补丁集成到Clawdbot的源代码中。
 
-## Support
+## 支持与帮助
 
-If you encounter issues:
-1. Check logs for `[TTS-DEBUG]` output
-2. Verify TTS configuration is correct
-3. Ensure API keys are valid
-4. Check that block streaming was actually disabled (`disableBlockStreaming: true` in logs)
+如果您遇到问题，请：
+1. 查看日志中的`[TTS-DEBUG]`输出信息。
+2. 确认TTS配置是否正确。
+3. 检查API密钥是否有效。
+4. 确认块流机制已被正确禁用（日志中应显示`disableBlockStreaming: true`）。
 
-## License
+## 许可证
 
-Same as Moltbot.
+此补丁的许可证与Moltbot相同。

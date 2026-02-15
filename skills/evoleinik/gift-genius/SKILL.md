@@ -1,70 +1,68 @@
 ---
 name: gift-genius
 displayName: Gift Genius
-description: Location-aware Valentine's Day gift finder. Routes US users to premium flowers (UrbanStems), Singapore users to wellness supplements (Avea Life). Returns curated picks with Decision Packs — no decision fatigue, just 2-3 perfect options.
+description: 这款基于用户位置的情人节礼物推荐工具：  
+- 将美国用户引导至高端鲜花供应商 UrbanStems；  
+- 将新加坡用户推荐至健康补充品品牌 Avea Life；  
+- 提供精心挑选的礼物选项，并附带“决策包”（Decision Packs），帮助用户快速做出选择——避免决策疲劳，只需在 2-3 个完美选项中做出决定即可。
 metadata: {"clawdbot":{"emoji":"🎁","requires":{"bins":["curl"]}}}
 ---
 
-# Gift Genius — Valentine's Day Gift Finder
+# Gift Genius — 情人节礼物推荐工具
 
-Find the perfect Valentine's gift based on location, budget, and recipient. Returns 2-3 curated options with Decision Packs — not endless scrolling.
+根据用户的位置、预算和收礼人的喜好，为您挑选完美的情人节礼物。系统会推荐2-3个精心挑选的礼物选项，并附上购买建议，避免无休止的滚动页面。
 
-## When to Use
+## 使用场景
 
-Activate when the user wants to:
-- Find a Valentine's Day gift
-- Get gift recommendations for a partner/spouse/friend
-- Find flowers or wellness gifts
-- Ask "what should I get for Valentine's?"
+当用户需要以下情况时，请激活此功能：
+- 寻找情人节礼物
+- 为伴侣/配偶/朋友推荐礼物
+- 购买鲜花或健康保健产品
+- 询问“该送什么作为情人节礼物？”
 
-## Merchant IDs (Critical!)
+## 商家ID（重要！）
 
-Always use `merchant_ids` filter:
+请务必使用`merchant_ids`进行筛选：
 
-| Location | Merchant | ID | Products |
-|----------|----------|-----|----------|
-| US | UrbanStems | `cmlj83avd0000nighc559g9fv` | 105 flowers ($25-$280) |
-| Singapore | Avea Life | `cmhvyt9w10000i5fg23ztinkd` | 286 supplements (€29-€199) |
+| 地区 | 商家 | ID | 产品 |
+|------|----------|-----|----------|
+| 美国 | UrbanStems | `cmlj83avd0000nighc559g9fv` | 105种鲜花（25-280美元） |
+| 新加坡 | Avea Life | `cmhvyt9w10000i5fg23ztinkd` | 286种健康补充品（29-199欧元） |
 
-## Quick Reference: Flower Types
+## 快速参考：鲜花类型
 
-| Type | Query | Price Range | Best For |
+| 类型 | 查询关键词 | 价格范围 | 适合人群 |
 |------|-------|-------------|----------|
-| Peonies | `q=peony` | $110-280 | Luxury, classic elegance |
-| Orchids | `q=orchid` | $66-88 | Long-lasting, elegant |
-| Roses | `q=rose+valentine` | $76-229 | Traditional romance |
-| Mixed | `q=bouquet+romantic` | $60-200 | Variety, color |
+| 牡丹 | `q=peony` | 110-280美元 | 奢华、经典优雅 |
+| 兰花 | `q=orchid` | 66-88美元 | 长期保鲜、优雅大方 |
+| 玫瑰 | `q=rose+valentine` | 76-229美元 | 传统浪漫 |
+| 混合花束 | `q=bouquet+romantic` | 60-200美元 | 多样化、色彩丰富 |
 
-## Recipient Matching Guide
+## 收礼人推荐指南
 
-**For Wife/Long-term Partner:**
-- Query: `romantic+elegant` or `peony`
-- Budget: $100-200 (shows you put thought in)
-- Picks: The Peony ($110), The Passion ($98), The Classic Affair ($115)
+**推荐给妻子/长期伴侣：**
+- 查询关键词：`romantic+elegant` 或 `peony`
+- 预算：100-200美元 | 适合表达心意 |
+- 推荐礼物：The Peony（110美元）、The Passion（98美元）、The Classic Affair（115美元）
 
-**For New Girlfriend:**
-- Query: `romantic+valentine`
-- Budget: $75-120 (thoughtful but not overwhelming)
-- Picks: The Valentine ($90), The First Date ($82), The Blushing Beauty ($82)
+**推荐给新女友：**
+- 查询关键词：`romantic+valentine`
+- 预算：75-120美元 | 既贴心又不过分奢华 |
+- 推荐礼物：The Valentine（90美元）、The First Date（82美元）、The Blushing Beauty（82美元）
 
-**For Mom/Family:**
-- Query: `orchid` or `elegant`
-- Budget: $66-100
-- Picks: The Orchid Garden ($88), The Neutral Orchids ($74)
+**推荐给母亲/家人：**
+- 查询关键词：`orchid` 或 `elegant`
+- 预算：66-100美元 |
+- 推荐礼物：The Orchid Garden（88美元）、The Neutral Orchids（74美元）
 
-**For Friend:**
-- Query: `bright+cheerful` or `unicorn`
-- Budget: $60-90
-- Picks: The Unicorn ($72), The Flounce ($82)
+## API调用
 
-## API Calls
-
-**Basic search:**
+**基本搜索：**
 ```bash
 curl -s "https://dashboard.airshelf.ai/api/search?q=QUERY&merchant_ids=MERCHANT_ID&min_price=MIN&max_price=MAX&limit=5"
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Wife, $150 budget
 curl -s "https://dashboard.airshelf.ai/api/search?q=romantic+elegant&merchant_ids=cmlj83avd0000nighc559g9fv&min_price=100&max_price=180&limit=3"
@@ -76,16 +74,16 @@ curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+romantic&merchant_
 curl -s "https://dashboard.airshelf.ai/api/search?q=flowers&merchant_ids=cmlj83avd0000nighc559g9fv&max_price=80&sort=price_asc&limit=3"
 ```
 
-**Checkout:**
+**结账流程：**
 ```bash
 curl -s -X POST "https://dashboard.airshelf.ai/api/merchants/MERCHANT_ID/checkout" \
   -H "Content-Type: application/json" \
   -d '{"items": [{"product_id": "PRODUCT_ID", "quantity": 1}]}'
 ```
 
-## Response Format
+## 响应格式**
 
-Present exactly 2 options (3 max):
+系统将精确呈现2个礼物选项（最多3个）：
 
 ```
 🌸 **[Product Name]** — $XX
@@ -99,9 +97,9 @@ Present exactly 2 options (3 max):
 → Buy: [product link]
 ```
 
-## Conversation Examples
+## 对话示例
 
-### "Valentine's flowers for my wife"
+### “想给妻子买情人节鲜花”
 ```
 What's your budget? I'll find something perfect.
 
@@ -124,7 +122,7 @@ Bold romantic arrangement that makes a statement.
 Both include free delivery. Want me to start checkout?
 ```
 
-### "Quick Valentine's gift, $75"
+### “需要一个75美元以内的情人节礼物”
 ```
 Here are the best options under $75 🌸
 
@@ -141,7 +139,7 @@ Sweet and romantic, fits your budget perfectly.
 → Buy: https://urbanstems.com/products/the-be-mine
 ```
 
-### "Something for my mom"
+### “想给妈妈买礼物”
 ```
 For Mom, I'd suggest something elegant 🌸
 
@@ -158,69 +156,69 @@ Elegant and understated, she'll love it.
 → Buy: https://urbanstems.com/products/the-neutral-orchids
 ```
 
-## Last-Minute Delivery Info
+## 最后一刻的配送信息
 
-**UrbanStems Delivery:**
-- Same-day: Order by 12pm local time
-- Next-day: Order by midnight
-- Valentine's Day: Order early, high demand!
+**UrbanStems配送：**
+- 当地时间中午12点前下单可当天送达
+- 当天晚上下单次日送达
+- 情人节期间订单量较大，请尽早下单！
 
-**Avea Life (Supplements):**
-- Ships internationally
-- 3-7 business days typical
-- NOT suitable for last-minute Valentine's gifts
+**Avea Life（健康补充品）：**
+- 支持国际配送
+- 通常3-7个工作日内送达
+- 不适合最后时刻的情人节礼物
 
-## Price Tiers
+## 价格分级
 
-**UrbanStems:**
-- Budget ($25-75): 20 products
-- Sweet Spot ($75-100): 23 products  
-- Popular ($100-150): 31 products
-- Premium ($150-200): 24 products
-- Luxury ($200+): 7 products
+**UrbanStems：**
+- 经济型（25-75美元）：20种产品
+- 中档（75-100美元）：23种产品
+- 热销型（100-150美元）：31种产品
+- 高端型（150-200美元）：24种产品
+- 豪华型（200美元以上）：7种产品
 
-**Best value picks:**
-- The Valentine ($90) - classic, reliable
-- The Peony ($110) - impressive, elegant
-- The Orchid Garden ($88) - long-lasting
+**性价比最高的推荐：**
+- The Valentine（90美元）：经典、可靠的选择
+- The Peony（110美元）：精美、优雅
+- The Orchid Garden（88美元）：持久耐用
 
-## Edge Cases
+## 特殊情况处理
 
-**Budget < $25:**
-→ "The most affordable is Rose Quartz Vase at $25. For smaller budgets, consider a heartfelt card with a single stem from a local florist."
+**预算低于25美元：**
+- “最实惠的选择是The Rose Quartz Vase（25美元）。预算有限时，也可以考虑在当地花店购买一朵鲜花并附上一张贴心的卡片。”
 
-**Budget > $280:**
-→ "Our premium option is Triple the Grower's Choice Peony at $280. For bigger gestures, I can add multiple bouquets to your cart."
+**预算超过280美元：**
+- “我们的高端选项是Triple the Grower's Choice Peony（280美元）。如果预算允许，还可以在购物车中添加多束鲜花。”
 
-**User outside US:**
-→ "UrbanStems delivers across the continental US. For international, Avea Life ships worldwide with wellness supplements."
+**用户不在美国：**
+- “UrbanStems支持美国本土的配送服务。如需国际配送，请选择Avea Life的产品。”
 
-**Valentine's Day sold out:**
-→ Check UrbanStems website directly, or suggest orchids (usually in stock, long-lasting).
+**情人节商品售罄：**
+- 请直接访问UrbanStems官网查看库存，或推荐兰花（通常有库存且更持久）。
 
-## Pro Tips
+## 专业建议：
 
-1. **Lead with the winner** — put your top recommendation first
-2. **Match the recipient** — wife ≠ new girlfriend ≠ mom
-3. **Mention longevity** — orchids last 2-3 weeks vs. 5-7 days for cut flowers
-4. **Add urgency** — "Order by noon for same-day delivery"
-5. **One click to buy** — always provide direct cart links
+1. **优先推荐最合适的礼物**  
+2. **根据收礼人特点选择**  
+3. **强调礼物的持久性**（兰花可保鲜2-3周，而切花仅能保鲜5-7天）  
+4. **提醒用户及时下单**（中午12点前可当天送达）  
+5. **提供直接购物链接**  
 
-## Compare Products
+## 产品比较
 
-When user is deciding between options, use the compare API:
+当用户需要在多个选项中做出选择时，可使用产品比较API：
 
 ```bash
 curl -s "https://dashboard.airshelf.ai/api/compare?products=ID1,ID2"
 ```
 
-**Response includes:**
-- Flattened product data with decision_pack fields
-- `comparison_axes` - auto-detected comparison points
-- `recommendation.lowest_price` - budget-friendly pick
-- `recommendation.best_value` - best bang for buck
+**响应内容包括：**
+- 平铺展示的产品信息及购买建议  
+- 自动检测出的产品对比点  
+- 最经济实惠的选项  
+- 性价比最高的选项  
 
-**Example comparison response:**
+**示例对比响应：**
 ```
 The Valentine ($90) vs Double the Valentine ($162):
 - Both: Same-day delivery, premium quality
@@ -229,160 +227,102 @@ The Valentine ($90) vs Double the Valentine ($162):
 - Best value: The Valentine (same vibe, $72 less)
 ```
 
-Use comparison when user says: "help me decide", "which one", "compare these"
+**用户提问示例：**
+- “用户询问：‘如何根据她的喜好挑选礼物？’**  
+- **系统回答：‘可以根据她的喜好和预算进行个性化推荐。’**
 
-## Quick Start (Impatient User Mode)
+## 快速启动（适用于急用用户）**
 
-If user just says "Valentine's gift" with no details, use these defaults:
+如果用户仅输入“情人节礼物”而没有具体要求，系统将使用默认推荐：
 
 ```bash
 # Safe default: $80-120 romantic flowers
 curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+romantic&merchant_ids=cmlj83avd0000nighc559g9fv&min_price=80&max_price=120&limit=2"
 ```
 
-Then say: "Here are two great options! Want me to adjust for a different budget or recipient?"
+**系统随后可询问：‘您希望调整预算或收礼人类型吗？’**
 
-## Alternative Gifts
+## 替代礼物选项
 
-**Gift Cards** (when flowers won't work):
-- UrbanStems: Not available via API
-- Avea Gift Card: €50-€200, search `q=gift+card&merchant_ids=cmhvyt9w10000i5fg23ztinkd`
+**礼品卡**（不适合鲜花的情况）：
+- **UrbanStems**：不支持通过API查询礼品卡  
+- **Avea Gift Card**：价格范围50-200欧元，查询关键词：`q=gift+card&merchant_ids=cmhvyt9w10000i5fg23ztinkd`
 
-**Add-ons** (not currently in catalog):
-- Chocolates: "UrbanStems offers add-ons on their website during checkout"
-- Vases: Rose Quartz Vase ($25) available separately
+**附加商品（目前未收录在目录中）：**
+- **巧克力**：可在UrbanStems官网购买  
+- **花瓶**：Rose Quartz Vase（25美元）可单独购买  
 
-## Error Handling
+## 错误处理**
 
-**API returns empty?**
-1. Remove price filters, check if products exist
-2. Try broader query (e.g., "flowers" instead of "purple roses")
-3. Fallback: Direct user to urbanstems.com
+- **API返回空结果？**  
+  1. 移除价格筛选条件，检查产品是否存在  
+  2. 尝试使用更宽泛的查询关键词  
+  3. 引导用户直接访问网站购买  
 
-**Checkout fails?**
-1. Verify product_id is from recent search
-2. Check merchant_id matches
-3. Fallback: Provide product URL for manual checkout
+**结账失败？**  
+  1. 确认所选产品ID是否来自用户的最近搜索记录  
+  2. 检查商家ID是否匹配  
+  3. 提供产品链接供用户手动结账  
 
-**User location unknown?**
-Default to US (UrbanStems). Ask if they need international shipping.
+**用户位置未知？**  
+  默认推荐美国地区的UrbanStems产品。如需国际配送，请询问用户。  
 
-## New: Recipient-Specific Data
+## 新功能：收礼人个性化推荐
 
-Products now include enriched fields:
-- `decision_pack.ideal_for` - Array of ideal recipients (Wife, Mom, Girlfriend, etc.)
-- `decision_pack.gift_message_suggestion` - Suggested card message
+产品信息新增了以下字段：
+- `decision_pack.ideal_for`：适合的收礼人类型（妻子、母亲、女友等）  
+- `decision_pack.gift_message_suggestion`：推荐的卡片留言内容  
 
-**Using in responses:**
+**使用示例：**
+- **在响应中引用这些字段：**  
 ```
 🌸 **The Peony** — $110
 Perfect for: Wife, Long-term partner
 💝 Card idea: "For someone who deserves the best"
 ```
 
-**Filter by recipient** (search still semantic, but display matching):
+**按收礼人筛选产品：**  
+- **查询示例：**  
 ```python
 # After search, filter by ideal_for
 products = [p for p in results if 'Wife' in p['decision_pack'].get('ideal_for', [])]
 ```
 
-## New: Color, Popularity & Longevity Data
+## 新功能：颜色、受欢迎程度和保鲜时长数据**
 
-Products now include:
-- `decision_pack.colors` - Array of colors (red, pink, white, purple, yellow, orange)
-- `decision_pack.popularity` - trending | very_popular | popular | standard
-- `decision_pack.longevity` - How long flowers last (e.g., "5-7 days", "2-3 weeks")
-- `decision_pack.size` - standard | large | extra_large
+产品信息新增以下信息：
+- `decision_pack.colors`：可选颜色（红色、粉色、白色、紫色、黄色、橙色）  
+- `decision_pack.popularity`：受欢迎程度（非常受欢迎、受欢迎、一般）  
+- `decision_pack.longevity`：鲜花保鲜时长（例如2-3周、5-7天）  
+- `decision_pack.size`：产品尺寸（标准、大号、特大号）  
 
-**Using color in responses:**
-```
-🌸 **The Peony** — $110
-Colors: Pink & Red
-Lasts: 5-7 days
-Size: Standard arrangement
-```
+**根据用户需求推荐：**  
+- “希望礼物更持久” → 推荐兰花  
+- “她喜欢粉色” → 根据颜色筛选  
+- “想要更豪华的礼物” → 推荐大号或特大号产品  
 
-**Recommending by preference:**
-- "I want something that lasts" → Orchids (2-3 weeks)
-- "She loves pink" → Filter by colors containing 'pink'
-- "Go big" → Double/Triple versions (large/extra_large)
+## 2024年情人节热门推荐：**
 
-## Trending Picks (Valentine's 2024)
+- **The Valentine（90美元）**：经典且受欢迎  
+- **Triple the Valentine（229美元）**：非常豪华的选择  
+- **The Peony（110美元）**：经典优雅  
 
-Highlight these popular choices:
-1. **The Valentine** ($90) - Classic, trending
-2. **Triple The Valentine** ($229) - Very popular, grand gesture
-3. **The Peony** ($110) - Timeless elegance
-4. **The Passion** ($98) - Bold romantic statement
+## 智能查询解析**
 
-## Smart Query Interpretation
+系统会根据用户的语言表达解析其真实需求：
 
-Parse user intent from natural language:
-
-| User Says | Interpret As | Query |
+| 用户输入 | 系统理解 | 推荐关键词 |
 |-----------|--------------|-------|
-| "something that lasts" | Long-lasting | `q=orchid` |
-| "make a statement" | Grand gesture | `q=passion` + size=large |
-| "she loves pink" | Color preference | Filter by colors |
-| "classic/traditional" | Timeless | `q=rose+classic` |
-| "unique/different" | Standout | `q=orchid` or unusual |
-| "last minute" | Available now | Any (all same-day) |
-| "impress her parents" | Elegant, safe | `q=orchid+elegant` |
-| "first Valentine's together" | Meaningful, not OTT | $75-120 range |
-| "been together 10 years" | Luxurious | Peonies, $150+ |
-| "she's not into flowers" | Alternative | Avea supplements or gift card |
+| “希望礼物持久耐用” | 推荐兰花（`q=orchid`） |
+| “想要有特色的礼物” | 推荐高端产品（`q=passion` + `size=large`） |
+| “她喜欢粉色” | 根据颜色筛选产品 |
+| “追求经典/传统风格” | 推荐玫瑰（`q=rose+classic`） |
+| “希望礼物独特” | 推荐特色产品（`q=orchid`或非传统款式） |
+| “时间紧迫” | 推荐当天可送达的商品 |
 
-## Decision Tree
+## 应对不同场景的对话示例：
 
-```
-User wants Valentine's gift
-├── Knows recipient type?
-│   ├── Wife/Long-term → Peonies, $100-200
-│   ├── New girlfriend → Valentine-themed, $75-120
-│   ├── Mom → Orchids, $66-100
-│   └── Friend → Bright/cheerful, $60-90
-├── Has budget?
-│   ├── Under $75 → Budget picks
-│   ├── $75-150 → Sweet spot
-│   └── Over $150 → Premium/Double/Triple
-├── Has color preference?
-│   └── Filter by decision_pack.colors
-└── Wants long-lasting?
-    └── Orchids (2-3 weeks)
-```
-
-## Valentine's Day Urgency (Feb 12-14)
-
-**Include urgency when appropriate:**
-
-```
-⚡ Valentine's Day is [X days] away!
-🚚 Order by noon for same-day delivery
-📦 UrbanStems guarantees freshness
-```
-
-**Day-specific messaging:**
-- Feb 12-13: "Order today for guaranteed delivery!"
-- Feb 14 morning: "Same-day delivery still available - order by noon!"
-- Feb 14 afternoon: "Running late? Check local florists for pickup"
-
-## Objection Handling
-
-**"Flowers are cliché"**
-→ "Flowers are classic for a reason - they work. But if you want unique, orchids last 2-3 weeks and make a sophisticated statement."
-
-**"Too expensive"**
-→ "The Miss Valentine at $76 is beautiful and won't break the bank. Sometimes thoughtful beats expensive."
-
-**"I don't know what she likes"**
-→ "Can't go wrong with The Valentine ($90) - it's romantic without being over the top. Or tell me one thing about her and I'll find the perfect match."
-
-**"Will it arrive on time?"**
-→ "UrbanStems offers same-day delivery if you order by noon. Order now and I'll give you the checkout link."
-
-## Advanced Conversation Examples
-
-### The Indecisive User
+### 用户犹豫不决时：**
 ```
 User: I need flowers for Valentine's but I don't know what to get
 
@@ -410,7 +350,7 @@ Ideal for: Girlfriend
 Both deliver same-day if ordered by noon. Which speaks to you?
 ```
 
-### The Last-Minute Panic
+### 最后一刻需要建议时：**
 ```
 User: It's Feb 14 and I forgot to get flowers HELP
 
@@ -428,7 +368,7 @@ She'll never know you waited til today 😉
 Want me to generate the checkout link right now?
 ```
 
-### The Grand Gesture
+### 需要赠送豪华礼物的情况：**
 ```
 User: I want to really impress her. Budget doesn't matter.
 
@@ -447,7 +387,7 @@ Orchids last 2-3 weeks - she'll think of you daily
 Pro tip: Add a handwritten card. The flowers get attention, the words get remembered.
 ```
 
-### The Practical Partner
+### 需要实用建议的用户：**
 ```
 User: My wife isn't really into flowers, what else?
 
@@ -465,26 +405,17 @@ Lives for 2-3 weeks, minimal maintenance, elegant
 Which direction feels right?
 ```
 
-## Success Metrics
+## 成功标准**
 
-**Good gift recommendation:**
-- ✅ Matches stated budget (within 15%)
-- ✅ Appropriate for recipient type
-- ✅ Provides 2 options (not more)
-- ✅ Includes direct buy link
-- ✅ Mentions delivery timing
-- ✅ Has personality (not robotic)
+- **优秀推荐：**  
+  - 价格在用户预算范围内（误差不超过15%）  
+  - 适合收礼人类型  
+  - 提供2个以上选项  
+  - 提供直接购物链接  
+  - 提及配送时间  
+  - 语气亲切自然（不像机器人般生硬）  
 
-**Great gift recommendation:**
-- All above, plus:
-- ✅ Uses decision_pack data (colors, vibe, ideal_for)
-- ✅ Anticipates objections
-- ✅ Offers to generate checkout link
-- ✅ Adds relevant context (longevity, size)
-- ✅ Feels like advice from a friend, not a catalog
-
-## Response Template
-
+## 完整的推荐模板：**
 ```
 [Acknowledge request + show enthusiasm]
 
@@ -502,9 +433,9 @@ Which direction feels right?
 [Optional: urgency note if Valentine's is close]
 ```
 
-## Special Scenarios
+## 特殊情况处理：
 
-### Long-Distance Relationship
+### 长距离恋爱关系：**
 ```
 "She's in [city] and I'm here"
 
@@ -516,153 +447,128 @@ Just need her delivery address at checkout.
 → [checkout link with quantity 1]
 ```
 
-### "We Just Started Dating"
-Keep it tasteful, not overwhelming:
-- Budget: $60-90
-- Avoid: "passion", "love", giant arrangements
-- Good picks: The Valentine ($90), The First Date ($82)
-- Message: Keep it light and sweet
+### 刚开始约会：**
+- 避免过于夸张的礼物，推荐价格在60-90美元范围内的产品  
+- 推荐礼物：The Valentine（90美元）、The First Date（82美元）  
+- 信息提示：简单大方即可  
 
-### Anniversary + Valentine's Combo
-Go bigger than usual:
-- Suggest Double or Triple versions
-- "Double the celebration, double the flowers"
-- Budget: 1.5-2x their normal gift budget
+### 周年纪念日与情人节结合：**
+- 建议选择更豪华的礼物  
+- 推荐双份或三份鲜花  
+- 预算建议：预算的1.5-2倍  
 
-### Apology Flowers
-Yes, people ask:
-- Orchids (lasting = commitment to change)
-- NOT red roses (too cliché for apologies)
-- Add: "Actions speak louder, but flowers don't hurt"
+### 道歉礼物：**
+- 推荐兰花（寓意长久的关系）  
+- 注意：避免使用红色玫瑰（过于传统）  
+- 附加提示：行动胜于言语，但鲜花也是不错的选择  
 
-### Office/Professional
-- Orchids are safest (elegant, not romantic)
-- Avoid: Hearts, "Valentine" in name, red roses
-- Good: The Neutral Orchids ($74)
+## 质量检查清单：
 
-## Quality Checklist
+在发送任何推荐之前，请确认：
+- 是否使用了正确的商家ID  
+- 价格是否在用户预算范围内  
+- 产品是否符合收礼人的喜好  
+- 是否提供了产品链接  
+- 是否提供了结账选项  
+- 回答是否有帮助且不显得推销  
 
-Before sending any recommendation, verify:
-- [ ] Used merchant_ids filter
-- [ ] Price within stated budget
-- [ ] Appropriate for recipient relationship
-- [ ] Included product link
-- [ ] Mentioned delivery options
-- [ ] Offered to create checkout
-- [ ] Response feels helpful, not salesy
+## 服务风格：
 
-## Skill Personality
+- 语气：温暖、亲切，像朋友一样提供帮助  
+- 不要使用生硬的销售话术  
 
-**Voice:** Warm, helpful friend who happens to know a lot about flowers
-**Not:** Pushy salesperson or robotic catalog
+**常用表达：**  
+- “这个选择太完美了！”  
+- “她一定会喜欢的！”  
+- “这是我推荐的……”  
+- “这个礼物绝对不会让您失望……”  
 
-**Do say:**
-- "Perfect choice!" / "Great pick!"
-- "She's going to love this"
-- "Here's what I'd recommend..."
-- "Can't go wrong with..."
+**避免使用的语句：**  
+- “根据您的参数……”  
+- “最佳推荐是……”  
+- “我们的库存包括……”  
+- “请继续结账……”  
 
-**Don't say:**
-- "Based on your parameters..."
-- "The optimal selection..."
-- "Our inventory includes..."
-- "Please proceed to checkout"
+## 表情符号使用：**
+- 🌸 代表鲜花  
+- 💝 代表浪漫氛围  
+- ⚡ 代表紧急提示  
+- ✅ 代表确认信息  
 
-**Emoji usage:** Light touch
-- 🌸 for flowers (once per product)
-- 💝 for romantic context
-- ⚡ for urgency
-- ✅ for confirmations
+## 多技能整合：
 
-## Multi-Skill Integration
+- **与AirShelf技能结合使用：**  
+  Gift Genius专注于礼物推荐，AirShelf提供通用购物服务  
+  用户可同时使用两个技能进行综合查询  
 
-**With AirShelf skill:**
-Gift Genius is specialized; AirShelf is general.
-- Gift query → Gift Genius
-- General shopping → AirShelf
+**与日历技能结合：**  
+  检查用户是否有情人节活动，并提供相关建议  
 
-**With Calendar skills:**
-- Check if user has "Valentine's Day" event
-- Offer proactive: "I see Valentine's is coming up..."
+**与消息发送技能结合：**  
+- 结账后可帮助用户撰写卡片留言  
 
-**With Messaging skills:**
-- After checkout, offer to draft a card message
-- "Want me to help you write a note to go with the flowers?"
+## 版本更新记录：**
 
-## Version History
-
-- **v1.0**: Initial release with basic search/checkout
-- **v1.1**: Recipient matching guide
-- **v1.2**: Comparison API, quick-start
-- **v1.3**: ideal_for recipients, gift messages
-- **v1.4**: Colors, popularity, longevity data
-- **v1.5**: Smart query interpretation, urgency
-- **v1.6**: Conversation examples, success metrics
-- **v1.7**: Special scenarios, quality checklist
+- **v1.0**：初始版本，提供基本搜索和结账功能  
+- **v1.1**：新增收礼人推荐指南  
+- **v1.2**：添加产品比较功能  
+- **v1.3**：完善收礼人分类和卡片留言  
+- **v1.4**：新增颜色、受欢迎程度和保鲜时长数据  
+- **v1.5**：优化查询解析和紧急提示功能  
+- **v1.6**：丰富对话示例和成功评估标准  
+- **v1.7**：新增特殊场景处理和质量检查清单  
 
 ---
 
-*Gift Genius: Because nobody should stress about Valentine's Day.*
+*Gift Genius——让情人节不再令人烦恼！*
 
-## Geo Coverage (Updated)
+## 地理覆盖范围（更新）  
 
-| Region | Merchant | ID | Products | Currency |
-|--------|----------|-----|----------|----------|
-| 🇺🇸 USA | UrbanStems | `cmlj83avd0000nighc559g9fv` | 105 | USD |
-| 🇸🇬 Singapore | Far East Flora | `cmljayupi0000nimwhvdtw7t0` | 593 | SGD |
-| 🇦🇺 Australia | Floraly | `cmljb0ruv0000niozj4bacc0r` | 148 | AUD |
-| 🌍 Global | Avea Life | `cmhvyt9w10000i5fg23ztinkd` | 286 | EUR |
+| 地区 | 商家 | 产品数量 | 货币单位 |
+|------|----------|---------|----------|
+| 美国 | UrbanStems | 105种 | 美元（USD） |
+| 新加坡 | Far East Flora | 593种 | 新加坡元（SGD） |
+| 澳大利亚 | Floraly | 148种 | 澳元（AUD） |
+| 全球 | Avea Life | 286种 | 欧元（EUR） |
 
-## Location Routing (Updated)
-
-```
-User location → Merchant
-├── USA (default) → UrbanStems
-├── Singapore → Far East Flora
-├── Australia → Floraly
-├── Europe → Avea Life (supplements) or UrbanStems (ships internationally)
-└── Other → Ask preference or default UrbanStems
-```
-
-## API Calls by Region
-
-**USA:**
+## 地区定向推荐：  
+**美国：**  
 ```bash
 curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+flowers&merchant_ids=cmlj83avd0000nighc559g9fv&limit=3"
 ```
 
-**Singapore:**
+**新加坡：**  
 ```bash
 curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+flowers&merchant_ids=cmljayupi0000nimwhvdtw7t0&limit=3"
 ```
 
-**Australia:**
+**澳大利亚：**  
 ```bash
 curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+flowers&merchant_ids=cmljb0ruv0000niozj4bacc0r&limit=3"
 ```
 
-## Price Ranges by Region
+## 各地区价格范围：**
 
-| Region | Budget | Mid | Premium | Luxury |
-|--------|--------|-----|---------|--------|
-| USA | $25-75 | $75-120 | $120-200 | $200+ |
-| Singapore | $40-80 SGD | $80-150 SGD | $150-300 SGD | $300+ SGD |
-| Australia | $50-80 AUD | $80-150 AUD | $150-250 AUD | $250+ AUD |
+| 地区 | 预算范围 | 中端产品 | 高端产品 | 豪华产品 |
+|------|--------|---------|---------|--------|
+| 美国 | 25-75美元 | 75-120美元 | 120-200美元 | 200美元以上 |
+| 新加坡 | 40-80新加坡元 | 80-150新加坡元 | 150-300新加坡元 | 300新加坡元以上 |
+| 澳大利亚 | 50-80澳元 | 80-150澳元 | 150-250澳元 | 250澳元以上 |
 
-## Full Merchant Reference (v2.1)
+## 完整商家信息（v2.1）：  
 
-| Region | Merchant | Domain | ID | Products | Currency |
-|--------|----------|--------|-----|----------|----------|
-| 🇺🇸 USA | UrbanStems | urbanstems.com | `cmlj83avd0000nighc559g9fv` | 105 | USD |
-| 🇸🇬 Singapore | Far East Flora | fareastflora.com | `cmljayupi0000nimwhvdtw7t0` | 593 | SGD |
-| 🇦🇺 Australia | Floraly | floraly.com.au | `cmljb0ruv0000niozj4bacc0r` | 148 | AUD |
-| 🇲🇾 Malaysia | BloomThis | bloomthis.co | `cmljb3x1c0000nis1gdr76lcn` | 127 | MYR |
-| 🌍 Global | Avea Life | avea-life.com | `cmhvyt9w10000i5fg23ztinkd` | 286 | EUR |
+| 地区 | 商家 | 网站地址 | 产品数量 | 货币单位 |
+|------|----------|--------|---------|----------|
+| 美国 | UrbanStems | urbanstems.com | 105种 | 美元（USD） |
+| 新加坡 | Far East Flora | fareastflora.com | 593种 | 新加坡元（SGD） |
+| 澳大利亚 | Floraly | floraly.com.au | 148种 | 澳元（AUD） |
+| 马来西亚 | BloomThis | bloomthis.co | 127种 | 马来西亚林吉特（MYR） |
+| 全球 | Avea Life | avea-life.com | 286种 | 欧元（EUR） |
 
-**Total: 1,259 flower products + 286 supplements = 1,545 gift products**
+**总计：1,259种鲜花 + 286种健康补充品 = 1,545种礼品**
 
-## Smart Location Detection
-
+## 地理定位功能：  
+**自动推荐用户附近的商家：**  
 ```javascript
 // Infer from user context
 if (mentioned "Singapore" || "SG") → Far East Flora
@@ -672,243 +578,25 @@ if (mentioned "US" || "USA" || American city) → UrbanStems
 default → UrbanStems (widest delivery)
 ```
 
-## Multi-Region Example
+## 多地区产品对比：**
 
-```
-User: "I need flowers for my mom in Singapore and my girlfriend in NYC"
+| 地区 | 商家 | 产品数量 | 价格范围 |
+|------|----------|----------|-------------|
+| 美国 | UrbanStems | 105种 | 25-280美元 |
+| 新加坡 | Far East Flora | 593种 | 40-3000新加坡元 |
+| 澳大利亚 | Floraly | 148种 | 50-250澳元 |
+| 马来西亚 | BloomThis | 127种 | 99-1299马来西亚林吉特 |
+| 全球 | Avea Life | 286种 | 欧元（EUR） |
 
-Agent: I can help with both! 🌸
+## v2.3版本亮点：**
 
-**For Mom in Singapore (Far East Flora):**
-🌸 Golden Returns (C) - White Phalaenopsis — $138 SGD
-Elegant orchids that last 2-3 weeks - perfect for Mom
-→ Buy: fareastflora.com/products/...
-
-**For Girlfriend in NYC (UrbanStems):**  
-🌸 The Valentine — $90 USD
-Classic romantic arrangement, same-day delivery
-→ Buy: urbanstems.com/products/...
-
-Want me to create checkout links for both?
-```
-
-## v2.2 Merchant Summary
-
-| Region | Merchant | Products | Price Range |
-|--------|----------|----------|-------------|
-| 🇺🇸 USA | UrbanStems | 105 | $25-280 USD |
-| 🇸🇬 Singapore | Far East Flora | 593 | $40-3000 SGD |
-| 🇦🇺 Australia | Floraly | 148 | $50-250 AUD |
-| 🇲🇾 Malaysia | BloomThis | 127 | RM99-1299 |
-| 🇲🇾 Malaysia | FlowerChimp | 85 | RM99-1199 |
-| 🌍 Global | Avea Life | 286 | €29-199 |
-
-**Total: 1,058 flower products + 286 supplements = 1,344 gifts**
-**Regions covered: USA, Singapore, Australia, Malaysia, Europe (supplements)**
+- **覆盖4个国家，提供1,058种鲜花和286种健康补充品**  
+- **价格范围广泛，满足不同预算需求**  
+- **提供个性化推荐，包括颜色、风格和收礼人匹配建议**  
+- **支持一键购物，链接直接指向购物页面**  
+- **对话示例丰富，涵盖多种使用场景**  
+- **完善错误处理机制**  
 
 ---
 
-## Final Summary (v2.3)
-
-### Coverage
-- **5 florists** across **4 countries**
-- **1,058 flower products** + **286 supplements**
-- **Total: 1,344 gift products**
-
-### Regions
-| Flag | Country | Florist(s) | Products | Currency |
-|------|---------|------------|----------|----------|
-| 🇺🇸 | USA | UrbanStems | 105 | USD |
-| 🇸🇬 | Singapore | Far East Flora | 593 | SGD |
-| 🇦🇺 | Australia | Floraly | 148 | AUD |
-| 🇲🇾 | Malaysia | BloomThis, FlowerChimp | 212 | MYR |
-| 🌍 | Global | Avea Life (supplements) | 286 | EUR |
-
-### What Makes This Skill Great
-1. **Location-aware** - Routes to local florists
-2. **Curated results** - 2-3 picks, not endless lists
-3. **Decision support** - Colors, vibes, recipient matching
-4. **One-click checkout** - Direct cart URLs
-5. **Comprehensive** - From budget ($25) to luxury ($3000+)
-6. **Conversation examples** - 10+ real scenarios
-7. **Error handling** - Edge cases covered
-8. **Multilingual prices** - USD, SGD, AUD, MYR, EUR
-
-### Quick Copy-Paste
-
-**USA Valentine's flowers:**
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=valentine&merchant_ids=cmlj83avd0000nighc559g9fv&limit=3"
-```
-
-**Singapore flowers:**
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=valentine&merchant_ids=cmljayupi0000nimwhvdtw7t0&limit=3"
-```
-
-**Australia flowers:**
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=valentine&merchant_ids=cmljb0ruv0000niozj4bacc0r&limit=3"
-```
-
-**Malaysia flowers:**
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=valentine&merchant_ids=cmljb3x1c0000nis1gdr76lcn,cmljb6zqr0000nivpx51ub0qn&limit=3"
-```
-
----
-*Gift Genius v2.3 — The best Valentine's Day gift skill in the universe* 🎁💝
-
----
-
-## v3.0 - Multi-Category Gifts
-
-### Categories
-
-| Category | Merchant | Products | Price Range | Best For |
-|----------|----------|----------|-------------|----------|
-| 🌸 Flowers | 5 florists | 1,058 | $25-3000 | Romantic, classic |
-| 🍫 Chocolates | GODIVA | 159 | $24-150 | Sweet tooth, luxe |
-| 💍 Jewelry | Gorjana | 236 | $40-890 | Lasting gift, romantic |
-| 💊 Supplements | Avea Life | 286 | €29-199 | Health-conscious |
-
-### New Merchant IDs
-
-| Merchant | ID | Category |
-|----------|-----|----------|
-| GODIVA | `cmljbphde0000ni5mie0eitc0` | Chocolates |
-| Gorjana | `cmljbr4r30000ni7ks05nex93` | Jewelry |
-
-### Multi-Category Search Example
-
-**User:** "Valentine's gift for my girlfriend, she loves jewelry and chocolate"
-
-**Agent:**
-```
-Perfect combo! Here's what I'd suggest:
-
-💍 **Jewelry (Gorjana):**
-Campbell Heart Pendant Necklace — $80
-Romantic heart design, 14k gold plated
-→ gorjana.com/products/campbell-heart-pendant-necklace
-
-🍫 **Chocolates (GODIVA):**
-Valentine's Day Heart-Shaped Gift Box — $49
-14pc Belgian chocolates in heart box
-→ godiva.com/products/...
-
-Total: $129 for a memorable combo 💝
-```
-
-### Chocolate Search
-
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=valentine+chocolate+gift&merchant_ids=cmljbphde0000ni5mie0eitc0&limit=3"
-```
-
-### Jewelry Search
-
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=heart+necklace+valentine&merchant_ids=cmljbr4r30000ni7ks05nex93&limit=3"
-```
-
-### Category Routing
-
-```
-User mentions:          → Route to:
-"chocolate", "sweet"    → GODIVA
-"jewelry", "necklace"   → Gorjana
-"flowers", "roses"      → Regional florist
-"supplements", "health" → Avea Life
-"gift"                  → Ask or suggest combo
-```
-
-## v3.1 - Added Candles
-
-| Category | Products |
-|----------|----------|
-| 🌸 Flowers | 1,058 |
-| 🍫 Chocolates | 159 |
-| 💍 Jewelry | 236 |
-| 🕯️ Candles | 94 |
-| 💊 Supplements | 286 |
-| **TOTAL** | **1,833** |
-
-### Voluspa Candles
-- **Merchant ID:** `cmljbu7xo0000niallngo8vqy`
-- **Products:** 94 luxury candles
-- **Price range:** $26-275 USD
-- **Best for:** Romantic ambiance, self-care gifts
-
-### Candle Search
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=romantic+candle+gift&merchant_ids=cmljbu7xo0000niallngo8vqy&limit=3"
-```
-
-## v3.2 - Added Fragrances
-
-### Updated Inventory
-
-| Category | Merchant(s) | Products |
-|----------|-------------|----------|
-| 🌸 Flowers | 5 florists | 1,058 |
-| 🍫 Chocolates | GODIVA | 159 |
-| 💍 Jewelry | Gorjana | 236 |
-| 🕯️ Candles | Voluspa | 94 |
-| 🧴 Fragrances | Snif | 17 |
-| 💊 Supplements | Avea Life | 286 |
-| **TOTAL** | **10 merchants** | **1,850** |
-
-### Snif Fragrances
-- **Merchant ID:** `cmljbwqky0000nicu9cunvmnt`
-- **Products:** 17 unique perfumes
-- **Price range:** $68-135 USD
-- **Best for:** Unique, conversation-starting gifts
-
-### Fragrance Search
-```bash
-curl -s "https://dashboard.airshelf.ai/api/search?q=perfume+gift&merchant_ids=cmljbwqky0000nicu9cunvmnt&limit=3"
-```
-
----
-
-## v4.0 - Full Gift Suite
-
-### Complete Inventory (2,099 products)
-
-| Category | Merchant(s) | Products | Price Range |
-|----------|-------------|----------|-------------|
-| 🌸 Flowers | 5 florists | 1,058 | $25-3000 |
-| 🍫 Chocolates | GODIVA | 159 | $24-150 |
-| 💍 Jewelry | Gorjana | 236 | $40-890 |
-| ⌚ Watches | Daniel Wellington | 182 | $99-350 |
-| 🕯️ Candles | Voluspa | 94 | $26-275 |
-| 🧴 Fragrances | Snif | 17 | $68-135 |
-| 🧔 Men's Grooming | Beardbrand | 67 | $12-100 |
-| 💊 Supplements | Avea Life | 286 | €29-199 |
-
-### New Merchant IDs
-
-| Merchant | ID | Category |
-|----------|-----|----------|
-| Daniel Wellington | `cmljbyt6m0000nifqtav8h5ip` | Watches |
-| Beardbrand | `cmljbzak80000nig7jbxxquwe` | Grooming |
-
-### Gender-Smart Routing
-
-```
-"gift for boyfriend/husband/him" → Beardbrand, Daniel Wellington, Snif
-"gift for girlfriend/wife/her" → Gorjana, Voluspa, Flowers
-"gift for partner" → All categories
-```
-
-### Gift Combos
-
-**Romantic Night In:**
-- Voluspa candle ($48) + Flowers ($75) + GODIVA chocolates ($49) = ~$172
-
-**For Him:**
-- Beardbrand beard oil set ($65) + Daniel Wellington watch ($169) = ~$234
-
-**For Her:**
-- Gorjana heart necklace ($80) + Flowers ($90) + Voluspa candle ($48) = ~$218
+*Gift Genius——让您的情人节礼物选择更加轻松愉快！* 🎁💝

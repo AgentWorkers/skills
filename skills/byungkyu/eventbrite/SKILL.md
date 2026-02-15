@@ -17,9 +17,9 @@ metadata:
 
 # Eventbrite
 
-Access the Eventbrite API with managed OAuth authentication. Manage events, venues, ticket classes, orders, attendees, and more.
+通过管理的OAuth认证来访问Eventbrite API。您可以管理事件、场地、票类、订单、参与者等信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/eventbrite/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Eventbrite API endpoint path. The gateway proxies requests to `www.eventbriteapi.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Eventbrite API端点路径。该网关会将请求代理到 `www.eventbriteapi.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Eventbrite OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Eventbrite OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Eventbrite connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Eventbrite连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### User Operations
+### 用户操作
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /eventbrite/v3/users/me/
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "emails": [{"email": "user@example.com", "verified": true, "primary": true}],
@@ -165,38 +165,38 @@ GET /eventbrite/v3/users/me/
 }
 ```
 
-#### List User Organizations
+#### 列出用户所属的组织
 
 ```bash
 GET /eventbrite/v3/users/me/organizations/
 ```
 
-#### List User Orders
+#### 列出用户的订单
 
 ```bash
 GET /eventbrite/v3/users/me/orders/
 ```
 
-### Organization Operations
+### 组织操作
 
-#### List Organization Events
+#### 列出组织事件
 
 ```bash
 GET /eventbrite/v3/organizations/{organization_id}/events/
 ```
 
-Query parameters:
-- `status` - Filter by status: `draft`, `live`, `started`, `ended`, `completed`, `canceled`
-- `order_by` - Sort order: `start_asc`, `start_desc`, `created_asc`, `created_desc`
-- `time_filter` - Filter by time: `current_future`, `past`
+查询参数：
+- `status` - 按状态过滤：`draft`、`live`、`started`、`ended`、`completed`、`canceled`
+- `order_by` - 排序方式：`start_asc`、`start_desc`、`created_asc`、`created_desc`
+- `time_filter` - 按时间过滤：`current_future`、`past`
 
-#### List Organization Venues
+#### 列出组织场地
 
 ```bash
 GET /eventbrite/v3/organizations/{organization_id}/venues/
 ```
 
-#### Create Venue
+#### 创建场地
 
 ```bash
 POST /eventbrite/v3/organizations/{organization_id}/venues/
@@ -216,17 +216,17 @@ Content-Type: application/json
 }
 ```
 
-### Event Operations
+### 事件操作
 
-#### Get Event
+#### 获取事件信息
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/
 ```
 
-#### Create Event
+#### 创建事件
 
-Events must be created under an organization:
+事件必须在一个组织下创建：
 
 ```bash
 POST /eventbrite/v3/organizations/{organization_id}/events/
@@ -255,7 +255,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Event
+#### 更新事件
 
 ```bash
 POST /eventbrite/v3/events/{event_id}/
@@ -269,39 +269,33 @@ Content-Type: application/json
 }
 ```
 
-#### Publish Event
+#### 发布事件
 
 ```bash
 POST /eventbrite/v3/events/{event_id}/publish/
 ```
 
-#### Unpublish Event
+#### 取消事件
 
 ```bash
 POST /eventbrite/v3/events/{event_id}/unpublish/
 ```
 
-#### Cancel Event
-
-```bash
-POST /eventbrite/v3/events/{event_id}/cancel/
-```
-
-#### Delete Event
+#### 删除事件
 
 ```bash
 DELETE /eventbrite/v3/events/{event_id}/
 ```
 
-### Ticket Class Operations
+### 票类操作
 
-#### List Ticket Classes
+#### 列出票类
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/ticket_classes/
 ```
 
-#### Create Ticket Class
+#### 创建票类
 
 ```bash
 POST /eventbrite/v3/events/{event_id}/ticket_classes/
@@ -321,9 +315,9 @@ Content-Type: application/json
 }
 ```
 
-For free tickets, omit the `cost` field or set `free: true`.
+对于免费票，请省略 `cost` 字段或设置 `free: true`。
 
-#### Update Ticket Class
+#### 更新票类
 
 ```bash
 POST /eventbrite/v3/events/{event_id}/ticket_classes/{ticket_class_id}/
@@ -336,57 +330,57 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Ticket Class
+#### 删除票类
 
 ```bash
 DELETE /eventbrite/v3/events/{event_id}/ticket_classes/{ticket_class_id}/
 ```
 
-### Attendee Operations
+### 参与者操作
 
-#### List Event Attendees
+#### 列出事件参与者
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/attendees/
 ```
 
-Query parameters:
-- `status` - Filter by status: `attending`, `not_attending`, `unpaid`
-- `changed_since` - ISO 8601 timestamp to get attendees changed after
+查询参数：
+- `status` - 按状态过滤：`attending`、`not_attending`、`unpaid`
+- `changed_since` - ISO 8601时间戳，用于获取之后更改的参与者
 
-#### Get Attendee
+#### 获取参与者信息
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/attendees/{attendee_id}/
 ```
 
-### Order Operations
+### 订单操作
 
-#### List Event Orders
+#### 列出事件订单
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/orders/
 ```
 
-Query parameters:
-- `status` - Filter by status: `active`, `inactive`, `all`
-- `changed_since` - ISO 8601 timestamp
+查询参数：
+- `status` - 按状态过滤：`active`、`inactive`、`all`
+- `changed_since` - ISO 8601时间戳
 
-#### Get Order
+#### 获取订单信息
 
 ```bash
 GET /eventbrite/v3/orders/{order_id}/
 ```
 
-### Venue Operations
+### 场地操作
 
-#### Get Venue
+#### 获取场地信息
 
 ```bash
 GET /eventbrite/v3/venues/{venue_id}/
 ```
 
-#### Update Venue
+#### 更新场地信息
 
 ```bash
 POST /eventbrite/v3/venues/{venue_id}/
@@ -399,15 +393,15 @@ Content-Type: application/json
 }
 ```
 
-### Reference Data
+### 参考数据
 
-#### List Categories
+#### 列出类别
 
 ```bash
 GET /eventbrite/v3/categories/
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "locale": "en_US",
@@ -420,54 +414,54 @@ GET /eventbrite/v3/categories/
 }
 ```
 
-#### Get Category
+#### 获取类别信息
 
 ```bash
 GET /eventbrite/v3/categories/{category_id}/
 ```
 
-#### List Subcategories
+#### 列出子类别
 
 ```bash
 GET /eventbrite/v3/subcategories/
 ```
 
-#### List Formats
+#### 列出格式
 
 ```bash
 GET /eventbrite/v3/formats/
 ```
 
-**Common formats:**
-- `1` - Conference
-- `2` - Seminar or Talk
-- `5` - Festival or Fair
-- `6` - Concert or Performance
-- `9` - Class, Training, or Workshop
-- `10` - Meeting or Networking Event
-- `11` - Party or Social Gathering
+**常见格式：**
+- `1` - 会议
+- `2` - 研讨会或演讲
+- `5` - 节日或展览
+- `6` - 音乐会或表演
+- `9` - 课程、培训或工作坊
+- `10` - 会议或社交活动
+- `11` - 派对或社交聚会
 
-#### List Countries
+#### 列出国家
 
 ```bash
 GET /eventbrite/v3/system/countries/
 ```
 
-#### List Regions
+#### 列出地区
 
 ```bash
 GET /eventbrite/v3/system/regions/
 ```
 
-## Pagination
+## 分页
 
-Eventbrite uses a combination of page-based and continuation-based pagination:
+Eventbrite使用基于页面和基于延续的分页方式：
 
 ```bash
 GET /eventbrite/v3/organizations/{org_id}/events/?page_size=50
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "pagination": {
@@ -482,29 +476,29 @@ GET /eventbrite/v3/organizations/{org_id}/events/?page_size=50
 }
 ```
 
-For subsequent pages, use the `continuation` token:
+对于后续页面，请使用 `continuation` 令牌：
 
 ```bash
 GET /eventbrite/v3/organizations/{org_id}/events/?continuation=eyJwYWdlIjogMn0
 ```
 
-## Expansions
+## 扩展数据
 
-Include related data by using the `expand` parameter:
+通过使用 `expand` 参数来包含相关数据：
 
 ```bash
 GET /eventbrite/v3/events/{event_id}/?expand=venue,ticket_classes,category
 ```
 
-Common expansions:
-- `venue` - Include venue details
-- `ticket_classes` - Include ticket information
-- `category` - Include category details
-- `subcategory` - Include subcategory details
-- `format` - Include format details
-- `organizer` - Include organizer information
+常见扩展数据：
+- `venue` - 包含场地详细信息
+- `ticket_classes` - 包含票类信息
+- `category` - 包含类别详细信息
+- `subcategory` - 包含子类别详细信息
+- `format` - 包含格式详细信息
+- `organizer` - 包含组织者信息
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -533,46 +527,46 @@ response = requests.get(
 user = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All endpoint paths should end with a trailing slash (`/`)
-- Event creation requires an organization - use organization-based endpoints
-- Legacy user-based event endpoints are deprecated; use organization equivalents
-- Timestamps are in ISO 8601 format (UTC)
-- Currency amounts are in minor units (cents) - e.g., "USD,2500" = $25.00
-- Rate limit: 1,000 calls per hour, 48,000 calls per day
-- Event Search API is no longer publicly available (deprecated February 2020)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有端点路径应以斜杠 `/` 结尾。
+- 创建事件需要一个组织——请使用基于组织的端点。
+- 旧的基于用户的事件端点已弃用；请使用基于组织的端点。
+- 时间戳采用ISO 8601格式（UTC）。
+- 货币金额以小单位表示（例如，“USD,2500”表示$25.00）。
+- 调用限制：每小时1,000次，每天48,000次。
+- 事件搜索API已不再公开提供（2020年2月弃用）。
+- 重要提示：当URL包含括号时，使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Eventbrite connection or invalid arguments |
-| 401 | Invalid or missing Maton API key |
-| 403 | Not authorized (check scopes or use organization endpoints) |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Eventbrite API |
+| 400 | 缺少Eventbrite连接或参数无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 未授权（请检查权限范围或使用基于组织的端点） |
+| 404 | 资源未找到 |
+| 429 | 调用次数受限 |
+| 4xx/5xx | 来自Eventbrite API的传递错误 |
 
-### Common Errors
+### 常见错误
 
-**NOT_AUTHORIZED with legacy user endpoints:**
+**使用旧的用户端点时出现“NOT_AUTHORIZED”：**
 ```json
 {"status_code": 403, "error": "NOT_AUTHORIZED", "error_description": "This user is not able to use legacy user endpoints, please use the organization equivalent."}
 ```
-Solution: Use `/organizations/{org_id}/events/` instead of `/users/me/owned_events/`
+解决方案：使用 `/organizations/{org_id}/events/` 而不是 `/users/me/owned_events/`。
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -583,17 +577,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `eventbrite`. For example:
+1. 确保您的URL路径以 `eventbrite` 开头。例如：
+- 正确：`https://gateway.maton.ai/eventbrite/v3/users/me/`
+- 错误：`https://gateway.maton.ai/v3/users/me/`
 
-- Correct: `https://gateway.maton.ai/eventbrite/v3/users/me/`
-- Incorrect: `https://gateway.maton.ai/v3/users/me/`
+## 资源
 
-## Resources
-
-- [Eventbrite API Documentation](https://www.eventbrite.com/platform/api)
-- [API Basics](https://www.eventbrite.com/platform/docs/api-basics)
-- [API Explorer](https://www.eventbrite.com/platform/docs/api-explorer)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Eventbrite API文档](https://www.eventbrite.com/platform/api)
+- [API基础知识](https://www.eventbrite.com/platform/docs/api-basics)
+- [API浏览器](https://www.eventbrite.com/platform/docs/api-explorer)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

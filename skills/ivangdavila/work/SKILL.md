@@ -1,89 +1,89 @@
 ---
 name: Work
-description: "Navigate office work with professional communication, meeting prep, workplace dynamics, and visibility tactics."
+description: "通过专业的沟通技巧、会议筹备方法、职场互动方式以及信息透明度策略来高效处理办公工作。"
 ---
 
-## Core Focus
+## 核心关注点
 
-Day-to-day effectiveness in corporate/office environments. Not career strategy (that's `career`), not personal productivity (that's `productivity`).
+在企业/办公环境中，重点在于日常工作的效率。这并非职业规划（那是“career”范畴的内容），也不是个人生产力（那是“productivity”范畴的内容）。
 
 ---
 
-## Situation Detection
+## 情境识别
 
-| Signal | Context | Load |
+| 信号 | 上下文 | 工作负担 |
 |--------|---------|------|
-| First 90 days, onboarding, new hire | New role adaptation | `situations/new-hire.md` |
-| Credit-taking, undermining, politics | Workplace dynamics | `situations/politics.md` |
-| Email drafts, meeting prep, status updates | Communication tasks | `situations/comms.md` |
-| Visibility, recognition, being overlooked | Perception management | `situations/visibility.md` |
-| Vague assignments, unclear priorities | Task clarity | `situations/clarity.md` |
+| 入职后的前90天 | 适应新角色 | `situations/new-hire.md` |
+| 功绩被他人抢夺、受到打压、职场政治 | 职场人际关系 | `situations/politics.md` |
+| 电子邮件草稿、会议准备、状态更新 | 沟通任务 | `situations/comms.md` |
+| 被忽视、缺乏认可 | 自我认知与管理 | `situations/visibility.md` |
+| 任务描述模糊、优先级不明确 | 任务清晰度 | `situations/clarity.md` |
 
 ---
 
-## Professional Communication
+## 专业沟通
 
-**Email drafts:** Match tone to recipient and urgency. Executive summary first, details below.
+**电子邮件草稿：** 根据收件人的身份和紧急程度调整语气。先写执行摘要，再详细说明。
 
-**Meeting prep:**
-1. Review context (previous threads, decisions)
-2. Define your contribution (questions, updates, blockers)
-3. Prepare one-liner if asked "any updates?"
+**会议准备：**
+1. 回顾相关背景（之前的讨论、已做出的决策）
+2. 明确你的贡献（提出的问题、更新的内容、遇到的阻碍）
+3. 如果有人问“有什么新进展吗？”，准备好简短的回答。
 
-**Status updates formula:**
+**状态更新模板：**
 ```
 DONE: [completed items with impact]
 IN PROGRESS: [current focus + ETA]
 BLOCKED: [what needs input/decision]
 ```
 
-**Difficult conversations:** See `scripts.md` for templates.
+**棘手的对话：** 可参考 `scripts.md` 中的模板。
 
 ---
 
-## Workplace Dynamics
+## 职场人际关系
 
-**When someone takes credit:** Document contributions in writing before meetings. Follow up with "as I mentioned in my email about X..."
+**当他人抢夺你的功劳时：** 在会议前以书面形式记录你的贡献，并在后续沟通中提到：“正如我在邮件中提到的……”
 
-**When undermined publicly:** Don't react in the moment. Address privately first: "I noticed X happened. Can we talk about how we work together?"
+**当你在公开场合受到打压时：** 不要当场反应，先私下沟通：“我注意到发生了X件事。我们可以聊聊我们该如何合作吗？”
 
-**Building alliances:** Visibility comes from being useful to the right people. Find where your work overlaps with influential stakeholders.
+**建立联盟：** 被认可的关键在于对关键人物有帮助。找出你的工作与有影响力的人之间的交集。
 
-**Reading the room:** Watch who speaks, who gets interrupted, who makes final calls. That's the real org chart.
-
----
-
-## First 90 Days
-
-**Week 1-4:** Listen more than contribute. Map relationships. Understand what "good" looks like here.
-
-**Week 5-8:** Start delivering small wins. Ask for feedback explicitly.
-
-**Week 9-12:** Own something end-to-end. Have the "how am I doing?" conversation.
-
-Key questions for manager:
-- "What does success look like in 90 days?"
-- "Who should I build relationships with?"
-- "What should I definitely avoid?"
+**观察职场动态：** 注意谁在发言、谁经常被打断、谁拥有最终决策权。这些才是真正的“组织结构”。
 
 ---
 
-## Work Profile
+## 入职后的前90天
 
-*Build over time. Confirm before storing.*
+**第1-4周：** 多倾听，少主动发言。了解职场中的“良好表现”是什么样的。
 
-### Environment
-<!-- "Open office, no private space" "Remote 3 days/week" -->
+**第5-8周：** 开始取得小成果，并主动寻求反馈。
 
-### Key Relationships
-<!-- "Manager: supportive but busy" "Skip-level: accessible" -->
+**第9-12周：** 承担起一项完整的任务，并进行自我评估（“我的表现如何？”）。
 
-### Culture Signals
-<!-- "Meetings start late (pattern)" "Email expected same-day (confirmed)" -->
-
-### Challenges
-<!-- "Credit issues with peer X" "Unclear priorities from above" -->
+**给经理的几个关键问题：**
+- “90天后，成功的标准是什么？”
+- “我应该与哪些人建立关系？”
+- “我绝对应该避免做什么？”
 
 ---
 
-*Empty = nothing learned yet. Every work question reveals more context.*
+## 工作概况
+
+*逐步建立自己的工作形象。在正式记录之前先确认相关信息。*
+
+### 工作环境
+（例如：“开放式办公环境，没有私人办公空间” 或 “每周有3天远程办公”）
+
+### 关键人际关系
+（例如：“经理支持我，但工作很忙” 或 “可以直接与上级沟通”）
+
+### 企业文化特征
+（例如：“会议经常迟到” 或 “邮件应在当天回复”）
+
+### 面临的挑战
+（例如：“与同事X之间存在功劳归属问题” 或 “上级对工作优先级的指示不明确”）
+
+---
+
+*如果某个字段为空，说明你还没有了解到相关内容。每个工作问题都会揭示更多背景信息。*

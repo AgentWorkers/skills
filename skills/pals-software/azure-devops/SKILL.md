@@ -1,24 +1,24 @@
 ---
 name: azure-devops
-description: List Azure DevOps projects, repositories, and branches; create pull requests; manage work items; check build status. Use when working with Azure DevOps resources, checking PR status, querying project structure, or automating DevOps workflows.
+description: 列出 Azure DevOps 项目、仓库和分支；创建拉取请求（pull requests）；管理工作项（work items）；检查构建状态（build status）。适用于处理 Azure DevOps 资源、查看拉取请求的状态、查询项目结构或自动化 DevOps 工作流程的场景。
 metadata: {"openclaw": {"emoji": "☁️", "requires": {"bins": ["curl", "jq"], "env": ["AZURE_DEVOPS_PAT"]}, "primaryEnv": "AZURE_DEVOPS_PAT"}}
 ---
 
-# Azure DevOps Skill
+# Azure DevOps 技能
 
-List projects, repositories, branches. Create pull requests. Manage work items. Check build status.
+列出项目、仓库和分支；创建拉取请求；管理工作项；检查构建状态。
 
-## Check before running for valid Configuration, if values missing ask the user!
+## 在运行前请检查配置是否有效，如果缺少值，请询问用户！
 
-**Required:**
-- `AZURE_DEVOPS_PAT`: Personal Access Token
-- `AZURE_DEVOPS_ORG`: Organization name
+**所需参数：**
+- `AZURE_DEVOPS_PAT`：个人访问令牌（Personal Access Token）
+- `AZURE_DEVOPS_ORG`：组织名称（Organization name）
 
-**If values are missing from `~/.openclaw/openclaw.json`, the agent should:**
-1. **ASK** the user for the missing PAT and/or organization name
-2. Store them in `~/.openclaw/openclaw.json` under `skills.entries["azure-devops"]`
+**如果 `~/.openclaw/openclaw.json` 文件中缺少这些值，代理应：**
+1. **询问** 用户缺失的访问令牌和/或组织名称
+2. 将这些信息保存到 `~/.openclaw/openclaw.json` 文件的 `skills.entries["azure-devops"]` 部分中
 
-### Example Config
+### 示例配置
 
 ```json5
 {
@@ -35,9 +35,9 @@ List projects, repositories, branches. Create pull requests. Manage work items. 
 }
 ```
 
-## Commands
+## 命令
 
-### List Projects
+### 列出项目
 
 ```bash
 curl -s -u ":${AZURE_DEVOPS_PAT}" \
@@ -45,7 +45,7 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   | jq -r '.value[] | "\(.name) - \(.description // "No description")"'
 ```
 
-### List Repositories in a Project
+### 列出项目中的仓库
 
 ```bash
 PROJECT="YourProject"
@@ -54,7 +54,7 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   | jq -r '.value[] | "\(.name) - \(.webUrl)"'
 ```
 
-### List Branches in a Repository
+### 列出仓库中的分支
 
 ```bash
 PROJECT="YourProject"
@@ -64,7 +64,7 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   | jq -r '.value[] | .name | sub("refs/heads/"; "")'
 ```
 
-### Create a Pull Request
+### 创建拉取请求
 
 ```bash
 PROJECT="YourProject"
@@ -86,7 +86,7 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   "https://dev.azure.com/${AZURE_DEVOPS_ORG}/${PROJECT}/_apis/git/repositories/${REPO_ID}/pullrequests?api-version=7.1"
 ```
 
-### Get Repository ID
+### 获取仓库 ID
 
 ```bash
 PROJECT="YourProject"
@@ -96,7 +96,7 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   | jq -r '.id'
 ```
 
-### List Pull Requests
+### 列出拉取请求
 
 ```bash
 PROJECT="YourProject"
@@ -106,10 +106,9 @@ curl -s -u ":${AZURE_DEVOPS_PAT}" \
   | jq -r '.value[] | "#\(.pullRequestId): \(.title) [\(.sourceRefName | sub("refs/heads/"; ""))] -> [\(.targetRefName | sub("refs/heads/"; ""))] - \(.createdBy.displayName)"'
 ```
 
-## Notes
-
-- Base URL: `https://dev.azure.com/${AZURE_DEVOPS_ORG}`
-- API Version: `7.1`
-- Auth: Basic Auth with empty username and PAT as password
-- Never log or expose the PAT in responses
-- Documentation: https://learn.microsoft.com/en-us/rest/api/azure/devops/
+## 注意事项：
+- 基本 URL：`https://dev.azure.com/${AZURE_DEVOPS_ORG>`
+- API 版本：`7.1`
+- 认证方式：使用空用户名和访问令牌（PAT）进行基本认证（Basic Auth）
+- 绝不要在响应中记录或泄露访问令牌（PAT）
+- 文档参考：https://learn.microsoft.com/en-us/rest/api/azure/devops/

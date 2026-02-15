@@ -1,21 +1,21 @@
 ---
 name: vikunja-fast
-description: Manage Vikunja projects and tasks (overdue/due/today), mark done, and get quick summaries via the Vikunja API.
+description: 通过 Vikunja API 管理 Vikunja 项目及其任务（包括逾期、到期或今日需完成的任务），标记任务为“已完成”，并快速获取任务概要。
 homepage: https://vikunja.io/
 metadata: {"clawdbot":{"emoji":"📋","requires":{"bins":["curl","jq"],"env":["VIKUNJA_URL"],"optionalEnv":["VIKUNJA_TOKEN","VIKUNJA_USERNAME","VIKUNJA_PASSWORD"]},"primaryEnv":"VIKUNJA_TOKEN"}}
 ---
 
-# ✅ Vikunja Fast Skill
+# ✅ Vikunja 快速技能
 
-Use Vikunja as the source of truth for tasks and completions, and interact with it from Clawdbot.
+使用 Vikunja 作为任务和完成情况的权威信息来源，并通过 Clawdbot 与之进行交互。
 
-## Setup
+## 设置
 
-You can provide credentials either via environment variables **or** via Clawdbot’s skills config.
+您可以通过环境变量 **或** Clawdbot 的技能配置来提供凭据。
 
-### Option A: Environment variables
+### 选项 A：环境变量
 
-Set these environment variables **in the same environment where the gateway runs**:
+在运行网关的同一环境中设置这些环境变量：
 
 ```bash
 export VIKUNJA_URL="https://vikunja.xyz"
@@ -28,9 +28,9 @@ export VIKUNJA_USERNAME="<username>"
 export VIKUNJA_PASSWORD="<password>"
 ```
 
-### Option B: Clawdbot skills config (recommended for the agent)
+### 选项 B：Clawdbot 技能配置（推荐给代理）
 
-Edit `~/.clawdbot/clawdbot.json`:
+编辑 `~/.clawdbot/clawdbot.json`：
 
 ```json5
 {
@@ -48,39 +48,39 @@ Edit `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Notes:
-- `VIKUNJA_URL` can be the base URL; the helper normalizes to `/api/v1`.
-- Vikunja auth expects a JWT bearer token for most API calls (`Authorization: Bearer <jwt>`).
-- If you only have a non-JWT token (often starts with `tk_...`), use `/login` to obtain a JWT.
+**注意：**
+- `VIKUNJA_URL` 可以是基础 URL；辅助工具会将其规范化为 `/api/v1`。
+- Vikunja 的身份验证要求大多数 API 调用使用 JWT 承载令牌（`Authorization: Bearer <jwt>`）。
+- 如果您只有非 JWT 令牌（通常以 `tk_...` 开头），请使用 `/login` 来获取 JWT。
 
-## Quick checks
+## 快速检查
 
-### Login (get a JWT)
+### 登录（获取 JWT）
 ```bash
 curl -fsS -X POST "$VIKUNJA_URL/login" \
   -H "Content-Type: application/json" \
   -d '{"username":"YOUR_USERNAME","password":"YOUR_PASSWORD","long_token":true}' | jq
 ```
 
-### Who am I? (requires JWT)
+### 我是谁？（需要 JWT）
 ```bash
 curl -fsS "$VIKUNJA_URL/user" \
   -H "Authorization: Bearer $VIKUNJA_TOKEN" | jq
 ```
 
-### List projects
+### 列出项目
 ```bash
 curl -fsS "$VIKUNJA_URL/projects" \
   -H "Authorization: Bearer $VIKUNJA_TOKEN" | jq '.[] | {id, title}'
 ```
 
-## Commands
+## 命令
 
-This skill ships with a tiny helper CLI:
+此技能附带了一个简单的辅助命令行工具：
 
 - `{baseDir}/vikunja.sh`
 
-Examples:
+**示例：**
 
 ```bash
 # Overdue across all projects
@@ -97,15 +97,14 @@ Examples:
 {baseDir}/vikunja.sh done 123
 ```
 
-Notes:
-- Output formatting:
-  - Each task should be formated as: `<EMOJI> <DUE_DATE> - #<ID> <TASK>`
-  - Emoji comes from the project title when it starts with one; otherwise uses `🔨`
-  - Due dates are rendered as `Mon/D` (time + year removed)
-- This skill uses `GET /tasks/all` to fetch tasks across all projects
+**注意：**
+- 输出格式：
+  - 每个任务应格式化为：`<EMOJI> <截止日期> - #<ID> <任务>`
+  - 如果项目标题以表情符号开头，则使用该表情符号；否则使用 `🔨`
+  - 截止日期显示为 `Mon/D`（时间+年份被省略）
+- 该技能使用 `GET /tasks/all` 来获取所有项目中的任务
 
-## Mark task done
-
+## 标记任务已完成
 ```bash
 TASK_ID=123
 

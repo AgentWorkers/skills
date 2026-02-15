@@ -1,47 +1,47 @@
 ---
 name: Solana
-description: Assist with Solana transactions, token accounts, priority fees, and program interactions.
+description: 协助处理Solana交易、代币账户、优先费用以及程序交互相关事宜。
 metadata: {"clawdbot":{"emoji":"◎","os":["linux","darwin","win32"]}}
 ---
 
-## Rent and Account Creation
-- Every Solana account must hold a minimum SOL balance (~0.00089 SOL for basic accounts) to be rent-exempt — accounts below this get deleted
-- Sending SOL to a new address that has never received anything will fail if the amount doesn't cover rent-exempt minimum
-- Token accounts require separate rent deposits — each new token type a wallet holds costs ~0.002 SOL to create
-- Close unused token accounts to recover rent: `spl-token close` returns the SOL to owner
+## 租用与账户创建  
+- 每个Solana账户都必须持有最低限度的SOL余额（基础账户约为0.00089 SOL），才能免于支付租金；低于此阈值的账户将会被删除。  
+- 如果发送到新地址的SOL金额不足以覆盖免租最低要求，交易将会失败。  
+- 代币账户需要单独支付租金：创建每个新的代币类型需要约0.002 SOL的费用。  
+- 为回收租金，请关闭未使用的代币账户：使用`spl-token close`命令可将SOL退还给账户所有者。  
 
-## Token Accounts (SPL Tokens)
-- Unlike Ethereum, Solana wallets don't automatically hold tokens — each token needs an Associated Token Account (ATA) created first
-- First-time token transfers must create the recipient's ATA — sender pays ~0.002 SOL account creation fee
-- "Account not found" error usually means the ATA doesn't exist yet, not that the wallet is invalid
-- One wallet can have multiple ATAs for the same token (non-associated) — always use the ATA address for standard transfers
+## 代币账户（SPL代币）  
+- 与Ethereum不同，Solana钱包不会自动持有代币——每个代币都需要先创建一个关联的代币账户（Associated Token Account，简称ATA）。  
+- 首次进行代币转账时，系统会为接收方创建相应的ATA账户；发送方需要支付约0.002 SOL的创建费用。  
+- 出现“账户未找到”的错误通常表示ATA尚未创建，而非钱包无效。  
+- 一个钱包可以为同一代币拥有多个ATA账户（这些ATA之间没有关联）——进行标准转账时请始终使用ATA地址。  
 
-## Transaction Fees and Priority
-- Base fee is ~0.000005 SOL (5000 lamports) per signature — much cheaper than Ethereum
-- Priority fee = compute units × price in micro-lamports — set via `SetComputeUnitPrice` instruction
-- During congestion (NFT mints, popular DEX), transactions without priority fees get dropped, not queued
-- Default compute unit limit is 200k per instruction — complex programs may need `SetComputeUnitLimit` to increase
+## 交易费用与优先级  
+- 基本交易费用为每次签名约0.000005 SOL（5000 lamports），远低于Ethereum的费用。  
+- 交易优先级费用由“计算单位（Compute Unit）”乘以“微lamports价格”决定，可通过`SetComputeUnitPrice`指令进行设置。  
+- 在网络拥堵期间（例如NFT铸造或热门去中心化交易所操作时），没有优先级费用的交易会被直接丢弃，而不会被排队处理。  
+- 默认的计算单位限制为每条指令200k个计算单位；复杂程序可能需要通过`SetComputeUnitLimit`指令来提高这一限制。  
 
-## Transaction Lifecycle
-- Solana transactions expire after ~60 seconds (based on blockhash age) — no permanent mempool like Bitcoin/Ethereum
-- "Dropped" means tx was never included and expired. "Failed" means it was included but reverted. Completely different outcomes
-- If transaction shows "confirmed" but not "finalized", wait — finalized means 31+ confirmations and is irreversible
-- Preflight simulation catches most errors before broadcast — disable with `skipPreflight: true` only if you know why
+## 交易生命周期  
+- Solana交易在大约60秒后失效（基于区块哈希值计算），没有像Bitcoin/Ethereum那样的永久性内存池。  
+- “交易被丢弃”表示交易从未被纳入区块且已失效；“交易失败”表示交易虽被纳入区块但被回滚了，两者结果完全不同。  
+- 如果交易显示为“已确认”但尚未“最终确认”，请耐心等待——最终确认需要31次或更多次的确认，并且是不可逆的。  
+- 预飞行模拟（Preflight simulation）可以在交易广播前捕获大部分错误；只有在明确了解原因的情况下，才可使用`skipPreflight: true`选项禁用该功能。  
 
-## Common Error Messages
-- "Insufficient funds for rent" — account would drop below rent-exempt minimum after transaction
-- "Account not found" — the account doesn't exist on-chain (never created or was closed)
-- "Blockhash not found" — transaction expired, need fresh blockhash and re-sign
-- "Program failed to complete" — smart contract error, check logs with `solana confirm -v <txid>`
+## 常见错误信息  
+- “资金不足支付租金”：交易完成后账户余额可能低于免租最低要求。  
+- “账户未找到”：该账户在链上不存在（可能从未创建或已被关闭）。  
+- “区块哈希值未找到”：交易已失效，需要新的区块哈希值并重新签名。  
+- “程序执行失败”：可能是智能合约出现错误，请使用`solana confirm -v <txid>`查看日志。  
 
-## RPC and APIs
-- Public RPCs (api.mainnet-beta.solana.com) have strict rate limits — production apps need paid RPC (Helius, QuickNode, Triton)
-- `getRecentPrioritizationFees` RPC gives current priority fee market — essential for landing txs during congestion
-- Solscan.io and Solana.fm are the main block explorers — both show decoded instruction data
-- For token metadata (name, symbol, image), query Metaplex on-chain or use Helius/SimpleHash APIs
+## RPC与API  
+- 公共RPC接口（api.mainnet-beta.solana.com）有严格的请求速率限制；生产环境中的应用需要使用付费的RPC服务（如Helius、QuickNode、Triton）。  
+- `getRecentPrioritizationFees` RPC可以获取当前的优先级费用信息，对于在网络拥堵期间成功提交交易至关重要。  
+- Solscan.io和Solana.fm是主要的区块浏览器工具，它们都能显示解码后的交易指令数据。  
+- 如需查询代币的元数据（名称、符号、图片等），可以通过Metaplex在链上查询或使用Helius/SimpleHash API。  
 
-## Wallet and Security
-- Phantom, Solflare, Backpack are the main wallets — each has slightly different transaction simulation UI
-- "Approve" prompts in Solana can drain entire wallet if malicious — read the simulation carefully
-- Burner wallets are common practice for minting/airdrops — never connect main wallet to unknown sites
-- Unlike Ethereum's infinite approvals, most Solana programs take tokens directly — no separate revoke step needed
+## 钱包与安全  
+- Phantom、Solflare、Backpack是主要的Solana钱包工具，它们的交易模拟界面略有不同。  
+- Solana中的“批准”操作如果被恶意利用，可能会导致钱包中的所有资金被消耗殆尽——请仔细阅读相关提示。  
+- 烧毁（Burner）钱包常用于代币铸造或空投操作；切勿将主钱包连接到未知网站。  
+- 与Ethereum不同，大多数Solana程序会直接处理代币，无需单独执行撤销操作。

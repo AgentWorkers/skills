@@ -1,25 +1,25 @@
 ---
 name: csv-pipeline
-description: Process, transform, analyze, and report on CSV and JSON data files. Use when the user needs to filter rows, join datasets, compute aggregates, convert formats, deduplicate, or generate summary reports from tabular data. Works with any CSV, TSV, or JSON Lines file.
+description: 处理、转换、分析并报告 CSV 和 JSON 数据文件。适用于用户需要过滤数据行、合并数据集、计算聚合值、转换数据格式、去除重复数据或从表格数据生成汇总报告的场景。支持处理任何类型的 CSV、TSV 或 JSON 文件。
 metadata: {"clawdbot":{"emoji":"📊","requires":{"anyBins":["python3","python","uv"]},"os":["linux","darwin","win32"]}}
 ---
 
-# CSV Data Pipeline
+# CSV 数据管道
 
-Process tabular data (CSV, TSV, JSON, JSON Lines) using standard command-line tools and Python. No external dependencies required beyond Python 3.
+使用标准的命令行工具和 Python 处理表格数据（CSV、TSV、JSON、JSON 行格式）。除了 Python 3 之外，不需要任何外部依赖。
 
-## When to Use
+## 使用场景
 
-- User provides a CSV/TSV/JSON file and asks to analyze, transform, or report on it
-- Joining, filtering, grouping, or aggregating tabular data
-- Converting between formats (CSV to JSON, JSON to CSV, etc.)
-- Deduplicating, sorting, or cleaning messy data
-- Generating summary statistics or reports
-- ETL workflows: extract from one format, transform, load into another
+- 用户提供 CSV/TSV/JSON 文件，并要求对其进行分析、转换或生成报告
+- 合并、过滤、分组或汇总表格数据
+- 在不同格式之间进行转换（如 CSV 到 JSON、JSON 到 CSV 等）
+- 去重、排序或清洗杂乱的数据
+- 生成汇总统计信息或报告
+- ETL 工作流程：从一种格式提取数据，进行转换，然后加载到另一种格式
 
-## Quick Operations with Standard Tools
+## 使用标准工具的快速操作
 
-### Inspect
+### 检查数据
 
 ```bash
 # Preview first rows
@@ -35,7 +35,7 @@ head -1 data.csv
 tail -n +2 data.csv | cut -d',' -f3 | sort -u | wc -l
 ```
 
-### Filter with `awk`
+### 使用 `awk` 进行过滤
 
 ```bash
 # Filter rows where column 3 > 100
@@ -48,7 +48,7 @@ awk -F',' 'NR==1 || $2 ~ /pattern/' data.csv > matched.csv
 awk -F',' 'NR>1 {sum += $4} END {print sum}' data.csv
 ```
 
-### Sort and Deduplicate
+### 排序和去重
 
 ```bash
 # Sort by column 2 (numeric)
@@ -61,9 +61,9 @@ head -1 data.csv > deduped.csv && tail -n +2 data.csv | sort -u >> deduped.csv
 awk -F',' '!seen[$2]++' data.csv > deduped.csv
 ```
 
-## Python Operations (for complex transforms)
+## 使用 Python 进行复杂的数据转换
 
-### Read and Inspect
+### 读取和检查数据
 
 ```python
 import csv, json, sys
@@ -92,7 +92,7 @@ for col in data[0]:
     print(f"  {col}: {non_empty}/{len(data)} non-empty")
 ```
 
-### Filter and Transform
+### 过滤和转换数据
 
 ```python
 # Filter rows
@@ -111,7 +111,7 @@ for r in data:
     r['date'] = r['date'].strip()
 ```
 
-### Group and Aggregate
+### 分组和汇总数据
 
 ```python
 from collections import defaultdict
@@ -147,7 +147,7 @@ summary = aggregate(data, 'category', 'revenue', 'sum')
 write_csv(summary, 'summary.csv')
 ```
 
-### Join Datasets
+### 合并数据集
 
 ```python
 def inner_join(left, right, on):
@@ -207,7 +207,7 @@ joined = left_join(orders, customers, on='customer_id')
 write_csv(joined, 'orders_with_customers.csv')
 ```
 
-### Deduplicate
+### 去重数据
 
 ```python
 def deduplicate(rows, key_cols=None):
@@ -228,9 +228,9 @@ def deduplicate(rows, key_cols=None):
 clean = deduplicate(data, key_cols=['email'])
 ```
 
-## Format Conversion
+## 格式转换
 
-### CSV to JSON
+### 将 CSV 转换为 JSON
 
 ```python
 import json, csv
@@ -248,7 +248,7 @@ with open('data.jsonl', 'w') as f:
         f.write(json.dumps(row) + '\n')
 ```
 
-### JSON to CSV
+### 将 JSON 转换为 CSV
 
 ```python
 import json, csv
@@ -262,7 +262,7 @@ with open('data.csv', 'w', newline='', encoding='utf-8') as f:
     writer.writerows(rows)
 ```
 
-### JSON Lines to CSV
+### 将 JSON 行格式转换为 CSV
 
 ```python
 import json, csv
@@ -282,15 +282,15 @@ with open('data.csv', 'w', newline='', encoding='utf-8') as f:
     writer.writerows(rows)
 ```
 
-### TSV to CSV
+### 将 TSV 转换为 CSV
 
 ```bash
 tr '\t' ',' < data.tsv > data.csv
 ```
 
-## Data Cleaning Patterns
+## 数据清洗技巧
 
-### Fix common CSV issues
+### 解决常见的 CSV 问题
 
 ```python
 def clean_csv(rows):
@@ -315,7 +315,7 @@ def clean_csv(rows):
     return cleaned
 ```
 
-### Validate data types
+### 验证数据类型
 
 ```python
 def validate_rows(rows, schema):
@@ -361,9 +361,9 @@ for e in bad[:5]:
     print(f"  Row {e['row']}: {e['errors']}")
 ```
 
-## Generating Reports
+## 生成报告
 
-### Summary report as Markdown
+### 以 Markdown 格式生成汇总报告
 
 ```python
 def generate_report(data, title, group_col, value_col):
@@ -391,9 +391,9 @@ with open('report.md', 'w') as f:
     f.write(report)
 ```
 
-## Large File Handling
+## 处理大文件
 
-For files too large to load into memory at once:
+对于无法一次性加载到内存中的大文件：
 
 ```python
 def stream_process(input_path, output_path, transform_fn, delimiter=','):
@@ -421,13 +421,13 @@ def process_row(row):
 stream_process('big_file.csv', 'output.csv', process_row)
 ```
 
-## Tips
+## 提示
 
-- Always check encoding: `file -i data.csv` or open with `encoding='utf-8-sig'` for BOM files
-- For Excel exports with commas in values, the CSV module handles quoting automatically
-- Use `json.dumps(ensure_ascii=False)` for international characters
-- Pipe-delimited files: use `delimiter='|'` in csv.reader/writer
-- For very large aggregations, consider `sqlite3` which Python includes:
+- 始终检查文件的编码格式：使用 `file -i data.csv` 或使用 `encoding='utf-8-sig'` 打开文件（特别是包含 BOM 字符的文件）
+- 对于 Excel 导出的数据（其中数值包含逗号），CSV 模块会自动处理引号问题
+- 如果需要处理包含国际字符的数据，可以使用 `json.dumps(ensure_ascii=False)`
+- 对于以管道符分隔的文件，在 `csv.reader/writer` 中设置分隔符为 `|`
+- 对于需要大量数据汇总的情况，可以考虑使用 Python 自带的 `sqlite3` 数据库：
   ```bash
   sqlite3 :memory: ".mode csv" ".import data.csv t" "SELECT category, SUM(amount) FROM t GROUP BY category;"
   ```

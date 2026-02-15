@@ -1,32 +1,40 @@
 ---
 name: clawd-modifier
-description: Modify Clawd, the Claude Code mascot. Use this skill when users want to customize Clawd's appearance in their Claude Code CLI, including changing colors (blue Clawd, green Clawd, holiday themes), adding features (arms, hats, accessories), or creating custom ASCII art variants. Triggers include "change Clawd color", "give Clawd arms", "customize the mascot", "modify Clawd", "make Clawd [color]", or any request to personalize the Claude Code terminal mascot.
+description: **修改 Clawd（Claude Code 的吉祥物）**  
+当用户希望自定义 Clawd 在 Claude Code CLI 中的外观时，可以使用此技能。具体操作包括：更改 Clawd 的颜色（蓝色、绿色或节日主题）、添加手臂、帽子等装饰元素，或者创建自定义的 ASCII 艺术图案。  
+可使用的命令示例：  
+- `change Clawd color`  
+- `give Clawd arms`  
+- `customize the mascot`  
+- `modify Clawd`  
+- `make Clawd [color]`  
+- 任何用于个性化 Claude Code 终端吉祥物的请求。
 ---
 
-# Clawd Modifier
+# Clawd 修改器
 
-Customize the Claude Code mascot's appearance by modifying colors and ASCII art.
+通过修改颜色和 ASCII 艺术图案来自定义 Claude 代码吉祥物的外观。
 
-## Quick Reference
+## 快速参考
 
-**CLI location**: `/opt/node22/lib/node_modules/@anthropic-ai/claude-code/cli.js`
+**命令行工具位置**：`/opt/node22/lib/node_modules/@anthropic-ai/claude-code/cli.js`
 
-**Clawd colors**:
-- Body: `rgb(215,119,87)` / `ansi:redBright`
-- Background: `rgb(0,0,0)` / `ansi:black`
+**Clawd 的颜色**：
+- 正文：`rgb(215,119,87)` / `ansi:redBright`
+- 背景：`rgb(0,0,0)` / `ansi:black`
 
-**Small Clawd** (prompt):
+**小型的 Clawd**（提示符）：
 ```
  ▐▛███▜▌
 ▝▜█████▛▘
   ▘▘ ▝▝
 ```
 
-## Workflows
+## 工作流程
 
-### Change Clawd's Color
+### 更改 Clawd 的颜色
 
-Use `scripts/patch_color.py`:
+使用 `scripts/patch_color.py`：
 
 ```bash
 # List available colors
@@ -42,9 +50,9 @@ python scripts/patch_color.py --rgb 100,200,150
 python scripts/patch_color.py --restore
 ```
 
-### Add Arms or Modify Art
+### 添加手臂或修改艺术图案
 
-Use `scripts/patch_art.py`:
+使用 `scripts/patch_art.py`：
 
 ```bash
 # List variants
@@ -61,24 +69,24 @@ python scripts/patch_art.py --add-right-arm
 python scripts/patch_art.py --restore
 ```
 
-### Extract Current Clawd
+### 提取当前的 Clawd 外观
 
-Use `scripts/extract_clawd.py` to see current state:
+使用 `scripts/extract_clawd.py` 来查看当前的状态：
 
 ```bash
 python scripts/extract_clawd.py
 ```
 
-### Manual Modifications
+### 手动修改
 
-For custom changes not covered by scripts, edit cli.js directly:
+对于脚本未覆盖的自定义修改，请直接编辑 `cli.js`：
 
-1. Backup: `cp cli.js cli.js.bak`
-2. Find patterns with grep
-3. Use sed or text editor to replace
-4. Test by running `claude`
+1. 备份：`cp cli.js cli.js.bak`
+2. 使用 `grep` 查找需要修改的文本模式
+3. 使用 `sed` 或文本编辑器进行替换
+4. 通过运行 `claude` 来测试修改效果
 
-Pattern examples:
+**模式示例**：
 ```bash
 # Find color definitions
 grep -o 'clawd_body:"[^"]*"' cli.js | head -5
@@ -87,15 +95,15 @@ grep -o 'clawd_body:"[^"]*"' cli.js | head -5
 sed -i 's/rgb(215,119,87)/rgb(100,149,237)/g' cli.js
 ```
 
-## Resources
+## 资源
 
-- **Unicode reference**: See `references/unicode-blocks.md` for block characters
-- **Technical details**: See `references/clawd-anatomy.md` for rendering internals
-- **Design gallery**: See `assets/clawd-variants.txt` for inspiration
+- **Unicode 参考**：请参阅 `references/unicode-blocks.md` 以获取相关字符信息
+- **技术细节**：请参阅 `references/clawd-anatomy.md` 了解渲染原理
+- **设计图库**：请参阅 `assets/clawd-variants.txt` 以获取设计灵感
 
-## Notes
+## 注意事项
 
-- Changes are overwritten by `npm update`
-- Always create backups before modifying
-- Test with `claude --version` after changes
-- Some terminals have limited Unicode support
+- 修改内容会在执行 `npm update` 时被覆盖
+- 修改前请务必创建备份
+- 修改后请使用 `claude --version` 来测试功能是否正常
+- 有些终端对 Unicode 的支持有限

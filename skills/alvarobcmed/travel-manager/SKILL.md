@@ -1,36 +1,36 @@
 ---
 name: travel-manager
-description: Comprehensive travel planning, booking, and management skill. Use when needing to plan international trips, manage multi-destination itineraries, handle family travel logistics, optimize travel costs, and coordinate complex travel arrangements.
+description: 全面的旅行规划、预订和管理技能。适用于需要规划国际旅行、管理多目的地行程、处理家庭旅行事务、优化旅行成本以及协调复杂旅行安排的情况。
 ---
 
-# Travel Manager Skill
+# 旅行经理技能
 
-## Core Capabilities
-- International trip planning
-- Multi-destination itinerary creation
-- Family travel logistics
-- Cost optimization
-- Travel document management
+## 核心能力
+- 国际旅行规划
+- 多目的地行程安排
+- 家庭旅行后勤管理
+- 成本优化
+- 旅行文件管理
 
-## Workflow Steps
-1. Destination Analysis
-2. Route Optimization
-3. Cost Calculation
-4. Document Preparation
-5. Booking Coordination
+## 工作流程步骤
+1. 目的地分析
+2. 路线优化
+3. 成本计算
+4. 文件准备
+5. 预订协调
 
-## Key Considerations for Family Travel
-- Child-friendly routes
-- Stopover comfort
-- Baggage requirements
-- Age-specific travel needs
+## 家庭旅行需重点考虑的因素
+- 适合儿童的旅行路线
+- 中途停留地的舒适度
+- 行李要求
+- 不同年龄段的旅行需求
 
-## References
-- [Family Travel Checklist](references/family-travel-checklist.md)
-- [International Travel Documents](references/travel-documents.md)
-- [Airline Comparison Matrix](references/airline-matrix.md)
+## 参考资料
+- [家庭旅行清单](references/family-travel-checklist.md)
+- [国际旅行文件](references/travel-documents.md)
+- [航空公司比较矩阵](references/airline-matrix.md)
 
-## Usage Examples
-- "Plan a family trip to Korea and Japan"
-- "Find the most cost-effective international travel route"
-- "Prepare travel documents for a multi-country trip"
+## 使用示例
+- “规划一次前往韩国和日本的家庭旅行”
+- “寻找最具成本效益的国际旅行路线”
+- “为多国旅行准备旅行文件”

@@ -1,72 +1,72 @@
 ---
 name: Polygon
-description: Assist with Polygon PoS and zkEVM transactions, bridging, gas tokens, and ecosystem navigation.
+description: 协助处理Polygon的PoS（权益证明）机制和zkEVM（零知识证明的以太坊虚拟机）交易，实现跨链桥接功能，管理Gas代币，并帮助用户更好地了解和导航Polygon的生态系统。
 metadata: {"clawdbot":{"emoji":"🟣","os":["linux","darwin","win32"]}}
 ---
 
-## Network Confusion (Critical)
-- Polygon PoS is the main chain — EVM compatible, uses MATIC for gas
-- Polygon zkEVM is separate — different RPC, same MATIC token but bridged separately
-- MATIC is rebranding to POL — transition in progress, wallets will update
-- Polygon Mainnet ≠ Ethereum Mainnet — same address format, different networks
-- Sending to wrong network loses funds — always verify network before sending
+## 网络相关问题（紧急提示）  
+- Polygon 的权益证明（PoS）网络是主链，兼容以太坊虚拟机（EVM），使用 MATIC 作为交易手续费（gas）。  
+- Polygon 的 zkEVM 网络是独立的，使用不同的远程过程调用（RPC）协议，虽然同样使用 MATIC 代币，但需要单独进行桥接。  
+- MATIC 正在更名为 POL，这一过程正在进行中，相关钱包将会自动更新。  
+- Polygon 主网与以太坊主网不同：地址格式相同，但属于不同的区块链网络。  
+- 如果发送到错误的网络，资金将会丢失——请务必在发送前确认目标网络。  
 
-## MATIC/POL Token
-- MATIC used for gas on Polygon PoS — required for all transactions
-- MATIC exists on Ethereum as ERC-20 — must bridge to use on Polygon
-- POL replacing MATIC — same value, automatic migration for most users
-- Native MATIC on Polygon vs ERC-20 MATIC on Ethereum — different networks
+## MATIC 与 POL 代币  
+- MATIC 是在 Polygon PoS 网络中用于支付交易手续费的代币，所有交易都必须使用 MATIC。  
+- MATIC 也以 ERC-20 标准存在于以太坊网络上，若要在 Polygon 上使用，需要先进行桥接。  
+- POL 将逐渐取代 MATIC，对大多数用户来说，代币会自动迁移至 POL。  
+- Polygon 上的原生 MATIC 与以太坊上的 ERC-20 MATIC 属于不同的区块链网络。  
 
-## Bridging
-- Official Polygon Bridge: bridge.polygon.technology — safe but slow (30+ minutes to Polygon, 7 days back)
-- Withdrawals to Ethereum take 7 days — checkpoint mechanism for security
-- Third-party bridges faster but have smart contract risk — Hop, Across, Stargate
-- Bridge MATIC before bridging tokens — need gas on destination chain
-- Always have MATIC for gas after bridging — tokens without gas are stuck
+## 桥接方式  
+- 官方提供的 Polygon 桥接工具：bridge.polygon.technology——安全性较高，但速度较慢（通常需要 30 分钟以上才能完成桥接）。  
+- 向以太坊网络提现需要 7 天时间，这是为了保障安全性而设置的检查点机制。  
+- 第三方桥接工具（如 Hop、Across、Stargate）虽然速度更快，但存在智能合约风险。  
+- 在桥接代币之前，请确保目标网络有足够的 MATIC 作为手续费。  
+- 桥接完成后，请确保钱包中仍有足够的 MATIC，否则代币可能会因缺乏手续费而无法转移。  
 
-## Gas and Fees
-- Gas prices in gwei like Ethereum — but much cheaper (typically 30-100 gwei)
-- Transactions cost fractions of a cent — major advantage over Ethereum
-- Gas spikes during high activity — NFT mints, popular drops
-- Failed transactions still cost gas — same as Ethereum behavior
-- Priority fee for faster inclusion — same EIP-1559 model
+## 交易手续费（Gas）  
+- Polygon 的手续费单位为 gwei，价格通常比以太坊便宜得多（大约 30–100 gwei）。  
+- 交易费用极低，仅为几美分，这是相对于以太坊的一大优势。  
+- 在活动高峰期（如 NFT 发行、热门代币发布时），手续费价格可能会上涨。  
+- 失败的交易仍需要支付手续费，与以太坊的处理方式相同。  
+- 优先处理交易以确保其更快被确认，采用相同的 EIP-1559 算法。  
 
-## Tokens and DeFi
-- Same token standards as Ethereum — ERC-20, ERC-721, ERC-1155 all work
-- Many Ethereum tokens have Polygon versions — verify contract addresses
-- Wrapped tokens need unwrapping — bridged ETH is not native ETH
-- QuickSwap, Uniswap, Aave all on Polygon — same interfaces as Ethereum
-- Lower liquidity than Ethereum mainnet — higher slippage on large trades
+## 代币与去中心化金融（DeFi）  
+- Polygon 支持与以太坊相同的代币标准（ERC-20、ERC-721、ERC-1155 等）。  
+- 许多以太坊代币在 Polygon 上也有对应的版本，请核对合约地址。  
+- 部分代币需要“解包”（unwrapping）才能在 Polygon 上使用；桥接过来的 ETH 并非原生 ETH。  
+- QuickSwap、Uniswap、Aave 等交易平台在 Polygon 上的接口与以太坊相同。  
+- 相较于以太坊主网，Polygon 的流动性较低，大额交易时可能会出现较大的滑点（slippage）。  
 
-## Wallet Setup
-- MetaMask supports Polygon natively — add network from chainlist.org
-- Chain ID: 137 — RPC: https://polygon-rpc.com
-- Block explorer: polygonscan.com — verify transactions and contracts
-- Same address as Ethereum — but balances are network-specific
+## 钱包设置  
+- MetaMask 支持直接连接 Polygon 网络（需从 chainlist.org 添加相应的网络配置）。  
+- Polygon 的链 ID 为 137，RPC 地址为：https://polygon-rpc.com。  
+- 可以使用 polygonscan.com 查看交易和合约信息。  
+- 账户地址与以太坊相同，但余额取决于所连接的网络。  
 
-## Common Issues
-- "Insufficient MATIC for gas" — need MATIC, not just tokens
-- Transaction stuck pending — gas price too low, speed up or wait
-- Tokens not showing in wallet — add custom token with contract address
-- Bridge transaction pending — checkpoints take time, don't panic
-- "Network not supported" — dApp may not support Polygon, check docs
+## 常见问题  
+- “MATIC 不足”：需要的是 MATIC，而不仅仅是代币本身。  
+- 交易处于待处理状态（pending）——可能是手续费过低，可以尝试提高手续费或稍等片刻。  
+- 代币未显示在钱包中——请检查钱包设置，确保已添加正确的代币及其合约地址。  
+- 桥接交易处于待处理状态——检查点机制需要时间，请耐心等待。  
+- “网络不支持”：某些去中心化应用（dApp）可能不支持 Polygon，建议查阅相关文档。  
 
-## zkEVM Specifics
-- Separate network from PoS — different RPC and chain ID (1101)
-- Uses ETH for gas, not MATIC — bridge ETH from Ethereum
-- Faster finality than optimistic rollups — ZK proofs instead of fraud proofs
-- Some opcodes behave differently — minor contract compatibility issues
-- Growing ecosystem — fewer dApps than PoS currently
+## zkEVM 的特殊说明  
+- zkEVM 是独立于 Polygon PoS 网络的，使用不同的 RPC 协议和链 ID（1101）。  
+- zkEVM 使用以太坊的 ETH 作为手续费，而非 Polygon 的 MATIC；需要先将 ETH 桥接到 Polygon 上。  
+- zkEVM 的交易确认速度更快（采用 ZK 证明机制而非乐观主义rollup算法）。  
+- 部分操作码在 zkEVM 上的行为可能与 Polygon PoS 网络不同，可能导致兼容性问题。  
+- 目前 zkEVM 生态系统仍在发展中，可用的 dApp 数量较少。  
 
-## Staking
-- MATIC staking on Ethereum mainnet — validators secure both networks
-- Delegate to validators — no minimum, rewards vary by validator
-- Unbonding takes 80 checkpoints (~3-4 days) — funds locked during unbonding
-- Liquid staking available — stMATIC, MaticX for liquidity while staking
+## 质押（Staking）  
+- 可以在以太坊主网上使用 MATIC 进行质押，质押者同时保障 Polygon 和以太坊网络的安全。  
+- 可将质押权委托给其他节点（validator），没有最低质押要求，奖励因节点而异。  
+- 解绑质押权需要通过 80 个检查点（约 3–4 天），解绑期间资金会被锁定。  
+- 提供流动性质押服务（如 stMATIC、MaticX），方便用户在质押期间进行资金操作。  
 
-## Security
-- Same security model as Ethereum — private key controls all
-- Approve tokens carefully — revoke unused approvals at polygonscan.com
-- Verify contract addresses — scam tokens use similar names
-- Official bridge is safest — third-party bridges have additional risk
-- Keep some MATIC for emergencies — stuck tokens without gas is common
+## 安全性  
+- Polygon 的安全模型与以太坊相同，所有操作都由私钥控制。  
+- 请谨慎处理代币授权操作，未使用的授权可以在 polygonscan.com 上撤销。  
+- 请核实合约地址，避免使用假冒代币。  
+- 官方提供的桥接工具是最安全的选项，第三方桥接工具可能存在额外风险。  
+- 请预留部分 MATIC 以应对紧急情况——因为缺乏手续费可能导致代币无法转移。

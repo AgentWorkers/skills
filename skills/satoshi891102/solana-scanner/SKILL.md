@@ -1,62 +1,62 @@
 ---
 name: solana-scanner
-description: Scan any Solana token for safety — liquidity, holder concentration, red flags, and rug pull indicators. No API keys required.
+description: 扫描任何 Solana 代币的安全性——包括流动性、持有者集中度、潜在风险以及欺诈行为的迹象。无需使用 API 密钥。
 ---
 
-# Solana Token Scanner
+# Solana 代币扫描器
 
-Analyze any Solana token for safety before trading. Checks liquidity, holder concentration, price action, and red flags. Uses free public APIs — no keys required.
+在交易之前，可分析任何 Solana 代币的安全性。该工具会检查代币的流动性、持有者集中度、价格走势以及潜在风险因素。所有功能均通过免费的公共 API 实现，无需任何密钥。
 
-## Quick Start
+## 快速入门
 
-To scan a token, run the scan script then analyze:
+要扫描一个代币，请运行扫描脚本，然后进行分析：
 
 ```bash
 bash scripts/scan-token.sh <MINT_ADDRESS> | python3 scripts/analyze-token.py
 ```
 
-## Examples
+## 示例
 
-User: "Is this token safe? EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-Agent: Run `bash scripts/scan-token.sh EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v | python3 scripts/analyze-token.py`
+用户：“这个代币安全吗？EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v”
+代理：“运行 `bash scripts/scan-token.sh EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v | python3 scripts/analyze-token.py`”
 
-User: "Scan BONK"
-Agent: Look up BONK mint address (DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263), then run scan.
+用户：“扫描 BONK 代币”
+代理：“查询 BONK 的发行地址（DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263），然后运行扫描。”
 
-User: "Check if this memecoin is a rug"
-Agent: Ask for the mint address, then run scan.
+用户：“检查这个表情币是否属于‘rug’（骗局代币）”
+代理：“获取发行地址后，再运行扫描。”
 
-## What It Checks
+## 检查内容
 
-| Check | What | Risk Signal |
+| 检查项 | 检查内容 | 风险信号 |
 |-------|------|-------------|
-| Liquidity | Pool size in USD | <$1K = almost certainly dead/rug |
-| Volume | 24h trading volume | <$100 = dead token |
-| Holders | Top holder concentration | >50% = extreme rug risk |
-| Age | When pair was created | <24h = very high risk |
-| Price | 24h price change | >-50% = dump in progress |
-| DEX | Which DEX it trades on | No DEX = untradeable |
+| 流动性 | 代币池的美元规模 | <1,000 美元 = 几乎可以确定是‘死币’/骗局代币 |
+| 成交量 | 24 小时交易量 | <100 笔 = 该代币几乎无法交易 |
+| 持有者 | 最大持有者集中度 | >50% = 极高的风险 |
+| 发行时间 | 代币创建时间 | <24 小时 = 风险极高 |
+| 价格 | 24 小时价格变动 | >-50% = 代币可能正在被抛售 |
+| 交易平台 | 该代币在哪个交易所交易 | 无交易所 = 无法交易 |
 
-## Safety Scores
+## 安全评分
 
-| Score | Rating | Meaning |
+| 评分 | 评级 | 含义 |
 |-------|--------|---------|
-| 80-100 | 🟢 RELATIVELY_SAFE | Major token, good liquidity |
-| 60-79 | 🟡 CAUTION | Some concerns, trade carefully |
-| 40-59 | 🟠 HIGH_RISK | Multiple red flags |
-| 0-39 | 🔴 AVOID | Likely scam or dead token |
+| 80-100 | 🟢 相对安全 | 主要代币，流动性良好 |
+| 60-79 | 🟡 警告 | 存在一些问题，请谨慎交易 |
+| 40-59 | 🟠 高风险 | 存在多个风险因素 |
+| 0-39 | 🔴 应避免 | 很可能是骗局或‘死币’ |
 
-## APIs Used (all free, no keys needed)
-- **DexScreener** — liquidity, volume, price, pair age
-- **Jupiter Price API** — current pricing
-- **Solana RPC** — supply info, largest holders
+## 使用的 API（全部免费，无需密钥）  
+- **DexScreener** — 流动性、成交量、价格、代币发行时间 |
+- **Jupiter Price API** — 当前价格 |
+- **Solana RPC** — 代币供应量、最大持有者信息 |
 
-## Dependencies
-- `bash`, `curl`, `python3` (standard on most systems)
-- Optional: `SOLANA_RPC_URL` env var for custom RPC (default: public mainnet)
+## 所需依赖项  
+- `bash`、`curl`、`python3`（大多数系统默认安装）  
+- 可选：环境变量 `SOLANA_RPC_URL` 用于自定义 RPC 服务（默认为公共主网）
 
-## Limitations
-- Public RPC rate limits may affect holder data
-- Set `SOLANA_RPC_URL` to a Helius/QuickNode endpoint for full holder analysis
-- DexScreener data may lag a few minutes
-- This is analysis, not financial advice
+## 限制  
+- 公共 RPC 服务的请求速率限制可能会影响持有者数据的获取  
+- 将 `SOLANA_RPC_URL` 设置为 Helius/QuickNode 端点以获取完整的持有者信息  
+- DexScreener 提供的数据可能存在几分钟的延迟  
+- 本工具仅提供分析结果，不构成财务建议 |

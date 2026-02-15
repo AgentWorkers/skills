@@ -1,6 +1,26 @@
 ---
 name: chaterimo
-description: AI Customer Service for Shopify & E-commerce - Query conversations, analyze chatbot performance, and manage your Chaterimo AI assistant
+description: **适用于 Shopify 和电子商务的 AI 客户服务工具**  
+- 查询对话记录  
+- 分析聊天机器人的性能  
+- 管理您的 Chaterimo AI 助手  
+
+**主要功能：**  
+1. **查询对话记录**：您可以轻松查看与客户的全部交互记录，以便更好地了解客户的需求和反馈。  
+2. **分析聊天机器人性能**：通过详细的统计数据，您可以评估聊天机器人的工作效率和用户体验。  
+3. **管理 Chaterimo AI 助手**：您可以配置和优化您的 AI 助手，以提供更优质的服务。  
+
+**优势：**  
+- **高效便捷**：所有功能均通过直观的界面轻松访问和管理。  
+- **实时监控**：实时跟踪聊天机器人的运行状态和客户反馈。  
+- **数据驱动**：基于大量数据优化聊天机器人的性能。  
+
+**适合人群：**  
+- **电子商务商家**：希望提升客户服务质量的企业主。  
+- **软件开发人员**：需要集成 AI 助手的开发者。  
+
+**立即尝试！**  
+了解更多关于 Chaterimo 的信息，并开始提升您的电子商务体验。
 emoji: 🛒
 homepage: https://www.chaterimo.com
 tags:
@@ -26,116 +46,116 @@ metadata:
           description: Your Chaterimo API key. Generate at https://www.chaterimo.com/account/api-keys/
 ---
 
-# Chaterimo - AI Customer Service for Shopify & E-commerce
+# Chaterimo – 专为 Shopify 和电子商务平台设计的 AI 客户服务
 
-Connect your Chaterimo AI chatbot to OpenClaw. Query customer conversations, analyze chatbot performance, and get insights from your e-commerce store's customer service data.
+将您的 Chaterimo AI 聊天机器人连接到 OpenClaw，查询客户对话记录，分析聊天机器人的性能，并从您的电子商务店铺的客户服务数据中获取洞察。
 
-## What is Chaterimo?
+## 什么是 Chaterimo？
 
-Chaterimo is an AI-powered customer service platform that integrates with **Shopify**, **Shoptet**, **Upgates**, and **eshop-rychle.cz** e-commerce platforms. It provides 24/7 automated customer support powered by leading LLM models: **ChatGPT**, **Claude**, **Gemini**, and **Grok**.
+Chaterimo 是一个基于 AI 的客户服务平台，可与 **Shopify**、**Shoptet**、**Upgates** 和 **eshop-rychle.cz** 等电子商务平台集成。它提供 24/7 的自动化客户支持，支持以下领先的 LLM（大型语言模型）：**ChatGPT**、**Claude**、**Gemini** 和 **Grok**。
 
-You can use Chaterimo with your own API keys (BYOK - Bring Your Own Key) or choose a custom plan with included AI credits.
+您可以使用自己的 API 密钥（BYOK – Bring Your Own Key）来使用 Chaterimo，或者选择包含 AI 信用额度的定制计划。
 
-📖 **Learn more:** [How to connect Chaterimo with Shopify](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/)
+📖 **了解更多：** [如何将 Chaterimo 与 Shopify 集成](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/)
 
-## What can this skill do?
+## 该功能可以做什么？
 
-### List Your Chatbots
-> "Show me all my chatbots"
+### 列出您的聊天机器人
+> “显示我所有的聊天机器人”
 
-Returns all chatbots configured for your store with their AI model settings and status.
+列出为您的店铺配置的所有聊天机器人及其 AI 模型设置和状态。
 
-### Browse Conversations
-> "Show me conversations from last week"
-> "List conversations from my Shopify store"
+### 浏览对话记录
+> “显示上周的对话记录”
+> “列出我店铺的对话记录”
 
-View customer service conversations with filters by date and platform. All customer PII is automatically stripped for privacy.
+您可以按日期和平台筛选客户服务对话记录。所有客户的个人身份信息（PII）都会被自动删除以保护隐私。
 
-### Read Conversation Transcripts
-> "Show me conversation #123"
-> "What did customers ask about yesterday?"
+### 阅读对话记录
+> “显示第 123 号对话”
+> “昨天客户问了什么？”
 
-Get full conversations with messages between customers and your AI chatbot. All personally identifiable information is automatically redacted.
+查看客户与您的 AI 聊天机器人之间的完整对话记录。所有个人身份信息都会被自动隐藏。
 
-## Setup
+## 设置
 
-1. Sign up at [chaterimo.com](https://www.chaterimo.com)
-2. Connect your e-commerce platform (Shopify, Shoptet, Upgates, or eshop-rychle.cz)
-3. Go to **API Keys** in your dashboard
-4. Click **Create API Key** and copy the key
-5. Set the environment variable:
+1. 在 [chaterimo.com](https://www.chaterimo.com) 注册。
+2. 将您的电子商务平台（Shopify、Shoptet、Upgates 或 eshop-rychle.cz）连接到 Chaterimo。
+3. 进入您的仪表板中的 **API 密钥** 部分。
+4. 点击 **创建 API 密钥** 并复制密钥。
+5. 设置环境变量：
    ```
    CHATERIMO_API_KEY=cha_your_key_here
    ```
 
-## API Endpoints
+## API 端点
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `GET /api/v1/chatbots/` | List all chatbots (returns chatbot IDs) |
-| `GET /api/v1/chatbots/{chatbot_id}/` | Get chatbot details |
-| `GET /api/v1/chatbots/{chatbot_id}/conversations/` | List conversations (returns conversation IDs) |
-| `GET /api/v1/conversations/{conversation_id}/` | Get full conversation with messages |
+| `GET /api/v1/chatbots/` | 列出所有聊天机器人（返回聊天机器人 ID） |
+| `GET /api/v1/chatbots/{chatbot_id}/` | 获取聊天机器人详情 |
+| `GET /api/v1/chatbots/{chatbot_id}/conversations/` | 列出对话记录（返回对话 ID） |
+| `GET /api/v1/conversations/{conversation_id}/` | 获取完整的对话记录（包含消息） |
 
-Your organisation is determined automatically from your API key - no need to specify it.
+您的组织信息会自动从您的 API 密钥中确定，无需手动指定。
 
-## Privacy & Data Security
+## 隐私与数据安全
 
-### PII Redaction
+### 个人身份信息保护
 
-All conversation data returned by the API has personally identifiable information (PII) automatically stripped to protect customer privacy:
+API 返回的所有对话数据中的个人身份信息（PII）都会被自动删除，以保护客户隐私：
 
-| Data Type | Example | Redacted As |
+| 数据类型 | 示例 | 替换后的显示方式 |
 |-----------|---------|-------------|
-| Email addresses | `john@example.com` | `[EMAIL]` |
-| Phone numbers | `+1-555-123-4567` | `[PHONE]` |
+| 电子邮件地址 | `john@example.com` | `[EMAIL]` |
+| 电话号码 | `+1-555-123-4567` | `[PHONE]` |
 
-This ensures you can analyze conversation patterns and chatbot performance without exposing sensitive customer data.
+这样您可以分析对话模式和聊天机器人的性能，而不会暴露敏感的客户数据。
 
-### API Key Security
+### API 密钥安全
 
-- **Hashed storage**: API keys are stored as SHA256 hashes - we never store your raw key in plain text
-- **One-time display**: Your full API key is shown only once at creation - copy it immediately
-- **Instant revocation**: Revoke compromised keys immediately from your dashboard
-- **Scoped access**: Keys are scoped to specific permissions (read-only by default)
+- **哈希存储**：API 密钥以 SHA256 哈希的形式存储——我们从不以明文形式存储原始密钥。
+- **一次性显示**：您的完整 API 密钥仅在创建时显示一次——请立即复制。
+- **即时撤销**：一旦密钥被泄露，可以立即从仪表板中撤销其权限。
+- **权限控制**：密钥的权限是有限的（默认为只读）。
 
-### Infrastructure Security
+### 基础设施安全
 
-- **Rate limiting**: 60 requests/minute per API key to prevent abuse
-- **Audit logging**: All API calls are logged with timestamps, endpoints, and response codes
-- **Tenant isolation**: API keys can only access data from their own organisation
-- **HTTPS only**: All API traffic is encrypted in transit
+- **请求限制**：每个 API 密钥每分钟仅允许 60 次请求，以防止滥用。
+- **审计日志**：所有 API 调用都会记录时间戳、端点和响应代码。
+- **租户隔离**：API 密钥只能访问其所属组织的数据。
+- **仅使用 HTTPS**：所有 API 流量在传输过程中都会被加密。
 
-## Supported Platforms
+## 支持的平台
 
-- **Shopify** - Full integration with product sync ([Setup guide](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/))
-- **Shoptet** - Czech e-commerce platform integration
-- **Upgates** - Full API integration
-- **eshop-rychle.cz** - Czech e-commerce platform
+- **Shopify**：与产品同步的完整集成（[设置指南](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/) |
+- **Shoptet**：捷克电子商务平台集成。
+- **Upgates**：完整的 API 集成。
+- **eshop-rychle.cz**：捷克电子商务平台。
 
-## Supported AI Models
+## 支持的 AI 模型
 
-Chaterimo supports multiple LLM providers via BYOK (Bring Your Own Key) or custom plans. We regularly update to include the latest models from each provider:
+Chaterimo 支持多种 LLM 提供商，您可以通过 BYOK（Bring Your Own Key）或定制计划来使用这些模型。我们会定期更新，以包含每个提供商的最新模型：
 
-- **OpenAI** - ChatGPT (latest GPT models)
-- **Anthropic** - Claude (latest Claude models)
-- **Google** - Gemini (latest Gemini models)
-- **xAI** - Grok (latest Grok models)
+- **OpenAI**：ChatGPT（最新的 GPT 模型）
+- **Anthropic**：Claude（最新的 Claude 模型）
+- **Google**：Geminii（最新的 Gemini 模型）
+- **xAI**：Grok（最新的 Grok 模型）
 
-## Coming Soon (Phase 2+)
+## 即将推出的功能（第二阶段及以后）
 
-- Analytics & metrics dashboard
-- Unanswered questions detection
-- Product search
-- Knowledge base management
-- Chatbot configuration via API
+- 分析与指标仪表板
+- 未回答问题的检测
+- 产品搜索
+- 知识库管理
+- 通过 API 配置聊天机器人
 
-## Support
+## 支持方式
 
-- Website: [chaterimo.com](https://www.chaterimo.com)
-- Shopify Guide: [How to connect Chaterimo with Shopify](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/)
+- 官网：[chaterimo.com](https://www.chaterimo.com)
+- Shopify 使用指南：[如何将 Chaterimo 与 Shopify 集成](https://www.chaterimo.com/en/blog/shopify-ai-customer-service/)
 
-## Example Usage
+## 使用示例
 
 ```
 User: Show me my chatbots

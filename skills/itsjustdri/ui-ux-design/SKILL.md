@@ -1,159 +1,131 @@
-# UI/UX Design
+# UI/UX 设计
 
-**Name:** ui-ux-design  
-**Description:** Modern UI/UX design principles, patterns, and best practices for web and mobile applications. Use when building user interfaces, designing layouts, choosing color palettes, implementing responsive design, ensuring accessibility (WCAG), or creating beautiful modern applications. Includes 2026 design trends, Tailwind CSS patterns, Shadcn/ui integration, micro-interactions, and mobile-first responsive design.
-
----
-
-## When to Use This Skill
-
-Activate this skill when:
-- Building or designing web/mobile interfaces
-- Choosing colors, typography, or layout systems
-- Implementing responsive design (mobile-first)
-- Ensuring accessibility compliance (WCAG 2.2)
-- Setting up Shadcn/ui + Tailwind CSS projects
-- Creating micro-interactions and animations
-- Reviewing UI/UX decisions before coding
+**名称：** ui-ux-design  
+**描述：** 针对 Web 和移动应用的现代 UI/UX 设计原则、模式及最佳实践。适用于构建用户界面、设计布局、选择颜色方案、实现响应式设计、确保可访问性（WCAG 标准），以及创建美观的现代应用程序。包含 2026 年的设计趋势、Tailwind CSS 模式、Shadcn/ui 的集成方案、微交互设计以及以移动设备为先的响应式设计方法。
 
 ---
 
-## Core Design Principles
-
-### 1. Mobile-First Always
-- Start with 320px width (smallest phone)
-- Breakpoints: 576px (phone), 768px (tablet), 992px (laptop), 1200px (desktop)
-- Single-column default, expand only when space allows
-
-### 2. Visual Hierarchy
-Guide user attention using:
-- **Size:** Larger = more important
-- **Color:** Bright/contrasting = attention
-- **Whitespace:** More space = emphasis
-- **Proximity:** Related items grouped together
-- **Contrast:** Dark on light or light on dark (4.5:1 minimum for text)
-
-### 3. Whitespace is Your Weapon
-- Space elements in multiples of 8px (8, 16, 24, 32, 48, 64)
-- Breathing room between sections: 48-64px minimum
-- Padding inside cards: 24-32px
+## 何时使用此技能  
+在以下情况下可激活此技能：  
+- 构建或设计 Web/移动应用程序的用户界面  
+- 选择颜色、字体或布局系统  
+- 实现响应式设计（以移动设备为先）  
+- 确保符合 WCAG 2.2 可访问性标准  
+- 设置 Shadcn/ui 与 Tailwind CSS 项目  
+- 创建微交互效果和动画  
+- 在编码前审查 UI/UX 设计决策  
 
 ---
 
-## Quick Reference
+## 核心设计原则  
 
-### Color System
-Build a primary color scale (50-900):
-- **Primary:** Brand color (CTAs, links, active states)
-- **Neutrals:** Grays 50-900 (text, backgrounds, borders)
-- **Semantic:** Success (green), Error (red), Warning (yellow/orange)
+### 1. 始终以移动设备为先  
+- 从 320px 宽度（最小尺寸的手机屏幕）开始设计  
+- 分界点：576px（手机）、768px（平板电脑）、992px（笔记本电脑）、1200px（桌面）  
+- 默认采用单列布局，仅在空间允许时扩展  
 
-Tools: Huevy.app, Coolors.co, Adobe Color
+### 2. 视觉层次结构  
+利用以下方式引导用户注意力：  
+- **大小**：越大越重要  
+- **颜色**：鲜艳/对比度强 = 更易吸引注意  
+- **空白空间**：更多的空白空间 = 更强的强调效果  
+- **邻近性**：相关元素应放在一起  
+- **对比度**：文字的对比度应为 4.5:1 或更高  
 
-### Typography Scale (8px baseline)
-```
-text-xs:   12px / 16px line-height
-text-sm:   14px / 20px
-text-base: 16px / 24px (body default)
-text-lg:   18px / 28px
-text-xl:   20px / 28px
-text-2xl:  24px / 32px
-text-3xl:  30px / 36px (section headers)
-text-4xl:  36px / 40px
-text-5xl:  48px / 1 (hero titles)
-```
-
-**Font pairing:** 2 fonts max (sans-serif for UI, optional serif for headings)
-
-### Layout Patterns
-- **CSS Grid:** 2D layouts (page structure)
-- **Flexbox:** 1D layouts (component internals)
-- **Auto-fit grid:** `repeat(auto-fit, minmax(280px, 1fr))` (no media queries!)
-
-### Micro-Interactions
-- **Hover:** Scale 1.05x (buttons feel clickable)
-- **Click:** Scale 0.95x (tactile feedback)
-- **Duration:** 0.2-0.3s max (keep it subtle)
-- **Animate only:** `transform` and `opacity` (GPU accelerated)
-
-### Accessibility (WCAG 2.2)
-- **Text contrast:** 4.5:1 minimum (normal text), 3:1 (large text)
-- **UI components:** 3:1 contrast minimum
-- **Keyboard navigation:** Tab order logical, focus states visible (3:1 contrast)
-- **ARIA labels:** Always provide for buttons, images, interactive elements
+### 3. 空白空间是关键  
+- 元素的间距应为 8px 的倍数（8、16、24、32、48、64）  
+- 各部分之间的间距至少为 48-64px  
+- 卡片内的内边距为 24-32px  
 
 ---
 
-## Shadcn/ui + Tailwind Stack
+## 快速参考  
 
-### Setup (Next.js)
-```bash
-npx create-next-app@latest project-name --typescript --tailwind --app
-cd project-name
-npx shadcn@latest init
-```
+### 颜色系统  
+创建一个主颜色方案（范围：50-900）：  
+- **主色**：品牌专属颜色（用于点击按钮、链接、激活状态）  
+- **中性色**：灰色（50-900 级别，用于文本、背景、边框）  
+- **语义颜色**：成功（绿色）、错误（红色）、警告（黄色/橙色）  
+**工具推荐**：Huevy.app、Coolors.co、Adobe Color  
 
-Choose: Style (Default), Base color (Blue or custom), CSS variables (Yes)
+### 字体样式  
+**字体搭配**：最多使用两种字体（UI 采用无衬线字体，标题可选使用衬线字体）  
 
-### Adding Components
-```bash
-npx shadcn@latest add button
-npx shadcn@latest add card
-npx shadcn@latest add dialog
-npx shadcn@latest add calendar
-```
+### 布局模式  
+- **CSS Grid**：用于构建二维布局  
+- **Flexbox**：用于构建一维布局  
+- **自动适应布局**：`repeat(auto-fit, minmax(280px, 1fr))`（无需使用媒体查询）  
 
-Components appear in `components/ui/` — you own the code, customize freely.
+### 微交互设计  
+- **悬停效果**：放大 1.05 倍（让按钮更具可点击感）  
+- **点击效果**：缩小 0.95 倍（提供触觉反馈）  
+- **动画时长**：最长 0.2-0.3 秒（保持简洁）  
+- **仅使用 `transform` 和 `opacity` 进行动画效果（利用 GPU 加速）  
 
-### Tailwind Best Practices
-- Use design tokens (not arbitrary values): `p-4` not `p-[17px]`
-- Responsive utilities: `w-full md:w-1/2 lg:w-1/3`
-- Dark mode: `dark:bg-gray-900 dark:text-white`
-
----
-
-## Pre-Build Checklist
-
-Before writing code, confirm:
-- [ ] Color palette defined (primary + neutrals + semantic colors)
-- [ ] Typography scale chosen (6-8 sizes)
-- [ ] Component library picked (Shadcn + Tailwind)
-- [ ] Mobile breakpoints planned (576px, 768px, 992px)
-- [ ] Accessibility contrast ratios checked (4.5:1 text, 3:1 UI)
-- [ ] Micro-interaction list (hover, click, success states)
-- [ ] Grid layout sketched (mobile → desktop progression)
+### 可访问性（WCAG 2.2）  
+- **文本对比度**：至少为 4.5:1  
+- **UI 组件**：对比度至少为 3:1  
+- **键盘导航**：标签顺序合理，焦点状态可见（对比度至少为 3:1）  
+- **为按钮、图片和交互元素添加 ARIA 标签**  
 
 ---
 
-## Inspiration Sources
+## Shadcn/ui + Tailwind CSS 组合使用  
 
-**Study these products:**
-- Linear (linear.app) — Best keyboard-first UI, subtle animations
-- Stripe Dashboard — Clean data visualization, perfect spacing
-- Vercel — Minimalist, fast, modern gradients
-- Notion — Intuitive drag-and-drop, clear hierarchy
+### 设置（Next.js）  
+**步骤说明：**  
+- 选择样式（默认样式或自定义样式）  
+- 设置基础颜色（蓝色或自定义颜色）  
+- 配置 CSS 变量  
 
-**Tools:**
-- Figma (mockups before coding)
-- WebAIM Contrast Checker (accessibility)
-- Coolors/Huevy (color palettes)
+### 添加组件  
+组件存储在 `components/ui/` 目录中，可自由定制代码  
 
----
-
-## The 5 Laws of Beautiful UI
-
-1. **Contrast creates hierarchy** (big vs small, dark vs light)
-2. **Whitespace creates calm** (never fear empty space)
-3. **Consistency builds trust** (same patterns repeated)
-4. **Feedback confirms action** (animations, success messages)
-5. **Accessibility includes everyone** (contrast, keyboard, screen readers)
+### Tailwind CSS 的最佳实践  
+- 使用设计相关的预定义样式（而非随意指定的数值，例如 `p-4` 而不是 `p-[17px]`）  
+- 响应式布局工具：`w-full md:w-1/2 lg:w-1/3`  
+- 暗色模式设置：`dark:bg-gray-900 dark:text-white`  
 
 ---
 
-## Full Reference
-
-For comprehensive deep-dives (component patterns, animation examples, responsive grid techniques), see `UI_UX_MASTER_GUIDE.md` in this skill directory.
+## 编码前的准备工作  
+在开始编写代码之前，请确认以下内容：  
+- [ ] 已定义颜色方案（主色、中性色、语义颜色）  
+- [ ] 选择了合适的字体样式（6-8 级别）  
+- [ ] 选择了合适的组件库（Shadcn + Tailwind CSS）  
+- [ ] 规划了移动设备的响应式分界点（576px、768px、992px）  
+- [ ] 检查了可访问性对比度（文本对比度 4.5:1，UI 元素对比度 3:1）  
+- [ ] 列出了所有微交互效果（悬停、点击、成功状态）  
+- [ ] 绘制了布局草图（从移动设备到桌面的适应性）  
 
 ---
 
-**Last Updated:** 2026-02-05
+## 灵感来源  
+**参考这些产品：**  
+- Linear (linear.app)：以键盘操作为导向的 UI 设计，动画效果细腻  
+- Stripe Dashboard：数据可视化清晰，间距布局合理  
+- Vercel：极简风格，动画效果快速且现代  
+- Notion：直观的拖放功能，层次结构清晰  
+
+**工具推荐：**  
+- Figma（用于设计原型）  
+- WebAIM Contrast Checker（用于检查可访问性）  
+- Coolors/Huevy（用于生成颜色方案）  
+
+---
+
+## 美丽 UI 的五大法则  
+1. **对比度营造层次感**（大元素与小元素、深色与浅色的对比）  
+2. **空白空间带来宁静感**（不要害怕使用空白空间）  
+3. **一致性建立信任**（重复相同的设计模式）  
+4. **反馈确认用户操作**（通过动画和成功提示）  
+5. **可访问性让所有人都能使用**（确保所有用户都能顺畅使用）  
+
+---
+
+## 完整参考资料  
+如需深入了解组件模式、动画示例及响应式布局技巧，请参阅该技能目录中的 `UI_UX_MASTER_GUIDE.md` 文件。  
+
+---
+
+**最后更新时间：** 2026-02-05

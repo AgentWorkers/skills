@@ -1,18 +1,18 @@
 ---
 name: llm_wallet
-description: Manage crypto wallets and make x402 micropayments with USDC stablecoins on Polygon
+description: 管理加密钱包，并使用 Polygon 平台上的 USDC 稳定币进行 x402 类型的微支付。
 homepage: https://github.com/x402/llm-wallet-mcp
 metadata: {"openclaw": {"emoji": "💰", "requires": {"bins": ["node"]}, "install": [{"id": "node", "kind": "node", "package": "llm-wallet-mcp", "bins": ["llm-wallet-mcp"], "label": "Install LLM Wallet MCP (node)"}]}}
 ---
 
-# LLM Wallet - Crypto Wallet & x402 Micropayments
+# LLM Wallet - 加密钱包与x402微支付
 
-Use `llm-wallet` commands to manage crypto wallets and make micropayments to paid APIs using USDC stablecoins on Polygon blockchain.
+使用`llm-wallet`命令来管理加密钱包，并通过Polygon区块链上的USDC稳定币向付费API进行微支付。
 
-**Default Network**: Polygon Testnet (polygon-amoy) - safe for testing
-**Facilitator**: https://x402-amoy.polygon.technology
+**默认网络**: Polygon测试网（polygon-amoy）——适合测试使用  
+**服务商**: https://x402-amoy.polygon.technology  
 
-## Quick Start
+## 快速入门  
 
 ```bash
 # Create wallet
@@ -26,162 +26,156 @@ llm-wallet set-limit --per-tx 0.10 --daily 5.00
 
 # View transaction history
 llm-wallet history
-```
+```  
 
-## Wallet Management
+## 钱包管理  
 
-### Create Wallet
+### 创建钱包  
 ```bash
 llm-wallet create [--label <name>]
-```
-Creates a new HD wallet with encryption. Returns wallet address.
-
-**Example:**
+```  
+创建一个带有加密功能的新硬件钱包，并返回钱包地址。  
+**示例**:  
 ```bash
 llm-wallet create --label "agent-wallet"
-```
+```  
 
-### Import Wallet
+### 导入钱包  
 ```bash
 llm-wallet import --private-key <key> [--label <name>]
-```
-Import existing wallet from private key.
+```  
+使用私钥导入现有钱包。  
 
-### Check Balance
+### 查看余额  
 ```bash
 llm-wallet balance
-```
-Shows USDC balance and native token balance on current network.
+```  
+显示当前网络上的USDC余额及原生代币余额。  
 
-### Transaction History
+### 交易历史  
 ```bash
 llm-wallet history
-```
-View all transactions and payments made from this wallet.
+```  
+查看该钱包的所有交易记录和支付记录。  
 
-## Spending Limits
+## 支出限制  
 
-### Set Limits
+### 设置限制  
 ```bash
 llm-wallet set-limit --per-tx <amount> --daily <amount>
-```
-Set per-transaction and daily spending caps in USDC.
-
-**Example:**
+```  
+设置单次交易和每日支付的USDC上限。  
+**示例**:  
 ```bash
 llm-wallet set-limit --per-tx 0.10 --daily 5.00
-```
+```  
 
-### Check Limits
+### 查看限制  
 ```bash
 llm-wallet get-limits
-```
-View current spending limits and daily usage.
+```  
+查看当前的支出限制和每日使用情况。  
 
-## x402 Payments
+## x402支付  
 
-### Make Payment
+### 进行支付  
 ```bash
 llm-wallet pay <url> [--method GET|POST] [--body <json>]
-```
-Make x402 micropayment to a paid API endpoint.
-
-**⚠️ IMPORTANT: Always ask user for approval before making payments!**
-
-**Example:**
+```  
+向付费API端点进行x402微支付。  
+**⚠️ 重要提示：** 在进行支付前务必获得用户批准！  
+**示例**:  
 ```bash
 # Ask user: "I need to make a payment to https://api.example.com/weather. Cost: $0.001 USDC. Approve?"
 llm-wallet pay "https://api.example.com/weather?location=London"
-```
+```  
 
-**Workflow:**
-1. Check if payment is needed: `llm-wallet check-payment <url>`
-2. Show user: URL, estimated cost, current limits
-3. Wait for user approval
-4. Execute: `llm-wallet pay <url>`
-5. Confirm completion and show transaction ID
+**工作流程**:  
+1. 检查是否需要支付：`llm-wallet check-payment <url>`  
+2. 向用户展示：支付链接、预计费用及当前限制  
+3. 等待用户批准  
+4. 执行支付：`llm-wallet pay <url>`  
+5. 确认支付完成并显示交易ID  
 
-### Check Payment (Pre-flight)
+### 预支付检查  
 ```bash
 llm-wallet check-payment <url>
-```
-Checks if wallet can afford payment without executing it.
+```  
+在支付前检查钱包是否有足够的资金完成支付。  
 
-## Dynamic API Registration
+## 动态API注册  
 
-### Register API
+### 注册API  
 ```bash
 llm-wallet register-api <url> --name <tool_name>
-```
-Register a paid API endpoint as a reusable tool.
-
-**Example:**
+```  
+将付费API端点注册为可重复使用的工具。  
+**示例**:  
 ```bash
 llm-wallet register-api "https://api.example.com/weather" --name weather_api
-```
+```  
 
-### List Registered APIs
+### 查看已注册的API  
 ```bash
 llm-wallet list-apis
-```
-Show all registered API tools.
+```  
+显示所有已注册的API工具。  
 
-### Call Registered API
+### 调用已注册的API  
 ```bash
 llm-wallet call-api <tool_name> [--params <json>]
-```
-Execute a registered API tool. Requires approval if payment needed.
-
-**Example:**
+```  
+执行已注册的API。如果需要支付，则需先获得用户批准。  
+**示例**:  
 ```bash
 # Ask user for approval first if cost > 0
 llm-wallet call-api weather_api --params '{"location": "London"}'
-```
+```  
 
-### Unregister API
+### 取消API注册  
 ```bash
 llm-wallet unregister-api <tool_name>
-```
-Remove a registered API tool.
+```  
+移除已注册的API工具。  
 
-## Seller Tools (Advanced)
+## 卖家工具（高级功能）  
 
-### Verify Payment
+### 验证支付  
 ```bash
 llm-wallet verify-payment --header <x-payment-header> --requirements <json>
-```
-Verify incoming payment from a buyer (seller-side).
+```  
+验证来自买家的支付（卖家端）。  
 
-### Create Payment Requirements
+### 创建支付请求  
 ```bash
 llm-wallet create-requirements --price <amount> --pay-to <address> --url <resource-url>
-```
-Generate payment requirements for a protected resource.
+```  
+为受保护的资源生成支付请求。  
 
-## Safety Rules
+## 安全规则  
 
-1. **Network Default**: Always uses polygon-amoy (testnet) unless configured otherwise
-2. **Approval Required**: Always ask user before making payments
-3. **Spending Limits**: Check limits before payment attempts
-4. **Transaction Logging**: All payments are logged with timestamps
-5. **Encryption**: Wallets are encrypted with AES-256-GCM
+1. **网络默认设置**: 除非另有配置，否则始终使用polygon-amoy（测试网）。  
+2. **必须获得用户批准**: 在进行支付前务必征求用户同意。  
+3. **支出限制**: 在尝试支付前检查当前限制。  
+4. **交易记录**: 所有交易都会附带时间戳进行记录。  
+5. **加密**: 钱包采用AES-256-GCM进行加密。  
 
-## Configuration
+## 配置  
 
-### Environment Variables
-- `WALLET_ENCRYPTION_KEY` - Wallet encryption key (32+ chars, auto-generated if missing)
-- `WALLET_NETWORK` - Network selection (default: `polygon-amoy` | `polygon`)
-- `FACILITATOR_URL` - Custom facilitator URL (auto-configured)
-- `WALLET_MAX_TX_AMOUNT` - Per-transaction limit override
-- `WALLET_DAILY_LIMIT` - Daily limit override
+### 环境变量  
+- `WALLET_ENCRYPTION_KEY` - 钱包加密密钥（32个以上字符，如未设置则自动生成）  
+- `WALLET_NETWORK` - 网络选择（默认：`polygon-amoy` | `polygon`）  
+- `FACILITATOR_URL` - 自定义服务商URL（自动配置）  
+- `WALLET_MAX_TX_AMOUNT` - 单次交易限额设置  
+- `WALLET_DAILY_LIMIT` - 每日限额设置  
 
-### Network Info
-- **Polygon Testnet (Amoy)**: Chain ID 80002, Facilitator: https://x402-amoy.polygon.technology
-- **Polygon Mainnet**: Chain ID 137, Facilitator: https://x402.polygon.technology
+### 网络信息  
+- **Polygon测试网（Amoy）**: 链路ID 80002，服务商：https://x402-amoy.polygon.technology  
+- **Polygon主网**: 链路ID 137，服务商：https://x402.polygon.technology  
 
-## Common Workflows
+## 常见操作流程  
 
-### First Time Setup
+### 首次设置  
 ```bash
 # 1. Create wallet
 llm-wallet create --label "my-agent"
@@ -194,9 +188,9 @@ llm-wallet balance
 
 # 4. Fund wallet with testnet USDC
 # User needs to: visit https://faucet.polygon.technology/
-```
+```  
 
-### Making a Payment
+### 进行支付  
 ```bash
 # 1. Pre-check payment
 llm-wallet check-payment "https://api.example.com/weather?location=London"
@@ -209,9 +203,9 @@ llm-wallet pay "https://api.example.com/weather?location=London"
 
 # 5. Confirm and show transaction ID
 llm-wallet history
-```
+```  
 
-### Registering a Paid API
+### 注册付费API  
 ```bash
 # 1. Register the API
 llm-wallet register-api "https://api.example.com/translate" --name translate_api
@@ -224,26 +218,23 @@ llm-wallet call-api translate_api --params '{"text": "hello", "to": "es"}'
 
 # 4. View payment in history
 llm-wallet history
-```
+```  
 
-## Error Handling
+## 错误处理**  
+- **余额不足**: 显示错误信息，并指导用户前往测试网获取资金或参考主网的充值指南。  
+- **支付被拒绝**: 交易会被撤销，请查看错误信息以获取详细原因。  
+- **超出限额**: 显示当前限制和每日使用情况，建议提高限额。  
+- **网络超时**: 采用指数级退避策略重试（最多3次）。  
 
-- **Insufficient Balance**: Show error and guide user to faucet (testnet) or funding instructions (mainnet)
-- **Payment Rejected**: Transaction reverted, check error message for details
-- **Limit Exceeded**: Show current limits and daily usage, suggest increasing limits
-- **Network Timeout**: Retry with exponential backoff (max 3 attempts)
+## 参考资料  
+请参阅`references/`文件夹中的文件：  
+- `x402-protocol.md` – x402支付协议概述  
+- `wallet-setup.md` – 详细的钱包设置指南  
+- `examples.md` – 更多的使用示例  
 
-## References
-
-See `references/` folder for:
-- `x402-protocol.md` - x402 payment protocol overview
-- `wallet-setup.md` - Detailed wallet setup guide
-- `examples.md` - More usage examples
-
-## Notes
-
-- All amounts are in USDC (6 decimals)
-- Default network is testnet for safety
-- Testnet USDC has no real value
-- Always verify network before mainnet usage
-- Keep encryption key secure (never share or commit)
+## 注意事项**  
+- 所有金额均以USDC为单位（保留6位小数）。  
+- 为安全起见，默认使用测试网。  
+- 测试网上的USDC没有实际价值。  
+- 在使用主网之前，请务必验证网络连接。  
+- 请妥善保管加密密钥（切勿共享或泄露）。

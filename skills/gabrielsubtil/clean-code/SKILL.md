@@ -1,179 +1,179 @@
 ---
 name: clean-code
-description: Pragmatic coding standards - concise, direct, no over-engineering, no unnecessary comments
+description: 实用编码规范：简洁明了，避免过度设计，去除不必要的注释
 allowed-tools: Read, Write, Edit
 version: 2.0
 priority: CRITICAL
 ---
 
-# Clean Code - Pragmatic AI Coding Standards
+# 清晰的代码——实用的AI编码规范
 
-> **CRITICAL SKILL** - Be **concise, direct, and solution-focused**.
+> **关键技能**：**简洁、直接、以解决方案为中心**。
 
 ---
 
-## Core Principles
+## 核心原则
 
-| Principle | Rule |
+| 原则 | 规则 |
 |-----------|------|
-| **SRP** | Single Responsibility - each function/class does ONE thing |
-| **DRY** | Don't Repeat Yourself - extract duplicates, reuse |
-| **KISS** | Keep It Simple - simplest solution that works |
-| **YAGNI** | You Aren't Gonna Need It - don't build unused features |
-| **Boy Scout** | Leave code cleaner than you found it |
+| **SRP**（单一职责原则） | 每个函数/类只负责一件事 |
+| **DRY**（避免重复） | 不要重复代码，应提取重复的部分并重用 |
+| **KISS**（保持简单） | 选择最简单且有效的解决方案 |
+| **YAGNI**（不要实现你不会用到的功能） | 不要开发未使用的功能 |
+| **保持代码整洁** | 使代码比你接收时更干净 |
 
 ---
 
-## Naming Rules
+## 命名规则
 
-| Element | Convention |
+| 元素 | 命名规范 |
 |---------|------------|
-| **Variables** | Reveal intent: `userCount` not `n` |
-| **Functions** | Verb + noun: `getUserById()` not `user()` |
-| **Booleans** | Question form: `isActive`, `hasPermission`, `canEdit` |
-| **Constants** | SCREAMING_SNAKE: `MAX_RETRY_COUNT` |
+| **变量** | 明确其用途：例如 `userCount` 而不是 `n` |
+| **函数** | 动词 + 名词：例如 `getUserById()` 而不是 `user()` |
+| **布尔值** | 采用疑问句形式：例如 `isActive`、`hasPermission`、`canEdit` |
+| **常量** | 使用大写且具有描述性的名称：例如 `MAX_RETRY_COUNT` |
 
-> **Rule:** If you need a comment to explain a name, rename it.
+> **规则：** 如果需要注释来解释某个名称，那就重新命名它。
 
 ---
 
-## Function Rules
+## 函数规则
 
-| Rule | Description |
+| 规则 | 描述 |
 |------|-------------|
-| **Small** | Max 20 lines, ideally 5-10 |
-| **One Thing** | Does one thing, does it well |
-| **One Level** | One level of abstraction per function |
-| **Few Args** | Max 3 arguments, prefer 0-2 |
-| **No Side Effects** | Don't mutate inputs unexpectedly |
+| **简洁性** | 函数长度不超过20行，理想情况下为5-10行 |
+| **单一职责** | 每个函数只完成一个任务，并且完成得很好 |
+| **单一抽象层次** | 每个函数只包含一个抽象层次 |
+| **参数数量** | 最多3个参数，最好为0-2个 |
+| **无副作用** | 不要意外地修改输入参数 |
 
 ---
 
-## Code Structure
+## 代码结构
 
-| Pattern | Apply |
+| 规范 | 应用方式 |
 |---------|-------|
-| **Guard Clauses** | Early returns for edge cases |
-| **Flat > Nested** | Avoid deep nesting (max 2 levels) |
-| **Composition** | Small functions composed together |
-| **Colocation** | Keep related code close |
+| **防护性条件** | 对于边缘情况，提前返回结果 |
+| **扁平结构** | 避免深度嵌套（最多2层嵌套） |
+| **组合式设计** | 将小函数组合在一起使用 |
+| **代码布局** | 相关代码应放在一起 |
 
 ---
 
-## AI Coding Style
+## AI编码风格
 
-| Situation | Action |
+| 情况 | 应对方式 |
 |-----------|--------|
-| User asks for feature | Write it directly |
-| User reports bug | Fix it, don't explain |
-| No clear requirement | Ask, don't assume |
+| 用户提出功能需求 | 直接实现该功能 |
+| 用户报告错误 | 修复错误，无需解释原因 |
+| 没有明确的需求 | 先询问用户，不要自行假设 |
 
 ---
 
-## Anti-Patterns (DON'T)
+## 避免的编码模式（不要这样做）
 
-| ❌ Pattern | ✅ Fix |
+| ❌ 不良编码模式 | ✅ 正确做法 |
 |-----------|-------|
-| Comment every line | Delete obvious comments |
-| Helper for one-liner | Inline the code |
-| Factory for 2 objects | Direct instantiation |
-| utils.ts with 1 function | Put code where used |
-| "First we import..." | Just write code |
-| Deep nesting | Guard clauses |
-| Magic numbers | Named constants |
-| God functions | Split by responsibility |
+| 每行都加注释 | 删除显而易见的注释 |
+| 为单行代码编写辅助函数 | 将代码内联 |
+| 为两个对象创建单独的工厂函数 | 直接实例化对象 |
+| 将所有功能放在 `utils.ts` 文件中 | 将代码放在实际使用的地方 |
+| 先导入再编写代码 | 直接编写代码 |
+| 深度嵌套 | 使用防护性条件 |
+| 使用魔法数字 | 使用有意义的常量命名 |
+| 功能过于复杂 | 按职责拆分函数 |
 
 ---
 
-## 🔴 Before Editing ANY File (THINK FIRST!)
+## 🔴 在编辑任何文件之前（先思考！）
 
-**Before changing a file, ask yourself:**
+**在修改文件之前，请问自己：**
 
-| Question | Why |
+| 问题 | 原因 |
 |----------|-----|
-| **What imports this file?** | They might break |
-| **What does this file import?** | Interface changes |
-| **What tests cover this?** | Tests might fail |
-| **Is this a shared component?** | Multiple places affected |
+| **这个文件依赖哪些其他文件？** | 修改它们可能会导致问题 |
+| **这个文件又依赖哪些文件？** | 修改这些文件可能会影响其他模块 |
+| **有哪些测试覆盖了这个文件？** | 修改后测试可能会失败 |
+| **这是一个共享组件吗？** | 修改这个文件可能会影响多个地方 |
 
-**Quick Check:**
+**快速检查：**
 ```
 File to edit: UserService.ts
 └── Who imports this? → UserController.ts, AuthController.ts
 └── Do they need changes too? → Check function signatures
 ```
 
-> 🔴 **Rule:** Edit the file + all dependent files in the SAME task.
-> 🔴 **Never leave broken imports or missing updates.**
+> 🔴 **规则：** 在同一任务中编辑该文件及其所有依赖文件。
+> 🔴 **切勿留下未修复的依赖关系或遗漏的更新。**
 
 ---
 
-## Summary
+## 总结
 
-| Do | Don't |
+| 应该做 | 不应该做 |
 |----|-------|
-| Write code directly | Write tutorials |
-| Let code self-document | Add obvious comments |
-| Fix bugs immediately | Explain the fix first |
-| Inline small things | Create unnecessary files |
-| Name things clearly | Use abbreviations |
-| Keep functions small | Write 100+ line functions |
+| 直接编写代码 | 编写教程 |
+| 依赖代码自解释 | 添加不必要的注释 |
+| 立即修复错误 | 先解释修复内容 |
+| 将小功能内联 | 创建不必要的文件 |
+| 名称含糊不清 | 使用缩写 |
+| 函数过长（超过100行） | 应该拆分函数 |
 
-> **Remember: The user wants working code, not a programming lesson.**
+> **记住：用户需要的是能正常运行的代码，而不是编程教程。**
 
 ---
 
-## 🔴 Self-Check Before Completing (MANDATORY)
+## 🔴 完成工作前的自我检查（必须执行）
 
-**Before saying "task complete", verify:**
+**在宣布任务完成之前，请验证：**
 
-| Check | Question |
+| 需要验证的内容 | 需要问的问题 |
 |-------|----------|
-| ✅ **Goal met?** | Did I do exactly what user asked? |
-| ✅ **Files edited?** | Did I modify all necessary files? |
-| ✅ **Code works?** | Did I test/verify the change? |
-| ✅ **No errors?** | Lint and TypeScript pass? |
-| ✅ **Nothing forgotten?** | Any edge cases missed? |
+| ✅ 是否达到了目标？ | 我是否完成了用户的要求？ |
+| ✅ 是否修改了所有相关文件？ | 我是否修改了所有必要的文件？ |
+| ✅ 代码能否正常运行？ | 我是否测试并验证了更改？ |
+| ✅ 有没有错误？ | 代码是否通过了代码检查（lint和TypeScript检查）？ |
+| ✅ 有没有遗漏什么？ | 有没有忽略任何边缘情况？ |
 
-> 🔴 **Rule:** If ANY check fails, fix it before completing.
+> 🔴 **规则：** 如果有任何验证失败，必须先修复问题再完成任务。
 
 ---
 
-## Verification Scripts (MANDATORY)
+## 验证脚本（必须执行）
 
-> 🔴 **CRITICAL:** Each agent runs ONLY their own skill's scripts after completing work.
+> 🔴 **重要提示：** 每个开发人员在工作完成后，只运行与自己负责技能相关的验证脚本。
 
-### Agent → Script Mapping
+### 开发人员与脚本的对应关系
 
-| Agent | Script | Command |
+| 开发人员 | 需要运行的脚本 | 命令 |
 |-------|--------|---------|
-| **frontend-specialist** | UX Audit | `python .agent/skills/frontend-design/scripts/ux_audit.py .` |
-| **frontend-specialist** | A11y Check | `python .agent/skills/frontend-design/scripts/accessibility_checker.py .` |
-| **backend-specialist** | API Validator | `python .agent/skills/api-patterns/scripts/api_validator.py .` |
-| **mobile-developer** | Mobile Audit | `python .agent/skills/mobile-design/scripts/mobile_audit.py .` |
-| **database-architect** | Schema Validate | `python .agent/skills/database-design/scripts/schema_validator.py .` |
-| **security-auditor** | Security Scan | `python .agent/skills/vulnerability-scanner/scripts/security_scan.py .` |
-| **seo-specialist** | SEO Check | `python .agent/skills/seo-fundamentals/scripts/seo_checker.py .` |
-| **seo-specialist** | GEO Check | `python .agent/skills/geo-fundamentals/scripts/geo_checker.py .` |
-| **performance-optimizer** | Lighthouse | `python .agent/skills/performance-profiling/scripts/lighthouse_audit.py <url>` |
-| **test-engineer** | Test Runner | `python .agent/skills/testing-patterns/scripts/test_runner.py .` |
-| **test-engineer** | Playwright | `python .agent/skills/webapp-testing/scripts/playwright_runner.py <url>` |
-| **Any agent** | Lint Check | `python .agent/skills/lint-and-validate/scripts/lint_runner.py .` |
-| **Any agent** | Type Coverage | `python .agent/skills/lint-and-validate/scripts/type_coverage.py .` |
-| **Any agent** | i18n Check | `python .agent/skills/i18n-localization/scripts/i18n_checker.py .` |
+| **前端专家** | 用户体验审计 | `python .agent/skills/frontend-design/scripts/ux_audit.py` |
+| **前端专家** | 可访问性检查 | `python .agent/skills/frontend-design/scripts/accessibility_checker.py` |
+| **后端专家** | API验证 | `python .agent/skills/api-patterns/scripts/api-validator.py` |
+| **移动开发者** | 移动应用审计 | `python .agent/skills/mobile-design/scripts/mobile_audit.py` |
+| **数据库架构师** | 数据库模式验证 | `python .agent/skills/database-design/scripts/schema-validator.py` |
+| **安全审计师** | 安全扫描 | `python .agent/skills/vulnerability-scanner/scripts/security_scan.py` |
+| **SEO专家** | SEO检查 | `python .agent/skills/seo-fundamentals/scripts/seo_checker.py` |
+| **SEO专家** | 地理位置检查 | `python .agent/skills/geo-fundamentals/scripts/geo_checker.py` |
+| **性能优化师** | Lighthouse性能分析 | `python .agent/skills/performance-profiling/scripts/lighthouse_audit.py <url>` |
+| **测试工程师** | 测试运行工具 | `python .agent/skills/testing-patterns/scripts/testrunner.py` |
+| **测试工程师** | Playwright测试工具 | `python .agent/skills/webapp-testing/scripts/playwrightrunner.py <url>` |
+| **任何开发人员** | 代码格式检查 | `python .agent/skills/lint-and-validate/scripts/lint_runner.py` |
+| **任何开发人员** | 类型覆盖检查 | `python .agent/skills/lint-and-validate/scripts/type_coverage.py` |
+| **任何开发人员** | 国际化检查 | `python .agent/skills/i18n-localization/scripts/i18n_checker.py` |
 
-> ❌ **WRONG:** `test-engineer` running `ux_audit.py`
-> ✅ **CORRECT:** `frontend-specialist` running `ux_audit.py`
+> ❌ **错误做法：** `测试工程师` 运行 `ux_audit.py`
+> ✅ **正确做法：** `前端专家` 运行 `ux_audit.py`
 
 ---
 
-### 🔴 Script Output Handling (READ → SUMMARIZE → ASK)
+### 🔴 脚本输出处理（必须执行）
 
-**When running a validation script, you MUST:**
+**运行验证脚本时，你必须：**
 
-1. **Run the script** and capture ALL output
-2. **Parse the output** - identify errors, warnings, and passes
-3. **Summarize to user** in this format:
+1. **运行脚本** 并记录所有输出结果 |
+2. **解析输出**：识别错误、警告和通过的结果 |
+3. **以以下格式向用户总结结果：**
 
 ```markdown
 ## Script Results: [script_name.py]
@@ -192,10 +192,9 @@ File to edit: UserService.ts
 **Should I fix the X errors?**
 ```
 
-4. **Wait for user confirmation** before fixing
-5. **After fixing** → Re-run script to confirm
+4. **等待用户确认后再进行修复** |
+5. **修复后**：重新运行脚本以确认结果是否正确 |
 
-> 🔴 **VIOLATION:** Running script and ignoring output = FAILED task.
-> 🔴 **VIOLATION:** Auto-fixing without asking = Not allowed.
-> 🔴 **Rule:** Always READ output → SUMMARIZE → ASK → then fix.
-
+> 🔴 **违规行为：** 运行脚本后忽略输出 = 任务失败。
+> 🔴 **违规行为：** 未经用户确认就自动修复 = 不允许。
+> 🔴 **规则：** 必须先阅读输出结果 → 总结问题 → 征求用户确认 → 再进行修复。

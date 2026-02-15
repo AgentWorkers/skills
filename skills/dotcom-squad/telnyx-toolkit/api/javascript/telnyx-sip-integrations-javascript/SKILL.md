@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Sip Integrations - JavaScript
+# Telnyx Sip 集成 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +31,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all call recordings
+## 列出所有通话记录
 
-Returns a list of your call recordings.
+返回您的通话记录列表。
 
 `GET /recordings`
 
@@ -45,9 +46,9 @@ for await (const recordingResponseData of client.recordings.list()) {
 }
 ```
 
-## Retrieve a call recording
+## 获取通话记录
 
-Retrieves the details of an existing call recording.
+检索现有通话记录的详细信息。
 
 `GET /recordings/{recording_id}`
 
@@ -57,9 +58,9 @@ const recording = await client.recordings.retrieve('recording_id');
 console.log(recording.data);
 ```
 
-## Delete a call recording
+## 删除通话记录
 
-Permanently deletes a call recording.
+永久删除通话记录。
 
 `DELETE /recordings/{recording_id}`
 
@@ -69,9 +70,9 @@ const recording = await client.recordings.delete('recording_id');
 console.log(recording.data);
 ```
 
-## Delete a list of call recordings
+## 删除通话记录列表
 
-Permanently deletes a list of call recordings.
+永久删除通话记录列表。
 
 `POST /recordings/actions/delete`
 
@@ -81,9 +82,9 @@ await client.recordings.actions.delete({
 });
 ```
 
-## List all recording transcriptions
+## 列出所有通话转录记录
 
-Returns a list of your recording transcriptions.
+返回您的通话转录记录列表。
 
 `GET /recording_transcriptions`
 
@@ -93,9 +94,9 @@ const recordingTranscriptions = await client.recordingTranscriptions.list();
 console.log(recordingTranscriptions.data);
 ```
 
-## Retrieve a recording transcription
+## 获取通话转录记录
 
-Retrieves the details of an existing recording transcription.
+检索现有通话转录记录的详细信息。
 
 `GET /recording_transcriptions/{recording_transcription_id}`
 
@@ -107,9 +108,9 @@ const recordingTranscription = await client.recordingTranscriptions.retrieve(
 console.log(recordingTranscription.data);
 ```
 
-## Delete a recording transcription
+## 删除通话转录记录
 
-Permanently deletes a recording transcription.
+永久删除通话转录记录。
 
 `DELETE /recording_transcriptions/{recording_transcription_id}`
 
@@ -121,9 +122,9 @@ const recordingTranscription = await client.recordingTranscriptions.delete(
 console.log(recordingTranscription.data);
 ```
 
-## Retrieve a stored credential
+## 获取存储的凭据
 
-Returns the information about custom storage credentials.
+返回有关自定义存储凭据的信息。
 
 `GET /custom_storage_credentials/{connection_id}`
 
@@ -133,9 +134,9 @@ const customStorageCredential = await client.customStorageCredentials.retrieve('
 console.log(customStorageCredential.connection_id);
 ```
 
-## Create a custom storage credential
+## 创建自定义存储凭据
 
-Creates a custom storage credentials configuration.
+创建自定义存储凭据配置。
 
 `POST /custom_storage_credentials/{connection_id}`
 
@@ -148,9 +149,9 @@ const customStorageCredential = await client.customStorageCredentials.create('co
 console.log(customStorageCredential.connection_id);
 ```
 
-## Update a stored credential
+## 更新存储的凭据
 
-Updates a stored custom credentials configuration.
+更新存储的自定义凭据配置。
 
 `PUT /custom_storage_credentials/{connection_id}`
 
@@ -163,9 +164,9 @@ const customStorageCredential = await client.customStorageCredentials.update('co
 console.log(customStorageCredential.connection_id);
 ```
 
-## Delete a stored credential
+## 删除存储的凭据
 
-Deletes a stored custom credentials configuration.
+删除存储的自定义凭据配置。
 
 `DELETE /custom_storage_credentials/{connection_id}`
 
@@ -173,9 +174,9 @@ Deletes a stored custom credentials configuration.
 await client.customStorageCredentials.delete('connection_id');
 ```
 
-## Retrieve stored Dialogflow Connection
+## 获取存储的 Dialogflow 连接信息
 
-Return details of the Dialogflow connection associated with the given CallControl connection.
+返回与给定 CallControl 连接关联的 Dialogflow 连接的详细信息。
 
 `GET /dialogflow_connections/{connection_id}`
 
@@ -185,9 +186,9 @@ const dialogflowConnection = await client.dialogflowConnections.retrieve('connec
 console.log(dialogflowConnection.data);
 ```
 
-## Create a Dialogflow Connection
+## 创建 Dialogflow 连接
 
-Save Dialogflow Credentiails to Telnyx, so it can be used with other Telnyx services.
+将 Dialogflow 凭据保存到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
 `POST /dialogflow_connections/{connection_id}`
 
@@ -210,9 +211,9 @@ const dialogflowConnection = await client.dialogflowConnections.create('connecti
 console.log(dialogflowConnection.data);
 ```
 
-## Update stored Dialogflow Connection
+## 更新存储的 Dialogflow 连接
 
-Updates a stored Dialogflow Connection.
+更新存储的 Dialogflow 连接信息。
 
 `PUT /dialogflow_connections/{connection_id}`
 
@@ -235,9 +236,9 @@ const dialogflowConnection = await client.dialogflowConnections.update('connecti
 console.log(dialogflowConnection.data);
 ```
 
-## Delete stored Dialogflow Connection
+## 删除存储的 Dialogflow 连接
 
-Deletes a stored Dialogflow Connection.
+删除存储的 Dialogflow 连接。
 
 `DELETE /dialogflow_connections/{connection_id}`
 
@@ -245,9 +246,9 @@ Deletes a stored Dialogflow Connection.
 await client.dialogflowConnections.delete('connection_id');
 ```
 
-## List all External Connections
+## 列出所有外部连接
 
-This endpoint returns a list of your External Connections inside the 'data' attribute of the response.
+此端点返回响应中 'data' 属性内的所有外部连接列表。
 
 `GET /external_connections`
 
@@ -258,11 +259,11 @@ for await (const externalConnection of client.externalConnections.list()) {
 }
 ```
 
-## Creates an External Connection
+## 创建外部连接
 
-Creates a new External Connection based on the parameters sent in the request.
+根据请求中发送的参数创建新的外部连接。
 
-`POST /external_connections` — Required: `external_sip_connection`, `outbound`
+`POST /external_connections` — 必需参数：`external_sip_connection`, `outbound`
 
 ```javascript
 const externalConnection = await client.externalConnections.create({
@@ -273,9 +274,9 @@ const externalConnection = await client.externalConnections.create({
 console.log(externalConnection.data);
 ```
 
-## Retrieve an External Connection
+## 获取外部连接信息
 
-Return the details of an existing External Connection inside the 'data' attribute of the response.
+返回响应中 'data' 属性内的现有外部连接的详细信息。
 
 `GET /external_connections/{id}`
 
@@ -285,11 +286,11 @@ const externalConnection = await client.externalConnections.retrieve('id');
 console.log(externalConnection.data);
 ```
 
-## Update an External Connection
+## 更新外部连接
 
-Updates settings of an existing External Connection based on the parameters of the request.
+根据请求的参数更新现有外部连接的设置。
 
-`PATCH /external_connections/{id}` — Required: `outbound`
+`PATCH /external_connections/{id}` — 必需参数：`outbound`
 
 ```javascript
 const externalConnection = await client.externalConnections.update('id', {
@@ -299,9 +300,9 @@ const externalConnection = await client.externalConnections.update('id', {
 console.log(externalConnection.data);
 ```
 
-## Deletes an External Connection
+## 删除外部连接
 
-Permanently deletes an External Connection.
+永久删除外部连接。
 
 `DELETE /external_connections/{id}`
 
@@ -311,9 +312,9 @@ const externalConnection = await client.externalConnections.delete('id');
 console.log(externalConnection.data);
 ```
 
-## List all civic addresses and locations
+## 列出所有公民地址和位置信息
 
-Returns the civic addresses and locations from Microsoft Teams.
+从 Microsoft Teams 中获取公民地址和位置信息。
 
 `GET /external_connections/{id}/civic_addresses`
 
@@ -323,9 +324,9 @@ const civicAddresses = await client.externalConnections.civicAddresses.list('id'
 console.log(civicAddresses.data);
 ```
 
-## Retrieve a Civic Address
+## 获取公民地址信息
 
-Return the details of an existing Civic Address with its Locations inside the 'data' attribute of the response.
+返回现有公民地址的详细信息及其位置信息（位于响应的 'data' 属性中）。
 
 `GET /external_connections/{id}/civic_addresses/{address_id}`
 
@@ -338,9 +339,9 @@ const civicAddress = await client.externalConnections.civicAddresses.retrieve(
 console.log(civicAddress.data);
 ```
 
-## Update a location's static emergency address
+## 更新位置的静态紧急地址
 
-`PATCH /external_connections/{id}/locations/{location_id}` — Required: `static_emergency_address_id`
+`PATCH /external_connections/{id}/locations/{location_id}` — 必需参数：`static_emergency_address_id`
 
 ```javascript
 const response = await client.externalConnections.updateLocation(
@@ -354,9 +355,9 @@ const response = await client.externalConnections.updateLocation(
 console.log(response.data);
 ```
 
-## List all phone numbers
+## 列出所有电话号码
 
-Returns a list of all active phone numbers associated with the given external connection.
+返回与给定外部连接关联的所有活跃电话号码列表。
 
 `GET /external_connections/{id}/phone_numbers`
 
@@ -369,9 +370,9 @@ for await (const externalConnectionPhoneNumber of client.externalConnections.pho
 }
 ```
 
-## Retrieve a phone number
+## 获取电话号码信息
 
-Return the details of a phone number associated with the given external connection.
+返回与给定外部连接关联的电话号码的详细信息。
 
 `GET /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -383,9 +384,9 @@ const phoneNumber = await client.externalConnections.phoneNumbers.retrieve('1234
 console.log(phoneNumber.data);
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
-Asynchronously update settings of the phone number associated with the given external connection.
+异步更新与给定外部连接关联的电话号码设置。
 
 `PATCH /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -397,9 +398,9 @@ const phoneNumber = await client.externalConnections.phoneNumbers.update('123456
 console.log(phoneNumber.data);
 ```
 
-## List all Releases
+## 列出所有发布记录
 
-Returns a list of your Releases for the given external connection.
+返回与给定外部连接关联的所有发布记录列表。
 
 `GET /external_connections/{id}/releases`
 
@@ -410,9 +411,9 @@ for await (const releaseListResponse of client.externalConnections.releases.list
 }
 ```
 
-## Retrieve a Release request
+## 获取发布请求信息
 
-Return the details of a Release request and its phone numbers.
+返回发布请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/releases/{release_id}`
 
@@ -425,9 +426,9 @@ const release = await client.externalConnections.releases.retrieve(
 console.log(release.data);
 ```
 
-## List all Upload requests
+## 列出所有上传请求
 
-Returns a list of your Upload requests for the given external connection.
+返回与给定外部连接关联的所有上传请求列表。
 
 `GET /external_connections/{id}/uploads`
 
@@ -438,11 +439,11 @@ for await (const upload of client.externalConnections.uploads.list('id')) {
 }
 ```
 
-## Creates an Upload request
+## 创建上传请求
 
-Creates a new Upload request to Microsoft teams with the included phone numbers.
+创建一个新的上传请求到 Microsoft Teams（包含关联的电话号码）。
 
-`POST /external_connections/{id}/uploads` — Required: `number_ids`
+`POST /external_connections/{id}/uploads` — 必需参数：`number_ids`
 
 ```javascript
 const upload = await client.externalConnections.uploads.create('id', {
@@ -457,9 +458,9 @@ const upload = await client.externalConnections.uploads.create('id', {
 console.log(upload.ticket_id);
 ```
 
-## Refresh the status of all Upload requests
+## 刷新所有上传请求的状态
 
-Forces a recheck of the status of all pending Upload requests for the given external connection in the background.
+强制重新检查给定外部连接的所有待处理上传请求的状态。
 
 `POST /external_connections/{id}/uploads/refresh`
 
@@ -469,9 +470,9 @@ const response = await client.externalConnections.uploads.refreshStatus('id');
 console.log(response.success);
 ```
 
-## Get the count of pending upload requests
+## 获取待处理上传请求的数量
 
-Returns the count of all pending upload requests for the given external connection.
+返回给定外部连接的所有待处理上传请求的数量。
 
 `GET /external_connections/{id}/uploads/status`
 
@@ -481,9 +482,9 @@ const response = await client.externalConnections.uploads.pendingCount('id');
 console.log(response.data);
 ```
 
-## Retrieve an Upload request
+## 获取上传请求信息
 
-Return the details of an Upload request and its phone numbers.
+返回上传请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/uploads/{ticket_id}`
 
@@ -496,9 +497,9 @@ const upload = await client.externalConnections.uploads.retrieve(
 console.log(upload.data);
 ```
 
-## Retry an Upload request
+## 重试上传请求
 
-If there were any errors during the upload process, this endpoint will retry the upload request.
+如果上传过程中出现错误，此端点将重试上传请求。
 
 `POST /external_connections/{id}/uploads/{ticket_id}/retry`
 
@@ -511,9 +512,9 @@ const response = await client.externalConnections.uploads.retry(
 console.log(response.data);
 ```
 
-## List all log messages
+## 列出所有日志消息
 
-Retrieve a list of log messages for all external connections associated with your account.
+检索与您的账户关联的所有外部连接的日志消息列表。
 
 `GET /external_connections/log_messages`
 
@@ -524,9 +525,9 @@ for await (const logMessageListResponse of client.externalConnections.logMessage
 }
 ```
 
-## Retrieve a log message
+## 获取日志消息
 
-Retrieve a log message for an external connection associated with your account.
+检索与您的账户关联的某个外部连接的日志消息。
 
 `GET /external_connections/log_messages/{id}`
 
@@ -536,9 +537,9 @@ const logMessage = await client.externalConnections.logMessages.retrieve('id');
 console.log(logMessage.log_messages);
 ```
 
-## Dismiss a log message
+## 删除日志消息
 
-Dismiss a log message for an external connection associated with your account.
+删除与您的账户关联的某个外部连接的日志消息。
 
 `DELETE /external_connections/log_messages/{id}`
 
@@ -548,9 +549,9 @@ const response = await client.externalConnections.logMessages.dismiss('id');
 console.log(response.success);
 ```
 
-## Refresh Operator Connect integration
+## 刷新 Operator Connect 集成
 
-This endpoint will make an asynchronous request to refresh the Operator Connect integration with Microsoft Teams for the current user.
+此端点将异步请求以刷新当前用户与 Microsoft Teams 的 Operator Connect 集成。
 
 `POST /operator_connect/actions/refresh`
 
@@ -560,9 +561,9 @@ const response = await client.operatorConnect.actions.refresh();
 console.log(response.message);
 ```
 
-## List uploaded media
+## 列出上传的媒体文件
 
-Returns a list of stored media files.
+返回存储的媒体文件列表。
 
 `GET /media`
 
@@ -572,11 +573,11 @@ const media = await client.media.list();
 console.log(media.data);
 ```
 
-## Upload media
+## 上传媒体文件
 
-Upload media file to Telnyx so it can be used with other Telnyx services
+将媒体文件上传到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
-`POST /media` — Required: `media_url`
+`POST /media` — 必需参数：`media_url`
 
 ```javascript
 const response = await client.media.upload({ media_url: 'http://www.example.com/audio.mp3' });
@@ -584,9 +585,9 @@ const response = await client.media.upload({ media_url: 'http://www.example.com/
 console.log(response.data);
 ```
 
-## Retrieve stored media
+## 获取存储的媒体文件信息
 
-Returns the information about a stored media file.
+返回存储的媒体文件的相关信息。
 
 `GET /media/{media_name}`
 
@@ -596,9 +597,9 @@ const media = await client.media.retrieve('media_name');
 console.log(media.data);
 ```
 
-## Update stored media
+## 更新存储的媒体文件
 
-Updates a stored media file.
+更新存储的媒体文件。
 
 `PUT /media/{media_name}`
 
@@ -608,9 +609,9 @@ const media = await client.media.update('media_name');
 console.log(media.data);
 ```
 
-## Deletes stored media
+## 删除存储的媒体文件
 
-Deletes a stored media file.
+删除存储的媒体文件。
 
 `DELETE /media/{media_name}`
 
@@ -618,9 +619,9 @@ Deletes a stored media file.
 await client.media.delete('media_name');
 ```
 
-## Download stored media
+## 下载存储的媒体文件
 
-Downloads a stored media file.
+下载存储的媒体文件。
 
 `GET /media/{media_name}/download`
 
@@ -631,4 +632,5 @@ console.log(response);
 
 const content = await response.blob();
 console.log(content);
+```
 ```

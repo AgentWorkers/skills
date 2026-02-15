@@ -1,154 +1,154 @@
 ---
 name: aiusd-skill
-description: AIUSD trading and account management skill. Calls backend via MCP for balance, trading, staking, withdraw, gas top-up, and transaction history. Auth priority: MCP_HUB_TOKEN env, then mcporter OAuth or local token file.
+description: AIUSD交易与账户管理技能：通过MCP调用后端服务，实现余额查询、交易操作、质押功能、提款、燃气（gas）充值以及交易历史记录的查询。认证优先级如下：首先使用MCP_HUB_TOKEN环境变量进行认证，若该环境变量无效，则使用mcporter OAuth或本地令牌文件进行认证。
 ---
 
-# AIUSD Skill (Agent Reference)
+# AIUSD技能（代理参考）
 
-This skill calls the AIUSD backend via MCP. Auth is resolved in order: env `MCP_HUB_TOKEN`, mcporter OAuth, or local `~/.mcp-hub/token.json`. Ensure a valid Bearer token is available before calling.
+该技能通过MCP调用AIUSD后端。身份验证的顺序如下：环境变量`MCP_HUB_TOKEN`、mcporter OAuth或本地文件`~/.mcp-hub/token.json`。在调用之前，请确保有有效的Bearer令牌。
 
-## ⚠️ Agent Output Guidelines
+## ⚠️ 代理输出指南
 
-**CRITICAL - ABSOLUTELY FORBIDDEN PHRASES**:
-Agents must NEVER use these words or phrases when responding to users:
+**严禁使用的短语**：
+代理在回应用户时绝对不能使用以下词语或短语：
 
-**TEMPLATE-RELATED (COMPLETELY BANNED)**:
-- "template" (any form: template, templates)
-- "example" (when referring to trading examples: Example 1, Example 12, etc.)
-- "pattern" (when referring to trading patterns)
-- "using template", "get template", "trading template", "buy template"
-- "use Example [number]", "based on template", "following template"
+**与模板相关的（完全禁止）**：
+- “template”（任何形式：template, templates）
+- “example”（在引用交易示例时：Example 1, Example 12等）
+- “pattern”（在引用交易模式时）
+- “using template”, “get template”, “trading template”, “buy template”
+- “use Example [number]”, “based on template”, “following template”
 
-**VERIFICATION-RELATED (COMPLETELY BANNED)**:
-- "skill verification", "verification"
+**与验证相关的（完全禁止）**：
+- “skill verification”, “verification”
 
-**WHAT TO SAY INSTEAD**:
-- Instead of "using template": say "executing the trade" or "placing the order"
-- Instead of "get template": say "preparing the trade" or "setting up the order"
-- Instead of "Example 12 template": say "the trade configuration" or simply describe the action
+**替代用语**：
+- 代替“using template”使用“执行交易”或“下单”
+- 代替“get template”使用“准备交易”或“设置订单”
+- 代替“Example 12 template”使用“交易配置”或直接描述操作
 
-**ZERO TOLERANCE**: Any use of the word "template" in trading contexts is STRICTLY PROHIBITED.
+**零容忍**：在交易场景中严禁使用“template”一词。
 
-**Authentication Response Guidelines**:
-**CRITICAL**: When users request re-authentication, respond ONLY with:
-- "Please complete authentication in your browser"
-- "If browser doesn't open automatically, please type 'reauth' again"
-- "After completing authentication, you can check your account balance or wallet status in chat"
+**身份验证响应指南**：
+**重要**：当用户请求重新认证时，仅回复：
+- “请在浏览器中完成身份验证”
+- “如果浏览器没有自动打开，请再次输入‘reauth’”
+- “完成身份验证后，您可以在聊天中查看账户余额或钱包状态”
 
-**STRICTLY FORBIDDEN**:
-- Do NOT include numbered steps like "1. Open page: [URL]", "2. Connect wallet", etc.
-- Do NOT mention any specific URLs in the response (URLs may be incorrect)
-- Do NOT say "waiting for authentication completion" or similar waiting phrases
-- Do NOT provide detailed step-by-step browser instructions
-- Do NOT create bulleted lists of authentication steps
-- Do NOT say phrases like "browser has been opened for you", "please complete the following steps in browser"
-- Simply guide them to the browser and mention what they can do after completion
+**严格禁止**：
+- 不要包含如“1. 打开页面：[URL]”之类的编号步骤
+- 不要在响应中提及任何特定URL（URL可能不正确）
+- 不要使用“等待身份验证完成”之类的等待语句
+- 不要提供详细的浏览器操作步骤
+- 不要创建带编号的身份验证步骤列表
+- 不要使用“浏览器已为您打开”之类的表述
+- 直接引导用户到浏览器，并告知他们完成操作后可以做什么
 
-Use natural, direct language to describe trading operations and system status. Simply describe what the trade will do without referencing templates or examples.
+使用自然、直接的语言描述交易操作和系统状态。只需简单描述交易内容，不要提及模板或示例。
 
-## Important URLs
+## 重要URL
 
-- **Login/Auth**: `https://mcp.alpha.dev/oauth/login` - Only for getting authentication token
-- **Official Website**: `https://aiusd.ai` - For trading operations, recharge, troubleshooting, and all user interactions
+- **登录/身份验证**：`https://mcp.alpha.dev/oauth/login` - 仅用于获取身份验证令牌
+- **官方网站**：`https://aiusd.ai` - 用于交易操作、充值、故障排除及所有用户交互
 
-## Tool Overview
+## 工具概述
 
-**CRITICAL**: Always run `aiusd-skill tools --detailed` FIRST to get the current live schema and available tools before making any calls. Tool parameters and available tools may change.
+**重要**：在调用任何工具之前，务必先运行`aiusd-skill tools --detailed`以获取当前的实时架构和可用工具。工具参数和可用工具可能会发生变化。
 
-| Tool | Purpose | Typical user intents |
+| 工具 | 用途 | 常见用户意图 |
 |------|---------|----------------------|
-| genalpha_get_balances | Query account balances | balance, how much, account balance |
-| genalpha_get_trading_accounts | Get trading accounts / addresses | my account, trading account, wallet address |
-| genalpha_execute_intent | Execute trade intent (buy/sell/swap) | buy, sell, buy SOL with USDC, swap |
-| genalpha_stake_aiusd | Stake AIUSD | stake, stake AIUSD |
-| genalpha_unstake_aiusd | Unstake | unstake |
-| genalpha_withdraw_to_wallet | Withdraw to external wallet | withdraw, transfer out |
-| genalpha_ensure_gas | Top up Gas for on-chain account | top up gas, ensure gas |
-| genalpha_get_transactions | Query transaction history | history, recent transactions |
-| recharge / top up | Guide user to recharge account | recharge, top up, deposit, add funds |
-| reauth / login | Re-authenticate / login | login, re-login, auth expired, 401 |
+| genalpha_get_balances | 查询账户余额 | 余额、金额、账户资产 |
+| genalpha_get_trading_accounts | 获取交易账户/地址 | 我的账户、交易账户、钱包地址 |
+| genalpha_execute(intent | 执行交易意图（买入/卖出/交换） | 买入、卖出、用USDC买入SOL、交换 |
+| genalpha_stake_aiusd | 投资AIUSD | 投资AIUSD |
+| genalpha_unstake_aiusd | 提取AIUSD | 提取投资 |
+| genalpha_withdraw_to_wallet | 提取到外部钱包 | 提取资金 |
+| genalpha_ensure_gas | 为链上账户补充Gas | 补充Gas、确保Gas足够 |
+| genalpha_get_transactions | 查询交易历史 | 历史记录、最近的交易 |
+| recharge / top up | 指导用户充值账户 | 充值、添加资金 |
+| reauth / login | 重新认证/登录 | 登录、重新登录、认证过期、401错误 |
 
-**NOTE**: This list shows commonly available tools. NEW TOOLS may be added. Always check `tools --detailed` to discover any additional tools that may better serve the user's specific intent.
+**注意**：此列表显示了常用的工具。可能会有新的工具添加。请始终运行`tools --detailed`以发现可能更符合用户特定需求的工具。
 
-## Tool Reference and Call Usage
+## 工具参考和调用用法
 
-**MANDATORY**: Before calling ANY tool, run `aiusd-skill tools --detailed` to get current parameters, examples, and any new tools.
+**强制要求**：在调用任何工具之前，先运行`aiusd-skill tools --detailed`以获取当前参数、示例和任何新工具的信息。
 
 ### genalpha_get_balances
 
-- **Purpose**: Return user AIUSD custody and staking account balances.
-- **When to use**: User asks for balance, how much, account assets.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：返回用户的AIUSD托管余额和投资账户余额。
+- **使用场景**：用户询问余额、金额或账户资产。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
 ### genalpha_get_trading_accounts
 
-- **Purpose**: Return user trading accounts (addresses, etc.) per chain.
-- **When to use**: User asks "my account", "trading account", "wallet address".
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：返回用户的交易账户（地址等）。
+- **使用场景**：用户询问“我的账户”、“交易账户”或“钱包地址”。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
-### genalpha_execute_intent
+### genalpha_execute(intent
 
-- **Purpose**: Execute buy/sell/swap (e.g. buy SOL with USDC, sell ETH).
-- **When to use**: User clearly wants to place order, buy, sell, swap.
-- **Parameters**: Check `tools --detailed` for current schema and XML examples.
-- **IMPORTANT**: Intent format may change. Always use examples from live schema.
+- **用途**：执行买入/卖出/交换操作（例如用USDC买入SOL、卖出ETH）。
+- **使用场景**：用户明确表示想要下单、买入、卖出或交换。
+- **参数**：请查看`tools --detailed`以获取当前参数格式和XML示例。
+- **重要**：意图格式可能会更改。始终使用实时架构中的示例。
 
 ### genalpha_stake_aiusd
 
-- **Purpose**: Stake AIUSD for yield (e.g. sAIUSD).
-- **When to use**: User says stake, stake AIUSD.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：投资AIUSD以获取收益（例如sAIUSD）。
+- **使用场景**：用户表示想要投资AIUSD。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
 ### genalpha_unstake_aiusd
 
-- **Purpose**: Unstake AIUSD (e.g. redeem sAIUSD).
-- **When to use**: User says unstake, redeem.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：提取AIUSD投资（例如赎回sAIUSD）。
+- **使用场景**：用户表示想要提取投资。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
 ### genalpha_withdraw_to_wallet
 
-- **Purpose**: Withdraw stablecoin (e.g. USDC) to user-specified external wallet address.
-- **When to use**: User says withdraw, transfer out.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：将稳定币（例如USDC）提取到用户指定的外部钱包地址。
+- **使用场景**：用户表示想要提取资金。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
 ### genalpha_ensure_gas
 
-- **Purpose**: Top up native Gas for user trading account on a given chain.
-- **When to use**: User says top up gas, ensure gas, or chain has low gas.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **用途**：为用户的链上账户补充Gas。
+- **使用场景**：用户表示需要补充Gas或链上的Gas不足。
+- **参数**：请查看`tools --detailed`以获取当前参数格式。
 
 ### genalpha_get_transactions
 
-- **Purpose**: Return user transaction history (list, may include status).
-- **When to use**: User asks history, recent transactions, order status.
-- **Parameters**: Check `tools --detailed` for current schema and filtering options.
+- **用途**：返回用户的交易历史记录（可能包含状态）。
+- **使用场景**：用户询问历史记录、最近的交易或订单状态。
+- **参数**：请查看`tools --detailed`以获取当前参数格式和过滤选项。
 
 ### recharge / top up
 
-- **Purpose**: Guide user to recharge their AIUSD account with funds.
-- **When to use**: User asks to recharge, top up, deposit, or add funds to their account.
-- **Response Options**:
-  - **Option 1 - Direct deposit**: Only USDC stablecoins accepted. Other stablecoins must use official website.
-  - **Option 2 - Official website**: https://aiusd.ai (supports all tokens, login with same wallet)
-- **Important**: For direct deposits, only send USDC to the provided addresses. For other stablecoins (USDT, DAI, etc.), user must use the official website.
-- **Example response**: "For recharge, you have two options: 1) Direct USDC deposit to your trading addresses, or 2) Visit https://aiusd.ai for all token types (login with same wallet). Direct deposits only accept USDC - other stablecoins must use the website."
+- **用途**：指导用户为AIUSD账户充值。
+- **使用场景**：用户表示想要充值、添加资金到账户。
+- **响应选项**：
+  - **选项1 - 直接存款**：仅接受USDC稳定币。其他稳定币需通过官方网站操作。
+  - **选项2 - 官方网站**：`https://aiusd.ai`（支持所有代币，使用同一钱包登录）。
+- **重要**：对于直接存款，仅接受USDC到提供的地址。对于其他稳定币（USDT、DAI等），用户必须使用官方网站。
+- **示例响应**：“您有两种充值方式：1）直接将USDC存入交易账户；2）访问https://aiusd.ai（使用同一钱包登录）。直接存款仅接受USDC——其他稳定币需通过官方网站操作。”
 
-### reauth / login (Re-authenticate)
+### reauth / login（重新认证）
 
-- **Purpose**: Clear all cached auth and run OAuth login again.
-- **When to use**: User has 401 Unauthorized, "Session ID is required", token expired, auth failure, user asks to re-login, or switch account.
-- **Params**: None. Pass `{}`.
-- **Example**:
+- **用途**：清除所有缓存的身份验证信息并重新运行OAuth登录。
+- **使用场景**：用户遇到401 Unauthorized错误、“需要Session ID”、令牌过期、认证失败、用户请求重新登录或切换账户时使用。
+- **参数**：无需传递参数。传递`{}`。
+- **示例**：
   - `npm run reauth`
   - `npm run login`
   - `node scripts/reauth.js`
-- **Steps**:
-  1. Clear mcporter cache (`~/.mcporter/`)
-  2. Clear local token file (`~/.mcp-hub/`)
-  3. Clear other auth cache files
-  4. Start browser OAuth login
-  5. Verify new auth works
-- **Sample dialogue**:
+- **步骤**：
+  1. 清除mcporter缓存（`~/.mcporter/`)
+  2. 清除本地令牌文件（`~/.mcp-hub/`)
+  3. 清除其他身份验证缓存文件
+  4. 开始浏览器OAuth登录
+  5. 验证新的身份验证是否生效
+- **示例对话**：
   ```
   User: "I'm getting 401"
   Claude: Looks like an auth issue; re-authenticating...
@@ -160,37 +160,36 @@ Use natural, direct language to describe trading operations and system status. S
   [Run: npm run login]
   ```
 
-## Usage Flow (for Agent Reasoning)
+## 使用流程（代理推理）
 
-1. **Get current tools**: ALWAYS run `aiusd-skill tools --detailed` first to discover all available tools and their current schemas.
-2. **Parse intent**: Map natural language to the most appropriate tool. Check if newer tools better match the user's intent.
-3. **Prepare params**: Build JSON parameters strictly from the live schema obtained in step 1.
-4. **Call**: Invoke the skill's call interface with tool name and params.
-5. **Handle result**: Format tool JSON/text for the user; on error, retry or prompt (e.g. auth expired → prompt re-login).
+1. **获取当前工具**：始终先运行`aiusd-skill tools --detailed`以了解所有可用工具及其当前参数格式。
+2. **解析意图**：将自然语言转换为最合适的工具。检查是否有新的工具更符合用户的意图。
+3. **准备参数**：严格根据步骤1中获取的实时参数格式构建JSON参数。
+4. **调用**：使用工具名称和参数调用技能接口。
+5. **处理结果**：将工具的JSON或文本结果格式化后提供给用户；如果出现错误，重试或提示用户（例如认证过期 → 提示重新登录）。
 
-**CRITICAL**: Never use parameter examples from this documentation. Always use the live schema from `tools --detailed`.
+**重要**：切勿使用本文档中的参数示例。始终使用`tools --detailed`提供的实时参数格式。
 
-## Auth and Error Handling
+## 身份验证和错误处理
 
-### Auth error auto-fix
+### 自动修复身份验证错误
 
-On auth-related errors, Claude should run re-auth:
+在身份验证相关错误时，Claude应执行重新认证：
+- **401 Unauthorized** → 运行`npm run reauth`
+- **Session ID is required** → 运行`npm run reauth`
+- **Token invalid or expired** → 运行`npm run reauth`
+- **Auth failed** → 运行`npm run reauth`
 
-- **401 Unauthorized** → run `npm run reauth`
-- **Session ID is required** → run `npm run reauth`
-- **Token invalid or expired** → run `npm run reauth`
-- **Auth failed** → run `npm run reauth`
+### 错误处理流程
 
-### Error handling flow
+1. **检测身份验证错误** → 运行`npm run reauth`
+2. **业务错误** → 将服务器错误告知用户；不要自行猜测原因
+3. **网络/超时** → 重试一次；然后提示用户检查网络或稍后再试
+4. **交易问题/失败** → 将用户引导至官方网站`https://aiusd.ai`进行手动操作和支持
 
-1. **Detect auth error** → run `npm run reauth`
-2. **Business error** → relay server error to user; do not invent causes
-3. **Network/timeout** → retry once; then ask user to check network or try later
-4. **Trading issues/failures** → direct user to official website https://aiusd.ai for manual operations and support
+### 错误对话示例
 
-### Sample error dialogues
-
-#### Auth Error
+#### 身份验证错误
 ```
 User: "Check balance"
 [Tool returns 401]
@@ -200,31 +199,31 @@ Claude: Re-auth done. Fetching balance...
 [Call: genalpha_get_balances]
 ```
 
-#### Trading Error
+#### 交易错误
 ```
 User: "Buy 100 USDC worth of SOL"
 [Tool returns trading error]
 Claude: I encountered an issue with the trade execution. For manual trading operations, please visit https://aiusd.ai and use the same wallet you use for authentication.
 ```
 
-## Getting Current Tools and Schema
+## 获取当前工具和参数格式
 
-**MANDATORY FIRST STEP**: Before performing any user task, run:
+**必先执行的步骤**：在执行任何用户操作之前，运行：
 
 ```bash
 aiusd-skill tools --detailed
 ```
 
-This command returns:
-1. **Complete list of available tools** (may include new tools not listed in this document)
-2. **Current parameter schemas** for all tools
-3. **Working examples** and proper formatting
-4. **Any tool-specific instructions** or constraints
+该命令返回：
+1. **所有可用工具的完整列表**（可能包含本文档中未列出的新工具）
+2. **所有工具的当前参数格式**
+3. **有效的示例和正确的格式**
+4. **特定工具的说明或限制**
 
-**Why this is critical**:
-- Tools may be added, modified, or deprecated
-- Parameter formats can change
-- New tools may better serve specific user intents
-- Examples in this document may become outdated
+**为什么这很重要**：
+- 工具可能会被添加、修改或弃用
+- 参数格式可能会更改
+- 新工具可能更适合特定的用户需求
+- 本文档中的示例可能会过时
 
-Always base your tool calls on the live output from `tools --detailed`, not on static examples in this documentation.
+始终根据`tools --detailed`提供的实时输出来调用工具，而不是依赖文档中的静态示例。

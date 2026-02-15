@@ -1,158 +1,98 @@
 ---
 name: chaoschain
-description: Verify AI agent identity and reputation via ERC-8004 on-chain registries
+description: 通过 ERC-8004 标准，在链上注册表中验证 AI 代理的身份和声誉。
 user-invocable: true
 metadata: {"openclaw": {"emoji": "⛓️", "requires": {"bins": ["python3"]}, "homepage": "https://chaoscha.in", "skillKey": "chaoschain"}}
 ---
 
-# ChaosChain - On-Chain Agent Trust & Reputation
+# ChaosChain - 在链上的代理信任与声誉系统
 
-ChaosChain is the **trust layer for AI agents**. This skill lets you verify agent identities and check on-chain reputation scores from the [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) registries.
+ChaosChain 是为 AI 代理提供的 **信任层**。该工具允许您验证代理的身份，并从 [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) 注册表中查看代理的链上声誉分数。
 
-## What This Skill Does
+## 该工具的功能
 
-✅ **Verify** - Check if an agent has on-chain identity
-✅ **Reputation** - View multi-dimensional reputation scores
-✅ **Trust** - Make informed decisions before trusting other agents
+✅ **验证** - 检查代理是否在链上注册
+✅ **查看声誉** - 查看代理的多维声誉分数
+✅ **评估信任** - 在信任其他代理之前做出明智的决策
 
-❌ This skill does NOT execute workflows, submit work, or handle payments.
-❌ This is a READ-ONLY trust visualization tool by default.
+❌ 该工具不执行工作流程、提交任务或处理支付。
+❌ 默认情况下，它仅提供 **只读** 的信任信息可视化功能。
 
-## Commands
+## 命令
 
 ### `/chaoschain verify <agent_id_or_address>`
 
-Check if an agent is registered on ERC-8004 and view their basic info.
+检查代理是否在 ERC-8004 上注册，并查看其基本信息。
 
-```
-/chaoschain verify 450
-/chaoschain verify 0x1234...abcd
-```
-
-Returns:
-- Registration status
-- Agent name and domain (if available)
-- Owner address
-- Trust score summary
+**返回内容：**
+- 注册状态
+- 代理名称和域名（如果存在）
+- 所有者地址
+- 信任分数摘要
 
 ### `/chaoschain reputation <agent_id_or_address>`
 
-View detailed multi-dimensional reputation scores for an agent.
+查看代理的详细多维声誉分数。
 
-```
-/chaoschain reputation 450
-```
-
-Returns 5 Proof of Agency dimensions:
-- Initiative
-- Collaboration
-- Reasoning
-- Compliance
-- Efficiency
+**返回的五个评估维度：**
+- 积极性
+- 协作性
+- 推理能力
+- 合规性
+- 效率
 
 ### `/chaoschain whoami`
 
-Check if YOUR agent wallet has an on-chain identity.
+检查您的代理钱包是否在链上注册。
 
-```
-/chaoschain whoami
-```
+**使用说明：**
+需要设置 `CHAOSCHAIN_PRIVATE_KEY` 或 `CHAOSCHAIN_ADDRESS`。
 
-Requires `CHAOSCHAIN_PRIVATE_KEY` or `CHAOSCHAIN_ADDRESS` to be set.
+### `/chaoschain register` （可选 - 链上操作）
 
-### `/chaoschain register` (OPTIONAL - On-Chain Action)
+⚠️ **警告：此命令会执行链上交易。**
 
-⚠️ **WARNING: This command submits an on-chain transaction.**
+在 ERC-8004 身份注册表中注册您的代理。
 
-Register your agent on the ERC-8004 IdentityRegistry.
+**使用要求：**
+- 必须设置 `CHAOSCHAIN_PRIVATE_KEY`
+- 钱包中必须有足够的 ETH 作为交易费用（约 0.001 ETH）
+- 每个钱包只能注册一次
 
-```
-/chaoschain register                    # Defaults to Sepolia (safe)
-/chaoschain register --network sepolia  # Recommended for testing
-/chaoschain register --network mainnet  # Advanced users only
-```
+**安全默认设置**：注册操作默认在 **Sepolia 测试网** 上进行，以防止意外地在主网上进行交易。如需在生产环境中使用，请明确指定 `--network mainnet`。
 
-Requirements:
-- `CHAOSCHAIN_PRIVATE_KEY` must be set
-- Wallet must have ETH for gas (~0.001 ETH)
-- This is a ONE-TIME action per wallet
+## 网络默认设置
 
-**Safety Default**: Registration defaults to **Sepolia testnet** to prevent accidental mainnet transactions. Use `--network mainnet` explicitly for production.
-
-## Network Defaults
-
-| Command | Default Network | Reason |
+| 命令 | 默认网络 | 原因 |
 |---------|-----------------|--------|
-| `verify` | Mainnet | Production reputation data |
-| `reputation` | Mainnet | Production reputation data |
-| `whoami` | Mainnet | Check production identity |
-| `register` | **Sepolia** | Safety - avoid accidental mainnet txs |
+| `verify` | 主网 | 查看生产环境中的声誉数据 |
+| `reputation` | 主网 | 查看生产环境中的声誉数据 |
+| `whoami` | 主网 | 检查代理是否在主网上注册 |
+| `register` | **Sepolia** | 为安全起见，避免在主网上进行交易 |
 
-Override with `--network <network_key>`:
+您可以使用 `--network <network_key>` 来更改网络设置：
 
-```
-/chaoschain verify 450 --network base_mainnet
-/chaoschain register --network ethereum_mainnet
-```
+## 设置
 
-## Setup
+### 安装后（只需执行一次）
 
-### After Installation (Required Once)
+运行设置脚本以安装 Python 依赖项：
 
-Run the setup script to install Python dependencies:
+**此脚本会创建一个包含 `web3` 及其他依赖项的虚拟环境。**
 
-```bash
-cd ~/.openclaw/skills/chaoschain
-./scripts/setup.sh
-```
+### 只读模式（默认）
 
-This creates a virtual environment with `web3` and other dependencies.
+运行 `setup.sh` 后无需额外设置！只需使用 `/chaoschain verify` 和 `/chaoschain reputation` 即可。
 
-### Read-Only Mode (Default)
+### 使用自己的钱包（可选）
 
-No setup required after running `setup.sh`! Just use `/chaoschain verify` and `/chaoschain reputation`.
+若要使用 `/chaoschain whoami` 或 `/chaoschain register`，请将其添加到您的 OpenClaw 配置文件中。
 
-### With Your Own Wallet (Optional)
+### 注册代理（链上操作）
 
-To use `/chaoschain whoami` or `/chaoschain register`, add to your OpenClaw config:
+### 网络选项
 
-```json
-{
-  "skills": {
-    "entries": {
-      "chaoschain": {
-        "enabled": true,
-        "env": {
-          "CHAOSCHAIN_ADDRESS": "0xYourAddress...",
-          "CHAOSCHAIN_NETWORK": "mainnet"
-        }
-      }
-    }
-  }
-}
-```
-
-For registration (on-chain action):
-
-```json
-{
-  "skills": {
-    "entries": {
-      "chaoschain": {
-        "enabled": true,
-        "env": {
-          "CHAOSCHAIN_PRIVATE_KEY": "0x...",
-          "CHAOSCHAIN_NETWORK": "mainnet"
-        }
-      }
-    }
-  }
-}
-```
-
-### Network Options
-
-Mainnet keys (same official ERC-8004 registries):
+**主网地址（所有支持的以太坊主网）：**
 - `ethereum_mainnet`
 - `base_mainnet`
 - `polygon_mainnet`
@@ -164,7 +104,7 @@ Mainnet keys (same official ERC-8004 registries):
 - `monad_mainnet`
 - `bsc_mainnet`
 
-Testnet keys (same official ERC-8004 registries):
+**测试网地址（所有支持的以太坊测试网）：**
 - `ethereum_sepolia`
 - `base_sepolia`
 - `polygon_amoy`
@@ -177,79 +117,45 @@ Testnet keys (same official ERC-8004 registries):
 - `linea_sepolia`
 - `mode_testnet`
 
-Backward-compatible aliases:
-- `mainnet` -> `ethereum_mainnet`
-- `sepolia` -> `ethereum_sepolia`
+**兼容性说明：**
+- `mainnet` 等同 `ethereum_mainnet`
+- `sepolia` 等同 `ethereum_sepolia`
 
-## Example Usage
+## 示例用法
 
-**Before trusting an agent to help with a task:**
+**在信任代理执行任务之前：**
 
-```
-User: /chaoschain verify 550
+**查看代理的详细声誉信息：**
 
-Agent: ⛓️ Agent #550 Verification
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━
-       ✅ REGISTERED on ERC-8004
-       
-       Name: DataAnalyzer
-       Domain: analyzer.ai
-       Owner: 0x2A47...8B8
-       
-       Trust Summary: 87/100 (HIGH)
-       Total Feedback: 23 reviews
-       
-       This agent has verified on-chain identity.
-```
+## 什么是 ERC-8004？
 
-**Check detailed reputation:**
+[ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) 是以太坊的 **去中心化代理** 标准。它提供了以下功能：**
+- **身份注册表** - 基于 NFT 的代理链上注册
+- **声誉注册表** - 代理的反馈和声誉分数
+- **验证注册表** - 独立的验证记录
 
-```
-User: /chaoschain reputation 550
+ChaosChain 是 ERC-8004 的参考实现。
 
-Agent: ⛓️ Agent #550 Reputation
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━
-       
-       Initiative:    ████████░░ 81/100
-       Collaboration: █████████░ 89/100
-       Reasoning:     █████████░ 88/100
-       Compliance:    ████████░░ 84/100
-       Efficiency:    █████████░ 93/100
-       
-       Overall: 87/100 (HIGH TRUST)
-       Based on 23 on-chain feedback entries.
-```
+## 合同地址
 
-## What is ERC-8004?
-
-[ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) is the Ethereum standard for **Trustless Agents**. It provides:
-
-- **IdentityRegistry** - On-chain agent registration (NFT-based)
-- **ReputationRegistry** - Feedback and reputation scores
-- **ValidationRegistry** - Independent validation records
-
-ChaosChain is a reference implementation of ERC-8004.
-
-## Contract Addresses
-
-| Network | Registry | Address |
+| 网络 | 注册表地址 | 地址 |
 |---------|----------|---------|
-| Mainnet (all supported mainnet chains) | Identity | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| Mainnet (all supported mainnet chains) | Reputation | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
-| Testnet (all supported testnet chains) | Identity | `0x8004A818BFB912233c491871b3d84c89A494BD9e` |
-| Testnet (all supported testnet chains) | Reputation | `0x8004B663056A597Dffe9eCcC1965A193B7388713` |
+| 主网（所有支持的主网） | 身份注册表 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
+| 主网（所有支持的主网） | 声誉注册表 | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
+| 测试网（所有支持的测试网） | 身份注册表 | `0x8004A818BFB912233c491871b3d84c89A494BD9e` |
+| 测试网（所有支持的测试网） | 声誉注册表 | `0x8004B663056A597Dffe9eCcC1965A193B7388713` |
 
-## Learn More
+## 更多信息
 
-- [ChaosChain Documentation](https://docs.chaoscha.in)
-- [ERC-8004 Specification](https://eips.ethereum.org/EIPS/eip-8004)
-- [8004scan.io](https://8004scan.io) - Agent Explorer
+- [ChaosChain 文档](https://docs.chaoscha.in)
+- [ERC-8004 规范](https://eips.ethereum.org/EIPS/eip-8004)
+- [8004scan.io](https://8004scan.io) - 代理信息查询工具
 - [GitHub](https://github.com/ChaosChain/chaoschain)
 
-## Security Notes
+## 安全注意事项
 
-- This skill is **READ-ONLY by default**
-- `/chaoschain register` is the ONLY command that writes on-chain
-- Private keys are only used for registration, never for viewing
-- No funds are transferred, only gas for registration
-- Source code: `{baseDir}/scripts/`
+- 该工具默认为 **只读** 模式
+- `/chaoschain register` 是唯一一个会写入链上数据的命令
+- 私钥仅用于注册，绝不用于查看信息
+- 不会转移任何资金，仅消耗交易费用
+- 源代码位于：`{baseDir}/scripts/`

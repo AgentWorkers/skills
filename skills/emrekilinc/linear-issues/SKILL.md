@@ -1,20 +1,20 @@
 ---
 name: linear
-description: Interact with Linear for issue tracking. Use when creating, updating, listing, or searching issues. Supports viewing assigned issues, changing status, adding comments, and managing tasks.
+description: 与 Linear 进行交互以进行问题跟踪。适用于创建、更新、查看问题列表或搜索问题。支持查看已分配的问题、更改问题状态、添加评论以及管理任务。
 ---
 
 # Linear
 
-Manage Linear issues via `scripts/linear.sh`.
+通过 `scripts/linear.sh` 命令来管理 Linear 相关的问题。
 
-## Setup
+## 设置
 
-Store API key in `~/.clawdbot/credentials/linear.json`:
+将 API 密钥保存在 `~/.clawdbot/credentials/linear.json` 文件中：
 ```json
 {"apiKey": "lin_api_..."}
 ```
 
-## Commands
+## 命令
 
 ```bash
 # List my assigned issues
@@ -48,11 +48,11 @@ scripts/linear.sh states
 scripts/linear.sh users
 ```
 
-Use `--json` flag for raw API output: `scripts/linear.sh --json issues --mine`
+使用 `--json` 标志可获取原始的 API 输出：`scripts/linear.sh --json issues --mine`
 
-## Workflow Examples
+## 工作流程示例
 
-**Create and assign a bug:**
+**创建并分配一个问题：**
 ```bash
 # Find team ID
 scripts/linear.sh teams
@@ -60,7 +60,7 @@ scripts/linear.sh teams
 scripts/linear.sh create --team abc123 --title "Critical: API down" --priority 2
 ```
 
-**Move issue to In Progress:**
+**将问题状态更改为“进行中”：**
 ```bash
 # Find state ID
 scripts/linear.sh states
@@ -68,4 +68,4 @@ scripts/linear.sh states
 scripts/linear.sh update CLP-45 --state xyz789
 ```
 
-See [references/api-examples.md](references/api-examples.md) for GraphQL details.
+有关 GraphQL 的详细信息，请参阅 [references/api-examples.md](references/api-examples.md)。

@@ -1,6 +1,6 @@
 ---
 name: table-extractor
-description: Extract tables from PDFs with high accuracy using camelot - handles complex table structures
+description: 使用 camelot 从 PDF 文件中高精度地提取表格内容——能够处理复杂的表格结构
 author: claude-office-skills
 version: "1.0"
 tags: [table, extraction, camelot, pdf, data]
@@ -12,28 +12,27 @@ library:
   stars: 4.2k
 ---
 
-# Table Extractor Skill
+# 表格提取技能
 
-## Overview
+## 概述
 
-This skill enables precise extraction of tables from PDF documents using **camelot** - the gold standard for PDF table extraction. Handle complex tables with merged cells, borderless tables, and multi-page layouts with high accuracy.
+该技能利用 **camelot**（PDF表格提取领域的黄金标准工具）实现从PDF文档中精确提取表格的功能。能够高效处理包含合并单元格、无边框表格以及多页布局的复杂表格。
 
-## How to Use
+## 使用方法
 
-1. Provide the PDF containing tables
-2. Optionally specify pages or table detection method
-3. I'll extract tables as pandas DataFrames
+1. 提供包含表格的PDF文件。
+2. （可选）指定需要提取的页面或表格检测方法。
+3. 表格将被提取为pandas DataFrame格式的数据结构。
 
-**Example prompts:**
-- "Extract all tables from this PDF"
-- "Get the table on page 5 of this report"
-- "Extract borderless tables from this document"
-- "Convert PDF tables to Excel format"
+**示例提示：**
+- “从该PDF文件中提取所有表格。”
+- “获取报告第5页的表格。”
+- “从该文档中提取无边框的表格。”
+- “将PDF表格转换为Excel格式。”
 
-## Domain Knowledge
+## 相关领域知识
 
-### camelot Fundamentals
-
+### camelot基础知识
 ```python
 import camelot
 
@@ -48,12 +47,12 @@ df = tables[0].df
 print(df)
 ```
 
-### Extraction Methods
+### 提取方法
 
-| Method | Use Case | Description |
-|--------|----------|-------------|
-| `lattice` | Bordered tables | Detects table by lines/borders |
-| `stream` | Borderless tables | Uses text positioning |
+| 方法          | 适用场景            | 描述                                      |
+|--------------|------------------|-----------------------------------------|
+| `lattice`      | 有边框的表格          | 通过线条/边框来检测表格                          |
+| `stream`       | 无边框的表格          | 利用文本位置信息进行检测                          |
 
 ```python
 # Lattice method (default) - for tables with visible borders
@@ -63,8 +62,7 @@ tables = camelot.read_pdf('document.pdf', flavor='lattice')
 tables = camelot.read_pdf('document.pdf', flavor='stream')
 ```
 
-### Page Selection
-
+### 页面选择
 ```python
 # Single page
 tables = camelot.read_pdf('document.pdf', pages='1')
@@ -79,9 +77,9 @@ tables = camelot.read_pdf('document.pdf', pages='1-5')
 tables = camelot.read_pdf('document.pdf', pages='all')
 ```
 
-### Advanced Options
+### 高级选项
 
-#### Lattice Options
+#### Lattice选项
 ```python
 tables = camelot.read_pdf(
     'document.pdf',
@@ -96,7 +94,7 @@ tables = camelot.read_pdf(
 )
 ```
 
-#### Stream Options
+#### Stream选项
 ```python
 tables = camelot.read_pdf(
     'document.pdf',
@@ -108,8 +106,7 @@ tables = camelot.read_pdf(
 )
 ```
 
-### Table Area Specification
-
+### 表格区域指定
 ```python
 # Extract from specific area (x1, y1, x2, y2)
 # Coordinates from bottom-left, in PDF points (72 points = 1 inch)
@@ -125,8 +122,7 @@ tables = camelot.read_pdf(
 )
 ```
 
-### Column Specification
-
+### 列指定
 ```python
 # Manually specify column positions (for stream method)
 tables = camelot.read_pdf(
@@ -136,8 +132,7 @@ tables = camelot.read_pdf(
 )
 ```
 
-### Working with Results
-
+### 结果处理
 ```python
 import camelot
 
@@ -160,8 +155,7 @@ for i, table in enumerate(tables):
     print(f"  Report: {report}")
 ```
 
-### Export Options
-
+### 导出选项
 ```python
 import camelot
 
@@ -184,8 +178,7 @@ for i, table in enumerate(tables):
     table.to_excel(f'table_{i+1}.xlsx')
 ```
 
-### Visual Debugging
-
+### 可视化调试
 ```python
 import camelot
 
@@ -207,8 +200,7 @@ fig = camelot.plot(tables[0])
 fig.savefig('debug.png')
 ```
 
-### Handling Multi-page Tables
-
+### 处理多页表格
 ```python
 import camelot
 import pandas as pd
@@ -240,17 +232,17 @@ def extract_multipage_table(pdf_path, pages='all'):
     return combined
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Try Both Methods**: Lattice for bordered, stream for borderless
-2. **Check Accuracy Score**: Above 90% is usually good
-3. **Use Visual Debugging**: Understand extraction results
-4. **Specify Areas**: For PDFs with multiple table types
-5. **Handle Headers**: First row often needs special treatment
+1. **两种方法结合使用**：对于有边框的表格使用`lattice`方法，对于无边框的表格使用`stream`方法。
+2. **检查准确率**：准确率在90%以上通常表示提取效果良好。
+3. **使用可视化调试工具**：帮助理解提取结果。
+4. **指定提取区域**：对于包含多种表格类型的PDF文件，需要明确指定提取范围。
+5. **处理表头**：表格的第一行通常需要特殊处理。
 
-## Common Patterns
+## 常见应用场景
 
-### Batch Table Extraction
+### 批量提取表格
 ```python
 import camelot
 from pathlib import Path
@@ -294,7 +286,7 @@ def batch_extract_tables(input_dir, output_dir):
     return results
 ```
 
-### Auto-detect Table Method
+### 自动检测表格方法
 ```python
 import camelot
 
@@ -318,9 +310,9 @@ def smart_extract_tables(pdf_path, pages='1'):
     return results
 ```
 
-## Examples
+## 示例
 
-### Example 1: Financial Statement Extraction
+### 示例1：财务报表提取
 ```python
 import camelot
 import pandas as pd
@@ -365,7 +357,7 @@ if financials['income_statement'] is not None:
     print(financials['income_statement'])
 ```
 
-### Example 2: Scientific Data Extraction
+### 示例2：科学数据提取
 ```python
 import camelot
 import pandas as pd
@@ -406,7 +398,7 @@ for i, item in enumerate(data):
     print(item['data'].head())
 ```
 
-### Example 3: Invoice Line Items
+### 示例3：发票明细项提取
 ```python
 import camelot
 
@@ -454,7 +446,7 @@ for item in items:
     print(item)
 ```
 
-### Example 4: Table Comparison
+### 示例4：表格对比
 ```python
 import camelot
 import pandas as pd
@@ -497,16 +489,15 @@ def compare_pdf_tables(pdf1_path, pdf2_path):
 comparison = compare_pdf_tables('report_v1.pdf', 'report_v2.pdf')
 ```
 
-## Limitations
+## 注意事项
 
-- Encrypted PDFs not supported
-- Image-based PDFs need OCR preprocessing
-- Very complex merged cells may need tuning
-- Rotated tables require preprocessing
-- Large PDFs may need page-by-page processing
+- 不支持加密的PDF文件。
+- 基于图像的PDF文件需要先进行OCR预处理。
+- 非常复杂的合并单元格可能需要调整提取参数。
+- 旋转的表格需要预先处理。
+- 大型PDF文件可能需要分页处理。
 
-## Installation
-
+## 安装方法
 ```bash
 pip install camelot-py[cv]
 
@@ -518,8 +509,8 @@ brew install ghostscript tcl-tk
 apt-get install ghostscript python3-tk
 ```
 
-## Resources
+## 参考资源
 
-- [camelot Documentation](https://camelot-py.readthedocs.io/)
-- [GitHub Repository](https://github.com/camelot-dev/camelot)
-- [Comparison with Other Tools](https://camelot-py.readthedocs.io/en/master/user/intro.html#why-camelot)
+- [camelot官方文档](https://camelot-py.readthedocs.io/)
+- [GitHub仓库](https://github.com/camelot-dev/camelot)
+- [与其他工具的对比](https://camelot-py.readthedocs.io/en/master/user/intro.html#why-camelot)

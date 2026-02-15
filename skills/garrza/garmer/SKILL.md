@@ -1,6 +1,6 @@
 ---
 name: garmer
-description: Extract health and fitness data from Garmin Connect including activities, sleep, heart rate, stress, steps, and body composition. Use when the user asks about their Garmin data, fitness metrics, sleep analysis, or health insights.
+description: 从 Garmin Connect 中提取健康和健身数据，包括活动记录、睡眠情况、心率、压力水平、步数以及身体成分信息。当用户询问其 Garmin 设备的数据、健身指标、睡眠分析或健康状况时，可以使用这些信息进行解答。
 license: MIT
 compatibility: Requires Python 3.10+, pip/uv for installation. Requires Garmin Connect account credentials for authentication.
 metadata:
@@ -27,36 +27,36 @@ metadata:
         label: Install garmer (pip)
 ---
 
-# Garmer - Garmin Data Extraction Skill
+# Garmer – 从Garmin设备提取数据的工具
 
-This skill enables extraction of health and fitness data from Garmin Connect for analysis and insights.
+该工具能够从Garmin Connect服务中提取健康和健身数据，以便进行分析和获取洞察。
 
-## Prerequisites
+## 先决条件
 
-1. A Garmin Connect account with health data
-2. The `garmer` CLI tool installed (see installation options in metadata)
+1. 拥有一个包含健康数据的Garmin Connect账户。
+2. 已安装`garmer`命令行工具（安装方法详见元数据中的说明）。
 
-## Authentication (One-Time Setup)
+## 认证（一次性设置）
 
-Before using garmer, authenticate with Garmin Connect:
+在使用`garmer`之前，请先进行认证：
 
 ```bash
 garmer login
 ```
 
-This will prompt for your Garmin Connect email and password. Tokens are saved to `~/.garmer/garmin_tokens` for future use.
+系统会提示您输入Garmin Connect的电子邮件地址和密码。认证生成的令牌会保存在`~/.garmer/garmin_tokens`文件中，以供后续使用。
 
-To check authentication status:
+要检查认证状态，请执行以下命令：
 
 ```bash
 garmer status
 ```
 
-## Available Commands
+## 可用的命令
 
-### Daily Summary
+### 每日总结
 
-Get today's health summary (steps, calories, heart rate, stress):
+获取当天的健康数据摘要（步数、卡路里消耗、心率、压力水平）：
 
 ```bash
 garmer summary
@@ -71,9 +71,9 @@ garmer summary --json
 garmer summary --date 2025-01-15 --with-sleep --json
 ```
 
-### Sleep Data
+### 睡眠数据
 
-Get sleep analysis (duration, phases, score, HRV):
+获取睡眠分析结果（睡眠时长、睡眠阶段、睡眠质量评分、心率变异性HRV）：
 
 ```bash
 garmer sleep
@@ -81,9 +81,9 @@ garmer sleep
 garmer sleep --date 2025-01-15
 ```
 
-### Activities
+### 运动活动
 
-List recent fitness activities:
+列出最近进行的健身活动：
 
 ```bash
 garmer activities
@@ -95,9 +95,9 @@ garmer activities --date 2025-01-15
 garmer activities --json
 ```
 
-### Activity Detail
+### 活动详情
 
-Get detailed information for a single activity:
+获取某次具体运动的详细信息：
 
 ```bash
 # Latest activity:
@@ -114,9 +114,9 @@ garmer activity --json
 garmer activity 12345678 --laps --zones --json
 ```
 
-### Health Snapshot
+### 健康状况概览
 
-Get comprehensive health data for a day:
+获取当天的综合健康数据：
 
 ```bash
 garmer snapshot
@@ -126,9 +126,9 @@ garmer snapshot --date 2025-01-15
 garmer snapshot --json
 ```
 
-### Export Data
+### 数据导出
 
-Export multiple days of data to JSON:
+将多天的数据导出为JSON格式：
 
 ```bash
 # Last 7 days (default)
@@ -141,7 +141,7 @@ garmer export --start-date 2025-01-01 --end-date 2025-01-31 --output my_data.jso
 garmer export --days 14
 ```
 
-### Utility Commands
+### 其他实用命令
 
 ```bash
 # Update garmer to latest version (git pull):
@@ -151,9 +151,9 @@ garmer update
 garmer version
 ```
 
-## Python API Usage
+## Python API使用
 
-For more complex data processing, use the Python API:
+如需进行更复杂的数据处理，可以使用Python API：
 
 ```python
 from garmer import GarminClient
@@ -166,7 +166,7 @@ client = GarminClient.from_saved_tokens()
 client = GarminClient.from_credentials(email="user@example.com", password="pass")
 ```
 
-### User Profile
+### 用户信息
 
 ```python
 # Get user profile
@@ -177,7 +177,7 @@ print(f"User: {profile.display_name}")
 devices = client.get_user_devices()
 ```
 
-### Daily Summary
+### 每日总结
 
 ```python
 # Get daily summary (defaults to today)
@@ -191,7 +191,7 @@ summary = client.get_daily_summary(date(2025, 1, 15))
 weekly = client.get_weekly_summary()
 ```
 
-### Sleep Data
+### 睡眠数据
 
 ```python
 # Get sleep data (defaults to today)
@@ -208,7 +208,7 @@ sleep_data = client.get_sleep_range(
 )
 ```
 
-### Activities
+### 运动活动
 
 ```python
 # Get recent activities
@@ -228,7 +228,7 @@ activities = client.get_activities(
 activity = client.get_activity(12345678)
 ```
 
-### Heart Rate
+### 心率
 
 ```python
 # Get heart rate data for a day
@@ -239,7 +239,7 @@ print(f"Resting HR: {hr.resting_heart_rate} bpm")
 resting_hr = client.get_resting_heart_rate(date(2025, 1, 15))
 ```
 
-### Stress & Body Battery
+### 压力水平与身体状态
 
 ```python
 # Get stress data
@@ -250,7 +250,7 @@ print(f"Avg stress: {stress.avg_stress_level}")
 battery = client.get_body_battery()
 ```
 
-### Steps
+### 步数
 
 ```python
 # Get detailed step data
@@ -261,7 +261,7 @@ print(f"Total: {steps.total_steps}, Goal: {steps.step_goal}")
 total = client.get_total_steps(date(2025, 1, 15))
 ```
 
-### Body Composition
+### 身体成分
 
 ```python
 # Get latest weight
@@ -275,7 +275,7 @@ weight = client.get_weight(date(2025, 1, 15))
 body = client.get_body_composition()
 ```
 
-### Hydration & Respiration
+### 水分摄入与呼吸数据
 
 ```python
 # Get hydration data
@@ -287,7 +287,7 @@ resp = client.get_respiration()
 print(f"Avg breathing: {resp.avg_waking_respiration} breaths/min")
 ```
 
-### Comprehensive Reports
+### 综合报告
 
 ```python
 # Get health snapshot (all metrics for a day)
@@ -308,65 +308,63 @@ data = client.export_data(
 )
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Health Check Query
+### 健康状况查询
 
-When a user asks "How did I sleep?" or "What's my health summary?":
+当用户询问“我的睡眠情况如何？”或“我的健康数据摘要是什么？”时，可以使用此功能：
 
 ```bash
 garmer snapshot --json
 ```
 
-### Activity Analysis
+### 运动数据分析
 
-When a user asks about workouts or exercise:
+当用户需要查看自己的运动记录或分析运动表现时，可以使用此功能：
 
 ```bash
 garmer activities --limit 10
 ```
 
-### Trend Analysis
+### 数据趋势分析
 
-When analyzing health trends over time:
+用于分析用户健康数据随时间的变化趋势：
 
 ```bash
 garmer export --days 30 --output health_data.json
 ```
 
-Then process the JSON file with Python for analysis.
+完成数据提取后，可以使用Python对JSON文件进行处理和分析。
 
-## Data Types Available
+## 可用的数据类型
 
-- **Activities**: Running, cycling, swimming, strength training, etc.
-- **Sleep**: Duration, phases (deep, light, REM), score, HRV
-- **Heart Rate**: Resting HR, samples, zones
-- **Stress**: Stress levels, body battery
-- **Steps**: Total steps, distance, floors
-- **Body Composition**: Weight, body fat, muscle mass
-- **Hydration**: Water intake tracking
-- **Respiration**: Breathing rate data
+- **运动类型**：跑步、骑行、游泳、力量训练等
+- **睡眠数据**：睡眠时长、睡眠阶段（深度睡眠、浅睡眠、快速眼动睡眠）、睡眠质量评分、心率变异性HRV
+- **心率数据**：静息心率、心率测量次数、心率区间
+- **压力水平**：压力指数、身体状态指标
+- **步数数据**：总步数、行走距离
+- **身体成分数据**：体重、体脂百分比、肌肉质量
+- **水分摄入数据**：每日水分摄入量
+- **呼吸数据**：呼吸频率数据
 
-## Error Handling
+## 错误处理
 
-If not authenticated:
-
-```
+- 如果未完成认证，系统会提示用户重新认证：
+  ```
 Not logged in. Use 'garmer login' first.
 ```
 
-If session expired, re-authenticate:
-
-```bash
+- 如果会话已过期，系统会提示用户重新登录：
+  ```bash
 garmer login
 ```
 
-## Environment Variables
+## 环境变量
 
-- `GARMER_TOKEN_DIR`: Custom directory for token storage
-- `GARMER_LOG_LEVEL`: Set logging level (DEBUG, INFO, WARNING, ERROR)
-- `GARMER_CACHE_ENABLED`: Enable/disable data caching (true/false)
+- `GARMER_TOKEN_DIR`：用于存储认证令牌的自定义目录
+- `GARMER_LOG_LEVEL`：设置日志记录级别（DEBUG、INFO、WARNING、ERROR）
+- `GARMER_CACHE_ENABLED`：启用/禁用数据缓存（true/false）
 
-## References
+## 参考资料
 
-For detailed API documentation and MoltBot integration examples, see `references/REFERENCE.md`.
+有关API的详细文档及MoltBot集成示例，请参阅`references/REFERENCE.md`。

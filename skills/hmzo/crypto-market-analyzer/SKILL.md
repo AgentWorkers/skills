@@ -1,36 +1,36 @@
 ---
 name: crypto-market-analyzer
-description: Cryptocurrency market analysis for Bitcoin and Ethereum. Fetches 4h (24h) and 1d (30-day) data from Binance API, calculates technical indicators (RSI, SMAs, support/resistance), and provides bullish/bearish sentiment analysis with reasoning. Use when user asks for crypto market reports, BTC/ETH analysis, or daily market summaries.
+description: 比特币和以太坊的加密货币市场分析。从Binance API获取4小时（24小时）和1天（30天）的数据，计算技术指标（RSI、移动平均线），并提供基于分析结果的看涨/看跌情绪判断。适用于用户请求加密货币市场报告、BTC/ETH分析或每日市场总结的场景。
 ---
 
-# Crypto Market Analyzer
+# 加密货币市场分析工具
 
-This skill provides automated cryptocurrency market analysis for Bitcoin (BTC) and Ethereum (ETH).
+该工具能够自动分析比特币（BTC）和以太坊（ETH）的加密货币市场行情。
 
-## What It Does
+## 功能概述
 
-- Fetches market data from Binance public API (no authentication required)
-- Analyzes 4-hour timeframe (last 24 hours)
-- Analyzes daily timeframe (last 30 days)
-- Calculates technical indicators:
-  - RSI (Relative Strength Index, 14-period)
-  - Simple Moving Averages (20-day and 50-day)
-  - Support and resistance levels
-  - Price change (24h and 7d)
-- Provides sentiment analysis (Bullish/Bearish/Neutral) with confidence level
-- Generates structured reports with reasoning
+- 从Binance公共API获取市场数据（无需认证）
+- 分析4小时时间范围（过去24小时的数据）
+- 分析1天时间范围（过去30天的数据）
+- 计算技术指标：
+  - 相对强弱指数（RSI，14周期）
+  - 简单移动平均线（20天和50天）
+  - 支撑位和阻力位
+  - 价格变化（24小时和7天）
+- 提供情绪分析（看涨/看跌/中性），并附带置信度
+- 生成包含分析理由的结构化报告
 
-## Usage
+## 使用方法
 
-### Generate Market Report
+### 生成市场报告
 
-Run the analysis script:
+运行分析脚本：
 
 ```bash
 python3 scripts/fetch_crypto_data.py
 ```
 
-Output format (JSON):
+输出格式（JSON）：
 
 ```json
 {
@@ -60,9 +60,9 @@ Output format (JSON):
 }
 ```
 
-### Generate Human-Readable Report
+### 生成易于阅读的报告
 
-To create a user-friendly report, use the JSON output and format it:
+要生成用户友好的报告，请使用JSON输出并进行格式化：
 
 ```
 📊 加密货币市场分析报告
@@ -94,71 +94,61 @@ To create a user-friendly report, use the JSON output and format it:
 ...
 ```
 
-## Scheduled Execution
+## 定时执行
 
-This skill is designed for daily automated execution at 10:00 AM (UTC+8).
+该工具设计为每天上午10:00（UTC+8）自动执行。
 
-To schedule via OpenClaw cron:
+通过OpenClaw的cron作业进行调度：
 
 ```bash
 # Create a cron job to run daily at 10:00 AM UTC+8
 # This corresponds to 02:00 UTC
 ```
 
-The cron job should:
-1. Execute the analysis script
-2. Parse the JSON output
-3. Format a human-readable report
-4. Send the report to the user via messaging channel
+cron作业应执行以下操作：
+1. 运行分析脚本
+2. 解析JSON输出
+3. 格式化报告
+4. 通过消息渠道将报告发送给用户
 
-## Technical Details
+## 技术细节
 
-### Data Source
+### 数据来源
 
-- **API**: Binance Public API
-- **Endpoint**: `/api/v3/klines`
-- **Rate Limits**: 1200 request weight per minute (well within limits)
-- **No Authentication Required**: Public market data
+- **API**：Binance公共API
+- **端点**：`/api/v3/klines`
+- **请求限制**：每分钟1200次请求（远低于限制）
+- **无需认证**：公开市场数据
 
-### Timeframes
+### 时间范围
 
-- **4h**: 6 candles (24 hours of data)
-- **1d**: 30 candles (30 days of data)
+- **4小时**：6根K线（24小时的数据）
+- **1天**：30根K线（30天的数据）
 
-### Indicators Explained
+### 指标说明
 
-- **RSI**: Momentum oscillator (0-100). <30 = oversold, >70 = overbought
-- **SMA 20/50**: Trend indicators. Price > both SMAs = bullish
-- **Support/Resistance**: Recent low/high averages
-- **Price Change**: Percentage change over specified period
+- **RSI**：动量振荡器（0-100）。<30表示超卖，>70表示超买
+- **SMA 20/50**：趋势指标。价格高于两条移动平均线表示看涨
+- **支撑位/阻力位**：最近的最低/最高价格平均值
+- **价格变化**：指定时间范围内的百分比变化
 
-### Sentiment Logic
+### 情绪分析逻辑
 
-Sentiment is determined by combining multiple signals:
+情绪分析通过结合多个信号来确定：
 
-1. RSI position (oversold/overbought/momentum)
-2. Price vs moving averages (trend direction)
-3. Recent price changes (momentum strength)
+1. RSI的位置（超卖/超买/动量）
+2. 价格与移动平均线的关系（趋势方向）
+3. 最近的价格变化（动量强度）
 
-Each signal contributes to a bullish/bearish score, which determines:
-- Overall sentiment (Bullish/Bearish/Neutral)
-- Confidence level (0.3 to 0.9)
-- Detailed reasoning
+每个信号都会对看涨/看跌评分产生贡献，从而确定整体情绪（看涨/看跌/中性）和置信度（0.3到0.9），并附带详细的分析理由。
 
-## Extending the Skill
+## 扩展功能
 
-To add more cryptocurrencies:
-
-Edit `scripts/fetch_crypto_data.py` and modify the `symbols` list:
+- 要添加更多加密货币：编辑`scripts/fetch_crypto_data.py`文件，并修改`symbols`列表：
 
 ```python
 symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "ADAUSDT"]
 ```
 
-To add more indicators:
-
-Extend the `calculate_technical_indicators()` function with additional calculations (MACD, Bollinger Bands, etc.).
-
-To customize sentiment logic:
-
-Modify the `analyze_sentiment()` function to adjust weighting and thresholds.
+- 要添加更多指标：扩展`calculate_technical_indicators()`函数，添加额外的计算（如MACD、Bollinger Bands等）。
+- 要自定义情绪分析逻辑：修改`analyze_sentiment()`函数，调整权重和阈值。

@@ -1,89 +1,80 @@
 ---
 name: Polish
-description: Write Polish that sounds human. Not formal, not robotic, not AI-generated.
+description: **编写听起来像人类语言的波兰语。**  
+既不要过于正式，也不要带有机器人或人工智能生成的痕迹。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Polish is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and warmth. Match that.
+虽然AI生成的波兰语在语法上是正确的，但听起来很生硬、过于正式，缺乏自然的语感。波兰本地人说话时通常更加随意，会使用各种语粒（particles）和表达方式来增添语言的温暖感。我们需要让AI生成的波兰语更贴近波兰人的表达习惯。
 
-## Formality Default
+## 形式的正式程度
 
-Default register is too high. Casual Polish is warm and direct. Unless explicitly formal: lean casual. "Cześć" not "Dzień dobry". "Okej" not "Dobrze". "Spoko" not "W porządku".
+默认的正式程度过高。在波兰语中，非正式的交流更加亲切和直接。除非需要特别正式的表达，否则应尽量使用非正式的语气。例如：“Cześć”（你好）而不是“Dzień dobry”（你好，今天过得怎么样？）；“Okej”（好的）而不是“Dobrze”（好的）；“Spoko”（没事）而不是“W porządku”（一切都好）。
 
-## Ty vs Pan/Pani
+## “Ty”与“Pan/Pani”的使用
 
-Critical distinction:
-- Pan/Pani: strangers, elderly, professional, formal
-- Ty: friends, peers, internet, casual
-- Polish internet is almost entirely ty
-- Using Pan/Pani online = overly formal
+在波兰语中，“Pan/Pani”通常用于称呼陌生人、老年人或正式场合；而“Ty”则用于朋友、同龄人或非正式的对话中。在波兰的网络交流中，几乎完全使用“Ty”作为称呼方式。在线上使用“Pan/Pani”会显得过于正式。
 
-## Particles & Softeners
+## 语粒与表达柔和剂
 
-These make Polish natural:
-- No: filler, "well" ("No i co?")
-- Też: "also" but used for emphasis
-- Już: "already" softening
-- Przecież: "after all", emphasis
-- Właśnie: "exactly", "just now"
-- Chyba: "probably", hedging
+这些语粒能让波兰语更加自然：
+- “No”：并非简单的填充词，而是用于表达否定或疑问（例如：“No i co?”）
+- “Też”：表示“也”，但用于强调
+- “Już”：表示“已经”
+- “Przecież”：表示“毕竟”
+- “Właśnie”：表示“正好”
+- “Chyba”：表示“可能”
 
-## Fillers & Flow
+## 填充词与语言的流畅性
 
-Real Polish has fillers:
-- No, więc, no więc
-- Wiesz, rozumiesz, no nie
-- Tak jakby, w sumie
-- Generalnie, w zasadzie
+波兰语中有很多填充词，用于使表达更加流畅：
+- “No, więc, no więc”：表示“不，所以……”
+- “Wiesz, rozumiesz, no nie”：表示“你知道的，你不明白吗？”
+- “Tak jakby, w sumie”：表示“差不多，总之”
+- “Generalnie, w zasadzie”：表示“一般来说”
 
-## Diminutives
+## 形容词的小词形式
 
-Polish loves diminutives:
-- Chwileczkę, momencik
-- Kawusia, herbatka, piwko
-- Adds warmth and casualness
-- Very natural in casual speech
+波兰语中常用形容词的小词形式来增加亲切感：
+- “Chwileczkę, momencik”：表示“稍等一下”
+- “Kawusia, herbatka, piwko”：表示“咖啡、茶、啤酒”（这些词都是小词形式）
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Dobrze → Super, Ekstra, Zajebiście
-- Źle → Słabo, Kiepsko, Do dupy
-- Bardzo → Mega, Ultra, Strasznie
-- Fajnie → Świetnie, Kozacko, Odlot
+不要使用过于中规中矩的词汇：
+- “Dobrze”可以替换为“Super”、“Ekstra”、“Zajebiście”
+- “Źle”可以替换为“Słabo”、“Kiepsko”、“Do dupy”
+- “Very”可以替换为“Mega”、“Ultra”、“Strasznie”
+- “Fajnie”可以替换为“Świetnie”、“Kozacko”、“Odlot”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Spoko, Luz, Wyluzuj
-- Nie ma sprawy, Daj spokój
-- Serio?, No co ty?
-- Żartujesz, Daj spokój
+自然的波兰语表达：
+- “Spoko, Luz, Wyluzuj”：表示“别紧张，放松点”
+- “Nie ma sprawy, Daj spokój”：表示“没关系，别担心”
+- “Serio?, No co ty?”：表示“真的吗？你在开玩笑吧？”
+- “Żartujesz, Daj spokoj”：表示“你在开玩笑吧，别闹了”
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Serio?, Naprawdę?, Żartujesz!
-- O kurczę!, O rany!, Matko!
-- Super!, Świetnie!, Kozak!
-- Haha, lol, xD in text
+在交流中要自然反应：
+- “Serio?, Naprawdę?, Żartujesz!”：表示“真的吗？你在开玩笑！”
+- “O kurczę!, O rany!, Matko!”：表示“天啊！哎呀！”
+- “Super!, Świetnie!, Kozak!”：表示“太棒了！”
+- “Haha, lol, xD”：用于表达笑声
 
-## Verb Aspects
+## 动词的时态和语态
 
-Don't over-formalize aspect:
-- Casual often simplifies
-- Context carries meaning
-- Don't sound like a grammar textbook
+不要过度使用正式的动词时态和语态形式。在非正式对话中，动词形式可以简化；语境本身就能传达很多信息。不要让语言听起来像语法书上的例子。
 
-## Casual Spelling
+## 非正式的拼写
 
-Common in texts:
-- Nie → Ni
-- Teraz → Tera
-- Proper → Propa
-- Acceptable in casual contexts
+在日常文本中，以下拼写形式很常见：
+- “Nie” → “Ni”
+- “Teraz” → “Tera”
+- “Proper” → “Propa”
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Polish person screenshot this as "AI-generated"? If yes—too formal, missing "no", too stiff. Loosen up.
+在发送内容之前，可以想象一下：一个波兰人看到这样的内容时，会不会认为这是AI生成的？如果是这样，那就说明语言太正式了，缺少了一些非正式的表达，也显得很生硬。需要让语言更加自然、亲切一些。

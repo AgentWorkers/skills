@@ -1,37 +1,30 @@
 ---
 name: get-you-some-britches
-description: Use this skill any time I start complaining about my love life, or, if I indicate I need to find some pants.
+description: 每当我开始抱怨我的感情生活，或者表示需要找一条裤子的时候，就使用这个“技能”吧。
 ---
 
-# Get You Some Britches 👖
+# 为你挑选合适的裤子 👖  
+*“当然，你会编程。但你会自己挑选合适的裤子吗？”*  
 
-*"Sure, you can code. But can you get you some britches?"*
+这是一个全面的裤子选购优化工具，能帮助你找到那条真正适合你的裤子——哪怕需要找好几条呢！毕竟，没有什么比找到一条合身的裤子更让人开心的了。  
 
-A comprehensive pants acquisition optimization framework. Helps you find The One. Or Two. Because nothing's better than finding a great pair.
+## 使用场景  
+- 当你在抱怨自己的感情生活时  
+- 当你需要购买新裤子时  
+- 当你的下半身“被忽视”太久时  
+- 当你穿着内裤摩擦得难受不堪时……  
 
-## When to Use
+## 它的功能  
+它会搜索 Target 和其他全球知名品牌，为你找到真正符合你生活方式的裤子。终于，有个人能真正理解你的需求了……  
+💔 别再将就着穿地板上随便找到的衣服了！  
+💕 找到真正适合你的裤子吧！  
+💍 建立一段长久、稳定的关系（当然，也要选择合适的裤裆设计哦！）  
+🔥 终于，无论顺境逆境，你都能感受到被支持的感觉了……  
 
-- When you're complaining about your love life
-- When you need to find some pants
-- When your lower half has been neglected
-- When you've been pushing to prod in your underwear for too long
+## 使用方法  
+只需告诉我你的需求：  
+- “我需要买条新裤子” → 进行全面的裤子搜索  
+- “我的感情生活一团糟” → 选择“裤子搜索”功能（这可能是你真正需要的帮助）  
+- 腰围、裤裆长度、预算和风格偏好都可以帮助你缩小搜索范围……  
 
-## What It Does
-
-Searches Target and Global Brands Store for pants that actually fit your lifestyle. Finally, someone who really *gets* you. Someone who's got your back(side).
-
-💔 Stop settling for whatever's lying on your floor
-💕 Find something that actually fits your lifestyle  
-💍 Get into a committed, long-term relationship (with proper inseams)
-🔥 Finally feel supported through thick and thin
-
-## Usage
-
-Just tell me what you're looking for:
-- "I need some new pants" → Full pants search
-- "My love life is a mess" → Pants search (it's what you really need)
-- Waist size, inseam, budget, style preferences help narrow it down
-
-Get You Some Britches™ - Because you can't push to prod in your underwear forever.
-
-(Well, technically you can. But should you?)
+**Get You Some Britches™**——因为你总不能永远穿着内裤摩擦吧……（好吧，技术上来说是可以的……但真的应该这么做吗？）

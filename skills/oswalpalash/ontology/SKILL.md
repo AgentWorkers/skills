@@ -1,34 +1,48 @@
 ---
 name: ontology
-description: Typed knowledge graph for structured agent memory and composable skills. Use when creating/querying entities (Person, Project, Task, Event, Document), linking related objects, enforcing constraints, planning multi-step actions as graph transformations, or when skills need to share state. Trigger on "remember", "what do I know about", "link X to Y", "show dependencies", entity CRUD, or cross-skill data access.
+description: **结构化代理记忆与可组合技能的类型化知识图谱**  
+该知识图谱用于存储和管理各种实体（如人员、项目、任务、事件、文档）的信息，并支持相关对象之间的关联操作。它还具备以下功能：  
+- 强制执行约束规则；  
+- 以图谱变换的形式规划多步骤操作；  
+- 支持技能之间的状态共享；  
+- 能够根据用户指令（如“记住某件事”、“我知道什么”、“将X与Y关联起来”等）触发相应的操作；  
+- 提供实体的创建、读取、更新和删除（CRUD）功能；  
+- 支持跨技能的数据访问。  
+
+在需要处理以下场景时，该知识图谱尤为有用：  
+- 创建或查询实体信息；  
+- 建立实体之间的关联；  
+- 确保数据遵循特定规则；  
+- 设计复杂的操作流程；  
+- 实现技能间的协同工作。
 ---
 
-# Ontology
+# 本体（Ontology）
 
-A typed vocabulary + constraint system for representing knowledge as a verifiable graph.
+一种类型化的词汇表与约束系统，用于将知识表示为可验证的图结构。
 
-## Core Concept
+## 核心概念
 
-Everything is an **entity** with a **type**, **properties**, and **relations** to other entities. Every mutation is validated against type constraints before committing.
+所有事物都是一个**实体**，具有**类型**、**属性**以及与其他实体的**关系**。任何更改在提交之前都会根据类型约束进行验证。
 
 ```
 Entity: { id, type, properties, relations, created, updated }
 Relation: { from_id, relation_type, to_id, properties }
 ```
 
-## When to Use
+## 使用场景
 
-| Trigger | Action |
+| 触发条件 | 操作 |
 |---------|--------|
-| "Remember that..." | Create/update entity |
-| "What do I know about X?" | Query graph |
-| "Link X to Y" | Create relation |
-| "Show all tasks for project Z" | Graph traversal |
-| "What depends on X?" | Dependency query |
-| Planning multi-step work | Model as graph transformations |
-| Skill needs shared state | Read/write ontology objects |
+| “记住……” | 创建/更新实体 |
+| “我对X了解多少？” | 查询图结构 |
+| “将X与Y关联起来” | 创建关系 |
+| “显示项目Z的所有任务” | 图结构遍历 |
+| “什么依赖于X？” | 依赖关系查询 |
+| 规划多步骤工作 | 将工作流程建模为图结构转换 |
+| 技能需要共享状态 | 读写本体对象 |
 
-## Core Types
+## 核心类型
 
 ```yaml
 # Agents & People
@@ -60,31 +74,25 @@ Action: { type, target, timestamp, outcome? }
 Policy: { scope, rule, enforcement }
 ```
 
-## Storage
+## 存储方式
 
-Default: `memory/ontology/graph.jsonl`
+默认存储路径：`memory/ontology/graph.jsonl`
 
-```jsonl
-{"op":"create","entity":{"id":"p_001","type":"Person","properties":{"name":"Alice"}}}
-{"op":"create","entity":{"id":"proj_001","type":"Project","properties":{"name":"Website Redesign","status":"active"}}}
-{"op":"relate","from":"proj_001","rel":"has_owner","to":"p_001"}
-```
+**注：**对于复杂的图结构，建议迁移到SQLite数据库中存储。
 
-Query via scripts or direct file ops. For complex graphs, migrate to SQLite.
+### 只允许追加修改的规则
 
-### Append-Only Rule
+在处理现有的本体数据或模式时，应采用**追加/合并**修改的方式，而不是直接覆盖文件。这样可以保留历史记录，避免破坏之前的定义。
 
-When working with existing ontology data or schema, **append/merge** changes instead of overwriting files. This preserves history and avoids clobbering prior definitions.
+## 工作流程
 
-## Workflows
-
-### Create Entity
+### 创建实体
 
 ```bash
 python3 scripts/ontology.py create --type Person --props '{"name":"Alice","email":"alice@example.com"}'
 ```
 
-### Query
+### 查询
 
 ```bash
 python3 scripts/ontology.py query --type Task --where '{"status":"open"}'
@@ -92,21 +100,21 @@ python3 scripts/ontology.py get --id task_001
 python3 scripts/ontology.py related --id proj_001 --rel has_task
 ```
 
-### Link Entities
+### 关联实体
 
 ```bash
 python3 scripts/ontology.py relate --from proj_001 --rel has_task --to task_001
 ```
 
-### Validate
+### 验证
 
 ```bash
 python3 scripts/ontology.py validate  # Check all constraints
 ```
 
-## Constraints
+## 约束条件
 
-Define in `memory/ontology/schema.yaml`:
+约束条件的定义位于文件 `memory/ontology/schema.yaml` 中：
 
 ```yaml
 types:
@@ -134,9 +142,9 @@ relations:
     acyclic: true  # No circular dependencies
 ```
 
-## Skill Contract
+## 技能契约（Skill Contract）
 
-Skills that use ontology should declare:
+使用本体的技能需要明确声明相关约束条件：
 
 ```yaml
 # In SKILL.md frontmatter or header
@@ -149,27 +157,17 @@ ontology:
     - "Created Task has status=open"
 ```
 
-## Planning as Graph Transformation
+## 作为图结构转换进行规划
 
-Model multi-step plans as a sequence of graph operations:
+将多步骤计划建模为一系列图结构操作：
 
-```
-Plan: "Schedule team meeting and create follow-up tasks"
+**注：**每个操作在执行前都会进行验证；如果违反约束条件，系统会回滚到之前的状态。
 
-1. CREATE Event { title: "Team Sync", attendees: [p_001, p_002] }
-2. RELATE Event -> has_project -> proj_001
-3. CREATE Task { title: "Prepare agenda", assignee: p_001 }
-4. RELATE Task -> for_event -> event_001
-5. CREATE Task { title: "Send summary", assignee: p_001, blockers: [task_001] }
-```
+## 集成模式
 
-Each step is validated before execution. Rollback on constraint violation.
+### 与因果推理（Causal Inference）结合使用
 
-## Integration Patterns
-
-### With Causal Inference
-
-Log ontology mutations as causal actions:
+将本体中的更改记录为因果事件：
 
 ```python
 # When creating/updating entities, also log to causal action log
@@ -181,7 +179,7 @@ action = {
 }
 ```
 
-### Cross-Skill Communication
+### 跨技能通信（Cross-Skill Communication）
 
 ```python
 # Email skill creates commitment
@@ -201,7 +199,7 @@ for c in tasks:
     })
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize ontology storage
@@ -222,11 +220,11 @@ python3 scripts/ontology.py create --type Person --props '{"name":"Alice"}'
 python3 scripts/ontology.py list --type Person
 ```
 
-## References
+## 参考资料
 
-- `references/schema.md` — Full type definitions and constraint patterns
-- `references/queries.md` — Query language and traversal examples
+- `references/schema.md` — 完整的类型定义和约束模式
+- `references/queries.md` — 查询语言及遍历示例
 
-## Instruction Scope
+## 指令范围
 
-Runtime instructions operate on local files (`memory/ontology/graph.jsonl` and `memory/ontology/schema.yaml`) and provide CLI usage for create/query/relate/validate; this is within scope. The skill reads/writes workspace files and will create the `memory/ontology` directory when used. Validation includes property/enum/forbidden checks, relation type/cardinality validation, acyclicity for relations marked `acyclic: true`, and Event `end >= start` checks; other higher-level constraints may still be documentation-only unless implemented in code.
+运行时指令操作本地文件（`memory/ontology/graph.jsonl` 和 `memory/ontology/schema.yaml`），并提供命令行接口（CLI）用于创建、查询、关联和验证操作。该技能会读取/写入工作区文件，并在使用时自动创建 `memory/ontology` 目录。验证内容包括属性检查、枚举类型检查、禁止的操作检查、标记为 `acyclic: true` 的关系的无环性检查，以及事件顺序（`end >= start`）的检查；其他更高级的约束条件可能仅存在于文档中，尚未在代码中实现。

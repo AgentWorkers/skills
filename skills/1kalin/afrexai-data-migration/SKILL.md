@@ -1,87 +1,85 @@
-# Data Migration Planner
+# 数据迁移规划器
 
-Plan, execute, and validate data migrations between systems. Covers schema mapping, ETL pipeline design, rollback strategies, and post-migration validation.
+用于规划、执行和验证系统间的数据迁移。涵盖模式映射、ETL流程设计、回滚策略以及迁移后的验证工作。
 
-## What It Does
+## 功能概述
 
-Given source and target system details, this skill:
-1. Maps source → target schemas with field-level transformation rules
-2. Generates an ETL pipeline plan with staging, transform, and load phases
-3. Creates validation queries (row counts, checksum, referential integrity)
-4. Builds a rollback plan with point-of-no-return criteria
-5. Produces a migration runbook with go/no-go gates
+根据源系统和目标系统的详细信息，该工具能够：
+1. 根据字段级别的转换规则，将源系统的模式映射到目标系统的模式；
+2. 生成包含数据准备、转换和加载阶段的ETL流程计划；
+3. 创建验证查询（如行数检查、校验和计算、引用完整性验证）；
+4. 制定包含“不可回退点”标准的回滚方案；
+5. 生成包含决策流程的迁移操作手册。
 
-## Usage
+## 使用方法
 
-Tell your agent:
-- "Plan a migration from Salesforce to HubSpot CRM"
-- "Create a data migration runbook for moving from MySQL to PostgreSQL"
-- "Map our legacy ERP data to the new system schema"
+您可以这样使用该工具：
+- “规划从Salesforce到HubSpot CRM的数据迁移”；
+- “创建从MySQL到PostgreSQL的数据迁移操作手册”；
+- “将我们的旧ERP系统数据映射到新系统的模式”。
 
-## Migration Framework
+## 迁移框架
 
-### Phase 1: Discovery
-- Inventory all source tables/objects and record counts
-- Document data types, constraints, and relationships
-- Identify data quality issues (nulls, duplicates, orphans)
-- Map business rules that affect data interpretation
+### 第1阶段：数据发现
+- 清点所有源表/对象并记录其数量；
+- 记录数据类型、约束条件及数据之间的关系；
+- 识别数据质量问题（如空值、重复数据或孤立数据）；
+- 映射影响数据解释的业务规则。
 
-### Phase 2: Schema Mapping
-For each source entity, document:
-| Source Field | Type | Target Field | Type | Transform | Notes |
-|---|---|---|---|---|---|
-| (field) | (type) | (field) | (type) | (rule) | (edge cases) |
+### 第2阶段：模式映射
+对于每个源实体，需要记录以下信息：
+| 源字段 | 类型 | 目标字段 | 类型 | 转换规则 | 特殊情况 |
 
-### Phase 3: ETL Pipeline
+### 第3阶段：ETL流程
 ```
 Extract → Stage (raw) → Clean → Transform → Validate → Load → Verify
 ```
-- **Extract**: Full vs incremental, API vs direct DB, rate limits
-- **Stage**: Raw landing zone, no transforms, audit trail
-- **Clean**: Dedup, null handling, encoding fixes
-- **Transform**: Type conversions, lookups, calculated fields
-- **Validate**: Pre-load checks (counts, checksums, business rules)
-- **Load**: Batch size, parallelism, error handling
-- **Verify**: Post-load reconciliation
+- **数据提取**：全量提取还是增量提取，是通过API还是直接访问数据库，以及数据提取的频率限制；
+- **数据准备阶段**：创建临时存储区，不进行数据转换，同时记录操作日志；
+- **数据清洗**：删除重复数据、处理空值、修复编码问题；
+- **数据转换**：进行类型转换、数据查找、计算新字段；
+- **数据验证**：进行预加载检查（如行数统计、校验和计算、业务规则验证）；
+- **数据加载**：确定批量大小、使用并行处理方式、处理错误；
+- **数据比对**：迁移完成后进行数据一致性验证。
 
-### Phase 4: Validation
-- Row count match (source vs target, per table)
-- Checksum validation on key columns
-- Referential integrity checks
-- Business rule validation (e.g., all active accounts migrated)
-- User acceptance sampling (random 5% manual review)
+### 第4阶段：数据验证
+- 检查源表和目标表中的行数是否匹配；
+- 对关键列进行校验和计算；
+- 验证数据的引用完整性；
+- 核对业务规则是否得到正确执行（例如，所有活跃账户是否都已迁移）；
+- 进行用户验收测试（随机抽取5%的数据进行人工审核）。
 
-### Phase 5: Cutover
-- Go/no-go criteria checklist
-- Point-of-no-return definition
-- Rollback procedure and time estimate
-- Communication plan (users, stakeholders)
-- Parallel run period (if applicable)
+### 第5阶段：迁移切换
+- 制定迁移是否可行的评估标准；
+- 明确“不可回退点”；
+- 制定回滚流程并估算所需时间；
+- 制定沟通计划（包括用户和利益相关者的通知方式）；
+- 如果适用，安排并行迁移的时间段。
 
-## Risk Factors
-- **Data volume**: >10M rows = batch strategy required
-- **Downtime window**: Zero-downtime needs CDC/dual-write
-- **Data quality**: Garbage in = garbage out. Clean BEFORE migrating
-- **Dependencies**: Other systems reading from source during migration
-- **Compliance**: GDPR/HIPAA data handling during transit
+## 风险因素
+- **数据量**：如果数据量超过1000万行，则需要采用批量迁移策略；
+- **迁移期间是否允许停机**：如果需要零停机时间，则需要使用CDC（连续数据复制）或双写机制；
+- **数据质量**：源数据的质量直接影响迁移结果，因此在迁移前必须进行数据清洗；
+- **系统依赖性**：迁移期间是否有其他系统依赖于源数据；
+- **合规性**：在数据传输过程中需遵守GDPR/HIPAA等数据保护法规。
 
-## Output Format
-Deliver a migration runbook as structured markdown with:
-1. Executive summary (what, why, when, risk level)
-2. Schema mapping tables
-3. ETL pipeline specification
-4. Validation test suite
-5. Cutover runbook with rollback
-6. Timeline with milestones
+## 输出格式
+输出格式为结构化的Markdown文件，包含以下内容：
+- 执行摘要（迁移目标、原因、时间安排、风险等级）；
+- 模式映射表；
+- ETL流程详细规范；
+- 验证测试用例集；
+- 包含回滚步骤的迁移操作手册；
+- 带有里程碑的时间线。
 
-## Cost Estimation
-Typical migration costs by complexity:
-- Simple (1-5 tables, <1M rows): $5K-$15K or 1-2 weeks internal
-- Medium (10-50 tables, 1-10M rows): $25K-$75K or 1-2 months
-- Complex (50+ tables, 10M+ rows, multiple systems): $100K-$500K or 3-6 months
+## 成本估算
+根据迁移的复杂程度，典型成本如下：
+- 简单迁移（1-5个表，数据量少于100万行）：5,000美元至15,000美元，或内部开发时间为1-2周；
+- 中等复杂度迁移（10-50个表，数据量100万至1,000万行）：25,000美元至75,000美元，或开发时间为1-2个月；
+- 高复杂度迁移（50个以上表，数据量超过1,000万行，涉及多个系统）：100,000美元至500,000美元，或开发时间为3-6个月。
 
 ---
 
-**Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/)** — AI Context Packs for business automation.
+**由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发** — 专为业务自动化设计的AI工具包。
 
-Calculate your AI automation ROI: [Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/)
+计算您的AI自动化投资回报率：[收益计算器](https://afrexai-cto.github.io/ai-revenue-calculator/)

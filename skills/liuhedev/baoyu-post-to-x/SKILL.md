@@ -1,35 +1,35 @@
 ---
 name: baoyu-post-to-x
-description: Posts content and articles to X (Twitter). Supports regular posts with images/videos and X Articles (long-form Markdown). Uses real Chrome with CDP to bypass anti-automation. Use when user asks to "post to X", "tweet", "publish to Twitter", or "share on X".
+description: 将内容及文章发布到 X（Twitter）。支持发布带有图片/视频的普通帖子，以及采用长格式 Markdown 编写的 X 文章（X Articles）。使用真实的 Chrome 浏览器，并结合 CDP（Chrome Data Platform）来规避反自动化检测机制。适用于用户要求“发布到 X”、“在 Twitter 上发推文”或“在 X 上分享”的场景。
 ---
 
-# Post to X (Twitter)
+# 在 X（Twitter）上发布内容
 
-Posts text, images, videos, and long-form articles to X via real Chrome browser (bypasses anti-bot detection).
+您可以使用真实的 Chrome 浏览器在 X（Twitter）上发布文本、图片、视频和长篇文章（绕过反机器人检测机制）。
 
-## Script Directory
+## 脚本目录
 
-**Important**: All scripts are located in the `scripts/` subdirectory of this skill.
+**重要提示**：所有脚本都位于该技能的 `scripts/` 子目录中。
 
-**Agent Execution Instructions**:
-1. Determine this SKILL.md file's directory path as `SKILL_DIR`
-2. Script path = `${SKILL_DIR}/scripts/<script-name>.ts`
-3. Replace all `${SKILL_DIR}` in this document with the actual path
+**代理执行说明**：
+1. 将此 SKILL.md 文件所在的目录路径设置为 `SKILL_DIR`。
+2. 脚本路径的格式为：`${SKILL_DIR}/scripts/<脚本名称>.ts`。
+3. 请将文档中的所有 `${SKILL_DIR}` 替换为实际的路径。
 
-**Script Reference**:
-| Script | Purpose |
-|--------|---------|
-| `scripts/x-browser.ts` | Regular posts (text + images) |
-| `scripts/x-video.ts` | Video posts (text + video) |
-| `scripts/x-quote.ts` | Quote tweet with comment |
-| `scripts/x-article.ts` | Long-form article publishing (Markdown) |
-| `scripts/md-to-html.ts` | Markdown → HTML conversion |
-| `scripts/copy-to-clipboard.ts` | Copy content to clipboard |
-| `scripts/paste-from-clipboard.ts` | Send real paste keystroke |
+**脚本参考**：
+| 脚本          | 功能                |
+|---------------|-------------------|
+| `scripts/x-browser.ts` | 发布普通帖子（文本 + 图片）       |
+| `scripts/x-video.ts` | 发布视频帖子（文本 + 视频）       |
+| `scripts/x-quote.ts` | 引用推文并添加评论           |
+| `scripts/x-article.ts` | 发布长篇 Markdown 文章       |
+| `scripts/md-to-html.ts` | 将 Markdown 转换为 HTML         |
+| `scripts/copy-to-clipboard.ts` | 将内容复制到剪贴板           |
+| `scripts/paste-from-clipboard.ts` | 执行实际的粘贴操作           |
 
-## Preferences (EXTEND.md)
+## 预设设置（EXTEND.md）
 
-Use Bash to check EXTEND.md existence (priority order):
+使用 Bash 命令检查 EXTEND.md 文件是否存在（优先级顺序如下）：
 
 ```bash
 # Check project-level first
@@ -40,98 +40,103 @@ test -f "$HOME/.baoyu-skills/baoyu-post-to-x/EXTEND.md" && echo "user"
 ```
 
 ┌──────────────────────────────────────────────────┬───────────────────┐
-│                       Path                       │     Location      │
+│                       路径                        │          位置                │
 ├──────────────────────────────────────────────────┼───────────────────┤
-│ .baoyu-skills/baoyu-post-to-x/EXTEND.md          │ Project directory │
+│ .baoyu-skills/baoyu-post-to-x/EXTEND.md          │ 项目目录              │
 ├──────────────────────────────────────────────────┼───────────────────┤
-│ $HOME/.baoyu-skills/baoyu-post-to-x/EXTEND.md    │ User home         │
+│ $HOME/.baoyu-skills/baoyu-post-to-x/EXTEND.md    │ 用户主目录              │
 └──────────────────────────────────────────────────┴───────────────────┘
 
-┌───────────┬───────────────────────────────────────────────────────────────────────────┐
-│  Result   │                                  Action                                   │
-├───────────┼───────────────────────────────────────────────────────────────────────────┤
-│ Found     │ Read, parse, apply settings                                               │
-├───────────┼───────────────────────────────────────────────────────────────────────────┤
-│ Not found │ Use defaults                                                              │
-└───────────┴───────────────────────────────────────────────────────────────────────────┘
+┌───────────┬───────────────────────────────────────────────────────────────────┐
+│                结果                        |                      执行操作                │
+├───────────┼───────────────────────────────────────────────────────────┤
+│                找到                     | 读取、解析并应用预设设置        │
+├───────────┼───────────────────────────────────────────────────────────┤
+│                未找到                     | 使用默认设置            │
+└───────────┴───────────────────────────────────────────────────────────┘
 
-**EXTEND.md Supports**: Default Chrome profile | Auto-submit preference
+**EXTEND.md 支持的设置**：
+- 默认 Chrome 配置文件
+- 自动提交功能
 
-## Prerequisites
+## 先决条件**
 
-- Google Chrome or Chromium
-- `bun` runtime
-- First run: log in to X manually (session saved)
+- Google Chrome 或 Chromium 浏览器
+- `bun` 运行时环境
+- 首次使用前需手动登录 X（会保存会话）
 
-## References
+## 参考资料**
 
-- **Regular Posts**: See `references/regular-posts.md` for manual workflow, troubleshooting, and technical details
-- **X Articles**: See `references/articles.md` for long-form article publishing guide
+- **普通帖子**：请参阅 `references/regular-posts.md` 以获取手动操作流程、故障排除方法和技术细节。
+- **X 文章**：请参阅 `references/articles.md` 以获取长篇文章的发布指南。
 
 ---
 
-## Regular Posts
+## 发布普通帖子
 
-Text + up to 4 images.
+可以发布文本以及最多 4 张图片。
 
 ```bash
 npx -y bun ${SKILL_DIR}/scripts/x-browser.ts "Hello!" --image ./photo.png          # Preview
 npx -y bun ${SKILL_DIR}/scripts/x-browser.ts "Hello!" --image ./photo.png --submit  # Post
 ```
 
-**Parameters**:
-| Parameter | Description |
-|-----------|-------------|
-| `<text>` | Post content (positional) |
-| `--image <path>` | Image file (repeatable, max 4) |
-| `--submit` | Post (default: preview) |
-| `--profile <dir>` | Custom Chrome profile |
+**参数**：
+| 参数            | 描述                        |
+|-----------------|---------------------------|
+| `<text>`          | 发布内容                      |
+| `--image <路径>`       | 图片文件路径（可重复使用，最多 4 张）     |
+| `--submit`        | 发布内容（默认为预览模式）          |
+| `--profile <目录>`     | 自定义 Chrome 配置文件路径         |
 
 ---
 
-## Video Posts
+## 发布视频帖子
 
-Text + video file.
+可以发布文本和视频文件。
 
 ```bash
 npx -y bun ${SKILL_DIR}/scripts/x-video.ts "Check this out!" --video ./clip.mp4          # Preview
 npx -y bun ${SKILL_DIR}/scripts/x-video.ts "Amazing content" --video ./demo.mp4 --submit  # Post
 ```
 
-**Parameters**:
-| Parameter | Description |
-|-----------|-------------|
-| `<text>` | Post content (positional) |
-| `--video <path>` | Video file (MP4, MOV, WebM) |
-| `--submit` | Post (default: preview) |
-| `--profile <dir>` | Custom Chrome profile |
+**参数**：
+| 参数            | 描述                        |
+|-----------------|---------------------------|
+| `<text>`          | 发布内容                      |
+| `--video <路径>`       | 视频文件路径（MP4、MOV、WebM 格式）     |
+| `--submit`        | 发布内容（默认为预览模式）          |
+| `--profile <目录>`     | 自定义 Chrome 配置文件路径         |
 
-**Limits**: Regular 140s max, Premium 60min. Processing: 30-60s.
+**限制**：
+- 普通帖子时长限制为 140 秒；
+- 高级账户支持发布时长长达 60 分钟；
+- 处理时间约为 30-60 秒。
 
 ---
 
-## Quote Tweets
+## 引用推文并添加评论
 
-Quote an existing tweet with comment.
+可以引用现有的推文并添加评论。
 
 ```bash
 npx -y bun ${SKILL_DIR}/scripts/x-quote.ts https://x.com/user/status/123 "Great insight!"          # Preview
 npx -y bun ${SKILL_DIR}/scripts/x-quote.ts https://x.com/user/status/123 "I agree!" --submit       # Post
 ```
 
-**Parameters**:
-| Parameter | Description |
-|-----------|-------------|
-| `<tweet-url>` | URL to quote (positional) |
-| `<comment>` | Comment text (positional, optional) |
-| `--submit` | Post (default: preview) |
-| `--profile <dir>` | Custom Chrome profile |
+**参数**：
+| 参数            | 描述                        |
+|-----------------|---------------------------|
+| `<tweet-url>`       | 要引用的推文链接                |
+| `<comment>`        | 评论内容（可选）                   |
+| `--submit`        | 发布内容（默认为预览模式）          |
+| `--profile <目录>`     | 自定义 Chrome 配置文件路径         |
 
 ---
 
-## X Articles
+## 发布长篇 Markdown 文章
 
-Long-form Markdown articles (requires X Premium).
+需要 X 的高级账户才能使用此功能。
 
 ```bash
 npx -y bun ${SKILL_DIR}/scripts/x-article.ts article.md                        # Preview
@@ -139,24 +144,24 @@ npx -y bun ${SKILL_DIR}/scripts/x-article.ts article.md --cover ./cover.jpg    #
 npx -y bun ${SKILL_DIR}/scripts/x-article.ts article.md --submit               # Publish
 ```
 
-**Parameters**:
-| Parameter | Description |
-|-----------|-------------|
-| `<markdown>` | Markdown file (positional) |
-| `--cover <path>` | Cover image |
-| `--title <text>` | Override title |
-| `--submit` | Publish (default: preview) |
+**参数**：
+| 参数            | 描述                        |
+|-----------------|---------------------------|
+| `<markdown>`       | Markdown 文件内容                |
+| `--cover <路径>`       | 封面图片路径                   |
+| `--title <文本>`       | 自定义标题                     |
+| `--submit`        | 发布内容（默认为预览模式）          |
 
-**Frontmatter**: `title`, `cover_image` supported in YAML front matter.
+**前置内容**：支持在 YAML 格式的前置内容中设置 `title` 和 `cover_image`。
 
 ---
 
-## Notes
+**注意事项**
 
-- First run: manual login required (session persists)
-- Always preview before `--submit`
-- Cross-platform: macOS, Linux, Windows
+- 首次使用前需手动登录 X（会保存会话）。
+- 发布前务必预览内容。
+- 支持跨平台使用：macOS、Linux、Windows。
 
-## Extension Support
+## 扩展功能支持
 
-Custom configurations via EXTEND.md. See **Preferences** section for paths and supported options.
+通过 EXTEND.md 文件进行自定义配置。具体路径和可用选项请参阅 **预设设置** 部分。

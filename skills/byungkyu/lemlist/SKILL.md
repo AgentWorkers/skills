@@ -18,9 +18,9 @@ metadata:
 
 # Lemlist
 
-Access the Lemlist API with managed OAuth authentication. Manage campaigns, leads, activities, schedules, sequences, and unsubscribes for sales automation and cold outreach.
+您可以使用受管理的 OAuth 认证来访问 Lemlist API。该 API 用于管理销售自动化和冷 Outreach 活动中的活动、潜在客户、日程安排、任务序列以及取消订阅等功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List campaigns
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/lemlist/api/{resource}
 ```
 
-Replace `{resource}` with the actual Lemlist API endpoint path. The gateway proxies requests to `api.lemlist.com/api` and automatically injects your OAuth token.
+请将 `{resource}` 替换为实际的 Lemlist API 端点路径。该网关会将请求代理到 `api.lemlist.com/api`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Lemlist OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Lemlist OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Lemlist connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Lemlist 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,45 +141,45 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Team
+### 团队
 
-#### Get Team
+#### 获取团队信息
 
 ```bash
 GET /lemlist/api/team
 ```
 
-Returns team information including user IDs and settings.
+返回团队信息，包括用户 ID 和设置。
 
-#### Get Team Credits
+#### 获取团队剩余信用
 
 ```bash
 GET /lemlist/api/team/credits
 ```
 
-Returns remaining credits balance.
+返回团队的剩余信用余额。
 
-#### Get Team Senders
+#### 获取团队发送者
 
 ```bash
 GET /lemlist/api/team/senders
 ```
 
-Returns all team members and their associated campaigns.
+返回所有团队成员及其关联的活动。
 
-### Campaigns
+### 活动
 
-#### List Campaigns
+#### 列出活动
 
 ```bash
 GET /lemlist/api/campaigns
 ```
 
-#### Create Campaign
+#### 创建活动
 
 ```bash
 POST /lemlist/api/campaigns
@@ -190,15 +190,15 @@ Content-Type: application/json
 }
 ```
 
-Creates a new campaign with an empty sequence and default schedule automatically added.
+创建一个新的活动，系统会自动添加一个空的任务序列和默认的日程安排。
 
-#### Get Campaign
+#### 获取活动信息
 
 ```bash
 GET /lemlist/api/campaigns/{campaignId}
 ```
 
-#### Update Campaign
+#### 更新活动
 
 ```bash
 PATCH /lemlist/api/campaigns/{campaignId}
@@ -209,37 +209,37 @@ Content-Type: application/json
 }
 ```
 
-#### Pause Campaign
+#### 暂停活动
 
 ```bash
 POST /lemlist/api/campaigns/{campaignId}/pause
 ```
 
-Pauses a running campaign.
+暂停正在运行的活动。
 
-### Campaign Sequences
+### 活动序列
 
-#### Get Campaign Sequences
+#### 获取活动序列
 
 ```bash
 GET /lemlist/api/campaigns/{campaignId}/sequences
 ```
 
-Returns all sequences and steps for a campaign.
+返回活动的所有任务序列和步骤。
 
-### Campaign Schedules
+### 活动日程安排
 
-#### Get Campaign Schedules
+#### 获取活动日程安排
 
 ```bash
 GET /lemlist/api/campaigns/{campaignId}/schedules
 ```
 
-Returns all schedules associated with a campaign.
+返回与活动关联的所有日程安排。
 
-### Leads
+### 潜在客户
 
-#### Add Lead to Campaign
+#### 将潜在客户添加到活动中
 
 ```bash
 POST /lemlist/api/campaigns/{campaignId}/leads
@@ -253,15 +253,15 @@ Content-Type: application/json
 }
 ```
 
-Creates a new lead and adds it to the campaign. If the lead already exists, it will be inserted into the campaign.
+创建一个新的潜在客户并将其添加到活动中。如果潜在客户已存在，系统会将其插入到相应的活动中。
 
-#### Get Lead by Email
+#### 通过电子邮件获取潜在客户信息
 
 ```bash
 GET /lemlist/api/leads/{email}
 ```
 
-#### Update Lead in Campaign
+#### 更新活动中的潜在客户信息
 
 ```bash
 PATCH /lemlist/api/campaigns/{campaignId}/leads/{email}
@@ -273,37 +273,37 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Lead from Campaign
+#### 从活动中删除潜在客户
 
 ```bash
 DELETE /lemlist/api/campaigns/{campaignId}/leads/{email}
 ```
 
-### Activities
+### 活动记录
 
-#### List Activities
+#### 列出活动记录
 
 ```bash
 GET /lemlist/api/activities
 ```
 
-Returns the history of campaign activities (last 100 activities).
+返回活动的历史记录（最近 100 条记录）。
 
-Query parameters:
-- `campaignId` - Filter by campaign
-- `type` - Filter by activity type (emailsSent, emailsOpened, emailsClicked, etc.)
+查询参数：
+- `campaignId` - 按活动进行过滤
+- `type` - 按活动类型进行过滤（如：发送的邮件、打开的邮件、点击的邮件等）
 
-### Schedules
+### 日程安排
 
-#### List Schedules
+#### 列出日程安排
 
 ```bash
 GET /lemlist/api/schedules
 ```
 
-Returns all schedules with pagination.
+返回所有日程安排（支持分页）。
 
-Response:
+**响应：**
 ```json
 {
   "schedules": [...],
@@ -316,7 +316,7 @@ Response:
 }
 ```
 
-#### Create Schedule
+#### 创建日程安排
 
 ```bash
 POST /lemlist/api/schedules
@@ -331,15 +331,15 @@ Content-Type: application/json
 }
 ```
 
-Weekdays: 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+工作日：0 = 星期日，1 = 星期一，...，6 = 星期六
 
-#### Get Schedule
+#### 获取日程安排信息
 
 ```bash
 GET /lemlist/api/schedules/{scheduleId}
 ```
 
-#### Update Schedule
+#### 更新日程安排
 
 ```bash
 PATCH /lemlist/api/schedules/{scheduleId}
@@ -352,23 +352,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Schedule
+#### 删除日程安排
 
 ```bash
 DELETE /lemlist/api/schedules/{scheduleId}
 ```
 
-### Companies
+### 公司
 
-#### List Companies
+#### 列出公司信息
 
 ```bash
 GET /lemlist/api/companies
 ```
 
-Returns companies with pagination.
+返回公司的列表（支持分页）。
 
-Response:
+**响应：**
 ```json
 {
   "data": [...],
@@ -376,17 +376,17 @@ Response:
 }
 ```
 
-### Unsubscribes
+### 取消订阅
 
-#### List Unsubscribes
+#### 列出取消订阅的信息
 
 ```bash
 GET /lemlist/api/unsubscribes
 ```
 
-Returns all unsubscribed emails and domains.
+返回所有已取消订阅的电子邮件地址和域名。
 
-#### Add Unsubscribe
+#### 添加取消订阅记录
 
 ```bash
 POST /lemlist/api/unsubscribes
@@ -397,23 +397,23 @@ Content-Type: application/json
 }
 ```
 
-Can also add domains by using a domain value.
+也可以通过提供域名来添加取消订阅记录。
 
-### Inbox Labels
+### 收件箱标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /lemlist/api/inbox/labels
 ```
 
-Returns all labels available to the team.
+返回团队可用的所有标签。
 
-## Pagination
+## 分页
 
-Lemlist uses page-based pagination with different formats depending on the endpoint:
+Lemlist 使用基于页面的分页机制，具体格式取决于端点：
 
-**Schedules format:**
+**日程安排格式：**
 ```json
 {
   "schedules": [...],
@@ -426,7 +426,7 @@ Lemlist uses page-based pagination with different formats depending on the endpo
 }
 ```
 
-**Companies format:**
+**公司信息格式：**
 ```json
 {
   "data": [...],
@@ -434,9 +434,9 @@ Lemlist uses page-based pagination with different formats depending on the endpo
 }
 ```
 
-## Code Examples
+## 代码示例
 
-### JavaScript - List Campaigns
+### JavaScript - 列出活动
 
 ```javascript
 const response = await fetch(
@@ -451,7 +451,7 @@ const campaigns = await response.json();
 console.log(campaigns);
 ```
 
-### Python - List Campaigns
+### Python - 列出活动
 
 ```python
 import os
@@ -466,7 +466,7 @@ for campaign in campaigns:
     print(f"{campaign['name']}: {campaign['_id']}")
 ```
 
-### Python - Create Campaign and Add Lead
+### Python - 创建活动并添加潜在客户
 
 ```python
 import os
@@ -499,49 +499,49 @@ lead = lead_response.json()
 print(f"Added lead: {lead['_id']}")
 ```
 
-## Notes
+## 注意事项
 
-- Campaign IDs start with `cam_`
-- Lead IDs start with `lea_`
-- Schedule IDs start with `skd_`
-- Sequence IDs start with `seq_`
-- Team IDs start with `tea_`
-- User IDs start with `usr_`
-- Campaigns cannot be deleted via API (only paused)
-- When creating a campaign, an empty sequence and default schedule are automatically added
-- Lead emails are used as identifiers for lead operations
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq`, environment variables may not expand correctly. Use Python examples instead.
+- 活动 ID 以 `cam_` 开头
+- 潜在客户 ID 以 `lea_` 开头
+- 日程安排 ID 以 `skd_` 开头
+- 任务序列 ID 以 `seq_` 开头
+- 团队 ID 以 `tea_` 开头
+- 用户 ID 以 `usr_` 开头
+- 活动无法通过 API 直接删除（只能暂停）
+- 创建活动时，系统会自动添加一个空的任务序列和默认的日程安排
+- 潜在客户的电子邮件地址用于标识操作对象
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 命令可以避免全局解析问题
+- 重要提示：将 curl 输出传递给 `jq` 时，环境变量可能无法正确解析。建议使用 Python 示例。
 
-## Rate Limits
+## 速率限制
 
-| Operation | Limit |
-|-----------|-------|
-| API calls | 20 per 2 seconds per API key |
+| 操作 | 限制 |
+|---------|------|
+| API 调用 | 每个 API 密钥每 2 秒最多 20 次 |
 
-When rate limited, implement exponential backoff for retries.
+当达到速率限制时，请使用指数退避策略进行重试。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Bad request or missing Lemlist connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 405 | Method not allowed |
-| 422 | Validation error |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Lemlist API |
+| 状态码 | 含义 |
+|--------|--------|
+| 400 | 请求错误或未建立 Lemlist 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 405 | 不允许的方法 |
+| 422 | 验证错误 |
+| 429 | 速率限制 |
+| 4xx/5xx | 来自 Lemlist API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -552,17 +552,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `lemlist`. For example:
+1. 确保您的 URL 路径以 `lemlist` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/lemlist/api/campaigns`
+- 错误的格式：`https://gateway.maton.ai/api/campaigns`
 
-- Correct: `https://gateway.maton.ai/lemlist/api/campaigns`
-- Incorrect: `https://gateway.maton.ai/api/campaigns`
+## 资源
 
-## Resources
-
-- [Lemlist API Documentation](https://developer.lemlist.com/)
-- [Lemlist API Reference](https://developer.lemlist.com/api-reference)
-- [Lemlist Help Center - API](https://help.lemlist.com/en/collections/17109856-api-webhooks)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Lemlist API 文档](https://developer.lemlist.com/)
+- [Lemlist API 参考](https://developer.lemlist.com/api-reference)
+- [Lemlist 帮助中心 - API](https://help.lemlist.com/en/collections/17109856-api-webhooks)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

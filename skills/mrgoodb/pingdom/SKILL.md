@@ -1,28 +1,33 @@
 ---
 name: pingdom
-description: Monitor uptime and performance via Pingdom API. Manage checks and view reports.
+description: 通过 Pingdom API 监控系统的正常运行时间和性能。管理检测任务并查看报告。
 metadata: {"clawdbot":{"emoji":"📡","requires":{"env":["PINGDOM_API_TOKEN"]}}}
 ---
-# Pingdom
-Uptime monitoring.
-## Environment
+# Pingdom  
+**服务可用性监控（Uptime Monitoring）**  
+
+## 环境配置（Environment Configuration）  
 ```bash
 export PINGDOM_API_TOKEN="xxxxxxxxxx"
-```
-## List Checks
+```  
+
+## 检查项列表（List of Checks）  
 ```bash
 curl "https://api.pingdom.com/api/3.1/checks" -H "Authorization: Bearer $PINGDOM_API_TOKEN"
-```
-## Get Check Results
+```  
+
+## 获取检查结果（Get Check Results）  
 ```bash
 curl "https://api.pingdom.com/api/3.1/results/{checkId}" -H "Authorization: Bearer $PINGDOM_API_TOKEN"
-```
-## Create Check
+```  
+
+## 创建新的检查项（Create a New Check）  
 ```bash
 curl -X POST "https://api.pingdom.com/api/3.1/checks" \
   -H "Authorization: Bearer $PINGDOM_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"name": "My Website", "host": "example.com", "type": "http"}'
-```
-## Links
-- Docs: https://docs.pingdom.com/api/
+```  
+
+## 链接（Links）  
+- 文档：https://docs.pingdom.com/api/

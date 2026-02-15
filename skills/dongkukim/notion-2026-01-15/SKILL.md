@@ -1,4 +1,4 @@
-Here is the complete `SKILL.md` file updated for the January 15, 2026 API state.
+以下是更新后的 `SKILL.md` 文件，反映了截至 2026 年 1 月 15 日的 API 状态：
 
 ```markdown
 ---
@@ -125,8 +125,8 @@ curl -X PATCH "[https://api.notion.com/v1/pages/](https://api.notion.com/v1/page
   -H "Notion-Version: 2025-09-03" \
   -H "Content-Type: application/json" \
   -d '{
-    "properties": {"Status": {"select": {"name": "Done"}}},
-    "is_locked": true
+    "properties": {"Status": {"select": {"name": "Done"}},
+    "isLocked": true
   }'
 
 ```
@@ -153,7 +153,7 @@ curl -X POST "[https://api.notion.com/v1/data_sources/](https://api.notion.com/v
   -H "Notion-Version: 2025-09-03" \
   -H "Content-Type: application/json" \
   -d '{
-    "filter": {"property": "Status", "select": {"equals": "Active"}},
+    "filter": {"property": "Status", "select": {"equals": "Active"},
     "sorts": [{"property": "Date", "direction": "descending"}]
   }'
 
@@ -169,7 +169,6 @@ curl -X PATCH "[https://api.notion.com/v1/blocks/](https://api.notion.com/v1/blo
   -d '{
     "children": [
       {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"text": {"content": "Hello"}}]}}
-    ]
   }'
 
 ```
@@ -203,7 +202,5 @@ Common property formats for database items:
 * The API cannot set database view filters — that's UI-only
 * Rate limit: ~3 requests/second average
 * Use `is_inline: true` when creating data sources to embed them in pages
-
-```
 
 ```

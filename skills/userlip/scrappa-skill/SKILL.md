@@ -1,27 +1,27 @@
 ---
 name: Scrappa MCP
-description: Access Scrappa's MCP server for Google, YouTube, Amazon, LinkedIn, Trustpilot, flights, hotels, and more via Model Context Protocol
+description: 您可以通过 Model Context Protocol 访问 Scrappa 的 MCP 服务器，以获取来自 Google、YouTube、Amazon、LinkedIn、Trustpilot 等平台的数据，包括航班信息、酒店预订等。
 ---
 
-# Scrappa MCP Skill
+# Scrappa MCP 技能
 
-Access 80+ tools for searching Google, YouTube, Amazon, LinkedIn, Trustpilot, business reviews, flights, hotels, real estate, and more via the Scrappa Model Context Protocol (MCP) server.
+通过 Scrappa 模型上下文协议（MCP）服务器，可以访问 80 多种工具，用于搜索 Google、YouTube、Amazon、LinkedIn、Trustpilot、商业评论、航班、酒店、房地产等信息。
 
-## Setup
+## 设置
 
-### 1. Get Your Scrappa API Key
+### 1. 获取 Scrappa API 密钥
 
-Sign up for a free account at [scrappa.co](https://scrappa.co/dashboard/register) and get your API key from the dashboard.
+在 [scrappa.co](https://scrappa.co/dashboard/register) 注册一个免费账户，并从控制面板中获取 API 密钥。
 
-### 2. Configure in Clawdbot
+### 2. 在 Clawdbot 中配置
 
-Add Scrappa to your mcporter configuration:
+将 Scrappa 添加到您的 mcporter 配置中：
 
 ```bash
 mcporter config add scrappa --url "https://scrappa.co/mcp" --headers "X-API-KEY=YOUR_API_KEY"
 ```
 
-Or manually edit `~/clawd/config/mcporter.json`:
+或者手动编辑 `~/clawd/config/mcporter.json`：
 
 ```json
 {
@@ -36,158 +36,158 @@ Or manually edit `~/clawd/config/mcporter.json`:
 }
 ```
 
-### 3. Restart Clawdbot
+### 3. 重启 Clawdbot
 
 ```bash
 clawdbot gateway restart
 ```
 
-## All Available Tools (80+)
+## 可用的所有工具（80 多种）
 
-### Google Search & Translation
+### Google 搜索与翻译
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `search` | Scrape Google search results with advanced filters |
-| `google-search-light` | Lightweight Google web search |
-| `google-search-autocomplete` | Google search suggestions |
-| `google-translate-api` | Translate text between languages |
-| `google-images` | Search Google Images |
-| `google-videos` | Search Google Videos |
-| `google-news` | Search Google News articles |
-| `google-jobs` | Search jobs indexed on Google |
-| `brave-search` | Privacy-focused Brave web search |
+| `search` | 使用高级过滤器抓取 Google 搜索结果 |
+| `google-search-light` | 轻量级的 Google 网页搜索 |
+| `google-search-autocomplete` | Google 搜索建议 |
+| `google-translate-api` | 在不同语言之间翻译文本 |
+| `google-images` | 搜索 Google 图片 |
+| `google-videos` | 搜索 Google 视频 |
+| `google-news` | 搜索 Google 新闻文章 |
+| `google-jobs` | 搜索 Google 上索引的职位 |
+| `brave-search` | 注重隐私的 Brave 网页搜索 |
 
 ### YouTube
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `youtube-external-search` | Search videos |
-| `youtube-external-video` | Get full video details |
-| `youtube-external-info` | Basic video metadata |
-| `youtube-external-channel` | Channel profile and stats |
-| `youtube-external-comments` | Fetch video comments |
-| `youtube-external-related` | Get related videos |
-| `youtube-external-chapters` | Extract video chapters |
-| `youtube-external-trending` | Trending videos by category |
-| `youtube-external-suggestions` | Search autocomplete suggestions |
-| `youtube-external-channel-videos` | Channel uploads |
-| `youtube-external-channel-playlists` | Channel playlists |
-| `youtube-external-channel-community` | Channel community posts |
-| `youtube-external-playlist` | Get playlist videos |
-| `youtube-external-health` | Check API status |
-| `youtube-external-proxies` | YouTube Proxies API |
-| `youtube-external-locales` | YouTube Locales API |
+| `youtube-external-search` | 搜索视频 |
+| `youtube-external-video` | 获取视频的完整信息 |
+| `youtube-external-info` | 基本视频元数据 |
+| `youtube-external-channel` | 频道信息和统计 |
+| `youtube-external-comments` | 获取视频评论 |
+| `youtube-external-related` | 获取相关视频 |
+| `youtube-external-chapters` | 提取视频章节 |
+| `youtube-external-trending` | 按类别搜索热门视频 |
+| `youtube-external-suggestions` | 搜索建议 |
+| `youtube-external-channel-videos` | 频道上传的视频 |
+| `youtube-external-channel-playlists` | 频道播放列表 |
+| `youtube-external-community` | 频道社区帖子 |
+| `youtube-external-playlist` | 获取播放列表中的视频 |
+| `youtube-external-health` | 检查 API 状态 |
+| `youtube-external-proxies` | YouTube 代理 API |
+| `youtube-external-locales` | YouTube 地区信息 API |
 
 ### Amazon
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `amazon-search` | Search products across 22 marketplaces |
-| `amazon-product` | Get detailed product by ASIN |
+| `amazon-search` | 在 22 个市场平台上搜索产品 |
+| `amazon-product` | 根据 ASIN 获取产品详细信息 |
 
 ### LinkedIn
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `linkedin-profile` | Get LinkedIn profile data |
-| `linkedin-company` | Get company page data |
-| `linkedin-post` | Get post details |
-| `linkedin-search` | Search LinkedIn profiles |
+| `linkedin-profile` | 获取 LinkedIn 个人资料信息 |
+| `linkedin-company` | 获取公司页面信息 |
+| `linkedin-post` | 获取帖子详细信息 |
+| `linkedin-search` | 搜索 LinkedIn 个人资料 |
 
 ### Trustpilot
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `trustpilot-categories` | List business categories |
-| `trustpilot-businesses` | Search businesses |
-| `trustpilot-countries` | List supported countries |
-| `trustpilot-company-search` | Search for a company |
-| `trustpilot-company-details` | Get company profile |
-| `trustpilot-company-reviews` | Fetch company reviews |
+| `trustpilot-categories` | 列出商业类别 |
+| `trustpilot-businesses` | 搜索企业 |
+| `trustpilot-countries` | 列出支持的国家 |
+| `trustpilot-company-search` | 搜索公司 |
+| `trustpilot-company-details` | 获取公司信息 |
+| `trustpilot-company-reviews` | 获取公司评论 |
 
-### Kununu (German Reviews)
+### Kununu（德国评论）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `kununu-search` | Search companies on Kununu |
-| `kununu-reviews` | Fetch company reviews |
-| `kununu-profiles` | Get company profile data |
-| `kununu-industries` | List available industries |
-| `kununu-company-details` | Full company details |
+| `kununu-search` | 在 Kununu 上搜索公司 |
+| `kununu-reviews` | 获取公司评论 |
+| `kununu-profiles` | 获取公司资料 |
+| `kununu-industries` | 列出可用行业 |
+| `kununu-company-details` | 公司详细信息 |
 
-### TrustedShops (European Reviews)
+### TrustedShops（欧洲评论）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `trustedshops-markets` | Get all available markets |
-| `trustedshops-search` | Search for shops |
-| `trustedshops-reviews` | Get reviews for a shop |
-| `trustedshops-shop` | Get detailed shop profile |
+| `trustedshops-markets` | 获取所有可用市场 |
+| `trustedshops-search` | 搜索店铺 |
+| `trustedshops-reviews` | 获取店铺评论 |
+| `trustedshops-shop` | 获取店铺详细信息 |
 
-### Google Maps & Places
+### Google 地图与地点
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `simple-search` | Quick search for places by query |
-| `advanced-search` | Search with filters and pagination |
-| `autocomplete` | Get place suggestions as you type |
-| `google-reviews` | Fetch Google place reviews |
-| `google-single-review` | Get single review details |
-| `google-business-details` | Full business info from Maps |
-| `google-maps-photos` | Download photos from a place |
-| `google-maps-directions` | Get directions between locations |
+| `simple-search` | 根据查询快速搜索地点 |
+| `advanced-search` | 使用过滤器进行搜索并分页 |
+| `autocomplete` | 输入时获取地点建议 |
+| `google-reviews` | 获取 Google 地点评论 |
+| `google-single-review` | 获取单条评论详细信息 |
+| `google-business-details` | 从地图中获取完整企业信息 |
+| `google-maps-photos` | 从地点下载照片 |
+| `google-maps-directions` | 获取地点间的路线信息 |
 
-### Google Flights
+### Google 航班
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `google-flights-one-way` | Search one-way flights |
-| `google-flights-round-trip` | Search round-trip flights |
-| `google-flights-date-range` | Find cheapest dates to fly |
-| `google-flights-airlines` | Get supported airlines (free) |
-| `google-flights-airports` | Get supported airports (free) |
-| `google-flights-booking-details` | Get flight booking information |
+| `google-flights-one-way` | 搜索单程航班 |
+| `google-flights-round-trip` | 搜索往返航班 |
+| `google-flights-date-range` | 查找最便宜的飞行日期 |
+| `google-flights-airlines` | 获取支持的航空公司（免费） |
+| `google-flights-airports` | 获取支持的机场（免费） |
+| `google-flights-booking-details` | 获取航班预订信息 |
 
-### Google Hotels
+### Google 酒店
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `google-hotels-search` | Search hotels by location |
-| `google-hotels-autocomplete` | Location autocomplete for hotels |
+| `google-hotels-search` | 根据位置搜索酒店 |
+| `google-hotels-autocomplete` | 酒店位置自动完成 |
 
-### ImmobilienScout24 (German Real Estate)
+### ImmobilienScout24（德国房地产）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `immobilienscout24-search` | Search property listings |
-| `immobilienscout24-property` | Get property details |
-| `immobilienscout24-locations` | Location autocomplete |
-| `immobilienscout24-price-insights` | Average price per m² |
+| `immobilienscout24-search` | 搜索房产列表 |
+| `immobilienscout24-property` | 获取房产详细信息 |
+| `immobilienscout24-locations` | 地点自动完成 |
+| `immobilienscout24-price-insights` | 每平方米的平均价格 |
 
-### Vinted (Marketplace)
+### Vinted（二手交易平台）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `vinted-search` | Search items on Vinted |
-| `vinted-filters` | Get available filters |
-| `vinted-suggestions` | Search autocomplete |
-| `vinted-item-details` | Get item information |
-| `vinted-item-shipping` | Get shipping details |
-| `vinted-similar-items` | Get similar items |
-| `vinted-user-profile` | Get user profile |
-| `vinted-user-items` | Get items listed by user |
-| `vinted-categories` | Get all catalog categories |
+| `vinted-search` | 在 Vinted 上搜索商品 |
+| `vinted-filters` | 获取可用过滤器 |
+| `vinted-suggestions` | 搜索建议 |
+| `vinted-item-details` | 获取商品信息 |
+| `vinted-item-shipping` | 获取运输信息 |
+| `vinted-similar-items` | 获取相似商品 |
+| `vinted-user-profile` | 获取用户资料 |
+| `vinted-user-items` | 获取用户列出的商品 |
+| `vinted-categories` | 获取所有商品类别 |
 
-### Indeed (Jobs)
+### Indeed（求职）
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `indeed-jobs` | Search for jobs on Indeed |
+| `indeed-jobs` | 在 Indeed 上搜索职位 |
 
-## Example Usage
+## 使用示例
 
-### Google Search
+### Google 搜索
 ```
 Search for "best coffee shops in New York"
 ```
@@ -198,7 +198,7 @@ Get details for video: dQw4w9WgXcQ
 Search for "latest AI news 2024"
 ```
 
-### Translation
+### 翻译
 ```
 Translate "Hello world" from English to Spanish
 Translate "Good morning" from English to German
@@ -222,24 +222,24 @@ Search for company "bestbuy"
 Get reviews for amazon.com
 ```
 
-### Google Maps
+### Google 地图
 ```
 Search for "coffee shops" near "Times Square"
 Get directions from "Central Park" to "Brooklyn Bridge"
 ```
 
-### Flights
+### 航班
 ```
 Search one-way flights from JFK to LHR on 2025-03-15
 Find cheapest dates to fly from NYC to Paris in April
 ```
 
-### Hotels
+### 酒店
 ```
 Search hotels in Paris for check-in 2025-04-01, check-out 2025-04-05
 ```
 
-### Real Estate (Germany)
+### 房地产（德国）
 ```
 Search apartments for rent in Berlin, max €1500
 Get property details for listing ID 123456
@@ -251,17 +251,17 @@ Search for "Nike shoes" on Vinted France
 Get item details for item ID 12345
 ```
 
-## Notes
+## 注意事项
 
-- API key required from [scrappa.co](https://scrappa.co)
-- Rate limits apply based on your Scrappa plan
-- Some tools require specific marketplace/country parameters
-- Google search results may have caching delays
-- Flight/hotel searches support various filters and sorting options
+- 需要从 [scrappa.co](https://scrappa.co) 获取 API 密钥 |
+- 使用频率受 Scrappa 计划的限制 |
+- 一些工具需要特定的市场/国家参数 |
+- Google 搜索结果可能存在缓存延迟 |
+- 航班/酒店搜索支持多种过滤器和排序选项
 
-## Links
+## 链接
 
-- [Scrappa Dashboard](https://scrappa.co/dashboard)
-- [Scrappa Documentation](https://scrappa.co/docs)
-- [MCP Integration Guide](https://scrappa.co/docs/mcp-integration)
-- [GitHub Repo](https://github.com/Scrappa-co/scrappa-skill)
+- [Scrappa 控制面板](https://scrappa.co/dashboard)
+- [Scrappa 文档](https://scrappa.co/docs)
+- [MCP 集成指南](https://scrappa.co/docs/mcp-integration)
+- [GitHub 仓库](https://github.com/Scrappa-co/scrappa-skill)

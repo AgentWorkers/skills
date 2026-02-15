@@ -1,28 +1,28 @@
 ---
 name: social-gen
-description: Generate social media posts for different platforms. Use when sharing content.
+description: 为不同的社交媒体平台生成帖子内容。在分享内容时可以使用这些帖子。
 ---
 
-# Social Generator
+# 社交媒体内容生成工具
 
-You wrote something great. Now you need to share it on Twitter, LinkedIn, and Reddit. Each platform wants different formats. This handles that.
+你创作了一些很棒的内容，现在需要将其分享到 Twitter、LinkedIn 和 Reddit 上。不过，每个平台对内容的格式要求都有所不同，这个工具可以帮你解决这个问题。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-social README.md --platform twitter
 ```
 
-## What It Does
+## 功能介绍
 
-- Reads your content and adapts it per platform
-- Twitter gets short and punchy
-- LinkedIn gets professional
-- Reddit gets genuine and non-promotional
+- 读取你的内容，并根据平台的特点对其进行优化：
+  - Twitter 的内容需要简短精炼；
+  - LinkedIn 的内容需要显得专业且正式；
+  - Reddit 的内容则需要自然、不带有推广性质。
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Twitter post
@@ -35,49 +35,52 @@ npx ai-social blog-post.md --platform linkedin
 npx ai-social announcement.md --platform all
 ```
 
-## Best Practices
+## 使用建议
 
-- **Know your audience** - each platform has different expectations
-- **Don't cross-post identical content** - people notice
-- **Engage don't broadcast** - social is conversation
-- **Time it right** - different platforms peak at different times
+- **了解目标受众**：每个平台对内容的期望不同；
+- **不要重复发布相同的内容**：否则用户会注意到；
+- **积极互动，而非单纯发布信息**：社交媒体本质上是互动的平台；
+- **选择合适的时间发布**：不同平台的活跃时间各不相同。
 
-## When to Use This
+## 适用场景
 
-- Launching a project
-- Sharing blog posts
-- Announcing features
-- Building audience
+- 项目发布；
+- 博文分享；
+- 新功能公告；
+- 建立受众群体。
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本无需支付费用、无需注册，也不需要 API 密钥，只需使用即可。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-social --help
 ```
 
-## How It Works
+## 工作原理
 
-Reads your content, understands the key message, and rewrites it for each platform. Twitter gets hashtags and brevity. LinkedIn gets line breaks and CTAs. Reddit gets genuine, non-salesy language.
+该工具会读取你的内容，提取关键信息，然后根据不同的平台要求重新编写内容：
+- Twitter 的内容会添加标签（hashtags）并保持简洁；
+- LinkedIn 的内容会添加换行符和行动号召（CTAs）；
+- Reddit 的内容则会使用自然、非推销性的语言。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费使用，你可以自由使用该工具。
 
 ---
 
-**Built by LXGIC Studios**
+**由 LXGIC Studios 开发**
 
 - GitHub: [github.com/lxgicstudios/social-card-gen](https://github.com/lxgicstudios/social-card-gen)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

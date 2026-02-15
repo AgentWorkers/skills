@@ -1,63 +1,69 @@
 ---
 name: moodcast
-description: Transform any text into emotionally expressive audio with ambient soundscapes using ElevenLabs v3 audio tags and Sound Effects API
+description: 使用 ElevenLabs v3 的音频标签和 Sound Effects API，将任何文本转换为具有情感表达的音频，并加入环境音效。
 metadata: {"moltbot":{"requires":{"env":["ELEVENLABS_API_KEY"]},"primaryEnv":"ELEVENLABS_API_KEY","homepage":"https://github.com/ashutosh887/moodcast"}}
 ---
 
 # MoodCast
 
-Transform any text into emotionally expressive audio with ambient soundscapes. MoodCast analyzes your content, adds expressive delivery using ElevenLabs v3 audio tags, and layers matching ambient soundscapes.
+MoodCast可以将任何文本转换为带有环境音效的、富有情感表达的音频。该工具会分析文本内容，使用 ElevenLabs v3 的音频标签来增强文本的表达力，并为音频添加相应的环境音效。
 
-## When to Use This Skill
+## 适用场景
 
-Use MoodCast when the user wants to:
-- Hear text read with natural emotional expression
-- Create audio versions of articles, stories, or scripts
-- Generate expressive voiceovers with ambient atmosphere
-- Listen to morning briefings that actually sound engaging
-- Transform boring text into captivating audio content
+当用户希望实现以下需求时，可以使用 MoodCast：
+- 听到带有自然情感表达的文本朗读
+- 为文章、故事或剧本创建音频版本
+- 生成具有氛围感的旁白
+- 收听引人入胜的晨间简报
+- 将枯燥的文本转化为引人入胜的音频内容
 
-**Trigger phrases:** "read this dramatically", "make this sound good", "create audio for", "moodcast this", "read with emotion", "narrate this"
+**常用指令：**
+- `read this dramatically`（以戏剧性的方式朗读文本）
+- `make this sound good`（让内容听起来更好）
+- `moodcast this`（将文本转换为音频）
+- `read with emotion`（带着情感朗读文本）
+- `narrate this`（为内容添加旁白）
 
-**Slash command:** `/moodcast`
+**命令行语法：**
+`/moodcast`
 
-## Core Capabilities
+## 核心功能
 
-### 1. Emotion-Aware Text Enhancement
-Automatically analyzes text and inserts appropriate v3 audio tags:
-- **Emotions:** `[excited]`, `[nervous]`, `[angry]`, `[sorrowful]`, `[calm]`, `[happy]`
-- **Delivery:** `[whispers]`, `[shouts]`, `[rushed]`, `[slows down]`
-- **Reactions:** `[laughs]`, `[sighs]`, `[gasps]`, `[giggles]`, `[crying]`
-- **Pacing:** `[pause]`, `[breathes]`, `[stammers]`, `[hesitates]`
+### 1. 情感分析及文本增强
+- 自动分析文本，并插入适当的 v3 音频标签：
+  - **情感标签**：`[excited]`（兴奋的）、`[nervous]`（紧张的）、`[angry]`（愤怒的）、`[sorrowful]`（悲伤的）、`[calm]`（平静的）
+  - **朗读方式**：`[whispers]`（低语）、`[shouts]`（大声喊叫）、`[rushed]`（急促的）、`[slows down]`（放慢语速）
+  - **反应动作**：`[laughs]`（笑声）、`[sighs]`（叹息）、`[gasps]`（倒吸一口气）、`[giggles]`（咯咯笑）、`[crying]`（哭泣）
+  - **节奏控制**：`[pause]`（暂停）、`[breathes]`（呼吸声）、`[stammers]`（结巴）、`[hesitates]`（犹豫）
 
-### 2. Ambient Soundscape Generation
-Creates matching background audio using Sound Effects API:
-- News → subtle office ambiance
-- Story → atmospheric soundscape matching mood
-- Motivational → uplifting background
-- Scary → tense, eerie atmosphere
+### 2. 环境音效生成
+- 使用 Sound Effects API 生成与文本内容相匹配的背景音效：
+  - 新闻：柔和的办公室环境音效
+  - 故事：符合故事氛围的音效
+  - 励志内容：振奋人心的背景音效
+  - 恐怖内容：紧张、诡异的氛围音效
 
-### 3. Multi-Voice Dialogue
-For conversations/scripts, assigns different voices to speakers with appropriate emotional delivery.
+### 3. 多人对话
+- 对于对话或剧本，可以为不同角色分配不同的声音和情感表达方式
 
-## Instructions
+## 使用说明
 
-### Quick Read (Single Command)
+### 快速操作（单条命令）
 ```bash
 python3 {baseDir}/scripts/moodcast.py --text "Your text here"
 ```
 
-### With Ambient Sound
+### 添加环境音效
 ```bash
 python3 {baseDir}/scripts/moodcast.py --text "Your text here" --ambient "coffee shop background noise"
 ```
 
-### Save to File
+### 保存到文件
 ```bash
 python3 {baseDir}/scripts/moodcast.py --text "Your text here" --output story.mp3
 ```
 
-### Different Moods
+### 设置不同的情感风格
 ```bash
 python3 {baseDir}/scripts/moodcast.py --text "Your text" --mood dramatic
 python3 {baseDir}/scripts/moodcast.py --text "Your text" --mood calm
@@ -65,89 +71,88 @@ python3 {baseDir}/scripts/moodcast.py --text "Your text" --mood excited
 python3 {baseDir}/scripts/moodcast.py --text "Your text" --mood scary
 ```
 
-### List Available Voices
+### 查看可用声音列表
 ```bash
 python3 {baseDir}/scripts/moodcast.py --list-voices
 ```
 
-### Custom Configuration
+### 自定义配置
 ```bash
 python3 {baseDir}/scripts/moodcast.py --text "Your text" --voice VOICE_ID --model eleven_v3 --output-format mp3_44100_128
 ```
 
-## Emotion Detection Rules
+## 情感检测规则
 
-The skill automatically detects and enhances:
-
-| Text Pattern | Audio Tag Added |
+该工具会自动检测并优化文本内容的情感表达：
+| 文本内容 | 添加的音频标签 |
 |-------------|-----------------|
-| "amazing", "incredible", "wow" | `[excited]` |
-| "scared", "afraid", "terrified" | `[nervous]` |
-| "angry", "furious", "hate" | `[angry]` |
-| "sad", "sorry", "unfortunately" | `[sorrowful]` |
-| "secret", "quiet", "between us" | `[whispers]` |
-| "!" exclamations | `[excited]` |
-| "..." trailing off | `[pause]` |
-| "haha", "lol" | `[laughs]` |
-| Questions | Natural rising intonation |
+| “amazing”, “incredible”, “wow” | `[excited]`（兴奋的） |
+| “scared”, “afraid”, “terrified” | `[nervous]`（紧张的） |
+| “angry”, “furious”, “hate” | `[angry]`（愤怒的） |
+| “sad”, “sorry”, “unfortunately” | `[sorrowful]`（悲伤的） |
+| “secret”, “quiet”, “between us” | `[whispers]`（低语） |
+| “!”（感叹词） | `[excited]`（兴奋的） |
+| 以 “...” 结尾的句子 | `[pause]`（暂停） |
+| “haha”, “lol” | `[laughs]`（笑声） |
+- 问句：使用自然的语调上升方式朗读
 
-## Example Transformations
+## 示例转换结果
 
-**Input:**
+**输入文本：**
 ```
 Breaking news! Scientists have discovered something incredible. 
 This could change everything we know about the universe...
 I can't believe it.
 ```
 
-**Enhanced Output:**
+**处理后的输出：**
 ```
 [excited] Breaking news! Scientists have discovered something incredible.
 [pause] This could change everything we know about the universe...
 [gasps] [whispers] I can't believe it.
 ```
 
-**Input:**
+**输入文本：**
 ```
 It was a dark night. The old house creaked. 
 Something moved in the shadows...
 "Who's there?" she whispered.
 ```
 
-**Enhanced Output:**
+**处理后的输出：**
 ```
 [slows down] It was a dark night. [pause] The old house creaked.
 [nervous] Something moved in the shadows...
 [whispers] "Who's there?" she whispered.
 ```
 
-## Environment Variables
+## 环境变量设置
 
-- `ELEVENLABS_API_KEY` (required) - Your ElevenLabs API key
-- `MOODCAST_DEFAULT_VOICE` (optional) - Default voice ID (defaults to `CwhRBWXzGAHq8TQ4Fs17`)
-- `MOODCAST_MODEL` (optional) - Default model ID (defaults to `eleven_v3`)
-- `MOODCAST_OUTPUT_FORMAT` (optional) - Default output format (defaults to `mp3_44100_128`)
-- `MOODCAST_AUTO_AMBIENT` (optional) - Set to `"true"` for automatic ambient sounds when using `--mood`
+- `ELEVENLABS_API_KEY`（必填）：您的 ElevenLabs API 密钥
+- `MOODCAST_DEFAULT_VOICE`（可选）：默认声音 ID（默认为 `CwhRBWXzGAHq8TQ4Fs17`）
+- `MOODCAST_MODEL`（可选）：默认模型 ID（默认为 `eleven_v3`）
+- `MOODCAST_OUTPUT_FORMAT`（可选）：默认输出格式（默认为 `mp3_44100_128`）
+- `MOODCAST_AUTO_AMBIENT`（可选）：设置为 `"true` 时，使用 `--mood` 命令会自动添加环境音效
 
-**Configuration Priority:** CLI arguments override environment variables, which override hardcoded defaults.
+**配置优先级：** 命令行参数的设置会覆盖环境变量的默认值。
 
-## Technical Notes
+## 技术细节
 
-- Uses ElevenLabs Eleven v3 model for audio tag support
-- Sound Effects API for ambient generation (up to 30 seconds)
-- Free tier: 10,000 credits/month (~10 min audio)
-- Max 2,400 characters per chunk (v3 supports 5,000, but we split conservatively for reliability)
-- Audio tags must be lowercase: `[whispers]` not `[WHISPERS]`
+- 使用 ElevenLabs 的 Eleven v3 模型来处理音频标签
+- 通过 Sound Effects API 生成环境音效（最长 30 秒）
+- 免费试用：每月 10,000 个信用点（约 10 分钟的音频时长）
+- 每段文本最多 2,400 个字符（v3 模型支持 5,000 个字符，为保证稳定性我们进行了限制）
+- 音频标签需使用小写形式（例如：`[whispers]`，而非 `[WHISPERS]`）
 
-## Tips for Best Results
+## 使用建议
 
-1. **Dramatic content** works best - stories, news, scripts
-2. **Shorter segments** (under 500 chars) sound more natural
-3. **Combine with ambient** for immersive experience
-4. **Roger and Rachel** voices are most expressive with v3
+- **戏剧性强的内容**（如故事、新闻、剧本）效果最佳
+- **较短的文本片段**（少于 500 个字符）听起来更自然
+- 结合环境音效可提升沉浸感
+- `Roger` 和 `Rachel` 这两个声音在 v3 模型下表现最为生动
 
-## Credits
+## 开发者信息
 
-Built by [ashutosh887](https://github.com/ashutosh887)  
-Using ElevenLabs Text-to-Speech v3 + Sound Effects API  
-Created for #ClawdEleven Hackathon
+由 [ashutosh887](https://github.com/ashutosh887) 开发  
+基于 ElevenLabs 的 Text-to-Speech v3 和 Sound Effects API 实现  
+专为 #ClawdEleven 编程马拉松项目开发

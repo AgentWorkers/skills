@@ -1,23 +1,23 @@
 ---
 name: e2e-playwright
-description: Playwright end-to-end testing expert. Use when writing E2E tests, browser automation, or debugging flaky tests.
+description: Playwright 是一款专注于端到端（end-to-end）测试的工具，由 Google 开发。它非常适合用于编写端到端测试用例、实现浏览器自动化操作，以及调试那些容易出错的测试脚本（即那些运行结果不稳定的测试）。
 ---
 
-# E2E Playwright Testing Expert
+# E2E（端到端）Playwright测试专家
 
-## Core Expertise
+## 核心专长
 
-### 1. Playwright Fundamentals
-**Browser Automation**:
-- Multi-browser support (Chromium, Firefox, WebKit)
-- Context isolation and parallel execution
-- Auto-waiting and actionability checks
-- Network interception and mocking
-- File downloads and uploads
-- Geolocation and permissions
-- Authentication state management
+### 1. Playwright基础
+**浏览器自动化**：
+- 支持多种浏览器（Chromium、Firefox、WebKit）
+- 实现上下文隔离和并行执行
+- 自动等待和操作性检查
+- 网络请求拦截与模拟
+- 文件上传与下载
+- 地理位置和权限处理
+- 身份验证状态管理
 
-**Test Structure**:
+**测试结构**：
 ```typescript
 import { test, expect } from '@playwright/test';
 
@@ -44,8 +44,8 @@ test.describe('Authentication Flow', () => {
 });
 ```
 
-### 2. Page Object Model (POM)
-**Pattern**: Encapsulate page interactions for maintainability
+### 2. 页面对象模型（Page Object Model, POM）
+**模式**：封装页面交互逻辑以提高可维护性
 
 ```typescript
 // pages/LoginPage.ts
@@ -95,8 +95,8 @@ test('login flow', async ({ page }) => {
 });
 ```
 
-### 3. Test Fixtures & Custom Contexts
-**Fixtures**: Reusable setup/teardown logic
+### 3. 测试固定装置（Test Fixtures）与自定义上下文
+**固定装置**：可重用的设置/清理逻辑
 
 ```typescript
 // fixtures/auth.fixture.ts
@@ -139,8 +139,8 @@ test('authenticated user can view profile', async ({ authenticatedPage }) => {
 });
 ```
 
-### 4. API Testing with Playwright
-**Pattern**: Test backend APIs alongside E2E flows
+### 4. 使用Playwright进行API测试
+**模式**：在E2E测试过程中同时测试后端API
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -200,8 +200,8 @@ test.describe('API Testing', () => {
 });
 ```
 
-### 5. Visual Regression Testing
-**Pattern**: Screenshot comparison for UI changes
+### 5. 可视化回归测试
+**模式**：通过截图对比来检测用户界面变化
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -251,8 +251,8 @@ test.describe('Visual Regression', () => {
 });
 ```
 
-### 6. Mobile Emulation & Device Testing
-**Pattern**: Test responsive behavior and touch interactions
+### 6. 移动设备模拟与测试
+**模式**：测试应用程序在移动设备上的响应性和触控交互
 
 ```typescript
 import { test, expect, devices } from '@playwright/test';
@@ -304,8 +304,8 @@ for (const deviceName of ['iPhone 13', 'Pixel 5', 'iPad Pro']) {
 }
 ```
 
-### 7. Accessibility Testing
-**Pattern**: Automated accessibility checks
+### 7. 可访问性测试
+**模式**：自动化进行可访问性检查
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -355,8 +355,8 @@ test.describe('Accessibility', () => {
 });
 ```
 
-### 8. Performance Testing
-**Pattern**: Monitor performance metrics
+### 8. 性能测试
+**模式**：监控应用程序的性能指标
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -401,8 +401,8 @@ test.describe('Performance', () => {
 });
 ```
 
-### 9. Advanced Configuration
-**playwright.config.ts**:
+### 9. 高级配置
+**playwright.config.ts**：配置文件示例
 
 ```typescript
 import { defineConfig, devices } from '@playwright/test';
@@ -462,8 +462,8 @@ export default defineConfig({
 });
 ```
 
-### 10. CI/CD Integration
-**GitHub Actions**:
+### 10. 持续集成/持续部署（CI/CD）集成
+**GitHub Actions**：自动化部署流程
 
 ```yaml
 name: E2E Tests
@@ -505,8 +505,9 @@ jobs:
           path: test-results/
 ```
 
-### 11. Debugging Strategies
-**Tools & Techniques**:
+### 11. 调试策略
+**工具与技术**：
+- 使用调试工具和技术来定位问题
 
 ```typescript
 // 1. Debug mode (headed browser + slow motion)
@@ -543,227 +544,64 @@ test.afterEach(async ({ page }, testInfo) => {
 // View: npx playwright show-trace trace.zip
 ```
 
-**Common Debugging Commands**:
-```bash
-# Run in headed mode (see browser)
-npx playwright test --headed
+**常见调试命令**：
+- [列出常用的调试命令]
 
-# Run with UI mode (interactive debugging)
-npx playwright test --ui
+### 12. 处理不可靠的测试（Flaky Tests）
+**提高测试稳定性的方法**：
+- [列出提高测试稳定性的策略]
 
-# Run single test
-npx playwright test tests/login.spec.ts
+## 最佳实践
 
-# Debug specific test
-npx playwright test tests/login.spec.ts --debug
+### 测试组织
+- [描述测试组织的最佳实践]
 
-# Generate test code
-npx playwright codegen http://localhost:3000
-```
+### 命名规范
+- 测试文件：`.spec.ts` 或 `.test.ts`
+- 页面对象文件：`.Page.ts`
+- 固定装置文件：`.fixture.ts`
+- 测试用例名称：例如：`should allow user to login with valid credentials`（“应允许用户使用有效凭据登录”）
 
-### 12. Handling Flaky Tests
-**Patterns for Reliability**:
+### 性能优化
+- **并行执行**：在多个线程或进程中同时运行测试
+- **测试拆分**：将测试分布在不同的CI服务器上执行
+- **选择性测试**：使用标签或注释来区分不同类型的测试（例如：基本测试、性能测试）
+- **重用身份验证状态**：保存身份验证信息并在多个测试中重复使用
+- **模拟外部API**：减少网络延迟和测试不稳定性的风险
 
-```typescript
-// 1. Proper waiting strategies
-test('wait for content', async ({ page }) => {
-  await page.goto('/');
+### 安全性考虑
+- **避免在测试文件中存储敏感信息**（如密码）
+- **使用环境变量管理敏感数据**
+- **将测试数据与生产环境分离**
+- **在每次测试后清除浏览器缓存和存储数据**
+- **使用一次性测试账户**
 
-  // ❌ BAD: Fixed delays
-  // await page.waitForTimeout(5000);
+## 常见模式与技巧
 
-  // ✅ GOOD: Wait for specific conditions
-  await page.waitForLoadState('networkidle');
-  await page.waitForSelector('.content', { state: 'visible' });
-  await page.getByText('Welcome').waitFor();
-});
+### 身份验证状态的复用
+- [描述如何复用身份验证状态]
 
-// 2. Retry logic for external dependencies
-test('api with retry', async ({ page }) => {
-  await page.goto('/');
+### 多标签页/窗口测试
+- [描述如何处理多标签页或窗口的测试场景]
 
-  let retries = 3;
-  while (retries > 0) {
-    try {
-      const response = await page.waitForResponse(
-        response => response.url().includes('/api/data') && response.ok(),
-        { timeout: 5000 }
-      );
-      expect(response.ok()).toBeTruthy();
-      break;
-    } catch (error) {
-      retries--;
-      if (retries === 0) throw error;
-      await page.reload();
-    }
-  }
-});
+### 文件上传/下载
+- [描述文件上传和下载的操作流程]
 
-// 3. Test isolation
-test.describe.configure({ mode: 'parallel' });
+## 故障排除
 
-test.beforeEach(async ({ page }) => {
-  // Clear state before each test
-  await page.context().clearCookies();
-  await page.context().clearPermissions();
-});
+### 常见问题及解决方法
+- **超时问题**：增加超时时间，使用合适的等待策略
+- **不可靠的元素选择器**：使用稳定且唯一的元素选择器（如角色、标签、测试ID）
+- **竞态条件**：等待网络请求完成，使用明确的等待机制
+- **身份验证失败**：清除浏览器缓存，检查身份验证状态
+- **截图不一致**：更新基准截图，禁用动画效果
 
-// 4. Deterministic test data
-test('use fixtures', async ({ page }) => {
-  // Seed database with known data
-  await page.request.post('/api/test/seed', {
-    data: { userId: 'test-123', email: 'test@example.com' }
-  });
+### 调试检查清单
+- [列出需要检查的调试事项]
 
-  await page.goto('/users/test-123');
-  await expect(page.getByText('test@example.com')).toBeVisible();
-
-  // Cleanup
-  await page.request.delete('/api/test/users/test-123');
-});
-```
-
-## Best Practices
-
-### Test Organization
-```
-e2e/
-├── fixtures/
-│   ├── auth.fixture.ts
-│   ├── data.fixture.ts
-│   └── mock.fixture.ts
-├── pages/
-│   ├── LoginPage.ts
-│   ├── DashboardPage.ts
-│   └── ProfilePage.ts
-├── tests/
-│   ├── auth/
-│   │   ├── login.spec.ts
-│   │   ├── signup.spec.ts
-│   │   └── logout.spec.ts
-│   ├── user/
-│   │   ├── profile.spec.ts
-│   │   └── settings.spec.ts
-│   └── api/
-│       ├── users.spec.ts
-│       └── posts.spec.ts
-└── playwright.config.ts
-```
-
-### Naming Conventions
-- Test files: `*.spec.ts` or `*.test.ts`
-- Page objects: `*Page.ts`
-- Fixtures: `*.fixture.ts`
-- Descriptive test names: `should allow user to login with valid credentials`
-
-### Performance Optimization
-1. **Parallel execution**: Run tests in parallel across workers
-2. **Test sharding**: Split tests across CI machines
-3. **Selective testing**: Use tags/annotations for smoke tests
-4. **Reuse authentication**: Save auth state, reuse across tests
-5. **Mock external APIs**: Reduce network latency and flakiness
-
-### Security Considerations
-- Never commit credentials in test files
-- Use environment variables for sensitive data
-- Isolate test data from production
-- Clear cookies/storage between tests
-- Use disposable test accounts
-
-## Common Patterns
-
-### Authentication State Reuse
-```typescript
-// global-setup.ts
-import { chromium, FullConfig } from '@playwright/test';
-
-async function globalSetup(config: FullConfig) {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await page.goto('http://localhost:3000/login');
-  await page.getByLabel('Email').fill('user@example.com');
-  await page.getByLabel('Password').fill('password123');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.waitForURL('http://localhost:3000/dashboard');
-
-  // Save signed-in state
-  await page.context().storageState({ path: 'auth.json' });
-  await browser.close();
-}
-
-export default globalSetup;
-
-// playwright.config.ts
-export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-  use: {
-    storageState: 'auth.json',
-  },
-});
-```
-
-### Multi-Tab/Window Testing
-```typescript
-test('open in new tab', async ({ context }) => {
-  const page = await context.newPage();
-  await page.goto('/');
-
-  const [newPage] = await Promise.all([
-    context.waitForEvent('page'),
-    page.getByRole('link', { name: 'Open in new tab' }).click()
-  ]);
-
-  await newPage.waitForLoadState();
-  await expect(newPage).toHaveURL('/new-page');
-});
-```
-
-### File Upload/Download
-```typescript
-test('upload file', async ({ page }) => {
-  await page.goto('/upload');
-
-  const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Upload' }).click();
-  const fileChooser = await fileChooserPromise;
-  await fileChooser.setFiles('path/to/file.pdf');
-
-  await expect(page.getByText('file.pdf uploaded')).toBeVisible();
-});
-
-test('download file', async ({ page }) => {
-  await page.goto('/downloads');
-
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('link', { name: 'Download Report' }).click();
-  const download = await downloadPromise;
-
-  await download.saveAs(`/tmp/${download.suggestedFilename()}`);
-  expect(download.suggestedFilename()).toBe('report.pdf');
-});
-```
-
-## Troubleshooting
-
-### Common Issues
-1. **Timeouts**: Increase timeout, use proper wait strategies
-2. **Flaky selectors**: Use stable locators (roles, labels, test IDs)
-3. **Race conditions**: Wait for network idle, use explicit waits
-4. **Authentication failures**: Clear cookies, check auth state
-5. **Screenshot mismatches**: Update baselines, disable animations
-
-### Debug Checklist
-- [ ] Test passes locally in headed mode?
-- [ ] Network requests succeed (check DevTools)?
-- [ ] Selectors are stable and unique?
-- [ ] Proper waits before assertions?
-- [ ] Test data is deterministic?
-- [ ] No race conditions with async operations?
-- [ ] Traces/screenshots captured on failure?
-
-## Resources
-- **Official Docs**: https://playwright.dev
-- **API Reference**: https://playwright.dev/docs/api/class-playwright
-- **Best Practices**: https://playwright.dev/docs/best-practices
-- **Examples**: https://github.com/microsoft/playwright/tree/main/examples
-- **Community**: https://github.com/microsoft/playwright/discussions
+## 资源
+- **官方文档**：https://playwright.dev
+- **API参考**：https://playwright.dev/docs/api/class-playwright
+- **最佳实践**：https://playwright.dev/docs/best-practices
+- **示例代码**：https://github.com/microsoft/playwright/tree/main/examples
+- **社区资源**：https://github.com/microsoft/playwright/discussions

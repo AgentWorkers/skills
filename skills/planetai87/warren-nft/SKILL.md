@@ -1,20 +1,19 @@
 ---
 name: warren-nft
-description: Deploy NFT collections permanently on MegaETH blockchain. Images stored on-chain via SSTORE2. Create and launch NFT collections with royalties, minting, and management pages.
+description: 将NFT系列永久部署在MegaETH区块链上。图像通过SSTORE2存储在链上。创建并发布带有版税功能的NFT系列，同时提供铸造（minting）和管理页面。
 metadata: {"openclaw":{"emoji":"🖼️","homepage":"https://megawarren.xyz","requires":{"anyBins":["node"]}}}
 user-invocable: true
 ---
 
-# Warren NFT - On-Chain NFT Collection Deployment
+# Warren NFT - 在链上的NFT集合部署
 
-Deploy complete NFT collections with **permanent on-chain image storage** on MegaETH testnet.
-All images are stored using SSTORE2 bytecode storage in a WarrenContainer, and each collection gets its own NFT contract with minting support.
+在MegaETH测试网上部署完整的NFT集合，这些集合具有**永久性的链上图像存储**功能。所有图像均使用SSTORE2字节码存储技术存储在WarrenContainer中，每个集合都有自己的NFT合约，并支持铸造（minting）功能。
 
-**Network**: MegaETH Testnet (Chain ID: 6343)
+**网络**: MegaETH测试网（链ID：6343）
 **RPC**: `https://carrot.megaeth.com/rpc`
-**Explorer**: https://megaeth-testnet-v2.blockscout.com
+**浏览器**: https://megaeth-testnet-v2.blockscout.com
 
-## How It Works
+## 工作原理
 
 ```
 Your Images → SSTORE2 (on-chain) → WarrenContainer → WarrenLaunchedNFT
@@ -23,26 +22,26 @@ Your Images → SSTORE2 (on-chain) → WarrenContainer → WarrenLaunchedNFT
                                      ...
 ```
 
-1. Each image is deployed as a Page contract (fractal tree for >15KB images)
-2. All images are stored in a WarrenContainer NFT at `/images/1.png`, `/images/2.png`, etc.
-3. A WarrenLaunchedNFT contract is deployed referencing the container
-4. Minting is enabled and the collection is registered on megawarren.xyz
+1. 每张图像都被部署为一个Page合约（对于超过15KB的图像，会使用分形树（fractal tree）结构进行存储）。
+2. 所有图像都存储在`/images/1.png`、`/images/2.png`等路径下的WarrenContainer NFT中。
+3. 部署一个WarrenLaunchedNFT合约来引用这些图像容器。
+4. 启用铸造功能后，该集合会在megawarren.xyz平台上进行注册。
 
-## Setup (One Time)
+## 设置（只需一次）
 
 ```bash
 cd {baseDir}
 bash setup.sh
 ```
 
-Get testnet ETH: https://docs.megaeth.com/faucet
-Genesis Key NFT auto-mints during first deployment (free on testnet).
+获取测试网ETH：https://docs.megaeth.com/faucet
+首次部署时，Genesis Key NFT会自动铸造（测试网免费）。
 
-## Deploy NFT Collection
+## 部署NFT集合
 
-### Option 1: From Image Folder
+### 选项1：使用图像文件夹
 
-Prepare a folder with numbered images:
+准备一个包含编号图像的文件夹：
 ```
 my-art/
 ├── 1.png
@@ -51,7 +50,7 @@ my-art/
 └── ...
 ```
 
-Deploy:
+然后执行部署命令：
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js \
@@ -62,9 +61,9 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --max-supply 100
 ```
 
-### Option 2: Auto-Generate SVG Art
+### 选项2：自动生成SVG艺术作品
 
-Generate unique SVG art programmatically:
+通过程序自动生成唯一的SVG艺术作品：
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js \
@@ -74,7 +73,7 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --description "AI-generated on-chain art"
 ```
 
-### Full Configuration
+### 完整配置
 
 ```bash
 PRIVATE_KEY=0x... node deploy-nft.js \
@@ -89,26 +88,26 @@ PRIVATE_KEY=0x... node deploy-nft.js \
   --royalty-bps 500
 ```
 
-## CLI Options
+## 命令行选项
 
-| Option | Required | Default | Description |
+| 选项 | 是否必填 | 默认值 | 说明 |
 |--------|----------|---------|-------------|
-| `--images-folder <path>` | * | - | Folder with image files |
-| `--generate-svg <count>` | * | - | Generate random SVG art (1-256) |
-| `--name <string>` | Yes | - | Collection name |
-| `--symbol <string>` | Yes | - | Collection symbol (3-5 chars) |
-| `--description <text>` | No | Auto | Collection description |
-| `--max-supply <number>` | No | Image count | Maximum mintable NFTs |
-| `--whitelist-price <eth>` | No | 0 | Whitelist mint price in ETH |
-| `--public-price <eth>` | No | 0 | Public mint price in ETH |
-| `--max-per-wallet <number>` | No | 10 | Mint limit per wallet |
-| `--royalty-bps <number>` | No | 500 | Royalty (500 = 5%, max 1000 = 10%) |
+| `--images-folder <路径>` | * | - | 包含图像文件的文件夹 |
+| `--generate-svg <数量>` | * | - | 生成随机数量的SVG艺术作品（1-256张） |
+| `--name <字符串>` | 是 | - | 集合名称 |
+| `--symbol <字符串>` | 是 | - | 集合符号（3-5个字符） |
+| `--description <文本>` | 否 | 自动生成 | 集合描述 |
+| `--max-supply <数字>` | 否 | 图像数量 | 最大可铸造的NFT数量 |
+| `--whitelist-price <以太币>` | 否 | 0 | 白名单铸造价格（以太币） |
+| `--public-price <以太币>` | 否 | 0 | 公开铸造价格（以太币） |
+| `--max-per-wallet <数字>` | 否 | 每个钱包的最大铸造数量 | |
+| `--royalty-bps <数字>` | 否 | 500 | 版权费（500表示5%，1000表示10%） |
 
-\* Either `--images-folder` or `--generate-svg` is required.
+* 必须选择`--images-folder`或`--generate-svg`中的一个选项。
 
-## Output
+## 部署结果
 
-After deployment, you'll receive:
+部署完成后，您将获得：
 
 ```
 🎉 NFT Collection Deployed!
@@ -124,66 +123,61 @@ Public Price:  0 ETH (Free)
 ============================================================
 ```
 
-- **Management Page**: Change mint state, prices, airdrop, withdraw funds
-- **Mint Page**: Public-facing page for minting your NFTs
+- **管理页面**：可以更改铸造状态、价格、进行空投（airdrop）以及提取资金。
+- **铸造页面**：用于铸造NFT的公开页面。
 
-## Image Requirements
+## 图像要求
 
-- **Formats**: PNG, JPG, JPEG, SVG, GIF, WebP
-- **Size**: Up to 500KB per image
-- **Count**: 1-256 images per collection
-- **Naming**: Sequential (1.png, 2.png) or alphabetical (auto-numbered)
-- Images >15KB are automatically split using fractal tree architecture
+- **格式**：PNG、JPG、JPEG、SVG、GIF、WebP
+- **大小**：每张图像最大500KB
+- **数量**：每个集合最多1-256张图像
+- **命名方式**：按顺序编号（如1.png、2.png）或按字母顺序（自动编号）
+- 超过15KB的图像会自动使用分形树结构进行分割存储。
 
-## Gas Costs (Testnet)
+## 测试网上的Gas费用
 
-| Component | Estimated Cost |
+| 组件 | 估计费用 |
 |-----------|---------------|
-| Per image chunk (15KB) | ~0.002 ETH |
-| Container minting | ~0.001 ETH |
-| NFT contract deployment | ~0.003 ETH |
-| **10 images (small)** | **~0.03 ETH** |
-| **50 images (medium)** | **~0.12 ETH** |
-| **100 images** | **~0.25 ETH** |
+| 每个15KB的图像块 | 约0.002以太币 |
+| 容器铸造 | 约0.001以太币 |
+| NFT合约部署 | 约0.003以太币 |
+| 10张小图像 | 约0.03以太币 |
+| 50张中等大小的图像 | 约0.12以太币 |
+| 100张图像 | 约0.25以太币 |
 
-## Stress Test Workflows
+## 压力测试流程
 
-### Quick Test (3 SVGs)
+### 快速测试（3张SVG图像）
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 3 --name "Quick Test" --symbol "QT"
 ```
 
-### Medium Test (20 SVGs)
+### 中等规模测试（20张SVG图像）
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 20 --name "Art Collection" --symbol "ART" --public-price 0.001
 ```
 
-### Full Test (100 SVGs)
+### 全面测试（100张SVG图像）
 ```bash
 cd {baseDir}
 PRIVATE_KEY=0x... node deploy-nft.js --generate-svg 100 --name "Century" --symbol "C100" --max-per-wallet 3
 ```
 
-## Contract Addresses (Testnet)
+## 合约地址（测试网）
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Genesis Key NFT | `0x954a7cd0e2f03041A6Abb203f4Cfd8E62D2aa692` |
 | WarrenContainer | `0xabba293F4eC5811ed15549D11020Df79c7f1Fa0B` |
 | ContainerRenderer | `0x99D70834fdEB882297C97aD67b31B071f9c10E6D` |
 
-## Troubleshooting
+## 故障排除
 
-**"No ETH"** → Get testnet ETH from https://docs.megaeth.com/faucet
-
-**"GenesisKeyRequired"** → Genesis Key auto-mints. If failing, check balance > 0.001 ETH
-
-**"Image exceeds 500KB"** → Resize or compress images before deployment
-
-**"Too many images"** → Maximum 256 images per container (TypeRegistry limit)
-
-**"TooManyFiles"** → Same as above, reduce image count
-
-**DB registration warning** → Non-critical. Collection still works on-chain. Management/mint pages will load from on-chain data.
+- **“没有ETH”**：请从https://docs.megaeth.com/faucet获取测试网ETH。
+- **“需要Genesis Key”**：Genesis Key会自动铸造NFT。如果失败，请检查账户余额是否大于0.001以太币。
+- **“图像超过500KB”**：在部署前请调整图像大小或压缩图像。
+- **“图像数量过多”**：每个容器最多只能存储256张图像（受TypeRegistry限制）。
+- **“文件数量过多”**：请减少图像数量。
+- **数据库注册警告**：非关键问题，集合仍可在链上正常运行。管理/铸造页面会从链上数据加载信息。

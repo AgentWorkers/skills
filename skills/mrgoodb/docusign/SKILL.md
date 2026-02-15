@@ -1,14 +1,14 @@
 ---
 name: docusign
-description: Send documents for electronic signature via DocuSign API. Create envelopes, track signing status, and download signed documents.
+description: 通过 DocuSign API 发送文档以进行电子签名。创建电子签名信封，跟踪签名进度，并下载已签名的文档。
 metadata: {"clawdbot":{"emoji":"✍️","requires":{"env":["DOCUSIGN_ACCESS_TOKEN","DOCUSIGN_ACCOUNT_ID"]}}}
 ---
 
 # DocuSign
 
-Electronic signatures.
+电子签名服务。
 
-## Environment
+## 环境配置
 
 ```bash
 export DOCUSIGN_ACCESS_TOKEN="xxxxxxxxxx"
@@ -16,7 +16,7 @@ export DOCUSIGN_ACCOUNT_ID="xxxxxxxxxx"
 export DOCUSIGN_BASE="https://demo.docusign.net/restapi"  # Use na1.docusign.net for prod
 ```
 
-## Send Document for Signature
+## 发送文档以获取签名
 
 ```bash
 curl -X POST "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes" \
@@ -41,21 +41,21 @@ curl -X POST "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes" \
   }'
 ```
 
-## List Envelopes
+## 查看待签名的文档列表
 
 ```bash
 curl "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes?from_date=2024-01-01" \
   -H "Authorization: Bearer $DOCUSIGN_ACCESS_TOKEN"
 ```
 
-## Get Envelope Status
+## 查看文档的签名状态
 
 ```bash
 curl "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes/{envelope_id}" \
   -H "Authorization: Bearer $DOCUSIGN_ACCESS_TOKEN"
 ```
 
-## Download Signed Document
+## 下载已签名的文档
 
 ```bash
 curl "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes/{envelope_id}/documents/combined" \
@@ -63,6 +63,6 @@ curl "$DOCUSIGN_BASE/v2.1/accounts/$DOCUSIGN_ACCOUNT_ID/envelopes/{envelope_id}/
   -o signed_document.pdf
 ```
 
-## Links
-- Console: https://apps.docusign.com
-- Docs: https://developers.docusign.com
+## 链接：
+- 控制台：https://apps.docusign.com
+- 文档中心：https://developers.docusign.com

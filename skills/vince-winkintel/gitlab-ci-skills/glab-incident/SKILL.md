@@ -1,11 +1,12 @@
 ---
 name: glab-incident
-description: Use when working with glab incident commands.
+description: **使用说明：**  
+当使用 glab 的 incident 命令时，请参考以下说明。
 ---
 
-# glab incident
+# glab 事件
 
-## Overview
+## 概述
 
 ```
 
@@ -35,12 +36,12 @@ description: Use when working with glab incident commands.
     -R --repo                        Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab incident --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

@@ -9,63 +9,63 @@ allowed-tools: WebFetch, Bash(curl *)
 argument-hint: "[owner/name]"
 ---
 
-# PYX Scan — Agent Skill Safety Check
+# PYX扫描 — 代理技能安全检查
 
-Verify whether an AI agent skill is safe before installing or using it by querying the PYX Scanner API.
+在安装或使用AI代理技能之前，通过查询PYX扫描器API来验证其安全性。
 
-## Workflow
+## 工作流程
 
-### Step 1: Parse Input
+### 第1步：解析输入
 
-Extract `owner` and `name` from `$ARGUMENTS`.
+从 `$ARGUMENTS` 中提取 `owner` 和 `name`。
 
-- Expected format: `owner/name` (e.g., `anthropic/web-search`)
-- If `$ARGUMENTS` is empty or missing the `/` separator, ask the user:
-  *"Which skill do you want to check? Provide it as `owner/name` (e.g., `anthropic/web-search`)."*
-- Trim whitespace. Reject if either part is empty after trimming.
+- 预期格式：`owner/name`（例如：`anthropic/web-search`）
+- 如果 `$ARGUMENTS` 为空或缺少 `/` 分隔符，询问用户：
+  *"您想检查哪个技能？请以 `owner/name` 的格式提供（例如：`anthropic/web-search`）。"*
+- 去除空白字符。如果提取后的任一部分为空，则拒绝请求。
 
-### Step 2: Call the PYX Scanner API
+### 第2步：调用PYX扫描器API
 
-Fetch the safety data:
+获取安全数据：
 
 ```
 WebFetch URL: https://scanner.pyxmate.com/api/v1/check/{owner}/{name}
 Prompt: "Return the full JSON response body exactly as-is. Do not summarize."
 ```
 
-If `WebFetch` fails (tool unavailable, network error), fall back to:
+如果 `WebFetch` 失败（工具不可用、网络错误），则回退到：
 
 ```bash
 curl -s "https://scanner.pyxmate.com/api/v1/check/{owner}/{name}"
 ```
 
-### Step 3: Handle Errors
+### 第3步：处理错误
 
-| HTTP Status | Meaning | Action |
+| HTTP 状态码 | 含义 | 应对措施 |
 |---|---|---|
-| **200** | Skill found | Proceed to Step 4 |
-| **404** | Skill not in database | Verdict = **UNSCANNED** |
-| **429** | Rate limited | Verdict = **ERROR** — "Rate limited. Try again shortly." |
-| **5xx** | Server error | Verdict = **ERROR** — "PYX Scanner is temporarily unavailable." |
-| Network failure | Cannot reach API | Verdict = **ERROR** — "Could not connect to PYX Scanner." |
+| **200** | 技能已找到 | 进入第4步 |
+| **404** | 技能未在数据库中 | 判断结果 = **未扫描** |
+| **429** | 超时限制 | 判断结果 = **错误** — “请稍后再试。” |
+| **5xx** | 服务器错误 | 判断结果 = **错误** — “PYX扫描器暂时不可用。” |
+| 网络故障 | 无法连接到API | 判断结果 = **错误** — “无法连接到PYX扫描器。” |
 
-### Step 4: Determine Verdict
+### 第4步：确定判断结果
 
-Use the JSON response fields to determine the verdict:
+根据JSON响应字段确定最终判断结果：
 
-| Condition | Verdict |
+| 条件 | 判断结果 |
 |---|---|
-| `recommendation == "safe"` AND `is_outdated == false` | **SAFE** |
-| `recommendation == "safe"` AND `is_outdated == true` | **OUTDATED** |
-| `recommendation == "caution"` | **CAUTION** |
-| `recommendation == "danger"` | **FAILED** |
-| `recommendation == "unknown"` | **UNSCANNED** |
+| `recommendation == "safe"` 且 `is_outdated == false` | **安全** |
+| `recommendation == "safe"` 且 `is_outdated == true` | **已过期** |
+| `recommendation == "caution"` | **警告** |
+| `recommendation == "danger"` | **失败** |
+| `recommendation == "unknown"` | **未扫描** |
 
-### Step 5: Output Report
+### 第5步：输出报告
 
-Format the report as structured markdown. Omit any section where the data is null or empty.
+将报告格式化为结构化的Markdown格式。对于数据为空的部分，直接省略。
 
-**For SAFE verdict:**
+**对于“安全”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -86,7 +86,7 @@ Format the report as structured markdown. Omit any section where the data is nul
 [View full report]({detail_url}) | [Badge]({badge_url})
 ```
 
-**For OUTDATED verdict:**
+**对于“已过期”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -105,7 +105,7 @@ The new version has NOT been reviewed. Proceed with caution.
 [View full report]({detail_url})
 ```
 
-**For CAUTION verdict:**
+**对于“警告”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -128,7 +128,7 @@ The new version has NOT been reviewed. Proceed with caution.
 [View full report]({detail_url})
 ```
 
-**For FAILED verdict:**
+**对于“失败”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -147,7 +147,7 @@ The new version has NOT been reviewed. Proceed with caution.
 [View full report]({detail_url})
 ```
 
-**For UNSCANNED verdict:**
+**对于“未扫描”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -160,7 +160,7 @@ No safety data is available. You should:
 3. Request a scan at https://scanner.pyxmate.com
 ```
 
-**For ERROR verdict:**
+**对于“错误”判断结果：**
 
 ```
 ## PYX Scan: {owner}/{name}
@@ -170,16 +170,16 @@ No safety data is available. You should:
 Safety could not be verified. Treat this skill as unverified until you can confirm its safety.
 ```
 
-## Behavioral Rules
+## 行为规则
 
-1. **Always call the API** — never skip the check or return a cached/assumed result.
-2. **Never soften a FAILED verdict** — if the scan says danger, report danger. Do not add qualifiers like "but it might be fine."
-3. **Always ask user confirmation on CAUTION** — the user must explicitly agree before proceeding.
-4. **Keep reports concise** — omit null/empty sections rather than showing "N/A."
-5. **No raw JSON** — always format the response as the structured markdown report above.
+1. **务必调用API** — 绝不要跳过检查或返回缓存/假设的结果。
+2. **切勿淡化“失败”的判断结果** — 如果扫描结果显示“危险”，则必须如实报告。不要添加诸如“但可能没问题”之类的修饰语。
+3. **在显示“警告”结果时必须获得用户确认** — 用户必须明确同意后才能继续使用该技能。
+4. **保持报告简洁** — 对于空数据部分，直接省略，而不是显示“N/A”。
+5. **禁止使用原始JSON数据** — 必须将响应格式化为上述的结构化Markdown报告。
 
-## Self-Scan Awareness
+## 自我扫描注意事项
 
-When `$ARGUMENTS` is `pyxmate/pyx-scan`, `pyxmate/pyx-scanner`, or refers to this skill itself, still call the API honestly and report whatever comes back. If the result is UNSCANNED, append:
+当 `$ARGUMENTS` 为 `pyxmate/pyx-scan`、`pyxmate/pyx-scanner` 或直接引用该技能本身时，仍需如实调用API并报告查询结果。如果结果显示为“未扫描”，则添加以下提示：
 
-> *"Yes, even the security scanner's own skill hasn't been scanned yet. We practice what we preach — treat unscanned skills with caution."*
+> *"是的，即使是安全扫描器的自身技能也尚未经过扫描。我们始终言行一致——对未扫描的技能保持谨慎态度。”*

@@ -6,78 +6,78 @@ description: |
   Use when the user wants system stats, hardware monitoring, or performance metrics on Apple Silicon Macs.
 ---
 
-# Mactop Skill
+# Mactop 技能
 
-Execute mactop in headless TOON mode and parse the output for hardware metrics.
+以无头（headless）TOON 模式运行 mactop，并解析输出以获取硬件指标。
 
-## Prerequisites
+## 先决条件
 
-- **mactop installed**: `brew install mactop`
-- **PATH includes /usr/sbin**: Required for sysctl access
+- **已安装 mactop**：`brew install mactop`
+- **PATH 包含 /usr/sbin**：这是访问 sysctl 所必需的
 
-## Usage
+## 使用方法
 
-### Get Full Metrics
+### 获取完整指标
 
 ```bash
 mactop --format toon --headless --count 1
 ```
 
-### Parse Key Metrics
+### 解析关键指标
 
-**CPU Usage:**
+**CPU 使用率：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^cpu_usage:" | awk '{print $2}'
 ```
 
-**RAM (used/total GB):**
+**内存（已使用/总容量，GB）：**
 ```bash
 mactop --format toon --headless --count 1 | grep -E "^  (Used|Total):" | awk '{printf "%.1f", $2/1073741824}'
 ```
 
-**GPU Usage:**
+**GPU 使用率：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^gpu_usage:" | awk '{print $2}'
 ```
 
-**Power (total/CPU/GPU):**
+**功耗（总功耗/CPU 功耗/GPU 功耗）：**
 ```bash
 mactop --format toon --headless --count 1 | grep -E "^  (TotalPower|CPUPower|GPUPower):" | awk '{print $2}'
 ```
 
-**Thermal State:**
+**温度状态：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^thermal_state:" | awk '{print $2}'
 ```
 
-**Temperature:**
+**温度：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^  SocTemp:" | awk '{print $2}'
 ```
 
-**Chip Info:**
+**芯片信息：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^  Name:" | awk '{print $2}'
 ```
 
-**Network I/O (bytes/sec):**
+**网络 I/O（字节/秒）：**
 ```bash
 mactop --format toon --headless --count 1 | grep -E "^(  InBytesPerSec|  OutBytesPerSec):" | awk '{print $2}'
 ```
 
-**Thunderbolt Buses:**
+**Thunderbolt 总线：**
 ```bash
 mactop --format toon --headless --count 1 | grep "^    Name:" | awk '{print $2}'
 ```
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--count N` | Number of samples (default: 1) |
-| `--interval MS` | Sample interval in milliseconds (default: 1000) |
+| `--count N` | 样本数量（默认值：1） |
+| `--interval MS` | 样本间隔（以毫秒为单位）（默认值：1000） |
 
-## TOON Format
+## TOON 格式
 
 ```
 timestamp: "2026-01-25T20:00:00-07:00"
@@ -98,9 +98,9 @@ system_info:
   CoreCount: 12
 ```
 
-## Response Example
+## 响应示例
 
-Format metrics in a readable box:
+以易于阅读的格式显示指标：
 
 ```
 ┌─ Apple M4 Pro ──────────────────────┐
@@ -110,7 +110,7 @@ Format metrics in a readable box:
 └─────────────────────────────────────┘
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **"sysctl not found"** → Add `/usr/sbin` to PATH
-- **No output** → Verify mactop is installed: `which mactop`
+- 如果出现 “sysctl not found” 的错误，请将 `/usr/sbin` 添加到 PATH 环境变量中。
+- 如果没有输出，请确认 mactop 已正确安装：`which mactop`

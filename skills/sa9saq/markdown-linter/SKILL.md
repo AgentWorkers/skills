@@ -1,22 +1,22 @@
 ---
-description: Lint Markdown files for style issues, broken links, and formatting problems with auto-fix suggestions.
+description: 使用 Lint 工具检查 Markdown 文件中的样式问题、失效的链接以及格式错误，并提供自动修复建议。
 ---
 
 # Markdown Linter
 
-Check and improve Markdown file quality with style checks and auto-fix.
+通过样式检查和对Markdown文件的自动修复来提升其质量。
 
-**Use when** linting markdown files, checking link validity, or fixing formatting.
+**使用场景**：用于检查Markdown文件的质量、验证链接的有效性或修复格式问题。
 
-## Requirements
+## 必备条件
 
-- Optional: `markdownlint-cli` (`npm install -g markdownlint-cli`)
-- Works without external tools using text analysis
-- No API keys needed
+- 可选：`markdownlint-cli`（通过 `npm install -g markdownlint-cli` 安装）
+- 无需外部工具，仅依赖文本分析即可运行
+- 不需要API密钥
 
-## Instructions
+## 使用说明
 
-1. **Using markdownlint-cli** (preferred if available):
+1. **使用 `markdownlint-cli`（如果可用，推荐使用）**：
    ```bash
    # Lint a single file
    npx markdownlint README.md
@@ -31,20 +31,19 @@ Check and improve Markdown file quality with style checks and auto-fix.
    npx markdownlint -c .markdownlint.json README.md
    ```
 
-2. **Manual analysis** (when CLI unavailable) — check for:
-
-   | Issue | How to Detect | Fix |
+2. **手动检查**（在无法使用命令行工具时）——请检查以下问题：
+   | 问题 | 检测方法 | 修复方法 |
    |-------|--------------|-----|
-   | Skipped heading levels | `# → ###` (skipped `##`) | Add missing level |
-   | Inconsistent list markers | Mixed `*`, `-`, `+` | Standardize to `-` |
-   | Trailing whitespace | Lines ending with spaces | Trim trailing spaces |
-   | Missing blank lines | No blank line before/after headings | Add blank lines |
-   | Long lines | Lines > 120 chars | Wrap or restructure |
-   | Broken relative links | `[text](./missing.md)` | Verify file exists |
-   | Duplicate headings | Multiple `## Setup` sections | Make headings unique |
-   | Missing alt text | `![](image.png)` | Add descriptive alt text |
+   | 被省略的标题级别 | `#` 应替换为 `###`（例如：`##` 被省略） | 补充缺失的标题级别 |
+   | 不一致的列表标记 | 列表标记使用了 `*`、`-`、`+` 等多种符号 | 将所有标记统一为 `-` |
+   | 行尾的空白字符 | 行尾有空格 | 删除行尾的空白字符 |
+   | 标题前后缺少空行 | 标题前后没有空行 | 在标题前后添加空行 |
+   | 过长的行 | 行长度超过120个字符 | 将行拆分或重新组织结构 |
+   | 错误的相对链接 | 如 `[text](./missing.md)` 这样的链接 | 验证目标文件是否存在 |
+   | 重复的标题 | 多个 `## Setup` 标题 | 使标题唯一 |
+   | 缺失的alt文本 | 如 `![](image.png)` 这样的图片链接 | 为图片添加描述性alt文本 |
 
-3. **Link validation**:
+3. **链接验证**：
    ```bash
    # Extract all links
    grep -oE '\[([^\]]*)\]\(([^)]+)\)' file.md
@@ -55,13 +54,13 @@ Check and improve Markdown file quality with style checks and auto-fix.
    done
    ```
 
-4. **TOC generation** (on request):
+4. **生成目录结构（TOC）**（根据需求）：
    ```bash
    # Extract headings and generate TOC
    grep -E '^#{1,3} ' file.md | sed 's/^## /  - /; s/^### /    - /; s/^# /- /'
    ```
 
-5. **Output format**:
+5. **输出格式**：
    ```
    ## 📝 Markdown Lint Report — README.md
 
@@ -75,7 +74,7 @@ Check and improve Markdown file quality with style checks and auto-fix.
    **Auto-fixable:** 1 of 3 issues
    ```
 
-## Recommended .markdownlint.json
+## 推荐的 `.markdownlint.json` 配置文件
 
 ```json
 {
@@ -85,9 +84,9 @@ Check and improve Markdown file quality with style checks and auto-fix.
 }
 ```
 
-## Edge Cases
+## 特殊情况处理
 
-- **MDX files**: Some JSX syntax will trigger false positives. Use `MD033: false` to allow HTML.
-- **Generated files**: Skip auto-generated markdown (CHANGELOG.md, API docs).
-- **Frontmatter**: Ensure linter is configured to ignore YAML frontmatter blocks.
-- **Tables**: Long tables may trigger line-length warnings — consider disabling MD013 for those files.
+- **MDX文件**：某些JSX语法可能会导致误报。可以使用 `MD033: false` 来允许使用HTML代码。
+- **自动生成的文件**：跳过自动生成的Markdown文件（如 `CHANGELOG.md`、API文档等）。
+- **前端页眉（Frontmatter）**：确保Linter配置能够忽略YAML格式的前端页眉内容。
+- **表格**：长表格可能会导致行长度警告——可以考虑为这些文件禁用 `MD013` 规则。

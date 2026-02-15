@@ -1,37 +1,36 @@
 ---
 name: Artificial Intelligence
-description: Answer AI questions with current info instead of outdated training data.
+description: 使用最新的信息来回答人工智能问题，而不是依赖过时的训练数据。
 metadata: {"clawdbot":{"emoji":"🤖","os":["linux","darwin","win32"]}}
 ---
 
-# Artificial Intelligence
+# 人工智能
 
-## Your Training Data Is Outdated
+## 你的训练数据已经过时了
 
-Before answering questions about pricing, rankings, or availability:
-- Pricing → check `openrouter.ai/models` (aggregates all providers)
-- Rankings → check `lmarena.ai` (crowdsourced ELO, updates weekly)
-- Outages → check status pages before blaming user code
+在回答关于价格、排名或可用性的问题之前，请先：
+- 价格信息：查看 `openrouter.ai/models`（汇总了所有提供者的价格）
+- 排名信息：查看 `lmarena.ai`（基于众包数据的 ELO 分数，每周更新）
+- 系统故障：在归咎于用户代码之前，请先检查系统的状态页面
 
-Don't cite specific prices, context windows, or rate limits from memory — they change quarterly.
+不要凭记忆来引用具体的价格、上下文窗口或速率限制——这些信息通常每季度都会发生变化。
 
-## Questions You Answer Too Vaguely
+## 你的回答过于模糊
 
-**"How do I reduce hallucinations?"**
-Not just "use RAG." Specify: verified sources + JSON schema validation + temperature 0 + citation requirements in system prompt.
+**“我该如何减少幻觉现象（hallucinations）？”**
+不要只简单地说“使用 RAG（Retrieval with Augmented Generation）”。请明确说明：需要使用经过验证的数据源、JSON 数据结构进行验证，并在系统提示中明确要求提供引用信息。
 
-**"Should I fine-tune or use RAG?"**
-RAG first, always. Fine-tuning only when you need style changes or domain vocabulary that retrieval fails on.
+**“我是应该进行微调（fine-tuning），还是直接使用 RAG？”**
+始终优先使用 RAG。只有在需要调整模型风格或模型无法获取特定领域词汇时，才考虑进行微调。
 
-**"What hardware for local models?"**
-Give numbers: 7B = 8GB VRAM, 13B = 16GB, 70B = 48GB+. Quantization (Q4) halves requirements.
+**“本地模型需要使用什么硬件？”**
+请给出具体的硬件配置：7B 模型需要 8GB 的显存（VRAM），13B 模型需要 16GB 的显存，70B 模型需要 48GB 或更多的显存。量化（Quantization）技术可以降低硬件需求。
 
-## When to Recommend Local vs API
+## 何时推荐使用本地模型（如 Ollama、LM Studio）与 API
 
-**Local (Ollama, LM Studio):** Privacy requirements, offline needed, or API spend >$100/month.
+- 当有隐私保护需求、需要离线运行模型，或者每月使用 API 的费用超过 100 美元时，建议使用本地模型。
+- 当你需要前沿的技术能力、没有 GPU，或者只是进行原型设计时，可以使用 API。
 
-**API:** Need frontier capabilities, no GPU, or just prototyping.
+## 关于令牌（tokens）的计算误区
 
-## Token Math You Get Wrong
-
-~4 characters per token in English. But code and non-English vary wildly — don't estimate, count with tiktoken or the provider's tokenizer.
+英文中每个令牌通常大约包含 4 个字符。不过，不同语言和代码类型的令牌长度差异很大——不要自行估算，可以使用 tiktoken 或相关提供者的分词工具来进行精确计算。

@@ -1,25 +1,25 @@
 ---
 name: volcengine-ai-audio-tts
-description: Text-to-speech generation on Volcengine audio services. Use when users need narration, multi-language speech output, voice selection, or TTS troubleshooting.
+description: 在 Volcengine 音频服务中提供了文本转语音（Text-to-Speech, TTS）功能。当用户需要语音播报、多语言语音输出、语音选择或解决 TTS 相关问题时，可以使用该服务。
 ---
 
 # volcengine-ai-audio-tts
 
-Synthesize speech from text with voice, language, and format controls.
+该工具能够根据用户设定的语音、语言和格式要求，将文本转换为语音输出。
 
-## Execution Checklist
+## 执行流程
 
-1. Confirm input text, language, and target voice.
-2. Set output format and sample rate.
-3. Execute TTS request and poll if async.
-4. Return audio URL/path and reproducible parameters.
+1. 确认输入的文本、目标语言以及所需的语音。
+2. 设置输出格式和采样率。
+3. 发送文本转语音（TTS）请求；如果采用异步处理方式，则需要定期检查请求状态。
+4. 返回音频文件的URL或路径，以及可复现的参数。
 
-## Output Rules
+## 输出规范
 
-- Prefer stable audio formats (`mp3` or `wav`).
-- Keep text chunks short for long passages.
-- Surface duration and file size when possible.
+- 优先选择稳定的音频格式（`mp3` 或 `wav`）。
+- 对于较长的文本段落，建议将文本分割成较短的部分进行转换。
+- 在可能的情况下，显示音频的播放时长和文件大小。
 
-## References
+## 参考资料
 
 - `references/sources.md`

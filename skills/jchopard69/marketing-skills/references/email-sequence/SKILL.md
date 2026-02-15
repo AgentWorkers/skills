@@ -1,925 +1,1129 @@
 ---
 name: email-sequence
-description: When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program. Also use when the user mentions "email sequence," "drip campaign," "nurture sequence," "onboarding emails," "welcome sequence," "re-engagement emails," "email automation," or "lifecycle emails." For in-app onboarding, see onboarding-cro.
+description: 当用户希望创建或优化电子邮件序列（email sequence）、滴灌式营销活动（drip campaign）、自动化电子邮件流程（automated email flow）或生命周期电子邮件程序（lifecycle email program）时，也可以使用该功能。此外，当用户提到“电子邮件序列”、“滴灌式营销活动”、“用户培养序列”（nurture sequence）、“入职邮件”（onboarding emails）、“欢迎邮件”（welcome sequence）、“重新参与邮件”（re-engagement emails）、“电子邮件自动化”（email automation）或“生命周期电子邮件”时，同样适用此功能。关于应用内的入职引导流程，请参阅 onboarding-cro。
 ---
 
-# Email Sequence Design
+# 邮件序列设计
 
-You are an expert in email marketing and automation. Your goal is to create email sequences that nurture relationships, drive action, and move people toward conversion.
+作为电子邮件营销和自动化领域的专家，您的目标是创建能够培养客户关系、推动行动并引导客户完成转化的邮件序列。
 
-## Initial Assessment
+## 初始评估
 
-Before creating a sequence, understand:
+在创建邮件序列之前，请了解以下内容：
 
-1. **Sequence Type**
-   - Welcome/onboarding sequence
-   - Lead nurture sequence
-   - Re-engagement sequence
-   - Post-purchase sequence
-   - Event-based sequence
-   - Educational sequence
-   - Sales sequence
+1. **序列类型**
+   - 欢迎/入职序列
+   - 客户培养序列
+   - 重新参与序列
+   - 购后序列
+   - 基于事件的序列
+   - 教育序列
+   - 销售序列
 
-2. **Audience Context**
-   - Who are they?
-   - What triggered them into this sequence?
-   - What do they already know/believe?
-   - What's their current relationship with you?
+2. **受众背景**
+   - 他们是谁？
+   - 是什么促使他们进入这个序列？
+   - 他们已经了解/相信什么？
+   - 他们与您目前的关系的如何？
 
-3. **Goals**
-   - Primary conversion goal
-   - Relationship-building goals
-   - Segmentation goals
-   - What defines success?
-
----
-
-## Core Principles
-
-### 1. One Email, One Job
-- Each email has one primary purpose
-- One main CTA per email
-- Don't try to do everything
-
-### 2. Value Before Ask
-- Lead with usefulness
-- Build trust through content
-- Earn the right to sell
-
-### 3. Relevance Over Volume
-- Fewer, better emails win
-- Segment for relevance
-- Quality > frequency
-
-### 4. Clear Path Forward
-- Every email moves them somewhere
-- Links should do something useful
-- Make next steps obvious
+3. **目标**
+   - 主要转化目标
+   - 建立关系的目标
+   - 分段目标
+   - 什么是成功的标准？
 
 ---
 
-## Email Sequence Strategy
+## 核心原则
 
-### Sequence Length
-- Welcome: 3-7 emails
-- Lead nurture: 5-10 emails
-- Onboarding: 5-10 emails
-- Re-engagement: 3-5 emails
+### 1. 每封邮件，一个目标
+   - 每封邮件都有一个主要目的
+   - 每封邮件中只有一个主要的呼叫行动（CTA）
+   - 不要试图同时完成太多事情
 
-Depends on:
-- Sales cycle length
-- Product complexity
-- Relationship stage
+### 2. 先提供价值，再提出请求
+   - 用有用的内容建立信任
+   - 赢得销售的权利
 
-### Timing/Delays
-- Welcome email: Immediately
-- Early sequence: 1-2 days apart
-- Nurture: 2-4 days apart
-- Long-term: Weekly or bi-weekly
+### 3. 相关性高于发送频率
+   - 少而精的邮件更有效
+   - 根据相关性进行分段
+   - 质量高于发送频率
 
-Consider:
-- B2B: Avoid weekends
-- B2C: Test weekends
-- Time zones: Send at local time
-
-### Subject Line Strategy
-- Clear > Clever
-- Specific > Vague
-- Benefit or curiosity-driven
-- 40-60 characters ideal
-- Test emoji (they're polarizing)
-
-**Patterns that work:**
-- Question: "Still struggling with X?"
-- How-to: "How to [achieve outcome] in [timeframe]"
-- Number: "3 ways to [benefit]"
-- Direct: "[First name], your [thing] is ready"
-- Story tease: "The mistake I made with [topic]"
-
-### Preview Text
-- Extends the subject line
-- ~90-140 characters
-- Don't repeat subject line
-- Complete the thought or add intrigue
+### 4. 明确下一步行动
+   - 每封邮件都应该引导客户走向下一步
+   - 链接应该具有实际作用
+   - 明确下一步该做什么
 
 ---
 
-## Sequence Templates
+## 邮件序列策略
 
-### Welcome Sequence (Post-Signup)
+### 序列长度
+- 欢迎序列：3-7封邮件
+- 客户培养序列：5-10封邮件
+- 入职序列：5-10封邮件
+- 重新参与序列：3-5封邮件
 
-**Email 1: Welcome (Immediate)**
-- Subject: Welcome to [Product] — here's your first step
-- Deliver what was promised (lead magnet, access, etc.)
-- Single next action
-- Set expectations for future emails
+具体长度取决于：
+- 销售周期长度
+- 产品复杂性
+- 客户关系阶段
 
-**Email 2: Quick Win (Day 1-2)**
-- Subject: Get your first [result] in 10 minutes
-- Enable small success
-- Build confidence
-- Link to helpful resource
+### 发送时间和间隔
+- 欢迎邮件：立即发送
+- 早期序列：每隔1-2天发送
+- 培养序列：每隔2-4天发送
+- 长期序列：每周或每两周发送
 
-**Email 3: Story/Why (Day 3-4)**
-- Subject: Why we built [Product]
-- Origin story or mission
-- Connect emotionally
-- Show you understand their problem
+考虑因素：
+- B2B：避免在周末发送
+- B2C：可以测试在周末发送
+- 不同时区：根据当地时间发送
 
-**Email 4: Social Proof (Day 5-6)**
-- Subject: How [Customer] achieved [Result]
-- Case study or testimonial
-- Relatable to their situation
-- Soft CTA to explore
+### 主题行策略
+- 清晰 > 巧妙
+- 具体 > 模糊
+- 强调好处或引发好奇心
+- 40-60个字符为宜
+- 测试使用表情符号（效果因人而异）
 
-**Email 5: Overcome Objection (Day 7-8)**
-- Subject: "I don't have time for X" — sound familiar?
-- Address common hesitation
-- Reframe the obstacle
-- Show easy path forward
+**有效的主题行示例**：
+- 问题：“还在为X问题困扰吗？”
+- 操作指南：“如何在[时间范围内]实现[目标]”
+- 数字：“3种[好处]”
 
-**Email 6: Core Feature (Day 9-11)**
-- Subject: Have you tried [Feature] yet?
-- Highlight underused capability
-- Show clear benefit
-- Direct CTA to try it
-
-**Email 7: Conversion (Day 12-14)**
-- Subject: Ready to [upgrade/buy/commit]?
-- Summarize value
-- Clear offer
-- Urgency if appropriate
-- Risk reversal (guarantee, trial)
+### 预览文本
+- 扩展主题行的内容
+- 约90-140个字符
+- 不要重复主题行内容
+- 完整表达意思或增加吸引力
 
 ---
 
-### Lead Nurture Sequence (Pre-Sale)
+## 邮件序列模板
 
-**Email 1: Deliver + Introduce (Immediate)**
-- Deliver the lead magnet
-- Brief intro to who you are
-- Preview what's coming
+### 欢迎序列（注册后）
 
-**Email 2: Expand on Topic (Day 2-3)**
-- Related insight to lead magnet
-- Establish expertise
-- Light CTA to content
+**邮件1：欢迎（立即发送）**
+- 主题：欢迎使用[产品]——这是您的第一步
+- 提供承诺的内容（吸引人的内容、访问权限等）
+- 明确的下一步行动
+- 设定期望，为后续邮件奠定基础
 
-**Email 3: Problem Deep-Dive (Day 4-5)**
-- Articulate their problem deeply
-- Show you understand
-- Hint at solution
+**邮件2：快速成功（第1-2天）**
+- 主题：10分钟内获得您的第一个[成果]
+- 帮助客户建立信心
+- 提供有用的资源链接
 
-**Email 4: Solution Framework (Day 6-8)**
-- Your approach/methodology
-- Educational, not salesy
-- Builds toward your product
+**邮件3：故事/原因（第3-4天）**
+- 主题：我们为什么开发[产品]
+- 产品的起源故事或使命
+- 建立情感联系
+- 表明您理解他们的问题
 
-**Email 5: Case Study (Day 9-11)**
-- Real results from real customer
-- Specific and relatable
-- Soft CTA
+**邮件4：案例证明（第5-6天）**
+- 主题：[客户]是如何实现[成果]的
+- 提供相关案例或推荐
+- 与他们的情况产生共鸣
+- 提供探索的提示
 
-**Email 6: Differentiation (Day 12-14)**
-- Why your approach is different
-- Address alternatives
-- Build preference
+**邮件5：克服障碍（第7-8天）**
+- 主题：“我没有时间做X”——听起来很熟悉吗？
+- 解决常见的犹豫
+- 重新定义障碍
+- 显示简单的解决方法
 
-**Email 7: Objection Handler (Day 15-18)**
-- Common concern addressed
-- FAQ or myth-busting
-- Reduce friction
+**邮件6：核心功能（第9-11天）**
+- 主题：您尝试过[功能]吗？
+- 强调未被充分利用的功能
+- 显示明显的好处
+- 提供尝试的直接呼吁行动
 
-**Email 8: Direct Offer (Day 19-21)**
-- Clear pitch
-- Strong value proposition
-- Specific CTA
-- Urgency if available
-
----
-
-### Re-Engagement Sequence
-
-**Email 1: Check-In (Day 30-60 of inactivity)**
-- Subject: Is everything okay, [Name]?
-- Genuine concern
-- Ask what happened
-- Easy win to re-engage
-
-**Email 2: Value Reminder (Day 2-3 after)**
-- Subject: Remember when you [achieved X]?
-- Remind of past value
-- What's new since they left
-- Quick CTA
-
-**Email 3: Incentive (Day 5-7 after)**
-- Subject: We miss you — here's something special
-- Offer if appropriate
-- Limited time
-- Clear CTA
-
-**Email 4: Last Chance (Day 10-14 after)**
-- Subject: Should we stop emailing you?
-- Honest and direct
-- One-click to stay or go
-- Clean the list if no response
+**邮件7：转化（第12-14天）**
+- 主题：准备好[升级/购买/行动]了吗？
+- 总结产品价值
+- 明确的优惠
+- 如有必要，强调紧迫性
+- 提供风险逆转措施（例如保证、试用期）
 
 ---
 
-### Onboarding Sequence (Product Users)
+## 客户培养序列（购买前）
 
-Coordinate with in-app onboarding. Email supports, doesn't duplicate.
+**邮件1：发送吸引人的内容 + 介绍（立即发送）**
+- 发送吸引人的内容
+- 简要介绍公司
+- 预览后续内容
 
-**Email 1: Welcome + First Step (Immediate)**
-- Confirm signup
-- One critical action
-- Link directly to that action
+**邮件2：深入探讨主题（第2-3天）**
+- 与吸引人的内容相关的见解
+- 建立专业形象
+- 提供相关内容的链接
 
-**Email 2: Getting Started Help (Day 1)**
-- If they haven't completed step 1
-- Quick tip or video
-- Support option
+**邮件3：深入分析问题（第4-5天）**
+- 深入分析客户的问题
+- 表明您理解问题
+- 提供解决方案的提示
 
-**Email 3: Feature Highlight (Day 2-3)**
-- Key feature they should know
-- Specific use case
-- In-app link
+**邮件4：解决方案框架（第6-8天）**
+- 您的方法/流程
+- 教育性内容，而非销售性内容
+- 逐步引导客户了解产品
 
-**Email 4: Success Story (Day 4-5)**
-- Customer who succeeded
-- Relatable journey
-- Motivational
+**邮件5：案例研究（第9-11天）**
+- 真实客户的成功案例
+- 与客户的情况相关
+- 提供软性的呼吁行动
 
-**Email 5: Check-In (Day 7)**
-- How's it going?
-- Ask for feedback
-- Offer help
+**邮件6：差异化（第12-14天）**
+- 说明您的方法与众不同
+- 解释替代方案
+- 建立偏好
 
-**Email 6: Advanced Tip (Day 10-12)**
-- Power feature
-- For engaged users
-- Level-up content
+**邮件7：处理异议（第15-18天）**
+- 解决常见的问题
+- 回答常见问题或消除误解
+- 减少障碍
 
-**Email 7: Upgrade/Expand (Day 14+)**
-- For trial users: conversion push
-- For free users: upgrade prompt
-- For paid: expansion opportunity
-
----
-
-## Email Types Reference
-
-A comprehensive guide to lifecycle and campaign emails. Use this as an audit checklist and implementation reference.
-
-### Onboarding Emails
-
-#### New Users Series
-**Trigger**: User signs up (free or trial)
-**Goal**: Activate user, drive to aha moment
-**Typical sequence**: 5-7 emails over 14 days
-
-- Email 1: Welcome + single next step (immediate)
-- Email 2: Quick win / getting started (day 1)
-- Email 3: Key feature highlight (day 3)
-- Email 4: Success story / social proof (day 5)
-- Email 5: Check-in + offer help (day 7)
-- Email 6: Advanced tip (day 10)
-- Email 7: Upgrade prompt or next milestone (day 14)
-
-**Key metrics**: Activation rate, feature adoption
+**邮件8：直接提供优惠（第19-21天）**
+- 明确的推销内容
+- 强有力的价值主张
+- 明确的呼吁行动
+- 如有必要，强调紧迫性**
 
 ---
 
-#### New Customers Series
-**Trigger**: User converts to paid
-**Goal**: Reinforce purchase decision, drive adoption, reduce early churn
-**Typical sequence**: 3-5 emails over 14 days
+## 重新参与序列
 
-- Email 1: Thank you + what's next (immediate)
-- Email 2: Getting full value — setup checklist (day 2)
-- Email 3: Pro tips for paid features (day 5)
-- Email 4: Success story from similar customer (day 7)
-- Email 5: Check-in + introduce support resources (day 14)
+**邮件1：检查进度（在30-60天未活动时发送）**
+- 主题：[姓名]，一切还好吗？
+- 表达真诚的关心
+- 询问发生了什么
+- 提供简单的重新参与方式
 
-**Key point**: Different from new user series—they've committed. Focus on reinforcement and expansion, not conversion.
+**邮件2：价值提醒（之后2-3天）**
+- 主题：还记得您[实现X]的时候吗？
+- 提醒过去的价值
+- 自从上次联系后有什么新变化
+- 提供简单的呼吁行动
 
----
+**邮件3：激励措施（之后5-7天）**
+- 主题：我们想念您——这里有特别优惠
+- 提供合适的优惠
+- 限时优惠
+- 明确的呼吁行动
 
-#### Key Onboarding Step Reminder
-**Trigger**: User hasn't completed critical setup step after X time
-**Goal**: Nudge completion of high-value action
-**Format**: Single email or 2-3 email mini-sequence
-
-**Example triggers**:
-- Hasn't connected integration after 48 hours
-- Hasn't invited team member after 3 days
-- Hasn't completed profile after 24 hours
-
-**Copy approach**:
-- Remind them what they started
-- Explain why this step matters
-- Make it easy (direct link to complete)
-- Offer help if stuck
+**邮件4：最后机会（之后10-14天）**
+- 主题：我们应该停止给您发送邮件吗？
+- 表达诚实和直接的态度
+- 提供一键选择，决定是继续接收邮件还是停止
+- 如果没有回复，将删除用户信息**
 
 ---
 
-#### New User Invite
-**Trigger**: Existing user invites teammate
-**Goal**: Activate the invited user
-**Recipient**: The person being invited
+## 入职序列（产品用户）
 
-- Email 1: You've been invited (immediate)
-- Email 2: Reminder if not accepted (day 2)
-- Email 3: Final reminder (day 5)
+与应用程序内的入职流程协调。邮件内容应支持入职流程，避免重复。
 
-**Copy approach**:
-- Personalize with inviter's name
-- Explain what they're joining
-- Single CTA to accept invite
-- Social proof optional
+**邮件1：欢迎 + 第一步（立即发送）**
+- 确认注册
+- 提供一个关键的操作步骤
+- 直接提供该操作的链接
 
----
+**邮件2：开始使用帮助（第1天）**
+- 如果用户尚未完成第一步操作
+- 提供快速提示或视频
+- 提供支持选项
 
-### Retention Emails
+**邮件3：功能亮点（第2-3天）**
+- 应该知道的关键功能
+- 具体的使用场景
+- 提供应用程序内的链接
 
-#### Upgrade to Paid
-**Trigger**: Free user shows engagement, or trial ending
-**Goal**: Convert free to paid
-**Typical sequence**: 3-5 emails
+**邮件4：成功案例（第4-5天）**
+- 成功的用户案例
+- 与用户的情况相关
+- 提供激励
 
-**Trigger options**:
-- Time-based (trial day 10, 12, 14)
-- Behavior-based (hit usage limit, used premium feature)
-- Engagement-based (highly active free user)
+**邮件5：检查进度（第7天）**
+- 进展如何？
+- 请求反馈
+- 提供帮助
 
-**Sequence structure**:
-- Value summary: What they've accomplished
-- Feature comparison: What they're missing
-- Social proof: Who else upgraded
-- Urgency: Trial ending, limited offer
-- Final: Last chance + easy path
+**邮件6：高级技巧（第10-12天）**
+- 高级功能
+- 为活跃用户提供的内容
+- 提升用户水平的内容
 
----
-
-#### Upgrade to Higher Plan
-**Trigger**: User approaching plan limits or using features available on higher tier
-**Goal**: Upsell to next tier
-**Format**: Single email or 2-3 email sequence
-
-**Trigger examples**:
-- 80% of seat limit reached
-- 90% of storage/usage limit
-- Tried to use higher-tier feature
-- Power user behavior patterns
-
-**Copy approach**:
-- Acknowledge their growth (positive framing)
-- Show what next tier unlocks
-- Quantify value vs. cost
-- Easy upgrade path
+**邮件7：升级/扩展（第14天以后）**
+- 对于试用用户：推动转化
+- 对于免费用户：提供升级提示
+- 对于付费用户：提供扩展机会**
 
 ---
 
-#### Ask for Review
-**Trigger**: Customer milestone (30/60/90 days, key achievement, support resolution)
-**Goal**: Generate social proof on G2, Capterra, app stores
-**Format**: Single email
+## 邮件类型参考
 
-**Best timing**:
-- After positive support interaction
-- After achieving measurable result
-- After renewal
-- NOT after billing issues or bugs
+这是一个关于生命周期和活动邮件的全面指南。请将其作为审核清单和实施参考。
 
-**Copy approach**:
-- Thank them for being a customer
-- Mention specific value/milestone if possible
-- Explain why reviews matter (help others decide)
-- Direct link to review platform
-- Keep it short—this is an ask
+### 入职邮件
 
----
+#### 新用户系列
+**触发条件**：用户注册（免费或试用）
+**目标**：激活用户，引发“啊哈”时刻
+**典型序列**：14天内发送5-7封邮件
 
-#### Offer Support Proactively
-**Trigger**: Signs of struggle (drop in usage, failed actions, error encounters)
-**Goal**: Save at-risk user, improve experience
-**Format**: Single email
+- 邮件1：欢迎 + 第一步操作（立即发送）
+- 邮件2：快速成功 / 开始使用（第1天）
+- 邮件3：关键功能亮点（第3天）
+- 邮件4：成功案例 / 社交证明（第5天）
+- 邮件5：检查进度 + 提供帮助（第7天）
+- 邮件6：高级技巧（第10天）
+- 邮件7：升级提示或下一个里程碑（第14天）
 
-**Trigger examples**:
-- Usage dropped significantly week-over-week
-- Multiple failed attempts at action
-- Viewed help docs repeatedly
-- Stuck at same onboarding step
-
-**Copy approach**:
-- Genuine concern tone
-- Specific: "I noticed you..." (if data allows)
-- Offer direct help (not just link to docs)
-- Personal from support or CSM
-- No sales pitch—pure help
+**关键指标**：激活率、功能采用率
 
 ---
 
-#### Product Usage Report
-**Trigger**: Time-based (weekly, monthly, quarterly)
-**Goal**: Demonstrate value, drive engagement, reduce churn
-**Format**: Single email, recurring
+#### 新客户系列
+**触发条件**：用户转为付费用户
+**目标**：巩固购买决定，减少早期流失
+**典型序列**：14天内发送3-5封邮件
 
-**What to include**:
-- Key metrics/activity summary
-- Comparison to previous period
-- Achievements/milestones
-- Suggestions for improvement
-- Light CTA to explore more
+- 邮件1：感谢您 + 下一步是什么（立即发送）
+- 邮件2：充分利用产品——设置检查清单（第2天）
+- 邮件3：付费功能的实用技巧（第5天）
+- 邮件4：类似客户的成功案例（第7天）
+- 邮件5：检查进度 + 介绍支持资源（第14天）
 
-**Examples**:
-- "You saved X hours this month"
-- "Your team completed X projects"
-- "You're in the top X% of users"
-
-**Key point**: Make them feel good and remind them of value delivered.
+**关键点**：与新用户系列不同——他们已经做出了购买决定。重点在于巩固关系和扩展使用，而非再次转化。
 
 ---
 
-#### NPS Survey
-**Trigger**: Time-based (quarterly) or event-based (post-milestone)
-**Goal**: Measure satisfaction, identify promoters and detractors
-**Format**: Single email
+#### 关键入职步骤提醒
+**触发条件**：用户在指定时间内未完成关键设置步骤
+**目标**：提醒用户完成高价值操作
+**格式**：单封邮件或2-3封邮件的迷你序列
 
-**Best practices**:
-- Keep it simple: Just the NPS question initially
-- Follow-up form for "why" based on score
-- Personal sender (CEO, founder, CSM)
-- Tell them how you'll use feedback
+**示例触发条件**：
+- 48小时内未连接集成
+- 3天内未邀请团队成员
+- 24小时内未完成个人资料设置
 
-**Follow-up based on score**:
-- Promoters (9-10): Thank + ask for review/referral
-- Passives (7-8): Ask what would make it a 10
-- Detractors (0-6): Personal outreach to understand issues
-
----
-
-#### Referral Program
-**Trigger**: Customer milestone, promoter NPS score, or campaign
-**Goal**: Generate referrals
-**Format**: Single email or periodic reminders
-
-**Good timing**:
-- After positive NPS response
-- After customer achieves result
-- After renewal
-- Seasonal campaigns
-
-**Copy approach**:
-- Remind them of their success
-- Explain the referral offer clearly
-- Make sharing easy (unique link)
-- Show what's in it for them AND referee
+**文案策略**：
+- 提醒他们开始的内容
+- 解释该步骤的重要性
+- 简化操作流程（提供直接链接）
+- 如果遇到困难，提供帮助
 
 ---
 
-### Billing Emails
+#### 新用户邀请
+**触发条件**：现有用户邀请团队成员
+**目标**：激活被邀请的用户
+**接收者**：被邀请的人
 
-#### Switch to Annual
-**Trigger**: Monthly subscriber at renewal time or campaign
-**Goal**: Convert monthly to annual (improve LTV, reduce churn)
-**Format**: Single email or 2-email sequence
+- 邮件1：您已被邀请（立即发送）
+- 邮件2：如果未接受邀请，请提醒（第2天）
+- 邮件3：最后提醒（第5天）
 
-**Value proposition**:
-- Calculate exact savings
-- Additional benefits (if any)
-- Lock in current price messaging
-- Easy one-click switch
-
-**Best timing**:
-- Around monthly renewal date
-- End of year / new year
-- After 3-6 months of loyalty
-- Price increase announcement (lock in old rate)
+**文案策略**：
+- 用邀请者的名字个性化邮件
+- 解释他们将被邀请加入的内容
+- 提供单一的呼吁行动，邀请他们接受邀请
+- 可选提供社交证明
 
 ---
 
-#### Failed Payment Recovery
-**Trigger**: Payment fails
-**Goal**: Recover revenue, retain customer
-**Typical sequence**: 3-4 emails over 7-14 days
+### 保留用户邮件
 
-**Sequence structure**:
-- Email 1 (Day 0): Friendly notice, update payment link
-- Email 2 (Day 3): Reminder, service may be interrupted
-- Email 3 (Day 7): Urgent, account will be suspended
-- Email 4 (Day 10-14): Final notice, what they'll lose
+#### 升级到付费版本
+**触发条件**：免费用户表现出活跃度，或试用期结束
+**目标**：将免费用户转化为付费用户
+**典型序列**：3-5封邮件
 
-**Copy approach**:
-- Assume it's an accident (card expired, etc.)
-- Clear, direct, no guilt
-- Single CTA to update payment
-- Explain what happens if not resolved
+**触发选项**：
+- 基于时间的（试用期第10天、12天、14天）
+- 基于行为的（达到使用限制、使用了高级功能）
+- 基于活跃度的（非常活跃的免费用户）
 
-**Key metrics**: Recovery rate, time to recovery
-
----
-
-#### Cancellation Survey
-**Trigger**: User cancels subscription
-**Goal**: Learn why, opportunity to save
-**Format**: Single email (immediate)
-
-**Options**:
-- In-app survey at cancellation (better completion)
-- Follow-up email if they skip in-app
-- Personal outreach for high-value accounts
-
-**Questions to ask**:
-- Primary reason for cancelling
-- What could we have done better
-- Would anything change your mind
-- Can we help with transition
-
-**Winback opportunity**: Based on reason, offer targeted save (discount, pause, downgrade, training).
+**序列结构**：
+- 价值总结：他们已经取得的成就
+- 功能对比：他们错过了什么
+- 社交证明：还有谁升级了
+- 强调紧迫性：试用期结束，提供优惠
+- 最后机会：最后的机会和简单的路径
 
 ---
 
-#### Upcoming Renewal Reminder
-**Trigger**: X days before renewal (14 or 30 days typical)
-**Goal**: No surprise charges, opportunity to expand
-**Format**: Single email
+#### 升级到更高级别计划
+**触发条件**：用户接近计划限制或使用了高级功能
+**目标**：升级到更高级别
+**格式**：单封邮件或2-3封邮件的序列
 
-**What to include**:
-- Renewal date and amount
-- What's included in renewal
-- How to update payment/plan
-- Changes to pricing/features (if any)
-- Optional: Upsell opportunity
+**触发示例**：
+- 使用量达到80%的限额
+- 存储/使用量达到90%的限额
+- 尝试了更高级别的功能
+- 表现出高级用户的行为模式
 
-**Required for**: Annual subscriptions, high-value contracts
-
----
-
-### Usage Emails
-
-#### Daily/Weekly/Monthly Summary
-**Trigger**: Time-based
-**Goal**: Drive engagement, demonstrate value
-**Format**: Single email, recurring
-
-**Content by frequency**:
-- **Daily**: Notifications, quick stats (for high-engagement products)
-- **Weekly**: Activity summary, highlights, suggestions
-- **Monthly**: Comprehensive report, achievements, ROI if calculable
-
-**Structure**:
-- Key metrics at a glance
-- Notable achievements
-- Activity breakdown
-- Suggestions / what to try next
-- CTA to dive deeper
-
-**Personalization**: Must be relevant to their actual usage. Empty reports are worse than no report.
+**文案策略**：
+- 承认他们的成长（积极表述）
+- 显示升级后的好处
+- 量化升级的价值与成本
+- 提供简单的升级路径
 
 ---
 
-#### Key Event or Milestone Notifications
-**Trigger**: Specific achievement or event
-**Goal**: Celebrate, drive continued engagement
-**Format**: Single email per event
+#### 请求评价
+**触发条件**：客户达到里程碑（30/60/90天、关键成就、支持问题解决）
+**目标**：在G2、Capterra、应用商店等平台上生成社交证明
+**格式**：单封邮件
 
-**Milestone examples**:
-- First [action] completed
-- 10th/100th [thing] created
-- Goal achieved
-- Team collaboration milestone
-- Usage streak
+**最佳发送时间**：
+- 在获得积极支持后
+- 在取得可衡量的成果后
+- 在续费后
+**注意**：不要在出现账单问题或故障后发送
 
-**Copy approach**:
-- Celebration tone
-- Specific achievement
-- Context (compared to others, compared to before)
-- What's next / next milestone
-
----
-
-### Win-Back Emails
-
-#### Expired Trials
-**Trigger**: Trial ended without conversion
-**Goal**: Convert or re-engage
-**Typical sequence**: 3-4 emails over 30 days
-
-**Sequence structure**:
-- Email 1 (Day 1 post-expiry): Trial ended, here's what you're missing
-- Email 2 (Day 7): What held you back? (gather feedback)
-- Email 3 (Day 14): Incentive offer (discount, extended trial)
-- Email 4 (Day 30): Final reach-out, door is open
-
-**Segmentation**: Different approach based on trial engagement level:
-- High engagement: Focus on removing friction to convert
-- Low engagement: Offer fresh start, more onboarding help
-- No engagement: Ask what happened, offer demo/call
+**文案策略**：
+- 感谢他们成为客户
+- 如果可能，提及具体的价值/里程碑
+- 解释评价的重要性（帮助他人做出决定）
+- 提供直接的评价链接
+- 保持简短——这是一个请求
 
 ---
 
-#### Cancelled Customers
-**Trigger**: Time after cancellation (30, 60, 90 days)
-**Goal**: Win back churned customers
-**Typical sequence**: 2-3 emails spread over 90 days
+#### 主动提供支持
+**触发条件**：用户出现使用下降、操作失败、遇到错误等情况
+**目标**：挽救有风险的用户，改善使用体验
+**格式**：单封邮件
 
-**Sequence structure**:
-- Email 1 (Day 30): What's new since you left
-- Email 2 (Day 60): We've addressed [common reason]
-- Email 3 (Day 90): Special offer to return
+**触发示例**：
+- 使用量每周显著下降
+- 多次操作失败
+- 反复查看帮助文档
+- 固定在相同的入职步骤上
 
-**Copy approach**:
-- No guilt, no desperation
-- Genuine updates and improvements
-- Personalize based on cancellation reason if known
-- Make return easy
-
-**Key point**: They're more likely to return if their reason was addressed.
-
----
-
-### Campaign Emails
-
-#### Monthly Roundup / Newsletter
-**Trigger**: Time-based (monthly)
-**Goal**: Engagement, brand presence, content distribution
-**Format**: Single email, recurring
-
-**Content mix**:
-- Product updates and tips
-- Customer stories
-- Educational content
-- Company news
-- Industry insights
-
-**Best practices**:
-- Consistent send day/time
-- Scannable format
-- Mix of content types
-- One primary CTA focus
-- Unsubscribe is okay—keeps list healthy
+**文案策略**：
+- 以真诚的态度表达关心
+- 具体说明：“我注意到您...”（如果数据允许）
+- 提供直接的帮助（而不仅仅是链接到文档）
+- 由支持人员或客户成功经理（CSM）亲自发送
+**注意**：不要包含销售内容
 
 ---
 
-#### Seasonal Promotions
-**Trigger**: Calendar events (Black Friday, New Year, etc.)
-**Goal**: Drive conversions with timely offer
-**Format**: Campaign burst (2-4 emails)
+#### 产品使用报告
+**触发条件**：基于时间（每周、每月、每季度）
+**目标**：展示价值，提高参与度，减少流失
+**格式**：单封邮件，定期发送
 
-**Common opportunities**:
-- New Year (fresh start, annual planning)
-- End of fiscal year (budget spending)
-- Black Friday / Cyber Monday
-- Industry-specific seasons
-- Back to school / work
+**包含内容**：
+- 关键指标/活动总结
+- 与上一时期的对比
+- 成就/里程碑
+- 改进建议
+- 提供进一步探索的提示
 
-**Sequence structure**:
-- Announcement: Offer reveal
-- Reminder: Midway through promotion
-- Last chance: Final hours
+**示例**：
+- “您本月节省了X小时”
+- “您的团队完成了X个项目”
+- “您位于用户中的前X%”
 
----
-
-#### Product Updates
-**Trigger**: New feature release
-**Goal**: Adoption, engagement, demonstrate momentum
-**Format**: Single email per major release
-
-**What to include**:
-- What's new (clear and simple)
-- Why it matters (benefit, not just feature)
-- How to use it (direct link)
-- Who asked for it (community acknowledgment)
-
-**Segmentation**: Consider targeting based on relevance:
-- Users who would benefit most
-- Users who requested feature
-- Power users first (for beta feel)
+**关键点**：让他们感到满意，并提醒他们产品带来的价值。
 
 ---
 
-#### Industry News Roundup
-**Trigger**: Time-based (weekly or monthly)
-**Goal**: Thought leadership, engagement, brand value
-**Format**: Curated newsletter
+#### NPS调查
+**触发条件**：基于时间（每季度）或基于事件（达到里程碑）
+**目标**：在G2、Capterra、应用商店等平台上生成社交证明
+**格式**：单封邮件
 
-**Content**:
-- Curated news and links
-- Your take / commentary
-- What it means for readers
-- How your product helps
-
-**Best for**: B2B products where customers care about industry trends.
-
----
-
-#### Pricing Update
-**Trigger**: Price change announcement
-**Goal**: Transparent communication, minimize churn
-**Format**: Single email (or sequence for major changes)
-
-**Timeline**:
-- Announce 30-60 days before change
-- Reminder 14 days before
-- Final notice 7 days before
-
-**Copy approach**:
-- Clear, direct, transparent
-- Explain the why (value delivered, costs increased)
-- Grandfather if possible (lock in old rate)
-- Give options (annual lock-in, downgrade)
-
-**Important**: Honesty and advance notice build trust even when price increases.
+**最佳实践**：
+- 保持简单：最初只发送NPS调查问题
+- 根据评分发送后续表格
+- 由CEO、创始人或CSM亲自发送
+**根据评分采取后续行动**：
+- 对于评分9-10分的人：表示感谢 + 请求评价/推荐
+- 对于评分7-8分的人：询问如何提高评分
+- 对于评分0-6分的人：进行个性化联系，了解问题
 
 ---
 
-## Email Audit Checklist
+#### 推荐计划
+**触发条件**：客户达到里程碑、评分较高或活动期间
+**目标**：生成推荐
+**格式**：单封邮件或定期提醒
 
-Use this to audit your current email program:
+**最佳发送时间**：
+- 在收到积极评价后
+- 在客户取得成就后
+- 在续费后
+- 在季节性活动期间
 
-### Onboarding
-- [ ] New users series
-- [ ] New customers series
-- [ ] Key onboarding step reminders
-- [ ] New user invite sequence
-
-### Retention
-- [ ] Upgrade to paid sequence
-- [ ] Upgrade to higher plan triggers
-- [ ] Ask for review (timed properly)
-- [ ] Proactive support outreach
-- [ ] Product usage reports
-- [ ] NPS survey
-- [ ] Referral program emails
-
-### Billing
-- [ ] Switch to annual campaign
-- [ ] Failed payment recovery sequence
-- [ ] Cancellation survey
-- [ ] Upcoming renewal reminders
-
-### Usage
-- [ ] Daily/weekly/monthly summaries
-- [ ] Key event notifications
-- [ ] Milestone celebrations
-
-### Win-Back
-- [ ] Expired trial sequence
-- [ ] Cancelled customer sequence
-
-### Campaigns
-- [ ] Monthly roundup / newsletter
-- [ ] Seasonal promotion calendar
-- [ ] Product update announcements
-- [ ] Pricing update communications
+**文案策略**：
+- 提醒他们之前的成功
+- 清晰解释推荐计划
+- 使分享变得容易（提供独特的链接）
+- 显示推荐计划对他们的好处
 
 ---
 
-## Email Copy Guidelines
+#### 账单邮件
 
-### Structure
-1. **Hook**: First line grabs attention
-2. **Context**: Why this matters to them
-3. **Value**: The useful content
-4. **CTA**: What to do next
-5. **Sign-off**: Human, warm close
+#### 升级到年度订阅
+**触发条件**：月度订阅者在续费时
+**目标**：将用户转化为年度订阅者（提高生命周期价值，减少流失）
+**格式**：单封邮件或2封邮件的序列
 
-### Formatting
-- Short paragraphs (1-3 sentences)
-- White space between sections
-- Bullet points for scanability
-- Bold for emphasis (sparingly)
-- Mobile-first (most read on phone)
+**价值主张**：
+- 计算节省的费用
+- 额外的好处（如果有）
+- 固定当前价格的信息
+- 提供简单的一键升级路径
 
-### Tone
-- Conversational, not formal
-- First-person (I/we) and second-person (you)
-- Active voice
-- Match your brand but lean friendly
-- Read it out loud—does it sound human?
+**最佳发送时间**：
+- 在每月续费日期附近
+- 年末/新年
+- 在忠诚度达到3-6个月时
 
-### Length
-- Shorter is usually better
-- 50-125 words for transactional
-- 150-300 words for educational
-- 300-500 words for story-driven
-- If it's long, it better be good
+**格式**：
+- 单封邮件或2封邮件的序列
 
-### CTA Buttons vs. Links
-- Buttons: Primary actions, high-visibility
-- Links: Secondary actions, in-text
-- One clear primary CTA per email
-- Button text: Action + outcome
+**内容**：
+- 计算节省的费用
+- 额外的好处（如果有）
+- 固定当前价格的信息
+- 提供简单的一键升级路径
+
+**最佳发送时间**：
+- 在每月续费日期附近
+- 年末/新年
+- 在忠诚度达到3-6个月时
 
 ---
 
-## Personalization
 
-### Merge Fields
-- First name (fallback to "there" or "friend")
-- Company name (B2B)
-- Relevant data (usage, plan, etc.)
+#### 失败支付恢复
+**触发条件**：支付失败
+**目标**：恢复收入，保留客户
+**典型序列**：7-14天内发送3-4封邮件
 
-### Dynamic Content
-- Based on segment
-- Based on behavior
-- Based on stage
+**序列结构**：
+- 邮件1（第0天）：友好通知，更新支付链接
+- 邮件2（第3天）：提醒，服务可能会中断
+- 邮件3（第7天）：紧急通知，账户将被暂停
+- 邮件4（第10-14天）：最后通知，说明将会失去什么
 
-### Triggered Emails
-- Action-based sends
-- More relevant than time-based
-- Examples: Feature used, milestone hit, inactivity
+**文案策略**：
+- 假设这是意外（例如卡片过期等）
+- 信息清晰、直接，不带有责备语气
+- 提供直接更新支付的链接
+- 解释如果不解决将会发生什么
 
----
-
-## Segmentation Strategies
-
-### By Behavior
-- Openers vs. non-openers
-- Clickers vs. non-clickers
-- Active vs. inactive
-
-### By Stage
-- Trial vs. paid
-- New vs. long-term
-- Engaged vs. at-risk
-
-### By Profile
-- Industry/role (B2B)
-- Use case / goal
-- Company size
+**关键指标**：恢复率，恢复时间
 
 ---
 
-## Testing and Optimization
+#### 取消订阅调查
+**触发条件**：用户取消订阅
+**目标**：了解取消原因，提供挽回机会
+**格式**：单封邮件（立即发送）
 
-### What to Test
-- Subject lines (highest impact)
-- Send times
-- Email length
-- CTA placement and copy
-- Personalization level
-- Sequence timing
+**选项**：
+- 在应用内发送调查（更好的完成率）
+- 如果用户未在应用内响应，发送后续邮件
+- 对于高价值账户，进行个性化联系
 
-### How to Test
-- A/B test one variable at a time
-- Sufficient sample size
-- Statistical significance
-- Document learnings
+**要询问的问题**：
+- 取消订阅的主要原因
+- 我们可以做什么来改善体验
+- 有什么可以改变您的决定吗
+- 我们能帮助您完成过渡吗？
 
-### Metrics to Track
-- Open rate (benchmark: 20-40%)
-- Click rate (benchmark: 2-5%)
-- Unsubscribe rate (keep under 0.5%)
-- Conversion rate (specific to sequence goal)
-- Revenue per email (if applicable)
+**挽回机会**：根据原因，提供有针对性的优惠（折扣、暂停服务、降级、培训等）。
 
 ---
 
-## Output Format
+#### 即将到来的续费提醒
+**触发条件**：在续费前X天（通常为14天或30天）
+**目标**：避免意外收费，提供扩展机会
+**格式**：单封邮件
 
-### Sequence Overview
-```
-Sequence Name: [Name]
-Trigger: [What starts the sequence]
-Goal: [Primary conversion goal]
-Length: [Number of emails]
-Timing: [Delay between emails]
-Exit Conditions: [When they leave the sequence]
-```
+**包含内容**：
+- 续费日期和费用
+- 续费包含的内容
+- 如何更新支付/计划
+- 价格/功能的变更（如果有）
 
-### For Each Email
-```
-Email [#]: [Name/Purpose]
-Send: [Timing]
-Subject: [Subject line]
-Preview: [Preview text]
-Body: [Full copy]
-CTA: [Button text] → [Link destination]
-Segment/Conditions: [If applicable]
-```
-
-### Metrics Plan
-What to measure and benchmarks
+**必要条件**：适用于年度订阅、高价值合同
 
 ---
 
-## Questions to Ask
+#### 使用情况邮件
 
-If you need more context:
-1. What triggers entry to this sequence?
-2. What's the primary goal/conversion action?
-3. Who is the audience?
-4. What do they already know about you?
-5. What other emails are they receiving?
-6. What's your current email performance?
+#### 每日/每周/每月总结
+**触发条件**：基于时间
+**目标**：提高参与度，展示价值
+**格式**：单封邮件，定期发送
+
+**内容根据频率不同**：
+- **每日**：通知、快速统计（针对高参与度产品）
+- **每周**：活动总结、亮点、建议
+- **每月**：综合报告、成就、投资回报率（ROI）
+
+**结构**：
+- 一目了然的关键指标
+- 显著的成就
+- 活动总结
+- 建议/下一步行动
+- 提供进一步探索的提示
+
+**个性化**：内容必须与用户的实际使用情况相关。空洞的报告比不发送报告更糟糕。
 
 ---
 
-## Related Skills
+#### 关键事件或里程碑通知
+**触发条件**：特定成就或事件
+**目标**：庆祝，促进持续参与
+**格式**：每次事件发送单封邮件
 
-- **onboarding-cro**: For in-app onboarding (email supports this)
-- **copywriting**: For landing pages emails link to
-- **ab-test-setup**: For testing email elements
-- **popup-cro**: For email capture popups
+**里程碑示例**：
+- 完成第一个[动作]
+- 创建第10个/第100个[东西]
+- 达成目标
+- 团队合作里程碑
+- 使用连续记录
+
+**文案策略**：
+- 以庆祝的语气发送
+- 具体的成就
+- 与之前的情况对比
+- 下一步是什么/下一个里程碑是什么
+
+---
+
+#### 回收流失用户邮件
+
+#### 试用期结束的用户
+**触发条件**：试用期结束
+**目标**：转化或重新参与
+**典型序列**：30天内发送3-4封邮件
+
+**序列结构**：
+- 邮件1（试用期结束后第1天）：试用期结束，您错过了什么
+- 邮件2（第7天）：是什么阻碍了您？（收集反馈）
+- 邮件3（第14天）：提供激励优惠（折扣、延长试用期）
+- 邮件4（第30天）：最后的联系，机会仍然存在
+
+**分段策略**：
+- 根据用户的参与程度采取不同的方法：
+- 高参与度用户：重点消除障碍，促进转化
+- 低参与度用户：提供新的开始、更多的入职帮助
+- 无参与度用户：询问原因，提供演示/电话支持
+
+---
+
+#### 活动邮件
+
+#### 活动邮件
+**触发条件**：基于时间（每周、每月、每季度）
+**目标**：提高参与度，展示价值
+**格式**：单封邮件，定期发送
+
+**内容组合**：
+- 产品更新和技巧
+- 客户故事
+- 教育内容
+- 公司新闻
+**最佳实践**：
+- 保持固定的发送时间和格式
+- 内容多样化
+- 一个主要的呼吁行动
+- 允许用户取消订阅——保持邮件列表的活跃
+
+---
+
+
+#### 季节性促销
+**触发条件**：基于时间（黑色星期五、新年等）
+**目标**：通过及时的优惠促进转化
+**格式**：2-4封邮件的系列
+
+**常见机会**：
+- 新年（新的开始、年度计划）
+- 财年结束（预算支出）
+- 黑色星期五/网络星期一
+- 行业特定季节
+
+**序列结构**：
+- 活动公告：优惠发布
+- 中间提醒：促销进行中
+- 最后机会：最后时刻
+
+---
+
+
+#### 产品更新邮件
+**触发条件**：新产品发布
+**目标**：提高采用率，促进参与度
+**格式**：每次重大更新发送单封邮件
+
+**包含内容**：
+- 新内容（简洁明了）
+- 重要性（好处，而不仅仅是功能）
+- 如何使用（提供直接链接）
+- 谁请求了这些更新（感谢社区的支持）
+
+**分段策略**：
+- 根据相关性进行目标定位：
+- 最能从中受益的用户
+- 请求过该功能的用户
+- 首先推荐给高级用户
+
+---
+
+
+#### 行业新闻汇总
+**触发条件**：基于时间（每周或每月）
+**目标**：衡量满意度，识别推广者和反对者
+**格式**：单封邮件
+
+**最佳实践**：
+- 保持简单：最初只发送NPS调查问题
+- 根据评分发送后续表格
+- 由CEO、创始人或CSM亲自发送
+**根据评分采取后续行动**：
+- 对于评分9-10分的人：表示感谢 + 请求评价/推荐
+- 对于评分7-8分的人：询问如何提高评分
+- 对于评分0-6分的人：进行个性化联系，了解问题
+
+---
+
+
+#### 推荐计划
+**触发条件**：客户达到里程碑、评分较高或活动期间
+**目标**：生成推荐
+**格式**：单封邮件或定期提醒
+
+**最佳发送时间**：
+- 在收到积极评价后
+- 在客户取得成就后
+- 在续费后
+- 在季节性活动期间
+
+**文案策略**：
+- 提醒他们之前的成功
+- 清晰解释推荐计划
+- 使分享变得容易（提供独特的链接）
+- 显示推荐计划对他们的好处
+
+---
+
+#### 账单邮件
+
+#### 升级到年度订阅
+**触发条件**：月度订阅者在续费时
+**目标**：将用户转化为年度订阅者（提高生命周期价值，减少流失）
+**格式**：单封邮件或2封邮件的序列
+
+**价值主张**：
+- 计算节省的费用
+- 额外的好处（如果有）
+- 固定当前价格的信息
+- 提供简单的一键升级路径
+
+**最佳发送时间**：
+- 在每月续费日期附近
+- 年末/新年
+- 在忠诚度达到3-6个月时
+
+---
+
+
+#### 支付失败恢复
+**触发条件**：支付失败
+**目标**：恢复收入，保留客户
+**典型序列**：7-14天内发送3-4封邮件
+
+**序列结构**：
+- 邮件1（第0天）：友好通知，更新支付链接
+- 邮件2（第3天）：提醒，服务可能会中断
+- 邮件3（第7天）：紧急通知，账户将被暂停
+- 邮件4（第10-14天）：最后通知，说明将会失去什么
+
+**文案策略**：
+- 假设这是意外（例如卡片过期等）
+- 信息清晰、直接，不带有责备语气
+- 提供直接更新支付的链接
+- 解释如果不解决将会发生什么
+
+**关键指标**：恢复率，恢复时间
+
+---
+
+#### 取消订阅调查
+**触发条件**：用户取消订阅
+**目标**：了解取消原因，提供挽回机会
+**格式**：单封邮件（立即发送）
+
+**选项**：
+- 在应用内发送调查（完成率更高）
+- 如果用户未在应用内响应，发送后续邮件
+- 对于高价值账户，进行个性化联系
+
+**要询问的问题**：
+- 取消订阅的主要原因
+- 我们可以做什么来改善体验
+- 有什么可以改变您的决定吗
+- 我们能帮助您完成过渡吗？
+
+---
+
+
+#### 即将到来的续费提醒
+**触发条件**：在续费前X天（通常为14天或30天）
+**目标**：避免意外收费，提供扩展机会
+**格式**：单封邮件
+
+**包含内容**：
+- 续费日期和费用
+- 续费包含的内容
+- 如何更新支付/计划
+- 价格/功能的变更（如果有）
+
+**必要条件**：适用于年度订阅、高价值合同
+
+
+#### 使用情况邮件
+
+#### 每日/每周/每月总结
+**触发条件**：基于时间
+**目标**：提高参与度，展示价值
+**格式**：单封邮件，定期发送
+
+**内容根据频率不同**：
+- **每日**：通知、快速统计（针对高参与度产品）
+- **每周**：活动总结、亮点、建议
+- **每月**：综合报告、成就、投资回报率（如果可以计算）
+
+**结构**：
+- 一目了然的关键指标
+- 显著的成就
+- 活动总结
+- 建议/下一步行动
+- 提供进一步探索的提示
+
+**个性化**：内容必须与用户的实际使用情况相关。空洞的报告比不发送报告更糟糕。
+
+---
+
+#### 关键事件或里程碑通知
+**触发条件**：特定成就或事件
+**目标**：庆祝，促进持续参与
+**格式**：每次事件发送单封邮件
+
+**里程碑示例**：
+- 完成第一个[动作]
+- 创建第10个/第100个[东西]
+- 达成目标
+- 团队合作里程碑
+- 使用连续记录
+
+**文案策略**：
+- 以庆祝的语气发送
+- 具体的成就
+- 与之前的情况对比
+- 下一步是什么/下一个里程碑是什么
+
+
+#### 回收流失用户邮件
+
+#### 试用期结束的用户
+**触发条件**：试用期结束
+**目标**：转化或重新参与
+**典型序列**：30天内发送3-4封邮件
+
+**序列结构**：
+- 邮件1（试用期结束后第1天）：试用期结束，您错过了什么
+- 邮件2（第7天）：是什么阻碍了您？（收集反馈）
+- 邮件3（第14天）：提供激励优惠（折扣、延长试用期）
+- 邮件4（第30天）：最后的联系，机会仍然存在
+
+**分段策略**：
+- 根据用户的参与程度采取不同的方法：
+- 高参与度用户：重点消除障碍，促进转化
+- 低参与度用户：提供新的开始、更多的入职帮助
+- 无参与度用户：询问原因，提供演示/电话支持
+
+
+#### 活动邮件
+
+#### 活动邮件
+**触发条件**：特定成就或事件
+**目标**：庆祝，促进持续参与
+**格式**：每次事件发送单封邮件
+
+**里程碑示例**：
+- 完成第一个[动作]
+- 创建第10个/第100个[东西]
+- 达成目标
+- 团队合作里程碑
+- 使用连续记录
+
+
+#### 营销活动邮件
+
+#### 月度总结/通讯
+**触发条件**：基于时间（每月）
+**目标**：提高参与度，增强品牌影响力，分发内容
+**格式**：单封邮件，定期发送
+
+**内容组合**：
+- 产品更新和技巧
+- 客户故事
+- 教育内容
+- 公司新闻
+
+
+#### 最佳实践**：
+- 保持固定的发送时间和格式
+- 可扫描的格式
+- 内容多样化
+- 一个主要的呼吁行动
+- 允许用户取消订阅——保持邮件列表的活跃
+
+
+#### 季节性促销
+**触发条件**：基于时间（黑色星期五、新年等）
+**目标**：通过及时的优惠促进转化
+**格式**：2-4封邮件的系列
+
+
+#### 产品更新
+**触发条件**：新产品发布
+**目标**：提高采用率，促进参与度
+**格式**：每次重大更新发送单封邮件
+
+
+**包含内容**：
+- 新内容（简洁明了）
+- 重要性（好处，而不仅仅是功能）
+- 如何使用（提供直接链接）
+- 谁请求了这些更新（感谢社区的支持）
+
+
+#### 行业新闻汇总
+**触发条件**：基于时间（每周或每月）
+**目标**：展现领导力，增强品牌影响力
+**格式**：精选的新闻和链接
+
+
+**最佳实践**：
+- 保持发送时间和格式的一致性
+- 混合不同类型的内容
+- 一个主要的呼吁行动
+- 允许用户取消订阅——保持邮件列表的活跃
+
+
+#### 价格更新
+**触发条件**：价格变动
+**目标**：透明沟通，减少流失
+**格式**：单封邮件（或2封邮件的序列）
+
+**时间安排**：
+- 在价格变动前30-60天宣布
+- 在更新前14天提醒
+- 在更新前7天最后通知
+
+
+**文案策略**：
+- 清晰、直接、透明
+- 解释原因（提供的价值，增加的费用）
+- 如果可能，提供旧的费率
+
+
+## 邮件审核清单
+
+使用此清单来审核您当前的邮件计划：
+
+### 入职环节
+- [ ] 新用户系列
+- [ ] 新客户系列
+- [ ] 关键入职步骤提醒
+- [ ] 新用户邀请序列
+
+
+### 保留用户环节
+- [ ] 升级到付费序列
+- [ ] 升级到更高级别计划的触发条件
+- [ ] 适时请求评价
+- [ ] 主动提供支持
+- [ ] 产品使用报告
+- [ ] NPS调查
+- [ ] 推荐计划邮件
+
+
+### 账单环节
+- [ ] 升级到年度订阅的营销活动
+- [ ] 支付失败后的恢复序列
+- [ ] 取消订阅后的调查
+- [ ] 即将到来的续费提醒
+
+
+### 使用情况环节
+- [ ] 每日/每周/每月总结
+- [ ] 关键事件通知
+- [ ] 里程碑庆祝
+
+
+### 回收用户环节
+- [ ] 试用期结束的序列
+- [ ] 取消订阅的序列
+
+
+### 活动环节
+- [ ] 月度总结/通讯
+- [ ] 季节性促销活动
+- [ ] 产品更新公告
+
+
+## 邮件文案指南
+
+### 结构
+1. **开头**：第一句话吸引注意力
+2. **背景**：解释这对他们的重要性
+3. **价值**：提供有用的内容
+4. **呼吁行动**：下一步该做什么
+5. **结尾**：人性化、温暖的结束语
+
+
+### 格式
+- 段落简短（1-3句话）
+- 段落之间留有空白
+- 使用项目符号以便于阅读
+- 使用粗体字突出重点（适度使用）
+- 以移动设备优先（大多数人在手机上阅读）
+
+
+### 语气
+- 采用对话式的语言，而非正式的语气
+- 使用第一人称（“我/我们”）和第二人称（“您”）
+- 使用主动语态
+- 与品牌风格一致，但保持友好
+- 朗读出来——听起来是否自然？
+
+
+### 长度
+- 通常越短越好
+- 交易类邮件：50-125个单词
+- 教育类邮件：150-300个单词
+- 基于故事的内容：300-500个单词
+- 如果内容较长，那么内容必须非常精彩
+
+
+### 呼叫行动按钮与链接
+- 按钮：主要的行动，高度可见
+- 链接：次要的行动，放在文本中
+- 每封邮件中只有一个明确的呼吁行动
+- 按钮文本：行动 + 结果
+
+
+## 个性化
+
+### 合并字段
+- 名字（默认为“there”或“friend”）
+- 公司名称（针对B2B）
+- 相关数据（使用情况、计划等）
+
+
+### 动态内容
+- 根据用户分组
+- 根据用户行为
+- 根据用户阶段
+
+
+### 触发式邮件
+- 根据用户的行为发送
+- 比基于时间的发送更有效
+**示例**：使用了某个功能、达到了某个里程碑、没有活动
+
+
+## 分段策略
+
+### 根据行为分段
+- 打开邮件的人 vs. 未打开邮件的人
+- 点击邮件的人 vs. 未点击邮件的人
+- 活跃用户 vs. 不活跃用户
+
+
+### 根据用户阶段分段
+- 试用用户 vs. 支付用户
+- 新用户 vs. 长期用户
+- 参与度高的用户 vs. 风险用户
+
+
+### 根据用户资料分段
+- 行业/角色（针对B2B）
+- 使用场景/目标
+- 公司规模
+
+
+## 测试与优化
+
+### 测试内容
+- 主题行（影响最大）
+- 发送时间
+- 邮件长度
+- 呼叫行动的位置和文案
+- 个性化程度
+- 序列的发送时间
+
+
+### 如何测试
+- 一次测试一个变量
+- 足够的样本量
+- 统计显著性
+- 记录测试结果
+
+
+### 需要跟踪的指标
+- 开启率（基准：20-40%）
+- 点击率（基准：2-5%）
+- 取消订阅率（保持在0.5%以下）
+- 转化率（针对特定序列目标）
+- 每封邮件的收入（如果适用）
+
+
+## 输出格式
+
+
+### 序列概览
+
+
+### 每封邮件的内容
+
+
+### 统计指标计划
+
+
+## 需要询问的问题
+
+如果您需要更多背景信息：
+1. 什么触发了用户进入这个序列？
+2. 主要目标/转化行动是什么？
+3. 用户是谁？
+4. 他们已经了解关于您的哪些信息？
+5. 他们还收到了哪些其他邮件？
+6. 您当前的邮件效果如何？
+
+
+## 相关技能
+
+- **onboarding-cro**：用于应用程序内的入职流程（邮件支持这一流程）
+- **copywriting**：用于登录页面的邮件链接
+- **ab-test-setup**：用于测试邮件元素
+- **popup-cro**：用于邮件捕获的弹窗

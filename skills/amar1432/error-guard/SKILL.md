@@ -11,79 +11,81 @@ description: >
 
 # error-guard
 
-⚠️ **System‑level skill (Advanced users)**
+⚠️ **系统级技能（高级用户专用）**
 
-This skill defines the **control‑plane safety primitives** for OpenClaw.
-It is intentionally minimal, non‑blocking, and designed to prevent agent freezes, deadlocks, and unrecoverable states when running long‑lived or high‑risk workloads.
+该技能定义了 OpenClaw 的 **控制平面安全机制**。其设计初衷是保持简洁性、非阻塞性，并旨在防止代理在处理长时间运行或高风险的工作负载时出现冻结、死锁或无法恢复的状态。
 
-## Design Principles
+## 设计原则
 
-> **Warning:** This skill operates at the agent control‑plane level.
-> It should be installed only by users who understand OpenClaw’s execution model and are running workloads that can block, hang, or run for extended periods.
+> **警告：** 该技能在代理的控制平面层面运行。  
+> 仅应由了解 OpenClaw 执行模型、且正在运行可能阻塞、挂起或长时间运行的工作负载的用户来安装。
 
-- **Main agent never blocks**: no long exec, no external I/O, no LLM calls.
-- **Event-driven**: workers emit events; the control plane listens.
-- **Fail-safe first**: recovery commands must always respond.
-- **Minimal state**: track only task metadata (never payloads).
+- **主代理永不阻塞**：避免长时间执行任务、避免外部 I/O 操作、避免调用大型语言模型（LLM）。
 
-## Command Surface (Phase 1)
+- **事件驱动**：工作进程会生成事件，控制平面会监听这些事件。
+
+- **优先考虑故障安全**：所有恢复命令都必须能够立即响应。
+
+- **状态信息最小化**：仅记录任务元数据（如任务 ID、创建时间、状态），绝不保存任务数据本身。
+
+## 命令接口（第一阶段）
 
 ### /status
 
-Report current system health and task registry state.
+报告当前系统健康状况和任务注册表的状态。
 
-Returns:
-- Active tasks (taskId, type, state)
-- Start time and last heartbeat
-- Flags for stalled or overdue tasks
+返回信息：
+- 活动中的任务（任务 ID、类型、状态）
+- 任务的开始时间和最后一次心跳信号
+- 标记为停滞或逾期的任务
 
-Constraints:
-- Must run in constant time
-- Must not call any model or external API
+**限制条件：**
+- 必须以恒定时间间隔执行
+- 严禁调用任何模型或外部 API。
 
 ### /flush
 
-Emergency stop.
+紧急停止操作。
 
-Immediately:
-- Cancel all active tasks
-- Kill active exec/process sessions
-- Clear pending message queue
-- Reset in-memory task registry
+立即执行以下操作：
+- 取消所有活动中的任务
+- 结束所有正在运行的进程/会话
+- 清空待处理消息队列
+- 重置内存中的任务注册表
 
-Constraints:
-- Must always respond
-- No waiting on workers
-- No model calls
+**限制条件：**
+- 必须立即响应请求
+- 不得等待任何工作进程的完成
+- 严禁调用任何模型。
 
 ### /recover
 
-Safe recovery sequence.
+安全的恢复流程：
 
-Steps:
-1. Execute `/flush`
-2. Reset control-plane state
-3. Optionally reload skills/state (no container restart)
+步骤：
+1. 执行 `/flush` 命令
+2. 重置控制平面的状态
+3. （可选）重新加载相关技能/状态数据（无需重启容器）
 
-## Future Extensions (Not Implemented Yet)
+## 未来扩展计划（尚未实现）
 
-- Sub-agent runner helper (event-driven)
-- Task watchdogs with TTL and silence detection
-- Structured event protocol (task.started, task.heartbeat, task.completed, ...)
-- Back-pressure and task classes (interactive / batch / background)
+- 子代理运行辅助工具（事件驱动）
+- 带有超时限制和静默检测功能的任务监控机制
+- 结构化的事件协议（如 `taskstarted`、`task.heartbeat`、`task_completed` 等）
+- 支持不同的任务执行模式（交互式、批量、后台执行）
 
-## Security & Privacy
+## 安全性与隐私保护
 
-- This skill **does not** store payloads, prompts, messages, or model outputs
-- Only minimal task metadata is persisted (taskId, timestamps, state)
-- No API keys, credentials, or user data are read or written
-- Safe to publish and share publicly
+- 该技能**不**存储任务数据、用户输入、消息或模型输出。
+- 仅保存最基本的任务元数据（如任务 ID、时间戳、状态）。
+- 不会读取或写入任何 API 密钥、凭据或用户数据。
+- 可以安全地公开发布和共享该技能。
 
-## Non-Goals
+## 非目标功能
 
-- No business logic
-- No background polling loops
-- No user-facing features
-- No LLM reasoning paths
+- 该技能不包含任何业务逻辑
+- 不包含后台轮询机制
+- 不提供面向用户的界面
+- 不涉及任何大型语言模型的推理过程
 
-This skill is the **last line of defense**. Keep it small, fast, and reliable.
+该技能是系统的**最后一道防线**。请确保其保持简洁、高效且可靠。

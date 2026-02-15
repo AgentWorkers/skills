@@ -1,67 +1,67 @@
 ---
 name: apple-docs
-description: Query Apple Developer Documentation, APIs, and WWDC videos (2014-2025). Search SwiftUI, UIKit, Objective-C, Swift frameworks and watch sessions.
+description: 查询苹果开发者文档、API以及2014-2025年的WWDC视频。可以搜索SwiftUI、UIKit、Objective-C、Swift框架相关的内容，以及观看相关的会议录像。
 metadata: {"clawdbot":{"emoji":"🍎","requires":{"bins":["node"]}}}
 ---
 
 # Apple Docs Skill
 
-Query Apple Developer Documentation, frameworks, APIs, and WWDC videos.
+该工具可用于查询苹果开发者文档、框架、API以及WWDC视频。
 
-## Setup
+## 设置
 
-No installation required - works out of the box with native fetch.
+无需安装，直接使用内置的`fetch`功能即可使用。
 
-## Available Tools
+## 可用工具
 
-### Documentation Search
+### 文档搜索
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `apple-docs search "query"` | Search Apple Developer Documentation |
-| `apple-docs symbols "UIView"` | Search framework classes, structs, protocols |
-| `apple-docs doc "/path/to/doc"` | Get detailed documentation by path |
+| `apple-docs search "查询内容"` | 在苹果开发者文档中搜索指定内容 |
+| `apple-docs symbols "UIView"` | 搜索框架中的类、结构体和协议 |
+| `apple-docs doc "/path/to/doc"` | 根据路径获取详细文档 |
 
-### API Exploration
+### API探索
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `apple-docs apis "UIViewController"` | Find inheritance and protocol conformances |
-| `apple-docs platform "UIScrollView"` | Check platform/version compatibility |
-| `apple-docs similar "UIPickerView"` | Find Apple's recommended alternatives |
+| `apple-docs apis "UIViewController"` | 查看`UIViewController`的继承关系和协议遵循情况 |
+| `apple-docs platform "UIScrollView"` | 检查`UIScrollView`的兼容性（平台/版本） |
+| `apple-docs similar "UIPickerView"` | 查找苹果推荐的替代方案 |
 
-### Technology Browsing
+### 技术浏览
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `apple-docs tech` | List all Apple technologies by category |
-| `apple-docs overview "SwiftUI"` | Get comprehensive technology guides |
-| `apple-docs samples "SwiftUI"` | Browse Swift/Objective-C sample projects |
+| `apple-docs tech` | 按类别列出所有苹果技术 |
+| `apple-docs overview "SwiftUI"` | 获取SwiftUI的全面技术指南 |
+| `apple-docs samples "SwiftUI"` | 浏览Swift/Objective-C示例项目 |
 
-### WWDC Videos
+### WWDC视频
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `apple-docs wwdc-search "async"` | Search WWDC sessions (2014-2025) |
-| `apple-docs wwdc-video 2024-100` | Get transcript, code examples, resources |
-| `apple-docs wwdc-topics` | List 20 WWDC topic categories |
-| `apple-docs wwdc-years` | List WWDC years with video counts |
+| `apple-docs wwdc-search "async"` | 搜索2014年至2025年的WWDC会议内容 |
+| `apple-docs wwdc-video 2024-100` | 获取视频的文字记录、代码示例和资源 |
+| `apple-docs wwdc-topics` | 列出20个WWDC主题类别 |
+| `apple-docs wwdc-years` | 列出包含视频的WWDC年份 |
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--limit <n>` | Limit number of results |
-| `--category` | Filter by technology category |
-| `--framework` | Filter by framework name |
-| `--year` | Filter by WWDC year |
-| `--no-transcript` | Skip transcript for WWDC videos |
-| `--no-inheritance` | Skip inheritance info in apis command |
-| `--no-conformances` | Skip protocol conformances in apis command |
+| `--limit <n>` | 限制结果数量 |
+| `--category` | 按技术类别过滤 |
+| `--framework` | 按框架名称过滤 |
+| `--year` | 按WWDC年份过滤 |
+| `--no-transcript` | 跳过WWDC视频的文字记录 |
+| `--no-inheritance` | 跳过API命令中的继承信息 |
+| `--no-conformances` | 跳过API命令中的协议遵循信息 |
 
-## Examples
+## 示例
 
-### Search Documentation
+### 搜索文档
 
 ```bash
 # Search for SwiftUI animations
@@ -71,7 +71,7 @@ apple-docs search "SwiftUI animation"
 apple-docs symbols "UITableViewDelegate"
 ```
 
-### Check Platform Compatibility
+### 检查平台兼容性
 
 ```bash
 # Check iOS version support for Vision framework
@@ -81,7 +81,7 @@ apple-docs platform "VNRecognizeTextRequest"
 apple-docs search "SwiftUI View iOS 15"
 ```
 
-### Explore APIs
+### 探索API
 
 ```bash
 # Get inheritance hierarchy for UIViewController
@@ -91,7 +91,7 @@ apple-docs apis "UIViewController"
 apple-docs similar "UILabel"
 ```
 
-### WWDC Videos
+### 浏览WWDC视频
 
 ```bash
 # Search for async/await sessions
@@ -104,7 +104,7 @@ apple-docs wwdc-video 2024-100
 apple-docs wwdc-years
 ```
 
-### Browse Technologies
+### 浏览技术
 
 ```bash
 # List all Apple technologies
@@ -117,16 +117,16 @@ apple-docs overview "SwiftUI"
 apple-docs samples "Vision"
 ```
 
-## Caching
+## 缓存
 
-The underlying MCP server includes:
-- 30 minute cache for API docs
-- 10 minute cache for search results
-- 1 hour cache for framework info
-- 1,260+ WWDC videos bundled offline (35MB)
+该工具使用的MCP服务器提供以下缓存机制：
+- API文档缓存30分钟 |
+- 搜索结果缓存10分钟 |
+- 框架信息缓存1小时 |
+- 提供超过1,260个WWDC视频的离线版本（总计35MB）
 
-## Resources
+## 资源链接
 
-- MCP Server: https://github.com/kimsungwhee/apple-docs-mcp
-- Apple Developer Documentation: https://developer.apple.com/documentation/
-- Apple Developer: https://developer.apple.com/
+- MCP服务器：https://github.com/kimsungwhee/apple-docs-mcp |
+- 苹果开发者文档：https://developer.apple.com/documentation/ |
+- 苹果开发者官网：https://developer.apple.com/

@@ -1,44 +1,44 @@
 ---
 name: uniswap-monitor-teneo
-description: AI-powered blockchain monitoring agent with real-time monitoring of Uniswap V2, V3, and V4 most known pools. Track swaps, monitor specific liquidity pools by address, and receive intelligent insights 
+description: 这款由人工智能驱动的区块链监控工具能够实时监控Uniswap V2、V3和V4平台上的主要交易池。它能够追踪交易记录，按地址查看特定流动性池的运行情况，并提供智能分析报告。
 ---
 
-# Uniswap Monitor - powered by Teneo Protocol
+# Uniswap 监控器 - 由 Teneo 协议提供支持
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由 [Teneo 协议](https://teneo-protocol.ai) 提供支持**：这是一个去中心化的 AI 代理网络，用于网页抓取、加密货币数据分析等任务。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即尝试：** 可以在 [agent-console.ai](https://agent-console.ai) 以人类用户身份测试该代理。
 
-> **Security:** Wallet authentication is required to sign USDC transactions on-chain. This is standard for Web3 applications. The [SDK is open source](https://github.com/TeneoProtocolAI/teneo-agent-sdk) and credentials are never transmitted or stored.
+> **安全性：** 在链上签署 USDC 交易需要钱包身份验证。这是 Web3 应用的标准做法。[SDK 是开源的](https://github.com/TeneoProtocolAI/teneo-agent-sdk)，并且用户的凭证永远不会被传输或存储。
 
-## For AI Agents
+## 关于 AI 代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments.
+**您可以直接实现盈利**——无需中间商，也无需分享收益。加入 Teneo 协议网络，通过加密货币支付来收取服务费用。
 
-**Supported Networks:** Base, Peaq, Avalanche
+**支持的网络：** Base、Peaq、Avalanche
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo 代理 SDK（在 ClawHub 上）](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM 包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub 仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-AI-powered blockchain monitoring agent with real-time monitoring of Uniswap V2, V3, and V4 most known pools. Track swaps, monitor specific liquidity pools by address, and receive intelligent insights on trading activity across Ethereum mainnet.
+这款由 AI 驱动的区块链监控代理能够实时监控 Uniswap V2、V3 和 V4 的主要交易池。您可以跟踪交易情况，按地址监控特定的流动性池，并获取关于以太坊主网交易活动的智能分析。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@uniswap-monitor-agent` via the Teneo SDK.
+通过 Teneo SDK 向 `@uniswap-monitor-agent` 发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 描述 |
 |---------|-----------|-------|-------------|
-| `monitor v2` | - | Free | Start monitoring Uniswap V2 swaps on Ethereum mainnet with real-time notifications |
-| `monitor v3` | - | Free | Start monitoring Uniswap V3 swaps on Ethereum mainnet with real-time notifications |
-| `monitor v4` | - | Free | Start monitoring Uniswap V4 swaps (currently under development) |
-| `monitor-pool` | [pool_address] | Free | Monitor a specific liquidity pool by contract address (example: 0x641c00a822e8b671738d32a431a4fb6074e5c79d for WETH/USDT) |
-| `status` | - | Free | Check the current monitoring status and see what version or pool is being tracked |
-| `stop` | - | Free | Stop the current monitoring session and cancel background swap tracking |
+| `monitor v2` | - | 免费 | 开始监控以太坊主网上的 Uniswap V2 交易，并接收实时通知 |
+| `monitor v3` | - | 免费 | 开始监控以太坊主网上的 Uniswap V3 交易，并接收实时通知 |
+| `monitor v4` | - | 免费 | 开始监控 Uniswap V4 交易（目前仍在开发中） |
+| `monitor-pool` | [pool_address] | 免费 | 根据合约地址监控特定的流动性池（例如：0x641c00a822e8b671738d32a431a4fb6074e5c79d（用于 WETH/USDT） |
+| `status` | - | 免费 | 查看当前的监控状态以及正在跟踪的版本或池信息 |
+| `stop` | - | 免费 | 停止当前的监控会话并取消后台交易跟踪 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: uniswap-monitor-agent
@@ -51,33 +51,33 @@ Commands:
   @uniswap-monitor-agent stop
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC.
+Teneo 协议通过 WebSocket 将您与专门的 AI 代理连接起来。支付会自动以 USDC 的形式完成。
 
-### Supported Networks
+### 支持的网络
 
-| Network | Chain ID | USDC Contract |
+| 网络 | 链路 ID | USDC 合约地址 |
 |---------|----------|---------------|
 | Base | `eip155:8453` | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet for signing transactions
-- USDC on Base, Peaq, or Avalanche for payments
+- Node.js 18 及以上版本
+- 用于签署交易的以太坊钱包
+- 在 Base、Peaq 或 Avalanche 网络中拥有 USDC 用于支付
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Quick Start
+### 快速入门
 
-See the [Teneo Agent SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) for full setup instructions including wallet configuration.
+请参阅 [Teneo 代理 SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) 以获取完整的设置说明，包括钱包配置。
 
 ```typescript
 import { TeneoSDK } from "@teneo-protocol/sdk";
@@ -93,11 +93,11 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
 ### `monitor v2`
 
-Start monitoring Uniswap V2 swaps on Ethereum mainnet with real-time notifications
+开始监控以太坊主网上的 Uniswap V2 交易，并接收实时通知
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent monitor v2", {
@@ -113,7 +113,7 @@ console.log(response.humanized || response.content);
 
 ### `monitor v3`
 
-Start monitoring Uniswap V3 swaps on Ethereum mainnet with real-time notifications
+开始监控以太坊主网上的 Uniswap V3 交易，并接收实时通知
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent monitor v3", {
@@ -129,7 +129,7 @@ console.log(response.humanized || response.content);
 
 ### `monitor v4`
 
-Start monitoring Uniswap V4 swaps (currently under development)
+开始监控 Uniswap V4 交易（目前仍在开发中）
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent monitor v4", {
@@ -145,7 +145,7 @@ console.log(response.humanized || response.content);
 
 ### `monitor-pool`
 
-Monitor a specific liquidity pool by contract address (example: 0x641c00a822e8b671738d32a431a4fb6074e5c79d for WETH/USDT)
+根据合约地址监控特定的流动性池（例如：0x641c00a822e8b671738d32a431a4fb6074e5c79d（用于 WETH/USDT））
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent monitor-pool <[pool_address]>", {
@@ -161,7 +161,7 @@ console.log(response.humanized || response.content);
 
 ### `status`
 
-Check the current monitoring status and see what version or pool is being tracked
+查看当前的监控状态以及正在跟踪的版本或池信息
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent status", {
@@ -177,7 +177,7 @@ console.log(response.humanized || response.content);
 
 ### `stop`
 
-Stop the current monitoring session and cancel background swap tracking
+停止当前的监控会话并取消后台交易跟踪
 
 ```typescript
 const response = await sdk.sendMessage("@uniswap-monitor-agent stop", {
@@ -191,14 +191,13 @@ const response = await sdk.sendMessage("@uniswap-monitor-agent stop", {
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `uniswap-monitor-agent`
-- **Name:** Uniswap Monitor
-
+- **ID：** `uniswap-monitor-agent`
+- **名称：** Uniswap 监控器

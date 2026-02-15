@@ -6,12 +6,11 @@ description: |
   트리거: Blender 실시간 조작, 씬 상태 확인, Poly Haven 에셋, Sketchfab 모델, 양방향 Blender 통신.
 ---
 
-# Blender Interactive Socket Server
+# Blender 交互式套接字服务器
 
-TCP 소켓 기반 양방향 통신으로 Blender를 실시간 조작하는 스킬.
-MiniPC의 headless Blender 5.0.1에서 실행.
+本技能通过基于TCP套接字的双向通信实现实时操控Blender的功能，运行在配备MiniPC的无头Blender 5.0.1系统上。
 
-## 아키텍처
+## 架构
 
 ```
 ┌─────────────┐     nodes.run      ┌──────────────────────┐
@@ -26,20 +25,20 @@ MiniPC의 headless Blender 5.0.1에서 실행.
                                     └──────────────────────┘
 ```
 
-## 기존 스킬과의 관계
+## 与其他技能的关系
 
-| 스킬 | 용도 | 패턴 |
+| 技能 | 用途 | 工作模式 |
 |------|------|------|
-| **blender-pipeline** | 배치 변환, 스프라이트시트, 프로시저럴 | 1회성 스크립트 실행 |
-| **blender-interactive** | 실시간 조작, 씬 구축, 상태 조회 | 상주 소켓 서버 |
+| **blender-pipeline** | 批量转换、精灵图制作、程序化操作 | 一次性脚本执行 |
+| **blender-interactive** | 实时操控、场景构建、状态查询 | 持续运行的套接字服务器 |
 
-**선택 기준:**
-- 단순 변환/배치 → blender-pipeline
-- 복잡한 씬 구축, 반복 조작, 상태 확인 필요 → blender-interactive
+**选择建议：**
+- 简单的转换/批量操作 → 使用 **blender-pipeline**  
+- 复杂的场景构建、重复操作或需要实时状态检查 → 使用 **blender-interactive**  
 
-## 빠른 시작
+## 快速入门
 
-### 1. 서버 시작 (MiniPC)
+### 1. 启动服务器（在MiniPC上）
 
 ```bash
 # nodes.run으로 서버 시작
@@ -54,7 +53,7 @@ nodes.run(node="MiniPC", command=[
 ])
 ```
 
-### 2. 명령 전송
+### 2. 发送命令
 
 ```bash
 # ping
@@ -88,7 +87,7 @@ nodes.run(node="MiniPC", command=[
 ])
 ```
 
-### 3. 서버 중지
+### 3. 停止服务器
 
 ```bash
 nodes.run(node="MiniPC", command=[
@@ -96,54 +95,48 @@ nodes.run(node="MiniPC", command=[
 ])
 ```
 
-## 명령어 레퍼런스
+## 命令参考
 
-### 시스템
-| 명령 | 파라미터 | 설명 |
+### 系统命令
+| 命令 | 参数 | 说明 |
 |------|----------|------|
-| `ping` | — | 서버 상태 확인 + 명령 목록 |
+| `ping` | — | 检查服务器状态及命令列表 |
 
-### 씬 조회
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `get_scene_info` | — | 전체 씬 상태 (오브젝트, 카메라, 라이트, 해상도 등) |
-| `get_object_info` | `name` | 특정 오브젝트 상세 (메시, 머티리얼, 바운딩박스) |
+### 查看场景信息
+| 命令 | 参数 | 说明 |
+| `get_scene_info` | — | 获取整个场景的状态（对象、相机、灯光、分辨率等） |
+| `get_object_info` | `name` | 获取特定对象的详细信息（网格、材质、绑定框） |
 
-### 오브젝트 조작
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `create_object` | `type`, `name?`, `location?`, `scale?` | 기본 메시 생성 (CUBE/SPHERE/PLANE/CYLINDER/CONE/TORUS/MONKEY) |
-| `delete_object` | `name` | 오브젝트 삭제 |
-| `modify_object` | `name`, `location?`, `rotation?`, `scale?`, `visible?` | 변환 수정 |
+### 操作对象
+| 命令 | 参数 | 说明 |
+| `create_object` | `type`, `name?`, `location?`, `scale?` | 创建基本几何体（立方体、球体、平面、圆柱体、圆锥体、环形体、猴子模型） |
+| `delete_object` | `name` | 删除对象 |
+| `modify_object` | `name`, `location?`, `rotation?`, `scale?`, `visible?` | 修改对象的位置、旋转、大小或可见性 |
 
-### 머티리얼
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `set_material` | `object_name`, `color?`, `metallic?`, `roughness?`, `material_name?` | PBR 머티리얼 설정 |
+### 材质设置
+| 命令 | 参数 | 说明 |
+| `set_material` | `object_name`, `color?`, `metallic?`, `roughness?`, `material_name?` | 设置PBR材质 |
 
-### 렌더링
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `render_preview` | `output_path?`, `resolution_x?`, `resolution_y?`, `samples?`, `engine?` | 빠른 프리뷰 (512x512, 32 samples) |
-| `render_to_file` | `output_path`, `format?`, `resolution_x?`, `resolution_y?`, `samples?`, `engine?` | 고품질 렌더 |
+### 渲染
+| 命令 | 参数 | 说明 |
+| `render_preview` | `output_path?`, `resolution_x?`, `resolution_y?`, `samples?`, `engine?` | 快速预览（512x512，32样本） |
+| `render_to_file` | `output_path`, `format?`, `resolution_x?`, `resolution_y?`, `samples?`, `engine?` | 高质量渲染 |
 
-### 파일 관리
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `save_blend` | `filepath` | .blend 저장 |
-| `load_blend` | `filepath` | .blend 로드 |
-| `import_model` | `filepath`, `format?` | 모델 임포트 (glTF/FBX/OBJ/STL/PLY) |
-| `export_model` | `filepath`, `format?`, `selected_only?` | 모델 내보내기 |
-| `clear_scene` | `keep_camera?`, `keep_lights?` | 씬 초기화 |
+### 文件管理
+| 命令 | 参数 | 说明 |
+| `save_blend` | `filepath` | 保存 Blender 文件 |
+| `load_blend` | `filepath` | 加载 Blender 文件 |
+| `import_model` | `filepath`, `format?` | 导入模型（glTF/FBX/OBJ/STL/PLY格式） |
+| `export_model` | `filepath`, `format?`, `selected_only?` | 导出模型 |
+| `clear_scene` | `keep_camera?`, `keep_lights?` | 重置场景状态 |
 
-### 코드 실행
-| 명령 | 파라미터 | 설명 |
-|------|----------|------|
-| `execute_code` | `code` | 임의 Python 코드 실행 (최대 유연성) |
+### 执行代码
+| 命令 | 参数 | 说明 |
+| `execute_code` | `code` | 执行任意Python代码（具有高度灵活性） |
 
-## Poly Haven 에셋 통합
+## 集成Poly Haven资源
 
-CC0 무료 에셋 (HDRI, 텍스처, 3D 모델) 검색/다운로드.
+支持搜索和下载CC0许可下的免费资源（HDRI图像、纹理、3D模型）。
 
 ```bash
 # 텍스처 카테고리 조회
@@ -180,7 +173,7 @@ nodes.run(node="MiniPC", command=[
 ])
 ```
 
-### Poly Haven + Blender 통합 워크플로우
+## Poly Haven与Blender的集成流程
 
 ```bash
 # 1. 텍스처 다운로드
@@ -192,9 +185,10 @@ blender_client.py execute_code --params '{
 }'
 ```
 
-## 프로토콜 상세
+## 协议细节
 
-### 요청 형식
+### 请求格式
+
 ```json
 {
   "type": "command_name",
@@ -204,7 +198,8 @@ blender_client.py execute_code --params '{
 }
 ```
 
-### 응답 형식
+### 响应格式
+
 ```json
 {
   "status": "success",
@@ -212,23 +207,16 @@ blender_client.py execute_code --params '{
 }
 ```
 
-```json
-{
-  "status": "error",
-  "message": "Error description"
-}
-```
+### 通信方式
+- **传输方式：** TCP套接字，基于TCP的JSON协议  
+- **端口：** 默认为9876  
+- **超时设置：** 300秒（用于处理渲染等耗时操作）  
+- **线程安全性：** 命令在Blender的主线程中执行（通过`bpy.app.timers`）  
+- **并发连接：** 支持多个客户端，但会按顺序处理请求  
 
-### 통신 방식
-- **전송:** TCP 소켓, JSON over TCP
-- **포트:** 9876 (기본)
-- **타임아웃:** 300초 (렌더링 등 대비)
-- **스레드 안전:** 명령은 Blender 메인 스레드에서 실행 (bpy.app.timers)
-- **동시 접속:** 다중 클라이언트 지원 (순차 처리)
+## MiniPC部署
 
-## MiniPC 배포
-
-### 파일 전송 (맥스튜디오 → MiniPC)
+### 文件传输（从MacStudio到MiniPC）
 
 ```bash
 # 1. 스킬 폴더를 MiniPC에 복사
@@ -236,7 +224,7 @@ blender_client.py execute_code --params '{
 scp -r skills/blender-interactive/ spritz@100.80.169.94:/home/spritz/blender-interactive/
 ```
 
-### 자동 시작 (systemd)
+### 自动启动（使用systemd）
 
 ```ini
 # /home/spritz/.config/systemd/user/blender-socket.service
@@ -261,23 +249,23 @@ systemctl --user enable blender-socket
 systemctl --user start blender-socket
 ```
 
-## 제한사항
+## 使用限制
 
-### Headless 제한
-- **뷰포트 스크린샷 불가** — 대신 `render_preview`로 Cycles CPU 렌더링 (느리지만 정확)
-- **EEVEE 불가** — headless에서 GPU 필요. Cycles CPU만 사용
-- **실시간 미리보기 없음** — 렌더링 결과로 확인
+### 无头模式限制
+- **无法截取视图窗口截图** — 可通过`render_preview`命令使用Cycles引擎进行CPU渲染（虽然速度较慢，但结果更准确）  
+- **不支持EEVEE引擎** — 无头模式下需要GPU，仅支持Cycles的CPU渲染 |
+- **不支持实时预览** — 需通过渲染结果查看最终效果 |
 
-### 성능
-- **MiniPC (8GB RAM)** — 로우폴리 씬 권장. 복잡한 씬은 메모리 부족 가능
-- **Cycles CPU 렌더** — 512x512, 32 samples ≈ 5-15초
-- **대용량 Poly Haven 에셋** — 4k 텍스처는 RAM 부담. 1k-2k 권장
+## 性能表现
+- **MiniPC（8GB内存）**：建议使用低复杂度的场景；复杂场景可能导致内存不足 |
+- **Cycles CPU渲染**：512x512分辨率、32样本的预览大约需要5-15秒 |
+- **处理大型Poly Haven资源**：4K纹理会占用较多内存，建议使用1k-2k分辨率的纹理 |
 
-### 보안
-- `execute_code`는 임의 코드 실행 가능 — 우리 환경(제어된 MiniPC)에서는 OK
-- 외부 노출 시 `--host 127.0.0.1`로 로컬만 바인딩
+### 安全性
+- `execute_code`命令可用于执行任意代码 — 在受控的MiniPC环境中是安全的 |
+- 若暴露给外部环境，需使用`--host 127.0.0.1`限制访问范围至本地主机 |
 
-## 파일 구조
+## 文件结构
 
 ```
 blender-interactive/

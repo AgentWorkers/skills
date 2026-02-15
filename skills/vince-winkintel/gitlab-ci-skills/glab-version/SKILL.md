@@ -1,11 +1,12 @@
 ---
 name: glab-version
-description: Use when working with glab version commands.
+description: **使用说明：**  
+当使用 glab 的版本管理命令时，请参考以下说明。
 ---
 
-# glab version
+# glab 版本
 
-## Overview
+## 概述
 
 ```
 
@@ -20,12 +21,12 @@ description: Use when working with glab version commands.
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab version --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

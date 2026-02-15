@@ -1,87 +1,87 @@
 ---
 name: Dogecoin
-description: Assist with Dogecoin DOGE transactions, wallet management, and network characteristics.
+description: 协助处理狗狗币（Dogecoin, DOGE）的交易、钱包管理以及了解其网络特性。
 metadata: {"clawdbot":{"emoji":"🐕","os":["linux","darwin","win32"]}}
 ---
 
-## Network Basics
-- Dogecoin is Bitcoin fork — similar UTXO model and transaction structure
-- Proof of Work with Scrypt — merged mining with Litecoin
-- 1 minute block time — faster than Bitcoin's 10 minutes
-- No supply cap — inflationary by design, ~5 billion new DOGE per year
-- Low transaction fees — typically less than 1 DOGE
+## 网络基础  
+- Dogecoin 是 Bitcoin 的分支版本，采用类似的未花费输出（UTXO）模型和交易结构。  
+- 使用 Scrypt 算法进行工作量证明（Proof of Work），这种采矿机制与 Litecoin 共享。  
+- 块生成时间为 1 分钟，比 Bitcoin 的 10 分钟更快。  
+- 没有总量上限，因此具有通货膨胀特性，每年大约新增 50 亿枚 DOGE。  
+- 交易费用较低，通常低于 1 枚 DOGE。  
 
-## Address Format
-- Addresses start with "D" — legacy format, always verify first character
-- 34 characters total — standard length like Bitcoin
-- Case-sensitive — typos cause lost funds
-- No SegWit or Taproot — simpler than modern Bitcoin
+## 地址格式  
+- 地址以 “D” 开头，属于传统格式，务必核对第一个字符是否正确。  
+- 地址总长度为 34 个字符，与 Bitcoin 的格式一致。  
+- 地址区分大小写，输入错误可能导致资金丢失。  
+- Dogecoin 没有采用 SegWit 或 Taproot 等先进技术，因此结构相对简单。  
 
-## Transaction Characteristics
-- Transactions confirm in ~1 minute — one block for basic confirmation
-- 6 confirmations for high-value — ~6 minutes, same security practice as Bitcoin
-- Fees are minimal — 1 DOGE per KB is standard, most transactions under 1 DOGE
-- No RBF (Replace-By-Fee) — stuck transactions harder to fix than Bitcoin
-- UTXO model — balance is sum of unspent outputs
+## 交易特性  
+- 交易确认时间约为 1 分钟（一个区块即可完成确认）。  
+- 高价值交易需要 6 次确认（约 6 分钟），安全机制与 Bitcoin 相同。  
+- 费用较低，标准费用为每 KB 1 枚 DOGE，大多数交易的费用低于 1 枚 DOGE。  
+- Dogecoin 不支持 “替换费用”（Replace-By-Fee, RBF）机制，因此交易失败后较难恢复。  
+- 采用 UTXO 模型，账户余额等于所有未花费输出的总和。  
 
-## Wallet Options
-- Dogecoin Core full node — downloads entire blockchain, most secure
-- MultiDoge light wallet — faster sync, SPV verification
-- Ledger and Trezor support — hardware wallet integration
-- Trust Wallet, Exodus — multi-coin wallets with DOGE support
-- Avoid web wallets — custody risk, prefer local wallets
+## 钱包选项  
+- **Dogecoin Core**：全节点钱包，会下载整个区块链数据，安全性最高。  
+- **MultiDoge**：轻量级钱包，同步速度更快，支持 SPV（Simple Payment Verification）验证方式。  
+- **Ledger** 和 **Trezor**：硬件钱包，提供更安全的存储方式。  
+- **Trust Wallet**、**Exodus**：支持多种货币的钱包，也支持 Dogecoin。  
+- **建议避免使用网页钱包**，因为存在资金保管风险，建议使用本地钱包。  
 
-## Common Issues
-- Transaction unconfirmed — wait, DOGE doesn't have RBF to speed up
-- "Dust" outputs — very small UTXOs may cost more in fees than value
-- Wallet sync slow — Dogecoin Core needs full blockchain download
-- Balance not showing — wallet not fully synced, wait for sync completion
-- Sent to wrong address — transactions irreversible, triple-check addresses
+## 常见问题  
+- 交易未确认：请耐心等待，Dogecoin 没有 RBF 机制来加速交易确认。  
+- **“Dust” 输出**：指金额极小的未花费输出，其交易费用可能高于其实际价值。  
+- 钱包同步缓慢：Dogecoin Core 需要下载完整区块链数据。  
+- 账户余额未显示：可能是钱包尚未完成同步，请等待同步完成。  
+- 误转至错误地址：交易一旦完成无法撤销，请仔细核对地址。  
 
-## Exchange Considerations
-- Most major exchanges support DOGE — high liquidity pairs
-- Withdrawals may have minimums — check exchange requirements
-- Network confirmations required — usually 6-20 depending on exchange
-- No memo/tag required — unlike XRP, simple address only
-- Some exchanges don't support all address types — verify compatibility
+## 交易所相关注意事项  
+- 大多数主要交易所都支持 Dogecoin，交易流动性较高。  
+- 提现可能设有最低金额限制，请查看交易所的具体规定。  
+- 需要等待网络确认（通常需要 6–20 分钟，具体取决于交易所）。  
+- Dogecoin 不需要备注或标签信息，只需提供地址即可。  
+- 部分交易所不支持所有类型的地址，请确认交易所的兼容性。  
 
-## Fee Management
-- Fees based on transaction size in bytes — not DOGE amount
-- Consolidating many small UTXOs costs more — larger transaction
-- Most wallets calculate fees automatically — rarely need manual adjustment
-- Minimum relay fee exists — transactions below threshold rejected by nodes
-- During low activity, minimum fees always work — no fee market pressure
+## 费用管理  
+- 费用根据交易数据的字节数计算，而非交易金额。  
+- 合并多个小额 UTXO 会增加费用；较大的交易费用相对较低。  
+- 大多数钱包会自动计算费用，很少需要手动调整。  
+- 存在最低费用门槛，低于该门槛的交易可能被节点拒绝。  
+- 在交易量较低时，最低费用始终有效，不存在费用波动问题。  
 
-## Security
-- Standard cryptocurrency security — seed phrase is everything
-- 12 or 24 word seed phrases — depends on wallet
-- Never share private keys — no legitimate service asks for them
-- Verify wallet downloads — get from official sources only
-- Cold storage for large amounts — hardware wallet or paper wallet
+## 安全性  
+- 遵循标准加密货币的安全规范，使用种子短语（seed phrase）进行账户保护。  
+- 种子短语长度可为 12 或 24 个单词，具体取决于所使用的钱包。  
+- 绝对不要分享私钥，任何正规服务都不会要求用户提供私钥。  
+- 请从官方渠道下载钱包软件。  
+- 对于大额资金，建议使用硬件钱包或纸钱包进行存储。  
 
-## Merged Mining
-- Dogecoin merge-mined with Litecoin — shares Scrypt PoW
-- Increases security — benefits from Litecoin's hashrate
-- No action required from users — happens at mining level
-- Makes 51% attacks more expensive — combined hashrate protection
+## 合并采矿（Merge Mining）  
+- Dogecoin 采用与 Litecoin 共享的 Scrypt 算法进行合并采矿。  
+- 这种机制提高了安全性，并受益于 Litecoin 的哈希率（hashrate）。  
+- 用户无需进行任何操作，整个过程由矿工完成。  
+- 这种机制使得 51% 攻击（51% Attack）的成本更高，因为合并后的哈希率更具防护性。  
 
-## Use Cases
-- Tipping and microtransactions — low fees make small payments viable
-- Community currency — strong meme culture and community
-- Learning cryptocurrency — simpler than Bitcoin, lower stakes
-- Payments where accepted — some merchants accept DOGE
-- Speculation — high volatility, meme-driven price movements
+## 使用场景  
+- 用于小额打赏和微支付（低费用使得小额交易成为可能）。  
+- 作为社区货币，Dogecoin 拥有强大的社区文化和用户群体。  
+- 适合初学者学习加密货币，因为其机制相对简单，风险较低。  
+- 在某些商家处可以使用 Dogecoin 进行支付。  
+- 由于价格波动较大，Dogecoin 也常被用于投机。  
 
-## Scam Recognition
-- "Double your DOGE" always scam — no exceptions
-- Fake Elon Musk giveaways — extremely common, all fake
-- Phishing wallet sites — verify URLs carefully
-- Mining apps that require deposit — legitimate mining doesn't work this way
-- "Support" asking for keys — no real support needs private keys
+## 诈骗识别  
+- 所有声称 “双倍奖励” 的宣传都是骗局。  
+- 假冒 Elon Musk 的赠品活动纯属欺诈行为。  
+- 要小心钓鱼性质的钱包网站，务必仔细核对网址。  
+- 需要用户存款的采矿应用通常是骗局，正规矿工不会要求用户付款。  
+- 任何以 “支持” 为名要求用户提供私钥的行为都是诈骗行为。  
 
-## Network Limitations
-- No smart contracts — simple transaction-only blockchain
-- No DeFi natively — wrapped DOGE exists on other chains
-- No staking — Proof of Work only
-- Limited development activity — slower updates than other chains
-- Scalability similar to Bitcoin — throughput limitations
+## 网络限制  
+- Dogecoin 不支持智能合约，仅支持简单的交易功能。  
+- 没有原生去中心化金融（DeFi）应用，相关功能需要通过其他区块链实现。  
+- 不支持质押（staking）机制，仅依赖工作量证明（Proof of Work）。  
+- 开发活动相对较少，更新速度较慢。  
+- 可扩展性类似于 Bitcoin，存在吞吐量限制。

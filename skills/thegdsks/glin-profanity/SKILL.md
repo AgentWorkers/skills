@@ -1,13 +1,13 @@
 ---
 name: glin-profanity
-description: Profanity detection and content moderation library with leetspeak, Unicode homoglyph, and ML-powered detection. Use when filtering user-generated content, moderating comments, checking text for profanity, censoring messages, or building content moderation into applications. Supports 24 languages.
+description: 这是一个用于检测脏话和进行内容审核的库，能够识别“leetspeak”（一种网络用语）、Unicode中的同形异义字符（即外观相似但含义不同的字符），并利用机器学习技术进行检测。该库适用于过滤用户生成的内容、审核评论、检查文本中的脏话、屏蔽消息，或将其功能集成到各种应用程序中。支持24种语言。
 ---
 
-# Glin Profanity - Content Moderation Library
+# Glin Profanity - 内容审核库
 
-Profanity detection library that catches evasion attempts like leetspeak (`f4ck`, `sh1t`), Unicode tricks (Cyrillic lookalikes), and obfuscated text.
+这是一个用于检测脏话的库，能够识别各种规避手段，如使用缩写（如 `f4ck`、`sh1t`）、Unicode 字符的伪装形式（例如模仿西里尔字母的字符），以及经过混淆的文本。
 
-## Installation
+## 安装
 
 ```bash
 # JavaScript/TypeScript
@@ -17,7 +17,7 @@ npm install glin-profanity
 pip install glin-profanity
 ```
 
-## Quick Usage
+## 快速使用
 
 ### JavaScript/TypeScript
 
@@ -77,18 +77,18 @@ function ChatInput() {
 }
 ```
 
-## Key Features
+## 主要功能
 
-| Feature | Description |
+| 功能 | 描述 |
 |---------|-------------|
-| Leetspeak detection | `f4ck`, `sh1t`, `@$$` patterns |
-| Unicode normalization | Cyrillic `fսck` → `fuck` |
-| 24 languages | Including Arabic, Chinese, Russian, Hindi |
-| Context whitelists | Medical, gaming, technical domains |
-| ML integration | Optional TensorFlow.js toxicity detection |
-| Result caching | LRU cache for performance |
+| 缩写检测 | 能够识别 `f4ck`、`sh1t`、`@$$` 等缩写形式 |
+| Unicode 规范化 | 将西里尔字母表示的 `fսck` 自动转换为 `fuck` |
+| 支持 24 种语言 | 包括阿拉伯语、中文、俄语、印地语等 |
+| 上下文白名单 | 支持医疗、游戏、技术等领域 |
+| 机器学习集成 | 可选集成 TensorFlow.js 进行内容毒性检测 |
+| 结果缓存 | 采用 LRU 缓存机制提升性能 |
 
-## Configuration Options
+## 配置选项
 
 ```javascript
 const filter = new Filter({
@@ -104,7 +104,7 @@ const filter = new Filter({
 });
 ```
 
-## Context-Aware Analysis
+## 基于上下文的分析
 
 ```javascript
 import { analyzeContext } from 'glin-profanity';
@@ -116,7 +116,7 @@ const result = analyzeContext("The patient has a breast tumor", {
 });
 ```
 
-## Batch Processing
+## 批量处理
 
 ```javascript
 import { batchCheck } from 'glin-profanity';
@@ -128,7 +128,7 @@ const results = batchCheck([
 ], { returnOnlyFlagged: true });
 ```
 
-## ML-Powered Detection (Optional)
+## 基于机器学习的检测（可选）
 
 ```javascript
 import { loadToxicityModel, checkToxicity } from 'glin-profanity/ml';
@@ -139,9 +139,9 @@ const result = await checkToxicity("You're the worst");
 // { toxic: true, categories: { toxicity: 0.92, insult: 0.87 } }
 ```
 
-## Common Patterns
+## 常见检测模式
 
-### Chat/Comment Moderation
+### 聊天/评论审核
 ```javascript
 const filter = new Filter({
   detectLeetspeak: true,
@@ -157,7 +157,7 @@ bot.on('message', (msg) => {
 });
 ```
 
-### Content Validation Before Publish
+### 发布前的内容验证
 ```javascript
 const result = filter.checkProfanity(userContent);
 
@@ -170,10 +170,10 @@ if (result.containsProfanity) {
 }
 ```
 
-## Resources
+## 资源
 
-- Docs: https://www.typeweaver.com/docs/glin-profanity
-- Demo: https://www.glincker.com/tools/glin-profanity
-- GitHub: https://github.com/GLINCKER/glin-profanity
-- npm: https://www.npmjs.com/package/glin-profanity
-- PyPI: https://pypi.org/project/glin-profanity/
+- 文档：https://www.typeweaver.com/docs/glin-profanity
+- 测试演示：https://www.glincker.com/tools/glin-profanity
+- GitHub 仓库：https://github.com/GLINCKER/glin-profanity
+- npm：https://www.npmjs.com/package/glin-profanity
+- PyPI：https://pypi.org/project/glin-profanity/

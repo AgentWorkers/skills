@@ -1,43 +1,43 @@
 ---
 name: snow-report
-description: Get snow conditions, forecasts, and ski reports for any mountain resort worldwide. Use when asked about snow, powder, ski conditions, or mountain weather. Supports 1000+ resorts via OpenSnow. Users can set favorite mountains for quick access. Supports SnowTick 4-letter codes (JHMR, TARG, MMTH) for quick lookups.
+description: 获取全球任何山间度假村的雪况、天气预报和滑雪报告。当被问及雪量、雪质或山区天气时，可以使用该服务。通过 OpenSnow 支持超过 1000 个度假村的查询。用户可以设置喜欢的度假村以便快速查看相关信息。同时支持使用 SnowTick 的 4 个字母代码（如 JHMR、TARG、MMTH）进行快速查询。
 ---
 
-# Snow Report
+# 雪情报告
 
-Fetch live snow conditions from OpenSnow for any ski resort worldwide.
+您可以从 OpenSnow 获取全球任何滑雪场的实时雪况信息。
 
-## SnowTick — Mountain Tickers
+## SnowTick — 山地代码
 
-4-letter codes for quick mountain lookups, like stock tickers:
+这些由 4 个字母组成的代码可用于快速查询滑雪场信息，类似于股票代码：
 
-| Ticker | Resort |
+| 代码 | 滑雪场名称 |
 |--------|--------|
-| `JHMR` | Jackson Hole |
-| `TARG` | Grand Targhee |
-| `MMTH` | Mammoth |
-| `BIRD` | Snowbird |
-| `ALTA` | Alta |
-| `BOAT` | Steamboat |
-| `WHIS` | Whistler |
+| `JHMR` | 杰克逊霍尔（Jackson Hole） |
+| `TARG` | 格兰德塔吉（Grand Targhee） |
+| `MMTH` | 猛犸（Mammoth） |
+| `BIRD` | 斯诺伯德（Snowbird） |
+| `ALTA` | 阿尔塔（Alta） |
+| `BOAT` | 斯蒂姆博特（Steamboat） |
+| `WHIS` | 惠斯勒（Whistler） |
 
-Full list in `references/resorts.md`. Use tickers anywhere you'd use a resort name.
+完整代码列表请参见 `references/resorts.md`。您可以在需要使用滑雪场名称的地方使用这些代码。
 
-## Commands
+## 命令
 
-| User Says | Action |
+| 用户指令 | 动作 |
 |-----------|--------|
-| "snowtick" | Quick ticker tape of all favorites |
-| "snow report" / "how's the snow" | Pull default mountain from user config |
-| "snow at Mammoth" / "Jackson snow" | Pull specific resort |
-| "JHMR" / "what's TARG at" | Pull by SnowTick code |
-| "compare Jackson and Targhee" | Multi-mountain comparison |
-| "compare JHMR TARG MMTH" | Compare by tickers |
-| "powder alert" / "where's it snowing" | Check forecasts across favorites |
+| "snowtick" | 显示所有收藏滑雪场的实时雪况 |
+| "snow report" / "雪况如何" | 从用户配置中获取默认滑雪场的雪况 |
+| "snow at Mammoth" / "Jackson snow" | 获取特定滑雪场的雪况 |
+| "JHMR" / "TARG at" | 根据代码获取滑雪场的雪况 |
+| "compare Jackson and Targhee" | 比较两个滑雪场的雪况 |
+| "compare JHMR TARG MMTH" | 按代码比较三个滑雪场的雪况 |
+| "powder alert" / "哪里在下雪" | 查看所有收藏滑雪场的天气预报 |
 
-## User Configuration
+## 用户配置
 
-Check `memory/snow-preferences.md` for user settings:
+用户设置请参见 `memory/snow-preferences.md`：
 
 ```markdown
 # Snow Preferences
@@ -56,20 +56,20 @@ JHMR
 - skip: parking
 ```
 
-Tickers or slugs both work. If no config exists, ask user for their home mountain and create the file.
+您可以使用代码或简称来表示滑雪场名称。如果配置文件不存在，系统会询问用户常用的滑雪场名称并自动创建该文件。
 
-## Resolving Tickers
+## 解析代码
 
-When user provides a ticker (4 uppercase letters):
-1. Look up in `references/resorts.md`
-2. Get the corresponding slug
-3. Use slug for OpenSnow URL
+当用户提供代码（4 个大写字母）时：
+1. 在 `references/resorts.md` 中查找对应的滑雪场名称。
+2. 获取该滑雪场的简称。
+3. 使用该简称作为 OpenSnow 的 URL。
 
-Example: `JHMR` → `jacksonhole` → `opensnow.com/location/jacksonhole/snow-summary`
+示例：`JHMR` → `jacksonhole` → `opensnow.com/location/jacksonhole/snow-summary`
 
-## Quick Usage
+## 快速使用方法
 
-### SnowTick Command
+### SnowTick 命令
 ```
 1. Read user favorites from memory/snow-preferences.md
 2. Open all favorite resort tabs in parallel
@@ -79,14 +79,14 @@ Example: `JHMR` → `jacksonhole` → `opensnow.com/location/jacksonhole/snow-su
 6. Close all tabs
 ```
 
-### Single Mountain
+### 单个滑雪场
 ```
 1. browser action=open targetUrl=https://opensnow.com/location/{slug}/snow-summary
 2. browser action=snapshot compact=true
 3. Extract key data, close tab
 ```
 
-### Multi-Mountain Comparison
+### 多个滑雪场比较
 ```
 1. Open all resort tabs in parallel (browser action=open for each)
 2. Snapshot all tabs
@@ -94,31 +94,31 @@ Example: `JHMR` → `jacksonhole` → `opensnow.com/location/jacksonhole/snow-su
 4. Close all tabs
 ```
 
-## Data Extraction
+## 数据提取
 
-From OpenSnow snapshot, find:
+从 OpenSnow 提取的信息包括：
 
-### Snow Summary
-- `Last 24 Hours` — reported snowfall + timestamp
-- `Next 1-5 Days` — forecasted snow
-- `Next 6-10 Days` — extended forecast
-- `Next 11-15 Days` — long range
+### 雪情概要
+- **过去 24 小时**：实际降雪量及时间戳
+- **未来 1-5 天**：天气预报
+- **未来 6-10 天**：长期天气预报
+- **未来 11-15 天**：长期天气趋势
 
-### Current Conditions (under "Right Now")
-- Temperature + feels-like
-- Wind speed, direction, gusts
-- Conditions (Sunny, Snowy, etc.)
+### 当前天气（“现在”）
+- 温度及体感温度
+- 风速、风向、阵风
+- 天气状况（晴朗、下雪等）
 
-### Local Expert (Daily Snow)
-- Expert name
-- Forecast narrative
+### 当地专家信息（每日雪况）
+- 专家姓名
+- 天气预报说明
 
-### AI Overview
-- Quick conditions summary
+### 人工智能概要
+- 简洁的天气状况总结
 
-## Output Formats
+## 输出格式
 
-### SnowTick (favorites dashboard)
+### SnowTick（收藏滑雪场仪表盘）
 ```
 📈 SnowTick — {date}
 
@@ -132,9 +132,9 @@ ROCK   2"  — 0"   ☀️ clear
 ▲ = next 5 days | ← = best bet
 ```
 
-Columns: Ticker | Base depth | 5-day forecast | Current conditions
+列：代码 | 积雪深度 | 5 天天气预报 | 当前天气状况
 
-### Compact (default)
+### 简化格式（默认）
 ```
 🏔️ {Resort} [{TICK}] — {date}
 
@@ -143,7 +143,7 @@ Columns: Ticker | Base depth | 5-day forecast | Current conditions
 **Daily Snow:** {1 sentence summary}
 ```
 
-### Detailed
+### 详细格式
 ```
 🏔️ {Resort} [{TICK}] — {date}
 
@@ -161,7 +161,7 @@ Columns: Ticker | Base depth | 5-day forecast | Current conditions
 **AI Overview:** {summary}
 ```
 
-### Comparison Table
+### 对比表格
 ```
 📊 Snow Comparison — {date}
 
@@ -174,7 +174,7 @@ Columns: Ticker | Base depth | 5-day forecast | Current conditions
 **Best Bet:** TARG — most snow coming
 ```
 
-### Powder Alert
+### 粉雪警报
 ```
 🚨 Powder Alert — {date}
 
@@ -189,35 +189,33 @@ Checking your favorites for incoming snow...
 **Verdict:** TARG looking best for next week
 ```
 
-## Resort Slugs & SnowTick Codes
+## 滑雪场简称及代码
 
-See `references/resorts.md` for full list with tickers.
+完整代码列表请参见 `references/resorts.md`。
 
-**Quick reference:**
-| Region | Tickers |
+**快速参考：**
+| 地区 | 代码 |
 |--------|---------|
-| Wyoming | `JHMR` `TARG` `SNWK` |
-| Utah | `ALTA` `BIRD` `PCMR` `DEER` |
-| Colorado | `VAIL` `AJAX` `TELL` `BOAT` |
-| California | `MMTH` `PALI` `KIRK` `HVLY` |
-| Montana | `BSKY` `FISH` `BRDG` |
-| BC | `WHIS` `RVLK` |
-| Japan | `NSKO` `HAKU` |
+| 怀俄明州 | `JHMR` `TARG` `SNWK` |
+| 犹他州 | `ALTA` `BIRD` `PCMR` `DEER` |
+| 科罗拉多州 | `VAIL` `AJAX` `TELL` `BOAT` |
+| 加利福尼亚州 | `MMTH` `PALI` `KIRK` `HVLY` |
+| 蒙大拿州 | `BSKY` `FISH` `BRDG` |
+| 不列颠哥伦比亚省 | `WHIS` `RVLK` |
+| 日本 | `NSKO` `HAKU` |
 
-For unlisted resorts: search opensnow.com and grab slug from URL, then add ticker to references.
+对于未列出的滑雪场，可以在 opensnow.com 上搜索并获取其简称，然后将其添加到配置文件中。
 
-## First-Time Setup
+## 首次使用说明
 
-If user asks for snow report with no config:
+如果用户首次请求雪情报告且没有配置文件：
+1. 询问用户常用的滑雪场名称，并将其设置为默认滑雪场。
+2. 生成 `memory/snow-preferences.md` 文件。
+3. 询问用户是否需要添加其他用于比较的滑雪场。
+4. 为该用户获取首次雪情报告。
 
-1. Ask: "What's your home mountain? I'll set it as your default."
-2. Create `memory/snow-preferences.md` with their answer
-3. Ask: "Any other favorites to add for comparisons?"
-4. Pull their first report
-
-## Notes
-
-- OpenSnow is JS-rendered; browser required
-- Data updates throughout day; morning reports freshest
-- 11-15 day forecast may be paywalled (show what's visible)
-- For resort-specific data (lifts, groomed runs), check resort's own site
+## 注意事项：
+- OpenSnow 使用 JavaScript 渲染数据，需要浏览器支持。
+- 数据会随时更新，早晨的预报最为准确。
+- 11-15 天的长期天气预报可能需要付费才能查看。
+- 如需了解滑雪场的具体信息（如缆车、雪道状况），请访问滑雪场的官方网站。

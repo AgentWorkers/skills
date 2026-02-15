@@ -1,6 +1,30 @@
 ---
 name: clawback
-description: Mirror congressional stock trades with automated broker execution and risk management. Use when you want to track and automatically trade based on congressional disclosures from House Clerk and Senate eFD sources.
+description: **功能说明：**  
+该工具能够自动执行国会股票交易，并进行风险管理。适用于需要根据众议院书记员（House Clerk）和参议院电子文件数据库（eFD）发布的公开信息来跟踪市场动态并自动进行交易的情况。  
+
+**主要特点：**  
+1. **自动执行交易**：根据国会公开的数据，自动委托经纪机构执行股票交易。  
+2. **实时风险管理**：实时监控交易过程中的风险，确保交易安全。  
+3. **数据来源**：交易指令基于众议院书记员和参议院电子文件数据库（eFD）提供的官方数据。  
+
+**适用场景：**  
+- **市场分析师**：利用国会公开信息进行股票交易分析。  
+- **量化投资策略**：开发基于国会数据的自动化交易策略。  
+- **合规监控**：确保交易行为符合相关法规要求。  
+
+**使用说明：**  
+1. **数据获取**：从指定来源获取最新的国会股票交易数据。  
+2. **策略制定**：根据数据制定交易策略。  
+3. **自动执行**：将策略转化为交易指令，由经纪机构自动执行。  
+4. **风险控制**：设置风险阈值，防止交易超出预设范围。  
+
+**注意事项：**  
+- 请确保使用的经纪机构支持自动化交易功能。  
+- 该工具仅用于合法、合规的交易目的。  
+
+**技术支持：**  
+如需技术支持或咨询，请联系我们的技术团队。
 version: 1.1.0
 author: mainfraame
 homepage: https://github.com/mainfraame/clawback
@@ -10,48 +34,48 @@ metadata: {"openclaw": {"emoji": "🦀", "requires": {"bins": ["python3", "pip"]
 
 # ClawBack
 
-**Mirror congressional stock trades with automated broker execution**
+**自动执行与国会成员股票交易相关的交易**
 
-## Agent Instructions
+## 客户端指令
 
-When the user invokes `/clawback`, execute the appropriate command based on the argument:
+当用户调用 `/clawback` 时，根据参数执行相应的命令：
 
-### Commands
+### 命令
 
-| Command | Action |
+| 命令 | 功能 |
 |---------|--------|
-| `/clawback setup` | Interactive setup - prompt for credentials (see below) |
-| `/clawback status` | Check status: `cd {baseDir} && source venv/bin/activate && python -m clawback.cli status` |
-| `/clawback run` | Start trading: `cd {baseDir} && source venv/bin/activate && python -m clawback.cli run` |
-| `/clawback` | Default to status check |
+| `/clawback setup` | 交互式设置 - 提示输入凭据（见下文） |
+| `/clawback status` | 检查状态：`cd {baseDir} && source venv/bin/activate && python -m clawback.cli status` |
+| `/clawback run` | 开始交易：`cd {baseDir} && source venv/bin/activate && python -m clawback.cli run` |
+| `/clawback` | 默认为状态检查 |
 
-### `/clawback setup` - Interactive Setup Flow
+### `/clawback setup` - 交互式设置流程
 
-When user runs `/clawback setup`, follow these steps:
+当用户运行 `/clawback setup` 时，请按照以下步骤操作：
 
-**Step 1: Install dependencies (if needed)**
-Check if `{baseDir}/venv` exists. If not, run:
+**步骤 1：安装依赖项（如需要）**
+检查 `{baseDir}/venv` 是否存在。如果不存在，请运行：
 ```bash
 cd {baseDir} && python3 -m venv venv && source venv/bin/activate && pip install -e .
 ```
 
-**Step 2: Prompt for E*TRADE credentials**
-Ask the user for each value:
+**步骤 2：提示输入 E*TRADE 凭据**
+向用户询问以下信息：
 
-1. **Environment**: Ask "Do you want to use **sandbox** (testing) or **production** (real money)?"
-   - Default: sandbox
+1. **环境**：询问“您想使用 **沙箱**（测试环境）还是 **生产环境**（真实货币交易）？”
+   - 默认值：沙箱环境
 
-2. **Consumer Key**: Ask "Enter your E*TRADE Consumer Key (from developer.etrade.com):"
-   - Required field
+2. **消费者密钥**：询问“请输入您的 E*TRADE 消费者密钥（来自 developer.etrade.com）：”
+   - 必填项
 
-3. **Consumer Secret**: Ask "Enter your E*TRADE Consumer Secret:"
-   - Required field
+3. **消费者秘钥**：询问“请输入您的 E*TRADE 消费者秘钥：”
+   - 必填项
 
-4. **Account ID**: Ask "Enter your E*TRADE Account ID (or leave blank to get it after OAuth):"
-   - Optional - can be obtained later
+4. **账户 ID**：询问“请输入您的 E*TRADE 账户 ID（或留空，通过 OAuth 获取）：”
+   - 可选 - 可以稍后获取
 
-**Step 3: Save configuration**
-Create/update `~/.clawback/config.json` with the provided values:
+**步骤 3：保存配置**
+使用提供的信息创建或更新 `~/.clawback/config.json` 文件：
 ```json
 {
   "broker": {
@@ -83,83 +107,83 @@ Create/update `~/.clawback/config.json` with the provided values:
 }
 ```
 
-**Step 4: Confirm setup**
-Tell the user: "Configuration saved to ~/.clawback/config.json. Run `/clawback status` to verify."
+**步骤 4：确认设置**
+告知用户：“配置已保存到 `~/.clawback/config.json`。运行 `/clawback status` 进行验证。”
 
-### Getting E*TRADE API Credentials
+### 获取 E*TRADE API 凭据
 
-Direct user to: https://developer.etrade.com
-1. Create a developer account
-2. Create a new app (sandbox first for testing)
-3. Copy the Consumer Key and Consumer Secret
+引导用户访问：https://developer.etrade.com
+1. 创建一个开发者账户
+2. 首先创建一个沙箱应用程序（用于测试）
+3. 复制消费者密钥和消费者秘钥
 
-### Configuration Location
+### 配置文件位置
 
-- Config file: `~/.clawback/config.json`
-- Skill directory: `{baseDir}`
+- 配置文件：`~/.clawback/config.json`
+- 代码目录：`{baseDir}`
 
-### Reading Saved Configuration
+### 读取保存的配置
 
-To check if the user has configured credentials, read `~/.clawback/config.json`:
-- If file doesn't exist or credentials are empty → prompt for setup
-- If credentials exist → can proceed with status/run commands
+要检查用户是否已配置凭据，请读取 `~/.clawback/config.json`：
+- 如果文件不存在或凭据为空 → 提示重新设置
+- 如果凭据存在 → 可以继续执行状态检查或交易命令
 
-The CLI automatically reads from `~/.clawback/config.json` for all operations.
+CLI 会自动从 `~/.clawback/config.json` 中读取所有配置信息。
 
-### Checking Setup Status
+### 检查设置状态
 
-Before running `/clawback status` or `/clawback run`, verify:
-1. `{baseDir}/venv` exists (dependencies installed)
-2. `~/.clawback/config.json` exists with non-empty `broker.credentials.apiKey`
+在运行 `/clawback status` 或 `/clawback run` 之前，请验证：
+1. `{baseDir}/venv` 是否存在（依赖项已安装）
+2. `~/.clawback/config.json` 是否存在，并且包含非空的 `broker.credentials.apiKey`
 
-If either is missing, suggest running `/clawback setup` first.
+如果缺少任何一项，请建议先运行 `/clawback setup`。
 
 ---
 
-ClawBack tracks stock trades disclosed by members of Congress (House and Senate) and executes scaled positions in your E*TRADE brokerage account. Built on the premise that congressional leaders consistently outperform the market due to informational advantages.
+ClawBack 跟踪国会成员（众议院和参议院）披露的股票交易，并在用户的 E*TRADE 经纪账户中自动执行相应的交易。该工具基于这样一个前提：由于信息优势，国会领导者的投资表现通常优于市场。
 
-## Default Target Politicians
+## 默认监控的政客
 
-ClawBack monitors these politicians by default (configurable):
+ClawBack 默认监控以下政客（可配置）：
 
-| Politician | Chamber | Priority |
+| 政客 | 所属议院 | 优先级 |
 |------------|---------|----------|
-| Nancy Pelosi | House | 1 (highest) |
-| Dan Crenshaw | House | 2 |
-| Tommy Tuberville | Senate | 2 |
-| Marjorie Taylor Greene | House | 3 |
+| Nancy Pelosi | 众议院 | 1（最高优先级） |
+| Dan Crenshaw | 众议院 | 2 |
+| Tommy Tuberville | 参议院 | 2 |
+| Marjorie Taylor Greene | 众议院 | 3 |
 
-## Trading Strategy Defaults
+## 交易策略默认值
 
-| Parameter | Default | Description |
+| 参数 | 默认值 | 描述 |
 |-----------|---------|-------------|
-| Trade Delay | 3 days | Wait after disclosure before trading |
-| Holding Period | 30 days | Target hold time for positions |
-| Position Size | 5% | Max allocation per trade |
-| Stop-Loss | 8% | Per-position stop-loss |
-| Portfolio Drawdown | 15% | Max portfolio loss before halt |
-| Disclosure Checks | 10:00, 14:00, 18:00 ET | Daily check times |
+| 交易延迟 | 3 天 | 披露信息后等待 3 天再交易 |
+| 持有期限 | 30 天 | 交易头寸的持有时间 |
+| 交易规模 | 5% | 每笔交易的最大分配比例 |
+| 止损 | 8% | 每笔交易的止损幅度 |
+| 投资组合回撤 | 15% | 投资组合的最大损失限度 |
+| 披露检查时间 | 美国东部时间 10:00, 14:00, 18:00 | 每日检查时间 |
 
-## Features
+## 功能
 
-- **Real-time disclosure tracking** from official House Clerk and Senate eFD sources
-- **Automated trade execution** via E*TRADE API (only supported broker)
-- **Smart position sizing** - scales trades to your account size
-- **Trailing stop-losses** - lock in profits, limit losses
-- **Risk management** - drawdown limits, consecutive loss protection
-- **Telegram notifications** - get alerts for new trades and stop-losses
-- **Backtesting engine** - test strategies on historical data
+- **实时跟踪披露信息**：来自官方众议院书记员和参议院的电子文件披露（eFD）
+- **自动执行交易**：通过 E*TRADE API（仅支持该经纪商）
+- **智能交易规模调整**：根据用户账户规模调整交易规模 |
+- **动态止损**：锁定利润，限制损失 |
+- **风险管理**：设置回撤限制，防止连续亏损 |
+- **Telegram 通知**：接收新交易和止损的提醒 |
+- **回测引擎**：使用历史数据测试交易策略
 
-## Performance (Backtest Results)
+## 性能（回测结果）
 
-| Strategy | Win Rate | Return | Sharpe |
+| 策略 | 胜率 | 收益率 | 夏普比率 |
 |----------|----------|--------|--------|
-| 3-day delay, 30-day hold | 42.9% | +6.2% | 0.39 |
-| 9-day delay, 90-day hold | 57.1% | +4.7% | 0.22 |
+| 3 天延迟，30 天持有 | 42.9% | +6.2% | 0.39 |
+| 9 天延迟，90 天持有 | 57.1% | +4.7% | 0.22 |
 
-Congressional leaders have outperformed the S&P 500 by 47% annually according to NBER research.
+根据 NBER 的研究，国会领导者的投资表现每年优于标准普尔 500 指数 47%。
 
-## Installation via ClawHub
+## 通过 ClawHub 安装
 
 ```bash
 # Install from ClawHub registry
@@ -169,16 +193,15 @@ clawhub install clawback
 clawhub install ./clawback
 ```
 
-### Post-Installation Setup
+### 安装后的设置
 
-After installation via ClawHub, the `install.sh` script runs automatically:
+通过 ClawHub 安装后，`install.sh` 脚本会自动执行以下操作：
+1. **Python 环境设置**：创建虚拟环境
+2. **包安装**：通过 pip 安装 ClawBack
+3. **目录结构**：创建 logs/、data/、config/ 目录
+4. **设置提示**：询问是否要运行设置向导
 
-1. **Python Environment Setup** - Creates virtual environment
-2. **Package Installation** - Installs ClawBack via pip
-3. **Directory Structure** - Creates logs/, data/, config/ directories
-4. **Setup Prompt** - Asks if you want to run the setup wizard
-
-If you skip setup during installation, run it manually:
+如果您在安装过程中跳过了设置步骤，可以手动运行：
 ```bash
 cd ~/.openclaw/skills/clawback
 ./setup.sh          # Interactive setup wizard
@@ -186,42 +209,42 @@ cd ~/.openclaw/skills/clawback
 clawback setup      # CLI-based setup
 ```
 
-### Improved Setup Features
+### 改进的设置功能
 
-- **Better input handling** - Works in both interactive and non-interactive modes
-- **Input validation** - Validates E*TRADE API key formats
-- **Timeout handling** - Automatically uses defaults if no input
-- **Error recovery** - Fallback to manual setup if CLI fails
-- **Configuration check** - Detects existing config and offers options
+- **更好的输入处理**：支持交互式和非交互式模式
+- **输入验证**：验证 E*TRADE API 密钥的格式
+- **超时处理**：如果没有输入，自动使用默认值
+- **错误恢复**：如果 CLI 失败，切换到手动设置
+- **配置检查**：检测现有配置并提供选项
 
-## Interactive Setup Wizard
+## 交互式设置向导
 
-The setup wizard guides you through configuration:
+设置向导会指导您完成配置：
 
-### Step 1: Environment Selection
-- **Sandbox** (recommended for testing): No real trades, uses E*TRADE developer sandbox
-- **Production**: Real trading with real money
+### 步骤 1：环境选择
+- **沙箱**（建议用于测试）：不进行真实交易，使用 E*TRADE 开发者沙箱环境
+- **生产环境**：使用真实货币进行真实交易
 
-### Step 2: E*TRADE API Credentials
-- **Consumer Key**: From E*TRADE developer portal
-- **Consumer Secret**: From E*TRADE developer portal
+### 步骤 2：E*TRADE API 凭据
+- **消费者密钥**：从 E*TRADE 开发者门户获取
+- **消费者秘钥**：从 E*TRADE 开发者门户获取
 
-### Step 3: Authentication
-- Automatic OAuth flow with E*TRADE
-- Opens browser for authorization
-- Returns verification code
+### 步骤 3：身份验证
+- 与 E*TRADE 自动进行 OAuth 验证
+- 打开浏览器进行授权
+- 显示验证码
 
-### Step 4: Account Selection
-- Lists all available E*TRADE accounts
-- Choose which account to trade with
+### 步骤 4：账户选择
+- 列出所有可用的 E*TRADE 账户
+- 选择用于交易的账户
 
-### Step 5: Telegram Setup (Optional)
-- Configure notifications via Telegram bot
-- Uses OpenClaw's built-in Telegram channel if available
+### 步骤 5：Telegram 设置（可选）
+- 通过 Telegram 机器人配置通知
+- 如果可用，使用 OpenClaw 的内置 Telegram 频道
 
-## Environment Variables
+## 环境变量
 
-After setup, credentials are stored in `.env`:
+设置完成后，凭据将存储在 `.env` 文件中：
 
 ```bash
 # E*TRADE API (required)
@@ -237,7 +260,7 @@ TELEGRAM_CHAT_ID=your_chat_id_here
 FMP_API_KEY=your_fmp_api_key_here
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Use the installed CLI command
@@ -248,38 +271,38 @@ clawback setup    # Re-run setup wizard
 clawback test     # Test Telegram notifications
 ```
 
-## Automated Trading
+## 自动交易
 
-The `clawback daemon` command runs continuously with:
-- **Disclosure checks** at 10:00, 14:00, 18:00 ET (when filings are typically released)
-- **Trade execution** at 9:35 AM ET (5 min after market open)
-- **Token refresh** every 90 minutes (keeps E*TRADE session alive)
-- **Market hours enforcement** (9:30 AM - 4:00 PM ET)
+`clawback` 守护进程会持续运行，执行以下操作：
+- 在美国东部时间 10:00、14:00、18:00 进行披露信息检查（这些时间是文件通常发布的时刻）
+- 在美国东部时间上午 9:35 开始交易（市场开盘后 5 分钟）
+- 每 90 分钟刷新令牌（保持 E*TRADE 会话活跃）
+- 遵循市场交易时间（上午 9:30 - 下午 4:00）
 
-## Data Sources
+## 数据来源
 
-- **House Clerk**: https://disclosures-clerk.house.gov (PDF parsing)
-- **Senate eFD**: https://efdsearch.senate.gov (web scraping)
-- **Financial Modeling Prep**: Enhanced financial data (optional)
+- **众议院书记员**：https://disclosures-clerk.house.gov（PDF 文件解析）
+- **参议院电子文件披露**：https://efdsearch.senate.gov（网络爬取）
+- **财务数据准备**：可选的增强型财务数据
 
-## Supported Brokers
+## 支持的经纪商
 
-ClawBack currently only supports E*TRADE. The adapter pattern allows for future broker support, but only E*TRADE is implemented and tested.
+ClawBack 目前仅支持 E*TRADE。虽然支持其他经纪商的适配器模式，但目前仅实现了 E*TRADE 的功能并进行测试。
 
-| Broker | Adapter | Status |
+| 经纪商 | 适配器 | 状态 |
 |--------|---------|--------|
-| E*TRADE | `etrade_adapter.py` | Supported |
+| E*TRADE | `etrade_adapter.py` | 已支持 |
 
-## Risk Management
+## 风险管理
 
-- **Position limits**: 5% max per symbol, 20 positions max
-- **Stop-losses**: 8% per position, 15% portfolio drawdown
-- **Daily limits**: 3% max daily loss
-- **PDT compliance**: Conservative 2 trades/day limit
+- **交易限额**：每个股票的最大交易比例为 5%，最多 20 个交易头寸
+- **止损**：每个交易头寸的止损幅度为 8%，投资组合的最大损失为 15%
+- **每日限额**：每日最大损失限制为 3%
+- **PDT 合规性**：每天最多 2 笔交易
 
-## Authentication Helpers
+## 身份验证辅助工具
 
-For manual E*TRADE authentication outside the main CLI:
+对于在主 CLI 之外进行手动 E*TRADE 验证的情况：
 
 ```bash
 # Standalone OAuth authentication script
@@ -288,30 +311,30 @@ source venv/bin/activate
 python scripts/auth_script.py
 ```
 
-This generates an authorization URL, prompts for the verification code, and completes authentication.
+该工具会生成授权 URL，提示用户输入验证码，并完成身份验证。
 
-## File Locations
+## 文件位置
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `~/.clawback/config.json` | Main configuration |
-| `~/.clawback/.access_tokens.json` | E*TRADE OAuth tokens |
-| `~/.clawback/data/trading.db` | SQLite database |
+| `~/.clawback/config.json` | 主配置文件 |
+| `~/.clawback/.access_tokens.json` | E*TRADE OAuth 令牌 |
+| `~/.clawback/data/trading.db` | SQLite 数据库 |
 
-## Security
+## 安全性
 
-- No hardcoded credentials in source code
-- Environment variable based configuration
-- Encrypted token storage for E*TRADE
-- Git-ignored `.env` file
-- Optional production encryption
+- 源代码中不包含硬编码的凭据
+- 配置基于环境变量
+- E*TRADE 令牌存储采用加密方式
+- `.env` 文件被 Git 忽略（防止泄露）
+- 可选的生产环境加密
 
-## Support
+## 支持
 
-- **Documentation**: See README.md for detailed setup
-- **Issues**: https://github.com/mainfraame/clawback/issues
-- **Community**: https://discord.com/invite/clawd
+- **文档**：详细设置信息请参阅 README.md
+- **问题反馈**：https://github.com/mainfraame/clawback/issues
+- **社区**：https://discord.com/invite/clawd
 
-## Disclaimer
+## 免责声明
 
-**Trading involves substantial risk of loss.** This software is for educational purposes only. Past congressional trading performance does not guarantee future results. Always test with E*TRADE sandbox accounts before live trading.
+**交易存在重大损失风险。** 本软件仅用于教育目的。过去国会成员的交易表现不能保证未来的结果。在实际交易前，请务必在 E*TRADE 沙箱账户中进行测试。

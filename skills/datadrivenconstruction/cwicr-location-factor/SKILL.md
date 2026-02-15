@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-location-factor"
 display_name: "CWICR Location Factor"
-description: "Apply geographic location factors to CWICR estimates. Adjust costs for regional labor rates, material prices, and market conditions."
+description: "将地理位置因素应用于CWICR的估算中。根据不同地区的劳动力成本、材料价格和市场状况来调整相关费用。"
 ---
 
-# CWICR Location Factor
+# CWICR（Construction Weighted Index Calculation and Reporting）中的位置因素
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction costs vary by location:
-- Labor rates differ by region
-- Material prices vary geographically
-- Market conditions affect costs
-- Remote locations have premiums
+### 问题描述
+建筑成本因地理位置而异：
+- 劳动力价格因地区而异
+- 材料价格存在地域差异
+- 市场状况会影响成本
+- 偏远地区的成本通常更高
 
-### Solution
-Apply location-based cost factors to CWICR estimates, adjusting for regional differences in labor, materials, and overall market conditions.
+### 解决方案
+在 CWICR 的估算中应用基于位置的成本因素，以考虑劳动力、材料和整体市场条件的地区差异。
 
-### Business Value
-- **Regional accuracy** - Location-specific estimates
-- **Market awareness** - Current conditions
-- **Comparison support** - Normalize across locations
-- **Planning** - Multi-location projects
+### 商业价值
+- **区域准确性**：提供针对特定地区的估算结果
+- **市场洞察**：反映当前的市场状况
+- **比较支持**：实现跨地区的成本标准化
+- **规划支持**：适用于多地点项目
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -320,8 +319,7 @@ class CWICRLocationFactor:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize with base location
 loc_factor = CWICRLocationFactor(base_location='US-NAT')
@@ -337,9 +335,9 @@ print(f"NYC: ${adjustment.adjusted_cost:,.2f}")
 print(f"Adjustment: {adjustment.adjustment_percent:+.1f}%")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Multi-Location Comparison
+### 1. 多地点成本比较
 ```python
 comparison = loc_factor.compare_locations(
     base_cost=5000000,
@@ -348,7 +346,7 @@ comparison = loc_factor.compare_locations(
 print(comparison)
 ```
 
-### 2. Adjust Estimate
+### 2. 调整估算结果
 ```python
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
 loc_factor = CWICRLocationFactor(cwicr, base_location='US-NAT')
@@ -362,7 +360,7 @@ dubai_estimate = loc_factor.adjust_estimate(items, 'AE-DXB')
 print(f"Dubai Cost: ${dubai_estimate['total_adjusted']:,.2f}")
 ```
 
-### 3. Custom Location
+### 3. 定制特定地点的估算
 ```python
 loc_factor.add_location(LocationFactor(
     'US-REMOTE',
@@ -378,6 +376,6 @@ loc_factor.add_location(LocationFactor(
 ))
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Location Cost Adjustments
+- **DDC 手册**: 第 3.1 章 - 地区成本调整

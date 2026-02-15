@@ -1,34 +1,34 @@
 ---
 name: book-auto
-description: Book auto services through Lokuli MCP. Use when user needs smog checks, oil changes, car detailing, mechanics, tire services, or any automotive service. Triggers on requests like "I need a smog check", "book an oil change", "find a mechanic near me", "car detailing", or any auto service request.
+description: 通过 Lokuli MCP 预订汽车服务。当用户需要进行尾气检测、更换机油、汽车美容、维修、轮胎服务或任何其他汽车相关服务时，可以使用该功能。该功能会在用户发起如下请求时触发：**“我需要进行尾气检测”**、**“预约更换机油”**、**“查找附近的维修技师”**、**“汽车美容”** 或任何其他汽车服务相关请求。
 ---
 
-# Book Auto Services
+# 预订汽车服务
 
-Book automotive services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订汽车服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Auto Services Available
+## 可用的汽车服务
 
-- Smog Check
-- Oil Change
-- Car Detailing
-- Mechanic
-- Tire Services
-- Brake Service
-- Car Wash
-- Auto Body Repair
+- 雾霾检测
+- 更换机油
+- 汽车美容
+- 机械维修
+- 轮胎服务
+- 刹车维修
+- 洗车服务
+- 汽车车身修复
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -44,7 +44,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查服务可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -59,7 +59,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",
@@ -77,11 +77,11 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-## Workflow
+## 工作流程
 
-1. **Understand** — What auto service? Where (ZIP)?
-2. **Search** — Find matching providers
-3. **Present** — Show top results with pricing
-4. **Check availability** — Get open time slots
-5. **Confirm** — Get explicit user approval
-6. **Create booking** — Generate checkout link
+1. **了解需求** — 需要哪种汽车服务？在哪里（具体地址）？
+2. **搜索** — 查找符合条件的服务提供商
+3. **展示结果** — 显示包含价格的信息
+4. **检查可用性** — 查看服务提供商的可用时间
+5. **确认预订** — 待用户明确同意后进行预订
+6. **创建预订** — 生成预订确认链接

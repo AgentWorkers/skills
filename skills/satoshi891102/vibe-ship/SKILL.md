@@ -1,47 +1,47 @@
 ---
 name: vibe-ship
-description: Ship a complete web app from idea to public deployment in one session. Use when user says "build me an app", "ship this idea", "vibe code", "quick ship", "deploy this", or describes any consumer app, tool, or website they want built and deployed. Handles validation, tech stack selection, building, testing, and deployment to Vercel or GitHub Pages.
+description: 将一个完整的Web应用程序从构思阶段快速开发并部署到线上。适用于用户提出“为我开发一个应用程序”、“实现这个想法”、“快速开发”、“部署这个应用程序”等需求时，适用于任何需要构建和部署的消费类应用程序、工具或网站。该流程包括需求验证、技术栈选择、代码开发、测试，以及将应用程序部署到Vercel或GitHub Pages平台。
 ---
 
 # Vibe Ship
 
-Ship a working, deployed web app from a single idea in one session. No planning paralysis. No localhost. Public URL or it didn't happen.
+在一个工作日内，将一个从简单想法出发的、可运行的Web应用从开发阶段部署到生产环境。无需繁琐的规划过程，也无需使用本地服务器（localhost）。必须提供一个公共URL，否则就算没有完成。
 
-## Workflow
+## 工作流程
 
-### Step 1: Validate (2 minutes max)
+### 第1步：验证（最多2分钟）
 
-Before writing any code, answer these four questions:
+在编写任何代码之前，回答以下四个问题：
 
-1. **Can you explain the value in one sentence?** If not, the idea isn't clear enough — ask user to clarify.
-2. **Does the core mechanism work?** Is this technically feasible with available tools (no paid APIs unless user has keys)?
-3. **Who would use this?** Be specific. "Everyone" is not an answer.
-4. **What's the fatal flaw?** Actively try to kill the idea. If you can't, proceed.
+1. **你能用一句话解释这个应用的价值吗？** 如果不能，说明这个想法还不够清晰——请用户进一步说明。
+2. **核心功能是否可行？** 使用现有的工具（除非用户拥有付费API的密钥，否则不使用这些API），这个功能在技术上是否可以实现？
+3. **谁会使用这个应用？** 需要具体说明。不能笼统地说“所有人”。
+4. **这个应用存在什么致命的缺陷吗？** 要主动尝试找出这些问题；如果找不到问题，再继续开发。
 
-If any answer is weak, tell the user and suggest a pivot. Don't build on broken concepts.
+如果任何问题的答案都不明确，就告诉用户并建议调整方向。不要在存在缺陷的概念上继续开发。
 
-### Step 2: Choose Stack
+### 第2步：选择技术栈
 
-**Default stack (90% of apps):**
-- Next.js 14+ (App Router)
+**推荐的技术栈（90%的应用）：**
+- Next.js 14及以上版本（用于应用路由管理）
 - Tailwind CSS
 - TypeScript
-- Deploy to Vercel
+- 通过Vercel进行部署
 
-**When to deviate:**
-- Static site / no backend needed → plain HTML/CSS/JS → GitHub Pages
-- Needs database → add Supabase (free tier)
-- Needs auth → add NextAuth or Clerk
-- Needs AI → use local inference or user-provided API keys (never hardcode keys)
+**在以下情况下可以选择其他技术栈：**
+- 如果是静态网站且不需要后端服务 → 使用纯HTML/CSS/JS → 通过GitHub Pages部署
+- 需要数据库 → 使用Supabase（免费版本）
+- 需要身份验证功能 → 使用NextAuth或Clerk
+- 需要AI功能 → 使用本地推理技术或用户提供的API密钥（切勿硬编码密钥）
 
-**Never use:**
-- Create React App (dead)
-- Webpack configs from scratch
-- Complex state management for simple apps (no Redux for a landing page)
+**绝对不要使用：**
+- Create React App（已经过时）
+- 从头开始配置Webpack
+- 对于简单的应用使用复杂的-state管理库（例如Redux）
 
-### Step 3: Build (iterative)
+### 第3步：逐步开发
 
-**Iteration 1 — Core functionality:**
+**第1轮迭代：实现核心功能：**
 ```
 1. Initialize project: npx create-next-app@latest [name] --typescript --tailwind --app --src-dir
 2. Build the ONE core feature that makes this app valuable
@@ -49,7 +49,7 @@ If any answer is weak, tell the user and suggest a pivot. Don't build on broken 
 4. Verify it actually works in the browser
 ```
 
-**Iteration 2 — Make it look good:**
+**第2轮迭代：优化界面美观：**
 ```
 1. Dark mode by default (users expect it)
 2. Mobile responsive (test at 375px width)
@@ -58,7 +58,7 @@ If any answer is weak, tell the user and suggest a pivot. Don't build on broken 
 5. No default Tailwind look — intentional design choices
 ```
 
-**Iteration 3 — Harden:**
+**第3轮迭代：增强应用稳定性：**
 ```
 1. Error handling on all external calls
 2. Input validation
@@ -67,9 +67,9 @@ If any answer is weak, tell the user and suggest a pivot. Don't build on broken 
 5. Favicon
 ```
 
-### Step 4: Deploy
+### 第4步：部署
 
-**Vercel (preferred):**
+**推荐使用Vercel：**
 ```bash
 # If Vercel CLI available:
 cd [project-dir]
@@ -81,58 +81,56 @@ gh repo create [name] --public --push
 # Then deploy via Vercel dashboard or CLI
 ```
 
-**GitHub Pages (static sites only):**
+**仅适用于静态网站的情况：使用GitHub Pages：**
 ```bash
 git init && git add . && git commit -m "Ship it"
 gh repo create [name] --public --push
 # Enable Pages in repo settings → deploy from main branch
 ```
 
-**After deployment:**
-1. Verify the public URL loads correctly
-2. Test on mobile (responsive check)
-3. Test core functionality end-to-end
-4. Share the URL with user
+**部署完成后：**
+1. 确认公共URL能够正确加载。
+2. 在移动设备上测试应用的响应性。
+3. 对核心功能进行端到端的测试。
+4. 将URL分享给用户。
 
-### Step 5: Post-ship
+### 第5步：项目交付后的工作
 
-1. Commit all code with meaningful message
-2. Add README.md with: what it is, how it works, tech stack, live URL
-3. Report to user: live URL + what was built + any known limitations
+1. 为所有代码提交代码，并附上清晰的提交信息。
+2. 创建README.md文件，内容包括：应用的功能、技术栈、以及公共URL。
+3. 向用户报告应用的详细信息，包括公共URL、已实现的功能以及任何已知的局限性。
 
-## Quality Checklist
+## 质量检查清单
 
-Before declaring "shipped," verify ALL of these:
+在宣布项目“完成并部署”之前，必须验证以下所有内容：
+- [ ] 公共URL可以访问（不能使用localhost）
+- [ ] 核心功能能够正常运行。
+- [ ] 应用在桌面和移动设备上的显示效果符合设计意图。
+- [ ] 没有控制台错误。
+- [ ] 没有硬编码的敏感信息（如API密钥）。
+- [ ] 页面有合适的标题和描述。
+- [ ] 错误情况得到了妥善处理（当应用出问题时，用户能够得到相应的提示）。
+- [ ] 在加载过程中有适当的加载提示（避免出现空白屏幕）。
 
-- [ ] Public URL accessible (not localhost)
-- [ ] Core feature works end-to-end
-- [ ] Looks intentional on desktop AND mobile
-- [ ] No console errors
-- [ ] No hardcoded secrets
-- [ ] Has proper page title and description
-- [ ] Error states handled (what happens when things break?)
-- [ ] Loading states present (no blank screens while fetching)
+## 避免的错误做法：
+- **过度设计**：对于MVP（最小可行产品）来说，不要添加不必要的身份验证、数据库或分析功能。只需实现核心价值即可。
+- **使用默认的Tailwind样式**：如果应用看起来和其他使用Tailwind的网站一样，就需要重新设计，以体现独特的风格。
+- **使用本地服务器进行部署**：仅仅因为在自己的机器上可以运行，并不意味着应用已经准备好部署到生产环境。
+- **功能蔓延**：用户只提出了一个需求，就立即实现它；可以在应用上线后再根据用户反馈决定是否添加额外功能。
+- **每一步都征求用户许可**：要果断做出决策，然后立即部署应用，并在应用上线后收集用户的反馈。
 
-## Anti-Patterns (Don't Do These)
+## 开发速度目标
 
-- **Over-engineering**: Don't add auth, database, analytics for an MVP. Ship the core value.
-- **Default Tailwind**: If it looks like every other Tailwind site, redesign it. Add personality.
-- **Localhost shipping**: "It works on my machine" is not shipped. Deploy it.
-- **Feature creep**: The user asked for one thing. Build that. Suggest extras AFTER it's live.
-- **Asking permission at every step**: Make decisions. Ship. Get feedback on the live thing.
-
-## Speed Targets
-
-| App Complexity | Target Time | Example |
+| 应用复杂度 | 预计开发时间 | 示例 |
 |----------------|-------------|---------|
-| Landing page | 30 min | Product waitlist page |
-| Single-feature tool | 1-2 hours | Color palette generator, calculator |
-| Multi-page app | 2-4 hours | Dashboard, content tool |
-| Full product | 4-8 hours | SaaS MVP with auth + database |
+| 简单的登录页面 | 30分钟 | 产品等待列表页面 |
+| 单功能工具 | 1-2小时 | 颜色调色板生成器、计算器 |
+| 多页面应用 | 2-4小时 | 仪表盘、内容管理工具 |
+| 完整的产品 | 4-8小时 | 带有身份验证和数据库功能的SaaS MVP |
 
-## Common Patterns
+## 常用开发模式
 
-**API route pattern (Next.js):**
+**Next.js中的API路由配置：**
 ```typescript
 // src/app/api/[endpoint]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
@@ -148,7 +146,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-**Dark mode base (globals.css):**
+**全局样式设置（globals.css）：**
 ```css
 :root {
   --background: #0a0a0a;
@@ -160,7 +158,7 @@ body {
 }
 ```
 
-**Responsive grid:**
+**响应式布局设计：**
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {items.map(item => <Card key={item.id} {...item} />)}

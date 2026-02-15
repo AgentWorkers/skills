@@ -1,33 +1,37 @@
 ---
 slug: "rfi-management"
 display_name: "Rfi Management"
-description: "Complete RFI (Request for Information) management system. Create, track, route, and analyze RFIs with automatic notifications and response deadline tracking."
+description: "完整的 RFI（请求信息）管理系统。能够创建、跟踪、路由 RFI 请求，并具备自动通知功能以及响应截止日期的跟踪机制。"
 ---
 
-# RFI Management System for Construction
+# 建筑项目中的RFI管理系统
 
-Comprehensive system for managing Requests for Information (RFIs) throughout the construction project lifecycle.
+这是一个用于管理整个建设项目生命周期中信息请求（RFIs）的综合性系统。
 
-## Business Case
+## 商业案例
 
-**Problem**: RFI management is chaotic:
-- RFIs get lost in email threads
-- Response deadlines missed
-- No visibility into RFI status
-- Difficult to track cost/schedule impacts
-- Manual logging wastes hours weekly
+**问题**：
+- RFI管理混乱：
+  - RFI信息在电子邮件对话中容易被遗漏
+  - 回复截止日期经常被错过
+- 无法实时了解RFI的状态
+- 难以追踪成本和进度的影响
+- 手动记录信息每周会浪费大量时间
 
-**Solution**: Structured RFI management that:
-- Auto-assigns RFI numbers
-- Routes to correct parties
-- Tracks response deadlines
-- Sends automatic reminders
-- Maintains audit trail
-- Analyzes trends and impacts
+**解决方案**：
+- 采用结构化的RFI管理方式，具备以下功能：
+  - 自动为RFI分配编号
+  - 将请求转发给相应的负责人
+- 跟踪回复截止日期
+- 自动发送提醒
+- 保留审计记录
+- 分析RFI的趋势及其对项目的影响
 
-**ROI**: 60% faster RFI response time, 90% reduction in lost RFIs
+**投资回报（ROI）**：
+- RFI的回复时间缩短60%
+- 丢失的RFI数量减少90%
 
-## RFI Workflow
+## RFI工作流程
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -58,9 +62,9 @@ Comprehensive system for managing Requests for Information (RFIs) throughout the
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Data Structure
+## 数据结构
 
-### RFI Log Schema
+### RFI日志架构
 
 ```python
 RFI_SCHEMA = {
@@ -106,7 +110,7 @@ RFI_SCHEMA = {
 }
 ```
 
-## Python Implementation
+## Python实现
 
 ```python
 import pandas as pd
@@ -527,7 +531,7 @@ if __name__ == "__main__":
     print(manager.generate_report())
 ```
 
-## n8n Integration
+## 与n8n平台的集成
 
 ```yaml
 name: RFI Notification Workflow
@@ -582,9 +586,9 @@ steps:
         [View in Portal]({{PROJECT_PORTAL_URL}}/rfi/{{$json.rfi_number}})
 ```
 
-## Templates
+## 模板
 
-### RFI Submission Template
+### RFI提交模板
 
 ```markdown
 ## REQUEST FOR INFORMATION
@@ -624,4 +628,4 @@ Submitted by: [Name, Company]
 
 ---
 
-*"A well-written RFI gets answered faster. Be specific, reference documents, and propose solutions."*
+*“一份编写规范的RFI会更快得到回复。请提供详细信息，引用相关文档，并提出解决方案。”*

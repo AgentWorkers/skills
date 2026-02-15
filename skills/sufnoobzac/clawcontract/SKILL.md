@@ -1,82 +1,82 @@
 ---
 name: clawcontract
-description: AI-powered smart contract generator, analyzer, and deployer for BNB Chain (BSC/opBNB). Use when you need to generate Solidity from natural language, run security analysis, compile and deploy contracts, verify source on BscScan/opBNBScan, interact with deployed contracts, or run the full generate→analyze→deploy→verify pipeline. Supports bsc-mainnet, bsc-testnet, opbnb-mainnet, opbnb-testnet.
+description: 这是一个基于人工智能的智能合约生成器、分析工具和部署工具，专为 BNB Chain（BSC/opBNB）设计。当您需要将自然语言转换为 Solidity 代码、进行安全分析、编译并部署智能合约、在 BscScan 或 opBNBScan 上验证合约源代码、与已部署的合约进行交互，或者执行完整的“生成→分析→部署→验证”流程时，都可以使用该工具。该工具支持 BSC 主网（bsc-mainnet）、BSC 测试网（bsc-testnet）以及 opBNB 主网（opbnb-mainnet）和 opBNB 测试网（opbnb-testnet）。
 homepage: https://github.com/cvpfus/clawcontract
 metadata: {"openclaw":{"requires":{"bins":["clawcontract"],"env":["OPENROUTER_API_KEY"]}}}
 ---
 
 # ClawContract
 
-Generate, analyze, deploy, and verify smart contracts on BNB Chain via CLI.
+通过命令行界面（CLI），在 BNB Chain 上生成、分析、部署和验证智能合约。
 
-**Source & install:** <https://github.com/cvpfus/clawcontract> — clone the repo, run `pnpm install && pnpm build && npm link`.
+**获取与安装：** <https://github.com/cvpfus/clawcontract> — 克隆仓库，然后运行 `pnpm install && pnpm build && npm link`。
 
-## Quick Start
+## 快速入门
 
-Generate a contract:
+生成智能合约：
 
-    clawcontract generate "escrow contract for peer to peer trades with dispute resolution and timeout auto release"
+    `clawcontract generate "用于点对点交易的托管合约，包含争议解决机制和超时自动释放功能"`
 
-Full pipeline (generate → analyze → deploy → verify):
+完整流程（生成 → 分析 → 部署 → 验证）：
 
-    clawcontract full "escrow contract for peer to peer trades with dispute resolution and timeout auto release" --chain bsc-testnet
+    `clawcontract full "用于点对点交易的托管合约，包含争议解决机制和超时自动释放功能" --chain bsc-testnet`
 
-Deploy an existing contract:
+部署现有的智能合约：
 
-    clawcontract deploy ./contracts/VibeToken.sol --chain bsc-testnet
+    `clawcontract deploy ./contracts/VibeToken.sol --chain bsc-testnet`
 
-Interact with a deployed contract:
+与已部署的智能合约交互：
 
-    clawcontract interact 0xABC... name --chain bsc-testnet
+    `clawcontract interact 0xABC... name --chain bsc-testnet`
 
-## Setup
+## 设置
 
-Generate `.env` non-interactively:
+非交互式地生成 `.env` 文件：
 
-    clawcontract setup --openrouter-key <key>
+    `clawcontract setup --openrouter-key <key>`
 
-Flags: `--private-key`, `--openrouter-key`, `--openrouter-model`, `--bscscan-key`.
+可选参数：`--private-key`、`--openrouter-key`、`--openrouter-model`、`--bscscan-key`。
 
-## References
+## 参考资料
 
-- **Full command reference (all flags, examples, notes):** See `{baseDir}/references/commands.md`
+- **完整命令参考（所有参数、示例和说明）：** 请参阅 `{baseDir}/references/commands.md`
 
-## Supported Chains
+## 支持的链
 
-| Key | Chain | Testnet |
+| 关键字 | 链名 | 测试网 |
 |-----|-------|---------|
-| `bsc-mainnet` | BNB Smart Chain | No |
-| `bsc-testnet` | BNB Smart Chain Testnet | Yes |
-| `opbnb-mainnet` | opBNB | No |
-| `opbnb-testnet` | opBNB Testnet | Yes |
+| `bsc-mainnet` | BNB 智能链 | 不支持 |
+| `bsc-testnet` | BNB 智能链测试网 | 支持 |
+| `opbnb-mainnet` | opBNB | 不支持 |
+| `opbnb-testnet` | opBNB 测试网 | 支持 |
 
-Default: `bsc-testnet`.
+默认值：`bsc-testnet`。
 
-## Env Vars
+## 环境变量
 
-| Variable | Required | Purpose |
+| 变量 | 是否必需 | 用途 |
 |----------|----------|---------|
-| `OPENROUTER_API_KEY` | Yes | AI contract generation |
-| `PRIVATE_KEY` | For deploy | Wallet for deployment — must be supplied by user |
-| `BSCSCAN_API_KEY` | For verify | Contract verification on BscScan/opBNBScan |
-| `OPENROUTER_MODEL` | No | Model override (default: anthropic/claude-sonnet-4-20250514) |
+| `OPENROUTER_API_KEY` | 是 | 用于生成智能合约 |
+| `PRIVATE_KEY` | 部署时必需 | 用于部署的私钥，需用户提供 |
+| `BSCSCAN_API_KEY` | 验证时必需 | 用于在 BscScan/opBNBScan 上验证合约 |
+| `OPENROUTER_MODEL` | 可选 | 链模型（默认：anthropic/claude-sonnet-4-20250514） |
 
-## Artifacts
+## 生成文件
 
-The CLI writes the following files to disk during normal operation:
+在正常运行过程中，CLI 会在磁盘上生成以下文件：
 
-| Path | When | Contents |
+| 文件路径 | 生成时机 | 文件内容 |
 |------|------|----------|
-| `contracts/*.sol` | `generate`, `full` | Generated Solidity source |
-| `.env` | `setup` | Environment variable file (user-initiated only) |
-| `.deployments/*.json` | `deploy`, `full` | Deployment metadata (address, chain, tx hash) |
+| `contracts/*.sol` | 生成智能合约时 | 生成的 Solidity 源代码 |
+| `.env` | 设置环境变量时 | 仅用户手动设置 |
+| `.deployments/*.json` | 部署时 | 部署元数据（地址、链名、交易哈希） |
 
-## Safety
+## 安全性注意事项
 
-- **No auto-generated keys.** `PRIVATE_KEY` must be explicitly provided by the user via `setup --private-key` or by setting the env var directly. The CLI will not generate or persist a private key on its own.
-- Deployment to mainnet chains shows an extra confirmation warning.
-- The CLI is fully non-interactive — all commands run without user prompts.
-- High-severity analysis issues trigger automatic fix attempts (up to 3) before deploy.
-- Use `--skip-deploy` with the `full` command to review generated contracts and analysis results before deploying.
-- Use `--skip-fix` to disable automatic fix attempts on high-severity issues.
-- Prefer testnet chains and throwaway keys for initial trials.
+- **不会自动生成私钥。** 用户必须通过 `setup --private-key` 或直接设置环境变量来提供 `PRIVATE_KEY`。CLI 不会自行生成或保存私钥。
+- 部署到主链时会显示额外的确认提示。
+- CLI 完全是非交互式的——所有命令均无需用户输入即可执行。
+- 对于高严重性的分析问题，CLI 会自动尝试修复（最多尝试 3 次）。
+- 使用 `--skip-deploy` 选项可以在部署前查看生成的合约和分析结果。
+- 使用 `--skip-fix` 选项可以禁用对高严重性问题的自动修复尝试。
+- 初次测试时建议使用测试网和临时生成的密钥。

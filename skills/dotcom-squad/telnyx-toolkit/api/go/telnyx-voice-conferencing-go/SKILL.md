@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Conferencing - Go
+# Telnyx 语音会议 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,13 +39,13 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Enqueue call
+## 将呼叫放入队列
 
-Put the call in a queue.
+将呼叫放入队列中。
 
-`POST /calls/{call_control_id}/actions/enqueue` — Required: `queue_name`
+`POST /calls/{call_control_id}/actions/enqueue` — 必需参数：`queue_name`
 
 ```go
 	response, err := client.Calls.Actions.Enqueue(
@@ -60,9 +61,9 @@ Put the call in a queue.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Remove call from a queue
+## 从队列中移除呼叫
 
-Removes the call from a queue.
+从队列中移除呼叫。
 
 `POST /calls/{call_control_id}/actions/leave_queue`
 
@@ -78,9 +79,9 @@ Removes the call from a queue.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List conferences
+## 列出会议
 
-Lists conferences.
+列出所有会议。
 
 `GET /conferences`
 
@@ -92,11 +93,11 @@ Lists conferences.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create conference
+## 创建会议
 
-Create a conference from an existing call leg using a `call_control_id` and a conference name.
+使用 `call_control_id` 和会议名称从现有的通话中创建会议。
 
-`POST /conferences` — Required: `call_control_id`, `name`
+`POST /conferences` — 必需参数：`call_control_id`, `name`
 
 ```go
 	conference, err := client.Conferences.New(context.TODO(), telnyx.ConferenceNewParams{
@@ -109,9 +110,9 @@ Create a conference from an existing call leg using a `call_control_id` and a co
 	fmt.Printf("%+v\n", conference.Data)
 ```
 
-## Retrieve a conference
+## 获取会议信息
 
-Retrieve an existing conference
+获取现有会议的信息。
 
 `GET /conferences/{id}`
 
@@ -127,9 +128,9 @@ Retrieve an existing conference
 	fmt.Printf("%+v\n", conference.Data)
 ```
 
-## Hold conference participants
+## 暂停会议参与者的发言
 
-Hold a list of participants in a conference call
+暂停会议中参与者的发言。
 
 `POST /conferences/{id}/actions/hold`
 
@@ -145,11 +146,11 @@ Hold a list of participants in a conference call
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Join a conference
+## 加入会议
 
-Join an existing call leg to a conference.
+加入现有的通话以参与会议。
 
-`POST /conferences/{id}/actions/join` — Required: `call_control_id`
+`POST /conferences/{id}/actions/join` — 必需参数：`call_control_id`
 
 ```go
 	response, err := client.Conferences.Actions.Join(
@@ -165,11 +166,11 @@ Join an existing call leg to a conference.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Leave a conference
+## 退出会议
 
-Removes a call leg from a conference and moves it back to parked state.
+将通话从会议中移除并恢复到待处理状态。
 
-`POST /conferences/{id}/actions/leave` — Required: `call_control_id`
+`POST /conferences/{id}/actions/leave` — 必需参数：`call_control_id`
 
 ```go
 	response, err := client.Conferences.Actions.Leave(
@@ -185,9 +186,9 @@ Removes a call leg from a conference and moves it back to parked state.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Mute conference participants
+## 静音会议参与者
 
-Mute a list of participants in a conference call
+静音会议中的所有参与者。
 
 `POST /conferences/{id}/actions/mute`
 
@@ -203,9 +204,9 @@ Mute a list of participants in a conference call
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Play audio to conference participants
+## 播放音频给会议参与者
 
-Play audio to all or some participants on a conference call.
+向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/play`
 
@@ -221,11 +222,11 @@ Play audio to all or some participants on a conference call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Conference recording pause
+## 暂停会议录制
 
-Pause conference recording.
+暂停会议录制。
 
-`POST /conferences/{id}/actions/record_pause`
+`POST /conferences/{id}/actions/record_PAUSE`
 
 ```go
 	response, err := client.Conferences.Actions.RecordPause(
@@ -239,9 +240,9 @@ Pause conference recording.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Conference recording resume
+## 恢复会议录制
 
-Resume conference recording.
+恢复会议录制。
 
 `POST /conferences/{id}/actions/record_resume`
 
@@ -257,11 +258,11 @@ Resume conference recording.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Conference recording start
+## 开始会议录制
 
-Start recording the conference.
+开始会议录制。
 
-`POST /conferences/{id}/actions/record_start` — Required: `format`
+`POST /conferences/{id}/actions/record_start` — 必需参数：`format`
 
 ```go
 	response, err := client.Conferences.Actions.RecordStart(
@@ -277,9 +278,9 @@ Start recording the conference.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Conference recording stop
+## 停止会议录制
 
-Stop recording the conference.
+停止会议录制。
 
 `POST /conferences/{id}/actions/record_stop`
 
@@ -295,11 +296,11 @@ Stop recording the conference.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Speak text to conference participants
+## 向会议参与者朗读文本
 
-Convert text to speech and play it to all or some participants.
+将文本转换为语音并播放给所有或部分参与者。
 
-`POST /conferences/{id}/actions/speak` — Required: `payload`, `voice`
+`POST /conferences/{id}/actions/speak` — 必需参数：`payload`, `voice`
 
 ```go
 	response, err := client.Conferences.Actions.Speak(
@@ -316,9 +317,9 @@ Convert text to speech and play it to all or some participants.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Stop audio being played on the conference
+## 停止向会议参与者播放音频
 
-Stop audio being played to all or some participants on a conference call.
+停止向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/stop`
 
@@ -334,11 +335,11 @@ Stop audio being played to all or some participants on a conference call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Unhold conference participants
+## 恢复会议参与者的发言权限
 
-Unhold a list of participants in a conference call
+恢复会议中参与者的发言权限。
 
-`POST /conferences/{id}/actions/unhold` — Required: `call_control_ids`
+`POST /conferences/{id}/actions/unhold` — 必需参数：`call_control_ids`
 
 ```go
 	response, err := client.Conferences.Actions.Unhold(
@@ -354,9 +355,9 @@ Unhold a list of participants in a conference call
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Unmute conference participants
+## 解除会议参与者的静音状态
 
-Unmute a list of participants in a conference call
+取消会议中参与者的静音状态。
 
 `POST /conferences/{id}/actions/unmute`
 
@@ -372,11 +373,11 @@ Unmute a list of participants in a conference call
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Update conference participant
+## 更新会议参与者信息
 
-Update conference participant supervisor_role
+更新会议参与者的角色。
 
-`POST /conferences/{id}/actions/update` — Required: `call_control_id`, `supervisor_role`
+`POST /conferences/{id}/actions/update` — 必需参数：`call_control_id`, `supervisor_role`
 
 ```go
 	action, err := client.Conferences.Actions.Update(
@@ -395,9 +396,9 @@ Update conference participant supervisor_role
 	fmt.Printf("%+v\n", action.Data)
 ```
 
-## List conference participants
+## 列出会议参与者
 
-Lists conference participants
+列出会议的所有参与者。
 
 `GET /conferences/{conference_id}/participants`
 
@@ -415,26 +416,27 @@ Lists conference participants
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callEnqueued` | Call Enqueued |
-| `callLeftQueue` | Call Left Queue |
-| `conferenceCreated` | Conference Created |
-| `conferenceEnded` | Conference Ended |
-| `conferenceFloorChanged` | Conference Floor Changed |
-| `conferenceParticipantJoined` | Conference Participant Joined |
-| `conferenceParticipantLeft` | Conference Participant Left |
-| `conferenceParticipantPlaybackEnded` | Conference Participant Playback Ended |
-| `conferenceParticipantPlaybackStarted` | Conference Participant Playback Started |
-| `conferenceParticipantSpeakEnded` | Conference Participant Speak Ended |
-| `conferenceParticipantSpeakStarted` | Conference Participant Speak Started |
-| `conferencePlaybackEnded` | Conference Playback Ended |
-| `conferencePlaybackStarted` | Conference Playback Started |
-| `conferenceRecordingSaved` | Conference Recording Saved |
-| `conferenceSpeakEnded` | Conference Speak Ended |
-| `conferenceSpeakStarted` | Conference Speak Started |
+| `callEnqueued` | 呼叫被放入队列 |
+| `callLeftQueue` | 呼叫离开队列 |
+| `conferenceCreated` | 会议创建 |
+| `conferenceEnded` | 会议结束 |
+| `conferenceFloorChanged` | 会议主持人变更 |
+| `conferenceParticipantJoined` | 会议参与者加入 |
+| `conferenceParticipantLeft` | 会议参与者离开 |
+| `conferenceParticipantPlaybackEnded` | 会议参与者停止发言 |
+| `conferenceParticipantPlaybackStarted` | 会议参与者开始发言 |
+| `conferenceParticipantSpeakEnded` | 会议参与者结束发言 |
+| `conferenceParticipantSpeakStarted` | 会议参与者开始发言 |
+| `conferencePlaybackEnded` | 会议播放结束 |
+| `conferencePlaybackStarted` | 会议播放开始 |
+| `conferenceRecordingSaved` | 会议录制保存 |
+| `conferenceSpeakEnded` | 会议发言结束 |
+| `conferenceSpeakStarted` | 会议发言开始 |
+```
+```

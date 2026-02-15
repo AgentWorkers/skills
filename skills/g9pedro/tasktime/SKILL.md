@@ -1,6 +1,6 @@
 ---
 name: tasktime
-description: CLI task timer for AI agents — benchmark learning progression with auto-save logs and visualizations. Integrates with ClawVault for persistent memory.
+description: AI代理的CLI任务定时器——用于监控学习进度，并自动保存日志和生成可视化数据。该工具与ClawVault集成，以实现数据的持久存储。
 metadata:
   openclaw:
     requires:
@@ -15,19 +15,19 @@ metadata:
 
 # tasktime Skill
 
-CLI task timer for AI agents — benchmark learning progression with auto-save logs and visualizations.
+这是一个用于AI代理的命令行（CLI）任务计时工具，可用来评估学习进度，并自动保存日志和生成可视化数据。
 
-**Part of the [ClawVault](https://clawvault.dev) ecosystem** for AI agent memory.
+该工具是[ClawVault](https://clawvault.dev)生态系统的一部分，用于管理AI代理的内存数据。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @versatly/tasktime
 ```
 
-## Quick Reference
+## 快速参考
 
-### Timer Commands
+### 计时命令
 ```bash
 tasktime start "Task description" --category coding   # Start timing
 tasktime stop --notes "What I learned"                # Stop and save
@@ -35,7 +35,7 @@ tasktime status                                       # Show current task
 tasktime now                                          # One-liner for prompts
 ```
 
-### History & Search
+### 任务历史记录与搜索
 ```bash
 tasktime history                    # Recent tasks (alias: tt ls)
 tasktime history -n 20              # Last 20 tasks
@@ -44,7 +44,7 @@ tasktime search "auth"              # Full-text search
 tasktime categories                 # List all categories
 ```
 
-### Reports & Charts
+### 报告与图表
 ```bash
 tasktime report                     # Full report with charts
 tasktime report --days 30           # Last 30 days
@@ -53,9 +53,9 @@ tasktime chart --type spark         # Sparkline
 tasktime chart --type line          # Line chart
 ```
 
-### ClawVault Integration
+### 与ClawVault的集成
 
-**Auto-save on stop (v1.2.0+):** Every completed task is automatically saved to [ClawVault](https://clawvault.dev):
+**自动保存功能（v1.2.0及以上版本）：** 每个完成的任务都会自动保存到[ClawVault](https://clawvault.dev)中：
 
 ```bash
 tasktime start "Build API" -c coding
@@ -65,7 +65,7 @@ tasktime stop --notes "Finished in record time"
 # 🐘 Saved to ClawVault              ← automatic!
 ```
 
-**Manual sync and export:**
+**手动同步与导出：**
 ```bash
 tasktime sync                       # Sync full report to ClawVault
 tasktime sync --days 30             # Sync last 30 days
@@ -73,15 +73,15 @@ tasktime export                     # Export as markdown
 tasktime stop --no-vault            # Skip auto-save for one task
 ```
 
-### Demo Data
+### 示例数据
 ```bash
 tasktime seed                       # Seed sample data (empty DB only)
 ```
 
-## Use Cases for Agents
+## 代理的使用场景
 
-### Benchmarking Learning
-Track how long similar tasks take over time to measure learning progression:
+### 学习进度评估
+通过跟踪类似任务所需的时间来衡量学习进度：
 
 ```bash
 tt start "Implement OAuth flow" -c auth
@@ -89,8 +89,8 @@ tt start "Implement OAuth flow" -c auth
 tt stop --notes "Used passport.js, took 20min less than last time"
 ```
 
-### Sync to ClawVault
-Persist task data to your agent's memory vault:
+### 同步到ClawVault
+将任务数据保存到代理的内存存储系统中：
 
 ```bash
 # After completing work
@@ -100,36 +100,36 @@ tasktime sync
 tasktime export | clawvault store --category research --title "Task Report"
 ```
 
-Learn more: [clawvault.dev](https://clawvault.dev)
+更多信息：[clawvault.dev](https://clawvault.dev)
 
-### Category-Based Analytics
-Group tasks to understand time allocation:
+### 基于类别的分析
+对任务进行分类，以了解时间分配情况：
 
 ```bash
 tt report --days 7
 # Shows time breakdown by category: coding, research, testing, docs, etc.
 ```
 
-### Quick Status for Prompts
-Add current task to your shell prompt:
+### 在shell提示中显示当前任务状态
+在shell提示中显示当前正在进行的任务：
 
 ```bash
 PS1='$(tasktime now) \$ '
 # Shows: ⏱️ Build API (23m) $
 ```
 
-## Data Storage
+## 数据存储
 
-- Location: `~/.tasktime/tasks.json`
-- Format: JSON (portable, human-readable)
-- No external dependencies or databases
+- 存储位置：`~/.tasktime/tasks.json`
+- 数据格式：JSON（便携式、易于阅读）
+- 无需依赖任何外部组件或数据库
 
-## Related
+## 相关工具
 
-- [ClawVault](https://clawvault.dev) — Memory system for AI agents
-- [OpenClaw](https://openclaw.ai) — AI agent platform
+- [ClawVault](https://clawvault.dev) — AI代理的内存管理系统
+- [OpenClaw](https://openclaw.ai) — AI代理平台
 
-## Aliases
+## 别名
 
-- `tasktime` → Full command
-- `tt` → Short alias (same functionality)
+- `tasktime` — 完整命令名称
+- `tt` — 简短别名（功能相同）

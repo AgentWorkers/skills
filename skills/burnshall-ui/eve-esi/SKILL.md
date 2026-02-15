@@ -1,6 +1,6 @@
 ---
 name: eve-esi
-description: "Query and manage EVE Online characters via the ESI (EVE Swagger Interface) REST API. Use when the user asks about EVE Online character data, wallet balance, ISK transactions, assets, skill queue, skill points, clone locations, implants, fittings, contracts, market orders, mail, industry jobs, killmails, planetary interaction, loyalty points, or any other EVE account management task."
+description: "通过 ESI（EVE Swagger Interface）REST API 查询和管理《EVE Online》中的角色。当用户需要查询《EVE Online》中的角色信息、钱包余额、ISK（游戏内货币）交易记录、资产、技能队列、技能点数、角色克隆位置、植入物、装备配置、合约、市场订单、邮件内容、工业任务、击杀通知、行星互动信息、忠诚度点数，或任何其他与《EVE Online》账户管理相关的信息时，可以使用该接口。"
 primary_credential: EVE_REFRESH_MAIN
 env:
   - name: EVE_CLIENT_ID
@@ -29,33 +29,32 @@ env:
     sensitive: true
 ---
 
-# Data Handling
+# 数据处理
 
-This skill communicates exclusively with the official EVE Online ESI API (`esi.evetech.net`) and EVE SSO (`login.eveonline.com`).
-No character data is exfiltrated to third-party servers.
-Optional integrations (Telegram, Discord) are user-configured via environment variables and only transmit alerts defined by the user.
+该功能仅与EVE Online的官方ESI API（`esi.evetech.net`）和EVE SSO（`login.eveonline.com`）进行交互。  
+任何角色数据都不会被传输到第三方服务器。  
+可选的集成功能（如Telegram、Discord）由用户通过环境变量进行配置，且仅会传输用户自定义的警报信息。
 
-# EVE Online ESI
+# EVE Online ESI  
 
-The ESI (EVE Swagger Interface) is the official REST API for EVE Online third-party development.
+ESI（EVE Swagger接口）是EVE Online官方提供的第三方开发REST API：  
+- 基本URL：`https://esi.evetech.net/latest`  
+- 规范文档：`https://esi.evetech.net/latestswagger.json`  
+- API浏览器：<https://developers.eveonline.com/api-explorer>  
 
-- Base URL: `https://esi.evetech.net/latest`
-- Spec: `https://esi.evetech.net/latest/swagger.json`
-- API Explorer: <https://developers.eveonline.com/api-explorer>
+## 认证  
 
-## Authentication
+ESI使用EVE SSO进行OAuth 2.0认证。大多数角色相关接口都需要具有正确权限范围的访问令牌。  
 
-ESI uses OAuth 2.0 via EVE SSO. Most character endpoints require an access token with the correct scope.
+认证流程如下：  
+1. 在<https://developers.eveonline.com/applications>注册应用程序。  
+2. 将用户重定向到EVE SSO的授权页面以获取所需的权限范围。  
+3. 用授权码换取访问令牌和刷新令牌。  
+4. 在所有ESI请求中添加`Authorization: Bearer <TOKEN>`头。  
 
-Quick flow:
-1. Register an app at <https://developers.eveonline.com/applications>
-2. Redirect user to SSO authorize URL with required scopes
-3. Exchange the auth code for access + refresh tokens
-4. Pass `Authorization: Bearer <TOKEN>` on every ESI request
+详细信息（包括PKCE、令牌刷新、权限范围等）请参阅[references/authentication.md]。  
 
-For full details (PKCE, token refresh, scope list): see [references/authentication.md](references/authentication.md).
-
-## Public endpoints (no auth)
+## 公共接口（无需认证）  
 
 ```bash
 # Character public info
@@ -71,9 +70,9 @@ curl -s "https://esi.evetech.net/latest/characters/2114794365/corporationhistory
 curl -s -X POST "https://esi.evetech.net/latest/characters/affiliation/" \
   -H "Content-Type: application/json" \
   -d '[2114794365, 95538921]'
-```
+```  
 
-## Character info (authenticated)
+## 角色信息（已认证用户可访问）  
 
 ```bash
 TOKEN="<your_access_token>"
@@ -82,9 +81,9 @@ CHAR_ID="<your_character_id>"
 # Online status (scope: esi-location.read_online.v1)
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/online/"
-```
+```  
 
-## Wallet
+## 钱包信息  
 
 ```bash
 # Balance (scope: esi-wallet.read_character_wallet.v1)
@@ -98,9 +97,9 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 # Transactions
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/wallet/transactions/"
-```
+```  
 
-## Assets
+## 资产信息  
 
 ```bash
 # All assets (paginated; scope: esi-assets.read_assets.v1)
@@ -118,9 +117,9 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '[1234567890]' \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/assets/names/"
-```
+```  
 
-## Skills
+## 技能信息  
 
 ```bash
 # All trained skills + total SP (scope: esi-skills.read_skills.v1)
@@ -134,9 +133,9 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 # Attributes (intelligence, memory, etc.)
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/attributes/"
-```
+```  
 
-## Location and ship
+## 角色位置与飞船信息  
 
 ```bash
 # Current location (scope: esi-location.read_location.v1)
@@ -146,9 +145,9 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 # Current ship (scope: esi-location.read_ship_type.v1)
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/ship/"
-```
+```  
 
-## Clones and implants
+## 克隆与植入物信息  
 
 ```bash
 # Jump clones + home station (scope: esi-clones.read_clones.v1)
@@ -158,41 +157,39 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 # Active implants (scope: esi-clones.read_implants.v1)
 curl -s -H "Authorization: Bearer $TOKEN" \
   "https://esi.evetech.net/latest/characters/$CHAR_ID/implants/"
-```
+```  
 
-## More endpoints
+## 其他接口  
 
-For contracts, fittings, mail, industry, killmails, market orders, mining, planetary interaction, loyalty points, notifications, blueprints, standings, and all other character endpoints, see [references/endpoints.md](references/endpoints.md).
+有关合约、飞船改装、邮件、工业任务、击杀通知、市场订单、采矿、行星交互、忠诚度点数、蓝图、排名等角色相关功能的详细信息，请参阅[references/endpoints.md]。  
 
-## Dashboard Config
+## 仪表盘配置  
 
-The skill supports a modular dashboard config for alerts, reports, and market tracking. Each user defines what they need in a JSON config file.
+该功能支持模块化的仪表盘配置，用于显示警报、报告和市场数据跟踪。用户可通过JSON配置文件自定义所需显示的内容：  
+- **配置规范**：[config/schema.json]（包含所有字段、类型及默认值）  
+- **示例配置**：[config/example-config.json]（可直接使用的模板）  
 
-- **Schema**: [config/schema.json](config/schema.json) — full JSON Schema with all fields, types, and defaults
-- **Example**: [config/example-config.json](config/example-config.json) — ready-to-use template
+### 主要功能  
 
-### Features
+| 模块 | 描述 |  
+|--------|-------------|  
+| **警报** | 实时监控战争决策、结构攻击、技能完成情况、钱包变动、工业任务、击杀通知等。 |  
+| **报告** | 定时生成报告，内容包括净资产、技能任务列表、工业活动、市场订单、钱包状况和资产信息。 |  
+| **市场** | 提供价格跟踪功能，支持绝对阈值和趋势分析。 |  
 
-| Module | Description |
-|--------|-------------|
-| **Alerts** | Real-time polling for war decs, structure attacks, skill completions, wallet changes, industry jobs, PI extractors, killmails, contracts, clone jumps, mail |
-| **Reports** | Cron-scheduled summaries: net worth, skill queue, industry, market orders, wallet, assets |
-| **Market** | Price tracking with absolute thresholds and trend detection |
+### 安全性提示  
 
-### Security
-
-Tokens should **not** be stored in plain text. Use environment variable references:
-
+令牌**严禁**以明文形式存储。建议使用环境变量来存储令牌信息：  
 ```json
 {
   "token": "$ENV:EVE_TOKEN_MAIN",
   "refresh_token": "$ENV:EVE_REFRESH_MAIN"
 }
-```
+```  
 
-The config file should live outside the workspace (e.g. `~/.openclaw/eve-dashboard-config.json`).
+配置文件应保存在工作区之外（例如：`~/.openclaw/eve-dashboard-config.json`）。  
 
-### Validate a config
+### 配置文件验证  
 
 ```bash
 python scripts/validate_config.py path/to/config.json
@@ -202,11 +199,11 @@ python scripts/validate_config.py --example
 
 # Show JSON schema
 python scripts/validate_config.py --schema
-```
+```  
 
-## Using the query script
+## 查询脚本的使用  
 
-A reusable Python script is bundled at `scripts/esi_query.py`. It handles pagination, error limits, and caching headers.
+`scripts/esi_query.py`提供了一个可重用的Python脚本，用于处理分页请求、错误限制和缓存设置。  
 
 ```bash
 # Simple query
@@ -218,21 +215,19 @@ python scripts/esi_query.py --token "$TOKEN" --endpoint "/characters/$CHAR_ID/as
 # POST request (e.g. asset names)
 python scripts/esi_query.py --token "$TOKEN" --endpoint "/characters/$CHAR_ID/assets/names/" \
   --method POST --body '[1234567890]' --pretty
-```
+```  
 
-## Best practices
+## 最佳实践：  
+- **缓存策略**：遵守`Expires`头部字段的设置，避免在令牌过期前频繁请求。  
+- **错误处理**：监控`X-ESI-Error-Limit-Remain`头部信息，当请求次数达到限制时暂停请求。  
+- **User-Agent**：务必设置包含联系信息的描述性User-Agent。  
+- **请求频率限制**：部分接口（如邮件、合约相关接口）有内部请求频率限制，超出限制会返回HTTP 520错误。  
+- **分页机制**：根据`X-Pages`头部字段进行分页请求（示例：`?page=N`）。  
+- **版本控制**：使用`/latest/`路径访问当前稳定的API版本；`/dev/`路径可能随时更新。  
 
-- **Caching**: respect the `Expires` header; do not poll before it expires.
-- **Error limits**: monitor `X-ESI-Error-Limit-Remain`; back off when low.
-- **User-Agent**: always set a descriptive User-Agent with contact info.
-- **Rate limits**: some endpoints (mail, contracts) have internal rate limits returning HTTP 520.
-- **Pagination**: check the `X-Pages` response header; iterate with `?page=N`.
-- **Versioning**: use `/latest/` for current stable routes. `/dev/` may change without notice.
+## 类型ID的解析  
 
-## Resolving type IDs
-
-ESI returns numeric type IDs (e.g. for ships, items, skills). Resolve names via:
-
+ESI返回的类型ID为数字形式（例如飞船、物品、技能的ID）。可通过以下方式解析这些ID以获取对应的名称：  
 ```bash
 # Single type
 curl -s "https://esi.evetech.net/latest/universe/types/587/"

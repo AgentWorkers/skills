@@ -1,6 +1,6 @@
 ---
 name: master-marketing
-description: All-in-one marketing engine combining growth strategy, content remixing, and trend monitoring. Drive growth with data-driven strategies, repurposed content across all platforms, and real-time trend analysis.
+description: 这是一个集增长策略、内容重组和趋势监控于一体的全方位营销引擎。通过数据驱动的策略、跨所有平台重新利用的内容以及实时趋势分析来推动业务增长。
 metadata:
   openclaw:
     emoji: "🚀"
@@ -15,190 +15,172 @@ metadata:
 
 # Master Marketing
 
-## Description
+## 描述
 
-Master Marketing is the ultimate all-in-one marketing engine for AI agents. It combines **Growth Strategy**, **Content Remixing**, and **Trend Monitoring** into a single powerful skill that drives organic growth through data-driven strategies, intelligent content repurposing, and real-time trend analysis.
+Master Marketing 是一款专为 AI 代理设计的综合性营销工具。它将 **增长策略**、**内容重塑** 和 **趋势监控** 功能整合为一体，通过数据驱动的策略、智能的内容再利用以及实时的趋势分析，推动业务的有机增长。
 
-Stop juggling multiple tools. Master Marketing handles everything from funnel analysis to viral content creation to trend-based campaign planning.
-
----
-
-## What This Skill Combines
-
-### 🎯 Growth Strategy (from Growth Skill)
-- North Star Metric definition and tracking
-- AARRR funnel analysis (Acquisition → Activation → Retention → Referral → Revenue)
-- Growth loop identification and optimization
-- Experiment framework (ICE scoring)
-- Retention analysis with cohort tracking
-
-### 🎬 Content Remixing (from Content Remix Studio)
-- Single source → multi-platform transformation
-- YouTube, TikTok, Instagram, LinkedIn, Twitter, Blog, Newsletter optimization
-- Platform-specific hook psychology
-- Content atomization strategies
-- Cross-promotion planning
-
-### 📈 Trend Monitoring (from Trend Watcher)
-- Real-time trend detection
-- Industry-specific trend analysis
-- Trend opportunity scoring
-- Seasonal and event-based planning
-- Competitive trend positioning
+无需再同时使用多种工具了。Master Marketing 能够处理从用户获取分析到病毒式内容创作，再到基于趋势的营销活动策划等所有营销任务。
 
 ---
 
-## Core Capabilities
+## 该技能包含的功能
 
-### 1. Growth Analysis
+### 🎯 增长策略（来自 Growth Skill）
+- 定义并跟踪核心指标（North Star Metric）
+- AARRR 营销漏斗分析（获取 → 激活 → 保留 → 推荐 → 收入）
+- 识别并优化增长循环
+- 实验框架（ICE 评分）
+- 基于用户群体的留存分析
 
-#### North Star Metric
-Define and track your most important metric:
-- **Define**: What single metric reflects customer value?
-- **Track**: Daily/weekly/monthly tracking
-- **Optimize**: Find the path to improvement
+### 🎬 内容重塑（来自 Content Remix Studio）
+- 单一内容源的多平台转化
+- 优化 YouTube、TikTok、Instagram、LinkedIn、Twitter、博客和新闻通讯的内容
+- 针对不同平台的用户心理特征
+- 内容拆分策略
+- 跨平台推广计划
 
-#### AARRR Funnel Analysis
-Measure each stage of the customer journey:
+### 📈 趋势监控（来自 Trend Watcher）
+- 实时趋势检测
+- 行业特定趋势分析
+- 评估趋势价值
+- 根据季节和事件制定营销计划
+- 在竞争中的趋势定位
 
-| Stage | What to Measure | Typical Actions |
+---
+
+## 核心能力
+
+### 1. 增长分析
+
+#### 核心指标
+定义并跟踪最重要的指标：
+- **定义**：哪个指标最能反映客户价值？
+- **跟踪**：每日/每周/每月的指标变化
+- **优化**：寻找改进的方法
+
+#### AARRR 营销漏斗分析
+衡量客户旅程的每个阶段：
+| 阶段 | 需要测量的指标 | 典型操作 |
 |-------|-----------------|-----------------|
-| **Acquisition** | Traffic sources, CAC, conversion rate | SEO, paid, social, referrals |
-| **Activation** | Signups, onboarding completion | Free trials, demos, first value moment |
-| **Retention** | DAU/MAU, return rate, churn | Email sequences, content, features |
-| **Referral** | Viral coefficient, NPS | Referral programs, testimonials |
-| **Revenue** | ARPU, LTV, conversion rate | Pricing optimization, upsells |
+| **获取** | 流量来源、客户获取成本（CAC）、转化率 | SEO、付费推广、社交媒体、推荐 |
+| **激活** | 注册量、入职完成情况 | 免费试用、演示、首次产生价值的时刻 |
+| **保留** | 日活跃用户（DAU）/月活跃用户（MAU）、用户流失率 | 电子邮件序列、内容、功能 |
+| **推荐** | 病毒式传播系数、净推荐值（NPS） | 推荐计划、用户评价 |
+| **收入** | 平均收入用户（ARPU）、生命周期价值（LTV）、转化率 | 定价优化、升级销售 |
 
-#### Growth Loops
+#### 增长循环
+识别并优化你的增长循环：
+**病毒式传播循环**：用户 → 邀请朋友 → 朋友成为新用户
+- 测量：病毒式传播系数（邀请次数 × 转化率）
+- 优化：分享激励机制、减少使用障碍
 
-Identify and optimize your growth loops:
+**内容循环**：内容 → SEO/社交媒体 → 用户 → 更多内容
+- 测量：内容投资回报率（ROI）、每条内容的流量
+- 优化：内容质量、传播渠道
 
-**Viral Loop**: User → invites friends → friends become users
-- Measure: viral coefficient (invites × conversion)
-- Optimize: sharing incentives, friction reduction
+**付费循环**：收入 → 再投资 → 用户 → 收入
+- 测量：客户获取成本（CAC）的回收期、投资回报率（ROAS）
+- 优化：目标定位、创意设计、着陆页
 
-**Content Loop**: Content → SEO/social → users → more content
-- Measure: content ROI, traffic per piece
-- Optimize: content quality, distribution
+**销售循环**：销售 → 客户 → 案例研究 → 销售线索
+- 测量：销售流程的速度、推荐率
+- 优化：销售支持、案例研究
 
-**Paid Loop**: Revenue → reinvest → users → revenue
-- Measure: CAC payback period, ROAS
-- Optimize: targeting, creative, landing pages
+### 2. 内容策略
 
-**Sales Loop**: Sales → customers → case studies → leads
-- Measure: pipeline velocity, referral rate
-- Optimize: sales enablement, case studies
-
-### 2. Content Strategy
-
-#### Multi-Platform Transformation
-
-Transform one piece of content into platform-optimized versions:
-
-| Platform | Format | Length | Key Element |
+#### 多平台转化
+将一篇内容转化为适合不同平台的版本：
+| 平台 | 格式 | 长度 | 关键元素 |
 |----------|--------|--------|--------------|
-| **YouTube** | Long-form video | 8-15 min | Timestamps, hook, CTA |
-| **TikTok/Reels** | Short video | 15-60 sec | 3-sec hook, loop |
-| **Instagram** | Carousel/Reels | 6-10 slides | Save-worthy |
-| **LinkedIn** | Article/Post | 1,300-2,000 chars | Professional hook |
-| **Twitter** | Thread | 8-15 tweets | Numbered format |
-| **Blog** | SEO article | 1,500-2,500 words | Keyword-rich |
-| **Newsletter** | Email | Personal tone | Single CTA |
+| **YouTube** | 长视频 | 8-15 分钟 | 时间戳、吸引人的开头、行动号召（CTA） |
+| **TikTok/Reels** | 短视频 | 15-60 秒 | 3 秒的吸引人开头 |
+| **Instagram** | 信息流/Reels | 6-10 张图片 | 值得保存的内容 |
+| **LinkedIn** | 文章/帖子 | 1,300-2,000 字 | 专业的语言风格 |
+| **Twitter** | 线程帖 | 8-15 条推文 | 编号格式 |
+| **博客** | SEO 优化过的文章 | 1,500-2,500 字 | 富含关键词 |
+| **新闻通讯** | 电子邮件 | 个人化的语言风格 | 单一的行动号召 |
 
-#### Platform-Specific Optimization
+#### 平台特定优化
+**YouTube 策略**：
+- 在标题中提前加入关键词（60-70 个字符）
+- 有吸引力的描述和时间戳
+- 在视频 30% 处设置互动提示
 
-**YouTube Strategy:**
-- Front-load keywords in title (60-70 chars)
-- Compelling description with timestamps
-- High-contrast thumbnail
-- Ask for engagement at 30% mark
+**TikTok/Reels 策略**：
+- 开头 1-3 秒内吸引用户注意力
+- 使用大字体和明显的文字
+- 整合流行的音乐
+- 适合算法的循环播放功能
 
-**TikTok/Reels Strategy:**
-- Hook in first 1-3 seconds
-- Text overlays (large, bold)
-- Trending sound integration
-- Loop-ability for algorithm
+**LinkedIn 策略**：
+- 第一行使用吸引人的语句（促使用户点击“查看更多”）
+- 专业的语言风格和个人故事
+- 使用 3-5 个相关标签
+- 结尾设置互动提示
 
-**LinkedIn Strategy:**
-- First line hook (make them click "see more")
-- Professional tone with personal stories
-- 3-5 relevant hashtags
-- Engagement prompt at end
+**Twitter 策略**：
+- 使用编号的推文结构
+- 设置互动诱因（问题、投票）
+- 发布时间：上午 8-10 点或下午 5-7 点
 
-**Twitter Strategy:**
-- Thread structure with numbered tweets
-- Engagement bait (questions, polls)
-- Quote-tweetable moments
-- Post timing: 8-10 AM or 5-7 PM
+**Instagram 策略**：
+- 信息流式叙事（问题 → 解决方案）
+- 高对比度的设计
+- 设置保存/分享的提示
+- 结合故事亮点
 
-**Instagram Strategy:**
-- Carousel storytelling (problem → solution)
-- High-contrast design
-- Save/share prompts
-- Story highlights tie-in
+#### 内容拆分
+将一篇内容拆分成 20 多个微内容：
+**从 1 个 YouTube 视频中**：
+- 生成 10 个 TikTok 视频片段
+- 5 个 Instagram Reels
+- 3 条 Twitter 推文
+- 2 条 LinkedIn 帖子
+- 1 篇博客文章
+- 10 张引用图片
+- 1 封新闻通讯内容
 
-#### Content Atomization
+### 3. 趋势智能
 
-Take one piece and create 20+ micro-content pieces:
-
-**From 1 YouTube Video:**
-- 10 TikTok clips
-- 5 Instagram Reels
-- 3 Twitter threads
-- 2 LinkedIn posts
-- 1 blog post
-- 10 quote graphics
-- 1 newsletter
-
-### 3. Trend Intelligence
-
-#### Trend Detection
-
-Monitor and identify relevant trends:
-
-**Sources to Monitor:**
+#### 趋势检测
+监控并识别相关趋势：
+**监控来源**：
 - Google Trends
-- Twitter/X trending topics
-- LinkedIn industry feeds
-- Reddit communities
+- Twitter/X 的热门话题
+- LinkedIn 行业动态
+- Reddit 社区
 - Product Hunt
 - TechCrunch / VentureBeat
-- Industry newsletters
-- Competitor content
+- 行业新闻通讯
+- 竞争对手的内容
 
-#### Trend Scoring
-
-Evaluate trends by opportunity:
-
-| Factor | Score (1-10) |
+#### 趋势评估
+根据趋势的价值进行评分：
+| 因素 | 评分（1-10） |
 |--------|--------------|
-| **Relevance** | How relevant to your audience? |
-| **Timing** | Early, peak, or declining? |
-| **Competition** | Few or many creators? |
-| **Longevity** | Flash or evergreen? |
-| **Alignment** | Fits brand voice? |
+| **相关性** | 与你的目标受众有多相关？ |
+| **时机** | 是早期趋势、高峰期还是下降期？ |
+| **竞争情况** | 竞争者多吗？ |
+| **持久性** | 是短暂趋势还是长期趋势？ |
+| **与品牌契合度** | 与品牌风格一致吗？ |
 
-#### Trend-Based Campaign Planning
-
-Create campaigns around trending topics:
-
-1. **Detect**: Find trending topic in your niche
-2. **Score**: Evaluate opportunity
-3. **Create**: Develop content angle
-4. **Execute**: Rapid deployment
-5. **Measure**: Track performance
+#### 基于趋势的营销活动策划
+围绕热门话题制定营销活动：
+1. **发现**：找到与你领域相关的话题
+2. **评估**：评估其潜力
+3. **创建**：制定内容方向
+4. **执行**：快速部署
+5. **测量**：跟踪活动效果
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Growth Strategy + Content Remix
+### 示例 1：增长策略 + 内容重塑
+**用户**：“我们的 SaaS 初创公司需要全面的营销改革。注册后用户流失严重，希望在 6 个月内实现 3 倍的增长。”
 
-**User**: "Our SaaS startup needs a complete marketing overhaul. We're losing users after signup and want to grow 3x in 6 months."
-
-**Assistant Response**:
-
-**Phase 1: Growth Audit**
+**助手回复**：
+**阶段 1：增长审计**
 ```
 🔍 North Star Metric: Weekly Active Users (WAU)
 
@@ -212,7 +194,7 @@ Create campaigns around trending topics:
 🎯 Priority: Fix activation first (leaky bucket)
 ```
 
-**Phase 2: Content Strategy**
+**阶段 2：内容策略**
 ```
 📝 Content Pillar: "Productivity for Remote Teams"
 
@@ -226,7 +208,7 @@ Create campaigns around trending topics:
 - Newsletter: Weekly productivity tips
 ```
 
-**Phase 3: Trend Integration**
+**阶段 3：趋势整合**
 ```
 📈 Trending Topics to Leverage:
 1. "Remote work burnout" - High relevance
@@ -238,24 +220,21 @@ Campaign: "5 AI Tools That Actually Boost Remote Productivity"
 
 ---
 
-### Example 2: Content Remix + Trend Monitoring
+### 示例 2：内容重塑 + 趋势监控
+**用户**：“我们刚刚发布了一篇关于‘AI 在教育领域的未来’的文章。如何最大化其传播范围？**
 
-**User**: "We just published a blog post about 'The Future of AI in Education.' How do we maximize its reach?"
-
-**Assistant Response**:
-
-**Content Remix Plan:**
-
-| Platform | Content Type | Hook |
+**助手回复**：
+**内容重塑计划**：
+| 平台 | 内容类型 | 吸引人的开头 |
 |----------|-------------|------|
-| YouTube | Video summary | "AI is Revolutionizing Education - Here's Proof" |
-| TikTok | 3 clips | "POV: Your teacher just used AI" |
-| LinkedIn | Article series | "3 Ways AI Changes Education Forever" |
-| Twitter | Thread | "I analyzed 100 education AI tools. Here's what I found 🧵" |
-| Instagram | Carousel | "AI in Education - By the Numbers" |
-| Newsletter | Email | "The Future is Here: AI in Classrooms" |
+| YouTube | 视频总结 | “AI 正在改变教育——证据就在这里” |
+| TikTok | 3 个短视频片段 | “视角：你的老师刚刚使用了 AI” |
+| LinkedIn | 文章系列 | “AI 如何永久改变教育” |
+| Twitter | 线程帖 | “我分析了 100 种教育 AI 工具。这是我的发现 🧵” |
+| Instagram | 信息流 | “AI 在教育中的应用——数据支持” |
+| 新闻通讯 | 电子邮件 | “未来已来：AI 进入课堂” |
 
-**Trend Integration:**
+**趋势整合**：
 ```
 📈 Current Trends to Leverage:
 - "AI in classrooms" - Trending up 200%
@@ -265,27 +244,24 @@ Campaign: "5 AI Tools That Actually Boost Remote Productivity"
 Suggested Angle: "Beyond the Hype: What Actually Works in AI Education"
 ```
 
-**Publishing Schedule:**
-| Day | Platform | Content |
+**发布计划**：
+| 时间 | 平台 | 内容 |
 |-----|----------|---------|
-| Monday | LinkedIn | Part 1 - The Change |
-| Tuesday | TikTok | Clip 1 - The Hook |
-| Wednesday | YouTube | Full Video |
-| Thursday | Twitter | Thread |
-| Friday | Instagram | Carousel |
-| Weekend | Newsletter | Synthesis |
+| 星期一 | LinkedIn | 第一部分 - 变革 |
+| 星期二 | TikTok | 第一个短视频片段 |
+| 星期三 | YouTube | 完整视频 |
+| 星期四 | Twitter | 线程帖 |
+| 星期五 | Instagram | 信息流 |
+| 周末 | 新闻通讯 | 总结 |
 
 ---
 
-### Example 3: Trend-Based Campaign
+### 示例 3：基于趋势的营销活动
+**用户**：“刚刚出现了一个重要的行业趋势。我们如何在 48 小时内围绕它制定营销活动？**
 
-**User**: "A major industry trend just emerged. How do we create a campaign around it in 48 hours?"
-
-**Assistant Response**:
-
-**Rapid Response Framework:**
-
-**Hour 0-4: Planning**
+**助手回复**：
+**快速响应框架**：
+**0-4 小时：规划**  
 ```
 🎯 Trend: [Industry Trend Name]
 📊 Trend Score: 8/10 (High opportunity)
@@ -293,7 +269,7 @@ Suggested Angle: "Beyond the Hype: What Actually Works in AI Education"
 ⏰ Decay: ~72 hours until saturation
 ```
 
-**Hour 4-24: Creation**
+**4-24 小时：创作**  
 ```
 Content Assets:
 1. Main pillar content (YouTube/video)
@@ -305,7 +281,7 @@ Content Assets:
 7. Email to list
 ```
 
-**Hour 24-48: Distribution**
+**24-48 小时：发布**  
 ```
 🚀 Launch Sequence:
 Hour 24: Twitter thread (fastest reach)
@@ -319,104 +295,95 @@ Hour 48: Repurpose top performers
 
 ---
 
-## Strategic Frameworks
+## 战略框架
 
-### The Growth-Content-Trinity
-
-| Component | Purpose | Output |
+### 增长-内容-趋势三要素
+| 组件 | 目的 | 输出 |
 |-----------|---------|--------|
-| **Growth** | Strategy & metrics | Funnel optimization, experiments |
-| **Content** | Distribution & reach | Multi-platform assets |
-| **Trends** | Timing & relevance | Campaign ideas, angles |
+| **增长** | 策略与指标 | 营销漏斗优化、实验 |
+| **内容** | 分发与覆盖范围 | 多平台内容 |
+| **趋势** | 时机与相关性 | 营销活动创意 |
 
-### The 1-10-100 Content Rule
-
-| Investment | Output |
+### 1-10-100 内容规则
+| 投资 | 输出 |
 |------------|--------|
-| 1 hour | Pillar content creation |
-| 10 minutes × 10 pieces | Micro-content remixing |
-| 100 hours | Audience value delivered |
+| 1 小时 | 制作核心内容 |
+| 10 分钟 × 10 个微内容 | 内容拆分 |
+| 100 小时 | 向受众传递价值 |
 
-### The Trend Opportunity Matrix
-
-| Trend Type | Speed | Investment | Expected ROI |
+### 趋势机会矩阵
+| 趋势类型 | 时间周期 | 投资 | 预期投资回报率（ROI） |
 |------------|-------|------------|--------------|
-| **Viral trend** | 24-48 hours | Low | High (if fast) |
-| **Growing trend** | 1-2 weeks | Medium | High |
-| **Established** | Ongoing | Low | Stable |
-| **Declining** | Skip | - | - |
+| **病毒式趋势** | 24-48 小时 | 低 | 高（如果传播迅速） |
+| **成长中的趋势** | 1-2 周 | 中等 | 高 |
+| **已确立的趋势** | 持续性 | 低 | 稳定 |
+| **衰退中的趋势** | 跳过 | - | - |
 
 ---
 
-## When to Use This Skill
+## 何时使用该技能
+在以下情况下使用 Master Marketing：
+### 增长与策略
+- 定义或修订核心指标
+- 分析 AARRR 营销漏斗的表现
+- 识别增长瓶颈
+- 规划实验
+- 优化用户留存
 
-Use Master Marketing when you need:
+### 内容策略
+- 在多个平台上重新利用内容
+- 制作针对特定平台的内容
+- 制定内容发布计划
+- 优化内容在平台上的表现
+- 最大化内容的投资回报率
 
-### Growth & Strategy
-- Defining or revising North Star Metric
-- Analyzing AARRR funnel performance
-- Identifying growth bottlenecks
-- Planning experiments
-- Optimizing retention
-
-### Content Strategy
-- Repurposing content across platforms
-- Creating platform-specific content
-- Planning content calendar
-- Optimizing for algorithms
-- Maximizing content ROI
-
-### Trend Intelligence
-- Monitoring industry trends
-- Creating trend-based campaigns
-- Finding content angles
-- Timing content release
-- Competitive positioning
+### 趋势智能
+- 监控行业趋势
+- 制定基于趋势的营销活动
+- 找到合适的内容方向
+- 安排内容发布时机
+- 在竞争中占据优势
 
 ---
 
-## Common Workflows
+## 常见工作流程
 
-### Workflow 1: Weekly Marketing Planning
+### 周度营销规划
+1. **回顾** - 检查上周的指标
+2. **分析** - 识别可以利用的趋势
+3. **规划** - 安排本周的内容发布
+4. **创作** - 从核心内容中拆分微内容
+5. **执行** - 在多个平台上发布
+6. **测量** - 跟踪并迭代
 
-1. **Review** - Check last week's metrics
-2. **Analyze** - Identify trends to leverage
-3. **Plan** - Schedule content for the week
-4. **Create** - Remix content from pillars
-5. **Execute** - Deploy across platforms
-6. **Measure** - Track and iterate
+### 新产品发布
+1. **发布前（2-4 周）**
+   - 制作核心内容
+   - 建立电子邮件列表
+   - 在社交媒体上预热
 
-### Workflow 2: New Product Launch
+2. **发布周**
+   - 在多个平台上发布内容
+   - 利用趋势
+   | 花费推广费用
 
-1. **Pre-launch (2-4 weeks)**
-   - Create pillar content
-   - Build email list
-   - Tease on social media
+3. **发布后（2-4 周）**
+   - 重新利用表现最好的内容
+   | 进行测试和迭代
+   | 建立持续发展的势头
 
-2. **Launch Week**
-   - Multi-platform content blast
-   - Trend leverage
-   - Paid amplification
-
-3. **Post-launch (2-4 weeks)**
-   - Repurpose top performers
-   - Test and iterate
-   - Build on momentum
-
-### Workflow 3: Competitor Response
-
-1. **Detect** - Competitor launches campaign
-2. **Analyze** - What's working for them?
-3. **Differentiate** - Find your angle
-4. **Execute** - Rapid response campaign
-5. **Convert** - Turn attention to your brand
+### 竞争对手响应
+1. **检测** - 竞争对手是否发布了新营销活动
+2. **分析** | 他们的策略有哪些效果？
+3. **差异化** | 找到自己的优势
+4. **执行** | 快速响应
+5. **转化** | 将注意力引导到自己的品牌上
 
 ---
 
-## Output Examples
+## 输出示例
 
-### Growth Analysis Report
-
+### 增长分析报告
 ```markdown
 # Growth Analysis Report
 
@@ -443,8 +410,7 @@ Current: [Value] | Target: [Value] | Gap: [Diff]
 2. [Experiment 2] - ICE Score: 7.2
 ```
 
-### Content Remix Plan
-
+### 内容重塑计划
 ```markdown
 # Content Remix Plan
 
@@ -489,8 +455,7 @@ Carousel (10 slides):
 | YouTube | Thursday | 2 PM |
 ```
 
-### Trend Alert Report
-
+### 趋势警报报告
 ```markdown
 # Trend Alert
 
@@ -522,36 +487,31 @@ Trend Score: 8/10
 
 ---
 
-## Integration with Other Skills
-
-| Skill | Integration Point |
+## 与其他技能的整合
+| 技能 | 整合点 |
 |-------|-------------------|
-| **CMO** | Strategic alignment, budget planning |
-| **SEO/Search** | Keyword research, content optimization |
-| **Social Media** | Platform posting, engagement |
-| **Email Marketing** | Newsletter content, drip campaigns |
-| **Analytics** | Performance tracking, reporting |
+| **首席营销官（CMO）** | 战略对齐、预算规划 |
+| **SEO/搜索** | 关键词研究、内容优化 |
+| **社交媒体** | 平台发布、互动推广 |
+| **电子邮件营销** | 新闻通讯内容、持续发送的邮件 |
+| **数据分析** | 表现跟踪、报告生成 |
 
 ---
 
-## Important Notes
-
-- **Quality over quantity**: One great piece beats ten mediocre ones
-- **Test and iterate**: Platforms and audiences change constantly
-- **Own your audience**: Email lists beat algorithm dependency
-- **Measure what matters**: Focus on revenue-impacting metrics
-- **Stay adaptable**: What works today may not work tomorrow
+## 重要提示
+- **质量胜过数量**：一个高质量的内容胜过十个平庸的内容
+- **测试并迭代**：平台和受众都在不断变化
+- **建立稳固的受众关系**：电子邮件列表比依赖算法更可靠
+- **关注关键指标**：关注对收入有影响的指标
+- **保持灵活性**：今天有效的方法明天可能不再适用
 
 ---
 
-*Master Marketing: Grow smarter, content louder, trends faster.*
+*Master Marketing：更智能地增长，更有效地传播内容，更快地把握趋势。*
 
+## 🚀 不断发展的应用课程
+_最新更新：2026-02-12 09:25_
 
-## 🚀 Gelişen Uygulama Dersleri
-_Son Güncelleme: 2026-02-12 09:25_
-
-### 🔄 Güncellenen Framework'ler
-
-| Framework | Güncelleme | Tarih |
+### 🔄 更新的框架
+| 框架 | 更新内容 | 更新日期 |
 |-----------|------------|-------|
-

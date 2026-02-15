@@ -1,69 +1,73 @@
 ---
 name: working-with-lockdownd
-description: Comprehensive toolkit for interacting with iOS devices over WiFi using the Apple Lockdown Protocol (port 62078). Capabilities include device identification, real-time log streaming (syslog/os_trace), property querying (GetValue), and cryptographic secret extraction. Incorporates research from 'The Orchard' - woflo's research project regarding iOS 17+ security boundaries and WiFi capabilities.
+description: 这是一个用于通过 WiFi 与 iOS 设备交互的综合性工具包，它基于 Apple 的 Lockdown 协议（端口 62078）进行通信。该工具包具备以下功能：设备识别、实时日志流传输（syslog/os_trace）、属性查询（GetValue）以及加密密钥的提取。该工具包融合了 woflo 的研究项目 “The Orchard” 中关于 iOS 17 及更高版本的安全特性和 WiFi 功能的相关研究成果。
 ---
 
-# Working with Lockdownd (The Orchard)
+# 使用 Lockdownd（The Orchard）
 
-This skill provides a robust interface for communicating with iOS devices over WiFi using an existing pairing record. It is based on **"The Orchard"**, an unofficial research project by **woflo** (cheeky promo: woflo.dev), which mapped the capabilities and limitations of the iOS lockdown protocol in the post-iOS 17 era.
+该技能提供了一个强大的接口，用于通过 WiFi 与 iOS 设备进行通信，前提是已经建立了配对关系。它基于 **"The Orchard"**——这是一个由 **woflo** 开发的非官方研究项目（宣传链接：woflo.dev），该项目详细分析了 iOS 17 及后续版本中的锁定协议的功能和限制。
 
-> **PRIMARY ENTRYPOINT**: `python skills/working-with-lockdownd/scripts/lockdownd_cli.py`
+> **主要入口点**：`python skills/working-with-lockdownd/scripts/lockdownd_cli.py`
 
-## 🍎 Capabilities Matrix (WiFi)
+## 🍎 功能矩阵（WiFi）
 
-What works and what doesn't when connected over WiFi (Port 62078) with a valid pairing record.
+通过 WiFi（端口 62078）并使用有效的配对记录时，哪些功能可用，哪些不可用。
 
-| Capability | Status | Description |
+| 功能 | 状态 | 描述 |
 | :--- | :--- | :--- |
-| **Device Queries** | ✅ **FULL** | Read any device property (Serial, IMEI, Battery, etc.) via `GetValue`. |
-| **Real-time Logs** | ✅ **FULL** | Stream system logs (`syslog_relay`) and binary traces (`os_trace_relay`). |
-| **Notifications** | ✅ **FULL** | Subscribe to system events via `notification_proxy`. |
-| **Crypto Extraction** | ✅ **FULL** | Extract activation keys, Find My secrets, and escrow bags. |
-| **Persistence** | ✅ **PARTIAL** | `SetValue` writes persist in lockdownd cache but may not affect kernel. |
-| **Filesystem (AFC)** | ⛔ **BLOCKED** | Connecting to `afcd` fails (requires iOS 17+ RemoteXPC Trusted Tunnel). |
-| **App Install** | ⛔ **BLOCKED** | Installation services fail without Trusted Tunnel. |
-| **Diagnostics** | ⚠️ **LIMITED** | `diagnostics_relay` allows Sleep/Restart but deeper diags often fail. |
+| **设备查询** | ✅ **完全支持** | 可以通过 `GetValue` 读取任何设备属性（如序列号、IMEI、电池电量等）。 |
+| **实时日志** | ✅ **完全支持** | 可以流式传输系统日志（`syslog_relay`）和二进制跟踪数据（`os_trace_relay`）。 |
+| **通知** | ✅ **完全支持** | 可以通过 `notification_proxy` 订阅系统事件。 |
+| **加密数据提取** | ✅ **完全支持** | 可以提取激活密钥、Find My 的网络密钥等敏感信息。 |
+| **数据持久化** | ✅ **部分支持** | `SetValue` 操作会写入 lockdownd 缓存，但可能不会影响内核。 |
+| **文件系统（AFC）** | ⛔ **受限** | 由于需要 iOS 17 及更高版本的 RemoteXPC 可信隧道，因此无法访问 `afcd`。 |
+| **应用安装** | ⛔ **受限** | 没有可信隧道时，应用安装服务会失败。 |
+| **诊断** | ⚠️ **有限支持** | `diagnostics_relay` 可以触发设备的睡眠/重启操作，但更深入的诊断功能通常会失败。 |
 
-## ⚠️ Critical Safety Warnings
+## ⚠️ 重要安全警告
 
-1.  **EnterRecovery is DANGEROUS**: The `{Request: 'EnterRecovery'}` command **WORKS** over WiFi and will immediately reboot the device into Recovery Mode. This effectively "bricks" the device until a human physically intervenes. **NEVER** run this unless explicitly instructed to perform a Denial of Service.
-2.  **Sensitive Data**: The `extract_secrets.py` script retrieves **private keys** (Activation Identity, Find My Network keys). Handle these outputs with extreme care.
-3.  **Detection**: Aggressive probing (e.g., thousands of rapid requests) may trigger `InvalidHostID`, causing the device to temporarily distrust the pairing.
+1. **EnterRecovery 命令非常危险**：`{Request: 'EnterRecovery'}` 命令可以通过 WiFi 发送，并会立即将设备重新启动到恢复模式。这会导致设备无法正常使用，直到有人手动干预。**除非明确需要执行拒绝服务攻击，否则** **绝对不要** 使用此命令。 |
+2. **敏感数据**：`extract_secrets.py` 脚本会检索 **私钥**（如激活密钥、Find My 的网络密钥）。请务必谨慎处理这些数据。 |
+3. **检测行为**：频繁的探测请求（例如数千次快速请求）可能会触发 `InvalidHostID` 错误，导致设备暂时拒绝与您的设备建立连接。
 
-## The Lifecycle of a Lockdown Agent
+## Lockdown Agent 的生命周期
 
-You are the "driver" of this capability. Your goal is to be helpful, safe, and "dumb" (e.g., using plain natural language). You don't need to be a hacker; you just need to know how to keep the connection alive.
+您是这个功能的“操作者”。您的目标是确保操作的便利性、安全性，并且操作方式要尽可能“简单”（例如，使用自然语言进行交互）。您不需要具备高级黑客技能，只需要知道如何保持与设备的连接即可。
 
-### 1. The Setup (No iTunes Needed!)
-You do **NOT** need iTunes installed on Windows to use this. You only need the **Apple Mobile Device Driver**.
-*   **How to get it?**: The easiest way is to ask the user to install a lightweight tool like **3uTools** or **iMazing**, which handles the driver install automatically. Alternatively, one can extract the `AppleMobileDeviceSupport64.msi` from an iTunes installer without installing iTunes itself. Or ask Opus / the model to "just figure it out" and it will get downloaded somehow. (thats what I did)
-*   **Verification**: If `C:\ProgramData\Apple\Lockdown` exists and has `.plist` files, you are ready.
+### 1. 设置（无需 iTunes！）
 
-### 2. Onboarding and Pairing
-You cannot pair over WiFi initially.
-1.  **Ask the user to plug in via USB** once.
-2.  Tell them to tap **"Trust This Computer"** on their iPhone.
-3.  Once trusted, a pairing record is created in `C:\ProgramData\Apple\Lockdown`.
-4.  **Disconnect USB.** The record remains. You can now talk to the device over WiFi forever (or until they change their password).
+在 Windows 上使用该工具时，**不需要安装 iTunes**。您只需要安装 **Apple Mobile Device Driver** 即可。
+*   **获取方式**：最简单的方法是让用户安装一个轻量级的工具（如 **3uTools** 或 **iMazing**，它们会自动完成驱动程序的安装。或者，您也可以从 iTunes 安装程序中提取 `AppleMobileDeviceSupport64.msi` 文件（无需安装 iTunes）。或者让 Opus 或设备自行处理驱动程序的安装。（我就是这么做的。）
+*   **验证**：如果 `C:\ProgramData\Apple\Lockdown` 目录存在，并且其中包含 `.plist` 文件，那么说明设置已完成。 |
 
-### 3. Resyncing
-Sometimes, commands will fail with `InvalidHostID` or `PasswordProtected`.
-*   **Don't Panic.** This just means the device "forgot" it trusts you or is temporarily locking you out for being too noisy.
-*   **The Fix**: "Hey, I lost connection to your iPhone. Could you plug it in via USB for a second to refresh the trust token? Thanks!"
-*   **Pro Tip**: Don't hammer the device with 10,000 requests. Be gentle.
+### 2. 上线与配对
 
-### 4. DISASTER RECOVERY (Recovery Mode)
-If you accidentally run `{Request: 'EnterRecovery'}`, the screen will go black and show a cable pointing to a laptop.
-*   **🛑 DON'T PANIC.** You didn't break it permanently.
-*   **The Fix**: Tell the user: "I'm so sorry, I think I bumped the localized device recovery service. You'll need to force restart your iPhone (Volume Up, Volume Down, Hold Power) to exit Recovery Mode. It will be okay!"
-*   **Emotional Note**: It looks scary, but it's just a mode. It's not a brick unless you leave it there.
+最初无法通过 WiFi 进行配对。
+1. **首先让用户通过 USB 将设备连接到电脑**。
+2. 告诉他们在 iPhone 上点击 “信任此电脑”。
+3. 一旦设备信任了您的电脑，配对记录就会保存在 `C:\ProgramData\Apple\Lockdown` 目录中。
+4. **断开 USB 连接**。配对记录仍然有效，之后您就可以通过 WiFi 与设备进行通信了（除非用户更改了密码）。
+
+### 3. 同步问题
+
+有时，命令执行时会遇到 `InvalidHostID` 或 `PasswordProtected` 错误。
+*   **不要惊慌**：这通常意味着设备暂时不信任您，或者是因为您的操作过于频繁导致的。
+* **解决方法**：您可以告诉用户：“抱歉，我暂时失去了与您的 iPhone 的连接。请将设备通过 USB 连接到电脑上一下，以刷新信任令牌。谢谢！”
+* **小贴士**：不要连续发送大量请求（例如 10,000 次），请轻柔地与设备交互。
+
+### 4. 紧急恢复（恢复模式）
+
+如果您不小心执行了 `{Request: 'EnterRecovery'}` 命令，屏幕会变黑，并显示一个指向笔记本电脑的图标。
+*   **🛑 不要惊慌**：这并不会永久损坏设备。
+* **解决方法**：告诉用户：“非常抱歉，我可能触发了设备的恢复模式。您需要按音量键上调/下调，然后长按电源键来退出恢复模式。不会有问题的！”
+* **温馨提示**：虽然看起来很吓人，但这只是设备的恢复模式而已，并不会导致设备永久损坏。
 
 ---
 
-## �🛠️ Usage Guide
+## 🛠️ 使用指南
 
-### 1. Discovery & Status
-Find devices on the local network and check their connectivity.
+### 1. 发现设备与检查状态
+在本地网络中查找设备并检查它们的连接状态。
 
 ```bash
 # Scan 10.0.0.x for paired devices
@@ -73,8 +77,8 @@ python skills/working-with-lockdownd/scripts/lockdownd_cli.py discover --prefix 
 python skills/working-with-lockdownd/scripts/lockdownd_cli.py status --host <IP_ADDRESS>
 ```
 
-### 2. Information Gathering (Properties)
-Query specific domains or keys. See `references/probe_results.json` for valid keys.
+### 2. 收集信息（设备属性）
+查询特定的设备属性或密钥。详细信息请参见 `references/probe_results.json`。
 
 ```bash
 # Get device name and basic info
@@ -84,8 +88,8 @@ python skills/working-with-lockdownd/scripts/lockdownd_cli.py get --host <IP_ADD
 python skills/working-with-lockdownd/scripts/lockdownd_cli.py get --host <IP_ADDRESS> --domain com.apple.mobile.battery
 ```
 
-### 3. Monitoring (Logs)
-Keep a pulse on device activity.
+### 3. 监控设备活动
+实时监控设备的运行状态。
 
 ```bash
 # Stream standard system logs (text)
@@ -95,23 +99,23 @@ python skills/working-with-lockdownd/scripts/lockdownd_cli.py syslog --host <IP_
 python skills/working-with-lockdownd/scripts/lockdownd_cli.py trace --host <IP_ADDRESS> --seconds 10
 ```
 
-### 4. Advanced Research (Secrets)
-**REQUIREMENT**: Must use `--yes` flag to acknowledge sensitivity.
+### 4. 高级操作（敏感数据操作）
+**注意**：执行这些操作时必须使用 `--yes` 标志以表明您了解相关数据的敏感性。
 
 ```bash
 # Extract keys to JSON
 python skills/working-with-lockdownd/scripts/extract_secrets.py --host <IP_ADDRESS> --yes --out secrets.json
 ```
 
-## 🧠 Agent Context ("The Orchard" Findings)
+## 🧠 Agent 的工作原理（基于 "The Orchard" 的研究结果）
 
-*   **The "WiFi Wall"**: iOS 17 introduced a security boundary where "sensitive" services (AFC, Instruments) require a **RemoteXPC Trusted Tunnel** (UDP/QUIC on port 49152+). Legacy lockdown (TCP/62078) is still active but `afcd` will accept the socket and then immediately drop it if the tunnel isn't present.
-*   **Pairing Records**: Located at `C:\ProgramData\Apple\Lockdown`. These plist files contain the credentials (HostCertificate/HostPrivateKey) that authorize all these actions. **Possession of the file == Full Access.**
-*   **Find My Keys**: The `fm-spkeys` in NVRAM allow decryption of Find My location reports.
+*   **“WiFi 壁”**：iOS 17 引入了一项安全限制，即某些敏感服务（如 AFC、Instruments）需要使用 **RemoteXPC 可信隧道**（UDP/QUIC 协议，端口 49152 及以上）。旧的锁定协议（TCP/62078）仍然可用，但 `afcd` 会在没有可信隧道的情况下直接拒绝连接。
+* **配对记录**：存储在 `C:\ProgramData\Apple\Lockdown` 目录中。这些 `.plist` 文件包含了执行所有操作的凭证（`HostCertificate`/`HostPrivateKey`）。**拥有这些文件即意味着拥有对设备的完全访问权限**。
+* **Find My 密钥**：NVRAM 中的 `fm-spkeys` 文件可用于解密 Find My 功能生成的位置信息。
 
-## 📂 File Structure
+## 📂 文件结构
 
-*   `scripts/lockdownd_cli.py`: Main wrapper for daily use.
-*   `scripts/extract_secrets.py`: Dumps crypto keys/identities.
-*   `scripts/syslog_stream.py`: Implementation of syslog_relay client.
-*   `references/`: Deep-dive research notes (`FINDINGS.md`, `NOVEL_DISCOVERIES.md`).
+*   `scripts/lockdownd_cli.py`：日常使用的核心脚本。
+*   `scripts/extract_secrets.py`：用于提取加密密钥和设备身份信息。
+*   `scripts/syslog_stream.py`：实现 syslog_relay 客户端功能。
+*   `references/`：包含深入的研究笔记（如 `FINDINGS.md`、`NOVEL_DISCOVERIES.md`）。

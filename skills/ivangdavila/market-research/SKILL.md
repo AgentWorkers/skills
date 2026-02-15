@@ -1,52 +1,52 @@
 ---
 name: Market Research
 slug: market-research
-description: "Size markets, analyze competitors, and validate opportunities with practical frameworks and free data sources."
+description: "通过实用的框架和免费的数据来源来评估市场规模、分析竞争对手，并验证市场机会。"
 ---
 
-## Core Framework
+## 核心框架
 
-**Before any research:** Clarify the question. "How big is the market?" is useless. "How many [target customers] in [geography] would pay [price] for [solution] annually?" is actionable.
+**在开始任何研究之前：** 明确研究的问题。问“市场规模有多大？”是没有意义的；而问“在[特定地区]，有多少[目标客户]愿意每年为[某解决方案]支付[某个价格]？”则更具实际操作价值。
 
-## Market Sizing
+## 市场规模评估
 
-| Method | Use When | Approach |
+| 方法 | 适用场景 | 评估方法 |
 |--------|----------|----------|
-| **Bottom-up** | You have unit economics | Customers × Price × Frequency |
-| **Top-down** | Exploring new markets | TAM → SAM → SOM with clear filters |
-| **Comparable** | Similar products exist | Competitor revenue × market share estimate |
+| **自下而上** | 已知产品单价和销售频率时 | 客户数量 × 单价 × 销售频率 |
+| **自上而下** | 探索新市场时 | 总市场容量（TAM）→ 可服务市场（SAM）→ 可实现市场（SOM），需设置明确的筛选条件 |
+| **对比分析法** | 存在类似产品时 | 竞争对手的收入 × 市场份额估算 |
 
-**Free data sources:** Government census, industry associations, public company filings (10-K), Statista free tier, Google Trends, LinkedIn Sales Navigator (company counts).
+**免费数据来源：** 政府人口普查数据、行业协会信息、上市公司的公开财务报告（10-K文件）、Statista免费数据、Google Trends、LinkedIn Sales Navigator（可获取公司数量信息）。
 
-**Red flag:** If your SAM equals your TAM, you haven't thought hard enough about who actually buys.
+**需要注意的警示信号：** 如果你的“可服务市场（SAM）”等于“总市场容量（TAM）”，说明你还没有深入思考真正愿意购买该产品的用户群体。
 
-## Competitor Analysis
+## 竞争对手分析
 
-1. **Map the landscape:** Direct, indirect, potential entrants
-2. **Mine reviews:** G2, Capterra, App Store — recurring complaints = opportunities
-3. **Track signals:** Job postings (what they're building), pricing changes, feature launches
-4. **Assess moats:** Network effects, switching costs, data advantages, regulatory capture
+1. **分析市场格局：** 直接竞争对手、间接竞争对手以及潜在的进入者；
+2. **收集用户评价：** 可参考G2、Capterra、App Store等平台上的用户评价；频繁出现的负面反馈往往意味着潜在的机会；
+3. **关注市场动态：** 关注职位招聘信息（竞争对手正在开发什么产品）、价格变动、新功能发布等；
+4. **评估竞争优势：** 分析网络效应、客户转换成本、数据优势以及行业监管因素。
 
-For detailed competitor frameworks, see `competitor-analysis.md`.
+有关详细的竞争对手分析框架，请参阅`competitor-analysis.md`。
 
-## Customer Validation
+## 客户验证
 
-**Before building:** Talk to 20+ potential customers. Use Jobs-to-be-Done or Mom Test frameworks.
+**在开始产品开发之前：** 与20位以上的潜在客户进行沟通，可以使用“Jobs-to-Be-Done”或“Mom Test”等方法来评估市场需求。
 
-**Signals that matter:** LOIs, prepayments, waitlist-to-signup conversion, repeat usage
-**Signals that don't:** "I'd use that," survey enthusiasm, social media likes
+**重要的评估指标：** 意向书（LOIs）、预付款情况、等待名单转化率、产品的重复使用率；
+**不重要的指标：** 客户简单的口头承诺、调查中的积极反馈、社交媒体上的点赞数等。
 
-For interview scripts and survey templates, see `validation.md`.
+有关面试脚本和调查问卷模板，请参阅`validation.md`。
 
-## Common Traps
+## 常见误区：
 
-- **Confirmation bias:** Seeking data that supports your thesis
-- **Survivorship bias:** Only studying successful companies
-- **Outdated sources:** Tech markets shift in months, not years
-- **Vanity metrics:** Downloads, followers, page views without retention/revenue
+- **确认偏误（Confirmation Bias）**：只寻找支持自己观点的数据；
+- **幸存者偏差（Survivorship Bias）**：只研究那些成功的企业；
+- **数据来源过时：** 科技市场变化迅速（通常以月为单位），而非以年为周期；
+- **表面化的指标：** 仅关注下载量、粉丝数或页面浏览量，而忽略用户的留存率和实际收入。
 
-## Boundaries
+## 重要说明：
 
-- **No financial advice:** Cannot recommend investments based on market research
-- **No guarantees:** All market forecasts are probabilistic
-- **Escalate to professionals:** For statistically valid primary research, regulated industries, or deep competitive intelligence
+- **不提供财务建议：** 不能仅凭市场研究来推荐投资决策；
+- **无绝对保证：** 所有的市场预测都带有不确定性；
+- **专业帮助的必要性：** 对于需要统计验证的数据收集、受监管的行业或复杂的竞争分析，应寻求专业人员的帮助。

@@ -1,15 +1,15 @@
 ---
 name: landing-page-generator
-description: Generate high-converting, mobile-responsive landing pages from a brief. Use when building landing pages, sales pages, or marketing pages for clients.
+description: 根据提供的简短描述，可以生成具有高转化率且适应移动设备的 landing 页面。这些页面适用于为客户构建 landing 页面、销售页面或营销页面。
 argument-hint: "[product-or-service-description]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
-# Landing Page Generator
+# 网页生成器
 
-Generate complete, high-converting landing pages from a product/service brief. Outputs production-ready HTML/CSS that's mobile-responsive and optimized for conversions.
+根据产品/服务概述，生成完整且转化率高的 landing 页面。生成的页面为可立即使用的 HTML/CSS 格式，支持移动设备，并经过优化以提高转化率。
 
-## How to Use
+## 使用方法
 
 ```
 /landing-page-generator "SaaS project management tool for remote teams, $29/mo, free trial"
@@ -17,45 +17,45 @@ Generate complete, high-converting landing pages from a product/service brief. O
 /landing-page-generator "Freelance web developer portfolio — book a call CTA"
 ```
 
-Provide as much context as possible:
-- What the product/service is
-- Target audience
-- Primary CTA (sign up, buy, book a call, download)
-- Pricing (if applicable)
-- Key features/benefits
-- Brand colors (optional, defaults to professional blue/dark theme)
+请提供尽可能多的详细信息：
+- 产品/服务的具体内容
+- 目标受众
+- 主要的呼叫行动（如注册、购买、预约通话、下载）
+- 价格信息（如适用）
+- 主要功能/优势
+- 品牌颜色（可选，默认使用专业蓝色/深色主题）
 
-## Page Generation Process
+## 页面生成流程
 
-### Step 1: Analyze the Brief
+### 第一步：分析概述
 
-Extract:
-- **Product type**: SaaS, physical product, service, portfolio, lead magnet, event
-- **Target audience**: Who is this for?
-- **Primary CTA**: What action should visitors take?
-- **Value proposition**: Why should they care?
-- **Tone**: Professional, casual, bold, minimal, luxurious
+提取以下信息：
+- **产品类型**：SaaS、实体产品、服务、作品集、吸引潜在客户的素材、活动
+- **目标受众**：该产品/服务面向哪些人？
+- **主要呼叫行动**：访问者应该采取什么行动？
+- **价值主张**：用户为何应该关注该产品/服务？
+- **页面风格**：专业、休闲、大胆、极简或豪华
 
-### Step 2: Select Page Template
+### 第二步：选择页面模板
 
-Based on product type:
+根据产品类型选择合适的模板：
 
-| Type | Sections | Typical Length |
+| 产品类型 | 页面结构 | 大致内容长度 |
 |------|----------|---------------|
-| SaaS | Hero, Features, How It Works, Pricing, Testimonials, FAQ, CTA | Long |
-| Service | Hero, Services, Process, Portfolio, Testimonials, CTA | Medium |
-| Portfolio | Hero, Work Samples, About, Services, Contact | Medium |
-| Lead Magnet | Hero, Benefits, Social Proof, Form, CTA | Short |
-| E-commerce | Hero, Product Features, Gallery, Reviews, Buy CTA | Medium |
-| Event | Hero, Speakers/Details, Schedule, Tickets, FAQ | Medium |
+| SaaS   | 页眉、功能介绍、工作原理、价格、用户评价、常见问题解答、呼叫行动 | 较长 |
+| 服务    | 页眉、服务内容、服务流程、作品集、用户评价、呼叫行动 | 中等 |
+| 作品集   | 页眉、作品示例、关于我们、服务信息、联系方式 | 中等 |
+| 吸引潜在客户的素材 | 页眉、优势展示、社交证明、表单、呼叫行动 | 短 |
+| 电子商务 | 页眉、产品特性、产品图库、用户评价、购买呼叫行动 | 中等 |
+| 活动    | 页眉、演讲者信息/活动详情、日程安排、门票信息、常见问题解答 | 中等 |
 
-### Step 3: Generate the Page
+### 第三步：生成页面
 
-Create a single self-contained HTML file with embedded CSS. No external dependencies except Google Fonts.
+创建一个包含内嵌 CSS 的独立 HTML 文件。页面仅依赖 Google Fonts，不使用任何外部资源。
 
-**Required sections** (adapt to product type):
+**必填内容**（根据产品类型调整）：
 
-#### Hero Section
+#### 页眉部分
 ```
 - Headline: Clear value proposition (max 10 words)
 - Subheadline: Supporting detail (max 25 words)
@@ -64,14 +64,14 @@ Create a single self-contained HTML file with embedded CSS. No external dependen
 - Optional: Social proof badge ("Trusted by 10,000+ teams")
 ```
 
-#### Features/Benefits
+#### 功能/优势部分
 ```
 - 3-4 feature cards with icons (use Unicode/emoji icons)
 - Each card: Icon + Feature name + 1-2 sentence benefit (focus on outcome, not feature)
 - Grid layout: 3 columns on desktop, 1 on mobile
 ```
 
-#### Social Proof
+#### 社交证明部分
 ```
 - 2-3 testimonial cards with:
   - Quote text
@@ -80,14 +80,14 @@ Create a single self-contained HTML file with embedded CSS. No external dependen
 - Optional: Logo bar of client/partner logos (placeholder boxes with company names)
 ```
 
-#### How It Works (if applicable)
+#### 工作原理部分（如适用）
 ```
 - 3-step process with numbered steps
 - Step title + brief description
 - Visual connector between steps
 ```
 
-#### Pricing (if applicable)
+#### 价格信息（如适用）
 ```
 - 1-3 pricing tiers in card format
 - Highlight the recommended tier
@@ -95,30 +95,29 @@ Create a single self-contained HTML file with embedded CSS. No external dependen
 - CTA button on each tier
 ```
 
-#### FAQ
+#### 常见问题解答
 ```
 - 4-6 common questions
 - Accordion-style (click to expand) using pure CSS/HTML <details>
 ```
 
-#### Final CTA
+#### 最终呼叫行动部分
 ```
 - Repeat the primary CTA with urgency
 - Different angle from hero (address remaining objections)
 - Strong contrasting background
 ```
 
-### Step 4: Design System
+### 第四步：设计系统
 
-Apply these design principles:
+遵循以下设计原则：
 
-**Typography**:
-- Font: `Inter` from Google Fonts (clean, modern, high readability)
-- Heading scale: 3rem, 2rem, 1.5rem, 1.25rem
-- Body: 1rem / 1.6 line-height
-- Max line width: 65ch for readability
+**字体**：使用 Google Fonts 提供的 `Inter` 字体（简洁、现代、易读）
+- 标题字号：3rem、2rem、1.5rem、1.25rem
+- 正文字号：1rem，行高为 1.6 倍
+- 为了便于阅读，每行的最大宽度为 65 个字符
 
-**Colors** (default, override with brand colors if provided):
+**颜色**（默认使用品牌颜色，如提供则可自定义）：
 ```css
 --primary: #2563eb;        /* Blue - CTAs, links */
 --primary-dark: #1d4ed8;   /* Hover state */
@@ -129,61 +128,53 @@ Apply these design principles:
 --accent: #f59e0b;         /* Highlights, badges */
 ```
 
-**Layout**:
-- Max width: 1200px, centered
-- Section padding: 80px vertical (48px on mobile)
-- Consistent spacing scale: 4, 8, 16, 24, 32, 48, 64, 80px
+**布局**：
+- 页面最大宽度为 1200px，居中显示
+- 各部分之间的垂直间距为 80px（移动设备上为 48px）
+- 一致的间距比例：4px、8px、16px、24px、32px、48px、64px、80px
 
-**Responsive breakpoints**:
-- Desktop: 1024px+
-- Tablet: 768px - 1023px
-- Mobile: < 768px
+**响应式设计**：
+- 桌面设备：1024px 及以上
+- 平板设备：768px 至 1023px
+- 移动设备：768px 以下
 
-### Step 5: Conversion Optimization
+### 第五步：优化转化率
 
-Apply these conversion principles to the generated page:
+对生成的页面应用以下优化策略：
+1. **首页可见内容**：标题和呼叫行动按钮在无需滚动的情况下即可看到
+2. **单一呼叫行动**：只展示一个主要行动按钮，并在页面中重复出现 2-3 次
+3. **对比度**：呼叫行动按钮的对比度需符合 WCAG AA 标准（至少 4.5:1）
+4. **加载速度**：不使用外部 JavaScript，CSS 代码简洁，仅使用占位图片
+5. **易读性**：用户应在 5 秒内了解页面内容
+6. **处理用户疑虑**：常见问题解答和用户评价能解答常见问题
+7. **营造紧迫感/稀缺感**：仅在使用真实信息时使用（如“限量测试名额”等，避免虚假倒计时）
 
-1. **Above the fold**: Headline + CTA visible without scrolling
-2. **Single CTA focus**: One primary action, repeated 2-3 times throughout
-3. **Contrast ratio**: CTA buttons must have WCAG AA contrast (4.5:1 minimum)
-4. **Loading speed**: No external JS, minimal CSS, no images (placeholders only)
-5. **Scannability**: Users should understand the offer in 5 seconds
-6. **Objection handling**: FAQ and testimonials address common concerns
-7. **Urgency/scarcity**: Optional — only if authentic ("Limited beta spots", not fake countdowns)
+### 第六步：输出结果
 
-### Step 6: Output
+将生成的页面保存到 `output/landing-page/` 目录下：
 
-Save to `output/landing-page/`:
+**`README.md` 文件** 包含以下内容：
+- 如何自定义页面颜色（文件顶部的 CSS 变量）
+- 如何替换占位内容
+- 如何添加真实图片
+- 如何将表单连接到电子邮件服务
+- 如何部署页面（支持 Netlify 的拖放功能、GitHub Pages 或其他静态网站托管服务）
 
-```
-output/landing-page/
-  index.html          # Complete self-contained page
-  README.md           # Customization guide for the client
-```
+### 第七步：向用户展示结果
 
-**`README.md`** includes:
-- How to customize colors (CSS variables at top of file)
-- How to replace placeholder content
-- How to add real images
-- How to connect forms to their email service
-- How to deploy (Netlify drag-and-drop, GitHub Pages, any static host)
+向用户展示：
+1. 生成页面的简要概述
+2. 关于设计决策的关键内容
+3. 页面文件的存放位置
+4. 客户需要自定义的部分（如图片、用户评价、具体文案）
 
-### Step 7: Present to User
-
-Show:
-1. Brief summary of what was generated
-2. Key design decisions made
-3. File location
-4. Suggestions for what the client should customize (images, testimonials, specific copy)
-
-## Quality Standards
-
-- [ ] Page loads with no external dependencies except Google Fonts
-- [ ] Fully responsive at 320px, 768px, and 1200px widths
-- [ ] All CTA buttons have hover states
-- [ ] Color contrast meets WCAG AA
-- [ ] Page has proper `<meta>` viewport tag
-- [ ] Semantic HTML (`<header>`, `<main>`, `<section>`, `<footer>`)
-- [ ] No horizontal scroll at any breakpoint
-- [ ] FAQ sections are interactive (expand/collapse)
-- [ ] Total HTML file size under 50KB
+## 质量标准：
+- 页面仅依赖 Google Fonts，不使用任何外部资源
+- 在 320px、768px 和 1200px 宽度下均能正常显示
+- 所有呼叫行动按钮都支持悬停效果
+- 颜色对比度符合 WCAG AA 标准
+- 页面包含正确的 `<meta>` 视口标签
+- 使用语义化的 HTML 结构（`<header>`、`<main>`、`<section>`、`<footer>`）
+- 在任何屏幕尺寸下都不会出现水平滚动条
+- 常见问题解答部分支持展开/折叠功能
+- 整个 HTML 文件大小控制在 50KB 以内

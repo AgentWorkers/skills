@@ -1,80 +1,76 @@
-# Incident Response Playbook
+# 事件响应方案
 
-Structured incident response for business and IT teams. Guides you through detection, triage, containment, resolution, and post-mortem — with auto-generated timelines and action items.
+为业务团队和IT团队提供结构化的事件响应流程，指导他们完成事件的检测、分类、控制、解决及事后分析工作，并自动生成时间线与行动项。
 
-## What It Does
+## 功能介绍
 
-When triggered with an incident description, this skill:
+当接收到事件描述时，该工具会：
+1. **根据影响程度和紧急性对事件进行分级**（P1-P4）；
+2. **生成针对事件类型的响应检查清单**（如服务中断、数据泄露、安全事件、服务性能下降、供应商故障等）；
+3. **制定沟通计划**，明确需要通知的对象、时间以及使用哪些沟通渠道；
+4. **实时更新事件时间线**；
+5. **生成包含根本原因分析和预防措施的事后分析报告**。
 
-1. **Classifies severity** (P1-P4) based on impact and urgency
-2. **Generates a response checklist** tailored to incident type (outage, data breach, security event, service degradation, vendor failure)
-3. **Builds a communication plan** — who to notify, when, what channels
-4. **Creates a real-time timeline** as you log updates
-5. **Produces a post-mortem template** with root cause analysis and prevention steps
+## 使用方法
 
-## Usage
+向管理员报告事件：
+> “生产环境的API在20%的请求中返回500错误代码。事件发生在10分钟前。”
 
-Tell your agent about an incident:
+或主动触发事件响应计划：
+> “为潜在的数据泄露事件创建一个响应方案。”
 
-> "Production API is returning 500 errors for 20% of requests. Started 10 minutes ago."
+## 支持的事件类型：
+- **服务中断**：完全或部分的服务停止；
+- **安全事件**：数据泄露、未经授权的访问、网络钓鱼攻击；
+- **数据事件**：数据损坏、丢失或隐私泄露；
+- **供应商故障**：第三方服务提供商未能履行服务级别协议（SLA）；
+- **性能下降**：系统响应延迟加剧或容量不足。
 
-Or trigger proactively:
+## 事件严重性等级：
 
-> "Create an incident response plan for a potential data breach scenario"
-
-## Incident Types Covered
-
-- **Service outages** — full or partial downtime
-- **Security incidents** — breaches, unauthorized access, phishing
-- **Data incidents** — corruption, loss, privacy violations
-- **Vendor failures** — third-party SLA breaches
-- **Performance degradation** — latency spikes, capacity issues
-
-## Severity Matrix
-
-| Level | Impact | Response Time | Escalation |
+| 等级 | 影响程度 | 响应时间 | 升级流程 |
 |-------|--------|---------------|------------|
-| P1 - Critical | Business stopped | Immediate | Executive + all hands |
-| P2 - High | Major feature down | < 30 min | Engineering lead + PM |
-| P3 - Medium | Degraded experience | < 2 hours | On-call team |
-| P4 - Low | Minor issue | Next business day | Ticket queue |
+| P1 - 严重 | 业务运营中断 | 立即响应 | 高层管理人员及全体相关人员 |
+| P2 - 高 | 关键功能无法使用 | 小于30分钟 | 工程团队负责人及项目经理 |
+| P3 - 中等 | 用户体验下降 | 小于2小时 | 值班团队 |
+| P4 - 轻微 | 问题不严重 | 下一个工作日处理 | 通过工单系统处理 |
 
-## Response Framework
+## 响应框架：
 
-### 1. Detection & Triage (First 5 minutes)
-- Confirm the incident is real (not a false alarm)
-- Classify severity using the matrix above
-- Assign incident commander
-- Open a dedicated communication channel
+### 1. 检测与分类（前5分钟）
+- 确认事件真实性（排除误报）；
+- 根据上述等级矩阵对事件进行分类；
+- 指定事件负责人；
+- 开启专门的沟通渠道。
 
-### 2. Containment (First 30 minutes)
-- Identify blast radius — what's affected?
-- Apply immediate mitigation (rollback, feature flag, scaling)
-- Communicate status to stakeholders
+### 2. 控制（前30分钟）
+- 确定受影响的范围；
+- 立即采取缓解措施（如回滚系统配置、启用临时解决方案或调整系统资源）；
+- 向相关方通报事件进展。
 
-### 3. Resolution
-- Root cause investigation
-- Implement fix with verification
-- Monitor for recurrence
-- Update all stakeholders
+### 3. 解决问题
+- 进行根本原因调查；
+- 实施修复措施并验证效果；
+- 监控问题是否再次发生；
+- 及时更新所有相关方的信息。
 
-### 4. Post-Mortem (Within 48 hours)
-- Timeline of events
-- Root cause analysis (5 Whys)
-- What went well / what didn't
-- Action items with owners and deadlines
-- Process improvements
+### 4. 事后分析（48小时内）
+- 形成事件时间线；
+- 分析事件的根本原因；
+- 总结哪些措施有效、哪些需要改进；
+- 制定具体的行动项及完成期限；
+- 提出流程优化建议。
 
-## Integration
+## 集成性
 
-Works with any monitoring stack. Feed alerts from PagerDuty, Datadog, Grafana, or manual reports.
+该工具可与任何监控系统配合使用，支持接收来自PagerDuty、Datadog、Grafana等平台的警报信息，也可手动输入事件信息。
 
-## Pro Tip
+## 使用建议
 
-Pair this with a full **AI Operations Context Pack** for your industry. Pre-built incident taxonomies, compliance-aware escalation paths, and automated stakeholder templates.
+建议将该工具与专为特定行业定制的**AI运营套件**结合使用，这些套件包含预先构建的事件分类标准、合规性升级流程以及自动化的沟通模板。
 
-Browse packs: https://afrexai-cto.github.io/context-packs/
+查看更多套件：https://afrexai-cto.github.io/context-packs/
 
-Free tools:
-- AI Revenue Calculator: https://afrexai-cto.github.io/ai-revenue-calculator/
-- Agent Setup Wizard: https://afrexai-cto.github.io/agent-setup/
+免费工具：
+- AI收入计算器：https://afrexai-cto.github.io/ai-revenue-calculator/
+- 客户端设置向导：https://afrexai-cto.github.io/agent-setup/

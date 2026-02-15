@@ -1,18 +1,18 @@
 ---
 name: binance-pro
-description: Complete Binance integration - world's largest crypto exchange. Trade spot, futures with up to 125x leverage, staking, and portfolio management. Use to check balances, open/close positions, set stop loss and take profit, check PnL, and any Binance operation.
+description: **完整的Binance集成**——全球最大的加密货币交易所。支持现货交易、期货交易（杠杆最高可达125倍）、质押服务以及投资组合管理。您可以使用该集成功能查询账户余额、开仓/平仓、设置止损和止盈、查看盈亏情况，以及执行Binance平台的任何操作。
 metadata: {"openclaw":{"emoji":"🟡","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # Binance Pro 🟡
 
-Professional skill for trading on Binance - the world's largest crypto exchange.
+这是一套专门用于在 Binance（全球最大的加密货币交易所）进行交易的专业技能指南。
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Setup Credentials
+### 设置凭证
 
-Save to `~/.openclaw/credentials/binance.json`:
+将凭证保存到 `~/.openclaw/credentials/binance.json` 文件中：
 ```json
 {
   "apiKey": "YOUR_API_KEY",
@@ -20,15 +20,15 @@ Save to `~/.openclaw/credentials/binance.json`:
 }
 ```
 
-### Environment Variables (alternative)
+### 环境变量（可选）
 ```bash
 export BINANCE_API_KEY="your_api_key"
 export BINANCE_SECRET="your_secret_key"
 ```
 
-## 📊 Basic Queries
+## 📊 基本查询
 
-### Check Spot Balance
+### 查看现货余额
 ```bash
 TIMESTAMP=$(date +%s%3N)
 QUERY="timestamp=${TIMESTAMP}"
@@ -38,12 +38,12 @@ curl -s "https://api.binance.com/api/v3/account?${QUERY}&signature=${SIGNATURE}"
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '[.balances[] | select(.free != "0.00000000")]'
 ```
 
-### Get Current Price
+### 获取当前价格
 ```bash
 curl -s "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT" | jq '.'
 ```
 
-### Get All Futures Positions
+### 获取所有期货持仓
 ```bash
 TIMESTAMP=$(date +%s%3N)
 QUERY="timestamp=${TIMESTAMP}"
@@ -53,9 +53,9 @@ curl -s "https://fapi.binance.com/fapi/v2/positionRisk?${QUERY}&signature=${SIGN
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '[.[] | select(.positionAmt != "0")]'
 ```
 
-## ⚡ Futures (Leverage Trading)
+## ⚡ 期货交易（杠杆交易）
 
-### Open LONG Position (Buy)
+### 开立多头仓位（买入）
 ```bash
 SYMBOL="BTCUSDT"
 SIDE="BUY"
@@ -69,7 +69,7 @@ curl -s -X POST "https://fapi.binance.com/fapi/v1/order?${QUERY}&signature=${SIG
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Open SHORT Position (Sell)
+### 开立空头仓位（卖出）
 ```bash
 SYMBOL="BTCUSDT"
 SIDE="SELL"
@@ -83,7 +83,7 @@ curl -s -X POST "https://fapi.binance.com/fapi/v1/order?${QUERY}&signature=${SIG
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Set Stop Loss
+### 设置止损
 ```bash
 SYMBOL="BTCUSDT"
 SIDE="SELL"  # To close LONG use SELL, to close SHORT use BUY
@@ -97,7 +97,7 @@ curl -s -X POST "https://fapi.binance.com/fapi/v1/order?${QUERY}&signature=${SIG
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Set Take Profit
+### 设置止盈
 ```bash
 SYMBOL="BTCUSDT"
 SIDE="SELL"  # To close LONG use SELL, to close SHORT use BUY
@@ -111,7 +111,7 @@ curl -s -X POST "https://fapi.binance.com/fapi/v1/order?${QUERY}&signature=${SIG
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Close Position (Market)
+### 平仓（市价）
 ```bash
 # First, get current position quantity
 POSITION=$(curl -s "https://fapi.binance.com/fapi/v2/positionRisk?timestamp=${TIMESTAMP}&signature=${SIGNATURE}" \
@@ -121,7 +121,7 @@ POSITION=$(curl -s "https://fapi.binance.com/fapi/v2/positionRisk?timestamp=${TI
 # If POSITION < 0, it's SHORT, close with BUY
 ```
 
-### Change Leverage
+### 更改杠杆比例
 ```bash
 SYMBOL="BTCUSDT"
 LEVERAGE="10"  # 1 to 125
@@ -134,9 +134,9 @@ curl -s -X POST "https://fapi.binance.com/fapi/v1/leverage?${QUERY}&signature=${
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-## 📈 Spot Trading
+## 📈 现货交易
 
-### Buy (Market)
+### 买入（市价）
 ```bash
 SYMBOL="ETHUSDT"
 QUANTITY="0.1"
@@ -149,7 +149,7 @@ curl -s -X POST "https://api.binance.com/api/v3/order?${QUERY}&signature=${SIGNA
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Sell (Market)
+### 卖出（市价）
 ```bash
 SYMBOL="ETHUSDT"
 QUANTITY="0.1"
@@ -162,9 +162,9 @@ curl -s -X POST "https://api.binance.com/api/v3/order?${QUERY}&signature=${SIGNA
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-## 🔧 Utilities
+## 🔧 实用工具
 
-### View Open Orders
+### 查看未成交订单
 ```bash
 TIMESTAMP=$(date +%s%3N)
 QUERY="timestamp=${TIMESTAMP}"
@@ -175,7 +175,7 @@ curl -s "https://fapi.binance.com/fapi/v1/openOrders?${QUERY}&signature=${SIGNAT
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### Cancel Order
+### 取消订单
 ```bash
 SYMBOL="BTCUSDT"
 ORDER_ID="123456789"
@@ -188,7 +188,7 @@ curl -s -X DELETE "https://fapi.binance.com/fapi/v1/order?${QUERY}&signature=${S
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.'
 ```
 
-### View Trade History
+### 查看交易历史
 ```bash
 SYMBOL="BTCUSDT"
 TIMESTAMP=$(date +%s%3N)
@@ -199,7 +199,7 @@ curl -s "https://fapi.binance.com/fapi/v1/userTrades?${QUERY}&signature=${SIGNAT
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '.[-10:]'
 ```
 
-## 🏦 Detailed Futures Balance
+## 🏦 期货详细余额
 ```bash
 TIMESTAMP=$(date +%s%3N)
 QUERY="timestamp=${TIMESTAMP}"
@@ -209,12 +209,12 @@ curl -s "https://fapi.binance.com/fapi/v2/balance?${QUERY}&signature=${SIGNATURE
   -H "X-MBX-APIKEY: ${API_KEY}" | jq '[.[] | select(.balance != "0")]'
 ```
 
-## 📋 Popular Pairs
+## 📋 热门交易对
 
-| Pair | Description |
+| 交易对 | 说明 |
 |------|-------------|
-| BTCUSDT | Bitcoin |
-| ETHUSDT | Ethereum |
+| BTCUSDT | 比特币 |
+| ETHUSDT | 以太坊 |
 | BNBUSDT | BNB |
 | SOLUSDT | Solana |
 | XRPUSDT | XRP |
@@ -222,19 +222,19 @@ curl -s "https://fapi.binance.com/fapi/v2/balance?${QUERY}&signature=${SIGNATURE
 | ADAUSDT | Cardano |
 | AVAXUSDT | Avalanche |
 
-## ⚠️ Safety Rules
+## ⚠️ 安全规则
 
-1. **ALWAYS** verify position before closing
-2. **ALWAYS** set Stop Loss on leveraged trades
-3. **NEVER** use leverage higher than 10x without experience
-4. **VERIFY** pair and quantity before executing
-5. **CONFIRM** with user before executing large orders
+1. **务必** 在平仓前核实持仓情况。
+2. **务必** 在进行杠杆交易时设置止损。
+3. **没有交易经验时**，**切勿** 使用超过 10 倍的杠杆。
+4. **执行交易前**，**务必** 核实交易对和交易数量。
+5. **执行大额交易前**，**务必** 与用户确认。
 
-## 🔗 Links
+## 🔗 链接
 
-- [API Documentation](https://binance-docs.github.io/apidocs/)
-- [Create Account](https://accounts.binance.com/register?ref=CPA_00F3AR52CL)
-- [Testnet](https://testnet.binance.vision/)
+- [API 文档](https://binance-docs.github.io/apidocs/)
+- [注册账户](https://accounts.binance.com/register?ref=CPA_00F3AR52CL)
+- [测试网](https://testnet.binance.vision/)
 
 ---
-*Skill created by Total Easy Software - Clayton Martins*
+*本技能由 Total Easy Software 的 Clayton Martins 创建*

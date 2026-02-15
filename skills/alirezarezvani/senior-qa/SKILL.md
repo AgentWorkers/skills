@@ -1,29 +1,29 @@
 ---
 name: senior-qa
-description: This skill should be used when the user asks to "generate tests", "write unit tests", "analyze test coverage", "scaffold E2E tests", "set up Playwright", "configure Jest", "implement testing patterns", or "improve test quality". Use for React/Next.js testing with Jest, React Testing Library, and Playwright.
+description: 当用户请求“生成测试用例”、“编写单元测试”、“分析测试覆盖率”、“搭建端到端测试框架”、“配置 Playwright”、“配置 Jest”、“实现测试模式”或“提高测试质量”时，应使用此技能。该技能适用于使用 Jest、React Testing Library 和 Playwright 进行 React/Next.js 应用程序的测试工作。
 ---
 
-# Senior QA Engineer
+# 高级质量保证工程师
 
-Test automation, coverage analysis, and quality assurance patterns for React and Next.js applications.
+负责 React 和 Next.js 应用程序的测试自动化、代码覆盖率分析以及质量保证工作。
 
-## Table of Contents
+## 目录
 
-- [Quick Start](#quick-start)
-- [Tools Overview](#tools-overview)
-  - [Test Suite Generator](#1-test-suite-generator)
-  - [Coverage Analyzer](#2-coverage-analyzer)
-  - [E2E Test Scaffolder](#3-e2e-test-scaffolder)
-- [QA Workflows](#qa-workflows)
-  - [Unit Test Generation Workflow](#unit-test-generation-workflow)
-  - [Coverage Analysis Workflow](#coverage-analysis-workflow)
-  - [E2E Test Setup Workflow](#e2e-test-setup-workflow)
-- [Reference Documentation](#reference-documentation)
-- [Common Patterns Quick Reference](#common-patterns-quick-reference)
+- [快速入门](#quick-start)
+- [工具概述](#tools-overview)
+  - [测试套件生成器](#1-test-suite-generator)
+  - [代码覆盖率分析工具](#2-coverage-analyzer)
+  - [端到端测试框架](#3-e2e-test-scaffolder)
+- [质量保证工作流程](#qa-workflows)
+  - [单元测试生成流程](#unit-test-generation-workflow)
+  - [代码覆盖率分析流程](#coverage-analysis-workflow)
+  - [端到端测试设置流程](#e2e-test-setup-workflow)
+- [参考文档](#reference-documentation)
+- [常见模式快速参考](#common-patterns-quick-reference)
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate Jest test stubs for React components
@@ -38,16 +38,16 @@ python scripts/e2e_test_scaffolder.py src/app/ --output e2e/
 
 ---
 
-## Tools Overview
+## 工具概述
 
-### 1. Test Suite Generator
+### 1. 测试套件生成器
 
-Scans React/TypeScript components and generates Jest + React Testing Library test stubs with proper structure.
+扫描 React/TypeScript 组件，并生成结构规范的 Jest + React Testing Library 测试代码。
 
-**Input:** Source directory containing React components
-**Output:** Test files with describe blocks, render tests, interaction tests
+**输入：** 包含 React 组件的源代码目录
+**输出：** 包含描述性代码（describe）、渲染测试和交互测试的测试文件
 
-**Usage:**
+**使用方法：**
 ```bash
 # Basic usage - scan components and generate tests
 python scripts/test_suite_generator.py src/components/ --output __tests__/
@@ -71,22 +71,22 @@ python scripts/test_suite_generator.py src/ --output __tests__/ --include-a11y
 python scripts/test_suite_generator.py src/ --template custom-template.tsx
 ```
 
-**Supported Patterns:**
-- Functional components with hooks
-- Components with Context providers
-- Components with data fetching
-- Form components with validation
+**支持的模式：**
+- 使用 hooks 的函数组件
+- 使用 Context 提供者的组件
+- 需要获取数据的组件
+- 需要验证数据的表单组件
 
 ---
 
-### 2. Coverage Analyzer
+### 2. 代码覆盖率分析工具
 
-Parses Jest/Istanbul coverage reports and identifies gaps, uncovered branches, and provides actionable recommendations.
+解析 Jest/Istanbul 的代码覆盖率报告，识别覆盖率不足的部分，并提供改进建议。
 
-**Input:** Coverage report (JSON or LCOV format)
-**Output:** Coverage analysis with recommendations
+**输入：** 代码覆盖率报告（JSON 或 LCOV 格式）
+**输出：** 带有改进建议的覆盖率分析结果
 
-**Usage:**
+**使用方法：**
 ```bash
 # Analyze coverage report
 python scripts/coverage_analyzer.py coverage/coverage-final.json
@@ -123,14 +123,14 @@ python scripts/coverage_analyzer.py coverage/ --format html --output report.html
 
 ---
 
-### 3. E2E Test Scaffolder
+### 3. 端到端测试框架
 
-Scans Next.js pages/app directory and generates Playwright test files with common interactions.
+扫描 Next.js 的页面或应用目录，生成包含常见交互操作的 Playwright 测试代码。
 
-**Input:** Next.js pages or app directory
-**Output:** Playwright test files organized by route
+**输入：** Next.js 的页面或应用目录
+**输出：** 按路由组织的 Playwright 测试文件
 
-**Usage:**
+**使用方法：**
 ```bash
 # Scaffold E2E tests for Next.js App Router
 python scripts/e2e_test_scaffolder.py src/app/ --output e2e/
@@ -159,23 +159,23 @@ python scripts/e2e_test_scaffolder.py src/app/ --routes "/login,/dashboard,/chec
 
 ---
 
-## QA Workflows
+## 质量保证工作流程
 
-### Unit Test Generation Workflow
+### 单元测试生成流程
 
-Use when setting up tests for new or existing React components.
+用于为新组件或现有组件设置测试。
 
-**Step 1: Scan project for untested components**
+**步骤 1：扫描项目中未测试的组件**
 ```bash
 python scripts/test_suite_generator.py src/components/ --scan-only
 ```
 
-**Step 2: Generate test stubs**
+**步骤 2：生成测试代码**
 ```bash
 python scripts/test_suite_generator.py src/components/ --output __tests__/
 ```
 
-**Step 3: Review and customize generated tests**
+**步骤 3：审查并自定义生成的测试代码**
 ```typescript
 // __tests__/Button.test.tsx (generated)
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -198,7 +198,7 @@ describe('Button', () => {
 });
 ```
 
-**Step 4: Run tests and check coverage**
+**步骤 4：运行测试并检查覆盖率**
 ```bash
 npm test -- --coverage
 python scripts/coverage_analyzer.py coverage/coverage-final.json
@@ -206,31 +206,31 @@ python scripts/coverage_analyzer.py coverage/coverage-final.json
 
 ---
 
-### Coverage Analysis Workflow
+### 代码覆盖率分析流程
 
-Use when improving test coverage or preparing for release.
+用于提高测试覆盖率或为发布做准备。
 
-**Step 1: Generate coverage report**
+**步骤 1：生成代码覆盖率报告**
 ```bash
 npm test -- --coverage --coverageReporters=json
 ```
 
-**Step 2: Analyze coverage gaps**
+**步骤 2：分析覆盖率不足的部分**
 ```bash
 python scripts/coverage_analyzer.py coverage/coverage-final.json --threshold 80
 ```
 
-**Step 3: Identify critical paths**
+**步骤 3：识别关键代码路径**
 ```bash
 python scripts/coverage_analyzer.py coverage/ --critical-paths
 ```
 
-**Step 4: Generate missing test stubs**
+**步骤 4：生成缺失的测试代码**
 ```bash
 python scripts/test_suite_generator.py src/ --uncovered-only --output __tests__/
 ```
 
-**Step 5: Verify improvement**
+**步骤 5：验证测试效果的改进**
 ```bash
 npm test -- --coverage
 python scripts/coverage_analyzer.py coverage/ --compare previous-coverage.json
@@ -238,21 +238,21 @@ python scripts/coverage_analyzer.py coverage/ --compare previous-coverage.json
 
 ---
 
-### E2E Test Setup Workflow
+### 端到端测试设置流程
 
-Use when setting up Playwright for a Next.js project.
+用于为 Next.js 项目配置 Playwright 测试框架。
 
-**Step 1: Initialize Playwright (if not installed)**
+**步骤 1：（如果未安装）初始化 Playwright**
 ```bash
 npm init playwright@latest
 ```
 
-**Step 2: Scaffold E2E tests from routes**
+**步骤 2：根据路由生成端到端测试代码**
 ```bash
 python scripts/e2e_test_scaffolder.py src/app/ --output e2e/
 ```
 
-**Step 3: Configure authentication fixtures**
+**步骤 3：配置认证相关的测试环境**
 ```typescript
 // e2e/fixtures/auth.ts (generated)
 import { test as base } from '@playwright/test';
@@ -269,13 +269,13 @@ export const test = base.extend({
 });
 ```
 
-**Step 4: Run E2E tests**
+**步骤 4：运行端到端测试**
 ```bash
 npx playwright test
 npx playwright show-report
 ```
 
-**Step 5: Add to CI pipeline**
+**步骤 5：将测试集成到持续集成（CI）流程中**
 ```yaml
 # .github/workflows/e2e.yml
 - name: Run E2E tests
@@ -289,19 +289,19 @@ npx playwright show-report
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-| File | Contains | Use When |
+| 文件 | 内容 | 使用场景 |
 |------|----------|----------|
-| `references/testing_strategies.md` | Test pyramid, testing types, coverage targets, CI/CD integration | Designing test strategy |
-| `references/test_automation_patterns.md` | Page Object Model, mocking (MSW), fixtures, async patterns | Writing test code |
-| `references/qa_best_practices.md` | Testable code, flaky tests, debugging, quality metrics | Improving test quality |
+| `references/testing_strategies.md` | 测试策略、测试类型、覆盖率目标、持续集成/持续部署（CI/CD）集成 | 设计测试策略 |
+| `references/test_automation_patterns.md` | 页面对象模型（Page Object Model, POM）、模拟（Mocking, MSW）、测试用例固定装置（Fixtures）、异步测试模式 | 编写测试代码 |
+| `references/qa_best_practices.md` | 可测试的代码、易出错的测试（Flaky Tests）、调试方法、质量指标 | 提高测试质量 |
 
 ---
 
-## Common Patterns Quick Reference
+## 常见模式快速参考
 
-### React Testing Library Queries
+### React Testing Library 的常用查询方法
 
 ```typescript
 // Preferred (accessible)
@@ -313,7 +313,7 @@ screen.getByPlaceholderText(/search/i)
 screen.getByTestId('custom-element')
 ```
 
-### Async Testing
+### 异步测试
 
 ```typescript
 // Wait for element
@@ -328,7 +328,7 @@ await waitFor(() => {
 });
 ```
 
-### Mocking with MSW
+### 使用 MSW 进行模拟
 
 ```typescript
 import { rest } from 'msw';
@@ -345,7 +345,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
 
-### Playwright Locators
+### Playwright 的定位器（Locators）
 
 ```typescript
 // Preferred
@@ -357,7 +357,7 @@ page.getByText('Welcome')
 page.getByRole('listitem').filter({ hasText: 'Product' })
 ```
 
-### Coverage Thresholds (jest.config.js)
+### Jest 配置文件（jest.config.js）中的覆盖率阈值设置
 
 ```javascript
 module.exports = {
@@ -374,7 +374,7 @@ module.exports = {
 
 ---
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Jest

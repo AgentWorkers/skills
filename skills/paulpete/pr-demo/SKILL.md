@@ -1,25 +1,26 @@
 ---
 name: pr-demo
-description: Use when creating animated demos (GIFs) for pull requests or documentation. Covers terminal recording with asciinema and conversion to GIF/SVG for GitHub embedding.
+description: **用途：**  
+用于创建动画演示（GIF文件），以供提交 Pull Request 或用于文档说明。该方法包括使用 `ascinema` 工具记录终端操作过程，并将录制的视频转换为 GIF 或 SVG 格式，以便在 GitHub 上嵌入使用。
 ---
 
-# PR Demo Creation
+# PR演示创建
 
-## Overview
+## 概述
 
-Create polished terminal demos for PRs using asciinema recordings converted to GIF. The workflow: **script → record → convert → embed**.
+使用`asciinema`录制的视频转换为GIF格式，为Pull Requests（PR）创建精美的终端演示。工作流程如下：**编写脚本 → 录制 → 转换 → 嵌入**。
 
-## Tool Selection
+## 工具选择
 
-| Goal | Tool Chain | Output |
+| 目标 | 工具链 | 输出格式 |
 |------|------------|--------|
-| CLI demo for GitHub PR | asciinema → agg | GIF (< 5MB) |
-| Smaller file needed | asciinema → svg-term-cli | SVG (< 500KB) |
-| TUI screenshot | tmux → freeze | SVG/PNG |
+| 适用于GitHub PR的CLI演示 | asciinema → agg | GIF（小于5MB） |
+| 需要更小的文件大小 | asciinema → svg-term-cli | SVG（小于500KB） |
+| 图形界面截图 | tmux → freeze | SVG/PNG |
 
-**Default choice:** asciinema + agg (best compatibility, GitHub renders GIFs natively)
+**默认选择：** asciinema + agg（兼容性最佳，GitHub原生支持GIF格式）
 
-## Prerequisites
+## 先决条件
 
 ```bash
 # Install tools (macOS)
@@ -28,11 +29,11 @@ cargo install --git https://github.com/asciinema/agg
 npm install -g svg-term-cli  # Optional: for SVG output
 ```
 
-## Workflow
+## 工作流程
 
-### 1. Script Your Demo (REQUIRED)
+### 1. 编写演示脚本（必选）
 
-Before recording, write a brief script:
+在录制之前，编写一个简短的脚本：
 
 ```markdown
 ## Demo: [feature name]
@@ -44,9 +45,9 @@ Duration: ~20-30 seconds
 4. [25-30s] Clean exit or final state
 ```
 
-**Keep it short.** 20-30 seconds max. Show ONE thing well.
+**请保持脚本简短，时长控制在20-30秒以内，并重点展示一个功能或操作。**
 
-### 2. Prepare Environment
+### 2. 准备环境
 
 ```bash
 # Clean terminal state
@@ -56,9 +57,9 @@ export TERM=xterm-256color         # Consistent colors
 # Hide sensitive info (API keys, paths with usernames)
 ```
 
-Terminal size: **100x24** (readable when scaled down)
+终端尺寸：**100x24**（缩放后仍可清晰显示）
 
-### 3. Record
+### 3. 录制
 
 ```bash
 # Record to .cast file
@@ -68,12 +69,12 @@ asciinema rec demo.cast --cols 100 --rows 24
 # Press Ctrl+D or type 'exit' when done
 ```
 
-**Tips:**
-- Type at readable speed (not too fast)
-- Pause briefly after key moments
-- If you make a mistake, start over (editing is harder than re-recording)
+**提示：**
+- 以适中的速度输入内容（不要太快）
+- 在关键操作后稍作停顿
+- 如果出现错误，请重新开始录制（编辑比重新录制更麻烦）
 
-### 4. Convert to GIF
+### 4. 转换为GIF格式
 
 ```bash
 # Basic conversion (recommended)
@@ -86,16 +87,16 @@ agg --speed 1.5 demo.cast demo.gif
 agg --font-size 14 demo.cast demo.gif
 ```
 
-**Alternative - SVG (smaller files):**
+**替代方案 - 使用SVG格式（文件更小）：**
 ```bash
 svg-term --in demo.cast --out demo.svg --window
 ```
 
-### 5. Validate (Self-Validation)
+### 5. 自我验证
 
-Claude can self-validate demos using three approaches:
+Claude可以通过以下三种方式对演示进行自我验证：
 
-#### A. Automated Checks (run these first)
+#### A. 自动检查（优先执行）
 
 ```bash
 # Check file size (must be < 5MB for GitHub)
@@ -105,9 +106,9 @@ ls -lh demo.gif
 head -1 demo.cast | jq '.duration // "check manually"'
 ```
 
-#### B. Visual Validation (LLM-as-judge)
+#### B. 视觉验证（使用大型语言模型进行评估）
 
-Extract a static frame for Claude to analyze:
+提取一个静态帧供Claude分析：
 
 ```bash
 # Option 1: Use svg-term to render a specific timestamp (e.g., 15 seconds in)
@@ -120,9 +121,9 @@ asciinema cat demo.cast | head -500 | freeze -o demo-preview.png
 # Claude can read GIF files with the Read tool
 ```
 
-Then ask Claude to analyze using the Read tool on the image:
+然后使用Read工具让Claude分析该图像：
 
-**Validation prompt:**
+**验证提示：**
 ```
 Analyze this terminal demo screenshot. Check:
 1. Is the text readable (not too small/blurry)?
@@ -134,9 +135,9 @@ Analyze this terminal demo screenshot. Check:
 Rate: PASS or FAIL with specific issues.
 ```
 
-#### C. Content Validation (parse .cast file)
+#### C. 内容验证（解析 `.cast` 文件）
 
-The `.cast` file is JSON lines - validate the content programmatically:
+`.cast` 文件包含JSON格式的数据——通过编程方式验证内容是否正确：
 
 ```bash
 # Check what commands were typed (input events)
@@ -150,50 +151,41 @@ head -1 demo.cast | jq -r '.duration | floor'
 grep -iE '(api.?key|password|secret|/Users/[a-z])' demo.cast && echo "WARNING: Sensitive data found!"
 ```
 
-#### D. Full Validation Checklist
+#### D. 完整的验证清单
 
-After running the above, verify:
+执行上述步骤后，需确认以下内容：
+- [ ] 文件大小小于5MB（自动检查）
+- [ ] 时长在20-30秒之间（自动检查）
+- `.cast` 文件中不含敏感信息（自动检查）
+- 预览帧中的文本可读（视觉/语言模型评估）
+- 演示功能展示清晰（视觉/语言模型评估）
+- 终端界面整洁（视觉/语言模型评估）
 
-- [ ] File size < 5MB (automated)
-- [ ] Duration 20-30 seconds (automated)
-- [ ] No sensitive info in .cast (automated)
-- [ ] Text readable in preview frame (visual/LLM)
-- [ ] Demo shows feature clearly (visual/LLM)
-- [ ] Clean terminal appearance (visual/LLM)
+### 6. 嵌入到PR中
 
-### 6. Embed in PR
+将生成的演示文件存储在`docs/demos/`或`assets/`目录中。
 
-```markdown
-## Demo
+## 快速参考
 
-![feature demo](./docs/demos/feature-demo.gif)
-
-*Shows: [one-sentence description of what the demo shows]*
-```
-
-Store demos in `docs/demos/` or `assets/` directory.
-
-## Quick Reference
-
-| Setting | Recommended Value |
+| 设置 | 推荐值 |
 |---------|------------------|
-| Duration | 20-30 seconds |
-| Terminal size | 100x24 |
-| Speed multiplier | 1.0-1.5x |
-| Target file size | < 2MB ideal, < 5MB max |
-| Font size (agg) | 14-16 |
+| 时长 | 20-30秒 |
+| 终端尺寸 | 100x24 |
+| 显示速度 | 1.0-1.5倍 |
+| 目标文件大小 | 理想值<2MB，最大值<5MB |
+| 字体大小（agg格式） | 14-16 |
 
-## Common Mistakes
+## 常见错误及解决方法
 
-| Mistake | Fix |
+| 错误 | 解决方法 |
 |---------|-----|
-| Demo too long | Script it first, show ONE thing |
-| Text unreadable | Use --font-size 14+, terminal 100x24 |
-| File too large | Use svg-term-cli instead, or increase speed |
-| Cluttered terminal | Clean PS1, clear history, hide paths |
-| No context in PR | Add one-line description below GIF |
+| 演示时间过长 | 先编写脚本，重点展示一个核心功能 |
+| 文本无法阅读 | 使用`--font-size 14+`设置字体大小，并将终端尺寸设置为100x24 |
+| 文件过大 | 改用`svg-term-cli`工具，或提高显示速度 |
+| 终端界面杂乱 | 清理终端历史记录，隐藏路径信息 |
+| PR中缺少上下文说明 | 在GIF文件下方添加简短描述 |
 
-## File Organization
+## 文件组织结构
 
 ```
 docs/demos/

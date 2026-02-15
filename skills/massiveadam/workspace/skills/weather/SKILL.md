@@ -1,49 +1,59 @@
 ---
 name: weather
-description: Get current weather and forecasts (no API key required).
+description: 获取当前天气和预报（无需API密钥）。
 homepage: https://wttr.in/:help
 metadata: {"clawdbot":{"emoji":"🌤️","requires":{"bins":["curl"]}}}
 ---
 
-# Weather
+# 天气信息
 
-Two free services, no API keys needed.
+有两个免费的服务，无需使用API密钥。
 
-## wttr.in (primary)
+## wttr.in（主要推荐）
 
-Quick one-liner:
+**简洁的命令格式：**
 ```bash
 curl -s "wttr.in/London?format=3"
 # Output: London: ⛅️ +8°C
 ```
 
-Compact format:
+**紧凑的天气信息格式：**
 ```bash
 curl -s "wttr.in/London?format=%l:+%c+%t+%h+%w"
 # Output: London: ⛅️ +8°C 71% ↙5km/h
 ```
 
-Full forecast:
+**详细的天气预报格式：**
 ```bash
 curl -s "wttr.in/London?T"
 ```
 
-Format codes: `%c` condition · `%t` temp · `%h` humidity · `%w` wind · `%l` location · `%m` moon
+**格式说明：**
+- `%c`：天气状况
+- `%t`：温度
+- `%h`：湿度
+- `%w`：风速
+- `%l`：位置
+- `%m`：月亮状态
 
-Tips:
-- URL-encode spaces: `wttr.in/New+York`
-- Airport codes: `wttr.in/JFK`
-- Units: `?m` (metric) `?u` (USCS)
-- Today only: `?1` · Current only: `?0`
-- PNG: `curl -s "wttr.in/Berlin.png" -o /tmp/weather.png`
+**使用提示：**
+- 对URL中的空格进行URL编码：`wttr.in/New+York`
+- 机场代码示例：`wttr.in/JFK`
+- 单位选择：`?m`（公制单位）`?u`（英制单位）
+- 仅显示今日天气：`?1`  
+- 仅显示当前天气：`?0`
+- 下载天气图片：`curl -s "wttr.in/Berlin.png" -o /tmp/weather.png`
 
-## Open-Meteo (fallback, JSON)
+## Open-Meteo（备用方案，返回JSON格式）
 
-Free, no key, good for programmatic use:
+完全免费，无需API密钥，适合编程使用：
 ```bash
 curl -s "https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.12&current_weather=true"
 ```
 
-Find coordinates for a city, then query. Returns JSON with temp, windspeed, weathercode.
+**使用方法：**
+1. 首先查找目标城市的坐标。
+2. 使用这些坐标查询天气信息，Open-Meteo会返回包含温度、风速和天气代码的JSON数据。
 
-Docs: https://open-meteo.com/en/docs
+**文档链接：**  
+https://open-meteo.com/en/docs

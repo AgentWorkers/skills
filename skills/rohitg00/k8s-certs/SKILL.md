@@ -1,21 +1,21 @@
 ---
 name: k8s-certs
-description: Kubernetes certificate management with cert-manager. Use when managing TLS certificates, configuring issuers, or troubleshooting certificate issues.
+description: 使用 `cert-manager` 进行 Kubernetes 证书管理。适用于管理 TLS 证书、配置证书颁发机构（CAs）或解决证书相关问题。
 ---
 
-# Certificate Management with cert-manager
+# 使用 cert-manager 进行证书管理
 
-Manage TLS certificates using kubectl-mcp-server's cert-manager tools.
+使用 kubectl-mcp-server 的 cert-manager 工具来管理 TLS 证书。
 
-## Check Installation
+## 检查安装
 
 ```python
 certmanager_detect_tool()
 ```
 
-## Certificates
+## 证书
 
-### List Certificates
+### 列出证书
 
 ```python
 # List all certificates
@@ -26,7 +26,7 @@ certmanager_certificates_list_tool(namespace="default")
 # - False: Certificate not ready (check events)
 ```
 
-### Get Certificate Details
+### 获取证书详细信息
 
 ```python
 certmanager_certificate_get_tool(
@@ -41,7 +41,7 @@ certmanager_certificate_get_tool(
 # - Renewal time
 ```
 
-### Create Certificate
+### 创建证书
 
 ```python
 kubectl_apply(manifest="""
@@ -61,9 +61,9 @@ spec:
 """)
 ```
 
-## Issuers
+## 发行者
 
-### List Issuers
+### 列出发行者
 
 ```python
 # Namespace issuers
@@ -73,14 +73,14 @@ certmanager_issuers_list_tool(namespace="default")
 certmanager_clusterissuers_list_tool()
 ```
 
-### Get Issuer Details
+### 获取发行者详细信息
 
 ```python
 certmanager_issuer_get_tool(name="my-issuer", namespace="default")
 certmanager_clusterissuer_get_tool(name="letsencrypt-prod")
 ```
 
-### Create Let's Encrypt Issuer
+### 创建 Let's Encrypt 发行者
 
 ```python
 # Staging (for testing)
@@ -120,7 +120,7 @@ spec:
 """)
 ```
 
-### Create Self-Signed Issuer
+### 创建自签名发行者
 
 ```python
 kubectl_apply(manifest="""
@@ -133,7 +133,7 @@ spec:
 """)
 ```
 
-## Certificate Requests
+## 证书请求
 
 ```python
 # List certificate requests
@@ -146,9 +146,9 @@ certmanager_certificaterequest_get_tool(
 )
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Certificate Not Ready
+### 证书未准备好
 
 ```python
 1. certmanager_certificate_get_tool(name, namespace)  # Check status
@@ -160,7 +160,7 @@ certmanager_certificaterequest_get_tool(
    # - Rate limited by Let's Encrypt
 ```
 
-### Issuer Not Ready
+### 发行者未准备好
 
 ```python
 1. certmanager_clusterissuer_get_tool(name)  # Check status
@@ -171,7 +171,7 @@ certmanager_certificaterequest_get_tool(
    # - Invalid configuration
 ```
 
-## Ingress Integration
+## Ingress 集成
 
 ```python
 # Automatic certificate via ingress annotation
@@ -201,7 +201,7 @@ spec:
 """)
 ```
 
-## Related Skills
+## 相关技能
 
-- [k8s-networking](../k8s-networking/SKILL.md) - Ingress configuration
-- [k8s-security](../k8s-security/SKILL.md) - Security best practices
+- [k8s-networking](../k8s-networking/SKILL.md) - Ingress 配置
+- [k8s-security](../k8s-security/SKILL.md) - 安全最佳实践

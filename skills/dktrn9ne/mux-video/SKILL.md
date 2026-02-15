@@ -1,337 +1,293 @@
 ---
 name: mux-video
-description: Mux Video infrastructure skill for designing, ingesting, transcoding/packaging, playback ID policy, live streaming, clipping, and observability with Mux Data. Use when architecting or operating Mux-based video pipelines, live workflows, playback security, or diagnosing playback issues.
+description: Mux Video基础设施技能：用于设计、处理视频数据（包括摄取、转码/打包、播放策略管理、实时流媒体传输、视频剪辑以及数据监控等功能），并支持与Mux Data的集成。该技能适用于构建或运维基于Mux的视频处理流程、实时工作流、确保播放安全性，以及诊断播放相关问题。
 ---
 
-# Mux Video (Optimal)
+# 视频分发（最佳实践）
 
-Skill Domain: Video Infrastructure & Delivery  
-Primary Platform: Mux  
-Target Level: Senior / Staff / Platform Architect  
-Philosophy: Video is infrastructure. Reliability beats novelty. Analytics validate reality.
-
----
-
-## 0. Prime Directive
-
-Mux Video exists to deliver video correctly, everywhere, under real-world conditions — not to feel fast in development.
-
-All decisions optimize for:
-- playback reliability
-- predictable latency
-- measurable experience
-- operational sanity
+**技能领域：** 视频基础设施与分发  
+**主要平台：** Mux  
+**目标受众：** 高级工程师、平台架构师  
+**核心理念：** 视频本质上是基础设施；可靠性比新颖性更重要。数据分析能验证系统的实际性能。
 
 ---
 
-## 1. Canonical Mental Model
-
-### What Mux Video Is
-- Managed video pipeline: ingest → transcode → package → distribute → secure
-- Abstracts FFmpeg complexity, CDN orchestration, ABR logic, and global delivery variance
-
-### What Mux Video Is Not
-- A CMS
-- A player
-- A social platform
-- A monetization engine
+## 0. 核心原则  
+Mux Video 的存在目的是在现实环境中，确保视频能够准确无误地被分发到任何地方——而非追求开发过程的快速性。  
+所有决策都围绕以下目标进行优化：  
+- 播放的可靠性  
+- 可预测的延迟  
+- 可量化的用户体验  
+- 系统的稳定性  
 
 ---
 
-## 2. Asset Model (Source of Truth)
+## 1. 视频分发的基本架构  
+### Mux Video 的功能  
+- 管理视频处理流程：上传 → 转码 → 打包 → 分发 → 加密保护  
+- 化简了 FFmpeg 的复杂性、CDN 的协调工作、自适应比特率（ABR）逻辑以及全球范围内的分发逻辑  
 
-### Assets
-- Canonical representation of media
-- Immutable once created
-- Represent media, not intent
-- Spawn many playback surfaces
-
-### Design Rule
-- One asset → many experiences
-
-### Asset Lifecycle
-- Ingest (upload or live record)
-- Transcode
-- Package (HLS / DASH)
-- Expose via Playback IDs
-- Observe via Mux Data
+### Mux Video 的定位  
+- **不是内容管理系统（CMS）**  
+- **不是播放器**  
+- **不是社交平台**  
+- **也不是盈利工具**  
 
 ---
 
-## 3. Control Planes (Separation of Concerns)
+## 2. 资产模型（数据来源）  
+**资产**：  
+- 媒体的标准化表示形式；  
+- 一旦创建便不可更改；  
+- 代表的是媒体内容本身，而非其使用目的；  
+- 可用于多种播放场景。  
 
-Mux controls:
-- ingest stability
-- transcoding
-- packaging
-- global delivery
+**设计原则：**  
+**一个资产 → 多种播放体验**  
 
-You control:
-- identity
-- entitlements
-- playback authorization
-- business rules
-- monetization logic
-
-Failure to respect control planes causes:
-- security leaks
-- brittle playback
-- un-debuggable outages
+**资产生命周期：**  
+- 上传或实时录制  
+- 转码  
+- 打包（HLS/DASH 格式）  
+- 通过播放 ID 进行分发  
+- 通过 Mux Data 进行监控  
 
 ---
 
-## 4. Ingest Strategy (Critical)
+## 3. 职能划分（职责分离）  
+Mux 负责控制：  
+- 上传的稳定性  
+- 转码过程  
+- 打包格式  
+- 全球范围内的视频分发  
 
-### On-Demand Ingest
-- File upload (API or direct upload)
-- Deterministic quality
-- Preferred for premium content
+**你负责管理：**  
+- 用户身份验证  
+- 播放权限  
+- 播放规则  
+- 盈利逻辑  
 
-### Live Ingest
-- RTMP only (by design)
-- Encoder quality determines everything downstream
-
-### Live Rule
-- If the encoder is unstable, the stream is already lost
-
-### Encoder Best Practices (Non-Negotiable)
-- Constant frame rate
-- GOP ≤ 2s (especially if clipping)
-- Stable bitrate ladder
-- Clean audio track
+**不遵循这些职责划分会导致：**  
+- 安全漏洞  
+- 播放不稳定  
+- 无法排查的故障  
 
 ---
 
-## 5. Encoding & Renditions
+## 4. 上传策略（关键点）  
+### 按需上传  
+- 通过 API 或直接上传文件  
+- 确保文件质量稳定  
+- 适用于高级内容  
 
-Mux automatically:
-- Generates adaptive bitrate ladders
-- Selects codecs
-- Tunes for device compatibility
+### 实时上传  
+- 仅支持 RTMP 协议  
+- 编码器的质量直接影响后续播放效果  
 
-### Encoding Truth
-- Mux can’t fix a bad source — only distribute it efficiently
+**实时流处理规则：**  
+- 如果编码器不稳定，流媒体数据可能已经丢失  
 
----
-
-## 6. Playback IDs (Exposure Layer)
-
-### Playback IDs Are Access Keys
-- Define who can watch, for how long, and under what policy
-- Do not modify the asset
-
-### Playback Policies
-- `public` → open access
-- `signed` → controlled access
-
-### Security Rule
-- Secure the Playback ID, not the asset
+**编码器最佳实践（不可妥协）：**  
+- 帧率保持恒定  
+- 帧组间隔（GOP）≤ 2 秒（尤其是进行剪辑时）  
+- 编码 bitrate 保持稳定  
 
 ---
 
-## 7. Playback Policy Decision Guide
+## 5. 编码与视频格式  
+Mux 会自动：  
+- 生成自适应比特率方案  
+- 选择合适的编码格式  
+- 根据设备特性调整编码参数  
 
-Use `public` when:
-- content is free or marketing
-- no revenue or rights risk exists
-- embedding is unrestricted
-
-Use `signed` when:
-- content is premium
-- playback must expire
-- access is user, geo, or entitlement based
-- clips have monetization value
+**注意：**  
+Mux 无法修复源视频的质量问题，只能高效地对其进行分发。  
 
 ---
 
-## 8. Playback URLs & Delivery
+## 6. 播放 ID（访问控制）  
+**播放 ID 的作用：**  
+- 定义谁可以观看、观看时长以及观看规则  
+- 确保资产内容不被篡改  
 
-Mux delivers:
-- HLS (.m3u8)
-- DASH (.mpd)
-- Thumbnails
-- Storyboards
+**播放策略：**  
+- `public`：公开访问  
+- `signed`：受控访问  
 
-Mux handles:
-- CDN selection
-- regional routing
-- device compatibility
-
-### Latency Philosophy
-- On-demand → stability > speed
-- Live → latency is a tradeoff curve
-- There is no free low-latency lunch
+**安全注意事项：**  
+保护播放 ID 的安全性，而非资产内容本身。  
 
 ---
 
-## 9. Live Streaming (Operational Reality)
+## 7. 播放策略选择指南  
+- 使用 `public` 模式：  
+  - 当内容免费或用于营销时  
+  - 不存在收入或版权风险时  
+  - 允许自由嵌入时  
 
-Live is a distributed failure generator. Expect:
-- packet loss
-- dropped frames
-- network variance
-- device heterogeneity
-
-Mux mitigates — it does not eliminate.
-
-### Live Best Practices
-- Always auto-record
-- Always monitor ingest
-- Always test encoder profiles
-- Never assume “it’ll be fine”
+- 使用 `signed` 模式：  
+  - 当内容为高级内容时  
+  - 播放需有时间限制时  
+  - 访问基于用户、地理位置或权限设置时  
+  - 剪辑内容具有盈利价值时  
 
 ---
 
-## 10. Live Latency Reality
+## 8. 视频分发格式与链接  
+Mux 提供的格式包括：  
+- HLS (.m3u8)  
+- DASH (.mpd)  
+- 缩略图  
+- 视频概览（storyboards）  
 
-- Ultra-low latency increases failure sensitivity
-- Lower latency reduces buffer safety
-- Buffering is a reliability feature, not a bug
+Mux 负责：  
+- 选择合适的 CDN 服务  
+- 根据地区进行路由  
+- 确保视频能在不同设备上正常播放  
 
-Choose latency based on:
-- audience tolerance
-- interaction requirements
-- failure cost
-
----
-
-## 11. Asset Clipping (First-Class Skill)
-
-### Clipping Model
-Clips are derivative assets defined by:
-- source asset
-- start_time
-- end_time
-
-### Rules
-- Source asset is immutable
-- Clips are disposable
-- Clips have independent analytics
-
-### Why Clipping Matters
-- highlights
-- previews
-- modular content
-- monetization tiers
-- social repurposing
-
-### Precision Constraint
-Clip accuracy depends on keyframe placement and encoder GOP size. Design accordingly.
+**延迟处理原则：**  
+- 按需播放时：稳定性优先于速度  
+- 实时流媒体：延迟是一个需要权衡的因素  
+- 无法同时实现低延迟和高稳定性  
 
 ---
 
-## 12. Player Responsibility Boundary
+## 9. 实时流媒体（运营现实）  
+实时流媒体容易引发各种问题：  
+- 数据包丢失  
+- 帧丢失  
+- 网络波动  
+- 设备兼容性问题  
 
-Mux delivers streams.  
-The player renders video, reports telemetry, and controls UX.
-
-### Rule
-- A bad player can sabotage a perfect pipeline
-
----
-
-## 13. Observability Hook (Mux Data Dependency)
-
-Mux Video without Mux Data is a blind system.
-
-### Requirement
-Every production playback must:
-- report sessions
-- surface QoE metrics
-
-No exceptions.
+**最佳实践：**  
+- 始终进行自动录制  
+- 实时监控上传过程  
+- 定期测试编码器性能  
 
 ---
 
-## 14. Observability Escalation Ladder
+## 10. 实时流媒体的延迟处理  
+- 极低延迟会增加系统故障的敏感性  
+- 较低的延迟会降低缓冲区的稳定性  
+- 缓冲区是确保播放稳定性的关键机制  
 
-1. Playback failure rate increase
-2. Startup time regression
-3. Rebuffer ratio spike
-4. Device or browser correlation
-5. Region-specific anomalies
-6. Ingest window correlation
-
-If you start debugging elsewhere, you’re guessing.
-
----
-
-## 15. Operational Playbooks
-
-### Playback Issues
-- Validate playback ID
-- Check startup time
-- Inspect error rates
-- Segment by device and browser
-- Correlate with ingest timing
-
-### Live Stream Failure
-- Inspect encoder logs
-- Validate RTMP stability
-- Compare bitrate ladder output
-- Check regional impact
-- Fallback to recording
+**延迟选择依据：**  
+- 观众的容忍度  
+- 交互需求  
+- 故障可能带来的损失  
 
 ---
 
-## 16. Anti-Patterns
+## 11. 视频剪辑（高级技巧）  
+**剪辑规则：**  
+- 剪辑内容基于源视频、开始时间和结束时间生成  
+- 剪辑内容为一次性使用的资源  
+- 剪辑内容可单独进行分析  
 
-- Treating assets like content objects
-- Editing video “in Mux”
-- Ignoring encoder configuration
-- Using public playback IDs for premium content
-- Shipping unobserved video
+**剪辑的重要性：**  
+- 用于制作精彩片段  
+- 提供预览内容  
+- 便于内容模块化  
+- 有助于实现盈利  
 
----
-
-## 17. Cost Reality
-
-Mux optimizes delivery cost.
-
-You control:
-- asset volume
-- clip proliferation
-- playback duration
-- entitlement abuse
-
-Unbounded playback equals silent spend.
+**精度要求：**  
+剪辑的准确性受关键帧位置和编码器参数影响，需据此进行设计。  
 
 ---
 
-## 18. Scaling Model
-
-Mux scales:
-- ingest
-- transcoding
-- delivery
-
-You scale:
-- auth
-- identity
-- entitlements
-- metadata
-- business logic
-
-Mux provides delivery truth.  
-OpenClaw provides ownership, rights, access, and monetization intelligence.
+## 12. 播放器的责任边界  
+Mux 负责流媒体的分发，而播放器负责视频的渲染、性能监控及用户体验的呈现。  
+**注意：**  
+一个性能不佳的播放器可能会破坏整个分发流程。  
 
 ---
 
-## 19. Operational Fluency Signals
+## 13. 数据监控（关键环节）  
+Mux Video 需要 Mux Data 来实现全面的监控功能。  
+**要求：**  
+所有发布的视频内容都必须：  
+- 记录播放会话信息  
+- 提供播放体验相关的指标  
 
-You’ve mastered Mux Video when you can:
-- diagnose playback failures from metrics alone
-- design live streams for failure tolerance
-- atomize long-form content into clips at scale
-- secure playback without user friction
-- treat video as infrastructure, not media
+**例外情况：**  
+无例外。  
 
 ---
 
-## 20. Extension Points (Next Skills)
+## 14. 故障排查流程  
+- 播放失败率上升  
+- 启动时间变长  
+- 缓冲区重新填充次数增加  
+- 设备或浏览器之间的差异  
+- 地区性问题  
 
-- Mux Data (deep analytics)
-- Live highlight automation
-- Signed playback architectures
-- Clip-to-revenue attribution
-- AI-driven QoE optimization
+**故障排查建议：**  
+从这些指标入手进行排查。  
+
+---
+
+## 15. 运营操作指南  
+### 播放问题处理：**  
+- 验证播放 ID 的有效性  
+- 检查启动时间  
+- 分析错误率  
+- 按设备和浏览器类型分析问题  
+- 与上传时间进行关联  
+
+**实时流媒体故障处理：**  
+- 查看编码器日志  
+- 确保 RTMP 传输稳定  
+- 比较不同编码器的输出效果  
+- 分析不同地区的播放情况  
+- 将流媒体切换为录制模式  
+
+---
+
+## 16. 避免的错误做法：**  
+- 将资产视为普通数据对象处理  
+- 在 Mux 内直接编辑视频内容  
+- 对高级内容使用公共播放 ID  
+- 发送未经处理的视频  
+
+---
+
+## 17. 成本控制  
+Mux 有助于优化分发成本。  
+**你需要控制：**  
+- 视频资源的数量  
+- 剪辑内容的传播范围  
+- 播放时长  
+- 权限使用的合理性  
+
+**过度使用资源会导致不必要的成本支出。**  
+
+---
+
+## 18. 扩展性设计  
+Mux 在上传、转码和分发环节都具有良好的扩展性。  
+**你需要调整的方面：**  
+- 用户身份验证  
+- 用户权限管理  
+- 元数据管理  
+- 商业逻辑的实现  
+
+Mux 提供准确的视频分发服务；OpenClaw 则提供内容的所有权管理、权限控制、访问权限及盈利分析功能。  
+
+---
+
+## 19. 运营能力评估  
+当你能够：  
+- 仅通过指标诊断播放故障  
+- 为实时流媒体设计容错机制  
+- 大规模地将长视频分割成适合播放的片段  
+- 保障播放的稳定性（无需用户额外操作）  
+- 将视频视为基础设施而非单纯的内容载体时，你就掌握了 Mux Video 的精髓。  
+
+---
+
+## 20. 进阶技能方向：  
+- 深度分析 Mux Data  
+- 实时剪辑内容的自动化处理  
+- 安全的播放权限管理  
+- 基于剪辑内容的盈利分析  
+- 人工智能驱动的播放体验优化

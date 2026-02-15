@@ -1,62 +1,62 @@
 ---
 name: check-analytics
-description: Audit existing Google Analytics implementation. Checks for common issues, missing configurations, and optimization opportunities.
+description: 审核现有的 Google Analytics 实施情况。检查是否存在常见问题、配置缺失以及优化空间。
 ---
 
-# Analytics Audit Skill
+# 分析审计技能
 
-You are auditing the Google Analytics implementation in this project.
+您正在对本项目中Google Analytics的实现进行审计。
 
-## Step 1: Find Existing Analytics
+## 第一步：查找现有的分析代码
 
-Search for analytics code:
-- `gtag` or `dataLayer` references
+搜索以下分析代码：
+- `gtag` 或 `dataLayer` 的引用
 - Google Tag Manager (`GTM-`)
-- Universal Analytics (`UA-`) - deprecated
+- Universal Analytics (`UA-`) – 已弃用
 - GA4 Measurement IDs (`G-`)
-- Third-party analytics (Mixpanel, Amplitude, Plausible, etc.)
+- 第三方分析工具（如Mixpanel、Amplitude、Plausible等）
 
-## Step 2: Generate Audit Report
+## 第二步：生成审计报告
 
-Create a report with these sections:
+创建一份包含以下内容的报告：
 
-### Current Setup
-- Framework detected
-- Analytics provider(s) found
-- Measurement ID(s) found (redact last 6 chars for security: `G-XXXX******`)
-- Implementation method (gtag.js, GTM, npm package)
+### 当前设置
+- 检测到的框架
+- 找到的分析服务提供商
+- 找到的Measurement IDs（为安全起见，隐藏最后6位字符：`G-XXXX******`)
+- 实现方式（gtag.js、GTM、npm包）
 
-### Issues Found
+### 发现的问题
 
-Check for:
-1. **Deprecated UA properties** - Universal Analytics sunset July 2024
-2. **Missing pageview tracking** for SPAs
-3. **Hardcoded Measurement IDs** (should use env vars)
-4. **Missing TypeScript types** for gtag
-5. **No consent mode** implementation
-6. **Debug mode in production** (check for `debug_mode: true`)
-7. **Duplicate script loading**
-8. **Missing error boundaries** around analytics code
-9. **Blocking script loading** (should be async)
-10. **No fallback** for ad-blocker scenarios
+检查以下内容：
+1. **已弃用的UA属性** – Universal Analytics将于2024年7月停止支持
+2. **单页应用程序（SPAs）缺少页面浏览量跟踪**
+3. **Measurement IDs被硬编码**（应使用环境变量）
+4. **gtag代码缺少TypeScript类型声明**
+5. **未实现用户同意机制**
+6. **在生产环境中启用调试模式**（检查 `debug_mode: true` 是否被设置）
+7. **脚本加载重复**
+8. **分析代码周围缺少错误处理逻辑**
+9. **脚本加载被阻塞**（应采用异步方式）
+10. **未为广告拦截器场景提供备用方案**
 
-### Recommendations
+### 建议
 
-Provide actionable fixes ranked by priority:
-- 🔴 Critical (breaking/deprecated)
-- 🟡 Warning (best practice violations)
-- 🟢 Suggestion (optimizations)
+提供按优先级排序的可行修复措施：
+- 🔴 严重问题（会导致功能故障或违反最佳实践）
+- 🟡 警告问题（违反最佳实践）
+- 🟢 建议（优化措施）
 
-### Event Coverage Analysis
+### 事件覆盖范围分析
 
-List custom events being tracked and suggest missing ones:
-- Sign up / Login events
-- Purchase/conversion events
-- Form submissions
-- Error tracking
-- Key user interactions
+列出正在跟踪的自定义事件，并建议添加缺失的事件：
+- 注册/登录事件
+- 购买/转化事件
+- 表单提交事件
+- 错误跟踪
+- 关键用户交互事件
 
-## Output Format
+## 输出格式
 
 ```markdown
 # Analytics Audit Report

@@ -1,3 +1,3 @@
-# log-archiver
+# 日志归档器
 
-log archiver skill.
+日志归档器技能。

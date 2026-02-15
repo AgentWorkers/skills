@@ -1,20 +1,20 @@
 ---
 name: boggle
-description: Solve Boggle boards — find all valid words (German + English) on a 4x4 letter grid. Use when the user shares a Boggle photo, asks for words on a grid, or plays word games. Includes 1.7M word dictionaries (DE+EN).
+description: **解决Boggle游戏中的单词问题**：在4x4字母网格中找出所有有效的单词（支持德语和英语）。当用户分享Boggle游戏的图片、询问网格中的单词或进行单词游戏时，可以使用该功能。该工具内置了包含170万个单词的词典（德语+英语）。
 ---
 
-# Boggle Solver
+# Boggle 解答器
 
-Fast trie-based DFS solver with dictionary-only matching. No AI/LLM guessing — words are validated exclusively against bundled dictionaries (359K English + 1.35M German).
+这是一个基于快速字典树（Trie）的深度优先搜索（DFS）解题工具，仅支持通过字典进行单词匹配。该工具不使用人工智能或大型语言模型（LLM）进行猜测，所有单词的验证都仅基于内置的字典（包含 35.9 万个英语单词和 135 万个德语单词）。
 
-## Workflow (from photo)
+## 工作流程（如图所示）：
 
-1. **Read the 4x4 grid** from the photo (left-to-right, top-to-bottom)
-2. **Show the grid to the user and ask for confirmation** before solving
-3. Only after user confirms → run the solver
-4. **Always run English and German SEPARATELY** — present as two labeled sections (🇬🇧 / 🇩🇪)
+1. 从图片中读取 4x4 的网格（从左到右、从上到下）。
+2. 在开始解题前将网格显示给用户并获取确认。
+3. 仅在用户确认后才能运行解题程序。
+4. 英语和德语的题目必须分别运行——以两个带有标签的部分显示（🇬🇧 / 🇩🇪）。
 
-## Solve a board
+## 解答题目
 
 ```bash
 # English
@@ -24,47 +24,45 @@ python3 skills/boggle/scripts/solve.py ELMU ZBTS ETVO CKNA --lang en
 python3 skills/boggle/scripts/solve.py ELMU ZBTS ETVO CKNA --lang de
 ```
 
-Each row is one argument (4 letters). Or use `--letters`:
+每一行代表一个单词（由 4 个字母组成）。也可以使用 `--letters` 参数来指定单词的字母数量：
 ```bash
 python3 skills/boggle/scripts/solve.py --letters ELMUZBTSETVOCKNA --lang en
 ```
 
-## Options
+## 选项：
 
-| Flag | Description |
+| 参数 | 描述 |
 |---|---|
-| `--lang en/de` | Language (default: en; **always run EN and DE separately**) |
-| `--min N` | Minimum word length (default: 3) |
-| `--json` | JSON output with scores |
-| `--dict FILE` | Custom dictionary (repeatable) |
+| `--lang en/de` | 语言（默认：en；**必须分别运行英语和德语题目**） |
+| `--min N` | 单词的最小长度（默认：3 个字母） |
+| `--json` | 以 JSON 格式输出结果及得分 |
+| `--dict FILE` | 使用自定义字典（可重复使用） |
 
-## Scoring (standard Boggle)
+## 得分规则（标准 Boggle）：
 
-- 3-4 letters: 1 pt
-- 5 letters: 2 pts
-- 6 letters: 3 pts
-- 7 letters: 5 pts
-- 8+ letters: 11 pts
+- 3-4 个字母：1 分 |
+- 5 个字母：2 分 |
+- 6 个字母：3 分 |
+- 7 个字母：5 分 |
+- 8 个及以上字母：11 分 |
 
-## How it works
+## 工作原理：
 
-- Builds a trie from dictionary files (one-time, ~11s)
-- DFS traversal from every cell, pruned by trie prefixes
-- Adjacency: 8 neighbors (horizontal, vertical, diagonal)
-- Each cell used at most once per word
-- **Qu tile support:** Standard Boggle "Qu" tiles are handled as a single cell (e.g., `QUENHARI...` → "QU" occupies one position)
-- **All matching is dictionary-only** — no generative/guessed words
+- 从字典文件中构建字典树（仅执行一次，耗时约 11 秒）。
+- 从每个单元格开始进行深度优先搜索，并通过字典树的前缀进行剪枝处理。
+- 单元格的相邻位置包括水平、垂直和对角线方向上的 8 个相邻单元格。
+- 每个单元格在每个单词中最多只能使用一次。
+- **“Qu” 特殊单元格的处理**：标准 Boggle 中的 “Qu” 单元格被视为一个单独的单元格（例如，`QUENHARI...` 被视为一个单词 “QU”）。
+- 所有的单词匹配都严格基于字典中的内容，不允许生成或猜测新的单词。
 
-## Data
+## 数据来源：
 
-Dictionaries are auto-downloaded from GitHub on first run if missing.
+如果系统缺少字典文件，会在首次运行时自动从 GitHub 下载：
 
+- `data/words_english_boggle.txt` — 35.9 万个英语单词
+- `data/words_german_boggle.txt` — 135 万个德语单词
 
-- `data/words_english_boggle.txt` — 359K English words
-- `data/words_german_boggle.txt` — 1.35M German words
+## 性能表现：
 
-## Performance
-
-- Trie build: ~11s (first run, 1.7M words)
-- Solve: <5ms per board
-
+- 构建字典树：约 11 秒（首次运行时，处理 170 万个单词）
+- 解题时间：每个题目不到 5 毫秒

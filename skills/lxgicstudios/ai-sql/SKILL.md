@@ -1,26 +1,26 @@
 ---
 name: sql-gen
-description: Generate SQL queries from natural language
+description: 将自然语言转换为SQL查询语句
 ---
 
-# SQL Generator
+# SQL 生成器
 
-Describe what you want, get the SQL. Works with any database.
+只需描述您的需求，即可获得相应的 SQL 语句。该工具支持任何数据库。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-sql "get all users who signed up this month and made a purchase"
 ```
 
-## What It Does
+## 功能简介
 
-- Converts English to SQL
-- Handles complex JOINs
-- Adds proper WHERE clauses
-- Optimizes for performance
+- 将自然语言描述转换为 SQL 语句
+- 支持复杂的 JOIN 操作
+- 自动添加正确的 WHERE 子句
+- 优化查询性能
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate query
@@ -33,7 +33,7 @@ npx ai-sql "users without orders" --schema ./schema.sql
 npx ai-sql "monthly active users" --dialect postgres
 ```
 
-## Dialects Supported
+## 支持的数据库方言
 
 - PostgreSQL
 - MySQL
@@ -41,7 +41,7 @@ npx ai-sql "monthly active users" --dialect postgres
 - SQL Server
 - Oracle
 
-## Output Example
+## 输出示例
 
 ```sql
 SELECT u.id, u.email, COUNT(o.id) as order_count
@@ -52,17 +52,18 @@ GROUP BY u.id, u.email
 HAVING COUNT(o.id) > 0;
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- Node.js 18.0 或更高版本
+- 需要 OPENAI_API_KEY
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
 - GitHub: [github.com/lxgicstudios/ai-sql](https://github.com/lxgicstudios/ai-sql)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

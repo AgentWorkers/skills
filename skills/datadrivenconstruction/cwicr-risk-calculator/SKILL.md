@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-risk-calculator"
 display_name: "CWICR Risk Calculator"
-description: "Calculate risk-adjusted cost estimates using CWICR data. Apply contingencies, Monte Carlo simulation, and probability distributions to cost estimates."
+description: "使用 CWICR 数据来计算风险调整后的成本估算。在成本估算中考虑各种不确定性因素（如应急情况），并运用蒙特卡洛模拟和概率分布来进行分析。"
 ---
 
-# CWICR Risk Calculator
+# CWICR 风险计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Cost estimates have inherent uncertainty:
-- What contingency to apply?
-- What is the confidence range?
-- Which items have highest risk?
-- How to quantify uncertainty?
+### 问题陈述
+成本估算存在固有的不确定性：
+- 应该采用何种应急措施？
+- 置信区间是多少？
+- 哪些项目的风险最高？
+- 如何量化这种不确定性？
 
-### Solution
-Risk-adjusted cost calculations using contingency analysis, Monte Carlo simulation, and probability distributions based on CWICR cost data.
+### 解决方案
+使用应急分析、蒙特卡洛模拟以及基于 CWICR 成本数据的概率分布来进行风险调整后的成本计算。
 
-### Business Value
-- **Informed decisions** - Understand estimate uncertainty
-- **Appropriate contingency** - Data-driven risk allowance
-- **Confidence intervals** - P50, P80, P90 estimates
-- **Risk prioritization** - Focus on high-impact items
+### 商业价值
+- **基于数据的决策** - 了解估算的不确定性
+- **适当的应急措施** - 以数据为依据的风险评估
+- **置信区间** – P50、P80、P90 的估算值
+- **风险优先级排序** – 重点关注高影响的项目
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -412,8 +411,7 @@ class CWICRRiskCalculator:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -438,9 +436,8 @@ print(f"P90: ${result.p90_estimate:,.2f}")
 print(f"Recommended Contingency: {result.contingency_percent}%")
 ```
 
-## Common Use Cases
-
-### 1. Phase-Based Contingency
+## 常见使用场景
+### 1. 基于阶段的应急措施
 ```python
 contingency = risk_calc.calculate_contingency(
     base_estimate=1000000,
@@ -450,7 +447,7 @@ contingency = risk_calc.calculate_contingency(
 print(f"Contingency: ${contingency['contingency_amount']:,.2f}")
 ```
 
-### 2. Sensitivity Analysis
+### 2. 敏感性分析
 ```python
 sensitivity = risk_calc.sensitivity_analysis(
     result.item_risks,
@@ -459,11 +456,11 @@ sensitivity = risk_calc.sensitivity_analysis(
 print(sensitivity.head(5))
 ```
 
-### 3. Export Report
+### 3. 报告导出
 ```python
 risk_calc.export_analysis(result, "risk_analysis.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Risk-Based Estimating
+- **DDC 书籍**: 第 3.1 章 – 基于风险的估算方法

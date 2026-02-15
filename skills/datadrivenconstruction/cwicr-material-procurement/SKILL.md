@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-material-procurement"
 display_name: "CWICR Material Procurement"
-description: "Generate material procurement lists from CWICR data. Calculate quantities with waste factors, group by supplier categories, and create purchase orders."
+description: "根据 CWICR 数据生成物料采购清单。计算所需数量时需考虑损耗因素，按供应商类别进行分类，并生成相应的采购订单。"
 ---
 
-# CWICR Material Procurement
+# CWICR材料采购
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Material procurement needs accurate quantity lists:
-- What materials are needed?
-- How much of each with waste allowance?
-- When are they needed on site?
-- How to group for suppliers?
+### 问题描述
+材料采购需要准确的数量清单：
+- 需要哪些材料？
+- 每种材料的数量是多少（包括损耗量）？
+- 这些材料需要在什么时间送达现场？
+- 如何对供应商进行分类？
 
-### Solution
-Generate procurement lists from CWICR material data with waste factors, delivery scheduling, and supplier grouping.
+### 解决方案
+根据CWICR的材料数据生成采购清单，其中包含损耗系数、交货安排和供应商分类信息。
 
-### Business Value
-- **Accurate quantities** - Based on validated norms
-- **Waste included** - Industry-standard waste factors
-- **Timely delivery** - Aligned with schedule
-- **Cost optimization** - Bulk ordering opportunities
+### 商业价值
+- **数量准确**：基于经过验证的标准计算
+- **包含损耗量**：采用行业标准的损耗系数
+- **交货及时**：与计划保持一致
+- **成本优化**：提供批量采购的机会
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -407,8 +406,7 @@ class CWICRMaterialProcurement:
         return df.sort_values('Total Cost', ascending=False)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -430,15 +428,15 @@ print(f"Total Items: {proc_list.total_items}")
 print(f"Total Cost: ${proc_list.total_cost:,.2f}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Get Critical Orders
+### 1. 获取关键订单
 ```python
 critical = procurement.get_critical_orders(proc_list, days_ahead=7)
 print(f"Order immediately: {len(critical)} items")
 ```
 
-### 2. Create Purchase Order
+### 2. 创建采购订单
 ```python
 po = procurement.create_purchase_order(
     proc_list.items,
@@ -447,17 +445,17 @@ po = procurement.create_purchase_order(
 )
 ```
 
-### 3. Export to Excel
+### 3. 导出到Excel
 ```python
 procurement.export_to_excel(proc_list, "procurement_list.xlsx")
 ```
 
-### 4. Material Aggregation
+### 4. 材料汇总
 ```python
 materials_df = procurement.aggregate_by_material(items)
 print(materials_df.head(10))
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Material Resource Planning
+- **DDC手册**: 第3.1章 - 材料资源规划

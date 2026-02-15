@@ -1,6 +1,6 @@
 ---
 name: pikaboard
-description: "Interact with PikaBoard task management API. Use when creating, updating, listing, or managing tasks. Agent-first kanban for AI teams. Triggers on: tasks, kanban, board, todo, backlog, sprint."
+description: "与 PikaBoard 任务管理 API 进行交互。该 API 用于创建、更新、列出或管理任务，适用于 AI 团队使用的基于代理（Agent-first）的看板系统。触发事件包括：任务（tasks）、看板（kanban）、看板界面（board）、待办事项（todo）和待处理事项列表（backlog）等。"
 metadata:
   openclaw:
     emoji: "📋"
@@ -30,86 +30,80 @@ metadata:
 
 # PikaBoard
 
-Agent-first task/kanban dashboard. **PikaBoard is the source of truth for tasks.**
+这是一个以代理（agent）为中心的任务/看板（kanban）管理工具。**PikaBoard 是任务信息的权威来源。**
 
-## Quick Start
+## 快速入门
 
-After install, start the server:
+安装完成后，启动服务器：
 ```bash
 cd pikaboard/backend && npm start
 ```
 
-Access dashboard at `http://localhost:3001`
+通过 `http://localhost:3001` 访问看板。
 
-## Configuration
+## 配置
 
-Create `backend/.env`:
+创建 `backend/.env` 文件：
 ```env
 DATABASE_PATH=./pikaboard.db
 API_TOKEN=your-secret-token
 PORT=3001
 ```
 
-Add to your TOOLS.md:
+将以下配置添加到您的 `TOOLS.md` 文件中：
 ```markdown
 ## PikaBoard
 - **API:** http://localhost:3001/api/
 - **Token:** your-secret-token
 ```
 
-## Task Commands
+## 任务操作命令
 
-Reference tasks by ID:
-- `task 12` or `#12` → view task
-- `move #12 to done` → status change
-- `create task "Fix bug"` → new task
+- **按 ID 查看任务**：`task 12` 或 `#12`
+- **将任务状态更改为“已完成”**：`move #12 to done`
+- **创建新任务**：`create task "Fix bug"`
 
-## API Reference
+## API 参考
 
-See `references/api.md` for full endpoint documentation.
+请参阅 `references/api.md` 以获取完整的 API 文档。
 
-### Common Operations
+### 常见操作
 
-**List tasks:**
-```bash
+- **列出所有任务**：```bash
 curl -H "Authorization: Bearer $TOKEN" $API/tasks
 ```
-
-**Create task:**
-```bash
+- **创建新任务**：```bash
 curl -X POST -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"name":"Fix bug","status":"inbox","priority":"high"}' \
   $API/tasks
 ```
-
-**Update status:**
-```bash
+- **更新任务状态**：```bash
 curl -X PATCH -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"status":"done"}' \
   $API/tasks/123
 ```
 
-## Enums
+## 枚举类型（Enums）
 
-| Field | Values |
-|-------|--------|
+| 字段 | 值        |
+|-------|------------|
 | status | `inbox`, `up_next`, `in_progress`, `in_review`, `done` |
 | priority | `low`, `medium`, `high`, `urgent` |
 
-## Multi-Agent Setup
+## 多代理设置
 
-Each agent can have their own board. Use `board_id` parameter:
+每个代理都可以拥有自己的看板。可以使用 `board_id` 参数来指定看板：
 ```bash
 curl "$API/tasks?board_id=6" -H "Authorization: Bearer $TOKEN"
 ```
 
-Board assignments:
-- Board 1: Pika (main)
-- Board 2: Tortoise (personal)
-- Board 3: Sala (work)
-- Board 4: Evoli (VirtualPyTest)
-- Board 5: Psykokwak (EZPlanning)
-- Board 6: Bulbi (PikaBoard)
-- Board 7: Mew (Ideas)
+看板分配示例：
+- 看板 1：Pika（主看板）
+- 看板 2：Tortoise（个人看板）
+- 看板 3：Sala（工作看板）
+- 看板 4：Evoli（VirtualPyTest）
+- 看板 5：Psykokwak（EZPlanning）
+- 看板 6：Bulbi（PikaBoard）
+- 看板 7：Mew（创意看板）

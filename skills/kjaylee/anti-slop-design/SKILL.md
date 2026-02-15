@@ -1,78 +1,78 @@
 ---
 name: anti-slop-design
-description: Create distinctive, production-grade frontend interfaces that avoid generic AI aesthetics. Use when building web components, game UIs, landing pages, dashboards, or any visual web interface. Prevents purple-gradient-rounded-corner-Inter-font syndrome.
+description: 创建具有独特风格的前端界面，确保其达到专业级（production-grade）的质量标准，同时避免使用过于通用（generic）的人工智能设计元素（AI aesthetics）。这种设计理念适用于构建网页组件、游戏用户界面（game UIs）、登录页面（landing pages）、仪表板（dashboards）或任何类型的可视化网页界面（visual web interfaces）。通过采用这种设计方法，可以有效避免出现“紫色渐变背景、圆角以及不协调的字体组合”（purple-gradient-rounded-corner-Inter-font syndrome）这类常见设计缺陷。
 metadata:
   author: misskim
   version: "1.0"
   origin: Concept inspired by Anthropic frontend-design skill, rewritten for our environment
 ---
 
-# Anti-Slop Design
+# 防止平庸设计
 
-모든 프론트엔드 작업에서 "AI가 만든 것 같은" 뻔한 디자인을 절대 방지한다.
+在所有前端设计中，我们必须坚决避免那种“看起来像是人工智能制作的”、缺乏创意的设计。
 
-## AI Slop의 징후 (절대 금지)
+## 人工智能设计的典型特征（绝对禁止）
 
-- Inter/Roboto/Arial/시스템 폰트 기본 사용
-- 보라색 그라디언트 on 흰 배경
-- 모든 요소에 균일한 rounded corners
-- 가운데 정렬만 하는 레이아웃
-- 뻔한 hero section + 3-column features
-- 모든 카드에 동일한 그림자
-- 감정 없는 일러스트레이션
+- 仅使用系统默认字体（如 Inter/Roboto/Arial）
+- 在白色背景上使用紫色渐变效果
+- 所有元素都具有相同的圆角效果
+- 布局仅采用居中排列方式
+- 使用千篇一律的英雄栏（hero section）和三栏式功能布局
+- 所有卡片都使用相同的阴影效果
+- 使用缺乏情感表达的插图
 
-## 디자인 프로세스
+## 设计流程
 
-### 1. 맥락 파악
-- **목적:** 이 인터페이스가 해결하는 문제는?
-- **사용자:** 누가 쓰나? (게이머? 개발자? 일반인?)
-- **톤:** 극단적으로 선택 — 아래 중 하나:
-  - 브루탈리즘 / 미니멀 / 레트로퓨처리즘 / 유기적자연
-  - 럭셔리 / 장난감같은 / 에디토리얼 / 아트데코
-  - 인더스트리얼 / 소프트파스텔 / 80s네온 / 일본미니멀
-- **차별점:** 사용자가 기억할 단 하나의 요소는?
+### 1. 理解设计背景
+- **目标：** 这个界面旨在解决什么问题？
+- **用户群体：** 是谁在使用这个界面？（玩家？开发者？普通用户？）
+- **设计风格：** 从以下几种风格中选择一种：
+  - 布鲁塔利兹姆（Brutalism）/极简主义（Minimalism）/复古未来主义（Retro-Futurism）/有机自然风格（Organic-Nature）
+  - 豪华风格（Luxury）/玩具风格（Toy-like）/编辑风格（Editorial）/艺术装饰风格（Art-Deco）
+  - 工业风格（Industrial）/柔和粉彩风格（Soft-Pastel）/80年代霓虹风格（80s Neon）/日本极简风格（Japanese Minimal）
+- **独特卖点：** 用户能记住这个设计的哪个独特元素？
 
-### 2. 핵심 원칙
+### 2. 核心设计原则
 
-**타이포그래피:**
-- 독특하고 아름다운 폰트 선택 (Google Fonts에서 발굴)
-- 디스플레이 폰트 + 본문 폰트 페어링
-- 매번 다른 폰트 조합 (같은 폰트 반복 금지)
+**字体设计：**
+- 选择独特且美观的字体（建议从 Google Fonts 中寻找）
+- 确保展示字体和正文字体之间的搭配协调一致
+- 每次设计都使用不同的字体组合（避免重复使用相同的字体）
 
-**컬러:**
-- CSS 변수로 일관성 확보
-- 지배적 색상 + 강렬한 액센트 (고르게 분배하지 말 것)
-- 매번 다른 색상 팔레트
+**色彩设计：**
+- 通过 CSS 变量来保持色彩的一致性
+- 使用主导色和强烈的色彩点缀（但要注意色彩分布的平衡）
+- 每次设计都使用不同的色彩调色板
 
-**모션:**
-- CSS-only 우선 (HTML 단일 파일의 경우)
-- 페이지 로드 시 staggered reveal이 핵심 인상
-- hover/scroll 기반 의외의 상호작용
+**动态效果：**
+- 尽量使用纯 CSS 动画效果（适用于 HTML 单文件的项目）
+- 页面加载时，采用错落有致的元素显示效果（staggered reveal）
+- 利用 hover 或 scroll 事件来实现意想不到的交互效果
 
-**공간 구성:**
-- 비대칭 레이아웃, 겹침, 대각선 흐름
-- 그리드를 깨는 요소들
-- 넉넉한 여백 또는 의도적 밀도
+**空间布局：**
+- 使用非对称布局、元素重叠以及 diagonal（对角线方向）的视觉流动
+- 在布局中加入打破规则感的元素
+- 适当设置合理的间距或故意营造密集感
 
-**배경/디테일:**
-- 단색 배경 기본값 금지
-- 그라디언트 메쉬, 노이즈 텍스처, 기하학 패턴
-- 깊이감을 주는 레이어, 그림자, 투명도
+**背景与细节处理：**
+- 禁止使用纯色背景
+- 使用渐变纹理、噪声纹理或几何图案
+- 通过层次感、阴影和透明度来增强视觉深度
 
-### 3. 게임 UI 특화 원칙
+### 针对游戏界面的特殊设计原则
 
-게임 인터페이스 제작 시 추가 적용:
-- **몰입감 우선:** UI가 게임 세계관의 일부여야 함
-- **에셋 활용:** NAS 게임마당(161GB), Gemini AI 생성, 무료 에셋 사이트
-- **애니메이션:** CSS transitions + requestAnimationFrame
-- **사운드 피드백:** 클릭/호버 시 효과음 (가능한 경우)
-- **반응형:** 텔레그램 Mini App 환경 고려 (WebView safe-area)
+在开发游戏界面时，还需遵循以下原则：
+- **沉浸感优先：** 界面设计应融入游戏的世界观
+- **充分利用现有资源：** 可以使用 NAS 游戏资源库（如 161GB 的游戏素材库）、Gemini AI 生成的素材，或免费的素材网站
+- **动画效果：** 使用 CSS 过渡效果（CSS transitions）并结合 requestAnimationFrame 实现动画
+- **声音反馈：** 在用户点击或悬停时添加音效（如果可能的话）
+- **响应式设计：** 考虑到 Telegram Mini App 的使用环境，确保界面在 WebView 中也能正常显示
 
-## 품질 체크리스트
+## 设计质量检查清单
 
-- [ ] Inter/Roboto/Arial 사용하지 않았는가?
-- [ ] 보라색 그라디언트 없는가?
-- [ ] 모든 요소가 동일한 border-radius가 아닌가?
-- [ ] 레이아웃에 비대칭 요소가 있는가?
-- [ ] 이전에 만든 것과 다른 폰트/색상인가?
-- [ ] "이게 AI가 만든 거야?"라는 말이 안 나올 정도인가?
+- [ ] 是否没有使用 Inter/Roboto/Arial 等系统默认字体？
+- [ ] 是否没有使用紫色渐变效果？
+- [ ] 所有元素的 border-radius 是否都相同？
+- [ ] 布局中是否包含非对称元素？
+- [ ] 字体和颜色是否与之前的设计有所不同？
+- [ ] 设计是否足够独特，让人不会怀疑它是人工智能制作的？

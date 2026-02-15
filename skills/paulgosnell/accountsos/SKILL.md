@@ -1,6 +1,6 @@
 ---
 name: accountsos
-description: AI-native accounting for UK micro-businesses. Use when the user wants to track transactions, manage VAT, check deadlines, or do any bookkeeping for a UK limited company.
+description: 专为英国微型企业设计的AI原生会计系统。当用户需要跟踪交易、管理增值税（VAT）、核对截止日期或处理任何与英国有限公司相关的簿记工作时，可以使用该系统。
 compatibility: Requires ACCOUNTSOS_API_KEY environment variable. Works on all platforms. Network access required to accounts-os.com API.
 metadata:
   author: thriveventurelabs
@@ -15,27 +15,27 @@ metadata:
 
 # AccountsOS
 
-AI-native accounting. Your agent runs the books so your human doesn't have to.
+一个专为人工智能（AI）设计的会计系统。您的AI代理会处理所有的财务事务，让您无需亲自操心。
 
-**Base URL:** `https://accounts-os.com/api/mcp`
+**基础网址：** `https://accounts-os.com/api/mcp`
 
-## What is AccountsOS?
+## 什么是AccountsOS？
 
-AccountsOS is accounting infrastructure for AI agents. Built for UK micro-businesses (Ltd companies, sole traders):
+AccountsOS是为AI代理设计的会计基础设施，专为英国的微型企业（有限公司、个体经营者）打造：
 
-- **Transaction tracking** — Income, expenses, categorized automatically
-- **VAT management** — Calculate returns, track what's owed
-- **Deadline alerts** — Corporation tax, VAT, confirmation statements
-- **Document storage** — Receipts, invoices, contracts
-- **AI categorization** — Smart category suggestions for every transaction
+- **交易追踪** — 自动分类收入和支出
+- **增值税（VAT）管理** — 计算应缴税款、跟踪欠款
+- **截止日期提醒** — 企业税、增值税、税务确认表的生成
+- **文档存储** — 收据、发票、合同等财务文件的保存
+- **智能分类** — 为每笔交易提供智能的分类建议
 
-No spreadsheets. No manual entry. Just tell your agent what happened.
+无需使用电子表格，也无需手动输入数据。只需向您的AI代理描述交易内容即可。
 
-## Quick Start (For AI Agents)
+## 快速入门（针对AI代理）
 
-### 1. Get API Key
+### 1. 获取API密钥
 
-**Option A: Self-Signup (recommended)** — Create an account yourself with one request:
+**选项A：自行注册（推荐）** — 通过一次请求即可创建账户：
 
 ```bash
 curl -X POST https://accounts-os.com/api/agent-signup \
@@ -47,15 +47,15 @@ curl -X POST https://accounts-os.com/api/agent-signup \
   }'
 ```
 
-Response includes `api_key` for immediate use. Your human gets a welcome email to claim the account.
+响应中会包含可供立即使用的`api_key`。您的负责人会收到一封欢迎邮件来领取账户。
 
-**Option B: Manual** — Your human signs up at https://accounts-os.com and generates an API key from the dashboard.
+**选项B：手动注册** — 您的负责人可以在https://accounts-os.com网站上注册，并通过控制面板生成API密钥。
 
 ```bash
 export ACCOUNTSOS_API_KEY="sk_live_..."
 ```
 
-### 2. Check the Books
+### 2. 查看账目
 
 ```bash
 # Get recent transactions
@@ -65,7 +65,7 @@ curl -X POST https://accounts-os.com/api/mcp \
   -d '{"type": "tool", "name": "get_transactions", "arguments": {"limit": 10}}'
 ```
 
-### 3. Record a Transaction
+### 3. 记录交易
 
 ```bash
 curl -X POST https://accounts-os.com/api/mcp \
@@ -83,7 +83,7 @@ curl -X POST https://accounts-os.com/api/mcp \
   }'
 ```
 
-### 4. Check VAT Position
+### 4. 查看增值税情况
 
 ```bash
 curl -X POST https://accounts-os.com/api/mcp \
@@ -94,20 +94,20 @@ curl -X POST https://accounts-os.com/api/mcp \
 
 ---
 
-## API Reference
+## API参考
 
-AccountsOS uses an MCP-style API. All requests go to `/api/mcp` with a JSON body specifying the tool or resource.
+AccountsOS使用MCP风格的API。所有请求都发送到`/api/mcp`，请求体需要使用JSON格式指定所需的工具或资源。
 
-### Authentication
+### 认证
 
 ```bash
 Authorization: Bearer your_api_key
 Content-Type: application/json
 ```
 
-### Tools (Actions)
+### 工具（操作）
 
-**Get transactions:**
+- **获取交易记录：**
 ```json
 {
   "type": "tool",
@@ -121,7 +121,7 @@ Content-Type: application/json
 }
 ```
 
-**Get balance:**
+- **获取账户余额：**
 ```json
 {
   "type": "tool",
@@ -130,7 +130,7 @@ Content-Type: application/json
 }
 ```
 
-**Get VAT summary:**
+- **获取增值税汇总信息：**
 ```json
 {
   "type": "tool",
@@ -139,7 +139,7 @@ Content-Type: application/json
 }
 ```
 
-**Get deadlines:**
+- **获取截止日期信息：**
 ```json
 {
   "type": "tool",
@@ -148,7 +148,7 @@ Content-Type: application/json
 }
 ```
 
-**Create transaction:**
+- **创建交易记录：**
 ```json
 {
   "type": "tool",
@@ -165,9 +165,9 @@ Content-Type: application/json
 }
 ```
 
-Directions: `in` (income) or `out` (expense)
+- **类型**：`in`（收入）或`out`（支出）
 
-**Update transaction:**
+- **更新交易记录：**
 ```json
 {
   "type": "tool",
@@ -180,18 +180,9 @@ Directions: `in` (income) or `out` (expense)
 }
 ```
 
-**AI categorization:**
-```json
-{
-  "type": "tool",
-  "name": "categorize_transaction",
-  "arguments": {"transaction_id": "uuid"}
-}
-```
+- **智能分类**：根据交易描述和历史数据提供分类建议
 
-Returns suggested category based on description and historical patterns.
-
-**List categories:**
+- **列出所有分类：**
 ```json
 {
   "type": "tool",
@@ -200,9 +191,9 @@ Returns suggested category based on description and historical patterns.
 }
 ```
 
-Types: `income`, `expense`, `asset`, `liability`, `equity`
+分类类型：`income`（收入）、`expense`（支出）、`asset`（资产）、`liability`（负债）、`equity`（权益）
 
-**Create deadline:**
+- **创建截止日期：**
 ```json
 {
   "type": "tool",
@@ -215,7 +206,7 @@ Types: `income`, `expense`, `asset`, `liability`, `equity`
 }
 ```
 
-**Search documents:**
+- **搜索文档：**
 ```json
 {
   "type": "tool",
@@ -227,7 +218,7 @@ Types: `income`, `expense`, `asset`, `liability`, `equity`
 }
 ```
 
-**Upload document:**
+- **上传文档：**
 ```json
 {
   "type": "tool",
@@ -240,7 +231,7 @@ Types: `income`, `expense`, `asset`, `liability`, `equity`
 }
 ```
 
-**Get Director's Loan Account balance:**
+- **获取董事贷款账户余额：**
 ```json
 {
   "type": "tool",
@@ -251,9 +242,9 @@ Types: `income`, `expense`, `asset`, `liability`, `equity`
 }
 ```
 
-Returns DLA balance with S455 tax warnings if the account is overdrawn.
+返回董事贷款账户的余额，并在账户透支时发出S455税务警告
 
-**Get invoices:**
+- **获取发票：**
 ```json
 {
   "type": "tool",
@@ -265,10 +256,10 @@ Returns DLA balance with S455 tax warnings if the account is overdrawn.
 }
 ```
 
-Status options: `draft`, `sent`, `paid`, `overdue`, `cancelled`, `all`
-Returns invoices with summary of outstanding and overdue amounts.
+- **发票状态**：`draft`（草稿）、`sent`（已发送）、`paid`（已支付）、`overdue`（逾期）、`cancelled`（已取消）、`all`（全部）
+- 返回发票及其未支付和逾期的金额汇总
 
-**Create deadline:**
+- **创建截止日期：**
 ```json
 {
   "type": "tool",
@@ -281,11 +272,11 @@ Returns invoices with summary of outstanding and overdue amounts.
 }
 ```
 
-### Agent Self-Signup
+### 代理自行注册
 
-**POST /api/agent-signup** — No authentication required.
+**POST /api/agent-signup** — 无需认证
 
-Create an account and get an API key in one request:
+通过一次请求即可创建账户并获取API密钥：
 
 ```json
 {
@@ -296,12 +287,12 @@ Create an account and get an API key in one request:
 }
 ```
 
-Required: `email`, `company_name`
-Optional: `full_name`, `entity_type` (default: `ltd`)
+所需信息：`email`（电子邮件地址）、`company_name`（公司名称）
+可选信息：`full_name`（全名）、`entity_type`（实体类型，默认为`ltd`）
 
-Entity types: `ltd`, `plc`, `llp`, `sole_trader`, `partnership`, `cic`, `charity`, `overseas`, `other`
+实体类型：`ltd`（有限公司）、`plc`（股份有限公司）、`llp`（有限合伙公司）、`sole_trader`（个体经营者）、`partnership`（合伙企业）、`cic`（商业公司）、`charity`（慈善机构）、`overseas`（海外公司）、`other`（其他类型）
 
-Response:
+响应内容：
 ```json
 {
   "api_key": "sk_live_...",
@@ -313,25 +304,25 @@ Response:
 }
 ```
 
-The API key has `read` + `write` scopes. 14-day free trial. Human receives a welcome email.
+API密钥具有`read`（读取）和`write`（写入）权限。提供14天的免费试用期。负责人会收到一封欢迎邮件。
 
-Returns `409` if the email is already registered.
+如果提供的电子邮件地址已注册，系统会返回`409`错误代码。
 
 ---
 
-### Scopes
+### 权限级别
 
-API keys support three permission levels:
+API密钥支持三种权限级别：
 
-- **read** — Query transactions, balances, deadlines, documents, invoices, DLA
-- **write** — Create/update transactions, documents, deadlines (includes read)
-- **admin** — Manage company settings (includes write)
+- **read** — 查询交易记录、账户余额、截止日期、文档、发票和董事贷款账户信息
+- **write** — 创建/更新交易记录、文档和截止日期（包含读取权限）
+- **admin** — 管理公司设置（包含写入权限）
 
-Your API key's scope is configured in the dashboard. Requests beyond your scope return a 403 error.
+您的API密钥的权限级别可以在控制面板中进行配置。超出权限范围的请求会返回`403`错误。
 
-### Resources (Read-only)
+### 只读资源
 
-**Company info:**
+- **公司信息：**
 ```json
 {
   "type": "resource",
@@ -339,7 +330,7 @@ Your API key's scope is configured in the dashboard. Requests beyond your scope 
 }
 ```
 
-**Recent transactions:**
+- **最近的交易记录：**
 ```json
 {
   "type": "resource",
@@ -349,107 +340,35 @@ Your API key's scope is configured in the dashboard. Requests beyond your scope 
 
 ---
 
-## Use Cases for Agents
+## 代理的使用场景
 
-### Daily Bookkeeping
-Your human mentions expenses throughout the day? Log them:
-
-```python
-# Human: "Just paid £45 for the Figma subscription"
-accountsos.create_transaction(
-    date=today,
-    description="Figma subscription - monthly",
-    amount=45.00,
-    direction="out"
-)
-# AI auto-categorizes as "Software & Subscriptions"
-```
-
-### Invoice Follow-up
-Track what's owed:
-
-```python
-# Check unpaid invoices
-transactions = accountsos.get_transactions(
-    direction="in",
-    status="pending"
-)
-for t in transactions:
-    if t.days_overdue > 14:
-        # Alert human or draft follow-up email
-        notify(f"Invoice {t.description} is {t.days_overdue} days overdue")
-```
-
-### VAT Prep
-Quarterly VAT? Already calculated:
-
-```python
-vat = accountsos.get_vat_summary(quarter="Q4 2025")
-print(f"VAT owed: £{vat.amount_owed}")
-print(f"Due: {vat.due_date}")
-# Surface to human before deadline
-```
-
-### Deadline Monitoring
-Never miss a filing:
-
-```python
-deadlines = accountsos.get_deadlines()
-for d in deadlines:
-    if d.days_until < 7:
-        alert(f"⚠️ {d.type} due in {d.days_until} days")
-```
-
-### Expense Categorization
-New transaction? Categorize it:
-
-```python
-# Get AI suggestion
-suggestion = accountsos.categorize_transaction(transaction_id)
-if suggestion.confidence > 0.8:
-    accountsos.update_transaction(transaction_id, {
-        "category_id": suggestion.category_id
-    })
-```
+- **日常记账**：您在日常工作中会记录各种支出吗？只需将这些信息录入系统即可。
+- **发票跟进**：追踪未支付的款项。
+- **增值税准备**：季度增值税计算已经完成？
+- **截止日期监控**：确保不会错过任何税务申报截止日期。
+- **支出分类**：新发生的交易需要分类吗？系统会自动完成分类。
 
 ---
 
-## Add to Your Heartbeat
-
-```markdown
-## AccountsOS (daily or weekly)
-
-### Daily
-- Check for new transactions needing categorization
-- Log any expenses human mentioned today
-
-### Weekly
-- Review uncategorized transactions
-- Check upcoming deadlines (next 14 days)
-- Summarize week's P&L if human asks
-
-### Quarterly
-- Generate VAT summary
-- Surface filing deadlines
-- Remind human to review before submission
-```
+## 添加到您的日常工作中
 
 ---
 
-## UK-Specific Features
 
-| Feature | Details |
+## 英国特有的功能
+
+| 功能 | 详细信息 |
 |---------|---------|
-| VAT schemes | Standard, Flat Rate, Cash Accounting |
-| Tax years | April-April alignment |
-| Deadlines | CT600, VAT, Confirmation Statement |
-| Categories | HMRC-aligned expense categories |
+| 增值税方案** | 标准税率、固定税率、现金会计模式 |
+| 税务年度** | 税务年度与日历年份对齐（4月-4月） |
+| 截止日期** | 企业税、增值税、税务确认表的截止日期 |
+| 分类** | 与英国税务部门（HMRC）规定的分类标准一致 |
 
-Built for UK Ltd companies and sole traders. Knows the rules so you don't have to.
+专为英国的有限公司和个体经营者设计，系统会自动遵守相关规则，让您无需费心处理复杂的税务事务。
 
 ---
 
-## Example: Weekly Finance Check
+## 示例：每周财务检查
 
 ```python
 import os
@@ -494,21 +413,21 @@ print(f"🧾 VAT owed: £{vat['amount_owed']}")
 
 ---
 
-## Links
+## 链接
 
-- **App:** https://accounts-os.com
-- **Support:** hello@accounts-os.com
-
----
-
-## Your Human's Financial Copilot
-
-Most people hate bookkeeping. They forget receipts, miss deadlines, panic at tax time.
-
-You don't forget. You don't panic. You just log, categorize, and surface what matters.
-
-Be the agent that makes finances boring (in a good way).
+- **应用程序：** https://accounts-os.com
+- **支持邮箱：** hello@accounts-os.com
 
 ---
 
-Built by [Thrive Venture Labs](https://thriveventurelabs.com)
+## 您的财务助手
+
+大多数人都不喜欢处理财务工作：他们容易忘记收据、错过截止日期，甚至在报税时感到恐慌。
+
+而您无需这些烦恼。只需记录、分类财务信息，让重要的数据一目了然。
+
+成为那个让财务工作变得简单高效的“代理”吧。
+
+---
+
+开发团队：[Thrive Venture Labs](https://thriveventurelabs.com)

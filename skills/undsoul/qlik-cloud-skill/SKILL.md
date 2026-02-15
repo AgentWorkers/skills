@@ -1,15 +1,19 @@
 ---
 name: qlik-cloud
-description: Complete Qlik Cloud analytics platform integration with 37 tools. Health checks, search, app management, reloads, natural language queries (Insight Advisor), automations, AutoML, Qlik Answers AI, data alerts, spaces, users, licenses, data files, and lineage. Use when user asks about Qlik, Qlik Cloud, Qlik Sense apps, analytics dashboards, data reloads, or wants to query business data using natural language.
+description: **与37种工具实现Qlik Cloud分析平台的全面集成：**  
+包括健康检查、搜索功能、应用程序管理、数据重新加载、自然语言查询（Insight Advisor）、自动化流程、AutoML（自动机器学习）、Qlik Answers AI（智能问答系统）、数据警报、用户管理、许可证管理、数据文件管理以及数据源追踪功能。  
+
+**适用场景：**  
+当用户咨询有关Qlik Cloud、Qlik Sense应用程序、分析仪表板或数据重新加载的相关问题时；或者希望使用自然语言查询业务数据时，均可使用该集成方案。
 ---
 
 # Qlik Cloud Skill
 
-Complete OpenClaw integration for Qlik Cloud — 37 tools covering the full platform.
+本技能提供了对Qlik Cloud的全面OpenClaw集成支持，涵盖了平台上的37种工具。
 
-## Setup
+## 设置
 
-Add credentials to TOOLS.md:
+请将您的凭据添加到`TOOLS.md`文件中：
 
 ```markdown
 ### Qlik Cloud
@@ -17,107 +21,110 @@ Add credentials to TOOLS.md:
 - API Key: your-api-key-here
 ```
 
-Get an API key: Qlik Cloud → Profile icon → Profile settings → API keys → Generate new key
+获取API密钥：进入Qlik Cloud → 点击个人资料图标 → 个人资料设置 → API密钥 → 生成新密钥
 
-## Quick Reference
+## 快速参考
 
-All scripts: `QLIK_TENANT="https://..." QLIK_API_KEY="..." bash scripts/<script>.sh [args]`
+所有脚本的通用格式如下：
+```
+QLIK_TENANT="https://..." QLIK_API_KEY="..." bash scripts/<script>.sh [args]
+```
 
-### Core Operations
-| Script | Description | Args |
+### 核心操作
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-health.sh` | Health check / connectivity test | — |
-| `qlik-tenant.sh` | Get tenant & user info | — |
-| `qlik-search.sh` | Search all resources | `"query"` |
-| `qlik-license.sh` | License info & usage | — |
+| `qlik-health.sh` | 健康检查/连接测试 | — |
+| `qlik-tenant.sh` | 获取租户和用户信息 | — |
+| `qlik-search.sh` | 搜索所有资源 | `"query"` |
+| `qlik-license.sh` | 获取许可证信息及使用情况 | — |
 
-### Apps
-| Script | Description | Args |
+### 应用程序
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-apps.sh` | List all apps | `[limit]` |
-| `qlik-app-get.sh` | Get app details | `<app-id>` |
-| `qlik-app-create.sh` | Create new app | `"name" [space-id] [description]` |
-| `qlik-app-delete.sh` | Delete app | `<app-id>` |
-| `qlik-app-fields.sh` | Get fields & tables in app | `<app-id>` |
-| `qlik-app-lineage.sh` | Get app data sources | `<app-id>` |
+| `qlik-apps.sh` | 列出所有应用程序 | `[limit]` |
+| `qlik-app-get.sh` | 获取应用程序详情 | `<app-id>` |
+| `qlik-app-create.sh` | 创建新应用程序 | `"name" [space-id] [description]"` |
+| `qlik-app-delete.sh` | 删除应用程序 | `<app-id>` |
+| `qlik-app-fields.sh` | 获取应用程序中的字段和表格 | `<app-id>` |
+| `qlik-app-lineage.sh` | 获取应用程序的数据源 | `<app-id>` |
 
-### Reloads
-| Script | Description | Args |
+### 重新加载
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-reload.sh` | Trigger app reload | `<app-id>` |
-| `qlik-reload-status.sh` | Check reload status | `<reload-id>` |
-| `qlik-reload-cancel.sh` | Cancel running reload | `<reload-id>` |
-| `qlik-reload-history.sh` | App reload history | `<app-id> [limit]` |
-| `qlik-reload-failures.sh` | Recent failed reloads | `[days] [limit]` |
+| `qlik-reload.sh` | 触发应用程序重新加载 | `<app-id>` |
+| `qlik-reload-status.sh` | 检查重新加载状态 | `<reload-id>` |
+| `qlik-reload-cancel.sh` | 取消正在进行的重新加载 | `<reload-id>` |
+| `qlik-reload-history.sh` | 查看应用程序重新加载历史记录 | `<app-id> [limit]"` |
+| `qlik-reload-failures.sh` | 查看最近的失败重新加载记录 | `[days] [limit]"` |
 
-### Monitoring
-| Script | Description | Args |
+### 监控
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-duplicates.sh` | Find duplicate apps (same name) | `[limit]` |
+| `qlik-duplicates.sh` | 查找重复的应用程序（名称相同） | `[limit]"` |
 
-### Insight Advisor ⭐ (Natural Language Queries)
-| Script | Description | Args |
+### Insight Advisor ⭐（自然语言查询）
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-insight.sh` | Ask questions, get real data back | `"question" [app-id]` |
+| `qlik-insight.sh` | 提出问题并获取实时数据 | `"question" [app-id]"` |
 
-**Note:** If you don't know the app-id, run without it first — Qlik will suggest matching apps. The app-id for Insight Advisor is UUID format (e.g., `950a5da4-0e61-466b-a1c5-805b072da128`).
+**注意：** 如果您不知道应用程序ID，可以不提供该参数——Qlik会自动推荐匹配的应用程序。Insight Advisor的应用程序ID为UUID格式（例如：`950a5da4-0e61-466b-a1c5-805b072da128`）。
 
-### Users & Governance
-| Script | Description | Args |
+### 用户与权限管理
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-users-search.sh` | Search users | `"query" [limit]` |
-| `qlik-user-get.sh` | Get user details | `<user-id>` |
-| `qlik-spaces.sh` | List all spaces | `[limit]` |
+| `qlik-users-search.sh` | 搜索用户 | `"query" [limit]"` |
+| `qlik-user-get.sh` | 获取用户详情 | `<user-id>` |
+| `qlik-spaces.sh` | 列出所有工作区 | `[limit]"` |
 
-### Data Files & Lineage
-| Script | Description | Args |
+### 数据文件与数据源
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-datafiles.sh` | List uploaded data files | `[space-id] [limit]` |
-| `qlik-datafile.sh` | Get data file details | `<file-id>` |
-| `qlik-datasets.sh` | List managed datasets* | `[space-id] [limit]` |
-| `qlik-dataset-get.sh` | Get managed dataset details* | `<dataset-id>` |
-| `qlik-lineage.sh` | Data lineage graph | `<secure-qri> [direction] [levels]` |
+| `qlik-datafiles.sh` | 列出上传的数据文件 | `[space-id] [limit]"` |
+| `qlik-datafile.sh` | 获取数据文件详情 | `<file-id>` |
+| `qlik-datasets.sh` | 列出管理的数据集* | `[space-id] [limit]"` |
+| `qlik-dataset-get.sh` | 获取管理的数据集详情* | `<dataset-id>` |
+| `qlik-lineage.sh` | 数据源追踪图 | `<secure-qri> [direction] [levels]"` |
 
-*Managed datasets require Qlik Data Integration license.
+*管理数据集需要Qlik Data Integration许可证。
 
-### Automations
-| Script | Description | Args |
+### 自动化任务
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-automations.sh` | List automations | `[limit]` |
-| `qlik-automation-get.sh` | Get automation details | `<automation-id>` |
-| `qlik-automation-run.sh` | Run automation | `<automation-id>` |
-| `qlik-automation-runs.sh` | Automation run history | `<automation-id> [limit]` |
+| `qlik-automations.sh` | 列出自动化任务 | `[limit]"` |
+| `qlik-automation-get.sh` | 获取自动化任务详情 | `<automation-id>` |
+| `qlik-automation-run.sh` | 运行自动化任务 | `<automation-id>` |
+| `qlik-automation-runs.sh` | 查看自动化任务运行历史 | `<automation-id> [limit]"` |
 
 ### AutoML
-| Script | Description | Args |
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-automl-experiments.sh` | List ML experiments | `[limit]` |
-| `qlik-automl-experiment.sh` | Experiment details | `<experiment-id>` |
-| `qlik-automl-deployments.sh` | List ML deployments | `[limit]` |
+| `qlik-automl-experiments.sh` | 列出机器学习实验 | `[limit]"` |
+| `qlik-automl-experiment.sh` | 查看实验详情 | `<experiment-id>` |
+| `qlik-automl-deployments.sh` | 列出机器学习部署 | `[limit]"` |
 
-### Qlik Answers (AI Assistant)
-| Script | Description | Args |
+### Qlik Answers（AI助手）
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-answers-assistants.sh` | List AI assistants | `[limit]` |
-| `qlik-answers-ask.sh` | Ask assistant a question | `<assistant-id> "question" [thread-id]` |
+| `qlik-answers-assistants.sh` | 列出AI助手 | `[limit]"` |
+| `qlik-answers-ask.sh` | 向AI助手提问 | `<assistant-id> "question" [thread-id]"` |
 
-### Data Alerts
-| Script | Description | Args |
+### 数据警报
+| 脚本 | 描述 | 参数 |
 |--------|-------------|------|
-| `qlik-alerts.sh` | List data alerts | `[limit]` |
-| `qlik-alert-get.sh` | Get alert details | `<alert-id>` |
-| `qlik-alert-trigger.sh` | Trigger alert evaluation | `<alert-id>` |
+| `qlik-alerts.sh` | 列出数据警报 | `[limit]"` |
+| `qlik-alert-get.sh` | 获取警报详情 | `<alert-id>` |
+| `qlik-alert-trigger.sh` | 触发警报评估 | `<alert-id>` |
 
-## Example Workflows
+## 示例工作流程
 
-### Check Environment
+### 检查环境配置
 ```bash
 bash scripts/qlik-health.sh
 bash scripts/qlik-tenant.sh
 bash scripts/qlik-license.sh
 ```
 
-### Find and Query an App
+### 查找并查询应用程序
 ```bash
 bash scripts/qlik-search.sh "Sales"
 bash scripts/qlik-app-get.sh "abc-123"
@@ -125,21 +132,21 @@ bash scripts/qlik-app-fields.sh "abc-123"
 bash scripts/qlik-insight.sh "What were total sales last month?" "abc-123"
 ```
 
-### See App Data Sources
+### 查看应用程序的数据源
 ```bash
 # Simple: see what files/connections an app uses
 bash scripts/qlik-app-lineage.sh "950a5da4-0e61-466b-a1c5-805b072da128"
 # Returns: QVD files, Excel files, databases, etc.
 ```
 
-### Reload Management
+### 管理应用程序的重新加载
 ```bash
 bash scripts/qlik-reload.sh "abc-123"
 bash scripts/qlik-reload-status.sh "reload-id"
 bash scripts/qlik-reload-history.sh "abc-123"
 ```
 
-### Natural Language Queries (Insight Advisor)
+### 使用Insight Advisor进行自然语言查询
 ```bash
 # Find apps that match your question
 bash scripts/qlik-insight.sh "show me sales trend"
@@ -149,7 +156,7 @@ bash scripts/qlik-insight.sh "ciro trend" "950a5da4-0e61-466b-a1c5-805b072da128"
 # Returns: "Total Ciro is 9,535,982. Max is 176,447 on 2025-01-02"
 ```
 
-### Qlik Answers (AI)
+### 使用Qlik Answers（AI助手）
 ```bash
 # List available AI assistants
 bash scripts/qlik-answers-assistants.sh
@@ -158,9 +165,9 @@ bash scripts/qlik-answers-assistants.sh
 bash scripts/qlik-answers-ask.sh "27c885e4-85e3-40d8-b5cc-c3e20428e8a3" "What products do you sell?"
 ```
 
-## Response Format
+## 输出格式
 
-All scripts output JSON:
+所有脚本的输出均为JSON格式：
 ```json
 {
   "success": true,
@@ -169,19 +176,19 @@ All scripts output JSON:
 }
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必填 | 描述 |
 |----------|----------|-------------|
-| `QLIK_TENANT` | Yes | Full tenant URL (https://...) |
-| `QLIK_API_KEY` | Yes | API key from Qlik Cloud |
+| `QLIK_TENANT` | 是 | 完整的租户URL（格式：https://...） |
+| `QLIK_API_KEY` | 是 | 来自Qlik Cloud的API密钥 |
 
-## Cloud-Only Features
+## 仅适用于云端的功能
 
-These require Qlik Cloud (not available on-premise):
-- Automations
+以下功能仅支持Qlik Cloud环境（不支持本地部署）：
+- 自动化任务
 - AutoML
 - Qlik Answers
-- Data Alerts
-- Lineage (QRI)
-- Managed Datasets (requires Data Integration license)
+- 数据警报
+- 数据源追踪（QRI）
+- 管理数据集（需要Qlik Data Integration许可证）

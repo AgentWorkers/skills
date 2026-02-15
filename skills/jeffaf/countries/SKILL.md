@@ -1,7 +1,7 @@
 ---
 name: countries
 version: 1.0.0
-description: "CLI for AI agents to lookup country info for their humans. Uses REST Countries API. No auth required."
+description: "这是一个用于AI代理查询其人类用户所在国家信息的命令行工具（CLI）。该工具通过REST Countries API来获取国家信息，且无需进行身份验证（无需登录或提供用户名/密码）。"
 homepage: https://restcountries.com
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["countries", "geography", "reference", "api", "cli"]
 ---
 
-# Countries Lookup
+# 国家信息查询
 
-CLI for AI agents to lookup country info for their humans. "What's the capital of Mongolia?" — now your agent can answer.
+这是一个用于AI代理查询国家信息的命令行工具（CLI），可以帮助代理回答用户关于国家的问题。例如：“蒙古的首都是哪里？”现在，您的AI代理就可以回答这个问题了。
 
-Uses REST Countries API (v3.1). No account or API key needed.
+该工具使用REST Countries API（v3.1）进行数据查询，无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Tell me about Japan"
@@ -26,17 +26,17 @@ Uses REST Countries API (v3.1). No account or API key needed.
 "Info on country code DE"
 ```
 
-## Commands
+## 命令
 
-| Action | Command |
-|--------|---------|
-| Search by name | `countries search "query"` |
-| Get details | `countries info <code>` |
-| List by region | `countries region <region>` |
-| Search by capital | `countries capital "city"` |
-| List all | `countries all` |
+| 功能 | 命令                |
+|--------|-------------------|
+| 按名称搜索 | `countries search "查询"`     |
+| 获取详细信息 | `countries info <国家代码>`    |
+| 按地区列出 | `countries region <地区>`    |
+| 按首都搜索 | `countries capital <首都>`    |
+| 列出所有国家 | `countries all`       |
 
-### Examples
+### 示例
 
 ```bash
 countries search "united states"   # Find country by name
@@ -47,18 +47,18 @@ countries capital tokyo            # Find country by capital
 countries all                      # List all countries (sorted)
 ```
 
-### Regions
+### 可用的地区
 
-Valid regions: `africa`, `americas`, `asia`, `europe`, `oceania`
+有效地区：`africa`、`americas`、`asia`、`europe`、`oceania`
 
-## Output
+## 输出结果
 
-**Search/list output:**
+**搜索/列表结果：**
 ```
 [US] United States — Washington D.C., Americas, Pop: 331M, 🇺🇸
 ```
 
-**Info output:**
+**详细信息输出：**
 ```
 🌍 Japan
    Official: Japan
@@ -77,31 +77,32 @@ Valid regions: `africa`, `americas`, `asia`, `europe`, `oceania`
 🗺️ Map: https://goo.gl/maps/...
 ```
 
-## Notes
+## 注意事项
 
-- Uses REST Countries API v3.1 (restcountries.com)
-- No authentication or rate limits
-- Country codes: alpha-2 (US), alpha-3 (USA), or numeric (840)
-- Population formatted with K/M/B suffixes
-- All regions lowercase
+- 使用REST Countries API v3.1（restcountries.com）
+- 无需认证或速率限制
+- 国家代码格式：alpha-2（例如：US）、alpha-3（例如：USA）或数字格式（例如：840）
+- 人口数据会以“K/M/B”后缀表示（千/百万/十亿）
+- 所有地区名称均使用小写形式
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/countries` (wrapper to `scripts/countries`)
+**脚本位置：`{skill_folder}/countries`（`scripts/countries`的封装脚本）**
 
-**When user asks about countries:**
-1. Run `./countries search "name"` to find country code
-2. Run `./countries info <code>` for full details
-3. Run `./countries region <region>` for regional lists
-4. Run `./countries capital "city"` to find by capital
+**当用户询问国家相关信息时：**
+1. 运行 `./countries search "名称"` 以获取国家代码
+2. 运行 `./countries info <国家代码>` 以获取详细信息
+3. 运行 `./countries region <地区>` 以获取该地区的国家列表
+4. 运行 `./countries capital <首都>` 以查询特定国家的首都
 
-**Common patterns:**
-- "What country is X in?" → search by name
-- "Tell me about X" → search, then info with code
-- "Countries in Europe" → region europe
-- "Capital of X" → info with code, check capital field
-- "What country has capital X?" → capital search
+**常见使用场景：**
+- “X属于哪个国家？” → 按名称搜索
+- “介绍一下X国家” → 先搜索国家名称，再获取详细信息
+- “欧洲的国家有哪些？” → 选择“region europe”进行查询
+- “X国家的首都是哪里？” → 先搜索国家名称，再查看首都信息
+- “哪个国家的首都是X？” → 按首都名称进行搜索
 
-**Don't use for:** Historical countries, disputed territories, non-sovereign regions.
+**不适用场景：**
+- 历史上的国家、有争议的地区或非主权领土

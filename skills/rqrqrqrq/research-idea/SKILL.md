@@ -1,22 +1,22 @@
 ---
 name: idea-clawdbot
-description: "Launch background Clawdbot sessions to explore and analyze business ideas. Say 'Idea: [description]' to trigger. Fork of 'idea' skill rewritten to use sessions_spawn instead of claude CLI + tmux + telegram CLI. Results sent to current chat, not Saved Messages. Zero external dependencies."
+description: "启动后台的 Clawdbot 会话以探索和分析商业创意。输入 “Idea: [描述]” 即可触发该会话。该技能已重新编写，现在使用 `sessions_spawn` 而不是 `claude CLI` + `tmux` + `telegram CLI` 来执行操作。所有结果都会发送到当前聊天窗口，而不会保存到 “Saved Messages” 中。该功能完全不依赖任何外部组件（即零外部依赖）。"
 metadata: {"clawdbot":{"emoji":"💡"}}
 ---
 
-# Idea Exploration Skill (Clawdbot Native)
+# 想法探索技能（Clawdbot原生功能）
 
-Launch autonomous background sessions to explore business ideas in depth. Get market research, technical analysis, GTM strategy, and actionable recommendations—all using built-in Clawdbot features.
+启动自动化的后台会话，深入探索商业创意。利用Clawdbot内置的功能，获取市场研究、技术分析、市场进入策略（GTM）以及可操作的推荐方案。
 
-## Quick Start
+## 快速入门
 
-**Trigger phrase:** Say `Idea: [description]` and the assistant will:
-1. Spawn a background sub-agent session using `sessions_spawn`
-2. Research and analyze the idea comprehensively
-3. Save results to `~/clawd/ideas/<slug>/research.md`
-4. Send the file + summary back to this Telegram chat
+**触发语句：** 说出“想法：[描述]”，助手将：
+1. 使用`sessions_spawn`创建一个后台子代理会话
+2. 全面研究并分析该创意
+3. 将结果保存到`~/clawd/ideas/<slug>/research.md`文件中
+4. 将文件及总结内容发送回当前的Telegram聊天窗口
 
-## How It Works
+## 工作原理
 
 ```
 User: "Idea: AI calendar assistant"
@@ -31,14 +31,14 @@ User: "Idea: AI calendar assistant"
 └─────────────────────────────────┘
 ```
 
-## Prerequisites
+## 先决条件
 
-- Clawdbot with `sessions_spawn` enabled
-- No external CLIs needed (fully native)
+- 已启用`sessions_spawn`功能的Clawdbot
+- 无需使用任何外部命令行工具（完全原生支持）
 
-## AGENTS.md Integration
+## 在`AGENTS.md`中的集成
 
-Add this to your `AGENTS.md`:
+将以下内容添加到您的`AGENTS.md`文件中：
 
 ```markdown
 ## Idea Exploration
@@ -60,26 +60,26 @@ Add this to your `AGENTS.md`:
 - Include brief summary of verdict (🟢/🟡/🟠/🔴)
 ```
 
-## Analysis Framework
+## 分析框架
 
-The exploration covers:
+分析内容包括：
 
-1. **Core Concept Analysis** - Problem, assumptions, uniqueness
-2. **Market Research** - Users, TAM/SAM/SOM, competitors
-3. **Technical Implementation** - Stack, MVP scope, challenges
-4. **Business Model** - Revenue, pricing, unit economics
-5. **Go-to-Market Strategy** - Launch, acquisition, partnerships
-6. **Risks & Challenges** - Technical, competitive, regulatory
-7. **Verdict & Recommendations** - Clear yes/no with action plan
+1. **核心概念分析** - 问题、假设、独特性
+2. **市场研究** - 用户群体、目标市场（TAM/SAM/SOM）、竞争对手
+3. **技术实现** - 技术栈、最小可行产品（MVP）的范围、挑战
+4. **商业模式** - 收入来源、定价策略、单位经济性
+5. **市场进入策略** - 发布方式、市场拓展、合作伙伴关系
+6. **风险与挑战** - 技术风险、市场竞争、法规问题
+7. **结论与建议** - 明确的“是/否”判断及行动计划
 
-## Verdict Types
+## 结论类型
 
-- 🟢 **STRONG YES** - Clear opportunity, pursue aggressively
-- 🟡 **CONDITIONAL YES** - Promising but needs validation
-- 🟠 **PIVOT RECOMMENDED** - Core insight good, execution needs work
-- 🔴 **PASS** - Too many red flags
+- 🟢 **强烈推荐** - 明显存在机会，应积极推进
+- 🟡 **有条件推荐** - 有潜力但需要进一步验证
+- 🟠 **建议调整方向** - 核心洞察良好，但执行方案需改进
+- 🔴 **不推荐** - 存在太多问题
 
-## Example Output
+## 示例输出
 
 ```
 ~/clawd/ideas/ai-calendar-assistant/
@@ -87,15 +87,15 @@ The exploration covers:
 ├── research.md    # 400-500 line comprehensive analysis
 ```
 
-## Tips
+## 使用技巧
 
-- Ideas typically take 3-5 minutes to analyze
-- Check session progress: `clawdbot sessions list --kinds spawn`
-- Monitor sub-agent: `clawdbot sessions history <session-key>`
-- Results come back to the same chat automatically
+- 每个创意的分析通常需要3-5分钟
+- 检查会话进度：`clawdbot sessions list --kinds spawn`
+- 监控子代理的运行情况：`clawdbot sessions history <session-key>`
+- 分析结果会自动发送回同一聊天窗口
 
-## Template Variables
+## 模板变量
 
-When spawning the sub-agent, replace these in the prompt template:
-- `{IDEA_DESCRIPTION}`: The actual idea text
-- `{IDEA_SLUG}`: URL-friendly version (e.g., "ai-powered-calendar")
+在创建子代理时，请在提示模板中替换以下内容：
+- `{IDEA_DESCRIPTION}`：实际的想法描述
+- `{IDEA_SLUG}`：适合URL使用的名称（例如：“ai-powered-calendar”）

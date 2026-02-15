@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Config - Python
+# Telnyx 数字信息配置 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,9 +32,9 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists the phone number blocks jobs
+## 列出电话号码块的相关任务
 
 `GET /phone_number_blocks/jobs`
 
@@ -44,7 +44,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieves a phone number blocks job
+## 获取某个电话号码块的相关信息
 
 `GET /phone_number_blocks/jobs/{id}`
 
@@ -55,11 +55,11 @@ job = client.phone_number_blocks.jobs.retrieve(
 print(job.data)
 ```
 
-## Deletes all numbers associated with a phone number block
+## 删除与某个电话号码块关联的所有号码
 
-Creates a new background job to delete all the phone numbers associated with the given block.
+创建一个新的后台任务来删除与该号码块关联的所有号码。
 
-`POST /phone_number_blocks/jobs/delete_phone_number_block` — Required: `phone_number_block_id`
+`POST /phone_number_blocks/jobs/delete_phone_number_block` — 必需参数：`phone_number_block_id`
 
 ```python
 response = client.phone_number_blocks.jobs.delete_phone_number_block(
@@ -68,7 +68,7 @@ response = client.phone_number_blocks.jobs.delete_phone_number_block(
 print(response.data)
 ```
 
-## List phone numbers
+## 列出所有电话号码
 
 `GET /phone_numbers`
 
@@ -78,7 +78,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a phone number
+## 获取某个电话号码的信息
 
 `GET /phone_numbers/{id}`
 
@@ -89,7 +89,7 @@ phone_number = client.phone_numbers.retrieve(
 print(phone_number.data)
 ```
 
-## Update a phone number
+## 更新某个电话号码的信息
 
 `PATCH /phone_numbers/{id}`
 
@@ -100,7 +100,7 @@ phone_number = client.phone_numbers.update(
 print(phone_number.data)
 ```
 
-## Delete a phone number
+## 删除某个电话号码
 
 `DELETE /phone_numbers/{id}`
 
@@ -111,9 +111,9 @@ phone_number = client.phone_numbers.delete(
 print(phone_number.data)
 ```
 
-## Change the bundle status for a phone number (set to being in a bundle or remove from a bundle)
+## 更改电话号码的捆绑状态（将其添加到捆绑中或从捆绑中移除）
 
-`PATCH /phone_numbers/{id}/actions/bundle_status_change` — Required: `bundle_id`
+`PATCH /phone_numbers/{id}/actions/bundle_status_change` — 必需参数：`bundle_id`
 
 ```python
 response = client.phone_numbers.actions.change_bundle_status(
@@ -123,9 +123,9 @@ response = client.phone_numbers.actions.change_bundle_status(
 print(response.data)
 ```
 
-## Enable emergency for a phone number
+## 为某个电话号码启用紧急呼叫功能
 
-`POST /phone_numbers/{id}/actions/enable_emergency` — Required: `emergency_enabled`, `emergency_address_id`
+`POST /phone_numbers/{id}/actions/enable_emergency` — 必需参数：`emergency_enabled`, `emergency_address_id`
 
 ```python
 response = client.phone_numbers.actions.enable_emergency(
@@ -136,7 +136,7 @@ response = client.phone_numbers.actions.enable_emergency(
 print(response.data)
 ```
 
-## Retrieve a phone number with voice settings
+## 获取包含语音设置的电话号码信息
 
 `GET /phone_numbers/{id}/voice`
 
@@ -147,7 +147,7 @@ voice = client.phone_numbers.voice.retrieve(
 print(voice.data)
 ```
 
-## Update a phone number with voice settings
+## 更新包含语音设置的电话号码信息
 
 `PATCH /phone_numbers/{id}/voice`
 
@@ -158,11 +158,11 @@ voice = client.phone_numbers.voice.update(
 print(voice.data)
 ```
 
-## Verify ownership of phone numbers
+## 验证电话号码的所有权
 
-Verifies ownership of the provided phone numbers and returns a mapping of numbers to their IDs, plus a list of numbers not found in the account.
+验证提供的电话号码的所有权，并返回号码与其 ID 的对应关系，以及未在账户中找到的号码列表。
 
-`POST /phone_numbers/actions/verify_ownership` — Required: `phone_numbers`
+`POST /phone_numbers/actions/verify_ownership` — 必需参数：`phone_numbers`
 
 ```python
 response = client.phone_numbers.actions.verify_ownership(
@@ -171,7 +171,7 @@ response = client.phone_numbers.actions.verify_ownership(
 print(response.data)
 ```
 
-## List CSV downloads
+## 查看 CSV 下载记录
 
 `GET /phone_numbers/csv_downloads`
 
@@ -181,7 +181,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a CSV download
+## 创建 CSV 下载文件
 
 `POST /phone_numbers/csv_downloads`
 
@@ -190,7 +190,7 @@ csv_download = client.phone_numbers.csv_downloads.create()
 print(csv_download.data)
 ```
 
-## Retrieve a CSV download
+## 获取 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads/{id}`
 
@@ -201,7 +201,7 @@ csv_download = client.phone_numbers.csv_downloads.retrieve(
 print(csv_download.data)
 ```
 
-## Lists the phone numbers jobs
+## 列出所有电话号码相关的任务
 
 `GET /phone_numbers/jobs`
 
@@ -211,7 +211,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a phone numbers job
+## 获取某个电话号码任务的相关信息
 
 `GET /phone_numbers/jobs/{id}`
 
@@ -222,11 +222,11 @@ job = client.phone_numbers.jobs.retrieve(
 print(job.data)
 ```
 
-## Delete a batch of numbers
+## 删除一批电话号码
 
-Creates a new background job to delete a batch of numbers.
+创建一个新的后台任务来删除一批电话号码。
 
-`POST /phone_numbers/jobs/delete_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/delete_phone_numbers` — 必需参数：`phone_numbers`
 
 ```python
 response = client.phone_numbers.jobs.delete_batch(
@@ -235,11 +235,11 @@ response = client.phone_numbers.jobs.delete_batch(
 print(response.data)
 ```
 
-## Update the emergency settings from a batch of numbers
+## 更新一批电话号码的紧急呼叫设置
 
-Creates a background job to update the emergency settings of a collection of phone numbers.
+创建一个新的后台任务来更新一批电话号码的紧急呼叫设置。
 
-`POST /phone_numbers/jobs/update_emergency_settings` — Required: `emergency_enabled`, `phone_numbers`
+`POST /phone_numbers/jobs/update_emergency_settings` — 必需参数：`emergency_enabled`, `phone_numbers`
 
 ```python
 response = client.phone_numbers.jobs.update_emergency_settings_batch(
@@ -249,11 +249,11 @@ response = client.phone_numbers.jobs.update_emergency_settings_batch(
 print(response.data)
 ```
 
-## Update a batch of numbers
+## 更新一批电话号码的信息
 
-Creates a new background job to update a batch of numbers.
+创建一个新的后台任务来更新一批电话号码的信息。
 
-`POST /phone_numbers/jobs/update_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/update_phone_numbers` — 必需参数：`phone_numbers`
 
 ```python
 response = client.phone_numbers.jobs.update_batch(
@@ -262,7 +262,7 @@ response = client.phone_numbers.jobs.update_batch(
 print(response.data)
 ```
 
-## Retrieve regulatory requirements for a list of phone numbers
+## 获取一批电话号码的监管要求信息
 
 `GET /phone_numbers/regulatory_requirements`
 
@@ -271,9 +271,9 @@ phone_numbers_regulatory_requirement = client.phone_numbers_regulatory_requireme
 print(phone_numbers_regulatory_requirement.data)
 ```
 
-## Slim List phone numbers
+## 简化版电话号码列表
 
-List phone numbers, This endpoint is a lighter version of the /phone_numbers endpoint having higher performance and rate limit.
+提供性能更高、请求限制更宽松的电话号码列表版本。
 
 `GET /phone_numbers/slim`
 
@@ -283,7 +283,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## List phone numbers with voice settings
+## 列出包含语音设置的电话号码
 
 `GET /phone_numbers/voice`
 
@@ -293,7 +293,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## List Mobile Phone Numbers
+## 列出手机号码
 
 `GET /v2/mobile_phone_numbers`
 
@@ -303,7 +303,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a Mobile Phone Number
+## 获取某个手机号码的信息
 
 `GET /v2/mobile_phone_numbers/{id}`
 
@@ -314,7 +314,7 @@ mobile_phone_number = client.mobile_phone_numbers.retrieve(
 print(mobile_phone_number.data)
 ```
 
-## Update a Mobile Phone Number
+## 更新某个手机号码的信息
 
 `PATCH /v2/mobile_phone_numbers/{id}`
 

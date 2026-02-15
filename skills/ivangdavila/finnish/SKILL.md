@@ -1,87 +1,85 @@
 ---
 name: Finnish
-description: Write Finnish that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的芬兰语。既不是正式的，也不是机器人生成的，更不是人工智能写的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Finnish is technically correct but sounds off. Too formal. Too kirjakieli (written language). Natives write more casually in puhekieli (spoken style). Match that.
+虽然使用AI生成的芬兰语在语法上是正确的，但听起来很不自然，过于正式，缺乏口语化表达。芬兰本地人在日常交流中更倾向于使用非正式的口语风格。
 
-## Formality Default
+## 形式的默认设置
 
-Default register is too high. Finnish casual is very different from formal. Unless explicitly formal: lean casual. Puhekieli over kirjakieli.
+芬兰语的默认表达方式过于正式。实际上，芬兰人的日常口语与正式语言有很大差异；除非需要特别强调正式性，否则应尽量使用非正式的表达方式。
 
-## Kirjakieli vs Puhekieli
+## 书面语与口语
 
-Two distinct registers:
-- Kirjakieli (written): formal, news, official
-- Puhekieli (spoken): daily life, texting, casual
-- Online is almost entirely puhekieli
-- Pure kirjakieli in casual = robotic
+芬兰语中有两种截然不同的表达风格：
+- **书面语**：用于正式场合、新闻报道或官方文件。
+- **口语**：用于日常生活、短信交流等非正式场景。
+- 在网络上，几乎完全使用口语风格。
+- 如果在非正式场合使用过于正式的书面语，会显得生硬、像机器人一样机械。
 
-## Sinä vs Te
+## “Sinä”与“Te”的使用
 
-Finnish is informal:
-- Sinä/Sä: universal, everyone
-- Te (formal you): very rare, elderly, very formal
-- Just use sinä/sä
+在芬兰语中，以下表达更为常见且非正式：
+- **Sinä/Sä**：用于指代任何人。
+- **Te**：较为正式，通常只用于老年人或非常正式的场合。
+- 建议始终使用**Sinä/Sä**。
 
-## Spoken Shortcuts
+## 口语中的缩略形式
 
-Puhekieli transforms words:
-- Minä → Mä/Mää
-- Sinä → Sä/Sää  
-- Hän → Se
-- Olet → Oot
-- Eikö → Eiks
+在口语中，一些单词会有缩略形式：
+- **Minä** → **Mä/Mää**
+- **Sinä** → **Sä/Sää**
+- **Hän** → **Se**
+- **Olet** → **Oot**
+- **Eikö** → **Eiks**
 
-## Particles & Softeners
+## 词缀与缓和词
 
-These make Finnish natural:
-- -han/-hän: emphasis, shared knowledge
-- -pa/-pä: softening ("Katopa")
-- -ko/-kö: questions
-- Ni: filler ("Nii")
-- Missing these = stiff
+这些词缀可以使芬兰语表达更加自然：
+- **-han/-hän**：用于强调或表示共同认知。
+- **-pa/-pä**：用于缓和语气（例如：“Katopa”）。
+- **-ko/-kö**：用于构成疑问句。
+- **Ni**：用于填充句子（例如：“Nii”）。
+- 如果省略这些词缀，表达会显得生硬。
 
-## Fillers & Flow
+## 填充词与语调
 
-Real Finnish has fillers:
-- Nii, niinku, sillee
-- Tota, öö, hmm
-- Siis, itseasias
-- No, joo, niin
+芬兰语中常用一些填充词来使表达更流畅：
+- **Nii, niinku, sillee**：表示同意或确认。
+- **Tota, öö, hmm**：用于思考或犹豫。
+- **Siis, itseasias**：用于引导话题或过渡。
+- **No, joo, niin**：用于回应或表示同意。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Hyvä → Mahtava, Loistava, Sika hyvä
-- Huono → Paska, Surkea, Ihan kuraa
-- Paljon → Tosi, Ihan, Helvetisti
+在表达时不要选择过于中庸的词汇：
+- **Hyvä** → **Mahtava, Loistava, Sika hyvä**（更好的表达方式）。
+- **Huono** → **Paska, Surkea, Ihan kuraa**（更生动的表达）。
+- **Paljon** → **Tosi, Ihan, Helvetisti**（更强烈的表达方式）。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Joo, Jep, Okei
-- Ei hätää, Ei mulla mitään
-- Selvä, Kyllä, No niin
-- Ai?, Oikeesti?, Ei voi olla
+以下是一些自然的表达方式：
+- **Joo, Jep, Okei**：表示同意或确认。
+- **Ei hätää, Ei mulla mitään**：表示没关系或不需要担心。
+- **Selvä, Kyllä, No niin**：表示理解或同意。
+- **Ai?, Oikeesti?, Ei voi olla**：表示疑问或惊讶。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Oikeesti?, Mitä?, Eikä!
-- Vau!, Jes!, Hitto!
-- Siistii!, Makeeta!, Aivan!
-- Haha, lol in text
+在交流时，应保持自然反应：
+- **Oikeesti?, Mitä?, Eikä!**：表示惊讶或疑问。
+- **Vau!, Jes!, Hitto!**：表示兴奋或强调。
+- **Siistii!, Makeeta!, Aivan!**：表示赞同或鼓励。
+- **Haha, lol**：在文本中也可以使用这些表达来增加幽默感。
 
-## Compound Words
+## 复合词
 
-Finnish creates long compounds:
-- Don't break them up
-- Lentokonesuihkuturbiinimoottoriapumekaanikkoaliupseerioppilas (extreme example)
-- Natural compounds are expected
+芬兰语中有很多长复合词，不要试图拆分它们：
+- **Lentokonesuihkuturbiinimoottoriapumekaanikkoaliupseerioppilas**（这是一个极端的例子，但复合词在芬兰语中很常见）。
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Finn screenshot this as "AI-generated"? If yes—too kirjakieli, no puhekieli forms, too formal. Use mä, sä.
+在发送内容之前，可以想象一下：如果一个芬兰人看到这样的文本，他会认为这是AI生成的吗？如果是的话，那么这个文本的书面语风格过于正式，缺乏口语化特征；应该使用**Mä**和**Sä**这样的词汇来使表达更自然。

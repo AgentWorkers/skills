@@ -1,26 +1,26 @@
 ---
 name: skill-reviewer
-description: Review and audit agent skills (SKILL.md files) for quality, correctness, and effectiveness. Use when evaluating a skill before publishing, reviewing someone else's skill, scoring skill quality, identifying defects in skill content, or improving an existing skill.
+description: 审查和审计代理技能（SKILL.md文件），以确保其质量、准确性和有效性。此过程适用于在发布技能之前进行评估、审核他人的技能、评估技能质量、发现技能内容中的缺陷或改进现有技能时使用。
 metadata: {"clawdbot":{"emoji":"🔍","requires":{"anyBins":["npx"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Skill Reviewer
+# 技能审核器
 
-Audit agent skills (SKILL.md files) for quality, correctness, and completeness. Provides a structured review framework with scoring rubric, defect checklists, and improvement recommendations.
+本工具用于审核技能文档（SKILL.md文件），检查其质量、准确性和完整性。它提供了一个结构化的审核框架，包括评分标准、缺陷检查清单以及改进建议。
 
-## When to Use
+## 使用场景
 
-- Reviewing a skill before publishing to the registry
-- Evaluating a skill you downloaded from the registry
-- Auditing your own skills for quality improvements
-- Comparing skills in the same category
-- Deciding whether a skill is worth installing
+- 在将技能发布到注册库之前进行审核
+- 评估从注册库下载的技能
+- 审核自己的技能以提升质量
+- 比较同一类别中的技能
+- 判断某项技能是否值得安装
 
-## Review Process
+## 审核流程
 
-### Step 1: Structural Check
+### 第一步：结构检查
 
-Verify the skill has the required structure. Read the file and check each item:
+验证技能文档是否具有所需的结构。阅读文件并检查以下各项：
 
 ```
 STRUCTURAL CHECKLIST:
@@ -37,11 +37,11 @@ STRUCTURAL CHECKLIST:
 [ ] "Tips" section present at the end
 ```
 
-### Step 2: Frontmatter Quality
+### 第二步：前言部分的质量审核
 
-#### Description field audit
+#### 描述部分的审核
 
-The description is the most impactful field. Evaluate it against these criteria:
+描述部分是影响技能使用效果的关键因素。根据以下标准进行评估：
 
 ```
 DESCRIPTION SCORING:
@@ -70,7 +70,7 @@ DESCRIPTION SCORING:
 Score: __/8
 ```
 
-#### Metadata audit
+#### 元数据部分的审核
 
 ```
 METADATA SCORING:
@@ -83,11 +83,11 @@ METADATA SCORING:
 Score: __/4
 ```
 
-### Step 3: Content Quality
+### 第三步：内容质量审核
 
-#### Example density
+#### 示例数量
 
-Count code blocks and total lines:
+统计代码块的数量和总行数：
 
 ```
 EXAMPLE DENSITY:
@@ -101,21 +101,21 @@ TARGET: 1 code block per 8-15 lines
 > 20 lines per block: needs more examples
 ```
 
-#### Example quality
+#### 示例质量
 
-For each code block, check:
+对于每个代码块，检查以下内容：
 
 ```
 EXAMPLE QUALITY CHECKLIST:
 
-[ ] Language tag specified (```bash, ```python, etc.)
-[ ] Command is syntactically correct
-[ ] Output shown in comments where helpful
-[ ] Uses realistic values (not foo/bar/baz)
-[ ] No placeholder values left (TODO, FIXME, xxx)
-[ ] Self-contained (doesn't depend on undefined variables)
-    OR setup is shown/referenced
-[ ] Covers the common case (not just edge cases)
+[ ] Language tag specified (```
+- 命令的语法是否正确
+- 有用的输出是否被显示在注释中
+- 使用的值是否真实（而非占位符，如 `foo`, `bar`, `baz`）
+- 是否没有未定义的变量（如 `TODO`, `FIXME`, `xxx`）
+- 代码是否独立完整（不依赖于未定义的变量），或者提供了相应的设置/引用
+- 是否涵盖了常见情况（而不仅仅是边缘情况）
+
 ```
 
 Score each example 0-3:
@@ -127,270 +127,157 @@ Score each example 0-3:
 #### Section organization
 
 ```
-ORGANIZATION SCORING:
 
-[2] Organized by task/scenario (not by abstract concept)
-    GOOD: "## Encode and Decode" → "## Inspect Characters" → "## Convert Formats"
-    BAD:  "## Theory" → "## Types" → "## Advanced"
+**组织结构评分：**
 
-[2] Most common operations come first
-    GOOD: Basic usage → Variations → Advanced → Edge cases
-    BAD:  Configuration → Theory → Finally the basic usage
+- **按任务/场景组织**（而非按抽象概念组织）：
+  **良好**：例如：“## 编码与解码” → “## 检查字符” → “## 转换格式”
+  **较差**：例如：“## 理论” → “## 类型” → “## 高级”
 
-[1] Sections are self-contained (can be used independently)
+- **常见操作是否放在前面**：
+  **良好**：先介绍基本用法，再介绍变体、高级用法和边缘情况
+  **较差**：先介绍配置，再介绍理论，最后才介绍基本用法
 
-[1] Consistent depth (not mixing h2 with h4 randomly)
+- **各章节是否独立完整**（可以单独使用）
 
-Score: __/6
-```
+- **标题级别是否一致**（避免随意混合使用 `h2` 和 `h4`）
 
-#### Cross-platform accuracy
+**评分：** __/6
 
-```
-PLATFORM CHECKLIST:
+**平台相关检查清单：**
 
-[ ] macOS differences noted where relevant
-    (sed -i '' vs sed -i, brew vs apt, BSD vs GNU flags)
-[ ] Linux distro variations noted (apt vs yum vs pacman)
-[ ] Windows compatibility addressed if os includes "win32"
-[ ] Tool version assumptions stated (Docker v2 syntax, Python 3.x)
-```
+- **针对 macOS 的差异进行说明**（例如：`sed -i ''` 与 `sed -i`, `brew` 与 `apt`, BSD 与 GNU 的命令行参数差异）
+- **说明 Linux 发行版的差异**（`apt` 与 `yum`, `pacman` 的区别）
+- **如果操作系统支持 `win32`，则说明兼容性**
+- **明确工具版本要求**（例如：使用 `Docker v2` 的语法，`Python 3.x`）
 
-### Step 4: Actionability Assessment
+**可操作性评分：**
 
-The core question: can an agent follow these instructions to produce correct results?
+- **指令是否明确**（如 “运行 X”，“创建 Y”）
+  **不佳**：使用模糊的表述，如 “你可以考虑……” 或 “建议……”
 
-```
-ACTIONABILITY SCORING:
+- **步骤是否逻辑清晰**（先说明前提条件，再说明操作步骤）
+- **是否处理了错误情况**（当命令失败时应该怎么做）
+- **是否描述了输出/结果**（如何验证命令是否成功）
 
-[3] Instructions are imperative ("Run X", "Create Y")
-    NOT: "You might consider..." or "It's recommended to..."
+**评分：** __/10
 
-[3] Steps are ordered logically (prerequisites before actions)
+**提示部分评分：**
 
-[2] Error cases addressed (what to do when something fails)
+- **是否提供了 5-10 条实用提示**
+  **不佳**：提示过于简单，如 “请阅读文档”
 
-[2] Output/result described (how to verify it worked)
+- **提示是否具体且可操作**（例如：提供具体的建议，如 “使用 `flock` 来防止 cron 命令重复执行”）
+- **提示是否与主要内容不矛盾**  
+  **不佳**：提示与主要内容相冲突
 
-Score: __/10
-```
+**评分：** __/8
 
-### Step 5: Tips Section Quality
-
-```
-TIPS SCORING:
-
-[2] 5-10 tips present
-
-[2] Tips are non-obvious (not "read the documentation")
-    GOOD: "The number one Makefile bug: spaces instead of tabs"
-    BAD:  "Make sure to test your code"
-
-[2] Tips are specific and actionable
-    GOOD: "Use flock to prevent overlapping cron runs"
-    BAD:  "Be careful with concurrent execution"
-
-[1] No tips contradict the main content
-
-[1] Tips cover gotchas/footguns specific to this topic
-
-Score: __/8
-```
-
-## Scoring Summary
-
-```
-SKILL REVIEW SCORECARD
+**技能审核评分卡**
 ═══════════════════════════════════════
-Skill: [name]
-Reviewer: [agent/human]
-Date: [date]
+技能：[名称]
+审核者：[代理/人工]
+日期：[日期]
 
-Category              Score    Max
+**类别              **评分**    **最高分**
 ─────────────────────────────────────
-Structure             __       11
-Description           __        8
-Metadata              __        4
-Example density       __        3*
-Example quality       __        3*
-Organization          __        6
-Actionability         __       10
-Tips                  __        8
+**结构             **11**      **8**
+**描述             **8**      **4**
+**元数据             **4**      **3**
+**示例数量           **3**      **3**
+**示例质量           **3**      **3**
+**组织结构           **6**      **10**
+**可操作性           **10**      **8**
+**提示               **8**      **8**
 ─────────────────────────────────────
-TOTAL                 __       53+
+**总分**          **53**
 
-* Example density and quality are per-sample,
-  not summed. Use the average across all examples.
+* 示例数量和示例质量是针对每个样本的，不进行求和。应取所有样本的平均值。
 
-RATING:
-  45+  Excellent — publish-ready
-  35-44 Good — minor improvements needed
-  25-34 Fair — significant gaps to address
-  < 25  Poor — needs major rework
+**评级：**
+- **45+**  优秀 — 可直接发布
+- **35-44**  良好 — 需要少量改进
+- **25-34**  一般 — 需要大量改进
+- **< 25**  较差 — 需要大幅修改
 
-VERDICT: [PUBLISH / REVISE / REWORK]
-```
+**审核结果：** [发布 / 修订 / 重新编写]
 
-## Common Defects
+### 常见缺陷及修复方法：
 
-### Critical (blocks publishing)
+#### 前言部分缺陷
+- **无效的前言**  
+  **修复方法：** 验证 YAML 格式，确保名称、描述和元数据齐全
 
-```
-DEFECT: Invalid frontmatter
-DETECT: YAML parse error, missing required fields
-FIX:    Validate YAML, ensure name/description/metadata all present
+#### 代码示例缺陷
+- **语法错误**  
+  **修复方法：** 在干净的环境中测试每个命令
 
-DEFECT: Broken code examples
-DETECT: Syntax errors, undefined variables, wrong flags
-FIX:    Test every command in a clean environment
+#### 工具要求缺陷
+- **工具要求与实际使用不符**  
+  **修复方法：** 根据文档内容更新工具要求
 
-DEFECT: Wrong tool requirements
-DETECT: metadata.requires lists tools not used in content, or omits tools that are used
-FIX:    Grep content for command names, update requires to match
+#### 其他缺陷及修复方法：
+- **描述不准确**  
+  **修复方法：** 根据实际内容调整描述，或补充缺失的信息
 
-DEFECT: Misleading description
-DETECT: Description promises coverage the content doesn't deliver
-FIX:    Align description with actual content, or add missing content
-```
+#### 其他常见缺陷及修复方法：
+- **缺少 “使用场景” 部分**  
+  **修复方法：** 添加 4-8 条描述触发场景的要点
+- **文本冗长但缺乏示例**  
+  **修复方法：** 为每个概念添加具体的示例
+- **示例缺少语言标签**  
+  **修复方法：** 为每个代码块添加语言标识（如 `bash`, `python`, `javascript`, `yaml` 等）
+- **缺少提示部分**  
+  **修复方法：** 添加 5-10 条实用且具体的提示
+- **组织结构混乱**  
+  **修复方法：** 按任务/操作重新组织内容
 
-### Major (should fix before publishing)
+#### 比较标准：
+- **覆盖范围**：哪个技能涵盖更多的使用场景？
+- **示例质量**：哪个技能提供了更多可运行的、真实的示例？
+- **常见操作的深度**：哪个技能对常见情况的处理更到位？
+- **边缘情况覆盖**：哪个技能解决了更多的问题？
+- **跨平台支持**：哪个技能在更多环境中可用？
+- **时效性**：哪个技能使用了最新的工具版本和语法？
 
-```
-DEFECT: No "When to Use" section
-IMPACT: Agent doesn't know when to activate the skill
-FIX:    Add 4-8 bullet points describing trigger scenarios
+**最佳技能判断：** [技能 A / 技能 B / 平局]
 
-DEFECT: Text walls without examples
-DETECT: Any section > 10 lines with no code block
-FIX:    Add concrete examples for every concept described
+**快速审核模板：**
+## [技能名称]  
+**结构**：[良好 / 存在问题……]  
+**描述**：[强 / 弱：原因]  
+**示例**：[代码块数量及质量]  
+**可操作性**：[代理能否按照这些步骤操作]  
+**主要缺陷**：**最需要修复的问题**  
+**审核结果**：[发布 / 修订 / 重新编写]
 
-DEFECT: Examples missing language tags
-DETECT: ``` without language identifier
-FIX:    Add bash, python, javascript, yaml, etc. to every code fence
+#### 示例代码：
+# 1. 验证前言部分的格式  
+`head -20 skills/my-skill/SKILL.md`  
+`# 确认 YAML 格式是否有效`  
 
-DEFECT: No Tips section
-IMPACT: Missing the distilled expertise that makes a skill valuable
-FIX:    Add 5-10 non-obvious, actionable tips
+# 2. 统计代码块的数量  
+`grep -c '...' skills/my-skill/SKILL.md`  
+`# 计算总行数并计算代码块数量`  
 
-DEFECT: Abstract organization
-DETECT: Sections named "Theory", "Overview", "Background", "Introduction"
-FIX:    Reorganize by task/operation: what the user is trying to DO
-```
+# 3. 检查占位符  
+`grep -n -i 'todo\|fixme\|xxx\|foo\|bar\|baz' skills/my-skill/SKILL.md`  
 
-### Minor (nice to fix)
+# 4. 检查语言标签  
+`grep -n '^...' skills/my-skill/SKILL.md`  
+**每个代码块都应包含语言标签**  
 
-```
-DEFECT: Placeholder values
-DETECT: foo, bar, baz, example.com, 1.2.3.4, TODO, FIXME
-FIX:    Replace with realistic values (myapp, api.example.com, 192.168.1.100)
+# 5. 验证工具要求**  
+**修复方法：** 根据前言内容检查实际使用的工具  
 
-DEFECT: Inconsistent formatting
-DETECT: Mixed heading levels, inconsistent code block style
-FIX:    Standardize heading hierarchy and formatting
+# 6. 测试命令**  
+`# 在干净的环境中测试 3-5 个命令，确保它们能正常运行`  
 
-DEFECT: Missing cross-references
-DETECT: Mentions tools/concepts covered by other skills without referencing them
-FIX:    Add "See the X skill for more on Y" notes
+# 7. 运行评分卡**  
+**评分标准：** 35+ 表示良好，45+ 表示优秀  
 
-DEFECT: Outdated commands
-DETECT: docker-compose (v1), python (not python3), npm -g without npx alternative
-FIX:    Update to current tool versions and syntax
-```
-
-## Comparative Review
-
-When comparing skills in the same category:
-
-```
-COMPARATIVE CRITERIA:
-
-1. Coverage breadth
-   Which skill covers more use cases?
-
-2. Example quality
-   Which has more runnable, realistic examples?
-
-3. Depth on common operations
-   Which handles the 80% case better?
-
-4. Edge case coverage
-   Which addresses more gotchas and failure modes?
-
-5. Cross-platform support
-   Which works across more environments?
-
-6. Freshness
-   Which uses current tool versions and syntax?
-
-WINNER: [skill A / skill B / tie]
-REASON: [1-2 sentence justification]
-```
-
-## Quick Review Template
-
-For a fast review when you don't need full scoring:
-
-```markdown
-## Quick Review: [skill-name]
-
-**Structure**: [OK / Issues: ...]
-**Description**: [Strong / Weak: reason]
-**Examples**: [X code blocks across Y lines — density OK/low/high]
-**Actionability**: [Agent can/cannot follow these instructions because...]
-**Top defect**: [The single most impactful thing to fix]
-**Verdict**: [PUBLISH / REVISE / REWORK]
-```
-
-## Review Workflow
-
-### Reviewing your own skill before publishing
-
-```bash
-# 1. Validate frontmatter
-head -20 skills/my-skill/SKILL.md
-# Visually confirm YAML is valid
-
-# 2. Count code blocks
-grep -c '```' skills/my-skill/SKILL.md
-# Divide total lines by this number for density
-
-# 3. Check for placeholders
-grep -n -i 'todo\|fixme\|xxx\|foo\|bar\|baz' skills/my-skill/SKILL.md
-
-# 4. Check for missing language tags
-grep -n '^```$' skills/my-skill/SKILL.md
-# Every code fence should have a language tag — bare ``` is a defect
-
-# 5. Verify tool requirements match content
-# Extract requires from frontmatter, then grep for each tool in content
-
-# 6. Test commands (sample 3-5 from the skill)
-# Run them in a clean shell to verify they work
-
-# 7. Run the scorecard mentally or in a file
-# Target: 35+ for good, 45+ for excellent
-```
-
-### Reviewing a registry skill after installing
-
-```bash
-# Install the skill
-npx molthub@latest install skill-name
-
-# Read it
-cat skills/skill-name/SKILL.md
-
-# Run the quick review template
-# If score < 25, consider uninstalling and finding an alternative
-```
-
-## Tips
-
-- The description field accounts for more real-world impact than all other fields combined. A perfect skill with a bad description will never be found via search.
-- Count code blocks as your first quality signal. Skills with fewer than 8 code blocks are almost always too abstract to be useful.
-- Test 3-5 commands from the skill in a clean environment. If more than one fails, the skill wasn't tested before publishing.
-- "Organized by task" vs. "organized by concept" is the single biggest structural quality differentiator. Good skills answer "how do I do X?" — bad skills explain "what is X?"
-- A skill with great tips but weak examples is better than one with thorough examples but no tips. Tips encode expertise that examples alone don't convey.
-- Check the `requires.anyBins` against what the skill actually uses. A common defect is listing `bash` (which everything has) instead of the actual tools like `docker`, `curl`, or `jq`.
-- Short skills (< 150 lines) usually aren't worth publishing — they don't provide enough value over a quick web search. If your skill is short, it might be better as a section in a larger skill.
-- The best skills are ones you'd bookmark yourself. If you wouldn't use it, don't publish it.
+#### 安装技能的示例：
+`npx molthub@latest install skill-name`  
+`# 阅读技能文档`  
+`# 运行快速审核模板`  
+**评分低于 25 分的技能建议卸载并寻找替代方案**

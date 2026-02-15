@@ -1,21 +1,21 @@
 ---
 name: umea-lunch
-description: Get today's lunch menus from restaurants in Umeå. Use when asking about lunch, restaurants, or food in Umeå. Fetches live data from umealunchguide.se.
+description: 获取乌梅奥（Umeå）当地餐厅的今日午餐菜单。在询问有关午餐、餐厅或乌梅奥食物的信息时可以使用此数据。数据实时更新，来源于 umealunchguide.se 网站。
 ---
 
-# Umeå Lunch Guide
+# 乌梅奥午餐指南
 
-Fetch and display lunch menus from Umeå restaurants via umealunchguide.se.
+通过 umealunchguide.se 获取并显示乌梅奥餐厅的午餐菜单。
 
-## Quick Start
+## 快速入门
 
-Run the script to get today's menus:
+运行脚本以获取当天的菜单：
 
 ```bash
 python3 /root/clawd/skills/umea-lunch/scripts/fetch_lunch.py
 ```
 
-### Options
+### 选项
 
 ```bash
 # Get menus for a specific date (YYYY-MM-DD)
@@ -31,9 +31,9 @@ python3 /root/clawd/skills/umea-lunch/scripts/fetch_lunch.py --list
 python3 /root/clawd/skills/umea-lunch/scripts/fetch_lunch.py --date 2026-01-29 --restaurant "o'learys"
 ```
 
-## Output Format
+## 输出格式
 
-The script outputs JSON with restaurant info and lunch courses:
+脚本会输出包含餐厅信息和午餐菜目的 JSON 数据：
 
 ```json
 {
@@ -57,10 +57,10 @@ The script outputs JSON with restaurant info and lunch courses:
 }
 ```
 
-## Response Guidelines
+## 响应指南
 
-When presenting lunch options:
-- Group by restaurant
-- Show dish name, description, and price
-- Mention dietary tags (🥗 vegetarisk, 🌱 vegansk, 🌾 glutenfri, 🥛 laktosfri)
-- Include address if user needs directions
+在展示午餐选项时，请遵循以下规则：
+- 按餐厅进行分类
+- 显示菜肴名称、描述和价格
+- 标明饮食标签（🥗 素食、🌱 纯素食、🌾 无麸质、🥛 无乳糖）
+- 如果用户需要路线指引，请提供餐厅地址

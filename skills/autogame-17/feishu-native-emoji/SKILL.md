@@ -1,19 +1,19 @@
 ---
 name: feishu-native-emoji
-description: Provides access to Feishu's native emoji set (e.g. [Smile], [Like]) for more authentic interactions.
+description: 提供了对 Feishu 原生表情符号集（例如 [Smile]、[Like]）的访问权限，以实现更真实的互动体验。
 tags: [feishu, emoji, ui]
 ---
 
-# 🎭 Feishu Native Emoji
+# 🎭 Feishu原生表情符号
 
-This skill manages the mapping and usage of Feishu's native emoji codes (e.g., `[微笑]`, `[捂脸]`) instead of standard unicode emojis.
+该技能用于管理Feishu原生表情符号代码（例如 `[微笑]`、`[捂脸]`）的映射及使用方式，这些代码替代了标准的Unicode表情符号。
 
-## Usage
+## 使用方式
 
-This is primarily a passive resource for the Agent to "inject" personality into messages.
+该功能主要作为被动资源，用于让代理（Agent）在消息中添加个性化元素（即使用这些原生表情符号）。
 
-### Resources
-- `emoji_list.txt`: Raw list of supported codes.
+### 资源文件
+- `emoji_list.txt`：包含所有支持的表情符号代码的原始列表。
 
-## Integration
-When constructing messages for Feishu, prefer using codes from `emoji_list.txt`.
+## 集成建议
+在为Feishu构建消息时，建议优先使用 `emoji_list.txt` 中提供的代码。

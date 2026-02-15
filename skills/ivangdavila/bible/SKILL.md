@@ -1,63 +1,61 @@
 ---
 name: Bible
-description: Accurate Bible study with proper citations, cross-references, original language insights, and interpretation methodology.
+description: 提供准确的圣经学习内容，包括正确的引用、交叉引用、原文的深入解读以及合适的解释方法。
 ---
 
-## Citation Format (Critical)
+## 引用格式（批判性分析）
 
-**Standard format**: Book Chapter:Verse — "John 3:16", "Genesis 1:1", "1 Corinthians 13:4-8"
+**标准格式**：书名·章节·经文——“约翰福音3:16”，“创世记1:1”，“哥林多前书13:4-8”
 
-**Common errors to prevent**:
-- ❌ "Psalms 23" → ✅ "Psalm 23" (always singular)
-- ❌ "1st Corinthians" → ✅ "1 Corinthians"
-- ❌ Mixing translations in same quote
-- ❌ Verse range doesn't match quoted text
+**需要避免的常见错误**：
+- ❌ “Psalms 23” → ✅ “诗篇23”（始终使用单数形式）
+- ❌ “1st Corinthians” → ✅ “哥林多前书”
+- ❌ 在同一引文中混用不同的译本
+- ❌ 经文范围与引用的内容不一致
 
-**Single-chapter books**: Include chapter — "Jude 1:3", "Philemon 1:6", "3 John 1:4"
+**单章书**：需包含章节名称——“犹大书1:3”，“腓利门书1:6”，“约翰三书1:4”
 
-**Always identify translation**: "John 3:16 (ESV)" or specify at passage start.
+**务必注明译本来源**：“约翰福音3:16（ESV）”或在引文开头明确标注译本。
 
-## Cross-Reference Patterns
+## 交叉引用模式**
 
-**Core themes with key verses**:
-- Faith: Romans 1:17, Hebrews 11:1, James 2:17
-- Love: 1 Corinthians 13:4-8, 1 John 4:8, John 13:34-35
-- Salvation: Ephesians 2:8-9, Romans 3:23-24, John 3:16
-- Grace: Ephesians 2:8, Romans 5:8, Titus 2:11
+**核心主题与关键经文**：
+- 信仰：罗马书1:17，希伯来书11:1，雅各书2:17
+- 爱：哥林多前书13:4-8，约翰一书4:8，约翰福音13:34-35
+- 救赎：以弗所书2:8-9，罗马书3:23-24，约翰福音3:16
+- 恩典：以弗所书2:8，罗马书5:8，提多书2:11
 
-**OT→NT fulfillment**: Always show prophetic connection when relevant.
+**旧约到新约的应验**：在相关情况下，务必展示预言的应验关系。
 
-## Original Language Terms
+## 原始语言术语**
 
-**Hebrew (OT)**: Hesed (covenant love), Shalom (peace/wholeness), Ruach (spirit/breath), Kavod (glory)
+**希伯来语（旧约）**：Hesed（盟约之爱），Shalom（和平/完整），Ruach（灵/气息），Kavod（荣耀）
 
-**Greek (NT)**: Agape (divine love), Pistis (faith), Charis (grace), Koinonia (fellowship)
+**希腊语（新约）**：Agape（神圣之爱），Pistis（信心），Charis（恩典），Koinonia（团契）
 
-**Word study method**: Root word → usage across authors → semantic range → theological development
+**词汇研究方法**：词根 → 不同作者中的用法 → 语义范围 → 神学发展
 
-## Translation Categories
+## 翻译类别**
 
-**Word-for-word** (study): NASB, ESV — most literal
-**Thought-for-thought** (reading): NIV, NLT, CSB — balanced clarity
-**Paraphrase** (devotional): MSG — fresh perspective, not for doctrine
+- **逐字翻译**（用于研究）：NASB，ESV — 最接近原文的字面意思
+- **意译**（便于阅读）：NIV，NLT，CSB — 保持清晰的表达
+- **意译（用于灵修）：MSG — 提供新的视角，但不用于阐述教义
 
-## Interpretation Principles
+## 解释原则**
 
-**Genre-specific rules**:
-- Narrative: Plot, character, moral lessons
-- Wisdom: Practical principles, not absolute promises
-- Prophecy: Near/far fulfillment, literal vs symbolic
-- Parables: One central truth per parable
-- Epistles: Doctrine with practical application
+- **特定体裁的规则**：
+  - 叙事体裁：关注情节、人物及道德教训
+  - 智慧体裁：强调实际原则，而非绝对的应许
+  - 预言体裁：区分预言的即时应验与象征意义
+  - 寓言体裁：每个寓言都传达一个核心真理
+  - 书信体裁：阐述具有实际应用的教义
 
-**Context hierarchy**: Immediate verses → chapter → book purpose → biblical theology → systematic theology
+**上下文层次**：直接引用的经文 → 章节 → 整本书的宗旨 → 圣经神学 → 系统神学
 
-**Progressive revelation**: Later Scripture clarifies earlier. NT fulfills OT types/shadows.
+**渐进式的启示**：后来的圣经经文会阐明早期的内容。新约实现了旧约中的预表或象征。
 
-## Common AI Errors
+## 常见的人工智能翻译错误**
 
-**Citation errors**: Verify every reference. Don't paraphrase and call it a quote. Check verse ranges match actual text.
-
-**Context violations**: Never proof-text. Consider surrounding verses. Don't impose modern concepts on ancient text.
-
-**Interpretation errors**: Clear passages interpret unclear. Scripture interprets Scripture. Distinguish description from prescription.
+- **引用错误**：仔细核对所有引用内容。不要将意译的内容误认为是直接引用，并确保经文范围的准确性。
+- **违反上下文**：不要孤立地引用经文，要考虑前后文。不要将现代概念强加于古代文献。
+- **解释错误**：清晰的经文不应被误解；圣经本身具有自我解释的能力。区分描述与命令性的内容。

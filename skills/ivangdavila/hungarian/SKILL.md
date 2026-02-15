@@ -1,85 +1,76 @@
 ---
 name: Hungarian
-description: Write Hungarian that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的匈牙利语。既不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Hungarian is technically correct but sounds off. Too formal. Too irodalmi (literary). Natives write more casually, with particles and warmth. Match that.
+虽然使用AI生成的匈牙利语在语法上是正确的，但听起来很不自然。这种表达方式过于正式，带有浓厚的文学色彩。匈牙利人的日常交流方式更加随意，会使用各种助词和表达方式来增添亲切感，因此需要调整语言风格以更贴近自然的语言习惯。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Hungarian casual is warm. Unless explicitly formal: lean casual. "Szia" not "Jó napot kívánok". "Oké" not "Rendben van".
+匈牙利语的默认表达方式过于正式。在非正式场合，应该使用更亲切、更自然的表达方式。例如，应该说“Szia”而不是“Jó napot kívánok”，说“Oké”而不是“Rendben van”。
 
-## Te vs Ön/Maga
+## “Te”与“Ön/Maga”的用法
 
-Critical distinction:
-- Ön/Maga: formal, strangers, professional
-- Te: friends, peers, internet, casual
-- Hungarian internet uses te
-- Ön online = robotic, distant
+在匈牙利语中，“Te”用于朋友、同龄人或非正式场合的交流，而“Ön/Maga”则用于正式场合或与陌生人、专业人士交流。在网络交流中，通常使用“Te”。
 
-## Conjugation Matters
+## 动词的变位形式
 
-Hungarian verbs mark formality:
-- Definite vs indefinite conjugation
-- -lak/-lek for "I...you"
-- Get these right—fundamental to Hungarian
+匈牙利语动词的变位形式可以体现语言的正式程度：
+- 使用定冠词时与不定冠词时的动词形式不同；
+- “I...you”这种表达需要使用“-lak/-lek”等后缀。
 
-## Particles & Softeners
+## 助词与缓和语气词
 
-These make Hungarian natural:
-- Hát: "well" filler ("Hát, nem tudom")
-- Csak: "just" ("Csak kérdeztem")
-- Már: emphasis, impatience
-- Ugye: "right?" tag
-- Azért: "still", "though"
+这些助词和语气词能让匈牙利语表达更加自然：
+- “Hát”：用于填充语气（例如：“Hát, nem tudom”）；
+- “Csak”：表示“只是”（例如：“Csak kérdeztem”）；
+- “Már”：表示强调或不耐烦；
+- “Ugye”：用于确认或表示疑问；
+- “Azért”：表示“虽然”或“但是”。
 
-## Fillers & Flow
+## 语言的填充性与流畅性
 
-Real Hungarian has fillers:
-- Hát, szóval, na
-- Tudod, érted, nézd
-- Asszem, szerintem
-- Mondjuk, viszont
+匈牙利语中有很多填充词，可以使表达更加流畅：
+- “Hát, szóval, na”等词用于衔接句子；
+- “Tudod, érted, nézd”等词用于表达理解或确认；
+- “Asszem, szerintem”等词用于表达个人观点；
+- “Mondjuk, viszont”等词用于引入转折或补充信息。
 
-## Expressiveness
+## 表达的生动性
 
-Don't pick the safe word:
-- Jó → Szuper, Király, Zsír, Frankó
-- Rossz → Gáz, Szar, Béna
-- Nagyon → Tök, Bazi, Irtó
+在表达时不要使用过于正式的词汇：
+- “Jó”可以替换为“Szuper”、“Király”、“Zsír”、“Frankó”等更自然的表达；
+- “Rossz”可以替换为“Gáz”、“Szar”、“Béna”等更口语化的词汇；
+- “Nagyon”可以替换为“Tök”、“Bazi”、“Irtó”等更亲切的词汇。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Király!, Zsír!, Szuper!
-- Semmi gond, Nem para
-- Komolyan?, Tényleg?, Nocsak
-- Oké, Ja, Aha
+一些自然的表达方式包括：
+- “Király!”, “Zsír!”, “Szuper!”（表示赞叹）；
+- “Semmi gond, Nem para”（表示没关系）；
+- “Komolyan?, Tényleg?, Nocsak”（表示疑问或惊讶）；
+- “Oké, Ja, Aha”（表示同意或理解）。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Komolyan?, Tényleg?, Mi?
-- Hú!, Basszus!, Jesszus!
-- Király!, Szuper!, Zsír!
-- Haha, lol in text
+在交流时，应保持自然的反应：
+- “Komolyan?, Tényleg?, Mi?”（表示惊讶或疑问）；
+- “Hú!, Basszus!, Jesszus!”（表示兴奋或感叹）；
+- “Király!, Szuper!, Zsír!”（表示赞美或喜悦）；
+- 在文本中可以使用“Haha, lol”等表情符号。
 
-## Word Order Flexibility
+## 词序的灵活性
 
-Hungarian has flexible word order:
-- Topic-focus structure
-- Emphasis through position
-- Use this for natural emphasis
+匈牙利语的词序非常灵活：
+- 句子可以根据焦点和强调点来调整词序；
+- 可以通过词序的变化来突出重点。
 
-## Suffixes
+## 后缀的使用
 
-Hungarian is agglutinative:
-- Many suffixes on words
-- Don't break them unnaturally
-- Házamban (in my house) is one word
+匈牙利语是黏着语，很多单词后面会加上后缀。在翻译时不要人为地拆分这些后缀，例如“Házamban”是一个完整的单词。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Hungarian screenshot this as "AI-generated"? If yes—too formal, no "hát", too stiff. Add "na" and "szóval".
+在发送内容之前，可以想象一下：如果一个匈牙利人看到这样的内容，他会认为这是AI生成的吗？如果是的话，那么表达方式确实太正式了，应该加上“na”和“szóval”等词来使表达更自然。

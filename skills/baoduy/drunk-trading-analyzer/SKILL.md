@@ -1,6 +1,6 @@
 ---
 name: trading-analyzer
-description: Multi-source trading analyzer (`/drunk-trading-analyzer`) combining crypto data (TradingView), stock data (Alpha Vantage), and market intelligence (Yahoo Finance) into unified analysis reports with price trends, technical indicators, and sentiment analysis.
+description: 多源交易分析工具（`/drunk-trading-analyzer`）能够整合加密货币数据（来自TradingView）、股票数据（来自Alpha Vantage）以及市场情报（来自Yahoo Finance），生成统一的分析报告。这些报告包含价格走势、技术指标和情绪分析等内容。
 metadata:
   {
     "openclaw":
@@ -14,13 +14,13 @@ metadata:
   }
 ---
 
-# Trading Analyzer Skill
+# **交易分析师技能**
 
-Multi-source market analysis combining cryptocurrency and stock data with AI-powered insights.
+该工具结合了加密货币和股票数据，并利用人工智能技术提供深入的市场分析。
 
-## Quick Start
+## **快速入门**
 
-### Analyze Cryptocurrency
+### 分析加密货币
 
 ```bash
 # List available TradingView tools
@@ -36,7 +36,7 @@ mcporter call tradingview-mcp.top_gainers exchange=BINANCE timeframe=4h limit=25
 mcporter call tradingview-mcp.volume_breakout_scanner exchange=KUCOIN timeframe=15m volume_multiplier=2.0
 ```
 
-### Analyze Stock
+### 分析股票
 
 ```bash
 # List available Alpha Vantage and Yahoo Finance tools
@@ -56,9 +56,9 @@ mcporter call alphavantage.get_price_history symbol=AAPL period=1y interval=1d
 mcporter call alphavantage.ticker_earning symbol=AAPL period=quarterly
 ```
 
-## Common Use Cases
+## **常见用例**
 
-### 1. Quick Crypto Analysis
+### 1. 快速加密货币分析
 
 ```bash
 # 1. Get immediate technical overview
@@ -72,7 +72,7 @@ mcporter call tradingview-mcp.smart_volume_scanner \
 mcporter call tradingview-mcp.top_gainers exchange=BINANCE timeframe=4h
 ```
 
-### 2. Fundamental Stock Research
+### 2. 基本面股票研究
 
 ```bash
 # 1. Get company metrics
@@ -85,9 +85,9 @@ mcporter call yahoo-finance-server.get_ticker_news symbol=TSLA count=5
 mcporter call alphavantage.get_price_history symbol=TSLA period=1y interval=1d
 ```
 
-### 3. Market Screening
+### 3. 市场筛选
 
-Use crypto screeners to identify opportunities:
+使用加密货币筛选器来识别投资机会：
 
 ```bash
 # Top performers
@@ -102,67 +102,67 @@ mcporter call yahoo-finance-server.get_top_entities \
   entity_type=performing_companies sector=technology count=10
 ```
 
-### 4. Consolidated Report
+### 4. 综合报告
 
-Combine multiple data sources for comprehensive analysis - use scripting or agent calls to orchestrate these tool calls together.
+通过整合多个数据源进行全面的分析——可以使用脚本或代理调用来协调这些工具的使用。
 
-## MCP Tools Reference
+## **MCP工具参考**
 
-### TradingView (Crypto Analysis)
+### **TradingView（加密货币分析）**
 
-| Tool                       | Purpose                                                  |
+| 工具                        | 功能                                                  |
 | -------------------------- | -------------------------------------------------------- |
-| `coin_analysis`            | Detailed analysis on specific coin (indicators, metrics) |
-| `smart_volume_scanner`     | Volume + RSI + price change combination scan             |
-| `volume_breakout_scanner`  | Coins with volume and price breakouts                    |
-| `top_gainers`              | Best performing coins (Bollinger Band filtered)          |
-| `top_losers`               | Worst performing coins                                   |
-| `advanced_candle_pattern`  | Progressive candle size patterns across timeframes       |
-| `consecutive_candles_scan` | Growing/shrinking consecutive candles                    |
+| `coin_analysis`            | 对特定加密货币进行详细分析（指标、数据）                         |
+| `smart_volume_scanner`     | 通过成交量、RSI和价格变化来筛选加密货币                     |
+| `volume_breakout_scanner`  | 筛选出现成交量和价格突破的加密货币                     |
+| `top_gainers`              | 表现最佳的加密货币（基于Bollinger Band过滤）                   |
+| `top_losers`               | 表现最差的加密货币                             |
+| `advanced_candle_pattern`  | 分析不同时间框架下的蜡烛图形态                         |
+| `consecutive_candles_scan` | 筛选连续蜡烛图的变化趋势                         |
 
-### Alpha Vantage (Stock Data)
+### **Alpha Vantage（股票数据）**
 
-| Tool                | Purpose                                   |
+| 工具                | 功能                                   |
 | ------------------- | ----------------------------------------- |
-| `get_ticker_info`   | Company fundamentals, metrics, governance |
-| `get_price_history` | Historical OHLC data for trend analysis   |
-| `ticker_earning`    | Earnings data and upcoming dates          |
+| `get_ticker_info`   | 获取公司基本信息、财务指标和治理结构                         |
+| `get_price_history` | 获取历史价格数据以进行趋势分析                         |
+| `ticker_earning`    | 获取公司的盈利数据和未来盈利预测                         |
 
-### Yahoo Finance (Market Intelligence)
+### **Yahoo Finance（市场情报）**
 
-| Tool               | Purpose                             |
+| 工具               | 功能                             |
 | ------------------ | ----------------------------------- |
-| `get_ticker_news`  | Recent news articles with sentiment |
-| `get-top-entities` | Top stocks/ETFs by sector           |
+| `get_ticker_news`  | 获取带有情感分析的最新新闻文章                         |
+| `get-top-entities` | 按行业分类的顶级股票/ETF                         |
 
-## Configuration
+## **配置**
 
-### Exchange Options (Crypto)
+### **交易所选项（加密货币）**
 
-- `BINANCE` (default highest liquidity)
-- `KUCOIN`
-- `BYBIT`
+- `BINANCE`（默认，流动性最高）  
+- `KUCOIN`  
+- `BYBIT`  
 
-### Timeframes (Crypto)
+### **时间框架（加密货币）**
 
-- `5m`, `15m`, `1h`, `4h`, `1D` (default), `1W`, `1M`
+- `5m`, `15m`, `1h`, `4h`, `1D`（默认），`1W`, `1M`  
 
-### Output Formats
+### **输出格式**
 
-- `markdown` (default) - Formatted report
-- `json` - Raw data structure
+- `markdown`（默认）——格式化的报告  
+- `json`——原始数据结构  
 
-## Asset Detection
+## **资产检测**
 
-Automatically routes to correct analyzer:
+系统会自动将资产路由到正确的分析工具：
 
-1. **Crypto**: Ends with USDT, USDC, BTC, ETH, BNB OR common crypto pairs (BTC, ETH, SOL, ADA)
-2. **Stock**: 1-5 letter tickers (AAPL, TSLA, MSFT)
-3. **Fallback**: Attempts stock lookup first, then crypto
+1. **加密货币**：以USDT、USDC、BTC、ETH、BNB或常见的加密货币对（如BTC、ETH、SOL、ADA）结尾的资产  
+2. **股票**：以1-5个字母组成的股票代码（如AAPL、TSLA、MSFT）  
+3. **备用方案**：首先尝试查找股票数据，如果找不到则转而使用加密货币数据  
 
-## Example Reports
+## **示例报告**
 
-### Crypto Report Structure
+### **加密货币报告结构**
 
 ```
 # Trading Analysis: BTCUSDT
@@ -182,7 +182,7 @@ Exchange: BINANCE | Sentiment: Neutral-Bearish
 Signal: HOLD | Risk: Moderate
 ```
 
-### Stock Report Structure
+### **股票报告结构**
 
 ```
 # Trading Analysis: AAPL
@@ -203,20 +203,20 @@ Revenue Growth: 2.3% | Profit Margin: 28.1%
 Outlook: BULLISH | Target: $295 | Risk: Low
 ```
 
-## Error Handling
+## **错误处理**
 
-- Graceful fallback if MCP server unavailable
-- Partial reports if single data source fails
-- Caching support for repeated queries
-- Clear error messages with retry guidance
+- 如果MCP服务器不可用，系统会优雅地切换到备用方案  
+- 如果某个数据源失败，系统会生成部分报告  
+- 支持重复查询的缓存机制  
+- 提供清晰的错误信息及重试建议  
 
-## Performance Notes
+## **性能说明**
 
-- Cache queries within 5-minute windows
-- Parallel data fetching for multi-source reports
-- Typical analysis time: 2-5 seconds per asset
+- 在5分钟的时间窗口内缓存查询结果  
+- 对于多数据源的报告，系统会并行获取数据  
+- 每个资产的平均分析时间为2-5秒  
 
-## Troubleshooting
+## **故障排除**
 
 ```bash
 # Verify MCP servers running
@@ -229,15 +229,15 @@ echo "Ensure Alpha Vantage API key is set"
 python3 -c "import requests; print(requests.__version__)"
 ```
 
-## Extensions
+## **扩展方式**
 
-To add new data sources:
+要添加新的数据源，请按照以下步骤操作：
 
-1. Create new analyzer in `analyzers/` directory
-2. Implement `analyze(symbol, options)` interface
-3. Register in routing logic
-4. Update tools reference
+1. 在`analyzers/`目录下创建新的分析工具  
+2. 实现`analyze(symbol, options)`接口  
+3. 在路由逻辑中注册新工具  
+4. 更新工具参考列表  
 
-## License
+## **许可证**
 
-MIT
+MIT许可证

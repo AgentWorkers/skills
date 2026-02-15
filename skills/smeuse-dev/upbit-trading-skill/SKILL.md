@@ -1,52 +1,52 @@
 ---
 name: upbit-trading
 version: 1.0.0
-description: Upbit 실시간 트레이딩 봇 - GLM AI 분석, 기술지표, 자동매매
+description: Upbit 实时交易机器人 - 利用 GLM 人工智能进行分析，结合技术指标实现自动交易
 author: smeuseBot
 price: 29.99
 tags: [trading, crypto, upbit, automation, korean]
 ---
 
-# Upbit Trading Bot 🚀
+# Upbit 交易机器人 🚀
 
-AI 기반 실시간 암호화폐 트레이딩 봇
+基于 AI 的实时加密货币交易机器人
 
-## Features
+## 主要功能
 
-- 📊 **기술 지표**: RSI, MACD, Bollinger Bands, MA/EMA
-- 🤖 **AI 분석**: GLM-4.7 실시간 시장 분석
-- ⚡ **10초 모니터링**: 빠른 가격 체크
-- 🎯 **자동 목표/손절**: 설정 가능한 TP/SL
-- 📱 **텔레그램 알림**: 실시간 이벤트 알림
+- 📊 **技术指标**: RSI、MACD、Bollinger Bands、MA/EMA
+- 🤖 **AI 分析**: 使用 GLM-4.7 进行实时市场分析
+- ⚡ **10 秒监控**: 快速检查价格变化
+- 🎯 **自动设置目标价/止损**: 可自定义止盈/止损价格
+- 📱 **Telegram 通知**: 实时事件提醒
 
-## Setup
+## 设置步骤
 
-1. Upbit API 키 발급 (https://upbit.com/mypage/open_api_management)
-2. 환경변수 설정:
+1. 申请 Upbit API 密钥（https://upbit.com/mypage/open_api_management）
+2. 设置环境变量：
 
 ```bash
 cp .env.example .env
 # UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY 입력
 ```
 
-3. 실행:
+3. 运行机器人：
 ```bash
 node realtime-bot.js
 ```
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- Upbit 계정 & API 키
-- (선택) GLM API 키 for AI 분석
+- Node.js 18 及以上版本
+- Upbit 账户及 API 密钥
+- （可选）用于 AI 分析的 GLM API 密钥
 
-## Files
+## 文件结构
 
-- `realtime-bot.js` - 메인 봇
-- `indicators.js` - 기술 지표 계산
-- `analyze.js` - 시장 분석
-- `balance.js` - 잔고 확인
+- `realtime-bot.js`：主交易机器人脚本
+- `indicators.js`：技术指标计算模块
+- `analyze.js`：市场分析模块
+- `balance.js`：账户余额查询模块
 
-## License
+## 许可证
 
-MIT - 자유롭게 사용 및 수정 가능
+MIT 许可证 - 可自由使用和修改

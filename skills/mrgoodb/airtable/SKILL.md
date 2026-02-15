@@ -1,24 +1,24 @@
 ---
 name: airtable
-description: Create, read, update, and delete records in Airtable bases. Use when you need to manage data in Airtable spreadsheets/databases, sync data, or automate workflows with Airtable as a data store.
+description: 在 Airtable 数据库中创建、读取、更新和删除记录。当您需要管理 Airtable 表格/数据库中的数据、同步数据，或使用 Airtable 作为数据存储来自动化工作流程时，可以使用这些功能。
 ---
 
 # Airtable API
 
-Manage Airtable bases, tables, and records via REST API.
+通过 REST API 管理 Airtable 的数据库、表格和记录。
 
-## Setup
+## 设置
 
-1. Get API key: https://airtable.com/create/tokens
-2. Create token with scopes: `data.records:read`, `data.records:write`
-3. Store token:
+1. 获取 API 密钥：https://airtable.com/create/tokens
+2. 创建具有以下权限范围的 API 密钥：`datarecords:read`, `datarecords:write`
+3. 存储 API 密钥：
 ```bash
 mkdir -p ~/.config/airtable
 echo "patXXXXXXXXXXXXXX" > ~/.config/airtable/api_key
 ```
-4. Find Base ID: Open base → Help → API documentation (starts with `app`)
+4. 查找数据库 ID：打开数据库 → 帮助 → API 文档（以 `app` 开头）
 
-## List Records
+## 列出记录
 
 ```bash
 AIRTABLE_KEY=$(cat ~/.config/airtable/api_key)
@@ -29,7 +29,7 @@ curl -s "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}" \
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq '.records'
 ```
 
-## Get Single Record
+## 获取单条记录
 
 ```bash
 RECORD_ID="recXXXXXXXXXXXXXX"
@@ -38,7 +38,7 @@ curl -s "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${RECORD_ID}" \
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq
 ```
 
-## Create Record
+## 创建记录
 
 ```bash
 curl -s -X POST "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}" \
@@ -55,7 +55,7 @@ curl -s -X POST "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}" \
   }' | jq
 ```
 
-## Create Multiple Records
+## 创建多条记录
 
 ```bash
 curl -s -X POST "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}" \
@@ -69,9 +69,9 @@ curl -s -X POST "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}" \
   }'
 ```
 
-Max 10 records per request.
+每次请求最多可以创建 10 条记录。
 
-## Update Record
+## 更新记录
 
 ```bash
 curl -s -X PATCH "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${RECORD_ID}" \
@@ -85,16 +85,17 @@ curl -s -X PATCH "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${RECORD_
   }' | jq
 ```
 
-PATCH = partial update, PUT = replace all fields
+- `PATCH`：部分更新
+- `PUT`：替换所有字段
 
-## Delete Record
+## 删除记录
 
 ```bash
 curl -s -X DELETE "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${RECORD_ID}" \
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq
 ```
 
-## Filter Records
+## 过滤记录
 
 ```bash
 # filterByFormula parameter (URL-encoded)
@@ -104,20 +105,20 @@ curl -s "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula=${
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq '.records'
 ```
 
-Common formulas:
-- `{Status}='Done'` - Exact match
-- `FIND('keyword', {Notes})` - Contains text
-- `{Date} >= TODAY()` - Date comparison
-- `AND({Status}='Active', {Priority}='High')` - Multiple conditions
+常用过滤条件：
+- `{Status}='Done'`：精确匹配
+- `FIND('关键词', {Notes})`：包含指定文本
+- `{Date} >= TODAY()`：日期比较
+- `AND({Status}='Active', {Priority}='High')`：多个条件同时满足
 
-## Sort Records
+## 对记录进行排序
 
 ```bash
 curl -s "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?sort%5B0%5D%5Bfield%5D=Created&sort%5B0%5D%5Bdirection%5D=desc" \
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq '.records'
 ```
 
-## Pagination
+## 分页
 
 ```bash
 # First page
@@ -133,25 +134,25 @@ if [ -n "$OFFSET" ]; then
 fi
 ```
 
-## Select Specific Fields
+## 选择特定字段
 
 ```bash
 curl -s "https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?fields%5B%5D=Name&fields%5B%5D=Status" \
   -H "Authorization: Bearer ${AIRTABLE_KEY}" | jq '.records'
 ```
 
-## Field Types
+## 字段类型
 
-- Text: `"value"`
-- Number: `123`
-- Checkbox: `true` / `false`
-- Date: `"2024-01-15"`
-- Single Select: `"Option Name"`
-- Multi Select: `["Option 1", "Option 2"]`
-- Linked Record: `["recXXX", "recYYY"]`
-- Attachment: `[{"url": "https://..."}]`
+- 文本：`"value"`
+- 数字：`123`
+- 复选框：`true` / `false`
+- 日期：`"2024-01-15"`
+- 单选：`"选项名称"`
+- 多选：`["选项 1", "选项 2"]`
+- 链接记录：`["recXXX", "recYYY"]`
+- 附件：`[{"url": "https://..."}]`
 
-## Rate Limits
+## 速率限制
 
-- 5 requests per second per base
-- Use batch operations (10 records max) to reduce calls
+- 每个数据库每秒最多 5 次请求
+- 使用批量操作（每次最多 10 条记录）以减少请求次数

@@ -1,44 +1,44 @@
 ---
 name: odos
-description: Odos smart order routing DEX aggregator. Best swap rates with patented SOR algorithm across 500+ liquidity sources.
+description: Odos 智能订单路由 DEX 聚合器：通过专利的 SOR（Smart Order Routing）算法，在 500 多个流动性来源中提供最优的交易汇率。
 metadata: {"clawdbot":{"emoji":"🔮","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # Odos 🔮
 
-Smart Order Routing DEX aggregator. Patented algorithm for best execution across 500+ liquidity sources.
+Odos 是一个智能订单路由去中心化交易所（DEX）聚合器，采用专利算法，能够在 500 多个流动性来源中实现最佳的交易执行效果。
 
-## 💎 Referral Fee Configuration
+## 💎 推荐费配置
 
-This skill includes a referral fee (1%) to support development.
+为了支持项目开发，Odos 收取 1% 的推荐费。
 
-| Variable | Value | Description |
+| 变量 | 值 | 说明 |
 |----------|-------|-------------|
-| `REFERRAL_CODE` | `0` | Referral code (0 = default) |
-| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
-| `COMPACT` | true | Use compact calldata for gas savings |
+| `REFERRAL_CODE` | `0` | 推荐码（0 为默认值） |
+| `FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收费钱包（EVM 地址） |
+| `COMPACT` | `true` | 使用紧凑型 calldata 以节省交易费用 |
 
-**Fee Breakdown:**
-- User pays: ~1% of swap output (configurable)
-- Referrer receives: 100% of fee
-- Fees are collected on-chain directly to your wallet
+**费用构成：**
+- 用户支付：交易金额的约 1%（可配置） |
+- 推荐人获得：全部费用的 100% |
+- 费用直接在链上转入推荐人的钱包。
 
-## Features
+## 主要功能
 
-- 🔄 **500+ Liquidity Sources** - Uniswap, SushiSwap, Curve, Balancer, etc.
-- ⛓️ **Multi-Chain** - Ethereum, Arbitrum, Optimism, Polygon, Base, Avalanche
-- 🧠 **Smart Order Routing** - Patented SOR algorithm
-- 📊 **Multi-Input Swaps** - Swap multiple tokens at once
-- 💰 **Referral Program** - Earn on every swap
-- ⚡ **Gas Optimized** - Compact calldata for lower gas
+- 🔄 **500 多个流动性来源**：Uniswap、SushiSwap、Curve、Balancer 等 |
+- ⛓️ **多链支持**：Ethereum、Arbitrum、Optimism、Polygon、Base、Avalanche |
+- 🧠 **智能订单路由**：采用专利的 SOR（Smart Order Routing）算法 |
+- 📊 **多输入交易**：一次可以交换多种代币 |
+- 💰 **推荐计划**：每次交易均可获得奖励 |
+- ⚡ **优化交易费用**：使用紧凑型 calldata 降低 Gas 成本 |
 
-## API Base URL
+## API 基本地址
 
 ```
 https://api.odos.xyz
 ```
 
-## Get Swap Quote
+## 获取交易报价
 
 ```bash
 CHAIN_ID="1"  # Ethereum
@@ -76,7 +76,7 @@ curl -s -X POST "https://api.odos.xyz/sor/quote/v2" \
   }'
 ```
 
-## Assemble Transaction
+## 组装交易请求
 
 ```bash
 PATH_ID="<PATH_ID_FROM_QUOTE>"
@@ -95,7 +95,7 @@ curl -s -X POST "https://api.odos.xyz/sor/assemble" \
   }'
 ```
 
-## Multi-Input Swap (Swap Multiple Tokens)
+## 多输入交易（交换多种代币）
 
 ```bash
 # Swap ETH + USDC to DAI
@@ -124,7 +124,7 @@ curl -s -X POST "https://api.odos.xyz/sor/quote/v2" \
   }" | jq '.'
 ```
 
-## Multi-Output Swap (Split to Multiple Tokens)
+## 多输出交易（将一种代币拆分为多种代币）
 
 ```bash
 # Swap ETH to 50% USDC + 50% DAI
@@ -153,9 +153,9 @@ curl -s -X POST "https://api.odos.xyz/sor/quote/v2" \
   }" | jq '.'
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | ID | Native Token |
+| 区块链 | ID | 原生代币 |
 |-------|-----|--------------|
 | Ethereum | 1 | ETH |
 | Arbitrum | 42161 | ETH |
@@ -170,19 +170,19 @@ curl -s -X POST "https://api.odos.xyz/sor/quote/v2" \
 | Mantle | 5000 | MNT |
 | Mode | 34443 | ETH |
 
-## Get Token List
+## 获取代币列表
 
 ```bash
 curl -s "https://api.odos.xyz/info/tokens/${CHAIN_ID}" | jq '.tokenMap | to_entries[:10] | .[] | {symbol: .value.symbol, address: .key, decimals: .value.decimals}'
 ```
 
-## Get Liquidity Sources
+## 获取流动性来源信息
 
 ```bash
 curl -s "https://api.odos.xyz/info/liquidity-sources/${CHAIN_ID}" | jq '.[] | {id: .id, name: .name}'
 ```
 
-## Check Contract Info
+## 查看合约信息
 
 ```bash
 curl -s "https://api.odos.xyz/info/contract-info/v2/${CHAIN_ID}" | jq '{
@@ -191,24 +191,24 @@ curl -s "https://api.odos.xyz/info/contract-info/v2/${CHAIN_ID}" | jq '{
 }'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display swap details before execution
-2. **WARN** if price impact > 1%
-3. **CHECK** token allowance before swap
-4. **VERIFY** output amounts
-5. **NEVER** execute without user confirmation
+1. **执行前务必** 显示交易详情。
+2. 如果价格波动超过 1%，系统会发出**警告**。
+3. 交易前请**确认**用户的代币余额是否足够。
+4. **务必** 核实交易后的输出金额。
+5. **未经用户确认**，切勿执行交易。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误类型 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `NO_PATH_FOUND` | No route available | Try different pair |
-| `INSUFFICIENT_LIQUIDITY` | Low liquidity | Reduce amount |
-| `SLIPPAGE_EXCEEDED` | Price moved | Increase slippage |
+| `NO_PATH_FOUND` | 未找到可用的交易路径 | 请尝试其他交易对 |
+| `INSUFFICIENT_LIQUIDITY` | 流动性不足 | 减少交易金额 |
+| `SLIPPAGE_EXCEEDED` | 价格波动过大 | 增加滑点（slippage） |
 
-## Links
+## 相关链接
 
-- [Odos Docs](https://docs.odos.xyz/)
-- [Odos App](https://app.odos.xyz/)
-- [API Reference](https://docs.odos.xyz/api/endpoints)
+- [Odos 文档](https://docs.odos.xyz/) |
+- [Odos 应用程序](https://app.odos.xyz/) |
+- [API 参考](https://docs.odos.xyz/api/endpoints)

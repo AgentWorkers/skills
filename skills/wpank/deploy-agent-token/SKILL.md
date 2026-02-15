@@ -1,72 +1,68 @@
 ---
 name: deploy-agent-token
-description: Deploy an agent token with a Uniswap V4 pool — handles pool creation with configurable hooks (anti-snipe, dynamic fees, revenue share), initial liquidity bootstrapping, LP locking, and post-deployment monitoring. Use when the user wants to launch a token on Uniswap.
+description: 部署一个代理令牌（agent token），该令牌与 Uniswap V4 池（pool）集成。该方案支持配置自定义的钩子（hooks）来管理池的创建过程（包括防止恶意抢购、动态费用设置、收益分配机制），同时涵盖初始流动性的注入、LP（ Liquidity Provider）的锁定机制以及部署后的监控功能。适用于用户希望在 Uniswap 平台上发行代币的场景。
 model: opus
 allowed-tools: [Task(subagent_type:token-deployer)]
 ---
 
-# Deploy Agent Token
+# 部署代理令牌（Deploy Agent Token）
 
-## Overview
+## 概述
 
-Automates the full lifecycle of launching a token on Uniswap V4: pool creation with configurable hooks, initial liquidity bootstrapping, LP token locking, and post-deployment monitoring. Delegates to the `token-deployer` agent which handles the critical first hours of a token's life — ensuring proper anti-snipe protections, correct initial pricing, sufficient liquidity depth, and locked LP tokens.
+该功能自动化了在Uniswap V4平台上部署令牌的整个生命周期，包括配置可定制的钩子（hooks）来创建池（pool）、启动初始流动性、锁定LP（liquidity pool）令牌，以及部署后的监控。这些操作由`token-deployer`代理负责执行，确保令牌在上线初期能够得到有效的保护（如防止恶意抢购）、维持合理的初始价格、足够的流动性，并锁定LP令牌。
 
-This skill exists because agent platforms like Clanker (585K+ tokens, $5B+ volume) and BankrBot need automated, safe pool creation. Misconfigured pools, missing anti-snipe hooks, or inadequate liquidity can destroy a launch.
+这类功能的存在，是因为像Clanker（拥有超过58.5万个令牌、交易量超过50亿美元）和BankrBot这样的代理平台需要自动化且安全的池创建流程。配置错误的池、缺失的防抢购机制或流动性不足都可能导致部署失败。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下请求时，可激活此功能：
+- “为我的代理部署一个令牌”
+- “为我的令牌创建一个Uniswap V4池”
+- “以防抢购保护的方式部署令牌”
+- “设置具有动态费用的池”
+- “在Base平台上部署带有锁定流动性的令牌”
+- “像Clanker那样部署我的代理令牌”
+- “创建具有收益分享机制的池”
+- “为新令牌启动流动性”
 
-- "Deploy a token for my agent"
-- "Create a Uniswap V4 pool for my token"
-- "Launch a token with anti-snipe protection"
-- "Set up a pool with dynamic fees"
-- "Deploy token on Base with locked liquidity"
-- "Launch my agent token like Clanker"
-- "Create a pool with revenue share hooks"
-- "Bootstrap liquidity for my new token"
+## 参数
 
-## Parameters
+| 参数                          | 是否必填 | 默认值    | 说明                                                                                          |
+| --------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------- |
+| tokenAddress       | 是      | --         | 需要创建池的ERC-20令牌合约地址                                                                                   |
+| pairedToken        | 否       | WETH       | 用于配对的报价令牌（WETH、USDC或地址）                                                                                   |
+| chain              | 否       | base       | 部署的目标链（必须支持Uniswap V4）                                                                                   |
+| initialPrice       | 否       | --         | 每个令牌的期望价格（或根据`targetMarketCap`计算）                                                                         |
+| targetMarketCap    | 否       | --         | 目标市场市值（以美元计），用于根据总供应量计算初始价格                                                                         |
+| initialLiquidity   | 是      | --         | 用于初始化池的每个令牌的数量（例如：“100万个AGENT令牌 + 10万WETH”                                                                         |
+| hooks              | 否       | anti-snipe | 钩子配置：“anti-snipe”、“dynamic-fees”、“revenue-share”或这些配置的组合     |
+| antiSnipeDelay     | 否       | 2个区块     | 防抢购延迟时间（基于ClankerHook模型）                                                                                   |
+| revenueSharePct    | 否       | --         | 交易费用中分配给令牌创建者的比例（如果启用了收益分享机制）                                                                     |
+| lpLockDuration     | 否       | 10年       | LP令牌的锁定期限（例如：“10年”、“1年”、“6个月”                                                                                   |
+| vestingSchedule    | 否       | --         | 令牌分配的可选解锁时间表                                                                                         |
 
-| Parameter          | Required | Default    | Description                                                                        |
-| ------------------ | -------- | ---------- | ---------------------------------------------------------------------------------- |
-| tokenAddress       | Yes      | --         | ERC-20 token contract address to create a pool for                                 |
-| pairedToken        | No       | WETH       | Quote token to pair with (WETH, USDC, or address)                                  |
-| chain              | No       | base       | Target chain for deployment (must support V4)                                      |
-| initialPrice       | No       | --         | Desired price per token in the paired token (or derive from `targetMarketCap`)     |
-| targetMarketCap    | No       | --         | Target market cap in USD — used to calculate initial price from total supply       |
-| initialLiquidity   | Yes      | --         | Amount of each token to seed the pool (e.g., "1M AGENT + 10 WETH")                |
-| hooks              | No       | anti-snipe | Hook configuration: "anti-snipe", "dynamic-fees", "revenue-share", or comma-separated combination |
-| antiSnipeDelay     | No       | 2 blocks   | Anti-snipe delay period in blocks (ClankerHook model)                              |
-| revenueSharePct    | No       | --         | Percentage of swap fees directed to token creator (if revenue-share hook enabled)   |
-| lpLockDuration     | No       | 10 years   | How long to lock LP tokens (e.g., "10 years", "1 year", "6 months")               |
-| vestingSchedule    | No       | --         | Optional vesting schedule for token allocations                                    |
+### 钩子配置指南
 
-### Hook Configuration Guide
+- **Anti-snipe**（默认推荐）：通过2个区块的延迟来防止机器人抢购（基于ClankerHook模型）。如果没有这个延迟，机器人可能在几秒钟内耗尽初始流动性。
+- **Dynamic fees**：根据波动性或交易量调整池费用。适用于早期交易模式不可预测的令牌。
+- **Revenue share**：将部分交易费用分配给令牌创建者，从而产生持续的收入流。
+- **TWAMM**：时间加权平均做市（Time-Weighted Average Market Making），帮助在部署期间逐步发现合理价格。
 
-- **Anti-snipe** (default, recommended): Prevents bot sniping at launch using a 2-block delay (ClankerHook model). Without this, bots can drain initial liquidity within seconds.
-- **Dynamic fees**: Adjusts pool fees based on volatility or volume. Good for tokens with unpredictable early trading patterns.
-- **Revenue share**: Directs a portion of swap fees to the token creator. Creates an ongoing revenue stream from trading activity.
-- **TWAMM**: Time-weighted average market making for gradual price discovery during launch.
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：确定令牌地址、配对令牌、目标链、初始价格或市场市值、流动性数量、钩子配置以及LP锁定期限。验证是否提供了必需的参数（令牌地址、初始流动性）。如果未指定初始价格但指定了目标市场市值，系统会根据总供应量计算价格。
+2. **委托给`token-deployer`代理**：使用提取的参数调用`Task(subagent_type:token-deployer)`。代理会执行7个步骤的流程：
+   - **验证令牌**：通过元数据（名称、符号、小数位数、供应量、风险标志）检查令牌合约。如果检测到恶意代码，将拒绝创建池。
+   - **配置钩子**：选择并验证V4兼容的钩子，确认它们已部署在目标链上，并计算钩子的地址要求。
+   - **创建池**：计算`sqrtPriceX96`，构建池密钥，通过`safety-guardian`进行模拟，然后执行初始化操作。
+   - **启动流动性**：委托给`lp-strategist`确定最佳费用范围，并通过`position manager`添加流动性。
+   - **锁定LP**：将相关NFT转移到时间锁定的保险库中，并设置锁定期限。
+   - **监控**：在关键的上线初期阶段跟踪价格、交易量、总价值（TVL）和异常情况。
+   - **生成报告**：为用户生成详细的部署报告。
 
-1. **Extract parameters** from the user's request. Determine the token address, paired token, chain, initial price or market cap, liquidity amounts, hook configuration, and LP lock duration. Validate that required parameters (token address, initial liquidity) are provided. If initial price is not specified but target market cap is, note that the agent will calculate the price from total supply.
+代理内部会委托`safety-guardian`（负责交易验证）和`lp-strategist`（负责流动性策略）来执行这些操作。
 
-2. **Delegate to `token-deployer` agent**: Invoke `Task(subagent_type:token-deployer)` with the extracted parameters. The agent executes a 7-step pipeline:
-   - **Verify token**: Check token contract via metadata (name, symbol, decimals, supply, risk flags). Refuse if honeypot indicators detected.
-   - **Configure hooks**: Select and validate V4 hooks, verify they are deployed on the target chain, calculate hook address requirements.
-   - **Create pool**: Calculate sqrtPriceX96, construct pool key, simulate via safety-guardian, execute initialization.
-   - **Bootstrap liquidity**: Delegate to lp-strategist for optimal range, add liquidity via position manager.
-   - **Lock LP**: Transfer position NFT to time-locked vault, configure lock duration.
-   - **Monitor**: Track price, volume, TVL, and anomalies during the critical first hours.
-   - **Report**: Produce comprehensive deployment report.
-
-   The agent internally delegates to `safety-guardian` (transaction validation) and `lp-strategist` (liquidity strategy).
-
-3. **Present results**: Format the deployment report for the user, including pool address, hook configuration, liquidity details, LP lock status, and early monitoring data.
-
-## Agent Delegation
+## 代理委托（Agent Delegation）
 
 ```
 Task(subagent_type:token-deployer)
@@ -83,7 +79,7 @@ Task(subagent_type:token-deployer)
   vestingSchedule: <schedule>
 ```
 
-## Output Format
+## 输出格式
 
 ```text
 Token Deployment Complete
@@ -120,26 +116,26 @@ Token Deployment Complete
     - Share pool address for community trading
 ```
 
-## Important Notes
+## 重要说明
 
-- Pool creation is irreversible. Every pool creation transaction is simulated via `safety-guardian` before broadcast.
-- Anti-snipe hooks are enabled by default and strongly recommended. Without them, bots can front-run the launch and drain initial liquidity within seconds.
-- All hook contracts must be deployed and verified on the target chain before they can be attached to a pool. Unverified hooks can steal funds.
-- If an existing pool with significant liquidity already exists for the token pair, the agent will warn you and suggest adding to the existing pool instead.
-- LP locking builds market confidence. The default 10-year lock follows the Clanker model. Shorter locks are possible but may reduce trader confidence.
-- Initial price calculation is critical. The agent cross-checks the price against token supply and target market cap to prevent misconfiguration.
-- Post-deployment monitoring runs during the first hours to detect anomalies (sandwich attacks, unusual trades, liquidity removal).
+- 池的创建是不可逆的。每次创建池的交易都会在广播前通过`safety-guardian`进行模拟。
+- 防抢购钩子默认是启用的，强烈建议使用。如果不使用，机器人可能会在几秒钟内耗尽初始流动性。
+- 所有钩子合约必须在目标链上部署并验证后才能应用于池中。未经验证的钩子可能会导致资金损失。
+- 如果该令牌对已经存在具有足够流动性的池，系统会警告用户并建议将其添加到现有池中。
+- LP令牌的锁定有助于建立市场信心。默认的10年锁定期限遵循Clanker模型。虽然可以设置更短的锁定期限，但可能会降低交易者的信心。
+- 初始价格的计算非常重要。代理会核对价格与令牌供应量和目标市场市值，以防止配置错误。
+- 部署后的监控会在最初几个小时内持续进行，以检测异常情况（如中间人攻击、异常交易、流动性流失等）。
 
-## Error Handling
+## 错误处理
 
-| Error                        | User-Facing Message                                                                          | Suggested Action                                  |
-| ---------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| Token verification failed    | "Could not verify token at [address]: [reason]."                                             | Check the token contract address and chain        |
-| Honeypot detected            | "Token has honeypot indicators. Refusing to create pool."                                    | Review the token contract for malicious code      |
-| Pool already exists          | "A pool with $[X] TVL already exists for this pair. Consider adding liquidity instead."      | Use manage-liquidity to add to existing pool      |
-| Hook not deployed            | "Hook contract [type] is not deployed on [chain]."                                           | Deploy the hook first or choose a different hook  |
-| V4 not supported             | "Uniswap V4 is not deployed on [chain]."                                                     | Choose a chain with V4 support                    |
-| Insufficient liquidity tokens| "Not enough [token] to seed the pool: have [X], need [Y]."                                   | Acquire more tokens or reduce initial liquidity   |
-| Safety guardian vetoed        | "Transaction vetoed by safety-guardian: [reason]."                                            | Review the veto reason and adjust parameters      |
-| LP lock failed               | "Could not lock LP tokens: [reason]."                                                        | Check vault contract availability on the chain    |
-| Gas estimation failed        | "Could not estimate gas for pool creation on [chain]."                                       | Try again or check chain status                   |
+| 错误类型                         | 向用户显示的消息                                                                 | 建议的操作                                                                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 令牌验证失败                        | “无法在[地址]验证令牌：[原因]。”                                                                 | 检查令牌合约地址和目标链                                                                                   |
+| 检测到恶意代码                         | “令牌存在恶意代码，拒绝创建池。”                                                                 | 审查令牌合约是否存在恶意代码                                                                                   |
+| 已存在池                         | “该令牌对已经存在一个TVL为[X]的池。建议添加流动性。”                                                                 | 使用`manage-liquidity`功能将令牌添加到现有池中                                                                                   |
+| 钩子未部署                         | “[类型]钩子未在[链]上部署。”                                                                 | 先部署钩子或选择其他类型的钩子                                                                                   |
+| 不支持Uniswap V4                     | “[链]不支持Uniswap V4。”                                                                 | 选择支持V4的链                                                                                         |
+| 流动性不足                         | “用于初始化池的[令牌]数量不足：当前有[X]个，需要[Y]个。”                                                                 | 获取更多令牌或减少初始流动性                                                                                   |
+| 安全保护机制拒绝交易                     | “交易被安全保护机制拒绝：[原因]。”                                                                 | 查看拒绝原因并调整参数                                                                                         |
+| LP锁定失败                         | “无法锁定LP令牌：[原因]。”                                                                 | 检查目标链上的保险库合约可用性                                                                                   |
+| 无法估算交易费用                         | “无法估算在[链]上创建池所需的气体费用。”                                                                 | 重试或检查链的状态                                                                                         |

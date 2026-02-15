@@ -1,24 +1,24 @@
 ---
 slug: "standards-compliance-checker"
 display_name: "Standards Compliance Checker"
-description: "Check data compliance with construction standards. Validate data against ISO 19650, IFC, COBie, UniFormat standards."
+description: "检查数据是否符合建筑标准。根据 ISO 19650、IFC、COBie 和 UniFormat 标准对数据进行验证。"
 ---
 
-# Standards Compliance Checker
+# 标准合规性检查工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction data compliance challenges:
-- Multiple standards to meet
-- Complex validation rules
-- Inconsistent implementations
-- Manual checking is error-prone
+### 问题描述
+建筑数据合规性面临以下挑战：
+- 需要满足多种标准
+- 验证规则复杂
+- 实施方式不一致
+- 手动检查容易出错
 
-### Solution
-Automated compliance checking against major construction data standards including ISO 19650, IFC, COBie, and UniFormat.
+### 解决方案
+自动检查建筑数据是否符合主要标准，包括 ISO 19650、IFC、COBie 和 UniFormat。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from typing import Dict, Any, List, Optional
@@ -261,7 +261,7 @@ class StandardsComplianceChecker:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize checker
@@ -279,9 +279,9 @@ print(f"Compliance: {report.compliance_level.value}")
 print(f"Passed: {report.passed}/{report.total_rules}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. COBie Validation
+### 1. COBie 验证
 ```python
 cobie_data = {
     "facility_name": "Building A",
@@ -292,14 +292,14 @@ cobie_data = {
 report = checker.check_compliance(cobie_data, Standard.COBIE)
 ```
 
-### 2. Batch Validation
+### 2. 批量验证
 ```python
 records = [{"filename": "...", "status": "..."}, ...]
 batch_report = checker.check_batch(records, Standard.ISO_19650)
 print(f"Compliance rate: {batch_report['compliance_rate']}%")
 ```
 
-### 3. Multiple Standards
+### 3. 多标准验证
 ```python
 reports = checker.check_multiple_standards(
     data,
@@ -307,7 +307,7 @@ reports = checker.check_multiple_standards(
 )
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.5 - Data Models and Standards
-- **ISO 19650**: Information management using BIM
-- **Website**: https://datadrivenconstruction.io
+## 资源参考
+- **DDC 手册**：第 2.5 章 - 数据模型与标准
+- **ISO 19650**：使用 BIM 进行信息管理
+- **官方网站**：https://datadrivenconstruction.io

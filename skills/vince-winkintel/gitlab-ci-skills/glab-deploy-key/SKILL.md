@@ -1,11 +1,11 @@
 ---
 name: glab-deploy-key
-description: Use when working with glab deploy-key commands.
+description: 在使用 `glab deploy-key` 命令时，请参考以下说明。
 ---
 
 # glab deploy-key
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Use when working with glab deploy-key commands.
     -R --repo                 Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab deploy-key --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 的完整输出，请参阅 [references/commands.md](references/commands.md)。

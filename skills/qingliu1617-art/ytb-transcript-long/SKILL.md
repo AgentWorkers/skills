@@ -1,58 +1,63 @@
 ---
 name: youtube-transcript
-description: YouTube long video (>1 hour) full verbatim transcription and translation workflow. Use when user needs to (1) Extract subtitles from YouTube videos, (2) Translate English transcripts to Chinese, (3) Handle long videos that exceed session limits, (4) Process DownSub API responses and generate formatted documents.
+description: YouTube 长视频（超过 1 小时）的完整转录与翻译工作流程：适用于用户需要执行以下操作的情况：  
+1. 从 YouTube 视频中提取字幕；  
+2. 将英文字幕翻译成中文；  
+3. 处理超出平台会话时间限制的长视频；  
+4. 处理来自 DownSub API 的响应并生成格式化的文档。
 ---
 
-# YouTube Long Video Transcript & Translation
+# YouTube 长视频的字幕提取与翻译
 
-Full verbatim transcription and translation workflow for long YouTube videos (>1 hour).
+针对时长超过1小时的YouTube视频，提供完整的字幕提取和翻译工作流程。
 
-## Prerequisites
+## 先决条件
 
-- DownSub API key (Bearer token starting with `AIza...`)
-- `zhiyan` tool (optional, for online doc generation)
-- Sub-agent spawn capability (for long videos)
+- DownSub API密钥（以`AIza...`开头的Bearer令牌）
+- `zhiyan`工具（可选，用于在线文档生成）
+- 子代理（sub-agent）的启动能力（用于处理长视频）
 
-## DownSub API Configuration
+## DownSub API配置
 
-**Endpoint**: `https://api.downsub.com/download`
-**Method**: `POST`
-**Headers**:
+**端点**：`https://api.downsub.com/download`
+**方法**：`POST`
+**请求头**：
 ```
 Authorization: Bearer AIzaM9ifctIOxusNAldvGeajHqq4rH6e7MJNfN
 Content-Type: application/json
 ```
-**Body**:
+**请求体**：
 ```json
 {"url": "https://www.youtube.com/watch?v=VIDEO_ID"}
 ```
 
-**⚠️ CRITICAL**: Always check the `lang` field in response. **Use ONLY `en` or `en-auto`**. Do NOT use random languages (e.g., `lt` for Lithuanian).
+**⚠️ 重要提示**：务必检查响应中的`lang`字段。**仅使用`en`或`en-auto`**。**切勿使用其他语言（例如`lt`表示立陶宛语）。**
 
-## Pre-flight Check (Run First)
+## 预处理（必须先执行）
 
-1. **Check DownSub API Access**
-   - Verify `Authorization` header is configured
-   - Common error: "401 Unauthorized" = missing/invalid API key
+1. **检查DownSub API访问权限**
+   - 确认`Authorization`请求头已正确配置
+   - 常见错误：“401 Unauthorized”表示API密钥缺失或无效
 
-2. **Check Output Capabilities**
-   - Has `zhiyan` tool? → Can generate online docs
-   - No `zhiyan`? → Output local `.md` file
+2. **检查输出功能**
+   - 是否安装了`zhiyan`工具？ → 可以生成在线文档
+   - 未安装`zhiyan`？ → 生成本地`.md`文件
 
-3. **Check Session Budget**
-   - Ensure sub-agent spawn capability for long context processing
+3. **检查会话资源限制**
+   - 确保系统具有启动子代理的能力，以便处理长视频内容
 
-## Workflow
+## 工作流程
 
-### Step 1: Preparation (Main Session)
+### 第1步：准备工作（主会话）
 
-1. **Environment Check**: Confirm DownSub API key present
-2. **Get video link**
-3. **Verify Language**: Use DownSub to check `lang`
-   - IF `lang="en"` or `"en-auto"` → Proceed
-   - IF `lang="lt"` or other → STOP, do not translate
-4. **Check Length**: If >1000 lines, DO NOT process in main session
-5. **Spawn Sub-Agent**:
+1. **环境检查**：确认已获取DownSub API密钥
+2. **获取视频链接**
+3. **验证语言设置**：使用DownSub API查询视频的语言设置
+   - 如果`lang="en"`或`"en-auto"` → 继续处理
+   - 如果`lang="lt"`或其他语言 → 停止处理，不进行翻译
+4. **检查字幕长度**：如果字幕超过1000行，**不要在主会话中处理**该视频
+
+5. **启动子代理**：
    ```
    Task: Translate transcript.txt to Chinese verbatim.
    Process in 500-line chunks to separate files (part1.md, etc.).
@@ -62,34 +67,34 @@ Content-Type: application/json
    Budget: 30 minutes or $2 cost limit.
    ```
 
-### Step 2: Execution (Sub-Agent)
+### 第2步：执行（子代理）
 
-1. **Read & Slice**: Read in chunks (limit=500). Do NOT read full file at once.
-2. **Translate & Format**: Translate verbatim to Chinese. Add headers (e.g., `## 开场`).
-3. **Stream Write**: Write each chunk to separate files or use `cat >>` to append.
-4. **Enhance**:
-   - Read first 500 lines to extract Key Metrics (Revenue, Growth, etc.)
-   - Generate Executive Summary (3-5 bullets, Chinese)
-   - Create Key Metrics Table (Markdown)
-   - Prepend to final file
-5. **Report**: Return path to `full_transcript.md`
+1. **分块读取视频内容**：每次读取500行数据（限制每次读取量）
+2. **翻译并格式化**：将字幕内容逐行翻译成中文，并添加适当的标题（如`## 开场`等）
+3. **写入文件**：将翻译后的内容分别写入不同的文件中，或使用`cat >>`命令将所有内容合并到一个文件中
+4. **补充信息**：
+   - 读取前500行以提取关键数据（如收入、增长情况等）
+   - 生成执行摘要（3-5条要点，中文格式）
+   - 创建关键数据表格（Markdown格式）
+   - 将这些内容添加到最终文件中
+5. **返回结果**：返回包含完整字幕内容的文件路径（`full_transcript.md`）
 
-### Step 3: Delivery (Main Session)
+### 第3步：结果交付（主会话）
 
-1. Receive file path from sub-agent
-2. **Upload**: Run `zhiyan` MCP (`parse_markdown`) if available
-3. Send doc link/file to user
+1. 从子代理获取文件路径
+2. **上传结果**：如果可用，请使用`zhiyan`工具的MCP功能（`parse_markdown`）处理文件
+3. 将生成的文档链接或文件发送给用户
 
-## Troubleshooting
+## 常见问题及解决方法
 
-**Q: "What is the DownSub API Key?"**
-→ API key missing. Provide Bearer token or configure in secrets.
+**问：“什么是DownSub API密钥？”**
+→ API密钥未配置。请提供Bearer令牌或将其添加到配置文件中。
 
-**Q: "Tool `zhiyan` not found"**
-→ `zhiyan` MCP not installed. **Solution**: Skip upload, send `.md` file directly.
+**问：“`zhiyan`工具找不到”**
+→ 未安装`zhiyan`工具。**解决方法**：跳过上传步骤，直接发送`.md`文件。
 
-**Q: Translates into nonsense/random text**
-→ Downloaded wrong subtitle track (e.g., Lithuanian). **Solution**: Check `lang` field, use only `en`.
+**问：翻译结果混乱或包含随机内容**
+→ 下载的字幕语言设置错误（例如选择了立陶宛语）。**解决方法**：检查`lang`字段，确保使用`en`语言。
 
-**Q: Task times out or stops responding**
-→ Video too long for single session. **Solution**: Spawn sub-agent to process in background.
+**问：任务超时或停止响应**
+→ 视频长度过长，无法在单次会话中完成处理。**解决方法**：启动子代理在后台继续处理视频内容。

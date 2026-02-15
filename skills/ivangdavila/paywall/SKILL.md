@@ -1,90 +1,90 @@
 ---
 name: "Paywall"
-description: "Build high-converting paywalls for mobile apps and web with proven patterns, pricing strategies, and A/B testing."
+description: "使用经过验证的模式、定价策略以及A/B测试，为移动应用和网站构建高转化率的付费墙。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: "create paywall", "subscription screen", "pricing page", "improve conversion", "paywall not converting", "free trial flow".
+在以下情况下激活：创建付费墙、订阅页面、定价页面、提升转化率、付费墙无法正常工作、免费试用流程。
 
-## Platform Differences
+## 平台差异
 
-| Aspect | Mobile (iOS/Android) | Web (SaaS) |
+| 方面 | 移动设备（iOS/Android） | Web（SaaS） |
 |--------|---------------------|------------|
-| Context | Full-screen takeover | Pricing page or modal |
-| Timing | Onboarding, contextual, campaigns | Landing page, upgrade prompts |
-| Billing | App Store / Play Store | Stripe, Paddle, etc. |
-| Trials | Store-managed | Self-managed |
-| Testing | Remote config, A/B tools | Standard web A/B |
+| 显示方式 | 全屏弹窗 | 定价页面或模态窗口 |
+| 触发时机 | 新用户引导、上下文相关场景、营销活动 | 登陆页面、升级提示 |
+| 结算方式 | App Store / Play Store | Stripe、Paddle 等支付平台 |
+| 试用机制 | 由平台管理 | 由用户自行管理 |
+| 测试方式 | 远程配置、A/B 测试工具 | 标准的 Web A/B 测试 |
 
-See `mobile.md` for iOS/Android specifics. See `web.md` for SaaS pricing pages.
+有关 iOS/Android 的详细信息，请参阅 `mobile.md`；有关 SaaS 定价页面的详细信息，请参阅 `web.md`。
 
-## Placement Strategy
+## 放置策略
 
-| Type | When | Conversion share |
+| 类型 | 触发时机 | 转化率 |
 |------|------|------------------|
-| Onboarding | After install, during setup | 40-60% of trials |
-| Contextual | User hits premium feature | 20-30% |
-| Upgrade button | Persistent in UI | 10-20% |
-| Campaign | Push, email, in-app trigger | 5-15% |
+| 新用户引导 | 安装完成后、设置过程中 | 40-60% 的试用用户 |
+| 上下文相关场景 | 用户尝试高级功能时 | 20-30% |
+| 升级按钮 | 用户界面中持续显示 | 10-20% |
+| 营销活动 | 推送通知、电子邮件、应用内触发 | 5-15% |
 
-**Rule:** Always have an onboarding paywall. Most conversions happen when motivation is highest.
+**规则：** 必须设置新用户引导时的付费墙。大多数转化发生在用户积极性最高的时候。
 
-See `placement.md` for timing and trigger strategies.
+有关触发时机和放置策略的详细信息，请参阅 `placement.md`。
 
-## Core Layout Elements
+## 核心布局元素
 
-Every high-converting paywall includes:
+所有高转化率的付费墙都应包含以下元素：
 
-1. **Value proposition** — What they get (benefits, not features)
-2. **Plan options** — Usually 2-3, with one highlighted
-3. **Price display** — Clear, with anchoring if applicable
-4. **CTA** — Single action, prominent
-5. **Trust signals** — Trial terms, cancel anytime, reviews
+1. **价值主张** — 用户能获得什么（好处，而非具体功能）
+2. **套餐选项** — 通常提供 2-3 个套餐选项，其中一个被重点突出显示
+3. **价格显示** — 清晰明了，必要时使用价格锚定技术
+4. **呼叫行动（CTA）** — 单一明确的操作按钮
+5. **信任信号** — 试用期条款、随时可取消订阅、用户评价
 
-See `layout.md` for design patterns and examples.
+有关设计模式和示例的详细信息，请参阅 `layout.md`。
 
-## Pricing Display
+## 定价展示
 
-| Pattern | Effect |
+| 展示方式 | 效果 |
 |---------|--------|
-| Monthly equivalent | "Just $4.99/mo" for yearly |
-| Savings badge | "Save 50%" on annual |
-| Decoy plan | Makes target plan look better |
-| Price anchoring | Show "was $X" or compare to alternatives |
+| 月度价格展示 | “年费仅需 $4.99” |
+| 节省费用提示 | “年费可节省 50%” |
+| 诱饵套餐 | 使目标套餐显得更吸引人 |
+| 价格锚定 | 显示“原价为 $X”或与其他套餐进行对比”
 
-**Default selection matters.** Pre-select the plan you want users to buy.
+**默认套餐的选择非常重要。** 需要预先设置用户最有可能购买的套餐。
 
-See `pricing.md` for plan structures and psychology.
+有关套餐结构和用户心理的详细信息，请参阅 `pricing.md`。
 
-## Copy Rules
+## 文本撰写规则
 
-- **Benefits over features.** "Unlimited exports" → "Never hit a limit"
-- **Specific outcomes.** "Save 4 hours/week" beats "Save time"
-- **Risk reversal.** "Cancel anytime" near CTA
-- **Social proof.** "Join 50,000+ subscribers"
+- 强调好处而非具体功能。例如：“无限导出”而非“无下载限制”
+- 使用具体、可量化的成果描述。例如：“每周节省 4 小时时间”比“节省时间”更有效
+- 在呼叫行动附近强调“随时可取消订阅”
+- 使用社交证明（例如“已有 50,000+ 名订阅者”）
 
-See `copy.md` for formulas by paywall type.
+有关不同类型付费墙的文本撰写技巧，请参阅 `copy.md`。
 
-## Testing Priority
+## 测试优先级
 
-Test in this order (highest impact first):
+按照以下顺序进行测试（优先测试影响最大的部分）：
 
-1. **Price points** — Test every 6-12 months minimum
-2. **Plan presentation** — Which plan is default, how many shown
-3. **Layout** — Full redesigns, section order
-4. **Copy** — Headlines, benefit framing
-5. **Timing** — When paywall appears
+1. **价格设置** — 至少每 6-12 个月测试一次
+2. **套餐展示方式** — 默认显示的套餐、显示的套餐数量
+3. **页面布局** — 全面重新设计、页面元素顺序
+4. **文本内容** — 标题、利益描述
+5. **触发时机** — 付费墙的显示时机
 
-**Rule:** Always A/B test paywall changes. Even "obvious" improvements can backfire.
+**规则：** 必须对付费墙的各个部分进行 A/B 测试。即使看似微小的改进也可能产生意想不到的效果。
 
-See `testing.md` for metrics, sample sizes, and experiment design.
+有关测试方法、样本量和实验设计的详细信息，请参阅 `testing.md`。
 
-## Red Flags
+## 需注意的问题
 
-Stop and fix:
-- No onboarding paywall → Add one
-- Only monthly plan → Add annual option
-- Cluttered with options → Simplify to 2-3 plans
-- No trial/guarantee → Add risk reversal
-- Can't test remotely → Implement remote config
+如果遇到以下情况，请立即停止并解决问题：
+- 未设置新用户引导时的付费墙 → 立即添加
+- 只提供月度套餐 → 需要添加年度套餐选项
+- 选项过于复杂 → 简化为 2-3 个套餐
+- 无试用机制或无购买保障 → 需要添加“随时可取消订阅”的提示
+- 无法进行远程测试 → 需要实现远程配置功能

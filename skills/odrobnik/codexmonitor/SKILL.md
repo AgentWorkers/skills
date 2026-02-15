@@ -32,23 +32,23 @@ metadata:
 
 # codexmonitor
 
-Use `codexmonitor` to browse local OpenAI Codex sessions.
+使用 `codexmonitor` 可以浏览本地的 OpenAI Codex 会话。
 
-## Setup
+## 设置
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
 
-## Common commands
+## 常用命令
 
-- List sessions (day): `codexmonitor list 2026/01/08`
-- List sessions (day, JSON): `codexmonitor list --json 2026/01/08`
-- Show a session: `codexmonitor show <session-id>`
-- Show with ranges: `codexmonitor show <session-id> --ranges 1...3,26...28`
-- Show JSON: `codexmonitor show <session-id> --json`
-- Watch all: `codexmonitor watch`
-- Watch specific: `codexmonitor watch --session <session-id>`
+- 列出所有会话（按日期）：`codexmonitor list 2026/01/08`
+- 列出所有会话（按日期，以 JSON 格式）：`codexmonitor list --json 2026/01/08`
+- 显示特定会话：`codexmonitor show <session-id>`
+- 显示指定范围内的会话：`codexmonitor show <session-id> --ranges 1...3,26...28`
+- 以 JSON 格式显示会话详情：`codexmonitor show <session-id> --json`
+- 实时监控所有会话：`codexmonitor watch`
+- 实时监控特定会话：`codexmonitor watch --session <session-id>`
 
-## Notes
-- Sessions live under `~/.codex/sessions/YYYY/MM/DD/` by default.
-- If your sessions live somewhere else, set `CODEX_SESSIONS_DIR` (preferred) or `CODEX_HOME`.
-- Sessions can be resumed/appended by id via Codex: `codex exec resume <SESSION_ID> "message"`.
+## 注意事项
+- 默认情况下，会话文件存储在 `~/.codex/sessions/YYYY/MM/DD/` 目录下。
+- 如果会话文件存储在其他位置，请设置 `CODEX_SESSIONS_DIR`（推荐）或 `CODEX_HOME`。
+- 可以通过会话 ID 通过 Codex 恢复或追加会话内容：`codex exec resume <SESSION_ID> "message"`。

@@ -1,6 +1,6 @@
 ---
 name: ctf-writeup-generator
-description: Automatically generate professional CTF writeups from solving sessions with flag detection, challenge categorization, and proper markdown formatting
+description: 能够从解决CTF（Capture The Flag）挑战的过程中自动生成专业的报告。这些报告包括标志（flag）的检测结果、挑战的类别划分，以及符合Markdown格式的文档编写。
 tags:
   - cybersecurity
   - ctf
@@ -10,90 +10,89 @@ tags:
 homepage: https://github.com/yourusername/ctf-writeup-generator
 ---
 
-# CTF Writeup Generator
+# CTF报告生成器
 
-## Description
+## 描述
 
-This skill helps CTF players, security researchers, and cybersecurity educators automatically generate professional writeups from their solving sessions. It intelligently detects flag formats, categorizes challenges, structures the writeup with proper headings, and includes code blocks with syntax highlighting.
+该工具帮助CTF参与者、安全研究人员和网络安全教育工作者自动从他们的解题过程中生成专业的报告。它能够智能地识别flag的格式，对挑战进行分类，并使用适当的标题来组织报告内容，同时还会包含带有语法高亮的代码块。
 
-Perfect for:
-- Creating platform-specific writeups (HackTheBox, TryHackMe, OffSec, etc.)
-- Documenting Jeopardy-style CTF solutions
-- Generating educational content for training materials
-- Building a portfolio of security research
+**适用场景**：
+- 为特定平台（如HackTheBox、TryHackMe、OffSec等）生成报告
+- 记录Jeopardy风格的CTF解决方案
+- 为培训材料生成教育性内容
+- 建立安全研究作品集
 
-## When to Use
+## 使用场景
 
-Use this skill when the user:
-- Says "generate a CTF writeup"
-- Mentions "document my CTF solution"
-- Asks to "create a writeup for [challenge name]"
-- References completing a CTF challenge and needs documentation
-- Wants to format their solving process professionally
-- Needs to extract and format flags from their notes
+当用户有以下需求时，请使用此工具：
+- 请求生成CTF报告
+- 表示需要记录自己的CTF解决方案
+- 要为某个挑战生成报告
+- 提到已完成CTF挑战并需要文档记录
+- 希望以专业的方式格式化解题过程
+- 需要从笔记中提取并格式化flag
 
-## Features
+## 功能特点
 
-### Flag Format Detection
-Automatically detects and validates common CTF flag formats:
-- `CTF{...}`, `FLAG{...}`, `flag{...}`
-- Platform-specific: `HTB{...}`, `THM{...}`, `SHAASTRA{...}`, `picoCTF{...}`
-- Custom regex patterns for competition-specific formats
-- Case-sensitive validation support
+### Flag格式识别
+- 自动识别并验证常见的CTF flag格式：`CTF{...}`、`FLAG{...}`、`flag{...}`  
+- 平台特定格式：`HTB{...}`、`THM{...}`、`SHAASTRA{...}`、`picoCTF{...}`  
+- 支持针对特定竞赛的自定义正则表达式模式  
+- 支持大小写敏感的验证
 
-### Challenge Categories
-Automatically categorizes based on keywords and tools used:
-- **Web Exploitation**: SQL injection, XSS, CSRF, authentication bypass
-- **Binary Exploitation**: Buffer overflow, ROP, format strings, heap exploitation
-- **Reverse Engineering**: Binary analysis, decompilation, obfuscation
-- **Cryptography**: Classical ciphers, modern crypto, hash cracking
-- **Forensics**: Steganography, memory forensics, network analysis, disk imaging
-- **OSINT**: Information gathering, social media analysis
-- **PWN**: Exploitation, shellcode, privilege escalation
-- **Miscellaneous**: Mixed or unique challenge types
+### 挑战分类
+- 根据关键词和使用的工具自动对挑战进行分类：
+  - **Web攻击**：SQL注入、XSS、CSRF、身份验证绕过  
+  - **二进制攻击**：缓冲区溢出、ROP、格式字符串攻击、堆栈溢出  
+  - **逆向工程**：二进制分析、反编译、代码混淆  
+  - **密码学**：经典加密算法、现代加密技术、哈希破解  
+  - **取证**：隐写术、内存取证、网络分析、磁盘成像  
+  - **OSINT**：信息收集、社交媒体分析  
+  - **PWN**：漏洞利用、shellcode编写、权限提升  
+  - **其他**：混合或独特的挑战类型
 
-### Structured Output
-Generates properly formatted markdown writeups with:
-- Challenge metadata (name, category, difficulty, points)
-- Executive summary
-- Reconnaissance findings
-- Step-by-step solution with code blocks
-- Tools used section
-- Flag submission
-- Key learnings and takeaways
-- Optional: Additional resources and references
+### 结构化输出
+- 生成格式规范的markdown报告，包含：
+  - 挑战元数据（名称、类别、难度、分数）
+  - 执行摘要  
+  - 逐步解题过程（含代码块）  
+  - 使用的工具  
+  - Flag提交方式  
+  - 关键学习点和收获  
+  - 可选：附加资源和参考文献
 
-### Code Formatting
-Proper syntax highlighting for:
-- Python, Bash, JavaScript, C/C++
-- Assembly (x86, ARM)
-- SQL queries
-- Command-line tools output
-- Network packet analysis
+### 代码格式化
+- 为以下语言提供正确的语法高亮：
+  - Python、Bash、JavaScript、C/C++  
+  - 汇编语言（x86、ARM）  
+  - SQL查询  
+  - 命令行工具输出  
+  - 网络数据包分析
 
-## Instructions
+## 使用说明
 
-When a user requests a CTF writeup, follow this workflow:
+当用户请求CTF报告时，请按照以下步骤操作：
 
-1. **Gather Information**
-   Ask the user for:
-   - Challenge name
-   - Platform/CTF name (e.g., "HackTheBox", "Shaastra CTF")
-   - Category (or detect from description)
-   - Difficulty level (Easy/Medium/Hard or points value)
-   - Flag format if non-standard
-   - Their solving process/notes
+1. **收集信息**：
+   - 询问用户以下内容：
+     - 挑战名称  
+     - 平台/CTF名称（例如：“HackTheBox”、“Shaastra CTF”）  
+     - 分类（或根据描述自动判断）  
+     - 难度级别（简单/中等/困难或分数值）  
+     - 非标准flag的格式  
+     - 解题过程/笔记  
 
-2. **Process the Content**
-   - Extract technical steps from their description
-   - Identify tools and commands used
-   - Detect flag format and validate
-   - Categorize the challenge
-   - Structure the flow logically
+2. **处理内容**：
+   - 从用户的描述中提取技术步骤  
+   - 识别使用的工具和命令  
+   - 识别并验证flag格式  
+   - 对挑战进行分类  
+   - 逻辑地组织解题流程  
 
-3. **Generate the Writeup**
-   Create a markdown document with this structure:
+3. **生成报告**：
+   使用以下结构创建markdown文档：
 
+   ```markdown
    ```markdown
    # [Challenge Name] - [Platform] CTF Writeup
    
@@ -122,7 +121,7 @@ When a user requests a CTF writeup, follow this workflow:
    [Detailed explanation with commands/code]
    
    ```bash
-   # Commands used
+   # 使用的命令
    ```
    
    ### Step 2: [Next phase]
@@ -149,81 +148,81 @@ When a user requests a CTF writeup, follow this workflow:
    
    - [Relevant links]
    ```
+   ```
 
-4. **Validate and Enhance**
-   - Check flag format matches the platform
-   - Ensure code blocks have proper syntax highlighting
-   - Add explanatory comments to complex commands
-   - Include alternative approaches if mentioned
+4. **验证和优化**：
+   - 检查flag格式是否与平台匹配  
+   - 确保代码块具有正确的语法高亮  
+   - 为复杂的命令添加解释性注释  
+   - 如果有替代方法，也一并包含  
 
-5. **Save the Writeup**
-   Save the generated writeup to a markdown file named:
-   `[platform]_[challenge-name]_writeup.md`
+5. **保存报告**：
+   将生成的报告保存为名为`[platform]_[challenge-name]_writeup.md`的markdown文件
 
-## Example Usage
+## 使用示例
 
-**User**: "I just solved the 'Binary Bash' challenge from Shaastra CTF. It was a buffer overflow where I had to overwrite the return address. The flag was Shaastra{buff3r_0v3rfl0w_m4st3r}. Can you generate a writeup?"
+**用户**：“我刚刚解决了Shaastra CTF中的‘Binary Bash’挑战。这是一个缓冲区溢出问题，我需要覆盖返回地址。flag的格式是Shaastra{buff3r_0v3rfl0w_m4st3r}。你能生成一份报告吗？”
 
-**Agent Response**:
-1. Asks for additional details (tools used, exact exploit steps)
-2. Generates a professional writeup with:
-   - Proper challenge metadata
-   - Binary exploitation category
-   - Step-by-step buffer overflow explanation
-   - Code blocks with assembly/C code
-   - GDB commands used
-   - Flag in correct format
-   - Learning points about memory safety
+**工具响应**：
+1. 询问更多详细信息（使用的工具、具体的攻击步骤）
+2. 生成一份专业报告，内容包括：
+   - 正确的挑战元数据  
+   - 二进制攻击的分类  
+   - 逐步解释缓冲区溢出过程  
+   - 包含汇编/C语言代码的代码块  
+   - 使用的GDB命令  
+   - 格式正确的flag  
+   - 关于内存安全的关键学习点
 
-## Platform-Specific Templates
+## 平台特定模板
 
-### HackTheBox
-- Include machine IP, OS, and difficulty rating
-- Add user/root flag sections
-- Include attack path diagram if complex
+- **HackTheBox**：
+  - 包含机器IP、操作系统和难度等级  
+  - 添加用户/root flag的相关内容  
+  - 如果复杂，添加攻击路径图  
 
-### OffSec/OSCP
-- Focus on enumeration methodology
-- Document privilege escalation chains
-- Include proof screenshots references
+- **OffSec/OSCP**：
+  - 重点记录枚举方法  
+  - 记录权限提升的步骤  
+  - 包含证明截图的参考  
 
-### Jeopardy CTF
-- List point values and solve times
-- Include team strategy if relevant
-- Categorize by challenge type
+- **Jeopardy CTF**：
+  - 列出分数值和解题时间  
+  - 如果适用，包括团队策略  
+  - 按挑战类型分类
 
-## Advanced Features
+## 高级功能
 
-### Multi-Tool Integration
-- Reference other skills for specific tasks:
-  - `ghidra-skill` for reverse engineering analysis
-  - `burpsuite-skill` for web exploitation
-  - `volatility-skill` for memory forensics
+- **多工具集成**：
+  - 针对特定任务引用其他工具：
+    - `ghidra-skill`用于逆向工程分析  
+    - `burpsuite-skill`用于Web攻击  
+    - `volatility-skill`用于内存取证  
 
-### Writeup Templates
-Support for different writeup styles:
-- **Academic**: Detailed with theoretical background
-- **Speedrun**: Concise with just essential steps
-- **Tutorial**: Beginner-friendly with extra explanations
-- **Portfolio**: Professional format for job applications
+- **报告模板**：
+  - 支持不同的报告风格：
+    - **学术型**：包含详细的理论背景  
+    **速通型**：仅包含必要步骤  
+    **教程型**：适合初学者的详细解释  
+    **作品集型**：适合求职申请的专业格式  
 
-### Export Formats
-- Standard Markdown (.md)
-- PDF via pandoc
-- HTML with custom CSS
-- Platform-specific formats (HTB Academy, Medium, dev.to)
+- **输出格式**：
+  - 标准Markdown (.md)  
+  - 通过pandoc生成PDF  
+  - 带有自定义CSS的HTML  
+  - 平台特定格式（如HTB Academy、Medium、dev.to）
 
-## Security Considerations
+## 安全注意事项
 
-- Never include actual credentials or sensitive API keys
-- Sanitize paths that might reveal system information
-- Respect competition rules (don't publish during active CTF)
-- Add spoiler warnings for recent challenges
-- Verify flag sharing is allowed by platform
+- **不要包含实际凭证或敏感的API密钥**  
+- 对可能泄露系统信息的路径进行清理  
+- 遵守比赛规则（在活动CTF期间不要发布报告）  
+- 对近期挑战添加剧透警告  
+- 确认平台允许分享flag
 
-## Configuration
+## 配置
 
-Users can customize via environment variables:
+用户可以通过环境变量进行自定义：
 
 ```bash
 # Set default author name
@@ -239,25 +238,26 @@ export CTF_WRITEUP_STYLE="tutorial"
 export CTF_AUTO_SCREENSHOTS=true
 ```
 
-## Dependencies
+## 依赖项
 
-- Basic markdown processor (built-in)
-- Optional: pandoc (for PDF export)
-- Optional: pygments (for enhanced syntax highlighting)
+- 基本的markdown处理器（内置）  
+- 可选：pandoc（用于PDF导出）  
+- 可选：pygments（用于增强语法高亮）
 
-## Tips for Best Results
+## 提高报告质量的建议
 
-1. Provide detailed solving notes - the more context, the better
-2. Include command outputs when relevant
-3. Mention dead-ends and why they failed (valuable learning)
-4. Reference CVEs and tool documentation
-5. Add your unique insights and methodology
-6. Keep flag formats consistent with the platform
+1. 提供详细的解题笔记——背景信息越详细越好  
+2. 在相关情况下包含命令输出  
+3. 提及遇到的死胡同及失败原因（这些是宝贵的学习内容）  
+4. 引用CVE和工具文档  
+5. 添加自己的独特见解和方法  
+6. 保持flag格式与平台一致
 
-## Example Writeup Structure
+## 报告示例结构
 
-For a web exploitation challenge:
+**Web攻击挑战示例：**
 
+```markdown
 ```markdown
 # SQL Injection Master - Shaastra CTF 2026
 
@@ -333,19 +333,20 @@ SHAASTRA{sql_inj3ct10n_pr0}
 - [OWASP SQL Injection Guide](https://owasp.org/...)
 - [SQLMap Documentation](https://sqlmap.org/)
 ```
+```
 
-## Contributing
+## 贡献方式
 
-Users can improve this skill by:
-- Adding new flag format patterns
-- Contributing platform-specific templates
-- Enhancing categorization logic
-- Sharing example writeups
+用户可以通过以下方式改进此工具：
+- 添加新的flag格式模式  
+- 贡献平台特定模板  
+- 优化分类逻辑  
+- 分享示例报告
 
-## License
+## 许可证
 
-MIT License - Free to use and modify
+MIT许可证——免费使用和修改
 
-## Support
+## 支持
 
-For issues or suggestions, contact the skill maintainer or file an issue on the GitHub repository.
+如有问题或建议，请联系工具维护者，或在GitHub仓库中提交问题。

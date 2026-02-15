@@ -11,38 +11,38 @@ description: >
   Also use when building artifacts or dashboards that display wallet or token data.
 ---
 
-# Zerion API Skill
+# Zerion API 技能
 
-Query web3 wallet data, token prices, NFTs, and transaction history via the Zerion MCP connector.
+通过 Zerion MCP 连接器查询 web3 钱包数据、代币价格、NFT 信息以及交易历史。
 
-## Authentication
+## 认证
 
-Zerion API requires a key for every request. The key is **not** stored in the MCP connector settings — the user must provide it each chat session.
+使用 Zerion API 需要一个密钥。该密钥 **不会** 存储在 MCP 连接器的设置中——用户必须在每次聊天会话中提供它。
 
-### Workflow
+### 工作流程
 
-1. **At the start of any Zerion-related task**, if no API key has been provided yet, ask:
-   *"To query Zerion, I'll need your API key. You can find it at https://dashboard.zerion.io/. Please paste it here."*
-2. **Store the key in memory** for the duration of the conversation. Never write it to files, display it in artifacts, or log it.
-3. **Pass the key** to the MCP server or REST calls as described below.
+1. **在任何与 Zerion 相关的任务开始时**，如果尚未提供 API 密钥，请询问：
+   *"要查询 Zerion，我需要您的 API 密钥。您可以在 https://dashboard.zerion.io/ 找到它。请将其粘贴到这里。"
+2. **将密钥存储在内存中**，在整个对话期间使用。切勿将其写入文件、显示在输出结果中或记录在日志中。
+3. **按照以下方式将密钥传递给 MCP 服务器或 REST 请求。**
 
-### Auth Format
+### 认证格式
 
-Zerion uses HTTP Basic Auth: the API key is the username, password is empty.
+Zerion 使用 HTTP Basic Auth：API 密钥作为用户名，密码为空。
 
 ```
 Authorization: Basic <base64(API_KEY + ":")>
 ```
 
-Example: key `zk_dev_abc123` → base64 of `zk_dev_abc123:` → `emtfZGV2X2FiYzEyMzo=`
+示例：密钥 `zk_dev_abc123` → `zk_dev_abc123:` 的 Base64 编码 → `emtfZGV2X2FiYzEyMzo=`
 
-## MCP Connection
+## MCP 连接
 
-The Zerion API MCP server is at `https://developers.zerion.io/mcp`.
+Zerion API 的 MCP 服务器地址为 `https://developers.zerion.io/mcp`。
 
-When using MCP tools directly (outside artifacts), pass the API key as required by the tool parameters.
+当直接使用 MCP 工具（不在输出结果中显示）时，按照工具参数的要求传递 API 密钥。
 
-When building artifacts that call the Anthropic API with MCP, include the key in the inner prompt so the inner Claude can authenticate:
+在构建调用 Anthropic API 的输出结果时，需要将密钥包含在内部提示中，以便内部 Claude 能够进行认证：
 
 ```javascript
 mcp_servers: [
@@ -50,7 +50,7 @@ mcp_servers: [
 ]
 ```
 
-**Important**: In artifacts, receive the API key as a prop or state variable — never hardcode it. Example pattern:
+**重要提示**：在输出结果中，将 API 密钥作为属性或状态变量接收——切勿将其硬编码。示例模式：
 
 ```jsx
 // User inputs key via a secure input field (type="password")
@@ -60,111 +60,111 @@ const [apiKey, setApiKey] = useState("");
 const prompt = `Using the Zerion API key: ${apiKey}, get portfolio for wallet 0x...`;
 ```
 
-## Quick Reference: Common Workflows
+## 常见工作流程
 
-### 1. Wallet Portfolio Overview
+### 1. 钱包资产概览
 
-Prompt the inner Claude to call the Zerion API for the wallet's portfolio:
+提示内部 Claude 调用 Zerion API 获取钱包的资产概况：
 
 ```
 Get the portfolio for wallet {address} in USD. Include total value, daily changes,
 and distribution by chain and position type.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/portfolio`
-- `currency`: usd (default), eth, btc, eur, etc.
-- `filter[positions]`: `only_simple` (default), `only_complex` (DeFi), `no_filter` (all)
+**端点：** `GET /v1/wallets/{address}/portfolio`
+- `currency`：usd（默认）、eth、btc、eur 等
+- `filter[positions]`：`only_simple`（默认）、`only_complex`（DeFi）、`no_filter`（全部）
 
-### 2. Wallet Token Positions
+### 2. 钱包代币持仓
 
 ```
 List all fungible positions for wallet {address}, sorted by value descending.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/positions/`
-- `filter[positions]`: `only_simple` | `only_complex` | `no_filter`
-- `filter[chain_ids]`: comma-separated chain IDs (e.g., `ethereum,polygon`)
-- `filter[position_types]`: `wallet`, `deposit`, `staked`, `loan`, `locked`, `reward`, `investment`
-- `sort`: `-value` (highest first) or `value`
-- `filter[trash]`: `only_non_trash` (default)
+**端点：** `GET /v1/wallets/{address}/positions/`
+- `filter[positions]`：`only_simple` | `only_complex` | `no_filter`
+- `filter[chain_ids]`：用逗号分隔的链 ID（例如：`ethereum,polygon`
+- `filter[position_types]`：`wallet`、`deposit`、`staked`、`loan`、`locked`、`reward`、`investment`
+- `sort`：`-value`（降序）或 `value`（升序）
+- `filter[trash]`：`only_non_trash`（默认）
 
-### 3. Transaction History
+### 3. 交易历史
 
 ```
 Get recent transactions for wallet {address}, filter for trades only.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/transactions/`
-- `filter[operation_types]`: `trade`, `send`, `receive`, `deposit`, `withdraw`, `mint`, `burn`, `claim`, `approve`, etc.
-- `filter[chain_ids]`: filter by chain
-- `filter[min_mined_at]` / `filter[max_mined_at]`: timestamp in milliseconds
-- `page[size]`: max 100
+**端点：** `GET /v1/wallets/{address}/transactions/`
+- `filter[operation_types]`：`trade`、`send`、`receive`、`deposit`、`withdraw`、`mint`、`burn`、`claim` 等
+- `filter[chain_ids]`：按链过滤
+- `filter[min_mined_at]` / `filter[max_mined_at]`：时间戳（以毫秒为单位）
+- `page[size]`：最多显示 100 条记录
 
-### 4. Profit & Loss (PnL)
+### 4. 盈亏（PnL）
 
 ```
 Get PnL for wallet {address}. Show realized gain, unrealized gain, fees, and net invested.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/pnl`
-- Returns: `realized_gain`, `unrealized_gain`, `total_fee`, `net_invested`, `received_external`, `sent_external`
-- Uses FIFO method
-- `filter[chain_ids]`, `filter[fungible_ids]`: narrow scope
+**端点：** `GET /v1/wallets/{address}/pnl`
+- 返回值：`realized_gain`（已实现收益）、`unrealized_gain`（未实现收益）、`total_fee`（总费用）、`net_invested`（总投资）、`received_external`（外部收入）、`sent_external`（外部支出）
+- 使用 FIFO 方法
+- `filter[chain_ids]`、`filter[fungible_ids]`：用于缩小搜索范围
 
-### 5. Wallet Balance Chart
+### 5. 钱包余额图表
 
 ```
 Get the balance chart for wallet {address} over the past month.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/charts/{chart_period}`
-- `chart_period`: `hour`, `day`, `week`, `month`, `3months`, `6months`, `year`, `5years`, `max`
-- Returns array of `[timestamp, balance]` points
+**端点：** `GET /v1/wallets/{address}/charts/{chart_period}`
+- `chart_period`：`hour`（小时）、`day`（天）、`week`（周）、`month`（月）、`3months`（3 个月）、`6months`（6 个月）、`year`（年）、`5years`（5 年）、`max`（全部）
+- 返回类型为 `[timestamp, balance]` 的数组
 
-### 6. Token Price & Search
+### 6. 代币价格与搜索
 
 ```
 Search for the fungible asset "ethereum" and return its price and market data.
 ```
 
-**Endpoint:** `GET /v1/fungibles/`
-- `filter[search_query]`: text search (e.g., "ethereum", "USDC")
-- `sort`: `-market_data.market_cap`, `-market_data.price.last`, etc.
-- Returns: `name`, `symbol`, `price`, `market_cap`, `circulating_supply`, `changes` (1d/30d/90d/365d)
+**端点：** `GET /v1/fungibles/`
+- `filter[search_query]`：文本搜索（例如：“ethereum”、“USDC”）
+- `sort`：`-market_data.market_cap`、`-market_data.price.last` 等
+- 返回值：`name`（名称）、`symbol`（代币符号）、`price`（价格）、`market_cap`（市值）、`circulating_supply`（流通供应量）、`changes`（过去 1 天/30 天/90 天/365 天的变动量）
 
-### 7. Token Price Chart
+### 7. 代币价格图表
 
 ```
 Get the price chart for fungible {fungible_id} over the past week.
 ```
 
-**Endpoint:** `GET /v1/fungibles/{fungible_id}/charts/{chart_period}`
-- Same chart periods as wallet charts
-- Returns `[timestamp, price]` points
+**端点：** `GET /v1/fungibles/{fungible_id}/charts/{chart_period}`
+- 图表周期与钱包图表相同
+- 返回类型为 `[timestamp, price]` 的数组
 
-### 8. NFT Positions
+### 8. NFT 持仓
 
 ```
 List all NFT positions for wallet {address}, sorted by floor price descending.
 ```
 
-**Endpoint:** `GET /v1/wallets/{address}/nft-positions/`
-- `sort`: `-floor_price`, `floor_price`, `created_at`, `-created_at`
-- `filter[chain_ids]`: filter by chain
-- `include`: `nfts`, `nft_collections`, `wallet_nft_collections` for richer data
+**端点：** `GET /v1/wallets/{address}/nft-positions/`
+- `sort`：`-floor_price`、`created_at`（创建时间）
+- `filter[chain_ids]`：按链过滤
+- `include`：`nfts`、`nft_collections`、`wallet_nft_collections`（获取更详细的数据）
 
-### 9. NFT Portfolio Value
+### 9. NFT 资产组合价值
 
-**Endpoint:** `GET /v1/wallets/{address}/nft-portfolio`
-- Returns total NFT portfolio value
+**端点：** `GET /v1/wallets/{address}/nft-portfolio`
+- 返回 NFT 资产组合的总价值
 
-## Building Artifacts with Zerion Data
+## 使用 Zerion 数据构建输出结果
 
-When building React/HTML artifacts that display Zerion data:
+在构建显示 Zerion 数据的 React/HTML 输出结果时：
 
-1. **Collect the API key securely** via a `type="password"` input field
-2. **Never display or log** the key in the UI
-3. **Pass it through the MCP prompt** so the inner Claude can authenticate
+1. **通过类型为 “password” 的输入字段安全地收集 API 密钥**
+2. **切勿在用户界面中显示或记录** 密钥
+3. **通过 MCP 提示将密钥传递给内部 Claude 进行认证**
 
 ```javascript
 // apiKey comes from a password input, never hardcoded
@@ -191,9 +191,9 @@ const response = await fetch("https://api.anthropic.com/v1/messages", {
 });
 ```
 
-### Processing MCP Responses
+### 处理 MCP 响应
 
-MCP responses contain multiple content blocks. Extract data by type:
+MCP 响应包含多个数据块。根据数据类型提取所需信息：
 
 ```javascript
 const data = await response.json();
@@ -211,19 +211,19 @@ const textResponses = data.content
   .join("\n");
 ```
 
-## Key Notes
+## 关键注意事项
 
-- **Address formats**: Supports EVM addresses (0x...) and Solana addresses. ENS names may need resolution first.
-- **Solana limitations**: No protocol positions or NFT transactions for Solana addresses.
-- **Currency options**: `usd`, `eth`, `btc`, `eur`, `krw`, `rub`, `gbp`, `aud`, `cad`, `inr`, `jpy`, `nzd`, `try`, `zar`, `cny`, `chf`
-- **Pagination**: Use `links.next` from responses for pagination; never construct `page[after]` manually.
-- **Rate limits**: API returns 429 on throttling. Implement retry with backoff in artifacts.
-- **Treat IDs as opaque strings**: Never assume format of IDs; they may change.
-- **DeFi positions**: Use `filter[positions]=no_filter` to include protocol positions alongside wallet positions.
-- **LP grouping**: Liquidity pool positions share a `group_id` attribute — group by it to display pools correctly.
+- **地址格式**：支持 EVM 地址（0x...）和 Solana 地址。ENS 名称可能需要先进行解析。
+- **Solana 的限制**：Solana 地址无法查询协议持仓或 NFT 交易。
+- **货币选项**：`usd`、`eth`、`btc`、`eur`、`krw`、`rub`、`gbp`、`aud`、`cad`、`inr`、`jpy`、`nzd`、`try`、`zar`、`cny`、`chf`
+- **分页**：使用响应中的 `links.next` 进行分页；切勿手动构造 `page[after]`。
+- **速率限制**：API 在达到速率限制时会返回 429 错误。在输出结果中实现带有退避机制的重试逻辑。
+- **将 ID 视为不可预测的字符串**：不要假设 ID 的固定格式，因为它们可能会发生变化。
+- **DeFi 持仓**：使用 `filter[positions]=no_filter` 以同时显示协议持仓和钱包持仓。
+- **LP 分组**：流动性池持仓共享 `group_id` 属性——根据该属性对池进行正确分组显示。
 
-## Detailed Endpoint Reference
+## 详细端点参考
 
-For full parameter details, response schemas, and edge cases:
-- **Wallet endpoints**: See [references/wallet-endpoints.md](references/wallet-endpoints.md)
-- **Fungible & NFT endpoints**: See [references/fungible-nft-endpoints.md](references/fungible-nft-endpoints.md)
+有关完整的参数详情、响应格式和边缘情况，请参阅：
+- **钱包端点**：[references/wallet-endpoints.md](references/wallet-endpoints.md)
+- **Fungible 和 NFT 端点**：[references/fungible-nft-endpoints.md](references/fungible-nft-endpoints.md)

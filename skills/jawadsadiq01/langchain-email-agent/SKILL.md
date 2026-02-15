@@ -1,18 +1,18 @@
 # EmailAgent README
 
-## Overview
+## 概述
 
-The `EmailAgent` class provides an AI-powered email composition and sending capability using LangChain with OpenAI's GPT model. It includes human-in-the-loop middleware that requires approval before emails are sent.
+`EmailAgent` 类利用 OpenAI 的 GPT 模型和 LangChain 提供了基于人工智能的电子邮件撰写和发送功能。该类包含一个“人工介入”（human-in-the-loop）中间件，在发送电子邮件之前需要经过审批。
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `OPENAI_MODEL` | `gpt-4o-mini` | OpenAI model to use |
+| `OPENAI_MODEL` | `gpt-4o-mini` | 要使用的 OpenAI 模型 |
 
-## Usage
+## 使用方法
 
 ```typescript
 import { EmailAgent } from './email.agent';
@@ -31,26 +31,26 @@ const dto: SendEmailDto = {
 const result = await agent.sendEmail(dto);
 ```
 
-## Human-in-the-Loop Middleware
+## 人工介入中间件
 
-The agent uses `humanInTheLoopMiddleware` which interrupts execution on the `EmailTool` before sending emails. This allows for:
+该代理在发送电子邮件之前会使用 `humanInTheLoopMiddleware` 中间件来中断 `EmailTool` 的执行流程。这允许用户执行以下操作：
 
-- **approve** - Send the email as composed
-- **edit** - Modify the email before sending
-- **reject** - Cancel the email operation
+- **approve**：批准已撰写的电子邮件并发送。
+- **edit**：在发送前修改电子邮件内容。
+- **reject**：取消电子邮件发送操作。
 
-The `readEmailTool` is excluded from interruption (`false`), allowing read operations to proceed without approval.
+`readEmailTool` 被排除在中间件干预之外（其值为 `false`），因此读取电子邮件的操作可以无需审批即可继续进行。
 
-## Parameters
+## 参数
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| `email` | string | Yes | Recipient email address |
-| `name` | string | Yes | Recipient name |
-| `subject` | string | No | Email subject line |
-| `body` | string | No | Initial email body content |
-| `instructions` | string | No | AI instructions for composing the email |
+| `email` | 字符串 | 是 | 收件人电子邮件地址 |
+| `name` | 字符串 | 是 | 收件人姓名 |
+| `subject` | 字符串 | 否 | 电子邮件主题行 |
+| `body` | 字符串 | 否 | 电子邮件正文内容 |
+| `instructions` | 字符串 | 否 | 用于指导人工智能撰写电子邮件的指令 |
 
-## Return Value
+## 返回值
 
-Returns the final message content from the agent as a string.
+该函数返回代理处理后的最终邮件内容（以字符串形式）。

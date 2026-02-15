@@ -1,13 +1,13 @@
 ---
 name: paste-rs
-description: Paste text, Markdown, or HTML snippets to https://paste.rs and return a shareable URL. Use when the user asks to "paste"/"upload" text to paste.rs, share logs/config snippets safely as a link, or quickly publish command output without sending long messages.
+description: 将文本、Markdown 或 HTML 代码片段粘贴到 https://paste.rs，系统会生成一个可分享的 URL。当用户请求将文本/配置片段安全地以链接形式分享，或希望快速发布命令输出（而无需发送长消息）时，可以使用此方法。
 ---
 
 # paste.rs
 
-## Quick start (preferred)
+## 快速入门（推荐方式）
 
-Use the bundled script (it **saves a local `.md` file first**, then uploads):
+使用随附的脚本（该脚本会先在本地生成一个 `.md` 文件，然后再将其上传）：
 
 ```bash
 # paste from stdin
@@ -23,11 +23,11 @@ python3 skills/paste-rs/scripts/paste_rs.py --text '<h1>Hello</h1>'
 python3 skills/paste-rs/scripts/paste_rs.py --outdir ./tmp-pastes --text 'hello'
 ```
 
-Output:
-- **stdout**: URL `https://paste.rs/XXXX.md`
-- **stderr**: path `saved: /tmp/paste-rs-YYYYMMDD-HHMMSS.md`
+输出结果：
+- **stdout**：URL `https://paste.rs/XXXX.md`
+- **stderr**：路径 `saved: /tmp/paste-rs-YYYYMMDD-HHMMSS.md`
 
-## Curl one-liners (fallback)
+## 使用 Curl 命令（备用方式）
 
 ```bash
 # stdin
@@ -37,13 +37,13 @@ some_command | curl -fsS https://paste.rs -d @-
 curl -fsS https://paste.rs -d @./file.txt
 ```
 
-## Safety notes
+## 安全提示
 
-- Treat the pasted content as **public**.
-- Script `scripts/paste_rs.py` melakukan **redact otomatis by default** untuk pola rahasia umum (token/apiKey/botToken/password/Authorization).
-- Kalau memang butuh raw (tidak disarankan), pakai `--no-redact`.
+- 请将粘贴的内容视为公开内容。
+- 脚本 `scripts/paste_rs.py` 默认会自动对包含敏感信息（如 token、apiKey、botToken、password、Authorization 等）的部分进行隐藏处理。
+- 如果确实需要保留原始内容（不推荐这样做），请使用 `--no-redact` 选项。
 
-## Resources
+## 资源
 
-- `scripts/paste_rs.py`: deterministic uploader (stdin / --text / --file)
-- `references/paste-rs-api.md`: minimal API reference
+- `scripts/paste_rs.py`：用于上传文件的脚本（支持标准输入、`--text` 或 `--file` 选项）
+- `references/paste-rs-api.md`：基本的 API 参考文档

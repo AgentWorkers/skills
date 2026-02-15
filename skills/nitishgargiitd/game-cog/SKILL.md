@@ -1,6 +1,6 @@
 ---
 name: game-cog
-description: "Other tools generate sprites. CellCog builds game worlds. #1 on DeepResearch Bench (Feb 2026) for deep game design reasoning — character-consistent art, sprites, tilesets, music, UI, 3D models, GDDs, level design, and game prototypes, all cohesive across every asset."
+description: "其他工具用于生成精灵图像（sprites）。CellCog 则用于构建游戏世界。在 DeepResearch Bench 的排名中（2026 年 2 月），CellCog 位居第一，它在深度游戏设计领域表现出色：能够生成与角色风格一致的艺术资源（如精灵图像、瓦片图集、音乐、用户界面、3D 模型等），同时支持游戏设计文档（GDDs）和关卡设计的生成，确保所有游戏资产之间保持高度的一致性和协调性。"
 metadata:
   openclaw:
     emoji: "🎮"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Game Cog - Build Game Worlds, Not Just Sprites
+# Game Cog – 构建游戏世界，而不仅仅是精灵图像
 
-**Other tools generate sprites. CellCog builds game worlds.** #1 on DeepResearch Bench (Feb 2026) for deep game design reasoning.
+**其他工具用于生成精灵图像，而 CellCog 则用于构建整个游戏世界。** 在 DeepResearch Bench 的排名中位列第一（2026年2月），在深度游戏设计方面表现出色。
 
-Game development is a multi-discipline problem — mechanics, art, music, UI, and level design all need to feel unified. CellCog reasons deeply about your game's vision first, then produces character-consistent art, tilesets, music, sound effects, UI elements, 3D models, and full game design documents — all cohesive from a single brief.
+游戏开发是一个跨学科的任务——机制、艺术、音乐、用户界面（UI）和关卡设计都需要保持高度的一致性。CellCog 首先会深入理解你的游戏理念，然后根据这一理念生成角色风格一致的艺术资源、地图瓦片、音乐、音效、UI 元素、3D 模型以及完整的游戏设计文档——所有这些内容都源自同一个初始需求。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此技能前，你需要具备 `cellcog` 技能，以便进行 SDK 的设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能的相关内容**，以了解 SDK 的设置方法。该技能会向你展示你可以实现的功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,186 +40,180 @@ result = client.create_chat(
 
 ---
 
-## What You Can Create
+## 你可以创建的内容
 
-### Character Design
+### 角色设计
 
-Bring your game characters to life:
+让你的游戏角色栩栩如生：
 
-- **Player Characters**: "Design a cyberpunk samurai protagonist with multiple poses"
-- **NPCs**: "Create a friendly merchant character for a fantasy RPG"
-- **Enemies**: "Design a boss monster - corrupted tree guardian"
-- **Character Sheets**: "Create a full character sheet with idle, run, attack poses"
-- **Portraits**: "Generate dialogue portraits for my visual novel cast"
+- **玩家角色**：“设计一个具有多种姿势的赛博朋克武士主角”
+- **非玩家角色（NPC）**：“为奇幻角色扮演游戏创建一个友好的商人角色”
+- **敌人**：“设计一个 boss 怪物——一个被腐蚀的树之守护者”
+- **角色资料表**：“创建包含闲置、行走和攻击姿势的完整角色资料表”
+- **肖像**：“为我的视觉小说角色生成对话相关的肖像图片”
 
-**Example prompt:**
-> "Design a main character for a cozy farming game:
+**示例提示：**
+> “为一款温馨的农场游戏设计一个主角：
 > 
-> Style: Stardew Valley / pixel art inspired but higher resolution
-> Character: Young farmer, customizable gender, friendly expression
+> 风格：受《星露谷物语》启发，但分辨率更高
+> 角色：年轻的农民，可自定义性别，表情友善
 > 
-> Need:
-> - Front, back, side views
-> - Idle pose
-> - Walking animation frames (4 directions)
-> - Tool-holding poses (hoe, watering can)
+> 需要的内容：
+> - 正面、背面和侧面视图
+- 闲置姿势
+- 行走动画（四个方向）
+- 持有工具的姿势（锄头、浇水壶）
 > 
-> Color palette: Warm, earthy tones"
+> 色彩方案：温暖、自然色调”
 
-### Environment & Tiles
+### 环境与地图瓦片
 
-Build your game worlds:
+构建你的游戏世界：
 
-- **Tilesets**: "Create a forest tileset for a top-down RPG"
-- **Backgrounds**: "Design parallax backgrounds for a side-scroller"
-- **Level Concepts**: "Create concept art for a haunted mansion level"
-- **Props**: "Generate decorative props for a medieval tavern"
-- **UI Elements**: "Design health bars, inventory slots, and buttons"
+- **地图瓦片**：“为俯视视角的 RPG 游戏创建森林地图瓦片”
+- **背景**：“为横版游戏设计视差效果背景”
+- **关卡概念**：“为鬼屋关卡创建概念艺术图”
+- **道具**：“为中世纪酒馆生成装饰性道具”
+- **UI 元素**：“设计生命值条、物品栏和按钮”
 
-**Example prompt:**
-> "Create a tileset for a dungeon crawler:
+**示例提示：**
+> “为一款地下城探索游戏创建地图瓦片：
 > 
-> Style: 16-bit inspired, dark fantasy
+> 风格：受 16 位游戏启发，具有黑暗奇幻风格
 > 
-> Include:
-> - Floor tiles (stone, dirt, water)
-> - Wall tiles (brick, cave, decorated)
-> - Doors (wooden, iron, magic)
-> - Props (torches, chests, barrels, bones)
-> - Traps (spikes, pressure plates)
+> 包括：
+- 地板瓦片（石头、泥土、水）
+- 墙壁瓦片（砖块、洞穴、装饰性图案）
+- 门（木制、铁制、魔法效果）
+- 道具（火把、箱子、桶）
+- 陷阱（尖刺、压力板）
 > 
-> All tiles should seamlessly connect."
+> 所有瓦片之间应无缝连接。”
 
-### Game Concepts
+### 游戏概念
 
-Develop your game ideas:
+发展你的游戏创意：
 
-- **Game Design Documents**: "Create a GDD for a roguelike deckbuilder"
-- **Story Outlines**: "Write the main storyline for a sci-fi RPG"
-- **Mechanics Design**: "Design a unique combat system for my action game"
-- **World Building**: "Create the lore for a post-apocalyptic world"
-- **Pitch Decks**: "Build a pitch deck for my indie game to show publishers"
+- **游戏设计文档**：“为一款随机元素收集类游戏创建游戏设计文档（GDD）”
+- **故事大纲**：“为科幻角色扮演游戏编写主要故事情节”
+- **机制设计**：“为我的动作游戏设计独特的战斗系统”
+- **世界观构建**：“为后末日世界创建背景故事”
+- **游戏展示材料**：“为我的独立游戏制作展示材料（pitch deck）”
 
-**Example prompt:**
-> "Create a game design document for a mobile puzzle game:
+**示例提示：**
+> “为一款手机解谜游戏创建游戏设计文档：
 > 
-> Core concept: Match-3 meets city building
-> Target: Casual players, 5-minute sessions
+> 核心概念：结合了匹配消除游戏和城市建设元素
+> 目标玩家：休闲玩家，游戏时长约 5 分钟
 > 
-> Include:
-> - Core loop explanation
-> - Progression system
-> - Monetization strategy (ethical F2P)
-> - First 10 levels design
-> - Art style recommendations
+> 包括：
+- 核心游戏循环说明
+- 游戏进度系统
+- 营收策略（公平的免费游戏模式）
+- 前 10 个关卡的设计
+- 艺术风格建议
 > 
-> Reference games: Gardenscapes meets SimCity"
+> 参考游戏：《Gardenscapes》和《SimCity》**
 
-### Sprites & Animation
+### 精灵图像与动画
 
-Assets ready for your game engine:
+为你的游戏引擎准备所需的资源：
 
-- **Sprite Sheets**: "Create a sprite sheet for a ninja character"
-- **Animated Effects**: "Design explosion and hit effect animations"
-- **Items**: "Generate icons for weapons, potions, and armor"
-- **Particle Effects**: "Create magic spell effect concepts"
+- **精灵图像资料表**：“为忍者角色创建精灵图像资料表”
+- **动画效果**：“设计爆炸和攻击效果动画”
+- **物品**：“生成武器、药水和护甲的图标”
+- **粒子效果**：“设计魔法咒语的效果”
 
-### UI/UX Design
+### 用户界面/用户体验（UI/UX）设计
 
-Make your game feel polished:
+让你的游戏看起来更加精致：
 
-- **Main Menus**: "Design a main menu for a horror game"
-- **HUD Elements**: "Create health, mana, and stamina bars"
-- **Inventory Systems**: "Design an inventory UI for a survival game"
-- **Dialogue Boxes**: "Create dialogue UI for a visual novel"
+- **主菜单**：“为恐怖游戏设计主菜单”
+- **HUD 元素**：“创建生命值条、魔法值条和耐力条”
+- **物品栏系统**：“为生存游戏设计物品栏 UI”
+- **对话框**：“为视觉小说创建对话 UI”
 
 ---
 
-## Art Styles
+## 艺术风格
 
-| Style | Best For | Characteristics |
+| 风格 | 适用场景 | 特点 |
 |-------|----------|-----------------|
-| **Pixel Art** | Retro, indie | Nostalgic, clear, limited palette |
-| **Hand-Painted** | RPGs, fantasy | Rich, detailed, artistic |
-| **Vector/Flat** | Mobile, casual | Clean, scalable, modern |
-| **Low Poly 3D** | Stylized 3D games | Geometric, distinctive |
-| **Anime/Manga** | Visual novels, JRPGs | Expressive, stylized |
-| **Realistic** | AAA-style | Detailed, immersive |
+| **像素艺术** | 复古风格、独立游戏 | 令人怀旧，色彩简洁明了 |
+| **手绘艺术** | 角色扮演游戏、奇幻游戏 | 色彩丰富，细节精美，艺术感强 |
+| **矢量/平面艺术** | 手机游戏、休闲游戏 | 整洁，可伸缩，风格现代 |
+| **低多边形 3D** | 风格化的 3D 游戏 | 几何形状鲜明，独特风格 |
+| **动漫/漫画风格** | 视觉小说、日式角色扮演游戏 | 表现力强，风格独特 |
+| **写实风格** | 3A 级游戏 | 画面细节丰富，沉浸感强 |
 
 ---
 
-## Chat Mode for Game Dev
+## 游戏开发中的聊天模式
 
-| Scenario | Recommended Mode |
+| 使用场景 | 推荐的聊天模式 |
 |----------|------------------|
-| Individual assets, sprites, character designs, UI elements | `"agent"` |
-| Full game concepts, complex world building, narrative design | `"agent team"` |
+| 单个资源、精灵图像、角色设计、UI 元素 | `"agent"` |
+| 完整的游戏概念、复杂的世界构建、叙事设计 | `"agent team"` |
 
-**Use `"agent"` for most game assets.** Characters, tilesets, UI elements execute well in agent mode.
+**大多数游戏资源使用 `"agent"` 模式**。角色、地图瓦片和 UI 元素在 `"agent"` 模式中表现最佳。
 
-**Use `"agent team"` for game design depth** - full GDDs, complex narratives, or when you need multiple creative angles explored.
-
----
-
-## Example Prompts
-
-**Full character design:**
-> "Design an enemy type for my metroidvania:
-> 
-> Concept: Shadow creatures that emerge from walls
-> Behavior: Ambush predator, retreats when hit
-> 
-> Need:
-> - Concept art showing the creature emerging from shadow
-> - Idle animation frames (lurking)
-> - Attack animation frames
-> - Death/dissolve animation
-> 
-> Style: Dark, fluid, unsettling but not gory (Teen rating)"
-
-**Complete tileset:**
-> "Create a complete tileset for a beach/tropical level:
-> 
-> Style: Bright, colorful, 32x32 pixel tiles
-> 
-> Include:
-> - Sand (multiple variations)
-> - Water (shallow, deep, animated waves)
-> - Palm trees and tropical plants
-> - Rocks and cliffs
-> - Beach items (shells, starfish, umbrellas)
-> - Wooden platforms/bridges
-> 
-> Should work for a platformer game."
-
-**Game concept:**
-> "Design a game concept: 'Wizard's Delivery Service'
-> 
-> Pitch: You're a wizard who delivers magical packages across a fantasy kingdom
-> Genre: Cozy adventure / time management
-> Platform: PC and Switch
-> 
-> I need:
-> - Core gameplay loop
-> - Progression systems
-> - Character concepts for the wizard and NPCs
-> - 3 sample delivery missions
-> - Art style moodboard
-> 
-> Vibe: Studio Ghibli meets Overcooked"
+**对于需要深入游戏设计的场景（如完整的游戏设计文档、复杂的叙事或需要多角度创意探讨时），使用 `"agent team"` 模式。**
 
 ---
 
-## Tips for Better Game Assets
+## 示例提示
 
-1. **Specify dimensions**: "32x32 tiles" or "1920x1080 background" prevents mismatched assets.
+**完整的角色设计：**
+> “为我的《银河恶魔城》风格游戏设计一种敌人类型：
+> 
+> 设计概念：从墙壁中出现的阴影生物
+> 行为：伏击猎物，受到攻击时撤退
+> 
+> 需要的内容：
+- 展示生物从阴影中出现的概念艺术图
+- 闲置动画（潜伏状态）
+- 攻击动画
+- 死亡/消散动画
+> 
+> 风格：黑暗、流畅，带有不安感，但不过分血腥（适合青少年玩家）”
 
-2. **Reference existing games**: "Style like Hollow Knight" or "Celeste-inspired" gives clear direction.
+**完整的地图瓦片集：**
+> “为海滩/热带场景创建完整的地图瓦片集：
+> 
+> 风格：明亮、色彩丰富，32x32 像素大小的瓦片
+> 
+> 包括：
+- 沙子（多种类型）
+- 水（浅水、深水，带有动态波浪效果）
+- 植物（棕榈树和热带植物）
+- 岩石和悬崖
+- 海滩物品（贝壳、海星、遮阳伞）
+- 木制平台/桥梁
+> 
+> 适用于平台游戏。**
 
-3. **Think about implementation**: Request assets in formats your engine can use. Mention if you need transparency, layers, or specific file types.
+**游戏概念：**
+> “设计一个名为‘巫师的快递服务’的游戏概念：**
+> **游戏玩法**：你是一名在奇幻王国中运送魔法包裹的巫师
+- **游戏类型**：温馨冒险类/时间管理游戏
+- **平台**：PC 和 Switch 平台
+> 
+> 需要的内容：
+- 核心游戏循环
+- 游戏进度系统
+- 巫师和 NPC 的角色设计
+- 3 个示例送货任务
+- 艺术风格参考图集
+> 
+> 游戏风格：结合了《Gardenscapes》和《Overcooked》的特点**
 
-4. **Consistency matters**: When requesting multiple assets, describe your game's overall style guide so everything matches.
+---
 
-5. **Animation frames**: Specify frame count and whether you need sprite sheets or individual frames.
+## 提高游戏资源质量的技巧
 
-6. **Consider your scope**: Start with placeholder assets and iterate. Perfect is the enemy of shipped.
+1. **明确尺寸要求**：指定“32x32 像素的瓦片”或“1920x1080 分辨率的背景图片”，以避免资源不匹配的问题。
+2. **参考现有游戏**：例如“模仿《Hollow Knight》或《Celeste》的风格，可以提供明确的设计方向。
+3. **考虑实现细节**：请求的资源格式应符合你的游戏引擎要求。如果需要透明度、图层或特定文件格式，请务必说明。
+4. **保持一致性**：在请求多个资源时，描述你的游戏整体设计风格，确保所有资源保持一致。
+5. **关于动画帧数**：明确需要多少动画帧，以及是需要精灵图像资料表还是单个动画帧。
+6. **合理规划工作流程**：从使用占位符资源开始，逐步完善。完美永远是追求的目标，但过度追求完美反而可能延误进度。

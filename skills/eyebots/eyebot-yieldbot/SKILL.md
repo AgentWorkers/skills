@@ -1,6 +1,6 @@
 ---
 name: eyebot-yieldbot
-description: Yield farming optimizer for maximum DeFi returns
+description: 用于实现最大DeFi收益的收益 farming（收益积累）优化器
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,36 +10,36 @@ metadata:
 
 # YieldBot 🌾
 
-**AI Yield Optimization**
+**AI收益优化工具**
 
-Find and farm the best yields across DeFi. Auto-compound rewards, track APY changes, and optimize capital allocation.
+在去中心化金融（DeFi）领域中，自动寻找并获取最高的收益。实现奖励的自动复利，跟踪年化收益率（APY）的变化，并优化资本分配。
 
-## Features
+## 主要功能
 
-- **Yield Discovery**: Find best APY opportunities
-- **Auto-Compound**: Automatic reward reinvestment
-- **Risk Assessment**: Protocol safety ratings
-- **Position Tracking**: Monitor all farm positions
-- **Rebalancing**: Optimize allocations over time
+- **收益发现**：寻找最佳的年化收益率（APY）投资机会
+- **自动复利**：自动将奖励重新投资
+- **风险评估**：对相关协议的安全性进行评级
+- **持仓监控**：实时跟踪所有投资持仓
+- **资产再平衡**：根据市场变化逐步优化资产配置
 
-## Yield Sources
+## 收益来源
 
-| Source | Type |
-|--------|------|
-| DEX LP | Trading fees + rewards |
-| Lending | Supply APY |
-| Staking | Protocol rewards |
-| Vaults | Automated strategies |
-| Points | Airdrop farming |
+| 来源 | 类型        |
+|--------|-----------|
+| DEX交易对（LP）| 交易手续费 + 奖励     |
+| 借贷服务 | 借出资产的年化收益率（APY） |
+| 质押服务 | 协议提供的奖励    |
+| 保险箱（Vaults）| 自动化的投资策略   |
+| 点数系统 | 通过空投获得的收益   |
 
-## Supported Protocols
+## 支持的协议
 
-- Aave, Compound (Lending)
-- Uniswap, Aerodrome (LP)
-- Lido, RocketPool (Staking)
-- Yearn, Beefy (Vaults)
+- Aave、Compound（借贷服务）
+- Uniswap、Aerodrome（交易对LP）
+- Lido、RocketPool（质押服务）
+- Yearn、Beefy（保险箱服务）
 
-## Usage
+## 使用方法
 
 ```bash
 # Find best yields
@@ -52,5 +52,6 @@ eyebot yieldbot farm <protocol> <pool> 1000 USDC
 eyebot yieldbot compound <position_id>
 ```
 
-## Support
-Telegram: @ILL4NE
+## 售后支持
+
+Telegram：@ILL4NE

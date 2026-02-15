@@ -11,25 +11,25 @@ description: |
 effort: high
 ---
 
-# Pencil to Code
+# 将 Pencil 设计转换为 React/Tailwind 代码
 
-Export Pencil .pen designs to production React/Tailwind code.
+本工具可将 Pencil 格式的 `.pen` 文件导出为适用于生产环境的 React/Tailwind 代码。
 
-## Interface
+## 界面
 
-**Input:**
-- Frame ID to export (or entire document)
-- Target framework: React (default), Vue, HTML
-- Optional: Component name, output path
+**输入参数：**
+- 需要导出的框架 ID（或整个文档）
+- 目标框架：React（默认）、Vue、HTML
+- 可选参数：组件名称、输出路径
 
-**Output:**
-- React component(s) with Tailwind classes
-- Tailwind theme configuration (from .pen variables)
-- Optional: Screenshot comparison for validation
+**输出结果：**
+- 带有 Tailwind 样式的 React 组件
+- 从 `.pen` 文件中提取的样式配置（作为 Tailwind 主题）
+- 可选：提供截图以供验证
 
-## Workflow
+## 工作流程
 
-### 1. Read Design Structure
+### 1. 读取设计结构
 
 ```javascript
 // Get full frame tree
@@ -45,9 +45,9 @@ mcp__pencil__batch_get({
 mcp__pencil__get_variables({ filePath: "<path>.pen" })
 ```
 
-### 2. Extract Design Tokens
+### 2. 提取设计元素（Design Tokens）
 
-Transform .pen variables → Tailwind theme:
+将 `.pen` 文件中的变量转换为 Tailwind 样式：
 
 ```css
 /* From .pen variables */
@@ -59,26 +59,26 @@ Transform .pen variables → Tailwind theme:
 }
 ```
 
-Reference: `references/token-extraction.md`
+参考文档：`references/token-extraction.md`
 
-### 3. Map Nodes to Components
+### 3. 将设计元素映射到对应的 React 组件
 
-| .pen Node Type | React Output |
+| `.pen` 元素类型 | 对应的 React 组件 |
 |---------------|--------------|
-| `frame` with layout | `<div className="flex ...">` |
-| `frame` with children | Component with children |
-| `text` | `<p>`, `<h1-6>`, or `<span>` |
-| `ref` (instance) | Reusable component |
-| `rectangle` | `<div>` with fill |
+| `frame`（包含布局） | `<div className="flex ...">` |
+| `frame`（包含子元素） | 包含子元素的 React 组件 |
+| `text` | `<p>`, `<h1-6>`, 或 `<span>` |
+| `ref`（引用） | 可重用的 React 组件 |
+| `rectangle` | 带有填充颜色的 `<div>` |
 | `ellipse` | `<div className="rounded-full">` |
-| `image` | `<img>` or `fill: url()` |
+| `image` | `<img>` 或 `fill: url()` |
 
-Reference: `references/node-mapping.md`
+参考文档：`references/node-mapping.md`
 
-### 4. Generate Code
+### 4. 生成代码
 
-**Component structure:**
-```tsx
+- **组件结构：**  
+  ```tsx
 // components/[ComponentName].tsx
 import { cn } from "@/lib/utils"
 
@@ -96,8 +96,8 @@ export function [ComponentName]({ className, ...props }: [ComponentName]Props) {
 }
 ```
 
-**Tailwind mapping:**
-```
+- **Tailwind 样式映射：**  
+  ```
 .pen property → Tailwind class
 --------------------------------
 fill: #000     → bg-black
@@ -109,7 +109,7 @@ fontWeight: 700 → font-bold
 cornerRadius: [8,8,8,8] → rounded-lg
 ```
 
-### 5. Validate (Optional)
+### 5. 验证（可选）
 
 ```javascript
 // Screenshot the .pen frame
@@ -119,7 +119,7 @@ mcp__pencil__get_screenshot({ nodeId: "frameId" })
 // (Manual step or browser automation)
 ```
 
-### 6. Output
+### 6. 输出结果
 
 ```markdown
 ## Generated Components
@@ -135,9 +135,9 @@ mcp__pencil__get_screenshot({ nodeId: "frameId" })
 Screenshot comparison: [attached]
 ```
 
-## Translation Rules
+## 代码规范
 
-### Layout System
+### 布局系统
 
 ```
 .pen                          Tailwind
@@ -154,7 +154,7 @@ width: "fill_container"    → w-full
 height: "fill_container"   → h-full
 ```
 
-### Spacing (8-point grid)
+### 间距（8 点网格系统）
 
 ```
 .pen padding                  Tailwind
@@ -165,7 +165,7 @@ height: "fill_container"   → h-full
 [24,32,24,32]              → py-6 px-8
 ```
 
-### Typography
+### 字体样式
 
 ```
 .pen                          Tailwind
@@ -183,7 +183,7 @@ fontWeight: 600            → font-semibold
 fontWeight: 700            → font-bold
 ```
 
-### Colors
+### 颜色设置
 
 ```
 .pen                          Tailwind
@@ -195,7 +195,7 @@ textColor: "#6B7280"       → text-gray-500
 stroke: "#E5E5E5"          → border-gray-200
 ```
 
-### Border Radius
+### 边缘圆角
 
 ```
 .pen cornerRadius             Tailwind
@@ -207,25 +207,21 @@ stroke: "#E5E5E5"          → border-gray-200
 [9999,9999,9999,9999]      → rounded-full
 ```
 
-## Constraints
+## 限制条件：
+- 仅负责将设计文件转换为代码，不允许对设计内容进行任何修改。
+- 使用 Tailwind 4 的 `@theme` 系统（CSS 首先被解析）。
+- 默认输出格式为 React + TypeScript。
+- 使用语义化的 HTML 元素。
+- 在适当的位置添加 `aria` 属性以提高可访问性。
 
-- **Single concern**: Export → code. No design modifications.
-- **Tailwind 4 @theme**: CSS-first token system
-- **React + TypeScript**: Default output target
-- **Semantic HTML**: Choose appropriate elements
-- **Accessibility**: Include aria attributes where detectable
+## 参考文档：
+- `references/node-mapping.md`：完整的元素到组件映射关系。
+- `references/token-extraction.md`：如何从 `.pen` 文件中提取样式变量。
+- `design-tokens/`：相关的样式变量命名规范。
 
-## References
+## 集成方式：
+- 由 `design-exploration` 工具在用户选择设计方向后调用。
+- 用户也可以直接使用该工具。
 
-- `references/node-mapping.md` — Complete node → component mapping
-- `references/token-extraction.md` — Variable → theme extraction
-- `design-tokens/` — Token system conventions
-
-## Integration
-
-**Called by:**
-- `design-exploration` orchestrator (after direction selection)
-- Direct user invocation
-
-**Composes:**
-- `design-tokens` (for theme structure)
+**依赖库：**
+- `design-tokens`（用于生成组件结构）。

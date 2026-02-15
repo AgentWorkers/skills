@@ -1,41 +1,41 @@
-# Webpage Builder Skill
+# 网页构建技能
 
-This skill allows agents to build, test, and deploy single-page applications (SPAs) using vanilla JavaScript, HTML, and CSS. It prioritizes simplicity, testability, and stability without relying on heavy build tools or frameworks.
+该技能使代理能够使用纯JavaScript、HTML和CSS来构建、测试和部署单页应用程序（SPAs）。它注重简洁性、可测试性和稳定性，而不依赖于复杂的构建工具或框架。
 
-## 1. Process: The "Spec-First" Loop
+## 1. 开发流程：**“规范先行”的循环**
 
-To ensure quality and prevent regressions, follow this strict loop:
+为确保质量和防止代码退化，请遵循以下严格的开发流程：
 
-1.  **Spec**: Define the requirements in `benchmarks/apps/<app-name>/spec.md`. List features, UI states, and data models.
-2.  **Test**: Write a headless logic test in `apps/<app-name>/test.js` using Node.js's native test runner. Mock browser APIs (like `localStorage`).
-3.  **Code**: Implement the logic in `apps/<app-name>/js/store.js` until the test passes.
-4.  **UI**: Build the UI in `apps/<app-name>/index.html` and `apps/<app-name>/js/app.js`, connecting it to the tested Store.
-5.  **Verify**: Open the app in a browser (or use `browser` tool) to verify the UI.
+1. **规范定义**：在 `benchmarks/apps/<app-name>/spec.md` 中定义应用程序的需求，包括功能、用户界面状态和数据模型。
+2. **测试**：使用 Node.js 的内置测试工具在 `apps/<app-name>/test.js` 中编写无头逻辑测试，并模拟浏览器 API（如 `localStorage`）。
+3. **代码实现**：在 `apps/<app-name>/js/store.js` 中实现相应的逻辑，直到测试通过。
+4. **用户界面开发**：在 `apps/<app-name>/index.html` 和 `apps/<app-name>/js/app.js` 中构建用户界面，并将其与已测试的存储模块（Store）连接起来。
+5. **验证**：在浏览器中打开应用程序（或使用 `browser` 工具）来验证用户界面的正确性。
 
-## 2. Architecture: Vanilla MVC
+## 2. 架构：纯 MVC 模式
 
-We use a lightweight "Vanilla MVC" pattern:
+我们采用轻量级的“纯 MVC”架构：
 
-### The Store (`store.js`)
-*   **Role**: Manages data state and business logic.
-*   **Dependencies**: Zero DOM dependencies. Uses `localStorage` for persistence.
-*   **Interface**: Exposes methods like `getItems()`, `addItem()`, `updateItem()`.
-*   **Testing**: Can be tested in Node.js by mocking `localStorage`.
+### 存储模块（`store.js`）
+- **功能**：管理数据状态和业务逻辑。
+- **依赖关系**：完全不依赖于 DOM，使用 `localStorage` 进行数据持久化。
+- **接口**：提供 `getItems()`、`addItem()`、`updateItem()` 等方法。
+- **测试**：可以通过模拟 `localStorage` 在 Node.js 中进行测试。
 
-### The Router (`app.js`)
-*   **Role**: Handles navigation via URL hashes (e.g., `#list`, `#detail:123`).
-*   **Mechanism**: Listens to `hashchange` events and calls the appropriate render function.
+### 路由器模块（`app.js`）
+- **功能**：通过 URL 哈希值（例如 `#list`、`#detail:123`）处理导航。
+- **工作原理**：监听 `hashchange` 事件并调用相应的渲染函数。
 
-### The App (`app.js`)
-*   **Role**: Renders UI based on the current route and Store data.
-*   **Mechanism**: Clears a main container (e.g., `<div id="view">`) and injects HTML strings.
-*   **Interactivity**: Binds event listeners to DOM elements after rendering.
+### 应用程序模块（`app.js`）
+- **功能**：根据当前路由和存储模块的数据来渲染用户界面。
+- **工作原理**：清空主容器（例如 `<div id="view">`），然后插入 HTML 内容。
+- **交互性**：在渲染完成后为 DOM 元素绑定事件监听器。
 
-## 3. Testing: Headless Logic
+## 3. 无头逻辑测试
 
-Since the Store has no DOM dependencies, we can test it using `node --test`.
+由于存储模块不依赖于 DOM，我们可以使用 `node --test` 命令对其进行测试。
 
-**Example Test Setup (`test.js`):**
+**测试示例（`test.js`）：**
 
 ```javascript
 const test = require('node:test');
@@ -58,13 +58,13 @@ test('Store adds an item', (t) => {
 });
 ```
 
-To run: `node apps/<app-name>/test.js`
+运行方式：`node apps/<app-name>/test.js`
 
-## 4. Gatekeeping: EVAL.md
+## 4. 任务完成验证：`EVAL.md`
 
-Before marking a task as complete, create or update `EVAL.md` in the app's directory. This file should contain a checklist of manual verification steps for the UI, as automated tests only cover logic.
+在将任务标记为完成之前，请在应用程序目录中创建或更新 `EVAL.md` 文件。该文件应包含用户界面的手动验证步骤列表，因为自动化测试仅覆盖逻辑部分。
 
-**Example `EVAL.md`:**
+**`EVAL.md` 示例：**
 ```markdown
 # Evaluation Checklist
 
@@ -74,6 +74,6 @@ Before marking a task as complete, create or update `EVAL.md` in the app's direc
 - [ ] Clicking "Delete" removes the item.
 ```
 
-## 5. Templates
+## 5. 模板
 
-Use the template in `skills/webpage_builder/templates/vanilla-app/` to bootstrap new projects. It includes the directory structure and boilerplate code for the Store, Router, and App.
+使用 `skills/webpage_builder/templates/vanilla-app/` 目录中的模板来启动新项目。这些模板包含了存储模块、路由器和应用程序的基本目录结构和示例代码。

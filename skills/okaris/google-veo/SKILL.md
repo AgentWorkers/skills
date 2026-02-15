@@ -9,11 +9,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Google Veo Video Generation
+# 使用 Google Veo 生成视频
 
-Generate videos with Google Veo models via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）使用 Google Veo 模型来生成视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -21,25 +21,25 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run google/veo-3-1-fast --input '{"prompt": "drone shot over a mountain lake"}'
 ```
 
-## Veo Models
+## Veo 模型
 
-| Model | App ID | Speed | Quality |
+| 模型 | 应用 ID | 生成速度 | 视频质量 |
 |-------|--------|-------|---------|
-| Veo 3.1 | `google/veo-3-1` | Slower | Best |
-| Veo 3.1 Fast | `google/veo-3-1-fast` | Fast | Excellent |
-| Veo 3 | `google/veo-3` | Medium | Excellent |
-| Veo 3 Fast | `google/veo-3-fast` | Fast | Very Good |
-| Veo 2 | `google/veo-2` | Medium | Good |
+| Veo 3.1 | `google/veo-3-1` | 生成速度较慢 | 视频质量最佳 |
+| Veo 3.1 Fast | `google/veo-3-1-fast` | 生成速度较快 | 视频质量优秀 |
+| Veo 3 | `google/veo-3` | 生成速度中等 | 视频质量优秀 |
+| Veo 3 Fast | `google/veo-3-fast` | 生成速度较快 | 视频质量非常好 |
+| Veo 2 | `google/veo-2` | 生成速度中等 | 视频质量良好 |
 
-## Search Veo Apps
+## 搜索可用的 Veo 应用程序
 
 ```bash
 infsh app list --search "veo"
 ```
 
-## Examples
+## 示例
 
-### Cinematic Shot
+### 电影风格镜头
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -47,7 +47,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Product Demo
+### 产品演示
 
 ```bash
 infsh app run google/veo-3 --input '{
@@ -55,7 +55,7 @@ infsh app run google/veo-3 --input '{
 }'
 ```
 
-### Nature Scene
+### 自然场景
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -63,7 +63,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Action Shot
+### 动作场景
 
 ```bash
 infsh app run google/veo-3 --input '{
@@ -71,7 +71,7 @@ infsh app run google/veo-3 --input '{
 }'
 ```
 
-### Urban Scene
+### 城市场景
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -79,17 +79,14 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Prompt Tips
+## 提示与建议
 
-**Camera movements**: drone shot, tracking shot, pan, zoom, dolly, steadicam
+- **摄像机运动方式**：无人机拍摄、跟踪拍摄、平移、缩放、推拉镜头、稳定器拍摄
+- **光线设置**：黄金时刻、蓝调时刻、摄影棚灯光、立体光效果、霓虹灯光、自然光
+- **风格选择**：电影风格、纪录片风格、商业广告风格、艺术风格、写实风格
+- **时间控制**：慢动作、延时摄影、实时拍摄
 
-**Lighting**: golden hour, blue hour, studio lighting, volumetric, neon, natural
-
-**Style**: cinematic, documentary, commercial, artistic, realistic
-
-**Timing**: slow motion, timelapse, real-time
-
-## Sample Workflow
+## 样本工作流程
 
 ```bash
 # 1. Generate sample input to see all options
@@ -100,7 +97,7 @@ infsh app sample google/veo-3-1-fast --save input.json
 infsh app run google/veo-3-1-fast --input input.json
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -116,10 +113,10 @@ npx skills add inference-sh/agent-skills@ai-avatar-video
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-Browse all video apps: `infsh app list --category video`
+- 查看所有视频应用程序：`infsh app list --category video`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
-- [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
+- [运行应用程序](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用程序
+- [实时进度更新](https://inference.sh/docs/api/sdk/streaming) - 应用程序的实时运行状态
+- [内容处理流程示例](https://inference.sh/docs/examples/content-pipeline) - 媒体处理工作流程的构建方法

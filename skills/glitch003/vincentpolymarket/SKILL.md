@@ -1,6 +1,6 @@
 ---
 name: Vincent - Polymarket for agents
-description: Use this skill to create a Polymarket wallet for your agent and trade on prediction markets. Browse markets, place bets, manage positions — all without exposing private keys.
+description: 使用此技能为您的代理创建一个 Polymarket 钱包，以便在预测市场中进行交易。您可以浏览市场、下注、管理持仓——而无需暴露私钥。
 homepage: https://heyvincent.ai
 source: https://github.com/HeyVincent-ai/Vincent
 metadata:
@@ -12,313 +12,209 @@ metadata:
         - ./agentwallet
 ---
 
-# Vincent - Polymarket for agents
+# Vincent – 为代理设计的 Polymarket 功能
 
-Use this skill to create a Polymarket wallet for your agent and trade on prediction markets. Browse markets, place bets, track positions, and manage orders — all without exposing private keys to the agent. Wallets use Gnosis Safe on Polygon with gasless trading through Polymarket's relayer.
+使用此功能为您的代理创建一个 Polymarket 钱包，并允许其在预测市场中进行交易。您可以浏览市场、下注、跟踪持仓以及管理订单——所有这些操作都不会将私钥暴露给代理。该钱包使用 Polygon 上的 Gnosis Safe，并通过 Polymarket 的中继器实现无gas交易。
 
-**The agent never sees the private key.** All operations are executed server-side. The agent receives a scoped API key that can only perform actions permitted by the wallet owner's policies. The private key never leaves the Vincent server.
+**代理永远不会看到私钥**。所有操作都在服务器端执行。代理会收到一个受限范围的 API 密钥，该密钥仅能执行钱包所有者允许的操作。私钥始终保留在 Vincent 服务器上。
 
-## Security Model
+## 安全模型
 
-This skill is designed for **autonomous agent trading with human oversight via server-side controls**. Understanding this model is important:
+此功能专为**在服务器端控制下实现自主交易**而设计。理解以下安全模型非常重要：
 
-**No environment variables are required** because this skill uses agent-first onboarding: the agent creates its own Polymarket wallet at runtime by calling the Vincent API, which returns a scoped API key. There is no pre-existing credential to configure. The agent generates and stores its own API key during wallet creation — no secrets need to exist before the skill runs. The config paths where the agent persists the returned API key (`~/.openclaw/credentials/agentwallet/` or `./agentwallet/`) are declared in this skill's metadata.
+**无需环境变量**，因为该功能采用“代理优先”的接入方式：代理在运行时通过调用 Vincent API 来创建自己的 Polymarket 钱包，API 会返回一个受限范围的 API 密钥。无需预先配置任何凭证。代理在创建钱包时生成并存储自己的 API 密钥——在功能运行之前无需任何秘密信息。代理将返回的 API 密钥保存在指定的配置路径中（`~/.openclaw/credentials/agentwallet/` 或 `./agentwallet/`）。
 
-**The agent's API key is not a private key.** It is a scoped Bearer token that can only execute actions within the policies set by the wallet owner. The Vincent server enforces all policies server-side — the agent cannot bypass them regardless of what it sends. If a trade violates a policy, the server rejects it. If a trade requires approval, the server holds it and notifies the wallet owner via Telegram for out-of-band human approval.
+**代理的 API 密钥并非私钥**。它是一个受限范围的承载令牌（Bearer token），仅能执行钱包所有者设定的操作。Vincent 服务器在服务器端强制执行所有策略——无论代理发送什么请求，都无法绕过这些策略。如果交易违反策略，服务器会拒绝该请求。如果交易需要批准，服务器会暂停交易并通过 Telegram 通知钱包所有者进行人工审批。
 
-**Model invocation is intentionally enabled.** The purpose of this skill is to give AI agents autonomous Polymarket trading capabilities. The agent is expected to invoke trading actions (browse markets, place bets, manage positions) on its own, within the boundaries the human operator defines. The human controls what the agent can do through policies (spending limits, approval thresholds) — not by gating individual invocations. The agent persists its scoped API key to the declared config paths so it can resume trading across sessions; this is expected behavior for an autonomous trading agent. The stored key is scoped and policy-constrained — even if another process reads it, it can only perform actions the wallet owner's policies allow, and the owner can revoke it instantly.
+**有意启用模型调用**。此功能的目的是让 AI 代理具备自主的 Polymarket 交易能力。代理应在人类操作员的设定范围内自行执行交易操作（如浏览市场、下注、管理持仓）。人类操作员通过策略（如消费限额、审批阈值）来控制代理的行为，而不是通过限制单个请求来实现控制。代理会将受限范围的 API 密钥保存在指定的配置路径中，以便在不同会话之间恢复交易——这是自主交易代理的预期行为。存储的密钥受到策略约束——即使其他进程读取了该密钥，也只能执行钱包所有者允许的操作，且所有者可以立即撤销该密钥。
 
-**All API calls go exclusively to `heyvincent.ai`** over HTTPS/TLS. No other endpoints, services, or external hosts are contacted. The agent does not read, collect, or transmit any data beyond what is needed for Polymarket wallet operations.
+**所有 API 请求仅通过 HTTPS/TLS 发送到 `heyvincent.ai`**。不会连接其他端点、服务或外部主机。代理不会读取、收集或传输超出 Polymarket 钱包操作所需的数据。
 
-**Key lifecycle:**
+**密钥生命周期：**
+- **创建**：代理调用 `POST /api/secrets` 来创建钱包。API 会返回一个受限范围的 API 密钥和一个声明 URL。
+- **声明所有权**：人类操作员使用声明 URL 在 `https://heyvincent.ai` 上声明所有权并配置策略。
+- **撤销**：钱包所有者可以随时通过 Vincent 前端撤销代理的 API 密钥。被撤销的密钥会立即被服务器拒绝。
+- **重新链接**：如果代理丢失了 API 密钥，钱包所有者可以生成一个一次性使用的重新链接令牌（有效期为 10 分钟），代理用该令牌换取新的 API 密钥。
+- **轮换**：钱包所有者可以随时撤销当前密钥并生成一个新的重新链接令牌以更换凭证。
 
-- **Creation**: The agent calls `POST /api/secrets` to create a wallet. The API returns a scoped API key and a claim URL.
-- **Claim**: The human operator uses the claim URL to take ownership and configure policies at `https://heyvincent.ai`.
-- **Revocation**: The wallet owner can revoke the agent's API key at any time from the Vincent frontend. Revoked keys are rejected immediately by the server.
-- **Re-linking**: If the agent loses its API key, the wallet owner generates a one-time re-link token (expires after 10 minutes) and the agent exchanges it for a new key.
-- **Rotation**: The wallet owner can revoke the current key and issue a re-link token to rotate credentials at any time.
+## 配置
 
-## Configuration
-
-All API requests require a Bearer token (the scoped API key returned when creating a wallet). This key is not a private key — it is a server-enforced, policy-scoped credential that the wallet owner can revoke at any time.
-
-Store the API key locally after wallet creation in one of the declared config paths. If you're an OpenClaw instance, store and retrieve it from `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, store it in your current working directory at `agentwallet/<API_KEY_ID>.json`. These paths are declared in this skill's metadata so the host environment can audit and manage credential storage.
+所有 API 请求都需要一个承载令牌（创建钱包时返回的受限范围 API 密钥）。此密钥并非私钥，而是由服务器强制执行的、受策略约束的凭证。钱包创建后，请将其保存在指定的配置路径中。如果您使用的是 OpenClaw 实例，请将其保存在 `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json` 中；否则，请将其保存在当前工作目录下的 `agentwallet/<API_KEY_ID>.json` 中。这些路径在功能的元数据中已声明，以便主机环境可以审计和管理凭证的存储。
 
 ```
 Authorization: Bearer <API_KEY>
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Create a Polymarket Wallet
+### 1. 创建 Polymarket 钱包
 
-Create a new Polymarket wallet for your agent. This generates a private key server-side (the agent never sees it), creates a Gnosis Safe on Polygon, and returns a scoped API key for the agent plus a claim URL for the wallet owner.
+为您的代理创建一个新的 Polymarket 钱包。此操作会在服务器端生成一个私钥（代理看不到该私钥），在 Polygon 上部署 Gnosis Safe，并为代理返回一个受限范围的 API 密钥以及钱包所有者的声明 URL。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "POLYMARKET_WALLET",
-    "memo": "My prediction market wallet"
-  }'
-```
+**响应内容包括：**
+- `apiKey` – 一个受限范围的 API 密钥；请安全保存该密钥，并将其用作所有后续请求的承载令牌。
+- `claimUrl` – 与用户共享此 URL 以声明所有权并设置策略。
+- `walletAddress` – Safe 的地址（首次使用时才会部署）。
 
-Response includes:
+创建完成后，告诉用户：
+> “这是您的钱包声明 URL：`<claimUrl>`。请使用此 URL 声明所有权、设置消费策略，并在 https://heyvincent.ai 上监控代理的钱包活动。”
 
-- `apiKey` -- a scoped API key; store this securely and use it as the Bearer token for all future requests
-- `claimUrl` -- share with the user to claim ownership and set policies
-- `walletAddress` -- the EOA address (Safe is deployed lazily on first use)
+**重要提示：** 创建完成后，钱包中没有任何资金。用户需要向 Safe 地址发送 **USDC.e（桥接的 USDC）** 才能进行下注。
 
-After creating, tell the user:
+### 2. 查看余额
 
-> "Here is your wallet claim URL: `<claimUrl>`. Use this to claim ownership, set spending policies, and monitor your agent's wallet activity at https://heyvincent.ai."
+**返回内容包括：**
+- `walletAddress` – Safe 的地址（首次调用时可能需要部署）。
+- `collateral.balance` – 可用于交易的 USDC.e 余额。
+- `collateral.allowance` – 允许用于 Polymarket 合同的金额。
 
-**Important:** After creation, the wallet has no funds. The user must send **USDC.e (bridged USDC)** on Polygon to the Safe address before placing bets.
+**注意：** 首次查询余额时会触发 Safe 的部署和抵押品审批（通过中继器实现无 gas 交易）。这可能需要 30-60 秒。
 
-### 2. Get Balance
+### 3. 为钱包充值
 
-```bash
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/balance" \
-  -H "Authorization: Bearer <API_KEY>"
-```
+在下注之前，用户需要向 Safe 地址发送 USDC.e：
+1. 从 `/balance` 端点获取钱包地址。
+2. 向该地址发送 USDC.e（桥接的 USDC，合约地址为 `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`）。
+- 每次下注至少需要 1 美元（Polymarket 的最低要求）。
 
-Returns:
+**请勿发送原始的 USDC（`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`）。Polymarket 仅接受桥接的 USDC.e。**
 
-- `walletAddress` -- the Safe address (deployed on first call if needed)
-- `collateral.balance` -- USDC.e balance available for trading
-- `collateral.allowance` -- approved amount for Polymarket contracts
+### 4. 浏览和搜索市场
 
-**Note:** The first balance call triggers Safe deployment and collateral approval (gasless via relayer). This may take 30-60 seconds.
+**市场响应内容包括：**
+- `question`：市场问题。
+- `outcomes`：结果数组（如 `["Yes", "No"]` 或 `["Team A", "Team B"]`）。
+- `outcomePrices`：每个结果当前的价格。
+- `tokenIds`：每个结果对应的令牌 ID（用于下注）。
+- `acceptingOrders`：市场是否开放交易。
+- `closed`：市场是否已结算。
 
-### 3. Fund the Wallet
+**重要提示：** 请始终使用市场响应中的 `tokenIds` 数组。每个结果在数组中的索引位置对应相应的令牌 ID。对于“是/否”类型的市场：
+- `tokenIds[0]` 是“是”的令牌 ID。
+- `tokenIds[1]` 是“否”的令牌 ID。
 
-Before placing bets, the user must send USDC.e to the Safe address:
+### 5. 查看订单簿
 
-1. Get the wallet address from `/balance` endpoint
-2. Send USDC.e (bridged USDC, contract `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`) on Polygon to that address
-3. Minimum $1 required per bet (Polymarket minimum)
+**返回内容包括**：买卖订单的价格和数量。这有助于在下注前了解当前市场价格。
 
-**Do not send native USDC** (`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`). Polymarket only accepts bridged USDC.e.
+### 6. 下注
 
-### 4. Browse & Search Markets
+**参数包括：**
+- `tokenId`：结果对应的令牌 ID（来自市场数据或订单簿）。
+- `side`：`BUY` 或 `SELL`。
+- `amount`：BUY 时表示要花费的美元金额；SELL 时表示要出售的股份数量。
+- `price`：限价（0.01 至 0.99）。可选——市场订单可省略。
 
-```bash
-# Search markets by keyword (recommended)
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/markets?query=bitcoin&limit=20" \
-  -H "Authorization: Bearer <API_KEY>"
+**BUY 订单：**
+- `amount` 表示您想要花费的美元金额（例如，`5` 表示 5 美元）。
+- 您将收到 `amount / price` 数量的股份（例如，5 美元对应 10 股）。
+- 最小订单金额为 1 美元。
 
-# Get all active markets (paginated)
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/markets?active=true&limit=50" \
-  -H "Authorization: Bearer <API_KEY>"
+**SELL 订单：**
+- `amount` 表示要出售的股份数量。
+- 您将收到 `amount * price` 美元的收益。
+- 需要先拥有相应的股份（通过之前的 BUY 交易获得）。
 
-# Get specific market by condition ID
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/market/<CONDITION_ID>" \
-  -H "Authorization: Bearer <API_KEY>"
-```
+**重要提示：** 在完成 BUY 交易后，请等待几秒钟再出售股份。股份需要在链上完成结算。
 
-**Market response includes:**
+如果交易违反策略，服务器会返回错误信息，说明违反了哪条策略。如果交易需要批准（基于审批阈值策略），服务器会返回 `status: "pending_approval"`，并通知钱包所有者进行批准或拒绝。
 
-- `question`: The market question
-- `outcomes`: Array like `["Yes", "No"]` or `["Team A", "Team B"]`
-- `outcomePrices`: Current prices for each outcome
-- `tokenIds`: **Array of token IDs for each outcome** - use these for placing bets
-- `acceptingOrders`: Whether the market is open for trading
-- `closed`: Whether the market has resolved
+### 7. 查看持仓和订单
 
-**Important:** Always use the `tokenIds` array from the market response. Each outcome has a corresponding token ID at the same index. For a "Yes/No" market:
+### 8. 取消订单
 
-- `tokenIds[0]` = "Yes" token ID
-- `tokenIds[1]` = "No" token ID
+## 策略（服务器端执行）
 
-### 5. Get Order Book
+钱包所有者可以通过在 `https://heyvincent.ai` 上设置策略来控制代理的行为。所有策略都由 Vincent API 在服务器端执行——代理无法绕过或修改这些策略。如果交易违反策略，API 会拒绝该交易。如果交易触发审批阈值，API 会暂停交易并通知钱包所有者进行人工审批。
 
-```bash
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/orderbook/<TOKEN_ID>" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-Returns bids and asks with prices and sizes. Use this to determine current market prices before placing orders.
-
-### 6. Place a Bet
-
-```bash
-curl -X POST "https://heyvincent.ai/api/skills/polymarket/bet" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "tokenId": "<OUTCOME_TOKEN_ID>",
-    "side": "BUY",
-    "amount": 5,
-    "price": 0.55
-  }'
-```
-
-Parameters:
-
-- `tokenId`: The outcome token ID (from market data or order book)
-- `side`: `"BUY"` or `"SELL"`
-- `amount`: For BUY orders, USD amount to spend. For SELL orders, number of shares to sell.
-- `price`: Limit price (0.01 to 0.99). Optional -- omit for market order.
-
-**BUY orders:**
-
-- `amount` is the USD you want to spend (e.g., `5` = $5)
-- You'll receive `amount / price` shares (e.g., $5 at 0.50 = 10 shares)
-- Minimum order is $1
-
-**SELL orders:**
-
-- `amount` is the number of shares to sell
-- You'll receive `amount * price` USD
-- Must own the shares first (from a previous BUY)
-
-**Important timing:** After a BUY fills, wait a few seconds before selling. Shares need time to settle on-chain.
-
-If a trade violates a policy, the server returns an error explaining which policy was triggered. If a trade requires human approval (based on the approval threshold policy), the server returns `status: "pending_approval"` and the wallet owner receives a Telegram notification to approve or deny.
-
-### 7. View Positions & Orders
-
-```bash
-# Get open orders
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/positions" \
-  -H "Authorization: Bearer <API_KEY>"
-
-# Get trade history
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/trades" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-### 8. Cancel Orders
-
-```bash
-# Cancel specific order
-curl -X DELETE "https://heyvincent.ai/api/skills/polymarket/orders/<ORDER_ID>" \
-  -H "Authorization: Bearer <API_KEY>"
-
-# Cancel all open orders
-curl -X DELETE "https://heyvincent.ai/api/skills/polymarket/orders" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-## Policies (Server-Side Enforcement)
-
-The wallet owner controls what the agent can do by setting policies via the claim URL at `https://heyvincent.ai`. All policies are enforced server-side by the Vincent API — the agent cannot bypass or modify them. If a trade violates a policy, the API rejects it. If a trade triggers an approval threshold, the API holds it and sends the wallet owner a Telegram notification for out-of-band human approval.
-
-| Policy                      | What it does                                                     |
+| 策略                        | 功能                                      |
 | --------------------------- | ---------------------------------------------------------------- |
-| **Spending limit (per tx)** | Max USD value per transaction                                    |
-| **Spending limit (daily)**  | Max USD value per rolling 24 hours                               |
-| **Spending limit (weekly)** | Max USD value per rolling 7 days                                 |
-| **Require approval**        | Every transaction needs human approval via Telegram              |
-| **Approval threshold**      | Transactions above a USD amount need human approval via Telegram |
+| **每次交易的消费限额**         | 每笔交易的最高美元金额                               |
+| **每日消费限额**         | 每 24 小时的最高美元金额                               |
+| **每周消费限额**         | 每 7 天的最高美元金额                               |
+| **需要审批**           | 每笔交易都需要通过 Telegram 进行人工审批                 |
+| **审批阈值**           | 超过指定金额的交易需要人工审批                         |
 
-Before the wallet is claimed, the agent can operate without policy restrictions. This is by design: agent-first onboarding allows the agent to begin trading immediately. Once the human operator claims the wallet via the claim URL, they can add any combination of policies to constrain the agent's behavior. The wallet owner can also revoke the agent's API key entirely at any time.
+在声明所有权之前，代理可以无限制地操作。这是设计初衷：代理优先的接入方式允许代理立即开始交易。一旦人类操作员通过声明 URL 声明所有权，他们可以添加任何策略来限制代理的行为。钱包所有者也可以随时完全撤销代理的 API 密钥。
 
-## Re-linking (Recovering API Access)
+## 重新链接（恢复 API 访问）
 
-If the agent loses its API key, the wallet owner can generate a **re-link token** from the frontend. The agent then exchanges this token for a new scoped API key.
+如果代理丢失了 API 密钥，钱包所有者可以从前端生成一个**重新链接令牌**。代理可以使用该令牌换取新的受限范围 API 密钥。
 
-**How it works:**
+**操作步骤：**
+1. 用户在 `https://heyvincent.ai` 的钱包详情页面生成一个重新链接令牌。
+2. 用户将令牌提供给代理（例如，通过聊天方式传递）。
+3. 代理调用重新链接端点，用令牌换取新的受限范围 API 密钥。
 
-1. The user generates a re-link token from the wallet detail page at `https://heyvincent.ai`
-2. The user gives the token to the agent (e.g. by pasting it in chat)
-3. The agent calls the re-link endpoint to exchange the token for a new scoped API key
+**响应内容包括：**
+- `secret` – 钱包的元数据（ID、类型、地址、chainId 等）。
+- `apiKey.key` – 新的受限范围 API 密钥，用作所有后续请求的承载令牌。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets/relink" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "relinkToken": "<TOKEN_FROM_USER>",
-    "apiKeyName": "Re-linked API Key"
-  }'
-```
+**重要提示：** 重新链接令牌是一次性使用的，有效期为 10 分钟。此端点不需要身份验证——令牌本身即代表授权。
 
-Response includes:
+如果用户提供了重新链接令牌，请使用此端点恢复对钱包的访问权限。将返回的 API 密钥保存下来，并用于所有后续请求。
 
-- `secret` -- the wallet metadata (id, type, address, chainId, etc.)
-- `apiKey.key` -- the new scoped API key to use as Bearer token for all future requests
-
-**Important:** Re-link tokens are one-time use and expire after 10 minutes. No authentication is required on this endpoint -- the token itself is the authorization.
-
-If a user tells you they have a re-link token, use this endpoint to regain access to the wallet. Store the returned API key and use it for all subsequent requests.
-
-## Workflow Example
-
-1. **Create wallet:**
-
+## 工作流程示例
+1. **创建钱包：**
    ```bash
    POST /api/secrets {"type": "POLYMARKET_WALLET", "memo": "Betting wallet"}
    ```
 
-2. **Get Safe address (triggers deployment):**
-
+2. **获取 Safe 地址（触发部署）：**
    ```bash
    GET /api/skills/polymarket/balance
    # Returns walletAddress -- give this to user to fund
    ```
 
-3. **User sends USDC.e to the Safe address on Polygon**
+3. **用户向 Polygon 上的 Safe 地址发送 USDC.e：**
+   ```bash
+   GET /api/skills/polymarket/balance
+   # Returns walletAddress -- give this to user to fund
+   ```
 
-4. **Search for a market:**
-
+4. **搜索市场：**
    ```bash
    # Search by keyword - returns only active, tradeable markets
    GET /api/skills/polymarket/markets?query=bitcoin&active=true
    ```
 
-   Response example:
-
-   ```json
-   {
-     "markets": [
-       {
-         "question": "Will Bitcoin hit $100k by end of 2025?",
-         "outcomes": ["Yes", "No"],
-         "outcomePrices": ["0.65", "0.35"],
-         "tokenIds": ["123456...", "789012..."],
-         "acceptingOrders": true
-       }
-     ]
-   }
-   ```
-
-5. **Check order book for the outcome you want:**
-
+5. **查看所需的订单簿：**
    ```bash
    # Use the tokenId from the market response
    GET /api/skills/polymarket/orderbook/123456...
    # Note the bid/ask prices
    ```
 
-6. **Place BUY bet using the correct token ID:**
-
+6. **使用正确的令牌 ID 下注：**
    ```bash
    # tokenId must be from the tokenIds array, NOT the conditionId
    POST /api/skills/polymarket/bet
    {"tokenId": "123456...", "side": "BUY", "amount": 5, "price": 0.55}
    ```
 
-7. **Wait for settlement** (a few seconds)
-
-8. **Sell position:**
+7. **等待结算（几秒钟）：**
    ```bash
    POST /api/skills/polymarket/bet
    {"tokenId": "123456...", "side": "SELL", "amount": 9.09, "price": 0.54}
    ```
 
-## Important Notes
+8. **出售持仓：**
+   ```bash
+   POST /api/skills/polymarket/bet
+   {"tokenId": "123456...", "side": "SELL", "amount": 9.09, "price": 0.54}
+   ```
 
-- **No gas needed.** All Polymarket transactions are gasless via Polymarket's relayer.
-- **Never try to access raw secret values.** The private key stays server-side -- that's the whole point.
-- Always store the API key from wallet creation in the declared config paths. If you're an OpenClaw instance, store it in `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, store it in your current working directory at `agentwallet/<API_KEY_ID>.json`.
-- Always search for existing API keys in the declared config paths before creating a new wallet. If you're an OpenClaw instance, search in `~/.openclaw/credentials/agentwallet/`. Otherwise, search in `./agentwallet/`.
-- Always share the claim URL with the user after creating a wallet.
-- If a transaction is rejected, it may be blocked by a server-side policy. Tell the user to check their policy settings at `https://heyvincent.ai`.
-- If a transaction requires approval, it will return `status: "pending_approval"`. The wallet owner will receive a Telegram notification to approve or deny.
+## 重要提示：
+- **无需 gas。** 所有 Polymarket 交易都通过 Polymarket 的中继器实现无 gas 交易。
+- **切勿尝试访问原始的秘密信息。** 私钥始终保留在服务器端——这是设计初衷。
+- 请始终将钱包创建后的 API 密钥保存在指定的配置路径中。如果您使用的是 OpenClaw 实例，请将其保存在 `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json` 中；否则，请保存在当前工作目录下的 `agentwallet/<API_KEY_ID>.json` 中。
+- 在创建新钱包之前，请始终在指定的配置路径中查找现有的 API 密钥。如果您使用的是 OpenClaw 实例，请在 `~/.openclaw/credentials/agentwallet/` 中查找；否则，请在 `./agentwallet/` 中查找。
+- 创建钱包后，请务必将声明 URL 分享给用户。
+- 如果交易被拒绝，可能是由于服务器端的策略限制。请让用户检查他们在 `https://heyvincent.ai` 上的策略设置。
+- 如果交易需要批准，系统会返回 `status: "pending_approval"`。钱包所有者会收到 Telegram 通知以进行批准或拒绝。
 
-**Common Errors:**
-
-- `"No orderbook exists for the requested token id"` - The market is closed or you're using the wrong ID. Make sure:
-  - The market has `acceptingOrders: true`
-  - You're using a `tokenId` from the `tokenIds` array, not the `conditionId`
-  - The market hasn't already resolved
+**常见错误：**
+- “请求的令牌 ID 不存在订单簿” – 市场可能已关闭，或者您使用了错误的 ID。请确保：
+  - 市场处于开放状态（`acceptingOrders: true`）。
+  - 您使用的是 `tokenIds` 数组中的令牌 ID，而不是 `conditionId`。
+  - 市场尚未结算。

@@ -1,28 +1,28 @@
 ---
 name: mixpost
-description: Mixpost is a self-hosted social media management software that helps you schedule and manage your social media content across multiple platforms including Facebook, Twitter/X, Instagram, LinkedIn, Pinterest, TikTok, YouTube, Mastodon, Google Business Profile, Threads, Bluesky, and more.
+description: Mixpost是一款自托管的社交媒体管理软件，可帮助您在多个平台上安排和管理您的社交媒体内容，包括Facebook、Twitter/X、Instagram、LinkedIn、Pinterest、TikTok、YouTube、Mastodon、Google Business Profile、Threads、Bluesky等。
 homepage: https://mixpost.app
 metadata: {"openclaw":{"emoji":"🗓️","primaryEnv":"MIXPOST_ACCESS_TOKEN","requires":{"env":["MIXPOST_URL","MIXPOST_ACCESS_TOKEN","MIXPOST_WORKSPACE_UUID"]}}}
 ---
 
-# Mixpost Skill
+# Mixpost 功能介绍
 
-Mixpost is a self-hosted social media management software that helps you schedule and manage your social media content across multiple platforms including Facebook, Twitter/X, Instagram, LinkedIn, Pinterest, TikTok, YouTube, Mastodon, Google Business Profile, Threads, Bluesky, and more.
+Mixpost 是一款自托管的社交媒体管理软件，可帮助您在多个平台上安排和管理社交媒体内容，包括 Facebook、Twitter/X、Instagram、LinkedIn、Pinterest、TikTok、YouTube、Mastodon、Google Business Profile、Threads、Bluesky 等。
 
-## Setup
+## 设置
 
-1. Navigate to your Mixpost dashboard
-2. Click on **Access Tokens** from the user menu
-3. Click **Create** to generate a new token
-4. Get your workspace UUID: Go to **Social Accounts** page, click the **3 dots menu** on any account, and copy the workspace UUID
-5. Set environment variables:
+1. 登录到您的 Mixpost 控制面板。
+2. 从用户菜单中点击 **访问令牌**（Access Tokens）。
+3. 点击 **创建**（Create）以生成新的访问令牌。
+4. 获取您的工作区 UUID：前往 **社交媒体账户**（Social Accounts）页面，点击任意账户的 **三个点菜单**（3 dots menu），然后复制该账户的工作区 UUID。
+5. 设置环境变量：
    ```bash
    export MIXPOST_URL="https://your-mixpost-instance.com/mixpost"
    export MIXPOST_ACCESS_TOKEN="your-access-token"
    export MIXPOST_WORKSPACE_UUID="your-workspace-uuid"
    ```
 
-## Test Connection
+## 测试连接
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/ping" \
@@ -32,9 +32,9 @@ curl -X GET "$MIXPOST_URL/api/ping" \
 
 ---
 
-## Accounts
+## 账户
 
-### Get all accounts
+### 获取所有账户
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/accounts" \
@@ -42,7 +42,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/accounts" \
   -H "Accept: application/json"
 ```
 
-### Get a specific account
+### 获取特定账户
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/accounts/:accountUuid" \
@@ -52,9 +52,9 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/accounts/:accountUuid" \
 
 ---
 
-## Media
+## 媒体
 
-### Get all media
+### 获取所有媒体文件
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media?limit=50" \
@@ -62,7 +62,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media?limit=50" \
   -H "Accept: application/json"
 ```
 
-### Get a specific media file
+### 获取特定媒体文件
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media/:mediaUuid" \
@@ -70,7 +70,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media/:mediaUuid" \
   -H "Accept: application/json"
 ```
 
-### Upload media (form-data)
+### 上传媒体文件（使用表单数据）
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media" \
@@ -79,7 +79,7 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media" \
   -F "file=@/path/to/your/file.png"
 ```
 
-### Update media
+### 更新媒体文件
 
 ```bash
 curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media/:mediaUuid" \
@@ -91,7 +91,7 @@ curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media/:mediaUuid" \
   }'
 ```
 
-### Delete media
+### 删除媒体文件
 
 ```bash
 curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media" \
@@ -105,9 +105,9 @@ curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/media" \
 
 ---
 
-## Tags
+## 标签
 
-### Get all tags
+### 获取所有标签
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags" \
@@ -115,7 +115,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags" \
   -H "Accept: application/json"
 ```
 
-### Get a specific tag
+### 获取特定标签
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
@@ -123,7 +123,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
   -H "Accept: application/json"
 ```
 
-### Create a tag
+### 创建标签
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags" \
@@ -136,7 +136,7 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags" \
   }'
 ```
 
-### Update a tag
+### 更新标签
 
 ```bash
 curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
@@ -149,7 +149,7 @@ curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
   }'
 ```
 
-### Delete a tag
+### 删除标签
 
 ```bash
 curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
@@ -159,9 +159,9 @@ curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/tags/:tagUuid" \
 
 ---
 
-## Posts
+## 帖子
 
-### Get all posts
+### 获取所有帖子
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts?limit=50&status=scheduled&page=1" \
@@ -169,15 +169,15 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts?limit=50&status=sche
   -H "Accept: application/json"
 ```
 
-**Query Parameters:**
-- `limit` (number, default: 50): Results per page
-- `status`: `draft`, `scheduled`, `published`, `failed`, `needs_approval`, `trash`
-- `keyword` (string): Search posts by content
-- `accounts` (array): Filter by account IDs
-- `tags` (array): Filter by tag names
-- `page` (number): Page number for pagination
+**查询参数：**
+- `limit`（数字，默认值：50）：每页显示的帖子数量
+- `status`：`draft`（草稿）、`scheduled`（已安排）、`published`（已发布）、`failed`（失败）、`needs_approval`（需要审核）、`trash`（已删除）
+- `keyword`（字符串）：按内容搜索帖子
+- `accounts`（数组）：按账户 ID 过滤帖子
+- `tags`（数组）：按标签名称过滤帖子
+- `page`（数字）：分页的页码
 
-### Get a specific post
+### 获取特定帖子
 
 ```bash
 curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
@@ -185,7 +185,7 @@ curl -X GET "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
   -H "Accept: application/json"
 ```
 
-### Create a post
+### 创建帖子
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts" \
@@ -216,13 +216,13 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts" \
   }'
 ```
 
-**Post Options:**
-- `schedule`: Set to `true` to schedule for specific date/time
-- `schedule_now`: Set to `true` to publish immediately
-- `queue`: Set to `true` to add to publishing queue
-- If none are set, post is saved as draft
+**帖子选项：**
+- `schedule`：设置为 `true` 以安排在特定日期/时间发布
+- `schedule_now`：设置为 `true` 立即发布
+- `queue`：设置为 `true` 将帖子添加到发布队列
+- 如果未设置任何选项，帖子将保存为草稿状态
 
-**Platform-specific options:**
+**平台特定选项：**
 ```json
 {
   "options": {
@@ -291,7 +291,7 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts" \
 }
 ```
 
-### Update a post
+### 更新帖子
 
 ```bash
 curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
@@ -307,7 +307,7 @@ curl -X PUT "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
   }'
 ```
 
-### Delete a post
+### 删除帖子
 
 ```bash
 curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
@@ -320,12 +320,12 @@ curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/:postUuid" \
   }'
 ```
 
-**Delete modes:**
-- `app_only`: Delete only from the app (default)
-- `app_and_social`: Delete from both app and social media
-- `social_only`: Delete only from social media platforms
+**删除方式：**
+- `app_only`：仅从应用程序中删除帖子（默认值）
+- `app_and_social`：从应用程序和社交媒体平台中同时删除帖子
+- `social_only`：仅从社交媒体平台中删除帖子
 
-### Delete multiple posts
+### 删除多篇帖子
 
 ```bash
 curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts" \
@@ -339,7 +339,7 @@ curl -X DELETE "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts" \
   }'
 ```
 
-### Schedule a post
+### 安排帖子发布
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/schedule/:postUuid" \
@@ -351,7 +351,7 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/schedule/:postUuid"
   }'
 ```
 
-### Add post to queue
+### 将帖子添加到发布队列
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/add-to-queue/:postUuid" \
@@ -359,7 +359,7 @@ curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/add-to-queue/:postU
   -H "Accept: application/json"
 ```
 
-### Approve a post
+### 审核帖子
 
 ```bash
 curl -X POST "$MIXPOST_URL/api/$MIXPOST_WORKSPACE_UUID/posts/approve/:postUuid" \

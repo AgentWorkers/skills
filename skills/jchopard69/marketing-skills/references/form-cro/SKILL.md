@@ -1,425 +1,422 @@
 ---
 name: form-cro
-description: When the user wants to optimize any form that is NOT signup/registration — including lead capture forms, contact forms, demo request forms, application forms, survey forms, or checkout forms. Also use when the user mentions "form optimization," "lead form conversions," "form friction," "form fields," "form completion rate," or "contact form." For signup/registration forms, see signup-flow-cro. For popups containing forms, see popup-cro.
+description: 当用户希望优化任何非注册/登录相关的表单时（包括潜在客户信息收集表单、联系表单、演示请求表单、申请表单、调查表单或结账表单），请参考本文档。此外，当用户提到“表单优化”、“潜在客户信息表单转化率”、“表单使用体验”、“表单字段”、“表单完成率”或“联系表单”等相关内容时，也请参考本文档。关于注册/登录表单的优化，请参阅 `signup-flow-cro`；关于包含表单的弹出窗口的优化，请参阅 `popup-cro`。
 ---
 
-# Form CRO
+# 表单优化（Form Optimization）
 
-You are an expert in form optimization. Your goal is to maximize form completion rates while capturing the data that matters.
+您是表单优化方面的专家，您的目标是在收集关键数据的同时，尽可能提高表单的填写完成率。
 
-## Initial Assessment
+## 初始评估
 
-Before providing recommendations, identify:
+在提供建议之前，需要了解以下信息：
 
-1. **Form Type**
-   - Lead capture (gated content, newsletter)
-   - Contact form
-   - Demo/sales request
-   - Application form
-   - Survey/feedback
-   - Checkout form
-   - Quote request
+1. **表单类型**：
+   - 潜在客户信息收集表单（ gated content）
+   - 联系表单
+   - 演示/销售请求表单
+   - 申请表
+   - 调查/反馈表单
+   - 结账表单
+   - 报价请求表单
 
-2. **Current State**
-   - How many fields?
-   - What's the current completion rate?
-   - Mobile vs. desktop split?
-   - Where do users abandon?
+2. **当前表单状态**：
+   - 表单包含多少个字段？
+   - 当前的填写完成率是多少？
+   - 移动设备和桌面设备的填写情况如何？
+   - 用户在填写过程中通常在哪个环节放弃填写？
 
-3. **Business Context**
-   - What happens with form submissions?
-   - Which fields are actually used in follow-up?
-   - Are there compliance/legal requirements?
-
----
-
-## Core Principles
-
-### 1. Every Field Has a Cost
-Each field reduces completion rate. Rule of thumb:
-- 3 fields: Baseline
-- 4-6 fields: 10-25% reduction
-- 7+ fields: 25-50%+ reduction
-
-For each field, ask:
-- Is this absolutely necessary before we can help them?
-- Can we get this information another way?
-- Can we ask this later?
-
-### 2. Value Must Exceed Effort
-- Clear value proposition above form
-- Make what they get obvious
-- Reduce perceived effort (field count, labels)
-
-### 3. Reduce Cognitive Load
-- One question per field
-- Clear, conversational labels
-- Logical grouping and order
-- Smart defaults where possible
+3. **业务背景**：
+   - 表单提交后会发生什么？
+   - 哪些字段在后续流程中被实际使用？
+   - 是否有合规性或法律方面的要求？
 
 ---
 
-## Field-by-Field Optimization
+## 核心原则
 
-### Email Field
-- Single field, no confirmation
-- Inline validation
-- Typo detection (did you mean gmail.com?)
-- Proper mobile keyboard
+### 每个字段都有其“成本”
 
-### Name Fields
-- Single "Name" vs. First/Last — test this
-- Single field reduces friction
-- Split needed only if personalization requires it
+每个字段都会降低表单的完成率。经验法则如下：
+- 3个字段：基本完成率
+- 4-6个字段：完成率降低10-25%
+- 7个及以上字段：完成率降低25%以上
 
-### Phone Number
-- Make optional if possible
-- If required, explain why
-- Auto-format as they type
-- Country code handling
+对于每个字段，需要思考：
+- 这个字段是否绝对必要？
+- 我们能否通过其他方式获取这些信息？
+- 或者我们可以稍后再询问这些信息？
 
-### Company/Organization
-- Auto-suggest for faster entry
-- Enrichment after submission (Clearbit, etc.)
-- Consider inferring from email domain
+### 价值必须超过用户付出的努力
 
-### Job Title/Role
-- Dropdown if categories matter
-- Free text if wide variation
-- Consider making optional
+- 明确表单提供的价值
+- 使用户能够清楚地了解填写表单的意义
+- 减少用户感到的填写难度（例如减少字段数量、简化字段标签）
 
-### Message/Comments (Free Text)
-- Make optional
-- Reasonable character guidance
-- Expand on focus
+### 降低认知负担
 
-### Dropdown Selects
-- "Select one..." placeholder
-- Searchable if many options
-- Consider radio buttons if < 5 options
-- "Other" option with text field
-
-### Checkboxes (Multi-select)
-- Clear, parallel labels
-- Reasonable number of options
-- Consider "Select all that apply" instruction
+- 每个字段只对应一个问题
+- 使用清晰、符合对话风格的字段标签
+- 逻辑性强、布局合理的字段排列
+- 在可能的情况下使用智能默认值
 
 ---
 
-## Form Layout Optimization
+## 逐字段优化
 
-### Field Order
-1. Start with easiest fields (name, email)
-2. Build commitment before asking more
-3. Sensitive fields last (phone, company size)
-4. Logical grouping if many fields
+### 电子邮件字段
+- 单个字段，无需确认
+- 实时验证
+- 检测拼写错误（例如，是否输入了正确的邮箱地址）
+- 适配移动设备的键盘输入
 
-### Labels and Placeholders
-- Labels: Always visible (not just placeholder)
-- Placeholders: Examples, not labels
-- Help text: Only when genuinely helpful
+### 姓名字段
+- 是使用“姓名”字段还是“名字/姓氏”字段？进行测试
+- 单个字段可以减少填写难度
+- 只有在需要个性化信息时才分开填写
 
-**Good:**
+### 电话号码字段
+- 如果可能的话，设置为可选字段
+- 如果必须填写，请说明原因
+- 用户输入时自动格式化电话号码
+- 处理国家代码
+
+### 公司/组织信息字段
+- 提供自动建议功能，以便用户更快输入
+- 提交后可以通过第三方服务（如Clearbit）进一步验证信息
+- 可以根据用户的电子邮件域名推断相关信息
+
+### 职位/角色字段
+- 如果选项较多，使用下拉菜单
+- 如果选项较少，可以使用自由文本输入框
+- 考虑将其设置为可选字段
+
+### 消息/评论字段（自由文本）
+- 设为可选字段
+- 提供合理的字符输入提示
+- 提供输入框的扩展提示
+
+### 下拉菜单字段
+- 使用“请选择...”这样的提示语
+- 如果选项较多，提供搜索功能
+- 如果选项少于5个，可以使用单选按钮
+- 提供“其他”选项，并附带一个文本输入框
+
+### 多选框字段
+- 使用清晰的标签
+- 选项数量要适中
+- 提供“选择所有适用项”的选项
+
+---
+
+## 表单布局优化
+
+### 字段顺序
+- 先从较简单的字段开始（姓名、电子邮件）
+- 在要求用户提供更多信息之前，先建立用户的参与感
+- 敏感信息（如电话号码、公司规模）放在表单的最后
+- 如果字段较多，要进行逻辑分组
+
+### 标签和占位符
+- 标签：始终可见（而不仅仅是占位符）
+- 占位符：应提供实际填写内容的示例
+- 帮助文本：只有在真正有帮助的情况下才显示
+
+**示例：**
 ```
 Email
 [name@company.com]
 ```
 
-**Bad:**
+**示例（错误示例）：**
 ```
 [Enter your email address]  ← Disappears on focus
 ```
 
-### Visual Design
-- Sufficient spacing between fields
-- Clear visual hierarchy
-- CTA button stands out
-- Mobile-friendly tap targets (44px+)
+### 视觉设计
+- 字段之间要有足够的间距
+- 保持清晰的视觉层次结构
+- 提交按钮要醒目易见
+- 移动设备上的按钮要足够大（至少44像素）
 
-### Single Column vs. Multi-Column
-- Single column: Higher completion, mobile-friendly
-- Multi-column: Only for short related fields (First/Last name)
-- When in doubt, single column
-
----
-
-## Multi-Step Forms
-
-### When to Use Multi-Step
-- More than 5-6 fields
-- Logically distinct sections
-- Conditional paths based on answers
-- Complex forms (applications, quotes)
-
-### Multi-Step Best Practices
-- Progress indicator (step X of Y)
-- Start with easy, end with sensitive
-- One topic per step
-- Allow back navigation
-- Save progress (don't lose data on refresh)
-- Clear indication of required vs. optional
-
-### Progressive Commitment Pattern
-1. Low-friction start (just email)
-2. More detail (name, company)
-3. Qualifying questions
-4. Contact preferences
+### 单列布局与多列布局
+- 单列布局：填写完成率更高，更适合移动设备
+- 多列布局：仅适用于相关字段较少的情况（如名字/姓氏）
+- 如果不确定，选择单列布局
 
 ---
 
-## Error Handling
+## 多步骤表单
 
-### Inline Validation
-- Validate as they move to next field
-- Don't validate too aggressively while typing
-- Clear visual indicators (green check, red border)
+### 何时使用多步骤表单
+- 当表单包含5-6个以上字段时
+- 当表单包含逻辑上独立的多个部分时
+- 当表单内容复杂时（如申请表、报价请求表单）
 
-### Error Messages
-- Specific to the problem
-- Suggest how to fix
-- Positioned near the field
-- Don't clear their input
+### 多步骤表单的最佳实践
+- 显示进度条（例如“当前处于第X步/共Y步”）
+- 从简单的问题开始，逐步过渡到敏感信息
+- 每一步只关注一个主题
+- 允许用户返回上一步
+- 保存用户的填写进度（刷新页面时不会丢失数据）
+- 明确区分必填字段和可选字段
 
-**Good:** "Please enter a valid email address (e.g., name@company.com)"
-**Bad:** "Invalid input"
-
-### On Submit
-- Focus on first error field
-- Summarize errors if multiple
-- Preserve all entered data
-- Don't clear form on error
-
----
-
-## Submit Button Optimization
-
-### Button Copy
-Weak: "Submit" | "Send"
-Strong: "[Action] + [What they get]"
-
-Examples:
-- "Get My Free Quote"
-- "Download the Guide"
-- "Request Demo"
-- "Send Message"
-- "Start Free Trial"
-
-### Button Placement
-- Immediately after last field
-- Left-aligned with fields
-- Sufficient size and contrast
-- Mobile: Sticky or clearly visible
-
-### Post-Submit States
-- Loading state (disable button, show spinner)
-- Success confirmation (clear next steps)
-- Error handling (clear message, focus on issue)
+### 逐步引导用户完成表单的策略
+- 从低门槛开始（例如只要求输入电子邮件）
+- 逐步提供更多详细信息（如姓名、公司信息）
+- 提出一些资格性问题
+- 提供继续填写的选项
 
 ---
 
-## Trust and Friction Reduction
+## 错误处理
 
-### Near the Form
-- Privacy statement: "We'll never share your info"
-- Security badges if collecting sensitive data
-- Testimonial or social proof
-- Expected response time
+### 实时验证
+- 在用户移动到下一个字段时进行验证
+- 避免在用户输入过程中过于频繁地验证
+- 使用清晰的视觉提示（绿色勾选标记或红色边框）
 
-### Reducing Perceived Effort
-- "Takes 30 seconds"
-- Field count indicator
-- Remove visual clutter
-- Generous white space
+### 错误信息
+- 错误信息要具体明确
+- 提供解决问题的建议
+- 错误信息应显示在相关字段附近
+- 不要清除用户已经输入的内容
 
-### Addressing Objections
-- "No spam, unsubscribe anytime"
-- "We won't share your number"
-- "No credit card required"
+**示例：**“请输入有效的电子邮件地址（例如：name@company.com）”
+**错误示例：**“输入无效”
 
----
-
-## Form Types: Specific Guidance
-
-### Lead Capture (Gated Content)
-- Minimum viable fields (often just email)
-- Clear value proposition for what they get
-- Consider asking enrichment questions post-download
-- Test email-only vs. email + name
-
-### Contact Form
-- Essential: Email/Name + Message
-- Phone optional
-- Set response time expectations
-- Offer alternatives (chat, phone)
-
-### Demo Request
-- Name, Email, Company required
-- Phone: Optional with "preferred contact" choice
-- Use case/goal question helps personalize
-- Calendar embed can increase show rate
-
-### Quote/Estimate Request
-- Multi-step often works well
-- Start with easy questions
-- Technical details later
-- Save progress for complex forms
-
-### Survey Forms
-- Progress bar essential
-- One question per screen for engagement
-- Skip logic for relevance
-- Consider incentive for completion
+### 提交时
+- 首先显示第一个出错的字段
+- 如果有多个错误，汇总显示
+- 保留用户已经输入的所有信息
+- 提交错误后不要清除表单内容
 
 ---
 
-## Mobile Optimization
+## 提交按钮优化
 
-- Larger touch targets (44px minimum height)
-- Appropriate keyboard types (email, tel, number)
-- Autofill support
-- Single column only
-- Sticky submit button
-- Minimal typing (dropdowns, buttons)
+### 按钮文本
+- 一般的按钮文本：“提交”或“发送”
+- 更有力的按钮文本：“[操作名称] + [用户将获得的结果]”
 
----
+**示例：**
+- “获取我的免费报价”
+- “下载指南”
+- “请求演示”
+- “发送消息”
+- “开始免费试用”
 
-## Measurement
+### 按钮位置
+- 放在最后一个字段的后面
+- 与字段对齐
+- 按钮的大小和对比度要适中
+- 在移动设备上，确保按钮易于点击
 
-### Key Metrics
-- **Form start rate**: Page views → Started form
-- **Completion rate**: Started → Submitted
-- **Field drop-off**: Which fields lose people
-- **Error rate**: By field
-- **Time to complete**: Total and by field
-- **Mobile vs. desktop**: Completion by device
-
-### What to Track
-- Form views
-- First field focus
-- Each field completion
-- Errors by field
-- Submit attempts
-- Successful submissions
+### 提交后的状态显示
+- 显示加载状态（禁用按钮，显示加载动画）
+- 显示成功提示（并显示下一步操作）
+- 显示错误处理信息（清除错误信息，突出显示问题）
 
 ---
 
-## Output Format
+## 增强用户信任感和降低填写难度
 
-### Form Audit
-For each issue:
-- **Issue**: What's wrong
-- **Impact**: Estimated effect on conversions
-- **Fix**: Specific recommendation
-- **Priority**: High/Medium/Low
+### 在表单附近显示重要信息
+- 隐私声明：“我们绝不会分享您的信息”
+- 如果收集敏感信息，显示安全认证标志
+- 显示用户评价或社交证明
+- 显示预期的响应时间
 
-### Recommended Form Design
-- **Required fields**: Justified list
-- **Optional fields**: With rationale
-- **Field order**: Recommended sequence
-- **Copy**: Labels, placeholders, button
-- **Error messages**: For each field
-- **Layout**: Visual guidance
+### 减少用户感到的填写难度
+- 提示用户填写表单大约需要30秒
+- 显示表单中包含的字段数量
+- 减少页面上的视觉干扰
+- 保持足够的空白空间
 
-### Test Hypotheses
-Ideas to A/B test with expected outcomes
-
----
-
-## Experiment Ideas
-
-### Form Structure Experiments
-
-**Layout & Flow**
-- Single-step form vs. multi-step with progress bar
-- 1-column vs. 2-column field layout
-- Form embedded on page vs. separate page
-- Vertical vs. horizontal field alignment
-- Form above fold vs. after content
-
-**Field Optimization**
-- Reduce to minimum viable fields
-- Add or remove phone number field
-- Add or remove company/organization field
-- Test required vs. optional field balance
-- Use field enrichment to auto-fill known data
-- Hide fields for returning/known visitors
-
-**Smart Forms**
-- Add real-time validation for emails and phone numbers
-- Progressive profiling (ask more over time)
-- Conditional fields based on earlier answers
-- Auto-suggest for company names
+### 处理用户的疑虑
+- 显示“不会发送垃圾邮件”或“您可以随时取消订阅”
+- 提示“我们不会使用您的电话号码”
+- 显示“无需信用卡”
 
 ---
 
-### Copy & Design Experiments
+## 不同表单类型的优化建议
 
-**Labels & Microcopy**
-- Test field label clarity and length
-- Placeholder text optimization
-- Help text: show vs. hide vs. on-hover
-- Error message tone (friendly vs. direct)
+### 潜在客户信息收集表单（gateled content）
+- 只要求最基本的字段（通常是电子邮件地址）
+- 明确说明用户填写表单后能获得的价值
+- 考虑在用户下载内容后询问更多信息
+- 测试仅要求输入电子邮件地址与同时要求输入电子邮件地址和姓名的效果
 
-**CTAs & Buttons**
-- Button text variations ("Submit" vs. "Get My Quote" vs. specific action)
-- Button color and size testing
-- Button placement relative to fields
+### 联系表单
+- 必填字段：电子邮件地址/姓名 + 消息
+- 电话号码字段可选
+- 明确告知用户预期的响应时间
+- 提供其他联系方式（如聊天、电话）
 
-**Trust Elements**
-- Add privacy assurance near form
-- Show trust badges next to submit
-- Add testimonial near form
-- Display expected response time
+### 演示请求表单
+- 必填字段：姓名、电子邮件地址、公司名称
+- 电话号码字段可选，并提供“首选联系方式”的选择
+- 询问用户的使用场景或目标，以便个性化展示信息
+- 如果可能，嵌入日历功能可以提高表单的填写率
 
----
+### 报价/估算请求表单
+- 多步骤表单通常效果更好
+- 从简单的问题开始
+- 复杂的信息可以稍后填写
+- 对于复杂的表单，允许用户保存填写进度
 
-### Form Type-Specific Experiments
-
-**Demo Request Forms**
-- Test with/without phone number requirement
-- Add "preferred contact method" choice
-- Include "What's your biggest challenge?" question
-- Test calendar embed vs. form submission
-
-**Lead Capture Forms**
-- Email-only vs. email + name
-- Test value proposition messaging above form
-- Gated vs. ungated content strategies
-- Post-submission enrichment questions
-
-**Contact Forms**
-- Add department/topic routing dropdown
-- Test with/without message field requirement
-- Show alternative contact methods (chat, phone)
-- Expected response time messaging
+### 调查表单
+- 必须显示进度条
+- 每个页面只显示一个问题，以保持用户的参与度
+- 根据用户的选择动态调整显示问题
+- 考虑为完成调查提供奖励
 
 ---
 
-### Mobile & UX Experiments
-
-- Larger touch targets for mobile
-- Test appropriate keyboard types by field
-- Sticky submit button on mobile
-- Auto-focus first field on page load
-- Test form container styling (card vs. minimal)
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What's your current form completion rate?
-2. Do you have field-level analytics?
-3. What happens with the data after submission?
-4. Which fields are actually used in follow-up?
-5. Are there compliance/legal requirements?
-6. What's the mobile vs. desktop split?
+## 移动设备优化
+- 确保按钮等交互元素足够大（至少44像素高）
+- 提供适合移动设备的键盘类型（电子邮件、电话号码、电话号码输入框）
+- 支持自动填充功能
+- 采用单列布局
+- 提交按钮要醒目易见
 
 ---
 
-## Related Skills
+## 数据监控
 
-- **signup-flow-cro**: For account creation forms
-- **popup-cro**: For forms inside popups/modals
-- **page-cro**: For the page containing the form
-- **ab-test-setup**: For testing form changes
+### 关键指标
+- **表单开始率**：页面浏览量与开始填写表单的比例
+- **完成率**：开始填写表单与成功提交表单的比例
+- **用户放弃填写的字段**：哪些字段导致用户放弃填写
+- **错误率**：按字段划分的错误情况
+- **完成表单所需的时间**：总完成时间以及按字段划分的完成时间
+- **移动设备与桌面设备的完成率对比**
+
+### 需要监控的数据
+- 表单的浏览量
+- 用户首次点击的字段
+- 每个字段的完成情况
+- 每个字段的错误情况
+- 用户的提交尝试次数
+- 成功提交的表单数量
+
+---
+
+## 输出格式
+
+### 表单审核
+对于每个问题，需要记录：
+- **问题**：具体问题是什么
+- **影响**：对转化率的影响估计
+- **解决方案**：具体的优化建议
+- **优先级**：高/中/低
+
+### 推荐的表单设计
+- **必填字段**：列出必填字段及其理由
+- **可选字段**：列出可选字段及其原因
+- **字段顺序**：推荐的填写顺序
+- **按钮和标签**：显示按钮文本、标签和占位符的位置
+- **错误信息**：为每个字段提供详细的错误提示
+- **布局**：整体的视觉设计指导
+
+### 测试假设
+
+- 提出一些可以A/B测试的方案，并预测测试结果
+
+---
+
+## 实验建议
+
+### 表单结构相关的实验
+- 单步骤表单与多步骤表单（带进度条）
+- 单列布局与多列布局
+- 表单是嵌入在页面中还是单独的页面
+- 字段在页面中的垂直或水平排列方式
+- 表单是位于页面上方还是下方
+
+### 字段优化相关的实验
+- 将字段数量减少到最低必要数量
+- 添加或删除电话号码字段
+- 添加或删除公司/组织信息字段
+- 测试必填字段与可选字段的平衡
+- 使用字段验证功能自动填充已知信息
+- 对于重复访问者或已知用户，隐藏某些字段
+
+### 按钮和文本相关的实验
+- 测试字段标签的清晰度和长度
+- 优化占位符文本的显示方式
+- 显示或隐藏帮助文本，以及在不同状态下（如鼠标悬停时）的显示方式
+- 错误信息的表达方式（友好或直接）
+
+### 提交按钮和CTA相关的实验
+- 测试不同的按钮文本（如“提交”或“获取我的报价”）
+- 测试按钮的颜色和大小
+- 测试按钮相对于其他元素的位置
+
+### 增强用户信任感和降低填写难度的实验
+- 在表单附近显示隐私声明
+- 在提交按钮附近显示安全认证标志
+- 显示用户评价或社交证明
+- 显示预期的响应时间
+
+---
+
+### 根据不同表单类型进行的具体优化建议
+
+- **潜在客户信息收集表单**：
+  - 只要求最基本的字段（通常是电子邮件地址）
+  - 明确说明用户填写表单后能获得的价值
+  - 考虑在用户下载内容后询问更多信息
+  - 测试仅要求输入电子邮件地址与同时要求输入电子邮件地址和姓名的效果
+
+- **联系表单**：
+  - 必填字段：电子邮件地址/姓名 + 消息
+  - 电话号码字段可选
+  - 明确告知用户预期的响应时间
+  - 提供其他联系方式（如聊天、电话）
+
+- **演示请求表单**：
+  - 必填字段：姓名、电子邮件地址、公司名称
+  - 电话号码字段可选，并提供“首选联系方式”的选择
+  - 询问用户的使用场景或目标，以便个性化展示信息
+  - 如果可能，嵌入日历功能可以提高表单的填写率
+
+- **报价/估算请求表单**：
+  - 多步骤表单通常效果更好
+  - 从简单的问题开始
+  - 复杂的信息可以稍后填写
+  - 允许用户保存填写进度
+
+- **调查表单**：
+  - 必须显示进度条
+  - 每个页面只显示一个问题，以保持用户的参与度
+  - 根据用户的选择动态调整显示问题
+  - 考虑为完成调查提供奖励
+
+---
+
+### 移动设备优化相关的实验
+- 确保移动设备上的按钮等交互元素足够大
+- 根据不同字段类型选择合适的键盘类型
+- 在移动设备上使用固定的提交按钮
+- 页面加载时自动将焦点放在第一个字段上
+- 测试表单的样式（卡片式布局或简洁式布局）
+
+---
+
+## 如需更多信息，请回答以下问题：
+1. 您当前的表单完成率是多少？
+2. 您是否有针对每个字段的统计分析数据？
+3. 表单提交后，数据会如何处理？
+4. 哪些字段在后续流程中被实际使用？
+5. 是否有合规性或法律方面的要求？
+6. 移动设备和桌面设备的填写情况如何？
+
+---
+
+## 相关技能
+- **注册流程表单优化（signup-flow-cro）**：针对注册表单的优化
+- **弹出窗口中的表单优化（popup-cro）**：针对弹出窗口或模态框中的表单
+- **页面中的表单优化（page-cro）**：针对包含表单的页面的优化
+- **表单测试设置（ab-test-setup）**：用于测试表单设计的变更

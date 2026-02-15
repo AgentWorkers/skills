@@ -1,175 +1,175 @@
 ---
 name: bitaxe-monitor
-description: Monitor Bitaxe Gamma Bitcoin miner status via HTTP API. Use when the user wants to check the status, hashrate, temperature, power consumption, or statistics of a Bitaxe Gamma miner. Supports config file or environment variable for device IP configuration, fetching system info, and formatting output as human-readable text or JSON.
+description: 通过 HTTP API 监控 Bitaxe Gamma 比特币矿机的状态。当用户需要查看矿机的状态、哈希率、温度、功耗或相关统计数据时，可以使用此功能。支持通过配置文件或环境变量来设置设备 IP 地址；同时支持获取系统信息，并可将输出格式化为便于阅读的文本或 JSON 格式。
 ---
 
 # Bitaxe Monitor
 
-Monitor and retrieve status information from Bitaxe Gamma (and compatible) Bitcoin miners via their HTTP API.
+通过HTTP API监控并获取Bitaxe Gamma（及兼容型号）比特币矿机的状态信息。
 
-## Overview
+## 概述
 
-Bitaxe Gamma is an open-source Bitcoin miner based on the BM1370 ASIC. It exposes a REST API at `http://<ip>/api/system/info` that returns real-time statistics including:
+Bitaxe Gamma是一款基于BM1370 ASIC芯片的开源比特币矿机。它提供了一个REST API，地址为`http://<ip>/api/system/info`，可以返回以下实时统计数据：
 
-- Hashrate (current, 1m, 10m, 1h averages)
-- Power consumption and voltage
-- Temperatures (ASIC, voltage regulator)
-- Fan speed and RPM
-- Share statistics (accepted/rejected)
-- Best difficulty found
-- WiFi status and signal strength
-- Pool connection info
-- Uptime and version info
+- 哈希率（当前值、1分钟平均值、10分钟平均值、1小时平均值）
+- 功耗和电压
+- 温度（ASIC芯片温度、电压调节器温度）
+- 风扇转速
+- 被接受/被拒绝的矿工工作量（share statistics）
+- 找到的最佳挖矿难度（best difficulty）
+- WiFi状态和信号强度
+- 矿机与矿池的连接信息
+- 系统运行时间和版本信息
 
-## Usage
+## 使用方法
 
-Use the provided script to fetch and display miner status:
+使用提供的脚本来获取并显示矿机的状态：
 
 ```bash
 python3 scripts/bitaxe_status.py [ip_address] [--format {json,text}] [--set-ip IP]
 ```
 
-### IP Configuration
+### IP配置
 
-The script looks for the Bitaxe IP in this order:
-1. Command line argument
-2. Config file (`~/.config/bitaxe-monitor/config.json`)
-3. `BITAXE_IP` environment variable
-4. Error (if none found)
+脚本会按以下顺序查找Bitaxe矿机的IP地址：
+1. 命令行参数
+2. 配置文件（`~/.config/bitaxe-monitor/config.json`）
+3. `BITAXE_IP`环境变量
+4. 如果以上方式均未找到IP地址，则显示错误信息
 
-### Saving IP Configuration
+### 保存IP配置
 
-**Option 1: Save to config file (recommended)**
+**选项1：保存到配置文件（推荐）**
 ```bash
 python3 scripts/bitaxe_status.py --set-ip 192.168.1.100
 ```
-This saves the IP to `~/.config/bitaxe-monitor/config.json`.
+该脚本会将IP地址保存到`~/.config/bitaxe-monitor/config.json`文件中。
 
-The config file is stored in a dedicated directory and does not modify your shell profile files.
+配置文件存储在专门的目录中，不会修改您的shell配置文件。
 
-**Option 2: Set environment variable**
+**选项2：设置环境变量**
 ```bash
 export BITAXE_IP=192.168.1.100
 python3 scripts/bitaxe_status.py
 ```
 
-**Option 3: Set for a single command**
+**选项3：为单个命令设置IP地址**
 ```bash
 BITAXE_IP=192.168.1.100 python3 scripts/bitaxe_status.py
 ```
 
-### Checking Status
+### 检查状态
 
-**With IP configured:**
+**配置IP地址后：**
 ```bash
 python3 scripts/bitaxe_status.py
 ```
 
-**Override with different IP:**
+**使用不同的IP地址进行检查：**
 ```bash
 python3 scripts/bitaxe_status.py 192.168.1.105
 ```
 
-**Get raw JSON data:**
+**获取原始JSON数据：**
 ```bash
 python3 scripts/bitaxe_status.py --format json
 ```
 
-## API Endpoints
+## API接口
 
-The Bitaxe API provides these main endpoints:
+Bitaxe API提供以下主要接口：
 
-- `GET /api/system/info` - Complete system status (used by default)
-- `GET /api/system/asic` - ASIC-specific settings
-- `GET /api/system/statistics` - Historical statistics (requires data logging enabled)
-- `GET /api/system/statistics/dashboard` - Dashboard-formatted statistics
+- `GET /api/system/info` - 获取完整的系统状态（默认使用）
+- `GET /api/system/asic` - 获取ASIC芯片的详细信息
+- `GET /api/system/statistics` - 获取历史统计数据（需要启用数据记录功能）
+- `GET /api/system/statistics/dashboard` - 以仪表盘格式显示统计数据
 
-## Key Status Fields
+## 主要状态字段
 
-| Field | Description | Unit |
+| 字段 | 描述 | 单位 |
 |-------|-------------|------|
-| `hashRate` | Current hashrate | GH/s |
-| `hashRate_1m` | 1-minute average | GH/s |
-| `hashRate_10m` | 10-minute average | GH/s |
-| `power` | Power consumption | Watts |
-| `temp` | ASIC temperature | °C |
-| `vrTemp` | Voltage regulator temp | °C |
-| `fanspeed` | Fan speed percentage | % |
-| `fanrpm` | Fan RPM | RPM |
-| `sharesAccepted` | Accepted shares | count |
-| `sharesRejected` | Rejected shares | count |
-| `bestDiff` | Best difficulty found | number |
-| `wifiRSSI` | WiFi signal strength | dBm |
-| `uptimeSeconds` | System uptime | seconds |
+| `hashRate` | 当前哈希率 | GH/s |
+| `hashRate_1m` | 1分钟平均哈希率 | GH/s |
+| `hashRate_10m` | 10分钟平均哈希率 | GH/s |
+| `power` | 功耗 | 瓦特（Watt） |
+| `temp` | ASIC芯片温度 | °C |
+| `vrTemp` | 电压调节器温度 | °C |
+| `fanspeed` | 风扇转速百分比 | % |
+| `fanrpm` | 风扇转速（RPM） |
+| `sharesAccepted` | 被接受的矿工工作量 | 数量 |
+| `sharesRejected` | 被拒绝的矿工工作量 | 数量 |
+| `bestDiff` | 找到的最佳挖矿难度 | 数值 |
+| `wifiRSSI` | WiFi信号强度 | dBm |
+| `uptimeSeconds` | 系统运行时间（秒） |
 
-## Resources
+## 资源
 
-### scripts/
+### 脚本
 
-- `bitaxe_status.py` - Main script to fetch and display Bitaxe status
-  - Supports both text (human-readable) and JSON output formats
-  - Handles connection errors gracefully
-  - Formats key metrics with emoji indicators
-  - Reads IP from config file or `BITAXE_IP` environment variable
-  - Saves IP to config file with `--set-ip`
+- `bitaxe_status.py` - 主脚本，用于获取并显示Bitaxe矿机的状态信息
+  - 支持文本（人类可读）和JSON两种输出格式
+  - 能够优雅地处理连接错误
+  - 使用表情符号来表示关键指标
+  - 从配置文件或`BITAXE_IP`环境变量中读取IP地址
+  - 可通过`--set-ip`参数将IP地址保存到配置文件
 
-## Configuration
+## 配置
 
-### Config File Location
+### 配置文件的位置
 
-The script stores configuration in:
+脚本将配置信息保存在以下路径：
 ```
 ~/.config/bitaxe-monitor/config.json
 ```
 
-This directory is created automatically when using `--set-ip`.
+使用`--set-ip`参数时，该目录会自动创建。
 
-### Environment Variables
+### 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必填 |
 |----------|-------------|----------|
-| `BITAXE_IP` | IP address of your Bitaxe miner | Alternative to config file |
+| `BITAXE_IP` | Bitaxe矿机的IP地址 | 可替代配置文件使用 |
 
-## Error Handling
+## 错误处理
 
-The script handles common errors:
-- Connection failures (wrong IP, device offline)
-- Invalid JSON responses
-- Network timeouts
-- Missing IP (prompts user to configure IP)
+脚本能够处理以下常见错误：
+- 连接失败（IP地址错误、设备离线）
+- JSON响应无效
+- 网络超时
+- 未找到IP地址（提示用户配置IP地址）
 
-## Command Reference
+## 命令参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `bitaxe_status.py` | Check status using saved configuration |
-| `bitaxe_status.py <IP>` | Check status of specific IP (one-time) |
-| `bitaxe_status.py --set-ip <IP>` | Save IP to config file |
-| `bitaxe_status.py --format json` | Output raw JSON |
-| `bitaxe_status.py --format text` | Output formatted text (default) |
+| `bitaxe_status.py` | 使用保存的配置信息检查矿机状态 |
+| `bitaxe_status.py <IP>` | 检查指定IP地址的矿机状态（一次性操作） |
+| `bitaxe_status.py --set-ip <IP>` | 将IP地址保存到配置文件 |
+| `bitaxe_status.py --format json` | 输出原始JSON数据 |
+| `bitaxe_status.py --format text` | 输出格式化的文本（默认格式） |
 
-## Examples
+## 示例
 
-**Quick setup (do once):**
+**快速设置（只需执行一次）：**
 ```bash
 python3 scripts/bitaxe_status.py --set-ip 192.168.1.100
 ```
 
-**Daily usage:**
+**日常使用：**
 ```bash
 python3 scripts/bitaxe_status.py
 ```
 
-**Check multiple miners:**
+**检查多台矿机：**
 ```bash
 python3 scripts/bitaxe_status.py 192.168.1.100
 python3 scripts/bitaxe_status.py 192.168.1.101
 ```
 
-## References
+## 参考资料
 
-For complete API documentation, see the official Bitaxe wiki:
+有关完整的API文档，请参阅Bitaxe的官方wiki：
 https://osmu.wiki/bitaxe/api/
 
-The OpenAPI specification is available at:
+OpenAPI规范请参考：
 https://github.com/bitaxeorg/ESP-Miner/blob/master/main/http_server/openapi.yaml

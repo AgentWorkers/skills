@@ -1,6 +1,6 @@
 ---
 name: overcome-problem
-description: Break down any problem with structured thinking, action plans, and progress tracking
+description: 使用结构化的思维方式来分析问题，制定行动计划，并进行进度跟踪。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,52 +11,51 @@ triggers:
   - "overcome challenge"
 ---
 
-# Overcome Any Problem
+# 克服任何问题
 
-Transform obstacles into solvable steps. Structured thinking beats brute force.
+将障碍转化为可解决的步骤。结构化的思维比蛮力更有效。
 
-## What it does
+## 功能介绍
 
-- **Problem decomposition** - Break complex challenges into discrete, manageable pieces
-- **Action planning** - Generate step-by-step execution paths with clear dependencies
-- **Obstacle identification** - Anticipate blockers before they derail progress
-- **Progress tracking** - Monitor advancement and adjust course mid-execution
+- **问题分解**：将复杂的挑战分解为独立、易于管理的部分。
+- **行动规划**：生成具有明确依赖关系的逐步执行路径。
+- **障碍识别**：在问题阻碍进展之前提前发现它们。
+- **进度跟踪**：监控进度并在执行过程中进行调整。
 
-## Usage
+## 使用方法
 
-### Define Problem
-State the challenge clearly. What's blocking you? What does success look like?
+### 定义问题
+清楚地描述面临的挑战。是什么阻碍了你？成功的标准是什么？
 
-### Break it Down
-Decompose into 8 angles: functional, technical, temporal, resource, risk, stakeholder, precedent, creative.
+### 分解问题
+从八个角度进行分析：功能性、技术性、时间性、资源性、风险性、利益相关者、先例、创造性。
 
-### Create Action Plan
-Sequence tasks with dependencies. Identify parallelizable work. Flag critical path items.
+### 制定行动计划
+按照依赖关系对任务进行排序。识别可以并行处理的工作。标记关键路径上的任务。
 
-### Track Progress
-Update status as you execute. Log blockers. Trigger re-analysis if assumptions break.
+### 跟进进度
+在执行过程中更新进度。记录遇到的障碍。如果假设不成立，重新进行分析。
 
-### Review Obstacles
-When stuck, inspect the directive. What changed? What was missed? Update and retry.
+### 复查障碍
+遇到困难时，回顾问题的指导原则。发生了什么变化？哪里出了问题？更新策略并重新尝试。
 
-## Problem-Solving Framework
+## 问题解决框架
 
-**Define** - Clarify the problem statement. State constraints and success criteria.
+**定义**：明确问题陈述。说明约束条件和成功标准。
 
-**Analyze** - Apply multiple lenses (technical, financial, temporal, creative, etc).
+**分析**：从多个角度（技术、财务、时间、创造性等）进行分析。
 
-**Generate options** - Brainstorm 3+ solution paths. Don't filter yet.
+**生成方案**：头脑风暴出至少三个解决方案。暂时不要筛选。
 
-**Choose** - Select the highest-leverage path. Justify the choice.
+**选择**：选择最具效率的方案。为选择理由提供依据。
 
-**Execute** - Run the action plan. Track assumptions in real-time.
+**执行**：按照行动计划执行。实时跟踪各项假设的实现情况。
 
-**Review** - Evaluate outcome. What worked? What's the directive update?
+**回顾**：评估结果。哪些方法有效？需要更新问题指导原则的地方有哪些？
 
-## Tips
+## 提示
 
-- Start with the constraint. Problems are bottleneck puzzles. Remove the tightest constraint first.
-- Think in primitives. What's the smallest building block? Build up from there.
-- Multiply, don't add. Each system should amplify everything below it.
-- Parallel over sequential. Find independent work streams. Execute simultaneously.
-- All data stays local on your machine. No cloud dependencies, full privacy control.
+- 从约束条件入手。问题往往是由最紧的约束条件造成的。先消除这个约束。
+- 用最小的基本单元来思考问题。从这些基本单元开始逐步构建解决方案。
+- 采用并行处理而非顺序处理的方式。寻找可以同时执行的任务流。
+- 所有数据都保存在本地机器上，避免依赖云服务，确保数据隐私。

@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Porting In - JavaScript
+# Telnyx 的端口迁移功能 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,11 +32,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all porting events
+## 列出所有端口迁移事件
 
-Returns a list of all porting events.
+返回所有端口迁移事件的列表。
 
 `GET /porting/events`
 
@@ -46,9 +47,9 @@ for await (const eventListResponse of client.porting.events.list()) {
 }
 ```
 
-## Show a porting event
+## 显示特定端口迁移事件
 
-Show a specific porting event.
+显示特定的端口迁移事件。
 
 `GET /porting/events/{id}`
 
@@ -58,9 +59,9 @@ const event = await client.porting.events.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d
 console.log(event.data);
 ```
 
-## Republish a porting event
+## 重新发布端口迁移事件
 
-Republish a specific porting event.
+重新发布特定的端口迁移事件。
 
 `POST /porting/events/{id}/republish`
 
@@ -68,9 +69,9 @@ Republish a specific porting event.
 await client.porting.events.republish('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 ```
 
-## Preview the LOA configuration parameters
+## 预览 LOA 配置参数
 
-Preview the LOA template that would be generated without need to create LOA configuration.
+预览生成的 LOA 模板，无需创建 LOA 配置。
 
 `POST /porting/loa_configuration_preview`
 
@@ -95,9 +96,9 @@ const content = await response.blob();
 console.log(content);
 ```
 
-## List LOA configurations
+## 列出 LOA 配置
 
-List the LOA configurations.
+列出所有 LOA 配置。
 
 `GET /porting/loa_configurations`
 
@@ -108,9 +109,9 @@ for await (const portingLoaConfiguration of client.porting.loaConfigurations.lis
 }
 ```
 
-## Create a LOA configuration
+## 创建 LOA 配置
 
-Create a LOA configuration.
+创建一个新的 LOA 配置。
 
 `POST /porting/loa_configurations`
 
@@ -132,9 +133,9 @@ const loaConfiguration = await client.porting.loaConfigurations.create({
 console.log(loaConfiguration.data);
 ```
 
-## Retrieve a LOA configuration
+## 获取 LOA 配置
 
-Retrieve a specific LOA configuration.
+获取特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}`
 
@@ -146,9 +147,9 @@ const loaConfiguration = await client.porting.loaConfigurations.retrieve(
 console.log(loaConfiguration.data);
 ```
 
-## Update a LOA configuration
+## 更新 LOA 配置
 
-Update a specific LOA configuration.
+更新特定的 LOA 配置。
 
 `PATCH /porting/loa_configurations/{id}`
 
@@ -173,9 +174,9 @@ const loaConfiguration = await client.porting.loaConfigurations.update(
 console.log(loaConfiguration.data);
 ```
 
-## Delete a LOA configuration
+## 删除 LOA 配置
 
-Delete a specific LOA configuration.
+删除特定的 LOA 配置。
 
 `DELETE /porting/loa_configurations/{id}`
 
@@ -183,9 +184,9 @@ Delete a specific LOA configuration.
 await client.porting.loaConfigurations.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 ```
 
-## Preview a LOA configuration
+## 预览 LOA 配置
 
-Preview a specific LOA configuration.
+预览特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}/preview`
 
@@ -200,9 +201,9 @@ const content = await response.blob();
 console.log(content);
 ```
 
-## List all porting orders
+## 列出所有端口迁移订单
 
-Returns a list of your porting order.
+返回所有端口迁移订单的列表。
 
 `GET /porting_orders`
 
@@ -213,11 +214,11 @@ for await (const portingOrder of client.portingOrders.list()) {
 }
 ```
 
-## Create a porting order
+## 创建端口迁移订单
 
-Creates a new porting order object.
+创建一个新的端口迁移订单对象。
 
-`POST /porting_orders` — Required: `phone_numbers`
+`POST /porting_orders` — 必需参数：`phone_numbers`
 
 ```javascript
 const portingOrder = await client.portingOrders.create({
@@ -227,9 +228,9 @@ const portingOrder = await client.portingOrders.create({
 console.log(portingOrder.data);
 ```
 
-## Retrieve a porting order
+## 获取端口迁移订单详情
 
-Retrieves the details of an existing porting order.
+获取现有端口迁移订单的详细信息。
 
 `GET /porting_orders/{id}`
 
@@ -239,9 +240,9 @@ const portingOrder = await client.portingOrders.retrieve('182bd5e5-6e1a-4fe4-a79
 console.log(portingOrder.data);
 ```
 
-## Edit a porting order
+## 编辑端口迁移订单
 
-Edits the details of an existing porting order.
+编辑现有端口迁移订单的详细信息。
 
 `PATCH /porting_orders/{id}`
 
@@ -251,9 +252,9 @@ const portingOrder = await client.portingOrders.update('182bd5e5-6e1a-4fe4-a799-
 console.log(portingOrder.data);
 ```
 
-## Delete a porting order
+## 删除端口迁移订单
 
-Deletes an existing porting order.
+删除现有的端口迁移订单。
 
 `DELETE /porting_orders/{id}`
 
@@ -261,9 +262,9 @@ Deletes an existing porting order.
 await client.portingOrders.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 ```
 
-## Activate every number in a porting order asynchronously.
+## 异步激活端口迁移订单中的每个号码
 
-Activate each number in a porting order asynchronously.
+异步激活端口迁移订单中的每个号码。
 
 `POST /porting_orders/{id}/actions/activate`
 
@@ -275,7 +276,7 @@ const response = await client.portingOrders.actions.activate(
 console.log(response.data);
 ```
 
-## Cancel a porting order
+## 取消端口迁移订单
 
 `POST /porting_orders/{id}/actions/cancel`
 
@@ -285,9 +286,9 @@ const response = await client.portingOrders.actions.cancel('182bd5e5-6e1a-4fe4-a
 console.log(response.data);
 ```
 
-## Submit a porting order.
+## 提交端口迁移订单
 
-Confirm and submit your porting order.
+确认并提交端口迁移订单。
 
 `POST /porting_orders/{id}/actions/confirm`
 
@@ -297,11 +298,11 @@ const response = await client.portingOrders.actions.confirm('182bd5e5-6e1a-4fe4-
 console.log(response.data);
 ```
 
-## Share a porting order
+## 共享端口迁移订单
 
-Creates a sharing token for a porting order.
+为端口迁移订单创建共享令牌。
 
-`POST /porting_orders/{id}/actions/share`
+`POST /porting/orders/{id}/actions/share`
 
 ```javascript
 const response = await client.portingOrders.actions.share('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
@@ -309,11 +310,11 @@ const response = await client.portingOrders.actions.share('182bd5e5-6e1a-4fe4-a7
 console.log(response.data);
 ```
 
-## List all porting activation jobs
+## 列出所有端口迁移激活任务
 
-Returns a list of your porting activation jobs.
+返回所有端口迁移激活任务的列表。
 
-`GET /porting_orders/{id}/activation_jobs`
+`GET /porting/orders/{id}/activation_jobs`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -324,11 +325,11 @@ for await (const portingOrdersActivationJob of client.portingOrders.activationJo
 }
 ```
 
-## Retrieve a porting activation job
+## 获取端口迁移激活任务详情
 
-Returns a porting activation job.
+获取特定的端口迁移激活任务的详细信息。
 
-`GET /porting_orders/{id}/activation_jobs/{activationJobId}`
+`GET /porting/orders/{id}/activation_jobs/{activationJobId}`
 
 ```javascript
 const activationJob = await client.portingOrders.activationJobs.retrieve(
@@ -339,11 +340,11 @@ const activationJob = await client.portingOrders.activationJobs.retrieve(
 console.log(activationJob.data);
 ```
 
-## Update a porting activation job
+## 更新端口迁移激活任务
 
-Updates the activation time of a porting activation job.
+更新端口迁移激活任务的激活时间。
 
-`PATCH /porting_orders/{id}/activation_jobs/{activationJobId}`
+`PATCH /porting/orders/{id}/activation_jobs/{activationJobId}`
 
 ```javascript
 const activationJob = await client.portingOrders.activationJobs.update(
@@ -354,11 +355,11 @@ const activationJob = await client.portingOrders.activationJobs.update(
 console.log(activationJob.data);
 ```
 
-## List additional documents
+## 列出附加文档
 
-Returns a list of additional documents for a porting order.
+返回端口迁移订单的所有附加文档的列表。
 
-`GET /porting_orders/{id}/additional_documents`
+`GET /porting/orders/{id}/additional_documents`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -369,11 +370,11 @@ for await (const additionalDocumentListResponse of client.portingOrders.addition
 }
 ```
 
-## Create a list of additional documents
+## 创建附加文档列表
 
-Creates a list of additional documents for a porting order.
+为端口迁移订单创建附加文档的列表。
 
-`POST /porting_orders/{id}/additional_documents`
+`POST /porting/orders/{id}/additional_documents`
 
 ```javascript
 const additionalDocument = await client.portingOrders.additionalDocuments.create(
@@ -383,11 +384,11 @@ const additionalDocument = await client.portingOrders.additionalDocuments.create
 console.log(additionalDocument.data);
 ```
 
-## Delete an additional document
+## 删除附加文档
 
-Deletes an additional document for a porting order.
+删除端口迁移订单中的附加文档。
 
-`DELETE /porting_orders/{id}/additional_documents/{additional_document_id}`
+`DELETE /porting/orders/{id}/additional_documents/{additional_document_id}`
 
 ```javascript
 await client.portingOrders.additionalDocuments.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
@@ -395,11 +396,11 @@ await client.portingOrders.additionalDocuments.delete('182bd5e5-6e1a-4fe4-a799-a
 });
 ```
 
-## List allowed FOC dates
+## 列出允许的 FOC 日期
 
-Returns a list of allowed FOC dates for a porting order.
+返回端口迁移订单允许的 FOC 日期列表。
 
-`GET /porting_orders/{id}/allowed_foc_windows`
+`GET /porting/orders/{id}/allowed_foc_windows`
 
 ```javascript
 const response = await client.portingOrders.retrieveAllowedFocWindows(
@@ -409,11 +410,11 @@ const response = await client.portingOrders.retrieveAllowedFocWindows(
 console.log(response.data);
 ```
 
-## List all comments of a porting order
+## 列出端口迁移订单的所有评论
 
-Returns a list of all comments of a porting order.
+返回端口迁移订单的所有评论列表。
 
-`GET /porting_orders/{id}/comments`
+`GET /porting/orders/{id}/comments`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -424,11 +425,11 @@ for await (const commentListResponse of client.portingOrders.comments.list(
 }
 ```
 
-## Create a comment for a porting order
+## 为端口迁移订单创建评论
 
-Creates a new comment for a porting order.
+为端口迁移订单创建新的评论。
 
-`POST /porting_orders/{id}/comments`
+`POST /porting/orders/{id}/comments`
 
 ```javascript
 const comment = await client.portingOrders.comments.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
@@ -436,9 +437,9 @@ const comment = await client.portingOrders.comments.create('182bd5e5-6e1a-4fe4-a
 console.log(comment.data);
 ```
 
-## Download a porting order loa template
+## 下载端口迁移订单的 LOA 模板
 
-`GET /porting_orders/{id}/loa_template`
+`GET /porting/orders/{id}/loa_template`
 
 ```javascript
 const response = await client.portingOrders.retrieveLoaTemplate(
@@ -451,11 +452,11 @@ const content = await response.blob();
 console.log(content);
 ```
 
-## List porting order requirements
+## 列出端口迁移订单的要求
 
-Returns a list of all requirements based on country/number type for this porting order.
+根据国家/号码类型，返回该端口迁移订单的所有要求列表。
 
-`GET /porting_orders/{id}/requirements`
+`GET /porting/orders/{id}/requirements`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -466,9 +467,9 @@ for await (const portingOrderRetrieveRequirementsResponse of client.portingOrder
 }
 ```
 
-## Retrieve the associated V1 sub_request_id and port_request_id
+## 获取关联的 V1 子请求 ID 和端口请求 ID
 
-`GET /porting_orders/{id}/sub_request`
+`GET /porting/orders/{id}/sub_request`
 
 ```javascript
 const response = await client.portingOrders.retrieveSubRequest(
@@ -478,11 +479,11 @@ const response = await client.portingOrders.retrieveSubRequest(
 console.log(response.data);
 ```
 
-## List verification codes
+## 列出验证代码
 
-Returns a list of verification codes for a porting order.
+返回端口迁移订单的所有验证代码列表。
 
-`GET /porting_orders/{id}/verification_codes`
+`GET /porting/orders/{id}/verification_codes`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -493,21 +494,21 @@ for await (const verificationCodeListResponse of client.portingOrders.verificati
 }
 ```
 
-## Send the verification codes
+## 发送验证代码
 
-Send the verification code for all porting phone numbers.
+为所有端口迁移号码发送验证代码。
 
-`POST /porting_orders/{id}/verification_codes/send`
+`POST /porting/orders/{id}/verification_codes/send`
 
 ```javascript
 await client.portingOrders.verificationCodes.send('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 ```
 
-## Verify the verification code for a list of phone numbers
+## 验证一系列号码的验证代码
 
-Verifies the verification code for a list of phone numbers.
+验证一系列号码的验证代码。
 
-`POST /porting_orders/{id}/verification_codes/verify`
+`POST /porting/orders/{id}/verification_codes/verify`
 
 ```javascript
 const response = await client.portingOrders.verificationCodes.verify(
@@ -517,9 +518,9 @@ const response = await client.portingOrders.verificationCodes.verify(
 console.log(response.data);
 ```
 
-## List action requirements for a porting order
+## 列出端口迁移订单的动作要求
 
-Returns a list of action requirements for a specific porting order.
+返回特定端口迁移订单的所有动作要求列表。
 
 `GET /porting_orders/{porting_order_id}/action_requirements`
 
@@ -532,11 +533,11 @@ for await (const actionRequirementListResponse of client.portingOrders.actionReq
 }
 ```
 
-## Initiate an action requirement
+## 启动动作要求
 
-Initiates a specific action requirement for a porting order.
+为特定端口迁移订单启动特定的动作要求。
 
-`POST /porting_orders/{porting_order_id}/action_requirements/{id}/initiate`
+`POST /porting_orders/{id}/action_requirements/{id}/initiate`
 
 ```javascript
 const response = await client.portingOrders.actionRequirements.initiate('id', {
@@ -547,11 +548,11 @@ const response = await client.portingOrders.actionRequirements.initiate('id', {
 console.log(response.data);
 ```
 
-## List all associated phone numbers
+## 列出所有关联的号码
 
-Returns a list of all associated phone numbers for a porting order.
+返回端口迁移订单的所有关联号码列表。
 
-`GET /porting_orders/{porting_order_id}/associated_phone_numbers`
+`GET /porting_orders/{id}/associated_phone_numbers`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -562,11 +563,11 @@ for await (const portingAssociatedPhoneNumber of client.portingOrders.associated
 }
 ```
 
-## Create an associated phone number
+## 创建关联号码
 
-Creates a new associated phone number for a porting order.
+为端口迁移订单创建新的关联号码。
 
-`POST /porting_orders/{porting_order_id}/associated_phone_numbers`
+`POST /porting_orders/{id}/associated_phone_numbers`
 
 ```javascript
 const associatedPhoneNumber = await client.portingOrders.associatedPhoneNumbers.create(
@@ -580,11 +581,11 @@ const associatedPhoneNumber = await client.portingOrders.associatedPhoneNumbers.
 console.log(associatedPhoneNumber.data);
 ```
 
-## Delete an associated phone number
+## 删除关联号码
 
-Deletes an associated phone number from a porting order.
+从端口迁移订单中删除关联号码。
 
-`DELETE /porting_orders/{porting_order_id}/associated_phone_numbers/{id}`
+`DELETE /porting_orders/{id}/associated_phone_numbers/{id}`
 
 ```javascript
 const associatedPhoneNumber = await client.portingOrders.associatedPhoneNumbers.delete(
@@ -595,11 +596,11 @@ const associatedPhoneNumber = await client.portingOrders.associatedPhoneNumbers.
 console.log(associatedPhoneNumber.data);
 ```
 
-## List all phone number blocks
+## 列出所有号码块
 
-Returns a list of all phone number blocks of a porting order.
+返回端口迁移订单的所有号码块列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_blocks`
+`GET /porting_orders/{id}/phone_number_blocks`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -610,11 +611,11 @@ for await (const portingPhoneNumberBlock of client.portingOrders.phoneNumberBloc
 }
 ```
 
-## Create a phone number block
+## 创建号码块
 
-Creates a new phone number block.
+为端口迁移订单创建新的号码块。
 
-`POST /porting_orders/{porting_order_id}/phone_number_blocks`
+`POST /porting_orders/{id}/phone_number_blocks`
 
 ```javascript
 const phoneNumberBlock = await client.portingOrders.phoneNumberBlocks.create(
@@ -628,11 +629,11 @@ const phoneNumberBlock = await client.portingOrders.phoneNumberBlocks.create(
 console.log(phoneNumberBlock.data);
 ```
 
-## Delete a phone number block
+## 删除号码块
 
-Deletes a phone number block.
+删除号码块。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_blocks/{id}`
+`DELETE /porting_orders/{id}/phone_number_blocks/{id}`
 
 ```javascript
 const phoneNumberBlock = await client.portingOrders.phoneNumberBlocks.delete(
@@ -643,11 +644,11 @@ const phoneNumberBlock = await client.portingOrders.phoneNumberBlocks.delete(
 console.log(phoneNumberBlock.data);
 ```
 
-## List all phone number extensions
+## 列出所有号码扩展
 
-Returns a list of all phone number extensions of a porting order.
+返回端口迁移订单的所有号码扩展列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_extensions`
+`GET /porting_orders/{id}/phone_number_extensions`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -658,11 +659,11 @@ for await (const portingPhoneNumberExtension of client.portingOrders.phoneNumber
 }
 ```
 
-## Create a phone number extension
+## 创建号码扩展
 
-Creates a new phone number extension.
+为端口迁移订单创建新的号码扩展。
 
-`POST /porting_orders/{porting_order_id}/phone_number_extensions`
+`POST /porting_orders/{id}/phone_numberextensions`
 
 ```javascript
 const phoneNumberExtension = await client.portingOrders.phoneNumberExtensions.create(
@@ -677,11 +678,11 @@ const phoneNumberExtension = await client.portingOrders.phoneNumberExtensions.cr
 console.log(phoneNumberExtension.data);
 ```
 
-## Delete a phone number extension
+## 删除号码扩展
 
-Deletes a phone number extension.
+删除号码扩展。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_extensions/{id}`
+`DELETE /porting_orders/{id}/phone_number_extensions/{id}`
 
 ```javascript
 const phoneNumberExtension = await client.portingOrders.phoneNumberExtensions.delete(
@@ -692,9 +693,9 @@ const phoneNumberExtension = await client.portingOrders.phoneNumberExtensions.de
 console.log(phoneNumberExtension.data);
 ```
 
-## List all exception types
+## 列出所有可能的异常类型
 
-Returns a list of all possible exception types for a porting order.
+返回端口迁移订单的所有可能异常类型列表。
 
 `GET /porting_orders/exception_types`
 
@@ -704,9 +705,9 @@ const response = await client.portingOrders.retrieveExceptionTypes();
 console.log(response.data);
 ```
 
-## List all phone number configurations
+## 列出所有号码配置
 
-Returns a list of phone number configurations paginated.
+分页显示端口迁移订单的所有号码配置。
 
 `GET /porting_orders/phone_number_configurations`
 
@@ -717,11 +718,11 @@ for await (const phoneNumberConfigurationListResponse of client.portingOrders.ph
 }
 ```
 
-## Create a list of phone number configurations
+## 创建号码配置列表
 
-Creates a list of phone number configurations.
+创建号码配置的列表。
 
-`POST /porting_orders/phone_number_configurations`
+`POST /porting/orders/phone_number_configurations`
 
 ```javascript
 const phoneNumberConfiguration = await client.portingOrders.phoneNumberConfigurations.create();
@@ -729,9 +730,9 @@ const phoneNumberConfiguration = await client.portingOrders.phoneNumberConfigura
 console.log(phoneNumberConfiguration.data);
 ```
 
-## List all porting phone numbers
+## 列出所有迁移的号码
 
-Returns a list of your porting phone numbers.
+返回所有迁移的号码列表。
 
 `GET /porting/phone_numbers`
 
@@ -742,9 +743,9 @@ for await (const portingPhoneNumberListResponse of client.portingPhoneNumbers.li
 }
 ```
 
-## List porting related reports
+## 列出与端口迁移相关的报告
 
-List the reports generated about porting operations.
+列出关于端口迁移操作的报告。
 
 `GET /porting/reports`
 
@@ -755,9 +756,9 @@ for await (const portingReport of client.porting.reports.list()) {
 }
 ```
 
-## Create a porting related report
+## 创建与端口迁移相关的报告
 
-Generate reports about porting operations.
+生成关于端口迁移操作的报告。
 
 `POST /porting/reports`
 
@@ -770,9 +771,9 @@ const report = await client.porting.reports.create({
 console.log(report.data);
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+获取特定的报告。
 
 `GET /porting/reports/{id}`
 
@@ -782,9 +783,9 @@ const report = await client.porting.reports.retrieve('182bd5e5-6e1a-4fe4-a799-aa
 console.log(report.data);
 ```
 
-## List available carriers in the UK
+## 列出英国的可用运营商
 
-List available carriers in the UK.
+列出英国的可用运营商。
 
 `GET /porting/uk_carriers`
 
@@ -794,9 +795,9 @@ const response = await client.porting.listUkCarriers();
 console.log(response.data);
 ```
 
-## Run a portability check
+## 运行端口迁移检查
 
-Runs a portability check, returning the results immediately.
+运行端口迁移检查，并立即返回结果。
 
 `POST /portability_checks`
 
@@ -804,4 +805,5 @@ Runs a portability check, returning the results immediately.
 const response = await client.portabilityChecks.run();
 
 console.log(response.data);
+```
 ```

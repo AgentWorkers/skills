@@ -1,18 +1,18 @@
 ---
 slug: "sql-query-builder"
 display_name: "SQL Query Builder"
-description: "Build SQL queries for construction databases. Generate optimized SQL queries for construction data retrieval"
+description: "为建筑数据库构建 SQL 查询。生成用于检索建筑数据的优化 SQL 查询。"
 ---
 
-# SQL Query Builder
+# SQL 查询构建器
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.1), this skill builds SQL queries for construction databases, supporting common construction data patterns like cost tracking, schedule management, and resource allocation.
+本技能基于 DDC 方法论（第 2.1 章），用于构建用于建筑数据库的 SQL 查询，支持常见的建筑数据模式，如成本跟踪、进度管理和资源分配。
 
-**Book Reference:** "Типы данных в строительстве" / "Data Types in Construction"
+**参考书籍**：《建筑中的数据类型》（"Типы данных в строительстве"）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -572,9 +572,9 @@ class QueryOptimizer:
         return analysis
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Build Cost Summary Query
+### 构建成本汇总查询
 
 ```python
 builder = ConstructionQueryBuilder()
@@ -584,7 +584,7 @@ query = builder.project_cost_summary(project_id=123)
 print(query)
 ```
 
-### Build Custom SELECT Query
+### 构建自定义 SELECT 查询
 
 ```python
 query = builder.select(
@@ -603,7 +603,7 @@ query = builder.select(
 )
 ```
 
-### Build JOIN Query
+### 构建 JOIN 查询
 
 ```python
 query = builder.select_with_joins(
@@ -623,7 +623,7 @@ query = builder.select_with_joins(
 )
 ```
 
-### Insert and Update Data
+### 插入和更新数据
 
 ```python
 # Insert new cost item
@@ -648,24 +648,24 @@ update_query = builder.update(
 )
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
+| 组件 | 用途 |
 |-----------|---------|
-| `ConstructionQueryBuilder` | Main query builder |
-| `WhereCondition` | WHERE clause conditions |
-| `JoinClause` | JOIN definitions |
-| `SelectColumn` | Column with aggregate/alias |
-| `OrderBy` | ORDER BY clause |
-| `QueryOptimizer` | Query optimization suggestions |
+| `ConstructionQueryBuilder` | 主要查询构建器 |
+| `WhereCondition` | WHERE 子句条件 |
+| `JoinClause` | JOIN 定义 |
+| `SelectColumn` | 包含聚合函数或别名的列 |
+| `OrderBy` | ORDER BY 子句 |
+| `QueryOptimizer` | 查询优化建议 |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.1
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko 著的《数据驱动的建筑》（"Data-Driven Construction"），第 2.1 章 |
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [data-type-classifier](../data-type-classifier/SKILL.md) to identify data types
-- Use [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) for data integration
-- Use [kpi-dashboard](../../Chapter-4.1/kpi-dashboard/SKILL.md) for visualization
+- 使用 [data-type-classifier](../data-type-classifier/SKILL.md) 来识别数据类型 |
+- 使用 [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) 进行数据集成 |
+- 使用 [kpi-dashboard](../../Chapter-4.1/kpi-dashboard/SKILL.md) 进行数据可视化

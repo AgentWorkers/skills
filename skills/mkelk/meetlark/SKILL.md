@@ -1,37 +1,37 @@
 ---
 name: meetlark
-description: Scheduling polls for humans and their agents. Create polls, share participation links, collect votes, and find the best meeting time. A Doodle alternative built for the age of AI agents.
+description: 为人类及其代理程序安排投票时间：创建投票问卷、分享参与链接、收集投票结果，并确定最佳的会议时间。这是一款专为人工智能代理程序时代设计的Doodle替代工具。
 homepage: https://meetlark.ai
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🐦"}}
 ---
 
-# meetlark.ai — Scheduling polls for humans and their agents
+# meetlark.ai — 为人类及其代理程序安排投票任务
 
-A Doodle alternative built for the age of AI agents. Create a poll, share a link, collect votes, find the best time.
+这是一个专为人工智能代理程序时代设计的替代工具（类似 Doodle）。您可以创建投票问卷、分享链接、收集投票结果，并选择最佳时间。
 
-## Two Tokens
+## 两种令牌
 
-When you create a poll you get two tokens:
+创建投票问卷时，您会获得两种令牌：
 
-- **Admin token** (`adm_...`) — Private. View full results, see who voted, close the poll. Store it in your memory for the poll's lifetime.
-- **Participate token** (`prt_...`) — Shareable. Anyone with the participate URL can vote — humans via the web UI, agents via the API. Multiple people use the same link.
+- **管理员令牌** (`adm_...`) — 仅限管理员使用。该令牌可用于查看完整结果、查看投票者信息以及关闭投票问卷。该令牌的有效期与投票问卷的生命周期相同。
+- **参与令牌** (`prt_...`) — 可共享。任何拥有参与链接的人都可以进行投票：人类可以通过网页界面投票，代理程序可以通过 API 进行投票。多人可以使用同一个链接。
 
-## Creating a Poll
+## 创建投票问卷
 
-Ask the user what times work and create the poll with those time slots.
+询问用户哪些时间段适合进行投票，然后根据这些时间段创建投票问卷。
 
 ```
 POST https://meetlark.ai/api/v1/polls?autoVerify=true
 ```
 
-The response includes `adminToken` and `participateUrl`.
+响应中会包含 `adminToken` 和 `participateUrl`。
 
-### Email Verification
+### 邮箱验证
 
-Poll creation requires a verified email (one-time, valid for 30 days of activity).
+创建投票问卷需要使用经过验证的电子邮件地址（验证一次，有效期为 30 天）。
 
-Use `?autoVerify=true` — if the email is unverified, the API automatically sends a verification email and returns:
+如果电子邮件未经过验证，可以使用 `?autoVerify=true` 参数。此时，API 会自动发送验证邮件，并返回相应的信息：
 ```json
 {
   "error": {
@@ -41,13 +41,13 @@ Use `?autoVerify=true` — if the email is unverified, the API automatically sen
 }
 ```
 
-Tell the user: "Check your email and click the verification link, then let me know."
+请告知用户：“请查看您的电子邮件并点击验证链接，之后再告诉我结果。”
 
-Poll `GET /api/v1/auth/status?email=...` until `verified: true`, then retry.
+用户需要通过 `GET /api/v1/auth/status?email=...` 请求来检查邮箱验证状态，直到状态变为 `verified: true` 为止，之后才能继续使用投票问卷。
 
-## Sharing the Poll
+## 分享投票问卷
 
-Give the participate URL to the user and ask them to share it. Suggest a message:
+将参与链接提供给用户，并建议他们分享该链接。
 
 ```
 Hi [name/team],
@@ -59,23 +59,23 @@ Vote here: [participate URL]
 Please vote on the times that work for you.
 ```
 
-## Checking Results
+## 查看投票结果
 
 ```
 GET https://meetlark.ai/api/v1/polls/{pollId}
 Authorization: Bearer adm_...
 ```
 
-Returns vote counts per time slot and individual votes.
+系统会返回每个时间段的投票人数以及具体的投票记录。
 
-## Closing the Poll
+## 关闭投票问卷
 
 ```
 POST https://meetlark.ai/api/v1/polls/{pollId}/close
 Authorization: Bearer adm_...
 ```
 
-## Quick Examples
+## 快速示例
 
 ```
 "Create a poll for our team standup next week"
@@ -84,12 +84,12 @@ Authorization: Bearer adm_...
 "Close the poll and tell me the winning time"
 ```
 
-## API
+## API 相关信息
 
-- **OpenAPI spec:** https://meetlark.ai/api/v1/openapi.json
-- **Interactive docs:** https://meetlark.ai/docs
-- **AI plugin manifest:** https://meetlark.ai/.well-known/ai-plugin.json
+- **开放 API 规范：** https://meetlark.ai/api/v1/openapi.json
+- **交互式文档：** https://meetlark.ai/docs
+- **AI 插件信息：** https://meetlark.ai/.well-known/ai-plugin.json
 
-## Website
+## 网站
 
-- **meetlark.ai:** https://meetlark.ai
+- **meetlark.ai：** https://meetlark.ai

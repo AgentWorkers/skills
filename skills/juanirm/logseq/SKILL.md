@@ -1,80 +1,71 @@
 ---
 name: logseq
-description: Provide commands for interacting with a local Logseq instance through its Plugin API. Use for creating pages, inserting blocks, querying the graph database, managing tasks, retrieving content, or automating workflows in Logseq. Only works with a locally running instance with the API enabled; default port or set path expected for [$API accessible skill].
+description: 提供用于通过 Logseq 的插件 API 与本地 Logseq 实例交互的命令。这些命令可用于创建页面、插入内容块、查询图数据库、管理任务、检索数据，以及自动化 Logseq 中的工作流程。请确保使用的是已启用 API 的本地运行实例；默认端口或路径适用于 [$API accessible skill]。
 ---
 
-# Logseq Plugin API
+# Logseq插件API
 
-Interact with your local Logseq instance through its JavaScript Plugin API. This skill enables reading, writing, querying, and automating workflows in your Logseq graph.
+您可以通过JavaScript插件API与本地的Logseq实例进行交互。该插件API支持读取、写入、查询以及自动化处理Logseq图中的工作流程。
 
-## Prerequisites
+## 先决条件
 
-**Logseq must be running locally** with a plugin that exposes the API. The standard way is:
+**Logseq必须在本机运行**，并且需要安装一个能够暴露API的插件。常见的实现方式如下：
 
-1. **Install a bridge plugin** that exposes `logseq` API via HTTP (e.g., via a custom plugin or localhost endpoint)
-2. **Alternative**: Use Node.js with `@logseq/libs` package to script against the running Logseq instance
+1. **安装桥接插件**：通过HTTP接口（例如自定义插件或本地端点）暴露`logseq` API。
+2. **另一种方式**：使用Node.js和`@logseq/libs`包来编写脚本，以与正在运行的Logseq实例进行交互。
 
-The API is primarily designed for in-browser plugins, so accessing it from external scripts requires a bridge/proxy.
+该API主要针对浏览器插件设计，因此从外部脚本访问它需要借助桥接插件或代理服务器。
 
-## Core API Namespaces
+## 核心API命名空间
 
-The Logseq Plugin API is organized into these main proxies:
+Logseq插件API主要分为以下几个命名空间：
 
 ### `logseq.App`
-Application-level operations: getting app info, user configs, current graph, commands, UI state, external links.
-
-**Key methods:**
-- `getInfo()` - Get app version and info
-- `getUserConfigs()` - Get user preferences (theme, format, language, etc.)
-- `getCurrentGraph()` - Get current graph info (name, path, URL)
-- `registerCommand(type, opts, action)` - Register custom commands
-- `pushState(route, params, query)` - Navigate to routes
+- 应用层操作：获取应用信息、用户配置、当前图谱、命令、UI状态、外部链接等。
+  - **关键方法**：
+    - `getInfo()`：获取应用版本和信息
+    - `getUserConfigs()`：获取用户偏好设置（主题、格式、语言等）
+    - `getCurrentGraph()`：获取当前图谱的信息（名称、路径、URL）
+    - `registerCommand(type, opts, action)`：注册自定义命令
+    - `pushState(route, params, query)`：导航到指定路径
 
 ### `logseq.Editor`
-Block and page editing operations: creating, updating, moving, querying content.
-
-**Key methods:**
-- `getBlock(uuid)` - Get block by UUID
-- `getCurrentPage()` - Get current page entity
-- `getCurrentPageBlocksTree()` - Get all blocks on current page
-- `getPageBlocksTree(page)` - Get all blocks for a specific page
-- `insertBlock(target, content, opts)` - Insert a new block
-- `updateBlock(uuid, content)` - Update block content
-- `createPage(pageName, properties, opts)` - Create a new page
-- `deletePage(pageName)` - Delete a page
-- `getPageLinkedReferences(page)` - Get backlinks to a page
-- `registerSlashCommand(tag, action)` - Add custom slash commands
+- 块和页面编辑操作：创建、更新、移动、查询内容等。
+  - **关键方法**：
+    - `getBlock(uuid)`：根据UUID获取块
+    - `getCurrentPage()`：获取当前页面的实体
+    - `getCurrentPageBlocksTree()`：获取当前页面上的所有块
+    - `getPageBlocksTree(page)`：获取特定页面的所有块
+    - `insertBlock(target, content, opts)`：插入新块
+    - `updateBlock(uuid, content)`：更新块内容
+    - `createPage(pageName, properties, opts)`：创建新页面
+    - `deletePage(pageName)`：删除页面
+    - `getPageLinkedReferences(page)`：获取页面的引用链接
+    - `registerSlashCommand(tag, action)`：添加自定义的斜杠命令
 
 ### `logseq.DB`
-Database queries using Datalog.
-
-**Key methods:**
-- `q(query, ...inputs)` - Run Datalog query
-- `datascriptQuery(query, ...inputs)` - Direct Datascript query
+- 使用Datalog进行数据库查询。
+  - **关键方法**：
+    - `q(query, ...inputs)`：执行Datalog查询
+    - `datascriptQuery(query, ...inputs)`：直接执行Datascript查询
 
 ### `logseq.UI`
-UI operations: messages, dialogs, main UI visibility.
-
-**Key methods:**
-- `showMsg(content, status)` - Show toast notification
-- `queryElementById(id)` - Query DOM elements
+- UI操作：显示消息、对话框、控制主UI的可见性等。
+  - **关键方法**：
+    - `showMsg(content, status)`：显示提示通知
+    - `queryElementById(id)`：查询DOM元素
 
 ### `logseq.Git`
-Git operations for the current graph.
-
-**Key methods:**
-- `execCommand(args)` - Execute git command
+- 对当前图谱进行Git操作。
+  - **关键方法**：
+    - `execCommand(args)`：执行Git命令
 
 ### `logseq.Assets`
-Asset management.
+- 资产管理相关操作。
 
-**Key methods:**
-- `listFilesOfCurrentGraph(path)` - List files in graph
+## 常见工作流程
 
-## Common Workflows
-
-### Read Content
-
+### 读取内容
 ```javascript
 // Get current page
 const page = await logseq.Editor.getCurrentPage();
@@ -92,8 +83,7 @@ const results = await logseq.DB.q(`
 `);
 ```
 
-### Write Content
-
+### 写入内容
 ```javascript
 // Create a new page
 await logseq.Editor.createPage('Project Notes', {
@@ -121,8 +111,7 @@ const blocks = [
 await logseq.Editor.insertBatchBlock('parent-uuid', blocks, { sibling: false });
 ```
 
-### Task Management
-
+### 任务管理
 ```javascript
 // Find all TODO items
 const todos = await logseq.DB.q(`
@@ -141,8 +130,7 @@ const blocks = await logseq.Editor.getPageBlocksTree(page.name);
 const tasks = blocks.filter(b => b.marker === 'TODO' || b.marker === 'DOING');
 ```
 
-### Navigation and UI
-
+### 导航和UI
 ```javascript
 // Navigate to a page
 logseq.App.pushState('page', { name: 'Project Notes' });
@@ -156,13 +144,12 @@ console.log('Theme:', configs.preferredThemeMode);
 console.log('Format:', configs.preferredFormat);
 ```
 
-## Implementation Approaches
+## 实现方式
 
-Since Logseq's Plugin API is browser-based, you have several options:
+由于Logseq的插件API是基于浏览器的，您有以下几种实现选择：
 
-### Option 1: Bridge Plugin
-Create a minimal Logseq plugin that exposes API calls via HTTP:
-
+### 选项1：桥接插件
+- 创建一个简单的Logseq插件，通过HTTP接口暴露API调用：
 ```javascript
 // In Logseq plugin (index.js)
 logseq.ready(() => {
@@ -177,27 +164,26 @@ logseq.ready(() => {
 // Then call from external script via HTTP POST
 ```
 
-### Option 2: Node.js Script with @logseq/libs
-For automation scripts, use the `@logseq/libs` package:
-
+### 选项2：使用`@logseq/libs`的Node.js脚本
+- 对于自动化脚本，可以使用`@logseq/libs`包：
 ```bash
 npm install @logseq/libs
 ```
 
-**Note:** This requires a running Logseq instance and proper connection setup.
+**注意**：这需要一个正在运行的Logseq实例以及正确的连接配置。
 
-### Option 3: Direct Plugin Development
-Develop a full Logseq plugin following the plugin samples at:
+### 选项3：直接开发插件
+- 可以参考以下链接开发完整的Logseq插件：
 https://github.com/logseq/logseq-plugin-samples
 
-## API Reference
+## API参考
 
-For complete API documentation, see:
-- **API Docs**: https://logseq.github.io/plugins/
-- **Plugin Samples**: https://github.com/logseq/logseq-plugin-samples
-- **Type Definitions**: `references/api-types.md` (extracted from `@logseq/libs`)
+完整的API文档请参阅：
+- **API文档**：https://logseq.github.io/plugins/
+- **插件示例**：https://github.com/logseq/logseq-plugin-samples
+- **类型定义**：`references/api-types.md`（来自`@logseq/libs`）
 
-## Key Data Structures
+## 关键数据结构
 
 ### BlockEntity
 ```typescript
@@ -228,20 +214,20 @@ For complete API documentation, see:
 }
 ```
 
-## Tips & Best Practices
+## 提示与最佳实践
 
-1. **Always check for null**: API methods may return `null` if entity doesn't exist
-2. **Use UUIDs over IDs**: Block UUIDs are stable, entity IDs can change
-3. **Batch operations**: Use `insertBatchBlock` for multiple inserts
-4. **Query efficiently**: Datalog queries are powerful but can be slow on large graphs
-5. **Properties are objects**: Access with `block.properties.propertyName`
-6. **Format matters**: Respect user's preferred format (markdown vs org-mode)
-7. **Async all the way**: All API calls return Promises
+1. **始终检查`null`：**如果实体不存在，API方法可能会返回`null`。
+2. **优先使用UUID**：块的UUID是稳定的，而实体ID可能会发生变化。
+3. **批量操作**：使用`insertBatchBlock`进行多次插入。
+4. **高效查询**：Datalog查询功能强大，但在大型图谱上可能会比较慢。
+5. **属性访问方式**：使用`block.properties.propertyName`来访问属性。
+6. **注意格式**：尊重用户选择的格式（Markdown或Org Mode）。
+7. **所有API调用都是异步的**：所有API调用都会返回Promise。
 
-## Common Gotchas
+## 常见问题
 
-- **Page names are lowercase**: When querying, use lowercase page names
-- **Journal pages**: Use `journalDay` format (YYYYMMDD) not date strings
-- **Block hierarchy**: Respect parent/child relationships when inserting
-- **Format differences**: Markdown uses `-` for bullets, Org uses `*`
-- **Properties syntax**: Different between markdown (`prop::`) and org (`:PROPERTIES:`)
+- **页面名称为小写**：在查询时请使用小写的页面名称。
+- **日志页面**：使用`journalDay`格式（YYYYMMDD），而不是日期字符串。
+- **块层次结构**：插入块时请注意父节点和子节点的关系。
+- **格式差异**：Markdown使用`-`作为项目符号，Org Mode使用`*`。
+- **属性语法**：Markdown使用`prop::`，Org Mode使用`:PROPERTIES:`。

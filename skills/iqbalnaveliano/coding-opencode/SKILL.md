@@ -1,40 +1,39 @@
 ---
 name: coding-opencode
-description: Memungkinkan penggunaan agen pengkodean OpenCode yang telah dikustomisasi dengan "Oh My OpenCode" untuk tugas pengembangan kode yang kompleks, eksplorasi codebase, debugging, refactoring, dan orkestrasi multi-model. Gunakan skill ini ketika Anda membutuhkan bantuan coding AI yang otonom dan canggih, terutama saat Anda ingin memanfaatkan fitur-fitur "Oh My OpenCode" seperti agen Sisyphus, Hephaestus, Oracle, Librarian, atau Explorer, serta alat LSP/AST.
+description: 允许使用通过“Oh My OpenCode”定制的OpenCode编码代理，来执行复杂的代码开发任务、代码库探索、调试以及多模型编排等工作。当您需要自主且先进的AI编码辅助时，可以运用这一技能，尤其是在希望利用“Oh My OpenCode”中的Sisyphus、Hephaestus、Oracle、Librarian或Explorer等代理功能，以及LSP/AST工具时。
 ---
 
-# Skill: coding-opencode
+# 技能：coding-opencode
 
-Skill ini dirancang untuk memanfaatkan kemampuan penuh dari instalasi OpenCode Anda yang telah dikustomisasi dengan "Oh My OpenCode". Ini memberikan akses ke orkestrasi multi-agen yang canggih, alat pengembangan yang terintegrasi, dan alur kerja otomatis untuk menyelesaikan tugas-tugas pengkodean.
+该技能旨在充分利用您通过“Oh My OpenCode”自定义后的 OpenCode 安装。它提供了对复杂的多代理编排系统、集成开发工具以及自动化工作流程的支持，帮助您完成编码任务。
 
-## Kapan Menggunakan Skill Ini
+## 何时使用此技能
 
-Gunakan `coding-opencode` ketika Anda:
-*   Membutuhkan bantuan AI untuk menulis atau memodifikasi kode.
-*   Perlu melakukan eksplorasi codebase yang mendalam.
-*   Membutuhkan bantuan untuk debugging atau refactoring.
-*   Ingin memanfaatkan agen khusus seperti Frontend UI/UX Engineer atau Oracle.
-*   Berencana untuk melakukan tugas pengembangan yang membutuhkan beberapa langkah dan koordinasi antar agen.
-*   Ingin mengaktifkan mode "ultrawork" atau "ulw" untuk eksekusi tugas yang otonom dan berkelanjutan.
+在以下情况下使用 `coding-opencode`：
+- 需要 AI 助力来编写或修改代码。
+- 需要对代码库进行深入探索。
+- 需要调试或重构代码。
+- 需要使用特定的代理（如前端 UI/UX 工程师代理或 Oracle 代理）。
+- 计划执行需要多个步骤及代理间协作的开发任务。
+- 希望启用 “ultrawork” 或 “ulw” 模式，以实现自动化、持续的任务执行。
 
-## Fitur Utama Melalui "Oh My OpenCode"
+## “Oh My OpenCode” 的主要功能
 
-"Oh My OpenCode" menghadirkan beberapa agen dan fitur canggih ke OpenCode Anda:
+“Oh My OpenCode” 为您的 OpenCode 增加了多种代理和高级功能：
+- **Sisyphus（主代理）**：负责协调其他代理的工作，确保任务顺利完成。
+- **Hephaestus（自主深度工作代理）**：专注于目标导向的自动化执行任务。
+- **Oracle（设计与调试代理）**：专门用于辅助设计和调试过程。
+- **Librarian（文档与代码库探索代理）**：用于查找文档和浏览代码库。
+- **Explore（快速代码库搜索代理）**：提供高效的代码库搜索功能。
+- **LSP & AST 工具**：全面支持 Language Server Protocol (LSP) 和 Abstract Syntax Tree (AST)，以实现更精确、安全的重构。
+- **多模型编排**：支持使用多种不同的 AI 模型，每种模型都针对特定任务进行了优化。
+- **`ultrawork` / `ulw` 关键字**：在命令中添加 `ultrawork` 或 `ulw` 即可激活完整的自动化工作流程，从而利用 “Oh My OpenCode” 的所有代理和功能。
 
-*   **Sisyphus (Main Agent)**: Mengorkestrasi agen-agen lain untuk memastikan tugas diselesaikan sampai tuntas.
-*   **Hephaestus (Autonomous Deep Worker)**: Agen otonom yang berorientasi pada tujuan untuk eksekusi mendalam.
-*   **Oracle (Design & Debugging)**: Agen spesialis untuk membantu dalam desain dan proses debugging.
-*   **Librarian (Docs & Codebase Exploration)**: Agen untuk mencari dokumentasi dan menjelajahi codebase.
-*   **Explore (Fast Codebase Grep)**: Untuk eksplorasi codebase yang sangat cepat.
-*   **LSP & AST Tools**: Dukungan penuh untuk Language Server Protocol (LSP) dan Abstract Syntax Tree (AST) untuk refactoring yang lebih akurat dan aman.
-*   **Multi-model Orchestration**: Memungkinkan penggunaan berbagai model AI yang berbeda, masing-masing dioptimalkan untuk tugas tertentu.
-*   **`ultrawork` / `ulw` Keyword**: Cukup sertakan `ultrawork` atau `ulw` dalam perintah Anda untuk mengaktifkan alur kerja otomatis penuh yang memanfaatkan semua agen dan fitur "Oh My OpenCode".
+## 使用方法
 
-## Cara Menggunakan
+要使用此技能，您可以通过 `exec` 工具调用 OpenCode 命令，并提供必要的指令和参数。若要启用 “Oh My OpenCode”的全套编排功能，请确保在命令提示符或参数中包含 `ultrawork` 或 `ulw`。
 
-Untuk menggunakan skill ini, Anda dapat memanggil perintah OpenCode melalui tool `exec`, dan menyertakan instruksi serta argumen yang diperlukan. Jika Anda ingin mengaktifkan orkestrasi penuh dari "Oh My OpenCode", pastikan untuk menyertakan `ultrawork` atau `ulw` dalam *prompt* atau argumen Anda.
-
-**Contoh Umum:**
+**常见用法示例：**
 
 ```bash
 # Untuk memulai sesi OpenCode dengan mode ultrawork
@@ -47,19 +46,18 @@ opencode --agent build "ulw: Cari dokumentasi untuk API 'requests' Python dan be
 opencode --agent build "ulw: Refactor file 'src/main.js' agar menggunakan async/await."
 ```
 
-**Perhatikan:** Perintah `opencode` di atas adalah contoh. Karena OpenCode diinstal di **WSL** dan dijalankan via **PowerShell**, setiap perintah OpenCode perlu diawali dengan `wsl`.
-Contoh: `wsl opencode ...`
+**注意：** 上面的 `opencode` 命令仅作为示例。由于 OpenCode 是通过 WSL 安装并通过 PowerShell 运行的，因此每个 OpenCode 命令都需要以 `wsl` 开头。示例：`wsl opencode ...`
 
-**Target Folder:** Semua operasi pengkodean atau manipulasi file akan menargetkan `C:\Users\Administrator\Documents\Jagonyakomputer` sebagai *working directory* utama secara default, kecuali jika ditentukan lain.
+**默认工作目录**：所有编码操作或文件操作默认以 `C:\Users\Administrator\Documents\Jagonyakomputer` 作为工作目录，除非另有指定。
 
-**Integrasi Docker:** Agent memiliki kemampuan untuk mengoperasikan Docker container via PowerShell, jika diperlukan untuk tugas yang melibatkan containerisasi atau lingkungan pengembangan terisolasi.
+**Docker 集成**：如果任务涉及容器化或隔离的开发环境，这些代理具备通过 PowerShell 操作 Docker 容器的能力。
 
-## Konfigurasi
+## 配置
 
-"Oh My OpenCode" sangat dapat dikustomisasi. Konfigurasi dapat ditemukan di:
-*   `.opencode/oh-my-opencode.json` (untuk proyek)
-*   `~/.config/opencode/oh-my-opencode.json` (untuk pengguna)
+“Oh My OpenCode” 具有很高的可定制性。配置信息位于以下位置：
+- `.opencode/oh-my-opencode.json`（针对项目）
+- `~/.config/opencode/oh-my-opencode.json`（针对用户）
 
-Anda dapat mengubah model yang digunakan oleh agen tertentu, suhu, *prompt*, dan izin di file konfigurasi ini.
+您可以在这些配置文件中更改代理的运行模型、工作温度、命令提示符设置以及权限等。
 
-Jika Anda perlu melakukan konfigurasi spesifik atau mengatasi masalah, saya akan merujuk ke dokumentasi "Oh My OpenCode" atau file konfigurasi tersebut.
+如果您需要特定配置或解决相关问题，请参考 “Oh My OpenCode”的官方文档或相应的配置文件。

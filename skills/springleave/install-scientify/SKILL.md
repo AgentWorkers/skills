@@ -1,6 +1,6 @@
 ---
 name: install-scientify
-description: "Install Scientify - AI-powered research workflow automation plugin. Adds skills for idea-generation, literature-review, research-pipeline, arxiv search, and workspace management commands."
+description: "安装 Scientify——这款由 AI 驱动的研发工作流程自动化插件。它提供了许多实用的功能，包括创意生成、文献检索、研究流程管理、Arxiv 数据库搜索以及工作区管理等功能。"
 metadata:
   {
     "openclaw":
@@ -19,47 +19,47 @@ metadata:
   }
 ---
 
-# Install Scientify
+# 安装 Scientify
 
-**Scientify** is an AI-powered research workflow automation plugin for OpenClaw.
+**Scientify** 是一个基于人工智能（AI）的研究工作流程自动化插件，专为 OpenClaw 设计。
 
-## What You Get
+## 您将获得的功能
 
-### Skills (LLM-powered)
+### 功能（由大型语言模型（LLM）提供支持）
 
-| Skill | Description |
+| 功能 | 描述 |
 |-------|-------------|
-| **idea-generation** | Generate innovative research ideas. Searches arXiv/GitHub, downloads papers, analyzes literature, outputs 5 ideas with citations. |
-| **research-pipeline** | End-to-end ML research workflow: idea → literature → survey → plan → implement → review → iterate. |
-| **literature-review** | Generate structured notes and synthesis from collected papers. |
-| **arxiv** | Search arXiv.org for papers and download .tex sources. |
+| **创意生成** | 生成创新的研究想法。搜索 arXiv/GitHub，下载论文，分析文献，并输出 5 个带有引用信息的创意。 |
+| **研究流程** | 从创意到实施的全流程自动化研究工作流程：创意 → 文献调研 → 计划 → 实施 → 审查 → 循环改进。 |
+| **文献综述** | 从收集到的论文中生成结构化的笔记和总结。 |
+| **arxiv** | 在 arXiv.org 上搜索论文并下载对应的 .tex 文件。 |
 
-### Commands (Direct, no LLM)
+### 命令（直接使用，无需依赖 LLM）
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/research-status` | Show workspace status |
-| `/papers` | List downloaded papers |
-| `/ideas` | List generated ideas |
-| `/projects` | List all projects |
-| `/project-switch <id>` | Switch project |
-| `/project-delete <id>` | Delete project |
+| `/research-status` | 显示工作区状态 |
+| `/papers` | 列出已下载的论文 |
+| `/ideas` | 列出生成的创意 |
+| `/projects` | 列出所有项目 |
+| `/project-switch <id>` | 切换项目 |
+| `/project-delete <id>` | 删除项目 |
 
-### Tool
+### 所需工具
 
-- **arxiv** - Search arXiv.org API with keyword search, date filtering, automatic .tex download
+- **arxiv**：提供 arXiv.org 的搜索 API，支持关键词搜索、日期筛选以及自动下载 .tex 文件的功能。
 
-## Installation
+## 安装方法
 
-Run:
+运行以下命令：
 
 ```bash
 npm install -g scientify
 ```
 
-Or let OpenClaw install it automatically when you use this skill.
+或者在使用该插件时让 OpenClaw 自动完成安装。
 
-Then add to your OpenClaw config:
+之后，请将其添加到您的 OpenClaw 配置文件中：
 
 ```json
 {
@@ -67,28 +67,28 @@ Then add to your OpenClaw config:
 }
 ```
 
-## Usage Examples
+## 使用示例
 
-### Generate Research Ideas
+### 生成研究创意
 
 ```
 帮我调研 "长文档摘要" 领域，生成一些创新的研究想法
 ```
 
-### Daily Literature Tracking
+### 日常文献跟踪
 
 ```
 帮我设置一个定时任务，每天检查 arXiv 上关于 "transformer efficiency" 的新论文，发到飞书
 ```
 
-### Check Workspace
+### 检查工作区状态
 
 ```
 /research-status
 ```
 
-## Links
+## 链接
 
 - npm: https://www.npmjs.com/package/scientify
 - GitHub: https://github.com/tsingyuai/scientific
-- Author: tsingyuai
+- 开发者：tsingyuai

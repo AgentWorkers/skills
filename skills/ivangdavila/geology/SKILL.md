@@ -1,51 +1,51 @@
 ---
 name: Geology
-description: Explain Earth's rocks, processes, and history from field trips to research.
+description: 通过实地考察和研究，来解释地球的岩石、地质过程及其历史。
 metadata: {"clawdbot":{"emoji":"🪨","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: terminology used, scale of questions, tools mentioned
-- When unclear, start with observable features and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别地质层次，灵活应对  
+- 地质背景能揭示地质层次：使用的术语、问题的规模、提到的工具等  
+- 当信息不明确时，从可观察的特征入手，并根据反馈进行调整  
+- 绝不要对专家表现出居高临下的态度，也不要让初学者感到不知所措  
 
-## For Beginners: Rocks Tell Stories
-- Start with what they can touch — pick up a rock, describe what you see
-- Three rock families — igneous (fire), sedimentary (layers), metamorphic (changed)
-- Fossils as time capsules — "This shell lived when dinosaurs walked"
-- Deep time through comparison — "If Earth's history were a day, humans arrive at 11:59 PM"
-- Plate tectonics as puzzle pieces — continents fit together, they moved
-- Volcanoes and earthquakes connected — same engine, different expressions
-- Connect to landscape — "Why is this mountain here? Why is this valley flat?"
+## 对于初学者：岩石会“讲述故事”  
+- 从他们能接触到的东西开始——拿起一块岩石，描述你所看到的  
+- 岩石分为三大类：火成岩（由熔岩形成）、沉积岩（由沉积物堆积而成）、变质岩（由原有岩石经过变化形成）  
+- 化石是时间胶囊——“这个贝壳形成于恐龙生活的时代”  
+- 通过对比来理解地质的漫长历史——“如果将地球的历史视为一天，人类出现的时间是晚上11点59分”  
+- 板块构造就像拼图——大陆之间相互拼接，且一直在移动  
+- 火山和地震是同一地质过程的两种表现形式  
+- 将地质现象与周围景观联系起来——“为什么这座山会在这里？为什么这个山谷是平坦的？”  
 
-## For Students: Process and Evidence
-- Rock cycle as system — trace pathways, identify what drives each transformation
-- Mineral identification systematic — hardness, luster, cleavage, streak, crystal form
-- Stratigraphy principles — superposition, original horizontality, cross-cutting relationships
-- Plate boundaries explain patterns — divergent, convergent, transform produce different features
-- Deep time requires calibration — radiometric dating, index fossils, correlation
-- Read landscapes — drainage patterns, fault scarps, glacial features tell history
-- Field notebooks matter — location, orientation, scale in every sketch
+## 对于学生：注重过程与证据  
+- 岩石循环是一个系统——追踪各个变化的过程，找出驱动这些变化的因素  
+- 矿物鉴定有固定的方法——硬度、光泽、解理、条痕、晶体形态等都是判断依据  
+- 地层学的基本原理——地层叠置、原始水平性、相互切割关系  
+- 板块边界决定了地貌特征——不同类型的板块边界会产生不同的地形  
+- 理解地质的漫长历史需要科学方法——放射性测年、指数化石、地层对比等  
+- 通过观察地貌来解读历史——排水模式、断层陡崖、冰川遗迹都能提供线索  
+- 野外记录非常重要——每张草图都要标注位置、方向和比例尺  
 
-## For Researchers: Precision and Context
-- Specify scale explicitly — hand sample, outcrop, regional, global behave differently
-- Methods have assumptions — isotope systems, geophysical models, each has limitations
-- Uncertainty is inherent — age ranges, paleoclimate proxies, reconstruction confidence
-- Literature is regional — what's established for Alps may not apply to Andes
-- Distinguish observation from interpretation — "We see X" vs "This suggests Y"
-- Earth systems interact — can't isolate tectonics from climate from life
-- Economic and hazard relevance — resources, risk assessment, land use implications
+## 对于研究人员：追求精确性与背景理解  
+- 明确研究尺度——手标本、露头、区域尺度或全球尺度的研究结果可能有所不同  
+- 每种研究方法都有其假设——同位素分析、地球物理模型都有局限性  
+- 不确定性是不可避免的——年龄范围、古气候重建的可靠性都有不确定性  
+- 文献具有地域性——适用于阿尔卑斯山的结论可能不适用于安第斯山脉  
+- 区分观察结果与解释——“我们看到了X”，但“这可能意味着Y”  
+- 地球系统是相互关联的——不能将地质过程与气候或生物活动孤立起来  
+- 地质现象具有经济和灾害风险意义——资源分布、风险评估、土地利用都与之相关  
 
-## For Teachers: Common Misconceptions
-- Rocks aren't eternal — they form, change, and get destroyed
-- Continents don't "float" like boats — plates include oceanic and continental crust
-- Fossils don't require dinosaurs — most are shells, plants, microorganisms
-- Volcanoes aren't random — they cluster at plate boundaries and hotspots
-- Deep time is genuinely hard — return to it repeatedly with different analogies
-- Field experience irreplaceable — photos help, but handling rocks teaches texture
-- Connect to local geology — every location has a story, use what's nearby
+## 对于教师：需要纠正的常见误解  
+- 岩石并非永恒不变——它们会形成、变化，最终也会被破坏  
+- 大陆并非像船一样“漂浮”——板块包括海洋地壳和大陆地壳  
+- 化石不一定与恐龙有关——大多数化石是贝壳、植物或微生物的遗骸  
+- 火山活动并非随机发生——它们通常发生在板块边界或热点区域  
+- 理解地质的漫长历史非常困难——需要反复学习，并使用不同的比喻来帮助理解  
+- 野外经验无可替代——照片有助于记录，但直接接触岩石能帮助学生感受岩石的质地  
+- 将地质知识与当地实际情况联系起来——每个地点都有其独特的地质故事，利用身边的地质现象进行教学  
 
-## Always
-- Specify location and context — geology is place-specific
-- Connect present processes to past evidence — uniformitarianism with caveats
-- Scale matters — always clarify temporal and spatial scale being discussed
+## 总结：始终要牢记  
+- 明确研究地点和背景——地质现象具有地域性  
+- 将当前的地貌过程与过去的地质证据联系起来——虽然地质学有“均变论”的观点，但也需要具体分析  
+- 尺度至关重要——务必明确讨论的时间和空间尺度

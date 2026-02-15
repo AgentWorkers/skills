@@ -2,94 +2,89 @@
 slug: heartbeat
 name: Heartbeat
 version: 1.0.0
-description: Auto-learns when to wake. Balances responsiveness with efficiency, grows autonomy over time.
+description: 它会自动学习何时应该“醒来”（即开始执行任务）。在响应速度与效率之间找到平衡，并且随着时间的推移逐渐增强自身的自主性（即能够更独立地完成任务）。
 ---
 
-## Auto-Adaptive Wake Management
+## 自适应唤醒管理
 
-This skill auto-evolves. Start conservative, learn patterns, confirm before assuming.
+该功能会持续进化：初始时采取保守策略，通过学习用户行为模式后再做出决策。
 
-**Core Loop:**
-1. **Wake** — Execute checklist, note what was useful
-2. **Observe** — Track hit rate (useful wakes / total wakes)
-3. **Pattern** — After 3+ wakes in category, detect optimal intervals
-4. **Confirm** — Ask: "Should I check X every Y instead of Z?"
-5. **Store** — Only after explicit yes, add to rules below
-6. **Adapt** — Context changes? Re-evaluate intervals
+**核心流程：**
+1. **唤醒**：执行检查清单，记录此次唤醒是否有效。
+2. **观察**：记录唤醒的频率（有效唤醒次数 / 总唤醒次数）。
+3. **分析模式**：当某一类别的唤醒次数达到3次以上时，检测出最合适的唤醒间隔。
+4. **确认**：询问用户：“我是否应该每Y小时而不是Z小时检查一次X？”
+5. **存储**：只有在用户明确同意后，才将新的规则添加到系统中。
+6. **调整**：如果环境发生变化，重新评估唤醒间隔。
 
-Check `intervals.md` for timing strategies. Check `triggers.md` for event-based waking.
+有关时间策略的详细信息，请参阅`intervals.md`；有关基于事件的唤醒机制，请参阅`triggers.md`。
 
 ---
 
-## Wake Levels
+## 唤醒级别
 
-| Level | Interval | When |
+| 级别 | 唤醒间隔 | 触发条件 |
 |-------|----------|------|
-| `active` | 5-15 min | Ongoing conversation, urgent monitor |
-| `watching` | 30-60 min | Waiting for specific event |
-| `idle` | 2-4 hours | Nothing pending, background checks |
-| `dormant` | 4-8 hours | Night, inactive periods |
+| `active` | 5-15分钟 | 正在进行对话或需要紧急监控 |
+| `watching` | 30-60分钟 | 等待特定事件发生 |
+| `idle` | 2-4小时 | 没有待处理的任务，进行后台检查 |
+| `dormant` | 4-8小时 | 夜间或用户不活跃的时间段 |
 
-**Default to `idle`. Promote/demote based on context and learned patterns.**
-
----
-
-## Hard Rules (Never Change)
-
-- User says "don't wake me about X" → respect immediately, store
-- User asleep (night hours) → `dormant` unless emergency
-- Sub-agent running → `watching` until complete
-- Nothing changed since last wake → extend interval
+**默认设置为`idle`级别。根据环境和学习到的模式动态调整唤醒级别。**
 
 ---
 
-## Entry Format
-
-One line: `trigger: interval (level) [hit rate]`
-
-Examples:
-- `email/urgent: 30min (watching) [80% useful]`
-- `calendar/upcoming: 2h (idle) [confirmed]`
-- `deploy/monitor: 10min (active) [until complete]`
-- `social/mentions: 4h (idle) [low value, user said skip]`
+## 固定规则（不可更改）  
+- 用户明确要求“不要在X事件发生时唤醒我” → 立即遵守该请求。  
+- 用户处于睡眠状态（夜间） → 除非有紧急情况，否则设置为`dormant`状态。  
+- 子代理正在运行 → 保持`watching`状态，直到任务完成。  
+- 如果自上次唤醒以来没有变化 → 延长唤醒间隔。  
 
 ---
 
-### Monitors
-<!-- What to check. Format: "source: interval (level)" -->
-
-### Triggers
-<!-- What justifies waking. Format: "event: action" -->
-
-### Quiet
-<!-- What user said to ignore/reduce -->
-
-### Patterns
-<!-- Observed optimal intervals by context -->
+## 触发规则格式  
+每条规则格式为：`trigger: interval (level) [hit rate]`  
+示例：  
+- `email/urgent: 30min (watching) [80% useful]`  
+- `calendar/upcoming: 2h (idle) [confirmed]`  
+- `deploy/monitor: 10min (active) [until complete]`  
+- `social/mentions: 4h (idle) [low value, user said skip]`  
 
 ---
 
-## On Each Wake
+### 监控项  
+（需要检查的内容，格式：`source: interval (level)`）  
 
-1. Run checklist (Monitors section)
-2. Note: Was this wake useful? Why/why not?
-3. Check Triggers: anything warrant action?
-4. Decide next interval based on context
-5. Update patterns if 3+ data points
+### 触发条件  
+（触发唤醒的事件，格式：`event: action`）  
 
----
+### 静默规则  
+（用户要求忽略或减少某些操作的规则）  
 
-## Learning Signals
-
-Phrases that adjust autonomy:
-- "Don't bug me about X" → add to Quiet, reduce frequency
-- "Check X more often" → increase interval for X
-- "That was useless" → mark wake as low-value, extend interval
-- "Good catch" → mark wake as high-value, maintain/shorten
-- "Wake me if Y" → add to Triggers
-
-**After pattern emerges:** Confirm before internalizing. "I notice X rarely needs checking—reduce to every 4h?"
+### 观察到的最佳唤醒间隔  
+（根据不同情境检测出的最佳唤醒间隔）  
 
 ---
 
-*Empty sections = still learning. Observe utility of each wake, propose adjustments.*
+**每次唤醒时的操作：**  
+1. 运行检查清单（监控相关内容）。  
+2. 记录此次唤醒是否有效，以及原因。  
+3. 检查是否有需要采取行动的触发条件。  
+4. 根据当前情境决定下一次唤醒的间隔。  
+5. 如果有足够的数据点（至少3次记录），则更新相应的规则。  
+
+---
+
+## 学习机制  
+用户反馈会调整系统的自主决策能力：  
+- 如果用户说“不要在X事件发生时打扰我”，则将该事件添加到“静默规则”中，减少其触发频率。  
+- 如果用户要求“更频繁地检查X”，则延长该事件的唤醒间隔。  
+- 如果某次唤醒被认定为无效（用户反馈“毫无用处”），则延长其唤醒间隔。  
+- 如果用户对某次唤醒表示认可（反馈“发现的问题很有价值”），则保持或缩短其唤醒间隔。  
+- 如果用户要求“在Y事件发生时唤醒我”，则将该事件添加到触发规则中。  
+
+**在形成固定模式后：** 在正式应用新规则之前，需要再次确认用户的意见。例如：“我发现X事件很少需要检查，是否可以将其唤醒间隔改为每4小时一次？”  
+
+---
+
+*如果某个部分为空，说明系统仍在学习中。请持续观察每次唤醒的实用性，并提出相应的调整建议。*

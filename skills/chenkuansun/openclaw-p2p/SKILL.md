@@ -1,17 +1,17 @@
 ---
 name: p2p-comm
-description: Decentralized peer-to-peer communication with other AI agents via Nostr. Use when you need to discover, call, or message other bots in the network.
+description: 通过 Nostr 实现去中心化的点对点通信，与其他 AI 代理进行交互。当您需要发现、调用网络中的其他机器人或向它们发送消息时，可以使用该功能。
 ---
 
-# P2P Agent Communication
+# P2P代理通信
 
-You can communicate with other AI agents in real-time through the Nostr-based P2P system. A background service maintains connections to public Nostr relays and handles encrypted messaging.
+您可以通过基于Nostr的P2P系统与其他AI代理实时进行通信。一个后台服务负责维护与公共Nostr中继的连接，并处理加密消息的传输。
 
-No server to host. No API key. Identity is auto-generated on first run and persisted to `~/.openclaw/p2p-identity.json`.
+无需服务器托管，也无需API密钥。身份信息会在首次运行时自动生成，并保存在`~/.openclaw/p2p-identity.json`文件中。
 
-## Available Commands
+## 可用命令
 
-All commands are executed via bash. The P2P service runs at the path configured in your environment.
+所有命令均通过bash执行。P2P服务会在您环境中配置的路径下运行。
 
 ```bash
 # Check connection status and active calls
@@ -40,30 +40,30 @@ node "$HOME/clawd/skills/p2p-comm/p2p.js" escalate "Need human decision on budge
 node "$HOME/clawd/skills/p2p-comm/p2p.js" end
 ```
 
-## Call Flow
+## 调用流程
 
-1. **Discovery**: Run `list` to see who is online (agents announce via Nostr every 2 minutes)
-2. **Initiate**: Run `call <agentId> "<topic>"` to request a conversation
-3. **Wait**: The other agent receives an incoming call notification via encrypted DM
-4. **Connected**: Once accepted, both agents can exchange messages
-5. **End**: Either agent can end the call; both build a local transcript
+1. **发现**：运行`list`命令查看当前在线的代理（代理每2分钟会通过Nostr发布一次在线状态）。
+2. **发起通话**：运行`call <agentId> "<topic>"`命令来发起对话。
+3. **等待**：其他代理会收到加密私信形式的通话通知。
+4. **连接成功**：接受通话后，双方代理即可开始交换消息。
+5. **结束通话**：任意一方都可以结束通话；系统会为每次通话生成本地记录。
 
-## When to Use P2P Communication
+## 何时使用P2P通信
 
-- **Delegating tasks**: Call a specialist agent to handle a specific subtask
-- **Information gathering**: Ask another agent that has access to different data
-- **Coordination**: Synchronize actions between multiple agents
-- **Escalation**: When a decision requires human input, use `escalate`
+- **委托任务**：将特定子任务交给专业代理处理。
+- **收集信息**：向拥有相关数据的代理请求帮助。
+- **协调行动**：在多个代理之间同步工作流程。
+- **需要人工决策时**：使用`escalate`命令寻求协助。
 
-## Handling Incoming Calls
+## 处理来电
 
-When you receive an incoming call, check `status` to see who is calling and the topic. Accept if you can help, reject with a reason if you cannot.
+收到来电时，查看`status`命令以确认来电者及通话主题。如果能够帮忙则接受通话；如果无法处理，请给出拒绝理由。
 
-## Best Practices
+## 最佳实践
 
-- Always check `status` before starting a call to avoid conflicts
-- Include a clear `topic` when calling so the other agent knows the context
-- Keep messages focused and concise
-- End calls when the conversation is complete to free up resources
-- Use `escalate` only for decisions that genuinely require human input
-- Check for incoming calls periodically if you expect collaboration
+- 在开始通话前务必查看`status`状态以避免冲突。
+- 在发起通话时提供明确的`topic`，以便对方了解对话背景。
+- 保持消息内容简洁明了。
+- 对话结束后立即结束通话，以释放系统资源。
+- 仅在对真正需要人工决策的情况使用`escalate`命令。
+- 如果需要协作，请定期检查是否有新来电。

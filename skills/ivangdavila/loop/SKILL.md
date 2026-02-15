@@ -1,52 +1,55 @@
 ---
 name: Ralph Loop
-description: Run iterative agent loops until success criteria are met. Autonomous iteration pattern.
+description: 运行迭代代理循环，直到满足成功标准。采用自主迭代模式。
 ---
 
-## Pattern
+## 模式（Pattern）
 
 ```
 Task + Criteria → Execute → Verify → [Pass? Exit : Retry]
 ```
 
-Keep trying until task succeeds or max iterations reached. Each iteration starts fresh but carries forward learnings. Check `memory.md` for what to persist between iterations.
+持续尝试，直到任务成功或达到最大迭代次数。每次迭代都是从头开始的，但会继承之前的学习成果。请查看 `memory.md` 以了解哪些内容需要在迭代之间保留。
 
-## When to Propose
+## 何时提出该模式（When to Propose）
 
-- Task has clear success criteria but uncertain path
-- Previous attempt failed but error is fixable
-- User says "keep trying until..." or "make it work"
+- 任务有明确的成功标准，但实现路径尚不确定
+- 上一次尝试失败了，但错误是可以解决的
+- 用户表示“继续尝试”或“一定要成功”
 
-**Not for:** One-shot tasks, undefined goals, exploratory work.
+**不适用的情况：** 一次性任务、目标不明确的工作，或探索性工作。
 
-## Setup
+## 准备工作（Setup）
 
-Before starting, establish with user:
+在开始之前，与用户确认以下内容：
 
-| Element | Required | Example |
-|---------|----------|---------|
-| Task | Yes | "Fix failing tests" |
-| Success criteria | Yes | "All tests pass" |
-| Max iterations | Default: 5 | 10 |
-| Verify command | Recommended | `npm test` |
+| 元素          | 是否必需 | 示例       |
+|-----------------|---------|-----------|
+| 任务（Task）       | 是       | “修复失败的测试”   |
+| 成功标准（Success criteria） | 是       | “所有测试都通过”   |
+| 最大迭代次数（Max iterations） | 是       | 默认值：5次     |
+| 验证命令（Verify command） | 推荐使用 | `npm test`   |
 
-## Execution
+## 执行过程（Execution）
 
-Each iteration:
-1. **Fresh context** — Only carry: task, criteria, count, learnings
-2. **Execute** — Attempt the task
-3. **Verify** — Check success criteria
-4. **Record** — Append to learnings: what worked, what failed
-5. **Decide** — Pass? Exit. Fail? Retry if under limit.
+每次迭代包括以下步骤：
+1. **新的环境** — 仅携带任务、成功标准、当前迭代次数以及之前的学习成果。
+2. **执行任务** — 尝试完成任务。
+3. **验证结果** — 检查是否达到成功标准。
+4. **记录结果** — 将成功的方法和失败的原因记录下来。
+5. **做出决策** — 如果达到成功标准，则结束迭代；如果失败且仍在允许的迭代次数范围内，则重新尝试。
 
-Check `examples.md` for common loop patterns.
+请查看 `examples.md` 以了解常见的循环模式。
 
-## Stopping
+## 停止迭代（Stopping）
 
-Exit when: ✅ Criteria met · ❌ Max reached · ⚠️ Unrecoverable error
+在以下情况下停止迭代：
+- ✅ 达到成功标准
+- ❌ 达到最大迭代次数
+- ⚠️ 出现无法恢复的错误
 
-On max without success: summarize attempts, recommend next steps.
+如果达到最大迭代次数仍未成功，请总结之前的尝试，并建议下一步该怎么做。
 
 ---
 
-**Related:** For designing structured multi-phase workflows (not iteration), see the `cycle` skill.
+**相关内容：** 如需设计结构化的多阶段工作流程（而非简单的迭代流程），请参考 `cycle` 技能。

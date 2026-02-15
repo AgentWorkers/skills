@@ -1,17 +1,17 @@
 ---
 name: ssh-essentials
-description: Essential SSH commands for secure remote access, key management, tunneling, and file transfers.
+description: 用于安全远程访问、密钥管理、隧道创建和文件传输的基本SSH命令。
 homepage: https://www.openssh.com/
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"bins":["ssh"]}}}
 ---
 
-# SSH Essentials
+# SSH基础知识
 
-Secure Shell (SSH) for remote access and secure file transfers.
+SSH（安全外壳）用于远程访问和安全文件传输。
 
-## Basic Connection
+## 基本连接
 
-### Connecting
+### 连接
 ```bash
 # Connect with username
 ssh user@hostname
@@ -30,7 +30,7 @@ ssh user@hostname 'ls -la'
 ssh user@hostname 'uptime && df -h'
 ```
 
-### Interactive use
+### 交互式使用
 ```bash
 # Connect with forwarding agent
 ssh -A user@hostname
@@ -46,9 +46,9 @@ ssh -Y user@hostname  # Trusted X11
 # ~? - Help
 ```
 
-## SSH Keys
+## SSH密钥
 
-### Generating keys
+### 生成密钥
 ```bash
 # Generate RSA key
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
@@ -63,7 +63,7 @@ ssh-keygen -t ed25519 -f ~/.ssh/id_myserver
 ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_deploy
 ```
 
-### Managing keys
+### 管理密钥
 ```bash
 # Copy public key to server
 ssh-copy-id user@hostname
@@ -81,7 +81,7 @@ ssh-keygen -lf ~/.ssh/id_rsa.pub
 ssh-keygen -p -f ~/.ssh/id_rsa
 ```
 
-### SSH agent
+### SSH代理
 ```bash
 # Start ssh-agent
 eval $(ssh-agent)
@@ -102,9 +102,9 @@ ssh-add -D
 ssh-add -t 3600 ~/.ssh/id_rsa
 ```
 
-## Port Forwarding & Tunneling
+## 端口转发与隧道
 
-### Local port forwarding
+### 本地端口转发
 ```bash
 # Forward local port to remote
 ssh -L 8080:localhost:80 user@hostname
@@ -118,7 +118,7 @@ ssh -L 8080:database.example.com:5432 user@jumphost
 ssh -L 8080:localhost:80 -L 3306:localhost:3306 user@hostname
 ```
 
-### Remote port forwarding
+### 远程端口转发
 ```bash
 # Forward remote port to local
 ssh -R 8080:localhost:3000 user@hostname
@@ -128,7 +128,7 @@ ssh -R 8080:localhost:3000 user@hostname
 ssh -R 9000:localhost:9000 user@publicserver
 ```
 
-### Dynamic port forwarding (SOCKS proxy)
+### 动态端口转发（SOCKS代理）
 ```bash
 # Create SOCKS proxy
 ssh -D 1080 user@hostname
@@ -141,7 +141,7 @@ firefox --profile $(mktemp -d) \
   --preferences "network.proxy.type=1;network.proxy.socks=localhost;network.proxy.socks_port=1080"
 ```
 
-### Background tunnels
+### 后台隧道
 ```bash
 # Run in background
 ssh -f -N -L 8080:localhost:80 user@hostname
@@ -154,9 +154,9 @@ ssh -f -N -L 8080:localhost:80 user@hostname
 ssh -o ServerAliveInterval=60 -L 8080:localhost:80 user@hostname
 ```
 
-## Configuration
+## 配置
 
-### SSH config file (`~/.ssh/config`)
+### SSH配置文件（`~/.ssh/config`）
 ```
 # Simple host alias
 Host myserver
@@ -192,7 +192,7 @@ Host *
     ServerAliveCountMax 3
 ```
 
-### Using config
+### 使用配置文件
 ```bash
 # Connect using alias
 ssh myserver
@@ -204,9 +204,9 @@ ssh internal
 ssh -o "StrictHostKeyChecking=no" myserver
 ```
 
-## File Transfers
+## 文件传输
 
-### SCP (Secure Copy)
+### SCP（安全复制）
 ```bash
 # Copy file to remote
 scp file.txt user@hostname:/path/to/destination/
@@ -227,7 +227,7 @@ scp -C large-file.zip user@hostname:/path/
 scp -p file.txt user@hostname:/path/
 ```
 
-### SFTP (Secure FTP)
+### SFTP（安全FTP）
 ```bash
 # Connect to SFTP server
 sftp user@hostname
@@ -252,7 +252,7 @@ sftp user@hostname
 sftp -b commands.txt user@hostname
 ```
 
-### Rsync over SSH
+### 通过SSH进行Rsync
 ```bash
 # Sync directory
 rsync -avz /local/dir/ user@hostname:/remote/dir/
@@ -274,9 +274,9 @@ rsync -avz -e "ssh -p 2222" /local/dir/ user@hostname:/remote/dir/
 rsync -avz --dry-run /local/dir/ user@hostname:/remote/dir/
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-### Hardening SSH
+### 加强SSH安全性
 ```bash
 # Disable password authentication (edit /etc/ssh/sshd_config)
 PasswordAuthentication no
@@ -298,7 +298,7 @@ AllowUsers user1 user2
 sudo systemctl restart sshd
 ```
 
-### Connection security
+### 连接安全
 ```bash
 # Check host key
 ssh-keygen -F hostname
@@ -313,9 +313,9 @@ ssh -o StrictHostKeyChecking=yes user@hostname
 ssh -c aes256-ctr user@hostname
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Debugging
+### 调试
 ```bash
 # Verbose output
 ssh -v user@hostname
@@ -330,7 +330,7 @@ ls -la ~/.ssh/
 # Should be: 700 for ~/.ssh, 600 for keys, 644 for .pub files
 ```
 
-### Common issues
+### 常见问题
 ```bash
 # Fix permissions
 chmod 700 ~/.ssh
@@ -345,9 +345,9 @@ ssh-keygen -R hostname
 ssh -o StrictHostKeyChecking=no user@hostname
 ```
 
-## Advanced Operations
+## 高级操作
 
-### Jump hosts (ProxyJump)
+### 跳转主机（ProxyJump）
 ```bash
 # Connect through bastion
 ssh -J bastion.example.com user@internal.local
@@ -359,7 +359,7 @@ ssh -J bastion1,bastion2 user@final-destination
 ssh internal  # Automatically uses ProxyJump
 ```
 
-### Multiplexing
+### 多路复用
 ```bash
 # Master connection
 ssh -M -S ~/.ssh/control-%r@%h:%p user@hostname
@@ -373,7 +373,7 @@ ssh -S ~/.ssh/control-user@hostname:22 user@hostname
 # ControlPersist 10m
 ```
 
-### Execute commands
+### 执行命令
 ```bash
 # Single command
 ssh user@hostname 'uptime'
@@ -388,20 +388,20 @@ cat local-script.sh | ssh user@hostname 'bash -s'
 ssh -t user@hostname 'sudo command'
 ```
 
-## Tips
+## 提示
 
-- Use SSH keys instead of passwords
-- Use `~/.ssh/config` for frequently accessed hosts
-- Enable SSH agent forwarding carefully (security risk)
-- Use ProxyJump for accessing internal networks
-- Keep SSH client and server updated
-- Use fail2ban or similar to prevent brute force
-- Monitor `/var/log/auth.log` for suspicious activity
-- Use port knocking or VPN for additional security
-- Backup your SSH keys securely
-- Use different keys for different purposes
+- 使用SSH密钥而非密码
+- 对于经常访问的主机，使用`~/.ssh/config`文件进行配置
+- 谨慎启用SSH代理转发（存在安全风险）
+- 使用ProxyJump访问内部网络
+- 保持SSH客户端和服务器的更新
+- 使用fail2ban等工具防止暴力攻击
+- 监控`/var/log/auth.log`以检测可疑活动
+- 使用端口敲击（port knocking）或VPN增强安全性
+- 安全地备份SSH密钥
+- 为不同用途使用不同的密钥
 
-## Documentation
+## 文档资料
 
-Official docs: https://www.openssh.com/manual.html
-Man pages: `man ssh`, `man ssh_config`, `man sshd_config`
+官方文档：https://www.openssh.com/manual.html
+手册页：`man ssh`、`man ssh_config`、`man sshd_config`

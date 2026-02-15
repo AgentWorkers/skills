@@ -1,18 +1,18 @@
 ---
 name: SVG
-description: Create and optimize SVG graphics with proper viewBox, accessibility, and CSS styling.
+description: 创建并优化 SVG 图形，确保其具有正确的 `viewBox` 属性、良好的可访问性（accessibility）以及美观的 CSS 样式。
 metadata: {"clawdbot":{"emoji":"📐","requires":{},"os":["linux","darwin","win32"]}}
 ---
 
-## viewBox Essentials
+## viewBox 的基础知识
 
 ```svg
 <svg viewBox="min-x min-y width height">
 ```
 
-- `viewBox` defines the internal coordinate system
-- `width`/`height` on `<svg>` define the display size
-- Without viewBox, SVG won't scale responsively
+- `viewBox` 定义了 SVG 图形的内部坐标系统。
+- `<svg>` 标签中的 `width` 和 `height` 属性定义了 SVG 图形的显示尺寸。
+- 如果不设置 `viewBox`，SVG 图形将无法根据屏幕大小进行自适应缩放。
 
 ```svg
 <!-- ✅ Scales to any size -->
@@ -26,11 +26,11 @@ metadata: {"clawdbot":{"emoji":"📐","requires":{},"os":["linux","darwin","win3
 </svg>
 ```
 
-Always include viewBox. Remove fixed `width`/`height` for responsive SVGs.
+务必为所有的 SVG 图形添加 `viewBox`。对于需要自适应显示的 SVG 图形，应移除固定的 `width` 和 `height` 属性。
 
-## Coordinates Must Match viewBox
+## 坐标必须与 viewBox 保持一致
 
-Elements outside the viewBox are invisible:
+位于 `viewBox` 范围之外的 SVG 元素将无法被显示：
 
 ```svg
 <!-- ❌ Circle at 500,500 but viewBox only covers 0-100 -->
@@ -44,65 +44,30 @@ Elements outside the viewBox are invisible:
 </svg>
 ```
 
-## Accessibility
+## 可访问性
 
-**Informative SVGs (convey meaning):**
-```html
-<svg role="img" aria-labelledby="chart-title">
-  <title id="chart-title">Sales increased 25% in Q4</title>
-  <desc id="chart-desc">Bar chart showing quarterly revenue...</desc>
-  <!-- paths -->
-</svg>
-```
+- **具有信息性的 SVG 图形（用于传达具体含义）：** [相关说明](...)
+- **仅用于装饰的 SVG 图形（纯粹用于视觉效果）：** [相关说明](...)
 
-**Decorative SVGs (purely visual):**
-```html
-<svg aria-hidden="true" focusable="false">
-  <!-- paths -->
-</svg>
-```
+**关键规则：**
+- 使用 `role="img"` 可以确保辅助技术将 SVG 图形视为普通图片。
+- `<title>` 标签必须是 `<svg>` 标签的第一个子元素。
+- 对于 SVG 图形而言，`aria-labelledby` 比 `aria-label` 更可靠。
+- 设置 `focusable="false"` 可以防止在 Internet Explorer 或 Edge 浏览器中通过 Tab 键选中 SVG 元素。
+- 页面上所有内联 SVG 图形的 ID 必须唯一。
 
-Key rules:
-- `role="img"` ensures assistive tech treats it as an image
-- `<title>` must be the first child of `<svg>`
-- `aria-labelledby` is more reliable than `aria-label` for SVG
-- `focusable="false"` prevents tab stops in IE/Edge
-- IDs must be unique across all inline SVGs on the page
+## CSS 样式设置
 
-## CSS Styling
+- **颜色继承：** [相关说明](...)
+- **在 SVG 内部定义自定义 CSS 属性：** [相关说明](...)
+- **注意限制：**
+  - 使用 `<img src="icon.svg">` 无法通过 CSS 进行样式设置。
+  - `background-image: url'icon.svg)` 也无法通过 CSS 进行样式设置。
+  - 只有内联 SVG 图形才能完全接受 CSS 的样式控制。
 
-**currentColor inheritance:**
-```svg
-<svg fill="currentColor">
-  <path d="..."/>
-</svg>
-```
+## SVGO 优化
 
-```css
-.icon { color: blue; }
-.icon:hover { color: red; }  /* SVG changes too */
-```
-
-**CSS custom properties inside SVG:**
-```svg
-<svg>
-  <style>
-    .primary { fill: var(--icon-primary, currentColor); }
-    .secondary { fill: var(--icon-secondary, #ccc); }
-  </style>
-  <path class="primary" d="..."/>
-  <path class="secondary" d="..."/>
-</svg>
-```
-
-**Limitations:**
-- `<img src="icon.svg">` cannot be styled with CSS
-- `background-image: url(icon.svg)` cannot be styled
-- Only inline SVG allows full CSS control
-
-## SVGO Optimization
-
-Critical config to preserve functionality:
+为了保留 SVG 图形的功能，需要正确配置 SVGO（一种 SVG 优化工具）：
 
 ```javascript
 // svgo.config.mjs
@@ -121,32 +86,30 @@ export default {
 };
 ```
 
-Safe to remove: metadata, comments, empty groups, editor cruft.
+可以安全地删除的元素包括元数据、注释、空的 `<group>` 标签以及编辑器生成的多余内容。通过 SVGO 优化，Illustrator 或 Figma 导出的 SVG 文件通常可以减少 50% 到 80% 的文件大小。
 
-Typical reduction: 50-80% for Illustrator/Figma exports.
+## SVG 的嵌入方法
 
-## Embedding Methods
-
-| Method | CSS Styling | Caching | Best for |
+| 嵌入方法 | CSS 样式支持 | 缓存支持 | 适用场景 |
 |--------|-------------|---------|----------|
-| Inline `<svg>` | ✅ Full | ❌ No | Dynamic styling, animation |
-| `<img src>` | ❌ No | ✅ Yes | Static images |
-| Symbol sprite `<use>` | ✅ Partial | ✅ Yes | Icon systems |
-| CSS background | ❌ No | ✅ Yes | Decorative patterns |
+| 内联 `<svg>` | ✅ 完全支持 | ❌ 不支持 | 需要动态样式或动画的 SVG 图形 |
+| 使用 `<img src>` | ❌ 不支持 | ✅ 支持 | 静态图片 |
+| 使用 `<use>` 标签引入符号精灵（Symbol Sprites） | ✅ 部分支持 | ✅ 适用于图标系统 |
+| 作为 CSS 背景图片使用 | ❌ 不支持 | ✅ 支持 | 用于装饰性图案 |
 
-## Performance
+## 性能测试
 
-Benchmark (1000 icons):
-- `<img>` data URI: 67ms (fastest)
-- Inline SVG optimized: 75ms
-- Symbol sprite: 99ms
-- External sprite: 126ms (very slow in Chrome)
+（以 1000 个 SVG 图标为例）：
+- 使用 `<img>` 标签并设置 data URI：67 毫秒（最快）
+- 优化后的内联 SVG：75 毫秒
+- 使用符号精灵：99 毫秒
+- 外部 SVG 文件（如外部 sprite）：126 毫秒（在 Chrome 浏览器中表现非常慢）
 
-For many repeated icons, use symbol sprites. For few icons, inline is fine.
+对于大量重复使用的图标，建议使用符号精灵；对于少量图标，内联 SVG 是一个合适的选择。
 
-## Namespace
+## 命名空间
 
-External `.svg` files require xmlns:
+外部 `.svg` 文件需要指定 `xmlns` 属性：
 
 ```svg
 <!-- ✅ Works as external file -->
@@ -156,16 +119,15 @@ External `.svg` files require xmlns:
 <svg viewBox="0 0 24 24">
 ```
 
-Inline SVG in HTML5 doesn't require xmlns, but including it doesn't hurt.
+在 HTML5 中，内联 SVG 图形不需要指定 `xmlns`，但加上它也不会造成问题。
 
-## Common Mistakes
-
-- Missing viewBox—SVG displays at fixed size or not at all
-- Coordinates outside viewBox range—elements invisible
-- Hardcoded `fill="#000"`—can't theme with CSS
-- Using `<img>` when styling is needed—no CSS access
-- SVGO removing viewBox or title—check output before deploying
-- Duplicate IDs across multiple inline SVGs—CSS/JS breaks
-- `preserveAspectRatio="none"` without understanding—causes distortion
-- viewBox with units `viewBox="0 0 100px 100px"`—viewBox uses unitless values
-- Empty groups and paths from editors—bloat without purpose
+## 常见错误：
+- 未设置 `viewBox`：SVG 图形会以固定大小显示，或者根本无法显示。
+- 坐标超出 `viewBox` 范围：相关元素将无法被显示。
+- 硬编码填充颜色（如 `fill="#000"`）：无法通过 CSS 进行颜色调整。
+- 在需要应用 CSS 样式的场景中使用 `<img>` 标签：会导致 CSS 无法生效。
+- 在部署前未检查 SVG 文件中的 `viewBox` 或 `title` 属性：可能导致样式问题。
+- 在多个内联 SVG 中使用重复的 ID：会导致 CSS 或 JavaScript 代码出错。
+- 误设置 `preserveAspectRatio="none"`：会导致图形失真。
+- 使用错误的 `viewBox` 单位（如 `viewBox="0 0 100px 100px"`）：`viewBox` 应使用无单位的值。
+- 编辑器生成的空 `<group>` 或路径：会无谓地增加文件大小。

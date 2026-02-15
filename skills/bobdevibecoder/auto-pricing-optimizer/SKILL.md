@@ -1,62 +1,59 @@
-# auto-pricing-optimizer
+# 自动定价优化器
 
-Analyzes conversion data and competitor pricing to recommend optimal price points for each product.
+该工具通过分析转化数据和竞争对手的定价策略，为每款产品推荐最优的定价方案。
 
-## Overview
+## 概述
 
-Uses Stripe conversion data, competitor analysis, and pricing psychology to suggest price changes that maximize revenue. Reports recommendations — never changes prices without human approval.
+该工具利用 Stripe 的转化数据、竞争对手分析以及消费者定价心理，提出能够最大化收入的定价调整建议。所有价格调整方案均需经过人工审核后才能生效。
 
-## Usage
+## 使用方式
 
--  - Analyze all products and suggest price changes
--  - Analyze a specific product
--  - Research competitor pricing
+- 分析所有产品并建议相应的价格调整方案
+- 仅分析特定产品
+- 研究竞争对手的定价策略
 
-## Analysis Steps
+## 分析步骤
 
-### Step 1: Get Current Pricing Data
+### 第一步：获取当前定价数据
 
+### 第二步：分析转化指标
+针对每款产品，计算以下指标：
+- 注册用户转化为付费用户的转化率
+- 试用用户转化为付费用户的转化率
+- 平均用户收入（ARPU）
+- 客户流失率（取消用户数 / 活跃用户数）
+- 客户生命周期价值（ARPU / 客户流失率）
 
-### Step 2: Analyze Conversion Metrics
-For each product, calculate:
-- Signup-to-paid conversion rate
-- Trial-to-paid conversion rate
-- Average revenue per user (ARPU)
-- Churn rate (cancellations / active)
-- Lifetime value estimate (ARPU / churn rate)
+### 第三步：竞争对手调研
+通过网络搜索获取竞争对手的定价信息：
+- 搜索格式：`"[工具类型] 定价方案 2026"`
+- 比较前五名竞争对手的功能和价格
+- 确定竞争对手的市场定位（低价、中端、高端）
 
-### Step 3: Competitor Research
-Use web search to find competitor pricing:
-- Search: "[tool type] pricing plans 2026"
-- Compare features vs price for top 5 competitors
-- Identify positioning (cheapest, mid-range, premium)
+### 第四步：生成定价建议
 
-### Step 4: Generate Recommendations
+## 定价策略规则
 
-## Pricing Strategy Rules
-
-| Signal | Recommendation |
+| 指标 | 建议 |
 |--------|---------------|
-| Conversion > 15% | Price may be too low — test +-3 increase |
-| Conversion < 3% | Price may be too high — test -2 decrease or add free tier |
-| Competitors average 2x our price | Significant room to increase |
-| High churn after month 1 | Value perception issue — improve onboarding or add features |
-| LTV < 0 | Consider annual plan with discount to lock in revenue |
+| 转化率 > 15% | 定价可能过低 — 可尝试上调 3% |
+| 转化率 < 3% | 定价可能过高 — 可尝试下调 2% 或添加免费试用计划 |
+| 竞争对手的平均定价是我们的两倍 | 有较大的提价空间 |
+| 使用一个月后客户流失率较高 | 可能存在客户对产品价值的误解 — 需改进产品体验或添加新功能 |
+| 客户生命周期价值（LTV）< 0 | 可考虑推出带有折扣的年度订阅计划以锁定收入 |
 
-## Pricing Tiers to Test
+## 可测试的定价层级
 
-For micro-SaaS tools, recommend this tiering:
-- **Free**: Limited usage (5 conversions/day) — drives traffic + SEO
-- **Pro (-9/mo)**: Unlimited usage — main revenue driver
-- **Team (9-29/mo)**: Multiple users + API access — upsell
+对于微服务型 SaaS 工具，建议采用以下定价层级：
+- **免费版**：限制使用量（每天 5 次转化）—— 用于吸引流量和提升搜索引擎排名（SEO）
+- **专业版（每月 9 美元）**：无限使用量 — 主要收入来源
+- **团队版（每月 29 美元）**：支持多用户使用及 API 访问 — 用于进一步拓展业务
 
-## Report Format
+## 报告格式
 
+## 重要提示
 
-
-## Important
-
-- NEVER change prices automatically
-- Always present as recommendations to the human
-- Run analysis monthly or when triggered manually
-- Factor in that new products need time to gather data (minimum 30 days)
+- **严禁自动调整价格**  
+- 所有价格调整建议均需提交给人工审核  
+- 每月自动运行分析，或根据需要手动触发分析  
+- 新产品需要至少 30 天的时间来收集数据，再制定定价策略

@@ -1,65 +1,79 @@
 ---
 name: primitives-dsl
-description: "Universal game architecture DSL with six primitives (LOOP, TILEGRID, CONTROLBLOCK, POOL, EVENT, DISPATCHER). Use when: (1) designing portable game/sim loops, (2) translating between architectures (68K ↔ Cell ↔ CUDA ↔ ECS), (3) explaining engine structure to AI agents, (4) refactoring chaos into explicit state + flow. Invocation produces: Primitive Map, Dataflow Sketch, Worked Example, Portability Notes."
+description: "通用游戏架构DSL（Domain-Specific Language），包含六种基本组件：LOOP（循环）、TILEGRID（网格结构）、CONTROLBLOCK（控制模块）、POOL（资源池）、EVENT（事件处理）、DISPATCHER（调度器）。适用场景包括：  
+1. 设计可移植的游戏/模拟循环；  
+2. 在不同架构之间进行转换（如68K、Cell、CUDA、ECS）；  
+3. 向AI代理解释游戏引擎的结构；  
+4. 将复杂的逻辑重构为明确的状态管理和流程控制。  
+使用该DSL后，会生成以下输出：  
+- 基本组件映射（Primitive Map）；  
+- 数据流图（Dataflow Sketch）；  
+- 具体实现示例（Worked Example）；  
+- 可移植性说明（Portability Notes）。"
 ---
 
-# primitives-dsl — Universal Game Architecture Patterns
+# primitives-dsl — 通用游戏架构模式
 
-## What this skill does
+## 该技能的作用
 
-Provides a small, portable DSL of **six universal primitives** that appear across 68K-era loops, Cell/PPU+SPU orchestration, CUDA/GPU kernels, and modern ECS engines.
+提供了一个简洁、可移植的DSL（Domain-Specific Language），包含**六个通用原语**，这些原语广泛应用于68K时代的循环结构、Cell/PPU+SPU协同处理、CUDA/GPU内核以及现代的ECS（Elastic Compute System）引擎中。
 
-Primitives: **LOOP** · **TILEGRID** · **CONTROLBLOCK** · **POOL** · **EVENT** · **DISPATCHER**
+**原语包括：**  
+- **LOOP**（循环）  
+- **TILEGRID**（平铺网格）  
+- **CONTROLBLOCK**（控制块）  
+- **POOL**（资源池）  
+- **EVENT**（事件）  
+- **DISPATCHER**（调度器）  
 
-Use this skill to:
-- Design a game/sim loop that ports cleanly across platforms
-- Translate between architectures (68K ↔ Cell ↔ CUDA ↔ ECS)
-- Explain engine structure to AI agents with minimal ambiguity
-- Produce "worked examples" using the same primitive vocabulary every time
+使用该技能可以：  
+- 设计能够在不同平台上顺畅运行的游戏/模拟循环结构；  
+- 在不同的架构之间进行代码转换（68K ↔ Cell ↔ CUDA ↔ ECS）；  
+- 以清晰的方式向AI代理解释引擎结构；  
+- 每次使用相同的原语词汇来生成可复用的“示例代码”。  
 
-## When to use it
+## 适用场景  
 
-- Starting a new subsystem and want a portable mental model
-- Refactoring chaos into explicit state + flow
-- Mapping legacy code to modern patterns
-- Designing constrained-device / edge / "shareware for the future" loops
+- 在开始新的子系统开发时，需要一个可移植的思维模型；  
+- 将混乱的代码重构为明确的状态和流程；  
+- 将旧代码映射到现代的架构模式中；  
+- 设计适用于受限设备、边缘设备或“未来可扩展的软件”的循环结构。  
 
-## When NOT to use it
+## 不适用场景  
 
-- Don't invent new primitives (keep the vocabulary stable)
-- Don't debate engine religion (Unity vs Unreal vs custom). Translate, don't preach.
-- Don't skip the concrete artifact: **every use must end in a diagram, table, or pseudocode**
+- 不要发明新的原语（保持词汇的稳定性）；  
+- 不要争论各种引擎技术（如Unity、Unreal或自定义引擎）；  
+- 不要跳过具体的实现细节——每次使用该技能时，都必须生成图表、表格或伪代码。  
 
-## The DSL (definitions)
+## DSL的定义  
 
-**LOOP**
-A repeated update cycle with explicit phases. Owns time slicing and ordering.
+**LOOP**  
+一个具有明确阶段的重复更新循环，支持时间切片和顺序控制。  
 
-**TILEGRID**
-A spatial index with stable adjacency rules (2D/3D grids, nav tiles, zone cells, chunk maps).
+**TILEGRID**  
+一种具有稳定邻接关系的空间索引结构（适用于2D/3D网格、导航瓷砖、区域单元等）。  
 
-**CONTROLBLOCK**
-A compact, authoritative state record (flags, counters, handles, timers) used to coordinate behavior and enforce constraints.
+**CONTROLBLOCK**  
+一个紧凑且权威的状态记录，用于协调行为并强制执行约束条件（包含标志位、计数器、句柄、计时器等）。  
 
-**POOL**
-A bounded allocator for frequently-created things (entities, bullets, particles, jobs). No unbounded `new` in hot paths.
+**POOL**  
+一个用于管理频繁创建的对象（如实体、子弹、粒子等）的受限资源分配器；在关键路径中禁止使用无限制的`new`操作。  
 
-**EVENT**
-A structured message representing "something happened" with minimal payload and explicit routing metadata.
+**EVENT**  
+一种结构化的消息，用于表示“某件事情发生了”，具有最小的数据负载和明确的路由元数据。  
 
-**DISPATCHER**
-Routes work and events to handlers (CPU threads, SPUs, GPU kernels, ECS systems). Also where scheduling policy lives.
+**DISPATCHER**  
+负责将任务和事件路由到相应的处理程序（CPU线程、SPU、GPU内核或ECS系统），同时也是调度策略的实现场所。  
 
-## Output contract (what you must produce)
+## 输出要求  
 
-When invoked, produce:
+调用该技能后，必须生成以下内容：  
+1. **原语映射表**：说明系统中的各个部分与哪些原语相对应；  
+2. **数据流图**：以文本图表或表格的形式描述状态/事件的流动过程；  
+3. **一个可复用的示例代码**；  
+4. **可移植性说明**：说明该技能如何应用于68K、Cell、CUDA或ECS架构。  
 
-1. **Primitive Map** — Identify which parts of the system correspond to each primitive
-2. **Dataflow Sketch** — Text diagram or table describing movement of state/events
-3. **One Worked Example** — Or cite an existing example file
-4. **Portability Notes** — How this maps to 68K / Cell / CUDA / ECS
-
-## Invocation patterns (copy/paste prompts)
+## 调用方式（可复制粘贴的提示）  
 
 ```
 "Apply primitives-dsl to design a loop for ___ . Provide a Primitive Map + Dataflow + Portability."
@@ -67,30 +81,27 @@ When invoked, produce:
 "Translate this architecture into LOOP/TILEGRID/CONTROLBLOCK/POOL/EVENT/DISPATCHER."
 
 "Given these constraints (___), propose a primitives-dsl design and a worked example."
-```
+```  
 
-## Guardrails / style rules
+## 规范与风格要求：  
+- 原语名称必须全部大写；  
+- 对于数据映射，优先使用表格形式而非段落描述；  
+- 使用简洁的伪代码（避免完整的实现细节）；  
+- 必须明确标注`CONTROLBLOCK`中的各个字段名称；  
+- 必须指定`POOL`的资源分配范围（即使只是猜测值）；  
+- `EVENT`必须包含路由键或通道信息；  
+- `DISPATCHER`必须明确指定调度策略（如FIFO、优先级、固定步长等）。  
 
-- Use primitive names in **ALL CAPS**
-- Prefer **tables** over paragraphs for mappings
-- Use **tight pseudocode** (no full implementations)
-- Always name the CONTROLBLOCK fields explicitly
-- Always specify POOL bounds (even if guessed)
-- EVENTS must have a routing key or channel
-- DISPATCHER must declare policy: FIFO, priority, fixed-step, budgeted, etc.
+## 参考资料：  
+- **快速参考**：[`assets/quick_card.md`](assets/quick_card.md)  
+- **架构映射**：[`references/architecture_mapping.md`](references/architecture_mapping.md)  
+- **示例代码**：  
+  - [`references/example_shooter.md`](references/example_shooter.md) — 经典射击游戏循环示例  
+  - [`references/example_mall.tick.md`](references/example_mall_tick.md) — GLITCHDEXMALL区域模拟示例  
+  - [`references/example_npc_step.md`](references/example_npc_step.md) — NPC状态机示例  
 
-## References
-
-- **Quick Card**: [`assets/quick_card.md`](assets/quick_card.md) — One-page reference
-- **Architecture Mapping**: [`references/architecture_mapping.md`](references/architecture_mapping.md) — Platform translation table + full code examples
-- **Worked Examples**:
-  - [`references/example_shooter.md`](references/example_shooter.md) — Classic shooter loop
-  - [`references/example_mall_tick.md`](references/example_mall_tick.md) — GLITCHDEXMALL zone sim
-  - [`references/example_npc_step.md`](references/example_npc_step.md) — NPC state machine step
-
-## External Resources
-
-- [Anthropic Skills Repository](https://github.com/anthropics/skills) — Skill creation patterns
-- [Alien Bash II](https://github.com/) — 68K source extraction (Glenn Cumming, open domain)
-- NVIDIA CUDA Programming Guide — Modern GPU primitive patterns
-- Cell Broadband Engine Programming Handbook — SPE work distribution
+## 外部资源：  
+- [Anthropic Skills Repository](https://github.com/anthropics/skills) — 技能开发相关资源  
+- [Alien Bash II](https://github.com/) — 68K源代码库（Glenn Cumming开发）  
+- NVIDIA CUDA编程指南 — 现代GPU原语相关内容  
+- Cell Broadband Engine编程手册 — SPE（Cell Broadband Engine）的工作分配机制

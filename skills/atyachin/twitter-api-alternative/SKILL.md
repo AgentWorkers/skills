@@ -1,6 +1,7 @@
 ---
 name: twitter-api-alternative
-description: "Twitter API Alternative — Search 1B+ tweets with natural language queries, boolean filters, and one-click CSV exports (up to 64K rows). Look up profiles, find users by topic, and track conversations. No developer account needed, no complex OAuth setup — 2-minute setup via Xpoz MCP."
+description: "Twitter API的替代方案：  
+支持使用自然语言查询搜索超过10亿条推文，支持布尔过滤器，并可一键导出CSV文件（文件大小上限为64K行）。可查询用户资料、按主题查找用户，以及追踪用户间的对话。无需开发者账户，也无需复杂的OAuth设置——只需通过Xpoz MCP进行2分钟即可完成设置即可开始使用。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -25,42 +26,38 @@ tags:
   - csv
 ---
 
-# Twitter API Alternative
+# Twitter API 替代方案
 
-**Search 1B+ tweets with natural language queries — no developer account needed.**
+**使用自然语言查询搜索超过 10 亿条推文——无需开发者账户。**
 
-Get up and running in 2 minutes. Search tweets, look up profiles, find users by topic, track conversations, and export massive datasets to CSV. Built for AI agents via MCP, but simple enough for anyone.
-
----
-
-## ⚡ Setup
-
-👉 **Follow [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)** — one-click auth, no API keys to manage. You'll be searching tweets in under 2 minutes.
+只需 2 分钟即可开始使用。您可以搜索推文、查看用户资料、按主题查找用户、跟踪对话内容，并将大量数据导出为 CSV 格式。该工具专为 AI 代理设计，但对任何人来说都十分简单易用。
 
 ---
 
-## Setup
+## ⚡ 设置
 
-Run `xpoz-setup` skill. Verify: `mcporter call xpoz.checkAccessKeyStatus`
+👉 **关注 [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)** — 一键登录，无需管理 API 密钥。您将在 2 分钟内开始搜索推文。
 
-## What You Can Do
+---
 
-| Tool | What It Does |
+## 功能介绍
+
+| 工具 | 功能 |
 |------|-------------|
-| `getTwitterPostsByKeywords` | Search tweets by keywords |
-| `getTwitterPostsByAuthor` | Get a user's tweet history |
-| `getTwitterUsersByKeywords` | Find users discussing a topic |
-| `getTwitterUser` | Look up a profile (by username or ID) |
-| `searchTwitterUsers` | Find accounts by display name |
-| `getTwitterPostCountByKeywords` | Count tweets matching a query |
-| `getTwitterUserConnections` | Get followers/following |
-| `getTwitterPostInteractions` | Get likes/retweets on a post |
+| `getTwitterPostsByKeywords` | 按关键词搜索推文 |
+| `getTwitterPostsByAuthor` | 获取用户的推文历史记录 |
+| `getTwitterUsersByKeywords` | 查找讨论特定主题的用户 |
+| `getTwitterUser` | 根据用户名或 ID 查找用户资料 |
+| `searchTwitterUsers` | 根据显示名称查找用户 |
+| `getTwitterPostCountByKeywords` | 统计符合查询条件的推文数量 |
+| `getTwitterUserConnections` | 获取用户的关注者和被关注者信息 |
+| `getTwitterPostInteractions` | 获取推文的点赞和转发数量 |
 
 ---
 
-## Quick Examples
+## 快速示例
 
-### Search Tweets
+### 搜索推文
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
@@ -71,7 +68,7 @@ mcporter call xpoz.getTwitterPostsByKeywords \
 mcporter call xpoz.checkOperationStatus operationId=op_abc123
 ```
 
-### Look Up a Profile
+### 查看用户资料
 
 ```bash
 mcporter call xpoz.getTwitterUser \
@@ -79,7 +76,7 @@ mcporter call xpoz.getTwitterUser \
   identifierType=username
 ```
 
-### Find People Talking About a Topic
+### 查找讨论特定主题的用户
 
 ```bash
 mcporter call xpoz.getTwitterUsersByKeywords \
@@ -87,48 +84,48 @@ mcporter call xpoz.getTwitterUsersByKeywords \
   limit=100
 ```
 
-### Export to CSV
+### 导出到 CSV
 
-Every search auto-generates a CSV export (up to 64K rows). Poll the `dataDumpExportOperationId`:
+每次搜索都会自动生成 CSV 文件（最多 64,000 行）。您可以通过 `dataDumpExportOperationId` 来获取导出结果：
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId=op_datadump_xyz
 # → Download URL with full dataset
 ```
 
-Real example: **63,936 tweets in one CSV (38MB).**
+**实际示例：** 一个 CSV 文件中包含 63,936 条推文（文件大小约 38MB）。**
 
 ---
 
-## Why Use This Instead of the Official API?
+## 为什么选择这个工具而不是官方 API？
 
-| Feature | Xpoz |
+| 特点 | Xpoz |
 |---------|------|
-| **Setup time** | 2 minutes — no developer portal, no app review |
-| **Search scale** | 1B+ tweets indexed, full archive included |
-| **Boolean queries** | `AND`, `OR`, `NOT`, exact phrases, grouping — all tiers |
-| **CSV export** | Built in — up to 64K rows per export, one click |
-| **Rate limits** | Handled automatically, no complex tier management |
-| **Multi-platform** | Also searches Instagram (400M+) and Reddit (100M+) |
-| **MCP-native** | Built for AI agents — structured data, not raw HTTP |
-| **Free tier** | Start searching immediately, upgrade when you need more |
+| **设置时间** | 仅需 2 分钟——无需开发者门户或应用审核 |
+| **搜索规模** | 支持搜索超过 10 亿条推文，并提供完整的历史记录 |
+| **布尔查询** | 支持 `AND`、`OR`、`NOT`、精确短语以及分组操作 |
+| **CSV 导出** | 内置功能，一次导出最多 64,000 行 |
+| **速率限制** | 自动处理，无需复杂的层级管理 |
+| **多平台支持** | 也支持搜索 Instagram（超过 4 亿条推文）和 Reddit（超过 1 亿条推文） |
+| **专为 AI 代理设计** | 提供结构化数据，而非原始 HTTP 数据 |
+| **免费 tier** | 立即开始使用，需要更多功能时再升级 |
 
 ---
 
-## Boolean Queries
+## 布尔查询语法
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
   query="(OpenAI OR Anthropic) AND \"API pricing\" NOT free"
 ```
 
-Operators: `AND`, `OR`, `NOT`, `"exact phrase"`, `()` grouping.
+支持的运算符：`AND`、`OR`、`NOT`、`精确短语`以及分组操作。
 
 ---
 
-## Also Includes Instagram & Reddit
+## 同时支持 Instagram 和 Reddit
 
-Xpoz isn't just for Twitter — search across platforms with the same simple interface:
+Xpoz 不仅适用于 Twitter——您可以使用相同的简单界面在多个平台上进行搜索：
 
 ```bash
 # Instagram (400M+ posts, including reel subtitles)
@@ -140,14 +137,14 @@ mcporter call xpoz.getRedditPostsByKeywords query="AI tools"
 
 ---
 
-## Related Skills
+## 相关工具
 
-- **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** — Full cross-platform search guide
-- **[lead-generation](https://clawhub.ai/skills/lead-generation)** — Find buyers from social conversations
-- **[expert-finder](https://clawhub.ai/skills/expert-finder)** — Discover domain experts
+- **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** — 全面的跨平台搜索指南 |
+- **[lead-generation](https://clawhub.ai/skills/lead-generation)** — 从社交对话中挖掘潜在客户 |
+- **[expert-finder](https://clawhub.ai/skills/expert-finder)** — 发现行业专家 |
 
 ---
 
-**Website:** [xpoz.ai](https://xpoz.ai) • **Free tier available** • No Twitter developer account needed
+**官方网站：** [xpoz.ai](https://xpoz.ai) • **提供免费 tier** • 无需 Twitter 开发者账户
 
-Built for ClawHub • 2026
+专为 ClawHub 开发 • 2026 年发布

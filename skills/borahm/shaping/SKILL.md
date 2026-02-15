@@ -1,96 +1,92 @@
 ---
 name: shaping
-description: Shape Up methodology for product and feature development. Use when collaboratively shaping a solution — iterating on problem definition (requirements) and solution options (shapes), breadboarding systems into affordances and wiring, and slicing into vertical implementation increments. Triggers include "shape this feature", "breadboard the system", "let's shape", "slice this into increments", "fit check", "define requirements", or any product/feature scoping discussion using Shape Up methodology.
+description: **Shape Up 方法论**：用于产品与功能的开发。该方法适用于团队协作过程中，通过迭代来明确问题定义（需求）和解决方案的方案；将系统原型搭建为可实际使用的功能模块，并将其划分为多个垂直方向的实现阶段。适用场景包括：“完善这个功能”、“搭建系统原型”、“让我们一起讨论解决方案”、“将项目划分为多个实施阶段”、“进行功能适配性检查”、“明确需求”，以及任何涉及产品/功能范围定义的讨论。
 ---
 
-# Shaping & Breadboarding
+# 技能塑造与原型设计（Skill Shaping and Prototyping）
 
-Structured methodology for defining problems, exploring solutions, and planning implementation. Based on [Shape Up](https://basecamp.com/shapeup) adapted for working with an LLM.
+这是一种结构化的方法论，用于定义问题、探索解决方案并规划实施步骤。该方法基于 [Shape Up](https://basecamp.com/shapeup) 并进行了调整，以适应与大型语言模型（LLM）协同工作的需求。
 
-Source: [rjs/shaping-skills](https://github.com/rjs/shaping-skills) by [@rjs](https://github.com/rjs) (Ryan Singer, author of [Shape Up](https://basecamp.com/shapeup))
+来源：[rjs/shaping-skills](https://github.com/rjs/shaping-skills)，作者为 [@rjs](https://github.com/rjs)（[Shape Up](https://basecamp.com/shapeup) 的作者 Ryan Singer）
 
-## Two Skills in One
+## 一石二鸟（Two Skills in One）
 
-**Shaping** — Iterate on problem (requirements) and solution (shapes) before committing to implementation. Separates what you need from how you might build it, with fit checks to see what's solved and what isn't.
+**技能塑造（Shaping）**：在正式实施之前，反复审视问题（需求）和解决方案（具体形态）。将所需的功能与实现方式分开，并通过验证来确认哪些问题已经得到解决，哪些尚未解决。
 
-**Breadboarding** — Map a system into UI affordances, code affordances, and wiring. Shows what users can do and how it works underneath in one view. Good for slicing into vertical scopes.
+**原型设计（Breadboarding）**：将系统映射到用户界面（UI）的功能、代码实现方式以及各组件之间的连接关系。通过一个视图展示用户可以执行的操作以及系统内部的运作机制。这种方法有助于将项目分解为多个独立的部分进行开发。
 
-## When to Use
+## 适用场景
 
-- Exploring a new feature or product direction
-- Comparing solution approaches before building
-- Mapping an existing system to understand where changes land
-- Breaking a selected solution into vertical implementation slices
-- Any "should we build X or Y?" discussion
+- 在探索新功能或产品方向时
+- 在开始开发之前比较不同的解决方案
+- 在分析现有系统时，明确需要进行的修改
+- 将选定的解决方案分解为多个独立的实现部分
+- 在讨论“我们应该开发 X 还是 Y”这类问题时
 
-## Entry Points
+## 入门步骤
 
-- **Start from R (Requirements)** — Describe the problem, pain points, constraints. Build up requirements and let shapes emerge.
-- **Start from S (Shapes)** — Sketch a solution already in mind. Capture it as a shape and extract requirements as you go.
+- **从需求（R）开始**：描述问题、痛点及约束条件，逐步明确需求，并逐步形成解决方案的雏形。
+- **从解决方案（S）开始**：先构思一个解决方案的框架，将其以“形状”的形式记录下来，并在过程中逐步细化需求。
 
-No required order. R and S inform each other throughout.
+这两个步骤没有固定的先后顺序，它们在整个过程中相互影响、相互补充。
 
-## Core Notation
+## 核心符号说明
 
-| Level | Notation | Meaning | Relationship |
-|-------|----------|---------|--------------|
-| Requirements | R0, R1, R2... | Problem constraints | Members of set R |
-| Shapes | A, B, C... | Solution options | Pick one from S |
-| Components | C1, C2, C3... | Parts of a shape | Combine within shape |
-| Alternatives | C3-A, C3-B... | Approaches to a component | Pick one per component |
+| 级别 | 符号        | 含义                | 关系                |
+|-------|------------|------------------|-------------------|
+| 需求    | R0, R1, R2...   | 问题的约束条件          | 需求集合的成员            |
+| 解决方案 | A, B, C...   | 可能的解决方案选项       | 从解决方案集合中选择一个        |
+| 组件    | C1, C2, C3...   | 解决方案中的各个部分         | 可以组合在同一个解决方案中      |
+| 替代方案 | C3-A, C3-B...   | 组件的实现方式          | 为每个组件选择一种实现方式       |
 
-## Phases
+## 工作流程
 
 ```
 Shaping → Slicing
 ```
 
-- **Shaping**: Explore problem/solution space, select and detail a shape
-- **Slicing**: Break down for implementation into vertical slices with demo-able UI
+- **技能塑造（Shaping）**：探索问题与解决方案的可行范围，选定一个解决方案并详细设计其具体形态。
+- **原型设计（Breadboarding）**：将解决方案分解为多个可实现的 UI 部分。
 
-## Key Actions
+## 关键步骤
 
-- **Populate R** — Gather requirements as they emerge
-- **Sketch a shape** — Propose a high-level approach
-- **Detail** — Break shape into components or concrete affordances
-- **Check fit** — Build decision matrix (R × S), binary ✅/❌ only
-- **Breadboard** — Map to UI/Code affordances with wiring
-- **Spike** — Investigate unknowns
-- **Slice** — Break breadboarded shape into vertical increments
+- **收集需求（Populate R）**：随着需求的浮现，不断收集相关信息。
+- **构思解决方案（Sketch a shape）**：提出一个高层次的解决方案框架。
+- **细化方案（Detail）**：将解决方案拆分为具体的组件或功能模块。
+- **验证可行性（Check fit）**：创建一个决策矩阵（需求 × 解决方案），仅使用二元判断（✅/❌）。
+- **搭建原型（Breadboard）**：将解决方案映射到用户界面和代码实现中，并展示各组件之间的连接关系。
+- **深入研究（Spike）**：对不确定的部分进行进一步探索和验证。
+- **分解方案（Slice）**：将搭建好的原型进一步细分为多个可实现的子部分。
 
-## Detailed Reference
+## 详细参考资料
 
-For the complete methodology, notation rules, examples, and procedures:
+有关完整的流程、符号规则、示例和操作步骤，请参考以下文档：
 
-- **Shaping reference**: See [references/shaping.md](references/shaping.md) — Full shaping methodology including fit checks, parts, spikes, documents, multi-level consistency
-- **Breadboarding reference**: See [references/breadboarding.md](references/breadboarding.md) — Complete breadboarding procedure, affordance tables, places, wiring, Mermaid conventions, chunking, slicing
+- **技能塑造参考**：[references/shaping.md](references/shaping.md) — 包括可行性验证、各个步骤、补充说明、文档编写规范以及多层级的一致性要求。
+- **原型设计参考**：[references/breadboarding.md](references/breadboarding.md) — 包括完整的原型设计流程、功能表、组件连接规则、Mermaid 图表格式、数据流说明等。
 
-Load the relevant reference when entering that phase of work.
+在进入相应的工作阶段时，请加载相应的参考文档。
 
-## Quick Reference: Fit Check Format
+## 快速参考：
 
-```markdown
-| Req | Requirement | Status | A | B | C |
-|-----|-------------|--------|---|---|---|
-| R0 | Full requirement text | Core goal | ✅ | ✅ | ✅ |
-| R1 | Full requirement text | Must-have | ✅ | ❌ | ✅ |
-```
+### 可行性验证格式（Fit Check Format）
 
-- Always show full requirement text, never abbreviate
-- Binary only: ✅ or ❌. No ⚠️ in fit checks
-- Explanations go in Notes section below the table
+- 必须完整显示需求内容，切勿缩写。
+- 仅使用二元判断（✅ 或 ❌），避免使用 ⚠️。
+- 任何解释性内容请写在表格下方的“备注”部分。
 
-## Quick Reference: Affordance Tables
+### 功能表（Affordance Tables）
 
-**UI Affordances**: `# | Place | Component | Affordance | Control | Wires Out | Returns To`
-**Code Affordances**: Same columns
-**Controls**: click, type, call, observe, write, render
-**Wires Out** (solid →): Control flow — calls, triggers, writes
-**Returns To** (dashed -.->): Data flow — return values, reads
+| 类型        | 位置          | 组件          | 功能            | 控制方式          | 数据流向          | 返回结果          |
+|------------|--------------|----------------|------------------|----------------|----------------|
+| 用户界面功能   | #            | Component       | Affordance       | Control         | Returns To       |
+| 代码实现功能 | （与用户界面功能相同） |                | Call, Type, Observe, Write   | Render          |
+| 控制操作      | Click, Type, Call     |                | Trigger          |                   |
+| 数据流向      | （箭头表示）      | Return Values     | Read            |
 
-## Quick Reference: Slicing
+### 分割方案（Slicing）
 
-- Every slice must end in **demo-able UI**
-- Max 9 slices
-- Each slice demonstrates a mechanism working
-- Format: `V1: Name` — affordances, demo statement
+- 每个分割后的部分都必须能够通过用户界面进行展示。
+- 最多允许分割成 9 个部分。
+- 每个部分都必须展示一个可实际运行的功能机制。
+- 格式示例：`V1: 功能名称 - 功能描述`

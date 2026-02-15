@@ -1,6 +1,6 @@
 ---
 name: habit-building
-description: Expert guidance for habit-building.
+description: 专家指导：如何培养良好的习惯。
 version: 1.0.0
 tags: [self-improvement,productivity,lifestyle]
 author: OpenWork
@@ -11,18 +11,18 @@ metadata:
       env: []
 ---
 
-# uhabit building
+# 习惯养成
 
-Expert guidance for habit-building.
+关于习惯养成的专业指导。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Tips and strategies
-- Practical exercises
-- Resource recommendations
+- 最佳实践
+- 技巧与策略
+- 实践练习
+- 资源推荐
 
-## Usage
-Help me with habit-building
-Tips for habit-building
-Best practices for habit-building
+## 使用方法
+- 帮助我养成习惯
+- 习惯养成的技巧
+- 习惯养成的最佳实践

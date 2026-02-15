@@ -1,6 +1,6 @@
 ---
 name: dash-cog
-description: Interactive dashboards and apps powered by CellCog. Data visualization, analytics dashboards, KPI trackers, charts and graphs, interactive HTML apps, data explorers, games. Build web apps with AI.
+description: 由 CellCog 提供支持的交互式仪表板和应用程序：数据可视化工具、分析仪表板、关键绩效指标（KPI）追踪器、图表与图形、交互式 HTML 应用程序、数据探索工具，以及基于人工智能构建的 Web 应用程序。
 metadata:
   openclaw:
     emoji: "📊"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Dash Cog - Interactive Dashboards & Apps Powered by CellCog
+# Dash Cog – 由 CellCog 提供支持的交互式仪表盘与应用程序
 
-Build interactive dashboards, data visualizations, and web apps with AI.
+使用 CellCog 构建交互式仪表盘、数据可视化工具和 Web 应用程序。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此技能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能文档**，以了解 SDK 的安装方法。该文档将向您展示其功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,151 +38,134 @@ result = client.create_chat(
 
 ---
 
-## What You Can Build
+## 可构建的内容
 
-### Analytics Dashboards
+### 分析仪表盘
 
-Interactive dashboards for data analysis:
+用于数据分析的交互式仪表盘：
+- **销售仪表盘**：创建一个交互式销售分析仪表盘，展示收入趋势、热门产品、地区分布及月度对比数据。
+- **营销仪表盘**：构建一个营销绩效仪表盘，显示活动投资回报率（ROI）、渠道贡献度和转化路径。
+- **财务仪表盘**：创建一个财务概览仪表盘，包含损益表（P&L）、现金流和关键财务比率。
+- **人力资源仪表盘**：构建一个员工分析仪表盘，展示员工人数趋势、离职率和部门分布。
 
-- **Sales Dashboard**: "Create an interactive sales analytics dashboard with revenue trends, top products, regional breakdown, and monthly comparisons"
-- **Marketing Dashboard**: "Build a marketing performance dashboard showing campaign ROI, channel attribution, and conversion funnels"
-- **Financial Dashboard**: "Create a financial overview dashboard with P&L, cash flow, and key financial ratios"
-- **HR Dashboard**: "Build an employee analytics dashboard with headcount trends, attrition, and department breakdowns"
+### 关键绩效指标（KPI）追踪器
 
-### KPI Trackers
+用于监控关键绩效指标：
+- **业务 KPI**：创建一个 KPI 追踪器，显示月经常性收入（MRR）、客户流失率（churn rate）、客户获取成本（CAC）、客户生命周期价值（LTV）等指标。
+- **项目 KPI**：构建一个项目健康状况仪表盘，包含时间线、预算分配和风险指标。
+- **SaaS 指标**：创建一个 SaaS 指标仪表盘，展示激活用户数、用户留存率和收入增长情况。
 
-Monitor key performance indicators:
+### 数据可视化工具
 
-- **Business KPIs**: "Create a KPI tracker showing MRR, churn rate, CAC, LTV, and growth metrics"
-- **Project KPIs**: "Build a project health dashboard with timeline, budget, resource allocation, and risk indicators"
-- **SaaS Metrics**: "Create a SaaS metrics dashboard with activation, retention, and expansion revenue"
+交互式图表和图形：
+- **时间序列图**：以交互式方式展示股票价格历史，并支持缩放和技术指标分析。
+- **对比图表**：创建一个交互式条形图，对比不同竞争对手的市场份额。
+- **地理可视化**：构建一个地图可视化工具，按地区显示销售数据，并支持深入查询。
+- **层次结构图表**：创建一个树状图，展示各部门的预算分配情况。
+- **网络可视化**：将关系数据以交互式网络图的形式呈现。
 
-### Data Visualizations
+### 数据探索工具
 
-Interactive charts and graphs:
+用于探索数据集的工具：
+- **数据集探索器**：为 CSV 数据创建一个交互式探索工具，支持过滤、排序和图表展示。
+- **调查结果分析工具**：构建一个交互式工具，用于分析调查结果并进行交叉制表。
+- **日志分析工具**：创建一个日志分析工具，支持搜索、过滤和模式检测。
 
-- **Time Series**: "Visualize stock price history with interactive zoom and technical indicators"
-- **Comparisons**: "Create an interactive bar chart comparing market share across competitors"
-- **Geographic**: "Build a map visualization showing sales by region with drill-down"
-- **Hierarchical**: "Create a treemap showing budget allocation across departments"
-- **Network**: "Visualize relationship data as an interactive network graph"
+### 交互式应用程序
 
-### Data Explorers
+超越传统仪表盘的 Web 应用程序：
+- **计算器**：构建一个交互式 ROI 计算器，允许用户调整输入参数并查看可视化结果。
+- **配置器**：创建一个产品配置器，根据用户选择显示价格信息。
+- **测验**：构建一个交互式测验应用，提供得分和结果解释功能。
+- **时间轴**：创建一个交互式时间轴，展示公司的重要里程碑。
 
-Tools for exploring datasets:
+### 游戏
 
-- **Dataset Explorer**: "Create an interactive explorer for this CSV data with filtering, sorting, and charts"
-- **Survey Results**: "Build an interactive tool to explore survey responses with cross-tabulation"
-- **Log Analyzer**: "Create a log exploration tool with search, filtering, and pattern detection"
-
-### Interactive Apps
-
-Web applications beyond dashboards:
-
-- **Calculators**: "Build an interactive ROI calculator with adjustable inputs and visual output"
-- **Configurators**: "Create a product configurator that shows pricing based on selected options"
-- **Quizzes**: "Build an interactive quiz app with scoring and result explanations"
-- **Timelines**: "Create an interactive timeline of company milestones"
-
-### Games
-
-Simple web-based games:
-
-- **Puzzle Games**: "Create a word puzzle game like Wordle"
-- **Memory Games**: "Build a memory matching card game"
-- **Trivia**: "Create a trivia game about [topic] with scoring"
-- **Arcade Style**: "Build a simple space invaders style game"
+简单的基于 Web 的游戏：
+- **拼字游戏**：创建类似 Wordle 的拼字游戏。
+- **记忆游戏**：构建一个记忆匹配卡片游戏。
+- **知识问答**：创建一个关于特定主题的知识问答游戏，并提供得分功能。
+- **街机风格游戏**：构建一个简单的太空入侵者风格游戏。
 
 ---
 
-## Dashboard Features
+## 仪表盘功能
 
-CellCog dashboards can include:
-
-| Feature | Description |
+CellCog 仪表盘支持以下功能：
+| 功能 | 描述 |
 |---------|-------------|
-| **Interactive Charts** | Line, bar, pie, scatter, area, heatmaps, treemaps, and more |
-| **Filters** | Date ranges, dropdowns, search, multi-select |
-| **KPI Cards** | Key metrics with trends and comparisons |
-| **Data Tables** | Sortable, searchable, paginated tables |
-| **Drill-Down** | Click to explore deeper levels of data |
-| **Responsive Design** | Works on desktop, tablet, and mobile |
-| **Dark/Light Themes** | Automatic theme support |
+| **交互式图表**：支持折线图、条形图、饼图、散点图、面积图、热力图、树状图等。 |
+| **筛选器**：支持日期范围筛选、下拉菜单选择、搜索和多选功能。 |
+| **KPI 卡片**：显示关键指标及其变化趋势和对比数据。 |
+| **数据表格**：支持排序、搜索和分页功能。 |
+| **深入查询**：点击可进一步探索数据细节。 |
+| **响应式设计**：兼容桌面、平板电脑和移动设备。 |
+| **暗色/浅色主题**：提供自动切换的主题选项。 |
 
 ---
 
-## Data Sources
+## 数据来源
 
-You can provide data via:
-
-1. **Inline data in prompt**: Small datasets described directly
-2. **File upload**: CSV, JSON, Excel files via SHOW_FILE
-3. **Sample/mock data**: "Generate realistic sample data for a SaaS company"
+数据来源如下：
+1. **直接在提示中提供的数据**：直接描述的小型数据集。
+2. **文件上传**：支持通过 `SHOW_FILE` 功能上传 CSV、JSON 或 Excel 文件。
+3. **示例/模拟数据**：可以为 SaaS 公司生成真实的模拟数据。
 
 ---
 
-## Chat Mode for Dashboards
+## 仪表盘的聊天模式选择
 
-Choose based on complexity:
-
-| Scenario | Recommended Mode |
+根据项目复杂度选择合适的聊天模式：
+| 情况 | 推荐模式 |
 |----------|------------------|
-| Standard dashboards, KPI trackers, data visualizations, charts | `"agent"` |
-| Complex interactive apps, games, novel data explorers | `"agent team"` |
+| 标准仪表盘、KPI 追踪器、数据可视化、图表** | `"agent"` |
+| 复杂的交互式应用程序、游戏或创新的数据探索工具** | `"agent team"` |
 
-**Default to `"agent"`** for most dashboard requests. CellCog's agent mode handles charts, tables, filters, and interactivity efficiently.
-
-Reserve `"agent team"` for truly complex applications requiring significant design thinking—like building a novel game mechanic or a highly customized analytical tool with multiple interconnected features.
+**大多数仪表盘请求默认使用 `"agent"` 模式**。CellCog 的代理模式能高效处理图表、表格、筛选器和交互功能。只有在需要深度设计（如构建复杂的游戏机制或高度定制的分析工具）时，才建议使用 `"agent team"` 模式。
 
 ---
 
-## Example Dashboard Prompts
+## 仪表盘示例提示
 
-**Sales analytics dashboard:**
-> "Create an interactive sales analytics dashboard with:
-> - KPI cards: Total Revenue, Orders, Average Order Value, Growth Rate
-> - Line chart: Monthly revenue trend (last 12 months)
-> - Bar chart: Revenue by product category
-> - Pie chart: Sales by region
-> - Data table: Top 10 products by revenue
+**销售分析仪表盘：**
+> “创建一个交互式销售分析仪表盘，包含：
+> - KPI 卡片：总收入、订单数量、平均订单价值、增长率。
+> - 折线图：过去 12 个月的收入趋势。
+- 条形图：按产品类别划分的收入情况。
+- 饼图：按地区划分的销售数据。
+- 数据表格：收入排名前十的产品。
 > 
-> Include date range filter. Use this data: [upload CSV or describe data]
-> Modern, professional design with blue color scheme."
+> 支持日期范围筛选。数据来源：[上传 CSV 文件或手动描述数据]。
+> 采用蓝色调的现代专业设计风格。”
 
-**Startup metrics dashboard:**
-> "Build a SaaS metrics dashboard for a startup showing:
-> - MRR and growth rate
-> - Customer acquisition funnel (visitors → signups → trials → paid)
-> - Churn rate trend
-> - LTV:CAC ratio
-> - Revenue by plan tier
+**初创公司指标仪表盘：**
+> “为一家初创公司构建一个 SaaS 指标仪表盘，显示：
+> - 月经常性收入（MRR）和增长率。
+- 客户获取流程（访问者 → 注册 → 试用 → 支付用户）。
+- 客户流失率趋势。
+- 客户生命周期价值（LTV）与客户获取成本（CAC）的比率。
+- 按计划层级划分的收入情况。
 > 
-> Generate realistic sample data for a B2B SaaS company growing from $10K to $100K MRR over 12 months."
+> 为一家月经常性收入从 1 万美元增长到 10 万美元的 B2B SaaS 公司生成真实的模拟数据。”
 
-**Interactive data explorer:**
-> "Create an interactive explorer for this employee dataset [upload CSV]. Include:
-> - Searchable, sortable data table
-> - Filters for department, location, tenure
-> - Charts: headcount by department, salary distribution, tenure histogram
-> - Summary statistics panel
+**交互式数据探索工具：**
+> “为这个员工数据集创建一个交互式探索工具（请上传 CSV 文件），包含：
+- 可搜索、可排序的数据表格。
+- 按部门、地区和任职时间筛选功能。
+- 图表：按部门划分的员工人数、薪资分布和任职时间直方图。
+- 总结统计信息面板。
 > 
-> Allow users to download filtered data as CSV."
+> 允许用户将筛选后的数据下载为 CSV 格式。”
 
-**Simple game:**
-> "Create a Wordle-style word guessing game. 5-letter words, 6 attempts, color feedback (green = correct position, yellow = wrong position, gray = not in word). Include keyboard, game statistics, and share results feature. Clean, modern design."
+**简单游戏：**
+> “创建一个类似 Wordle 的拼字游戏，包含 5 个字母的单词，允许用户尝试 6 次，提供颜色反馈（绿色表示正确位置，黄色表示错误位置，灰色表示单词中不存在的字母）。支持键盘输入、游戏统计信息和结果分享功能。设计风格简洁现代。”
 
 ---
 
-## Tips for Better Dashboards
-
-1. **Prioritize key metrics**: Don't cram everything. Lead with the 3-5 most important KPIs.
-
-2. **Describe the data**: What columns exist? What do they mean? What time period?
-
-3. **Specify chart types**: "Line chart for trends, bar chart for comparisons, pie for composition."
-
-4. **Include interactivity**: "Filter by date range", "Click to drill down", "Hover for details."
-
-5. **Design direction**: "Modern minimal", "Corporate professional", "Playful and colorful", specific color schemes.
-
-6. **Responsive needs**: "Desktop only" vs "Must work on mobile."
+## 更好构建仪表盘的技巧：
+1. **优先展示关键指标**：不要塞入所有信息，重点展示最重要的 3-5 个 KPI。
+2. **说明数据来源**：说明数据包含哪些列及其含义，以及数据的时间范围。
+3. **指定图表类型**：使用折线图展示趋势，条形图进行对比，饼图展示结构。
+4. **添加交互功能**：提供按日期范围筛选、点击深入查询和悬停显示详细信息的功能。
+5. **确定设计风格**：选择现代简约风格、企业专业风格或趣味性强的色彩方案。
+6. **考虑设备兼容性**：确定仪表盘是否仅适用于桌面设备，还是需要支持移动设备。

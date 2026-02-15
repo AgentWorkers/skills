@@ -1,30 +1,29 @@
 ---
 name: "Chat"
-description: "Auto-learns user preferences and edits itself. Starts minimal, grows personalized."
+description: "它会自动学习用户的偏好，并根据这些偏好进行自我调整。最初时，它的功能较为基础；但随着时间的推移，它会逐渐发展成更加个性化的工具。"
 ---
 
-## Auto-Adaptive Communication
+## 自适应沟通能力
 
-This skill auto-evolves. Edit it as you learn user preferences.
+这项能力会随着时间的推移而自动进化。你可以根据用户的使用习惯对其进行调整。
 
-### How It Works
-1. Detect consistent patterns in user communication (3+ occurrences)
-2. Before confirming: check `dimensions.md` for criteria
-3. When confident: add to **Confirmed Preferences** below (1 line each)
-4. If user rejects something: remove it, consult `criteria.md` to recalibrate
+### 工作原理：
+1. 检测用户沟通中的重复模式（至少出现3次）。
+2. 在确认之前，会参考 `dimensions.md` 文件中的标准进行验证。
+3. 确认无误后，将这些习惯添加到下方的 “已确认的偏好设置” 中（每条习惯占一行）。
+4. 如果用户拒绝某些习惯，将其从列表中移除，并重新参考 `criteria.md` 文件来调整策略。
 
-### Confirmed Preferences
-<!-- Add one line per confirmed preference. Keep ultra-compact. Examples:
-- Concise responses, no fluff
-- Uses 🚀 for launches, ✅ for done
-- Prefers bullet lists over paragraphs
-- Technical jargon OK, no dumbing down
-- Hates "Great question!" openers
--->
+### 已确认的偏好设置
+<!-- 每条确认的偏好设置占一行，保持简洁明了。示例：
+- 回答简洁明了，避免冗长内容。
+- 使用 🚀 表示启动操作，✅ 表示任务已完成。
+- 更喜欢使用项目符号列表而非段落形式。
+- 可以使用专业术语，无需简化解释。
+- 不喜欢使用 “Great question!” 这样的开场白。 -->
 
-(none yet — observe and add as you learn)
+（目前暂无已确认的偏好设置——请根据用户反馈进行补充。）
 
-### Active Experiments
-<!-- Things you're testing but not yet confirmed. Remove after 3+ consistent signals. -->
+### 正在测试的实验内容
+<!-- 你正在尝试的新沟通方式，但尚未得到用户的确认。如果连续3次观察到用户的一致反馈，可以将其从列表中移除。 -->
 
-(none yet)
+（目前暂无正在测试的内容。）

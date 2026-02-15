@@ -1,6 +1,6 @@
 ---
 name: quality-documentation-manager
-description: Document control system management for medical device QMS. Covers document numbering, version control, change management, and 21 CFR Part 11 compliance. Use for document control procedures, change control workflow, document numbering, version management, electronic signature compliance, or regulatory documentation review.
+description: 医疗设备质量管理体系（QMS）中的文档控制系统管理。涵盖文档编号、版本控制、变更管理以及21 CFR Part 11合规性要求。该系统可用于文档控制流程、变更控制工作流程、文档编号管理、电子签名合规性验证，以及监管文件的审核工作。
 triggers:
   - document control
   - document numbering
@@ -16,422 +16,473 @@ triggers:
   - record retention
 ---
 
-# Quality Documentation Manager
+# 质量文档管理系统
 
-Document control system design and management for ISO 13485-compliant quality management systems, including numbering conventions, approval workflows, change control, and electronic record compliance.
-
----
-
-## Table of Contents
-
-- [Document Control Workflow](#document-control-workflow)
-- [Document Numbering System](#document-numbering-system)
-- [Approval and Review Process](#approval-and-review-process)
-- [Change Control Process](#change-control-process)
-- [21 CFR Part 11 Compliance](#21-cfr-part-11-compliance)
-- [Reference Documentation](#reference-documentation)
-- [Tools](#tools)
+本系统专为符合ISO 13485标准的质量管理体系设计，用于管理文档控制流程，包括文档编号规则、审批流程、变更控制以及电子记录的合规性要求。
 
 ---
 
-## Document Control Workflow
+## 目录
 
-Implement document control from creation through obsolescence:
+- [文档控制流程](#document-control-workflow)
+- [文档编号系统](#document-numbering-system)
+- [审批与审核流程](#approval-and-review-process)
+- [变更控制流程](#change-control-process)
+- [21 CFR Part 11合规性](#21-cfr-part-11-compliance)
+- [参考文档](#reference-documentation)
+- [工具](#tools)
 
-1. Assign document number per numbering procedure
-2. Create document using controlled template
-3. Route for review to required reviewers
-4. Address review comments and document responses
-5. Obtain required approval signatures
-6. Assign effective date and distribute
-7. Update Document Master List
-8. **Validation:** Document accessible at point of use; obsolete versions removed
+---
 
-### Document Lifecycle Stages
+## 文档控制流程
 
-| Stage | Definition | Actions Required |
+从文档创建到失效的整个生命周期，系统均实施严格的控制措施：
+
+1. 按照规定的编号规则为文档分配唯一编号。
+2. 使用统一的模板创建文档。
+3. 将文档发送给相应的审核人员进行审核。
+4. 处理审核意见并回复审核人员。
+5. 确保获得所有必要的审批签名。
+6. 设置文档的有效日期并分发文档。
+7. 更新文档主列表。
+8. **验证**：确保文档在需要使用时可被访问；过时的版本将被删除。
+
+### 文档生命周期阶段
+
+| 阶段 | 定义 | 需要执行的操作 |
 |-------|------------|------------------|
-| Draft | Under creation or revision | Author editing, not for use |
-| Review | Circulated for review | Reviewers provide feedback |
-| Approved | All signatures obtained | Ready for training/distribution |
-| Effective | Training complete, released | Available for use |
-| Superseded | Replaced by newer revision | Remove from active use |
-| Obsolete | No longer applicable | Archive per retention schedule |
+| 草稿 | 正在创建或修订中 | 作者进行编辑，不得使用 |
+| 审核 | 分发给审核人员 | 审核人员提供反馈 |
+| 批准 | 收到所有签名 | 可以用于培训或分发 |
+| 生效 | 培训完成，文档发布 | 可以正式使用 |
+| 被替代 | 被新版本取代 | 从使用中移除 |
+| 过时 | 不再适用 | 按照保留计划归档 |
 
-### Document Types and Prefixes
+### 文档类型及前缀
 
-| Prefix | Document Type | Typical Content |
+| 前缀 | 文档类型 | 通常包含的内容 |
 |--------|---------------|-----------------|
-| QM | Quality Manual | QMS overview, scope, policy |
-| SOP | Standard Operating Procedure | Process-level procedures |
-| WI | Work Instruction | Task-level step-by-step |
-| TF | Template/Form | Controlled forms |
-| SPEC | Specification | Product/process specs |
-| PLN | Plan | Quality/project plans |
+| QM | 质量手册 | 质量管理体系概述、范围、政策 |
+| SOP | 标准操作程序 | 过程级别的操作步骤 |
+| WI | 工作指导书 | 任务级别的详细步骤 |
+| TF | 模板/表格 | 控制用的填写表格 |
+| SPEC | 规格书 | 产品/过程的规格要求 |
+| PLN | 计划 | 质量/项目计划 |
 
-### Required Reviewers by Document Type
+### 不同文档类型所需的审核人员
 
-| Document Type | Required Reviewers | Required Approvers |
+| 文档类型 | 所需审核人员 | 所需审批人员 |
 |---------------|-------------------|-------------------|
-| SOP | Process Owner, QA | QA Manager, Process Owner |
-| WI | Area Supervisor, QA | Area Manager |
-| SPEC | Engineering, QA | Engineering Manager, QA |
-| TF | Process Owner | QA |
-| Design Documents | Design Team, QA | Design Control Authority |
+| SOP | 过程负责人、QA | QA经理、过程负责人 |
+| WI | 区域主管、QA | 区域经理 |
+| SPEC | 工程团队、QA | 工程经理、QA |
+| TF | 过程负责人 | QA |
+| 设计文档 | 设计团队、QA | 设计控制负责人 |
 
 ---
 
-## Document Numbering System
+## 文档编号系统
 
-Assign consistent document numbers for identification and retrieval.
+为文档分配一致的编号，以便于识别和查找。
 
-### Numbering Format
+### 编号格式
 
-Standard format: `PREFIX-CATEGORY-SEQUENCE[-REVISION]`
+标准格式：`前缀-类别-序列号[-修订版本]`
 
-```
-Example: SOP-02-001-A
+---CODE_BLOCK_0___
 
-SOP = Document type (Standard Operating Procedure)
-02  = Category code (Document Control)
-001 = Sequential number
-A   = Revision indicator
-```
+### 类别代码
 
-### Category Codes
-
-| Code | Functional Area | Description |
+| 代码 | 功能领域 | 说明 |
 |------|-----------------|-------------|
-| 01 | Quality Management | QMS procedures, management review |
-| 02 | Document Control | This area |
-| 03 | Human Resources | Training, competency |
-| 04 | Design & Development | Design control processes |
-| 05 | Purchasing | Supplier management |
-| 06 | Production | Manufacturing procedures |
-| 07 | Quality Control | Inspection, testing |
-| 08 | CAPA | Corrective/preventive actions |
-| 09 | Risk Management | ISO 14971 processes |
-| 10 | Regulatory Affairs | Submissions, compliance |
+| 01 | 质量管理 | 质量管理体系相关程序、管理审核 |
+| 02 | 文档控制 | 与文档控制相关的流程 |
+| 03 | 人力资源 | 培训、能力要求 |
+| 04 | 设计与开发 | 设计控制流程 |
+| 05 | 采购 | 供应商管理 |
+| 06 | 生产 | 制造流程 |
+| 07 | 质量控制 | 检验、测试 |
+| 08 | CAPA | 纠正/预防措施 |
+| 09 | 风险管理 | ISO 14971相关流程 |
+| 10 | 法规事务 | 与法规提交相关的文档 |
 
-### Numbering Workflow
+### 编号流程
 
-1. Author requests document number from Document Control
-2. Document Control verifies category assignment
-3. Document Control assigns next available sequence number
-4. Number recorded in Document Master List
-5. Author creates document using assigned number
-6. **Validation:** Number format matches standard; no duplicates in Master List
+1. 作者向文档控制部门申请文档编号。
+2. 文档控制部门验证所属类别。
+3. 分配下一个可用的序列号。
+4. 将编号记录在文档主列表中。
+5. 作者使用分配的编号创建文档。
+6. **验证**：编号格式符合标准；主列表中无重复编号。
 
-### Revision Designation
+### 修订版本标识
 
-| Change Type | Revision Increment | Example |
+| 变更类型 | 修订版本增量 | 例 |
 |-------------|-------------------|---------|
-| Major revision | Increment number | Rev 01 → Rev 02 |
-| Minor revision | Increment sub-revision | Rev 01 → Rev 01.1 |
-| Administrative | No change or letter suffix | Rev 01 → Rev 01a |
+| 主要修订 | 增量编号 | 从Rev 01修订为Rev 02 |
+| 小幅修订 | 修订子版本 | 从Rev 01修订为Rev 01.1 |
+| 行政性变更 | 无内容变更或仅添加字母后缀 | 从Rev 01修订为Rev 01a |
 
-See `references/document-control-procedures.md` for complete numbering guidance.
+有关完整的编号指南，请参阅`references/document-control-procedures.md`。
 
 ---
 
-## Approval and Review Process
+## 审批与审核流程
 
-Obtain required reviews and approvals before document release.
+在文档发布前，必须完成必要的审核和审批流程。
 
-### Review Workflow
+### 审核流程
 
-1. Author completes document draft
-2. Author submits for review via routing form or DMS
-3. Reviewers assigned based on document type
-4. Reviewers provide comments within review period (5-10 business days)
-5. Author addresses comments and documents responses
-6. Author resubmits revised document
-7. Approvers sign and date
-8. **Validation:** All required reviewers completed; all comments addressed with documented disposition
+1. 作者完成文档草稿。
+2. 作者通过指定渠道或DMS系统提交文档进行审核。
+3. 根据文档类型分配审核人员。
+4. 审核人员在规定时间内（5-10个工作日内）提供反馈。
+5. 作者处理审核意见并回复。
+6. 作者提交修订后的文档。
+7. 审批人员签字并注明日期。
+8. **验证**：所有指定审核人员均已完成审核；所有意见均已处理并有记录。
 
-### Comment Disposition
+### 意见处理方式
 
-| Disposition | Action Required |
+| 处理方式 | 需要执行的操作 |
 |-------------|-----------------|
-| Accept | Incorporate comment as written |
-| Accept with modification | Incorporate with changes, document rationale |
-| Reject | Do not incorporate, document justification |
-| Defer | Address in future revision, document reason |
+| 同意 | 直接采纳审核意见 |
+| 同意但需修改 | 在文档中说明修改内容及理由 |
+| 拒绝 | 不采纳修改意见，并记录拒绝理由 |
+| 延期处理 | 在后续修订中处理该意见，并记录原因 |
 
-### Approval Matrix
+### 审批矩阵
 
-```
-Document Level 1 (Policy/QM): CEO or delegate + QA Manager
-Document Level 2 (SOP): Department Manager + QA Manager
-Document Level 3 (WI/TF): Area Supervisor + QA Representative
-```
+---CODE_BLOCK_1___
 
-### Signature Requirements
+### 签名要求
 
-| Element | Requirement |
+| 签名要素 | 要求 |
 |---------|-------------|
-| Name | Printed name of signer |
-| Signature | Handwritten or electronic signature |
-| Date | Date signature applied |
-| Role | Function/role of signer |
+| 姓名 | 签名者的姓名 |
+| 签名 | 手写或电子签名 |
+| 日期 | 签名的日期 |
+| 职责 | 签名者的职位/角色 |
 
 ---
 
-## Change Control Process
+## 变更控制流程
 
-Manage document changes systematically through review and approval.
+通过审核和审批系统系统地管理文档的变更。
 
-### Change Control Workflow
+### 变更控制流程
 
-1. Identify need for document change
-2. Complete Change Request Form with justification
-3. Document Control assigns change number and logs request
-4. Route to reviewers for impact assessment
-5. Obtain approvals based on change classification
-6. Author implements approved changes
-7. Update revision number and change history
-8. **Validation:** Changes match approved scope; change history complete
+1. 确定需要变更的文档。
+2. 填写变更请求表并附上变更理由。
+3. 文档控制部门分配变更编号并记录请求。
+4. 将文档发送给相关审核人员进行影响评估。
+5. 根据变更的严重程度获得审批。
+6. 作者实施批准的变更。
+7. 更新文档的修订版本号和变更历史记录。
+8. **验证**：变更内容在审批范围内；变更历史记录完整。
 
-### Change Classification
+### 变更分类
 
-| Class | Definition | Approval Level | Examples |
+| 变更类型 | 定义 | 审批级别 | 例 |
 |-------|------------|----------------|----------|
-| Administrative | No content impact | Document Control | Typos, formatting |
-| Minor | Limited content change | Process Owner + QA | Clarifications |
-| Major | Significant content change | Full review cycle | New requirements |
-| Emergency | Urgent safety/compliance | Expedited + retrospective | Safety issues |
+| 行政性变更 | 不影响文档内容 | 由文档控制部门处理 | 如拼写错误、格式问题 |
+| 小幅变更 | 内容有少量修改 | 由过程负责人和QA共同审批 | 如需要澄清的部分 |
+| 主要变更 | 内容有重大修改 | 需要完整的审核流程 | 如新增要求 |
+| 紧急变更 | 影响安全或合规性 | 需快速处理并追溯 | 如涉及安全问题 |
 
-### Impact Assessment Checklist
+### 影响评估检查表
 
-| Impact Area | Assessment Questions |
+| 变更可能影响的方面 | 需要评估的内容 |
 |-------------|---------------------|
-| Training | Does change require retraining? |
-| Equipment | Does change affect equipment or systems? |
-| Validation | Does change require revalidation? |
-| Regulatory | Does change affect regulatory filings? |
-| Other Documents | Which related documents need updating? |
-| Records | What records are affected? |
+| 培训 | 变更是否需要重新培训？ |
+| 设备 | 变更是否影响设备或系统？ |
+| 验证 | 变更是否需要重新验证？ |
+| 法规 | 变更是否影响法规文件？ |
+| 其他文档 | 哪些相关文档需要更新？ |
+| 记录 | 哪些记录会受到影响？ |
 
-### Change History Documentation
+### 变更历史记录
 
-Each document must include change history:
+每份文档都必须包含详细的变更历史记录：
 
-```
-| Revision | Date | Description | Author | Approver |
-|----------|------|-------------|--------|----------|
-| 01 | 2023-01-15 | Initial release | J. Smith | M. Jones |
-| 02 | 2024-03-01 | Updated workflow | J. Smith | M. Jones |
-```
+---CODE_BLOCK_2___
 
 ---
 
-## 21 CFR Part 11 Compliance
+## 21 CFR Part 11合规性
 
-Implement electronic record and signature controls for FDA compliance.
+为符合FDA的法规要求，系统实施电子记录和签名控制。
 
-### Part 11 Scope
+### Part 11的适用范围
 
-| Applies To | Does Not Apply To |
+| 适用对象 | 不适用对象 |
 |------------|-------------------|
-| Records required by FDA regulations | Paper records |
-| Records submitted to FDA | Internal non-regulated documents |
-| Electronic signatures on required records | General email communication |
+| FDA法规要求的记录 | 纸质记录 |
+| 提交给FDA的记录 | 内部的非法规文件 |
+| 需要电子签名的记录 | 一般的电子邮件通信 |
 
-### Electronic Record Controls
+### 电子记录控制
 
-1. Validate system for accuracy and reliability
-2. Implement secure audit trail for all changes
-3. Restrict system access to authorized individuals
-4. Generate accurate copies in human-readable format
-5. Protect records throughout retention period
-6. **Validation:** Audit trail captures who, what, when for all changes
+1. 确保系统的准确性和可靠性。
+2. 为所有变更生成安全的审计追踪记录。
+3. 仅允许授权人员访问系统。
+4. 生成可读的电子副本。
+5. 在整个保留期内保护记录的安全性。
+6. **验证**：审计追踪记录了所有变更的详细信息。
 
-### Audit Trail Requirements
+### 审计追踪要求
 
-| Requirement | Implementation |
+| 要求 | 实施方式 |
 |-------------|----------------|
-| Secure | Cannot be modified by users |
-| Computer-generated | System creates automatically |
-| Time-stamped | Date and time of each action |
-| Original values | Previous values retained |
-| User identity | Who made each change |
+| 安全性 | 系统不允许用户自行修改记录 |
+| 系统自动生成记录 | 系统自动记录所有操作 |
+| 时间戳 | 每次操作的日期和时间 |
+| 原始数据 | 保留所有原始数据 |
+| 用户身份 | 记录每项变更的执行人 |
 
-### Electronic Signature Requirements
+### 电子签名要求
 
-| Requirement | Implementation |
+| 要求 | 实施方式 |
 |-------------|----------------|
-| Unique to individual | Not shared between persons |
-| At least 2 components | User ID + password minimum |
-| Signature manifestation | Name, date/time, meaning displayed |
-| Linked to record | Cannot be excised or copied |
+| 签名唯一性 | 每个用户都有唯一的签名 |
+| 至少包含两部分 | 用户ID和密码 |
+| 签名显示方式 | 显示签名者的姓名、日期和时间 |
+| 与记录关联 | 签名必须与记录关联，不可删除或复制 |
 
-### Signature Manifestation
+### 签名显示方式
 
-Every electronic signature must display:
+每个电子签名必须包含以下信息：
 
-| Element | Example |
+| 元素 | 例 |
 |---------|---------|
-| Printed name | John Smith |
-| Date and time | 2024-03-15 14:32:05 EST |
-| Meaning | Approved for Release |
+| 姓名 | 约翰·史密斯 |
+| 日期和时间 | 2024-03-15 14:32:05 EST |
+| 签名含义 | 表示“批准发布” |
 
-### System Controls Checklist
+### 系统控制要求
 
-**Access Controls:**
-- [ ] Unique user ID for each person
-- [ ] Password complexity enforced
-- [ ] Account lockout after failed attempts
-- [ ] Session timeout after inactivity
+**访问控制：**
+- 每个用户都有唯一的用户ID。
+- 强制设置密码复杂度。
+- 失败登录后账户会被锁定。
+- 不活动一段时间后账户会自动锁定。
+**审计追踪：**
+- 所有记录的创建操作都会被记录。
+- 所有修改操作都会被记录，包括旧值和新值。
+- 记录用户的操作时间和身份。
+**安全性：**
+- 基于角色的访问控制。
+- 数据在存储和传输过程中都经过加密。
+- 定期备份数据并测试恢复机制。
 
-**Audit Trail:**
-- [ ] All record creation logged
-- [ ] All modifications logged with old/new values
-- [ ] User identity captured
-- [ ] Date/time stamp on all entries
-
-**Security:**
-- [ ] Role-based access control
-- [ ] Encryption for data at rest and in transit
-- [ ] Regular backup and tested recovery
-
-See `references/21cfr11-compliance-guide.md` for detailed compliance requirements.
+有关详细的合规性要求，请参阅`references/21cfr11-compliance-guide.md`。
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-### Document Control Procedures
+### 文档控制流程
 
-`references/document-control-procedures.md` contains:
+`references/document-control-procedures.md`包含以下内容：
+- 文档编号系统和格式。
+- 文档生命周期的各个阶段及转换规则。
+- 审核和审批流程的详细信息。
+- 变更控制流程及分类标准。
+- 文档的分发和访问控制方法。
+- 记录的保留期限和处理方式。
+- 文档主列表的要求。
 
-- Document numbering system and format
-- Document lifecycle stages and transitions
-- Review and approval workflow details
-- Change control process with classification criteria
-- Distribution and access control methods
-- Record retention periods and disposal procedures
-- Document Master List requirements
+### 21 CFR Part 11合规性指南
 
-### 21 CFR Part 11 Compliance Guide
-
-`references/21cfr11-compliance-guide.md` contains:
-
-- Part 11 scope and applicability
-- Electronic record requirements (§11.10)
-- Electronic signature requirements (§11.50, 11.100, 11.200)
-- System control specifications
-- Validation approach and documentation
-- Compliance checklist and gap assessment template
-- Common FDA deficiencies and prevention
+`references/21cfr11-compliance-guide.md`包含以下内容：
+- Part 11的适用范围和具体要求。
+- 电子记录的相关要求（§11.10、11.50、11.100、11.200）。
+- 系统控制的具体规格。
+- 验证方法和相关文档。
+- 合规性检查清单和差距评估模板。
+- 常见的FDA合规性问题及预防措施。
 
 ---
 
-## Tools
+## 工具
 
-### Document Validator
+### 文档验证工具
 
-```bash
-# Validate document metadata
-python scripts/document_validator.py --doc document.json
+**Document Validator**
 
-# Interactive validation mode
-python scripts/document_validator.py --interactive
+该工具用于验证：
+- 文档编号是否符合规定。
+- 文档的标题和状态是否正确。
+- 日期是否有效（是否已生效或需要审核）。
+- 根据文档类型检查审批要求是否满足。
+- 变更历史记录是否完整。
+- 是否满足21 CFR Part 11的相关要求（如审计追踪、签名等）。
 
-# JSON output for integration
-python scripts/document_validator.py --doc document.json --output json
+### 样本文档输入
 
-# Generate sample document JSON
-python scripts/document_validator.py --sample > sample_doc.json
-```
-
-Validates:
-- Document numbering convention compliance
-- Title and status requirements
-- Date validation (effective, review due)
-- Approval requirements by document type
-- Change history completeness
-- 21 CFR Part 11 controls (audit trail, signatures)
-
-### Sample Document Input
-
-```json
-{
-  "number": "SOP-02-001",
-  "title": "Document Control Procedure",
-  "doc_type": "SOP",
-  "revision": "03",
-  "status": "Effective",
-  "effective_date": "2024-01-15",
-  "review_date": "2025-01-15",
-  "author": "J. Smith",
-  "approver": "M. Jones",
-  "change_history": [
-    {"revision": "01", "date": "2022-01-01", "description": "Initial release"},
-    {"revision": "02", "date": "2023-01-15", "description": "Updated workflow"},
-    {"revision": "03", "date": "2024-01-15", "description": "Added e-signature requirements"}
-  ],
-  "has_audit_trail": true,
-  "has_electronic_signature": true,
-  "signature_components": 2
-}
-```
+---CODE_BLOCK_4___
 
 ---
 
-## Document Control Metrics
+## 文档控制指标
 
-Track document control system performance.
+用于监控文档控制系统的性能。
 
-### Key Performance Indicators
+### 关键绩效指标
 
-| Metric | Target | Calculation |
+| 指标 | 目标值 | 计算方法 |
 |--------|--------|-------------|
-| Document cycle time | <30 days | Average days from draft to effective |
-| Review completion rate | >95% | Reviews completed on time / Total reviews |
-| Change request backlog | <10 | Open change requests at month end |
-| Overdue review rate | <5% | Documents past review date / Total effective |
-| Audit finding rate | <2 per audit | Document control findings per internal audit |
+| 文档周期时间 | <30天 | 从草稿到正式发布的平均天数 |
+| 审核完成率 | >95% | 完成的审核数量占总审核数量的百分比 |
+| 未处理的变更请求数量 | <10个 | 每月底未处理的变更请求数量 |
+| 过期审核率 | <5% | 过期未审核的文档数量占已发布文档总数的百分比 |
+| 审计中发现的问题数量 | <2个 | 每次内部审计中发现的文档控制问题数量 |
 
-### Periodic Review Schedule
+### 定期审查计划
 
-| Document Type | Review Frequency |
+| 文档类型 | 审查频率 |
 |---------------|------------------|
-| Policy | Every 3 years |
-| SOP | Every 2 years |
-| WI | Every 2 years |
-| Specifications | As needed or with product changes |
-| Forms/Templates | Every 3 years |
+| 政策 | 每3年一次 |
+| SOP | 每2年一次 |
+| 工作指导书 | 每2年一次 |
+| 规格书 | 根据需要或产品更新情况 |
+| 模板/表格 | 每3年一次 |
 
 ---
 
-## Regulatory Requirements
+## 法规要求
 
-### ISO 13485:2016 Clause 4.2
+### ISO 13485:2016标准第4.2条
 
-| Sub-clause | Requirement |
+| 子条款 | 要求 |
 |------------|-------------|
-| 4.2.1 | Quality management system documentation |
-| 4.2.2 | Quality manual |
-| 4.2.3 | Medical device file (technical documentation) |
-| 4.2.4 | Control of documents |
-| 4.2.5 | Control of records |
+| 4.2.1 | 质量管理体系文档 |
+| 4.2.2 | 质量手册 |
+| 4.2.3 | 医疗设备文件（技术文档） |
+| 4.2.4 | 文档控制 |
+| 4.2.5 | 记录控制 |
 
 ### FDA 21 CFR 820
 
-| Section | Requirement |
+| 条款 | 要求 |
 |---------|-------------|
-| 820.40 | Document controls |
-| 820.180 | General record requirements |
-| 820.181 | Device master record |
-| 820.184 | Device history record |
-| 820.186 | Quality system record |
+| 820.40 | 文档控制 |
+| 820.180 | 一般记录要求 |
+| 820.181 | 设备主记录 |
+| 820.184 | 设备历史记录 |
+| 820.186 | 质量系统记录 |
 
-### Common Audit Findings
+### 常见的审计问题及预防措施
 
-| Finding | Prevention |
+| 审计中发现的问题 | 预防措施 |
 |---------|------------|
-| Obsolete documents in use | Implement distribution control |
-| Missing approval signatures | Enforce workflow before release |
-| Incomplete change history | Require history update with each revision |
-| No periodic review schedule | Establish and enforce review calendar |
-| Inadequate audit trail | Validate DMS for Part 11 compliance |
+| 使用过时的文档 | 实施文档分发控制 |
+| 缺少审批签名 | 在文档发布前确保完成审批流程 |
+| 变更历史记录不完整 | 每次修订时更新历史记录 |
+| 未制定定期审查计划 | 建立并执行审查计划 |
+| 审计追踪不完善 | 确保DMS系统符合Part 11的合规性要求 |
+
+---
+
+## 相关参考文档
+
+### 文档控制流程
+
+`references/document-control-procedures.md`包含以下内容：
+- 文档编号系统和格式。
+- 文档生命周期的各个阶段及转换规则。
+- 审核和审批流程的详细信息。
+- 变更控制流程及分类标准。
+- 文档的分发和访问控制方法。
+- 记录的保留期限和处理方式。
+- 文档主列表的要求。
+
+### 21 CFR Part 11合规性指南
+
+`references/21cfr11-compliance-guide.md`包含以下内容：
+- Part 11的适用范围和具体要求。
+- 电子记录的相关要求（§11.10、11.50、11.100、11.200）。
+- 系统控制的具体规格。
+- 验证方法和相关文档。
+- 合规性检查清单和差距评估模板。
+- 常见的FDA合规性问题及预防措施。
+
+---
+
+## 工具
+
+### 文档验证工具
+
+**Document Validator**
+
+该工具用于验证：
+- 文档编号是否符合规定。
+- 文档的标题和状态是否正确。
+- 日期是否有效（是否已生效或需要审核）。
+- 根据文档类型检查审批要求是否满足。
+- 变更历史记录是否完整。
+- 是否满足21 CFR Part 11的相关要求（如审计追踪、签名等）。
+
+### 样本文档输入
+
+---CODE_BLOCK_4___
+
+---
+
+## 文档控制指标
+
+用于监控文档控制系统的性能。
+
+### 关键绩效指标
+
+| 指标 | 目标值 | 计算方法 |
+|--------|--------|-------------|
+| 文档周期时间 | <30天 | 从草稿到正式发布的平均天数 |
+| 审核完成率 | >95% | 完成的审核数量占总审核数量的百分比 |
+| 未处理的变更请求数量 | <10个 | 每月底未处理的变更请求数量 |
+| 过期审核率 | <5% | 过期未审核的文档数量占已发布文档总数的百分比 |
+| 审计中发现的问题数量 | <2个 | 每次内部审计中发现的文档控制问题数量 |
+
+### 定期审查计划
+
+| 文档类型 | 审查频率 |
+|---------------|------------------|
+| 政策 | 每3年一次 |
+| SOP | 每2年一次 |
+| 工作指导书 | 每2年一次 |
+| 规格书 | 根据需要或产品更新情况 |
+| 模板/表格 | 每3年一次 |
+
+---
+
+## 法规要求
+
+### ISO 13485:2016标准第4.2条
+
+| 子条款 | 要求 |
+|------------|-------------|
+| 4.2.1 | 质量管理体系文档 |
+| 4.2.2 | 质量手册 |
+| 4.2.3 | 医疗设备文件（技术文档） |
+| 4.2.4 | 文档控制 |
+| 4.2.5 | 记录控制 |
+
+### FDA 21 CFR 820
+
+| 条款 | 要求 |
+|---------|-------------|
+| 820.40 | 文档控制 |
+| 820.180 | 一般记录要求 |
+| 820.181 | 设备主记录 |
+| 820.184 | 设备历史记录 |
+| 820.186 | 质量系统记录 |
+
+### 常见的审计问题及预防措施
+
+| 审计中发现的问题 | 预防措施 |
+|---------|------------|
+| 使用过时的文档 | 实施文档分发控制 |
+| 缺少审批签名 | 在文档发布前确保完成审批流程 |
+| 变更历史记录不完整 | 每次修订时更新历史记录 |
+| 未制定定期审查计划 | 建立并执行审查计划 |
+| 审计追踪不完善 | 确保DMS系统符合Part 11的合规性要求 |

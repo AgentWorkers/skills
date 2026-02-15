@@ -1,37 +1,45 @@
 ---
 name: creator-alpha-feed
-description: Collect and rank daily AI content for creator-focused publishing workflows. Use when users ask for AI topic scouting, KOL tracking (especially X/Twitter), practical tutorial picks, industry updates, or automated Feishu/Obsidian briefing pushes with configurable templates and time windows.
+description: 收集并整理每日的人工智能相关内容，以支持以创作者为中心的发布工作流程。当用户需要寻找人工智能相关的话题、追踪KOL（尤其是X/Twitter上的影响者）、挑选实用教程、获取行业动态，或通过可配置的模板和时间窗口自动推送Feishu/Obsidian简报时，可使用该功能。
 ---
 
-# Creator Alpha Feed
+# 创建者 Alpha 数据源采集脚本
 
-1. Read config first:
+1. 首先读取配置文件：
    - `${OBSIDIAN_CONFIG_PATH:-<your_obsidian_vault>/OpenClaw/项目/AI内容日报/采集配置.md}`
-2. Execute collection in this order for X:
-   - homepage feed → whitelist accounts → keywords
-3. Prefer API where available; fallback to browser when unavailable.
-4. Enforce browser tab cap:
-   - max 7 concurrent tabs; close finished tabs first; end with 0 tabs (close all temporary tabs before finishing).
-5. Build ranked outputs by configured structure (default):
-   - KOL TOP3 (last 6h)
-   - Practical/Tutorial/Opinion TOP10
-   - Industry TOP3 (last 6h)
-6. Push concise results to group channel; write full report to Obsidian path.
-7. Name report files with timestamp format: `YYYY-MM-DD_HHMM.md`.
-8. Prefer real Obsidian Vault path (not workspace mirror) when available.
-9. Use structured Obsidian directories:
-   - `OpenClaw/项目/AI内容日报/01-日报/` for final reports
-   - `OpenClaw/项目/AI内容日报/02-运行记录/` for verification/debug runs
-   - `OpenClaw/项目/AI内容日报/03-文档/` for installation/operational docs
-10. If login is required for a source, pause and notify user to log in; wait up to 3 minutes with periodic checks, then continue remaining sources if still unavailable.
 
-## Bundled scripts
+2. 按以下顺序执行数据采集任务：
+   - 首页数据 → 白名单账户 → 关键词
 
-Use `scripts/collect-v4.sh` and related scripts for deterministic fallback/automation when needed.
+3. 在可用情况下优先使用 API；API 不可用时使用浏览器进行数据采集。
 
-## Required output checks
+4. 实施浏览器标签页限制：
+   - 同时打开的标签页数量最多为 7 个；先关闭已完成的标签页；最终确保标签页数量为 0（在任务完成前关闭所有临时标签页）。
 
-- Include must-track account status for `@xiaohu @dotey @marclou`
-- Include fallback/degradation notes
-- Include final report path
-- In group replies, mention the question asker (`@who asked`) when channel supports mentions
+5. 根据配置的结构生成排名结果（默认设置）：
+   - KOL（关键意见领袖）排名前 3 名（过去 6 小时）
+   - 实用教程/观点类内容排名前 10 名
+   - 行业相关内容排名前 3 名（过去 6 小时）
+
+6. 将简洁的结果推送到指定群组频道；将完整报告写入 Obsidian 数据库中的相应路径。
+
+7. 使用时间戳格式为报告文件命名：`YYYY-MM-DD_HHMM.md`。
+
+8. 在可能的情况下，优先使用真实的 Obsidian 数据库路径（而非工作区镜像路径）。
+
+9. 使用结构化的 Obsidian 目录结构：
+   - `OpenClaw/项目/AI内容日报/01-日报/`：存放最终报告
+   - `OpenClaw/项目/AI内容日报/02-运行记录/`：存放验证/调试运行记录
+   - `OpenClaw/项目/AI内容日报/03-文档/`：存放安装/操作指南文档
+
+10. 如果某个数据源需要登录才能访问，请暂停任务并通知用户登录；等待最多 3 分钟，如果用户仍未登录，则定期检查该数据源的状态；如果数据源仍无法访问，则继续处理其他数据源。
+
+## 集成脚本
+
+根据需要使用 `scripts/collect-v4.sh` 及相关脚本来实现自动化处理。
+
+## 必须包含的输出内容：
+- 需要跟踪的账户状态（例如：@xiaohu、@dotey、@marclou）
+- 备用方案/故障处理说明
+- 最终报告的存储路径
+- 在群组回复中，如果频道支持提及功能，请提及提问者（例如：@who asked）

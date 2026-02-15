@@ -1,219 +1,131 @@
 ---
 name: simmer-signalsniper
 displayName: Polymarket Signal Sniper
-description: Snipe Polymarket opportunities from your own signal sources. Monitors RSS feeds with Trading Agent-grade safeguards.
+description: 从您自己的信号源中捕捉 Polymarket 的投资机会。使用具有 Trading Agent 级别安全性的工具来监控 RSS 源。
 metadata: {"clawdbot":{"emoji":"🎯","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
 version: "1.3.0"
 ---
 
-# Polymarket Signal Sniper
+# Polymarket Signal Sniper  
+这是一个用于捕捉市场信号的自动化工具，它结合了Simmer的交易智能。  
 
-Your signals, Simmer's trading intelligence.
+## 何时使用该工具  
+当用户希望：  
+- 监控RSS源以寻找交易机会  
+- 在市场反应之前根据突发新闻进行交易  
+- 自定义信号来源和关键词  
+- 为交易提供高级的安全保障时，可以使用该工具。  
 
-## When to Use This Skill
+## 快速命令  
+（命令示例请参见下方代码块）  
 
-Use this skill when the user wants to:
-- Monitor RSS feeds for trading opportunities
-- Trade on breaking news before markets react
-- Configure their own signal sources and keywords
-- Get Trading Agent-grade safeguards on their trades
+**API参考：**  
+- 基本URL：`https://api.simmer.markets`  
+- 认证：`Authorization: Bearer $SIMMER_API_KEY`  
+- 投资组合：`GET /api/sdk/portfolio`  
+- 持仓情况：`GET /api/sdk/positions`  
 
-## Quick Commands
+## 快速入门（临时使用）  
+**用户提供RSS源和市场信息：**  
+（具体操作请参见下方代码块）  
+→ 使用`--feed`和`--market`参数运行脚本：  
+（示例命令：`python signal_sniper.py --feed "URL" --scan-only`）  
 
-```bash
-# Check account balance and positions
-python scripts/status.py
+## 持久化设置（可选）  
+如需自动定期扫描，可通过环境变量进行配置：  
+| 设置 | 环境变量 | 默认值 | 说明 |  
+|---------|---------------------|---------|-------------|  
+| RSS源 | `SIMMER_SNIPER_feedS` | （无） | 以逗号分隔的RSS地址列表 |  
+| 市场 | `SIMMER_SNIPERMARKETS` | （无） | 以逗号分隔的市场ID列表 |  
+| 关键词 | `SIMMER_SNIPER_KEYWORDS` | （无） | 需要匹配的关键词列表 |  
+| 交易置信度 | `SIMMER_SNIPER_CONFIDENCE` | 0.7 | 最低交易置信度（0.0-1.0） |  
+| 每笔交易最大金额 | `SIMMER_SNIPER_MAX_USD` | 25 | 每笔交易的最大金额 |  
+| 每次扫描的最大交易数量 | `SIMMER_SNIPER_MAX_TRADES` | 5 | 每次扫描的最大交易数量 |  
 
-# Detailed position list
-python scripts/status.py --positions
-```
+**Polymarket限制：**  
+- 每笔订单至少需5股股票；低于此数量的订单将被拒绝并显示错误信息。  
 
-**API Reference:**
-- Base URL: `https://api.simmer.markets`
-- Auth: `Authorization: Bearer $SIMMER_API_KEY`
-- Portfolio: `GET /api/sdk/portfolio`
-- Positions: `GET /api/sdk/positions`
+## 工作原理  
+脚本每个周期会执行以下操作：  
+1. 访问配置的RSS源  
+2. 根据关键词过滤文章  
+3. 将匹配到的文章与目标市场进行匹配  
+4. 对每个匹配结果，调用SDK接口进行安全检查（例如：是否已持有该股票、市场是否具有流动性等）  
+5. 如果安全检查通过，用户（Claude）会分析信号并决定是否执行交易  
+6. 执行交易后，系统会记录已处理的文章以避免重复。  
 
-## Quick Start (Ad-Hoc Usage)
+## 运行该工具  
+**进行扫描（默认为模拟运行，不执行交易）：**  
+（示例命令：`python signal_sniper.py`）  
+**执行真实交易：**  
+（示例命令：`python signal_sniper.py --feed "URL" --trade`）  
+**仅查看信号而不执行交易：**  
+（示例命令：`python signal_sniper.py --scan-only`）  
+**查看当前配置：**  
+（示例命令：`python signal_sniper.py --config`）  
+**针对单次运行进行自定义设置：**  
+（示例命令：`python signal_sniper.py --config "RSS=URL, markets=MARKET_ID, keywords=KEYWORDLIST"`）  
+**查看已处理的文章：**  
+（示例命令：`python signal_sniper.py --history`）  
 
-**User provides RSS feed and market directly:**
-```
-User: "Watch this RSS feed for greenland news: https://news.google.com/rss/search?q=greenland"
-User: "Snipe any news about trump from this feed"
-```
+## 解读警告信息  
+在交易前，请务必查看警告信息：  
+| 警告 | 处理方式 |  
+|---------|--------|  
+| `MARKET RESOLVED` | 不要交易 |  
+| `HIGH URGENCY: Resolves in Xh` | 评估信号是否及时 |  
+| `flip_flop_warning: SEVERE` | 警告：市场波动频繁，需谨慎操作 |  
+| `flip_flop_warning: CAUTION` | 警告：需要更明确的信号 |  
+| `Wide spread (X%)` | 减少持仓规模或跳过该交易 |  
+| `Simmer AI signal: X% more bullish/bearish` | 参考Simmer的预测意见 |  
 
-→ Run with `--feed` and `--market` flags:
-```bash
-python signal_sniper.py --feed "https://news.google.com/rss/search?q=greenland" --market "greenland-acquisition" --dry-run
-```
+## 分析信号  
+找到匹配的文章后，请仔细分析：  
+1. **阅读标题和摘要**：了解新闻内容。  
+2. **检查是否符合交易条件**：确认新闻是否符合交易标准（例如，“greenland”并不一定意味着“收购完成”）。  
+3. **评估置信度**（0.0-1.0）：判断信号与交易条件的关联程度及来源的可信度。  
+4. **仅在执行交易时满足以下条件**：  
+  - 置信度高于阈值（默认0.7）  
+  - 无严重警告  
+  - 信号符合交易条件。  
 
-## Persistent Setup (Optional)
+## 示例对话：  
+**用户：“为Greenland市场设置新闻监控”**  
+  - 提供要监控的RSS源  
+  - 配置市场ID和关键词  
+  - 启用定时扫描功能  
 
-For automated recurring scans, configure via environment:
+**用户：“检查该RSS源中的交易信号”**  
+  - 运行：`python signal_sniper.py --feed "URL" --scan-only`  
+  - 查看匹配到的文章及潜在交易机会  
 
-| Setting | Environment Variable | Default | Description |
-|---------|---------------------|---------|-------------|
-| RSS Feeds | `SIMMER_SNIPER_FEEDS` | (none) | Comma-separated RSS URLs |
-| Markets | `SIMMER_SNIPER_MARKETS` | (none) | Comma-separated market IDs |
-| Keywords | `SIMMER_SNIPER_KEYWORDS` | (none) | Comma-separated keywords to match |
-| Confidence | `SIMMER_SNIPER_CONFIDENCE` | 0.7 | Min confidence to trade (0.0-1.0) |
-| Max USD | `SIMMER_SNIPER_MAX_USD` | 25 | Max per trade |
-| Max trades/run | `SIMMER_SNIPER_MAX_TRADES` | 5 | Maximum trades per scan cycle |
+**用户：“抓取CoinDesk上的比特币相关新闻”**  
+  - 使用CoinDesk的RSS源和比特币相关市场  
+  - 查看匹配结果并决定是否进行交易  
 
-**Polymarket Constraints:**
-- Minimum 5 shares per order
-- Trades below this threshold are rejected with an error message
+**用户：“我们处理了哪些信号？”**  
+  - 运行：`python signal_sniper.py --history`  
+  - 查看最近的文章及交易记录  
 
-## How It Works
+## 示例交易流程  
+（交易流程示意图请参见下方代码块）  
 
-Each cycle the script:
-1. Polls configured RSS feeds
-2. Filters articles by keywords (if configured)
-3. Matches articles to target markets
-4. For each match, calls SDK context endpoint for safeguards:
-   - Position awareness (already holding?)
-   - Flip-flop detection (recently changed direction?)
-   - Slippage estimates (is market liquid?)
-   - Time decay (resolving soon?)
-   - Resolution criteria (what actually resolves this market?)
-5. If safeguards pass, you (Claude) analyze the signal
-6. If confident, executes trade via SDK
-7. Tracks processed articles to avoid duplicates
+## 故障排除：  
+- **“未配置RSS源”**：提供RSS地址或设置`SIMMER_SNIPER_feedS`环境变量。  
+- **“未找到匹配文章”**：检查关键词是否正确；RSS源可能没有最新文章；尝试使用`--scan-only`模式查看内容。  
+- **“因市场波动频繁而跳过交易”**：等待市场稳定后再操作或获取新信息。  
+- **“滑点过高”**：市场流动性差，减少交易规模或跳过交易。  
+- **“文章已处理过”**：系统会避免重复处理相同文章。  
 
-## Running the Skill
+## 选择RSS源的建议：  
+- **Google News RSS**：`https://news.google.com/rss/search?q=YOUR_TOPIC`  
+- **专业领域来源**：通常比主流媒体更新及时  
+- **官方来源**：政府或公司公告  
+- **Twitter列表的RSS订阅**：可使用Nitter或RSS.app等工具  
 
-**Run a scan (dry run by default — no trades):**
-```bash
-python signal_sniper.py
-```
-
-**Execute real trades:**
-```bash
-python signal_sniper.py --live
-```
-
-**Check for signals without trading:**
-```bash
-python signal_sniper.py --scan-only
-```
-
-**View current config:**
-```bash
-python signal_sniper.py --config
-```
-
-**Override for one run:**
-```bash
-python signal_sniper.py --feed "https://..." --keywords "trump,greenland" --market "abc123"
-```
-
-**Show processed articles:**
-```bash
-python signal_sniper.py --history
-```
-
-## Interpreting Context Warnings
-
-Before trading, ALWAYS check the context warnings. The skill will show you:
-
-| Warning | Action |
-|---------|--------|
-| `MARKET RESOLVED` | Do NOT trade |
-| `HIGH URGENCY: Resolves in Xh` | Consider if signal is timely enough |
-| `flip_flop_warning: SEVERE` | Skip - you've been reversing too much |
-| `flip_flop_warning: CAUTION` | Proceed carefully, need strong signal |
-| `Wide spread (X%)` | Reduce position size or skip |
-| `Simmer AI signal: X% more bullish/bearish` | Consider Simmer's oracle opinion |
-
-## Analyzing Signals
-
-When you find a matching article, analyze it carefully:
-
-1. **Read the headline and summary** - What is the actual news?
-
-2. **Check resolution_criteria** - What ACTUALLY resolves this market?
-   - Example: "greenland" in headline doesn't mean "acquisition complete"
-   - The resolution might be "US formally acquires Greenland by 2027"
-   - Does this signal move the needle on THAT specific criteria?
-
-3. **Assess confidence** (0.0-1.0):
-   - How directly does this signal relate to resolution criteria?
-   - Is the source credible?
-   - Is this news likely already priced in?
-
-4. **Only trade if**:
-   - Confidence > threshold (default 0.7)
-   - No severe warnings
-   - Signal validates against resolution criteria
-
-## Example Conversations
-
-**User: "Set up news sniping for the Greenland market"**
-→ Ask for RSS feeds they want to monitor
-→ Configure with market ID and keywords
-→ Enable cron for recurring scans
-
-**User: "Check this feed for trading signals"**
-→ Run: `python signal_sniper.py --feed "URL" --scan-only`
-→ Show found articles and potential matches
-
-**User: "Snipe any bitcoin news from CoinDesk"**
-→ Run with CoinDesk RSS and bitcoin-related markets
-→ Show matches and ask if they want to trade
-
-**User: "What signals have we processed?"**
-→ Run: `python signal_sniper.py --history`
-→ Show recent articles and actions taken
-
-## Example Trade Flow
-
-```
-1. RSS poll finds: "Trump and Denmark reach preliminary Greenland agreement"
-2. Keywords match: "greenland", "trump"
-3. Call context endpoint for market "greenland-acquisition-2027"
-4. Check warnings: none severe ✓
-5. Resolution criteria: "Resolves YES if US formally acquires Greenland by 2027"
-6. You analyze: "preliminary agreement" ≠ "formally acquires" but bullish signal
-7. Confidence: 0.75 (positive indicator, not definitive)
-8. Check slippage: 2.5% on $25 ✓
-9. Execute: BUY YES $25
-10. Report: "🎯 Sniped: Trump/Greenland agreement → BUY YES $25"
-```
-
-## Troubleshooting
-
-**"No feeds configured"**
-- Provide feeds in message: "watch this RSS: https://..."
-- Or set `SIMMER_SNIPER_FEEDS` environment variable
-
-**"No matching articles found"**
-- Check keywords are correct
-- RSS feed might not have recent articles
-- Try `--scan-only` to see what's in the feed
-
-**"Skipped due to flip-flop warning"**
-- You've been changing direction too much on this market
-- Wait before trading again, or find new information
-
-**"Slippage too high"**
-- Market is illiquid
-- Reduce trade size or skip
-
-**"Already processed"**
-- This article was already seen
-- Working as intended (dedup)
-
-## Finding Good RSS Feeds
-
-Tips for choosing signal sources:
-- **Google News RSS**: `https://news.google.com/rss/search?q=YOUR_TOPIC`
-- **Niche sources**: Better than mainstream (less priced in)
-- **Official sources**: Government, company announcements
-- **Twitter lists → RSS**: Use services like Nitter or RSS.app
-
-The skill works best when:
-- Feeds are relevant to your target markets
-- You have specific keywords to filter noise
-- Sources publish before mainstream coverage
+**使用提示：**  
+- 确保RSS源与目标市场相关；  
+- 使用特定关键词过滤无关信息；  
+- 选择在主流媒体之前发布信息的来源，以便更早获取交易机会。

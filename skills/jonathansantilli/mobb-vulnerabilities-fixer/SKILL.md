@@ -1,76 +1,70 @@
 ---
 name: mobb-vulnerabilities-fixer
-description: Scan, fix, and remediate security vulnerabilities in a local code repository using Mobb MCP/CLI. Use when the user asks to scan for vulnerabilities, run a security check, auto-fix issues, remediate findings, or apply Mobb fixes (e.g., \"scan this repo\", \"fix security issues\", \"remediate vulnerabilities\", \"run Mobb on my changes\").
+description: 使用 Mobb MCP/CLI 扫描、修复并解决本地代码仓库中的安全漏洞。当用户需要扫描漏洞、执行安全检查、自动修复问题或应用 Mobb 提供的修复方案时，可以使用该工具（例如：“扫描这个仓库”、“修复安全问题”、“解决漏洞”、“在我的更改上运行 Mobb”）。
 ---
 
-# Mobb Vulnerabilities Fixer
+# Mobb漏洞修复器
 
-## Overview
-Use Mobb MCP scan-and-fix behavior to identify security issues in a local repo and apply the generated patches. Follow the MCP workflow exactly, including file selection, pagination, and rescan rules.
+## 概述  
+使用 Mobb MCP 的扫描与修复功能来识别本地仓库中的安全问题，并应用生成的补丁。请严格遵循 MCP 的工作流程，包括文件选择、分页以及重新扫描规则。
 
-## Workflows
+## 工作流程  
 
-### Scan and Fix (default)
+### 扫描与修复（默认设置）  
+1. 确认目标仓库路径。  
+   使用仓库根目录的绝对路径。拒绝包含遍历模式的路径。如果用户输入了`.`且已知工作区根目录，可以使用该路径。  
 
-1. Confirm target repository path.
-Use an absolute path to the repository root. Reject paths with traversal patterns. If the user gives `.` and a workspace root is known, use it.
+2. 确保 Mobb 的身份验证功能可用。  
+   建议使用环境变量 `API_KEY` 进行身份验证。如果该变量缺失或无效，系统会弹出一个浏览器窗口，让用户登录并授权 Mobb；授权成功后才能继续操作。如果用户没有账户，请指导他们创建账户并生成 API 密钥。详情请参阅 `references/mobb-auth.md`。  
 
-2. Ensure Mobb authentication is available.
-Prefer `API_KEY` in the environment. If missing or invalid, inform the user a browser window will open for Mobb login and authorization, then proceed once authenticated. If the user has no account, instruct them to create one and generate an API key. See `references/mobb-auth.md`.
+3. 确保 MCP 已经运行。  
+   请勿自行安装或启动 MCP；请用户使用他们授权的进程在本地机器上启动 Mobb MCP 服务器，并确认其正在运行后再进行下一步操作。  
 
-3. Require MCP to be already running.
-Do not install or launch MCP yourself. Ask the user to start the Mobb MCP server on their machine using their approved process and confirm it is running before you proceed.
+4. 执行 MCP 的扫描与修复任务。  
+   调用 `scan_and_fix_vulnerabilities` 工具，并传入仓库路径。只有在用户明确要求时才使用可选参数。  
 
-4. Execute MCP scan-and-fix.
-Invoke the MCP tool `scan_and_fix_vulnerabilities` with the repository path. Use optional parameters only when the user explicitly asks.
+**必填参数：**  
+- `path`：仓库根目录的绝对路径  
 
-Required parameter:
-- `path`: absolute path to the repository root
+**可选参数：**  
+- `offset`：用于分页的偏移量  
+- `limit`：返回的修复数量上限（默认值为 3）  
+- `maxFiles`：扫描最近更改的文件数量（默认值为 10）；设置此参数会触发重新扫描  
+- `rescan`：强制进行完整重新扫描（仅在用户明确要求时使用）  
+- `scanRecentlyChangedFiles`：如果该参数为 `true` 且未检测到 Git 变更，则从历史记录中扫描最近更改的文件  
 
-Optional parameters:
-- `offset`: pagination offset for additional fixes
-- `limit`: maximum number of fixes to return (default is 3)
-- `maxFiles`: scan up to N recently changed files (default is 10); setting this triggers a fresh scan
-- `rescan`: force a full rescan; only when user explicitly asks
-- `scanRecentlyChangedFiles`: when true and no git changes are found, scan recently changed files from history
+5. 仅在用户明确同意的情况下应用修复补丁。  
+   如果工具返回了补丁，请汇总修改内容并征求用户的确认后再应用。请严格按照提供的补丁内容进行操作，切勿修改其他内容，并在应用后向用户解释操作结果。如果某个补丁无法应用，请详细说明冲突原因，并继续处理用户已批准的其余补丁。  
 
-5. Apply returned fixes only with explicit user consent.
-If the tool returns patches, summarize what will change and ask the user to confirm before applying. Apply patches exactly as provided, modify nothing else, and explain after applying. If a patch cannot be applied, report the exact conflict and continue with others the user approved.
+6. 绝不要自动重新扫描或自动分页。  
+   除非用户明确要求，否则不要自动重新扫描或获取更多修复内容。如果还有更多可用的修复补丁，请告知用户如何请求下一页数据。  
 
-6. Never auto-rescan or auto-page.
-Do not rescan or fetch additional pages of fixes unless the user explicitly asks. If more fixes are available, inform the user how to request the next page.
+### 获取可用修复补丁（仅提供概要）  
+当用户仅需要查看可用修复补丁的概要（而不进行上传、扫描或应用补丁）时，可以使用此功能。  
+调用 `fetch_available_fixes`，并传入以下参数：  
+- `path`：仓库根目录的绝对路径  
+- `offset` 和 `limit`：用于分页的参数  
+- `fileFilter`：用于过滤修复文件的相对路径列表  
+- `fetchFixesFromAnyFile`：一个布尔值，用于是否从所有文件中获取修复补丁  
 
-### Fetch Available Fixes (summary only)
+`fileFilter` 和 `fetchFixesFromAnyFile` 是互斥的：如果两者均未提供，工具会自动筛选出状态发生变化的文件。  
 
-Use when the user wants a summary of available fixes without uploading/scanning or applying patches.
+### 检查是否有新的可用修复补丁（监控功能）  
+在编辑或测试结束后，或用户明确要求时，调用 `check_for_new_available_fixes` 功能来检查是否有新的可用修复补丁。  
+**注意：**  
+- 该功能需要一个包含 `origin` 远程仓库的本地 Git 仓库。  
+- 如果启用了自动修复功能，系统可能会自动应用补丁；请用户审核并提交更改。  
+- 根据实际情况，该功能可能返回 “初始扫描正在进行中” 或 “没有新的修复补丁”。  
 
-Call `fetch_available_fixes` with:
-- `path`: absolute path to the repo root
-- `offset` and `limit`: optional pagination
-- `fileFilter`: optional list of relative paths to filter fixes
-- `fetchFixesFromAnyFile`: optional boolean to fetch fixes for all files
+## 文件选择规则（`scan_and_fix_vulnerabilities`）  
+- 如果路径是一个有效的 Git 仓库，系统默认只会扫描已更改或处于暂存状态的文件。  
+- 如果未检测到任何更改且 `scanRecentlyChangedFiles` 为 `true`（或设置了 `maxFiles`），则会从 Git 历史记录中扫描最近更改的文件。  
+- 如果路径不是 Git 仓库，系统会扫描目录中最近更改的文件。  
+- 系统会排除大小超过 5 MB 的文件。  
 
-`fileFilter` and `fetchFixesFromAnyFile` are mutually exclusive. If neither is provided, the tool filters to files with git status changes.
+## 无更改情况  
+如果未检测到任何更改的文件，系统会向用户说明情况，并提供使用 `scanRecentlyChangedFiles` 和/或 `maxFiles` 进行重新扫描的选项；但除非用户明确请求，否则不会自动执行重新扫描。  
 
-### Check for New Available Fixes (monitoring)
-
-Call `check_for_new_available_fixes` once at the end of a session after edits/tests, or when the user explicitly asks to check for fresh fixes.
-
-Behavior notes:
-- Requires a local git repo with an `origin` remote.
-- If auto-fix is enabled, fixes may be applied automatically; tell the user to review and commit changes.
-- It may return "initial scan in progress" or "no fresh fixes" depending on timing.
-
-## File Selection Rules (scan_and_fix_vulnerabilities)
-
-- If the path is a valid git repo, scan only changed/staged files by default.
-- If no changes are found and `scanRecentlyChangedFiles` is true (or `maxFiles` is set), scan recently changed files from git history.
-- If not a git repo, scan recently changed files in the directory.
-- Exclude files larger than 5 MB.
-
-## No-Changes Case
-If no changed files are detected, explain the situation and offer a follow-up scan using `scanRecentlyChangedFiles` and/or `maxFiles`, but do not run it unless explicitly requested.
-
-## Resources
-- `references/mcp-scan-fix.md`: MCP scan-and-fix, fetch, and monitoring tool details
-- `references/mobb-auth.md`: authentication and login flow details
+## 参考资源：  
+- `references/mcp-scan-fix.md`：MCP 扫描与修复、数据获取及监控工具的详细信息  
+- `references/mobb-auth.md`：身份验证和登录流程的详细说明

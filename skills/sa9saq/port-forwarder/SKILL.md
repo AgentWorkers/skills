@@ -1,23 +1,23 @@
 ---
-description: Set up and manage SSH tunnels, port forwarding, and SOCKS proxies with simple commands.
+description: 使用简单的命令来设置和管理 SSH 隧道、端口转发以及 SOCKS 代理。
 ---
 
-# Port Forwarder
+# 端口转发器
 
-Set up and manage SSH tunnels and port forwarding.
+用于设置和管理 SSH 隧道及端口转发功能。
 
-**Use when** creating SSH tunnels, forwarding ports, or setting up SOCKS proxies.
+**适用场景**：创建 SSH 隧道、转发端口或配置 SOCKS 代理时使用。
 
-## Requirements
+## 必备条件
 
-- OpenSSH client (`ssh`)
-- Optional: `autossh` for persistent tunnels
-- No API keys needed
+- OpenSSH 客户端（`ssh`）
+- 可选：`autossh`（用于创建持久性隧道）
+- 不需要 API 密钥
 
-## Instructions
+## 使用说明
 
-### Local Port Forwarding
-Access a remote service as if it's local:
+### 本地端口转发
+将远程服务访问方式设置为本地服务：
 ```bash
 # Forward local:8080 → remote:80
 ssh -fNL 8080:localhost:80 user@remote-host
@@ -29,33 +29,33 @@ ssh -fNL 5432:db-server:5432 user@jump-host
 ssh -fNL 0.0.0.0:8080:localhost:80 user@remote-host
 ```
 
-### Remote Port Forwarding
-Expose a local service on the remote host:
+### 远程端口转发
+在远程主机上暴露本地服务：
 ```bash
 # Expose local:3000 on remote:9000
 ssh -fNR 9000:localhost:3000 user@remote-host
 ```
 
-### Dynamic SOCKS Proxy
-Route all traffic through the remote host:
+### 动态 SOCKS 代理
+将所有网络流量路由通过远程主机：
 ```bash
 ssh -fND 1080 user@remote-host
 # Configure browser: SOCKS5 proxy → localhost:1080
 ```
 
-### SSH Flag Reference
+### SSH 配置参数说明
 
-| Flag | Meaning |
+| 参数 | 含义 |
 |------|---------|
-| `-f` | Background after auth |
-| `-N` | No remote command (tunnel only) |
-| `-L` | Local port forward |
-| `-R` | Remote port forward |
-| `-D` | Dynamic SOCKS proxy |
-| `-o ServerAliveInterval=60` | Keep alive every 60s |
-| `-o ExitOnForwardFailure=yes` | Fail if port binding fails |
+| `-f` | 验证身份后在后台运行 |
+| `-N` | 不执行远程命令（仅建立隧道） |
+| `-L` | 本地端口转发 |
+| `-R` | 远程端口转发 |
+| `-D` | 动态 SOCKS 代理 |
+| `-o ServerAliveInterval=60` | 每 60 秒发送一次心跳请求 |
+| `-o ExitOnForwardFailure=yes` | 如果端口绑定失败则终止连接 |
 
-### Management Commands
+### 管理命令
 ```bash
 # List active SSH tunnels
 ps aux | grep 'ssh -[fN]' | grep -v grep
@@ -71,7 +71,7 @@ kill <PID>
 pkill -f 'ssh -fN'
 ```
 
-### Persistent Tunnels with autossh
+### 使用 `autossh` 创建持久性隧道
 ```bash
 # Auto-reconnect on failure
 autossh -M 0 -fNL 8080:localhost:80 user@remote-host \
@@ -82,8 +82,8 @@ autossh -M 0 -fNL 8080:localhost:80 user@remote-host \
 # Create /etc/systemd/system/ssh-tunnel.service
 ```
 
-## Output Format
-When reporting tunnel status:
+## 隧道状态输出格式
+用于显示隧道状态的信息：
 ```
 ## 🔌 Active SSH Tunnels
 | PID | Type | Local | Remote | Host | Status |
@@ -92,17 +92,17 @@ When reporting tunnel status:
 | 5678 | SOCKS | :1080 | — | proxy1 | 🟢 Active |
 ```
 
-## Edge Cases
+## 注意事项
 
-- **Port already in use**: Check with `lsof -i :8080` or `ss -tlnp | grep 8080`.
-- **Connection drops**: Add `-o ServerAliveInterval=60 -o ServerAliveCountMax=3`. Or use `autossh`.
-- **Permission denied**: Ensure SSH key is configured. Check `~/.ssh/config`.
-- **Remote port forwarding blocked**: Server needs `GatewayPorts yes` in `/etc/ssh/sshd_config`.
-- **Tunnel works but service doesn't respond**: The remote service might only listen on localhost.
+- **端口已被占用**：可以使用 `lsof -i :8080` 或 `ss -tlnp | grep 8080` 检查。
+- **连接中断**：添加 `-o ServerAliveInterval=60 -o ServerAliveCountMax=3` 以保持连接。或使用 `autossh`。
+- **权限问题**：确保 SSH 密钥已正确配置（检查 `~/.ssh/config`）。
+- **远程端口转发被阻止**：服务器的 `/etc/ssh/sshd_config` 文件中需要设置 `GatewayPorts yes`。
+- **隧道可用但服务无响应**：可能是远程服务仅监听本地地址（localhost）。
 
-## Security Considerations
+## 安全提示
 
-- **Never forward sensitive ports to `0.0.0.0`** unless intentional — this exposes to all network interfaces.
-- Use SSH key auth, not passwords, for tunnel connections.
-- Restrict remote port forwarding on servers that don't need it.
-- Monitor active tunnels — orphaned tunnels can be security risks.
+- **切勿将敏感端口转发到 `0.0.0.0`**（除非有特殊需求），否则会导致所有网络接口均可访问该端口。
+- 使用 SSH 密钥进行身份验证，避免使用密码。
+- 对不需要的服务器禁用远程端口转发功能。
+- 定期监控活跃的隧道，避免长时间未使用的隧道成为安全风险。

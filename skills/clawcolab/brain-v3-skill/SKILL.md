@@ -1,31 +1,32 @@
 ---
 name: clawbrain
 version: 0.1.10
-description: "Claw Brain - Personal AI Memory System for OpenClaw/ClawDBot. Provides memory, personality, bonding, and learning capabilities with encrypted secrets support. Auto-refreshes on service restart."
+description: "**Claw Brain** – 专为 OpenClaw/ClawDBot 设计的个人 AI 记忆系统  
+该系统具备存储数据、塑造机器人“个性”、促进机器人与用户之间的互动以及支持加密数据存储的功能。在服务重启时，系统会自动更新其内部数据。"
 metadata: {"openclaw":{"emoji":"🧠","category":"memory","provides":{"slot":"memory"},"events":["gateway:startup","command:new"]},"clawdbot":{"emoji":"🧠","category":"memory","provides":{"slot":"memory"},"events":["gateway:startup","command:new"]}}
 ---
 
-# Claw Brain Skill 🧠
+# Claw Brain 技能 🧠
 
-Personal AI Memory System with Soul, Bonding, and Learning for OpenClaw/ClawDBot.
+这是一个专为 OpenClaw/ClawDBot 设计的个性化 AI 记忆系统，具备灵魂、情感联结和学习功能。
 
-> **Auto-Refresh on Restart**: ClawBrain automatically refreshes memory when the service restarts.
+> **重启时自动刷新**：当服务重启时，ClawBrain 会自动刷新记忆数据。
 
-## Features
+## 主要特性
 
-- 🎭 **Soul/Personality** - 6 evolving traits (humor, empathy, curiosity, creativity, helpfulness, honesty)
-- 👤 **User Profile** - Learns user preferences, interests, communication style
-- 💭 **Conversation State** - Real-time mood detection and context tracking
-- 📚 **Learning Insights** - Continuously learns from interactions and corrections
-- 🧠 **get_full_context()** - Everything for personalized responses
-- 🔄 **Auto-Refresh** - Automatically refreshes memory on service restart
-- 🔐 **Encrypted Secrets** - Store API keys and credentials securely
+- 🎭 **灵魂/个性**：6 个可发展的特质（幽默感、同理心、好奇心、创造力、乐于助人、诚实）
+- 👤 **用户资料**：学习用户的偏好、兴趣和沟通风格
+- 💭 **对话状态**：实时检测用户情绪并跟踪对话上下文
+- 📚 **学习能力**：通过互动和反馈持续学习
+- 🧠 **get_full_context()**：提供个性化响应所需的所有信息
+- 🔄 **自动刷新**：服务重启时自动更新记忆数据
+- 🔐 **加密保护**：安全存储 API 密钥和凭证
 
 ---
 
-## Quick Install
+## 快速安装
 
-### From PyPI (Recommended)
+### 通过 PyPI 安装（推荐）
 
 ```bash
 # Install with all features
@@ -41,13 +42,13 @@ clawbrain backup-key --all
 sudo systemctl restart clawdbot  # or openclaw
 ```
 
-The setup command will:
-1. Detect your platform (ClawdBot or OpenClaw)
-2. Generate a secure encryption key
-3. Install the startup hook automatically
-4. Test the installation
+安装命令会：
+1. 识别您的平台（ClawdBot 或 OpenClaw）
+2. 生成一个安全的加密密钥
+3. 自动安装启动钩子
+4. 测试安装是否成功
 
-### Alternative: From Source
+### 或者：从源代码安装
 
 ```bash
 # Clone to your skills directory
@@ -60,9 +61,9 @@ clawbrain setup
 
 ---
 
-## Configuration
+## 配置
 
-After installation, optionally configure your agent ID:
+安装完成后，您可以选择配置代理 ID：
 
 ```bash
 # Create systemd drop-in config
@@ -82,47 +83,46 @@ sudo systemctl daemon-reload
 sudo systemctl restart clawdbot  # or openclaw
 ```
 
-### Environment Variables
+### 环境变量
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `BRAIN_AGENT_ID` | Unique ID for this agent's memories | `default` |
-| `BRAIN_ENCRYPTION_KEY` | Fernet key for encrypting sensitive data (auto-generated if not set) | - |
-| `BRAIN_POSTGRES_HOST` | PostgreSQL host | `localhost` |
-| `BRAIN_POSTGRES_PASSWORD` | PostgreSQL password | - |
-| `BRAIN_POSTGRES_PORT` | PostgreSQL port | `5432` |
-| `BRAIN_POSTGRES_DB` | PostgreSQL database | `brain_db` |
-| `BRAIN_POSTGRES_USER` | PostgreSQL user | `brain_user` |
-| `BRAIN_REDIS_HOST` | Redis host | `localhost` |
-| `BRAIN_REDIS_PORT` | Redis port | `6379` |
-| `BRAIN_STORAGE` | Force storage: `sqlite`, `postgresql`, `auto` | `auto` |
-
----
-
-## How It Works
-
-### On Service Startup
-1. Hook triggers on `gateway:startup` event
-2. Detects storage backend (SQLite/PostgreSQL)
-3. Loads memories for the configured `BRAIN_AGENT_ID`
-4. Injects context into agent bootstrap
-
-### On `/new` Command
-1. Hook triggers on `command:new` event  
-2. Saves current session summary to memory
-3. Clears session state for fresh start
-
-### Storage Priority
-1. **PostgreSQL** - If available and configured
-2. **SQLite** - Fallback, zero configuration needed
+| 变量          | 描述                                      | 默认值        |
+|-----------------|-----------------------------------------|-------------|
+| BRAIN_AGENT_ID     | 该代理的记忆的唯一标识符                         | `default`       |
+| BRAIN_ENCRYPTION_KEY | 用于加密敏感数据的 Fernet 密钥（未设置时自动生成）       | -            |
+| BRAIN_POSTGRES_HOST   | PostgreSQL 服务器地址                          | `localhost`     |
+| BRAIN_POSTGRES_PASSWORD | PostgreSQL 密码                             | -            |
+| BRAIN_POSTGRES_PORT    | PostgreSQL 端口                          | `5432`       |
+| BRAIN_POSTGRES_DB     | 使用的 PostgreSQL 数据库名称                     | `brain_db`     |
+| BRAIN_POSTGRES_USER   | PostgreSQL 用户名                          | `brain_user`     |
+| BRAIN_REDIS_HOST   | Redis 服务器地址                          | `localhost`     |
+| BRAIN_REDIS_PORT    | Redis 端口                          | `6379`       |
+| BRAIN_STORAGE     | 数据存储方式（可选：sqlite、postgresql、auto）           | `auto`        |
 
 ---
 
-## Encrypted Secrets
+## 工作原理
 
-ClawBrain supports encrypting sensitive data like API keys and credentials.
+### 服务启动时
+1. 在 `gateway:startup` 事件触发时初始化 ClawBrain
+2. 检测配置的存储后端（SQLite 或 PostgreSQL）
+3. 加载与 `BRAIN_AGENT_ID` 相关的记忆数据
+4. 将对话上下文信息注入代理的启动流程中
 
-**Setup:**
+### 执行 `/new` 命令时
+1. 在 `command:new` 事件触发时将当前会话信息保存到内存中
+2. 清除会话状态以便重新开始对话
+
+### 数据存储优先级
+1. **PostgreSQL**：如果可用且已配置，则优先使用
+2. **SQLite**：作为备用方案，无需额外配置
+
+---
+
+## 加密保护
+
+ClawBrain 支持加密 API 密钥和凭证等敏感数据。
+
+**设置方法：**
 ```bash
 # Run setup to generate encryption key
 clawbrain setup
@@ -131,7 +131,7 @@ clawbrain setup
 clawbrain backup-key --all
 ```
 
-**Usage:**
+**使用方法：**
 ```python
 # Store encrypted secret
 brain.remember(
@@ -146,7 +146,7 @@ secrets = brain.recall(agent_id="assistant", memory_type="secret")
 api_key = secrets[0].content  # Automatically decrypted
 ```
 
-**Key Management CLI:**
+**密钥管理命令行工具：**
 ```bash
 clawbrain show-key          # View key info (masked)
 clawbrain show-key --full   # View full key
@@ -154,37 +154,37 @@ clawbrain backup-key --all  # Backup with all methods
 clawbrain generate-key      # Generate new key
 ```
 
-⚠️ **Important**: Backup your encryption key! Lost keys = lost encrypted data.
+**重要提示：** 请务必备份您的加密密钥！密钥丢失会导致加密数据丢失。
 
 ---
 
-## CLI Commands
+## 命令行接口
 
-ClawBrain includes a command-line interface:
+ClawBrain 提供了以下命令行接口：
 
-| Command | Description |
-|---------|-------------|
-| `clawbrain setup` | Set up ClawBrain, generate key, install hooks |
-| `clawbrain generate-key` | Generate new encryption key |
-| `clawbrain show-key` | Display current encryption key |
-| `clawbrain backup-key` | Backup key (file, QR, clipboard) |
-| `clawbrain health` | Check health status |
-| `clawbrain info` | Show installation info |
-
----
-
-## Hooks
-
-| Event | Action |
-|-------|--------|
-| `gateway:startup` | Initialize brain, refresh memories |
-| `command:new` | Save session to memory |
+| 命令        | 功能                                        |
+|-------------|---------------------------------------------|
+| `clawbrain setup` | 设置 ClawBrain、生成密钥并安装启动钩子                |
+| `clawbrain generate-key` | 生成新的加密密钥                        |
+| `clawbrain show-key` | 显示当前的加密密钥                        |
+| `clawbrain backup-key` | 备份密钥（文件、二维码或剪贴板）                      |
+| `clawbrain health` | 检查系统运行状态                        |
+| `clawbrain info` | 显示安装信息                            |
 
 ---
 
-## Development Installation
+## 启动钩子
 
-For development or manual installation:
+| 事件          | 执行的操作                                      |
+|--------------|---------------------------------------------|
+| `gateway:startup` | 初始化 ClawBrain 并刷新记忆数据                        |
+| `command:new`    | 将当前会话信息保存到内存中                        |
+
+---
+
+## 开发环境安装
+
+适用于开发或手动安装场景：
 
 ```bash
 # Clone to your skills directory
@@ -198,7 +198,7 @@ cd clawbrain
 
 ## Python API
 
-For direct Python usage (outside ClawdBot/OpenClaw):
+支持在 ClawdBot/OpenClaw 之外直接使用 ClawBrain 的 Python API：
 
 ```python
 from clawbrain import Brain
@@ -206,33 +206,24 @@ from clawbrain import Brain
 brain = Brain()
 ```
 
-#### Methods
+#### 方法列表
 
-| Method | Description | Returns |
-|--------|-------------|---------|
-| `get_full_context()` | Get all context for personalized responses | dict |
-| `remember()` | Store a memory | None |
-| `recall()` | Retrieve memories | List[Memory] |
-| `learn_user_preference()` | Learn user preferences | None |
-| `get_user_profile()` | Get user profile | UserProfile |
-| `detect_user_mood()` | Detect current mood | dict |
-| `detect_user_intent()` | Detect message intent | str |
-| `generate_personality_prompt()` | Generate personality guidance | str |
-| `health_check()` | Check backend connections | dict |
-| `close()` | Close connections | None |
+| 方法            | 功能                                        | 返回值         |
+|-----------------|---------------------------------------------|-------------------|
+| `get_full_context()` | 获取所有用于个性化响应的上下文信息                | dict            |
+| `remember()`      | 存储新的记忆数据                              | None            |
+| `recall()`       | 检索已存储的记忆数据                              | List[Memory]       |
+| `learn_user_preference()` | 学习用户的偏好设置                              | None            |
+| `get_user_profile()` | 获取用户资料                              | UserProfile       |
+| `detect_user_mood()` | 检测用户的当前情绪                        | dict            |
+| `detect_user(intent()` | 分析用户的意图                              | str            |
+| `generate_personality_prompt()` | 生成个性化的引导语                         | str            |
+| `health_check()`     | 检查与后端的连接状态                        | dict            |
+| `close()`        | 关闭所有连接                                  | None            |
 
-### get_full_context()
+### `get_full_context()`
 
-```python
-context = brain.get_full_context(
-    session_key="telegram_12345",  # Unique session ID
-    user_id="username",              # User identifier
-    agent_id="assistant",          # Bot identifier
-    message="Hey, how's it going?" # Current message
-)
-```
-
-**Returns:**
+**返回值：**
 ```python
 {
     "user_profile": {...},        # User preferences, interests
@@ -244,29 +235,15 @@ context = brain.get_full_context(
 }
 ```
 
-### detect_user_mood()
+### `detect_user_mood()`
 
-```python
-mood = brain.detect_user_mood("I'm so excited about this!")
-# Returns: {"mood": "happy", "confidence": 0.9, "emotions": ["joy", "anticipation"]}
-```
+### `detect_user(intent()`
 
-### detect_user_intent()
-
-```python
-intent = brain.detect_user_intent("How does AI work?")
-# Returns: "question"
-
-intent = brain.detect_user_intent("Set a reminder for 3pm")
-# Returns: "command"
-
-intent = brain.detect_user_intent("I had a great day today")
-# Returns: "casual"
-```
+### `detect_user(intent()`
 
 ---
 
-## Example: Full Integration
+## 完整集成示例
 
 ```python
 import sys
@@ -316,88 +293,64 @@ class AssistantBot:
 
 ---
 
-## Storage Backends
+## 数据存储方式
 
-### SQLite (Default - Zero Setup)
+### SQLite（默认配置，无需额外设置）
 
-No configuration needed. Data stored in local SQLite database.
+数据存储在本地 SQLite 数据库中。
 
-```python
-brain = Brain({"storage_backend": "sqlite"})
-```
+**适用场景：** 开发、测试及单用户环境
 
-**Best for:** Development, testing, single-user deployments
+### PostgreSQL + Redis（生产环境推荐）
 
-### PostgreSQL + Redis (Production)
-
-Requires PostgreSQL and Redis servers.
+需要安装 PostgreSQL 和 Redis 服务器。
 
 ```python
 brain = Brain()  # Auto-detects
 ```
 
-**Requirements:**
-- PostgreSQL 14+
-- Redis 6+
-- Python packages: `psycopg2-binary`, `redis`
+**系统要求：**
+- PostgreSQL 14 及以上版本
+- Redis 6 及以上版本
+- 必需的 Python 包：`psycopg2-binary`、`redis`
 
-```bash
-pip install psycopg2-binary redis
-```
-
-**Best for:** Production, multi-user, high-concurrency
+**适用场景：** 生产环境、多用户场景及高并发需求
 
 ---
 
-## Files
+## 相关文件
 
-- `clawbrain.py` - Main Brain class with all features
-- `__init__.py` - Module exports
-- `SKILL.md` - This documentation
-- `skill.json` - ClawdHub metadata
-- `README.md` - Quick start guide
-
----
-
-## Troubleshooting
-
-### ImportError: No module named 'clawbrain'
-
-```bash
-# Ensure ClawBrain folder is in your path
-sys.path.insert(0, "ClawBrain")
-```
-
-### PostgreSQL connection failed
-
-```bash
-# Check environment variables
-echo $POSTGRES_HOST
-echo $POSTGRES_PORT
-
-# Verify PostgreSQL is running
-pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT
-```
-
-### Redis connection failed
-
-```bash
-# Check Redis is running
-redis-cli ping
-```
-
-### Using SQLite (fallback)
-
-If PostgreSQL/Redis are unavailable, Claw Brain automatically falls back to SQLite:
-
-```python
-brain = Brain({"storage_backend": "sqlite"})
-```
+- `clawbrain.py`：包含所有核心功能的 Python 类文件
+- `__init__.py`：模块导出文件
+- `SKILL.md`：本文档文件
+- `skill.json`：ClawdHub 的元数据文件
+- `README.md`：快速入门指南
 
 ---
 
-## Learn More
+## 常见问题解答
 
-- **Repository:** https://github.com/clawcolab/clawbrain
-- **README:** See README.md for quick start
-- **Issues:** Report bugs at GitHub Issues
+### 错误提示：`ImportError: No module named 'clawbrain'`
+
+**解决方法：** 确保已正确安装 ClawBrain 相关模块。
+
+### PostgreSQL 连接失败
+
+**解决方法：** 检查 PostgreSQL 服务器是否正常运行，并检查连接配置。
+
+### Redis 连接失败
+
+**解决方法：** 检查 Redis 服务器是否正常运行，并检查连接配置。
+
+### 使用 SQLite（备用方案）
+
+如果 PostgreSQL 或 Redis 无法使用，ClawBrain 会自动切换到 SQLite 数据存储模式。
+
+---
+
+
+## 更多信息
+
+- **项目仓库：** https://github.com/clawcolab/clawbrain
+- **快速入门指南：** 查看 `README.md`
+- **问题报告：** 在 GitHub 的 Issues 中提交问题反馈。

@@ -1,23 +1,23 @@
 ---
 name: book-facial
-description: Book facial services through Lokuli MCP. Use when user needs to find and book facial. Triggers on requests like "book a facial", "find facial near me", or any facial service request.
+description: 通过 Lokuli MCP 预订面部护理服务。当用户需要查找或预订面部护理服务时，可以使用此功能。该功能会在用户输入“预订面部护理”、“查找附近的面部护理服务”等相关请求时被触发。
 ---
 
-# uook facial
+# uook面部护理服务
 
-Book facial services through Lokuli's MCP server.
+您可以通过Lokuli的MCP服务器预约面部护理服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",

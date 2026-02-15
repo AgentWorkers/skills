@@ -1,7 +1,8 @@
 ---
 name: browser-ladder
 version: 1.0.0
-description: Climb the browser ladder — start free, escalate only when needed. L1 (fetch) → L2 (local Playwright) → L3 (BrowserCat) → L4 (Browserless.io for CAPTCHA/bot bypass).
+description: 逐步提升您的浏览器开发技能——先从免费版本开始，只有在需要时再升级。技能等级分为：  
+L1（基础功能：数据获取）→ L2（本地Playwright框架）→ L3（BrowserCat工具）→ L4（Browserless.io平台，用于绕过验证码或实现自动化操作）。
 metadata:
   clawdbot:
     emoji: "🪜"
@@ -18,26 +19,22 @@ metadata:
         required: false
 ---
 
-# Browser Ladder 🪜
+# 浏览器阶梯 🪜  
+只有在确实需要的时候，才从免费方案升级到付费方案。  
 
-Climb from free to paid only when you need to.
-
-## Quick Setup
-
-Run the setup script after installation:
+## 快速设置  
+安装完成后，运行设置脚本：  
 ```bash
 ./skills/browser-ladder/scripts/setup.sh
-```
-
-Or manually add to your `.env`:
+```  
+或者手动将其添加到您的 `.env` 文件中：  
 ```bash
 # Optional - only needed for Rungs 3-4
 BROWSERCAT_API_KEY=your-key    # Free: https://browsercat.com
 BROWSERLESS_TOKEN=your-token   # Paid: https://browserless.io
-```
+```  
 
-## The Ladder
-
+## 浏览器阶梯的层级  
 ```
 ┌─────────────────────────────────────────────┐
 │  🪜 Rung 4: Browserless.io (Cloud Paid)     │
@@ -62,20 +59,18 @@ BROWSERLESS_TOKEN=your-token   # Paid: https://browserless.io
 └─────────────────────────────────────────────┘
 
 Start at the bottom. Climb only when needed.
-```
+```  
 
-## When to Climb
+## 何时升级  
+| 情况 | 对应层级 | 原因 |  
+|-----------|------|-----|  
+| 静态 HTML、API | 1 | 无需 JavaScript |  
+| React/Vue/SPA 应用 | 2 | 需要 JavaScript 进行页面渲染 |  
+| 无法使用 Docker | 3 | 使用云服务作为备用方案 |  
+| 需要绕过验证码/Cloudflare | 4 | 需要防止机器人访问 |  
+| 需要 OAuth/MFA 验证 | 4 | 需要复杂的身份验证流程 |  
 
-| Situation | Rung | Why |
-|-----------|------|-----|
-| Static HTML, APIs | 1 | No JS needed |
-| React/Vue/SPA apps | 2 | JS rendering |
-| Docker unavailable | 3 | Cloud fallback |
-| CAPTCHA/Cloudflare | 4 | Bot bypass needed |
-| OAuth/MFA flows | 4 | Complex auth |
-
-## Decision Flow
-
+## 决策流程  
 ```
 Need to access a URL
          │
@@ -91,51 +86,48 @@ Need to access a URL
          │ YES
          ▼
     Rung 4 (Browserless.io) ──▶ DONE
-```
+```  
 
-## Usage Examples
-
-### Rung 1: Static content
+## 使用示例  
+### 第 1 层级：静态内容  
 ```javascript
 // Built into Clawdbot
 const content = await web_fetch("https://example.com");
-```
+```  
 
-### Rung 2: JS-rendered page
+### 第 2 层级：需要 JavaScript 渲染的页面  
 ```bash
 docker run --rm -v /tmp:/output mcr.microsoft.com/playwright:v1.58.0-jammy \
   npx playwright screenshot https://spa-app.com /output/shot.png
-```
+```  
 
-### Rung 3: Cloud browser (BrowserCat)
+### 第 3 层级：使用 Cloud Browser（BrowserCat）  
 ```javascript
 const { chromium } = require('playwright');
 const browser = await chromium.connect('wss://api.browsercat.com/connect', {
   headers: { 'Api-Key': process.env.BROWSERCAT_API_KEY }
 });
-```
+```  
 
-### Rung 4: CAPTCHA bypass (Browserless)
+### 第 4 层级：绕过验证码（使用 Browserless）  
 ```javascript
 const { chromium } = require('playwright');
 const browser = await chromium.connectOverCDP(
   `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_TOKEN}`
 );
 // CAPTCHA handled automatically
-```
+```  
 
-## Cost Optimization
+## 成本优化  
+1. **从低层级开始**——始终优先尝试第 1 层级。  
+2. **缓存结果**——避免不必要的数据重新请求。  
+3. **批量请求**——一次浏览器会话中处理多个页面。  
+4. **检查是否成功**——只有在较低层级的方案失败时，才尝试更高层级的方案。  
 
-1. **Start low** — Always try Rung 1 first
-2. **Cache results** — Don't re-fetch unnecessarily  
-3. **Batch requests** — One browser session for multiple pages
-4. **Check success** — Only climb if lower rung fails
+## 获取服务密钥  
+| 服务 | 成本 | 注册方式 |  
+|---------|------|---------|  
+| BrowserCat | 免费 tier | https://browsercat.com |  
+| Browserless.io | 每月 $10+ | https://browserless.io |  
 
-## Get Your Keys
-
-| Service | Cost | Sign Up |
-|---------|------|---------|
-| BrowserCat | Free tier | https://browsercat.com |
-| Browserless.io | $10+/mo | https://browserless.io |
-
-Both are optional — Rungs 1-2 work without any API keys.
+这两种服务都是可选的——第 1 至第 2 层级的方案无需任何 API 密钥即可使用。

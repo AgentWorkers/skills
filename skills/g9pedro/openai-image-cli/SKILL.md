@@ -1,7 +1,7 @@
 ---
 name: openai-image-cli
 version: 1.0.0
-description: Generate, edit, and manage images via OpenAI's GPT Image and DALL-E models.
+description: 通过 OpenAI 的 GPT Image 和 DALL-E 模型生成、编辑和管理图像。
 metadata:
   {
     "openclaw": { "emoji": "🎨", "requires": { "bins": ["openai-image"], "envs": ["OPENAI_API_KEY"] } },
@@ -10,15 +10,15 @@ metadata:
 
 # OpenAI Image CLI
 
-Generate, edit, and create variations of images using OpenAI's latest models.
+使用 OpenAI 的最新模型生成、编辑和创建图像的变体。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @versatly/openai-image-cli
 ```
 
-## Authentication
+## 认证
 
 ```bash
 # Via environment variable
@@ -28,7 +28,7 @@ export OPENAI_API_KEY=sk-...
 openai-image config set api-key sk-...
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate an image
@@ -47,21 +47,21 @@ openai-image edit photo.png "Add sunglasses to the person"
 openai-image vary original.png -n 3
 ```
 
-## Available Models
+## 可用模型
 
-| Model | Description | Notes |
+| 模型 | 描述 | 备注 |
 |-------|-------------|-------|
-| `gpt-image-1.5` | Latest GPT Image (default) | Best quality, recommended |
-| `gpt-image-1` | GPT Image | Good balance |
-| `gpt-image-1-mini` | GPT Image Mini | Cost-effective |
-| `dall-e-3` | DALL-E 3 | Deprecated May 2026 |
-| `dall-e-2` | DALL-E 2 | Deprecated May 2026, supports variations |
+| `gpt-image-1.5` | 最新的 GPT Image 模型（默认） | 图像质量最佳，推荐使用 |
+| `gpt-image-1` | GPT Image 模型 | 图像质量与性能平衡良好 |
+| `gpt-image-1-mini` | GPT Image Mini 模型 | 性能优越但成本较低 |
+| `dall-e-3` | DALL-E 3 模型 | 于 2026 年 5 月停止支持 |
+| `dall-e-2` | DALL-E 2 模型 | 于 2026 年 5 月停止支持，但仍支持图像变体功能 |
 
-## Commands
+## 命令
 
 ### generate
 
-Create images from text prompts.
+根据文本提示生成图像。
 
 ```bash
 openai-image generate "prompt" [options]
@@ -84,7 +84,7 @@ Options:
 
 ### edit
 
-Edit existing images with prompts.
+根据提示编辑现有图像。
 
 ```bash
 openai-image edit <image> "instructions" [options]
@@ -99,7 +99,7 @@ Options:
   -o, --output <path>        Output path
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Simple edit
 openai-image edit photo.png "Add sunglasses"
@@ -113,7 +113,7 @@ openai-image edit base.png "Create gift basket" --images item1.png item2.png
 
 ### vary
 
-Create variations of an image (DALL-E 2 only).
+创建图像的变体（仅适用于 DALL-E 2 模型）。
 
 ```bash
 openai-image vary <image> [options]
@@ -126,7 +126,7 @@ Options:
 
 ### batch
 
-Generate multiple images from a file or stdin.
+从文件或标准输入（stdin）生成多张图像。
 
 ```bash
 openai-image batch [options]
@@ -140,7 +140,7 @@ Options:
   --delay <ms>               Delay between requests (default: 100)
 ```
 
-**JSONL format:**
+**JSONL 格式：**
 ```json
 {"prompt": "A red car", "size": "1024x1024", "quality": "high"}
 {"prompt": "A blue boat", "size": "1536x1024"}
@@ -148,7 +148,7 @@ Options:
 
 ### config
 
-Manage CLI configuration.
+管理 CLI 的配置参数。
 
 ```bash
 openai-image config set <key> <value>
@@ -158,11 +158,11 @@ openai-image config reset
 openai-image config path
 ```
 
-**Keys:** `api-key`, `default-model`, `default-size`, `default-quality`, `default-format`, `output-dir`
+**配置参数：`api-key`、`default-model`、`default-size`、`default-quality`、`default-format`、`output-dir`
 
 ### models
 
-List available models.
+列出所有可用的模型。
 
 ```bash
 openai-image models [--json]
@@ -170,15 +170,16 @@ openai-image models [--json]
 
 ### history
 
-View local generation history.
+查看本地生成的图像历史记录。
 
 ```bash
 openai-image history [-n <limit>] [--json] [--clear]
 ```
 
-## Output Formats
+## 输出格式
 
-### Default (human-readable)
+### 默认格式（人类可读）
+
 ```
 ✓ Generated image saved to ./generated-1707500000.png
   Model: gpt-image-1.5
@@ -187,7 +188,8 @@ openai-image history [-n <limit>] [--json] [--clear]
   Tokens: 150 (text: 10, image: 140)
 ```
 
-### JSON (`--json`)
+### JSON 格式（`--json`）
+
 ```json
 {
   "success": true,
@@ -203,22 +205,22 @@ openai-image history [-n <limit>] [--json] [--clear]
 }
 ```
 
-## Size Options
+## 图像尺寸选项
 
-| Model | Sizes |
+| 模型 | 可选尺寸 |
 |-------|-------|
-| GPT Image | 1024x1024, 1536x1024 (landscape), 1024x1536 (portrait), auto |
-| DALL-E 3 | 1024x1024, 1792x1024, 1024x1792 |
-| DALL-E 2 | 256x256, 512x512, 1024x1024 |
+| GPT Image | 1024x1024、1536x1024（横向）、1024x1536（纵向）、自动调整 |
+| DALL-E 3 | 1024x1024、1792x1024、1024x1792 |
+| DALL-E 2 | 256x256、512x512、1024x1024 |
 
-## Tips
+## 提示：
 
-1. **Transparent backgrounds**: Use `-b transparent -f png` for logos
-2. **Batch processing**: Use JSONL for per-image options
-3. **Cost control**: Use `gpt-image-1-mini` for drafts
-4. **History tracking**: Enabled by default, view with `openai-image history`
+1. **透明背景**：使用 `-b transparent -f png` 选项生成带有透明背景的图像（适用于徽标）。
+2. **批量处理**：使用 JSONL 格式为每张图像指定自定义参数。
+3. **成本控制**：对于草图需求，建议使用 `gpt-image-1-mini` 模型。
+4. **历史记录**：功能默认启用，可通过 `openai-image history` 命令查看生成历史记录。
 
-## Links
+## 链接：
 
-- npm: https://www.npmjs.com/package/@versatly/openai-image-cli
-- GitHub: https://github.com/Versatly/openai-image-cli
+- npm：https://www.npmjs.com/package/@versatly/openai-image-cli
+- GitHub：https://github.com/Versatly/openai-image-cli

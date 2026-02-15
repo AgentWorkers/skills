@@ -1,73 +1,73 @@
 ---
 name: review-summarizer
-description: Scrape, analyze, and summarize product reviews from multiple platforms (Amazon, Google, Yelp, TripAdvisor). Extract key insights, sentiment analysis, pros/cons, and recommendations. Use when researching products for arbitrage, creating affiliate content, or making purchasing decisions.
+description: 从多个平台（如 Amazon、Google、Yelp、TripAdvisor）抓取、分析并汇总产品评论。提取关键信息、情感分析结果、产品的优缺点以及用户推荐。这些数据可用于产品研究（例如进行套利）、创建联盟营销内容或辅助购买决策。
 ---
 
-# Review Summarizer
+# 评论摘要工具
 
-## Overview
+## 概述
 
-Automatically scrape and analyze product reviews from multiple platforms to extract actionable insights. Generate comprehensive summaries with sentiment analysis, pros/cons identification, and data-driven recommendations.
+该工具能够自动从多个平台抓取并分析产品评论，提取有价值的洞察信息。生成的摘要包含情感分析、优缺点识别以及基于数据的推荐结果。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Multi-Platform Review Scraping
+### 1. 多平台评论抓取
 
-**Supported Platforms:**
-- Amazon (product reviews)
-- Google (Google Maps, Google Shopping)
-- Yelp (business and product reviews)
-- TripAdvisor (hotels, restaurants, attractions)
-- Custom platforms (via URL pattern matching)
+**支持的平台：**
+- 亚马逊（产品评论）
+- 谷歌（地图、购物）
+- Yelp（商家和产品评论）
+- TripAdvisor（酒店、餐厅、景点）
+- 自定义平台（通过URL模式匹配）
 
-**Scrape Options:**
-- All reviews or specific time ranges
-- Verified purchases only
-- Filter by rating (1-5 stars)
-- Include images and media
-- Max review count limits
+**抓取选项：**
+- 所有评论或特定时间范围
+- 仅限已验证的购买记录
+- 按评分（1-5星）筛选
+- 包含图片和媒体文件
+- 设置评论数量上限
 
-### 2. Sentiment Analysis
+### 2. 情感分析
 
-**Analyzes:**
-- Overall sentiment score (-1.0 to +1.0)
-- Sentiment distribution (positive/neutral/negative)
-- Key sentiment drivers (what causes positive/negative reviews)
-- Trend analysis (sentiment over time)
-- Aspect-based sentiment (battery life, quality, shipping, etc.)
+**分析内容：**
+- 总体情感得分（-1.0至+1.0）
+- 情感分布（正面/中性/负面）
+- 影响情感的主要因素（导致正面/负面评论的原因）
+- 情感趋势（随时间的变化）
+- 基于具体方面的分析（如电池寿命、质量、配送等）
 
-### 3. Insight Extraction
+### 3. 洞察提取
 
-**Automatically identifies:**
-- Top pros mentioned in reviews
-- Common complaints and cons
-- Frequently asked questions
-- Use cases and applications
-- Competitive comparisons mentioned
-- Feature-specific feedback
+**自动识别：**
+- 评论中提到的主要优点
+- 常见的问题和缺点
+- 用户的常见问题
+- 产品的使用场景和应用方式
+- 相关产品的竞争情况
+- 针对特定功能的反馈
 
-### 4. Summary Generation
+### 4. 摘要生成
 
-**Output formats:**
-- Executive summary (150-200 words)
-- Detailed breakdown by category
-- Pros/cons lists with frequency counts
-- Statistical summary (avg rating, review count, etc.)
-- CSV export for analysis
-- Markdown report for documentation
+**输出格式：**
+- 执行摘要（150-200字）
+- 按类别详细分类的总结
+- 优缺点列表及出现频率
+- 统计摘要（平均评分、评论数量等）
+- 可导出的CSV文件（用于分析）
+- 用于文档的Markdown格式报告
 
-### 5. Recommendation Engine
+### 5. 推荐系统
 
-**Generates recommendations based on:**
-- Overall sentiment score
-- Review quantity and recency
-- Verified purchase ratio
-- Aspect-based ratings
-- Competitive comparison
+**推荐依据：**
+- 总体情感得分
+- 评论数量和更新时间
+- 已验证购买的比例
+- 基于具体方面的评分
+- 产品之间的竞争情况
 
-## Quick Start
+## 快速入门
 
-### Summarize Amazon Product Reviews
+### 摘要亚马逊产品评论
 
 ```python
 # Use scripts/scrape_reviews.py
@@ -78,7 +78,7 @@ python3 scripts/scrape_reviews.py \
   --output amazon_summary.md
 ```
 
-### Compare Reviews Across Platforms
+### 比较多个平台的评论
 
 ```python
 # Use scripts/compare_reviews.py
@@ -88,7 +88,7 @@ python3 scripts/compare_reviews.py \
   --output comparison_report.md
 ```
 
-### Generate Quick Summary
+### 生成简短摘要
 
 ```python
 # Use scripts/quick_summary.py
@@ -98,22 +98,22 @@ python3 scripts/quick_summary.py \
   --output summary.txt
 ```
 
-## Scripts
+## 脚本
 
 ### `scrape_reviews.py`
-Scrape and analyze reviews from a single URL.
+从单个URL抓取并分析评论。
 
-**Parameters:**
-- `--url`: Product or business review URL (required)
-- `--platform`: Platform (amazon, google, yelp, tripadvisor) (auto-detected if omitted)
-- `--max-reviews`: Maximum reviews to fetch (default: 100)
-- `--verified-only`: Filter to verified purchases only
-- `--min-rating`: Minimum rating to include (1-5)
-- `--time-range`: Time filter (7d, 30d, 90d, all) (default: all)
-- `--output`: Output file (default: summary.md)
-- `--format`: Output format (markdown, json, csv)
+**参数：**
+- `--url`：产品或商家评论的URL（必填）
+- `--platform`：平台（亚马逊、谷歌、Yelp、TripAdvisor）（省略时自动检测）
+- `--max-reviews`：要获取的最大评论数量（默认：100）
+- `--verified-only`：仅限已验证的购买记录
+- `--min-rating`：包含的最低评分（1-5星）
+- `--time-range`：时间范围（7天、30天、90天、全部）（默认：全部）
+- `--output`：输出文件（默认：summary.md）
+- `--format`：输出格式（Markdown、JSON、CSV）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/scrape_reviews.py \
   --url "https://amazon.com/dp/B0XXXXX" \
@@ -125,16 +125,16 @@ python3 scripts/scrape_reviews.py \
 ```
 
 ### `compare_reviews.py`
-Compare reviews for a product across multiple platforms.
+比较多个平台上的产品评论。
 
-**Parameters:**
-- `--product`: Product name or keyword (required)
-- `--platforms`: Comma-separated platforms (default: all)
-- `--max-reviews`: Max reviews per platform (default: 50)
-- `--output`: Output file
-- `--format`: Output format (markdown, json)
+**参数：**
+- `--product`：产品名称或关键词（必填）
+- `--platforms`：用逗号分隔的平台（默认：全部）
+- `--max-reviews`：每个平台的最大评论数量（默认：50）
+- `--output`：输出文件
+- `--format`：输出格式（Markdown、JSON）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/compare_reviews.py \
   --product "AirPods Pro 2" \
@@ -144,15 +144,15 @@ python3 scripts/compare_reviews.py \
 ```
 
 ### `sentiment_analysis.py`
-Analyze sentiment of review text.
+分析评论文本的情感。
 
-**Parameters:**
-- `--input`: Input file or text (required)
-- `--type`: Input type (file, text, url)
-- `--aspects`: Analyze specific aspects (comma-separated)
-- `--output`: Output file
+**参数：**
+- `--input`：输入文件或文本（必填）
+- `--type`：输入类型（文件、文本、URL）
+- `--aspects`：要分析的具体方面（用逗号分隔）
+- `--output`：输出文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/sentiment_analysis.py \
   --input reviews.txt \
@@ -162,15 +162,15 @@ python3 scripts/sentiment_analysis.py \
 ```
 
 ### `quick_summary.py`
-Generate a brief executive summary.
+生成简短的执行摘要。
 
-**Parameters:**
-- `--url`: Review URL (required)
-- `--brief`: Brief summary only (no detailed breakdown)
-- `--words`: Summary word count (default: 150)
-- `--output`: Output file
+**参数：**
+- `--url`：评论URL（必填）
+- `--brief`：仅生成简短摘要（无详细分类）
+- `--words`：摘要的字数（默认：150）
+- `--output`：输出文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/quick_summary.py \
   --url "https://yelp.com/biz/example-business" \
@@ -180,14 +180,14 @@ python3 scripts/quick_summary.py \
 ```
 
 ### `export_data.py`
-Export review data for further analysis.
+导出评论数据以供进一步分析。
 
-**Parameters:**
-- `--input`: Summary file or JSON data (required)
-- `--format`: Export format (csv, json, excel)
-- `--output`: Output file
+**参数：**
+- `--input`：摘要文件或JSON数据（必填）
+- `--format`：输出格式（CSV、JSON、Excel）
+- `--output`：输出文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/export_data.py \
   --input product_summary.json \
@@ -195,9 +195,9 @@ python3 scripts/export_data.py \
   --output reviews_data.csv
 ```
 
-## Output Format
+## 输出格式
 
-### Markdown Summary Structure
+### Markdown摘要结构
 
 ```markdown
 # Product Review Summary: [Product Name]
@@ -229,30 +229,30 @@ python3 scripts/export_data.py \
 ✅ **Recommended** - Strong positive sentiment with high customer satisfaction.
 ```
 
-## Best Practices
+## 最佳实践
 
-### For Arbitrage Research
-1. **Compare across platforms** - Check Amazon vs eBay seller ratings
-2. **Look for red flags** - High return rates, quality complaints
-3. **Check authenticity** - Verified purchases only
-4. **Analyze trends** - Recent review sentiment vs older reviews
+### 用于套利研究
+1. **跨平台比较**：对比亚马逊和eBay的卖家评分
+2. **关注风险信号**：高退货率、质量投诉
+3. **验证真实性**：仅使用已验证的购买记录
+4. **分析趋势**：近期评论与旧评论的情感倾向
 
-### For Affiliate Content
-1. **Extract real quotes** - Use actual customer feedback
-2. **Identify use cases** - How people use the product
-3. **Find pain points** - Problems the product solves
-4. **Build credibility** - Use data from many reviews
+### 用于联盟营销内容
+1. **提取真实用户反馈**：使用客户的实际评价
+2. **了解使用场景**：用户如何使用该产品
+3. **发现痛点**：产品解决的问题
+4. **增强可信度**：利用大量评论的数据
 
-### For Purchasing Decisions
-1. **Check recent reviews** - Last 30-90 days
-2. **Look at 1-star reviews** - Understand worst-case scenarios
-3. **Consider your needs** - Match features to your use case
-4. **Compare alternatives** - Use compare_reviews.py
+### 用于购买决策
+1. **查看近期评论**：最近30-90天的评论
+2. **关注1星评论**：了解最糟糕的情况
+3. **考虑自身需求**：确保产品功能符合你的使用场景
+4. **比较替代产品**：使用`compare_reviews.py`进行比较
 
-## Integration Opportunities
+## 集成机会
 
-### With Price Tracker
-Use review summaries to validate arbitrage opportunities:
+### 与价格追踪工具集成
+利用评论摘要验证套利机会：
 ```bash
 # 1. Find arbitrage opportunity
 price-tracker/scripts/compare_prices.py --keyword "Sony WH-1000XM5"
@@ -264,8 +264,8 @@ review-summarizer/scripts/scrape_reviews.py --url [ebay_url]
 # 3. Make informed decision
 ```
 
-### With Content Recycler
-Generate content from review insights:
+### 与内容生成工具集成
+根据评论洞察生成内容：
 ```bash
 # 1. Summarize reviews
 review-summarizer/scripts/scrape_reviews.py --url [amazon_url]
@@ -277,9 +277,9 @@ seo-article-gen --keyword "[product name] review" --use-insights review_summary.
 content-recycler/scripts/recycle_content.py --input article.md
 ```
 
-## Automation
+## 自动化应用
 
-### Weekly Review Monitoring
+### 周期性评论监控
 
 ```bash
 # Monitor competitor products
@@ -289,7 +289,7 @@ content-recycler/scripts/recycle_content.py --input article.md
   --output /path/to/competitor_analysis.md
 ```
 
-### Alert on Negative Trends
+### 负面趋势警报
 
 ```bash
 # Check for sentiment drops below threshold
@@ -298,22 +298,22 @@ if [ $(grep -o "Sentiment: -" summary.md | wc -l) -gt 0 ]; then
 fi
 ```
 
-## Data Privacy & Ethics
+## 数据隐私与伦理
 
-- Only scrape publicly available reviews
-- Respect robots.txt and rate limits
-- Don't store PII (personal information)
-- Aggregate data, don't expose individual reviewers
-- Follow platform terms of service
+- 仅抓取公开可用的评论
+- 遵守robots.txt文件和平台的评分限制
+- 不存储个人身份信息（PII）
+- 统计数据，不暴露个别评论者的信息
+- 遵守各平台的服务条款
 
-## Limitations
+## 限制
 
-- Rate limiting on some platforms
-- Cannot access verified purchase status on all platforms
-- Fake reviews may skew analysis
-- Language support varies by platform
-- Some platforms block scraping
+- 部分平台存在评分限制
+- 无法获取所有平台的购买验证状态
+- 假评论可能影响分析结果
+- 不同平台的语言支持不同
+- 有些平台禁止抓取评论
 
 ---
 
-**Make data-driven decisions. Automate research. Scale intelligence.**
+**基于数据做出决策。自动化研究流程。提升智能水平。**

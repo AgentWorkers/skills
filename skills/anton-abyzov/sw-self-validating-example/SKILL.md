@@ -1,6 +1,6 @@
 ---
 name: self-validating-example
-description: Example skill demonstrating self-validating REST API generation with automatic test execution. Use as a template for creating skills with pre-tool-use validation hooks. Validates Node.js environment and dependencies before generating endpoints.
+description: 示例技能：演示如何生成具有自动测试执行功能的自验证 REST API。该技能可用作创建包含预工具使用验证钩子的其他技能的模板。在生成 API 端点之前，该技能会验证 Node.js 环境及其依赖项是否满足要求。
 hooks:
   pre_tool_use:
     - validate: file_exists
@@ -20,11 +20,11 @@ hooks:
       command: npx tsc --noEmit $OUTPUT
 ---
 
-# Self-Validating API Endpoint Generator
+# 自动验证的 API 端点生成器
 
-You are generating a REST API endpoint with **automatic validation**.
+您正在生成一个具有 **自动验证** 功能的 REST API 端点。
 
-## How Self-Validation Works
+## 自动验证的工作原理
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -49,9 +49,9 @@ You are generating a REST API endpoint with **automatic validation**.
 └──────────────────────────────────────────────────────────────┘
 ```
 
-## Required Outputs
+## 必需的输出文件
 
-### 1. API Endpoint (`src/routes/[name].ts`)
+### 1. API 端点（`src/routes/[name].ts`）
 
 ```typescript
 import { Router, Request, Response } from 'express';
@@ -71,7 +71,7 @@ router.post('/', async (req: Request, res: Response) => {
 export default router;
 ```
 
-### 2. Test File (`src/routes/[name].test.ts`) - REQUIRED!
+### 2. 测试文件（`src/routes/[name].test.ts`） - 必须提供！
 
 ```typescript
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
@@ -105,22 +105,22 @@ describe('[Name] API', () => {
 });
 ```
 
-## Validation Criteria
+## 验证标准
 
-| Check | Command | Required |
+| 验证项 | 命令 | 是否必需 |
 |-------|---------|----------|
-| Tests pass | `npm test -- --testPathPattern="$OUTPUT"` | ✅ Yes |
-| Lint clean | `npm run lint -- $OUTPUT` | ✅ Yes (auto-fix) |
-| Types valid | `npx tsc --noEmit $OUTPUT` | ✅ Yes |
+| 测试是否通过 | `npm test -- --testPathPattern="$OUTPUT"` | ✅ 是 |
+| 代码格式是否整洁（lint） | `npm run lint -- $OUTPUT` | ✅ 是（会自动修复问题） |
+| 类型是否正确 | `npx tsc --noEmit $OUTPUT` | ✅ 是 |
 
-## Self-Healing Behavior
+## 自动修复机制
 
-If tests fail, you will receive:
-1. The test output showing which tests failed
-2. A request to fix the failing tests
-3. Another attempt (up to 3 total)
+如果测试失败，您将收到以下信息：
+1. 显示哪些测试失败的测试输出结果
+2. 修复失败测试的提示
+3. 会自动尝试修复（最多尝试 3 次）
 
-**Example failure feedback:**
+**测试失败时的反馈示例：**
 ```
 🔴 VALIDATION FAILED (attempt 1/3)
 
@@ -132,9 +132,9 @@ Test Results:
 Please fix the route handler and regenerate.
 ```
 
-## Important Notes
+## 重要说明
 
-1. **Always generate tests** - The skill will NOT complete without passing tests
-2. **Use proper types** - TypeScript errors block completion
-3. **Follow lint rules** - Auto-fixed but avoid common issues
-4. **Handle edge cases** - Test both success and error paths
+1. **务必生成测试用例** —— 如果测试未通过，该功能将无法完成。
+2. **使用正确的类型声明** —— TypeScript 的类型错误会阻止代码的生成。
+3. **遵守代码格式规范** —— 代码会自动修复常见的问题。
+4. **处理边缘情况** —— 需要测试成功和失败的各种情况。

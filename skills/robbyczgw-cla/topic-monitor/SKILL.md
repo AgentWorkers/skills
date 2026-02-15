@@ -1,34 +1,34 @@
 ---
 name: topic-monitor
 version: 1.3.4
-description: Monitor topics of interest and proactively alert when important developments occur. Use when user wants automated monitoring of specific subjects (e.g., product releases, price changes, news topics, technology updates). Supports scheduled web searches, AI-powered importance scoring, smart alerts vs weekly digests, and memory-aware contextual summaries.
+description: 监控感兴趣的主题，并在发生重要进展时主动发出警报。适用于用户希望自动监控特定主题的情况（例如产品发布、价格变动、新闻话题、技术更新等）。支持定时网页搜索、基于人工智能的重要性评分机制、智能警报功能以及每周汇总报告；同时具备内存管理功能，能够生成与上下文相关的摘要信息。
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"TOPIC_MONITOR_TELEGRAM_ID":"optional - Telegram chat ID for alerts","TOPIC_MONITOR_DATA_DIR":"optional - defaults to .data/ in skill dir","WEB_SEARCH_PLUS_PATH":"optional - defaults to relative path"},"note":"All env vars optional. Defaults work out of the box."}}}
 ---
 
-# Topic Monitor
+# 话题监控器
 
-**Monitor what matters. Get notified when it happens.**
+**监控重要的信息。在事件发生时及时收到通知。**
 
-Topic Monitor transforms your assistant from reactive to proactive by continuously monitoring topics you care about and intelligently alerting you only when something truly matters.
+话题监控器通过持续监控您关注的话题，并仅在真正重要的信息出现时智能地提醒您，将您的助手从被动响应式转变为主动式。
 
 ---
 
-## ⚡ Quick Start (New in v1.2.0!)
+## ⚡ 快速入门（v1.2.0 新功能！）
 
-**Just want to monitor one topic? One command:**
+**只想监控一个话题？只需一个命令：**
 
 ```bash
 python3 scripts/quick.py "AI Model Releases"
 ```
 
-That's it! This creates a topic with sensible defaults:
-- **Query:** Auto-generated from topic name
-- **Keywords:** Extracted from topic name
-- **Frequency:** Daily
-- **Importance:** Medium
-- **Channel:** Telegram
+就这样！系统会创建一个具有默认设置的话题：
+- **查询**：根据话题名称自动生成
+- **关键词**：从话题名称中提取
+- **频率**：每天
+- **重要性**：中等
+- **渠道**：Telegram
 
-### Quick Start Options
+### 快速入门选项
 
 ```bash
 # Basic - just a topic name
@@ -47,53 +47,52 @@ python3 scripts/quick.py "Competitor News" --query "CompanyName product launch f
 python3 scripts/quick.py "Team Updates" --channel discord
 ```
 
-### Quick Start vs Full Setup
+### 快速入门与完整设置
 
-| Feature | Quick Start | Full Setup |
+| 功能 | 快速入门 | 完整设置 |
 |---------|-------------|------------|
-| Speed | ⚡ 1 command | 📝 Wizard |
-| Defaults | Smart | Customizable |
-| Use case | Single topic | Multiple topics |
-| Configuration | Minimal | Full control |
+| 速度 | ⚡ 一个命令 | 📝 向导 |
+| 默认设置 | 智能设置 | 可自定义 |
+| 使用场景 | 单个话题 | 多个话题 |
+| 配置 | 最简 | 全面控制 |
 
-**After Quick Start, you can always customize:**
+**快速入门后，您随时可以自定义设置：**
 ```bash
 python3 scripts/manage_topics.py edit ai-model-releases --frequency hourly
 ```
 
 ---
 
-## Core Capabilities
+## 核心功能
 
-1. **Topic Configuration** - Define subjects with custom parameters
-2. **Scheduled Monitoring** - Automated searches at configurable intervals
-3. **AI Importance Scoring** - Smart filtering: immediate alert vs digest vs ignore
-4. **Contextual Summaries** - Not just links—meaningful summaries with context
-5. **Weekly Digest** - Low-priority findings compiled into readable reports
-6. **Memory Integration** - References your past conversations and interests
+1. **话题配置** - 使用自定义参数定义监控主题
+2. **定时监控** - 按可配置的时间间隔自动搜索
+3. **AI 重要性评分** - 智能过滤：立即提醒、汇总或忽略
+4. **上下文摘要** - 不仅仅是链接，还包括有意义的上下文摘要
+5. **每周摘要** - 将低优先级的发现整理成可读的报告
+6. **记忆整合** - 参考您之前的对话和兴趣
 
 ---
 
-## Full Setup (Interactive Wizard)
+## 完整设置（交互式向导）
 
-For configuring multiple topics or advanced options:
+要配置多个话题或高级选项，请使用以下向导：
 
 ```bash
 python3 scripts/setup.py
 ```
 
-The wizard will guide you through:
+向导将引导您完成以下步骤：
+1. **选择话题** - 您想监控哪些主题？
+2. **搜索查询** - 如何搜索每个话题
+3. **关键词** - 哪些词能表示相关性
+4. **频率** - 每多久检查一次（每小时/每天/每周）
+5. **重要性阈值** - 何时发送提醒（低/中/高）
+6. **每周摘要** - 将非紧急的发现整理成摘要
 
-1. **Topics** - What subjects do you want to monitor?
-2. **Search queries** - How to search for each topic
-3. **Keywords** - What terms indicate relevance
-4. **Frequency** - How often to check (hourly/daily/weekly)
-5. **Importance threshold** - When to send alerts (low/medium/high)
-6. **Weekly digest** - Compile non-urgent findings into a summary
+向导会创建一个 `config.json` 文件来保存您的设置。您以后可以随时编辑它，或者使用 `manage_topics.py` 来添加/删除话题。
 
-The wizard creates `config.json` with your preferences. You can always edit it later or use `manage_topics.py` to add/remove topics.
-
-**Example session:**
+**示例操作流程：**
 ```
 🔍 Topic Monitor - Setup Wizard
 
@@ -120,9 +119,9 @@ How often should I check for updates?
 ✅ Setup Complete!
 ```
 
-## Quick Start
+## 快速入门
 
-Already know what you're doing? Here's the manual approach:
+如果您已经熟悉操作流程，可以参考以下手动指南：
 
 ```bash
 # Initialize config from template
@@ -141,19 +140,18 @@ python3 scripts/monitor.py --dry-run
 python3 scripts/setup_cron.py
 ```
 
-## Topic Configuration
+## 话题配置
 
-Each topic has:
+每个话题包含以下信息：
+- **名称** - 显示名称（例如：“AI模型发布”
+- **查询** - 搜索查询（例如：“新AI模型发布公告”
+- **关键词** - 用于过滤相关内容的关键词（例如：“GPT”、“Claude”、“Llama”、“release”）
+- **频率** - 每小时/每天/每周
+- **重要性阈值** - 高（立即提醒）、中等（重要时提醒）、低（仅汇总）
+- **渠道** - 提醒发送的渠道（例如：“Telegram”、“Discord”）
+- **上下文** - 您关注这些话题的原因（用于生成有意义的摘要）
 
-- **name** - Display name (e.g., "AI Model Releases")
-- **query** - Search query (e.g., "new AI model release announcement")
-- **keywords** - Relevance filters (["GPT", "Claude", "Llama", "release"])
-- **frequency** - `hourly`, `daily`, `weekly`
-- **importance_threshold** - `high` (alert immediately), `medium` (alert if important), `low` (digest only)
-- **channels** - Where to send alerts (["telegram", "discord"])
-- **context** - Why you care (for AI contextual summaries)
-
-### Example config.json
+### 示例 config.json 文件
 
 ```json
 {
@@ -202,11 +200,11 @@ Each topic has:
 }
 ```
 
-## Scripts
+## 脚本
 
 ### manage_topics.py
 
-Manage research topics:
+用于管理研究话题：
 
 ```bash
 # Add topic
@@ -232,7 +230,7 @@ python3 scripts/manage_topics.py test eth-price
 
 ### monitor.py
 
-Main monitoring script (run via cron):
+主要监控脚本（通过 cron 任务运行）：
 
 ```bash
 # Normal run (alerts + saves state)
@@ -248,18 +246,18 @@ python3 scripts/monitor.py --topic eth-price
 python3 scripts/monitor.py --verbose
 ```
 
-**How it works:**
-1. Reads topics due for checking (based on frequency)
-2. Searches using web-search-plus or built-in web_search
-3. Scores each result with AI importance scorer
-4. High-importance → immediate alert
-5. Medium-importance → saved for digest
-6. Low-importance → ignored
-7. Updates state to prevent duplicate alerts
+**工作原理：**
+1. 根据设定的频率读取需要检查的话题
+2. 使用 `web-search-plus` 或内置的搜索功能进行搜索
+3. 用 AI 评分系统对每个搜索结果进行重要性评分
+4. 重要性高的结果 → 立即提醒
+5. 重要性中等的结果 → 保存以供后续汇总
+6. 重要性低的结果 → 被忽略
+7. 更新系统状态以避免重复提醒
 
 ### digest.py
 
-Generate weekly digest:
+生成每周摘要：
 
 ```bash
 # Generate digest for current week
@@ -272,7 +270,7 @@ python3 scripts/digest.py --send
 python3 scripts/digest.py --preview
 ```
 
-Output format:
+**输出格式：**
 ```markdown
 # Weekly Research Digest - [Date Range]
 
@@ -297,7 +295,7 @@ Based on your interests, you might want to monitor:
 
 ### setup_cron.py
 
-Configure automated monitoring:
+配置自动监控任务：
 
 ```bash
 # Interactive setup
@@ -310,7 +308,7 @@ python3 scripts/setup_cron.py --auto
 python3 scripts/setup_cron.py --remove
 ```
 
-Creates cron entries:
+该脚本用于创建 cron 任务条目：
 ```cron
 # Topic Monitor - Hourly topics
 0 * * * * cd /path/to/skills/topic-monitor && python3 scripts/monitor.py --frequency hourly
@@ -322,65 +320,65 @@ Creates cron entries:
 0 18 * * 0 cd /path/to/skills/topic-monitor && python3 scripts/digest.py --send
 ```
 
-## AI Importance Scoring
+## AI 重要性评分
 
-The scorer uses multiple signals to decide alert priority:
+评分系统使用多种信号来决定提醒的优先级：
 
-### Scoring Signals
+### 评分标准
 
-**HIGH priority (immediate alert):**
-- Major breaking news (detected via freshness + keyword density)
-- Price changes >10% (for finance topics)
-- Product releases matching your exact keywords
-- Security vulnerabilities in tools you use
-- Direct answers to specific questions you asked
+**高优先级（立即提醒）：**
+- 重大突发新闻（通过新鲜度和关键词密度判断）
+- 价格变动超过 10%（针对金融类话题）
+- 与您的关键词完全匹配的产品发布
+- 您使用的工具中的安全漏洞
+- 对您提出的具体问题的直接回答
 
-**MEDIUM priority (digest-worthy):**
-- Related news but not urgent
-- Minor updates to tracked products
-- Interesting developments in your topics
-- Tutorial/guide releases
-- Community discussions with high engagement
+**中等优先级（值得汇总）：**
+- 相关新闻但非紧急
+- 跟踪产品的次要更新
+- 您关注领域的有趣发展
+- 教程/指南的发布
+- 社区讨论热度高的内容
 
-**LOW priority (ignore):**
-- Duplicate news (already alerted)
-- Tangentially related content
-- Low-quality sources
-- Outdated information
-- Spam/promotional content
+**低优先级（忽略）：**
+- 重复的新闻（已收到过提醒）
+- 关联性较弱的内容
+- 质量较低的信息源
+- 过时的信息
+- 垃圾信息/促销内容
 
-### Learning Mode
+### 学习模式
 
-When enabled (`learning_enabled: true`), the system:
-1. Tracks which alerts you interact with
-2. Adjusts scoring weights based on your behavior
-3. Suggests topic refinements
-4. Auto-adjusts importance thresholds
+当启用学习模式（`learning_enabled: true`）时，系统会：
+1. 记录您对哪些提醒有反应
+2. 根据您的行为调整评分权重
+3. 建议优化话题设置
+4. 自动调整重要性阈值
 
-Learning data stored in `.learning_data.json` (privacy-safe, never shared).
+学习数据存储在 `.learning_data.json` 文件中（保护用户隐私，不会被共享）。
 
-## Memory Integration
+## 记忆整合
 
-Topic Monitor connects to your conversation history:
+话题监控器会关联您的对话历史：
 
-**Example alert:**
-> 🔔 **Dirac Live Update**
+**示例提醒：**
+> 🔔 **Dirac 实时更新**
 > 
-> Version 3.8 released with the room correction improvements you asked about last week.
+> 新版本 3.8 已发布，包含了您上周请求的房间音效优化功能。
 > 
-> **Context:** You mentioned struggling with bass response in your studio. This update includes new low-frequency optimization.
+> **上下文**：您提到在录音室中遇到低频音效问题。此更新包含新的低频优化措施。
 > 
-> [Link] | [Full details]
+> [链接] | [详细信息]
 
-**How it works:**
-1. Reads references/memory_hints.md (create this file)
-2. Scans recent conversation logs (if available)
-3. Matches findings to past context
-4. Generates personalized summaries
+**工作原理：**
+1. 读取 `memory_hints.md` 文件（系统自动生成）
+2. 扫描最近的对话记录（如果有的话）
+3. 将搜索结果与之前的对话内容进行匹配
+4. 生成个性化的摘要
 
-### memory_hints.md (optional)
+### memory_hints.md（可选）
 
-Help the AI connect dots:
+帮助 AI 更好地理解您的需求：
 
 ```markdown
 # Memory Hints for Topic Monitor
@@ -401,11 +399,11 @@ Help the AI connect dots:
 - Tracking potential acquisition targets
 ```
 
-## Alert Channels
+## 提醒渠道
 
 ### Telegram
 
-Requires OpenClaw message tool:
+需要使用 OpenClaw 消息工具：
 
 ```json
 {
@@ -423,9 +421,9 @@ Requires OpenClaw message tool:
 
 ### Discord
 
-Agent-delivered (no webhook in skill config):
+提醒通过代理发送（技能配置中不使用 webhook）：
 
-`monitor.py` emits `DISCORD_ALERT` JSON payloads, and OpenClaw sends them via the message tool. This matches the Telegram alert flow (structured output, no direct HTTP in skill code).
+`monitor.py` 会生成 `DISCORD_ALERT` JSON 格式的提醒内容，OpenClaw 通过消息工具将其发送给指定频道。这种方式符合 Telegram 的提醒流程（结构化输出，技能代码中不直接使用 HTTP 请求）。
 
 ```json
 {
@@ -435,7 +433,7 @@ Agent-delivered (no webhook in skill config):
 
 ### Email
 
-SMTP or API:
+支持 SMTP 或 API：
 
 ```json
 {
@@ -449,11 +447,11 @@ SMTP or API:
 }
 ```
 
-## Advanced Features
+## 高级功能
 
-### Alert Conditions
+### 提醒条件
 
-Fine-tune when to alert:
+您可以精细调整提醒的触发条件：
 
 ```json
 {
@@ -475,9 +473,9 @@ Fine-tune when to alert:
 }
 ```
 
-### Regex Patterns
+### 正则表达式模式
 
-Match specific patterns:
+用于匹配特定的搜索模式：
 
 ```json
 {
@@ -489,9 +487,9 @@ Match specific patterns:
 }
 ```
 
-### Rate Limiting
+### 限制提醒频率
 
-Prevent alert fatigue:
+防止频繁提醒：
 
 ```json
 {
@@ -506,18 +504,18 @@ Prevent alert fatigue:
 }
 ```
 
-## Environment Variables
+## 环境变量
 
-Configure these environment variables to customize topic-monitor:
+通过设置以下环境变量来自定义话题监控器的行为：
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 说明 |
 |----------|---------|-------------|
-| `TOPIC_MONITOR_TELEGRAM_ID` | — | Your Telegram chat ID for receiving alerts |
-| `TOPIC_MONITOR_DATA_DIR` | `.data/` in skill dir | Where to store state and findings |
-| `WEB_SEARCH_PLUS_PATH` | Relative to skill | Path to web-search-plus search.py |
-| `SERPER_API_KEY` / `TAVILY_API_KEY` / `EXA_API_KEY` / `YOU_API_KEY` / `SEARXNG_INSTANCE_URL` / `WSP_CACHE_DIR` | — | Optional search-provider vars passed via subprocess env allowlist |
+| `TOPIC_MONITOR_TELEGRAM_ID` | — | 用于接收提醒的 Telegram 聊天 ID |
+| `TOPIC_MONITOR_DATA_DIR` | 技能目录下的 `.data/` | 用于存储状态和搜索结果 |
+| `WEB_SEARCH_plus_PATH` | 相对于技能目录的路径 | 指向 `web-search-plus` 搜索脚本的路径 |
+| `SERPER_API_KEY` / `TAVILY_API_KEY` / `EXA_API_KEY` / `YOU_API_KEY` / `SEARXNG_INSTANCE_URL` / `WSP_CACHE_DIR` | 可选的搜索服务相关环境变量 |
 
-**Example setup:**
+**示例配置：**
 ```bash
 # Add to ~/.bashrc or .env
 export TOPIC_MONITOR_TELEGRAM_ID="123456789"
@@ -525,19 +523,19 @@ export TOPIC_MONITOR_DATA_DIR="/home/user/topic-monitor-data"
 export WEB_SEARCH_PLUS_PATH="/path/to/skills/web-search-plus/scripts/search.py"
 ```
 
-## State Management
+## 状态管理
 
 ### .research_state.json
 
-Stored in `TOPIC_MONITOR_DATA_DIR` (default: `.data/` in skill directory).
+文件存储在 `TOPIC_MONITOR_DATA_DIR` 目录下（默认为技能目录下的 `.data/`）。
 
-Tracks:
-- Last check time per topic
-- Alerted URLs (deduplication)
-- Importance scores history
-- Learning data (if enabled)
+记录以下信息：
+- 每个话题的最后检查时间
+- 已发送提醒的链接（去重处理）
+- 重要性评分历史
+- 学习数据（如果启用了学习模式）
 
-Example:
+示例文件内容：
 ```json
 {
   "topics": {
@@ -559,9 +557,9 @@ Example:
 }
 ```
 
-### .findings/ directory
+### .findings/ 目录
 
-Stores digest-worthy findings:
+用于存储值得汇总的搜索结果：
 
 ```
 .findings/
@@ -570,65 +568,65 @@ Stores digest-worthy findings:
 └── 2026-01-27_ai-breakthroughs.json
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Start conservative** - Set `importance_threshold: medium` initially, adjust based on alert quality
-2. **Use context field** - Helps AI generate better summaries
-3. **Refine keywords** - Add negative keywords to filter noise: `"keywords": ["AI", "-clickbait", "-spam"]`
-4. **Enable learning** - Improves over time based on your behavior
-5. **Review digest weekly** - Don't ignore the digest—it surfaces patterns
-6. **Combine with personal-analytics** - Get topic recommendations based on your chat patterns
+1. **谨慎开始** - 初始时将 `importance_threshold` 设置为“中等”，根据提醒的质量进行调整
+2. **使用上下文字段** - 有助于 AI 生成更准确的摘要
+3. **优化关键词** - 添加否定关键词以过滤无关内容（例如：“keywords”: ["AI", "-clickbait", "-spam"]）
+4. **启用学习模式** - 系统会根据您的使用习惯逐步优化评分
+5. **每周查看摘要** - 不要忽略摘要，其中可能包含有用的信息
+6. **结合个人分析** - 根据您的聊天记录获取推荐话题
 
-## Integration with Other Skills
+## 与其他技能的集成
 
 ### web-search-plus
 
-Automatically uses intelligent routing:
-- Product/price topics → Serper
-- Research topics → Tavily  
-- Company/startup discovery → Exa
+自动选择合适的搜索服务：
+- 产品/价格相关的话题 → 使用 Serper
+- 研究类话题 → 使用 Tavily
+- 公司/初创企业相关的话题 → 使用 Exa
 
 ### personal-analytics
 
-Suggests topics based on conversation patterns:
-> "You've asked about Rust 12 times this month. Want me to monitor 'Rust language updates'?"
+根据您的聊天记录推荐相关话题：
+> “您本月已经询问了 12 次关于 Rust 的信息。是否需要我监控‘Rust 语言更新’？”
 
-## Privacy & Security
+## 隐私与安全
 
-- **All data local** - No external services except search APIs
-- **State files gitignored** - Safe to use in version-controlled workspace
-- **Memory hints optional** - You control what context is shared
-- **Learning data stays local** - Never sent to APIs
-- **Subprocess env allowlist** - monitor forwards only PATH/HOME/LANG/TERM and search-provider keys
-- **No direct HTTP in skill code** - alerts are emitted as JSON for OpenClaw delivery
+- **所有数据均存储在本地** - 除搜索 API 外，不使用任何外部服务
+- **状态文件受版本控制** - 安全地用于版本控制的工作环境
+- **记忆提示功能可选** - 您可以控制共享的上下文信息
+- **学习数据仅存储在本地** - 不会发送到任何外部服务
+- **进程环境变量限制** - 只允许传递 PATH/HOME/LANG/TERM 和搜索服务相关的环境变量
+- **技能代码中不使用直接 HTTP 请求** - 提醒信息以 JSON 格式发送给 OpenClaw
 
-## Troubleshooting
+## 故障排除
 
-**No alerts being sent:**
-- Check cron is running: `crontab -l`
-- Verify channel config (Telegram chat ID, topic channel list for Discord/email)
-- Run with `--dry-run --verbose` to see scoring
+**没有收到提醒：**
+- 检查 cron 任务是否正在运行：`crontab -l`
+- 验证渠道配置（Telegram 聊天 ID、Discord/Email 的频道列表）
+- 使用 `--dry-run --verbose` 参数运行脚本以查看评分逻辑
 
-**Too many alerts:**
-- Increase `importance_threshold`
-- Add rate limiting
-- Refine keywords (add negative filters)
-- Enable learning mode
+**提醒过多：**
+- 提高 `importance_threshold` 值
+- 设置提醒频率限制
+- 优化关键词（添加否定过滤条件）
+- 启用学习模式
 
-**Missing important news:**
-- Decrease `importance_threshold`
-- Increase check frequency
-- Broaden keywords
-- Check `.research_state.json` for deduplication issues
+**重要新闻未被提醒：**
+- 降低 `importance_threshold` 值
+- 增加检查频率
+- 扩大关键词范围
+- 检查 `.research_state.json` 文件中的去重情况
 
-**Digest not generating:**
-- Verify `.findings/` directory exists and has content
-- Check digest cron schedule
-- Run manually: `python3 scripts/digest.py --preview`
+**摘要未生成：**
+- 确保 `.findings/` 目录存在且包含内容
+- 检查每周摘要的生成脚本是否正常运行
+- 手动运行 `python3 scripts/digest.py --preview` 命令查看摘要内容
 
-## Example Workflows
+## 示例工作流程
 
-### Track Product Release
+### 监控产品发布
 
 ```bash
 python3 scripts/manage_topics.py add "iPhone 17 Release" \
@@ -640,7 +638,7 @@ python3 scripts/manage_topics.py add "iPhone 17 Release" \
   --context "Planning to upgrade from iPhone 13"
 ```
 
-### Monitor Competitor
+### 监控竞争对手动态
 
 ```bash
 python3 scripts/manage_topics.py add "Competitor Analysis" \
@@ -651,7 +649,7 @@ python3 scripts/manage_topics.py add "Competitor Analysis" \
   --channels discord,email
 ```
 
-### Research Topic
+### 进行研究
 
 ```bash
 python3 scripts/manage_topics.py add "Quantum Computing Papers" \
@@ -662,6 +660,6 @@ python3 scripts/manage_topics.py add "Quantum Computing Papers" \
   --channels email
 ```
 
-## Credits
+## 致谢
 
-Built for ClawHub. Uses web-search-plus skill for intelligent search routing.
+本功能由 ClawHub 开发，使用了 `web-search-plus` 技能来实现智能的搜索路由。

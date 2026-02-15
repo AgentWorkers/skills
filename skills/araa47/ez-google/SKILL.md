@@ -1,16 +1,17 @@
 ---
 name: ez-google
-description: Use when asked to send email, check inbox, read emails, check calendar, schedule meetings, create events, search Google Drive, create Google Docs, read or write spreadsheets, find contacts, or any task involving Gmail, Google Calendar, Drive, Docs, Sheets, Slides, or Contacts. Agent-friendly with hosted OAuth - no API keys needed.
+description: **使用场景：**  
+当需要发送电子邮件、查看收件箱、阅读邮件、查看日历、安排会议、创建事件、搜索 Google Drive 内容、创建 Google 文档、读取或编辑电子表格、查找联系人，或执行任何与 Gmail、Google 日历、Drive、Docs、Sheets、Slides 或 Contacts 相关的任务时均可使用。该工具支持托管式 OAuth 认证，无需手动配置 API 密钥，对代理（agent）非常友好。
 metadata: {"openclaw":{"emoji":"📧"}}
 ---
 
 # ez-google
 
-Agent-friendly Google Workspace tools. Simple CLI scripts with hosted OAuth - users just click a link and paste back a token. No API keys or credentials needed.
+专为代理（Agent）设计的 Google Workspace 工具。使用托管的 OAuth 进行简单操作——用户只需点击链接并复制返回的令牌即可。无需 API 密钥或凭据。
 
-**Run all commands with:** `uv run scripts/<script>.py <command> [args]`
+**运行所有命令的格式：** `uv run scripts/<script>.py <command> [args]`
 
-## Auth (do this first)
+## 认证（请先执行此步骤）
 
 ```bash
 auth.py status        # Check: AUTHENTICATED or NOT_AUTHENTICATED
@@ -18,7 +19,7 @@ auth.py login         # Get URL → send to user
 auth.py save '<TOKEN>'  # Save token from hosted OAuth
 ```
 
-**Auth flow:** `status` → if not authenticated → `login` → user clicks link, copies token → `save '<TOKEN>'`
+**认证流程：** `status` → 如果未认证 → `login` → 用户点击链接并复制令牌 → `save '<TOKEN>'`
 
 ---
 
@@ -37,14 +38,14 @@ gmail.py bulk-label "query" --add LABEL --remove LABEL  # Add/remove labels
 gmail.py bulk-trash "query" [-y]     # Move to trash (use -y to skip confirmation)
 ```
 
-**Bulk examples:**
+**批量操作示例：**
 ```bash
 gmail.py bulk-label "from:newsletter@example.com" --add ARCHIVE --remove INBOX
 gmail.py bulk-trash "subject:alert older_than:30d" -y
 gmail.py bulk-label "category:promotions" --add Label_3  # Use label IDs from `labels`
 ```
 
-## Calendar
+## 日历（Calendar）
 
 ```bash
 gcal.py list [DATE]                  # List events (DATE: YYYY-MM-DD or "today")
@@ -54,7 +55,7 @@ gcal.py delete EVENT_ID              # Delete event
 gcal.py calendars                    # List calendars
 ```
 
-## Drive
+## 驱动器（Drive）
 
 ```bash
 drive.py list [-n 20]                # List files
@@ -64,7 +65,7 @@ drive.py download FILE_ID            # File content
 drive.py create-folder "name"        # Create folder
 ```
 
-## Docs
+## 文档（Docs）
 
 ```bash
 docs.py create "title"               # Create doc
@@ -75,7 +76,7 @@ docs.py insert DOC_ID "text"         # Insert at start
 docs.py replace DOC_ID "old" "new"   # Replace text
 ```
 
-## Sheets
+## 表格（Sheets）
 
 ```bash
 sheets.py create "title"             # Create spreadsheet
@@ -86,7 +87,7 @@ sheets.py write ID "Sheet!A1" "a,b;c,d"   # Write (rows separated by ;)
 sheets.py append ID "Sheet!A:B" "a,b;c,d" # Append rows
 ```
 
-## Slides
+## 幻灯片（Slides）
 
 ```bash
 slides.py find "query"               # Find presentations
@@ -95,7 +96,7 @@ slides.py text PRESENTATION_ID       # Extract all text
 slides.py create "title"             # Create presentation
 ```
 
-## People/Contacts
+## 人员/联系人（People/Contacts）
 
 ```bash
 people.py me                         # Current user profile
@@ -104,7 +105,7 @@ people.py search "name"              # Search contacts
 people.py get CONTACT_ID             # Contact details
 ```
 
-## Chat (Workspace only)
+## 聊天（仅限 Workspace）
 
 ```bash
 chat.py spaces                       # List spaces
@@ -115,4 +116,4 @@ chat.py get SPACE_ID                 # Space details
 
 ---
 
-Note: After adding new services, run `auth.py logout` then `login` again to grant new permissions.
+注意：添加新服务后，请先运行 `auth.py logout`，然后再运行 `login` 以授予新的权限。

@@ -1,77 +1,77 @@
 ---
 name: Redis
-description: Use Redis effectively for caching, queues, and data structures with proper expiration and persistence.
+description: 有效地使用 Redis 进行缓存、队列管理以及数据结构操作，并确保数据具有适当的过期时间和持久性。
 metadata: {"clawdbot":{"emoji":"🔴","requires":{"anyBins":["redis-cli"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Expiration (Memory Leaks)
+## 过期（内存泄漏）
 
-- Keys without TTL live forever—set expiry on every cache key: `SET key value EX 3600`
-- Can't add TTL after SET without another command—use `SETEX` or `SET ... EX`
-- `EXPIRE` resets on key update by default—`SET` removes TTL; use `SET ... KEEPTTL` (Redis 6+)
-- Lazy expiration: expired keys removed on access—may consume memory until touched
-- `SCAN` with large database: expired keys still show until cleanup cycle runs
+- 没有设置 TTL 的键会永久存在——需要为每个缓存键设置过期时间：`SET key value EX 3600`
+- 在使用 `SET` 命令后无法直接设置 TTL——需要使用 `SETEX` 或 `SET ... EX`
+- 默认情况下，更新键会重置其过期时间——使用 `SET ... KEEPTTL` 可以保留 TTL（Redis 6.0 及更高版本支持）
+- 拖延式过期：过期的键会在被访问时才被删除——这可能会导致内存占用持续增加
+- 在大型数据库中使用 `SCAN` 命令时，过期的键仍然会显示在结果中，直到清理周期执行。
 
-## Data Structures I Underuse
+## 我未充分利用的数据结构
 
-- Sorted sets for rate limiting: `ZADD limits:{user} {now} {request_id}` + `ZREMRANGEBYSCORE` for sliding window
-- HyperLogLog for unique counts: `PFADD visitors {ip}` uses 12KB for billions of uniques
-- Streams for queues: `XADD`, `XREAD`, `XACK`—better than LIST for reliable queues
-- Hashes for objects: `HSET user:1 name "Alice" email "a@b.com"`—more memory efficient than JSON string
+- 使用排序集（Sorted Sets）进行速率限制：`ZADD limits:{user} {now} {request_id}`，并结合 `ZREMRANGEBYSCORE` 实现滑动窗口控制
+- 使用 HyperLogLog 计算唯一值的数量：`PFADD visitors {ip}` 可以在内存中使用 12KB 的空间来存储数十亿个唯一值
+- 使用流（Streams）来处理队列：`XADD`、`XREAD`、`XACK` 比 `LIST` 更适合处理可靠的队列场景
+- 使用哈希表（Hashes）存储对象：`HSET user:1 name "Alice" email "a@b.com"` 比使用 JSON 字符串更节省内存
 
-## Atomicity Traps
+## 原子性相关的问题
 
-- `GET` then `SET` is not atomic—another client can modify between; use `INCR`, `SETNX`, or Lua
-- `SETNX` for locks: `SET lock:resource {token} NX EX 30`—NX = only if not exists
-- `WATCH`/`MULTI`/`EXEC` for optimistic locking—transaction aborts if watched key changed
-- Lua scripts are atomic—use for complex operations: `EVAL "script" keys args`
+- 先执行 `GET` 再执行 `SET` 的操作不是原子的——其他客户端可能会在这期间修改数据；应使用 `INCR`、`SETNX` 或 Lua 脚本
+- 使用 `SETNX` 命令实现锁机制：`SET lock:resource {token} NX EX 30`——`NX` 表示“如果键不存在则执行操作”
+- 使用 `WATCH`/`MULTI`/`EXEC` 实现乐观锁机制——如果被监视的键发生变化，事务会自动中止
+- Lua 脚本具有原子性——适用于复杂的操作：`EVAL "script" keys args`
 
-## Pub/Sub Limitations
+## Pub/Sub 的局限性
 
-- Messages not persisted—subscribers miss messages sent while disconnected
-- At-most-once delivery—no acknowledgment, no retry
-- Use Streams for reliable messaging—`XREAD BLOCK` + `XACK` pattern
-- Pub/Sub across cluster: message goes to all nodes—works but adds overhead
+- 消息不会被持久化——订阅者在断开连接时会丢失接收到的消息
+- 消息最多只发送一次——没有确认机制，也不会重试
+- 使用流（Streams）进行可靠的消息传递：`XREAD BLOCK` 结合 `XACK` 可以确保消息的可靠传输
+- 在集群环境中使用 Pub/Sub 时，消息会发送到所有节点——虽然可行，但会增加系统开销
 
-## Persistence Configuration
+## 持久化配置
 
-- RDB (snapshots): fast recovery, but data loss between snapshots—default every 5min
-- AOF (append log): less data loss, slower recovery—`appendfsync everysec` is good balance
-- Both off = pure cache—acceptable if data can be regenerated
-- `BGSAVE` for manual snapshot—doesn't block but forks process, needs memory headroom
+- RDB（快照）：恢复速度快，但快照之间的数据可能会丢失——默认情况下，快照每隔 5 分钟生成一次
+- AOF（追加日志）：数据丢失较少，但恢复速度较慢——`appendfsync everysec` 是一个较好的平衡方案
+- 如果数据可以重新生成，可以选择不使用这两种持久化方式（即仅使用缓存）
+- 使用 `BGSAVE` 命令手动生成快照——该命令不会阻塞进程，但会创建一个新的进程，并需要额外的内存空间
 
-## Memory Management (Critical)
+## 内存管理（至关重要）
 
-- `maxmemory` must be set—without it, Redis uses all RAM, then swap = disaster
-- Eviction policies: `allkeys-lru` for cache, `volatile-lru` for mixed, `noeviction` for persistent data
-- `INFO memory` shows usage—monitor `used_memory` vs `maxmemory`
-- Large keys hurt eviction—one 1GB key evicts poorly; prefer many small keys
+- 必须设置 `maxmemory` 参数——如果不设置，Redis 会占用所有可用内存，最终导致系统交换分区（swap）被使用，从而引发严重问题
+- 弹出策略：`allkeys-lru` 适用于缓存数据，`volatile-lru` 适用于混合类型的数据，`noeviction` 适用于持久化数据
+- 使用 `INFO memory` 命令查看内存使用情况——监控 `used_memory` 与 `maxmemory` 的值
+- 大型键会严重影响内存回收效率——一个 1GB 的键可能会严重影响内存回收；建议使用多个小型键
 
-## Clustering
+## 集群部署
 
-- Hash slots: keys distributed by hash—same slot required for multi-key operations
-- Hash tags: `{user:1}:profile` and `{user:1}:sessions` go to same slot—use for related keys
-- No cross-slot `MGET`/`MSET`—error unless all keys in same slot
-- `MOVED` redirect: client must follow—use cluster-aware client library
+- 使用哈希槽（Hash Slots）来分配键：相同的键会被分配到同一个哈希槽中，便于进行多键操作
+- 使用哈希标签（Hash Tags）：例如 `{user:1}:profile` 和 `{user:1}:sessions` 会被分配到同一个哈希槽中，便于管理相关数据
+- 不支持跨哈希槽执行 `MGET`/`MSET` 操作——除非所有相关键都在同一个哈希槽中，否则会引发错误
+- 当键被移动时，客户端需要根据返回的 `MOVED` 响应进行相应的处理——建议使用支持集群功能的客户端库
 
-## Common Patterns
+## 常见的使用模式
 
-- Cache-aside: check Redis, miss → fetch DB → write Redis—standard caching
-- Write-through: write DB + Redis together—keeps cache fresh
-- Rate limiter: `INCR requests:{ip}:{minute}` with `EXPIRE`—simple fixed window
-- Distributed lock: `SET ... NX EX` + unique token—verify token on release
+- **缓存策略**：先检查 Redis 中的数据，如果不存在则从数据库中获取数据并写入 Redis（Cache-aside）
+- **写穿透**：同时将数据写入数据库和 Redis，以确保缓存数据的实时性
+- **速率限制**：使用 `INCR requests:{ip}:{minute}` 并设置 `EXPIRE` 来限制请求频率
+- **分布式锁**：使用 `SET ... NX EX` 并生成唯一令牌来实现锁机制；释放锁时需要验证令牌的有效性
 
-## Connection Management
+## 连接管理
 
-- Connection pooling: reuse connections—creating is expensive
-- Pipeline commands: send batch without waiting—reduces round trips
-- `QUIT` on shutdown—graceful disconnect
-- Sentinel or Cluster for HA—single Redis is SPOF
+- 使用连接池（Connection Pooling）：重复使用连接可以减少资源消耗
+- 使用管道命令（Pipeline Commands）：批量发送请求，减少网络请求的往返次数
+- 在关闭连接时使用 `QUIT` 命令实现优雅断开
+- 使用 Sentinel 或 Cluster 机制来确保系统的高可用性（HA）——单台 Redis 服务器存在单点故障风险
 
-## Common Mistakes
+## 常见错误
 
-- No TTL on cache keys—memory grows until OOM
-- Using as primary database without persistence—data loss on restart
-- Blocking operations in single-threaded Redis—`KEYS *` blocks everything; use `SCAN`
-- Storing large blobs—Redis is RAM; 100MB values are expensive
-- Ignoring `maxmemory`—production Redis without limit will crash host
+- 不为缓存键设置 TTL——会导致内存持续增长，最终可能导致系统内存不足（OOM）
+- 将 Redis 作为主数据库使用而不进行持久化存储——重启时数据会丢失
+- 在单线程环境下执行阻塞操作（如 `KEYS *`）会导致整个系统卡顿；建议使用 `SCAN` 命令来处理大量数据
+- 存储大型数据（如二进制文件）——Redis 是基于内存的存储系统，存储大型数据会消耗大量内存
+- 忽略 `maxmemory` 参数的设置——在生产环境中，不设置 `maxmemory` 会导致 Redis 系统崩溃

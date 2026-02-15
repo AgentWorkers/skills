@@ -1,6 +1,6 @@
 ---
 name: nature-sounds
-description: Expert guidance for nature-sounds.
+description: 关于自然声音处理的专家指导。
 version: 1.0.0
 tags: [music,wellness,therapy]
 author: OpenWork
@@ -11,17 +11,18 @@ metadata:
       env: []
 ---
 
-# unature sounds
+# unature Sounds
 
-Music for wellness.
+专为提升生活品质而设计的音乐服务。
 
-## Capabilities
+## 功能
 
-- Music recommendations
-- Technique guidance
-- Benefits explanation
-- Usage tips
+- 音乐推荐
+- 演奏技巧指导
+- 音乐益处的解释
+- 使用技巧提示
 
-## Usage
-Music for relaxation
-Therapeutic music
+## 使用方法
+
+- 用于放松身心
+- 治疗性音乐（帮助缓解压力、促进放松）

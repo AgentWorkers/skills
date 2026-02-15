@@ -1,27 +1,27 @@
 ---
 name: evm-hardhat
-description: Hardhat development for EVM chains including Celo. Use when setting up Hardhat projects, writing Solidity contracts, compiling, testing, deploying, or verifying contracts with Hardhat.
+description: 适用于 EVM 链（包括 Celo）的 Hardhat 开发工具。用于配置 Hardhat 项目、编写 Solidity 合同、编译合同、测试合同、部署合同以及验证合同的功能。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Hardhat Development for EVM Chains
+# 用于EVM链的Hardhat开发
 
-This skill covers Hardhat setup and development for EVM-compatible chains with emphasis on Celo.
+本技能涵盖了在兼容EVM的区块链上使用Hardhat进行开发和设置的过程，重点介绍Celo平台。
 
-## When to Use
+## 使用场景
 
-- Setting up a new Hardhat project
-- Writing and compiling Solidity smart contracts
-- Testing contracts with Hardhat
-- Deploying contracts to Celo or other EVM chains
-- Verifying contracts on block explorers
+- 设置新的Hardhat项目
+- 编写和编译Solidity智能合约
+- 使用Hardhat测试合约
+- 将合约部署到Celo或其他EVM链上
+- 在区块浏览器中验证合约
 
-## Quick Start
+## 快速入门
 
-### Initialize Project
+### 初始化项目
 
 ```bash
 mkdir my-project && cd my-project
@@ -30,25 +30,24 @@ npm install --save-dev hardhat
 npx hardhat init
 ```
 
-Select "Create a TypeScript project" when prompted.
+根据提示选择“创建TypeScript项目”。
 
-### Install Additional Dependencies
+### 安装额外依赖项
 
 ```bash
 npm install --save-dev @nomicfoundation/hardhat-toolbox dotenv
 ```
 
-## Celo Network Information
+## Celo网络信息
 
-| Network | Chain ID | RPC Endpoint |
+| 网络 | 链ID | RPC端点 |
 |---------|----------|--------------|
-| Celo Mainnet | 42220 | https://forno.celo.org |
+| Celo主网 | 42220 | https://forno.celo.org |
 | Celo Sepolia | 11142220 | https://forno.celo-sepolia.celo-testnet.org |
 
+## 配置
 
-## Configuration
-
-### hardhat.config.ts for Celo
+### Celo的hardhat.config.ts文件
 
 ```typescript
 import { HardhatUserConfig } from "hardhat/config";
@@ -117,16 +116,16 @@ const config: HardhatUserConfig = {
 export default config;
 ```
 
-### Environment Variables (.env)
+### 环境变量（.env文件）
 
 ```bash
 PRIVATE_KEY=your_private_key_here
 CELOSCAN_API_KEY=your_celoscan_api_key_here
 ```
 
-## Writing Contracts
+## 编写合约
 
-### Basic Contract Structure
+### 基本合约结构
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -156,7 +155,7 @@ contract MyContract {
 }
 ```
 
-### Using OpenZeppelin
+### 使用OpenZeppelin框架
 
 ```bash
 npm install @openzeppelin/contracts
@@ -180,7 +179,7 @@ contract MyToken is ERC20, Ownable {
 }
 ```
 
-## Compilation
+## 编译合约
 
 ```bash
 # Compile all contracts
@@ -190,9 +189,9 @@ npx hardhat compile
 npx hardhat clean && npx hardhat compile
 ```
 
-## Testing
+## 测试
 
-### Test File Structure
+### 测试文件结构
 
 ```typescript
 // test/MyContract.test.ts
@@ -243,7 +242,7 @@ describe("MyContract", function () {
 });
 ```
 
-### Running Tests
+### 运行测试
 
 ```bash
 # Run all tests
@@ -259,9 +258,9 @@ REPORT_GAS=true npx hardhat test
 npx hardhat coverage
 ```
 
-## Deployment
+## 部署
 
-### Deployment Script
+### 部署脚本
 
 ```typescript
 // scripts/deploy.ts
@@ -296,7 +295,7 @@ main()
   });
 ```
 
-### Deploy Commands
+### 部署命令
 
 ```bash
 # Deploy to local Hardhat network
@@ -309,9 +308,9 @@ npx hardhat run scripts/deploy.ts --network celoSepolia
 npx hardhat run scripts/deploy.ts --network celo
 ```
 
-## Verification
+## 验证
 
-### Verify After Deployment
+### 部署后的验证
 
 ```bash
 # Verify on Celo Sepolia
@@ -321,7 +320,7 @@ npx hardhat verify --network celoSepolia <CONTRACT_ADDRESS> "Constructor Arg 1"
 npx hardhat verify --network celo <CONTRACT_ADDRESS> "Constructor Arg 1"
 ```
 
-### Programmatic Verification
+### 程序化验证
 
 ```typescript
 // Add to deployment script after deployment
@@ -345,28 +344,28 @@ async function verify(address: string, constructorArguments: any[]) {
 }
 ```
 
-## Common Tasks
+## 常见任务
 
-### Flatten Contract for Manual Verification
+### 打压合约文件以便手动验证
 
 ```bash
 npx hardhat flatten contracts/MyContract.sol > Flattened.sol
 ```
 
-### Check Contract Size
+### 检查合约大小
 
 ```bash
 npx hardhat compile --force
 npx hardhat size-contracts
 ```
 
-## Block Explorers
+## 块浏览器
 
-- **Celo Mainnet:** https://celoscan.io
-- **Celo Sepolia:** https://sepolia.celoscan.io
+- **Celo主网：** https://celoscan.io
+- **Celo Sepolia：** https://sepolia.celoscan.io
 
-## Additional Resources
+## 额外资源
 
-- [hardhat-config.md](references/hardhat-config.md) - Detailed configuration options
-- [testing-patterns.md](references/testing-patterns.md) - Advanced testing patterns
-- [security-checklist.md](rules/security-checklist.md) - Security best practices
+- [hardhat-config.md](references/hardhat-config.md) - 详细配置选项
+- [testing-patterns.md](references/testing-patterns.md) - 高级测试模式
+- [security-checklist.md](rules/security-checklist.md) - 安全最佳实践

@@ -1,6 +1,6 @@
 ---
 name: aria2-json-rpc
-description: Interact with aria2 download manager via JSON-RPC 2.0. Manage downloads, query status, and control tasks through natural language commands. Use when working with aria2, download management, or torrent operations.
+description: 通过 JSON-RPC 2.0 与 aria2 下载管理器进行交互。可以使用自然语言命令来管理下载任务、查询下载状态以及控制下载过程。适用于 aria2 的使用、下载任务的管理或种子文件（torrent）的操作场景。
 license: MIT
 compatibility: Requires Python 3.6+. WebSocket support requires websockets package (pip install websockets) and Python version must match dependency requirements.
 metadata:
@@ -8,40 +8,36 @@ metadata:
   version: "1.1.0"
 ---
 
-## What This Skill Does
+## 该技能的功能
 
-This skill enables you to control aria2 download manager through natural language commands:
-- Download files (HTTP/HTTPS/FTP/Magnet/Torrent/Metalink)
-- Monitor download progress and status
-- Control downloads (pause, resume, remove)
-- Manage batch operations (pause all, resume all)
-- View statistics and configure options
+该技能允许您通过自然语言命令来控制 aria2 下载管理器：
+- 下载文件（支持 HTTP/HTTPS/FTP/Magnet/Torrent/Metalink 协议）
+- 监控下载进度和状态
+- 控制下载操作（暂停、恢复、删除下载）
+- 管理批量下载任务（暂停所有下载、恢复所有下载）
+- 查看下载统计信息并配置相关选项
 
-## How to Use (For AI Agents)
+## 使用方法（针对 AI 代理）
 
-**⚠️ CRITICAL: DO NOT manually construct JSON-RPC requests.**
+**⚠️ 重要提示：** **切勿手动构造 JSON-RPC 请求！**  
+**✅ 请始终使用 `scripts/` 目录中的 Python 脚本。**  
+**⚠️ 请使用 `python3` 命令，而非 `python`（尤其是在 macOS 系统上，因为 `python` 可能不存在）**
 
-**✅ ALWAYS use the Python scripts in the `scripts/` directory.**
+### 工作流程（必须遵循）
 
-**⚠️ IMPORTANT: Use `python3` command, NOT `python`** (especially on macOS where `python` symlink doesn't exist)
+**步骤 1：检查配置状态**
 
-### Workflow (MUST FOLLOW)
-
-**Step 1: Check Configuration Status**
-
-Before executing any aria2 commands, ALWAYS check if configuration is ready:
-
+在执行任何 aria2 命令之前，务必先检查配置是否已准备好：
 ```bash
 python3 scripts/config_loader.py test
 ```
 
-- If **successful**: Proceed to execute user's command
-- If **failed**: Guide user to initialize configuration (see Step 2)
+- 如果配置成功：继续执行用户的命令。
+- 如果配置失败：引导用户初始化配置（参见步骤 2）。
 
-**Step 2: Initialize Configuration (if needed)**
+**步骤 2：初始化配置（如需要）**
 
-If connection test fails, guide user to set up configuration:
-
+如果连接测试失败，引导用户设置配置：
 ```bash
 # Recommended: User config (survives skill updates)
 python3 scripts/config_loader.py init --user
@@ -50,31 +46,31 @@ python3 scripts/config_loader.py init --user
 python3 scripts/config_loader.py init --local
 ```
 
-Then instruct user to edit the generated config file with their aria2 server details.
+然后指导用户使用他们的 aria2 服务器信息编辑生成的配置文件。
 
-**Step 3: Execute User Commands**
+**步骤 3：执行用户命令**
 
-Once configuration is ready, execute the requested aria2 operations.
+配置完成后，执行用户请求的 aria2 操作。
 
-### Example Workflow
+### 示例工作流程
 
-**User:** "download http://example.com/file.zip"
+**用户：** “下载 http://example.com/file.zip”
 
-**You execute:**
+**您执行：**
 ```bash
 # 1. Check configuration
 python3 scripts/config_loader.py test
 ```
 
-If test passes:
+如果测试通过：
 ```bash
 # 2. Execute download command
 python3 scripts/rpc_client.py aria2.addUri '["http://example.com/file.zip"]'
 ```
 
-**You respond:** "✓ Download started! GID: 2089b05ecca3d829"
+**您回复：** “✓ 下载已开始！GID: 2089b05ecca3d829”
 
-If test fails:
+如果测试失败：
 ```
 Configuration not ready. Please initialize:
 1. Run: python3 scripts/config_loader.py init --user
@@ -82,108 +78,108 @@ Configuration not ready. Please initialize:
 3. Run: python3 scripts/config_loader.py test (to verify)
 ```
 
-## Documentation Structure
+## 文档结构
 
-**For detailed execution instructions, see:**
-- **[references/execution-guide.md](references/execution-guide.md)** - Complete guide for AI agents with:
-  - Command mapping table (user intent → script call)
-  - Parameter formatting rules
-  - Step-by-step examples
-  - Common mistakes to avoid
-  - Response formatting guidelines
+**有关详细的执行说明，请参阅：**
+- **[references/execution-guide.md](references/execution-guide.md)** - 为 AI 代理提供的完整指南，内容包括：
+  - 命令映射表（用户意图 → 脚本调用）
+  - 参数格式规则
+  - 逐步示例
+  - 常见错误及避免方法
+  - 响应格式指南
 
-**For aria2 method reference, see:**
-- **[references/aria2-methods.md](references/aria2-methods.md)** - Detailed aria2 RPC method documentation
+**有关 aria2 方法的详细信息，请参阅：**
+- **[references/aria2-methods.md](references/aria2-methods.md)** - aria2 RPC 方法的详细文档
 
-## Common Commands Quick Reference
+## 常用命令快速参考
 
-| User Intent | Command Example |
+| 用户意图 | 命令示例 |
 |-------------|----------------|
-| Download a file | `python3 scripts/rpc_client.py aria2.addUri '["http://example.com/file.zip"]'` |
-| Check status | `python3 scripts/rpc_client.py aria2.tellStatus <GID>` |
-| List active downloads | `python3 scripts/rpc_client.py aria2.tellActive` |
-| List stopped downloads | `python3 scripts/rpc_client.py aria2.tellStopped 0 100` |
-| Pause download | `python3 scripts/rpc_client.py aria2.pause <GID>` |
-| Resume download | `python3 scripts/rpc_client.py aria2.unpause <GID>` |
-| Show statistics | `python3 scripts/rpc_client.py aria2.getGlobalStat` |
-| Show version | `python3 scripts/rpc_client.py aria2.getVersion` |
-| Purge results | `python3 scripts/rpc_client.py aria2.purgeDownloadResult` |
+| 下载文件 | `python3 scripts/rpc_client.py aria2.addUri '["http://example.com/file.zip"]'` |
+| 检查状态 | `python3 scripts/rpc_client.py aria2.tellStatus <GID>` |
+| 列出正在下载的文件 | `python3 scripts/rpc_client.py aria2.tellActive` |
+| 列出已暂停的下载任务 | `python3 scripts/rpc_client.py aria2.tellStopped 0 100` |
+| 暂停下载 | `python3 scripts/rpc_client.py aria2.pause <GID>` |
+| 恢复下载 | `python3 scripts/rpc_client.py aria2.unpause <GID>` |
+| 查看统计信息 | `python3 scripts/rpc_client.py aria2.getGlobalStat` |
+| 查看版本信息 | `python3 scripts/rpc_client.py aria2.Version` |
+| 清除下载结果 | `python3 scripts/rpc_client.py aria2.purgeDownloadResult` |
 
-For detailed usage and more commands, see [execution-guide.md](references/execution-guide.md).
+有关更多详细信息和使用方法，请参阅 [execution-guide.md](references/execution-guide.md)。
 
-## Available Scripts
+## 可用的脚本
 
-- `scripts/rpc_client.py` - Main interface for RPC calls
-- `scripts/examples/list-downloads.py` - Formatted download list
-- `scripts/examples/pause-all.py` - Pause all downloads
-- `scripts/examples/add-torrent.py` - Add torrent downloads
-- `scripts/examples/monitor-downloads.py` - Real-time monitoring
-- `scripts/examples/set-options.py` - Modify options
+- `scripts/rpc_client.py` - 主要的 RPC 调用接口脚本
+- `scripts/examples/list-downloads.py` - 格式化的下载列表脚本
+- `scripts/examples/pause-all.py` - 暂停所有下载的脚本
+- `scripts/examples/add-torrent.py` - 添加 torrent 下载的脚本
+- `scripts/examples/monitor-downloads.py` - 实时监控下载状态的脚本
+- `scripts/examples/set-options.py` - 修改配置选项的脚本
 
-## Configuration
+## 配置设置
 
-Scripts automatically load configuration from multiple sources with the following priority (highest to lowest):
+脚本会自动从多个来源加载配置，优先级如下（从高到低）：
 
-### Configuration Priority
+### 配置优先级
 
-1. **Environment Variables** (highest priority - temporary override)
-   - `ARIA2_RPC_HOST`, `ARIA2_RPC_PORT`, `ARIA2_RPC_PATH`, etc.
-   - Best for: CI/CD pipelines, temporary overrides, testing
-   - **Note**: For reference only. Agents should use config files instead.
+1. **环境变量**（最高优先级，用于临时覆盖）：
+   - `ARIA2_RPC_HOST`、`ARIA2_RPC_PORT`、`ARIA2_RPC_PATH` 等
+   - 适用于 CI/CD 流程、临时配置修改和测试场景
+   **注意**：仅用于参考。代理应使用配置文件进行配置。
 
-2. **Skill Directory Config** (project-specific configuration)
-   - Location: `skills/aria2-json-rpc/config.json`
-   - Best for: Project-specific settings, local testing, development
-   - ⚠️ **Warning**: Lost when running `npx skills add` to update the skill
+2. **技能目录配置**（项目特定配置）：
+   - 位置：`skills/aria2-json-rpc/config.json`
+   - 适用于项目特定设置和本地测试
+   ⚠️ **警告**：使用 `npx skills add` 更新技能时，此配置可能会丢失。
 
-3. **User Config Directory** (global fallback, update-safe) 🆕
-   - Location: `~/.config/aria2-skill/config.json`
-   - Best for: Personal default settings across all projects
-   - ✅ **Safe**: Survives skill updates via `npx skills add`
+3. **用户配置目录**（全局默认配置，安全可靠） 🆕：
+   - 位置：`~/.config/aria2-skill/config.json`
+   - 适用于所有项目中的个人默认设置
+   ✅ **安全**：在更新技能时配置不会丢失。
 
-4. **Defaults** (localhost:6800)
-   - Zero-configuration fallback for local development
+4. **默认配置**（localhost:6800）：
+   - 适用于本地开发的默认配置
 
-### Configuration Options
+### 配置选项
 
-- **host**: Hostname or IP address (default: `localhost`)
-- **port**: Port number (default: `6800`)
-- **path**: URL path (default: `null`). Set to `/jsonrpc` for standard aria2, or custom path for reverse proxy
-- **secret**: RPC secret token (default: `null`)
-- **secure**: Use HTTPS instead of HTTP (default: `false`)
-- **timeout**: Request timeout in milliseconds (default: `30000`)
+- **host**：主机名或 IP 地址（默认：`localhost`）
+- **port**：端口号（默认：`6800`）
+- **path**：URL 路径（默认：`null`）；设置为 `/jsonrpc` 以使用标准 aria2，或设置为自定义路径以使用反向代理
+- **secret**：RPC 密钥（默认：`null`）
+- **secure**：是否使用 HTTPS（默认：`false`）
+- **timeout**：请求超时时间（以毫秒为单位，默认：`30000`）
 
-### Quick Setup (For AI Agents)
+### 快速设置（针对 AI 代理）
 
-**IMPORTANT**: Always use Python scripts to manage configuration. Do NOT use shell commands directly.
+**重要提示**：始终使用 Python 脚本进行配置管理，切勿直接使用 shell 命令。
 
-**Step 1: Check current configuration status**
+**步骤 1：检查当前配置状态**
 ```bash
 python3 scripts/config_loader.py show
 ```
 
-**Step 2: Initialize configuration if needed**
+**步骤 2：（如需要）初始化配置**
 
-User config (recommended - survives updates):
+**用户配置（推荐使用，配置在更新后仍可保留）：**
 ```bash
 python3 scripts/config_loader.py init --user
 ```
 
-Local config (project-specific):
+**项目特定配置：**
 ```bash
 python3 scripts/config_loader.py init --local
 ```
 
-**Step 3: Guide user to edit the config file**
+**步骤 3：指导用户编辑配置文件**
 
-After initialization, the tool will display the config file path. Instruct user to edit it with their aria2 server details (host, port, secret, etc.).
+初始化完成后，工具会显示配置文件的路径。指导用户使用他们的 aria2 服务器信息（主机名、端口号、密钥等）编辑配置文件。
 
-**Step 4: Verify configuration**
+**步骤 4：验证配置**
 ```bash
 python3 scripts/config_loader.py test
 ```
 
-Example config file content:
+**示例配置文件内容：**
 ```json
 {
   "host": "localhost",
@@ -194,10 +190,9 @@ Example config file content:
 }
 ```
 
-### Configuration Management (For AI Agents)
+### 配置管理（针对 AI 代理）
 
-**Available Python scripts for configuration management:**
-
+**可用于配置管理的 Python 脚本：**
 ```bash
 # Check current configuration and source
 python3 scripts/config_loader.py show
@@ -212,20 +207,19 @@ python3 scripts/config_loader.py init --local
 python3 scripts/config_loader.py test
 ```
 
-**Agent Workflow for Configuration Setup:**
+**代理配置设置流程：**
 
-1. **Check if config exists**: Run `python3 scripts/config_loader.py show`
-2. **If config missing or invalid**: Guide user to run `python3 scripts/config_loader.py init --user`
-3. **User edits config**: Tell user the file path and required fields (host, port, secret)
-4. **Verify setup**: Run `python3 scripts/config_loader.py test`
-5. **Proceed with operations**: Once test passes, execute user's aria2 commands
+1. **检查配置是否存在**：运行 `python3 scripts/config_loader.py show`
+2. **如果配置缺失或无效**：引导用户运行 `python3 scripts/config_loader.py init --user`
+3. **用户编辑配置**：告知用户配置文件的路径及所需字段（主机名、端口号、密钥等）
+4. **验证配置**：运行 `python3 scripts/config_loader.py test`
+5. **执行操作**：配置验证通过后，执行用户的 aria2 命令
 
-### Advanced Configuration
+### 高级配置
 
-**Reverse Proxy Setup:**
+**反向代理设置：**
 
-For reverse proxy setups like `https://example.com:443/jsonrpc`, the config file should contain:
-
+对于类似 `https://example.com:443/jsonrpc` 的反向代理设置，配置文件应包含以下内容：
 ```json
 {
   "host": "example.com",
@@ -236,56 +230,56 @@ For reverse proxy setups like `https://example.com:443/jsonrpc`, the config file
 }
 ```
 
-**Environment Variables (for reference only):**
+**环境变量（仅供参考）：**
 
-Configuration can also be overridden via environment variables:
-- `ARIA2_RPC_HOST`: Hostname
-- `ARIA2_RPC_PORT`: Port number
-- `ARIA2_RPC_PATH`: URL path
-- `ARIA2_RPC_SECRET`: Secret token
-- `ARIA2_RPC_SECURE`: "true" or "false"
+配置也可以通过环境变量进行覆盖：
+- `ARIA2_RPC_HOST`：主机名
+- `ARIA2_RPC_PORT`：端口号
+- `ARIA2_RPC_PATH`：URL 路径
+- `ARIA2_RPC_SECRET`：密钥
+- `ARIA2_RPCSecure`：是否使用 HTTPS（`true` 或 `false`）
 
-Note: Use Python scripts for configuration management. Environment variables are documented here for reference only.
+**注意**：建议使用 Python 脚本进行配置管理。环境变量的设置仅用于参考。
 
-## Key Principles (For AI Agents)
+## 关键原则（针对 AI 代理）
 
-1. **Never** construct JSON-RPC requests manually
-2. **Always** call Python scripts via Bash tool using `python3` (not `python`)
-3. **Always** check configuration before executing commands:
-   - Run `python3 scripts/config_loader.py test` first
-   - If test fails, guide user through initialization
-4. **Never** run raw shell commands (mkdir, cat, export, etc.) directly
-   - Use Python scripts: `config_loader.py init`, `config_loader.py show`, etc.
-5. **Parse** script output and format for users
-6. **Refer to** execution-guide.md when unsure
+1. **切勿** 手动构造 JSON-RPC 请求。
+2. **始终** 通过 `python3` 使用 Bash 工具调用 Python 脚本。
+3. **在执行命令前** **务必检查配置**：
+   - 先运行 `python3 scripts/config_loader.py test`
+   - 如果测试失败，引导用户完成配置初始化。
+4. **切勿** 直接运行原始的 shell 命令（如 `mkdir`、`cat`、`export` 等）。
+   - 使用 Python 脚本进行配置管理，例如 `config_loader.py init`、`config_loader.py show` 等。
+5. **解析** 脚本输出并为用户提供格式化的结果。
+6. **如有疑问**，请参考执行指南（execution-guide.md）。
 
-## Supported Operations
+## 支持的操作
 
-### Download Management
-- Add downloads (HTTP/FTP/Magnet/Torrent/Metalink)
-- Pause/resume (individual or all)
-- Remove downloads
-- Add with custom options
+### 下载管理
+- 添加下载任务（支持 HTTP/FTP/Magnet/Torrent/Metalink 协议）
+- 暂停/恢复下载（单个或全部）
+- 删除下载任务
+- 使用自定义选项添加下载任务
 
-### Monitoring
-- Check download status
-- List active/waiting/stopped downloads
-- Get global statistics
-- Real-time monitoring
+### 监控
+- 检查下载状态
+- 列出正在下载、等待或已暂停的下载任务
+- 获取全局统计信息
+- 实时监控下载进度
 
-### Configuration
-- Get/change download options
-- Get/change global options
-- Query aria2 version
-- List available methods
+### 配置管理
+- 获取/修改下载选项
+- 获取/修改全局配置选项
+- 查询 aria2 的版本信息
+- 列出所有可用的方法
 
-### Maintenance
-- Purge download results
-- Remove specific results
+### 维护
+- 清除下载结果
+- 删除特定的下载任务
 
-## Need Help?
+**需要帮助？**
 
-- **Execution details:** [references/execution-guide.md](references/execution-guide.md)
-- **Method reference:** [references/aria2-methods.md](references/aria2-methods.md)
-- **Troubleshooting:** [references/troubleshooting.md](references/troubleshooting.md)
-- **aria2 official docs:** https://aria2.github.io/
+- **执行详情**：[references/execution-guide.md](references/execution-guide.md)
+- **方法参考**：[references/aria2-methods.md](references/aria2-methods.md)
+- **故障排除**：[references/troubleshooting.md](references/troubleshooting.md)
+- **aria2 官方文档**：https://aria2.github.io/

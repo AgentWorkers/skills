@@ -1,74 +1,74 @@
 ---
 name: slack-actions
 summary: Control Slack messaging, reactions, pins, and member information using Clawdbot.
-description: Enables authenticated interaction with Slack for sending, editing, deleting, reacting to, and managing messages and pins via a secure bot token.
+description: 该功能允许使用安全的机器人令牌（bot token）与 Slack 进行身份验证后的交互，从而实现发送、编辑、删除、回复以及管理消息和置顶帖子的操作。
 tags: ["slack","automation","collaboration","productivity","chatops"]
 version: 1.2.0
 author: Rayen Kamta / GEEKSDOBYTE LLC / GEEKSDOBYTE.COM
 ---
-# Slack Actions Skill
+# Slack Actions 技能
 
-## Overview
+## 概述
 
-The **Slack Actions Skill** enables Clawdbot to securely interact with Slack channels and direct messages using a Bot OAuth token.
+**Slack Actions 技能** 允许 Clawdbot 使用 Bot OAuth 令牌安全地与 Slack 频道和直接消息进行交互。
 
-This skill allows agents to:
+该技能使代理能够：
 
-- Send, edit, and delete messages
-- Add and list reactions
-- Pin and unpin messages
-- Read recent channel history
-- Retrieve member information
-- List workspace emojis
+- 发送、编辑和删除消息
+- 添加和列出反应（回复）
+- 固定（pin）和取消固定（unpin）消息
+- 阅读最近的频道历史记录
+- 获取成员信息
+- 列出工作区的表情符号
 
-All actions are executed using the permissions granted to the configured bot account.
-
----
-
-## Purpose & Capability
-
-This skill enables authenticated Slack operations using a Bot OAuth token supplied through the `SLACK_BOT_TOKEN` environment variable.
-
-With valid credentials, the skill can:
-
-- Manage messages and reactions
-- Maintain pinned references
-- Retrieve basic user metadata
-- Support lightweight workflow automation
-
-The skill operates strictly within the authorization scope of the configured Slack bot.
+所有操作均基于配置的机器人账户所获得的权限来执行。
 
 ---
 
-## Authentication & Configuration
+## 目的与功能
 
-### Required Environment Variable
+该技能通过 `SLACK_BOT_TOKEN` 环境变量提供的 Bot OAuth 令牌，实现经过身份验证的 Slack 操作。
 
-This skill requires a Slack Bot User OAuth token.
+使用有效的凭据，该技能可以：
 
-Before use, configure:
+- 管理消息和反应
+- 维护固定的消息引用
+- 获取基本用户元数据
+- 支持轻量级的工作流自动化
+
+该技能严格在配置的 Slack 机器人的授权范围内运行。
+
+---
+
+## 认证与配置
+
+### 必需的环境变量
+
+该技能需要一个 Slack 机器人用户的 OAuth 令牌。
+
+使用前，请进行以下配置：
 
 ```
 
 SLACK_BOT_TOKEN
 
-````
+```
 
-Example:
+示例：
 
 ```bash
 export SLACK_BOT_TOKEN="xoxb-xxxxxxxxxxxx-xxxxxxxxxxxx-xxxxxxxxxxxx"
-````
+```
 
-Or in `.env` format:
+或者以 `.env` 格式：
 
 ```
 SLACK_BOT_TOKEN=xoxb-xxxxxxxxxxxx-xxxxxxxxxxxx-xxxxxxxxxxxx
 ```
 
-### Token Requirements
+### 令牌要求
 
-The token must include the following OAuth scopes:
+令牌必须包含以下 OAuth 权限范围：
 
 * `chat:write`
 * `channels:read`
@@ -78,104 +78,104 @@ The token must include the following OAuth scopes:
 * `users:read`
 * `emoji:read`
 
-Additional scopes may be required depending on workspace policies.
+根据工作区政策，可能还需要其他权限范围。
 
-### Credential Storage
+### 凭据存储
 
-* Tokens must be stored only in environment variables
-* Tokens must never be hardcoded
-* Tokens must never be logged
-* Tokens must not be exposed in outputs
+* 令牌必须仅存储在环境变量中
+* 严禁将令牌硬编码
+* 严禁记录令牌信息
+* 严禁在输出中暴露令牌
 
-If `SLACK_BOT_TOKEN` is missing, invalid, or revoked, this skill must not execute.
-
----
-
-## Initial Setup
-
-To configure this skill:
-
-1. Create a Slack App in your workspace
-2. Enable Bot Token authentication
-3. Assign required OAuth scopes
-4. Install the app to the workspace
-5. Copy the Bot User OAuth token
-6. Store the token in `SLACK_BOT_TOKEN`
-7. Restart the agent
-
-After setup, the skill becomes available for execution.
+如果 `SLACK_BOT_TOKEN` 缺失、无效或被撤销，该技能将无法执行。
 
 ---
 
-## Credential Constraints
+## 初始设置
 
-* Only Bot User tokens (`xoxb-`) are supported
-* User tokens (`xoxp-`) are not permitted
-* Tokens must belong to a single workspace
-* Cross-workspace tokens are unsupported
-* Tokens must be rotated periodically
-* Tokens must comply with organizational security policies
+要配置此技能，请按照以下步骤操作：
 
-Unauthorized credential usage is prohibited.
+1. 在您的工作区创建一个 Slack 应用
+2. 启用 Bot Token 认证
+3. 分配所需的 OAuth 权限范围
+4. 将应用安装到工作区
+5. 复制机器人用户的 OAuth 令牌
+6. 将令牌存储到 `SLACK_BOT_TOKEN` 变量中
+7. 重启代理
 
----
-
-## When to Use This Skill
-
-Activate this skill when the user requests:
-
-* Sending messages to Slack
-* Reacting to messages
-* Editing or deleting content
-* Pinning or unpinning messages
-* Reading recent messages
-* Looking up users
-* Viewing emojis
-
-Example triggers:
-
-> “Send this to #engineering.”
-> “React with a checkmark.”
-> “Pin that message.”
-> “Who is U123?”
+设置完成后，该技能即可使用。
 
 ---
 
-## Required Inputs
+## 凭据限制
 
-### Message Targeting
+* 仅支持机器人用户令牌（格式为 `xoxb-`）
+* 不支持用户令牌（格式为 `xoxp-`）
+* 令牌必须属于单个工作区
+* 不支持跨工作区的令牌
+* 令牌必须定期轮换
+* 令牌必须符合组织的安全政策
 
-* `channelId` — Slack channel ID (ex: `C1234567890`)
-* `messageId` — Slack timestamp (ex: `1712023032.1234`)
-
-### Reactions
-
-* `emoji` — Unicode emoji or `:name:` format
-
-### Sending Messages
-
-* `to` — `channel:<id>` or `user:<id>`
-* `content` — Message text
-
-Message context may contain reusable fields such as `channel` and `slack message id`.
+禁止未经授权使用凭据。
 
 ---
 
-## Supported Action Groups
+## 何时使用此技能
 
-| Group      | Status  | Description                       |
+当用户请求以下操作时，激活此技能：
+
+- 向 Slack 发送消息
+- 对消息做出反应
+- 编辑或删除内容
+- 固定或取消固定消息
+- 阅读最近的消息
+- 查找用户信息
+- 查看表情符号
+
+示例触发语句：
+
+> “将此消息发送到 #engineering。”
+> “用勾号作为回复。”
+> “将那条消息固定。”
+> “U123 是谁？”
+
+---
+
+## 必需的输入参数
+
+### 消息目标
+
+* `channelId` — Slack 频道 ID（例如：`C1234567890`）
+* `messageId` — Slack 消息 ID（例如：`1712023032.1234`）
+
+### 反应（Reactions）
+
+* `emoji` — Unicode 表情符号或 `:name:` 格式
+
+### 发送消息
+
+* `to` — `channel:<id>` 或 `user:<id>`
+* `content` — 消息文本
+
+消息上下文可能包含可重用的字段，如 `channel` 和 `slack message id`。
+
+---
+
+## 支持的操作组
+
+| 操作组      | 状态    | 描述                                      |
 | ---------- | ------- | --------------------------------- |
-| reactions  | Enabled | Add and list reactions            |
-| messages   | Enabled | Send, edit, delete, read messages |
-| pins       | Enabled | Manage pinned items               |
-| memberInfo | Enabled | Retrieve user profiles            |
-| emojiList  | Enabled | List custom emojis                |
+| reactions  | 已启用 | 添加和列出反应                              |
+| messages   | 已启用 | 发送、编辑、删除和阅读消息                        |
+| pins       | 已启用 | 管理固定的消息                              |
+| memberInfo | 已启用 | 获取用户资料                              |
+| emojiList  | 已启用 | 列出自定义表情符号                            |
 
 ---
 
-## Available Actions
+## 可用的操作
 
-### React to a Message
+### 对消息做出反应
 
 ```json
 {
@@ -188,7 +188,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### List Reactions
+### 列出反应
 
 ```json
 {
@@ -200,7 +200,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Send a Message
+### 发送消息
 
 ```json
 {
@@ -212,7 +212,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Edit a Message
+### 编辑消息
 
 ```json
 {
@@ -225,7 +225,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Delete a Message
+### 删除消息
 
 ```json
 {
@@ -237,7 +237,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Read Recent Messages
+### 阅读最近的消息
 
 ```json
 {
@@ -249,7 +249,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Pin a Message
+### 固定消息
 
 ```json
 {
@@ -261,7 +261,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Unpin a Message
+### 取消固定消息
 
 ```json
 {
@@ -273,7 +273,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### List Pinned Items
+### 列出固定的消息
 
 ```json
 {
@@ -284,7 +284,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Get Member Information
+### 获取成员信息
 
 ```json
 {
@@ -295,7 +295,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### List Workspace Emojis
+### 列出工作区的表情符号
 
 ```json
 {
@@ -305,19 +305,19 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-## Behavioral Rules
+## 行为规则
 
-* Confirm IDs before destructive actions
-* Never delete messages without explicit user approval
-* Prefer reactions over messages for acknowledgments
-* Validate inputs before execution
-* Never expose credentials
+* 在执行破坏性操作前确认身份
+* 未经用户明确许可，严禁删除消息
+* 对于确认操作，优先使用反应而非消息
+* 在执行前验证输入内容
+* 严禁泄露凭据
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Mark Task Complete
+### 标记任务完成
 
 ```json
 {
@@ -330,7 +330,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Post Status Update
+### 发布状态更新
 
 ```json
 {
@@ -342,7 +342,7 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-### Save Important Message
+### 保存重要消息
 
 ```json
 {
@@ -354,37 +354,36 @@ Message context may contain reusable fields such as `channel` and `slack message
 
 ---
 
-## Instruction Scope
+## 操作范围
 
-This skill is limited to Slack workspace operations authorized by the configured bot token.
+该技能仅限于配置的机器人令牌授权的 Slack 工作区操作。
 
-It does NOT:
+它不执行以下操作：
 
-* Create Slack applications
-* Modify workspace settings
-* Manage billing
-* Bypass permissions
-* Escalate privileges
+- 创建 Slack 应用
+- 修改工作区设置
+- 管理账单
+- 绕过权限限制
+- 升级权限
 
-All operations respect Slack API constraints.
-
----
-
-## Compliance
-
-This skill follows Slack API Terms of Service and OAuth security guidelines.
-
-Users are responsible for obtaining organizational approval prior to deployment.
+所有操作均遵守 Slack API 的限制。
 
 ---
 
-## Best Practices
+## 合规性
 
-* Use reactions for lightweight workflows
-* Pin long-term references
-* Keep messages concise
-* Avoid bulk destructive actions
-* Rotate credentials regularly
+该技能遵循 Slack API 服务条款和 OAuth 安全指南。
+
+用户在部署前需获得组织的批准。
 
 ---
 
+## 最佳实践
+
+- 使用反应（reactions）实现轻量级的工作流
+- 固定长期需要的信息
+- 保持消息简洁
+- 避免批量执行破坏性操作
+- 定期轮换凭据
+
+---

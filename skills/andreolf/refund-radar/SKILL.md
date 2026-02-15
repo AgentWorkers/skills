@@ -1,138 +1,131 @@
 ---
 name: refund-radar
-description: Scan bank statements to detect recurring charges, flag suspicious transactions, and draft refund requests with interactive HTML reports.
+description: 扫描银行对账单以检测重复性收费，标记可疑交易，并通过交互式的 HTML 报告生成退款申请。
 ---
 
 # refund-radar
 
-Scan bank statements to detect recurring charges, flag suspicious transactions, identify duplicates and fees, draft refund request templates, and generate an interactive HTML audit report.
+该工具可扫描银行对账单，检测重复收费、标记可疑交易、识别重复项和费用，生成退款申请模板，并生成交互式的HTML审计报告。
 
-## Triggers
+## 触发命令
 
-- "scan my bank statement for refunds"
-- "analyze my credit card transactions"
-- "find recurring charges in my statement"
-- "check for duplicate or suspicious charges"
-- "help me dispute a charge"
-- "generate a refund request"
-- "audit my subscriptions"
+- `scan my bank statement for refunds`：扫描我的银行对账单以查找可退款项
+- `analyze my credit card transactions`：分析我的信用卡交易
+- `find recurring charges in my statement`：在对账单中查找重复收费
+- `check for duplicate or suspicious charges`：检查是否存在重复或可疑的交易
+- `help me dispute a charge`：帮助我投诉某笔交易
+- `generate a refund request`：生成退款申请
+- `audit my subscriptions`：审计我的订阅服务
 
-## Workflow
+## 工作流程
 
-### 1. Get Transaction Data
+### 1. 获取交易数据
 
-Ask user for bank/card CSV export or pasted text. Common sources:
+- 请求用户提供银行或信用卡的交易数据（CSV格式）或直接粘贴文本。
+- 常见数据来源：
+  - Apple Card：钱包 → 卡片余额 → 导出CSV文件
+  - Chase：账户 → 下载交易记录 → CSV格式
+  - Mint：交易记录 → 导出CSV文件
+  - 其他银行：从交易历史中下载CSV文件
 
-- Apple Card: Wallet → Card Balance → Export
-- Chase: Accounts → Download activity → CSV
-- Mint: Transactions → Export
-- Any bank: Download as CSV from transaction history
-
-Or accept pasted text format:
+- 或者直接接受用户粘贴的文本数据：
 ```
 2026-01-03 Spotify -11.99 USD
 2026-01-15 Salary +4500 USD
 ```
 
-### 2. Parse and Normalize
+### 2. 解析和规范化数据
 
-Run the parser on their data:
-
+- 使用解析器处理用户提供的数据：
 ```bash
 python -m refund_radar analyze --csv statement.csv --month 2026-01
 ```
 
-Or for pasted text:
+- 对于直接粘贴的文本数据，使用相应的解析逻辑：
 ```bash
 python -m refund_radar analyze --stdin --month 2026-01 --default-currency USD
 ```
 
-The parser auto-detects:
-- Delimiter (comma, semicolon, tab)
-- Date format (YYYY-MM-DD, DD/MM/YYYY, MM/DD/YYYY)
-- Amount format (single column or debit/credit)
-- Currency
+解析器会自动识别：
+- 数据分隔符（逗号、分号、制表符）
+- 日期格式（YYYY-MM-DD、DD/MM/YYYY、MM/DD/YYYY）
+- 金额格式（单列显示或区分借方/贷方）
+- 货币类型
 
-### 3. Review Recurring Charges
+### 3. 检查重复收费
 
-Tool identifies recurring subscriptions by:
-- Same merchant >= 2 times in 90 days
-- Similar amounts (within 5% or $2)
-- Consistent cadence (weekly, monthly, yearly)
-- Known subscription keywords (Netflix, Spotify, etc.)
+- 通过以下条件识别重复订阅：
+  - 在90天内同一商家多次收费
+  - 金额相似（相差在5%以内或2美元以内）
+  - 收费周期固定（每周、每月、每年）
+  - 包含常见的订阅服务关键词（如Netflix、Spotify等）
 
-Output shows:
-- Merchant name
-- Average amount and cadence
-- Last charge date
-- Next expected charge
+- 输出结果包括：
+  - 商家名称
+  - 平均收费金额及周期
+  - 最后一次收费日期
+  - 下一次预计收费时间
 
-### 4. Flag Suspicious Charges
+### 4. 标记可疑交易
 
-Tool automatically flags:
-
-| Flag Type | Trigger | Severity |
+- 工具会自动标记以下类型的可疑交易：
+| 标记类型 | 触发条件 | 严重程度 |
 |-----------|---------|----------|
-| Duplicate | Same merchant + amount within 2 days | HIGH |
-| Amount Spike | > 1.8x baseline, delta > $25 | HIGH |
-| New Merchant | First time + amount > $30 | MEDIUM |
-| Fee-like | Keywords (FEE, ATM, OVERDRAFT) + > $3 | LOW |
-| Currency Anomaly | Unusual currency or DCC | LOW |
+| 重复收费 | 同一商家在2天内多次收费 | 高度可疑 |
+| 金额异常 | 金额超过基线的1.8倍（差额超过25美元） | 高度可疑 |
+| 新商家 | 首次收费且金额超过30美元 | 中等可疑 |
+| 类似费用 | 包含“FEE”、“ATM”、“OVERDRAFT”等关键词且金额超过3美元 | 低度可疑 |
+| 货币异常 | 使用非常用货币或DCC支付方式 | 低度可疑 |
 
-### 5. Clarify with User
+### 5. 与用户确认
 
-For flagged items, ask in batches of 5-10:
+- 对于被标记的交易，分批次（每批5-10条）询问用户：
+  - 这笔收费是否合法？
+  - 是否应将其视为正常收费？
+  - 是否需要为这笔交易生成退款申请模板？
 
-- Is this charge legitimate?
-- Should I mark this merchant as expected?
-- Do you want a refund template for this?
-
-Update state based on answers:
+- 根据用户的回答更新交易状态：
 ```bash
 python -m refund_radar mark-expected --merchant "Costco"
 python -m refund_radar mark-recurring --merchant "Netflix"
 ```
 
-### 6. Generate HTML Report
+### 6. 生成HTML报告
 
-Report saved to `~/.refund_radar/reports/YYYY-MM.html`
+- 报告文件保存在`~/.refund_radar/reports/YYYY-MM.html`中。
+- 报告结构参考[template.html]模板：
+  - **摘要**：交易总数、总支出、重复收费次数、被标记的次数
+  - **重复收费**：列出商家名称、金额、收费周期、下次预计收费时间
+  - **异常收费**：显示被标记的交易及其严重程度和原因
+  - **重复收费**：同一天的重复收费记录
+  - **类似费用**：ATM手续费、外汇手续费等服务费用
+  - **退款模板**：提供可复制的退款申请邮件/聊天消息模板
 
-Copy [template.html](assets/template.html) structure. Sections:
-- **Summary**: Transaction count, total spent, recurring count, flagged count
-- **Recurring Charges**: Table with merchant, amount, cadence, next expected
-- **Unexpected Charges**: Flagged items with severity and reason
-- **Duplicates**: Same-day duplicate charges
-- **Fee-like Charges**: ATM fees, FX fees, service charges
-- **Refund Templates**: Ready-to-copy email/chat/dispute messages
+- 功能特性：
+  - 可切换隐私设置（隐藏商家名称）
+  - 支持深色/浅色显示模式
+  - 部分内容可折叠
+  - 模板上提供复制按钮
+  - 空内容部分会自动隐藏
 
-Features:
-- Privacy toggle (blur merchant names)
-- Dark/light mode
-- Collapsible sections
-- Copy buttons on templates
-- Auto-hide empty sections
+### 7. 生成退款申请
 
-### 7. Draft Refund Requests
+- 为每笔被标记的交易生成三种类型的退款申请模板：
+  - **电子邮件**：正式的退款申请
+  **聊天**：用于实时支持的快捷消息
+  **投诉**：用于银行投诉的表格
 
-For each flagged charge, generate three template types:
-- **Email**: Formal refund request
-- **Chat**: Quick message for live support
-- **Dispute**: Bank dispute form text
+- 每种模板提供三种语气风格（简洁、坚定、友好）
 
-Three tone variants each:
-- Concise (default)
-- Firm (assertive)
-- Friendly (polite)
+- 模板包含以下信息：
+  - 商家名称和收费日期
+  - 收费金额
+  - 根据标记类型说明投诉原因
+  - 包含信用卡最后四位数字和参考号码的占位符
 
-Templates include:
-- Merchant name and date
-- Charge amount
-- Dispute reason based on flag type
-- Placeholders for card last 4, reference number
+**注意**：生成的文本中不允许使用撇号（'）。
 
-**Important**: No apostrophes in any generated text.
-
-## CLI Reference
+## 命令行接口（CLI）参考
 
 ```bash
 # Analyze statement
@@ -157,26 +150,26 @@ python -m refund_radar reset-state
 python -m refund_radar export --month 2026-01 --out data.json
 ```
 
-## Files Written
+## 文件目录结构
 
-| Path | Purpose |
+| 文件路径 | 用途 |
 |------|---------|
-| `~/.refund_radar/state.json` | Learned preferences, merchant history |
-| `~/.refund_radar/reports/YYYY-MM.html` | Interactive audit report |
-| `~/.refund_radar/reports/YYYY-MM.json` | Raw analysis data |
+| `~/.refund_radar/state.json` | 存储用户设置和交易历史记录 |
+| `~/.refund_radar/reports/YYYY-MM.html` | 交互式审计报告 |
+| `~/.refund_radar/reports/YYYY-MM.json` | 原始分析数据 |
 
-## Privacy
+## 隐私政策
 
-- **No network calls.** Everything runs locally.
-- **No external APIs.** No Plaid, no cloud services.
-- **Your data stays on your machine.**
-- **Privacy toggle in reports.** Blur merchant names with one click.
+- **无需网络连接**：所有操作均在本地完成。
+- **不使用外部API**：不依赖Plaid或任何云服务。
+- **用户数据仅保存在用户设备上**。
+- **报告中的隐私设置**：可一键隐藏商家名称。
 
-## Requirements
+## 系统要求
 
-- Python 3.9+
-- No external dependencies
+- Python 3.9及以上版本
+- 无需额外依赖库
 
-## Repository
+## 项目仓库
 
 https://github.com/andreolf/refund-radar

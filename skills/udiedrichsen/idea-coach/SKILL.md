@@ -1,6 +1,6 @@
 ---
 name: idea-coach
-description: AI-powered idea/problem/challenge manager with GitHub integration. Captures, categorizes, reviews, and helps ship ideas to repos.
+description: 这是一款由人工智能驱动的想法/问题/挑战管理工具，具备与 GitHub 的集成功能。它能够捕获用户提出的想法，对其进行分类和审核，并协助将这些想法上传到相应的代码仓库中。
 version: 0.2.0
 author: moinsen-dev
 commands:
@@ -21,58 +21,58 @@ commands:
 
 # Idea Coach
 
-> Your critical sparring partner for ideas, problems, and challenges — now with GitHub integration!
+> 您在想法、问题和挑战方面的得力助手——现在支持与 GitHub 的集成！
 
-## What It Does
+## 功能介绍
 
-Idea Coach helps you:
-- **Capture** ideas, problems, and challenges as they come
-- **Categorize** by type, domain, energy, urgency, and importance
-- **Review** periodically (daily → quarterly based on importance)
-- **Ship** ideas to GitHub repos when ready
-- **Track** progress and know when to let go
+Idea Coach 可帮助您：
+- **记录** 新出现的想法、问题和挑战
+- **按类型、领域、紧迫性和重要性进行分类**
+- **定期回顾**（根据重要性，每天或每季度）
+- **将想法提交到 GitHub 仓库**（准备就绪时）
+- **跟踪进度**，并判断何时应该放弃某个想法
 
-## Philosophy
+## 设计理念
 
-**Be critical, not just supportive.** Idea Coach will:
-- Suggest dropping ideas that aren't worth pursuing
-- Ask hard questions during reviews
-- Track which ideas actually ship vs. rot forever
+**既要提出建设性意见，也要进行批判性分析。** Idea Coach 会：
+- 建议放弃那些不值得追求的想法
+- 在回顾过程中提出尖锐的问题
+- 记录哪些想法最终被实现，哪些被长期搁置
 
-## Commands
+## 命令操作
 
-### Core Commands
+### 核心命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/idea <text>` | Capture a new idea |
-| `/idea_list` | List active ideas |
-| `/idea_list --due` | Show ideas due for review |
-| `/idea_get <id>` | Get idea details |
-| `/idea_update <id>` | Update idea attributes |
-| `/idea_review <id>` | Add review interaction |
-| `/idea_drop <id>` | Mark as dropped (requires reason) |
-| `/idea_done <id>` | Mark as completed |
-| `/idea_stats` | Show statistics |
+| `/idea <文本>` | 记录一个新的想法 |
+| `/idea_list` | 列出所有活跃的想法 |
+| `/idea_list --due` | 显示即将需要审核的想法 |
+| `/idea_get <id>` | 获取想法的详细信息 |
+| `/idea_update <id>` | 更新想法的属性 |
+| `/idea_review <id>` | 为想法添加审核记录 |
+| `/idea_drop <id>` | 将想法标记为“已放弃”（需提供理由） |
+| `/idea_done <id>` | 将想法标记为“已完成” |
+| `/idea_stats` | 显示统计信息 |
 
-### GitHub Commands
+### GitHub 相关命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/idea_link <id> <owner/repo>` | Link to existing repo |
-| `/idea_ship <id>` | Create new repo for idea |
-| `/idea_ship <id> --public` | Create public repo |
-| `/idea_repo <id>` | Show linked repo status |
-| `/idea_sync <id>` | Create/update GitHub issue |
+| `/idea_link <id> <owner/repo>` | 将想法链接到现有的 GitHub 仓库 |
+| `/idea_ship <id>` | 为想法创建一个新的 GitHub 仓库 |
+| `/idea_ship <id> --public` | 创建公共仓库 |
+| `/idea_repo <id>` | 查看链接的仓库状态 |
+| `/idea_sync <id>` | 在 GitHub 上创建/更新问题 |
 
-## Attributes
+## 属性分类
 
-### Types
-- 💡 **idea** — Something to build or create
-- 🔧 **problem** — Something to fix or solve
-- 🎯 **challenge** — Something to overcome
+### 类型
+- 💡 **idea** — 需要构建或创造的内容
+- 🔧 **problem** — 需要解决的问题
+- 🎯 **challenge** — 需要克服的挑战
 
-### Status Flow
+### 状态流转流程
 ```
 captured → exploring → developing → shipped/done
                 ↓           ↓
@@ -81,24 +81,24 @@ captured → exploring → developing → shipped/done
              dropped
 ```
 
-### Importance → Review Cycle
-| Importance | Energy | Review Cycle |
+### 重要性与审核周期
+
+| 重要性 | 紧迫性 | 审核周期 |
 |------------|--------|--------------|
-| critical | high | daily |
-| critical | * | weekly |
-| important | high | weekly |
-| important | * | biweekly |
-| nice-to-have | * | monthly |
-| parked | * | quarterly |
+| 非常重要 | 高 | 每天 |
+| 非常重要 | * | 每周 |
+| 重要 | 高 | 每周 |
+| 重要 | * | 每两周 |
+| 可有可无 | * | 每月 |
+| 暂缓处理 | * | 每季度 |
 
-## GitHub Integration
+## GitHub 集成
 
-### Prerequisites
-- `gh` CLI installed and authenticated
-- Run `gh auth login` if not set up
+### 先决条件
+- 安装并登录 `gh` CLI
+- 如果尚未设置，请运行 `gh auth login`
 
-### Workflow Example
-
+### 工作流程示例
 ```
 # 1. Capture idea
 /idea "Build a CLI for task management"
@@ -119,8 +119,7 @@ captured → exploring → developing → shipped/done
 /idea_sync abc123
 ```
 
-## CLI Usage
-
+## CLI 使用方法
 ```bash
 # Add idea
 python scripts/coach.py add "Build something cool" --type idea --importance important
@@ -137,22 +136,21 @@ python scripts/coach.py repo-status <id>
 python scripts/coach.py sync-issue <id> --labels enhancement,idea
 ```
 
-## Data Storage
+## 数据存储
 
-Ideas are stored in `~/.openclaw/idea-coach/ideas.json`
+想法存储在 `~/.openclaw/idea-coach/ideas.json` 文件中
 
-Each idea tracks:
-- Basic info (title, description, type, domain)
-- Status and progress
-- Energy, urgency, importance
-- Review schedule and history
-- **GitHub integration** (repo, issue, sync timestamps)
-- Interaction log
+每个想法会记录以下信息：
+- 基本信息（标题、描述、类型、领域）
+- 状态和进度
+- 紧迫性、重要性
+- 审核计划和历史记录
+- **GitHub 集成信息**（仓库链接、问题编号、同步时间）
+- 交互记录
 
-## Tips
-
-1. **Capture quickly** — Don't overthink the initial capture
-2. **Review honestly** — Use reviews to kill stale ideas
-3. **Ship early** — Create a repo as soon as an idea has momentum
-4. **Sync issues** — Use GitHub issues for detailed tracking
-5. **Drop freely** — A dropped idea is a decision, not a failure
+## 使用建议：
+1. **快速记录** — 初步记录时不必过度思考
+2. **如实审核** — 通过审核来淘汰过时的想法
+3. **尽早提交** — 一旦想法有发展潜力，立即创建仓库
+4. **同步问题** — 使用 GitHub 问题进行详细跟踪
+5. **自由放弃** — 放弃一个想法是一个决定，而不是失败

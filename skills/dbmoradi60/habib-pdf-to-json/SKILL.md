@@ -1,28 +1,28 @@
 ---
 slug: "pdf-to-structured"
 display_name: "PDF To Structured"
-description: "Extract structured data from construction PDFs. Convert specifications, BOMs, schedules, and reports from PDF to Excel/CSV/JSON. Use OCR for scanned documents and pdfplumber for native PDFs."
+description: "从建筑相关的PDF文件中提取结构化数据。将技术规格书、物料清单（BOM）、施工进度表以及各种报告从PDF格式转换为Excel、CSV或JSON格式。对于扫描后的文档，可以使用OCR技术进行识别；而对于原始PDF文件，则可以直接使用pdfplumber工具进行处理。"
 ---
 
-# PDF to Structured Data Conversion
+# PDF到结构化数据的转换
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.4), this skill transforms unstructured PDF documents into structured formats suitable for analysis and integration. Construction projects generate vast amounts of PDF documentation - specifications, BOMs, schedules, and reports - that need to be extracted and processed.
+本技能基于DDC方法论（第2.4章），将非结构化的PDF文档转换为适合分析和集成的结构化格式。建设项目会产生大量的PDF文档——如规范、物料清单（BOM）、进度表和报告——这些文档需要被提取并进行处理。
 
-**Book Reference:** "Преобразование данных в структурированную форму" / "Data Transformation to Structured Form"
+**参考书籍**：《数据转换为结构化格式》（"Преобразование данных в структурированную форму"）
 
-> "Преобразование данных из неструктурированной в структурированную форму — это и искусство, и наука. Этот процесс часто занимает значительную часть работы инженера по обработке данных."
-> — DDC Book, Chapter 2.4
+> “将数据从非结构化格式转换为结构化格式既是一门艺术，也是一门科学。这一过程通常占据数据工程师工作的重要部分。”
+——DDC书籍，第2.4章
 
-## ETL Process Overview
+## ETL流程概述
 
-The conversion follows the ETL pattern:
-1. **Extract**: Load the PDF document
-2. **Transform**: Parse and structure the content
-3. **Load**: Save to CSV, Excel, or JSON
+转换过程遵循ETL模式：
+1. **提取（Extract）**：加载PDF文档
+2. **转换（Transform）**：解析并组织文档内容
+3. **加载（Load）**：将结果保存为CSV、Excel或JSON格式
 
-## Quick Start
+## 快速入门
 
 ```python
 import pdfplumber
@@ -36,7 +36,7 @@ with pdfplumber.open("construction_spec.pdf") as pdf:
     df.to_excel("extracted_data.xlsx", index=False)
 ```
 
-## Installation
+## 安装
 
 ```bash
 # Core libraries
@@ -50,9 +50,9 @@ pip install pytesseract pdf2image
 pip install pypdf
 ```
 
-## Native PDF Extraction (pdfplumber)
+## 原生PDF提取工具（pdfplumber）
 
-### Extract All Tables from PDF
+### 从PDF中提取所有表格
 
 ```python
 import pdfplumber
@@ -82,7 +82,7 @@ df = extract_tables_from_pdf("material_specification.pdf")
 df.to_excel("materials.xlsx", index=False)
 ```
 
-### Extract Text with Layout
+### 带有布局的文本提取
 
 ```python
 import pdfplumber
@@ -105,7 +105,7 @@ with open("report_text.txt", "w", encoding="utf-8") as f:
     f.write(text)
 ```
 
-### Extract Specific Table by Position
+### 按位置提取特定表格
 
 ```python
 import pdfplumber
@@ -134,9 +134,9 @@ def extract_table_from_area(pdf_path, page_num, bbox):
 df = extract_table_from_area("drawing.pdf", 0, (50, 100, 550, 400))
 ```
 
-## Scanned PDF Processing (OCR)
+## 扫描PDF的处理（OCR）
 
-### Extract Text from Scanned PDF
+### 从扫描PDF中提取文本
 
 ```python
 import pytesseract
@@ -169,7 +169,7 @@ df = ocr_scanned_pdf("scanned_specification.pdf", language='eng')
 df.to_csv("ocr_results.csv", index=False)
 ```
 
-### OCR Table Extraction
+### OCR表格提取
 
 ```python
 import pytesseract
@@ -210,9 +210,9 @@ df = ocr_table_from_scanned_pdf("scanned_bom.pdf")
 print(df)
 ```
 
-## Construction-Specific Extractions
+## 与建筑项目相关的特定数据提取
 
-### Bill of Materials (BOM) Extraction
+### 物料清单（BOM）提取
 
 ```python
 import pdfplumber
@@ -249,7 +249,7 @@ bom = extract_bom_from_pdf("project_bom.pdf")
 bom.to_excel("bom_extracted.xlsx", index=False)
 ```
 
-### Project Schedule Extraction
+### 项目进度表提取
 
 ```python
 import pdfplumber
@@ -293,7 +293,7 @@ schedule = extract_schedule_from_pdf("project_schedule.pdf")
 print(schedule)
 ```
 
-### Specification Parsing
+### 规范解析
 
 ```python
 import pdfplumber
@@ -329,9 +329,9 @@ specs = parse_specification_pdf("technical_spec.pdf")
 print(specs)
 ```
 
-## Batch Processing
+## 批量处理
 
-### Process Multiple PDFs
+### 处理多个PDF文件
 
 ```python
 import pdfplumber
@@ -374,7 +374,7 @@ count = batch_extract_tables("./pdf_documents/", "./extracted/")
 print(f"Extracted {count} tables")
 ```
 
-## Data Cleaning After Extraction
+## 提取后的数据清洗
 
 ```python
 import pandas as pd
@@ -406,7 +406,7 @@ df_clean = clean_extracted_data(df)
 df_clean.to_excel("clean_data.xlsx", index=False)
 ```
 
-## Export Options
+## 导出选项
 
 ```python
 import pandas as pd
@@ -431,35 +431,35 @@ df = extract_tables_from_pdf("document.pdf")
 export_to_multiple_formats(df, "extracted_data")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Task | Tool | Code |
+| 任务 | 工具 | 代码 |
 |------|------|------|
-| Extract table | pdfplumber | `page.extract_table()` |
-| Extract text | pdfplumber | `page.extract_text()` |
-| OCR scanned | pytesseract | `pytesseract.image_to_string(image)` |
-| Merge PDFs | pypdf | `writer.add_page(page)` |
-| Convert to image | pdf2image | `convert_from_path(pdf)` |
+| 提取表格 | pdfplumber | `page.extract_table()` |
+| 提取文本 | pdfplumber | `page.extract_text()` |
+| OCR扫描 | pytesseract | `pytesseract.image_to_string(image)` |
+| 合并PDF文件 | pypdf | `writer.add_page(page)` |
+| 转换为图像 | pdf2image | `convert_from_path(pdf)` |
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Table not detected | Try adjusting table settings: `page.extract_table(table_settings={})` |
-| Wrong column alignment | Use visual debugging: `page.to_image().draw_rects()` |
-| OCR quality poor | Increase DPI, preprocess image, use correct language |
-| Memory issues | Process pages one at a time, close PDF after processing |
+| 未检测到表格 | 调整表格设置：`page.extract_table(table_settings={})` |
+| 列对齐错误 | 使用可视化调试工具：`page.to_image().draw_rects()` |
+| OCR质量差 | 提高DPI、预处理图像、使用正确的语言 |
+| 内存问题 | 一次处理一页文档，处理完成后关闭PDF文件 |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.4
-- **Website**: https://datadrivenconstruction.io
-- **pdfplumber Docs**: https://github.com/jsvine/pdfplumber
-- **Tesseract OCR**: https://github.com/tesseract-ocr/tesseract
+- **书籍**：Artem Boiko所著的《数据驱动的建造》（"Data-Driven Construction"），第2.4章
+- **网站**：https://datadrivenconstruction.io
+- **pdfplumber文档**：https://github.com/jsvine/pdfplumber
+- **Tesseract OCR**：https://github.com/tesseract-ocr/tesseract
 
-## Next Steps
+## 下一步
 
-- See `image-to-data` for image processing
-- See `cad-to-data` for CAD/BIM data extraction
-- See `etl-pipeline` for automated processing workflows
-- See `data-quality-check` for validating extracted data
+- 查看`image-to-data`以了解图像处理方法
+- 查看`cad-to-data`以了解CAD/BIM数据提取方法
+- 查看`etl-pipeline`以了解自动化处理工作流程
+- 查看`data-quality-check`以了解提取数据的验证方法

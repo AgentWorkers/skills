@@ -1,6 +1,6 @@
 ---
 name: mastodon-scout
-description: Read-only Mastodon CLI. Outputs human-readable timeline summaries or raw JSON.
+description: 只读版的 Mastodon 命令行界面（CLI）。它可以输出易于阅读的时间线摘要，或者原始的 JSON 数据。
 metadata:
   {
     "openclaw":
@@ -56,45 +56,45 @@ metadata:
 
 # Mastodon Scout
 
-## Purpose
+## 功能说明
 
-Read-only Mastodon CLI that fetches data from the Mastodon API. Returns human-readable summaries by default, or raw JSON with `--json` flag.
+这是一个仅限读取数据的 Mastodon 命令行工具（CLI），它通过 Mastodon API 获取数据。默认情况下，工具会返回易于阅读的摘要信息；如果使用 `--json` 标志，则会返回原始的 JSON 数据。
 
 ---
 
-## Invocation Rules (MANDATORY)
+## 使用规则（必须遵守）
 
-### Binary Selection
+### 可执行文件选择
 - **macOS / Darwin** → `dist/mastodon-scout`
 - **Linux** → `dist/mastodon-scout-linux`
 
-### Commands
+### 命令
 
-#### Home Timeline
+#### 主时间线
 ```
 {baseDir}/bin/mastodon-scout home
 ```
-Fetches the authenticated user's home timeline.
+获取已认证用户的个人主时间线。
 
-#### User Tweets
+#### 用户发布的推文
 ```
 {baseDir}/bin/mastodon-scout user-tweets
 ```
-Fetches the authenticated user's own posts.
+获取已认证用户自己发布的推文。
 
-#### Mentions
+#### 被提及
 ```
 {baseDir}/bin/mastodon-scout mentions
 ```
-Fetches mentions of the authenticated user.
+获取提及已认证用户的推文。
 
-#### Search
+#### 搜索
 ```
 {baseDir}/bin/mastodon-scout search <query>
 ```
-Searches for posts matching the query.
+搜索与指定查询匹配的推文。
 
-### Flags (Optional)
+### 标志（可选）
 ```
 --instance <url>       # Mastodon instance URL (default: https://mastodon.social)
 --limit <int>          # Number of items to return (default: 20)
@@ -102,132 +102,124 @@ Searches for posts matching the query.
 --json                 # Output raw JSON instead of human-readable text
 ```
 
-### Environment Variables (REQUIRED)
+### 环境变量（必须设置）
 ```
 MASTODON_TOKEN         # OAuth bearer token for authentication
 ```
 
 ---
 
-## Output Modes
+## 输出格式
 
-### Text Mode (Default)
+### 文本格式（默认）
 ```bash
 mastodon-scout home
 ```
-Returns human-readable summary of timeline data.
+以易于阅读的形式返回时间线数据的摘要信息。
+该工具可以对时间线结果进行总结和解释，以便用户更轻松地理解。
 
-The agent MAY summarize and explain the timeline results to make them more accessible to the user.
-
-### JSON Mode
+### JSON 格式
 ```bash
 mastodon-scout --json home
 ```
-Returns raw JSON data from the Mastodon API.
-
-When JSON mode is used, return the output verbatim without interpretation.
-
----
-
-## Error Handling
-
-- If the binary exits non-zero:
-  - In JSON mode: return error output verbatim
-  - In text mode: the agent MAY explain the error to the user
-  - Do not retry
-
-- If MASTODON_TOKEN is not set:
-  - The binary will exit with an error message
-  - Agent should guide the user to the authentication setup section
+直接返回来自 Mastodon API 的原始 JSON 数据。
+在 JSON 模式下，输出内容将保持原样，不进行任何解释。
 
 ---
 
-## Examples That Trigger This Skill
+## 错误处理
 
-- `mastodon-scout home`
-- `show my mastodon timeline`
-- `check mastodon mentions`
-- `search mastodon for "golang"`
-- `get my mastodon posts`
+- 如果程序非零退出：
+  - 在 JSON 模式下：直接返回错误信息。
+  - 在文本模式下：工具可以向用户解释错误原因。
+  - 不需要重试。
 
----
-
-## Performance Requirements
-
-- Execute binary directly
-- No web searches
-- No secondary tools beyond the binary
-- Minimize latency
+- 如果未设置 `MASTODON_TOKEN` 环境变量：
+  - 程序将输出错误信息，并提示用户设置认证信息。
 
 ---
 
-## Notes
-
-- In text mode: agent MAY summarize and explain results
-- In JSON mode: output verbatim, no interpretation
-- This skill is **read-only** (no posting, following, or other mutations)
+## 使用示例
+- `mastodon-scout home`  
+- `show my mastodon timeline`  
+- `check mastodon mentions`  
+- `search mastodon for "golang"`  
+- `get my mastodon posts`  
 
 ---
 
-## Authentication Setup (Agent MAY Help)
+## 性能要求
+- 直接执行命令行工具。
+- 不允许使用任何第三方搜索工具。
+- 尽量减少延迟。
 
-**EXCEPTION TO STRICT MODE**: If the user needs help obtaining a token, the agent **may** provide guidance before executing the skill.
+---
 
-The tool requires a Mastodon OAuth bearer token set in the `MASTODON_TOKEN` environment variable.
+## 其他说明
 
-### How to Obtain a Token (Guide the User):
+- 在文本模式下，工具可以对结果进行总结和解释。
+- 在 JSON 模式下，输出内容将保持原样，不进行任何解释。
+- 该工具仅用于读取数据（不支持发布、关注或其他操作）。
 
-**Step 1: Access Development Settings**
-- User should log into their Mastodon instance (e.g., mastodon.social, fosstodon.org)
-- Navigate to: **Settings → Development** (or Preferences → Development)
-- Direct URL format: `https://[instance-domain]/settings/applications`
+---
 
-**Step 2: Create Application**
-- Click "New Application"
-- Fill in details:
-  - **Application name**: `mastodon-scout` (or any name)
-  - **Application website**: Can leave blank or use any URL
-  - **Redirect URI**: `urn:ietf:wg:oauth:2.0:oob` (for CLI apps)
-  - **Scopes**: **CRITICAL - Only select `read`** (uncheck write, follow, push)
+## 认证设置（工具可提供帮助）
 
-**Step 3: Get Access Token**
-- Click "Submit"
-- Click on the created application to view details
-- Copy the **"Your access token"** field value
+**严格模式下的例外**：如果用户需要帮助获取访问令牌，工具可以在执行命令前提供指导。
+该工具需要用户在 `MASTODON_TOKEN` 环境变量中设置 Mastodon 的 OAuth 访问令牌。
 
-**Step 4: Set Environment Variable**
+### 获取令牌的步骤（指导用户）：
+
+**步骤 1：进入开发设置**
+- 用户需要登录他们的 Mastodon 账户（例如：mastodon.social 或 fosstodon.org）。
+- 转到：**设置 → 开发**（或偏好设置 → 开发）。
+- 直接访问地址：`https://[实例域名]/settings/applications`
+
+**步骤 2：创建应用程序**
+- 点击“新建应用程序”。
+- 填写相关信息：
+  - **应用程序名称**：`mastodon-scout`（或任意名称）
+  - **应用程序网站**：可以留空或使用任意 URL
+  - **重定向 URI**：`urn:ietf:wg:oauth:2.0:oob`（适用于 CLI 应用程序）
+  - **权限范围**：仅选择“读取”权限（取消勾选“写入”、“关注”和“推送”权限）。
+
+**步骤 3：获取访问令牌**
+- 点击“提交”。
+- 查看创建的应用程序的详细信息。
+- 复制“访问令牌”字段的值。
+
+**步骤 4：设置环境变量**
 ```bash
 export MASTODON_TOKEN="paste_token_here"
 ```
 
-**Step 5: Verify Token Works**
+**步骤 5：验证令牌是否有效**
 ```bash
 ./dist/mastodon-scout home
 ```
 
-### Common Mastodon Instances:
-- `mastodon.social` - General purpose (default)
-- `fosstodon.org` - FOSS/tech community
-- `mas.to` - Tech focused
-- `hachyderm.io` - Tech/infosec community
+### 常见的 Mastodon 实例：
+- `mastodon.social` - 通用用途（默认实例）
+- `fosstodon.org` - 开源/技术社区
+- `mas.to` - 专注于技术的社区
+- `hachyderm.io` - 技术/信息安全社区
+对于非默认实例，可以使用 `--instance https://your-instance.com` 标志。
 
-Use `--instance https://your-instance.com` flag for non-default instances.
-
-### Security Notes to Communicate:
-- Token is **read-only** (cannot post, follow, or delete)
-- Keep token secret (don't commit to git)
-- Can be revoked anytime in Development settings
-- Each Mastodon instance requires its own token
+### 安全注意事项：
+- 该令牌仅用于读取数据（无法用于发布、关注或删除操作）。
+- 请妥善保管令牌（切勿将其提交到 Git 仓库）。
+- 令牌可以在开发设置中随时被撤销。
+- 每个 Mastodon 实例都需要单独的访问令牌。
 
 ---
 
-## Output Format
+## 输出格式
 
-### Text Mode (Default)
-Human-readable summary of posts, formatted for readability. The agent decides how to present the information.
+### 文本格式（默认）
+以易于阅读的形式显示推文摘要信息。具体展示方式由工具决定。
 
-### JSON Mode (`--json` flag)
-All commands return JSON in the following format:
+### JSON 格式（使用 `--json` 标志）
+所有命令返回的 JSON 数据格式如下：
 
 ```json
 {
@@ -236,8 +228,7 @@ All commands return JSON in the following format:
 }
 ```
 
-Or on error:
-
+如果发生错误，输出格式如下：
 ```json
 {
   "success": false,
@@ -245,4 +236,4 @@ Or on error:
 }
 ```
 
-The `data` field contains the raw Mastodon API response without any modifications.
+`data` 字段包含未经修改的原始 Mastodon API 响应数据。

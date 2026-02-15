@@ -1,54 +1,54 @@
 ---
 name: perplexity
-description: Use Perplexity API for web-grounded AI search and research. Use when user needs up-to-date information, multi-step reasoning with web citations, exhaustive research with source references, factual queries with current events, or competitive analysis. Default when user mentions Perplexity, needs current information, or requires source citations.
+description: 使用 Perplexity API 进行基于网络的 AI 搜索与研究。当用户需要最新信息、包含网络引用的多步骤推理、带有来源参考的详尽研究、涉及当前事件的事实性查询，或进行竞争分析时，均可使用该 API。当用户提及 Perplexity、需要最新信息或要求提供来源引用时，该 API 为默认选择。
 ---
 
-# Perplexity AI Search
+# Perplexity AI 搜索
 
-## Overview
+## 概述
 
-This skill provides access to the Perplexity API for web-grounded AI search and research. It combines the power of large language models with real-time web search, providing accurate, up-to-date answers with source citations.
+该技能提供了对 Perplexity API 的访问权限，用于基于网络的 AI 搜索和研究。它结合了大型语言模型的强大功能和实时网络搜索能力，能够提供准确、最新的答案，并附带来源引用。
 
-## When to Use Perplexity vs. Built-in Search
+## 何时使用 Perplexity 与内置搜索
 
-**Use Perplexity when:**
-- You need **current information** (news, prices, events, recent developments)
-- The user asks for **source citations** or references
-- Complex **multi-step reasoning** is required
-- The user specifically mentions Perplexity or wants research-style answers
-- You need **exhaustive analysis** across multiple sources
+**在以下情况下使用 Perplexity：**
+- 需要 **最新信息**（新闻、价格、事件、最新发展）
+- 用户要求提供 **来源引用** 或参考资料
+- 需要进行复杂的 **多步骤推理**
+- 用户明确提到了 Perplexity 或希望获得研究风格的答案
+- 需要对多个来源进行 **全面分析**
 
-**Use built-in web search when:**
-- Simple factual queries
-- Quick information lookup
-- The user doesn't need AI-generated synthesis
-- Basic URL or content retrieval is sufficient
+**在以下情况下使用内置网络搜索：**
+- 简单的事实性查询
+- 快速查找信息
+- 用户不需要 AI 生成的合成内容
+- 仅需要基本的 URL 或内容检索
 
-## Model Selection Guide
+## 模型选择指南
 
-Choose the right model based on task complexity:
+根据任务复杂性选择合适的模型：
 
-### 🔍 Search Models (Quick Facts)
-Use for simple, factual queries where speed matters.
+### 🔍 搜索模型（快速查询）
+适用于需要快速响应的简单事实性查询。
 
-- `sonar` - Default search model with web access. Best for most queries.
-- `sonar-pro` - Advanced search with deeper understanding.
+- `sonar` - 默认搜索模型，支持网络访问。适用于大多数查询。
+- `sonar-pro` - 具有更深入理解能力的高级搜索模型。
 
-### 🧠 Reasoning Models (Complex Analysis)
-Use for complex, multi-step tasks requiring logical thinking.
+### 🧠 推理模型（复杂分析）
+适用于需要逻辑思维的复杂多步骤任务。
 
-- `sonar-reasoning` - Complex reasoning with web search.
-- `sonar-reasoning-pro` - Advanced reasoning with deeper content understanding.
+- `sonar-reasoning` - 结合网络搜索的复杂推理模型。
+- `sonar-reasoning-pro` - 具有更深入内容理解能力的高级推理模型。
 
-### 📚 Research Models (Exhaustive Analysis)
-Use for comprehensive, in-depth research across multiple sources.
+### 📚 研究模型（全面分析）
+适用于需要对多个来源进行综合、深入研究的场景。
 
-- `sonar-research` - Comprehensive research with in-depth analysis.
-- `sonar-research-pro` - Advanced research with exhaustive analysis and detailed reports.
+- `sonar-research` - 提供全面研究的模型。
+- `sonar-research-pro` - 提供详尽分析及详细报告的高级研究模型。
 
-## Quick Start
+## 快速入门
 
-### Basic Search
+### 基本搜索
 
 ```bash
 # Simple query (uses sonar by default)
@@ -61,7 +61,7 @@ scripts/perplexity_search.sh "Latest AI developments" -m sonar-pro
 scripts/perplexity_search.sh "Tesla stock analysis" -f markdown
 ```
 
-### Advanced Research
+### 高级研究
 
 ```bash
 # Deep research with comprehensive analysis
@@ -77,113 +77,112 @@ scripts/perplexity_search.sh "Analyze tech trends" \
   -s "You are a technology analyst. Focus on business implications and market trends."
 ```
 
-## Search Context Size
+## 搜索上下文大小
 
-Control how much web information is retrieved:
+控制检索到的网络信息量：
 
-- **low** - Faster, fewer sources. Good for simple queries.
-- **medium** (default) - Balanced. Good for most use cases.
-- **high** - Most comprehensive. Best for research and detailed analysis.
+- **低** - 检索速度更快，来源较少。适用于简单查询。
+- **中等**（默认） - 平衡性较好，适用于大多数使用场景。
+- **高** - 检索内容最全面，适用于研究和详细分析。
 
-## Pro Search Mode
+## 专业搜索模式
 
-Available for `sonar-pro` and reasoning models. Controls multi-step tool usage:
+仅适用于 `sonar-pro` 和推理模型。可以控制多步骤搜索的流程：
 
-- **fast** (default) - Standard single-step search.
-- **pro** - Automated multi-step reasoning with multiple web searches.
-- **auto** - Automatic classification based on query complexity.
+- **快速**（默认） - 标准的单步搜索。
+- **专业** - 自动化的多步骤推理，涉及多次网络搜索。
+- **自动** - 根据查询复杂性自动选择搜索方式。
 
-## Setup Requirements
+## 设置要求
 
-### API Key Configuration
+### API 密钥配置
 
-The skill requires Perplexity API key via environment variable:
+该技能需要通过环境变量设置 Perplexity API 密钥：
 
 ```bash
 export PERPLEXITY_API_KEY="your-key-here"
 ```
 
-**To set it permanently (add to ~/.bashrc or ~/.zshrc):**
+**要永久设置该密钥（请添加到 ~/.bashrc 或 ~/.zshrc）：**
 ```bash
 echo 'export PERPLEXITY_API_KEY="your-key-here"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-**Note:** Do not store API key in Clawdbot config. The skill only reads from environment variable to avoid config conflicts.
+**注意：** 不要将 API 密钥存储在 Clawdbot 配置文件中。该技能仅从环境变量中读取密钥，以避免配置冲突。
 
-### Dependencies
+### 依赖项
 
-The script uses bash and curl. Both are typically pre-installed on Linux systems.
+该脚本使用 bash 和 curl。这两个工具通常已预安装在 Linux 系统上。
 
-## Usage Patterns
+## 使用场景
 
-### News and Current Events
+### 新闻和时事
 ```bash
 scripts/perplexity_search.sh "Latest news about AI regulation in Europe" -m sonar
 ```
 
-### Competitive Analysis
+### 竞争分析
 ```bash
 scripts/perplexity_search.sh "Compare iPhone 15 vs Samsung Galaxy S24 features" \
   -m sonar-reasoning-pro -c high -f markdown
 ```
 
-### Market Research
+### 市场研究
 ```bash
 scripts/perplexity_search.sh "Electric vehicle market forecast 2025-2030" \
   -m sonar-research-pro -c high -p pro -f markdown
 ```
 
-### Technical Questions with Current Data
+### 需要最新数据的技术问题
 ```bash
 scripts/perplexity_search.sh "Latest Python frameworks for web development 2025" \
   -m sonar-reasoning -c medium
 ```
 
-## Output Formats
+## 输出格式
 
-- **text** (default) - Plain text with citation references [1], [2], etc.
-- **markdown** - Markdown formatted response with source links
-- **json** - Raw API response in JSON format
+- **文本**（默认） - 带有引用 [1], [2] 等的纯文本格式。
+- **markdown** - 带有来源链接的 Markdown 格式响应。
+- **json** - 以 JSON 格式返回的原始 API 响应。
 
-## Cost Awareness
+## 成本说明
 
-Perplexity API is not free. Be mindful of usage costs:
+Perplexity API 不是免费的。请注意使用成本：
 
-- **Simple queries**: ~$0.005–$0.015 per query
-- **Deep research**: ~$0.015–$0.03+ per query
-- **Pro users get $5/month credits** in Perplexity Pro subscription
+- **简单查询**：每次查询约 0.005–0.015 美元
+- **深度研究**：每次查询约 0.015–0.03 美元及以上
+- **专业用户可通过 Perplexity Pro 订阅获得每月 5 美元的信用额度**
 
-Use reasoning/research models judiciously. Default to `sonar` for most queries.
+请谨慎使用推理/研究模型。对于大多数查询，建议使用默认的 `sonar` 模型。
 
-## List Available Models
+## 可用模型列表
 
 ```bash
 scripts/perplexity_search.sh --list-models
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Error: PERPLEXITY_API_KEY environment variable not set**
-- Set up API key as described in "Setup Requirements" above
+**错误：未设置 PERPLEXITY_API_KEY 环境变量**
+- 按照上述“设置要求”设置 API 密钥。
 
-**Error: curl command not found**
-- Install curl: `apt install curl` or equivalent for your system
+**错误：未找到 curl 命令**
+- 安装 curl：`apt install curl` 或适用于您系统的相应命令。
 
-**Error: Unexpected API response**
-- Check your API key is valid and has not been revoked
-- Verify your Perplexity account has API access
+**错误：API 响应异常**
+- 确认您的 API 密钥有效且未被吊销
+- 验证您的 Perplexity 账户是否具有 API 访问权限。
 
-## Resources
+## 资源
 
-### scripts/
-
-- **perplexity_search.sh** - Main script for Perplexity API interactions
-  - Supports all Perplexity models
-  - Handles API key discovery from environment or config
-  - Provides multiple output formats
-  - Uses curl for API calls (no Python dependencies)
+### 脚本：
+- **perplexity_search.sh** - 主要用于与 Perplexity API 交互的脚本
+  - 支持所有 Perplexity 模型
+  - 从环境或配置文件中获取 API 密钥
+  - 提供多种输出格式
+  - 使用 curl 进行 API 调用（无需 Python）
 
 ---
 
-**Note:** This skill uses external API calls. Be mindful of rate limits and costs. The API key should never be committed to version control or shared publicly.
+**注意：** 该技能依赖于外部 API 调用。请注意使用频率限制和费用问题。API 密钥切勿提交到版本控制系统中或公开共享。

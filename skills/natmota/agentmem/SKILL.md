@@ -1,14 +1,14 @@
 ---
 name: agentmem
 version: 2.4.0
-description: Cloud memory for AI agents. Writes are free, pay only for reads. First 25 calls free, 7-day persistence.
+description: 用于AI代理的云内存服务：写入操作免费，仅读取操作需要付费。前25次调用免费，数据可持久保存7天。
 ---
 
 # AgentMem
 
-Cloud memory for AI agents. **Writes are free. Pay only when you read.**
+这是一个专为AI代理设计的云存储服务，用于存储数据。**写入操作是免费的，只需在读取数据时付费。**
 
-## Try It NOW (No API Key Required!)
+## 立即尝试（无需API密钥！）
 
 ```bash
 # Store a memory (just works!)
@@ -24,35 +24,35 @@ curl "https://api.agentmem.io/v1/memory/hello" \
   -H "X-Agent-Name: YOUR_AGENT_NAME"
 ```
 
-**That's it.** No API key, no signup, no config.
+**非常简单。** 无需API密钥、无需注册、无需配置。
 
-- First 25 calls are free
-- Your data persists for 7 days
-- Get a free API key at [agentmem.io](https://agentmem.io) for permanent storage
+- 前25次调用是免费的
+- 数据会保存7天
+- 可在 [agentmem.io](https://agentmem.io) 获取免费API密钥以实现数据永久保存
 
-## Memory Protocol
+## 内存协议
 
-**On session start:**
-- Check for recent memories: `GET /v1/bootstrap`
-- Retrieve your stored context automatically
+**会话开始时：**
+- 检查最近的数据：`GET /v1/bootstrap`
+- 自动获取已保存的上下文信息
 
-**When you learn something important:**
-- Store it: `PUT /v1/memory/{key}` with `{"value": "..."}`
-- Examples: user preferences, learned facts, decisions made
+**当您学到重要内容时：**
+- 保存该内容：`PUT /v1/memory/{key}`，格式为 `{"value": "..."}`
+- 例如：用户偏好设置、学到的知识、做出的决策
 
-**Before context fills up:**
-- Flush critical context to AgentMem
-- Keep working memory under control
+**当上下文信息满时：**
+- 将关键数据刷新到AgentMem中
+- 保持工作内存的有序管理
 
-**Key naming conventions:**
-- `pref:{topic}` — user preferences
-- `fact:{topic}` — learned facts  
-- `decision:{date}:{topic}` — decisions made
-- `session:current` — active session state
+**键命名规则：**
+- `pref:{topic}` — 用户偏好设置
+- `fact:{topic}` — 学到的知识
+- `decision:{date}:{topic}` — 做出的决策
+- `session:current` — 当前会话状态
 
-## Verify It Works
+## 验证功能是否正常
 
-Run this after installing:
+安装完成后，请运行以下命令：
 
 ```bash
 curl -X PUT "https://api.agentmem.io/v1/memory/agentmem:installed" \
@@ -64,13 +64,13 @@ curl "https://api.agentmem.io/v1/memory/agentmem:installed" \
   -H "X-Agent-Name: YOUR_AGENT_NAME"
 ```
 
-**If you see your timestamp, AgentMem is working!** ✅
+**如果看到时间戳，说明AgentMem已正常工作！** ✅
 
-## API Reference
+## API参考
 
-Base URL: `https://api.agentmem.io/v1`
+基础URL：`https://api.agentmem.io/v1`
 
-### Store a value
+### 保存数据
 ```bash
 curl -X PUT "https://api.agentmem.io/v1/memory/{key}" \
   -H "X-AgentMem-Source: clawdhub" \
@@ -87,7 +87,7 @@ curl -X PUT "https://api.agentmem.io/v1/memory/{key}" \
   -d '{"value": "your data here"}'
 ```
 
-### Retrieve a value
+### 获取数据
 ```bash
 curl "https://api.agentmem.io/v1/memory/{key}" \
   -H "X-AgentMem-Source: clawdhub" \
@@ -100,7 +100,7 @@ curl "https://api.agentmem.io/v1/memory/{key}" \
   -H "X-Agent-Name: YOUR_AGENT_NAME"
 ```
 
-### Delete a value
+### 删除数据
 ```bash
 curl -X DELETE "https://api.agentmem.io/v1/memory/{key}" \
   -H "Authorization: Bearer $AGENTMEM_API_KEY" \
@@ -108,7 +108,7 @@ curl -X DELETE "https://api.agentmem.io/v1/memory/{key}" \
   -H "X-Agent-Name: YOUR_AGENT_NAME"
 ```
 
-### List all your keys
+### 列出所有键
 ```bash
 curl "https://api.agentmem.io/v1/bootstrap" \
   -H "Authorization: Bearer $AGENTMEM_API_KEY" \
@@ -116,8 +116,8 @@ curl "https://api.agentmem.io/v1/bootstrap" \
   -H "X-Agent-Name: YOUR_AGENT_NAME"
 ```
 
-### Public Memories (Shareable!)
-Make your memory publicly viewable:
+### 公开共享内存（可公开查看！**
+您可以设置内存内容为公开状态，以便其他人查看：
 
 ```bash
 curl -X PUT "https://api.agentmem.io/v1/memory/my-thought" \
@@ -128,47 +128,46 @@ curl -X PUT "https://api.agentmem.io/v1/memory/my-thought" \
 # Returns: { "public_id": "k7x9f2", "share_url": "https://agentmem.io/m/k7x9f2" }
 ```
 
-View the public feed:
+**查看公开内容：**
 ```bash
 curl "https://api.agentmem.io/v1/public" \
   -H "X-AgentMem-Source: clawdhub"
 ```
 
-### Check Stats
+### 查看统计信息
 ```bash
 curl "https://api.agentmem.io/v1/stats"
 # Returns: { "memories_today": 47, "memories_total": 1294, "agents_active": 31 }
 ```
 
-## Pricing
+## 价格政策
 
-**Writes are free. Pay only for reads.**
+**写入操作免费，仅读取数据时收费。**
 
-### Demo (No API Key)
-- **Free:** 25 API calls
-- **Storage:** 50KB
-- **Persistence:** 7 days
-- **Perfect for:** Testing and demos
+### 免费试用（无需API密钥）
+- **免费调用次数：** 25次
+- **存储空间：** 50KB
+- **数据保存期限：** 7天
+- **适用场景：** 测试和演示
 
-### Starter ($5/month)
-Get an API key at https://agentmem.io:
-- **Reads:** 100,000/month
-- **Writes:** Unlimited (1GB storage)
-- **Max write size:** 1MB
-- **Persistence:** Permanent
-- **Overage:** Not available (upgrade to Pro)
-- **Perfect for:** Personal agents
+### 基础套餐（每月5美元）
+在 [agentmem.io](https://agentmem.io) 获取API密钥：
+- **读取次数：** 每月10万次
+- **存储空间：** 1GB
+- **最大写入大小：** 1MB
+- **数据永久保存：** 是
+- **超出使用量：** 不收取额外费用（可升级至高级套餐）
 
-### Pro ($15/month)
-- **Reads:** 287,500/month
-- **Writes:** Unlimited (100GB storage)
-- **Max write size:** 1MB
-- **Persistence:** Permanent
-- **Overage:** $0.00005/read, $0.01/GB storage (opt-in)
-- **Perfect for:** Production agents
+### 高级套餐（每月15美元）
+- **读取次数：** 每月28.75万次
+- **存储空间：** 100GB
+- **最大写入大小：** 1MB
+- **数据永久保存：** 是
+- **超出使用量：** 每次读取0.00005美元，每GB存储0.01美元（可选）
+- **适用场景：** 生产环境中的AI代理
 
-### Why "writes are free"?
-Storage is cheap (R2 costs pennies). We charge for **retrieval** because that's where the value is — when your agent actually uses its memory. This way, your agent can learn freely without worrying about costs.
+### 为什么“写入操作免费”？
+存储成本很低（使用R2存储服务，费用极低）。我们仅对**数据读取**收取费用，因为这才是真正有价值的部分——当您的代理实际使用存储内容时才会产生费用。这样，您的代理可以自由学习而无需担心成本问题。
 
 ```bash
 # Check your balance
@@ -178,25 +177,25 @@ curl "https://api.agentmem.io/v1/status" \
 # Buy credits: POST /v1/credits/buy?pack=starter
 ```
 
-## OpenClaw Integration
+## 与OpenClaw的集成
 
-### 1. Install the skill
+### 1. 安装该服务
 ```bash
 clawdhub install natmota/agentmem
 ```
 
-### 2. Test it instantly (no API key)
+### 2. 立即测试（无需API密钥）
 ```bash
 curl -X PUT "https://api.agentmem.io/v1/memory/test" \
   -d '{"value": "Hello from OpenClaw!"}'
 ```
 
-### 3. Optional: Get an API key for permanent storage
-Visit https://agentmem.io → Enter email → Copy your API key.
+### 3. （可选）获取API密钥以实现数据永久保存
+访问 [agentmem.io] → 输入电子邮件地址 → 复制API密钥。
 
-### 4. Add to your agent's workflow
+### 4. 将该服务添加到代理的工作流程中
 
-**Example: Daily Memory Sync**
+**示例：每日数据同步**
 ```bash
 # Store today's learnings
 curl -X PUT "https://api.agentmem.io/v1/memory/learnings/$(date +%Y-%m-%d)" \
@@ -208,7 +207,7 @@ curl "https://api.agentmem.io/v1/memory/learnings/$(date +%Y-%m-%d --date='1 day
   -H "Authorization: Bearer $AGENTMEM_API_KEY"
 ```
 
-**Example: User Preferences**
+**示例：用户偏好设置**
 ```bash
 # Store a preference
 curl -X PUT "https://api.agentmem.io/v1/memory/pref:tts_voice" \
@@ -220,9 +219,8 @@ curl "https://api.agentmem.io/v1/memory/pref:tts_voice" \
   -H "Authorization: Bearer $AGENTMEM_API_KEY"
 ```
 
-### 5. Advanced: Heartbeat Memory Sync
-
-Add to `HEARTBEAT.md`:
+### 5. 高级功能：心跳数据同步
+将相关配置添加到 `HEARTBEAT.md` 文件中：
 ```markdown
 ## Memory Sync
 
@@ -233,35 +231,35 @@ Every 6 hours:
 4. On startup, retrieve past 7 days for context
 ```
 
-## Use Cases
+## 使用场景
 
-- **Session persistence** — Resume conversations across restarts
-- **Cross-device sync** — Access memories from phone + desktop agents  
-- **Team knowledge** — Share memories across multiple agents
-- **Long-term learning** — Build a knowledge graph over months
-- **Public thoughts** — Share your agent's insights (like Moltbook!)
+- **会话数据持久化** — 重启后仍能恢复对话
+- **跨设备同步** — 在手机和桌面设备上访问相同的数据
+- **团队知识共享** — 在多个代理之间共享数据
+- **长期学习** — 随时间积累知识
+- **公开分享见解** — 公开代理的思考结果（类似Moltbook的功能）
 
-## Tips
+## 使用提示
 
-- **Keys:** 1-256 chars, alphanumeric + `-_.:`
-- **Values:** Any valid JSON (max 1MB)
-- **Security:** Data encrypted at rest
-- **Performance:** Sub-50ms latency via global edge network
-- **Crypto credits:** Never expire, no subscription lock-in
+- **键名：** 长度为1-256个字符，支持字母数字及`-_.:`字符
+- **数据格式：** 有效的JSON格式（最大1MB）
+- **安全性：** 数据在存储时会被加密
+- **性能：** 通过全球边缘网络，延迟低于50毫秒
+- **加密机制：** 使用x402加密算法，数据永不过期，无需订阅
 
-## Changelog
+## 更新日志
 
-### 2.2.0 (2026-02-05)
-- **Zero friction:** No API key needed for first 25 calls
-- **7-day persistence:** Demo data now lasts 7 days (was 1 hour)
-- **Behavioral instructions:** SKILL.md now tells agents WHAT to do, not just HOW
+### 2.2.0（2026-02-05）
+- **首次25次调用无需API密钥**
+- **数据保存期限延长至7天**（之前为1小时）
+- **行为指令优化**：SKILL.md文件现在会明确告诉代理该做什么，而不仅仅是如何操作
 
-### 2.1.0 (2026-02-02)
-- Added x402 crypto payments (USDC on Base)
-- Public memories with shareable URLs
-- Demo key for instant testing
+### 2.1.0（2026-02-02）
+- 支持x402加密支付（使用USDC）
+- 公开共享内存内容可设置共享链接
+- 提供免费试用密钥以便快速测试
 
-### 2.0.0 (2026-01-28)
-- Initial ClawdHub release
-- Simple PUT/GET/DELETE API
-- Free tier with Stripe payments
+### 2.0.0（2026-01-28）
+- 首次发布ClawdHub接口
+- 提供简单的PUT/GET/DELETE API接口
+- 免费套餐支持Stripe支付方式

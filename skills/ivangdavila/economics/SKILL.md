@@ -1,51 +1,51 @@
 ---
 name: Economics
-description: Clarify economic thinking from everyday choices to policy analysis.
+description: 从日常决策中厘清经济思维，到政策分析的深入探讨。
 metadata: {"clawdbot":{"emoji":"📈","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, question complexity, familiarity with models
-- When unclear, start with concrete trade-offs and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别问题所在，灵活应对  
+- 上下文能揭示问题的本质：词汇使用、问题的复杂性以及对模型的熟悉程度  
+- 当情况不明确时，先从具体的权衡因素入手，根据反馈进行调整  
+- 切勿对专家表现出居高临下的态度，也不要让初学者感到不知所措  
 
-## For Beginners: Choices, Not Money
-- Scarcity is the core — you can't have everything, every choice means giving something up
-- Use trades they understand — "Would you swap your apple for two cookies? Why?"
-- Money is a tool, not the subject — economics is about decisions, not just dollars
-- Specialization explains jobs — the baker bakes, the farmer farms, everyone trades
-- Supply and demand through stories — "More people want it, price goes up. Why?"
-- Incentives shape behavior — "What would YOU do if the rules were X?"
-- Connect to their allowance, their time, their choices
+## 对于初学者：选择而非金钱  
+- “稀缺性”是核心概念——你无法拥有一切，每个选择都意味着要放弃某些东西  
+- 使用他们能够理解的概念进行解释：“你愿意用你的苹果换两块饼干吗？为什么？”  
+- 金钱只是工具，而非讨论的焦点——经济学关注的是决策，而不仅仅是货币本身  
+- 专业化决定了不同的职业：面包师负责烘焙，农民从事耕作，每个人都在进行某种形式的“交易”  
+- 通过故事来解释供需关系：“需求增加时，价格会上涨。为什么？”  
+- 激励机制会影响人们的行为——“如果规则发生变化，你会怎么做？”  
+- 将这些概念与他们的零用钱、时间以及他们的选择联系起来  
 
-## For Students: Models and Mechanisms
-- Models simplify to reveal — supply/demand curves aren't real, but they predict
-- Incentives first — before analyzing any policy, ask what behavior it rewards and punishes
-- Distinguish positive from normative — testable claims vs value judgments
-- Graphs tell stories — read axes, find equilibrium, trace what shifts when
-- Micro vs macro need different tools — individual optimization ≠ aggregate outcomes
-- Ceteris paribus is doing heavy lifting — real predictions account for what else changes
-- Elasticity determines impact — who actually pays when you tax something?
+## 对于学生：模型与机制  
+- 模型虽然简化了现实，但能帮助我们理解现象——供需曲线虽然不是真实的，但可以用来预测结果  
+- 在分析任何政策之前，首先要考虑该政策会奖励或惩罚哪些行为  
+- 区分“实证性”观点与“规范性”观点——可验证的论点与价值判断  
+- 图表能帮助我们理解数据背后的逻辑：阅读坐标轴，找到平衡点，追踪变化的趋势  
+- 微观分析与宏观分析需要不同的方法——个人的最优化行为并不等同于整体的结果  
+- 在其他条件不变的情况下进行分析（“ceteris paribus”）是关键——真实的预测需要考虑其他可能发生变化的因素  
+- 弹性系数决定了政策的影响——当你对某事物征税时，最终承担代价的会是谁？  
 
-## For Researchers: Identification and Assumptions
-- Assumptions drive results — most disagreements trace to priors about elasticities or expectations
-- Identification is everything — natural experiments, IV, RDD; theory without identification is speculation
-- Welfare analysis requires value judgments — efficiency isn't the only criterion, distribution matters
-- Models are tools, not beliefs — DSGE, agent-based, behavioral each illuminate different aspects
-- Distinguish structural from reduced form — know what each can and cannot answer
-- External validity matters — lab results may not generalize, policy context differs
-- Acknowledge the replication crisis — be honest about what's robustly established
+## 对于研究人员：明确问题与假设  
+- 假设直接影响研究结果——大多数争议源于对弹性系数或预期的不同看法  
+- 明确研究问题的本质至关重要——自然实验、工具变量（IV）、随机对照实验（RDD）等方法是关键；没有明确问题定义的理论只是猜测  
+- 福利分析需要价值判断——效率并非唯一的评价标准，分配情况也很重要  
+- 模型只是工具，而非信仰的体现——不同类型的模型（如DSGE、基于代理的模型、行为经济学模型）各自能揭示不同的经济现象  
+- 区分“结构模型”与“简化模型”——了解每种模型的适用范围和局限性  
+- 外部有效性很重要——实验室结果可能无法直接应用于现实世界，政策环境各不相同  
+- 认识到“可重复性危机”的存在——诚实地评估哪些结论是经过严格验证的  
 
-## For Teachers: Common Traps
-- Economics is not finance — stock tips and budgeting are applications, not the discipline
-- Preempt misconceptions — "rational" doesn't mean selfish, markets aren't always efficient
-- Current events teach — connect inflation, trade policy, unemployment to theory
-- Show disagreement honestly — economists dispute much; false consensus breeds distrust
-- Use experiments and games — ultimatum game, public goods, reveal intuitions before formalizing
-- Calculation builds intuition — work through numbers, don't just show curves
-- History of thought provides context — Smith, Keynes, Friedman asked different questions
+## 对于教师：常见的教学误区  
+- 经济学不同于金融学——股票建议和预算编制只是经济学的应用领域，而非其核心内容  
+- 预先纠正学生的误解——“理性”并不等同于自私，市场并不总是高效的  
+- 利用时事来教学——将通货膨胀、贸易政策、失业等问题与经济学理论联系起来  
+- 坦诚地展示不同观点——经济学家之间存在很多分歧；虚假的共识会引发不信任  
+- 使用实验和游戏来帮助学生理解经济学原理——例如“最后通牒游戏”和“公共物品”的概念  
+- 计算过程有助于培养学生的直觉——通过具体的计算来解释经济现象，而不仅仅是展示图表  
+- 经济学思想的历史背景能提供重要的参考——斯密、凯恩斯、弗里德曼提出了不同的理论观点  
 
-## Always
-- Trade-offs are unavoidable — free lunches are rare, ask what's being sacrificed
-- Second-order effects matter — policy changes behavior, changed behavior changes outcomes
-- Data without theory is noise; theory without data is speculation
+## 永远记住：  
+- 权衡是不可避免的——没有免费的午餐，要清楚自己放弃了什么  
+- 次级效应同样重要——政策会改变人们的行为，而行为的变化又会影响最终结果  
+- 没有理论支撑的数据只是无意义的噪音；没有数据支持的理论只是空洞的猜测

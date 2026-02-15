@@ -10,9 +10,9 @@ argument-hint: "[text or template]"
 
 # memelink CLI
 
-Generate memes from the terminal. Wraps the Memegen.link API.
+这是一个用于从终端生成模因（meme）的工具，它基于 Memegen.link API 进行操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Auto-generate — API picks the best template
@@ -31,39 +31,39 @@ memelink drake "before memelink" "after memelink" -c -o
 memelink --json "deploy on friday"
 ```
 
-## Commands
+## 命令
 
-- `memelink "text"` -- auto-select template, generate meme (default command)
-- `memelink <template> "top" "bottom"` -- generate from specific template
-- `memelink custom --background <url> "text"` -- custom background image
-- `memelink templates` -- list templates; interactive fuzzy picker in TTY (alias: ls)
-- `memelink templates <id>` -- show template detail
-- `memelink templates --filter <query>` -- filter templates
-- `memelink fonts` -- list available fonts
-- `memelink config path|list|get|set|unset` -- manage config
-- `memelink version` -- print version info
+- `memelink "text"` -- 自动选择模板并生成模因（默认命令）
+- `memelink <template> "top" "bottom"` -- 使用指定模板生成模因
+- `memelink custom --background <url> "text"` -- 使用自定义背景图片生成模因
+- `memelink templates` -- 列出所有模板；支持TTY界面下的交互式选择（别名：ls）
+- `memelink templates <id>` -- 显示指定模板的详细信息
+- `memelink templates --filter <query>` -- 根据查询条件过滤模板
+- `memelink fonts` -- 列出可用的字体
+- `memelink config path|list|get|set|unset` -- 管理配置文件
+- `memelink version` -- 打印版本信息
 
-Command aliases: `generate` → `gen`, `g`; `templates` → `ls`
+命令别名：`generate` → `gen`, `g`; `templates` → `ls`
 
-## Generate Flags
+## 生成模因的参数
 
-- `--format png|jpg|gif|webp` / `-f` -- output format
-- `--font <name>` -- font name
-- `--layout default|top` -- text layout
-- `--width N` / `--height N` -- image dimensions
-- `--style <style>` -- template style (repeatable)
-- `--text-color <hex>` -- text color per line (repeatable)
-- `--background <url>` -- custom background (with 'custom' template)
-- `--center x,y` / `--scale N` -- overlay position and scale
-- `--safe` -- filter NSFW content
-- `--copy` / `-c` -- copy URL to clipboard
-- `--open` / `-o` -- open in browser
-- `--output <path>` / `-O` -- download image
-- `--preview` / `--no-preview` -- inline terminal preview
+- `--format png|jpg|gif|webp` / `-f` -- 输出格式
+- `--font <name>` -- 使用的字体名称
+- `--layout default|top` -- 文本布局方式
+- `--width N` / `--height N` -- 图像尺寸
+- `--style <style>` -- 模板样式（可重复使用）
+- `--text-color <hex>` -- 每行的文本颜色（可重复使用）
+- `--background <url>` -- 自定义背景图片（仅适用于使用 `custom` 模板的场景）
+- `--center x,y` / `--scale N` -- 模因在屏幕上的显示位置和缩放比例
+- `--safe` -- 过滤不适宜公开的内容
+- `--copy` / `-c` -- 将生成的模因 URL 复制到剪贴板
+- `--open` / `-o` -- 在浏览器中打开模因
+- `--output <path>` / `-O` -- 下载生成的图像
+- `--preview` / `--no-preview` -- 是否在终端中显示预览图
 
-## Configuration
+## 配置文件
 
-Config file: `~/.config/memelink/config.json`
+配置文件路径：`~/.config/memelink/config.json`
 
 ```bash
 memelink config set default_format png
@@ -71,15 +71,15 @@ memelink config get default_format
 memelink config list
 ```
 
-Keys: default_format, default_font, default_layout, safe, auto_copy, auto_open, preview, cache_ttl
+配置键：`default_format`, `default_font`, `default_layout`, `safe`, `auto_copy`, `auto_open`, `preview`, `cache_ttl`
 
-## Environment
+## 环境变量
 
-- `MEMEGEN_API_KEY` -- optional API key for higher rate limits
+- `MEMEGEN_API_KEY` -- 可选参数，用于获取更高的 API 使用频率限制
 
-## Global Flags
+## 全局参数
 
-- `--json` -- JSON output (pipe-friendly)
-- `--no-input` -- disable interactive prompts
-- `--verbose` -- debug logging
-- `--color auto|always|never` -- color output
+- `--json` -- 以 JSON 格式输出结果（便于管道传输）
+- `--no-input` -- 禁用交互式提示
+- `--verbose` -- 开启详细日志记录
+- `--color auto|always|never` -- 决定输出文本的颜色方式

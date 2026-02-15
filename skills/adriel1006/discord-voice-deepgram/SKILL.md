@@ -1,6 +1,6 @@
 ---
 name: deepgram-discord-voice
-description: Voice-channel conversations in Discord using Deepgram streaming STT + low-latency TTS
+description: 在 Discord 中，通过 Deepgram 的流式语音转文本（STT, Speech-to-Text）技术和低延迟的语音合成（TTS, Text-to-Speech）功能来实现语音通道的对话。
 metadata:
   clawdbot:
     config:
@@ -36,62 +36,51 @@ metadata:
         }
 ---
 
-# Deepgram Discord Voice (Clawdbot/OpenClaw Plugin)
+# Deepgram Discord语音插件（适用于OpenClaw/Clawdbot）
 
-This plugin lets you talk to your agent **only from a Discord voice channel**.
+该插件允许您**仅通过Discord语音频道**与您的智能助手进行交流。
 
-Pipeline (low latency):
-- Discord voice audio → **Deepgram streaming STT** (WebSocket)
-- Transcript → your agent
-- Agent reply → **Deepgram TTS** (`/v1/speak` streamed HTTP Ogg/Opus)
-- Audio played back into the voice channel
+**通信流程（低延迟）：**
+- Discord语音音频 → **Deepgram的实时语音转文本（STT）**（通过WebSocket传输）
+- 转换后的文本 → 智能助手
+- 智能助手的回复 → **Deepgram的文本转语音（TTS）**（通过HTTP以Ogg/Opus格式传输）
+- 处理后的音频再次播放回Discord语音频道
 
-## Requirements
+## 所需条件：
+- 一个Discord机器人令牌（`DISCORD_TOKEN`）
+- 一个Deepgram API密钥（`DEEPGRAM_API_KEY`）
+- 您的Discord机器人需要具备以下权限：
+  - **连接（Connect）**
+  - **发言（Speak）**
+  - **使用语音功能（Use Voice Activity）**
 
-- A Discord bot token (`DISCORD_TOKEN`)
-- A Deepgram API key (`DEEPGRAM_API_KEY`)
-- Discord bot permissions in your server:
-  - **Connect**
-  - **Speak**
-  - **Use Voice Activity**
+## 安装方法：
+### 方法A：通过ClawHub安装
+1. 在OpenClaw/Clawdbot的控制面板中，进入**Skills/Plugins**（技能/插件）。
+2. 添加并安装`deepgram-discord-voice`插件。
+3. 设置所需的环境变量。
 
-## Install
-
-### Option A: Install from ClawHub
-
-1. In your OpenClaw/Clawdbot dashboard, open **Skills/Plugins**.
-2. Add/install **deepgram-discord-voice**.
-3. Set the required environment variables.
-
-### Option B: Manual install
-
-1. Copy this folder into your extensions/plugins directory.
-2. Run:
-
+### 方法B：手动安装
+1. 将该插件文件夹复制到您的`extensions/plugins`目录中。
+2. 运行以下命令：
 ```bash
 npm install
 ```
 
-3. Restart OpenClaw/Clawdbot.
+3. 重启OpenClaw/Clawdbot。
 
-## Configuration
+## 配置选项：
+### 核心配置参数：
+- `primaryUser`（推荐）：默认情况下，机器人会监听哪个用户的声音。
+  - 最佳选择：您的**Discord用户ID**（数字格式）。
+  - 如果在频道内唯一，也可以使用用户名或显示名称（例如`atechy`）。
+- `allowVoiceSwitch`：如果设置为`true`，则主用户可以切换允许语音通信的对象。
+- `wakeWord`：语音控制命令的前缀。默认值为`openclaw`。
+- `deepgram.sttModel`：默认使用`nova-2`模型。
+- `deepgram.language`：可选的BCP-47语言标签（例如`en-US`、`es`、`es-EC`）。
+- `ttsVoice`：Deepgram的语音合成模型（例如`aura-2-thalia-en`）。
 
-### Key settings
-
-- `primaryUser` (recommended): Who the bot listens to by default.
-  - Best: your **Discord user ID** (numeric)
-  - Also supported: username/display name (e.g., `atechy`) if unique in-channel
-
-- `allowVoiceSwitch`: If `true`, the primary user can switch who is allowed by voice.
-
-- `wakeWord`: Prefix for voice control commands. Default: `openclaw`.
-
-- `deepgram.sttModel`: Default `nova-2`.
-- `deepgram.language`: Optional BCP‑47 language tag (e.g., `en-US`, `es`, `es-EC`).
-- `ttsVoice`: Deepgram Aura voice model (e.g., `aura-2-thalia-en`).
-
-### Example config
-
+### 配置示例：
 ```json5
 {
   "plugins": {
@@ -121,39 +110,32 @@ npm install
 }
 ```
 
-## Usage
+## 使用方法：
+### 加入语音频道
+- 使用插件工具或特定的Discord命令加入频道：
+  - 加入：`action=join`，后跟频道ID。
+- 离开：`action=leave`。
 
-### Join a voice channel
+### 语音交流
+- 机器人连接后，您可以直接通过语音与智能助手交流。
 
-Use the plugin tool or slash command (depends on your OpenClaw setup):
-- Join: `action=join` with the `channelId`
-- Leave: `action=leave`
+### 安全设置（默认）：
+- 当设置了`primaryUser`后，插件只会监听该用户的声音，除非您允许其他用户使用语音功能。
 
-### Talk (voice channel)
+### 允许其他用户使用语音功能：
+- 作为主用户，您可以执行以下命令：
+  - `openclaw allow <用户名>`：允许指定用户使用语音功能。
+  - `openclaw listen to <用户名>`：切换监听对象为指定用户。
 
-Once the bot is connected, just speak.
+### 重新设置监听用户：
+- `openclaw only me`：仅允许主用户使用语音功能。
+- `openclaw reset`：重置所有设置。
 
-### Safeguard: only listen to you (default)
+### 通过工具进行语音控制：
+- `allow_speaker`：允许指定用户使用语音功能（支持用户ID、@提及或用户名）。
+- `only_me`：仅允许主用户使用语音功能。
+- `status`：查看当前的语音监听状态。
 
-When `primaryUser` is set, the plugin will only listen to that user unless you allow someone else.
-
-### Let someone else talk (voice commands)
-
-As the primary user, say:
-- `openclaw allow <name>`
-- `openclaw listen to <name>`
-
-To lock it back:
-- `openclaw only me`
-- `openclaw reset`
-
-### Switch via tool actions (optional)
-
-- `allow_speaker` with `user` (id / @mention / name)
-- `only_me`
-- `status`
-
-## Notes
-
-- Lowest latency comes from `streamingSTT=true` and `streamingTTS=true`.
-- Deepgram TTS is streamed over HTTP in **Ogg/Opus** so Discord can play it immediately.
+## 注意事项：
+- 通过`streamingSTT=true`和`streamingTTS=true`可实现最低延迟的通信效果。
+- Deepgram的文本转语音功能通过HTTP以Ogg/Opus格式传输，因此Discord可以立即播放处理后的音频。

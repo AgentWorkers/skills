@@ -1,23 +1,23 @@
 ---
 name: book-inspection
-description: Book inspection services through Lokuli MCP. Use when user needs to find and book inspection. Triggers on requests like "book a inspection", "find inspection near me", or any inspection service request.
+description: 通过 Lokuli MCP 提供设备检测服务。当用户需要查找并预约检测服务时，可以使用该功能。该功能会在收到诸如“预约检测”、“查找附近的检测服务”或任何与检测服务相关的请求时被触发。
 ---
 
-# uook inspection
+# 书籍检查服务
 
-Book inspection services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来使用书籍检查服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

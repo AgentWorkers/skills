@@ -1,39 +1,39 @@
 ---
 name: sports-ticker
 version: 3.0.5
-description: Live sports alerts for Soccer, NFL, NBA, NHL, MLB, F1 and more. Real-time scoring with FREE ESPN API. Track any team from any major league worldwide.
+description: 实时体育赛事提醒，涵盖足球、NFL、NBA、NHL、MLB、F1等运动项目。通过免费的ESPN API提供实时比分更新。您可以追踪全球任何主要联赛中的任意一支球队。
 metadata: {"openclaw":{"requires":{"bins":["python3"],"note":"No API keys needed. Uses free ESPN API."}}}
 ---
 
-# Sports Ticker
+# 体育赛事实时更新工具
 
-Track your favorite teams across **multiple sports** with **FREE live alerts**!
+您可以免费追踪您喜爱的**多个体育项目**的球队动态，并接收实时提醒！
 
-Supports: ⚽ Soccer • 🏈 NFL • 🏀 NBA • 🏒 NHL • ⚾ MLB • 🏎️ F1
+支持的运动项目：⚽ 足球 • 🏈 美国国家橄榄球联盟（NFL）• 🏀 美国职业篮球联赛（NBA）• 🏒 国家冰球联盟（NHL）• ⚾ 美国职业棒球大联盟（MLB）• 🏎️ 一级方程式赛车（F1）
 
-## First Run (Onboarding)
+## 首次使用（设置流程）
 
-When no `config.json` exists, running the setup script launches an interactive wizard:
+如果系统中不存在 `config.json` 文件，运行设置脚本会启动一个交互式向导：
 
 ```bash
 python3 scripts/setup.py
 ```
 
-**The wizard asks:**
-1. 📺 **Which sports?** — Pick from Soccer, NFL, NBA, NHL, MLB, F1
-2. 🏆 **Which teams?** — Choose from popular teams or search for any team
-3. 🔔 **Alert style?** — Live scores, final only, or daily digest
-4. ⏰ **Game-day reminders?** — Get a heads-up 30 mins before kick-off
-5. 🌙 **Quiet hours?** — Pause alerts while you sleep
+**向导会询问：**
+1. 📺 **选择关注的运动项目？** — 可选足球、NFL、NBA、NHL、MLB 或 F1
+2. 🏆 **选择关注的球队？** — 可从热门球队列表中选择，或自行搜索球队名称
+3. 🔔 **提醒方式？** — 实时比分更新、仅显示最终结果，还是每日总结
+4. ⏰ **比赛日提醒？** — 在比赛开始前 30 分钟收到提醒
+5. 🌙 **静音时段？** — 在您睡觉时暂停提醒功能
 
-After setup, your `config.json` is ready and you can start tracking!
+设置完成后，`config.json` 文件会自动生成，您就可以开始追踪球队动态了！
 
-**Re-run setup anytime:**
+**随时可以重新运行设置脚本：**
 ```bash
 python3 scripts/setup.py --force  # Overwrites existing config
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```bash
 # First time? Just run setup!
@@ -48,7 +48,7 @@ python3 scripts/setup.py find "Barcelona" soccer
 python3 scripts/ticker.py
 ```
 
-## Config Example
+## 配置示例
 
 ```json
 {
@@ -71,7 +71,7 @@ python3 scripts/ticker.py
 }
 ```
 
-## Commands
+## 命令操作
 
 ```bash
 # Ticker for all teams
@@ -104,22 +104,21 @@ python3 scripts/espn.py scoreboard nba basketball
 python3 scripts/espn.py search "Chiefs" football
 ```
 
-## Alert Types
+## 提醒类型：
+- 🏟️ 比赛开始（开球/比赛开始）
+- ⚽🏈🏀⚾ 重要得分（进球、达阵、三分球、本垒打）
+- 🟥 红牌/球员被罚下
+- ⏸️ 半场休息/节间休息
+- 🏁 最终比赛结果（胜/负/平）
 
-- 🏟️ Game start (kick-off / tip-off)
-- ⚽🏈🏀⚾ Scoring plays (goals, touchdowns, 3-pointers, home runs)
-- 🟥 Red cards / Ejections
-- ⏸️ Halftime / Period breaks
-- 🏁 Final results (WIN/LOSS/DRAW)
+## ESPN API（免费使用！）
 
-## ESPN API (Free!)
+无需任何密钥即可使用。该 API 覆盖全球所有主要体育项目和 50 多个联赛的数据。
 
-No key needed. Covers all major sports and 50+ leagues worldwide.
-
-**Supported Sports:**
-- Soccer: Premier League, La Liga, Champions League, MLS, and 30+ more
-- Football: NFL
-- Basketball: NBA, WNBA, NCAA
-- Hockey: NHL
-- Baseball: MLB
-- Racing: Formula 1
+**支持的运动项目：**
+- 足球：英超联赛、西甲联赛、欧冠联赛、MLS 等
+- 美式橄榄球：NFL
+- 篮球：NBA、WNBA、NCAA
+- 冰球：NHL
+- 棒球：MLB
+- 赛车：一级方程式赛车

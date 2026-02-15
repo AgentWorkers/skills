@@ -1,6 +1,6 @@
 ---
 name: tools-marketplace
-description: Use Danube's 100+ API tools (Gmail, GitHub, Notion, etc.) through MCP. Search for tools, check authentication, execute with parameters, and handle errors gracefully.
+description: 通过 MCP（Management Console）使用 Danube 提供的 100 多个 API 工具（如 Gmail、GitHub、Notion 等）。您可以搜索所需的工具，验证其认证信息，使用参数执行相关操作，并优雅地处理可能出现的错误。
 license: MIT
 compatibility: openclaw
 metadata:
@@ -9,28 +9,28 @@ metadata:
   tags: [danube, mcp, apis, tools]
 ---
 
-# Using Danube Tools
+# 使用 Danube 工具
 
-Access 100+ API tools for Gmail, GitHub, Notion, Google Calendar, and more through Danube's MCP integration.
+通过 Danube 的 MCP 集成，您可以访问 100 多种针对 Gmail、GitHub、Notion、Google 日历等服务的 API 工具。
 
-**Setup:** If not configured yet, run `bash scripts/setup.sh` to add Danube MCP to OpenClaw.
+**设置：** 如果尚未配置，请运行 `bash scripts/setup.sh` 以将 Danube MCP 添加到 OpenClaw 中。
 
-## When to Use
+## 适用场景
 
-Use Danube when users want to:
-- Send emails, create issues, manage calendars
-- Interact with cloud services (GitHub, Notion, Google Drive)
-- Execute any external API action
+当用户需要执行以下操作时，可以使用 Danube：
+- 发送电子邮件、创建问题、管理日历
+- 与云服务（如 GitHub、Notion、Google Drive）进行交互
+- 执行任何外部 API 操作
 
-**Don't use for:** Local file operations, calculations, or non-API tasks.
+**不适用场景：** 本地文件操作、计算任务或非 API 相关的任务。
 
-## Core Workflow
+## 核心工作流程
 
-Every tool interaction follows this pattern:
+所有工具的使用都遵循以下步骤：
 
-### 1. Search for Tools
+### 1. 搜索工具
 
-Use `search_tools()` with natural language:
+使用 `search_tools()` 函数进行自然语言查询：
 
 ```python
 search_tools("send email")        # → Gmail, Outlook
@@ -38,9 +38,9 @@ search_tools("create github issue") # → GitHub - Create Issue
 search_tools("calendar events")   # → Google Calendar
 ```
 
-### 2. Check Authentication
+### 2. 检查身份验证
 
-If tool requires credentials, guide user to connect:
+如果工具需要凭据，请指导用户完成身份验证：
 
 ```
 "To use Gmail, you need to connect your account first.
@@ -53,11 +53,11 @@ Visit: https://danubeai.com/dashboard
 Let me know when you're ready!"
 ```
 
-**Always check auth BEFORE attempting execution.**
+**在执行任何操作之前，请务必检查身份验证状态。**
 
-### 3. Gather Parameters
+### 3. 收集所需参数
 
-Ask for missing required parameters:
+询问用户是否缺少任何必要的参数：
 
 ```
 User: "Send an email"
@@ -67,7 +67,7 @@ You: "I can help! I need:
      - What should the message say?"
 ```
 
-### 4. Execute Tool
+### 4. 执行工具
 
 ```python
 execute_tool(
@@ -80,27 +80,27 @@ execute_tool(
 )
 ```
 
-### 5. Handle Response
+### 5. 处理响应
 
-**Success:**
-```
+- **成功：** 
+  ```
 "✅ Email sent successfully to user@example.com!"
 ```
 
-**Auth Error:**
-```
+- **身份验证错误：** 
+  ```
 "🔐 Authentication failed. Reconnect Gmail at:
 https://danubeai.com/dashboard → Tools → Gmail"
 ```
 
-**Other Error:**
-```
+- **其他错误：** 
+  ```
 "⚠️ Failed: [error]. Let me help troubleshoot..."
 ```
 
-## Common Patterns
+## 常见操作模式
 
-### Email Tools
+### 邮件工具
 ```
 User: "Email john@example.com about the project"
 
@@ -113,7 +113,7 @@ User: "Email john@example.com about the project"
 7. Report: "✅ Email sent!"
 ```
 
-### GitHub Tools
+### GitHub 工具
 ```
 User: "Create issue about the login bug"
 
@@ -125,7 +125,7 @@ User: "Create issue about the login bug"
 6. Report: "✅ Issue created: [link]"
 ```
 
-### Calendar Tools
+### 日历工具
 ```
 User: "What's on my calendar today?"
 
@@ -138,57 +138,56 @@ User: "What's on my calendar today?"
    • 2:00 PM - Client meeting"
 ```
 
-## Best Practices
+## 最佳实践
 
-### ✅ Do:
-- **Search first** - Always use `search_tools()`, don't assume tool IDs
-- **Check auth** - Verify credentials before execution
-- **Confirm actions** - Get user approval for emails, issues, etc.
-- **Be specific** - "Email sent to john@example.com" not just "Done"
-- **Handle errors** - Provide solutions, not just error messages
+- **务必先搜索**：始终使用 `search_tools()` 函数来查找工具，不要直接使用工具 ID。
+- **检查身份验证**：在执行操作前验证用户的凭据。
+- **确认操作**：在发送邮件、创建问题等操作前获取用户的确认。
+- **提供详细信息**：例如，应明确说明“邮件已发送至 john@example.com”，而不仅仅是简单地说“操作完成”。
+- **妥善处理错误**：除了显示错误信息外，还应提供具体的解决方案。
 
-### ❌ Don't:
-- Assume tool IDs without searching
-- Auto-execute without confirmation
-- Give vague responses like "Error" or "Done"
-- Skip authentication checks
+### 不应做的行为：
+- 不要未经搜索就直接使用工具。
+- 未经确认就自动执行操作。
+- 给出模糊的响应（如“错误”或“操作完成”）。
+- 跳过身份验证步骤。
 
-## Available Tools
+## 可用工具
 
-| Tool | Purpose |
+| 工具 | 功能 |
 |------|---------|
-| `list_services` | Browse available services |
-| `search_tools` | Find tools by query |
-| `get_service_tools` | List tools for a service |
-| `execute_tool` | Run tool with parameters |
-| `search_contacts` | Find user's contacts |
+| `list_services` | 浏览可用服务 |
+| `search_tools` | 根据查询条件查找工具 |
+| `get_service_tools` | 获取特定服务的工具列表 |
+| `execute_tool` | 带参数执行工具 |
+| `search_contacts` | 查找用户的联系人 |
 
-## Error Handling
+## 错误处理
 
-**Authentication (401):**
-```
+- **身份验证错误（401）：** 
+  ```
 "🔐 [Service] requires authentication.
 Visit https://danubeai.com/dashboard → Tools → [Service] → Connect"
 ```
 
-**Missing Parameters:**
-```
+- **缺少参数：** 
+  ```
 "I need:
 • [param1]: [description]
 • [param2]: [description]"
 ```
 
-**Rate Limit:**
-```
+- **请求速率限制：** 
+  ```
 "⚠️ Hit rate limit for [Service].
 • Try again in a few minutes
 • Use alternative service
 • Break into smaller batches"
 ```
 
-## Multi-Step Workflows
+## 多步骤工作流程
 
-Some tasks need multiple tools:
+某些任务可能需要使用多个工具来完成：
 
 ```
 User: "Email me a summary of today's GitHub commits"
@@ -201,34 +200,34 @@ User: "Email me a summary of today's GitHub commits"
 6. Report: "✅ Sent summary of 5 commits!"
 ```
 
-## Communication Templates
+## 通信模板
 
-**Request Auth:**
-```
+- **请求身份验证：** 
+  ```
 "To use [Service], connect your account:
 1. Visit https://danubeai.com/dashboard
 2. Tools → [Service] → Connect
 3. Come back when ready!"
 ```
 
-**Confirm Execution:**
-```
+- **确认操作结果：** 
+  ```
 "I'll [action] using [Tool].
 Parameters: [list]
 Proceed?"
 ```
 
-**Report Success:**
-```
+- **报告操作成功：** 
+  ```
 "✅ Done!
 [Specific result]
 [Link if applicable]"
 ```
 
-## Quick Reference
+## 快速参考
 
-**Workflow:**
-```
+- **工作流程：** 
+  ```
 1. User requests action
 2. search_tools() → Find tool
 3. Check authentication → Guide if needed
@@ -238,12 +237,11 @@ Proceed?"
 7. Report → Success or error
 ```
 
-**Key URLs:**
-- **MCP Server:** https://mcp.danubeai.com/mcp
-- **Dashboard:** https://danubeai.com/dashboard
-- **Connect Services:** https://danubeai.com/dashboard → Tools
-
-**Debug:**
-- Check API key: `cat ~/.openclaw/.env | grep DANUBE`
-- Restart: `openclaw gateway restart`
-- Check errors: `openclaw doctor`
+- **关键 URL：**
+  - **MCP 服务器：** https://mcp.danubeai.com/mcp
+  - **控制面板：** https://danubeai.com/dashboard
+  - **连接服务：** https://danubeai.com/dashboard → 工具
+- **调试：**
+  - 检查 API 密钥：`cat ~/.openclaw/.env | grep DANUBE`
+  - 重启服务：`openclaw gateway restart`
+  - 查看错误信息：`openclaw doctor`

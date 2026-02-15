@@ -1,6 +1,6 @@
 ---
 name: api-connector
-description: Connect to REST APIs, manage authentication, and process responses. Use for API integration tasks.
+description: 连接 REST API，管理认证流程，并处理响应数据。适用于 API 集成相关任务。
 allowed-tools:
   - Read
   - Glob
@@ -19,38 +19,36 @@ allowed-tools:
 
 # api-connector - Claude Code Skill
 
-Connect to REST APIs, manage authentication, and process responses. Use for API integration tasks.
+该技能用于连接 REST API、管理身份验证以及处理响应，适用于 API 集成任务。
 
-## Configuration
+## 配置
 
-This skill requires the following environment variables:
+使用该技能需要以下环境变量：
 
-- `API_BASE_URL`: Base URL for API requests (default: https://api.example.com)
-- `API_KEY`: API authentication key **(required)**
-- `API_TIMEOUT`: Request timeout in milliseconds (default: 30000)
+- `API_BASE_URL`：API 请求的基地址（默认值：https://api.example.com）
+- `API_KEY`：API 认证密钥（**必填**）
+- `API_TIMEOUT`：请求超时时间（以毫秒为单位，默认值：30000）
 
-Set these in your environment or Claude Code configuration.
+请在您的环境变量或 Claude Code 配置中设置这些值。
 
-Connect to REST APIs, manage authentication, and process responses.
+## 功能
 
-## Features
+- 支持 GET、POST、PUT、DELETE 请求
+- 自动处理认证请求头
+- 解析 JSON 格式的响应数据
+- 实现速率限制和重试机制
+- 支持响应缓存
 
-- Make GET, POST, PUT, DELETE requests
-- Automatic authentication header management
-- JSON response parsing
-- Rate limiting and retry logic
-- Response caching
+## 配置
 
-## Configuration
+**必填项：**
+- `API_KEY`：您的 API 认证密钥
 
-**Required:**
-- `API_KEY`: Your API authentication key
+**可选项：**
+- `API_BASE_URL`：API 的基地址（默认值：https://api.example.com）
+- `API_TIMEOUT`：请求超时时间（以毫秒为单位，默认值：30000）
 
-**Optional:**
-- `API_BASE_URL`: Base URL (default: https://api.example.com)
-- `API_TIMEOUT`: Timeout in ms (default: 30000)
-
-## Usage
+## 使用方法
 
 ```
 "Get data from /users endpoint"
@@ -58,15 +56,14 @@ Connect to REST APIs, manage authentication, and process responses.
 "Check the API status"
 ```
 
-## Safety
+## 安全性
 
-This extension operates in read-only mode:
-- Cannot execute bash commands
-- Cannot edit local files
-- Cannot write files to disk
-
-Only makes HTTP requests to configured API endpoints.
+该扩展仅以只读模式运行：
+- 无法执行 bash 命令
+- 无法编辑本地文件
+- 无法将文件写入磁盘
+- 仅向配置好的 API 端点发送 HTTP 请求
 
 ---
 
-*This skill was converted from a Gemini CLI extension using [skill-porter](https://github.com/jduncan-rva/skill-porter)*
+*该技能是通过 [skill-porter](https://github.com/jduncan-rva/skill-porter) 工具从 Gemini CLI 扩展程序转换而来的。*

@@ -1,6 +1,6 @@
 ---
 name: youtube-kids
-description: Expert guidance for youtube-kids.
+description: 针对 YouTube Kids 的专家指导。
 version: 1.0.0
 tags: [parenting,family,children]
 author: OpenWork
@@ -13,15 +13,16 @@ metadata:
 
 # uyoutube kids
 
-Parenting and family guidance.
+育儿与家庭指导
 
-## Capabilities
+## 功能
 
-- Practical tips
-- Activity ideas
-- Development milestones
-- Resource recommendations
+- 实用育儿建议
+- 活动创意
+- 孩子成长里程碑
+- 资源推荐
 
-## Usage
-Parenting help
-Child development tips
+## 使用方法
+
+- 获得育儿帮助
+- 学习儿童成长方面的技巧

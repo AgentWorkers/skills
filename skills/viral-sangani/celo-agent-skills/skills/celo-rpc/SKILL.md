@@ -1,55 +1,55 @@
 ---
 name: celo-rpc
-description: Interact with Celo blockchain via RPC endpoints. Use when reading balances, transactions, blocks, and interacting with Celo via viem or cast.
+description: 通过 RPC（Remote Procedure Call）端点与 Celo 区块链进行交互。适用于读取账户余额、交易记录、区块信息，以及通过 viem 或 cast 工具与 Celo 进行交互的场景。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Celo RPC Interactions
+# Celo RPC交互
 
-This skill covers interacting with the Celo blockchain via RPC endpoints.
+本技能涵盖了通过RPC端点与Celo区块链进行交互的方法。
 
-## When to Use
+## 使用场景
 
-- Reading account balances (CELO and tokens)
-- Querying transaction data
-- Getting block information
-- Interacting with Celo via viem or cast
+- 读取账户余额（CELO代币）
+- 查询交易数据
+- 获取区块信息
+- 通过viem或cast与Celo进行交互
 
-## Network Information
+## 网络信息
 
-| Network | Chain ID | RPC Endpoint |
+| 网络 | 链路ID | RPC端点 |
 |---------|----------|--------------|
-| Celo Mainnet | 42220 | https://forno.celo.org |
+| Celo主网 | 42220 | https://forno.celo.org |
 | Celo Sepolia | 11142220 | https://forno.celo-sepolia.celo-testnet.org |
 
-Forno is a rate-limited, best-effort service. For production, use a dedicated RPC provider.
+Forno是一个具有速率限制的服务，采用尽力而为（best-effort）的机制。在生产环境中，请使用专用的RPC提供商。
 
-### Alternative RPC Providers
+### 可选的RPC提供商
 
-| Provider | Mainnet | Testnet |
+| 提供商 | 主网 | 测试网 |
 |----------|---------|---------|
 | Alchemy | https://celo-mainnet.g.alchemy.com/v2/{API_KEY} | https://celo-sepolia.g.alchemy.com/v2/{API_KEY} |
 | Infura | https://celo-mainnet.infura.io/v3/{API_KEY} | https://celo-sepolia.infura.io/v3/{API_KEY} |
 | Ankr | https://rpc.ankr.com/celo | https://rpc.ankr.com/celo_testnet |
-| QuickNode | Custom endpoint via dashboard | Custom endpoint via dashboard |
+| QuickNode | 通过控制台设置自定义端点 | 通过控制台设置自定义端点 |
 
-## Block Explorers
+## 区块浏览器
 
-- **Celo Mainnet:** https://celoscan.io
-- **Celo Sepolia:** https://sepolia.celoscan.io
+- **Celo主网：** https://celoscan.io
+- **Celo Sepolia：** https://sepolia.celoscan.io
 
-## Using viem with Celo
+## 使用viem与Celo交互
 
-### Installation
+### 安装
 
 ```bash
 npm install viem
 ```
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 import { createPublicClient, http } from "viem";
@@ -68,7 +68,7 @@ const testnetClient = createPublicClient({
 });
 ```
 
-### Reading Balances
+### 读取余额
 
 ```typescript
 // Get CELO balance
@@ -95,7 +95,7 @@ const tokenBalance = await publicClient.readContract({
 });
 ```
 
-### Getting Block Data
+### 获取区块数据
 
 ```typescript
 // Get latest block number
@@ -112,7 +112,7 @@ const blockByHash = await publicClient.getBlock({
 });
 ```
 
-### Getting Transaction Data
+### 获取交易数据
 
 ```typescript
 // Get transaction by hash
@@ -126,9 +126,9 @@ const receipt = await publicClient.getTransactionReceipt({
 });
 ```
 
-## Using cast (Foundry)
+## 使用cast（Foundry）
 
-### Reading Data
+### 读取数据
 
 ```bash
 # Get CELO balance
@@ -153,7 +153,7 @@ cast call 0x765de816845861e75a25fca122bb6898b8b1282a \
 cast storage 0x... 0 --rpc-url https://forno.celo.org
 ```
 
-### Chain Information
+### 链路信息
 
 ```bash
 # Get chain ID
@@ -163,9 +163,9 @@ cast chain-id --rpc-url https://forno.celo.org
 cast gas-price --rpc-url https://forno.celo.org
 ```
 
-## Using curl (Raw RPC)
+## 使用curl（原始RPC请求）
 
-### Get Balance
+### 读取余额
 
 ```bash
 curl -X POST https://forno.celo.org \
@@ -178,7 +178,7 @@ curl -X POST https://forno.celo.org \
   }'
 ```
 
-### Get Block Number
+### 获取区块编号
 
 ```bash
 curl -X POST https://forno.celo.org \
@@ -191,24 +191,24 @@ curl -X POST https://forno.celo.org \
   }'
 ```
 
-## Standard EVM RPC Methods
+## 标准EVM RPC方法
 
-All standard Ethereum JSON-RPC methods are supported:
+所有标准的Ethereum JSON-RPC方法都得到支持：
 
-| Method | Description |
+| 方法 | 描述 |
 |--------|-------------|
-| eth_blockNumber | Returns the current block number |
-| eth_getBalance | Returns the balance of an address |
-| eth_getTransactionByHash | Returns transaction by hash |
-| eth_getTransactionReceipt | Returns transaction receipt |
-| eth_call | Executes a call without creating a transaction |
-| eth_estimateGas | Estimates gas for a transaction |
-| eth_gasPrice | Returns current gas price |
-| eth_getBlockByNumber | Returns block by number |
-| eth_getBlockByHash | Returns block by hash |
-| eth_getLogs | Returns logs matching filter |
-| eth_sendRawTransaction | Sends a signed transaction |
+| eth_blockNumber | 返回当前区块编号 |
+| eth_getBalance | 返回指定地址的余额 |
+| eth_getTransactionByHash | 根据哈希值获取交易信息 |
+| eth_getTransactionReceipt | 返回交易收据 |
+| eth_call | 执行函数调用（不创建新交易） |
+| eth_estimateGas | 估算交易所需的气体费用 |
+| eth_gasPrice | 返回当前的气体价格 |
+| eth_getBlockByNumber | 根据编号获取区块 |
+| eth_getBlockByHash | 根据哈希值获取区块 |
+| eth_getLogs | 根据条件过滤并获取日志信息 |
+| eth_sendRawTransaction | 发送已签名的交易 |
 
-## Additional Resources
+## 额外资源
 
-- [rpc-providers.md](references/rpc-providers.md) - Full list of RPC providers
+- [rpc-providers.md](references/rpc-providers.md) - 完整的RPC提供商列表

@@ -1,8 +1,8 @@
 # Wiki.js Skill v1.4
 
-A complete CLI for managing Wiki.js via the GraphQL API.
+这是一个用于通过GraphQL API管理Wiki.js的完整命令行工具（CLI）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install
@@ -16,138 +16,138 @@ cp config/wikijs.example.json ~/.config/wikijs.json
 wikijs health
 ```
 
-## Commands Reference
+## 命令参考
 
-### Reading
+### 读取操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs list` | List all pages |
-| `wikijs search "query"` | Search pages |
-| `wikijs get <id-or-path>` | Read a page |
-| `wikijs info <id-or-path>` | Show page metadata |
-| `wikijs grep "pattern"` | Search within content |
-| `wikijs tree` | Display page hierarchy |
+| `wikijs list` | 列出所有页面 |
+| `wikijs search "查询"` | 搜索页面 |
+| `wikijs get <id或路径>` | 读取页面内容 |
+| `wikijs info <id或路径>` | 显示页面元数据 |
+| `wikijs grep "模式"` | 在页面内容中搜索 |
+| `wikijs tree` | 显示页面层次结构 |
 
-### Writing
+### 编写操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs create <path> <title>` | Create a page |
-| `wikijs create ... --template doc` | Create from template |
-| `wikijs update <id>` | Update a page |
-| `wikijs move <id> <new-path>` | Move a page |
-| `wikijs delete <id>` | Delete a page |
+| `wikijs create <路径> <标题>` | 创建新页面 |
+| `wikijs create ... --template doc` | 使用模板创建页面 |
+| `wikijs update <id>` | 更新页面 |
+| `wikijs move <id> <新路径>` | 移动页面 |
+| `wikijs delete <id>` | 删除页面 |
 
-### Tags
+### 标签操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs tags` | List all tags |
-| `wikijs tag <id> add <tag>` | Add a tag |
-| `wikijs tag <id> remove <tag>` | Remove a tag |
+| `wikijs tags` | 列出所有标签 |
+| `wikijs tag <id> add <标签>` | 为页面添加标签 |
+| `wikijs tag <id> remove <标签>` | 从页面移除标签 |
 
-### Backup & Restore
+### 备份与恢复
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs backup` | Create backup |
-| `wikijs restore-backup <file>` | Restore from backup |
-| `wikijs export <dir>` | Export to files |
+| `wikijs backup` | 创建备份 |
+| `wikijs restore-backup <文件>` | 从备份中恢复 |
+| `wikijs export <目录>` | 将页面内容导出为文件 |
 
-### Versions
+### 版本管理
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs versions <id>` | Show history |
-| `wikijs revert <id> <version>` | Restore version |
-| `wikijs diff <id>` | Compare versions |
+| `wikijs versions <id>` | 查看页面版本历史 |
+| `wikijs revert <id> <版本>` | 恢复到指定版本 |
+| `wikijs diff <id>` | 比较两个版本的内容 |
 
-### Assets
+### 资产管理
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs images` | List assets |
-| `wikijs upload <file>` | Upload asset |
-| `wikijs delete-image <id>` | Delete asset |
+| `wikijs images` | 列出所有图片资源 |
+| `wikijs upload <文件>` | 上传图片文件 |
+| `wikijs delete-image <id>` | 删除图片资源 |
 
-### Bulk Operations
+### 批量操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs bulk-create <folder>` | Create from files |
-| `wikijs bulk-update <folder>` | Update from files |
-| `wikijs sync` | Sync to local |
-| `wikijs sync --watch` | Watch mode |
+| `wikijs bulk-create <文件夹>` | 从文件创建多个页面 |
+| `wikijs bulk-update <文件夹>` | 批量更新多个页面 |
+| `wikijs sync` | 将页面内容同步到本地 |
+| `wikijs sync --watch` | 监控页面变化 |
 
-### Analysis
+### 分析操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs tree` | Page hierarchy tree |
-| `wikijs check-links` | Find broken links |
-| `wikijs stats` | Show statistics |
-| `wikijs lint <file>` | Lint markdown file |
-| `wikijs lint --id <id>` | Lint wiki page |
-| `wikijs orphans` | Find pages with no incoming links |
-| `wikijs duplicates` | Find similar/duplicate content |
-| `wikijs toc <id>` | Generate table of contents |
-| `wikijs validate <id>` | Validate page content |
-| `wikijs validate --all` | Validate all pages |
-| `wikijs spellcheck <id>` | Check spelling |
+| `wikijs tree` | 显示页面层次结构 |
+| `wikijs check-links` | 检查页面中的链接是否有效 |
+| `wikijs stats` | 显示页面统计信息 |
+| `wikijs lint <文件>` | 代码格式检查（针对Markdown文件） |
+| `wikijs lint --id <id>` | 代码格式检查（针对特定页面） |
+| `wikijs orphans` | 查找没有外部链接的页面 |
+| `wikijs duplicates` | 查找重复内容 |
+| `wikijs toc <id>` | 生成页面目录 |
+| `wikijs validate <id>` | 验证页面内容 |
+| `wikijs validate --all` | 验证所有页面内容 |
+| `wikijs spellcheck <id>` | 检查页面拼写错误 |
 
-### Content Operations
+### 内容操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs clone <id> <path>` | Duplicate a page |
-| `wikijs replace "old" "new"` | Search/replace across pages |
-| `wikijs sitemap` | Generate XML sitemap |
+| `wikijs clone <id> <路径>` | 复制页面内容 |
+| `wikijs replace "旧内容" "新内容"` | 在多个页面中替换指定内容 |
+| `wikijs sitemap` | 生成XML站点地图 |
 
-### Interactive
+### 交互式操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs shell` | Interactive shell mode |
-| `wikijs watch <id>` | Watch page for changes |
+| `wikijs shell` | 进入交互式shell模式 |
+| `wikijs watch <id>` | 监控指定页面的变更 |
 
-### Templates
+### 模板操作
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs template list` | List templates |
-| `wikijs template show <name>` | Show template |
-| `wikijs template create <name>` | Create template |
-| `wikijs template delete <name>` | Delete template |
+| `wikijs template list` | 列出所有模板 |
+| `wikijs template show <名称>` | 查看模板内容 |
+| `wikijs template create <名称>` | 创建新模板 |
+| `wikijs template delete <名称>` | 删除模板 |
 
-### System
+### 系统管理
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wikijs health` | Check connection |
-| `wikijs cache clear` | Clear cache |
-| `wikijs completion bash` | Shell completion |
+| `wikijs health` | 检查系统连接状态 |
+| `wikijs cache clear` | 清除缓存 |
+| `wikijs completion bash` | 提供bash命令补全功能 |
 
-## Global Options
+## 全局选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-v, --verbose` | Verbose output |
-| `-d, --debug` | Debug output |
-| `--no-color` | Disable colors |
-| `--rate-limit <ms>` | API rate limiting |
+| `-v, --verbose` | 详细输出 |
+| `-d, --debug` | 调试模式 |
+| `--no-color` | 禁用颜色显示 |
+| `--rate-limit <毫秒>` | 设置API请求速率限制 |
 
-## Common Options
+## 常用选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--format json\|table` | Output format |
-| `--limit <n>` | Limit results |
-| `--force` | Skip confirmations |
-| `--locale <locale>` | Specify locale |
-| `--dry-run` | Preview changes |
+| `--format json` | 输出格式（JSON或表格） |
+| `--limit <数量>` | 限制返回结果的数量 |
+| `--force` | 强制执行操作，无需确认 |
+| `--locale <语言>` | 设置显示语言 |
+| `--dry-run` | 预览操作结果 |
 
-## Examples
+## 示例
 
 ```bash
 # Create page with template
@@ -197,10 +197,10 @@ wikijs spellcheck 42 --lang en --ignore "API,CLI,GraphQL"
 wikijs validate --all --format json
 ```
 
-## Integration Notes
+## 集成说明
 
-- All commands return exit code 0 on success, 1 on failure
-- Use `--format json` for machine-readable output
-- Delete operations prompt for confirmation unless `--force` is used
-- Escape sequences (`\n`, `\t`) are interpreted in `--content` strings
-- Templates support placeholders: `{{title}}`, `{{path}}`, `{{date}}`
+- 所有命令在成功执行时返回0，失败时返回1。
+- 使用`--format json`选项可获取机器可读的输出格式。
+- 删除操作默认需要用户确认，除非使用了`--force`选项。
+- 在`--content`参数中，`\n`和`\t`等转义字符会被正确解析。
+- 模板支持以下占位符：`{{title}}`、`{{path}}`、`{{date}}`。

@@ -1,6 +1,6 @@
 ---
 name: lametric-cli
-description: Control LaMetric TIME/SKY smart displays from the command line. Use when sending notifications, controlling device brightness/volume, managing timers, or displaying data on LaMetric devices. Triggers on "LaMetric", "smart display", "notification to device", "set timer", "send alert to clock".
+description: 通过命令行控制 LaMetric 的 TIME/SKY 智能显示屏。适用于发送通知、调节设备亮度/音量、管理定时器，或在 LaMetric 设备上显示数据等场景。相关命令包括：“LaMetric”、“smart display”、“notification to device”、“set timer”以及“send alert to clock”。
 license: MIT
 metadata:
   author: dedene
@@ -9,11 +9,11 @@ metadata:
 
 # LaMetric CLI
 
-CLI tool for controlling LaMetric TIME/SKY devices. Send notifications, control settings, manage timers, and stream content.
+LaMetric CLI 是一个用于控制 LaMetric TIME/SKY 设备的工具。它可以发送通知、调整设备设置、管理定时器以及流式传输内容。
 
-## Prerequisites
+## 先决条件
 
-### Installation
+### 安装
 
 ```bash
 # Homebrew (macOS/Linux)
@@ -23,16 +23,16 @@ brew install dedene/tap/lametric
 go install github.com/dedene/lametric-cli/cmd/lametric@latest
 ```
 
-### Setup
+### 设置
 
-1. Get API key from LaMetric mobile app: Device Settings > API Key
-2. Run setup wizard:
+1. 从 LaMetric 移动应用中获取 API 密钥：设备设置 > API 密钥
+2. 运行设置向导：
 
 ```bash
 lametric setup
 ```
 
-Or configure manually:
+或者手动配置：
 
 ```bash
 # Store API key securely
@@ -43,78 +43,78 @@ export LAMETRIC_API_KEY=your-api-key
 export LAMETRIC_DEVICE=192.168.1.100
 ```
 
-Config file location: `~/.config/lametric-cli/config.yaml`
+配置文件位置：`~/.config/lametric-cli/config.yaml`
 
-## Core Workflows
+## 核心工作流程
 
-### Sending Notifications
+### 发送通知
 
-**Simple notification:**
+- **简单通知：**
 ```bash
 lametric notify "Hello World"
 ```
 
-**With icon and sound:**
+- **带图标和声音的通知：**
 ```bash
 lametric notify "Build passed" --icon=checkmark --sound=positive1
 ```
 
-**Critical alert (wakes device, plays alarm):**
+- **紧急警报（唤醒设备、播放警报）：**
 ```bash
 lametric notify "ALERT: Server down" --priority=critical --sound=alarm1
 ```
 
-**Progress indicator:**
+- **进度指示器：**
 ```bash
 lametric notify "Upload progress" --goal=75/100 --icon=upload
 ```
 
-**Sparkline chart:**
+- **折线图：**
 ```bash
 lametric notify "CPU Usage" --chart=10,25,50,30,45,80,60
 ```
 
-**From stdin (for pipelines):**
+- **从标准输入（用于数据管道）：**
 ```bash
 echo "Build complete" | lametric notify
 git log -1 --format="%s" | lametric notify --icon=github
 ```
 
-**Wait for user dismissal:**
+- **等待用户确认：**
 ```bash
 lametric notify "Confirm deployment?" --wait
 ```
 
-### Device Control
+### 设备控制
 
-**Get device info:**
+- **获取设备信息：**
 ```bash
 lametric device
 ```
 
-**Display brightness:**
+- **调整屏幕亮度：**
 ```bash
 lametric display get
 lametric display brightness 50      # Set to 50%
 lametric display mode auto          # Auto brightness
 ```
 
-**Audio volume:**
+- **调整音量：**
 ```bash
 lametric audio get
 lametric audio volume 30            # Set to 30%
 ```
 
-**Bluetooth:**
+- **蓝牙连接：**
 ```bash
 lametric bluetooth get
 lametric bluetooth on
 lametric bluetooth off
 ```
 
-### Built-in Apps
+### 内置应用程序
 
-**Timer:**
+- **定时器：**
 ```bash
 lametric app timer set 5m           # Set 5 minute timer
 lametric app timer set 1h30m        # Set 1 hour 30 minutes
@@ -123,14 +123,14 @@ lametric app timer pause
 lametric app timer reset
 ```
 
-**Stopwatch:**
+- **秒表：**
 ```bash
 lametric app stopwatch start
 lametric app stopwatch pause
 lametric app stopwatch reset
 ```
 
-**Radio:**
+- **收音机：**
 ```bash
 lametric app radio play
 lametric app radio stop
@@ -138,17 +138,16 @@ lametric app radio next
 lametric app radio prev
 ```
 
-**App navigation:**
+- **应用程序导航：**
 ```bash
 lametric app list                   # List installed apps
 lametric app next                   # Switch to next app
 lametric app prev                   # Switch to previous app
 ```
 
-### Streaming
+### 流式传输
 
-Stream images or video to the display:
-
+- 将图像或视频流式传输到显示屏：
 ```bash
 lametric stream start               # Start streaming session
 lametric stream image logo.png      # Send static image
@@ -156,24 +155,22 @@ lametric stream gif animation.gif   # Send animated GIF
 lametric stream stop                # End streaming
 ```
 
-**Pipe from ffmpeg:**
+- 从 ffmpeg 输入数据：
 ```bash
 ffmpeg -i video.mp4 -vf "scale=37:8" -f rawvideo -pix_fmt rgb24 - | lametric stream pipe
 ```
 
-### Discovery
+### 设备发现
 
-Find LaMetric devices on your network:
-
+- 在网络中查找 LaMetric 设备：
 ```bash
 lametric discover
 lametric discover --timeout=10s
 ```
 
-## Common Patterns
+## 常见用法
 
-### Build/CI Notifications
-
+- **构建/持续集成通知：**
 ```bash
 # Success
 lametric notify "Build #123 passed" --icon=checkmark --sound=positive1
@@ -185,8 +182,7 @@ lametric notify "Build #123 failed" --icon=error --sound=negative1 --priority=wa
 lametric notify "Deployed to prod" --icon=rocket --sound=positive2
 ```
 
-### System Monitoring
-
+- **系统监控：**
 ```bash
 # CPU alert
 lametric notify "High CPU: 95%" --priority=warning --icon=warning
@@ -195,68 +191,64 @@ lametric notify "High CPU: 95%" --priority=warning --icon=warning
 lametric notify "Disk: 85% full" --goal=85/100 --icon=harddrive
 ```
 
-### Pomodoro Timer
-
+- **Pomodoro 计时器：**
 ```bash
 lametric app timer set 25m && lametric app timer start
 ```
 
-### Meeting Reminder
-
+- **会议提醒：**
 ```bash
 lametric notify "Meeting in 5 min" --icon=calendar --sound=alarm3 --priority=warning
 ```
 
-## Quick Reference
+## 快速参考
 
-### Popular Icons
+### 常用图标
 
-| Alias | Description |
+| 别名 | 描述 |
 |-------|-------------|
-| `checkmark` | Success/complete |
-| `error` | Error/failure |
-| `warning` | Warning/caution |
-| `info` | Information |
-| `rocket` | Deploy/launch |
+| `checkmark` | 成功/完成 |
+| `error` | 错误/失败 |
+| `warning` | 警告/注意 |
+| `info` | 信息 |
+| `rocket` | 部署/启动 |
 | `github` | GitHub |
 | `slack` | Slack |
-| `mail` | Email |
-| `calendar` | Calendar/meeting |
-| `download` | Download |
-| `upload` | Upload |
+| `mail` | 电子邮件 |
+| `calendar` | 日历/会议 |
+| `download` | 下载 |
+| `upload` | 上传 |
 
-Run `lametric icons` for full list.
+运行 `lametric icons` 可查看完整图标列表。
 
-### Popular Sounds
+### 常用声音
 
-| Sound | Category |
+| 声音 | 类别 |
 |-------|----------|
-| `positive1-5` | Success sounds |
-| `negative1-5` | Error sounds |
-| `alarm1-13` | Alarm sounds |
-| `notification1-4` | Gentle notifications |
+| `positive1-5` | 成功提示音 |
+| `negative1-5` | 错误提示音 |
+| `alarm1-13` | 警报声 |
+| `notification1-4` | 轻柔的通知音 |
 
-Run `lametric sounds` for full list.
+运行 `lametric sounds` 可查看完整声音列表。
 
-### Global Flags
+### 全局参数
 
-| Flag | Description |
+| 参数 | 描述 |
 |------|-------------|
-| `-d, --device` | Device name or IP |
-| `-j, --json` | Output JSON |
-| `--plain` | Output TSV (for scripting) |
-| `-v, --verbose` | Verbose logging |
+| `-d, --device` | 设备名称或 IP 地址 |
+| `-j, --json` | 以 JSON 格式输出结果 |
+| `--plain` | 以 TSV 格式输出结果（适用于脚本编写） |
+| `-v, --verbose` | 详细日志输出 |
 
-## Troubleshooting
+## 故障排除
 
-### Connection Failed
+- **连接失败**：
+  1. 验证设备 IP 地址：`lametric discover`
+  2. 确保设备位于同一网络中
+  3. 检查 API 密钥是否正确：`lametric auth get-key --device=NAME`
 
-1. Verify device IP: `lametric discover`
-2. Check device is on same network
-3. Ensure API key is correct: `lametric auth get-key --device=NAME`
-
-### Authentication Error
-
+### 认证错误：
 ```bash
 # Re-set API key
 lametric auth set-key --device=living-room
@@ -265,8 +257,7 @@ lametric auth set-key --device=living-room
 export LAMETRIC_API_KEY=your-api-key
 ```
 
-### Device Not Found
-
+### 设备未找到：
 ```bash
 # Discover devices
 lametric discover --timeout=10s
@@ -275,8 +266,7 @@ lametric discover --timeout=10s
 lametric setup
 ```
 
-## Installation
-
+## 安装说明：
 ```bash
 brew install dedene/tap/lametric
 ```

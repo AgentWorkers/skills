@@ -1,53 +1,52 @@
 ---
 name: billing-automation
-description: Automated billing systems for SaaS subscription management, invoicing, and payment recovery. Use when implementing recurring billing, automating invoice generation, or handling failed payment dunning. Covers proration calculations, billing cycle management, usage-based billing, and tax compliance (VAT/GST).
+description: 自动化计费系统，用于SaaS订阅管理、发票生成和欠款催收。适用于实现定期计费、自动生成发票或处理支付失败的情况。该系统涵盖按使用量计费（proration calculations）、计费周期管理、基于使用量的计费方式（usage-based billing）以及税务合规性（增值税/VAT/GST）等方面的功能。
 ---
 
-# Billing Automation
+# 计费自动化
 
-Master automated billing systems including recurring billing, invoice generation, dunning management, proration, and tax calculation.
+掌握自动化计费系统的相关技能，包括定期计费、发票生成、催款管理、费用分摊以及税费计算等功能。
 
-## When to Use This Skill
+## 适用场景
 
-- Implementing SaaS subscription billing
-- Automating invoice generation and delivery
-- Managing failed payment recovery (dunning)
-- Calculating prorated charges for plan changes
-- Handling sales tax, VAT, and GST
-- Processing usage-based billing
-- Managing billing cycles and renewals
+- 实现 SaaS 订阅模式的计费功能
+- 自动化发票的生成与发送
+- 管理未支付的款项（通过催款流程）
+- 根据计划变更情况计算分摊费用
+- 处理销售税、增值税（VAT）和商品及服务税（GST）
+- 处理基于使用量的计费方式
+- 管理计费周期和续费流程
 
-## Core Concepts
+## 核心概念
 
-### 1. Billing Cycles
-**Common Intervals:**
-- Monthly (most common for SaaS)
-- Annual (discounted long-term)
-- Quarterly
-- Weekly
-- Custom (usage-based, per-seat)
+### 1. 计费周期
+**常见周期：**
+- 每月（SaaS 服务中最常见）
+- 每年（长期订阅的优惠选项）
+- 每季度
+- 每周
+- 自定义（根据使用量或用户数量计算）
 
-### 2. Subscription States
+### 2. 订阅状态
 ```
 trial → active → past_due → canceled
               → paused → resumed
 ```
 
-### 3. Dunning Management
-Automated process to recover failed payments through:
-- Retry schedules
-- Customer notifications
-- Grace periods
-- Account restrictions
+### 3. 催款管理
+通过以下方式自动化处理未支付的款项：
+- 重试机制
+- 客户通知
+- 宽限期
+- 账户限制
 
-### 4. Proration
-Adjusting charges when:
-- Upgrading/downgrading mid-cycle
-- Adding/removing seats
-- Changing billing frequency
+### 4. 费用分摊
+在以下情况下调整费用：
+- 订阅期间升级/降级
+- 增加/减少用户数量
+- 更改计费频率
 
-## Quick Start
-
+## 快速入门指南
 ```python
 from billing import BillingEngine, Subscription
 
@@ -66,8 +65,7 @@ subscription = billing.create_subscription(
 billing.process_billing_cycle(subscription.id)
 ```
 
-## Subscription Lifecycle Management
-
+## 订阅生命周期管理
 ```python
 from datetime import datetime, timedelta
 from enum import Enum
@@ -126,8 +124,7 @@ class Subscription:
             return self.current_period_start + timedelta(days=7)
 ```
 
-## Billing Cycle Processing
-
+## 计费周期处理流程
 ```python
 class BillingEngine:
     def process_billing_cycle(self, subscription_id):
@@ -205,8 +202,7 @@ class BillingEngine:
             return PaymentResult(success=False, error=str(e))
 ```
 
-## Dunning Management
-
+## 催款管理流程
 ```python
 class DunningManager:
     """Manage failed payment recovery."""
@@ -278,8 +274,7 @@ class DunningManager:
         )
 ```
 
-## Proration
-
+## 费用分摊方法
 ```python
 class ProrationCalculator:
     """Calculate prorated charges for plan changes."""
@@ -328,8 +323,7 @@ class ProrationCalculator:
         }
 ```
 
-## Tax Calculation
-
+## 税费计算方法
 ```python
 class TaxCalculator:
     """Calculate sales tax, VAT, GST."""
@@ -397,8 +391,7 @@ class TaxCalculator:
         pass
 ```
 
-## Invoice Generation
-
+## 发票生成流程
 ```python
 class Invoice:
     def __init__(self, customer_id, subscription_id=None):
@@ -476,8 +469,7 @@ class Invoice:
         )
 ```
 
-## Usage-Based Billing
-
+## 基于使用量的计费方式
 ```python
 class UsageBillingEngine:
     """Track and bill for usage."""
@@ -529,20 +521,18 @@ class UsageBillingEngine:
         return charge
 ```
 
-## Best Practices
+## 最佳实践
+1. **全面自动化**：尽量减少人工干预
+2. **清晰沟通**：及时通知客户计费相关事宜
+3. **灵活的催款策略**：在确保资金回收的同时，兼顾客户体验
+4. **准确的费用分摊**：根据计划变更情况合理计算费用
+5. **合规性**：按照当地法规正确计算税费
+6. **审计追踪**：记录所有计费操作
+7. **优雅的故障处理**：妥善处理特殊情况，避免系统崩溃
 
-1. **Automate Everything**: Minimize manual intervention
-2. **Clear Communication**: Notify customers of billing events
-3. **Flexible Retry Logic**: Balance recovery with customer experience
-4. **Accurate Proration**: Fair calculation for plan changes
-5. **Tax Compliance**: Calculate correct tax for jurisdiction
-6. **Audit Trail**: Log all billing events
-7. **Graceful Degradation**: Handle edge cases without breaking
-
-## Common Pitfalls
-
-- **Incorrect Proration**: Not accounting for partial periods
-- **Missing Tax**: Forgetting to add tax to invoices
-- **Aggressive Dunning**: Canceling too quickly
-- **No Notifications**: Not informing customers of failures
-- **Hardcoded Cycles**: Not supporting custom billing dates
+## 常见问题
+- **费用分摊错误**：未正确处理部分使用期的费用
+- **税费计算遗漏**：忘记在发票中添加税费
+- **催款策略过于激进**：过早采取强制措施
+- **缺乏通知**：未及时告知客户付款失败的情况
+- **固定计费周期**：不支持自定义计费日期

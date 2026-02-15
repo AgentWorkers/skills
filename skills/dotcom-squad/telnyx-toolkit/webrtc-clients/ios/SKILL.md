@@ -14,11 +14,11 @@ metadata:
 
 # Telnyx WebRTC - iOS SDK
 
-Build real-time voice communication into iOS applications using Telnyx WebRTC.
+使用 Telnyx WebRTC 将实时语音通信功能集成到 iOS 应用程序中。
 
-> **Prerequisites**: Create WebRTC credentials and generate a login token using the Telnyx server-side SDK. See the `telnyx-webrtc-*` skill in your server language plugin (e.g., `telnyx-python`, `telnyx-javascript`).
+> **前提条件**：使用 Telnyx 服务器端 SDK 创建 WebRTC 凭据并生成登录令牌。请参考您所使用的服务器语言插件（例如 `telnyx-python`、`telnyx-javascript`）中的 `telnyx-webrtc-*` 技能文档。
 
-## Installation
+## 安装
 
 ### CocoaPods
 
@@ -26,27 +26,25 @@ Build real-time voice communication into iOS applications using Telnyx WebRTC.
 pod 'TelnyxRTC', '~> 0.1.0'
 ```
 
-Then run:
+然后运行：
 
 ```bash
 pod install --repo-update
 ```
 
-### Swift Package Manager
+### Swift 包管理器
 
-1. In Xcode: File → Add Packages
-2. Enter: `https://github.com/team-telnyx/telnyx-webrtc-ios.git`
-3. Select the `main` branch
+1. 在 Xcode 中：文件 → 添加包
+2. 输入：`https://github.com/team-telnyx/telnyx-webrtc-ios.git`
+3. 选择 `main` 分支
 
-## Project Configuration
+## 项目配置
 
-1. **Disable Bitcode**: Build Settings → "Bitcode" → Set to "NO"
-
-2. **Enable Background Modes**: Signing & Capabilities → +Capability → Background Modes:
-   - Voice over IP
-   - Audio, AirPlay, and Picture in Picture
-
-3. **Microphone Permission**: Add to `Info.plist`:
+1. **禁用 Bitcode**：构建设置 → “Bitcode” → 设置为 “NO”
+2. **启用后台模式**：签名与功能 → +功能 → 后台模式：
+   - IP 语音通话
+   - 音频、AirPlay 和画中画功能
+3. **麦克风权限**：将其添加到 `Info.plist` 中：
    ```xml
    <key>NSMicrophoneUsageDescription</key>
    <string>Microphone access required for VoIP calls</string>
@@ -54,9 +52,9 @@ pod install --repo-update
 
 ---
 
-## Authentication
+## 认证
 
-### Option 1: Credential-Based Login
+### 选项 1：基于凭据的登录
 
 ```swift
 import TelnyxRTC
@@ -80,7 +78,7 @@ do {
 }
 ```
 
-### Option 2: Token-Based Login (JWT)
+### 选项 2：基于令牌的登录（JWT）
 
 ```swift
 let txConfig = TxConfig(
@@ -94,19 +92,19 @@ let txConfig = TxConfig(
 try telnyxClient.connect(txConfig: txConfig)
 ```
 
-### Configuration Options
+### 配置选项
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `sipUser` / `token` | String | Credentials from Telnyx Portal |
-| `password` | String | SIP password (credential auth) |
-| `pushDeviceToken` | String? | APNS VoIP push token |
-| `ringtone` | String? | Audio file for incoming calls |
-| `ringBackTone` | String? | Audio file for ringback |
-| `logLevel` | LogLevel | .none, .error, .warning, .debug, .info, .all |
-| `forceRelayCandidate` | Bool | Force TURN relay (avoid local network) |
+| `sipUser` / `token` | 字符串 | 来自 Telnyx Portal 的凭据 |
+| `password` | 字符串 | SIP 密码（基于凭据的认证） |
+| `pushDeviceToken` | 字符串？ | APNS VoIP 推送令牌 |
+| `ringtone` | 字符串？ | 来电时的音频文件 |
+| `ringBackTone` | 字符串？ | 回拨时的音频文件 |
+| `logLevel` | 日志级别 | .none, .error, .warning, .debug, .info, .all |
+| `forceRelayCandidate` | 布尔值 | 强制使用 TURN 中继（避免使用本地网络） |
 
-### Region Selection
+### 地区选择
 
 ```swift
 let serverConfig = TxServerConfiguration(
@@ -119,9 +117,9 @@ try telnyxClient.connect(txConfig: txConfig, serverConfiguration: serverConfig)
 
 ---
 
-## Client Delegate
+## 客户端代理
 
-Implement `TxClientDelegate` to receive events:
+实现 `TxClientDelegate` 以接收事件：
 
 ```swift
 extension ViewController: TxClientDelegate {
@@ -178,7 +176,7 @@ extension ViewController: TxClientDelegate {
 
 ---
 
-## Making Outbound Calls
+## 发出外拨电话
 
 ```swift
 let call = try telnyxClient.newCall(
@@ -191,7 +189,7 @@ let call = try telnyxClient.newCall(
 
 ---
 
-## Receiving Inbound Calls
+## 接收来电
 
 ```swift
 func onIncomingCall(call: Call) {
@@ -205,7 +203,7 @@ func onIncomingCall(call: Call) {
 
 ---
 
-## Call Controls
+## 通话控制
 
 ```swift
 // End call
@@ -228,9 +226,9 @@ call.dtmf(digit: "1")
 
 ---
 
-## Push Notifications (PushKit + CallKit)
+## 推送通知（PushKit + CallKit）
 
-### 1. Configure PushKit
+### 1. 配置 PushKit
 
 ```swift
 import PushKit
@@ -265,7 +263,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PKPushRegistryDelegate {
 }
 ```
 
-### 2. Handle VoIP Push
+### 2. 处理 VoIP 推送
 
 ```swift
 func handleVoIPPush(payload: PKPushPayload) {
@@ -296,7 +294,7 @@ func handleVoIPPush(payload: PKPushPayload) {
 }
 ```
 
-### 3. CallKit Integration
+### 3. CallKit 集成
 
 ```swift
 import CallKit
@@ -335,9 +333,9 @@ class AppDelegate: CXProviderDelegate {
 
 ---
 
-## Call Quality Metrics
+## 通话质量指标
 
-Enable with `debug: true`:
+通过设置 `debug: true` 来启用这些指标：
 
 ```swift
 let call = try telnyxClient.newCall(
@@ -367,7 +365,7 @@ call.onCallQualityChange = { metrics in
 }
 ```
 
-| Quality Level | MOS Range |
+| 质量等级 | MOS 分数范围 |
 |---------------|-----------|
 | .excellent | > 4.2 |
 | .good | 4.1 - 4.2 |
@@ -377,9 +375,9 @@ call.onCallQualityChange = { metrics in
 
 ---
 
-## AI Agent Integration
+## AI 代理集成
 
-### 1. Anonymous Login
+### 1. 匿名登录
 
 ```swift
 client.anonymousLogin(
@@ -388,7 +386,7 @@ client.anonymousLogin(
 )
 ```
 
-### 2. Start Conversation
+### 2. 开始对话
 
 ```swift
 // After anonymous login, destination is ignored
@@ -400,7 +398,7 @@ let call = client.newInvite(
 )
 ```
 
-### 3. Receive Transcripts
+### 3. 接收通话记录
 
 ```swift
 let cancellable = client.aiAssistantManager.subscribeToTranscriptUpdates { transcripts in
@@ -411,7 +409,7 @@ let cancellable = client.aiAssistantManager.subscribeToTranscriptUpdates { trans
 }
 ```
 
-### 4. Send Text Message
+### 4. 发送文本消息
 
 ```swift
 let success = client.sendAIAssistantMessage("Hello, can you help me?")
@@ -419,7 +417,7 @@ let success = client.sendAIAssistantMessage("Hello, can you help me?")
 
 ---
 
-## Custom Logging
+## 自定义日志记录
 
 ```swift
 class MyLogger: TxLogger {
@@ -439,18 +437,18 @@ let txConfig = TxConfig(
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| No audio | Ensure microphone permission granted |
-| Push not working | Verify APNS certificate in Telnyx Portal |
-| CallKit crash on iOS 13+ | Must report incoming call to CallKit |
-| Audio routing issues | Use `enableAudioSession`/`disableAudioSession` in CXProviderDelegate |
-| Login fails | Verify SIP credentials in Telnyx Portal |
+| 无音频 | 确保已授予麦克风权限 |
+| 推送失败 | 验证 Telnyx Portal 中的 APNS 证书 |
+| iOS 13+ 上的 CallKit 崩溃 | 必须将来电通知给 CallKit |
+| 音频路由问题 | 在 CXProviderDelegate 中使用 `enableAudioSession`/`disableAudioSession` |
+| 登录失败 | 验证 Telnyx Portal 中的 SIP 凭据 |
 
-## Resources
+## 资源
 
-- [Official Documentation](https://developers.telnyx.com/docs/voice/webrtc/ios-sdk)
-- [Push Notification Setup](https://developers.telnyx.com/docs/voice/webrtc/ios-sdk/push-notification/portal-setup)
-- [GitHub Repository](https://github.com/team-telnyx/telnyx-webrtc-ios)
+- [官方文档](https://developers.telnyx.com/docs/voice/webrtc/ios-sdk)
+- [推送通知设置](https://developers.telnyx.com/docs/voice/webrtc/ios-sdk/push-notification/portal-setup)
+- [GitHub 仓库](https://github.com/team-telnyx/telnyx-webrtc-ios)

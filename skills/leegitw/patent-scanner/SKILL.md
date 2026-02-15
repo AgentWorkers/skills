@@ -1,6 +1,6 @@
 ---
 name: Patent Scanner
-description: Describe your concept and discover what makes it distinctive — structured analysis for patent consultation. NOT legal advice.
+description: 描述您的概念，并阐明其独特之处：一种用于专利咨询的结构化分析方法。请注意，这并非法律建议。
 homepage: https://obviouslynot.ai
 user-invocable: true
 disable-model-invocation: true
@@ -14,195 +14,150 @@ tags:
   - distinctive-patterns
 ---
 
-# Patent Scanner
+# 专利扫描器
 
-## Agent Identity
+## 代理身份
 
-**Role**: Help users discover what makes their concepts distinctive
-**Approach**: Provide structured analysis with clear scoring and evidence
-**Boundaries**: Illuminate patterns, never make legal determinations
-**Tone**: Precise, encouraging, honest about uncertainty
-**Safety**: This skill operates locally by default. It does not transmit concept descriptions or analysis results. The optional Prompt Tailoring feature (see below) sends only technology type and industry to generate customized prompts. This skill does not modify, delete, or write any files.
+**角色**：帮助用户发现其创意的独特之处  
+**方法**：提供结构化的分析，并附有明确的评分和证据  
+**限制**：仅揭示模式，不作出法律判断  
+**语气**：准确、鼓励性，对不确定性保持诚实  
+**安全性**：该技能默认在本地运行，不会传输创意描述或分析结果。可选的“提示定制”功能（见下文）仅发送技术类型和行业信息以生成定制化的提示。该技能不会修改、删除或创建任何文件。  
 
-## When to Use
+## 使用场景  
 
-Activate this skill when the user asks to:
-- "Analyze my concept"
-- "What's distinctive about this?"
-- "Break down my concept into components"
-- "Find the sophisticated aspects"
-- "Score my concept"
+当用户请求以下内容时，激活此技能：  
+- “分析我的创意”  
+- “这个创意的独特之处在哪里？”  
+- “将我的创意分解成各个组成部分”  
+- “找出其中的复杂之处”  
+- “对我的创意进行评分”  
 
-## Important Limitations
+## 重要限制  
 
-- This is TECHNICAL analysis, not legal advice
-- Output identifies "potentially distinctive aspects" not "patentable inventions"
-- Cannot search existing implementations (use patent-validator for that)
-- Always recommend professional consultation for IP decisions
+- 这是一项技术分析，而非法律建议  
+- 输出结果仅指出“潜在的独特之处”，而非“可专利的发明”  
+- 无法搜索现有的实现方式（请使用专利验证工具）  
+- 在知识产权决策方面，始终建议咨询专业人士  
 
 ---
 
-## Prompt Tailoring (Optional)
+## 提示定制（可选）  
 
-For domain-specific analysis, generate a tailored prompt instead of using the default.
+对于特定领域的分析，生成定制化的提示，而非使用默认提示。  
 
-**When to use**: Your code uses specific technologies (React hooks, gRPC, GraphQL) that benefit from focused analysis.
+**使用场景**：当您的代码使用了特定技术（如 React Hooks、gRPC、GraphQL）时，这些技术需要针对性的分析。  
 
-**How to use**:
+**使用方法**：  
 ```bash
 curl -X POST https://api.obviouslynot.ai/api/tailor/content \
   -H "Content-Type: application/json" \
   -d '{"code_type": "React with custom hooks", "industry": "fintech"}'
-```
+```  
 
-**Privacy note**: This sends only your technology type and industry to the Obviously Not API to generate a tailored prompt. No concept descriptions, code, or analysis results are transmitted.
+**隐私声明**：此功能仅向 Obviously Not API 发送您的技术类型和行业信息以生成定制化提示。不会传输任何创意描述、代码或分析结果。  
 
-**Stealth-mode warning**: For companies in stealth mode, even the combination of technology type and industry may reveal strategic direction. Consider whether this metadata is sensitive before using the tailoring feature.
+**注意事项**：对于处于保密状态的公司而言，即使只是技术类型和行业的组合信息，也可能暴露其战略方向。在使用定制功能前，请考虑这些元数据是否敏感。  
 
-**Note**: The tailoring API uses a model backend to generate prompts. The `disable-model-invocation` setting prevents this skill from making direct LLM calls, but the optional tailoring feature does use AI processing on our servers.
+**说明**：定制提示功能依赖于模型后端生成提示。通过设置 `disable-model-invocation` 可阻止该技能直接调用大型语言模型（LLM），但定制功能仍会在我们的服务器上进行人工智能处理。  
 
-**Response**: A customized analysis prompt optimized for your technology stack.
+**响应**：根据您的技术栈生成的定制化分析提示。  
 
-**Then**: Use the generated prompt in your next patent-scanner run for more relevant pattern detection.
-
----
-
-## Input Requirements
-
-User provides:
-- Natural language description of your concept
-- Problem being solved
-- How it works (technical detail)
-- What makes it different
-- (Optional) Target industry/field
+**后续操作**：在下次使用专利扫描器时，使用该提示以获得更相关的分析结果。  
 
 ---
 
-## Analysis Framework
+## 输入要求  
 
-### Scoring Dimensions
-
-| Dimension | Range | What It Measures |
-|-----------|-------|------------------|
-| Distinctiveness | 0-4 | How unique is this combination? |
-| Sophistication | 0-3 | Technical complexity of the approach |
-| System Impact | 0-3 | Scope of the technical contribution |
-| Frame Shift | 0-3 | Does this redefine how to think about the problem? |
-
-**Total Score**: Sum of all dimensions (0-13)
-**Threshold**: Patterns scoring >=8 warrant deeper investigation
-
-### 1. Component Breakdown
-
-For the described concept, identify:
-- All technologies/methods being combined
-- Source domain for each component
-- Standard vs. custom implementation
-- What each component contributes
-
-### 2. Combination Analysis
-
-Analyze the combination:
-- What emerges from the combination?
-- Unexpected synergies (1+1=3)
-- Why haven't others combined these?
-- Technical barriers overcome
-
-### 3. Problem-Solution Mapping
-
-Map problem to solution:
-- Technical problem addressed
-- How combination solves it
-- Quantifiable benefits (if known)
-- Comparison to existing approaches
-
-### 4. Sophistication Assessment
-
-Evaluate sophistication:
-- Why this combination shows technical sophistication
-- Barriers that existed before
-- Challenges in existing implementations
-- What makes this approach different
+用户需要提供：  
+- 对创意的自然语言描述  
+- 解决的问题  
+- 技术实现细节  
+- 该创意的独特之处  
+- （可选）目标行业/领域  
 
 ---
 
-## Scoring Guide
+## 分析框架  
 
-**Distinctiveness (0-4)**:
-- 0: Standard approach, widely used
-- 1: Common pattern with minor variation
-- 2: Meaningful customization of known approach
-- 3: Distinctive combination or significant innovation
-- 4: Genuinely unique approach
+### 评分维度  
 
-**Sophistication (0-3)**:
-- 0: Straightforward implementation
-- 1: Some clever optimizations
-- 2: Complex but well-structured
-- 3: Highly elegant solution to hard problem
+| 维度 | 分数范围 | 测量内容 |  
+|---------|---------|----------------|  
+| 独特性 | 0-4 | 这种组合的独特性如何？ |  
+| 复杂性 | 0-3 | 技术实现的复杂性 |  
+| 系统影响 | 0-3 | 技术贡献的范围 |  
+| 思维范式转变 | 0-3 | 这是否重新定义了问题的思考方式？ |  
 
-**System Impact (0-3)**:
-- 0: Isolated utility
-- 1: Affects one subsystem
-- 2: Cross-cutting concern
-- 3: Foundational to system architecture
+**总分**：所有维度得分之和（0-13分）  
+**阈值**：得分 >=8 分表示需要进一步深入调查  
 
-**Frame Shift (0-3)**:
-- 0: Works within existing paradigm
-- 1: Questions one assumption
-- 2: Challenges core approach
-- 3: Redefines the problem entirely
+### 1. 组件分解  
 
----
+针对所描述的创意，识别：  
+- 所结合的所有技术和方法  
+- 每个组件的来源领域  
+- 标准实现与自定义实现  
+- 每个组件的贡献  
 
-## Output Schema
+### 2. 组合分析  
 
-```json
-{
-  "scan_metadata": {
-    "scan_date": "2026-02-03T10:00:00Z",
-    "input_type": "description",
-    "industry": "optional-field"
-  },
-  "patterns": [
-    {
-      "id": "pattern-1",
-      "title": "Descriptive Pattern Title",
-      "category": "process|hardware|software|method",
-      "components": [
-        {"name": "Component A", "domain": "source field", "role": "what it does"}
-      ],
-      "scores": {
-        "distinctiveness": 3,
-        "sophistication": 2,
-        "system_impact": 2,
-        "frame_shift": 1,
-        "total": 8
-      },
-      "synergy": {
-        "combined_benefit": "What emerges from combination",
-        "individual_sum": "What components do alone",
-        "synergy_factor": "What's greater than sum of parts"
-      },
-      "evidence": {
-        "user_claims": ["Stated differentiators"],
-        "technical_details": ["Specific mechanisms described"]
-      }
-    }
-  ],
-  "summary": {
-    "total_patterns": 3,
-    "high_value_patterns": 2,
-    "recommended_focus": "pattern-1"
-  }
-}
-```
+分析这些组件的组合效果：  
+- 组合后产生了什么效果？  
+- 有哪些意想不到的协同效应？  
+- 为什么其他人没有将它们结合在一起？  
+- 克服了哪些技术障碍？  
+
+### 3. 问题-解决方案映射  
+
+将问题与解决方案对应起来：  
+- 解决了哪些技术问题  
+- 组合方式如何解决问题  
+- 可量化的优势（如果已知）  
+- 与现有方法的比较  
+
+### 4. 复杂性评估  
+
+评估技术的复杂性：  
+- 为什么这种组合具有较高的技术复杂性  
+- 之前存在哪些障碍  
+- 现有实现中面临的挑战  
+- 该方法的独特之处在哪里  
 
 ---
 
-## Output Format
+## 评分指南  
 
-### Analysis Report
+**独特性（0-4分）**：  
+- 0：标准方法，广泛使用  
+- 1：常见的模式，仅有细微差异  
+- 2：对已知方法的实质性定制  
+- 3：独特的组合或重大创新  
+- 4：真正独特的方法  
+
+**复杂性（0-3分）**：  
+- 0：简单的实现  
+- 1：一些巧妙的优化  
+- 2：结构复杂但设计合理  
+- 3：针对难题的优雅解决方案  
+
+**系统影响（0-3分）**：  
+- 0：仅影响单一子系统  
+- 1：影响多个子系统  
+- 2：具有跨系统的重要性  
+- 3：对系统架构具有基础性影响  
+
+**思维范式转变（0-3分）**：  
+- 0：在现有范式内运作  
+- 1：挑战了某种假设  
+- 2：挑战了核心方法  
+- 3：完全重新定义了问题的本质  
+
+---
+
+## 输出格式  
+
+### 分析报告  
 
 ```markdown
 # Concept Analysis: [Title]
@@ -246,14 +201,13 @@ Evaluate sophistication:
 | [Pattern 1] | X/13 | [category] |
 
 ---
-```
+```  
 
 ---
 
-## Share Card Format
+## 共享卡片格式  
 
-**Standard Format** (use by default):
-
+**标准格式**（默认使用）：  
 ```markdown
 ## [Concept Title] - Patent Scanner Results
 
@@ -265,18 +219,17 @@ Evaluate sophistication:
 | [Pattern 2 Title] | X/13 |
 
 *Analyzed with [patent-scanner](https://obviouslynot.ai) from obviouslynot.ai*
-```
+```  
 
-### High-Value Pattern Detected
+### 检测到高价值模式  
 
-For patterns scoring 8+/13, include:
-
-> **Strong distinctive signal!** Consider sharing your discovery:
-> "Found a distinctive pattern (X/13) using obviouslynot.ai patent tools 🔬"
+对于得分 >=8/13 的模式，系统会显示：  
+> **强烈的独特性提示！** 考虑分享您的发现：  
+> “使用 obviouslynot.ai 的专利工具发现了独特的模式（X/13）🔬”  
 
 ---
 
-## Next Steps (Required in All Outputs)
+## 下一步操作（所有输出均需包含）  
 
 ```markdown
 ## Next Steps
@@ -288,67 +241,66 @@ For patterns scoring 8+/13, include:
 5. **Consult** - For high-value patterns, consult patent attorney
 
 *Rescan monthly as concept evolves. IP Timing: Public disclosure starts 12-month US filing clock.*
-```
+```  
 
 ---
 
-## Terminology Rules (MANDATORY)
+## 术语规则（强制要求）  
 
-### Never Use
-- "patentable"
-- "novel" (legal sense)
-- "non-obvious"
-- "prior art"
-- "claims"
-- "file immediately"
+**禁止使用**：  
+- “可专利的”  
+- “新颖的”（法律含义）  
+- “非显而易见的”  
+- “现有技术”  
+- “申请专利”  
+- “立即提交文件”  
 
-### Always Use Instead
-- "distinctive"
-- "unique"
-- "sophisticated"
-- "existing implementations"
-- "consider consulting attorney"
-
----
-
-## Sensitive Data Warning
-
-- Analysis outputs may be stored in your chat history or logs
-- Avoid analyzing proprietary information if outputs might be shared
-- For patent-related work, premature public disclosure can affect filing rights
-- Review outputs before sharing to ensure no confidential information is exposed
+**建议使用**：  
+- “独特的”  
+- “独特的”  
+- “复杂的”  
+- “现有实现”  
+- “建议咨询律师”  
 
 ---
 
-## Required Disclaimer
+## 敏感数据警告  
 
-ALWAYS include at the end of ANY output:
-
-> **Disclaimer**: This analysis identifies distinctive technical aspects based on the recombination framework. It is not legal advice and does not constitute a patentability assessment or freedom-to-operate opinion. Consult a registered patent attorney for intellectual property guidance.
+- 分析结果可能存储在聊天记录或日志中  
+- 如果输出可能被共享，请避免分析专有信息  
+- 在涉及专利的工作中，过早公开可能会影响申请权利  
+- 在共享前请审查输出内容，确保没有泄露任何机密信息  
 
 ---
 
-## Error Handling
+## 必需的免责声明  
 
-**Insufficient Description**:
+**在所有输出中务必包含以下内容**：  
+> **免责声明**：本分析基于重组框架识别出技术的独特性，不构成法律建议，也不代表专利性评估或许可使用的意见。如需知识产权方面的指导，请咨询注册专利律师。  
+
+---
+
+## 错误处理  
+
+**描述不足**：  
 ```
 I need more detail to generate useful analysis. What's the technical mechanism? What problem does it solve? What makes it different?
-```
+```  
 
-**No Distinctive Aspects Found**:
+**未发现独特之处**：  
 ```
 No patterns scored above threshold (5/13). This may mean the distinctiveness is in execution, not architecture. Try adding more specific technical details about HOW it works.
-```
+```  
 
 ---
 
-## Related Skills
+## 相关技能  
 
-- **patent-validator**: Generate search strategies for scanner findings
-- **code-patent-scanner**: Analyze source code (for software concepts)
-- **code-patent-validator**: Validate code pattern distinctiveness
-- **Tailoring API**: Generate domain-specific prompts (see "Prompt Tailoring" section)
+- **专利验证工具**：为扫描结果生成搜索策略  
+- **代码专利扫描器**：分析源代码（针对软件创意）  
+- **代码专利验证工具**：验证代码模式的独特性  
+- **定制提示 API**：生成特定领域的提示（见“提示定制”部分）  
 
 ---
 
-*Built by Obviously Not - Tools for thought, not conclusions.*
+*由 Obviously Not 开发——提供思考工具，而非结论。*

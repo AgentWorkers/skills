@@ -1,73 +1,71 @@
-# X (Twitter) Automation Skill
+# X（Twitter）自动化技能
 
-Automate X posts via browser control - bypass $200/month API costs.
+通过浏览器自动化来发布X平台上的帖子——从而避免每月200美元的API费用。
 
-## What It Does
+## 功能介绍
 
-- **Scrape trending topics** from your personalized "For You" feed
-- **Generate tweet ideas** based on trends (crypto/Web3/tech focused)
-- **Schedule tweets** throughout the day for natural posting
-- **Post via browser automation** - no API keys needed
-- **Queue management** for approval workflows
+- **抓取热门话题**：从您的个性化“For You”信息流中提取热门话题。
+- **生成推文创意**：根据热门话题生成推文内容（聚焦于加密货币、Web3或科技领域）。
+- **安排发布时间**：在一天中的不同时间段自动发布推文，以模拟人类的发布习惯。
+- **无需API密钥**：完全通过浏览器自动化实现发布。
+- **支持审批流程**：推文发布前需要经过审批。
 
-## Why This Exists
+## 使用背景
 
-X API pricing is insane:
-- Free tier: Write-only, can't read anything
-- Basic: $200/month for 15k tweets read
-- Pro: $5,000/month
+X平台的API定价非常昂贵：
+- **免费 tier**：仅支持写入操作，无法读取任何数据。
+- **Basic tier**：每月200美元，可读取1.5万条推文。
+- **Pro tier**：每月5,000美元。
 
-This skill uses browser automation instead. Zero API costs.
+本技能采用浏览器自动化技术，因此完全无需支付API费用。
 
-## Features
+## 主要功能
 
-✅ **Trend Scraping**
-- Navigates to X.com/explore
-- Extracts trending topics from "For You" tab
-- Saves to JSON for AI processing
+✅ **趋势抓取**：
+- 访问X.com/explore页面。
+- 从“For You”标签页中提取热门话题。
+- 将提取的数据保存为JSON格式，以便后续的AI处理。
 
-✅ **Tweet Generation**
-- AI generates 3-5 tweet ideas based on trends
-- Customizable tone/voice
-- Length optimization (150-250 chars for engagement)
+✅ **推文生成**：
+- AI根据热门话题生成3-5条推文创意。
+- 可自定义推文的语气和风格。
+- 推文长度优化（150-250个字符，以提高互动性）。
 
-✅ **Scheduled Posting**
-- Space tweets throughout the day
-- Human-like delays between posts
-- Approval queue workflow
+✅ **定时发布**：
+- 在一天中的不同时间自动发布推文。
+- 发布间隔时间模拟人类用户的习惯。
+- 支持推文发布前的审批流程。
 
-✅ **Browser Automation**
-- Uses OpenClaw browser control
-- Requires one-time login
-- Session persists across runs
+✅ **浏览器自动化**：
+- 使用OpenClaw浏览器控制工具进行操作。
+- 需要一次性登录X平台。
+- 登录状态会在多次运行中保持。
 
-## Installation
-
+## 安装步骤
 ```bash
 cd ~/.openclaw/workspace/skills/x-automation
 npm install
 ```
 
-## Usage
+## 使用方法
 
-### 1. Manual Tweet Generation
+### 1. 手动生成推文
 
-Ask your agent:
+请您的代理执行以下操作：
 ```
 "Check X trends and generate 3 tweet ideas"
 ```
 
-The agent will:
-1. Navigate to X.com/explore
-2. Scrape trending topics
-3. Generate tweet ideas
-4. Send to you for approval
-5. Post approved tweets
+代理将：
+1. 访问X.com/explore页面。
+2. 抓取热门话题。
+3. 生成推文创意。
+4. 将推文内容发送给您进行审批。
+5. 在获得批准后发布推文。
 
-### 2. Automated Posting (Cron)
+### 2. 自动化发布（使用Cron作业）
 
-Set up a cron job to run every 4 hours:
-
+设置一个每4小时运行一次的Cron作业：
 ```json
 {
   "schedule": { "kind": "every", "everyMs": 14400000 },
@@ -79,36 +77,33 @@ Set up a cron job to run every 4 hours:
 }
 ```
 
-### 3. Direct Posting
+### 3. 直接发布推文
 
 ```
 "Post this tweet: <your text>"
 ```
 
-## Configuration
+## 配置说明
 
-No API keys needed! Just:
+无需API密钥！只需按照以下步骤操作：
+1. 在OpenClaw浏览器中登录X.com。
+2. 保持浏览器会话状态（或在需要时重新登录）。
+3. 在您的SOUL.md文件或命令提示中自定义推文的语气和风格。
 
-1. **Log in to X.com** in OpenClaw browser
-2. **Keep browser session active** (or re-login when needed)
-3. **Customize tweet voice** in your SOUL.md or prompt
+## 推文生成指南
 
-## Tweet Generation Guidelines
+**默认关注领域（可在命令提示中自定义）：**
+- 加密货币趋势（如ETH、Base L2、DeFi）
+- Web3开发相关内容
+- 科技评论
+- 产品更新信息（如适用）
 
-Default focus areas (customize in your prompts):
-- Crypto trends (ETH, Base L2, DeFi)
-- Web3 development
-- Tech commentary
-- Product updates (if applicable)
+**默认推文风格：**
+- 直言不讳，表达个人观点。
+- 避免使用官方语言。
+- 推文长度控制在150-250个字符以内，以提高互动性。
 
-Default tone:
-- Direct, opinionated
-- No corporate speak
-- Short & punchy (150-250 chars)
-- Engagement-focused
-
-## File Structure
-
+## 文件结构
 ```
 x-automation/
 ├── scripts/
@@ -125,66 +120,66 @@ x-automation/
 └── package.json
 ```
 
-## Safety Features
+## 安全特性
 
-- **No auto-posting without approval** (unless you configure it)
-- **Human-like delays** (30-60s between tweets)
-- **Daily limits** (configurable, default 10/day)
-- **Queue review** before posting
+- **未经批准不会自动发布推文**。
+- 发布间隔时间模拟人类用户的习惯（每次发布之间间隔30-60秒）。
+- 每日发布次数有限制（默认为10条）。
+- 发布前需要审核推文内容。
 
-## Anti-Detection
+## 防检测机制
 
-- Uses real browser session (not headless)
-- Random delays between actions
-- Natural posting schedule
-- Human-like mouse movements (Playwright)
+- 使用真实的浏览器会话（而非无头浏览器）。
+- 操作之间有随机延迟。
+- 发布时间安排自然。
+- 使用Playwright库模拟人类的鼠标操作。
 
-## Limitations
+## 注意事项
 
-- Requires browser to stay logged in
-- Can be detected if too aggressive
-- Manual login required (can't automate 2FA)
+- 需要保持浏览器登录状态。
+- 如果操作过于频繁，可能会被平台检测到。
+- 需要手动登录X平台（无法自动完成两步验证）。
 
-## Legal Note
+## 法律声明
 
-This automates YOUR account via YOUR browser. You're not violating X ToS any more than using the website normally. Just don't spam.
+本工具仅用于通过您的浏览器自动化发布推文，并不会违反X平台的服务条款。请注意不要发送垃圾信息。
 
-## Pro Tips
+## 使用技巧
 
-**Optimal posting times (adjust for your timezone):**
-- Morning: 9-10 AM (commute browsing)
-- Lunch: 1-2 PM (break time)
-- Evening: 7-9 PM (peak Twitter hours)
-- Late: 11 PM-12 AM (night crew)
+**最佳发布时间（根据您的时区调整）：**
+- 早上9-10点：通勤途中使用。
+- 午餐时间：1-2点。
+- 晚上7-9点：Twitter使用高峰期。
+- 深夜11点-12点：夜间使用时段。
 
-**Posting frequency:**
-- 2-4 tweets/day is natural
-- Space out by 3-4 hours minimum
-- Don't post all at once
+**推荐发布频率：**
+- 每天发布2-4条推文。
+- 发布间隔至少3-4小时。
+- 避免一次性发布大量推文。
 
-**Content strategy:**
-- Comment on trends (show you're plugged in)
-- Share insights (demonstrate expertise)
-- Mention your product (subtle, 1 in 5 tweets)
-- Engage with replies (build community)
+**内容策略：**
+- 对热门话题发表评论，展示您的关注度。
+- 分享专业见解。
+- 适当提及您的产品（每5条推文中提及1条）。
+- 与用户互动，参与讨论（建立社区）。
 
-## Examples
+## 示例
 
-See `WORKFLOW.md` for detailed examples of:
-- Trend scraping output
-- Generated tweet samples
-- Approval workflows
-- Scheduling strategies
+详细示例请参见`WORKFLOW.md`文件：
+- 热门话题抓取结果。
+- 生成的推文样本。
+- 审批流程。
+- 发布时间安排策略。
 
-## Support
+## 技术支持
 
-This skill is credential-free and safe to share. No API keys, no passwords, no private data.
+本技能无需任何认证信息，且安全可靠。无需API密钥或密码，也不会泄露任何私人数据。
 
-Issues? Check:
-1. Is browser logged into X?
-2. Is OpenClaw browser control running?
-3. Are cron jobs properly configured?
+遇到问题时，请检查以下内容：
+1. 浏览器是否已登录X平台？
+2. OpenClaw浏览器控制工具是否正在运行？
+- Cron作业是否配置正确？
 
 ---
 
-Built for crypto devs who refuse to pay $200/month for an API that should be free.
+专为那些不愿意每月支付200美元API费用的加密货币开发者设计。

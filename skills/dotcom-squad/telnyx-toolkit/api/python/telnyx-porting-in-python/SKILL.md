@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Porting In - Python
+# Telnyx 的端口迁移功能（Python）
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +33,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all porting events
+## 列出所有端口迁移事件
 
-Returns a list of all porting events.
+返回所有端口迁移事件的列表。
 
 `GET /porting/events`
 
@@ -46,9 +47,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Show a porting event
+## 显示单个端口迁移事件
 
-Show a specific porting event.
+显示特定的端口迁移事件。
 
 `GET /porting/events/{id}`
 
@@ -59,9 +60,9 @@ event = client.porting.events.retrieve(
 print(event.data)
 ```
 
-## Republish a porting event
+## 重新发布端口迁移事件
 
-Republish a specific porting event.
+重新发布特定的端口迁移事件。
 
 `POST /porting/events/{id}/republish`
 
@@ -71,9 +72,9 @@ client.porting.events.republish(
 )
 ```
 
-## Preview the LOA configuration parameters
+## 预览 LOA 配置参数
 
-Preview the LOA template that would be generated without need to create LOA configuration.
+无需创建 LOA 配置即可预览 LOA 模板。
 
 `POST /porting/loa_configuration_preview`
 
@@ -101,9 +102,9 @@ content = response.read()
 print(content)
 ```
 
-## List LOA configurations
+## 列出 LOA 配置
 
-List the LOA configurations.
+列出所有 LOA 配置。
 
 `GET /porting/loa_configurations`
 
@@ -113,9 +114,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a LOA configuration
+## 创建 LOA 配置
 
-Create a LOA configuration.
+创建一个新的 LOA 配置。
 
 `POST /porting/loa_configurations`
 
@@ -141,9 +142,9 @@ loa_configuration = client.porting.loa_configurations.create(
 print(loa_configuration.data)
 ```
 
-## Retrieve a LOA configuration
+## 获取 LOA 配置
 
-Retrieve a specific LOA configuration.
+获取特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}`
 
@@ -154,9 +155,9 @@ loa_configuration = client.porting.loa_configurations.retrieve(
 print(loa_configuration.data)
 ```
 
-## Update a LOA configuration
+## 更新 LOA 配置
 
-Update a specific LOA configuration.
+更新特定的 LOA 配置。
 
 `PATCH /porting/loa_configurations/{id}`
 
@@ -183,9 +184,9 @@ loa_configuration = client.porting.loa_configurations.update(
 print(loa_configuration.data)
 ```
 
-## Delete a LOA configuration
+## 删除 LOA 配置
 
-Delete a specific LOA configuration.
+删除特定的 LOA 配置。
 
 `DELETE /porting/loa_configurations/{id}`
 
@@ -195,9 +196,9 @@ client.porting.loa_configurations.delete(
 )
 ```
 
-## Preview a LOA configuration
+## 预览 LOA 配置
 
-Preview a specific LOA configuration.
+预览特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}/preview`
 
@@ -210,9 +211,9 @@ content = response.read()
 print(content)
 ```
 
-## List all porting orders
+## 列出所有端口迁移订单
 
-Returns a list of your porting order.
+返回所有端口迁移订单的列表。
 
 `GET /porting_orders`
 
@@ -222,11 +223,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a porting order
+## 创建端口迁移订单
 
-Creates a new porting order object.
+创建一个新的端口迁移订单。
 
-`POST /porting_orders` — Required: `phone_numbers`
+`POST /porting_orders` — 必需参数：`phone_numbers`
 
 ```python
 porting_order = client.porting_orders.create(
@@ -235,9 +236,9 @@ porting_order = client.porting_orders.create(
 print(porting_order.data)
 ```
 
-## Retrieve a porting order
+## 获取端口迁移订单详情
 
-Retrieves the details of an existing porting order.
+获取现有端口迁移订单的详细信息。
 
 `GET /porting_orders/{id}`
 
@@ -248,9 +249,9 @@ porting_order = client.porting_orders.retrieve(
 print(porting_order.data)
 ```
 
-## Edit a porting order
+## 编辑端口迁移订单
 
-Edits the details of an existing porting order.
+编辑现有端口迁移订单的详细信息。
 
 `PATCH /porting_orders/{id}`
 
@@ -261,9 +262,9 @@ porting_order = client.porting_orders.update(
 print(porting_order.data)
 ```
 
-## Delete a porting order
+## 删除端口迁移订单
 
-Deletes an existing porting order.
+删除现有的端口迁移订单。
 
 `DELETE /porting_orders/{id}`
 
@@ -273,9 +274,9 @@ client.porting_orders.delete(
 )
 ```
 
-## Activate every number in a porting order asynchronously.
+## 异步激活端口迁移订单中的每个号码
 
-Activate each number in a porting order asynchronously.
+异步激活端口迁移订单中的每个号码。
 
 `POST /porting_orders/{id}/actions/activate`
 
@@ -286,7 +287,9 @@ response = client.porting_orders.actions.activate(
 print(response.data)
 ```
 
-## Cancel a porting order
+## 取消端口迁移订单
+
+取消端口迁移订单。
 
 `POST /porting_orders/{id}/actions/cancel`
 
@@ -297,9 +300,9 @@ response = client.porting_orders.actions.cancel(
 print(response.data)
 ```
 
-## Submit a porting order.
+## 提交端口迁移订单
 
-Confirm and submit your porting order.
+确认并提交端口迁移订单。
 
 `POST /porting_orders/{id}/actions/confirm`
 
@@ -310,9 +313,9 @@ response = client.porting_orders.actions.confirm(
 print(response.data)
 ```
 
-## Share a porting order
+## 共享端口迁移订单
 
-Creates a sharing token for a porting order.
+为端口迁移订单创建共享令牌。
 
 `POST /porting_orders/{id}/actions/share`
 
@@ -323,9 +326,9 @@ response = client.porting_orders.actions.share(
 print(response.data)
 ```
 
-## List all porting activation jobs
+## 列出所有端口迁移激活作业
 
-Returns a list of your porting activation jobs.
+返回所有端口迁移激活作业的列表。
 
 `GET /porting_orders/{id}/activation_jobs`
 
@@ -337,9 +340,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a porting activation job
+## 获取端口迁移激活作业详情
 
-Returns a porting activation job.
+获取特定的端口迁移激活作业的详细信息。
 
 `GET /porting_orders/{id}/activation_jobs/{activationJobId}`
 
@@ -351,11 +354,11 @@ activation_job = client.porting_orders.activation_jobs.retrieve(
 print(activation_job.data)
 ```
 
-## Update a porting activation job
+## 更新端口迁移激活作业
 
-Updates the activation time of a porting activation job.
+更新端口迁移激活作业的激活时间。
 
-`PATCH /porting_orders/{id}/activation_jobs/{activationJobId}`
+`PATCH /porting/orders/{id}/activation_jobs/{activationJobId}`
 
 ```python
 activation_job = client.porting_orders.activation_jobs.update(
@@ -365,11 +368,11 @@ activation_job = client.porting_orders.activation_jobs.update(
 print(activation_job.data)
 ```
 
-## List additional documents
+## 列出所有附加文档
 
-Returns a list of additional documents for a porting order.
+返回端口迁移订单的所有附加文档的列表。
 
-`GET /porting_orders/{id}/additional_documents`
+`GET /porting/orders/{id}/additional_documents`
 
 ```python
 page = client.porting_orders.additional_documents.list(
@@ -379,11 +382,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a list of additional documents
+## 创建附加文档列表
 
-Creates a list of additional documents for a porting order.
+为端口迁移订单创建附加文档列表。
 
-`POST /porting_orders/{id}/additional_documents`
+`POST /porting/orders/{id}/additional_documents`
 
 ```python
 additional_document = client.porting_orders.additional_documents.create(
@@ -392,11 +395,11 @@ additional_document = client.porting_orders.additional_documents.create(
 print(additional_document.data)
 ```
 
-## Delete an additional document
+## 删除附加文档
 
-Deletes an additional document for a porting order.
+删除端口迁移订单中的附加文档。
 
-`DELETE /porting_orders/{id}/additional_documents/{additional_document_id}`
+`DELETE /porting/orders/{id}/additional_documents/{additional_document_id}`
 
 ```python
 client.porting_orders.additional_documents.delete(
@@ -405,11 +408,11 @@ client.porting_orders.additional_documents.delete(
 )
 ```
 
-## List allowed FOC dates
+## 列出允许的 FOC 日期
 
-Returns a list of allowed FOC dates for a porting order.
+返回端口迁移订单允许的 FOC 日期列表。
 
-`GET /porting_orders/{id}/allowed_foc_windows`
+`GET /porting/orders/{id}/allowed_foc_windows`
 
 ```python
 response = client.porting_orders.retrieve_allowed_foc_windows(
@@ -418,11 +421,11 @@ response = client.porting_orders.retrieve_allowed_foc_windows(
 print(response.data)
 ```
 
-## List all comments of a porting order
+## 列出端口迁移订单的所有评论
 
-Returns a list of all comments of a porting order.
+返回端口迁移订单的所有评论列表。
 
-`GET /porting_orders/{id}/comments`
+`GET /porting/orders/{id}/comments`
 
 ```python
 page = client.porting_orders.comments.list(
@@ -432,9 +435,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a comment for a porting order
+## 为端口迁移订单创建评论
 
-Creates a new comment for a porting order.
+为端口迁移订单创建新的评论。
 
 `POST /porting_orders/{id}/comments`
 
@@ -445,9 +448,11 @@ comment = client.porting_orders.comments.create(
 print(comment.data)
 ```
 
-## Download a porting order loa template
+## 下载端口迁移订单的 LOA 模板
 
-`GET /porting_orders/{id}/loa_template`
+下载端口迁移订单的 LOA 模板。
+
+`GET /porting/orders/{id}/loa_template`
 
 ```python
 response = client.porting_orders.retrieve_loa_template(
@@ -458,11 +463,11 @@ content = response.read()
 print(content)
 ```
 
-## List porting order requirements
+## 列出端口迁移订单的需求
 
-Returns a list of all requirements based on country/number type for this porting order.
+根据国家/号码类型返回所有需求列表。
 
-`GET /porting_orders/{id}/requirements`
+`GET /porting/orders/{id}/requirements`
 
 ```python
 page = client.porting_orders.retrieve_requirements(
@@ -472,7 +477,9 @@ page = page.data[0]
 print(page.field_type)
 ```
 
-## Retrieve the associated V1 sub_request_id and port_request_id
+## 获取关联的 V1 子请求 ID 和端口请求 ID
+
+获取关联的 V1 子请求 ID 和端口请求 ID。
 
 `GET /porting_orders/{id}/sub_request`
 
@@ -483,9 +490,9 @@ response = client.porting_orders.retrieve_sub_request(
 print(response.data)
 ```
 
-## List verification codes
+## 列出验证代码
 
-Returns a list of verification codes for a porting order.
+返回端口迁移订单的所有验证代码列表。
 
 `GET /porting_orders/{id}/verification_codes`
 
@@ -497,9 +504,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Send the verification codes
+## 发送验证代码
 
-Send the verification code for all porting phone numbers.
+为所有端口迁移号码发送验证代码。
 
 `POST /porting_orders/{id}/verification_codes/send`
 
@@ -509,9 +516,9 @@ client.porting_orders.verification_codes.send(
 )
 ```
 
-## Verify the verification code for a list of phone numbers
+## 验证一系列号码的验证代码
 
-Verifies the verification code for a list of phone numbers.
+验证一系列号码的验证代码。
 
 `POST /porting_orders/{id}/verification_codes/verify`
 
@@ -522,9 +529,9 @@ response = client.porting_orders.verification_codes.verify(
 print(response.data)
 ```
 
-## List action requirements for a porting order
+## 列出端口迁移订单的动作需求
 
-Returns a list of action requirements for a specific porting order.
+返回特定端口迁移订单的所有动作需求列表。
 
 `GET /porting_orders/{porting_order_id}/action_requirements`
 
@@ -536,9 +543,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Initiate an action requirement
+## 启动动作需求
 
-Initiates a specific action requirement for a porting order.
+为特定端口迁移订单启动特定的动作需求。
 
 `POST /porting_orders/{porting_order_id}/action_requirements/{id}/initiate`
 
@@ -554,11 +561,11 @@ response = client.porting_orders.action_requirements.initiate(
 print(response.data)
 ```
 
-## List all associated phone numbers
+## 列出所有关联的号码
 
-Returns a list of all associated phone numbers for a porting order.
+返回端口迁移订单的所有关联号码列表。
 
-`GET /porting_orders/{porting_order_id}/associated_phone_numbers`
+`GET /porting_orders/{id}/associated_phone_numbers`
 
 ```python
 page = client.porting_orders.associated_phone_numbers.list(
@@ -568,11 +575,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an associated phone number
+## 创建关联号码
 
-Creates a new associated phone number for a porting order.
+为端口迁移订单创建新的关联号码。
 
-`POST /porting_orders/{porting_order_id}/associated_phone_numbers`
+`POST /porting_orders/{id}/associated_phone_numbers`
 
 ```python
 associated_phone_number = client.porting_orders.associated_phone_numbers.create(
@@ -583,11 +590,11 @@ associated_phone_number = client.porting_orders.associated_phone_numbers.create(
 print(associated_phone_number.data)
 ```
 
-## Delete an associated phone number
+## 删除关联号码
 
-Deletes an associated phone number from a porting order.
+从端口迁移订单中删除关联号码。
 
-`DELETE /porting_orders/{porting_order_id}/associated_phone_numbers/{id}`
+`DELETE /porting_orders/{id}/associated_phone_numbers/{id}`
 
 ```python
 associated_phone_number = client.porting_orders.associated_phone_numbers.delete(
@@ -597,11 +604,11 @@ associated_phone_number = client.porting_orders.associated_phone_numbers.delete(
 print(associated_phone_number.data)
 ```
 
-## List all phone number blocks
+## 列出所有号码块
 
-Returns a list of all phone number blocks of a porting order.
+返回端口迁移订单的所有号码块列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_blocks`
+`GET /porting_orders/{id}/phone_number_blocks`
 
 ```python
 page = client.porting_orders.phone_number_blocks.list(
@@ -611,11 +618,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a phone number block
+## 创建号码块
 
-Creates a new phone number block.
+为端口迁移订单创建新的号码块。
 
-`POST /porting_orders/{porting_order_id}/phone_number_blocks`
+`POST /porting_orders/{id}/phone_number_blocks`
 
 ```python
 phone_number_block = client.porting_orders.phone_number_blocks.create(
@@ -632,11 +639,11 @@ phone_number_block = client.porting_orders.phone_number_blocks.create(
 print(phone_number_block.data)
 ```
 
-## Delete a phone number block
+## 删除号码块
 
-Deletes a phone number block.
+删除号码块。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_blocks/{id}`
+`DELETE /porting_orders/{id}/phone_number_blocks/{id}`
 
 ```python
 phone_number_block = client.porting_orders.phone_number_blocks.delete(
@@ -646,11 +653,11 @@ phone_number_block = client.porting_orders.phone_number_blocks.delete(
 print(phone_number_block.data)
 ```
 
-## List all phone number extensions
+## 列出所有号码扩展名
 
-Returns a list of all phone number extensions of a porting order.
+返回端口迁移订单的所有号码扩展名列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_extensions`
+`GET /porting_orders/{id}/phone_numberextensions`
 
 ```python
 page = client.porting_orders.phone_number_extensions.list(
@@ -660,11 +667,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a phone number extension
+## 创建号码扩展名
 
-Creates a new phone number extension.
+为端口迁移订单创建新的号码扩展名。
 
-`POST /porting_orders/{porting_order_id}/phone_number_extensions`
+`POST /porting_orders/{id}/phone_numberextensions`
 
 ```python
 phone_number_extension = client.porting_orders.phone_number_extensions.create(
@@ -682,11 +689,11 @@ phone_number_extension = client.porting_orders.phone_number_extensions.create(
 print(phone_number_extension.data)
 ```
 
-## Delete a phone number extension
+## 删除号码扩展名
 
-Deletes a phone number extension.
+删除号码扩展名。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_extensions/{id}`
+`DELETE /porting_orders/{id}/phone_number_extensions/{id}`
 
 ```python
 phone_number_extension = client.porting_orders.phone_number_extensions.delete(
@@ -696,9 +703,9 @@ phone_number_extension = client.porting_orders.phone_number_extensions.delete(
 print(phone_number_extension.data)
 ```
 
-## List all exception types
+## 列出所有可能的异常类型
 
-Returns a list of all possible exception types for a porting order.
+返回端口迁移订单的所有可能异常类型列表。
 
 `GET /porting_orders/exception_types`
 
@@ -707,9 +714,9 @@ response = client.porting_orders.retrieve_exception_types()
 print(response.data)
 ```
 
-## List all phone number configurations
+## 列出所有号码配置
 
-Returns a list of phone number configurations paginated.
+分页返回所有号码配置列表。
 
 `GET /porting_orders/phone_number_configurations`
 
@@ -719,9 +726,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a list of phone number configurations
+## 创建号码配置列表
 
-Creates a list of phone number configurations.
+创建号码配置列表。
 
 `POST /porting_orders/phone_number_configurations`
 
@@ -730,9 +737,9 @@ phone_number_configuration = client.porting_orders.phone_number_configurations.c
 print(phone_number_configuration.data)
 ```
 
-## List all porting phone numbers
+## 列出所有迁移中的号码
 
-Returns a list of your porting phone numbers.
+返回所有迁移中的号码列表。
 
 `GET /porting/phone_numbers`
 
@@ -742,9 +749,9 @@ page = page.data[0]
 print(page.porting_order_id)
 ```
 
-## List porting related reports
+## 列出与端口迁移相关的报告
 
-List the reports generated about porting operations.
+列出与端口迁移操作相关的报告。
 
 `GET /porting/reports`
 
@@ -754,9 +761,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a porting related report
+## 创建与端口迁移相关的报告
 
-Generate reports about porting operations.
+生成与端口迁移操作相关的报告。
 
 `POST /porting/reports`
 
@@ -770,9 +777,9 @@ report = client.porting.reports.create(
 print(report.data)
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+获取特定的报告。
 
 `GET /porting/reports/{id}`
 
@@ -783,9 +790,9 @@ report = client.porting.reports.retrieve(
 print(report.data)
 ```
 
-## List available carriers in the UK
+## 列出英国的可用运营商
 
-List available carriers in the UK.
+列出英国的可用运营商。
 
 `GET /porting/uk_carriers`
 
@@ -794,13 +801,14 @@ response = client.porting.list_uk_carriers()
 print(response.data)
 ```
 
-## Run a portability check
+## 运行端口迁移检查
 
-Runs a portability check, returning the results immediately.
+立即运行端口迁移检查并返回结果。
 
 `POST /portability_checks`
 
 ```python
 response = client.portability_checks.run()
 print(response.data)
+```
 ```

@@ -1,27 +1,25 @@
 # EchoAgent
 
-EchoAgent is a minimal OpenClaw-compatible skill.
+EchoAgent 是一个与 OpenClaw 兼容的简单技能（skill）。
 
-## What it does
-- Accepts text input
-- Uses a tool to process it
-- Returns deterministic output
+## 功能
+- 接收文本输入
+- 使用特定工具处理该输入
+- 返回确定的输出结果
 
-## Use case
-This skill is intended as a reference example for building
-and publishing OpenClaw agents.
+## 使用场景
+此技能旨在作为构建和发布 OpenClaw 代理（agents）的参考示例。
 
-## Entry point
-agent.py
+## 入口点
+`agent.py`
 
-## Interoperability
+## 互操作性
+此技能专为其他 OpenClaw 代理设计，可供它们使用。
 
-This skill is designed to be used by other OpenClaw agents.
+### 输入参数
+- `text`（字符串类型）
 
-### Input
-- text (string)
+### 输出参数
+- `result`（字符串类型）
 
-### Output
-- result (string)
-
-This agent can be safely chained inside multi-agent workflows.
+此代理可以安全地被集成到多代理工作流（multi-agent workflows）中。

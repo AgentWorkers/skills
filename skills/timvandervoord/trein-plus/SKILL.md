@@ -1,42 +1,42 @@
 ---
 name: trein
-description: Query Dutch Railways (NS) for TRAIN travel only - train departures, time-based trip planning (depart-at/arrive-by), disruptions, and station search via the trein CLI. NOT for car, bus, or other transport.
+description: 仅查询荷兰铁路（NS）的火车旅行相关信息：包括火车发车时间、基于时间的行程规划（出发/到达时间）、列车延误情况，以及通过“trein CLI”工具进行的车站搜索。不涉及汽车、公交车或其他交通工具的相关信息。
 homepage: https://github.com/joelkuijper/trein
 metadata: {"clawdbot":{"emoji":"🚆","requires":{"bins":["trein"],"env":["NS_API_KEY"]},"primaryEnv":"NS_API_KEY","install":[{"id":"npm","kind":"node","package":"trein","bins":["trein"],"label":"Install trein (npm)"},{"id":"download-mac-arm","kind":"download","url":"https://github.com/joelkuijper/trein/releases/latest/download/trein-darwin-arm64","bins":["trein"],"label":"Download (macOS Apple Silicon)","os":["darwin"]},{"id":"download-mac-x64","kind":"download","url":"https://github.com/joelkuijper/trein/releases/latest/download/trein-darwin-x64","bins":["trein"],"label":"Download (macOS Intel)","os":["darwin"]},{"id":"download-linux","kind":"download","url":"https://github.com/joelkuijper/trein/releases/latest/download/trein-linux-x64","bins":["trein"],"label":"Download (Linux x64)","os":["linux"]}]}}
 ---
 
-# trein - Dutch Railways CLI
-A CLI for the NS (Dutch Railways) API with real-time **train** departures, **train** trip planning, disruptions, and station search.
+# trein - 荷兰铁路 CLI  
+这是一个用于荷兰铁路（NS）API的命令行工具（CLI），提供实时的列车出发信息、列车行程规划、列车延误情况以及车站查询服务。  
 
-## Install
-npm (recommended):
+## 安装  
+推荐使用 npm：  
 ```bash
 npm i -g trein
-```
+```  
 
-Or download a standalone binary from [GitHub Releases](https://github.com/joelkuijper/trein/releases).
+或从 [GitHub 仓库](https://github.com/joelkuijper/trein/releases) 下载独立的二进制文件。  
 
-## Setup
-Get an API key from https://apiportal.ns.nl/ and set it:
+## 设置  
+从 https://apiportal.ns.nl/ 获取 API 密钥，并进行配置：  
 ```bash
 export NS_API_KEY="your-api-key"
-```
+```  
 
-Or create `~/.config/trein/trein.config.json`:
+或创建 `~/.config/trein/trein.config.json` 文件：  
 ```json
 { "apiKey": "your-api-key" }
-```
+```  
 
-## Commands
+## 命令  
 
-### Departures
+### 列车出发信息  
 ```bash
 trein departures "Amsterdam Centraal"
 trein d amsterdam
 trein d amsterdam --json  # structured output
-```
+```  
 
-### Trip Planning
+### 列车行程规划  
 ```bash
 trein trip "Utrecht" "Den Haag Centraal"
 trein t utrecht denhaag --json
@@ -44,55 +44,51 @@ trein t amsterdam rotterdam --via utrecht  # route via specific station
 trein t hoofddorp "den haag" --arrive-by 09:30 --json  # arrive by 09:30 TODAY
 trein t hoofddorp "den haag" --depart-at 09:00 --json  # depart at 09:00 TODAY
 trein t utrecht amsterdam --date 2026-02-05 --depart-at 14:30 --json  # specific FUTURE date and time
-```
+```  
 
-### Disruptions
+### 列车延误情况  
 ```bash
 trein disruptions
 trein disruptions --json
-```
+```  
 
-### Station Search
+### 车站查询  
 ```bash
 trein stations rotterdam
 trein s rotterdam --json
-```
+```  
 
-### Aliases (shortcuts)
+### 别名（快捷方式）  
 ```bash
 trein alias set home "Amsterdam Centraal"
 trein alias set work "Rotterdam Centraal"
 trein alias list
 trein d home  # uses alias
-```
+```  
 
-## When to Use This Skill
+## 适用场景  
+当用户询问在荷兰的列车出行相关问题时，可以使用此工具：  
+- “前往 [车站] 的下一班列车什么时候出发？”  
+- “我该如何从 [A] 乘坐火车前往 [B]？”  
+- “我需要在 [时间] 到达 [车站]，应该乘坐哪班列车？”  
+- “是否有列车延误？”  
+- “我需要什么时候出发才能在 [时间] 之前到达 [车站]？”  
+- “[车站名称] 的车站代码是什么？”  
+- “前往 [车站] 的列车从哪个站台出发？”  
+- “从 [A] 乘坐火车到 [B] 需要多长时间？”  
 
-This skill should be used when users ask about **TRAIN TRAVEL** in the Netherlands:
-- "When does the next **train** to [station] leave?"
-- "How do I get from [A] to [B] **by train**?"
-- "I need to be in [station] at [time], which **train** should I take?"
-- "Are there any **train** disruptions?"
-- "What time should I leave to arrive **by train** at [time]?"
-- "What's the **train** station code for [name]?"
-- "Which platform does the **train** to [station] leave from?"
-- "How long does it take to **travel by train** from [A] to [B]?"
+## 命令选择指南  
+**首先：确认用户确实需要查询列车出行信息。如果用户需要查询汽车、公交车或其他交通工具的信息，请勿使用此工具。**  
+然后选择相应的命令：  
+- 用户想查询某个车站的实时列车出发信息 → 使用 `departures`  
+- 用户想从 A 地点乘坐火车前往 B 地点 → 使用 `trip`  
+- 用户提供了具体的到达/出发时间 → 使用 `trip` 并添加 `--arrive-by` 或 `--depart-at` 参数  
+- 用户询问列车延误情况 → 使用 `disruptions`  
+- 用户提供了部分车站名称 → 先使用 `stations` 命令查询准确名称  
+- 用户指定了未来的出行日期 → 使用 `trip` 并添加 `--date` 参数  
 
-## Command Selection Guide
-
-**First: Confirm the user wants TRAIN travel. If they want car/bus/other transport, do NOT use this skill.**
-
-Then select the appropriate command:
-- User wants real-time **train** departures from ONE station → use `departures`
-- User wants to travel from A to B **by train** → use `trip`
-- User mentions a specific arrival/departure time **for train** → use `trip` with `--arrive-by` or `--depart-at`
-- User asks about **train** delays or disruptions → use `disruptions`
-- User gives partial **train** station name → use `stations` first to resolve
-- User mentions future date **for train travel** → use `trip` with `--date`
-
-## JSON Output Examples
-
-### Trip Planning Response
+## JSON 输出示例  
+### 列车行程规划结果  
 ```json
 {
   "trips": [{
@@ -109,9 +105,9 @@ Then select the appropriate command:
     }]
   }]
 }
-```
+```  
 
-### Departures Response
+### 列车出发信息结果  
 ```json
 {
   "departures": [{
@@ -122,9 +118,9 @@ Then select the appropriate command:
     "trainType": "IC"
   }]
 }
-```
+```  
 
-### Disruptions Response
+### 列车延误情况结果  
 ```json
 {
   "disruptions": [{
@@ -135,57 +131,51 @@ Then select the appropriate command:
     "expectedEnd": "2026-02-05 23:59"
   }]
 }
-```
+```  
 
-## Best Practices for AI Agents
+## 人工智能助手的最佳实践  
+1. **确认用户需求**：仅当用户明确表示需要查询列车出行信息时才使用此工具。  
+2. **始终使用 `--json` 选项** 以获得机器可读的 JSON 输出。  
+3. **使用 `stations` 命令验证用户输入的车站名称**（避免歧义）。  
+4. **支持模糊匹配**：不需要用户提供精确的车站名称。  
+5. **正确处理包含空格的车站名称**（例如：“Den Haag Centraal”）。  
+6. **在向用户展示结果前检查 JSON 数据中的错误**。  
+7. **时间格式统一为 24 小时制（HH:mm）**。  
+8. **默认使用当前日期**：今日出行时省略 `--date` 参数；未来出行时才添加该参数。  
+9. **注意荷兰车站名称的特殊性**（许多车站名称包含特殊字符或多个单词）。  
+10. **仔细解析 JSON 数据**：某些字段可能为空或缺失。  
 
-1. **VERIFY train travel intent** - Only use this skill if user explicitly wants train travel, not car/bus/other transport
-2. **Always use `--json`** for machine-readable output
-3. **Validate station names first** if user input is ambiguous using `stations` command
-4. **Use fuzzy matching** - don't require exact station names from users
-5. **Quote station names** containing spaces (e.g., "Den Haag Centraal") to prevent argument parsing errors
-6. **Check for errors** in JSON response before presenting results to user
-7. **Interpret times in 24-hour format** (HH:mm)
-8. **Default to current date** - omit `--date` flag for today's travel; only add `--date` for future dates
-9. **Handle Dutch station names** - many contain special characters or multiple words
-10. **Parse JSON carefully** - some fields may be null or missing depending on circumstances
+## 常见使用场景示例  
+- **示例 1**：“我需要在 9:30 到达阿姆斯特丹。”  
+  1. 确认用户当前位置（如需可询问）。  
+  2. 判断用户是指今天还是未来的日期。  
+  3. 运行命令：`trein t hoofddorp amsterdam --arrive-by 09:30 --json`（今天）  
+    或：`trein t hoofddorp amsterdam --date 2026-02-05 --arrive-by 09:30 --json`（未来日期）。  
+  4. 解析 JSON 结果并显示最早的合适出行选项。  
+- **示例 2**：“前往鹿特丹的下一班列车什么时候出发？”  
+  1. 确认用户当前位置。  
+  2. 运行命令：`trein d <当前车站> --json`。  
+  3. 过滤前往鹿特丹的列车信息。  
+  4. 显示下一班列车的出发时间和站台信息。  
+- **示例 3**：“我计划明天下午 2 点从乌得勒支前往海牙。”  
+  1. 运行命令：`trein t utrecht "den haag" --date 2026-02-04 --depart-at 14:00 --json`。  
+  2. 解析结果并显示出行选项（包括换乘信息和旅行时间）。  
+- **示例 4**：“我常走的路线有延误吗？”  
+  1. 首先查询行程信息：`trein t amsterdam utrecht --json`。  
+  2. 然后查询列车延误情况：`trein disruptions --json`。  
+  3. 将结果进行对比并告知用户相关延误信息。  
 
-## Common Workflows
+## 常见问题及解决方法  
+- **“车站未找到”** → 使用 `trein stations <查询> --json` 查找正确的车站名称。  
+- **“API 密钥缺失”** → 确认 `NS_API_KEY` 环境变量已设置。  
+- **查询结果为空** → 检查输入的日期/时间是否在有效范围内。  
+- **“未找到行程信息”** → 可尝试不使用 `--via` 参数（某些路线可能无法经过该车站）。  
 
-### Example 1: "I need to be in Amsterdam at 9:30"
-1. Determine current location (ask user if unclear)
-2. Check if user means today or a future date
-3. Run: `trein t hoofddorp amsterdam --arrive-by 09:30 --json` (today)
-   OR: `trein t hoofddorp amsterdam --date 2026-02-05 --arrive-by 09:30 --json` (future date)
-4. Parse JSON and present earliest suitable option with departure time
-
-### Example 2: "When does the next train to Rotterdam leave?"
-1. Determine current location
-2. Run: `trein d <current-station> --json`
-3. Filter results for trains going to Rotterdam
-4. Present next departure with platform and time
-
-### Example 3: "Plan my trip tomorrow at 2pm from Utrecht to Den Haag"
-1. Run: `trein t utrecht "den haag" --date 2026-02-04 --depart-at 14:00 --json`
-2. Parse response and present journey options with transfers and duration
-
-### Example 4: "Are there delays on my usual route?"
-1. First get the trip: `trein t amsterdam utrecht --json`
-2. Then check disruptions: `trein disruptions --json`
-3. Cross-reference routes and inform user of relevant disruptions
-
-## Common Errors & Solutions
-
-- **"Station not found"** → Use `trein stations <query> --json` to find correct name
-- **"API key missing"** → Verify `NS_API_KEY` environment variable is set
-- **Empty results** → Check if date/time is in the past
-- **"No trips found"** → Try without `--via`, route may not be possible via that station
-
-## Tips
-- Use `--json` flag for all commands to get structured output for parsing
-- Station names support fuzzy matching (e.g., "adam" -> "Amsterdam Centraal")
-- Aliases are stored in the config file and can be used in place of station names
-- Use `--via` with trip planning to specify a specific route through an intermediate station
-- Use `--depart-at HH:mm` to plan trips departing at a specific time (defaults to TODAY)
-- Use `--arrive-by HH:mm` to plan trips arriving before a specific time (defaults to TODAY)
-- `--date YYYY-MM-DD` is OPTIONAL - only needed for future dates (omit for today)
+## 使用提示  
+- 所有命令都建议使用 `--json` 选项以获得结构化的 JSON 输出。  
+- 车站名称支持模糊匹配（例如：“adam” 可匹配 “Amsterdam Centraal”）。  
+- 别名存储在配置文件中，可替代车站名称使用。  
+- 在行程规划时使用 `--via` 指定途经的中间车站。  
+- 使用 `--depart-at HH:mm` 指定出发时间（默认为今天）。  
+- 使用 `--arrive-by HH:mm` 指定到达时间（默认为今天）。  
+- `--date YYYY-MM-DD` 为可选参数（仅用于未来日期）。

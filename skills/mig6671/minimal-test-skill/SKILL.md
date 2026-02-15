@@ -1,8 +1,8 @@
 ---
 name: minimal-test-skill
-description: Minimal test skill for debugging ClawHub publishing
+description: 调试 ClawHub 发布功能所需的最基本测试技能
 ---
 
-# Minimal Test
+# 最小化测试
 
-This is a test skill.
+这是一个用于测试技能的示例。

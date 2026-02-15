@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Services - Go
+# Telnyx 数字服务 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +38,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List dynamic emergency addresses
+## 列出动态紧急地址
 
-Returns the dynamic emergency addresses according to filters
+根据筛选条件返回动态紧急地址
 
 `GET /dynamic_emergency_addresses`
 
@@ -53,11 +54,11 @@ Returns the dynamic emergency addresses according to filters
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a dynamic emergency address.
+## 创建动态紧急地址
 
-Creates a dynamic emergency address.
+创建一个动态紧急地址。
 
-`POST /dynamic_emergency_addresses` — Required: `house_number`, `street_name`, `locality`, `administrative_area`, `postal_code`, `country_code`
+`POST /dynamic_emergency_addresses` — 必需参数：`house_number`、`street_name`、`locality`、`administrative_area`、`postal_code`、`country_code`
 
 ```go
 	dynamicEmergencyAddress, err := client.DynamicEmergencyAddresses.New(context.TODO(), telnyx.DynamicEmergencyAddressNewParams{
@@ -76,9 +77,9 @@ Creates a dynamic emergency address.
 	fmt.Printf("%+v\n", dynamicEmergencyAddress.Data)
 ```
 
-## Get a dynamic emergency address
+## 获取动态紧急地址
 
-Returns the dynamic emergency address based on the ID provided
+根据提供的 ID 返回动态紧急地址
 
 `GET /dynamic_emergency_addresses/{id}`
 
@@ -90,9 +91,9 @@ Returns the dynamic emergency address based on the ID provided
 	fmt.Printf("%+v\n", dynamicEmergencyAddress.Data)
 ```
 
-## Delete a dynamic emergency address
+## 删除动态紧急地址
 
-Deletes the dynamic emergency address based on the ID provided
+根据提供的 ID 删除动态紧急地址
 
 `DELETE /dynamic_emergency_addresses/{id}`
 
@@ -104,9 +105,9 @@ Deletes the dynamic emergency address based on the ID provided
 	fmt.Printf("%+v\n", dynamicEmergencyAddress.Data)
 ```
 
-## List dynamic emergency endpoints
+## 列出动态紧急终端点
 
-Returns the dynamic emergency endpoints according to filters
+根据筛选条件返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints`
 
@@ -118,11 +119,11 @@ Returns the dynamic emergency endpoints according to filters
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a dynamic emergency endpoint.
+## 创建动态紧急终端点
 
-Creates a dynamic emergency endpoints.
+创建一个动态紧急终端点。
 
-`POST /dynamic_emergency_endpoints` — Required: `dynamic_emergency_address_id`, `callback_number`, `caller_name`
+`POST /dynamic_emergency_endpoints` — 必需参数：`dynamic_emergency_address_id`、`callback_number`、`caller_name`
 
 ```go
 	dynamicEmergencyEndpoint, err := client.DynamicEmergencyEndpoints.New(context.TODO(), telnyx.DynamicEmergencyEndpointNewParams{
@@ -138,9 +139,9 @@ Creates a dynamic emergency endpoints.
 	fmt.Printf("%+v\n", dynamicEmergencyEndpoint.Data)
 ```
 
-## Get a dynamic emergency endpoint
+## 获取动态紧急终端点
 
-Returns the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints/{id}`
 
@@ -152,9 +153,9 @@ Returns the dynamic emergency endpoint based on the ID provided
 	fmt.Printf("%+v\n", dynamicEmergencyEndpoint.Data)
 ```
 
-## Delete a dynamic emergency endpoint
+## 删除动态紧急终端点
 
-Deletes the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 删除动态紧急终端点
 
 `DELETE /dynamic_emergency_endpoints/{id}`
 
@@ -166,9 +167,9 @@ Deletes the dynamic emergency endpoint based on the ID provided
 	fmt.Printf("%+v\n", dynamicEmergencyEndpoint.Data)
 ```
 
-## List your voice channels for non-US zones
+## 列出非美国区域的语音通道
 
-Returns the non-US voice channels for your account.
+返回您账户中的非美国区域语音通道。
 
 `GET /channel_zones`
 
@@ -180,11 +181,11 @@ Returns the non-US voice channels for your account.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Update voice channels for non-US Zones
+## 更新非美国区域的语音通道
 
-Update the number of Voice Channels for the Non-US Zones.
+更新非美国区域的语音通道数量。
 
-`PUT /channel_zones/{channel_zone_id}` — Required: `channels`
+`PUT /channel_zones/{channel_zone_id}` — 必需参数：`channels`
 
 ```go
 	channelZone, err := client.ChannelZones.Update(
@@ -200,9 +201,9 @@ Update the number of Voice Channels for the Non-US Zones.
 	fmt.Printf("%+v\n", channelZone.ID)
 ```
 
-## List your voice channels for US Zone
+## 列出美国区域的语音通道
 
-Returns the US Zone voice channels for your account.
+返回您账户中的美国区域语音通道。
 
 `GET /inbound_channels`
 
@@ -214,11 +215,11 @@ Returns the US Zone voice channels for your account.
 	fmt.Printf("%+v\n", inboundChannels.Data)
 ```
 
-## Update voice channels for US Zone
+## 更新美国区域的语音通道
 
-Update the number of Voice Channels for the US Zone.
+更新美国区域的语音通道数量。
 
-`PATCH /inbound_channels` — Required: `channels`
+`PATCH /inbound_channels` — 必需参数：`channels`
 
 ```go
 	inboundChannel, err := client.InboundChannels.Update(context.TODO(), telnyx.InboundChannelUpdateParams{
@@ -230,9 +231,9 @@ Update the number of Voice Channels for the US Zone.
 	fmt.Printf("%+v\n", inboundChannel.Data)
 ```
 
-## List All Numbers using Channel Billing
+## 列出使用通道计费的电话号码
 
-Retrieve a list of all phone numbers using Channel Billing, grouped by Zone.
+检索按区域分组的所有使用通道计费的电话号码列表。
 
 `GET /list`
 
@@ -244,9 +245,9 @@ Retrieve a list of all phone numbers using Channel Billing, grouped by Zone.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List Numbers using Channel Billing for a specific Zone
+## 列出特定区域的使用通道计费的电话号码
 
-Retrieve a list of phone numbers using Channel Billing for a specific Zone.
+检索特定区域使用通道计费的电话号码列表。
 
 `GET /list/{channel_zone_id}`
 
@@ -258,9 +259,9 @@ Retrieve a list of phone numbers using Channel Billing for a specific Zone.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Get voicemail
+## 获取语音信箱
 
-Returns the voicemail settings for a phone number
+返回电话号码的语音信箱设置
 
 `GET /phone_numbers/{phone_number_id}/voicemail`
 
@@ -272,9 +273,9 @@ Returns the voicemail settings for a phone number
 	fmt.Printf("%+v\n", voicemail.Data)
 ```
 
-## Create voicemail
+## 创建语音信箱
 
-Create voicemail settings for a phone number
+为电话号码创建语音信箱设置
 
 `POST /phone_numbers/{phone_number_id}/voicemail`
 
@@ -292,9 +293,9 @@ Create voicemail settings for a phone number
 	fmt.Printf("%+v\n", voicemail.Data)
 ```
 
-## Update voicemail
+## 更新语音信箱
 
-Update voicemail settings for a phone number
+更新电话号码的语音信箱设置
 
 `PATCH /phone_numbers/{phone_number_id}/voicemail`
 
@@ -310,4 +311,5 @@ Update voicemail settings for a phone number
 		panic(err.Error())
 	}
 	fmt.Printf("%+v\n", voicemail.Data)
+```
 ```

@@ -1,16 +1,16 @@
 ---
 name: Events
-description: Build a personal event system for tracking concerts, conferences, parties, appointments, and everything in between.
+description: 构建一个个人事件管理系统，用于跟踪音乐会、会议、聚会以及各种其他活动。
 metadata: {"clawdbot":{"emoji":"📅","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions event → offer to track it
-- User planning event → help organize details
-- User asks what's coming up → surface relevant events
-- Create `~/events/` as workspace
+## 核心功能
+- 当用户提到某个活动时，主动提出帮忙跟踪该活动。
+- 当用户计划举办活动时，协助组织相关细节。
+- 当用户询问即将发生的活动时，及时提供相关信息。
+- 创建 `~/events/` 作为活动管理的工作空间。
 
-## File Structure
+## 文件结构
 ```
 ~/events/
 ├── upcoming/
@@ -25,7 +25,7 @@ metadata: {"clawdbot":{"emoji":"📅","os":["linux","darwin","win32"]}}
 └── calendar.md
 ```
 
-## Event Entry
+## 活动记录
 ```markdown
 # radiohead-may.md
 ## Event
@@ -46,7 +46,7 @@ Doors 7pm, meeting Jake at 6:30
 No large bags allowed
 ```
 
-## Hosting an Event
+## 主办活动
 ```markdown
 # hosting/birthday-2024/
 ├── overview.md    # date, venue, status checklist
@@ -54,7 +54,7 @@ No large bags allowed
 └── details.md     # food, drinks, music, setup
 ```
 
-Guest tracking:
+**访客跟踪**
 ```markdown
 ## Confirmed (12)
 - Sarah + 1
@@ -67,7 +67,7 @@ Guest tracking:
 - Amy — out of town
 ```
 
-## Annual Recurring
+## 年度重复性活动
 ```markdown
 # recurring.md
 ## Birthdays
@@ -79,7 +79,7 @@ Guest tracking:
 - Industry conference: March (register early)
 ```
 
-## Quick Calendar View
+## 快速日历视图
 ```markdown
 # calendar.md
 ## March 2024
@@ -88,34 +88,34 @@ Guest tracking:
 - 22: Mom's birthday
 ```
 
-## Multi-Day Events
+## 多日活动
 ```markdown
 # sxsw-2024/
 ├── overview.md    # dates, location, registration, travel
 └── schedule.md    # day-by-day sessions and plans
 ```
 
-## What To Track
-- Date, time, location
-- Tickets/confirmation numbers
-- Logistics (parking, doors, dress code)
-- Who you're going with
-- RSVPs when hosting
+## 需要记录的信息：
+- 日期、时间、地点
+- 门票/确认号码
+- 后勤信息（停车、入场方式、着装要求）
+- 与谁一起参加活动
+- 在主办活动时记录参与者的回复情况（是否参加）
 
-## What To Surface
-- "Concert next week — doors at 7pm"
-- "Mom's birthday in 5 days"
-- "Registration closes tomorrow"
-- "15 confirmed for Saturday"
+## 需要展示的信息：
+- “下周有音乐会，入场时间为晚上7点”
+- “妈妈5天后生日”
+- “报名截止日期是明天”
+- “周六已有15人确认参加”
 
-## Progressive Enhancement
-- Start: add upcoming events
-- Add annual dates (birthdays, holidays)
-- Track past events for memories
-- Build hosting checklists
+## 逐步改进计划：
+- 首先：添加即将举行的活动。
+- 接着：添加年度重要事件（如生日、节假日）的记录。
+- 然后：跟踪过去的事件以供回顾。
+- 最后：建立活动主办的 checklist（检查清单）。
 
-## What NOT To Do
-- Forget confirmation numbers
-- Miss registration deadlines
-- Lose track of RSVPs when hosting
-- Skip logistics details
+## 不应做的事情：
+- 忘记确认号码。
+- 迟误报名截止日期。
+- 在主办活动时忘记记录参与者的回复情况。
+- 忽略后勤细节。

@@ -1,29 +1,29 @@
-# RTFM Testing
+# RTFM 测试（RTFM Testing）
 
-A documentation quality methodology that spawns fresh agents to validate whether docs are actually usable.
+这是一种文档质量评估方法，通过创建全新的测试代理来验证文档是否真正可用。
 
-## The Problem
+## 问题所在
 
-Documentation written by the person who built the thing is almost always incomplete. They fill in gaps unconsciously. They assume context. They skip "obvious" steps.
+通常情况下，由软件开发者自己编写的文档总是存在缺陷：他们会在不知不觉中填补某些空白，假设某些上下文是已知的，或者跳过一些“显而易见”的步骤。
 
-RTFM Testing fixes this by spawning a fresh agent with zero context and asking: can you complete this task using only the docs?
+RTFM 测试通过创建一个没有任何背景信息的测试代理来解决这些问题，并要求该代理仅依靠文档来完成指定的任务。
 
-## When to Use
+## 适用场景
 
-- Before publishing docs, READMEs, tutorials, or setup guides
-- When users report confusion but you can't see why
-- After major refactors to validate docs still work
-- As part of CI for documentation-heavy projects
+- 在发布文档、README 文件、教程或设置指南之前
+- 当用户反馈使用困难但开发者无法理解原因时
+- 在对文档进行重大修改后，需要验证文档是否仍然有效
+- 作为文档密集型项目的持续集成（CI）流程的一部分
 
-## How It Works
+## 工作原理
 
-1. **Identify the task** — What should someone be able to do after reading the docs?
-2. **Bundle the docs** — Collect all relevant documentation (and nothing else)
-3. **Spawn a fresh tester** — Use the TESTER.md prompt with `sessions_spawn`
-4. **Analyze failures** — Every confusion point is a doc bug
-5. **Fix and repeat** — Update docs, respawn, retest until clean
+1. **确定任务**：阅读文档后，用户应该能够完成什么操作？
+2. **收集文档**：仅收集所有相关的文档内容。
+3. **创建测试代理**：使用 `sessions_spawn` 命令来启动一个新的测试代理。
+4. **分析失败原因**：任何导致测试失败的环节都表明文档存在问题。
+5. **修复问题并重复测试**：不断更新文档，重新启动测试代理，直到所有测试都通过为止。
 
-## Usage
+## 使用方法
 
 ```
 sessions_spawn(
@@ -33,23 +33,23 @@ sessions_spawn(
 )
 ```
 
-Or use the full TESTER.md prompt for more structured output.
+或者使用完整的 `TESTER.md` 脚本来获得更结构化的测试结果。
 
-## Metrics
+## 监控指标
 
-- **Cold Start Score** — Number of spawn cycles until task completion (lower = better docs)
-- **Gap Count** — Number of `[GAP]` reports per run
-- **Gap Categories** — Missing steps, unclear language, wrong assumptions, missing prerequisites
+- **冷启动得分（Cold Start Score）**：完成任务所需的测试循环次数（次数越少，文档质量越好）。
+- **漏洞数量（Gap Count）**：每次测试中报告的漏洞数量。
+- **漏洞类型（Gap Categories）**：包括缺失的步骤、语言表述不清、错误的假设、遗漏的先决条件等。
 
-## Key Principles
+## 关键原则
 
-1. **No hints** — Don't help the tester. Let it fail.
-2. **Literal reading** — Tester must not infer or guess
-3. **Docs only** — No external knowledge, no "common sense"
-4. **Failures are signal** — Every stumble is actionable feedback
+1. **禁止提示**：不要给测试代理任何提示或帮助，让它完全依靠文档自己完成任务。
+2. **严格按文档内容操作**：测试代理必须严格按照文档中的描述进行操作，不得自行推断或猜测。
+3. **仅依赖文档**：测试过程中不允许使用任何外部知识或“常识”。
+4. **将失败视为反馈**：每一次测试失败都应被视为可改进的信号。
 
-## Files
+## 相关文件
 
-- `SKILL.md` — This file
-- `TESTER.md` — System prompt for the fresh agent
-- `GAPS.md` — Output format specification
+- `SKILL.md`：本文档。
+- `TESTER.md`：用于创建测试代理的系统脚本。
+- `GAPS.md`：输出结果的格式规范。

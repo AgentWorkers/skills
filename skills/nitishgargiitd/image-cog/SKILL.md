@@ -1,6 +1,6 @@
 ---
 name: image-cog
-description: AI image generation powered by CellCog. Create images, edit photos, consistent characters, product photography, reference-based images, sets of images, style transfer. Professional image creation with AI.
+description: 由 CellCog 提供支持的 AI 图像生成技术。可以用于创建图像、编辑照片、生成统一风格的字符、制作产品照片、生成基于参考内容的图像以及进行图像风格转换。借助 AI，实现专业的图像创作。
 metadata:
   openclaw:
     emoji: "🎨"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Image Cog - AI Image Generation Powered by CellCog
+# Image Cog - 由 CellCog 提供支持的 AI 图像生成服务
 
-Create professional images with AI - from single images to consistent character sets to product photography.
+使用 AI 创建专业级别的图像，从单张图片到一致性的角色系列，再到产品摄影，一切皆可实现。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 cellcog 技能文档** 以了解 SDK 的安装方法。该文档将向您展示该功能的全部功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,138 +38,113 @@ result = client.create_chat(
 
 ---
 
-## What Images You Can Create
+## 可创建的图像类型
 
-### Single Image Creation
+### 单张图片生成
 
-Generate any image from a text description:
+根据文本描述生成任意类型的图片：
+- **场景图片**：例如：“一家舒适的咖啡店内部，早晨的光线透过窗户洒进来”
+- **肖像图片**：例如：“一位穿着职业装、充满自信的女性肖像”
+- **产品图片**：例如：“一款白色运动鞋放在大理石桌面上的简约产品照片”
+- **抽象艺术图片**：例如：“以海军蓝和金色为主的几何抽象画”
+- **自然风光图片**：例如：“日出时的迷雾笼罩的山景，画面中有一位独自徒步的旅行者”
 
-- **Scenes**: "A cozy coffee shop interior with morning light streaming through windows"
-- **Portraits**: "Professional headshot of a confident woman in business attire"
-- **Products**: "Minimalist product shot of a white sneaker on a marble surface"
-- **Abstract**: "Geometric abstract art in navy and gold"
-- **Nature**: "Misty mountain landscape at sunrise with a lone hiker"
+### 图像编辑
 
-### Image Editing
+对现有图片进行修改：
+- **风格转换**：例如：“将这张照片转换为水彩画风格”
+- **背景去除**：例如：“去除图片背景，将其放置在一个干净的白色背景上”
+- **图像增强**：例如：“调整颜色并添加戏剧性的光影效果”
+- **人物服饰修改**：例如：“将人物的服饰改为红色连衣裙”
 
-Transform existing images:
+### 一致性角色生成
 
-- **Style Transfer**: "Transform this photo into a watercolor painting"
-- **Background Removal**: "Remove the background and place on a clean white backdrop"
-- **Enhancement**: "Enhance the colors and add dramatic lighting"
-- **Modification**: "Change the person's outfit to a red dress"
+为同一角色创建多张不同场景下的图片：
+- **角色系列**：例如：“创建一位科技创业家的角色形象，并展示他们在以下场景中的样子：1）在办公桌前编程；2）向投资者展示产品；3）庆祝产品发布”
+- **吉祥物设计**：例如：“设计一个友好的机器人吉祥物，并为其创建适用于欢迎页面、错误页面和加载界面的不同版本”
+- **故事情节图片**：例如：“创建一个主角形象，并通过 5 个场景描绘他们的旅程”
 
-### Consistent Characters
+这些功能非常适用于：
+- 漫画和故事板制作
+- 需要使用统一角色的营销活动
+- 视频帧的生成
+- 在不同场景中展示品牌吉祥物
 
-Create multiple images of the same character in different scenarios:
+### 产品摄影
 
-- **Character Series**: "Create a tech entrepreneur character, then show them: 1) At their desk coding, 2) Presenting to investors, 3) Celebrating a product launch"
-- **Mascot Variations**: "Design a friendly robot mascot, then create versions for: welcome page, error page, success message, loading screen"
-- **Story Sequences**: "Create a main character, then illustrate them in 5 scenes of a journey"
+专业的产品视觉效果：
+- **产品特写图片**：例如：“一款智能手表在渐变背景下的特写镜头”
+- **生活方式图片**：例如：“一个人在现代客厅中使用智能手机的场景”
+- **产品平铺展示**：例如：“带有植物元素的护肤品平铺展示”
+- **360 度全景图片**：例如：“一款皮革手提包的多个角度（正面、侧面、背面、细节部分）”
 
-This is powerful for:
-- Comic strips and storyboards
-- Marketing campaigns with consistent characters
-- Video frame generation
-- Brand mascots across contexts
+### 相关图片集
 
-### Product Photography Style
+为营销活动或产品系列创建多张连贯的图片：
+- **社交媒体图片集**：例如：“为一个健身品牌创建 5 张 Instagram 发布图片，保持风格一致但内容各异”
+- **网站首页图片**：例如：“为一个 SaaS 产品的登录页面创建 3 张专业且具有科技感的封面图片”
+- **广告图片**：例如：“为同一产品创建 4 种不同背景和氛围的广告图片”
+- **博客插图**：例如：“为一篇关于提高效率的文章创建 6 张插图”
 
-Professional product visuals:
+### 基于参考图片的生成
 
-- **Hero Shots**: "Product hero shot of a smartwatch on a gradient background"
-- **Lifestyle Shots**: "Smartphone being used by a person in a modern living room"
-- **Flat Lays**: "Flat lay of skincare products with botanical elements"
-- **360 Views**: "Multiple angles of a leather handbag - front, side, back, detail"
-
-### Sets of Related Images
-
-Multiple cohesive images for campaigns or collections:
-
-- **Social Media Sets**: "5 Instagram post images for a fitness brand - consistent style, varied content"
-- **Website Heroes**: "3 hero images for a SaaS landing page - professional, modern, tech-focused"
-- **Ad Variations**: "4 versions of a product ad with different backgrounds and moods"
-- **Blog Illustrations**: "Set of 6 illustrations for a blog post about productivity tips"
-
-### Reference-Based Generation
-
-Use existing images as references for style, character, or composition:
-
-- **Style Matching**: "Create a new image in the same artistic style as this reference"
-- **Character Consistency**: "Using this person as reference, create a new scene with them hiking"
-- **Brand Alignment**: "Create product images matching this brand's visual style"
-- **Composition Reference**: "Create a similar composition but with different subjects"
+使用现有的图片作为风格、角色或构图的参考：
+- **风格匹配**：例如：“根据这张参考图片，创建一张具有相同艺术风格的新的图片”
+- **角色一致性**：例如：“以这个人物为参考，创建他们徒步旅行时的新场景图片”
+- **品牌一致性**：例如：“创建与品牌视觉风格相符的产品图片”
+- **构图参考**：例如：“创建一个类似的构图，但更换不同的主体”
 
 ---
 
-## Image Specifications
+## 图像规格
 
-| Aspect | Options |
+| 图像比例 | 可选选项 |
 |--------|---------|
-| **Aspect Ratios** | 1:1 (square), 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, 21:9 |
-| **Sizes** | 1K (~1024px), 2K (~2048px), 4K (~4096px) |
-| **Styles** | Photorealistic, illustration, watercolor, oil painting, anime, digital art, vector |
-| **Formats** | PNG (default) |
+| **比例** | 1:1（正方形）、16:9、9:16、4:3、3:4、3:2、2:3、21:9 |
+| **尺寸** | 1K（约 1024px）、2K（约 2048px）、4K（约 4096px） |
+| **风格** | 真实主义、插画、水彩、油画、动漫、数字艺术、矢量图 |
+| **格式** | PNG（默认格式） |
 
-**Size recommendations:**
-- **1K**: Quick iterations, thumbnails, social media posts, drafts
-- **2K**: Standard web content, presentations, marketing materials
-- **4K**: Hero images, print materials, final deliverables where detail matters
-
----
-
-## When to Use Agent Team Mode
-
-For image generation, `chat_mode="agent team"` is recommended for:
-- Complex scenes requiring multiple elements
-- Consistent character series
-- Reference-based generation requiring analysis
-- Sets of related images
-
-For simple single images, `chat_mode="agent"` can work faster.
+**尺寸建议：**
+- **1K**：适用于快速迭代、缩略图、社交媒体发布、草图
+- **2K**：适用于标准网页内容、演示文稿、营销材料
+- **4K**：适用于需要详细展示的产品特写图片和最终输出文件
 
 ---
 
-## Example Image Prompts
+## 何时使用“代理团队模式”
 
-**Professional headshot:**
-> "Create a professional headshot of a friendly Asian woman in her 30s, wearing a navy blazer, soft studio lighting, neutral gray background, confident but approachable expression. 1:1 square, 2K quality, photorealistic."
-
-**Product photography:**
-> "Product shot of a premium wireless earbuds case, matte black finish, on a reflective dark surface with subtle blue accent lighting. Minimalist, high-end tech aesthetic. 4:3 landscape, 4K for hero image."
-
-**Consistent character set:**
-> "Create a character: young Black male software developer, casual style with glasses, friendly demeanor. Then create 4 images:
-> 1. Working at a standing desk with multiple monitors
-> 2. In a video call meeting, explaining something
-> 3. At a coffee shop with laptop, thinking
-> 4. Celebrating with team, high-fiving
-> Keep the character exactly consistent across all images."
-
-**Social media set:**
-> "Create 5 Instagram posts for a plant-based meal delivery service:
-> 1. Colorful Buddha bowl from above
-> 2. Happy person unpacking delivery
-> 3. Meal prep containers arranged neatly
-> 4. Close-up of fresh ingredients
-> 5. Before/after showing ingredients to finished dish
-> Style: bright, fresh, appetizing, consistent warm color grading. 1:1 square format."
-
-**Style transfer:**
-> "Transform this uploaded photo of a city street into a Studio Ghibli anime style illustration. Keep the composition and elements but apply the characteristic Ghibli warmth, soft clouds, and whimsical details."
+对于需要多个元素的复杂场景、一致性角色系列或基于参考图片的生成任务，建议使用 `chat_mode="agent team"` 模式：
+- 对于简单的单张图片生成，`chat_mode="agent"` 通常会更快完成。
 
 ---
 
-## Tips for Better Images
+## 图像生成示例
 
-1. **Be descriptive**: "Woman in office" is vague. "Confident woman in her 40s, silver blazer, modern glass-walled office, warm afternoon light" is better.
+**专业肖像示例：**
+> “生成一张 30 多岁的亚洲女性的专业肖像，她穿着海军蓝夹克，采用柔和的摄影棚灯光，背景为中性灰色，表情自信且亲切。图片比例为 1:1 的正方形格式，质量为 2K，风格为真实主义。”
 
-2. **Specify style**: "Photorealistic", "digital illustration", "watercolor", "minimalist vector".
+**产品摄影示例：**
+> “拍摄一款高端无线耳机的产品图片，外壳为哑光黑色，放置在反光的深色背景上，背景灯光带有淡淡的蓝色调。风格要求简约且具有高科技感。图片比例为 4:3 的横向格式，分辨率需达到 4K。”
 
-3. **Describe lighting**: "Soft natural light", "dramatic side lighting", "golden hour glow", "studio lighting".
+**一致性角色系列示例：**
+> “创建一个年轻的黑人男性软件开发者的角色形象，穿着休闲风格并戴着眼镜，态度友好。然后生成以下 4 张图片：1）在带有多个显示器的办公桌前工作；2）在视频会议中讲解产品；3）在咖啡店使用笔记本电脑思考；4）与团队一起庆祝产品发布。所有图片中的角色形象必须保持一致。”
 
-4. **Include mood**: "Professional and confident", "warm and inviting", "energetic and vibrant".
+**社交媒体图片集示例：**
+> “为一个植物性食品配送服务创建 5 张 Instagram 发布图片：1）从上方拍摄的彩色佛陀碗；2）一个人开心地拆开包裹；3）整齐摆放的餐前准备容器；4）新鲜食材的特写；5）展示食材与成品之间的对比。风格要求明亮、清新、诱人，色彩搭配要统一且温暖。图片比例为 1:1 的正方形格式。”
 
-5. **Mention composition**: "Rule of thirds", "centered symmetry", "close-up", "wide establishing shot".
+**风格转换示例：**
+> “将上传的都市街道照片转换为 Studio Ghibli 风格的插画。保持原有的构图和元素，但添加典型的 Ghibli 风格的温暖色调、柔和的云朵以及富有想象力的细节。”
 
-6. **For consistency**: When creating character series, describe the character in detail first, then reference "the same character" in subsequent prompts.
+---
+
+## 提高图片质量的建议：
+
+1. **描述要清晰**：例如，“一个在办公室的女性”这样的描述不够具体。建议使用更详细的描述，如：“一位 40 多岁的自信女性，穿着海军蓝夹克，在现代风格的玻璃幕墙办公室里，周围是温暖的午后光线。”
+2. **明确指定风格**：例如，选择“真实主义”、“数字插画”、“水彩”、“极简矢量”等具体风格。
+3. **详细描述光线效果**：例如，可以说明“柔和的自然光”、“戏剧性的侧光”、“黄金时刻的光线效果”或“摄影棚灯光”。
+4. **表达图片氛围**：例如，可以描述图片的整体氛围，如“专业且自信”、“温暖亲切”或“充满活力”。
+5. **注意构图**：例如，可以提示使用“三分法则”、“居中对称”或“特写”、“全景拍摄”等构图技巧。
+6. **确保一致性**：在创建角色系列时，首先详细描述角色的特征，然后在后续请求中明确指出“使用同一个角色”。
+
+---

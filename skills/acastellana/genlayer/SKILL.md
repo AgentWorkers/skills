@@ -1,91 +1,94 @@
 ---
 name: genlayer-claw-skill
 version: 1.0.0
-description: Understand and explain GenLayer - the AI-native blockchain for trustless decision-making. Use for investor pitches, protocol explanations, architecture questions, consensus mechanics, positioning, and ecosystem discussions. Triggers: explain genlayer, what is genlayer, genlayer thesis, optimistic democracy, genlayer pitch, genlayer architecture, condorcet jury theorem, equivalence principle, AI blockchain, trustless AI. (For writing contracts, use genlayer-dev-claw-skill instead.)
+description: 了解并解释 GenLayer——这款专为人工智能设计的区块链平台，旨在实现无需信任的决策机制。该平台适用于投资者推介、协议说明、架构讨论、共识机制讲解以及生态系统相关话题。相关术语包括：GenLayer、GenLayer 的核心理念、乐观民主（optimistic democracy）、GenLayer 的架构原理、Condorcet 陪审团定理（Condorcet Jury Theorem）、等价性原则（equivalence principle）、人工智能区块链（AI blockchain）以及无需信任的人工智能（trustless AI）。如需编写智能合约，请使用 genlayer-dev-claw-skill 工具。
 ---
 
-# GenLayer Knowledge Skill
+# GenLayer 技术技能
 
-GenLayer is a decentralized protocol where multiple LLMs reach consensus on complex tasks and decisions—the first AI-native blockchain.
+GenLayer 是一种去中心化协议，允许多个大型语言模型（LLMs）在复杂任务和决策上达成共识——它是首个基于人工智能的区块链平台。
 
-## When to Use This Skill
+## 适用场景
 
-- Explaining GenLayer to investors, developers, or partners
-- Writing about the protocol, architecture, or vision
-- Understanding consensus mechanics (Optimistic Democracy)
-- Technical architecture questions
-- Ecosystem/product discussions
-- Pitch decks and positioning
+- 向投资者、开发者或合作伙伴解释 GenLayer 的原理和优势
+- 撰写关于该协议的文档、架构或发展愿景的文章
+- 了解其共识机制（“乐观民主”机制）
+- 解决与技术架构相关的问题
+- 参与生态系统或产品的讨论
+- 制作产品推介材料
 
-**For writing/deploying Intelligent Contracts** → use `genlayer-dev-claw-skill`
+**如需编写或部署智能合约，请使用 `genlayer-dev-claw-skill`**
 
-## Quick Reference
+## 快速参考
 
-**Tagline:** The intelligence layer of the Internet
+**标语：**  
+“互联网的智能层”
 
-**One-liner:**
-> Bitcoin is trustless money. Ethereum is trustless apps. GenLayer is trustless decision-making.
+**简短概括：**  
+> Bitcoin 是一种无需信任的货币；Ethereum 是一种无需信任的应用程序；GenLayer 则是一种能够实现无需信任的决策机制。
 
-**What it does:** Enables smart contracts (called "Intelligent Contracts") to natively access the Internet, process natural language, and make subjective decisions through AI-powered validator consensus.
+**主要功能：**  
+GenLayer 使智能合约能够直接访问互联网、处理自然语言，并通过基于人工智能的验证机制达成共识，从而做出主观性决策。
 
-## Core Concepts
+## 核心概念
 
-| Concept | Description |
+| 概念 | 描述 |
 |---------|-------------|
-| **Intelligent Contracts** | AI-powered smart contracts in Python that can reason, access web data, and handle non-deterministic operations |
-| **Optimistic Democracy** | Consensus mechanism using multiple LLMs + Condorcet Jury Theorem for trustless decision-making |
-| **Equivalence Principle** | How validators agree on "equivalent" outputs despite non-deterministic AI results |
-| **GenVM** | The execution environment for Intelligent Contracts |
-| **GEN Token** | Native token for staking, gas, and governance |
+| **智能合约** | 由人工智能驱动的智能合约，具备推理能力，可以访问网络数据并处理非确定性操作 |
+| **乐观民主** | 一种共识机制，利用多个大型语言模型和康德赛特陪审团定理（Condorcet Jury Theorem）来实现无需信任的决策 |
+| **等价性原则** | 即使人工智能的结果具有不确定性，验证节点也能就“等价”的结果达成一致 |
+| **GenVM** | 智能合约的执行环境 |
+| **GEN 代币** | 用于质押、支付交易费用和参与治理的专用代币 |
 
-## Files in This Skill
+## 相关文件
 
-| File | Use For |
+| 文件 | 用途 |
 |------|---------|
-| `overview.md` | What GenLayer is, mission, positioning |
-| `thesis.md` | Philosophical foundation: trust, AI, why GenLayer exists |
-| `architecture.md` | Technical components, GenVM, validators, rollup integration |
-| `consensus.md` | Optimistic Democracy, Equivalence Principle, appeals, slashing |
-| `intelligent-contracts.md` | High-level developer concepts |
-| `staking.md` | Validator/delegator economics |
-| `use-cases.md` | What you can build |
+| `overview.md` | GenLayer 的简介、使命和定位 |
+| `thesis.md` | GenLayer 的哲学基础：信任、人工智能以及其存在的必要性 |
+| `architecture.md` | 技术组件、GenVM、验证节点及集成方案 |
+| `consensus.md` | 乐观民主机制、等价性原则及相关细节 |
+| `intelligent-contracts.md` | 智能合约的高级开发概念 |
+| `staking.md` | 验证节点与委托人的经济模型 |
+| `use-cases.md` | 可以利用 GenLayer 构建的应用场景 |
 
-## Elevator Pitches
+## 简短推介语
 
-### 30 seconds (technical)
-GenLayer is a blockchain where validators run LLMs to reach consensus on complex, non-deterministic tasks. Smart contracts can access the web, understand natural language, and make subjective decisions—all validated by multiple AI models using game theory to converge on truth.
+### （技术层面）  
+GenLayer 是一个区块链平台，通过运行大型语言模型来处理复杂的、具有不确定性的决策任务。智能合约可以访问互联网、理解自然语言，并通过多模型共识机制做出主观性决策。所有决策都经过严格验证。
 
-### 30 seconds (business)
-GenLayer enables a new class of applications that need trustless AI decision-making: prediction markets on subjective events, AI-powered DAOs, automated dispute resolution, and performance-based contracts that verify real-world outcomes without human intervention.
+### （商业层面）  
+GenLayer 为需要无需信任的人工智能决策的应用程序提供了支持，例如基于主观事件的预测市场、由人工智能驱动的去中心化自治组织（DAOs）、自动化纠纷解决系统，以及无需人工干预即可验证实际结果的合约。
 
-### One sentence for crypto people
-"It's like having a decentralized, incorruptible AI judge that can read the internet and understand context."
+### 对加密领域人士的说明：  
+“GenLayer 就像是一个去中心化、不可篡改的‘人工智能裁判’，能够解读互联网信息并理解上下文。”
 
-### One sentence for AI people
-"It's infrastructure for AI agents to make binding agreements and resolve disputes without trusting any single model."
+### 对人工智能领域人士的说明：  
+“GenLayer 是一个基础设施，让人工智能代理能够在不依赖任何单一模型的情况下达成具有约束力的协议并解决纠纷。”
 
-## Key Differentiators
+## 主要优势
 
-| vs. Oracles | vs. Other AI Chains |
-|-------------|---------------------|
-| No pre-defined data feeds | Native LLM consensus, not just inference |
-| Contracts can fetch any URL | Subjective decisions, not just compute |
-| Natural language understanding | Game-theoretic truth convergence |
-| No oracle setup required | Python-native development |
+| 与预言机（Oracles）相比： | 与其他人工智能区块链相比： |
+|-----------------|---------------------|
+| 不依赖预定义的数据源 | 基于大型语言模型的共识机制，而不仅仅是数据推断 |
+| 合约可以访问任意网页 | 支持主观性决策，而不仅仅是数据计算 |
+| 具备自然语言处理能力 | 采用博弈论确保决策的客观性 |
+| 无需额外设置预言机 | 支持 Python 语言的原生开发 |
 
-## Key Links
+## 关键链接  
 
-- [Documentation](https://docs.genlayer.com)
-- [SDK](https://sdk.genlayer.com)
-- [GitHub](https://github.com/genlayerlabs)
-- [Discord](https://discord.gg/8Jm4v89VAu)
-- [Telegram](https://t.me/genlayer)
-- [Jury Theorem Simulator](https://jury-theorem.genlayer.com)
+- [官方文档](https://docs.genlayer.com)  
+- [SDK](https://sdk.genlayer.com)  
+- [GitHub 仓库](https://github.com/genlayerlabs)  
+- [Discord 社区](https://discord.gg/8Jm4v89VAu)  
+- [Telegram 公众号](https://t.me/genlayer)  
+- [康德赛特陪审团定理模拟器](https://jury-theorem.genlayer.com)  
 
-## Companion Skill
+## 相关技能  
 
-**`genlayer-dev-claw-skill`** — For actually building Intelligent Contracts:
-- SDK API reference
-- Code examples
-- CLI commands
-- Deployment guides
+**`genlayer-dev-claw-skill`**  
+- 用于实际开发智能合约的配套技能，包含：  
+  - SDK 和 API 参考文档  
+  - 代码示例  
+  - 命令行工具（CLI）  
+  - 部署指南

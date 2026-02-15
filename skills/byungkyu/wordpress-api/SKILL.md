@@ -17,9 +17,9 @@ metadata:
 
 # WordPress.com
 
-Access the WordPress.com REST API with managed OAuth authentication. Create and manage posts, pages, and site content on WordPress.com hosted sites.
+您可以使用管理的 OAuth 认证来访问 WordPress.com 的 REST API，从而在托管在 WordPress.com 上的网站上创建和管理帖子、页面以及站点内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List posts from a site
@@ -31,41 +31,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/wordpress/rest/v1.1/{endpoint}
 ```
 
-The gateway proxies requests to `public-api.wordpress.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `public-api.wordpress.com`，并自动插入您的 OAuth 令牌。
 
-**Note:** WordPress.com uses the REST v1.1 API. Site-specific endpoints use the pattern `/sites/{site_id_or_domain}/{resource}`.
+**注意：** WordPress.com 使用的是 REST v1.1 API。特定站点的端点遵循 `/sites/{site_id_or_domain}/{resource}` 的模式。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your WordPress.com OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 WordPress.com OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple WordPress.com connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 WordPress.com 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,19 +142,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Sites
+### 站点
 
-#### Get Site Information
+#### 获取站点信息
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site_id_or_domain}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "ID": 252505333,
@@ -170,34 +170,34 @@ GET /wordpress/rest/v1.1/sites/{site_id_or_domain}
 }
 ```
 
-The site identifier can be either:
-- Numeric site ID (e.g., `252505333`)
-- Domain name (e.g., `myblog.wordpress.com` or `en.blog.wordpress.com`)
+站点标识符可以是：
+- 数字站点 ID（例如：`252505333`）
+- 域名（例如：`myblog.wordpress.com` 或 `en.blog.wordpress.com`）
 
-### Posts
+### 帖子
 
-#### List Posts
+#### 列出帖子
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts
 ```
 
-**Query Parameters:**
-- `number` - Number of posts to return (default: 20, max: 100)
-- `offset` - Offset for pagination
-- `page` - Page number
-- `page_handle` - Cursor for pagination (from response `meta.next_page`)
-- `order` - Sort order: `DESC` or `ASC`
-- `order_by` - Sort field: `date`, `modified`, `title`, `comment_count`, `ID`
-- `status` - Post status: `publish`, `draft`, `pending`, `private`, `future`, `trash`, `any`
-- `type` - Post type: `post`, `page`, `any`
-- `search` - Search term
-- `category` - Category slug
-- `tag` - Tag slug
-- `author` - Author ID
-- `fields` - Comma-separated list of fields to return
+**查询参数：**
+- `number` - 要返回的帖子数量（默认：20，最大：100）
+- `offset` - 分页偏移量
+- `page` - 页码
+- `page_handle` - 分页游标（来自响应中的 `meta.next_page`）
+- `order` - 排序方式：`DESC` 或 `ASC`
+- `order_by` - 排序字段：`date`、`modified`、`title`、`comment_count`、`ID`
+- `status` - 帖子状态：`publish`、`draft`、`pending`、`private`、`future`、`trash`、`any`
+- `type` - 帖子类型：`post`、`page`、`any`
+- `search` - 搜索词
+- `category` - 分类别别名
+- `tag` - 标签别名
+- `author` - 作者 ID
+- `fields` - 要返回的字段列表（用逗号分隔）
 
-**Response:**
+**响应：**
 ```json
 {
   "found": 150,
@@ -228,13 +228,13 @@ GET /wordpress/rest/v1.1/sites/{site}/posts
 }
 ```
 
-#### Get Post
+#### 获取帖子详细信息
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "ID": 83587,
@@ -263,7 +263,7 @@ GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}
 }
 ```
 
-#### Create Post
+#### 创建帖子
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/new
@@ -278,21 +278,21 @@ Content-Type: application/json
 }
 ```
 
-**Parameters:**
-- `title` - Post title (required)
-- `content` - Post content (HTML)
-- `excerpt` - Post excerpt
-- `status` - `publish`, `draft`, `pending`, `private`, `future`
-- `date` - Post date (ISO 8601)
-- `categories` - Comma-separated category names or slugs
-- `tags` - Comma-separated tag names or slugs
-- `format` - Post format: `standard`, `aside`, `chat`, `gallery`, `link`, `image`, `quote`, `status`, `video`, `audio`
-- `slug` - URL slug
-- `featured_image` - Featured image attachment ID
-- `sticky` - Whether post is sticky (boolean)
-- `password` - Password to protect post
+**参数：**
+- `title` - 帖子标题（必填）
+- `content` - 帖子内容（HTML 格式）
+- `excerpt` - 帖子摘要
+- `status` - 帖子状态：`publish`、`draft`、`pending`、`private`、`future`
+- `date` - 帖子发布日期（ISO 8601 格式）
+- `categories` - 用逗号分隔的分类别名
+- `tags` - 用逗号分隔的标签别名
+- `format` - 帖子格式：`standard`、`aside`、`chat`、`gallery`、`link`、`image`、`quote`、`status`、`video`、`audio`
+- `slug` - 帖子 URL 别名
+- `featured_image` - 特色图片附件 ID
+- `sticky` - 帖子是否固定显示（布尔值）
+- `password` - 保护帖子的密码
 
-**Response:**
+**响应：**
 ```json
 {
   "ID": 123,
@@ -303,7 +303,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Post
+#### 更新帖子
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}
@@ -315,27 +315,27 @@ Content-Type: application/json
 }
 ```
 
-Uses the same parameters as Create Post.
+使用与创建帖子相同的参数。
 
-#### Delete Post
+#### 删除帖子
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/delete
 ```
 
-Moves post to trash. Returns the deleted post with `status: "trash"`.
+将帖子移至“回收站”，并返回状态为 `status: "trash"` 的帖子。
 
-### Pages
+### 页面
 
-Pages use the same endpoints as posts with `type=page`:
+页面使用与帖子相同的端点，只需在 `type` 参数中指定 `page`：
 
-#### List Pages
+#### 列出页面
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts?type=page
 ```
 
-#### Create Page
+#### 创建页面
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/new?type=page
@@ -348,31 +348,31 @@ Content-Type: application/json
 }
 ```
 
-#### Get Page Dropdown List
+#### 获取页面下拉列表
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/dropdown-pages/
 ```
 
-Returns a simplified list of pages for dropdowns/menus.
+返回用于下拉菜单/导航的简化页面列表。
 
-#### Get Page Templates
+#### 获取页面模板
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/page-templates
 ```
 
-Returns available page templates for the site's theme.
+返回站点主题中可用的页面模板。
 
-### Post Likes
+### 帖子点赞
 
-#### Get Post Likes
+#### 获取帖子点赞数
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "found": 99,
@@ -384,27 +384,27 @@ GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes
 }
 ```
 
-#### Like Post
+#### 点赞帖子
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes/new
 ```
 
-#### Unlike Post
+#### 取消点赞帖子
 
 ```bash
 POST /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/likes/mine/delete
 ```
 
-### Post Reblogs
+### 重新发布帖子
 
-#### Check Reblog Status
+#### 检查重新发布的状态
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/reblogs/mine
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "can_reblog": true,
@@ -413,15 +413,15 @@ GET /wordpress/rest/v1.1/sites/{site}/posts/{post_id}/reblogs/mine
 }
 ```
 
-### Post Types
+### 帖子类型
 
-#### List Post Types
+#### 列出帖子类型
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/post-types
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "found": 3,
@@ -440,17 +440,15 @@ GET /wordpress/rest/v1.1/sites/{site}/post-types
 }
 ```
 
-### Post Counts
-
-#### Get Post Counts
+### 获取帖子数量
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/post-counts/{post_type}
 ```
 
-**Example:** `/sites/{site}/post-counts/post` or `/sites/{site}/post-counts/page`
+**示例：** `/sites/{site}/post-counts/post` 或 `/sites/{site}/post-counts/page`
 
-**Response:**
+**响应：**
 ```json
 {
   "counts": {
@@ -462,15 +460,15 @@ GET /wordpress/rest/v1.1/sites/{site}/post-counts/{post_type}
 }
 ```
 
-### Users
+### 用户
 
-#### List Site Users
+#### 列出站点用户
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/users
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "found": 3,
@@ -486,15 +484,15 @@ GET /wordpress/rest/v1.1/sites/{site}/users
 }
 ```
 
-### User Settings
+### 用户设置
 
-#### Get User Settings
+#### 获取用户设置
 
 ```bash
 GET /wordpress/rest/v1.1/me/settings
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "enable_translator": true,
@@ -504,7 +502,7 @@ GET /wordpress/rest/v1.1/me/settings
 }
 ```
 
-#### Update User Settings
+#### 更新用户设置
 
 ```bash
 POST /wordpress/rest/v1.1/me/settings/
@@ -515,15 +513,15 @@ Content-Type: application/json
 }
 ```
 
-### User Likes
+### 用户点赞
 
-#### Get User's Liked Posts
+#### 获取用户点赞的帖子
 
 ```bash
 GET /wordpress/rest/v1.1/me/likes
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "found": 10,
@@ -537,29 +535,29 @@ GET /wordpress/rest/v1.1/me/likes
 }
 ```
 
-### Embeds
+### 嵌入内容
 
-#### Get Site Embeds
+#### 获取站点可用的嵌入功能
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/embeds
 ```
 
-Returns available embed handlers for the site.
+返回站点上可用的嵌入处理程序。
 
-### Shortcodes
+### 短代码
 
-#### Get Available Shortcodes
+#### 获取可用的短代码
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/shortcodes
 ```
 
-Returns shortcodes available on the site.
+返回站点上可用的短代码。
 
-## Pagination
+## 分页
 
-WordPress.com uses cursor-based pagination with `page_handle`:
+WordPress.com 使用基于游标的分页方式，通过 `page_handle` 进行分页：
 
 ```python
 import os
@@ -591,13 +589,13 @@ while result.get('meta', {}).get('next_page'):
 print(f"Total posts: {len(all_posts)}")
 ```
 
-Alternatively, use `offset` for simple pagination:
+或者，您也可以使用 `offset` 进行简单分页：
 
 ```bash
 GET /wordpress/rest/v1.1/sites/{site}/posts?number=20&offset=20
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -629,7 +627,7 @@ data = response.json()
 print(f"Found {data['found']} posts")
 ```
 
-### Python (Create Post)
+### Python（创建帖子）
 
 ```python
 import os
@@ -653,29 +651,29 @@ post = response.json()
 print(f"Created post ID: {post['ID']}")
 ```
 
-## Notes
+## 注意事项
 
-- WordPress.com API uses REST v1.1 (not v2)
-- Site identifiers can be numeric IDs or domain names
-- POST requests to `/posts/{id}` update the post (not PUT/PATCH)
-- DELETE uses POST to `/posts/{id}/delete` (not HTTP DELETE)
-- Categories and tags are created automatically when referenced in posts
-- Date/time values are in ISO 8601 format
-- All content is HTML-formatted
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- WordPress.com API 使用的是 REST v1.1（而非 v2）
+- 站点标识符可以是数字 ID 或域名
+- 对 `/posts/{id}` 的 POST 请求用于更新帖子（而非 PUT/PATCH 请求）
+- 删除帖子使用 `/posts/{id}/delete` 的 POST 请求（而非 HTTP DELETE 请求）
+- 当在帖子中引用分类别或标签时，它们会自动创建
+- 日期/时间值采用 ISO 8601 格式
+- 所有内容均为 HTML 格式
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing WordPress connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions or OAuth scope |
-| 404 | Site or resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from WordPress.com API |
+| 400 | 未建立 WordPress 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足或 OAuth 范围不正确 |
+| 404 | 站点或资源未找到 |
+| 429 | 请求次数限制 |
+| 4xx/5xx | 来自 WordPress.com API 的传递错误 |
 
-Error responses include details:
+错误响应会包含详细信息：
 ```json
 {
   "error": "unauthorized",
@@ -683,15 +681,15 @@ Error responses include details:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -702,18 +700,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `wordpress`. For example:
+1. 确保您的 URL 路径以 `wordpress` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/wordpress/rest/v1.1/sites/{site_id}/posts`
+- 错误的路径：`https://gateway.maton.ai/rest/v1.1/sites/{site_id}/posts`
 
-- Correct: `https://gateway.maton.ai/wordpress/rest/v1.1/sites/{site_id}/posts`
-- Incorrect: `https://gateway.maton.ai/rest/v1.1/sites/{site_id}/posts`
+## 资源
 
-## Resources
-
-- [WordPress.com REST API Overview](https://developer.wordpress.com/docs/api/)
-- [Getting Started Guide](https://developer.wordpress.com/docs/api/getting-started/)
-- [API Reference](https://developer.wordpress.com/docs/api/rest-api-reference/)
-- [OAuth Authentication](https://developer.wordpress.com/docs/oauth2/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [WordPress.com REST API 概述](https://developer.wordpress.com/docs/api/)
+- [入门指南](https://developer.wordpress.com/docs/api/getting-started/)
+- [API 参考](https://developer.wordpress.com/docs/api/rest-api-reference/)
+- [OAuth 认证](https://developer.wordpress.com/docs/oauth2/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

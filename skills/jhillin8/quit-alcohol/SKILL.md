@@ -1,6 +1,6 @@
 ---
 name: quit-alcohol
-description: Track sobriety with alcohol-free streaks, craving management, and recovery milestones
+description: 通过保持无酒精饮酒的状态、管理饮酒欲望以及设定康复里程碑来记录自己的清醒状态。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,62 +11,62 @@ triggers:
   - "sobriety check"
 ---
 
-# Quit Alcohol
+# 戒酒助手（Alcohol Quitter）
 
-Your personal sobriety companion. Track streaks, manage urges, celebrate wins.
+您的个人戒酒伴侣——帮助您记录戒酒的连续天数，管理戒酒时的冲动，并庆祝每一次成功。
 
-## What it does
+## 功能介绍
 
-- **Sobriety tracking**: Records your alcohol-free streak in days, weeks, and months
-- **Urge management**: Logs cravings, identifies triggers, suggests coping strategies
-- **Milestone celebrations**: Marks 24 hours, 1 week, 30 days, 90 days, and 1-year achievements
-- **Progress dashboard**: Visual summaries of your recovery journey
-- **Support reminders**: Links to local resources and recovery communities
+- **戒酒记录**：记录您连续不饮酒的天数（按天、周、月为单位）。
+- **冲动管理**：记录您的饮酒欲望，识别引发这些欲望的诱因，并提供应对策略。
+- **里程碑庆祝**：标记您完成24小时、1周、30天、90天以及1年戒酒目标的时刻。
+- **进度仪表盘**：以可视化的方式展示您的戒酒历程。
+- **支持资源**：提供当地戒酒互助小组、热线电话等资源的链接。
 
-## Usage
+## 使用方法
 
-### Start sobriety
-- "Start my sobriety journey today" - Begin tracking from now
-- "My quit date is [date]" - Set a historical start date
-- "Reset my sobriety tracker" - Start fresh if relapsed
+### 开始戒酒
+- “今天开始我的戒酒之旅”：立即开始记录。
+- “我的戒酒日期是[日期]”：设置一个具体的开始日期。
+- “重置我的戒酒记录”：如果复饮，可以重新开始记录。
 
-### Handle cravings
-- "I'm having an urge" - Log a craving and get immediate coping suggestions
-- "What triggered this?" - Analyze patterns in your urges
-- "Distraction ideas" - Get activities to redirect the urge
+### 应对饮酒冲动
+- “我感到有饮酒的冲动”：记录下这种冲动，并立即获取应对建议。
+- “是什么引发了这种冲动？”：分析导致您产生冲动的原因。
+- **转移注意力的方法**：获取一些活动建议，帮助您转移注意力。
 
-### Check progress
-- "How long have I been sober?" - View your current streak
-- "Show my stats" - See days/weeks/months and patterns
-- "Next milestone?" - What achievement is coming up
+### 检查进度
+- “我已经戒酒多久了？”：查看您当前的戒酒连续天数。
+- “显示我的统计数据”：查看您戒酒的总天数、周数和月数，以及其中的规律。
+- “下一个里程碑是什么？”：了解下一个需要达成的目标。
 
-### Money saved
-- "How much have I saved?" - Calculate money not spent on alcohol (based on your typical spend)
-- "Savings goal" - Set a target and track progress toward it
+### 节省的费用
+- “我节省了多少钱？”：根据您的日常饮酒花费，计算您节省下来的金额。
+- **设定储蓄目标**：设定一个储蓄目标，并跟踪您的进展。
 
-### Get support
-- "Find meetings near me" - Locate AA/SMART Recovery/other groups
-- "Support resources" - Get phone numbers and crisis lines
-- "Tell me why I quit" - Reaffirm your reasons for sobriety
+### 寻求支持
+- “查找附近的戒酒互助小组”：找到附近的戒酒互助组织或支持团体。
+- **获取支持资源**：获取相关机构的电话号码和危机热线。
+- “告诉我我戒酒的原因”：重新确认自己戒酒的决心和动力。
 
-## Milestones
+## 戒酒里程碑
 
-| Duration | Achievement |
+| 戒酒时长 | 成就 |
 |----------|-------------|
-| 24 hours | First steps |
-| 1 week | Breaking the pattern |
-| 30 days | One month strong |
-| 90 days | Three months—transformation begins |
-| 1 year | One year sober—you're a fighter |
+| 24小时 | 迈出第一步 |
+| 1周 | 打破旧习惯 |
+| 30天 | 坚持一个月 |
+| 90天 | 三个月——转变的开始 |
+| 1年 | 保持一年戒酒——您是个了不起的战士！ |
 
-## Tips
+## 小贴士
 
-- **Be honest about triggers**: Log what sets off cravings (stress, certain places, people, emotions). Patterns reveal themselves.
-- **Plan your escape**: Before urges hit, pre-decide your response—call a friend, go for a walk, hit the gym.
-- **Celebrate small wins**: Each day sober is a win. Acknowledge it. Momentum compounds.
-- **Connect with others**: Share your journey with people who understand. Vulnerability builds resilience.
-- **All data stays local on your machine**: Your recovery is private. No cloud storage, no corporate tracking—complete confidentiality.
+- **诚实地记录诱因**：记录下哪些因素会引发您的饮酒欲望（如压力、特定环境、人物或情绪）。通过记录，您可以发现其中的规律。
+- **提前制定应对计划**：在冲动出现之前，提前想好应对方法（比如打电话给朋友、去散步或去健身房）。
+- **庆祝每一个小成就**：每一天保持清醒都是一个胜利，要给予自己肯定。这样的积极态度会增强您的坚持力。
+- **与他人分享**：与理解您处境的人分享您的戒酒经历。分享会增强您的抗压能力。
+- **所有数据仅保存在您的设备上**：您的戒酒信息完全保密，不会被存储在云端或被任何机构追踪。
 
 ---
 
-*Note: For medical withdrawal concerns or if you're experiencing severe withdrawal symptoms, consult a healthcare provider. Alcohol withdrawal can be dangerous and may require professional medical support.*
+*注意：如果您有戒酒过程中的身体不适或严重戒断症状，请咨询医疗专业人士。酒精戒断可能很危险，可能需要专业的医疗帮助。*

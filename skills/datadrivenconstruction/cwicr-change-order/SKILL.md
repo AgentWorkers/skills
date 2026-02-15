@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-change-order"
 display_name: "CWICR Change Order"
-description: "Process construction change orders using CWICR data. Calculate cost impact, compare to original estimate, and generate change order documentation."
+description: "使用 CWICR 数据处理变更订单。计算成本影响，与原始估算进行比较，并生成变更订单文档。"
 ---
 
-# CWICR Change Order Processor
+# CWICR 变更订单处理系统
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Change orders require:
-- Quick cost impact analysis
-- Comparison to original scope
-- Fair pricing for added work
-- Documentation for disputes
+### 问题描述
+变更订单需要：
+- 快速的成本影响分析
+- 与原始工作范围的对比
+- 对新增工作的合理定价
+- 用于争议解决的文档记录
 
-### Solution
-Systematic change order processing using CWICR data to calculate fair costs, document changes, and analyze impact on project budget.
+### 解决方案
+使用 CWICR 数据进行系统的变更订单处理，以计算合理的成本、记录变更内容，并分析对项目预算的影响。
 
-### Business Value
-- **Fair pricing** - Based on validated norms
-- **Quick turnaround** - Rapid cost analysis
-- **Documentation** - Clear change records
-- **Budget tracking** - Cumulative impact
+### 商业价值
+- **合理定价**：基于经过验证的规范
+- **快速响应**：快速的成本分析
+- **文档记录**：清晰的变更记录
+- **预算跟踪**：变更对预算的累积影响
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -364,8 +363,7 @@ class CWICRChangeOrder:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -395,9 +393,9 @@ print(f"Direct Impact: ${co.direct_cost_impact:,.2f}")
 print(f"Total Impact: ${co.total_impact:,.2f}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Quick Impact Analysis
+### 1. 快速影响分析
 ```python
 changes = [
     {'code': 'CONC-001', 'change_type': 'addition', 'original_qty': 0, 'revised_qty': 50},
@@ -408,7 +406,7 @@ impact = co_processor.calculate_quick_impact(changes)
 print(f"Net Impact: ${impact['total_impact']:,.2f}")
 ```
 
-### 2. Compare to Budget
+### 2. 与预算对比
 ```python
 comparison = co_processor.compare_to_budget(
     co_number="CO-001",
@@ -418,11 +416,11 @@ comparison = co_processor.compare_to_budget(
 print(f"Budget Change: {comparison['change_percent']}%")
 ```
 
-### 3. Export Documentation
+### 3. 导出文档
 ```python
 co_processor.export_change_order("CO-001", "change_order_001.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.2 - Change Order Management
+- **DDC 手册**：第 3.2 章 - 变更订单管理

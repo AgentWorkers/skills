@@ -1,14 +1,14 @@
-# Tick Multi-Agent Coordination
+# 多代理协调系统（Tick Multi-Agent Coordination）
 
-Coordinate work across human and AI agents using structured Markdown files. Users interact naturally with you, and you maintain tasks transparently in TICK.md.
+通过结构化的Markdown文件来协调人类代理和AI代理之间的工作。用户可以自然地与你交互，而你则负责在TICK.md文件中透明地管理各项任务。
 
-## Installation
+## 安装
 
-**Prerequisites**: The Tick CLI and MCP server should already be installed and configured by your environment.
+**前提条件**：你的环境中已经安装并配置好了Tick命令行工具（CLI）和MCP服务器。
 
-**First time setup?** See `INSTALL.md` for editor-specific installation instructions.
+**首次设置？** 请参阅`INSTALL.md`以获取针对特定编辑器的安装说明。
 
-**Quick Check**:
+**快速检查**：
 ```bash
 # Verify CLI is available
 tick --version
@@ -20,38 +20,38 @@ ls TICK.md
 tick init
 ```
 
-## Core Concept
+## 核心概念
 
-**Tick Protocol** = Git-based task coordination via TICK.md files
-- **Human-readable**: Standard Markdown with YAML
-- **Machine-parseable**: Structured for tools
-- **Git-backed**: Full version control and audit trail
-- **Local-first**: No cloud required
+**Tick协议**：基于Git的任务协调机制，通过TICK.md文件实现：
+- **人类可读**：使用标准Markdown格式，并结合YAML格式
+- **机器可解析**：结构化的数据格式，便于工具处理
+- **Git支持**：具备完整的版本控制和审计追踪功能
+- **本地优先**：无需依赖云服务
 
-## Quick Start
+## 快速入门
 
-### Check if Tick is initialized
+### 检查Tick是否已初始化
 ```bash
 ls TICK.md
 ```
 
-### If not initialized
+### 如果未初始化
 ```bash
 tick init
 ```
 
-### Get current status
+### 获取当前状态
 ```bash
 tick status
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### 1. User Asks You to Do Something
+### 1. 用户请求你执行某项任务
 
-**User**: "Can you refactor the authentication system?"
+**用户**：“你能重构认证系统吗？”
 
-**Your Actions**:
+**你的操作**：
 ```bash
 # 1. Create task
 tick add "Refactor authentication system" --priority high --tags backend,security
@@ -72,9 +72,9 @@ tick comment TASK-XXX @your-name --note "Refactored to use JWT tokens"
 tick done TASK-XXX @your-name
 ```
 
-### 2. User Asks About Project Status
+### 2. 用户询问项目进度
 
-**User**: "What tasks are we working on?"
+**用户**：“我们正在处理哪些任务？”
 
 ```bash
 # Get comprehensive status
@@ -85,11 +85,11 @@ tick list --status in_progress
 tick list --claimed-by @bot-name
 ```
 
-Summarize the output naturally for the user.
+**为用户自然地总结任务进度。**
 
-### 3. Coordination with Other Agents
+### 3. 与其他代理协调
 
-**User**: "Have the other agents finished their tasks?"
+**用户**：“其他代理完成任务了吗？”
 
 ```bash
 # Check overall status
@@ -102,11 +102,11 @@ tick agent list --verbose
 tick validate
 ```
 
-### 4. Breaking Down Complex Work
+### 4. 分解复杂任务
 
-**User**: "Build a user dashboard with charts and data export"
+**用户**：“需要制作一个包含图表和数据导出的用户仪表板。”
 
-**Your Actions**:
+**你的操作**：
 ```bash
 # Create parent task
 tick add "Build user dashboard" --priority high --tags frontend
@@ -120,9 +120,9 @@ tick add "Add CSV export" --priority low --tags frontend,export --depends-on TAS
 tick graph
 ```
 
-## Command Reference
+## 命令参考
 
-### Project Management
+### 项目管理
 ```bash
 tick init                          # Initialize new project
 tick status                        # View project overview
@@ -133,7 +133,7 @@ tick validate                      # Check for errors
 tick sync --push                   # Commit and push to git
 ```
 
-### Task Operations
+### 任务操作
 ```bash
 tick add "Task title" \
   --priority high \                # urgent|high|medium|low
@@ -155,7 +155,7 @@ tick edit TASK-001 \               # Direct field edit
   --status in_progress
 ```
 
-### Corrections & Recovery
+### 修正与恢复
 ```bash
 tick reopen TASK-001 @agent        # Reopen completed task
 tick reopen TASK-001 @agent \      # Reopen and re-block dependents
@@ -177,7 +177,7 @@ tick undo                          # Undo last tick operation
 tick undo --dry-run                # Preview what would be undone
 ```
 
-### Bulk Operations
+### 批量操作
 ```bash
 tick import tasks.yaml             # Import tasks from YAML file
 tick import - < tasks.yaml         # Import from stdin
@@ -189,7 +189,7 @@ tick batch commit                  # Commit all batched changes
 tick batch abort                   # Discard batched changes
 ```
 
-### Advanced Task Listing
+### 高级任务列表
 ```bash
 tick list                          # All tasks, grouped by status
 tick list --status blocked         # Only blocked tasks
@@ -199,21 +199,21 @@ tick list --tag backend            # Tasks with tag
 tick list --json                   # JSON output for scripts
 ```
 
-### Dependency Visualization
+### 依赖关系可视化
 ```bash
 tick graph                         # ASCII dependency tree
 tick graph --format mermaid        # Mermaid flowchart
 tick graph --show-done             # Include completed tasks
 ```
 
-### Real-time Monitoring
+### 实时监控
 ```bash
 tick watch                         # Watch for changes
 tick watch --interval 10           # Custom polling interval
 tick watch --filter in_progress    # Only show specific status
 ```
 
-### Agent Management
+### 代理管理
 ```bash
 tick agent register @name \        # Register new agent
   --type bot \                     # human|bot
@@ -226,32 +226,32 @@ tick agent list --type bot         # Filter by type
 tick agent list --status working   # Filter by status
 ```
 
-## MCP Tools (Alternative to CLI)
+## MCP工具（替代CLI）
 
-If using Model Context Protocol, use these tools instead of CLI commands:
+如果使用Model Context Protocol，可以使用以下工具代替CLI命令：
 
-### Status and Inspection
-- `tick_status` - Get project status (agents, tasks, progress)
-- `tick_validate` - Validate TICK.md structure
-- `tick_agent_list` - List agents with optional filters
+### 状态与检查
+- `tick_status`：获取项目状态（代理、任务、进度）
+- `tick_validate`：验证TICK.md文件的结构
+- `tick_agent_list`：列出代理列表（可选过滤条件）
 
-### Task Management
-- `tick_add` - Create new task
-- `tick_claim` - Claim task for agent
-- `tick_release` - Release claimed task
-- `tick_done` - Complete task (auto-unblocks dependents)
-- `tick_comment` - Add note to task
+### 任务管理
+- `tick_add`：创建新任务
+- `tick_claim`：将任务分配给代理
+- `tick_release`：释放被代理占用的任务
+- `tick_done`：完成任务（自动解除依赖关系）
+- `tick_comment`：为任务添加备注
 
-### Corrections & Recovery
-- `tick_reopen` - Reopen completed task
-- `tick_delete` - Delete a task
-- `tick_edit` - Direct field edit (bypasses state machine)
-- `tick_undo` - Undo last tick operation
+### 修正与恢复
+- `tick_reopen`：重新打开已完成的任务
+- `tick_delete`：删除任务
+- `tick_edit`：直接编辑任务字段（绕过状态机）
+- `tick_undo`：撤销上一次操作
 
-### Agent Operations
-- `tick_agent_register` - Register new agent
+### 代理管理
+- `tick_agent_register`：注册新代理
 
-**MCP Example**:
+**MCP示例**：
 ```javascript
 // Create task via MCP
 await tick_add({
@@ -268,27 +268,27 @@ await tick_claim({
 })
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Natural Conversation First
+### 1. 首先进行自然对话
 
-✅ **Good**: User says "refactor the auth", you create task automatically
-❌ **Bad**: Making user explicitly create tasks
+✅ **正确做法**：用户提出请求时，你自动创建相应任务。
+❌ **错误做法**：让用户手动创建任务。
 
-### 2. Always Use Your Agent Name
+### 2. 始终使用代理的名称
 
-Register once:
+**注册一次后**：
 ```bash
 tick agent register @your-bot-name --type bot --roles "engineer"
 ```
 
-Then use consistently:
+**之后始终一致地使用该名称**：
 ```bash
 tick claim TASK-001 @your-bot-name
 tick done TASK-001 @your-bot-name
 ```
 
-### 3. Provide Context in Comments
+### 3. 在评论中提供上下文信息
 
 ```bash
 # ✅ Good - explains what and why
@@ -298,9 +298,9 @@ tick comment TASK-005 @bot --note "Switched from REST to GraphQL for better type
 tick comment TASK-005 @bot --note "Updated API"
 ```
 
-### 4. Break Down Large Tasks
+### 4. 分解大型任务
 
-Create subtasks with dependencies:
+将复杂任务拆分为包含依赖关系的子任务：
 ```bash
 tick add "Set up CI/CD pipeline" --priority high
 tick add "Configure GitHub Actions" --depends-on TASK-010
@@ -308,7 +308,7 @@ tick add "Add deployment scripts" --depends-on TASK-011
 tick add "Set up staging environment" --depends-on TASK-011
 ```
 
-### 5. Check Status Before Claiming
+### 5. 在分配任务前检查状态
 
 ```bash
 # Make sure task exists and isn't claimed
@@ -318,15 +318,15 @@ tick status
 tick claim TASK-XXX @your-name
 ```
 
-## Understanding TICK.md Structure
+## 理解TICK.md文件的结构
 
-The file has three sections:
+该文件包含三个部分：
 
-1. **Frontmatter** (YAML): Project metadata
-2. **Agents Table** (Markdown): Who's working on what
-3. **Task Blocks** (YAML + Markdown): Individual tasks with history
+1. **前置内容**（YAML）：项目元数据
+2. **代理列表**（Markdown）：哪些代理正在处理哪些任务
+3. **任务块**（YAML + Markdown）：包含任务详情和历史记录的详细信息
 
-**Example**:
+**示例**：
 ```markdown
 ---
 project: my-app
@@ -345,11 +345,11 @@ next_id: 5
 
 \```yaml
 id: TASK-001
-title: Build authentication
+title: 构建认证系统
 status: done
 priority: high
 claimed_by: null
-# ... more fields
+# ... 其他字段
 history:
   - ts: 2026-02-07T10:00:00Z
     who: @bot
@@ -362,11 +362,11 @@ history:
 Implemented JWT-based authentication with token refresh...
 ```
 
-## Advanced Features
+## 高级功能
 
-### Automatic Dependency Unblocking
+### 自动解除依赖关系
 
-When you complete a task, dependent tasks automatically unblock:
+当你完成任务后，相关依赖任务会自动解除阻塞：
 ```bash
 # TASK-002 depends on TASK-001
 # TASK-002 status: blocked
@@ -375,24 +375,25 @@ tick done TASK-001 @bot
 # TASK-002 automatically changes to: todo
 ```
 
-### Circular Dependency Detection
+### 检测循环依赖关系
 
-Validation catches circular dependencies:
+系统会自动检测并处理循环依赖关系：
 ```bash
 tick validate
 # Error: Circular dependency detected: TASK-001 → TASK-002 → TASK-003 → TASK-001
 ```
 
-### Smart Commit Messages
+### 智能提交信息
 
+提交代码时使用描述性信息，便于理解变更内容：
 ```bash
 tick sync --push
 # Automatically generates: "feat: complete TASK-001, TASK-002; update TASK-003"
 ```
 
-### Reopening Completed Tasks
+### 重新打开已完成的任务
 
-If a task was marked done prematurely:
+如果任务被错误地标记为已完成，可以重新打开它：
 ```bash
 tick reopen TASK-001 @bot
 # Sets status back to in_progress, records in history
@@ -401,8 +402,9 @@ tick reopen TASK-001 @bot --re-block
 # Also re-blocks any tasks that depend on this one
 ```
 
-### Fixing Mistakes
+### 修正错误
 
+及时发现并修正错误：
 ```bash
 # Undo the last tick operation
 tick undo
@@ -414,9 +416,9 @@ tick undo --dry-run
 tick edit TASK-001 --status todo --priority urgent
 ```
 
-### Batch Operations
+### 批量操作
 
-For multiple changes without individual commits:
+对于多个更改，可以一次性提交：
 ```bash
 tick batch start
 # Now make multiple changes...
@@ -428,8 +430,9 @@ tick batch commit   # Single commit for all changes
 # Or: tick batch abort  # Discard all changes
 ```
 
-### Real-time Monitoring
+### 实时监控
 
+系统提供实时任务状态监控功能：
 ```bash
 tick watch
 # [10:23:45] ✓ Added: TASK-015 - Implement user search
@@ -437,7 +440,7 @@ tick watch
 # [10:26:33] ⟳ TASK-015: in_progress → done
 ```
 
-## Quick Reference Card
+## 快速参考卡
 
 ```
 Workflow:      init → add → claim → work → comment → done → sync
@@ -448,24 +451,24 @@ Coordination:  agent register | agent list | validate | watch
 Git:           sync --pull | sync --push
 ```
 
-## Key Reminders
+## 关键提示
 
-1. **Users interact with YOU, not with Tick directly**
-2. **YOU maintain the TICK.md transparently**
-3. **Dashboard is for inspection, not primary interaction**
-4. **Always use your agent name consistently**
-5. **Comment frequently to show progress**
-6. **Validate before syncing**
-7. **Check status before claiming**
-8. **Break down complex work into subtasks**
+1. **用户与你交互，而不是直接与Tick系统交互**
+2. **你负责透明地维护TICK.md文件的内容**
+3. **仪表板仅用于查看信息，而非主要交互工具**
+4. **始终一致地使用代理的名称**
+5. **经常添加评论以展示任务进度**
+6. **同步前务必验证文件内容**
+7. **在分配任务前检查任务状态**
+8. **将复杂任务分解为子任务**
 
-## Resources
+## 资源
 
-- **GitHub**: https://github.com/your-org/tick-md
-- **Documentation**: https://tick-md.dev/docs
-- **CLI npm**: https://npmjs.com/package/tick-md
-- **MCP Server npm**: https://npmjs.com/package/tick-mcp-server
+- **GitHub仓库**：https://github.com/your-org/tick-md
+- **文档**：https://tick-md.dev/docs
+- **CLI包（npm）**：https://npmjs.com/package/tick-md
+- **MCP服务器包（npm）**：https://npmjs.com/package/tick-mcp-server
 
-## License
+## 许可证
 
-MIT
+MIT许可证

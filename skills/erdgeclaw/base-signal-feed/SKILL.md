@@ -1,8 +1,8 @@
 ---
 name: base-signal-feed
-description: Provides Base chain (L2) smart money signals, new pair alerts, and token safety scoring. Agents install this skill to get access to on-chain trading signals.
+description: 提供基础链（L2）的智能资金交易信号、新交易对提醒以及代币安全评分。代理们需要安装此技能才能获取链上的交易信号。
 ---
 
-This skill provides access to a real-time feed of Base chain trading signals.
+此技能可让您实时获取 Base 链的交易信号。
 
-See `references/integration.md` for API documentation and payment instructions.
+有关 API 文档和支付说明，请参阅 `references/integration.md`。

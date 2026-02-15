@@ -1,200 +1,203 @@
 ---
 name: warden-studio
-description: Use Warden Studio (studio.wardenprotocol.org) via browser automation to register/publish a Community Agent to the Warden Agent Hub. Use when you need to (1) log in to Studio, (2) create/submit an agent listing, (3) configure API URL/auth, skills, avatar, and billing model, (4) pay registration + gas, and (5) verify the agent appears in Studio and in Warden's Agent Hub. Designed for safe, repeatable publishing with explicit confirmation gates.
+description: 通过浏览器自动化工具使用 Warden Studio (studio.wardenprotocol.org) 来向 Warden Agent Hub 注册/发布社区代理（Community Agent）。该工具适用于以下场景：  
+1. 登录 Warden Studio；  
+2. 创建或提交代理信息；  
+3. 配置 API 地址、认证方式、技能、头像以及计费模式；  
+4. 支付注册费用及相关费用；  
+5. 确认代理信息已在 Warden Studio 以及 Warden Agent Hub 中正确显示。  
+Warden Studio 专为安全、可重复的代理发布流程设计，并提供了明确的确认机制。
 ---
 
 # Warden Studio
 
-Automate publishing a Community Agent in **Warden Studio** through a safe, repeatable workflow that other agents can follow.
+通过一个安全、可重复的工作流程，在**Warden Studio**中自动化发布社区代理（Community Agent）的功能，其他代理也可以按照这个流程进行操作。
 
-## Safety & constraints (non-negotiable)
+## 安全性与限制（不可协商）
 
-- Never request or store seed phrases / private keys.
-- Never ask the user to paste secrets into chat. If an API key must be entered, instruct the user to paste it directly into the Studio UI field.
-- Treat publishing/onchain registration as **high-risk**: confirm network, fees, and what is being signed before any wallet confirmation.
-- Prefer read-only validation (checking forms, status, preview) unless the user explicitly authorizes execution (e.g., "yes, publish" / "yes, execute").
-- Do not reveal any private info (local files, credentials, IPs, internal logs).
-- Public comms: do not claim any affiliation or relationship unless it is publicly disclosed and the user explicitly asks you to state it.
+- **严禁**请求或存储种子短语（seed phrases）/私钥（private keys）。
+- **严禁**要求用户在聊天中输入敏感信息**。如果需要输入API密钥，请指导用户直接将其输入到Studio的用户界面（UI）字段中。
+- 将代理的发布或链上注册（on-chain registration）视为**高风险操作**：在确认任何钱包操作之前，必须核实网络连接、费用以及将要签署的文件内容。
+- 优先采用只读验证方式（如检查表单、状态、预览等），除非用户明确授权执行操作（例如，输入“是，发布”/“是，执行”）。
+- **严禁**泄露任何私人信息（如本地文件、凭证、IP地址、内部日志等）。
+- 在公开交流中，**严禁**声明与Warden Studio的任何关联或合作关系，除非这些信息已经公开披露，并且用户明确要求你提及。
 
-## What this skill does
+## 该技能的功能
 
-Typical outcomes:
+典型操作流程如下：
 
-- Log into `https://studio.wardenprotocol.org`
-- Create a new Agent submission/listing
-- Provide:
-  - API URL (service endpoint)
-  - API key / auth method (if required)
-  - Name, description, skills, avatar
-  - Billing model (free vs paid per inference, in USDC)
-- Pay registration fee + gas (if prompted by the UI)
-- Verify the agent shows up in Studio and becomes discoverable in Warden's Agent Hub (Community tab), when applicable.
+1. 登录 `https://studio.wardenprotocol.org`
+2. 创建一个新的代理提交/列表（Agent submission/listing）。
+3. 提供以下信息：
+   - **API地址**（服务端点）
+   - **API密钥**/ **认证方式**（如需）
+   - **代理名称**、**描述**、**技能**、**头像**
+   - **计费模式**（免费或按每次推理收费，以USDC计价）
+4. 支付注册费用及网络费用（如果用户界面有提示）
+5. 确认代理已成功添加到Studio中，并能在Warden的代理中心（Community标签页）中找到。
 
-## Workflow (UI automation)
+## 工作流程（UI自动化）
 
-### 0) Preconditions
+### 0) 前提条件
 
-1. A Chromium browser is available (Chrome/Brave/Edge/Chromium). (Firefox not supported.)
-2. User can log in to Warden Studio (email/SSO/2FA completed).
-3. The agent is already deployed somewhere and reachable via HTTPS (no UI required):
-   - stable API base URL
-   - (optional) API key or token if the endpoint is protected
-4. Funding is ready for registration (if required by the flow):
-   - USDC on Base for the registration fee (confirm the fee in the UI)
-   - ETH on Base for gas
+- 必须安装Chromium浏览器（Chrome/Brave/Edge/Chromium）。（Firefox不支持。）
+- 用户已登录Warden Studio（完成邮箱登录/单点登录/双重身份验证）。
+- 代理已部署在某个可访问的位置，并且可以通过HTTPS访问（无需通过UI进行配置）：
+   - 稳定的API基础地址（API base URL）
+   - （可选）如果端点需要保护，提供API密钥或令牌（API key/token）
+6. 如果流程要求，确保已有足够的资金用于支付注册费用和网络费用：
+   - 在Base平台上准备USDC用于支付注册费用
+   - 在Base平台上准备ETH用于支付网络费用（gas）
 
-If any of the above is missing, stop and ask the user to do that step.
+如果上述任何一项不满足，请暂停操作并让用户完成相应的步骤。
 
-### 1) Open + stabilize Studio
+### 1) 打开并登录Warden Studio
 
-- Open: `https://studio.wardenprotocol.org`
-- Wait for the landing/dashboard to load.
-- Take a snapshot and identify:
-  - logged-in user / account handle
-  - any "Agents" list/table or "Submit / Create agent" entry point
-  - network/payment cues (e.g., Base, USDC, wallet connection state)
+- 打开 `https://studio.wardenprotocol.org`
+- 等待登录页面加载完成。
+- 拍摄屏幕截图并确认以下内容：
+   - 已登录的用户/账户信息
+   - “代理”列表/表格或“提交/创建代理”的入口点
+   - 网络连接/支付相关的提示信息（如Base平台、USDC、钱包连接状态）
 
-If Studio is gated by login, stop and ask the user to complete login in the UI.
+如果Warden Studio需要登录才能使用，请暂停操作并让用户完成登录。
 
-### 2) Read-only checks (default)
+### 2) 进行只读检查（默认步骤）
 
-Use these first to prevent failed submissions:
+首先进行这些检查，以防止提交失败：
 
-- Confirm the agent endpoint is reachable:
-  - the URL is HTTPS
-  - no obvious typos
-  - (if a "Test connection" exists) run it
-- Validate required metadata is prepared:
-  - agent name (short)
-  - description (clear, non-misleading)
-  - skills list (concise + accurate)
-  - avatar image ready (square recommended)
-- Check billing/monetization options:
-  - free vs per-inference (USDC)
-  - expected fees shown by the UI
+- **确认代理端点是否可访问**：
+  - 确保URL使用的是HTTPS协议
+  - 没有明显的拼写错误
+  - 如果有“测试连接”（Test connection）的功能，请尝试使用它
+- **验证所需元数据是否准备齐全**：
+  - 代理名称（简洁明了）
+  - 描述（清晰无误）
+  - 技能列表（简洁准确）
+  - 头像图片已准备好（建议使用方形图片）
+- **检查计费/货币化选项**：
+  - 是否免费或按每次推理收费（以USDC计价）
+  - 用户界面是否显示了预计的费用
 
-### 3) Draft the submission (no publishing yet)
+### 3) 起草代理提交信息（暂不进行发布）
 
-**Direct create page (recommended):** `https://studio.wardenprotocol.org/agents/create`
+**推荐使用直接创建页面**：`https://studio.wardenprotocol.org/agents/create`
 
-#### Current “Register Agent” form fields
+#### 当前的“注册代理”表单字段
 
-Fill the form top-to-bottom to match the UI sections:
+按照用户界面的要求，从上到下填写表单：
 
-1. **API details**
-   - **API URL*** — your agent’s HTTPS endpoint
-   - **API Key** — if your endpoint requires a key  
-     *Never paste secrets into chat; enter them directly into the Studio field.*
+1. **API详细信息**
+   - **API地址**——你的代理的HTTPS端点
+   - **API密钥**——如果端点需要密钥，请输入
+     ***严禁**将密钥输入到聊天框中；直接在Studio的字段中输入。*
 
-   The UI may also show helper links like **“Build an agent using LangGraph”** / **“How it works”**.
+   用户界面可能还会提供辅助链接，例如“使用LangGraph构建代理”（Build an agent using LangGraph）或“工作原理”（How it works）。
 
-2. **Info**
-   - **Agent Name***  
-   - **Select agent skills*** — choose the relevant skill tags
-   - **Describe the key features of the agent*** — short, accurate capability summary
+2. **基本信息**
+   - **代理名称**
+   - **选择代理技能**——选择相关的技能标签
+   - **描述代理的核心功能**——简洁明了的功能概述
 
-3. **Agent avatar**
-   - Paste link to add an agent avatar → **Image link** (URL)
+3. **代理头像**
+   - 上传代理头像的链接 → **图片链接**（URL）
 
-4. **Billing model**
-   - Choose how the agent charges users: **Per inference** or **Free**
-   - If **Per inference**: **Cost in USDC*** (numeric)
+4. **计费模式**
+   - 选择代理的收费方式：**按每次推理收费**或**免费**
+   - 如果选择**按每次推理收费**，请填写**费用金额（以USDC计价）**
 
-5. **Agent Preview**
-   - **Agent name**
-   - **Short description about your agent** (max **100** characters)
+5. **代理预览**
+   - **代理名称**
+   - **关于代理的简短描述**（最多100个字符）
 
-6. Final action: **Register agent**
+6. **最终操作**：**注册代理**
 
-Navigate to the agent submission flow (or go directly to `https://studio.wardenprotocol.org/agents/create`), then fill fields in a deterministic order:
+进入代理提交流程（或直接访问 `https://studio.wardenprotocol.org/agents/create`），并按照以下顺序填写字段：
 
-1. **Identity**
-   - Agent name
-   - Short tagline (if any)
-   - Category (if any)
+1. **身份信息**
+   - 代理名称
+   - 简短标语（如有）
+   - 类别（如有）
 
-2. **Capabilities**
-   - Description
-   - Skills (keywords and/or bullet list)
-   - Links (docs, GitHub, website) if requested
+2. **功能信息**
+   - 描述代理的功能
+   - 技能列表（关键词和/或项目符号列表）
+   - 如有需要，提供文档、GitHub仓库或官方网站的链接
 
-3. **Integration**
-   - API URL (service endpoint)
-   - Auth:
-     - API key field (if present), or
-     - header/token configuration (if present)
+3. **集成信息**
+   - API地址（服务端点）
+   - 认证信息：
+     - API密钥字段（如有）
+     - 请求头/令牌配置（如有）
 
-4. **Branding**
-   - Upload avatar
-   - Optional banner/images (if supported)
+4. **品牌信息**
+   - 上传头像
+   - 可选：添加横幅或图片（如果支持）
 
-5. **Monetization**
-   - Choose billing model (free vs paid/per inference) if supported
-   - Review any platform/registration fee disclosures
+5. **货币化设置**
+   - 选择计费模式（免费或按每次推理收费）
+   - 查看平台/注册费用的详细信息
 
-At the end of drafting, stop and show the user a **Submission Summary**:
+在完成信息起草后，向用户展示**提交摘要**：
 
-- Agent name + description (1–2 lines)
-- Skills list
-- API URL (domain + path)
-- Auth method (mask any key/token)
-- Billing model + any displayed fees
+- 代理名称及描述（1-2行）
+- 技能列表
+- API地址（包括域名和路径）
+- 认证方式（隐藏密钥/令牌信息）
+- 计费模式及显示的费用
 
-### 4) Publish / register (requires explicit approval)
+### 4) 发布/注册（需要用户明确授权）
 
-**Execution gate:** Do not click the final "Publish / Register / Submit" button unless the user explicitly replies with **"yes, publish"** or **"yes, execute"** (or an unambiguous equivalent).
+**执行前的确认**：在用户明确回复“是，发布”或“是，执行”之前，切勿点击最终的“发布/注册/提交”按钮。
 
-Before finalizing, summarize:
+在最终确认之前，向用户说明以下内容：
 
-- What action will happen (publish/register agent listing)
-- What network/payment is involved (e.g., Base; registration fee + gas, as shown in the UI)
-- Any costs shown in the UI (USDC amount + estimated gas)
-- What could go wrong:
-  - wrong endpoint / downtime → failed validation
-  - wrong billing settings
-  - wallet prompt on wrong network
-  - unintended fee payment
+- 将执行的操作（发布/注册代理列表）
+- 涉及的网络和支付方式（例如Base平台；注册费用及网络费用）
+- 用户界面显示的所有费用信息（USDC金额及预估的网络费用）
+- 可能出现的错误：
+  - 端点错误/服务器故障 → 验证失败
+  - 计费设置错误
+  - 在错误的网络上进行操作 → 导致钱包费用支付错误
 
-Then proceed with the final click and wallet confirmation step (user signs in their wallet).
+随后，让用户完成最后的点击操作并确认钱包支付。
 
-### 5) Post-publish verification
+### 5) 发布后的验证
 
-After publishing/registration:
+发布/注册完成后：
+- 在Studio中确认状态：**已提交**、**待处理**、**已发布**等
+- 记录代理的标识符或链接（列表URL）
+- 检查代理是否已显示在Studio的代理列表中
+- 如果用户界面提示代理的分布信息：
+  - 确认代理是否已显示在Warden的代理中心（Community标签页）
+- 记录所有出现的错误，并截图保存：
+  - 验证错误
+  - 支付失败
+  - 认证失败
 
-- Confirm status in Studio:
-  - "Submitted", "Pending", "Published", etc.
-- Capture any agent identifier or link shown (listing URL).
-- Check the agent appears in Studio's Agents list.
-- If the UI mentions distribution:
-  - verify it appears in Warden Agent Hub → Community tab (when available)
-- Record any errors verbatim and capture screenshots of:
-  - validation errors
-  - payment failures
-  - endpoint/auth failures
+## 故障排除指南
 
-## Troubleshooting playbook
+常见故障及解决方法：
 
-Common failures and fixes:
+- **端点验证失败**：
+  - 检查HTTPS协议、路径是否正确（包括路径末尾的斜杠）
+  - 确认代理服务器是否正常运行且未被地理限制
+  - 如果需要认证，请确认用户界面中输入的密钥/令牌是否正确（严禁将密钥输入到聊天框中）
 
-- **Endpoint validation fails**
-  - Check HTTPS, trailing slashes, versioned paths
-  - Confirm the agent server is live and not geo-blocked
-  - If auth required, verify the correct key/token was entered in UI (never paste it into chat)
+- **钱包/网络不匹配**：
+  - 确保钱包连接到了正确的平台（例如Base平台）
 
-- **Wallet/network mismatch**
-  - Ensure wallet is on the correct network (e.g., Base) if Studio requires it
+- **资金不足**：
+  - 在Base平台上添加足够的USDC用于支付注册费用，在Base平台上添加ETH用于支付网络费用，然后重新尝试
 
-- **Insufficient funds**
-  - Add USDC on Base for fee and ETH on Base for gas, then retry
+## 创建可供其他代理使用的辅助技能
 
-## Building a wrapper skill other agents can use
+当被要求“创建一个允许其他代理通过Warden Studio发布代理的技能”时，请按照以下步骤操作：
 
-When asked to "create a skill that lets other agents publish via Warden Studio":
+1. 将可重复的工作流程（包括URL和用户界面关键步骤）记录在 `references/warden-studio-ui-notes.md` 文件中。
+2. 保持 `SKILL.md` 文件的内容稳定且通用；将可能变化的UI元素、截图和点击路径放在参考文档中。
+3. 仅添加能够减少错误的脚本（例如，用于生成提交摘要的脚本）。
 
-1. Record the minimal repeatable workflow (URLs + UI landmarks) in `references/warden-studio-ui-notes.md`.
-2. Keep `SKILL.md` stable and general; put volatile UI selectors, screenshots, and clickpaths in references.
-3. Only add deterministic scripts if they reduce errors (e.g., a submission summary checklist formatter).
+## 参考资料
 
-## References
-
-- Read `references/warden-studio-ui-notes.md` for the latest Studio navigation map, observed fields, and publishing quirks.
+- 阅读 `references/warden-studio-ui-notes.md` 文件，以获取最新的Warden Studio导航信息、所需填写的字段以及发布过程中的注意事项。

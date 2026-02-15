@@ -1,28 +1,28 @@
 ---
 name: xmtp-cli-groups
-description: Create and manage XMTP groups and DMs from the CLI. Use when creating a DM or group, or updating group metadata.
+description: 通过命令行界面（CLI）创建和管理 XMTP 组以及发送私信（DMs）。适用于创建私信或组，或更新组元数据时使用。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI groups
+# CLI 组管理
 
-Create DMs and groups, and update group metadata with the XMTP CLI.
+使用 XMTP CLI 创建私信（DM）和组，并更新组的元数据。
 
-## When to apply
+## 使用场景
 
-- Creating a DM with a target address
-- Creating a group with member addresses or inbox IDs
-- Updating group name or image URL
+- 创建带有目标收件人的私信
+- 创建包含成员地址或收件箱 ID 的组
+- 更新组名称或图片 URL
 
-## Rules
+## 规则
 
-- `create-dm-group` – `groups create` (DM vs group, member-addresses, member-inbox-ids)
-- `metadata` – `groups metadata` (group-id, name, image-url)
+- `create-dm-group` – 用于创建私信或组（区分私信和组，支持指定成员地址或成员收件箱 ID）
+- `metadata` – 用于更新组的元数据（包括组 ID、名称和图片 URL）
 
-## Quick start
+## 快速入门
 
 ```bash
 # Create DM
@@ -32,4 +32,4 @@ xmtp groups create --target 0x123...
 xmtp groups create --type group --name "Team" --member-addresses "0x123...,0x456..."
 ```
 
-Read `rules/create-dm-group.md` and `rules/metadata.md` for details.
+详情请参阅 `rules/create-dm-group.md` 和 `rules/metadata.md` 文件。

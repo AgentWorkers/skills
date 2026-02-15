@@ -1,15 +1,15 @@
 ---
 name: update-plus
-description: Full backup, update, and restore for OpenClaw - config, workspace, and skills with auto-rollback
+description: OpenClaw 的完整备份、更新及恢复功能：包括配置文件、工作区以及各项技能设置，并支持自动回滚功能。
 version: 4.0.3
 metadata: {"openclaw":{"emoji":"🔄","requires":{"bins":["git","jq","rsync"]}}}
 ---
 
 # 🔄 Update Plus
 
-A comprehensive backup, update, and restore tool for your OpenClaw environment. Protect your config, workspace, and skills with automatic rollback, encrypted backups, and cloud sync.
+这是一个专为 OpenClaw 环境设计的全面备份、更新和恢复工具。通过自动回滚、加密备份以及云同步功能，保护您的配置文件、工作区和技能设置。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check for available updates
@@ -28,27 +28,27 @@ update-plus update --dry-run
 update-plus restore openclaw-backup-2026-01-25-12:00:00.tar.gz
 ```
 
-## Features
+## 主要功能
 
-| Feature | Description |
+| 功能 | 说明 |
 |---------|-------------|
-| **Full Backup** | Backup entire environment (config, workspace, skills) |
-| **Auto Backup** | Creates backup before every update |
-| **Auto Rollback** | Reverts to previous commit if update fails |
-| **Smart Restore** | Restore everything or specific parts (config, workspace) |
-| **Multi-Directory** | Separate prod/dev skills with independent update settings |
-| **Encrypted Backups** | Optional GPG encryption |
-| **Cloud Sync** | Upload backups to Google Drive, S3, Dropbox via rclone |
-| **Notifications** | Get notified via WhatsApp, Telegram, or Discord |
-| **Connection Retry** | Auto-retry on network failure (configurable) |
+| **全面备份** | 备份整个环境（配置文件、工作区和技能设置） |
+| **自动备份** | 每次更新前自动创建备份 |
+| **自动回滚** | 如果更新失败，可恢复到之前的版本 |
+| **智能恢复** | 恢复全部或部分内容（配置文件、工作区） |
+| **多目录管理** | 支持区分生产环境（prod）和开发环境（dev），并设置不同的更新策略 |
+| **加密备份** | 支持 GPG 加密备份 |
+| **云同步** | 可通过 rclone 将备份文件上传至 Google Drive、S3 或 Dropbox |
+| **通知功能** | 通过 WhatsApp、Telegram 或 Discord 接收更新通知 |
+| **网络重试机制** | 在网络故障时自动重试（可配置） |
 
-## Installation
+## 安装
 
 ```bash
 git clone https://github.com/hopyky/update-plus.git ~/.openclaw/skills/update-plus
 ```
 
-### Add to PATH
+### 将工具添加到系统路径
 
 ```bash
 mkdir -p ~/bin
@@ -57,9 +57,9 @@ source ~/.zshrc
 ln -sf ~/.openclaw/skills/update-plus/bin/update-plus ~/bin/update-plus
 ```
 
-## Configuration
+## 配置
 
-Create `~/.openclaw/update-plus.json`:
+创建 `~/.openclaw/update-plus.json` 文件：
 
 ```json
 {
@@ -82,46 +82,46 @@ Create `~/.openclaw/update-plus.json`:
 }
 ```
 
-## Commands
+## 命令行工具
 
-| Command | Description |
+| 命令 | 说明 |
 |---------|-------------|
-| `update-plus check` | Check for available updates |
-| `update-plus backup` | Create a full backup |
-| `update-plus update` | Update OpenClaw and all skills |
-| `update-plus update --dry-run` | Preview changes |
-| `update-plus restore <file>` | Restore from backup |
-| `update-plus install-cron` | Install automatic updates (daily 2 AM) |
-| `update-plus uninstall-cron` | Remove cron job |
+| `update-plus check` | 检查是否有可用更新 |
+| `update-plus backup` | 创建全面备份 |
+| `update-plus update` | 更新 OpenClaw 及所有相关技能 |
+| `update-plus update --dry-run` | 预览更新内容 |
+| `update-plus restore <file>` | 从备份文件中恢复数据 |
+| `update-plus install-cron` | 安装自动更新任务（每天凌晨 2 点执行） |
+| `update-plus uninstall-cron` | 卸载自动更新任务 |
 
-## Changelog
+## 更新日志
 
 ### v4.0.3
-- Check for updates BEFORE backup (skip backup if already up to date)
-- No more wasted bandwidth/storage when nothing to update
+- 在备份前先检查是否需要更新（如果已是最新版本，则跳过备份）
+- 当无需更新时，避免浪费带宽和存储空间 |
+- 使用 curl 替代 ping 进行连接检测（更可靠） |
+- 支持通过防火墙以及 Mac 从睡眠状态唤醒后的连接 |
 
 ### v4.0.2
-- Use curl instead of ping for connection check (more reliable)
-- Works through firewalls and when Mac wakes from sleep
-
-### v4.0.1
-- Added Homebrew path detection (`/opt/homebrew/bin`) for cron jobs
-- Added `~/bin` to cron PATH for local symlinks
-- Updated example config with clearer workspace structure
+- 使用 curl 替代 ping 进行连接检测（更可靠） |
+- 可在通过防火墙或 Mac 从睡眠状态唤醒后正常使用 |
+- 为 cron 任务添加了 Homebrew 路径检测功能（`/opt/homebrew/bin`） |
+- 将 `~/bin` 添加到 cron 的系统路径中，以支持本地符号链接 |
+- 更新了示例配置文件，使其更符合实际使用习惯 |
 
 ### v4.0.0
-- OpenClaw only (removed moltbot/clawdbot legacy support)
-- Simplified configuration and paths
-- Config: ~/.openclaw/update-plus.json
+- 仅支持 OpenClaw（移除了对 moltbot/clawdbot 的旧版本支持） |
+- 简化了配置流程和路径设置 |
+- 配置文件位置：`~/.openclaw/update-plus.json`
 
 ### v3.x
-- Multi-bot support (openclaw, moltbot, clawdbot)
-- Connection retry for cron jobs
+- 支持多款机器人（OpenClaw、moltbot、clawdbot） |
+- 为 cron 任务添加了网络重试机制 |
 
-## Author
+## 开发者
 
-Created by **hopyky**
+由 **hopyky** 创建
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

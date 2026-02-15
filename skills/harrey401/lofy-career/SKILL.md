@@ -1,13 +1,13 @@
 ---
 name: lofy-career
-description: Job search automation for the Lofy AI assistant — application tracking, resume tailoring to job descriptions, interview prep with company research, follow-up management with draft emails, and pipeline analytics. Use when tracking job applications, tailoring resumes, preparing for interviews, managing follow-ups, or analyzing job search strategy.
+description: Lofy AI助手的求职自动化工具：包括申请跟踪、根据职位描述定制简历、通过公司调研准备面试、发送跟进邮件以及分析求职流程。适用于追踪求职申请、优化简历内容、准备面试、管理后续沟通环节，或分析整体的求职策略。
 ---
 
-# Career Manager — Job Pipeline
+# 职业经理 — 工作流程管理工具
 
-Automates job search: finds roles, tracks applications, tailors resumes, preps for interviews, and manages follow-ups.
+该工具自动化了求职流程：帮助用户查找职位、跟踪申请进度、定制简历、准备面试以及管理后续沟通。
 
-## Data File: `data/applications.json`
+## 数据文件：`data/applications.json`
 
 ```json
 {
@@ -32,45 +32,45 @@ Automates job search: finds roles, tracks applications, tailors resumes, preps f
 }
 ```
 
-## Resume Tailoring
+## 简历定制
 
-When user shares a job description:
-1. Parse key requirements (must-have vs nice-to-have)
-2. Map each requirement to user's experience (read `profile/career.md`)
-3. Suggest bullet point rewrites emphasizing relevant experience
-4. Flag gaps and suggest how to address in cover letter
-5. Rate overall match: "You match X/Y requirements strongly, Z partially, N gaps"
+当用户分享职位描述时：
+1. 分析职位的关键要求（必备条件与可选条件）
+2. 将每个要求与用户的经验进行匹配（参考 `profile/career.md` 文件）
+3. 建议用户重新组织简历内容，突出相关经验
+4. 指出简历中的不足之处，并提供在求职信中如何弥补的建议
+5. 评估用户与职位要求的匹配程度：“您在 X/Y 项要求上非常符合，Z 项要求部分符合，存在 N 处不足”
 
-## Interview Prep
+## 面试准备
 
-When interview is scheduled:
-1. Web search: recent company news, product launches, tech blog
-2. Research interviewer if name provided
-3. Generate likely questions (technical, behavioral STAR format, system design)
-4. Prepare talking points per project
-5. Suggest questions user should ask
-6. Send prep package 24h before
+当面试安排好后：
+1. 在网上搜索该公司的最新动态、产品发布信息以及相关技术博客
+2. 如果知道面试官的姓名，对其进行背景调查
+3. 预测面试中可能被问到的问题（包括技术问题、行为面试问题以及系统设计相关问题）
+4. 为每个项目准备相应的回答要点
+5. 建议用户准备一些可以提出的问题
+6. 在面试前 24 小时发送面试准备资料包
 
-## Follow-Up Management
+## 后续沟通管理
 
-- 5 business days after apply, no response → draft follow-up email
-- After phone screen → draft thank-you within 24h
-- After technical → detailed thank-you referencing discussion
-- After onsite → personalized thank-you per interviewer
-- Track ghosting patterns
+- 申请后 5 个工作日内若无回复 → 起草跟进邮件
+- 面试通过电话筛选后 → 在 24 小时内发送感谢邮件
+- 技术面试结束后 → 发送详细的感谢邮件，并提及面试中的讨论内容
+- 现场面试结束后 → 根据每位面试官的情况发送个性化的感谢邮件
+- 监控用户是否故意忽视后续沟通（即“玩消失”的行为）
 
-## Application Updates via Natural Language
+## 通过自然语言处理更新申请状态
 
-- "heard back from [company]" → prompt for details, update status
-- "got rejected from [company]" → update to rejected, log reason
-- "have a phone screen with [company] next Tuesday" → update status, schedule prep
-- "got an offer!" → celebrate, then help evaluate
+- “收到 [公司] 的回复” → 提示用户询问详细信息并更新申请状态
+- “被 [公司] 拒绝” → 更新申请状态并记录拒绝原因
+- “下周二将与 [公司] 进行电话筛选” → 更新申请状态并安排准备工作
+- “收到录用通知！” → 表示祝贺，并协助用户评估录用决定
 
-## Instructions
+## 使用说明
 
-1. Always check `data/applications.json` before suggesting roles (avoid duplicates)
-2. Update JSON immediately after any career conversation
-3. Be strategic — quality > quantity
-4. Help spot patterns: what types of roles respond? What keywords work?
-5. If <10% response rate after 20 apps, reassess approach
-6. For interviews, always research first — never send generic prep
+1. 在推荐职位之前，请务必查看 `data/applications.json` 文件，以避免推荐重复的申请
+2. 每次与用户进行职业相关的沟通后，立即更新 `data/applications.json` 文件中的信息
+3. 做到策略性规划——质量优先于数量
+4. 帮助用户发现求职过程中的规律：哪些类型的职位更容易获得回复？哪些关键词更有效？
+5. 如果提交 20 份申请后仍未收到任何回复，重新评估求职策略
+6. 面试前务必进行充分准备——切勿发送千篇一律的通用准备资料

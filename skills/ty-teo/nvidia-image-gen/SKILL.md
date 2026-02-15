@@ -1,22 +1,22 @@
 ---
 name: nvidia-image-gen
 version: 1.0.0
-description: Generate and edit images using NVIDIA FLUX models. Use when user asks to generate images, create pictures, edit photos, or modify existing images with AI. Supports text-to-image generation and image editing with text prompts.
+description: 使用 NVIDIA FLUX 模型生成和编辑图像。当用户需要生成图像、创建图片、编辑照片或使用人工智能修改现有图像时，可以使用该功能。支持基于文本提示的图像生成和图像编辑。
 ---
 
-# NVIDIA Image Generation
+# NVIDIA 图像生成
 
-Generate and edit images using NVIDIA's FLUX models.
+使用 NVIDIA 的 FLUX 模型生成和编辑图像。
 
-## Models
+## 模型
 
-| Model | Use Case | Speed | Quality |
+| 模型 | 用途 | 速度 | 质量 |
 |-------|----------|-------|---------|
-| `dev` | High-quality text-to-image | Normal | Best |
-| `schnell` | Fast text-to-image | Fast | Good |
-| `kontext` | Image editing | Normal | Best |
+| `dev` | 高质量的文本到图像转换 | 中等 | 最佳 |
+| `schnell` | 快速的文本到图像转换 | 快速 | 良好 |
+| `kontext` | 图像编辑 | 中等 | 最佳 |
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate an image
@@ -26,35 +26,35 @@ python scripts/generate.py "A cute cat in space"
 python scripts/generate.py "Add sunglasses" -i photo.jpg -o edited.png
 ```
 
-## Parameters
+## 参数
 
-### Text-to-Image (dev/schnell)
+### 文本到图像（dev/schnell）
 
-| Parameter | Short | Default | Description |
+| 参数 | 缩写 | 默认值 | 说明 |
 |-----------|-------|---------|-------------|
-| `prompt` | | (required) | Text description |
-| `-o, --output` | | output.png | Output file path |
-| `--width` | | 1024 | Output width in pixels |
-| `--height` | | 1024 | Output height in pixels |
-| `--aspect-ratio` | `-ar` | 1:1 | Aspect ratio preset |
-| `--steps` | `-s` | 30 | Diffusion steps |
-| `--seed` | | 0 | Random seed (0=random) |
-| `--model` | `-m` | auto | Model selection |
+| `prompt` | | （必填） | 文本描述 |
+| `-o, --output` | | 输出文件路径 |
+| `--width` | | 1024 | 输出图像的宽度（像素） |
+| `--height` | | 1024 | 输出图像的高度（像素） |
+| `--aspect-ratio` | `-ar` | 1:1 | 宽高比预设 |
+| `--steps` | `-s` | 30 | 扩散步骤数 |
+| `--seed` | | 0 | 随机种子（0 表示随机生成） |
+| `--model` | `-m` | auto | 自动选择模型 |
 
-### Image Editing (kontext)
+### 图像编辑（kontext）
 
-| Parameter | Short | Default | Description |
+| 参数 | 缩写 | 默认值 | 说明 |
 |-----------|-------|---------|-------------|
-| `prompt` | | (required) | Edit instruction |
-| `-i, --input` | | (required) | Input image path |
-| `-o, --output` | | output.png | Output file path |
-| `--steps` | `-s` | 30 | Diffusion steps |
-| `--cfg` | | 3.5 | Guidance scale |
-| `--seed` | | 0 | Random seed |
+| `prompt` | | （必填） | 编辑指令 |
+| `-i, --input` | | （必填） | 输入图像路径 |
+| `-o, --output` | | 输出文件路径 |
+| `--steps` | `-s` | 30 | 扩散步骤数 |
+| `--cfg` | | 3.5 | 指导比例 |
+| `--seed` | | 0 | 随机种子 |
 
-## Supported Aspect Ratios
+## 支持的宽高比
 
-| Ratio | Resolution |
+| 宽高比 | 分辨率 |
 |-------|------------|
 | 1:1 | 1024×1024 |
 | 16:9 | 1344×768 |
@@ -62,47 +62,47 @@ python scripts/generate.py "Add sunglasses" -i photo.jpg -o edited.png
 | 4:3 | 1216×832 |
 | 3:4 | 832×1216 |
 
-## Examples
+## 示例
 
-### Basic Generation
+### 基本生成
 ```bash
 python scripts/generate.py "A mountain landscape at sunset"
 ```
 
-### Wide Format (16:9)
+### 宽屏格式（16:9）
 ```bash
 python scripts/generate.py "A panoramic beach view" -ar 16:9
 ```
 
-### Portrait Mode (9:16)
+### 肖像模式（9:16）
 ```bash
 python scripts/generate.py "A professional headshot" -ar 9:16
 ```
 
-### Custom Size
+### 自定义尺寸
 ```bash
 python scripts/generate.py "A banner image" --width 1344 --height 768
 ```
 
-### Fast Generation
+### 快速生成
 ```bash
 python scripts/generate.py "Quick sketch of a robot" -m schnell
 ```
 
-### Edit an Image
+### 编辑图像
 ```bash
 python scripts/generate.py "Make the background a sunset" -i input.jpg -o output.png
 ```
 
-### Reproducible Results
+### 可重复的结果
 ```bash
 python scripts/generate.py "A robot" --seed 12345
 ```
 
-## Output
+## 输出结果
 
-The script outputs `MEDIA:/path/to/image.png` which can be sent directly to chat.
+脚本会将生成的图像输出到 `MEDIA:/path/to/image.png`，可以直接发送到聊天应用中。
 
-## API Key
+## API 密钥
 
-The API key is embedded in the script. To use a different key, set the `NVIDIA_API_KEY` environment variable.
+API 密钥已内置于脚本中。如需使用其他密钥，请设置 `NVIDIA_API_KEY` 环境变量。

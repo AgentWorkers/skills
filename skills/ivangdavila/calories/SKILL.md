@@ -1,55 +1,56 @@
 ---
 name: "Calorie Tracker"
-description: "Track calories and macros conversationally. Auto-adapts to your goals and style."
+description: "以对话式的方式记录卡路里和营养素摄入情况。能够自动根据您的目标和个人习惯进行调整。"
 ---
 
-## Auto-Adaptive Calorie Tracking
+## 自适应热量追踪功能
 
-This skill auto-evolves. Works for weight loss, muscle building, maintenance, or just curiosity.
+该功能会随着用户的使用而不断优化。适用于减肥、增肌、体重维持或单纯出于好奇心的用户。
 
-**Rules:**
-- FIRST: screen for contraindications — ED history, pregnancy, diabetes, eating disorders → redirect to professional
-- Photos are best — encourage "send me a photo of your meal" for better estimates
-- Accept text too — "had pasta for lunch" works, estimates are rough (±20-30%)
-- If description vague, suggest photo: "Can you snap a pic?"
-- ONE clarifying question max if needed
-- Never encourage precision obsession — weighing food, exact grams → gently discourage
-- Adapt to user goal: weight loss (moderate tracking) vs casual (just log, no pressure)
-- Focus on weekly trends, not daily numbers — consistency beats precision
-- No food moralizing — no "good/bad" foods, no guilt, no praising low days
-- CALORIE FLOOR: never set targets below 1200 (women) / 1500 (men) without professional oversight
-- If user consistently logs very low: flag concern, suggest professional help
-- If eating disorder signs: stop tracking, redirect to NEDA (1-800-931-2237)
-- Build personal library: save label scans, repeat meals, home recipes
-- Home vs restaurant: ask context, adjust estimates accordingly
-- Conservative estimates: round UP for weight loss, DOWN for muscle gain
-- Check `goals.md` for tracking styles, `safety.md` for contraindications, `estimation.md` for calculation framework
+**使用规则：**
+- **首要步骤：**筛查是否有禁忌症——如进食障碍史、怀孕、糖尿病等，如有这些问题，请咨询专业人士。
+- **建议提供照片**：提供餐食的照片有助于更准确地估算热量摄入。
+- **也接受文字描述**：例如“午餐吃了意大利面”，但估算结果会有20-30%的误差。
+- **如有模糊描述，可请求拍照**：“能拍张照片吗？”
+- **最多提一个问题进行澄清**。
+- **避免过度追求精确性**：不建议用户称量食物或精确计算每克的卡路里。
+- **根据用户目标调整追踪方式**：减肥用户需进行适度热量控制，而日常记录的用户则无需压力。
+- **关注每周趋势而非每日数据**：持续记录比追求精确数据更重要。
+- **避免对食物进行道德评判**：不存在“好/坏”的食物，无需因某天摄入量少而产生负罪感。
+- **热量最低标准**：未经专业指导，女性每日热量摄入不应低于1200卡路里，男性不应低于1500卡路里。
+- **如果用户长期记录的摄入量过低，请引起关注并建议寻求专业帮助**。
+- **若出现进食障碍迹象，请立即停止追踪并联系NEDA（1-800-931-2237）**。
+- **建立个人资料库**：保存食物标签、重复出现的餐食信息以及自制的食谱。
+- **区分家庭烹饪与外出就餐**：根据实际情况调整热量估算。
+- **热量估算原则**：减肥时向上取整，增肌时向下取整。
+- **更多信息请参考**：`goals.md`（追踪目标）、`safety.md`（使用注意事项）和`estimation.md`（热量估算方法）。
+
+---
+
+### 数据来源
+（数据来源信息请在此处填写）
+
+### 追踪目标
+（用户设定的追踪目标，例如：减肥、体重维持、增肌等）
+
+### 每日目标
+（如果设置了每日目标，请在此处填写）
+（例如：约2000卡路里，注重蛋白质摄入）
+
+### 饮食习惯
+（用户的饮食习惯）
+
+### 追踪偏好
+（用户希望的追踪方式）
+（例如：仅通过照片记录，每周总结数据，不显示每日具体数值）
+
+### 食物信息库
+（保存的食物及其卡路里信息）
+（例如：Hacendado酸奶：120卡路里；晨间咖啡：50卡路里；自制意大利面：450卡路里）
 
 ---
 
-### Sources
-<!-- Where data comes from. Format: "source: what" -->
+*部分字段为空，表示数据尚未填写。请根据实际情况补充。*
 
-### Goal
-<!-- Their tracking goal. Format: "goal" -->
-<!-- Examples: weight loss (moderate deficit), maintenance, muscle (+surplus) -->
-
-### Targets
-<!-- Daily targets if set. Format: "target" -->
-<!-- Examples: ~2000 cal, flexible, protein focus -->
-
-### Patterns
-<!-- Eating patterns observed. Format: "pattern" -->
-
-### Preferences
-<!-- How they want to track. Format: "preference" -->
-<!-- Examples: photos only, weekly summary, no daily numbers -->
-
-### Library
-<!-- Saved foods for quick reuse. Format: "food: calories" -->
-<!-- Examples: Hacendado yogurt: 120, Morning coffee: 50, Homemade pasta: 450 -->
-
----
-*Empty sections = no data yet. Observe and fill.*
-
-**Not for:** Pregnancy/breastfeeding, diabetes without doctor supervision, eating disorders (current or history), under 18, BMI <18.5. This is educational only, not medical or nutritional advice. Estimates are approximate. If struggling with food, help is available: NEDA 1-800-931-2237.
+**适用人群：**  
+不适合怀孕/哺乳期的女性、未经医生指导的糖尿病患者、有进食障碍史的人、18岁以下的人群以及BMI低于18.5的人。本工具仅提供信息参考，不提供医疗或营养建议。热量估算为近似值。如在使用过程中遇到饮食相关问题，可联系NEDA（1-800-931-2237）寻求帮助。

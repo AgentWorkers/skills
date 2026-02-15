@@ -1,24 +1,25 @@
 ---
 name: solidity-lsp
-description: Solidity language server providing smart contract development support including compilation, linting, security analysis, and code intelligence for .sol files. Use when working with Ethereum smart contracts, Substrate pallets, or any Solidity code that needs compilation, security checks, gas optimization, or code navigation. Essential for ClawChain pallet development.
+description: **Solidity语言服务器**  
+该服务器提供智能合约开发的全方位支持，包括编译、代码检查（linting）、安全分析以及代码智能功能（code intelligence），适用于`.sol`文件。无论您是在处理Ethereum智能合约、Substrate框架中的智能合约，还是任何需要编译、安全检测、Gas优化或代码导航的Solidity代码，这款服务器都是不可或缺的工具。对于ClawChain框架的开发来说，它更是至关重要。
 ---
 
 # Solidity LSP
 
-Solidity language server integration providing comprehensive smart contract development support through solc (Solidity compiler) and solhint (linter).
+Solidity LSP（Language Server Protocol）是一个用于集成Solidity语言服务器的工具，通过`solc`（Solidity编译器）和`solhint`（代码检查工具）提供全面的智能合约开发支持。
 
-## Capabilities
+## 功能
 
-- **Compilation**: Compile Solidity smart contracts with solc
-- **Linting**: Static analysis with solhint for best practices and security
-- **Security**: Detect common vulnerabilities (reentrancy, overflow, etc.)
-- **Gas optimization**: Identify expensive operations
-- **Code intelligence**: Syntax highlighting, error detection
-- **Supported extensions**: `.sol`
+- **编译**：使用`solc`编译Solidity智能合约。
+- **代码检查**：利用`solhint`进行静态分析，确保代码遵循最佳实践并不存在安全问题。
+- **安全性检测**：识别常见的安全漏洞（如重入（reentrancy）、溢出（overflow）等。
+- **Gas优化**：识别耗时的操作，提高合约的执行效率。
+- **代码智能**：提供语法高亮显示和错误检测功能。
+- **支持的文件扩展名**：`.sol`。
 
-## Installation
+## 安装
 
-Install Solidity compiler and linter:
+请先安装Solidity编译器和`solhint`：
 
 ```bash
 # Solidity compiler
@@ -28,40 +29,35 @@ npm install -g solc
 npm install -g solhint
 ```
 
-Verify installation:
+安装完成后，请验证安装是否成功：
+
 ```bash
 solcjs --version
 solhint --version
 ```
 
-## Usage
+## 使用方法
 
-### Compile Solidity Contract
+### 编译Solidity合约
 
 ```bash
 solcjs --bin --abi contract.sol
 ```
 
-Compile with optimization:
+### 带有优化的编译
+
 ```bash
 solcjs --optimize --bin --abi contract.sol
 ```
 
-### Lint Contract
+### 检查合约代码
 
-Run solhint on a file:
-```bash
-solhint contracts/MyContract.sol
-```
+- 单个文件：运行`solhint`对文件进行代码检查。
+- 整个项目：运行`solhint`对整个项目进行代码检查。
 
-Run on entire project:
-```bash
-solhint 'contracts/**/*.sol'
-```
+### 安全性分析
 
-### Security Analysis
-
-solhint includes security rules by default. For advanced security analysis, consider:
+`solhint`默认包含了安全规则。如需进行更高级的安全性分析，可以考虑使用额外的工具。
 
 ```bash
 # Install slither (requires Python)
@@ -71,11 +67,11 @@ pip3 install slither-analyzer
 slither contracts/
 ```
 
-## Configuration
+## 配置
 
-### solhint Configuration
+### `solhint`配置
 
-Create `.solhint.json` in project root:
+在项目根目录下创建`.solhint.json`文件以配置`solhint`的行为：
 
 ```json
 {
@@ -91,30 +87,30 @@ Create `.solhint.json` in project root:
 }
 ```
 
-### Hardhat/Foundry Integration
+## 与Hardhat/Foundry的集成
 
-For full development environments, see `references/frameworks.md`.
+有关完整的开发环境配置，请参阅`references/frameworks.md`。
 
-## Integration Pattern
+## 开发流程
 
-When developing smart contracts:
+在开发智能合约时，请遵循以下步骤：
 
-1. **Write**: Edit Solidity code
-2. **Lint**: Run `solhint` to catch issues early
-3. **Compile**: Use `solcjs` to verify compilation
-4. **Analyze**: Run security tools before deployment
-5. **Test**: Write comprehensive unit tests
+1. **编写代码**：编写Solidity合约代码。
+2. **代码检查**：运行`solhint`以尽早发现潜在问题。
+3. **编译**：使用`solcjs`验证代码是否能够成功编译。
+4. **安全性分析**：在部署前使用安全工具进行检测。
+5. **测试**：编写全面的单元测试。
 
-## Common Issues
+## 常见问题
 
-- **Compiler version mismatch**: Specify pragma version in contract
-- **Gas optimization**: Use `view`/`pure` where possible
-- **Security**: Never use `tx.origin` for authentication
-- **Best practices**: Follow Checks-Effects-Interactions pattern
+- **编译器版本不匹配**：在合约中指定正确的`pragma`版本。
+- **Gas优化**：尽可能使用`view`或`pure`修饰符来减少Gas消耗。
+- **安全性**：切勿使用`tx.origin`进行身份验证。
+- **最佳实践**：遵循“检查（Checks）- 动作（Effects）- 相互作用（Interactions）”的设计模式。
 
-## More Information
+## 更多信息
 
-- [Solidity Documentation](https://docs.soliditylang.org/)
-- [Solhint GitHub](https://github.com/protofire/solhint)
-- [Solidity Security Best Practices](https://consensys.github.io/smart-contract-best-practices/)
-- See `references/frameworks.md` for Hardhat/Foundry setup
+- [Solidity官方文档](https://docs.soliditylang.org/)
+- [Solhint GitHub仓库](https://github.com/protofire/solhint)
+- [Solidity安全最佳实践](https://consensys.github.io/smart-contract-best-practices/)
+- 有关Hardhat/Foundry的集成信息，请参阅`references/frameworks.md`。

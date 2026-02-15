@@ -1,16 +1,16 @@
 ---
 slug: "bid-analysis-comparator"
 display_name: "Bid Analysis Comparator"
-description: "Compare and analyze contractor bids. Score proposals, identify scope gaps, and recommend selections."
+description: "比较和分析承包商的投标方案；对提案进行评分，识别项目范围中的差异，并推荐合适的承包商。"
 ---
 
-# Bid Analysis Comparator
+# 投标分析工具
 
-## Business Case
+## 商业场景
 
-Bid evaluation requires systematic comparison across multiple criteria. This skill provides structured bid analysis and scoring.
+投标评估需要系统地对比多个标准。本工具提供了结构化的投标分析和评分机制。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -168,7 +168,7 @@ class BidAnalysisComparator:
             pd.DataFrame(details).to_excel(writer, sheet_name='Details', index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 comparator = BidAnalysisComparator("Office Tower", "Electrical")
@@ -185,5 +185,5 @@ recommendation = comparator.get_recommendation()
 print(f"Recommended: {recommendation['recommendation']}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.4 - Procurement
+## 资源
+- **DDC手册**：第3.4章 - 采购

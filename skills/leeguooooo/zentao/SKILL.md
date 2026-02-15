@@ -1,40 +1,39 @@
 ---
 name: zentao
-description: Use the zentao CLI to login and query ZenTao products and bugs. ZENTAO_URL usually includes /zentao.
+description: 使用 zentao CLI 登录并查询 ZenTao 产品及 bug 信息。ZENTAO_URL 通常包含 “/zentao” 这一部分。
 homepage: https://www.npmjs.com/package/@leeguoo/zentao-mcp
 metadata: {"openclaw":{"emoji":"🐞","install":[{"id":"node","kind":"node","package":"@leeguoo/zentao-mcp","bins":["zentao"],"label":"Install zentao CLI (node)"}]}}
 ---
 
 # zentao (ZenTao CLI)
 
-## When to use this skill
+## 何时使用此技能
 
-Use this skill when the user asks to:
+当用户需要执行以下操作时，请使用此技能：
+- 通过 CLI 登录到 ZenTao
+- 列出所有产品
+- 查看某个产品的所有漏洞
+- 查看漏洞的详细信息
+- 查看用户自己的漏洞
 
-- login to ZenTao via the CLI
-- list products
-- list bugs for a product
-- view bug details
-- list the user's own bugs
+## 安装（推荐）
 
-## Installation (recommended)
-
-To install globally with pnpm:
+使用 pnpm 进行全局安装：
 
 ```bash
 pnpm i -g @leeguoo/zentao-mcp
 ```
 
-If pnpm is not installed:
+如果未安装 pnpm，请按照以下步骤进行安装：
 
 ```bash
 npm i -g pnpm
 pnpm i -g @leeguoo/zentao-mcp
 ```
 
-## Login workflow
+## 登录流程
 
-1) Run login once:
+1) 首次运行 `login` 命令：
 
 ```bash
 zentao login \
@@ -43,48 +42,41 @@ zentao login \
   --zentao-password="***"
 ```
 
-2) This writes credentials to:
+2) 此命令会将登录凭据保存到以下文件中：
+- `~/.config/zentao/config.toml`（或 `$XDG_CONFIG_HOME/zentao/config.toml`）
 
-- `~/.config/zentao/config.toml` (or `$XDG_CONFIG_HOME/zentao/config.toml`)
-
-3) Verify:
+3) 验证登录是否成功：
 
 ```bash
 zentao whoami
 ```
 
-IMPORTANT: `--zentao-url` usually must include `/zentao`.
-If login returns HTML 404, the base path is likely missing `/zentao`.
+**重要提示：** `--zentao-url` 参数中必须包含 `/zentao`。如果登录时出现 404 错误，很可能是因为缺少 `/zentao` 这个路径。
 
-## Commands
+## 命令说明
 
-List products (simple by default):
-
+- **列出所有产品**（默认为简单列表）：
 ```bash
 zentao products list
 ```
 
-List bugs for a product:
-
+- **查看某个产品的漏洞**：
 ```bash
 zentao bugs list --product 6
 ```
 
-Get bug details:
-
+- **查看漏洞的详细信息**：
 ```bash
 zentao bug get --id 1329
 ```
 
-List my bugs (include details):
-
+- **查看用户自己的漏洞（包含详细信息）**：
 ```bash
 zentao bugs mine --status active --include-details
 ```
 
-Full JSON output:
-
-- `zentao products list --json`
-- `zentao bugs list --product 6 --json`
-- `zentao bug get --id 1329 --json`
-- `zentao bugs mine --include-details --json`
+- **以 JSON 格式获取完整信息**：
+  - `zentao products list --json`
+  - `zentao bugs list --product 6 --json`
+  - `zentao bug get --id 1329 --json`
+  - `zentao bugs mine --include-details --json`

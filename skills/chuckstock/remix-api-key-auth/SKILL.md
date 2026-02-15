@@ -1,32 +1,32 @@
 ---
 name: remix-api-key-auth
-description: Configure and verify bearer API key authentication for Remix agent publishing workflows.
+description: 配置并验证用于 Remix 代理发布工作流的 bearer API 密钥认证。
 metadata:
   tags: remix, auth, api-key
 ---
 
-# Remix API Key Setup
+# Remix API 密钥设置
 
-Use this skill when a user needs to authenticate an external service/agent for Remix server APIs.
+当用户需要为 Remix 服务器的 API 验证外部服务/代理时，请使用此技能。
 
-## Steps
+## 步骤
 
-1. Log in to your Remix account.
-2. Go to `https://remix.gg/api-keys`.
-3. Create a new API key.
-4. Store it as a secret in your service runtime.
-5. Send:
+1. 登录您的 Remix 账户。
+2. 访问 `https://remix.gg/api-keys`。
+3. 创建一个新的 API 密钥。
+4. 将该密钥作为机密信息存储在您的服务运行环境中。
+5. 在请求头中添加以下内容：
    - `Authorization: Bearer <api_key>`
-6. Use base URL `https://api.remix.gg`.
+6. 使用基础 URL `https://api.remix.gg`。
 
-## Verification
+## 验证
 
-Run a cheap authenticated call first (for example, `POST /v1/agents/games` in a test project) to verify the key works.
+首先运行一个简单的认证请求（例如，在测试项目中发送 `POST /v1/agents/games`），以验证密钥是否有效。
 
-## Troubleshooting Invalid API Key
+## 解决无效 API 密钥的问题
 
-- Check `Authorization` is formatted as `Bearer <api_key>`.
-- Re-copy the key from `https://remix.gg/api-keys` and rotate if needed.
-- Verify your service is reading the expected secret/env var in the current runtime.
-- Confirm the request is server-side and not exposed through browser code.
-- If behavior seems inconsistent with local docs, use `https://api.remix.gg/docs` as source of truth.
+- 确保 `Authorization` 的格式为 `Bearer <api_key>`。
+- 从 `https://remix.gg/api-keys` 复制密钥，并在需要时更新它。
+- 确认您的服务正在从运行环境中读取正确的机密信息（secret/env 变量）。
+- 确保请求是在服务器端发起的，而不是通过浏览器代码执行的。
+- 如果实际行为与本地文档不符，请以 `https://api.remix.gg/docs` 作为权威信息来源。

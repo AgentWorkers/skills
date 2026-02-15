@@ -1,6 +1,6 @@
 ---
 name: mastodon-publisher
-description: Publish content to Mastodon. Use when you need to post a Mastodon status.
+description: 将内容发布到 Mastodon。当您需要发布 Mastodon 状态更新时，请使用此功能。
 author: Behrang Saeedzadeh
 version: 0.5.0
 triggers:
@@ -9,61 +9,61 @@ triggers:
 metadata: { "clawdbot": { "emoji": "🐘" }, "requires": { "bins": ["bun"] } }
 ---
 
-# Mastodon Publisher
+# Mastodon 发布器
 
-Publish content to Mastodon. Use when you need to share updates, posts, or media.
+用于将内容发布到 Mastodon。当你需要分享更新、帖子或媒体文件时，可以使用该工具。
 
-## Usage
+## 使用方法
 
-### Post one or more statuses to Mastodon
+### 向 Mastodon 发布一个或多个状态更新
 
-Post a new status to Mastodon with Bun:
+使用 `bun` 命令向 Mastodon 发布一个新的状态更新：
 
 ```bash
 bun {baseDir}/scripts/tootbot.js '{"status": "Hello, Mastodon!"}' '{"status": "Goodby, Mastodon!"}'
 ```
 
-JSON fields
+**JSON 参数说明：**
 
-| Name                  | Description                              | Type                                            | Example                                               | Required | Default  |
-| --------------------- | ---------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- | -------- | -------- |
-| `status`              | The text content of the status           | string                                          | "Hello, World"                                        | yes^1    | N/A      |
-| `visibility`          | Sets the visibility of the posted status | `public` or `private` or `unlisted` or `direct` | "private"                                             | no       | "public" |
-| `language`            | ISO 639-1 language code for this status  | ISO-639-1 Language Code                         | "en"                                                  | no       |          |
-| `scheduledAt`         | Datetime at which to schedule a status   | RFC3339 date time                               | "2029-02-03T15:30:45.000Z"                            | no       |          |
-| `quoteApprovalPolicy` | Sets who is allowed to quote the status  | `public` or `followrs` or `nobody`              | "nobody"                                              | no       | "public  |
-| `media`               | Media to be attached to the status       | array of `{file, description}` objects          | `{"file": "/path/to/foo.png", "description" : "Foo"}` | no^2     |          |
+| 参数名                | 描述                                      | 类型                                      | 示例                                                    | 是否必填 | 默认值       |
+|-------------------|----------------------------------------|-----------------------------------|-----------------------------------------------------|-----------|------------|
+| `status`              | 状态更新的文本内容                          | 字符串                                      | "Hello, World"                                        | 是        |            |
+| `visibility`          | 设置状态更新的可见性（public、private、unlisted 或 direct） | string                                      | "private"                                             | 否        | "public"     |
+| `language`            | 该状态更新的 ISO 639-1 语言代码                    | string                                      | "en"                                                  | 否        |            |
+| `scheduledAt`         | 状态更新的计划发布时间（RFC3339 格式）                    | string                                      | "2029-02-03T15:30:45.000Z"                            | 否        |            |
+| `quoteApprovalPolicy`     | 允许谁引用该状态更新（public、followrs 或 nobody）      | string                                      | "nobody"                                              | 否        | "public"     |
+| `media`               | 附加到状态更新中的媒体文件（数组格式）                    | 数组                                        | `{"file": "/path/to/foo.png", "description": "Foo"}`         | 否        |            |
 
-- ^1 `status` can be ommitted when one or `--media-path` parameters are present
-- ^2 one or `media` objects must be present if `status` is ommitted
-- ^2 `media.description` is optional
+- ^1 如果提供了 `--media-path` 参数，则可以省略 `status` 参数。
+- ^2 如果省略了 `status` 参数，则必须提供至少一个 `media` 对象。
+- ^2 `media.description` 是可选的。
 
-Environment Variables
+**环境变量：**
 
-| Name                    | Description                | Example                   |
-| ----------------------- | -------------------------- | ------------------------- |
-| `MASTODON_URL`          | Your Mastodon instance URL | `https://mastodon.social` |
-| `MASTODON_ACCESS_TOKEN` | Your Mastodon access token | `xAyBzC`                  |
+| 变量名                | 描述                                      | 示例                                      |
+|-------------------|----------------------------------------|-----------------------------------------|
+| `MASTODON_URL`          | 你的 Mastodon 实例 URL                          | `https://mastodon.social`                          |            |            |
+| `MASTODON_ACCESS_TOKEN` | 你的 Mastodon 访问令牌                          | `xAyBzC`                                      |            |
 
-## Examples
+## 示例：
 
-- **Post a new status**
+- **发布一个新的状态更新：**
 
   ```bash
   bun {baseDir}/scripts/tootbot.js '{"status": "Hello, Mastodon"}'
   ```
 
-  Read the output and summarize it for the user.
+  请阅读输出结果，并为用户总结其内容。
 
-- **Post a scheduled status**
+- **发布一个计划好的状态更新：**
 
   ```bash
   bun {baseDir}/scripts/tootbot.js '{"status": "Hello, future!", "scheduledAt" : "2030-02-05T13:21:34.000Z"}'
   ```
 
-  Read the output and summarize it for the user.
+  请阅读输出结果，并为用户总结其内容。
 
-- **Post a scheduled status with visibility, language, quote approval policy, and a single media attachment**
+- **发布一个计划好的状态更新，同时设置可见性、语言、引用权限以及一个媒体附件：**
 
   ```bash
   bun {baseDir}/scripts/tootbot.js <<EOF
@@ -83,9 +83,9 @@ Environment Variables
   EOF
   ```
 
-  Read the output and summarize it for the user.
+  请阅读输出结果，并为用户总结其内容。
 
-- **Post a new status with media multiple attachments**
+- **发布一个包含多个媒体附件的状态更新：**
 
   ```bash
   bun {baseDir}/scripts/tootbot.js <<EOF
@@ -109,7 +109,7 @@ Environment Variables
   EOF
   ```
 
-- **Post a new status with media attachments and no status text**
+- **发布一个包含媒体附件但无状态文本的状态更新：**
 
   ```bash
   bun {baseDir}/scripts/tootbot.js <<EOF
@@ -128,6 +128,6 @@ Environment Variables
   EOF
   ```
 
-## Notes
+## 注意事项：
 
-- Requires `bun` to be installed and available in the PATH.
+- 使用该工具前，请确保已安装 `bun` 并将其添加到系统的 PATH 环境变量中。

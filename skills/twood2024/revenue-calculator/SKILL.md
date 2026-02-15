@@ -1,33 +1,33 @@
 ---
 name: revenue-calculator
-description: Projects revenue for OpenClaw sub-agent strategies (marketplace, subs, pay-per-task). Use for monetization estimates: input users/pricing/conversions → detailed annual/monthly projections, sensitivity analysis, break-even. Triggers: 'calculate revenue', 'project earnings', 'monetize skill/agent'.
+description: OpenClaw子代理策略的项目收入（包括市场平台、订阅服务以及按任务计费的方式）。这些数据用于货币化估算：包括用户数量、定价策略、转化率等关键因素，以及详细的年度/月度收入预测、敏感性分析结果和盈亏平衡点计算。触发事件包括“计算收入”、“项目收益”以及“实现技能/代理的货币化”。
 ---
 
-# Revenue Calculator
+# 收入计算器
 
-## Workflow
-1. **Gather Inputs**: Users/mo, price ($/user/task), conv rate (%), churn (%), costs (% compute).
-2. **Select Strategy**: 1=API Sales, 2=Marketplace, 3=White-label, 4=Affiliates.
-3. **Calculate**: Monthly/annual rev, net profit. Use scripts/revenue-calc.py for models.
-4. **Output**: Table + sensitivity (e.g., +/-20% users) + next steps.
-5. **Sensitivity**: Test scenarios (low/med/high).
+## 工作流程
+1. **收集输入数据**：用户数量（每月）、单价（美元/用户/任务）、转化率（%）、用户流失率（%）、成本（%计算成本）。
+2. **选择销售策略**：1=API销售；2=市场平台销售；3=白标合作；4=联盟营销。
+3. **进行计算**：计算月度/年度收入及净利润。使用 `scripts/revenue-calc.py` 脚本进行模型计算。
+4. **输出结果**：生成表格，并提供敏感性分析（例如：用户数量增加/减少20%时的影响）以及后续行动建议。
+5. **敏感性分析**：测试不同情景（低/中/高用户流失率、不同价格策略）。
 
-## Quick Example
-Input: Strategy 2, 100 users, $10/mo, 80% conv, 10% churn, 20% costs.
-Output: Monthly $800, Annual $8,640 net.
+## 快速示例
+输入数据：销售策略2，100名用户，每月单价10美元，转化率80%，用户流失率10%，成本占收入的20%。
+输出结果：每月收入800美元，年净利润8,640美元。
 
-## Strategies Pricing Defaults (ref/pricing-models.md)
-- Sub: $9-99/mo
-- Per-task: $0.01-1
-- Usage: $0.001/token
-- Affiliate: 5-20%
+## 各销售策略的定价默认值（参考文件：`pricing-models.md`）
+- 月订阅费：9-99美元
+- 每次任务费用：0.01-1美元
+- 使用量费用：0.001美元/令牌
+- 联盟营销佣金：5-20%
 
-## Resources
-### scripts/revenue-calc.py
-Exec for precise calcs (input JSON → output JSON/table).
+## 相关资源
+### `scripts/revenue-calc.py`
+用于精确计算（输入格式为JSON，输出格式为JSON或表格）。
 
-### references/pricing-models.md
-Full tables/examples.
+### `references/pricing-models.md`
+包含完整的表格和计算示例。
 
-### assets/report-template.md
-Copy for formatted outputs.
+### `assets/report-template.md`
+用于生成格式化的输出报告。

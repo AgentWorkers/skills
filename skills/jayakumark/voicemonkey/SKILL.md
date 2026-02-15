@@ -1,22 +1,22 @@
 ---
 name: voicemonkey
-description: Control Alexa devices via VoiceMonkey API v2 - make announcements, trigger routines, start flows, and display media.
+description: 通过 VoiceMonkey API v2 控制 Alexa 设备：发布公告、触发例程、启动操作流程以及播放媒体内容。
 homepage: https://voicemonkey.io
 metadata: {"clawdbot":{"emoji":"🐒","requires":{"env":["VOICEMONKEY_TOKEN"]},"primaryEnv":"VOICEMONKEY_TOKEN"}}
 ---
 
 # VoiceMonkey
 
-Control Alexa/Echo devices via VoiceMonkey API v2. Make TTS announcements, trigger Alexa routines, start flows, and display images/videos on Echo Show devices.
+通过 VoiceMonkey API v2 控制 Alexa/Echo 设备。可以进行文本转语音（TTS）播报、触发 Alexa 任务、启动流程，并在 Echo Show 设备上显示图片/视频。
 
-## Setup
+## 设置
 
-1. Get your secret token from [Voice Monkey Console](https://console.voicemonkey.io) → Settings → API Credentials
-2. Set environment variable:
+1. 从 [Voice Monkey 控制台](https://console.voicemonkey.io) → 设置 → API 凭据中获取您的秘密令牌。
+2. 设置环境变量：
    ```bash
    export VOICEMONKEY_TOKEN="your-secret-token"
    ```
-   Or add to `~/.clawdbot/clawdbot.json`:
+   或将其添加到 `~/.clawdbot/clawdbot.json` 文件中：
    ```json
    {
      "skills": {
@@ -28,27 +28,27 @@ Control Alexa/Echo devices via VoiceMonkey API v2. Make TTS announcements, trigg
      }
    }
    ```
-3. Find your Device IDs in the Voice Monkey Console → Settings → Devices
+3. 在 Voice Monkey 控制台的设置 → 设备中查找您的设备 ID。
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://api-v2.voicemonkey.io
 ```
 
-## Announcement API
+## 播报 API
 
-Make TTS announcements, play audio/video, or display images on Alexa devices.
+在 Alexa 设备上进行文本转语音播报、播放音频/视频或显示图片。
 
-**Endpoint:** `https://api-v2.voicemonkey.io/announcement`
+**端点：** `https://api-v2.voicemonkey.io/announcement`
 
-### Basic TTS Announcement
+### 基本文本转语音播报
 
 ```bash
 curl -X GET "https://api-v2.voicemonkey.io/announcement?token=$VOICEMONKEY_TOKEN&device=YOUR_DEVICE_ID&text=Hello%20from%20Echo"
 ```
 
-### With Authorization Header (recommended)
+### 带授权头（推荐）
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -60,7 +60,7 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### With Voice and Chime
+### 带语音和提示音
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -74,7 +74,7 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### Display Image on Echo Show
+### 在 Echo Show 上显示图片
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -90,7 +90,7 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### Play Audio File
+### 播放音频文件
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -102,7 +102,7 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### Play Video on Echo Show
+### 在 Echo Show 上播放视频
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -115,7 +115,7 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### Open Website on Echo Show
+### 在 Echo Show 上打开网页
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/announcement" \
@@ -128,35 +128,35 @@ curl -X POST "https://api-v2.voicemonkey.io/announcement" \
   }'
 ```
 
-### Announcement Parameters
+### 播报参数
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `token` | Yes* | Secret token (*or use Authorization header) |
-| `device` | Yes | Device ID from Voice Monkey console |
-| `text` | No | TTS text (supports SSML) |
-| `voice` | No | Voice for TTS (see API Playground for options) |
-| `language` | No | Language code for better pronunciation |
-| `chime` | No | Sound URL or Alexa sound library reference |
-| `audio` | No | HTTPS URL of audio file to play |
-| `background_audio` | No | Audio to play behind TTS |
-| `image` | No | HTTPS URL of image for Echo Show |
-| `video` | No | HTTPS URL of MP4 video for Echo Show |
-| `video_repeat` | No | Number of times to loop video |
-| `website` | No | URL to open on Echo Show |
-| `no_bg` | No | Set "true" to hide Voice Monkey branding |
-| `media_width` | No | Image width |
-| `media_height` | No | Image height |
-| `media_scaling` | No | Image scaling mode |
-| `media_align` | No | Image alignment |
-| `media_radius` | No | Corner radius for image clipping |
-| `var-[name]` | No | Update Voice Monkey variables |
+| `token` | 是* | 秘密令牌（*或使用授权头） |
+| `device` | 是 | 来自 Voice Monkey 控制台的设备 ID |
+| `text` | 否 | 文本内容（支持 SSML 格式） |
+| `voice` | 否 | 用于文本转语音的语音（详情请参阅 API 测试平台） |
+| `language` | 否 | 语言代码，用于优化发音 |
+| `chime` | 否 | 提示音的音频 URL 或 Alexa 的内置声音 |
+| `audio` | 否 | 需要播放的音频文件的 HTTPS URL |
+| `background_audio` | 否 | 在文本转语音播放时背景音的音频 |
+| `image` | 否 | 用于 Echo Show 的图片的 HTTPS URL |
+| `video` | 否 | 用于 Echo Show 的 MP4 视频的 HTTPS URL |
+| `video_repeat` | 否 | 视频循环播放的次数 |
+| `website` | 否 | 在 Echo Show 上打开的网页 URL |
+| `no_bg` | 否 | 设置为 "true" 可隐藏 Voice Monkey 的品牌标识 |
+| `media_width` | 否 | 图片宽度 |
+| `media_height` | 否 | 图片高度 |
+| `media_scaling` | 否 | 图片缩放方式 |
+| `media_align` | 否 | 图片对齐方式 |
+| `media_radius` | 否 | 图片裁剪的圆角半径 |
+| `var-[name]` | 否 | 更新 Voice Monkey 的内部变量 |
 
-## Routine Trigger API
+## 触发 Alexa 任务 API
 
-Trigger Voice Monkey devices to start Alexa Routines.
+触发 VoiceMonkey 设备以执行 Alexa 任务。
 
-**Endpoint:** `https://api-v2.voicemonkey.io/trigger`
+**端点：** `https://api-v2.voicemonkey.io/trigger`
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/trigger" \
@@ -167,16 +167,16 @@ curl -X POST "https://api-v2.voicemonkey.io/trigger" \
   }'
 ```
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `token` | Yes* | Secret token (*or use Authorization header) |
-| `device` | Yes | Trigger Device ID from Voice Monkey console |
+| `token` | 是* | 秘密令牌（*或使用授权头） |
+| `device` | 是 | 需要触发的设备 ID |
 
-## Flows Trigger API
+## 启动流程 API
 
-Start Voice Monkey Flows.
+启动 VoiceMonkey 的流程。
 
-**Endpoint:** `https://api-v2.voicemonkey.io/flows`
+**端点：** `https://api-v2.voicemonkey.io/flows`
 
 ```bash
 curl -X POST "https://api-v2.voicemonkey.io/flows" \
@@ -188,37 +188,37 @@ curl -X POST "https://api-v2.voicemonkey.io/flows" \
   }'
 ```
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `token` | Yes* | Secret token (*or use Authorization header) |
-| `device` | Yes | Device ID |
-| `flow` | Yes | Numeric Flow ID from Voice Monkey console |
+| `token` | 是* | 秘密令牌（*或使用授权头） |
+| `device` | 是 | 设备 ID |
+| `flow` | 是 | 来自 Voice Monkey 控制台的流程 ID |
 
-## Media Requirements
+## 媒体要求
 
-### Images
-- Most common formats supported (JPG, PNG, etc.)
-- **No animated GIFs**
-- Optimize file size for faster loading
-- Must be hosted at HTTPS URL with valid SSL
-- CORS must allow wildcard: `Access-Control-Allow-Origin: *`
+### 图片
+- 支持常见的图片格式（JPG、PNG 等）
+- **禁止使用动画 GIF**
+- 优化文件大小以提高加载速度
+- 必须托管在具有有效 SSL 证书的 HTTPS URL 上
+- CORS 设置必须允许通配符：`Access-Control-Allow-Origin: *`
 
-### Videos
-- **MP4 format only** (MPEG-4 Part-14)
-- Audio codecs: AAC, MP3
-- Max resolution: 1080p @30fps or @60fps
-- Must be hosted at HTTPS URL with valid SSL
+### 视频
+- **仅支持 MP4 格式**（MPEG-4 Part-14）
+- 音频编码格式：AAC、MP3
+- 最大分辨率：1080p @30fps 或 @60fps
+- 必须托管在具有有效 SSL 证书的 HTTPS URL 上
 
-### Audio
-- Formats: AAC, MP3, OGG, Opus, WAV
-- Bit rate: ≤ 1411.20 kbps
-- Sample rate: ≤ 48kHz
-- File size: ≤ 10MB
-- Total response length: ≤ 240 seconds
+### 音频
+- 格式：AAC、MP3、OGG、Opus、WAV
+- 比特率：≤ 1411.20 kbps
+- 样本率：≤ 48kHz
+- 文件大小：≤ 10MB
+- 总响应时长：≤ 240 秒
 
-## SSML Examples
+## SSML 示例
 
-Use SSML in the `text` parameter for richer announcements:
+在 `text` 参数中使用 SSML 格式以实现更丰富的播报效果：
 
 ```xml
 <speak>
@@ -234,9 +234,9 @@ Use SSML in the `text` parameter for richer announcements:
 </speak>
 ```
 
-## Notes
+## 注意事项
 
-- Keep your token secure; rotate via Console → Settings → API Credentials if compromised
-- Use the [API Playground](https://console.voicemonkey.io) to test and explore options
-- Premium members can upload media directly in the Voice Monkey console
-- Always confirm before sending announcements to avoid unexpected noise
+- 请妥善保管您的秘密令牌；如果令牌被盗用，请通过控制台 → 设置 → API 凭据进行更换。
+- 使用 [API 测试平台](https://console.voicemonkey.io) 测试和探索各种功能。
+- 高级会员可以直接在 VoiceMonkey 控制台中上传媒体文件。
+- 在发送播报内容前请务必确认，以避免意外出现噪音。

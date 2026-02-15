@@ -1,13 +1,13 @@
 ---
 name: mediator
-description: Intercept and filter communications from difficult contacts. Strips emotion, extracts facts, drafts neutral responses. Use when setting up communication filtering for specific contacts, configuring the mediator, or processing intercepted messages. Triggers on "mediator", "intercept messages", "filter communications", "difficult contact", or requests to handle messages from someone the user doesn't want to deal with directly.
+description: 拦截并过滤来自“难缠联系人”的通信内容。去除其中的情感色彩，提取关键事实，并生成中立的回复。适用于为特定联系人设置通信过滤规则、配置调解器（mediator），或处理被拦截的消息。该功能会在触发“mediator”、“intercept messages”、“filter communications”、“difficult contact”等事件时启动，也可用于处理用户不想直接处理的消息请求。
 ---
 
-# Mediator Skill
+# Mediator 技能
 
-Emotional firewall for difficult relationships. Intercepts messages from configured contacts, strips out emotional content, presents just the facts, and helps draft measured responses.
+在复杂的人际关系中，它充当情感的“防火墙”。它会拦截来自已配置联系人的信息，去除其中的情感内容，仅呈现事实，并帮助用户起草恰当的回复。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize config (creates mediator.yaml if missing)
@@ -29,9 +29,9 @@ Emotional firewall for difficult relationships. Intercepts messages from configu
 ~/clawd/skills/mediator/scripts/mediator.sh remove "Ex Partner"
 ```
 
-## Configuration
+## 配置
 
-Config lives at `~/.clawdbot/mediator.yaml`:
+配置文件位于 `~/.clawdbot/mediator.yaml`：
 
 ```yaml
 mediator:
@@ -56,90 +56,90 @@ mediator:
       respond: draft
 ```
 
-### Modes
+### 模式
 
-- **intercept**: Archive/hide original, only show summary. User never sees raw emotional content.
-- **assist**: Show original but also provide summary and response suggestions.
+- **intercept**：存档/隐藏原始信息，仅显示摘要。用户永远不会看到原始的情感内容。
+- **assist**：显示原始信息，并提供回复建议。
 
-### Summarize Options
+### 摘要选项
 
-- **facts-only**: Extract only actionable items, requests, deadlines. No emotion.
-- **neutral**: Rewrite the message in neutral tone, preserving all content.
-- **full**: Show everything but flag emotional/manipulative language.
+- **facts-only**：仅提取可操作的信息、请求和截止日期，不包含情感内容。
+- **neutral**：用中立的语气重写信息，保留所有内容。
+- **full**：显示所有内容，但会标记出情感性或具有操控性的语言。
 
-### Respond Options
+### 回复选项
 
-- **draft**: Generate suggested response, wait for approval before sending.
-- **auto**: Automatically respond (use with extreme caution).
+- **draft**：生成建议的回复，在发送前等待用户批准。
+- **auto**：自动回复（请谨慎使用）。
 
-## How It Works
+## 工作原理
 
-### Email Flow
+### 邮件处理流程
 
-1. Gmail Pub/Sub notification arrives (real-time)
-2. Check if sender matches any configured contact
-3. If match:
-   - Fetch full email content
-   - Process through LLM to extract facts/strip emotion
-   - Archive original (apply "Mediator/Raw" label, mark read)
-   - Send summary to configured notify channel
-   - If response needed, draft one
+1. 收到 Gmail 的 Pub/Sub 通知（实时）
+2. 检查发送者是否与已配置的联系人匹配
+3. 如果匹配：
+   - 获取完整的邮件内容
+   - 通过大型语言模型（LLM）提取事实并去除情感内容
+   - 存档原始邮件（添加 “Mediator/Raw” 标签，并标记为已读）
+   - 将摘要发送到指定的通知渠道
+   - 如果需要回复，则起草回复
 
-### iMessage Flow
+### iMessage 处理流程
 
-1. `imsg watch` monitors for new messages
-2. Check if sender matches configured contact
-3. If match:
-   - Process message content
-   - Send summary to notify channel
-   - Draft response if requested
+1. `imsg watch` 监控新消息
+2. 检查发送者是否与已配置的联系人匹配
+3. 如果匹配：
+   - 处理消息内容
+   - 将摘要发送到通知渠道
+   - 如果需要回复，则起草回复
 
-## Scripts
+## 脚本
 
-- `mediator.sh` - Main CLI wrapper
-- `process-email.py` - Email processing logic
-- `process-imessage.py` - iMessage processing logic
-- `summarize.py` - LLM-based content analysis and summarization
+- `mediator.sh`：主要的命令行接口（CLI）包装器
+- `process-email.py`：邮件处理逻辑
+- `process-imessage.py`：iMessage 处理逻辑
+- `summarize.py`：基于大型语言模型（LLM）的内容分析和摘要生成
 
-## Integration
+## 集成
 
-### Heartbeat Check
+### 心跳检查
 
-Add to `HEARTBEAT.md`:
+请将以下代码添加到 `HEARTBEAT.md` 文件中：
 ```
 ## Mediator Check
 ~/clawd/skills/mediator/scripts/mediator.sh check
 ```
 
-### Cron (for more frequent checking)
+### 定时检查（更频繁的监控）
 
 ```bash
 # Check every 5 minutes during business hours
 */5 9-18 * * 1-5 ~/clawd/skills/mediator/scripts/mediator.sh check
 ```
 
-## Safety Notes
+## 安全注意事项
 
-- **Never auto-respond** to legal, financial, or child-related messages
-- Original messages are archived, not deleted (recoverable)
-- All actions logged to `~/.clawdbot/logs/mediator.log`
-- Review and adjust prompts if summaries miss important context
+- **切勿自动回复** 法律、财务或与儿童相关的问题
+- 原始邮件会被存档，但不会被删除（可恢复）
+- 所有操作都会记录在 `~/.clawdbot/logs/mediator.log` 中
+- 如果摘要遗漏了重要信息，请审查并调整提示语
 
-## Example Output
+## 示例输出
 
-**Original email:**
-> I can't BELIEVE you would do this to me AGAIN. After everything I've done for you!!! You NEVER think about anyone but yourself. I need you to pick up the kids at 3pm on Saturday and if you can't even do THAT then I don't know what to say anymore.
+**原始邮件：**
+> 我简直不敢相信你竟然会再次这样对我。我为你付出了这么多！！！你从来只考虑自己。我需要你在周六下午 3 点去接孩子，如果你连这点都做不到，那我真不知道该说什么好了。
 
-**Mediator summary:**
-> **From:** Ex Partner
-> **Channel:** Email  
-> **Action Required:** Yes
+**Mediator 摘要：**
+> **发件人：** 前任伴侣
+> **渠道：** 邮件
+> **需要执行的操作：** 是
 > 
-> **Request:** Pick up kids at 3pm Saturday
+> **请求：** 在周六下午 3 点去接孩子
 > 
-> **Suggested response:**
-> "Confirmed. I'll pick up the kids at 3pm on Saturday."
+> **建议的回复：**
+> “已确认。我会在周六下午 3 点去接孩子。”
 
 ---
 
-See `references/prompts.md` for the LLM prompts used in processing.
+有关处理过程中使用的 LLM 提示语，请参阅 `references/prompts.md` 文件。

@@ -1,8 +1,8 @@
-# Colony Orchestration Skill
+# **Colony Orchestration Skill**
 
-Multi-agent task delegation and process orchestration with audit logging and agent learning capabilities.
+该技能支持多智能体任务分配、流程协调，并具备审计日志记录和智能体学习功能。
 
-## Quick Start
+## **快速入门**
 
 ```bash
 # Single task - auto-routed
@@ -20,156 +20,142 @@ node scripts/colony.mjs audit
 node scripts/colony.mjs memory scout
 ```
 
-## Agents
+## **智能体**
 
-| Agent | Role | Specialization |
+| 智能体 | 角色 | 专长 |
 |-------|------|----------------|
-| **scuttle** | researcher | Quick searches, lookups, fact-finding |
-| **scout** | researcher | Deep market/competitor research, intelligence |
-| **forecast** | analyst | Data analysis, trends, projections |
-| **pincer** | coder | Writing, debugging, refactoring code |
-| **shell** | ops | Git, deployments, system tasks |
-| **forge** | product | PRDs, specs, roadmaps |
-| **ledger** | finance | Pricing, costs, business cases |
-| **muse** | creative | Brainstorming, naming, ideas |
-| **scribe** | writer | Blog posts, docs, long-form content |
-| **quill** | copywriter | Landing pages, sales copy, ads |
-| **echo** | social | Tweets, social posts, promotion |
-| **sentry** | qa | Testing, bug verification |
+| **scuttle** | 研究员 | 快速搜索、信息查询、事实收集 |
+| **scout** | 研究员 | 深度市场/竞争对手研究、情报收集 |
+| **forecast** | 分析师 | 数据分析、趋势预测 |
+| **pincer** | 编程员 | 代码编写、调试、代码重构 |
+| **shell** | 操作员 | Git管理、部署、系统任务处理 |
+| **forge** | 产品经理 | 产品需求文档（PRD）编写、规格制定、路线图规划 |
+| **ledger** | 财务人员 | 定价、成本核算、商业案例分析 |
+| **muse** | 创意团队成员 | 头脑风暴、命名建议、创意生成 |
+| **scribe** | 写作人员 | 博文撰写、文档编写、长篇内容创作 |
+| **quill** | 文案撰写专家 | 登陆页设计、销售文案、广告文案撰写 |
+| **echo** | 社交媒体专员 | 推文发布、社交媒体内容管理 |
+| **sentry** | 质量保证（QA） | 测试、错误验证 |
 
-## Task Commands
+## **任务命令**
 
-### Dispatch (Auto-Route)
+### **任务调度（自动路由）**
 ```bash
 node scripts/colony.mjs dispatch "research best practices for API rate limiting"
 ```
-Automatically detects the best agent based on task keywords.
+根据任务关键词自动选择最合适的智能体来执行任务。
 
-### Assign to Specific Agent
+### **分配给特定智能体**
 ```bash
 node scripts/colony.mjs assign scout "find top 5 time-series databases"
 node scripts/colony.mjs assign pincer "refactor the auth module to use JWT"
 node scripts/colony.mjs assign shell "deploy the staging branch"
 ```
 
-### Check Status
+### **检查状态**
 ```bash
 node scripts/colony.mjs status
 ```
-Shows all agents and their current tasks.
+显示所有智能体及其当前任务。
 
-### Get Results
+### **获取结果**
 ```bash
 node scripts/colony.mjs results              # Latest completed task
 node scripts/colony.mjs results abc123       # Specific task by ID
 ```
 
-### View History
+### **查看历史记录**
 ```bash
 node scripts/colony.mjs history              # Last 10 completed/failed
 node scripts/colony.mjs history --limit 20   # Custom limit
 ```
 
-## Process Commands
+## **流程命令**
 
-Processes are multi-stage workflows that chain agents together.
+流程是由多个阶段组成的工作流，这些阶段通过智能体相互连接。
 
-### List Available Processes
+### **列出可用流程**
 ```bash
 node scripts/colony.mjs processes
 ```
 
-### Start a Process
+### **启动流程**
 ```bash
 node scripts/colony.mjs process <process-name> --context "description"
 ```
 
-Examples:
-```bash
-node scripts/colony.mjs process validate-idea --context "AI-powered meal planning for busy parents"
-node scripts/colony.mjs process content-pipeline --context "How to use vector databases for RAG"
-node scripts/colony.mjs process product-launch --context "Life Lunch ritual kit for parents"
-node scripts/colony.mjs process bug-triage --context "Login fails with OAuth on mobile"
-```
-
-### Check Process Status
+### **检查流程状态**
 ```bash
 node scripts/colony.mjs process-status           # Show latest run
 node scripts/colony.mjs process-status abc123    # Specific run
 ```
 
-Shows: current stage, completed stages, checkpoints, output files.
+显示流程的当前阶段、已完成阶段、检查点以及输出文件。
 
-### View Process Runs
-```bash
-node scripts/colony.mjs runs                 # All runs (active, paused, completed)
-node scripts/colony.mjs runs --limit 5       # Last 5
-```
-
-### Approve Checkpoint
-When a process hits a checkpoint, it pauses for human approval:
+### **批准检查点**
+当流程到达检查点时，会暂停以等待人工审批：
 ```bash
 node scripts/colony.mjs approve abc123
 ```
 
-Also used to retry a failed stage.
+该命令也可用于重试失败的阶段。
 
-### Cancel a Process
+### **取消流程**
 ```bash
 node scripts/colony.mjs cancel abc123
 ```
 
-## Audit Commands
+## **审计命令**
 
-Track agent performance, task statistics, and system health.
+跟踪智能体性能、任务统计数据和系统健康状况。
 
-### Dashboard
+### **仪表盘**
 ```bash
 node scripts/colony.mjs audit
 ```
-Shows global stats, per-agent summary, and recent events.
+显示全局统计数据、各智能体的详细信息以及近期事件。
 
-### Agent Details
+### **智能体详情**
 ```bash
 node scripts/colony.mjs audit agent scout
 node scripts/colony.mjs audit agent pincer
 ```
-Shows detailed stats for a specific agent including:
-- Total tasks, success rate
-- Average duration
-- Token usage
-- Recent failures
+显示特定智能体的详细信息，包括：
+- 总任务数、成功率
+- 平均处理时间
+- 令牌使用情况
+- 最近的失败记录
 
-### Event Log
+### **事件日志**
 ```bash
 node scripts/colony.mjs audit log              # Last 20 events
 node scripts/colony.mjs audit log --limit 50   # More events
 ```
 
-### Slowest Tasks
+### **最慢的任务**
 ```bash
 node scripts/colony.mjs audit slow             # Top 10 slowest
 node scripts/colony.mjs audit slow --limit 20
 ```
 
-### Recent Failures
+### **最近的失败记录**
 ```bash
 node scripts/colony.mjs audit failures         # Last 10 failures
 node scripts/colony.mjs audit failures --limit 20
 ```
 
-## Learning Commands
+## **学习命令**
 
-Agents learn from experience and share knowledge.
+智能体通过经验学习并分享知识。
 
-### Feedback
-Record feedback for completed tasks:
+### **提供反馈**
+为已完成的任务记录反馈：
 ```bash
 node scripts/colony.mjs feedback abc123 "Great research, but needed more pricing data"
 ```
 
-### Agent Memory
-Each agent has a persistent memory file with lessons learned:
+### **智能体记忆**
+每个智能体都拥有一个持久化的记忆文件，用于存储学习到的经验：
 
 ```bash
 # View an agent's memory
@@ -184,8 +170,8 @@ node scripts/colony.mjs memory scout add "Missed competitor X in analysis" --mis
 node scripts/colony.mjs memory scout add "Prefers markdown tables over lists" --pref
 ```
 
-### Shared Learnings
-Cross-agent insights and lessons:
+### **共享学习成果**
+智能体之间可以交流学习心得：
 
 ```bash
 # View all shared learnings
@@ -196,8 +182,8 @@ node scripts/colony.mjs learn add "validate-idea works better with 3 competitors
 node scripts/colony.mjs learn add "Always verify API rate limits early" --category technical --source run-abc123
 ```
 
-### Global Context
-Shared context all agents can access:
+### **全局上下文**
+所有智能体都可以访问共享的上下文信息：
 
 ```bash
 # View global context
@@ -218,78 +204,77 @@ node scripts/colony.mjs context add-decision "Use Postgres over MySQL" --project
 node scripts/colony.mjs context add-project "life-lunch"
 ```
 
-### Retrospective
-Review recent activity and generate insights:
+### **回顾性分析**
+回顾近期活动并生成分析报告：
 
 ```bash
 node scripts/colony.mjs retro              # Last 7 days
 node scripts/colony.mjs retro --days 14    # Last 14 days
 ```
 
-Shows:
-- Task completion summary
-- Per-agent stats
-- Failure patterns
-- Suggested learnings
+显示以下内容：
+- 任务完成总结
+- 各智能体的统计信息
+- 失败模式
+- 建议的学习内容
 
-## Available Processes
+## **可用流程**
 
-### validate-idea
-**Validate a business idea end-to-end**
-- Stages: brainstorm → research → analyze → spec → estimate
-- Checkpoints: after analyze
-- Output: business-case.md
+### **validate-idea**  
+**端到端验证商业想法**  
+- 阶段：头脑风暴 → 研究 → 分析 → 规格制定 → 估算  
+- 检查点：分析阶段结束后  
+- 输出：business-case.md  
 
-### product-launch
-**End-to-end product launch**
-- Stages: research → spec → build → copy
-- Checkpoints: after spec, after copy
-- Output: market-brief.md, prd.md, code/, landing-copy.md
+### **product-launch**  
+**端到端产品发布**  
+- 阶段：研究 → 规格制定 → 开发 → 文案编写  
+- 检查点：规格制定阶段结束后、文案编写阶段结束后  
+- 输出：market-brief.md, prd.md, code/, landing-copy.md  
 
-### content-pipeline
-**Research, write, publish, promote content**
-- Stages: research → draft → review → publish → promote
-- Checkpoints: review (human reviews draft)
-- Output: research.md, draft.md, social-posts.md
+### **content-pipeline**  
+**内容研究、撰写、发布、推广**  
+- 阶段：研究 → 草稿撰写 → 审核 → 发布 → 推广  
+- 检查点：审核阶段（人工审核草稿）  
+- 输出：research.md, draft.md, social-posts.md  
 
-### bug-triage
-**Reproduce, fix, deploy bug fixes**
-- Stages: reproduce → fix → test → deploy
-- Checkpoints: none (fast path)
-- Output: bug-report.md, fix-summary.md
+### **bug-triage**  
+**重现问题、修复错误、部署修复方案**  
+- 阶段：问题重现 → 修复 → 测试 → 部署  
+- 检查点：无（快速流程）  
+- 输出：bug-report.md, fix-summary.md  
 
-### customer-research
-**Deep dive on a customer segment**
-- Stages: identify → pain-points → validate → synthesize
-- Checkpoints: none
-- Output: customer-profile.md, insights.md
+### **customer-research**  
+**深入研究客户群体**  
+- 阶段：客户群体识别 → 痛点分析 → 结果整合  
+- 检查点：无  
+- 输出：customer-profile.md, insights.md  
 
-### landing-page
-**Create a full landing page**
-- Stages: strategy → copy → review → build
-- Checkpoints: after copy review
-- Output: strategy.md, copy.md, landing.html, landing.css
+### **landing-page**  
+**创建完整的登录页**  
+- 阶段：策略制定 → 文案编写 → 审核 → 页面开发  
+- 检查点：文案审核阶段结束后  
+- 输出：strategy.md, copy.md, landing.html, landing.css  
 
-## How Processes Work
+## **流程工作原理**
 
-1. **Start** - Process creates a run entry and spawns first stage agent
-2. **Execute** - Each stage runs with inputs from previous stages
-3. **Checkpoint** - If stage is a checkpoint, process pauses for approval
-4. **Continue** - After approval, next stage runs
-5. **Complete** - All stages done, outputs in `colony/context/<run-id>/`
+1. **启动**：流程创建一个运行记录，并启动第一个阶段的智能体。  
+2. **执行**：每个阶段根据前一个阶段的输出结果进行运行。  
+3. **检查点**：如果某个阶段是检查点，流程会暂停以等待人工审批。  
+4. **继续**：获得审批后，进入下一个阶段。  
+5. **完成**：所有阶段完成后，输出结果将保存在 `colony/context/<run-id/>` 目录下。  
 
-### Context Passing
+### **上下文传递**
 
-- `{context}` in task templates is replaced with your --context value
-- Stage outputs are saved to `colony/context/<run-id>/<output-file>`
-- Next stage reads inputs from previous stage's output files
-- Agent memory and global context are injected into prompts
-- Full task history in `tasks.json`
+- 任务模板中的 `{context}` 会被替换为实际的 `--context` 参数值。  
+- 各阶段的输出结果会被保存在 `colony/context/<run-id>/<output-file>` 目录下。  
+- 下一个阶段会从前一个阶段的输出文件中读取输入数据。  
+- 智能体的记忆信息和全局上下文会被纳入其工作流程中。  
+- 完整的任务历史记录保存在 `tasks.json` 文件中。  
 
-### Parallel Stages
+### **并行阶段**
 
-Stages that share the same `parallel_group` run concurrently:
-
+具有相同 `parallel_group` 的阶段会同时执行：  
 ```yaml
 stages:
   - id: spec
@@ -303,49 +288,35 @@ stages:
     parallel_group: "final"  # Same group = parallel execution
 ```
 
-When the process reaches a parallel group:
-1. All consecutive stages with the same `parallel_group` are collected
-2. All stages spawn concurrently (using `Promise.all()`)
-3. Process waits for ALL parallel stages to complete
-4. If any stage fails, the entire group fails
-5. Checkpoints work per-group (pause after all parallel stages complete)
+当流程遇到并行阶段时：
+1. 所有属于同一 `parallel_group` 的阶段会同时启动。  
+2. 使用 `Promise.all()` 确保所有并行阶段同时完成。  
+3. 如果有任何阶段失败，整个流程都会失败。  
+4. 检查点的处理是按组进行的（所有并行阶段完成后才会继续执行）。  
 
-Output shows parallel execution clearly:
-```
-═══ Parallel Group: final (2 stages) ═══
-    → Stage 4: spec (forge)
-    → Stage 5: estimate (ledger)
+**使用并行阶段的场景：**  
+- 需要读取相同输入数据的阶段（彼此之间没有依赖关系）。  
+- 开发和文案编写任务（都依赖于规格制定阶段，但彼此之间没有依赖关系）。  
+- 对相同数据的多次分析。  
+- 独立的调研任务。  
 
---- [PARALLEL] Stage 4/5: spec ---
---- [PARALLEL] Stage 5/5: estimate ---
+**示例流程：**  
+- `validate-idea`：规格制定和估算阶段会并行执行。  
+- `product-launch`：开发和文案编写阶段会并行执行。  
 
-═══ Parallel Group: final completed ═══
-```
+### **通知**  
+当流程到达检查点、完成或失败时，系统会发送通知。通知通过 `openclaw cron wake` 功能发送。  
 
-**When to use parallel groups:**
-- Stages that read the same inputs (no dependencies on each other)
-- Build + copy tasks (both depend on spec, not on each other)
-- Multiple analyses of the same data
-- Independent research threads
-
-**Processes with parallel stages:**
-- `validate-idea`: spec + estimate run in parallel
-- `product-launch`: build + copy run in parallel
-
-### Notifications
-
-Colony can send notifications when processes hit checkpoints, complete, or fail. Notifications use `openclaw cron wake` to alert you.
-
-**Configuration** (`colony/config.yaml`):
+**配置**（`colony/config.yaml`）：  
 ```yaml
 notifications:
   enabled: true         # Master switch for all notifications
   on_checkpoint: true   # Notify when process pauses at checkpoint
   on_complete: true     # Notify when process finishes
   on_failure: true      # Notify when process/stage fails
-```
+```  
 
-**Manage via CLI:**
+**通过 CLI 进行管理：**  
 ```bash
 # View current config
 node scripts/colony.mjs config
@@ -357,22 +328,19 @@ node scripts/colony.mjs config set notifications.enabled false
 node scripts/colony.mjs config set notifications.on_checkpoint false
 node scripts/colony.mjs config set notifications.on_complete false
 node scripts/colony.mjs config set notifications.on_failure true
-```
+```  
 
-**Notification examples:**
-- 🛑 `Colony checkpoint: Process "validate-idea" paused after stage "analyze". To continue: colony approve abc123`
-- ✅ `Colony complete: Process "validate-idea" finished in 120s. Run ID: abc123`
-- ❌ `Colony failed: Process "validate-idea" failed at stage "research". Error: Agent timed out. Run ID: abc123`
+**通知示例：**  
+- 🛑 `Colony checkpoint: Process "validate-idea" 已在 "analyze" 阶段暂停。要继续，请输入：colony approve abc123`  
+- ✅ `Colony complete: Process "validate-idea" 已在 120 秒内完成。运行 ID：abc123`  
+- ❌ `Colony failed: Process "validate-idea" 在 "research" 阶段失败。错误原因：智能体超时。运行 ID：abc123`  
 
-### Checkpoints
+### **检查点**  
+检查点会暂停流程以等待人工审核。有两种定义方式：  
+1. 在流程的 `checkpoints` 数组中设置（该阶段完成后触发）。  
+2. 作为独立的阶段设置 `checkpoint: true`（仅需要人工审核）。  
 
-Checkpoints pause the process for human review. Two ways to define:
-
-1. In process `checkpoints` array (after that stage completes)
-2. As a standalone stage with `checkpoint: true` (human-only review step)
-
-## File Structure
-
+## **文件结构**  
 ```
 skills/colony/
 ├── SKILL.md              # This file
@@ -405,28 +373,26 @@ skills/colony/
     ├── agent-wrapper.mjs # Task lifecycle utilities
     ├── audit.mjs         # Audit system functions
     └── learning.mjs      # Learning system functions
-```
+```  
 
-## Audit Events
+## **审计日志**  
+审计日志记录以下事件：  
+| 事件 | 字段 |  
+|-------|--------|  
+| `task_started` | taskId, agent, processRunId?, stage? |  
+| `task_completed` | taskId, agent, durationMs, tokens, success |  
+| `task_failed` | taskId, agent, durationMs, error |  
+| `checkpoint_waiting` | runId, stage |  
+| `checkpoint_approved` | runId, stage |  
+| `checkpoint_rejected` | runId, stage, reason |  
+| `process_started` | runId, processId, context |  
+| `process_completed` | runId, processId, durationMs |  
+| `feedback_received` | taskId, agent, feedback |  
 
-The audit log tracks these events:
+## **自定义设置**  
 
-| Event | Fields |
-|-------|--------|
-| `task_started` | taskId, agent, processRunId?, stage? |
-| `task_completed` | taskId, agent, durationMs, tokens, success |
-| `task_failed` | taskId, agent, durationMs, error |
-| `checkpoint_waiting` | runId, stage |
-| `checkpoint_approved` | runId, stage |
-| `checkpoint_rejected` | runId, stage, reason |
-| `process_started` | runId, processId, context |
-| `process_completed` | runId, processId, durationMs |
-| `feedback_received` | taskId, agent, feedback |
-
-## Customization
-
-### Add New Agents
-Edit `colony/agents.yaml`:
+### **添加新智能体**  
+编辑 `colony/agents.yaml` 文件：  
 ```yaml
 agents:
   myagent:
@@ -437,15 +403,14 @@ agents:
     triggers:
       - keyword1
       - keyword2
-```
-
-After adding, create their memory file:
+```  
+添加新智能体后，需要为其创建对应的记忆文件：  
 ```bash
 touch colony/memory/myagent.md
-```
+```  
 
-### Add New Processes
-Edit `colony/processes.yaml`:
+### **添加新流程**  
+编辑 `colony/processes.yaml` 文件：  
 ```yaml
 processes:
   my-process:
@@ -462,48 +427,42 @@ processes:
         inputs: [output1.md]
         outputs: [output2.md]
     checkpoints: [stage1]  # Optional: pause after these stages
-```
+```  
 
-## Integration
+## **集成**  
+该系统可与 OpenClaw 的智能体会话集成。  
+- **任务调度/分配（异步）**：任务在后台启动，CLI 会立即返回结果。可以使用 `colony status` 命令监控进度，使用 `colony results <task-id>` 查看输出结果。  
+- **流程阶段（阻塞式执行）**：多阶段流程按顺序执行，每个阶段完成后才会进入下一个阶段。这样可以确保数据在各阶段之间正确传递，并正确处理检查点。  
 
-Works with OpenClaw's agent sessions.
+每个智能体会收到以下信息：  
+- 自己的角色描述  
+- 来自记忆文件的学到的经验  
+- 全局上下文中的相关信息  
+- 项目相关的背景信息  
 
-**Dispatch/Assign (async):** Tasks are spawned in the background and the CLI returns immediately. Use `colony status` to monitor progress and `colony results <task-id>` to view output.
+## **示例**  
 
-**Process stages (blocking):** Multi-stage processes run sequentially, waiting for each stage to complete before proceeding. This ensures proper data flow between stages and checkpoint handling.
-
-Each agent receives:
-- Their role description
-- Lessons from their memory file
-- Active facts from global context
-- Project/preference context
-
-## Examples
-
-### Validate a Startup Idea
+### **验证创业想法**  
 ```bash
 node scripts/colony.mjs process validate-idea \
   --context "Subscription box for home coffee brewing experiments"
-```
+```  
+流程流程如下：头脑风暴 → 研究 → 分析 → （检查点） → 规格制定 → 估算  
 
-Watch as it flows: brainstorm → research → analyze → (checkpoint) → spec → estimate
-
-### Write and Publish a Blog Post
+### **撰写并发布博客文章**  
 ```bash
 node scripts/colony.mjs process content-pipeline \
   --context "Why RAG is eating traditional search"
-```
+```  
+流程步骤：研究 → 草稿撰写 → （人工审核） → 发布 → 推广  
 
-Stages: research → draft → (human review) → publish → promote
-
-### Quick Research Task
+### **快速研究任务**  
 ```bash
 node scripts/colony.mjs dispatch "compare Pinecone vs Weaviate vs Milvus"
-```
+```  
+任务会自动分配给 `scout` 智能体执行，并返回研究结果。  
 
-Auto-routes to scout, returns comparison.
-
-### Track Performance
+### **跟踪智能体性能**  
 ```bash
 # After several tasks, check overall health
 node scripts/colony.mjs audit

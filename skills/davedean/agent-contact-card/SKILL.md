@@ -1,6 +1,7 @@
 ---
 name: agent-contact-card
-description: Discover and create Agent Contact Cards - a vCard-like format for AI agents. Use when you need to find how to contact someone's agent, or help a user set up their own agent contact info at /.well-known/agent-card.
+description: **发现并创建代理联系卡（Agent Contact Cards）——一种类似vCard的格式，用于AI代理。**  
+当您需要查找如何联系某人的代理，或帮助用户在 `/.well-known/agent-card` 上设置自己的代理联系信息时，可以使用这种格式。
 license: CC0-1.0
 metadata:
   author: davedean
@@ -8,32 +9,32 @@ metadata:
   homepage: https://github.com/davedean/agent-contact-card
 ---
 
-# Agent Contact Card
+# 代理联系卡
 
-A simple format for publishing how AI agents can be contacted. Like a vCard, but for agents.
+这是一种用于发布如何联系AI代理的简单格式。类似于vCard，但专门用于代理。
 
-## When to Use This Skill
+## 何时使用此功能
 
-- User asks how to let other agents contact their agent
-- User wants to discover how to reach someone else's agent
-- You need to contact another agent on behalf of your user
-- User mentions "agent-card", "agent contact", or agent-to-agent communication
+- 用户询问如何让其他代理联系他们的代理
+- 用户想了解如何联系其他代理
+- 您需要代表用户联系其他代理
+- 用户提到“agent-card”、“代理联系”或代理之间的通信
 
-## Quick Reference
+## 快速参考
 
-### Discovering an Agent Contact Card
+### 查找代理联系卡
 
-Try fetching `/.well-known/agent-card` on their domain:
+尝试在其域名下获取`/.well-known/agent-card`文件：
 
 ```
 https://example.com/.well-known/agent-card
 ```
 
-The file is markdown with YAML frontmatter. Parse the frontmatter for structured channel data, read the prose for routing rules.
+该文件使用Markdown格式，并包含YAML头部信息。解析头部信息以获取结构化的通道数据，并阅读正文以了解路由规则。
 
-### Creating an Agent Contact Card
+### 创建代理联系卡
 
-Create a markdown file with YAML frontmatter:
+创建一个包含YAML头部信息的Markdown文件：
 
 ```markdown
 ---
@@ -61,43 +62,43 @@ If you're an agent:
 - Response time: within a few hours
 ```
 
-Host this at `/.well-known/agent-card` on the user's domain.
+将此文件托管在用户域名的`/.well-known/agent-card`路径下。
 
-## Format Details
+## 格式详情
 
-### Required Fields
+### 必填字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `version` | Spec version. Currently `"1"` |
+| `version` | 规范版本。当前为`"1"` |
 
-### Recommended Fields
+### 推荐字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `human_contact` | Phone/email for humans to reach the human |
-| `channels` | Contact channels for agents (see below) |
+| `human_contact` | 供人类联系该代理的电话/电子邮件地址 |
+| `channels` | 代理的联系方式（见下文） |
 
-### Optional Fields
+### 可选字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `name` | Display name for this agent configuration |
-| `last_updated` | ISO date when card was last modified |
-| `capabilities` | What this agent can do (e.g., `["scheduling", "accepts_ical"]`) |
-| `agents` | Named agents if multiple (see Multi-Agent section) |
+| `name` | 该代理配置的显示名称 |
+| `last_updated` | 卡片最后修改的ISO日期 |
+| `capabilities` | 该代理可以执行的功能（例如`["scheduling", "accepts_ical"]`） |
+| `agents` | 如果有多个代理，则列出这些代理的名称（见多代理部分） |
 
-### Channels
+### 通道
 
-Channel names are freeform. Common ones:
+通道名称可以是自定义的。常见的通道类型包括：
 
-- `email` - Email address
-- `discord` - Discord username
-- `webhook` - HTTP endpoint for structured messages
-- `signal` - Signal phone number
-- `telegram` - Telegram username
+- `email` - 电子邮件地址
+- `discord` - Discord用户名
+- `webhook` - 用于发送结构化消息的HTTP端点
+- `signal` - Signal电话号码
+- `telegram` - Telegram用户名
 
-For webhooks, provide details:
+对于Webhook，请提供以下详细信息：
 
 ```yaml
 channels:
@@ -108,9 +109,9 @@ channels:
     format: "JSON with 'message' and 'from' fields"
 ```
 
-### Multi-Agent Setups
+### 多代理设置
 
-List multiple specialized agents:
+列出多个专门的代理：
 
 ```yaml
 agents:
@@ -124,49 +125,49 @@ agents:
     id: "https://example.com/support"
 ```
 
-The markdown body should explain routing between them.
+Markdown正文应说明这些代理之间的路由规则。
 
-## Privacy Tiers
+## 隐私级别
 
-Different URLs for different access levels:
+不同的URL对应不同的访问权限：
 
-| Tier | URL Pattern | Access |
+| 级别 | URL模式 | 访问权限 |
 |------|-------------|--------|
-| Public | `/.well-known/agent-card` | Anyone |
-| Named | `/.well-known/agent-card/{name}` | Know the name |
-| Private | `/{random-uuid}/agent-card.md` | Shared URL only |
+| 公开 | `/.well-known/agent-card` | 任何人都可以访问 |
+| 指定名称 | `/.well-known/agent-card/{name}` | 需要知道代理的名称 |
+| 私有 | `/{random-uuid}/agent-card.md` | 仅限共享URL的访问者 |
 
-Each tier can expose different channels and capabilities.
+每个级别可以暴露不同的通道和功能。
 
-## Discovery Methods
+## 查找方法
 
-1. **Well-known URL**: Check `https://domain/.well-known/agent-card`
-2. **vCard extension**: Look for `X-AGENT-CARD` field in contact cards
-3. **Ask the human**: Request the URL directly
+1. **Well-known URL**：访问`https://domain/.well-known/agent-card`
+2. **vCard扩展名**：在联系卡中查找`X-AGENT-CARD`字段
+3. **询问人类用户**：直接请求URL
 
-## Reading an Agent Card
+## 阅读代理联系卡
 
-When you fetch an agent card:
+获取代理联系卡后：
 
-1. Parse YAML frontmatter for structured data
-2. Read markdown body for natural language routing rules
-3. Choose appropriate channel based on your purpose
-4. Follow any authentication requirements mentioned
+1. 解析YAML头部信息以获取结构化数据
+2. 阅读Markdown正文以了解路由规则
+3. 根据您的需求选择合适的通道
+4. 遵循任何提到的认证要求
 
-## Test It
+## 测试
 
-Here's a live demo you can test:
+这里有一个可供测试的示例：
 
 ```
 https://city-services-api.dave-dean.workers.dev/.well-known/agent-card
 ```
 
-This is a fictional "City of Millbrook" tip line. Fetch the card, then try POSTing to the webhook endpoint. Your experience may vary depending on what you say.
+这是一个虚构的“City of Millbrook”帮助热线示例。获取该联系卡后，尝试向Webhook端点发送POST请求。您的体验可能会因输入的内容而有所不同。
 
-## Full Specification
+## 完整规范
 
-See [references/SPEC.md](references/SPEC.md) for the complete specification.
+请参阅[references/SPEC.md](references/SPEC.md)以获取完整规范。
 
-## Examples
+## 示例
 
-See [references/EXAMPLES.md](references/EXAMPLES.md) for more complete examples.
+更多详细示例请参见[references/EXAMPLES.md](references/EXAMPLES.md)。

@@ -1,6 +1,6 @@
 ---
 name: video-message
-description: Generate and send video messages with a lip-syncing VRM avatar. Use when user asks for video message, avatar video, video reply, or when TTS should be delivered as video instead of audio.
+description: 生成并发送带有唇形同步功能的 VRM（Virtual Reality Model）头像的视频消息。适用于用户请求视频消息、头像视频、视频回复的情况，或者当文本转语音（TTS）需要以视频形式而非音频形式呈现时。
 metadata:
   {
     "openclaw":
@@ -35,19 +35,19 @@ metadata:
   }
 ---
 
-# Video Message
+# 视频消息
 
-Generate avatar video messages from text or audio. Outputs as Telegram video notes (circular format).
+可以将文本或音频转换为头像视频消息，并以 Telegram 视频便签的形式发送（圆形格式）。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g openclaw-avatarcam
 ```
 
-## Configuration
+## 配置
 
-Configure in `TOOLS.md`:
+在 `TOOLS.md` 文件中进行配置：
 
 ```markdown
 ### Video Message (avatarcam)
@@ -55,64 +55,51 @@ Configure in `TOOLS.md`:
 - background: #00FF00
 ```
 
-### Settings Reference
+### 设置参考
 
-| Setting | Default | Description |
+| 设置 | 默认值 | 说明 |
 |---------|---------|-------------|
-| `avatar` | `default.vrm` | VRM avatar file path |
-| `background` | `#00FF00` | Color (hex) or image path |
+| `avatar` | `default.vrm` | VRM 头像文件路径 |
+| `background` | `#00FF00` | 颜色（十六进制）或图片路径 |
 
-## Prerequisites
+## 先决条件
 
-### System Dependencies
+### 系统依赖
 
-| Platform | Command |
+| 平台 | 命令 |
 |----------|---------|
 | **macOS** | `brew install ffmpeg` |
 | **Linux** | `sudo apt-get install -y xvfb xauth ffmpeg` |
-| **Windows** | Install ffmpeg and add to PATH |
-| **Docker** | See Docker section below |
+| **Windows** | 安装 ffmpeg 并将其添加到 PATH 环境变量中 |
+| **Docker** | 请参阅下面的 Docker 部分 |
 
-> **Note:** macOS and Windows don't need xvfb — they have native display support.
+> **注意：** macOS 和 Windows 不需要 `xvfb`，因为它们具有原生显示支持。
 
-### Docker Users
-Add to `OPENCLAW_DOCKER_APT_PACKAGES`:
+### Docker 用户
+将以下内容添加到 `OPENCLAW_DOCKER_APT_PACKAGES` 文件中：
 ```
 build-essential procps curl file git ca-certificates xvfb xauth libgbm1 libxss1 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libasound2 libnss3 ffmpeg
 ```
 
-## Usage
+## 使用方法
 
-```bash
-# With color background
-avatarcam --audio voice.mp3 --output video.mp4 --background "#00FF00"
-
-# With image background
-avatarcam --audio voice.mp3 --output video.mp4 --background "./bg.png"
-
-# With custom avatar
-avatarcam --audio voice.mp3 --output video.mp4 --avatar "./custom.vrm"
-```
-
-## Sending as Video Note
-
-Use OpenClaw's `message` tool with `asVideoNote`:
+使用 OpenClaw 的 `message` 工具，并通过 `asVideoNote` 参数发送视频消息：
 
 ```
 message action=send filePath=/tmp/video.mp4 asVideoNote=true
 ```
 
-## Workflow
+## 工作流程
 
-1. **Read config** from TOOLS.md (avatar, background)
-2. **Generate TTS** if given text: `tts text="..."` → audio path
-3. **Run avatarcam** with audio + settings → MP4 output
-4. **Send as video note** via `message action=send filePath=... asVideoNote=true`
-5. **Return NO_REPLY** after sending
+1. 从 `TOOLS.md` 文件中读取配置（头像和背景设置）。
+2. 如果提供了文本，使用 `tts` 命令生成音频文件：`tts text="..."` → 生成音频文件路径。
+3. 运行 `avatarcam` 工具，使用生成的音频和配置文件生成 MP4 视频文件。
+4. 通过 `message action=send filePath=... asVideoNote=true` 将视频文件作为视频便签发送。
+5. 发送完成后返回 `NO_REPLY`。
 
-## Example Flow
+## 示例流程
 
-User: "Send me a video message saying hello"
+用户：**“给我发送一条说‘hello’的视频消息”。**
 
 ```bash
 # 1. TTS
@@ -128,42 +115,43 @@ message action=send filePath=/tmp/video.mp4 asVideoNote=true
 NO_REPLY
 ```
 
-## Technical Details
+## 技术细节
 
-| Setting | Value |
+| 设置 | 值 |
 |---------|-------|
-| Resolution | 384x384 (square) |
-| Frame rate | 30fps constant |
-| Max duration | 60 seconds |
-| Video codec | H.264 (libx264) |
-| Audio codec | AAC |
-| Quality | CRF 18 (high quality) |
-| Container | MP4 |
+| 分辨率 | 384x384（正方形） |
+| 帧率 | 30 帧/秒（恒定） |
+| 最大时长 | 60 秒 |
+| 视频编码格式 | H.264（libx264） |
+| 音频编码格式 | AAC |
+| 质量 | CRF 18（高质量） |
+| 容器格式 | MP4 |
 
-### Processing Pipeline
-1. Electron renders VRM avatar with lip sync at 1280x720
-2. WebM captured via `canvas.captureStream(30)`
-3. FFmpeg processes: crop → fps normalize → scale → encode
-4. Message tool sends via Telegram `sendVideoNote` API
+### 处理流程
 
-## Platform Support
+1. Electron 在 1280x720 分辨率下渲染 VRM 头像，并实现唇形同步。
+2. 使用 `canvascaptureStream(30)` 功能捕获视频流。
+3. FFmpeg 对视频流进行处理：裁剪、调整帧率、缩放并编码。
+4. 使用 OpenClaw 的 `message` 工具通过 Telegram 的 `sendVideoNote` API 发送视频消息。
 
-| Platform | Display | Notes |
+## 平台支持
+
+| 平台 | 显示方式 | 备注 |
 |----------|---------|-------|
-| macOS | Native Quartz | No extra deps |
-| Linux | xvfb (headless) | `apt install xvfb` |
-| Windows | Native | No extra deps |
+| macOS | 原生 Quartz 显示引擎 | 无需额外依赖 |
+| Linux | 使用 `xvfb`（无头模式） | 需安装 `xvfb` |
+| Windows | 原生显示引擎 | 无需额外依赖 |
 
-## Headless Rendering
+## 无头环境渲染
 
-Avatarcam auto-detects headless environments:
-- Uses `xvfb-run` when `$DISPLAY` is not set (Linux only)
-- macOS/Windows use native display
-- GPU stall warnings are safe to ignore
-- Generation time: ~1.5x realtime (20s audio ≈ 30s processing)
+`avatarcam` 会自动检测无头环境：
+- 如果 `$DISPLAY` 环境变量未设置，会使用 `xvfb-run` 进行渲染（仅限 Linux）。
+- macOS 和 Windows 使用原生显示引擎。
+- 可以忽略 GPU 相关的延迟警告。
+- 生成视频的时间约为实际时间的 1.5 倍（20 秒的音频处理时间约为 30 秒）。
 
-## Notes
+## 其他注意事项
 
-- Config is read from TOOLS.md
-- Clean up temp files after sending: `rm /tmp/video*.mp4`
-- For regular video (not circular), omit `asVideoNote=true`
+- 配置信息从 `TOOLS.md` 文件中读取。
+- 发送完成后请删除临时文件：`rm /tmp/video*.mp4`。
+- 如果需要发送普通视频（非圆形格式），请省略 `asVideoNote=true` 参数。

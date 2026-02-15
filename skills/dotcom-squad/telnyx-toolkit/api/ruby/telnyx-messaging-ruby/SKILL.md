@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
-# Telnyx Messaging - Ruby
+# Telnyx 消息服务 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,13 +32,13 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## Send a message
+## 发送消息
 
-Send a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来发送消息。
 
-`POST /messages` — Required: `to`
+`POST /messages` — 必需参数：`to`
 
 ```ruby
 response = client.messages.send_(to: "+18445550001")
@@ -45,9 +46,9 @@ response = client.messages.send_(to: "+18445550001")
 puts(response)
 ```
 
-## Retrieve a message
+## 获取消息
 
-Note: This API endpoint can only retrieve messages that are no older than 10 days since their creation.
+注意：此 API 端点仅能获取创建时间不超过 10 天的消息。
 
 `GET /messages/{id}`
 
@@ -57,9 +58,9 @@ message = client.messages.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 puts(message)
 ```
 
-## Cancel a scheduled message
+## 取消已安排的消息
 
-Cancel a scheduled message that has not yet been sent.
+取消尚未发送的已安排消息。
 
 `DELETE /messages/{id}`
 
@@ -69,9 +70,9 @@ response = client.messages.cancel_scheduled("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26
 puts(response)
 ```
 
-## Send a Whatsapp message
+## 发送 Whatsapp 消息
 
-`POST /messages/whatsapp` — Required: `from`, `to`, `whatsapp_message`
+`POST /messages/whatsapp` — 必需参数：`from`, `to`, `whatsapp_message`
 
 ```ruby
 response = client.messages.send_whatsapp(from: "+13125551234", to: "+13125551234", whatsapp_message: {})
@@ -79,9 +80,9 @@ response = client.messages.send_whatsapp(from: "+13125551234", to: "+13125551234
 puts(response)
 ```
 
-## Send a group MMS message
+## 发送群组 MMS 消息
 
-`POST /messages/group_mms` — Required: `from`, `to`
+`POST /messages/group_mms` — 必需参数：`from`, `to`
 
 ```ruby
 response = client.messages.send_group_mms(from: "+13125551234", to: ["+18655551234", "+14155551234"])
@@ -89,9 +90,9 @@ response = client.messages.send_group_mms(from: "+13125551234", to: ["+186555512
 puts(response)
 ```
 
-## Send a long code message
+## 发送长码消息
 
-`POST /messages/long_code` — Required: `from`, `to`
+`POST /messages/long_code` — 必需参数：`from`, `to`
 
 ```ruby
 response = client.messages.send_long_code(from: "+18445550001", to: "+13125550002")
@@ -99,9 +100,9 @@ response = client.messages.send_long_code(from: "+18445550001", to: "+1312555000
 puts(response)
 ```
 
-## Send a message using number pool
+## 使用号码池发送消息
 
-`POST /messages/number_pool` — Required: `to`, `messaging_profile_id`
+`POST /messages/number_pool` — 必需参数：`to`, `messaging_profile_id`
 
 ```ruby
 response = client.messages.send_number_pool(
@@ -112,11 +113,11 @@ response = client.messages.send_number_pool(
 puts(response)
 ```
 
-## Schedule a message
+## 安排消息
 
-Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来安排消息的发送。
 
-`POST /messages/schedule` — Required: `to`
+`POST /messages/schedule` — 必需参数：`to`
 
 ```ruby
 response = client.messages.schedule(to: "+18445550001")
@@ -124,9 +125,9 @@ response = client.messages.schedule(to: "+18445550001")
 puts(response)
 ```
 
-## Send a short code message
+## 发送短代码消息
 
-`POST /messages/short_code` — Required: `from`, `to`
+`POST /messages/short_code` — 必需参数：`from`, `to`
 
 ```ruby
 response = client.messages.send_short_code(from: "+18445550001", to: "+18445550001")
@@ -134,9 +135,9 @@ response = client.messages.send_short_code(from: "+18445550001", to: "+184455500
 puts(response)
 ```
 
-## List opt-outs
+## 查看退订信息
 
-Retrieve a list of opt-out blocks.
+获取退订信息的列表。
 
 `GET /messaging_optouts`
 
@@ -146,7 +147,7 @@ page = client.messaging_optouts.list
 puts(page)
 ```
 
-## Retrieve a phone number with messaging settings
+## 获取带有消息功能的电话号码信息
 
 `GET /phone_numbers/{id}/messaging`
 
@@ -156,7 +157,7 @@ messaging = client.phone_numbers.messaging.retrieve("id")
 puts(messaging)
 ```
 
-## Update the messaging profile and/or messaging product of a phone number
+## 更新电话号码的消息功能配置
 
 `PATCH /phone_numbers/{id}/messaging`
 
@@ -166,7 +167,7 @@ messaging = client.phone_numbers.messaging.update("id")
 puts(messaging)
 ```
 
-## List phone numbers with messaging settings
+## 查看带有消息功能的电话号码列表
 
 `GET /phone_numbers/messaging`
 
@@ -176,7 +177,7 @@ page = client.phone_numbers.messaging.list
 puts(page)
 ```
 
-## Retrieve a mobile phone number with messaging settings
+## 获取带有消息功能的手机号码信息
 
 `GET /mobile_phone_numbers/{id}/messaging`
 
@@ -186,7 +187,7 @@ messaging = client.mobile_phone_numbers.messaging.retrieve("id")
 puts(messaging)
 ```
 
-## List mobile phone numbers with messaging settings
+## 查看带有消息功能的手机号码列表
 
 `GET /mobile_phone_numbers/messaging`
 
@@ -196,9 +197,9 @@ page = client.mobile_phone_numbers.messaging.list
 puts(page)
 ```
 
-## Bulk update phone number profiles
+## 批量更新电话号码配置
 
-`POST /messaging_numbers/bulk_updates` — Required: `messaging_profile_id`, `numbers`
+`POST /messaging_numbers/bulk_updates` — 必需参数：`messaging_profile_id`, `numbers`
 
 ```ruby
 messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.create(
@@ -209,25 +210,20 @@ messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.create(
 puts(messaging_numbers_bulk_update)
 ```
 
-## Retrieve bulk update status
+## 查看批量更新状态
 
 `GET /messaging_numbers/bulk_updates/{order_id}`
 
-```ruby
-messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.retrieve("order_id")
-
-puts(messaging_numbers_bulk_update)
-```
-
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `deliveryUpdate` | Delivery Update |
-| `inboundMessage` | Inbound Message |
-| `replacedLinkClick` | Replaced Link Click |
+| `deliveryUpdate` | 消息发送状态更新 |
+| `inboundMessage` | 收到的消息 |
+| `replacedLinkClick` | 被替换的链接被点击 |
+```
+```

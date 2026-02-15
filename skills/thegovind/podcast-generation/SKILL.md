@@ -1,21 +1,21 @@
 ---
 name: podcast-generation
-description: Generate AI-powered podcast-style audio narratives using Azure OpenAI's GPT Realtime Mini model via WebSocket. Use when building text-to-speech features, audio narrative generation, podcast creation from content, or integrating with Azure OpenAI Realtime API for real audio output. Covers full-stack implementation from React frontend to Python FastAPI backend with WebSocket streaming.
+description: 使用 Azure OpenAI 的 GPT Realtime Mini 模型，通过 WebSocket 生成基于 AI 的播客风格音频叙事。该技术适用于构建文本转语音功能、音频叙事生成、从文本内容创建播客，或与 Azure OpenAI Realtime API 集成以实现实时音频输出。涵盖了从 React 前端到 Python FastAPI 后端的完整栈实现，包括 WebSocket 流传输。
 ---
 
-# Podcast Generation with GPT Realtime Mini
+# 使用 GPT Realtime Mini 生成播客内容
 
-Generate real audio narratives from text content using Azure OpenAI's Realtime API.
+利用 Azure OpenAI 的 Realtime API 从文本内容生成真实的音频叙述。
 
-## Quick Start
+## 快速入门
 
-1. Configure environment variables for Realtime API
-2. Connect via WebSocket to Azure OpenAI Realtime endpoint
-3. Send text prompt, collect PCM audio chunks + transcript
-4. Convert PCM to WAV format
-5. Return base64-encoded audio to frontend for playback
+1. 配置 Realtime API 的环境变量
+2. 通过 WebSocket 连接到 Azure OpenAI 的实时端点
+3. 发送文本提示，接收 PCM 音频数据及文字转录结果
+4. 将 PCM 数据转换为 WAV 格式
+5. 将编码后的音频数据以 Base64 格式返回给前端进行播放
 
-## Environment Configuration
+## 环境配置
 
 ```env
 AZURE_OPENAI_AUDIO_API_KEY=your_realtime_api_key
@@ -23,11 +23,11 @@ AZURE_OPENAI_AUDIO_ENDPOINT=https://your-resource.cognitiveservices.azure.com
 AZURE_OPENAI_AUDIO_DEPLOYMENT=gpt-realtime-mini
 ```
 
-**Note**: Endpoint should NOT include `/openai/v1/` - just the base URL.
+**注意**：端点地址中不应包含 `/openai/v1/`，只需提供基础 URL 即可。
 
-## Core Workflow
+## 核心工作流程
 
-### Backend Audio Generation
+### 后端音频生成
 
 ```python
 from openai import AsyncOpenAI
@@ -74,7 +74,7 @@ pcm_audio = b''.join(audio_chunks)
 wav_audio = pcm_to_wav(pcm_audio, sample_rate=24000)
 ```
 
-### Frontend Audio Playback
+### 前端音频播放
 
 ```javascript
 // Convert base64 WAV to playable blob
@@ -90,32 +90,32 @@ const audioUrl = URL.createObjectURL(audioBlob);
 new Audio(audioUrl).play();
 ```
 
-## Voice Options
+## 语音选项
 
-| Voice | Character |
+| 语音 | 特性       |
 |-------|-----------|
-| alloy | Neutral |
-| echo | Warm |
-| fable | Expressive |
-| onyx | Deep |
-| nova | Friendly |
-| shimmer | Clear |
+| alloy | 中性音色       |
+| echo | 温暖的音色     |
+| fable | 表达力强的音色   |
+| onyx | 深沉的音色     |
+| nova | 友好的音色     |
+| shimmer | 清晰的音色     |
 
-## Realtime API Events
+## Realtime API 的事件响应
 
-- `response.output_audio.delta` - Base64 audio chunk
-- `response.output_audio_transcript.delta` - Transcript text
-- `response.done` - Generation complete
-- `error` - Handle with `event.error.message`
+- `response.output_audio_delta`：Base64 编码的音频数据块
+- `response.output_audio_transcript_delta`：文字转录结果
+- `response.done`：生成完成
+- `error`：处理错误信息（使用 `event.error.message`）
 
-## Audio Format
+## 音频格式
 
-- **Input**: Text prompt
-- **Output**: PCM audio (24kHz, 16-bit, mono)
-- **Storage**: Base64-encoded WAV
+- **输入**：文本提示
+- **输出**：PCM 格式的音频（24kHz、16位、单声道）
+- **存储方式**：Base64 编码的 WAV 文件
 
-## References
+## 参考资料
 
-- **Full architecture**: See [references/architecture.md](references/architecture.md) for complete stack design
-- **Code examples**: See [references/code-examples.md](references/code-examples.md) for production patterns
-- **PCM conversion**: Use [scripts/pcm_to_wav.py](scripts/pcm_to_wav.py) for audio format conversion
+- **完整架构**：请参阅 [references/architecture.md](references/architecture.md) 了解完整的系统架构设计
+- **代码示例**：请参阅 [references/code-examples.md](references/code-examples.md) 了解实际开发中的代码模式
+- **PCM 转换**：使用 [scripts/pcm_to_wav.py](scripts/pcm_to_wav.py) 脚本进行音频格式转换

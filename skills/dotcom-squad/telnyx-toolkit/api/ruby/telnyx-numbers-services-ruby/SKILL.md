@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Services - Ruby
+# Telnyx 数字服务 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +31,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List dynamic emergency addresses
+## 列出动态紧急地址
 
-Returns the dynamic emergency addresses according to filters
+根据过滤器返回动态紧急地址
 
 `GET /dynamic_emergency_addresses`
 
@@ -44,11 +45,11 @@ page = client.dynamic_emergency_addresses.list
 puts(page)
 ```
 
-## Create a dynamic emergency address.
+## 创建动态紧急地址
 
-Creates a dynamic emergency address.
+创建一个动态紧急地址。
 
-`POST /dynamic_emergency_addresses` — Required: `house_number`, `street_name`, `locality`, `administrative_area`, `postal_code`, `country_code`
+`POST /dynamic_emergency_addresses` — 必需参数：`house_number`、`street_name`、`locality`、`administrative_area`、`postal_code`、`country_code`
 
 ```ruby
 dynamic_emergency_address = client.dynamic_emergency_addresses.create(
@@ -63,9 +64,9 @@ dynamic_emergency_address = client.dynamic_emergency_addresses.create(
 puts(dynamic_emergency_address)
 ```
 
-## Get a dynamic emergency address
+## 获取动态紧急地址
 
-Returns the dynamic emergency address based on the ID provided
+根据提供的 ID 返回动态紧急地址
 
 `GET /dynamic_emergency_addresses/{id}`
 
@@ -75,9 +76,9 @@ dynamic_emergency_address = client.dynamic_emergency_addresses.retrieve("182bd5e
 puts(dynamic_emergency_address)
 ```
 
-## Delete a dynamic emergency address
+## 删除动态紧急地址
 
-Deletes the dynamic emergency address based on the ID provided
+根据提供的 ID 删除动态紧急地址
 
 `DELETE /dynamic_emergency_addresses/{id}`
 
@@ -87,9 +88,9 @@ dynamic_emergency_address = client.dynamic_emergency_addresses.delete("182bd5e5-
 puts(dynamic_emergency_address)
 ```
 
-## List dynamic emergency endpoints
+## 列出动态紧急终端点
 
-Returns the dynamic emergency endpoints according to filters
+根据过滤器返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints`
 
@@ -99,11 +100,11 @@ page = client.dynamic_emergency_endpoints.list
 puts(page)
 ```
 
-## Create a dynamic emergency endpoint.
+## 创建动态紧急终端点
 
-Creates a dynamic emergency endpoints.
+创建一个动态紧急终端点。
 
-`POST /dynamic_emergency_endpoints` — Required: `dynamic_emergency_address_id`, `callback_number`, `caller_name`
+`POST /dynamic_emergency_endpoints` — 必需参数：`dynamic_emergency_address_id`、`callback_number`、`caller_name`
 
 ```ruby
 dynamic_emergency_endpoint = client.dynamic_emergency_endpoints.create(
@@ -115,9 +116,9 @@ dynamic_emergency_endpoint = client.dynamic_emergency_endpoints.create(
 puts(dynamic_emergency_endpoint)
 ```
 
-## Get a dynamic emergency endpoint
+## 获取动态紧急终端点
 
-Returns the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints/{id}`
 
@@ -127,9 +128,9 @@ dynamic_emergency_endpoint = client.dynamic_emergency_endpoints.retrieve("182bd5
 puts(dynamic_emergency_endpoint)
 ```
 
-## Delete a dynamic emergency endpoint
+## 删除动态紧急终端点
 
-Deletes the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 删除动态紧急终端点
 
 `DELETE /dynamic_emergency_endpoints/{id}`
 
@@ -139,9 +140,9 @@ dynamic_emergency_endpoint = client.dynamic_emergency_endpoints.delete("182bd5e5
 puts(dynamic_emergency_endpoint)
 ```
 
-## List your voice channels for non-US zones
+## 列出非美国地区的语音通道
 
-Returns the non-US voice channels for your account.
+列出您账户中的非美国地区语音通道。
 
 `GET /channel_zones`
 
@@ -151,11 +152,11 @@ page = client.channel_zones.list
 puts(page)
 ```
 
-## Update voice channels for non-US Zones
+## 更新非美国地区的语音通道
 
-Update the number of Voice Channels for the Non-US Zones.
+更新非美国地区的语音通道数量。
 
-`PUT /channel_zones/{channel_zone_id}` — Required: `channels`
+`PUT /channel_zones/{channel_zone_id}` — 必需参数：`channels`
 
 ```ruby
 channel_zone = client.channel_zones.update("channel_zone_id", channels: 0)
@@ -163,9 +164,9 @@ channel_zone = client.channel_zones.update("channel_zone_id", channels: 0)
 puts(channel_zone)
 ```
 
-## List your voice channels for US Zone
+## 列出美国地区的语音通道
 
-Returns the US Zone voice channels for your account.
+列出您账户中的美国地区语音通道。
 
 `GET /inbound_channels`
 
@@ -175,11 +176,11 @@ inbound_channels = client.inbound_channels.list
 puts(inbound_channels)
 ```
 
-## Update voice channels for US Zone
+## 更新美国地区的语音通道
 
-Update the number of Voice Channels for the US Zone.
+更新美国地区的语音通道数量。
 
-`PATCH /inbound_channels` — Required: `channels`
+`PATCH /inbound_channels` — 必需参数：`channels`
 
 ```ruby
 inbound_channel = client.inbound_channels.update(channels: 7)
@@ -187,9 +188,9 @@ inbound_channel = client.inbound_channels.update(channels: 7)
 puts(inbound_channel)
 ```
 
-## List All Numbers using Channel Billing
+## 列出使用通道计费的电话号码
 
-Retrieve a list of all phone numbers using Channel Billing, grouped by Zone.
+检索按地区分组的所有使用通道计费的电话号码。
 
 `GET /list`
 
@@ -199,9 +200,9 @@ response = client.list.retrieve_all
 puts(response)
 ```
 
-## List Numbers using Channel Billing for a specific Zone
+## 列出特定地区的使用通道计费的电话号码
 
-Retrieve a list of phone numbers using Channel Billing for a specific Zone.
+检索特定地区使用通道计费的电话号码列表。
 
 `GET /list/{channel_zone_id}`
 
@@ -211,9 +212,9 @@ response = client.list.retrieve_by_zone("channel_zone_id")
 puts(response)
 ```
 
-## Get voicemail
+## 获取语音信箱
 
-Returns the voicemail settings for a phone number
+获取电话号码的语音信箱设置
 
 `GET /phone_numbers/{phone_number_id}/voicemail`
 
@@ -223,9 +224,9 @@ voicemail = client.phone_numbers.voicemail.retrieve("123455678900")
 puts(voicemail)
 ```
 
-## Create voicemail
+## 创建语音信箱
 
-Create voicemail settings for a phone number
+为电话号码创建语音信箱设置
 
 `POST /phone_numbers/{phone_number_id}/voicemail`
 
@@ -235,9 +236,9 @@ voicemail = client.phone_numbers.voicemail.create("123455678900")
 puts(voicemail)
 ```
 
-## Update voicemail
+## 更新语音信箱
 
-Update voicemail settings for a phone number
+更新电话号码的语音信箱设置
 
 `PATCH /phone_numbers/{phone_number_id}/voicemail`
 
@@ -245,4 +246,5 @@ Update voicemail settings for a phone number
 voicemail = client.phone_numbers.voicemail.update("123455678900")
 
 puts(voicemail)
+```
 ```

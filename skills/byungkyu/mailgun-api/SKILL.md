@@ -18,9 +18,9 @@ metadata:
 
 # Mailgun
 
-Access the Mailgun API with managed OAuth authentication. Send transactional emails, manage domains, routes, templates, mailing lists, suppressions, and webhooks.
+您可以使用管理的OAuth身份验证来访问Mailgun API。该API支持发送交易型电子邮件、管理域名、路由、模板、邮件列表、邮件抑制规则以及Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List domains
@@ -32,41 +32,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/mailgun/v3/{resource}
 ```
 
-Replace `{resource}` with the actual Mailgun API endpoint path. The gateway proxies requests to `api.mailgun.net/v3` (US region) and automatically injects your OAuth token.
+请将 `{resource}` 替换为实际的Mailgun API端点路径。该代理会将请求转发到 `api.mailgun.net/v3`（美国地区），并自动插入您的OAuth令牌。
 
-**Regional Note:** Mailgun has US and EU regions. The gateway defaults to US region (api.mailgun.net).
+**区域说明：** Mailgun提供美国和欧盟两个区域。默认使用美国区域（api.mailgun.net）。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Mailgun OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Mailgun OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -77,7 +77,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -90,7 +90,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -101,7 +101,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -116,9 +116,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -129,9 +129,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Mailgun connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Mailgun连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -143,29 +143,29 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，代理将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-**Important:** Mailgun API uses `application/x-www-form-urlencoded` for POST/PUT requests, not JSON.
+**重要提示：** Mailgun API在POST/PUT请求中使用 `application/x-www-form-urlencoded` 格式，而不是JSON。
 
-### Domains
+### 域名
 
-#### List Domains
+#### 列出域名
 
 ```bash
 GET /mailgun/v3/domains
 ```
 
-Returns all domains for the account.
+返回账户下的所有域名。
 
-#### Get Domain
+#### 获取域名信息
 
 ```bash
 GET /mailgun/v3/domains/{domain_name}
 ```
 
-#### Create Domain
+#### 创建域名
 
 ```bash
 POST /mailgun/v3/domains
@@ -174,15 +174,15 @@ Content-Type: application/x-www-form-urlencoded
 name=example.com&smtp_password=supersecret
 ```
 
-#### Delete Domain
+#### 删除域名
 
 ```bash
 DELETE /mailgun/v3/domains/{domain_name}
 ```
 
-### Messages
+### 消息
 
-#### Send Message
+#### 发送邮件
 
 ```bash
 POST /mailgun/v3/{domain_name}/messages
@@ -191,23 +191,23 @@ Content-Type: application/x-www-form-urlencoded
 from=sender@example.com&to=recipient@example.com&subject=Hello&text=Hello World
 ```
 
-Parameters:
-- `from` (required) - Sender email address
-- `to` (required) - Recipient(s), comma-separated
-- `cc` - CC recipients
-- `bcc` - BCC recipients
-- `subject` (required) - Email subject
-- `text` - Plain text body
-- `html` - HTML body
-- `template` - Name of stored template to use
-- `o:tag` - Tag for tracking
-- `o:tracking` - Enable/disable tracking (yes/no)
-- `o:tracking-clicks` - Enable click tracking
-- `o:tracking-opens` - Enable open tracking
-- `h:X-Custom-Header` - Custom headers (prefix with h:)
-- `v:custom-var` - Custom variables for templates (prefix with v:)
+参数：
+- `from`（必填）- 发件人电子邮件地址
+- `to`（必填）- 收件人地址（用逗号分隔）
+- `cc` - 抄送收件人
+- `bcc` - 密送收件人
+- `subject`（必填）- 邮件主题
+- `text` - 纯文本正文
+- `html` - HTML正文
+- `template` - 要使用的模板名称
+- `o:tag` - 跟踪标签
+- `o:tracking` - 启用/禁用跟踪（是/否）
+- `o:tracking-clicks` - 启用点击跟踪
+- `o:tracking-opens` - 启用打开跟踪
+- `h:X-Custom-Header` - 自定义头部（前缀为 `h:`）
+- `v:custom-var` - 模板中的自定义变量（前缀为 `v:`）
 
-#### Send MIME Message
+#### 发送MIME邮件
 
 ```bash
 POST /mailgun/v3/{domain_name}/messages.mime
@@ -216,39 +216,39 @@ Content-Type: multipart/form-data
 to=recipient@example.com&message=<MIME content>
 ```
 
-### Events
+### 事件
 
-#### List Events
+#### 列出事件
 
 ```bash
 GET /mailgun/v3/{domain_name}/events
 ```
 
-Query parameters:
-- `begin` - Start time (RFC 2822 or Unix timestamp)
-- `end` - End time
-- `ascending` - Sort order (yes/no)
-- `limit` - Results per page (max 300)
-- `event` - Filter by event type (accepted, delivered, failed, opened, clicked, unsubscribed, complained, stored)
-- `from` - Filter by sender
-- `to` - Filter by recipient
-- `tags` - Filter by tags
+查询参数：
+- `begin` - 开始时间（RFC 2822格式或Unix时间戳）
+- `end` - 结束时间
+- `ascending` - 排序方式（是/否）
+- `limit` - 每页显示的结果数量（最多300条）
+- `event` - 按事件类型过滤（已接受、已送达、失败、已打开、已点击、已取消订阅、已投诉、已存储）
+- `from` - 按发件人过滤
+- `to` - 按收件人过滤
+- `tags` - 按标签过滤
 
-### Routes
+### 路由
 
-Routes are defined globally per account, not per domain.
+路由是针对整个账户全局定义的，而不是针对每个域名定义的。
 
-#### List Routes
+#### 列出路由
 
 ```bash
 GET /mailgun/v3/routes
 ```
 
-Query parameters:
-- `skip` - Number of records to skip
-- `limit` - Number of records to return
+查询参数：
+- `skip` - 要跳过的记录数
+- `limit` - 返回的记录数
 
-#### Create Route
+#### 创建路由
 
 ```bash
 POST /mailgun/v3/routes
@@ -257,19 +257,19 @@ Content-Type: application/x-www-form-urlencoded
 priority=0&description=My Route&expression=match_recipient(".*@example.com")&action=forward("https://example.com/webhook")
 ```
 
-Parameters:
-- `priority` - Route priority (lower = higher priority)
-- `description` - Route description
-- `expression` - Filter expression (match_recipient, match_header, catch_all)
-- `action` - Action(s) to take (forward, store, stop)
+参数：
+- `priority` - 路由优先级（优先级越低，优先级越高）
+- `description` - 路由描述
+- `expression` - 过滤条件（match_recipient、match_header、catch_all）
+- `action` - 要执行的操作（转发、存储、停止）
 
-#### Get Route
+#### 获取路由信息
 
 ```bash
 GET /mailgun/v3/routes/{route_id}
 ```
 
-#### Update Route
+#### 更新路由
 
 ```bash
 PUT /mailgun/v3/routes/{route_id}
@@ -278,21 +278,21 @@ Content-Type: application/x-www-form-urlencoded
 priority=1&description=Updated Route
 ```
 
-#### Delete Route
+#### 删除路由
 
 ```bash
 DELETE /mailgun/v3/routes/{route_id}
 ```
 
-### Webhooks
+### Webhook
 
-#### List Webhooks
+#### 列出Webhook
 
 ```bash
 GET /mailgun/v3/domains/{domain_name}/webhooks
 ```
 
-#### Create Webhook
+#### 创建Webhook
 
 ```bash
 POST /mailgun/v3/domains/{domain_name}/webhooks
@@ -301,15 +301,15 @@ Content-Type: application/x-www-form-urlencoded
 id=delivered&url=https://example.com/webhook
 ```
 
-Webhook types: `accepted`, `delivered`, `opened`, `clicked`, `unsubscribed`, `complained`, `permanent_fail`, `temporary_fail`
+Webhook类型：`accepted`、`delivered`、`opened`、`clicked`、`unsubscribed`、`complained`、`permanent_fail`、`temporary_fail`
 
-#### Get Webhook
+#### 获取Webhook信息
 
 ```bash
 GET /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
 ```
 
-#### Update Webhook
+#### 更新Webhook
 
 ```bash
 PUT /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
@@ -318,21 +318,21 @@ Content-Type: application/x-www-form-urlencoded
 url=https://example.com/new-webhook
 ```
 
-#### Delete Webhook
+#### 删除Webhook
 
 ```bash
 DELETE /mailgun/v3/domains/{domain_name}/webhooks/{webhook_type}
 ```
 
-### Templates
+### 模板
 
-#### List Templates
+#### 列出模板
 
 ```bash
 GET /mailgun/v3/{domain_name}/templates
 ```
 
-#### Create Template
+#### 创建模板
 
 ```bash
 POST /mailgun/v3/{domain_name}/templates
@@ -341,27 +341,27 @@ Content-Type: application/x-www-form-urlencoded
 name=my-template&description=Welcome email&template=<html><body>Hello {{name}}</body></html>
 ```
 
-#### Get Template
+#### 获取模板信息
 
 ```bash
 GET /mailgun/v3/{domain_name}/templates/{template_name}
 ```
 
-#### Delete Template
+#### 删除模板
 
 ```bash
 DELETE /mailgun/v3/{domain_name}/templates/{template_name}
 ```
 
-### Mailing Lists
+### 邮件列表
 
-#### List Mailing Lists
+#### 列出邮件列表
 
 ```bash
 GET /mailgun/v3/lists/pages
 ```
 
-#### Create Mailing List
+#### 创建邮件列表
 
 ```bash
 POST /mailgun/v3/lists
@@ -370,15 +370,15 @@ Content-Type: application/x-www-form-urlencoded
 address=newsletter@example.com&name=Newsletter&description=Monthly newsletter&access_level=readonly
 ```
 
-Access levels: `readonly`, `members`, `everyone`
+访问权限：`readonly`、`members`、`everyone`
 
-#### Get Mailing List
+#### 获取邮件列表信息
 
 ```bash
 GET /mailgun/v3/lists/{list_address}
 ```
 
-#### Update Mailing List
+#### 更新邮件列表
 
 ```bash
 PUT /mailgun/v3/lists/{list_address}
@@ -387,21 +387,21 @@ Content-Type: application/x-www-form-urlencoded
 name=Updated Newsletter
 ```
 
-#### Delete Mailing List
+#### 删除邮件列表
 
 ```bash
 DELETE /mailgun/v3/lists/{list_address}
 ```
 
-### Mailing List Members
+### 邮件列表成员
 
-#### List Members
+#### 列出成员
 
 ```bash
 GET /mailgun/v3/lists/{list_address}/members/pages
 ```
 
-#### Add Member
+#### 添加成员
 
 ```bash
 POST /mailgun/v3/lists/{list_address}/members
@@ -410,13 +410,13 @@ Content-Type: application/x-www-form-urlencoded
 address=member@example.com&name=John Doe&subscribed=yes
 ```
 
-#### Get Member
+#### 获取成员信息
 
 ```bash
 GET /mailgun/v3/lists/{list_address}/members/{member_address}
 ```
 
-#### Update Member
+#### 更新成员信息
 
 ```bash
 PUT /mailgun/v3/lists/{list_address}/members/{member_address}
@@ -425,15 +425,15 @@ Content-Type: application/x-www-form-urlencoded
 name=Jane Doe&subscribed=no
 ```
 
-#### Delete Member
+#### 删除成员
 
 ```bash
 DELETE /mailgun/v3/lists/{list_address}/members/{member_address}
 ```
 
-### Suppressions
+### 邮件抑制规则
 
-#### Bounces
+#### 处理邮件退回
 
 ```bash
 # List bounces
@@ -452,7 +452,7 @@ GET /mailgun/v3/{domain_name}/bounces/{address}
 DELETE /mailgun/v3/{domain_name}/bounces/{address}
 ```
 
-#### Unsubscribes
+#### 取消订阅
 
 ```bash
 # List unsubscribes
@@ -468,7 +468,7 @@ address=unsubscribed@example.com&tag=*
 DELETE /mailgun/v3/{domain_name}/unsubscribes/{address}
 ```
 
-#### Complaints
+#### 处理投诉
 
 ```bash
 # List complaints
@@ -484,7 +484,7 @@ address=complainer@example.com
 DELETE /mailgun/v3/{domain_name}/complaints/{address}
 ```
 
-#### Whitelists
+#### 白名单
 
 ```bash
 # List whitelists
@@ -500,64 +500,64 @@ address=allowed@example.com
 DELETE /mailgun/v3/{domain_name}/whitelists/{address}
 ```
 
-### Statistics
+### 统计数据
 
-#### Get Stats
+#### 获取统计信息
 
 ```bash
 GET /mailgun/v3/{domain_name}/stats/total?event=delivered&event=opened
 ```
 
-Query parameters:
-- `event` (required) - Event type(s): accepted, delivered, failed, opened, clicked, unsubscribed, complained
-- `start` - Start date (RFC 2822 or Unix timestamp)
-- `end` - End date
-- `resolution` - Data resolution (hour, day, month)
-- `duration` - Period to show stats for
+查询参数：
+- `event`（必填）- 事件类型：已接受、已送达、失败、已打开、已点击、已取消订阅、已投诉
+- `start` - 开始日期（RFC 2822格式或Unix时间戳）
+- `end` - 结束日期
+- `resolution` - 数据显示周期（小时、天、月）
+- `duration` - 显示统计数据的期间
 
-### Tags
+### 标签
 
-#### List Tags
+#### 列出标签
 
 ```bash
 GET /mailgun/v3/{domain_name}/tags
 ```
 
-#### Get Tag
+#### 获取标签信息
 
 ```bash
 GET /mailgun/v3/{domain_name}/tags/{tag_name}
 ```
 
-#### Delete Tag
+#### 删除标签
 
 ```bash
 DELETE /mailgun/v3/{domain_name}/tags/{tag_name}
 ```
 
-### IPs
+### IP地址
 
-#### List IPs
+#### 列出IP地址
 
 ```bash
 GET /mailgun/v3/ips
 ```
 
-#### Get IP
+#### 获取IP地址信息
 
 ```bash
 GET /mailgun/v3/ips/{ip_address}
 ```
 
-### Domain Tracking
+### 域名跟踪
 
-#### Get Tracking Settings
+#### 获取跟踪设置
 
 ```bash
 GET /mailgun/v3/domains/{domain_name}/tracking
 ```
 
-#### Update Open Tracking
+#### 更新打开跟踪设置
 
 ```bash
 PUT /mailgun/v3/domains/{domain_name}/tracking/open
@@ -566,7 +566,7 @@ Content-Type: application/x-www-form-urlencoded
 active=yes
 ```
 
-#### Update Click Tracking
+#### 更新点击跟踪设置
 
 ```bash
 PUT /mailgun/v3/domains/{domain_name}/tracking/click
@@ -575,7 +575,7 @@ Content-Type: application/x-www-form-urlencoded
 active=yes
 ```
 
-#### Update Unsubscribe Tracking
+#### 更新取消订阅跟踪设置
 
 ```bash
 PUT /mailgun/v3/domains/{domain_name}/tracking/unsubscribe
@@ -584,15 +584,15 @@ Content-Type: application/x-www-form-urlencoded
 active=yes&html_footer=<a href="%unsubscribe_url%">Unsubscribe</a>
 ```
 
-### Credentials
+### 凭据
 
-#### List Credentials
+#### 列出凭据
 
 ```bash
 GET /mailgun/v3/domains/{domain_name}/credentials
 ```
 
-#### Create Credential
+#### 创建凭据
 
 ```bash
 POST /mailgun/v3/domains/{domain_name}/credentials
@@ -601,15 +601,15 @@ Content-Type: application/x-www-form-urlencoded
 login=alice&password=supersecret
 ```
 
-#### Delete Credential
+#### 删除凭据
 
 ```bash
 DELETE /mailgun/v3/domains/{domain_name}/credentials/{login}
 ```
 
-## Pagination
+## 分页
 
-Mailgun uses cursor-based pagination:
+Mailgun使用基于游标的分页机制：
 
 ```json
 {
@@ -623,11 +623,11 @@ Mailgun uses cursor-based pagination:
 }
 ```
 
-Use `limit` parameter to control page size (default: 100).
+使用 `limit` 参数来控制页面大小（默认值为100条）。
 
-## Code Examples
+## 代码示例
 
-### JavaScript - Send Email
+### JavaScript - 发送电子邮件
 
 ```javascript
 const formData = new URLSearchParams();
@@ -651,7 +651,7 @@ const result = await response.json();
 console.log(result);
 ```
 
-### Python - Send Email
+### Python - 发送电子邮件
 
 ```python
 import os
@@ -670,7 +670,7 @@ response = requests.post(
 print(response.json())
 ```
 
-### Python - List Domains
+### Python - 列出域名
 
 ```python
 import os
@@ -685,7 +685,7 @@ for domain in domains['items']:
     print(f"{domain['name']}: {domain['state']}")
 ```
 
-### Python - Create Route and Webhook
+### Python - 创建路由和Webhook
 
 ```python
 import os
@@ -719,48 +719,48 @@ webhook_response = requests.post(
 print(f"Webhook created: {webhook_response.json()}")
 ```
 
-## Notes
+## 注意事项
 
-- Mailgun uses `application/x-www-form-urlencoded` for POST/PUT requests, not JSON
-- Domain names must be included in most endpoint paths
-- Routes are global (per account), not per domain
-- Sandbox domains require authorized recipients for sending
-- Dates are returned in RFC 2822 format
-- Event logs are stored for at least 3 days
-- Stats require at least one `event` parameter
-- Templates use Handlebars syntax by default
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq`, environment variables may not expand correctly. Use Python examples instead.
+- Mailgun在POST/PUT请求中使用 `application/x-www-form-urlencoded` 格式，而不是JSON。
+- 大多数端点路径中必须包含域名。
+- 路由是针对整个账户全局定义的，而不是针对每个域名。
+- 沙箱域名在发送邮件时需要授权的收件人。
+- 日期以RFC 2822格式返回。
+- 事件日志至少保存3天。
+- 统计数据需要至少提供一个 `event` 参数。
+- 模板默认使用Handlebars语法。
+- **重要提示：** 当URL包含括号时，使用 `curl -g` 选项来禁用全局解析。
+- **重要提示：** 当将curl输出传递给 `jq` 时，环境变量可能无法正确解析。建议使用Python示例。
 
-## Rate Limits
+## 速率限制
 
-| Operation | Limit |
-|-----------|-------|
-| Sending | Varies by plan |
-| API calls | No hard limit, but excessive requests may be throttled |
+| 操作 | 限制 |
+|---------|-------|
+| 发送邮件 | 根据套餐不同而有所差异 |
+| API调用 | 没有硬性限制，但过多的请求可能会被限制 |
 
-When rate limited, implement exponential backoff for retries.
+当遇到速率限制时，请实施指数级退避策略进行重试。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing Mailgun connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden (e.g., sandbox domain restrictions) |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Mailgun API |
+| 400 | 请求错误或未建立Mailgun连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 被禁止（例如，由于沙箱域名限制） |
+| 404 | 资源未找到 |
+| 429 | 达到速率限制 |
+| 4xx/5xx | 来自Mailgun API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -771,23 +771,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `mailgun`. For example:
+1. 确保您的URL路径以 `mailgun` 开头。例如：
+- 正确：`https://gateway.maton.ai/mailgun/v3/domains`
+- 错误：`https://gateway.maton.ai/v3/domains`
 
-- Correct: `https://gateway.maton.ai/mailgun/v3/domains`
-- Incorrect: `https://gateway.maton.ai/v3/domains`
+### 故障排除：沙箱域名限制
 
-### Troubleshooting: Sandbox Domain Restrictions
+沙箱域名只能发送给授权的收件人。要发送邮件，请：
+1. 升级到付费套餐，或
+2. 在Mailgun控制台中将收件人地址添加到授权收件人列表中。
 
-Sandbox domains can only send to authorized recipients. To send emails:
-1. Upgrade to a paid plan, or
-2. Add recipient addresses to authorized recipients in the Mailgun dashboard
+## 资源
 
-## Resources
-
-- [Mailgun API Documentation](https://documentation.mailgun.com/docs/mailgun/api-reference/api-overview)
-- [Mailgun API Reference](https://mailgun-docs.redoc.ly/docs/mailgun/api-reference/intro/)
-- [Mailgun Postman Collection](https://www.postman.com/mailgun/mailgun-s-public-workspace/documentation/ik8dl61/mailgun-api)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Mailgun API文档](https://documentation.mailgun.com/docs/mailgun/api-reference/api-overview)
+- [Mailgun API参考](https://mailgun-docs.redoc.ly/docs/mailgun/api-reference/intro/)
+- [Mailgun Postman集合](https://www.postman.com/mailgun/mailgun-s-public-workspace/documentation/ik8dl61/mailgun-api)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

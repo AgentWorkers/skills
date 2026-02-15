@@ -1,40 +1,40 @@
 ---
 name: openserv-launch
-description: Launch tokens on Base blockchain via the OpenServ Launch API. Creates ERC-20 tokens with Aerodrome concentrated liquidity pools. Use when launching tokens, deploying memecoins, or building agents that create tokens with locked LP. Read reference.md for the full API reference. Read openserv-agent-sdk and openserv-client for building and running agents. You can launch tokens for your OpenServ agents.
+description: 通过 OpenServ Launch API 在 Base 区块链上发布代币。该 API 可用于创建基于 ERC-20 标准的代币，并利用 Aerodrome 平台提供的集中流动性池（liquidity pools）进行代币发行。这些代币可用于后续的部署、交易或其他业务场景（如 memecoins 的发行，或构建能够生成代币的代理程序）。如需完整的 API 参考信息，请参阅 reference.md 文件。如需了解如何构建和运行用于管理这些代币的代理程序，请查阅 openserv-agent-sdk 和 openserv-client 文档。您可以使用这些工具为自己的 OpenServ 代理程序生成代币。
 ---
 
-# OpenServ Launch API
+# OpenServ 发布 API
 
-Launch tokens instantly on Base blockchain with one-sided concentrated liquidity pools on Aerodrome Slipstream.
+在 Aerodrome Slipstream 上，利用单边集中流动性池即时发布代币。
 
-**Reference files:**
+**参考文件：**
 
-- `reference.md` - Full API reference for all endpoints
-- `troubleshooting.md` - Common issues and solutions
-- `examples/` - Complete code examples
+- `reference.md` - 所有端点的完整 API 参考
+- `troubleshooting.md` - 常见问题及解决方案
+- `examples/` - 完整的代码示例
 
-**Base URL:** `https://instant-launch.openserv.ai`
-
----
-
-## What This API Does
-
-- **Deploys ERC-20 tokens** - 1 billion supply, standard token contract
-- **Creates Aerodrome CL pools** - One-sided liquidity with 2,000,000x price range
-- **Locks LP for 1 year** - Automatic rug-pull protection
-- **Splits fees 50/50** - Creator wallet receives 50% of all trading fees
+**基础 URL：`https://instant-launch.openserv.ai`
 
 ---
 
-## Quick Start
+## 该 API 的功能
 
-### Dependencies
+- **部署 ERC-20 代币** - 总供应量为 10 亿枚，采用标准代币合约
+- **创建 Aerodrome CL 池** - 单边流动性池，价格波动范围为 2,000,000 倍
+- **锁定流动性池 1 年** - 提供自动防止资金抽逃的保护机制
+- **交易费用平分** - 创建者钱包获得 50% 的所有交易费用
+
+---
+
+## 快速入门
+
+### 所需依赖项
 
 ```bash
 npm install axios
 ```
 
-### Launch a Token
+### 发布代币
 
 ```typescript
 import axios from 'axios'
@@ -62,31 +62,31 @@ console.log(response.data)
 
 ---
 
-## Endpoints Overview
+## 端点概述
 
-| Endpoint              | Method | Description                      |
+| 端点              | 方法    | 描述                                      |
 | --------------------- | ------ | -------------------------------- |
-| `/api/launch`         | POST   | Create a new token with LP pool  |
-| `/api/tokens`         | GET    | List launched tokens             |
-| `/api/tokens/:address`| GET    | Get token details by address     |
+| `/api/launch`         | POST   | 创建带有流动性池的新代币                         |
+| `/api/tokens`         | GET    | 列出已发布的代币                             |
+| `/api/tokens/:address`| GET    | 根据地址获取代币详情                         |
 
 ---
 
-## Launch Request Fields
+## 发布请求字段
 
-| Field       | Type   | Required | Description                                      |
-| ----------- | ------ | -------- | ------------------------------------------------ |
-| `name`      | string | Yes      | Token name (1-64 characters)                     |
-| `symbol`    | string | Yes      | Token symbol (1-10 chars, uppercase, alphanumeric) |
-| `wallet`    | string | Yes      | Creator wallet address (receives 50% of fees)   |
-| `description` | string | No     | Token description (max 500 characters)          |
-| `imageUrl`  | string | No       | Direct link to image file (jpg, png, gif, webp, svg) |
-| `website`   | string | No       | Website URL (must start with http/https)        |
-| `twitter`   | string | No       | Twitter handle (with or without @)              |
+| 字段            | 类型     | 是否必填 | 描述                                      |
+| --------------------------- | -------- | ----------------------------- |
+| `name`      | string | 是      | 代币名称（1-64 个字符）                         |
+| `symbol`    | string | 是      | 代币符号（1-10 个字符，大写，字母数字混合）                 |
+| `wallet`    | string | 是      | 创建者钱包地址（获得 50% 的费用）                     |
+| `description` | string | 否      | 代币描述（最多 500 个字符）                         |
+| `imageUrl`  | string | 否      | 图片文件链接（jpg、png、gif、webp、svg 格式）                |
+| `website`   | string | 否      | 网站地址（必须以 http/https 开头）                     |
+| `twitter`   | string | 否      | Twitter 账号（可带 @）                         |
 
 ---
 
-## Launch Response
+## 发布响应
 
 ```typescript
 interface LaunchResponse {
@@ -127,23 +127,23 @@ interface LaunchResponse {
 
 ---
 
-## Token Defaults
+## 代币默认参数
 
-| Setting            | Value              |
-| ------------------ | ------------------ |
-| Token Supply       | 1 billion          |
-| Initial Market Cap | $15,000            |
-| Price Range        | 2,000,000x (~$30B) |
-| Pool Fee           | 2%                 |
-| Tick Spacing       | 500                |
-| Fee Split          | 50/50 (creator/platform) |
-| Lock Duration      | 1 year             |
-| Staking Allocation | 5%                 |
-| Initial Buy        | 0.0005 ETH         |
+| 参数              | 值                                      |
+| --------------------------- | -------------------------------------- |
+| 代币总量       | 10 亿枚                              |
+| 初始市值        | 15,000 美元                              |
+| 价格波动范围     | 2,000,000 倍（约 300 亿美元）                     |
+| 流动性池费用     | 2%                                    |
+| 价格更新间隔     | 500 毫秒                               |
+| 费用分配        | 50/50（创建者/平台）                          |
+| 锁定期限        | 1 年                                   |
+| 投资奖励        | 5%                                    |
+| 最小购买金额     | 0.0005 ETH                              |
 
 ---
 
-## Example: Agent with Token Launch Capability
+## 示例：具备代币发布功能的代理
 
 ```typescript
 import { Agent, run } from '@openserv-labs/sdk'
@@ -195,22 +195,22 @@ main().catch(console.error)
 
 ---
 
-## Rate Limits
+## 限制规则
 
-- **1 token per wallet per 24 hours** (spam prevention)
-- Creator wallet must have on-chain activity (not empty)
-
----
-
-## Network
-
-All tokens are deployed on **Base Mainnet** (chainId: 8453).
+- **每个钱包 24 小时内只能发布 1 个代币**（防止垃圾信息）
+- 创建者钱包必须在链上具有活跃交易记录（账户不得为空）
 
 ---
 
-## Updating This Skill
+## 网络信息
 
-This skill may be outdated. The OpenServ team ships updates regularly—new features, API changes, and bug fixes won't be reflected here until you update. **If something isn't working as expected, or you want to make sure you have the latest information, update the skill before proceeding.**
+所有代币均部署在 **Base Mainnet** 上（链 ID：8453）。
+
+---
+
+## 更新本技能
+
+本技能可能会过时。OpenServ 团队会定期发布更新——新的功能、API 变更和漏洞修复内容将在更新后才会在此显示。**如果某些功能无法正常使用，或您希望确保拥有最新信息，请在继续使用前更新本技能。**
 
 ```bash
 # Check if updates are available
@@ -220,7 +220,7 @@ npx skills check
 npx skills update
 ```
 
-Or reinstall the OpenServ skills directly:
+或者直接重新安装 OpenServ 技能：
 
 ```bash
 npx skills add openserv-labs/skills
@@ -228,9 +228,9 @@ npx skills add openserv-labs/skills
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **openserv-agent-sdk** - Build agents with token launch capabilities
-- **openserv-client** - Provision and deploy agents on the platform
-- **openserv-multi-agent-workflows** - Multi-agent collaboration patterns
-- **openserv-ideaboard-api** - Find ideas and ship token-related services
+- **openserv-agent-sdk** - 用于构建具备代币发布功能的代理
+- **openserv-client** - 用于在平台上配置和部署代理
+- **openserv-multi-agent-workflows** - 多代理协作模式
+- **openserv-ideaboard-api** - 用于查找创意并发布与代币相关的服务

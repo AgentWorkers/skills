@@ -6,21 +6,20 @@ description: |
   Use when implementing accessible interfaces, fixing screen reader issues, keyboard navigation, or troubleshooting "focus outline missing", "aria-label required", "insufficient contrast".
 ---
 
-# Web Accessibility (WCAG 2.1 AA)
+# 网页无障碍（WCAG 2.1 AA）
 
-**Status**: Production Ready ✅
-**Last Updated**: 2026-01-14
-**Dependencies**: None (framework-agnostic)
-**Standards**: WCAG 2.1 Level AA
+**状态**: 已准备好投入生产 ✅  
+**最后更新**: 2026-01-14  
+**依赖项**: 无（与框架无关）  
+**标准**: WCAG 2.1 AA  
 
 ---
 
-## Quick Start (5 Minutes)
+## 快速入门（5分钟）  
 
-### 1. Semantic HTML Foundation
+### 1. 语义化HTML基础  
 
-Choose the right element - don't use `div` for everything:
-
+选择正确的元素——不要滥用`<div>`：  
 ```html
 <!-- ❌ WRONG - divs with onClick -->
 <div onclick="submit()">Submit</div>
@@ -29,17 +28,16 @@ Choose the right element - don't use `div` for everything:
 <!-- ✅ CORRECT - semantic elements -->
 <button type="submit">Submit</button>
 <a href="/next">Next page</a>
-```
+```  
 
-**Why this matters:**
-- Semantic elements have built-in keyboard support
-- Screen readers announce role automatically
-- Browser provides default accessible behaviors
+**重要性**:  
+- 语义化元素具有内置的键盘导航支持；  
+- 屏幕阅读器可以自动识别元素的用途；  
+- 浏览器会提供默认的无障碍行为。  
 
-### 2. Focus Management
+### 2. 焦点管理  
 
-Make interactive elements keyboard-accessible:
-
+确保交互式元素可通过键盘访问：  
 ```css
 /* ❌ WRONG - removes focus outline */
 button:focus { outline: none; }
@@ -49,17 +47,16 @@ button:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-```
+```  
 
-**CRITICAL:**
-- Never remove focus outlines without replacement
-- Use `:focus-visible` to show only on keyboard focus
-- Ensure 3:1 contrast ratio for focus indicators
+**关键点**:  
+- 绝不要移除焦点轮廓，除非有替代方案；  
+- 使用`:focus-visible`属性仅在键盘聚焦时显示元素；  
+- 确保焦点指示器的对比度达到3:1。  
 
-### 3. Text Alternatives
+### 3. 文本替代内容  
 
-Every non-text element needs a text alternative:
-
+每个非文本元素都需要有文本替代内容：  
 ```html
 <!-- ❌ WRONG - no alt text -->
 <img src="logo.png">
@@ -68,16 +65,15 @@ Every non-text element needs a text alternative:
 <!-- ✅ CORRECT - proper alternatives -->
 <img src="logo.png" alt="Company Name">
 <button aria-label="Close dialog"><svg>...</svg></button>
-```
+```  
 
 ---
 
-## The 5-Step Accessibility Process
+## 五步无障碍实现流程  
 
-### Step 1: Choose Semantic HTML
+### 第1步：选择语义化HTML  
 
-**Decision tree for element selection:**
-
+**元素选择指南**:  
 ```
 Need clickable element?
 ├─ Navigates to another page? → <a href="...">
@@ -96,14 +92,12 @@ Form element?
 ├─ Multiple choice? → <select> or <input type="radio">
 ├─ Toggle? → <input type="checkbox"> or <button aria-pressed>
 └─ Long text? → <textarea>
-```
+```  
+**详细指南请参阅`references/semantic-html.md`。**  
 
-**See `references/semantic-html.md` for complete guide.**
+### 第2步：必要时使用ARIA  
 
-### Step 2: Add ARIA When Needed
-
-**Golden rule: Use ARIA only when HTML can't express the pattern.**
-
+**黄金法则**: 仅在HTML无法表达所需功能时使用ARIA。  
 ```html
 <!-- ❌ WRONG - unnecessary ARIA -->
 <button role="button">Click me</button>  <!-- Button already has role -->
@@ -118,21 +112,18 @@ Form element?
 <dialog aria-labelledby="title">
   <h2 id="title">Confirm action</h2>
 </dialog>
-```
+```  
+**常见ARIA属性示例**:  
+- `aria-label`：用于没有可见标签的元素；  
+- `aria-labelledby`：引用现有文本作为标签；  
+- `aria-describedby`：提供额外说明；  
+- `aria-live`：用于通知动态内容更新；  
+- `aria-expanded`：用于表示可折叠/展开的状态。  
+**完整指南请参阅`references/aria-patterns.md`。**  
 
-**Common ARIA patterns:**
-- `aria-label` - When visible label doesn't exist
-- `aria-labelledby` - Reference existing text as label
-- `aria-describedby` - Additional description
-- `aria-live` - Announce dynamic updates
-- `aria-expanded` - Collapsible/expandable state
+### 第3步：实现键盘导航  
 
-**See `references/aria-patterns.md` for complete patterns.**
-
-### Step 3: Implement Keyboard Navigation
-
-**All interactive elements must be keyboard-accessible:**
-
+所有交互式元素都必须可通过键盘访问：  
 ```typescript
 // Tab order management
 function Dialog({ onClose }) {
@@ -165,24 +156,21 @@ function Dialog({ onClose }) {
 
   return <div ref={dialogRef} role="dialog">...</div>;
 }
-```
+```  
+**常用键盘操作**:  
+- Tab/Shift+Tab：在可聚焦元素间切换；  
+- Enter/Space：激活按钮/链接；  
+- 方向键：在组件内导航（如标签页、菜单）；  
+- Escape：关闭对话框/菜单；  
+- Home/End：跳转到页面的首/末项。  
+**详细指南请参阅`references/focus-management.md`。**  
 
-**Essential keyboard patterns:**
-- Tab/Shift+Tab: Navigate between focusable elements
-- Enter/Space: Activate buttons/links
-- Arrow keys: Navigate within components (tabs, menus)
-- Escape: Close dialogs/menus
-- Home/End: Jump to first/last item
+### 第4步：确保颜色对比度  
 
-**See `references/focus-management.md` for complete patterns.**
-
-### Step 4: Ensure Color Contrast
-
-**WCAG AA requirements:**
-- Normal text (under 18pt): 4.5:1 contrast ratio
-- Large text (18pt+ or 14pt+ bold): 3:1 contrast ratio
-- UI components (buttons, borders): 3:1 contrast ratio
-
+**WCAG AA要求**:  
+- 普通文本（小于18号字体）：对比度≥4.5:1；  
+- 大字体文本（18号或更粗的字体）：对比度≥3:1；  
+- 用户界面元素（如按钮、边框）：对比度≥3:1。  
 ```css
 /* ❌ WRONG - insufficient contrast */
 :root {
@@ -195,19 +183,16 @@ function Dialog({ onClose }) {
   --background: #ffffff;
   --text: #595959;  /* 4.6:1 - passes WCAG AA */
 }
-```
+```  
+**测试工具**:  
+- 浏览器开发者工具（Chrome/Firefox内置检查工具）；  
+- 对比度检查插件；  
+- axe开发者工具。  
+**详细指南请参阅`references/color-contrast.md`。**  
 
-**Testing tools:**
-- Browser DevTools (Chrome/Firefox have built-in checkers)
-- Contrast checker extensions
-- axe DevTools extension
+### 第5步：使表单可访问  
 
-**See `references/color-contrast.md` for complete guide.**
-
-### Step 5: Make Forms Accessible
-
-**Every form input needs a visible label:**
-
+每个表单输入字段都需要有可见的标签：  
 ```html
 <!-- ❌ WRONG - placeholder is not a label -->
 <input type="email" placeholder="Email address">
@@ -215,10 +200,8 @@ function Dialog({ onClose }) {
 <!-- ✅ CORRECT - proper label -->
 <label for="email">Email address</label>
 <input type="email" id="email" name="email" required aria-required="true">
-```
-
-**Error handling:**
-
+```  
+**错误处理**:  
 ```html
 <label for="email">Email address</label>
 <input
@@ -231,184 +214,169 @@ function Dialog({ onClose }) {
 <span id="email-error" role="alert">
   Please enter a valid email address
 </span>
-```
-
-**Live regions for dynamic errors:**
-
+```  
+**动态错误的提示**:  
 ```html
 <div role="alert" aria-live="assertive" aria-atomic="true">
   Form submission failed. Please fix the errors above.
 </div>
-```
-
-**See `references/forms-validation.md` for complete patterns.**
-
----
-
-## Critical Rules
-
-### Always Do
-
-✅ Use semantic HTML elements first (button, a, nav, article, etc.)
-✅ Provide text alternatives for all non-text content
-✅ Ensure 4.5:1 contrast for normal text, 3:1 for large text/UI
-✅ Make all functionality keyboard accessible
-✅ Test with keyboard only (unplug mouse)
-✅ Test with screen reader (NVDA on Windows, VoiceOver on Mac)
-✅ Use proper heading hierarchy (h1 → h2 → h3, no skipping)
-✅ Label all form inputs with visible labels
-✅ Provide focus indicators (never just `outline: none`)
-✅ Use `aria-live` for dynamic content updates
-
-### Never Do
-
-❌ Use `div` with `onClick` instead of `button`
-❌ Remove focus outlines without replacement
-❌ Use color alone to convey information
-❌ Use placeholders as labels
-❌ Skip heading levels (h1 → h3)
-❌ Use `tabindex` > 0 (messes with natural order)
-❌ Add ARIA when semantic HTML exists
-❌ Forget to restore focus after closing dialogs
-❌ Use `role="presentation"` on focusable elements
-❌ Create keyboard traps (no way to escape)
+```  
+**详细指南请参阅`references/forms-validation.md`。**  
 
 ---
 
-## Known Issues Prevention
+## 关键规则  
 
-This skill prevents **12** documented accessibility issues:
+### 必须遵守的规则  
 
-### Issue #1: Missing Focus Indicators
+✅ 首先使用语义化HTML元素（如`<button>`、`<a>`、`<nav>`、`<article>`等）；  
+✅ 为所有非文本内容提供文本替代内容；  
+✅ 确保普通文本的对比度达到4.5:1，大字体文本的对比度达到3:1；  
+✅ 使所有功能均可通过键盘访问；  
+✅ 仅使用键盘进行测试（禁用鼠标）；  
+✅ 使用屏幕阅读器进行测试（Windows使用NVDA，Mac使用VoiceOver）；  
+✅ 使用正确的标题层级（h1 → h2 → h3，不得跳过层级）；  
+✅ 为所有表单输入字段添加可见的标签；  
+✅ 为动态内容使用`aria-live`属性。  
 
-**Error**: Interactive elements have no visible focus indicator
-**Source**: WCAG 2.4.7 (Focus Visible)
-**Why It Happens**: CSS reset removes default outline
-**Prevention**: Always provide custom focus-visible styles
+### 绝对不能做的规则  
 
-### Issue #2: Insufficient Color Contrast
-
-**Error**: Text has less than 4.5:1 contrast ratio
-**Source**: WCAG 1.4.3 (Contrast Minimum)
-**Why It Happens**: Using light gray text on white background
-**Prevention**: Test all text colors with contrast checker
-
-### Issue #3: Missing Alt Text
-
-**Error**: Images missing alt attributes
-**Source**: WCAG 1.1.1 (Non-text Content)
-**Why It Happens**: Forgot to add or thought it was optional
-**Prevention**: Add alt="" for decorative, descriptive alt for meaningful images
-
-### Issue #4: Keyboard Navigation Broken
-
-**Error**: Interactive elements not reachable by keyboard
-**Source**: WCAG 2.1.1 (Keyboard)
-**Why It Happens**: Using div onClick instead of button
-**Prevention**: Use semantic interactive elements (button, a)
-
-### Issue #5: Form Inputs Without Labels
-
-**Error**: Input fields missing associated labels
-**Source**: WCAG 3.3.2 (Labels or Instructions)
-**Why It Happens**: Using placeholder as label
-**Prevention**: Always use `<label>` element with for/id association
-
-### Issue #6: Skipped Heading Levels
-
-**Error**: Heading hierarchy jumps from h1 to h3
-**Source**: WCAG 1.3.1 (Info and Relationships)
-**Why It Happens**: Using headings for visual styling instead of semantics
-**Prevention**: Use headings in order, style with CSS
-
-### Issue #7: No Focus Trap in Dialogs
-
-**Error**: Tab key exits dialog to background content
-**Source**: WCAG 2.4.3 (Focus Order)
-**Why It Happens**: No focus trap implementation
-**Prevention**: Implement focus trap for modal dialogs
-
-### Issue #8: Missing aria-live for Dynamic Content
-
-**Error**: Screen reader doesn't announce updates
-**Source**: WCAG 4.1.3 (Status Messages)
-**Why It Happens**: Dynamic content added without announcement
-**Prevention**: Use aria-live="polite" or "assertive"
-
-### Issue #9: Color-Only Information
-
-**Error**: Using only color to convey status
-**Source**: WCAG 1.4.1 (Use of Color)
-**Why It Happens**: Red text for errors without icon/text
-**Prevention**: Add icon + text label, not just color
-
-### Issue #10: Non-descriptive Link Text
-
-**Error**: Links with "click here" or "read more"
-**Source**: WCAG 2.4.4 (Link Purpose)
-**Why It Happens**: Generic link text without context
-**Prevention**: Use descriptive link text or aria-label
-
-### Issue #11: Auto-playing Media
-
-**Error**: Video/audio auto-plays without user control
-**Source**: WCAG 1.4.2 (Audio Control)
-**Why It Happens**: Autoplay attribute without controls
-**Prevention**: Require user interaction to start media
-
-### Issue #12: Inaccessible Custom Controls
-
-**Error**: Custom select/checkbox without keyboard support
-**Source**: WCAG 4.1.2 (Name, Role, Value)
-**Why It Happens**: Building from divs without ARIA
-**Prevention**: Use native elements or implement full ARIA pattern
+❌ 不要用`<div>`代替`<button>`并设置`onClick`属性；  
+❌ 移除焦点轮廓后不提供替代方案；  
+❌ 仅使用颜色来传达信息；  
+❌ 用占位符作为标签；  
+❌ 跳过标题层级（h1 → h3）；  
+❌ 在存在语义化HTML元素的情况下仍使用`aria`属性；  
+❌ 关闭对话框后不恢复焦点；  
+❌ 为可聚焦元素设置`role="presentation"`。  
 
 ---
 
-## WCAG 2.1 AA Quick Checklist
+## 常见问题的预防  
 
-### Perceivable
+遵循这些规则可以避免12种常见的无障碍问题：  
 
-- [ ] All images have alt text (or alt="" if decorative)
-- [ ] Text contrast ≥ 4.5:1 (normal), ≥ 3:1 (large)
-- [ ] Color not used alone to convey information
-- [ ] Text can be resized to 200% without loss of content
-- [ ] No auto-playing audio >3 seconds
+### 问题1：缺少焦点指示器  
 
-### Operable
+**错误**: 交互式元素没有可见的焦点指示器  
+**来源**: WCAG 2.4.7（Focus Visible）  
+**原因**: CSS样式重置移除了默认的焦点轮廓  
+**预防措施**: 始终为元素添加自定义的`:focus-visible`样式。  
 
-- [ ] All functionality keyboard accessible
-- [ ] No keyboard traps
-- [ ] Visible focus indicators
-- [ ] Users can pause/stop/hide moving content
-- [ ] Page titles describe purpose
-- [ ] Focus order is logical
-- [ ] Link purpose clear from text or context
-- [ ] Multiple ways to find pages (menu, search, sitemap)
-- [ ] Headings and labels describe purpose
+### 问题2：颜色对比度不足  
 
-### Understandable
+**错误**: 文本的对比度低于4.5:1  
+**来源**: WCAG 1.4.3（Contrast Minimum）  
+**原因**: 使用浅灰色文本在白色背景上  
+**预防措施**: 使用对比度检查工具测试所有文本的颜色。  
 
-- [ ] Page language specified (`<html lang="en">`)
-- [ ] Language changes marked (`<span lang="es">`)
-- [ ] No unexpected context changes on focus/input
-- [ ] Consistent navigation across site
-- [ ] Form labels/instructions provided
-- [ ] Input errors identified and described
-- [ ] Error prevention for legal/financial/data changes
+### 问题3：缺少alt文本  
 
-### Robust
+**错误**: 图片没有`alt`属性  
+**来源**: WCAG 1.1.1（Non-text Content）  
+**原因**: 忘记添加`alt`属性，或认为它是可选的  
+**预防措施**: 为装饰性图片添加`alt="""`，为有意义的图片添加描述性`alt`文本。  
 
-- [ ] Valid HTML (no parsing errors)
-- [ ] Name, role, value available for all UI components
-- [ ] Status messages identified (aria-live)
+### 问题4：键盘导航失效  
+
+**错误**: 交互式元素无法通过键盘访问  
+**来源**: WCAG 2.1.1（Keyboard）  
+**原因**: 使用`<div>`的`onClick`属性代替`<button>`  
+**预防措施**: 使用语义化的交互元素（如`<button>`、`<a>`）。  
+
+### 问题5：表单输入字段没有标签  
+
+**错误**: 输入字段没有关联的标签  
+**来源**: WCAG 3.3.2（Labels or Instructions）  
+**原因**: 使用占位符作为标签  
+**预防措施**: 必须使用`<label>`元素，并将其`for`属性与输入字段关联。  
+
+### 问题6：标题层级混乱  
+
+**错误**: 页面的标题层级跳跃（例如从h1直接跳到h3）  
+**原因**: 仅为了视觉样式而使用标题，而非根据语义结构  
+**预防措施**: 按正确的顺序使用标题，并使用CSS进行样式设置。  
+
+### 问题7：对话框中没有焦点陷阱  
+
+**错误**: 使用Tab键时用户会跳转到背景页面  
+**原因**: 未实现焦点陷阱  
+**预防措施**: 为模态对话框实现焦点陷阱。  
+
+### 问题8：动态内容没有`aria-live`属性  
+
+**错误**: 屏幕阅读器无法通知动态内容的更新  
+**来源**: WCAG 4.1.3（Status Messages）  
+**原因**: 动态内容添加时未使用`aria-live`属性  
+**预防措施**: 使用`aria-live="polite"`或`aria-live="assertive"`。  
+
+### 问题9：仅使用颜色传达信息  
+
+**错误**: 仅通过颜色显示状态信息  
+**原因**: 错误信息仅用颜色显示，没有图标或文字说明  
+**预防措施**: 添加图标和文字标签。  
+
+### 问题10：链接文本缺乏描述性  
+
+**错误**: 链接文本过于通用（如“点击这里”或“阅读更多”）  
+**来源**: WCAG 2.4.4（Link Purpose）  
+**原因**: 链接文本缺乏描述性  
+**预防措施**: 使用描述性的链接文本或`aria-label`属性。  
+
+### 问题11：自动播放媒体  
+
+**错误**: 媒体自动播放，用户无法控制  
+**来源**: WCAG 1.4.2（Audio Control）  
+**原因**: 媒体自动播放时没有用户交互机制  
+**预防措施**: 强制用户手动触发媒体播放。  
+
+### 问题12：自定义控件不可访问  
+
+**错误**: 自定义的选择框/复选框无法通过键盘操作  
+**原因**: 未使用`aria`属性  
+**预防措施**: 使用原生元素或完整的ARIA模式实现自定义控件。  
 
 ---
 
-## Testing Workflow
+## WCAG 2.1 AA快速检查清单  
 
-### 1. Keyboard-Only Testing (5 minutes)
+### 可感知性（Perceivable）  
+- 所有图片都有`alt`文本（装饰性图片使用`alt="""`）；  
+- 文本对比度≥4.5:1（普通文本），≥3:1（大字体文本）；  
+- 不仅使用颜色来传达信息；  
+- 文本可以放大到200%而不丢失内容；  
+- 没有自动播放时长超过3秒的音频。  
 
+### 可操作性（Operable）  
+- 所有功能均可通过键盘访问；  
+- 不存在键盘导航陷阱；  
+- 具有可见的焦点指示器；  
+- 用户可以暂停/停止/隐藏动态内容；  
+- 页面标题能清晰说明页面用途；  
+- 焦点切换顺序合理；  
+- 链接的用途从文本或上下文中可以明确了解；  
+- 有多种方式可以找到页面（菜单、搜索、站点地图）；  
+- 标题和标签能清晰说明内容用途。  
+
+### 可理解性（Understandable）  
+- 页面语言已明确指定（`<html lang="en">`）；  
+- 语言切换有明确提示（`<span lang="es">`）；  
+- 焦点或输入操作不会导致意外的上下文变化；  
+- 网站内的导航一致；  
+- 提供表单标签和说明；  
+- 输入错误有提示和解释；  
+- 对法律/财务/数据相关的更改有错误提示。  
+
+### 健壮性（Robust）  
+- HTML代码有效（无解析错误）；  
+- 所有用户界面元素都有名称、角色和值；  
+- 状态信息有明确的`aria-live`属性。  
+
+---
+
+## 测试流程  
+
+### 1. 仅使用键盘的测试（5分钟）  
 ```
 1. Unplug mouse or hide cursor
 2. Tab through entire page
@@ -418,316 +386,94 @@ This skill prevents **12** documented accessibility issues:
 3. Use Enter/Space to activate
 4. Use Escape to close dialogs
 5. Use arrow keys in menus/tabs
-```
+```  
 
-### 2. Screen Reader Testing (10 minutes)
+### 2. 使用屏幕阅读器的测试（10分钟）  
 
-**NVDA (Windows - Free)**:
-- Download: https://www.nvaccess.org/download/
-- Start: Ctrl+Alt+N
-- Navigate: Arrow keys or Tab
-- Read: NVDA+Down arrow
-- Stop: NVDA+Q
+**NVDA（Windows - 免费）**:  
+- 下载：https://www.nvaccess.org/download/  
+- 启动：Ctrl+Alt+N  
+- 导航：使用方向键或Tab键；  
+- 阅读内容：NVDA+Down箭头；  
+- 停止：NVDA+Q  
 
-**VoiceOver (Mac - Built-in)**:
-- Start: Cmd+F5
-- Navigate: VO+Right/Left arrow (VO = Ctrl+Option)
-- Read: VO+A (read all)
-- Stop: Cmd+F5
+**VoiceOver（Mac - 内置）**:  
+- 启动：Cmd+F5  
+- 导航：使用VO+Right/Left箭头；  
+- 阅读内容：VO+A；  
+- 停止：Cmd+F5  
 
-**What to test:**
-- Are all interactive elements announced?
-- Are images described properly?
-- Are form labels read with inputs?
-- Are dynamic updates announced?
-- Is heading structure clear?
+**测试内容**:  
+- 所有交互式元素是否被正确读取？  
+- 图片是否有描述？  
+- 表单标签和输入字段是否被正确读取？  
+- 动态内容更新是否被通知？  
+- 标题结构是否清晰？  
 
-### 3. Automated Testing
+### 3. 自动化测试  
 
-**axe DevTools** (Browser extension - highly recommended):
-- Install: Chrome/Firefox extension
-- Run: F12 → axe DevTools tab → Scan
-- Fix: Review violations, follow remediation
-- Retest: Scan again after fixes
+**axe开发者工具**（强烈推荐）:  
+- 安装：Chrome/Firefox扩展程序；  
+- 运行：F12 → 打开axe开发者工具 → 进行扫描；  
+- 修复问题后重新扫描；  
+- 修复后再次测试。  
 
-**Lighthouse** (Built into Chrome):
-- Open DevTools (F12)
-- Lighthouse tab
-- Select "Accessibility" category
-- Generate report
-- Score 90+ is good, 100 is ideal
+**Lighthouse**（Chrome内置工具）:  
+- 打开开发者工具（F12） → 选择“Accessibility”类别；  
+- 生成报告；  
+- 分数90分以上表示良好，100分为理想状态。  
 
 ---
 
-## Common Patterns
+## 常见的无障碍实现模式  
 
-### Pattern 1: Accessible Dialog/Modal
+### 模式1：可访问的对话框/模态窗口  
 
-```typescript
-interface DialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-}
+**适用场景**: 任何会阻挡用户与背景内容交互的模态窗口或覆盖层。  
 
-function Dialog({ isOpen, onClose, title, children }: DialogProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
+### 模式2：可访问的标签页  
 
-  useEffect(() => {
-    if (!isOpen) return;
+**适用场景**: 具有多个标签页的界面。  
 
-    const previousFocus = document.activeElement as HTMLElement;
+### 模式3：跳过链接的导航  
 
-    // Focus first focusable element
-    const firstFocusable = dialogRef.current?.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    ) as HTMLElement;
-    firstFocusable?.focus();
+**适用场景**: 所有多页面网站，且导航栏位于主要内容之前。  
 
-    // Focus trap
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-      if (e.key === 'Tab') {
-        const focusableElements = dialogRef.current?.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        if (!focusableElements?.length) return;
+### 模式4：具有验证功能的可访问表单  
 
-        const first = focusableElements[0] as HTMLElement;
-        const last = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      previousFocus?.focus();
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="dialog-backdrop"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Dialog */}
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="dialog-title"
-        className="dialog"
-      >
-        <h2 id="dialog-title">{title}</h2>
-        <div className="dialog-content">{children}</div>
-        <button onClick={onClose} aria-label="Close dialog">×</button>
-      </div>
-    </>
-  );
-}
-```
-
-**When to use**: Any modal dialog or overlay that blocks interaction with background content.
-
-### Pattern 2: Accessible Tabs
-
-```typescript
-function Tabs({ tabs }: { tabs: Array<{ label: string; content: React.ReactNode }> }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      const newIndex = index === 0 ? tabs.length - 1 : index - 1;
-      setActiveIndex(newIndex);
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      const newIndex = index === tabs.length - 1 ? 0 : index + 1;
-      setActiveIndex(newIndex);
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      setActiveIndex(0);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      setActiveIndex(tabs.length - 1);
-    }
-  };
-
-  return (
-    <div>
-      <div role="tablist" aria-label="Content tabs">
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            role="tab"
-            aria-selected={activeIndex === index}
-            aria-controls={`panel-${index}`}
-            id={`tab-${index}`}
-            tabIndex={activeIndex === index ? 0 : -1}
-            onClick={() => setActiveIndex(index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      {tabs.map((tab, index) => (
-        <div
-          key={index}
-          role="tabpanel"
-          id={`panel-${index}`}
-          aria-labelledby={`tab-${index}`}
-          hidden={activeIndex !== index}
-          tabIndex={0}
-        >
-          {tab.content}
-        </div>
-      ))}
-    </div>
-  );
-}
-```
-
-**When to use**: Tabbed interface with multiple panels.
-
-### Pattern 3: Skip Links
-
-```html
-<!-- Place at very top of body -->
-<a href="#main-content" class="skip-link">
-  Skip to main content
-</a>
-
-<style>
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--primary);
-  color: white;
-  padding: 8px 16px;
-  z-index: 9999;
-}
-
-.skip-link:focus {
-  top: 0;
-}
-</style>
-
-<!-- Then in your layout -->
-<main id="main-content" tabindex="-1">
-  <!-- Page content -->
-</main>
-```
-
-**When to use**: All multi-page websites with navigation/header before main content.
-
-### Pattern 4: Accessible Form with Validation
-
-```typescript
-function ContactForm() {
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-
-  const validateEmail = (email: string) => {
-    if (!email) return 'Email is required';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Email is invalid';
-    return '';
-  };
-
-  const handleBlur = (field: string, value: string) => {
-    setTouched(prev => ({ ...prev, [field]: true }));
-    const error = validateEmail(value);
-    setErrors(prev => ({ ...prev, [field]: error }));
-  };
-
-  return (
-    <form>
-      <div>
-        <label htmlFor="email">Email address *</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          aria-required="true"
-          aria-invalid={touched.email && !!errors.email}
-          aria-describedby={errors.email ? 'email-error' : undefined}
-          onBlur={(e) => handleBlur('email', e.target.value)}
-        />
-        {touched.email && errors.email && (
-          <span id="email-error" role="alert" className="error">
-            {errors.email}
-          </span>
-        )}
-      </div>
-
-      <button type="submit">Submit</button>
-
-      {/* Global form error */}
-      <div role="alert" aria-live="assertive" aria-atomic="true">
-        {/* Dynamic error message appears here */}
-      </div>
-    </form>
-  );
-}
-```
-
-**When to use**: All forms with validation.
+**适用场景**: 所有需要验证的表单。  
 
 ---
 
-## Using Bundled Resources
+## 使用相关资源  
 
-### References (references/)
+### 参考资料（references/）  
 
-Detailed documentation for deep dives:
+- **wcag-checklist.md**: 完整的WCAG 2.1 A级和AA级要求及示例；  
+- **semantic-html.md**: 元素选择指南；  
+- **aria-patterns.md**: ARIA属性的使用方法；  
+- **focus-management.md**: 焦点顺序、焦点陷阱和恢复机制；  
+- **color-contrast.md**: 对比度要求、测试工具和颜色搭配建议；  
+- **forms-validation.md**: 表单的可访问性实现、错误处理和提示信息。  
 
-- **wcag-checklist.md** - Complete WCAG 2.1 Level A & AA requirements with examples
-- **semantic-html.md** - Element selection guide, when to use which tag
-- **aria-patterns.md** - ARIA roles, states, properties, and when to use them
-- **focus-management.md** - Focus order, focus traps, focus restoration patterns
-- **color-contrast.md** - Contrast requirements, testing tools, color palette tips
-- **forms-validation.md** - Accessible form patterns, error handling, announcements
+**何时需要使用这些资源**:  
+- 用户需要完整的WCAG检查清单；  
+- 需要深入了解特定无障碍实现模式（如标签页、折叠式菜单等）；  
+- 需要解决颜色对比度问题或进行颜色搭配设计；  
+- 需要处理复杂的表单验证场景。  
 
-**When Claude should load these**:
-- User asks for complete WCAG checklist
-- Deep dive into specific pattern (tabs, accordions, etc.)
-- Color contrast issues or palette design
-- Complex form validation scenarios
+### 无障碍审计工具  
 
-### Agents (agents/)
-
-- **a11y-auditor.md** - Automated accessibility auditor that checks pages for violations
-
-**When to use**: Request accessibility audit of existing page/component.
+- **a11y-auditor.md**: 自动化无障碍审计工具，用于检查页面的合规性。  
+**适用场景**: 需要对现有页面或组件进行无障碍审计。  
 
 ---
 
-## Advanced Topics
+## 高级主题  
 
-### ARIA Live Regions
+### ARIA Live Regions  
 
-Three politeness levels:
-
+**三种提示级别**:  
 ```html
 <!-- Polite: Wait for screen reader to finish current announcement -->
 <div aria-live="polite">New messages: 3</div>
@@ -739,18 +485,16 @@ Three politeness levels:
 
 <!-- Off: Don't announce (default) -->
 <div aria-live="off">Loading...</div>
-```
+```  
+**最佳实践**:  
+- 对于非关键性的更新（如通知、计数器）使用`aria-live="polite"`；  
+- 对于错误或重要提示使用`aria-live="assertive"`；  
+- 使用`aria-atomic="true"`在内容更新时显示整个区域；  
+- 保持提示信息简洁明了。  
 
-**Best practices:**
-- Use `polite` for non-critical updates (notifications, counters)
-- Use `assertive` for errors and critical alerts
-- Use `aria-atomic="true"` to read entire region on change
-- Keep messages concise and meaningful
+### SPA中的焦点管理  
 
-### Focus Management in SPAs
-
-React Router doesn't reset focus on navigation - you need to handle it:
-
+React Router在导航时不会自动恢复焦点——需要手动处理：  
 ```typescript
 function App() {
   const location = useLocation();
@@ -771,112 +515,82 @@ function App() {
 
   return <main ref={mainRef} tabIndex={-1} id="main-content">...</main>;
 }
-```
+```  
 
-### Accessible Data Tables
+### 可访问的数据表格  
 
-```html
-<table>
-  <caption>Monthly sales by region</caption>
-  <thead>
-    <tr>
-      <th scope="col">Region</th>
-      <th scope="col">Q1</th>
-      <th scope="col">Q2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">North</th>
-      <td>$10,000</td>
-      <td>$12,000</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-**Key attributes:**
-- `<caption>` - Describes table purpose
-- `scope="col"` - Identifies column headers
-- `scope="row"` - Identifies row headers
-- Associates data cells with headers for screen readers
+**关键属性**:  
+- `<caption>`：描述表格的用途；  
+- `scope="col"`：标识列标题；  
+- `scope="row"`：标识行标题；  
+- 使用`scope`属性帮助屏幕阅读器理解数据单元格与标题的关系。  
 
 ---
 
-## Official Documentation
+## 官方文档  
 
-- **WCAG 2.1**: https://www.w3.org/WAI/WCAG21/quickref/
-- **MDN Accessibility**: https://developer.mozilla.org/en-US/docs/Web/Accessibility
-- **ARIA Authoring Practices**: https://www.w3.org/WAI/ARIA/apg/
-- **WebAIM**: https://webaim.org/articles/
-- **axe DevTools**: https://www.deque.com/axe/devtools/
-
----
-
-## Troubleshooting
-
-### Problem: Focus indicators not visible
-
-**Symptoms**: Can tab through page but don't see where focus is
-**Cause**: CSS removed outlines or insufficient contrast
-**Solution**:
-```css
-*:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-```
-
-### Problem: Screen reader not announcing updates
-
-**Symptoms**: Dynamic content changes but no announcement
-**Cause**: No aria-live region
-**Solution**: Wrap dynamic content in `<div aria-live="polite">` or use role="alert"
-
-### Problem: Dialog focus escapes to background
-
-**Symptoms**: Tab key navigates to elements behind dialog
-**Cause**: No focus trap
-**Solution**: Implement focus trap (see Pattern 1 above)
-
-### Problem: Form errors not announced
-
-**Symptoms**: Visual errors appear but screen reader doesn't notice
-**Cause**: No aria-invalid or role="alert"
-**Solution**: Use aria-invalid + aria-describedby pointing to error message with role="alert"
+- **WCAG 2.1**: https://www.w3.org/WAI/WCAG21/quickref/  
+- **MDN无障碍指南**: https://developer.mozilla.org/en-US/docs/Web/Accessibility  
+- **ARIA编写指南**: https://www.w3.org/WAI/ARIA/apg/  
+- **WebAIM**: https://webaim.org/articles/  
+- **axe开发者工具**: https://www.deque.com/axe/devtools/  
 
 ---
 
-## Complete Setup Checklist
+## 故障排除  
 
-Use this for every page/component:
+### 问题：焦点指示器不可见  
 
-- [ ] All interactive elements are keyboard accessible
-- [ ] Visible focus indicators on all focusable elements
-- [ ] Images have alt text (or alt="" if decorative)
-- [ ] Text contrast ≥ 4.5:1 (test with axe or Lighthouse)
-- [ ] Form inputs have associated labels (not just placeholders)
-- [ ] Heading hierarchy is logical (no skipped levels)
-- [ ] Page has `<html lang="en">` or appropriate language
-- [ ] Dialogs have focus trap and restore focus on close
-- [ ] Dynamic content uses aria-live or role="alert"
-- [ ] Color not used alone to convey information
-- [ ] Tested with keyboard only (no mouse)
-- [ ] Tested with screen reader (NVDA or VoiceOver)
-- [ ] Ran axe DevTools scan (0 violations)
-- [ ] Lighthouse accessibility score ≥ 90
+**症状**: 可以使用Tab键导航，但看不到焦点位置  
+**原因**: CSS样式移除了焦点轮廓或对比度不足  
+**解决方法**: 为相关元素添加`:focus-visible`属性。  
 
----
+### 问题：屏幕阅读器无法通知更新  
 
-**Questions? Issues?**
+**症状**: 动态内容发生变化但屏幕阅读器没有提示  
+**原因**: 未为动态内容添加`aria-live`属性  
+**解决方法**: 将动态内容包裹在`<div aria-live="polite">`中，或使用`role="alert"`。  
 
-1. Check `references/wcag-checklist.md` for complete requirements
-2. Use `/a11y-auditor` agent to scan your page
-3. Run axe DevTools for automated testing
-4. Test with actual keyboard + screen reader
+### 问题：对话框中的焦点会跳转到背景页面  
+
+**症状**: 使用Tab键时用户会跳转到对话框后面的内容  
+**原因**: 未实现焦点陷阱  
+**解决方法**: 为对话框实现焦点陷阱。  
+
+### 问题：表单错误未得到提示  
+
+**症状**: 动态错误出现但屏幕阅读器未通知  
+**原因**: 未为错误信息添加`aria-invalid`属性或`role="alert"`  
+**解决方法**: 为错误信息添加`aria-invalid`和`aria-description`属性，并设置`role="alert"`。  
 
 ---
 
-**Standards**: WCAG 2.1 Level AA
-**Testing Tools**: axe DevTools, Lighthouse, NVDA, VoiceOver
-**Success Criteria**: 90+ Lighthouse score, 0 critical violations
+## 完整的设置检查清单  
+
+确保每个页面和组件都符合以下要求：  
+- 所有交互式元素均可通过键盘访问；  
+- 所有可聚焦元素都有可见的焦点指示器；  
+- 图片都有`alt`文本（装饰性图片使用`alt="""`）；  
+- 文本对比度≥4.5:1（使用axe或Lighthouse工具测试）；  
+- 表单输入字段都有关联的标签；  
+- 标题层级清晰（无层级跳跃）；  
+- 页面使用`<html lang="en">`指定语言；  
+- 对话框具有焦点陷阱，并在关闭时恢复焦点；  
+- 动态内容使用`aria-live`或`role="alert"`；  
+- 不仅使用颜色来传达信息；  
+- 仅使用键盘进行测试；  
+- 使用屏幕阅读器进行测试；  
+- 使用axe开发者工具进行扫描（无违规项）；  
+- Lighthouse无障碍评分≥90分。  
+
+---
+
+**有问题或需要帮助吗？**  
+1. 查阅`references/wcag-checklist.md`获取完整要求；  
+2. 使用`a11y-auditor`工具检查页面；  
+3. 使用axe开发者工具进行自动化测试；  
+4. 使用键盘和屏幕阅读器进行实际测试。  
+
+**标准**: WCAG 2.1 AA  
+**测试工具**: axe开发者工具、Lighthouse、NVDA、VoiceOver  
+**成功标准**: Lighthouse评分≥90分，且无严重违规项。

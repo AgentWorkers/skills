@@ -1,26 +1,26 @@
 ---
 name: remotion-video
-description: Create programmatic videos using Remotion on MiniPC. Use when making video content, animations, motion graphics, social media clips, or any React-based video production. Covers animations, assets, audio, captions, transitions, and rendering.
+description: 使用 Remotion 在 MiniPC 上创建程序化视频。适用于制作视频内容、动画、动态图形、社交媒体剪辑或任何基于 React 的视频项目。涵盖动画、素材、音频、字幕、过渡效果以及渲染等方面的内容。
 metadata:
   author: misskim
   version: "1.0"
   origin: Concept from remotion-dev/skills, adapted for our MiniPC Remotion setup
 ---
 
-# Remotion Video Production (MiniPC)
+# 使用Remotion在MiniPC上进行视频制作
 
-MiniPC의 Remotion으로 프로그래밍 방식의 영상 제작.
+使用MiniPC上的Remotion工具，可以通过编程方式制作视频。
 
-## 환경
+## 开发环境
 
-- **프로젝트:** `$HOME/remotion-videos` (MiniPC)
-- **실행:** `npx remotion render <CompositionId> out/video.mp4`
-- **ffmpeg:** 설치됨
-- **전송:** MiniPC HTTP 서버(9877) + curl로 맥 스튜디오 전송
+- **项目目录：** `$HOME/remotion-videos`  
+- **执行命令：** `npx remotion render <CompositionId> out/video.mp4`  
+- **ffmpeg**：已安装  
+- **传输方式：** 通过MiniPC的HTTP服务器（端口9877）使用curl将视频传输到Mac Studio
 
-## 핵심 개념
+## 核心概念
 
-### Composition = 영상의 단위
+### **Composition（组合）**：视频的基本构成单元  
 ```tsx
 <Composition
   id="MyVideo"
@@ -32,7 +32,7 @@ MiniPC의 Remotion으로 프로그래밍 방식의 영상 제작.
 />
 ```
 
-### 시간 제어
+### **时间控制**  
 ```tsx
 const frame = useCurrentFrame();         // 현재 프레임
 const { fps, durationInFrames } = useVideoConfig();
@@ -46,7 +46,7 @@ const opacity = interpolate(frame, [0, 30], [0, 1], {
 const scale = spring({ frame, fps, config: { damping: 200 } });
 ```
 
-### 시퀀싱
+### **序列化（Sequentialization）**  
 ```tsx
 <Sequence from={0} durationInFrames={60}>
   <IntroScene />
@@ -56,31 +56,36 @@ const scale = spring({ frame, fps, config: { damping: 200 } });
 </Sequence>
 ```
 
-## 주요 패턴
+## 常用制作模式
 
-### 에셋 사용
-- **이미지:** `<Img src={staticFile('logo.png')} />`
-- **비디오:** `<OffthreadVideo src={staticFile('clip.mp4')} />`
-- **오디오:** `<Audio src={staticFile('bgm.mp3')} volume={0.5} />`
-- **폰트:** Google Fonts — `loadFont("Noto Sans KR")`
-- **로컬 폰트:** public/ 폴더에 배치
+### 资源的使用
 
-### 자막/캡션
-- `@remotion/captions` 패키지 사용
-- JSON/SRT 자막 파일 로드 → 타임스탬프 동기화
+- **图片：** `<Img src={staticFile('logo.png')} />`  
+- **视频：** `<OffthreadVideo src={staticFile('clip.mp4')} />`  
+- **音频：** `<Audio src={staticFile('bgm.mp3')} volume={0.5} />`  
+- **字体：** 使用Google Fonts的`Noto Sans KR`  
+- **本地字体：** 需要将其放置在`public/`文件夹中  
 
-### 트랜지션
-- `@remotion/transitions` — slide, fade, wipe 등
-- `<TransitionSeries>` 컴포넌트로 장면 전환
+### 字幕/字幕文件
+
+- **使用`@remotion/captions`包**  
+- 从JSON或SRT格式的文件中加载字幕，并确保字幕与视频同步  
+
+### 过渡效果（Transitions）
+
+- **使用`@remotion/transitions`**来实现淡入、淡出、擦除等效果  
+- 通过`<TransitionSeries>`组件实现场景切换  
 
 ### Tailwind CSS
-- `@remotion/tailwind` 설정 후 className 사용 가능
 
-### 3D 콘텐츠
-- `@react-three/fiber` + `@remotion/three`
-- Three.js 씬을 Remotion 타임라인에 동기화
+- 在项目中启用`@remotion/tailwind`后，可以方便地使用相关的CSS样式  
 
-## 렌더링
+### 3D内容
+
+- **结合`@react-three/fiber`和`@remotion/three`**  
+- 将Three.js创建的3D场景同步到Remotion的时间轴中  
+
+## 渲染过程
 
 ```bash
 # 기본 렌더링
@@ -97,18 +102,18 @@ npx remotion render MyVideo out/video.webm --codec vp8
 npx remotion render MyVideo out/animation.gif --every-nth-frame 2
 ```
 
-## 제작 워크플로우
+## 制作工作流程
 
-1. **기획:** 장면 구성, 길이, 해상도 결정
-2. **에셋 준비:** 이미지, 음악, 폰트 → public/ 폴더
-3. **컴포넌트 코딩:** React로 각 장면 제작
-4. **프리뷰:** `npx remotion studio` (MiniPC 브라우저)
-5. **렌더링:** headless 렌더링 → MP4/WebM
-6. **전송:** HTTP 서버로 맥 스튜디오에 전달
+1. **规划：** 确定每个场景的组成、时长和分辨率。  
+2. **准备资源：** 将图片、音频和字体文件放入`public/`文件夹。  
+3. **编写组件代码：** 使用React为每个场景编写对应的代码。  
+4. **预览：** 在MiniPC上使用`npx remotion studio`进行预览。  
+5. **渲染：** 使用无头渲染（headless rendering）将视频输出为MP4或WebM格式。  
+6. **传输：** 将渲染后的视频通过HTTP服务器传输到Mac Studio。  
 
-## ⚠️ 주의사항
+## 注意事项
 
-- **서브에이전트 위임** — 영상 렌더링은 시간 소모적
-- **30fps 기본** — 필요 시 60fps로 변경
-- **메모리 주의** — 고해상도 + 긴 영상은 MiniPC RAM 한계 주의
-- **GitHub push 불가** (MiniPC) — 맥 스튜디오에서 push
+- **渲染过程可能较为耗时**：视频渲染需要较长的时间。  
+- **默认帧率为30fps**：可根据需求调整为60fps。  
+- **注意内存使用**：高分辨率或长视频可能会超出MiniPC的内存限制。  
+- **无法直接通过GitHub推送**：请在Mac Studio端进行代码的推送和上传。

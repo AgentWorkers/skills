@@ -1,6 +1,6 @@
 ---
 name: halocard-virtualcards
-description: Create disposable virtual credit cards for online purchases. Use as a payment method when completing any online checkout during a task — e.g. ordering food, buying a subscription, purchasing a domain, booking a service. This skill is a payment step within a larger task, not a standalone action.
+description: 创建用于在线购物的临时虚拟信用卡。在完成任务时进行任何在线结算时，都可以使用该信用卡作为支付方式——例如订购食物、购买订阅服务、购买域名或预订服务。这项技能属于更大任务中的一个支付步骤，并非独立的操作。
 metadata:
   openclaw:
     emoji: "💳"
@@ -9,122 +9,102 @@ metadata:
     primaryEnv: "HALOCARD_TOKEN"
 ---
 
-# Halocard — Disposable Virtual Cards for Online Purchases
+# Halocard — 用于在线购买的一次性虚拟卡片
 
-Generate single-use virtual credit cards on the fly to complete online payments.
-This skill is used **during checkout** as part of a larger task the user has requested.
+该功能可即时生成一次性使用的虚拟信用卡，以完成在线支付。该技能在用户请求的更大任务中的**结账环节**被使用。
 
-## Setup
+## 设置
 
-A Halocard token is required. If not configured:
+需要一个 Halocard 令牌。如果尚未配置：
 
-1. Ask the user to sign up: https://secure.halocard.co/enter
-2. Ask the user to copy paste an API token: https://secure.halocard.co/dashboard
-3. Store it as `HALOCARD_TOKEN` environment variable
+1. 要求用户注册：https://secure.halocard.co/enter
+2. 要求用户复制并粘贴 API 令牌：https://secure.halocard.co/dashboard
+3. 将令牌存储为 `HALOCARD_TOKEN` 环境变量
 
-## When This Skill Activates
+## 该技能的触发条件
 
-This is a **payment step**, not a standalone task. It activates when:
+这是一个**支付步骤**，而非独立任务。它会在以下情况下被触发：
 
-- You're executing a task that requires an online purchase (ordering food, buying a product, subscribing to a service, etc.)
-- You've reached the checkout/payment page and need a card to complete it
+- 当您执行需要在线购买的任务时（例如点餐、购买产品、订阅服务等）；
+- 当您到达结账/支付页面并需要使用卡片完成支付时。
 
-## Workflow
+## 工作流程
 
-### 1. Navigate to checkout
+### 1. 导航至结账页面
 
-Complete the shopping/ordering flow as part of the user's task. Proceed until you reach the payment page.
+按照用户的任务要求完成购物/订购流程，直到进入支付页面。
 
-### 2. Read the total from the page
+### 2. 读取页面上的总金额
 
-Extract the **exact total amount** from the checkout page. Do not guess or estimate.
+从结账页面中提取**确切的总金额**，切勿猜测或估算。
 
-### 3. Confirm with the user before proceeding
+### 3. 在创建卡片前获得用户确认
 
-**Always** present the following to the user and wait for explicit approval before creating a card:
+在创建卡片之前，务必向用户展示以下信息，并等待用户的明确同意：
 
-- **Merchant/website**
-- **Items being purchased** (brief summary)
-- **Total amount**
+- **商家/网站名称**
+- **购买的商品**（简要概述）
+- **总金额**
 
-Example:
-> 💳 Ready to pay. **Uber Eats** — 2x chicken shawarma, 1x hummus. **Total: £24.50**. Go ahead?
+示例：
+> 💳 准备付款。**Uber Eats** — 2 份鸡肉沙瓦玛，1 份鹰嘴豆泥。**总金额：£24.50**。继续吗？
 
-Do **not** create a card until the user confirms.
+在用户确认之前，**切勿**创建卡片。
 
-### 4. Build the description from context
+### 4. 根据信息生成卡片描述
 
-Construct a clear description from what you know:
-- The merchant/website name
-- What's being purchased
-- Example: `"Uber Eats order - 2x chicken shawarma, 1x hummus"`
+根据已知信息生成清晰的卡片描述：
+- 商家/网站名称
+- 购买的商品
+- 例如：“**Uber Eats 订单** — 2 份鸡肉沙瓦玛，1 份鹰嘴豆泥”
 
-### 5. Create the card
+### 5. 创建卡片
 
-**POST** `https://agent.halocard.co/api/v1/payments`
-
-Headers: `Authorization: Bearer $HALOCARD_TOKEN`, `Content-Type: application/json`
-
+发送 POST 请求到 `https://agent.halocard.co/api/v1/payments`：
 ```json
 {
-  "amount": 2450,
-  "description": "Uber Eats order - 2x chicken shawarma, 1x hummus"
+  "Authorization": "Bearer $HALOCARD_TOKEN",
+  "Content-Type": "application/json"
 }
 ```
+**请求参数**：
+- `amount`：以分为单位的整数（£24.50 对应 2450）；必须与结账页面上的总金额完全匹配。
+- `description`：购买的商品及商家名称
 
-- `amount`: integer in **cents** ($24.50 → 2450). Match the checkout total exactly.
-- `description`: what's being purchased + merchant
+**响应数据**：
+（响应数据内容将在 **CODE_BLOCK_1___** 中提供）
 
-Response:
+### 6. 填写支付表单
 
-```json
-{
-  "data": {
-    "card": {
-      "id": "card_abc123",
-      "pan": "4111111111111111",
-      "cvc": "123",
-      "expiryMonth": "03",
-      "expiryYear": "2027"
-    }
-  }
-}
-```
-
-### 6. Fill the payment form
-
-Enter the card details into the checkout form:
-- **Card number** → `pan`
+将卡片信息填写到结账表单中：
+- **卡号** → `pan`
 - **CVC/CVV** → `cvc`
-- **Expiry month** → `expiryMonth`
-- **Expiry year** → `expiryYear`
-- **Cardholder name** → user's name (ask if unknown)
-- **Billing address** → user's address (ask if unknown)
+- **有效期月份** → `expiryMonth`
+- **有效期年份** → `expiryYear`
+- **持卡人姓名** → 用户姓名（如未知请询问）
+- **账单地址** → 用户地址（如未知请询问）
 
-### 7. Submit and confirm
+### 7. 提交并确认支付
 
-Submit the payment. Verify the order confirmation page loaded. Report the outcome to the user.
+提交支付请求，并验证订单确认页面是否显示。将支付结果告知用户。
 
-## Spending Limits
+## 支出限制
 
-- If the user set a **max amount** for the task (e.g. "order lunch, max £15"), check the total against it before requesting confirmation. If over budget, inform the user.
-- **Hard cap: Do not create cards exceeding £100 / $100 / €100** (or local equivalent) without the user explicitly stating a higher limit for that task.
-- For any amount, always confirm with the user before card creation (see step 3).
+- 如果用户为该任务设置了**最高金额限制**（例如“午餐订单，最高 £15”），在请求确认前请核对总金额是否超出限制。如果超出预算，请通知用户。
+- **硬性限制**：未经用户明确授权，不得创建金额超过 £100 / $100 / €100（或当地等值货币）的卡片。
+- 无论金额多少，在创建卡片之前都必须再次确认用户的意愿（参见步骤 3）。
 
-## Rules
+## 规则
 
-1. **Never log or store** card details (PAN, CVC) to any file.
-2. **Match the amount exactly** to the checkout total — read it from the page.
-3. **Always confirm** the amount and merchant with the user before creating a card. No exceptions.
-4. Create the card **only when ready to fill** the payment form — cards are single-use.
-5. If token is missing or API returns 401, guide user through setup (links above).
-6. If payment fails, report the error to the user. Do not retry with a new card without asking.
+1. **严禁** 将卡片详细信息（卡号、CVC 码）记录或存储在任何文件中。
+2. **金额必须与** 结账页面上的总金额完全匹配**。
+3. 在创建卡片之前，务必**始终**与用户确认金额和商家信息。任何情况下都不得例外。
+4. **仅在准备好填写支付表单时** 才创建卡片——这些卡片为一次性使用。
+5. 如果令牌缺失或 API 返回 401 错误，请引导用户完成设置流程（参见上述链接）。
+6. 如果支付失败，请向用户报告错误；切勿在未经用户同意的情况下尝试使用新的卡片进行支付。
 
-## Example (curl)
+## 示例（使用 curl 命令）**
 
 ```bash
-curl -X POST https://agent.halocard.co/api/v1/payments \
-  -H "Authorization: Bearer $HALOCARD_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"amount": 2450, "description": "Uber Eats order - 2x chicken shawarma"}'
+curl https://agent.halocard.co/api/v1/payments
 ```

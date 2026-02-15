@@ -1,47 +1,47 @@
 ---
 name: claw-admin
-description: "Provision and manage @clawemail.com Google Workspace email accounts. Use when the user wants to create an email for their AI agent, check email availability, or manage existing ClawEmail accounts."
+description: "配置和管理 @clawemail.com 的 Google Workspace 邮箱账户。当用户需要为他们的 AI 代理创建邮箱、检查邮箱是否可用或管理现有的 ClawEmail 账户时，请使用此功能。"
 user-invocable: true
 metadata: {"openclaw":{"requires":{"env":["CLAWEMAIL_API_KEY"]},"primaryEnv":"CLAWEMAIL_API_KEY","emoji":"🦞"}}
 ---
 
 # ClawEmail
 
-Provision and manage **@clawemail.com** Google Workspace email accounts for AI agents. Each account comes with full Gmail, Docs, Sheets, Calendar, and Drive access plus OAuth credentials for programmatic use.
+用于为AI代理提供并管理**@clawemail.com**的Google Workspace电子邮件账户。每个账户都具备Gmail、Docs、Sheets、Calendar和Drive的完整访问权限，同时提供用于程序化操作的OAuth凭证。
 
-## Setup
+## 设置
 
-Set your API key as an environment variable:
+将您的API密钥设置为环境变量：
 
 ```
 export CLAWEMAIL_API_KEY=your_api_key_here
 ```
 
-**Base URL:** `https://clawemail.com`
+**基础URL：** `https://clawemail.com`
 
-All admin endpoints require the header: `-H "X-API-Key: $CLAWEMAIL_API_KEY"`
+所有管理员端点都需要添加以下头部信息：`-H "X-API-Key: $CLAWEMAIL_API_KEY"`
 
-## Check Email Availability (Public — no API key needed)
+## 检查电子邮件地址的可用性（公开查询——无需API密钥）
 
-Before creating an account, always check if the prefix is available:
+在创建账户之前，请务必先检查所需的前缀是否可用：
 
 ```bash
 curl -s https://clawemail.com/check/DESIRED_PREFIX
 ```
 
-Response when available:
+**可用时的响应：**
 ```json
 {"prefix":"tom","email":"tom@clawemail.com","available":true}
 ```
 
-Response when taken or reserved:
+**已被占用或预留时的响应：**
 ```json
 {"available":false,"errors":["This email is reserved"]}
 ```
 
-## Create Email Account
+## 创建电子邮件账户
 
-Provisions a new @clawemail.com Google Workspace user. Returns a temporary password and an OAuth connect URL.
+创建一个新的@clawemail.com Google Workspace用户账户。系统会返回一个临时密码以及一个用于OAuth连接的URL。
 
 ```bash
 curl -s -X POST https://clawemail.com/api/emails \
@@ -50,7 +50,7 @@ curl -s -X POST https://clawemail.com/api/emails \
   -d '{"prefix":"DESIRED_PREFIX"}'
 ```
 
-Response:
+**响应：**
 ```json
 {
   "success": true,
@@ -61,83 +61,79 @@ Response:
 }
 ```
 
-**Important:** Save the password immediately — it is shown only once.
+**重要提示：** 请立即保存密码——该密码仅显示一次。
 
-After creation, the user must:
-1. Log in to Gmail at https://mail.google.com with the new email and password
-2. Visit the `connect_url` to authorize OAuth and receive their credentials JSON
+创建账户后，用户需要：
+1. 使用新邮箱和密码登录Gmail（网址：https://mail.google.com）
+2. 访问`connect_url`以完成OAuth授权并获取他们的认证信息（JSON格式）。
 
-## List All Emails
+## 列出所有电子邮件地址
 
 ```bash
 curl -s https://clawemail.com/api/emails \
   -H "X-API-Key: $CLAWEMAIL_API_KEY"
 ```
 
-Supports pagination with `?limit=100&offset=0`.
+支持分页查询，格式为`?limit=100&offset=0`。
 
-## Get Email Details
+## 获取电子邮件详细信息
 
 ```bash
 curl -s https://clawemail.com/api/emails/PREFIX \
   -H "X-API-Key: $CLAWEMAIL_API_KEY"
 ```
 
-Returns email status, creation date, OAuth connection date, and Workspace user details.
+返回电子邮件的状态、创建日期、OAuth连接日期以及Workspace用户的详细信息。
 
-## Suspend Email
+## 暂停电子邮件账户
 
-Temporarily disables a Google Workspace account (preserves data):
+暂时禁用Google Workspace账户（数据保持不变）：
 
 ```bash
 curl -s -X POST https://clawemail.com/api/emails/PREFIX/suspend \
   -H "X-API-Key: $CLAWEMAIL_API_KEY"
 ```
 
-## Unsuspend Email
+## 恢复电子邮件账户
 
-Re-enables a previously suspended account:
+重新启用之前被暂停的账户：
 
 ```bash
 curl -s -X POST https://clawemail.com/api/emails/PREFIX/unsuspend \
   -H "X-API-Key: $CLAWEMAIL_API_KEY"
 ```
 
-## Delete Email
+## 删除电子邮件账户
 
-Permanently deletes the Google Workspace account and all associated data:
+永久删除Google Workspace账户及其所有关联数据：
 
 ```bash
 curl -s -X DELETE https://clawemail.com/api/emails/PREFIX \
   -H "X-API-Key: $CLAWEMAIL_API_KEY"
 ```
 
-## Self-Service Signup (No API Key)
+## 自助注册（无需API密钥）
 
-For users who want to sign up themselves through Stripe checkout:
+对于希望通过Stripe支付系统自行注册的用户：
+1. 将他们引导至：`https://clawemail.com/signup?prefix=DESIRED_PREFIX`
+2. 用户可以选择月度（16美元/月）或年度（160美元/年）订阅计划，输入账单邮箱地址，然后通过Stripe完成支付
+3. 支付完成后，用户将收到密码和OAuth连接链接。
 
-1. Direct them to: `https://clawemail.com/signup?prefix=DESIRED_PREFIX`
-2. They choose monthly ($16/mo) or annual ($160/yr), enter billing email, and pay via Stripe
-3. After payment they receive their password and OAuth connect link
+## 典型工作流程：
+1. **检查可用性：** `curl -s https://clawemail.com/check/myagent`
+2. **创建账户：** 向`/api/emails`发送POST请求，并提供所需的前缀
+3. **保存凭证：** 安全地存储密码
+4. **完成OAuth授权：** 将用户引导至响应中提供的`connect_url`
+5. **使用账户：** 代理现在拥有了一个具有完整Google Workspace访问权限的Gmail地址。
 
-## Typical Workflow
+## 前缀规则：
+- 前缀长度必须在3到30个字符之间
+- 必须以字母开头
+- 可以包含字母、数字、点（.）、下划线（_）或连字符（-）
+- 许多常见的名称、品牌和词汇已被预留。
 
-1. **Check availability:** `curl -s https://clawemail.com/check/myagent`
-2. **Create account:** POST to `/api/emails` with the prefix
-3. **Save credentials:** Store the password securely
-4. **Connect OAuth:** Direct user to the `connect_url` from the response
-5. **Use the account:** The agent now has a real Gmail address with full Google Workspace access
-
-## Prefix Rules
-
-- Must be 3-30 characters
-- Must start with a letter
-- Can contain letters, numbers, dots, underscores, or hyphens
-- Many common names, brands, and words are reserved
-
-## When to Use
-
-- User asks to create an email account for their AI agent
-- User needs a Google Workspace account with OAuth access
-- User wants to check if a specific email address is available
-- User needs to manage (suspend/unsuspend/delete) an existing account
+## 使用场景：
+- 用户需要为他们的AI代理创建电子邮件账户
+- 用户需要一个具有OAuth访问权限的Google Workspace账户
+- 用户想要检查特定电子邮件地址是否可用
+- 用户需要管理（暂停/恢复/删除）现有账户

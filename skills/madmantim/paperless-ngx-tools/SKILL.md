@@ -1,17 +1,17 @@
 ---
 name: paperless-ngx
-description: Manage documents in Paperless-ngx - search, upload, tag, and retrieve.
+description: 在 Paperless-ngx 中管理文档：搜索、上传、添加标签以及检索文档。
 homepage: https://github.com/paperless-ngx/paperless-ngx
 metadata: {"clawdbot":{"requires":{"env":["PAPERLESS_URL","PAPERLESS_TOKEN"]},"primaryEnv":"PAPERLESS_TOKEN"}}
 ---
 
 # Paperless-ngx
 
-Document management via Paperless-ngx REST API.
+通过 Paperless-ngx REST API 进行文档管理。
 
-## Configuration
+## 配置
 
-Set environment variables in `~/.clawdbot/clawdbot.json`:
+在 `~/.clawdbot/clawdbot.json` 中设置环境变量：
 
 ```json
 {
@@ -22,7 +22,7 @@ Set environment variables in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Or configure via the skills entry (allows using `apiKey` shorthand):
+或者通过技能配置文件进行配置（支持使用 `apiKey` 简写）：
 
 ```json
 {
@@ -37,26 +37,26 @@ Or configure via the skills entry (allows using `apiKey` shorthand):
 }
 ```
 
-Get your API token from Paperless web UI: Settings → Users & Groups → [user] → Generate Token.
+从 Paperless 的 Web 界面获取 API 密钥：设置 → 用户与组 → [用户] → 生成令牌。
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| Search documents | `node {baseDir}/scripts/search.mjs "query"` |
-| List recent | `node {baseDir}/scripts/list.mjs [--limit N]` |
-| Get document | `node {baseDir}/scripts/get.mjs <id> [--content]` |
-| Upload document | `node {baseDir}/scripts/upload.mjs <file> [--title "..."] [--tags "a,b"]` |
-| Download PDF | `node {baseDir}/scripts/download.mjs <id> [--output path]` |
-| List tags | `node {baseDir}/scripts/tags.mjs` |
-| List types | `node {baseDir}/scripts/types.mjs` |
-| List correspondents | `node {baseDir}/scripts/correspondents.mjs` |
+| 搜索文档 | `node {baseDir}/scripts/search.mjs "query"` |
+| 列出最近访问的文档 | `node {baseDir}/scripts/list.mjs [--limit N]` |
+| 获取文档 | `node {baseDir}/scripts/get.mjs <id> [--content]` |
+| 上传文档 | `node {baseDir}/scripts/upload.mjs <file> [--title "..."] [--tags "a,b"]` |
+| 下载 PDF 文档 | `node {baseDir}/scripts/download.mjs <id> [--output path]` |
+| 列出文档标签 | `node {baseDir}/scripts/tags.mjs` |
+| 列出文档类型 | `node {baseDir}/scripts/types.mjs` |
+| 列出相关联系人 | `node {baseDir}/scripts/correspondents.mjs` |
 
-All scripts are in `{baseDir}/scripts/`.
+所有脚本均位于 `{baseDir}/scripts/` 目录下。
 
-## Common Workflows
+## 常见工作流程
 
-### Find a document
+### 查找文档
 
 ```bash
 # Full-text search
@@ -75,7 +75,7 @@ node {baseDir}/scripts/search.mjs --correspondent "AGL"
 node {baseDir}/scripts/search.mjs "2025" --tag "unpaid" --type "Invoice"
 ```
 
-### Get document details
+### 获取文档详情
 
 ```bash
 # Metadata only
@@ -88,7 +88,7 @@ node {baseDir}/scripts/get.mjs 28 --content
 node {baseDir}/scripts/get.mjs 28 --content --full
 ```
 
-### Upload a document
+### 上传文档
 
 ```bash
 # Basic upload (title auto-detected)
@@ -103,7 +103,7 @@ node {baseDir}/scripts/upload.mjs /path/to/invoice.pdf \
   --created "2026-01-15"
 ```
 
-### Download a document
+### 下载文档
 
 ```bash
 # Download to current directory
@@ -116,7 +116,7 @@ node {baseDir}/scripts/download.mjs 28 --output ~/Downloads/document.pdf
 node {baseDir}/scripts/download.mjs 28 --original
 ```
 
-### Manage metadata
+### 管理元数据
 
 ```bash
 # List all tags
@@ -135,24 +135,21 @@ node {baseDir}/scripts/tags.mjs --create "new-tag-name"
 node {baseDir}/scripts/correspondents.mjs --create "New Company Name"
 ```
 
-## Output Format
+## 输出格式
 
-All scripts output JSON for easy parsing. Use `jq` for formatting:
+所有脚本均输出 JSON 格式的数据，便于解析。可以使用 `jq` 工具进行格式化：
 
 ```bash
 node {baseDir}/scripts/search.mjs "invoice" | jq '.results[] | {id, title, created}'
 ```
 
-## Advanced Usage
+## 高级用法
 
-For complex queries or bulk operations, see [references/api.md](references/api.md) for direct API access patterns.
+对于复杂的查询或批量操作，请参阅 [references/api.md](references/api.md) 以获取直接的 API 使用方法。
 
-## Troubleshooting
+## 故障排除
 
-**"PAPERLESS_URL not set"** — Add to `~/.clawdbot/clawdbot.json` env section or export in shell.
-
-**"401 Unauthorized"** — Check PAPERLESS_TOKEN is valid. Regenerate in Paperless UI if needed.
-
-**"Connection refused"** — Verify Paperless is running and URL is correct (include port).
-
-**Upload fails silently** — Check Paperless logs; file may be duplicate or unsupported format.
+- **“PAPERLESS_URL 未设置”**：请将其添加到 `~/.clawdbot/clawdbot.json` 的环境变量部分，或在 shell 中进行设置。
+- **“401 Unauthorized”**：请检查 API 密钥（PAPERLESS_TOKEN）是否有效。如有需要，可在 Paperless 界面重新生成密钥。
+- **“连接失败”**：请确认 Paperless 服务正在运行，并且提供的 URL 正确（包括端口号）。
+- **上传失败且没有提示**：请查看 Paperless 的日志；可能是文件重复或格式不被支持。

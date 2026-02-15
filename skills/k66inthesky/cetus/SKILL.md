@@ -1,46 +1,46 @@
-# Cetus Protocol SDK v2 - OpenClaw Integration Guide
+# Cetus Protocol SDK v2 - OpenClaw集成指南
 
-This guide covers all Cetus SDK v2 packages for building DeFi applications on Sui.
+本指南涵盖了所有用于在Sui平台上构建DeFi应用程序的Cetus SDK v2包。
 
 ---
 
-## Table of Contents
+## 目录
 
-1. [Common SDK](#common-sdk)
+1. [通用SDK](#common-sdk)
 2. [CLMM SDK](#clmm-sdk)
 3. [DLMM SDK](#dlmm-sdk)
 4. [Vaults SDK](#vaults-sdk)
 5. [Farms SDK](#farms-sdk)
 6. [xCETUS SDK](#xcetus-sdk)
-7. [Limit Order SDK](#limit-order-sdk)
-8. [Burn SDK](#burn-sdk)
+7. [限价单SDK](#limit-order-sdk)
+8. [燃烧SDK](#burn-sdk)
 9. [DCA SDK](#dca-sdk)
 10. [Zap SDK](#zap-sdk)
-11. [Aggregator SDK](#aggregator-sdk)
+11. [聚合器SDK](#aggregator-sdk)
 
 ---
 
-## Common SDK
+## 通用SDK
 
-Foundational utility library shared across all Cetus SDKs.
+这是一个基础性的实用工具库，所有Cetus SDK都会使用它。
 
 ```bash
 npm install @cetusprotocol/common-sdk
 ```
 
-Provides essential utilities and shared functionality for protocol interactions. All other SDKs depend on this package.
+该库提供了协议交互所需的基本实用工具和共享功能。所有其他SDK都依赖于这个包。
 
 ---
 
 ## CLMM SDK
 
-Concentrated Liquidity Market Maker - the core AMM of Cetus.
+集中式流动性做市商（Concentrated Liquidity Market Maker）——Cetus的核心自动做市商（AMM）机制。
 
 ```bash
 npm install @cetusprotocol/sui-clmm-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusClmmSDK } from '@cetusprotocol/sui-clmm-sdk'
@@ -65,13 +65,13 @@ sdk.setSenderAddress('YOUR_SUI_ADDRESS')
 
 ## DLMM SDK
 
-Dynamic Liquidity Market Maker - discrete bin-based AMM with dynamic fees.
+动态流动性做市商（Dynamic Liquidity Market Maker）——基于离散bin的自动做市商机制，支持动态费用。
 
 ```bash
 npm install @cetusprotocol/dlmm-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusDlmmSDK } from '@cetusprotocol/dlmm-sdk'
@@ -81,7 +81,7 @@ const sdk = CetusDlmmSDK.createSDK()
 sdk.setSenderAddress(walletAddress)
 ```
 
-### Pool Operations
+### 池操作
 
 ```typescript
 // Get all pools
@@ -97,12 +97,12 @@ const binConfig = await sdk.Dlmm.getBinConfig(config_id)
 const history = await sdk.Dlmm.getPoolTransactionHistory(pool_id)
 ```
 
-### Position Management
+### 持仓管理
 
-Three liquidity distribution strategies:
-- **Spot** - even distribution across bins
-- **BidAsk** - concentrated at specific price levels
-- **Curve** - smooth bell-curve distribution
+三种流动性分配策略：
+- **现货**（Spot）：在所有bin中均匀分配流动性
+- **买卖价**（BidAsk）：集中在特定价格区间
+- **曲线**（Curve）：平滑的钟形曲线分布
 
 ```typescript
 // Calculate optimal liquidity distribution
@@ -118,7 +118,7 @@ const payload = await sdk.Dlmm.removeLiquidityPayload(params)
 const payload = await sdk.Dlmm.closePositionPayload(params)
 ```
 
-### Swap Operations
+### 交换操作
 
 ```typescript
 // Get swap quote
@@ -128,7 +128,7 @@ const quote = await sdk.Dlmm.preSwapQuote(params)
 const payload = await sdk.Dlmm.swapPayload(params)
 ```
 
-### Fee & Reward Operations
+### 费用与奖励操作
 
 ```typescript
 // Get total fee rate (base + variable)
@@ -141,7 +141,7 @@ const payload = await sdk.Dlmm.collectFeePayload(params)
 const payload = await sdk.Dlmm.collectRewardPayload(params)
 ```
 
-### Pool Creation
+### 池创建
 
 ```typescript
 // Create pool only
@@ -151,7 +151,7 @@ const payload = await sdk.Dlmm.createPoolPayload(params)
 const payload = await sdk.Dlmm.createPoolAndAddLiquidityPayload(params)
 ```
 
-### Utility: BinUtils
+### 实用工具：BinUtils
 
 ```typescript
 import { BinUtils } from '@cetusprotocol/dlmm-sdk'
@@ -168,13 +168,13 @@ BinUtils.calculateLiquidity(params)
 
 ## Vaults SDK
 
-Automated liquidity management with fee reinvestment and rebalancing.
+自动化流动性管理，支持费用再投资和重新平衡。
 
 ```bash
 npm install @cetusprotocol/vaults-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusVaultsSDK } from '@cetusprotocol/vaults-sdk'
@@ -185,20 +185,7 @@ const sdk = CetusVaultsSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Vault Queries
-
-```typescript
-// Get all vaults for an owner
-const vaults = await sdk.Vaults.getOwnerVaultsBalance(owner)
-
-// Get specific vault
-const vault = await sdk.Vaults.getVault(vault_id)
-
-// Get LP token balance
-const balance = await sdk.getOwnerCoinBalances(address, lp_token_type)
-```
-
-### Deposit
+### 存款
 
 ```typescript
 // Calculate deposit amounts
@@ -208,7 +195,7 @@ const amounts = await sdk.Vaults.calculateDepositAmount(params)
 const tx = await sdk.Vaults.deposit(params, tx)
 ```
 
-### Withdraw
+### 提取
 
 ```typescript
 // Calculate withdrawal amounts
@@ -218,7 +205,7 @@ const amounts = await sdk.Vaults.calculateWithdrawAmount(params)
 const tx = await sdk.Vaults.withdraw(params, tx)
 ```
 
-### Vesting
+### 持仓锁定
 
 ```typescript
 // Get vest info for multiple vaults
@@ -238,13 +225,13 @@ const payload = await sdk.Vest.buildRedeemPayload(options)
 
 ## Farms SDK
 
-Staking CLMM positions for additional reward farming.
+通过质押CLMM持仓来获得额外奖励。
 
 ```bash
 npm install @cetusprotocol/farms-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusFarmsSDK } from '@cetusprotocol/farms-sdk'
@@ -254,7 +241,7 @@ const sdk = CetusFarmsSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Pool Queries
+### 池查询
 
 ```typescript
 // Get all farming pools
@@ -270,7 +257,7 @@ const nfts = await sdk.Farms.getOwnedFarmsPositionNFTList(wallet)
 const nft = await sdk.Farms.getFarmsPositionNFT(position_nft_id)
 ```
 
-### Staking Operations
+### 质押操作
 
 ```typescript
 // Stake a CLMM position into farm
@@ -286,7 +273,7 @@ const payload = await sdk.Farms.harvestPayload({ pool_id, position_nft_id })
 const payload = await sdk.Farms.batchHarvestAndClmmFeePayload(farms_list, clmm_list)
 ```
 
-### Liquidity Operations (within Farm)
+### 流动性操作（在池内）
 
 ```typescript
 // Add liquidity with fixed coin amount
@@ -299,26 +286,26 @@ const payload = await sdk.Farms.removeLiquidityPayload(params)
 const payload = await sdk.Farms.claimFeeAndClmmReward({ pool_id, position_nft_id })
 ```
 
-### Error Codes
+### 错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 1 | Invalid CLMM Pool ID |
-| 2 | Invalid Position NFT |
+| 1 | CLMM池ID无效 |
+| 2 | 持仓NFT无效 |
 | ... | ... |
-| 15 | Amount Out Below Min Limit |
+| 15 | 存款金额低于最低限制 |
 
 ---
 
 ## xCETUS SDK
 
-Platform equity token management - convert CETUS to non-transferable xCETUS for governance and rewards.
+用于管理平台权益代币（Platform equity token）——将CETUS转换为不可转让的xCETUS，用于治理和奖励分配。
 
 ```bash
 npm install @cetusprotocol/xcetus-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusXcetusSDK } from '@cetusprotocol/xcetus-sdk'
@@ -327,7 +314,7 @@ const sdk = CetusXcetusSDK.createSDK({ env: 'mainnet', sui_client })
 sdk.setSenderAddress(wallet)
 ```
 
-### Data Retrieval
+### 数据检索
 
 ```typescript
 // Get user's veNFT (holds xCETUS balance)
@@ -346,7 +333,7 @@ const dividendInfo = await sdk.Xcetus.getVeNFTDividendInfo()
 const manager = await sdk.Xcetus.getXcetusManager()
 ```
 
-### Token Operations
+### 代币操作
 
 ```typescript
 // Convert CETUS -> xCETUS (1:1 ratio)
@@ -365,7 +352,7 @@ const payload = await sdk.Xcetus.cancelRedeemPayload(params)
 const payload = await sdk.Xcetus.redeemDividendV3Payload(params)
 ```
 
-### Utility Functions
+### 实用函数
 
 ```typescript
 // Calculate redeemable CETUS for given lock duration
@@ -384,15 +371,15 @@ const isLocked = XCetusUtil.isLocked(lockObj)
 
 ---
 
-## Limit Order SDK
+## 限价单SDK
 
-Place limit orders with specified price and expiration.
+用于放置具有指定价格和到期时间的限价单。
 
 ```bash
 npm install @cetusprotocol/limit-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusLimitSDK } from '@cetusprotocol/limit-sdk'
@@ -402,7 +389,7 @@ const sdk = CetusLimitSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Order Management
+### 单据管理
 
 ```typescript
 // Place a limit order
@@ -416,7 +403,7 @@ const payload = await sdk.Limit.cancelOrdersByOwner(params)
 const payload = await sdk.Limit.claimTargetCoin(params)
 ```
 
-### Order Queries
+### 单据查询
 
 ```typescript
 // Get order details
@@ -432,7 +419,7 @@ const logs = await sdk.Limit.getLimitOrderLogs(orderId)
 const claimLogs = await sdk.Limit.getLimitOrderClaimLogs(orderId)
 ```
 
-### Pool Info
+### 池信息
 
 ```typescript
 // Get supported tokens
@@ -448,26 +435,26 @@ const pool = await sdk.Limit.getLimitOrderPool(coinA, coinB)
 const indexerId = await sdk.Limit.getPoolIndexerId(coinA, coinB)
 ```
 
-### Execution
+### 执行
 
 ```typescript
 // Execute transaction
 await sdk.FullClient.executeTx(keyPair, payload, true)
 ```
 
-Order statuses: `Running` | `PartialCompleted` | `Completed` | `Cancelled`
+订单状态：`运行中` | `部分完成` | `已完成` | `已取消`
 
 ---
 
-## Burn SDK
+## 燃烧SDK
 
-Permanently lock liquidity positions while still earning fees and rewards.
+永久锁定流动性持仓，同时继续赚取费用和奖励。
 
 ```bash
 npm install @cetusprotocol/burn-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusBurnSDK } from '@cetusprotocol/burn-sdk'
@@ -477,7 +464,7 @@ const sdk = CetusBurnSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Queries
+### 查询
 
 ```typescript
 // Get burn pool list
@@ -493,7 +480,7 @@ const posIds = await sdk.Burn.getBurnPositionList(account_address)
 const pos = await sdk.Burn.getBurnPosition(pos_id)
 ```
 
-### Burn Operations
+### 燃烧操作
 
 ```typescript
 // Lock liquidity permanently (irreversible!)
@@ -503,7 +490,7 @@ const payload = await sdk.Burn.createBurnPayload(params)
 const payload = await sdk.Burn.createBurnLPV2Payload(pos_id)
 ```
 
-### Fee & Reward Collection (still works after burn)
+### 费用与奖励收集（燃烧后仍可进行）
 
 ```typescript
 // Collect fees for single position
@@ -519,7 +506,7 @@ const payload = await sdk.Burn.createCollectFeesPayload(params)
 const payload = await sdk.Burn.createCollectRewardsPayload(params)
 ```
 
-### Vesting
+### 持仓锁定
 
 ```typescript
 // Redeem vested tokens
@@ -531,13 +518,13 @@ const payload = await sdk.Burn.redeemVestPayload(params)
 
 ## DCA SDK
 
-Dollar-Cost Averaging - automated periodic token purchases.
+美元成本平均（Dollar-Cost Averaging）——自动化的定期代币购买机制。
 
 ```bash
 npm install @cetusprotocol/dca-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusDcaSDK } from '@cetusprotocol/dca-sdk'
@@ -547,7 +534,7 @@ const sdk = CetusDcaSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Order Management
+### 单据管理
 
 ```typescript
 // Create DCA order
@@ -569,22 +556,22 @@ const payload = await sdk.Dca.withdrawPayload(params)
 const payload = await sdk.Dca.dcaCloseOrderPayload(params)
 ```
 
-### Token Whitelist
+### 代币白名单
 
 ```typescript
 // Get supported tokens
 const whitelist = await sdk.Dca.getDcaCoinWhiteList()
 ```
 
-Whitelist modes:
-| Mode | Description |
+白名单模式：
+| 模式 | 描述 |
 |------|-------------|
-| 0 | Disabled |
-| 1 | in_coin only |
-| 2 | out_coin only |
-| 3 | Both coin types enabled |
+| 0 | 禁用 |
+| 1 | 仅限输入代币 |
+| 2 | 仅限输出代币 |
+| 3 | 两种代币均可 |
 
-### Execution
+### 执行
 
 ```typescript
 await sdk.FullClient.sendTransaction(keyPair, payload)
@@ -594,13 +581,13 @@ await sdk.FullClient.sendTransaction(keyPair, payload)
 
 ## Zap SDK
 
-One-click liquidity operations - add/remove liquidity with flexible input modes.
+一键式流动性操作——支持灵活的输入方式来添加或移除流动性。
 
 ```bash
 npm install @cetusprotocol/zap-sdk
 ```
 
-### Initialization
+### 初始化
 
 ```typescript
 import { CetusZapSDK } from '@cetusprotocol/zap-sdk'
@@ -610,9 +597,9 @@ const sdk = CetusZapSDK.createSDK()
 sdk.setSenderAddress(wallet)
 ```
 
-### Deposit (Add Liquidity)
+### 存款（添加流动性）
 
-Deposit modes: `FixedOneSide` | `FlexibleBoth` | `OnlyCoinA` | `OnlyCoinB`
+存款方式：`FixedOneSide` | `FlexibleBoth` | `OnlyCoinA` | `OnlyCoinB`
 
 ```typescript
 // Pre-calculate deposit amounts
@@ -637,7 +624,7 @@ const payload = await sdk.Zap.buildDepositPayload({
 })
 ```
 
-### Withdraw (Remove Liquidity)
+### 提取（移除流动性）
 
 ```typescript
 // Pre-calculate withdrawal amounts
@@ -655,13 +642,13 @@ const payload = await sdk.Zap.buildWithdrawPayload({
 
 ## Aggregator SDK
 
-Multi-DEX swap aggregator optimizing trades across Cetus, DeepBook, Kriya, FlowX, Aftermath, and more.
+多DEX交换聚合器，可优化在Cetus、DeepBook、Kriya、FlowX、Aftermath等平台上的交易。
 
 ```bash
 npm install @cetusprotocol/aggregator-sdk
 ```
 
-### Workflow
+### 工作流程
 
 ```typescript
 import { CetusAggregatorSDK } from '@cetusprotocol/aggregator-sdk'
@@ -694,21 +681,21 @@ const tx = await client.routerSwap({
 })
 ```
 
-### Supported DEXs
+### 支持的DEX平台
 
-Cetus, DeepBook, Kriya, FlowX, Aftermath, Turbos, Bluefin, and more.
+Cetus、DeepBook、Kriya、FlowX、Aftermath、Turbos、Bluefin等。
 
-### Mainnet Contract Addresses
+### 主网合约地址
 
-- **CetusAggregatorV2** - Primary aggregator
-- **CetusAggregatorV2ExtendV1** - Extended functionality
-- **CetusAggregatorV2ExtendV2** - Extended functionality v2
+- **CetusAggregatorV2**：主要聚合器
+- **CetusAggregatorV2ExtendV1**：扩展功能
+- **CetusAggregatorV2ExtendV2**：扩展功能v2
 
 ---
 
-## Common Patterns
+## 共通模式
 
-### SDK Initialization (all packages follow this pattern)
+### SDK初始化（所有包均遵循此模式）
 
 ```typescript
 // Default mainnet
@@ -730,7 +717,7 @@ sdk.setSenderAddress('0x...')
 sdk.updateFullRpcUrl('NEW_URL')
 ```
 
-### Transaction Execution
+### 交易执行
 
 ```typescript
 // Using FullClient
@@ -742,18 +729,18 @@ await sdk.FullClient.sendTransaction(keyPair, payload)
 
 ---
 
-## Package Reference
+## 包引用
 
-| Package | npm | Purpose |
+| 包名 | npm链接 | 用途 |
 |---------|-----|---------|
-| common | `@cetusprotocol/common-sdk` | Shared utilities |
-| clmm | `@cetusprotocol/sui-clmm-sdk` | Concentrated liquidity AMM |
-| dlmm | `@cetusprotocol/dlmm-sdk` | Dynamic liquidity (bin-based) |
-| vaults | `@cetusprotocol/vaults-sdk` | Automated vault management |
-| farms | `@cetusprotocol/farms-sdk` | Yield farming |
-| xcetus | `@cetusprotocol/xcetus-sdk` | Governance token (xCETUS) |
-| limit | `@cetusprotocol/limit-sdk` | Limit orders |
-| burn | `@cetusprotocol/burn-sdk` | Permanent liquidity lock |
-| dca | `@cetusprotocol/dca-sdk` | Dollar-cost averaging |
-| zap | `@cetusprotocol/zap-sdk` | One-click liquidity |
-| aggregator | `@cetusprotocol/aggregator-sdk` | Multi-DEX swap routing |
+| common | `@cetusprotocol/common-sdk` | 共享实用工具 |
+| clmm | `@cetusprotocol/sui-clmm-sdk` | 集中式流动性做市商 |
+| dlmm | `@cetusprotocol/dlmm-sdk` | 动态流动性做市商 |
+| vaults | `@cetusprotocol/vaults-sdk` | 自动化仓库管理 |
+| farms | `@cetusprotocol/farms-sdk` | 收益 farming |
+| xcetus | `@cetusprotocol/xcetus-sdk` | 治理代币（xCETUS） |
+| limit | `@cetusprotocol/limit-sdk` | 限价单 |
+| burn | `@cetusprotocol/burn-sdk` | 永久锁定流动性 |
+| dca | `@cetusprotocol/dca-sdk` | 美元成本平均 |
+| zap | `@cetusprotocol/zap-sdk` | 一键式流动性操作 |
+| aggregator | `@cetusprotocol/aggregator-sdk` | 多DEX交换路由 |

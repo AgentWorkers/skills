@@ -1,48 +1,48 @@
 ---
 name: openclaw-media-gen
-description: "Generate images & videos with AIsa. Gemini 3 Pro Image (image) + Qwen Wan 2.6 (video) via one API key."
+description: "使用 AIsa，通过一个 API 密钥即可生成图像和视频：Gemini 3 Pro 用于生成图像，Qwen Wan 2.6 用于生成视频。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"🎬","requires":{"bins":["python3","curl"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
 # OpenClaw Media Gen 🎬
 
-Generate **images** and **videos** with one AIsa API key:
+使用一个 AIsa API 密钥即可生成 **图片** 和 **视频**：
 
-- **Image**: `gemini-3-pro-image-preview` (Gemini GenerateContent)
-- **Video**: `wan2.6-t2v` (Qwen Wan 2.6 / Tongyi Wanxiang, async task)
+- **图片**：`gemini-3-pro-image-preview`（Gemini GenerateContent）
+- **视频**：`wan2.6-t2v`（Qwen Wan 2.6 / Tongyi Wanxiang，异步任务）
 
-API Reference: [AIsa API Reference](https://aisa.mintlify.app/api-reference/introduction) (all pages available at `https://aisa.mintlify.app/llms.txt`)
+API 参考：[AIsa API 参考](https://aisa.mintlify.app/api-reference/introduction)（所有页面可在 `https://aisa.mintlify.app/llms.txt` 查看）
 
-## 🎯 Pricing Advantage
+## 🎯 价格优势
 
-### Video Generation (WAN) - Cost Comparison
+### 视频生成（WAN）- 成本对比
 
-| Resolution | AIsa (Contract) | AIsa (Official) | Bailian (Official) | OpenRouter |
+| 分辨率 | AIsa（合约） | AIsa（官方） | Bailian（官方） | OpenRouter |
 |------------|-----------------|-----------------|-------------------|------------|
-| 720P | **$0.06/sec** | ~$0.08 | ~$0.10 | ❌ |
-| 1080P | **$0.09/sec** | ~$0.12 | ~$0.15 | ❌ |
-| Pro/Animate | **$0.108–0.156** | ~$0.18 | ~$0.25 | ❌ |
+| 720P | **0.06 美元/秒** | 约 0.08 美元 | 约 0.10 美元 | ❌ |
+| 1080P | **0.09 美元/秒** | 约 0.12 美元 | 约 0.15 美元 | ❌ |
+| Pro/Animate | **0.108–0.156 美元** | 约 0.18 美元 | 约 0.25 美元 | ❌ |
 
-**Key Benefits**:
-- **25-40% cheaper** than Bailian official pricing
-- **OpenRouter doesn't support video** - AIsa is the only unified API with video generation
-- Contract pricing available for production workloads
-- Single API key for both image and video generation
+**主要优势**：
+- 比 Bailian 官方价格便宜 25-40%
+- OpenRouter 不支持视频生成——AIsa 是唯一支持视频生成的统一 API
+- 提供合约定价，适用于生产级工作负载
+- 使用同一个 API 密钥即可生成图片和视频
 
-## 🔥 What You Can Do
+## 🔥 您能做什么
 
-### Image Generation (Gemini)
+### 图片生成（Gemini）
 ```
 "Generate a cyberpunk cityscape at night, neon lights, rainy, cinematic"
 ```
 
-### Video Generation (Wan 2.6)
+### 视频生成（Wan 2.6）
 ```
 "Use a reference image to generate a 5-second shot: slow camera push-in, wind blowing hair, cinematic, shallow depth of field"
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 export AISA_API_KEY="your-key"
@@ -50,16 +50,16 @@ export AISA_API_KEY="your-key"
 
 ---
 
-## 🖼️ Image Generation (Gemini)
+## 🖼️ 图片生成（Gemini）
 
-### Endpoint
+### 端点
 
-- Base URL: `https://api.aisa.one/v1`
+- 基础 URL：`https://api.aisa.one/v1`
 - `POST /models/{model}:generateContent`
 
-Documentation: `google-gemini-chat` (GenerateContent) at `https://aisa.mintlify.app/api-reference/chat/chat-api/google-gemini-chat.md`
+文档说明：`google-gemini-chat`（GenerateContent）请参阅 `https://aisa.mintlify.app/api-reference/chat/chat-api/google-gemini-chat.md`
 
-### curl Example (returns inline_data for images)
+### curl 示例（返回图片的 inline_data）
 
 ```bash
 curl -X POST "https://api.aisa.one/v1/models/gemini-3-pro-image-preview:generateContent" \
@@ -72,19 +72,19 @@ curl -X POST "https://api.aisa.one/v1/models/gemini-3-pro-image-preview:generate
   }'
 ```
 
-> Note: Response may contain `candidates[].parts[].inline_data` (typically with base64 data and mime type); client script automatically parses and saves the file.
+> 注意：响应中可能包含 `candidates[].parts[].inline_data`（通常包含 Base64 编码的数据和 MIME 类型）；客户端脚本会自动解析并保存文件。
 
 ---
 
-## 🎞️ Video Generation (Qwen Wan 2.6 / Tongyi Wanxiang)
+## 🎞️ 视频生成（Qwen Wan 2.6 / Tongyi Wanxiang）
 
-### Create Task
+### 创建任务
 
-- Base URL: `https://api.aisa.one/apis/v1`
+- 基础 URL：`https://api.aisa.one/apis/v1`
 - `POST /services/aigc/video-generation/video-synthesis`
-- Header: `X-DashScope-Async: enable` (required for async)
+- 请求头：`X-DashScope-Async: enable`（异步请求必需）
 
-Documentation: `video-generation` at `https://aisa.mintlify.app/api-reference/aliyun/video/video-generation.md`
+文档说明：`video-generation` 请参阅 `https://aisa.mintlify.app/api-reference/aliyun/video/video-generation.md`
 
 ```bash
 curl -X POST "https://api.aisa.one/apis/v1/services/aigc/video-generation/video-synthesis" \
@@ -106,11 +106,11 @@ curl -X POST "https://api.aisa.one/apis/v1/services/aigc/video-generation/video-
   }'
 ```
 
-### Poll Task Status
+### 查询任务状态
 
 - `GET /services/aigc/tasks?task_id=...`
 
-Documentation: `task` at `https://aisa.mintlify.app/api-reference/aliyun/video/task.md`
+文档说明：`task` 请参阅 `https://aisa.mintlify.app/api-reference/aliyun/video/task.md`
 
 ```bash
 curl "https://api.aisa.one/apis/v1/services/aigc/tasks?task_id=YOUR_TASK_ID" \
@@ -119,7 +119,7 @@ curl "https://api.aisa.one/apis/v1/services/aigc/tasks?task_id=YOUR_TASK_ID" \
 
 ---
 
-## Python Client
+## Python 客户端
 
 ```bash
 # Generate image (save to local file)
@@ -143,17 +143,17 @@ python3 {baseDir}/scripts/media_gen_client.py video-wait --task-id YOUR_TASK_ID 
 python3 {baseDir}/scripts/media_gen_client.py video-wait --task-id YOUR_TASK_ID --download --out out.mp4
 ```
 
-## 💡 Use Cases
+## 💡 使用场景
 
-- **AI Agents**: Automate visual content generation for social media, marketing materials
-- **Content Creators**: Generate custom images and videos programmatically
-- **Developers**: Build apps with multimodal generation capabilities
-- **Businesses**: Cost-effective alternative to Bailian with better pricing
+- **AI 代理**：自动化生成用于社交媒体和营销材料的视觉内容
+- **内容创作者**：程序化生成自定义图片和视频
+- **开发者**：构建具备多模态生成功能的应用程序
+- **企业**：相比 Bailian，更具成本效益且价格更优
 
-## 🚀 Why AIsa for Media Generation?
+## 🚀 为什么选择 AIsa 进行媒体生成？
 
-1. **Unified API**: Single key for both images (Gemini) and videos (WAN)
-2. **Best Pricing**: 25-40% cheaper than alternatives
-3. **Production Ready**: Contract pricing and enterprise support available
-4. **No Competition**: OpenRouter doesn't support video generation
-5. **Simple Integration**: Python client with async task management built-in
+1. **统一 API**：一个 API 密钥即可生成图片（Gemini）和视频（WAN）
+2. **最佳价格**：比其他服务便宜 25-40%
+3. **适合生产环境**：提供合约定价和企业级支持
+4. **无竞争对手**：OpenRouter 不支持视频生成
+5. **集成简单**：内置 Python 客户端和异步任务管理功能

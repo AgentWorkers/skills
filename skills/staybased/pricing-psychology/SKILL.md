@@ -1,205 +1,145 @@
-# Pricing Psychology — Strategic Pricing Framework
+# 定价心理学——战略定价框架
 
-Design pricing that converts using cognitive biases and proven psychological principles.
-Sources: Phoenix Strategy Group, ScaleCrush, NetSuite research, SaaS pricing studies (2024-2026).
-All outputs go to `workspace/artifacts/`.
+设计定价策略时，应充分利用认知偏见和经过验证的心理学原理。  
+资料来源：Phoenix Strategy Group、ScaleCrush、NetSuite的研究报告以及2024-2026年的SaaS定价研究。  
+所有相关文件存放在`workspace/artifacts/`目录下。
 
-## Use when
-- Setting prices for products, services, or subscriptions
-- Designing pricing pages or tier structures
-- Evaluating whether current pricing is leaving money on the table
-- Preparing proposals or quotes for clients
-- Choosing between pricing models (flat, tiered, usage-based, etc.)
-- Repricing after market feedback or competitive analysis
+## 适用场景：  
+- 为产品、服务或订阅服务设定价格  
+- 设计定价页面或价格层级结构  
+- 评估当前定价策略是否未能充分挖掘潜在利润  
+- 为客户准备报价或提案  
+- 在不同的定价模式（固定价格、分层定价、按使用量计费等）之间做出选择  
+- 根据市场反馈或竞争分析调整价格  
 
-## Don't use when
-- Internal cost accounting or budgeting (this is about perception, not COGS)
-- Commodity pricing where market sets the price (gas, raw materials)
-- Regulatory/government pricing with fixed rate schedules
-- Charity/nonprofit where pricing psychology feels manipulative
+## 不适用场景：  
+- 内部成本核算或预算编制（此处关注的是消费者感知，而非实际成本）  
+- 市场价格已固定的商品定价（如汽油、原材料）  
+- 受监管或政府定价限制的情况  
+- 非营利组织的定价策略（避免使用可能引起误解的定价手段）  
 
-## Negative examples
-- "Calculate my profit margins" → No. This is pricing perception, not accounting.
-- "What should I charge per hour?" → Borderline. Use this to FRAME the rate, not calculate it.
-- "How much does AWS cost?" → No. This is for setting YOUR prices, not understanding others'.
+## 错误示例：  
+- “计算我的利润率”：这属于会计范畴，而非定价策略。  
+- “我应该每小时收费多少？”：这种问题更适合用于初步定价框架的构建，而非精确计算。  
+- “AWS的费用是多少？”：这适用于了解市场行情，而非制定自己的定价策略。  
 
-## Edge cases
-- Freelance rate setting (Upwork, etc.) → YES. Framing and anchoring apply heavily.
-- "Should I charge $29 or $30?" → YES. Charm pricing analysis directly applies.
-- Negotiation prep → YES. Anchoring is the #1 negotiation tactic.
-- Free tier decisions → YES. Free-to-paid conversion is a pricing psychology problem.
-
----
-
-## The 9 Core Principles
-
-### 1. Charm Pricing (Left-Digit Bias)
-Prices ending in .99 or .97 feel significantly cheaper than the next round number.
-
-**The science:** Our brains process left-to-right, anchoring on the first digit. $9.99 feels like "$9-something," not "$10."
-
-**Impact:** Studies suggest charm prices can outperform rounded prices significantly (estimates range from 10-24% depending on context and product category). Moving from $4.99 to $5.00 typically causes a 3-6% sales drop.
-
-**When to use:**
-- Everyday products, subscriptions, impulse buys
-- Price-sensitive audiences
-- Competitive markets where $1 perception matters
-
-**When NOT to use:**
-- Premium/luxury positioning → use round numbers ($100, not $99.99). Round prices signal quality and confidence.
-- B2B enterprise deals → round numbers feel more professional
-- Very high price points (>$1,000) → the .99 looks cheap, not smart
-
-**Application to our products:**
-- ClawHub skills: $9 or $19 (not $10 or $20)
-- Alfred's service: $149/mo (not $150) — charm + just below threshold
-
-### 2. Price Anchoring
-The first price a prospect sees becomes their reference point for everything after.
-
-**The science:** Cognitive anchoring bias. A $500/mo option makes $149/mo feel like a steal, even if $149 was always the target.
-
-**How to implement:**
-- Always show your highest tier first (on pricing pages, in proposals, in conversation)
-- In proposals: state the full value first, then the price. "This system typically delivers $3,000/mo in saved labor. Investment: $149/mo."
-- Reference competitor pricing: "Podium charges $399/mo for similar features. We're $149."
-- On pricing pages: Enterprise → Pro → Starter (left to right or top to bottom)
-
-**Critical rule:** The anchor must be credible. An absurd anchor ($10,000 for a simple service) backfires and destroys trust.
-
-### 3. Price Thresholds
-Customers have mental boundaries. Crossing them triggers disproportionate resistance.
-
-**Common thresholds:** $10, $25, $50, $100, $500, $1,000
-
-**Strategy:** Price just below the threshold.
-- $49 instead of $52
-- $99 instead of $105
-- $499 instead of $520
-
-**The math:** A product at $49 can outsell the same product at $51 by 15-20%, even though the actual difference is $2.
-
-**Application:** Our Reef product at $29 (below $30 threshold) — already correct.
-
-### 4. Decoy Pricing (Asymmetric Dominance)
-Add an intentionally unattractive option to make your target option look superior.
-
-**Classic example (The Economist):**
-- Digital only: $59
-- Print only: $125
-- Print + Digital: $125 ← everyone picks this because print-only is the decoy
-
-**How to design a decoy:**
-1. Decide which tier you want most people to buy (your "target")
-2. Create a tier that's close in price to the target but much worse in value
-3. The target now looks like an obvious bargain by comparison
-
-**3-tier formula:**
-| Tier | Price | Value | Purpose |
-|------|-------|-------|---------|
-| Basic | Low | Adequate | Entry point, captures budget buyers |
-| Pro (TARGET) | Medium | High | Best value ratio — this is what you want them to buy |
-| Premium | High | Highest | Anchor + decoy (close in price to Pro, makes Pro look smart) |
-
-### 5. Bundling & Unbundling
-Combining products increases perceived value. Separating them increases perceived cost.
-
-**Bundle when:** You want to increase average order value and perceived savings.
-- "Get all 5 skills for $39" (vs $15 each = $75 separately) → 48% savings messaging
-
-**Unbundle when:** You want to show how much you're providing.
-- Itemize your service in proposals: "SMS automation ($50 value) + booking system ($75 value) + review management ($50 value) = $175 value, bundled at $149/mo"
-
-**Key insight:** Bundling works for purchases. Unbundling works for perceived value in proposals and negotiations.
-
-### 6. Scarcity & Urgency
-Limited availability increases perceived value and triggers loss aversion.
-
-**Ethical applications:**
-- "First 10 customers get founding member pricing" (real limit)
-- "This rate is locked for 12 months" (real deadline)
-- "3 client slots remaining this month" (real capacity constraint)
-
-**Unethical (avoid):**
-- Fake countdown timers that reset
-- "Only 2 left!" when you have unlimited digital inventory
-- Artificial urgency on non-scarce items
-
-**Loss aversion multiplier:** People feel losses ~2x more intensely than equivalent gains. "Save $50/mo" is less powerful than "You're losing $50/mo without this."
-
-### 7. Price Framing
-Same price, different frame, different perception.
-
-**Daily vs monthly:** "$3.27/day" feels cheaper than "$99/mo" feels cheaper than "$1,188/year" — even though they're identical.
-
-**Comparison framing:** "Less than your daily coffee" (relatable anchor)
-
-**ROI framing:** "Pays for itself in 2 weeks" (investment, not cost)
-
-**Per-unit framing:** "$0.12 per automated message" (micro-cost feels trivial)
-
-**Best practice:** Frame in the smallest credible unit for affordable products. Frame in ROI terms for expensive ones.
-
-### 8. Social Proof in Pricing
-What others chose influences what new buyers choose.
-
-**Tactics:**
-- "Most Popular" badge on your target tier (increases selection by 20-30%)
-- "X customers chose this plan"
-- Testimonials placed next to the price (reduces price objection)
-- Case studies with specific ROI numbers near the CTA
-
-**For us:** When we have ClawHub downloads, show install counts. "500+ agents use this skill."
-
-### 9. Tiered Pricing Architecture
-Multiple tiers capture different willingness-to-pay segments.
-
-**The rule of 3:** Three tiers is optimal. Two feels like "cheap vs expensive." Four+ causes choice paralysis.
-
-**Tier design principles:**
-- Each tier should have a clear "hero feature" that justifies the jump
-- Price gaps should feel logical (not 2x jumps — aim for 1.5-2x between tiers)
-- The middle tier should be the obvious best value (commonly the most selected tier, though exact % varies by market — design it to be the obvious choice)
-- Name tiers by outcome, not features ("Starter / Growth / Scale" beats "Basic / Pro / Enterprise")
+## 特殊情况：  
+- 自由职业者的定价策略（如Upwork）：定价框架和锚定效应非常适用。  
+- “我应该定价29美元还是30美元？”：这种问题适合使用定价心理学分析。  
+- 谈判前的准备：锚定效应是重要的谈判策略。  
+- 免费试用阶段的定价决策：免费到付费的转换过程涉及定价心理学原理。  
 
 ---
 
-## Pricing Decision Checklist
+## 九大核心定价原则：  
 
-When setting any price, run through these questions:
+### 1. **魅力定价（个位数字偏见）**  
+以.99或.97结尾的价格比整数价格显得更便宜。  
+**原理**：人类大脑处理信息时从左到右阅读，会首先注意到个位数字。$9.99给人的感觉是“9几美元”，而非“10美元”。  
+**影响**：研究表明，这种定价方式通常比四舍五入后的价格更有效（效果因情境和产品类别而异，估计提升幅度为10%-24%）。例如，将价格从$4.99提高到$5.00可能导致销售额下降3%-6%。  
+**适用场景**：日常消费品、订阅服务、冲动购买行为；对价格敏感的客户群体；竞争激烈的市场。  
+**不适用场景**：高端或奢侈品定价（应使用整数价格，如$100而非$99.99）。  
 
-- [ ] **Who is the buyer?** (Price-sensitive consumer vs. value-driven business)
-- [ ] **What's the anchor?** (What will they compare this price to?)
-- [ ] **Am I below a threshold?** ($10, $25, $50, $100, $500, $1K)
-- [ ] **Charm or round?** (Everyday = charm. Premium = round.)
-- [ ] **How am I framing it?** (Daily? Monthly? ROI? Comparison?)
-- [ ] **Is there a decoy?** (Does my tier structure guide toward the target?)
-- [ ] **Social proof near price?** (Testimonials, "most popular," customer count)
-- [ ] **Scarcity real?** (Only use if the constraint is genuine)
-- [ ] **Have I unbundled in proposals?** (Show itemized value, then bundled price)
+### 2. **价格锚定效应**  
+客户首次看到的价格会成为后续所有价格决策的参考点。  
+**原理**：这是一种认知锚定偏见。例如，如果某个选项标价为$500/月，那么$149/月的价格就会显得非常划算。  
+**实施方法**：  
+- 在定价页面、提案或对话中始终首先展示最高价格层级。  
+- 在提案中先说明总价值，再展示具体价格。  
+- 参考竞争对手的定价：例如，“Podium类似功能的定价为$399/月，而我们的价格是$149”。  
+**关键提示**：锚定价格必须具有合理性；否则会破坏客户的信任。  
+
+### 3. **价格阈值**  
+消费者对价格存在心理上的阈值（如$10、$25、$50等）。  
+**策略**：将价格设定在这些阈值附近。例如，将价格定为$49而非$52。  
+**效果**：价格低于阈值的产品通常销量更高（例如，$49的产品比$51的产品销量高出15%-20%，尽管实际差异仅2美元）。  
+
+### 4. **诱饵定价（不对称优势）**  
+故意设置一个不吸引人的选项，让目标选项显得更有吸引力。  
+**经典例子**：  
+- 仅提供数字版：$59  
+- 仅提供印刷版：$125  
+- 同时提供数字版和印刷版：$125（大多数人会选择印刷版，因为印刷版是诱饵）。  
+**设计方法**：  
+- 确定最希望客户购买的层级；  
+- 创建一个价格接近目标层级但功能较差的选项；  
+- 目标层级因此显得更加划算。  
+
+### 5. **捆绑销售与拆分销售**  
+组合产品能提升产品的整体价值；分开销售则可能降低感知价值。  
+**适用场景**：希望提高平均订单价值和客户感知的节省金额。  
+**实施方法**：  
+- “五项技能只需$39”（单独购买每项价格为$15，合计$75）。  
+- 在提案中详细列出各项服务的价值：  
+  - 短信自动化：$50  
+  - 预订系统：$75  
+  - 评论管理系统：$50  
+  - 总计：$175/月（捆绑后价格为$149）。  
+
+### 6. **稀缺性与紧迫感**  
+产品供应有限会提升消费者的感知价值，并引发损失厌恶心理。  
+**合法应用示例**：  
+- “前10位客户可享受创始会员价”（真实限制）  
+- “此价格有效期为12个月”（明确截止日期）  
+- “本月仅剩3个名额”（真实容量限制）  
+**避免的做法**：  
+- 使用虚假的倒计时器；  
+- 在产品供应充足的情况下制造虚假的紧迫感。  
+
+### 7. **价格框架**  
+同样的价格，不同的表达方式会带来不同的感知效果。  
+**示例**：  
+- “每天$3.27”比“每月$99”更便宜；  
+- “每月$99”比“每年$1,188”更便宜。  
+**技巧**：  
+- 根据产品特性选择合适的定价框架（例如，按天数或月度、ROI等）。  
+
+### 8. **社会认同效应**  
+他人的选择会影响新客户的决策。  
+**策略**：  
+- 在目标层级上标注“最受欢迎”；  
+- 在价格旁边展示客户评价；  
+- 提供具体的ROI数据。  
+
+### 9. **分层定价架构**  
+设置多个价格层级，以满足不同消费者的支付意愿。  
+**原则**：  
+- 每个层级都应有一个明确的卖点；  
+- 价格差距要合理（避免过大或过小）；  
+- 中间层级通常是最佳选择。  
+
+## 定价决策 checklist：  
+在设定价格时，请回答以下问题：  
+- **买家是谁？**（价格敏感型消费者还是注重价值的客户？）  
+- **价格参考点是什么？**  
+- 定价是否低于某个心理阈值？  
+- 应采用魅力定价还是四舍五入的价格？  
+- 如何呈现价格？  
+- 是否设置了诱饵选项？  
+- 定价策略是否有助于引导客户选择目标层级？  
+- 是否提供了社会认同的依据（如客户评价）？  
+- 稀缺性是否真实存在？  
+- 在提案中是否详细说明了各项服务的价值？  
+
+## 快速参考：  
+| 情境 | 主要策略 | 辅助策略 |  
+| --- | --- | --- |  
+| SaaS/订阅服务定价 | 分层定价 + 诱饵定价 | 魅力定价 + 锚定效应 |  
+| 自由职业者定价 | 锚定效应 + 价格框架 | 捆绑销售 |  
+- 产品发布 | 利用稀缺性 + 社会认同效应 | 设置价格阈值 |  
+- 价格调整 | 通过框架提升价值后再涨价 |  
+- 竞争激烈的市场 | 设置价格阈值 + 对比分析 |  
+- 高端产品定价 | 使用整数价格 + 锚定效应 | 拆分销售以展示产品价值 |  
+- 提交提案/报价 | 先展示高价，再解释节省金额 |  
+
+## 关键数据：  
+- 根据多项研究，魅力定价的效率比四舍五入后的价格高出10%-24%；  
+- 40%-95%的零售产品价格以9结尾；  
+- 将价格从$4.99提高到$5.00通常会导致销售额下降3%-6%；  
+- 诱饵定价能提升目标层级的选择率10%-30%；  
+- “最受欢迎”的标签能显著提高目标层级的选择率；  
+- 损失厌恶心理使人们更强烈地感受到损失（Kahneman & Tversky, 1979）。  
 
 ---
 
-## Quick Reference: When to Use What
-
-| Situation | Primary Tactic | Secondary |
-|-----------|---------------|-----------|
-| SaaS/subscription pricing | Tiered + Decoy | Charm + Anchoring |
-| Freelance rate setting | Anchoring + Framing | Bundling (package deals) |
-| Product launch | Scarcity + Social Proof | Threshold pricing |
-| Price increase | Framing + Bundling | Add value before raising |
-| Competitive market | Threshold + Comparison | Charm pricing |
-| Premium positioning | Round numbers + Anchoring | Unbundling (show value) |
-| Proposal/quote | Anchor high → present price | Unbundle + ROI frame |
-
----
-
-## Key Numbers
-- Charm pricing outperforms round by 10-24% depending on context (multiple studies, wide range)
-- 40-95% of retail prices end in 9 (industry standard)
-- $4.99→$5.00 typically causes 3-6% sales drop
-- Decoy pricing increases target tier selection by 10-30% (varies by implementation)
-- "Most Popular" badges meaningfully increase target tier selection (test on your own pages)
-- Loss aversion: losses feel ~2x stronger than equivalent gains (Kahneman & Tversky, 1979 — Prospect Theory)
-- 3 tiers optimal; middle tier typically most selected when designed as best value
-- Advanced pricing psychology can increase average deal size 25-60% (SaaS studies, 2026)
+希望这些信息能帮助您更好地制定定价策略！

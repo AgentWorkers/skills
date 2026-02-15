@@ -1,6 +1,6 @@
 ---
 name: mcp-ssh-manager
-description: This skill should be used when the user asks to "run ssh command", "execute on server", "ssh session", "upload file", "download file", "ssh tunnel", "check server status", "monitor server", "deploy files", "backup server", or needs remote server management. This skill emphasizes session reuse, workdir organization, and content persistence for sustainable operations.
+description: 当用户请求执行“运行SSH命令”、“在服务器上执行操作”、“建立SSH会话”、“上传文件”、“下载文件”、“创建SSH隧道”、“检查服务器状态”、“监控服务器”、“部署文件”、“备份服务器”或需要远程服务器管理时，应使用此技能。该技能注重会话的重用、工作目录的有序管理以及内容的持久化，以确保操作的可持续性和高效性。
 version: 0.1.0
 metadata:
   clawdbot:
@@ -9,78 +9,78 @@ metadata:
       mcp_servers: ["ssh-manager"]
 ---
 
-# MCP SSH Manager Skill
+# MCP SSH管理技能
 
-> **Original MCP Server**: [mcp-ssh-manager](https://github.com/bvisible/mcp-ssh-manager) by [@bvisible](https://github.com/bvisible)
->
-> This skill provides documentation, workflows, and best practices for using the MCP ssh-manager server.
+> **原始MCP服务器**: [mcp-ssh-manager](https://github.com/bvisible/mcp-ssh-manager) 由 [@bvisible](https://github.com/bvisible) 开发
 
-Manage remote SSH servers using MCP ssh-manager tools. Emphasizes session reuse, workdir organization, and content persistence for sustainable operations.
+本技能提供了关于如何使用MCP ssh-manager服务器的文档、工作流程和最佳实践。
 
-## Quick Reference
+使用MCP ssh-manager工具来管理远程SSH服务器。重点在于会话的重用、工作目录的组织以及内容的持久化，以实现可持续的操作。
 
-### Connection Management
+## 快速参考
 
-| Task | Tool | Example |
+### 连接管理
+
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| List servers | `ssh_list_servers` | `ssh_list_servers` |
-| Execute command | `ssh_execute` | `ssh_execute server="rock5t" command="df -h"` |
-| Execute with sudo | `ssh_execute_sudo` | `ssh_execute_sudo server="rock5t" command="apt update"` |
-| Check status | `ssh_connection_status` | `ssh_connection_status action="status"` |
+| 列出服务器 | `ssh_list_servers` | `ssh_list_servers` |
+| 执行命令 | `ssh_execute` | `ssh_execute server="rock5t" command="df -h"` |
+| 以sudo权限执行命令 | `ssh_execute_sudo` | `ssh_execute_sudo server="rock5t" command="apt update"` |
+| 检查连接状态 | `ssh_connection_status` | `ssh_connection_status action="status"` |
 
-### Session Management
+### 会话管理
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| Start session | `ssh_session_start` | `ssh_session_start server="rock5t" name="deploy"` |
-| Send command | `ssh_session_send` | `ssh_session_send session="xxx" command="cd /var"` |
-| List sessions | `ssh_session_list` | `ssh_session_list` |
-| Close session | `ssh_session_close` | `ssh_session_close session="xxx"` |
+| 启动会话 | `ssh_session_start` | `ssh_session_start server="rock5t" name="deploy"` |
+| 发送命令 | `ssh_session_send` | `ssh_session_send session="xxx" command="cd /var"` |
+| 列出会话 | `ssh_session_list` | `ssh_session_list` |
+| 关闭会话 | `ssh_session_close` | `ssh_session_close session="xxx"` |
 
-### File Operations
+### 文件操作
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| Upload file | `ssh_upload` | `ssh_upload server="rock5t" localPath="." remotePath="/tmp"` |
-| Download file | `ssh_download` | `ssh_download server="rock5t" remotePath="/var/log/syslog" localPath="."` |
-| Sync files | `ssh_sync` | `ssh_sync server="rock5t" source="local:./dist" destination="remote:/var/www"` |
+| 上传文件 | `ssh_upload` | `ssh_upload server="rock5t" localPath="." remotePath="/tmp"` |
+| 下载文件 | `ssh_download` | `ssh_download server="rock5t" remotePath="/var/log/syslog" localPath="."` |
+| 同步文件 | `ssh_sync` | `ssh_sync server="rock5t" source="local:./dist" destination="remote:/var/www"` |
 
-### Monitoring
+### 监控
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| Tail log | `ssh_tail` | `ssh_tail server="rock5t" file="/var/log/syslog" lines=20` |
-| Health check | `ssh_health_check` | `ssh_health_check server="rock5t"` |
-| Monitor resources | `ssh_monitor` | `ssh_monitor server="rock5t" type="overview"` |
-| Service status | `ssh_service_status` | `ssh_service_status server="rock5t" services="nginx,docker"` |
+| 查看日志尾部内容 | `ssh_tail` | `ssh_tail server="rock5t" file="/var/log/syslog" lines=20` |
+| 检查服务器健康状况 | `ssh_health_check` | `ssh_health_check server="rock5t"` |
+| 监控资源使用情况 | `ssh_monitor` | `ssh_monitor server="rock5t" type="overview"` |
+| 检查服务状态 | `ssh_service_status` | `ssh_service_status server="rock5t" services="nginx,docker"` |
 
-### Tunneling
+### 隧道创建
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| Create tunnel | `ssh_tunnel_create` | `ssh_tunnel_create server="rock5t" type="local" localPort=8080 remoteHost="localhost" remotePort=80` |
-| List tunnels | `ssh_tunnel_list` | `ssh_tunnel_list` |
-| Close tunnel | `ssh_tunnel_close` | `ssh_tunnel_close tunnelId="xxx"` |
+| 创建隧道 | `ssh_tunnel_create` | `ssh_tunnel_create server="rock5t" type="local" localPort=8080 remoteHost="localhost" remotePort=80` |
+| 列出隧道 | `ssh_tunnel_list` | `ssh_tunnel_list` |
+| 关闭隧道 | `ssh_tunnel_close` | `ssh_tunnel_close tunnelId="xxx"` |
 
-### Backup
+### 备份
 
-| Task | Tool | Example |
+| 任务 | 工具 | 示例 |
 |------|------|---------|
-| Create backup | `ssh_backup_create` | `ssh_backup_create server="rock5t" type="files" name="data"` |
-| List backups | `ssh_backup_list` | `ssh_backup_list server="rock5t"` |
-| Restore backup | `ssh_backup_restore` | `ssh_backup_restore server="rock5t" backupId="xxx"` |
-| Schedule backup | `ssh_backup_schedule` | `ssh_backup_schedule server="rock5t" schedule="0 2 * * *" type="files" name="daily"` |
+| 创建备份 | `ssh_backup_create` | `ssh_backup_create server="rock5t" type="files" name="data"` |
+| 列出备份 | `ssh_backup_list` | `ssh_backup_list server="rock5t"` |
+| 恢复备份 | `ssh_backup_restore` | `ssh_backup_restore server="rock5t" backupId="xxx"` |
+| 安排备份任务 | `ssh_backup_schedule` | `ssh_backup_schedule server="rock5t" schedule="0 2 * * *" type="files" name="daily"` |
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Single Command
+### 示例1：单条命令
 
 ```bash
 # Simple command - no session needed
 ssh_execute server="rock5t" command="df -h"
 ```
 
-### Example 2: Multi-step Deployment with Session
+### 示例2：使用会话的多步骤部署
 
 ```bash
 # Check existing sessions first
@@ -100,7 +100,7 @@ ssh_session_send session="xxx" command="pm2 restart all"
 ssh_session_close session="xxx"
 ```
 
-### Example 3: System Health Check
+### 示例3：系统健康检查
 
 ```bash
 # Check overall health
@@ -113,7 +113,7 @@ ssh_monitor server="rock5t" type="cpu" interval=5 duration=30
 ssh_service_status server="rock5t" services="nginx,docker,postgres"
 ```
 
-### Example 4: File Deployment
+### 示例4：文件部署
 
 ```bash
 # Upload deployment package
@@ -123,7 +123,7 @@ ssh_upload server="rock5t" localPath="./dist/app.tar.gz" remotePath="/tmp/app.ta
 ssh_execute server="rock5t" command="cd /tmp && tar -xzf app.tar.gz && cp -r app/* /var/www/ && pm2 restart app"
 ```
 
-### Example 5: Log Monitoring
+### 示例5：日志监控
 
 ```bash
 # Tail real-time logs
@@ -133,7 +133,7 @@ ssh_tail server="rock5t" file="/var/log/nginx/access.log" lines=50 follow=true
 ssh_tail server="rock5t" file="/var/log/syslog" grep="error" lines=100
 ```
 
-### Example 6: Create SSH Tunnel
+### 示例6：创建SSH隧道
 
 ```bash
 # Local port forward (access remote service locally)
@@ -142,11 +142,11 @@ ssh_tunnel_create server="rock5t" type="local" localPort=5432 remoteHost="localh
 # Now connect to local:5432 to access remote database
 ```
 
-## Workdir Management
+## 工作目录管理
 
-Store SSH operation results in `~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/` for reuse and comparison.
+将SSH操作的结果保存在 `~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/` 目录中，以便重用和比较。
 
-### Structure
+### 结构
 
 ```
 ~/.ssh-workdir/
@@ -161,7 +161,7 @@ Store SSH operation results in `~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/`
         └── summary.md     # Findings and notes
 ```
 
-### Create Workdir
+### 创建工作目录
 
 ```bash
 # Create new workdir
@@ -171,7 +171,7 @@ mkdir -p ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/output
 touch ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/commands.md
 ```
 
-### Log Commands
+### 记录命令执行结果
 
 ```bash
 # Add command to log
@@ -179,14 +179,14 @@ echo "## $(date)" >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/commands.md
 echo 'df -h' >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/commands.md
 ```
 
-### Save Output
+### 保存输出结果
 
 ```bash
 # Execute and save
 ssh_execute server="{hostname}" command="df -h" > ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/output/df-h.txt
 ```
 
-### Write Summary
+### 编写操作总结
 
 ```bash
 # Write findings
@@ -195,7 +195,7 @@ echo '- Disk usage: 75% on /dev/sda1' >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-
 echo '- Memory: 4GB/16GB used' >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/summary.md
 ```
 
-### Reuse Previous Context
+### 重用之前的操作上下文
 
 ```bash
 # Check if recent work exists
@@ -209,22 +209,22 @@ diff ~/.ssh-workdir/{hostname}/{yesterday}-{topic}/output/df-h.txt \
      ~/.ssh-workdir/{hostname}/{today}-{topic}/output/df-h.txt
 ```
 
-## Session Management Guidelines
+## 会话管理指南
 
-### When to Use Sessions
+### 何时使用会话
 
-**Use session for:**
-- Multi-step deployments
-- Tasks requiring state (cd, environment)
-- Long-running workflows (more than 3 commands)
-- Tasks where command order matters
+**适合使用会话的情况：**
+- 多步骤部署
+- 需要保持状态（如目录切换、环境设置）的任务
+- 长时间运行的工作流程（包含多个命令）
+- 命令执行顺序重要的任务
 
-**Don't use session for:**
-- Single quick commands (`df -h`, `pwd`)
-- Unrelated commands that don't need state
-- Read-only monitoring tasks
+**不适合使用会话的情况：**
+- 单个快速命令（如 `df -h`、`pwd`）
+- 不需要保持状态的无关命令
+- 仅用于读取日志的监控任务
 
-### Session Lifecycle
+### 会话生命周期
 
 ```bash
 # 1. Check existing sessions first
@@ -240,92 +240,92 @@ ssh_session_start server="{hostname}" name="{task-name}"
 ssh_session_close session="{session-id}"
 ```
 
-### Timeout Considerations
+### 超时处理
 
-- SSH server may close idle sessions (typically 3-5 minutes by default)
-- Configure `ClientAliveInterval` on server for longer keepalive
-- For long-running tasks, consider periodic lightweight commands to keepalive
-- If session becomes unresponsive, create a new one
+- SSH服务器可能会关闭空闲会话（默认为3-5分钟）
+- 可以在服务器上配置 `ClientAliveInterval` 以延长会话保持时间
+- 对于长时间运行的任务，可以考虑定期发送简单命令来保持会话活跃
+- 如果会话无响应，可以创建新的会话
 
-## Best Practices
+## 最佳实践
 
-### Before SSH Operations
+### 在执行SSH操作之前：
 
-1. **Check existing sessions**
+1. **检查现有的会话**  
    ```bash
    ssh_session_list
    ```
 
-2. **Check recent workdir**
+2. **查看最近的工作目录**  
    ```bash
    ls ~/.ssh-workdir/{hostname}/
    ```
 
-3. **Create new workdir if starting new task**
+3. **如果开始新任务，则创建新的工作目录**  
    ```bash
    mkdir -p ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/output
    ```
 
-### During SSH Operations
+### 在执行SSH操作期间：
 
-1. **Use appropriate tool for the task**
-   - Single command: `ssh_execute`
-   - Multi-step: `ssh_session_start` → `ssh_session_send` → `ssh_session_close`
-   - File transfer: `ssh_upload/download/sync`
-   - Monitoring: `ssh_monitor`, `ssh_tail`, `ssh_health_check`
+1. **根据任务选择合适的工具**：
+   - 单条命令：使用 `ssh_execute`
+   - 多步骤操作：使用 `ssh_session_start` → `ssh_session_send` → `ssh_session_close`
+   - 文件传输：使用 `ssh_upload/download/sync`
+   - 监控：使用 `ssh_monitor`、`ssh_tail`、`ssh_health_check`
 
-2. **Log commands to workdir**
+2. **将命令执行结果记录到工作目录中**  
    ```bash
    echo "command" >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/commands.md
    ```
 
-3. **Save important outputs**
+3. **保存重要的输出结果**  
    ```bash
    ssh_execute server="{hostname}" command="df -h" > ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/output/df-h.txt
    ```
 
-### After SSH Operations
+### 在SSH操作完成后：
 
-1. **Close sessions**
+1. **关闭会话**  
    ```bash
    ssh_session_close session="{session-id}"
    ```
 
-2. **Write summary**
+2. **编写操作总结**  
    ```bash
    echo '## Findings' >> ~/.ssh-workdir/{hostname}/{YYYY-MM-DD}-{topic}/summary.md
    ```
 
-3. **Clean up**
-   - Close tunnels: `ssh_tunnel_close`
-   - Verify all sessions closed: `ssh_session_list`
+3. **清理资源**：
+   - 关闭隧道：`ssh_tunnel_close`
+   - 确保所有会话都已关闭：`ssh_session_list`
 
-## Tips
+## 提示：
 
-- Use `ssh_session_list` before starting new tasks to reuse existing sessions
-- Create workdir for each task to maintain organized history
-- Write summaries to quickly recall previous work
-- Use `ssh_connection_status action="status"` to check connection health
-- For server comparison, store outputs with consistent naming across hosts
-- Close sessions when done to free resources
-- Configure server-side `ClientAliveInterval` for longer session timeouts if needed
+- 在开始新任务之前，使用 `ssh_session_list` 来查看是否有可重用的会话
+- 为每个任务创建工作目录，以保持操作历史的条理清晰
+- 编写操作总结，以便快速回顾之前的操作
+- 使用 `ssh_connection_status action="status"` 来检查连接状态
+- 为了便于跨服务器比较结果，使用统一的文件命名规则
+- 完成操作后关闭会话以释放资源
+- 如有需要，可以配置服务器端的 `ClientAliveInterval` 以延长会话超时时间
 
-## Additional Resources
+## 额外资源
 
-### Reference Files
+### 参考文件：
 
-- **`references/sessions.md`** - Session management deep dive
-- **`references/workspace.md`** - Workdir structure and usage
-- **`references/comparison.md`** - How to compare historical data
+- **`references/sessions.md`** - 会话管理的详细说明
+- **`references/workspace.md`** - 工作目录的结构和使用方法
+- **`references/comparison.md`** - 如何比较历史数据
 
-### Example Files
+### 示例文件：
 
-- **`examples/system-check.md`** - Complete system health check workflow
-- **`examples/deployment.md`** - Multi-step deployment example
-- **`examples/troubleshooting.md`** - Problem diagnosis workflow
+- **`examples/system-check.md`** - 完整的系统健康检查工作流程
+- **`examples/deployment.md`** - 多步骤部署示例
+- **`examples/troubleshooting.md`** - 问题诊断工作流程
 
-### Scripts
+### 脚本：
 
-- **`scripts/create-workdir.sh`** - Create new workdir structure
-- **`scripts/log-command.sh`** - Log command to workdir
-- **`scripts/save-status.sh`** - Capture and save host status
+- **`scripts/create-workdir.sh`** - 创建新的工作目录结构
+- **`scripts/log-command.sh`** - 将命令执行结果记录到工作目录
+- **`scripts/save-status.sh`** - 捕获并保存服务器状态信息

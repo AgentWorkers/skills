@@ -1,13 +1,14 @@
 ---
 name: jb-hook-deploy-ui
-description: Deploy custom Juicebox hooks from browser. Compile Solidity, deploy contracts, verify on explorers, and attach to projects. Works with Claude-generated hooks.
+description: **从浏览器部署自定义的Juicebox挂钩**：  
+您可以编译Solidity代码、部署合约、在浏览器中的探索器（explorers）上进行合约验证，并将这些挂钩应用到项目中。该功能兼容Claude生成的挂钩（hooks）。
 ---
 
-# Juicebox V5 Hook Deployment UI
+# Juicebox V5 钩子部署界面
 
-Deploy custom hooks directly from the browser. Compile Solidity code, deploy to any chain, verify on block explorers, and attach to your Juicebox project.
+您可以直接通过浏览器部署自定义的钩子（hooks）。编译 Solidity 代码，将其部署到任何区块链上，在区块浏览器中进行验证，然后将其应用到您的 Juicebox 项目中。
 
-## Overview
+## 概述
 
 ```
 1. Paste or load Solidity source code
@@ -17,7 +18,7 @@ Deploy custom hooks directly from the browser. Compile Solidity code, deploy to 
 5. Attach hook to project ruleset
 ```
 
-## Complete Hook Deploy UI Template
+## 完整的钩子部署界面模板
 
 ```html
 <!DOCTYPE html>
@@ -516,9 +517,9 @@ Use /jb-interact-ui for full ruleset configuration.`);
 </html>
 ```
 
-## Compilation API Endpoint
+## 编译 API 端点
 
-For browser compilation, you'll need a server-side endpoint:
+为了通过浏览器进行编译，您需要一个服务器端的 API 端点：
 
 ```typescript
 // pages/api/compile.ts
@@ -544,7 +545,7 @@ function findImports(path) {
 }
 ```
 
-## Import Resolution
+## 导入解析功能
 
 ```javascript
 const IMPORT_MAPPINGS = {
@@ -554,9 +555,9 @@ const IMPORT_MAPPINGS = {
 };
 ```
 
-## Related Skills
+## 相关技能
 
-- `/jb-pay-hook` - Generate pay hook Solidity code
-- `/jb-cash-out-hook` - Generate cash out hook Solidity code
-- `/jb-split-hook` - Generate split hook Solidity code
-- `/jb-interact-ui` - Queue rulesets with hooks
+- `/jb-pay-hook`：生成用于支付操作的 Solidity 代码
+- `/jb-cash-out-hook`：生成用于现金提取操作的 Solidity 代码
+- `/jb-split-hook`：生成用于资金分配操作的 Solidity 代码
+- `/jb-interact-ui`：用于将规则集与钩子关联的功能

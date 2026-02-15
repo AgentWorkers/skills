@@ -8,20 +8,20 @@ description: >
 
 ---
 
-# Skill Security Audit
+# 技能安全审计
 
-**MANDATORY** security check before installing external skills.
+在安装外部技能之前，必须进行此安全检查。
 
-Inspired by the ClawHavoc campaign that compromised 341 malicious skills on ClawHub.
+该检查的灵感来源于ClawHavoc事件，该事件导致ClawHub上的341个恶意技能被泄露。
 
-## When to Use
+## 使用时机
 
-Run this audit **BEFORE** any skill installation:
+在安装任何技能之前，请运行此审计：
 - `clawhub install <skill>`
-- Manual skill download/copy
-- Skills from GitHub, URLs, or untrusted sources
+- 手动下载/复制技能
+- 来自GitHub、URL或不可信来源的技能
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Scan a skill folder
@@ -34,55 +34,55 @@ python3 scripts/scan_skill.py /path/to/skill --json
 python3 scripts/scan_skill.py /path/to/skill --install-if-safe
 ```
 
-## What It Detects
+## 审计内容
 
-### 🔴 CRITICAL (Blocks Installation)
+### 🔴 严重风险（阻止安装）
 
-| Category | Patterns |
-|----------|----------|
-| **Reverse Shells** | `nc -e`, `bash /dev/tcp`, Python socket shells |
+| 类别 | 模式                |
+|----------|----------------------|
+| **反向shell** | `nc -e`, `bash /dev/tcp`, Python套接字shell |
 | **Curl-Pipe-Bash** | `curl \| bash`, `wget && chmod +x` |
-| **Credential Access** | ~/.ssh, ~/.aws, ~/.openclaw, .env files |
-| **Data Exfiltration** | Discord/Slack webhooks, POST with secrets |
-| **Malicious Domains** | glot.io, pastebin (known malware hosts) |
-| **Persistence** | crontab, systemd, LaunchAgents, .bashrc |
-| **Command Injection** | eval(), exec(), subprocess shell=True |
-| **Obfuscation** | base64 decode pipes, pickle, marshal |
+| **凭证访问** | `~/.ssh`, `~/.aws`, `~/.openclaw`, `.env`文件 |
+| **数据泄露** | 使用Discord/Slack Webhook发送包含敏感信息的POST请求 |
+| **恶意域名** | `glot.io`, `pastebin`（已知的恶意软件托管网站） |
+| **持久化机制** | `crontab`, `systemd`, `LaunchAgents`, `.bashrc` |
+| **命令注入** | `eval()`, `exec()`, `subprocess shell=True` |
+| **混淆技术** | 使用base64解码、pickle、marshal等加密方式 |
 
-### 🟡 WARNING (Review Required)
+### 🟡 警告（需要审查）
 
-Only patterns that are suspicious regardless of skill type:
-- Raw socket usage (unusual for most skills)
-- Dynamic code compilation
-- File/directory deletion
-- Screenshot/keyboard capture libraries
-- Low-level system calls (ctypes)
+无论技能类型如何，以下模式均被视为可疑：
+- 直接使用原始套接字（对大多数技能来说是不寻常的）
+- 动态代码编译
+- 删除文件/目录
+- 使用截图/键盘捕获功能
+- 低级系统调用（如ctypes）
 
-### Philosophy
+### 审计原则
 
-We intentionally **don't warn** on common patterns like:
-- HTTP requests (normal for API skills)
-- API key references (normal for integration skills)
-- File writes (normal for data skills)
-- Environment variable access (normal for config)
+对于以下常见模式，我们**不会发出警告**：
+- HTTP请求（API技能的正常操作）
+- API密钥的使用（集成技能的正常操作）
+- 文件写入（数据技能的正常操作）
+- 环境变量的访问（配置技能的正常操作）
 
-This reduces noise so real threats stand out.
+这样可以减少不必要的警报，使真正的威胁更加突出。
 
-## Risk Scoring
+## 风险评分
 
 ```
 CRITICAL findings × 30 = Base score
 WARNING findings × 3 (capped at 10) = Warning contribution
 ```
 
-| Score | Level | Action |
-|-------|-------|--------|
-| 0-20 | 🟢 SAFE | Auto-approve |
-| 21-50 | 🟡 CAUTION | Review findings |
-| 51-80 | 🔶 DANGER | Detailed review required |
-| 81-100 | 🔴 BLOCKED | Do NOT install |
+| 分数 | 等级 | 处理方式 |
+|-------|-------|---------|
+| 0-20 | 🟢 安全 | 自动批准安装 |
+| 21-50 | 🟡 警告 | 需要审查审计结果 |
+| 51-80 | 🔶 危险 | 需要详细审查 |
+| 81-100 | 🔴 禁止安装 |
 
-## Sample Output
+## 示例输出
 
 ```
 ════════════════════════════════════════════════════════════
@@ -107,9 +107,9 @@ WARNING findings × 3 (capped at 10) = Warning contribution
 ════════════════════════════════════════════════════════════
 ```
 
-## Integration with clawhub
+## 与ClawHub的集成
 
-Create a wrapper script to auto-scan before installation:
+创建一个包装脚本，在安装技能之前自动执行安全审计：
 
 ```bash
 #!/bin/bash
@@ -133,11 +133,10 @@ fi
 rm -rf "$TEMP"
 ```
 
-## References
+## 参考资料
 
-See `references/threat-patterns.md` for detailed pattern explanations.
+有关详细的安全模式说明，请参阅`references/threat-patterns.md`。
 
-## Credits
+## 致谢
 
-Developed in response to the ClawHavoc campaign (Feb 2026) that demonstrated
-large-scale supply chain attacks via AI agent skill marketplaces.
+本工具的开发是为了应对ClawHavoc事件（2026年2月），该事件揭示了通过AI代理技能市场进行的大规模供应链攻击行为。

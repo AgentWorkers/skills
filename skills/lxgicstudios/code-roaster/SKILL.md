@@ -1,22 +1,22 @@
 # Code Roaster
 
-Get your code brutally roasted with humor AND useful feedback. Like a code review from that one senior dev who's funny but also right.
+这款工具会以幽默的方式对你的代码进行“严厉”的点评，并提供实用的反馈——就像那位既风趣又专业的资深开发人员在进行代码审查一样。
 
-## Quick Start
+## 快速开始
 
 ```bash
 npx ai-roast ./your-file.js
 ```
 
-## What It Does
+## 功能介绍
 
-- Roasts your code with savage (but accurate) commentary
-- Points out actual problems behind the jokes
-- Catches naming crimes, antipatterns, and WTFs
-- Gives you real suggestions after the roast
-- Makes code review actually entertaining
+- 用尖锐（但准确的）评论来分析你的代码
+- 指出评论背后的实际问题
+- 发现代码中的命名错误、反模式（不良编程习惯）以及令人困惑的地方
+- 在点评结束后给出切实可行的改进建议
+- 让代码审查过程变得既有趣又富有收获
 
-## Usage
+## 使用方法
 
 ```bash
 # Roast a specific file
@@ -26,7 +26,7 @@ npx ai-roast ./src/index.js
 npx ai-roast ./src
 ```
 
-## Example Output
+## 示例输出
 
 ```
 🔥 Line 42: "password123" as a default? Bold strategy.
@@ -37,16 +37,16 @@ npx ai-roast ./src
    FIX: Break into smaller, well-named functions.
 ```
 
-## Part of the LXGIC Dev Toolkit
+## LXGIC 开发工具包的一部分
 
-One of 110+ free developer tools from LXGIC Studios. No paywalls, no sign-ups.
+LXGIC Studios 提供的 110 多款免费开发工具之一，无需支付费用，也无需注册。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/lxgic-studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。

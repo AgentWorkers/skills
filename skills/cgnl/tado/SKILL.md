@@ -1,93 +1,92 @@
 ---
 name: tado
-description: Control your Tado smart thermostat - check temperature, set heating, manage home/away modes, and monitor presence via geolocation.
+description: 控制您的 Tado 智能恒温器：查看温度、设置供暖模式、管理“在家/外出”模式，并通过地理位置信息监控您的位置。
 homepage: https://www.tado.com
 metadata: {"openclaw":{"emoji":"🌡️","requires":{"bins":["python3","pip3"]}}}
 ---
 
-# Tado Smart Thermostat Skill
+# Tado智能恒温器技能
 
-Control your Tado smart thermostat from OpenClaw.
+通过OpenClaw控制您的Tado智能恒温器。
 
-## Features
+## 功能
 
-- 📊 **Status:** Get current temperature, humidity, heating status per zone
-- 🌡️ **Temperature Control:** Set target temperature with optional timer
-- 🏠 **Presence:** Check who is home (geolocation)
-- 🔄 **Modes:** Home, Away, Auto (schedule-based)
-- ⚙️ **Zone Management:** Support for multi-zone setups
-- 📋 **JSON Output:** Machine-readable format for scripting
+- 📊 **状态信息：** 获取当前温度、湿度以及每个区域的供暖状态
+- 🌡️ **温度调节：** 设置目标温度，并可设置定时器
+- 🏠 **人员检测：** 通过地理位置判断是否有人在家
+- ⚙️ **区域管理：** 支持多区域设置
+- 📋 **JSON输出：** 以机器可读的格式输出数据，便于脚本编写
 
-## Installation
+## 安装
 
-### 1. Install Dependencies
+### 1. 安装依赖库
 
 ```bash
 cd ~/clawd/skills/tado
 pip3 install libtado --break-system-packages
 ```
 
-**Minimum version:** libtado 4.1.1+ (OAuth2 support required)
+**最低版本要求：** libtado 4.1.1+（支持OAuth2认证）
 
-### 2. OAuth2 Authentication (One-Time Setup)
+### 2. OAuth2认证（一次性设置）
 
-**⚠️ Important:** libtado 4.1.1+ requires OAuth2. Username/password authentication is **no longer supported**.
+**⚠️ 重要提示：** libtado 4.1.1+版本起仅支持OAuth2认证。用户名/密码认证方式已不再可用。
 
-**First-time setup:**
+**首次设置：**
 
 ```bash
 # Run the libtado CLI to authenticate via browser
 python3 -m libtado -f ~/.tado_auth.json zones
 ```
 
-**What happens:**
-1. libtado generates a Tado login URL
-2. Your browser opens (or you paste the URL manually)
-3. Log in with your Tado credentials
-4. libtado saves OAuth2 tokens to `~/.tado_auth.json`
-5. You'll see your zones listed (confirming success)
+**操作步骤：**
+1. libtado会生成一个Tado登录URL
+2. 打开浏览器访问该URL或手动输入URL
+3. 使用您的Tado账户登录
+4. libtado会将OAuth2令牌保存到`~/.tado_auth.json`文件中
+5. 系统会显示您已设置的区域列表（表示设置成功）
 
-**After setup:**
-- The skill will automatically use `~/.tado_auth.json`
-- No further browser login needed
-- Tokens refresh automatically
+**设置完成后：**
+- 该技能将自动使用`~/.tado_auth.json`文件
+- 无需再次登录浏览器
+- 令牌会自动刷新
 
-**Security Note:** The token file should be readable only by you:
+**安全提示：** 该令牌文件仅允许您本人访问：
 
 ```bash
 chmod 600 ~/.tado_auth.json
 ```
 
-### 3. Test Connection
+### 3. 测试连接
 
 ```bash
 cd ~/clawd/skills/tado
 ./scripts/tado.py zones
 ```
 
-You should see a list of your configured zones.
+您应该能看到已配置的区域列表。
 
-**If authentication fails:**
+**如果认证失败：**
 ```bash
 # Re-authenticate (regenerates tokens)
 python3 -m libtado -f ~/.tado_auth.json zones
 ```
 
-## Authentication
+## 认证
 
-### OAuth2 Flow (Required)
+### OAuth2认证流程（强制要求）
 
-As of **libtado 4.1.1+**, OAuth2 is the only supported authentication method.
+从**libtado 4.1.1+**版本开始，OAuth2成为唯一的认证方式。
 
-**Token file location:** `~/.tado_auth.json`
+**令牌文件位置：** `~/.tado_auth.json`
 
-**How it works:**
-1. First run: Browser login via `python3 -m libtado -f ~/.tado_auth.json zones`
-2. libtado saves access token + refresh token
-3. Skill uses `token_file_path` parameter: `Tado(token_file_path='~/.tado_auth.json')`
-4. libtado automatically refreshes expired tokens
+**工作原理：**
+1. 首次运行时：通过`python3 -m libtado -f ~/.tado_auth.json zones`进行浏览器登录
+2. libtado会保存访问令牌和刷新令牌
+3. 该技能会使用`token_file_path`参数（例如：`Tado(token_file_path='~/.tado_auth.json')`
+4. libtado会自动刷新过期的令牌
 
-**Token structure (managed by libtado):**
+**令牌结构（由libtado管理）：**
 ```json
 {
   "access_token": "...",
@@ -96,38 +95,38 @@ As of **libtado 4.1.1+**, OAuth2 is the only supported authentication method.
 }
 ```
 
-**Do NOT manually edit this file!** Let libtado manage it.
+**请勿手动编辑此文件！** 由libtado负责管理令牌。
 
-### Migration from Username/Password
+### 从用户名/密码认证方式迁移
 
-**Old authentication (no longer works):**
+**旧认证方式（不再适用）：**
 ```python
 Tado(username='email', password='pass')  # ❌ Not supported
 ```
 
-**New authentication (required):**
+**新认证方式（强制要求）：**
 ```python
 Tado(token_file_path='~/.tado_auth.json')  # ✅ Works
 ```
 
-**Migration steps:**
-1. Delete old `~/.tado_credentials.json` (no longer used)
-2. Run `python3 -m libtado -f ~/.tado_auth.json zones`
-3. Follow browser login flow
-4. Done! Skill will work automatically
+**迁移步骤：**
+1. 删除旧的`~/.tado_credentials.json`文件
+2. 运行`python3 -m libtado -f ~/.tado_auth.json zones`
+3. 按照浏览器登录流程操作
+4. 完成迁移后，技能将自动生效
 
-**No backward compatibility:** Once you upgrade to libtado 4.1.1+, you MUST use OAuth2.
+**注意：** 升级到libtado 4.1.1+版本后，必须使用OAuth2认证方式。
 
-## Usage
+## 使用方法
 
-### Status Commands
+### 状态查询命令
 
-**Get status of all zones:**
+**查询所有区域的状态：**
 ```bash
 ./scripts/tado.py status
 ```
 
-**Output:**
+**输出结果：**
 ```
 🏠 Woonkamer (Zone 1)
   Current: 20.5°C (55% humidity)
@@ -142,26 +141,26 @@ Tado(token_file_path='~/.tado_auth.json')  # ✅ Works
   Mode:    Auto (following schedule)
 ```
 
-**Get status of specific zone:**
+**查询特定区域的状态：**
 ```bash
 ./scripts/tado.py status --zone 1
 ./scripts/tado.py status --zone "Woonkamer"
 ```
 
-**JSON output (for scripting):**
+**JSON输出（用于脚本编写）：**
 ```bash
 ./scripts/tado.py status --json
 ```
 
-### Temperature Control
+### 温度调节
 
-**Set temperature (permanent until next schedule change):**
+**设置温度（直到下一次定时器触发为止）：**
 ```bash
 ./scripts/tado.py set --zone 1 --temperature 21
 ./scripts/tado.py set --zone "Woonkamer" --temperature 21.5
 ```
 
-**Set temperature with timer (temporary override):**
+**设置带定时器的温度（临时调整）：**
 ```bash
 # Set 22°C for 60 minutes, then return to schedule
 ./scripts/tado.py set --zone 1 --temperature 22 --duration 60
@@ -170,39 +169,39 @@ Tado(token_file_path='~/.tado_auth.json')  # ✅ Works
 ./scripts/tado.py set --zone 1 -t 22 -d 60
 ```
 
-**Reset to automatic schedule:**
+**恢复到自动定时模式：**
 ```bash
 ./scripts/tado.py reset --zone 1
 ./scripts/tado.py reset --zone "Woonkamer"
 ```
 
-### Home/Away Modes
+### 家/外出模式
 
-**Set home mode (all zones follow schedule):**
+**设置家庭模式（所有区域遵循定时器设置）：**
 ```bash
 ./scripts/tado.py mode home
 ```
 
-**Set away mode (energy-saving temperatures):**
+**设置外出模式（节能温度设置）：**
 ```bash
 ./scripts/tado.py mode away
 ```
 
-**Set auto mode (geolocation-based):**
+**设置自动模式（基于地理位置）：**
 ```bash
 ./scripts/tado.py mode auto
 ```
 
-When in auto mode, Tado automatically switches between home/away based on your phone's location.
+在自动模式下，Tado会根据您的手机位置自动切换家庭/外出模式。
 
-### Presence Detection
+### 人员检测
 
-**Check who is home:**
+**判断是否有人在家：**
 ```bash
 ./scripts/tado.py presence
 ```
 
-**Output:**
+**输出结果：**
 ```
 👥 Presence
   Anyone home: Yes
@@ -210,14 +209,14 @@ When in auto mode, Tado automatically switches between home/away based on your p
   - Partner's iPhone: 🚶 Away
 ```
 
-### Zone Management
+### 区域管理
 
-**List all zones:**
+**列出所有区域：**
 ```bash
 ./scripts/tado.py zones
 ```
 
-**Output:**
+**输出结果：**
 ```
 📍 Available Zones:
   1: Woonkamer (HEATING)
@@ -225,9 +224,9 @@ When in auto mode, Tado automatically switches between home/away based on your p
   3: Badkamer (HOT_WATER)
 ```
 
-## Zone Identification
+## 区域标识
 
-Zones can be referenced by **ID** or **name**:
+区域可以通过**ID**或**名称**来引用：
 
 ```bash
 # By ID (faster)
@@ -238,15 +237,15 @@ Zones can be referenced by **ID** or **name**:
 ./scripts/tado.py status --zone "woonkamer"
 ```
 
-## JSON Output for Scripting
+## JSON输出（用于脚本编写）
 
-All commands support `--json` flag for machine-readable output:
+所有命令都支持`--json`参数，以获取机器可读的输出格式：
 
 ```bash
 ./scripts/tado.py status --zone 1 --json
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "zone_id": 1,
@@ -261,7 +260,7 @@ All commands support `--json` flag for machine-readable output:
 }
 ```
 
-**Use in scripts:**
+**在脚本中的使用方法：**
 ```bash
 # Get current temperature as number
 TEMP=$(./scripts/tado.py status --zone 1 --json | jq -r '.current_temp')
@@ -273,9 +272,9 @@ HEATING=$(./scripts/tado.py status --zone 1 --json | jq -r '.heating')
 ./scripts/tado.py status --json | jq '.zones[] | {name: .zone_name, temp: .current_temp}'
 ```
 
-## OpenClaw Integration
+## 与OpenClaw的集成
 
-**From OpenClaw chat:**
+**在OpenClaw聊天界面中：**
 
 ```
 @jarvis What's the temperature in the living room?
@@ -291,110 +290,110 @@ HEATING=$(./scripts/tado.py status --zone 1 --json | jq -r '.heating')
 → Uses: ./scripts/tado.py mode away
 ```
 
-## Troubleshooting
+## 故障排除**
 
-### Authentication Errors
+### 认证错误
 
-**Error:** `Tado OAuth2 token not found!`
+**错误：** “Tado OAuth2令牌未找到！”**
 
-**Solution:** Run the one-time authentication flow:
+**解决方法：** 运行一次性认证流程：
 ```bash
 python3 -m libtado -f ~/.tado_auth.json zones
 ```
 
-Then follow the browser login prompt.
+然后按照浏览器登录提示操作。
 
 ---
 
-**Error:** `Failed to connect to Tado: 401 Unauthorized`
+**错误：** “无法连接到Tado：401未经授权”
 
-**Possible causes:**
-- Expired or invalid OAuth2 token
-- Token file corrupted
-- Tado service outage
+**可能原因：**
+- OAuth2令牌过期或无效
+- 令牌文件损坏
+- Tado服务暂时不可用
 
-**Solutions:**
-1. Re-authenticate:
+**解决方法：**
+1. 重新认证：
    ```bash
    python3 -m libtado -f ~/.tado_auth.json zones
    ```
-2. Check token file exists: `ls -la ~/.tado_auth.json`
-3. Verify token file permissions: `chmod 600 ~/.tado_auth.json`
-4. Check Tado service status at https://status.tado.com
+2. 检查令牌文件是否存在：`ls -la ~/.tado_auth.json`
+3. 确保令牌文件的权限设置为600：`chmod 600 ~/.tado_auth.json`
+4. 查看Tado服务状态：https://status.tado.com
 
-### API Errors
+### API错误
 
-**Error:** `Failed to get status: HTTP 500`
+**错误：** “获取状态信息失败：HTTP 500”
 
-**Solution:** Tado API may be temporarily down. Check https://status.tado.com
+**解决方法：** Tado API可能暂时不可用。请查看https://status.tado.com
 
 ---
 
-**Error:** `Zone 'X' not found`
+**错误：** “区域‘X’未找到”
 
-**Solution:** 
-1. List available zones: `./scripts/tado.py zones`
-2. Use exact zone ID or name from the list
+**解决方法：**
+1. 列出所有可用区域：`./scripts/tado.py zones`
+2. 使用列表中的区域ID或名称
 
-### Connection Issues
+### 连接问题
 
-**Error:** `Failed to connect to Tado: Network unreachable`
+**错误：** “无法连接到Tado：网络不可达”
 
-**Solution:**
-1. Check internet connection
-2. Verify DNS is working: `ping my.tado.com`
-3. Check firewall settings
+**解决方法：**
+1. 检查网络连接
+2. 确认DNS设置是否正常：`ping my.tado.com`
+3. 检查防火墙设置
 
-### Library Errors
+### 库相关错误
 
-**Error:** `ModuleNotFoundError: No module named 'PyTado'`
+**错误：** “ModuleNotFoundError: 未找到名为‘PyTado’的模块”
 
-**Solution:**
+**解决方法：**
 ```bash
 pip3 install libtado --break-system-packages
 ```
 
 ---
 
-**Error:** `AttributeError: 'Tado' object has no attribute 'setAutoMode'`
+**错误：** “AttributeError: ‘Tado’对象没有‘setAutoMode’属性”
 
-**Possible cause:** Outdated `libtado` version
+**可能原因：** 使用的libtado版本过旧
 
-**Solution:**
+**解决方法：**
 ```bash
 pip3 install --upgrade libtado
 ```
 
-## API Rate Limits
+## API使用限制
 
-Tado API has rate limits (exact numbers not publicly documented):
+Tado API有使用频率限制（具体数值未公开）：
 
-**Best practices:**
-- Don't poll status more than once per minute
-- Use `--json` output and cache results when possible
-- Batch multiple zones in one `status` call instead of separate calls
+**最佳实践：**
+- 每分钟不要多次查询状态信息
+- 尽可能使用`--json`输出格式并缓存结果
+- 将多个区域的查询合并到一个`status`请求中，避免多次调用
 
-**If rate limited:**
-- Wait 1-2 minutes before retrying
-- Reduce polling frequency
+**如果遇到频率限制：**
+- 等待1-2分钟后重试
+- 减少查询频率
 
-## Data Privacy
+## 数据隐私
 
-**Local data:**
-- Credentials stored in `~/.tado_credentials.json` (mode 600 recommended)
-- No usage tracking or telemetry
-- All API calls go directly to Tado servers
+**本地数据：**
+- 认证信息存储在`~/.tado_credentials.json`文件中（建议设置权限为600）
+- 不会进行使用情况跟踪或数据传输
+- 所有API请求直接发送到Tado服务器
 
-**Never exposed:**
-- Your credentials are never sent anywhere except Tado API
-- Zone names, temperatures, and presence data stay local
-- No third-party analytics
+**数据安全：**
+- 您的认证信息不会被泄露（仅传输给Tado API）
+- 区域名称、温度和人员状态数据仅保存在本地
+- 不会与第三方分享数据
 
-## Advanced Usage
+## 高级用法
 
-### Temperature Scheduling
+### 温度调度
 
-Create a simple heating schedule script:
+**创建简单的供暖调度脚本：**
 
 ```bash
 #!/bin/bash
@@ -408,12 +407,12 @@ sleep 7200
 ./scripts/tado.py reset --zone "Woonkamer"
 ```
 
-Run with cron:
+**通过cron任务运行脚本：**
 ```
 30 6 * * * /path/to/morning-heat.sh
 ```
 
-### Smart Away Detection
+### 智能外出检测**
 
 ```bash
 #!/bin/bash
@@ -427,7 +426,7 @@ if [ "$ANYONE_HOME" = "false" ]; then
 fi
 ```
 
-### Energy Monitoring
+### 能源监控**
 
 ```bash
 #!/bin/bash
@@ -441,53 +440,57 @@ jq '.zones[] | select(.heating == true) | {zone: .zone_name, power: .heating_pow
   ~/logs/tado-$DATE.json
 ```
 
-## Known Limitations
+## 已知限制
 
-1. **Hot Water Control:** Basic support only (ON/OFF), no temperature setting
-2. **Weather Data:** Not yet implemented (available in Tado API)
-3. **Energy IQ:** Statistics not yet exposed (available in Tado API)
-4. **Multi-Home:** Only one Tado home supported per token file
+1. **热水控制：** 仅支持开关功能，无法设置温度
+2. **天气数据：** 尚未实现（可通过Tado API获取）
+3. **能源使用情况分析：** 相关数据尚未提供（可通过Tado API获取）
+4. **多家庭支持：** 每个令牌文件仅支持一个家庭账户
 
-## Future Enhancements
+## 未来改进计划
 
-- [x] OAuth2 authentication (✅ Implemented in v1.1.0)
-- [ ] Weather data integration
-- [ ] Energy IQ statistics
-- [ ] Multi-home support
-- [ ] Web dashboard (optional)
-- [ ] Push notifications for temperature alerts
+- [x] 支持OAuth2认证（已在v1.1.0版本实现）
+- [ ] 集成天气数据
+- [ ] 提供能源使用情况分析功能
+- [ ] 支持多家庭账户
+- [ ] 提供Web界面（可选）
+- [ ] 提供温度警报的推送通知
 
-## Resources
+## 资源链接
 
-- **libtado Documentation:** https://libtado.readthedocs.io/
-- **libtado GitHub:** https://github.com/germainlefebvre4/libtado
-- **Tado API (unofficial):** https://blog.scphillips.com/posts/2017/01/the-tado-api-v2/
-- **Tado Service Status:** https://status.tado.com
+- **libtado文档：** https://libtado.readthedocs.io/
+- **libtado GitHub仓库：** https://github.com/germainlefebvre4/libtado
+- **Tado API（非官方文档）：** https://blog.scphillips.com/posts/2017/01/the-tado-api-v2/
+- **Tado服务状态：** https://status.tado.com
 
-## Support
+## 技术支持
 
-**For skill issues:**
-- Check this SKILL.md
-- Read error messages carefully (they include hints)
-- Try `--json` output for debugging
+**关于技能使用问题：**
+- 查阅本文档
+- 仔细阅读错误信息（其中包含解决方法）
+- 使用`--json`输出格式进行调试
 
-**For Tado API/account issues:**
-- Check Tado app first (does it work?)
-- Visit https://my.tado.com
-- Contact Tado support
+**关于Tado API/账户问题：**
+- 先检查Tado应用程序是否正常工作
+- 访问https://my.tado.com
+- 联系Tado客服
 
-## Changelog
+## 更新记录
 
-**v1.1.0** (2026-02-03)
-- ✅ **OAuth2 authentication** (libtado 4.1.1+)
-- ⚠️ **BREAKING:** Username/password auth removed (no longer supported by libtado)
-- One-time browser login flow via `python3 -m libtado`
-- Automatic token refresh
-- Updated all documentation for OAuth2
+**v1.1.0**（2026-02-03）
+- ✅ 支持OAuth2认证（libtado 4.1.1+版本）
+- ⚠️ 取消了对用户名/密码认证的支持
+- 引入了通过`python3 -m libtado`进行的一次性登录流程
+- 令牌自动刷新功能
+- 更新了所有与OAuth2认证相关的文档
 
-**v0.1.0** (2026-01-29)
-- Initial release
-- Status, temperature control, modes, presence
-- JSON output support
-- Zone management (ID and name-based)
-- Error handling and troubleshooting
+**v0.1.0**（2026-01-29）
+- 首次发布版本
+- 支持状态查询、温度调节、模式设置和人员检测功能
+- 支持JSON输出格式
+- 支持区域管理（通过ID或名称查询）
+- 改进了错误处理和故障排除机制
+
+---
+
+请注意：由于技术文档的更新频率较快，部分内容可能已经过时。建议定期查看最新版本以获取最准确的信息。

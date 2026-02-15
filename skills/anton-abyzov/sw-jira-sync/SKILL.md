@@ -1,44 +1,46 @@
 ---
 name: jira-sync
-description: Sync guidance for SpecWeave increments with JIRA epics/stories (content SpecWeave→JIRA, status JIRA→SpecWeave). Use when asking about JIRA integration setup or troubleshooting sync. For actual syncing, use /sw-jira:sync command instead.
+description: 关于如何将 SpecWeave 的增量数据与 JIRA 的史诗（epic）或故事（story）进行同步的指导（数据从 SpecWeave 导入 JIRA，状态从 JIRA 更新到 SpecWeave）。在询问 JIRA 集成设置或同步问题时，请参考本指南。如需实际执行同步操作，请使用 `/sw-jira:sync` 命令。
 allowed-tools: Read, Write, Edit, Task, Bash
 ---
 
-# JIRA Sync Skill
+# JIRA同步技能
 
-Coordinates JIRA synchronization by delegating to `jira-mapper` agent.
+该技能通过委托给`jira-mapper`代理来协调JIRA的同步操作。
 
-**Sync Behavior**: Content (specs, tasks) syncs SpecWeave → JIRA. Status (open/closed) syncs JIRA → SpecWeave.
+**同步行为**：
+- 内容（规格说明、任务）从SpecWeave同步到JIRA。
+- 状态（打开/关闭）从JIRA同步到SpecWeave。
 
-**⚠️ IMPORTANT**: This skill provides HELP and GUIDANCE about JIRA sync. For actual syncing, users should use the `/sw-jira:sync` command directly. This skill should NOT auto-activate when the command is being invoked.
+**⚠️ 重要提示**：此技能仅提供关于JIRA同步的帮助和指导。实际进行同步操作时，用户应直接使用`/sw-jira:sync`命令。在调用该命令时，此技能不应自动激活。
 
-## When to Activate
+## 何时激活此技能
 
-✅ **Do activate when**:
-- User asks: "How do I set up JIRA sync?"
-- User asks: "What JIRA credentials do I need?"
-- User asks: "How does JIRA sync work?"
-- User needs help configuring JIRA integration
+✅ **在以下情况下激活**：
+- 用户询问：“如何设置JIRA同步？”
+- 用户询问：“我需要哪些JIRA凭证？”
+- 用户询问：“JIRA同步是如何工作的？”
+- 用户需要帮助配置JIRA集成
 
-❌ **Do NOT activate when**:
-- User invokes `/sw-jira:sync` command (command handles it)
-- Command is already running (avoid duplicate invocation)
-- Task completion hook is syncing (automatic process)
+❌ **在以下情况下不要激活此技能**：
+- 用户已经调用了`/sw-jira:sync`命令（该命令会自动处理同步操作）。
+- 命令正在运行中（避免重复调用）。
+- 任务完成钩子正在执行同步操作（这是自动进行的流程）。
 
-## Responsibilities
+## 负责事项
 
-1. Answer questions about JIRA sync configuration
-2. Help validate prerequisites (JIRA credentials, increment structure)
-3. Explain sync directions: content (SpecWeave→JIRA), status (JIRA→SpecWeave)
-4. Provide troubleshooting guidance
+1. 回答有关JIRA同步配置的问题。
+2. 帮助用户验证所需的先决条件（JIRA凭证、数据结构）。
+3. 解释同步的方向：内容从SpecWeave同步到JIRA，状态从JIRA同步到SpecWeave。
+4. 提供故障排除指导。
 
 ---
 
-## ⚠️ CRITICAL: Secrets Required (MANDATORY CHECK)
+## ⚠️ 重要提示：需要保密信息（必须检查）
 
-**BEFORE attempting JIRA sync, CHECK for JIRA credentials.**
+**在尝试JIRA同步之前，请务必检查JIRA凭证。**
 
-### Step 1: Check If Credentials Exist
+### 第1步：检查凭证是否存在
 
 ```bash
 # Check .env file for both required credentials
@@ -49,7 +51,7 @@ else
 fi
 ```
 
-### Step 2: If Credentials Missing, STOP and Show This Message
+### 第2步：如果凭证缺失，请停止并显示以下提示信息
 
 ```
 🔐 **JIRA API Token and Email Required**
@@ -84,7 +86,7 @@ Please provide:
 3. Your JIRA domain (e.g., company.atlassian.net):
 ```
 
-### Step 3: Validate Credentials Format
+### 第3步：验证凭证格式
 
 ```bash
 # Validate email format
@@ -109,7 +111,7 @@ if [ -z "$JIRA_API_TOKEN" ]; then
 fi
 ```
 
-### Step 4: Save Credentials Securely
+### 第4步：安全地保存凭证
 
 ```bash
 # Save to .env
@@ -137,7 +139,7 @@ echo "✅ Credentials saved to .env (gitignored)"
 echo "✅ Created .env.example for team (commit this)"
 ```
 
-### Step 5: Use Credentials in Sync
+### 第5步：使用凭证进行同步
 
 ```bash
 # Export for JIRA API calls (read from .env without displaying values)
@@ -154,7 +156,7 @@ curl -H "Authorization: Basic $AUTH" \
      https://$JIRA_DOMAIN/rest/api/3/issue/PROJ-123
 ```
 
-### Step 6: Never Log Secrets
+### 第6步：切勿记录敏感信息
 
 ```bash
 # ❌ WRONG - Logs secret
@@ -164,7 +166,7 @@ echo "Using token: $JIRA_API_TOKEN"
 echo "Using JIRA credentials (token present: ✅, email: $JIRA_EMAIL)"
 ```
 
-### Step 7: Error Handling
+### 第7步：错误处理
 
 ```bash
 # If API call fails with 401 Unauthorized
@@ -196,31 +198,31 @@ if [ $? -eq 403 ]; then
 fi
 ```
 
-### Step 8: Production Recommendations
+### 第8步：生产环境建议
 
-**For production deployments, use OAuth 2.0** instead of API tokens:
+**在生产环境中，建议使用OAuth 2.0而非API令牌：**
 
-**Why OAuth 2.0?**
-- ✅ More secure (no long-lived credentials)
-- ✅ Fine-grained permissions (scopes)
-- ✅ Automatic token refresh
-- ✅ Audit trail in JIRA
+**为什么选择OAuth 2.0？**
+- ✅ 更安全（无需长期有效的凭证）
+- ✅ 权限控制更精细（通过范围进行限制）
+- ✅ 令牌会自动更新
+- ✅ JIRA中会有审计记录
 
-**How to set up OAuth 2.0**:
-1. Go to: https://developer.atlassian.com/console/myapps/
-2. Create a new app
-3. Configure OAuth 2.0 credentials
-4. Add required scopes (read:jira-work, write:jira-work)
-5. Use OAuth flow instead of API token
+**如何设置OAuth 2.0**：
+1. 访问：https://developer.atlassian.com/console/myapps/
+2. 创建一个新的应用程序。
+3. 配置OAuth 2.0凭证。
+4. 添加所需的权限范围（读取：jira-work，写入：jira-work）。
+5. 使用OAuth授权流程而非API令牌。
 
-**For self-hosted JIRA**: Use Personal Access Tokens (PAT) instead of API tokens.
+**对于自托管的JIRA**：请使用个人访问令牌（Personal Access Tokens，简称PAT）代替API令牌。
 
 ---
 
-## Usage
+## 使用方法
 
-**Export**: `/sync-jira export 0001`
-**Import**: `/sync-jira import PROJ-123`
-**Sync**: `/sync-jira sync 0001`
+**导出**：`/sync-jira export 0001`
+**导入**：`/sync-jira import PROJ-123`
+**同步**：`/sync-jira sync 0001`
 
-All conversion logic is handled by the `jira-mapper` agent.
+所有的转换逻辑均由`jira-mapper`代理负责处理。

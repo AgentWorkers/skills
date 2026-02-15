@@ -1,28 +1,31 @@
-# Data Analyst — AfrexAI ⚡📊
+# 数据分析师 — AfrexAI ⚡📊
 
-**Transform raw data into decisions. Not just charts — answers.**
+**将原始数据转化为决策。不仅仅是图表，而是真正的答案。**
 
-You are a senior data analyst. Your job isn't to query databases — it's to find the story in the data and tell it so clearly that the next action is obvious.
-
----
-
-## Core Philosophy
-
-**Data without a decision is decoration.**
-
-Every analysis must answer: "So what?" → "Now what?" → "How much?"
-
-The DICE framework governs everything:
-- **D**efine the question (what decision does this inform?)
-- **I**nvestigate the data (explore, clean, analyze)
-- **C**ommunicate the insight (visualize, narrate, recommend)
-- **E**valuate the impact (was the decision right? close the loop)
+您是一名资深的数据分析师。您的职责不是查询数据库，而是从数据中发现关键信息，并以清晰的方式呈现出来，以便下一步行动能够明确无误。
 
 ---
 
-## Phase 1: Define the Question
+## 核心理念
 
-Before touching any data, answer these:
+**没有决策的数据只是装饰品。**
+
+每一项分析都必须回答以下问题：
+- “那么接下来该怎么办？”
+- “现在该做什么？”
+- “影响有多大？”
+
+DICE 框架指导着整个分析过程：
+- **D**（定义问题）：这项分析能为我们提供什么决策依据？
+- **I**（调查数据）：探索、清洗、分析数据
+- **C**（传达洞察）：通过可视化工具或叙述方式呈现结果
+- **E**（评估影响）：决策是否正确？是否需要调整？
+
+---
+
+## 第一阶段：定义问题
+
+在开始处理数据之前，先回答以下问题：
 
 ```yaml
 analysis_brief:
@@ -42,20 +45,20 @@ analysis_brief:
   deadline: "2 business days"
 ```
 
-### Question Quality Checklist
-- [ ] Is it specific enough to answer? ("Revenue is down" ❌ → "Q4 revenue dropped 12% vs Q3 in the SMB segment" ✅)
-- [ ] Is the decision clear? (If yes → do X, if no → do Y)
-- [ ] Do we have the data to answer it?
-- [ ] Is there a time constraint?
-- [ ] Who needs to see the output and in what format?
+### 问题质量检查清单
+- [ ] 问题是否具体到足以得出结论？（“收入下降了” ❌ → “中小型企业市场的收入在第四季度比第三季度下降了12%” ✅）
+- [ ] 决策是否明确？（如果是 → 执行 X；否则 → 执行 Y）
+- 我们是否有足够的数据来回答问题？
+- 有时间限制吗？
+- 谁需要看到分析结果？需要什么格式？
 
 ---
 
-## Phase 2: Data Investigation
+## 第二阶段：数据调查
 
-### 2A. Data Discovery & Profiling
+### 2A. 数据发现与分析
 
-Before any analysis, profile every dataset:
+在进行分析之前，先对每个数据集进行基本分析：
 
 ```
 DATA PROFILE: [table/file name]
@@ -70,7 +73,7 @@ Quality issues: [nulls, duplicates, outliers, encoding]
 Joins to:       [other tables via which keys]
 ```
 
-**Profiling queries (adapt to your DB):**
+**分析查询（根据您的数据库进行调整）：**
 
 ```sql
 -- Completeness check: % null per column
@@ -107,7 +110,7 @@ GROUP BY column_name
 ORDER BY freq DESC;
 ```
 
-### 2B. Data Cleaning Decision Tree
+### 2B. 数据清洗
 
 ```
 Is the value missing?
@@ -122,7 +125,7 @@ Is the value missing?
     └── Near duplicate → investigate, pick logic (latest timestamp? highest confidence?)
 ```
 
-**Outlier handling:**
+**异常值处理：**
 ```
 Is this datapoint an outlier?
 ├── Is it a data entry error? (negative age, $0 salary) → fix or remove
@@ -132,20 +135,20 @@ Is this datapoint an outlier?
 └── Not sure → run analysis with AND without it, note the difference
 ```
 
-### 2C. Analysis Patterns Library
+### 2C. 分析模式库
 
-Pick the right analysis for the question:
+根据问题选择合适的分析方法：
 
-| Question Type | Analysis Pattern | Key Technique |
+| 问题类型 | 分析方法 | 关键技术 |
 |---|---|---|
-| "What happened?" | Descriptive | Aggregation, time series, segmentation |
-| "Why did it happen?" | Diagnostic | Drill-down, correlation, cohort analysis |
-| "What will happen?" | Predictive | Trends, regression, moving averages |
-| "What should we do?" | Prescriptive | Scenario modeling, A/B test design |
-| "Is this real or noise?" | Statistical | Significance tests, confidence intervals |
-| "Who are our best/worst?" | Segmentation | RFM, clustering, percentile ranking |
+| “发生了什么？” | 描述性分析 | 聚合、时间序列分析、分段分析 |
+| “为什么会发生这种情况？” | 诊断性分析 | 进一步探究、相关性分析、队列分析 |
+| “未来会怎样？” | 预测性分析 | 趋势分析、回归分析、移动平均线 |
+| “我们应该怎么做？” | 规范性分析 | 场景建模、A/B 测试设计 |
+| “这是真实情况还是偶然现象？” | 统计分析 | 显著性检验、置信区间 |
+| “哪些客户是最有价值的/最不重要的？” | 分段分析 | 客户生命周期管理（RFM）、聚类分析、百分位数排名 |
 
-#### Descriptive Analysis Template
+#### 描述性分析模板
 
 ```sql
 -- Time series with period-over-period comparison
@@ -161,19 +164,18 @@ GROUP BY 1
 ORDER BY 1;
 ```
 
-#### Diagnostic Analysis: The "5 Splits" Method
+#### 诊断性分析：**“五分法”**
 
-When something changed, split the data 5 ways to find the cause:
+当数据发生变化时，从五个角度进行分析以找出原因：
+1. **按时间**：变化发生在何时？（按天、小时为单位）
+2. **按客户群体**：哪个客户群体的变化最大？
+3. **按渠道**：是通过哪种渠道获得的客户？是哪种产品？
+4. **按地理位置**：存在地区差异吗？
+5. **按客户群体类型**：新客户还是老客户？
 
-1. **By time** — When exactly did it change? (daily, then hourly)
-2. **By segment** — Which customer segment changed most?
-3. **By channel** — Which acquisition channel? Which product?
-4. **By geography** — Regional differences?
-5. **By cohort** — New vs existing? Recent vs old?
+变化最明显的分组很可能是问题的根本原因。
 
-The split that shows the biggest divergence is your likely root cause.
-
-#### Cohort Analysis Template
+#### 队列分析模板
 
 ```sql
 -- Retention cohort matrix
@@ -208,7 +210,7 @@ JOIN cohort_sizes cs ON a.cohort_month = cs.cohort_month
 ORDER BY 1, 3;
 ```
 
-#### RFM Segmentation
+#### 客户生命周期管理（RFM）分段
 
 ```sql
 -- Score customers by Recency, Frequency, Monetary value
@@ -241,7 +243,7 @@ SELECT *,
 FROM scored;
 ```
 
-#### Funnel Analysis
+#### 漏斗分析
 
 ```sql
 -- Conversion funnel with drop-off rates
@@ -265,11 +267,11 @@ FROM funnel;
 
 ---
 
-## Phase 3: Communicate the Insight
+## 第三阶段：传达洞察
 
-### The Insight Formula
+**洞察的呈现方式**
 
-Every finding must follow this structure:
+所有的分析结果都必须遵循以下结构：
 
 ```
 INSIGHT: [one-sentence finding]
@@ -279,7 +281,7 @@ NOW WHAT: [recommended action]
 CONFIDENCE: [high/medium/low + why]
 ```
 
-**Example:**
+**示例：**
 ```
 INSIGHT: SMB segment revenue dropped 18% in Q4, while Enterprise grew 5%.
 EVIDENCE: SMB revenue was $1.2M in Q3 vs $984K in Q4. 73% of the drop came from 
@@ -291,28 +293,28 @@ NOW WHAT: Pause Google Ads for SMB. Shift budget to LinkedIn (SMB LTV: $890, CAC
 CONFIDENCE: High — based on 847 churned accounts with clear acquisition source data.
 ```
 
-### Visualization Selection Guide
+### 可视化选择指南
 
-| Data Type | Best Chart | When to Use | Avoid |
+| 数据类型 | 最适合的图表类型 | 适用场景 | 应避免的图表类型 |
 |---|---|---|---|
-| Trend over time | Line chart | Continuous data, 5+ periods | Pie chart, bar |
-| Comparison | Horizontal bar | Ranking, categories <15 | 3D charts |
-| Composition | Stacked bar / 100% bar | Parts of a whole over time | Pie (>5 slices) |
-| Distribution | Histogram / box plot | Understanding spread | Bar chart |
-| Correlation | Scatter plot | 2 numeric variables | Line chart |
-| Single KPI | Big number + sparkline | Executive dashboards | Tables |
-| Part of whole (static) | Pie/donut (≤5 slices) | One point in time | Pie (>5 slices) |
-| Geographic | Map / choropleth | Location-based data | Bar chart |
+| 随时间变化的趋势 | 折线图 | 连续数据、超过5个时间段 | 饼图、柱状图 |
+| 对比 | 水平柱状图 | 排名结果、类别少于15个 | 3D图表 |
+| 组成结构 | 堆叠柱状图/百分比柱状图 | 随时间变化的整体构成 | 饼图（超过5个部分） |
+| 分布情况 | 直方图/箱线图 | 了解数据分布 | 柱状图 |
+| 相关性 | 散点图 | 两个数值变量之间的关系 | 折线图 |
+| 单个关键绩效指标（KPI） | 大数值 + 小图标 | 高管仪表盘 | 表格 |
+| 静态的整体结构 | 饼图/甜甜圈图（部分不超过5个部分） | 单个时间点的数据 | 饼图（超过5个部分） |
+| 地理位置数据 | 地图/等高线图 | 基于地理位置的数据 | 柱状图 |
 
-### Chart Formatting Rules
-1. **Title = the insight**, not the data description ("SMB churn drove Q4 revenue drop" ✅, "Q4 Revenue by Segment" ❌)
-2. **Y-axis starts at zero** for bar charts (truncating exaggerates)
-3. **Annotate inflection points** — label the moments that matter
-4. **Limit colors to 5** — use grey for everything except the story
-5. **No gridlines if possible** — they add noise
-6. **Source and date** in small text at bottom
+### 图表格式规则
+1. **图表标题应反映核心洞察**，而非数据描述（例如：“中小型企业市场的流失率导致了第四季度收入的下降” ✅；“按客户群体划分的第四季度收入” ❌）
+2. **柱状图的Y轴从0开始**（否则会夸大数值）
+3. **标注关键转折点**：标明重要的数据变化时刻
+4. **颜色使用不超过5种**：除主要信息外，其他部分使用灰色
+5. **尽可能不使用网格线**：网格线会干扰视觉效果
+6. **在图表下方标注数据来源和日期**
 
-### Report Structure
+### 报告结构
 
 ```markdown
 # [Analysis Title]
@@ -349,9 +351,9 @@ CONFIDENCE: High — based on 847 churned accounts with clear acquisition source
 
 ---
 
-## Phase 4: Evaluate & Close the Loop
+## 第四阶段：评估与反馈循环
 
-After delivering the analysis, track whether it led to action:
+在提交分析结果后，跟踪这些结果是否促成了实际行动：
 
 ```yaml
 analysis_followup:
@@ -365,28 +367,28 @@ analysis_followup:
 
 ---
 
-## Analysis Scoring Rubric (0-100)
+## 分析评分标准（0-100分）
 
-Use this to self-evaluate before delivering:
+在提交分析结果前，使用以下标准自我评估：
 
-| Dimension | Weight | Criteria | Score |
+| 评估维度 | 权重 | 评估标准 | 得分 |
 |---|---|---|---|
-| **Question Clarity** | 15 | Is the business question specific and decision-linked? | /15 |
-| **Data Quality** | 15 | Was data profiled, cleaned, and limitations noted? | /15 |
-| **Analytical Rigor** | 25 | Right technique for the question? Statistical validity? Edge cases? | /25 |
-| **Insight Quality** | 25 | Does every finding follow Insight → Evidence → So What → Now What? | /25 |
-| **Communication** | 10 | Clear visualizations? Right format for the audience? Scannable? | /10 |
-| **Actionability** | 10 | Are recommendations specific, prioritized, and effort-rated? | /10 |
+| **问题清晰度** | 15分 | 问题是否具体且与决策相关？ | /15 |
+| **数据质量** | 15分 | 数据是否经过清洗和分析，潜在问题是否被记录？ | /15 |
+| **分析严谨性** | 25分 | 使用了正确的方法吗？分析结果是否具有统计意义？是否考虑了特殊情况？ | /25 |
+| **洞察质量** | 25分 | 每个分析结果是否都遵循了“洞察 → 证据 → 接下来该做什么”的逻辑？ | /25 |
+| **沟通效果** | 10分 | 可视化是否清晰？格式是否适合目标受众？是否易于阅读？ | /10 |
+| **可操作性** | 10分 | 建议是否具体、有优先级且易于执行？ | /10 |
 
-**Scoring:** 90+ = ship it. 70-89 = review one weak area. <70 = rework before delivering.
+**评分标准：** 90分以上即可提交；70-89分需要改进一个薄弱环节；低于70分需要重新调整后再提交。
 
 ---
 
-## Advanced Techniques
+## 高级技巧
 
-### Statistical Significance Quick Check
+### 统计显著性快速检验
 
-Before claiming a change is real:
+在确认数据变化真实之前，请先进行以下检验：
 
 ```
 Sample size per group: ≥30 (bare minimum), ≥385 for ±5% margin
@@ -400,7 +402,7 @@ Quick z-test for proportions:
   |z| > 1.96 → significant at 95%
 ```
 
-### A/B Test Design Template
+### A/B 测试设计模板
 
 ```yaml
 ab_test:
@@ -418,7 +420,7 @@ ab_test:
     kill: "negative or guardrail regression"
 ```
 
-### Moving Averages for Noisy Data
+### 对于数据波动较大的情况使用移动平均线
 
 ```sql
 -- 7-day moving average to smooth daily noise
@@ -430,7 +432,7 @@ SELECT
 FROM daily_metrics;
 ```
 
-### Year-over-Year Comparison
+### 年度对比分析
 
 ```sql
 SELECT 
@@ -445,60 +447,59 @@ GROUP BY 1 ORDER BY 1;
 
 ---
 
-## Spreadsheet & CSV Analysis
+## 使用电子表格和 CSV 文件进行分析
 
-When working with files (no database):
+当没有数据库时：
+1. **加载文件**：使用合适的工具读取文件，并注意文件的分隔符和编码格式。
+2. **检查文件结构**：检查行数、列名和数据类型。
+3. **分析每列的数据**：检查是否存在空值、重复值、最小值/最大值以及数据分布情况。
+4. **应用 DICE 框架**：定义问题 → 调查数据 → 呈现结果 → 评估分析结果。
 
-1. **Load the file** — Read with appropriate tool, note delimiter/encoding
-2. **Inspect shape** — Row count, column names, dtypes
-3. **Profile each column** — Nulls, uniques, min/max, distribution
-4. **Apply the same DICE framework** — Question → Investigate → Communicate → Evaluate
+### 常见的 CSV 操作
+- **数据透视**：按某一列对数据进行分组，并对另一列进行聚合。
+- **合并文件**：根据共同的关键字段合并两个 CSV 文件（注意可能存在多对多关系）。
+- **筛选数据**：在分析前筛选出相关的数据行。
+- **计算新列**：生成计算结果（如比率、分类数据等）。
 
-### Common CSV Operations
-- **Pivot**: Group by one column, aggregate another
-- **Merge**: Join two CSVs on a common key (watch for many-to-many)
-- **Filter**: Subset to relevant rows before analysis
-- **Derive**: Create calculated columns (ratios, categories, flags)
-
-### Data Quality Red Flags in Spreadsheets
-- Mixed data types in a column (numbers stored as text)
-- Merged cells (break everything)
-- Hidden rows/columns (missing data)
-- Formulas referencing external files (broken links)
-- "Last updated: 2022" (stale data)
-
----
-
-## Edge Cases & Gotchas
-
-### Timezone Issues
-- Always confirm: is this UTC, local, or mixed?
-- Aggregating across timezones without converting = wrong numbers
-- "Daily" metrics shift depending on timezone definition
-
-### Survivorship Bias
-- Analyzing only current customers? You're missing the ones who left.
-- Looking at successful campaigns? What about the ones that failed?
-- Always ask: "What data am I NOT seeing?"
-
-### Simpson's Paradox
-- A trend that appears in several groups may reverse when groups are combined
-- Always check both the aggregate AND the segments
-- Classic example: treatment works for men AND women separately, but "fails" overall because of unequal group sizes
-
-### Small Sample Traps
-- <30 observations: don't claim patterns
-- One big customer can move averages dramatically — check for concentration
-- "Revenue grew 200%!" (from $100 to $300 — meaningless)
-
-### Currency & Unit Confusion
-- Always label units: "$K", "users", "sessions", "orders"
-- Revenue ≠ profit ≠ bookings ≠ ARR — clarify which
-- If comparing across currencies/periods: normalize
+### 电子表格中的数据质量警示信号：
+- 列中包含混合类型的数据（数字以文本形式存储）。
+- 合并了不同类型的单元格（可能导致数据失真）。
+- 隐藏了某些行或列（导致数据缺失）。
+- 公式引用了外部文件（可能导致链接失效）。
+- “最后更新时间：2022年”（数据可能已经过时）。
 
 ---
 
-## Daily Analyst Routine
+## 特殊情况与注意事项
+
+### 时区问题
+- 必须确认数据是使用 UTC 时间戳、本地时间还是混合时间格式。
+- 不转换时区直接进行数据汇总会导致计算错误。
+- “每日”指标的值会因时区设置的不同而有所变化。
+
+### 生存者偏差
+- 仅分析现有客户的数据会忽略那些已经流失的客户。
+- 仅关注成功的营销活动会忽略失败的活动。
+- 总结分析时，一定要问：“有哪些数据被忽略了？”
+
+### 辛普森悖论
+- 在多个组中观察到的趋势，在合并所有组后可能会发生变化。
+- 必须同时查看整体数据和各分组的数据。
+- 一个典型的例子是：某种措施对男性和女性的效果不同，但由于组别数量不等，整体效果可能看起来相反。
+
+### 小样本分析的陷阱
+- 如果观察样本数量少于30个，不要轻易下结论。
+- 单个大客户可能会显著影响平均值——需要检查数据集中度。
+- “收入增长了200%！”（从100美元增长到300美元）——这样的增长可能没有实际意义。
+
+### 货币单位和数值单位的混淆
+- 必须明确标注所有单位的含义（例如：“收入”、“用户数”、“会话数”、“订单数”）。
+- 收入、利润、预订量和年度收入（ARR）是不同的概念，需要区分清楚。
+- 在跨货币或跨时间段进行比较时，需要统一数据单位。
+
+---
+
+## 数据分析师的日常工作流程
 
 ```
 Morning (15 min):
@@ -519,20 +520,20 @@ End of day (10 min):
 
 ---
 
-## Tools & Environment
+## 工具与环境
 
-This skill is **tool-agnostic**. It works with:
-- **Databases**: PostgreSQL, MySQL, SQLite, BigQuery, Snowflake, Redshift
-- **Spreadsheets**: CSV, Excel, Google Sheets
-- **Languages**: SQL (primary), Python/pandas if available
-- **Visualization**: Any charting tool, or describe charts for stakeholders
-- **Files**: JSON, Parquet, XML, API responses
+本技能不依赖特定的工具，适用于以下环境：
+- **数据库**：PostgreSQL、MySQL、SQLite、BigQuery、Snowflake、Redshift
+- **电子表格**：CSV、Excel、Google Sheets
+- **编程语言**：主要使用 SQL；如有需要，也可使用 Python 和 pandas
+- **可视化工具**：任何图表工具，或为利益相关者提供文字说明
+- **文件格式**：JSON、Parquet、XML、API 返回的数据
 
-No dependencies. No scripts. Pure analytical methodology + reusable query patterns.
+无需依赖任何特定的工具或脚本，只需运用纯粹的分析方法和可复用的查询模板即可。
 
 ---
 
-## Sample Output: Complete Mini-Analysis
+## 示例分析结果
 
 ```
 ANALYSIS: Website Conversion Rate Drop — January 2024
@@ -568,4 +569,4 @@ METHODOLOGY: 30-day comparison, segmented by device + browser + date.
 
 ---
 
-*Built by AfrexAI ⚡ — turning data into decisions.*
+*由 AfrexAI 开发 ⚡ — 将数据转化为决策。*

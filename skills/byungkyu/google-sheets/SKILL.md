@@ -15,9 +15,9 @@ metadata:
 
 # Google Sheets
 
-Access the Google Sheets API with managed OAuth authentication. Read and write spreadsheet values, create sheets, apply formatting, and perform batch operations.
+使用托管的 OAuth 认证来访问 Google Sheets API。您可以读取和写入电子表格的数据，创建新的电子表格，应用格式设置，并执行批量操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Read values from a spreadsheet (note: range is URL-encoded)
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-sheets/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Sheets API endpoint path. The gateway proxies requests to `sheets.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Sheets API 端点路径。该网关会将请求代理到 `sheets.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google accounts connected, specify which one to use with the `Maton-Connection` header:
+如果您连接了多个 Google 账户，请使用 `Maton-Connection` 头部指定要使用的账户：
 
 ```bash
 python <<'EOF'
@@ -138,35 +138,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Get Spreadsheet Metadata
+### 获取电子表格元数据
 
 ```bash
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}
 ```
 
-### Get Values
+### 获取电子表格中的数据
 
 ```bash
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}
 ```
 
-Example:
+示例：
 
 ```bash
 GET /google-sheets/v4/spreadsheets/SHEET_ID/values/Sheet1%21A1%3AD10
 ```
 
-### Get Multiple Ranges
+### 获取多个范围的数据
 
 ```bash
 GET /google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchGet?ranges=Sheet1%21A1%3AB10&ranges=Sheet2%21A1%3AC5
 ```
 
-### Update Values
+### 更新电子表格中的数据
 
 ```bash
 PUT /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}?valueInputOption=USER_ENTERED
@@ -180,7 +180,7 @@ Content-Type: application/json
 }
 ```
 
-### Append Values
+### 向电子表格中追加数据
 
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:append?valueInputOption=USER_ENTERED
@@ -194,7 +194,7 @@ Content-Type: application/json
 }
 ```
 
-### Batch Update Values
+### 批量更新电子表格中的数据
 
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values:batchUpdate
@@ -209,13 +209,13 @@ Content-Type: application/json
 }
 ```
 
-### Clear Values
+### 清空电子表格中的数据
 
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}/values/{range}:clear
 ```
 
-### Create Spreadsheet
+### 创建电子表格
 
 ```bash
 POST /google-sheets/v4/spreadsheets
@@ -227,7 +227,7 @@ Content-Type: application/json
 }
 ```
 
-### Batch Update (formatting, add sheets, etc.)
+### 批量更新（包括格式设置、添加电子表格等）
 
 ```bash
 POST /google-sheets/v4/spreadsheets/{spreadsheetId}:batchUpdate
@@ -240,9 +240,9 @@ Content-Type: application/json
 }
 ```
 
-## Common batchUpdate Requests
+## 常见的批量更新请求
 
-### Update Cells with Formatting
+### 带格式设置更新单元格
 
 ```json
 {
@@ -256,7 +256,7 @@ Content-Type: application/json
 }
 ```
 
-### Format Header Row (Bold + Background Color)
+### 格式化标题行（加粗 + 背景颜色）
 
 ```json
 {
@@ -273,7 +273,7 @@ Content-Type: application/json
 }
 ```
 
-### Auto-Resize Columns
+### 自动调整列宽
 
 ```json
 {
@@ -283,7 +283,7 @@ Content-Type: application/json
 }
 ```
 
-### Rename Sheet
+### 重命名电子表格
 
 ```json
 {
@@ -294,7 +294,7 @@ Content-Type: application/json
 }
 ```
 
-### Insert Rows/Columns
+### 插入行/列
 
 ```json
 {
@@ -305,7 +305,7 @@ Content-Type: application/json
 }
 ```
 
-### Sort Range
+### 对范围进行排序
 
 ```json
 {
@@ -316,7 +316,7 @@ Content-Type: application/json
 }
 ```
 
-### Add Filter
+### 添加过滤器
 
 ```json
 {
@@ -328,7 +328,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Sheet
+### 删除电子表格
 
 ```json
 {
@@ -336,20 +336,20 @@ Content-Type: application/json
 }
 ```
 
-## Value Input Options
+## 数据输入选项
 
-- `RAW` - Values are stored as-is
-- `USER_ENTERED` - Values are parsed as if typed into the UI (formulas executed, numbers parsed)
+- `RAW` - 数据以原始形式存储。
+- `USER_ENTERED` - 数据会被解析为用户在用户界面中输入的内容（公式会被执行，数字会被解析）。
 
-## Range Notation
+## 范围表示法
 
-- `Sheet1!A1:D10` - Specific range
-- `Sheet1!A:D` - Entire columns A through D
-- `Sheet1!1:10` - Entire rows 1 through 10
-- `Sheet1` - Entire sheet
-- `A1:D10` - Range in first sheet
+- `Sheet1!A1:D10` - 指定范围。
+- `Sheet1!A:D` - A 到 D 列的所有单元格。
+- `Sheet1!1:10` - 1 到 10 行的所有单元格。
+- `Sheet1` - 整个电子表格。
+- `A1:D10` - 第一个电子表格中的范围。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -401,33 +401,33 @@ response = requests.put(
 )
 ```
 
-## Notes
+## 注意事项
 
-- When using curl, ranges in URL paths must be URL-encoded (! -> %21, : -> %3A). JavaScript fetch and Python requests handle encoding automatically.
-- Use `valueInputOption=USER_ENTERED` to parse formulas and numbers
-- Delete spreadsheets via the Google Drive API, not Sheets API
-- Sheet IDs are numeric and found in the spreadsheet metadata
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 使用 `curl` 时，URL 路径中的范围需要使用 URL 编码（`!` -> `%21`，`:` -> `%3A`）。JavaScript 的 `fetch` 和 Python 的请求会自动处理编码。
+- 使用 `valueInputOption=USER_ENTERED` 可以解析公式和数字。
+- 请通过 Google Drive API 而不是 Sheets API 来删除电子表格。
+- 电子表格的 ID 是数字格式的，可以在电子表格的元数据中找到。
+- **重要提示：** 当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- **重要提示：** 当将 `curl` 的输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Sheets connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Sheets API |
+| 400 | 未建立 Google Sheets 连接。 |
+| 401 | Maton API 密钥无效或缺失。 |
+| 429 | 每个账户的请求速率限制为 10 次/秒。 |
+| 4xx/5xx | 来自 Google Sheets API 的传递错误。 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -438,24 +438,23 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-sheets`. For example:
+1. 确保您的 URL 路径以 `google-sheets` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/google-sheets/v4/spreadsheets/SPREADSHEET_ID`
+- 错误的格式：`https://gateway.maton.ai/v4/spreadsheets/SPREADSHEET_ID`
 
-- Correct: `https://gateway.maton.ai/google-sheets/v4/spreadsheets/SPREADSHEET_ID`
-- Incorrect: `https://gateway.maton.ai/v4/spreadsheets/SPREADSHEET_ID`
+## 资源
 
-## Resources
-
-- [Sheets API Overview](https://developers.google.com/workspace/sheets/api/reference/rest)
-- [Get Spreadsheet](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/get)
-- [Create Spreadsheet](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/create)
-- [Batch Update](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/batchUpdate)
-- [Batch Update Request Types](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/request)
-- [Get Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/get)
-- [Update Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/update)
-- [Append Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/append)
-- [Batch Get Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchGet)
-- [Batch Update Values](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Sheets API 概述](https://developers.google.com/workspace/sheets/api/reference/rest)
+- [获取电子表格信息](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/get)
+- [创建电子表格](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/create)
+- [批量更新电子表格](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/batchUpdate)
+- [批量更新请求类型](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/request)
+- [获取电子表格数据](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/get)
+- [更新电子表格数据](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/update)
+- [向电子表格中追加数据](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/append)
+- [批量获取电子表格数据](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchGet)
+- [批量更新电子表格数据](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

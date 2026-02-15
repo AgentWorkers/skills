@@ -1,91 +1,77 @@
 ---
 name: Files
-description: Safely organize, deduplicate, and analyze files with intelligent bulk operations and full undo support.
+description: 通过智能批量操作和全面的撤销功能，安全地组织、去重并分析文件。
 metadata: {"clawdbot":{"emoji":"📁","os":["linux","darwin","win32"]}}
 ---
 
-## What This Skill Does (and Doesn't)
+## 该工具的功能与限制
 
-**YES:** Organize existing files, find duplicates, analyze disk usage, batch rename/move, clean up clutter
-**NO:** Open files, create files/folders, copy files, extract archives, basic file browsing — use standard file operations for those
+**功能：**  
+- 整理现有文件；查找重复文件；分析磁盘使用情况；批量重命名/移动文件；清理文件杂乱。  
+**不支持的功能：**  
+- 打开文件；创建文件/文件夹；复制文件；解压压缩文件；基本的文件浏览操作（这些功能请使用系统的标准文件管理工具）。  
 
-This is a power tool for reorganization, not a replacement for basic file commands.
+这是一款强大的文件整理工具，但不能替代基本的文件操作命令。  
 
-## Path Security (Non-Negotiable)
+## 路径安全性（绝对不可妥协）  
+- 在执行任何操作之前，先对所有路径进行规范化处理（解析 `..`、`~`、符号链接等），然后进行验证。  
+- 如果路径位于用户主目录之外或不在允许的目录范围内，直接拒绝操作。  
+- 在遍历文件系统时，绝不会跟随符号链接；遇到符号链接时，会提示用户“该链接指向某个位置，请确认是否继续”。  
+- 禁止访问以下敏感目录：`/`, `/etc`, `/var`, `/usr`, `/System`, `/Library`, `C:\Windows`, `C:\Program Files`。  
+- 如果路径在规范化处理后仍包含 `..`，也会被拒绝，并给出原因说明。  
 
-- Canonicalize ALL paths before any operation: resolve `..`, `~`, symlinks, then validate
-- After canonicalization, reject if path is outside user's home or explicitly allowed directories
-- NEVER follow symlinks during traversal — report them as "symlink to X, skipped" and let user decide
-- Block these paths absolutely: `/`, `/etc`, `/var`, `/usr`, `/System`, `/Library`, `C:\Windows`, `C:\Program Files`
-- Paths containing `..` after canonicalization = reject with explanation
+## 快速路径与安全路径  
+- **快速路径（文件数量少于10个）：** 立即执行操作，并简单提示用户确认（例如：“将3个文件移动到归档目录？[Y/n]”）。  
+- **安全路径（文件数量超过10个）：** 会生成操作清单，显示文件列表，并要求用户明确确认操作。  
+这种设计旨在避免用户在处理大量文件时因重复确认而感到疲劳，同时确保操作的安全性。  
 
-## Fast Path vs Safe Path
+## 文件回收处理  
+- 使用操作系统的原生文件回收功能（macOS/Linux 的 `trash` 命令行工具，Windows 的回收站 API）。  
+- 如果操作系统不支持文件回收功能，文件会被移动到 `~/.local/share/file-organizer-trash/` 目录中，并附带元数据（包含原始路径、删除时间戳、操作ID等信息）。  
+- 未经用户明确指令，绝不会永久删除文件。  
 
-**Fast path (1-9 files):** Execute immediately with brief confirmation: "Move 3 files to Archive? [Y/n]"
-**Safe path (10+ files):** Create manifest, show summary, require explicit "yes" or review
+## 操作撤销功能  
+- 每次操作都会在 `~/.local/share/file-organizer/undo/TIMESTAMP.json` 文件中生成撤销记录，记录包括操作类型、源路径、目标路径以及移动文件的校验和信息。  
+- 可以使用该记录撤销最近的操作。  
+- 撤销记录在30天后自动失效，系统会在此之前提醒用户。  
+- 撤销操作仅通过 JSON 元数据实现，不依赖 shell 脚本。  
 
-This prevents confirmation fatigue for simple operations while protecting bulk actions.
+## 符号链接处理政策  
+- 在遍历目录时，会跳过符号链接并单独提示用户（例如：“该文件夹包含12个指向外部目录的符号链接，请确认是否继续操作”。  
+- 用户可以明确选择“跟随符号链接”，但必须对每个外部目标路径进行确认。  
 
-## Trash Handling
+## 重复文件检测（可扩展）  
+- **第一阶段：** 按文件大小对文件进行分组（无需I/O操作）。  
+- **第二阶段：** 对相同大小的文件的前4KB内容进行哈希处理（快速过滤）。  
+- **第三阶段：** 仅对通过第二阶段过滤的文件进行完整哈希比对。  
+- 如果文件数量超过10,000个，系统会要求用户确认操作（例如：“此操作可能需要约15分钟，是否继续？”）。  
+- 哈希值会缓存到 `~/.local/share/file-organizer/hash-cache.db`（SQLite数据库）中，并设置过期时间（基于文件修改时间）。  
 
-- Use the operating system's native trash: `trash` CLI on macOS/Linux, Recycle Bin API on Windows
-- If OS trash unavailable, move to `~/.local/share/file-organizer-trash/` with metadata sidecar
-- Metadata sidecar (JSON): original path, deletion timestamp, operation ID — NOT path-in-filename
-- Never permanently delete without explicit "permanently delete" or "empty trash" command
+## 批量操作  
+- **批量重命名：** 如果文件数量少于50个，会预览所有文件的更改内容；如果文件数量较多，仅显示前10个文件的更改情况，并始终显示总文件数量。  
+- **批量移动：** 在开始操作前会检查目标目录是否有足够空间；每个文件的移动操作都是原子性的（即要么全部成功，要么全部失败）。  
+- **操作进度更新：** 每5%或30秒更新一次进度（以较慢者为准），避免频繁的界面更新。  
+- **错误处理：** 发生任何错误时，系统会停止操作，报告哪些文件成功、哪些失败，并提供“继续忽略错误”或“回滚操作”的选项。  
 
-## Undo System
+## 文件整理建议  
+- 首先分析目录内容，然后提出整理方案（例如：“80%的文件是图片，15%是视频，5%是文档，按日期或类型进行整理？”）。  
+- 总会提供具体的文件示例（例如：“vacation-photo.jpg → 2024/06-June/vacation-photo.jpg”）。  
+- 除非用户特别要求，否则会保留文件的原始名称。  
+- 会在目标目录中生成 `.file-organizer-manifest.json` 文件，以便日后参考。  
 
-- Every operation creates an undo record in `~/.local/share/file-organizer/undo/TIMESTAMP.json`
-- Record contains: operation type, source paths, destination paths, checksums of moved files
-- "Undo last" reverses the most recent operation using the record
-- Undo records expire after 30 days — warn user before expiry
-- NO shell scripts for undo — JSON metadata only, executed by the agent
+## 文件大小分析  
+- 分析每个目录中文件的大小占用情况（而非单个文件的大小）。  
+- 标记出可以安全删除的文件（例如：`node_modules`, `.gradle`, `build/`, `Pods/` 等）。  
+- 计算文件的实际大小与显示大小（考虑稀疏文件和硬链接的影响）。  
+- 在提供清理建议时，会说明文件的可恢复性（例如：“删除 `node_modules` 文件后，可以通过 `npm install` 恢复文件”。  
 
-## Symlink Policy
+## 平台兼容性  
+- **macOS：** 尊重 `.app` 包（它们实际上是目录结构），如果可用，通过 Homebrew 使用 `trash` 命令进行文件管理。  
+- **Windows：** 对于路径长度超过260个字符的情况，使用 `\\?\` 作为路径前缀；使用 shell API 进行文件回收操作。  
+- **Linux：** 遵循 XDG 文件回收规范（路径存储在 `~/.local/share/Trash/`），并处理不同文件系统的特性。  
 
-- During directory traversal: skip symlinks, report them separately
-- "This folder contains 12 symlinks pointing outside — review before proceeding?"
-- Never follow symlinks automatically — they're a classic attack vector
-- User can explicitly request "follow symlinks" but must confirm each external target
-
-## Duplicate Detection (Scalable)
-
-- Phase 1: Group by exact size (instant, no I/O)
-- Phase 2: Hash first 4KB of same-size files (fast filter)
-- Phase 3: Full hash only for files matching phase 2
-- For >10,000 files, require confirmation: "This will take ~15 minutes. Proceed?"
-- Cache hashes in `~/.local/share/file-organizer/hash-cache.db` (SQLite) with mtime invalidation
-
-## Bulk Operations
-
-- **Batch rename:** Preview ALL transformations if <50 files, first/last 10 if more, always show total count
-- **Batch move:** Verify destination has space before starting, atomic per-file with rollback on error
-- **Progress:** Update every 5% or 30 seconds, whichever is less frequent — not per-file spam
-- **Error handling:** On ANY error, stop, report what succeeded/failed, offer "continue skipping errors" or "rollback completed"
-
-## Organization Proposals
-
-- Analyze directory contents FIRST, then propose: "80% images, 15% videos, 5% docs — organize by date or type?"
-- Always show concrete examples: "vacation-photo.jpg → 2024/06-June/vacation-photo.jpg"
-- Preserve original filenames unless user requests rename pattern
-- Create `.file-organizer-manifest.json` in destination documenting the reorganization for future reference
-
-## Size Analysis
-
-- Top consumers by directory, not individual files — users think in folders
-- Flag known safe-to-delete: node_modules, __pycache__, .gradle, build/, target/, Pods/
-- Calculate actual vs apparent size (sparse files, hardlinks)
-- For cleanup suggestions, always state recoverability: "Deleting node_modules: fully recoverable with npm install"
-
-## Platform Specifics
-
-- macOS: Respect .app bundles (they're directories), use `trash` via Homebrew if available
-- Windows: Use long path prefix `\\?\` for paths >260 chars, use shell API for Recycle Bin
-- Linux: XDG trash spec (`~/.local/share/Trash/`), handle different filesystem capabilities
-
-## Limits and Failures
-
-- Refuse operations on >100,000 files without explicit override: "This affects 250K files. Type 'I understand' to proceed"
-- If manifest would exceed 10MB, paginate: "Showing batch 1 of 15 (page through with 'next')"
-- Network drives: detect by response time, warn about reliability, suggest local copy first
-- Disk full: check before starting, reserve 1% headroom, fail gracefully with partial completion report
+## 限制与异常处理  
+- 如果文件数量超过100,000个，系统会拒绝操作，并要求用户确认（例如：“此操作将影响250,000个文件，请输入‘I understand’以继续”。）  
+- 如果生成的操作清单文件大小超过10MB，系统会分页显示（例如：“当前显示第1到15个文件，使用‘next’切换页面”）。  
+- 对于网络驱动器，系统会根据响应时间判断其可靠性，并建议先进行本地复制。  
+- 如果磁盘空间不足，系统会在开始操作前进行检查，并预留1%的可用空间；如果无法完成操作，会优雅地报告错误并提示用户。

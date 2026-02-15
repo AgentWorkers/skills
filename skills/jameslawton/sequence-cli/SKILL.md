@@ -1,6 +1,6 @@
 ---
 name: sequence-builder
-description: "Manage Sequence smart wallets, projects, API keys, ERC20 transfers, and query blockchain data using the Sequence Builder CLI. Use when user asks about creating wallets, sending tokens, checking balances, managing Sequence projects, or interacting with EVM blockchains."
+description: "使用 Sequence Builder CLI 管理 Sequence 智能钱包、项目、API 密钥、ERC20 转移以及查询区块链数据。当用户需要创建钱包、发送代币、查看余额、管理 Sequence 项目或与 EVM 区块链交互时，可以使用该工具。"
 homepage: https://github.com/0xsequence/builder-cli
 metadata:
   clawdbot:
@@ -16,16 +16,16 @@ metadata:
 
 # Sequence Builder CLI
 
-CLI for Sequence Builder — designed for AI agents and automation. Create wallets, authenticate, manage projects, query blockchain data, and send ERC20 transfers from the command line.
+Sequence Builder 的命令行界面（CLI）专为 AI 代理和自动化任务设计。用户可以通过命令行创建钱包、进行身份验证、管理项目、查询区块链数据以及发送 ERC20 代币转账。
 
-All commands support `--json` for machine-readable output. Always use `--json` when parsing results programmatically.
+所有命令都支持使用 `--json` 选项来生成机器可读的输出格式。在程序化解析结果时，请务必使用 `--json`。
 
-## Prerequisites
+## 前提条件
 
-- Node.js 18+
-- A Sequence Builder account (created automatically on first login)
+- Node.js 18 及更高版本
+- 已注册 Sequence Builder 账户（首次登录时会自动创建）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Create a wallet
@@ -49,9 +49,9 @@ npx @0xsequence/builder-cli transfer \
   -m <amount> -c <chain-id> --json
 ```
 
-## Encrypted Key Storage
+## 加密密钥存储
 
-Set `SEQUENCE_PASSPHRASE` to auto-encrypt and store the private key locally. Once stored, you no longer need to pass `-k` on every command.
+将 `SEQUENCE_PASSPHRASE` 设置为自动加密并本地存储私钥。一旦私钥被存储，后续的所有命令中就无需再指定 `-k` 参数。
 
 ```bash
 export SEQUENCE_PASSPHRASE="your-strong-secret"
@@ -60,26 +60,26 @@ npx @0xsequence/builder-cli create-wallet --json
 # All subsequent commands will use the stored key automatically
 ```
 
-## Understanding Wallet Addresses
+## 了解钱包地址
 
-This CLI uses **Sequence Smart Wallets** for transfers:
+该 CLI 使用 **Sequence 智能钱包** 来执行转账操作：
 
-- **EOA Address** — Standard Ethereum address from your private key. Used for login and project ownership.
-- **Sequence Wallet Address** — Smart contract wallet that can pay gas fees with ERC20 tokens (no native token needed). Used for transfers.
+- **EOA（Externally Owned Account）地址**：由私钥生成的标准以太坊地址，用于登录和项目所有权管理。
+- **Sequence 钱包地址**：一种智能合约钱包，可以使用 ERC20 代币来支付交易手续费（无需使用原生代币）。所有转账操作均需通过此地址进行。
 
-**Always send tokens to the Sequence Wallet Address** for use with the `transfer` command. Use `wallet-info` to see both addresses.
+**请务必将代币发送到 Sequence 钱包地址**，才能使用 `transfer` 命令。可以使用 `wallet-info` 命令查看这两个地址。
 
-## Command Reference
+## 命令参考
 
 ### create-wallet
 
-Generate a new EOA keypair.
+生成一个新的 EOA（Externally Owned Account）密钥对。
 
 ```bash
 npx @0xsequence/builder-cli create-wallet --json
 ```
 
-JSON output:
+JSON 输出：
 ```json
 {
   "privateKey": "0x4c0883a...",
@@ -90,17 +90,17 @@ JSON output:
 
 ### wallet-info
 
-Show EOA and Sequence smart wallet addresses.
+显示 EOA 地址和 Sequence 智能钱包地址。
 
 ```bash
 npx @0xsequence/builder-cli wallet-info -k <private-key> -a <access-key> --json
 ```
 
-Options:
-- `-k, --private-key <key>` — Wallet private key (optional if stored)
-- `-a, --access-key <key>` — Project access key (required)
+选项：
+- `-k, --private-key <key>` — 钱包私钥（如果已存储，则可选）
+- `-a, --access-key <key>` — 项目访问密钥（必需）
 
-JSON output:
+JSON 输出：
 ```json
 {
   "eoaAddress": "0x742BDb3...",
@@ -111,19 +111,19 @@ JSON output:
 
 ### login
 
-Authenticate with Sequence Builder.
+使用 Sequence Builder 进行身份验证。
 
 ```bash
 npx @0xsequence/builder-cli login -k <private-key> --json
 ```
 
-Options:
-- `-k, --private-key <key>` — Wallet private key (optional if stored)
-- `-e, --email <email>` — Email to associate with the account
-- `--env <environment>` — Environment: `prod` (default) or `dev`
-- `--api-url <url>` — Custom API URL
+选项：
+- `-k, --private-key <key>` — 钱包私钥（如果已存储，则可选）
+- `-e, --email <email>` — 与账户关联的电子邮件地址
+- `--env <environment>` — 环境：`prod`（默认）或 `dev`
+- `--api-url <url>` — 自定义 API 地址
 
-JSON output:
+JSON 输出：
 ```json
 {
   "success": true,
@@ -134,7 +134,7 @@ JSON output:
 
 ### projects
 
-Manage Sequence Builder projects. Requires login.
+管理 Sequence Builder 项目（需要登录后使用）。
 
 ```bash
 # List all projects
@@ -152,7 +152,7 @@ npx @0xsequence/builder-cli projects get <project-id> --json
 
 ### apikeys
 
-Manage API keys for a project. Requires login.
+管理项目的 API 密钥（需要登录后使用）。
 
 ```bash
 # List all API keys
@@ -164,7 +164,7 @@ npx @0xsequence/builder-cli apikeys default <project-id> --json
 
 ### transfer
 
-Send an ERC20 token transfer using the Sequence smart wallet. Gas fees are paid with the same token being transferred — no native token needed.
+使用 Sequence 智能钱包发送 ERC20 代币转账。交易手续费由所转移的代币本身支付（无需使用其他代币）。
 
 ```bash
 npx @0xsequence/builder-cli transfer \
@@ -177,15 +177,15 @@ npx @0xsequence/builder-cli transfer \
   --json
 ```
 
-Options:
-- `-k, --private-key <key>` — Wallet private key (optional if stored)
-- `-a, --access-key <key>` — Project access key (required)
-- `-t, --token <address>` — ERC20 token contract address (required)
-- `-r, --recipient <address>` — Recipient address (required)
-- `-m, --amount <amount>` — Amount in token units, e.g. `10.5` (required)
-- `-c, --chain-id <chainId>` — Chain ID (required)
+选项：
+- `-k, --private-key <key>` — 钱包私钥（如果已存储，则可选）
+- `-a, --access-key <key>` — 项目访问密钥（必需）
+- `-t, --token <address>` — ERC20 代币的合约地址（必需）
+- `-r, --recipient <address>` — 收件人地址（必需）
+- `-m, --amount <amount>` — 代币数量（例如：`10.5`）（必需）
+- `-c, --chain-id <chainId>` — 链路 ID（必需）
 
-JSON output:
+JSON 输出：
 ```json
 {
   "success": true,
@@ -201,7 +201,7 @@ JSON output:
 
 ### indexer
 
-Query blockchain data using the Sequence Indexer.
+使用 Sequence Indexer 查询区块链数据。
 
 ```bash
 # Get token balances
@@ -221,9 +221,9 @@ npx @0xsequence/builder-cli indexer token-info <contract-address> \
   -a <access-key> -c <chain-id> --json
 ```
 
-## Supported Networks
+## 支持的网络
 
-| Network | Chain ID |
+| 网络 | 链路 ID |
 |---------|----------|
 | Ethereum | 1 |
 | Polygon | 137 |
@@ -233,24 +233,24 @@ npx @0xsequence/builder-cli indexer token-info <contract-address> \
 | BSC | 56 |
 | Avalanche | 43114 |
 
-Full list: https://status.sequence.info/
+完整网络列表：https://status.sequence.info/
 
-## Exit Codes
+## 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 0 | Success |
-| 1 | General error |
-| 10 | Not logged in |
-| 11 | Invalid private key |
-| 20 | Insufficient funds |
-| 30 | No projects found |
-| 31 | Project not found |
-| 40 | API error |
+| 0 | 操作成功 |
+| 1 | 一般错误 |
+| 10 | 未登录 |
+| 11 | 私钥无效 |
+| 20 | 资金不足 |
+| 30 | 未找到项目 |
+| 31 | 项目未找到 |
+| 40 | API 错误 |
 
-## Common Workflows
+## 常见工作流程
 
-### Full setup from scratch
+### 从零开始的全方位设置
 
 ```bash
 export SEQUENCE_PASSPHRASE="my-secret"
@@ -263,7 +263,7 @@ npx @0xsequence/builder-cli wallet-info -a <access-key> --json
 # Fund the sequenceWalletAddress via the fundingUrl
 ```
 
-### Check balance then transfer
+### 先查看余额再转账
 
 ```bash
 # Check balance first
@@ -275,7 +275,7 @@ npx @0xsequence/builder-cli transfer \
   -a <access-key> -t <token> -r <recipient> -m 10 -c 8453 --json
 ```
 
-### Multi-chain balance check
+### 多链余额查询
 
 ```bash
 # Check across multiple chains
@@ -284,19 +284,16 @@ npx @0xsequence/builder-cli indexer balances <address> -a <key> -c 137 --json
 npx @0xsequence/builder-cli indexer balances <address> -a <key> -c 8453 --json
 ```
 
-## Configuration
+## 配置信息
 
-Stored in `~/.sequence-builder/config.json`:
-- JWT token for authentication
-- Environment settings (prod/dev)
-- Encrypted private key (when `SEQUENCE_PASSPHRASE` is set)
+配置信息存储在 `~/.sequence-builder/config.json` 文件中：
+- 用于身份验证的 JWT 令牌
+- 环境设置（prod/dev）
+- 加密后的私钥（当设置了 `SEQUENCE_PASSPHRASE` 时）
 
-## Troubleshooting
+## 故障排除
 
-**"Not logged in" error:** Run `login` first. JWT tokens expire — re-run login if expired.
-
-**"Invalid private key" error:** Key must be a 64-character hex string (with or without `0x` prefix). If using stored key, verify `SEQUENCE_PASSPHRASE` is correct.
-
-**"Insufficient balance" error:** Send tokens to the **Sequence Wallet Address** (not the EOA). Use `wallet-info` to get the correct address.
-
-**Transfer fails:** Ensure the Sequence wallet has enough of the token being transferred. The same token is used to pay gas fees.
+- **“未登录”错误**：请先运行 `login` 命令。JWT 令牌可能已过期，请重新登录。
+- **“私钥无效”错误**：私钥必须是一个 64 位的十六进制字符串（可以带有 `0x` 前缀，也可以不带）。如果使用已存储的私钥，请确认 `SEQUENCE_PASSPHRASE` 设置正确。
+- **“资金不足”错误**：请将代币发送到 **Sequence 钱包地址**，而非 EOA 地址。可以使用 `wallet-info` 命令获取正确的地址。
+- **转账失败**：确保 Sequence 钱包中有足够的代币用于支付手续费，并且使用的代币类型与转账所需的代币类型一致。

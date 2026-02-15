@@ -1,58 +1,58 @@
 ---
 name: diet-tracker
-description: Tracks daily diet and calculates nutrition information to help achieve weight loss goals. Use when the user provides information about their meals and wants to track calorie and macronutrient intake. Also used to remind the user to log meals. This skill reads user's height, weight, age, gender and activity levels from USER.md to predict TDEE. Then based on daily calorie surplus or deficit, extrapolate weight changes.
+description: 该功能可记录用户的每日饮食情况，并计算相关的营养信息，以帮助用户实现减肥目标。当用户提供自己的饮食信息时，该工具会统计用户的卡路里摄入量和宏量营养素的摄入情况，并提醒用户记录饮食内容。此外，该功能还会从 `USER.md` 文件中读取用户的身高、体重、年龄、性别以及活动水平，从而估算用户的每日总能量消耗（TDEE）。随后，根据每日卡路里的盈余或亏损情况，预测用户的体重变化。
 ---
 
-# Diet Tracker
+# 饮食记录器
 
-This skill helps you track your daily diet and achieve your weight loss goals.
+该功能可帮助您记录每日饮食情况，从而实现减肥目标。
 
-## Usage
+## 使用方法
 
-1.  The skill will read User related info in `USER.md` to get:
-    *   Your daily calorie target
-    *   Your height, weight, age, gender, and activity level to calculate TDEE.
+1. 该功能会读取 `USER.md` 文件中的用户相关信息，以获取：
+    * 您的每日热量摄入目标
+    * 您的身高、体重、年龄、性别以及活动水平（用于计算总能量消耗，TDEE）。
 
-2.  When you provide information about your meals (e.g., "I had a sandwich for lunch"), this skill will:
-    *   Identify the food items in your meal.
-    *   Use the `get_food_nutrition.py` script to fetch nutrition information (calories, protein, carbs, fat) from the web.
-    *   Add the meal information and nutrition details to the current day's memory file (memory/YYYY-MM-DD.md).
-    *   Calculate the total calories and macronutrients for the meal.
-    *   Update the total daily intake and remaining calorie budget.
-        *   Also predict weight change based on daily calories.
+2. 当您提供用餐信息时（例如：“我午餐吃了一个三明治”），该功能会：
+    * 识别您所吃的食物种类
+    * 使用 `get_food_nutrition.py` 脚本从网络获取食物的营养成分（热量、蛋白质、碳水化合物、脂肪）
+    * 将用餐信息及营养成分添加到当天的记录文件（格式为 `memory/YYYY-MM-DD.md`）
+    * 计算该餐的总热量及宏量营养素摄入量
+    * 更新每日总热量摄入量和剩余热量预算
+    * 根据每日摄入的热量预测体重变化
 
-3.  When you ask about your remaining calorie budget, this skill will:
-    *   Read the current day’s memory file.
-    *   Calculate the total calories consumed so far.
-    *   Subtract the consumed calories from your daily calorie goal (found in USER.md).
-    *   Report the remaining calories.
-        *   Also predict weight change based on accumulated daily calories.
+3. 当您询问剩余热量预算时，该功能会：
+    * 读取当天的记录文件
+    * 计算迄今为止消耗的总热量
+    * 从每日热量目标中减去已消耗的热量
+    * 显示剩余热量
+    * 根据累计的每日热量预测体重变化
 
-## Scripts
+## 所需脚本
 
-*   `scripts/get_food_nutrition.py`: Fetches nutrition information for a given food item from the web and calculates TDEE.
-*   `scripts/update_memory.py`: Updates the current day’s memory file with meal information and nutrition details.
+* `scripts/get_food_nutrition.py`：从网络获取指定食物的营养成分，并计算总能量消耗（TDEE）
+* `scripts/update_memory.py`：更新当天的记录文件，包含用餐信息和营养成分
 
-## Data
+## 数据来源
 
-*   `references/food_database.json`: A database of common food items and their nutrition information (used as a fallback).
+* `references/food_database.json`：包含常见食物及其营养成分的数据库（作为备用）
 
-## Workflow
+## 工作流程
 
-1.  Diet-tracker skill read User related info from `USER.md` to get:
-    *   Daily calorie target
-    *   Height, weight, age, gender, and activity level. Activity levels:
-        *   Sedentary (little or no exercise)
-        *   Lightly active (light exercise/sports 1-3 days/week)
-        *   Moderately active (moderate exercise/sports 3-5 days/week)
-        *   Very active (hard exercise/sports 6-7 days a week)
-        *   Extra active (very hard exercise/sports & physical job or 2x training)
-2.  User provides meal information.
-3.  Skill identifies food items.
-4.  Skill uses `scripts/get_food_nutrition.py` to fetch nutrition information. If the information is not available online, the skill will use the `references/food_database.json` file.
-5.  Skill uses `scripts/update_memory.py` to update the current day’s memory file.
-6.  Skill calculates the total calories and macronutrients for the meal and updates the daily intake.
-7.  Skill reports the meal information, remaining calorie budget, and predicted weight change range to the user.
+1. 饮食记录器功能从 `USER.md` 文件中读取用户相关信息：
+    * 每日热量摄入目标
+    * 身高、体重、年龄、性别以及活动水平（活动水平分为：
+        * 久坐不动（几乎不运动）
+        * 轻度活动（每周进行1-3天轻度运动/锻炼）
+        * 中等活动（每周进行3-5天中等强度运动/锻炼）
+        * 高强度活动（每周进行6-7天高强度运动/锻炼）
+        * 非常活跃（进行高强度运动/锻炼，或从事体力劳动，同时每周进行两次训练）
 
+2. 用户提供用餐信息。
+3. 功能识别所吃的食物种类。
+4. 功能使用 `scripts/get_food_nutrition.py` 脚本获取营养成分；如果网络信息不可用，则使用 `references/food_database.json` 文件。
+5. 功能使用 `scripts/update_memory.py` 更新当天的记录文件。
+6. 功能计算该餐的总热量及宏量营养素摄入量，并更新每日总热量摄入量。
+7. 功能向用户展示用餐信息、剩余热量预算以及预测的体重变化范围。
 
-Remember to use `exec cat` command to confirm file type.
+**注意：** 使用 `exec cat` 命令可确认文件的类型。

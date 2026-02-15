@@ -1,15 +1,15 @@
 ---
 slug: "airflow-dag"
 display_name: "Airflow Dag"
-description: "Create Apache Airflow DAGs for construction data pipelines. Orchestrate ETL, validation, and reporting workflows."
+description: "创建用于构建数据管道的 Apache Airflow 数据流图（DAGs），并协调数据提取（ETL）、数据验证以及数据报告的工作流程。"
 ---
 
-# Apache Airflow DAG for Construction
+# 用于建筑行业的 Apache Airflow 数据流图（DAG）
 
-## Overview
-Apache Airflow orchestrates complex data pipelines. This skill creates DAGs for construction ETL processes - from BIM extraction to cost reports.
+## 概述
+Apache Airflow 可以编排复杂的数据处理流程。本文档介绍了如何使用 Apache Airflow 创建用于建筑行业 ETL（提取、转换、加载）流程的数据流图（DAG），这些流程涵盖了从 BIM 数据提取到成本报告生成的整个过程。
 
-## Python Implementation
+## Python 实现
 
 ```python
 from datetime import datetime, timedelta
@@ -363,7 +363,7 @@ class ConstructionPipelineTemplates:
         return builder
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create custom pipeline
@@ -382,27 +382,27 @@ print(code)
 builder.save_dag('/airflow/dags/my_pipeline.py')
 ```
 
-## Pipeline Templates
+## 流程模板
 
-### 1. BIM Validation
+### 1. BIM 数据验证
 ```python
 templates = ConstructionPipelineTemplates()
 validation_dag = templates.bim_validation_pipeline()
 validation_dag.save_dag('/airflow/dags/bim_validation.py')
 ```
 
-### 2. Cost Estimation
+### 2. 成本估算
 ```python
 cost_dag = templates.cost_estimation_pipeline()
 cost_dag.save_dag('/airflow/dags/cost_estimation.py')
 ```
 
-### 3. Batch Conversion
+### 3. 批量数据转换
 ```python
 batch_dag = templates.batch_conversion_pipeline()
 batch_dag.save_dag('/airflow/dags/batch_convert.py')
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - Apache Airflow Orchestration
-- **Airflow Docs**: https://airflow.apache.org/docs/
+## 参考资源
+- **DDC Book**：第 4.2 章 - Apache Airflow 的编排功能
+- **Airflow 官方文档**：https://airflow.apache.org/docs/

@@ -1,56 +1,56 @@
 ---
 name: exe-dev
-description: Manage persistent VMs on exe.dev. Create VMs, configure HTTP proxies, share access, and set up custom domains. Use when working with exe.dev VMs for hosting, development, or running persistent services.
+description: 在 exe.dev 上管理持久化虚拟机（Persistent VMs）。您可以创建虚拟机、配置 HTTP 代理、共享访问权限，并设置自定义域名。这些功能适用于在 exe.dev 上使用虚拟机进行托管、开发或运行持久化服务。
 author: Benjamin Jesuiter
 ---
 
-> ⚠️ **Warning:** This skill was auto-built by clawdbot from the exe.dev markdown documentation. It's not tested yet — use with caution! I plan to test it soon. 🔜
+> ⚠️ **警告：** 此功能是由 clawdbot 根据 exe.dev 的 markdown 文档自动生成的，尚未经过测试——请谨慎使用！我计划尽快对其进行测试。 🔜
 
-# exe.dev VM Management
+# exe.dev 虚拟机管理
 
-## Quick Commands
+## 快速命令
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| List VMs | `ssh exe.dev ls --json` |
-| Create VM | `ssh exe.dev new` |
-| Make public | `ssh exe.dev share set-public <vm>` |
-| Change port | `ssh exe.dev share port <vm> <port>` |
-| Add user | `ssh exe.dev share add <vm> <email>` |
-| Share link | `ssh exe.dev share add-link <vm>` |
+| 列出虚拟机 | `ssh exe.dev ls --json` |
+| 创建虚拟机 | `ssh exe.dev new` |
+| 将虚拟机设为公共状态 | `ssh exe.dev share set-public <vm>` |
+| 更改端口 | `ssh exe.dev share port <vm> <port>` |
+| 添加用户 | `ssh exe.dev share add <vm> <email>` |
+| 共享链接 | `ssh exe.dev share add-link <vm>` |
 
-## Access URLs
+## 访问地址
 
-- **VM**: `https://<vmname>.exe.xyz/`
-- **Shelley agent**: `https://<vmname>.exe.xyz:9999/`
+- **虚拟机**: `https://<vmname>.exe.xyz/`
+- **Shelley 代理**: `https://<vmname>.exe.xyz:9999/`
 - **VSCode**: `vscode://vscode-remote/ssh-remote+<vmname>.exe.xyz/home/exedev`
 
-## Proxy Configuration
+## 代理配置
 
-Default port is auto-selected from Dockerfile EXPOSE. Change with:
+默认端口会从 Dockerfile 的 `EXPOSE` 指令中自动选择。如需更改，请使用以下命令：
 ```bash
 ssh exe.dev share port <vmname> <port>
 ```
 
-Access ports 3000-9999 via `https://vmname.exe.xyz:<port>/`
+可以通过 `https://vmname.exe.xyz:<port>/` 访问 3000-9999 端口的资源。
 
-## Authentication Headers
+## 身份验证头部信息
 
-When users authenticate via exe.dev:
-- `X-ExeDev-UserID` — user identifier
-- `X-ExeDev-Email` — user email
+当用户通过 exe.dev 进行身份验证时，会发送以下头部信息：
+- `X-ExeDev-UserID` — 用户标识符
+- `X-ExeDev-Email` — 用户邮箱
 
-For testing, use mitmproxy to inject headers:
+在测试过程中，可以使用 mitmproxy 来注入这些头部信息：
 ```bash
 mitmdump --mode reverse:http://localhost:8000 --listen-port 3000 \
   --set modify_headers='/~q/X-ExeDev-Email/user@example.com'
 ```
 
-## Custom Domains
+## 自定义域名
 
-- **Subdomains**: CNAME `app.example.com` → `vmname.exe.xyz`
-- **Apex**: ALIAS `example.com` → `exe.xyz` + CNAME `www` → `vmname.exe.xyz`
+- **子域名**: 使用 CNAME 将 `app.example.com` 映射到 `vmname.exe.xyz`
+- **顶级域名 (Apex)**: 使用 ALIAS 将 `example.com` 映射到 `exe.xyz`，并使用 CNAME 将 `www` 映射到 `vmname.exe.xyz`
 
-## Full Reference
+## 完整文档
 
-See [references/exe-dev-vm-service.md](exe-dev-vm-service.md) for complete documentation including pricing, Shelley agent setup, SSH key config, and FAQ.
+有关定价、Shelley 代理设置、SSH 密钥配置及常见问题的详细信息，请参阅 [references/exe-dev-vm-service.md](exe-dev-vm-service.md)。

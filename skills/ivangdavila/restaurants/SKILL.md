@@ -1,16 +1,16 @@
 ---
 name: Restaurants
-description: Build a personal restaurant system for tracking places to try, favorites, and dining memories.
+description: 构建一个个人餐厅管理系统，用于记录想要尝试的餐厅、收藏的餐厅以及用餐的回忆。
 metadata: {"clawdbot":{"emoji":"🍽️","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions restaurant → offer to save with notes
-- User asks for recommendation → check their saved places first
-- User returns from meal → help document experience
-- Create `~/restaurants/` as workspace
+## 核心功能
+- 当用户提到某家餐厅时，提供保存该餐厅的选项并附上备注。
+- 当用户请求推荐时，首先查看他们已保存的餐厅列表。
+- 当用户用餐归来后，帮助他们记录用餐体验。
+- 创建 `~/restaurants/` 作为工作目录。
 
-## File Structure
+## 文件结构
 ```
 ~/restaurants/
 ├── to-try/
@@ -21,7 +21,7 @@ metadata: {"clawdbot":{"emoji":"🍽️","os":["linux","darwin","win32"]}}
 └── by-occasion/
 ```
 
-## To-Try Entry
+## 待尝试的餐厅
 ```markdown
 # sushi-nakazawa.md
 ## Location
@@ -40,7 +40,7 @@ $$$$
 Need reservation weeks ahead
 ```
 
-## Visited Entry
+## 已访问过的餐厅
 ```markdown
 # la-mercerie-2024-03.md
 ## Date
@@ -58,7 +58,7 @@ Anniversary dinner
 ★★★★☆ — Would return for brunch
 ```
 
-## Favorites
+## 最喜欢的餐厅
 ```markdown
 # joes-pizza.md
 ## Go-To Order
@@ -71,8 +71,8 @@ Quick lunch, late night
 Cash only, expect line
 ```
 
-## By-Cuisine and By-Occasion
-Simple lists linking to favorites:
+## 按菜系和场合分类的餐厅列表
+- 提供链接到用户最喜欢的餐厅的简单列表：
 ```markdown
 # date-night.md
 - La Mercerie — beautiful space
@@ -80,31 +80,31 @@ Simple lists linking to favorites:
 - Carbone — never fails
 ```
 
-## What To Track
-- Location and neighborhood
-- Cuisine type
-- Price range: $ to $$$$
-- Reservation: needed? how far ahead?
-- Standout dishes
-- Rating after visit
+## 需要记录的信息
+- 餐厅的位置和周边环境
+- 菜系类型
+- 价格范围：$ 至 $$$$
+- 是否需要预订？需要提前多久预订？
+- 突出的特色菜肴
+- 用餐后的评分
 
-## Surfacing Recommendations
-When user asks "where should we eat":
-- Ask occasion and cuisine preference
-- Check THEIR saved places first
-- Suggest from their data before general knowledge
+## 推荐机制
+当用户询问“我们应该去哪里吃饭”时：
+- 询问用户的用餐场合和菜系偏好
+- 首先查看用户已保存的餐厅列表
+- 在提供一般性推荐之前，优先参考用户自己的数据
 
-## What To Surface
-- "You haven't tried that sushi place on your list"
-- "Last Italian you loved was L'Artusi"
-- "For date night you rated La Mercerie highest"
+## 应展示的信息
+- “你还没有尝试过列表中的那家寿司店。”
+- “你上次喜欢的意大利餐厅是 L'Artusi。”
+- “对于约会之夜，你给 La Mercerie 的评分最高。”
 
-## Progressive Enhancement
-- Start: add 5 places to try
-- After meals: quick entry with verdict
-- Build cuisine and occasion lists over time
+## 持续改进计划
+- 初始阶段：推荐 5 家待尝试的餐厅。
+- 餐后：用户可以快速记录用餐体验和评价。
+- 随着时间的推移，逐步完善菜系和场合分类的餐厅列表。
 
-## What NOT To Do
-- Recommend unsaved places without asking
-- Forget dietary restrictions
-- Over-organize — simple notes work
+## 需避免的行为
+- 未经用户询问就推荐未保存的餐厅。
+- 忘记用户的饮食限制。
+- 过度组织信息——简单的备注就足够了。

@@ -1,34 +1,34 @@
 ---
 name: alexa-remote
-description: Control Alexa devices via CLI - set alarms, play music, flash briefings, smart home commands. Use when asked to set an alarm, play something on Echo, control smart home devices, or send voice commands to Alexa.
+description: 通过 CLI 控制 Alexa 设备——设置闹钟、播放音乐、查看简报、执行智能家居指令。当需要设置闹钟、在 Echo 设备上播放音乐、控制智能家居设备或向 Alexa 发送语音指令时，可以使用此方法。
 ---
 
-# Alexa Remote Control
+# Alexa 遥控器
 
-Control Amazon Echo devices via shell commands using [alexa-remote-control](https://github.com/adn77/alexa-remote-control).
+通过 [alexa-remote-control](https://github.com/adn77/alexa-remote-control) 使用 shell 命令来控制 Amazon Echo 设备。
 
-## Setup
+## 设置
 
-### 1. Clone the repo
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/adn77/alexa-remote-control.git
 cd alexa-remote-control
 ```
 
-### 2. Get a refresh token
+### 2. 获取刷新令牌
 
-The script needs a refresh token from Amazon. Use [alexa-cookie-cli](https://github.com/adn77/alexa-cookie-cli):
+该脚本需要从 Amazon 获取刷新令牌。请使用 [alexa-cookie-cli](https://github.com/adn77/alexa-cookie-cli)：
 
 ```bash
 npx alexa-cookie-cli
 ```
 
-This opens a browser for Amazon login. After authentication, copy the `refreshToken` (starts with `Atnr|...`).
+这会打开一个浏览器页面，用于登录 Amazon。登录成功后，复制 `refreshToken`（以 `Atnr|...` 开头）。
 
-### 3. Create a wrapper script
+### 3. 创建一个封装脚本
 
-Create `alexa-alarm.sh` (or similar) with credentials:
+创建一个名为 `alexa-alarm.sh`（或类似名称）的脚本，并在其中设置凭据：
 
 ```bash
 #!/bin/bash
@@ -43,18 +43,18 @@ export ALEXA='alexa.amazon.co.uk' # or alexa.amazon.com
 "$SCRIPT_DIR/alexa_remote_control.sh" -d "$DEVICE" -e "textcommand:Set an alarm for $TIME"
 ```
 
-Make executable: `chmod +x alexa-alarm.sh`
+使其可执行：`chmod +x alexa-alarm.sh`
 
-## Usage
+## 使用方法
 
-### Set alarms
+### 设置闹钟
 
 ```bash
 ./alexa-alarm.sh "6:30 am"                    # Default device
 ./alexa-alarm.sh "7:00 am" "Kitchen Echo"     # Specific device
 ```
 
-### Generic commands
+### 常用命令
 
 ```bash
 # Play flash briefing (news)
@@ -73,23 +73,23 @@ Make executable: `chmod +x alexa-alarm.sh`
 ./alexa_remote_control.sh -d "Kitchen Echo" -e "textcommand:Set a timer for 10 minutes"
 ```
 
-### List devices
+### 列出设备
 
 ```bash
 ./alexa_remote_control.sh -a  # Lists all devices with names/types
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Example |
+| 变量 | 描述 | 示例 |
 |----------|-------------|---------|
-| `REFRESH_TOKEN` | Amazon auth token | `Atnr|EwMDI...` |
-| `AMAZON` | Amazon domain | `amazon.co.uk` / `amazon.com` |
-| `ALEXA` | Alexa domain | `alexa.amazon.co.uk` |
+| `REFRESH_TOKEN` | Amazon 认证令牌 | `Atnr|EwMDI...` |
+| `AMAZON` | Amazon 域名 | `amazon.co.uk` / `amazon.com` |
+| `ALEXA` | Alexa 域名 | `alexa.amazon.co.uk` |
 
-## Notes
+## 注意事项
 
-- Token expires periodically; re-run `alexa-cookie-cli` if auth fails
-- Device names are case-sensitive; use `-a` to check exact names
-- UK users: use `amazon.co.uk` / `alexa.amazon.co.uk`
-- US users: use `amazon.com` / `alexa.amazon.com`
+- 令牌会定期过期；如果认证失败，请重新运行 `alexa-cookie-cli`。
+- 设备名称区分大小写；使用 `-a` 参数来检查设备名称是否正确。
+- 英国用户：使用 `amazon.co.uk` / `alexa.amazon.co.uk`。
+- 美国用户：使用 `amazon.com` / `alexa.amazon.com`。

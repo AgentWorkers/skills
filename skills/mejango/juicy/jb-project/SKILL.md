@@ -1,64 +1,64 @@
 ---
 name: jb-project
-description: Create and configure Juicebox V5 projects. Generate deployment scripts for launching projects with rulesets, terminals, and splits using JBController. Also helps with project ownership transfer and metadata updates.
+description: 创建并配置 Juicebox V5 项目。生成用于通过 JBController 启动项目的部署脚本（这些脚本包含规则集、终端配置以及相关设置）。同时，该工具还支持项目所有权的转移以及元数据的更新。
 ---
 
-# Juicebox V5 Project Management
+# Juicebox V5 项目管理
 
-Create and manage Juicebox V5 projects including deployment, configuration, and ownership.
+用于创建和管理 Juicebox V5 项目，包括项目的部署、配置和所有权管理。
 
-## Project Identity
+## 项目标识
 
-**A Juicebox project is uniquely identified by: `projectId + chainId + version`**
+**一个 Juicebox 项目的唯一标识是：`projectId + chainId + version`**
 
-This matters because:
-- **V4 and V5 are different protocols.** Project #64 on V4 is NOT the same as Project #64 on V5, even on the same chain.
-- **Project IDs cannot be coordinated across chains.** Each chain assigns the next available ID independently. If you deploy to Ethereum you might get project #42, and deploying to Optimism might give you project #17.
-- **Suckers link projects across chains.** To create an "omnichain project," you deploy separate projects on each chain (with different IDs) and connect them using Suckers. This enables token bridging while maintaining treasury backing.
-- When referencing a project, always specify the version and chain to avoid confusion.
+这一点很重要，因为：
+- **V4 和 V5 使用的是不同的协议。** 在 V4 上的项目 #64 与 V5 上的项目 #64 不同，即使在同一个链上也是如此。
+- **项目 ID 不能在不同链之间共享。** 每个链会独立分配下一个可用的 ID。如果你在 Ethereum 上部署项目，可能会得到项目 ID #42；而在 Optimism 上部署则可能得到项目 ID #17。
+- **Suckers 可以跨链链接项目。** 要创建一个“多链项目”，你需要在每个链上分别部署项目（使用不同的 ID），并通过 Suckers 将它们连接起来。这样可以实现代币的跨链桥接，同时保持资金库的安全性。
+- 在引用项目时，务必指定版本和链，以避免混淆。
 
-## V5.1 Contract Update (Dec 2025)
+## V5.1 合约更新（2025 年 12 月）
 
-**Only JBRulesets has a code change** (one-line approval hook fix). Other contracts were redeployed due to dependency chains (JBTerminalStore→JBMultiTerminal, JB721TiersHook→JB721TiersHookDeployer→JBOmnichainDeployer).
+**只有 JBRuleset 合约有代码更改**（修复了一行审批钩子）。其他合约由于依赖关系被重新部署（例如：JBTerminalStore→JBMultiTerminal, JB721TiersHook→JB721TiersHookDeployer→JBOmnichainDeployer）。
 
-| Deploying... | Use These Contracts |
+| 部署内容 | 使用的合约 |
 |--------------|---------------------|
-| New project | **V5.1** (JBController5_1, JBMultiTerminal5_1, etc.) |
-| Revnet | **V5.0** (REVDeployer uses V5.0 JBController) |
+| 新项目 | **V5.1**（JBController5_1, JBMultiTerminal5_1 等） |
+| Revnet | **V5.0**（REVDeployer 使用 V5.0 的 JBController） |
 
-**Do not mix V5.0 and V5.1 contracts** - use one complete set or the other.
+**请不要混合使用 V5.0 和 V5.1 的合约**——只能使用其中一套完整的合约。
 
-See `references/v5-addresses.md` or `shared/chain-config.json` for addresses.
+有关地址的信息，请参阅 `references/v5-addresses.md` 或 `shared/chain-config.json`。
 
-## Before Writing Custom Code
+## 在编写自定义代码之前
 
-**Always check if native mechanics can achieve your goal:**
+**请始终先检查是否可以使用原生的功能来实现你的目标：**
 
-| User Need | Recommended Solution |
+| 用户需求 | 推荐解决方案 |
 |-----------|---------------------|
-| Autonomous tokenized treasury | Deploy a **Revnet** via revnet-core-v5 |
-| Project with structured rules and no EOA owner | Use contract-as-owner pattern |
-| Simple fundraising project | Use this skill to generate deployment |
-| Vesting/time-locked distributions | Use **payout limits + cycling rulesets** (no custom contracts) |
-| NFT-gated treasury | Use **nana-721-hook-v5** with native cash outs |
-| Governance-minimal/immutable | Transfer ownership to **burn address** after setup |
-| One-time treasury access | Use **surplus allowance** (doesn't reset each cycle) |
-| Custom token mechanics | Use **custom ERC20** via `setTokenFor()` |
+| 自主管理的代币化资金库 | 通过 revnet-core-v5 部署一个 **Revnet** 合约 |
+| 没有 EOA（Externally Owned Account）所有者的项目 | 使用 **contract-as-owner** 模式 |
+| 简单的筹款项目 | 使用该功能来生成部署脚本 |
+| 分配/时间锁定的代币发放 | 使用 **payout limits + cycling rulesets**（无需自定义合约） |
+| 需要 NFT 来管理的资金库 | 使用 **nana-721-hook-v5** 合约，并结合原生的现金退出机制 |
+| 最小化治理操作/不可更改的所有权 | 设置完成后将所有权转移到 **burn address** |
+| 一次性资金库访问 | 使用 **surplus allowance**（不会在每个周期重置） |
+| 自定义代币机制 | 通过 `setTokenFor()` 使用 **custom ERC20** 合约 |
 
-**See `/jb-patterns` for detailed examples of these patterns.**
-**See `/jb-simplify` for a checklist to reduce custom code.**
+**有关这些模式的详细示例，请参阅 `/jb-patterns`。**
+**如需减少自定义代码的使用，请参阅 `/jb-simplify`。**
 
-## Project Creation Overview
+## 项目创建概述
 
-Projects are created through `JBController.launchProjectFor()` which:
-1. Creates a new project NFT via JBProjects
-2. Sets the controller for the project
-3. Configures the first ruleset
-4. Sets up terminal configurations
+项目是通过 `JBController.launchProjectFor()` 创建的，该函数会：
+1. 通过 JBProjects 创建一个新的项目 NFT。
+2. 设置项目的控制器。
+3. 配置第一个规则集。
+4. 设置终端配置。
 
-## Core Functions
+## 核心功能
 
-### Launch a Project
+### 启动项目
 
 ```solidity
 function launchProjectFor(
@@ -70,9 +70,9 @@ function launchProjectFor(
 ) external returns (uint256 projectId);
 ```
 
-### Project Metadata (projectUri)
+### 项目元数据（projectUri）
 
-The `projectUri` should point to a JSON file (typically on IPFS) with:
+`projectUri` 应该指向一个 JSON 文件（通常存储在 IPFS 上），该文件包含以下内容：
 
 ```json
 {
@@ -86,7 +86,7 @@ The `projectUri` should point to a JSON file (typically on IPFS) with:
 }
 ```
 
-## Configuration Structs
+## 配置结构
 
 ### JBRulesetConfig
 
@@ -122,7 +122,7 @@ struct JBAccountingContext {
 }
 ```
 
-## Deployment Script Example
+## 部署脚本示例
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -221,11 +221,11 @@ contract DeployProject is Script {
 }
 ```
 
-## Custom ERC20 Project Tokens
+## 自定义 ERC20 项目代币
 
-By default, Juicebox projects use **credits** (unclaimed internal balances). You can upgrade to an ERC20 token two ways:
+默认情况下，Juicebox 项目使用 **credits**（未领取的内部余额）。你可以通过以下两种方式升级为 ERC20 代币：
 
-### Option 1: Deploy Standard JBERC20
+### 选项 1：部署标准的 JBERC20
 
 ```solidity
 // Deploy the default Juicebox ERC20 token
@@ -237,24 +237,24 @@ IJBToken token = CONTROLLER.deployERC20For(
 );
 ```
 
-This creates a standard `JBERC20` that the controller can mint/burn. Simple and works for most projects.
+这种方式会创建一个标准的 `JBERC20` 代币，控制器可以对其进行铸造或销毁。这种方法简单，适用于大多数项目。
 
-### Option 2: Use a Custom ERC20
+### 选项 2：使用自定义的 ERC20
 
-For advanced tokenomics, you can bring your own ERC20:
+对于更复杂的代币经济模型，你可以使用自己的 ERC20 代币：
 
 ```solidity
 // Set an existing/custom ERC20 as the project token
 CONTROLLER.setTokenFor(projectId, IJBToken(myCustomToken));
 ```
 
-**Requirements for custom tokens:**
-1. Must use **18 decimals**
-2. Must implement `canBeAddedTo(uint256 projectId)` returning `true`
-3. Must not be assigned to another Juicebox project
-4. Controller needs mint/burn permissions (typically via ownership or access control)
+**自定义代币的要求：**
+1. 必须使用 **18 个小数位**。
+2. 必须实现 `canBeAddedTo(uint256 projectId)` 方法，并返回 `true`。
+3. 不能被分配给其他 Juicebox 项目。
+4. 控制器需要具有铸造或销毁代币的权限（通常通过所有权或访问控制来实现）。
 
-### Custom Token Interface
+### 自定义代币接口
 
 ```solidity
 interface IJBToken is IERC20 {
@@ -275,20 +275,20 @@ interface IJBToken is IERC20 {
 }
 ```
 
-### When to Use Custom ERC20s
+### 何时使用自定义 ERC20
 
-| Use Case | Why Custom ERC20 |
+| 使用场景 | 为什么使用自定义 ERC20 |
 |----------|------------------|
-| **Transfer taxes** | Implement fees on transfers (e.g., reflection tokens) |
-| **Rebasing tokens** | Elastic supply that adjusts balances automatically |
-| **Pre-existing tokens** | Integrate a community token with established holders |
-| **Governance features** | Voting snapshots, delegation, checkpointing |
-| **Vesting schedules** | Built-in unlock mechanics in the token itself |
-| **Allowlist/denylist** | Transfer restrictions for compliance |
-| **Concentration limits** | Cap max holdings per address for distribution |
-| **Editable metadata** | Rebrand name/symbol without redeploying |
+| **转移税** | 在转移过程中收取费用（例如，使用反射代币） |
+| **代币基数调整** | 自动调整代币供应量的机制 |
+| **现有的社区代币** | 将社区代币整合到系统中 |
+| **治理功能** | 实现投票、委托、检查点等功能 |
+| **分配计划** | 代币本身内置解锁机制 |
+| **白名单/黑名单** | 控制代币的转移 |
+| **集中度限制** | 限制每个地址的最大持有量 |
+| **可编辑的元数据** | 不需要重新部署即可更改代币的名称/符号 |
 
-### Example: Custom Token with Transfer Tax
+### 示例：带有转移税的自定义代币
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -351,7 +351,7 @@ contract TaxedProjectToken is ERC20, Ownable {
 }
 ```
 
-### Example: Integrating Existing Community Token
+### 示例：整合现有的社区代币
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -395,9 +395,9 @@ contract JBCompatibleToken is ERC20, AccessControl {
 }
 ```
 
-### Example: Editable Name/Symbol Token
+### 示例：可编辑名称/符号的代币
 
-Allows project owners to rebrand without redeploying or migrating liquidity:
+允许项目所有者在不重新部署或迁移流量的情况下更改代币的名称/符号：
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -468,62 +468,61 @@ contract EditableProjectToken is ERC20 {
 }
 ```
 
-**Note**: Some DEXs/aggregators cache metadata. Changes may take time to propagate.
+**注意**：一些去中心化交易所（DEX）或聚合器会缓存元数据。因此，更改可能需要一段时间才能生效。
 
-### Tradeoffs
+### 权衡
 
-| Approach | Pros | Cons |
+| 方法 | 优点 | 缺点 |
 |----------|------|------|
-| **Credits only** | Zero deployment cost, simplest | Not transferable, no DeFi integration |
-| **Standard JBERC20** | Simple, compatible, audited | No custom mechanics |
-| **Custom ERC20** | Full control over tokenomics | More complexity, audit burden, must maintain 18 decimals |
+| **仅使用 Credits** | 部署成本为零，最简单 | 不支持转移，无法集成 DeFi 功能 |
+| **标准 JBERC20** | 简单、兼容性强、经过审计 | 没有自定义功能 |
+| **自定义 ERC20** | 可完全控制代币经济模型 | 复杂度更高，需要审计，且必须使用 18 个小数位 |
 
-### Critical Considerations
+### 关键注意事项
 
-1. **Controller must have mint/burn access** - The JBController needs to mint tokens on payments and burn on cash outs
-2. **18 decimals is mandatory** - The entire Juicebox math assumes 18 decimal tokens
-3. **One token per project** - A token can only be assigned to one project
-4. **Credits convert to tokens** - Existing credit holders can claim tokens after ERC20 is set
-5. **Token can't be changed** - Once set, you cannot swap to a different token contract
+1. **控制器必须具有铸造/销毁代币的权限**——JBController 需要在支付时铸造代币，并在现金退出时销毁代币。
+2. **必须使用 18 个小数位**——Juicebox 的所有计算都基于 18 个小数位的代币。
+3. **每个项目只能使用一个代币**——一个代币只能分配给一个项目。
+4. **Credits 可以转换为代币**——在设置 ERC20 代币后，现有的 Credits 持有者可以领取代币。
+5. **代币不能更改**——一旦设置好，就不能更换为其他类型的代币合约。
 
-## Other Project Operations
+## 其他项目操作
 
-### Transfer Ownership
+### 转移所有权
 
-Project ownership is an ERC-721 NFT. Transfer using standard ERC-721:
+项目所有权通过 ERC-721 NFT 来管理。使用标准的 ERC-721 协议进行转移：
 
 ```solidity
 IJBProjects(PROJECTS).transferFrom(currentOwner, newOwner, projectId);
 ```
 
-### Set Project Metadata
+### 设置项目元数据
 
 ```solidity
 IJBProjects(PROJECTS).setTokenURI(projectId, "ipfs://newUri");
 ```
 
-### Add Terminals
+### 添加终端
 
 ```solidity
 IJBDirectory(DIRECTORY).setTerminalsOf(projectId, terminals);
 ```
 
-## Generation Guidelines
+## 生成指南
 
-1. **Ask about project requirements** - ownership model, token economics, payout structure
-2. **Consider Revnets** if autonomous operation is desired
-3. **Configure appropriate metadata** - reserved rate, cash out tax, permissions
-4. **Set up splits** for payouts and reserved tokens
-5. **Generate deployment scripts** using Foundry
+1. **了解项目需求**——包括所有权模型、代币经济模型和支付结构。
+2. 如果需要自主运行，请考虑使用 Revnet。
+3. **配置适当的元数据**——例如预留率、现金退出税和权限设置。
+4. **使用 Foundry 生成部署脚本**。
 
-## Example Prompts
+## 示例提示
 
-- "Create a project that mints 1000 tokens per ETH with 10% reserved"
-- "Set up a project with weekly payout cycles to 3 addresses"
-- "Deploy a project with a 3-day approval delay for ruleset changes"
-- "Create a project that accepts both ETH and USDC"
+- “创建一个项目，每 ETH 铸造 1000 个代币，并预留 10%。”
+- “设置一个每周向 3 个地址支付的项目。”
+- “部署一个需要 3 天审批周期才能更改规则集的项目。”
+- “创建一个同时接受 ETH 和 USDC 的项目。”
 
-## Reference
+## 参考资料
 
-- **nana-core-v5**: https://github.com/Bananapus/nana-core-v5
-- **revnet-core-v5**: https://github.com/rev-net/revnet-core-v5
+- **nana-core-v5**：https://github.com/Bananapus/nana-core-v5
+- **revnet-core-v5**：https://github.com/rev-net/revnet-core-v5

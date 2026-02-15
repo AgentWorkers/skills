@@ -1,20 +1,20 @@
 ---
 name: code-cache
-description: Semantic code caching for AI agents. Cache, retrieve, and reuse code from prior agent executions.
+description: 用于AI代理的语义代码缓存机制：能够缓存、检索并重用代理先前执行过程中生成的代码。
 metadata: {"openclaw":{"emoji":"🏄","homepage":"https://raysurfer.com","requires":{"env":["RAYSURFER_API_KEY"]},"primaryEnv":"RAYSURFER_API_KEY"}}
 ---
 
-# Code Cache - Semantic Code Caching for AI Agents
+# 代码缓存 - 为 AI 代理提供的语义化代码缓存功能
 
-This skill enables semantic code caching via the [Raysurfer](https://raysurfer.com) API.
+该技能通过 [Raysurfer](https://raysurfer.com) API 实现语义化代码缓存。
 
-## What It Does
+## 功能概述
 
-When your agent generates and executes code, Code Cache stores it. When a similar task comes up later, the agent can retrieve and run the cached code instead of regenerating it—saving time and tokens.
+当您的代理生成并执行代码时，代码缓存系统会将其存储起来。之后如果遇到类似的任务，代理可以直接从缓存中获取并运行已缓存的代码，从而节省时间和令牌（token）。
 
-## Setup
+## 设置方法
 
-Get your API key from the [Raysurfer dashboard](https://raysurfer.com/dashboard/api-keys) and configure it:
+从 [Raysurfer 仪表板](https://raysurfer.com/dashboard/api-keys) 获取您的 API 密钥，并进行配置：
 
 ```bash
 # Via environment variable
@@ -24,110 +24,110 @@ export RAYSURFER_API_KEY=your_api_key_here
 openclaw config set skills.entries.code-cache.apiKey "your_api_key_here"
 ```
 
-## Available Commands
+## 可用命令
 
-### Search for cached code
+### 搜索缓存的代码片段
 
 ```
 /code-cache search <task description> [--top-k N] [--min-score FLOAT] [--show-code]
 ```
 
-Search for cached code snippets that match a natural language task description.
+根据自然语言任务描述搜索缓存的代码片段。
 
-**Options:**
-- `--top-k N` — Maximum number of results (default: 5)
-- `--min-score FLOAT` — Minimum verdict score filter (default: 0.3)
-- `--show-code` — Display the source code of the top match
+**选项：**
+- `--top-k N` — 最多返回结果数量（默认值：5）
+- `--min-score FLOAT` — 最低评分过滤条件（默认值：0.3）
+- `--show-code` — 显示匹配项的源代码
 
-**Example:**
+**示例：**
 ```
 /code-cache search "Generate a quarterly revenue report"
 /code-cache search "Fetch GitHub trending repos" --top-k 3 --show-code
 ```
 
-### Get code files for a task
+### 获取任务所需的代码文件
 
 ```
 /code-cache files <task description> [--top-k N] [--cache-dir DIR]
 ```
 
-Retrieve code files ready for execution, with a pre-formatted prompt addition for your LLM.
+检索可用于执行的代码文件，并为大型语言模型（LLM）提供预格式化的提示。
 
-**Options:**
-- `--top-k N` — Maximum number of files (default: 5)
-- `--cache-dir DIR` — Output directory (default: `.code_cache`)
+**选项：**
+- `--top-k N` — 最多返回文件数量（默认值：5）
+- `--cache-dir DIR` — 输出目录（默认值：`.code_cache`）
 
-**Example:**
+**示例：**
 ```
 /code-cache files "Fetch GitHub trending repos"
 /code-cache files "Build a chart" --cache-dir ./cached_code
 ```
 
-### Upload code to cache
+### 将代码上传到缓存
 
 ```
 /code-cache upload <task> --files <path> [<path>...] [--failed] [--no-auto-vote]
 ```
 
-Upload code from an execution to the cache for future reuse.
+将执行后的代码上传到缓存中，以便将来重复使用。
 
-**Options:**
-- `--files, -f` — Files to upload (required, can specify multiple)
-- `--failed` — Mark the execution as failed (default: succeeded)
-- `--no-auto-vote` — Disable automatic voting on stored code blocks
+**选项：**
+- `--files, -f` — 需要上传的文件（必选，可指定多个文件）
+- `--failed` — 将执行结果标记为失败（默认值：成功）
+- `--no-auto-vote` — 禁用对存储代码片段的自动评分
 
-**Example:**
+**示例：**
 ```
 /code-cache upload "Build a chart" --files chart.py
 /code-cache upload "Data pipeline" -f extract.py transform.py load.py
 /code-cache upload "Failed attempt" --files broken.py --failed
 ```
 
-### Vote on cached code
+### 对缓存的代码进行评分
 
 ```
 /code-cache vote <code_block_id> [--up|--down] [--task TEXT] [--name TEXT] [--description TEXT]
 ```
 
-Vote on whether cached code was useful. This improves retrieval quality over time.
+对缓存的代码进行评分，以评估其实用性。这有助于提升代码的检索质量。
 
-**Options:**
-- `--up` — Upvote / thumbs up (default)
-- `--down` — Downvote / thumbs down
-- `--task` — Original task description (optional)
-- `--name` — Code block name (optional)
-- `--description` — Code block description (optional)
+**选项：**
+- `--up` — 点赞（默认值）
+- `--down` — 点踩
+- `--task` — 原始任务描述（可选）
+- `--name` — 代码片段名称（可选）
+- `--description` — 代码片段描述（可选）
 
-**Example:**
+**示例：**
 ```
 /code-cache vote abc123 --up
 /code-cache vote xyz789 --down --task "Generate report"
 ```
 
-## How It Works
+## 工作原理
 
-1. **Cache Hit**: When you ask for code similar to something previously executed, Code Cache returns the cached version instantly
-2. **Cache Miss**: When no match exists, your agent generates code normally, then Code Cache stores it for future use
-3. **Verdict Scoring**: Code that works gets 👍, code that fails gets 👎—retrieval improves over time
+1. **缓存命中**：当您请求与之前执行过的代码相似的代码时，代码缓存系统会立即返回已缓存的版本。
+2. **缓存未命中**：如果没有匹配项，代理会正常生成代码，然后代码缓存系统会将其存储起来以供将来使用。
+3. **评分机制**：成功的代码会获得 👍，失败的代码会获得 👎——随着时间的推移，检索效果会逐渐提升。
 
-## API Reference
+## API 参考
 
-The skill wraps these Raysurfer API methods:
+该技能使用了以下 Raysurfer API 方法：
 
-| Method | Description |
-|--------|-------------|
-| `search(task, top_k, min_verdict_score)` | Unified search for cached code snippets |
-| `get_code_files(task, top_k, cache_dir)` | Get code files ready for sandbox execution |
-| `upload_new_code_snips(task, files_written, succeeded, auto_vote)` | Store new code after execution |
-| `vote_code_snip(task, code_block_id, code_block_name, code_block_description, succeeded)` | Vote on snippet usefulness |
+| 方法          | 描述                                      |
+|---------------|-------------------------------------------|
+| `search(task, top_k, min_verdict_score)` | 统一搜索缓存的代码片段                         |
+| `get_code_files(task, top_k, cache_dir)` | 获取可用于沙箱执行的代码文件                         |
+| `upload_new_code_snips(task, files_written, succeeded, auto_vote)` | 在执行后存储新的代码片段                         |
+| `vote_code_snip(task, code_block_id, code_block_name, code_block_description, succeeded)` | 对代码片段的实用性进行评分                         |
 
-## Why Code Caching?
+## 为什么需要代码缓存？
 
-LLM agents repeat the same patterns constantly. Instead of regenerating code every time:
+大型语言模型（LLM）代理经常重复执行相同的操作。通过使用代码缓存，可以避免每次都重新生成代码：
 
-- **30x faster**: Retrieve proven code instead of waiting for generation
-- **Lower costs**: Reduce token usage by reusing cached solutions  
-- **Higher quality**: Cached code has been validated and voted on
-- **Consistent output**: Same task = same proven solution
+- **速度提升 30 倍**：直接使用已验证过的代码，无需等待代码生成。
+- **降低成本**：通过重用缓存代码，减少令牌的使用。
+- **代码质量更高**：缓存代码已经过验证和评分。
+- **输出结果一致**：相同的任务总是得到相同的解决方案。
 
-Learn more at [raysurfer.com](https://raysurfer.com) or read the [documentation](https://docs.raysurfer.com).
+更多信息请访问 [raysurfer.com](https://raysurfer.com) 或阅读 [官方文档](https://docs.raysurfer.com)。

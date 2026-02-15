@@ -1,222 +1,143 @@
 ---
 name: agent-step-sequencer
-description: Multi-step scheduler for in-depth agent requests. Detects when user needs multiple steps, suggests plan and waits for confirmation, persists state, and runs heartbeat-aware flow. Use when requests have 3+ actions, sequential dependencies, output dependencies, or high scope/risk.
+description: **多步骤调度器：用于处理复杂的代理请求**  
+该调度器能够识别用户需要执行多个步骤的请求，自动建议相应的处理方案，并在用户确认后继续执行后续操作。它能够保持请求的状态，并确保流程在心跳检测机制（heartbeat detection）的监控下正常运行。适用于以下场景：  
+- 请求包含3个或更多操作；  
+- 操作之间存在顺序依赖关系；  
+- 请求结果依赖于其他输出结果；  
+- 请求的复杂度较高或风险较高。
 metadata: {"openclaw":{"emoji":"🔗","requires":{"bins":["python3"],"env":["STEP_AGENT_CMD"]},"install":[{"id":"apt","kind":"apt","package":"python3","bins":["python3"],"label":"Install Python 3","os":["linux"]},{"id":"brew","kind":"brew","formula":"python@3","bins":["python3"],"label":"Install Python 3","os":["darwin"]}]}}
 ---
 
-# Agent Step Sequencer
+# 代理步骤序列器
 
-Multi-step scheduler for in-depth requests. Enables step-based actions with heartbeat integration—survives gateway reset mid-step.
+这是一个用于处理多步骤请求的调度器，支持基于步骤的操作，并集成了心跳检测机制——即使在步骤执行过程中网关重置，也能继续执行。
 
-## Core Pattern
+## 核心模式
 
-1. **Interpret** when user request requires multiple steps
-2. **Suggest** step plan, wait for confirmation
-3. **Persist** state.json (with plan format)
-4. **Agent invokes** `scripts/step-sequencer-check.py` immediately (no wait for heartbeat)
-5. **Heartbeat** (e.g. every 5 min) also invokes the script—keeps sequencer aligned with email jobs and other heartbeat tasks
+1. **解析** 用户请求是否需要多个步骤。
+2. **建议** 步骤计划，并等待用户确认。
+3. **保存** `state.json` 文件（包含步骤计划信息）。
+4. **代理立即执行 `scripts/step-sequencer-check.py` 脚本（无需等待心跳信号）。
+5. **心跳检测**（例如每5分钟一次）也会触发该脚本的执行——确保步骤序列器与电子邮件任务和其他心跳检测任务保持同步。
 
-**Critical:** If gateway resets mid-step, next heartbeat reads state and resumes correctly.
-
----
-
-## Plan Format
-
-Agent builds a plan when user approves. During approval, agent asks: **Use 2-minute delay between steps?** Recommended for rate-limit–sensitive API calls. User chooses; agent sets `stepDelayMinutes` (0 or 2) in state. Each step has `title`, `instruction`, and optionally `requiredOutputs` (paths relative to workspace that must exist before the step is marked DONE):
-
-```json
-{
-  "plan": {
-    "steps": {
-      "step-1": { "title": "Research topic X", "instruction": "Research topic X and produce a concise summary", "requiredOutputs": ["study/summary.md"] },
-      "step-2": { "title": "Write paper", "instruction": "Using the summary from step 1, write a research paper..." }
-    }
-  },
-  "stepQueue": ["step-1", "step-2"],
-  "currentStep": 0,
-  "stepRuns": {},
-  "stepDelayMinutes": 0,
-  "status": "IN_PROGRESS"
-}
-```
-
-- **title**: Human-readable label
-- **instruction**: Full instruction for the agent (research, summarize, pull X from Y, etc.)
-- **requiredOutputs** (optional): List of paths (relative to workspace). Runner marks step DONE only if agent exits 0 and all these paths exist; otherwise step is FAILED with "Missing required outputs: …".
+**重要提示：** 如果在步骤执行过程中网关重置，下一次心跳检测会读取状态信息并继续执行剩余的步骤。
 
 ---
 
-## Roles
+## 计划格式
 
-- **Agent**: Builds plan, persists state; does not touch state during step execution. Takes prompts.
-- **Runner** (`step-sequencer-runner.py`): Invokes agent with step instruction, waits for exit, marks DONE/FAILED. Applies stepDelayMinutes. On retry, agent gets troubleshoot prompt.
-- **Check script** (`step-sequencer-check.py`): If work to do, invokes runner. Handles FAILED → retry (reset PENDING, invoke runner).
-- **Heartbeat**: Invokes check script on schedule.
-
----
-
-## Step execution: autonomous recovery
-
-**Do not stop mid-step to ask the user.** When executing a step, if something fails (empty fetch, API error, source unavailable):
-
-1. **Retry** once (same source/URL) if it might be transient.
-2. **Try an alternative** (e.g. CoinGecko instead of CoinMarketCap, different endpoint or token) and complete the step with what you can.
-3. **Document and exit** only if you truly cannot complete the step—then exit non-zero so the runner marks FAILED; the scheduler will retry with a troubleshoot prompt.
-
-Do not stop silently. If you cannot complete the step after retry and alternatives: **actively prompt the user**—post a short message that you hit a snag, what failed, and what you tried (e.g. "Step 2 (research Meteora) failed: CoinMarketCap fetch empty, tried CoinGecko—also empty. Need another source or skip this token."). Then exit non-zero so the runner marks FAILED and the scheduler can retry or add to blockers. Never just stop without telling the user.
+当用户批准请求后，代理会生成一个步骤计划。在批准过程中，系统会询问用户是否需要在步骤之间设置2分钟的延迟；这适用于对请求频率有限制（如API调用）的情况。用户可以选择是否设置延迟，代理会将延迟时间（0或2分钟）保存在 `state.json` 中。每个步骤都包含以下信息：
+- **title**：便于人类阅读的标签。
+- **instruction**：代理需要执行的完整指令（例如：进行研究、汇总数据、从某个来源获取数据等）。
+- **requiredOutputs**（可选）：步骤完成前必须存在的文件路径列表。
 
 ---
 
-## How Agent Determines Multi-Step
 
-**Agent must suggest before proceeding.** When MULTI_STEP, propose the step plan and wait for confirmation before executing.
+## 角色分配
 
-```
-MULTI_STEP =
-  (action_count >= 3)
-  OR has_sequential_language
-  OR has_output_dependency
-  OR high_scope_or_risk
-  OR user_requests_steps
-  OR contains_setup_keywords
-
-SINGLE_STEP =
-  (action_count == 1)
-  AND NOT has_output_dependency
-  AND immediate_execution
-
-DECISION =
-  IF MULTI_STEP THEN suggest_multi_step → wait for confirm → proceed
-  ELSE single_step
-```
-
-**Definitions:**
-
-| Criterion | Meaning |
-|-----------|---------|
-| `action_count` | Number of distinct actions (file edits, commands, etc.) |
-| `has_sequential_language` | "then", "after", "first...then", "step 1" |
-| `has_output_dependency` | Step B needs output from step A |
-| `high_scope_or_risk` | Many files, destructive ops, migration |
-| `user_requests_steps` | "step by step", "break this down", "one at a time" |
-| `contains_setup_keywords` | "set up", "migrate", "implement from scratch", "full X", "complete Y" |
+- **代理**：负责生成计划并保存状态信息；在步骤执行过程中不修改状态数据，仅接收用户的指令。
+- **执行器**（`step-sequencer-runner.py`）：根据代理的指令执行步骤，等待步骤完成，并标记步骤状态为“完成”或“失败”。执行器会按照设置的延迟时间来执行步骤。
+- **检查脚本**（`step-sequencer-check.py`）：在需要时触发执行器的执行；如果步骤执行失败，会尝试重新执行（将状态设置为“待重试”）。
 
 ---
 
-## State Schema
+## 步骤执行：自动恢复机制
 
-See [references/state-schema.md](references/state-schema.md). Key fields:
-
-- `plan.steps`: step definitions (`title`, `instruction`, optional `requiredOutputs`)
-- `stepQueue`, `currentStep`, `stepRuns`
-- `stepDelayMinutes`: 0 = no delay; 2 = 2 min between steps
-- `blockers`, `lastHeartbeatIso`, `artifacts`
+在执行步骤时，如果遇到问题（如数据获取失败、API错误或数据源不可用），请不要停止执行并立即询问用户。可以：
+- **重试一次**（使用相同的来源/URL），因为问题可能是暂时的。
+- **尝试其他替代方案**（例如使用CoinGecko代替CoinMarketCap、更换API端点或尝试其他数据源），并尽可能完成步骤。
+- **只有在确实无法完成步骤时才记录错误并退出**；此时应返回非零状态码，以便执行器标记步骤为“失败”，然后调度器会尝试重新执行或将该步骤标记为“阻塞项”。切勿在未通知用户的情况下直接停止执行。
 
 ---
 
-## Heartbeat Flow
+## 代理如何判断是否需要多步骤执行
 
-Heartbeat invokes `scripts/step-sequencer-check.py`. Agent also invokes it right after persisting state.
-
-1. Read state.json
-2. If no state or status=DONE → do nothing
-3. If step FAILED → bump tries, reset to PENDING, invoke runner (immediate retry)
-4. If step DONE → advance currentStep, invoke runner
-5. If step PENDING or IN_PROGRESS → invoke runner
-6. Update lastHeartbeatIso
-
-Runner invokes agent (configurable via `STEP_AGENT_CMD`). Runner applies stepDelayMinutes.
+**代理必须在执行前向用户提出建议**。如果需要执行多个步骤，代理会先提出步骤计划并等待用户的确认。
 
 ---
 
-## Failure Flow
 
-1. Runner marks step FAILED, stores error in stepRuns
-2. Runner invokes check script immediately (no heartbeat wait)
-3. Check script bumps tries, resets status to PENDING, invokes runner
-4. Runner invokes agent with troubleshoot prompt: "Step X failed (tries: N). Previous run ended with: [error]. Please troubleshoot and retry: [instruction]"
-5. Repeats until DONE or max retries / blockers
+## 判断标准
 
----
-
-## Flow Diagrams
-
-### Check script → Runner
-
-```mermaid
-flowchart TD
-    A[Heartbeat or Agent] --> B[step-sequencer-check.py]
-    B --> C{Work to do?}
-    C -->|No| D[Do nothing]
-    C -->|Yes| E[Invoke runner]
-    E --> F[step-sequencer-runner.py]
-    F --> G[Invoke agent with instruction]
-    G --> H{Agent exit}
-    H -->|Success| I[Mark DONE]
-    H -->|Fail| J[Mark FAILED, invoke check script]
-    I --> K[Check advances or done]
-    J --> B
-```
-
-### User flow (propose + persist)
-
-```mermaid
-flowchart TD
-    U[User Request] --> V{Complex enough?}
-    V -->|No| W[Execute directly]
-    V -->|Yes| X[Propose step plan]
-    X --> Y[User confirms]
-    Y --> Z[Persist state.json with plan]
-    Z --> AA[Agent invokes step-sequencer-check]
-    AA --> AB[Runner invokes agent - step 1]
-    AB --> AC[Heartbeat also invokes on schedule]
-```
+以下是一些判断是否需要多步骤执行的依据：
+- `action_count`：不同操作的数量（如文件编辑、命令执行等）。
+- `has_sequential_language`：步骤之间存在逻辑顺序（例如“先...然后...”）。
+- `has_output_dependency`：某个步骤依赖于另一个步骤的输出结果。
+- `high_scope_or_risk`：涉及大量文件、具有破坏性操作或需要迁移的操作。
+- `user_requests_steps`：用户请求按步骤执行任务。
+- `contains_setup_keywords`：步骤包含设置、迁移、从头开始实现等关键词。
 
 ---
 
-## Configuration
+## 状态结构
 
-| Env | Description |
-|-----|-------------|
-| `STEP_AGENT_CMD` | **Required.** Command to invoke agent (space-separated). Prompt appended as last arg. Example: `openclaw agent --message` |
-| `STEP_RUNNER` | Path to step-sequencer-runner.py (optional) |
-| `STEP_MAX_RETRIES` | Max retries on FAILED before adding to blockers. Default: 3 |
-
-OpenClaw: Wire `STEP_AGENT_CMD` to OpenClaw's agent invocation (e.g. `openclaw agent --message`).
-
-**Security:** Set `STEP_AGENT_CMD` only to your trusted agent binary. Do not use shell interpreters (`bash`, `sh`, etc.) or `-c`/`-e`—the runner rejects these to prevent command injection. The instruction from state.json is passed as a single argument; it is never executed by a shell.
+详细状态结构请参考 [references/state-schema.md](references/state-schema.md)。关键字段包括：
+- `plan_steps`：步骤的定义（包含 `title`、`instruction` 和可选的 `requiredOutputs`）。
+- `stepQueue`、`currentStep`、`stepRuns`：存储步骤的执行顺序和当前执行步骤的索引。
+- `stepDelayMinutes`：步骤之间的延迟时间（0表示无延迟；2表示每步之间延迟2分钟）。
+- `blockers`、`lastHeartbeatIso`、`artifacts`：用于记录执行过程中的错误信息和结果文件。
 
 ---
 
-## Final Deliverables Step
+## 心跳检测流程
 
-When all steps complete:
+心跳检测脚本会调用 `scripts/step-sequencer-check.py`。代理在保存状态信息后也会立即执行该脚本：
+1. 读取 `state.json` 文件。
+2. 如果没有状态信息或步骤状态为“已完成”，则不执行任何操作。
+3. 如果步骤执行失败，会增加重试次数并将状态设置为“待重试”，然后立即重新执行步骤。
+4. 如果步骤已完成，会推进到下一个步骤并继续执行。
+5. 如果步骤处于“待重试”或“进行中”状态，也会继续执行步骤。
+6. 更新最后一次心跳检测的时间戳。
 
-- Confirm all requirements of the steps are met
-- Produce summary with links or paths to any files created/written
-- Mark state DONE → on subsequent heartbeats, scheduler does nothing
+执行器可以通过 `STEP_AGENT_CMD` 配置参数来调用代理。执行器会按照设置的延迟时间来执行步骤。
 
 ---
 
-## Installation
+## 失败处理流程
 
-```bash
-clawhub install agent-step-sequencer
-```
+当步骤执行失败时，执行器会：
+- 将步骤状态标记为“失败”，并将错误信息记录在 `stepRuns` 中。
+- 立即调用检查脚本（无需等待心跳信号）。
+- 检查脚本会增加重试次数，并将状态设置为“待重试”，然后再次调用执行器。
+- 执行器会向用户显示故障提示（例如：“步骤X执行失败（已尝试N次）。上次尝试的结果为：[错误信息]。请排查问题并重试。”）
+- 重复上述流程，直到步骤完成或达到最大重试次数或遇到阻塞项。
 
-Manual copy:
+---
 
-```bash
-cp -r agent-step-sequencer ~/.openclaw/skills/agent-step-sequencer
-```
+## 流程图
 
-**Heartbeat integration** — Add this to your heartbeat (or have the agent add it):
+- **检查脚本 → 执行器** 的交互流程（见 **CODE_BLOCK_2___**）
+- **用户提出步骤计划 → 保存状态** 的交互流程（见 **CODE_BLOCK_3___**）
 
-```bash
-# Agent Step Sequencer check (add to heartbeat cycle)
-python3 ~/.openclaw/skills/agent-step-sequencer/scripts/step-sequencer-check.py ~/.openclaw/workspace/state.json
-```
+---
 
-Or if skill is in workspace: `python3 ~/.openclaw/workspace/skills/agent-step-sequencer/scripts/step-sequencer-check.py ~/.openclaw/workspace/state.json`
+## 配置参数
 
-Set `STEP_AGENT_CMD` to your agent invocation before running. Agent should invoke the check script immediately after persisting state.
+以下是一些配置参数的说明：
+- `STEP_AGENT_CMD`：用于调用代理的命令（以空格分隔多个参数，最后一个参数是提示信息）。示例：`openclaw agent --message`。
+- `STEP_RUNNER`：`step-sequencer-runner.py` 脚本的路径（可选）。
+- `STEP_MAX_RETRIES`：步骤失败后的最大重试次数。默认值为3次。
+
+在OpenClaw环境中，需要将 `STEP_AGENT_CMD` 配置为代理的调用命令（例如：`openclaw agent --message`）。
+
+**安全提示：** 请仅将 `STEP_AGENT_CMD` 设置为可信的代理程序的路径。不要使用shell解释器（如 `bash`、`sh` 等）或 `-c`/`-e` 选项，因为这些方式可能导致命令注入攻击。`state.json` 中的指令会作为单个参数传递给代理，不会被shell执行。
+
+---
+
+## 最终输出
+
+当所有步骤完成后：
+- 确认所有步骤的要求都已满足。
+- 生成包含相关文件链接或路径的总结报告。
+- 将状态标记为“已完成”；之后的心跳检测脚本将不再执行任何操作。
+
+---
+
+## 安装说明
+
+- 手动安装方法（见 **CODE_BLOCK_4___**）。
+- 心跳检测集成方法：将相关脚本添加到心跳检测系统中（或让代理自动完成该操作，见 **CODE_BLOCK_6___**）。
+- 如果该技能已添加到工作空间中，可以直接运行：`python3 ~/.openclaw/workspace/skills/agent-step-sequencer/scripts/step-sequencer-check.py ~/.openclaw/workspace/state.json`。
+- 在运行之前，请确保将 `STEP_AGENT_CMD` 设置为正确的代理调用命令。代理应在保存状态信息后立即执行检查脚本。

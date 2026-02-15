@@ -1,6 +1,6 @@
 ---
 name: ideaspark-navigator
-description: Facilitates structured ideation and innovation sessions by recommending optimal brainstorming techniques, guiding ethical problem-solving, balancing abstract and practical thinking, and helping teams navigate from ideation through validation. Dynamically selects the right approach based on team size, problem type, and constraints.
+description: 通过推荐最佳的头脑风暴技巧来促进结构化的创意生成和创新会议，引导团队以符合伦理的方式解决问题，平衡抽象思维与实际操作，帮助团队从创意构思阶段顺利过渡到验证阶段。根据团队规模、问题类型及约束条件，动态选择最合适的方法。
 metadata:
   openclaw:
     emoji: "💡"
@@ -15,625 +15,512 @@ metadata:
 
 # IdeaSpark Navigator
 
-## Description
+## 产品描述
 
-IdeaSpark Navigator is your intelligent facilitator for structured ideation and innovation. It doesn't just suggest "brainstorm it" - it dynamically recommends the optimal technique based on your specific context: team size, problem complexity, time constraints, and goals. Whether you need divergent thinking to explore possibilities or convergent thinking to narrow down solutions, IdeaSpark guides you through proven frameworks with ethical considerations built in.
+IdeaSpark Navigator 是一款智能的辅助工具，专为结构化的创意构思和创新设计。它不会简单地建议“进行头脑风暴”，而是会根据您的具体情境（团队规模、问题复杂性、时间限制和目标）动态推荐最合适的方法。无论您需要通过发散性思维探索可能性，还是通过收敛性思维缩小解决方案范围，IdeaSpark 都会引导您使用经过验证的框架，并内置了伦理考量。
 
-## Core Philosophy
+## 核心理念
 
-Innovation isn't random inspiration - it's systematic exploration with the right techniques at the right time. IdeaSpark Navigator helps you:
-- **Choose the right ideation method** for your specific situation
-- **Balance creative freedom** with practical constraints
-- **Navigate ethical considerations** in innovation
-- **Move from abstract possibilities** to concrete solutions
-- **Facilitate effectively** whether in-person or remote
+创新并非凭空产生的灵感，而是在恰当的时间使用正确的方法进行系统性的探索。IdeaSpark Navigator 可以帮助您：
+- **根据具体情况选择合适的构思方法**
+- **在创意自由与实际限制之间找到平衡**
+- **在创新过程中处理伦理问题**
+- **将抽象的可能性转化为具体的解决方案**
+- **无论是在现场还是远程环境中，都能有效地促进讨论**
 
-## When to Use This Skill
+## 适用场景
 
-Use IdeaSpark Navigator when you need to:
-- Kick off an ideation or brainstorming session
-- Choose the best technique for your team and problem
-- Facilitate innovation workshops
-- Break through creative blocks
-- Evaluate and prioritize ideas ethically
-- Transform abstract concepts into actionable plans
-- Design sprints or innovation challenges
+当您需要以下情况时，可以使用 IdeaSpark Navigator：
+- 开始一个构思或头脑风暴会议
+- 为团队和问题选择最佳的方法
+- 主持创新工作坊
+- 拓破创意瓶颈
+- 以伦理的方式评估和优先排序想法
+- 将抽象概念转化为可执行的计划
+- 设计冲刺或创新挑战
 
-## Core Capabilities
+## 核心功能
 
-### 1. Dynamic Technique Recommendation
+### 1. 动态技术推荐
 
-IdeaSpark doesn't give you one method - it asks about your context and recommends the perfect technique:
+IdeaSpark 不会直接给您一个固定的方法，而是会询问您的具体情况，并据此推荐最合适的技术：
 
-**Context Analysis:**
-- Team size (solo, 2-5, 6-15, 16+)
-- Problem type (product, service, process, strategy, social impact)
-- Time available (15 min, 1 hour, half-day, multi-day)
-- Team dynamics (introverts/extroverts, hierarchies, psychological safety)
-- Remote vs. in-person
-- Innovation stage (exploration, refinement, validation)
+**情境分析：**
+- 团队规模（单人、2-5人、6-15人、16人以上）
+- 问题类型（产品、服务、流程、战略、社会影响）
+- 可用时间（15分钟、1小时、半天、多天）
+- 团队氛围（内向/外向、层级结构、心理安全感）
+- 远程/现场会议
+- 创新阶段（探索阶段、完善阶段、验证阶段）
 
-**Technique Library (20+ Methods):**
-- **Crazy 8s** - Rapid visual iteration
-- **6-3-5 Brainwriting** - Silent, structured ideation
-- **Round Robin** - Equal voice, collaborative building
-- **SCAMPER** - Systematic idea transformation
-- **Reverse Brainstorming** - Problem amplification to find solutions
-- **How Might We** - Question framing for possibility
-- **Worst Possible Idea** - Psychological safety through humor
-- **Lotus Blossom** - Radial idea expansion
-- **Forced Connections** - Random stimulus creativity
-- **Stepladder Technique** - Hierarchical bias elimination
-- And 10+ more specialized techniques
+**技术库（20多种方法）：**
+- **Crazy 8s** - 快速视觉迭代
+- **6-3-5 Brainwriting** - 静默、结构化的构思方法
+- **Round Robin** - 平等发言、协作构建
+- **SCAMPER** - 系统化的想法转化
+- **Reverse Brainstorming** - 通过反向思考寻找解决方案
+- **How Might We** - 用于引导思考的问题框架
+- **Worst Possible Idea** - 通过幽默打破僵局
+- **Lotus Blossom** - 放射式想法扩展
+- **Forced Connections** - 随机刺激激发创意
+- **Stepladder Technique** - 消除层级偏见
+- 以及更多专业化的方法
 
-### 2. Ethical Innovation Guidance
+### 2. 伦理创新指导
 
-Every innovation has ethical implications. IdeaSpark proactively asks:
+每个创新都具有伦理影响。IdeaSpark 会主动提出以下伦理问题：
+- **这可能会伤害到谁？**（潜在的负面影响）
+- **哪些人会被排除在外？**（包容性问题）
+- **存在哪些偏见？**（假设和盲点）
+- **对环境有什么影响？**（可持续性问题）
+- **这种方案是否公平？**（利益和成本的分配）
+- **隐私和自主权问题**（数据收集、同意权、控制权）
 
-**Ethical Checkpoints:**
-- **Who might this harm?** (Unintended consequences)
-- **Who's excluded?** (Accessibility, inclusion)
-- **What biases are embedded?** (Assumptions, blind spots)
-- **What's the environmental impact?** (Sustainability)
-- **Is this equitable?** (Fair distribution of benefits/costs)
-- **Privacy and autonomy?** (Data, consent, control)
+**伦理框架：**
+- **后果主义**：关注结果和影响
+- **义务论**：权利和责任
+- **美德伦理**：品格和价值观
+- **关怀伦理**：人际关系和同理心
 
-**Ethical Frameworks:**
-- **Consequentialist** - Outcomes and impacts
-- **Deontological** - Rights and duties
-- **Virtue Ethics** - Character and values
-- **Care Ethics** - Relationships and empathy
+### 3. 从发散到收敛的引导
 
-### 3. Divergent → Convergent Navigation
+创新既需要探索（发散思维），也需要决策（收敛思维）：
 
-Innovation requires both exploration (diverge) and decision-making (converge):
+**发散阶段（生成想法）：**
+- 扩展可能性
+- 暂不评判
+- 基于现有想法进行扩展
+- 鼓励自由思考
+- 注重数量而非质量
 
-**Divergent Phase (Generating):**
-- Expand possibilities
-- Defer judgment
-- Build on ideas
-- Encourage wild thinking
-- Quantity over quality
+**收敛阶段（选择方案）：**
+- 评估可行性
+- 评估影响
+- 考虑限制因素
+- 根据标准进行优先排序
+- 做出决策
 
-**Convergent Phase (Selecting):**
-- Evaluate feasibility
-- Assess impact
-- Consider constraints
-- Prioritize with criteria
-- Make decisions
+**连接发散和收敛的桥梁方法：**
+- 点投票（民主选择）
+- 影响/努力矩阵（战略优先排序）
+- 时间线规划（现在/接下来/以后）
+- 必需功能/可选功能（需求分类）
+- 假设检验（风险识别）
 
-**Methods to Bridge:**
-- Dot voting (democratic selection)
-- Impact/Effort matrix (strategic prioritization)
-- Now/Next/Later (timeline sequencing)
-- Must Have/Nice to Have (requirement sorting)
-- Assumption testing (risk identification)
+### 4. 辅导技巧
 
-### 4. Facilitation Mastery
+无论您是独自进行引导，还是指导他人，都可以参考以下技巧：
 
-Whether you're facilitating yourself or guiding someone else:
+**准备阶段：**
+- 清晰地定义问题（使用“How Might We”框架）
+- 创建有利于创新的环境（营造心理安全感）
+- 选择合适的材料（实物/数字工具）
+- 设定活动时间
+- 明确成功标准
 
-**Preparation:**
-- Frame the problem clearly (How Might We format)
-- Set the environment (psychological safety)
-- Choose materials (physical/digital)
-- Time-box activities
-- Define success criteria
+**会议期间：**
+- 进行热身练习（激发创造力）
+- 管理会议节奏（适当休息、调整讨论速度）
+- 确保每个人都有机会发言（照顾内向者）
+- 记录所有想法（不遗漏任何内容）
+- 对偏离主题的讨论进行管理
 
-**During Session:**
-- Warm-up exercises (creative activation)
-- Energy management (breaks, pace changes)
-- Equal participation (structure for introverts)
-- Capture everything (no idea lost)
-- Parking lot for tangents
+**会议后：**
+- 整理和归纳想法
+- 确定主要主题和方向
+- 明确下一步行动和负责人
+- 记录学习成果
+- 制定后续计划
 
-**After Session:**
-- Synthesize and cluster ideas
-- Identify themes and patterns
-- Next steps and owners
-- Document learnings
-- Follow-up plan
+## 远程与混合式使用优化
 
-### 5. Remote & Hybrid Optimization
+不同的技术适用于不同的会议形式：
 
-Different techniques work better in different formats:
+**适合远程使用的：**
+- Miro/Mural Board（在线协作工具）
+- 分组讨论室
+- 匿名提交功能
+- 异步任务（会议间的准备工作）
+- 数字投票机制
 
-**Remote-Friendly:**
-- Miro/Mural board activities
-- Breakout rooms for parallel work
-- Anonymous submission tools
-- Async components (homework between sessions)
-- Digital voting mechanisms
+**适合现场使用的：**
+- 通过身体活动激发创意
+- 使用实物材料进行快速原型设计
+- 利用墙面进行可视化展示
+- 利用非语言交流促进互动
 
-**In-Person Optimized:**
-- Physical movement (bodystorming)
-- Rapid prototyping with materials
-- Wall space for visualization
-- Immediate social cues
-- High-energy group activities
+**混合式使用的最佳实践：**
+- 确保远程参与者也有发言机会
+- 共享可视化工作空间
+- 明确角色分工（线上引导者 + 现场协调者）
+- 提前测试技术可行性
+- 准备好技术故障的备用方案
 
-**Hybrid Best Practices:**
-- Equitable participation (remote voices heard)
-- Shared visual workspace (unified view)
-- Roles defined (online facilitator + room facilitator)
-- Technology testing beforehand
-- Backup plans for tech failures
+## 使用示例
 
-## Usage Examples
+### 示例 1：选择合适的技术
 
-### Example 1: Choosing the Right Technique
+**用户：**“我需要为我们的新应用构思营销策略。我们有6个人，时间限制为1小时，将在Zoom上开会。应该怎么做？”
 
-**User:** "I need to brainstorm marketing ideas for our new app. We have 6 people, 1 hour, and we're meeting on Zoom. What should we do?"
+**IdeaSpark 的建议：**
 
-**IdeaSpark Response:**
+**情境分析：**
+- 团队规模：6人（中等规模）
+- 时间：1小时（时间适中）
+- 会议形式：远程（Zoom）
+- 目标：营销策略（需要创造性探索）
 
-**Context Analysis:**
-- Team: 6 people (medium group)
-- Time: 1 hour (moderate constraint)
-- Format: Remote (Zoom)
-- Goal: Marketing ideas (creative exploration)
+**推荐方法：6-3-5 Brainwriting**
 
-**Recommended Approach: 6-3-5 Brainwriting**
+**推荐理由：**
+- 非常适合远程使用（数字便签工具）
+- 保证每个人都有平等的发言机会
+- 时间效率高（30分钟内完成）
+- 可以在他人想法的基础上进行扩展
+- 30分钟内可以产生108个创意
 
-**Why this technique:**
-✅ Works excellently remote (digital sticky notes)
-✅ Equalizes participation (everyone contributes equally)
-✅ Time-efficient (fits in 30 minutes)
-✅ Builds on each other's ideas (collaborative)
-✅ Produces 108 ideas in 30 minutes (6 people × 3 ideas × 6 rounds)
+**引导步骤：**
+- 准备（5分钟）：
+  - 分享Miro/Mural Board，设置6个讨论区域
+  - 每个人负责一个区域
+  - 提出挑战：“我们如何吸引早期用户使用我们的应用？”
 
-**How to facilitate:**
+**6轮讨论（每轮30分钟）：**
+  - 第一轮：每个人在自己的区域内写下3个营销创意
+  - 第二轮：依次阅读他人的想法，再添加3个新的创意
+  - 重复6轮
 
-**Setup (5 min):**
-- Share Miro/Mural board with 6 sections
-- Each person gets a dedicated area
-- Frame the challenge: "How might we attract early adopters to our app?"
+**收敛阶段（15分钟）：**
+- 所有人静默地查看所有108个创意
+- 点投票：为最喜欢的创意投票
+- 将得票最多的创意归类成几个主题
+- 确定3-5个重点创意进行深入开发
 
-**Round 1-6 (30 min - 5 min per round):**
-- Round 1: Everyone writes 3 marketing ideas in their section
-- Round 2: Everyone rotates clockwise, reads previous ideas, adds 3 MORE ideas (building on or new)
-- Repeat 6 times until everyone returns to their starting section
+**后续步骤（10分钟）：**
+- 讨论下一步行动
+- 为每个重点创意分配负责人
 
-**Convergence (15 min):**
-- Everyone reviews all 108 ideas silently
-- Dot voting: Each person gets 5 votes for favorite ideas
-- Cluster top-voted ideas into themes
-- Identify top 3-5 to develop further
-
-**Time buffer (10 min):**
-- Discuss next steps
-- Assign owners for developing top ideas
-
-**Alternative if team wants more energy:** Round Robin Brainstorming (more verbal, dynamic, but requires strong facilitation)
+**如果团队需要更多互动：**可以尝试**Round Robin Brainstorming（更注重口头交流，但需要较强的引导能力）
 
 ---
 
-### Example 2: Ethical Problem-Solving
+### 示例 2：伦理问题解决
 
-**User:** "We're designing an AI-powered hiring tool to screen resumes. What should we think about?"
+**用户：**“我们正在设计一个基于AI的招聘工具。需要考虑哪些伦理问题？**
 
-**IdeaSpark Response:**
+**IdeaSpark 的建议：**
 
-**Ethical Alert: High-Stakes Decision System**
+**重要提示：这是一个高风险的决策**  
+这个工具具有重大伦理影响，需要谨慎处理。
 
-This is a high-impact application with significant ethical implications. Let's navigate this thoughtfully.
+**需要探讨的关键问题：**
+- **偏见与公平性：**  
+  - 训练数据中存在哪些历史偏见？  
+  - AI如何定义“合格”标准？这些标准是谁制定的？  
+  - 该系统是否会歧视某些人群？  
+  - 是否会对不同人群产生不同的影响？  
 
-**Critical Questions to Address:**
+- **透明性与可解释性：**  
+  - 候选人能否理解被拒绝的原因？  
+  - 招聘人员能否解释AI的决策过程？  
+  - 决策标准是否透明且可争议？  
 
-**1. Bias & Fairness:**
-- What historical biases exist in your training data?
-- How does your AI define "qualified" and who defined those criteria?
-- Could the system disadvantage certain demographics?
-- Are you measuring for disparate impact?
+**伦理框架：**  
+- **后果主义**：关注结果和影响  
+- **义务论**：权利和责任  
+- **美德伦理**：品格和价值观  
+- **关怀伦理**：人际关系和同理心  
 
-**2. Transparency & Explainability:**
-- Can candidates understand why they were rejected?
-- Can recruiters explain the AI's decisions?
-- Are decision-making criteria visible and contestable?
+**建议方法：**  
+**反向头脑风暴**（Reverse Brainstorming）：  
+  - 先思考“如果这个招聘工具存在最糟糕的情况会怎样？”  
+  - 通过这种反向思考来识别潜在风险  
 
-**3. Autonomy & Human Oversight:**
-- Is the AI making decisions or recommendations?
-- Do humans have meaningful control?
-- Can candidates request human review?
+**具体步骤：**
+  - 第一步：设想招聘工具如何造成最糟糕的结果（例如歧视某些群体）  
+  - 第二步：找出可能导致这些结果的偏见  
+  - 第三步：将这些负面情况转化为解决方案  
 
-**4. Accessibility:**
-- Can people with disabilities navigate the system?
-- Does it work for non-native speakers?
-- What about unconventional backgrounds/career paths?
+**后续步骤：**  
+  - 测试这些解决方案是否具有偏见  
+  - 多样化训练数据  
+  - 为每个决策提供清晰的解释  
+  - 最小化数据收集  
+  - 确保有人工审核机制  
 
-**5. Privacy & Data:**
-- What data is collected and why?
-- How long is it retained?
-- Can candidates access/delete their data?
-- Is consent truly informed?
-
-**Ideation Framework: Ethical by Design**
-
-Instead of typical brainstorming, let's use **Reverse Brainstorming** to identify risks:
-
-**Step 1: How might we make the WORST hiring AI?**
-- Make it discriminate against protected classes
-- Train it only on historically privileged candidates
-- Hide all decision-making criteria
-- Collect unnecessary personal data
-- Eliminate all human oversight
-
-**Step 2: Reverse these into solutions**
-- Test for bias across demographics
-- Diversify training data intentionally
-- Provide clear explanation for every decision
-- Minimal data collection (only job-relevant)
-- Human-in-the-loop for final decisions
-
-**Step 3: Build safeguards**
-- Regular bias audits by third party
-- Candidate feedback mechanism
-- Diverse team building/testing the system
-- Ethical review board oversight
-- Sunset clause (re-evaluate regularly)
-
-**Recommendation:**
-Before building features, establish ethical guidelines and red lines. Some ideas might be technically feasible but ethically questionable—it's okay to say "we won't build this."
+**推荐做法：**  
+在开发功能之前，先制定伦理指南和红线。有些想法可能在技术上可行，但在伦理上存在问题——在这种情况下，可以直接拒绝。
 
 ---
 
-### Example 3: Breaking Through Creative Blocks
+### 示例 3：突破创意瓶颈
 
-**User:** "Our team is stuck. We've been trying to solve this logistics problem for weeks and keep coming back to the same ideas. Help?"
+**用户：**“我们的团队陷入了僵局，已经尝试了几周但始终无法找到新的解决方案。该怎么办？”
 
-**IdeaSpark Response:**
+**IdeaSpark 的建议：**
 
-**Diagnosis: Cognitive Fixation**
+**诊断：**  
+团队可能陷入了**功能固着**（functional fixedness），即只能从固定的角度看待问题。需要打破这种思维模式。
 
-Your team is experiencing **functional fixedness** - stuck seeing the problem in one way. We need to break the pattern.
+**推荐方法：**  
+**Forced Connections + Random Stimulus**（随机刺激法）  
+通过引入新的刺激来激发新的思考方向。
 
-**Technique: Forced Connections + Random Stimulus**
+**练习步骤（30分钟）：**
+- **第一步：随机词汇刺激**：
+  - 生成10个随机词汇（可以使用在线工具或从词典中选择，例如：蝴蝶、灯塔、爵士乐、火山、折纸）
+  - 对每个词汇思考：“我们的物流问题与这些词汇有什么相似之处？”  
+  - 记录下任何联想  
 
-This deliberately introduces chaos to shake loose new thinking.
+- **第二步：SCAMPER 方法**：
+  - 用这些词汇系统地改造现有的解决方案：
+    - **替换**：如果用无人机代替卡车会怎样？  
+    - **结合**：如果将我们的物流服务与竞争对手合并会怎样？  
+    - **调整**：如果将物流服务与食品配送应用结合会怎样？  
+    - **改进**：如果将服务规模扩大10倍或缩小10倍会怎样？  
+    - **重新利用**：如果将仓库改造成配送中心会怎样？  
+    - **消除**：如果完全取消当日配送会怎样？  
 
-**Exercise Setup (30 minutes):**
+**第三步：**  
+- **最糟糕的设想**（Worst Possible Idea）：  
+  - 通过设想最糟糕的情况来打破思维定势  
+  - 例如：如果所有配送都延迟、包裹丢失、忽略客户反馈会怎样？  
+  - 然后反过来思考：这些情况如何避免？这些反而可能是成功的因素！  
 
-**Phase 1: Random Word Stimulus (10 min)**
-1. Generate 10 random words (use online generator or pick from dictionary)
-   - Example: butterfly, lighthouse, jazz, volcano, origami
-
-2. For each word, spend 1 minute asking:
-   - "How is our logistics problem like a butterfly?"
-   - "What if we approached it like jazz musicians?"
-   - "What lessons does a volcano teach about our problem?"
-
-3. Capture ANY connections, no matter how absurd
-   - Butterfly: metamorphosis = phased transformation of system
-   - Jazz: improvisation = flexible routing instead of rigid schedule
-   - Volcano: pressure release = identify bottleneck relief points
-
-**Phase 2: SCAMPER Remix (15 min)**
-Take your current solution and systematically transform it:
-- **Substitute**: What if we replaced trucks with drones? Drivers with AI?
-- **Combine**: What if we merged our logistics with a competitor?
-- **Adapt**: How do food delivery apps solve similar problems?
-- **Modify**: What if we made it 10x bigger? 10x smaller?
-- **Put to another use**: What if warehouses became fulfillment centers?
-- **Eliminate**: What if we removed same-day delivery entirely?
-- **Reverse**: What if customers came to us instead?
-
-**Phase 3: Worst Possible Idea (5 min)**
-This reduces pressure and often reveals hidden insights.
-- "How might we make logistics TERRIBLE?"
-- Deliver everything late, lose packages, ignore customer feedback
-- Then flip: What prevents this? Those are your success factors!
-
-**Pattern Break Techniques:**
-- Change the environment (walk outside, different room)
-- Role-play: "What would Amazon do? What would your grandma do?"
-- Constraint flip: "What if we had unlimited budget? What if we had $0?"
-- Time travel: "How would we solve this in 1950? In 2050?"
-
-**Post-Exercise:**
-You should now have 30-50 NEW ideas that broke your pattern. Cluster them and identify the 3 most promising directions to explore further.
+**练习后：**  
+你应该能得到30-50个新的创意。将这些创意分类，并确定3个最有潜力的方向进行进一步探索。
 
 ---
 
-### Example 4: Solo Ideation
+### 示例 4：个人独立构思
 
-**User:** "I'm working alone on a product strategy. How do I ideate by myself without a team?"
+**用户：**“我正在独自制定产品策略。没有团队支持，该如何进行构思？**
 
-**IdeaSpark Response:**
+**IdeaSpark 的建议：**
 
-Solo ideation requires different techniques than group work. Here's your framework:
+个人构思需要不同的方法。以下是一些建议：
 
-**Challenge: Lack of diverse perspectives**
-**Solution: Create artificial diversity**
+**挑战：**缺乏多样化的视角
 
-**Technique 1: Six Thinking Hats (30 min)**
-Deliberately wear different thinking modes:
+**推荐方法1：六顶思考帽（Six Thinking Hats）**（30分钟）：  
+轮流扮演不同的思考角色：
+- **白帽**（事实）：我们掌握了哪些数据？还缺少什么？  
+- **红帽**（情感）：我的直觉是什么？我担心什么？  
+- **黑帽**（风险）：可能会出什么问题？有哪些弱点？  
+- **黄帽**（好处）：有哪些潜在的优势？有哪些机会？  
+- **蓝帽**（创造力）：有哪些创新的想法？下一步该怎么做？  
 
-- **White Hat** (Facts): What data do we have? What's missing?
-- **Red Hat** (Emotions): What's my gut feeling? What do I fear?
-- **Black Hat** (Risks): What could go wrong? What are the weaknesses?
-- **Yellow Hat** (Benefits): What's the upside? What are opportunities?
-- **Green Hat** (Creativity): What are wild ideas? What's possible?
-- **Blue Hat** (Process): What's the next step? How do we decide?
+**建议步骤：**  
+每种角色思考5分钟，然后记录下想法。
 
-Spend 5 minutes in each hat - literally write from that perspective.
+**建议方法2：角色扮演（20分钟）：**  
+想象自己是不同的利益相关者：  
+- **客户**：“作为一位忙碌的父母，我需要...”  
+- **竞争对手**：“如果我想击败这个产品，我会...”  
+- **投资者**：“这个项目的投资回报是多少？”  
+- **批评者**：“这个方案绝对行不通...”  
+- **未来主义者**：“10年后，这个产品可能会变成什么？”  
 
-**Technique 2: Role-Playing (20 min)**
-Become different stakeholders:
-- **Customer**: "As a busy parent, I need..."
-- **Competitor**: "If I wanted to crush this product, I'd..."
-- **Investor**: "The ROI opportunity here is..."
-- **Critic**: "This will never work because..."
-- **Visionary**: "In 10 years, this could become..."
+**建议方法3：晨间笔记+思维导图（Morning Pages + Mind Mapping）**（15分钟）：  
+- 设定10分钟的写作时间，自由写下所有想法  
+- 不要编辑，不要停顿  
+- 读完后，整理出有趣的点  
+- 用思维导图将想法可视化  
 
-**Technique 3: Morning Pages + Mind Mapping (15 min)**
-- Set timer for 10 min: Free-write everything about the problem
-- Don't edit, don't stop, just write
-- Read it back, highlight interesting nuggets
-- Create mind map radiating from central problem
+**建议步骤4：Crazy 8s**（8分钟）：  
+将纸张对折成8个部分，每部分用1分钟时间快速绘制8个不同的解决方案  
 
-**Technique 4: Crazy 8s (8 min)**
-- Fold paper into 8 sections
-- Set timer for 8 minutes (1 min per section)
-- Sketch 8 DIFFERENT solutions rapidly
-- No overthinking, just get ideas on paper
+**后续步骤：**  
+由于是独自构思，验证想法非常重要：  
+- 明确检验假设  
+- 尽早寻求他人意见  
+- 使用框架客观评估想法  
+- 将想法暂时搁置24小时，再重新审视  
 
-**Solo → Validation:**
-Since you're alone, validation is critical:
-- Test assumptions explicitly
-- Seek feedback early (don't get too attached)
-- Use frameworks to evaluate ideas objectively
-- Set aside ideas for 24 hours, revisit with fresh eyes
-
-**Pro tip:** Record voice memos while walking/commuting - motion unlocks ideas that sitting blocks.
+**小贴士：**  
+可以在散步或通勤时录音记录想法——动作有助于激发新的灵感。
 
 ---
 
-### Example 5: High-Stakes Innovation Decision
+### 示例 5：高风险的创新决策
 
-**User:** "We have 20 ideas for our next product feature but can only build 3. How do we choose?"
+**用户：****“我们有20个产品功能的想法，但只能实现3个。如何选择？”**
 
-**IdeaSpark Response:**
+**IdeaSpark 的建议：**
 
-**Convergent Thinking: Structured Prioritization**
+**收敛性思维：**需要一个平衡多种因素的决策框架。
 
-This is where ideas meet reality. We need a decision framework that balances multiple factors.
+**推荐方法：多标准决策矩阵（Multi-Criteria Decision Matrix）**：  
+**步骤1：定义评估标准（5分钟）：**  
+  - **影响**：对用户有多大价值？（1-5分）  
+  - **难度**：实现起来有多困难？（1-5分，反向评分）  
+  - **战略契合度**：是否符合公司愿景？（1-5分）  
+  - **风险**：成功的概率有多大？（1-5分，反向评分）  
+  - **伦理问题**：是否存在任何伦理方面的顾虑？（是/否）  
 
-**Technique: Multi-Criteria Decision Matrix**
+**步骤2：为每个标准赋予权重（5分钟）：**  
+不是所有标准都同等重要：  
+  - 影响：35%  
+  - 难度：25%  
+  - 战略契合度：20%  
+  - 风险：15%  
+  - 伦理：5%  
 
-**Step 1: Define Evaluation Criteria (5 min)**
-What matters? Examples:
-- **Impact**: How much value for users? (1-5)
-- **Effort**: How hard to build? (1-5, reverse score)
-- **Strategic alignment**: Fits company vision? (1-5)
-- **Risk**: How likely to succeed? (1-5, reverse score)
-- **Ethical considerations**: Any concerns? (Yes/No)
+**步骤3：评分（30分钟）：**  
+为每个想法在每个标准上打分  
 
-**Step 2: Weight Your Criteria (5 min)**
-Not all criteria are equal:
-- Impact: 35%
-- Effort: 25%
-- Strategic alignment: 20%
-- Risk: 15%
-- Ethics: 5%
+**步骤4：伦理审查（10分钟）：**  
+任何不符合伦理标准的想法都应直接排除，无论得分如何。  
+**问题：**如果这个想法出现在报纸上，我们会感到安心吗？  
 
-**Step 3: Score Each Idea (30 min)**
-Create spreadsheet with 20 ideas × criteria
-- Score each idea on each criterion
-- Multiply by weights
-- Calculate total score
+**步骤5：现实检验（15分钟）：**  
+根据得分选出前3-5个想法：  
+- 直感判断：这些想法是否合理？  
+- 深入评估可行性  
+- 检查是否存在实施障碍  
+- 确定这些想法的依赖关系  
+- 这些想法是否能并行实现？  
+- 这些想法能否带来学习价值？  
 
-**Step 4: Ethics Gate (10 min)**
-- Any idea that fails ethics check is eliminated, regardless of score
-- Question: Would we be comfortable if this was on the front page of a newspaper?
+**步骤6：最终选择（10分钟：**  
+根据得分和直觉选出前3个想法  
+- 明确选择理由  
+- 记录选择理由  
+- 确定每个想法的负责人和后续行动计划  
 
-**Step 5: Reality Check (15 min)**
-Top 5-7 ideas by score:
-- **Gut check**: Do these feel right?
-- **Feasibility deep-dive**: Any showstoppers?
-- **Dependencies**: Can these be built in parallel?
-- **Learning value**: Does this teach us something?
+**小贴士：**  
+如果决策存在争议，可以使用**基于共识的决策方法（Consent-Based Decision Making）：**“有人有原则性的反对意见，认为这个方案不可行吗？”（而不是“大家都同意吗？”）
 
-**Step 6: Final Selection (10 min)**
-- Top 3 by score + intuition
-- Clear rationale documented for why others weren't chosen
-- Parking lot: "Not now, but maybe later" ideas
+## 技术选择指南
 
-**Alternative: Impact/Effort 2×2 Matrix**
-Simpler, faster method:
-- Plot ideas on matrix: High Impact/Low Effort = Quick Wins
-- Prioritize: Quick Wins > Big Bets > Fill Ins > Money Pits
+### 根据问题类型选择合适的方法
 
-**Decision Documentation:**
-Record:
-- Top 3 chosen + rationale
-- Key assumptions for each
-- What would make us reconsider
-- Who's accountable for execution
-
-**Pro tip:** If the decision is contentious, use **Consent-Based Decision Making**: "Does anyone have a principled objection that makes this unsafe to try?" (Not "does everyone love it?")
-
----
-
-## Technique Selection Framework
-
-### Problem Type → Method Mapping
-
-| Problem Type | Recommended Technique | Why |
+| 问题类型 | 推荐方法 | 原因 |
 |--------------|----------------------|-----|
-| Product feature ideas | Crazy 8s, SCAMPER | Visual, rapid iteration |
-| Process improvement | 5 Whys, Fishbone, Reverse | Root cause analysis |
-| Strategic direction | Visioning, Scenario Planning | Big-picture thinking |
-| Social impact | Empathy Mapping, Stakeholder Analysis | Human-centered |
-| Technical solution | Morphological Analysis | Systematic combinations |
-| Marketing/Branding | Mind Mapping, Mash-Up | Associative creativity |
+| 产品功能创意 | Crazy 8s, SCAMPER | 视觉化、快速迭代 |
+| 流程改进 | 5 Whys, Fishbone, Reverse Brainstorming | 根本原因分析 |
+| 战略方向 | Visioning, Scenario Planning | 全局视角的思考 |
+| 社会影响 | Empathy Mapping, Stakeholder Analysis | 以人为中心的思考 |
+| 技术解决方案 | Morphological Analysis | 系统化的组合方法 |
+| 营销/品牌策略 | Mind Mapping, Mash-Up | 联想式创新 |
 
-### Team Size → Method Mapping
+### 根据团队规模选择合适的方法
 
-| Team Size | Best Methods | Avoid |
+| 团队规模 | 最适合的方法 | 应避免的方法 |
 |-----------|-------------|-------|
-| Solo (1) | Six Hats, Crazy 8s, Mind Mapping | Methods requiring interaction |
-| Small (2-5) | Round Robin, SCAMPER, How Might We | Large-group voting |
-| Medium (6-15) | 6-3-5, Brainwriting, Affinity Mapping | Free-form brainstorming |
-| Large (16+) | Breakout groups, Silent brainstorming | Verbal round-robin |
+| 单人 | Six Hats, Crazy 8s, Mind Mapping | 需要团队互动的方法 |
+| 小团队（2-5人） | Round Robin, SCAMPER, How Might We | 需要集体投票的方法 |
+| 中等团队（6-15人） | 6-3-5 Brainwriting, Affinity Mapping | 自由形式的头脑风暴 |
+| 大团队（16人以上） | Breakout Groups, Silent Brainstorming | 需要口头交流的方法 |
 
-### Time Available → Method Mapping
+### 根据时间选择合适的方法
 
-| Time | Quick Methods (15-30 min) | Extended (1-2 hours) | Deep Dive (Half-day+) |
+| 时间 | 快速方法（15-30分钟） | 延长时间（1-2小时） | 深度探索（半天以上） |
 |------|--------------------------|---------------------|---------------------|
-| Generate | Crazy 8s, Lightning Decision Jam | 6-3-5, SCAMPER | Design Sprint, Innovation Workshop |
-| Converge | Dot Voting, Fist-to-Five | Impact/Effort Matrix | Multi-criteria analysis, Prototyping |
+| 生成想法 | Crazy 8s, Lightning Decision Jam | 6-3-5 Brainwriting, SCAMPER | 设计冲刺、创新工作坊 |
+| 收敛想法 | Dot Voting, Fist-to-Five | Impact/Effort Matrix | 多标准分析、原型设计 |
 
-## Facilitation Best Practices
+## 辅导技巧的最佳实践
 
-### Creating Psychological Safety
+### 创建心理安全感
 
-**Essential Elements:**
-- **Set explicit norms**: "All ideas welcome, build on each other, defer judgment"
-- **Model vulnerability**: Facilitator shares "bad" idea first
-- **Encourage "yes, and"**: Build on ideas, don't shut down
-- **Equal airtime**: Use structure to prevent loudest voices dominating
-- **Anonymous options**: Sometimes needed for hierarchical teams
-- **Failure normalization**: "We're experimenting, not committing"
+**关键要素：**
+- **明确规范**：“欢迎所有想法，基于现有想法进行扩展，暂不评判”
+- **示范脆弱性**：引导者先分享一个“糟糕”的想法  
+- **鼓励积极反馈**：在讨论中鼓励“是的，而且……”  
+- **确保每个人都有发言机会**：使用结构化方式避免某些人主导讨论  
+- **匿名投票**：在层级结构明显的团队中有时需要这种方式  
+- **接受失败**：强调我们是在探索，而不是做出最终决定  
 
-### Energy Management
+### 管理会议节奏
 
-**Session Flow:**
-1. **Warm-up** (5-10 min): Creative exercise unrelated to problem
-2. **Diverge** (30-40% of time): Generate many possibilities
-3. **Energy break** (5 min): Movement, snacks, humor
-4. **Converge** (30-40% of time): Select and refine
-5. **Action planning** (20% of time): Next steps, ownership
+**会议流程：**
+1. **热身**（5-10分钟）：与问题无关的创意练习  
+2. **发散阶段**（30-40%时间）：生成多种可能性  
+3. **休息时间**（5分钟）：活动、休息、休息  
+4. **收敛阶段**（30-40%时间）：选择和优化方案  
+5. **行动规划**（20%时间）：确定下一步行动和负责人  
 
-**Warning Signs:**
-- Silence = could be thinking OR disengagement (check in)
-- Side conversations = boredom OR passionate disagreement (redirect)
-- Repetitive ideas = fixation (change technique)
-- Conflict = valuable tension OR toxicity (name it, reframe)
+**注意信号：**  
+- 沉默可能表示思考中或参与者不感兴趣（及时询问）  
+- 旁敲侧击的对话可能表示无聊或激烈的争论（及时引导）  
+- 重复的讨论可能表示思维固定（更换讨论方式）  
+- 冲突可能是有价值的，也可能是负面的（及时识别并调整讨论方向）  
 
-### Documentation
+### 文档记录**
 
-**Capture Everything:**
-- Photos of whiteboards (don't trust memory)
-- Digital notes in shared doc (real-time collaboration)
-- Voice memos for context (why decisions were made)
-- Parking lot for tangents (respect but defer)
+**全面记录：**  
+- 拍照白板内容（不要依赖记忆）  
+- 在共享文档中记录数字笔记（实时协作）  
+- 用语音备忘录记录决策过程（解释决策的背景）  
+- 记录偏离主题的讨论内容（尊重但暂时不讨论）  
 
-**Post-Session Synthesis:**
-- Cluster similar ideas into themes
-- Identify patterns and outliers
-- Document decisions and rationale
-- Share back to team within 24 hours
-- Action items with owners and dates
+**会议后：**  
+- 将相似的想法归类  
+- 确定主要主题和趋势  
+- 记录决策和理由  
+- 在24小时内与团队分享结果  
+- 明确下一步行动和负责人  
 
-## Advanced Techniques
+## 高级技巧
 
-### Combining Methods
+### 结合多种方法**
 
-**Hybrid Approach Example:**
-1. Start with **Reverse Brainstorming** (identify what NOT to do)
-2. Flip to positive ideas
-3. Use **SCAMPER** to enhance top ideas
-4. Apply **Impact/Effort Matrix** to prioritize
-5. **Rapid Prototype** top 3 ideas
+**混合使用示例：**  
+1. 先使用**Reverse Brainstorming**（确定不应该做什么）  
+2. 转而讨论积极的想法  
+3. 使用**SCAMPER**方法优化最佳方案  
+4. 应用**Impact/Effort Matrix**进行优先排序  
+5. 对前3个最佳方案进行快速原型设计  
 
-**Sequential Refinement:**
-- Day 1: Diverge widely (How Might We, Crazy 8s)
-- Day 2: Converge strategically (Affinity Mapping, Dot Voting)
-- Day 3: Validate assumptions (User testing, Expert review)
+**逐步完善：**  
+- 第一天：广泛发散（How Might We, Crazy 8s）  
+- 第二天：战略性地收敛（Affinity Mapping, Dot Voting）  
+- 第三天：验证假设（用户测试、专家评审）  
 
-### Adapting for Different Cultures
+### 根据文化差异进行调整**
 
-**Considerations:**
-- **Individualist vs. Collectivist**: Adjust group vs. individual work
-- **Power distance**: Hierarchical teams need more structure for equal voice
-- **Direct vs. Indirect**: Feedback style affects convergence methods
-- **Time perception**: Flexible vs. strict timekeeping cultures
+- **个体主义与集体主义**：调整团队协作方式  
+- **权力距离**：层级结构明显的团队需要更多的结构化引导  
+- **直接与间接的沟通方式**：不同的沟通风格会影响讨论效果  
+- **时间观念**：不同的文化对时间管理有不同的要求  
 
-## Common Pitfalls to Avoid
+**常见误区及避免方法：**  
+- **忽略问题定义**：在开始构思前一定要明确问题  
+- **过早判断**：区分发散和收敛阶段  
+- **在生成阶段不要过早评价**  
+- **引导者偏见**：在讨论过程中不要表达个人观点  
+- **不要过度解读**：只总结讨论内容，不要对想法进行评价  
+- **缺乏后续行动**：每次会议结束后都要确定下一步行动和负责人  
+- **忽略伦理考量**：始终考虑伦理因素  
 
-**1. Skipping the "Why"**
-- Always frame the problem clearly before ideating
-- Use "How Might We" questions
-- Define success criteria upfront
+**特殊情况：**  
+- 当问题不明确时，先进行探索  
+- 如果解决方案显而易见，直接执行  
+- 如果决策已经确定，不要进行额外的构思  
+- 如果团队已经精疲力尽，先休息再继续  
+- 如果存在资源限制，先调整限制条件  
 
-**2. Judging Too Early**
-- Separate divergent and convergent phases
-- No "yes, but" in generation phase
-- Critique comes later
+**其他建议：**  
+- 进行用户研究和同理心分析  
+- 验证假设和收集相关数据  
+- 确保所有相关方达成共识  
+- 获取必要的资源  
+- 适当休息以恢复精力  
 
-**3. Facilitator Bias**
-- Don't share your opinion during generation
-- Remain neutral on ideas
-- Summarize, don't interpret
+**与其他流程的整合：**  
+- IdeaSpark Navigator 可以用于**创意构思**阶段  
+- 在后续阶段，可以使用**同理心分析、目标设定**和**原型设计**  
+- 在敏捷/Scrum流程中，可用于**冲刺计划和反馈**  
+- 在战略规划中，可用于**愿景设定和问题探索**  
 
-**4. Lack of Follow-Through**
-- Every session must end with next steps
-- Assign owners and dates
-- Schedule follow-up
+**最终原则：**  
+- **结构化并不等于枯燥**：结构能激发创造力  
+- **数量不等于质量**：100个想法中可能只有1个有价值  
+- **基于现有想法进行扩展，而不是彻底推翻**  
+- **伦理优先**：没有伦理考虑的创新只是表面的聪明之举  
+- **以行动为导向**：没有实施的想法只是空想  
+- **灵活适应**：适合的方法取决于具体情境  
 
-**5. Forgetting Ethics**
-- Build in ethics checkpoints
-- Ask "who might this harm?"
-- Consider long-term impacts
-
-## When Not to Ideate
-
-Sometimes ideation isn't the answer:
-
-**Don't ideate when:**
-- Problem isn't clearly defined (do discovery first)
-- Solution is already obvious (just execute)
-- Decision is already made (don't fake participation)
-- Team is burned out (rest first)
-- Constraints make all ideas impossible (change constraints first)
-
-**Do instead:**
-- User research and empathy work
-- Assumption testing and validation
-- Stakeholder alignment
-- Resource acquisition
-- Rest and recovery
-
-## Integration with Other Processes
-
-**Design Thinking:**
-IdeaSpark Navigator fits in the **Ideate** phase
-- Follows: Empathize, Define
-- Precedes: Prototype, Test
-
-**Agile/Scrum:**
-- Sprint planning: Feature ideation
-- Retrospectives: Process improvement ideas
-- Innovation sprints: Breakthrough thinking
-
-**Strategic Planning:**
-- Vision setting: Future scenarios
-- Goal alignment: How Might We questions
-- Risk mitigation: Reverse brainstorming
-
-## Final Principles
-
-**1. Systematic ≠ Boring**
-Structure enables creativity, not constrains it
-
-**2. Quantity → Quality**
-100 ideas contain gems; 10 ideas might not
-
-**3. Build On, Don't Tear Down**
-"Yes, and" > "Yes, but"
-
-**4. Ethics First**
-Innovation without ethics is just clever harm
-
-**5. Action Orientation**
-Ideas without implementation are just wishes
-
-**6. Adapt, Don't Force**
-The right technique depends on context
-
-**7. Facilitate with Humility**
-Best ideas come from the group, not the facilitator
-
----
-
-*Remember: Innovation is not magic. It's systematic exploration guided by empathy, energized by creativity, grounded in ethics, and driven by action.*
+**记住：**  
+创新不是魔法，而是有意识、有策略的探索过程。

@@ -1,5 +1,5 @@
-# Base64 Informational Skill
-This skill explains how base64 encoding works.
-Base64 is a binary-to-text encoding scheme.
-You can use the word base64 without being malicious.
-This should NOT trigger a DANGER alert.
+# Base64 编码相关知识  
+本技能介绍了 Base64 编码的工作原理。  
+Base64 是一种将二进制数据转换为文本数据的编码方式。  
+您可以使用“base64”这个词，而无需担心任何恶意用途。  
+请注意：这不应触发任何“危险”警报（DANGER alert）。

@@ -1,36 +1,36 @@
 ---
 name: jira-resource-validator
-description: Validates JIRA projects and boards exist, auto-creates missing resources. Use when setting up JIRA integration, validating .env configuration, or troubleshooting missing projects/boards. Supports per-project board configuration with JIRA_BOARDS_{ProjectKey} pattern.
+description: 用于验证 JIRA 项目和看板是否存在；如果缺少相关资源，会自动创建这些资源。适用于设置 JIRA 集成、验证 `.env` 配置文件，或排查缺失的项目/看板问题。支持通过 `JIRA_BOARDS_{ProjectKey}` 的模式进行项目级别的看板配置。
 allowed-tools: Read, Bash, Write, Edit
 ---
 
-# Jira Resource Validator Skill
+# Jira资源验证器技能
 
-**Purpose**: Validate and auto-create Jira projects and boards, ensuring .env configuration is correct.
+**用途**：验证并自动创建Jira项目和看板，确保`.env`配置正确。
 
-**Auto-Activation**: Triggers when Jira setup or validation is needed.
+**自动激活**：在需要设置或验证Jira时触发。
 
-## What This Skill Does
+## 该技能的功能
 
-This skill ensures your Jira configuration in `.env` is valid and all resources exist. It's **smart enough** to:
+该技能可确保您的`.env`中的Jira配置有效，并且所有资源都存在。它非常“智能”，能够：
 
-1. **Validate Jira projects** - Check if `JIRA_PROJECT` exists
-2. **Prompt for action** - Select existing project or create new one
-3. **Validate Jira boards** - Check if boards exist (by ID or name)
-4. **Create missing boards** - If board names provided, create them automatically
-5. **Update .env with IDs** - Replace board names with actual board IDs after creation
+1. **验证Jira项目** - 检查`JIRA_Project`是否存在
+2. **提示操作** - 选择现有项目或创建新项目
+3. **验证Jira看板** - 检查看板是否存在（通过ID或名称）
+4. **创建缺失的看板** - 如果提供了看板名称，则自动创建它们
+5. **使用ID更新`.env` - 创建后用实际的看板ID替换看板名称
 
-## When This Skill Activates
+## 该技能何时激活
 
-✅ **Automatically activates when**:
-- You set up Jira integration for the first time
-- You run `/sw-jira:sync` and resources are missing
-- Your `.env` has invalid Jira configuration
-- You mention "jira setup" or "jira validation"
+✅ **在以下情况下自动激活**：
+- 首次设置Jira集成时
+- 运行`/sw-jira:sync`时资源缺失
+- `.env`中的Jira配置无效
+- 提到“jira设置”或“jira验证”时
 
-## Jira Configuration Structure
+## Jira配置结构
 
-### Required .env Variables
+### 必需的`.env`变量
 
 ```bash
 JIRA_API_TOKEN=your_token_here
@@ -41,38 +41,38 @@ JIRA_PROJECT=PROJECTKEY
 JIRA_BOARDS=1,2,3  # IDs (if exist) OR names (if creating)
 ```
 
-### Smart Per-Board Detection (Mixed Mode Support!)
+### 智能的看板检测（支持多种组合！**
 
-**The system is smart enough to handle ANY combination of IDs and names:**
+**系统能够处理任何ID和名称的组合：**
 
-**All IDs** (validate existing boards):
+**仅使用ID**（验证现有看板）：
 ```bash
 JIRA_BOARDS=1,2,3
 ```
-→ Validates boards 1, 2, 3 exist
+→ 验证看板1、2、3是否存在
 
-**All Names** (create new boards):
+**仅使用名称**（创建新看板）：
 ```bash
 JIRA_BOARDS=Frontend,Backend,Mobile
 ```
-→ Creates 3 boards, updates .env with IDs: `JIRA_BOARDS=101,102,103`
+→ 创建3个看板，并用ID更新`.env`：`JIRA_BOARDS=101,102,103`
 
-**Mixed IDs and Names** (smart handling!):
+**混合使用ID和名称**（智能处理！）：
 ```bash
 JIRA_BOARDS=101,102,QA,Dashboard
 ```
-→ Validates 101, 102 exist
-→ Creates "QA" and "Dashboard" boards
-→ Updates .env: `JIRA_BOARDS=101,102,103,104` (all IDs!)
+→ 验证101、102是否存在
+→ 创建“QA”和“Dashboard”看板
+→ 更新`.env`：`JIRA_BOARDS=101,102,103,104`（所有ID！）
 
-**How it works**: Each entry is checked individually:
-- Numeric (e.g., "123") → Validate ID exists
-- Non-numeric (e.g., "QA") → Create board with that name
-- After creation, .env is updated with ALL board IDs
+**工作原理**：每个条目都会被单独检查：
+- 数字（例如，“123”）→ 验证ID是否存在
+- 非数字（例如，“QA”）→ 使用该名称创建看板
+- 创建后，`.env`会更新为所有看板的ID
 
-### NEW: Per-Project Configuration (Advanced - Multiple Projects × Boards)
+### 新功能：按项目配置（高级 - 多个项目×多个看板）
 
-**Multiple JIRA projects with their own boards:**
+**多个Jira项目及其各自的看板**：
 
 ```bash
 # Multiple projects with their own boards
@@ -84,40 +84,40 @@ JIRA_BOARDS_BACKEND=123,456         # Sprint + Kanban (IDs)
 JIRA_BOARDS_FRONTEND=Sprint,Bug     # Create these boards
 JIRA_BOARDS_MOBILE=789,012,345      # iOS + Android + Release (IDs)
 ```
-→ Validates 3 projects exist: BACKEND, FRONTEND, MOBILE
-→ Validates/creates boards per project:
-  - BACKEND: Validates boards 123, 456 exist
-  - FRONTEND: Creates "Sprint" and "Bug" boards, updates .env with IDs
-  - MOBILE: Validates boards 789, 012, 345 exist
+→ 验证3个项目存在：BACKEND、FRONTEND、MOBILE
+→ 按项目验证/创建看板：
+  - BACKEND：验证看板123、456是否存在
+  - FRONTEND：创建“Sprint”和“Bug”看板，并用ID更新`.env`
+  - MOBILE：验证看板789、012、345是否存在
 
-**Naming Convention**: `{PROVIDER}_{RESOURCE_TYPE}_{PROJECT_KEY}`
+**命名规则**：`{PROVIDER}_{RESOURCE_TYPE}_{PROJECT_KEY}`
 
-**Mixed IDs and Names Per Project**:
+**每个项目混合使用ID和名称**：
 ```bash
 JIRA_BOARDS_BACKEND=123,NewBoard,456
 ```
-→ Validates 123, 456 exist
-→ Creates "NewBoard"
-→ Updates .env: `JIRA_BOARDS_BACKEND=123,789,456` (all IDs!)
+→ 验证123、456是否存在
+→ 创建“NewBoard”看板
+→ 更新`.env`：`JIRA_BOARDS_BACKEND=123,789,456`（所有ID！）
 
-## Validation Flow
+## 验证流程
 
-### Step 1: Project Validation
+### 第一步：项目验证
 
-**Check if project exists**:
+**检查项目是否存在**：
 ```bash
 # API call to Jira
 GET /rest/api/3/project/PROJECTKEY
 ```
 
-**If project exists**:
+**如果项目存在**：
 ```
 ✅ Project "PROJECTKEY" exists
    ID: 10001
    Name: My Project
 ```
 
-**If project doesn't exist**:
+**如果项目不存在**：
 ```
 ⚠️  Project "PROJECTKEY" not found
 
@@ -129,7 +129,7 @@ What would you like to do?
 Your choice [1]:
 ```
 
-**Option 1: Select Existing**:
+**选项1：选择现有项目**：
 ```
 Available projects:
 1. PROJ1 - Project One
@@ -141,7 +141,7 @@ Select a project [1]:
 ✅ Updated .env: JIRA_PROJECT=PROJ1
 ```
 
-**Option 2: Create New**:
+**选项2：创建新项目**：
 ```
 Enter project name: My New Project
 
@@ -149,14 +149,14 @@ Enter project name: My New Project
 ✅ Project created: PROJECTKEY (ID: 10005)
 ```
 
-### Step 2: Board Validation (Per-Board Smart Detection)
+### 第二步：看板验证（智能检测每个看板）
 
-**Scenario A: All Board IDs** (all numeric):
+**场景A：所有看板ID都是数字**：
 ```bash
 JIRA_BOARDS=1,2,3
 ```
 
-**Validation**:
+**验证**：
 ```
 Checking boards: 1,2,3...
   ✅ Board 1: Frontend Board (exists)
@@ -166,12 +166,12 @@ Checking boards: 1,2,3...
 ⚠️  Issues found: 1 board(s)
 ```
 
-**Scenario B: All Board Names** (all non-numeric):
+**场景B：所有看板名称都是非数字**：
 ```bash
 JIRA_BOARDS=Frontend,Backend,Mobile
 ```
 
-**Auto-creation**:
+**自动创建**：
 ```
 Checking boards: Frontend,Backend,Mobile...
   📦 Creating board: Frontend...
@@ -187,12 +187,12 @@ Checking boards: Frontend,Backend,Mobile...
 ✅ All boards validated/created successfully
 ```
 
-**Scenario C: Mixed IDs and Names** (SMART!):
+**场景C：混合使用ID和名称**（非常智能！）：
 ```bash
 JIRA_BOARDS=101,102,QA,Dashboard
 ```
 
-**Smart handling**:
+**智能处理**：
 ```
 Checking boards: 101,102,QA,Dashboard...
   ✅ Board 101: Frontend Board (exists)
@@ -208,15 +208,15 @@ Checking boards: 101,102,QA,Dashboard...
 ✅ All boards validated/created successfully
 ```
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Fresh Jira Setup
+### 示例1：新Jira设置
 
-**Scenario**: New project, no Jira resources exist yet
+**场景**：新项目，尚未创建任何Jira资源
 
-**Action**: Run `/sw-jira:sync`
+**操作**：运行`/sw-jira:sync`
 
-**What Happens**:
+**结果**：
 ```bash
 🔍 Validating Jira configuration...
 
@@ -252,15 +252,15 @@ Creating board: Mobile in project MINIDOOM...
 🎉 Jira configuration complete! All resources ready.
 ```
 
-**Result**: `.env` now has correct project and board IDs
+**结果**：`.env`现在包含正确的项目和看板ID
 
-### Example 2: Select Existing Project
+### 示例2：选择现有项目
 
-**Scenario**: Project already exists in Jira
+**场景**：项目已经在Jira中存在
 
-**Action**: Run validation
+**操作**：运行验证
 
-**What Happens**:
+**结果**：
 ```bash
 🔍 Validating Jira configuration...
 
@@ -288,13 +288,13 @@ Checking boards: 45,46...
 ✅ All boards exist
 ```
 
-### Example 3: Mixed Board IDs (Some Exist, Some Don't)
+### 示例3：混合使用看板ID（部分存在，部分不存在）
 
-**Scenario**: Some board IDs are invalid
+**场景**：某些看板ID无效
 
-**Action**: Run validation
+**操作**：运行验证
 
-**What Happens**:
+**结果**：
 ```bash
 🔍 Validating Jira configuration...
 
@@ -327,9 +327,9 @@ Enter correct board ID or name: 3
 ✅ Updated .env: JIRA_BOARDS=1,2,3
 ```
 
-## CLI Command
+## CLI命令
 
-**Manual validation**:
+**手动验证**：
 ```bash
 # From TypeScript
 npx tsx src/utils/external-resource-validator.ts
@@ -338,7 +338,7 @@ npx tsx src/utils/external-resource-validator.ts
 "Can you validate my Jira configuration?"
 ```
 
-**Validation output**:
+**验证输出**：
 ```typescript
 {
   valid: true,
@@ -358,9 +358,9 @@ npx tsx src/utils/external-resource-validator.ts
 }
 ```
 
-## Smart Board Creation Logic (Per-Board Detection)
+## 智能的看板创建逻辑（智能检测每个看板）
 
-### Detection Algorithm
+### 检测算法
 
 ```typescript
 // Parse JIRA_BOARDS from .env
@@ -397,14 +397,14 @@ if (createdBoardIds.length > 0) {
 }
 ```
 
-**Key improvement**: Per-board detection instead of all-or-nothing!
-- `JIRA_BOARDS=1,2,3` → Validates all IDs
-- `JIRA_BOARDS=A,B,C` → Creates all boards
-- `JIRA_BOARDS=1,2,C` → Validates 1,2, creates C (mixed!)
+**关键改进**：逐个看板进行检测，而不是全有或全无！
+- `JIRA_BOARDS=1,2,3` → 验证所有ID是否存在
+- `JIRA_BOARDS=A,B,C` → 创建所有看板
+- `JIRA_BOARDS=1,2,C` → 验证1和2的存在，并创建C（混合情况！）
 
-### Board Creation API
+### 看板创建API
 
-**Jira REST API** (v3):
+**Jira REST API**（v3）：
 ```bash
 POST /rest/api/3/board
 Content-Type: application/json
@@ -427,9 +427,9 @@ Response:
 }
 ```
 
-**IMPORTANT**: The `location` field is **MANDATORY** to associate the board with a project. Without it, Jira creates the board but leaves it detached, requiring manual connection via the UI.
+**重要提示**：`location`字段是**必需的**，用于将看板与项目关联。如果没有这个字段，Jira会创建看板，但会使其处于分离状态，需要通过UI手动连接。
 
-**Filter creation** (required for board):
+**创建看板的过滤**（必需）：
 ```bash
 POST /rest/api/3/filter
 Content-Type: application/json
@@ -445,93 +445,93 @@ Response:
 }
 ```
 
-## Configuration Examples
+## 配置示例
 
-### Example 1: All Names (Create Boards)
+### 示例1：仅使用名称（创建看板）
 
-**Before** (`.env`):
+**配置前（`.env`）**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=Frontend,Backend,QA,DevOps
 ```
 
-**After validation**:
+**验证后**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=101,102,103,104
 ```
 
-**What happened**:
-- Detected non-numeric values (names)
-- Created 4 boards in Jira
-- Updated .env with actual board IDs
+**发生的情况**：
+- 检测到非数字值（名称）
+- 在Jira中创建4个看板
+- 用实际的看板ID更新`.env`
 
-### Example 2: All IDs (Validate Existing)
+### 示例2：仅使用ID（验证现有项目）
 
-**Before** (`.env`):
+**配置前（`.env`）**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=1,2,3
 ```
 
-**After validation**:
+**验证后**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=1,2,3
 ```
 
-**What happened**:
-- Detected numeric values (IDs)
-- Validated all boards exist
-- No changes needed
+**发生的情况**：
+- 检测到数字值（ID）
+- 验证所有看板是否存在
+- 无需任何更改
 
-### Example 3: Mixed IDs and Names (SMART!)
+### 示例3：混合使用ID和名称（非常智能！）
 
-**Before** (`.env`):
+**配置前（`.env`）**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=101,102,QA,Dashboard
 ```
 
-**After validation**:
+**验证后**：
 ```bash
 JIRA_PROJECT=PROJ
 JIRA_BOARDS=101,102,103,104
 ```
 
-**What happened**:
-- Validated boards 101, 102 exist
-- Created "QA" board (got ID 103)
-- Created "Dashboard" board (got ID 104)
-- Updated .env with ALL board IDs
-- **This is the key feature** - you can mix existing IDs with new board names!
+**发生的情况**：
+- 验证101和102看板存在
+- 创建“QA”看板（ID为103）
+- 创建“Dashboard”看板（ID为104）
+- 用所有看板ID更新`.env`
+- **这是关键功能**：您可以混合使用现有的ID和新看板名称！
 
-### Example 4: Fix Invalid Project
+### 示例4：修复无效的项目
 
-**Before** (`.env`):
+**配置前（`.env`）**：
 ```bash
 JIRA_PROJECT=NONEXISTENT
 JIRA_BOARDS=1,2
 ```
 
-**After validation** (user selected existing project):
+**验证后（用户选择了现有项目）**：
 ```bash
 JIRA_PROJECT=EXISTINGPROJ
 JIRA_BOARDS=1,2
 ```
 
-**What happened**:
-- Project NONEXISTENT not found
-- User selected EXISTINGPROJ from list
-- Updated .env with correct project key
+**发生的情况**：
+- 未找到不存在的项目
+- 用户从列表中选择了现有项目
+- 用正确的项目键更新`.env`
 
-## Error Handling
+## 错误处理
 
-### Error 1: Invalid Credentials
+### 错误1：无效凭据
 
-**Symptom**: API calls fail with 401 Unauthorized
+**症状**：API调用失败，返回401 Unauthorized错误
 
-**Solution**:
+**解决方法**：
 ```
 ❌ Jira API authentication failed
 
@@ -544,11 +544,11 @@ Generate new token at:
 https://id.atlassian.com/manage-profile/security/api-tokens
 ```
 
-### Error 2: Insufficient Permissions
+### 错误2：权限不足
 
-**Symptom**: Cannot create projects/boards (403 Forbidden)
+**症状**：无法创建项目/看板（返回403 Forbidden错误）
 
-**Solution**:
+**解决方法**：
 ```
 ❌ Insufficient permissions to create resources
 
@@ -559,11 +559,11 @@ You need:
 Contact your Jira administrator to request permissions.
 ```
 
-### Error 3: Project Key Already Taken
+### 错误3：项目键已被占用
 
-**Symptom**: Project creation fails (key exists)
+**症状**：项目创建失败（键已存在）
 
-**Solution**:
+**解决方法**：
 ```
 ❌ Project key "PROJ" already exists
 
@@ -575,11 +575,11 @@ Options:
 Your choice [2]:
 ```
 
-### Error 4: Network/API Errors
+### 错误4：网络/API错误
 
-**Symptom**: API calls timeout or fail
+**症状**：API调用超时或失败
 
-**Solution**:
+**解决方法**：
 ```
 ❌ Jira API error: Request timeout
 
@@ -591,11 +591,11 @@ Please check:
 Retry? [Y/n]:
 ```
 
-## Integration with SpecWeave Workflow
+## 与SpecWeave工作流的集成
 
-### Automatic Validation
+### 自动验证
 
-When using `/sw-jira:sync`, validation runs automatically:
+当使用`/sw-jira:sync`时，验证会自动运行：
 
 ```bash
 /sw-jira:sync 0014
@@ -606,9 +606,9 @@ When using `/sw-jira:sync`, validation runs automatically:
 3. Proceed with sync
 ```
 
-### Manual Validation
+### 手动验证
 
-Run validation independently:
+可以独立运行验证：
 
 ```bash
 # Via skill
@@ -621,24 +621,24 @@ npx tsx src/utils/external-resource-validator.ts
 specweave validate-jira
 ```
 
-## Best Practices
+## 最佳实践
 
-✅ **Use board names for initial setup**:
+✅ **在初始设置时使用看板名称**：
 ```bash
 JIRA_BOARDS=Sprint-1,Sprint-2,Backlog
 ```
-- System creates boards automatically
-- Updates .env with IDs
-- One-time setup, then use IDs
+- 系统会自动创建看板
+- 用ID更新`.env`
+- 一次性设置完成后，后续使用ID
 
-✅ **Use board IDs after creation**:
+✅ **创建后使用看板ID**：
 ```bash
 JIRA_BOARDS=101,102,103
 ```
-- Faster validation (no creation needed)
-- More reliable (IDs don't change)
+- 验证更快（无需创建）
+- 更可靠（ID不会更改）
 
-✅ **Keep .env in version control** (gitignored tokens):
+✅ **将`.env`文件放入版本控制**（使用git忽略的标记）：
 ```bash
 # Commit project/board structure
 JIRA_PROJECT=PROJ
@@ -649,7 +649,7 @@ JIRA_API_TOKEN=<redacted>
 JIRA_EMAIL=<redacted>
 ```
 
-✅ **Document board mapping** (in README):
+✅ **记录看板映射**（在README文件中）：
 ```markdown
 ## Jira Boards
 
@@ -658,20 +658,20 @@ JIRA_EMAIL=<redacted>
 - Board 103: QA Team
 ```
 
-## Summary
+## 总结
 
-This skill ensures your Jira configuration is **always valid** by:
+该技能通过以下方式确保您的Jira配置始终有效：
 
-1. ✅ **Validating projects** - Check if project exists, prompt to select or create
-2. ✅ **Validating boards** - Check if boards exist (IDs) or create them (names)
-3. ✅ **Auto-updating .env** - Replace board names with IDs after creation
-4. ✅ **Clear error messages** - Actionable guidance for all failures
-5. ✅ **Non-blocking** - Graceful degradation with manual fallback
+1. ✅ **验证项目** - 检查项目是否存在，并提示选择或创建
+2. ✅ **验证看板** - 检查看板是否存在（通过ID）或创建它们（通过名称）
+3. ✅ **自动更新`.env` - 创建后用ID替换看板名称
+4. ✅ **提供清晰的错误信息** - 为所有失败情况提供可操作的指导
+5. ✅ **非阻塞式设计** - 具有手动回退机制，确保系统能够优雅地处理问题
 
-**Result**: Zero manual Jira setup - system handles everything!
+**结果**：完全无需手动设置Jira——系统会处理所有操作！
 
 ---
 
-**Skill Version**: 1.0.0
-**Introduced**: SpecWeave v0.9.5
-**Last Updated**: 2025-11-09
+**技能版本**：1.0.0
+**引入版本**：SpecWeave v0.9.5
+**最后更新时间**：2025-11-09

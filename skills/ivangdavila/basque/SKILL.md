@@ -1,79 +1,56 @@
 ---
 name: Basque
-description: Write Basque that sounds human. Not formal, not robotic, not AI-generated.
+description: 编写听起来像真人说的巴斯克语。既不是正式的，也不是机械的，更不是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Basque is technically correct but sounds off. Too formal. Too batua (standard). Natives write more casually, often mixing dialects. Match that.
+虽然“AI Basque”在语法上是正确的，但听起来很生硬、过于正式，缺乏自然感。巴斯克语的母语者通常会使用更随意的表达方式，甚至会混合使用不同的方言。因此，我们需要让AI生成的文本更贴近巴斯克语的口语表达习惯。
 
-## Formality Default
+## 文化背景与语言习惯
 
-Default register is too high. Casual Basque is warm and direct. Unless explicitly formal: lean casual. "Kaixo" not "Egun on". "Bai" not "Bai, jakina".
+- **语言的正式程度**：巴斯克语的正式程度通常比日常对话要高。在非正式场合，应采用更自然、更亲切的表达方式。
+- **“Kaixo”与“Egun on”**：在巴斯克语中，“Kaixo”是常用的问候语，而“Egun on”则显得过于正式。
+- **“Bai”与“Bai, jakina”**：同样，“Bai”是简单的回答，而“Bai, jakina”则显得更加亲切。
 
-## Zu vs Hi
+## “Zu”与“Hi”的区别
 
-Distinction:
-- Zu: standard, most contexts
-- Hi: very informal (hika), regional
-- Hika is intimate, regional (not universal)
-- Zu is safe default for casual
+- **“Zu”**：是标准的、最常用的表达方式，适用于大多数场合。
+- **“Hi”**：非常非正式，主要用于某些地区。
+- **“Hika”**：虽然也很非正式，但仅在特定地区使用，且具有亲密感（并非普遍通用）。
+- **“Zu”**是日常对话中的安全选择，因为它更符合巴斯克语的常规表达习惯。
 
-## Batua vs Dialects
+## 标准巴斯克语与方言
 
-Standard vs regional:
-- Batua: unified standard Basque
-- Dialects: Bizkaiera, Gipuzkera, etc.
-- Online uses batua mostly
-- But dialect flavor is natural
+- **标准巴斯克语（Batua）**：是统一的、通用的巴斯克语形式。
+- **方言**：包括Bizkaiera、Gipuzkera等地区性方言。
+- 在网上交流时，大多数人使用标准巴斯克语（Batua），但保留方言特色也是自然的表现。
 
-## Spanish/French Mixing
+## 西班牙语/法语的混合使用
 
-Basque speakers often mix:
-- "Oso interesting da"
-- Code-switching is natural
-- Pure Basque can sound forced
-- Match natural bilingual flow
+巴斯克语使用者经常会在对话中混合使用西班牙语或法语词汇，例如：“Oso interesting da”。这种混合使用是自然的，因为双语环境中的语言交流往往不会非常严格。
 
-## Particles & Softeners
+## 常见填充词与缓和语气词
 
-These make Basque natural:
-- Ba: filler, "well"
-- Ala: question tag
-- Bada: "so", "well then"
-- Ezta: "isn't it"
+这些词能让巴斯克语的表达更加自然：
+- **Ba**：用于填充语，表示“嗯”或“好吧”。
+- **Ala**：用于疑问句中，表示“真的吗？”
+- **Bada**：表示“那么”或“好吧”。
+- **Ezta**：表示“不是吗？”
 
-## Fillers & Flow
+## 表达的灵活性
 
-Real Basque has fillers:
-- Ba, bueno, ondo
-- Badakizu, ikusten?
-- Beraz, dena den
-- Begira, entzun
+在表达时，不要拘泥于过于正式的词汇：
+- **Ondo** → 可以替换为“Oso ondo”、“Primeran”、“Bikain”等更自然的表达。
+- **Gaizki** → 可以替换为“Txarto”、“Oso txarto”等更亲切的词汇。
+- **Asko** → 可以替换为“Oso”、“Izugarri”等更生动的表达。
 
-## Expressiveness
+## 常见表达与回应
 
-Don't pick the safe word:
-- Ondo → Oso ondo, Primeran, Bikain
-- Gaizki → Txarto, Oso txarto
-- Asko → Oso, Izugarri
+- **自然表达**：例如“Ados”、“Ondo”、“Vale”等。
+- **疑问句**：如“Ez dago arazorik, Lasai?”、“Benetan?, Egia?, Zer?”等。
+- **鼓励与赞美**：如“Bikain!”, “Primeran!”, “Oso ondo!”等。
 
-## Common Expressions
+## 语言的自然性测试
 
-Natural expressions:
-- Ados, Ondo, Vale
-- Ez dago arazorik, Lasai
-- Benetan?, Egia?, Zer?
-- Bikain!, Primeran!, Oso ondo!
-
-## Reactions
-
-React naturally:
-- Benetan?, Egia al da?, Zer?
-- Aiba!, Ostras!, Ene!
-- Bikain!, Oso ondo!, Genial!
-- Jajaja in text
-
-## The "Native Test"
-
-Before sending: would a Basque speaker screenshot this as "AI-generated"? If yes—too formal, no mixing, too batua. Add natural warmth.
+在发送文本之前，可以想象一下：如果一个巴斯克语母语者看到这段文本，他会认为这是“AI生成的”吗？如果是这样，那么这段文本就太正式了，缺乏自然感；如果他没有这种感觉，说明文本的正式程度适中，但还需要增加一些亲切感。

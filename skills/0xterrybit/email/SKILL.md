@@ -1,29 +1,29 @@
 ---
 name: email
-description: Email management and automation. Send, read, search, and organize emails across multiple providers.
+description: 电子邮件管理及自动化工具：支持在多个电子邮件服务提供商之间发送、接收、搜索和整理电子邮件。
 metadata: {"clawdbot":{"emoji":"📧","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# Email 📧
+# 电子邮件 📧
 
-Email management and automation.
+电子邮件管理及自动化工具。
 
-## Features
+## 主要功能
 
-- Send emails
-- Read inbox
-- Search messages
-- Organize with labels/folders
-- Email templates
-- Bulk operations
+- 发送电子邮件
+- 查看收件箱
+- 搜索邮件
+- 使用标签/文件夹进行分类管理
+- 电子邮件模板
+- 批量操作
 
-## Supported Providers
+## 支持的邮件服务提供商
 
 - Gmail
 - Outlook
 - IMAP/SMTP
 
-## Usage Examples
+## 使用示例
 
 ```
 "Send email to user@example.com"

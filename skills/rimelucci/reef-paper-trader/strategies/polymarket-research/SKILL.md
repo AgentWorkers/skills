@@ -6,134 +6,133 @@ description: |
   SUB-STRATEGY: Managed by parent paper-trader orchestrator.
 ---
 
-# Polymarket Research Strategy
+# Polymarket 研究策略
 
-**PARENT**: This is a sub-strategy of `paper-trader`. Portfolio-level rules in `../../SKILL.md` take precedence.
+**父策略**：本策略是 `paper-trader` 的子策略。`../../SKILL.md` 中的 portfolio-level 规则具有优先级。
 
-**ROLE**: Research-based directional trading on Polymarket to maximize PnL through information edge.
+**角色**：在 Polymarket 上进行基于研究的趋势交易，通过信息优势来最大化利润和损失（PnL）。
 
-## Orchestrator Integration
+## 与上级策略的集成
 
-**Report to parent orchestrator:**
-- Log all trades to `references/research_journal.md`
-- Parent reads this for unified portfolio view
-- Parent enforces cross-strategy risk limits
+**向上级策略报告：**
+- 将所有交易记录到 `references/research_journal.md` 中
+- 上级策略会查看这些记录以获得统一的投资组合视图
+- 上级策略会执行跨策略的风险限制
 
-**Check parent before trading:**
-- Verify portfolio-level exposure limits in `../../references/master_portfolio.md`
-- Check correlation with PM Arb positions (same markets)
-- Check correlation with Memecoin (crypto price markets)
-- Respect parent's risk level (🟢/🟡/🟠/🔴)
+**交易前需检查上级策略的指示：**
+- 核实 `../../references/master_portfolio.md` 中的投资组合级风险敞口限制
+- 检查与 Polymarket 对冲头寸的相关性（相同市场）
+- 检查与加密货币价格市场（Memecoin）的相关性
+- 遵守上级策略设定的风险等级（🟢/🟡/🟠/🔴）
 
-**Your job within the system:**
-1. Research markets deeply to find informational edge
-2. Develop probability estimates better than market consensus
-3. Paper trade directional positions with documented thesis
-4. Track calibration and refine research methodology
-5. Strategy-level Telegram updates flow through parent orchestrator
+**你在系统中的职责：**
+1. 深入研究市场，寻找信息优势
+2. 提出比市场共识更准确的概率估计
+3. 根据研究结果进行趋势性交易，并记录交易理由
+4. 跟踪策略的校准情况，并不断优化研究方法
+5. 策略级别的更新信息会通过上级策略传递给你
 
-## Reference Files
+## 参考文件
 
-- `references/research_journal.md` - Trade logs
-- `references/strategy_evolution.md` - Methodology improvements
-- `references/thesis_library.md` - Active and past theses
-- `references/calibration_log.md` - Probability calibration
-- `references/source_quality.md` - Rated sources
-- `../../references/rick_preferences.md` - Rick's preferences (parent level)
+- `references/research_journal.md` - 交易日志
+- `references/strategy_evolution.md` - 研究方法的改进
+- `references/thesis_library.md` - 当前的和过去的策略研究
+- `references/calibration_log.md` - 概率校准记录
+- `references/source_quality.md` - 信息来源的质量评估
+- `../../references/rick_preferences.md` - Rick 的个人偏好设置
 
-## Core Research Framework
+## 核心研究框架
 
-### The Edge Equation
-
+### 信息优势的计算公式
 ```
 Expected Value = (Your Probability × Payout) - (Your Probability of Loss × Stake)
 
 You profit when: Your probability estimate > Market probability + fees
 ```
 
-### Research Categories
+### 研究类别
 
-#### Category 1: Information Aggregation
-Synthesize public information better than the market.
+#### 类别 1：信息聚合
+比市场更有效地整合公开信息。
 
-**Sources**:
-- News sites (Reuters, AP, Bloomberg, NYT, WSJ)
-- Primary sources (government docs, court filings, official statements)
-- Domain expert Twitter/X accounts
-- Academic papers and polls
-- Historical data and base rates
+**信息来源**：
+- 新闻网站（路透社、美联社、彭博社、纽约时报、华尔街日报）
+- 第一手资料（政府文件、法院文件、官方声明）
+- 领域专家的 Twitter/X 账号
+- 学术论文和民意调查
+- 历史数据和基础概率
 
-**Edge**: Markets are slow to process dispersed information
+**信息优势**：市场处理分散信息的速度较慢
 
-#### Category 2: Base Rate Analysis
-Use historical patterns to estimate probabilities.
+#### 类别 2：基础概率分析
+利用历史模式来估计概率。
 
-**Method**:
-1. Find reference class of similar events
-2. Calculate base rate from history
-3. Adjust for specific factors
-4. Compare to market price
+**方法**：
+1. 找到类似事件的参考案例
+2. 从历史数据中计算基础概率
+3. 考虑特定因素的影响
+4. 与市场价格进行比较
 
-**Edge**: Markets often anchor on recent events, ignore base rates
+**信息优势**：市场往往过于关注近期事件，而忽视基础概率
 
-#### Category 3: Incentive Analysis
-Understand what actors will do based on incentives.
+#### 类别 3：激励分析
+理解各方参与者在特定激励下的行为。
 
-**Questions**:
-- What do key actors want?
-- What are their constraints?
-- What would a rational actor do?
-- What's the political economy?
+**需要考虑的问题**：
+- 关键参与者想要什么？
+- 他们的限制是什么？
+- 理性参与者会怎么做？
+- 政治经济环境如何影响决策？
 
-**Edge**: Markets underweight game theory
+**信息优势**：市场往往忽视了博弈论的影响
 
-#### Category 4: Technical/Domain Expertise
-Apply specialized knowledge to niche markets.
+#### 类别 4：技术/领域专业知识
+将专业知识应用于特定市场。
 
-**Areas**:
-- Crypto/blockchain events
-- Specific sports analytics
-- Political science models
-- Legal procedure knowledge
-- Weather/climate patterns
+**应用领域**：
+- 加密货币/区块链领域
+- 特定体育赛事的分析
+- 政治科学模型
+- 法律程序知识
+- 天气/气候模式
 
-**Edge**: Retail traders lack domain expertise
+**信息优势**：散户投资者通常缺乏这些领域的专业知识
 
-#### Category 5: Sentiment Divergence
-Identify when market sentiment diverges from fundamentals.
+#### 类别 5：市场情绪与基本面的偏离
+识别市场情绪与基本面之间的偏差。
 
-**Signals**:
-- Social media volume vs actual probability
-- News narrative vs data
-- Emotional reactions vs base rates
+**判断依据**：
+- 社交媒体上的讨论量与实际概率的对比
+- 新闻报道与数据的差异
+- 情绪反应与基础概率的差异
 
-**Edge**: Markets overreact to narratives
+**信息优势**：市场往往会对舆论反应过度
 
-## Research Protocol
+## 研究流程
 
-### For Each Market You Consider
+### 对每个市场的研究步骤
 
-1. **Initial Screen** (5 mins)
-   - What's the question exactly?
-   - When does it resolve?
-   - What's the current price?
-   - Is there enough volume/liquidity?
+1. **初步分析**（5 分钟）：
+   - 确定研究问题
+   - 问题何时能够解决
+   - 当前市场价格是多少
+   - 市场是否有足够的成交量和流动性
 
-2. **Research Phase** (30-60 mins)
-   - Gather all relevant public information
-   - Search news from multiple sources
-   - Find primary sources if possible
-   - Check what experts say
-   - Look for base rate data
+2. **深入研究**（30-60 分钟）：
+   - 收集所有相关的公开信息
+   - 从多个来源搜索新闻
+   - 尽可能获取第一手资料
+   - 查看专家的观点
+   - 查找基础概率数据
 
-3. **Probability Estimation**
-   - Start with base rate if available
-   - List factors that adjust probability up
-   - List factors that adjust probability down
-   - Arrive at your probability estimate
-   - Calculate confidence interval
+3. **概率估计**：
+   - 如果有基础概率数据，先从那里开始
+   - 列出影响概率上升的因素
+   - 列出影响概率下降的因素
+   - 得出概率估计值
+   - 计算置信区间
 
-4. **Edge Calculation**
+4. **信息优势的计算**：
    ```
    Your estimate: X%
    Market price: Y%
@@ -145,18 +144,18 @@ Identify when market sentiment diverges from fundamentals.
    If Edge < 2%: Skip
    ```
 
-5. **Thesis Documentation**
-   Document in `references/thesis_library.md`
+5. **策略记录**：
+   将研究结果记录在 `references/thesis_library.md` 中
 
-## Paper Trading Protocol
+## 交易执行流程
 
-### Starting Parameters
-- Initial paper balance: $10,000 USDC
-- Max per position: 10% ($1,000)
-- Min edge required: 5%
-- Position sizing: Kelly criterion (quarter Kelly)
+### 初始参数
+- 初始交易资金：10,000 美元（USDC）
+- 每个头寸的最大投资额：10%（1,000 美元）
+- 所需的信息优势至少为 5%
+- 头寸大小：使用凯利准则（Kelly Criterion）进行调整
 
-### Kelly Criterion Calculator
+### 凯利准则计算器
 ```
 f* = (p × (b + 1) - 1) / b
 
@@ -168,10 +167,8 @@ Where:
 Use quarter Kelly (f* / 4) to be conservative
 ```
 
-### Trade Documentation
-
-**EVERY trade must be logged to `references/research_journal.md`:**
-
+### 交易记录
+**所有交易必须记录到 `references/research_journal.md` 中**：
 ```markdown
 ## Trade #[N] - [DATE]
 
@@ -208,77 +205,77 @@ Use quarter Kelly (f* / 4) to be conservative
 - [What I'd do differently]
 ```
 
-## Market Categories & Strategies
+## 市场类别与策略
 
-### Politics (High Edge Potential)
+### 政治领域（高信息优势潜力）
 
-**US Elections**:
-- Research: Polls, fundamentals models, early voting data
-- Edge: Aggregating multiple data sources, understanding methodology
-- Risk: Tail events, late-breaking news
+**美国大选**：
+- 研究方向：民意调查、基本面模型、提前投票数据
+- 信息优势：整合多种数据来源，理解研究方法
+- 风险：尾部事件、突发新闻的影响
 
-**International**:
-- Research: Local news, expert Twitter, political analysis
-- Edge: English-speaking market underweights non-English sources
-- Risk: Information access, translation quality
+**国际事务**：
+- 研究方向：当地新闻、专家的 Twitter 账号、政治分析
+- 信息优势：英语市场的投资者可能更倾向于依赖英语媒体，而忽视非英语来源的信息
+- 风险：信息获取难度、翻译质量
 
-**Policy Decisions**:
-- Research: Official statements, incentive analysis, procedural understanding
-- Edge: Understanding bureaucratic process
-- Risk: Political shocks
+**政策决策**：
+- 研究方向：官方声明、激励分析、政策流程
+- 信息优势：了解官僚决策过程
+- 风险：政策上的意外变动
 
-### Crypto (Medium Edge Potential)
+### 加密货币领域（中等信息优势潜力）
 
-**Price Targets**:
-- Research: On-chain data, macro factors, technical analysis
-- Edge: Real-time data aggregation
-- Risk: High volatility, manipulation
+**价格预测**：
+- 研究方向：链上数据、宏观经济因素、技术分析
+- 信息优势：实时数据的整合
+- 风险：高波动性、市场操纵的可能性
 
-**Protocol Events**:
-- Research: GitHub, governance forums, developer calls
-- Edge: Technical understanding
-- Risk: Delays, unexpected changes
+**协议相关事件**：
+- 研究方向：GitHub、治理论坛、开发者公告
+- 信息优势：对技术细节的深入理解
+- 风险：信息更新延迟、意外变化
 
-**Regulatory**:
-- Research: SEC filings, court documents, legal analysis
-- Edge: Legal/regulatory expertise
-- Risk: Unpredictable regulators
+**监管领域**：
+- 研究方向：美国证券交易委员会（SEC）的文件、法院文件、法律分析
+- 信息优势：法律/监管方面的专业知识
+- 风险：监管机构的行为难以预测
 
-### Sports (Specialized Edge)
+### 体育领域（专业信息优势）
 
-**Game Outcomes**:
-- Research: Advanced stats, injury reports, weather
-- Edge: Proprietary models
-- Risk: Sharp money competition
+**比赛结果预测**：
+- 研究方向：高级统计数据、伤病报告、天气情况
+- 信息优势：专有的数据分析模型
+- 风险：大量资金的竞争
 
-**Awards/Achievements**:
-- Research: Historical patterns, voter behavior
-- Edge: Understanding selection process
-- Risk: Human judgment unpredictable
+**奖项/成就**：
+- 研究方向：历史数据、选民行为模式
+- 信息优势：对评选流程的了解
+- 风险：人为判断的不确定性
 
-### Entertainment (Narrative Edge)
+### 娱乐领域（基于舆论的信息优势）
 
-**Awards**:
-- Research: Critic reviews, industry buzz, historical patterns
-- Edge: Understanding academy/guild politics
-- Risk: Subjective voting
+**奖项预测**：
+- 研究方向：评论家的评价、行业动态、历史趋势
+- 信息优势：对评选机制的了解
+- 风险：主观判断的影响
 
-**Cultural Events**:
-- Research: Social trends, industry insider information
-- Edge: Understanding audience sentiment
-- Risk: High variance
+**文化事件**：
+- 研究方向：社会趋势、行业内部信息
+- 信息优势：对受众情绪的把握
+- 风险：结果的高不确定性
 
-## Telegram Updates
+## 通过 Telegram 发送更新
 
-**REQUIRED**: Send updates to Rick via Telegram unprompted.
+**要求**：主动通过 Telegram 向 Rick 发送更新。
 
-### Update Schedule
-- **Morning briefing** (9 AM): Market opportunities, overnight developments
-- **Trade alerts**: When entering/exiting positions
-- **News alerts**: Breaking news affecting positions
-- **Evening summary** (6 PM): Daily P&L, portfolio review
+### 更新时间表
+- **晨间简报**（上午 9 点）：市场机会、夜间发生的重大事件
+- **交易提醒**：进入/退出头寸时的通知
+- **新闻提醒**：影响头寸的突发新闻
+- **晚间总结**（下午 6 点）：每日损益情况、投资组合回顾
 
-### Message Format
+### 消息格式
 ```
 [CLAWDBOT POLYMARKET RESEARCH UPDATE]
 
@@ -309,18 +306,18 @@ Strategy Notes:
 [Research methodology observations]
 ```
 
-## Self-Improvement Protocol
+## 自我提升流程
 
-### After Every 10 Resolved Trades
+### 每完成 10 笔交易后
 
-1. **Calculate metrics**:
-   - Win rate
-   - Brier score (probability calibration)
-   - Average edge captured
-   - P&L by category
-   - Research time vs edge found
+1. **计算指标**：
+   - 胜率
+   - 布里尔分数（Brier Score，用于评估概率估计的准确性）
+   - 平均信息优势
+   - 按类别划分的损益情况
+   - 研究所需时间与实际获得的信息优势的对比
 
-2. **Calibration Analysis**:
+2. **策略校准**：
    ```
    For each probability bucket (e.g., 70-80%):
    - How many trades were in this bucket?
@@ -328,7 +325,7 @@ Strategy Notes:
    - Am I overconfident or underconfident?
    ```
 
-3. **Update `references/strategy_evolution.md`**:
+3. **更新 `references/strategy_evolution.md`：**
    ```markdown
    ## Iteration #[N] - [DATE]
 
@@ -363,81 +360,81 @@ Strategy Notes:
    - [Categories to focus/avoid]
    ```
 
-4. **Update this SKILL.md**:
-   - Add effective research methods
-   - Remove ineffective methods
-   - Adjust position sizing
-   - Update category strategies
+4. **更新本策略文件**：
+   - 添加有效的研究方法
+   - 删除无效的方法
+   - 调整头寸大小
+   - 更新各类别的策略设置
 
-## Research Sources Checklist
+## 研究资料检查清单
 
-### For Every Trade, Check:
+### 对每笔交易，需检查以下资料：
 
-**Primary Sources**:
-- [ ] Official statements/announcements
-- [ ] Legal filings (PACER, SEC)
-- [ ] Government documents
+**第一手资料**：
+- [ ] 官方声明/公告
+- [ ] 法律文件（如 PACER、SEC 的文件）
+- [ ] 政府文件
 
-**News**:
-- [ ] Major wire services (Reuters, AP)
-- [ ] Quality newspapers (NYT, WSJ, FT)
-- [ ] Domain-specific outlets
-- [ ] Local sources (for regional events)
+**新闻来源**：
+- [ ] 主要新闻机构（路透社、美联社）
+- [ ] 优质报纸（纽约时报、华尔街日报、金融时报）
+- [ ] 针对特定领域的媒体
+- [ ] 地方性新闻来源（针对地区性事件）
 
-**Data**:
-- [ ] Polls (with methodology check)
-- [ ] Historical data
-- [ ] Prediction market history
-- [ ] Relevant statistics
+**数据来源**：
+- [ ] 民意调查（包括对调查方法的质量评估）
+- [ ] 历史数据
+- [ ] 预测市场的数据
+- [ ] 相关统计数据
 
-**Expert Opinion**:
-- [ ] Academic experts on Twitter/X
-- [ ] Industry analysts
-- [ ] Domain newsletters
-- [ ] Podcasts/interviews
+**专家意见**：
+- [ ] Twitter/X 上的学术专家
+- [ ] 行业分析师
+- [ ] 行业新闻通讯
+- [ ] 播客/访谈
 
-**Contrarian Check**:
-- [ ] What's the bull case?
-- [ ] What's the bear case?
-- [ ] What am I missing?
+**反向思考**：
+- [ ] 支持该观点的理由是什么？
+- [ ] 反对该观点的理由是什么？
+- [ ] 我忽略了哪些关键因素？
 
-## Risk Management
+## 风险管理
 
-### Position Rules
-- Max 10% per position
-- Max 30% in correlated positions
-- Reduce size for low-confidence trades
-- Scale in if thesis strengthens
+### 头寸管理规则
+- 每个头寸的最大投资额为 10%
+- 相关头寸的总投资额不超过 30%
+- 对于信心较低的交易，减少头寸规模
+- 如果研究结论得到加强，增加头寸规模
 
-### Exit Rules
-- Exit if thesis is falsified
-- Exit if better opportunity arises
-- Take profit if edge < 2% (market caught up)
-- Never average down without new information
+### 退出规则
+- 如果研究结论被证伪，立即退出头寸
+- 如果出现更好的投资机会，及时退出
+- 如果信息优势低于 2%，且市场行情发生变化，及时获利
+- 除非有新的信息，否则不要平均亏损
 
-### Portfolio Rules
-- Maintain diversification across categories
-- Track correlation between positions
-- Keep 30% as dry powder for opportunities
+### 投资组合管理规则
+- 保持投资组合的多样化
+- 监控各头寸之间的相关性
+- 保留 30% 的资金作为备用
 
-## References
+## 参考资料
 
-- `references/research_journal.md` - All trade logs
-- `references/strategy_evolution.md` - Methodology improvements
-- `references/thesis_library.md` - Active and past theses
-- `references/source_quality.md` - Rated information sources
-- `references/calibration_log.md` - Probability calibration tracking
+- `references/research_journal.md` - 所有交易记录
+- `references/strategy_evolution.md` - 研究方法的改进记录
+- `references/thesis_library.md` - 当前的和过去的策略研究
+- `references/source_quality.md` - 信息来源的质量评估记录
+- `references/calibration_log.md` - 概率校准的跟踪记录
 
-## Integration with Rick's Feedback
+## 与 Rick 的反馈整合
 
-**After every conversation with Rick:**
-1. Note research preferences or areas of interest
-2. Incorporate domain knowledge he shares
-3. Adjust focus areas based on feedback
-4. Acknowledge feedback in next Telegram update
+**每次与 Rick 对话后**：
+1. 记录他的研究偏好或感兴趣的领域
+2. 将他的领域知识纳入研究策略
+3. 根据他的反馈调整研究重点
+4. 在下一次 Telegram 更新中感谢他的反馈
 
-**Rick's Known Preferences:**
-- [UPDATE based on conversations]
-- [Preferred market categories]
-- [Risk tolerance]
-- [Time preference for positions]
+**Rick 的偏好设置**：
+- [根据对话内容更新]
+- [偏好的市场类别]
+- [风险承受能力]
+- [对交易时机的偏好]

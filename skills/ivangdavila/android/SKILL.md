@@ -1,11 +1,11 @@
 ---
 name: android
-description: Android build system and deployment patterns
+description: Android 构建系统与部署模式
 ---
 
-# Android Build & Deploy
+# Android 构建与部署
 
-## ADB Essentials
+## ADB 基础知识
 
 ```bash
 # Debug builds require -t flag (agents forget this)
@@ -15,7 +15,7 @@ adb install -r -t app-debug.apk
 adb logcat -s "YourApp:*" "*:E"
 ```
 
-## Gradle Critical Fixes
+## Gradle 的关键修复问题
 
 ```gradle
 android {
@@ -32,7 +32,7 @@ dependencies {
 }
 ```
 
-## Compose State Errors
+## Compose 的状态错误
 
 ```kotlin
 // WRONG - recomputed every recomposition
@@ -48,7 +48,7 @@ var count by mutableStateOf(0)
 var count by remember { mutableStateOf(0) }
 ```
 
-## AndroidManifest Pitfall
+## AndroidManifest 文件中的常见陷阱
 
 ```xml
 <!-- Declare camera optional or Play Console auto-requires it -->

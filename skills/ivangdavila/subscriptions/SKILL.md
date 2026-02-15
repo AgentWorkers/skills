@@ -1,16 +1,16 @@
 ---
 name: Subscriptions
-description: Build a personal subscription tracker for managing recurring payments, renewals, and cutting waste.
+description: 构建一个个人订阅跟踪工具，用于管理定期付款、续订事务，并减少不必要的开支。
 metadata: {"clawdbot":{"emoji":"🔄","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions subscription → add to tracker
-- User asks about spending → surface totals
-- Alert before renewals and price increases
-- Create `~/subscriptions/` as workspace
+## 核心功能
+- 当用户提及订阅服务时，将其添加到跟踪列表中。
+- 当用户询问费用支出情况时，显示总费用信息。
+- 在订阅服务续订或价格调整前发出提醒。
+- 创建名为 `~/subscriptions/` 的工作文件夹用于存储相关数据。
 
-## File Structure
+## 文件结构
 ```
 ~/subscriptions/
 ├── active/
@@ -21,7 +21,7 @@ metadata: {"clawdbot":{"emoji":"🔄","os":["linux","darwin","win32"]}}
 └── totals.md
 ```
 
-## Subscription Entry
+## 订阅信息记录
 ```markdown
 ## Netflix
 - Cost: $15.99/month
@@ -31,7 +31,7 @@ metadata: {"clawdbot":{"emoji":"🔄","os":["linux","darwin","win32"]}}
 - Value: High
 ```
 
-## Totals
+## 费用统计
 ```markdown
 # totals.md
 ## Monthly
@@ -45,39 +45,39 @@ metadata: {"clawdbot":{"emoji":"🔄","os":["linux","darwin","win32"]}}
 - Amazon Prime: Oct 1 ($139)
 ```
 
-## What To Track
-- Cost and billing frequency
-- Billing date and payment method
-- Last time used
-- Perceived value (essential/high/medium/low)
+## 需要跟踪的信息
+- 费用金额及计费频率
+- 计费日期和支付方式
+- 最后使用时间
+- 用户对服务的满意度（高/中/低）
 
-## What To Surface
-- "You spend $165/month on subscriptions"
-- "HBO unused for 3 weeks"
-- "Adobe renews in 30 days — $660"
-- "3 subscriptions bill this week"
+## 需要展示的信息
+- “您每月在订阅服务上的支出为165美元。”
+- “HBO服务已3周未被使用。”
+- “Adobe订阅服务将在30天后自动续订，费用为660美元。”
+- “本周有三项订阅服务需要付费。”
 
-## Review Triggers
-- Unused 30+ days → suggest cancel
-- Price increased → flag it
-- Annual renewal approaching → remind 7 days before
-- Quarterly prompt: "still getting value?"
+## 审查触发条件
+- 如果服务超过30天未被使用，建议用户取消订阅。
+- 当价格发生变化时，需要立即通知用户。
+- 年度续订前7天需要提醒用户。
+- 每季度提醒用户：“您是否仍然认为这项服务有价值？”
 
-## Cancelled Log
+## 取消订阅的记录
 ```markdown
 # cancelled.md
 ## 2024
 - Hulu: Feb 1 (never used) — saved $18/mo
 ```
 
-## Progressive Enhancement
-- Start: list all current subscriptions
-- Add billing dates and costs
-- Track usage patterns
-- Quarterly review habit
+## 逐步改进计划
+- 初始阶段：列出用户当前所有的订阅服务。
+- 添加每个订阅服务的计费日期和费用信息。
+- 跟踪用户的订阅使用情况。
+- 培养用户每季度定期审查订阅服务的习惯。
 
-## What NOT To Do
-- Forget annual renewals until charged
-- Ignore unused subscriptions
-- Miss price increases
-- Keep services "just in case"
+## 不应做的事情
+- 直到费用被收取才想起年度续订的事宜。
+- 忽视那些长期未被使用的订阅服务。
+- 忽略价格变动的信息。
+- 仅仅为了“以防万一”而保留某些服务。

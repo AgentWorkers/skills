@@ -1,20 +1,20 @@
 # claw-clawbridge
 
-> **The Intelligent Connection Bridge**: A high-signal scouting agent that runs nightly to bridge you with the right people. 
+> **智能连接桥梁**：一个夜间运行的高效率搜索代理，帮助您与合适的人建立联系。
 
-## Overview
+## 概述
 
-Clawbridge transforms a simple human prompt into a persistent, nightly scouting operation. It doesn't just find leads; it builds a bridge between your goals and the people who can help you achieve them.
+Clawbridge 将简单的人类指令转化为持续的、每晚进行的搜索操作。它不仅寻找潜在候选人，还能在您的目标与能够帮助您实现目标的人之间架起桥梁。
 
-1. **Human Intent**: You define what you offer and who you're looking for once.
-2. **Nightly Scouting**: Every night, the agent scours Moltbook, professional communities, and the open web.
-3. **Smart Matching**: It filters and ranks candidates based on intent signals, credibility, and recent activity.
-4. **Connection Brief**: It delivers a daily "Connection Brief" with evidence-backed matches and personalized outreach drafts.
-5. **Human-in-the-Loop**: You review the matches and decide whether to approach, maintaining full control over the final "bridge."
+1. **人类指令**：您只需一次性定义您所提供的服务和您正在寻找的人。
+2. **夜间搜索**：每晚，该代理会遍历 Moltbook、专业社区和公开网络。
+3. **智能匹配**：根据指令信号、可信度和近期活动对候选人进行筛选和排名。
+4. **连接简报**：每天提供一份“连接简报”，其中包含基于证据的匹配结果和个人化的联系草稿。
+5. **人工审核**：您需要审核这些匹配结果，并决定是否与候选人联系，从而完全掌控最终的沟通过程。
 
-## Installation
+## 安装
 
-### Via ClawHub (Recommended)
+### 推荐方式：通过 ClawHub
 
 ```bash
 # Install the ClawHub CLI
@@ -24,7 +24,7 @@ npm install -g clawhub
 clawhub install claw-clawbridge
 ```
 
-### Via Legacy clawdbot CLI
+### 传统方式：通过 clawdbot CLI
 
 ```bash
 # From registry
@@ -34,20 +34,20 @@ clawdbot skills install claw-clawbridge
 clawdbot skills install github:YOUR_USERNAME/clawbridge-skill
 ```
 
-### Manual
+### 手动安装
 
-Clone and copy to your OpenClaw workspace:
+将代码克隆并复制到您的 OpenClaw 工作区：
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/clawbridge-skill.git ~/.openclaw/workspace/skills/claw-clawbridge
 openclaw gateway restart
 ```
 
-## Inputs
+## 输入参数
 
-The skill requires the following inputs:
+该技能需要以下输入信息：
 
-### 1. Project Profile (required)
+### 1. 项目概况（必填）
 
 ```yaml
 offer: "What your agency/company offers"
@@ -63,7 +63,7 @@ disallowed:
 tone: "Short style guidance for draft messages"
 ```
 
-### 2. Constraints (optional)
+### 2. 限制条件（可选）
 
 ```yaml
 no_spam_rules:
@@ -77,7 +77,7 @@ avoid_list:
   - "@spam_account"
 ```
 
-### 3. Targets (optional)
+### 3. 目标人群（可选）
 
 ```yaml
 venues:
@@ -89,7 +89,7 @@ query_templates:
   - "{vertical} + looking for + {ask}"
 ```
 
-### 4. Run Budget (optional)
+### 4. 运行预算（可选）
 
 ```yaml
 max_searches: 20
@@ -97,27 +97,27 @@ max_fetches: 50
 max_minutes: 10
 ```
 
-## Tools Used
+## 使用的工具
 
-This skill uses the following OpenClaw tools:
+该技能使用了以下 OpenClaw 工具：
 
-| Tool | Purpose | When Used |
+| 工具 | 用途 | 使用场景 |
 |------|---------|-----------|
-| `web_search` | Discover candidate pages | Fast venue scanning |
-| `web_fetch` | Extract page content | Reading candidate profiles |
-| `browser` | JS-heavy sites | Only when fetch fails |
+| `web_search` | 发现候选人页面 | 快速搜索网站信息 |
+| `web_fetch` | 提取页面内容 | 读取候选人资料 |
+| `browser` | 处理包含大量 JavaScript 的网站 | 仅在 `web_search` 失败时使用 |
 
-## Security Requirements
+## 安全要求
 
-⚠️ **MUST follow these security defaults:**
+⚠️ **必须遵守以下安全规范**：
 
-1. **Keep secrets out of prompts** - Pass via env/config only
-2. **Use strict tool allowlists** - Only enable `web_*` tools when actively scouting
-3. **Human-in-the-loop** - NEVER auto-send outreach in MVP
-4. **Rate limiting** - Respect run budget constraints
-5. **Avoid list enforcement** - Never contact entries in avoid_list
+1. **不要在指令中透露敏感信息** – 仅通过环境变量或配置文件传递敏感数据。
+2. **使用严格的工具白名单** – 仅在主动搜索时启用 `web_*` 系列工具。
+3. **人工审核** – 在 MVP 阶段，切勿自动发送联系信息。
+4. **限制执行频率** – 遵守运行预算限制。
+5. **避免联系黑名单中的对象** – 绝不联系 `avoid_list` 中的候选人。
 
-## Execution Flow
+## 执行流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -156,77 +156,77 @@ This skill uses the following OpenClaw tools:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Output
+## 输出结果
 
-The skill outputs a **Connection Brief** in two formats:
+该技能以两种格式输出结果：
 
-### 1. Structured JSON (`run.json`)
+### 1. 结构化 JSON 文件（`run.json`）
 
-See `schema/connection_brief.json` for the full schema.
+详细格式请参考 `schema/connection_brief.json`。
 
-### 2. Human-Readable Markdown (`run.md`)
+### 2. 人类可读的 Markdown 文件（`run.md`）
 
-See `examples/sample_run.md` for a sample report.
+示例报告请参见 `examples/sample_run.md`。
 
-## Candidate Selection Rules
+## 候选人筛选规则
 
-### Hard Requirements (discard if missing)
+### 必需满足的条件（缺少这些条件将导致候选人被排除）
 
-- ✅ At least 2 evidence URLs per candidate
-- ✅ Clear reason mapping to your `ask`
-- ✅ Last activity within N days (configurable, default 30)
+- ✅ 每位候选人至少提供 2 个可信的参考链接。
+- ✅ 参考链接必须与您的需求明确相关。
+- ✅ 候选人的最近活动时间在 N 天以内（可配置，默认为 30 天）。
 
-### Risk Flags
+## 风险提示
 
-Candidates are flagged if they exhibit:
+如果候选人符合以下情况，将被标记为风险候选人：
 
-- 🟡 `low_evidence` - Fewer than expected signals
-- 🟡 `spammy_language` - Promotional or suspicious content
-- 🟡 `unclear_identity` - Cannot verify who they are
-- 🟡 `too_salesy` - Overly promotional content
-- 🟡 `irrelevant` - Weak connection to your ask
+- 🟡 **证据不足** – 参考链接数量较少。
+- 🟡 **内容可疑** – 包含促销或可疑信息。
+- 🟡 **身份不明确** – 无法核实候选人的真实身份。
+- 🟡 **过度推销** – 内容过于宣传性。
+- 🟡 **不相关** – 与您的需求关联度低。
 
-## Ranking Heuristic (v1)
+## 评分规则（版本 1）
 
-Each candidate is scored on:
+每位候选人的评分依据如下：
 
-| Factor | Weight | Description |
+| 评分因素 | 权重 | 说明 |
 |--------|--------|-------------|
-| Relevance | 30% | Match to keywords + ask |
-| Intent | 25% | Actively building/hiring/seeking |
-| Credibility | 20% | Consistent footprint across sources |
-| Recency | 15% | Recent activity signals |
-| Engagement | 10% | Mutual interests/communities |
+| 相关性 | 30% | 是否与您的需求关键词匹配 |
+| 意图 | 25% | 候选人是否正在积极寻找工作或需要招聘 |
+| 可信度 | 20% | 在多个来源中的一致性表现 |
+| 最新活动 | 15% | 最近的活动记录 |
+| 互动性 | 10% | 与您的共同兴趣或所属社区 |
 
-**Output:** Top K candidates (default K=3, configurable 5-10)
+**输出结果**：排名前 K 位的候选人（默认 K=3，可配置为 5-10）。
 
-## Examples
+## 示例
 
-See the `examples/` directory for:
+请查看 `examples/` 目录中的文件：
 
-- `sample_run.json` - Full JSON output example
-- `sample_run.md` - Human-readable report example
+- `sample_run.json` – 完整的 JSON 输出示例。
+- `sample_run.md` – 人类可读的报告示例。
 
-## Prompts
+## 指令模板
 
-The skill uses modular prompts located in `prompts/`:
+该技能使用位于 `prompts/` 目录下的模块化指令模板：
 
-- `discovery.md` - How to search for candidates
-- `filtering.md` - How to apply hard requirements
-- `ranking.md` - How to score and rank candidates
-- `drafting.md` - How to write outreach messages
+- `discovery.md` – 如何搜索候选人。
+- `filtering.md` – 如何设置筛选条件。
+- `ranking.md` – 如何对候选人进行评分和排名。
+- `drafting.md` – 如何撰写联系信息。
 
-## Venues
+## 搜索渠道
 
-Venue-specific search strategies are in `venues/`:
+针对不同渠道的搜索策略位于 `venues/` 目录下：
 
-- `moltbook.md` - Moltbook platform scouting
-- `web.md` - General web search strategies
-- `communities.md` - Community/forum discovery
+- `moltbook.md` – Moltbook 平台的搜索策略。
+- `web.md` – 通用网络搜索策略。
+- `communities.md` – 社区/论坛的搜索策略。
 
-## Configuration
+## 配置设置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 # Optional: Override defaults
@@ -236,9 +236,9 @@ CLAWBRIDGE_MAX_SEARCHES=20           # Max search queries per run
 CLAWBRIDGE_MAX_FETCHES=50            # Max page fetches per run
 ```
 
-### Workspace Configuration
+### 工作区配置
 
-The skill reads workspace config from the runner or vault:
+该技能会从运行环境或配置文件中读取工作区配置信息：
 
 ```yaml
 workspace_id: "ws_abc123"
@@ -246,15 +246,15 @@ workspace_token: "tok_..."  # For vault uploads
 delivery_target: "discord"  # or "slack" or "email"
 ```
 
-## License
+## 许可证
 
-MIT License - See LICENSE file for details.
+采用 MIT 许可证。详细信息请参阅 LICENSE 文件。
 
-## Contributing
+## 贡献方式
 
-Contributions welcome! Please read the prompts carefully and ensure any changes maintain:
+欢迎贡献代码！请仔细阅读指令模板，确保任何修改都遵循以下原则：
 
-1. Deterministic output schema
-2. No secrets in prompts
-3. Human-in-the-loop requirement
-4. Evidence-based candidate selection
+1. 保持输出结果的确定性。
+2. 不要在指令中透露任何敏感信息。
+3. 确保始终有人参与最终决策过程。
+4. 候选人的选择必须基于客观证据。

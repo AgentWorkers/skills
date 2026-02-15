@@ -1,17 +1,17 @@
 ---
 name: lidarr
 version: 1.0.0
-description: Search and add music to Lidarr. Supports artists, albums, and quality profiles (FLAC preferred).
+description: 在 Lidarr 中搜索并添加音乐。支持艺术家、专辑以及音乐质量设置（优先选择 FLAC 格式的音乐）。
 metadata: {"openclaw":{"emoji":"🎵","requires":{"bins":["curl","jq"]}}}
 ---
 
 # Lidarr
 
-Add music (artists and albums) to your Lidarr library.
+将音乐（艺术家和专辑）添加到您的 Lidarr 图书库中。
 
-## Setup
+## 设置
 
-Create `~/.clawdbot/credentials/lidarr/config.json`:
+创建 `~/.clawdbot/credentials/lidarr/config.json` 文件：
 ```json
 {
   "url": "http://192.168.1.50:8686",
@@ -21,106 +21,106 @@ Create `~/.clawdbot/credentials/lidarr/config.json`:
 }
 ```
 
-- `defaultQualityProfile`: Quality profile ID (FLAC, MP3, etc. — run `config` to see options)
-- `defaultMetadataProfile`: Metadata profile ID (albums only, discography, etc. — run `config` to see options)
+- `defaultQualityProfile`：音频质量配置文件 ID（FLAC、MP3 等 — 运行 `config` 命令查看可用选项）
+- `defaultMetadataProfile`：元数据配置文件 ID（仅适用于专辑信息，如唱片目录等 — 运行 `config` 命令查看可用选项）
 
-## Quality Profiles
-Typically you'll want FLAC:
-- Lossless (FLAC)
-- Lossless 24bit (FLAC 24-bit)
+## 音频质量配置文件
+通常推荐使用 FLAC 格式：
+- 无损音频（FLAC）
+- 24 位无损音频（FLAC 24-bit）
 
-## Metadata Profiles
-- **Albums only** (recommended) — just studio albums
-- Standard — albums + some extras
-- Discography / Everything — all releases
+## 元数据配置文件
+- **仅适用于专辑**（推荐） — 仅包含录音室专辑的信息
+- 标准配置 — 包含专辑及其他相关信息
+- 录片目录 / 全部内容 — 包含所有发布的音乐作品
 
-## Workflow
+## 工作流程
 
-### 1. Search for an artist
+### 1. 搜索艺术家
 ```bash
 bash scripts/lidarr.sh search "Artist Name"
 ```
-Returns numbered list with MusicBrainz links.
+返回包含 MusicBrainz 链接的编号列表。
 
-### 2. Check if artist exists
+### 2. 检查艺术家是否存在
 ```bash
 bash scripts/lidarr.sh exists <foreignArtistId>
 ```
 
-### 3. Add artist
+### 3. 添加艺术家
 ```bash
 bash scripts/lidarr.sh add <foreignArtistId>
 ```
-If artist already exists, this will monitor them instead of failing.
+如果艺术家已经存在，系统将开始监控该艺术家的新作品，而不会报错。
 
-**Options:**
-- `--discography` — add full discography instead of albums only
-- `--no-search` — don't search immediately
+**选项：**
+- `--discography` — 添加该艺术家的全部唱片目录（而不仅仅是专辑）
+- `--no-search` — 不立即执行搜索操作
 
-### 4. List albums for an artist
+### 4. 列出艺术家的专辑
 ```bash
 bash scripts/lidarr.sh list-artist-albums <artistId>
 ```
-Shows all albums with their IDs and monitored status.
+显示该艺术家的所有专辑及其对应的 ID 和监控状态。
 
-### 5. Monitor specific albums
+### 5. 监控特定专辑
 ```bash
 bash scripts/lidarr.sh monitor-album <albumId>
 ```
-Monitor and optionally search for a specific album.
+监控并可选地搜索特定的专辑。
 
-**Options:**
-- `--no-search` — monitor but don't search yet
+**选项：**
+- `--no-search` — 仅进行监控，不执行搜索操作
 
-## Commands
+## 命令
 
-### Search for artists
+### 搜索艺术家
 ```bash
 bash scripts/lidarr.sh search "KMFDM"
 ```
 
-### Check if artist exists
+### 检查艺术家是否存在
 ```bash
 bash scripts/lidarr.sh exists 45074d7c-5307-44a8-854f-ae072e1622ae
 ```
 
-### Add an artist (FLAC + albums only by default)
+### 添加艺术家（默认情况下仅添加 FLAC 格式的专辑）
 ```bash
 bash scripts/lidarr.sh add 45074d7c-5307-44a8-854f-ae072e1622ae
 ```
 
-### Add with full discography
+### 添加艺术家的全部唱片目录
 ```bash
 bash scripts/lidarr.sh add 45074d7c-5307-44a8-854f-ae072e1622ae --discography
 ```
 
-### List albums for an artist
+### 列出艺术家的专辑
 ```bash
 bash scripts/lidarr.sh list-artist-albums 382
 ```
 
-### Monitor a specific album
+### 监控特定专辑
 ```bash
 bash scripts/lidarr.sh monitor-album 11116
 ```
 
-### List your library
+### 列出您的音乐库
 ```bash
 bash scripts/lidarr.sh list
 ```
 
-### Refresh artist metadata
+### 更新艺术家的元数据
 ```bash
 bash scripts/lidarr.sh refresh <artistId>
 ```
 
-### Remove an artist
+### 删除艺术家
 ```bash
 bash scripts/lidarr.sh remove <artistId>              # keep files
 bash scripts/lidarr.sh remove <artistId> --delete-files  # delete files too
 ```
 
-### Get configuration
+### 查看配置信息
 ```bash
 bash scripts/lidarr.sh config
 ```

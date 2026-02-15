@@ -1,76 +1,76 @@
 ---
 name: veeam-mcp
-description: "Query Veeam Backup & Replication and Veeam ONE via MCP server running in Docker. Provides intelligent backup monitoring, job analysis, capacity planning, and infrastructure health checks."
+description: "通过运行在 Docker 中的 MCP 服务器，可以查询 Veeam Backup & Replication 和 Veeam ONE 的状态。该服务器提供了智能的备份监控、作业分析、容量规划以及基础设施健康检查功能。"
 ---
 
-# Veeam Intelligence MCP Skill
+# Veeam Intelligence MCP 技能
 
-Interact with Veeam Backup & Replication (VBR) and Veeam ONE through an MCP (Model Context Protocol) server running in Docker.
+通过运行在 Docker 中的 MCP（Model Context Protocol）服务器，与 Veeam Backup & Replication (VBR) 和 Veeam ONE 进行交互。
 
-## Natural Language Commands
+## 自然语言命令
 
-When the user asks things like:
-- **"What backup jobs failed last night?"**
-- **"Show me backup status for all VMs"**
-- **"What's my backup repository capacity?"**
-- **"Which VMs haven't been backed up recently?"**
-- **"Check Veeam ONE alerts"**
-- **"Analyze backup performance trends"**
+当用户提出以下问题时：
+- **“昨晚哪些备份任务失败了？”**
+- **“显示所有虚拟机的备份状态”**
+- **“我的备份存储库容量是多少？”**
+- **“哪些虚拟机最近没有进行备份？”**
+- **“查看 Veeam ONE 的警报”**
+- **“分析备份性能趋势”**
 
-## What This Does
+## 功能概述
 
-This skill wraps the Veeam Intelligence MCP server (running in Docker) and provides natural language access to:
+该技能通过运行在 Docker 中的 Veeam Intelligence MCP 服务器，提供对以下功能的自然语言访问：
 
 **Veeam Backup & Replication (VBR):**
-- Backup job status and history
-- Repository capacity and health
-- VM backup status
-- Job configuration details
-- Failed job analysis
+- 备份任务的状态和历史记录
+- 备份存储库的容量和健康状况
+- 虚拟机的备份状态
+- 任务配置详情
+- 失败任务的分析
 
 **Veeam ONE:**
-- Infrastructure monitoring
-- Performance analysis
-- Alert management
-- Capacity planning
-- Trend analysis
+- 基础设施监控
+- 性能分析
+- 警报管理
+- 容量规划
+- 趋势分析
 
-## Prerequisites
+## 先决条件
 
-- Docker installed and running
-- Veeam Backup & Replication and/or Veeam ONE with active licenses (not Community Edition)
-- **Veeam Intelligence enabled** on your Veeam servers (required for Advanced Mode)
-- Admin credentials for Veeam servers
+- 已安装并运行 Docker
+- 拥有有效的 Veeam Backup & Replication 和/或 Veeam ONE 许可证（非社区版）
+- 在 Veeam 服务器上启用了 Veeam Intelligence（高级模式所需）
+- 具有 Veeam 服务器的管理员权限
 
-## Installation
+## 安装
 
-### 1. Obtain Veeam Intelligence MCP Server
+### 1. 获取 Veeam Intelligence MCP 服务器
 
-The Veeam Intelligence MCP server is currently in **beta**. 
+Veeam Intelligence MCP 服务器目前处于 **测试阶段**（beta）。
 
-**To obtain access:**
-- Contact Veeam directly or your Veeam account representative
-- Visit the official Veeam community forums
-- Check Veeam's official channels for beta program announcements
+**获取访问权限的方法：**
+- 直接联系 Veeam 或您的 Veeam 客户服务代表
+- 访问官方 Veeam 社区论坛
+- 关注 Veeam 的官方渠道以获取测试计划公告
 
-Once you have the MCP server package, build the Docker image:
+获取 MCP 服务器包后，构建 Docker 镜像：
 
 ```bash
 cd /path/to/veeam-mcp-server
 docker build -t veeam-intelligence-mcp-server .
 ```
 
-### 2. Install This Skill
+### 2. 安装此技能
 
 ```bash
 clawhub install veeam-mcp
 ```
 
-## Configuration
+## 配置
 
-### Create Credentials File
+### 创建凭据文件
 
-Create `~/.veeam-mcp-creds.json`:
+创建 `~/.veeam-mcp-creds.json` 文件：
 
 ```json
 {
@@ -87,38 +87,39 @@ Create `~/.veeam-mcp-creds.json`:
 }
 ```
 
-**Important:** Lock down the credentials file:
+**重要提示：** 保护凭据文件的安全：
 ```bash
 chmod 600 ~/.veeam-mcp-creds.json
 ```
 
-### Username Format
+### 用户名格式
 
-- **Local accounts**: Use `".\\username"` format
-- **Domain accounts**: Use `"DOMAIN\\username"` or `"username@domain.com"`
-- **Escape backslashes**: Single backslash in JSON: `".\\"` not `".\\\\"`
+- **本地账户**：使用 `".\\username"` 格式
+- **域账户**：使用 `"DOMAIN\\username"` 或 `"username@domain.com"`
+- **JSON 中的反斜杠转义**：使用 `".\\"` 而不是 `".\\\\"`
 
-### Enable Veeam Intelligence
+### 启用 Veeam Intelligence
 
-For live data queries (Advanced Mode), enable Veeam Intelligence on your Veeam servers:
+为了进行实时数据查询（高级模式），需要在 Veeam 服务器上启用 Veeam Intelligence：
 
 **Veeam Backup & Replication:**
-1. Open Veeam B&R console
-2. Go to **Options** → **Veeam Intelligence Settings**
-3. Enable the AI assistant
+1. 打开 Veeam B&R 控制台
+2. 转到 **选项** → **Veeam Intelligence 设置**
+3. 启用 AI 助手
 
 **Veeam ONE:**
-1. Open Veeam ONE console
-2. Find **Veeam Intelligence** settings
-3. Enable the feature
+1. 打开 Veeam ONE 控制台
+2. 查找 **Veeam Intelligence** 设置
+3. 启用该功能
 
-Without this, queries will only return documentation (Basic Mode).
+如果没有启用此功能，查询将仅返回文档信息（基本模式）。
 
-## Usage
+## 使用方法
 
-### Natural Language (OpenClaw)
+### 自然语言交互（使用 OpenClaw）
 
-Just ask naturally:
+只需自然地提出问题即可：
+
 ```
 "What Veeam backup jobs failed yesterday?"
 "Show me backup repository capacity"
@@ -126,7 +127,7 @@ Just ask naturally:
 "Which VMs haven't been backed up this week?"
 ```
 
-### Command Line Scripts
+### 命令行脚本
 
 ```bash
 # Query VBR
@@ -143,24 +144,16 @@ Just ask naturally:
 ./scripts/list-tools.sh vbr
 ```
 
-## How It Works
+## 工作原理
 
-```
-User Question → OpenClaw Skill → Docker MCP Server → Veeam API
-                                        ↓
-                               Veeam Intelligence
-                                        ↓
-                                 JSON Response
-```
+1. **Docker 容器**：MCP 服务器在隔离的容器中运行
+2. **标准输入/输出（STDIO）通信**：通过标准输入/输出进行数据交换
+3. **凭据传递**：从凭据文件安全地传递环境变量
+4. **自然语言处理**：Veeam Intelligence 使用人工智能处理查询请求
 
-1. **Docker Container**: MCP server runs in isolated container
-2. **STDIO Transport**: Communicates via standard input/output
-3. **Credential Injection**: Env vars passed securely from credentials file
-4. **Natural Language**: Veeam Intelligence processes queries with AI
+## 故障排除
 
-## Troubleshooting
-
-### Connection Test Fails
+### 连接失败
 
 ```bash
 # Check credentials file
@@ -180,34 +173,34 @@ echo '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-1
     veeam-intelligence-mcp-server
 ```
 
-### Basic Mode (Documentation Only)
+### 基本模式（仅提供文档信息）
 
-If responses say "Basic mode is active", enable Veeam Intelligence on your servers.
+如果响应显示“处于基本模式”，请在您的服务器上启用 Veeam Intelligence。
 
-### Username Format Issues
+### 用户名格式问题
 
-- Try `.\\username` (local account)
-- Try `DOMAIN\\username` (domain account)
-- Ensure single backslash in JSON
+- 尝试使用 `.\\username`（本地账户）
+- 尝试使用 `DOMAIN\\username`（域账户）
+- 确保 JSON 中的反斜杠使用单斜杠 `\"`
 
-## Security Notes
+## 安全注意事项
 
-- Credentials stored locally in `~/.veeam-mcp-creds.json` (chmod 600)
-- Docker container runs with non-root user
-- HTTPS connections with self-signed cert acceptance
-- No credentials exposed in logs or command history
-- MCP server communicates via stdin/stdout only
+- 凭据存储在本地文件 `~/.veeam-mcp-creds.json` 中（权限设置为 600）
+- Docker 容器以非 root 用户身份运行
+- 使用自签名证书进行 HTTPS 连接
+- 凭据不会被记录在日志或命令历史记录中
+- MCP 服务器仅通过标准输入/输出（stdin/stdout）进行通信
 
-## References
+## 参考资料
 
-- Veeam Intelligence MCP Server: Contact Veeam for beta access
+- Veeam Intelligence MCP 服务器：请联系 Veeam 以获取测试权限
 - [Model Context Protocol](https://modelcontextprotocol.io/)
-- [Veeam Intelligence Documentation](https://helpcenter.veeam.com/)
+- [Veeam Intelligence 文档](https://helpcenter.veeam.com/)
 
-## License
+## 许可证
 
-This skill is provided as-is. Veeam Intelligence MCP server is licensed separately.
+此技能按“原样”提供。Veeam Intelligence MCP 服务器需要单独购买许可证。
 
 ---
 
-**Need Help?** Open an issue on GitHub or ask in the OpenClaw Discord.
+**需要帮助？** 请在 GitHub 上提交问题或在 OpenClaw 的 Discord 频道中咨询。

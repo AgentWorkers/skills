@@ -1,19 +1,19 @@
 ---
 name: nano-banana-antigravity
-description: Generate or edit images via Nano Banana Pro using Antigravity OAuth (no API key needed!)
+description: 使用 Nano Banana Pro 和 Antigravity OAuth 生成或编辑图片（无需 API 密钥！）
 homepage: https://antigravity.google
 metadata: {"openclaw":{"emoji":"🍌","requires":{"bins":["uv"]}}}
 ---
 
-# Nano Banana Antigravity (Gemini 3 Pro Image via OAuth)
+# Nano Banana Antigravity（通过 OAuth 使用 Gemini 3 Pro 图像）
 
-Generate images using Nano Banana Pro (Gemini 3 Pro Image) via your existing Google Antigravity OAuth credentials.
+使用 Nano Banana Pro（基于 Gemini 3 Pro 图像）以及您现有的 Google Antigravity OAuth 凭据来生成图片。
 
-**No separate API key needed!** Uses the same OAuth tokens as your OpenClaw Antigravity provider.
+**无需单独的 API 密钥！** 使用与 OpenClaw Antigravity 提供商相同的 OAuth 令牌。
 
-## Generate Image
+## 生成图片
 
-**For WhatsApp HD (recommended):**
+**推荐用于 WhatsApp HD：**
 ```bash
 {baseDir}/scripts/generate_whatsapp_hd.sh \
   --prompt "your image description" \
@@ -22,12 +22,12 @@ Generate images using Nano Banana Pro (Gemini 3 Pro Image) via your existing Goo
   --resolution 4K
 ```
 
-**Standard PNG output:**
+**标准 PNG 格式输出：**
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "your image description" --filename "output.png"
 ```
 
-## Generate with Options
+## 带有选项的生成方式**
 
 ```bash
 {baseDir}/scripts/generate_whatsapp_hd.sh \
@@ -37,13 +37,13 @@ uv run {baseDir}/scripts/generate_image.py --prompt "your image description" --f
   --resolution 4K
 ```
 
-**What `generate_whatsapp_hd.sh` does:**
-- ✅ Auto-converts PNG → progressive JPEG
-- ✅ Optimizes quality (85-92%) to stay under 6.28MB
-- ✅ WhatsApp HD ready (no compression!)
-- ✅ Warns if image is too large
+**`generate_whatsapp_hd.sh` 的功能：**
+- ✅ 自动将 PNG 图像转换为渐进式 JPEG 格式
+- ✅ 优化图像质量（85-92%），确保文件大小不超过 6.28MB
+- ✅ 适合 WhatsApp HD 使用（无需压缩）
+- ✅ 如果图片过大，会发出警告
 
-## Edit/Composite Images
+## 编辑/合成图片**
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py \
@@ -52,7 +52,7 @@ uv run {baseDir}/scripts/generate_image.py \
   -i original.png
 ```
 
-## Multi-image Composition
+## 多张图片合成**
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py \
@@ -61,45 +61,46 @@ uv run {baseDir}/scripts/generate_image.py \
   -i image1.png -i image2.png -i image3.png
 ```
 
-## Options
+## 可用选项：**
 
-- `--prompt, -p` (required): Image description or edit instructions
-- `--filename, -f` (required): Output filename
-- `--input-image, -i`: Input image(s) for editing (can be repeated)
-- `--aspect-ratio, -a`: 1:1 (default), 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9
-- `--resolution, -r`: 1K, 2K (default), 4K
+- `--prompt, -p`（必选）：图片描述或编辑说明
+- `--filename, -f`（必选）：输出文件名
+- `--input-image, -i`：用于编辑的输入图片（可以重复输入）
+- `--aspect-ratio, -a`：宽高比（默认值：1:1，可选值：2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9）
+- `--resolution, -r`：分辨率（1K, 2K, 4K，默认值：2K）
 
-## Authentication
+## 认证
 
-Uses existing OpenClaw Antigravity OAuth credentials. Make sure you're authenticated:
+使用现有的 OpenClaw Antigravity OAuth 凭据进行认证。请确保您已完成认证：
 
 ```bash
 openclaw models auth login --provider google-antigravity
 ```
 
-The script looks for credentials in:
+脚本会从以下位置查找认证信息：
 - `~/.openclaw/credentials/google-antigravity.json`
 - `~/.config/openclaw/credentials/google-antigravity.json`
 - `~/.config/opencode/antigravity-accounts.json`
 
-## WhatsApp HD Upload Limits
+## WhatsApp HD 上传限制
 
-**For best WhatsApp HD quality:**
-- Use `generate_whatsapp_hd.sh` instead of `generate_image.py`
-- Output filename must end in `.jpg` or `.jpeg`
-- Images ≤6.28MB will upload without compression
-- Images >6.28MB may be compressed by WhatsApp
+**为了获得最佳的 WhatsApp HD 图像质量：**
+- 请使用 `generate_whatsapp_hd.sh` 脚本，而不是 `generate_image.py`
+- 输出文件名必须以 `.jpg` 或 `.jpeg` 结尾
+- 文件大小小于或等于 6.28MB 的图片将不会被压缩
+- 文件大小超过 6.28MB 的图片可能会被 WhatsApp 压缩
 
-**Size guidelines:**
-- ≤6.28MB → ✅ HD (no compression)
-- 6.29-6.5MB → Slight compression (~5.7MB)
-- 6.5-7.6MB → Moderate compression (~6.2MB)
-- >9MB → ⚠️ Heavy compression
+**文件大小指南：**
+- ≤6.28MB → ✅ 高清质量（无压缩）
+- 6.29-6.5MB → 轻微压缩（约 5.7MB）
+- 6.5-7.6MB → 中等压缩（约 6.2MB）
+- >9MB → ⚠️ 重度压缩
 
-## Notes
+## 注意事项：**
 
-- The script prints a `MEDIA:` line for OpenClaw to auto-attach on supported chat providers.
-- Do not read the image back; report the saved path only.
-- Uses timestamps in filenames for uniqueness: `yyyy-mm-dd-hh-mm-ss-name.png`
-- Falls back to regular Nano Banana if Nano Banana Pro isn't available yet.
-- **Account rotation:** Automatically tries all 12 Antigravity accounts on rate limits
+- 脚本会输出一条 `MEDIA:` 信息，以便 OpenClaw 在支持的聊天应用中自动插入图片。
+- 请不要尝试读取生成的图片文件，只需提供保存路径即可。
+- 文件名中包含时间戳以确保文件唯一性（格式：`yyyy-mm-dd-hh-mm-ss-name.png`）
+- 如果 Nano Banana Pro 尚未可用，脚本会回退到使用普通的 Nano Banana 工具。
+
+**账户轮换：** 脚本会自动尝试使用所有 12 个 Antigravity 账户来避免达到上传速率限制。

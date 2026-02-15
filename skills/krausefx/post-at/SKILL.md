@@ -1,112 +1,103 @@
 ---
 name: post-at
-description: Manage Austrian Post (post.at) deliveries - list packages, check delivery status, set delivery place preferences.
+description: 管理奥地利邮政（post.at）的配送服务：查询包裹信息、查看配送状态、设置配送地址偏好。
 homepage: https://github.com/krausefx/post-at-cli
 metadata: {"clawdbot":{"emoji":"📦","requires":{"bins":["node"]}}}
 ---
 
 # post-at CLI
 
-Unofficial CLI for viewing and managing deliveries on post.at (Österreichische Post). Uses the same web flows as the site and requires your own account credentials.
+这是一个非官方的命令行工具（CLI），用于查看和管理奥地利邮政（Österreichische Post）的包裹投递信息。该工具使用与网站相同的交互流程，因此需要您自己的账户凭据。
 
-Credentials: `POST_AT_USERNAME` and `POST_AT_PASSWORD` environment variables (or `--username` / `--password` options).
+**凭据：**  
+`POST_AT_USERNAME` 和 `POST_AT_PASSWORD` 环境变量（或 `--username` / `--password` 选项）。
 
-## Quick Reference
+## 快速参考
 
-### Login
-Cache a short-lived session (auto-expires):
+### 登录  
+（会缓存一个短期的会话令牌，该令牌会自动过期）：  
 ```bash
 post-at login
 # Output: Logged in as you@example.com
 ```
 
-### List Deliveries
-Upcoming deliveries (default):
+### 列出投递信息  
+- 即将投递的包裹（默认显示）：  
 ```bash
 post-at deliveries
 # Shows: tracking number, ETA, sender, status
-```
-
-All deliveries (including delivered):
+```  
+- 所有已投递的包裹：  
 ```bash
 post-at deliveries --all
-```
-
-JSON output:
+```  
+（输出格式为 JSON）：  
 ```bash
 post-at deliveries --json
-```
-
-Limit results:
+```  
+（可限制显示结果的数量）：  
 ```bash
 post-at deliveries --limit 10
 ```
 
-### Delivery Details
-Get details for a specific tracking number:
+### 查看包裹详情  
+- 根据具体的追踪号码获取包裹详情：  
 ```bash
 post-at delivery 1042348411302810212306
 # Output: tracking, expected delivery, sender, status, picture URL
-```
-
-JSON output:
+```  
+（输出格式为 JSON）：  
 ```bash
 post-at delivery <tracking-number> --json
 ```
 
-### Delivery Place Options (Wunschplatz)
-
-List available place options:
+### 投递地点选择（Wunschplatz）  
+- 列出可用的投递地点选项：  
 ```bash
 post-at routing place-options
-```
+```  
+- 常见选项：  
+  - `Vor_Haustüre`（在住宅门前）  
+  - `Vor_Wohnungstüre`（在公寓门前）  
+  - `AufOderUnter_Briefkasten`（放在/在邮箱下方）  
+  - `Hinter_Zaun`（在围栏后面）  
+  - `In_Garage`（在车库内）  
+  - `Auf_Terrasse`（在阳台上）  
+  - `Im_Carport`（在车棚内）  
+  - `In_Flexbox`（在储物箱内）  
+  - `sonstige`（其他指定地点）  
 
-Common options:
-- `Vor_Haustüre` — Vor der Haustüre
-- `Vor_Wohnungstüre` — Vor der Wohnungstüre
-- `AufOderUnter_Briefkasten` — Unter / Auf dem Briefkasten
-- `Hinter_Zaun` — Hinter dem Zaun
-- `In_Garage` — In der Garage
-- `Auf_Terrasse` — Auf der Terrasse
-- `Im_Carport` — Im Carport
-- `In_Flexbox` — In der Flexbox
-- `sonstige` — Anderer Wunsch‑Platz
-
-### Set Delivery Place
-Using preset shortcut:
+### 设置投递地点  
+- 使用预设的快捷方式：  
 ```bash
 post-at routing place <tracking-number> \
   --preset vor-der-wohnungstuer \
   --description "Please leave at the door"
-```
-
-Using key directly:
+```  
+- 直接使用地址：  
 ```bash
 post-at routing place <tracking-number> \
   --key Vor_Wohnungstüre \
   --description "Bitte vor die Wohnungstür"
-```
-
-Using label:
+```  
+- 使用标签进行指定：  
 ```bash
 post-at routing place <tracking-number> \
   --place "Vor der Wohnungstüre" \
   --description "Custom instructions"
 ```
 
-## Example Workflows
+## 示例用法  
 
-Check what's arriving today/tomorrow:
+- 查看今天/明天的投递信息：  
 ```bash
 post-at deliveries
-```
-
-Get full details including package photo:
+```  
+- 获取包含包裹照片的完整详情：  
 ```bash
 post-at delivery <tracking-number>
-```
-
-Set all upcoming deliveries to door:
+```  
+- 将所有即将投递的包裹设置为“门前”（Vor der Haustüre）：  
 ```bash
 # First list deliveries
 post-at deliveries --json > /tmp/deliveries.json
@@ -118,9 +109,8 @@ post-at routing place 1042348411302810212306 \
   --description "Leave at apartment door"
 ```
 
-## Notes
-
-- Session tokens expire after a short time (auto-relogin when needed)
-- Not all deliveries support Wunschplatz redirection
-- Picture URLs may not be available for all packages
-- Use `--json` output for programmatic processing
+## 注意事项：  
+- 会话令牌会在一段时间后过期，需要重新登录。  
+- 并非所有包裹都支持用户指定的投递地点。  
+- 并非所有包裹的图片链接都可用。  
+- 如需进行程序化处理，请使用 `--json` 选项输出数据。

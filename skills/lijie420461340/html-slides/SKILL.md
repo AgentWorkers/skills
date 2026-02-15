@@ -1,6 +1,6 @@
 ---
 name: html-slides
-description: Create interactive HTML presentations using reveal.js - the web's most popular presentation framework
+description: 使用reveal.js创建交互式HTML演示文稿——reveal.js是网络上最受欢迎的演示文稿框架。
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, reveal.js, html, slides, interactive]
@@ -12,27 +12,27 @@ library:
   stars: 70.5k
 ---
 
-# HTML Slides Skill
+# HTML幻灯片制作技能
 
-## Overview
+## 概述
 
-This skill enables creation of stunning HTML-based presentations using **reveal.js** - the web's most popular presentation framework. Create interactive, responsive slides with animations, code highlighting, speaker notes, and more.
+该技能允许您使用**reveal.js**（目前最流行的Web演示框架）来创建精美的HTML演示文稿。您可以制作包含动画、代码高亮显示、演讲者备注等功能的交互式、响应式幻灯片。
 
-## How to Use
+## 使用方法
 
-1. Describe the presentation you want to create
-2. Specify theme, transitions, and features needed
-3. I'll generate a reveal.js presentation
+1. 描述您想要制作的演示文稿内容。
+2. 指定所需的主题、过渡效果及其他功能。
+3. 我将为您生成相应的reveal.js演示文稿。
 
-**Example prompts:**
-- "Create an interactive presentation about our product"
-- "Build a code walkthrough presentation with syntax highlighting"
-- "Make a presentation with speaker notes and timer"
-- "Create slides with animations and transitions"
+**示例提示：**
+- “制作一个关于我们产品的交互式演示文稿。”
+- “创建一个带有代码高亮显示功能的演示文稿。”
+- “制作一个包含演讲者备注和计时器的演示文稿。”
+- “制作包含动画和过渡效果的幻灯片。”
 
-## Domain Knowledge
+## 相关知识
 
-### reveal.js Basics
+### reveal.js基础
 
 ```html
 <!doctype html>
@@ -54,7 +54,7 @@ This skill enables creation of stunning HTML-based presentations using **reveal.
 </html>
 ```
 
-### Slide Structure
+### 幻灯片结构
 
 ```html
 <!-- Horizontal slides -->
@@ -77,15 +77,15 @@ This skill enables creation of stunning HTML-based presentations using **reveal.
 </section>
 ```
 
-### Themes
+### 主题
 
-Built-in themes: `black`, `white`, `league`, `beige`, `sky`, `night`, `serif`, `simple`, `solarized`, `blood`, `moon`
+内置主题：`black`、`white`、`league`、`beige`、`sky`、`night`、`serif`、`simple`、`solarized`、`blood`、`moon`
 
 ```html
 <link rel="stylesheet" href="reveal.js/dist/theme/moon.css">
 ```
 
-### Transitions
+### 过渡效果
 
 ```javascript
 Reveal.initialize({
@@ -95,7 +95,7 @@ Reveal.initialize({
 });
 ```
 
-### Fragments (Animations)
+### 动画效果
 
 ```html
 <section>
@@ -106,9 +106,9 @@ Reveal.initialize({
 </section>
 ```
 
-Fragment styles: `fade-in`, `fade-out`, `fade-up`, `fade-down`, `fade-left`, `fade-right`, `highlight-red`, `highlight-blue`, `highlight-green`, `strike`
+动画效果类型：`fade-in`（淡入）、`fade-out`（淡出）、`fade-up`（淡入）、`fade-down`（淡出）、`fade-left`（向左淡入）、`fade-right`（向右淡入）、`highlight-red`（高亮显示为红色）、`highlight-blue`（高亮显示为蓝色）、`highlight-green`（高亮显示为绿色）、`strike`（划线效果）
 
-### Code Highlighting
+### 代码高亮显示
 
 ```html
 <section>
@@ -121,7 +121,7 @@ def hello():
 </section>
 ```
 
-### Speaker Notes
+### 演讲者备注
 
 ```html
 <section>
@@ -133,7 +133,7 @@ def hello():
 </section>
 ```
 
-### Backgrounds
+### 背景图片
 
 ```html
 <!-- Color background -->
@@ -149,7 +149,7 @@ def hello():
 <section data-background-gradient="linear-gradient(to bottom, #283b95, #17b2c3)">
 ```
 
-### Configuration
+### 配置选项
 
 ```javascript
 Reveal.initialize({
@@ -187,9 +187,9 @@ Reveal.initialize({
 });
 ```
 
-## Examples
+## 示例
 
-### Example 1: Tech Talk
+### 示例1：技术讲座
 ```html
 <!doctype html>
 <html>
@@ -254,7 +254,7 @@ DELETE /users/123    # Delete
 </html>
 ```
 
-### Example 2: Product Launch
+### 示例2：产品发布会
 ```html
 <!doctype html>
 <html>
@@ -302,8 +302,8 @@ DELETE /users/123    # Delete
 </html>
 ```
 
-## Resources
+## 资源
 
-- [reveal.js Documentation](https://revealjs.com/)
-- [GitHub Repository](https://github.com/hakimel/reveal.js)
-- [Demo Slides](https://revealjs.com/demo/)
+- [reveal.js官方文档](https://revealjs.com/)
+- [GitHub仓库](https://github.com/hakimel/reveal.js)
+- [演示文稿示例](https://revealjs.com/demo/)

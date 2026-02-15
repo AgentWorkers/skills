@@ -8,43 +8,43 @@ description: |
   Use this BEFORE writing any Manim code. This skill plans the video; use manimce-best-practices or manimgl-best-practices for implementation.
 ---
 
-## Workflow
+## 工作流程
 
-### Phase 1: Understand the Concept
+### 第一阶段：理解概念
 
-1. **Research the topic** deeply before asking questions
-   - Use web search to understand the core concepts
-   - Identify the key insights that make this topic interesting
-   - Find the "aha moment" - what makes this click for learners
-   - Note common misconceptions to address
+1. **深入研究主题**  
+   - 在提问之前，先通过网络搜索来了解核心概念。  
+   - 找出使这个主题变得有趣的关键点。  
+   - 体验“顿悟”的时刻——也就是让学习者产生共鸣的部分。  
+   - 记录下常见的误解，以便在讲解过程中加以澄清。
 
-2. **Identify the narrative hook**
-   - What question does this video answer?
-   - Why should the viewer care?
-   - What's the surprising or counterintuitive element?
+2. **确定视频的叙事焦点**  
+   - 这个视频要回答什么问题？  
+   - 观众为什么应该关心这个问题？  
+   - 视频中有哪些令人惊讶或违反直觉的内容？
 
-### Phase 2: Clarify with User
+### 第二阶段：与用户沟通并明确需求
 
-Ask targeted questions (not all at once - adapt based on responses):
+提出有针对性的问题（不要一次性问完所有问题，根据用户的回答进行调整）：
 
-**Audience & Scope**
-- What math/science background should I assume? (e.g., "knows calculus" or "high school algebra")
-- Target video length? (short: 5-10min, medium: 15-20min, long: 30min+)
-- Should this be self-contained or part of a series?
+**受众与内容范围**  
+- 我应该假设观众具备什么样的数学/科学背景？（例如：“了解微积分”或“高中代数”）  
+- 视频的时长应该控制在多少？（短：5-10分钟；中：15-20分钟；长：30分钟以上）  
+- 这个视频应该是独立的，还是系列的一部分？
 
-**Focus & Depth**
-- Any specific aspects to emphasize or skip?
-- Proof-heavy or intuition-focused?
-- Real-world applications to include?
+**内容重点与深度**  
+- 有哪些具体的方面需要强调或省略？  
+- 视频应该侧重于证明过程，还是更注重直观理解？  
+- 是否需要包含实际应用案例？
 
-**Style Preferences**
-- Color scheme preferences?
-- Narration style? (casual, formal, playful)
-- Any specific visual metaphors you have in mind?
+**风格偏好**  
+- 喜欢什么样的配色方案？  
+- 叙述风格是随意的、正式的，还是幽默风趣的？  
+- 有没有特定的视觉隐喻或表达方式希望使用？
 
-### Phase 3: Create scenes.md
+### 第三阶段：创建 `scenes.md` 文件
 
-Output a comprehensive `scenes.md` file with this structure:
+生成一个结构完整的 `scenes.md` 文件，内容如下：
 
 ```markdown
 # [Video Title]
@@ -103,36 +103,36 @@ Output a comprehensive `scenes.md` file with this structure:
 [Suggested order for implementing scenes, noting dependencies]
 ```
 
-## 3b1b Style Principles
+## 3b1b 风格原则
 
-Apply these principles when composing scenes:
+在制作视频场景时，请遵循以下原则：
 
-### Visual Storytelling
-- **Show, don't just tell** - Every concept needs a visual representation
-- **Progressive revelation** - Build complexity gradually, don't show everything at once
-- **Visual continuity** - Transform objects rather than replacing them when possible
+### 视觉叙事  
+- **展示而非仅仅讲解**——每个概念都需要通过视觉方式来呈现。  
+- **逐步揭示复杂内容**——不要一次性展示所有细节，而是逐步引导观众理解。  
+- **保持视觉连贯性**——尽可能通过变换对象来展示信息，而不是直接替换它们。
 
-### Pacing & Rhythm
-- **Pause for insight** - Give viewers time to absorb key moments
-- **Vary the pace** - Mix quick sequences with slower explanations
-- **End scenes with resolution** - Each scene should feel complete
+### 节奏与节奏  
+- **适当停顿**——给观众时间来消化关键内容。  
+- **调整讲解速度**——快速讲解与详细解释交替进行。  
+- **每个场景都要有明确的结局**——让每个视频片段都感觉完整。
 
-### Mathematical Beauty
-- **Emphasize elegance** - Highlight when math is surprisingly simple or beautiful
-- **Connect representations** - Show the same concept multiple ways (algebraic, geometric, intuitive)
-- **Embrace abstraction gradually** - Start concrete, then generalize
+### 数学的美感  
+- **强调简洁与美感**——当数学原理显得简洁或优美时，要加以突出。  
+- **多种表达方式**——用代数、几何或直观的方式展示同一个概念。  
+- **逐步引入抽象概念**——从具体实例开始，再逐步抽象化。
 
-### Engagement Techniques
-- **Pose questions** - Make viewers curious before revealing answers
-- **Acknowledge difficulty** - "This might seem confusing at first..."
-- **Celebrate insight** - Make the "aha moment" feel earned
+### 互动技巧  
+- **提出问题**——在揭示答案之前激发观众的好奇心。  
+- **承认难度**——可以这样说：“这可能会让人感到困惑……”  
+- **庆祝顿悟**——让观众感受到“顿悟”的喜悦。
 
-## References
+## 参考资料  
 
-- [references/narrative-patterns.md](references/narrative-patterns.md) - Common 3b1b narrative structures
-- [references/visual-techniques.md](references/visual-techniques.md) - Effective visualization patterns
-- [references/scene-examples.md](references/scene-examples.md) - Example scenes.md excerpts
+- [references/narrative-patterns.md](references/narrative-patterns.md) – 常见的 3b1b 叙事结构  
+- [references/visual-techniques.md](references/visual-techniques.md) – 有效的可视化技巧  
+- [references/scene-examples.md](references/scene-examples.md) – 视频场景的示例
 
-## Templates
+## 模板  
 
-- [templates/scenes-template.md](templates/scenes-template.md) - Blank scenes.md template
+- [templates/scenes-template.md](templates/scenes-template.md) – 空白的 `scenes.md` 模板

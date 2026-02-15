@@ -1,34 +1,34 @@
 ---
-description: Analyze disk usage, find large/old files, and suggest safe cleanup actions.
+description: 分析磁盘使用情况，查找大型或陈旧的文件，并提供安全的清理建议。
 ---
 
-# Disk Cleaner
+# 磁盘清理工具
 
-Analyze disk usage and identify cleanup opportunities.
+该工具用于分析磁盘使用情况，并识别需要清理的文件或文件夹。
 
-## Instructions
+## 使用说明
 
-1. **Filesystem overview**:
+1. **文件系统概述**：
    ```bash
    df -h --output=source,size,used,avail,pcent,target | grep -v tmpfs
    ```
 
-2. **Directory analysis** (top space consumers):
+2. **目录分析**（占用最多空间的目录）：
    ```bash
    du -sh /path/* 2>/dev/null | sort -rh | head -20
    ```
 
-3. **Find large files**:
+3. **查找大文件**：
    ```bash
    find /path -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -k5 -rh | head -20
    ```
 
-4. **Find old files** (not modified in 90+ days):
+4. **查找旧文件**（90 天以上未修改的文件）：
    ```bash
    find /path -type f -mtime +90 -size +10M -exec ls -lh {} \; 2>/dev/null | sort -k5 -rh
    ```
 
-5. **Common cleanup targets**:
+5. **常见的清理目标**：
    ```bash
    # Package caches
    du -sh ~/.cache/pip ~/.npm/_cacache ~/.cache/yarn 2>/dev/null
@@ -42,7 +42,7 @@ Analyze disk usage and identify cleanup opportunities.
    du -sh /tmp 2>/dev/null
    ```
 
-6. **Report format**:
+6. **报告格式**：
    ```
    💾 Disk Report — /home (85% used, 12GB free)
 
@@ -60,20 +60,20 @@ Analyze disk usage and identify cleanup opportunities.
    | Old logs | ~800 MB | find /var/log -mtime +30 -delete | 🟡 Review |
    ```
 
-## Security
+## 安全性注意事项
 
-- **Never auto-delete** — always show commands and let user confirm
-- Use `trash` over `rm` when available (recoverable)
-- Skip `/proc`, `/sys`, `/dev` in scans
-- Don't scan directories outside user's permission
+- **切勿自动删除文件**——始终显示删除命令，让用户进行确认；
+- 如果可能，优先使用 `trash` 命令而非 `rm` 命令（因为 `trash` 命令允许恢复文件）；
+- 扫描时跳过 `/proc`、`/sys`、`/dev` 目录；
+- 不要扫描用户没有权限访问的目录。
 
-## Edge Cases
+## 特殊情况处理
 
-- **Permission denied**: Use `2>/dev/null` to suppress; note inaccessible dirs
-- **Symlinks**: Use `-not -type l` to avoid counting symlinked data twice
-- **Mounted drives**: Identify mount points; don't accidentally clean external storage
+- **权限问题**：使用 `2>/dev/null` 来忽略权限错误；对于无法访问的目录，应记录相关信息；
+- **符号链接**：使用 `-not -type l` 选项以避免重复计算符号链接所指向的文件；
+- **已挂载的驱动器**：请识别出已挂载的驱动器，避免误删外部存储设备中的文件。
 
-## Requirements
+## 所需工具
 
-- Standard Unix tools: `du`, `df`, `find`, `sort`
-- No API keys needed
+- 标准的 Unix 工具：`du`、`df`、`find`、`sort`；
+- 不需要任何 API 密钥。

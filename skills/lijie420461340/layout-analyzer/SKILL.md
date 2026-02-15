@@ -1,6 +1,6 @@
 ---
 name: layout-analyzer
-description: Analyze document structure and layout using surya - detect text blocks, tables, and reading order
+description: 使用 surya 分析文档结构和布局——检测文本块、表格以及阅读顺序
 author: claude-office-skills
 version: "1.0"
 tags: [layout, surya, structure, document-analysis, detection]
@@ -12,27 +12,27 @@ library:
   stars: 19k
 ---
 
-# Layout Analyzer Skill
+# 布局分析技能
 
-## Overview
+## 概述
 
-This skill enables document layout analysis using **surya** - an advanced document understanding system. Detect text blocks, tables, figures, headings, and determine reading order in complex documents.
+该技能利用 **surya**（一个先进的文档理解系统）来分析文档的布局。它可以检测文本块、表格、图表、标题，并确定复杂文档中的阅读顺序。
 
-## How to Use
+## 使用方法
 
-1. Provide the document image or PDF
-2. Specify what layout elements to detect
-3. I'll analyze the structure and return detected regions
+1. 提供文档的图片或 PDF 文件。
+2. 指定需要检测的布局元素。
+3. 我将分析文档结构并返回检测到的区域。
 
-**Example prompts:**
-- "Analyze the layout of this document page"
-- "Detect all tables and text blocks in this image"
-- "Determine the reading order for this PDF page"
-- "Find headings and paragraphs in this document"
+**示例提示：**
+- “分析此文档页面的布局。”
+- “检测此图片中的所有表格和文本块。”
+- “确定此 PDF 页面的阅读顺序。”
+- “查找此文档中的标题和段落。”
 
-## Domain Knowledge
+## 领域知识
 
-### surya Fundamentals
+### surya 基础知识
 
 ```python
 from surya.detection import DetectionPredictor
@@ -48,23 +48,23 @@ layout_predictor = LayoutPredictor()
 layout_result = layout_predictor([image])
 ```
 
-### Layout Element Types
+### 布局元素类型
 
-| Element | Description |
-|---------|-------------|
-| Text | Regular paragraph text |
-| Title | Document/section titles |
-| Section-header | Section headings |
-| List-item | Bulleted/numbered items |
-| Table | Tabular data |
-| Figure | Images/diagrams |
-| Caption | Figure/table captions |
-| Footnote | Footnotes |
-| Formula | Mathematical equations |
-| Page-header | Headers |
-| Page-footer | Footers |
+| 元素        | 描述                                      |
+|-------------|-----------------------------------------|
+| 文本        | 普通段落文本                                      |
+| 标题        | 文档/章节的标题                                    |
+| 节标题       | 节的标题                                      |
+| 列表项       | 项目符号/编号列表项                                  |
+| 表格        | 表格数据                                      |
+| 图表        | 图片/图表                                      |
+| 图表标题     | 图表/表格的说明文字                                |
+| 脚注        | 文档中的脚注                                    |
+| 公式        | 数学公式                                      |
+| 页面标题     | 页面顶部或底部的标题                              |
+| 页面底部     | 页面底部的注释或信息                              |
 
-### Text Detection
+### 文本检测
 
 ```python
 from surya.detection import DetectionPredictor
@@ -86,7 +86,7 @@ for page_result in results:
         print(f"Confidence: {bbox.confidence}")
 ```
 
-### Layout Analysis
+### 布局分析
 
 ```python
 from surya.layout import LayoutPredictor
@@ -107,7 +107,7 @@ for page_result in layout_results:
         print(f"Confidence: {element.confidence}")
 ```
 
-### Reading Order Detection
+### 阅读顺序检测
 
 ```python
 from surya.reading_order import ReadingOrderPredictor
@@ -129,7 +129,7 @@ for page_result in order_results:
         print(f"{i+1}. {element.label}: {element.bbox}")
 ```
 
-### OCR with Layout
+### 带布局的 OCR 处理
 
 ```python
 from surya.ocr import OCRPredictor
@@ -160,7 +160,7 @@ for layout, ocr in zip(layout_results, ocr_results):
                 print(f"  Text: {text_line.text}")
 ```
 
-### Processing PDFs
+### PDF 文件处理
 
 ```python
 from surya.layout import LayoutPredictor
@@ -200,7 +200,7 @@ def analyze_pdf_layout(pdf_path):
 structure = analyze_pdf_layout("document.pdf")
 ```
 
-### Visualization
+### 可视化
 
 ```python
 from surya.layout import LayoutPredictor
@@ -242,17 +242,18 @@ def visualize_layout(image_path, output_path):
     return output_path
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use High-Quality Images**: 150+ DPI for best results
-2. **Preprocess if Needed**: Deskew rotated documents
-3. **Validate Results**: Check confidence scores
-4. **Handle Multi-page**: Process pages individually
-5. **Combine with OCR**: Get text within detected regions
+1. **使用高清晰度图片**：建议使用 150 DPI 以上的图片以获得最佳效果。
+2. **必要时进行预处理**：校正文档的倾斜或旋转。
+3. **验证结果**：检查检测到的区域的置信度评分。
+4. **处理多页文档**：逐页进行处理。
+5. **结合 OCR**：从检测到的区域中提取文本。
 
-## Common Patterns
+## 常见模式
 
-### Document Structure Extraction
+### 文档结构提取
+
 ```python
 def extract_document_structure(image_path):
     """Extract hierarchical document structure."""
@@ -295,7 +296,8 @@ def extract_document_structure(image_path):
     return structure
 ```
 
-### Table Region Extraction
+### 表格区域提取
+
 ```python
 def extract_table_regions(image_path):
     """Extract table regions from document."""
@@ -324,9 +326,10 @@ def extract_table_regions(image_path):
     return tables
 ```
 
-## Examples
+## 示例
 
-### Example 1: Academic Paper Analysis
+### 示例 1：学术论文分析
+
 ```python
 from surya.layout import LayoutPredictor
 from surya.reading_order import ReadingOrderPredictor
@@ -382,7 +385,8 @@ print(f"Total tables: {paper['element_counts']['Table']}")
 print(f"Total figures: {paper['element_counts']['Figure']}")
 ```
 
-### Example 2: Form Field Detection
+### 示例 2：表单字段检测
+
 ```python
 from surya.layout import LayoutPredictor
 from PIL import Image
@@ -413,7 +417,8 @@ fields = detect_form_fields('form.png')
 print(f"Found {len(fields)} potential form elements")
 ```
 
-### Example 3: Multi-column Article
+### 示例 3：多列文章
+
 ```python
 from surya.layout import LayoutPredictor
 from surya.reading_order import ReadingOrderPredictor
@@ -464,15 +469,15 @@ print(f"Left column: {len(article['columns']['left'])} elements")
 print(f"Right column: {len(article['columns']['right'])} elements")
 ```
 
-## Limitations
+## 限制
 
-- Handwritten layouts may be inaccurate
-- Very small text regions may be missed
-- Complex nested layouts challenging
-- GPU recommended for batch processing
-- Multi-language support varies
+- 手写内容的布局可能检测不准确。
+- 非常小的文本区域可能会被遗漏。
+- 复杂的嵌套布局较难处理。
+- 建议使用 GPU 进行批量处理。
+- 对多语言的支持程度因版本而异。
 
-## Installation
+## 安装
 
 ```bash
 pip install surya-ocr
@@ -481,8 +486,8 @@ pip install surya-ocr
 pip install pdf2image
 ```
 
-## Resources
+## 资源
 
-- [surya GitHub](https://github.com/VikParuchuri/surya)
-- [Model Documentation](https://github.com/VikParuchuri/surya#models)
-- [Examples](https://github.com/VikParuchuri/surya/tree/master/examples)
+- [surya GitHub 仓库](https://github.com/VikParuchuri/surya)
+- [模型文档](https://github.com/VikParuchuri/surya#models)
+- [示例代码](https://github.com/VikParuchuri/surya/tree/master/examples)

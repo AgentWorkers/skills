@@ -1,38 +1,38 @@
 ---
 name: tiered-memory
-description: "EvoClaw Tiered Memory Architecture v2.1.0 - LLM-powered three-tier memory system with structured metadata extraction, URL preservation, validation, and cloud-first sync. Enhanced to prevent loss of URLs and technical details during distillation."
+description: "EvoClaw 分层内存架构 v2.1.0——一种基于 LLM（大型语言模型）的三层内存系统，具备结构化元数据提取、URL 保留、验证以及以云为中心的同步功能。该架构经过优化，旨在防止在数据提取过程中 URL 和技术细节的丢失。"
 version: "2.1.0"
 ---
 
-# Tiered Memory System v2.1.0
+# 分层记忆系统 v2.1.0
 
-> *A mind that remembers everything is as useless as one that remembers nothing. The art is knowing what to keep.* 🧠
+> “一个记住一切的头脑和一个什么都不记得的头脑一样无用。真正的艺术在于知道该记住什么。” 🧠
 
-EvoClaw-compatible three-tier memory system inspired by human cognition and PageIndex tree retrieval.
+这款与EvoClaw兼容的三层记忆系统借鉴了人类认知机制和PageIndex树的检索技术。
 
-## What's New in v2.1.0
+## v2.1.0的新功能
 
-🎯 **Structured Metadata Extraction**
-- Automatic extraction of URLs, shell commands, and file paths from facts
-- Preserved during distillation and consolidation
-- Searchable by URL fragment
+🎯 **结构化元数据提取**
+- 从事实信息中自动提取URL、shell命令和文件路径
+- 在信息整合和压缩过程中保留这些元数据
+- 可通过URL片段进行搜索
 
-✅ **Memory Completeness Validation**
-- Check daily notes for missing URLs, commands, and next steps
-- Proactive warnings for incomplete information
-- Actionable suggestions for improvement
+✅ **记忆完整性验证**
+- 每日检查笔记中是否缺少URL、命令或后续步骤
+- 对不完整的信息发出主动警告
+- 提供改进的建议
 
-🔍 **Enhanced Search**
-- Search facts by URL fragment
-- Get all stored URLs from warm memory
-- Metadata-aware fact storage
+🔍 **增强搜索功能**
+- 可通过URL片段搜索事实信息
+- 从“热记忆”中获取所有存储的URL
+- 元数据会被纳入事实信息的存储过程中
 
-🛡️ **URL Preservation**
-- URLs explicitly preserved during LLM distillation
-- Fallback metadata extraction if LLM misses them
-- Command-line support for adding metadata manually
+🛡️ **URL保存**
+- 在大语言模型（LLM）处理过程中明确保留URL
+- 如果LLM未能提取URL，会使用备用元数据
+- 支持通过命令行手动添加元数据
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -67,33 +67,33 @@ EvoClaw-compatible three-tier memory system inspired by human cognition and Page
 └─────────────────────────────────────────────────────┘
 ```
 
-## Design Principles
+## 设计原则
 
-### From Human Memory
-- **Consolidation** — Short-term → long-term happens during consolidation cycles
-- **Relevance Decay** — Unused memories fade; accessed memories strengthen
-- **Strategic Forgetting** — Not remembering everything is a feature
-- **Hierarchical Organization** — Navigate categories, not scan linearly
+### 从人类记忆中汲取灵感
+- **整合**：短期记忆在整合过程中转化为长期记忆
+- **相关性衰减**：未使用的记忆会逐渐消失；经常访问的记忆会变得更加牢固
+- **战略性遗忘**：不记住所有事情是一种能力
+- **分层组织**：按类别导航，而非线性扫描
 
-### From PageIndex
-- **Vectorless Retrieval** — LLM reasoning instead of embedding similarity
-- **Tree-Structured Index** — O(log n) navigation, not O(n) scan
-- **Explainable Results** — Every retrieval traces a path through categories
-- **Reasoning-Based Search** — "Why relevant?" not "how similar?"
+### 从PageIndex中汲取灵感
+- **无向量检索**：依靠LLM进行推理，而非基于相似性进行检索
+- **树状索引**：O(log n)的导航效率，而非O(n)的线性扫描
+- **可解释的结果**：每次检索都会显示一条通过类别的路径
+- **基于推理的搜索**：询问“为什么相关？”而非“有多相似？”
 
-### Cloud-First (EvoClaw)
-- **Device is replaceable** — Soul lives in cloud (Turso)
-- **Critical sync** — Hot + tree sync after every conversation
-- **Disaster recovery** — Full restore in <2 minutes
-- **Multi-device** — Same agent across phone/desktop/embedded
+### 以云为中心（EvoClaw）
+- **设备可替换**：核心数据存储在云端（Turso）
+- **关键数据同步**：每次对话后都会同步热数据和树结构
+- **灾难恢复**：可在2分钟内完全恢复数据
+- **多设备支持**：手机/桌面/嵌入式设备均可使用同一代理
 
-## Memory Tiers
+## 记忆层次
 
-### 🔴 Hot Memory (5KB max)
+### 🔴 热记忆（最大5KB）
 
-**Purpose:** Core identity and active context, always in agent's context window.
+**用途：**存储核心身份和当前活动上下文，始终在代理的上下文窗口中显示。
 
-**Structure:**
+**结构：**
 ```json
 {
   "identity": {
@@ -137,19 +137,19 @@ EvoClaw-compatible three-tier memory system inspired by human cognition and Page
 }
 ```
 
-**Auto-pruning:**
-- Lessons: Max 20, removes lowest-importance when full
-- Events: Keeps last 10 only
-- Tasks: Max 10 pending
-- Total size: Hard limit at 5KB, progressively prunes if exceeded
+**自动修剪：**
+- 课程：最多20条，满时删除优先级最低的课程
+- 事件：仅保留最近10条
+- 任务：最多10个待办任务
+- 总大小：严格限制在5KB以内，超出限制时会自动修剪
 
-**Generates:** `MEMORY.md` — auto-rebuilt from structured hot state
+**生成文件：** `MEMORY.md` — 从结构化的热记忆状态自动生成
 
-### 🟡 Warm Memory (50KB max, 30-day retention)
+### 🟡 温暖记忆（最大50KB，保留30天）
 
-**Purpose:** Recent distilled facts with decay scoring.
+**用途：** 存储最近提取的事实信息，并对其进行相关性评分
 
-**Entry format:**
+**条目格式：**
 ```json
 {
   "id": "abc123def456",
@@ -163,7 +163,7 @@ EvoClaw-compatible three-tier memory system inspired by human cognition and Page
 }
 ```
 
-**Scoring:**
+**评分机制：**
 ```
 score = importance × recency_decay(age) × reinforcement(access_count)
 
@@ -171,22 +171,22 @@ recency_decay(age) = exp(-age_days / 30)
 reinforcement(access) = 1 + 0.1 × access_count
 ```
 
-**Tier classification:**
-- `score >= 0.7` → Hot (promote to hot state)
-- `score >= 0.3` → Warm (keep)
-- `score >= 0.05` → Cold (archive)
-- `score < 0.05` → Frozen (delete after retention period)
+**层次分类：**
+- `score >= 0.7` → 被标记为“热记忆”（提升到热记忆状态）
+- `score >= 0.3` → 被标记为“温暖记忆”（保留）
+- `score >= 0.05` → 被标记为“冷记忆”（归档）
+- `score < 0.05` → 被标记为“冻结记忆”（超过保留期限后删除）
 
-**Eviction triggers:**
-1. Age > 30 days AND score < 0.3
-2. Total warm size > 50KB (evicts lowest-scored)
-3. Manual consolidation
+**驱逐规则：**
+1. 存储时间超过30天且评分低于0.3
+2. 温暖记忆总大小超过50KB（删除评分最低的条目）
+3. 手动进行整合
 
-### 🟢 Cold Memory (Unlimited, Turso)
+### 🟢 冷记忆（无限制，存储在Turso中）
 
-**Purpose:** Long-term archive, queryable but never bulk-loaded.
+**用途：** 长期归档，可查询但不可批量加载
 
-**Schema:**
+**数据结构：**
 ```sql
 CREATE TABLE cold_memories (
   id TEXT PRIMARY KEY,
@@ -205,20 +205,20 @@ CREATE TABLE critical_state (
 );
 ```
 
-**Retention:** 10 years (configurable)
-**Cleanup:** Monthly consolidation removes frozen entries older than retention period
+**保留期限：** 10年（可配置）
+**清理机制：** 每月清理超过保留期限的冻结条目
 
-## Tree Index
+## 树状索引
 
-**Purpose:** Hierarchical category map for O(log n) retrieval.
+**用途：** 提供O(log n)的检索效率的分层类别映射
 
-**Constraints:**
-- Max 50 nodes
-- Max depth 4 levels
-- Max 2KB serialized
-- Max 10 children per node
+**限制：**
+- 最多50个节点
+- 最大深度为4层
+- 每个节点最多包含2KB的数据
+- 每个节点最多有10个子节点
 
-**Example:**
+**示例：**
 ```
 Memory Tree Index
 ==================================================
@@ -240,17 +240,17 @@ Nodes: 7/50
 Size: 1842 / 2048 bytes
 ```
 
-**Operations:**
-- `--add PATH DESC` — Add category node
-- `--remove PATH` — Remove node (only if no data)
-- `--prune` — Remove dead nodes (no activity in 60+ days)
-- `--show` — Pretty-print tree
+**操作命令：**
+- `--add PATH DESC` — 添加类别节点
+- `--remove PATH` — 删除节点（仅当节点为空时）
+- `--prune` — 删除60天以上无活动的节点
+- `--show` — 以美观的方式显示树结构
 
-## Distillation Engine
+## 提取引擎
 
-**Purpose:** Three-stage compression of conversations.
+**用途：** 对对话内容进行三阶段压缩
 
-**Pipeline:**
+**处理流程：**
 ```
 Raw conversation (500B)
   ↓ Stage 1→2: Extract structured info
@@ -259,10 +259,10 @@ Distilled fact (80B)
 Core summary (20B)
 ```
 
-### Stage 1→2: Raw → Distilled
+### 第1阶段→第2阶段：原始数据 → 提取后的结构化数据
 
-**Input:** Raw conversation text
-**Output:** Structured JSON
+**输入：** 原始对话文本
+**输出：** 结构化的JSON数据
 
 ```json
 {
@@ -275,11 +275,11 @@ Core summary (20B)
 }
 ```
 
-**Modes:**
-- `rule`: Regex/heuristic extraction (fast, no LLM)
-- `llm`: LLM-powered extraction (accurate, requires endpoint)
+**操作模式：**
+- `rule`：基于正则表达式/启发式的提取方法（快速，无需LLM）
+- `llm`：利用LLM进行提取（准确，但需要API端点）
 
-**Usage:**
+**使用方法：**
 ```bash
 # Rule-based (default)
 distiller.py --text "Had a productive chat about the BSC integration..." --mode rule
@@ -291,11 +291,11 @@ distiller.py --text "..." --mode llm --llm-endpoint http://localhost:8080/comple
 distiller.py --text "..." --mode rule --core-summary
 ```
 
-### Stage 2→3: Distilled → Core Summary
+### 第2阶段→第3阶段：提取后的数据 → 核心摘要
 
-**Purpose:** One-line summary for tree index
+**用途：** 生成树状索引的一行摘要
 
-**Example:**
+**示例：**
 ```
 Distilled: {
   "fact": "Bowen decided raw JSON-RPC for BSC, no go-ethereum",
@@ -305,32 +305,30 @@ Distilled: {
 Core summary: "BSC integration: raw JSON-RPC (no deps)"
 ```
 
-**Target:** <30 bytes
+**目标：** 输出长度小于30字节
 
-## LLM-Powered Tree Search
+## 利用LLM的树状搜索
 
-**Purpose:** Semantic search through tree structure using LLM reasoning.
+**工作原理：**
 
-**How it works:**
+1. **构建查询提示**：结合树结构和查询内容
+2. **LLM进行推理**，确定哪些类别相关
+3. **返回** 相关类别的路径及对应的评分
+4. **从这些类别中检索** 相关的记忆信息
 
-1. **Build prompt** with tree structure + query
-2. **LLM reasons** about which categories are relevant
-3. **Returns** category paths with relevance scores
-4. **Fetches** memories from those categories
+**示例：**
 
-**Example:**
+查询：“我们关于黑客马拉松的截止日期做了什么决定？”
 
-Query: *"What did we decide about the hackathon deadline?"*
+**关键词搜索** 返回：
+- `projects/evoclaw`（得分0.8）
+- `technical/deployment`（得分0.4）
 
-**Keyword search** returns:
-- `projects/evoclaw` (0.8)
-- `technical/deployment` (0.4)
+**LLM推理结果：**
+- `projects/evoclaw/bsc`（得分0.95）—— “关于黑客马拉松的BSC集成”
+- `active_context/events`（得分0.85）—— “这里提到了截止日期”
 
-**LLM search** reasons:
-- `projects/evoclaw/bsc` (0.95) — "BSC integration for hackathon"
-- `active_context/events` (0.85) — "Deadline mentioned here"
-
-**LLM prompt template:**
+**LLM查询提示模板：**
 ```
 You are a memory retrieval system. Given a memory tree index and a query, 
 identify which categories are relevant.
@@ -349,7 +347,7 @@ Output (JSON):
 ]
 ```
 
-**Usage:**
+**使用方法：**
 ```bash
 # Keyword search (fast)
 tree_search.py --query "BSC integration" --tree-file memory-tree.json --mode keyword
@@ -363,11 +361,11 @@ tree_search.py --query "..." --tree-file memory-tree.json \
   --mode llm --llm-prompt-file prompt.txt
 ```
 
-## Multi-Agent Support
+## 多代理支持
 
-**Agent ID scoping** — All operations support `--agent-id` flag.
+**代理ID限定**：所有操作都支持`--agent-id`标志
 
-**File layout:**
+**文件组织：**
 ```
 memory/
   default/
@@ -383,9 +381,9 @@ MEMORY.md              # default agent
 MEMORY-agent-2.md      # agent-2
 ```
 
-**Cold storage:** Agent-scoped queries via `agent_id` column
+**冷存储：** 通过`agent_id`列实现代理级别的查询
 
-**Usage:**
+**使用方法：**
 ```bash
 # Store for agent-2
 memory_cli.py store --text "..." --category "..." --agent-id agent-2
@@ -397,76 +395,52 @@ memory_cli.py retrieve --query "..." --agent-id agent-2
 memory_cli.py consolidate --mode daily --agent-id agent-2
 ```
 
-## Consolidation Modes
+## 整合机制
 
-**Purpose:** Periodic memory maintenance and optimization.
+**用途：** 定期维护和优化记忆系统
 
-### Quick (hourly)
-- Warm eviction (score-based)
-- Archive expired to cold
-- Recalculate all scores
-- Rebuild MEMORY.md
+### 快速模式（每小时执行一次）
+- 根据评分驱逐“温暖记忆”中的条目
+- 将过期条目归档到“冷记忆”
+- 重新计算所有条目的评分
+- 重新生成`MEMORY.md`文件
 
-### Daily
-- Everything in Quick
-- Tree prune (remove dead nodes, 60+ days no activity)
+### 每日执行
+- 执行快速模式的全部操作
+- 修剪树结构中的无活动节点（60天以上无活动的节点）
 
-### Monthly
-- Everything in Daily
-- Tree rebuild (LLM-powered restructuring, future)
-- Cold cleanup (delete frozen entries older than retention)
+### 每月执行
+- 执行快速模式的全部操作
+- 重新构建树结构（利用LLM）
+- 清理“冷记忆”中的冻结条目
 
-### Full
-- Everything in Monthly
-- Full recalculation of all scores
-- Deep tree analysis
-- Generate consolidation report
+### 完整模式
+- 执行每月的所有操作
+- 重新计算所有条目的评分
+- 深度分析树结构
+- 生成整合报告
 
-**Usage:**
-```bash
-# Quick consolidation (default)
-memory_cli.py consolidate
+**推荐执行频率：**
+- 快速模式：每2-4小时执行一次（作为心跳操作）
+- 每日模式：午夜通过cron任务执行
+- 每月模式：每月1日通过cron任务执行
 
-# Daily (run via cron)
-memory_cli.py consolidate --mode daily
+## 关键数据同步（以云为中心）
 
-# Monthly (run via cron)
-memory_cli.py consolidate --mode monthly --db-url "$TURSO_URL" --auth-token "$TURSO_TOKEN"
-```
+**用途：** 每次对话后，将热记忆状态和树结构备份到云端
 
-**Recommended schedule:**
-- Quick: Every 2-4 hours (heartbeat)
-- Daily: Midnight via cron
-- Monthly: 1st of month via cron
+**同步内容：**
+- 热记忆状态（身份信息、所有者资料、当前活动上下文、课程内容）
+- 树状索引（结构及条目数量）
+- 时间戳
 
-## Critical Sync (Cloud-First)
+**恢复机制：** 如果设备丢失，可在2分钟内从云端恢复数据
 
-**Purpose:** Cloud backup of hot state + tree after every conversation.
+**异常处理策略：** 如果无法连接云端，采用指数级重试机制（5秒、10秒、20秒、40秒）
 
-**What syncs:**
-- Hot memory state (identity, owner profile, active context, lessons)
-- Tree index (structure + counts)
-- Timestamp
+## 监控指标与可见性
 
-**Recovery:** If device lost, restore from cloud in <2 minutes
-
-**Usage:**
-```bash
-# Manual critical sync
-memory_cli.py sync-critical --db-url "$TURSO_URL" --auth-token "$TURSO_TOKEN" --agent-id default
-
-# Automatic: Call after every important conversation
-# In agent code:
-#   1. Process conversation
-#   2. Store distilled facts
-#   3. Call sync-critical
-```
-
-**Retry strategy:** Exponential backoff if cloud unreachable (5s, 10s, 20s, 40s)
-
-## Metrics & Observability
-
-**Tracked metrics:**
+**跟踪的指标：**
 ```json
 {
   "tree_index_size_bytes": 1842,
@@ -484,32 +458,32 @@ memory_cli.py sync-critical --db-url "$TURSO_URL" --auth-token "$TURSO_TOKEN" --
 }
 ```
 
-**Usage:**
+**使用方法：**
 ```bash
 memory_cli.py metrics --agent-id default
 ```
 
-**Key metrics:**
-- **context_tokens_saved** — Estimated tokens saved vs. flat MEMORY.md
-- **retrieval_count** — How often memories are accessed
-- **evictions_today** — Memory pressure indicator
-- **warm_memory_size_kb** — Storage usage
+**关键指标：**
+- **context_tokens_saved** — 与原始`MEMORY.md`相比节省的字符数
+- **retrieval_count** — 记忆信息的访问频率
+- **evictions_today** — 记忆系统的压力指标
+- **warm_memory_size_kb** — 存储使用情况
 
-## Commands Reference
+## 命令参考
 
-### Store
+### 存储操作
 
 ```bash
 memory_cli.py store --text "Fact text" --category "path/to/category" [--importance 0.8] [--agent-id default]
 ```
 
-**Importance guide:**
-- `0.9-1.0` — Critical decisions, credentials, core identity
-- `0.7-0.8` — Project decisions, architecture, preferences
-- `0.5-0.6` — General facts, daily events
-- `0.3-0.4` — Casual mentions, low priority
+**重要性分级：**
+- `0.9-1.0` — 关键决策、凭证、核心身份信息
+- `0.7-0.8` — 项目决策、架构信息、个人偏好
+- `0.5-0.6** — 一般性事实、日常事件
+- `0.3-0.4` — 非常规提及的内容、优先级较低
 
-**Example:**
+**示例：**
 ```bash
 memory_cli.py store \
   --text "Decided to deploy EvoClaw on BSC testnet before mainnet" \
@@ -527,15 +501,15 @@ memory_cli.py store \
   --path "/home/user/models/"
 ```
 
-### Validate (v2.1.0)
+### 验证功能（v2.1.0）
 
 ```bash
 memory_cli.py validate [--file PATH] [--agent-id default]
 ```
 
-**Purpose:** Check daily notes for incomplete information (missing URLs, commands, next steps).
+**用途：** 每日检查笔记中是否存在不完整的信息（如缺失的URL、命令或后续步骤）
 
-**Example:**
+**示例：**
 ```bash
 # Validate today's daily notes
 memory_cli.py validate
@@ -544,7 +518,7 @@ memory_cli.py validate
 memory_cli.py validate --file memory/2026-02-13.md
 ```
 
-**Output:**
+**输出结果：**
 ```json
 {
   "status": "warning",
@@ -561,20 +535,20 @@ memory_cli.py validate --file memory/2026-02-13.md
 }
 ```
 
-### Extract Metadata (v2.1.0)
+### 提取元数据（v2.1.0）
 
 ```bash
 memory_cli.py extract-metadata --file PATH
 ```
 
-**Purpose:** Extract structured metadata (URLs, commands, paths) from a file.
+**用途：** 从文件中提取结构化元数据（URL、命令、路径）
 
-**Example:**
+**示例：**
 ```bash
 memory_cli.py extract-metadata --file memory/2026-02-13.md
 ```
 
-**Output:**
+**输出结果：**
 ```json
 {
   "file": "memory/2026-02-13.md",
@@ -600,24 +574,16 @@ memory_cli.py extract-metadata --file memory/2026-02-13.md
 }
 ```
 
-### Search by URL (v2.1.0)
+### 按URL搜索（v2.1.0）
 
+**用途：** 根据URL片段搜索事实信息
+
+**示例：**
 ```bash
 memory_cli.py search-url --url FRAGMENT [--limit 5] [--agent-id default]
 ```
 
-**Purpose:** Search facts by URL fragment.
-
-**Example:**
-```bash
-# Find all facts with comfy.org URLs
-memory_cli.py search-url --url "comfy.org"
-
-# Find GitHub repos
-memory_cli.py search-url --url "github.com" --limit 10
-```
-
-**Output:**
+**输出结果：**
 ```json
 {
   "query": "comfy.org",
@@ -637,17 +603,17 @@ memory_cli.py search-url --url "github.com" --limit 10
 }
 ```
 
-### Retrieve
+### 检索功能**
 
 ```bash
 memory_cli.py retrieve --query "search query" [--limit 5] [--llm] [--llm-endpoint URL] [--agent-id default]
 ```
 
-**Modes:**
-- Default: Keyword-based tree + warm + cold search
-- `--llm`: LLM-powered semantic tree search
+**操作模式：**
+- 默认模式：基于关键词的树状搜索，结合“温暖记忆”和“冷记忆”
+- `--llm`：利用LLM进行语义搜索
 
-**Example:**
+**示例：**
 ```bash
 # Keyword search
 memory_cli.py retrieve --query "BSC deployment decision" --limit 5
@@ -659,13 +625,13 @@ memory_cli.py retrieve \
   --db-url "$TURSO_URL" --auth-token "$TURSO_TOKEN"
 ```
 
-### Distill
+### 提取操作**
 
 ```bash
 memory_cli.py distill --text "raw conversation" [--llm] [--llm-endpoint URL]
 ```
 
-**Example:**
+**示例：**
 ```bash
 # Rule-based distillation
 memory_cli.py distill --text "User: Let's deploy to testnet first. Agent: Good idea, safer that way."
@@ -676,7 +642,7 @@ memory_cli.py distill \
   --llm --llm-endpoint http://localhost:8080/complete
 ```
 
-**Output:**
+**输出结果：**
 ```json
 {
   "distilled": {
@@ -693,7 +659,7 @@ memory_cli.py distill \
 }
 ```
 
-### Hot Memory
+### 热记忆操作**
 
 ```bash
 # Update hot state
@@ -706,15 +672,15 @@ memory_cli.py hot --rebuild [--agent-id default]
 memory_cli.py hot [--agent-id default]
 ```
 
-**Keys:**
-- `identity` — Agent/owner identity info
-- `owner_profile` — Owner preferences, personality
-- `lesson` — Add critical lesson
-- `event` — Add event to active context
-- `task` — Add task to active context
-- `project` — Add/update project
+**可输入的键：**
+- `identity` — 代理/所有者的身份信息
+- `owner_profile` — 所有者的偏好和个性特征
+- `lesson` — 添加关键课程内容
+- `event` — 将事件添加到当前活动上下文中
+- `task` — 将任务添加到当前活动上下文中
+- `project` — 添加/更新项目信息
 
-**Examples:**
+**示例：**
 ```bash
 # Update owner profile
 memory_cli.py hot --update owner_profile '{"timezone": "Australia/Sydney", "work_hours": "9am-6pm"}'
@@ -729,7 +695,7 @@ memory_cli.py hot --update project '{"name": "EvoClaw", "status": "Active", "des
 memory_cli.py hot --rebuild
 ```
 
-### Tree
+### 树状索引操作**
 
 ```bash
 # Show tree
@@ -745,7 +711,7 @@ memory_cli.py tree --remove "path/to/category" [--agent-id default]
 memory_cli.py tree --prune [--agent-id default]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Add category
 memory_cli.py tree --add "projects/evoclaw/bsc" "BSC blockchain integration"
@@ -757,7 +723,7 @@ memory_cli.py tree --remove "old/unused/path"
 memory_cli.py tree --prune
 ```
 
-### Cold Storage
+### 冷存储操作**
 
 ```bash
 # Initialize Turso tables
@@ -767,7 +733,7 @@ memory_cli.py cold --init --db-url URL --auth-token TOKEN
 memory_cli.py cold --query "search term" [--limit 10] [--agent-id default] --db-url URL --auth-token TOKEN
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Init tables (once)
 memory_cli.py cold --init --db-url "https://your-db.turso.io" --auth-token "your-token"
@@ -776,9 +742,9 @@ memory_cli.py cold --init --db-url "https://your-db.turso.io" --auth-token "your
 memory_cli.py cold --query "blockchain decision" --limit 10 --db-url "$TURSO_URL" --auth-token "$TURSO_TOKEN"
 ```
 
-## Configuration
+## 配置文件**
 
-**File:** `config.json` (optional, uses defaults if not present)
+**配置文件：** `config.json`（可选，如未配置则使用默认值）
 
 ```json
 {
@@ -820,9 +786,9 @@ memory_cli.py cold --query "blockchain decision" --limit 10 --db-url "$TURSO_URL
 }
 ```
 
-## Integration with OpenClaw Agents
+## 与OpenClaw代理的集成
 
-### After Conversation
+### 对话后的操作**
 
 ```python
 import subprocess
@@ -858,7 +824,7 @@ def process_conversation(user_message, agent_response, category="conversations")
     ])
 ```
 
-### Before Responding (Retrieval)
+### 回答前的操作（用于数据检索）
 
 ```python
 def get_relevant_context(query):
@@ -879,7 +845,7 @@ def get_relevant_context(query):
     return "\n".join([f"- {m['text']}" for m in memories])
 ```
 
-### Heartbeat Consolidation
+### 心跳式整合**
 
 ```python
 import schedule
@@ -909,28 +875,26 @@ schedule.every().month.do(lambda: subprocess.run([
 ]))
 ```
 
-## LLM Integration
+## 与LLM的集成
 
-### Model Recommendations
+**推荐模型：**
 
-**For Distillation & Tree Search:**
-- Claude 3 Haiku (fast, cheap, excellent structure)
-- GPT-4o-mini (good balance)
-- Gemini 1.5 Flash (very fast)
+**用于数据提取和树状搜索：**
+- Claude 3 Haiku（速度快、成本低、结构优秀）
+- GPT-4o-mini（平衡性良好）
+- Gemini 1.5 Flash（速度非常快）
 
-**For Tree Rebuilding:**
-- Claude 3.5 Sonnet (better reasoning)
-- GPT-4o (strong planning)
+**用于树状索引的重建：**
+- Claude 3.5 Sonnet（推理能力更强）
+- GPT-4o（规划能力更强）
 
-### Cost Optimization
+**成本优化建议：**
+1. **对于频繁的操作（如数据提取和搜索），使用成本较低的模型**
+2. **批量处理**：将多条对话数据批量处理
+3. **缓存树状索引的提示信息** — 因为树结构变化不大
+4. **对于简单的查询，可以省略LLM的使用** — 直接使用基于规则的提取方法
 
-1. **Use cheaper models** for frequent operations (distill, search)
-2. **Batch distillation** — Queue conversations, distill in batch
-3. **Cache tree prompts** — Tree structure doesn't change often
-4. **Skip LLM for simple** — Use rule-based for short conversations
-
-### Example LLM Endpoint
-
+**示例LLM端点：**
 ```python
 from flask import Flask, request, jsonify
 
@@ -950,43 +914,43 @@ if __name__ == "__main__":
     app.run(port=8080)
 ```
 
-## Performance Characteristics
+## 性能特点**
 
-**Context Size:**
-- Hot: ~5KB (always loaded)
-- Tree: ~2KB (always loaded)
-- Retrieved: ~1-3KB per query
-- **Total: ~8-15KB** (constant, regardless of agent age)
+**存储空间：**
+- 热记忆：约5KB（始终加载）
+- 树状索引：约2KB（始终加载）
+- 每次查询返回的数据量：约1-3KB
+**总存储空间：** 约8-15KB（与代理的使用时间无关）
 
-**Retrieval Speed:**
-- Keyword: 10-20ms
-- LLM tree search: 300-600ms
-- Cold query: 50-100ms
+**检索速度：**
+- 关键词搜索：10-20毫秒
+- 利用LLM的树状搜索：300-600毫秒
+- 冷存储查询：50-100毫秒
 
-**5-Year Scenario:**
-- Hot: Still 5KB (living document)
-- Warm: Last 30 days (~50KB)
-- Cold: ~50MB in Turso (compressed distilled facts)
-- Tree: Still 2KB (different nodes, same size)
-- **Context per session: Same as day 1**
+**五年使用情况：**
+- 热记忆：始终占用5KB
+- 温暖记忆：最近30天的数据（约50KB）
+- 冷存储：约50MB（压缩后的数据）
+- 树状索引：始终占用2KB（节点不同，但数据量相同）
+**每次会话的存储空间：** 与初始状态相同
 
-## Comparison with Alternatives
+## 与其他系统的比较**
 
-| System | Memory Model | Scaling | Accuracy | Cost |
+| 系统 | 记忆模型 | 扩展性 | 准确性 | 成本 |
 |--------|-------------|---------|----------|------|
-| **Flat MEMORY.md** | Linear text | ❌ Months | ⚠️ Degrades | ❌ Linear |
-| **Vector RAG** | Embeddings | ✅ Years | ⚠️ Similarity≠relevance | ⚠️ Moderate |
-| **EvoClaw Tiered** | Tree + tiers | ✅ Decades | ✅ Reasoning-based | ✅ Fixed |
+| **原始的MEMORY.md** | 线性文本 | 不支持扩展 | 易退化 | 成本较高 |
+| **基于向量的RAG** | 基于嵌入的模型 | 可扩展多年 | 相似性而非相关性作为判断标准 | 效率一般 |
+| **EvoClaw的分层记忆系统** | 结合树状结构和分层存储 | 可扩展数十年 | 基于推理的检索机制 | 数据结构稳定 |
 
-**Why tree > vectors:**
-- **Accuracy:** 98%+ vs. 70-80% (PageIndex benchmark)
-- **Explainable:** "Projects → EvoClaw → BSC" vs. "cosine 0.73"
-- **Multi-hop:** Natural vs. poor
-- **False positives:** Low vs. high
+**为什么选择树状存储而非向量存储：**
+- **准确性**：98%以上，而基于向量的模型仅为70-80% |
+- **可解释性**：例如，“projects/evoclaw”这样的查询结果更易于理解 |
+- **多步推理**：处理过程更自然 |
+- **误判率**：较低 |
 
-## Troubleshooting
+## 常见问题及解决方法**
 
-### Tree size exceeding limit
+### 树状索引大小超出限制
 
 ```bash
 # Prune dead nodes
@@ -999,7 +963,7 @@ memory_cli.py tree --show | grep "Memories:"
 memory_cli.py tree --remove "unused/category"
 ```
 
-### Warm memory filling up
+### “温暖记忆”空间不足
 
 ```bash
 # Run consolidation
@@ -1012,7 +976,7 @@ memory_cli.py metrics
 # Edit config.json: "eviction_threshold": 0.4
 ```
 
-### Hot memory exceeding 5KB
+### 热记忆超过5KB的限制
 
 ```bash
 # Hot auto-prunes, but check structure
@@ -1025,7 +989,7 @@ memory_cli.py hot --update project '{"name": "OldProject", "status": "Completed"
 memory_cli.py hot --rebuild
 ```
 
-### LLM search failing
+### LLM搜索失败
 
 ```bash
 # Fallback to keyword search (automatic)
@@ -1038,33 +1002,33 @@ curl -X POST http://localhost:8080/complete -d '{"prompt": "test"}'
 tree_search.py --query "..." --tree-file memory/memory-tree.json --mode llm --llm-prompt-file test.txt
 ```
 
-## Migration from v1.x
+## 从v1.x版本升级到v2.1**
 
-**Backward compatible:** Existing `warm-memory.json` and `memory-tree.json` files work as-is.
+**兼容性：**
+- 现有的`warm-memory.json`和`memory-tree.json`文件可以继续使用
+**新文件：**
+- `config.json`（可选，使用默认配置）
+- `hot-memory-state.json`（自动生成）
+- `metrics.json`（自动生成）
 
-**New files:**
-- `config.json` (optional, uses defaults)
-- `hot-memory-state.json` (auto-created)
-- `metrics.json` (auto-created)
+**升级步骤：**
+1. 更新技能配置：`clawhub update tiered-memory`
+2. 运行整合命令以重建热记忆状态：`memory_cli.py consolidate`
+3. （可选）初始化冷存储：`memory_cli.py cold --init --db-url ... --auth-token ...`
+4. 配置代理以使用新的命令（详见集成部分）
 
-**Steps:**
-1. Update skill: `clawhub update tiered-memory`
-2. Run consolidation to rebuild hot state: `memory_cli.py consolidate`
-3. Initialize cold storage (optional): `memory_cli.py cold --init --db-url ... --auth-token ...`
-4. Configure agent to use new commands (see Integration section)
+## 从v2.0版本升级到v2.1版本**
 
-## Migration from v2.0 to v2.1
+**完全兼容性：**
+- 现有的记忆文件无需修改即可使用新功能
+**新增功能：**
+- 自动从现有数据中提取元数据
+- 新增命令：`validate`、`extract-metadata`、`search-url`
+- `store`命令现在支持`--url`、`--command`、`--path`参数
+- 提取过程中会保留URL和技术细节
+- 无需额外操作，只需更新配置即可使用新功能
 
-**Fully backward compatible:** Existing memory files work without changes.
-
-**What's new:**
-- ✅ Metadata automatically extracted from existing facts when loaded
-- ✅ New commands: `validate`, `extract-metadata`, `search-url`
-- ✅ `store` command now accepts `--url`, `--command`, `--path` flags
-- ✅ Distillation preserves URLs and technical details
-- ✅ No action required - just update and use new features
-
-**Testing the upgrade:**
+**升级测试方法：**
 ```bash
 # Update skill
 clawhub update tiered-memory
@@ -1079,12 +1043,12 @@ memory_cli.py validate
 memory_cli.py search-url --url "github.com"
 ```
 
-## References
+## 参考资料**
 
-- **Design:** `/docs/TIERED-MEMORY.md` (EvoClaw)
-- **Cloud Sync:** `/docs/CLOUD-SYNC.md` (EvoClaw)
-- **Inspiration:** [PageIndex](https://github.com/VectifyAI/PageIndex) (tree-based retrieval)
+- **设计文档：** `/docs/TIERED-MEMORY.md`（EvoClaw）
+- **云同步文档：** `/docs/CLOUD-SYNC.md`（EvoClaw）
+- **灵感来源：** [PageIndex](https://github.com/VectifyAI/PageIndex)（基于树状结构的检索技术）
 
 ---
 
-*v2.1.0 — A mind that remembers everything is as useless as one that remembers nothing. The art is knowing what to keep. Now with structured metadata to remember HOW, not just WHAT.* 🧠🌲🔗
+*v2.1.0版本更新说明：** “一个记住一切的头脑和一个什么都不记得的头脑一样无用。真正的艺术在于知道该记住什么。现在，我们不仅记录了事实内容，还记录了记录方式。” 🧠🌲🔗

@@ -1,6 +1,6 @@
 ---
 name: autism-support
-description: Expert guidance for autism-support.
+description: 关于自闭症支持的专家指导。
 version: 1.0.0
 tags: [parenting,family,children]
 author: OpenWork
@@ -11,17 +11,18 @@ metadata:
       env: []
 ---
 
-# uautism support
+# 自闭症支持
 
-Parenting and family guidance.
+育儿与家庭指导
 
-## Capabilities
+## 功能
 
-- Practical tips
-- Activity ideas
-- Development milestones
-- Resource recommendations
+- 实用建议
+- 活动建议
+- 发展里程碑
+- 资源推荐
 
-## Usage
-Parenting help
-Child development tips
+## 使用方式
+
+- 育儿帮助
+- 儿童发展建议

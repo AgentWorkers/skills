@@ -1,27 +1,27 @@
 ---
 name: perf-profiler
-description: Profile and optimize application performance. Use when diagnosing slow code, measuring CPU/memory usage, generating flame graphs, benchmarking functions, load testing APIs, finding memory leaks, or optimizing database queries.
+description: 分析和优化应用程序性能。适用于诊断代码运行缓慢的问题、测量CPU/内存使用情况、生成性能分析图表（火焰图）、对函数进行基准测试、对API进行负载测试、查找内存泄漏问题，以及优化数据库查询。
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"anyBins":["node","python3","go","curl","ab"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Performance Profiler
+# 性能分析工具
 
-Measure, profile, and optimize application performance. Covers CPU profiling, memory analysis, flame graphs, benchmarking, load testing, and language-specific optimization patterns.
+用于测量、分析并优化应用程序的性能。涵盖CPU性能分析、内存分析、火焰图生成、基准测试、负载测试以及针对不同语言的优化技巧。
 
-## When to Use
+## 使用场景
 
-- Diagnosing why an application or function is slow
-- Measuring CPU and memory usage
-- Generating flame graphs to visualize hot paths
-- Benchmarking functions or endpoints
-- Load testing APIs before deployment
-- Finding and fixing memory leaks
-- Optimizing database query performance
-- Comparing performance before and after changes
+- 诊断应用程序或函数运行缓慢的原因
+- 测量CPU和内存使用情况
+- 生成火焰图以可视化代码中耗时最多的部分
+- 对函数或API端点进行基准测试
+- 在部署前对API进行负载测试
+- 查找并修复内存泄漏问题
+- 优化数据库查询性能
+- 比较修改前后的性能差异
 
-## Quick Timing
+## 快速性能测试
 
-### Command-line timing
+### 命令行性能测试
 
 ```bash
 # Time any command
@@ -43,7 +43,7 @@ hyperfine --warmup 3 --runs 20 'my-command'
 hyperfine --export-json results.json 'old-version' 'new-version'
 ```
 
-### Inline timing (any language)
+### 内联性能测试（适用于多种语言）
 
 ```javascript
 // Node.js
@@ -88,9 +88,9 @@ doExpensiveThing()
 fmt.Printf("Elapsed: %v\n", time.Since(start))
 ```
 
-## Node.js Profiling
+## Node.js 性能分析
 
-### CPU profiling with V8 inspector
+### 使用V8 Inspector进行CPU性能分析
 
 ```bash
 # Generate CPU profile (writes .cpuprofile file)
@@ -106,7 +106,7 @@ node --inspect app.js
 # Go to Performance tab, click Record
 ```
 
-### Heap snapshots (memory)
+### 内存快照分析
 
 ```bash
 # Generate heap snapshot
@@ -129,7 +129,7 @@ console.log('Heap snapshot written to:', snapshotStream);
 # 4. In Chrome DevTools > Memory, load both and use "Comparison" view
 ```
 
-### Memory usage monitoring
+### 内存使用监控
 
 ```javascript
 // Print memory usage periodically
@@ -155,7 +155,7 @@ setInterval(() => {
 }, 10000);
 ```
 
-### Node.js benchmarking
+### Node.js 基准测试
 
 ```javascript
 // Simple benchmark function
@@ -174,9 +174,9 @@ benchmark('JSON.parse', () => JSON.parse('{"key":"value","num":42}'));
 benchmark('regex match', () => /^\d{4}-\d{2}-\d{2}$/.test('2026-02-03'));
 ```
 
-## Python Profiling
+## Python 性能分析
 
-### cProfile (built-in CPU profiler)
+### 使用cProfile（内置CPU性能分析工具）
 
 ```bash
 # Profile a script
@@ -202,7 +202,7 @@ cProfile.run('expensive_function()', sort='cumulative')
 "
 ```
 
-### line_profiler (line-by-line)
+### 使用line_profiler（逐行分析工具）
 
 ```bash
 # Install
@@ -232,7 +232,7 @@ profiler.disable()
 profiler.print_stats()
 ```
 
-### Memory profiling (Python)
+### Python内存分析
 
 ```bash
 # memory_profiler
@@ -265,7 +265,7 @@ for stat in top_stats[:10]:
     print(stat)
 ```
 
-### Python benchmarking
+### Python基准测试
 
 ```python
 import timeit
@@ -286,9 +286,9 @@ print(f"filter: {t1:.4f}s  |  listcomp: {t2:.4f}s  |  speedup: {t1/t2:.2f}x")
 #     benchmark(sorted, list(range(1000)))
 ```
 
-## Go Profiling
+## Go语言性能分析
 
-### Built-in pprof
+### 使用pprof（内置性能分析工具）
 
 ```go
 // Add to main.go for HTTP-accessible profiling
@@ -322,7 +322,7 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 # png > out.png   - save call graph as image
 ```
 
-### Go benchmarks
+### Go语言基准测试
 
 ```go
 // math_test.go
@@ -356,9 +356,9 @@ go install golang.org/x/perf/cmd/benchstat@latest
 benchstat old.txt new.txt
 ```
 
-## Flame Graphs
+## 火焰图
 
-### Generate flame graphs
+### 生成火焰图
 
 ```bash
 # Node.js: 0x (easiest)
@@ -386,7 +386,7 @@ perf record -g -p PID -- sleep 30
 perf script | stackcollapse-perf.pl | flamegraph.pl > flame.svg
 ```
 
-### Reading flame graphs
+### 阅读火焰图
 
 ```
 Key concepts:
@@ -402,9 +402,9 @@ What to look for:
 4. Unexpected functions appearing wide → performance bug
 ```
 
-## Load Testing
+## 负载测试
 
-### curl-based quick test
+### 基于curl的快速测试
 
 ```bash
 # Single request timing
@@ -431,7 +431,7 @@ ab -n 100 -c 10 -p data.json -T application/json http://localhost:3000/api/endpo
 # - Percentage of requests served within a certain time (p50, p90, p99)
 ```
 
-### wrk (modern load testing)
+### wrk（现代负载测试工具）
 
 ```bash
 # Install: https://github.com/wg/wrk
@@ -442,30 +442,16 @@ wrk -t4 -c100 -d10s http://localhost:3000/api/endpoint
 wrk -t4 -c100 -d10s -s post.lua http://localhost:3000/api/endpoint
 ```
 
-```lua
--- post.lua
-wrk.method = "POST"
-wrk.body   = '{"key": "value"}'
-wrk.headers["Content-Type"] = "application/json"
-
--- Custom request generation
-request = function()
-  local id = math.random(1, 10000)
-  local path = "/api/users/" .. id
-  return wrk.format("GET", path)
-end
-```
-
-### Autocannon (Node.js load testing)
+### Autocannon（Node.js负载测试工具）
 
 ```bash
 npx autocannon -c 100 -d 10 http://localhost:3000/api/endpoint
 npx autocannon -c 100 -d 10 -m POST -b '{"key":"value"}' -H 'Content-Type=application/json' http://localhost:3000/api/endpoint
 ```
 
-## Database Query Performance
+## 数据库查询性能优化
 
-### EXPLAIN analysis
+### 使用EXPLAIN进行分析
 
 ```bash
 # PostgreSQL
@@ -478,7 +464,7 @@ mysql -e "EXPLAIN SELECT * FROM orders WHERE user_id = 123;" mydb
 sqlite3 mydb.sqlite "EXPLAIN QUERY PLAN SELECT * FROM orders WHERE user_id = 123;"
 ```
 
-### Slow query detection
+### 检测慢速查询
 
 ```bash
 # PostgreSQL: enable slow query logging
@@ -502,7 +488,7 @@ LIMIT 10;
 "
 ```
 
-## Memory Leak Detection Patterns
+## 内存泄漏检测
 
 ### Node.js
 
@@ -534,7 +520,7 @@ setInterval(() => {
 }, 10000);
 ```
 
-### Common leak patterns
+### 常见的内存泄漏类型
 
 ```
 Node.js:
@@ -556,7 +542,7 @@ Go:
 - Global maps that grow forever
 ```
 
-## Performance Comparison Script
+## 性能对比脚本
 
 ```bash
 #!/bin/bash
@@ -593,13 +579,13 @@ printf '%s\n' "${times[@]}" | awk '{
 }'
 ```
 
-## Tips
+## 使用建议
 
-- **Profile before optimizing.** Guessing where bottlenecks are is wrong more often than right. Measure first.
-- **Optimize the hot path.** Flame graphs show you exactly which functions consume the most time. A 10% improvement in a function that takes 80% of CPU time is worth more than a 50% improvement in one that takes 2%.
-- **Memory and CPU are different problems.** A memory leak can exist in fast code. A CPU bottleneck can exist in code with stable memory. Profile both independently.
-- **Benchmark under realistic conditions.** Microbenchmarks (empty loops, single-function timing) can be misleading due to JIT optimization, caching, and branch prediction. Use realistic data and workloads.
-- **p99 matters more than average.** An API with 50ms average but 2s p99 has a tail latency problem. Always look at percentiles, not just averages.
-- **Load test before shipping.** `ab`, `wrk`, or `autocannon` for 60 seconds at expected peak traffic reveals problems that unit tests never will.
-- **GC pauses are real.** In Node.js, Python, Go, and Java, garbage collection can cause latency spikes. If flame graphs show significant GC time, reduce allocation pressure (reuse objects, use object pools, avoid unnecessary copies).
-- **Database queries are usually the bottleneck.** Before optimizing application code, run `EXPLAIN` on your slowest queries. An index can turn a 2-second query into 2ms.
+- **先分析再优化。** 直接猜测性能瓶颈的位置往往是不准确的，应先进行实际测量。
+- **优先优化耗时最多的代码段。** 火焰图能清晰显示哪些函数消耗了最多的时间。对于占CPU时间80%的函数，提高10%的性能比对于只占2%时间的函数提高50%的性能更有意义。
+- **内存问题和CPU问题不同。** 快速运行的代码也可能存在内存泄漏；而内存使用稳定的代码也可能存在CPU瓶颈。应分别对这两方面进行性能分析。
+- **在真实环境下进行基准测试。** 微基准测试（如空循环、单函数测试）可能因JIT优化、缓存机制和分支预测而产生误导。应使用真实的数据和工作负载进行测试。
+- **关注99百分位的数据。** 一个API的平均响应时间为50毫秒，但99百分位的响应时间为2秒，说明存在严重的延迟问题。应关注数据分布的百分位数，而不仅仅是平均值。
+- **在发布前进行负载测试。** 使用`ab`、`wrk`或`autocannon`在预期的高峰流量下测试60秒，可以发现单元测试无法发现的问题。
+- **垃圾回收（GC）会导致延迟。** 在Node.js、Python、Go和Java中，垃圾回收操作可能会引起性能波动。如果火焰图显示垃圾回收时间较长，应减少内存分配压力（重用对象、使用对象池、避免不必要的数据复制）。
+- **数据库查询通常是性能瓶颈。** 在优化应用程序代码之前，先对最慢的查询使用`EXPLAIN`进行分析。适当的索引优化可以将原本需要2秒的查询时间缩短至2毫秒。

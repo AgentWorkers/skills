@@ -1,13 +1,13 @@
 ---
 name: pscale-org
-description: List, show, and switch PlanetScale organizations. Use when managing multiple organizations, switching between accounts, viewing organization details, or troubleshooting organization access. Triggers on org, organization, switch org, list orgs.
+description: 列出、显示以及切换 PlanetScale 组织。此功能适用于管理多个组织、在多个账户之间切换、查看组织详情或排查组织访问权限问题。相关操作会触发 `org`, `organization`, `switch org`, `list orgs` 等相关事件。
 ---
 
 # pscale org
 
-List, show, and switch organizations.
+用于列出、显示以及切换组织。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # List all organizations
@@ -20,9 +20,9 @@ pscale org show
 pscale org switch <org-name>
 ```
 
-## Workflows
+## 工作流程
 
-### Switch Between Organizations
+### 在不同组织之间切换
 
 ```bash
 # View current org
@@ -38,22 +38,22 @@ pscale org switch my-other-org
 pscale database list --org my-other-org
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Cannot see expected databases
+### 无法查看预期的数据库
 
-**Solution:** Check current organization
+**解决方案：** 检查当前所属的组织
 
 ```bash
 pscale org show
 pscale org switch <correct-org>
 ```
 
-## Related Skills
+## 相关技能
 
-- **pscale-auth** - Authentication and account management
-- **pscale-database** - Organization-scoped database operations
+- **pscale-auth** - 身份验证和账户管理
+- **pscale-database** - 组织范围内的数据库操作
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete command reference.
+请参阅 `references/commands.md` 以获取完整的命令参考信息。

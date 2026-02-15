@@ -1,6 +1,6 @@
 ---
 name: PDF Compress
-description: Reduce PDF file size while maintaining acceptable quality
+description: 在保持可接受质量的同时减小PDF文件的大小
 author: claude-office-skills
 version: "1.0"
 tags: [pdf, compression, optimization, file-size, performance]
@@ -8,66 +8,66 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# PDF Compress
+# PDF压缩
 
-Reduce PDF file sizes for easier sharing, faster loading, and efficient storage.
+减小PDF文件大小，以便于分享、加快加载速度并提高存储效率。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Reduce PDF file sizes significantly
-- Balance quality vs. file size
-- Optimize for specific use cases (web, print, archive)
-- Batch compress multiple files
-- Understand compression trade-offs
+本技能可帮助您：
+- 显著减小PDF文件大小
+- 在文件质量和大小之间取得平衡
+- 根据具体用途（网页、打印、归档）进行优化
+- 批量压缩多个文件
+- 了解压缩过程中的权衡因素
 
-## How to Use
+## 使用方法
 
-### Basic Compression
+### 基本压缩
 ```
 "Compress this PDF to reduce file size"
 "Make this PDF smaller for email"
 "Optimize this PDF for web viewing"
 ```
 
-### With Targets
+### 带目标参数的压缩
 ```
 "Compress this PDF to under 5 MB"
 "Reduce file size by at least 50%"
 "Optimize for minimum file size"
 ```
 
-### Quality Levels
+### 质量级别
 ```
 "Compress with high quality (minimal loss)"
 "Compress for screen viewing"
 "Maximum compression, quality not critical"
 ```
 
-## Compression Levels
+## 压缩级别
 
-### Presets
-| Level | Target Use | Image Quality | Size Reduction |
+### 预设值
+| 压缩级别 | 使用场景 | 图像质量 | 文件大小缩减比例 |
 |-------|------------|---------------|----------------|
-| **Minimum** | Archival | Original | 5-15% |
-| **Low** | Print | Near original | 15-30% |
-| **Medium** | General use | Good | 30-50% |
-| **High** | Email/Web | Acceptable | 50-70% |
-| **Maximum** | Preview only | Reduced | 70-90% |
+| **最低** | 归档 | 保持原样 | 5-15% |
+| **低** | 打印 | 接近原样 | 15-30% |
+| **中** | 通用用途 | 良好质量 | 30-50% |
+| **高** | 电子邮件/网页 | 可接受的质量 | 50-70% |
+| **最高** | 仅用于预览 | 大幅减小文件大小 | 70-90% |
 
-### Use Case Recommendations
-| Use Case | Recommended Level | Reason |
+### 使用场景推荐
+| 使用场景 | 推荐压缩级别 | 原因 |
 |----------|-------------------|--------|
-| Print production | Minimum/Low | Quality critical |
-| Email attachment | Medium/High | Balance size/quality |
-| Web download | High | Fast loading |
-| Quick preview | Maximum | Speed priority |
-| Archive | Low | Long-term quality |
-| Presentation | Medium | Good on-screen |
+| 打印文件 | 最低/低 | 对质量要求较高 |
+| 电子邮件附件 | 中/高 | 在文件大小和质量之间取得平衡 |
+| 网页下载 | 高 | 加快加载速度 |
+| 快速预览 | 最高 | 优先考虑加载速度 |
+| 归档 | 低 | 长期保存时保持文件质量 |
+| 演示文稿 | 中 | 适合在屏幕上查看 |
 
-## Compression Techniques
+## 压缩技术
 
-### Image Optimization
+### 图像优化
 ```markdown
 ## Image Compression Settings
 
@@ -97,7 +97,7 @@ This skill helps you:
 | Low | 25-49 | Visible artifacts |
 ```
 
-### Content Optimization
+### 内容优化
 ```markdown
 ## Additional Optimizations
 
@@ -120,9 +120,9 @@ This skill helps you:
 - [ ] Remove embedded files
 ```
 
-## Output Report
+## 输出报告
 
-### Compression Report
+### 压缩报告
 ```markdown
 ## PDF Compression Report
 
@@ -155,7 +155,7 @@ This skill helps you:
 ⚠️ Not recommended for: High-quality print, archival
 ```
 
-### Optimization Plan
+### 优化计划
 ```markdown
 ## Compression Strategy: [Document Name]
 
@@ -181,9 +181,9 @@ This skill helps you:
 - Quality: Good for screen/general use
 ```
 
-## Batch Compression
+## 批量压缩
 
-### Batch Job Template
+### 批量压缩任务模板
 ```markdown
 ## Batch Compression Job
 
@@ -223,9 +223,9 @@ This skill helps you:
 | charts_hires.pdf | 15 MB | Acceptable |
 ```
 
-## Quality Comparison
+## 质量对比
 
-### Before/After Guide
+### 压缩前后的效果对比
 ```markdown
 ## Quality Comparison Guide
 
@@ -255,31 +255,31 @@ Note: Text (when vector) remains crisp at all compression levels.
 Only embedded text images are affected.
 ```
 
-## Tool Recommendations
+## 工具推荐
 
-### Online Tools
-- **SmallPDF**: Easy, good quality
-- **ILovePDF**: Free, batch support
-- **PDF24**: Configurable options
-- **Adobe Online**: Professional quality
+### 在线工具
+- **SmallPDF**：操作简单，压缩效果良好
+- **ILovePDF**：免费，支持批量压缩
+- **PDF24**：提供丰富的配置选项
+- **Adobe Online**：压缩效果专业
 
-### Desktop Software
-- **Adobe Acrobat Pro**: Best control
-- **Foxit PDF Editor**: Good alternative
-- **PDF-XChange**: Many options
-- **Preview (Mac)**: Basic, built-in
+### 桌面软件
+- **Adobe Acrobat Pro**：压缩控制最精细
+- **Foxit PDF Editor**：优秀的替代工具
+- **PDF-XChange**：功能多样
+- **Preview (Mac)**：内置压缩功能
 
-### Command Line
-- **Ghostscript**: Powerful, scriptable
-- **qpdf**: Fast, lossless options
-- **pdfcpu**: Modern Go tool
-- **img2pdf**: Image-specific
+### 命令行工具
+- **Ghostscript**：功能强大，支持脚本操作
+- **qpdf**：压缩速度快，支持无损压缩
+- **pdfcpu**：基于Go语言的现代压缩工具
+- **img2pdf**：专门用于图像文件的压缩
 
-## Limitations
+## 限制因素
 
-- Cannot perform actual compression (provides guidance)
-- Some PDFs have minimum compressible content
-- Scanned documents are mostly images
-- Already compressed PDFs have less savings
-- Extreme compression affects quality
-- Vector graphics don't compress much
+- 该工具本身不执行实际的压缩操作，仅提供压缩指导
+- 某些PDF文件的可压缩内容较少
+- 扫描文档主要由图像组成，压缩效果有限
+- 已经压缩过的PDF文件进一步压缩的空间有限
+- 过度压缩会影响文件质量
+- 矢量图形难以被有效压缩

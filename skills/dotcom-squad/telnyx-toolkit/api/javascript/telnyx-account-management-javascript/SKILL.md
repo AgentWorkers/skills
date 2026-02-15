@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Management - JavaScript
+# Telnyx 账户管理 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists accounts managed by the current user.
+## 列出当前用户管理的账户
 
-Lists the accounts managed by the current user.
+列出当前用户管理的账户。
 
 `GET /managed_accounts`
 
@@ -45,11 +45,11 @@ for await (const managedAccountListResponse of client.managedAccounts.list()) {
 }
 ```
 
-## Create a new managed account.
+## 创建一个新的受管理的账户
 
-Create a new managed account owned by the authenticated user.
+创建一个由已认证用户拥有的新受管理账户。
 
-`POST /managed_accounts` — Required: `business_name`
+`POST /managed_accounts` — 必需参数：`business_name`
 
 ```javascript
 const managedAccount = await client.managedAccounts.create({
@@ -59,9 +59,9 @@ const managedAccount = await client.managedAccounts.create({
 console.log(managedAccount.data);
 ```
 
-## Retrieve a managed account
+## 获取受管理的账户信息
 
-Retrieves the details of a single managed account.
+获取单个受管理账户的详细信息。
 
 `GET /managed_accounts/{id}`
 
@@ -71,9 +71,9 @@ const managedAccount = await client.managedAccounts.retrieve('id');
 console.log(managedAccount.data);
 ```
 
-## Update a managed account
+## 更新受管理的账户
 
-Update a single managed account.
+更新单个受管理的账户。
 
 `PATCH /managed_accounts/{id}`
 
@@ -83,11 +83,11 @@ const managedAccount = await client.managedAccounts.update('id');
 console.log(managedAccount.data);
 ```
 
-## Disables a managed account
+## 禁用受管理的账户
 
-Disables a managed account, forbidding it to use Telnyx services, including sending or receiving phone calls and SMS messages.
+禁用受管理的账户，使其无法使用 Telnyx 服务（包括发送或接收电话呼叫和短信）。
 
-`POST /managed_accounts/{id}/actions/disable`
+`POST /managedaccounts/{id}/actions/disable`
 
 ```javascript
 const response = await client.managedAccounts.actions.disable('id');
@@ -95,11 +95,11 @@ const response = await client.managedAccounts.actions.disable('id');
 console.log(response.data);
 ```
 
-## Enables a managed account
+## 恢复受管理的账户
 
-Enables a managed account and its sub-users to use Telnyx services.
+启用受管理的账户及其子用户使用 Telnyx 服务。
 
-`POST /managed_accounts/{id}/actions/enable`
+`POST /managed.accounts/{id}/actions/enable`
 
 ```javascript
 const response = await client.managedAccounts.actions.enable('id');
@@ -107,7 +107,9 @@ const response = await client.managedAccounts.actions.enable('id');
 console.log(response.data);
 ```
 
-## Update the amount of allocatable global outbound channels allocated to a specific managed account.
+## 更新分配给特定受管理账户的全球出站通道数量
+
+更新分配给特定受管理账户的全球出站通道数量。
 
 `PATCH /managed_accounts/{id}/update_global_channel_limit`
 
@@ -117,7 +119,9 @@ const response = await client.managedAccounts.updateGlobalChannelLimit('id');
 console.log(response.data);
 ```
 
-## Display information about allocatable global outbound channels for the current user.
+## 显示当前用户可用的全球出站通道信息
+
+显示当前用户可用的全球出站通道信息。
 
 `GET /managed_accounts/allocatable_global_outbound_channels`
 

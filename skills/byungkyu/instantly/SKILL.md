@@ -18,9 +18,9 @@ metadata:
 
 # Instantly
 
-Access the Instantly API v2 with managed authentication. Manage cold email campaigns, leads, sending accounts, and view analytics.
+通过管理认证方式访问 Instantly API v2。您可以管理冷邮件活动（cold email campaigns）、潜在客户信息（leads）、发送账户（sending accounts），并查看分析数据（analytics）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List campaigns
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/instantly/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Instantly API endpoint path. The gateway proxies requests to `api.instantly.ai` and automatically injects your API key.
+请将 `{native-api-path}` 替换为实际的 Instantly API 端点路径。该网关会将请求代理到 `api.instantly.ai` 并自动插入您的 API 密钥。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Instantly connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Instantly 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete authorization.
+在浏览器中打开返回的 `url` 以完成授权过程。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Instantly connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Instantly 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,31 +141,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Campaigns
+### 活动管理
 
-#### List Campaigns
+#### 列出活动
 
 ```bash
 GET /instantly/api/v2/campaigns?limit=10&status=1&search=keyword
 ```
 
-Query parameters:
-- `limit` - Number of results (default: 10)
-- `status` - Campaign status filter (0=draft, 1=active, 2=paused, 3=completed)
-- `search` - Search by campaign name
-- `starting_after` - Cursor for pagination
+查询参数：
+- `limit` - 结果数量（默认值：10）
+- `status` - 活动状态过滤器（0=草稿，1=活动中，2=暂停，3=已完成）
+- `search` - 按活动名称搜索
+- `starting_after` - 分页的起始位置
 
-#### Get Campaign
+#### 获取活动信息
 
 ```bash
 GET /instantly/api/v2/campaigns/{campaign_id}
 ```
 
-#### Create Campaign
+#### 创建活动
 
 ```bash
 POST /instantly/api/v2/campaigns
@@ -195,7 +195,8 @@ Content-Type: application/json
 }
 ```
 
-Note: Timezone must use Etc/GMT format (e.g., "Etc/GMT+5", "Etc/GMT-8", "Etc/GMT+12").
+注意：时区必须使用 Etc/GMT 格式（例如：“Etc/GMT+5”、“Etc/GMT-8”、“Etc/GMT+12”）。
+
 ```
 
 #### Activate Campaign
@@ -699,22 +700,20 @@ echo $MATON_API_KEY
 python <<'EOF'
 import urllib.request, os, json
 req = urllib.request.Request('https://ctrl.maton.ai/connections')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
+req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `instantly`. For example:
+1. 确保您的 URL 路径以 `instantly` 开头。例如：
+- 正确：`https://gateway.maton.ai/instantly/api/v2/campaigns`
+- 错误：`https://gateway.maton.ai/api/v2/campaigns`
 
-- Correct: `https://gateway.maton.ai/instantly/api/v2/campaigns`
-- Incorrect: `https://gateway.maton.ai/api/v2/campaigns`
+## 资源
 
-## Resources
-
-- [Instantly API V2 Documentation](https://developer.instantly.ai/api/v2)
-- [Instantly API Introduction](https://developer.instantly.ai/)
-- [Instantly Help Center](https://help.instantly.ai/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Instantly API V2 文档](https://developer.instantly.ai/api/v2)
+- [Instantly API 介绍](https://developer.instantly.ai/)
+- [Instantly 帮助中心](https://help.instantly.ai/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

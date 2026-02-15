@@ -1,42 +1,41 @@
 ---
 name: prompt-optimizer
-description: Evaluate, optimize, and enhance prompts using 58 proven prompting techniques. Use when user asks to improve, optimize, or analyze a prompt; when a prompt needs better clarity, specificity, or structure; or when generating prompt variations for different use cases. Covers quality assessment, targeted improvements, and automatic optimization across techniques like CoT, few-shot learning, role-play, and 50+ more.
+description: 使用58种经过验证的提示生成技术来评估、优化和提升提示的质量。当用户要求改进、优化或分析某个提示时；当提示需要更清晰、更具体或更有条理时；或者当需要为不同的使用场景生成多种提示变体时，都可以采用这些技术。内容包括质量评估、有针对性的改进方法，以及基于CoT（Contextual Optimization Techniques）、少样本学习（few-shot learning）、角色扮演（role-play）等技术的自动优化方法。
 ---
 
-# Prompt Optimizer
+# 提示优化器
 
-## Overview
+## 概述
 
-Evaluate prompt quality, provide targeted improvement suggestions, and generate optimized versions using 58 proven prompting techniques. This skill systematically analyzes prompts across multiple quality dimensions and applies evidence-based optimization patterns.
+本技能通过58种经过验证的提示优化技术，评估提示的质量，提供针对性的改进建议，并生成优化后的提示版本。它系统地从多个维度分析提示内容，并应用基于证据的优化方法。
 
-## Quick Start
+## 快速入门
 
-For most optimization tasks, follow this workflow:
+对于大多数优化任务，请遵循以下工作流程：
 
-1. **Analyze the current prompt** - Read and understand what the user wants to achieve
-2. **Evaluate quality** - Assess across clarity, specificity, structure, completeness
-3. **Load relevant techniques** - Read [references/prompt-techniques.md](references/prompt-techniques.md) for applicable methods
-4. **Generate suggestions** - Use evaluation results and techniques to propose improvements
-5. **Create optimized version** - Apply chosen techniques to produce an enhanced prompt
+1. **分析当前提示** - 阅读并理解用户想要实现的目标。
+2. **评估质量** - 从清晰度、具体性、结构、完整性等方面进行评估。
+3. **加载相关技术** - 查阅 [references/prompt-techniques.md](references/prompt-techniques.md) 以获取适用的方法。
+4. **生成改进建议** - 根据评估结果和技术应用，提出改进方案。
+5. **创建优化版本** - 应用选定的技术来生成改进后的提示。
 
-## Evaluation Workflow
+## 评估流程
 
-When a user asks to optimize or evaluate a prompt:
+当用户请求优化或评估提示时：
 
-### Step 1: Load Quality Framework
+### 第1步：加载质量评估框架
 
-Read [references/quality-framework.md](references/quality-framework.md) to understand evaluation dimensions:
+阅读 [references/quality-framework.md](references/quality-framework.md) 以了解评估维度：
+- **清晰度** - 提示是否明确易懂？
+- **具体性** - 需求和限制是否清晰定义？
+- **结构** - 是否具有逻辑性？
+- **完整性** - 是否包含了所有必要的背景信息和说明？
+- **语气** - 语气是否适合任务？
+- **限制** - 边界和限制是否明确？
 
-- **Clarity** - Is the prompt unambiguous and easy to understand?
-- **Specificity** - Are requirements and constraints clearly defined?
-- **Structure** - Does it follow logical organization?
-- **Completeness** - Does it include all necessary context and instructions?
-- **Tone** - Is the voice appropriate for the task?
-- **Constraints** - Are boundaries and limitations clear?
+### 第2步：执行质量评估
 
-### Step 2: Perform Quality Assessment
-
-Evaluate the prompt against each dimension:
+根据每个维度对提示进行评估：
 
 ```
 For each quality dimension:
@@ -46,139 +45,132 @@ For each quality dimension:
 4. Note specific improvement opportunities
 ```
 
-### Step 3: Identify Applicable Techniques
+### 第3步：确定适用的技术
 
-Load [references/prompt-techniques.md](references/prompt-techniques.md) and identify techniques that address the identified weaknesses.
+加载 [references/prompt-techniques.md](references/prompt-techniques.md)，并找出能够解决识别出的问题的技术。
 
-**Example mapping:**
-- Weak: "Be creative" → Apply: **Role-play** or **Creative Persona**
-- Weak: "Write an essay" → Apply: **Chain of Thought** or **Step-by-Step**
-- Weak: "Summarize this" → Apply: **Few-shot Learning** with examples
+**示例对应关系：**
+- 弱点：“发挥创造力” → 应用技术：**角色扮演** 或 **创造性人格设定**
+- 弱点：“写一篇文章” → 应用技术：**思维链** 或 **逐步指导**
+- 弱点：“总结这个内容” → 应用技术：**小样本学习**（结合示例）
 
-### Step 4: Generate Optimization Plan
+### 第4步：制定优化计划
 
-Create a structured optimization plan:
+创建一个结构化的优化计划：
+- **优先改进事项** - 能解决多个问题的关键改进措施。
+- **可选增强项** - 可提升效果的附加技术。
+- **技术组合** - 为特定场景推荐技术组合。
 
-1. **Priority improvements** - High-impact changes that address multiple weaknesses
-2. **Optional enhancements** - Nice-to-have techniques that boost performance
-3. **Technique combinations** - Suggest technique pairings for specific use cases
+### 第5步：生成优化后的提示
 
-### Step 5: Generate Optimized Prompt
+应用选定的技术来创建改进后的版本：
+- 保持原始意图和需求不变。
+- 在缺失的部分添加结构和清晰度。
+- 根据需要嵌入示例、限制或指导信息。
+- 保持适当的语气和语气。
 
-Apply the selected techniques to create an improved version:
+## 优化模式
 
-- Preserve original intent and requirements
-- Add structure and clarity where missing
-- Embed examples, constraints, or guidance as needed
-- Maintain appropriate tone and voice
+针对常见的优化场景，使用以下经过验证的模式：
 
-## Optimization Patterns
+### 模糊的请求 → 结构化分解
+当提示缺乏清晰度时：
+1. 添加明确的任务定义。
+2. 将任务分解为带编号的子任务。
+3. 包括输出格式的规范。
+4. 添加完成标准。
 
-For common optimization scenarios, use these proven patterns:
+### 通用任务 → 技术增强
+当提示过于宽泛时：
+1. 从 [references/prompt-techniques.md](references/prompt-techniques.md) 中选择适用的技术。
+2. 添加示例（小样本学习）或推理步骤（思维链）。
+3. 提供角色或人格设定指导。
+4. 明确评估标准。
 
-### Ambiguous Requests → Structured Breakdown
-When prompt lacks clarity:
-1. Add explicit task definition
-2. Break into sub-tasks with numbered steps
-3. Include output format specification
-4. Add completion criteria
+### 缺乏背景信息 → 场景构建
+当提示缺乏背景信息时：
+1. 添加用户意图/目标陈述。
+2. 指定目标受众。
+3. 定义成功指标。
+4. 添加相关的限制或边界条件。
 
-### Generic Tasks → Technique Enhancement
-When prompt is too broad:
-1. Apply relevant technique from [references/prompt-techniques.md](references/prompt-techniques.md)
-2. Add examples (few-shot) or reasoning steps (CoT)
-3. Include role or persona guidance
-4. Specify evaluation criteria
+### 指令不明确 → 可操作的步骤
+当提示提供的指导不够具体时：
+1. 将抽象概念转化为具体行动。
+2. 添加逐步指导。
+3. 设置质量检查点。
+4. 明确预期的输出格式。
 
-### Missing Context → Scenario Framing
-When prompt lacks background:
-1. Add user intent/goal statement
-2. Include target audience specification
-3. Define success metrics
-4. Add relevant constraints or boundaries
+## 脚本使用
 
-### Weak Instructions → Actionable Steps
-When prompt provides vague guidance:
-1. Convert abstract concepts to concrete actions
-2. Add step-by-step instructions
-3. Include quality checkpoints
-4. Specify expected output format
+### 质量评估
 
-## Script Usage
-
-### Quality Evaluation
-
-For consistent, repeatable evaluation:
+为了实现一致且可重复的评估，请使用以下脚本：
 
 ```bash
 python3 scripts/evaluate.py "Your prompt here"
 ```
 
-This provides:
-- Dimension scores (clarity, specificity, structure, completeness)
-- Overall quality rating
-- Detailed weakness analysis
-- Suggested improvement areas
+该脚本提供：
+- 各维度的评分（清晰度、具体性、结构、完整性）。
+- 总体质量评级。
+- 详细的缺陷分析。
+- 建议的改进方向。
 
-### Prompt Optimization
+### 提示优化
 
-For automatic optimization generation:
+为了自动生成优化后的提示，请使用以下脚本：
 
 ```bash
 python3 scripts/optimize.py "Your prompt here" --techniques "few-shot,coT"
 ```
 
-This generates:
-- Multiple optimized prompt versions
-- Explanation of applied techniques
-- Comparison with original prompt
+该脚本生成：
+- 多个优化后的提示版本。
+- 应用技术的说明。
+- 与原始提示的对比结果。
 
-**Note:** Scripts should be used for automation or when you need deterministic results. For complex optimization tasks, use the manual workflow for more nuanced analysis.
+**注意：** 脚本适用于自动化操作或需要确定结果的情况。对于复杂的优化任务，建议使用手动工作流程进行更细致的分析。
 
-## Reference Files
+## 参考文件
 
 ### references/prompt-techniques.md
-Complete catalog of 58 prompting techniques including:
-- Reasoning techniques (CoT, Tree of Thoughts, Decomposition)
-- Context techniques (Few-shot, Self-Consistency, Reflection)
-- Creative techniques (Role-play, Scenario, Persona)
-- Structural techniques (Template, Framework, Checklists)
-- And 50+ more with usage examples
+包含58种提示优化技术的完整目录，包括：
+- 推理技术（思维链、树状分析、分解法）
+- 上下文构建技术（小样本学习、自我一致性、反思）
+- 创造性技术（角色扮演、场景设定、人格设定）
+- 结构化技术（模板、框架、检查清单）
+- 以及更多技术及其使用示例。
 
-Load this when you need to identify applicable techniques for a specific optimization task.
+在需要为特定优化任务选择适用技术时，请加载此文件。
 
 ### references/quality-framework.md
-Detailed evaluation framework with:
-- Dimension-specific criteria and rubrics
-- Scoring guidelines
-- Common anti-patterns to avoid
-- Quality benchmarks for different prompt types
+包含详细的评估框架：
+- 各维度的评估标准和评分细则。
+- 需避免的常见错误模式。
+- 不同类型提示的质量基准。
 
-Load this before any evaluation task to ensure consistent assessment.
+在进行任何评估任务之前，请先加载此文件以确保评估的一致性。
 
 ### references/optimization-patterns.md
-Collection of proven optimization patterns including:
-- Pattern → Technique mappings
-- Before/after examples
-- Technique combination guidelines
-- Use-case specific templates
+包含经过验证的优化模式集合：
+- 模式与技术的对应关系。
+- 优化前后的对比示例。
+- 技术组合指南。
+- 针对特定场景的模板。
 
-Load this when optimizing common prompt types (essays, code generation, analysis, etc.).
+## 最佳实践：
+1. **保持用户意图** - 不要改变用户的原始需求，只需调整表达方式。
+2. **逐步改进** - 每次应用一种技术并评估其效果。
+3. **迭代测试** - 优化后测试提示，并根据需要进一步改进。
+4. **记录选择** - 说明应用了哪些技术及其原因。
+5. **提供多种选项** - 在适当的情况下提供多个优化版本。
 
-## Best Practices
+## 何时使用此技能
 
-1. **Preserve user intent** - Never change what the user wants, only how they ask for it
-2. **Add incrementally** - Apply one technique at a time and evaluate impact
-3. **Test iteratively** - After optimization, test the prompt and refine further if needed
-4. **Document choices** - Explain which techniques you applied and why
-5. **Provide options** - Offer multiple optimization versions when appropriate
-
-## When This Skill Should Trigger
-
-This skill should be activated when:
-- User explicitly asks to "optimize," "improve," or "evaluate" a prompt
-- User asks if a prompt is "good" or "clear"
-- User wants to "fix" or "enhance" a prompt that isn't working well
-- User requests "better versions" of a prompt
-- User asks about prompt engineering techniques or best practices
-- User wants to analyze why a prompt is producing poor results
+当用户明确请求“优化”、“改进”或“评估”提示时；
+当用户询问提示是否“好”或“清晰”时；
+当用户希望“修复”或“改进”效果不佳的提示时；
+当用户请求提示的“更好版本”时；
+当用户咨询提示设计技巧或最佳实践时；
+当用户想分析提示为何效果不佳时，请激活此技能。

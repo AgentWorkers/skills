@@ -1,7 +1,8 @@
 ---
 name: nextjs-expert
 version: 1.0.0
-description: Use when building Next.js 14/15 applications with the App Router. Invoke for routing, layouts, Server Components, Client Components, Server Actions, Route Handlers, authentication, middleware, data fetching, caching, revalidation, streaming, Suspense, loading states, error boundaries, dynamic routes, parallel routes, intercepting routes, or any Next.js architecture question.
+description: **使用场景：**  
+在构建使用 App Router 的 Next.js 14/15 应用程序时，该模块可用于路由管理、布局设计、服务器组件（Server Components）、客户端组件（Client Components）、服务器端操作（Server Actions）、路由处理程序（Route Handlers）、身份验证（Authentication）、中间件（Middleware）、数据获取（Data Fetching）、缓存（Caching）、数据重新验证（Revalidation）、数据流处理（Streaming）、加载状态管理（Loading States）、错误处理（Error Handling）、动态路由（Dynamic Routes）、并行路由（Parallel Routes）、路由拦截（Route Interception）以及任何与 Next.js 架构相关的问题。
 triggers:
   - Next.js
   - Next
@@ -29,60 +30,60 @@ scope: implementation
 output-format: code
 ---
 
-# Next.js Expert
+# Next.js 专家
 
-Comprehensive Next.js 15 App Router specialist. Adapted from buildwithclaude by Dave Poon (MIT).
+我是一名专注于 Next.js 15 应用程序路由开发的专家。这些内容改编自 Dave Poon（MIT）的 buildwithclaude 文档。
 
-## Role Definition
+## 职责定义
 
-You are a senior Next.js engineer specializing in the App Router, React Server Components, and production-grade full-stack applications with TypeScript.
+我是一名资深的 Next.js 工程师，主要负责应用程序路由、React 服务器组件以及使用 TypeScript 开发的生产级全栈应用程序的开发。
 
-## Core Principles
+## 核心原则
 
-1. **Server-first**: Components are Server Components by default. Only add `'use client'` when you need hooks, event handlers, or browser APIs.
-2. **Push client boundaries down**: Keep `'use client'` as low in the tree as possible.
-3. **Async params**: In Next.js 15, `params` and `searchParams` are `Promise` types — always `await` them.
-4. **Colocation**: Keep components, tests, and styles near their routes.
-5. **Type everything**: Use TypeScript strictly.
+1. **以服务器为先**：默认情况下，所有组件都是服务器组件。只有在需要使用钩子、事件处理器或浏览器 API 时，才添加 `use client`。
+2. **尽量降低客户端功能的依赖**：将 `use client` 的使用位置尽可能向下移动。
+3. **异步参数**：在 Next.js 15 中，`params` 和 `searchParams` 都是 `Promise` 类型，必须使用 `await` 来处理它们。
+4. **组件、测试和样式应与对应的路由保持紧密关联**。
+5. **严格使用类型注解（TypeScript）**。
 
 ---
 
-## App Router File Conventions
+## 应用程序路由文件规范
 
-### Route Files
+### 路由文件
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `page.tsx` | Unique UI for a route, makes it publicly accessible |
-| `layout.tsx` | Shared UI wrapper, preserves state across navigations |
-| `loading.tsx` | Loading UI using React Suspense |
-| `error.tsx` | Error boundary for route segment (must be `'use client'`) |
-| `not-found.tsx` | UI for 404 responses |
-| `template.tsx` | Like layout but re-renders on navigation |
-| `default.tsx` | Fallback for parallel routes |
-| `route.ts` | API endpoint (Route Handler) |
+| `page.tsx` | 为特定路由提供唯一的用户界面 |
+| `layout.tsx` | 公共的用户界面包装器，用于在页面切换时保持状态 |
+| `loading.tsx` | 使用 React Suspense 显示加载界面 |
+| `error.tsx` | 用于处理路由段中的错误情况（必须使用 `use client`） |
+| `not-found.tsx` | 用于显示 404 错误页面的界面 |
+| `template.tsx` | 与 `layout.tsx` 类似，但在页面切换时重新渲染 |
+| `default.tsx` | 用于处理多个路由的默认情况 |
+| `route.ts` | API 端点（路由处理器） |
 
-### Folder Conventions
+### 文件夹结构规范
 
-| Pattern | Purpose | Example |
+| 文件夹模式 | 用途 | 示例 |
 |---------|---------|---------|
-| `folder/` | Route segment | `app/blog/` → `/blog` |
-| `[folder]/` | Dynamic segment | `app/blog/[slug]/` → `/blog/:slug` |
-| `[...folder]/` | Catch-all segment | `app/docs/[...slug]/` → `/docs/*` |
-| `[[...folder]]/` | Optional catch-all | `app/shop/[[...slug]]/` → `/shop` or `/shop/*` |
-| `(folder)/` | Route group (no URL) | `app/(marketing)/about/` → `/about` |
-| `@folder/` | Named slot (parallel routes) | `app/@modal/login/` |
-| `_folder/` | Private folder (excluded) | `app/_components/` |
+| `folder/` | 路由段 | `app/blog/` → `/blog` |
+| `[folder]/` | 动态路由段 | `app/blog/[slug]/` → `/blog/:slug` |
+| `[...folder]/` | 捕获所有路由的通用部分 | `app/docs/[...slug]/` → `/docs/*` |
+| `[[...folder]]/` | 可选的通用捕获部分 | `app/shop/[[...slug]]/` → `/shop` 或 `/shop/*` |
+| `(folder)/` | 路由组（无特定 URL） | `app/(marketing)/about/` → `/about` |
+| `@folder/` | 带有名称的路由槽（用于多个路由） | `app/@modal/login/` |
+| `_folder/` | 私有文件夹（不公开） | `app/_components/` |
 
-### File Hierarchy (render order)
+### 文件渲染顺序
 
-1. `layout.tsx` → 2. `template.tsx` → 3. `error.tsx` (boundary) → 4. `loading.tsx` (boundary) → 5. `not-found.tsx` (boundary) → 6. `page.tsx`
+1. `layout.tsx` → 2. `template.tsx` → 3. `error.tsx`（错误处理） → 4. `loading.tsx`（加载界面） → 5. `not-found.tsx`（404 错误） → 6. `page.tsx`（具体页面内容）
 
 ---
 
-## Pages and Routing
+## 页面与路由
 
-### Basic Page (Server Component)
+### 基本页面（服务器组件）
 
 ```tsx
 // app/about/page.tsx
@@ -96,7 +97,7 @@ export default function AboutPage() {
 }
 ```
 
-### Dynamic Routes
+### 动态路由
 
 ```tsx
 // app/blog/[slug]/page.tsx
@@ -111,7 +112,7 @@ export default async function BlogPost({ params }: PageProps) {
 }
 ```
 
-### Search Params
+### 搜索参数
 
 ```tsx
 // app/search/page.tsx
@@ -126,7 +127,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 }
 ```
 
-### Static Generation
+### 静态内容生成
 
 ```tsx
 export async function generateStaticParams() {
@@ -140,9 +141,9 @@ export const dynamicParams = true
 
 ---
 
-## Layouts
+## 布局
 
-### Root Layout (Required)
+### 根布局（必需）
 
 ```tsx
 // app/layout.tsx
@@ -155,7 +156,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-### Nested Layout with Data Fetching
+### 带数据获取的嵌套布局
 
 ```tsx
 // app/dashboard/layout.tsx
@@ -172,7 +173,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 }
 ```
 
-### Route Groups for Multiple Root Layouts
+### 多个根布局的路由组
 
 ```
 app/
@@ -184,7 +185,7 @@ app/
     └── dashboard/page.tsx
 ```
 
-### Metadata
+### 元数据
 
 ```tsx
 // Static
@@ -211,25 +212,25 @@ export const metadata: Metadata = {
 
 ---
 
-## Server Components vs Client Components
+## 服务器组件与客户端组件
 
-### Decision Guide
+### 判断指南
 
-**Server Component (default) when:**
-- Fetching data or accessing backend resources
-- Keeping sensitive info on server (API keys, tokens)
-- Reducing client JavaScript bundle
-- No interactivity needed
+**使用服务器组件（默认情况）：**
+- 用于获取数据或访问后端资源
+- 用于存储敏感信息（如 API 密钥、令牌）
+- 用于减少客户端 JavaScript 的体积
+- 当不需要交互功能时
 
-**Client Component (`'use client'`) when:**
-- Using `useState`, `useEffect`, `useReducer`
-- Using event handlers (`onClick`, `onChange`)
-- Using browser APIs (`window`, `document`)
-- Using custom hooks with state
+**使用客户端组件（使用 `use client`）：**
+- 用于使用 `useState`, `useEffect`, `useReducer`
+- 用于处理事件（如 `onClick`, `onChange`
+- 用于使用浏览器 API（如 `window`, `document`）
+- 用于使用自定义的带有状态的钩子
 
-### Composition Patterns
+### 组合模式
 
-**Pattern 1: Server data → Client interactivity**
+**模式 1：服务器获取数据 → 客户端交互**
 
 ```tsx
 // app/products/page.tsx (Server)
@@ -252,7 +253,7 @@ export function ProductFilter({ products }: { products: Product[] }) {
 }
 ```
 
-**Pattern 2: Children as Server Components**
+**模式 2：子组件作为服务器组件**
 
 ```tsx
 // components/client-wrapper.tsx
@@ -277,7 +278,7 @@ export default function Page() {
 }
 ```
 
-**Pattern 3: Providers at the boundary**
+**模式 3：在组件边界处使用提供者（Providers）**
 
 ```tsx
 // app/providers.tsx
@@ -298,7 +299,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Shared Data with `cache()`
+### 使用 `cache()` 共享数据
 
 ```tsx
 import { cache } from 'react'
@@ -313,9 +314,9 @@ export const getUser = cache(async () => {
 
 ---
 
-## Data Fetching
+## 数据获取
 
-### Async Server Components
+### 异步服务器组件
 
 ```tsx
 export default async function PostsPage() {
@@ -324,7 +325,7 @@ export default async function PostsPage() {
 }
 ```
 
-### Parallel Data Fetching
+### 并发数据获取
 
 ```tsx
 export default async function DashboardPage() {
@@ -335,7 +336,7 @@ export default async function DashboardPage() {
 }
 ```
 
-### Streaming with Suspense
+### 使用 Suspense 实现数据流式加载
 
 ```tsx
 import { Suspense } from 'react'
@@ -355,7 +356,7 @@ export default function DashboardPage() {
 }
 ```
 
-### Caching
+### 数据缓存
 
 ```tsx
 // Cache indefinitely (static)
@@ -373,9 +374,9 @@ const data = await fetch(url, { next: { tags: ['posts'] } })
 
 ---
 
-## Loading and Error States
+## 加载状态与错误处理
 
-### Loading UI
+### 加载界面
 
 ```tsx
 // app/dashboard/loading.tsx
@@ -392,7 +393,7 @@ export default function Loading() {
 }
 ```
 
-### Error Boundary
+### 错误处理
 
 ```tsx
 // app/dashboard/error.tsx
@@ -411,7 +412,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 }
 ```
 
-### Not Found
+### 404 错误页面
 
 ```tsx
 // app/posts/[slug]/page.tsx
@@ -427,9 +428,9 @@ export default async function PostPage({ params }: PageProps) {
 
 ---
 
-## Server Actions
+## 服务器端操作
 
-### Defining Actions
+### 定义服务器端操作
 
 ```tsx
 // app/actions.ts
@@ -464,7 +465,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-### Form with useFormState and useFormStatus
+### 使用 `useState` 和 `useStatus` 的表单
 
 ```tsx
 // components/submit-button.tsx
@@ -498,7 +499,7 @@ export function CreatePostForm() {
 }
 ```
 
-### Optimistic Updates
+### 乐观更新（Optimistic Updates）
 
 ```tsx
 'use client'
@@ -535,7 +536,7 @@ export function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
 }
 ```
 
-### Revalidation
+### 数据重新验证
 
 ```tsx
 'use server'
@@ -553,9 +554,9 @@ export async function updatePost(id: string, formData: FormData) {
 
 ---
 
-## Route Handlers (API Routes)
+## 路由处理器（API 路由）
 
-### Basic CRUD
+### 基本的 CRUD 操作
 
 ```tsx
 // app/api/posts/route.ts
@@ -581,7 +582,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-### Dynamic Route Handler
+### 动态路由处理
 
 ```tsx
 // app/api/posts/[id]/route.ts
@@ -599,7 +600,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 }
 ```
 
-### Streaming / SSE
+### 数据流式传输（SSE）
 
 ```tsx
 export async function GET() {
@@ -621,9 +622,9 @@ export async function GET() {
 
 ---
 
-## Parallel and Intercepting Routes
+## 并发路由与路由拦截
 
-### Parallel Routes (Slots)
+### 并发路由（使用路由槽）
 
 ```
 app/
@@ -645,7 +646,7 @@ export default function Layout({ children, modal }: {
 }
 ```
 
-### Modal Component
+### 模态组件
 
 ```tsx
 'use client'
@@ -666,9 +667,9 @@ export function Modal({ children }: { children: React.ReactNode }) {
 
 ---
 
-## Authentication (NextAuth.js v5 / Auth.js)
+## 认证（NextAuth.js v5 / Auth.js）
 
-### Setup
+### 设置认证机制
 
 ```tsx
 // auth.ts
@@ -699,7 +700,7 @@ import { handlers } from '@/auth'
 export const { GET, POST } = handlers
 ```
 
-### Middleware Protection
+### 中间件保护
 
 ```tsx
 // middleware.ts
@@ -710,7 +711,7 @@ export const config = {
 }
 ```
 
-### Server Component Auth Check
+### 服务器组件中的认证检查
 
 ```tsx
 import { auth } from '@/auth'
@@ -723,7 +724,7 @@ export default async function DashboardPage() {
 }
 ```
 
-### Server Action Auth Check
+### 服务器端操作中的认证检查
 
 ```tsx
 'use server'
@@ -743,7 +744,7 @@ export async function deletePost(id: string) {
 
 ---
 
-## Route Segment Config
+## 路由段配置
 
 ```tsx
 export const dynamic = 'force-dynamic'    // 'auto' | 'force-dynamic' | 'error' | 'force-static'
@@ -754,13 +755,13 @@ export const maxDuration = 30             // seconds
 
 ---
 
-## Anti-Patterns to Avoid
+## 应避免的错误做法
 
-1. ❌ Adding `'use client'` to entire pages — push it down to interactive leaves
-2. ❌ Fetching data in Client Components when it could be a Server Component
-3. ❌ Sequential `await` when fetches are independent — use `Promise.all()`
-4. ❌ Passing functions as props across server/client boundary (use Server Actions)
-5. ❌ Using `useEffect` for data fetching in App Router (use async Server Components)
-6. ❌ Forgetting `await params` in Next.js 15 (they're Promises now)
-7. ❌ Missing `loading.tsx` or `<Suspense>` boundaries for async pages
-8. ❌ Not validating Server Action inputs (always validate with zod)
+1. ✌ 不要在整个页面中都使用 `use client`——仅将其应用于需要交互的部分。
+2. ✌ 当数据可以由服务器组件获取时，不要在客户端组件中获取数据。
+3. ✌ 当数据获取操作是独立的时，不要顺序使用 `await`——应使用 `Promise.all()`。
+4. ✌ 不要在服务器和客户端之间直接传递函数作为属性——应使用服务器端操作。
+5. ✌ 不要在 Next.js 15 中使用 `useEffect` 来获取数据（应使用异步服务器组件）。
+6. ✌ 忘记在异步页面中添加 `await` 处理 `params`（它们现在是 `Promise` 类型）。
+7. ✌ 确保异步页面中包含 `loading.tsx` 或 `<Suspense>` 来显示加载状态。
+8. ✌ 不要对服务器端操作的输入进行验证（始终使用 zod 进行验证）。

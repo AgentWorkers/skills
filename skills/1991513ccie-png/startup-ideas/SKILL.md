@@ -1,6 +1,6 @@
 ---
 name: startup-ideas
-description: Expert guidance for startup-ideas.
+description: 针对创业想法的专业指导。
 version: 1.0.0
 tags: [business,entrepreneurship]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# ustartup ideas
+# 创业想法
 
-Expert guidance for business.
+为创业者提供的专业指导。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Strategies and methods
-- Practical tips
-- Examples and case studies
+- 最佳实践
+- 战略与方法
+- 实用技巧
+- 实例与案例研究
 
-## Usage
-Help with this skill
-Business guidance
+## 使用方式
+帮助您掌握这些创业技能
+- 提供商业指导

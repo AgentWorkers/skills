@@ -1,6 +1,6 @@
 ---
 name: url2png
-description: Convert URL to PNG suitable for mobile reading.
+description: 将 URL 转换为适合移动设备阅读的 PNG 图片格式。
 metadata: {"openclaw":{"always":true,"emoji":"🦞","homepage":"https://clawhub.ai/guoqiao/url2png","os":["darwin","linux"],"requires":{"bins":["uv"]}}}
 triggers:
 - "/url2png <url>"
@@ -8,29 +8,31 @@ triggers:
 - "Take long screenshot for this url"
 ---
 
-# URL to PNG
+# 将网页URL转换为适合移动设备查看的PNG图片
 
-Given a url for a webpage, convert it to png suitable for mobile view.
+给定一个网页的URL，将其转换为适合移动设备查看的PNG图片。
 
-See [examples](https://github.com/guoqiao/skills/tree/main/url2png/examples)
+请参考[示例](https://github.com/guoqiao/skills/tree/main/url2png/examples)
 
 
-## Requirements
+## 需求
 
-- `uv`
+- 使用`uv`工具进行转换
 
-## Installation
+
+## 安装
 
 ```bash
 bash ${baseDir}/install.sh
 ```
 
-The script will:
+该脚本将：
 
-- install `shot-scraper` as uv tool
-- install `chromium` browser module for shot-scraper/playwright
+- 安装`shot-scraper`作为`uv`工具
+- 安装`chromium`浏览器模块，以便`shot-scraper`和`playwright`能够使用
 
-## Usage
+
+## 使用方法
 
 ```bash
 # save to ~/Pictures with proper name by default
@@ -39,8 +41,9 @@ bash url2png.sh <url>
 bash url2png.sh <url> path/to/png
 ```
 
-## Agent Instructions
 
-1. Execute the `url2png.sh` script.
-2. Locate the generated PNG file (default in `~/Pictures` if not specified).
-3. Send the file to the user. **Crucial:** To avoid compression or dimension limits (especially on Telegram), send the image as a **document/file** (or ZIP it), do not send as a photo.
+## 代理使用说明
+
+1. 运行`url2png.sh`脚本。
+2. 查找生成的PNG图片文件（如果未指定，默认保存在`~/Pictures`目录下）。
+3. 将文件发送给用户。**重要提示：**为避免压缩或尺寸限制（尤其是在使用Telegram时），请将图片以**文档/文件**的形式发送（或将其压缩成ZIP文件），不要以照片的形式发送。

@@ -1,43 +1,43 @@
 ---
 name: reader-deep-dive
-description: Daily briefing that connects your recent reading to your long-term archive.
+description: 每日简报将您最近阅读的内容与您的长期资料库联系起来。
 metadata: {"clawdbot":{"emoji":"🤿","requires":{"env":["READWISE_TOKEN"]}}}
 ---
 
-# Reader Deep Dive 🤿
+# 深度阅读功能 🤿
 
-Your reading list shouldn't be a write-only memory. This skill checks what you've saved recently, finds connected ideas from your deep archive (last 3 days, 3 months, or years ago), and sends you a high-signal briefing with context on why you should revisit them.
+你的阅读列表不应该只是一个仅供阅读的“记忆库”。这个功能会检查你最近保存的内容，从你的阅读记录中（无论是最近3天、3个月还是几年前的内容）找出相关的主题，并向你发送一份包含背景信息的简报，告诉你为什么应该重新阅读这些内容。
 
-It turns "I saved that somewhere" into "Here is the timeline of your thinking on this topic."
+它将“我把这个内容保存在某个地方了”转化为“这是你关于这个主题的思考时间线”。
 
-## How it works
+## 工作原理
 
-1.  **Scans Recent Saves:** Checks your Readwise Reader "new" folder for the last 24 hours.
-2.  **Identifies Themes:** Uses your system's default LLM to figure out your current obsession.
-3.  **Temporal Context:** Searches your library history and finds relevant items from different timeframes.
-4.  **Delivers Briefing:** Sends a WhatsApp message with a "Deep Dive" summary connecting your current saves to your past library.
+1. **扫描最近的阅读记录**：检查你的Readwise Reader应用程序中“新文件”文件夹中过去24小时内添加的文件。
+2. **识别阅读主题**：使用你系统的默认大型语言模型（LLM）来分析你当前关注的主题。
+3. **时间背景信息**：搜索你的阅读历史记录，找出不同时间框架下的相关内容。
+4. **发送简报**：通过WhatsApp发送一条简报，将你当前的阅读内容与过去的阅读记录联系起来。
 
-## Setup
+## 设置
 
-1.  Get your Access Token from [readwise.io/access_token](https://readwise.io/access_token).
-2.  Set it in your environment:
+1. 从 [readwise.io/access_token](https://readwise.io/access_token) 获取你的访问令牌。
+2. 将访问令牌设置到你的环境中：
     ```bash
     export READWISE_TOKEN="your_token_here"
     ```
 
-## Usage
+## 使用方法
 
-**Manual Trigger:**
+**手动触发**：
 ```bash
 bash scripts/brief.sh
 ```
 
-**Schedule (Cron):**
-Run it every afternoon at 2 PM:
+**定时任务（Cron）**：
+每天下午2点自动运行：
 ```bash
 clawdbot cron add --id reader_brief --schedule "0 14 * * *" --command "bash scripts/brief.sh"
 ```
 
-## Customization
+## 自定义
 
-You can tweak the prompt in `prompts/briefing.txt` if you want a different tone or format. By default, it uses a clean, WhatsApp-friendly style.
+如果你想更改简报的语气或格式，可以在 `prompts/briefing.txt` 文件中进行调整。默认情况下，简报采用简洁、适合WhatsApp发送的格式。

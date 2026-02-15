@@ -1,6 +1,6 @@
 ---
 name: docker-ctl
-description: "Inspect containers, logs, and images via podman"
+description: "通过 `podman` 检查容器、日志和镜像"
 metadata:
   {
     "openclaw":
@@ -14,9 +14,9 @@ metadata:
 
 # Docker Ctl
 
-Inspect containers, logs, and images via podman. On Bazzite/Fedora, podman is the default container runtime and is always available.
+通过 `podman` 检查容器、日志和镜像。在 Bazzite/Fedora 系统中，`podman` 是默认的容器运行时环境，并且始终可用。
 
-## Commands
+## 命令
 
 ```bash
 # List running containers
@@ -32,6 +32,6 @@ docker-ctl images
 docker-ctl inspect <container>
 ```
 
-## Install
+## 安装
 
-No installation needed. Bazzite uses `podman` as its container runtime and it is pre-installed.
+无需额外安装。Bazzite 使用 `podman` 作为其容器运行时环境，因此 `podman` 已经预装好了。

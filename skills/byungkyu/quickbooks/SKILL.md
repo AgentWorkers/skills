@@ -15,9 +15,9 @@ metadata:
 
 # QuickBooks
 
-Access the QuickBooks Online API with managed OAuth authentication. Manage customers, vendors, invoices, payments, and run financial reports.
+您可以使用受管理的OAuth身份验证来访问QuickBooks Online API，从而管理客户、供应商、发票、支付信息，并生成财务报告。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Query customers
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/quickbooks/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual QuickBooks API endpoint path. The gateway proxies requests to `quickbooks.api.intuit.com`. The `:realmId` placeholder is automatically replaced with your company's realm ID from connection config.
+请将 `{native-api-path}` 替换为实际的QuickBooks API端点路径。该网关会将请求代理到 `quickbooks.api.intuit.com`。`:realmId` 占位符会自动替换为您从连接配置中获取的公司ID。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your QuickBooks OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的QuickBooks OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple QuickBooks connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个QuickBooks连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,31 +138,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Company Info
+### 公司信息
 
 ```bash
 GET /quickbooks/v3/company/:realmId/companyinfo/:realmId
 ```
 
-### Customers
+### 客户
 
-#### Query Customers
+#### 查询客户
 
 ```bash
 GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Customer%20MAXRESULTS%20100
 ```
 
-#### Get Customer
+#### 获取客户信息
 
 ```bash
 GET /quickbooks/v3/company/:realmId/customer/{customerId}
 ```
 
-#### Create Customer
+#### 创建客户
 
 ```bash
 POST /quickbooks/v3/company/:realmId/customer
@@ -175,9 +175,9 @@ Content-Type: application/json
 }
 ```
 
-#### Update Customer
+#### 更新客户信息
 
-Requires `Id` and `SyncToken` from previous GET:
+需要使用之前GET请求返回的 `Id` 和 `SyncToken`：
 
 ```bash
 POST /quickbooks/v3/company/:realmId/customer
@@ -190,15 +190,15 @@ Content-Type: application/json
 }
 ```
 
-### Invoices
+### 发票
 
-#### Query Invoices
+#### 查询发票
 
 ```bash
 GET /quickbooks/v3/company/:realmId/query?query=SELECT%20*%20FROM%20Invoice%20MAXRESULTS%20100
 ```
 
-#### Create Invoice
+#### 创建发票
 
 ```bash
 POST /quickbooks/v3/company/:realmId/invoice
@@ -219,7 +219,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Invoice
+#### 删除发票
 
 ```bash
 POST /quickbooks/v3/company/:realmId/invoice?operation=delete
@@ -231,9 +231,9 @@ Content-Type: application/json
 }
 ```
 
-### Payments
+### 支付
 
-#### Create Payment
+#### 创建支付记录
 
 ```bash
 POST /quickbooks/v3/company/:realmId/payment
@@ -251,21 +251,21 @@ Content-Type: application/json
 }
 ```
 
-### Reports
+### 报告
 
-#### Profit and Loss
+#### 利润与损失报告
 
 ```bash
 GET /quickbooks/v3/company/:realmId/reports/ProfitAndLoss?start_date=2024-01-01&end_date=2024-12-31
 ```
 
-#### Balance Sheet
+#### 资产负债表
 
 ```bash
 GET /quickbooks/v3/company/:realmId/reports/BalanceSheet?date=2024-12-31
 ```
 
-### Batch Operations
+### 批量操作
 
 ```bash
 POST /quickbooks/v3/company/:realmId/batch
@@ -279,24 +279,24 @@ Content-Type: application/json
 }
 ```
 
-## Query Language
+## 查询语言
 
-QuickBooks uses SQL-like queries:
+QuickBooks支持类似SQL的查询语言：
 
 ```sql
 SELECT * FROM Customer WHERE DisplayName LIKE 'John%' MAXRESULTS 100
 ```
 
-Operators: `=`, `LIKE`, `<`, `>`, `<=`, `>=`, `IN`
+运算符：`=`, `LIKE`, `<`, `>`, `<=`, `>=`, `IN`
 
 ## SyncToken
 
-All updates require the current `SyncToken`:
-1. GET the entity to get current `SyncToken`
-2. Include `Id` and `SyncToken` in POST body
-3. If SyncToken doesn't match, update fails
+所有更新操作都需要当前的 `SyncToken`：
+1. 通过GET请求获取当前的 `SyncToken`。
+2. 在POST请求的请求体中包含 `Id` 和 `SyncToken`。
+3. 如果 `SyncToken` 不匹配，更新操作将失败。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -324,34 +324,34 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- `:realmId` is automatically replaced by the router
-- All queries must be URL-encoded
-- Use `MAXRESULTS` to limit query results
-- Dates are in `YYYY-MM-DD` format
-- Soft delete entities by setting `Active: false`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- `:realmId` 会自动由系统替换为正确的值。
+- 所有查询都需要进行URL编码。
+- 使用 `MAXRESULTS` 参数来限制查询结果的数量。
+- 日期格式为 `YYYY-MM-DD`。
+- 通过将 `Active` 属性设置为 `false` 来实现软删除（即不立即删除数据）。
+- **重要提示：** 当URL中包含方括号（如 `fields[]`, `sort[]`, `records[]`）时，使用 `curl -g` 命令可以避免glob解析问题。
+- **重要提示：** 在将curl输出传递给 `jq` 或其他命令时，某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析，这可能导致“无效API密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing QuickBooks connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from QuickBooks API |
+| 400 | 未建立QuickBooks连接 |
+| 401 | Maton API密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（10次/秒） |
+| 4xx/5xx | 来自QuickBooks API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出所有连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -362,19 +362,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `quickbooks`. For example:
+1. 确保您的URL路径以 `quickbooks` 开头。例如：
+   - 正确的路径：`https://gateway.maton.ai/quickbooks/v3/company/:realmId/query`
+   - 错误的路径：`https://gateway.maton.ai/v3/company/:realmId/query`
 
-- Correct: `https://gateway.maton.ai/quickbooks/v3/company/:realmId/query`
-- Incorrect: `https://gateway.maton.ai/v3/company/:realmId/query`
+## 资源
 
-## Resources
-
-- [QuickBooks API Overview](https://developer.intuit.com/app/developer/qbo/docs/get-started)
-- [Customers](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/customer)
-- [Invoices](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/invoice)
-- [Payments](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/payment)
-- [Reports](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/report-entities/profitandloss)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [QuickBooks API概述](https://developer.intuit.com/app/developer/qbo/docs/get-started)
+- [客户信息](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/customer)
+- [发票信息](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/invoice)
+- [支付信息](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/payment)
+- [报告信息](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/report-entities/profitandloss)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

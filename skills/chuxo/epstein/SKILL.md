@@ -15,13 +15,13 @@ metadata:
       bins: ["node", "curl"]
 ---
 
-# Epstein Files Search — Free DOJ Document Search
+# 埃普斯坦文件搜索——免费的司法部文档搜索工具  
 
-Search **44,886+ declassified Jeffrey Epstein documents** released by the U.S. Department of Justice on January 30, 2026. Powered by the [DugganUSA](https://analytics.dugganusa.com) public index.
+您可以搜索美国司法部于2026年1月30日公开的44,886多份解密的杰弗里·埃普斯坦相关文件。该工具由[DugganUSA](https://analytics.dugganusa.com)提供的公共索引支持。  
 
-**100% free. No API keys. No accounts. No payment.**
+**完全免费。无需API密钥、无需注册账户，也无需支付任何费用。**  
 
-## Quick Start
+## 快速入门  
 
 ```bash
 # Search by name
@@ -35,24 +35,23 @@ node scripts/epstein.mjs search --query "Little St James"
 
 # Get index statistics
 node scripts/epstein.mjs stats
-```
+```  
 
-## Commands
+## 命令  
 
-### `search` — Search Epstein Documents
-
-Search across all 44,886+ indexed documents by keyword, name, topic, or location.
+### `search` — 搜索埃普斯坦相关文件  
+您可以通过关键词、文件名称、主题或文件位置来搜索所有已索引的文件。  
 
 ```bash
 node scripts/epstein.mjs search --query "SEARCH TERMS" [--limit N]
-```
+```  
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--query <terms>` | Search query (required) | — |
-| `--limit <N>` | Number of results (1-500) | `10` |
+| `--query <术语>` | 搜索查询（必填） | — |
+| `--limit <数量>` | 显示的结果数量（1-500条） | `10` |
 
-**Examples:**
+**示例：**  
 
 ```bash
 # Search for a specific person
@@ -69,78 +68,41 @@ node scripts/epstein.mjs search --query "flight logs" --limit 50
 
 # Search for evidence types
 node scripts/epstein.mjs search --query "phone records"
-```
+```  
 
-### `stats` — Index Statistics
-
-Get the current state of the document index — total documents, database size, and last update time.
+### `stats` — 索引统计信息  
+您可以获取文档索引的当前状态，包括总文件数量、数据库大小以及最后一次更新时间。  
 
 ```bash
 node scripts/epstein.mjs stats
-```
+```  
 
-## Output Format
+## 输出格式  
+搜索结果以JSON格式输出到标准输出（stdout），便于进一步处理；状态信息和PDF文件的直接链接会输出到标准错误输出（stderr），方便查看。  
 
-Search results are returned as JSON to stdout (for easy piping and parsing). Status messages and **Quick Links** (direct PDF URLs) go to stderr for easy viewing.
+### 搜索结果的结构  
+每个搜索结果包含以下信息：  
+- `doj_url`（PDF文件的直接链接）  
+- `doj_listing_url`（相关数据集的页面链接）  
 
-### Search Result Shape
-
-```json
-{
-  "query": "flight logs",
-  "totalHits": 1523,
-  "hits": [
-    {
-      "id": "doc-abc123",
-      "efta_id": "EFTA-00001234",
-      "content_preview": "Excerpt from the document...",
-      "doc_type": "legal_document",
-      "dataset": "epstein_files",
-      "pages": 3,
-      "people": ["Person A", "Person B"],
-      "locations": ["New York", "Palm Beach"],
-      "aircraft": ["N908JE"],
-      "evidence_types": ["financial_record"],
-      "source": "DOJ Release Jan 2026",
-      "indexed_at": "2026-01-31T...",
-      "doj_url": "https://www.justice.gov/epstein/files/DataSet%209/EFTA-00001234.pdf",
-      "doj_listing_url": "https://www.justice.gov/epstein/doj-disclosures/data-set-9-files"
-    }
-  ]
-}
-```
-
-**New in v1.1.0:** Each result now includes `doj_url` (direct PDF link) and `doj_listing_url` (dataset page). The CLI also displays Quick Links in stderr output:
+**v1.1.0的新功能：** 每个搜索结果现在都包含这些信息。此外，命令行界面（CLI）也会在标准错误输出中显示PDF文件的直接链接。  
 
 ```
 --- Quick Links ---
 1. EFTA-00001234: https://www.justice.gov/epstein/files/DataSet%209/EFTA-00001234.pdf
 2. EFTA-00001235: https://www.justice.gov/epstein/files/DataSet%209/EFTA-00001235.pdf
-```
+```  
 
-### Stats Shape
+## 数据来源  
+所有文件均来自美国司法部于2026年1月30日公开的杰弗里·埃普斯坦相关记录。这些文件通过[DugganUSA](https://analytics.dugganusa.com)提供的公共API进行索引和搜索。  
 
-```json
-{
-  "totalDocuments": 44886,
-  "databaseSize": "2.1 GB",
-  "lastUpdate": "2026-01-31T...",
-  "isIndexing": false
-}
-```
+- **数据来源**：[美国司法部埃普斯坦相关记录](https://www.justice.gov/epstein)  
+- **索引服务**：[DugganUSA Analytics](https://analytics.dugganusa.com)  
+- **文件数量**：44,886多份（总计超过300万页）  
+- **内容类型**：法庭文件、证词记录、飞行日志、财务记录、通信记录、证据清单等  
 
-## Data Source
-
-All documents come from the **U.S. Department of Justice** release of Jeffrey Epstein-related records on January 30, 2026. The documents are indexed and searchable via the [DugganUSA](https://analytics.dugganusa.com) public API.
-
-- **Source**: [DOJ Epstein Records](https://www.justice.gov/epstein)
-- **Index**: [DugganUSA Analytics](https://analytics.dugganusa.com)
-- **Coverage**: 44,886+ document files (3+ million pages)
-- **Content**: Court filings, depositions, flight logs, financial records, communications, evidence inventories, and more
-
-## Piping & Integration
-
-Results go to stdout as JSON, making it easy to pipe into other tools:
+## 数据处理与集成  
+搜索结果以JSON格式输出到标准输出（stdout），方便将其导入其他工具中进行进一步处理。  
 
 ```bash
 # Pipe to jq for filtering
@@ -154,21 +116,20 @@ node scripts/epstein.mjs search --query "Palm Beach" | jq '.totalHits'
 
 # Extract all mentioned people
 node scripts/epstein.mjs search --query "2005" --limit 100 | jq '[.hits[].people[]?] | unique'
-```
+```  
 
-## Troubleshooting
+## 常见问题解答  
 
-**"Cannot reach API"**
-Check your internet connection. The DugganUSA API may have temporary downtime.
+**“无法访问API”**  
+请检查您的网络连接。DugganUSA的API可能会暂时处于关闭状态。  
 
-**"No results found"**
-Try broader search terms. The search is keyword-based — use names, locations, or document types rather than full sentences.
+**“未找到结果”**  
+尝试使用更宽泛的搜索关键词。该工具基于关键词进行搜索，请使用文件名称、位置或文件类型，而非完整的句子。  
 
-**Slow responses**
-The API typically responds in 100-900ms. Larger result sets (limit > 100) may take slightly longer.
+**响应速度较慢**  
+API的响应时间通常在100-900毫秒之间；如果查询结果数量较多（`--limit`参数大于100），响应时间可能会稍长。  
 
-## References
-
-- [DOJ Epstein Records](https://www.justice.gov/epstein) — Official DOJ release page
-- [DugganUSA API](https://analytics.dugganusa.com) — Search index provider
-- [Project Einstein](https://emc2ai.io) — AI agent with built-in Epstein files search
+## 参考资料  
+- [美国司法部埃普斯坦相关记录](https://www.justice.gov/epstein) — 官方发布页面  
+- [DugganUSA API](https://analytics.dugganusa.com) — 索引服务提供商  
+- [Project Einstein](https://emc2ai.io) — 内置埃普斯坦文件搜索功能的人工智能工具

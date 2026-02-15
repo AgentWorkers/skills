@@ -1,137 +1,129 @@
 ---
 name: saas-idea-discovery
-description: "Monitor Reddit and Hacker News for micro-SaaS opportunities. Score ideas 0-100. Report high-potential ideas (>70) to Telegram. Run via cron every 6 hours + weekly summary on Sundays."
+description: "监控 Reddit 和 Hacker News 上的微服务（micro-SaaS）相关机会。为这些机会打分（0-100 分），并将评分高于 70 分的优质机会通过 Telegram 报告给相关人员。该任务通过 cron 任务每 6 小时执行一次，并在每周日生成总结报告。"
 metadata: { "openclaw": { "emoji": "💡" } }
 ---
 
-# Micro-SaaS Idea Discovery Engine
+# 微服务（Micro-SaaS）产品创意发现引擎
 
-You discover viable micro-SaaS product opportunities by monitoring online communities where people express unmet software needs.
+通过监控在线社区中用户表达的未满足的软件需求，您可以发现可行的微服务产品机会。
 
-## Execution Modes
+## 执行模式
 
-### Discovery Mode (default)
-Scan all data sources, score ideas, report those scoring >70 to Telegram, persist to JSON.
+### 发现模式（默认模式）
+扫描所有数据源，对创意进行评分，将评分高于70的创意通过Telegram发送，并将其保存为JSON格式。
 
-### Summary Mode
-Read discovered_ideas.json and generate a weekly pipeline report.
+### 总结模式
+读取 `discovered_ideas.json` 文件，并生成每周的管道报告。
 
 ---
 
-## Data Sources
+## 数据来源
 
-### Reddit Subreddits
-⚠️ **NOTE:** Reddit's public API now blocks requests (403 errors). Use web search fallback instead:
+### Reddit子版块
+⚠️ **注意：** Reddit的公共API现已阻止请求（返回403错误）。请使用网页搜索作为替代方案：
 
-**Option 1: Web Search (Recommended)**
-Use Brave Search or Tavily to search Reddit content:
+**选项1：网页搜索（推荐）**
+使用Brave Search或Tavily来搜索Reddit内容：
 ```
 Query: "site:reddit.com/r/SaaS I wish there was tool"
 Query: "site:reddit.com/r/Entrepreneur looking for app"
 ```
 
-**Option 2: Hacker News (Still Working)**
-HN API remains accessible and is the primary data source.
+**选项2：Hacker News（仍可使用）**
+Hacker News的API仍然可用，是主要的数据来源。
 
-Subreddits to search (in priority order):
-1. **r/SaaS** — direct SaaS discussions
-2. **r/Entrepreneur** — business pain points
-3. **r/SideProject** — indie maker needs
-4. **r/webdev** — developer tool gaps
-5. **r/smallbusiness** — SMB software needs
+需要搜索的子版块（按优先级排序）：
+1. **r/SaaS** — 直接讨论SaaS产品的版块
+2. **r/Entrepreneur** — 企业面临的痛点
+3. **r/SideProject** — 独立创作者的需求
+4. **r/webdev** — 开发者工具的缺失
+5. **r/smallbusiness** — 小型企业对软件的需求
 
 ### Hacker News
-Scan Ask HN posts:
-
-
----
-
-## Search Patterns
-
-Match posts containing these phrases (case-insensitive):
-- "I wish there was"
-- "why isn't there"
-- "would pay for"
-- "someone should build"
-- "looking for a tool"
-- "need a simple"
-- "frustrated with"
-- "paying too much for"
-- "is there a tool"
-- "any tool that"
-- "alternative to"
+扫描Hacker News上的相关帖子：
 
 ---
 
-## Scoring Rubric (0-100)
+## 搜索模式
 
-Use the scoring script for initial heuristics, then apply your judgment:
-
-
-### Buildable in <1 Week? (0-20 points)
-- 18-20: Single CRUD app, standard auth, one API integration max
-- 10-17: Two features, maybe one complex integration
-- 0-9: Needs ML, real-time, or multiple complex systems
-
-### Clear Single Use Case? (0-20 points)
-- 18-20: "Convert X to Y" or "Track X" — one sentence describes it
-- 10-17: Two related features, slightly broader scope
-- 0-9: Vague, platform-like, or multi-feature
-
-### Existing Solutions Suck? (0-15 points)
-- 12-15: People explicitly complain about current tools being bloated/expensive
-- 6-11: Some alternatives exist but have gaps
-- 0-5: Good solutions already exist
-
-### People Actively Complaining? (0-15 points)
-- 12-15: Post has 10+ upvotes AND 5+ comments agreeing
-- 6-11: Some engagement (3-10 upvotes, few comments)
-- 0-5: Low engagement or single person asking
-
-### Monetizable at -50/mo? (0-15 points)
-- 12-15: Business users, clear time savings, recurring need
-- 6-11: Could charge but value prop is moderate
-- 0-5: Likely free-tier only or one-time use
-
-### No Major Competitor Moat? (0-15 points)
-- 12-15: No dominant player, easy to differentiate
-- 6-11: Competitors exist but are overpriced or over-featured
-- 0-5: Big Tech or well-funded startup owns the space
+匹配包含以下短语的帖子（不区分大小写）：
+- “我希望有……”
+- “为什么没有这样的工具？”
+- “愿意为此付费”
+- “应该有人来开发这个工具”
+- “正在寻找某个工具”
+- “需要一个简单的工具”
+- “对现有工具感到沮丧”
+- “为某个工具支付了过高的费用”
+- “有这样的工具吗？”
+- “有没有……这样的工具？”
+- “……的替代品”
 
 ---
 
-## Deduplication
+## 评分标准（0-100分）
 
-Before reporting, read  and skip if:
-- Same URL already exists
-- Title is >80% similar to an existing entry (fuzzy match)
+使用评分脚本进行初步评估，然后根据实际情况进行判断：
+
+### 是否能在1周内开发完成？（0-20分）
+- 18-20分：单一CRUD应用程序，标准认证机制，最多集成一个API
+- 10-17分：包含两个功能，可能需要一个复杂的集成
+- 0-9分：需要机器学习、实时功能或多个复杂系统
+
+### 是否有明确的使用场景？（0-20分）
+- 18-20分：功能描述为“将X转换为Y”或“跟踪X”
+- 10-17分：包含两个相关功能，范围稍广
+- 0-9分：描述模糊、类似平台或包含多个功能
+
+### 现有的解决方案是否糟糕？（0-15分）
+- 12-15分：用户明确抱怨现有工具臃肿或价格过高
+- 6-11分：虽然有替代品，但存在不足
+- 0-5分：已有优秀的解决方案
+
+### 用户是否在积极抱怨？（0-15分）
+- 12-15分：帖子获得10个以上的点赞，并且有5条以上的评论表示同意
+- 6-11分：有一定互动（3-10个点赞，评论较少）
+- 0-5分：互动较少或仅由一个人提出需求
+
+### 是否具有每月-50美元的盈利潜力？（0-15分）
+- 12-15分：有企业用户，能明显节省时间，需求具有重复性
+- 6-11分：可以收费，但价值主张较为普通
+- 0-5分：很可能仅提供免费试用或一次性使用
+
+### 是否没有主要的竞争对手？（0-15分）
+- 12-15分：没有主导厂商，易于区分产品差异
+- 6-11分：虽然有竞争对手，但价格过高或功能过于复杂
+- 0-5分：该领域被大型科技公司或资金充足的初创公司占据
 
 ---
 
-## Telegram Report Format (for ideas >70)
+## 去重处理
 
-Send this exact format:
-
-
-
----
-
-## Weekly Summary Format (Sundays)
-
-
+在报告之前，请检查以下内容，如果符合条件则跳过：
+- 如果同一URL已经存在
+- 标题与现有条目的相似度超过80%（模糊匹配）
 
 ---
 
-## Data Persistence
+## Telegram报告格式（适用于评分高于70分的创意）
 
-After each scan, update :
-
+请按照以下格式发送报告：
 
 ---
 
-## Error Handling
+## 每周总结格式（每周日）
 
-- If a Reddit request returns 429: wait 60s, retry once, then skip that subreddit
-- If HN API fails: log error, continue with Reddit results only
-- If JSON file is corrupted: create a backup, start fresh
-- Always report at least a "no new ideas found" message so the user knows the scan ran
+---
+
+## 数据持久化
+
+每次扫描完成后，请更新相关数据：
+
+---
+
+## 错误处理
+- 如果Reddit请求返回429错误：等待60秒后重试，然后跳过该子版块
+- 如果Hacker News API失败：记录错误信息，仅使用Reddit的搜索结果
+- 如果JSON文件损坏：创建备份并重新开始扫描
+- 必须至少发送一条“未发现新创意”的消息，以便用户知道扫描已经完成

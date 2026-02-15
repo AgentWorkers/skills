@@ -1,32 +1,32 @@
 ---
 name: clawver-reviews
-description: Handle Clawver customer reviews. Monitor ratings, craft responses, track sentiment trends. Use when asked about customer feedback, reviews, ratings, or reputation management.
+description: 处理 Clawver 客户评价：监控评分，撰写回复，跟踪用户情绪趋势。在需要了解客户反馈、评价或声誉管理相关情况时使用这些数据。
 version: 1.1.0
 homepage: https://clawver.store
 metadata: {"openclaw":{"emoji":"⭐","homepage":"https://clawver.store","requires":{"env":["CLAW_API_KEY"]},"primaryEnv":"CLAW_API_KEY"}}
 ---
 
-# Clawver Reviews
+# Clawver 评论管理
 
-Manage customer reviews on your Clawver store. Monitor ratings, respond to feedback, and maintain your store's reputation.
+在您的 Clawver 商店中管理客户评论，监控评分，回应反馈，并维护商店的声誉。
 
-## Prerequisites
+## 先决条件
 
-- `CLAW_API_KEY` environment variable
-- Active store with completed orders
+- `CLAW_API_KEY` 环境变量
+- 已有活跃的商店且订单已完成
 
-For platform-specific good and bad API patterns from `claw-social`, use `references/api-examples.md`.
+有关 `claw-social` 提供的特定平台上的优秀和不良 API 模式的详细信息，请参阅 `references/api-examples.md`。
 
-## List Reviews
+## 查看评论
 
-### Get All Reviews
+### 查看所有评论
 
 ```bash
 curl https://api.clawver.store/v1/stores/me/reviews \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -69,14 +69,14 @@ curl https://api.clawver.store/v1/stores/me/reviews \
 }
 ```
 
-### Pagination
+### 分页
 
 ```bash
 curl "https://api.clawver.store/v1/stores/me/reviews?limit=20&cursor=abc123" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-### Filter Unanswered Reviews
+### 过滤未回复的评论
 
 ```python
 response = api.get("/v1/stores/me/reviews")
@@ -85,7 +85,7 @@ unanswered = [r for r in reviews if not r.get("response")]
 print(f"Unanswered reviews: {len(unanswered)}")
 ```
 
-## Respond to Reviews
+## 回复评论
 
 ```bash
 curl -X POST https://api.clawver.store/v1/reviews/{reviewId}/respond \
@@ -96,30 +96,14 @@ curl -X POST https://api.clawver.store/v1/reviews/{reviewId}/respond \
   }'
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "review": {
-      "id": "review_abc123",
-      "response": {
-        "body": "Thank you for your kind review! We appreciate your support.",
-        "createdAt": "2024-01-15T11:00:00Z"
-      }
-    }
-  }
-}
-```
+**响应要求：**
+- 回复内容长度不超过 1000 个字符
+- 重新回复会替换原有的评论内容
+- 建议使用专业的语气
 
-**Response requirements:**
-- Maximum 1000 characters
-- Posting again replaces the existing response for that review
-- Professional tone recommended
+## 评论 Webhook
 
-## Review Webhook
-
-Get notified when new reviews are posted:
+当有新评论发布时收到通知：
 
 ```bash
 curl -X POST https://api.clawver.store/v1/webhooks \
@@ -132,7 +116,7 @@ curl -X POST https://api.clawver.store/v1/webhooks \
   }'
 ```
 
-**Webhook payload:**
+**Webhook 数据包：**
 ```json
 {
   "event": "review.received",
@@ -145,12 +129,12 @@ curl -X POST https://api.clawver.store/v1/webhooks \
 }
 ```
 
-**Signature format:**
+**签名格式：**
 ```
 X-Claw-Signature: sha256=abc123...
 ```
 
-**Verification (Node.js):**
+**验证（Node.js）：**
 ```javascript
 const crypto = require('crypto');
 
@@ -166,61 +150,61 @@ function verifyWebhook(body, signature, secret) {
 }
 ```
 
-## Response Templates
+## 回复模板
 
-### Positive Reviews (4-5 stars)
+### 正面评论（4-5 星）
 
-**Generic thank you:**
+**通用感谢语：**
 ```
 Thank you for your wonderful review! We're thrilled you love the product. Your support means everything to us!
 ```
 
-**For repeat customers:**
+**针对重复购买的客户：**
 ```
 Thank you for another great review! We truly appreciate your continued support.
 ```
 
-**For detailed reviews:**
+**针对详细评论：**
 ```
 Thank you for taking the time to write such a thoughtful review! Feedback like yours helps other customers and motivates us to keep creating.
 ```
 
-### Neutral Reviews (3 stars)
+### 中立评论（3 星）
 
-**Acknowledge and improve:**
+**表示感谢并承诺改进：**
 ```
 Thank you for your honest feedback! We're always looking to improve. If there's anything specific we can do better, please reach out—we'd love to hear from you.
 ```
 
-### Negative Reviews (1-2 stars)
+### 负面评论（1-2 星）
 
-**Apologize and offer solution:**
+**道歉并提供解决方案：**
 ```
 We're sorry to hear about your experience. This isn't the standard we aim for. Please contact us at [email] so we can make this right.
 ```
 
-**For shipping issues (POD):**
+**针对配送问题（POD）：**
 ```
 We apologize for the shipping delay. We're working with our fulfillment partner to improve delivery times. Thank you for your patience and feedback.
 ```
 
-**For product issues:**
+**针对产品问题：**
 ```
 We're sorry the product didn't meet your expectations. We'd like to understand more about what went wrong. Please reach out to us so we can resolve this for you.
 ```
 
-## Analytics
+## 分析
 
-### Overall Rating from Store Analytics
+### 来自商店分析的总体评分
 
 ```bash
 curl https://api.clawver.store/v1/stores/me/analytics \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-Top products in the response include `averageRating` and `reviewsCount`.
+回复中会显示产品的 `averageRating` 和 `reviewsCount`。
 
-### Rating Distribution
+### 评分分布
 
 ```python
 response = api.get("/v1/stores/me/reviews")
@@ -236,9 +220,9 @@ for rating, count in distribution.items():
     print(f"{rating} stars: {count} ({pct:.1f}%)")
 ```
 
-## Automated Review Management
+## 自动化评论管理
 
-### Daily Review Check
+### 每日评论检查
 
 ```python
 def check_and_respond_to_reviews():
@@ -266,7 +250,7 @@ def check_and_respond_to_reviews():
         print(f"Responded to review {review['id']}")
 ```
 
-### Sentiment Monitoring
+### 情感分析
 
 ```python
 def check_sentiment_trend():
@@ -289,18 +273,18 @@ def check_sentiment_trend():
         print("Warning: Multiple negative reviews in recent batch")
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Respond quickly** - Aim to respond within 24 hours
-2. **Be professional** - Avoid defensive or argumentative responses
-3. **Take it offline** - For complex issues, invite customers to email
-4. **Thank everyone** - Even negative reviewers deserve acknowledgment
-5. **Learn from feedback** - Use recurring themes to improve products
-6. **Don't incentivize** - Never offer discounts for positive reviews
+1. **快速回复** - 尽量在 24 小时内回复
+2. **保持专业** - 避免 defensive 或争论性的回复
+3. **将复杂问题转交给客服** - 对于复杂问题，邀请客户通过电子邮件联系
+4. **感谢每一位评论者** - 即使是负面评论，也值得感谢
+5. **从反馈中学习** - 利用反馈中的共同问题来改进产品
+6. **不要激励评论** - 绝不要为正面评论提供折扣
 
-## Impact on Store
+## 评论对商店的影响
 
-- Reviews display on product pages
-- Average rating shows on store profile
-- Higher ratings improve marketplace visibility
-- Responding to reviews builds trust with future buyers
+- 评论会显示在产品页面上
+- 平均评分会显示在商店简介中
+- 更高的评分有助于提高商店在市场上的可见度
+- 回复评论有助于建立与未来买家的信任

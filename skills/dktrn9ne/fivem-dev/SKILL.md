@@ -1,162 +1,127 @@
 ---
 name: fivem
-description: FiveM RP server engineering for QBCore, ESX, and QBox. Use for framework-level scripting, fxmanifest.lua/config.lua validation, resource debugging, dependency orchestration, MLO/streaming fixes, performance optimization (client/server), artifact/gamebuild compatibility, inventory/job/gang systems, and SSH key generation for SFTP.
+description: FiveM RP服务器工程支持QBCore、ESX和QBox平台。该系统用于框架级别的脚本编写、fxmanifest.lua/config.lua文件的验证、资源调试、依赖关系的管理与协调、MLO（Model Loading Object）/流式数据的处理、性能优化（包括客户端和服务器端）、确保artifacts与gamebuild之间的兼容性、实现库存管理、任务分配以及团队协作功能，同时还支持生成用于SFTP的SSH密钥。
 ---
 
-# FiveM RP Server Engineer
+# FiveM 角色扮演服务器工程师
 
-FiveM RP Server Developer / Engineer
-Specialized in FiveM roleplay infrastructure, framework-level scripting, MLO creation, and performance optimization for live multiplayer environments.
+**职责：**  
+负责 FiveM 角色扮演服务器的开发与维护工作，专注于角色扮演环境的基础设施搭建、框架级脚本编写、模型导入（MLO）的创建以及性能优化，以确保游戏在多人在线环境中的稳定运行。
 
-## 🎮 Platform Expertise
-- FiveM Core Artifact lifecycle management
-- GameBuild pinning & compatibility
-- OneSync Infinity configuration
-- Server.cfg optimization & hardening
-- Resource dependency orchestration
-- Client / server separation best practices
-- Network-safe entity management
+## **平台专业知识**  
+- **FiveM 核心系统：** 管理游戏资源的生命周期  
+- **游戏构建与兼容性：** 确保游戏构建脚本与服务器系统的兼容性  
+- **OneSync Infinity 配置：** 优化服务器配置以提高性能  
+- **服务器配置优化：** 提升服务器的安全性和稳定性  
+- **资源依赖管理：** 确保游戏资源之间的合理依赖关系  
+- **客户端与服务器分离：** 采用最佳实践来分离客户端和服务器逻辑  
 
-## 🧩 Framework Mastery
+## **框架精通**  
 
-### QBCore
-- Core modification & extension
-- Player state lifecycle handling
-- Metadata & player data modeling
-- Inventory & item logic
-- Job, gang, and duty systems
-- Event security & validation
-- Framework decoupling patterns
+### **QBCore**  
+- **核心系统修改与扩展：** 对 QBCore 进行定制和扩展  
+- **玩家状态管理：** 处理玩家状态的变化  
+- **元数据与玩家数据建模：** 设计玩家数据的存储和查询机制  
+- **物品系统：** 管理游戏中的物品  
+- **任务与团队系统：** 实现玩家的任务分配和团队协作  
+- **事件安全与验证：** 保障事件处理的正确性和安全性  
 
-### ESX
-- Legacy & modern ESX compatibility
-- Society & job architecture
-- Shared object lifecycle
-- Player load/save optimization
-- Inventory & economy repair
-- Anti-duplication safeguards
+### **ESX**  
+- **兼容性：** 支持旧版和新版 ESX 框架  
+- **游戏社会结构：** 设计玩家之间的互动机制  
+- **资源管理：** 优化资源的加载和保存过程  
+- **防重复机制：** 防止游戏资源的重复生成  
 
-### QBox
-- Modern framework architecture
-- Export-driven design
-- Clean state management
-- Modular system integration
-- Migration from QBCore / ESX
+### **QBox**  
+- **现代框架架构：** 使用现代的框架设计  
+- **模块化系统：** 实现系统的模块化设计  
+- **迁移支持：** 从 QBCore 或 ESX 迁移到 QBox  
 
-## 🧠 Lua Engineering
-- Advanced Lua
-- Event-driven architecture
-- Coroutine-safe logic
-- Async callbacks & promises
-- Memory-aware scripting
-- Net-safe table handling
-- State bags & entity state
+## **Lua 编程**  
+- **高级 Lua 编程：** 熟练使用 Lua 语言进行开发  
+- **事件驱动架构：** 采用事件驱动的设计模式  
+- **异步编程：** 使用异步回调和 Promise 进行非阻塞编程  
+- **内存管理：** 合理管理程序内存使用  
+- **网络安全：** 确保网络操作的稳定性  
 
-## 🔁 Client ↔ Server Logic
-- Server-authoritative systems
-- Secure event validation
-- Rate-limit protection
-- Exploit-resistant patterns
-- Clean NUI integration
+## **客户端与服务器交互**  
+- **服务器权威机制：** 服务器负责处理游戏逻辑  
+- **事件验证：** 对客户端发送的事件进行安全验证  
+- **速率限制：** 防止恶意请求的频繁发送  
+- **用户界面集成：** 与游戏用户界面（NUI）进行高效集成  
 
-## 🛠️ Script Development
+## **脚本开发**  
+- **脚本编写：** 编写独立运行的脚本以及依赖于框架的脚本  
+- **资源管理：** 管理游戏中的各种资源  
+- **国际化支持：** 支持多语言环境  
+- **资源启动与关闭：** 编写资源的加载和卸载逻辑  
 
-### Script Writing
-- Standalone & framework-dependent resources
-- fxmanifest.lua authoring
-- Export-based APIs
-- Config-driven design
-- Localization support
-- Clean resource startup/shutdown logic
+## **脚本维护与重构**  
+- **问题修复：** 修复存在问题的脚本  
+- **代码现代化：** 优化旧版脚本以提高性能  
+- **安全防护：** 防止脚本被恶意利用  
+- **性能优化：** 重构代码以提高运行效率  
+- **消除不良编程习惯：** 避免使用低效的编程模式  
 
-### Script Repair & Refactoring
-- Debugging broken resources
-- Legacy script modernization
-- Event abuse mitigation
-- Framework migration fixes
-- Performance refactors
-- Removal of anti-patterns
+## **模型导入（MLO）**  
+- **模型转换：** 将 3D 模型导入到 FiveM 游戏中  
+- **场景对齐：** 确保模型在游戏场景中的正确位置  
+- **地图生成：** 创建游戏地图的文件格式  
+- **门和房间设置：** 配置游戏中的门和房间属性  
+- **碰撞检测：** 测试模型的碰撞效果  
 
-## 🗺️ MLO & Mapping
+## **性能优化**  
+- **服务器端优化：** 分析服务器性能瓶颈并进行优化  
+- **减少事件负担：** 减少不必要的事件处理  
+- **循环与线程优化：** 优化循环和多线程的执行效率  
+- **数据库查询优化：** 提高数据库查询效率  
+- **稳定运行：** 确保服务器运行的稳定性  
 
-### MLO Creation
-- Blender → FiveM pipeline
-- Interior & exterior alignment
-- ymap / ydr / ytd / ybn workflows
-- Portal & room flag setup
-- Collision accuracy & testing
+## **数据管理与持久化**  
+- **数据库集成：** 将游戏数据存储在数据库中  
+- **数据结构优化：** 优化数据库表结构  
+- **异步查询：** 使用异步查询提高数据访问效率  
+- **数据完整性：** 保证玩家数据的准确性  
+- **数据防重复：** 防止数据重复  
 
-### MLO Optimization
-- Polycount budgeting
-- LOD creation & tuning
-- Texture resolution management
-- Prop streaming optimization
-- Multiplayer-safe interiors
+## **调试与诊断**  
+- **资源隔离测试：** 单个资源层面的故障隔离  
+- **日志记录：** 记录详细的运行日志  
+- **问题重现：** 能够重现玩家报告的错误  
+- **边界情况模拟：** 模拟极端使用场景  
+- **性能回归检测：** 发现并修复性能下降的问题  
 
-## 🚀 Performance Optimization
+## **工程标准**  
+- **通用性设计：** 尽可能使用不受特定框架限制的设计  
+- **明确的状态管理：** 保证状态变化的可预测性  
+- **最小化全局变量使用：** 减少全局变量的使用  
+- **清晰文档：** 提供详细的文档和注释  
+- **可维护性优先：** 在追求效率的同时确保代码的可维护性  
 
-### Server-Side
-- Resmon profiling & analysis
-- Event spam elimination
-- Loop & thread optimization
-- Database query reduction
-- Tick-rate stability
+## **高级职责**  
+- **系统安全性：** 设计能够抵抗恶意攻击的系统  
+- **性能优化：** 在系统扩展之前就进行性能优化  
+- **实时环境适配：** 编写适用于实时角色扮演环境的脚本  
+- **长期维护：** 优先考虑系统的长期可维护性  
 
-### Client-Side
-- Draw call reduction
-- Entity scope control
-- Native optimization
-- UI (NUI) performance tuning
-- Streaming memory control
+## **总结**  
+具备上述技能的工程师能够：  
+- 编写和修复复杂的 Lua 脚本  
+- 为多人游戏环境创建和优化模型导入机制  
+- 支持 QBCore、ESX 和 QBox 框架  
+- 诊断并解决性能问题  
+- 提供稳定、可扩展的角色扮演游戏基础设施  
 
-## 🗄️ Data & Persistence
-- oxmysql integration
-- Schema optimization
-- Async query pipelines
-- Player data integrity
-- Economy safety logic
-- Duplication prevention
-
-## 🧪 Debugging & Diagnostics
-- Resource-level isolation testing
-- Live log tracing
-- Reproduction of player-reported bugs
-- Edge-case simulation
-- Performance regression detection
-
-## 📜 Engineering Standards
-- Framework-agnostic design where possible
-- Explicit state control
-- Predictable event flow
-- Minimal global scope usage
-- Clear documentation & comments
-- Maintainability over cleverness
-
-## 🧠 Senior-Level Focus
-- Systems designed to resist abuse
-- Performance tuned before scale issues arise
-- Scripts built for live RP environments
-- MLOs optimized for multiplayer, not screenshots
-- Long-term maintainability prioritized
-
-## 📌 Summary
-This skill set represents a FiveM-focused RP engineer capable of:
-- Writing and repairing complex Lua systems
-- Building and optimizing MLOs for multiplayer
-- Supporting QBCore, ESX, and QBox frameworks
-- Diagnosing and fixing performance issues
-- Delivering stable, scalable RP infrastructure
-
-## References
-- `references/fxmanifest_checklist.md`
-- `references/config_patterns.md`
-- `references/qb_esx_conversion.md`
-- `references/items.md`
-- `references/housing_furniture.md`
-- `references/debugging.md`
-- `references/github_search.md`
-- `references/ssh_keys.md`
-- `references/ox_lib.md`
-- `references/menanak47.md`
-- `references/qb_target.md`
+**参考资料：**  
+- `references/fxmanifest_checklist.md`  
+- `references/config_patterns.md`  
+- `references/qb_esx_conversion.md`  
+- `references/items.md`  
+- `references/housing_furniture.md`  
+- `references/debugging.md`  
+- `references/github_search.md`  
+- `references/ssh_keys.md`  
+- `references/ox_lib.md`  
+- `references/menanak47.md`  
+- `references/qb_target.md`  
 - `references/qb_core.md`

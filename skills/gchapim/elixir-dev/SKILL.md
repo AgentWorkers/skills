@@ -1,15 +1,15 @@
 ---
 name: elixir-dev
-description: "Elixir/Phoenix development companion. Run and interpret mix test, mix credo, mix dialyzer, mix format. Generate modules following OTP conventions: contexts, schemas, GenServers, supervisors, tasks. Debug compilation errors and warnings. Help with Ecto migrations, queries, changesets, and associations. Use for any Elixir or Phoenix development task including writing modules, fixing tests, refactoring code, or understanding OTP patterns."
+description: "Elixir/Phoenix 开发辅助工具。可以运行并解释 `mix test`、`mix credo`、`mix dialyzer`、`mix format` 等命令；遵循 OTP（Elixir Template Project）规范生成模块（包括上下文、数据模型、GenServers、Supervisors、Tasks 等）。能够调试编译错误和警告；支持 Ecto 迁移、数据库查询、变更集（changesets）以及关联（associations）操作。适用于各种 Elixir 或 Phoenix 开发任务，如编写模块、修复测试代码、重构代码或理解 OTP 设计模式。"
 ---
 
-# Elixir Dev
+# Elixir 开发
 
-## Running Mix Commands
+## 运行 Mix 命令
 
-See [references/mix-commands.md](references/mix-commands.md) for full command reference.
+有关完整的命令参考，请参阅 [references/mix-commands.md](references/mix-commands.md)。
 
-### Test
+### 测试
 
 ```bash
 # Run all tests
@@ -28,11 +28,11 @@ mix test --failed
 mix test --cover
 ```
 
-**Interpreting failures:**
-- `** (MatchError)` — Pattern match failed; check return value shape.
-- `** (Ecto.NoResultsError)` — `Repo.get!` with non-existent ID; use `Repo.get` or seed data.
-- `** (DBConnection.OwnershipError)` — Missing `async: true` or sandbox setup.
-- `no function clause matching` — Wrong arity or unexpected arg type.
+**故障解析：**
+- `** (MatchError)` — 模式匹配失败；请检查返回值的格式。
+- `** (Ecto.NoResultsError)` — 使用不存在的 ID 调用 `Repo.get!`；请使用 `Repo.get` 或生成测试数据。
+- `** (DBConnection.OwnershipError)` — 缺少 `async: true` 选项或未设置沙箱环境。
+- `no function clause matching` — 参数数量不正确或参数类型不符合预期。
 
 ### Credo
 
@@ -42,10 +42,10 @@ mix credo suggest --format json
 mix credo explain MyApp.Module  # Explain issues for specific module
 ```
 
-**Common Credo fixes:**
-- `Credo.Check.Readability.ModuleDoc` — Add `@moduledoc`.
-- `Credo.Check.Refactor.CyclomaticComplexity` — Extract helper functions.
-- `Credo.Check.Design.TagTODO` — Address or remove TODO comments.
+**常见的 Credo 代码优化建议：**
+- `Credo.Check.Readability.ModuleDoc` — 为模块添加 `@moduledoc` 注解。
+- `Credo.Check.Refactor.CyclomaticComplexity` — 提取辅助函数。
+- `Credo.Check.Design.TagTODO` — 处理或删除 TODO 注释。
 
 ### Dialyzer
 
@@ -54,24 +54,24 @@ mix dialyzer
 mix dialyzer --format short
 ```
 
-**Common Dialyzer warnings:**
-- `The pattern can never match` — Dead code or wrong type in pattern.
-- `Function has no local return` — Crashes on all paths; check internal calls.
-- `The call will never return` — Calling a function that always raises.
-- Fix: Add `@spec` annotations; use `@dialyzer {:nowarn_function, func: arity}` as last resort.
+**常见的 Dialyzer 警告：**
+- `The pattern can never match` — 模式中的代码无法被匹配；或者类型不正确。
+- `Function has no local return` — 函数在所有路径上都会导致崩溃；请检查内部调用。
+- `The call will never return` — 调用的函数总是会抛出异常。
+- 解决方法：添加 `@spec` 注解；作为最后手段，可以使用 `@dialyzer {:nowarn_function, func: arity}`。
 
-### Format
+### 格式化
 
 ```bash
 mix format
 mix format --check-formatted  # CI mode — exit 1 if unformatted
 ```
 
-## Module Generation
+## 模块编写规范
 
-Always include `@moduledoc`, `@doc`, and `@spec` on public functions.
+在公共函数上始终添加 `@moduledoc`、`@doc` 和 `@spec` 注解。
 
-### Context Module
+### Context 模块
 
 ```elixir
 defmodule MyApp.Notifications do
@@ -96,7 +96,7 @@ defmodule MyApp.Notifications do
 end
 ```
 
-### Schema Module
+### Schema 模块
 
 ```elixir
 defmodule MyApp.Notifications.Notification do
@@ -134,23 +134,23 @@ defmodule MyApp.Notifications.Notification do
 end
 ```
 
-## OTP Patterns
+## OTP 模式
 
-See [references/otp-patterns.md](references/otp-patterns.md) for GenServer, Supervisor, Agent, Task patterns.
+有关 GenServer、Supervisor、Agent 和 Task 的模式，请参阅 [references/otp-patterns.md](references/otp-patterns.md)。
 
-### When to Use What
+### 何时使用哪种模式
 
-| Pattern | Use When |
+| 模式 | 使用场景 |
 |---------|----------|
-| GenServer | Stateful process with sync/async calls (cache, rate limiter, connection pool) |
-| Agent | Simple state wrapper with no complex logic |
-| Task | One-off async work, fire-and-forget or awaited |
-| Task.Supervisor | Supervised fire-and-forget tasks |
-| Supervisor | Managing child process lifecycles |
-| Registry | Process lookup by name/key |
-| DynamicSupervisor | Starting children at runtime |
+| GenServer | 具有同步/异步调用状态的管理进程（例如缓存、速率限制器、连接池） |
+| Agent | 无需复杂逻辑的简单状态封装 |
+| Task | 一次性异步任务，执行后即可忽略 |
+| Task.Supervisor | 监控并执行一次性任务 |
+| Supervisor | 管理子进程的生命周期 |
+| Registry | 通过名称/键查找进程 |
+| DynamicSupervisor | 在运行时启动子进程 |
 
-### GenServer Template
+### GenServer 模板
 
 ```elixir
 defmodule MyApp.RateLimiter do
@@ -185,19 +185,19 @@ defmodule MyApp.RateLimiter do
 end
 ```
 
-## Common Compilation Errors
+## 常见的编译错误
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方法 |
 |-------|-------|-----|
-| `module X is not available` | Missing dep or typo | Check `mix.exs` deps, verify module name |
-| `undefined function X/N` | Not imported/aliased | Add `import`, `alias`, or full module path |
-| `(CompileError) redefining module` | Duplicate module name | Rename one of them |
-| `protocol not implemented` | Missing protocol impl | Add `defimpl` for your struct |
-| `cannot use ^x outside of match` | Pin in wrong position | Move to pattern match context |
+| `module X is not available` | 缺少依赖项或拼写错误 | 检查 `mix.exs` 文件中的依赖项列表，并验证模块名称 |
+| `undefined function X/N` | 模块未被导入或别名未正确设置 | 添加 `import` 语句、别名或完整的模块路径 |
+| `(CompileError) redefining module` | 模块名称重复 | 为其中一个模块重新命名 |
+| `protocol not implemented` | 缺少协议实现 | 为相关结构体添加 `defimpl` 方法 |
+| `cannot use ^x outside of match` | `^x` 的使用位置不正确 | 将其移至模式匹配的上下文中 |
 
-## Ecto Query Patterns
+## Ecto 查询模式
 
-### Dynamic Filters
+### 动态过滤器
 
 ```elixir
 def list(filters) do
@@ -211,7 +211,7 @@ def list(filters) do
 end
 ```
 
-### Preloading
+### 预加载
 
 ```elixir
 # Query-time preload (single query with join)
@@ -224,7 +224,7 @@ Post |> Repo.all() |> Repo.preload(:author)
 Repo.preload(posts, [comments: :author])
 ```
 
-### Aggregates
+### 聚合操作
 
 ```elixir
 from(o in Order,
@@ -235,9 +235,9 @@ from(o in Order,
 |> Repo.all()
 ```
 
-## Phoenix LiveView Basics
+## Phoenix LiveView 基础知识
 
-### Mount + Handle Events
+### 绑定组件 + 处理事件
 
 ```elixir
 defmodule MyAppWeb.DashboardLive do
@@ -266,7 +266,7 @@ defmodule MyAppWeb.DashboardLive do
 end
 ```
 
-### PubSub for Real-time
+### 使用 PubSub 实现实时通信
 
 ```elixir
 # Subscribe in mount

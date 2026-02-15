@@ -1,57 +1,58 @@
 ---
 name: ms365-tenant-manager
-description: Microsoft 365 tenant administration for Global Administrators. Automate M365 tenant setup, Office 365 admin tasks, Azure AD user management, Exchange Online configuration, Teams administration, and security policies. Generate PowerShell scripts for bulk operations, Conditional Access policies, license management, and compliance reporting. Use for M365 tenant manager, Office 365 admin, Azure AD users, Global Administrator, tenant configuration, or Microsoft 365 automation.
+description: **Microsoft 365租户管理工具（适用于全局管理员）**  
+该工具可自动化M365租户的配置、Office 365管理任务、Azure AD用户管理、Exchange Online配置以及Teams管理流程，并支持安全策略的制定。它能够生成用于批量操作的PowerShell脚本，实现条件访问控制策略、许可证管理及合规性报告的自动化处理。适用于M365租户管理员、Office 365管理员、Azure AD用户及全局管理员，适用于租户配置及Microsoft 365相关自动化场景。
 ---
 
-# Microsoft 365 Tenant Manager
+# Microsoft 365 租户管理器
 
-Expert guidance and automation for Microsoft 365 Global Administrators managing tenant setup, user lifecycle, security policies, and organizational optimization.
-
----
-
-## Table of Contents
-
-- [Trigger Phrases](#trigger-phrases)
-- [Quick Start](#quick-start)
-- [Tools](#tools)
-- [Workflows](#workflows)
-- [Best Practices](#best-practices)
-- [Reference Guides](#reference-guides)
-- [Limitations](#limitations)
+为 Microsoft 365 全局管理员提供专家指导与自动化工具，帮助管理租户设置、用户生命周期、安全策略及组织优化。
 
 ---
 
-## Trigger Phrases
+## 目录
 
-Use this skill when you hear:
-- "set up Microsoft 365 tenant"
-- "create Office 365 users"
-- "configure Azure AD"
-- "generate PowerShell script for M365"
-- "set up Conditional Access"
-- "bulk user provisioning"
-- "M365 security audit"
-- "license management"
-- "Exchange Online configuration"
-- "Teams administration"
+- [触发短语](#trigger-phrases)
+- [快速入门](#quick-start)
+- [工具](#tools)
+- [工作流程](#workflows)
+- [最佳实践](#best-practices)
+- [参考指南](#reference-guides)
+- [限制](#limitations)
 
 ---
 
-## Quick Start
+## 触发短语
 
-### Generate Security Audit Script
+当您听到以下需求时，请使用此技能：
+- “设置 Microsoft 365 租户”
+- “创建 Office 365 用户”
+- “配置 Azure AD”
+- “生成用于 M365 的 PowerShell 脚本”
+- “设置条件访问（Conditional Access）”
+- “批量用户配置”
+- “M365 安全审计”
+- “许可证管理”
+- “Exchange Online 配置”
+- “Teams 管理”
+
+---
+
+## 快速入门
+
+### 生成安全审计脚本
 
 ```bash
 python scripts/powershell_generator.py --action audit --output audit_script.ps1
 ```
 
-### Create Bulk User Provisioning Script
+### 创建批量用户配置脚本
 
 ```bash
 python scripts/user_management.py --action provision --csv users.csv --license E3
 ```
 
-### Configure Conditional Access Policy
+### 配置条件访问策略
 
 ```bash
 python scripts/powershell_generator.py --action conditional-access --require-mfa --include-admins
@@ -59,13 +60,13 @@ python scripts/powershell_generator.py --action conditional-access --require-mfa
 
 ---
 
-## Tools
+## 工具
 
 ### powershell_generator.py
 
-Generates ready-to-use PowerShell scripts for Microsoft 365 administration.
+生成可用于 Microsoft 365 管理的 PowerShell 脚本。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Generate security audit script
@@ -83,25 +84,25 @@ python scripts/powershell_generator.py --action license \
   --sku "ENTERPRISEPACK"
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `--action` | Yes | Script type: `audit`, `conditional-access`, `license`, `users` |
-| `--policy-name` | No | Name for Conditional Access policy |
-| `--require-mfa` | No | Require MFA in policy |
-| `--include-users` | No | Users to include: `All` or specific UPNs |
-| `--csv` | No | CSV file path for bulk operations |
-| `--sku` | No | License SKU for assignment |
-| `--output` | No | Output file path (default: stdout) |
+| `--action` | 是 | 脚本类型：`audit`（审计）、`conditional-access`（条件访问）、`license`（许可证）、`users`（用户） |
+| `--policy-name` | 否 | 条件访问策略的名称 |
+| `--require-mfa` | 否 | 是否在策略中要求多因素认证（MFA） |
+| `--include-users` | 否 | 要包含的用户：`All`（全部）或特定 UPN（用户统一资源名称） |
+| `--csv` | 否 | 用于批量操作的 CSV 文件路径 |
+| `--sku` | 否 | 要分配的许可证 SKU（产品密钥） |
+| `--output` | 否 | 输出文件路径（默认：stdout） |
 
-**Output:** Complete PowerShell scripts with error handling, logging, and best practices.
+**输出：** 包含错误处理、日志记录及最佳实践的完整 PowerShell 脚本。
 
 ### user_management.py
 
-Automates user lifecycle operations and bulk provisioning.
+自动化用户生命周期操作和批量用户配置。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Provision users from CSV
@@ -114,21 +115,21 @@ python scripts/user_management.py --action offboard --user john.doe@company.com
 python scripts/user_management.py --action report-inactive --days 90
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `--action` | Yes | Operation: `provision`, `offboard`, `report-inactive`, `sync` |
-| `--csv` | No | CSV file for bulk operations |
-| `--user` | No | Single user UPN |
-| `--days` | No | Days for inactivity threshold (default: 90) |
-| `--license` | No | License SKU to assign |
+| `--action` | 是 | 操作类型：`provision`（配置用户）、`offboard`（注销用户）、`report-inactive`（报告不活跃用户）、`sync`（同步数据） |
+| `--csv` | 否 | 用于批量操作的 CSV 文件 |
+| `--user` | 否 | 单个用户的 UPN（用户统一资源名称） |
+| `--days` | 否 | 不活跃用户的阈值（默认：90 天） |
+| `--license` | 否 | 要分配的许可证 SKU |
 
 ### tenant_setup.py
 
-Initial tenant configuration and service provisioning automation.
+初始化租户配置和服务配置自动化。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Generate tenant setup checklist
@@ -143,43 +144,43 @@ python scripts/tenant_setup.py --action security-baseline
 
 ---
 
-## Workflows
+## 工作流程
 
-### Workflow 1: New Tenant Setup
+### 工作流程 1：新租户设置
 
-**Step 1: Generate Setup Checklist**
+**步骤 1：生成设置检查清单**
 
 ```bash
 python scripts/tenant_setup.py --action checklist --company "Company Name" --users 100
 ```
 
-**Step 2: Configure DNS Records**
+**步骤 2：配置 DNS 记录**
 
 ```bash
 python scripts/tenant_setup.py --action dns --domain company.com
 ```
 
-**Step 3: Apply Security Baseline**
+**步骤 3：应用安全基线**
 
 ```bash
 python scripts/powershell_generator.py --action audit > initial_audit.ps1
 ```
 
-**Step 4: Provision Users**
+**步骤 4：配置用户**
 
 ```bash
 python scripts/user_management.py --action provision --csv employees.csv --license E3
 ```
 
-### Workflow 2: Security Hardening
+### 工作流程 2：安全强化
 
-**Step 1: Run Security Audit**
+**步骤 1：运行安全审计**
 
 ```bash
 python scripts/powershell_generator.py --action audit --output security_audit.ps1
 ```
 
-**Step 2: Create MFA Policy**
+**步骤 2：创建多因素认证策略**
 
 ```bash
 python scripts/powershell_generator.py --action conditional-access \
@@ -188,25 +189,25 @@ python scripts/powershell_generator.py --action conditional-access \
   --include-users "All"
 ```
 
-**Step 3: Review Results**
+**步骤 3：查看结果**
 
-Execute generated scripts and review CSV reports in output directory.
+执行生成的脚本，并查看输出目录中的 CSV 报告。
 
-### Workflow 3: User Offboarding
+### 工作流程 3：用户注销
 
-**Step 1: Generate Offboarding Script**
+**步骤 1：生成注销脚本**
 
 ```bash
 python scripts/user_management.py --action offboard --user departing.user@company.com
 ```
 
-**Step 2: Execute Script with -WhatIf**
+**步骤 2：使用 `-WhatIf` 参数测试脚本**
 
 ```powershell
 .\offboard_user.ps1 -WhatIf
 ```
 
-**Step 3: Execute for Real**
+**步骤 3：实际执行脚本**
 
 ```powershell
 .\offboard_user.ps1 -Confirm:$false
@@ -214,72 +215,72 @@ python scripts/user_management.py --action offboard --user departing.user@compan
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### Tenant Setup
+### 租户设置
 
-1. Enable MFA before adding users
-2. Configure named locations for Conditional Access
-3. Use separate admin accounts with PIM
-4. Verify custom domains before bulk user creation
-5. Apply Microsoft Secure Score recommendations
+1. 在添加用户之前启用多因素认证（MFA）。
+2. 为条件访问（Conditional Access）配置指定的位置。
+3. 使用具有 PIM（Personal Information Management）功能的独立管理员账户。
+4. 在批量创建用户之前验证自定义域名。
+5. 遵循 Microsoft 安全评分建议。
 
-### Security Operations
+### 安全操作
 
-1. Start Conditional Access policies in report-only mode
-2. Use `-WhatIf` parameter before executing scripts
-3. Never hardcode credentials in scripts
-4. Enable audit logging for all operations
-5. Regular quarterly security reviews
+1. 以仅报告模式启动条件访问策略。
+2. 在执行脚本之前使用 `-WhatIf` 参数进行测试。
+3. 不要在脚本中硬编码凭证。
+4. 为所有操作启用审计日志记录。
+5. 定期进行季度安全审查。
 
-### PowerShell Automation
+### PowerShell 自动化
 
-1. Prefer Microsoft Graph over legacy MSOnline modules
-2. Include try/catch blocks for error handling
-3. Implement logging for audit trails
-4. Use Azure Key Vault for credential management
-5. Test in non-production tenant first
+1. 尽量使用 Microsoft Graph 模块而非旧的 MSOnline 模块。
+2. 使用 try/catch 块进行错误处理。
+3. 实施日志记录以追踪操作过程。
+4. 使用 Azure Key Vault 管理凭证。
+5. 先在非生产环境中进行测试。
 
 ---
 
-## Reference Guides
+## 参考指南
 
-### When to Use Each Reference
+### 各参考资料的用途
 
 **references/powershell-templates.md**
 
-- Ready-to-use script templates
-- Conditional Access policy examples
-- Bulk user provisioning scripts
-- Security audit scripts
+- 可直接使用的脚本模板
+- 条件访问策略示例
+- 批量用户配置脚本
+- 安全审计脚本
 
 **references/security-policies.md**
 
-- Conditional Access configuration
-- MFA enforcement strategies
-- DLP and retention policies
-- Security baseline settings
+- 条件访问配置指南
+- 多因素认证策略
+- 数据丢失防护（DLP）和保留策略
+- 安全基线设置
 
 **references/troubleshooting.md**
 
-- Common error resolutions
-- PowerShell module issues
-- Permission troubleshooting
-- DNS propagation problems
+- 常见问题解决方法
+- PowerShell 模块相关问题
+- 权限问题排查
+- DNS 传播问题
 
 ---
 
-## Limitations
+## 限制
 
-| Constraint | Impact |
+| 限制 | 影响 |
 |------------|--------|
-| Global Admin required | Full tenant setup needs highest privilege |
-| API rate limits | Bulk operations may be throttled |
-| License dependencies | E3/E5 required for advanced features |
-| Hybrid scenarios | On-premises AD needs additional configuration |
-| PowerShell prerequisites | Microsoft.Graph module required |
+| 需要全局管理员权限 | 完整的租户设置需要最高权限 |
+| API 使用率限制 | 批量操作可能会受到速率限制 |
+| 许可证依赖性 | 高级功能需要 E3/E5 许可证 |
+| 混合环境 | 需要额外配置本地 AD（On-premises AD） |
+| PowerShell 先决条件 | 需要 Microsoft.Graph 模块 |
 
-### Required PowerShell Modules
+### 所需 PowerShell 模块
 
 ```powershell
 Install-Module Microsoft.Graph -Scope CurrentUser
@@ -287,9 +288,9 @@ Install-Module ExchangeOnlineManagement -Scope CurrentUser
 Install-Module MicrosoftTeams -Scope CurrentUser
 ```
 
-### Required Permissions
+### 所需权限
 
-- **Global Administrator** - Full tenant setup
-- **User Administrator** - User management
-- **Security Administrator** - Security policies
-- **Exchange Administrator** - Mailbox management
+- **全局管理员（Global Administrator）**：完整租户设置
+- **用户管理员（User Administrator）**：用户管理
+- **安全管理员（Security Administrator）**：安全策略管理
+- **Exchange 管理员（Exchange Administrator）**：邮箱管理

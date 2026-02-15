@@ -1,75 +1,75 @@
 ---
 name: Tailwind CSS
-description: Write Tailwind utility classes with proper responsive design, dark mode, and configuration.
+description: 编写具有适当响应式设计、暗黑模式和配置功能的 Tailwind CSS 实用类。
 metadata: {"clawdbot":{"emoji":"🌊","requires":{"bins":["npx"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Content Configuration
+## 内容配置
 
-- `content` array in tailwind.config.js must include ALL files with classes—missing paths = missing styles in production
-- Glob patterns: `"./src/**/*.{js,jsx,ts,tsx,html}"` covers nested directories
-- Dynamic class names like `bg-${color}-500` won't be detected—use complete class names or safelist
-- Check production build size—if unexpectedly small, content paths are wrong
+- `tailwind.config.js` 中的 `content` 数组必须包含所有带有类的文件；如果路径缺失，生产环境中的样式也会相应缺失。
+- 全局匹配模式：`"./src/**/*.{js,jsx,ts,tsx,html}"` 可覆盖嵌套目录。
+- 动态类名（如 `bg-${color}-500`）可能无法被正确识别，请使用完整的类名或使用安全列表（safelist）。
+- 检查生产环境的构建文件大小；如果文件大小异常小，可能说明内容路径有误。
 
-## Responsive Prefixes
+## 响应式前缀
 
-- Mobile-first: unprefixed styles apply to all sizes, `md:` applies at medium AND above
-- `sm:hidden md:block` means hidden on small, visible on medium+—not "only on medium"
-- Breakpoints: sm(640px), md(768px), lg(1024px), xl(1280px), 2xl(1536px)
-- Custom breakpoints in config override defaults—use `extend.screens` to add without replacing
+- 以移动设备优先（mobile-first）：未加前缀的样式适用于所有屏幕尺寸；`md:` 前缀的样式仅适用于中等及以上屏幕尺寸。
+- `sm:hidden md:block` 表示在小屏幕上隐藏，在中等及以上屏幕上显示（而非“仅在中等屏幕上显示”）。
+- 分辨率断点：`sm(640px)`、`md(768px)`、`lg(1024px)`、`xl(1280px)`、`2xl(1536px)`。
+- 配置文件中的自定义断点可以覆盖默认设置；使用 `extend.screens` 来添加新的断点，而不会替换原有的断点。
 
-## Dark Mode
+## 暗黑模式
 
-- `dark:` prefix requires `darkMode: 'class'` in config—won't work with default media strategy if you need manual toggle
-- Dark class on `<html>` or `<body>`, not on individual components
-- `dark:bg-gray-900` only applies when ancestor has `class="dark"`
-- System preference: `darkMode: 'media'` uses `prefers-color-scheme`
+- 使用 `dark:` 前缀时，需要在配置文件中设置 `darkMode: 'class'`；如果需要手动切换模式，则不能使用默认的媒体策略。
+- 暗黑模式相关的样式应应用于 `<html>` 或 `<body>` 元素，而不是单独的组件。
+- `dark:bg-gray-900` 仅在父元素具有 `class="dark"` 时生效。
+- 系统偏好设置：`darkMode: 'media'` 会根据用户的颜色偏好来决定显示模式。
 
-## State Variants
+## 状态变量
 
-- `hover:`, `focus:`, `active:` work as expected
-- `group-hover:` requires `group` class on parent—child reacts to parent hover
-- `peer-focus:` requires `peer` class on sibling AND sibling must come first in DOM
-- Stack variants: `dark:hover:bg-gray-700` applies on hover in dark mode
+- `hover:`、`focus:`、`active:` 等状态变量的效果如预期般工作。
+- `group-hover:` 需要在父元素上添加 `group` 类；子元素才会响应父元素的悬停事件。
+- `peer-focus:` 需要在同级元素上同时添加 `peer` 类，并且这些同级元素在 DOM 中必须位于相同的位置。
+- 在黑暗模式下，`stack-variants` 中的样式会在悬停时生效（例如 `dark:hover:bg-gray-700`）。
 
-## Arbitrary Values
+## 任意值
 
-- `bg-[#1da1f2]` for one-off colors—brackets for any arbitrary value
-- `w-[calc(100%-2rem)]` for calc expressions
-- `grid-cols-[1fr_2fr_1fr]` underscores for spaces in values
-- Arbitrary properties: `[mask-type:alpha]` for unsupported CSS properties
+- 使用方括号表示任意值，例如 `bg-[#1da1f2]`。
+- 使用计算表达式，例如 `w-[calc(100%-2rem)]`。
+- 值中的空格需要用下划线表示，例如 `grid-columns-[1fr_2fr_1fr]`。
+- 对于不支持的 CSS 属性，可以使用占位符，例如 `[mask-type:alpha]`。
 
-## @apply Traps
+## `@apply` 的使用注意事项
 
-- `@apply` in component CSS loses responsive/state variants—`@apply hover:bg-blue-500` doesn't work as expected
-- Order in `@apply` matters unlike HTML classes—later utilities override earlier
-- Prefer HTML classes over `@apply`—easier to maintain, better tree-shaking
-- If you must use `@apply`, keep it simple: base styles only
+- 在组件 CSS 中使用 `@apply` 会丢失响应式和状态相关的样式效果；例如 `@apply hover:bg-blue-500` 可能无法按预期工作。
+- `@apply` 中的顺序很重要，后面的规则会覆盖前面的规则。
+- 建议优先使用 HTML 类，因为它们更易于维护且有助于优化样式树的构建。
+- 如果必须使用 `@apply`，请保持其简单性，仅用于基础样式的应用。
 
-## Configuration
+## 配置选项
 
-- `extend` adds to defaults: `extend: { colors: { brand: '#xxx' } }` keeps all existing colors
-- Top-level replaces defaults: `colors: { brand: '#xxx' }` removes all default colors
-- `theme()` function in CSS: `border-color: theme('colors.gray.200')`
-- Plugin order matters—later plugins can override earlier ones
+- `extend` 可以扩展默认设置：`extend: { colors: { brand: '#xxx' }` 可保留所有现有的颜色设置。
+- 顶级配置可以覆盖默认设置：`colors: { brand: '#xxx' }` 会移除所有默认颜色。
+- CSS 中的 `theme()` 函数：`border-color: theme('colorsgray.200')` 可根据主题颜色设置边框颜色。
+- 插件的加载顺序很重要；后面的插件可能会覆盖前面的插件设置。
 
-## Important Modifier
+## 重要修饰符
 
-- `!` prefix forces important: `!mt-4` generates `margin-top: 1rem !important`
-- Use sparingly—usually indicates specificity battle that should be fixed
-- `important: true` in config makes ALL utilities important—avoid, breaks third-party CSS
-- `important: '#app'` scopes specificity to selector—better than global important
+- `!` 前缀用于标记重要的样式规则：`!mt-4` 会生成 `margin-top: 1rem !important`。
+- 请谨慎使用该前缀，因为它通常表示需要解决特定的样式冲突问题。
+- 在配置文件中设置 `important: true` 会使所有样式规则都具有最高优先级，但这可能会影响第三方 CSS 的正常工作。
+- `important: '#app'` 可将样式优先级限制在特定的选择器范围内，比全局设置更有效。
 
-## Common Mistakes
+## 常见错误
 
-- `class="px-4 px-6"` last one wins in stylesheet, not in HTML—both get applied, cascade decides
-- Forgetting `overflow-hidden` with `rounded-*` on parent with absolute children
-- `h-screen` doesn't account for mobile browser chrome—use `h-dvh` (dynamic viewport height)
-- `truncate` needs width constraint or `max-w-*` to actually truncate
+- 在样式表中，`class="px-4 px-6"` 的规则会覆盖 `class="px-6"`；在 HTML 中则不会，最终取决于层叠规则。
+- 如果父元素使用了 `rounded-*` 类，并且有绝对定位的子元素，忘记设置 `overflow-hidden` 会导致样式错误。
+- `h-screen` 规则可能不适用于 Chrome 浏览器（移动设备）；应使用 `h-dvh`（动态视口高度）来适应移动设备。
+- `truncate` 属性需要宽度限制或 `max-w-*` 来实现文本截断效果。
 
-## Performance
+## 性能优化
 
-- JIT is default since v3—generates only used classes, no purge needed
-- Avoid `safelist` with patterns like `bg-*`—defeats tree-shaking
-- `@layer components` for reusable component styles—proper cascade order
-- Large arbitrary values generate unique classes—extract to config if repeated
+- 从 v3 开始，Tailwind CSS 支持 JIT（即时编译）技术，只会生成实际使用的样式，无需进行额外的清理操作。
+- 对于像 `bg-*` 这样的通用样式规则，应避免使用 `safelist`，因为这会破坏样式树的优化效果。
+- 使用 `@layer components` 来定义可复用的组件样式，以确保正确的层叠顺序。
+- 如果样式值很长或包含任意字符，建议将其提取到配置文件中以避免重复。

@@ -1,12 +1,12 @@
 ---
 slug: "weather-impact-scheduler"
 display_name: "Weather Impact Scheduler"
-description: "Analyze weather impact on construction schedule. Predict delays and adjust activities based on forecast."
+description: "分析天气对施工进度的影响。根据天气预报预测可能出现的延误，并据此调整施工活动。"
 ---
 
-# Weather Impact Scheduler
+# 天气影响调度器
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -196,7 +196,7 @@ class WeatherImpactScheduler:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 scheduler = WeatherImpactScheduler("Office Tower")
@@ -214,5 +214,5 @@ summary = scheduler.get_total_delay_forecast()
 print(f"Projected delay: {summary['total_impact_days']} days")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.3 - Schedule Management
+## 资源
+- **《DDC手册》**：第3.3章 - 计划管理

@@ -1,44 +1,51 @@
 ---
 name: lygo-mint-verifier
-description: "LYGO-MINT verifier for Champion/alignment prompt packs: canonicalize a pack, generate a deterministic SHA-256 hash, write append-only and canonical ledgers, and output a portable Anchor Snippet for posting anywhere (Moltbook/Moltx/X/Discord/4claw). Use when you need verifiable, hash-addressed alignment artifacts (Champion packs, summon prompts, workflow packs) with receipts and optional anchor backfill."
+description: "**LYGO-MINT 验证器**：用于冠军/对齐提示包（Champion/alignment prompt packs）  
+- 对提示包进行规范化处理；  
+- 生成唯一的 SHA-256 哈希值；  
+- 创建只读的、规范化的账本（ledgers）；  
+- 输出可移植的 Anchor Snippet，以便在任何平台（Moltbook、Moltx、X、Discord、4claw）上使用。  
+
+**功能说明：**  
+适用于需要可验证的对齐结果（如冠军包、召唤提示包、工作流程包）的场景，支持生成带有哈希地址的验证凭证，并可选择性地添加锚点数据（anchor backfill）。"
 ---
 
-# LYGO-MINT VERIFIER
+# LYGO-MINT 验证工具
 
-This skill turns an aligned Champion pack (or any prompt/workflow pack) into a **verifiable artifact**:
-- canonical form
-- deterministic hash
-- ledger receipts
-- portable Anchor Snippet (paste anywhere)
+该工具可将对齐后的冠军包（或任何提示/工作流程包）转换为可验证的成果：
+- 规范化格式
+- 确定性哈希值
+- 分账记录
+- 可移植的 Anchor Snippet（可粘贴到任何地方）
 
-## Workflow (high-level)
-1) Create/align the pack (e.g. Champion alignment system).
-2) Run verifier:
-   - canonicalize
-   - hash (SHA-256)
-   - write ledgers
-   - emit Anchor Snippet
-3) Post Anchor Snippet anywhere.
-4) Backfill anchor IDs into the ledger.
+## 工作流程（概述）
+1) 创建/对齐包（例如：使用 Champion 对齐系统）。
+2) 运行验证工具：
+   - 对包内容进行规范化处理
+   - 计算哈希值（SHA-256）
+   - 将处理结果写入分账系统
+   - 生成 Anchor Snippet
+3) 将生成的 Anchor Snippet 发布到任意位置。
+4) 将 Anchor 的 ID 添加到分账系统中。
 
-Read the full process doc: `references/process.md`.
+详细流程请参阅：`references/process.md`。
 
-## Commands (scripts)
-This skill wraps local tools in `tools/lygo_mint` and is designed to operate on non-secret prompt packs. It does not read env vars or network in the code shown, but **you should review the `tools/lygo_mint/*.py` files in your own workspace before using it on sensitive data.**
+## 命令（脚本）
+该工具封装了 `tools/lygo_mint` 目录中的本地工具，专为处理非敏感数据而设计。虽然代码中未涉及环境变量或网络操作，但在使用该工具处理敏感数据之前，请务必先自行查看 `tools/lygo_mint/*.py` 文件。
 
-### Mint + verify a pack file
+### 铸造并验证包文件
 - `python scripts/mint_pack_local.py --pack reference/CHAMPION_PACK_LYRA_V1.md --version 2026-02-07.v1`
 
-### Generate just an anchor snippet from an existing hash record
+### 从现有哈希记录生成 Anchor Snippet
 - `python scripts/make_anchor_snippet.py --hash <64-hex> --title "..."`
 
-### Backfill anchors (post IDs/links)
+### 将 Anchor ID 添加到分账系统中
 - `python scripts/backfill_anchors.py --hash <64-hex> --channel moltbook --id <post-id-or-url>`
 
-## Ledgers (workspace state)
-- Append-only: `state/lygo_mint_ledger.jsonl`
-- Canonical (dedup): `state/lygo_mint_ledger_canonical.json`
+## 分账系统状态文件
+- 只读文件：`state/lygo_mint_ledger.jsonl`
+- 规范化后的文件（去重处理）：`state/lygo_mint_ledger_canonical.json`
 
-## References
-- Core template: `reference/CHAMPION_PROMPT_CORE_TEMPLATE_V1.md`
-- Publish checklist: `reference/CHAMPION_PACK_PUBLISH_CHECKLIST.md`
+## 参考资料
+- 核心模板：`reference/CHAMPION_PROMPT_CORE TEMPLATE_V1.md`
+- 发布检查清单：`reference/CHAMPION_PACK_PUBLISH_CHECKLIST.md`

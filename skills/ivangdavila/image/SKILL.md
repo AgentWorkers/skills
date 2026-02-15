@@ -1,69 +1,69 @@
 ---
 name: Image
 version: 1.0.2
-description: Process, optimize, and manage images with web optimization, color management, platform specs, and e-commerce standards.
+description: 使用网页优化、色彩管理、平台规格以及电子商务标准来处理、优化和管理图像。
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
-|------|------|
-| Web optimization, formats, responsive | `web.md` |
-| Color profiles, metadata, RAW, print | `photography.md` |
-| Social media dimensions by platform | `social.md` |
-| E-commerce/marketplace standards | `ecommerce.md` |
-| ImageMagick/PIL commands | `commands.md` |
-
----
-
-## Format Selection
-
-| Content | Format | Reason |
-|---------|--------|--------|
-| Photos | WebP (JPEG fallback) | 25-35% smaller |
-| Icons, logos | SVG | Scalable, tiny |
-| Screenshots with text | PNG | Sharp edges |
-| Transparency + photo | WebP or PNG-24 | Alpha support |
-| Animation | WebP or MP4 | NOT GIF (5-10x larger) |
-
-**Rule:** Never use BMP, TIFF, or uncompressed for web.
+| 任务 | 对应文档 | 备注 |
+|------|------|------|
+| 网页优化、格式设置、响应式设计 | `web.md` |  
+| 色彩配置文件、元数据、RAW格式、打印设置 | `photography.md` |  
+| 不同平台的社交媒体图片尺寸 | `social.md` |  
+| 电子商务/市场平台标准 | `ecommerce.md` |  
+| ImageMagick/PIL命令 | `commands.md` |  
 
 ---
 
-## File Size Budgets
+## 格式选择
 
-- **Hero images:** MAX 200KB (ideally <150KB)
-- **Content images:** MAX 100KB
-- **Thumbnails:** MAX 30KB
-- **Icons (raster):** MAX 5KB
-- **Total page load:** MAX 1.5MB images
+| 内容 | 格式 | 选择理由 |  
+|---------|--------|--------|  
+| 照片 | WebP（JPEG作为备用格式） | 文件大小减少25-35% |  
+| 图标、徽标 | SVG | 可缩放且文件体积小 |  
+| 带文字的截图 | PNG | 图像边缘清晰 |  
+| 透明图片 | WebP或PNG-24 | 支持透明度效果 |  
+| 动画文件 | WebP或MP4 | 不要使用GIF格式（通常文件体积更大） |  
 
----
-
-## Quality Levels
-
-| Format | Hero | General | Thumbnails |
-|--------|------|---------|------------|
-| JPEG | 80-85% | 70-75% | 60-65% |
-| WebP | 80-82% | 72-78% | 60-70% |
-
-**Rule:** Below 60% = visible artifacts.
+**规则：** 网页用途严禁使用BMP、TIFF或未压缩的图片格式。  
 
 ---
 
-## Retina/HiDPI
+## 文件大小限制
 
-- **2x required** for standard Retina (phones, MacBooks)
-- **3x only** for iPhone Plus/Max
-- A 400px displayed image needs **800px source** minimum
-- 1920px hero on Retina needs **3840px source**
+- **首页图片（Hero Image）：** 最大200KB（理想情况下小于150KB）  
+- **内容图片：** 最大100KB  
+- **缩略图：** 最大30KB  
+- **图标（位图格式）：** 最大5KB  
+- **页面总图片大小：** 不超过1.5MB  
 
 ---
 
-## Before Processing Checklist
+## 图像质量标准
 
-- [ ] Target format determined (web vs print)
-- [ ] Color profile appropriate (sRGB for web)
-- [ ] Dimensions/aspect ratio defined
-- [ ] Compression quality set
-- [ ] Metadata handling decided (strip GPS?)
+| 格式 | 首页图片 | 一般图片 | 缩略图 |  
+|--------|------|---------|------------|  
+| JPEG | 80-85% | 70-75% | 60-65% |  
+| WebP | 80-82% | 72-78% | 60-70% |  
+
+**规则：** 图像质量低于60%时，视觉效果会明显受损。  
+
+---
+
+## Retina/高分辨率屏幕要求
+
+- 标准Retina屏幕（手机、MacBook）：图像需放大2倍显示  
+- iPhone Plus/Max：图像需放大3倍显示  
+- 显示尺寸为400px的图片，源文件至少需要800px  
+- Retina屏幕上显示1920px的图片，源文件至少需要3840px  
+
+---
+
+## 处理前的检查清单
+
+- [ ] 已确定目标格式（网页还是打印用途）  
+- [ ] 选择了合适的色彩配置文件（网页使用sRGB）  
+- [ ] 已定义图片的尺寸和宽高比  
+- [ ] 设置了压缩质量  
+- [ ] 决定了元数据的处理方式（是否去除GPS信息等）

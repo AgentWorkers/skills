@@ -1,25 +1,25 @@
 ---
 name: makefile-build
-description: Write Makefiles for any project type. Use when setting up build automation, defining multi-target builds, managing dependencies between tasks, creating project task runners, or using Make for non-C projects (Go, Python, Docker, Node.js). Also covers Just and Task as modern alternatives.
+description: 为任何类型的项目编写 Makefile。这些 Makefile 可用于设置构建自动化流程、定义多目标构建、管理任务之间的依赖关系、创建项目任务执行器，或者用于非 C 语言的项目（如 Go、Python、Docker、Node.js）的构建过程。同时，文档还介绍了 Just 和 Task 这两种现代的替代方案。
 metadata: {"clawdbot":{"emoji":"🔨","requires":{"anyBins":["make","just","task"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Makefile & Build
+# Makefile 与构建
 
-Write Makefiles for project automation across any language. Covers targets, dependencies, variables, pattern rules, phony targets, and using Make for Go, Python, Docker, and Node.js projects. Includes Just and Task as modern alternatives.
+编写 Makefile 以实现项目的自动化构建，支持多种编程语言。内容包括目标（targets）、依赖关系（dependencies）、变量（variables）、模式规则（pattern rules）、虚拟目标（phony targets），以及如何为 Go、Python、Docker 和 Node.js 项目使用 Makefile。同时介绍了 Just 和 Task 这两种现代的替代方案。
 
-## When to Use
+## 适用场景
 
-- Automating build, test, lint, deploy commands
-- Defining dependencies between tasks (build before test)
-- Creating a project-level task runner (consistent across team)
-- Replacing long CLI commands with short memorable targets
-- Managing multi-step build processes
-- Any project that needs a `make build && make test && make deploy` workflow
+- 自动化构建、测试、代码检查（lint）和部署（deploy）命令
+- 定义任务之间的依赖关系（例如：先构建再测试）
+- 创建一个全项目范围内的任务执行器（确保团队成员使用一致的方法）
+- 用简洁易记的目标替换冗长的命令行界面（CLI）命令
+- 管理多步骤的构建流程
+- 适用于需要执行 `make build && make test && make deploy` 工作流程的项目
 
-## Makefile Basics
+## Makefile 基础知识
 
-### Structure
+### 结构
 
 ```makefile
 # target: prerequisites
@@ -37,7 +37,7 @@ clean:
 # First target is the default (runs with bare `make`)
 ```
 
-### Variables
+### 变量
 
 ```makefile
 # Simple assignment
@@ -59,7 +59,7 @@ build:
 	@echo "Version: $(VERSION)"
 ```
 
-### Automatic variables
+### 自动变量
 
 ```makefile
 # $@ = target name
@@ -81,7 +81,7 @@ bin/app: src/main.go src/util.go
 # For foo.o: $@ = foo.o, $< = foo.c, $* = foo
 ```
 
-### Phony targets (not files)
+### 虚拟目标（Phony Targets）
 
 ```makefile
 # Without .PHONY, if a file named "clean" exists, `make clean` does nothing
@@ -102,7 +102,7 @@ help:
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 ```
 
-### Self-documenting Makefile
+### 自文档化的 Makefile
 
 ```makefile
 .DEFAULT_GOAL := help
@@ -124,7 +124,7 @@ help: ## Show this help
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 ```
 
-## Language-Specific Makefiles
+## 针对特定语言的 Makefile
 
 ### Go
 
@@ -279,9 +279,9 @@ compose-logs: ## Follow compose logs
 	docker compose logs -f
 ```
 
-## Advanced Patterns
+## 高级技巧
 
-### Conditional logic
+### 条件逻辑
 
 ```makefile
 # OS detection
@@ -310,7 +310,7 @@ endif
 	docker build -t myapp .
 ```
 
-### Multi-directory builds
+### 多目录构建
 
 ```makefile
 SERVICES := api worker scheduler
@@ -329,7 +329,7 @@ test-all:
 	done
 ```
 
-### Include other Makefiles
+### 包含其他 Makefile
 
 ```makefile
 # Split large Makefile into modules
@@ -341,7 +341,7 @@ include mk/deploy.mk
 -include .env.mk
 ```
 
-### Silent execution and output control
+### 静默执行与输出控制
 
 ```makefile
 # @ suppresses command echo
@@ -356,9 +356,9 @@ install:
 MAKEFLAGS += --no-print-directory
 ```
 
-## Just (Modern Alternative)
+## Just（现代替代方案）
 
-### Justfile syntax
+### Justfile 语法
 
 ```just
 # justfile — simpler than Make, no TAB requirement
@@ -407,16 +407,7 @@ help:
     @just --list
 ```
 
-```bash
-# Install: https://github.com/casey/just
-# Run:
-just          # Default recipe
-just build    # Specific recipe
-just run 9090 # With argument
-just --list   # List all recipes
-```
-
-## Task (Go Task Runner)
+### Task（Go 任务执行器）
 
 ### Taskfile.yml
 
@@ -488,25 +479,25 @@ task build    # Specific task
 task --list   # List all tasks
 ```
 
-## Make vs Just vs Task
+## Make、Just 与 Task 的比较
 
-| Feature | Make | Just | Task |
+| 特性 | Make | Just | Task |
 |---|---|---|---|
-| Config format | Makefile (TAB-sensitive) | justfile | Taskfile.yml |
-| Dependencies | File-based + phony | Recipe-based | Task-based |
-| File change detection | Built-in | No | sources/generates |
-| Variables | Yes (complex) | Yes (simple) | Yes (YAML) |
-| Cross-platform | Needs make installed | Single binary | Single binary |
-| Learning curve | High | Low | Low |
-| Best for | C/C++ builds, complex deps | Task runner replacement | YAML-native projects |
+| 配置格式 | Makefile（对制表符（TAB）敏感） | Justfile | Taskfile.yml |
+| 依赖关系管理 | 基于文件 + 虚拟目标 | 基于任务定义 | 基于任务定义 |
+| 文件变更检测 | 内置功能 | 不支持 | 需要手动更新源文件或生成新的任务文件 |
+| 变量支持 | 支持（但配置复杂） | 支持（配置简单） | 支持（使用 YAML 格式） |
+| 跨平台兼容性 | 需要安装 Make 工具 | 无需额外安装 | 无需额外安装 |
+| 学习难度 | 相对较高 | 相对较低 | 相对较低 |
+| 适用场景 | 适合 C/C++ 构建、依赖关系复杂的项目 | 适用于替代传统的任务执行器 | 适用于原生使用 YAML 的项目 |
 
-## Tips
+## 使用技巧
 
-- The number one Makefile bug: using spaces instead of tabs for indentation. Make requires literal TAB characters in recipes.
-- `.PHONY` every target that isn't a real file. Without it, `make clean` won't run if a file named `clean` exists.
-- Use `@` prefix to suppress command echo for cleaner output: `@echo "Building..."` prints only "Building...", not the echo command itself.
-- The self-documenting `help` target (with `## comments`) is worth adding to every Makefile. `make help` becomes the project's command reference.
-- Make is overkill for simple task running. If you just want named commands, Just or Task are simpler and don't have the TAB footgun.
-- Use `?=` for variables users might want to override: `PORT ?= 8080` lets `PORT=9090 make run` work.
-- For polyglot projects (Go + Python + Docker), a Makefile at the root that delegates to language-specific tools is a clean pattern.
-- Make's file-based dependency tracking is genuinely powerful for build systems. If your project compiles files, Make's `target: prerequisites` model avoids unnecessary rebuilds.
+- Makefile 的常见错误：使用空格而非制表符进行缩进。Makefile 中的依赖关系定义必须严格使用制表符（TAB）。
+- 为所有非实际存在的文件添加 `.PHONY` 标签。否则，如果存在名为 `clean` 的文件，`make clean` 命令将不会执行。
+- 使用 `@` 前缀来抑制命令的输出，以获得更清晰的输出：`@echo "Building..."` 只会输出 “Building...”，而不会显示 `echo` 命令本身。
+- 在每个 Makefile 中添加自文档化的 `help` 目标（使用 `##` 注释），方便用户快速了解如何使用该文件。执行 `make help` 可以获取项目的使用说明。
+- 对于简单的任务执行，Just 或 Task 更为简洁易用，且不需要关注制表符的使用规则。
+- 使用 `?=` 来允许用户覆盖某些变量：例如 `PORT ?= 8080` 可以让 `PORT=9090 make run` 命令正常执行。
+- 对于混合使用多种编程语言的项目（如 Go、Python 和 Docker），在项目根目录下编写一个 Makefile，并将其链接到对应语言的构建脚本是一个常见的做法。
+- Makefile 的基于文件的依赖关系管理功能非常强大，能有效避免不必要的重新构建。

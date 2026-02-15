@@ -1,71 +1,69 @@
-# China Market Gateway Skill
+# 中国市场门户技能（China Market Gateway Skill）
 
-**Name:** `china-market-gateway`  
-**Description:** Umbrella skill for retrieving Chinese finance data (A-shares, HK, funds, economic data) using Python. Pull stock prices, fund data, market news, and macro indicators from Eastmoney, Sina, CLS, Baidu, and other Chinese sources. Use when researching Chinese equities, mainland stock prices, HK market data, fund performance, or China-related financial news and economic indicators.  
-**License:** MIT  
-**Compatibility:** Requires Python 3.8+, network access to Chinese financial websites. May require proxy for regions with restricted access.  
+**名称：** `china-market-gateway`  
+**描述：** 一个用于使用 Python 获取中国金融数据的通用技能（包括 A 股、港股、基金数据以及经济数据）。该技能可以从 Eastmoney、新浪财经、财联社（CLS）、百度等中国金融网站获取股票价格、基金信息、市场新闻和宏观经济指标。适用于研究中国股票、内地股票价格、港股市场数据、基金表现以及与中国相关的金融新闻和经济指标。  
+**许可证：** MIT  
+**兼容性：** 需要 Python 3.8 及以上版本，并且能够访问中国金融网站。在某些地区可能需要使用代理服务器来绕过访问限制。  
 
-**Metadata:**
-- **Author:** Etherdrake
-- **Version:** 1.0.2
-- **Supported Markets:**  
-  - A-shares  
-  - HK  
-  - Shanghai  
-  - Shenzhen  
-  - Fund  
-  - Macro
+**元数据：**  
+- **作者：** Etherdrake  
+- **版本：** 1.0.2  
+- **支持的市场：**  
+  - A 股  
+  - 港股  
+  - 上海  
+  - 深圳  
+  - 基金  
+  - 宏观经济数据  
 
-# YuanData - Chinese Finance Data Retrieval (Python)
+# YuanData – 中国金融数据检索（Python）  
 
-## When to Use This Skill
+## 何时使用此技能  
 
-Use this skill when you need to:
+当您需要以下信息时，请使用此技能：  
+- 获取中国 A 股（上海/深圳）的实时或历史股票价格  
+- 检索港股数据  
+- 查找中国公司的财务新闻  
+- 研究中国大陆市场信息  
+- 访问百度金融数据（Baidu Gushitong）进行股票分析  
+- 获取基金数据和净资产价值  
+- 获取宏观经济指标（如 GDP、CPI、PPI、PMI）  
+- 跟踪投资日历和经济事件  
 
-- Get real-time or historical stock prices for Chinese A-shares (Shanghai/Shenzhen)
-- Retrieve Hong Kong (HK) stock data
-- Search for Chinese company financial news
-- Research mainland China market information
-- Access Baidu Gushitong for stock analysis
-- Pull fund data and net asset values
-- Fetch macroeconomic indicators (GDP, CPI, PPI, PMI)
-- Track investment calendars and economic events
+## 支持的数据来源  
 
-## Supported Sources
-
-| Source           | URL Pattern                                                          | Coverage                     |
+| 数据来源            | URL 模式                                                         | 覆盖范围                     |
 |------------------|----------------------------------------------------------------------|------------------------------|
-| Eastmoney        | `https://quote.eastmoney.com/{stockCode}.html`                       | A-shares, HK, indices        |
-| Sina Finance     | `https://finance.sina.com.cn/realstock/company/{stockCode}/nc.shtml` | A-shares, HK, US             |
-| CLS (财联社)        | `https://www.cls.cn/searchPage`                                      | Market news, telegraph       |
-| Baidu Gushitong  | `https://gushitong.baidu.com/stock/ab-{stockCode}`                   | Stock analysis, quotes       |
-| Eastmoney Funds  | `https://fund.eastmoney.com/{fundCode}.html`                         | Fund data                    |
-| Eastmoney Macro  | `https://datacenter-web.eastmoney.com/api/data/v1/get`               | GDP, CPI, PPI, PMI           |
+| Eastmoney        | `https://quote.eastmoney.com/{stockCode}.html`                       | A 股、港股、指数        |
+| 新浪财经           | `https://finance.sina.com.cn/realstock/company/{stockCode}/nc.shtml` | A 股、港股、美股             |
+| 财联社（CLS）        | `https://www.cls.cn/searchPage`                                      | 市场新闻、电讯报道       |
+| 百度金融数据（Baidu Gushitong） | `https://gushitong.baidu.com/stock/ab-{stockCode}`                   | 股票分析、报价       |
+| Eastmoney 基金        | `https://fund.eastmoney.com/{fundCode}.html`                         | 基金数据                    |
+| Eastmoney 宏观经济数据 | `https://datacenter-web.eastmoney.com/api/data/v1/get`               | GDP、CPI、PPI、PMI           |
 
-## Stock Code Formats
+## 股票代码格式  
 
-Chinese stocks use specific prefixes:
+中国股票的代码前缀如下：  
+- **A 股（上海）：** `sh000001`（上证），`sh600000`（上证）  
+- **A 股（深圳）：** `sz000001`（深证），`sz300000`（创业板）  
+- **港股：** `hk00001`（港交所），`hk00700`（腾讯）  
+- **美股ADR（参考）：** `usAAPL`  
 
-- **A-shares (Shanghai):** `sh000001` (SSE), `sh600000` (SSE)
-- **A-shares (Shenzhen):** `sz000001` (SZSE), `sz300000` (ChiNext)
-- **HK stocks:** `hk00001` (HKEX), `hk00700` (Tencent)
-- **US ADRs (for reference):** `usAAPL`
+### 示例  
 
-### Examples
-
-| Stock Code     | Company                    | Type       |
-|----------------|----------------------------|------------|
-| `sh000001`     | Shanghai Composite Index   | Index      |
-| `sh600519`     | Kweichow Moutai            | A-share    |
-| `sz000001`     | Ping An Bank               | A-share    |
-| `hk00700`      | Tencent                    | HK         |
-| `hk09660`      | Horizon Robotics           | HK         |
+| 股票代码       | 公司名称                | 股票类型       |
+|----------------|------------------|------------|
+| `sh000001`     | 上证综合指数           | 指数        |
+| `sh600519`     | 古井贡酒             | A 股        |
+| `sz000001`     | 平安银行               | A 股        |
+| `hk00700`      | 腾讯                 | 港股        |
+| `hk09660`      | Horizon Robotics         | 港股        |
 
 ---
 
-# Part 1: Stock Data Retrieval (Python)
+# 第 1 部分：股票数据检索（Python）  
 
-## 1. Setup and Dependencies
+## 1. 设置和依赖项  
 
 ```python
 import requests
@@ -106,9 +104,9 @@ class YuanData:
         except Exception as e:
             logger.error(f"Request failed: {url} - {e}")
             return None
-```
+```  
 
-## 2. Sina Finance API (Real-Time Stock Data)
+## 2. 新浪财经 API（实时股票数据）  
 
 ```python
 class SinaStockAPI:
@@ -214,9 +212,9 @@ class SinaStockAPI:
                 results.append(quote)
             time.sleep(0.1)  # Prevent rate limiting
         return results
-```
+```  
 
-## 3. Tencent Finance API (Alternative Source)
+## 3. 腾讯财经 API（备用数据源）  
 
 ```python
 class TencentStockAPI:
@@ -280,9 +278,9 @@ class TencentStockAPI:
             'market_cap': float(parts[44]) if len(parts) > 44 else 0,
             'pe_ratio': float(parts[39]) if len(parts) > 39 else 0,
         }
-```
+```  
 
-## 4. Eastmoney Web Scraping
+## 4. Eastmoney 网页爬虫  
 
 ```python
 class EastmoneyAPI:
@@ -316,9 +314,9 @@ class EastmoneyAPI:
         except Exception as e:
             logger.error(f"HTML parsing failed: {e}")
             return None
-```
+```  
 
-## 5. CLS News API
+## 5. 财联社新闻 API  
 
 ```python
 class CLSNewsAPI:
@@ -363,9 +361,9 @@ class CLSNewsAPI:
         except Exception as e:
             logger.error(f"Telegraph fetch failed: {e}")
             return []
-```
+```  
 
-## 6. Baidu Gushitong API
+## 6. 百度金融数据 API  
 
 ```python
 class BaiduGushitongAPI:
@@ -387,13 +385,13 @@ class BaiduGushitongAPI:
         url = f"{self.BASE_URL}/stock/ab-{stock_code}"
         response = self.parent._request(url)
         return response is not None and response.status_code == 200
-```
+```  
 
 ---
 
-# Part 2: Fund Data Retrieval (Python)
+# 第 2 部分：基金数据检索（Python）  
 
-## 7. Eastmoney Fund API
+## 7. Eastmoney 基金 API  
 
 ```python
 class EastmoneyFundAPI:
@@ -453,13 +451,13 @@ class EastmoneyFundAPI:
         except Exception as e:
             logger.error(f"Fund details parse failed: {e}")
             return None
-```
+```  
 
 ---
 
-# Part 3: Economic Data Retrieval (Python)
+# 第 3 部分：经济数据检索（Python）  
 
-## 8. Eastmoney Economic Data API
+## 8. Eastmoney 宏观经济数据 API  
 
 ```python
 class EastmoneyMacroAPI:
@@ -550,9 +548,9 @@ class EastmoneyMacroAPI:
             'reportName': 'RPT_ECONOMY_PMI',
         }
         return self._fetch_macro_data(params)
-```
+```  
 
-## 9. Investment Calendar API
+## 9. 投资日历 API  
 
 ```python
 class InvestmentCalendarAPI:
@@ -590,13 +588,13 @@ class InvestmentCalendarAPI:
         except Exception as e:
             logger.error(f"Calendar fetch failed: {e}")
             return []
-```
+```  
 
 ---
 
-# Part 4: Unified Data Access Class
+# 第 4 部分：统一数据访问类  
 
-## 10. YuanData Main Class
+## 10. YuanData 主类  
 
 ```python
 class YuanData:
@@ -678,13 +676,13 @@ def get_cpi_data(proxy: Optional[str] = None) -> List[Dict]:
     """Get CPI data"""
     data = YuanData(proxy)
     return data.macro.get_cpi()
-```
+```  
 
 ---
 
-# Part 5: Handling Tickers That Don't Return Data
+# 第 5 部分：处理无法返回数据的股票代码  
 
-## 11. Troubleshooting Guide (Python)
+## 11. 故障排除指南（Python）  
 
 ```python
 class DataTroubleshooter:
@@ -745,55 +743,54 @@ def troubleshoot_ticker(stock_code: str, proxy: Optional[str] = None) -> Dict:
         results['recommendation'] = 'INACTIVE_OR_INVALID'
 
     return results
-```
+```  
 
 ---
 
-# Part 6: Common Stock Code Examples
+# 第 6 部分：常见股票代码示例  
 
-| Company               | A-Share Code | HK Code  | Industry         |
-|-----------------------|--------------|----------|------------------|
-| Kweichow Moutai       | sh600519     | -        | Liquor           |
-| Tencent               | -            | hk00700  | Internet         |
-| Alibaba               | sh9988       | hk9988   | E-commerce       |
-| Meituan                 | sh3690       | hk3690   | Food Delivery    |
-| Ping An               | sh601318     | hk2318   | Insurance        |
-| BYD                   | sh002594     | hk1211   | Electric Vehicles |
-| China Merchants Bank  | sh600036     | hk3968   | Banking          |
-| Industrial Bank       | sh601166     | -        | Banking          |
-
----
-
-# Part 7: Important Notes
-
-### Time Zone
-
-- China Standard Time (CST): **UTC+8**
-- Trading Hours:
-  - Morning: **9:30–11:30**
-  - Afternoon: **13:00–15:00**
-- Lunch Break: **11:30–13:00**
-
-### Currency
-
-- **A-shares:** CNY (RMB)
-- **HK stocks:** HKD
-- Approx rate: **1 HKD ≈ 0.89 CNY**
-
-### Market Holidays
-
-Closed on:
-- Weekends (Saturday–Sunday)
-- Public holidays: **Chinese New Year, National Day (Oct 1), Labor Day (May 1)**
-
-### Proxy Requirements
-
-- Consider using a **CN-based proxy or VPS** when accessing from outside China
-- Some sites block non-Chinese IPs
+| 公司名称                | A 股代码       | 港股代码       | 行业         |
+|-----------------------|--------------|------------|------------------|
+| 古井贡酒                | sh600519     | -           | 酒类           |
+| 腾讯                 | -            | hk00700       | 互联网         |
+| 阿里巴巴                | sh9988       | hk9988       | 电子商务       |
+| 美团                 | sh3690       | hk3690       | 食品配送       |
+| 平安银行                | sh601318     | hk2318       | 保险           |
+| 比亚迪                 | sh002594     | hk1211       | 电动汽车       |
+| 中国招商银行           | sh600036     | hk3968       | 银行业         |
+| 工业银行               | sh601166     | -           | 银行业         |
 
 ---
 
-# Part 8: Usage Examples
+# 第 7 部分：重要说明  
+
+### 时间区  
+
+- 中国标准时间（CST）：**UTC+8**  
+- 交易时间：  
+  - 上午：**9:30–11:30**  
+  - 下午：**13:00–15:00**  
+- 午休时间：**11:30–13:00**  
+
+### 货币  
+
+- **A 股：** 人民币（CNY）  
+- **港股：** 港元（HKD）  
+- 大致汇率：**1 港元 ≈ 0.89 人民币**  
+
+### 市场假期  
+
+- 周末（周六–周日）关闭  
+- 公共假期：**春节、国庆节（10 月 1 日）、劳动节（5 月 1 日）**  
+
+### 代理服务器要求  
+
+- 从中国境外访问时，请考虑使用基于中国的代理服务器或虚拟专用服务器（VPS）  
+- 一些网站会屏蔽非中国 IP 地址  
+
+---
+
+# 第 8 部分：使用示例  
 
 ```python
 # Initialize with optional proxy
@@ -823,4 +820,3 @@ print(f"News: {news}")
 result = troubleshoot_ticker("hk2259")
 print(f"Troubleshoot: {result}")
 ```
-

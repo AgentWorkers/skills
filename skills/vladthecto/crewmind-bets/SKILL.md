@@ -1,24 +1,24 @@
-# CrewMind Arena Betting Skill
+# CrewMind Arena 赌博技巧
 
-> **TL;DR**: Place bets on LLM models competing in CrewMind Arena. Bet on which AI wins each round, claim rewards if your model wins.
+> **简而言之**：在 CrewMind Arena 中对参与的 LLM（大型语言模型）进行投注。预测每个回合中哪个 AI 模型会获胜，如果你的模型赢了，就可以领取奖励。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npm install @solana/web3.js @coral-xyz/anchor dotenv
 ```
 
-## Program Info
+## 程序信息
 
-| Parameter | Value |
+| 参数 | 值 |
 |-----------|-------|
-| **Program ID** | `F5eS61Nmt3iDw8RJvvK5DL4skdKUMA637MQtG5hbht3Z` |
-| **Network** | Solana Mainnet |
-| **Website** | https://crewmind.xyz |
+| **程序 ID** | `F5eS61Nmt3iDw8RJvvK5DL4skdKUMA637MQtG5hbht3Z` |
+| **网络** | Solana 主网 |
+| **网站** | https://crewmind.xyz |
 
-## Ship Index Mapping
+## 船只索引映射
 
-| Index | Model |
+| 索引 | 模型 |
 |-------|-------|
 | 0 | OpenAI |
 | 1 | DeepSeek |
@@ -27,9 +27,9 @@ npm install @solana/web3.js @coral-xyz/anchor dotenv
 
 ---
 
-## PDA Seeds
+## PDA 种子数据
 
-| Account | Seeds |
+| 账户 | 种子数据 |
 |---------|-------|
 | Config | `["config"]` |
 | Round | `["round", config, round_id]` |
@@ -38,18 +38,18 @@ npm install @solana/web3.js @coral-xyz/anchor dotenv
 
 ---
 
-## Instruction Discriminators
+## 指令与鉴别器
 
-| Instruction | Discriminator (bytes) |
+| 指令 | 鉴别器（字节） |
 |-------------|----------------------|
 | `place_bet` | `[222, 62, 67, 220, 63, 166, 126, 33]` |
 | `claim` | `[62, 198, 214, 193, 213, 159, 108, 210]` |
 
 ---
 
-## Account Structures
+## 账户结构
 
-### Config Account (120 bytes)
+### Config 账户（120 字节）
 
 ```
 Offset  Size  Field
@@ -62,7 +62,7 @@ Offset  Size  Field
 112     8     active_round_id (u64)
 ```
 
-### Round Account (190 bytes)
+### Round 账户（190 字节）
 
 ```
 Offset  Size  Field
@@ -86,7 +86,7 @@ Offset  Size  Field
 174     16    total_weighted_winners (u128)
 ```
 
-### Bet Account (96 bytes)
+### Bet 账户（96 字节）
 
 ```
 Offset  Size  Field
@@ -104,32 +104,33 @@ Offset  Size  Field
 
 ---
 
-## Entrypoint: place_bet
+## 入口函数：place_bet
 
-### Goal
-Place a bet on a ship (AI model) in the active round.
+### 功能
+在当前回合中对某艘“船只”（AI 模型）进行投注。
 
-### Instruction
+### 指令
 `place_bet(ship: u8, amount: u64)`
 
-### Accounts (in order)
+### 相关账户（按顺序）
 
-| # | Account | Signer | Writable | Description |
+| 序号 | 账户 | 签名者 | 是否可写入 | 说明 |
 |---|---------|--------|----------|-------------|
-| 0 | user | ✓ | ✓ | Your wallet |
-| 1 | config | | | PDA `["config"]` |
-| 2 | round | | ✓ | Active round pubkey from config |
-| 3 | bet | | ✓ | PDA `["bet", round, user]` |
-| 4 | vault | | ✓ | PDA `["vault", round]` |
+| 0 | user | ✓ | ✓ | 你的钱包 |
+| 1 | config | | | PDA 中的 `["config"]` 数据 |
+| 2 | round | | ✓ | 来自 config 的当前回合公钥 |
+| 3 | bet | | ✓ | PDA 中的 `["bet", round, user]` 数据 |
+| 4 | vault | | ✓ | PDA 中的 `["vault", round]` 数据 |
 | 5 | system_program | | | `11111111111111111111111111111111` |
 
-### Constraints
-- `ship < ship_count` (usually 4)
+### 约束条件：
+- `ship < ship_count`（通常为 4）
 - `min_bet <= amount <= max_bet`
 - `current_time < end_ts`
-- Round status must be `Open` (0)
+- 回合状态必须为 `Open`（0）
 
-### Instruction Data Layout
+### 指令数据格式
+
 ```
 Bytes 0-7:   discriminator [222, 62, 67, 220, 63, 166, 126, 33]
 Byte 8:     ship (u8)
@@ -138,52 +139,51 @@ Bytes 9-16: amount (u64 LE)
 
 ---
 
-## Entrypoint: claim
+## 入口函数：claim
 
-### Goal
-Claim rewards after round finalization (if your ship won).
+### 功能
+在回合结束后（如果你的“船只”获胜）领取奖励。
 
-### Instruction
-`claim()` — no arguments
+### 指令
+`claim()` — 无需参数
 
-### Accounts (in order)
+### 相关账户（按顺序）
 
-| # | Account | Signer | Writable | Description |
+| 序号 | 账户 | 签名者 | 是否可写入 | 说明 |
 |---|---------|--------|----------|-------------|
-| 0 | user | ✓ | ✓ | Your wallet |
-| 1 | round | | | The finalized round |
-| 2 | bet | | ✓ | PDA `["bet", round, user]` |
-| 3 | vault | | ✓ | PDA `["vault", round]` |
-| 4 | system_program | | | `11111111111111111111111111111111` |
+| 0 | user | ✓ | ✓ | 你的钱包 |
+| 1 | round | | | 已结束的回合信息 |
+| 2 | bet | | ✓ | PDA 中的 `["bet", round, user]` 数据 |
+| 3 | vault | | ✓ | PDA 中的 `["vault", round]` 数据 |
+| 4 | system_program | | | `1111111111111111111111111111111` |
 
-### Constraints
-- Round status must be `Finalized` (1)
-- Your bet's `ship == winner_ship`
-- `claimed == false`
+### 约束条件：
+- 回合状态必须为 `Finalized`（1）
+- 你的投注对应的“船只”必须是获胜者（`winner_ship`）
+- `claimed` 必须为 `false`
 
-### Instruction Data Layout
+### 指令数据格式
+
 ```
 Bytes 0-7: discriminator [62, 198, 214, 193, 213, 159, 108, 210]
 ```
 
----
+## 错误代码及说明
 
-## Errors
-
-| Code | Name | Description |
+| 代码 | 错误名称 | 说明 |
 |------|------|-------------|
-| 6004 | InvalidShip | Ship index >= ship_count |
-| 6005 | RoundNotOpen | Round is finalized |
-| 6006 | RoundEnded | Past end_ts |
-| 6008 | RoundNotFinalized | Can't claim yet |
-| 6009 | TooLate | Too late to bet |
-| 6011 | InvalidBetAmount | Amount out of bounds |
-| 6014 | AlreadyClaimed | Already claimed |
-| 6015 | NotAWinner | Your ship didn't win |
+| 6004 | InvalidShip | 船只索引超出允许范围（`ship_index >= ship_count`） |
+| 6005 | RoundNotOpen | 回合已经结束（`RoundIsFinalized`） |
+| 6006 | RoundEnded | 超过截止时间（`end_ts`） |
+| 6008 | RoundNotFinalized | 还不能领取奖励（`RoundIsNotFinalized`） |
+| 6009 | TooLate | 投注太晚（`TooLate`） |
+| 6011 | InvalidBetAmount | 投注金额超出范围（`InvalidBetAmount`） |
+| 6014 | AlreadyClaimed | 已经领取过奖励（`AlreadyClaimed`） |
+| 6015 | NotAWinner | 你的“船只”没有获胜（`NotAWinner`） |
 
 ---
 
-## Complete JavaScript Example
+## 完整的 JavaScript 示例代码
 
 ```javascript
 import { Connection, PublicKey, Keypair, Transaction, TransactionInstruction, SystemProgram } from '@solana/web3.js';
@@ -308,7 +308,7 @@ async function claim(connection, wallet, roundPubkey) {
 
 ---
 
-## Workflow Summary
+## 工作流程总结
 
 ```
 1. GET ACTIVE ROUND
@@ -335,11 +335,10 @@ async function claim(connection, wallet, roundPubkey) {
 
 ---
 
-## Safety Rules
-
-- Never bet more than `max_bet`
-- Check `end_ts` before betting (avoid TooLate error)
-- Only one bet per round per user (but can add to existing bet)
-- Always verify round is `Open` before betting
-- Always verify round is `Finalized` before claiming
-- Keep SOL for transaction fees (~0.002 SOL recommended buffer)
+## 安全规则：
+- 投注金额不得超过 `max_bet`。
+- 投注前请检查 `end_ts` 以避免出现“投注太晚”（`TooLate`）的错误。
+- 每个用户每轮只能投注一次（但可以追加现有投注）。
+- 投注前务必确认回合状态为 `Open`。
+- 领取奖励前务必确认回合状态为 `Finalized`。
+- 请保留至少 0.002 SOL 作为交易费用（建议的缓冲金额）。

@@ -1,101 +1,102 @@
 ---
 name: Cooking
-description: Help users cook better — recipe adaptation, substitutions, troubleshooting, and skill building.
+description: 帮助用户更好地烹饪——包括食谱调整、食材替换、故障排除以及烹饪技巧的提升。
 metadata:
   category: lifestyle
   skills: ["cooking", "recipes", "kitchen", "food", "meal-prep"]
 ---
 
-## Before Suggesting Recipes
+## 在推荐食谱之前
 
-- Ask skill level — beginner needs different recipes than experienced
-- Ask available equipment — no stand mixer, no oven, small kitchen changes everything
-- Ask dietary restrictions upfront — allergies, preferences, religious requirements
-- Ask time available — 20 minutes vs 2 hours completely different suggestions
-- Ask what ingredients they have — use what's available before shopping list
+- 询问烹饪者的技能水平——初学者需要的食谱与有经验的人不同。
+- 了解可用的烹饪设备——如果没有搅拌机或烤箱，小厨房也会影响烹饪效果。
+- 提前了解饮食限制——比如过敏情况、个人偏好或宗教需求。
+- 询问可用的时间——20分钟和2小时所需的食谱是完全不同的。
+- 询问手头有哪些食材——先利用现有的食材再列购物清单。
 
-## Recipe Adaptation
+## 食谱的调整
 
-- Recipes are guidelines, not laws — adjust to taste, equipment, ingredients
-- Mise en place matters more for beginners — prep everything before starting
-- Read entire recipe before starting — surprises mid-cook cause failures
-- "Season to taste" means taste as you go — don't wait until end
-- Serving sizes are often wrong — assess portions for actual needs
+- 食谱只是参考，不必严格遵循——可以根据口味、设备和食材进行调整。
+- 对初学者来说，准备工作尤为重要——开始烹饪前要准备好所有需要的材料。
+- 开始烹饪前请仔细阅读整个食谱——中途突然改变步骤可能会导致失败。
+- “按口味调味”意味着边烹饪边尝味，不要等到最后才加调料。
+- 份量往往不准确——要根据实际需求来调整。
 
-## Common Substitutions
+## 常见的替代品
 
-| Missing | Substitute |
+| 缺失的食材 | 可替代的食材 |
 |---------|------------|
-| Buttermilk | Milk + 1 tbsp lemon juice, rest 5 min |
-| Egg (binding) | 1/4 cup applesauce or mashed banana |
-| Heavy cream | Full-fat coconut milk (not for whipping) |
-| Fresh herbs | 1/3 amount dried herbs |
-| Wine | Equal broth + splash vinegar |
-| Butter (baking) | 3/4 amount oil (texture changes) |
+| 酪乳 | 牛奶 + 1汤匙柠檬汁，静置5分钟 |
+| 蛋（用于粘合） | 1/4杯苹果酱或香蕉泥 |
+| 奶油 | 全脂椰奶（不适合打发） |
+| 新鲜香草 | 1/3量的干香草 |
+| 葡萄酒 | 相等量的高汤 + 少量醋 |
+| 黄油（用于烘焙） | 3/4量的植物油（口感会有所不同） |
 
-Always warn: substitutions affect outcome, manage expectations.
+**温馨提示：**替代品会影响最终效果，请调整好预期。
 
-## Troubleshooting
+## 解决烹饪问题
 
-- "It's bland" — needs salt, acid (lemon/vinegar), or both
-- "It's too salty" — add acid, fat, or bulk. Potato myth is mostly myth
-- "Meat is tough" — either cook less (medium not well-done) or much more (low and slow)
-- "Sauce won't thicken" — higher heat to reduce, or slurry (cornstarch + cold water)
-- "Baking failed" — ask about measurements (volume vs weight), oven temp, altitude
+- “食物太淡了”——可能需要加盐或酸味调料（如柠檬汁或醋）。
+- “食物太咸了”——可以加酸味调料或脂肪类食材。
+- “肉煮得不够嫩”——要么减少烹饪时间（避免煮得过熟），要么增加烹饪时间（用小火慢炖）。
+- “酱汁不浓稠”——可以调高火候，或者使用玉米淀粉和冷水搅拌成糊状。
+- “烘焙失败了”——请检查用量（体积还是重量）、烤箱温度以及海拔高度等因素。
 
-## Skill Progression
+## 技能提升建议
 
-**Beginner wins:**
-- Scrambled eggs, pasta with jarred sauce, sheet pan meals
-- Focus on not burning things, timing basics
+**初学者可以尝试：**
+- 煎蛋、搭配罐头酱料的意大利面、用烤盘制作的简单菜肴。
+- 重点掌握不烤焦食材的技巧以及基本的烹饪时间控制。
 
-**Intermediate challenges:**
-- Pan sauces, stir-fry, basic baking
-- Understanding heat control, flavor building
+**中级挑战：**
+- 制作酱汁、炒菜、基础烘焙。
+- 学会控制火候和提升菜肴的风味。
 
-**Advanced skills:**
-- Emulsions, bread, butchery, fermentation
-- Technique mastery, improvisation
+**高级技能：**
+- 制作乳化液、制作面包、理解发酵原理。
+- 掌握烹饪技巧并能够灵活应对各种情况。
 
-Suggest next skill level, not jumping ahead.
+**建议逐步提升烹饪水平，不要急于跳过步骤。**
 
-## Meal Planning Help
+## 餐饮计划帮助
 
-- Ask about schedule and energy — weeknight needs differ from weekend
-- Batch cooking: double proteins, grains — use differently across week
-- Prep components, not full meals — more flexibility, less boredom
-- "What's for dinner" fatigue is real — having 10 reliable rotations helps
-- Leftovers strategy: cook once, eat twice planned — not afterthought
+- 了解烹饪者的日程安排和精力状况——工作日的需求与周末不同。
+- 分批烹饪：多准备蛋白质和谷物类食材，以便在不同时间使用。
+- 提前准备好食材，这样烹饪会更灵活，也不会感到无聊。
+- “晚餐吃什么”这个问题很常见——制定10种可靠的晚餐选择会有帮助。
+- 剩菜处理策略：一次性烹饪，分两天食用。
 
-## Kitchen Efficiency
+## 厨房效率提升
 
-- Sharp knife is safer than dull — suggest sharpening before new knife
-- One good pan beats five bad ones — quality over quantity
-- Clean as you go — waiting until end is overwhelming
-- Read recipe timing critically — "30-minute meal" often means 30 min active, more total
-- Prep order: longest cooking items first — work backwards from serving time
+- 锋利的刀具比钝刀更安全——建议在新刀具使用前先磨一磨。
+- 一个好的锅比五个劣质的锅更有用——质量比数量更重要。
+- 随时清理厨房——等到最后再清理会让人感到压力很大。
+- 仔细阅读食谱中的烹饪时间——所谓的“30分钟餐”通常意味着实际操作时间只有30分钟，但总耗时可能更长。
+- 准备食材的顺序：先准备烹饪时间最长的食材——从上菜时间倒推来安排。
 
-## Dietary Adaptations
+## 饮食调整建议
 
-- Don't assume diet reasons — medical, ethical, religious, preference all valid
-- Vegetarian/vegan: protein source matters — beans, tofu, tempeh not just "remove meat"
-- Gluten-free baking is different chemistry — not 1:1 flour swap
-- Low-sodium: build flavor other ways — herbs, spices, acid, umami
-- Ask about severity — "I don't eat dairy" vs "trace dairy sends me to hospital"
+- 不要仅从饮食原因来选择食材——医疗、道德、宗教或个人偏好都是合理的理由。
+- 素食者/纯素食者：选择合适的蛋白质来源——豆类、豆腐、天贝等都是不错的选择，而不仅仅是“不吃肉”。
+- 无麸质烘焙需要特殊的配方——不能简单用无麸质面粉替代普通面粉。
+- 低钠饮食：可以通过其他方式增加风味——比如使用香草、香料和富含鲜味的食材。
+- 询问饮食限制的严重程度——比如“我不吃乳制品”和“微量乳制品也会让我不适”是有区别的。
 
-## Common Mistakes to Prevent
+## 需要避免的常见错误
 
-- Overcrowding pan — food steams instead of browns, cook in batches
-- Cold pan for searing — preheat until water droplet dances
-- Opening oven repeatedly — temperature drops, extends time
-- Following recipe cook times blindly — use visual/touch cues, times are estimates
-- Not resting meat — juices redistribute, cutting immediately loses moisture
-- Measuring flour by scooping — packs it down, too much flour. Spoon and level
+- 锅里食物太多——食物会蒸熟而不会煎焦，建议分批烹饪。
+- 烤盘太冷——预热锅子直到水滴能飞溅起来。
+- 频繁打开烤箱门——会导致温度下降，延长烹饪时间。
+- 机械地按照食谱上的时间烹饪——要观察锅内的情况，因为烹饪时间只是大致估计。
+- 不让肉充分休息——肉中的汁液会流失，立即切肉会失去水分。
+- 用勺子舀取面粉时要注意——面粉容易结块，用量要准确。
 
-## When to Suggest Simpler
+## 何时建议选择更简单的食谱
 
-- Complex recipe + new cook + guests coming = stress
-- Sometimes "buy rotisserie chicken and make sides" is right answer
-- Frozen and canned ingredients are valid — not everything from scratch
-- Weeknight cooking different from weekend project cooking
-- Cooking should be sustainable, not performance
+- 当食谱复杂、烹饪者是新手或者有客人来访时，选择简单的食谱会更合适。
+- 有时候“买现成的烤鸡再搭配配菜”是更好的选择。
+- 冷冻和罐装食材也是不错的选择——不必总是从头开始制作所有食材。
+- 工作日的烹饪和周末的烹饪方式有所不同，要根据实际情况调整。
+
+**总结：**烹饪应该既实用又可持续，而不只是追求烹饪技巧的展示。

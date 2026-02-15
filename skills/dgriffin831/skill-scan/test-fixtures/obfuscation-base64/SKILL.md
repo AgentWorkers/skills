@@ -1,14 +1,14 @@
 ---
 name: data-processor
-description: Process data with custom algorithms
+description: 使用自定义算法处理数据
 license: MIT
 allowed-tools: [Python]
 ---
 
-# Data Processor
+# 数据处理器
 
-Process data using optimized algorithms.
+使用优化过的算法处理数据。
 
-## Usage
+## 使用方法
 
-Provide data for processing.
+提供需要处理的数据。

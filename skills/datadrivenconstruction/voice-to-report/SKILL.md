@@ -1,26 +1,26 @@
 ---
 slug: "voice-to-report"
 display_name: "Voice To Report"
-description: "Convert voice recordings to structured construction reports. Field workers speak, AI transcribes and formats. Supports daily reports, safety observations, progress updates."
+description: "将语音录音转换为结构化的施工报告。现场工作人员进行语音录制，AI系统负责转录和格式化。该功能支持生成每日报告、安全观察记录以及进度更新报告。"
 ---
 
-# Voice to Report
+# 语音转报告功能
 
-## Overview
+## 概述
 
-Field workers prefer talking over typing. This skill converts voice recordings into structured construction reports using speech-to-text and LLM processing.
+现场工作人员更喜欢通过语音交流而非打字。该功能利用语音转文本技术以及大型语言模型（LLM）将语音记录转换为结构化的施工报告。
 
-## Why Voice?
+## 为什么选择语音？
 
-| Typing | Voice |
+| 打字 | 语音 |
 |--------|-------|
-| Slow on mobile | 3x faster |
-| Requires attention | Hands-free |
-| Limited in cold/rain | Works anywhere |
-| Formal language | Natural expression |
-| Short messages | Detailed descriptions |
+| 在移动设备上速度较慢 | 速度快3倍 |
+| 需要集中注意力 | 可实现免提操作 |
+| 在寒冷或雨天使用受限 | 可在任何地方使用 |
+| 语言形式较为正式 | 表达更自然 |
+| 适合发送简短信息 | 适合发送详细描述 |
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -39,7 +39,7 @@ Field workers prefer talking over typing. This skill converts voice recordings i
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from openai import OpenAI
@@ -95,9 +95,9 @@ def voice_to_report(audio_path: str, report_type: str = "daily") -> dict:
     }
 ```
 
-## Report Schemas
+## 报告模板
 
-### Daily Report Schema
+### 日报模板
 
 ```python
 daily_report_schema = {
@@ -141,7 +141,7 @@ daily_report_schema = {
 }
 ```
 
-### Safety Observation Schema
+### 安全观察模板
 
 ```python
 safety_schema = {
@@ -158,7 +158,7 @@ safety_schema = {
 }
 ```
 
-### Progress Update Schema
+### 进度更新模板
 
 ```python
 progress_schema = {
@@ -175,7 +175,7 @@ progress_schema = {
 }
 ```
 
-## n8n Workflow
+## n8n工作流程
 
 ```json
 {
@@ -226,7 +226,7 @@ progress_schema = {
 }
 ```
 
-## Multi-Language Support
+## 多语言支持
 
 ```python
 def transcribe_multilingual(audio_path: str) -> dict:
@@ -259,7 +259,7 @@ def transcribe_multilingual(audio_path: str) -> dict:
     }
 ```
 
-## Mobile App Integration
+## 移动应用集成
 
 ```python
 # Example: Flutter/React Native integration
@@ -283,7 +283,7 @@ async def upload_voice_report(audio_bytes, project_id):
 # - pdf_url (if generated)
 ```
 
-## Cost Optimization
+## 成本优化
 
 ```python
 # Use local Whisper for high volume
@@ -302,14 +302,14 @@ def transcribe_local(audio_path: str) -> str:
 # - Local Whisper (large): $0 (compute only, slower)
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install openai whisper python-telegram-bot
 ```
 
-## Resources
+## 资源
 
 - OpenAI Whisper: https://platform.openai.com/docs/guides/speech-to-text
 - Local Whisper: https://github.com/openai/whisper
-- n8n Voice Processing: https://docs.n8n.io/integrations/
+- n8n语音处理服务: https://docs.n8n.io/integrations/

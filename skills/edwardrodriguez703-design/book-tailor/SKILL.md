@@ -1,23 +1,23 @@
 ---
 name: book-tailor
-description: Book tailor services through Lokuli MCP. Use when user needs to find and book tailor. Triggers on requests like "book a tailor", "find tailor near me", or any tailor service request.
+description: 通过 Lokuli MCP 提供裁缝服务。当用户需要寻找或预订裁缝服务时，可以使用该功能。该功能会在用户发起“预订裁缝”、“查找附近的裁缝”或其他任何与裁缝服务相关的请求时被触发。
 ---
 
-# uook tailor
+# 书籍定制服务
 
-Book tailor services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来使用书籍定制服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

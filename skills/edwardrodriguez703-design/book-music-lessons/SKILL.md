@@ -1,23 +1,23 @@
 ---
 name: book-music-lessons
-description: Book music-lessons services through Lokuli MCP. Use when user needs to find and book music-lessons. Triggers on requests like "book a music-lessons", "find music-lessons near me", or any music-lessons service request.
+description: 通过 Lokuli MCP 预订音乐课程服务。当用户需要查找或预订音乐课程时，可以使用该功能。该功能会在用户发起“预订音乐课程”、“查找附近的音乐课程”或其他与音乐课程相关的请求时被触发。
 ---
 
-# uook music lessons
+# uook 音乐课程
 
-Book music-lessons services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订音乐课程服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查课程可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

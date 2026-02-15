@@ -1,28 +1,28 @@
 ---
 name: license-gen
-description: Pick and generate the right license for your project. Use when licensing open source.
+description: 为您的项目选择并生成合适的许可证。在开源许可时，请使用该许可证。
 ---
 
-# License Generator
+# 许可证生成器
 
-Picking a license shouldn't require a law degree. This tool explains each license in plain English and generates the LICENSE file for you.
+选择合适的许可证并不需要法律学位。这个工具会用通俗易懂的语言解释每种许可证的详细内容，并为你生成相应的 LICENSE 文件。
 
-**One command. Zero config. Just works.**
+**仅需一个命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-license
 ```
 
-## What It Does
+## 功能介绍
 
-- Interactive license selection with explanations
-- Generates complete LICENSE files
-- Explains what each license actually means
-- Covers MIT, Apache, GPL, BSD, and more
+- 提供交互式的许可证选择界面，并附带详细说明
+- 生成完整的 LICENSE 文件
+- 解释每种许可证的实际含义
+- 支持 MIT、Apache、GPL、BSD 等多种许可证类型
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Interactive mode
@@ -35,42 +35,42 @@ npx ai-license --type mit --name "Jane Doe"
 npx ai-license --explain apache-2.0
 ```
 
-## Best Practices
+## 最佳实践
 
-- **MIT for simplicity** - do whatever you want, just keep the copyright
-- **Apache for patents** - includes patent protection
-- **GPL for copyleft** - derivatives must also be open source
-- **Check dependencies** - some licenses are incompatible
+- **选择 MIT 许可证（简单易用）**：你可以自由使用代码，只需保留版权信息即可。
+- **选择 Apache 许可证（包含专利保护）**：代码会受到专利法的保护。
+- **选择 GPL 许可证（遵循开源原则）**：衍生作品也必须保持开源状态。
+- **检查依赖关系**：某些许可证可能存在兼容性问题。
 
-## When to Use This
+## 适用场景
 
-- Starting an open source project
-- Not sure which license fits your needs
-- Want to understand license implications
-- Need to generate LICENSE file quickly
+- 开始一个新的开源项目时
+- 不确定哪种许可证适合你的需求时
+- 需要快速了解许可证的详细规定时
+- 需要快速生成 LICENSE 文件时
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本无需支付费用、无需注册，也不需要 API 密钥，只需使用相应的命令即可使用这些工具。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具时需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-license --help
 ```
 
-## How It Works
+## 工作原理
 
-Walks you through questions about how you want your code to be used, then recommends appropriate licenses. Uses GPT-4o-mini to explain license terms in plain English and generate the full LICENSE file.
+该工具会询问你关于代码使用方式的详细要求，然后推荐合适的许可证。它利用 GPT-4o-mini 模型以通俗易懂的语言解释许可证条款，并自动生成完整的 LICENSE 文件。
 
-## License
+## 许可证信息
 
-MIT. Free forever. Use it however you want.
+该工具基于 MIT 许可证发布，永久免费。你可以随心所欲地使用该工具。

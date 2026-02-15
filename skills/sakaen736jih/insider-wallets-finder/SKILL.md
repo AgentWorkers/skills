@@ -1,23 +1,42 @@
 ---
 name: insider-wallets-finder
-description: Find and analyze smart money addresses - discover early buyers, track successful traders, identify whale accumulation patterns, and research on-chain alpha.
+description: **功能概述：**  
+- **寻找并分析“聪明资金”的交易地址**：识别早期买入者（即那些具备专业投资能力的投资者）。  
+- **追踪成功交易者的行为**：监测那些在市场中表现优异的交易者的交易记录。  
+- **分析“大户”（鲸鱼投资者）的资产积累模式**：研究这些大型投资者如何进行资产配置。  
+- **研究链上的投资机会**：探索区块链平台上存在的潜在投资机会（即“链上阿尔法效应”）。  
+
+**技术实现细节：**  
+- **数据来源与整合**：从多个可靠的数据源收集相关信息，并对这些数据进行整合和处理。  
+- **智能分析算法**：运用先进的机器学习算法对收集到的数据进行深度分析，以发现潜在的投资趋势和模式。  
+- **可视化工具**：提供直观的可视化界面，帮助用户更轻松地理解和解读分析结果。  
+
+**应用场景：**  
+- **投资策略制定**：帮助投资者制定更明智的投资策略。  
+- **市场研究**：为研究人员提供有价值的市场洞察。  
+- **风险管理**：帮助金融机构识别潜在的风险点。  
+
+**优势：**  
+- **实时更新**：数据实时更新，确保分析结果的准确性。  
+- **高度定制化**：用户可以根据自己的需求定制分析参数和范围。  
+- **安全性**：所有数据传输和存储均经过加密处理，确保用户隐私安全。
 metadata: {"openclaw":{"requires":{"bins":["python3"]},"install":[{"id":"python","kind":"pip","package":"requests","bins":[],"label":"Install requests (pip)"}]}}
 ---
 
-# Insider Wallets Finder
+# 内部钱包查找器（Insider Wallets Finder）
 
-## Overview
+## 概述
 
-Identify profitable addresses by analyzing:
-- Early token buyers
-- Consistent profitable traders
-- Whale accumulation patterns
-- DEX trading patterns
-- NFT flippers
+通过分析以下信息来识别盈利地址：
+- 早期代币购买者
+- 表现稳定的盈利交易者
+- 大额资金持有者的积累模式
+- DEX（去中心化交易所）的交易模式
+- NFT（非同质化代币）的交易者
 
-## Find Early Buyers of Token
+## 查找代币的早期购买者
 
-### Ethereum (ERC-20)
+### 以太坊（ERC-20）
 
 ```bash
 # Get first 100 transfers of a token
@@ -35,7 +54,7 @@ for addr, count in buyers.most_common(20):
     print(f'{addr} | {count} buys')"
 ```
 
-### Solana (SPL Token)
+### Solana（SPL代币）
 
 ```bash
 # Find early holders using Birdeye API
@@ -43,7 +62,7 @@ curl -s "https://public-api.birdeye.so/public/token_holder?address=TOKEN_MINT&of
   -H "X-API-KEY: your-birdeye-key" | python3 -m json.tool
 ```
 
-## Analyze Deployer Activity
+## 分析部署者活动
 
 ```bash
 # Find what else deployer created
@@ -61,7 +80,7 @@ for c in contracts[:10]:
     print(c)"
 ```
 
-## Track Whale Accumulation
+## 跟踪大额资金持有者的积累情况
 
 ```bash
 python3 << 'EOF'
@@ -82,9 +101,9 @@ for holder in resp.get('result', [])[:20]:
 EOF
 ```
 
-## Find Profitable DEX Traders
+## 找到盈利的DEX交易者
 
-### Analyze Uniswap Trades
+### 分析Uniswap交易
 
 ```bash
 python3 << 'EOF'
@@ -118,9 +137,9 @@ for addr, vol in traders.most_common(10):
 EOF
 ```
 
-## Solana DEX Analysis
+## Solana DEX分析
 
-### Find Raydium/Jupiter Traders
+### 找到Raydium/Jupiter的交易者
 
 ```bash
 # Using Birdeye API
@@ -138,7 +157,7 @@ for addr, count in traders.most_common(10):
     print(f'{addr[:20]}... | {count} trades')"
 ```
 
-## NFT Flipper Analysis
+## NFT交易者分析
 
 ```bash
 python3 << 'EOF'
@@ -164,7 +183,7 @@ for addr, total in sorted(profits.items(), key=lambda x: -x[1])[:10]:
 EOF
 ```
 
-## Cross-Reference Multiple Tokens
+## 跨多个代币进行对比分析
 
 ```bash
 python3 << 'EOF'
@@ -194,25 +213,25 @@ for addr, count in all_early_buyers.most_common(20):
 EOF
 ```
 
-## Labeled Address Databases
+## 标记地址数据库
 
-### Check Known Addresses
+### 检查已知地址
 
 ```bash
 # Etherscan labels
 curl -s "https://api.etherscan.io/api?module=account&action=balance&address=ADDRESS&tag=latest&apikey=YourKey"
 ```
 
-### Arkham Intelligence (API)
+### Arkham Intelligence（API）
 
 ```bash
 curl -s "https://api.arkhamintelligence.com/intelligence/address/ADDRESS" \
   -H "API-Key: your-arkham-key" | python3 -m json.tool
 ```
 
-## Pattern Detection
+## 模式检测
 
-### Find Addresses with Similar Behavior
+### 找到行为相似的地址
 
 ```bash
 python3 << 'EOF'
@@ -246,20 +265,20 @@ for block_group, buyers in timing.items():
 EOF
 ```
 
-## Research Tools
+## 研究工具
 
-| Tool | Purpose | Link |
+| 工具 | 用途 | 链接 |
 |------|---------|------|
-| Nansen | Labeled addresses | nansen.ai |
-| Arkham | Intel platform | arkhamintelligence.com |
-| Bubblemaps | Holder visualization | bubblemaps.io |
-| DeBank | Portfolio tracking | debank.com |
-| Dune | Custom queries | dune.com |
-| Birdeye | Solana analytics | birdeye.so |
+| Nansen | 标记地址 | nansen.ai |
+| Arkham | 智能分析平台 | arkhamintelligence.com |
+| Bubblemaps | 持有者可视化工具 | bubblemaps.io |
+| DeBank | 投资组合跟踪工具 | debank.com |
+| Dune | 自定义查询工具 | dune.com |
+| Birdeye | Solana数据分析工具 | birdeye.so |
 
-## Dune Analytics Queries
+## Dune数据分析查询
 
-Find smart money on Dune:
+在Dune平台上查找“聪明资金”的交易行为：
 ```sql
 -- Top profitable traders
 SELECT
@@ -274,12 +293,12 @@ ORDER BY total_profit DESC
 LIMIT 50
 ```
 
-## Notes
+## 注意事项：
 
-- All blockchain data is public
-- Use for research and education
-- Cross-reference multiple sources
-- Patterns don't guarantee future performance
-- Consider transaction fees in profit calculations
-- Some "insiders" may be arbitrage bots
-- Always verify findings manually
+- 所有区块链数据都是公开的
+- 仅用于研究和学习目的
+- 需要跨多个来源进行数据对比分析
+- 模式分析不能保证未来的投资回报
+- 计算利润时需考虑交易费用
+- 部分“内部人士”可能是套利机器人
+- 必须手动验证分析结果

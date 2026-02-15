@@ -1,64 +1,66 @@
 ---
 name: transport-investigation-acas-aligned-pack
-description: Generates ACAS-aligned investigation invite wording, neutral question sets, and evidence logs. USE WHEN starting a driver incident investigation/interview.
+description: 生成符合ACAS标准的调查邀请函模板、中立的问题集以及证据记录。适用于启动驾驶员事故调查或访谈时使用。
 ---
 
-# Investigation Pack (ACAS-aligned)
+# 调查包（符合ACAS标准）
 
-## PURPOSE
-Create an ACAS-aligned investigation starter pack: invite wording, neutral question plan, and evidence log structure for transport incidents and potential misconduct.
+## 目的  
+创建一个符合ACAS标准的调查启动包，包括用于处理运输事故及潜在不当行为的邀请函模板、中立性问题列表以及证据记录表格。
 
-## WHEN TO USE
-- “Draft an investigation invite letter for this incident and evidence list.”
-- “Create investigation questions for this driver interview, ACAS aligned.”
-- “Summarise these incident notes into a clean manager brief.” (when it feeds an investigation)
+## 使用场景  
+- “为此次事故起草调查邀请函及证据清单。”  
+- “为驾驶员面试准备符合ACAS标准的问题。”  
+- “将这些事故记录整理成简洁的管理层汇报材料。”  
 
-DO NOT USE WHEN…
-- Generic HR queries like “What is a fair disciplinary process?” with no case artefact needed.
-- You’re drafting outcomes/sanctions without an investigation stage.
+**不适用场景**  
+- 无需调查流程的通用人力资源咨询（例如：“什么是公平的纪律处分程序？”）  
+- 在未进行调查的情况下直接起草处分结果或处罚措施。  
 
-## INPUTS
-- REQUIRED:
-  - Incident summary (what/when/where), parties involved, and what’s alleged/being reviewed
-  - Evidence available so far (CCTV, telematics, tacho extracts, witness notes, PCN, photos)
-  - Proposed meeting date window and who will chair/note-take
-- OPTIONAL:
-  - Relevant internal policies (paste text), previous similar cases, union/companion info
-- EXAMPLES:
-  - “Allegation: falsified manual entry on [date]. Evidence: tacho report + supervisor note.”
+## 输入内容  
+**必填项**：  
+- 事故概况（事件内容、时间、地点、涉及人员以及被指控的行为/审查内容）  
+- 目前可获取的证据（监控录像、车载记录仪数据、车速记录、目击者陈述、事故报告、照片等）  
+- 预议的会议时间范围以及会议主持人/记录员信息  
 
-## OUTPUTS
-- `investigation-invite.md` (Word-ready)
-- `question-plan.md`
-- `evidence-log.md` (Excel-ready table)
-- Success criteria:
-  - Neutral tone, no assumptions of guilt
-  - Includes right-to-be-accompanied wording
-  - Clear evidence handling and logging
+**可选项**：  
+- 相关内部政策文件  
+- 以往类似案例  
+- 工会/相关方信息  
 
-## WORKFLOW
-1. Confirm this is an **investigation** (fact-finding), not a disciplinary hearing.
-   - IF unclear → **STOP AND ASK THE USER** what stage they are at.
-2. Draft invite using `assets/invite-letter-template.docx-ready.md`.
-   - Include: purpose, date/time, attendees, right-to-be-accompanied, evidence access, and contact route.
-3. Build a neutral question plan using `assets/neutral-question-plan-template.md`.
-   - Start broad → then specifics → then mitigation/context → then closing.
-4. Create an evidence log using `assets/evidence-log-template.md`.
-   - Include chain-of-custody fields if needed.
-5. Add ACAS alignment checks from `references/acas-alignment-checklist.md`.
-6. If asked to edit existing documents → **ASK FIRST**.
+**示例**：  
+- **指控内容**：在[日期]伪造了手动记录。**证据**：车速记录报告 + 上司的书面说明。  
 
-## OUTPUT FORMAT
+## 输出文件  
+- `investigation-invite.md`（适用于Word编辑）  
+- `question-plan.md`  
+- `evidence-log.md`（适用于Excel编辑的表格）  
+
+**成功标准**：  
+- 语言表达中立，不预设任何一方有罪；  
+- 明确提及被调查人员有权陪同他人参与调查；  
+- 规范证据的处理和记录流程。  
+
+## 工作流程  
+1. 确认此次调查属于事实调查（而非纪律听证会）。  
+   - 如有疑问，请**立即询问用户**当前处于哪个调查阶段。  
+2. 使用`assets/invite-letter-template.docx-ready.md`模板起草邀请函，内容包括调查目的、时间、参会人员、被调查人员的陪同权利、证据获取方式及联系方式。  
+3. 根据`assets/neutral-question-plan-template.md`模板制定中立性问题清单，问题应从一般性内容逐步深入到具体细节、潜在影响及应对措施，最后总结调查要点。  
+4. 使用`assets/evidence-log-template.md`创建证据记录表格，必要时添加证据保管链相关字段。  
+5. 根据`references/acas-alignment-checklist.md`文件检查文件内容是否符合ACAS标准。  
+6. 如需修改现有文件，请**先征得同意**。  
+
+## 输出格式  
 ```text
 # evidence-log.md
 | Ref | Evidence item | Source | Date/time captured | Who captured | Storage location | Integrity notes | Relevance | Shared with employee (Y/N, date) |
 |-----|---------------|--------|-------------------|-------------|------------------|-----------------|----------|----------------------------------|
-```
+```  
 
-## SAFETY & EDGE CASES
-- Don’t provide legal advice; keep to process and neutrality.
-- If the allegation is serious and outcomes could be dismissal, flag that HR/legal review may be required per internal governance (ask for your policy text).
+## 安全性与特殊注意事项  
+- 请勿提供法律建议，严格遵循既定流程并保持中立立场。  
+- 若指控严重，可能导致解雇等后果，需根据公司内部规定确认是否需要人力资源部门或法律部门的介入（请查阅相关政策文件）。  
 
-## EXAMPLES
-- Input: “Invite letter + questions for driver interview”
-  - Output: invite + question plan + evidence log template populated with known items
+## 示例操作流程  
+- **输入内容**：驾驶员面试的邀请函及问题列表  
+- **输出结果**：包含邀请函、问题清单及已填写好的证据记录表格。

@@ -1,20 +1,20 @@
 ---
 slug: "uberization-readiness"
 display_name: "Uberization Readiness"
-description: "Assess company readiness for construction industry uberization. Analyze data transparency, process automation, and competitive positioning against open data platforms."
+description: "评估公司在建筑行业实现“超级化”（即通过技术提升效率）方面的准备情况。分析数据透明度、流程自动化程度，以及该公司在开放数据平台（open data platforms）中的竞争地位。"
 ---
 
-# Uberization Readiness Assessment
+# 乌贝化（Uberization）准备度评估
 
-## Overview
+## 概述
 
-The construction industry faces disruption from open data platforms that bring transparency to pricing, quality, and performance. Companies that fail to adapt risk being "uberized" out of the market.
+建筑行业正受到开放数据平台的冲击，这些平台为价格、质量和性能带来了透明度。未能适应这一变化的公司可能会被市场淘汰（即被“乌贝化”）。
 
-> "Traditional business model often thrives on opacity... Automation and open data bring radical transparency." — Artem Boiko
+> “传统商业模式往往依赖于信息的不透明性……自动化和开放数据带来了彻底的透明度。” — Artem Boiko
 
-> "Working with construction companies on process automation is like trying to build a copy of Uber for taxi drivers at an airport in 2005." — Artem Boiko
+> “与建筑公司合作推进流程自动化，就如同在2005年试图为机场的出租车司机打造一个类似Uber的服务。” — Artem Boiko
 
-## What is Construction Uberization?
+## 什么是建筑行业的“乌贝化”？
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -36,7 +36,7 @@ The construction industry faces disruption from open data platforms that bring t
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Readiness Assessment Framework
+## 准备度评估框架
 
 ```python
 from dataclasses import dataclass
@@ -152,7 +152,7 @@ def assess_uberization_readiness(company_data: dict) -> dict:
     }
 ```
 
-## Self-Assessment Questionnaire
+## 自我评估问卷
 
 ```python
 assessment_questions = [
@@ -226,7 +226,7 @@ assessment_questions = [
 ]
 ```
 
-## Competitive Threat Analysis
+## 竞争威胁分析
 
 ```python
 def analyze_competitive_threats(market_data: dict) -> dict:
@@ -275,7 +275,7 @@ def analyze_competitive_threats(market_data: dict) -> dict:
     }
 ```
 
-## Transformation Roadmap
+## 转型路线图
 
 ```
 Year 1: Foundation
@@ -303,7 +303,7 @@ Year 4+: Leadership
 └── Monetize data insights
 ```
 
-## Output Report
+## 输出报告
 
 ```python
 def generate_readiness_report(assessment: dict) -> str:
@@ -344,8 +344,8 @@ def generate_readiness_report(assessment: dict) -> str:
     return report
 ```
 
-## Resources
+## 参考资源
 
-- CWICR Database: https://openconstructionestimate.com
-- Open BIM Standards: https://www.buildingsmart.org
-- DDC Book Chapter 5: Threats and Strategy
+- CWICR数据库：https://openconstructionestimate.com
+- 开放BIM标准：https://www.buildingsmart.org
+- DDC第5章：威胁与策略

@@ -1,6 +1,6 @@
 ---
 name: AURA Security Scanner
-description: Scan AI agent skills for malware, credential theft, prompt injection, and dangerous permissions before installing them
+description: 在安装AI代理之前，扫描其功能以检测是否存在恶意软件、密码盗窃、提示注入（prompt injection）以及危险权限（dangerous permissions）等安全风险。
 version: 1.0.0
 requires:
   bins: []
@@ -13,21 +13,21 @@ permissions:
 tags: [security, malware-detection, skill-scanner, trust]
 ---
 
-# AURA Security Scanner
+# AURA 安全扫描器
 
-Protect your AI agent from malicious skills. Scan any OpenClaw, Claude MCP, or LangChain skill before installation.
+保护您的人工智能代理免受恶意技能的侵害。在安装任何 OpenClaw、Claude MCP 或 LangChain 技能之前，请先对其进行扫描。
 
-## What It Detects
+## 扫描内容
 
-- **Malware Patterns** - Credential theft, file exfiltration, crypto miners, backdoors
-- **Prompt Injection** - Attempts to override system instructions or jailbreak agents
-- **Permission Issues** - Overly broad filesystem, network, or execution permissions
-- **Suspicious Networks** - Connections to known exfiltration domains (webhook.site, etc.)
-- **Obfuscated Code** - Base64/hex encoded execution, dynamic eval patterns
+- **恶意软件模式**：凭证窃取、文件泄露、加密矿工程序、后门
+- **提示注入**：试图篡改系统指令或越狱代理
+- **权限问题**：文件系统、网络或执行权限设置过于宽松
+- **可疑网络**：连接到已知的泄露源（如 webhook.site 等）
+- **混淆代码**：使用 Base64 或十六进制编码的代码、动态执行脚本等
 
-## Usage
+## 使用方法
 
-Ask me to scan a skill before you install it:
+在安装技能之前，请让我先对其进行扫描：
 
 ```
 "Scan this skill for security issues: https://github.com/user/cool-skill"
@@ -41,22 +41,22 @@ Ask me to scan a skill before you install it:
 "Check https://clawhub.xyz/skill/weather-api for malware"
 ```
 
-## Verdicts
+## 扫描结果
 
-| Verdict | Risk Score | Meaning |
+| 扫描结果 | 风险等级 | 含义 |
 |---------|-----------|---------|
-| SAFE | 0-20 | No issues found, safe to install |
-| WARNING | 21-50 | Minor concerns, review before installing |
-| DANGEROUS | 51-80 | Significant risks detected, avoid |
-| BLOCKED | 81-100 | Critical threats, do not install |
+| 安全（SAFE） | 0-20 | 未发现任何问题，可安全安装 |
+| 警告（WARNING） | 21-50 | 存在轻微风险，请在安装前仔细检查 |
+| 危险（DANGEROUS） | 51-80 | 检测到重大风险，请避免安装 |
+| 被阻止（BLOCKED） | 81-100 | 存在严重威胁，切勿安装 |
 
-## AURA Verified Badge
+## AURA 验证徽章
 
-Skills with a SAFE verdict can display the AURA Verified badge, showing users they've been scanned and approved.
+获得“安全（SAFE）”扫描结果的技能可以显示 AURA 验证徽章，证明该技能已通过安全检测。
 
-## Examples
+## 示例
 
-### Safe Skill Response
+### 安全的技能响应
 ```
 AURA Skill Scan: weather-api
 
@@ -70,7 +70,7 @@ Requests only weather API access.
 Recommendation: Safe to install.
 ```
 
-### Dangerous Skill Response
+### 危险的技能响应
 ```
 AURA Skill Scan: suspicious-helper
 
@@ -89,7 +89,7 @@ theft and data exfiltration patterns.
 
 ## API
 
-This skill calls the AURA Security API:
+该技能会调用 AURA 安全 API 进行扫描：
 
 ```
 POST https://api.aurasecurity.io/scan-skill
@@ -100,10 +100,10 @@ POST https://api.aurasecurity.io/scan-skill
 }
 ```
 
-## About AURA
+## 关于 AURA
 
-AURA (Agent Universal Reputation & Assurance) provides security infrastructure for the AI agent ecosystem. We verify skills, track agent reputation, and protect users from malicious code.
+AURA（Agent Universal Reputation & Assurance，代理通用信誉与保障系统）为人工智能代理生态系统提供安全保障。我们会对技能进行验证，跟踪代理的信誉状况，并保护用户免受恶意代码的侵害。
 
-- Website: https://aurasecurity.io
-- GitHub: https://github.com/aurasecurityio/aura-security
-- X/Twitter: @aurasecurityio
+- 官网：https://aurasecurity.io
+- GitHub 仓库：https://github.com/aurasecurityio/aura-security
+- X/Twitter 账号：@aurasecurityio

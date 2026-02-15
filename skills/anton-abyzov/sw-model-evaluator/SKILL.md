@@ -4,40 +4,40 @@ description: |
   Comprehensive ML model evaluation with multiple metrics, cross-validation, and statistical testing. Activates for "evaluate model", "model metrics", "model performance", "compare models", "validation metrics", "test accuracy", "precision recall", "ROC AUC". Generates detailed evaluation reports with visualizations and statistical significance tests, integrated with SpecWeave increment documentation.
 ---
 
-# Model Evaluator
+# 模型评估器
 
-## Overview
+## 概述
 
-Provides comprehensive, unbiased model evaluation following ML best practices. Goes beyond simple accuracy to evaluate models across multiple dimensions, ensuring confident deployment decisions.
+本工具遵循机器学习的最佳实践，提供全面且无偏的模型评估服务。它不仅关注模型的准确性，还从多个维度对模型进行评估，从而帮助用户做出更加可靠的部署决策。
 
-## Core Evaluation Framework
+## 核心评估框架
 
-### 1. Classification Metrics
-- Accuracy, Precision, Recall, F1-score
-- ROC AUC, PR AUC
-- Confusion matrix
-- Per-class metrics (for multi-class)
-- Class imbalance handling
+### 1. 分类指标
+- 准确率（Accuracy）、精确度（Precision）、召回率（Recall）、F1分数（F1-score）
+- ROC-AUC曲线、PR-AUC曲线
+- 混淆矩阵（Confusion matrix）
+- 多类分类时的类别指标（Per-class metrics）
+- 处理类别不平衡问题（Class imbalance handling）
 
-### 2. Regression Metrics
-- RMSE, MAE, MAPE
-- R² score, Adjusted R²
-- Residual analysis
-- Prediction interval coverage
+### 2. 回归指标
+- 均方根误差（RMSE）、平均绝对误差（MAE）、平均百分比误差（MAPE）
+- R²分数、调整后的R²分数（Adjusted R²）
+- 剩差分析（Residual analysis）
+- 预测区间覆盖率（Prediction interval coverage）
 
-### 3. Ranking Metrics (Recommendations)
-- Precision@K, Recall@K
-- NDCG@K, MAP@K
-- MRR (Mean Reciprocal Rank)
-- Coverage, Diversity
+### 3. 推荐系统评估指标
+- 精确度@K（Precision@K）、召回率@K（Recall@K）
+- NDCG@K、MAP@K（NDCG@K、MAP@K）
+- 平均倒数排名（MRR，Mean Reciprocal Rank）
+- 覆盖率（Coverage）、多样性（Diversity）
 
-### 4. Statistical Validation
-- Cross-validation (K-fold, stratified, time-series)
-- Confidence intervals
-- Statistical significance testing
-- Calibration curves
+### 4. 统计验证
+- 交叉验证（Cross-validation，包括K折法、分层法、时间序列法）
+- 置信区间（Confidence intervals）
+- 统计显著性检验（Statistical significance testing）
+- 校准曲线（Calibration curves）
 
-## Usage
+## 使用方法
 
 ```python
 from specweave import ModelEvaluator
@@ -58,7 +58,7 @@ report = evaluator.evaluate_all()
 # - Statistical tests
 ```
 
-## Evaluation Report Structure
+## 评估报告结构
 
 ```markdown
 # Model Evaluation Report: XGBoost Classifier
@@ -92,7 +92,7 @@ report = evaluator.evaluate_all()
 ⚠️  Monitor: Class 1 recall slightly lower (0.84)
 ```
 
-## Model Comparison
+## 模型比较
 
 ```python
 from specweave import compare_models
@@ -113,7 +113,8 @@ comparison = compare_models(
 )
 ```
 
-**Output**:
+**输出结果**
+
 ```
 Model Comparison Report
 =======================
@@ -131,15 +132,15 @@ Recommendation: XGBoost
 - Good size/performance tradeoff
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always compare to baseline** - Random, majority, rule-based
-2. **Use cross-validation** - Never trust single split
-3. **Check calibration** - Are probabilities meaningful?
-4. **Analyze errors** - What types of mistakes?
-5. **Test statistical significance** - Is improvement real?
+1. **始终与基线进行比较** – 可以使用随机样本、多数样本或基于规则的基线。
+2. **使用交叉验证** – 切勿仅依赖单次训练结果。
+3. **检查模型校准情况** – 模型的预测概率是否具有实际意义？
+4. **分析错误类型** – 了解模型犯错的类型。
+5. **测试统计显著性** – 确认模型的改进是真实的。
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
 ```bash
 # Evaluate model in increment
@@ -152,4 +153,4 @@ Recommendation: XGBoost
 /ml:evaluation-report 0042
 ```
 
-Evaluation results automatically included in increment COMPLETION-SUMMARY.md.
+评估结果会自动包含在`COMPLETION-SUMMARY.md`文件中。

@@ -1,24 +1,24 @@
 ---
 slug: "scenario-planner"
 display_name: "Scenario Planner"
-description: "What-if analysis for construction projects: model different scenarios and their cost/schedule/resource impacts. Compare alternatives and optimize decisions."
+description: "建设项目中的“假设分析”：模拟不同场景及其对成本、进度和资源的影响。比较各种方案，优化决策过程。"
 ---
 
-# Scenario Planner for Construction
+# 建筑项目场景规划器
 
-## Overview
+## 概述
 
-Model different project scenarios to understand their impacts on cost, schedule, and resources. Compare alternatives, optimize decisions, and prepare for contingencies.
+通过模拟不同的项目场景，了解它们对成本、进度和资源的影响。比较各种方案，优化决策，并为可能出现的问题做好准备。
 
-## Business Case
+## 商业案例
 
-Construction decisions require understanding trade-offs:
-- **Design Alternatives**: Which option is most cost-effective?
-- **Schedule Compression**: What's the cost of accelerating?
-- **Resource Options**: In-house vs. subcontractor?
-- **Risk Scenarios**: What if materials increase 20%?
+在建筑项目中，决策需要权衡各种因素：
+- **设计方案选择**：哪种方案最具成本效益？
+- **进度压缩**：加快施工进度会带来哪些成本？
+- **资源选择**：是使用内部资源还是外包给第三方供应商？
+- **风险情景**：如果材料价格上涨20%会如何应对？
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -413,7 +413,7 @@ class ConstructionScenarioPlanner:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Define base project
@@ -472,7 +472,7 @@ report = planner.generate_report()
 print(report)
 ```
 
-## Dependencies
+## 依赖关系
 
 ```bash
 pip install pandas numpy

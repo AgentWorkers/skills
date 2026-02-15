@@ -1,40 +1,40 @@
 ---
 name: gitlab-api
-description: GitLab API integration for repository operations. Use when working with GitLab repositories for reading, writing, creating, or deleting files, listing projects, managing branches, or any other GitLab repository operations.
+description: GitLab API集成用于仓库操作。当您需要与GitLab仓库进行交互（如读取、写入、创建或删除文件、列出项目、管理分支等）时，可以使用该集成。
 ---
 
 # GitLab API
 
-Interact with GitLab repositories via the REST API. Supports both GitLab.com and self-hosted instances.
+您可以通过 REST API 与 GitLab 仓库进行交互。该 API 支持 GitLab.com 以及自托管的 GitLab 实例。
 
-## Setup
+## 设置
 
-Store your GitLab personal access token:
+请存储您的 GitLab 个人访问令牌：
 
 ```bash
 mkdir -p ~/.config/gitlab
 echo "glpat-YOUR_TOKEN_HERE" > ~/.config/gitlab/api_token
 ```
 
-**Token scopes needed:** `api` or `read_api` + `write_repository`
+**所需的令牌权限：** `api` 或 `read_api` + `write_repository`
 
-**Get a token:**
-- GitLab.com: https://gitlab.com/-/user_settings/personal_access_tokens
-- Self-hosted: https://YOUR_GITLAB/~/-/user_settings/personal_access_tokens
+**获取令牌：**
+- GitLab.com：https://gitlab.com/-/user_settings/personal_access_tokens
+- 自托管 GitLab：https://YOUR_GITLAB/~/-/user_settings/personal_access_tokens
 
-## Configuration
+## 配置
 
-Default instance: `https://gitlab.com`
+默认实例：`https://gitlab.com`
 
-For self-hosted GitLab, create a config file:
+对于自托管的 GitLab，请创建一个配置文件：
 
 ```bash
 echo "https://gitlab.example.com" > ~/.config/gitlab/instance_url
 ```
 
-## Common Operations
+## 常用操作
 
-### List Projects
+### 列出项目
 
 ```bash
 GITLAB_TOKEN=$(cat ~/.config/gitlab/api_token)
@@ -44,9 +44,9 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   "$GITLAB_URL/api/v4/projects?owned=true&per_page=20"
 ```
 
-### Get Project ID
+### 获取项目 ID
 
-Projects are identified by ID or URL-encoded path (`namespace%2Fproject`).
+项目可以通过 ID 或 URL 编码的路径（`namespace%2Fproject`）来识别。
 
 ```bash
 # By path
@@ -56,7 +56,7 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
 # Extract ID from response: jq '.id'
 ```
 
-### Read File
+### 读取文件
 
 ```bash
 PROJECT_ID="12345"
@@ -68,7 +68,7 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   | jq -r '.content' | base64 -d
 ```
 
-### Create/Update File
+### 创建/更新文件
 
 ```bash
 PROJECT_ID="12345"
@@ -89,9 +89,9 @@ curl -X POST -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
 EOF
 ```
 
-For updates, use `-X PUT` instead of `-X POST`.
+进行更新时，请使用 `-X PUT` 而不是 `-X POST`。
 
-### Delete File
+### 删除文件
 
 ```bash
 curl -X DELETE -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
@@ -100,14 +100,14 @@ curl -X DELETE -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   -d '{"branch": "main", "commit_message": "Delete file"}'
 ```
 
-### List Files in Directory
+### 列出目录中的文件
 
 ```bash
 curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   "$GITLAB_URL/api/v4/projects/$PROJECT_ID/repository/tree?path=src&ref=main"
 ```
 
-### Get Repository Content (Archive)
+### 获取仓库内容（存档）
 
 ```bash
 curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
@@ -115,14 +115,14 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   -o repo.tar.gz
 ```
 
-### List Branches
+### 列出分支
 
 ```bash
 curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   "$GITLAB_URL/api/v4/projects/$PROJECT_ID/repository/branches"
 ```
 
-### Create Branch
+### 创建分支
 
 ```bash
 curl -X POST -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
@@ -131,9 +131,9 @@ curl -X POST -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
   -d '{"branch": "feature-xyz", "ref": "main"}'
 ```
 
-## Helper Script
+## 辅助脚本
 
-Use `scripts/gitlab_api.sh` for common operations:
+使用 `scripts/gitlab_api.sh` 来执行常用操作：
 
 ```bash
 # List projects
@@ -152,17 +152,17 @@ Use `scripts/gitlab_api.sh` for common operations:
 ./scripts/gitlab_api.sh list-dir <project-id> <dir-path> [branch]
 ```
 
-## Rate Limits
+## 速率限制
 
-- GitLab.com: 300 requests/minute (authenticated)
-- Self-hosted: Configurable by admin
+- GitLab.com：每分钟 300 次请求（已认证用户）
+- 自托管 GitLab：由管理员配置
 
-## API Reference
+## API 参考
 
-Full API docs: https://docs.gitlab.com/ee/api/api_resources.html
+完整的 API 文档：https://docs.gitlab.com/ee/api/api_resources.html
 
-Key endpoints:
-- Projects: `/api/v4/projects`
-- Repository files: `/api/v4/projects/:id/repository/files`
-- Repository tree: `/api/v4/projects/:id/repository/tree`
-- Branches: `/api/v4/projects/:id/repository/branches`
+主要 API 端点：
+- 项目：`/api/v4/projects`
+- 仓库文件：`/api/v4/projects/:id/repository/files`
+- 仓库目录结构：`/api/v4/projects/:id/repository/tree`
+- 分支：`/api/v4/projects/:id/repository/branches`

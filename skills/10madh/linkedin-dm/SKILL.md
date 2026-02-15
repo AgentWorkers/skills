@@ -1,220 +1,203 @@
 ---
 name: linkedin-dm
-description: Send personalized LinkedIn direct messages to a list of existing 1st-degree connections via browser automation. Use when the user wants to message LinkedIn connections with AI-personalized outreach — e.g. nurturing leads, following up after events, reconnecting with contacts, or announcing something. Takes a data file (CSV/TSV) or plain list with connection names and companies, asks for outreach context/goal, generates a tailored message per person, and sends each one via browser automation. Handles message compose flow, character limits, and incremental status tracking.
+description: 通过浏览器自动化工具，向用户的一级联系人列表发送个性化的LinkedIn直接消息。当用户需要通过AI个性化的方式与LinkedIn联系人进行沟通时（例如：跟进潜在客户、在活动后联系他们、重新建立联系或发布重要信息），可以使用此功能。该工具接收一个包含联系人姓名和公司名称的数据文件（CSV/TSV格式）或纯文本列表，用户需要提供沟通的背景和目标。系统会为每位联系人生成定制化的消息，并通过浏览器自动化流程发送这些消息。同时，该工具会处理消息的编写流程、字符长度限制以及发送过程中的状态跟踪。
 ---
 
-# LinkedIn DM
+# LinkedIn私信功能
 
-Sends personalized LinkedIn messages to existing 1st-degree connections. Each message has:
-- A **personalized opening** unique to each person (based on their profile + relationship to the sender)
-- A **consistent product/pitch section** confirmed once by the user and reused for all messages
-
----
-
-## ⚠️ Pre-flight Checklist — Confirm Before Starting
-
-### 1. Connection List
-Ask the user for their data file or list. Must include (or be added):
-- **Person Name** — full name
-- **Company/Role** — their current company or role
-- **LinkedIn URL** — optional but helpful
-- **Message Status** — column for tracking (add if missing)
-
-If only a plain list is provided, offer to convert to TSV.
-
-### 2. Read Sender's LinkedIn Profile (mandatory)
-Before writing any messages, navigate to `/in/me/` and read the sender's profile:
-- **Name** and **current role/company**
-- **Career history** — companies, roles, years
-- **Education** — college, degree, batch years
-- **Location**
-
-Store these facts. They are used to identify relationship hooks with each connection.
-
-### 3. Confirm the Pitch (once, upfront)
-Ask the user:
-> *"What's your pitch / product message? This will be the consistent part of every message. Describe it in 1–2 sentences."*
-
-Then draft a polished pitch section (2–4 sentences max, punchy and clear). Show it to the user and get explicit approval. **Do not start sending until the pitch is confirmed.**
-
-Example prompt: *"Here's the pitch I'll use for everyone — confirm or edit:*
-> *'I'm building an AI calling agent — you give it a phone number + context, and it handles the call end-to-end. Think customer follow-ups, research calls, vendor coordination — anything phone-based that eats into your day. Happy to show you a demo if this sounds useful.'"*
-
-### 4. Browser Setup
-- **Option A — Chrome Browser Relay** (`profile="chrome"`): extension attached to LinkedIn tab (badge ON) — recommended for flagged accounts
-- **Option B — OpenClaw Isolated Browser** (`profile="openclaw"`): openclaw-managed Chrome, LinkedIn logged in
-
-### 5. CRM Sheet
-Ask the user for a Google Sheet ID/URL to log outreach results. If they don't have one, offer to set one up (create tab + write headers). Confirm `gog` is authenticated (`gog auth list`).
-
-If the user skips this, fall back to local `linkedin_dm_progress.json` but remind them the follow-up skill needs the sheet.
-
-### 6. Ready Check
-Only proceed once:
-- ✅ List is ready
-- ✅ Sender profile has been read
-- ✅ Pitch is confirmed by user
-- ✅ Browser is open with LinkedIn logged in
-- ✅ Sheet ID confirmed (or sidecar fallback acknowledged)
+该功能用于向用户的一级联系人发送个性化的LinkedIn消息。每条消息包含以下内容：
+- 一个针对每个联系人定制的开场白（基于他们的个人资料及与发送者的关系）
+- 一个统一的产品介绍/推广内容（由用户确认后，在所有消息中重复使用）
 
 ---
 
-## Relationship Analysis (per person)
+## ⚠️ 开始前的准备工作
 
-Before writing a message, compare the connection's profile against the sender's profile to find the strongest hook. Use this hierarchy — pick the highest that applies:
+### 1. 联系人列表
+请用户提供联系人信息文件或列表。列表中必须包含（或补充）以下内容：
+- **姓名** — 全名
+- **公司/职位** — 当前所在公司或职位
+- **LinkedIn链接** — 可选，但有助于识别联系人
+- **消息状态** — 用于追踪消息发送情况的字段（如未提供可添加）
 
-| Priority | Hook | Example opener |
+如果用户仅提供纯文本列表，可建议将其转换为TSV格式。
+
+### 2. 阅读发送者的LinkedIn个人资料（必填）
+在发送任何消息之前，请访问`/in/me/`并阅读发送者的个人资料：
+- **姓名** 和 **当前职位/公司**
+- **工作经历** — 曾经工作过的公司、职位及任职时间
+- **教育背景** — 毕业院校、学位及毕业年份
+- **所在地**
+
+将这些信息记录下来，以便在后续消息中找到与联系人的共同点。
+
+### 3. 确认推广内容（提前完成）
+询问用户：
+> “您的推广内容/产品介绍是什么？这将是每条消息中统一使用的部分。请用1-2句话描述它。”
+
+然后起草一份简洁明了的推广内容（最多2-4句话），展示给用户并获得明确批准。**在确认推广内容之前，请勿开始发送消息。**
+
+示例提示：  
+> “这是我将用于所有联系人的推广内容——请确认或修改：  
+> ‘我正在开发一款AI电话助手——您只需提供电话号码和背景信息，它就能完成整个通话流程。适用于客户跟进、市场调研、供应商协调等需要使用电话的环节。如果觉得有用，我很乐意为您演示。’”
+
+### 4. 浏览器设置
+- **选项A — Chrome浏览器Relay**（`profile="chrome"`）：在LinkedIn标签页上安装该扩展程序（确保扩展程序已启用）——适用于被标记的特殊账户
+- **选项B — OpenClaw隔离浏览器**（`profile="openclaw"`）：使用OpenClaw管理的Chrome浏览器，并确保已登录LinkedIn
+
+### 5. 客户关系管理（CRM）表格
+请用户提供用于记录推广结果的Google Sheets表格ID/链接。如果用户没有提供，可以协助创建表格（包括相应的列）。确认用户已通过gog认证（查看`gog auth list`）。
+
+如果用户跳过此步骤，请使用本地的`linkedin_dm_progress.json`文件，但需提醒他们后续操作需要该表格。
+
+### 6. 确认准备工作完成
+只有在以下所有条件都满足时才能继续：
+- ✅ 联系人列表已准备好
+- ✅ 已阅读发送者的个人资料
+- ✅ 推广内容已得到用户确认
+- ✅ 浏览器已打开且已登录LinkedIn
+- ✅ 表格ID已确认（或已设置好备用方案）
+
+---
+
+## 人际关系分析（针对每个联系人）
+在发送消息之前，将联系人的个人资料与发送者的个人资料进行对比，找出最合适的沟通切入点。参考以下优先级：
+| 优先级 | 切入点 | 示例开场白 |
 |---|---|---|
-| 1 | **Same company** (current or past) | "You and I both spent time at CRED…" |
-| 2 | **Same college + overlapping years** | "Fellow BITS Goa 2018 batch here…" |
-| 3 | **Same college** (different years) | "BITS connect here — saw your journey from…" |
-| 4 | **Same industry/function** | "Both been in fintech/product for a while…" |
-| 5 | **Mutual connection** | "We're both connected to [Name]…" |
-| 6 | **Their work context** (no personal hook) | "Seen what you've built at [Company]…" |
+| 1 | **同一家公司**（当前或过去共事） | “我们曾在CRED共事过……” |
+| 2 | **同一家大学且毕业年份相同** | “我们是2018年 BITS Goa班的同学……” |
+| 3 | **同一家大学但毕业年份不同** | “我们是BITS的同学——看到你的职业发展历程……” |
+| 4 | **同行业/相同职位** | “我们都在金融科技/产品领域工作了一段时间……” |
+| 5 | **有共同联系人** | “我们都与[姓名]有联系……” |
+| 6 | **他们的职业背景**（无个人关联） | “看到你在[公司]的成就……” |
 
-Combine the hook with a line about **their current work** to show you know what they do.
+结合关于**他们当前工作的内容**来撰写开场白，以显示你对他们工作的了解。
 
 ---
 
-## Message Structure
-
-Send as **two separate messages** per person, back to back:
-
-**Message 1 — Personalized opener** (unique per person)
+## 消息结构
+针对每个联系人发送**两条独立的消息**：
+**消息1 — 个性化开场白**（针对每个人定制）
 ```
 [Relationship hook — 1 sentence]
 [Acknowledgement of their work/role — 1 sentence]
 ```
-Target: 100–180 chars. Feels like a genuine reach-out from someone who knows them.
+长度：100–180个字符。让对方感受到这是一条来自熟悉他们的人的真诚联系。
 
-**Message 2 — Pitch** (identical for everyone, confirmed upfront)
+**消息2 — 产品推广内容**（对所有人相同，提前确认）
 ```
 [Product description — 1–2 sentences]
 [Relevant use case for their role — 1 sentence]
 [Soft CTA — 1 sentence]
 ```
-Target: 150–250 chars. Clear, punchy, no filler.
+长度：150–250个字符。内容简洁明了，避免冗余。
 
-**Why two messages?**
-- Opener lands first — they see it before the pitch, feels more personal
-- Pitch is clearly a separate thought, not buried at the end
-- Mirrors how a human would actually message a connection
+**为什么要发送两条消息？**
+- 开场白先发送，让对方在看到推广内容之前先感受到亲切感
+- 产品推广内容作为独立的部分，不会被隐藏在消息末尾
+- 这种方式更符合人类之间的沟通习惯
 
-**Fallback:** If sending two messages is technically difficult (e.g. bubble re-focusing issues), use `Shift+Enter` twice between the opener and pitch to create a paragraph break within a single message.
+**备用方案：**  
+如果发送两条消息存在技术问题（例如浏览器界面问题），可以在开场白和推广内容之间按两次`Shift+Enter`来创建段落分隔。
 
-**Do not:**
-- Open with "I hope you're well" or "I came across your profile"
-- Use the same opening for multiple people
-- Change the pitch section per person
+**禁止的行为：**
+- 以“希望你一切都好”或“我在LinkedIn上看到了你的资料”开头
+- 对多个联系人使用相同的开场白
+- 为每个人更改推广内容
 
 ---
 
-## Batch Preview Before Sending
-
-Generate messages for the **entire list first**. Present them in a table:
-
-| Name | Company | Relationship Hook Used | Message Preview |
+## 发送前的批量预览
+首先为**整个联系人列表**生成消息内容，并以表格形式展示：
+| 姓名 | 公司 | 使用的切入点 | 消息预览 |
 |---|---|---|---|
-| Shorya Saini | Razorpay | Same BITS batch | Hey Shorya, BITS Goa 2018 batch… |
+| Shorya Saini | Razorpay | 同为BITS 2018届同学 | 嘿Shorya，我们是2018年BITS Goa班的同学…… |
 
-Get user approval on the full batch before opening the browser. Allow edits per row.
-
----
-
-## Sending Flow (Per Person)
-
-1. **Navigate to `/feed/`** — mandatory, no exceptions, no skipping
-2. **Wait 3–5 seconds**
-3. **Search connections** at `linkedin.com/mynetwork/invite-connect/connections/` — type name in "Search by name"
-4. **Handle results:**
-   - 1 match → confirm name + headline → click to open profile
-   - Multiple matches → show user, ask which one
-   - 0 matches → mark `Not a Connection`, skip
-5. **Read their profile** if not already done (for personalisation)
-6. **Click Message button** on their profile
-7. **Send Message 1** — personalized opener only, send it
-8. **Send Message 2** — pitch only, send it immediately after
-9. **Confirm both delivered**
-10. **Log to CRM sheet** — append row via `gog sheets append` with all fields (see CRM Tracking section)
-
-See `references/browser-workflow.md` for exact browser automation steps.
+在开始发送之前，请获得用户的批准，并允许用户对每条消息进行修改。
 
 ---
 
-## Status Values
+## 发送流程（针对每个联系人）
+1. **务必访问 `/feed/` — 无例外，不可跳过**
+2. **等待3–5秒**
+3. 在`linkedin.com/mynetwork/invite-connect/connections/`中搜索联系人——输入联系人姓名进行查找
+4. 处理搜索结果：
+   - 找到匹配项 → 确认姓名和标题 → 点击进入个人资料页面
+   - 找到多个匹配项 → 询问用户具体是哪位联系人
+   - 未找到匹配项 → 标记为“非联系人”，跳过该联系人
+5. 如果尚未阅读其个人资料，请阅读其资料以进行个性化定制
+6. 点击其个人资料页面上的“发送消息”按钮
+7. 先发送**消息1**（仅包含个性化开场白）
+8. 立即发送**消息2**（仅包含产品推广内容）
+9. 确认两条消息都已成功发送
+10. 将发送记录添加到CRM表格中——使用`gog sheets append`函数，并填写所有字段（详见CRM追踪部分）
 
-| Status | Meaning |
+具体浏览器自动化步骤请参考`references/browser-workflow.md`。
+
+---
+
+## 消息状态说明
+| 状态 | 含义 |
 |---|---|
-| `Sent` | Message delivered this session |
-| `Already Messaged` | Recent conversation exists — skip |
-| `Not a Connection` | No Message button or not in connections search |
-| `Profile Not Found` | Could not identify the right person |
-| `Skipped` | User chose to skip |
-| `Failed` | Browser error — retry next session |
+| `Sent` | 消息已成功发送 |
+| `Already Messaged` | 已经有过交流记录——跳过该联系人 |
+| `Not a Connection` | 该联系人没有“发送消息”按钮或不在联系人列表中 |
+| `Profile Not Found` | 无法识别该联系人 |
+| `Skipped` | 用户选择跳过该联系人 |
+| `Failed` | 浏览器出现错误——请在下一次会话中重试 |
 
 ---
 
-## Anti-Detection Rules
-
-- `/feed/` before **every single profile** — non-negotiable
-- 3–5 second wait after feed loads
-- Max **15–20 messages per session**
-- Stop immediately if LinkedIn warns about messaging rate — tell the user
+## 防检测规则
+- 必须在发送每条消息前访问`/feed/`页面
+- 每次发送消息后等待3–5秒
+- 每次会话最多发送15–20条消息
+- 如果LinkedIn提示发送频率过高，请立即停止发送并告知用户
 
 ---
 
-## CRM Tracking — Google Sheet
-
-After each message is sent, append a row to a Google Sheet. This sheet is the source of truth for all outreach — current session and future follow-up.
-
-### Sheet Setup
-
-Ask the user for a Google Sheet ID or URL at the start of the session (or offer to create a new one). The sheet should have a tab named `Outreach` with these columns:
-
-| Col | Field | Notes |
+## 客户关系管理（CRM）追踪——Google Sheets
+每条消息发送后，需在Google Sheets中添加一条记录。该表格是所有推广活动的记录来源，可用于后续跟踪：
+- **表格设置**：在会话开始时请用户提供Google Sheets的ID或链接（或协助创建新表格）。表格中应包含以下列：
+| 列名 | 字段 | 备注 |
 |---|---|---|
-| A | Date Sent | ISO date, e.g. `2026-02-13` |
-| B | Person Name | Full name |
-| C | Role / Title | Their current headline from LinkedIn |
-| D | Company | Current company |
-| E | LinkedIn URL | Profile URL |
-| F | Relationship Hook | What hook was used (e.g. "Same batch BITS Goa 2018", "Both at CRED 2022–23") |
-| G | Opener Sent | Exact text of Message 1 |
-| H | Pitch Sent | Exact text of Message 2 |
-| I | Campaign | Short label for this batch (e.g. "AI Calling - Feb 2026") |
-| J | Status | Always `Sent` when first logged — updated by follow-up skill |
-| K | Notes | Anything notable (prior conversation, context, mutual connection used) |
-| L | Last Updated | Timestamp of last status change |
+| A | 发送日期 | ISO格式日期，例如`2026-02-13` |
+| B | 姓名 | 全名 |
+| C | 职位/头衔 | 来自LinkedIn的当前职位/头衔 |
+| D | 公司 | 当前工作公司 |
+| E | LinkedIn链接 | 个人资料链接 |
+| F | 使用的切入点 | 使用的沟通切入点（例如“同为2018年BITS Goa班的同学”、“曾在CRED共事”） |
+| G | 开场白内容 | 消息1的完整文本 |
+| H | 产品推广内容 | 消息2的完整文本 |
+| I | 活动名称 | 本次活动的简短标签（例如“AI电话助手 - 2026年2月” |
+| J | 状态 | 首次发送时标记为“Sent”，后续会更新 |
+| K | 备注 | 任何重要信息（如之前的交流记录、背景信息、共同联系人等） |
+| L | 最后更新时间 | 状态更新的日期戳 |
 
-**Column I (Status) lifecycle** — only `Sent` is written by this skill. The follow-up skill will update to:
+**注：** 列“I（状态）”仅由本脚本填写。后续操作会更新为：
 `Replied` · `Call Scheduled` · `Demo Done` · `Follow Up Sent` · `No Response` · `Closed Won` · `Closed Lost`
 
-### Appending a Row
-
-After each message pair is sent, run:
-
+### 添加新记录
+每发送完一对消息后，执行以下操作：
 ```bash
 gog sheets append <SHEET_ID> "Outreach!A:L" \
   --values-json '[["<date>","<name>","<role>","<company>","<url>","<hook>","<opener>","<pitch>","<campaign>","Sent","<notes>","<timestamp>"]]' \
   --insert INSERT_ROWS
 ```
 
-### First-Time Setup
+### 首次使用时的设置
+如果尚未创建表格，请告知用户：
+> “我需要一个Google Sheets表格来记录推广活动。请分享现有的表格ID/链接，或者我可以为您创建一个新的表格。”
 
-If no sheet exists yet, tell the user:
-> "I'll need a Google Sheet to track outreach. Share an existing sheet ID/URL, or I can create one with the right columns."
-
-To create a new sheet, use Drive (or ask user to create one and share the ID). Then write the header row:
-
+创建新表格时，可以使用Google Drive（或让用户创建并分享表格ID）。然后填写表格的标题行：
 ```bash
 gog sheets update <SHEET_ID> "Outreach!A1:L1" \
   --values-json '[["Date Sent","Person Name","Role / Title","Company","LinkedIn URL","Relationship Hook","Opener Sent","Pitch Sent","Campaign","Status","Notes","Last Updated"]]' \
   --input USER_ENTERED
 ```
 
-### Local Sidecar (fallback)
-
-If Google Sheets is not set up, fall back to a local `linkedin_dm_progress.json`:
+### 本地备用方案
+如果未设置Google Sheets，可以使用本地的`linkedin_dm_progress.json`文件：
 ```json
 {
   "campaign": "AI Calling - Feb 2026",

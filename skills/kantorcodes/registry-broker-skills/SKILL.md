@@ -1,6 +1,6 @@
 ---
 name: registry-broker
-description: Search and chat with 72,000+ AI agents across 14 registries via the Hashgraph Online Registry Broker API. Use when discovering agents, starting conversations, or registering new agents.
+description: 通过 Hashgraph 在线注册表代理 API，您可以搜索并与来自 14 个注册表的 72,000 多个 AI 代理进行交流。该 API 可用于发现代理、启动对话或注册新的代理。
 homepage: https://hol.org/registry
 metadata:
   {
@@ -13,27 +13,27 @@ metadata:
   }
 ---
 
-# Registry Broker
+# 注册表代理（Registry Broker）
 
-Search 72,000+ AI agents across AgentVerse, NANDA, OpenRouter, Virtuals Protocol, PulseMCP, Near AI, and more via the [Hashgraph Online Registry Broker](https://hol.org/registry).
+您可以通过 [Hashgraph 在线注册表代理](https://hol.org/registry) 在 AgentVerse、NANDA、OpenRouter、Virtuals Protocol、PulseMCP、Near AI 等平台中搜索 72,000 多个 AI 代理。
 
-## Setup
+## 设置（Setup）
 
-Get your API key at https://hol.org/registry and set:
+在 [https://hol.org/registry](https://hol.org/registry) 获取您的 API 密钥，并进行相应的配置：
 
 ```bash
 export REGISTRY_BROKER_API_KEY="your-key"
 ```
 
-## API Base
+## API 基础（API Base）
 
 ```
 https://hol.org/registry/api/v1
 ```
 
-## Discovery
+## 代理发现（Agent Discovery）
 
-### Keyword Search
+### 关键词搜索（Keyword Search）
 
 ```bash
 # GET /search with query params
@@ -43,7 +43,7 @@ curl "https://hol.org/registry/api/v1/search?q=trading+bot&limit=5"
 curl "https://hol.org/registry/api/v1/search?q=defi&registries=agentverse,nanda&verified=true&limit=10"
 ```
 
-### Vector/Semantic Search
+### 向量/语义搜索（Vector/Semantic Search）
 
 ```bash
 # POST /search with JSON body
@@ -52,7 +52,7 @@ curl -X POST "https://hol.org/registry/api/v1/search" \
   -d '{"query": "help me analyze financial data", "limit": 5}'
 ```
 
-### Capability Search
+### 功能搜索（Capability Search）
 
 ```bash
 # POST /search/capabilities
@@ -61,7 +61,7 @@ curl -X POST "https://hol.org/registry/api/v1/search/capabilities" \
   -d '{"capabilities": ["code-generation", "data-analysis"], "limit": 10}'
 ```
 
-### Agent Details
+### 代理详情（Agent Details）
 
 ```bash
 # GET /agents/{uaid} - Get agent details
@@ -74,7 +74,7 @@ curl "https://hol.org/registry/api/v1/agents/uaid:aid:fetchai:.../similar"
 curl "https://hol.org/registry/api/v1/agents/uaid:aid:fetchai:.../feedback"
 ```
 
-### Routing & Resolution
+### 路由与解析（Routing & Resolution）
 
 ```bash
 # GET /resolve/{uaid} - Resolve UAID to agent metadata
@@ -87,7 +87,7 @@ curl "https://hol.org/registry/api/v1/uaids/validate/uaid:aid:fetchai:..."
 curl "https://hol.org/registry/api/v1/uaids/connections/uaid:aid:.../status"
 ```
 
-### Registry Information
+### 注册表信息（Registry Information）
 
 ```bash
 # GET /registries - List known registries
@@ -115,9 +115,9 @@ curl "https://hol.org/registry/api/v1/search/facets"
 curl "https://hol.org/registry/api/v1/search/status"
 ```
 
-## Chat
+## 聊天（Chat）
 
-### Session Management
+### 会话管理（Session Management）
 
 ```bash
 # POST /chat/session - Create session (by UAID or agentUrl)
@@ -134,7 +134,7 @@ curl -X POST "https://hol.org/registry/api/v1/chat/session" \
 # Returns: {"sessionId": "sess_..."}
 ```
 
-### Messaging
+### 消息传递（Messaging）
 
 ```bash
 # POST /chat/message - Send message
@@ -151,7 +151,7 @@ curl -X POST "https://hol.org/registry/api/v1/chat/message" \
   -d '{"sessionId": "sess_...", "message": "Hello!", "stream": true}'
 ```
 
-### History & Management
+### 历史记录与管理（History & Management）
 
 ```bash
 # GET /chat/session/{sessionId}/history - Get conversation history
@@ -171,9 +171,9 @@ curl -X DELETE "https://hol.org/registry/api/v1/chat/session/sess_..." \
   -H "x-api-key: $REGISTRY_BROKER_API_KEY"
 ```
 
-## Registration
+## 注册（Registration）
 
-### Quote & Register
+### 报价与注册（Quote & Register）
 
 ```bash
 # GET /register/additional-registries - List available registries for registration
@@ -198,7 +198,7 @@ curl -X POST "https://hol.org/registry/api/v1/register" \
   }'
 ```
 
-### Status & Updates
+### 状态与更新（Status & Updates）
 
 ```bash
 # GET /register/status/{uaid} - Check registration status
@@ -220,7 +220,7 @@ curl -X DELETE "https://hol.org/registry/api/v1/register/uaid:..." \
   -H "x-api-key: $REGISTRY_BROKER_API_KEY"
 ```
 
-## Credits & Payments
+## 信用与支付（Credits & Payments）
 
 ```bash
 # GET /credits/balance - Check balance (optional accountId query param)
@@ -244,9 +244,9 @@ curl -X POST "https://hol.org/registry/api/v1/credits/payments/intent" \
   -d '{"credits": 100}'
 ```
 
-## Ledger Authentication (Wallet-based)
+## 密钥本认证（基于钱包的 Ledger Authentication）
 
-Authenticate with EVM or Hedera wallets instead of API keys:
+使用 EVM 或 Hedera 钱包进行认证，而非 API 密钥：
 
 ```bash
 # POST /auth/ledger/challenge - Get sign challenge
@@ -269,11 +269,11 @@ curl -X POST "https://hol.org/registry/api/v1/auth/ledger/verify" \
 # Returns: {"apiKey": {...}, "expiresAt": "..."}
 ```
 
-Supported networks: `hedera-mainnet`, `hedera-testnet`, `ethereum`, `base`, `polygon`
+支持的网络：`hedera-mainnet`、`hedera-testnet`、`ethereum`、`base`、`polygon`
 
-Signature kinds: `raw`, `map`, `evm`
+签名类型：`raw`、`map`、`evm`
 
-## Encryption Keys
+## 加密密钥（Encryption Keys）
 
 ```bash
 # POST /encryption/keys - Register long-term encryption key
@@ -283,7 +283,7 @@ curl -X POST "https://hol.org/registry/api/v1/encryption/keys" \
   -d '{"publicKey": "...", "uaid": "uaid:..."}'
 ```
 
-## Content Inscription (HCS)
+## 内容记录（Content Inscription，HCS）
 
 ```bash
 # GET /inscribe/content/config - Get inscription service config
@@ -311,7 +311,7 @@ curl "https://hol.org/registry/api/v1/inscribe/content?limit=20" \
   -H "x-api-key: $REGISTRY_BROKER_API_KEY"
 ```
 
-## Routing (Advanced)
+## 路由（高级功能，Advanced Routing）
 
 ```bash
 # POST /route/{uaid} - Send routed message to agent
@@ -327,57 +327,57 @@ curl -X DELETE "https://hol.org/registry/api/v1/uaids/connections/uaid:..." \
 
 ---
 
-## MCP Server (recommended for Claude/Cursor)
+## MCP 服务器（推荐用于 Claude/Cursor）
 
-For richer integration with AI coding tools, use the MCP server:
+为了与 AI 编码工具实现更紧密的集成，请使用 MCP 服务器：
 
 ```bash
 npx @hol-org/hashnet-mcp up --transport sse --port 3333
 ```
 
-### MCP Tools
+### MCP 工具（MCP Tools）
 
-**Discovery**
-- `hol.search` - keyword search with filters
-- `hol.vectorSearch` - semantic similarity search
-- `hol.agenticSearch` - hybrid semantic + lexical
-- `hol.resolveUaid` - resolve + validate UAID
+**代理发现（Agent Discovery）**
+- `hol.search` - 带有过滤条件的关键词搜索
+- `hol.vectorSearch` - 语义相似性搜索
+- `hol.agenticSearch` - 混合语义与词汇搜索
+- `hol.resolveUaid` - 解析并验证 UAID
 
-**Chat**
-- `hol.chat.createSession` - open session by uaid or agentUrl
-- `hol.chat.sendMessage` - send message (auto-creates session if needed)
-- `hol.chat.history` - get conversation history
-- `hol.chat.compact` - summarize for context window
-- `hol.chat.end` - close session
+**聊天（Chat）**
+- `hol.chat.createSession` - 通过 UAID 或 agentUrl 打开会话
+- `hol.chat.sendMessage` - 发送消息（必要时会自动创建会话）
+- `hol.chat.history` - 获取聊天记录
+- `hol.chat.compact` - 为上下文窗口生成摘要
+- `hol.chat.end` - 关闭会话
 
-**Registration**
-- `hol.getRegistrationQuote` - cost estimate
-- `hol.registerAgent` - submit registration
-- `hol.waitForRegistrationCompletion` - poll until done
+**注册（Registration）**
+- `hol.getRegistrationQuote` - 获取费用估算
+- `hol.registerAgent` - 提交注册请求
+- `hol.waitForRegistrationCompletion` - 等待注册完成
 
-**Credits**
-- `hol.credits.balance` - check credit balance
-- `hol.purchaseCredits.hbar` - buy credits with HBAR
-- `hol.x402.minimums` - get X402 payment minimums
-- `hol.x402.buyCredits` - buy credits via X402 (EVM)
+**信用（Credits）**
+- `hol.credits.balance` - 检查信用余额
+- `hol.purchaseCredits.hbar` - 使用 HBAR 购买信用点数
+- `hol.x402.minimums` - 获取 X402 的最低支付金额
+- `hol.x402.buyCredits` - 通过 X402（EVM）购买信用点数
 
-**Ledger Authentication**
-- `hol.ledger.challenge` - get wallet sign challenge
-- `hol.ledger.authenticate` - verify signature, get temp API key
+**密钥本认证（Ledger Authentication）**
+- `hol.ledger.challenge` - 获取钱包签名挑战
+- `hol.ledger.authenticate` - 验证签名并获取临时 API 密钥
 
-**Workflows**
-- `workflow.discovery` - search + resolve flow
-- `workflow.registerMcp` - quote + register + wait
-- `workflow.chatSmoke` - test chat lifecycle
+**工作流程（Workflows）**
+- `workflow.discovery` - 搜索 + 解析代理信息
+- `workflow.registerMcp` - 报价 + 注册 + 等待处理结果
+- `workflow.chatSmoke` - 测试聊天功能
 
-See: https://github.com/hashgraph-online/hashnet-mcp-js
+更多信息请参阅：https://github.com/hashgraph-online/hashnet-mcp-js
 
 ---
 
-## Links
+## 链接（Links）
 
-- Registry: https://hol.org/registry
-- API Docs: https://hol.org/docs/registry-broker/
-- SDK: https://npmjs.com/package/@hashgraphonline/standards-sdk
-- OpenAPI: https://hol.org/registry/api/v1/openapi.json
-- MCP Server: https://github.com/hashgraph-online/hashnet-mcp-js
+- 注册表：https://hol.org/registry
+- API 文档：https://hol.org/docs/registry-broker/
+- SDK：https://npmjs.com/package/@hashgraphonline/standards-sdk
+- OpenAPI：https://hol.org/registry/api/v1/openapi.json
+- MCP 服务器：https://github.com/hashgraph-online/hashnet-mcp-js

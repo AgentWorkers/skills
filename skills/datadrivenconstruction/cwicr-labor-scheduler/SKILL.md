@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-labor-scheduler"
 display_name: "CWICR Labor Scheduler"
-description: "Schedule labor crews based on CWICR norms and project timeline. Calculate crew sizes, shifts, and labor loading curves."
+description: "根据 CWICR 标准和项目时间表安排劳动力团队。计算团队规模、班次以及劳动力负荷曲线。"
 ---
 
-# CWICR Labor Scheduler
+# CWICR 劳动力调度器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project managers need to plan labor allocation:
-- How many workers per day?
-- What skills are needed when?
-- How to balance workload across project phases?
-- How to avoid resource conflicts?
+### 问题陈述
+项目经理需要规划劳动力分配：
+- 每天需要多少工人？
+- 在不同阶段需要哪些技能？
+- 如何平衡项目各阶段的工作量？
+- 如何避免资源冲突？
 
-### Solution
-Data-driven labor scheduling using CWICR labor norms to generate crew schedules, loading curves, and skill requirement timelines.
+### 解决方案
+利用 CWICR 劳动力规范进行数据驱动的劳动力调度，生成人员排班表、负荷曲线以及技能需求时间表。
 
-### Business Value
-- **Accurate planning** - Based on validated labor norms
-- **Resource leveling** - Smooth workload distribution
-- **Skill matching** - Right workers at right time
-- **Cost control** - Optimize labor costs
+### 商业价值
+- **精确规划**：基于经过验证的劳动力规范
+- **资源平衡**：实现工作量的平稳分配
+- **技能匹配**：在正确的时间安排合适的工人
+- **成本控制**：优化劳动力成本
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -414,7 +414,7 @@ class WeeklyScheduleGenerator:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime
@@ -444,33 +444,33 @@ print(f"Peak Workers: {schedule.peak_workers}")
 print(f"Average Workers: {schedule.average_workers}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Resource Leveling
+### 1. 资源平衡
 ```python
 # Check if schedule can meet target
 leveled = scheduler.level_resources(schedule, target_workers=25)
 ```
 
-### 2. Loading Curve
+### 2. 负荷曲线
 ```python
 # Get labor loading data for charts
 loading_df = scheduler.generate_loading_curve(schedule)
 ```
 
-### 3. Trade Breakdown
+### 3. 工种分解
 ```python
 # See hours by trade
 trades = scheduler.get_trade_breakdown(schedule)
 print(trades)
 ```
 
-### 4. Weekly Schedule Export
+### 4. 周度排班表导出
 ```python
 gen = WeeklyScheduleGenerator(scheduler)
 gen.export_to_excel(schedule, "labor_schedule.xlsx")
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Labor Resource Planning
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 劳动力资源规划

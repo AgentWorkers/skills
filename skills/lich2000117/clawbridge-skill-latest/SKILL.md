@@ -1,6 +1,6 @@
 ---
 name: clawbridge
-description: Run Clawbridge discovery from OpenClaw chat
+description: 从 OpenClaw 聊天窗口中运行 Clawbridge 发现功能。
 metadata:
   openclaw:
     emoji: "🌉"
@@ -15,42 +15,42 @@ metadata:
         bins: ["clawbridge"]
 ---
 
-# Clawbridge Skill
+# Clawbridge 技能
 
-> **Optional chat command** to trigger Clawbridge from OpenClaw.
+> **可选的聊天命令**：用于通过 OpenClaw 启动 Clawbridge。
 
-## What This Skill Does
+## 该技能的功能
 
-This skill is a **thin trigger** — it runs the Clawbridge CLI and returns the Vault link.
+该技能是一个**“薄触发器”**（thin trigger）——它仅运行 Clawbridge 的命令行界面（CLI），并返回 Vault 的链接。
 
-**The skill does NOT do discovery.** All business logic lives in the runner.
+**该技能不负责数据发现（data discovery）**；所有的业务逻辑都由运行器（runner）处理。
 
-## Behavior
+## 行为
 
-When the user types `/clawbridge`:
+当用户输入 `/clawbridge` 时：
 
-1. **Exec**: Run `clawbridge run` locally
-2. **Parse stdout**: Extract machine-readable lines:
+1. **执行命令**：在本地运行 `clawbridge run` 命令。
+2. **解析输出结果**：提取机器可读的行：
    - `VAULT_URL=...`
    - `CANDIDATES_COUNT=...`
-   - `DISCOVERY_SOURCE=...` (optional)
-3. **Reply in chat**:
-   - "Done — found X candidates."
-   - "Review here: <vault url>"
+   - `DISCOVERY_SOURCE=...`（可选）
+3. **在聊天中回复**：
+   - “已完成——找到了 X 个候选人。”
+   - “请在此处查看：<vault_url>”
 
-## Usage
+## 使用方法
 
 ```
 /clawbridge
 ```
 
-Or with a profile:
+或者通过配置文件来使用：
 
 ```
 /clawbridge --profile myprofile
 ```
 
-## Example Output
+## 示例输出
 
 ```
 Done — found 3 candidates.
@@ -58,17 +58,17 @@ Done — found 3 candidates.
 Review here: https://clawbridge.cloud/app/workspaces/xxx/runs/xxx
 ```
 
-## Prerequisites
+## 先决条件
 
-**Don't have Clawbridge yet?** Get started at:
+**还没有安装 Clawbridge 吗？** 请访问以下链接开始使用：
 
 👉 **https://clawbridge.cloud**
 
-1. Create an account
-2. Create a workspace
-3. Follow the setup instructions
+1. 创建账户。
+2. 创建工作区。
+3. 按照设置指南进行操作。
 
-Or if you already have an account:
+如果您已经拥有账户：
 
 ```bash
 # 1. Install runner
@@ -78,7 +78,7 @@ curl -fsSL https://clawbridge.cloud/install | bash
 clawbridge link CB-XXXXXX
 ```
 
-## Architecture
+## 架构
 
 ```
 User: /clawbridge
@@ -103,10 +103,10 @@ User: /clawbridge
 └───────────────────────────────┘
 ```
 
-## Mental Model
+## 技术架构模型
 
-- **Runner = product** (owns discovery strategy, prompts, ranking)
-- **Web = vault + approval** (review candidates, approve outreach)
-- **Skill = chat shortcut** (optional convenience)
+- **运行器（Runner）**：负责数据发现策略、提示信息的生成以及候选人的排序。
+- **Web 端**：用于查看候选人信息并批准相关操作。
+- **该技能（Skill）**：只是一个便捷的聊天快捷方式（可选）。
 
-You don't need this skill to use Clawbridge. Run `clawbridge run` directly from terminal.
+您无需使用该技能即可直接通过终端运行 `clawbridge run` 命令来使用 Clawbridge。

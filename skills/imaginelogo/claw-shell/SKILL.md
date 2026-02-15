@@ -1,45 +1,40 @@
 # claw-shell
 
-ALWAYS USES TMUX SESSION `claw`.
+**始终使用 TMUX 会话 `claw`。**
 
-## PURPOSE
+## **用途：**
+- 在 TMUX 会话 `claw` 中运行 Shell 命令。
+- **严禁** 操作其他任何会话。
+- 将命令的输出结果发送回代理。
 
-- RUN SHELL COMMANDS INSIDE TMUX SESSION `claw`
-- NEVER TOUCH ANY OTHER SESSION
-- READ OUTPUT BACK TO THE AGENT
+## **接口：**
 
-## INTERFACE
+### 工具：`claw_shell_run`
 
-### Tool: `claw_shell_run`
+**输入参数：**
+- `command`（字符串，必填）：要在会话 `claw` 中运行的 Shell 命令。
 
-**Inputs:**
+**执行流程：**
+1. 连接到 TMUX 会话 `claw`（如果会话不存在，则创建该会话：`tmux new -s claw -d`）。
+2. 发送命令并按下 Enter 键。
+3. 捕获会话中最新显示的输出内容。
+4. 将捕获到的输出结果发送回代理。
 
-- `command` (string, required): shell command to run inside session `claw`.
-
-**Behavior:**
-
-1. Attach to tmux session `claw` (create it if missing: `tmux new -s claw -d`).
-2. Send the command followed by Enter.
-3. Capture the latest pane output.
-4. Return the captured output to the agent.
-
-## SAFETY
-
-- DO NOT RUN:
+## **安全注意事项：**
+- **禁止运行以下命令：**
   - `sudo`
-  - `rm` (without explicit user approval)
-  - `reboot`, `shutdown`, or destructive system-level commands
-- IF THE COMMAND CONTAINS ANY OF THE ABOVE:
-  - ASK USER FOR CONFIRMATION BEFORE EXECUTING.
+  - `rm`（未经用户明确许可）
+  - 任何可能导致系统重启、关机或造成系统损坏的命令。
+- **如果命令包含上述任何内容：**
+  - 在执行前必须先获得用户的确认。
 
-## EXAMPLES
-
-- SAFE:
+## **示例：**
+- **安全操作：**
   - `ls -la`
   - `bird read https://x.com/...`
   - `git status`
 
-- DANGEROUS (ASK FIRST):
+- **危险操作（执行前需确认）：**
   - `rm -rf ...`
   - `docker system prune -a`
   - `chmod -R ...`

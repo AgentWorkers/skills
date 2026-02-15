@@ -1,59 +1,59 @@
 ---
 name: R
-description: Avoid common R mistakes — vectorization traps, NA propagation, factor surprises, and indexing gotchas.
+description: 避免常见的R语言编程错误：向量化陷阱、缺失值（NA）的处理问题、因变量选择不当带来的意外结果，以及索引使用中的常见问题。
 metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["Rscript"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Vectorization
-- Loops are slow — use `apply()`, `lapply()`, `sapply()`, or `purrr::map()`
-- Vectorized functions operate on whole vectors — `sum(x)` not `for (i in x) total <- total + i`
-- `ifelse()` is vectorized — `if` is not, use `ifelse()` for vector conditions
-- Column operations faster than row — R is column-major
+## 向量化操作  
+- 循环操作效率较低，应使用 `apply()`, `lapply()`, `sapply()`, 或 `purrr::map()`。  
+- 向量化函数会对整个向量进行操作（例如 `sum(x)`），而不是通过 `for (i in x) total <- total + i` 的方式逐个元素累加。  
+- `ifelse()` 是支持向量化操作的；而 `if` 不支持，因此处理向量条件时请使用 `ifelse()`。  
+- 列操作通常比行操作更快，因为 R 使用的是列优先（column-major）的数据存储方式。  
 
-## Indexing Gotchas
-- R is 1-indexed — first element is `x[1]`, not `x[0]`
-- `x[0]` returns empty vector — not error, silent bug
-- Negative index excludes — `x[-1]` removes first element
-- `[[` extracts single element — `[` returns subset (list stays list)
-- `df[, 1]` drops to vector — use `df[, 1, drop = FALSE]` to keep data frame
+## 索引相关注意事项  
+- R 使用 1 索引方式：第一个元素是 `x[1]`，而不是 `x[0]`。  
+- `x[0]` 会返回一个空向量，这并非错误，而是一个隐藏的 bug。  
+- 负索引用于排除元素（例如 `x[-1]` 会删除第一个元素）。  
+- `[[` 用于提取单个元素；`[` 则用于提取子集（列表本身仍然保持列表形式）。  
+- `df[, 1]` 会将该列转换为向量，若需保留数据框结构，请使用 `df[, 1, drop = FALSE]`。  
 
-## NA Handling
-- NA propagates — `1 + NA` is `NA`, `NA == NA` is `NA`
-- Use `is.na()` to check — not `x == NA`
-- Most functions need `na.rm = TRUE` — `mean(x)` returns NA if any NA present
-- `na.omit()` removes rows with any NA — may lose data unexpectedly
-- `complete.cases()` returns logical vector — rows without NA
+## NA 值的处理  
+- NA 值会进行传播：`1 + NA` 的结果仍然是 `NA`，`NA == NA` 也仍然为 `NA`。  
+- 使用 `is.na()` 来检查变量是否为 NA 值，而不是直接比较 `x == NA`。  
+- 大多数函数在处理 NA 值时需要设置 `na.rm = TRUE`（例如 `mean(x)` 在存在 NA 值时会返回 NA）。  
+- `na.omit()` 会删除包含 NA 值的行，可能会意外丢失数据。  
+- `complete.cases()` 会返回一个逻辑向量，其中包含所有非 NA 的行。  
 
-## Factor Traps
-- Old R converted strings to factors by default — use `stringsAsFactors = FALSE` or modern R
-- `levels()` shows categories — but factor values are integers internally
-- Adding new value not in levels gives NA — use `factor(x, levels = c(old, new))`
-- `as.numeric(factor)` gives level indices — use `as.numeric(as.character(factor))` for values
-- Dropping unused levels: `droplevels()` — or `factor()` again
+## 因子（factor）相关的问题  
+- 在旧版本的 R 中，字符串默认会被转换为因子；请使用 `stringsAsFactors = FALSE` 或更新版本的 R 来避免这种情况。  
+- `levels()` 可以显示因子的类别，但因子内部的值实际上是整数。  
+- 如果要添加新的因子类别，需要使用 `factor(x, levels = c(old, new)`。  
+- 将因子转换为数值型时，`as.numeric(factor)` 会返回因子的索引；若需要数值本身，请使用 `as.numeric(as.character(factor))`。  
+- 若要删除未使用的因子类别，可以使用 `droplevels()` 或再次使用 `factor()`。  
 
-## Recycling
-- Shorter vector recycled to match longer — `c(1,2,3) + c(10,20)` gives `11, 22, 13`
-- No error if lengths aren't multiples — just warning, easy to miss
-- Single values recycle intentionally — `x + 1` adds 1 to all elements
+## 数据的循环利用  
+- 较短的向量会被自动扩展以匹配较长的向量：`c(1, 2, 3) + c(10, 20)` 的结果会是 `11, 22, 13`。  
+- 如果向量长度不是倍数，虽然不会报错，但会发出警告（这个警告很容易被忽略）。  
+- 单个数值在循环操作中会被自动重复使用（例如 `x + 1` 会为所有元素加上 1）。  
 
-## Data Frames vs Tibbles
-- Tibble never converts strings to factors — safer defaults
-- Tibble never drops dimensions — `df[, 1]` stays tibble
-- Tibble prints better — shows type, doesn't flood console
-- `as_tibble()` to convert — from `tibble` or `dplyr` package
+## 数据框（data frame）与 Tibble 的区别  
+- Tibble 默认不会将字符串转换为因子，因此更加安全。  
+- Tibble 不会删除数据的维度（例如 `df[, 1]` 仍然是 Tibble 结构）。  
+- Tibble 的输出格式更清晰，不会在控制台中显示大量信息。  
+- 可以使用 `as_tibble()` 函数将其他数据结构转换为 Tibble。  
 
-## Assignment
-- `<-` is idiomatic R — `=` works but avoided in style guides
-- `<<-` assigns to parent environment — global assignment, usually a mistake
-- `->` right assignment exists — rarely used, confusing
+## 变量赋值  
+- `<-` 是 R 中的惯用赋值方式；虽然 `=` 也可以用于赋值，但在编码规范中通常不推荐使用。  
+- `<<-` 用于将变量赋值给父环境（即全局变量），这通常是错误的用法。  
+- `->` 用于将变量赋值给当前作用域内的变量，但使用频率较低且容易引起混淆。  
 
-## Scope
-- Functions look up in parent environment — can accidentally use global variable
-- Local variable shadows global — same name hides outer variable
-- `local()` creates isolated scope — variables don't leak out
+## 变量作用域  
+- 函数会在父作用域中查找变量；如果使用不当，可能会意外使用到全局变量。  
+- 局部变量会“遮盖”外部变量（即同名局部变量会覆盖外部变量）。  
+- `local()` 可以创建一个独立的作用域，确保变量不会影响到外部环境。  
 
-## Common Mistakes
-- `T` and `F` can be overwritten — use `TRUE` and `FALSE` always
-- `1:length(x)` fails on empty x — gives `c(1, 0)`, use `seq_along(x)`
-- `sample(5)` vs `sample(c(5))` — different! first gives 1:5 permutation
-- String splitting: `strsplit()` returns list — even for single string
+## 常见错误  
+- `T` 和 `F` 可以被覆盖；请始终使用 `TRUE` 和 `FALSE` 来表示逻辑值。  
+- 当 `x` 为空时，`1:length(x)` 会返回 `c(1, 0)`，应使用 `seq_along(x)` 来生成序列。  
+- `sample(5)` 和 `sample(c(5))` 的结果不同：`sample(5)` 会生成 1 到 5 的排列序列，而 `sample(c(5))` 会生成一个包含 5 个元素的列表。  
+- 字符串分割时，`strsplit()` 会返回一个列表（即使输入的是单个字符串）。

@@ -1,15 +1,15 @@
 ---
 name: seo-content-factory
-description: Generate fully SEO-optimized blog posts and articles with keyword research, competitor analysis, and SERP-aware content. Use when creating SEO content, blog posts, articles, or content for clients.
+description: 生成完全符合SEO优化标准的博客文章和稿件，这些文章需要经过关键词研究、竞争对手分析，并确保内容符合搜索引擎的排名规则（SERP）。您可以在创建SEO相关内容、博客文章或为客户提供的内容时使用这些方法。
 argument-hint: "[keyword-or-topic] [word-count]"
 allowed-tools: Read, Write, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 
-# SEO Content Factory
+# SEO内容工厂
 
-End-to-end SEO content pipeline: from keyword to publish-ready article. Produces content that ranks.
+这是一个端到端的SEO内容生成流程：从确定目标关键词到生成可发布的文章，旨在帮助内容在搜索引擎中获得更好的排名。
 
-## How to Use
+## 使用方法
 
 ```
 /seo-content-factory "best project management tools for freelancers" 2000
@@ -17,42 +17,44 @@ End-to-end SEO content pipeline: from keyword to publish-ready article. Produces
 /seo-content-factory batch keywords.txt
 ```
 
-- `$ARGUMENTS[0]` = Target keyword or topic (or "batch" for multiple)
-- `$ARGUMENTS[1]` = Word count (default: 1,500)
-- For batch mode, provide a file with one keyword per line
+- `$ARGUMENTS[0]`：目标关键词或主题（如需批量处理，可输入“batch”）
+- `$ARGUMENTS[1]`：文章的字数（默认为1,500字）
 
-## Content Generation Pipeline
+（批量模式下，需要提供一个文件，每行包含一个关键词）
 
-### Phase 1: Keyword Intelligence
+## 内容生成流程
 
-For the target keyword `$ARGUMENTS[0]`:
+### 第1阶段：关键词分析
 
-1. **Search the keyword** to understand current SERP landscape
-2. **Identify**:
-   - Search intent (informational, transactional, navigational, commercial)
-   - Content format that ranks (listicle, how-to, comparison, guide, review)
-   - Average word count of top 5 results
-   - Common subtopics and questions covered
-   - Related keywords and LSI terms
-3. **Generate a keyword cluster**:
-   - Primary keyword
-   - 3-5 secondary keywords
-   - 5-10 long-tail variations
-   - 3-5 related questions (People Also Ask style)
+针对目标关键词 `$ARGUMENTS[0]`：
 
-### Phase 2: Competitor Content Analysis
+1. **搜索该关键词**，了解当前的搜索引擎结果页面（SERP）情况。
+2. **识别以下信息**：
+   - 用户的搜索意图（信息型、交易型、导航型、商业型）
+   - 有助于提高排名的内容类型（列表文章、操作指南、对比文章、攻略、评论）
+   - 前5名搜索结果的平均字数
+   - 常见的子主题和相关问题
+   - 相关关键词和长尾关键词
 
-Analyze top 5 SERP results for the target keyword:
+3. **生成关键词簇**：
+   - 主关键词
+   - 3-5个次要关键词
+   - 5-10个长尾关键词变体
+   - 3-5个相关问题（采用“人们也问”（People Also Ask）的格式）
 
-1. **Content gaps**: What do ALL top results miss? This is our opportunity.
-2. **Common structure**: How are they organized? (H2/H3 patterns)
-3. **Unique angles**: What perspective hasn't been covered?
-4. **Content freshness**: Are top results outdated? Can we provide 2026 data?
-5. **Backlink bait**: What makes content in this niche linkable?
+### 第2阶段：竞争对手内容分析
 
-### Phase 3: Content Architecture
+分析目标关键词的前5名搜索结果：
 
-Build the article structure BEFORE writing:
+1. **内容缺口**：这些结果中缺少哪些内容？这就是我们的机会。
+2. **内容结构**：它们的结构是怎样的？（使用H2/H3标题）
+3. **独特视角**：有哪些未被覆盖的视角？
+4. **内容更新性**：这些结果是否过时？我们能否提供2026年的数据？
+5. **可链接性**：这些内容有哪些可被其他网站链接的点？
+
+### 第3阶段：内容架构设计
+
+在开始写作之前，先设计好文章的结构：
 
 ```
 Title: [Primary keyword + compelling modifier]
@@ -84,40 +86,40 @@ H1: [Title]
     - Clear CTA
 ```
 
-### Phase 4: Content Writing
+### 第4阶段：内容创作
 
-Write the article following these SEO content rules:
+遵循以下SEO内容规则进行写作：
 
-**Keyword Placement** (non-negotiable):
-- Primary keyword in: title, H1, first 100 words, 1-2 H2s, last 100 words, meta description
-- Keyword density: 1-2% (natural, never forced)
-- Secondary keywords: 1-2 uses each, spread throughout
-- Long-tail variations: use naturally in body and H3s
+**关键词使用**（必须遵守）：
+- 主关键词出现在：标题、H1标题、前100个单词、1-2个H2标题、最后100个单词以及元描述中
+- 关键词密度：1-2%（自然融入，切勿刻意堆砌）
+- 次要关键词：每个使用1-2次，分散在文章各处
+- 长尾关键词变体：自然地出现在正文中和H3标题中
 
-**Readability**:
-- Flesch-Kincaid grade level: 6-8 (accessible to all readers)
-- Sentences: max 20 words average
-- Paragraphs: max 3-4 sentences
-- Use bullet points and numbered lists liberally
-- Include a table or comparison if the topic allows
-- Break up text with H2 every 200-300 words
+**可读性**：
+- 弗莱施-金凯德 readability等级：6-8（适合所有读者）
+- 句子长度：平均不超过20个单词
+- 段落长度：不超过3-4句话
+- 大量使用项目符号和编号列表
+- 如果主题合适，可以加入表格或对比内容
+- 每200-300个单词使用一个H2标题来分隔段落
 
-**Engagement**:
-- Open with a hook (statistic, question, bold claim)
-- Use "you" and "your" throughout (conversational tone)
-- Include specific numbers and data points
-- Add actionable takeaways (not just information)
-- End sections with transitions to the next
+**提高互动性**：
+- 以引人注目的开头（统计数据、问题或强调性陈述）开始
+- 全文使用“你”和“你的”等代词，保持对话式语气
+- 包含具体的数字和数据
+- 提供可操作的结论或建议（而不仅仅是信息）
+- 每个段落之间使用过渡语句，引导读者阅读下一部分
 
-**E-E-A-T Signals** (Experience, Expertise, Authoritativeness, Trustworthiness):
-- Include first-person experience markers ("In my experience...", "When I tested...")
-- Reference specific tools, processes, or methodologies by name
-- Cite statistics with implied sources
-- Provide nuanced opinions, not just generic advice
+**体现E-E-A-T原则**（体验、专业性、权威性、可信度）：
+- 使用第一人称表达（如“根据我的经验...”）
+- 明确引用具体的工具、流程或方法
+- 提供带有来源的统计数据
+- 提出有深度的观点，而不仅仅是泛泛而谈的建议
 
-### Phase 5: On-Page SEO Elements
+### 第5阶段：页面内SEO元素
 
-Generate these alongside the article:
+在撰写文章的同时生成以下内容：
 
 ```yaml
 title_tag: "[Primary Keyword] - [Modifier] | [Brand]" (50-60 chars)
@@ -131,17 +133,17 @@ content_type: "[listicle|how-to|guide|comparison|review]"
 search_intent: "[informational|transactional|commercial|navigational]"
 ```
 
-**Internal linking suggestions**: 3-5 recommended internal link anchor texts and target topics
-**External linking suggestions**: 2-3 authoritative sources to cite
-**Image suggestions**: 3-5 image descriptions with recommended alt text containing keywords
-**Schema markup**: Provide appropriate schema (Article, FAQ, HowTo) in JSON-LD format
+**内部链接建议**：为文章生成3-5个推荐的内部链接锚文本及其目标主题
+**外部链接建议**：引用2-3个权威来源
+**图片建议**：为每张图片添加3-5个描述性文字，并包含关键词
+**结构化数据标记**：使用JSON-LD格式添加适当的结构化数据（如Article、FAQ、HowTo）
 
-### Phase 6: Output Format
+### 第6阶段：输出格式
 
-Deliver the final article in TWO formats:
+最终文章提供两种格式：
 
-1. **Clean Markdown** — for CMS systems, Ghost, Hugo, Jekyll
-2. **WordPress-ready HTML** — with proper heading tags, schema markup embedded, and meta tags as HTML comments at the top
+1. **纯Markdown格式**：适用于CMS系统（如Ghost、Hugo、Jekyll）
+2. **适用于WordPress的HTML格式**：包含正确的标题标签、结构化数据标记，以及作为HTML注释的元描述
 
 ```html
 <!-- SEO Meta
@@ -161,28 +163,28 @@ Keywords: [primary], [secondary1], [secondary2]
 </script>
 ```
 
-## Batch Mode
+## 批量处理模式
 
-When `$ARGUMENTS[0]` is "batch", read the keyword file from `$ARGUMENTS[1]` and generate articles for each keyword. For each article:
-1. Run the full pipeline above
-2. Save each article as `output/[url-slug].md` and `output/[url-slug].html`
-3. Generate an index file `output/batch-summary.md` with:
-   - All articles generated
-   - Primary and secondary keywords for each
-   - Word counts
-   - Suggested publishing order (based on keyword difficulty — easier first)
-   - Internal linking map between the articles
+当 `$ARGUMENTS[0]$ 为“batch”时，从 `$ARGUMENTS[1]$ 中读取关键词文件，并为每个关键词生成相应的文章：
+1. 运行上述所有生成流程
+2. 将每篇文章保存为 `output/[url-slug].md` 和 `output/[url-slug].html`
+3. 生成一个索引文件 `output/batch-summary.md`，内容包括：
+   - 所生成的所有文章
+   - 每篇文章的主关键词和次要关键词
+   - 每篇文章的字数
+   - 建议的发布顺序（根据关键词的难度排序，从简单到复杂）
+   - 文章之间的内部链接关系
 
-## Quality Checks
+## 质量检查
 
-Before delivering, verify:
-- [ ] Primary keyword appears in title, H1, first 100 words, meta description
-- [ ] Keyword density is 1-2% (not stuffed)
-- [ ] All H2/H3 headings are descriptive (not "Introduction" or "Conclusion")
-- [ ] FAQ section uses actual questions people search for
-- [ ] Article is longer than average competing content
-- [ ] At least one table, list, or visual element per 500 words
-- [ ] Schema markup is valid JSON-LD
-- [ ] Meta description is 150-160 characters
-- [ ] Title tag is 50-60 characters
-- [ ] No fluff paragraphs — every paragraph earns its place
+在交付前，请验证以下内容：
+- 主关键词是否出现在标题、H1标题、前100个单词以及元描述中
+- 关键词密度是否在1-2%之间（避免过度使用）
+- 所有的H2/H3标题是否具有描述性（避免使用“Introduction”或“Conclusion”等通用标题）
+- FAQ部分是否使用了用户实际搜索的常见问题
+- 文章长度是否超过竞争对手的平均水平
+- 每500个单词至少包含一个表格、列表或视觉元素
+- 结构化数据标记是否为有效的JSON-LD格式
+- 元描述长度是否在150-160个字符之间
+- 标题标签长度是否在50-60个字符之间
+- 每个段落都有实际意义，避免冗长的无意义内容

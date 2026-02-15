@@ -1,51 +1,51 @@
-# MCP Prerequisites Setup
+# MCP 前置条件设置
 
-A skill for verifying and configuring the required MCP (Model Context Protocol) servers for the Product Guide Writer workflow.
+这是一项用于验证和配置 Product Guide Writer 工作流程所需 MCP（Model Context Protocol）服务器的技能。
 
-## Overview
+## 概述
 
-The Product Guide Writer relies on several MCP servers to provide external integrations. This skill helps verify that required MCPs are configured and guides users through setup if needed.
+Product Guide Writer 需要依赖多个 MCP 服务器来提供外部集成功能。该技能可帮助验证所需的 MCP 是否已正确配置，并在需要时指导用户完成设置。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- Starting the Product Guide Writer for the first time
-- Encountering MCP-related errors during documentation workflow
-- Setting up a new development environment
-- Troubleshooting Confluence/GitHub integration issues
+在以下情况下使用该技能：
+- 首次启动 Product Guide Writer 时
+- 在文档编写过程中遇到与 MCP 相关的错误时
+- 设置新的开发环境时
+- 解决 Confluence/GitHub 集成问题时
 
 ---
 
-## Required MCP Servers
+## 所需的 MCP 服务器
 
-| MCP Server | Purpose | Required | Features Used |
+| MCP 服务器 | 功能 | 是否必需 | 使用的功能 |
 |------------|---------|----------|---------------|
-| **user-atlassian** | Confluence search/publish, Jira integration | **Yes** | searchConfluenceUsingCql, createConfluencePage, getConfluenceSpaces |
-| **user-github** | Repository search, code exploration | **Yes** | search_repositories, search_code, get_file_contents |
-| **user-Figma** | Design mockup retrieval | Optional | get_file, get_images |
-| **user-elasticsearch-mcp** | Log analysis for request flow verification | Optional | search, get |
+| **user-atlassian** | Confluence 搜索/发布、Jira 集成 | 是 | searchConfluenceUsingCql、createConfluencePage、getConfluenceSpaces |
+| **user-github** | 仓库搜索、代码浏览 | 是 | search_repositories、search_code、get_file_contents |
+| **user-Figma** | 设计原型检索 | 可选 | get_file、get_images |
+| **user-elasticsearch-mcp** | 用于请求流程验证的日志分析 | 可选 | search、get |
 
 ---
 
-## Step 1: Verify MCP Status
+## 第一步：验证 MCP 状态
 
-### 1.1: Check Enabled MCP Servers
+### 1.1：检查已启用的 MCP 服务器
 
-The agent should verify MCP availability by checking the MCP configuration folder:
+代理应通过检查 MCP 配置文件夹来验证 MCP 的可用性：
 
 ```
 /Users/{username}/.cursor/projects/{workspace}/mcps/
 ```
 
-Look for these directories:
-- `user-atlassian/` - Atlassian MCP (required)
-- `user-github/` - GitHub MCP (required)
-- `user-Figma/` - Figma MCP (optional)
-- `user-elasticsearch-mcp/` - Elasticsearch MCP (optional)
+查找以下目录：
+- `user-atlassian/` - Atlassian MCP（必需）
+- `user-github/` - GitHub MCP（必需）
+- `user-Figma/` - Figma MCP（可选）
+- `user-elasticsearch-mcp/` - Elasticsearch MCP（可选）
 
-### 1.2: Test Atlassian MCP Connection
+### 1.2：测试 Atlassian MCP 连接
 
-Use the `getAccessibleAtlassianResources` tool to verify Atlassian authentication:
+使用 `getAccessibleAtlassianResources` 工具来验证 Atlassian 的身份验证：
 
 ```
 Tool: CallMcpTool
@@ -54,13 +54,13 @@ ToolName: getAccessibleAtlassianResources
 Arguments: {}
 ```
 
-**Expected Response:** List of accessible Atlassian Cloud instances including Trading212.
+**预期响应：** 包含 Trading212 在内的可用 Atlassian Cloud 实例列表。
 
-**If Error:** Guide user through authentication (see Step 2).
+**如果出现错误：** 指导用户完成身份验证（参见第二步）。
 
-### 1.3: Verify GT Space Access
+### 1.3：验证对 GT 空间的访问权限
 
-Confirm access to the Product Documentation space:
+确认是否可以访问产品文档空间：
 
 ```
 Tool: CallMcpTool
@@ -71,28 +71,28 @@ Arguments:
   keys: ["GT"]
 ```
 
-**Expected Response:** Space details for GT (Product Documentation space).
+**预期响应：** GT（产品文档空间）的详细信息。
 
-**If Error:** User may need additional Confluence permissions.
+**如果出现错误：** 用户可能需要额外的 Confluence 权限。
 
 ---
 
-## Step 2: MCP Configuration Guide
+## 第二步：MCP 配置指南
 
-If any required MCP is missing or misconfigured, guide the user:
+如果缺少或配置错误的 MCP，请指导用户进行相应的操作：
 
-### 2.1: Atlassian MCP Setup
+### 2.1：Atlassian MCP 的配置
 
-**If `user-atlassian` is not configured:**
+**如果 `user-atlassian` 未配置：**
 
-1. **Open Cursor Settings:**
-   - Press `Cmd/Ctrl + ,` to open settings
-   - Navigate to "MCP Servers" or "Extensions"
+1. **打开设置：**
+   - 按 `Cmd/Ctrl + ,` 打开设置
+   - 导航到 “MCP 服务器” 或 “扩展程序”
 
-2. **Add Atlassian MCP:**
-   - Search for "Atlassian" in the MCP marketplace
-   - Install the official Atlassian MCP server
-   - Or add manually to `mcp.json` (official Atlassian remote MCP):
+2. **添加 Atlassian MCP：**
+   - 在 MCP 市场中搜索 “Atlassian”
+   - 安装官方的 Atlassian MCP 服务器
+   - 或者手动将其添加到 `mcp.json` 文件中（官方的 Atlassian 远程 MCP）：
    ```json
    {
      "atlassian-mcp": {
@@ -101,22 +101,22 @@ If any required MCP is missing or misconfigured, guide the user:
    }
    ```
 
-3. **Authenticate:**
-   - When prompted, authorize access to your Atlassian account
-   - Grant access to the Trading212 workspace
-   - Ensure you have access to the GT Confluence space
+3. **身份验证：**
+   - 根据提示授权访问您的 Atlassian 账户
+   - 授予访问 Trading212 工作区的权限
+   - 确保您有权访问 GT Confluence 空间
 
-4. **Verify Installation:**
-   - Restart Cursor
-   - Run the verification check in Step 1.2
+4. **验证安装：**
+   - 重启 Cursor
+   - 重新运行步骤 1.2 中的验证检查
 
-### 2.2: GitHub MCP Setup
+### 2.2：GitHub MCP 的配置
 
-**If `user-github` is not configured:**
+**如果 `user-github` 未配置：**
 
-1. **Install GitHub MCP:**
-   - Usually pre-installed with Cursor
-   - If missing, add to `mcp_servers.json`:
+1. **安装 GitHub MCP：**
+   - 通常已随 Cursor 预装
+   - 如果未安装，请将其添加到 `mcp_servers.json` 文件中：
    ```json
    {
      "github": {
@@ -129,34 +129,34 @@ If any required MCP is missing or misconfigured, guide the user:
    }
    ```
 
-2. **Configure GitHub Token:**
-   - Create a Personal Access Token at github.com/settings/tokens
-   - Grant `repo` and `read:org` scopes
-   - Set as environment variable: `export GITHUB_TOKEN=your_token`
+2. **配置 GitHub Token：**
+   - 在 github.com/settings/tokens 创建个人访问令牌
+   - 授予 `repo` 和 `read:org` 权限
+   - 将令牌设置为环境变量：`export GITHUB_TOKEN=your_token`
 
-3. **Verify Access:**
-   - Test with a simple repository search
-   - Ensure access to Trading212 organization
+3. **验证访问权限：**
+   - 通过简单的仓库搜索来测试访问权限
+   - 确保可以访问 Trading212 组织
 
-### 2.3: Optional MCPs
+### 2.3：可选的 MCP
 
-**Figma MCP (for UI documentation):**
-- Install: `@anthropic/mcp-server-figma`
-- Requires Figma access token
-- Useful for documenting user-facing features
+**Figma MCP（用于 UI 文档）：**
+- 安装：`@anthropic/mcp-server-figma`
+- 需要 Figma 访问令牌
+- 适用于记录用户界面相关的功能
 
-**Elasticsearch MCP (for log verification):**
-- Install: `@anthropic/mcp-server-elasticsearch`
-- Requires Elasticsearch cluster access
-- Used in Phase 4 verification
+**Elasticsearch MCP（用于日志验证）：**
+- 安装：`@anthropic/mcp-server-elasticsearch`
+- 需要访问 Elasticsearch 集群
+- 用于第四阶段的验证
 
 ---
 
-## Step 3: Configuration Validation
+## 第三步：配置验证
 
-After setup, run a full validation:
+配置完成后，运行全面的验证：
 
-### 3.1: Validation Checklist
+### 3.1：验证检查列表
 
 ```markdown
 ## MCP Configuration Status
@@ -180,9 +180,9 @@ After setup, run a full validation:
 - [ ] Trading212 org accessible
 ```
 
-### 3.2: Test Search
+### 3.2：测试搜索功能
 
-Perform a test search to confirm full functionality:
+执行搜索测试以确认所有功能是否正常：
 
 ```
 Tool: CallMcpTool
@@ -194,61 +194,60 @@ Arguments:
   limit: 5
 ```
 
-If this returns results, Atlassian MCP is fully configured.
+如果搜索返回结果，则表示 Atlassian MCP 已正确配置。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Cause | Solution |
+| 问题 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "MCP server not found" | MCP not installed | Follow Step 2 setup guide |
-| "Authentication failed" | Token expired/invalid | Re-authenticate in Cursor settings |
-| "Permission denied" for GT space | Confluence permissions | Request access from Confluence admin |
-| "Rate limited" | Too many API calls | Wait and retry, or use caching |
-| "Cloud ID not found" | Wrong Atlassian instance | Use `getAccessibleAtlassianResources` to find correct ID |
+| “找不到 MCP 服务器” | MCP 未安装 | 按照第二步的设置指南进行操作 |
+| “身份验证失败” | 令牌过期/无效 | 在 Cursor 设置中重新进行身份验证 |
+| “无法访问 GT 空间” | Confluence 权限问题 | 向 Confluence 管理员请求访问权限 |
+| “API 调用次数过多导致限制” | 等待片刻后重试，或使用缓存 |
+| “Cloud ID 未找到” | 使用错误的 Atlassian 实例 | 使用 `getAccessibleAtlassianResources` 查找正确的 ID |
 
 ---
 
-## Quick Reference
+## 快速参考
 
 ### Atlassian Cloud ID
 ```
 trading212.atlassian.net
 ```
 
-### GT Space Details
+### GT 空间详细信息
 ```
 Space Key: GT
 Space Name: Product Documentation
 URL: https://trading212.atlassian.net/wiki/spaces/gt
 ```
 
-### Useful CQL Queries
+### 有用的 CQL 查询
 
-**Find all product guides:**
+**查找所有产品文档：**
 ```
 space = GT AND type = page AND title ~ "Product Guide"
 ```
 
-**Find guides for specific OTT:**
+**查找特定 OTT 的文档：**
 ```
 space = GT AND type = page AND text ~ "{ott-name}"
 ```
 
-**Find recently updated pages:**
+**查找最近更新的页面：**
 ```
 space = GT AND type = page AND lastmodified >= now("-30d")
 ```
 
 ---
 
-## Integration with Product Guide Writer
+## 与 Product Guide Writer 的集成
 
-Once MCPs are configured, the Product Guide Writer will:
+配置完 MCP 后，Product Guide Writer 将执行以下操作：
+1. **第一阶段：** 使用 Atlassian MCP 搜索现有文档
+2. **第四阶段：** 使用 Atlassian MCP 添加相关页面并选择性地进行发布
+3. **整个过程中：** 使用 GitHub MCP 进行仓库搜索和代码查找
 
-1. **Phase 1:** Use Atlassian MCP to search for existing documentation
-2. **Phase 4:** Use Atlassian MCP to populate Related Pages and optionally publish
-3. **Throughout:** Use GitHub MCP for repository discovery and code search
-
-See [product-guide-writer/SKILL.md](../product-guide-writer/SKILL.md) for the full workflow.
+有关完整的工作流程，请参阅 [product-guide-writer/SKILL.md](../product-guide-writer/SKILL.md)。

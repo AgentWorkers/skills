@@ -1,60 +1,44 @@
 ---
 name: alicloud-security-kms
-description: Manage Alibaba Cloud KeyManagementService (Kms) via OpenAPI/SDK. Use for listing resources, creating or updating configurations, querying status, and troubleshooting workflows for this product.
+description: 通过 OpenAPI/SDK 管理阿里云 KeyManagementService (KMS)。该服务支持资源列表查询、配置创建/更新、状态查询以及故障排查等功能。
 ---
 
-Category: service
+**类别：服务**  
+**# 密钥管理服务**  
 
-# Key Management Service
+您可以使用 Alibaba Cloud OpenAPI（RPC）以及官方 SDK 或 OpenAPI Explorer 来管理 KeyManagementService 的资源。  
 
-Use Alibaba Cloud OpenAPI (RPC) with official SDKs or OpenAPI Explorer to manage resources for KeyManagementService.
+**工作流程**：  
+1. 确定区域、资源标识符以及所需执行的操作。  
+2. 查看 API 列表及所需参数（详见参考资料）。  
+3. 通过 SDK 或 OpenAPI Explorer 调用相应的 API。  
+4. 使用 `describe`/`list` API 验证操作结果。  
 
-## Workflow
+**AccessKey 的优先级（必须遵循）**：  
+1. **环境变量**：`ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`  
+   - `ALICLOUD_REGION_ID` 是可选的默认值；如果未设置，请根据任务需求选择最合适的区域；如果不确定，请询问用户。  
+2. **共享配置文件**：`~/.alibabacloud/credentials`  
 
-1) Confirm region, resource identifiers, and desired action.
-2) Discover API list and required parameters (see references).
-3) Call API with SDK or OpenAPI Explorer.
-4) Verify results with describe/list APIs.
+**API 发现**：  
+- **产品代码**：`Kms`  
+- **默认 API 版本**：`2016-01-20`  
+- 可通过 OpenAPI 元数据端点来列出 API 并获取其架构信息（详见参考资料）。  
 
-## AccessKey priority (must follow)
+**高频操作模式**：  
+1. **资源清单/查询**：建议使用 `List*`/`Describe*` API 来获取当前资源信息。  
+2. **资源修改/配置**：建议使用 `Create*`/`Update*`/`Modify*`/`Set*` API 来对资源进行修改或配置。  
+3. **状态检查/故障排除**：建议使用 `Get*`/`Query*`/`Describe*Status` API 来诊断资源状态或解决问题。  
 
-1) Environment variables: `ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`
-Region policy: `ALICLOUD_REGION_ID` is an optional default. If unset, decide the most reasonable region for the task; if unclear, ask the user.
-2) Shared config file: `~/.alibabacloud/credentials`
-
-## API discovery
-
-- Product code: `Kms`
-- Default API version: `2016-01-20`
-- Use OpenAPI metadata endpoints to list APIs and get schemas (see references).
-
-## High-frequency operation patterns
-
-1) Inventory/list: prefer `List*` / `Describe*` APIs to get current resources.
-2) Change/configure: prefer `Create*` / `Update*` / `Modify*` / `Set*` APIs for mutations.
-3) Status/troubleshoot: prefer `Get*` / `Query*` / `Describe*Status` APIs for diagnosis.
-
-## Minimal executable quickstart
-
-Use metadata-first discovery before calling business APIs:
-
-```bash
+**最小化执行快速入门步骤**：  
+在调用业务 API 之前，请先使用元数据来发现可用的 API（参见 **```bash
 python scripts/list_openapi_meta_apis.py
-```
+```**）。  
 
-Optional overrides:
+**可选的覆盖设置**：  
+（请在此处添加自定义的配置或覆盖规则。）  
 
-```bash
-python scripts/list_openapi_meta_apis.py --product-code <ProductCode> --version <Version>
-```
+**脚本执行结果输出**：  
+脚本会将 API 相关的清单信息输出到指定的目录中（例如：`output/alicloud-security-kms/`）。  
 
-The script writes API inventory artifacts under the skill output directory.
-
-## Output policy
-
-If you need to save responses or generated artifacts, write them under:
-`output/alicloud-security-kms/`
-
-## References
-
-- Sources: `references/sources.md`
+**参考资料**：  
+- **来源文档**：`references/sources.md`

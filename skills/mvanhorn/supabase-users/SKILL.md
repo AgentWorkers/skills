@@ -1,6 +1,6 @@
 ---
 name: supabase
-description: Query Supabase projects - count users, list signups, check stats. Use for database queries and user analytics.
+description: 查询 Supabase 项目：统计用户数量、列出注册用户信息、查看各项统计数据。适用于数据库查询和用户数据分析。
 user-invocable: true
 disable-model-invocation: true
 triggers:
@@ -20,45 +20,45 @@ metadata:
 
 # Supabase ⚡
 
-Query your Supabase projects directly from chat.
+您可以直接通过聊天功能查询您的 Supabase 项目信息。
 
-## Setup
+## 设置
 
-### 1. Get your credentials
+### 1. 获取您的凭证
 
-Go to **Supabase Dashboard → Project Settings → API**
+请访问 **Supabase 仪表板 → 项目设置 → API**
 
-You'll see two tabs:
-- **"Publishable and secret API keys"** - New format (limited functionality)
-- **"Legacy anon, service_role API keys"** - JWT format (full functionality)
+您将看到两个选项卡：
+- **“可公开的和私有的 API 密钥”** - 新格式（功能有限）
+- **“旧版匿名用户/服务角色 API 密钥”** - JWT 格式（功能齐全）
 
-**⚠️ Use the Legacy JWT key for full access!**
+**⚠️ 请使用旧版 JWT 密钥以获得完整访问权限！**
 
-The `service_role` JWT key (starts with `eyJ...`) gives full admin access including:
-- Listing users with details
-- Counting signups
-- Accessing auth.users
+`service_role` JWT 密钥（以 `eyJ...` 开头）提供完整的管理员权限，包括：
+- 列出用户信息
+- 统计注册用户数量
+- 访问 `auth.users` 数据
 
-The new `sb_secret_...` keys have limited functionality and can't access the Admin API.
+新的 `sb_secret_...` 密钥功能有限，无法访问管理员 API。
 
-### 2. Find your keys
+### 2. 查找您的密钥
 
-1. Go to: **Project Settings → API**
-2. Click the **"Legacy anon, service_role API keys"** tab
-3. Find `service_role` (marked with red "secret" badge)
-4. Click **Reveal** and copy the `eyJ...` token
+1. 访问：**项目设置 → API**
+2. 点击 **“旧版匿名用户/服务角色 API 密钥”** 选项卡
+3. 找到标记为红色的 “secret” 标签的 `service_role` 密钥
+4. 点击 **显示** 并复制 `eyJ...` 令牌
 
-Direct link: `https://supabase.com/dashboard/project/YOUR_PROJECT_REF/settings/api`
+直接链接：`https://supabase.com/dashboard/project/YOUR_PROJECT_REF/settings/api`
 
-### 3. Configure
+### 3. 配置
 
-**Option A: Interactive setup**
+**选项 A：交互式设置**
 ```bash
 python3 {baseDir}/scripts/supabase.py auth
 ```
 
-**Option B: Manual config**
-Create `~/.supabase_config.json`:
+**选项 B：手动配置**
+创建 `~/.supabase_config.json` 文件：
 ```json
 {
   "url": "https://xxxxx.supabase.co",
@@ -66,15 +66,15 @@ Create `~/.supabase_config.json`:
 }
 ```
 
-**Option C: Environment variables**
+**选项 C：环境变量**
 ```bash
 export SUPABASE_URL="https://xxxxx.supabase.co"
 export SUPABASE_SERVICE_KEY="eyJhbG..."
 ```
 
-## Commands
+## 命令
 
-### User Analytics
+### 用户分析
 ```bash
 # Count total users
 python3 {baseDir}/scripts/supabase.py users
@@ -95,7 +95,7 @@ python3 {baseDir}/scripts/supabase.py list-users-today
 python3 {baseDir}/scripts/supabase.py list-users --limit 5
 ```
 
-### Project Info
+### 项目信息
 ```bash
 # Show project info and key type
 python3 {baseDir}/scripts/supabase.py info
@@ -104,33 +104,33 @@ python3 {baseDir}/scripts/supabase.py info
 python3 {baseDir}/scripts/supabase.py tables
 ```
 
-### JSON Output
+### JSON 输出
 ```bash
 python3 {baseDir}/scripts/supabase.py list-users --json
 ```
 
-## Key Types Explained
+## 密钥类型说明
 
-| Key Type | Format | User Listing | User Count | REST Tables |
+| 密钥类型 | 格式 | 是否可以列出用户 | 是否可以统计用户数量 | 是否可以访问 REST 表格 |
 |----------|--------|--------------|------------|-------------|
-| JWT service_role | `eyJ...` | ✅ Yes | ✅ Yes | ✅ Yes |
-| New secret | `sb_secret_...` | ❌ No | ❌ No | ✅ Yes |
+| JWT service_role | `eyJ...` | ✅ 是 | ✅ 是 | ✅ 是 |
+| 新型秘密密钥（sb_secret_...） | ❌ 否 | ❌ 否 | ✅ 是 |
 
-**Recommendation:** Always use the JWT `service_role` key for Clawdbot integration.
+**建议：** 在集成 Clawdbot 时，请始终使用 `service_role` JWT 密钥。
 
-## Daily Reports
+## 日报
 
-Set up automated daily user reports via Clawdbot cron.
+通过 Clawdbot 的 cron 任务设置自动生成每日用户报告。
 
-### Example: Daily 5 PM Report
+### 示例：下午 5 点生成日报
 
-Ask Clawdbot:
+向 Clawdbot 发送请求：
 ```
 Send me a report of how many new users signed up at 5 PM every day, 
 show the last 5 signups with their names
 ```
 
-This creates a cron job like:
+这将创建一个 cron 作业，如下所示：
 ```json
 {
   "name": "Daily Supabase User Report",
@@ -145,7 +145,7 @@ This creates a cron job like:
 }
 ```
 
-### Sample Report Output
+### 报告示例输出
 
 ```
 📊 Supabase Daily Report
@@ -162,22 +162,22 @@ Last 5 signups:
 
 ## GraphQL API (pg_graphql)
 
-⚠️ **pg_graphql is disabled by default** on new Supabase projects (as of late 2025).
+⚠️ 自 2025 年底起，新创建的 Supabase 项目默认禁用了 `pg_graphql`。
 
-If you need the GraphQL API:
+如果您需要使用 GraphQL API：
 
-### Enable pg_graphql
+### 启用 pg_graphql
 ```sql
 -- Run in SQL Editor
 create extension if not exists pg_graphql;
 ```
 
-### Endpoint
+### 端点
 ```
 https://<PROJECT_REF>.supabase.co/graphql/v1
 ```
 
-### Example Query
+### 示例查询
 ```bash
 curl -X POST https://<PROJECT_REF>.supabase.co/graphql/v1 \
   -H 'apiKey: <API_KEY>' \
@@ -185,40 +185,40 @@ curl -X POST https://<PROJECT_REF>.supabase.co/graphql/v1 \
   --data-raw '{"query": "{ accountCollection(first: 1) { edges { node { id } } } }"}'
 ```
 
-Note: GraphQL automatically reflects your database schema. Tables/views in `public` schema become queryable. See [Supabase GraphQL docs](https://supabase.com/docs/guides/graphql) for configuration.
+注意：GraphQL 会自动反映您的数据库架构。`public` 架构中的表格/视图都可以被查询。有关配置详情，请参阅 [Supabase GraphQL 文档](https://supabase.com/docs/guidesgraphql)。
 
-## Troubleshooting
+## 故障排除
 
-### "list-users requires a JWT service_role key"
-You're using an `sb_secret_...` key. Get the JWT key from:
-**Project Settings → API → Legacy tab → service_role → Reveal**
+### “list-users 需要 JWT service_role 密钥”
+您可能使用了 `sb_secret_...` 密钥。请从以下位置获取 JWT 密钥：
+**项目设置 → API → 旧版选项卡 → service_role → 显示**
 
-### "No API key found in request"  
-The new `sb_secret_` keys don't work with all endpoints. Switch to the JWT key.
+### “请求中未找到 API 密钥”
+新的 `sb_secret_` 密钥不支持所有端点，请切换到 JWT 密钥。
 
-### Keys not showing
-Make sure you're on the **"Legacy anon, service_role API keys"** tab, not the new API keys tab.
+### 密钥未显示
+请确保您在 **“旧版匿名用户/服务角色 API 密钥”** 选项卡上，而不是新 API 密钥选项卡。
 
-## Security & Permissions
+## 安全与权限
 
-The `service_role` key has **full admin access** to your database. This skill requires it for the Auth Admin API (listing/counting users).
+`service_role` 密钥具有对数据库的 **完整管理员权限**。此技能需要该密钥来访问管理员 API（列出/统计用户）。
 
-**What this skill does:**
-- Makes GET requests to your Supabase project's Auth Admin API
-- Reads user metadata (email, name, provider, signup date)
-- All requests stay between your machine and your Supabase instance
+**此技能的功能：**
+- 向您的 Supabase 项目的管理员 API 发送 GET 请求
+- 读取用户元数据（电子邮件、姓名、提供商、注册日期）
+- 所有请求仅限于您的机器和 Supabase 实例之间
 
-**What this skill does NOT do:**
-- Does not write, modify, or delete any data
-- Does not send credentials to any third party
-- Does not access any endpoints outside your Supabase project
-- Cannot be invoked autonomously by the agent (`disable-model-invocation: true`)
+**此技能不执行以下操作：**
+- 不会写入、修改或删除任何数据
+- 不会向任何第三方发送凭证
+- 不会访问 Supabase 项目之外的任何端点
+- 不能被代理程序自动调用（`disable-model-invocation: true`）
 
-**Least-privilege alternative:** Create a read-only Postgres role scoped to `auth.users` and use the Supabase SQL API instead of the Admin API.
+**最低权限替代方案：** 创建一个仅具有 `auth.users` 访问权限的只读 Postgres 角色，并使用 Supabase SQL API 代替管理员 API。
 
-**Key safety:**
-- Never commit keys to git
-- Don't expose in client-side code
-- Only use on trusted machines
-- Config file is automatically set to mode 600 (owner read/write only)
-- Review `scripts/supabase.py` before first use
+**密钥安全注意事项：**
+- 绝不要将密钥提交到 Git
+- 不要在客户端代码中暴露密钥
+- 仅在可信机器上使用该技能
+- 配置文件会自动设置为 600 模式（仅所有者可读写）
+- 在首次使用前请查看 `scripts/supabase.py` 文件

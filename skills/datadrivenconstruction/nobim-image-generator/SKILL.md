@@ -1,38 +1,37 @@
 ---
 slug: "nobim-image-generator"
 display_name: "Nobim Image Generator"
-description: "Generate images and visualizations from Revit/IFC files without BIM software. Python-based noBIM tool for batch processing."
+description: "无需使用BIM软件，即可从Revit/IFC文件生成图像和可视化内容。这是一个基于Python的、用于批量处理的noBIM工具。"
 ---
 
-# noBIM Image Generator
+# noBIM 图像生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Creating visualizations from BIM models typically requires:
-- Expensive BIM software licenses
-- Manual screenshot capture
-- Time-consuming rendering
-- Impossible to batch process
+### 问题描述
+从 BIM 模型创建可视化内容通常需要：
+- 昂贵的 BIM 软件许可证
+- 手动截图
+- 耗时的渲染过程
+- 无法进行批量处理
 
-### Solution
-noBIM tool extracts data and generates visualizations using Python libraries, processing hundreds of projects without BIM software.
+### 解决方案
+noBIM 工具利用 Python 库提取数据并生成可视化内容，无需使用 BIM 软件即可处理数百个项目。
 
-### Business Value
-- **No license required** - Pure Python solution
-- **Batch processing** - Generate images for 1000s of projects
-- **Customizable** - Create exactly the visualizations you need
-- **Automatable** - Integrate into data pipelines
+### 商业价值
+- **无需许可证** – 完全基于 Python 的解决方案
+- **批量处理** – 为数百个项目生成图像
+- **可定制** – 创建您所需的可视化内容
+- **自动化** – 可集成到数据流程中
 
-## Technical Implementation
+## 技术实现
 
-### Installation
+### 安装
 ```bash
 pip install pandas matplotlib seaborn plotly ifcopenshell
 ```
 
-### Core Functionality
-
+### 核心功能
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -191,9 +190,9 @@ class NoBIMVisualizer:
         return generated
 ```
 
-## Usage Examples
+## 使用示例
 
-### Single Project
+### 单个项目
 ```python
 viz = NoBIMVisualizer()
 viz.load_from_excel("C:/Projects/Office.xlsx")
@@ -208,7 +207,7 @@ viz.generate_floor_plan("office_level1.png", level="Level 1")
 viz.generate_category_chart("office_categories.png")
 ```
 
-### Batch Processing
+### 批量处理
 ```python
 from pathlib import Path
 
@@ -226,18 +225,17 @@ generated = viz.batch_generate(
 print(f"Generated visualizations for {len(generated)} projects")
 ```
 
-## Output Examples
+## 输出示例
 
-| Visualization | Use Case |
-|---------------|----------|
-| 3D Scatter | Overall project structure |
-| Floor Plan | Level-by-level layout |
-| Category Chart | Element distribution |
-| Volume Treemap | Material quantities |
-| Level Comparison | Multi-floor analysis |
+| 可视化类型 | 使用场景 |
+|------------|-----------|
+| 3D 散点图    | 整个项目结构 |
+| 平面图      | 各楼层的布局 |
+| 类别分布图   | 元素分布情况 |
+| 体积树状图   | 材料用量统计 |
+| 多层对比图   | 多层建筑分析 |
 
-## Integration with Reporting
-
+## 与报告系统的集成
 ```python
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -267,7 +265,6 @@ def create_project_report(xlsx_path: str, output_pdf: str):
     return output_pdf
 ```
 
-## Resources
-
+## 资源
 - **GitHub**: [Revit-IFC-Creating-images](https://github.com/datadrivenconstruction/Revit-IFC-Creating-images)
-- **Examples**: See repository for Jupyter notebooks
+- **示例**: 请查看仓库中的 Jupyter 笔记本示例

@@ -1,64 +1,64 @@
 ---
 name: newsletter-generator
-description: Generate automated email newsletters with curated content, affiliate links, and personalized recommendations. Use when creating daily/weekly newsletters, building email lists, or monetizing subscriber engagement with affiliate content.
+description: 生成包含精选内容、联盟链接以及个性化推荐的自动化电子邮件通讯。适用于创建每日/每周通讯、建立邮件列表，或通过联盟内容实现订阅者参与度的货币化。
 ---
 
-# Newsletter Generator
+# 新闻通讯生成器
 
-## Overview
+## 概述
 
-Automate email newsletter creation with curated content, affiliate monetization, and personalized recommendations. Build and monetize email lists at scale.
+通过精选内容、联盟营销和个人化推荐，自动化生成电子邮件新闻通讯。大规模构建并变现电子邮件列表。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Content Curation
+### 1. 内容精选
 
-**Automatically:**
-- Curate trending articles and blog posts
-- Find relevant content based on keywords/topics
-- Extract key points and summaries
-- Categorize content by topic (tech, marketing, lifestyle, etc.)
-- Filter for quality and relevance
+- **自动执行：**
+  - 精选热门文章和博客帖子
+  - 根据关键词/主题查找相关内容
+  - 提取关键点和摘要
+  - 按主题对内容进行分类（技术、营销、生活方式等）
+  - 过滤内容的质量和相关性
 
-### 2. Newsletter Templates
+### 2. 新闻通讯模板
 
-**Pre-built templates for:**
-- Daily digest (5-10 links, brief summaries)
-- Weekly roundup (deep dives, featured articles)
-- Industry news (news-focused, time-sensitive)
-- Tutorial series (educational, step-by-step)
-- Product recommendations (affiliate-heavy, monetized)
+- **预建的模板包括：**
+  - 每日摘要（5-10个链接，简短摘要）
+  - 周度汇总（深入分析，精选文章）
+  - 行业新闻（以新闻为主，时效性强）
+  - 教程系列（教育性内容，分步指导）
+  - 产品推荐（包含联盟链接，可变现）
 
-### 3. Affiliate Integration
+### 3. 联盟营销集成
 
-**Automatically includes:**
-- Context-aware affiliate links
-- Product recommendations matching newsletter theme
-- FTC-compliant disclosures
-- Trackable links for analytics
-- Revenue optimization based on engagement
+- **自动包含：**
+  - 与内容相关的联盟链接
+  - 与新闻通讯主题匹配的产品推荐
+  - 符合FTC（美国联邦贸易委员会）规定的披露信息
+  - 可追踪的链接用于数据分析
+  - 根据用户互动情况优化收入
 
-### 4. Personalization
+### 4. 个性化
 
-**Personalize with:**
-- Subscriber segments
-- Past engagement data
-- Time zones for optimal send times
-- Custom sender info
-- Dynamic content based on preferences
+- **个性化设置：**
+  - 订阅者分组
+  - 过往互动数据
+  - 适合的发送时间（考虑时区）
+  - 自定义发件人信息
+  - 根据偏好动态生成内容
 
-### 5. Analytics & Optimization
+### 5. 数据分析与优化
 
-**Track and optimize:**
-- Open rates and click-through rates
-- Affiliate link performance
-- Subscriber growth and churn
-- Best-performing content types
-- Send time optimization
+- **跟踪和优化：**
+  - 开启率和点击率
+  - 联盟链接的效果
+  - 订阅者增长和流失情况
+  - 最受欢迎的内容类型
+  - 最佳发送时间
 
-## Quick Start
+## 快速入门
 
-### Generate Daily Digest
+### 生成每日摘要
 
 ```python
 # Use scripts/generate_newsletter.py
@@ -70,7 +70,7 @@ python3 scripts/generate_newsletter.py \
   --output newsletter.md
 ```
 
-### Generate Weekly Roundup
+### 生成每周汇总
 
 ```python
 python3 scripts/generate_newsletter.py \
@@ -82,7 +82,7 @@ python3 scripts/generate_newsletter.py \
   --output weekly.md
 ```
 
-### Curate from RSS Feeds
+### 从RSS源精选内容
 
 ```python
 # Use scripts/curate_content.py
@@ -93,22 +93,22 @@ python3 scripts/curate_content.py \
   --output curated_content.json
 ```
 
-## Scripts
+## 脚本
 
 ### `generate_newsletter.py`
-Generate newsletter from curated content.
+从精选内容生成新闻通讯。
 
-**Parameters:**
-- `--type`: Newsletter type (daily, weekly, monthly, roundup, products)
-- `--topic`: Primary topic/theme
-- `--articles`: Number of articles to include
-- `--affiliate-links`: Number of affiliate links to include
-- `--include-tutorials`: Include educational content
-- `--include-products`: Include product recommendations
-- `--tone`: Newsletter tone (professional, casual, playful)
-- `--output`: Output file
+**参数：**
+- `--type`：新闻通讯类型（每日、每周、每月、汇总、产品推荐）
+- `--topic`：主要主题
+- `--articles`：包含的文章数量
+- `--affiliate-links`：包含的联盟链接数量
+- `--include-tutorials`：是否包含教育性内容
+- `--include-products`：是否包含产品推荐
+- `--tone`：新闻通讯的语气（专业、随意、轻松）
+- `--output`：输出文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/generate_newsletter.py \
   --type daily \
@@ -120,16 +120,16 @@ python3 scripts/generate_newsletter.py \
 ```
 
 ### `curate_content.py`
-Curate content from RSS feeds or URLs.
+从RSS源或URL中精选内容。
 
-**Parameters:**
-- `--rss-feeds`: Comma-separated RSS feed URLs
-- `--keywords`: Filter by keywords
-- `--max-articles`: Maximum articles to curate
-- `--min-relevance`: Minimum relevance score (0-1)
-- `--output`: Output JSON file
+**参数：**
+- `--rss-feeds`：逗号分隔的RSS源URL
+- `--keywords`：按关键词过滤
+- `--max-articles`：精选的最大文章数量
+- `--min-relevance`：最低相关性得分（0-1）
+- `--output`：输出JSON文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/curate_content.py \
   --rss-feeds https://blog.example.com/feed,https://news.example.com/rss \
@@ -139,15 +139,15 @@ python3 scripts/curate_content.py \
 ```
 
 ### `add_affiliate_links.py`
-Add affiliate links to existing newsletter.
+向现有新闻通讯中添加联盟链接。
 
-**Parameters:**
-- `--input`: Newsletter file
-- `--network`: Affiliate network (amazon, shareasale, cj, impact)
-- `--links`: Number of links to add
-- `--disclosure-position`: Where to add disclosure (top, bottom, inline)
+**参数：**
+- `--input`：新闻通讯文件
+- `--network`：联盟营销网络（亚马逊、ShareASale、CJ、Impact）
+- `--links`：要添加的链接数量
+- `--disclosure-position`：披露位置（顶部、底部、内联）
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/add_affiliate_links.py \
   --input newsletter.md \
@@ -157,16 +157,16 @@ python3 scripts/add_affiliate_links.py \
 ```
 
 ### `schedule_newsletter.py`
-Schedule newsletter for sending (generates schedule data).
+安排新闻通讯的发送时间（生成发送计划）。
 
-**Parameters:**
-- `--newsletter`: Newsletter file
-- `--send-time`: Optimal send time
-- `--timezone`: Subscriber timezone
-- `--segments`: Subscriber segments
-- `--output`: Schedule file for ESP (Email Service Provider)
+**参数：**
+- `--newsletter`：新闻通讯文件
+- `--send-time`：最佳发送时间
+- `--timezone`：订阅者的时区
+- `--segments`：订阅者分组
+- `--output`：用于电子邮件服务提供商（ESP）的发送计划文件
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/schedule_newsletter.py \
   --newsletter newsletter.md \
@@ -176,16 +176,16 @@ python3 scripts/schedule_newsletter.py \
 ```
 
 ### `analytics_report.py`
-Generate analytics and optimization recommendations.
+生成分析报告和优化建议。
 
-**Parameters:**
-- `--metrics-file`: Metrics data from ESP
-- `--period`: Time period (7d, 30d, 90d)
-- `--output`: Report file
+**参数：**
+- `--metrics-file`：来自ESP的指标数据
+- `--period`：时间周期（7天、30天、90天）
+- `--output`：报告文件
 
-## Newsletter Templates
+## 新闻通讯模板
 
-### Daily Digest Template
+### 每日摘要模板
 
 ```
 Subject: [Topic] Daily Digest - [Date]
@@ -217,7 +217,7 @@ Subject: [Topic] Daily Digest - [Date]
 [FTC Disclosure]
 ```
 
-### Weekly Roundup Template
+### 周度汇总模板
 
 ```
 Subject: [Topic] Weekly Roundup - Top [N] Stories
@@ -250,34 +250,34 @@ Subject: [Topic] Weekly Roundup - Top [N] Stories
 [FTC Disclosure]
 ```
 
-## Best Practices
+## 最佳实践
 
-### Subject Lines
-- Keep under 50 characters for mobile
-- Use numbers and brackets [Daily Digest], [Weekly]
-- Include urgency or curiosity
-- A/B test different subject lines
+### 主题行
+- 保持50个字符以内，以便在移动设备上显示
+- 使用数字和括号（例如 [每日摘要]、[每周]
+- 包含紧迫感或好奇心元素
+- 对不同的主题行进行A/B测试
 
-### Content Balance
-- 70% value (educational content)
-- 20% curation (other people's content)
-- 10% promotion (affiliate/sales)
+### 内容平衡
+- 70% 有价值的内容（教育性内容）
+- 20% 精选内容（他人的文章）
+- 10% 促销内容（联盟链接/销售信息）
 
-### Affiliate Links
-- 1-3 links per newsletter
-- Contextually relevant to content
-- Clear disclosure at the top
-- Trackable links for analytics
+### 联盟链接
+- 每封新闻通讯包含1-3个链接
+- 与内容相关联
+- 在顶部明确标注披露信息
+- 可追踪的链接用于数据分析
 
-### Send Times
-- **B2B:** Tuesday-Thursday, 9-11 AM
-- **B2C:** Weekends, 6-8 PM
-- **Newsletters:** Tuesday/Wednesday, 8-10 AM
-- **Promotions:** Monday or Friday
+### 发送时间
+- **B2B**：周二至周四，上午9-11点
+- **B2C**：周末，下午6-8点
+- **普通新闻通讯**：周二/周三，上午8-10点
+- **促销邮件**：周一或周五
 
-## Automation
+## 自动化流程
 
-### Daily Newsletter Generation
+### 每日新闻通讯生成
 
 ```bash
 # Generate daily newsletter at 8 AM
@@ -289,7 +289,7 @@ Subject: [Topic] Weekly Roundup - Top [N] Stories
   --output /path/to/newsletters/daily_$(date +\%Y\%m\%d).md
 ```
 
-### Weekly Roundup
+### 周度汇总
 
 ```bash
 # Generate weekly newsletter every Sunday at 9 AM
@@ -301,9 +301,9 @@ Subject: [Topic] Weekly Roundup - Top [N] Stories
   --output /path/to/newsletters/weekly_$(date +\%Y\%m\%d).md
 ```
 
-## Integration Opportunities
+## 集成机会
 
-### With Content Recycler
+### 与内容回收工具集成
 ```bash
 # 1. Recycle article to newsletter format
 content-recycler/scripts/recycle_content.py \
@@ -315,7 +315,7 @@ newsletter-generator/scripts/add_affiliate_links.py \
   --input email_version.md
 ```
 
-### With SEO Article Generator
+### 与SEO文章生成工具集成
 ```bash
 # 1. Generate SEO article
 seo-article-gen --keyword "newsletter topic"
@@ -327,18 +327,18 @@ newsletter-generator/scripts/curate_content.py --keywords "newsletter topic"
 newsletter-generator/scripts/generate_newsletter.py
 ```
 
-## Revenue Impact
+## 收入影响
 
-**Email Marketing Stats:**
-- Average open rate: 20-30%
-- Average CTR: 2-5%
-- Affiliate conversion: 1-3%
-- Revenue per 1,000 subscribers: $50-500/month
+**电子邮件营销统计数据：**
+- 平均打开率：20-30%
+- 平均点击率：2-5%
+- 联盟营销转化率：1-3%
+- 每1000名订阅者的收入：50-500美元/月
 
-**Scaling Potential:**
-- 1 newsletter/day × 1,000 subscribers = $50-500/day
-- 1 newsletter/week × 10,000 subscribers = $500-5,000/week
+**扩展潜力：**
+- 每天发送1封新闻通讯 × 1000名订阅者 = 每天50-500美元
+- 每周发送1封新闻通讯 × 10,000名订阅者 = 每周500-5,000美元
 
 ---
 
-**Build your list. Monetize automatically. Scale effortlessly.**
+**构建您的订阅列表。自动变现。轻松扩展。**

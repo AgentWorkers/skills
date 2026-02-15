@@ -1,18 +1,18 @@
 ---
 slug: "image-to-data"
 display_name: "Image To Data"
-description: "Extract data from construction images using AI Vision. Analyze site photos, scanned documents, drawings"
+description: "使用人工智能视觉技术从施工图像中提取数据。分析现场照片、扫描的文档和图纸。"
 ---
 
-# Image To Data
+# 将图像转换为结构化数据
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.4), this skill extracts structured data from construction images using computer vision, OCR, and AI models to analyze site photos, scanned documents, and drawings.
+本技能基于DDC方法论（第2.4章），利用计算机视觉、OCR（光学字符识别）和AI模型从建筑图像中提取结构化数据，从而分析现场照片、扫描文档和图纸。
 
-**Book Reference:** "Преобразование данных в структурированную форму" / "Data Transformation to Structured Form"
+**参考书籍**：《数据转换成结构化形式》（Data Transformation to Structured Form）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -516,9 +516,9 @@ class ConstructionImageAnalyzer:
             raise ValueError(f"Unsupported format: {format}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Analyze Site Photo
+### 分析现场照片
 
 ```python
 analyzer = ConstructionImageAnalyzer()
@@ -534,7 +534,7 @@ print(f"Safety compliance: {result['safety_compliance']['overall_compliance']}")
 print(f"Progress: {result['progress'].percent_complete}%")
 ```
 
-### Extract Drawing Data
+### 提取图纸数据
 
 ```python
 with open("floor_plan.png", "rb") as f:
@@ -548,7 +548,7 @@ for table in data['tables']:
     print(f"Table with {len(table['records'])} rows")
 ```
 
-### Detect Safety Violations
+### 检测安全隐患
 
 ```python
 detector = ObjectDetector()
@@ -563,24 +563,24 @@ if safety['overall_compliance'] == 'non-compliant':
         print(f"Violation: {violation['type']} - Count: {violation['count']}")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `ConstructionImageAnalyzer` | Main analysis engine |
-| `OCREngine` | Text extraction |
-| `ObjectDetector` | Object detection |
-| `TableExtractor` | Table extraction |
-| `ProgressAnalyzer` | Progress analysis |
-| `ImageAnalysisResult` | Complete analysis result |
+| 组件          | 功能                      |
+|---------------|-------------------------|
+| `ConstructionImageAnalyzer` | 主要分析引擎                |
+| `OCREngine`      | 文本提取                    |
+| `ObjectDetector`   | 对象检测                    |
+| `TableExtractor`   | 表格提取                    |
+| `ProgressAnalyzer`   | 进度分析                    |
+| `ImageAnalysisResult` | 完整的分析结果                |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.4
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（Data-Driven Construction），第2.4章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [cad-to-data](../cad-to-data/SKILL.md) for CAD/BIM extraction
-- Use [defect-detection-ai](../../../DDC_Innovative/defect-detection-ai/SKILL.md) for defects
-- Use [safety-compliance-checker](../../../DDC_Innovative/safety-compliance-checker/SKILL.md) for safety
+- 使用 [cad-to-data](../cad-to-data/SKILL.md) 进行CAD/BIM数据提取
+- 使用 [defect-detection-ai](../../../DDC_Innovative/defect-detection-ai/SKILL.md) 进行缺陷检测
+- 使用 [safety-compliance-checker](../../../DDC_Innovative/safety-compliance-checker/SKILL.md) 进行安全合规性检查

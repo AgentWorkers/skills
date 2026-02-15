@@ -1,15 +1,15 @@
 ---
 name: browser-use
 version: 1.0.0
-description: Cloud browser automation via Browser Use API. Use when you need AI-driven web browsing, scraping, form filling, or multi-step web tasks without local browser control. Triggers on "browser use", "cloud browser", "scrape website", "automate web task", or when local browser isn't available/suitable.
+description: 通过 `Browser Use API` 实现云浏览器自动化。当您需要人工智能驱动的网页浏览、数据抓取、表单填写或多步骤网页任务（且无需使用本地浏览器）时，可以使用该功能。该功能会在以下情况下被触发：`browser use`、`cloud browser`、`scrape website`、`automate web task`，或者当本地浏览器不可用/不合适时。
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"env":["BROWSER_USE_API_KEY"]}}}
 ---
 
-# Browser Use
+# 浏览器使用
 
-Cloud-based AI browser automation. Send a task in plain English, get structured results.
+基于云的AI浏览器自动化工具。您可以使用简单的英语指令来发起任务，并获得结构化的数据结果。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Submit task
@@ -23,9 +23,9 @@ curl -s "https://api.browser-use.com/api/v2/tasks/TASK_ID" \
   -H "X-Browser-Use-API-Key: $BROWSER_USE_API_KEY"
 ```
 
-## Helper Script
+## 辅助脚本
 
-Use `scripts/browser-use.sh` for simpler execution:
+使用 `scripts/browser-use.sh` 可以更便捷地执行任务：
 
 ```bash
 # Run task and wait for result
@@ -35,14 +35,14 @@ Use `scripts/browser-use.sh` for simpler execution:
 ./scripts/browser-use.sh --no-wait "Search Google for AI news"
 ```
 
-## API Reference
+## API参考
 
-### Create Task
+### 创建任务
 ```
 POST https://api.browser-use.com/api/v2/tasks
 ```
 
-Body:
+任务执行过程：
 ```json
 {
   "task": "Plain English description of what to do",
@@ -50,7 +50,7 @@ Body:
 }
 ```
 
-Response:
+任务结果：
 ```json
 {
   "id": "task-uuid",
@@ -58,41 +58,42 @@ Response:
 }
 ```
 
-### Get Task Status
+### 获取任务状态
 ```
 GET https://api.browser-use.com/api/v2/tasks/{taskId}
 ```
 
-Response fields:
+响应字段：
 - `status`: `pending` | `started` | `finished` | `failed`
-- `output`: Result text when finished
-- `steps`: Array of actions taken (with screenshots)
-- `cost`: Cost in dollars (e.g., "0.02")
-- `isSuccess`: Boolean result
+- `output`: 任务完成后的结果文本
+- `steps`: 执行的步骤列表（包含截图）
+- `cost`: 任务成本（以美元为单位，例如：“0.02”）
+- `isSuccess`: 任务是否成功的布尔值
 
-### Stop Task
+### 停止任务
 ```
 POST https://api.browser-use.com/api/v2/tasks/{taskId}/stop
 ```
 
-## Pricing
+## 价格
 
-~$0.01-0.05 per task depending on complexity. Check balance:
+根据任务复杂度，费用约为0.01至0.05美元。请查看您的账户余额：
+
 ```bash
 curl -s https://api.browser-use.com/api/v2/credits \
   -H "X-Browser-Use-API-Key: $BROWSER_USE_API_KEY"
 ```
 
-## When to Use
+## 适用场景
 
-- Complex multi-step web workflows
-- Sites that block simple scraping
-- Form filling and submissions
-- When you need screenshots of steps
-- When local browser control isn't available
+- 复杂的多步骤网页操作
+- 阻止简单数据抓取的网站
+- 表单填写与提交
+- 需要步骤截图的情况
+- 无法使用本地浏览器控制时
 
-## When NOT to Use
+## 不适用场景
 
-- Simple page fetches (use `web_fetch` instead)
-- When you have local browser access (use `browser` tool)
-- Rapid/high-volume scraping (use Code Use or local scraping)
+- 简单的页面获取（请使用 `web_fetch` 工具）
+- 可以使用本地浏览器时（请使用 `browser` 工具）
+- 需要快速或大量数据抓取时（请使用其他自动化工具或本地抓取方法）

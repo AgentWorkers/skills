@@ -1,21 +1,21 @@
 ---
 name: mootdx-china-stock-data
-description: Fetch China A-share stock market data (bars, realtime quotes, tick-by-tick transactions) via mootdx/TDX protocol. Use when working with Chinese stock data, mootdx library, TDX quotes, intraday minute bars, transaction history, or real-time A-share market data.
+description: 通过 mootdx/TDX 协议获取中国 A 股市场的数据（包括条形图、实时报价以及逐笔交易记录）。适用于处理中国股票数据、mootdx 库、TDX 报价、日内分钟级数据、交易历史记录或实时 A 股市场数据时。
 ---
 
 # Mootdx China A-Share Stock Data Client
 
-A wrapper around the `mootdx` library (TDX protocol) for fetching China A-share market data including K-line bars, real-time quotes, and tick-by-tick transaction records.
+这是一个基于 `mootdx` 库（TDX 协议）的封装层，用于获取中国 A 股市场的数据，包括 K 线图、实时报价以及逐笔交易记录。
 
-## Installation
+## 安装
 
 ```bash
 pip install mootdx
 ```
 
-> `mootdx` depends on `tdxpy` internally. Both are installed together.
+> `mootdx` 在内部依赖于 `tdxpy`，两者需要一起安装。
 
-### Verify & Demo
+### 验证与演示
 
 ```bash
 python scripts/setup_and_verify.py           # Install + verify + connectivity test
@@ -23,70 +23,70 @@ python scripts/setup_and_verify.py --check   # Verify only (skip install)
 python scripts/setup_and_verify.py --demo    # Full API demo with real output
 ```
 
-The `--demo` mode exercises every major API and prints real data — useful as a runnable reference for correct calling patterns.
+`--demo` 模式会测试所有的主要 API 并输出实时数据，可作为正确调用方式的参考。
 
-## Critical: Time & Timezone Considerations
+## 关键注意事项：时间与时区
 
-### Trading Hours (Beijing Time, UTC+8)
+### 交易时间（北京时间，UTC+8）
 
-| Session | Time |
+| 交易时段 | 时间 |
 |---------|------|
-| Morning | 09:30 - 11:30 (120 min) |
-| Lunch break | 11:30 - 13:00 |
-| Afternoon | 13:00 - 15:00 (120 min) |
-| **Total** | **240 trading minutes/day** |
+| 早晨 | 09:30 - 11:30 (120 分钟) |
+| 午休时间 | 11:30 - 13:00 |
+| 下午 | 13:00 - 15:00 (120 分钟) |
+| **总计** | **每天 240 分钟的交易时间** |
 
-### Trading Time Bypass Patch
+### 交易时间绕过补丁
 
-**Problem**: `mootdx` / `tdxpy` has a built-in `time_frame()` check that blocks API calls outside trading hours. On servers with non-Beijing timezone, this breaks even during valid trading hours.
+**问题**：`mootdx` / `tdxpy` 内置了 `time_frame()` 检查机制，会在非交易时段阻止 API 调用。在非北京时间时区的服务器上，即使在有效交易时段内也会出现此问题。
 
-**Solution**: Monkey-patch `tdxpy.hq.time_frame` to always return `True`:
+**解决方案**：对 `tdxpy.hq.time_frame` 进行修改，使其始终返回 `True`：
 
 ```python
 import tdxpy.hq
 tdxpy.hq.time_frame = lambda: True
 ```
 
-This patch is applied automatically during `MootdxClient.__init__()`. Without it, `transactions()` and `transaction()` calls will silently return empty results outside detected trading hours.
+该补丁会在 `MootdxClient.__init__()` 被自动应用。如果不使用此补丁，`transactions()` 和 `transaction()` 方法在非交易时段会返回空结果。
 
-### Trading Calendar
+### 交易日历
 
-When querying historical data, always check if a date is a trading day. Non-trading days (weekends, holidays) have no data. The client uses `TradingCalendarStrategy.is_trading_day(date_str)` for this — you must have a trading calendar service available.
+在查询历史数据时，务必检查日期是否为交易日。非交易日（周末、节假日）没有数据。客户端使用 `TradingCalendarStrategy.is_trading_day(date_str)` 来判断交易日——你需要一个可用的交易日历服务。
 
-### Date/Time Parameter Formats
+### 日期/时间参数格式
 
-| Parameter | Format | Example |
+| 参数 | 格式 | 示例 |
 |-----------|--------|---------|
 | `date` | `YYYYMMDD` | `"20250210"` |
-| `time` | `HH:MM:SS` or `HH:MM` | `"10:30:00"` or `"10:30"` |
+| `time` | `HH:MM:SS` 或 `HH:MM` | `"10:30:00"` 或 `"10:30"` |
 
-## Stock Code Format
+## 股票代码格式
 
-mootdx uses **pure numeric codes** (TDX format). Convert from standard format:
+`mootdx` 使用 **纯数字代码**（TDX 格式）。请按照以下规则进行转换：
 
-| Standard Format | TDX Format | Market |
+| 标准格式 | TDX 格式 | 市场 |
 |----------------|------------|--------|
-| `000001.SZ` | `000001` | Shenzhen |
-| `600300.SH` | `600300` | Shanghai |
-| `300750.SZ` | `300750` | Shenzhen (ChiNext) |
-| `688001.SH` | `688001` | Shanghai (STAR) |
+| `000001.SZ` | `000001` | 深圳 |
+| `600300.SH` | `600300` | 上海 |
+| `300750.SZ` | `300750` | 深圳（创业板） |
+| `688001.SH` | `688001` | 上海（STAR） |
 
-**Conversion**: Strip the `.SH` / `.SZ` / `.BJ` suffix.
+**转换方法**：去掉 `.SH` / `.SZ` / `.BJ` 后缀。
 
-> **Important**: mootdx does NOT support Beijing Stock Exchange (`.BJ`) stocks. Filter them out before calling.
+> **重要提示**：`mootdx` 不支持北京证券交易所（`.BJ`）的股票。在调用相关接口前请先过滤掉这些股票。
 
-## API Reference
+## API 参考
 
-### 1. Initialize Client
+### 1. 初始化客户端
 
 ```python
 from mootdx.quotes import Quotes
 client = Quotes.factory(market='std')
 ```
 
-### 2. `get_bars()` — K-Line / Candlestick Data
+### 2. `get_bars()` — K 线图数据
 
-Fetch historical or real-time K-line bars.
+获取历史或实时的 K 线图数据。
 
 ```python
 await client.get_bars(
@@ -99,16 +99,16 @@ await client.get_bars(
 )
 ```
 
-**Frequency codes:**
+**频率代码**：
 
-| Code | Period |
-|------|--------|
-| 7 | 1-minute bars |
-| 8 | 1-minute bars (alternative) |
-| 4 | Daily bars |
-| 9 | Daily bars (alternative) |
+| 代码 | 周期 |  
+|------|--------|  
+| 7   | 1 分钟的 K 线图 |  
+| 8   | 1 分钟的 K 线图（备用格式）|  
+| 4   | 日线图   |  
+| 9   | 日线图（备用格式）|  
 
-**Return format** (list of dicts):
+**返回格式**（字典列表）：
 
 ```python
 {
@@ -123,18 +123,18 @@ await client.get_bars(
 }
 ```
 
-**Start position calculation**: For historical dates, the `start` parameter is calculated as the number of trading minutes (for 1-min bars) or trading days (for daily bars) between now and the target datetime. This accounts for:
-- Whether today is a trading day
-- Current trading session status (pre-market / in-session / post-market)
-- Lunch break gap (11:30-13:00)
+**起始位置计算**：对于历史数据，`start` 参数会根据当前时间与目标日期之间的交易分钟数（1 分钟 K 线图）或交易天数（日线图）来计算。计算时会考虑以下因素：
+- 当前是否为交易日  
+- 当前的交易时段（盘前/盘中/盘后）  
+- 午休时间的间隔（11:30-13:00）
 
-### 3. `get_realtime_quote()` — Single Stock Real-Time Quote
+### 3. `get_realtime_quote()` — 单股实时报价
 
 ```python
 await client.get_realtime_quote(stock_code="000001.SZ")
 ```
 
-**Returns** (dict): Price, OHLC, volume, amount, and full Level-2 order book (5-level bid/ask):
+**返回值**（字典）：价格、开盘价（OHLC）、成交量、交易量以及完整的二级订单簿（5 个价格等级的买卖订单）：
 
 ```python
 {
@@ -150,15 +150,15 @@ await client.get_realtime_quote(stock_code="000001.SZ")
 }
 ```
 
-### 4. `get_realtime_quotes()` — Batch Real-Time Quotes
+### 4. `get_realtime_quotes()` — 批量实时报价
 
-Native batch interface — much faster than looping `get_realtime_quote()`.
+提供批量处理的接口，比循环调用 `get_realtime_quote()` 更快。
 
 ```python
 await client.get_realtime_quotes(["000001.SZ", "600300.SH", "300750.SZ"])
 ```
 
-**Returns** (list of dicts):
+**返回值**（字典列表）：
 
 ```python
 {
@@ -174,11 +174,11 @@ await client.get_realtime_quotes(["000001.SZ", "600300.SH", "300750.SZ"])
 }
 ```
 
-> `pct_chg` is calculated from **today's open price**, not previous close.
+> `pctchg` 是根据 **当天的开盘价** 计算的，而非前一天的收盘价。
 
-### 5. `get_batch_bars()` — Batch K-Line Data
+### 5. `get_batch_bars()` — 批量 K 线图数据
 
-Parallel fetch K-line bars for multiple stocks with concurrency control.
+并行获取多只股票的 K 线图数据，并支持并发控制。
 
 ```python
 await client.get_batch_bars(
@@ -189,11 +189,11 @@ await client.get_batch_bars(
 )
 ```
 
-**Returns**: `Dict[str, List[Dict]]` — `{stock_code: [bar_data, ...]}`
+**返回值**：`Dict[str, List[Dict]]` — `{stock_code: [bar_data, ...]}`
 
-### 6. `get_transactions_history()` — Historical Tick Data
+### 6. `get_transactions_history()` — 历史交易记录
 
-Tick-by-tick transaction records for a specific historical date.
+获取指定历史日期的逐笔交易记录。
 
 ```python
 await client.get_transactions_history(
@@ -204,7 +204,7 @@ await client.get_transactions_history(
 )
 ```
 
-**Returns** (list of dicts):
+**返回值**（字典列表）：
 
 ```python
 {
@@ -218,9 +218,9 @@ await client.get_transactions_history(
 }
 ```
 
-### 7. `get_transactions_realtime()` — Real-Time Tick Data
+### 7. `get_transactions_realtime()` — 实时逐笔交易数据
 
-Today's live tick-by-tick transaction stream.
+获取当天的实时逐笔交易数据。
 
 ```python
 await client.get_transactions_realtime(
@@ -230,11 +230,11 @@ await client.get_transactions_realtime(
 )
 ```
 
-Same return format as `get_transactions_history()`.
+返回格式与 `get_transactions_history()` 相同。
 
-### 8. `get_transactions_with_fallback()` — Tick Data with Fallback
+### 8. `get_transactions_with_fallback()` — 带有回退机制的实时数据
 
-Tries real-time first, falls back to today's historical data if empty.
+首先尝试获取实时数据，如果实时数据为空，则回退到当天的历史数据。
 
 ```python
 await client.get_transactions_with_fallback(
@@ -244,9 +244,9 @@ await client.get_transactions_with_fallback(
 )
 ```
 
-## Raw mootdx API (Low-Level)
+## 原始的 `mootdx` API（低级接口）
 
-If using `mootdx` directly without the wrapper:
+如果直接使用 `mootdx` 而不使用此封装层：
 
 ```python
 from mootdx.quotes import Quotes
@@ -267,16 +267,16 @@ df = client.transactions(symbol="000001", start=0, offset=1000, date="20250210")
 df = client.transaction(symbol="000001", start=0, offset=1000)
 ```
 
-> All raw APIs return **pandas DataFrames**.
+> 所有原始 API 都返回 **pandas DataFrame**。
 
-## Common Pitfalls
+## 常见问题
 
-1. **Empty results outside trading hours**: Apply the `time_frame` patch (see above)
-2. **Beijing Exchange stocks**: `.BJ` codes are NOT supported — always filter them out
-3. **Rate limiting**: Default rate limit is 0.005s between calls; adjust if connection drops
-4. **Weekend/holiday queries**: Always validate against trading calendar before querying
-5. **1-min bar offset calculation**: Must account for 240 trading minutes/day with lunch gap
+1. **非交易时段返回空结果**：请应用上述的 `time_frame` 补丁。
+2. **北京证券交易所的股票**：不支持 `.BJ` 格式的股票代码，请在调用前过滤掉它们。
+3. **请求速率限制**：默认的请求间隔为 0.005 秒；如果网络连接不稳定，请适当调整。
+4. **周末/节假日查询**：在查询前务必验证日期是否为交易日。
+5. **1 分钟 K 线图的起始时间计算**：需要考虑每天 240 分钟的交易时间以及午休时间的影响。
 
-## Additional Resources
+## 额外资源
 
-- For detailed method signatures and time calculation logic, see [api-reference.md](api-reference.md)
+- 有关详细的 API 方法签名和时间计算逻辑，请参阅 [api-reference.md](api-reference.md)。

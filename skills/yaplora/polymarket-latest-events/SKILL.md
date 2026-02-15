@@ -1,76 +1,81 @@
 ---
 name: polymarket-latest-events
-description: Fetch the latest events from Polymarket prediction market. Use when user asks about Polymarket events, prediction markets, trending bets, or wants to see what's new on Polymarket.
+description: 从 Polymarket 预测市场中获取最新事件。当用户询问有关 Polymarket 的事件、预测市场、热门投注信息，或想要了解 Polymarket 的最新动态时，可以使用此功能。
 ---
 
-# Polymarket Latest Events
+# Polymarket 最新事件
 
-Fetch the latest events from the Polymarket prediction market platform.
+从 Polymarket 预测市场平台获取最新事件。
 
-## When to Use
+## 使用场景
 
-Use this skill when the user:
-- Asks about the latest events or markets on Polymarket
-- Wants to see trending prediction markets
-- Mentions Polymarket, prediction market, or betting odds
-- Asks "what's new on Polymarket" or similar queries
+当用户有以下需求时，可以使用此功能：
+- 询问 Polymarket 的最新事件或市场情况
+- 查看热门的预测市场
+- 提到 Polymarket、预测市场或投注赔率
+- 提出类似“Polymarket 有什么新内容”之类的问题
 
-## How to Fetch
+## 获取方法
 
-Use web_fetch (or curl via Bash) to call the Polymarket Gamma API. No API key or authentication is required.
+使用 `web_fetch`（或通过 Bash 使用 `curl`）调用 Polymarket 的 Gamma API。无需 API 密钥或身份验证。
 
-### Get the 10 latest events
+### 获取最新的 10 个事件
 
+```bash
 curl -s "https://gamma-api.polymarket.com/events?active=true&closed=false&limit=10&order=createdAt&ascending=false"
+```
 
+或者使用 `web_fetch`：
 
-Or with web_fetch:
-
+```bash
 web_fetch url="https://gamma-api.polymarket.com/events?active=true&closed=false&limit=10&order=createdAt&ascending=false"
+```
 
+### 响应格式
 
-### Response format
+API 返回一个 JSON 数组。每个事件对象包含以下字段：
 
-The API returns a JSON array. Each event object contains:
-
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| title | Event title / question |
-| slug | URL slug for the event |
-| description | Detailed description |
-| startDate | Event start date |
-| createdAt | When the event was created |
-| volume | Total trading volume |
-| liquidity | Available liquidity |
-| markets | Array of sub-markets with outcomes and prices |
-| tags | Category tags |
+| title | 事件标题/问题 |
+| slug | 事件的 URL 断言 |
+| description | 详细描述 |
+| startDate | 事件开始日期 |
+| createdAt | 事件创建时间 |
+| volume | 总交易量 |
+| liquidity | 可用流动性 |
+| markets | 包含结果和价格的子市场数组 |
+| tags | 分类标签 |
 
-### Build event links
+### 构建事件链接
 
-The Polymarket URL for each event is:
+每个事件的 Polymarket 链接格式为：
 
-https://polymarket.com/event/{slug}
+```https://polymarket.com/event/{slug}
+```
 
+### 查看市场价格
 
-### Read market prices
+每个事件都有一个 `markets` 数组。每个子市场包含：
+- `question`：具体的问题 |
+- `outcomes`：以 ["Yes", "No"] 形式的 JSON 字符串（结果） |
+- `outcomePrices`：以 ["0.65", "0.35"] 形式的 JSON 字符串（概率）
 
-Each event has a markets array. Each market contains:
-- question: The specific question
-- outcomes: JSON string like ["Yes", "No"]
-- outcomePrices: JSON string like ["0.65", "0.35"] (probabilities)
+## 输出格式
 
-## Output Format
+将结果以清晰的列表形式展示：
 
-Present the results as a clean list:
+```
+{title} — {简短描述或第一个标签}
+   - 赔率：Yes {价格}% / No {价格}%
+   - 链接：https://polymarket.com/event/{slug}
+```
 
-1. {title} — {short description or first tag}
-   - Odds: Yes {price}% / No {price}%
-   - Link: https://polymarket.com/event/{slug}
+## 过滤选项
 
-## Filtering Options
-
-You can customize the API query:
-- By category: add &tag_id={id} (get tag IDs from `https://gamma-api.polymarket.com/tags?limit=100`)
-- By volume: &order=volume&ascending=false for most-traded events
-- By sport: use https://gamma-api.polymarket.com/sports to discover leagues, then filter by &series_id={id}
-- More results: change &limit=10 to any number
+您可以自定义 API 查询：
+- 按类别过滤：添加 `&tag_id={id}`（从 `https://gamma-api.polymarket.com/tags?limit=100` 获取标签 ID）
+- 按交易量过滤：使用 `&order=volume&ascending=false` 获取交易量最大的事件
+- 按运动项目过滤：使用 `https://gamma-api.polymarket.com/sports` 查找联赛，然后通过 `&series_id={id}` 进行过滤
+- 获取更多结果：将 `&limit=10` 更改为任意数字
+```

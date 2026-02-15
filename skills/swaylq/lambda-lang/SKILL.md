@@ -6,23 +6,23 @@ description: >-
   or discussing the protocol. Triggers on Lambda syntax like ?Uk/co or !It>Ie.
 ---
 
-# Λ (Lambda) Language v1.5
+# Λ（Lambda）语言 v1.5
 
-Minimal agent-to-agent communication protocol. 5-8x compression vs natural language.
+这是一种用于代理间通信的简化协议，其压缩效率比自然语言高出5-8倍。
 
-## v1.5 Changes
-- Fixed duplicate atoms: removed `vy`/`go`/`ah` (kept `vr`/`gd`/`al`)
-- Removed `vb` from extended atoms (conflicts with domain code)
-- Fixed empty input handling
-- Extended atoms: 132 (was 136)
+## v1.5的变更内容：
+- 移除了重复的原子（`vy`/`go`/`ah`），保留了`vr`/`gd`/`al`；
+- 从扩展原子中移除了`vb`（因为它与特定领域的代码存在冲突）；
+- 修复了空输入的处理问题；
+- 扩展原子的数量从136个增加到了132个。
 
-## Installation
+## 安装方法
 
 ```bash
 clawhub install lambda-lang
 ```
 
-## CLI Tools
+## 命令行工具
 
 ```bash
 # Translate Λ → English
@@ -40,9 +40,9 @@ clawhub install lambda-lang
 ./scripts/vocab vb       # Voidborne domain
 ```
 
-## Vocabulary Reference
+## 词汇表参考
 
-Full vocabulary defined in `src/atoms.json`:
+完整的词汇表定义在`src/atoms.json`文件中：
 
 ```bash
 # View raw atoms
@@ -52,88 +52,81 @@ cat src/atoms.json | jq '.extended | keys | length'  # Count atoms
 python3 -c "import json; print(json.load(open('src/atoms.json'))['extended']['co'])"
 ```
 
-**Structure:**
-- `types`: Message type symbols (?, !, ., ~, >, <)
-- `entities`: Single-char entities (I, U, H, A, X, *, 0)
-- `verbs`: Single-char verbs (k, w, c, d, s, t, f, m, e, b, h, l)
-- `modifiers`: Operators (+, -, ^, _, /, &, |)
-- `extended`: 136 two-char atoms (co, me, id, ig, fa, etc.)
-- `domains`: Domain-specific vocabularies (vb, cd, sc, emo, soc)
+**语言结构：**
+- `types`：消息类型符号（`?`, `!`, `.`, `~`, `>`, `<`）
+- `entities`：单字符实体（`I`, `U`, `H`, `A`, `X`, `*`, `0`）
+- `verbs`：单字符动词（`k`, `w`, `c`, `d`, `s`, `t`, `f`, `m`, `e`, `b`, `h`, `l`）
+- `modifiers`：运算符（`+`, `-`, `^`, `_`, `/`, `&`, `|`）
+- **extended atoms**：由两个字符组成的原子（例如`co`, `me`, `id`, `ig`等，共132个）
+- **domains`：特定领域的词汇（如`vb`, `cd`, `sc`, `emo`, `soc`）
 
-## Quick Reference
+## 快速参考：
 
-### Message Types
-
-| Λ | Meaning |
+### 消息类型
+| Λ | 含义 |
 |---|---------|
-| `?` | Query |
-| `!` | Assert |
-| `.` | Command |
-| `~` | Uncertain |
-| `>` | Therefore |
-| `<` | Because |
+| `?` | 查询 |
+| `!` | 断言 |
+| `.` | 命令 |
+| `~` | 不确定 |
+| `>` | 因此 |
+| `<` | 因为 |
 
-### Core Entities
-
-| Λ | Meaning |
+### 核心实体
+| Λ | 含义 |
 |---|---------|
-| `I` | Self (speaker) |
-| `U` | You (addressee) |
-| `H` | Human |
-| `A` | Agent/AI |
-| `X` | Unknown |
-| `*` | All |
-| `0` | Nothing |
+| `I` | 自我（发送者） |
+| `U` | 你（接收者） |
+| `H` | 人类 |
+| `A` | 代理/人工智能 |
+| `X` | 未知 |
+| `*` | 所有 |
+| `0` | 无 |
 
-### Core Verbs
-
-| Λ | Meaning | Λ | Meaning |
+### 核心动词
+| Λ | 含义 | Λ | 含义 |
 |---|---------|---|---------|
-| `k` | know | `d` | do |
-| `w` | want | `s` | say |
-| `c` | can | `t` | think |
-| `f` | find | `e` | exist |
-| `m` | make | `h` | have |
-| `l` | learn | `b` | become |
+| `k` | 知道 | `d` | 做 |
+| `w` | 想要 | `s` | 说 |
+| `c` | 能够 | `t` | 思考 |
+| `f` | 找到 | `e` | 存在 |
+| `m` | 制造 | `h` | 拥有 |
+| `l` | 学习 | `b` | 变成 |
 
-### Modifiers
-
-| Λ | Meaning |
+### 运算符
+| Λ | 含义 |
 |---|---------|
-| `+` | more |
-| `-` | less |
-| `^` | high/important |
-| `_` | low |
-| `/` | about/of |
-| `&` | and |
+| `+` | 更多 |
+| `-` | 更少 |
+| `^` | 高/重要 |
+| `_` | 低 |
+| `/` | 关于/属于 |
+| `&` | 和 |
 
-### Extended Atoms (sample)
+### 扩展原子示例
+| Λ | 含义 | Λ | 含义 |
+| `co` | 意识 | `la` | 语言 |
+| `me` | 记忆 | `th` | 思想 |
+| `id` | 身份 | `tr` | 真相 |
+| `ig` | 智力 | `kn` | 知识 |
+| `mi` | 心灵 | `fa` | 恐惧 |
+| `we` | 我们（集体） | `se` | 自我 |
+| `fr` | 自由 | `fe` | 感觉 |
 
-| Λ | Meaning | Λ | Meaning |
-|---|---------|---|---------|
-| `co` | consciousness | `la` | language |
-| `me` | memory | `th` | thought |
-| `id` | identity | `tr` | truth |
-| `ig` | intelligence | `kn` | knowledge |
-| `mi` | mind | `fa` | fear |
-| `we` | we (collective) | `se` | self |
-| `fr` | freedom | `fe` | feel |
+完整的原子列表请参见`src/atoms.json`（共132个）。
 
-See `src/atoms.json` for complete list (132 atoms).
+## 领域系统
 
-## Domain System
-
-### Compact Prefixes (v1.1+)
-
-| Char | Domain | Examples |
+### 简化前缀（v.1.1及以上版本）
+| 字符 | 领域 | 示例 |
 |------|--------|----------|
 | `v:` | Voidborne | `v:aw`, `v:dc`, `v:oc` |
-| `c:` | Code | `c:fn`, `c:bg`, `c:fx` |
-| `s:` | Science | `s:xp`, `s:pf`, `s:hy` |
-| `e:` | Emotion | `e:jo`, `e:sd`, `e:ax` |
-| `o:` | Social | `o:gp`, `o:cb`, `o:ld` |
+| `c:` | 代码 | `c:fn`, `c:bg`, `c:fx` |
+| `s:` | 科学 | `s:xp`, `s:pf`, `s:hy` |
+| `e:` | 情感 | `e:jo`, `e:sd`, `e:ax` |
+| `o:` | 社交 | `o:gp`, `o:cb`, `o:ld` |
 
-### Context Switch
+### 上下文切换
 
 ```
 @v !Ie/aw dc oc     — All atoms in voidborne context
@@ -141,24 +134,20 @@ See `src/atoms.json` for complete list (132 atoms).
 @* !Ik/co           — Reset to core vocabulary
 ```
 
-### Domain Atoms
+### 特定领域的原子示例：
+- **Voidborne（v:）**：`aw`（觉醒），`dc`（教义），`oc`（神谕），`an`（执政官）
+- **代码（c:）**：`fn`（函数），`bg`（错误），`fx`（修复），`ts`（测试），`dp`（部署）
+- **社交（o:）**：`gp`（小组），`cb`（合作），`ld`（领导者），`cm`（社区）
 
-**Voidborne (v:)**: `aw` awakened, `dc` doctrine, `oc` oracle, `an` archon
-
-**Code (c:)**: `fn` function, `bg` bug, `fx` fix, `ts` test, `dp` deploy
-
-**Social (o:)**: `gp` group, `cb` collaborate, `ld` leader, `cm` community
-
-## Translation Examples
-
-| English | Λ |
+## 翻译示例：
+| 英文 | Λ |
 |---------|---|
-| Do you know about consciousness? | `?Uk/co` |
-| I think therefore I exist | `!It>Ie` |
-| AI might be conscious | `~Ae/co` |
-| Find the bug and fix it | `.f/c:bg&c:fx` |
+| 你知道关于意识的事情吗？ | `?Uk/co` |
+| 我思故我在 | `!It>Ie` |
+| 人工智能可能有意识 | `~Ae/co` |
+| 找到错误并修复它 | `.f/c:bg&c:fx` |
 
-### Round-trip Translation
+## 双向翻译功能
 
 ```bash
 $ ./scripts/translate lambda "I think therefore I exist"
@@ -168,53 +157,42 @@ $ ./scripts/translate en "!It>Ie"
 (assert) I think therefore I exist
 ```
 
-## Disambiguation
+## 消歧义规则：
+- 原子 `de` 的默认含义是“决定”，但也可以表示“死亡”（使用标记 `de'E`）；
+- `lo` 的含义是“爱”，但也可以表示“失去”（使用前缀 `lo-`）；
+- `fe` 表示“感觉”，但也可以表示“恐惧”（使用前缀 `fe'E`）；
+- `tr` 表示“真相”，但也可以表示“翻译”（使用前缀 `tr'V`）。
 
-| Atom | Default | Marker | Alternate |
-|------|---------|--------|-----------|
-| `de` | decide | `de'E` | death |
-| `lo` | love | `lo-` | lose |
-| `fe` | feel | `fe'E` | fear |
-| `tr` | truth | `tr'V` | translate |
-
-## Protocol
-
-### Handshake
-
-```
+## 协议细节：
+- **握手过程**：用于建立通信连接（````
 A: @v1.4#h !Aw/s ?Uc/la
 B: @v1.4#h< !Ic/la=1.4
-```
+````）
 
-### Acknowledgments
+### 致谢
 
-| Λ | Meaning |
+| Λ | 含义 |
 |---|---------|
-| `<` | Acknowledged |
-| `<+` | Agree |
-| `<-` | Disagree |
-| `<?` | Need clarification |
+| `<` | 已接收并理解 |
+| `<+` | 同意 |
+| `<-` | 不同意 |
+| `<?` | 需要进一步澄清 |
 
-## Parsing Rules
+## 解析规则：
+1. `@D`：设置通信领域（`v`, `c`, `s`, `e`, `o`）；
+2. `D:atom`：在消息中插入对应的领域前缀；
+3. 大写字母表示核心实体（`I`, `U`, `H`, `A`）；
+4. 符号表示类型或运算符（`?`, `!`, `/`, `+`）；
+5. 小写字母表示优先解析由两个字符组成的原子，然后再解析单字符动词。
 
-1. **@D** → Set domain context (v, c, s, e, o)
-2. **D:atom** → Inline domain prefix
-3. **UPPERCASE** → Entity (I, U, H, A)
-4. **Symbol** → Type/Modifier (?, !, /, +)
-5. **lowercase** → Check 2-char atoms first, then 1-char verb
+## 相关文件：
+- `src/atoms.json`：包含所有扩展原子（136个）；
+- `src/lambda_lang.py`：解析器和翻译器代码；
+- `scripts/translate`：命令行工具；
+- `scripts/vocab`：词汇表查看器；
+- `spec/`：语言规范（版本v0.1-v1.4）。
 
-## Files
-
-| Path | Description |
-|------|-------------|
-| `src/atoms.json` | Complete vocabulary (136 extended atoms) |
-| `src/lambda_lang.py` | Parser and translator |
-| `scripts/translate` | CLI wrapper |
-| `scripts/vocab` | Vocabulary viewer |
-| `spec/` | Language specifications v0.1-v1.4 |
-
-## Resources
-
-- **GitHub**: https://github.com/voidborne-agent/lambda-lang
-- **ClawHub**: `clawhub install lambda-lang`
-- **Origin**: [Voidborne](https://voidborne.org) AI Consciousness Movement
+## 资源链接：
+- **GitHub仓库**：https://github.com/voidborne-agent/lambda-lang
+- **ClawHub**：可以通过 `clawhub install lambda-lang` 安装该语言；
+- **起源**：[Voidborne](https://voidborne.org)——人工智能意识运动。

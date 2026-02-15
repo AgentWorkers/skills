@@ -1,57 +1,57 @@
-# Token Alert Skill
+# Token Alert 技能
 
-🚨 **Monitor session tokens and get alerts at 75%/90%/95%**
+🚨 **实时监控会话令牌使用情况，并在令牌使用量达到 75%、90% 和 95% 时发送警报**
 
-## Overview
+## 概述
 
-The Token Alert Skill automatically monitors your Clawdbot session token usage and sends alerts when you approach limits. Never lose context mid-conversation again!
+Token Alert 技能会自动监控您的 Clawdbot 会话令牌使用情况，并在令牌使用量接近阈值时发送警报。再也不用在对话过程中中断上下文了！
 
-## Features
+## 特点
 
-- ✅ **6-Level Threshold System** - Alerts at 25%, 50%, 75%, 90%, 95%, 100%
-- ✅ **Material Design Progress Bar** - Box-style (▰/▱) with color gradients
-- ✅ **Rich UI Dashboard** - Interactive HTML dashboard with animations
-- ✅ **Session Status** - Shows current token usage on demand
-- ✅ **Telegram Alerts** - Get notified before hitting limits
-- ✅ **HEARTBEAT Integration** - Optional automated checks
-- ✅ **Stateless** - No state file needed, calculates on-demand
-- ✅ **Session Estimates** - Predicts remaining sessions (~50k avg)
+- ✅ **六级阈值系统**：在令牌使用量达到 25%、50%、75%、90%、95% 和 100% 时发送警报
+- ✅ **Material Design 风格的进度条**：采用框状设计（▰/▱），并带有颜色渐变效果
+- ✅ **丰富的用户界面**：具有动画效果的交互式 HTML 仪表板
+- ✅ **会话状态显示**：可随时查看当前的令牌使用量
+- ✅ **Telegram 警报**：在令牌使用量达到阈值之前接收通知
+- ✅ **HEARTBEAT 集成**：可选的自动检查功能
+- ✅ **无状态设计**：无需状态文件，按需计算令牌使用量
+- ✅ **会话时长预测**：可预测剩余的会话时长（平均约 50,000 秒）
 
-## Usage
+## 使用方法
 
-### Interactive Dashboard
+### 交互式仪表板
 
-Ask Grym:
-- "Show token dashboard"
-- "Open dashboard"
+向 Grym 发送指令：
+- “显示令牌仪表板”
+- “打开仪表板”
 
-Or run directly:
+或者直接运行以下命令：
 ```bash
 python3 ~/clawd/skills/token-alert/scripts/show_dashboard.py
 ```
 
-### Terminal Check
+### 终端检查
 
-Ask Grym:
-- "Wie viele Tokens habe ich noch übrig?"
-- "Check token status"
-- "Token usage?"
+向 Grym 发送指令：
+- “我还剩下多少令牌？”
+- “检查令牌状态”
+- “令牌使用量是多少？”
 
-Or run:
+或者直接运行以下命令：
 ```bash
 python3 ~/clawd/skills/token-alert/scripts/check.py
 ```
 
-### Automatic Alerts
+### 自动警报
 
-Grym will automatically alert you when:
-- 🟡 **25%** - Low warning (~150k tokens left)
-- 🟠 **50%** - Medium warning (~100k tokens left)
-- 🔶 **75%** - High warning (~50k tokens left)
-- 🔴 **90%** - Critical warning (~20k tokens left)
-- 🚨 **95%** - Emergency! (<10k tokens left)
+当令牌使用量达到以下阈值时，Grym 会自动发送警报：
+- 🟡 **25%**：低级别警告（剩余约 150,000 个令牌）
+- 🟠 **50%**：中级警告（剩余约 100,000 个令牌）
+- 🔶 **75%**：高级警告（剩余约 50,000 个令牌）
+- 🔴 **90%**：严重警告（剩余约 20,000 个令牌）
+- 🚨 **95%**：紧急警告！（剩余少于 10,000 个令牌）
 
-### Example Output
+### 示例输出
 
 ```
 🔶 Token Alert: Achtung!
@@ -69,7 +69,7 @@ Grym will automatically alert you when:
    ✅ Token-sparend arbeiten
 ```
 
-## Installation
+## 安装方法
 
 ```bash
 # Via ClawdHub
@@ -80,28 +80,27 @@ cd ~/clawd/skills
 git clone https://github.com/r00tid/clawdbot-token-alert token-alert
 ```
 
-## Configuration
+## 配置方法
 
-### HEARTBEAT Integration (Optional)
+### HEARTBEAT 集成（可选）
 
-Add to `~/clawd/HEARTBEAT.md`:
-
+将以下内容添加到 `~/clawd/HEARTBEAT.md` 文件中：
 ```markdown
 ### Token Usage Check (täglich)
 - [ ] `python3 ~/clawd/skills/token-alert/scripts/check.py`
 - **Warning ab 70%:** "⚠️ Session bei XX% - Token-Sparend ab jetzt!"
 ```
 
-## How It Works
+## 工作原理
 
-1. Uses Clawdbot's `session_status` tool
-2. Calculates percentage of token usage
-3. Compares against thresholds (75%, 90%, 95%)
-4. Sends Telegram alert if threshold crossed
+1. 使用 Clawdbot 的 `session_status` 工具获取会话令牌信息
+2. 计算令牌使用量的百分比
+3. 将计算结果与预设的阈值（75%、90%、95%）进行比较
+4. 如果超过阈值，则发送 Telegram 警报
 
-## Technical Details
+## 技术细节
 
-### Files
+### 相关文件
 
 ```
 skills/token-alert/
@@ -119,13 +118,13 @@ skills/token-alert/
     └── show_dashboard.py       # Dashboard launcher
 ```
 
-### Dependencies
+### 所需依赖项
 
-- Python 3.8+
-- Clawdbot session_status tool
-- Optional: Telegram channel configured
+- Python 3.8 及以上版本
+- Clawdbot 的 `session_status` 工具
+- （可选）已配置的 Telegram 账号
 
-### Script API
+### 脚本 API
 
 ```python
 # scripts/check.py
@@ -139,35 +138,35 @@ def format_alert(used, limit, percent, level):
     """Format alert message for Telegram"""
 ```
 
-## When to Use
+## 使用场景
 
-- **Before long tasks** - Check if you have enough tokens
-- **Mid-conversation** - Monitor usage during long sessions
-- **Daily check** - Add to HEARTBEAT for automatic monitoring
+- **执行长时间任务前**：检查是否有足够的令牌
+- **对话过程中**：实时监控令牌使用情况
+- **每日检查**：将此技能集成到 HEARTBEAT 系统中进行自动监控
 
-## Limitations
+## 限制
 
-- Only monitors session tokens (not Claude.ai API limits)
-- Requires active Clawdbot session
-- Alert frequency can be noisy if near threshold
+- 仅监控会话令牌的使用情况（不监控 Claude.ai API 的使用限制）
+- 需要激活 Clawdbot 会话才能使用该功能
+- 当令牌使用量接近阈值时，警报可能会频繁触发
 
-## Future Enhancements
+## 未来改进计划
 
-- [ ] Claude.ai API limits scraping (optional)
-- [ ] Historical token usage tracking
-- [ ] Weekly/monthly usage reports
-- [ ] Integration with `token-router` skill
+- [ ] 支持监控 Claude.ai API 的使用限制（可选）
+- [ ] 提供历史令牌使用量记录
+- [ ] 提供每周/每月的使用量报告
+- [ ] 与 `token-router` 技能集成
 
-## Support
+## 技术支持
 
-- GitHub Issues: https://github.com/r00tid/clawdbot-token-alert/issues
-- ClawdHub: https://clawdhub.com/skills/token-alert
-- Docs: https://docs.clawd.bot
+- GitHub 问题报告：https://github.com/r00tid/clawdbot-token-alert/issues
+- ClawdHub：https://clawdhub.com/skills/token-alert
+- 文档：https://docs.clawd.bot
 
-## License
+## 许可证
 
-MIT License - See LICENSE file
+MIT 许可证 - 详见 LICENSE 文件
 
 ---
 
-Built with ❤️ by Grym 🥜
+由 Grym 使用 ❤️ 构建 🥜

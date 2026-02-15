@@ -1,6 +1,6 @@
 ---
 name: aluvia
-description: "Stop your AI agent from getting blocked. Aluvia routes traffic through real US mobile carrier IPs (AT&T, T-Mobile, Verizon) so websites treat your agent like a human. Bypasses Cloudflare, DataDome, PerimeterX, Akamai Bot Manager, and other anti-bot systems automatically. Use when your agent hits 403 Forbidden, Cloudflare challenges, CAPTCHAs, rate limits (429), IP bans, empty responses, or WAF blocks. Features auto block detection and bypass, one-command IP rotation, US geo-targeting, dynamic proxy routing rules, and managed headless Chromium via Playwright — all through a JSON-first CLI built for AI agents."
+description: "防止你的AI代理被屏蔽。Aluvia通过真实的美国移动运营商IP（AT&T、T-Mobile、Verizon）来路由流量，因此网站会将你的代理视为人类用户。该工具能够自动绕过Cloudflare、DataDome、PerimeterX、Akamai Bot Manager等反机器人系统。当你的代理遇到403 Forbidden错误、Cloudflare的验证请求、CAPTCHAs、速率限制（429）、IP封禁、空响应或WAF拦截时，可以使用Aluvia。它具备自动检测和绕过屏蔽功能、一键切换IP地址的功能、美国地理定位功能、动态代理路由规则，以及通过Playwright管理的无头Chromium浏览器——所有这些功能都通过专为AI代理设计的JSON驱动的命令行界面（CLI）来实现。"
 metadata:
   {
     "openclaw":
@@ -12,51 +12,51 @@ metadata:
   }
 ---
 
-# Aluvia Proxy: Unblock agent browser with proxies + playwright
+# Aluvia Proxy：通过代理和Playwright解除代理浏览器的限制
 
-## The Problem
+## 问题
 
-Your OpenClaw agent gets blocked because anti-bot systems are built to stop cloud-based agent/bot traffic with datacenter IP addresses. You get 403 Forbidden, CAPTCHAs, 429 rate limits, IP bans, empty responses.
+您的OpenClaw代理会被阻止，因为反机器人系统旨在阻止来自数据中心IP地址的代理/机器人流量。您会遇到403 Forbidden错误、CAPTCHAs、429速率限制、IP封禁或空响应等问题。
 
-## The Solution
+## 解决方案
 
-Aluvia routes your agent's traffic through **real US mobile carrier IPs** — the same IPs used by millions of real people on their phones. Websites cannot distinguish your agent from a legitimate user browsing on a mobile device.
+Aluvia会将您的代理流量路由到**真实的美国移动运营商IP**——这些IP正是数百万真实用户在手机上使用的IP。网站无法区分您的代理和合法用户在移动设备上的浏览行为。
 
-Aluvia's proxies + Playwright + Chrome stack: detects website blocks and routes your agent's traffic through a clean mobile IP when necessary. All automatically. All without proxy configs. All without building custom routing rules.
+Aluvia结合了代理、Playwright和Chrome技术栈：能够检测到网站对代理的封锁，并在必要时将代理流量路由到新的移动IP。所有操作都是自动完成的，无需配置代理或编写自定义路由规则。
 
-## Features
+## 特点
 
-- **Mobile carrier residential proxies** — Not datacenter or shared residential IPs. Real mobile carrier IPs that websites inherently trust. Highest-quality proxy tier available.
-- **Automatic block detection and bypass** — Every page load is scored 0.0–1.0. Detects Cloudflare challenges, CAPTCHAs, 403/429 responses, soft blocks, and empty pages. With `--auto-unblock`, blocks are remediated automatically by rerouting through proxy and reloading.
-- **One-command IP rotation** — Rotate to a fresh mobile IP mid-session without restarting the browser. Break through persistent blocks and rate limits instantly.
-- **US geo-targeting** — Pin your exit IP to a specific US state (California, New York, Texas, etc.) for location-sensitive scraping and content access.
-- **Dynamic proxy routing rules** — Proxy only the domains that need it. Add or remove hostnames on the fly as your agent navigates across sites and discovers new endpoints.
-- **Managed headless Chromium with Playwright** — Full browser sessions with Chrome DevTools Protocol (CDP) access. No browser setup, no stealth plugins, no fingerprint patching required.
-- **JSON-first CLI built for agents** — Every command returns structured JSON to stdout. Designed for programmatic use by AI agents, not for humans typing in a terminal.
+- **移动运营商的住宅IP**：不是数据中心或共享的住宅IP，而是网站信任的真实移动运营商IP，提供最高质量的代理服务。
+- **自动检测和绕过封锁**：每个页面加载的评分范围为0.0–1.0。能够检测到Cloudflare的挑战、CAPTCHAs、403/429错误、软封锁以及空页面。使用`--auto-unblock`选项后，系统会通过重新路由和刷新页面来自动解决封锁问题。
+- **一键IP轮换**：在会话中途无需重启浏览器即可切换到新的移动IP，从而立即突破持续的封锁和速率限制。
+- **美国地理定位**：可以将您的出口IP设置为特定的美国州（如加利福尼亚、纽约、德克萨斯等），以便进行位置敏感的抓取和内容访问。
+- **动态代理路由规则**：仅对需要代理的域名进行代理处理。当代理访问新网站时，可以动态添加或删除主机名。
+- **使用Playwright管理的无头Chrome**：提供完整的浏览器会话，并支持Chrome DevTools Protocol (CDP)访问。无需手动配置浏览器或安装任何插件。
+- **专为代理设计的JSON格式CLI**：所有命令都会以结构化的JSON格式返回到标准输出（stdout）。适用于AI代理的程序化使用，而非人类在终端中手动输入命令。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @aluvia/sdk
 ```
 
-Or use directly with npx (no install needed):
+或者直接使用`npx`命令进行安装（无需额外安装）：
 
 ```bash
 npx aluvia help
 ```
 
-## CLI Interface
+## CLI接口
 
-- Every command outputs a single JSON object to stdout. Parse it with your JSON tool.
-- Exit code `0` = success, `1` = error. Errors return `{"error": "message"}`.
-- The CLI manages long-running browser daemons — start a session, interact via the `exec` tool, close when done.
-- Block detection scores pages 0.0-1.0: `blocked` >= 0.7, `suspected` >= 0.4, `clear` < 0.4.
-- `--auto-unblock` handles most blocks automatically by adding hostnames to proxy rules and reloading.
+- 每个命令都会将一个JSON对象输出到标准输出（stdout）。请使用相应的JSON解析工具进行解析。
+- 成功返回退出代码`0`，失败返回`1`。失败时返回`{"error": "message"}`。
+- CLI可以管理长时间运行的浏览器进程：启动会话、通过`exec`工具进行交互，并在会话结束后关闭进程。
+- 页面封锁评分范围为0.0–1.0：`blocked` >= 0.7表示被封锁，`suspected` >= 0.4表示疑似被封锁，`clear` < 0.4表示未被封锁。
+- `--auto-unblock`选项会自动将需要代理的主机名添加到代理规则中，并重新加载页面以绕过封锁。
 
-## Prerequisites Check
+## 使用前的准备工作
 
-Before using any command, verify the environment:
+在使用任何命令之前，请先验证环境：
 
 ```bash
 # 1. Check API key is set (never log the full value)
@@ -69,119 +69,105 @@ aluvia help --json
 node -e "require('playwright')"
 ```
 
-If the API key is missing, direct the user to create one at the [Aluvia dashboard](https://dashboard.aluvia.io) and set `ALUVIA_API_KEY`. If `aluvia` is not found, run `npm install @aluvia/sdk`. If Playwright is missing, run `npm install playwright`.
+如果API密钥缺失，请引导用户前往[Aluvia控制台](https://dashboard.aluvia.io)创建密钥，并设置`ALUVIA_API_KEY`。如果未安装`aluvia`模块，请运行`npm install @aluvia/sdk`；如果未安装Playwright，请运行`npm install playwright`。
 
-## Core Commands Quick Reference
+## 核心命令快速参考
 
-| Command                     | Purpose                                                 | Common Usage                                                                        |
+| 命令                        | 功能                                      | 常见用法                                                                                              |
 | --------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `session start <url>`       | Launch a headless browser session                       | `aluvia session start https://example.com --auto-unblock --browser-session my-task` |
-| `session close`             | Stop a running session                                  | `aluvia session close --browser-session my-task`                                    |
-| `session list`              | List all active sessions                                | `aluvia session list`                                                               |
-| `session get`               | Get session details + block detection + connection info | `aluvia session get --browser-session my-task`                                      |
-| `session rotate-ip`         | Rotate to a new upstream IP                             | `aluvia session rotate-ip --browser-session my-task`                                |
-| `session set-geo <geo>`     | Target IPs from a specific US region                    | `aluvia session set-geo us_ca --browser-session my-task`                            |
-| `session set-rules <rules>` | Add hostnames to proxy routing                          | `aluvia session set-rules "example.com,api.example.com" --browser-session my-task`  |
-| `account`                   | Show account info and balance                           | `aluvia account`                                                                    |
-| `account usage`             | Show bandwidth usage stats                              | `aluvia account usage`                                                              |
-| `geos`                      | List available geo-targeting regions                    | `aluvia geos`                                                                       |
-| `help`                      | Show help (use `--json` for structured output)          | `aluvia help --json`                                                                |
+| `session start <url>`       | 启动无头浏览器会话                                      | `aluvia session start https://example.com --auto-unblock --browser-session my-task`         |
+| `session close`             | 关闭正在运行的会话                                      | `aluvia session close --browser-session my-task`                                      |
+| `session list`              | 列出所有活跃的会话                                      | `aluvia session list`                                                                                         |
+| `session get`               | 获取会话详情、封锁检测结果和连接信息                        | `aluvia session get --browser-session my-task`                                      |
+| `session rotate-ip`         | 切换到新的上游IP                                      | `aluvia session rotate-ip --browser-session my-task`                                      |
+| `session set-geo <geo>`     | 设置会话的地理位置                                      | `aluvia session set-geo us_ca --browser-session my-task`                         |
+| `session set-rules <rules>` | 向代理路由规则中添加主机名                                | `aluvia session set-rules "example.com,api.example.com" --browser-session my-task`         |
+| `account`                   | 显示账户信息和余额                                      | `aluvia account`                                                                                          |
+| `account usage`             | 显示带宽使用情况                                    | `aluvia account usage`                                                                                         |
+| `geos`                      | 列出可用的地理定位区域                                      | `aluvia geos`                                                                                         |
+| `help`                      | 显示帮助信息（使用`--json`可获取结构化输出）                         | `aluvia help --json`                                                                                         |
 
-## Standard Workflow
+## 标准工作流程
 
-### 1. Start a session
+### 1. 启动会话
 
-Always use `--browser-session` to name your session. Always use `--auto-unblock` unless you need manual block control.
+始终使用`--browser-session`参数为会话命名。除非需要手动控制封锁行为，否则请使用`--auto-unblock`选项。
 
 ```bash
 aluvia session start https://example.com --auto-unblock --browser-session my-task
 ```
 
-### 2. Parse the JSON output
+### 2. 解析JSON输出
 
-The start command returns:
+启动命令会返回一个JSON对象。请保存`browserSession`变量，以便后续命令使用。
 
-```json
-{
-  "browserSession": "my-task",
-  "pid": 12345,
-  "startUrl": "https://example.com",
-  "cdpUrl": "http://127.0.0.1:38209",
-  "connectionId": 3449,
-  "blockDetection": true,
-  "autoUnblock": true
-}
-```
+**如果代理使用的是OpenClaw浏览器工具**：请使用该会话的`cdpUrl`创建一个远程CDP配置文件，并在所有浏览器命令中使用该配置文件。详情请参阅[OpenClaw浏览器集成文档](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/openclaw-browser.md)。
 
-Save `browserSession` — you need it for every subsequent command.
+### 3. 监控封锁情况
 
-**If the agent uses the OpenClaw browser tool:** create a remote CDP profile with this session's `cdpUrl` and use that profile for all browser commands. See [OpenClaw browser integration](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/openclaw-browser.md).
-
-### 3. Monitor for blocks
-
-Check session status including the latest block detection result:
+检查会话状态及最新的封锁检测结果：
 
 ```bash
 aluvia session get --browser-session my-task
 ```
 
-Look at the `lastDetection` object in the response. If `blockStatus` is `"blocked"` and `--auto-unblock` is on, the SDK already handled it. If blocks persist, escalate:
+查看响应中的`lastDetection`对象。如果`blockStatus`为`"blocked"`且`--auto-unblock`选项已启用，SDK会自动处理封锁问题。如果封锁持续存在，请采取进一步措施。
 
-### 4. Rotate IP if blocked
+### 4. 在被封锁时切换IP
 
 ```bash
 aluvia session rotate-ip --browser-session my-task
 ```
 
-Returns a new `sessionId` (UUID). The next request through the proxy uses a fresh IP.
+系统会返回一个新的`sessionId`（UUID）。后续通过代理的请求将使用新的IP地址。
 
-### 5. Set geo-targeting if needed
+### 5. 设置地理定位（如需）
 
-Some sites serve different content or apply different blocks by region:
+某些网站会根据地区提供不同的内容或采取不同的封锁措施：
 
 ```bash
 aluvia session set-geo us_ca --browser-session my-task
 ```
 
-### 6. Expand routing rules
+### 6. 动态扩展路由规则
 
-If your agent navigates to new domains that need proxying, add them dynamically:
+如果代理访问的新域名需要代理支持，请动态添加相应的规则：
 
 ```bash
 aluvia session set-rules "newsite.com,api.newsite.com" --browser-session my-task
 ```
 
-Rules are appended to existing rules (not replaced).
+新规则会添加到现有规则中（不会替换原有规则）。
 
-### 7. Close the session when done
+### 7. 会话结束后关闭会话
 
-**Always close your session.** Sessions consume resources until explicitly closed.
+**务必关闭会话**。会话会持续消耗系统资源，直到明确关闭。
 
 ```bash
 aluvia session close --browser-session my-task
 ```
 
-## Safety Constraints
+## 安全注意事项
 
-Follow these rules in every interaction:
+在所有操作中请遵守以下规则：
 
-1. **Always close sessions.** When your task finishes — success or failure — run `session close`. If uncertain whether a session exists, run `session list` first.
-2. **Never expose the API key.** Reference `ALUVIA_API_KEY` by name only. Never log, print, or include its value in output.
-3. **Check balance before expensive operations.** Run `aluvia account` and inspect `balance_gb` before long scraping tasks.
-4. **Limit IP rotation retries to 3.** If rotating IP three times doesn't resolve a block, stop and report the issue — the site may use fingerprinting beyond IP.
-5. **Prefer `--auto-unblock`.** Let the SDK handle block detection and remediation automatically. Only disable it when you need manual control over routing decisions.
-6. **Prefer headless mode.** Only use `--headful` for debugging. Headless is faster and uses fewer resources.
-7. **Parse exit codes.** Always check the exit code. On exit code 1, parse the `error` field and handle it — do not blindly retry.
-8. **Use named sessions.** Always pass `--browser-session <name>` to avoid ambiguity errors when multiple sessions run.
-9. **Clean up on failure.** If any step fails, close the session before retrying or aborting. Use `session close --all` as a last resort.
-10. **One session per task.** Do not start multiple sessions unless the task explicitly requires parallel browsing of different sites.
+1. **始终关闭会话**：无论任务是否完成，都请运行`session close`。如果不确定会话是否存在，请先运行`session list`。
+2. **切勿泄露API密钥**：仅以`ALUVIA_API_KEY`的名称引用该密钥，切勿将其记录、打印或显示在输出中。
+3. **在高成本操作前检查余额**：在执行长时间抓取任务前，请运行`aluvia account`并查看`balance_gb`。
+4. **限制IP轮换尝试次数**：如果尝试三次切换IP仍无法解决问题，请停止操作并报告问题（某些网站可能使用其他方式识别用户）。
+5. **优先使用`--auto-unblock`选项**：让SDK自动处理封锁检测和绕过机制。仅在需要手动控制路由决策时才禁用该选项。
+6. **优先使用无头模式**：除非需要调试，否则请使用`--headful`选项。无头模式更快且更节省资源。
+7. **解析退出代码**：务必检查退出代码。当退出代码为1时，请解析`error`字段并相应处理错误，切勿盲目重试。
+8. **使用命名的会话**：为每个会话指定名称（如`--browser-session <name>`），以避免混淆。
+9. **失败后进行清理**：如果任何步骤失败，请先关闭会话，然后再尝试或中止操作。必要时可使用`session close --all`。
+10. **每个任务使用一个会话**：除非任务明确要求同时访问多个网站，否则不要启动多个会话。
 
-## References
+## 参考资料
 
-For detailed command specs, workflows, and troubleshooting:
+有关详细命令说明、工作流程和故障排除方法，请参考以下文档：
 
-- **Command reference:** [docs/command-reference.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/command-reference.md) — every flag, output schema, and error for all 11 commands
-- **Workflow recipes:** [docs/workflows.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/workflows.md) — step-by-step patterns for common scenarios
-- **Troubleshooting:** [docs/troubleshooting.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/troubleshooting.md) — error messages, block score interpretation, signal names, recovery steps
-- **agent-browser integration:** [docs/integrations/agent-browser.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/agent-browser.md) — using Aluvia CDP with [agent-browser](https://www.npmjs.com/package/agent-browser) CLI
-- **OpenClaw browser integration:** [docs/integrations/openclaw-browser.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/openclaw-browser.md) — using Aluvia CDP with [OpenClaw browser tool](https://docs.openclaw.ai/tools/browser)
+- **命令参考**：[docs/command-reference.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/command-reference.md) — 所有11个命令的参数、输出格式和错误信息。
+- **工作流程指南**：[docs/workflows.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/workflows.md) — 常见场景的详细操作步骤。
+- **故障排除**：[docs/troubleshooting.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/troubleshooting.md) — 错误信息、封锁等级解析、信号名称及恢复方法。
+- **代理与浏览器集成**：[docs/integrations/agent-browser.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/agent-browser.md) — 如何将Aluvia与[agent-browser](https://www.npmjs.com/package/agent-browser) CLI集成。
+- **OpenClaw浏览器集成**：[docs/integrations/openclaw-browser.md](https://github.com/aluvia-connect/aluvia-skills/blob/main/docs/integrations/openclaw-browser.md) — 如何将Aluvia与[OpenClaw浏览器工具](https://docs.openclaw.ai/tools/browser)集成。

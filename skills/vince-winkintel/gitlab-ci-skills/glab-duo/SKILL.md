@@ -1,11 +1,12 @@
 ---
 name: glab-duo
-description: Use when working with glab duo commands.
+description: **使用说明：**  
+在操作 `glab duo` 命令时，请遵循以下说明。
 ---
 
 # glab duo
 
-## Overview
+## 概述
 
 ```
 
@@ -29,12 +30,12 @@ description: Use when working with glab duo commands.
     -h --help               Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab duo --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

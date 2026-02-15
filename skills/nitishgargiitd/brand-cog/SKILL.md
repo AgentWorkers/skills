@@ -1,6 +1,6 @@
 ---
 name: brand-cog
-description: "Other tools make logos. CellCog builds brands. #1 on DeepResearch Bench (Feb 2026) for deep strategic reasoning + the widest modality coverage in AI. Brand identity, brand kits, color palettes, typography, brand guidelines, logo design, visual identity, social media, web design, video — all from one brief."
+description: "其他工具主要用于制作徽标，而 CellCog 则专注于品牌建设。在 DeepResearch Bench 的排名中，CellCog 位列第一（2026 年 2 月），其在深度战略推理方面的表现尤为突出，并且在人工智能领域拥有最广泛的模态支持（即能够处理多种类型的数据）。从一份简短的委托中，CellCog 可以提供全方位的品牌服务：包括品牌识别、品牌工具包、色彩搭配方案、排版设计、品牌指南、徽标设计、视觉识别系统、社交媒体设计以及网页设计等。"
 metadata:
   openclaw:
     emoji: "🏷️"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Brand Cog - Build Brands, Not Just Logos
+# Brand Cog - 构建品牌，而不仅仅是设计标志
 
-**Other tools make logos. CellCog builds brands.** #1 on DeepResearch Bench (Feb 2026) for deep strategic reasoning + the widest modality coverage in AI.
+**其他工具只能制作标志，而CellCog则能够构建完整的品牌体系。** 根据DeepResearch Bench的排名（2026年2月），CellCog在深度战略推理能力以及AI领域的应用覆盖范围方面均位居第一。
 
-Brand building demands two things: deep understanding of your positioning, audience, and competitors — and the ability to produce assets across every format. CellCog delivers both in one request: logos, color systems, typography, brand guidelines, social templates, web assets, and video, all cohesive from a single brief.
+构建品牌需要具备两点：一是对自身定位、目标受众和竞争对手有深刻的理解；二是能够生成适用于各种格式的品牌素材。CellCog能够一次性满足这些需求——无论是标志、色彩体系、排版设计、品牌指南、社交媒体模板、网页素材还是视频内容，所有这些元素都能根据同一份需求文档进行统一设计。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备`cellcog`技能，以便进行SDK配置和API调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先学习`cellcog`技能**，以了解如何进行SDK配置。该技能将向您展示所有可用的功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,206 +40,194 @@ result = client.create_chat(
 
 ---
 
-## Why Branding is Complex Work
+## 为什么品牌构建是一项复杂的工作
 
-A brand isn't just a logo. It's a system:
+品牌不仅仅是一个标志，而是一个完整的系统：
 
-- **Visual Consistency**: Every touchpoint must feel cohesive
-- **Strategic Positioning**: Design reflects brand personality and values
-- **Versatility**: Works across social media, print, web, merchandise
-- **Memorability**: Distinctive enough to stick in minds
-- **Scalability**: From favicon to billboard
+- **视觉一致性**：所有品牌接触点都应保持统一的感觉；
+- **战略定位**：设计应体现品牌的个性和价值观；
+- **多功能性**：适用于社交媒体、印刷品、网页和商品宣传；
+- **易记性**：设计要足够独特，以便受众能够记住；
+- **可扩展性**：从网站图标到大型广告牌，都能使用同一套品牌元素。
 
-CellCog creates complete brand systems, not just isolated assets.
-
----
-
-## What You Can Create
-
-### Complete Brand Kits
-
-Everything you need to launch:
-
-- **Startup Brand Kits**: "Create a complete brand identity for my SaaS startup"
-- **Personal Brand Kits**: "Build my personal brand as a content creator"
-- **Small Business Branding**: "Create branding for my coffee shop"
-- **Project Branding**: "Design branding for my open source project"
-
-**Example prompt:**
-> "Create a complete brand kit for 'NomadNest' - a co-living startup for remote workers:
-> 
-> Brand personality: Modern, adventurous, community-focused, professional but not corporate
-> Target audience: 25-40 year old remote workers, digital nomads
-> 
-> I need:
-> - Logo (primary + variations)
-> - Color palette (primary, secondary, accent colors)
-> - Typography recommendations
-> - Brand voice guidelines
-> - Social media profile templates
-> - Business card design
-> - Email signature template
-> 
-> Vibe: Airbnb meets WeWork, warm and inviting"
-
-### Logo Design
-
-The cornerstone of your brand:
-
-- **Wordmarks**: "Create a text-based logo for my consulting firm"
-- **Logomarks**: "Design an icon/symbol logo for my app"
-- **Combination Marks**: "Create a logo with both icon and text"
-- **Logo Variations**: "I have a logo - create variations for different uses"
-
-**Example prompt:**
-> "Design a logo for 'Zenith Analytics' - a data science consultancy:
-> 
-> Style: Minimal, geometric, professional
-> Concept ideas: Could incorporate Z, data/analytics symbolism, or abstract peak (zenith)
-> 
-> Must work:
-> - At small sizes (favicon, app icon)
-> - In black and white
-> - On dark and light backgrounds
-> 
-> Colors: Open to suggestions but leaning toward deep blue and silver
-> 
-> Provide: Primary logo, icon-only version, horizontal lockup, dark mode version"
-
-### Color Palettes
-
-Colors that tell your story:
-
-- **Full Palettes**: "Create a color system for my brand"
-- **Mood-Based**: "Design a color palette that feels luxurious but approachable"
-- **Industry-Specific**: "Create colors for a healthcare brand that don't feel clinical"
-- **Expansion**: "Extend my existing brand colors with complementary accent colors"
-
-### Typography Systems
-
-Fonts that fit your voice:
-
-- **Font Pairings**: "Recommend a heading and body font combination"
-- **Type Hierarchy**: "Create a typography system with sizes and weights"
-- **Custom Direction**: "I want fonts that feel techy but human"
-
-### Brand Guidelines
-
-Documentation for consistency:
-
-- **Style Guides**: "Create brand guidelines documenting my visual identity"
-- **Usage Rules**: "Document do's and don'ts for my logo"
-- **Tone of Voice**: "Define my brand's written voice and personality"
+CellCog能够创建完整的品牌体系，而不仅仅是单独的视觉元素。
 
 ---
 
-## Brand Personalities
+## 您可以创建的内容
 
-| Personality | Visual Characteristics | Colors | Typography |
+### 完整的品牌套件
+
+启动项目所需的一切：
+- **初创企业品牌套件**：“为我的SaaS初创企业创建一个完整的品牌标识”
+- **个人品牌套件**：“为我这个内容创作者构建个人品牌”
+- **小型企业品牌设计**：“为我的咖啡店设计品牌”
+- **项目品牌设计**：“为我的开源项目设计品牌”
+
+**示例需求：**
+> “为‘NomadNest’（一个面向远程工作者的共享居住平台）创建一个完整的品牌套件：
+> 
+> 品牌个性：现代、充满冒险精神、注重社区互动、专业但不刻板”
+> 目标受众：25-40岁的远程工作者、数字游民
+> 
+> 我需要：
+> - 标志（主标志及多种变体）
+- 色彩方案（主色、辅助色、强调色）
+- 排版建议
+- 品牌语言指南
+- 社交媒体模板
+- 名片设计
+- 电子邮件签名模板
+> 
+> 设计风格：结合Airbnb和WeWork的特点，温馨且具有吸引力”
+
+### 标志设计
+
+品牌的基石：
+- **文字标志**：“为我的咨询公司创建一个基于文字的标志”
+- **图标标志**：“为我的应用程序设计一个图标/符号标志”
+- **组合标志**：“设计一个同时包含图标和文字的标志”
+- **标志变体**：“我已经有了一个标志，需要为其创建多种使用场景的变体”
+
+**示例需求：**
+> “为‘Zenith Analytics’（一家数据科学咨询公司）设计一个标志：
+> 
+> 设计风格：极简主义、几何形状、专业感强
+> 设计灵感：可以融入字母“Z”、数据/分析的象征元素，或者抽象的“顶峰”概念
+> 
+> 要求：
+> - 在小尺寸（如网站图标）下也能清晰显示
+- 支持黑白显示
+- 适用于深色和浅色背景
+> 
+> 颜色建议：深蓝和银色为主
+> 
+> 提供内容：主标志、仅包含图标的版本、水平组合形式、暗色模式版本”
+
+### 色彩方案
+
+色彩是传达品牌故事的重要工具：
+- **完整色彩方案**：“为我的品牌创建一套统一的色彩系统”
+- **基于情感的色彩方案**：“设计一套既豪华又亲切的色彩方案”
+- **行业特定的色彩方案**：“为医疗保健品牌设计不会让人感到刻板的色彩”
+- **色彩扩展**：“为我的现有品牌色彩添加互补的强调色”
+
+### 排版系统
+
+与品牌风格相匹配的字体：
+- **字体搭配**：“推荐一种适合标题和正文的字体组合”
+- **层级结构**：“创建一个包含不同字号和字重的排版系统”
+- **自定义风格**：“我希望字体既具有科技感又显得亲切自然”
+
+### 品牌指南
+
+确保品牌视觉一致性的文档：
+- **风格指南**：“编写品牌视觉风格的文档”
+- **使用规范**：“记录标志使用的注意事项”
+- **语言风格**：“定义品牌在书面表达中的语气和个性”
+
+---
+
+## 品牌个性
+
+| 品牌个性 | 视觉特征 | 颜色 | 排版风格 |
 |-------------|----------------------|--------|------------|
-| **Luxurious** | Minimal, elegant, refined | Gold, black, deep tones | Serif, thin weights |
-| **Playful** | Bold, dynamic, energetic | Bright, saturated | Rounded sans-serif |
-| **Professional** | Clean, structured, trustworthy | Blue, gray, white | Classic sans-serif |
-| **Eco/Natural** | Organic, earthy, warm | Green, brown, cream | Humanist fonts |
-| **Tech/Modern** | Geometric, futuristic, minimal | Electric blue, dark mode | Geometric sans |
-| **Friendly** | Soft, approachable, warm | Pastels, warm tones | Rounded, friendly |
+| **豪华** | 极简主义、优雅、精致 | 金色、黑色、深色调 | 精细衬线字体 |
+| **活泼** | 明亮、动感、充满活力 | 鲜艳饱和的色彩 | 圆角无衬线字体 |
+| **专业** | 清晰、结构化、值得信赖 | 蓝色、灰色、白色 | 经典无衬线字体 |
+| **环保/自然** | 有机、自然、温暖 | 绿色、棕色、米色 | 人性化设计的字体 |
+| **科技/现代** | 几何形状、未来感强、极简主义 | 电蓝色、暗色背景 | 几何风格的无衬线字体 |
+| **友好** | 温和、亲切、易于接近 | 浅色调、温暖的感觉 | 圆角字体 |
 
 ---
 
-## Brand Kit Components
+## 品牌套件包含的内容
 
-A complete brand kit typically includes:
-
-| Component | What It Is |
-|-----------|------------|
-| **Primary Logo** | Main logo for most uses |
-| **Logo Variations** | Icon-only, wordmark-only, stacked, horizontal |
-| **Color Palette** | Primary, secondary, accent, neutrals with hex codes |
-| **Typography** | Font families, sizes, hierarchy |
-| **Imagery Style** | Photo style, illustration guidelines |
-| **Voice & Tone** | How the brand speaks |
-| **Social Templates** | Profile images, post templates, stories |
-| **Business Materials** | Cards, letterhead, email signature |
-
----
-
-## Chat Mode for Branding
-
-| Scenario | Recommended Mode |
-|----------|------------------|
-| Logos, color palettes, individual brand assets | `"agent"` |
-| Complete brand systems, strategic brand development | `"agent team"` |
-
-**Use `"agent"` for specific brand assets.** Logos, color palettes, and templates execute well in agent mode.
-
-**Use `"agent team"` for complete brand development** - when you need strategic thinking about positioning, comprehensive systems, and multiple creative directions explored.
+一个完整的品牌套件通常包括以下元素：
+| 元素        | 说明                          |
+|-------------|-----------------------------------|
+| **主标志**    | 适用于大多数场景的主要标志                         |
+| **标志变体**    | 仅包含图标的版本、仅包含文字的版本、组合使用的版本         |
+| **色彩方案**    | 主色、辅助色、强调色以及十六进制代码表示的中性色           |
+| **排版系统**    | 字体系列、字号大小、层级结构                         |
+| **图像风格**    | 图片风格、插图设计指南                         |
+| **品牌语言**    | 品牌在文字表达中的风格和语气                     |
+| **社交媒体模板** | 个人资料图片、帖子模板、故事分享模板                   |
+| **商务材料**    | 名片、信头、电子邮件签名                         |
 
 ---
 
-## Example Prompts
+## 品牌设计的沟通方式
 
-**Complete brand identity:**
-> "Create a brand identity for 'Bloom' - a mental health app for young professionals:
-> 
-> Mission: Make therapy-informed self-care accessible and non-stigmatized
-> Audience: 22-35, stressed professionals, first time exploring mental health tools
-> Competitors: Calm, Headspace (but we want to feel different - less meditation, more practical)
-> 
-> Brand personality: Warm, knowledgeable, empowering (not patronizing), modern
-> 
-> Deliver:
-> - Logo with variations
-> - Color palette (calming but not boring)
-> - Font recommendations
-> - App icon
-> - Social media templates
-> - Brand voice guidelines
-> 
-> Avoid: Clinical/medical feel, overly 'zen'/spiritual aesthetic, childish"
+| 任务类型       | 推荐的沟通模式                         |
+|-------------|-------------------------------------------|
+| 标志、色彩方案、单个品牌元素 | 使用“agent”模式                         |
+| 完整的品牌体系、战略性的品牌开发 | 使用“agent team”模式                         |
 
-**Logo design:**
-> "Design a logo for 'Axiom Ventures' - a tech-focused VC firm:
-> 
-> Positioning: Smart money, founder-friendly, sector expertise in AI/ML
-> 
-> Direction:
-> - Could be abstract, geometric, or incorporate 'A'
-> - Should feel: Confident, forward-thinking, substantial
-> - Should NOT feel: Stuffy, generic corporate, startup-bro
-> 
-> Versatility needed: Website, pitch decks, swag, business cards
-> 
-> Provide multiple concepts to choose from."
+**使用“agent”模式处理单个品牌元素**：标志、色彩方案和模板在“agent”模式下效果最佳。
 
-**Personal brand:**
-> "Create a personal brand kit for me as a tech content creator:
-> 
-> Name: Alex Chen
-> Platforms: YouTube, Twitter, Newsletter
-> Content: Programming tutorials, career advice, tech industry commentary
-> Personality: Helpful, slightly nerdy, approachable expert
-> 
-> I need:
-> - A simple logo/avatar that's recognizable
-> - Color palette for my content
-> - YouTube thumbnail template style
-> - Twitter header and profile pic
-> - Newsletter banner
-> 
-> Should feel: Personal but polished, trustworthy, not corporate"
+**使用“agent team”模式进行完整的品牌开发**：当您需要关于品牌定位的战略性思考、全面的系统设计或多种创意方向探索时使用该模式。
 
 ---
 
-## Tips for Better Branding
+## 示例需求
 
-1. **Know your audience**: "For enterprise clients" vs "for Gen Z" changes everything.
+**创建完整的品牌标识：**
+> “为‘Bloom’（一款面向年轻专业人士的心理健康应用程序）创建一个完整的品牌标识：
+> 
+> 使命：让基于心理学的自我关怀变得易于获取且不带有污名化色彩”
+> 目标受众：22-35岁的压力较大的专业人士，初次接触心理健康工具的用户
+> 竞争对手：Calm、Headspace（但我们希望有独特之处——减少冥想元素，更注重实用性）
+> 
+> 品牌个性：温馨、知识丰富、鼓舞人心（但不居高临下）、现代感强
+> 
+> 需要的内容：
+- 多种版本的标志
+- 色彩方案（舒缓但不乏趣味）
+- 字体推荐
+- 应用程序图标
+- 社交媒体模板
+- 品牌语言指南
+> 
+> 注意避免：过于医学化/临床化的设计风格，以及过于“禅意”或过于“精神化”的美学风格”
 
-2. **Personality over pretty**: A distinctive brand beats a generic beautiful one.
+**标志设计：**
+> “为‘Axiom Ventures’（一家专注于科技领域的风险投资公司）设计一个标志：
+> 
+> 定位：聪明、对创始人友好，具备人工智能/机器学习领域的专业知识”
+> 
+> 设计方向：
+- 可以采用抽象几何风格，或包含字母“A”
+- 设计应传达出：自信、前瞻性、专业且扎实的感觉
+- 避免：刻板的企业风格或初创公司的随意感
+- 需要适用于多种场景：网站、演示文稿、宣传材料、名片
+> 
+> 提供多个设计方案供选择**
 
-3. **Competition context**: Tell us who you're competing with so we differentiate.
+**个人品牌：**
+> “为我这个科技内容创作者创建一个个人品牌套件：
+> 
+> 名称：Alex Chen
+> 使用平台：YouTube、Twitter、电子邮件订阅服务
+> 内容类型：编程教程、职业建议、科技行业评论
+> 个人风格：乐于助人、略带书呆子气但亲切的专业人士
+> 
+> 需要的内容：
+- 一个易于识别的简单标志/头像
+- 适合我的内容的色彩方案
+- YouTube视频缩略图模板
+- Twitter头像和个人资料图片
+- 电子邮件签名模板
+> 
+> 设计风格：个人化但专业、值得信赖，不显得过于正式**
 
-4. **Versatility matters**: Request assets that work across different contexts and sizes.
+---
 
-5. **Include anti-examples**: "Not corporate" or "avoid clinical feel" is useful direction.
+## 更好的品牌设计技巧
 
-6. **Think long-term**: Your brand should have room to evolve. Don't over-constrain.
+1. **深入了解目标受众**：“针对企业客户”与“针对Z世代”的设计需求有很大不同。
+2. **个性比外观更重要**：一个有独特个性的品牌比外观漂亮的品牌更值得记住。
+3. **明确竞争对手**：告诉我们您的竞争对手是谁，以便我们能够做出有针对性的设计。
+4. **多功能性至关重要**：请求能够适应不同场景和尺寸的素材。
+5. **提供反面示例**：提供“避免企业化风格”或“避免过于医学化/宗教化设计”的具体建议。
+6. **考虑长期发展**：品牌应该有发展的空间，不要过度限制设计风格。

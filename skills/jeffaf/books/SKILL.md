@@ -1,7 +1,7 @@
 ---
 name: books
 version: 1.0.0
-description: "CLI for AI agents to search and lookup books for their humans. Uses Open Library API. No auth required."
+description: "这是一个用于AI代理的命令行工具（CLI），帮助它们为人类用户搜索和查找书籍。该工具使用了Open Library API，且无需进行身份验证（无需登录）。"
 homepage: https://openlibrary.org
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["books", "reading", "open-library", "literature", "cli"]
 ---
 
-# Book Lookup
+# 书籍查询功能
 
-CLI for AI agents to search and lookup books for their humans. "What's that fantasy series about the magic university?" — now your agent can answer.
+这是一个用于AI代理的命令行工具（CLI），帮助用户为其人类用户搜索和查找书籍。例如：“那个关于魔法大学的奇幻系列小说叫什么名字？”——现在你的AI代理可以为你解答这个问题。
 
-Uses Open Library API. No account or API key needed.
+该工具使用了Open Library API，无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Search for books called The Name of the Wind"
@@ -26,15 +26,15 @@ Uses Open Library API. No account or API key needed.
 "Who is author OL23919A?"
 ```
 
-## Commands
+## 命令列表
 
-| Action | Command |
-|--------|---------|
-| Search | `books search "query"` |
-| Get book details | `books info <work_id>` |
-| Get author info | `books author <author_id>` |
+| 功能 | 命令                |
+|--------|-------------------|
+| 搜索书籍 | `books search "查询内容"`     |
+| 查看书籍详情 | `books info <书籍ID>`     |
+| 查看作者信息 | `books author <作者ID>`     |
 
-### Examples
+### 使用示例
 
 ```bash
 books search "the name of the wind"     # Find books by title
@@ -43,14 +43,14 @@ books info OL27448W                     # Get full details by work ID
 books author OL23919A                   # Get author bio and works
 ```
 
-## Output
+## 输出结果
 
-**Search output:**
+**搜索结果：**
 ```
 [OL27448W] The Name of the Wind — Patrick Rothfuss, 2007, ⭐ 4.5
 ```
 
-**Info output:**
+**书籍详情：**
 ```
 📚 The Name of the Wind
    Work ID: OL27448W
@@ -63,7 +63,7 @@ books author OL23919A                   # Get author bio and works
 🖼️ Cover: https://covers.openlibrary.org/b/id/12345-L.jpg
 ```
 
-**Author output:**
+**作者信息：**
 ```
 👤 Patrick Rothfuss
    Born: June 6, 1973
@@ -77,29 +77,30 @@ books author OL23919A                   # Get author bio and works
 [OL16313124W] The Wise Man's Fear, 2011
 ```
 
-## Notes
+## 注意事项
 
-- Uses Open Library API (openlibrary.org)
-- No authentication required
-- Work IDs look like: OL27448W
-- Author IDs look like: OL23919A
-- Search supports `author:`, `title:`, `subject:` prefixes
-- Cover images available in S, M, L sizes
+- 该工具基于Open Library API（网址：openlibrary.org）运行。
+- 无需进行身份验证。
+- 书籍的ID格式为：OL27448W
+- 作者的ID格式为：OL23919A
+- 搜索支持使用前缀 `author:`、`title:` 和 `subject:` 来指定搜索条件。
+- 书籍封面图片提供S、M、L三种尺寸可供选择。
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/books` (wrapper to `scripts/books`)
+**脚本位置：** `{skill_folder}/books`（实际脚本位于 `scripts/books` 文件夹中）
 
-**When user asks about books:**
-1. Run `./books search "title or author"` to find work ID
-2. Run `./books info <work_id>` for full details
-3. Run `./books author <author_id>` for author info and bibliography
+**当用户询问书籍相关信息时：**
+1. 运行 `./books search "书名或作者名"` 来获取书籍的ID。
+2. 运行 `./books info <书籍ID>` 来查看书籍的详细信息。
+3. 运行 `./books author <作者ID>` 来查看作者的信息及参考文献。
 
-**Search tips:**
-- Use `author:name` to search specifically by author
-- Use `title:name` to search specifically by title
-- Use `subject:topic` to search by genre/subject
+**搜索提示：**
+- 使用 `author:作者名` 可以根据作者名称进行精确搜索。
+- 使用 `title:书名` 可以根据书名进行精确搜索。
+- 使用 `subject:主题` 可以根据书籍的类型或主题进行搜索。
 
-**Don't use for:** E-books, audiobooks, purchasing, or reading the actual content.
+**不适用场景：**
+- 该工具不适用于电子书、有声书的查询，也不支持购买书籍或阅读书籍的实际内容。

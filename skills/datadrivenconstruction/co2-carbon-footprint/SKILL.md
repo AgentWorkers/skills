@@ -1,30 +1,30 @@
 ---
 slug: "co2-carbon-footprint"
 display_name: "Co2 Carbon Footprint"
-description: "Calculate CO2 emissions and carbon footprint from BIM model data. Analyze embodied carbon by material, element, and building system."
+description: "根据BIM模型数据计算二氧化碳排放量和碳足迹。按材料、构件以及建筑系统类别分析其中所含的碳量（即“内含碳”）。"
 ---
 
-# CO2 Carbon Footprint Calculator
+# 二氧化碳碳足迹计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Sustainability requirements demand carbon tracking:
-- Need to quantify embodied carbon
-- Material selection impact unclear
-- Reporting requirements increasing
-- No integration with BIM workflow
+### 问题描述
+可持续性要求需要追踪碳排放：
+- 需要量化产品中的固有碳含量
+- 材料选择对环境的影响尚不明确
+- 报告要求日益增加
+- 该工具尚未与BIM工作流程集成
 
-### Solution
-Calculate CO2 emissions from BIM quantities using EPD (Environmental Product Declaration) data and carbon coefficients.
+### 解决方案
+使用EPD（环境产品声明）数据和碳系数，根据BIM数据计算二氧化碳排放量。
 
-### Business Value
-- **Sustainability** - Meet green building requirements
-- **Design optimization** - Identify high-carbon elements
-- **Reporting** - Automated carbon reports
-- **Decision support** - Compare material alternatives
+### 商业价值
+- **可持续性**：满足绿色建筑标准
+- **设计优化**：识别高碳排放材料
+- **报告生成**：自动生成碳排放报告
+- **决策支持**：帮助比较不同材料的选择
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -411,7 +411,7 @@ class CO2FootprintCalculator:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize calculator
@@ -429,27 +429,27 @@ print(f"Total: {summary.total_tonco2} ton CO2e")
 print(f"Per m2: {summary.kgco2_per_m2} kg CO2e/m2")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Material Comparison
+### 1. 材料比较
 ```python
 # Compare concrete vs timber
 concrete_elements = elements[elements['material'].str.contains('Concrete')]
 timber_elements = elements[elements['material'].str.contains('Timber')]
 ```
 
-### 2. Target Compliance
+### 2. 达成合规目标
 ```python
 TARGET_KGCO2_M2 = 500  # LEED/BREEAM target
 if summary.kgco2_per_m2 > TARGET_KGCO2_M2:
     print(f"Warning: Exceeds target by {summary.kgco2_per_m2 - TARGET_KGCO2_M2} kg/m2")
 ```
 
-### 3. Export Report
+### 3. 导出报告
 ```python
 calculator.export_results("carbon_report.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.3 - CO2 Estimation
-- **Reference**: EN 15978, EPD databases
+## 参考资源
+- **DDC手册**：第3.3章 – 二氧化碳估算
+- **标准参考**：EN 15978、EPD数据库

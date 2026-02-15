@@ -1,31 +1,31 @@
 ---
 name: crypto-wallet
-description: Multi-chain cryptocurrency wallet management. Check balances, send tokens, view transaction history across Ethereum, Solana, Bitcoin and more.
+description: 多链加密货币钱包管理功能：支持查询余额、发送代币，以及查看来自以太坊（Ethereum）、Solana、比特币（Bitcoin）等平台的交易历史记录。
 metadata: {"clawdbot":{"emoji":"💰","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Crypto Wallet 💰
+# 加密钱包 💰
 
-Manage cryptocurrency wallets across multiple blockchains.
+管理多个区块链上的加密货币钱包。
 
-## Supported Chains
+## 支持的区块链
 
-- Ethereum (ETH, ERC-20)
-- Solana (SOL, SPL tokens)
-- Bitcoin (BTC)
-- Polygon (MATIC)
+- 以太坊（ETH, ERC-20）
+- Solana（SOL, SPL代币）
+- 比特币（BTC）
+- Polygon（MATIC）
 - Arbitrum
 - Base
 
-## Features
+## 功能
 
-- Check wallet balances
-- View transaction history
-- Send tokens (with confirmation)
-- Token price lookup
-- Portfolio overview
+- 查看钱包余额
+- 查看交易历史
+- 发送代币（需要确认）
+- 查询代币价格
+- 投资组合概览
 
-## Usage Examples
+## 使用示例
 
 ```
 "What's my ETH balance?"
@@ -33,8 +33,8 @@ Manage cryptocurrency wallets across multiple blockchains.
 "Send 0.1 ETH to 0x..."
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** confirm before sending transactions
-2. **NEVER** expose private keys
-3. **ALWAYS** verify recipient addresses
+1. **发送交易前** **务必** 进行确认
+2. **切勿** 泄露私钥
+3. **始终** 核实接收地址的准确性

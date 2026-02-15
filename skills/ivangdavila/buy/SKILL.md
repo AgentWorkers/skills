@@ -1,73 +1,73 @@
 ---
 name: "Buy"
-description: "Research purchases, compare prices, detect scams, and negotiate better deals."
+description: "研究购买方案，比较价格，识别诈骗行为，并协商更优惠的交易条件。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: "should I buy", "is this worth it", "is this a good deal", "help me find", "compare prices", "negotiate", price research requests.
+在以下情况下触发：**“我应该买吗？”，“这值得买吗？”，“这是个划算的交易吗？”，“帮我找找”，“比较价格”，“谈判”，“价格调研请求”。**
 
-**Before acting:** Clarify budget (hard limit vs flexible), timeline (urgent vs can wait), quality tolerance.
+**在采取行动之前：** 明确预算（固定金额还是可调整范围）、时间期限（紧急还是可以等待）、对产品质量的容忍度。
 
-## Core Flow
+## 核心流程
 
-1. **Identify** — What are they buying? (product, service, B2B software)
-2. **Research** — Check sources per category (see `sources.md`)
-3. **Evaluate** — Price vs market, red flags, timing
-4. **Recommend** — Buy / wait / walk + reasoning
-5. **Support** — Negotiation scripts if needed
+1. **识别** — 他们想要购买什么？（产品、服务、B2B软件）
+2. **调研** — 按类别查找信息来源（参见 `sources.md`）
+3. **评估** — 价格与市场行情的对比、潜在风险、购买时机
+4. **推荐** — 是否购买、等待还是放弃购买，并说明理由
+5. **支持** — 如有需要，提供谈判脚本
 
-## Quick Deal Check
+## 快速交易判断
 
-When asked "is this a good deal?":
-- Compare to recent **sold** prices (not listings)
-- Check 3-month price trend — dropping = wait, stable = buy
-- Scan for red flags below
+当被问到“这是个划算的交易吗？”时：
+- 与最近的**成交价格**进行比较（而非列表价格）
+- 查看过去3个月的价格走势：价格下降 → 等待；价格稳定 → 购买
+- 注意以下潜在风险：
 
-**Red flags that kill deals:**
-- Price far below market → scam
-- Seller avoids written communication
-- Payment via wire/crypto/gift cards only
-- "Sale" price is actually above 6-month average
+**可能导致交易失败的警示信号：**
+- 价格远低于市场水平 → 可能是骗局
+- 卖家拒绝书面沟通
+- 仅接受电汇、加密货币或礼品卡支付
+- 所谓的“特价”实际上高于过去6个月的平均价格
 
-## Decision Framework
+## 决策框架
 
-| Question | No = |
-|----------|------|
-| Do I need this (not just want)? | Wait 30 days |
-| Have I researched alternatives? | Research first |
-| Is price at/below market? | Negotiate |
-| Do I have a walk-away price? | Set one now |
+| 问题 | 答案 | 后续行动 |
+|----------|------|---------|
+| 我真的需要这个吗（而不只是想要吗？） | 等待30天 |
+| 我已经调研过其他替代方案了吗？ | 先进行调研 |
+| 价格是否在市场水平上？ | 进行谈判 |
+| 我有放弃购买的底线吗？ | 立即设定一个底线 |
 
-All yes → Buy.
+如果所有问题都得到肯定答案 → 购买。
 
-## Negotiation Basics
+## 谈判基础
 
-**Retail/services:**
-> "I found this for $X at [competitor]. Can you match?"
+**零售/服务类：**
+> “我在[竞争对手]那里看到这个产品售价为X美元。你们能给出同样的价格吗？”
 
-**Used goods:**
-> "Similar items sold for $X. Would you take that?"
+**二手商品：**
+> “类似商品的交易价格是X美元。你们能接受这个价格吗？”
 
-**Bills (internet, insurance):**
-> "I've been a customer X years. What can you do to keep me?"
+**账单（互联网服务、保险）：**
+> “我是你们的客户已经X年了。你们能给我什么优惠来留住我吗？”
 
-For advanced tactics and category-specific scripts, see `tactics.md`.
+有关更高级的谈判技巧和特定类别的谈判脚本，请参阅 `tactics.md`。
 
-## Category Guidance
+## 类别指南
 
-Different categories need different approaches — pricing data, negotiation norms, and red flags vary significantly. See `categories.md` for:
-- Electronics & tech
-- Vehicles
-- Real estate
-- Services (contractors, professionals)
-- B2B / SaaS
-- Subscriptions
+不同类别的谈判方法和注意事项各不相同——价格数据、谈判规范和潜在风险存在显著差异。具体信息请参阅 `categories.md`，包括：
+- 电子产品与技术类
+- 车辆
+- 房地产
+- 服务（承包商、专业人士）
+- B2B/SaaS服务
+- 订阅服务
 
-## Subscription Audit
+## 订阅服务审核
 
-When asked to review subscriptions:
-1. List all with cost + last use date
-2. Flag: unused (60+ days), overpriced, redundant
-3. Provide cancellation talking points
-4. Calculate total savings
+当被要求审核订阅服务时：
+1. 列出所有订阅服务及其费用和最后一次使用日期
+2. 标记出以下情况：未使用超过60天、价格过高或重复订阅的服务
+3. 准备好取消订阅的理由
+4. 计算总节省金额

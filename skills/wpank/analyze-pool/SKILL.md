@@ -1,54 +1,51 @@
 ---
 name: analyze-pool
-description: Analyze a specific Uniswap pool's performance, liquidity depth, fee APY, and risk factors. Use when the user asks about pool metrics, TVL, volume, or whether a pool is good for LPing.
+description: 分析特定 Uniswap 池的运行表现、流动性深度、费用年化收益率（APY）以及风险因素。当用户询问池的指标、总价值锁定（TVL）、交易量，或者某个池是否适合进行锁定策略（LPing）时，可以使用此分析结果。
 model: opus
 allowed-tools: [Task(subagent_type:pool-researcher)]
 ---
 
-# Analyze Pool
+# 分析交易池
 
-## Overview
+## 概述
 
-Provides a detailed analysis of a specific Uniswap pool by delegating to the `pool-researcher` agent. Returns TVL, volume, fee APY, liquidity depth, concentration metrics, and risk factors.
+该功能通过委托给 `pool-researcher` 代理来提供对特定 Uniswap 交易池的详细分析。分析结果包括总价值（TVL）、交易量、费用年化收益率（fee APY）、流动性深度、集中度指标以及风险因素。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，可激活此功能：
+- “分析 ETH/USDC 交易池”
+- “X/Y 交易池的总价值（TVL）是多少？”
+- “WETH/USDC 交易池的交易量是多少？”
+- “ETH/USDC 交易池的费用年化收益率（fee APY）是多少？”
+- “这个交易池适合进行流动性提供（LP）操作吗？”
+- “Base 平台上的 ETH/USDC 交易池信息”
+- “这个交易池的流动性深度如何？”
 
-- "Analyze the ETH/USDC pool"
-- "What's the TVL of X/Y pool?"
-- "How much volume does the WETH/USDC pool do?"
-- "What's the fee APY for ETH/USDC?"
-- "Is this pool good for LPing?"
-- "Pool info for ETH/USDC on Base"
-- "How deep is the liquidity in this pool?"
+## 参数
 
-## Parameters
+| 参数        | 是否必填 | 默认值       | 描述                                      |
+|------------|--------|-----------|-----------------------------------------|
+| token0      | 是      | —          | 第一种代币的名称、符号或地址                         |
+| token1      | 是      | —          | 第二种代币的名称、符号或地址                         |
+| chain       | 否       | ethereum    | 区块链名称（ethereum、base、arbitrum 等）                |
+| feeTier     | 否       | 自动检测     | 费用等级（例如：“0.05%”、“30bp”、“3000”）                     |
+| version     | 否       | 自动检测     | 协议版本（“v2”、“v3”或“v4”）                         |
 
-| Parameter | Required | Default     | Description                                   |
-| --------- | -------- | ----------- | --------------------------------------------- |
-| token0    | Yes      | —           | First token name, symbol, or address          |
-| token1    | Yes      | —           | Second token name, symbol, or address         |
-| chain     | No       | ethereum    | Chain name (ethereum, base, arbitrum, etc.)    |
-| feeTier   | No       | Auto-detect | Fee tier (e.g., "0.05%", "30bp", "3000")      |
-| version   | No       | Auto-detect | Protocol version: "v2", "v3", or "v4"         |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：确定 `token0`、`token1`、`chain`、`feeTier` 和 `version`。
+2. **委托给 pool-researcher**：使用提取的参数调用 `Task(subagent_type:pool-researcher)`。`pool-researcher` 将收集链上数据，计算各项指标，并生成结构化的报告。
+3. **展示结果**：将 `pool-researcher` 生成的报告整理成用户易于理解的摘要，内容包括：
+   - 交易池信息（地址、协议版本、费用等级）
+   - 当前状态（价格、总价值、流动性）
+   - 绩效数据（过去 7 天/30 天的费用年化收益率、过去 24 小时/7 天的交易量、使用率）
+   - 流动性深度（对价格影响小于 1% 的交易量）
+   - 风险因素（如有）
 
-1. **Extract parameters** from the user's request: identify token0, token1, chain, fee tier, and version.
+## 输出格式
 
-2. **Delegate to pool-researcher**: Invoke `Task(subagent_type:pool-researcher)` with the extracted parameters. The pool-researcher will gather on-chain data, calculate metrics, and produce a structured report.
-
-3. **Present results**: Format the pool-researcher's report into a user-friendly summary covering:
-   - Pool identification (address, version, fee tier)
-   - Current state (price, TVL, liquidity)
-   - Performance (fee APY 7d/30d, volume 24h/7d, utilization)
-   - Liquidity depth (trade size at < 1% impact)
-   - Risk factors (if any)
-
-## Output Format
-
-Present a clean summary:
+以简洁明了的摘要形式展示分析结果：
 
 ```text
 Pool Analysis: WETH/USDC 0.05% (V3, Ethereum)
@@ -71,16 +68,16 @@ Pool Analysis: WETH/USDC 0.05% (V3, Ethereum)
   Risk Factors: None identified
 ```
 
-## Important Notes
+## 重要说明
 
-- This skill delegates entirely to the `pool-researcher` agent — it does not call MCP tools directly.
-- If the pool doesn't exist, the agent will report this clearly.
-- Fee APY is historical (not guaranteed). The output distinguishes realized vs projected APY.
+- 该功能完全依赖 `pool-researcher` 代理来执行分析，不直接调用 MCP 工具。
+- 如果指定的交易池不存在，代理会明确告知用户。
+- 费用年化收益率（fee APY）为历史数据，不保证未来仍保持不变。输出结果会区分已实现的收益和预测的收益。
 
-## Error Handling
+## 错误处理
 
-| Error                    | User-Facing Message                          | Suggested Action                |
-| ------------------------ | -------------------------------------------- | ------------------------------- |
-| Pool not found           | "No pool found for X/Y on this chain."       | Try different fee tier or chain |
-| Token not recognized     | "Could not resolve token X."                 | Provide contract address        |
-| Insufficient data        | "Limited data available for this pool."       | Pool may be too new             |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|-------------------|--------------------------------------------|-----------------------------------------|
+| 交易池未找到             | “在该区块链上未找到 X/Y 交易池。”                        | 尝试不同的费用等级或区块链                |
+| 代币无法识别             | “无法解析代币 X。”                                      | 提供代币的合约地址                         |
+| 数据不足             | “该交易池的数据有限。”                                      | 可能是因为交易池创建时间较短                         |

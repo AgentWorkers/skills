@@ -1,56 +1,56 @@
 # Microsoft 365 MCP Server
 
-Full Microsoft 365 integration via Model Context Protocol (MCP).
+通过 Model Context Protocol (MCP) 实现与 Microsoft 365 的全面集成。
 
-## Features
+## 特性
 
-### 📧 Mail (Outlook)
-- List, read, send, and search emails
-- Filter by folder (inbox, sent, drafts)
-- HTML email support
+### 📧 邮件（Outlook）
+- 列出、阅读、发送和搜索电子邮件
+- 按文件夹（收件箱、已发送、草稿）过滤邮件
+- 支持 HTML 格式的电子邮件
 
-### 📅 Calendar
-- List and create events
-- Teams meeting integration
-- Check availability/free-busy
+### 📅 日历
+- 列出和创建事件
+- 集成 Teams 会议功能
+- 查看用户的时间安排（空闲/忙碌状态）
 
 ### 📁 OneDrive
-- Browse files and folders
-- Search files
-- Read file content
+- 浏览文件和文件夹
+- 搜索文件
+- 阅读文件内容
 
-### ✅ Tasks (Microsoft To-Do)
-- List task lists
-- Create and manage tasks
-- Set importance and due dates
+### ✅ 任务（Microsoft To-Do）
+- 列出任务列表
+- 创建和管理任务
+- 设置任务的重要性和截止日期
 
 ### 💬 Teams
-- List chats
-- Read and send messages
+- 列出聊天记录
+- 阅读和发送消息
 
-### 👥 Users
-- List organization users
-- Get user profiles
+### 👥 用户
+- 列出组织内的用户
+- 查看用户资料
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- Azure Entra ID App with Microsoft Graph permissions
+- Node.js 18 及以上版本
+- 拥有 Microsoft Graph 权限的 Azure Entra ID 应用程序
 
-## Setup
+## 设置步骤
 
-### 1. Create Azure Entra ID App
+### 1. 创建 Azure Entra ID 应用程序
 
-1. Go to [Azure Portal](https://portal.azure.com)
-2. Navigate to **Microsoft Entra ID** → **App registrations** → **New registration**
-3. Configure:
-   - Name: `MCP-Microsoft365`
-   - Supported account types: Single tenant (recommended)
-   - Redirect URI: `http://localhost:3000/callback`
+1. 访问 [Azure 门户](https://portal.azure.com)
+2. 转到 **Microsoft Entra ID** → **应用注册** → **新建注册**
+3. 配置以下信息：
+   - 应用程序名称：`MCP-Microsoft365`
+   - 支持的账户类型：单租户（推荐）
+   - 重定向 URI：`http://localhost:3000/callback`
 
-### 2. Add API Permissions
+### 2. 添加 API 权限
 
-Add these **Application permissions** for Microsoft Graph:
+为 Microsoft Graph 添加以下应用程序权限：
 
 ```
 Mail.Read, Mail.Send, Mail.ReadWrite
@@ -61,16 +61,16 @@ Chat.Read.All, Chat.ReadWrite.All
 User.Read.All
 ```
 
-**Important:** Click "Grant admin consent"
+**注意：** 点击“授予管理员同意”以完成权限设置
 
-### 3. Get Credentials
+### 3. 获取凭据
 
-Save these values:
-- Application (client) ID
-- Directory (tenant) ID
-- Client Secret (create under Certificates & secrets)
+保存以下信息：
+- 应用程序（客户端）ID
+- 目录（租户）ID
+- 客户端密钥（在“证书和密钥”中创建）
 
-### 4. Install
+### 4. 安装
 
 ```bash
 # Clone/download the skill
@@ -83,13 +83,13 @@ npm install
 npm run build
 ```
 
-### 5. Configure mcporter
+### 5. 配置 mcporter
 
 ```bash
 mcporter config add m365 --stdio "node /path/to/mcp-microsoft365/dist/index.js"
 ```
 
-Edit `config/mcporter.json` to add environment variables:
+编辑 `config/mcporter.json` 文件以添加环境变量：
 
 ```json
 {
@@ -107,9 +107,9 @@ Edit `config/mcporter.json` to add environment variables:
 }
 ```
 
-## Usage
+## 使用方法
 
-### Email
+### 邮件
 ```bash
 # List recent emails
 mcporter call m365.m365_mail_list top:5
@@ -121,7 +121,7 @@ mcporter call m365.m365_mail_send to:"recipient@email.com" subject:"Hello" body:
 mcporter call m365.m365_mail_search query:"important"
 ```
 
-### Calendar
+### 日历
 ```bash
 # List events
 mcporter call m365.m365_calendar_list top:10
@@ -130,7 +130,7 @@ mcporter call m365.m365_calendar_list top:10
 mcporter call m365.m365_calendar_create subject:"Team Sync" start:"2026-01-27T10:00:00" end:"2026-01-27T11:00:00" isOnline:true
 ```
 
-### Files
+### 文件
 ```bash
 # List OneDrive root
 mcporter call m365.m365_files_list
@@ -139,7 +139,7 @@ mcporter call m365.m365_files_list
 mcporter call m365.m365_files_search query:"report"
 ```
 
-### Tasks
+### 任务
 ```bash
 # List task lists
 mcporter call m365.m365_tasks_lists
@@ -151,37 +151,36 @@ mcporter call m365.m365_tasks_lists
 mcporter call m365.m365_teams_chats top:10
 ```
 
-## 19 Available Tools
+## 可用的工具
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `m365_mail_list` | List emails |
-| `m365_mail_read` | Read email by ID |
-| `m365_mail_send` | Send email |
-| `m365_mail_search` | Search emails |
-| `m365_calendar_list` | List events |
-| `m365_calendar_create` | Create event |
-| `m365_calendar_availability` | Check free/busy |
-| `m365_files_list` | List files |
-| `m365_files_search` | Search files |
-| `m365_files_read` | Read file content |
-| `m365_files_info` | Get file metadata |
-| `m365_tasks_lists` | List task lists |
-| `m365_tasks_list` | List tasks |
-| `m365_tasks_create` | Create task |
-| `m365_teams_chats` | List chats |
-| `m365_teams_messages` | Read messages |
-| `m365_teams_send` | Send message |
-| `m365_users_list` | List users |
-| `m365_user_info` | Get user profile |
+| `m365_mail_list` | 列出电子邮件 |
+| `m365_mail_read` | 通过 ID 阅读电子邮件 |
+| `m365_mail_send` | 发送电子邮件 |
+| `m365_mail_search` | 搜索电子邮件 |
+| `m365_calendar_list` | 列出事件 |
+| `m365_calendar_create` | 创建事件 |
+| `m365_calendar_availability` | 查看用户的时间安排（空闲/忙碌状态） |
+| `m365_files_list` | 列出文件 |
+| `m365_files_search` | 搜索文件 |
+| `m365_files_read` | 阅读文件内容 |
+| `m365_files_info` | 获取文件元数据 |
+| `m365_tasks_lists` | 列出任务列表 |
+| `m365_tasks_create` | 创建任务 |
+| `m365_teams_chats` | 列出聊天记录 |
+| `m365_teams_messages` | 阅读消息 |
+| `m365_teams_send` | 发送消息 |
+| `m365_users_list` | 列出用户 |
+| `m365_user_info` | 查看用户资料 |
 
-## Author
+## 作者
 
 **Mahmoud Alkhatib**
-- Website: [malkhatib.com](https://malkhatib.com)
-- YouTube: [@malkhatib](https://youtube.com/@malkhatib)
-- Twitter: [@malkhateeb](https://twitter.com/malkhateeb)
+- 网站：[malkhatib.com](https://malkhatib.com)
+- YouTube：[@malkhatib](https://youtube.com/@malkhatib)
+- Twitter：[@malkhateeb](https://twitter.com/malkhateeb)
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

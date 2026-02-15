@@ -14,9 +14,9 @@ allowed-tools: Bash(infsh *)
 
 ![Agentic Browser](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgjw8atdxgkrsr8a2t5peq7b.jpeg)
 
-Browser automation for AI agents via [inference.sh](https://inference.sh). Uses Playwright under the hood with a simple `@e` ref system for element interaction.
+这是一个用于AI代理的浏览器自动化工具，通过 [inference.sh](https://inference.sh) 提供支持。该工具内部使用了 Playwright 库，并通过简单的 `@e` 引用系统来实现与网页元素的交互。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install CLI
@@ -26,14 +26,14 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run agent-browser --function open --input '{"url": "https://example.com"}' --session new
 ```
 
-## Core Workflow
+## 核心工作流程
 
-Every browser automation follows this pattern:
+所有浏览器自动化操作都遵循以下步骤：
 
-1. **Open** - Navigate to URL, get `@e` refs for elements
-2. **Interact** - Use refs to click, fill, drag, etc.
-3. **Re-snapshot** - After navigation/changes, get fresh refs
-4. **Close** - End session (returns video if recording)
+1. **打开页面** - 导航到指定 URL，并获取页面元素的 `@e` 引用。
+2. **与元素交互** - 使用 `@e` 引用来执行点击、输入文本、拖拽等操作。
+3. **重新获取页面状态** - 在页面内容发生变化后，重新获取元素的 `@e` 引用。
+4. **关闭会话** - 结束当前会话（如果启用了视频录制，会返回录制视频）。
 
 ```bash
 # 1. Start session
@@ -61,40 +61,40 @@ infsh app run agent-browser --function snapshot --session $SESSION_ID --input '{
 infsh app run agent-browser --function close --session $SESSION_ID --input '{}'
 ```
 
-## Functions
+## 主要功能
 
-| Function | Description |
-|----------|-------------|
-| `open` | Navigate to URL, configure browser (viewport, proxy, video recording) |
-| `snapshot` | Re-fetch page state with `@e` refs after DOM changes |
-| `interact` | Perform actions using `@e` refs (click, fill, drag, upload, etc.) |
-| `screenshot` | Take page screenshot (viewport or full page) |
-| `execute` | Run JavaScript code on the page |
-| `close` | Close session, returns video if recording was enabled |
+| 功能 | 描述 |
+|---------|---------|
+| `open`   | 导航到指定 URL，并配置浏览器设置（如视口、代理设置、视频录制等）。|
+| `snapshot` | 在 DOM 发生变化后，重新获取页面元素的 `@e` 引用。|
+| `interact` | 使用 `@e` 引用来执行各种操作（如点击、输入文本、拖拽等）。|
+| `screenshot` | 截取页面截图（包括视口或整个页面）。|
+| `execute` | 在页面上运行 JavaScript 代码。|
+| `close` | 关闭会话；如果启用了视频录制，会返回录制视频。|
 
-## Interact Actions
+## 交互操作
 
-| Action | Description | Required Fields |
-|--------|-------------|-----------------|
-| `click` | Click element | `ref` |
-| `dblclick` | Double-click element | `ref` |
-| `fill` | Clear and type text | `ref`, `text` |
-| `type` | Type text (no clear) | `text` |
-| `press` | Press key (Enter, Tab, etc.) | `text` |
-| `select` | Select dropdown option | `ref`, `text` |
-| `hover` | Hover over element | `ref` |
-| `check` | Check checkbox | `ref` |
-| `uncheck` | Uncheck checkbox | `ref` |
-| `drag` | Drag and drop | `ref`, `target_ref` |
-| `upload` | Upload file(s) | `ref`, `file_paths` |
-| `scroll` | Scroll page | `direction` (up/down/left/right), `scroll_amount` |
-| `back` | Go back in history | - |
-| `wait` | Wait milliseconds | `wait_ms` |
-| `goto` | Navigate to URL | `url` |
+| 操作        | 描述                                      | 必需参数                          |
+|-------------|-----------------------------------------|-----------------------------------|
+| `click`      | 点击元素                                      | 需要点击的元素引用 (`ref`)                    |
+| `dblclick`    | 双击元素                                      | 需要双击的元素引用 (`ref`)                    |
+| `fill`      | 清空并输入文本                                   | 需要输入的文本 (`text`)                     |
+| `type`      | 输入文本                                      | 需要输入的文本 (`text`)                     |
+| `press`      | 按下按键（如 Enter、Tab 等）                        | 需要按下的按键 (`text`)                     |
+| `select`      | 选择下拉菜单选项                             | 需要选择的选项引用 (`ref`)                    |
+| `hover`      | 将鼠标悬停在元素上                                  | 需要悬停的元素引用 (`ref`)                    |
+| `check`      | 勾选复选框                                    | 需要勾选的复选框引用 (`ref`)                    |
+| `uncheck`     | 取消勾选复选框                                    | 需要取消勾选的复选框引用 (`ref`)                    |
+| `drag`      | 拖拽元素                                      | 需要拖动的元素引用 (`ref`)                    | 需要拖放的目标元素引用 (`target_ref`)                |
+| `upload`     | 上传文件                                      | 需要上传的文件引用 (`ref`)                    | 需要上传的文件路径 (`file_paths`)                |
+| `scroll`      | 滚动页面                                      | 滚动方向（上/下/左/右）和滚动距离 (`scroll_amount`)         |
+| `back`      | 返回上一页                                    | -                                      |
+| `wait`      | 等待指定毫秒数                                  | 需要等待的时间 (`wait_ms`)                     |
+| `goto`      | 导航到指定 URL                                    | 需要导航的 URL                          |
 
-## Element Refs
+## 元素引用
 
-Elements are returned with `@e` refs:
+页面元素通过 `@e` 引用来标识：
 
 ```
 @e1 [a] "Home" href="/"
@@ -104,16 +104,17 @@ Elements are returned with `@e` refs:
 @e5 [input type="checkbox"] name="agree"
 ```
 
-**Important:** Refs are invalidated after navigation. Always re-snapshot after:
-- Clicking links/buttons that navigate
-- Form submissions
-- Dynamic content loading
+**重要提示：**  
+引用在页面导航后可能会失效。在以下情况下务必重新获取元素引用：  
+- 点击链接或按钮导致页面跳转时；  
+- 表单提交后；  
+- 动态内容加载完成后。
 
-## Features
+## 特性
 
-### Video Recording
+### 视频录制
 
-Record browser sessions for debugging or documentation:
+支持录制浏览器会话，便于调试或生成文档：
 
 ```bash
 # Start with recording enabled (optionally show cursor indicator)
@@ -130,9 +131,9 @@ infsh app run agent-browser --function close --session $SESSION --input '{}'
 # Returns: {"success": true, "video": <File>}
 ```
 
-### Cursor Indicator
+### 光标指示器
 
-Show a visible cursor in screenshots and video (useful for demos):
+在截图和视频中显示可见的光标（对演示非常有用）：
 
 ```bash
 infsh app run agent-browser --function open --session new --input '{
@@ -142,11 +143,11 @@ infsh app run agent-browser --function open --session new --input '{
 }'
 ```
 
-The cursor appears as a red dot that follows mouse movements and shows click feedback.
+光标会以红色圆点的形式显示，并跟随鼠标移动，同时提供点击反馈。
 
-### Proxy Support
+### 代理支持
 
-Route traffic through a proxy server:
+允许通过代理服务器转发网络请求：
 
 ```bash
 infsh app run agent-browser --function open --session new --input '{
@@ -157,9 +158,9 @@ infsh app run agent-browser --function open --session new --input '{
 }'
 ```
 
-### File Upload
+### 文件上传
 
-Upload files to file inputs:
+支持将文件上传到指定的文件输入框：
 
 ```bash
 infsh app run agent-browser --function interact --session $SESSION --input '{
@@ -169,9 +170,9 @@ infsh app run agent-browser --function interact --session $SESSION --input '{
 }'
 ```
 
-### Drag and Drop
+### 拖拽操作
 
-Drag elements to targets:
+支持将元素拖放到目标位置：
 
 ```bash
 infsh app run agent-browser --function interact --session $SESSION --input '{
@@ -181,9 +182,9 @@ infsh app run agent-browser --function interact --session $SESSION --input '{
 }'
 ```
 
-### JavaScript Execution
+### JavaScript 执行
 
-Run custom JavaScript:
+允许在页面上运行自定义 JavaScript 代码：
 
 ```bash
 infsh app run agent-browser --function execute --session $SESSION --input '{
@@ -192,97 +193,35 @@ infsh app run agent-browser --function execute --session $SESSION --input '{
 # Returns: {"result": "5", "screenshot": <File>}
 ```
 
-## Deep-Dive Documentation
+## 详细文档
 
-| Reference | Description |
-|-----------|-------------|
-| [references/commands.md](references/commands.md) | Full function reference with all options |
-| [references/snapshot-refs.md](references/snapshot-refs.md) | Ref lifecycle, invalidation rules, troubleshooting |
-| [references/session-management.md](references/session-management.md) | Session persistence, parallel sessions |
-| [references/authentication.md](references/authentication.md) | Login flows, OAuth, 2FA handling |
-| [references/video-recording.md](references/video-recording.md) | Recording workflows for debugging |
-| [references/proxy-support.md](references/proxy-support.md) | Proxy configuration, geo-testing |
+- [references/commands.md](references/commands.md)：包含所有功能的详细参考信息及选项说明。  
+- [references/snapshot-refs.md](references/snapshot-refs.md)：介绍引用的生命周期、失效规则及故障排除方法。  
+- [references/session-management.md](references/session-management.md)：讲解会话管理机制及多会话处理方式。  
+- [references/authentication.md](references/authentication.md)：介绍登录流程、OAuth 认证及双因素认证（2FA）的实现方式。  
+- [references/video-recording.md](references/video-recording.md)：提供视频录制的相关功能及使用方法。  
+- [references/proxy-support.md](references/proxy-support.md)：介绍代理服务器的配置方法及地理测试相关内容。
 
-## Ready-to-Use Templates
+## 可用的模板
 
-| Template | Description |
-|----------|-------------|
-| [templates/form-automation.sh](templates/form-automation.sh) | Form filling with validation |
-| [templates/authenticated-session.sh](templates/authenticated-session.sh) | Login once, reuse session |
-| [templates/capture-workflow.sh](templates/capture-workflow.sh) | Content extraction with screenshots |
+- [templates/form-automation.sh](templates/form-automation.sh)：包含带有验证功能的表单自动化模板。  
+- [templates/authenticated-session.sh](templates/authenticated-session.sh)：支持登录一次后重复使用会话的功能。  
+- [templates/capture-workflow.sh](templates/capture-workflow.sh)：用于提取内容并生成截图的模板。
 
-## Examples
+## 示例
 
-### Form Submission
+- [examples/form-submission.md](examples/form-submission.md)：演示如何提交表单。  
+- [examples/search-and-extract.md](examples/search-and-extract.md)：演示如何搜索和提取信息。  
+- [examples/screenshot-with-video.md](examples/screenshot-with-video.md)：演示如何截取包含视频的页面截图。  
 
-```bash
-SESSION=$(infsh app run agent-browser --function open --session new --input '{
-  "url": "https://example.com/contact"
-}' | jq -r '.session_id')
+## 会话管理
 
-# Get elements: @e1 [input] "Name", @e2 [input] "Email", @e3 [textarea], @e4 [button] "Send"
+浏览器会话的状态会在会话期间持续保存。使用方法如下：  
+1. 首次调用时使用 `--session new` 参数创建新会话。  
+2. 后续调用时使用返回的 `session_id` 识别当前会话。  
+3. 操作完成后关闭会话。  
 
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "fill", "ref": "@e1", "text": "John Doe"}'
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "fill", "ref": "@e2", "text": "john@example.com"}'
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "fill", "ref": "@e3", "text": "Hello!"}'
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "click", "ref": "@e4"}'
+## 相关技能
 
-infsh app run agent-browser --function snapshot --session $SESSION --input '{}'
-infsh app run agent-browser --function close --session $SESSION --input '{}'
-```
-
-### Search and Extract
-
-```bash
-SESSION=$(infsh app run agent-browser --function open --session new --input '{
-  "url": "https://google.com"
-}' | jq -r '.session_id')
-
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "fill", "ref": "@e1", "text": "weather today"}'
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "press", "text": "Enter"}'
-infsh app run agent-browser --function interact --session $SESSION --input '{"action": "wait", "wait_ms": 2000}'
-
-infsh app run agent-browser --function snapshot --session $SESSION --input '{}'
-infsh app run agent-browser --function close --session $SESSION --input '{}'
-```
-
-### Screenshot with Video
-
-```bash
-SESSION=$(infsh app run agent-browser --function open --session new --input '{
-  "url": "https://example.com",
-  "record_video": true
-}' | jq -r '.session_id')
-
-# Take full page screenshot
-infsh app run agent-browser --function screenshot --session $SESSION --input '{
-  "full_page": true
-}'
-
-# Close and get video
-RESULT=$(infsh app run agent-browser --function close --session $SESSION --input '{}')
-echo $RESULT | jq '.video'
-```
-
-## Sessions
-
-Browser state persists within a session. Always:
-
-1. Start with `--session new` on first call
-2. Use returned `session_id` for subsequent calls
-3. Close session when done
-
-## Related Skills
-
-```bash
-# Web search (for research + browse)
-npx skills add inferencesh/skills@web-search
-
-# LLM models (analyze extracted content)
-npx skills add inferencesh/skills@llm-models
-```
-
-## Documentation
-
-- [inference.sh Sessions](https://inference.sh/docs/extend/sessions) - Session management
-- [Multi-function Apps](https://inference.sh/docs/extend/multi-function-apps) - How functions work
+- [inference.sh Sessions](https://inference.sh/docs/extend/sessions)：了解会话管理的相关知识。  
+- [inference.sh Multi-function Apps](https://inference.sh/docs/extend/multi-function-apps)：了解工具中的多功能组件的工作原理。

@@ -1,6 +1,6 @@
 ---
 name: md-slides
-description: Create presentations from Markdown using Marp - simple syntax, professional output
+description: 使用 Marp 从 Markdown 创建演示文稿——简单的语法，专业的输出
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, marp, markdown, pdf, pptx]
@@ -14,25 +14,25 @@ library:
 
 # Markdown Slides Skill
 
-## Overview
+## 概述
 
-This skill enables creation of presentations from pure Markdown using **Marp**. Write slides in familiar Markdown syntax and export to PDF, PPTX, or HTML with professional themes.
+该技能允许您使用 **Marp** 从纯 Markdown 格式创建演示文稿。您可以使用熟悉的 Markdown 语法编写幻灯片内容，并将其导出为 PDF、PPTX 或带有专业主题的 HTML 格式。
 
-## How to Use
+## 使用方法
 
-1. Write or provide Markdown content
-2. I'll format it for Marp with proper directives
-3. Export to your preferred format (PDF/PPTX/HTML)
+1. 编写或提供 Markdown 内容。
+2. 我会使用相应的指令将内容格式化为适合 Marp 使用的格式。
+3. 将格式化后的内容导出为您所需的格式（PDF/PPTX/HTML）。
 
-**Example prompts:**
-- "Convert my notes to a presentation"
-- "Create slides from this markdown"
-- "Build a pitch deck using markdown"
-- "Generate PDF slides from this outline"
+**示例提示：**
+- “将我的笔记转换为演示文稿。”
+- “根据这段 Markdown 代码生成幻灯片。”
+- “使用 Markdown 创建一个提案演示文稿。”
+- “根据这个大纲生成 PDF 幻灯片。”
 
-## Domain Knowledge
+## 相关知识
 
-### Basic Syntax
+### 基本语法
 
 ```markdown
 ---
@@ -51,7 +51,7 @@ Content here
 - Bullet 2
 ```
 
-### Themes
+### 主题（Themes）
 
 ```markdown
 ---
@@ -60,7 +60,7 @@ theme: default  # default, gaia, uncover
 ---
 ```
 
-### Directives
+### 指令（Directives）
 
 ```markdown
 ---
@@ -74,7 +74,7 @@ backgroundColor: #fff
 ---
 ```
 
-### Images
+### 图片（Images）
 
 ```markdown
 ![width:500px](image.png)
@@ -82,7 +82,7 @@ backgroundColor: #fff
 ![bg left:40%](sidebar.jpg)
 ```
 
-### Columns
+### 列（Columns）
 
 ```markdown
 <div class="columns">
@@ -103,7 +103,7 @@ Content
 </div>
 ```
 
-## Example
+## 示例
 
 ```markdown
 ---
@@ -143,7 +143,7 @@ Q4 2024 Review
 questions@company.com
 ```
 
-## CLI Usage
+## 命令行工具（CLI）使用方法
 
 ```bash
 # Install
@@ -155,7 +155,7 @@ marp slides.md -o presentation.pptx
 marp slides.md -o presentation.html
 ```
 
-## Resources
+## 资源
 
-- [Marp Documentation](https://marp.app/)
+- [Marp 文档](https://marp.app/)
 - [GitHub](https://github.com/marp-team/marp)

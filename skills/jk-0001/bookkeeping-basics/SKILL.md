@@ -1,135 +1,130 @@
 ---
 name: bookkeeping-basics
-description: Set up and maintain basic bookkeeping for a solopreneur business. Use when tracking income and expenses, preparing for taxes, managing invoices and receipts, understanding cash flow, or generating financial reports. Covers accounting software selection, chart of accounts, expense categorization, reconciliation, and financial statements. Not professional accounting advice — consult a CPA for complex situations. Trigger on "bookkeeping", "accounting", "track expenses", "financial records", "QuickBooks", "invoicing", "receipts", "profit and loss".
+description: 为个人创业企业建立并维护基本的簿记系统。该系统可用于追踪收入和支出、准备税务申报、管理发票和收据、了解现金流情况以及生成财务报告。内容涵盖会计软件的选择、账户分类、费用归类、对账以及财务报表的编制方法。请注意，本指南不提供专业的会计建议；对于复杂的情况，请咨询注册会计师（CPA）。相关关键词包括：簿记（bookkeeping）、会计（accounting）、追踪支出（track expenses）、财务记录（financial records）、QuickBooks（会计软件）、发票（invoices）、收据（receipts）以及损益（profit and loss）。
 ---
 
-# Bookkeeping Basics
+# 财务管理基础
 
-## Overview
-Bookkeeping tracks where money comes from and where it goes. Most solopreneurs hate bookkeeping, so they avoid it — then face chaos at tax time or when applying for loans. This playbook gives you a simple system: minimal time, maximum clarity. **Disclaimer: This is educational content, not professional accounting advice. Consult a CPA for complex situations.**
-
----
-
-## Step 1: Choose Your Accounting Software
-
-Don't use spreadsheets. Use accounting software. It automates most of the work and keeps you compliant.
-
-**Software comparison:**
-
-| Software | Best For | Pricing | Learning Curve | Features |
-|---|---|---|---|---|
-| **Wave** | Freelancers, very small businesses | Free (pay for payments/payroll) | Easy | Basic invoicing, expense tracking, reports |
-| **QuickBooks Online** | Most solopreneurs, scaling businesses | $15-50/month | Medium | Full accounting, invoicing, tax reports, integrations |
-| **FreshBooks** | Service businesses, invoicing-heavy | $17-55/month | Easy | Invoicing, time tracking, expense tracking |
-| **Xero** | International businesses, contractors | $13-70/month | Medium | Full accounting, multi-currency, payroll |
-
-**Selection guide:**
-- Just starting, no revenue yet → Wave (free)
-- Revenue < $50K/year → Wave or FreshBooks
-- Revenue $50K-250K/year → QuickBooks Online
-- International clients or contractors → Xero
-
-**Recommendation:** Start with Wave (free). Upgrade to QuickBooks when you hit $50K revenue or need more features.
+## 概述
+财务管理的主要目的是记录资金的来源和去向。许多独立创业者都讨厌做财务管理工作，因此选择逃避这一责任，结果在报税时或申请贷款时遇到麻烦。本指南为您提供了一个简单高效的系统：用最少的时间实现最大的清晰度。**免责声明：本内容仅用于学习目的，并非专业会计建议。遇到复杂情况请咨询注册会计师（CPA）。**
 
 ---
 
-## Step 2: Set Up Your Chart of Accounts
+## 第一步：选择会计软件
+不要使用电子表格，而是选择专业的会计软件。这类软件可以自动化大部分财务工作，并确保您的财务记录符合法规要求。
 
-A chart of accounts is a list of categories for organizing income and expenses. Most software comes with defaults — use them unless you have a specific reason to customize.
+**软件对比：**
 
-**Basic chart of accounts (solopreneur):**
+| 软件 | 适合人群 | 价格 | 学习难度 | 功能 |
+| --- | --- | --- | --- |
+| **Wave** | 自由职业者、小型企业 | 免费（需支付支付和工资处理费用） | 易于使用 | 基本的开票、费用跟踪、报表功能 |
+| **QuickBooks Online** | 大多数独立创业者、规模较大的企业 | 每月15-50美元 | 中等难度 | 全面会计功能、开票、税务报告、系统集成 |
+| **FreshBooks** | 服务型企业、需要频繁开票的企业 | 每月17-55美元 | 易于使用 | 开票、时间跟踪、费用跟踪 |
+| **Xero** | 国际业务、承包商 | 每月13-70美元 | 中等难度 | 全面会计功能、多货币支持、工资处理 |
 
-### INCOME CATEGORIES:
-- Sales Revenue (product/service sales)
-- Consulting Revenue
-- Other Income (interest, refunds, etc.)
+**选择指南：**
+- 刚开始创业且没有收入 → 选择Wave（免费）
+- 年收入低于5万美元 → 选择Wave或FreshBooks
+- 年收入在5万至25万美元之间 → 选择QuickBooks Online
+- 有国际客户或承包商 → 选择Xero
 
-### EXPENSE CATEGORIES:
-- **Cost of Goods Sold (COGS):** Direct costs to deliver your product/service (if applicable)
-- **Operating Expenses:**
-  - Advertising / Marketing
-  - Software / Tools / Subscriptions
-  - Contractor Payments
-  - Office Supplies
-  - Professional Services (lawyer, accountant)
-  - Travel / Meals (business-related)
-  - Insurance
-  - Bank Fees / Merchant Fees
-  - Home Office Deduction (if applicable)
-  - Utilities (if home office)
-  - Other Expenses
-
-**Rule:** Don't over-categorize. 10-15 categories max. Too many creates confusion. Too few makes tax prep hard.
+**建议：** 先从Wave（免费版）开始使用，当年收入达到5万美元或需要更多功能时再升级到QuickBooks。
 
 ---
 
-## Step 3: Track Every Transaction
+## 第二步：设置账户科目表
+账户科目表是一份用于分类收入和费用的列表。大多数会计软件都提供默认的科目设置，除非有特殊需求，否则可以直接使用这些设置。
 
-Every dollar in and every dollar out must be recorded. No exceptions.
+**独立创业者的基本账户科目表：**
 
-**Income tracking:**
-- Record every payment received (invoice, client name, date, amount)
-- Use invoicing software (Wave, QuickBooks, FreshBooks) to generate invoices and track payments automatically
-- For cash payments, create manual invoices or receipts
+### 收入类别：
+- 销售收入（产品/服务销售收入）
+- 咨询服务收入
+- 其他收入（利息、退款等）
 
-**Expense tracking:**
-- Connect your business bank account and credit card to your accounting software (auto-imports transactions)
-- Categorize each expense when it imports (software learns patterns over time)
-- Save receipts (digital copies, not paper — use apps like Expensify or Shoeboxed, or just your phone camera)
+### 费用类别：
+- **销售成本（COGS）**：提供产品/服务的直接成本
+- **运营费用：**
+  - 广告/营销费用
+  - 软件/工具/订阅费用
+  - 承包商付款
+  - 办公用品费用
+  - 专业服务费用（律师、会计师）
+  - 差旅/餐饮费用（与工作相关）
+  - 保险费用
+  - 银行手续费/商户手续费
+  - 家庭办公费用（如适用）
+  - 公用事业费用（如果在家办公）
+  - 其他费用
 
-**Receipt rules (IRS):**
-- Keep receipts for expenses > $75
-- Keep receipts for ALL meals, travel, and entertainment (even under $75)
-- Store digitally (cloud storage, accounting software, or receipt app)
-- Retain for 7 years (IRS audit window)
-
-**Bank/credit card reconciliation (monthly):**
-Reconciliation = matching your accounting software records to your actual bank statements.
-
-**How to reconcile (15-30 min/month):**
-1. Download bank statement for the month
-2. Open your accounting software's reconciliation tool
-3. Check off each transaction in software that matches the bank statement
-4. Investigate any mismatches (missing transactions, duplicate entries)
-5. Mark reconciliation as complete
-
-**Why this matters:** Catches errors, fraud, or missed transactions. If software balance ≠ bank balance, something's wrong.
+**注意事项：** 分类不宜过多或过少。10-15个类别最为合适。分类过多会导致混乱，分类过少则会影响税务申报。
 
 ---
 
-## Step 4: Separate Business and Personal Finances
+## 第三步：记录每一笔交易
+所有收入和支出都必须被记录下来，没有任何例外。
 
-NEVER mix business and personal money. It's the #1 bookkeeping mistake.
+**收入记录：**
+- 记录收到的每一笔付款（包括发票、客户名称、日期、金额）
+- 使用开票软件（Wave、QuickBooks、FreshBooks）自动生成发票并跟踪付款情况
+- 对于现金支付，需手动创建发票或收据
 
-**Why separation matters:**
-- Simplifies bookkeeping (business account = business transactions only)
-- Protects your LLC liability protection (mixing funds pierces the corporate veil)
-- Makes taxes easier (clear business expenses vs personal)
-- Looks professional to clients, lenders, investors
+**费用记录：**
+- 将企业银行账户和信用卡连接到会计软件（自动导入交易记录）
+- 在导入费用时进行分类（软件会逐渐学习费用模式）
+- 保存收据（电子版或照片，可以使用Expensify、Shoeboxed等应用程序，或直接用手机拍照）
 
-**How to separate:**
-- [ ] Open a business bank account (use your EIN, not SSN)
-- [ ] Get a business credit card
-- [ ] Pay yourself a salary or owner's draw (transfer from business to personal account on a schedule)
-- [ ] Pay all business expenses from business account ONLY
-- [ ] Pay all personal expenses from personal account ONLY
+**美国国税局（IRS）的收据要求：**
+- 费用超过75美元时必须保留收据
+- 所有餐饮、差旅和娱乐费用（无论金额多少）都必须保留收据
+- 以数字形式保存收据（云存储、会计软件或收据管理应用）
+- 保留7年（以备IRS审计）
 
-**If you accidentally pay a personal expense from business account:**
-1. Record it as "Owner's Draw" or "Personal Expense" in your bookkeeping
-2. Don't try to deduct it on taxes (it's not a business expense)
+**银行/信用卡对账（每月进行一次）：**
+对账就是将会计软件中的记录与银行对账单进行核对。
+
+**对账步骤（每月15-30分钟）：**
+1. 下载当月的银行对账单
+2. 打开会计软件的对账工具
+3. 核对软件中的每一笔交易是否与银行对账单一致
+4. 查找任何不一致的地方（缺失的交易或重复记录）
+5. 标记对账完成
+
+**重要性：** 这一步可以发现错误、欺诈行为或遗漏的交易。如果软件显示的余额与银行余额不符，说明存在问题。
 
 ---
 
-## Step 5: Understand Basic Financial Statements
+## 第四步：区分企业财务和个人财务
+切勿将企业资金和个人资金混用。这是财务管理中最常见的错误。
 
-Your accounting software generates these automatically. You should review them monthly.
+**区分财务的重要性：**
+- 简化财务管理（企业账户仅记录企业相关交易）
+- 保护有限责任公司的法律责任（混用资金会破坏公司的独立性）
+- 便于税务申报（明确区分企业费用和个人支出）
+- 给客户、贷款机构和投资者留下专业印象
 
-### Profit & Loss (P&L) / Income Statement
-Shows: Revenue - Expenses = Profit (or Loss)
+**区分方法：**
+- 开设企业银行账户（使用企业的EIN，而非个人SSN）
+- 办理企业信用卡
+- 定期从企业账户向个人账户转账作为工资或所有者提款
+- 所有企业支出必须从企业账户支付
+- 所有个人支出必须从个人账户支付
 
-**What it tells you:** Are you making money? Which expense categories are highest?
+**如果误从企业账户支付了个人费用：**
+1. 在财务记录中将其记为“所有者提款”或“个人支出”
+2. 不得在报税时尝试抵扣这部分费用（因为它不属于企业支出）
 
-**Example:**
+---
+
+## 第五步：了解基本财务报表
+会计软件会自动生成这些报表，您应每月查看一次。
+
+### 利润与损失表（P&L）/ 收益表
+显示：收入 - 费用 = 利润（或亏损）
+
+**用途：** 了解您的盈利情况，以及哪些费用项目最高。
+
+**示例：**
 ```
 Revenue:              $10,000
 Expenses:
@@ -141,115 +136,106 @@ Total Expenses:       $6,500
 Net Profit:           $3,500
 ```
 
-**How to use it:**
-- Compare month-over-month (are you growing?)
-- Identify expense trends (is one category ballooning?)
-- Calculate profit margin (Net Profit / Revenue = 35% in example above — healthy is 20-50%)
+**使用方法：**
+- 比较每月的数据（是否在增长）
+- 分析费用趋势（是否有某个费用项目异常增长）
+- 计算利润率（示例中的净利润为35%，正常范围为20%-50%）
 
-### Balance Sheet
-Shows: Assets = Liabilities + Equity
+### 资产负债表
+显示：资产 = 负债 + 所有者权益
 
-**What it tells you:** What you own (assets), what you owe (liabilities), and what's left over (equity/net worth).
+**用途：** 显示您的资产、负债以及剩余的净资产。
 
-**Most solopreneurs can ignore this** unless applying for a loan or raising funding.
+**大多数独立创业者可以忽略此报表**，除非需要申请贷款或筹集资金。
 
-### Cash Flow Statement
-Shows: Cash in - Cash out = Net cash flow
+### 现金流量表
+显示：现金收入 - 现金支出 = 净现金流量
 
-**What it tells you:** Are you running out of cash? (even profitable businesses can have cash flow problems if customers pay late)
+**用途：** 了解您的现金流状况（即使盈利，如果客户付款延迟也可能出现现金流问题）
 
-**How to use it:**
-- Track cash balance over time
-- Predict cash shortages (if expenses > revenue for next 2-3 months)
-- Plan for large purchases or dry spells
-
----
-
-## Step 6: Prepare for Tax Time
-
-Good bookkeeping makes tax prep fast and cheap. Bad bookkeeping means expensive CPA hours or IRS penalties.
-
-**Tax prep checklist (do this all year, not just at tax time):**
-
-- [ ] Categorize every transaction monthly (don't wait until December)
-- [ ] Save receipts for deductible expenses
-- [ ] Track mileage if you drive for business (apps: MileIQ, Everlance)
-- [ ] Set aside 25-30% of revenue for taxes (transfer to separate savings account)
-- [ ] Generate a P&L at year-end (December 31)
-- [ ] Prepare a summary of all income and expenses by category
-- [ ] Hand off to your CPA or tax software (TurboTax, TaxAct)
-
-**Common deductible expenses (U.S.):**
-- Home office (if you have dedicated workspace)
-- Software and subscriptions
-- Contractor payments
-- Marketing and advertising
-- Professional services (lawyer, accountant)
-- Business travel and meals (50% of meals, 100% of travel)
-- Equipment and tools
-- Business insurance
-- Bank and merchant fees
-
-**Non-deductible (can't write off):**
-- Personal expenses
-- Commuting (home to office — but client visits are deductible)
-- Clothing (unless it's a uniform or specialized work gear)
-- Entertaining clients (used to be 50% deductible, now 0% as of 2021 — check current rules)
-
-**Rule:** When in doubt, ask your CPA. Don't guess on deductions.
+**使用方法：**
+- 长期跟踪现金余额
+- 预测未来2-3个月的现金流是否充足
+- 规划大额支出或资金短缺的情况
 
 ---
 
-## Step 7: Monthly Bookkeeping Routine (30-60 min/month)
+## 第六步：为报税做好准备
+良好的财务管理可以让报税过程快速且成本低廉。相反，糟糕的财务管理会导致高昂的会计师费用或IRS罚款。
 
-Consistency prevents end-of-year chaos. Do these tasks monthly:
+**年度报税准备清单（全年持续进行，而不仅仅是报税时）：**
+- 每月对每一笔交易进行分类（不要等到12月）
+- 保存可抵扣费用的收据
+- 如果因工作需要开车，记录行驶里程（使用MileIQ、Everlance等应用程序）
+- 每月预留25-30%的收入用于缴税（转入专用储蓄账户）
+- 在年底（12月31日）生成利润与损失表
+- 按类别汇总所有收入和费用
+- 将数据交给注册会计师或使用税务软件（如TurboTax、TaxAct）
 
-**Monthly bookkeeping checklist:**
+**美国常见的可抵扣费用：**
+- 家庭办公费用（如果有专门的办公空间）
+- 软件和订阅费用
+- 承包商付款
+- 营销和广告费用
+- 专业服务费用（律师、会计师）
+- 差旅和餐饮费用（餐饮费用可抵扣50%，差旅费用100%）
+- 设备和工具费用
+- 企业保险费用
+- 银行和商户手续费
 
-- [ ] **Reconcile bank and credit card accounts** (match software to statements)
-- [ ] **Categorize any uncategorized transactions**
-- [ ] **Review P&L** (revenue vs expenses, profit margin)
-- [ ] **Send outstanding invoices** (if clients haven't paid)
-- [ ] **Follow up on overdue invoices** (Net-30 past due? Send reminder)
-- [ ] **Pay bills due this month** (don't miss deadlines or you'll pay late fees)
-- [ ] **Set aside taxes** (transfer 25-30% of profit to tax savings account)
-- [ ] **Check cash flow** (will you run out of cash in next 2-3 months? If yes, plan ahead)
+**不可抵扣的费用：**
+- 个人支出
+- 通勤费用（从家到办公室的通勤费用不可抵扣，但客户访问相关的费用可抵扣）
+- 服装费用（除非是工作制服或专用工作装备）
+- 客户招待费用（以前可抵扣50%，自2021年起不可抵扣）
 
-**Time required:** 30 min if your bookkeeping is current. 3 hours if you've been ignoring it.
-
-**Rule:** Do this monthly. Don't wait until tax season.
-
----
-
-## Step 8: When to Hire a Bookkeeper or CPA
-
-**DIY bookkeeping works if:**
-- Revenue < $100K/year
-- Simple business model (no inventory, payroll, or complex transactions)
-- You can commit 1 hour/month to bookkeeping
-
-**Hire a bookkeeper if:**
-- Revenue > $100K/year
-- Complex transactions (inventory, multiple revenue streams, many contractors)
-- You hate bookkeeping and keep procrastinating
-
-**Cost:** Virtual bookkeeper = $200-500/month. Worth it if it saves you 5+ hours/month.
-
-**Hire a CPA (tax accountant) if:**
-- Revenue > $50K/year (DIY taxes become risky)
-- Complex tax situation (multiple LLCs, S-Corp election, international clients)
-- You want to maximize deductions and minimize tax liability
-
-**Cost:** CPA = $500-2,000/year for tax prep. More if you need year-round advice.
-
-**Rule:** DIY bookkeeping is fine. DIY taxes past $50K revenue is risky. Hire a CPA.
+**注意事项：** 有疑问时请咨询注册会计师。不要自行猜测哪些费用可以抵扣。
 
 ---
 
-## Bookkeeping Mistakes to Avoid
-- **Not tracking expenses.** Every dollar counts at tax time. Missing receipts = higher taxes.
-- **Mixing personal and business finances.** Creates a mess. Separate accounts from day one.
-- **Not reconciling monthly.** Errors compound. Reconcile monthly or you'll regret it at year-end.
-- **Waiting until tax season to organize.** Bookkeeping in December is painful. Do it monthly.
-- **Not setting aside money for taxes.** Quarterly taxes sneak up on you. Save 25-30% of profit consistently.
-- **Guessing at expense categories.** If unsure, ask a CPA. Wrong categorization = IRS audit risk.
+## 第七步：每月的财务管理常规工作（每月30-60分钟）
+保持一致性可以避免年末的混乱。每月完成以下任务：
+
+**每月财务管理清单：**
+- 对账银行账户和信用卡账户（确保软件记录与银行对账单一致）
+- 对未分类的交易进行分类
+- 查看利润与损失表（收入与费用对比、利润率）
+- 发送未支付的发票
+- 跟进逾期未付的发票
+- 支付本月的账单（避免逾期支付罚款）
+- 预留税款（每月从利润中提取25-30%用于缴税）
+- 检查现金流（未来2-3个月内是否会资金短缺）
+
+**所需时间：** 如果财务管理及时，每月约30分钟；如果长期疏于管理，可能需要3小时。
+
+**注意事项：** 每月坚持进行这些工作，不要等到报税季才处理。
+
+## 第八步：何时聘请财务人员或注册会计师
+以下情况下可以选择自行管理财务：  
+- 年收入低于10万美元  
+- 业务模式简单（无库存、无需处理工资或复杂交易）  
+- 每月能投入1小时进行财务管理  
+
+**需要聘请财务人员的情况：**  
+- 年收入超过10万美元  
+- 业务涉及复杂交易（如库存管理、多收入来源、多个承包商）  
+- 讨厌财务工作且经常拖延  
+
+**费用：** 虚拟财务人员的费用为每月200-500美元。如果这能为您节省超过5小时的工作时间，那么这笔费用是值得的。  
+
+**需要聘请注册会计师的情况：**  
+- 年收入超过5万美元（自行报税可能存在风险）  
+- 财务情况复杂（如涉及多个有限责任公司、S型公司选择、国际客户）  
+- 希望最大化税收抵扣并降低税务负担  
+
+**费用：** 注册会计师的费用为每年500-2000美元。如果需要全年财务咨询，费用会更高。  
+
+**注意事项：** 如果年收入低于10万美元，自行管理财务通常是可以的；但如果年收入超过5万美元，自行报税可能会带来风险。如果需要专业税务建议或处理复杂税务问题，建议聘请注册会计师。  
+
+## 需避免的财务管理错误：  
+- 不记录费用：每一笔支出在报税时都很重要。遗漏收据会导致更高的税务负担。  
+- 混淆企业和个人财务：会造成财务混乱，从一开始就应分开管理。  
+- 不定期对账：错误会累积，每月对账可以避免年末的麻烦。  
+- 等到报税季才整理财务：12月进行财务整理非常麻烦，应每月进行。  
+- 不预留税款：如果不提前预留税款，可能会在报税时遇到麻烦。  
+- 对费用分类猜测：不确定时请咨询注册会计师。错误的分类可能导致IRS审计。

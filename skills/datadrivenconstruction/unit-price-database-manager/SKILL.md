@@ -1,24 +1,24 @@
 ---
 slug: "unit-price-database-manager"
 display_name: "Unit Price Database Manager"
-description: "Manage construction unit price databases: update prices, track vendors, apply location factors, maintain historical records. Essential for accurate estimating."
+description: "管理建筑单位价格数据库：更新价格、跟踪供应商信息、应用地理位置因素、维护历史记录。这对于准确进行成本估算至关重要。"
 ---
 
-# Unit Price Database Manager for Construction
+# 建筑单位价格数据库管理器
 
-## Overview
+## 概述
 
-Manage and maintain construction unit price databases. Update prices from vendors, apply location and time adjustments, track price history, and ensure estimating accuracy.
+本工具用于管理和维护建筑单位的单价数据库。它能够从供应商处获取价格更新信息，根据地理位置和时间因素调整价格，记录价格历史数据，并确保估算的准确性。
 
-## Business Case
+## 商业价值
 
-Accurate unit prices are critical for:
-- **Competitive Bids**: Win work with accurate pricing
-- **Cost Control**: Avoid budget surprises
-- **Vendor Management**: Track supplier pricing
-- **Historical Analysis**: Understand price trends
+准确的单位价格对于以下方面至关重要：
+- **竞争性投标**：通过精确的定价赢得项目
+- **成本控制**：避免预算超支
+- **供应商管理**：跟踪供应商的价格变动
+- **历史数据分析**：了解价格趋势
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -440,7 +440,7 @@ class UnitPriceDatabaseManager:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from decimal import Decimal
@@ -488,7 +488,7 @@ print(f"Escalated {count} items by 3.5%")
 print(manager.generate_report())
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas

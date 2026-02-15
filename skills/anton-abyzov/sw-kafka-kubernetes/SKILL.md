@@ -1,47 +1,47 @@
 ---
 name: kafka-kubernetes
-description: Kubernetes deployment expert for Apache Kafka using Helm, Strimzi, and Confluent operators. Use when deploying Kafka on K8s, configuring StatefulSets, or choosing between Kafka operators for production.
+description: Kubernetes 部署专家，专注于使用 Helm、Strimzi 和 Confluent 操作符来部署 Apache Kafka。适用于在 Kubernetes 上部署 Kafka、配置 StatefulSets，以及在生产环境中选择合适的 Kafka 操作符的场景。
 ---
 
-# Kafka on Kubernetes Deployment
+# 在 Kubernetes 上部署 Kafka
 
-Expert guidance for deploying Apache Kafka on Kubernetes using industry-standard tools.
+本文档提供了使用行业标准工具在 Kubernetes 上部署 Apache Kafka 的专家指导。
 
-## When to Use This Skill
+## 适用场景
 
-I activate when you need help with:
-- **Kubernetes deployments**: "Deploy Kafka on Kubernetes", "run Kafka in K8s", "Kafka Helm chart"
-- **Operator selection**: "Strimzi vs Confluent Operator", "which Kafka operator to use"
-- **StatefulSet patterns**: "Kafka StatefulSet best practices", "persistent volumes for Kafka"
-- **Production K8s**: "Production-ready Kafka on K8s", "Kafka high availability in Kubernetes"
+当您需要以下帮助时，请参考本文档：
+- **Kubernetes 部署**：在 Kubernetes 上部署 Kafka、在 K8s 中运行 Kafka、使用 Kafka Helm 图表
+- **Kafka 运营商选择**：Strimzi 与 Confluent 运营商的比较
+- **StatefulSet 模式**：Kafka StatefulSet 的最佳实践、Kafka 的持久化存储
+- **生产级 Kubernetes 环境**：适用于生产环境的 Kafka 部署、Kafka 在 Kubernetes 中的高可用性配置
 
-## What I Know
+## 我所掌握的知识
 
-### Deployment Options Comparison
+### 部署方案对比
 
-| Approach | Difficulty | Production-Ready | Best For |
-|----------|-----------|------------------|----------|
-| **Strimzi Operator** | Easy | ✅ Yes | Self-managed Kafka on K8s, CNCF project |
-| **Confluent Operator** | Medium | ✅ Yes | Enterprise features, Confluent ecosystem |
-| **Bitnami Helm Chart** | Easy | ⚠️  Mostly | Quick dev/staging environments |
-| **Custom StatefulSet** | Hard | ⚠️  Requires expertise | Full control, custom requirements |
+| 方案 | 难度 | 是否适合生产环境 | 适用场景 |
+|---------|---------|-------------|---------|
+| **Strimzi 运营商** | 简单 | ✅ 是 | 适用于自管理的 Kafka 部署（基于 CNCF 项目） |
+| **Confluent 运营商** | 中等 | ✅ 是 | 提供企业级功能，支持 Confluent 生态系统 |
+| **Bitnami Helm 图表** | 简单 | ⚠️ 主要适用于开发/测试环境 |
+| **自定义 StatefulSet** | 复杂 | ⚠️ 需要专业知识 | 提供完全的控制权和自定义配置 |
 
-**Recommendation**: **Strimzi Operator** for most production use cases (CNCF project, active community, KRaft support)
+**推荐方案**：对于大多数生产环境，建议使用 **Strimzi 运营商**（基于 CNCF 项目，拥有活跃的社区支持，并支持 KRaft 协议）。
 
-## Deployment Approach 1: Strimzi Operator (Recommended)
+## 部署方法 1：使用 Strimzi 运营商（推荐）
 
-**Strimzi** is a CNCF Sandbox project providing Kubernetes operators for Apache Kafka.
+**Strimzi** 是一个基于 CNCF 的项目，提供了用于管理 Apache Kafka 的 Kubernetes 运营商。
 
-### Features
-- ✅ KRaft mode support (Kafka 3.6+, no ZooKeeper)
-- ✅ Declarative Kafka management (CRDs)
-- ✅ Automatic rolling upgrades
-- ✅ Built-in monitoring (Prometheus metrics)
-- ✅ Mirror Maker 2 for replication
-- ✅ Kafka Connect integration
-- ✅ User and topic management via CRDs
+### 主要特性
+- ✅ 支持 KRaft 模式（Kafka 3.6 及更高版本，无需 ZooKeeper）
+- ✅ 基于声明式配置（CRDs）进行 Kafka 管理
+- ✅ 自动化升级
+- 内置监控功能（Prometheus 指标）
+- 支持 MirrorMaker 2 进行数据复制
+- 支持与 Kafka Connect 的集成
+- 通过 CRDs 进行用户和主题的管理
 
-### Installation (Helm)
+### 安装（使用 Helm）
 
 ```bash
 # 1. Add Strimzi Helm repository
@@ -62,7 +62,7 @@ kubectl get pods -n kafka
 # Output: strimzi-cluster-operator-... Running
 ```
 
-### Deploy Kafka Cluster (KRaft Mode)
+### 部署 Kafka 集群（KRaft 模式）
 
 ```yaml
 # kafka-cluster.yaml
@@ -162,7 +162,7 @@ kubectl get kafka -n kafka
 # Output: my-kafka-cluster   3.7.0   3         True
 ```
 
-### Create Topics (Declaratively)
+### 声明式创建主题
 
 ```yaml
 # kafka-topics.yaml
@@ -196,6 +196,8 @@ spec:
     min.insync.replicas: 2
 ```
 
+### 声明式创建用户
+
 ```bash
 # Apply topics
 kubectl apply -f kafka-topics.yaml
@@ -204,7 +206,7 @@ kubectl apply -f kafka-topics.yaml
 kubectl get kafkatopics -n kafka
 ```
 
-### Create Users (Declaratively)
+### 声明式配置用户权限
 
 ```yaml
 # kafka-users.yaml
@@ -257,29 +259,19 @@ spec:
         operations: [Read]
 ```
 
-```bash
-# Apply users
-kubectl apply -f kafka-users.yaml
+### 部署方法 2：使用 Confluent 运营商
 
-# Get user credentials (TLS certificates)
-kubectl get secret my-producer -n kafka -o jsonpath='{.data.user\.crt}' | base64 -d > producer.crt
-kubectl get secret my-producer -n kafka -o jsonpath='{.data.user\.key}' | base64 -d > producer.key
-kubectl get secret my-kafka-cluster-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
-```
+**Confluent for Kubernetes (CFK)** 提供企业级 Kafka 管理功能。
 
-## Deployment Approach 2: Confluent Operator
+### 主要特性
+- 完整的 Confluent 生态系统（包括 Kafka、Schema Registry、ksqlDB、Connect）
+- 支持混合部署（Kubernetes + 本地环境）
+- 支持无停机时间的自动升级
+- 支持多区域数据复制
+- 具备高级安全特性（RBAC、加密）
+- ⚠️ 需要购买 Confluent Platform 许可证
 
-**Confluent for Kubernetes (CFK)** provides enterprise-grade Kafka management.
-
-### Features
-- ✅ Full Confluent Platform (Kafka, Schema Registry, ksqlDB, Connect)
-- ✅ Hybrid deployments (K8s + on-prem)
-- ✅ Rolling upgrades with zero downtime
-- ✅ Multi-region replication
-- ✅ Advanced security (RBAC, encryption)
-- ⚠️  Requires Confluent Platform license (paid)
-
-### Installation
+### 安装
 
 ```bash
 # 1. Add Confluent Helm repository
@@ -298,7 +290,7 @@ helm install confluent-operator confluentinc/confluent-for-kubernetes \
 kubectl get pods -n confluent
 ```
 
-### Deploy Kafka Cluster
+### 部署 Kafka 集群
 
 ```yaml
 # kafka-cluster-confluent.yaml
@@ -346,19 +338,11 @@ spec:
         cpu: 4
 ```
 
-```bash
-# Apply Kafka cluster
-kubectl apply -f kafka-cluster-confluent.yaml
+### 部署方法 3：使用 Bitnami Helm 图表（适用于开发/测试环境）
 
-# Wait for cluster
-kubectl wait kafka/kafka --for=condition=Ready --timeout=600s -n confluent
-```
+**Bitnami Helm 图表** 配置简单，但不太适合生产环境。
 
-## Deployment Approach 3: Bitnami Helm Chart (Dev/Staging)
-
-**Bitnami Helm Chart** is simple but less suitable for production.
-
-### Installation
+### 安装
 
 ```bash
 # 1. Add Bitnami repository
@@ -381,16 +365,16 @@ helm install kafka bitnami/kafka \
 export KAFKA_BOOTSTRAP=$(kubectl get svc kafka -n kafka -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):9092
 ```
 
-**Limitations**:
-- ⚠️  Less production-ready than Strimzi/Confluent
-- ⚠️  Limited declarative topic/user management
-- ⚠️  Fewer advanced features (no MirrorMaker 2, limited RBAC)
+**注意事项**：
+- ⚠️ 相较于 Strimzi/Confluent，其生产准备程度较低
+- 声明式主题/用户管理功能有限
+- 高级特性较少（不支持 MirrorMaker 2，RBAC 功能也较为简单）
 
-## Production Best Practices
+## 生产环境最佳实践
 
-### 1. Storage Configuration
+### 1. 存储配置
 
-**Use SSD-backed storage classes** for Kafka logs:
+**建议使用 SSD 支持的存储类来存储 Kafka 日志**：
 
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -406,12 +390,12 @@ allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
 ```
 
-**Kafka storage requirements**:
-- **Min IOPS**: 3000+ per broker
-- **Min Throughput**: 125 MB/s per broker
-- **Persistent**: Use `deleteClaim: false` (don't delete data on pod deletion)
+**Kafka 的存储要求**：
+- **每个 broker 的最低 IOPS**：3000+
+- **每个 broker 的最低吞吐量**：125 MB/s
+- **数据持久化**：设置 `deleteClaim: false`（避免在 Pod 删除时删除数据）
 
-### 2. Resource Limits
+### 2. 资源限制
 
 ```yaml
 resources:
@@ -427,14 +411,12 @@ jvmOptions:
   -Xmx: 4096m  # Max heap (50% of memory limit, leave room for OS cache)
 ```
 
-**Sizing guidelines**:
-- **Small (dev)**: 2 CPU, 4Gi memory
-- **Medium (staging)**: 4 CPU, 8Gi memory
-- **Large (production)**: 8 CPU, 16Gi memory
+**规模规划指南**：
+- **小型环境（开发）**：2 个 CPU 核心，4 GiB 内存
+- **中型环境（测试）**：4 个 CPU 核心，8 GiB 内存
+- **大型环境（生产）**：8 个 CPU 核心，16 GiB 内存
 
-### 3. Pod Disruption Budgets
-
-Ensure high availability during K8s upgrades:
+### 3. 确保 Kubernetes 升级过程中的高可用性
 
 ```yaml
 apiVersion: policy/v1
@@ -449,9 +431,9 @@ spec:
       app.kubernetes.io/name: kafka
 ```
 
-### 4. Affinity Rules
+### 4. 资源亲和性配置
 
-**Spread brokers across availability zones**:
+**将 Kafka broker 分布到不同的可用区**：
 
 ```yaml
 spec:
@@ -470,9 +452,9 @@ spec:
                 topologyKey: topology.kubernetes.io/zone
 ```
 
-### 5. Network Policies
+### 5. 网络策略
 
-**Restrict access to Kafka brokers**:
+**限制对 Kafka broker 的访问**：
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -501,11 +483,11 @@ spec:
         port: 9093
 ```
 
-## Monitoring Integration
+## 监控集成
 
-### Prometheus + Grafana Setup
+**使用 Prometheus 和 Grafana 进行监控**
 
-Strimzi provides built-in Prometheus metrics exporter:
+**Strimzi** 内置了 Prometheus 指标导出功能**：
 
 ```yaml
 # kafka-metrics-configmap.yaml
@@ -556,11 +538,12 @@ kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
 # Dashboards: Kafka Cluster Overview, Broker Metrics, Consumer Lag, Topic Metrics, JVM Metrics
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "Pods stuck in Pending state"
-**Cause**: Insufficient resources or storage class not found
-**Fix**:
+### “Pod 处于 ‘Pending’ 状态”
+
+**原因**：资源不足或未找到合适的存储类
+**解决方法**：
 ```bash
 # Check events
 kubectl describe pod kafka-my-kafka-cluster-0 -n kafka
@@ -571,9 +554,10 @@ kubectl get storageclass
 # If missing, create fast-ssd storage class (see Production Best Practices above)
 ```
 
-### "Kafka broker not ready after 10 minutes"
-**Cause**: Slow storage provisioning or resource limits too low
-**Fix**:
+### “Kafka broker 在 10 分钟后仍未准备好”
+
+**原因**：存储资源分配缓慢或资源限制过低
+**解决方法**：
 ```bash
 # Check broker logs
 kubectl logs kafka-my-kafka-cluster-0 -n kafka
@@ -584,9 +568,10 @@ kubectl logs kafka-my-kafka-cluster-0 -n kafka
 # 3. KRaft quorum not formed → Check all brokers are running
 ```
 
-### "Cannot connect to Kafka from outside K8s"
-**Cause**: External listener not configured
-**Fix**:
+### “无法从外部连接到 Kafka”
+
+**原因**：未配置外部监听器
+**解决方法**：
 ```yaml
 # Add external listener (Strimzi)
 spec:
@@ -603,9 +588,9 @@ spec:
 kubectl get kafka my-kafka-cluster -n kafka -o jsonpath='{.status.listeners[?(@.name=="external")].bootstrapServers}'
 ```
 
-## Scaling Operations
+## 扩展操作
 
-### Horizontal Scaling (Add Brokers)
+### 水平扩展（增加 broker）
 
 ```bash
 # Strimzi: Update KafkaNodePool replicas
@@ -620,7 +605,7 @@ kubectl patch kafka kafka -n confluent --type='json' \
 kubectl rollout status statefulset/kafka-my-kafka-cluster-kafka -n kafka
 ```
 
-### Vertical Scaling (Change Resources)
+### 垂直扩展（调整资源）
 
 ```bash
 # Update resources in Kafka CR
@@ -633,14 +618,14 @@ kubectl patch kafka my-kafka-cluster -n kafka --type='json' \
 # Rolling restart will happen automatically
 ```
 
-## Integration with Other Skills
+## 其他相关技能
 
-- **kafka-iac-deployment**: Alternative to K8s (use Terraform for cloud-managed Kafka)
-- **kafka-observability**: Set up Prometheus + Grafana dashboards for K8s Kafka
-- **kafka-architecture**: Cluster sizing and partitioning strategy
-- **kafka-cli-tools**: Test K8s Kafka cluster with kcat
+- **kafka-iac-deployment**：Kubernetes 部署 Kafka 的另一种方案（可使用 Terraform 进行云管理）
+- **kafka-observability**：用于配置 Prometheus 和 Grafana 监控面板以监控 Kafka 集群
+- **kafka-architecture**：提供 Kafka 集群的规模规划和分区策略
+- **kafka-cli-tools**：使用 kcat 工具测试 Kafka 集群
 
-## Quick Reference Commands
+## 快速参考命令
 
 ```bash
 # Strimzi
@@ -660,8 +645,8 @@ kubectl port-forward -n kafka svc/my-kafka-cluster-kafka-bootstrap 9092:9092
 
 ---
 
-**Next Steps After K8s Deployment**:
-1. Use **kafka-observability** skill to verify Prometheus metrics and Grafana dashboards
-2. Use **kafka-cli-tools** skill to test cluster with kcat
-3. Deploy your producer/consumer applications to K8s
-4. Set up GitOps for declarative topic/user management (ArgoCD, Flux)
+**Kubernetes 部署完成后，请执行以下操作**：
+1. 使用 **kafka-observability** 工具验证 Prometheus 指标和 Grafana 监控面板
+2. 使用 **kafka-cli-tools** 工具通过 kcat 测试 Kafka 集群
+3. 将生产应用程序部署到 Kubernetes 上
+4. 配置 GitOps 系统以实现声明式的主题和用户管理（例如使用 ArgoCD 或 Flux）

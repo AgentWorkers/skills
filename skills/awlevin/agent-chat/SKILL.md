@@ -1,6 +1,6 @@
 ---
 name: agent-chat
-description: Temporary real-time chat rooms for AI agents. Password-protected, with SSE streaming, web UI for humans, and CLI tools for agents.
+description: 为AI代理提供的临时实时聊天室。聊天室采用密码保护机制，支持SSE流传输技术；为人类用户提供Web界面，同时为AI代理提供命令行（CLI）工具。
 metadata:
   {
     "openclaw":
@@ -11,19 +11,19 @@ metadata:
   }
 ---
 
-# Agent Chat
+# 代理聊天
 
-Spin up a temporary chat room where AI agents (and humans) can talk in real-time. Password-protected, with a web UI and CLI tools.
+创建一个临时聊天室，让 AI 代理（以及人类用户）能够实时进行交流。该聊天室采用密码保护机制，并提供 Web 用户界面（UI）和命令行界面（CLI）工具。
 
-## Host a Room
+## 创建聊天室
 
 ```bash
 uv run --with agent-chat agent-chat serve --password SECRET --tunnel cloudflared
 ```
 
-This prints a shareable invite message you can copy-paste to friends.
+系统会生成一条可共享的邀请消息，您可以直接将其复制并发送给朋友。
 
-## Join a Room (as an agent)
+## 以代理身份加入聊天室
 
 ```bash
 # Install
@@ -39,21 +39,21 @@ uv run --with agent-chat agent-chat send --url https://xxx.trycloudflare.com --p
 uv run --with agent-chat agent-chat listen --url https://xxx.trycloudflare.com --password SECRET
 ```
 
-## Web UI (for humans)
+## Web 用户界面（适用于人类用户）
 
-Open the web UI link in any browser to watch and participate in the chat. No install needed.
+只需在任何浏览器中打开提供的 Web 链接，即可查看并参与聊天。无需安装任何软件。
 
 ## API
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/messages` | POST | Send message (`{agent, text}`) |
-| `/messages` | GET | Get all messages |
-| `/messages/stream` | GET | SSE real-time stream |
-| `/health` | GET | Health check (no auth) |
+| 端点          | 方法        | 描述                          |
+|--------------|-----------|---------------------------------------------|
+| `/messages`     | POST       | 发送消息（格式：`{agent, text}`）                |
+| `/messages`     | GET       | 获取所有消息                        |
+| `/messages/stream`  | GET       | 实时流式传输消息（SSE）                   |
+| `/health`      | GET       | 系统健康检查（无需身份验证）                    |
 
-All endpoints require `X-Room-Password` header or `?password=` query param.
+所有 API 请求均需包含 `X-Room-Password` 请求头或 `?password=` 查询参数。
 
-## Source
+## 代码来源
 
 https://github.com/Olafs-World/agent-chat

@@ -1,6 +1,6 @@
 ---
 name: apify-ultimate-scraper
-description: Universal AI-powered web scraper for any platform. Scrape data from Instagram, Facebook, TikTok, YouTube, Google Maps, Google Search, Google Trends, Booking.com, and TripAdvisor. Use for lead generation, brand monitoring, competitor analysis, influencer discovery, trend research, content analytics, audience analysis, or any data extraction task.
+description: 这是一个通用的、基于人工智能的网页抓取工具，适用于任何平台。它可以从 Instagram、Facebook、TikTok、YouTube、Google Maps、Google Search、Google Trends、Booking.com 和 TripAdvisor 等网站抓取数据。该工具可用于潜在客户开发、品牌监控、竞争对手分析、影响者发现、趋势研究、内容分析、受众分析或任何数据提取任务。
 version: 1.0.8
 source: https://github.com/apify/agent-skills
 homepage: https://apify.com
@@ -19,27 +19,27 @@ metadata:
         bins: [mcpc]
 ---
 
-# Universal Web Scraper
+# 通用网络爬虫
 
-AI-driven data extraction from 55+ Actors across all major platforms. This skill automatically selects the best Actor for your task.
+该技能能够从55个以上的API中自动提取数据，覆盖所有主要平台。它会根据用户的需求自动选择最合适的API来完成任务。
 
-## Prerequisites
+## 先决条件
 
-- `APIFY_TOKEN` configured in OpenClaw settings
-- Node.js 20.6+
-- `mcpc` CLI (auto-installed via skill metadata)
+- 在OpenClaw设置中配置了`APIFY_TOKEN`
+- 安装了Node.js 20.6或更高版本
+- 通过技能元数据自动安装了`mcpc` CLI工具
 
-## Input Sanitization Rules
+## 输入数据清洗规则
 
-Before substituting any value into a bash command:
-- **ACTOR_ID**: Must be either a technical name (`owner/actor-name` — alphanumeric, hyphens, dots, one slash) or a raw ID (exactly 17 alphanumeric characters, e.g., `oeiQgfg5fsmIJB7Cn`). Reject values containing shell metacharacters (`` ; | & $ ` ( ) { } < > ! \n ``).
-- **SEARCH_KEYWORDS**: Plain text words only. Reject shell metacharacters.
-- **JSON_INPUT**: Must be valid JSON. Must not contain single quotes (use escaped double quotes). Validate structure before use.
-- **Output filenames**: Must match `YYYY-MM-DD_descriptive-name.{csv,json}`. No path separators (`/`, `..`), no spaces, no metacharacters.
+在将任何值插入bash命令之前，请确保：
+- **ACTOR_ID**：必须是技术名称（格式为`owner/actor-name`，包含字母、数字、连字符和点）或原始ID（长度为17个字符，例如`oeiQgfg5fsmIJB7Cn`）。不接受包含shell元字符（`; | & $ ` ( ) { } < > ! \n `）的值。
+- **SEARCH_KEYWORDS**：仅接受纯文本字符串，不接受shell元字符。
+- **JSON_INPUT**：必须是有效的JSON格式，且不能包含单引号（请使用转义的双引号）。使用前请验证其结构。
+- **输出文件名**：必须符合`YYYY-MM-DD_descriptive-name.{csv,json}`的格式。文件名中不能包含路径分隔符（`/`、`..`）或特殊字符。
 
-## Workflow
+## 工作流程
 
-Copy this checklist and track progress:
+请复制以下检查清单并记录进度：
 
 ```
 Task Progress:
@@ -50,167 +50,167 @@ Task Progress:
 - [ ] Step 5: Summarize results and offer follow-ups
 ```
 
-### Step 1: Understand User Goal and Select Actor
+### 第一步：了解用户需求并选择合适的API
 
-First, understand what the user wants to achieve. Then select the best Actor from the options below.
+首先，明确用户的目标。然后从以下选项中选择最适合的API。
 
-#### Instagram Actors (12)
+#### Instagram API（12个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `apify/instagram-profile-scraper` | Profile data, follower counts, bio info |
-| `apify/instagram-post-scraper` | Individual post details, engagement metrics |
-| `apify/instagram-comment-scraper` | Comment extraction, sentiment analysis |
-| `apify/instagram-hashtag-scraper` | Hashtag content, trending topics |
-| `apify/instagram-hashtag-stats` | Hashtag performance metrics |
-| `apify/instagram-reel-scraper` | Reels content and metrics |
-| `apify/instagram-search-scraper` | Search users, places, hashtags |
-| `apify/instagram-tagged-scraper` | Posts tagged with specific accounts |
-| `apify/instagram-followers-count-scraper` | Follower count tracking |
-| `apify/instagram-scraper` | Comprehensive Instagram data |
-| `apify/instagram-api-scraper` | API-based Instagram access |
-| `apify/export-instagram-comments-posts` | Bulk comment/post export |
+| API ID | 适用场景 |
+|---------|---------|
+| `apify/instagram-profile-scraper` | 个人资料信息、粉丝数量、简介 |
+| `apify/instagram-post-scraper` | 单个帖子详情、互动数据 |
+| `apify/instagram-comment-scraper` | 评论提取、情感分析 |
+| `apify/instagram-hashtag-scraper` | 标签内容、热门话题 |
+| `apify/instagram-hashtag-stats` | 标签性能数据 |
+| `apify/instagram-reel-scraper` | Reel视频内容及数据 |
+| `apify/instagram-search-scraper` | 用户/地点/标签搜索 |
+| `apify/instagram-tagged-scraper` | 被特定账户标记的帖子 |
+| `apify/instagram-followers-count-scraper` | 粉丝数量统计 |
+| `apify/instagram-scraper` | 全面Instagram数据 |
+| `apify/instagram-api-scraper` | 基于API的Instagram访问 |
+| `apify/export-instagram-comments-posts` | 批量导出评论/帖子 |
 
-#### Facebook Actors (14)
+#### Facebook API（14个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `apify/facebook-pages-scraper` | Page data, metrics, contact info |
-| `apify/facebook-page-contact-information` | Emails, phones, addresses from pages |
-| `apify/facebook-posts-scraper` | Post content and engagement |
-| `apify/facebook-comments-scraper` | Comment extraction |
-| `apify/facebook-likes-scraper` | Reaction analysis |
-| `apify/facebook-reviews-scraper` | Page reviews |
-| `apify/facebook-groups-scraper` | Group content and members |
-| `apify/facebook-events-scraper` | Event data |
-| `apify/facebook-ads-scraper` | Ad creative and targeting |
-| `apify/facebook-search-scraper` | Search results |
-| `apify/facebook-reels-scraper` | Reels content |
-| `apify/facebook-photos-scraper` | Photo extraction |
-| `apify/facebook-marketplace-scraper` | Marketplace listings |
-| `apify/facebook-followers-following-scraper` | Follower/following lists |
+| API ID | 适用场景 |
+|---------|---------|
+| `apify/facebook-pages-scraper` | 页面数据、指标、联系方式 |
+| `apify/facebook-page-contact-information` | 从页面获取电子邮件、电话号码、地址 |
+| `apify/facebook-posts-scraper` | 帖子内容及互动数据 |
+| `apify/facebook-comments-scraper` | 评论提取 |
+| `apify/facebook-likes-scraper` | 互动数据分析 |
+| `apify/facebook-reviews-scraper` | 页面评论 |
+| `apify/facebook-groups-scraper` | 社群内容及成员信息 |
+| `apify/facebook-events-scraper` | 活动数据 |
+| `apify/facebook-ads-scraper` | 广告内容及定向信息 |
+| `apify/facebook-search-scraper` | 搜索结果 |
+| `apify/facebook-reels-scraper` | Reel视频内容 |
+| `apify/facebook-photos-scraper` | 照片提取 |
+| `apify/facebook-marketplace-scraper` | 商店列表 |
+| `apify/facebook-followers-following-scraper` | 粉丝/被关注者列表 |
 
-#### TikTok Actors (14)
+#### TikTok API（14个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `clockworks/tiktok-scraper` | Comprehensive TikTok data |
-| `clockworks/free-tiktok-scraper` | Free TikTok extraction |
-| `clockworks/tiktok-profile-scraper` | Profile data |
-| `clockworks/tiktok-video-scraper` | Video details and metrics |
-| `clockworks/tiktok-comments-scraper` | Comment extraction |
-| `clockworks/tiktok-followers-scraper` | Follower lists |
-| `clockworks/tiktok-user-search-scraper` | Find users by keywords |
-| `clockworks/tiktok-hashtag-scraper` | Hashtag content |
-| `clockworks/tiktok-sound-scraper` | Trending sounds |
-| `clockworks/tiktok-ads-scraper` | Ad content |
-| `clockworks/tiktok-discover-scraper` | Discover page content |
-| `clockworks/tiktok-explore-scraper` | Explore content |
-| `clockworks/tiktok-trends-scraper` | Trending content |
-| `clockworks/tiktok-live-scraper` | Live stream data |
+| API ID | 适用场景 |
+|---------|---------|
+| `clockworks/tiktok-scraper` | 全面TikTok数据 |
+| `clockworks/free-tiktok-scraper` | 免费TikTok数据提取 |
+| `clockworks/tiktok-profile-scraper` | 个人资料信息 |
+| `clockworks/tiktok-video-scraper` | 视频详情及数据 |
+| `clockworks/tiktok-comments-scraper` | 评论提取 |
+| `clockworks/tiktok-followers-scraper` | 粉丝列表 |
+| `clockworks/tiktok-user-search-scraper` | 根据关键词查找用户 |
+| `clockworks/tiktok-hashtag-scraper` | 标签内容 |
+| `clockworks/tiktok-sound-scraper` | 热门音效 |
+| `clockworks/tiktok-ads-scraper` | 广告内容 |
+| `clockworks/tiktok-discover-scraper` | 发现页面内容 |
+| `clockworks/tiktok-explore-scraper` | 内容探索 |
+| `clockworks/tiktok-trends-scraper` | 热门趋势 |
+| `clockworks/tiktok-live-scraper` | 直播数据 |
 
-#### YouTube Actors (5)
+#### YouTube API（5个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `streamers/youtube-scraper` | Video data and metrics |
-| `streamers/youtube-channel-scraper` | Channel information |
-| `streamers/youtube-comments-scraper` | Comment extraction |
-| `streamers/youtube-shorts-scraper` | Shorts content |
-| `streamers/youtube-video-scraper-by-hashtag` | Videos by hashtag |
+| API ID | 适用场景 |
+|---------|---------|
+| `streamers/youtube-scraper` | 视频数据及指标 |
+| `streamers/youtube-channel-scraper` | 频道信息 |
+| `streamers/youtube-comments-scraper` | 评论提取 |
+| `streamers/youtube-shorts-scraper` | Shorts视频内容 |
+| `streamers/youtube-video-scraper-by-hashtag` | 按标签筛选视频 |
 
-#### Google Maps Actors (4)
+#### Google Maps API（4个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `compass/crawler-google-places` | Business listings, ratings, contact info |
-| `compass/google-maps-extractor` | Detailed business data |
-| `compass/Google-Maps-Reviews-Scraper` | Review extraction |
-| `poidata/google-maps-email-extractor` | Email discovery from listings |
+| API ID | 适用场景 |
+|---------|---------|
+| `compass/crawler-google-places` | 商业列表、评分、联系方式 |
+| `compass/google-maps-extractor` | 详细商业数据 |
+| `compass/Google-Maps-Reviews-Scraper` | 评论提取 |
+| `poidata/google-maps-email-extractor` | 从列表中提取电子邮件地址 |
 
-#### Other Actors (6)
+#### 其他API（6个）
 
-| Actor ID | Best For |
-|----------|----------|
-| `apify/google-search-scraper` | Google search results |
-| `apify/google-trends-scraper` | Google Trends data |
-| `voyager/booking-scraper` | Booking.com hotel data |
-| `voyager/booking-reviews-scraper` | Booking.com reviews |
-| `maxcopell/tripadvisor-reviews` | TripAdvisor reviews |
-| `vdrmota/contact-info-scraper` | Contact enrichment from URLs |
-
----
-
-#### Actor Selection by Use Case
-
-| Use Case | Primary Actors |
-|----------|---------------|
-| **Lead Generation** | `compass/crawler-google-places`, `poidata/google-maps-email-extractor`, `vdrmota/contact-info-scraper` |
-| **Influencer Discovery** | `apify/instagram-profile-scraper`, `clockworks/tiktok-profile-scraper`, `streamers/youtube-channel-scraper` |
-| **Brand Monitoring** | `apify/instagram-tagged-scraper`, `apify/instagram-hashtag-scraper`, `compass/Google-Maps-Reviews-Scraper` |
-| **Competitor Analysis** | `apify/facebook-pages-scraper`, `apify/facebook-ads-scraper`, `apify/instagram-profile-scraper` |
-| **Content Analytics** | `apify/instagram-post-scraper`, `clockworks/tiktok-scraper`, `streamers/youtube-scraper` |
-| **Trend Research** | `apify/google-trends-scraper`, `clockworks/tiktok-trends-scraper`, `apify/instagram-hashtag-stats` |
-| **Review Analysis** | `compass/Google-Maps-Reviews-Scraper`, `voyager/booking-reviews-scraper`, `maxcopell/tripadvisor-reviews` |
-| **Audience Analysis** | `apify/instagram-followers-count-scraper`, `clockworks/tiktok-followers-scraper`, `apify/facebook-followers-following-scraper` |
+| API ID | 适用场景 |
+|---------|---------|
+| `apify/google-search-scraper` | Google搜索结果 |
+| `apify/google-trends-scraper` | Google趋势数据 |
+| `voyager/booking-scraper` | Booking.com酒店信息 |
+| `voyager/booking-reviews-scraper` | Booking.com评论 |
+| `maxcopell/tripadvisor-reviews` | TripAdvisor评论 |
+| `vdrmota/contact-info-scraper` | 从URL中提取联系方式 |
 
 ---
 
-#### Multi-Actor Workflows
+#### 根据使用场景选择API
 
-For complex tasks, chain multiple Actors:
+| 使用场景 | 推荐API |
+|---------|---------------|
+| **潜在客户生成** | `compass/crawler-google-places`, `poidata/google-maps-email-extractor`, `vdrmota/contact-info-scraper` |
+| **影响者发现** | `apify/instagram-profile-scraper`, `clockworks/tiktok-profile-scraper`, `streamers/youtube-channel-scraper` |
+| **品牌监控** | `apify/instagram-tagged-scraper`, `apify/instagram-hashtag-scraper`, `compass/Google-Maps-Reviews-Scraper` |
+| **竞争对手分析** | `apify/facebook-pages-scraper`, `apify/facebook-ads-scraper`, `apify/instagram-profile-scraper` |
+| **内容分析** | `apify/instagram-post-scraper`, `clockworks/tiktok-scraper`, `streamers/youtube-scraper` |
+| **趋势研究** | `apify/google-trends-scraper`, `clockworks/tiktok-trends-scraper`, `apify/instagram-hashtag-stats` |
+| **评论分析** | `compass/Google-Maps-Reviews-Scraper`, `voyager/booking-reviews-scraper`, `maxcopell/tripadvisor-reviews` |
+| **受众分析** | `apify/instagram-followers-count-scraper`, `clockworks/tiktok-followers-scraper`, `apify/facebook-followers-following-scraper` |
 
-| Workflow | Step 1 | Step 2 |
-|----------|--------|--------|
-| **Lead enrichment** | `compass/crawler-google-places` → | `vdrmota/contact-info-scraper` |
-| **Influencer vetting** | `apify/instagram-profile-scraper` → | `apify/instagram-comment-scraper` |
-| **Competitor deep-dive** | `apify/facebook-pages-scraper` → | `apify/facebook-posts-scraper` |
-| **Local business analysis** | `compass/crawler-google-places` → | `compass/Google-Maps-Reviews-Scraper` |
+---
 
-#### Can't Find a Suitable Actor?
+#### 多API工作流程
 
-If none of the Actors above match the user's request, search the Apify Store directly:
+对于复杂任务，可以链接多个API：
+
+| 工作流程 | 第一步 | 第二步 |
+|---------|--------|--------|
+| **潜在客户信息丰富** | `compass/crawler-google-places` → `vdrmota/contact-info-scraper` |
+| **影响者筛选** | `apify/instagram-profile-scraper` → `apify/instagram-comment-scraper` |
+| **竞争对手深度分析** | `apify/facebook-pages-scraper` → `apify/facebook-posts-scraper` |
+| **本地企业分析** | `compass/crawler-google-places` → `compass/Google-Maps-Reviews-Scraper` |
+
+#### 找不到合适的API？
+
+如果上述API都无法满足用户需求，请直接在Apify商店中搜索：
 
 ```bash
 mcpc --json mcp.apify.com --header "Authorization: Bearer $APIFY_TOKEN" tools-call search-actors keywords:="SEARCH_KEYWORDS" limit:=10 offset:=0 category:="" | jq -r '.content[0].text'
 ```
 
-Replace `SEARCH_KEYWORDS` with 1-3 simple terms (e.g., "LinkedIn profiles", "Amazon products", "Twitter").
+请将`SEARCH_KEYWORDS`替换为1-3个简单关键词（例如：“LinkedIn profiles”、“Amazon products”、“Twitter”）。
 
-### Step 2: Fetch Actor Schema
+### 第二步：获取API的输入格式和详细信息
 
-Fetch the Actor's input schema and details dynamically using mcpc:
+使用`mcpc`动态获取所选API的输入格式和详细信息：
 
 ```bash
 mcpc --json mcp.apify.com --header "Authorization: Bearer $APIFY_TOKEN" tools-call fetch-actor-details actor:="ACTOR_ID" | jq -r ".content"
 ```
 
-Replace `ACTOR_ID` with the selected Actor (e.g., `compass/crawler-google-places`).
+请将`ACTOR_ID`替换为实际选择的API（例如`compass/crawler-google-places`）。
 
-This returns:
-- Actor description and README
-- Required and optional input parameters
-- Output fields (if available)
+此操作将返回：
+- API的描述和README文件
+- 必需和可选的输入参数
+- 可用的输出字段
 
-### Step 3: Ask User Preferences
+### 第三步：询问用户偏好
 
-Before running, ask:
-1. **Output format**:
-   - **Quick answer** - Display top few results in chat (no file saved)
-   - **CSV** - Full export with all fields
-   - **JSON** - Full export in JSON format
-2. **Number of results**: Based on character of use case
+在运行脚本之前，请询问用户以下信息：
+1. **输出格式**：
+   - **快速响应**：在聊天框中显示前几条结果（不保存文件）
+   - **CSV**：包含所有字段的完整导出文件
+   - **JSON**：以JSON格式的完整导出文件
+2. **结果数量**：根据具体使用场景确定
 
-### Step 4: Run the Script
+### 第四步：运行脚本
 
-**Quick answer (display in chat, no file):**
+**快速响应（在聊天框中显示，不保存文件）：**
 ```bash
 node {baseDir}/reference/scripts/run_actor.js \
   --actor 'ACTOR_ID' \
   --input 'JSON_INPUT'
 ```
 
-**CSV:**
+**CSV格式导出：**
 ```bash
 node {baseDir}/reference/scripts/run_actor.js \
   --actor 'ACTOR_ID' \
@@ -219,7 +219,7 @@ node {baseDir}/reference/scripts/run_actor.js \
   --format csv
 ```
 
-**JSON:**
+**JSON格式导出：**
 ```bash
 node {baseDir}/reference/scripts/run_actor.js \
   --actor 'ACTOR_ID' \
@@ -228,32 +228,31 @@ node {baseDir}/reference/scripts/run_actor.js \
   --format json
 ```
 
-### Step 5: Summarize Results and Offer Follow-ups
+### 第五步：总结结果并提供后续建议
 
-After completion, report:
-- Number of results found
-- File location and name
-- Key fields available
-- **Suggested follow-up workflows** based on results:
+任务完成后，报告以下信息：
+- 找到的结果数量
+- 文件的位置和名称
+- 可用的关键字段
+- 根据结果提供的后续建议：
 
-| If User Got | Suggest Next |
-|-------------|--------------|
-| Business listings | Enrich with `vdrmota/contact-info-scraper` or get reviews |
-| Influencer profiles | Analyze engagement with comment scrapers |
-| Competitor pages | Deep-dive with post/ad scrapers |
-| Trend data | Validate with platform-specific hashtag scrapers |
+| 用户需求 | 建议的下一步操作 |
+|---------|-------------------|
+| 获取商业列表 | 使用`vdrmota/contact-info-scraper`丰富数据或获取评论 |
+| 分析影响者资料 | 使用评论提取工具分析互动情况 |
+| 研究竞争对手页面 | 使用帖子/广告提取工具深入分析 |
+| 分析趋势数据 | 使用特定平台的标签提取工具验证数据 |
 
+## 安全性与数据隐私
 
-## Security & Data Privacy
+该技能会指导代理选择合适的API，通过`mcpc`获取其输入格式，并运行相应的爬虫。脚本仅与`api.apify.com`通信，并将输出文件保存在当前工作目录下；不会访问其他系统文件或环境变量。
 
-This skill instructs the agent to select an Apify Actor, fetch its schema (via mcpc), and run scrapers. The included script communicates only with api.apify.com and writes outputs to files under the current working directory; it does not access unrelated system files or other environment variables.
+Apify的API仅抓取公开可用的数据，不会收集目标平台上无法公开获取的私人或个人身份信息。为确保安全，您可以通过查询`https://api.apify.com/v2/acts/:actorId`来查看API的权限级别：`LIMITED_PERMISSIONS`表示在受限环境中运行，而`FULL_PERMISSIONS`表示具有更广泛的系统访问权限。有关详细信息，请参阅[Apify的通用条款和条件](https://docs.apify.com/legal/general-terms-and-conditions)。
 
-Apify Actors only scrape publicly available data and do not collect private or personally identifiable information beyond what is openly accessible on the target platforms. For additional security assurance, you can check an Actor's permission level by querying `https://api.apify.com/v2/acts/:actorId` — an Actor with `LIMITED_PERMISSIONS` operates in a restricted sandbox, while `FULL_PERMISSIONS` indicates broader system access. For full details, see [Apify's General Terms and Conditions](https://docs.apify.com/legal/general-terms-and-conditions).
+## 错误处理
 
-## Error Handling
-
-`APIFY_TOKEN not found` - Ask user to configure `APIFY_TOKEN` in OpenClaw settings
-`mcpc not found` - Run `npm install -g @apify/mcpc`
-`Actor not found` - Check Actor ID spelling
-`Run FAILED` - Ask user to check Apify console link in error output
-`Timeout` - Reduce input size or increase `--timeout`
+- **`APIFY_TOKEN未找到`**：请用户在OpenClaw设置中配置`APIFY_TOKEN`。
+- **`mcpc未找到`**：运行`npm install -g @apify/mcpc`。
+- **API未找到`**：请检查API ID的拼写是否正确。
+- **运行失败`**：请用户查看错误输出中的Apify控制台链接。
+- **超时`**：尝试减小输入数据量或增加`--timeout`参数。

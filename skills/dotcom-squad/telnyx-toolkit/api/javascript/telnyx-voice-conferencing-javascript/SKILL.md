@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Conferencing - JavaScript
+# Telnyx 语音会议 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,13 +32,13 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Enqueue call
+## 将呼叫加入队列
 
-Put the call in a queue.
+将呼叫放入队列中。
 
-`POST /calls/{call_control_id}/actions/enqueue` — Required: `queue_name`
+`POST /calls/{call_control_id}/actions/enqueue` — 必需参数：`queue_name`
 
 ```javascript
 const response = await client.calls.actions.enqueue('call_control_id', { queue_name: 'support' });
@@ -45,9 +46,9 @@ const response = await client.calls.actions.enqueue('call_control_id', { queue_n
 console.log(response.data);
 ```
 
-## Remove call from a queue
+## 从队列中移除呼叫
 
-Removes the call from a queue.
+从队列中移除呼叫。
 
 `POST /calls/{call_control_id}/actions/leave_queue`
 
@@ -57,9 +58,9 @@ const response = await client.calls.actions.leaveQueue('call_control_id');
 console.log(response.data);
 ```
 
-## List conferences
+## 列出会议
 
-Lists conferences.
+列出所有会议。
 
 `GET /conferences`
 
@@ -70,11 +71,11 @@ for await (const conference of client.conferences.list()) {
 }
 ```
 
-## Create conference
+## 创建会议
 
-Create a conference from an existing call leg using a `call_control_id` and a conference name.
+使用 `call_control_id` 和会议名称从现有的通话中创建会议。
 
-`POST /conferences` — Required: `call_control_id`, `name`
+`POST /conferences` — 必需参数：`call_control_id`, `name`
 
 ```javascript
 const conference = await client.conferences.create({
@@ -85,9 +86,9 @@ const conference = await client.conferences.create({
 console.log(conference.data);
 ```
 
-## Retrieve a conference
+## 查找会议
 
-Retrieve an existing conference
+检索现有的会议。
 
 `GET /conferences/{id}`
 
@@ -97,9 +98,9 @@ const conference = await client.conferences.retrieve('id');
 console.log(conference.data);
 ```
 
-## Hold conference participants
+## 暂停会议参与者的发言
 
-Hold a list of participants in a conference call
+暂停会议中所有参与者的发言。
 
 `POST /conferences/{id}/actions/hold`
 
@@ -109,11 +110,11 @@ const response = await client.conferences.actions.hold('id');
 console.log(response.data);
 ```
 
-## Join a conference
+## 加入会议
 
-Join an existing call leg to a conference.
+加入现有的通话以参与会议。
 
-`POST /conferences/{id}/actions/join` — Required: `call_control_id`
+`POST /conferences/{id}/actions/join` — 必需参数：`call_control_id`
 
 ```javascript
 const response = await client.conferences.actions.join('id', {
@@ -123,11 +124,11 @@ const response = await client.conferences.actions.join('id', {
 console.log(response.data);
 ```
 
-## Leave a conference
+## 退出会议
 
-Removes a call leg from a conference and moves it back to parked state.
+将通话从会议中移除并恢复到待处理状态。
 
-`POST /conferences/{id}/actions/leave` — Required: `call_control_id`
+`POST /conferences/{id}/actions/leave` — 必需参数：`call_control_id`
 
 ```javascript
 const response = await client.conferences.actions.leave('id', {
@@ -137,9 +138,9 @@ const response = await client.conferences.actions.leave('id', {
 console.log(response.data);
 ```
 
-## Mute conference participants
+## 静音会议参与者
 
-Mute a list of participants in a conference call
+静音会议中所有参与者。
 
 `POST /conferences/{id}/actions/mute`
 
@@ -149,9 +150,9 @@ const response = await client.conferences.actions.mute('id');
 console.log(response.data);
 ```
 
-## Play audio to conference participants
+## 向会议参与者播放音频
 
-Play audio to all or some participants on a conference call.
+向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/play`
 
@@ -161,11 +162,11 @@ const response = await client.conferences.actions.play('id');
 console.log(response.data);
 ```
 
-## Conference recording pause
+## 暂停会议录制
 
-Pause conference recording.
+暂停会议录制。
 
-`POST /conferences/{id}/actions/record_pause`
+`POST /conferences/{id}/actions/record_PAUSE`
 
 ```javascript
 const response = await client.conferences.actions.recordPause('id');
@@ -173,9 +174,9 @@ const response = await client.conferences.actions.recordPause('id');
 console.log(response.data);
 ```
 
-## Conference recording resume
+## 恢复会议录制
 
-Resume conference recording.
+恢复会议录制。
 
 `POST /conferences/{id}/actions/record_resume`
 
@@ -185,11 +186,11 @@ const response = await client.conferences.actions.recordResume('id');
 console.log(response.data);
 ```
 
-## Conference recording start
+## 开始会议录制
 
-Start recording the conference.
+开始会议录制。
 
-`POST /conferences/{id}/actions/record_start` — Required: `format`
+`POST /conferences/{id}/actions/record_start` — 必需参数：`format`
 
 ```javascript
 const response = await client.conferences.actions.recordStart('id', { format: 'wav' });
@@ -197,9 +198,9 @@ const response = await client.conferences.actions.recordStart('id', { format: 'w
 console.log(response.data);
 ```
 
-## Conference recording stop
+## 停止会议录制
 
-Stop recording the conference.
+停止会议录制。
 
 `POST /conferences/{id}/actions/record_stop`
 
@@ -209,11 +210,11 @@ const response = await client.conferences.actions.recordStop('id');
 console.log(response.data);
 ```
 
-## Speak text to conference participants
+## 向会议参与者朗读文本
 
-Convert text to speech and play it to all or some participants.
+将文本转换为语音并播放给所有或部分参与者。
 
-`POST /conferences/{id}/actions/speak` — Required: `payload`, `voice`
+`POST /conferences/{id}/actions/speak` — 必需参数：`payload`, `voice`
 
 ```javascript
 const response = await client.conferences.actions.speak('id', {
@@ -224,9 +225,9 @@ const response = await client.conferences.actions.speak('id', {
 console.log(response.data);
 ```
 
-## Stop audio being played on the conference
+## 停止向会议参与者播放音频
 
-Stop audio being played to all or some participants on a conference call.
+停止向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/stop`
 
@@ -236,11 +237,11 @@ const response = await client.conferences.actions.stop('id');
 console.log(response.data);
 ```
 
-## Unhold conference participants
+## 恢复会议参与者的发言权限
 
-Unhold a list of participants in a conference call
+恢复会议中所有参与者的发言权限。
 
-`POST /conferences/{id}/actions/unhold` — Required: `call_control_ids`
+`POST /conferences/{id}/actions/unhold` — 必需参数：`call_control_ids`
 
 ```javascript
 const response = await client.conferences.actions.unhold('id', {
@@ -250,9 +251,9 @@ const response = await client.conferences.actions.unhold('id', {
 console.log(response.data);
 ```
 
-## Unmute conference participants
+## 解除会议参与者的静音状态
 
-Unmute a list of participants in a conference call
+解除会议中所有参与者的静音状态。
 
 `POST /conferences/{id}/actions/unmute`
 
@@ -262,11 +263,11 @@ const response = await client.conferences.actions.unmute('id');
 console.log(response.data);
 ```
 
-## Update conference participant
+## 更新会议参与者信息
 
-Update conference participant supervisor_role
+更新会议参与者的角色。
 
-`POST /conferences/{id}/actions/update` — Required: `call_control_id`, `supervisor_role`
+`POST /conferences/{id}/actions/update` — 必需参数：`call_control_id`, `supervisor_role`
 
 ```javascript
 const action = await client.conferences.actions.update('id', {
@@ -277,9 +278,9 @@ const action = await client.conferences.actions.update('id', {
 console.log(action.data);
 ```
 
-## List conference participants
+## 列出会议参与者
 
-Lists conference participants
+列出会议中的所有参与者。
 
 `GET /conferences/{conference_id}/participants`
 
@@ -294,26 +295,28 @@ for await (const conferenceListParticipantsResponse of client.conferences.listPa
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 webhook 事件会被发送到您配置的 webhook 地址：
+所有 webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 头部信息以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callEnqueued` | Call Enqueued |
-| `callLeftQueue` | Call Left Queue |
-| `conferenceCreated` | Conference Created |
-| `conferenceEnded` | Conference Ended |
-| `conferenceFloorChanged` | Conference Floor Changed |
-| `conferenceParticipantJoined` | Conference Participant Joined |
-| `conferenceParticipantLeft` | Conference Participant Left |
-| `conferenceParticipantPlaybackEnded` | Conference Participant Playback Ended |
-| `conferenceParticipantPlaybackStarted` | Conference Participant Playback Started |
-| `conferenceParticipantSpeakEnded` | Conference Participant Speak Ended |
-| `conferenceParticipantSpeakStarted` | Conference Participant Speak Started |
-| `conferencePlaybackEnded` | Conference Playback Ended |
-| `conferencePlaybackStarted` | Conference Playback Started |
-| `conferenceRecordingSaved` | Conference Recording Saved |
-| `conferenceSpeakEnded` | Conference Speak Ended |
-| `conferenceSpeakStarted` | Conference Speak Started |
+| `callEnqueued` | 呼叫被加入队列 |
+| `callLeftQueue` | 呼叫离开队列 |
+| `conferenceCreated` | 会议创建 |
+| `conferenceEnded` | 会议结束 |
+| `conferenceFloorChanged` | 会议主持人变更 |
+| `conferenceParticipantJoined` | 会议参与者加入 |
+| `conferenceParticipantLeft` | 会议参与者离开 |
+| `conferenceParticipantPlaybackEnded` | 会议参与者停止发言 |
+| `conferenceParticipantPlaybackStarted` | 会议参与者开始发言 |
+| `conferenceParticipantSpeakEnded` | 会议参与者结束发言 |
+| `conferenceParticipantSpeakStarted` | 会议参与者开始发言 |
+| `conferencePlaybackEnded` | 会议播放结束 |
+| `conferencePlaybackStarted` | 会议播放开始 |
+| `conferenceRecordingSaved` | 会议录制保存 |
+| `conferenceSpeakEnded` | 会议发言结束 |
+| `conferenceSpeakStarted` | 会议发言开始 |
+```
+```

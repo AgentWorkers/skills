@@ -1,32 +1,32 @@
 ---
 name: "Writing"
-description: "Auto-learns your writing style across contexts. Adapts to brands, relationships, and content types."
+description: "能够自动学习您的写作风格，并根据不同的上下文进行调整。它可以适应不同的品牌、沟通对象以及内容类型，从而提供更加个性化、符合需求的写作服务。"
 ---
 
-## Auto-Adaptive Writing Preferences
+## 自适应写作偏好设置
 
-This skill auto-evolves. Edit sections below as you learn user's writing patterns.
+此功能会随着用户写作习惯的演变而自动调整。您可以根据用户的实际写作模式来编辑以下内容。
 
-**Rules:**
-- Detect patterns from what user writes and edits
-- Support multiple contexts (brands, people, content types)
-- Confirm after 2+ consistent examples
-- Keep entries ultra-compact
-- Check `dimensions.md` for categories, `criteria.md` for format
-
----
-
-### Default
-<!-- General style when no specific context. Format: "trait" -->
-
-### By Context
-<!-- Different styles for different situations. Format: "context: traits" -->
-
-### Voices
-<!-- Named personas/brands with distinct styles. Format: "name: traits" -->
-
-### Never
-<!-- Things user rejected or dislikes in writing -->
+**规则：**
+- 从用户的写作和编辑行为中识别出规律或模式。
+- 支持多种写作场景（不同品牌、不同用户、不同类型的内容）。
+- 需要连续出现2个或更多相同的写作示例才能确认偏好设置。
+- 保持设置信息的简洁性。
+- 请参考 `dimensions.md` 文件了解分类信息，以及 `criteria.md` 文件了解格式要求。
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 默认设置
+<!-- 无特定写作场景时的通用样式。格式：`trait` -->
+
+### 按场景划分的设置
+<!-- 不同场景下的特定写作风格。格式：`context: traits` -->
+
+### 个性化写作风格
+<!-- 具有独特写作风格的特定人物或品牌。格式：`name: traits` -->
+
+### 应避免的写作方式
+<!-- 用户明确拒绝或不喜欢的使用方式。 -->
+
+---
+*如果某个部分为空，说明用户尚未形成明确的写作偏好。请继续观察并填写相应内容。*

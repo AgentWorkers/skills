@@ -1,21 +1,21 @@
 ---
 name: write-plan
-description: "MUST use after brainstorming and before executing. Creates detailed implementation plans with checkpoints, verification criteria, and execution options."
+description: "必须在头脑风暴之后、执行之前使用。该工具会生成详细的实施计划，其中包含检查点、验证标准以及执行选项。"
 ---
 
-# Write Plan
+# 编写实施计划
 
-## Overview
+## 概述
 
-Transform validated designs into detailed, actionable implementation plans with checkpoints.
+将经过验证的设计转化为详细的、可执行的实施计划，并设置相应的检查点。
 
-Every plan includes:
-- Bite-sized tasks (2-5 minutes each)
-- Checkpoints with verification criteria
-- Estimated time for each section
-- Execution options at the end
+每个计划应包括：
+- 任务量适中的任务（每个任务耗时2-5分钟）
+- 带有验证标准的检查点
+- 每个部分的预计完成时间
+- 计划末尾提供执行选项
 
-## Plan Structure
+## 计划结构
 
 ```markdown
 # [Project Name] - Implementation Plan
@@ -40,37 +40,36 @@ Every plan includes:
 - [ ] User approval obtained
 ```
 
-## Task Granularity
+## 任务粒度
 
-- **Small:** 2-5 minutes of work
-- **Specific:** Clear what "done" means
-- **Verifiable:** Can confirm completion
-- **Independent:** Doesn't block on other tasks in same checkpoint
+- **小任务：** 需要2-5分钟完成
+- **具体明确：** 明确“完成”的标准
+- **可验证：** 可以确认任务是否已完成
+- **独立性：** 不会阻碍同一检查点内的其他任务
 
-## Execution Handoff
+## 执行方式的选择
 
-After saving the plan, offer execution choice:
+保存计划后，提供以下两种执行方式：
 
-**"Plan complete and saved to `memory/plans/<filename>.md`. Two execution options:**
+**“计划已保存至 `memory/plans/<filename>.md`。**  
+**执行选项：**  
+**1. 单个代理执行（当前会话）**：按顺序执行任务，并在每个检查点进行汇报  
+**2. 分配多个代理执行（并行）**：为独立任务创建子代理以并行处理  
 
-**1. Single-Agent (this session)** - I execute tasks sequentially, review at each checkpoint
+**选择哪种方式？**  
 
-**2. Dispatch Multiple Agents (parallel)** - Spawn subagents for independent tasks
+**如果选择单个代理执行：**  
+- 保持当前会话状态  
+- 按顺序执行任务  
+- 在每个检查点报告进度  
 
-**Which approach?"**
+**如果选择分配多个代理执行：**  
+- 使用 `dispatch-multiple-agents` 技能  
+- 为任务创建子代理以实现并行处理  
+- 整合各子代理的执行结果  
 
-**If Single-Agent chosen:**
-- Stay in this session
-- Execute tasks sequentially
-- Report progress at each checkpoint
+## 与其他技能的集成  
 
-**If Dispatch Multiple Agents chosen:**
-- Use dispatch-multiple-agents skill
-- Spawn subagents for parallel work
-- Integrate results
-
-## Integration with Other Skills
-
-- After **brainstorming** → Use write-plan
-- Before **doing-tasks** → Plan must exist
-- With **dispatch-multiple-agents** → For parallel execution
+- 在进行**头脑风暴**之后 → 使用 `write-plan` 技能  
+- 在开始**执行任务**之前 → 必须先制定计划  
+- 与 `dispatch-multiple-agents` 技能结合使用 → 以实现任务并行执行

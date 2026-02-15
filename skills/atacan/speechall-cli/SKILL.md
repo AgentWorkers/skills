@@ -1,31 +1,37 @@
 ---
 name: speechall-cli
-description: "Install and use the speechall CLI tool for speech-to-text transcription. Use when the user wants to: (1) transcribe audio or video files to text, (2) install speechall on macOS or Linux, (3) list available STT models and their capabilities, (4) use speaker diarization, subtitles, or other transcription features from the terminal. Triggers on mentions of speechall, audio transcription CLI, or speech-to-text from the command line."
+description: "安装并使用 `speechall` CLI 工具进行语音转文本的转录。该工具适用于以下场景：  
+1. 将音频或视频文件转录为文本；  
+2. 在 macOS 或 Linux 系统上安装 `speechall`；  
+3. 查看可用的语音转文本（STT）模型及其功能；  
+4. 通过终端使用语音识别功能、字幕生成或其他转录功能。  
+
+该工具会在命令行中检测到与 `speechall`、`audio transcription CLI` 或 `speech-to-text` 相关的指令时自动执行相应操作。"
 ---
 
 # speechall-cli
 
-CLI for speech-to-text transcription via the Speechall API. Supports multiple providers (OpenAI, Deepgram, AssemblyAI, Google, Gemini, Groq, ElevenLabs, Cloudflare, and more).
+这是一个用于通过 Speechall API 将语音转换为文本的命令行工具（CLI）。支持多种语音转文本服务提供商（OpenAI、Deepgram、AssemblyAI、Google、Gemini、Groq、ElevenLabs、Cloudflare 等）。
 
-## Installation
+## 安装
 
-### Homebrew (macOS and Linux)
+### Homebrew（macOS 和 Linux）
 
 ```bash
 brew install Speechall/tap/speechall
 ```
 
-**Without Homebrew**: Download the binary for your platform from https://github.com/Speechall/speechall-cli/releases and place it on your `PATH`.
+**不使用 Homebrew 的情况**：从 [https://github.com/Speechall/speechall-cli/releases](https://github.com/Speechall/speechall-cli/releases) 下载适用于您平台的二进制文件，并将其添加到您的 `PATH` 环境变量中。
 
-### Verify
+### 验证安装
 
 ```bash
 speechall --version
 ```
 
-## Authentication
+## 认证
 
-An API key is required. Provide it via environment variable (preferred) or flag:
+需要一个 API 密钥。可以通过环境变量（推荐）或命令行参数来提供该密钥：
 
 ```bash
 export SPEECHALL_API_KEY="your-key-here"
@@ -33,35 +39,35 @@ export SPEECHALL_API_KEY="your-key-here"
 speechall --api-key "your-key-here" audio.wav
 ```
 
-The user can create an API key on https://speechall.com/console/api-keys
+用户可以在 [https://speechall.com/console/api-keys](https://speechall.com/console/api-keys) 上创建 API 密钥。
 
-## Commands
+## 命令
 
-### transcribe (default)
+### transcribe（默认命令）
 
-Transcribe an audio or video file. This is the default subcommand — `speechall audio.wav` is equivalent to `speechall transcribe audio.wav`.
+用于将音频或视频文件转换为文本。这是默认的子命令，例如：`speechall audio.wav` 等同于 `speechall transcribe audio.wav`。
 
 ```bash
 speechall <file> [options]
 ```
 
-**Options:**
+**选项：**
 
-| Flag | Description | Default |
-|---|---|---|
-| `--model <provider.model>` | STT model identifier | `openai.gpt-4o-mini-transcribe` |
-| `--language <code>` | Language code (e.g. `en`, `tr`, `de`) | API default (auto-detect) |
-| `--output-format <format>` | Output format (`text`, `json`, `verbose_json`, `srt`, `vtt`) | API default |
-| `--diarization` | Enable speaker diarization | off |
-| `--speakers-expected <n>` | Expected number of speakers (use with `--diarization`) | — |
-| `--no-punctuation` | Disable automatic punctuation | — |
-| `--temperature <0.0-1.0>` | Model temperature | — |
-| `--initial-prompt <text>` | Text prompt to guide model style | — |
-| `--custom-vocabulary <term>` | Terms to boost recognition (repeatable) | — |
-| `--ruleset-id <uuid>` | Replacement ruleset UUID | — |
-| `--api-key <key>` | API key (overrides `SPEECHALL_API_KEY` env var) | — |
+| 参数 | 描述 | 默认值 |
+| --- | --- | --- |
+| `--model <provider.model>` | 语音转文本模型标识符 | `openai.gpt-4o-mini-transcribe` |
+| `--language <code>` | 语言代码（例如 `en`、`tr`、`de`） | 由 API 自动检测 |
+| `--output-format <format>` | 输出格式（`text`、`json`、`verbose_json`、`srt`、`vtt`） | 由 API 自动检测 |
+| `--diarization` | 是否启用说话者标注功能 | 关闭（默认） |
+| `--speakers-expected <n>` | 预期的说话者数量（与 `--diarization` 一起使用） | — |
+| `--no-punctuation` | 禁用自动添加标点符号 | — |
+| `--temperature <0.0-1.0>` | 模型的“温度”参数（影响生成结果的质量） | — |
+| `--initial-prompt <text>` | 用于引导模型生成的文本提示 | — |
+| `--custom-vocabulary <term>` | 用于提高识别准确性的自定义词汇 | — |
+| `--ruleset-id <uuid>` | 替换规则集的 UUID | — |
+| `--api-key <key>` | API 密钥（覆盖 `SPEECHALL_API_KEY` 环境变量） | — |
 
-**Examples:**
+**示例：**
 
 ```bash
 # Basic transcription
@@ -82,26 +88,26 @@ speechall presentation.mp4
 
 ### models
 
-List available speech-to-text models. Outputs JSON to stdout. Filters combine with AND logic.
+列出所有可用的语音转文本模型。输出结果为 JSON 格式到标准输出（stdout）。
 
 ```bash
 speechall models [options]
 ```
 
-**Filter flags:**
+**过滤参数：**
 
-| Flag | Description |
-|---|---|
-| `--provider <name>` | Filter by provider (e.g. `openai`, `deepgram`) |
-| `--language <code>` | Filter by supported language (`tr` matches `tr`, `tr-TR`, `tr-CY`) |
-| `--diarization` | Only models supporting speaker diarization |
-| `--srt` | Only models supporting SRT output |
-| `--vtt` | Only models supporting VTT output |
-| `--punctuation` | Only models supporting automatic punctuation |
-| `--streamable` | Only models supporting real-time streaming |
-| `--vocabulary` | Only models supporting custom vocabulary |
+| 参数 | 描述 |
+| --- | --- |
+| `--provider <name>` | 按提供商过滤（例如 `openai`、`deepgram`） |
+| `--language <code>` | 按支持的语言过滤（例如 `tr` 表示土耳其语） |
+| `--diarization` | 仅显示支持说话者标注功能的模型 | — |
+| `--srt` | 仅显示支持 SRT 格式输出的模型 | — |
+| `--vtt` | 仅显示支持 VTT 格式输出的模型 | — |
+| `--punctuation` | 仅显示支持自动添加标点符号的模型 | — |
+| `--streamable` | 仅显示支持实时流处理的模型 | — |
+| `--vocabulary` | 仅显示支持自定义词汇的模型 | — |
 
-**Examples:**
+**示例：**
 
 ```bash
 # List all available models
@@ -117,10 +123,10 @@ speechall models --language tr --diarization
 speechall models --provider openai | jq '.[].identifier'
 ```
 
-## Tips
+## 提示：
 
-- On macOS, video files (`.mp4`, `.mov`, etc.) are automatically converted to audio before upload.
-- On Linux, pass audio files directly (`.wav`, `.mp3`, `.m4a`, `.flac`, etc.).
-- Output goes to stdout. Redirect to save: `speechall audio.wav > transcript.txt`
-- Errors go to stderr, so piping stdout is safe.
-- Run `speechall --help`, `speechall transcribe --help`, or `speechall models --help` to see all valid enum values for model identifiers, language codes, and output formats.
+- 在 macOS 上，视频文件（如 `.mp4`、`.mov` 等）在上传前会自动转换为音频格式。
+- 在 Linux 上，可以直接传递音频文件（如 `.wav`、`.mp3`、`.m4a`、`.flac` 等）。
+- 输出结果会显示在标准输出（stdout）中。若需保存结果，可以使用 `speechall audio.wav > transcript.txt`。
+- 错误信息会显示在标准错误输出（stderr）中，因此直接将标准输出重定向到文件是安全的。
+- 运行 `speechall --help`、`speechall transcribe --help` 或 `speechall models --help` 可以查看所有有效的模型标识符、语言代码和输出格式的选项。

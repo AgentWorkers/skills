@@ -1,29 +1,29 @@
 ---
 name: openclaw-docs
-description: Reference documentation for OpenClaw capabilities, configuration options, and best practices. Use when the user needs information about OpenClaw features, config schema, cron jobs, multi-agent routing, or troubleshooting.
+description: OpenClaw功能、配置选项及最佳实践的参考文档。当用户需要了解OpenClaw的特性、配置方案、定时任务（cron jobs）、多代理路由（multi-agent routing）或故障排除（troubleshooting）相关信息时，请参考本文档。
 metadata:
   {"openclaw": {"always": true, "emoji": "📚"}}
 ---
 
-# OpenClaw Docs Reference
+# OpenClaw 文档参考
 
-Quick reference for OpenClaw capabilities.
+OpenClaw 功能的快速参考。
 
-## Config Paths (agents.defaults)
+## 配置路径（agentsdefaults）
 
-| Feature | Config Path |
+| 功能 | 配置路径 |
 |---------|-------------|
-| Memory flush | `compaction.memoryFlush.enabled` |
-| Session memory | `memorySearch.experimental.sessionMemory` |
-| Web search | `tools.web.search.{enabled,provider,apiKey}` |
-| Cron | `cron.{enabled,store,maxConcurrentRuns}` |
-| Skills dirs | `skills.load.extraDirs[]` |
-| Multi-agent | `agents.list[], bindings[]` |
-| Sandbox | `agents.defaults.sandbox.{mode,scope,workspaceAccess}` |
+| 内存刷新 | `compaction.memoryFlush.enabled` |
+| 会话内存 | `memorySearch.experimental.sessionMemory` |
+| 网页搜索 | `tools.web.search.{enabled,provider,apiKey}` |
+| Cron 任务 | `cron.{enabled,store,maxConcurrentRuns}` |
+| 技能目录 | `skills.load.extraDirs[]` |
+| 多代理 | `agents.list[], bindings[]` |
+| 沙箱环境 | `agentsdefaults.sandbox.{mode,scope,workspaceAccess}` |
 
-## Cron Job Types
+## Cron 任务类型
 
-**Main session** (uses heartbeat context):
+**主会话**（使用心跳机制）：
 ```json
 {
   "schedule": {"kind": "at", "atMs": 1234567890000},
@@ -32,7 +32,7 @@ Quick reference for OpenClaw capabilities.
 }
 ```
 
-**Isolated session** (dedicated agent run):
+**隔离会话**（专用代理执行）：
 ```json
 {
   "schedule": {"kind": "cron", "expr": "0 7 * * *", "tz": "UTC"},
@@ -46,21 +46,21 @@ Quick reference for OpenClaw capabilities.
 }
 ```
 
-## Tool Categories
+## 工具类别
 
-- **Core**: read, write, edit, apply_patch
-- **Shell**: exec, process
-- **Web**: web_search, web_fetch, browser
-- **Sessions**: sessions_list, sessions_history, sessions_send, sessions_spawn
-- **Schedule**: cron, system event
-- **System**: gateway, nodes, canvas
-- **Memory**: memory_search, memory_get
+- **核心工具**：read、write、edit、apply_patch
+- **Shell 工具**：exec、process
+- **Web 工具**：web_search、web_fetch、browser
+- **会话管理工具**：sessions_list、sessions_history、sessions_send、sessions_spawn
+- **调度工具**：cron、system event
+- **系统管理工具**：gateway、nodes、canvas
+- **内存管理工具**：memory_search、memory_get
 
-## Security Gates
+## 安全策略
 
-- `requires.bins`: Binaries that must exist on PATH
-- `requires.env`: Required environment variables
-- `requires.config`: Config paths that must be truthy
-- `os`: darwin, linux, win32
+- `requires.bins`：必须在 PATH 环境变量中存在的二进制文件
+- `requires.env`：必需的环境变量
+- `requires.config`：必须为真值的配置路径
+- `os`：操作系统类型（darwin、linux、win32）
 
-See references/ for full details.
+详情请参阅相关参考资料。

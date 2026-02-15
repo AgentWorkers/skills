@@ -1,30 +1,30 @@
 ---
 name: openclaw-health-brief
-description: Generate a daily health brief from Oura, Whoop, and Withings. Unified re-auth script, local token persistence, Green/Yellow/Red morning summary.
+description: 从 Oura、Whoop 和 Withings 生成每日健康报告。实现统一的重新认证脚本、本地令牌的持久化存储，以及每日早晨的健康状况总结（分为绿色、黄色和红色三个等级）。
 ---
 
-# OpenClaw Health Brief
+# OpenClaw 健康概要
 
-Daily health metrics from **Oura**, **WHOOP**, and **Withings** → normalized JSON + Markdown brief.
+来自 **Oura**、**WHOOP** 和 **Withings** 的每日健康数据 → 标准化的 JSON 格式 + Markdown 说明。
 
-## Setup (3 steps)
+## 设置（3 个步骤）
 
-### Step 1: Configure secrets
+### 第一步：配置密钥
 
-**Option A: 1Password (recommended)**
+**选项 A：1Password（推荐）**
 ```bash
 export OP_SERVICE_ACCOUNT_TOKEN="your-token"
 export OPENCLAW_1P_VAULT="Assistant"  # or your vault name
 ```
 
-Create items in your vault with these titles and fields:
+在您的密码管理工具中创建以下条目：
 - `OpenClaw Whoop` → `client_id`, `client_secret`, `token`, `refresh_token`
 - `OpenClaw Oura` → `client_id`, `client_secret`, `token`, `refresh_token`
 - `OpenClaw Withings` → `client_id`, `client_secret`, `access_token`, `refresh_token`, `user_id`
 
-See `./docs/1PASSWORD_CONVENTIONS.md` for full field details.
+请参阅 `./docs/1PASSWORD_CONVENTIONS.md` 以获取完整的字段详情。
 
-**Option B: Environment variables**
+**选项 B：环境变量**
 ```bash
 # WHOOP
 export WHOOP_ACCESS_TOKEN="..." WHOOP_REFRESH_TOKEN="..." WHOOP_CLIENT_ID="..." WHOOP_CLIENT_SECRET="..."
@@ -34,27 +34,27 @@ export OURA_PERSONAL_ACCESS_TOKEN="..."  # or OAuth: OURA_REFRESH_TOKEN + OURA_C
 export WITHINGS_CLIENT_ID="..." WITHINGS_CLIENT_SECRET="..." WITHINGS_REFRESH_TOKEN="..." WITHINGS_USER_ID="..."
 ```
 
-### Step 2: Authorize providers
+### 第二步：授权服务提供商
 
 ```bash
 python3 ./bin/health-reauth all
 ```
 
-This opens your browser for each provider. Click authorize, and tokens are saved to both 1Password and `~/.openclaw/secrets/health_tokens.json` automatically.
+这将打开您的浏览器并引导您完成每个服务提供商的授权流程。点击“授权”按钮后，生成的令牌会自动保存到 1Password 以及 `~/.openclaw/secrets/health_tokens.json` 文件中。
 
-You can also re-auth individually: `python3 ./bin/health-reauth whoop`
+您也可以单独重新授权：`python3 ./bin/health-reauth whoop`
 
-### Step 3: Run your first brief
+### 第三步：运行首次健康概要报告
 
 ```bash
 ./bin/health-brief --date "$(date +%F)" --sources whoop,oura,withings --out "./out/daily_health_$(date +%F).json"
 ```
 
-**That's it.** Token rotation is handled automatically — refreshed tokens persist to the local file so you don't need to re-auth again.
+这样就完成了设置。令牌的更新会自动处理——新的令牌会保存在本地文件中，因此您无需再次进行授权。
 
-## Add to OpenClaw cron
+## 将任务添加到 OpenClaw 定时任务中
 
-Wire it into your morning routine with an OpenClaw cron job:
+将此任务设置为每天早晨运行的定时任务：
 
 ```bash
 openclaw cron add \
@@ -69,36 +69,36 @@ export OPENCLAW_1P_VAULT=YourVault
 Read the JSON output. Report only non-null metrics with a Green/Yellow/Red rating.'
 ```
 
-The cron job runs as an isolated agent session — it executes the brief, reads the output, and delivers a formatted summary to your preferred channel.
+定时任务会以独立会话的形式运行，执行健康概要报告的生成，读取结果，并将格式化后的摘要发送到您指定的渠道。
 
-## Smoke test (no creds needed)
+## 测试（无需输入凭据）
 
 ```bash
 ./bin/smoke
 ```
 
-Runs in sample mode, validates JSON schema. Good for checking the skill is installed correctly.
+该测试以示例模式运行，用于验证 JSON 数据结构的正确性。这有助于确认技能安装是否成功。
 
-## Troubleshooting
+## 故障排除
 
-### Check individual providers
+### 检查各个服务提供商的连接状态
 ```bash
 ./bin/whoop --date "$(date +%F)"
 ./bin/oura --date "$(date +%F)"
 ./bin/withings --date "$(date +%F)"
 ```
 
-### Common errors
-- `has_token: false` → credentials not found. Check 1Password item names or env vars.
-- `refresh_failed` → refresh token expired. Run `python3 ./bin/health-reauth <provider>`
-- `missing_credentials` → client_id/client_secret not set.
+### 常见错误
+- `has_token: false` → 未找到凭据。请检查 1Password 中的条目名称或环境变量设置。
+- `refresh_failed` → 令牌已过期。请运行 `python3 ./bin/health-reauth <provider>` 重新授权。
+- `missing_credentials` → `client_id` 或 `client_secret` 未设置。
 
-### Validate output JSON
+### 验证输出 JSON 数据
 ```bash
 ./bin/validate-json --in ./out/daily_health_YYYY-MM-DD.json
 ```
 
-## References
-- `./docs/1PASSWORD_CONVENTIONS.md` — field naming for 1Password items
-- `./docs/OURA.md`, `./docs/WHOOP.md`, `./docs/WITHINGS.md` — provider API notes
-- `./docs/MORNING_BRIEF.md` — morning brief intent and format
+## 参考资料
+- `./docs/1PASSWORD_CONVENTIONS.md` — 1Password 中字段的命名规则
+- `./docs/OURA.md`, `./docs/WHOOP.md`, `./docs/WITHINGS.md` — 各服务提供商的 API 使用说明
+- `./docs/MORNING_BRIEF.md` — 早晨健康概要报告的用途和格式规范

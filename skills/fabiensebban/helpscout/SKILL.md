@@ -1,6 +1,6 @@
 ---
 name: helpscout
-description: Fetches messages from specific Helpscout inboxes
+description: 从特定的 Helpscout 收件箱中获取消息
 metadata:
   {
     "openclaw":
@@ -10,36 +10,36 @@ metadata:
   }
 ---
 
-# Helpscout Skill
+# Helpscout 技能
 
-## Description
+## 描述
 
-This skill interacts with Helpscout to fetch conversations from specific inboxes with powerful filtering options. It is designed to streamline the retrieval of customer support conversations directly into OpenClaw, ensuring easy integration and follow-up.
+该技能用于与 Helpscout 交互，从指定的收件箱中获取对话内容，并提供强大的过滤选项。它旨在简化将客户支持对话直接导入 OpenClaw 的过程，从而实现便捷的集成和后续处理。
 
-## Features
-- Fetch conversations from multiple Helpscout inboxes
-- Filter by status, folder, assignee, customer, tags, and more
-- Sort conversations by various fields
-- Embed thread data directly in the response
-- Securely authenticate using an API key and App Secret
-- Handle potential errors like invalid credentials or network issues gracefully
+## 特点
+- 从多个 Helpscout 收件箱中获取对话内容
+- 可根据状态、文件夹、分配者、客户、标签等条件进行过滤
+- 按多种字段对对话内容进行排序
+- 可将对话的详细信息直接嵌入到响应结果中
+- 通过 API 密钥和 App Secret 进行安全认证
+- 能够优雅地处理无效凭据或网络问题等潜在错误
 
-## Setup Instructions
+## 设置说明
 
-To use this skill, you need to configure Helpscout credentials and specify the IDs of the inboxes you want to fetch conversations from.
+要使用此技能，您需要配置 Helpscout 的凭据，并指定要从中获取对话内容的收件箱 ID。
 
-### 1. Retrieve Helpscout API Key & App Secret
-1. Go to your Helpscout account.
-2. Navigate to **Manage > Apps**.
-3. Create or open your app to retrieve the following details:
-   - **API Key**
+### 1. 获取 Helpscout API 密钥和 App Secret
+1. 登录您的 Helpscout 账户。
+2. 转到 **管理 > 应用程序**。
+3. 创建或打开您的应用程序以获取以下信息：
+   - **API 密钥**
    - **App Secret**
 
-### 2. Collect Inbox IDs
-1. Retrieve the IDs of the inboxes you want to fetch conversations from using Helpscout's [API documentation](https://developer.helpscout.com/).
+### 2. 收集收件箱 ID
+1. 根据 Helpscout 的 [API 文档](https://developer.helpscout.com/) 获取您想要获取对话内容的收件箱 ID。
 
-### 3. Save Credentials in OpenClaw
-Use the following command to save your Helpscout credentials:
+### 3. 在 OpenClaw 中保存凭据
+使用以下命令保存您的 Helpscout 凭据：
 
 ```bash
 cat ~/.openclaw/openclaw.json | jq '.skills.entries.helpscout = {
@@ -52,18 +52,18 @@ cat ~/.openclaw/openclaw.json | jq '.skills.entries.helpscout = {
 }' | openclaw gateway config.apply
 ```
 
-### 4. Verify Configuration
-To ensure the credentials are properly set, check your configuration:
+### 4. 验证配置
+确保凭据配置正确：
 
 ```bash
 openclaw gateway config.get
 ```
-Make sure the `helpscout` object looks correct (avoid sharing the `API_KEY` or `APP_SECRET`).
+请检查 `helpscout` 对象的配置是否正确（切勿泄露 `API_KEY` 或 `APP_SECRET`）。
 
-## Usage
+## 使用方法
 
-### Basic Usage
-Fetch all active conversations from configured inboxes:
+### 基本用法
+从已配置的收件箱中获取所有活跃的对话内容：
 
 ```javascript
 const { fetchAllInboxes } = require('./index.js');
@@ -72,7 +72,7 @@ const { fetchAllInboxes } = require('./index.js');
 const results = await fetchAllInboxes();
 ```
 
-### Advanced Filtering
+### 高级过滤
 
 ```javascript
 const { fetchConversations } = require('./index.js');
@@ -110,28 +110,28 @@ const searched = await fetchConversations(321755, {
 });
 ```
 
-### Available Options
+### 可用参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `status` | string | Filter by status: `active`, `pending`, `closed`, `spam`, or `all` (default: `active`) |
-| `folderId` | number | Filter by folder ID |
-| `assignedTo` | number | Filter by user ID |
-| `customerId` | number | Filter by customer ID |
-| `number` | number | Filter by conversation number |
-| `modifiedSince` | string | ISO8601 date to filter conversations modified after this date |
-| `sortField` | string | Sort field: `createdAt`, `mailboxId`, `modifiedAt`, `number`, `score`, `status`, `subject` (default: `createdAt`) |
-| `sortOrder` | string | Sort order: `asc` or `desc` (default: `desc`) |
-| `tag` | string | Filter by tag name |
-| `query` | string | Advanced search query in `fieldId:value` format |
-| `embed` | string | Comma-separated list of resources to embed: `threads` |
-| `page` | number | Page number for pagination (default: 1) |
+| `status` | 字符串 | 按状态过滤：`active`（活跃）、`pending`（待处理）、`closed`（已关闭）、`spam`（垃圾邮件）或 `all`（全部）（默认：`active`） |
+| `folderId` | 数字 | 按文件夹 ID 过滤 |
+| `assignedTo` | 数字 | 按用户 ID 过滤 |
+| `customerId` | 数字 | 按客户 ID 过滤 |
+| `number` | 数字 | 按对话编号过滤 |
+| `modifiedSince` | 字符串 | ISO8601 格式的日期，用于过滤在该日期之后修改的对话 |
+| `sortField` | 字符串 | 排序字段：`createdAt`（创建时间）、`mailboxId`（收件箱 ID）、`modifiedAt`（修改时间）、`number`（对话编号）、`score`（评分）、`status`（状态）、`subject`（主题）（默认：`createdAt`） |
+| `sortOrder` | 字符串 | 排序方式：`asc`（升序）或 `desc`（降序）（默认：`desc`） |
+| `tag` | 字符串 | 按标签名称过滤 |
+| `query` | 字符串 | 以 `fieldId:value` 格式进行高级搜索 |
+| `embed` | 字符串 | 用逗号分隔的嵌入资源列表：`threads`（对话线程） |
+| `page` | 数字 | 分页页码（默认：1） |
 
-### Security Best Practices
-- Never hardcode credentials into your codebase.
-- Use OpenClaw's `config.apply` system for securely managing sensitive details.
-- Avoid sharing sensitive parts of your configuration output (`API_KEY` and `APP_SECRET`) with others.
+### 安全最佳实践
+- 切勿将凭据硬编码到代码库中。
+- 使用 OpenClaw 的 `config.apply` 系统来安全地管理敏感信息。
+- 避免与他人共享配置输出中的敏感部分（`API_KEY` 和 `APP_SECRET`）。
 
-## Contribution Guidelines
-- Ensure compliance with Helpscout's API usage policies.
-- Add documentation for any new features added.
+## 贡献指南
+- 确保遵守 Helpscout 的 API 使用政策。
+- 为新添加的功能添加相应的文档说明。

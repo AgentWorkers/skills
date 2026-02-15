@@ -1,29 +1,27 @@
 ---
 name: k8s-gen
-description: Generate Kubernetes manifests from docker-compose or plain English. Use when deploying apps to K8s.
+description: 从 `docker-compose` 文件或纯文本描述中生成 Kubernetes 配置文件（manifests）。在将应用程序部署到 Kubernetes 集群时使用这些配置文件。
 ---
 
 # Kubernetes Manifest Generator
 
-Stop writing YAML by hand. This tool converts your docker-compose files or plain descriptions into production ready Kubernetes manifests. Deployments, Services, ConfigMaps, the whole thing.
+别再手动编写 YAML 了！这个工具可以将您的 `docker-compose` 文件或简单的描述转换为适用于生产环境的 Kubernetes 配置文件（包括 Deployment、Service、ConfigMap 等）。只需一个命令，无需任何额外的配置，即可完成转换。
 
-**One command. Zero config. Just works.**
-
-## Quick Start
+**快速入门**
 
 ```bash
 npx ai-k8s "nginx with 3 replicas, exposed on port 80"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts docker-compose.yml to Kubernetes manifests automatically
-- Generates Deployments, Services, ConfigMaps, and Secrets
-- Creates proper resource limits and health checks
-- Outputs clean, production ready YAML you can kubectl apply
-- Handles multi-service architectures with proper networking
+- 自动将 `docker-compose.yml` 文件转换为 Kubernetes 配置文件
+- 生成 Deployment、Service、ConfigMap 和 Secret 等资源对象
+- 设置合理的资源限制和健康检查机制
+- 输出格式清晰、可直接使用 `kubectl apply` 命令应用的 YAML 文件
+- 支持具有复杂网络架构的多服务系统
 
-## Usage Examples
+## 使用示例**
 
 ```bash
 # Generate from a description
@@ -36,42 +34,42 @@ npx ai-k8s --compose docker-compose.yml
 npx ai-k8s "node app with redis cache and postgres db, 3 replicas each"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Start simple** - Generate one service first, validate it works, then add complexity
-- **Review resource limits** - The AI sets reasonable defaults, but adjust for your workload
-- **Use namespaces** - Add --namespace flag to keep your deployments organized
-- **Version your manifests** - Commit generated YAML to git, treat it as code
+- **从简单开始**：先生成一个服务，验证其功能是否正常，再逐步增加复杂性
+- **检查资源限制**：虽然工具会设置合理的默认值，但请根据实际工作负载进行调整
+- **使用命名空间**：通过 `--namespace` 标志来组织部署资源
+- **为配置文件添加版本控制**：将生成的 YAML 文件提交到 Git，视其为代码进行版本管理
 
-## When to Use This
+## 适用场景
 
-- You know Docker but K8s YAML feels overwhelming
-- Migrating docker-compose setups to Kubernetes
-- Prototyping new deployments quickly without YAML boilerplate
-- Learning K8s concepts through generated examples
+- 如果您熟悉 Docker，但对 Kubernetes 的 YAML 格式感到困惑
+- 需要将 `docker-compose` 配置迁移到 Kubernetes 环境
+- 需要快速原型化新的部署方案，而不想编写繁琐的 YAML 代码
+- 希望通过生成的示例来学习 Kubernetes 的概念
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+LXGIC Studios 开发了 110 多款免费开发者工具，这款工具就是其中之一。免费版本完全无付费门槛、无需注册，也不需要 API 密钥，只需使用 `npx` 命令即可运行。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-k8s --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool analyzes your docker-compose file or description, understands the services and their relationships, then generates idiomatic Kubernetes manifests. It maps Docker concepts to K8s equivalents like volumes to PersistentVolumeClaims and ports to Services.
+该工具会分析您的 `docker-compose` 文件或配置描述，理解其中的服务及其之间的关系，然后生成符合 Kubernetes 规范的配置文件。它将 Docker 中的概念（如卷、端口等）映射到 Kubernetes 中对应的资源类型（如 `PersistentVolumeClaim`、`Service` 等）。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费使用。您可以随意使用该工具。

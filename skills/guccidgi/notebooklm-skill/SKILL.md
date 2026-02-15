@@ -1,26 +1,25 @@
 ---
 name: notebooklm
-description: Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.
+description: 使用此技能，您可以直接通过 Claude Code 查询您的 Google NotebookLM 笔记本，从而从 Gemini 获得基于实际数据、有引证支持的答案。该工具支持浏览器自动化、库管理以及持久化身份验证功能。通过仅提供文档形式的响应，显著减少了“幻觉”（即不准确或误导性的信息）的出现。
 ---
 
-# NotebookLM Research Assistant Skill
+# NotebookLM研究助手技能
 
-Interact with Google NotebookLM to query documentation with Gemini's source-grounded answers. Each question opens a fresh browser session, retrieves the answer exclusively from your uploaded documents, and closes.
+该技能允许用户与Google NotebookLM交互，通过Gemini的基于知识的回答来查询文档。每个问题都会开启一个新的浏览器会话，仅从用户上传的文档中检索答案，然后关闭会话。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Trigger when user:
-- Mentions NotebookLM explicitly
-- Shares NotebookLM URL (`https://notebooklm.google.com/notebook/...`)
-- Asks to query their notebooks/documentation
-- Wants to add documentation to NotebookLM library
-- Uses phrases like "ask my NotebookLM", "check my docs", "query my notebook"
+在以下情况下触发该技能：
+- 用户明确提到NotebookLM
+- 用户分享NotebookLM的URL（`https://notebooklm.google.com/notebook/...`）
+- 用户请求查询其笔记本中的文档
+- 用户希望将文档添加到NotebookLM库中
+- 用户使用类似“询问我的NotebookLM”、“查看我的文档”或“查询我的笔记本”之类的短语
 
-## ⚠️ CRITICAL: Add Command - Smart Discovery
+## ⚠️ 重要提示：添加“Smart Discovery”命令
 
-When user wants to add a notebook without providing details:
-
-**SMART ADD (Recommended)**: Query the notebook first to discover its content:
+当用户想要添加一个笔记本但未提供详细信息时：
+**推荐使用“Smart Add”方法**：首先查询笔记本的内容：
 ```bash
 # Step 1: Query the notebook about its content
 python scripts/run.py ask_question.py --question "What is the content of this notebook? What topics are covered? Provide a complete overview briefly and concisely" --notebook-url "[URL]"
@@ -29,18 +28,17 @@ python scripts/run.py ask_question.py --question "What is the content of this no
 python scripts/run.py notebook_manager.py add --url "[URL]" --name "[Based on content]" --description "[Based on content]" --topics "[Based on content]"
 ```
 
-**MANUAL ADD**: If user provides all details:
-- `--url` - The NotebookLM URL
-- `--name` - A descriptive name
-- `--description` - What the notebook contains (REQUIRED!)
-- `--topics` - Comma-separated topics (REQUIRED!)
+**手动添加**：如果用户提供了所有详细信息：
+- `--url` - NotebookLM的URL
+- `--name` - 笔记本的描述性名称
+- `--description` - 笔记本的内容（必填！）
+- `--topics` - 用逗号分隔的主题（必填！）
 
-NEVER guess or use generic descriptions! If details missing, use Smart Add to discover them.
+**切勿猜测或使用通用描述！** 如果缺少详细信息，请使用“Smart Add”方法来获取这些信息。
 
-## Critical: Always Use run.py Wrapper
+## 重要提示：始终使用`run.py`包装器
 
-**NEVER call scripts directly. ALWAYS use `python scripts/run.py [script]`:**
-
+**切勿直接调用脚本。** **务必使用`python scripts/run.py [script]`：**
 ```bash
 # ✅ CORRECT - Always use run.py:
 python scripts/run.py auth_manager.py status
@@ -51,35 +49,34 @@ python scripts/run.py ask_question.py --question "..."
 python scripts/auth_manager.py status  # Fails without venv!
 ```
 
-The `run.py` wrapper automatically:
-1. Creates `.venv` if needed
-2. Installs all dependencies
-3. Activates environment
-4. Executes script properly
+`run.py`包装器会自动执行以下操作：
+1. （如有需要）创建`.venv`虚拟环境
+2. 安装所有依赖项
+3. 激活虚拟环境
+4. 正确执行脚本
 
-## Core Workflow
+## 核心工作流程
 
-### Step 1: Check Authentication Status
+### 第1步：检查认证状态
 ```bash
 python scripts/run.py auth_manager.py status
 ```
 
-If not authenticated, proceed to setup.
+如果未认证，请进行设置。
 
-### Step 2: Authenticate (One-Time Setup)
+### 第2步：认证（一次性设置）
 ```bash
 # Browser MUST be visible for manual Google login
 python scripts/run.py auth_manager.py setup
 ```
 
-**Important:**
-- Browser is VISIBLE for authentication
-- Browser window opens automatically
-- User must manually log in to Google
-- Tell user: "A browser window will open for Google login"
+**重要提示：**
+- 认证过程中需要使用可见的浏览器
+- 浏览器窗口会自动打开
+- 用户必须手动登录Google
+- 告知用户：“将打开一个浏览器窗口以进行Google登录”
 
-### Step 3: Manage Notebook Library
-
+### 第3步：管理笔记本库
 ```bash
 # List all notebooks
 python scripts/run.py notebook_manager.py list
@@ -105,12 +102,11 @@ python scripts/run.py notebook_manager.py activate --id notebook-id
 python scripts/run.py notebook_manager.py remove --id notebook-id
 ```
 
-### Quick Workflow
-1. Check library: `python scripts/run.py notebook_manager.py list`
-2. Ask question: `python scripts/run.py ask_question.py --question "..." --notebook-id ID`
+### 快速工作流程
+1. 检查笔记本库：`python scripts/run.py notebook_manager.py list`
+2. 提出问题：`python scripts/run.py ask_question.py --question "..." --notebook-id ID`
 
-### Step 4: Ask Questions
-
+### 第4步：提出问题
 ```bash
 # Basic query (uses active notebook if set)
 python scripts/run.py ask_question.py --question "Your question here"
@@ -125,24 +121,24 @@ python scripts/run.py ask_question.py --question "..." --notebook-url "https://.
 python scripts/run.py ask_question.py --question "..." --show-browser
 ```
 
-## Follow-Up Mechanism (CRITICAL)
+## 后续处理机制（非常重要）
 
-Every NotebookLM answer ends with: **"EXTREMELY IMPORTANT: Is that ALL you need to know?"**
+每个NotebookLM的回答都会以以下内容结束：“**非常重要：这就是您需要知道的全部信息吗？**”
 
-**Required Claude Behavior:**
-1. **STOP** - Do not immediately respond to user
-2. **ANALYZE** - Compare answer to user's original request
-3. **IDENTIFY GAPS** - Determine if more information needed
-4. **ASK FOLLOW-UP** - If gaps exist, immediately ask:
+**Claude系统的要求：**
+1. **停止** - 不要立即回复用户
+2. **分析** - 将回答与用户的原始请求进行对比
+3. **判断是否需要更多信息** - 确定是否需要更多信息
+4. **提出后续问题** - 如果需要更多信息，请立即提问：
    ```bash
    python scripts/run.py ask_question.py --question "Follow-up with context..."
    ```
-5. **REPEAT** - Continue until information is complete
-6. **SYNTHESIZE** - Combine all answers before responding to user
+5. **重复** - 一直重复此过程，直到信息完整
+6. **整合答案** - 在回复用户之前整合所有答案
 
-## Script Reference
+## 脚本参考
 
-### Authentication Management (`auth_manager.py`)
+### 认证管理（`auth_manager.py`）
 ```bash
 python scripts/run.py auth_manager.py setup    # Initial setup (browser visible)
 python scripts/run.py auth_manager.py status   # Check authentication
@@ -150,7 +146,7 @@ python scripts/run.py auth_manager.py reauth   # Re-authenticate (browser visibl
 python scripts/run.py auth_manager.py clear    # Clear authentication
 ```
 
-### Notebook Management (`notebook_manager.py`)
+### 笔记本管理（`notebook_manager.py`）
 ```bash
 python scripts/run.py notebook_manager.py add --url URL --name NAME --description DESC --topics TOPICS
 python scripts/run.py notebook_manager.py list
@@ -160,27 +156,27 @@ python scripts/run.py notebook_manager.py remove --id ID
 python scripts/run.py notebook_manager.py stats
 ```
 
-### Question Interface (`ask_question.py`)
+### 问题处理脚本（`ask_question.py`）
 ```bash
 python scripts/run.py ask_question.py --question "..." [--notebook-id ID] [--notebook-url URL] [--show-browser]
 ```
 
-### Data Cleanup (`cleanup_manager.py`)
+### 数据清理（`cleanup_manager.py`）
 ```bash
 python scripts/run.py cleanup_manager.py                    # Preview cleanup
 python scripts/run.py cleanup_manager.py --confirm          # Execute cleanup
 python scripts/run.py cleanup_manager.py --preserve-library # Keep notebooks
 ```
 
-## Environment Management
+## 环境管理
 
-The virtual environment is automatically managed:
-- First run creates `.venv` automatically
-- Dependencies install automatically
-- Chromium browser installs automatically
-- Everything isolated in skill directory
+虚拟环境会自动管理：
+- 首次运行时会自动创建`.venv`虚拟环境
+- 依赖项会自动安装
+- Chromium浏览器会自动安装
+- 所有操作都在技能目录内进行
 
-Manual setup (only if automatic fails):
+**手动设置（仅在自动设置失败时使用）：**
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Linux/Mac
@@ -188,18 +184,18 @@ pip install -r requirements.txt
 python -m patchright install chromium
 ```
 
-## Data Storage
+## 数据存储
 
-All data stored in `~/.claude/skills/notebooklm/data/`:
-- `library.json` - Notebook metadata
-- `auth_info.json` - Authentication status
-- `browser_state/` - Browser cookies and session
+所有数据存储在`~/.claude/skills/notebooklm/data/`目录下：
+- `library.json` - 笔记本元数据
+- `auth_info.json` - 认证状态
+- `browser_state/` - 浏览器cookie和会话信息
 
-**Security:** Protected by `.gitignore`, never commit to git.
+**安全性：** 数据受到`.gitignore`文件的保护，不会被提交到Git仓库。
 
-## Configuration
+## 配置
 
-Optional `.env` file in skill directory:
+技能目录中有一个可选的`.env`文件：
 ```env
 HEADLESS=false           # Browser visibility
 SHOW_BROWSER=false       # Default browser display
@@ -209,8 +205,7 @@ TYPING_WPM_MAX=240
 DEFAULT_NOTEBOOK_ID=     # Default notebook
 ```
 
-## Decision Flow
-
+## 决策流程
 ```
 User mentions NotebookLM
     ↓
@@ -229,41 +224,40 @@ See "Is that ALL you need?" → Ask follow-ups until complete
 Synthesize and respond to user
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| ModuleNotFoundError | Use `run.py` wrapper |
-| Authentication fails | Browser must be visible for setup! --show-browser |
-| Rate limit (50/day) | Wait or switch Google account |
-| Browser crashes | `python scripts/run.py cleanup_manager.py --preserve-library` |
-| Notebook not found | Check with `notebook_manager.py list` |
+| 模块找不到 | 使用`run.py`包装器 |
+| 认证失败 | 设置过程中必须使用可见的浏览器！ --show-browser |
+- 日访问量限制（每天50次） | 等待或更换Google账户 |
+- 浏览器崩溃 | `python scripts/run.py cleanup_manager.py --preserve-library` |
+- 笔记本未找到 | 使用`notebook_manager.py list`检查
 
-## Best Practices
+## 最佳实践
 
-1. **Always use run.py** - Handles environment automatically
-2. **Check auth first** - Before any operations
-3. **Follow-up questions** - Don't stop at first answer
-4. **Browser visible for auth** - Required for manual login
-5. **Include context** - Each question is independent
-6. **Synthesize answers** - Combine multiple responses
+1. **始终使用`run.py`** - 它会自动处理环境设置
+2. **先检查认证状态** - 在执行任何操作之前
+3. **提出后续问题** - 不要仅根据第一次回答就停止
+4. **使用可见的浏览器进行认证** - 手动登录时必须使用浏览器
+5. **提供上下文** - 每个问题都是独立的
+6. **整合答案** - 将多个回答整合在一起
 
-## Limitations
+## 限制
 
-- No session persistence (each question = new browser)
-- Rate limits on free Google accounts (50 queries/day)
-- Manual upload required (user must add docs to NotebookLM)
-- Browser overhead (few seconds per question)
+- 没有会话持久化（每个问题都会打开一个新的浏览器会话）
+- 免费Google账户的日访问量有限（每天50次查询）
+- 需要用户手动上传文档到NotebookLM
+- 浏览器会带来一定的性能开销（每个问题大约需要几秒钟）
 
-## Resources (Skill Structure)
+## 资源（技能结构）
 
-**Important directories and files:**
-
-- `scripts/` - All automation scripts (ask_question.py, notebook_manager.py, etc.)
-- `data/` - Local storage for authentication and notebook library
-- `references/` - Extended documentation:
-  - `api_reference.md` - Detailed API documentation for all scripts
-  - `troubleshooting.md` - Common issues and solutions
-  - `usage_patterns.md` - Best practices and workflow examples
-- `.venv/` - Isolated Python environment (auto-created on first run)
-- `.gitignore` - Protects sensitive data from being committed
+**重要目录和文件：**
+- `scripts/` - 所有自动化脚本（`ask_question.py`、`notebook_manager.py`等）
+- `data/` - 用于存储认证信息和笔记本库的本地文件夹
+- `references/` - 扩展文档：
+  - `api_reference.md` - 所有脚本的详细API文档
+  - `troubleshooting.md` - 常见问题及解决方法
+  - `usage_patterns.md` - 最佳实践和工作流程示例
+- `.venv/` - 自动创建的Python虚拟环境
+- `.gitignore` - 用于保护敏感数据不被提交到Git仓库

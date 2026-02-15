@@ -1,56 +1,56 @@
 ---
 name: information-security-manager-iso27001
-description: ISO 27001 ISMS implementation and cybersecurity governance for HealthTech and MedTech companies. Use for ISMS design, security risk assessment, control implementation, ISO 27001 certification, security audits, incident response, and compliance verification. Covers ISO 27001, ISO 27002, healthcare security, and medical device cybersecurity.
+description: 适用于医疗技术和医疗器械公司的ISO 27001信息安全管理（ISMS）体系实施及网络安全治理方案。该方案可用于ISMS体系设计、安全风险评估、控制措施的实施、ISO 27001认证申请、安全审计、事件响应以及合规性验证。内容涵盖ISO 27001标准、ISO 27002标准、医疗行业安全规范以及医疗设备的网络安全要求。
 ---
 
-# Information Security Manager - ISO 27001
+# 信息安全经理 - ISO 27001
 
-Implement and manage Information Security Management Systems (ISMS) aligned with ISO 27001:2022 and healthcare regulatory requirements.
-
----
-
-## Table of Contents
-
-- [Trigger Phrases](#trigger-phrases)
-- [Quick Start](#quick-start)
-- [Tools](#tools)
-- [Workflows](#workflows)
-- [Reference Guides](#reference-guides)
-- [Validation Checkpoints](#validation-checkpoints)
+负责实施和管理符合 ISO 27001:2022 标准以及医疗行业监管要求的信息安全管理体系（ISMS）。
 
 ---
 
-## Trigger Phrases
+## 目录
 
-Use this skill when you hear:
-- "implement ISO 27001"
-- "ISMS implementation"
-- "security risk assessment"
-- "information security policy"
-- "ISO 27001 certification"
-- "security controls implementation"
-- "incident response plan"
-- "healthcare data security"
-- "medical device cybersecurity"
-- "security compliance audit"
+- [触发短语](#trigger-phrases)
+- [快速入门](#quick-start)
+- [工具](#tools)
+- [工作流程](#workflows)
+- [参考指南](#reference-guides)
+- [验证检查点](#validation-checkpoints)
 
 ---
 
-## Quick Start
+## 触发短语
 
-### Run Security Risk Assessment
+当听到以下术语时，请使用此技能：
+- “实施 ISO 27001”
+- “ISMS 实施”
+- “安全风险评估”
+- “信息安全政策”
+- “ISO 27001 认证”
+- “安全控制措施的实施”
+- “事件响应计划”
+- “医疗数据安全”
+- “医疗设备的网络安全”
+- “安全合规性审计”
+
+---
+
+## 快速入门
+
+### 进行安全风险评估
 
 ```bash
 python scripts/risk_assessment.py --scope "patient-data-system" --output risk_register.json
 ```
 
-### Check Compliance Status
+### 检查合规性状态
 
 ```bash
 python scripts/compliance_checker.py --standard iso27001 --controls-file controls.csv
 ```
 
-### Generate Gap Analysis Report
+### 生成差距分析报告
 
 ```bash
 python scripts/compliance_checker.py --standard iso27001 --gap-analysis --output gaps.md
@@ -58,13 +58,13 @@ python scripts/compliance_checker.py --standard iso27001 --gap-analysis --output
 
 ---
 
-## Tools
+## 工具
 
 ### risk_assessment.py
 
-Automated security risk assessment following ISO 27001 Clause 6.1.2 methodology.
+根据 ISO 27001 第 6.1.2 条款的方法论，自动进行安全风险评估。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Full risk assessment
@@ -77,28 +77,28 @@ python scripts/risk_assessment.py --scope "ehr-system" --template healthcare --o
 python scripts/risk_assessment.py --assets assets.csv --output risks.json
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必需 | 说明 |
 |-----------|----------|-------------|
-| `--scope` | Yes | System or area to assess |
-| `--template` | No | Assessment template: `general`, `healthcare`, `cloud` |
-| `--assets` | No | CSV file with asset inventory |
-| `--output` | No | Output file (default: stdout) |
-| `--format` | No | Output format: `json`, `csv`, `markdown` |
+| `--scope` | 是 | 需要评估的系统或范围 |
+| `--template` | 否 | 评估模板：`general`、`healthcare`、`cloud` |
+| `--assets` | 否 | 包含资产清单的 CSV 文件 |
+| `--output` | 否 | 输出文件（默认：stdout） |
+| `--format` | 否 | 输出格式：`json`、`csv`、`markdown` |
 
-**Output:**
-- Asset inventory with classification
-- Threat and vulnerability mapping
-- Risk scores (likelihood × impact)
-- Treatment recommendations
-- Residual risk calculations
+**输出：**
+- 带有分类的资产清单 |
+- 威胁与漏洞映射 |
+- 风险等级（可能性 × 影响程度） |
+- 处理建议 |
+- 剩余风险计算 |
 
 ### compliance_checker.py
 
-Verify ISO 27001/27002 control implementation status.
+验证 ISO 27001/27002 控制措施的实施状态。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 # Check all ISO 27001 controls
@@ -114,236 +114,236 @@ python scripts/compliance_checker.py --standard iso27001 --domains "access-contr
 python scripts/compliance_checker.py --standard iso27001 --output compliance_report.md
 ```
 
-**Parameters:**
+**参数：**
 
-| Parameter | Required | Description |
+| 参数 | 是否必需 | 说明 |
 |-----------|----------|-------------|
-| `--standard` | Yes | Standard to check: `iso27001`, `iso27002`, `hipaa` |
-| `--controls-file` | No | CSV with current control status |
-| `--gap-analysis` | No | Include remediation recommendations |
-| `--domains` | No | Specific control domains to check |
-| `--output` | No | Output file path |
+| `--standard` | 是 | 需要检查的标准：`iso27001`、`iso27002`、`hipaa` |
+| `--controls-file` | 否 | 包含当前控制措施状态的 CSV 文件 |
+| `--gap-analysis` | 否 | 包含整改建议 |
+| `--domains` | 否 | 需要检查的具体控制领域 |
+| `--output` | 否 | 输出文件路径 |
 
-**Output:**
-- Control implementation status
-- Compliance percentage by domain
-- Gap analysis with priorities
-- Remediation recommendations
+**输出：**
+- 控制措施的实施状态 |
+- 各领域的合规百分比 |
+- 带有优先级的差距分析 |
+- 整改建议 |
 
 ---
 
-## Workflows
+## 工作流程
 
-### Workflow 1: ISMS Implementation
+### 工作流程 1：ISMS 实施
 
-**Step 1: Define Scope and Context**
+**步骤 1：定义范围和背景**
 
-Document organizational context and ISMS boundaries:
-- Identify interested parties and requirements
-- Define ISMS scope and boundaries
-- Document internal/external issues
+记录组织背景和 ISMS 的边界：
+- 识别相关方和需求 |
+- 定义 ISMS 的范围和边界 |
+- 记录内部/外部问题 |
 
-**Validation:** Scope statement reviewed and approved by management.
+**验证：** 管理层审核并批准范围声明。
 
-**Step 2: Conduct Risk Assessment**
+**步骤 2：进行风险评估**
 
 ```bash
 python scripts/risk_assessment.py --scope "full-organization" --template general --output initial_risks.json
 ```
 
-- Identify information assets
-- Assess threats and vulnerabilities
-- Calculate risk levels
-- Determine risk treatment options
+- 识别信息资产 |
+- 评估威胁和漏洞 |
+- 计算风险等级 |
+- 确定风险处理方案 |
 
-**Validation:** Risk register contains all critical assets with assigned owners.
+**验证：** 风险登记册中包含所有已分配负责人的关键资产。
 
-**Step 3: Select and Implement Controls**
+**步骤 3：选择并实施控制措施**
 
-Map risks to ISO 27002 controls:
+将风险与 ISO 27002 控制措施对应起来：
 
 ```bash
 python scripts/compliance_checker.py --standard iso27002 --gap-analysis --output control_gaps.md
 ```
 
-Control categories:
-- Organizational (policies, roles, responsibilities)
-- People (screening, awareness, training)
-- Physical (perimeters, equipment, media)
-- Technological (access, crypto, network, application)
+控制措施类别：
+- 组织层面（政策、角色、职责）
+- 人员层面（筛选、意识提升、培训）
+- 物理层面（边界防护、设备、媒介）
+- 技术层面（访问控制、加密、网络、应用程序）
 
-**Validation:** Statement of Applicability (SoA) documents all controls with justification.
+**验证：** 适用性声明（SoA）记录了所有控制措施及其理由。
 
-**Step 4: Establish Monitoring**
+**步骤 4：建立监控机制**
 
-Define security metrics:
-- Incident count and severity trends
-- Control effectiveness scores
-- Training completion rates
-- Audit findings closure rate
+定义安全指标：
+- 事件数量和严重程度趋势 |
+- 控制措施的有效性评分 |
+- 培训完成率 |
+- 审计发现的处理情况
 
-**Validation:** Dashboard shows real-time compliance status.
+**验证：** 仪表板显示实时合规状态。
 
-### Workflow 2: Security Risk Assessment
+### 工作流程 2：安全风险评估
 
-**Step 1: Asset Identification**
+**步骤 1：资产识别**
 
-Create asset inventory:
+创建资产清单：
 
-| Asset Type | Examples | Classification |
+| 资产类型 | 示例 | 分类 |
 |------------|----------|----------------|
-| Information | Patient records, source code | Confidential |
-| Software | EHR system, APIs | Critical |
-| Hardware | Servers, medical devices | High |
-| Services | Cloud hosting, backup | High |
-| People | Admin accounts, developers | Varies |
+| 信息资产 | 患者记录、源代码 | 机密 |
+| 软件 | 电子健康记录（EHR）系统、API | 关键 |
+| 硬件 | 服务器、医疗设备 | 高风险 |
+| 服务 | 云托管、备份 | 高风险 |
+| 人员 | 管理员账户、开发人员 | 分类不同 |
 
-**Validation:** All assets have assigned owners and classifications.
+**验证：** 所有资产均已分配负责人和分类。
 
-**Step 2: Threat Analysis**
+**步骤 2：威胁分析**
 
-Identify threats per asset category:
+针对每个资产类别识别威胁：
 
-| Asset | Threats | Likelihood |
+| 资产 | 威胁 | 可能性 |
 |-------|---------|------------|
-| Patient data | Unauthorized access, breach | High |
-| Medical devices | Malware, tampering | Medium |
-| Cloud services | Misconfiguration, outage | Medium |
-| Credentials | Phishing, brute force | High |
+| 患者数据 | 未经授权的访问、数据泄露 | 高 |
+| 医疗设备 | 恶意软件、篡改 | 中等 |
+| 云服务 | 配置错误、服务中断 | 中等 |
+| 认证信息 | 钓鱼攻击、暴力破解 | 高 |
 
-**Validation:** Threat model covers top-10 industry threats.
+**验证：** 威胁模型涵盖了行业内的十大主要威胁。
 
-**Step 3: Vulnerability Assessment**
+**步骤 3：漏洞评估**
 
 ```bash
 python scripts/risk_assessment.py --scope "network-infrastructure" --output vuln_risks.json
 ```
 
-Document vulnerabilities:
-- Technical (unpatched systems, weak configs)
-- Process (missing procedures, gaps)
-- People (lack of training, insider risk)
+记录漏洞：
+- 技术漏洞（未打补丁的系统、配置薄弱）
+- 流程漏洞（缺失的程序、流程漏洞）
+- 人员漏洞（缺乏培训、内部风险）
 
-**Validation:** Vulnerability scan results mapped to risk register.
+**验证：** 漏洞扫描结果被记录到风险登记册中。
 
-**Step 4: Risk Evaluation and Treatment**
+**步骤 4：风险评估和处理**
 
-Calculate risk: `Risk = Likelihood × Impact`
+计算风险：`风险 = 可能性 × 影响程度`
 
-| Risk Level | Score | Treatment |
+| 风险等级 | 分数 | 处理措施 |
 |------------|-------|-----------|
-| Critical | 20-25 | Immediate action required |
-| High | 15-19 | Treatment plan within 30 days |
-| Medium | 10-14 | Treatment plan within 90 days |
-| Low | 5-9 | Accept or monitor |
-| Minimal | 1-4 | Accept |
+| 关键 | 20-25 | 需要立即采取行动 |
+| 高 | 15-19 | 在 30 天内制定处理计划 |
+| 中等 | 10-14 | 在 90 天内制定处理计划 |
+| 低 | 5-9 | 可接受或继续监控 |
+| 极低 | 1-4 | 可接受 |
 
-**Validation:** All high/critical risks have approved treatment plans.
+**验证：** 所有高风险/关键风险均已制定处理计划。
 
-### Workflow 3: Incident Response
+### 工作流程 3：事件响应
 
-**Step 1: Detection and Reporting**
+**步骤 1：检测和报告**
 
-Incident categories:
-- Security breach (unauthorized access)
-- Malware infection
-- Data leakage
-- System compromise
-- Policy violation
+事件类别：
+- 安全漏洞（未经授权的访问）
+- 恶意软件感染 |
+- 数据泄露 |
+- 系统被入侵 |
+- 政策违规
 
-**Validation:** Incident logged within 15 minutes of detection.
+**验证：** 事件在发现后 15 分钟内被记录。
 
-**Step 2: Triage and Classification**
+**步骤 2：分类和优先级划分**
 
-| Severity | Criteria | Response Time |
+| 严重程度 | 判断标准 | 响应时间 |
 |----------|----------|---------------|
-| Critical | Data breach, system down | Immediate |
-| High | Active threat, significant risk | 1 hour |
-| Medium | Contained threat, limited impact | 4 hours |
-| Low | Minor violation, no impact | 24 hours |
+| 关键 | 数据泄露、系统瘫痪 | 立即响应 |
+| 高 | 活跃的威胁、重大风险 | 1 小时 |
+| 中等 | 被控制的威胁、影响有限 | 4 小时 |
+| 低 | 轻微违规、无影响 | 24 小时 |
 
-**Validation:** Severity assigned and escalation triggered if needed.
+**验证：** 为事件分配了适当的严重程度，并在必要时触发升级流程。
 
-**Step 3: Containment and Eradication**
+**步骤 3：遏制和消除**
 
-Immediate actions:
-1. Isolate affected systems
-2. Preserve evidence
-3. Block threat vectors
-4. Remove malicious artifacts
+立即采取行动：
+1. 隔离受影响的系统 |
+2. 保存证据 |
+3. 阻止威胁传播 |
+4. 删除恶意代码 |
 
-**Validation:** Containment confirmed, no ongoing compromise.
+**验证：** 确认威胁已被遏制，系统未继续受到损害。
 
-**Step 4: Recovery and Lessons Learned**
+**步骤 4：恢复和总结经验**
 
-Post-incident activities:
-1. Restore systems from clean backups
-2. Verify integrity before reconnection
-3. Document timeline and actions
-4. Conduct post-incident review
-5. Update controls and procedures
+事件后的活动：
+1. 从备份中恢复系统 |
+2. 在重新连接前验证系统完整性 |
+3. 记录事件经过和处理步骤 |
+4. 进行事件后审查 |
+5. 更新控制措施和流程 |
 
-**Validation:** Post-incident report completed within 5 business days.
+**验证：** 在 5 个工作日内完成事件后报告。
 
 ---
 
-## Reference Guides
+## 参考指南
 
-### When to Use Each Reference
+### 各参考指南的适用场景
 
 **references/iso27001-controls.md**
-- Control selection for SoA
-- Implementation guidance
-- Evidence requirements
-- Audit preparation
+- 适用性声明（SoA）中的控制措施选择 |
+- 实施指南 |
+- 证据要求 |
+- 审计准备
 
 **references/risk-assessment-guide.md**
-- Risk methodology selection
-- Asset classification criteria
-- Threat modeling approaches
-- Risk calculation methods
+- 风险评估方法选择 |
+- 资产分类标准 |
+- 威胁建模方法 |
+- 风险计算方法
 
 **references/incident-response.md**
-- Response procedures
-- Escalation matrices
-- Communication templates
-- Recovery checklists
+- 响应程序 |
+- 升级流程 |
+- 沟通模板 |
+- 恢复检查清单 |
 
 ---
 
-## Validation Checkpoints
+## 验证检查点
 
-### ISMS Implementation Validation
+### ISMS 实施验证
 
-| Phase | Checkpoint | Evidence Required |
+| 阶段 | 检查点 | 所需证据 |
 |-------|------------|-------------------|
-| Scope | Scope approved | Signed scope document |
-| Risk | Register complete | Risk register with owners |
-| Controls | SoA approved | Statement of Applicability |
-| Operation | Metrics active | Dashboard screenshots |
-| Audit | Internal audit done | Audit report |
+| 范围 | 范围已获得批准 | 签署的范围声明文件 |
+| 风险 | 风险登记册已完成 | 包含负责人的风险登记册 |
+| 控制措施 | 适用性声明已批准 | 适用性声明（SoA） |
+| 运营 | 监控指标正常运行 | 仪表板截图 |
+| 审计 | 内部审计已完成 | 审计报告 |
 
-### Certification Readiness
+### 认证准备
 
-Before Stage 1 audit:
-- [ ] ISMS scope documented and approved
-- [ ] Information security policy published
-- [ ] Risk assessment completed
-- [ ] Statement of Applicability finalized
-- [ ] Internal audit conducted
-- [ ] Management review completed
-- [ ] Nonconformities addressed
+在第一次审计之前：
+- [ ] ISMS 范围已记录并获得批准 |
+- [ ] 信息安全政策已发布 |
+- [ ] 风险评估已完成 |
+- [ ] 适用性声明已最终确定 |
+- [ ] 内部审计已完成 |
+- [ ] 管理层审查已完成 |
+- [ ] 不合规问题已解决 |
 
-Before Stage 2 audit:
-- [ ] Controls implemented and operational
-- [ ] Evidence of effectiveness available
-- [ ] Staff trained and aware
-- [ ] Incidents logged and managed
-- [ ] Metrics collected for 3+ months
+在第二次审计之前：
+- [ ] 控制措施已实施并正常运行 |
+- [ ] 有证据表明控制措施有效 |
+- [ ] 员工已接受培训并了解相关要求 |
+- [ ] 事件已记录并得到妥善处理 |
+- [ ] 已收集至少 3 个月的监控数据 |
 
-### Compliance Verification
+### 合规性验证
 
-Run periodic checks:
+定期进行检查：
 
 ```bash
 # Monthly compliance check
@@ -355,50 +355,50 @@ python scripts/compliance_checker.py --standard iso27001 --gap-analysis --output
 
 ---
 
-## Worked Example: Healthcare Risk Assessment
+## 实例：医疗数据管理系统的安全风险评估
 
-**Scenario:** Assess security risks for a patient data management system.
+**场景：** 评估患者数据管理系统的安全风险。
 
-### Step 1: Define Assets
+**步骤 1：识别资产**
 
 ```bash
 python scripts/risk_assessment.py --scope "patient-data-system" --template healthcare
 ```
 
-**Asset inventory output:**
+**资产清单输出：**
 
-| Asset ID | Asset | Type | Owner | Classification |
+| 资产 ID | 资产 | 类型 | 所有者 | 分类 |
 |----------|-------|------|-------|----------------|
-| A001 | Patient database | Information | DBA Team | Confidential |
-| A002 | EHR application | Software | App Team | Critical |
-| A003 | Database server | Hardware | Infra Team | High |
-| A004 | Admin credentials | Access | Security | Critical |
+| A001 | 患者数据库 | 信息资产 | 数据库管理员团队 | 机密 |
+| A002 | 电子健康记录（EHR）应用程序 | 软件资产 | 应用程序团队 | 关键 |
+| A003 | 数据库服务器 | 硬件资产 | 基础设施团队 | 高风险 |
+| A004 | 管理员账户 | 访问权限 | 安全团队 | 关键 |
 
-### Step 2: Identify Risks
+**步骤 2：识别风险**
 
-**Risk register output:**
+**风险登记册输出：**
 
-| Risk ID | Asset | Threat | Vulnerability | L | I | Score |
+| 风险 ID | 资产 | 威胁 | 漏洞 | 可能性 | 影响程度 | 分数 |
 |---------|-------|--------|---------------|---|---|-------|
-| R001 | A001 | Data breach | Weak encryption | 3 | 5 | 15 |
-| R002 | A002 | SQL injection | Input validation | 4 | 4 | 16 |
-| R003 | A004 | Credential theft | No MFA | 4 | 5 | 20 |
+| R001 | A001 | 数据泄露 | 加密措施薄弱 | 3 | 5 | 15 |
+| R002 | A002 | SQL 注入攻击 | 输入验证缺失 | 4 | 4 | 16 |
+| R003 | A004 | 认证信息被盗 | 未启用多因素认证（MFA） | 4 | 5 | 20 |
 
-### Step 3: Determine Treatment
+**步骤 3：确定处理措施**
 
-| Risk | Treatment | Control | Timeline |
+| 风险 | 处理措施 | 对应的控制措施 | 实施时间表 |
 |------|-----------|---------|----------|
-| R001 | Mitigate | Implement AES-256 encryption | 30 days |
-| R002 | Mitigate | Add input validation, WAF | 14 days |
-| R003 | Mitigate | Enforce MFA for all admins | 7 days |
+| R001 | 减轻风险 | 实施 AES-256 加密 | 30 天 |
+| R002 | 减轻风险 | 添加输入验证机制、使用 WAF（Web 应用程序防火墙） | 14 天 |
+| R003 | 减轻风险 | 强制所有管理员使用多因素认证 | 7 天 |
 
-### Step 4: Verify Implementation
+**步骤 4：验证实施情况**
 
 ```bash
 python scripts/compliance_checker.py --controls-file implemented_controls.csv
 ```
 
-**Verification output:**
+**验证输出：**
 
 ```
 Control Implementation Status

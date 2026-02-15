@@ -1,23 +1,23 @@
 ---
 name: book-windshield
-description: Book windshield services through Lokuli MCP. Use when user needs to find and book windshield. Triggers on requests like "book a windshield", "find windshield near me", or any windshield service request.
+description: 通过 Lokuli MCP 预订挡风玻璃服务。当用户需要查找或预订挡风玻璃时，可以使用此功能。该功能会在用户发出“预订挡风玻璃”、“查找附近的挡风玻璃”或任何与挡风玻璃服务相关的请求时被触发。
 ---
 
-# uook windshield
+# 更换汽车挡风玻璃
 
-Book windshield services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预约挡风玻璃更换服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

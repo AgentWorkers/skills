@@ -1,6 +1,6 @@
 ---
 name: test-audit-badge
-description: Test skill to demonstrate the audit badge; do not use it for real workflows.
+description: 测试相关技能以展示审计徽章的获取资格；请勿在实际工作流程中使用该功能。
 ---
 
-This is just a placeholder skill with random text. Nothing to see here, move along.
+这只是一个包含随机文本的占位符技能文件，这里没有任何实际内容，请直接跳过。

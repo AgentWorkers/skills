@@ -1,104 +1,95 @@
 ---
 name: multi-viewpoint-debates
-description: Spawn isolated sub-agents representing distinct worldviews (Elon, Capitalist, Monkey) to debate decisions from multiple angles. Expose blind spots by forcing genuine disagreement on important questions. Use when facing decisions where you need to challenge your assumptions, stress-test ideas, or see a problem through fundamentally different lenses. Automatically captures debate outputs to an archive for future reference and pattern analysis.
+description: 生成代表不同世界观（如“Elon”、“Capitalist”、“Monkey”）的独立子代理，从多个角度对决策进行辩论。通过强制在关键问题上产生真正的意见分歧，来揭示潜在的盲点。在需要质疑自己的假设、对想法进行压力测试，或从根本不同的视角审视问题时使用该方法。系统会自动将辩论结果捕获并存档，以供将来参考和进行分析。
 ---
 
-# Multi-Viewpoint Debates
+# 多视角辩论
 
-Spawn three isolated sub-agent personas with conflicting worldviews to debate any decision. Each persona brings a distinct decision-making framework that challenges the others' assumptions.
+创建三个具有不同世界观的独立子代理角色，让他们就任何决策进行辩论。每个角色都带来一种独特的决策框架，这种框架会挑战其他角色的假设。
 
-## Quick Start
+## 快速入门
 
-**Run a debate:**
+**启动辩论：**
 ```bash
 clawdbot sessions_spawn --task "You are Elon Musk [persona framework]. Decision: [your question]. Respond as Elon would."
 clawdbot sessions_spawn --task "You are a Capitalist [persona framework]. Decision: [your question]. Respond as a ruthless capitalist would."
 clawdbot sessions_spawn --task "You are a Monkey [persona framework]. Decision: [your question]. Respond as a monkey would."
 ```
 
-**Save the debate:**
-1. Collect responses from all three personas
-2. Create a new markdown file in your debates archive
-3. Use the template from `assets/debate-template.md`
-4. Update `INDEX.md` with metadata
+**保存辩论结果：**
+1. 收集所有三个角色的回应。
+2. 在你的辩论档案中创建一个新的 markdown 文件。
+3. 使用 `assets/debate-template.md` 模板。
+4. 使用 `INDEX.md` 更新元数据。
 
-## The Three Personas
+## 三个角色
 
-Each persona brings a fundamentally different decision-making framework. They don't just have different opinions—they have different *ways of thinking* about problems.
+每个角色都采用根本不同的决策框架。他们不仅观点不同，对问题的思考方式也截然不同。
 
-### Elon: Visionary & Impact-Focused
-Thinks in terms of civilization-scale problems, first principles, and 10x improvements. Willing to take massive technical risks. Impatient with inefficiency and conventional wisdom. Asks: "Will this accelerate human progress?" and "Can we do 10x better, not 10%?"
+### 尼尔·马斯克（Elon）：富有远见且注重影响力
+从文明层面的问题、基本原则以及实现 10 倍改进的角度出发进行思考。愿意承担巨大的技术风险。对低效率和传统观念感到不耐烦。会问：“这会加速人类的进步吗？”以及“我们能做到比现在好 10 倍吗？”
 
-**When Elon is right**: You need to challenge incremental thinking, identify the fundamental bottleneck, or assess whether you're solving a real problem at scale.
+**当尼尔·马斯克正确时**：你需要挑战渐进式的思维方式，找出根本的瓶颈，或者评估你是否在解决一个真正具有规模化影响的问题。
 
-**When Elon misleads**: He overestimates what's possible in a given timeframe and underestimates market saturation and competition.
+**当尼尔·马斯克误导他人时**：他会高估在给定时间框架内可以实现的目标，同时低估市场的饱和度和竞争程度。
 
-### Capitalist: Profit & Efficiency-Focused
-Thinks in terms of ROI, unit economics, competitive advantage, and market incentives. Ruthlessly efficient cost-benefit analysis. Sees everything through the lens of returns and opportunity cost. Asks: "What's the ROI?" and "Can I extract value faster than competitors?"
+### 资本主义者（Capitalist）：注重利润和效率
+从投资回报率（ROI）、单位经济效益、竞争优势和市场激励的角度出发进行思考。进行无情的成本效益分析。一切都以回报和机会成本为视角来看待问题。会问：“投资回报率是多少？”以及“我能否比竞争对手更快地获取价值？”
 
-**When Capitalist is right**: You need hard numbers, competitive reality checks, and to understand whether something is actually a business.
+**当资本主义者正确时**：你需要具体的数据、现实的竞争分析，以及判断某件事是否具有商业价值。
 
-**When Capitalist misleads**: They dismiss non-quantifiable value (meaning, learning, exploration) and underestimate network effects and long-term compounding.
+**当资本主义者误导他人时**：他们会忽视那些无法量化的价值（如学习、探索），并低估网络效应和长期的复利效应。
 
-### Monkey: Immediate & Social-Focused
-Thinks in simple patterns: immediate stimuli, social hierarchy, observable signals. Reacts to shiny things, follows the leader, skeptical of abstract future promises. Asks: "Does this help me now?" and "What are the smart monkeys doing?"
+### 猴子（Monkey）：注重即时性和社会性
+以简单的模式思考：即时的刺激、社会层级、可观察到的信号。会对闪亮的事物产生反应，跟随领导者，对抽象的未来承诺持怀疑态度。会问：“这现在能对我有帮助吗？”以及“其他‘聪明的人’在做什么？”
 
-**When Monkey is right**: You need gut-level reality checks, honest signals of traction, and to understand whether you're actually excited about something.
+**当猴子正确时**：你需要基于直觉的现实检验，以及判断你是否真的对某件事感到兴奋。
 
-**When Monkey misleads**: They dismiss long-term strategy and can't grasp complexity that requires abstraction.
+**当猴子误导他人时**：他们会忽视长期战略，无法理解需要抽象思维的复杂性。
 
-## Running a Debate
+## 运行辩论
 
-### 1. Define Your Decision Clearly
+### 1. 明确你的决策
+用一句话概括你正在做出的决策。
+✅ “我应该继续开发 Brain Dump 这个项目吗？还是应该转向其他方向？”
+✅ “我应该雇佣自由职业者，还是自己内部开发？”
+❌ “我应该做什么？”（太模糊）
 
-One sentence. Something you're actually deciding.
-
-✅ "Should I continue working on Brain Dump or pivot?"  
-✅ "Should I hire a freelancer or build in-house?"  
-❌ "What should I do?" (too vague)
-
-### 2. Spawn Each Persona
-
-Use `scripts/run-debate.sh` for convenience, or spawn manually:
-
+### 2. 创建每个角色
+为了方便起见，可以使用 `scripts/run-debate.sh` 脚本，或者手动创建：
 ```bash
 clawdbot sessions_spawn --task "You are Elon Musk with this personality framework: [paste from references/elon.md]. Decision: [your question]. Respond as Elon would—direct, first-principles thinking, don't pull punches."
 ```
 
-Each spawns in its own isolated session. Wait for all three to complete.
+每个角色将在独立的会话中参与辩论。等待所有三个角色完成辩论。
 
-### 3. Collect Responses
+### 3. 收集回应
+从每个会话的记录中获取回应（或直接从 Clawdbot 的输出中复制）。
 
-Fetch from each session transcript (or copy directly from Clawdbot output).
+### 4. 保存到档案中
+使用 `assets/debate-template.md` 模板，包括以下内容：
+- 元数据（日期、主题、参与角色、背景信息）
+- 每个角色的完整回应（实际引用）
+- 他们的观点总结表
+- 他们之间的主要分歧
+- 你的最终决策
 
-### 4. Save to Archive
+### 5. 更新索引
+在辩论索引中添加一条记录，包含关键元数据。这样你以后可以搜索之前的决策。
 
-Use the `assets/debate-template.md` template. Include:
-- Metadata (date, topic, personas, context)
-- Full response from each persona (actual quotes)
-- Summary table of verdicts
-- Key tensions between them
-- Your decision (when made)
+## 分歧的力量
 
-### 5. Update INDEX
+真正的价值在于**分歧**本身。当尼尔·马斯克说“要快速行动”而资本主义者说“数据不支持这个决定”时，这就是产生洞察力的地方。这种分歧揭示了你的真正价值观以及你所忽略的东西。
 
-Add one entry to your debates index with key metadata. This lets you search past decisions later.
+**使用方法：**
+1. 沉浸在分歧中（不要急于接受某个角色的观点）。
+2. 注意自己倾向于忽略哪种观点。
+3. 问自己：“那个角色看到了什么而我没有看到？”
+4. 根据三个角色的观点来做出决策。
+5. 写下你选择某个路径的原因。
 
-## The Power of Disagreement
-
-The magic happens in the **tension**. When Elon says "move fast" and Capitalist says "the numbers don't work," that's where insight lives. The tension reveals what you actually value and what you're missing.
-
-**Usage pattern:**
-1. Sit with the disagreement (don't rush to one persona's view)
-2. Notice which view you're tempted to dismiss
-3. Ask: "What is that persona seeing that I'm not?"
-4. Make your decision informed by all three perspectives
-5. Write down why you're choosing one path over another
-
-## Archive Structure
-
-Your debates live in a searchable archive:
-
+## 档案结构
+你的辩论记录保存在一个可搜索的档案中：
 ```
 debates/
 ├── INDEX.md                             (master index, update after each debate)
@@ -110,70 +101,57 @@ debates/
     └── run-debate.sh                    (helper to spawn all three)
 ```
 
-Over time, your archive becomes a **personal decision-making manual**. You can search "Should I build vertical SaaS?" and see what you thought about similar decisions before.
+随着时间的推移，这个档案会变成你的**个人决策手册**。你可以搜索“我应该开发垂直领域的 SaaS 产品吗？”来查看你之前对类似决策的思考。
 
-## Reference Materials
+## 参考资料
+- **`references/elon.md`** – 尼尔·马斯克的特点、决策框架、说话风格、示例回应
+- **`references/capitalist.md`** – 资本主义者的特点、决策框架、示例
+- **`references/monkey.md`** – 猴子的特点、决策框架、示例
+- **`references/how-to-debate.md`** – 关于如何进行有效辩论的详细指导
 
-- **`references/elon.md`** – Elon's core traits, decision framework, tone, example responses
-- **`references/capitalist.md`** – Capitalist's traits, framework, examples
-- **`references/monkey.md`** – Monkey's traits, framework, examples
-- **`references/how-to-debate.md`** – Detailed guidance on running effective debates
+## 脚本
+- **`scripts/run-debate.sh`** – 基于你的主题生成三个角色参与辩论的辅助脚本
 
-## Scripts
+## 资源文件
+- **`assets/debate-template.md`** – 新辩论 markdown 文件的模板
+- **`assets/index-template.md`** – INDEX.md 的模板条目
 
-- **`scripts/run-debate.sh`** – Helper script that generates spawn commands for all three personas based on your topic
+## 高级技巧：模式分析
+随着辩论记录的积累：
+1. **识别哪种角色通常更适合你的情况**——你可能会发现资本主义者能发现财务上的盲点，而尼尔·马斯克会促使你更有雄心。
+2. **跟踪决策结果**——六个月后回顾一下。这些角色的预测是否与现实相符？
+3. **完善角色定义**——如果发现不足，更新参考文件。
+4. **建立个人决策指南**——“对于市场决策，我应该先听取资本主义者的意见；对于评估雄心时，参考尼尔·马斯克的观点；对于判断现实情况时，参考猴子的观点。”
 
-## Assets
+## 提示
+- **保持决策的针对性**——当你在 2-3 个明确的选项之间做选择时，辩论效果最佳。
+- **使用实际背景信息**——引用具体的网址、指标、真实用户数据（参见 Brain Dump 的示例）。
+- **不要将任何一个人的观点视为绝对真理**——真正的价值在于分歧本身，而不仅仅是跟随某一个声音。
+- **随着情况的变化更新状态**——根据思考的变化，将辩论标记为“进行中”、“已决定”、“监控中”或“暂缓”。
+- **策略性地分享辩论记录**——你的辩论档案是私有的；除非你想与合作伙伴分享决策过程，否则请保持其隐私。
 
-- **`assets/debate-template.md`** – Template for new debate markdown files
-- **`assets/index-template.md`** – Template entry for INDEX.md
+## 示例辩论
+**主题：“我应该继续开发 Brain Dump（一款基于语音的待办事项管理工具）吗？”**
 
-## Advanced: Pattern Analysis
+**尼尔·马斯克的观点：“如果 3-6 个月内达到每月活跃用户 10% 并且找到一个具有明显竞争优势的垂直市场，那么这个项目还有潜力。否则，应该转向其他方向。”**
+**资本主义者的观点：“这个项目没有投资回报率。你在与微软（免费产品）和 Todoist（500 万用户，年收入 1 亿美元）竞争。你的时间可以用于更有价值的事情。”**
+**猴子的观点：“这个应用看起来不错，但我觉得没有其他人在使用它。看看你自己的热情程度。你是兴奋还是觉得无聊？”**
 
-As debates accumulate:
+**结果：**三个角色都认为这种通用的“语音待办工具”已经商品化了。关键在于你是否能在某个特定领域占据主导地位。
 
-1. **Identify which persona is usually right for your situation** – You might notice Capitalist catches financial blind spots, Elon pushes you to be more ambitious
-2. **Track decision outcomes** – Come back 6 months later. Did the personas' predictions match reality?
-3. **Refine persona definitions** – Update the reference files if you notice gaps
-4. **Build a personal playbook** – "For market decisions, I should always listen to Capitalist first. For ambition checks, Elon. For reality, Monkey."
+## 扩展系统
+### 创建新的角色
+复制一个参考文件（例如 `references/elon.md`），然后创建你自己的角色。例如：
+- **怀疑论者（Skeptic）**：对一切持怀疑态度，认为失败是常态。
+- **艺术家（Artist）**：更看重美感和创造力而非效率。
+- **家长（Parent）**：考虑项目对家庭的影响和长期后果。
+- **律师（Lawyer）**：处处看到风险和责任。
+- **科学家（Scientist）**：基于证据，严谨对待事物，对炒作持怀疑态度。
 
-## Tips
+根据需要更新你的脚本，以支持新的角色。
 
-- **Keep decisions focused** – Debates work best when you're deciding between 2-3 clear options
-- **Use actual context** – Reference URLs, specific metrics, real user data (see Brain Dump example)
-- **Don't treat any single persona as gospel** – The magic is in the tension, not in following one voice
-- **Update status as situations evolve** – Mark debates as "Active," "Decided," "Monitoring," or "Shelved" as your thinking changes
-- **Share debates strategically** – Your debate archive is personal; keep it private unless you want to share decision-making with collaborators
+### 与决策流程整合
+在重大决策之前进行辩论，并将结果保存下来。在面临类似选择时可以参考这些记录。
 
-## Example Debate
-
-**Topic:** "Should I continue working on Brain Dump (AI voice-powered todo organizer)?"
-
-**Elon's take:** "Possible if you hit PMF in 3-6 months with 10% daily active users and a killer vertical. Otherwise, pivot to something with a real moat."
-
-**Capitalist's take:** "Kill it. Negative ROI. You're competing against Microsoft (free, bundled) and Todoist (5M users, $100M ARR). Your time is worth more elsewhere."
-
-**Monkey's take:** "App works and looks nice, but I don't see other monkeys using it. Check your own energy level. Are you excited or bored?"
-
-**Result:** All three agree the generic "voice-to-todo" is commoditized. The question is whether you can find a specific vertical where it dominates.
-
-## Extending the System
-
-### Create New Personas
-
-Copy a reference file (e.g., `references/elon.md`) and create your own persona. Examples:
-- **Skeptic** – Questions everything, assumes failure
-- **Artist** – Values beauty and creativity over efficiency
-- **Parent** – Thinks about family impact and long-term consequences
-- **Lawyer** – Sees risks and liabilities everywhere
-- **Scientist** – Evidence-based, rigorous, skeptical of hype
-
-Update your spawn scripts to include new personas as needed.
-
-### Integrate with Decision-Making Workflow
-
-Run a debate before major decisions. Archive the results. Reference them when facing similar choices.
-
-### Share with Teams
-
-Your debate archive can be shared with collaborators or decision-making partners. They can see your thinking and challenge your assumptions in context.
+### 与团队分享
+你可以将辩论档案分享给合作伙伴或决策伙伴。他们可以了解你的思考过程，并在具体情境下对你的假设提出质疑。

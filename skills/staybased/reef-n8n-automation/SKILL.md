@@ -1,43 +1,42 @@
-# n8n Automation — Build & Deliver Workflows Fast
+# n8n自动化——快速构建与交付工作流
 
-Build, customize, and deliver n8n workflows using our 2,061-template library.
-Reference: `~/projects/n8n-workflows/` — browse by integration folder.
-Our n8n instance: `localhost:5678` (requires `fnm use 22` before starting).
-All outputs go to `workspace/artifacts/`.
+使用我们包含2,061个模板的库来构建、定制和交付n8n工作流。
+参考路径：`~/projects/n8n-workflows/`——可按集成文件夹进行浏览。
+我们的n8n实例地址：`localhost:5678`（启动前需要执行`fnm use 22`命令）。
+所有输出结果都会保存到`workspace/artifacts/`目录中。
 
-## Use when
-- Building an n8n workflow for a client (Upwork, Alfred, direct)
-- Customizing a template from our library for a specific use case
-- Debugging or optimizing an existing n8n workflow
-- Designing a workflow architecture before building
-- Estimating delivery time for a workflow project
-- Importing/exporting workflow JSON
+## 适用场景：
+- 为Upwork、Alfred等平台或直接为客户构建n8n工作流
+- 根据具体需求从我们的模板库中定制模板
+- 调试或优化现有的n8n工作流
+- 在构建工作流之前设计其架构
+- 估算工作流的交付时间
+- 导入/导出工作流的JSON格式数据
 
-## Don't use when
-- Finding Upwork jobs (use upwork-hunting skill)
-- Writing the client proposal (use proposal-writing skill)
-- General coding tasks not involving n8n
-- Zapier/Make.com builds (different platforms, different nodes)
+## 不适用场景：
+- 搜索Upwork上的工作（请使用`upwork-hunting`技能）
+- 编写客户提案（请使用`proposal-writing`技能）
+- 与n8n无关的常规编码任务
+- 使用Zapier/Make.com等工具进行集成（这些工具使用不同的平台和工作流节点）
 
-## Negative examples
-- "Find me automation jobs on Upwork" → No. Use upwork-hunting.
-- "Build me a Python script" → No. This is n8n-specific.
-- "Set up my n8n server" → Borderline. Infrastructure setup is ops, not workflow building. But credential configuration fits here.
+## 错误示例：
+- “在Upwork上寻找自动化相关的工作” → 不适用，应使用`upwork-hunting`技能。
+- “为我编写一个Python脚本” → 不适用，这属于n8n的专业领域。
+- “设置我的n8n服务器” → 边缘适用，因为服务器配置属于运维范畴，而非工作流构建，但配置凭证的操作属于n8n的职责范围。
 
-## Edge cases
-- Workflow uses custom JavaScript (Code node) → YES. n8n supports inline JS.
-- Client wants Zapier→n8n migration → YES. Map Zapier triggers/actions to n8n equivalents.
-- Workflow needs external API with no n8n node → YES. Use HTTP Request node.
-- Multi-workflow orchestration → YES. Use Execute Workflow node.
+## 特殊情况：
+- 工作流使用了自定义JavaScript（Code节点） → 可以，n8n支持内嵌JavaScript。
+- 客户希望将现有的Zapier流程迁移到n8n → 可以，只需将Zapier的触发器/动作映射到n8n对应的节点。
+- 工作流需要外部API且n8n中没有相应的节点 → 可以，可以使用`HTTP Request`节点。
 
 ---
 
-## Template Library Quick Reference
+## 模板库快速参考
 
-**Location:** `~/projects/n8n-workflows/workflows/`
-**Structure:** `workflows/[IntegrationName]/[id]_[integration]_[action]_[trigger].json`
+**位置：`~/projects/n8n-workflows/workflows/`
+**结构：`workflows/[集成名称]/[id]_[集成类型]_[动作]_[触发方式].json`
 
-### Finding the Right Template
+### 如何找到合适的模板
 ```bash
 # List all templates for an integration
 ls ~/projects/n8n-workflows/workflows/Twilio/
@@ -49,58 +48,58 @@ find ~/projects/n8n-workflows/workflows/ -name "*.json" | grep -i "shopify"
 ls ~/projects/n8n-workflows/workflows/ | while read d; do echo "$(ls ~/projects/n8n-workflows/workflows/$d/ | wc -l) $d"; done | sort -rn | head -20
 ```
 
-### Top Integration Folders (by Upwork demand)
-| Integration | Path | Common Jobs |
+### 最受欢迎的集成类型（根据Upwork需求排序）
+| 集成类型 | 路径 | 常见用途 |
 |-------------|------|-------------|
-| Gmail | workflows/Gmail/ | Auto-responders, lead capture, notifications |
-| Google Sheets | workflows/Googlesheets/ | Data logging, reporting, sync |
-| Slack | workflows/Slack/ | Notifications, bots, CRM sync |
-| Twilio | workflows/Twilio/ | SMS automation, call routing, alerts |
-| Telegram | workflows/Telegram/ | Chatbots, notifications, AI assistants |
-| WhatsApp | workflows/Whatsapp/ | Business messaging, chatbots |
-| Shopify | workflows/Shopify/ | Order notifications, inventory sync |
-| HubSpot | workflows/Hubspot/ | CRM automation, lead routing |
-| Calendly | workflows/Calendly/ | Booking confirmations, follow-ups |
-| OpenAI | workflows/Openai/ | AI chatbots, content generation |
-| Webhook | workflows/Webhook/ | Custom triggers, API integrations |
-| Airtable | workflows/Airtable/ | Database sync, form processing |
+| Gmail | workflows/Gmail/ | 自动回复、潜在客户信息收集、通知 |
+| Google Sheets | workflows/Googlesheets/ | 数据记录、报告生成、数据同步 |
+| Slack | workflows/Slack/ | 通知、机器人、CRM系统同步 |
+| Twilio | workflows/Twilio/ | SMS自动化、电话路由、警报通知 |
+| Telegram | workflows/Telegram/ | 聊天机器人、通知、AI助手 |
+| WhatsApp | workflows/Whatsapp/ | 商务消息传递、聊天机器人 |
+| Shopify | workflows/Shopify/ | 订单通知、库存同步 |
+| HubSpot | workflows/Hubspot/ | CRM自动化、潜在客户路由 |
+| Calendly | workflows/Calendly/ | 预约确认、跟进提醒 |
+| OpenAI | workflows/Openai/ | AI聊天机器人、内容生成 |
+| Webhook | workflows/Webhook/ | 自定义触发器、API集成 |
+| Airtable | workflows/Airtable/ | 数据库同步、表单处理 |
 
 ---
 
-## Workflow Building Process
+## 工作流构建流程
 
-### Step 1: Assess Requirements
-From client discovery, answer:
-- What **triggers** the workflow? (webhook, schedule, form, app event)
-- What **actions** need to happen? (send email, update CRM, create record)
-- What **data** needs to flow? (fields, formats, transformations)
-- What **error handling** is needed? (retries, fallback, alerts)
-- What **credentials** are required? (API keys, OAuth, etc.)
+### 第一步：评估需求
+根据与客户的沟通，明确以下内容：
+- 什么事件会触发工作流？（Webhook、定时任务、表单提交、应用程序事件）
+- 需要执行哪些操作？（发送邮件、更新CRM系统、创建记录）
+- 需要传输哪些数据？（数据字段、数据格式、数据转换方式）
+- 需要如何处理错误？（重试机制、错误处理方式、警报通知）
+- 需要哪些凭证？（API密钥、OAuth认证等）
 
-### Step 2: Find Matching Templates
+### 第二步：查找合适的模板
 ```bash
 # Search for relevant templates
 find ~/projects/n8n-workflows/workflows/ -name "*.json" | xargs grep -l "keyword" 2>/dev/null
 ```
 
-Or browse by integration folder. Most jobs need 2-3 templates stitched together.
+或者直接通过集成文件夹来查找模板。大多数工作流需要组合2-3个模板来完成。
 
-### Step 3: Import & Customize
-1. Copy template JSON
-2. In n8n: Menu → Import from File (or paste JSON)
-3. Update credentials (Client's API keys)
-4. Update field mappings (their data structure)
-5. Adjust trigger settings (their webhook URL, schedule, etc.)
-6. Add error handling nodes (Error Trigger → notification)
+### 第三步：导入并定制模板
+1. 复制模板JSON文件。
+2. 在n8n界面中选择“从文件导入”功能（或直接粘贴JSON代码）。
+3. 更新凭证信息（使用客户的API密钥）。
+4. 调整字段映射关系（确保数据结构正确）。
+5. 设置触发器的参数（如Webhook地址、执行时间等）。
+6. 添加错误处理节点（例如使用“Error Trigger”节点来处理错误情况）。
 
-### Step 4: Test
-- Use n8n's **Manual Execution** to test each node step-by-step
-- Verify data flows correctly between nodes
-- Test error paths (what happens when an API is down?)
-- Check rate limits (especially for bulk operations)
+### 第四步：测试工作流
+- 通过n8n的“手动执行”功能逐步测试每个节点的功能。
+- 确认数据在各节点之间的传输是否正确。
+- 测试错误处理机制（例如API请求失败时的应对方式）。
+- 检查操作频率限制（尤其是批量操作时）。
 
-### Step 5: Document & Deliver
-Every delivered workflow includes:
+### 第五步：文档编写与交付
+每个交付的工作流都会附带以下文档：
 ```
 ## Workflow: [Name]
 **Trigger:** [What starts it]
@@ -112,111 +111,107 @@ Every delivered workflow includes:
 
 ---
 
-## Common Workflow Patterns
+## 常见的工作流模式
 
-### Pattern 1: Trigger → Transform → Action
-The simplest and most common. Event happens → process data → do something.
+### 模式1：触发 → 数据处理 → 执行操作
+最简单且最常见的模式：事件发生 → 处理数据 → 执行相应操作。
 ```
 [Webhook/Form/Schedule] → [Set/Code node: transform data] → [Send Email/Update CRM/Create Record]
 ```
 
-### Pattern 2: Trigger → Branch → Multiple Actions
-Different outcomes based on conditions.
+### 模式2：根据条件分支执行多种操作
+根据不同的条件执行不同的操作。
 ```
 [Trigger] → [IF node: check condition] → True: [Action A] / False: [Action B]
 ```
 
-### Pattern 3: Scheduled Batch Processing
-Periodic bulk operations.
+### 模式3：定期批量处理
+定期执行批量操作。
 ```
 [Cron/Schedule] → [Get data from Sheet/DB] → [Loop: process each item] → [Action per item]
 ```
 
-### Pattern 4: Webhook API Endpoint
-n8n acts as an API that other services call.
+### 模式4：作为API接口使用
+n8n可以作为其他服务调用的API接口。
 ```
 [Webhook: receive request] → [Process] → [Respond to Webhook: return data]
 ```
 
-### Pattern 5: Multi-Step Pipeline
-Complex workflows with multiple stages.
+### 模式5：多步骤工作流
+包含多个处理阶段的工作流。
 ```
 [Trigger] → [Enrich data] → [Route/Split] → [Multiple actions] → [Aggregate] → [Final action]
 ```
 
-### Pattern 6: Error-Resilient Workflow
-Production-grade with error handling.
+### 模式6：具有错误处理能力的工作流
+具备生产级错误处理机制的工作流。
 ```
 [Trigger] → [Try: main flow] → [Catch: Error Trigger] → [Alert via Slack/Email]
 ```
 
 ---
 
-## Node Cheat Sheet
+## 节点功能速查表
 
-| Need | Node | Notes |
+| 功能需求 | 对应节点 | 说明 |
 |------|------|-------|
-| Custom logic | Code | JavaScript, access to all data |
-| API call (no native node) | HTTP Request | Works with any REST API |
-| Conditional routing | IF / Switch | Branch based on data |
-| Loop over items | Split In Batches | Process items one at a time |
-| Wait/delay | Wait | Pause between steps |
-| Merge data | Merge | Combine data from branches |
-| Transform data | Set | Rename/restructure fields |
-| Schedule | Schedule Trigger | Cron expressions |
-| Webhook | Webhook | Receive external HTTP calls |
-| Respond | Respond to Webhook | Return data to caller |
-| Error handling | Error Trigger | Catch workflow errors |
-| Sub-workflow | Execute Workflow | Call another workflow |
+| 自定义逻辑 | Code | 支持JavaScript编程，可访问所有数据 |
+| API调用（无内置节点） | HTTP Request | 可与任何REST API配合使用 |
+| 条件分支 | IF / Switch | 根据数据内容选择执行路径 |
+| 分批处理数据 | Split In Batches | 逐个处理数据项 |
+| 等待/延迟 | Wait | 在步骤之间设置延迟 |
+| 数据合并 | Merge | 合并来自不同来源的数据 |
+| 数据转换 | Set | 重新命名或重组数据字段 |
+| 定时执行 | Schedule Trigger | 使用Cron表达式设置定时任务 |
+| Webhook | Webhook | 接收外部HTTP请求 |
+| 回复请求 | Respond to Webhook | 向调用方返回处理结果 |
+| 错误处理 | Error Trigger | 捕捉并处理工作流中的错误 |
+| 调用其他工作流 | Execute Workflow | 执行其他工作流 |
 
 ---
 
-## Credential Setup Checklist
-
-Before delivering to a client, ensure:
-- [ ] All credentials use THEIR API keys (never ours)
-- [ ] OAuth tokens are connected to THEIR accounts
-- [ ] Webhook URLs point to THEIR n8n instance (or ours if managed)
-- [ ] Sensitive data isn't hardcoded in nodes (use credentials store)
-- [ ] Test credentials work in production (not just sandbox)
-
----
-
-## Delivery Checklist
-
-- [ ] Workflow tested end-to-end with real data
-- [ ] Error handling nodes in place
-- [ ] Documentation written (trigger, steps, credentials, maintenance)
-- [ ] Workflow JSON exported as backup
-- [ ] Client can import and run independently
-- [ ] Edge cases tested (empty data, API errors, rate limits)
-- [ ] Screenshot of working workflow included in delivery
+## 凭证设置检查清单
+在交付工作流之前，请确保：
+- 所有凭证都使用客户的API密钥（切勿使用自己的密钥）。
+- OAuth令牌已正确绑定到客户的账户。
+- Webhook地址指向客户的n8n实例（如果由我们管理，则使用我们的实例地址）。
+- 敏感数据不会硬编码在节点中（使用凭证存储机制）。
+- 确保凭证在真实环境中也能正常使用（而不仅仅是沙箱环境）。
 
 ---
 
-## Estimation Guide
+## 交付前检查清单
+- 使用真实数据对工作流进行端到端的测试。
+- 确保错误处理机制已配置完毕。
+- 已编写完整的文档（包括触发条件、操作步骤、凭证信息及维护说明）。
+- 工作流的JSON文件已备份。
+- 客户能够独立导入并运行该工作流。
+- 已测试所有可能的边界情况（包括空数据、API错误、频率限制等问题）。
+- 交付时附上工作流运行的截图。
 
-| Complexity | Description | Time | Price Range |
+---
+
+## 价格估算指南
+
+| 复杂度 | 描述 | 所需时间 | 价格范围 |
 |------------|-------------|------|-------------|
-| Simple | 2-3 nodes, single trigger→action | 1-2 hrs | $100-300 |
-| Standard | 4-8 nodes, branching, transforms | 2-4 hrs | $300-600 |
-| Complex | 10+ nodes, multiple APIs, error handling | 4-8 hrs | $600-1,200 |
-| Enterprise | Multi-workflow, database, custom code | 8-20 hrs | $1,200-3,000 |
+| 简单 | 2-3个节点，单一触发器/动作 | 1-2小时 | 100-300美元 |
+| 标准 | 4-8个节点，包含分支逻辑和数据转换 | 2-4小时 | 300-600美元 |
+| 复杂 | 10个以上节点，涉及多个API和错误处理 | 4-8小时 | 600-1,200美元 |
+| 企业级 | 多个工作流，包含数据库交互和自定义代码 | 8-20小时 | 1,200-3,000美元 |
 
-**Our speed advantage:** Templates cut these times by 40-60%.
+**我们的优势：** 使用模板后，构建时间可缩短40-60%。
 
 ---
 
-## n8n Instance Management
+## n8n实例管理
 
-**Start n8n:**
+**启动n8n服务：**
 ```bash
 eval "$(fnm env)" && fnm use 22 && nohup n8n start > /tmp/n8n.log 2>&1 &
 ```
 
-**Access:** http://localhost:5678
-
-**Import workflow via API:**
+**通过API导入工作流：**
 ```bash
 curl -X POST http://localhost:5678/api/v1/workflows \
   -H "Content-Type: application/json" \
@@ -224,6 +219,6 @@ curl -X POST http://localhost:5678/api/v1/workflows \
   -d @workflow.json
 ```
 
-**Our credentials configured:**
-- Twilio API Auth (ID: 2hP5kiyhResadXrF)
-- More to be added per client
+**我们的凭证配置示例：**
+- Twilio API认证信息：`ID: 2hP5kiyhResadXrF`
+- 其他客户的凭证信息请另行添加。

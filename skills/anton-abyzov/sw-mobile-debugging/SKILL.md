@@ -1,50 +1,49 @@
 ---
 name: mobile-debugging
-description: React Native debugging with Flipper, React DevTools, and crash analysis. Use for mobile app debugging or network request issues.
+description: 使用 Flipper、React DevTools 进行 React Native 应用调试，并进行崩溃分析。这些工具适用于移动应用调试以及网络请求相关问题的排查。
 ---
 
-# Mobile Debugging Expert
+# 移动应用调试专家
 
-Specialized in debugging React Native and Expo applications across iOS and Android platforms. Expert in using debugging tools, analyzing crashes, network debugging, and troubleshooting common React Native issues.
+专注于在 iOS 和 Android 平台上调试 React Native 以及 Expo 应用程序。擅长使用调试工具、分析应用程序崩溃、进行网络调试，并解决常见的 React Native 相关问题。
 
-## What I Know
+## 我的技能
 
-### Debugging Tools
+### 调试工具
 
 **React DevTools**
-- Component tree inspection
-- Props and state inspection
-- Profiler for performance analysis
-- Component re-render tracking
-- Installation: `npm install -g react-devtools`
-- Usage: `react-devtools` before starting app
+- 组件树查看
+- 属性和状态检查
+- 性能分析工具
+- 组件重新渲染跟踪
+- 安装方式：`npm install -g react-devtools`
+- 使用方法：在启动应用程序前运行 `react-devtools`
 
-**Chrome DevTools (Remote Debugging)**
-- JavaScript debugger access
-- Breakpoints and step-through debugging
-- Console for logging and evaluation
-- Network tab for API inspection
-- Source maps for original code navigation
+**Chrome DevTools（远程调试）**
+- JavaScript 调试器
+- 断点设置和逐步执行调试
+- 控制台用于日志记录和代码评估
+- 网络标签页用于 API 监控
+- 源代码映射功能
 
-**Flipper (Meta's Debugging Platform)**
-- Layout inspector for UI debugging
-- Network inspector with request/response details
-- Logs viewer with filtering
-- React DevTools plugin integration
-- Database inspector
-- Crash reporter integration
-- Performance metrics monitoring
+**Flipper（Meta 的调试平台）**
+- UI 调试工具
+- 带有请求/响应详细信息的网络调试工具
+- 可过滤的日志查看器
+- 集成了 React DevTools 插件
+- 数据库调试工具
+- 支持崩溃报告功能
+- 性能指标监控
 
-**React Native Debugger (Standalone)**
-- All-in-one debugging solution
-- Redux DevTools integration
-- React DevTools integration
-- Network inspection
-- AsyncStorage inspection
+**React Native Debugger（独立工具）**
+- 一站式调试解决方案
+- 集成了 Redux DevTools 和 React DevTools
+- 支持网络调试
+- 可查看 AsyncStorage 数据
 
-### Debugging Techniques
+### 调试技巧
 
-**Console Logging Strategies**
+**控制台日志记录策略**
 ```javascript
 // Basic logging
 console.log('Debug:', value);
@@ -71,7 +70,7 @@ console.timeEnd('DataLoad');
 console.table(users);
 ```
 
-**Breakpoint Debugging**
+**断点调试**
 ```javascript
 // Debugger statement
 function processData(data) {
@@ -84,7 +83,7 @@ function processData(data) {
 // Condition: userId === '12345'
 ```
 
-**Error Boundaries**
+**错误边界检测**
 ```javascript
 import React from 'react';
 import { View, Text } from 'react-native';
@@ -122,9 +121,9 @@ class ErrorBoundary extends React.Component {
 </ErrorBoundary>
 ```
 
-### Network Debugging
+### 网络调试
 
-**Intercepting Network Requests**
+**拦截网络请求**
 ```javascript
 // Using Flipper (recommended)
 // Automatically intercepts fetch() and XMLHttpRequest
@@ -142,7 +141,7 @@ global.fetch = async (...args) => {
 // Automatically works with fetch() and axios
 ```
 
-**API Response Debugging**
+**API 响应调试**
 ```javascript
 // Wrapper for API calls with detailed logging
 async function apiCall(endpoint, options = {}) {
@@ -178,25 +177,25 @@ async function apiCall(endpoint, options = {}) {
 }
 ```
 
-### Platform-Specific Debugging
+### 平台特定调试
 
-**iOS Debugging**
-- Safari Web Inspector for JSContext debugging
-- Xcode Console for native logs
-- Instruments for performance profiling
-- Crash logs: `~/Library/Logs/DiagnosticReports/`
-- System logs: `log stream --predicate 'processImagePath contains "MyApp"'`
+**iOS 调试**
+- 使用 Safari Web Inspector 进行 JavaScript 调试
+- 通过 Xcode 控制台查看原生日志
+- 使用 Instruments 进行性能分析
+- 崩溃日志位置：`~/Library/Logs/DiagnosticReports/`
+- 系统日志位置：`log stream --predicate 'processImagePath contains "MyApp"'`
 
-**Android Debugging**
-- Chrome DevTools for JavaScript debugging
-- Android Studio Logcat for system logs
-- ADB logcat filtering: `adb logcat *:E` (errors only)
-- Native crash logs: `adb logcat AndroidRuntime:E`
-- Monitoring device: `adb shell top`
+**Android 调试**
+- 使用 Chrome DevTools 进行 JavaScript 调试
+- 通过 Android Studio 的 Logcat 查看系统日志
+- 使用 ADB 过滤 Logcat 日志（仅显示错误信息）：`adb logcat *:E`
+- 查看原生崩溃日志：`adb logcat AndroidRuntime:E`
+- 监控设备状态：`adb shell top`
 
-### Common Debugging Scenarios
+### 常见调试场景
 
-**App Crashes on Startup**
+- 应用程序启动时崩溃
 ```bash
 # iOS: Check Xcode console
 # Open Xcode → Window → Devices and Simulators → Select device → View logs
@@ -211,7 +210,7 @@ adb logcat *:E
 # - Initialization errors
 ```
 
-**White Screen / Blank Screen**
+- 应用程序显示白屏或空白屏幕
 ```javascript
 // Add error boundary to root
 import { ErrorBoundary } from 'react-error-boundary';
@@ -229,7 +228,7 @@ function ErrorFallback({ error }) {
 </ErrorBoundary>
 ```
 
-**Red Screen Errors**
+- 应用程序出现红色错误提示
 ```javascript
 // Globally catch errors in development
 if (__DEV__) {
@@ -240,7 +239,7 @@ if (__DEV__) {
 }
 ```
 
-**Network Request Failures**
+- 网络请求失败
 ```bash
 # Check if Metro bundler is accessible
 curl http://localhost:8081/status
@@ -254,7 +253,7 @@ curl http://localhost:8081/status
 adb shell ping 8.8.8.8  # Android
 ```
 
-**Performance Issues**
+- 性能问题
 ```javascript
 // Use React DevTools Profiler
 import { Profiler } from 'react';
@@ -280,25 +279,25 @@ function onRenderCallback(
 </Profiler>
 ```
 
-## When to Use This Skill
+## 何时需要我的帮助
 
-Ask me when you need help with:
-- Setting up debugging tools (Flipper, React DevTools)
-- Debugging crashes or error screens
-- Inspecting network requests and responses
-- Finding performance bottlenecks
-- Analyzing component re-renders
-- Debugging native module issues
-- Reading crash logs and stack traces
-- Setting up error boundaries
-- Remote debugging on physical devices
-- Debugging platform-specific issues
-- Troubleshooting "white screen" errors
-- Inspecting AsyncStorage or databases
+当您遇到以下问题时，请联系我：
+- 设置调试工具（如 Flipper、React DevTools）
+- 调试应用程序崩溃或错误界面
+- 检查网络请求和响应
+- 查找性能瓶颈
+- 分析组件重新渲染的情况
+- 调试原生模块问题
+- 阅读崩溃日志和堆栈跟踪信息
+- 设置错误边界
+- 在真实设备上进行远程调试
+- 解决平台特定问题
+- 故障排除（如应用程序显示白屏）
+- 检查 AsyncStorage 或数据库数据
 
-## Essential Debugging Commands
+## 必需的调试命令
 
-### Start Debugging
+### 开始调试
 ```bash
 # Open React DevTools
 react-devtools
@@ -310,7 +309,7 @@ npm start
 # Or: Press "d" in Metro bundler terminal
 ```
 
-### Platform Logs
+### 查看平台日志
 ```bash
 # iOS System Logs (real device)
 idevicesyslog
@@ -331,7 +330,7 @@ adb logcat ReactNative:V ReactNativeJS:V *:S
 adb logcat -c
 ```
 
-### Performance Analysis
+### 性能分析
 ```bash
 # iOS: Use Instruments
 # Xcode → Open Developer Tool → Instruments → Time Profiler
@@ -343,7 +342,7 @@ react-native log-android
 # Shake device → Show Perf Monitor
 ```
 
-### Flipper Setup
+### 设置 Flipper
 ```bash
 # Install Flipper Desktop
 brew install --cask flipper
@@ -359,12 +358,10 @@ brew install --cask flipper
 eas build --profile development --platform all
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与窍门
 
-### 1. Custom Dev Menu
-
-Add custom debugging tools to dev menu:
-
+### 1. 自定义调试菜单
+- 向调试菜单中添加自定义调试工具
 ```javascript
 import { DevSettings } from 'react-native';
 
@@ -385,10 +382,8 @@ if (__DEV__) {
 }
 ```
 
-### 2. Network Request Logger
-
-Comprehensive network debugging:
-
+### 2. 网络请求日志记录器
+- 实现全面的网络调试功能
 ```javascript
 // Create a network logger file
 import axios from 'axios';
@@ -431,8 +426,8 @@ if (__DEV__) {
 }
 ```
 
-### 3. React Query DevTools (for data fetching)
-
+### 3. React Query DevTools（用于数据获取）
+- 使用 React Query DevTools 监控数据请求
 ```javascript
 import { useReactQueryDevTools } from '@tanstack/react-query-devtools';
 
@@ -446,10 +441,8 @@ function App() {
 }
 ```
 
-### 4. Debugging State Updates
-
-Track state changes with custom hook:
-
+### 4. 调试状态更新
+- 通过自定义钩子跟踪状态变化
 ```javascript
 import { useEffect, useRef } from 'react';
 
@@ -482,8 +475,8 @@ function MyComponent(props) {
 }
 ```
 
-### 5. Debugging Offline/Online State
-
+### 5. 调试离线/在线状态
+- 确保应用程序在离线/在线状态下都能正常工作
 ```javascript
 import NetInfo from '@react-native-community/netinfo';
 
@@ -497,10 +490,8 @@ NetInfo.addEventListener(state => {
 });
 ```
 
-### 6. Production Error Tracking
-
-Integrate with error tracking services:
-
+### 6. 生产环境错误追踪
+- 集成错误追踪服务（如 Sentry、Bugsnag）
 ```javascript
 // Using Sentry (example)
 import * as Sentry from '@sentry/react-native';
@@ -522,15 +513,15 @@ try {
 }
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-**During Development**
-- Document debugging approaches in increment `reports/`
-- Track known issues and workarounds in `spec.md`
-- Include debugging steps in `tasks.md` test plans
+**开发阶段**
+- 在 `reports/` 文件中记录调试方法
+- 在 `spec.md` 中记录已知问题及解决方法
+- 在 `tasks.md` 的测试计划中包含调试步骤
 
-**Production Monitoring**
-- Set up error boundaries for all features
-- Integrate crash reporting (Sentry, Bugsnag)
-- Document debugging procedures in runbooks
-- Track common errors in living documentation
+**生产环境监控**
+- 为所有功能设置错误边界
+- 集成崩溃报告系统（如 Sentry、Bugsnag）
+- 在运行手册中记录调试流程
+- 在实时文档中跟踪常见错误

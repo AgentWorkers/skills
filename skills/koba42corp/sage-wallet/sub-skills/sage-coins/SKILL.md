@@ -1,105 +1,60 @@
 ---
 name: sage-coins
-description: Sage coin and address operations. List coins, check spendability, validate addresses, get derivations, check asset ownership.
+description: Sage币及其地址的相关操作：  
+- 列出所有可用的币种；  
+- 检查币种的可用性（是否可以花费）；  
+- 验证地址的有效性；  
+- 获取地址的派生信息；  
+- 核实资产的所有权。
 ---
 
-# Sage Coins & Addresses
+# Sage币种与地址管理
 
-Coin queries and address management.
+## 常用接口
 
-## Endpoints
+### 常用接口说明
 
-### Coin Queries
+| 接口名称 | 请求参数 | 功能描述 |
+|---------|---------|-------------|
+| `get_coins` | 详见下文 | 根据条件查询币种列表 |
+| `get_coins_by_ids` | `{"coin_ids": [...]}` | 根据ID获取特定币种信息 |
+| `get_are_coins_spendable` | `{"coin_ids": [...]}` | 检查币种的可用性（是否可花费） |
+| `get_spendable_coin_count` | `{"asset_id": null}` | 统计可花费的币种数量 |
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_coins` | See below | List coins with filters |
-| `get_coins_by_ids` | `{"coin_ids": [...]}` | Get specific coins |
-| `get_are_coins_spendable` | `{"coin_ids": [...]}` | Check spendability |
-| `get_spendable_coin_count` | `{"asset_id": null}` | Count spendable |
+#### `get_coins` 请求参数
 
-#### get_coins Payload
+**排序方式**：`"coin_id"`、`"amount"`、`"created_height"`、`"spent_height"`、`"clawback_timestamp"`
 
-```json
-{
-  "asset_id": null,
-  "offset": 0,
-  "limit": 50,
-  "sort_mode": "created_height",
-  "filter_mode": "selectable",
-  "ascending": false
-}
-```
+**过滤方式**：`"all"`、`"selectable"`、`"owned"`、`"spent"`、`"clawback"`
 
-Sort modes: `"coin_id"`, `"amount"`, `"created_height"`, `"spent_height"`, `"clawback_timestamp"`
+### 地址操作
 
-Filter modes: `"all"`, `"selectable"`, `"owned"`, `"spent"`, `"clawback"`
+| 接口名称 | 请求参数 | 功能描述 |
+|---------|---------|-------------|
+| `check_address` | `{"address": "xch1..."}` | 验证地址格式及所属钱包 |
+| `getderivations` | `{"hardened": false, "offset": 0, "limit": 50}` | 获取地址的衍生地址信息 |
+| `increase_derivation_index` | `{"index": 100, "hardened": true, "unhardened": true}` | 生成新的衍生地址 |
 
-### Address Operations
+### 资产所有权查询
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `check_address` | `{"address": "xch1..."}` | Validate address |
-| `get_derivations` | `{"hardened": false, "offset": 0, "limit": 50}` | Get derivations |
-| `increase_derivation_index` | `{"index": 100, "hardened": true, "unhardened": true}` | Generate more |
+| 接口名称 | 请求参数 | 功能描述 |
+|---------|---------|-------------|
+| `is_assetOwned` | `{"asset_id": "..."}` | 检查是否拥有该资产 |
 
-### Asset Ownership
+## 常用数据结构
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `is_asset_owned` | `{"asset_id": "..."}` | Check if owned |
+#### 常用数据结构说明
 
-## Coin Record Structure
+- `asset_id`：用于查询XCH币种的相关信息
+- `filter_mode`：`"selectable"`：仅返回可花费的币种
+- 地址验证：检查地址格式及所属钱包
 
-```json
-{
-  "coin_id": "0x...",
-  "parent_coin_info": "0x...",
-  "puzzle_hash": "0x...",
-  "amount": "1000000000000",
-  "asset_id": null,
-  "created_height": 1234567,
-  "spent_height": null,
-  "clawback_timestamp": null
-}
-```
+## 示例
 
-## Derivation Record Structure
+（示例代码内容请根据实际需求填写）
 
-```json
-{
-  "index": 0,
-  "hardened": false,
-  "address": "xch1...",
-  "puzzle_hash": "0x...",
-  "public_key": "0x..."
-}
-```
+## 注意事项
 
-## Examples
-
-```bash
-# List XCH coins
-sage_rpc get_coins '{"asset_id": null, "limit": 20}'
-
-# List CAT coins
-sage_rpc get_coins '{"asset_id": "a628c1c2...", "limit": 20}'
-
-# Check address
-sage_rpc check_address '{"address": "xch1abc..."}'
-
-# Check if coins are spendable
-sage_rpc get_are_coins_spendable '{"coin_ids": ["0xabc...", "0xdef..."]}'
-
-# Get address derivations
-sage_rpc get_derivations '{"hardened": false, "offset": 0, "limit": 10}'
-
-# Generate more addresses
-sage_rpc increase_derivation_index '{"index": 200, "hardened": true, "unhardened": true}'
-```
-
-## Notes
-
-- `asset_id: null` queries XCH coins
-- `filter_mode: "selectable"` returns only spendable coins
-- Address validation checks format and wallet ownership
+- 当 `asset_id` 为 `null` 时，系统会查询XCH币种的相关信息。
+- `filter_mode` 设置为 `"selectable"` 时，仅返回可花费的币种。
+- 地址验证会检查地址的格式及所属钱包。

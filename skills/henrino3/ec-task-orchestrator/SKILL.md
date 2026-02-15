@@ -1,19 +1,19 @@
 ---
 name: task-orchestrator
-description: Autonomous multi-agent task orchestration with dependency analysis, parallel tmux/Codex execution, and self-healing heartbeat monitoring. Use for large projects with multiple issues/tasks that need coordinated parallel execution.
+description: 具有依赖关系分析功能的自主多智能体任务编排系统，支持并行执行 tmux/Codex 工具，并具备自我修复的心跳监测机制。适用于需要协调并行处理多个问题/任务的大型项目。
 metadata: {"clawdbot":{"emoji":"🎭","requires":{"anyBins":["tmux","codex","gh"]}}}
 ---
 
-# Task Orchestrator
+# 任务编排器
 
-Autonomous orchestration of multi-agent builds using tmux + Codex with self-healing monitoring.
+使用 tmux 和 Codex 实现多代理构建的自动化编排，并具备自我修复的监控功能。
 
-**Load the senior-engineering skill alongside this one for engineering principles.**
+**请同时参考“高级工程技能”以了解相关工程原理。**
 
-## Core Concepts
+## 核心概念
 
-### 1. Task Manifest
-A JSON file defining all tasks, their dependencies, files touched, and status.
+### 1. 任务清单（Task Manifest）
+一个 JSON 文件，用于定义所有任务、它们的依赖关系、涉及的文件以及状态。
 
 ```json
 {
@@ -47,24 +47,23 @@ A JSON file defining all tasks, their dependencies, files touched, and status.
 }
 ```
 
-### 2. Dependency Rules
-- **Same file = sequential** — Tasks touching the same file must run in order or merge
-- **Different files = parallel** — Independent tasks can run simultaneously
-- **Explicit depends = wait** — `dependsOn` array enforces ordering
-- **Phase gates** — Next phase waits for current phase completion
+### 2. 依赖规则
+- **相同文件 = 顺序执行** — 涉及相同文件的任务必须按顺序执行或合并
+- **不同文件 = 并行执行** — 独立的任务可以同时执行
+- **显式依赖关系 = 等待** — `dependsOn` 数组用于强制执行顺序
+- **阶段门控（Phase Gates）** — 下一个阶段需要等待当前阶段的完成
 
-### 3. Execution Model
-- Each task gets its own **git worktree** (isolated branch)
-- Each task runs in its own **tmux session**
-- Use **Codex with --yolo** for autonomous execution
-- Model: **GPT-5.2-codex high** (configurable)
+### 3. 执行模型
+- 每个任务都有自己的 **git 工作区（git worktree，即独立的分支）**
+- 每个任务都在自己的 **tmux 会话（tmux session）** 中运行
+- 使用 `Codex` 并配合 `--yolo` 参数实现自动化执行
+- 模型：**GPT-5.2-codex high**（可配置）
 
 ---
 
-## Setup Commands
+## 设置命令
 
-### Initialize Orchestration
-
+### 初始化编排
 ```bash
 # 1. Create working directory
 WORKDIR="${TMPDIR:-/tmp}/orchestrator-$(date +%s)"
@@ -92,8 +91,7 @@ cat > "$WORKDIR/manifest.json" << 'EOF'
 EOF
 ```
 
-### Analyze GitHub Issues for Dependencies
-
+### 分析 GitHub 问题以获取依赖关系
 ```bash
 # Fetch all open issues
 gh issue list --repo OWNER/REPO --state open --json number,title,body,labels > issues.json
@@ -102,16 +100,14 @@ gh issue list --repo OWNER/REPO --state open --json number,title,body,labels > i
 # Tasks touching same files should serialize
 ```
 
-### Create Worktrees
-
+### 创建工作区
 ```bash
 # For each task, create isolated worktree
 cd "$WORKDIR/repo"
 git worktree add -b fix/issue-N "$WORKDIR/task-tN" main
 ```
 
-### Launch Tmux Sessions
-
+### 启动 tmux 会话
 ```bash
 SOCKET="$WORKDIR/orchestrator.sock"
 
@@ -126,10 +122,9 @@ tmux -S "$SOCKET" send-keys -t "task-tN" \
 
 ---
 
-## Monitoring & Self-Healing
+## 监控与自我修复
 
-### Progress Check Script
-
+### 进度检查脚本
 ```bash
 #!/bin/bash
 # check_progress.sh - Run via heartbeat
@@ -174,16 +169,14 @@ for session in $(tmux -S "$SOCKET" list-sessions -F "#{session_name}" 2>/dev/nul
 done
 ```
 
-### Self-Healing Actions
-
-When a task is stuck, the orchestrator should:
-
-1. **Waiting for input** → Send appropriate response
+### 自我修复机制
+当任务卡住时，编排器应采取以下措施：
+1. **等待用户输入** → 发送相应的提示或请求
    ```bash
    tmux -S "$SOCKET" send-keys -t "$session" "y" Enter
    ```
 
-2. **Error/failure** → Capture logs, analyze, retry with fixes
+2. **出现错误/失败** → 捕获日志，分析问题并尝试修复后重新执行
    ```bash
    # Capture error context
    tmux -S "$SOCKET" capture-pane -p -t "$session" -S -100 > "$WORKDIR/logs/$task_id-error.log"
@@ -195,7 +188,7 @@ When a task is stuck, the orchestrator should:
      "cd $WORKDIR/$task_id && codex --model gpt-5.2-codex-high --yolo 'Previous attempt failed with: $(cat error.log | tail -20). Fix the issue and retry.'" Enter
    ```
 
-3. **No progress for 20+ mins** → Nudge or restart
+3. **20 分钟以上无进展** → 发送提醒或重启任务
    ```bash
    # Check git log for recent commits
    cd "$WORKDIR/$task_id"
@@ -204,8 +197,7 @@ When a task is stuck, the orchestrator should:
    # If no commits in threshold, restart
    ```
 
-### Heartbeat Cron Setup
-
+### 心跳检测（Heartbeat Detection）配置
 ```bash
 # Add to cron (every 15 minutes)
 cron action:add job:{
@@ -217,10 +209,9 @@ cron action:add job:{
 
 ---
 
-## Workflow: Full Orchestration Run
+## 完整的编排流程
 
-### Step 1: Analyze & Plan
-
+### 第 1 步：分析与规划
 ```bash
 # 1. Fetch issues
 gh issue list --repo OWNER/REPO --state open --json number,title,body > /tmp/issues.json
@@ -236,12 +227,10 @@ gh issue list --repo OWNER/REPO --state open --json number,title,body > /tmp/iss
 # - Serial batch: Same files or explicit deps → run in order
 ```
 
-### Step 2: Create Manifest
+### 第 2 步：创建任务清单
+编写 `manifest.json` 文件，其中包含所有任务及其依赖关系和文件映射。
 
-Write manifest.json with all tasks, dependencies, file mappings.
-
-### Step 3: Launch Phase 1
-
+### 第 3 步：启动第一阶段
 ```bash
 # Create worktrees for Phase 1 tasks
 for task in phase1_tasks; do
@@ -256,16 +245,14 @@ for task in phase1_parallel_batch; do
 done
 ```
 
-### Step 4: Monitor & Self-Heal
+### 第 4 步：监控与自我修复
+每 15 分钟进行一次心跳检测：
+1. 检查所有 tmux 会话的状态
+2. 更新任务清单以反映进度
+3. 自动修复卡住的任务
+4. 当所有第 N 阶段的任务完成后，启动第 N+1 阶段
 
-Heartbeat checks every 15 mins:
-1. Poll all sessions
-2. Update manifest with progress
-3. Self-heal stuck tasks
-4. When all Phase N tasks complete → launch Phase N+1
-
-### Step 5: Create PRs
-
+### 第 5 步：创建 Pull Request (PR)
 ```bash
 # When task completes successfully
 cd "$WORKDIR/task-$id"
@@ -283,8 +270,7 @@ gh pr create --repo OWNER/REPO \
 - [ ] Manual verification"
 ```
 
-### Step 6: Cleanup
-
+### 第 6 步：清理
 ```bash
 # After all PRs merged or work complete
 tmux -S "$SOCKET" kill-server
@@ -297,23 +283,21 @@ rm -rf "$WORKDIR"
 
 ---
 
-## Manifest Status Values
-
-| Status | Meaning |
+## 任务清单的状态值
+| 状态 | 含义 |
 |--------|---------|
-| `pending` | Not started yet |
-| `blocked` | Waiting on dependency |
-| `running` | Codex session active |
-| `stuck` | Needs intervention (auto-heal) |
-| `error` | Failed, needs retry |
-| `complete` | Done, ready for PR |
-| `pr_open` | PR created |
-| `merged` | PR merged |
+| `pending` | 尚未开始 |
+| `blocked` | 正在等待依赖关系完成 |
+| `running` | Codex 会话正在运行 |
+| `stuck` | 需要人工干预（自我修复） |
+| `error` | 失败，需要重试 |
+| `complete` | 任务已完成，可以提交 Pull Request |
+| `pr_open` | 已创建 Pull Request |
+| `merged` | Pull Request 已合并 |
 
 ---
 
-## Example: Security Framework Orchestration
-
+## 示例：安全框架的编排
 ```json
 {
   "project": "nuri-security-framework",
@@ -341,56 +325,53 @@ rm -rf "$WORKDIR"
 }
 ```
 
-**Parallel execution in Phase 1:**
-- t1 and t3 run in parallel (different files)
-- t2 waits for t1 (same file)
+**第一阶段的并行执行：**
+- `t1` 和 `t3` 并行执行（处理不同的文件）
+- `t2` 等待 `t1` 的完成（处理相同的文件）
 
-**Parallel execution in Phase 2:**
-- t4, t6, t7 can start together
-- t5 waits for t4, t8 waits for t7
-
----
-
-## Tips
-
-1. **Always use GPT-5.2-codex high** for complex work: `--model gpt-5.2-codex-high`
-2. **Clear prompts** — Include issue number, description, expected outcome, test instructions
-3. **Atomic commits** — Tell Codex to commit after each logical change
-4. **Push early** — Push to remote branch so progress isn't lost if session dies
-5. **Checkpoint logs** — Capture tmux output periodically to files
-6. **Phase gates** — Don't start Phase N+1 until Phase N is 100% complete
-7. **Self-heal aggressively** — If stuck >10 mins, intervene automatically
-8. **Browser relay limits** — If CDP automation is blocked, use iframe batch scraping or manual browser steps
+**第二阶段的并行执行：**
+- `t4`、`t6`、`t7` 可以同时开始执行
+- `t5` 等待 `t4` 的完成，`t8` 等待 `t7` 的完成
 
 ---
 
-## Integration with Other Skills
-
-- **senior-engineering**: Load for build principles and quality gates
-- **coding-agent**: Reference for Codex CLI patterns
-- **github**: Use for PR creation, issue management
+## 提示
+1. 对于复杂任务，始终使用 `GPT-5.2-codex high` 模型：`--model gpt-5.2-codex-high`
+2. 提交信息应包含问题编号、描述、预期结果和测试步骤
+3. 使用 **原子提交（Atomic Commits）**——确保每次逻辑变更后都进行提交
+4. 尽早将代码推送到远程仓库，以防会话异常导致进度丢失
+5. 定期将 tmux 的输出保存到文件中
+6. 在第 N 阶段 100% 完成后才能启动第 N+1 阶段
+7. 如果任务卡住超过 10 分钟，应立即进行自动修复
+8. 如果 CDP 自动化功能受阻，可以使用 iframe 批量抓取或手动操作浏览器来完成任务
 
 ---
 
-## Lessons Learned (2026-01-17)
+## 与其他技能的集成
+- **高级工程技能（Senior Engineering Skills）**：用于指导构建流程和质量控制
+- **编码代理（Coding Agent）**：提供 Codex CLI 的使用规范
+- **GitHub**：用于创建 Pull Request 和管理问题
 
-### Codex Sandbox Limitations
-When using `codex exec --full-auto`, the sandbox:
-- **No network access** — `git push` fails with "Could not resolve host"
-- **Limited filesystem** — Can't write to paths like `~/nuri_workspace`
+---
 
-### Heartbeat Detection Improvements
-The heartbeat should check for:
-1. **Shell prompt idle** — If tmux pane shows `username@hostname path %`, worker is done
-2. **Unpushed commits** — `git log @{u}.. --oneline` shows commits not on remote
-3. **Push failures** — Look for "Could not resolve host" in output
+## 经验总结（2026-01-17）
+### Codex 沙箱环境的限制
+使用 `codex exec --full-auto` 时，沙箱环境存在以下限制：
+- **无网络访问权限** — 会导致 `git push` 失败（提示“Could not resolve host”）
+- **文件系统限制** — 无法写入某些路径（如 `~/nuri_workspace`）
 
-When detected, the orchestrator (not the worker) should:
-1. Push the commit from outside the sandbox
-2. Create the PR via `gh pr create`
-3. Update manifest and notify
+### 心跳检测的改进措施
+心跳检测应检查以下情况：
+1. **Shell 提示符是否处于空闲状态** — 如果 tmux 会话显示 `username@hostname path %`，则表示任务已完成
+2. **未提交的更改** — 使用 `git log @{u}.. --oneline` 命令检查是否有未推送的更改
+3. **推送失败** — 查看日志中是否有 “Could not resolve host” 的错误信息
 
-### Recommended Pattern
+当检测到这些问题时，应由编排器（而非任务执行者）来处理：
+1. 从沙箱外部推送更改
+2. 通过 `gh pr create` 命令创建 Pull Request
+3. 更新任务清单并通知相关人员
+
+### 推荐的实践模式
 ```bash
 # In heartbeat, for each task:
 cd /tmp/orchestrator-*/task-tN

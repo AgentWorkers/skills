@@ -1,23 +1,29 @@
 ---
 name: proxmox-full
-description: Complete Proxmox VE management - create/clone/start/stop VMs and LXC containers, manage snapshots, backups, storage, and templates. Use when user wants to manage Proxmox infrastructure, virtual machines, or containers.
+description: **Proxmox VE的全面管理功能**  
+- **创建/克隆/启动/停止虚拟机（VMs）和LXC容器**  
+- **管理快照、备份以及存储资源**  
+- **管理模板**  
+
+适用于需要管理Proxmox基础设施、虚拟机或容器的用户。
 metadata: {"clawdbot":{"emoji":"🖥️","homepage":"https://www.proxmox.com/","requires":{"bins":["curl","jq"],"env":["PVE_TOKEN"]},"primaryEnv":"PVE_TOKEN"}}
 ---
 
-# Proxmox VE - Full Management
+# Proxmox VE - 全面管理
 
-Complete control over Proxmox VE hypervisor via REST API.
+通过 REST API 完全控制 Proxmox VE 虚拟机管理器。
 
-## Setup
+## 设置
 
 ```bash
 export PVE_URL="https://192.168.1.10:8006"
 export PVE_TOKEN="user@pam!tokenid=secret-uuid"
 ```
 
-**Create API token:** Datacenter → Permissions → API Tokens → Add (uncheck Privilege Separation)
+**创建 API 令牌：**  
+进入 “Datacenter” → “Permissions” → “API Tokens” → 点击 “Add”（请取消选中 “Privilege Separation” 选项）。
 
-## Auth Header
+## 请求头（Auth Header）
 
 ```bash
 AUTH="Authorization: PVEAPIToken=$PVE_TOKEN"
@@ -25,7 +31,7 @@ AUTH="Authorization: PVEAPIToken=$PVE_TOKEN"
 
 ---
 
-## Cluster & Nodes
+## 集群与节点（Cluster & Nodes）
 
 ```bash
 # Cluster status
@@ -40,7 +46,7 @@ curl -sk -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/status" | jq
 
 ---
 
-## List VMs & Containers
+## 列出虚拟机与容器（List VMs & Containers）
 
 ```bash
 # All VMs on node
@@ -55,7 +61,7 @@ curl -sk -H "$AUTH" "$PVE_URL/api2/json/cluster/resources?type=vm" | jq '.data[]
 
 ---
 
-## VM/Container Control
+## 虚拟机/容器控制（VM/Container Control）
 
 ```bash
 # Start
@@ -75,7 +81,7 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/qemu/{vmid}/status/
 
 ---
 
-## Create LXC Container
+## 创建 LXC 容器（Create LXC Container）
 
 ```bash
 # Get next available VMID
@@ -96,26 +102,26 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/lxc" \
   -d "start=1"
 ```
 
-**LXC Parameters:**
-| Param | Example | Description |
+**LXC 参数：**  
+| 参数 | 示例 | 说明 |
 |-------|---------|-------------|
-| vmid | 200 | Container ID |
-| hostname | myct | Container hostname |
-| ostemplate | local:vztmpl/debian-12-... | Template path |
-| storage | local-lvm | Storage for rootfs |
-| rootfs | local-lvm:8 | Root disk (8GB) |
-| memory | 1024 | RAM in MB |
-| swap | 512 | Swap in MB |
-| cores | 2 | CPU cores |
-| net0 | name=eth0,bridge=vmbr0,ip=dhcp | Network config |
-| password | secret | Root password |
-| ssh-public-keys | ssh-rsa ... | SSH keys (URL encoded) |
-| unprivileged | 1 | Unprivileged container |
-| start | 1 | Start after creation |
+| vmid | 200 | 容器 ID |
+| hostname | myct | 容器主机名 |
+| ostemplate | local:vztmpl/debian-12-... | 模板路径 |
+| storage | local-lvm | rootfs 的存储空间 |
+| rootfs | local-lvm:8 | 根目录磁盘（8GB） |
+| memory | 1024 | 内存（MB） |
+| swap | 512 | 交换空间（MB） |
+| cores | 2 | CPU 核心数 |
+| net0 | name=eth0,bridge=vmbr0,ip=dhcp | 网络配置 |
+| password | secret | root 用户密码 |
+| ssh-public-keys | ssh-rsa ... | SSH 密钥（URL 编码格式） |
+| unprivileged | 1 | 无权限容器 |
+| start | 1 | 创建后立即启动 |
 
 ---
 
-## Create VM
+## 创建虚拟机（Create VM）
 
 ```bash
 # Get next VMID
@@ -137,24 +143,24 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/qemu" \
   -d "ostype=l26"
 ```
 
-**VM Parameters:**
-| Param | Example | Description |
+**虚拟机参数：**  
+| 参数 | 示例 | 说明 |
 |-------|---------|-------------|
-| vmid | 100 | VM ID |
-| name | myvm | VM name |
-| memory | 2048 | RAM in MB |
-| cores | 2 | CPU cores per socket |
-| sockets | 1 | CPU sockets |
-| cpu | host | CPU type |
-| net0 | virtio,bridge=vmbr0 | Network |
-| scsi0 | local-lvm:32 | Disk (32GB) |
-| ide2 | local:iso/file.iso,media=cdrom | ISO |
-| ostype | l26 (Linux), win11 | OS type |
-| boot | order=scsi0;ide2 | Boot order |
+| vmid | 100 | 虚拟机 ID |
+| name | myvm | 虚拟机名称 |
+| memory | 2048 | 内存（MB） |
+| cores | 2 | 每个 CPU 插槽的核心数 |
+| sockets | 1 | CPU 插槽数 |
+| cpu | host | CPU 类型 |
+| net0 | virtio,bridge=vmbr0 | 网络配置 |
+| scsi0 | local-lvm:32 | 磁盘（32GB） |
+| ide2 | local:iso/file.iso,media=cdrom | ISO 镜像文件 |
+| ostype | l26 (Linux), win11 | 操作系统类型 |
+| boot | order=scsi0;ide2 | 启动顺序 |
 
 ---
 
-## Clone VM/Container
+## 克隆虚拟机/容器（Clone VM/Container）
 
 ```bash
 # Clone VM
@@ -172,18 +178,18 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/lxc/{vmid}/clone" \
   -d "storage=local-lvm"
 ```
 
-**Clone Parameters:**
-| Param | Description |
+**克隆参数：**  
+| 参数 | 说明 |
 |-------|-------------|
-| newid | New VMID |
-| name/hostname | New name |
-| full | 1=full clone, 0=linked clone |
-| storage | Target storage |
-| target | Target node (for migration) |
+| newid | 新虚拟机 ID |
+| name/hostname | 新名称 |
+| full | 1=完整克隆；0=链接克隆 |
+| storage | 目标存储空间 |
+| target | 目标节点（用于迁移） |
 
 ---
 
-## Convert to Template
+## 将虚拟机转换为模板（Convert to Template）
 
 ```bash
 # Convert VM to template
@@ -195,7 +201,7 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/lxc/{vmid}/template
 
 ---
 
-## Snapshots
+## 快照（Snapshots）
 
 ```bash
 # List snapshots
@@ -215,7 +221,7 @@ curl -sk -X DELETE -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/qemu/{vmid}/snaps
 
 ---
 
-## Backups
+## 备份（Backups）
 
 ```bash
 # Start backup
@@ -237,7 +243,7 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/qemu" \
 
 ---
 
-## Storage & Templates
+## 存储与模板（Storage & Templates）
 
 ```bash
 # List storage
@@ -257,7 +263,7 @@ curl -sk -X POST -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/aplinfo" \
 
 ---
 
-## Tasks
+## 任务管理（Tasks）
 
 ```bash
 # Recent tasks
@@ -272,7 +278,7 @@ curl -sk -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/tasks/{upid}/log" | jq -r '
 
 ---
 
-## Delete VM/Container
+## 删除虚拟机/容器（Delete VM/Container）
 
 ```bash
 # Delete VM (must be stopped)
@@ -287,27 +293,26 @@ curl -sk -X DELETE -H "$AUTH" "$PVE_URL/api2/json/nodes/{node}/qemu/{vmid}?purge
 
 ---
 
-## Quick Reference
+## 快速参考（Quick Reference）
 
-| Action | Endpoint | Method |
+| 操作 | 端点（Endpoint） | 方法（Method） |
 |--------|----------|--------|
-| List nodes | /nodes | GET |
-| List VMs | /nodes/{node}/qemu | GET |
-| List LXC | /nodes/{node}/lxc | GET |
-| Create VM | /nodes/{node}/qemu | POST |
-| Create LXC | /nodes/{node}/lxc | POST |
-| Clone | /nodes/{node}/qemu/{vmid}/clone | POST |
-| Start | /nodes/{node}/qemu/{vmid}/status/start | POST |
-| Stop | /nodes/{node}/qemu/{vmid}/status/stop | POST |
-| Snapshot | /nodes/{node}/qemu/{vmid}/snapshot | POST |
-| Delete | /nodes/{node}/qemu/{vmid} | DELETE |
-| Next ID | /cluster/nextid | GET |
+| 列出节点 | /nodes | GET |
+| 列出虚拟机 | /nodes/{node}/qemu | GET |
+| 列出 LXC 容器 | /nodes/{node}/lxc | GET |
+| 创建虚拟机 | /nodes/{node}/qemu | POST |
+| 创建 LXC 容器 | /nodes/{node}/lxc | POST |
+| 克隆虚拟机 | /nodes/{node}/qemu/{vmid}/clone | POST |
+| 启动虚拟机 | /nodes/{node}/qemu/{vmid}/status/start | POST |
+| 停止虚拟机 | /nodes/{node}/qemu/{vmid}/status/stop | POST |
+| 创建快照 | /nodes/{node}/qemu/{vmid}/snapshot | POST |
+| 删除虚拟机 | /nodes/{node}/qemu/{vmid} | DELETE |
+| 获取下一个 ID | /cluster/nextid | GET |
 
-## Notes
-
-- Use `-k` for self-signed certs
-- API tokens don't need CSRF
-- Replace `{node}` with node name (e.g., `pve`)
-- Replace `{vmid}` with VM/container ID
-- Use `qemu` for VMs, `lxc` for containers
-- All create/clone operations return task UPID for tracking
+## 注意事项：**
+- 使用 `-k` 选项生成自签名证书。
+- API 令牌无需进行 CSRF 验证。
+- 将 `{node}` 替换为节点名称（例如 `pve`）。
+- 将 `{vmid}` 替换为虚拟机/容器的 ID。
+- 对于虚拟机使用 `qemu`，对于容器使用 `lxc`。
+- 所有创建/克隆操作都会返回一个任务 ID（UPID）以便追踪。

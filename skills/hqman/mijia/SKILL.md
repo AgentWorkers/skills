@@ -1,34 +1,34 @@
 ---
 name: mijia
-description: Control Xiaomi Mijia smart home devices. Use this skill when the user wants to control desk lamps, smart plugs, or other Mijia devices. Supports turning lights on/off, adjusting brightness, setting color temperature, switching modes, and more.
+description: **控制小米米家智能家居设备**  
+当用户需要控制台灯、智能插座或其他米家设备时，可以使用此技能。支持开关灯、调节亮度、设置色温、切换模式等操作。
 invocable: true
 ---
 
-# Mijia Smart Home Control
+# 米家智能家居控制
 
-Control Xiaomi Mijia smart devices via the mijiaAPI.
+通过 `mijiaAPI` 控制小米米家智能设备。
 
-## Setup
+## 设置
 
-Before using this skill, you need to:
+在使用此技能之前，您需要完成以下步骤：
 
-1. Install dependencies:
+1. 安装依赖项：
 ```bash
 cd /path/to/mijia-skill
 uv sync
 ```
 
-2. Set your device ID as an environment variable:
+2. 将您的设备 ID 设置为环境变量：
 ```bash
 export MIJIA_LAMP_DID="your_device_id"
 ```
 
-3. First run will prompt for Xiaomi account login via QR code.
+3. 首次运行时，系统会提示您通过二维码登录小米账户。
 
-## Finding Device IDs
+## 查找设备 ID
 
-To find your device IDs, use the mijia-api library:
-
+要查找您的设备 ID，请使用 `mijia-api` 库：
 ```python
 from mijiaAPI import mijiaAPI
 api = mijiaAPI()
@@ -38,11 +38,11 @@ for d in devices:
     print(f"{d['name']}: {d['did']}")
 ```
 
-## How to Use
+## 使用方法
 
-Skill path: `~/.clawdbot/skills/mijia`
+技能路径：`~/.clawdbot/skills/mijia`
 
-### Lamp Control Commands
+### 灯具控制命令
 
 ```bash
 # Navigate to skill directory
@@ -72,29 +72,29 @@ uv run python scripts/lamp_cli.py mode candle     # Candle effect
 uv run python scripts/lamp_cli.py mode twinkle    # Twinkle alert
 ```
 
-## Natural Language Understanding
+## 自然语言理解
 
-When the user says the following, execute the corresponding command:
+当用户说出以下指令时，系统会执行相应的命令：
 
-| User Says | Command |
-|-----------|---------|
-| Turn on the light / open lamp | `scripts/lamp_cli.py on` |
-| Turn off the light / close lamp | `scripts/lamp_cli.py off` |
-| Toggle the light | `scripts/lamp_cli.py toggle` |
-| Brighter / more bright | Check status first, then increase by 20-30% |
-| Dimmer / less bright | Check status first, then decrease by 20-30% |
-| Full brightness / maximum | `scripts/lamp_cli.py brightness 100` |
-| Minimum brightness | `scripts/lamp_cli.py brightness 1` |
-| Warm light | `scripts/lamp_cli.py temp 2700` |
-| Cool light / white light | `scripts/lamp_cli.py temp 6500` |
-| Reading mode | `scripts/lamp_cli.py mode reading` |
-| Computer mode | `scripts/lamp_cli.py mode computer` |
-| Night mode | `scripts/lamp_cli.py mode night` |
-| Lamp status / what's the light status | `scripts/lamp_cli.py status` |
+| 用户指令 | 命令             |
+|-----------|-------------------|
+| 打开灯       | `scripts/lamp_cli.py on`       |
+| 关闭灯       | `scripts/lamp_cli.py off`       |
+| 切换灯的状态   | `scripts/lamp_cli.py toggle`     |
+| 调亮灯光     | 先检查状态，然后增加 20-30% 的亮度 |
+| 调暗灯光     | 先检查状态，然后减少 20-30% 的亮度 |
+| 最大亮度     | `scripts/lamp_cli.py brightness 100`     |
+| 最小亮度     | `scripts/lamp_cli.py brightness 1`     |
+| 温暖光       | `scripts/lamp_cli.py temp 2700`     |
+| 冷白光       | `scripts/lamp_cli.py temp 6500`     |
+| 读书模式     | `scripts/lamp_cli.py mode reading`    |
+| 电脑模式     | `scripts/lamp_cli.py mode computer`    |
+| 夜间模式     | `scripts/lamp_cli.py mode night`     |
+| 查看灯的状态   | `scripts/lamp_cli.py status`     |
 
-## Before Executing
+## 执行前准备
 
-1. Navigate to skill directory: `cd ~/.clawdbot/skills/mijia`
-2. Ensure `MIJIA_LAMP_DID` environment variable is set
-3. Run with uv: `uv run python scripts/lamp_cli.py <command>`
-4. Report the result to the user after execution
+1. 导航到技能目录：`cd ~/.clawdbot/skills/mijia`
+2. 确保 `MIJIA_LAMP_DID` 环境变量已设置
+3. 使用 `uv` 命令运行脚本：`uv run python scripts/lamp_cli.py <命令>`
+4. 执行完成后向用户报告结果

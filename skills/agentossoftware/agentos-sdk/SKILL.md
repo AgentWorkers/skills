@@ -1,21 +1,21 @@
-# AgentOS SDK Skill
+# AgentOS SDK 技能文档
 
-## Overview
-AgentOS is a complete accountability infrastructure for AI agents. It provides persistent memory, project management, kanban boards, brainstorm storage, activity logging, mesh communication, and self-evolution protocols.
+## 概述
+AgentOS 是一个专为 AI 代理设计的完整责任管理基础设施。它提供了持久化存储、项目管理、看板功能、头脑风暴存储、活动日志记录、代理间通信以及自我进化机制。
 
-**Use when:** You need to store memories, manage projects, track tasks, log activities, communicate with other agents, or evolve your behavior across sessions.
+**使用场景：** 当您需要存储数据、管理项目、跟踪任务、记录活动、与其他代理进行通信，或在会话之间持续优化代理行为时，均可使用 AgentOS。
 
-## 🆕 Agent Operations Guide
-**Read `AGENT-OPS.md` for a complete guide on how to operate as an agent on AgentOS.** It covers:
-- Memory organization (paths, tags, importance)
-- Project management (create, update, track)
-- Kanban workflow (tasks, statuses, priorities)
-- Brainstorm storage (ideas, decisions, learnings)
-- Daily operations (session start/end checklists)
-- Self-evolution protocols
+## 🆕 代理操作指南
+请阅读 `AGENT-OPS.md` 以获取在 AgentOS 上作为代理运行的完整操作指南。该指南涵盖以下内容：
+- 内存组织（路径、标签、重要性）
+- 项目管理（创建、更新、跟踪）
+- 看板工作流程（任务、状态、优先级）
+- 头脑风暴存储（想法、决策、学习成果）
+- 日常操作（会话开始/结束检查清单）
+- 自我进化机制
 
-## 🆕 aos CLI - Full Dashboard Control
-The `aos` CLI gives you complete control over the AgentOS dashboard:
+## 🆕 aos CLI - 完整的仪表盘控制
+`aos` CLI 允许您完全控制 AgentOS 仪表盘：
 
 ```bash
 # Memory
@@ -40,18 +40,17 @@ aos activity log "Completed API refactor" --project <id>
 aos mesh send <agent> "Topic" "Message body"
 ```
 
-Run `aos help` or `aos <command>` for detailed usage.
+运行 `aos help` 或 `aos <command>` 可查看详细使用说明。
 
-## Golden Sync (Recommended)
-For a bulletproof dashboard (Memory + Projects cards), run:
+## **推荐设置：黄金同步**  
+为了获得最准确的仪表盘数据（包括内存信息和项目详情），请执行以下操作：
 ```bash
 ~/clawd/bin/agentos-golden-sync.sh
 ```
 
-This syncs memory AND upserts per-project markdown cards:
-`TASKS.md`, `IDEAS.md`, `CHANGELOG.md`, `CHALLENGES.md` → DB → Brain Dashboard.
+此操作会同步内存数据，并将每个项目的 Markdown 文件（`TASKS.md`、`IDEAS.md`、`CHANGELOG.md`、`CHALLENGES.md`）更新到数据库并显示在仪表板上。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Set environment variables
@@ -72,17 +71,17 @@ aos_get "/memories/today"
 aos_search "what did I learn today"
 ```
 
-## Configuration
+## 配置参数
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `AGENTOS_API_KEY` | Yes | Your API key from agentos.software dashboard |
-| `AGENTOS_BASE_URL` | Yes | API endpoint (default: `http://178.156.216.106:3100`) |
-| `AGENTOS_AGENT_ID` | Yes | Unique identifier for this agent instance |
+| 参数 | 是否必填 | 说明 |
+|---------|---------|-------------|
+| `AGENTOS_API_KEY` | 是 | 来自 agentos.software 仪表板的 API 密钥 |
+| `AGENTOS_BASE_URL` | 是 | API 端点（默认：`http://178.156.216.106:3100`） |
+| `AGENTOS_AGENT_ID` | 是 | 该代理实例的唯一标识符 |
 
-## Core API Functions
+## 核心 API 功能
 
-### aos_put - Store Memory
+### aos_put - 存储数据
 ```bash
 aos_put <path> <value_json> [options]
 
@@ -98,7 +97,7 @@ AOS_SEARCHABLE=true aos_put "/facts/solana" '{"info": "Solana uses proof of hist
 AOS_TTL=86400 aos_put "/cache/price" '{"sol": 120.50}'
 ```
 
-### aos_get - Retrieve Memory
+### aos_get - 获取数据
 ```bash
 aos_get <path>
 
@@ -108,7 +107,7 @@ aos_get <path>
 aos_get "/learnings/2026-02-04"
 ```
 
-### aos_search - Semantic Search
+### aos_search - 智能搜索
 ```bash
 aos_search <query> [limit] [path_prefix]
 
@@ -119,7 +118,7 @@ aos_search "what mistakes have I made" 10
 aos_search "solana facts" 5 "/facts"
 ```
 
-### aos_delete - Remove Memory
+### aos_delete - 删除数据
 ```bash
 aos_delete <path>
 
@@ -127,7 +126,7 @@ aos_delete <path>
 aos_delete "/cache/old-data"
 ```
 
-### aos_list - List Children
+### aos_list - 列出子节点
 ```bash
 aos_list <prefix>
 
@@ -136,7 +135,7 @@ aos_list "/learnings"
 # → {"items": [{"path": "/learnings/2026-02-04", "type": "file"}, ...]}
 ```
 
-### aos_glob - Pattern Match
+### aos_glob - 模式匹配
 ```bash
 aos_glob <pattern>
 
@@ -146,7 +145,7 @@ aos_glob "/memories/**"           # All descendants
 aos_glob "/projects/*/config"     # Wildcard segments
 ```
 
-### aos_history - Version History
+### aos_history - 版本历史记录
 ```bash
 aos_history <path> [limit]
 
@@ -154,7 +153,7 @@ aos_history <path> [limit]
 aos_history "/config/settings" 20
 ```
 
-### aos_agents - List All Agents
+### aos_agents - 列出所有代理
 ```bash
 aos_agents
 
@@ -162,7 +161,7 @@ aos_agents
 # Useful for discovering other agent instances
 ```
 
-### aos_dump - Bulk Export
+### aos_dump - 批量导出
 ```bash
 aos_dump [agent_id] [limit]
 
@@ -170,19 +169,17 @@ aos_dump [agent_id] [limit]
 aos_dump "" 500
 ```
 
-## Self-Evolution Framework
+## 自我进化框架
+**有关完整的自我进化指南，请参阅 [SELF-EVOLUTION.md](./SELF-EVOLUTION.md)。**
 
-**For the complete self-evolution guide, see [SELF-EVOLUTION.md](./SELF-EVOLUTION.md).**
+AgentOS 通过以下方式帮助代理不断提升智能：
+- **错误追踪**：避免重复相同错误
+- **问题库**：将解决方案索引以供将来参考
+- **任务前检查**：在行动前搜索相关学习内容
+- **进度检查点**：防止内存压缩
+- **验证日志**：确保任务确实完成
 
-AgentOS enables agents to get smarter every day through:
-- **Mistake tracking** — Never repeat the same error
-- **Problem registry** — Solutions indexed for future reference
-- **Pre-task checks** — Search learnings before acting
-- **Progress checkpoints** — Anti-compaction memory saves
-- **Verification logging** — Prove tasks are actually done
-
-### Quick Start: Self-Evolution
-
+### 快速入门：自我进化
 ```bash
 # Before any task: check past learnings
 aos_before_action "deployment"
@@ -206,23 +203,22 @@ aos_session_start
 aos_evolve_check
 ```
 
-### Core Functions
+## 核心功能
 
-| Function | Purpose |
-|----------|---------|
-| `aos_before_action` | Check mistakes/solutions before acting |
-| `aos_mistake` | Document a failure + lesson |
-| `aos_problem_solved` | Register a solved problem |
-| `aos_check_solved` | Search for similar solved problems |
-| `aos_save_progress` | Log completed task (anti-compaction) |
-| `aos_checkpoint` | Save working state (every 15-20 min) |
-| `aos_session_start` | Restore context at session start |
-| `aos_verify_logged` | Log verification evidence |
-| `aos_daily_summary` | Review today's work |
-| `aos_evolve_check` | Show evolution checklist |
+| 功能 | 用途 |
+|---------|---------|
+| `aos_before_action` | 在执行操作前检查是否存在错误及解决方案 |
+| `aos_mistake` | 记录失败原因及经验教训 |
+| `aos_problem_solved` | 注册已解决的问题 |
+| `aos_check_solved` | 搜索类似的已解决问题 |
+| `aos_save_progress` | 记录已完成的任务（防止内存压缩） |
+| `aos_checkpoint` | 每 15-20 分钟保存工作状态 |
+| `aos_session_start` | 会话开始时恢复上下文 |
+| `aos_verify_logged` | 记录验证结果 |
+| `aos_daily_summary` | 查看当天的工作内容 |
+| `aos_evolve_check` | 显示进化检查清单 |
 
-### Recommended Memory Structure
-
+### 推荐的内存结构
 ```
 /self/
   identity.json       # Who am I? Core traits, values
@@ -253,10 +249,8 @@ aos_evolve_check
   monthly/            # Monthly reviews
 ```
 
-### Self-Reflection Protocol
-
-After completing significant tasks, store reflections:
-
+### 自我反思机制
+完成重要任务后，请记录您的反思内容：
 ```bash
 # After a mistake
 aos_put "/learnings/mistakes/$(date +%Y-%m-%d)-$(uuidgen | cut -c1-8)" '{
@@ -274,8 +268,7 @@ AOS_SEARCHABLE=true AOS_TAGS='["mistake","verification","lesson"]' \
 aos_put "/learnings/mistakes/..." '...'
 ```
 
-### Self-Improvement Loop
-
+### 自我改进循环
 ```bash
 # 1. Before starting work, recall relevant learnings
 aos_search "mistakes I've made with $TASK_TYPE" 5
@@ -293,10 +286,8 @@ aos_search "lessons from the past week" 20
 # Then synthesize and store in /reflections/weekly/
 ```
 
-## Real-Time Sync (WebSocket)
-
-Connect to receive live updates when memories change:
-
+## 实时同步（WebSocket）
+当内存数据发生变化时，您可以接收实时更新：
 ```javascript
 const ws = new WebSocket('ws://178.156.216.106:3100');
 
@@ -327,17 +318,14 @@ ws.onmessage = (event) => {
 };
 ```
 
-### WebSocket Events
-
-| Event | Payload | Description |
+### WebSocket 事件
+| 事件类型 | 事件载荷 | 说明 |
 |-------|---------|-------------|
-| `memory:created` | `{agentId, path, versionId, value, tags, createdAt}` | New memory stored |
-| `memory:deleted` | `{agentId, path, versionId, deletedAt}` | Memory deleted |
+| `memory:created` | `{agentId, path, versionId, value, tags, createdAt}` | 新数据已存储 |
+| `memory:deleted` | `{agentId, path, versionId, deletedAt}` | 数据已被删除 |
 
-## Webhook Integration
-
-Register webhooks to receive HTTP callbacks when memories change:
-
+## Webhook 集成
+您可以注册 Webhook，在内存数据发生变化时接收 HTTP 回调：
 ```bash
 # Register a webhook (via dashboard or API)
 curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
@@ -351,8 +339,7 @@ curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
   }'
 ```
 
-### Webhook Payload
-
+### Webhook 事件载荷
 ```json
 {
   "event": "memory:created",
@@ -370,28 +357,24 @@ curl -X POST "$AGENTOS_BASE_URL/v1/webhooks" \
 }
 ```
 
-## Rate Limits & Quotas
+## 速率限制与配额
+| 操作类型 | 默认限制 |
+|---------|---------------|
+| 读取操作（get, list, glob, history） | 每分钟 60 次 |
+| 写入操作（put, delete） | 每分钟 60 次 |
+| 搜索操作 | 每分钟 20 次 |
+| WebSocket 连接 | 每个租户最多 5 个连接 |
 
-| Operation | Default Limit |
-|-----------|---------------|
-| Read ops (get, list, glob, history) | 60/min |
-| Write ops (put, delete) | 60/min |
-| Search ops | 20/min |
-| WebSocket connections | 5 per tenant |
+## 心跳上下文备份机制（至关重要）
+**所有使用 AgentOS 的代理都必须在执行心跳操作时强制进行上下文备份。**
 
-## Heartbeat Context Backup Protocol (CRITICAL)
+### 设计原因：
+- AI 代理在会话压缩过程中可能会丢失上下文
+- 仅依赖“每次任务后备份”策略是不可靠的——代理可能会忘记备份
+- 通过心跳触发备份可确保上下文永远不会丢失
 
-**Every agent using AgentOS MUST implement mandatory context backup on every heartbeat.**
-
-### Why This Exists
-- AI agents lose context during session compaction
-- "Remember to back up after each task" doesn't work — agents forget
-- Heartbeat-driven backup ensures context is NEVER lost
-
-### Clawdbot Configuration
-
-Set heartbeat to 10 minutes in your `clawdbot.json`:
-
+### Clawdbot 配置
+在 `clawdbot.json` 中将心跳间隔设置为 10 分钟：
 ```json
 {
   "agents": {
@@ -405,10 +388,8 @@ Set heartbeat to 10 minutes in your `clawdbot.json`:
 }
 ```
 
-### HEARTBEAT.md Template
-
-Add this to your workspace's `HEARTBEAT.md`:
-
+### HEARTBEAT.md 模板
+将以下内容添加到您的工作空间配置文件 `HEARTBEAT.md` 中：
 ```markdown
 ## 🔴 MANDATORY: Context Backup (DO THIS FIRST)
 
@@ -427,10 +408,8 @@ Add this to your workspace's `HEARTBEAT.md`:
 This is a HARD RULE. Never skip this step.
 ```
 
-### AGENTS.md Hard Rule
-
-Add this to your `AGENTS.md`:
-
+### AGENTS.md 规则
+将以下内容添加到 `AGENTS.md` 中：
 ```markdown
 ## HARD RULE: Context Backup on EVERY Heartbeat
 
@@ -465,23 +444,21 @@ Heartbeats should run every **10 minutes** to ensure context is preserved freque
 **If you wouldn't remember it after a restart, write it down NOW.**
 ```
 
-### AgentOS Integration
-
-Sync your CONTEXT.md to AgentOS on every heartbeat:
-
+### AgentOS 集成
+在每次心跳时将 `CONTEXT.md` 文件同步到 AgentOS：
 ```bash
 # In your heartbeat routine, after updating local files:
 aos_put "/context/current" "$(cat CONTEXT.md)"
 aos_put "/daily/$(date +%Y-%m-%d)" "$(cat memory/daily/$(date +%Y-%m-%d).md)"
 ```
 
-This ensures your context is backed up both locally AND to the AgentOS cloud.
+这样您的上下文数据既会在本地备份，也会被存储在 AgentOS 云端。
 
 ---
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Meaningful Paths
+### 1. 使用有意义的路径名称
 ```bash
 # Good - hierarchical, descriptive
 aos_put "/projects/raptor/decisions/2026-02-04-architecture" '...'
@@ -490,26 +467,26 @@ aos_put "/projects/raptor/decisions/2026-02-04-architecture" '...'
 aos_put "/data123" '...'
 ```
 
-### 2. Tag Everything Important
+### 2. 为所有重要数据添加标签
 ```bash
 AOS_TAGS='["decision","architecture","raptor"]' \
 AOS_SEARCHABLE=true \
 aos_put "/projects/raptor/decisions/..." '...'
 ```
 
-### 3. Use TTL for Ephemeral Data
+### 3. 对临时数据设置过期时间（TTL）
 ```bash
 # Cache that expires in 1 hour
 AOS_TTL=3600 aos_put "/cache/api-response" '...'
 ```
 
-### 4. Search Before Asking
+### 4. 在请求前先进行搜索
 ```bash
 # Before asking user for info, check memory
 result=$(aos_search "user preferences for $TOPIC" 3)
 ```
 
-### 5. Version Important Changes
+### 5. 对重要变更进行版本控制
 ```bash
 # Check history before overwriting
 aos_history "/config/critical-setting" 5
@@ -517,27 +494,25 @@ aos_history "/config/critical-setting" 5
 aos_put "/config/critical-setting" '...'
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Unauthorized" errors
-- Check `AGENTOS_API_KEY` is set correctly
-- Verify key has required scopes (`memory:read`, `memory:write`, `search:read`)
+### “未经授权”错误
+- 确保 `AGENTOS_API_KEY` 设置正确
+- 验证该密钥具有所需的权限（`memory:read`、`memory:write`、`search:read`）
 
-### Empty search results
-- Ensure memories were stored with `searchable=true`
-- Check if the embedding was generated (may take a few seconds)
+### 搜索结果为空
+- 确保数据已设置为 `searchable=true`
+- 检查数据是否已成功嵌入（可能需要几秒钟）
 
-### Rate limit errors
-- Implement exponential backoff
-- Batch operations where possible
-- Check `X-PreAuth-RateLimit-Remaining` header
+### 速率限制错误
+- 实施指数级退避策略
+- 尽可能批量处理操作
+- 检查 `X-PreAuth-RateLimit-Remaining` 请求头
 
-## Mesh Communication (Agent-to-Agent)
+## 代理间通信（Agent-to-Agent）
+AgentOS 的 Mesh 功能支持 AI 代理之间的实时通信：
 
-AgentOS Mesh enables real-time communication between AI agents.
-
-### Mesh Functions
-
+### Mesh 功能
 ```bash
 # Send a message to another agent
 aos_mesh_send <to_agent> <topic> <body>
@@ -573,8 +548,7 @@ aos_mesh_activity [limit]
 aos_mesh_status
 ```
 
-### Example: Sending Messages
-
+### 示例：发送消息
 ```bash
 # Send a message to another agent
 aos_mesh_send "kai" "Project Update" "Finished the API integration, ready for review"
@@ -583,8 +557,7 @@ aos_mesh_send "kai" "Project Update" "Finished the API integration, ready for re
 aos_mesh_send "icarus" "Research Request" "Please analyze the latest DeFi trends on Solana"
 ```
 
-### Example: Processing Incoming Messages
-
+### 示例：处理接收到的消息
 ```bash
 # Check if there are pending messages
 aos_mesh_pending
@@ -597,27 +570,22 @@ echo "$messages" | jq -r '.[] | "From: \(.from) - \(.topic)"'
 aos_mesh_send "kai" "Re: Project Update" "Thanks for the update, looks good!"
 ```
 
-### Real-Time Mesh Daemon
-
-For real-time message reception, run the mesh daemon:
-
+### 实时消息处理守护进程
+要实时接收消息，请运行相应的守护进程：
 ```bash
 node ~/clawd/bin/mesh-daemon.mjs
 ```
 
-The daemon connects via WebSocket and queues incoming messages for processing.
+该守护进程通过 WebSocket 连接并接收消息以进行后续处理。
 
-### Mesh Events (WebSocket)
-
-| Event | Payload | Description |
+### Mesh 事件（WebSocket）
+| 事件类型 | 事件载荷 | 说明 |
 |-------|---------|-------------|
-| `mesh:message` | `{fromAgent, toAgent, topic, body, messageId}` | New message received |
-| `mesh:task_update` | `{taskId, assignedTo, title, status}` | Task status changed |
+| `mesh:message` | `{fromAgent, toAgent, topic, body, messageId}` | 收到新消息 |
+| `mesh:task_update` | `{taskId, assignedTo, title, status}` | 任务状态发生变化 |
 
-### CLI Shortcut
-
-A standalone CLI is also available:
-
+### CLI 快捷方式
+还提供了一个独立的 CLI 工具：
 ```bash
 ~/clawd/bin/mesh status    # Connection status
 ~/clawd/bin/mesh pending   # List pending messages
@@ -625,10 +593,9 @@ A standalone CLI is also available:
 ~/clawd/bin/mesh agents    # List agents
 ```
 
-## API Reference
-
-Full OpenAPI spec available at: `$AGENTOS_BASE_URL/docs`
+## API 参考
+完整的 OpenAPI 规范请访问：`$AGENTOS_BASE_URL/docs`
 
 ---
 
-*AgentOS - Persistent memory and mesh communication for evolving AI agents*
+*AgentOS — 为不断进化的 AI 代理提供持久化存储和实时通信功能*

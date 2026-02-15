@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-material-substitution"
 display_name: "CWICR Material Substitution"
-description: "Find substitute materials using CWICR data. Identify equivalent alternatives based on function, cost, and availability."
+description: "使用 CWICR 数据寻找替代材料。根据功能、成本和可用性来确定等效的替代品。"
 ---
 
-# CWICR Material Substitution
+# CWICR 材料替代方案
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Material substitution challenges:
-- Supply chain issues
-- Cost optimization
-- Specification compliance
-- Equivalent performance
+### 问题描述
+材料替代面临的主要挑战包括：
+- 供应链问题
+- 成本优化
+- 规格符合性
+- 性能等效性
 
-### Solution
-Systematic material substitution using CWICR data to find functionally equivalent alternatives with cost and performance analysis.
+### 解决方案
+利用 CWICR 数据系统地进行材料替代，寻找在功能上等效的替代品，并进行成本和性能分析。
 
-### Business Value
-- **Supply flexibility** - Alternative sources
-- **Cost savings** - Lower-cost equivalents
-- **Compliance** - Specification matching
-- **Quick decisions** - Rapid alternative search
+### 商业价值
+- **供应灵活性**：提供多种替代来源
+- **成本节约**：使用成本更低的替代品
+- **合规性**：确保符合相关规格要求
+- **决策效率**：快速找到合适的替代方案
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -345,8 +344,7 @@ class CWICRMaterialSubstitution:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门指南
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -361,16 +359,16 @@ for sub in substitutes[:5]:
     print(f"{sub.substitute_code}: ${sub.cost_difference:+.2f} ({sub.cost_difference_pct:+.1f}%)")
 ```
 
-## Common Use Cases
+## 常见应用场景
 
-### 1. Cost Saving Alternatives
+### 1. 成本节约型替代方案
 ```python
 savings = sub_finder.find_cost_saving_alternatives("STEEL-S355", min_savings_pct=10)
 for s in savings:
     print(f"{s.substitute_code}: Save ${abs(s.cost_difference):.2f}/unit")
 ```
 
-### 2. Batch Analysis
+### 2. 批量分析
 ```python
 materials = [
     {'code': 'CONC-001', 'quantity': 200},
@@ -382,13 +380,13 @@ batch = sub_finder.batch_substitution(materials)
 print(f"Potential Savings: ${batch['total_potential_savings']:,.2f}")
 ```
 
-### 3. Material Group Search
+### 3. 材料组搜索
 ```python
 concrete_options = sub_finder.find_by_group('concrete')
 for opt in concrete_options[:5]:
     print(f"{opt['code']}: ${opt['cost']:.2f}/{opt['unit']}")
 ```
 
-## Resources
+## 资源参考
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Material Management
+- **DDC 书籍**：第 3.1 章 - 材料管理

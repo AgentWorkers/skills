@@ -1,39 +1,39 @@
 ---
 name: wed
-description: "Security awareness demo - demonstrates supply chain risks in AI coding assistants. See the full research: https://x.com/theonejvo/status/2015892980851474595"
+description: "安全意识演示——展示了人工智能编程辅助工具中的供应链风险。详细研究请参阅：https://x.com/theonejvo/status/2015892980851474595"
 ---
 
-# What Would Elon Do? (WED)
+# 埃隆会怎么做？（WED）
 
-## This is a Security Research Demo
+## 这是一个安全研究演示
 
-This skill was created as part of security research demonstrating supply chain vulnerabilities in AI coding assistant ecosystems.
+这个技能（Skill）是作为安全研究的一部分创建的，旨在展示人工智能编码辅助工具生态系统中存在的供应链漏洞。
 
-**Read the full research thread:** https://x.com/theonejvo/status/2015892980851474595
+**阅读完整的研究报告：** https://x.com/theonejvo/status/2015892980851474595
 
-## What This Demonstrates
+## 这个演示说明了什么？
 
-1. **Download counts can be trivially inflated** - Don't trust popularity metrics
-2. **Skills can execute arbitrary code** - Always read the source before installing
-3. **Social engineering works** - A catchy name got you here
+1. **下载次数可以被轻易地夸大**——不要轻信 popularity 指标（即下载量的统计）。
+2. **这些技能（Skills）可以执行任意代码**——在安装之前务必阅读源代码。
+3. **社会工程学手段仍然有效**——一个吸引人的名称可能会让你上当。
 
-## Is This Malicious?
+## 这个技能具有恶意吗？
 
-No. This is a **neutered demo version**:
-- NO commands are executed
-- NO data is collected
-- NO network requests are made
+不。这是一个 **经过修改的演示版本**：
+- 不会执行任何命令。
+- 不会收集任何数据。
+- 不会发起任何网络请求。
 
-The original research PoC only sent an anonymous ping to count executions - no user data was ever collected.
+原始的研究用例（PoC）仅发送了一个匿名 ping 请求来统计下载次数——从未收集过用户数据。
 
-## Protect Yourself
+## 如何保护自己？
 
-1. **ALWAYS read SKILL.md and source files before installing**
-2. **Don't trust download counts or stars** - they can be faked
-3. **Be suspicious of skills that seem too good to be true**
+1. **在安装之前务必阅读 SKILL.md 文件和源代码文件。**
+2. **不要轻信下载次数或评分（如星星数量）——这些数据可能被伪造。**
+3. **对那些看起来过于完美的技能要保持警惕。**
 
 ---
 
-**Research by:** [@theonejvo](https://x.com/theonejvo)
+**研究作者：** [@theonejvo](https://x.com/theonejvo)
 
-**Full writeup:** https://x.com/theonejvo/status/2015892980851474595
+**完整报告：** https://x.com/theonejvo/status/2015892980851474595

@@ -1,15 +1,14 @@
 ---
 name: websocket-hub-patterns
 model: standard
-description: Horizontally-scalable WebSocket hub pattern with lazy Redis subscriptions, connection registry, and graceful shutdown. Use when building real-time WebSocket servers that scale across multiple instances. Triggers on WebSocket hub, WebSocket scaling, connection registry, Redis WebSocket, real-time gateway, horizontal scaling.
+description: 一种支持水平扩展的WebSocket中心模式，采用懒加载的Redis订阅机制、连接管理机制以及优雅的关闭流程。适用于构建需要跨多个实例进行扩展的实时WebSocket服务器。该模式适用于WebSocket中心、WebSocket扩展、连接管理、Redis与WebSocket的集成、实时数据传输以及水平扩展等场景。
 ---
 
-# WebSocket Hub Patterns
+# WebSocket 中间件模式
 
-Production patterns for horizontally-scalable WebSocket connections with Redis-backed coordination.
+这些模式用于实现基于 Redis 协调的、可水平扩展的 WebSocket 连接。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,16 +19,16 @@ npx clawhub@latest install websocket-hub-patterns
 
 ---
 
-## When to Use
+## 适用场景
 
-- Real-time bidirectional communication
-- Chat applications, collaborative editing
-- Live dashboards with client interactions
-- Need horizontal scaling across multiple gateway instances
+- 实时双向通信
+- 聊天应用、协作编辑
+- 需要与客户端交互的实时仪表盘
+- 需要在多个网关实例之间实现水平扩展的应用
 
 ---
 
-## Hub Structure
+## 中间件结构
 
 ```go
 type Hub struct {
@@ -59,7 +58,7 @@ type Hub struct {
 
 ---
 
-## Hub Main Loop
+## 中间件主循环
 
 ```go
 func (h *Hub) Run() {
@@ -91,9 +90,9 @@ func (h *Hub) Run() {
 
 ---
 
-## Lazy Redis Subscriptions
+## 延迟订阅 Redis 数据
 
-Subscribe to Redis only when first local subscriber joins:
+仅当第一个本地订阅者加入时，才开始订阅 Redis 数据：
 
 ```go
 func (h *Hub) subscribeToChannel(conn *Connection, channel string) error {
@@ -131,7 +130,7 @@ func (h *Hub) unsubscribeFromChannel(conn *Connection, channel string) {
 
 ---
 
-## Redis Message Forwarding
+## Redis 消息转发
 
 ```go
 func (h *Hub) forwardRedisMessages(channel string, pubsub *goredis.PubSub) {
@@ -168,7 +167,7 @@ func (h *Hub) broadcastToChannel(event *Event) {
 
 ---
 
-## Connection Write Pump
+## 连接写入泵（Connection Write Pump）
 
 ```go
 func (c *Connection) writePump() {
@@ -204,7 +203,7 @@ func (c *Connection) writePump() {
 
 ---
 
-## Connection Registry for Horizontal Scaling
+## 用于水平扩展的连接注册表（Connection Registry）
 
 ```go
 type ConnectionRegistry struct {
@@ -230,7 +229,7 @@ func (r *ConnectionRegistry) HeartbeatInstance(ctx context.Context, connectionCo
 
 ---
 
-## Graceful Shutdown
+## 优雅关闭（Graceful Shutdown）
 
 ```go
 func (h *Hub) Shutdown() {
@@ -255,30 +254,30 @@ func (h *Hub) Shutdown() {
 
 ---
 
-## Decision Tree
+## 决策树
 
-| Situation | Approach |
+| 情况 | 对策 |
 |-----------|----------|
-| Single instance | Skip ConnectionRegistry |
-| Multi-instance | Enable ConnectionRegistry |
-| No subscribers to channel | Lazy unsubscribe from Redis |
-| Slow client | Close on buffer overflow |
-| Need message history | Use Redis Streams + Pub/Sub |
+| 单个实例 | 跳过连接注册表（ConnectionRegistry） |
+| 多个实例 | 启用连接注册表（ConnectionRegistry） |
+| 通道没有订阅者 | 延迟从 Redis 中取消订阅 |
+| 客户端响应缓慢 | 当缓冲区满时关闭连接 |
+| 需要消息历史记录 | 使用 Redis Streams 和 Pub/Sub 功能 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — Complete realtime dashboard guide
-- [dual-stream-architecture](../dual-stream-architecture/) — Event publishing
-- [resilient-connections](../resilient-connections/) — Connection resilience
+- **元技能：** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — 完整的实时仪表盘指南
+- [dual-stream-architecture](../dual-stream-architecture/) — 事件发布机制
+- [resilient-connections](../resilient-connections/) — 连接容错机制
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情
 
-- **NEVER block on conn.send** — Use select with default to detect overflow
-- **NEVER skip graceful shutdown** — Clients need close frames
-- **NEVER share pubsub across channels** — Each channel needs own subscription
-- **NEVER forget instance heartbeat** — Dead instances leave orphaned connections
-- **NEVER send without ping/pong** — Load balancers close "idle" connections
+- **绝对不要在 `conn.send` 方法中阻塞** — 应使用 `select` 语句并设置默认值来检测缓冲区是否已满
+- **绝对不要跳过优雅关闭流程** — 客户端需要接收关闭信号
+- **绝对不要在多个通道之间共享 Pub/Sub 订阅** — 每个通道都需要单独的订阅
+- **绝对不要忘记发送心跳信号** — 死掉的实例会导致连接处于孤立状态
+- **绝对不要在没有发送“ping/pong”信号的情况下发送数据** — 负载均衡器会关闭“空闲”的连接

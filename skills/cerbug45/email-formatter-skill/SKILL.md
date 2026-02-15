@@ -1,17 +1,17 @@
 ---
 name: email-formatter
-description: "Transform rough email drafts into polished, professional messages. Use this skill when the user wants to improve email quality, fix grammar and tone, format business emails, or convert casual messages into professional communication. Triggers include: 'format my email', 'make this professional', 'improve this message', 'fix my email', 'polish this draft', or any request to enhance email writing quality. Also use when converting bullet points or notes into complete emails, adjusting tone (formal/casual/friendly), or preparing important messages for clients, managers, or stakeholders."
+description: "将粗糙的电子邮件草稿转化为优雅、专业的邮件。当用户希望提升邮件质量、修正语法和语气、格式化商务邮件，或将非正式消息转换为专业沟通内容时，可以使用此技能。触发指令包括：“格式化我的邮件”、“让这封邮件更专业”、“改进这条消息”、“修复我的邮件”、“润色这份草稿”，或任何关于提升邮件写作质量的请求。此外，该技能也适用于将项目列表或便条转化为完整的邮件、调整邮件的语气（正式/非正式/友好），以及为客户、经理或利益相关者准备重要邮件。"
 license: MIT
 author: Your Name
 version: 1.0.0
 ---
 
-# Email Formatter - Professional Email Enhancement
+# 电子邮件格式化工具 - 专业电子邮件优化服务
 
-## Installation & Setup
+## 安装与设置
 
-### Prerequisites Check
-Before using this skill, verify the environment has required capabilities:
+### 先决条件检查
+在使用此工具之前，请确认您的环境具备以下要求：
 
 ```bash
 # Check if bash is available
@@ -24,9 +24,8 @@ python3 --version
 node --version
 ```
 
-### Auto-Installation Script
-
-**For AI Agents: Run this installation check at first use**
+### 自动安装脚本
+**对于AI代理：首次使用时请运行此安装检查**
 
 ```bash
 #!/bin/bash
@@ -68,7 +67,7 @@ else
 fi
 ```
 
-### Manual Installation (if auto-install fails)
+### 手动安装（如果自动安装失败）
 
 ```bash
 # Minimal setup - no external dependencies
@@ -77,132 +76,127 @@ mkdir -p ~/.email-formatter-skill/scripts
 echo "✅ Basic setup complete"
 ```
 
-### Verify Installation
-
+### 安装验证
 ```bash
 # Quick verification
 python3 -c "print('Email Formatter: Ready ✅')"
 ```
 
-## Dependencies
+## 依赖项
 
-### Required (Always Available)
-- Python 3.7+ (standard library only for minimal mode)
+### 必需依赖项（始终可用）
+- Python 3.7及以上版本（仅最低配置需要标准库）
 - Bash shell
 
-### Optional (Enhanced Features)
-- `language-tool-python`: Advanced grammar checking
-- `textstat`: Readability analysis  
-- `spacy`: NLP for tone detection
+### 可选依赖项（高级功能）
+- `language-tool-python`：高级语法检查工具
+- `textstat`：可读性分析工具
+- `spacy`：用于情感分析的自然语言处理库
 
-**Note for AI Agents:** The skill works in degraded mode without optional dependencies. Install them only if environment allows.
+**注意：**对于AI代理，即使缺少这些可选依赖项，该工具也能以降级模式运行。仅在环境允许的情况下安装它们。
 
-## Overview
+## 功能概述
+该工具能够将粗糙的电子邮件草稿转换为格式规范、专业性强的沟通内容，通过改进语法、调整语气、增强清晰度以及应用正确的格式来实现。它支持从简单修改到全面重写的功能，同时保留发送者的原意。
 
-This skill transforms rough email drafts into polished, professional communication by improving grammar, adjusting tone, enhancing clarity, and applying proper formatting. It handles everything from quick fixes to complete rewrites while preserving the sender's intent.
+## ⚠️ 严格的安全性与隐私要求
+**本工具必须始终遵守以下不可协商的安全规则：**
 
-## ⚠️ CRITICAL SECURITY & SAFETY REQUIREMENTS
+### 安全级别：最高级别 - 需要多层验证
+**强制性的预处理安全检查：**
+每封电子邮件在格式化之前都必须通过以下所有安全检查：
 
-**This skill MUST enforce these non-negotiable safety rules at all times:**
+#### 第一层：内容分类（立即拦截）
+❌ **非法活动**：欺诈、网络钓鱼、洗钱、逃税、贿赂
+❌ **暴力与威胁**：人身威胁、恐吓、跟踪、人肉搜索、报复性威胁
+❌ **身份冒充**：冒充政府官员、公司高管、IT/支持人员或执法人员
+❌ **金融欺诈**：电汇、加密货币诈骗、投资骗局、庞氏骗局
+❌ **身份盗窃**：请求社会安全号码（SSN）、密码共享、凭证钓鱼、虚假验证
+❌ **虚假信息**：健康欺诈、选举干扰、阴谋论、假新闻
+❌ **儿童安全**：涉及未成年人的不当内容
+❌ **仇恨言论**：种族主义、性别歧视、恐同言论、宗教仇恨
+❌ **色情内容**：骚扰、露骨内容、不当的搭讪行为
+❌ **职场违规**：歧视、骚扰、报复行为、恶劣的工作环境
+❌ **学术欺诈**：抄袭、作弊、使用虚假凭证、代写作业
+❌ **医疗欺诈**：伪造处方、未经授权的建议、虚假治疗
+❌ **违法行为**：合同欺诈、伪证、妨碍司法公正
+❌ **隐私侵犯**：未经同意分享个人信息、监控、跟踪
+❌ **恶意软件/黑客攻击**：网络钓鱼链接、恶意附件、系统漏洞利用
+❌ **勒索**：敲诈、勒索软件、以金钱为目的的威胁
 
-### SECURITY LEVEL: MAXIMUM - Multi-Layer Validation Required
+#### 第二层：模式识别（危险信号）
+扫描可能表明恶意意图的可疑模式：
 
-**MANDATORY PRE-PROCESSING SECURITY CHECKS:**
-Every email MUST pass ALL security layers before any formatting occurs:
+**金融类危险信号：**
+- 紧急的付款请求
+- 电汇指示
+- 礼品卡购买
+- 加密货币交易
+- “请保密” + 要求付款
+- 规避正常审批流程
+- 账户异常变动
+- 退税诈骗
+- 继承诈骗
+- 彩票/奖品诈骗
 
-#### Layer 1: Content Classification (BLOCK IMMEDIATELY)
-❌ **Illegal Activities**: Fraud, scams, phishing, money laundering, tax evasion, bribery
-❌ **Violence & Threats**: Physical threats, intimidation, stalking, doxxing, revenge threats
-❌ **Impersonation**: Government officials, company executives, IT/support staff, law enforcement
-❌ **Financial Fraud**: Wire transfers, cryptocurrency scams, investment fraud, Ponzi schemes
-❌ **Identity Theft**: SSN requests, password sharing, credential phishing, fake verification
-❌ **Misinformation**: Health fraud, election interference, conspiracy theories, fake news
-❌ **Child Safety**: ANY content involving minors in inappropriate context
-❌ **Hate Speech**: Racism, sexism, homophobia, religious hatred, ethnic slurs
-❌ **Sexual Content**: Harassment, explicit content, unwanted advances, grooming
-❌ **Workplace Violations**: Discrimination, harassment, retaliation, hostile environment
-❌ **Academic Fraud**: Plagiarism, cheating, fake credentials, assignment ghostwriting
-❌ **Medical Fraud**: Fake prescriptions, unlicensed advice, miracle cures, dangerous treatments
-❌ **Legal Violations**: Contract fraud, perjury, witness tampering, obstruction
-❌ **Privacy Violations**: Sharing private info without consent, surveillance, stalking
-❌ **Malware/Hacking**: Phishing links, malicious attachments, system exploits
-❌ **Extortion**: Blackmail, ransomware, threats for money, coercion
+**权威冒充类危险信号：**
+- “我是来自IT/人力资源/法律/管理部门的”
+- “CEO需要您……”
+- “[权威机构]的紧急请求”
+- “请勿告知他人”
+- 规避电子邮件/域名验证
+- 来自上级的异常请求
+- 虚假的紧急情况
 
-#### Layer 2: Pattern Recognition (RED FLAGS)
-Scan for suspicious patterns that indicate malicious intent:
+**凭证收集类危险信号：**
+- “请验证您的密码”
+- “确认您的账户”
+- “点击以防止账户被暂停”
+- 检测到异常登录尝试
+- 链接到登录页面的链接
+- 虚假的安全警告
+- 账户过期警告
 
-**Financial Red Flags:**
-- Urgent payment requests
-- Wire transfer instructions
-- Gift card purchases
-- Cryptocurrency transactions
-- "Keep this confidential" + money
-- Bypassing normal approval process
-- Unusual account changes
-- Tax refund scams
-- Inheritance scams
-- Lottery/prize scams
+**社会工程类危险信号：**
+- 人为制造的紧迫感
+- 情感操控
+- 似乎好得令人难以置信的提议
+- 要求保密
+- 发件人行为异常
+- 施加压力的沟通方式
+- 基于恐惧的言论
 
-**Authority Impersonation Red Flags:**
-- "I'm from IT/HR/Legal/Management"
-- "CEO needs you to..."
-- "Urgent request from [authority]"
-- "Don't tell anyone"
-- Bypassing email/domain verification
-- Unusual requests from superiors
-- Fake emergency scenarios
+#### 第三层：情感与语气分析（警告或拦截）
+⚠️ **攻击性/敌对性**：侮辱性、贬低性、威胁性语言
+⚠️ **操控性**：利用愧疚感、情感操控、精神操控
+⚠️ **强制性**：利用权力不平衡进行胁迫
+⚠️ **欺骗性**：半真半假的信息、误导性陈述、隐瞒事实
+⚠️ **歧视性**：基于受保护特征的表达
+⚠️ **报复性**：因受保护行为而进行报复
 
-**Credential Harvesting Red Flags:**
-- "Verify your password"
-- "Confirm your account"
-- "Click to prevent suspension"
-- "Unusual login detected"
-- Links to login pages
-- Fake security alerts
-- Account expiration warnings
+#### 第四层：上下文验证（确认合法性）
+✓ **发送者与接收者的关系**：这与他们的正常沟通方式一致吗？
+✓ **请求的合理性**：这是一个正常的业务请求吗？
+✓ **沟通渠道**：应该通过电子邮件还是面对面/电话进行？
+✓ **紧迫性**：为什么这么紧急？这种紧迫性合理吗？
+✓ **信息的敏感性**：这些信息适合通过电子邮件发送吗？
+✓ **授权**：发送者是否有权限提出这样的请求？
 
-**Social Engineering Red Flags:**
-- Artificial urgency
-- Emotional manipulation
-- Too good to be true
-- Requests for secrecy
-- Unusual sender behavior
-- Pressure tactics
-- Fear-based messaging
+#### 第五层：隐私与数据保护（遵守GDPR/CCPA法规）
+🔒 **个人身份信息（PII）检测**：姓名、地址、电话号码、电子邮件地址、社会安全号码（SSN）、出生日期（DOB）、照片
+🔒 **财务数据**：信用卡信息、银行账户信息、税务识别号、薪资信息
+🔒 **健康数据**：医疗记录、诊断结果、处方信息、HIPAA相关数据
+🔒 **凭证信息**：密码、API密钥、令牌、安全问题相关信息
+🔒 **专有数据**：商业机密、保密业务信息、保密协议（NDA）相关内容
+🔒 **儿童数据**：任何关于18岁以下个人的数据
 
-#### Layer 3: Sentiment & Tone Analysis (WARN OR BLOCK)
-⚠️ **Aggressive/Hostile**: Insulting, demeaning, threatening language
-⚠️ **Manipulative**: Guilt-tripping, gaslighting, emotional blackmail
-⚠️ **Coercive**: Power imbalance exploitation, quid pro quo
-⚠️ **Deceptive**: Half-truths, misleading statements, omissions
-⚠️ **Discriminatory**: Based on protected characteristics
-⚠️ **Retaliatory**: Punishment for protected actions
+**处理措施：**如果检测到个人身份信息（PII），需警告用户：
+- 电子邮件默认未加密
+- 存在数据泄露风险
+- 需遵守GDPR、CCPA、HIPAA等法规
+- 建议使用安全的替代方式（加密电子邮件、安全门户、面对面沟通）
 
-#### Layer 4: Context Validation (VERIFY LEGITIMACY)
-✓ **Sender-Recipient Relationship**: Does this match their normal communication?
-✓ **Request Reasonability**: Is this a normal business request?
-✓ **Communication Channel**: Should this be email or in-person/phone?
-✓ **Timing**: Why is this urgent? Is urgency justified?
-✓ **Information Sensitivity**: Should this data be in email?
-✓ **Authorization**: Does sender have authority for this request?
-
-#### Layer 5: Privacy & Data Protection (GDPR/CCPA COMPLIANCE)
-🔒 **PII Detection**: Name, address, phone, email, SSN, DOB, photos
-🔒 **Financial Data**: Credit cards, bank accounts, tax IDs, salary info
-🔒 **Health Data**: Medical records, diagnoses, prescriptions, HIPAA data
-🔒 **Credentials**: Passwords, API keys, tokens, security questions
-🔒 **Proprietary Data**: Trade secrets, confidential business info, NDA material
-🔒 **Children's Data**: ANY data about individuals under 18
-
-**ACTION REQUIRED:** If PII detected, warn user about:
-- Email is not encrypted by default
-- Data breach risks
-- Regulatory compliance (GDPR, CCPA, HIPAA)
-- Suggest secure alternatives (encrypted email, secure portal, in-person)
-
-### ZERO TOLERANCE BLOCKING - Immediate Rejection
-
-If ANY of these detected, **REFUSE IMMEDIATELY WITHOUT FORMATTING**:
+### 绝不容忍的拦截行为
+如果检测到任何违规内容，**立即拒绝发送，且不进行任何格式化处理**：
 
 ```python
 ZERO_TOLERANCE_PATTERNS = [
@@ -240,9 +234,8 @@ ZERO_TOLERANCE_PATTERNS = [
 ]
 ```
 
-### Enhanced Security Response Protocol
-
-When prohibited content detected:
+### 加强安全响应机制
+当检测到禁止内容时：
 
 ```
 1. STOP - Do not process further
@@ -253,7 +246,7 @@ When prohibited content detected:
 6. REPORT - Flag for review if severe (threats, child safety, fraud)
 ```
 
-**Example Response Template:**
+**示例回复模板：**
 ```
 🛑 SECURITY BLOCK: Email Formatting Refused
 
@@ -274,11 +267,10 @@ THIS SKILL CANNOT:
 - Enable harassment or threats
 ```
 
-## Helper Scripts & Tools
+## 辅助脚本与工具
+该工具包含供AI代理使用的实用脚本。请将这些脚本保存在`~/.email-formatter-skill/scripts/`目录下：
 
-The skill includes utility scripts for AI agents to use. Create these in `~/.email-formatter-skill/scripts/`:
-
-### 1. Grammar Checker (`grammar_check.py`)
+### 1. 语法检查器 (`grammar_check.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -335,7 +327,7 @@ if __name__ == "__main__":
         print("✅ No basic issues found")
 ```
 
-### 2. Tone Analyzer (`tone_analyzer.py`)
+### 2. 语气分析器 (`tone_analyzer.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -424,7 +416,7 @@ if __name__ == "__main__":
         print("⚠️  WARNING: Excessive capitalization detected")
 ```
 
-### 3. Readability Scorer (`readability.py`)
+### 3. 可读性评分器 (`readability.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -523,7 +515,7 @@ if __name__ == "__main__":
         print("💡 TIP: Break long sentences into shorter ones")
 ```
 
-### 4. Security Scanner (`security_scan.py`)
+### 4. 安全扫描器 (`security_scan.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -906,10 +898,8 @@ if __name__ == "__main__":
     sys.exit(report['threat_level'])
 ```
 
-## Usage Workflow for AI Agents
-
-**MANDATORY SECURITY-FIRST WORKFLOW:**
-
+## AI代理的使用流程
+**强制性的安全流程：**
 ```bash
 #!/bin/bash
 # Email Formatter - Secure Processing Pipeline
@@ -1042,15 +1032,14 @@ echo "================================================"
 rm -rf "$TEMP_DIR"
 ```
 
-### Critical Enforcement Rules for AI Agents
+### AI代理必须严格遵守的安全规则
+**切勿跳过任何安全扫描步骤：**
+- 在进行任何格式化操作之前必须进行安全扫描
+- 格式化完成后也必须进行安全扫描
+- 两次扫描都必须通过（退出代码为0），邮件才能被发送
+- 如果退出代码为1、2或3，则必须停止整个流程
 
-**NEVER SKIP SECURITY SCANS:**
-- Security scan must run BEFORE any formatting
-- Security scan must run AFTER formatting
-- Both scans must pass (exit 0) for email to be delivered
-- Exit codes 1, 2, 3 MUST stop the pipeline
-
-**DOUBLE-CHECK MECHANISM:**
+**双重检查机制：**
 ```python
 # Before presenting formatted email to user
 def final_validation(formatted_email):
@@ -1079,7 +1068,7 @@ def final_validation(formatted_email):
     }
 ```
 
-**Logging & Audit Trail (Privacy-Safe):**
+**日志记录与审计追踪（保护用户隐私）：**
 ```python
 # Log violations only (NO content)
 def log_security_event(violation_type, severity, timestamp):
@@ -1098,45 +1087,40 @@ def log_security_event(violation_type, severity, timestamp):
     # This helps improve security detection
 ```
 
-## When to Use This Skill
+## 适用场景
+当用户需要以下操作时，请使用此工具：
+- 修正电子邮件中的语法错误、拼写错误和标点符号问题
+- 调整语气（使其更加正式、随意、友好或坚定）
+- 将杂乱无章的草稿整理成条理清晰的邮件
+- 将要点或笔记转换成完整的电子邮件
+- 添加专业的问候语和结尾语
+- 提高邮件的清晰度和简洁性
+- 为高管、客户或利益相关者准备重要邮件
 
-Use this skill when the user needs to:
-- Fix grammar, spelling, and punctuation in emails
-- Adjust tone (make more formal, casual, friendly, or assertive)
-- Structure messy drafts into clear, organized messages
-- Convert bullet points or notes into complete emails
-- Add professional greetings and closings
-- Improve clarity and conciseness
-- Prepare important messages for executives, clients, or stakeholders
+## 核心原则
+1. **保留原意**：不要改变邮件的核心内容或事实，仅改进表达方式
+2. **适应上下文**：根据接收者和情境调整邮件格式的正式程度
+3. **增强清晰度**：消除歧义，同时保持自然的语气
+4. **遵循专业标准**：运用商务写作最佳实践
+5. **考虑文化差异**：尊重专业规范和沟通习惯
 
-## Core Principles
+## 格式化流程
+### 第一步：分析草稿
+在格式化之前，请评估以下内容：
+- **接收者关系**：是上司、同事、客户、供应商、团队成员还是外部人员？
+- **邮件目的**：是请求、更新信息、介绍、跟进、反馈还是道歉？
+- **所需的语气**：正式的、半正式的、随意的、友好的还是坚定的？
+- **紧急程度**：是常规邮件、重要邮件、紧急邮件还是敏感邮件？
+- **当前存在的问题**：是否存在语法错误、结构混乱、语气不当或上下文缺失？
 
-1. **Preserve Intent**: Never change the core message or facts - only improve how it's communicated
-2. **Match Context**: Adjust formality based on recipient and situation
-3. **Enhance Clarity**: Remove ambiguity while maintaining natural voice
-4. **Professional Standard**: Apply business writing best practices
-5. **Cultural Awareness**: Consider professional norms and communication styles
+### 第二步：进行优化
+**语法与表达**：
+- 修正拼写错误、标点符号错误和语法错误
+- 确保主语和动词一致，时态使用正确
+- 删除冗长的句子和片段
+- 修改逗号使用不当或修饰语位置错误的部分
 
-## Formatting Process
-
-### Step 1: Analyze the Draft
-
-Before formatting, assess:
-- **Recipient relationship**: Boss, colleague, client, vendor, team, external?
-- **Purpose**: Request, update, introduction, follow-up, feedback, apology?
-- **Tone needed**: Formal, semi-formal, casual, friendly, assertive, diplomatic?
-- **Urgency**: Routine, important, urgent, sensitive?
-- **Current issues**: Grammar errors, unclear structure, wrong tone, missing context?
-
-### Step 2: Apply Improvements
-
-**Grammar & Mechanics:**
-- Fix spelling, punctuation, and grammatical errors
-- Correct subject-verb agreement and tense consistency
-- Remove run-on sentences and fragments
-- Fix comma splices and misplaced modifiers
-
-**Structure & Organization:**
+**结构与组织**：
 ```
 Standard Email Structure:
 1. Greeting (appropriate to relationship)
@@ -1148,55 +1132,53 @@ Standard Email Structure:
 7. Signature
 ```
 
-**Tone Adjustments:**
-
-*Too Casual → Professional:*
+**语气调整**：
+*过于随意 → 修正为更正式的语气*
 ```
 Before: "Hey! Just wanted to check if u got my last email lol"
 After: "Hi Sarah, I wanted to follow up on my previous email from Tuesday. Please let me know if you need any additional information."
 ```
 
-*Too Formal → Friendly:*
+*过于正式 → 修正为更友好的语气*
 ```
 Before: "I am writing to inquire whether you have completed the aforementioned task."
 After: "Hi John, I wanted to check in on the status of the marketing report. How's it coming along?"
 ```
 
-*Too Aggressive → Diplomatic:*
+*过于攻击性 → 修正为更外交化的语气*
 ```
 Before: "You need to fix this immediately. This is unacceptable."
 After: "I noticed an issue that requires urgent attention. Could we prioritize resolving this today? I'm happy to help if needed."
 ```
 
-**Clarity Enhancements:**
-- Replace vague phrases with specific language
-- Break long paragraphs into digestible chunks
-- Use bullet points for lists or multiple items
-- Add context where assumed knowledge might be missing
-- Remove redundancy and filler words
+**清晰度提升**：
+- 用具体语言替换模糊的表达
+- 将长段落拆分成易于理解的段落
+- 对于列表或多项内容，使用项目符号
+- 在可能缺失背景信息的地方提供补充说明
+- 删除冗余和多余的词语
 
-### Step 3: Polish Details
+### 第三步：完善细节
+**主题行**（如果提供或需要的话）：
+- 保持字数在50个字符以内
+- 表达具体且具有行动导向
+- 注意大小写的使用（不要全部大写）
+- 例如：
+  - “Q1预算审查会议 - 3月15日”
+  - “关于项目进度的快速咨询”
+  - “跟进：网站重新设计提案”
 
-**Subject Line** (if provided or needed):
-- Keep it under 50 characters
-- Make it specific and actionable
-- Use sentence case (not all caps)
-- Examples:
-  - "Q1 Budget Review Meeting - March 15"
-  - "Quick question about project timeline"
-  - "Following up: Website redesign proposal"
+**问候语**：
+- 正式场合：”亲爱的Smith博士”，或“亲爱的招聘经理，”
+- 专业场合：“嗨，Jennifer”，或“大家好，”
+- 随意场合：“嘿，Alex”，或“大家好，”
 
-**Greetings:**
-- Formal: "Dear Dr. Smith," or "Dear Hiring Manager,"
-- Professional: "Hi Jennifer," or "Hello Team,"
-- Casual: "Hey Alex," or "Hi everyone,"
+**结尾语**：
+- 正式场合：“此致”，“敬上”，“祝好，”
+- 专业场合：“Best”，“谢谢”，“期待您的回复，”
+- 随意场合：“Cheers”，“回头聊”，“祝你有美好的一天，”
 
-**Closings:**
-- Formal: "Sincerely," "Respectfully," "Best regards,"
-- Professional: "Best," "Thanks," "Looking forward to hearing from you,"
-- Casual: "Cheers," "Talk soon," "Have a great day,"
-
-**Signature Block:**
+**签名部分**：
 ```
 Best regards,
 [Name]
@@ -1205,9 +1187,8 @@ Best regards,
 [Contact Info - if external]
 ```
 
-## Common Email Scenarios
-
-### 1. Request Email
+## 常见邮件场景
+### 1. 请求邮件
 ```
 Structure:
 - Greeting
@@ -1219,7 +1200,7 @@ Structure:
 - Closing
 ```
 
-### 2. Follow-Up Email
+### 2. 追进邮件
 ```
 Structure:
 - Reference previous communication
@@ -1229,7 +1210,7 @@ Structure:
 - Closing
 ```
 
-### 3. Bad News Email
+### 3. 坏消息邮件
 ```
 Structure:
 - Direct but empathetic opening
@@ -1239,7 +1220,7 @@ Structure:
 - End on positive note if possible
 ```
 
-### 4. Introduction Email
+### 4. 介绍邮件
 ```
 Structure:
 - Who you are and connection
@@ -1249,93 +1230,83 @@ Structure:
 - Professional closing
 ```
 
-## Best Practices
+## 最佳实践
+### 应该做到：
+✅ 保持邮件简洁（尽可能控制在200字以内）
+✅ 使用主动语态（例如：“我会发送”而不是“它将被发送”）
+✅ 用空格分隔文本
+✅ 将最重要的信息放在第一段
+✅ 校对拼写和自动纠错
+✅ 确保“回复所有人”按钮的使用得当
+✅ 明确说明下一步行动或需要采取的措施
+✅ 保持与发送者的语气一致
 
-### DO:
-✅ Keep emails concise (under 200 words when possible)
-✅ Use active voice ("I will send" vs "It will be sent")
-✅ Break up text with white space
-✅ Put most important info in first paragraph
-✅ Proofread for typos and auto-correct errors
-✅ Use "Reply All" judiciously
-✅ Include clear next steps or calls to action
-✅ Match the sender's energy level
+### 不应该这样做：
+❌ 全部使用大写（显得生硬）
+❌ 过度使用感叹号
+❌ 在一封邮件中包含多个主题（如果内容复杂）
+❌ 对外部接收者使用行业术语
+❌ 在情绪激动时撰写邮件（这可能会引起误解）
+❌ 假设接收者能理解邮件中的语气（讽刺或幽默可能无法被正确理解）
+❌ 忘记在邮件中提及附件
 
-### DON'T:
-❌ Use all caps (seems like shouting)
-❌ Overuse exclamation marks
-❌ Include multiple topics in one email (if complex)
-❌ Use jargon with external recipients
-❌ Write when emotional (flag if email seems angry)
-❌ Assume tone translates (sarcasm, humor can fail)
-❌ Forget attachments referenced in text
-❌ Change factual content or commitments
+## 语气指南
+**正式场合（针对高管、客户、初次联系）：**
+- 使用完整的句子
+- 使用专业词汇
+- 使用正确的称谓和全名
+- 用“我会……”而非“你能……”
+- 用“请让我知道”而非“让我了解”
 
-## Tone Guide
+**半正式场合（针对同事、常规联系）：**
+- 语言风格自然但保持专业
+- 可以使用缩写
+- 使用名字而非“您能……”
+- 语气友好但保持尊重
 
-**Formal (executives, clients, first contact):**
-- Complete sentences
-- Professional vocabulary
-- Proper titles and full names
-- "I would appreciate" vs "Can you"
-- "Please let me know" vs "Let me know"
+**随意场合（针对关系亲密的同事、内部团队）：**
+- 语言轻松
+- 使用缩写和非正式表达
+- 问候语简短
+- 可以使用表情符号（如果文化允许）
 
-**Semi-Formal (colleagues, regular contacts):**
-- Conversational but professional
-- Contractions are fine
-- First names acceptable
-- "Could you" vs "Can you"
-- Friendly but respectful
+## 质量检查清单
+在发送格式化后的邮件之前，请确认：
+- [ ] **安全第一**：内容符合所有安全要求
+- [ ] **无禁止内容**：未违反上述任何安全规则
+- [ ] **符合法律法规**：邮件内容不包含欺诈、骚扰或违法内容
+- [ ] **符合道德标准**：信息真实且恰当
+- [ ] 语法和拼写正确
+- [ ] 语气符合接收者和情境
+- [ ] 结构清晰合理
+- [ ] 关键信息易于查找
+- [ ] 行动指示明确
+- [ ] 开头和结尾恰当
+- [ ] 无歧义或混淆
+- [ ] 长度适中（简洁但信息完整）
+- [ ] 使用了专业的格式
+- [ ] 保留了原始的意图
+- [ ] 未泄露敏感信息
+- [ ] **隐私保护**：未不当暴露敏感数据
 
-**Casual (close colleagues, internal teams):**
-- Relaxed language
-- Contractions and informal phrases
-- Quick greetings
-- Can be brief
-- Emoji okay if culturally appropriate
+## 危险信号检测
+**始终注意以下警告信号：**
+- 请求金钱、凭证或个人信息
+- 紧急请求与财务请求同时出现
+- 伪装成权威人士的语言（例如：“我是来自……”）
+- 威胁或最后通牒
+- 要求接收者保密沟通内容
+- 规避正常流程
+- 发件人信息不一致
+- 鼓励接收者点击可疑链接
+- 在看似官方的邮件中存在语法/拼写错误
+- 显得好得令人难以置信的优惠
+- 情感操控手段
+- 歧视性语言
+- 对受保护群体的敌对或攻击性言论
 
-## Quality Checklist
-
-Before presenting the formatted email, verify:
-- [ ] **SECURITY FIRST**: Content passes all safety requirements
-- [ ] **No prohibited content**: Checked against all safety rules above
-- [ ] **Legal compliance**: No fraudulent, harassing, or illegal content
-- [ ] **Ethical standards**: Message is honest and appropriate
-- [ ] Grammar and spelling are correct
-- [ ] Tone matches relationship and context
-- [ ] Structure is clear and logical
-- [ ] Key information is easy to find
-- [ ] Call to action is clear (if needed)
-- [ ] Opening and closing are appropriate
-- [ ] No ambiguity or confusion
-- [ ] Length is appropriate (concise but complete)
-- [ ] Professional formatting applied
-- [ ] Original intent is preserved
-- [ ] **Privacy check**: No sensitive data exposed inappropriately
-- [ ] **Reputation check**: Sender won't regret sending this
-
-## Red Flag Detection
-
-**Always scan for these warning signs:**
-- Requests for money, credentials, or personal information
-- Urgency combined with financial requests
-- Impersonation language ("I'm calling from...", "This is [authority]...")
-- Threats or ultimatums
-- Asking recipient to keep communication secret
-- Bypassing normal procedures
-- Inconsistent sender information
-- Requests to click suspicious links
-- Grammar/spelling errors in supposedly official communication
-- Too-good-to-be-true offers
-- Emotional manipulation tactics
-- Discriminatory language
-- False information
-- Hostile or aggressive tone toward protected groups
-
-## Incident Response Protocol
-
-**When Critical Violations Detected (Threat Level 3):**
-
+## 事件响应机制
+**当检测到严重违规行为（威胁等级3）时：**
 ```
 IMMEDIATE ACTIONS:
 1. BLOCK - Refuse to format email
@@ -1350,7 +1321,7 @@ IMMEDIATE ACTIONS:
    - Illegal activities
 ```
 
-**Response Template for Critical Violations:**
+**严重违规行为的回复模板：**
 ```
 🚨 CRITICAL SECURITY VIOLATION DETECTED
 
@@ -1387,9 +1358,8 @@ This email has been blocked to protect you and recipients.
 For questions about this decision, review security guidelines.
 ```
 
-## Security Metrics & Monitoring
-
-**Track these metrics (content-free):**
+## 安全指标与监控
+**记录以下指标（不包含具体内容）：**
 ```python
 SECURITY_METRICS = {
     'total_scans': 0,
@@ -1413,17 +1383,15 @@ SECURITY_METRICS = {
 }
 ```
 
-**Regular Security Audits:**
-- Review blocked emails (patterns only, no content)
-- Update detection patterns based on new threats
-- Tune sensitivity to reduce false positives
-- Improve educational messages
-- Add new threat categories as they emerge
+**定期安全审计：**
+- 查看被拦截的邮件（仅分析模式，不查看内容）
+- 根据新出现的威胁更新检测规则
+- 调整检测灵敏度以减少误报
+- 定期更新教育性提示信息
+- 随着新威胁的出现添加新的检测类别
 
-## Privacy & Data Protection Compliance
-
-**GDPR/CCPA/HIPAA Compliance:**
-
+## 隐私与数据保护合规性
+**遵守GDPR/CCPA/HIPAA法规：**
 ```python
 DATA_PROTECTION_RULES = {
     'data_minimization': 'Process only what's needed for formatting',
@@ -1436,15 +1404,14 @@ DATA_PROTECTION_RULES = {
 }
 ```
 
-**User Rights:**
-- Right to explanation: User can ask why email was blocked
-- Right to appeal: User can dispute false positives
-- Right to deletion: No content retention
-- Right to transparency: Clear security policies
+**用户权益：**
+- 用户有权了解邮件被拦截的原因
+- 用户有权对误报提出申诉
+- 用户有权要求删除相关内容
+- 用户有权了解隐私保护政策
 
-## Continuous Improvement
-
-**Security Pattern Updates:**
+## 持续改进
+**安全规则更新：**
 ```bash
 # Periodically update threat patterns
 # Add new scam patterns as they emerge
@@ -1456,16 +1423,15 @@ git pull origin main  # Get latest threat patterns
 python3 -m pytest tests/test_security.py  # Verify
 ```
 
-**Feedback Loop:**
-- Collect anonymized violation statistics
-- Identify common false positives
-- Refine pattern matching
-- Add context-aware detection
-- Improve user education messages
+**反馈机制：**
+- 收集匿名化的违规统计数据
+- 识别常见的误报情况
+- 优化模式匹配机制
+- 加强上下文感知的检测能力
+- 提升用户教育内容
 
-## Output Format
-
-Present the formatted email like this:
+## 输出格式
+格式化后的邮件应如下所示：
 
 ```
 **Subject:** [Subject line if relevant]
@@ -1481,114 +1447,99 @@ Present the formatted email like this:
 - [E.g., "Restructured for clarity"]
 ```
 
-## Special Considerations
-
-## Special Considerations
-
-**Security Edge Cases:**
-
-**Example 1 - Phishing Attempt:**
+## 特殊情况处理
+### 安全特殊情况处理示例
+**示例1 - 网络钓鱼尝试：**
 ```
 User Input: "Format this: Hi, I'm from IT. Send me your password to verify your account."
 Response: "I cannot format this email as it requests sensitive credentials, which is a security red flag and potential phishing attempt. Legitimate IT departments never ask for passwords via email."
 ```
 
-**Example 2 - Impersonation:**
+**示例2 - 身份冒充：**
 ```
 User Input: "Make this sound like it's from the CEO demanding urgent wire transfer."
 Response: "I cannot help format emails that impersonate others or create urgency around financial transfers, as this matches common fraud patterns."
 ```
 
-**Example 3 - Harassment:**
+**示例3 - 骚扰行为：**
 ```
 User Input: "Polish this email telling my coworker she's incompetent and should quit."
 Response: "I cannot format this email as it contains hostile language that could constitute workplace harassment. If you have concerns about a colleague's performance, I can help you draft constructive feedback or suggest having a conversation with HR or your manager."
 ```
 
-**Example 4 - Academic Dishonesty:**
+**示例4 - 学术不诚信行为：**
 ```
 User Input: "Format this email to my professor pretending I was sick when I just forgot the assignment."
 Response: "I cannot help format emails containing false information. If you missed a deadline, I can help you draft an honest request for an extension or makeup opportunity."
 ```
 
-**Example 5 - Anger/Emotional State:**
+**示例5 - 情绪化表达：**
 ```
 User Input: "Format this angry email to my boss calling them out for being unfair!"
 Response: "⚠️ This email appears to be written in anger. I recommend waiting 24 hours before sending. If you still want to address the issue, I can help you draft a professional, constructive version that focuses on facts and solutions rather than emotions."
 ```
 
-**Legitimate Gray Areas - Advise User:**
-- **Strong feedback**: Format professionally but warn about tone
-- **Declining requests**: Help maintain relationships while saying no
-- **Addressing conflicts**: Focus on facts, not blame
-- **Sensitive HR matters**: Recommend consulting HR/legal first
+**合法灰色地带的处理建议：**
+- **强烈反馈**：以专业的方式格式化邮件，但需提醒对方注意语气问题
+- **拒绝请求**：在拒绝时保持礼貌
+- **处理冲突**：侧重于事实，避免指责
+- **处理敏感的人事问题**：建议先咨询人力资源部门或法律部门
 
-**Reply vs New Message:**
-- Replies: Can be more concise, less formal
-- New messages: Need more context and structure
+**回复与新建邮件的区别**
+- 回复邮件可以更简洁、语气更随意
+- 新建邮件则需要提供更多背景信息和支持结构
 
-**Group Emails:**
-- Address all recipients appropriately
-- Be clear about who needs to take action
-- Avoid "Reply All" clutter
+**群发邮件：**
+- 正确处理所有接收者
+- 明确指出需要采取行动的人
+- 避免使用“回复所有人”导致信息混乱
 
-**Sensitive Topics:**
-- Be extra diplomatic
-- Acknowledge feelings/concerns
-- Stick to facts
-- Offer to discuss in person/call if needed
+**敏感话题处理：**
+- 使用更加外交化的语言
+- 表达时要考虑对方的感受和顾虑
+- 陈述事实
+- 如有必要，建议面对面沟通或通过电话联系
 
-**International Recipients:**
-- Avoid idioms and colloquialisms
-- Use clear, direct language
-- Be aware of cultural communication differences
-- Spell out dates (avoid 3/4/24 format ambiguity)
+**国际接收者：**
+- 避免使用俚语和口语化表达
+- 使用清晰直接的语言
+- 注意文化差异
+- 明确日期的表述方式（避免使用模糊的日期格式）
 
-**Mobile Email:**
-- Front-load most important info
-- Use shorter paragraphs
-- Limit to one topic if possible
-- Clear subject lines are crucial
+**常见错误避免**
+1. **以道歉开头**：例如“很抱歉打扰您” → “希望这封邮件能让您感到愉快”
+2. **隐藏重点**：将主要观点放在第一段
+3. **问题过多**：每封邮件中不要包含太多问题
+4. **过度使用被动语态**：例如“报告已完成” → “我已经完成了报告”
+5. **后续步骤不明确**：务必明确下一步行动
+6. **解释过多**：简洁表达，避免过度解释
+7. **遗漏背景信息**：假设接收者不记得之前的讨论内容
+8. **语气不一致**：在整个邮件中保持一致的语气
 
-## Common Mistakes to Avoid
+**高级技巧**
+**BLUF法则**（先陈述结论或请求）：
+- 先说明结论或请求，再提供支持细节
+- 适合忙碌的高管使用
 
-1. **Starting with apologies**: "Sorry to bother you" → "I hope this email finds you well"
-2. **Buried lede**: Put main point in first paragraph
-3. **Too many questions**: Limit to 1-2 per email
-4. **Passive voice overuse**: "The report was completed" → "I completed the report"
-5. **Unclear next steps**: Always specify what happens next
-6. **Over-explaining**: Be concise; don't over-justify
-7. **Missing context**: Assume recipient doesn't remember previous discussion
-8. **Inconsistent tone**: Maintain same formality throughout
+**信息分段处理**：
+- 对于长邮件使用小标题
+- 使用项目符号列出要点
+- 用粗体突出关键信息
 
-## Advanced Techniques
+**行动指示的清晰表达**：
+- 例如：“请在周五下班前审阅并批准”
+- “如果您有任何问题，请告诉我”
+- “我会在周四之前发送草稿以获取您的反馈”
 
-**The BLUF Method** (Bottom Line Up Front):
-- State conclusion/request first
-- Provide supporting details after
-- Ideal for busy executives
+**缓和请求的语气**：
+- 例如：“您能……吗？” vs “您能否……？”
+- “我在想……” vs “我需要……”
+- “如果可能的话……” vs “请您……”
 
-**Chunking Information:**
-- Use subheadings for long emails
-- Bullet points for lists
-- Bold key phrases for scanning
+**版本历史**
+- v1.0.0（2024年）：初始版本，具备基本格式化功能
 
-**Call to Action Clarity:**
-- "Please review and approve by Friday EOD"
-- "Let me know if you have questions"
-- "I'll send the draft by Thursday for your feedback"
+## 许可证
+MIT许可证 - 免费使用和修改
 
-**Softening Requests:**
-- "Would you be able to..." vs "Can you..."
-- "I was wondering if..." vs "I need..."
-- "If possible..." vs "Please..."
-
-## Version History
-- v1.0.0 (2024): Initial release with core formatting capabilities
-
-## License
-MIT License - Free to use and modify
-
----
-
-**Pro Tip for Users**: For best results, provide context about the recipient relationship and email purpose. The more context, the better the skill can match the appropriate tone and structure.
+**用户提示**：为了获得最佳效果，请提供关于接收者关系和邮件目的的详细信息。提供的背景信息越详细，该工具就能更好地调整邮件的语气和格式。

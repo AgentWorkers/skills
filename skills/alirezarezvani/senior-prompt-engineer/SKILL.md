@@ -1,29 +1,29 @@
 ---
 name: senior-prompt-engineer
-description: This skill should be used when the user asks to "optimize prompts", "design prompt templates", "evaluate LLM outputs", "build agentic systems", "implement RAG", "create few-shot examples", "analyze token usage", or "design AI workflows". Use for prompt engineering patterns, LLM evaluation frameworks, agent architectures, and structured output design.
+description: 此技能适用于以下场景：用户请求“优化提示语”、“设计提示模板”、“评估大型语言模型（LLM）的输出”、“构建智能代理系统”、“实现基于检索的生成（RAG）技术”、“创建少量样本数据”、“分析令牌使用情况”或“设计人工智能工作流程”。该技能可用于提示工程模式、LLM评估框架、智能代理架构以及结构化输出的设计。
 ---
 
-# Senior Prompt Engineer
+# 高级提示工程师
 
-Prompt engineering patterns, LLM evaluation frameworks, and agentic system design.
+提示工程模式、大型语言模型（LLM）评估框架以及代理系统设计。
 
-## Table of Contents
+## 目录
 
-- [Quick Start](#quick-start)
-- [Tools Overview](#tools-overview)
-  - [Prompt Optimizer](#1-prompt-optimizer)
-  - [RAG Evaluator](#2-rag-evaluator)
-  - [Agent Orchestrator](#3-agent-orchestrator)
-- [Prompt Engineering Workflows](#prompt-engineering-workflows)
-  - [Prompt Optimization Workflow](#prompt-optimization-workflow)
-  - [Few-Shot Example Design](#few-shot-example-design-workflow)
-  - [Structured Output Design](#structured-output-design-workflow)
-- [Reference Documentation](#reference-documentation)
-- [Common Patterns Quick Reference](#common-patterns-quick-reference)
+- [快速入门](#quick-start)
+- [工具概述](#tools-overview)
+  - [提示优化器](#1-prompt-optimizer)
+  - [RAG 评估器](#2-rag-evaluator)
+  - [代理编排器](#3-agent-orchestrator)
+- [提示工程工作流程](#prompt-engineering-workflows)
+  - [提示优化工作流程](#prompt-optimization-workflow)
+  - [少量样本示例设计](#few-shot-example-design-workflow)
+  - [结构化输出设计](#structured-output-design-workflow)
+- [参考文档](#reference-documentation)
+- [常见模式快速参考](#common-patterns-quick-reference)
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Analyze and optimize a prompt file
@@ -38,16 +38,16 @@ python scripts/agent_orchestrator.py agent_config.yaml --visualize
 
 ---
 
-## Tools Overview
+## 工具概述
 
-### 1. Prompt Optimizer
+### 1. 提示优化器
 
-Analyzes prompts for token efficiency, clarity, and structure. Generates optimized versions.
+分析提示文本的效率、清晰度和结构，并生成优化后的版本。
 
-**Input:** Prompt text file or string
-**Output:** Analysis report with optimization suggestions
+**输入：** 提示文本文件或字符串
+**输出：** 包含优化建议的分析报告
 
-**Usage:**
+**使用方法：**
 ```bash
 # Analyze a prompt file
 python scripts/prompt_optimizer.py prompt.txt --analyze
@@ -77,14 +77,14 @@ python scripts/prompt_optimizer.py prompt.txt --extract-examples --output exampl
 
 ---
 
-### 2. RAG Evaluator
+### 2. RAG 评估器
 
-Evaluates Retrieval-Augmented Generation quality by measuring context relevance and answer faithfulness.
+通过测量上下文相关性和答案的准确性来评估检索增强生成（Retrieval-Augmented Generation）的质量。
 
-**Input:** Retrieved contexts (JSON) and questions/answers
-**Output:** Evaluation metrics and quality report
+**输入：** 检索到的上下文（JSON格式）以及问题/答案
+**输出：** 评估指标和质量报告
 
-**Usage:**
+**使用方法：**
 ```bash
 # Evaluate retrieval quality
 python scripts/rag_evaluator.py --contexts retrieved.json --questions eval_set.json
@@ -121,14 +121,14 @@ python scripts/rag_evaluator.py --contexts retrieved.json --questions eval_set.j
 
 ---
 
-### 3. Agent Orchestrator
+### 3. 代理编排器
 
-Parses agent definitions and visualizes execution flows. Validates tool configurations.
+解析代理定义并可视化执行流程，验证工具配置。
 
-**Input:** Agent configuration (YAML/JSON)
-**Output:** Workflow visualization, validation report
+**输入：** 代理配置文件（YAML/JSON格式）
+**输出：** 工作流程可视化结果和验证报告
 
-**Usage:**
+**使用方法：**
 ```bash
 # Validate agent configuration
 python scripts/agent_orchestrator.py agent.yaml --validate
@@ -194,67 +194,67 @@ python scripts/agent_orchestrator.py agent.yaml --visualize --format mermaid
 
 ---
 
-## Prompt Engineering Workflows
+## 提示工程工作流程
 
-### Prompt Optimization Workflow
+### 提示优化工作流程
 
-Use when improving an existing prompt's performance or reducing token costs.
+用于提升现有提示的性能或降低生成所需的令牌数量。
 
-**Step 1: Baseline current prompt**
+**步骤 1：确定当前提示的基准**
 ```bash
 python scripts/prompt_optimizer.py current_prompt.txt --analyze --output baseline.json
 ```
 
-**Step 2: Identify issues**
-Review the analysis report for:
-- Token waste (redundant instructions, verbose examples)
-- Ambiguous instructions (unclear output format, vague verbs)
-- Missing constraints (no length limits, no format specification)
+**步骤 2：识别问题**
+查看分析报告，找出以下问题：
+- 令牌浪费（冗余指令、冗长的示例）
+- 模糊的指令（输出格式不明确、动词使用不当）
+- 缺失的约束条件（没有长度限制、没有格式规范）
 
-**Step 3: Apply optimization patterns**
-| Issue | Pattern to Apply |
+**步骤 3：应用优化模式**
+| 问题 | 应用的模式 |
 |-------|------------------|
-| Ambiguous output | Add explicit format specification |
-| Too verbose | Extract to few-shot examples |
-| Inconsistent results | Add role/persona framing |
-| Missing edge cases | Add constraint boundaries |
+| 输出格式不明确 | 添加明确的格式规范 |
+| 冗长内容 | 提取为少量样本示例 |
+| 结果不一致 | 添加角色/人物设定 |
+| 缺少边缘情况 | 设置约束条件 |
 
-**Step 4: Generate optimized version**
+**步骤 4：生成优化后的版本**
 ```bash
 python scripts/prompt_optimizer.py current_prompt.txt --optimize --output optimized.txt
 ```
 
-**Step 5: Compare results**
+**步骤 5：比较结果**
 ```bash
 python scripts/prompt_optimizer.py optimized.txt --analyze --compare baseline.json
 # Shows: token reduction, clarity improvement, issues resolved
 ```
 
-**Step 6: Validate with test cases**
-Run both prompts against your evaluation set and compare outputs.
+**步骤 6：用测试用例进行验证**
+将两个版本的提示应用于测试集，并比较输出结果。
 
 ---
 
-### Few-Shot Example Design Workflow
+### 少量样本示例设计工作流程
 
-Use when creating examples for in-context learning.
+用于为上下文学习创建示例。
 
-**Step 1: Define the task clearly**
+**步骤 1：明确任务要求**
 ```
 Task: Extract product entities from customer reviews
 Input: Review text
 Output: JSON with {product_name, sentiment, features_mentioned}
 ```
 
-**Step 2: Select diverse examples (3-5 recommended)**
-| Example Type | Purpose |
+**步骤 2：选择多样化的示例（建议选择 3-5 个）**
+| 示例类型 | 目的 |
 |--------------|---------|
-| Simple case | Shows basic pattern |
-| Edge case | Handles ambiguity |
-| Complex case | Multiple entities |
-| Negative case | What NOT to extract |
+| 简单案例 | 展示基本模式 |
+| 边缘案例 | 处理模糊性 |
+| 复杂案例 | 多个实体 |
+| 负面案例 | 明确指出不应提取的内容 |
 
-**Step 3: Format consistently**
+**步骤 3：保持格式一致性**
 ```
 Example 1:
 Input: "Love my new iPhone 15, the camera is amazing!"
@@ -265,22 +265,22 @@ Input: "The laptop was okay but battery life is terrible."
 Output: {"product_name": "laptop", "sentiment": "mixed", "features_mentioned": ["battery life"]}
 ```
 
-**Step 4: Validate example quality**
+**步骤 4：验证示例质量**
 ```bash
 python scripts/prompt_optimizer.py prompt_with_examples.txt --validate-examples
 # Checks: consistency, coverage, format alignment
 ```
 
-**Step 5: Test with held-out cases**
-Ensure model generalizes beyond your examples.
+**步骤 5：用保留的案例进行测试**
+确保模型能够泛化到未提供的示例情况。
 
 ---
 
-### Structured Output Design Workflow
+### 结构化输出设计工作流程
 
-Use when you need reliable JSON/XML/structured responses.
+当需要可靠的 JSON/XML 结构化响应时使用。
 
-**Step 1: Define schema**
+**步骤 1：定义数据结构**
 ```json
 {
   "type": "object",
@@ -293,7 +293,7 @@ Use when you need reliable JSON/XML/structured responses.
 }
 ```
 
-**Step 2: Include schema in prompt**
+**步骤 2：在提示中包含数据结构信息**
 ```
 Respond with JSON matching this schema:
 - summary (string, max 200 chars): Brief summary of the content
@@ -301,42 +301,42 @@ Respond with JSON matching this schema:
 - confidence (number 0-1): Your confidence in the sentiment
 ```
 
-**Step 3: Add format enforcement**
+**步骤 3：强制执行格式规范**
 ```
 IMPORTANT: Respond ONLY with valid JSON. No markdown, no explanation.
 Start your response with { and end with }
 ```
 
-**Step 4: Validate outputs**
+**步骤 4：验证输出结果**
 ```bash
 python scripts/prompt_optimizer.py structured_prompt.txt --validate-schema schema.json
 ```
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-| File | Contains | Load when user asks about |
+| 文件 | 包含内容 | 用户查询时提供链接 |
 |------|----------|---------------------------|
-| `references/prompt_engineering_patterns.md` | 10 prompt patterns with input/output examples | "which pattern?", "few-shot", "chain-of-thought", "role prompting" |
-| `references/llm_evaluation_frameworks.md` | Evaluation metrics, scoring methods, A/B testing | "how to evaluate?", "measure quality", "compare prompts" |
-| `references/agentic_system_design.md` | Agent architectures (ReAct, Plan-Execute, Tool Use) | "build agent", "tool calling", "multi-agent" |
+| `references/prompt_engineering_patterns.md` | 10 种提示工程模式及输入/输出示例 | “使用哪种模式？”，“少量样本示例”，“思维链”，“角色提示” |
+| `references/llm_evaluation_frameworks.md` | 评估指标、评分方法、A/B 测试 | “如何进行评估？”，“如何衡量质量？”，“如何比较不同提示？” |
+| `references/agentic_system_design.md` | 代理系统架构（ReAct、Plan-Execute、工具使用） | “构建代理”，“调用工具”，“多代理系统” |
 
 ---
 
-## Common Patterns Quick Reference
+## 常见模式快速参考
 
-| Pattern | When to Use | Example |
+| 模式 | 使用场景 | 示例 |
 |---------|-------------|---------|
-| **Zero-shot** | Simple, well-defined tasks | "Classify this email as spam or not spam" |
-| **Few-shot** | Complex tasks, consistent format needed | Provide 3-5 examples before the task |
-| **Chain-of-Thought** | Reasoning, math, multi-step logic | "Think step by step..." |
-| **Role Prompting** | Expertise needed, specific perspective | "You are an expert tax accountant..." |
-| **Structured Output** | Need parseable JSON/XML | Include schema + format enforcement |
+| **零样本（Zero-shot）** | 任务简单且定义明确 | “将这封邮件分类为垃圾邮件或非垃圾邮件” |
+| **少量样本（Few-shot）** | 任务复杂且需要统一的输出格式 | 在执行任务前提供 3-5 个示例 |
+| **思维链（Chain-of-Thought）** | 需要推理、多步骤逻辑 | “请逐步思考...” |
+| **角色提示（Role Prompting）** | 需要专家知识或特定视角 | “你是一名税务专家...” |
+| **结构化输出（Structured Output）** | 需要可解析的 JSON/XML 格式 | 包含数据结构 + 强制执行格式规范 |
 
 ---
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Prompt Analysis

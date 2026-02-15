@@ -18,9 +18,9 @@ metadata:
 
 # Zoho Mail
 
-Access the Zoho Mail API with managed OAuth authentication. Send, receive, search, and manage emails with full folder and label management.
+您可以使用受管理的 OAuth 认证来访问 Zoho Mail API。该 API 允许您发送、接收、搜索电子邮件，并对电子邮件及其文件夹和标签进行完整的管理。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all accounts
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-mail/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Zoho Mail API endpoint path. The gateway proxies requests to `mail.zoho.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Zoho Mail API 端点路径。Maton 代理会将请求转发到 `mail.zoho.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho Mail OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Zoho Mail OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho Mail connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho Mail 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,21 +141,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，Maton 代理将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Account Operations
+### 账户操作
 
-#### Get All Accounts
+#### 获取所有账户
 
-Retrieve all mail accounts for the authenticated user.
+检索已认证用户的所有邮件账户。
 
 ```bash
 GET /zoho-mail/api/accounts
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -166,21 +166,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Account Details
+#### 获取账户详情
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}
 ```
 
-### Folder Operations
+### 文件夹操作
 
-#### List All Folders
+#### 列出所有文件夹
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -191,7 +191,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": {
@@ -220,7 +220,7 @@ EOF
 }
 ```
 
-#### Create Folder
+#### 创建文件夹
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/folders
@@ -231,7 +231,7 @@ Content-Type: application/json
 }
 ```
 
-#### Rename Folder
+#### 重命名文件夹
 
 ```bash
 PUT /zoho-mail/api/accounts/{accountId}/folders/{folderId}
@@ -242,21 +242,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Folder
+#### 删除文件夹
 
 ```bash
 DELETE /zoho-mail/api/accounts/{accountId}/folders/{folderId}
 ```
 
-### Label Operations
+### 标签操作
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/labels
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -267,7 +267,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Label
+#### 创建标签
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/labels
@@ -278,7 +278,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Label
+#### 更新标签
 
 ```bash
 PUT /zoho-mail/api/accounts/{accountId}/labels/{labelId}
@@ -289,31 +289,31 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Label
+#### 删除标签
 
 ```bash
 DELETE /zoho-mail/api/accounts/{accountId}/labels/{labelId}
 ```
 
-### Email Message Operations
+### 邮件操作
 
-#### List Emails in Folder
+#### 列出文件夹中的邮件
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/messages/view?folderId={folderId}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `folderId` | long | Folder ID to list messages from |
-| `limit` | integer | Number of messages to return (default: 50) |
-| `start` | integer | Offset for pagination |
-| `sortBy` | string | Sort field (e.g., `date`) |
-| `sortOrder` | boolean | `true` for ascending, `false` for descending |
+| `folderId` | long | 要列出邮件的文件夹 ID |
+| `limit` | integer | 返回的邮件数量（默认：50） |
+| `start` | integer | 分页偏移量 |
+| `sortBy` | string | 排序字段（例如：`date`） |
+| `sortOrder` | boolean | `true` 表示升序，`false` 表示降序 |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -324,21 +324,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Search Emails
+#### 搜索邮件
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/messages/search?searchKey={query}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `searchKey` | string | Search query |
-| `limit` | integer | Number of results to return |
-| `start` | integer | Offset for pagination |
+| `searchKey` | string | 搜索关键字 |
+| `limit` | integer | 返回的结果数量 |
+| `start` | integer | 分页偏移量 |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -351,13 +351,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Email Content
+#### 获取邮件内容
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/content
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -368,25 +368,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Email Headers
+#### 获取邮件头部信息
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/header
 ```
 
-#### Get Email Metadata
+#### 获取邮件元数据
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/details
 ```
 
-#### Get Original Message (MIME)
+#### 获取原始邮件（MIME 格式）
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/messages/{messageId}/originalmessage
 ```
 
-#### Send Email
+#### 发送邮件
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/messages
@@ -401,21 +401,21 @@ Content-Type: application/json
 }
 ```
 
-**Request Body Fields:**
+**请求体字段：**
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `fromAddress` | string | Yes | Sender's email address |
-| `toAddress` | string | Yes | Recipient's email address |
-| `subject` | string | Yes | Email subject |
-| `content` | string | Yes | Email body content |
-| `ccAddress` | string | No | CC recipient |
-| `bccAddress` | string | No | BCC recipient |
-| `mailFormat` | string | No | `html` or `plaintext` (default: `html`) |
-| `askReceipt` | string | No | `yes` or `no` for read receipt |
-| `encoding` | string | No | Character encoding (default: `UTF-8`) |
+| `fromAddress` | string | 是 | 发件人邮箱地址 |
+| `toAddress` | string | 是 | 收件人邮箱地址 |
+| `subject` | string | 是 | 邮件主题 |
+| `content` | string | 是 | 邮件正文内容 |
+| `ccAddress` | string | 否 | 抄送收件人邮箱 |
+| `bccAddress` | string | 否 | 密件抄送收件人邮箱 |
+| `mailFormat` | string | 否 | `html` 或 `plaintext`（默认：`html`） |
+| `askReceipt` | string | 否 | 是否要求发送阅读回执 |
+| `encoding` | string | 否 | 字符编码（默认：`UTF-8` |
 
-**Example - Send Email:**
+**示例 - 发送邮件：**
 
 ```bash
 python <<'EOF'
@@ -434,16 +434,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Scheduling Parameters (Optional):**
+**调度参数（可选）：**
 
-| Field | Type | Description |
+| 参数 | 类型 | 描述 |
 |-------|------|-------------|
-| `isSchedule` | boolean | Enable scheduling |
-| `scheduleType` | integer | 1-5 for preset times; 6 for custom |
-| `timeZone` | string | Required if scheduleType=6 (e.g., `GMT 5:30`) |
-| `scheduleTime` | string | Required if scheduleType=6 (format: `MM/DD/YYYY HH:MM:SS`) |
+| `isSchedule` | boolean | 是否启用调度 |
+| `scheduleType` | integer | 1-5 表示预设时间；6 表示自定义时间 |
+| `timeZone` | string | 如果 `scheduleType` 为 6 时必填（例如：`GMT 5:30`） |
+| `scheduleTime` | string | 如果 `scheduleType` 为 6 时必填（格式：`MM/DD/YYYY HH:MM:SS`） |
 
-#### Reply to Email
+#### 回复邮件
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/messages/{messageId}
@@ -457,7 +457,7 @@ Content-Type: application/json
 }
 ```
 
-#### Save Draft
+#### 保存草稿
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/messages
@@ -472,7 +472,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Message (Mark as Read/Unread, Move, Flag)
+#### 更新邮件（标记为已读/未读、移动、设置标记）
 
 ```bash
 PUT /zoho-mail/api/accounts/{accountId}/updatemessage
@@ -485,17 +485,17 @@ Content-Type: application/json
 }
 ```
 
-**Mode Options:**
-- `markAsRead` - Mark messages as read
-- `markAsUnread` - Mark messages as unread
-- `moveMessage` - Move messages (requires `destfolderId`)
-- `flag` - Set flag (requires `flagid`: 1-4)
-- `archive` - Archive messages
-- `unArchive` - Unarchive messages
-- `spam` - Mark as spam
-- `notSpam` - Mark as not spam
+**操作选项：**
+- `markAsRead` - 将邮件标记为已读
+- `markAsUnread` - 将邮件标记为未读
+- `moveMessage` - 移动邮件（需要 `destfolderId`）
+- `flag` - 设置标记（需要 `flagid`：1-4）
+- `archive` - 将邮件归档
+- `unArchive` - 解压邮件
+- `spam` - 将邮件标记为垃圾邮件
+- `notSpam` - 将邮件标记为非垃圾邮件
 
-**Example - Mark as Read:**
+**示例 - 标记为已读：**
 
 ```bash
 python <<'EOF'
@@ -512,50 +512,50 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete Email
+#### 删除邮件
 
 ```bash
 DELETE /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}
 ```
 
-### Attachment Operations
+### 附件操作
 
-#### Upload Attachment
+#### 上传附件
 
 ```bash
 POST /zoho-mail/api/accounts/{accountId}/messages/attachments
 Content-Type: multipart/form-data
 ```
 
-#### Get Attachment Info
+#### 获取附件信息
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachmentinfo
 ```
 
-#### Download Attachment
+#### 下载附件
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/folders/{folderId}/messages/{messageId}/attachments/{attachmentId}
 ```
 
-## Pagination
+## 分页
 
-Zoho Mail uses offset-based pagination:
+Zoho Mail 使用基于偏移量的分页机制：
 
 ```bash
 GET /zoho-mail/api/accounts/{accountId}/messages/view?folderId={folderId}&start=0&limit=50
 ```
 
-- `start`: Offset index (default: 0)
-- `limit`: Number of records to return (default: 50)
+- `start`：偏移量索引（默认：0）
+- `limit`：返回的记录数量（默认：50）
 
-For subsequent pages, increment `start` by `limit`:
-- Page 1: `start=0&limit=50`
-- Page 2: `start=50&limit=50`
-- Page 3: `start=100&limit=50`
+对于后续页面，将 `start` 增加 `limit`：
+- 第 1 页：`start=0&limit=50`
+- 第 2 页：`start=50&limit=50`
+- 第 3 页：`start=100&limit=50`
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -584,35 +584,35 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Account IDs are required for most operations - first call `/api/accounts` to get your account ID
-- Message IDs and Folder IDs are numeric strings
-- The `fromAddress` must be associated with the authenticated account
-- Default folders include: Inbox, Drafts, Templates, Snoozed, Sent, Spam, Trash, Outbox
-- Supported encodings: Big5, EUC-JP, EUC-KR, GB2312, ISO-2022-JP, ISO-8859-1, KOI8-R, Shift_JIS, US-ASCII, UTF-8, WINDOWS-1251
-- Some operations (labels, folder management, sending) require additional OAuth scopes. If you receive an `INVALID_OAUTHSCOPE` error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 大多数操作都需要账户 ID——首次调用 `/api/accounts` 以获取您的账户 ID。
+- 邮件 ID 和文件夹 ID 是数字字符串。
+- `fromAddress` 必须与已认证的账户关联。
+- 默认文件夹包括：收件箱、草稿箱、模板、待办事项、已发送邮件、垃圾邮件、收件箱外。
+- 支持的编码格式：Big5、EUC-JP、EUC-KR、GB2312、ISO-2022-JP、ISO-8859-1、KOI8-R、Shift_JIS、US-ASCII、UTF-8、WINDOWS-1251。
+- 某些操作（如标签管理、文件夹操作、发送邮件）需要额外的 OAuth 权限范围。如果您收到 `INVALID_OAUTHSCOPE` 错误，请联系 Maton 支持团队（support@maton.ai），并提供所需的操作、API 以及使用场景。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho Mail connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho Mail API |
+| 400 | 未找到 Zoho Mail 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Zoho Mail API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -623,18 +623,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `zoho-mail`. For example:
+1. 确保您的 URL 路径以 `zoho-mail` 开头。例如：
 
-- Correct: `https://gateway.maton.ai/zoho-mail/api/accounts`
-- Incorrect: `https://gateway.maton.ai/api/accounts`
+- 正确：`https://gateway.maton.ai/zoho-mail/api/accounts`
+- 错误：`https://gateway.maton.ai/api/accounts`
 
-## Resources
+## 资源
 
-- [Zoho Mail API Overview](https://www.zoho.com/mail/help/api/overview.html)
-- [Zoho Mail API Index](https://www.zoho.com/mail/help/api/)
-- [Email Messages API](https://www.zoho.com/mail/help/api/email-api.html)
-- [Getting Started with Zoho Mail API](https://www.zoho.com/mail/help/api/getting-started-with-api.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho Mail API 概述](https://www.zoho.com/mail/help/api/overview.html)
+- [Zoho Mail API 索引](https://www.zoho.com/mail/help/api/)
+- [电子邮件 API](https://www.zoho.com/mail/help/api/email-api.html)
+- [开始使用 Zoho Mail API](https://www.zoho.com/mail/help/api/getting-started-with-api.html)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

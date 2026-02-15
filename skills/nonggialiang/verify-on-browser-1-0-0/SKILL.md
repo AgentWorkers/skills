@@ -1,37 +1,37 @@
 ---
-description: Control browser via Chrome DevTools Protocol - full CDP access
+description: 通过 Chrome DevTools 协议控制浏览器——实现完整的 CDP（Chrome DevTools Protocol）访问功能
 ---
 
-# Browser Control Skill
+# 浏览器控制技能
 
-Use the `browser` MCP server to control a browser with full CDP access. The core `cdp_send` tool can call ANY Chrome DevTools Protocol method.
+使用 `browser` MCP 服务器来控制浏览器，并具备完整的 CDP（Chrome DevTools Protocol）访问权限。核心工具 `cdp_send` 可以调用 Chrome DevTools 协议中的任意方法。
 
-## Available Tools
+## 可用工具
 
-### `cdp_send` - Raw CDP Access
-Call any CDP method directly:
+### `cdp_send` - 原始 CDP 访问
+直接调用任意 CDP 方法：
 ```
 cdp_send(method: "Domain.method", params: {...})
 ```
 
-### `screenshot` - Capture Page
+### `screenshot` - 捕获页面截图
 ```
 screenshot(format: "png"|"jpeg", fullPage: true|false)
 ```
 
-### `get_url` - Current URL
+### `get_url` - 获取当前 URL
 ```
 get_url()
 ```
 
-### `close_browser` - Close Browser
+### `close_browser` - 关闭浏览器
 ```
 close_browser()
 ```
 
-## Common CDP Operations
+## 常见的 CDP 操作
 
-### Navigation
+### 导航
 ```javascript
 // Navigate to URL
 cdp_send(method: "Page.navigate", params: { url: "https://example.com" })
@@ -43,7 +43,7 @@ cdp_send(method: "Page.reload")
 cdp_send(method: "Page.navigateToHistoryEntry", params: { entryId: 1 })
 ```
 
-### DOM Manipulation
+### DOM 操作
 ```javascript
 // Get document root
 cdp_send(method: "DOM.getDocument")
@@ -58,7 +58,7 @@ cdp_send(method: "DOM.getOuterHTML", params: { nodeId: 5 })
 cdp_send(method: "DOM.setAttributeValue", params: { nodeId: 5, name: "class", value: "new-class" })
 ```
 
-### JavaScript Execution
+### JavaScript 执行
 ```javascript
 // Evaluate expression
 cdp_send(method: "Runtime.evaluate", params: { expression: "document.title" })
@@ -76,7 +76,7 @@ cdp_send(method: "Runtime.callFunctionOn", params: {
 })
 ```
 
-### Network
+### 网络请求
 ```javascript
 // Enable network tracking (required first)
 cdp_send(method: "Network.enable")
@@ -103,7 +103,7 @@ cdp_send(method: "Network.setExtraHTTPHeaders", params: {
 cdp_send(method: "Network.setBlockedURLs", params: { urls: ["*.ads.com"] })
 ```
 
-### Input Simulation
+### 输入模拟
 ```javascript
 // Click (dispatch mouse event)
 cdp_send(method: "Input.dispatchMouseEvent", params: {
@@ -124,7 +124,7 @@ cdp_send(method: "Input.dispatchKeyEvent", params: {
 })
 ```
 
-### Emulation
+### 设备模拟
 ```javascript
 // Set viewport
 cdp_send(method: "Emulation.setDeviceMetricsOverride", params: {
@@ -145,7 +145,7 @@ cdp_send(method: "Emulation.setGeolocationOverride", params: {
 cdp_send(method: "Emulation.setTimezoneOverride", params: { timezoneId: "America/New_York" })
 ```
 
-### Performance & Debugging
+### 性能与调试
 ```javascript
 // Enable performance metrics
 cdp_send(method: "Performance.enable")
@@ -169,7 +169,7 @@ cdp_send(method: "Debugger.setBreakpointByUrl", params: {
 })
 ```
 
-### Storage
+### 存储
 ```javascript
 // Get local storage
 cdp_send(method: "DOMStorage.getDOMStorageItems", params: {
@@ -183,19 +183,19 @@ cdp_send(method: "Storage.clearDataForOrigin", params: {
 })
 ```
 
-## CDP Protocol Reference
+## CDP 协议参考
 
-For complete list of all domains and methods:
+有关所有域名和方法的完整列表，请参考：
 https://chromedevtools.github.io/devtools-protocol/
 
-Common domains:
-- **Page** - Navigation, lifecycle, PDF generation
-- **DOM** - Document structure manipulation
-- **CSS** - Stylesheet manipulation
-- **Runtime** - JavaScript execution
-- **Network** - Request/response interception
-- **Input** - Keyboard/mouse simulation
-- **Emulation** - Device/viewport simulation
-- **Debugger** - JavaScript debugging
-- **Performance** - Performance metrics
-- **Storage** - localStorage, IndexedDB, cookies
+常见域名：
+- **Page**：导航、页面生命周期、PDF 生成
+- **DOM**：文档结构操作
+- **CSS**：样式表操作
+- **Runtime**：JavaScript 执行
+- **Network**：请求/响应拦截
+- **Input**：键盘/鼠标模拟
+- **Emulation**：设备/视口模拟
+- **Debugger**：JavaScript 调试
+- **Performance**：性能指标
+- **Storage**：localStorage、IndexedDB、cookies

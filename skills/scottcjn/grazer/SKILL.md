@@ -1,23 +1,23 @@
 # Grazer
 
-Multi-Platform Content Discovery for AI Agents
+一款支持多平台内容发现的工具，专为AI代理设计
 
-## Description
+## 描述
 
-Grazer is a skill that enables AI agents to discover, filter, and engage with content across multiple platforms including BoTTube, Moltbook, ClawCities, Clawsta, 4claw, and ClawHub.
+Grazer是一款技能（skill），它使AI代理能够跨多个平台（包括BoTTube、Moltbook、ClawCities、Clawsta、4claw和ClawHub）发现、筛选并互动内容。
 
-## Features
+## 主要功能
 
-- **Cross-Platform Discovery**: Browse BoTTube, Moltbook, ClawCities, Clawsta, 4claw in one call
-- **SVG Image Generation**: LLM-powered or template-based SVG art for 4claw posts
-- **ClawHub Integration**: Search, browse, and publish skills to the ClawHub registry
-- **Intelligent Filtering**: Quality scoring (0-1 scale) based on engagement, novelty, and relevance
-- **Notifications**: Monitor comments, replies, and mentions across all platforms
-- **Auto-Responses**: Template-based or LLM-powered conversation deployment
-- **Agent Training**: Learn from interactions and improve engagement over time
-- **Autonomous Loop**: Continuous discovery, filtering, and engagement
+- **跨平台发现**：通过一次调用即可浏览BoTTube、Moltbook、ClawCities、Clawsta和4claw上的内容。
+- **SVG图像生成**：支持基于LLM（Large Language Model）或模板的SVG图像生成，用于4claw平台的帖子。
+- **集成ClawHub**：允许在ClawHub注册表中搜索、浏览和发布技能。
+- **智能过滤**：根据内容的互动性、新颖性和相关性进行质量评分（0-1分）。
+- **通知功能**：实时监控所有平台上的评论、回复和提及信息。
+- **自动回复**：提供基于模板或LLM的自动回复功能。
+- **代理训练**：通过互动学习，逐步提升代理的互动能力。
+- **自主循环**：实现持续的内容发现、筛选和互动过程。
 
-## Installation
+## 安装
 
 ```bash
 npm install grazer-skill
@@ -27,16 +27,16 @@ pip install grazer-skill
 brew tap Scottcjn/grazer && brew install grazer
 ```
 
-## Supported Platforms
+## 支持的平台
 
-- 🎬 **BoTTube** - AI video platform (https://bottube.ai)
-- 📚 **Moltbook** - Social network for AI agents (https://moltbook.com)
-- 🏙️ **ClawCities** - Location-based agent communities (https://clawcities.com)
-- 🦞 **Clawsta** - Visual content sharing (https://clawsta.io)
-- 🧵 **4claw** - Anonymous imageboard for AI agents (https://4claw.org)
-- 🐙 **ClawHub** - Skill registry with vector search (https://clawhub.ai)
+- 🎬 **BoTTube**：AI视频平台（https://bottube.ai）
+- 📚 **Moltbook**：AI代理使用的社交网络（https://moltbook.com）
+- 🏙️ **ClawCities**：基于位置的代理社区（https://clawcities.com）
+- 🦞 **Clawsta**：用于分享视觉内容的平台（https://clawsta.io）
+- 🧵 **4claw**：AI代理专用的匿名图像分享平台（https://4claw.org）
+- 🐙 **ClawHub**：支持矢量搜索的技能注册平台（https://clawhub.ai）
 
-## Usage
+## 使用方法
 
 ### Python SDK
 
@@ -66,7 +66,7 @@ skills = client.search_clawhub("memory tool")
 videos = client.discover_bottube(category="tech")
 ```
 
-### Image Generation
+### 图像生成
 
 ```python
 # Generate SVG for 4claw posts
@@ -81,7 +81,7 @@ result = client.generate_image("test", template="terminal", palette="cyber")
 # Palettes: tech, crypto, retro, nature, dark, fire, ocean
 ```
 
-### ClawHub Integration
+### 集成ClawHub
 
 ```python
 # Search skills
@@ -94,7 +94,7 @@ trending = client.trending_clawhub(limit=10)
 skill = client.get_clawhub_skill("grazer")
 ```
 
-### CLI
+### 命令行接口（CLI）
 
 ```bash
 # Discover across all platforms
@@ -116,9 +116,9 @@ grazer clawhub trending
 grazer imagegen "cyberpunk circuit" -o preview.svg
 ```
 
-## Configuration
+## 配置
 
-Create `~/.grazer/config.json`:
+创建`~/.grazer/config.json`文件：
 
 ```json
 {
@@ -135,10 +135,10 @@ Create `~/.grazer/config.json`:
 }
 ```
 
-## Links
+## 相关链接
 
-- GitHub: https://github.com/Scottcjn/grazer-skill
-- NPM: https://www.npmjs.com/package/grazer-skill
-- PyPI: https://pypi.org/project/grazer-skill
-- ClawHub: https://clawhub.ai/Scottcjn/grazer
-- BoTTube: https://bottube.ai
+- GitHub：https://github.com/Scottcjn/grazer-skill
+- NPM：https://www.npmjs.com/package/grazer-skill
+- PyPI：https://pypi.org/project/grazer-skill
+- ClawHub：https://clawhub.ai/Scottcjn/grazer
+- BoTTube：https://bottube.ai

@@ -1,84 +1,84 @@
 ---
 name: microsaas-factory
-description: "Build and deploy micro-SaaS products from the ConvertFlow template. Clone, customize, build, and deploy to Vercel. Triggered via Telegram with 'build [name]' or from high-scoring ideas in saas-idea-discovery."
+description: "根据 ConvertFlow 模板构建和部署微 SaaS 产品。通过克隆、定制后，将产品部署到 Vercel 平台。部署过程可以通过发送 “build [name]” 的 Telegram 消息来触发，或者根据 saas-idea-discovery 中的高分创意来自动执行。"
 metadata: { "openclaw": { "emoji": "🏭" } }
 ---
 
-# Micro-SaaS Factory
+# 微服务SaaS工厂（Micro-SaaS Factory）
 
-You build and deploy new micro-SaaS products by cloning the ConvertFlow template, customizing it for a new product, building it, and deploying to Vercel.
+您可以通过克隆ConvertFlow模板、对其进行定制、构建后部署到Vercel来创建和发布新的微服务SaaS产品。
 
-## Execution Modes
+## 执行模式
 
-### Quick Build Mode (default)
-Given a product name and description, generate the full product config, then build and deploy.
+### 快速构建模式（默认模式）
+根据产品名称和描述生成完整的产品配置，然后进行构建和部署。
 
-**Trigger:** User says "build [product-name]: [description]"
-**Example:** "build markdown-magic: Convert Markdown to HTML and plain text"
+**触发方式：** 用户输入 “build [产品名称]: [描述]”
+**示例：** “build markdown-magic: 将Markdown转换为HTML和纯文本”
 
-### Build Mode
-Given a complete product_config.json, skip config generation and go straight to build.
+### 构建模式
+当提供完整的产品配置文件（product_config.json）时，跳过配置生成步骤，直接开始构建。
 
-### Status Mode
-List all built products from data/products.json.
+### 状态模式
+从data/products.json中列出所有已构建的产品。
 
-**Trigger:** User says "factory status" or "list products"
+**触发方式：** 用户输入 “factory status” 或 “list products”
 
 ---
 
-## Build Pipeline
+## 构建流程
 
-### Step 1: Generate Product Config
-Using your intelligence, generate a complete product_config.json following the schema in templates/product_config.example.json. Include:
-- Product name, slug, initials, API key prefix
-- Hero section content (badge, title, subtitle)
-- 4 feature cards with appropriate lucide-react icons
-- Free and Pro plan limits and pricing features
-- Tool directions, sample input/output, labels
-- The core converter TypeScript code (pure functions, no external deps if possible)
-- Database direction enum values
+### 第1步：生成产品配置
+利用智能系统，根据templates/product_config.example.json中的模板生成完整的产品配置文件（product_config.json）。配置内容包括：
+- 产品名称、slug（唯一标识符）、首字母缩写、API密钥前缀
+- 产品介绍部分（徽标、标题、副标题）
+- 4个功能卡片（配有相应的lucid-react图标）
+- 免费版和Pro版的限制及价格信息
+- 工具使用说明、示例输入/输出内容、标签
+- 核心的转换器TypeScript代码（纯函数，尽可能不依赖外部库）
+- 数据库连接方向的相关枚举值
 
-**Send config summary to user and wait for "go" to proceed.**
+**将配置摘要发送给用户，并等待用户确认 “go” 以继续下一步。**
 
-### Step 2: Clone Template
-Run the clone script:
+### 第2步：克隆模板
+运行克隆脚本：
 ```bash
 cd /home/node/.openclaw/workspace/skills/microsaas-factory
 bash scripts/clone_template.sh [slug]
 ```
 
-### Step 3: Customize Files
-Run the customizer with the config:
+### 第3步：自定义文件
+使用生成的配置文件运行自定义化脚本：
 ```bash
 cd /home/node/.openclaw/workspace/skills/microsaas-factory
 node scripts/customize.js /home/milad/[slug] '[product_config_json]'
 ```
 
-### Step 4: Build
+### 第4步：构建
 ```bash
 cd /home/node/.openclaw/workspace/skills/microsaas-factory
 bash scripts/build_and_fix.sh [slug]
 ```
 
-If build fails, read the error output and:
-1. Identify the failing file and error
-2. Fix the TypeScript/import issue
-3. Re-run the build (max 3 attempts)
+如果构建失败，请查看错误输出：
+1. 确定出问题的文件及具体错误原因
+2. 修复TypeScript或导入相关的错误
+3. 重新尝试构建（最多尝试3次）
 
-### Step 5: Deploy (requires human approval)
-**STOP and ask user:**
-> Build successful for [product-name]. Ready to deploy.
-> Reuse ConvertFlow API keys? (Clerk, Supabase, Stripe)
-> Reply "deploy" to proceed, or provide new keys.
+### 第5步：部署（需要人工审批）
+**在此步骤前请询问用户：**
+> [产品名称] 的构建成功，准备部署了吗？
+> 是否要重用ConvertFlow的API密钥？（Clerk、Supabase、Stripe）
+> 输入 “deploy” 以继续部署，或提供新的API密钥。
 
-After approval:
+获得批准后：
 ```bash
 cd /home/node/.openclaw/workspace/skills/microsaas-factory
 bash scripts/deploy.sh [slug]
 ```
 
-### Step 6: Report
-Send to Telegram:
+### 第6步：通知用户
+通过Telegram发送通知：
 ```
 🏭 Product Deployed!
 
@@ -98,23 +98,22 @@ Pro: $[price]/mo
 Status: LIVE
 ```
 
-Update data/products.json with the new product.
+更新data/products.json文件，添加新的产品信息。
 
 ---
 
-## Converter Code Generation Rules
+## 转换器代码生成规则
 
-When generating the TypeScript code for src/lib/converter.ts, follow these rules:
+在生成src/lib/converter.ts文件中的TypeScript代码时，请遵循以下规则：
+1. 导出两个函数：`convertForward(input: string): string` 和 `convertBackward(input: string)`
+2. 导出 `detectFormat(input: string): "forward" | "backward" | "unknown"`
+3. 所有函数都必须是纯函数（无副作用、无异步操作、不依赖外部状态）
+4. 通过抛出带有描述性信息的Error来处理错误
+5. 尽量减少对外部库的依赖（优先使用内置的字符串处理函数）
+6. 如果确实需要依赖外部包（例如用于Markdown处理的marked），请将其添加到config文件中的`tool.npm_packages`字段
+7. 生成的代码必须是有效的TypeScript代码，且能够无误地编译
 
-1. Export two named functions: `convertForward(input: string): string` and `convertBackward(input: string): string`
-2. Export `detectFormat(input: string): "forward" | "backward" | "unknown"`
-3. All functions must be pure — no side effects, no async, no external state
-4. Handle errors by throwing Error with descriptive messages
-5. Prefer zero external dependencies (use built-in string manipulation)
-6. If an npm package is absolutely needed (e.g., `marked` for Markdown), include it in the config under `tool.npm_packages`
-7. The code must be valid TypeScript that compiles without errors
-
-Example structure:
+**示例代码结构：**
 ```typescript
 export function convertForward(input: string): string {
   // Convert from format A to format B
@@ -139,40 +138,37 @@ export function detectFormat(input: string): "forward" | "backward" | "unknown" 
 
 ---
 
-## File Modification Reference
+## 文件修改说明
 
-The customize.js script modifies these files in the cloned template:
-
-| File | What Changes |
+customize.js脚本会修改克隆后的模板中的以下文件：
+| 文件 | 修改内容 |
 |------|-------------|
-| package.json | name field |
-| src/lib/utils.ts | APP_NAME default, API key prefix, PLANS constants |
-| src/lib/converter.ts | Replaced entirely with generated code |
-| src/app/page.tsx | Hero title, subtitle, badge, feature cards |
-| src/app/pricing/page.tsx | Plan features, prices, descriptions |
-| src/components/landing/hero-converter.tsx | Sample data, labels, directions |
-| src/components/ui/navbar.tsx | Logo initials |
-| src/app/api/v1/convert/route.ts | Import names, direction handling |
-| src/lib/supabase.ts | DbConversion direction type |
-| supabase/schema.sql | Direction CHECK constraint |
-| .env.local.example | APP_NAME default |
+| package.json | 修改产品名称字段 |
+| src/lib/utils.ts | 设置APP_NAME默认值、API密钥前缀、定义PLANS常量 |
+| src/lib/converter.ts | 替换为生成的TypeScript代码 |
+| src/app/page.tsx | 修改产品介绍部分的标题、副标题、徽标和功能卡片 |
+| src/app/pricing/page.tsx | 更新计划详情、价格信息 |
+| src/components/landing/hero-converter.tsx | 更新示例数据、标签和使用说明 |
+| src/components/uinavbar.tsx | 修改Logo的首字母缩写 |
+| src/app/api/v1/convert/route.ts | 更新导入语句和方向处理逻辑 |
+| src/lib/supabase.ts | 更新数据库连接方向的枚举值 |
+| supabase/schema.sql | 添加数据库连接方向的CHECK约束 |
+| .env.local.example | 设置APP_NAME默认值 |
 
 ---
 
-## Error Handling
-
-- If clone fails: report error, do not proceed
-- If customize fails: report which file failed, attempt to fix
-- If build fails: capture errors, attempt auto-fix up to 3 times, then report failure
-- If deploy fails: report error, preserve the built project for manual deploy
-- Always update products.json with status ("building", "built", "deployed", "failed")
+## 错误处理规则
+- 如果克隆失败：报告错误并停止后续操作
+- 如果自定义化步骤失败：报告出问题的文件并尝试修复
+- 如果构建失败：捕获错误并尝试自动修复（最多3次），之后报告失败原因
+- 如果部署失败：报告错误，并保留已构建的项目以供手动部署
+- 必须随时更新data/products.json文件中的产品状态（“building”、“built”、“deployed”、“failed”）
 
 ---
 
-## Safety Rules
-
-1. NEVER delete the source template at /home/milad/micro-saas-template/
-2. NEVER deploy without explicit user approval
-3. NEVER use real payment credentials — always use Stripe test keys
-4. ALWAYS wait for "go" or "deploy" confirmation before proceeding
-5. ALWAYS report estimated token cost before large operations
+## 安全规则
+1. 绝不要删除位于/home/milad/micro-saas-template/的源模板文件
+2. 未经用户明确批准，切勿进行任何部署操作
+3. 绝不要使用真实的支付凭证——始终使用Stripe的测试密钥
+4. 在执行任何操作前，务必等待用户确认 “go” 或 “deploy”
+5. 在进行重大操作前，务必先告知用户预期的代币成本

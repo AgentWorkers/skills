@@ -1,119 +1,132 @@
 ---
 name: gandi
-description: "Comprehensive Gandi domain registrar integration for domain and DNS management. Register and manage domains, create/update/delete DNS records (A, AAAA, CNAME, MX, TXT, SRV, and more), configure email forwarding and aliases, check SSL certificate status, create DNS snapshots for safe rollback, bulk update zone files, and monitor domain expiration. Supports multi-domain management, zone file import/export, and automated DNS backups. Includes both read-only and destructive operations with safety controls."
+description: "Gandi域名注册商的全面集成，支持域名和DNS管理功能：  
+- 注册和管理域名；  
+- 创建/更新/删除DNS记录（A、AAAA、CNAME、MX、TXT、SRV等）；  
+- 配置邮件转发和别名；  
+- 检查SSL证书状态；  
+- 创建DNS快照以方便安全回滚；  
+- 批量更新区域文件；  
+- 监控域名过期情况。  
+- 支持多域名管理、区域文件导入/导出以及自动化的DNS备份功能。  
+- 提供只读和修改操作模式，并附带安全控制机制。"
 metadata: {"openclaw":{"disable-model-invocation":true,"capabilities":["dns-modification","email-management","domain-registration","destructive-operations"],"credentials":{"type":"file","location":"~/.config/gandi/api_token","description":"Gandi Personal Access Token (PAT)","permissions":600},"requires":{"bins":["node","npm"]}}}
 ---
 
-# Gandi Domain Registrar Skill
+# Gandi域名注册商技能
 
-Comprehensive Gandi domain registrar integration for Moltbot.
+本技能实现了与Moltbot的全面集成，用于管理Gandi域名注册商的相关功能。
 
-**Status:** ✅ Phase 2 Complete - DNS modification & snapshots functional
+**状态：** ✅ 第二阶段已完成 - DNS修改和快照功能已启用
 
-## ⚠️ Security Warning
+## ⚠️ 安全警告
 
-**This skill can perform DESTRUCTIVE operations on your Gandi account:**
+**此技能可能对您的Gandi账户执行破坏性操作：**
 
-- **DNS Modification:** Add, update, or delete DNS records (can break websites/email)
-- **Email Management:** Create, modify, or delete email forwards (can intercept emails)
-- **Domain Registration:** Register domains (creates financial transactions)
-- **Bulk Operations:** Replace all DNS records at once (cannot be undone except via snapshots)
+- **DNS修改：** 添加、更新或删除DNS记录（可能导致网站或电子邮件服务中断）
+- **电子邮件管理：** 创建、修改或删除电子邮件转发规则（可能导致邮件被截获）
+- **域名注册：** 注册新域名（会产生财务交易）
+- **批量操作：** 一次性替换所有DNS记录（除非使用快照，否则无法撤销）
 
-**Before running ANY script:**
-1. Review the script code to understand what it does
-2. Create DNS snapshots before bulk changes (`create-snapshot.js`)
-3. Use read-only Personal Access Tokens where possible
-4. Test on non-production domains first
-5. Understand that some operations cannot be undone
+**在运行任何脚本之前：**
+1. 仔细阅读脚本代码，了解其功能。
+2. 在进行批量修改之前，先使用`create-snapshot.js`创建DNS快照。
+3. 尽可能使用只读的个人访问令牌。
+4. 先在非生产环境中测试脚本。
+5. 请注意，某些操作是不可撤销的。
 
-**Destructive scripts** (⚠️ modify or delete data):
-- `add-dns-record.js`, `delete-dns-record.js`, `update-dns-bulk.js`
-- `add-email-forward.js`, `update-email-forward.js`, `delete-email-forward.js`
-- `restore-snapshot.js` (replaces current DNS)
+**具有破坏性的脚本**（⚠️ 会修改或删除数据）：
+- `add-dns-record.js`
+- `delete-dns-record.js`
+- `update-dns-bulk.js`
+- `add-email-forward.js`
+- `update-email-forward.js`
+- `delete-email-forward.js`
+- `restore-snapshot.js`（用于恢复DNS记录）
 
-**Read-only scripts** (✅ safe, no modifications):
-- `list-domains.js`, `list-dns.js`, `list-snapshots.js`
-- `list-email-forwards.js`, `check-domain.js`, `check-ssl.js`
+**只读脚本**（✅ 安全，不会修改数据）：
+- `list-domains.js`
+- `list-dns.js`
+- `list-snapshots.js`
+- `list-email-forwards.js`
+- `check-domain.js`
+- `check-ssl.js`
 
-📖 **For complete script documentation:** See [SCRIPTS.md](SCRIPTS.md) for detailed information about:
-- What each script does
-- Network operations and API calls
-- Security implications
-- Undo/recovery procedures
-- Audit workflow recommendations
+📖 **有关完整脚本文档，请参阅[SCRIPTS.md]**，其中包含以下详细信息：
+- 每个脚本的功能
+- 网络操作和API调用
+- 安全影响
+- 撤销/恢复流程
+- 审计工作流程建议
 
-## Current Capabilities
+## 当前功能
 
-### Phase 1 (Complete)
-- ✅ Personal Access Token authentication
-- ✅ List domains in your account
-- ✅ Get domain details (expiration, status, services)
-- ✅ List DNS records for domains
-- ✅ View domain and DNS information
-- ✅ **Domain availability checking** ([#4](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/4))
-- ✅ **Smart domain suggestions with variations** ([#4](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/4))
-- ✅ SSL certificate status checker
-- ✅ Error handling and validation
+### 第一阶段（已完成）
+- ✅ 使用个人访问令牌进行身份验证
+- ✅ 列出您账户中的域名
+- ✅ 获取域名详情（过期日期、状态、服务信息）
+- ✅ 查看域名的DNS记录
+- ✅ 查看域名和DNS信息
+- ✅ **域名可用性检查** ([#4](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/4))
+- ✅ 提供带变体的智能域名建议 ([#4](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/4))
+- ✅ SSL证书状态检查
+- ✅ 错误处理和验证
 
-### Phase 2 (Complete)
-- ✅ **Add/update DNS records** (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA, PTR)
-- ✅ **Delete DNS records**
-- ✅ **Bulk DNS operations** (replace all records at once)
-- ✅ **DNS zone snapshots** (create, list, restore)
-- ✅ **Email forwarding** (create, list, update, delete forwards including catch-all)
-- ✅ **Record validation** (automatic validation for each record type)
-- ✅ **Safety features** (automatic snapshots before bulk changes, confirmation prompts)
+### 第二阶段（已完成）
+- ✅ **添加/更新DNS记录**（A、AAAA、CNAME、MX、TXT、NS、SRV、CAA、PTR）
+- ✅ **删除DNS记录**
+- ✅ **批量DNS操作**（一次性替换所有记录）
+- ✅ **DNS区域快照**（创建、列出、恢复）
+- ✅ **电子邮件转发**（创建、列出、更新、删除转发规则，包括通配符转发）
+- ✅ **记录验证**（自动验证每种记录类型）
+- ✅ **安全功能**（在批量修改前自动创建快照，提供确认提示）
 
-## Coming Soon (Phase 3+)
+## 即将推出的功能（第三阶段及以后）
+- 域名注册
+- 多组织支持 ([#1](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/1))
+- Gateway Console配置 ([#3](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/3))
+- 域名续订管理
+- DNSSEC配置
+- 证书管理
+- 电子邮件邮箱管理（超出转发功能）
 
-- Domain registration
-- Multi-organization support ([#1](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/1))
-- Gateway Console configuration ([#3](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/3))
-- Domain renewal management
-- DNSSEC configuration
-- Certificate management
-- Email mailbox management (beyond forwarding)
+## 设置
 
-## Setup
+### 第一步：创建个人访问令牌
 
-### Step 1: Create Personal Access Token
+**⚠️ 安全建议：** 根据您的使用场景，仅使用**最低所需的权限范围**。
 
-**⚠️ Security Recommendation:** Use the **minimum required scopes** for your use case.
+1. 访问 [Gandi Admin → Personal Access Tokens](https://admin.gandi.net/organizations/account/pat)
+2. 点击“Create a token”
+3. 选择您的组织
+4. 选择权限范围：
+   - **只读（建议用于查看）：**
+     - ✅ Domain: 读取（列出域名所需）
+     - ✅ LiveDNS: 读取（查看DNS记录所需）
+     - ✅ Email: 读取（查看电子邮件转发规则所需）
+   - **写入权限（用于修改，请谨慎使用）：**
+     - ⚠️ LiveDNS: 写入（允许修改DNS记录、删除记录、执行批量操作）
+     - ⚠️ Email: 写入（允许创建、更新、删除电子邮件转发规则）
 
-1. Go to [Gandi Admin → Personal Access Tokens](https://admin.gandi.net/organizations/account/pat)
-2. Click **"Create a token"**
-3. Select your organization
-4. Choose scopes:
-   
-   **Read-Only (Recommended for viewing only):**
-   - ✅ Domain: read (required for listing domains)
-   - ✅ LiveDNS: read (required for viewing DNS records)
-   - ✅ Email: read (required for viewing email forwards)
-   
-   **Write Access (Required for modifications - use with caution):**
-   - ⚠️ LiveDNS: write (enables DNS modification, deletion, bulk operations)
-   - ⚠️ Email: write (enables email forward creation, updates, deletions)
+5. 复制令牌（您将无法再次看到它！）
 
-5. Copy the token (you won't see it again!)
+**安全最佳实践：**
+- 为只读操作和写入操作创建不同的令牌。
+- 使用只读令牌进行常规检查/监控。
+- 仅在需要主动修改时使用写入令牌。
+- 定期轮换令牌（建议每90天轮换一次）。
+- 立即删除未使用的令牌。
+- **切勿将令牌共享或提交到版本控制系统中**。
 
-**Security Best Practices:**
-- Create separate tokens for read-only vs. write operations
-- Use read-only tokens for routine checks/monitoring
-- Only use write tokens when actively making changes
-- Rotate tokens regularly (every 90 days recommended)
-- Delete unused tokens immediately
-- **Never share or commit tokens to version control**
+### 第二步：存储令牌
 
-### Step 2: Store Token
+脚本会按优先顺序检查凭据：
+1. **`GANDI_API_TOKEN` 环境变量**（首先检查）
+2. **`~/.config/gandi/api_token` 文件**（如果环境变量未设置，则作为备用）
 
-Scripts check for credentials in priority order:
-1. **`GANDI_API_TOKEN` environment variable** (checked first)
-2. **`~/.config/gandi/api_token` file** (fallback if env var not set)
+**选择适合您工作流程的方法：**
 
-**Choose the method that fits your workflow:**
-
-#### Option A: Environment Variable (Recommended for CI/CD)
-
+#### 选项A：环境变量（推荐用于CI/CD）
 ```bash
 # Set environment variable (replace YOUR_PAT with actual token)
 export GANDI_API_TOKEN="YOUR_PERSONAL_ACCESS_TOKEN"
@@ -122,14 +135,13 @@ export GANDI_API_TOKEN="YOUR_PERSONAL_ACCESS_TOKEN"
 echo 'export GANDI_API_TOKEN="YOUR_PERSONAL_ACCESS_TOKEN"' >> ~/.bashrc
 ```
 
-**Benefits:**
-- ✅ CI/CD friendly (standard pattern for automation)
-- ✅ Container-ready (no file mounts needed)
-- ✅ Works with secret management tools (1Password, Vault, etc.)
-- ✅ Easy to switch between multiple tokens
+**优点：**
+- ✅ 适合CI/CD自动化流程
+- ✅ 适用于容器环境（无需挂载文件）
+- ✅ 可与秘密管理工具（如1Password、Vault等）配合使用
+- ✅ 可轻松切换多个令牌
 
-#### Option B: File-based (Recommended for local development)
-
+#### 选项B：基于文件的存储（推荐用于本地开发）
 ```bash
 # Create config directory
 mkdir -p ~/.config/gandi
@@ -141,15 +153,15 @@ echo "YOUR_PERSONAL_ACCESS_TOKEN" > ~/.config/gandi/api_token
 chmod 600 ~/.config/gandi/api_token
 ```
 
-**Benefits:**
-- ✅ Token persists across shell sessions
-- ✅ Secure file permissions (0600 = owner read-only)
-- ✅ No risk of exposing token in process list
-- ✅ Works offline (no external dependencies)
+**优点：**
+- ✅ 令牌在shell会话之间保持有效
+- ✅ 文件权限设置安全（0600权限，仅允许所有者读取）
+- ✅ 避免在进程列表中暴露令牌
+- ✅ 可在离线环境中使用（无需外部依赖）
 
-### Step 3: Install Dependencies
+### 第三步：安装依赖项
 
-**Required:** Node.js >= 18.0.0
+**要求：** Node.js >= 18.0.0
 
 ```bash
 cd gandi-skill/scripts
@@ -161,23 +173,23 @@ npm install
 npm list --depth=0
 ```
 
-**Expected packages:**
-- axios (HTTP client for Gandi API)
-- Any other dependencies listed in package.json
+**所需包：**
+- axios（用于与Gandi API通信的HTTP客户端）
+- `package.json` 中列出的其他依赖项
 
-**Troubleshooting:**
-- If `node` or `npm` not found: Install Node.js from [nodejs.org](https://nodejs.org/)
-- If permission errors: Don't use `sudo` - fix npm permissions or use nvm
-- If package errors: Delete `node_modules/` and `package-lock.json`, then `npm install` again
+**故障排除：**
+- 如果找不到`node`或`npm`：请从 [nodejs.org](https://nodejs.org/) 安装Node.js。
+- 如果遇到权限问题：不要使用`sudo`，请修复npm权限问题或使用nvm。
+- 如果遇到包安装问题：删除`node_modules/`和`package-lock.json`，然后重新运行`npm install`。
 
-### Step 4: Test Authentication
+### 第四步：测试身份验证
 
 ```bash
 cd gandi-skill/scripts
 node test-auth.js
 ```
 
-Expected output:
+预期输出：
 ```
 ✅ Authentication successful!
 
@@ -188,45 +200,44 @@ Your organizations:
 🎉 You're ready to use the Gandi skill!
 ```
 
-### Step 5: Setup Contact Information (Optional, for Domain Registration)
+### 第五步：设置联系信息（可选，用于域名注册）
 
-If you plan to register domains, save your contact information once for reuse:
+如果您计划注册域名，请保存一次联系信息以供后续使用：
 
 ```bash
 cd gandi-skill/scripts
 node setup-contact.js
 ```
 
-**The script will prompt for:**
-- Name (first and last)
-- Email address
-- Phone number (international format: +1.5551234567)
-- Street address
-- City
-- State/Province (for US: 2-letter code like OH, automatically formatted to US-OH)
-- ZIP/Postal code
-- Country (2-letter code: US, FR, etc.)
-- Type (individual or company)
-- **Privacy preference:** Retain or auto-purge contact after registration
+脚本会要求您提供以下信息：
+- 姓名（名和姓）
+- 电子邮件地址
+- 电话号码（国际格式：+1.5551234567）
+- 街道地址
+- 城市
+- 州/省（例如美国：使用2个字母的代码，如OH，系统会自动格式化为US-OH）
+- 邮政编码
+- 国家（2个字母的代码，如US、FR等）
+- 类型（个人或公司）
+- **隐私设置：** 是否在注册后保留联系信息
 
-**Contact information is saved to:**
+**联系信息保存位置：**
 - `~/.config/gandi/contact.json`
-- Permissions: 600 (owner read-write only)
-- Outside the skill directory (never committed to git)
+- 权限设置：600（仅允许所有者读写）
+- 该文件位于技能目录之外（不会提交到git仓库）
 
-**Privacy Options:**
+**隐私设置：**
+1. **保留（默认）：** 在未来注册时保留联系信息
+   - 适用于频繁注册域名的用户
+   - 设置一次，永久有效
+   - 可随时使用`delete-contact.js`删除
 
-1. **RETAIN (default):** Keep contact saved for future registrations
-   - Best for frequent domain registrations
-   - Setup once, use forever
-   - Delete manually anytime with `delete-contact.js`
+2. **删除：** 在每次注册后自动删除联系信息
+   - 适用于注重隐私的用户
+   - 联系信息仅在注册期间存在
+   - 下次注册时需要重新输入
 
-2. **PURGE:** Auto-delete contact after each registration
-   - Best for privacy-conscious users
-   - Contact info only exists during registration
-   - Must re-enter for next registration
-
-**Managing saved contact:**
+**管理保存的联系信息：**
 ```bash
 # View current contact
 node view-contact.js
@@ -241,68 +252,62 @@ node delete-contact.js
 node delete-contact.js --force
 ```
 
-**One-time purge override:**
+**一次性删除设置：**
 ```bash
 # Register and delete contact (even if preference is "retain")
 node register-domain.js example.com --purge-contact
 ```
 
-## Usage Examples
+## 使用示例
 
-### List Your Domains
+### 列出您的域名
 
 ```bash
 node list-domains.js
 ```
 
-Output shows:
-- Domain names
-- Expiration dates
-- Auto-renewal status
-- Services (LiveDNS, Email, etc.)
-- Organization ownership
+输出内容包括：
+- 域名
+- 到期日期
+- 自动续订状态
+- 服务信息（LiveDNS、电子邮件等）
+- 组织所有权
 
-### List DNS Records
+### 列出DNS记录
 
 ```bash
 node list-dns.js example.com
 ```
 
-Output shows:
-- All DNS records grouped by type
-- TTL values
-- Record names and values
-- Nameservers
+输出内容包括：
+- 按类型分组的DNS记录
+- TTL值
+- 记录名称和值
+- 名服务器
 
-### Using from Moltbot
+### 通过Moltbot使用
 
-Once configured, you can use natural language:
+配置完成后，您可以使用自然语言命令执行操作：
+> “列出我的Gandi域名”
+> “显示example.com的DNS记录”
+> “example.com的到期日期是什么时候？”
+> “example.com是否启用了自动续订？”
 
-> "List my Gandi domains"
+## 域名可用性检查
 
-> "Show DNS records for example.com"
-
-> "When does example.com expire?"
-
-> "Is auto-renewal enabled for example.com?"
-
-## Domain Availability Checking
-
-### Check Single Domain
-
-Check if a specific domain is available for registration:
+### 检查单个域名是否可用
 
 ```bash
 node check-domain.js example.com
 ```
 
-**Features:**
-- Shows availability status (available/unavailable/pending/error)
-- Displays pricing information (registration, renewal, transfer)
-- Lists supported features (DNSSEC, LiveDNS, etc.)
-- Shows TLD information
+**功能：**
+- 显示域名是否可用（可用/不可用/待定/错误）
+- 显示价格信息（注册、续订、转移等）
+- 列出支持的功能（DNSSEC、LiveDNS等）
+- 显示顶级域名（TLD）信息
 
-**Example Output:**
+**示例输出：**
 ```
 🔍 Checking availability for: example.com
 
@@ -323,9 +328,9 @@ Domain: example.com
   Extension: com
 ```
 
-### Smart Domain Suggestions
+### 智能域名建议
 
-Find available alternatives with TLD variations and name modifications:
+提供带顶级域名变体和名称修改的可用域名建议：
 
 ```bash
 # Check all configured TLDs + variations
@@ -341,14 +346,14 @@ node suggest-domains.js example --no-variations
 node suggest-domains.js example --json
 ```
 
-**Name Variation Patterns:**
-1. **Hyphenated**: Adds hyphens between word boundaries (`example` → `ex-ample`)
-2. **Abbreviated**: Removes vowels (`example` → `exmpl`)
-3. **Prefix**: Adds common prefixes (`example` → `get-example`, `my-example`)
-4. **Suffix**: Adds common suffixes (`example` → `example-app`, `example-hub`)
-5. **Numbers**: Appends numbers (`example` → `example2`, `example3`)
+**名称修改模式：**
+1. **添加连字符**：在单词之间添加连字符（例如 `example` → `ex-ample`）
+2. **缩写**：删除元音（例如 `example` → `exmpl`）
+3. **添加前缀**：添加常见前缀（例如 `example` → `get-example`、`my-example`）
+4. **添加后缀**：添加常见后缀（例如 `example` → `example-app`、`example-hub`）
+5. **添加数字**：在域名后添加数字（例如 `example` → `example2`、`example3`）
 
-**Example Output:**
+**示例输出：**
 ```
 🔍 Checking availability for: example
 
@@ -392,11 +397,11 @@ Suffix:
 ═══════════════════════════════════════════════════════
 ```
 
-### Configuration
+### 配置
 
-Domain checker configuration is stored in `gandi-skill/config/domain-checker-defaults.json`.
+域名检查器的配置保存在 `gandi-skill/config/domain-checker-defaults.json` 文件中。
 
-**Structure:**
+**结构：**
 ```json
 {
   "tlds": {
@@ -423,22 +428,22 @@ Domain checker configuration is stored in `gandi-skill/config/domain-checker-def
 }
 ```
 
-**Rate Limiting & Limits:**
-- **maxConcurrent**: Maximum concurrent API requests (default: 3)
-- **delayMs**: Delay between requests in milliseconds (default: 200ms)
-- **maxRequestsPerMinute**: Hard limit on requests per minute (default: 100, Gandi allows 1000)
-- **maxTlds**: Maximum TLDs to check in suggest-domains.js (default: 5)
-- **maxVariations**: Maximum name variations to generate (default: 10)
+**速率限制和限制：**
+- **maxConcurrent**：最大并发API请求数量（默认值：3）
+- **delayMs**：请求之间的延迟时间（以毫秒为单位）（默认值：200ms）
+- **maxRequestsPerMinute**：每分钟的请求上限（默认值：100，Gandi允许1000）
+- **maxTlds**：在`suggest-domains.js`中检查的顶级域名数量（默认值：5）
+- **maxVariations**：生成的名称变体数量（默认值：10）
 
-These limits ensure good API citizenship and prevent overwhelming Gandi's API.
+这些限制有助于确保API的稳定运行，防止对Gandi API造成过大负担。
 
-**TLD Modes:**
-- `"extend"`: Use defaults + custom TLDs (merged list)
-- `"replace"`: Use only custom TLDs (ignore defaults)
+**顶级域名模式：**
+- `"extend"`：使用默认设置和自定义顶级域名（合并列表）
+- `"replace"`：仅使用自定义顶级域名（忽略默认设置）
 
-**Gateway Console Integration:**
+**Gateway Console集成：**
 
-When Gateway Console support is added ([#3](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/3)), configuration will be available at:
+当添加Gateway Console支持时（[#3](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/3)），配置信息将位于以下位置：
 
 ```yaml
 skills:
@@ -455,13 +460,13 @@ skills:
             patterns: [...]
 ```
 
-See `docs/gateway-config-design.md` for complete configuration architecture.
+有关完整配置架构，请参阅 `docs/gateway-config-design.md`。
 
-## DNS Management (Phase 2)
+## DNS管理（第二阶段）
 
-### Add or Update DNS Records
+### 添加或更新DNS记录
 
-Create or update individual DNS records:
+创建或更新单个DNS记录：
 
 ```bash
 # Add an A record for root domain
@@ -480,11 +485,11 @@ node add-dns-record.js example.com @ TXT "v=spf1 include:_spf.google.com ~all"
 node add-dns-record.js example.com api A 192.168.1.10 300
 ```
 
-**Supported record types:** A, AAAA, CNAME, MX, TXT, NS, SRV, CAA, PTR
+**支持的记录类型：** A、AAAA、CNAME、MX、TXT、NS、SRV、CAA、PTR
 
-### Delete DNS Records
+### 删除DNS记录
 
-Remove specific DNS records:
+删除特定的DNS记录：
 
 ```bash
 # Delete old A record
@@ -497,9 +502,9 @@ node delete-dns-record.js example.com test CNAME
 node delete-dns-record.js example.com old A --force
 ```
 
-### Bulk DNS Operations
+### 批量DNS操作
 
-Replace all DNS records at once:
+一次性替换所有DNS记录：
 
 ```bash
 # From JSON file
@@ -515,7 +520,7 @@ node update-dns-bulk.js example.com records.json --no-snapshot
 node update-dns-bulk.js example.com records.json --force
 ```
 
-**JSON format:**
+**JSON格式：**
 ```json
 [
   {
@@ -539,9 +544,9 @@ node update-dns-bulk.js example.com records.json --force
 ]
 ```
 
-### DNS Zone Snapshots
+### DNS区域快照
 
-Create safety backups before making changes:
+在修改之前创建安全备份：
 
 ```bash
 # Create a snapshot
@@ -557,14 +562,14 @@ node restore-snapshot.js example.com abc123-def456-ghi789
 node restore-snapshot.js example.com abc123-def456-ghi789 --force
 ```
 
-**Automatic snapshots:**
-- Bulk updates automatically create snapshots (unless `--no-snapshot`)
-- Snapshots are named with timestamp
-- Use snapshots for easy rollback
+**自动快照：**
+- 批量更新会自动创建快照（除非指定了`--no-snapshot`）
+- 快照会带有时间戳
+- 使用快照便于回滚
 
-### Common DNS Configuration Examples
+### 常见DNS配置示例
 
-#### Basic Website Setup
+#### 基本网站设置
 ```bash
 # Root domain
 node add-dns-record.js example.com @ A 192.168.1.1
@@ -573,7 +578,7 @@ node add-dns-record.js example.com @ A 192.168.1.1
 node add-dns-record.js example.com www CNAME @
 ```
 
-#### Email Configuration (Google Workspace)
+#### 电子邮件配置（Google Workspace）
 ```bash
 # MX records
 node add-dns-record.js example.com @ MX "1 ASPMX.L.GOOGLE.COM."
@@ -584,8 +589,9 @@ node add-dns-record.js example.com @ MX "5 ALT2.ASPMX.L.GOOGLE.COM."
 node add-dns-record.js example.com @ TXT "v=spf1 include:_spf.google.com ~all"
 ```
 
-#### Domain Redirect Setup
-To redirect one domain to another:
+#### 域名重定向设置
+
+将一个域名重定向到另一个域名：
 
 ```bash
 # Point root domain to same server
@@ -595,9 +601,9 @@ node add-dns-record.js old-domain.com @ A 192.168.1.1
 node add-dns-record.js old-domain.com www CNAME @
 ```
 
-Then configure HTTP 301 redirect at the server level.
+随后在服务器级别配置HTTP 301重定向。
 
-#### Subdomain Setup
+#### 子域名设置
 ```bash
 # API subdomain
 node add-dns-record.js example.com api A 192.168.1.10
@@ -609,19 +615,19 @@ node add-dns-record.js example.com staging A 192.168.1.20
 node add-dns-record.js example.com "*" A 192.168.1.100
 ```
 
-## Email Forwarding (Phase 2)
+## 电子邮件转发（第二阶段）
 
-### List Email Forwards
+### 列出电子邮件转发规则
 
-See all email forwards configured for a domain:
+查看某个域名配置的所有电子邮件转发规则：
 
 ```bash
 node list-email-forwards.js example.com
 ```
 
-### Create Email Forwards
+### 创建电子邮件转发规则
 
-Forward emails to one or more destinations:
+将电子邮件转发到一个或多个目的地：
 
 ```bash
 # Simple forward
@@ -634,9 +640,9 @@ node add-email-forward.js example.com support team1@example.com team2@example.co
 node add-email-forward.js example.com @ catchall@example.com
 ```
 
-### Update Email Forwards
+### 更新电子邮件转发规则
 
-Change the destination(s) for an existing forward:
+更改现有转发的目的地：
 
 ```bash
 # Update single destination
@@ -646,11 +652,11 @@ node update-email-forward.js example.com hello newemail@personal.com
 node update-email-forward.js example.com support new1@example.com new2@example.com
 ```
 
-**Note:** This replaces all existing destinations with the new ones.
+**注意：** 这将替换所有现有的转发规则。
 
-### Delete Email Forwards
+### 删除电子邮件转发规则
 
-Remove email forwards:
+删除电子邮件转发规则：
 
 ```bash
 # Delete with confirmation prompt
@@ -663,9 +669,9 @@ node delete-email-forward.js example.com old --force
 node delete-email-forward.js example.com @ --force
 ```
 
-### Common Email Forwarding Use Cases
+### 常见电子邮件转发场景
 
-#### Basic Email Forwarding
+#### 基本电子邮件转发
 ```bash
 # Forward contact@ to your personal email
 node add-email-forward.js example.com contact you@gmail.com
@@ -674,7 +680,7 @@ node add-email-forward.js example.com contact you@gmail.com
 node add-email-forward.js example.com sales team@example.com
 ```
 
-#### Domain Migration Email Forwarding
+#### 域名迁移时的电子邮件转发
 ```bash
 # Forward all email from old domain to new domain
 # Preserves the local part (username before @)
@@ -690,7 +696,7 @@ node add-email-forward.js old-domain.com support support@new-domain.com
 node add-email-forward.js old-domain.com @ admin@new-domain.com
 ```
 
-#### Team Distribution Lists
+#### 团队分发列表
 ```bash
 # Forward to entire team
 node add-email-forward.js example.com team alice@example.com bob@example.com charlie@example.com
@@ -699,7 +705,7 @@ node add-email-forward.js example.com team alice@example.com bob@example.com cha
 node update-email-forward.js example.com team alice@example.com dave@example.com
 ```
 
-#### Catch-All Configuration
+#### 通配符转发设置
 ```bash
 # Forward all unmatched emails to one address
 node add-email-forward.js example.com @ catchall@example.com
@@ -708,18 +714,17 @@ node add-email-forward.js example.com @ catchall@example.com
 node add-email-forward.js example.com @ admin1@example.com admin2@example.com
 ```
 
-**Note:** Catch-all forwards only apply to email addresses that don't have specific forwards configured.
+**注意：** 通配符转发仅适用于没有配置特定转发的电子邮件地址。
 
-### Email Forward Management Tips
+### 电子邮件转发管理提示
 
-1. **Test after creating:** Send a test email to verify forwarding works
-2. **Use specific forwards over catch-all:** More control and easier to manage
-3. **Multiple destinations:** Email is sent to all destinations (not round-robin)
-4. **Order doesn't matter:** Gandi processes most specific match first
-5. **Check spam folders:** Forwarded emails may be filtered by recipient's spam filter
+1. **创建后进行测试：** 发送测试邮件以验证转发是否正常工作。
+2. **优先使用特定转发规则：** 更易于管理和控制。
+3. **多个目的地：** 邮件会发送到所有指定目的地（非轮询方式）。
+4. **顺序无关紧要：** Gandi会优先处理最匹配的规则。
+5. **检查垃圾邮件文件夹：** 转发的邮件可能会被收件人的垃圾邮件过滤器过滤。
 
-### Example: Complete Domain Email Setup
-
+### 完整的域名电子邮件设置示例
 ```bash
 # 1. Set up MX records (if not already done)
 node add-dns-record.js example.com @ MX "10 spool.mail.gandi.net."
@@ -737,61 +742,61 @@ node add-email-forward.js example.com @ admin@example.com
 node list-email-forwards.js example.com
 ```
 
-## Helper Scripts
+## 辅助脚本
 
-All scripts are in `gandi-skill/scripts/`:
+所有脚本位于 `gandi-skill/scripts/` 目录下：
 
-### Authentication & Setup
-| Script | Purpose |
+### 身份验证和设置
+| 脚本 | 功能 |
 |--------|---------|
-| `test-auth.js` | Verify authentication works |
-| `setup-contact.js` | Save contact info for domain registration (run once) |
-| `view-contact.js` | View saved contact information |
-| `delete-contact.js` | Delete saved contact (with optional --force) |
+| `test-auth.js` | 验证身份验证是否正常工作 |
+| `setup-contact.js` | 保存用于域名注册的联系信息（仅运行一次） |
+| `view-contact.js` | 查看保存的联系信息 |
+| `delete-contact.js` | 删除保存的联系信息（可选参数`--force`） |
 
-### Domain & DNS Viewing
-| Script | Purpose |
+### 域名和DNS查看
+| 脚本 | 功能 |
 |--------|---------|
-| `list-domains.js` | Show all domains in account |
-| `list-dns.js <domain>` | Show DNS records for domain |
-| `check-domain.js <domain>` | Check single domain availability + pricing |
-| `suggest-domains.js <name>` | Smart domain suggestions with variations |
-| `check-ssl.js` | Check SSL certificate status for all domains |
+| `list-domains.js` | 显示账户中的所有域名 |
+| `list-dns.js <domain>` | 显示域名的DNS记录 |
+| `check-domain.js <domain>` | 检查单个域名的可用性和价格信息 |
+| `suggest-domains.js <name>` | 提供带变体的智能域名建议 |
+| `check-ssl.js` | 检查所有域名的SSL证书状态 |
 
-### DNS Modification (Phase 2)
-| Script | Purpose |
+### DNS修改（第二阶段）
+| 脚本 | 功能 |
 |--------|---------|
-| `add-dns-record.js <domain> <name> <type> <value> [ttl]` | Add or update a DNS record |
-| `delete-dns-record.js <domain> <name> <type> [--force]` | Delete a DNS record |
-| `update-dns-bulk.js <domain> <records.json> [--no-snapshot] [--force]` | Bulk update all DNS records |
-| `list-snapshots.js <domain>` | List DNS zone snapshots |
-| `create-snapshot.js <domain> [name]` | Create a DNS zone snapshot |
-| `restore-snapshot.js <domain> <snapshot-id> [--force]` | Restore DNS zone from snapshot |
+| `add-dns-record.js <domain> <name> <type> <value> [ttl]` | 添加或更新DNS记录 |
+| `delete-dns-record.js <domain> <name> <type> [--force]` | 删除DNS记录 |
+| `update-dns-bulk.js <domain> <records.json> [--no-snapshot] [--force]` | 批量更新所有DNS记录 |
+| `list-snapshots.js <domain>` | 列出DNS区域快照 |
+| `create-snapshot.js <domain> [name]` | 创建DNS区域快照 |
+| `restore-snapshot.js <domain> <snapshot-id> [--force]` | 从快照恢复DNS区域设置 |
 
-### Email Forwarding (Phase 2)
-| Script | Purpose |
+### 电子邮件转发（第二阶段）
+| 脚本 | 功能 |
 |--------|---------|
-| `list-email-forwards.js <domain>` | List all email forwards for a domain |
-| `add-email-forward.js <domain> <mailbox> <destination> [dest2...]` | Create email forward (use @ for catch-all) |
-| `update-email-forward.js <domain> <mailbox> <destination> [dest2...]` | Update email forward destinations |
-| `delete-email-forward.js <domain> <mailbox> [--force]` | Delete email forward |
+| `list-email-forwards.js <domain>` | 查看某个域名的所有电子邮件转发规则 |
+| `add-email-forward.js <domain> <mailbox> <destination> [dest2...]` | 创建电子邮件转发规则（使用@符号表示通配符） |
+| `update-email-forward.js <domain> <mailbox> <destination> [dest2...]` | 更新电子邮件转发规则的目标地址 |
+| `delete-email-forward.js <domain> <mailbox> [--force]` | 删除电子邮件转发规则 |
 
-### Core Library
-| Script | Purpose |
+### 核心库
+| 脚本 | 功能 |
 |--------|---------|
-| `gandi-api.js` | Core API client (importable) |
+| `gandi-api.js` | 核心API客户端（可导入） |
 
-## Configuration
+## 配置
 
-### Default Configuration
+### 默认配置
 
-- **Token file:** `~/.config/gandi/api_token` (API authentication)
-- **Contact file:** `~/.config/gandi/contact.json` (domain registration info, optional)
-- **API URL:** `https://api.gandi.net` (production)
+- **令牌文件：** `~/.config/gandi/api_token`（API身份验证）
+- **联系信息文件：** `~/.config/gandi/contact.json`（域名注册信息，可选）
+- **API地址：** `https://api.gandi.net`（生产环境）
 
-### Sandbox Testing
+### 沙箱测试
 
-To use Gandi's sandbox environment:
+要使用Gandi的沙箱环境，请执行以下操作：
 
 ```bash
 # Create sandbox token at: https://admin.sandbox.gandi.net
@@ -799,9 +804,9 @@ echo "YOUR_SANDBOX_TOKEN" > ~/.config/gandi/api_token
 echo "https://api.sandbox.gandi.net" > ~/.config/gandi/api_url
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Token Not Found
+### 令牌未找到
 
 ```bash
 # Verify file exists
@@ -810,34 +815,34 @@ ls -la ~/.config/gandi/api_token
 # Should show: -rw------- (600 permissions)
 ```
 
-### Authentication Failed (401)
+### 身份验证失败（401）
 
-- Token is incorrect or expired
-- Create new token at Gandi Admin
-- Update stored token file
+- 令牌不正确或已过期
+- 在Gandi Admin中创建新令牌
+- 更新存储的令牌文件
 
-### Permission Denied (403)
+### 权限被拒绝（403）
 
-- Token doesn't have required scopes
-- Create new token with Domain:read and LiveDNS:read
-- Verify organization membership
+- 令牌没有所需的权限范围
+- 创建新的令牌，确保包含 `Domain:read` 和 `LiveDNS:read` 权限
+- 验证组织成员资格
 
-### Domain Not Using LiveDNS
+### 域名未启用LiveDNS
 
-If you get "not using Gandi LiveDNS" error:
-1. Log in to Gandi Admin
-2. Go to domain management
-3. Attach LiveDNS service to the domain
+如果出现“未启用Gandi LiveDNS”的错误：
+1. 登录Gandi Admin
+2. 进入域名管理页面
+3. 为该域名启用LiveDNS服务
 
-### Rate Limit (429)
+### 速率限制（429）
 
-Gandi allows 1000 requests/minute. If exceeded:
-- Wait 60 seconds
-- Reduce frequency of API calls
+Gandi允许每分钟1000次请求。如果超过限制：
+- 等待60秒
+- 减少API请求的频率
 
-## API Reference
+## API参考
 
-The skill provides importable functions:
+本技能提供了可导入的API函数：
 
 ```javascript
 import { 
@@ -868,35 +873,35 @@ const record = await getDnsRecord('example.com', '@', 'A');
 const available = await checkAvailability(['example.com', 'example.net']);
 ```
 
-## Security
+## 安全性
 
-### Token Storage
+### 令牌存储
 
-✅ **DO:**
-- Store at `~/.config/gandi/api_token`
-- Use 600 permissions (owner read-only)
-- Rotate tokens regularly
-- Use minimal required scopes
+✅ **建议的做法：**
+- 将令牌存储在 `~/.config/gandi/api_token` 文件中
+- 设置权限为600（仅允许所有者读取）
+- 定期轮换令牌
+- 仅使用最低所需的权限范围
 
-❌ **DON'T:**
-- Commit tokens to repositories
-- Share tokens between users
-- Give tokens unnecessary permissions
-- Store tokens in scripts
+❌ **禁止的做法：**
+- 将令牌提交到版本控制系统中
+- 在用户之间共享令牌
+- 给令牌分配不必要的权限
+- 将令牌存储在脚本中
 
-### Token Scopes
+### 令牌权限范围
 
-**Phase 1 (current):**
-- Domain: read
-- LiveDNS: read
+**当前阶段（第一阶段）：**
+- Domain: 读取
+- LiveDNS: 读取
 
-**Phase 2+ (future):**
-- Domain: read, write (for registration, renewal)
-- LiveDNS: read, write (for DNS modifications)
-- Certificate: read (optional, for SSL certs)
-- Email: read, write (optional, for email config)
+**未来阶段（第二阶段及以后）：**
+- Domain: 读取、写入（用于域名注册和续订）
+- LiveDNS: 读取、写入（用于DNS修改）
+- Certificate: 读取（可选，用于SSL证书）
+- Email: 读取、写入（可选，用于电子邮件配置）
 
-## Architecture
+## 架构
 
 ```
 gandi-skill/
@@ -915,48 +920,48 @@ gandi-skill/
     └── list-dns.js          # List DNS records
 ```
 
-## Development Roadmap
+## 开发路线图
 
-**Phase 1: Read Operations** (✅ Current)
-- Authentication with PAT
-- List domains
-- Get domain details
-- List DNS records
-- Basic error handling
+**第一阶段：读取操作**（已完成）
+- 使用个人访问令牌（PAT）进行身份验证
+- 列出域名
+- 获取域名详情
+- 查看DNS记录
+- 基本错误处理
 
-**Phase 2: DNS Modifications**
-- Add DNS records
-- Update DNS records
-- Delete DNS records
-- Bulk DNS operations
+**第二阶段：DNS修改**
+- 添加DNS记录
+- 更新DNS记录
+- 删除DNS记录
+- 批量DNS操作
 
-**Phase 3: Domain Management**
-- Domain registration
-- Domain renewal
-- Auto-renewal configuration
-- Nameserver management
+**第三阶段：域名管理**
+- 域名注册
+- 域名续订
+- 自动续订设置
+- 名服务器管理
 
-**Phase 4: Multi-Organization** ([#1](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/1))
-- Profile-based token management
-- Organization selection
-- Multiple token support
+**第四阶段：多组织支持** ([#1](https://github.com/chrisagiddings/moltbot-gandi-skill/issues/1))
+- 基于角色的令牌管理
+- 组织选择
+- 多个令牌支持
 
-**Phase 5: Advanced Features**
-- DNSSEC management
-- Certificate management
-- Email/mailbox configuration
-- Domain transfer operations
+**第五阶段：高级功能**
+- DNSSEC管理
+- 证书管理
+- 电子邮件/邮箱配置
+- 域名转移操作
 
-## Contributing
+## 贡献
 
-See [Contributing Guide](../../README.md#contributing) in the main README.
+请参阅主README文件中的 [贡献指南](../../README.md#contributing)。
 
-## Support
+## 支持
 
-- **Issues:** [GitHub Issues](https://github.com/chrisagiddings/moltbot-gandi-skill/issues)
-- **Documentation:** [Reference Guides](./references/)
-- **Gandi Support:** [help.gandi.net](https://help.gandi.net/)
+- **问题报告：** [GitHub Issues](https://github.com/chrisagiddings/moltbot-gandi-skill/issues)
+- **文档：** [参考指南](./references/)
+- **Gandi支持：** [help.gandi.net](https://help.gandi.net/)
 
-## License
+## 许可证
 
-MIT License - See [LICENSE](../../LICENSE)
+MIT许可证 - 详情请参阅 [LICENSE](../../LICENSE)

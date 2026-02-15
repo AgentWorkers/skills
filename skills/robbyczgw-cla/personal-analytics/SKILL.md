@@ -1,35 +1,35 @@
 ---
 name: personal-analytics
-description: Analyze conversation patterns, track productivity, and surface self-knowledge insights. Use when user wants to understand their own patterns (when they chat, what topics they discuss, productivity trends, sentiment over time). Provides weekly/monthly reports, topic recommendations, and time-based insights. Privacy-first design with all analysis local.
+description: 分析对话模式、追踪工作效率，并揭示关于个人认知的见解。适用于用户希望了解自己的交流习惯（如聊天内容、讨论的主题、工作效率趋势以及情绪变化）的情况。提供每周/每月的报告、主题推荐以及基于时间的分析结果。该工具采用以隐私保护为核心的设计理念，所有分析数据均存储在本地。
 ---
 
-# Personal Analytics
+# 个人分析工具
 
-**Know thyself. Work smarter. Discover patterns you didn't know existed.**
+**了解自己，更高效地工作，发现那些你未曾察觉的规律。**
 
-Personal Analytics analyzes your conversation patterns to surface actionable insights about your work style, interests, and productivity—all while keeping your data completely private and local.
+个人分析工具会分析你的对话模式，从而揭示关于你的工作方式、兴趣和效率的实用见解——同时确保你的数据完全保密且仅存储在本地。
 
-## Core Capabilities
+## 核心功能
 
-1. **Session Analysis** - When you chat, for how long, productivity patterns
-2. **Topic Tracking** - What subjects come up repeatedly, trending interests
-3. **Sentiment Patterns** - Mood tracking over time, stress indicators
-4. **Productivity Insights** - When you're most effective, optimal work times
-5. **Weekly/Monthly Reports** - Beautiful summaries of your patterns
-6. **Topic Recommendations** - Auto-suggest topics for proactive-research monitoring
+1. **会话分析** - 分析你的聊天时长及效率模式
+2. **主题追踪** - 常被提及的主题及当前的热门兴趣
+3. **情绪分析** - 随时间变化的情绪状态及压力指标
+4. **效率洞察** - 你最有效的工作时段
+5. **周/月度报告** - 以美观的形式呈现你的数据模式
+6. **主题推荐** - 自动推荐值得主动研究的主题
 
-## Privacy First
+## 首先考虑隐私
 
-🔒 **All analysis happens locally. Nothing leaves your machine.**
+🔒 **所有分析都在本地进行，数据不会离开你的设备。**
 
-- Raw conversations **never** stored
-- Only aggregated statistics saved
-- Opt-in design (must enable)
-- Data deletion anytime
-- No external APIs for analysis
-- Gitignored data files
+- 原始对话 **从不** 被存储
+- 仅保存汇总统计信息
+- 需要用户主动启用功能
+- 可随时删除数据
+- 无外部API用于数据分析
+- Git会忽略数据文件
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize
@@ -48,30 +48,29 @@ python3 scripts/report.py weekly
 python3 scripts/recommend.py
 ```
 
-## What Gets Tracked
+## 被追踪的内容
 
-### Session Metadata
-- Timestamp (start/end)
-- Duration
-- Message count
-- Primary topics discussed
-- Sentiment (positive/neutral/negative/mixed)
-- Productivity markers (tasks completed, decisions made)
+### 会话元数据
+- 时间戳（开始/结束）
+- 会话时长
+- 消息数量
+- 主要讨论的主题
+- 情绪（积极/中立/消极/混合）
+- 效率标记（完成任务、做出决策）
 
-### Aggregated Stats
-- Hourly activity heatmap
-- Topic frequency over time
-- Average session duration
-- Productivity by time of day
-- Sentiment trends
+### 汇总统计
+- 每小时活动热图
+- 主题频率随时间变化的情况
+- 不同时间段的工作效率
+- 情绪趋势
 
-### What's NOT Tracked
-- ❌ Raw message content
-- ❌ Personal information
-- ❌ Sensitive data (passwords, keys, etc.)
-- ❌ Specific conversations
+### 不被追踪的内容
+- ❌ 原始消息内容
+- ❌ 个人信息
+- ❌ 敏感数据（密码、密钥等）
+- ❌ 具体对话内容
 
-## Configuration
+## 配置
 
 ### config.json
 
@@ -111,11 +110,11 @@ python3 scripts/recommend.py
 }
 ```
 
-## Scripts
+## 脚本
 
 ### analyze.py
 
-Analyze conversation patterns:
+分析对话模式：
 
 ```bash
 # Analyze all available data
@@ -131,7 +130,7 @@ python3 scripts/analyze.py --insights
 python3 scripts/analyze.py --verbose
 ```
 
-**Output:**
+**输出：**
 ```
 📊 Personal Analytics Analysis
 
@@ -165,7 +164,7 @@ Sentiment:
 
 ### report.py
 
-Generate beautiful reports:
+生成美观的报告：
 
 ```bash
 # Weekly report
@@ -184,7 +183,7 @@ python3 scripts/report.py weekly --output report.md
 python3 scripts/report.py weekly --send
 ```
 
-**Report Format:**
+**报告格式：**
 
 ```markdown
 # 📊 Weekly Analytics Report
@@ -201,22 +200,22 @@ python3 scripts/report.py weekly --send
 
 ### Activity Heatmap
 ```
-Mon  ████░░░░░░░░░░░░░░░░░░░░  4h
-Tue  ██████████░░░░░░░░░░░░░░  6h 30m
-Wed  ████████████░░░░░░░░░░░░  8h 15m  ← Peak
-Thu  ██████░░░░░░░░░░░░░░░░░░  5h
-Fri  ████░░░░░░░░░░░░░░░░░░░░  3h 45m
-Sat  ██░░░░░░░░░░░░░░░░░░░░░░  1h 30m
-Sun  ░░░░░░░░░░░░░░░░░░░░░░░░  45m
+周一  ████░░░░░░░░░░░░░░░░░░░░  4小时
+周二  ██████████░░░░░░░░░░░░ 6小时30分钟
+周三  ████████████░░░░░░░░░░ 8小时15分钟  ← 高效时段
+周四  ██████░░░░░░░░░░░░░ 5小时
+周五  ████░░░░░░░░░░░░░░ 3小时45分钟
+周六  ██░░░░░░░░░░░░░░░ 1小时30分钟
+周日  ░░░░░░░░░░░░░░░ 45分钟
 ```
 
 ### Hourly Distribution
 ```
-06-09: ██░░░░░░░░ (12%)
-09-12: ████████░░ (38%)  ← Peak productivity
-12-14: ███░░░░░░░ (15%)
-14-17: █████░░░░░ (24%)
-17-22: ██░░░░░░░░ (11%)
+06-09: ██░░░░░░░░  (12%)
+09-12: ████████░░  (38%)  ← 高效时段
+12-14: ███░░░░░░  (15%)
+14-17: █████░░░░  (24%)
+17-22: ██░░░░░  (11%)
 ```
 
 ## 📚 Topic Insights
@@ -264,9 +263,9 @@ Sun  ░░░░░░░░░░░░░░░░░░░░░░░░  4
 
 ### Overall Mood
 ```
-😊 Positive  ████████████████░░  78%  (↗️ +13%)
-😐 Neutral   ████░░░░░░░░░░░░░░  18%
-😟 Negative  ██░░░░░░░░░░░░░░░░   4%
+😊 积极情绪  ████████████████░  78%  (↑13%)
+😐 中立情绪  ████░░░░░░░░ 18%
+😟 消极情绪  ██░░░░░░ 4%
 ```
 
 ### Stress Indicators
@@ -302,7 +301,7 @@ _Generated by Personal Analytics • Privacy-first, locally processed_
 
 ### recommend.py
 
-Get topic recommendations for proactive-research:
+生成值得主动研究的主题推荐：
 
 ```bash
 # Get recommendations
@@ -318,7 +317,7 @@ python3 scripts/recommend.py --auto-add
 python3 scripts/recommend.py --threshold 5
 ```
 
-**Output:**
+**输出：**
 ```
 💡 Topic Recommendations for Proactive Research
 
@@ -346,7 +345,7 @@ Would you like to add these topics to proactive-research? [y/N]
 
 ### session_tracker.py
 
-Track individual sessions (called by Moltbot):
+跟踪由Moltbot调用的会话：
 
 ```bash
 # Log session start
@@ -361,11 +360,11 @@ python3 scripts/session_tracker.py message --session-id <id> \
   --sentiment positive
 ```
 
-This script is designed to be called by Moltbot hooks, not manually.
+此脚本专为通过Moltbot的钩子调用设计，不可手动执行。
 
 ### enable.py / disable.py
 
-Manage tracking:
+管理数据追踪功能：
 
 ```bash
 # Enable tracking
@@ -378,19 +377,19 @@ python3 scripts/disable.py
 python3 scripts/status.py
 ```
 
-## Integration with Moltbot
+## 与Moltbot的集成
 
-Personal Analytics can integrate with Moltbot session lifecycle:
+个人分析工具可以与Moltbot的会话生命周期集成：
 
-### Hook Points
+### 钩子点
 
-1. **Session Start** - Log timestamp, channel
-2. **Session End** - Calculate duration, save stats
-3. **Message Received** - Extract topics (lightweight), detect sentiment
+1. **会话开始** - 记录时间戳和频道
+2. **会话结束** - 计算时长并保存统计信息
+3. **收到消息** - 提取主题（简化处理）并检测情绪
 
-### Recommended Setup
+### 推荐的设置方式
 
-Add to Moltbot SOUL.md:
+将相关配置添加到Moltbot的SOUL.md文件中：
 
 ```markdown
 ## Personal Analytics Integration
@@ -402,11 +401,11 @@ After each session ends, if personal-analytics is enabled:
 4. Log to personal-analytics via session_tracker.py
 ```
 
-## Data Storage
+## 数据存储
 
 ### .analytics_data.json
 
-Aggregated statistics only:
+仅保存汇总统计信息：
 
 ```json
 {
@@ -449,7 +448,7 @@ Aggregated statistics only:
 
 ### .topic_cache.json
 
-Topic extraction cache (temporary):
+主题提取缓存（临时文件）：
 
 ```json
 {
@@ -458,51 +457,51 @@ Topic extraction cache (temporary):
 }
 ```
 
-Auto-deleted after 7 days.
+缓存文件会在7天后自动删除。
 
-## Insights & Patterns
+## 洞察与规律
 
-### Time-Based Insights
+### 基于时间的洞察
 
-**Productivity by Hour:**
-- Analyzes task completion rate by hour
-- Identifies peak productivity windows
-- Suggests optimal work scheduling
+**按小时分析效率：**
+- 分析每小时的任务完成率
+- 确定高效工作时段
+- 提供最佳工作安排建议
 
-**Day of Week Patterns:**
-- Activity levels per day
-- Best days for deep work
-- Meeting-heavy vs focus-heavy days
+**每周工作模式：**
+- 每天的活动水平
+- 最适合深入工作的日子
+- 会议较多与专注工作的日子对比
 
-### Topic Insights
+### 主题洞察
 
-**Topic Clustering:**
-- Groups related topics
-- Identifies emerging interests
-- Detects topic trends (rising, falling, stable)
+**主题聚类：**
+- 将相关主题分组
+- 发现新的兴趣点
+- 检测主题趋势（上升/下降/稳定）
 
-**Depth Analysis:**
-- Surface-level mentions vs deep dives
-- Problem-solving topics vs casual chat
-- Technical vs non-technical ratio
+**深度分析：**
+- 表面提及与深入讨论的区别
+- 问题解决类主题与闲聊类主题的对比
+- 技术类与非技术类主题的比例
 
-### Sentiment Insights
+### 情绪洞察
 
-**Mood Tracking:**
-- Overall sentiment trends
-- Correlation with time of day
-- Stress indicator detection
+**情绪追踪：**
+- 整体情绪趋势
+- 与时间段的关联
+- 压力指标的检测
 
-**Well-being Metrics:**
-- Late-night work frequency
-- Urgent/stress keywords
-- Work-life balance indicators
+**健康指标：**
+- 深夜工作的频率
+- 紧急/压力相关的关键词
+- 工作与生活的平衡指标
 
-## Privacy Controls
+## 隐私控制
 
-### Exclusion Patterns
+### 敏感数据的排除
 
-Automatically exclude sensitive data:
+自动排除敏感数据：
 
 ```json
 {
@@ -515,9 +514,9 @@ Automatically exclude sensitive data:
 }
 ```
 
-### Data Retention
+### 数据保留
 
-Auto-delete old data:
+自动删除旧数据：
 
 ```json
 {
@@ -528,7 +527,7 @@ Auto-delete old data:
 }
 ```
 
-### Manual Deletion
+### 手动删除
 
 ```bash
 # Delete all data
@@ -541,11 +540,11 @@ python3 scripts/delete_data.py --since "2026-01-01" --until "2026-01-31"
 python3 scripts/delete_data.py --topics "topic1,topic2"
 ```
 
-## Advanced Features
+## 高级功能
 
-### Custom Productivity Markers
+### 定义效率标准
 
-Define what "productivity" means for you:
+自定义“效率”的定义：
 
 ```json
 {
@@ -558,15 +557,15 @@ Define what "productivity" means for you:
 }
 ```
 
-### Topic Suggestions for Proactive Research
+### 主题推荐
 
-Automatically suggest topics based on:
-- Frequency threshold (mentioned N+ times)
-- Trend detection (rising interest)
-- Problem-solving patterns (technical depth)
-- Temporal patterns (regular discussions)
+根据以下条件自动推荐主题：
+- 主题出现的频率（N次以上）
+- 主题趋势（兴趣增长）
+- 问题解决的模式（技术深度）
+- 时间模式（频繁讨论的主题）
 
-### Report Customization
+### 报告定制
 
 ```json
 {
@@ -584,54 +583,54 @@ Automatically suggest topics based on:
 }
 ```
 
-## Use Cases
+## 使用场景
 
-### 🎯 Optimize Work Schedule
-Discover your peak productivity hours and schedule deep work accordingly.
+### 🎯 优化工作安排
+发现你的高效时段，并据此安排深度工作。
 
-### 📚 Track Learning Journey
-See which topics you're exploring, how deeply, and identify knowledge gaps.
+### 📚 跟踪学习过程
+了解你关注的主题、关注程度以及知识缺口。
 
-### 🧘 Monitor Well-being
-Track stress indicators, late-night work, and mood trends.
+### 🧘 监控健康状况
+追踪压力指标、深夜工作情况和情绪趋势。
 
-### 🔍 Discover Patterns
-Surface interests you didn't realize were important.
+### 🔍 发现规律
+发现你未曾注意到的兴趣点。
 
-### 🤝 Improve Collaboration
-Understand when you're most responsive and schedule meetings accordingly.
+### 🤝 提升协作效率
+了解你最能响应的时间，并据此安排会议。
 
-### 💡 Generate Content Ideas
-Your most-discussed topics are content goldmines.
+### 💡 生成内容灵感
+你讨论最多的主题是宝贵的内容资源。
 
-## Best Practices
+## 最佳实践
 
-1. **Run weekly reports** - Set up auto-generated reports every Sunday
-2. **Review recommendations** - Check topic suggestions monthly
-3. **Adjust privacy settings** - Start conservative, adjust as comfortable
-4. **Use with proactive-research** - Turn insights into automated monitoring
-5. **Don't over-optimize** - Insights are guides, not rules
+1. **每周生成报告** - 设置每周自动生成报告
+2. **查看推荐主题** - 每月检查主题推荐
+3. **调整隐私设置** - 从保守开始，根据需要逐步调整
+4. **结合主动研究使用** - 将洞察转化为自动化监控
+5. **不要过度优化** - 洞察是参考，而非绝对规则
 
-## Troubleshooting
+## 故障排除
 
-**No data collected:**
-- Verify tracking is enabled: `python3 scripts/status.py`
-- Check Moltbot integration is active
-- Run manual analysis: `python3 scripts/analyze.py --verbose`
+**未收集数据：**
+- 确保已启用数据追踪：`python3 scripts/status.py`
+- 检查Moltbot集成是否激活
+- 执行手动分析：`python3 scripts/analyze.py --verbose`
 
-**Inaccurate sentiment:**
-- Sentiment detection is heuristic-based
-- Adjust if needed in future versions
+**情绪分析不准确：**
+- 情绪检测基于启发式方法
+- 可在后续版本中进行调整
 
-**Missing topics:**
-- Topic extraction uses keyword matching
-- Lower threshold in config if too restrictive
+**主题缺失：**
+- 主题提取依赖于关键词匹配
+- 如果配置过于严格，可降低匹配阈值
 
-**Privacy concerns:**
-- Review `.analytics_data.json` - only aggregated stats
-- Delete data anytime: `python3 scripts/delete_data.py --all`
-- Disable tracking: `python3 scripts/disable.py`
+**隐私问题：**
+- 查看`.analytics_data.json`文件——仅保存汇总统计信息
+- 可随时删除数据：`python3 scripts/delete_data.py --all`
+- 禁用数据追踪：`python3 scripts/disable.py`
 
-## Credits
+## 致谢
 
-Built for ClawdHub. Privacy-first design inspired by Quantified Self movement.
+本工具专为ClawdHub开发，其隐私保护设计灵感来源于“量化自我”（Quantified Self）理念。

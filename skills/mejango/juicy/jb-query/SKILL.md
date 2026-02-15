@@ -1,13 +1,13 @@
 ---
 name: jb-query
-description: Query Juicebox V5 project state from the blockchain. Read project configurations, rulesets, terminal balances, token holder data, and splits using cast or ethers.js. Supports mainnet and testnets.
+description: 从区块链中查询 Juicebox V5 项目的状态。可以使用 cast 或 ethers.js 读取项目配置、规则集、终端余额、代币持有者数据以及代币分配情况。支持主网（mainnet）和测试网（testnet）。
 ---
 
-# Juicebox V5 Chain Queries
+# Juicebox V5 连链查询
 
-Query on-chain state for Juicebox V5 projects.
+用于查询 Juicebox V5 项目的链上状态。
 
-## Quick Reference - Contract Functions
+## 快速参考 - 合约函数
 
 ### JBProjects (ERC-721)
 ```solidity
@@ -24,12 +24,11 @@ primaryTerminalOf(projectId, token) → address  // Primary terminal for token
 isTerminalOf(projectId, terminal) → bool       // Check terminal validity
 ```
 
-**IMPORTANT**: `controllerOf()` is the ONLY authoritative way to determine which contract version
-a project uses. Compare the returned address against known V5/V5.1 controller addresses:
+**重要提示**：`controllerOf()` 是确定项目使用哪个合约版本的唯一权威方法。将返回的地址与已知的 V5/V5.1 控制器地址进行比较：
 - V5.0: `0x27da30646502e2f642be5281322ae8c394f7668a`
 - V5.1: `0xf3cc99b11bd73a2e3b8815fb85fe0381b29987e1`
 
-Some non-revnet projects use V5.0 contracts. Never assume version based on ownership.
+一些非 Revnet 项目使用 V5.0 合约。切勿仅根据所有权来判断合约版本。
 
 ### JBController
 ```solidity
@@ -66,24 +65,24 @@ surplusAllowanceOf(projectId, rulesetId, terminal, token, currency) → uint256
 usedSurplusAllowanceOf(projectId, terminal, token, rulesetId) → uint256
 ```
 
-## Cast Commands (Foundry)
+## Cast 命令（Foundry）
 
-### Get Project Owner
+### 获取项目所有者
 ```bash
 cast call $JB_PROJECTS "ownerOf(uint256)(address)" $PROJECT_ID --rpc-url $RPC_URL
 ```
 
-### Get Current Ruleset
+### 获取当前规则集
 ```bash
 cast call $JB_CONTROLLER "currentRulesetOf(uint256)" $PROJECT_ID --rpc-url $RPC_URL
 ```
 
-### Get Project Token
+### 获取项目代币
 ```bash
 cast call $JB_TOKENS "tokenOf(uint256)(address)" $PROJECT_ID --rpc-url $RPC_URL
 ```
 
-### Get Terminal Balance
+### 获取终端余额
 ```bash
 cast call $JB_TERMINAL "currentSurplusOf(uint256,address[],uint256,uint256)" \
     $PROJECT_ID \
@@ -93,7 +92,7 @@ cast call $JB_TERMINAL "currentSurplusOf(uint256,address[],uint256,uint256)" \
     --rpc-url $RPC_URL
 ```
 
-### Get Splits
+### 获取分配份额
 ```bash
 # Reserved token splits (groupId = 1, JBSplitGroupIds.RESERVED_TOKENS)
 cast call $JB_SPLITS "splitsOf(uint256,uint256,uint256)" \
@@ -117,16 +116,16 @@ cast call $JB_SPLITS "splitsOf(uint256,uint256,uint256)" \
     --rpc-url $RPC_URL
 ```
 
-### Get Token Balance
+### 获取代币余额
 ```bash
 cast call $JB_TOKENS "totalBalanceOf(address,uint256)(uint256)" \
     $HOLDER_ADDRESS $PROJECT_ID \
     --rpc-url $RPC_URL
 ```
 
-## TypeScript Examples (ethers.js)
+## TypeScript 示例（ethers.js）
 
-### Setup
+### 设置
 ```typescript
 import { ethers } from 'ethers';
 
@@ -142,7 +141,7 @@ const controller = new ethers.Contract(JB_CONTROLLER, CONTROLLER_ABI, provider);
 const tokens = new ethers.Contract(JB_TOKENS, TOKENS_ABI, provider);
 ```
 
-### Query Project Info
+### 查询项目信息
 ```typescript
 async function getProjectInfo(projectId: number) {
     const owner = await projects.ownerOf(projectId);
@@ -166,7 +165,7 @@ async function getProjectInfo(projectId: number) {
 }
 ```
 
-### Query Token Holders
+### 查询代币持有者
 ```typescript
 async function getTokenBalance(holder: string, projectId: number) {
     const balance = await tokens.totalBalanceOf(holder, projectId);
@@ -174,10 +173,10 @@ async function getTokenBalance(holder: string, projectId: number) {
 }
 ```
 
-## Common Queries
+## 常见查询
 
-### "Which contract version does project X use?"
-**ALWAYS start here before making any other queries that involve versioned contracts.**
+### “项目 X 使用的是哪个合约版本？”
+**在进行任何涉及版本化合约的查询之前，** **务必先从这里开始**。
 ```bash
 # Check JBDirectory.controllerOf() - the authoritative source
 cast call 0x0061e516886a0540f63157f112c0588ee0651dcf \
@@ -186,36 +185,36 @@ cast call 0x0061e516886a0540f63157f112c0588ee0651dcf \
 # V5.0 controller: 0x27da30646502e2f642be5281322ae8c394f7668a
 # V5.1 controller: 0xf3cc99b11bd73a2e3b8815fb85fe0381b29987e1
 ```
-Then use the matching versioned contracts (terminal, rulesets, etc.) for all subsequent queries.
+然后使用相应的版本化合约（终端、规则集等）进行后续查询。
 
-### "What's the current state of project X?"
-1. **First**: Get controller version via `JBDirectory.controllerOf(projectId)` - determines which contracts to use
-2. Get owner: `JBProjects.ownerOf(projectId)`
-3. Get ruleset: Use correct versioned `JBController.currentRulesetOf(projectId)`
-4. Get token: `JBTokens.tokenOf(projectId)`
-5. Get terminals: `JBDirectory.terminalsOf(projectId)`
-6. Get surplus: Use correct versioned `JBMultiTerminal.currentSurplusOf(...)`
+### “项目 X 的当前状态是什么？”
+1. **首先**：通过 `JBDirectory.controllerOf(projectId)` 获取控制器版本——以确定使用哪些合约
+2. 获取所有者：`JBProjects.ownerOf(projectId)`
+3. 获取规则集：使用正确的版本化 `JBController.currentRulesetOf(projectId)`
+4. 获取代币：`JBTokens.tokenOf(projectId)`
+5. 获取终端：`JBDirectory.terminalsOf(projectId)`
+6. 获取剩余资金：使用正确的版本化 `JBMultiTerminal.currentSurplusOf(...)`
 
-### "Who are the split recipients?"
-1. Get current ruleset ID from `currentRulesetOf`
-2. Query reserved splits: `JBSplits.splitsOf(projectId, rulesetId, 1)` (group 1 = RESERVED_TOKENS)
-3. Query payout splits: `JBSplits.splitsOf(projectId, rulesetId, uint256(uint160(token)))`
-   - For native token (ETH): group = uint256(uint160(JBConstants.NATIVE_TOKEN))
-   - For USDC: group = uint256(uint160(USDC_ADDRESS))
+### “分配份额的接收者是谁？”
+1. 从 `currentRulesetOf` 获取当前规则集 ID
+2. 查询预留的分配份额：`JBSplits.splitsOf(projectId, rulesetId, 1)`（group 1 = RESERVED_TOKENS）
+3. 查询支付份额：`JBSplits.splitsOf(projectId, rulesetId, uint256(uint160(token)))`
+   - 对于原生代币（ETH）：group = uint256(uint160(JBConstants.NATIVE_TOKEN))
+   - 对于 USDC：group = uint256(uint160(USDC_ADDRESS))
 
-### "How much can be paid out?"
-1. Get payout limit: `JBFundAccessLimits.payoutLimitOf(...)`
-2. Get used amount: `JBFundAccessLimits.usedPayoutLimitOf(...)`
-3. Remaining = limit - used
+### “可以支付多少？”
+1. 获取支付限额：`JBFundAccessLimits.payoutLimitOf(...)`
+2. 获取已使用金额：`JBFundAccessLimits.usedPayoutLimitOf(...)`
+3. 剩余金额 = 限额 - 已使用金额
 
-### "What hooks are configured?"
-1. Get ruleset metadata from `currentRulesetOf`
-2. Check `useDataHookForPay` and `useDataHookForCashOut`
-3. Get hook address from `dataHook`
+### “配置了哪些钩子？”
+1. 从 `currentRulesetOf` 获取规则集元数据
+2. 检查 `useDataHookForPay` 和 `useDataHookForCashOut`
+3. 从 `dataHook` 获取钩子地址
 
-## Network RPC URLs
+## 网络 RPC 地址
 
-| Network | RPC URL |
+| 网络 | RPC 地址 |
 |---------|---------|
 | Ethereum | `https://eth.llamarpc.com` |
 | Sepolia | `https://rpc.sepolia.org` |
@@ -223,18 +222,18 @@ Then use the matching versioned contracts (terminal, rulesets, etc.) for all sub
 | Arbitrum | `https://arb1.arbitrum.io/rpc` |
 | Base | `https://mainnet.base.org` |
 
-## Generation Guidelines
+## 生成指南
 
-1. **Identify the data needed** from user's question
-2. **Determine which contracts** to query
-3. **Provide cast commands** for quick CLI queries
-4. **Provide TypeScript** for programmatic access
-5. **Use the /jb-docs skill** to get current contract addresses
+1. **确定用户问题所需的数据**
+2. **确定需要查询的合约**
+3. **提供用于快速 CLI 查询的 Cast 命令**
+4. **提供 TypeScript 代码以实现程序化访问**
+5. **使用 /jb-docs 技能获取当前的合约地址**
 
-## Example Prompts
+## 示例提示
 
-- "What's the current ruleset for project 123?"
-- "Who owns project 456?"
-- "How much surplus does project 789 have?"
-- "List all payout splits for project 42"
-- "What's my token balance in project 100?"
+- “项目 123 的当前规则集是什么？”
+- “项目 456 的所有者是谁？”
+- “项目 789 的剩余资金是多少？”
+- “列出项目 42 的所有支付份额”
+- “我在项目 100 中的代币余额是多少？”

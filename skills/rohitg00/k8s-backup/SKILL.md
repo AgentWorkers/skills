@@ -1,13 +1,13 @@
 ---
 name: k8s-backup
-description: Kubernetes backup and restore with Velero. Use when creating backups, restoring applications, managing disaster recovery, or migrating workloads between clusters.
+description: 使用 Velero 进行 Kubernetes 备份和恢复。适用于创建备份、恢复应用程序、管理灾难恢复方案，或在集群之间迁移工作负载的场景。
 ---
 
-# Kubernetes Backup with Velero
+# 使用 Velero 进行 Kubernetes 备份
 
-Manage backups and restores using kubectl-mcp-server's Velero tools.
+使用 `kubectl-mcp-server` 的 Velero 工具来管理备份和恢复操作。
 
-## Check Velero Installation
+## 检查 Velero 安装情况
 
 ```python
 # Detect Velero
@@ -17,7 +17,7 @@ velero_detect_tool()
 velero_backup_locations_list_tool()
 ```
 
-## Create Backups
+## 创建备份
 
 ```python
 # Backup entire namespace
@@ -48,7 +48,7 @@ velero_backup_create_tool(
 )
 ```
 
-## List and Describe Backups
+## 列出并描述备份
 
 ```python
 # List all backups
@@ -65,7 +65,7 @@ velero_backup_get_tool(name="my-backup")
 # - PartiallyFailed: Some items failed
 ```
 
-## Restore from Backup
+## 从备份中恢复数据
 
 ```python
 # Full restore
@@ -96,7 +96,7 @@ velero_restore_create_tool(
 )
 ```
 
-## List and Monitor Restores
+## 列出并监控恢复操作
 
 ```python
 # List restores
@@ -106,7 +106,7 @@ velero_restores_list_tool()
 velero_restore_get_tool(name="my-restore")
 ```
 
-## Scheduled Backups
+## 定时备份
 
 ```python
 # List schedules
@@ -131,9 +131,9 @@ spec:
 """)
 ```
 
-## Disaster Recovery Workflow
+## 灾难恢复工作流程
 
-### Create DR Backup
+### 创建灾难恢复备份
 ```python
 1. velero_backup_create_tool(
        name="dr-backup-$(date)",
@@ -142,7 +142,7 @@ spec:
 2. velero_backup_get_tool(name="dr-backup-...")  # Wait for completion
 ```
 
-### Restore to New Cluster
+### 恢复到新集群
 ```python
 1. velero_detect_tool()  # Verify Velero installed
 2. velero_backups_list_tool()  # Find backup
@@ -153,7 +153,7 @@ spec:
 4. velero_restore_get_tool(name="dr-restore")  # Monitor
 ```
 
-## Related Skills
+## 相关技能
 
-- [k8s-multicluster](../k8s-multicluster/SKILL.md) - Multi-cluster operations
-- [k8s-incident](../k8s-incident/SKILL.md) - Incident response
+- [k8s-multicluster](../k8s-multicluster/SKILL.md) - 多集群操作
+- [k8s-incident](../k8s-incident/SKILL.md) - 事件响应

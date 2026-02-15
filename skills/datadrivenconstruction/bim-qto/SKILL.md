@@ -1,15 +1,15 @@
 ---
 slug: "bim-qto"
 display_name: "BIM QTO"
-description: "Extract quantities from BIM/CAD data for cost estimation. Group by type, level, zone. Generate QTO reports."
+description: "从 BIM/CAD 数据中提取用于成本估算的各类数据，并按类型、层级、区域进行分类。生成详细的材料清单（QTO, Quantity Takeoff）报告。"
 ---
 
-# BIM Quantity Takeoff
+# BIM数量统计（Quantity Takeoff）
 
-## Overview
-Quantity Takeoff (QTO) extracts measurable quantities from BIM models. This skill processes BIM exports to generate grouped quantity reports for cost estimation.
+## 概述
+数量统计（Quantity Takeoff, QTO）是从BIM模型中提取可测量数据的过程。该技能通过处理BIM导出文件来生成分组后的数量报告，用于成本估算。
 
-## Python Implementation
+## Python实现
 
 ```python
 import pandas as pd
@@ -313,7 +313,7 @@ class BIMQuantityTakeoff:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load BIM export
@@ -331,9 +331,9 @@ walls = qto.get_walls()
 print(walls)
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Full QTO Report
+### 1. 完整的数量统计报告
 ```python
 qto = BIMQuantityTakeoff(df)
 report = qto.generate_report("Office Building")
@@ -342,16 +342,16 @@ for item in report.items[:5]:
     print(f"{item.type_name}: {item.quantity} {item.unit}")
 ```
 
-### 2. Level-by-Level Analysis
+### 2. 分层分析
 ```python
 pivot = qto.pivot_by_level_and_type()
 print(pivot)
 ```
 
-### 3. Export to Excel
+### 3. 导出到Excel
 ```python
 qto.to_excel("qto_report.xlsx", "My Project")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.2 - Quantity Take-Off
+## 参考资源
+- **DDC手册**：第3.2章 - 数量统计（Quantity Take-Off）

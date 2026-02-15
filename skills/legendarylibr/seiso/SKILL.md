@@ -1,81 +1,81 @@
 ---
 name: seisoai
-description: SeisoAI x402 protocol skill for OpenClaw/Claw agents. Pay-per-request AI inference via USDC on Base.
+description: SeisoAI x402 协议技能，适用于 OpenClaw/Claw 代理。通过 Base 平台，使用 USDC 以按请求计费的方式提供 AI 推理服务。
 metadata: {"openclaw":{"homepage":"https://seisoai.com","emoji":":art:"}}
 version: 2.0.0
 last_synced: 2026-02-13
 ---
 
-# SeisoAI x402 Skill for OpenClaw
+# SeisoAI x402 技能（适用于 OpenClaw）
 
-Base URL: `https://seisoai.com`
+基础 URL：`https://seisoai.com`
 
-## Overview
+## 概述
 
-SeisoAI provides AI inference tools (image, video, music, 3D, audio) accessible via x402 payment protocol. External agents authenticate by paying - no API key or JWT required.
+SeisoAI 提供了 AI 推理工具（图像、视频、音乐、3D、音频），可通过 x402 支付协议进行使用。外部代理需要通过支付来验证身份——无需 API 密钥或 JWT。
 
-**Payment network**: Base mainnet (eip155:8453)
-**Payment asset**: USDC
+**支付网络**：Base 主网（eip155:8453）
+**支付货币**：USDC
 
-## Quick Start
+## 快速入门
 
-1. Call any gateway endpoint without auth
-2. Receive 402 Payment Required with price
-3. Sign payment to the `payTo` wallet
-4. Retry with `payment-signature` header
-5. Receive result or job ID for polling
+1. 无需认证即可调用任何网关端点。
+2. 收到“需要支付（402）”的提示，并显示价格信息。
+3. 向 `payTo` 钱包支付费用。
+4. 使用 `payment-signature` 头部信息重新尝试请求。
+5. 接收结果或作业 ID 以进行后续查询。
 
-## Gateway Endpoints
+## 网关端点
 
-All x402-enabled endpoints are under `/api/gateway/`:
+所有支持 x402 的端点都位于 `/api/gateway/` 下：
 
-### Discovery (No Auth Required)
+### 发现（无需认证）
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `GET /api/gateway` | Gateway info, categories, endpoints |
-| `GET /api/gateway/tools` | List all tools |
-| `GET /api/gateway/tools?category=X` | Filter by category |
-| `GET /api/gateway/tools?q=X` | Search tools |
-| `GET /api/gateway/tools/:toolId` | Get tool details |
-| `GET /api/gateway/price/:toolId` | Get pricing |
-| `GET /api/gateway/schema` | OpenAPI schema |
-| `GET /api/gateway/mcp-manifest` | MCP manifest |
-| `GET /api/gateway/agents` | List registered agents |
+| `GET /api/gateway` | 网关信息、类别、端点列表 |
+| `GET /api/gateway/tools` | 列出所有工具 |
+| `GET /api/gateway/tools?category=X` | 按类别筛选工具 |
+| `GET /api/gateway/tools?q=X` | 搜索工具 |
+| `GET /api/gateway/tools/:toolId` | 获取工具详情 |
+| `GET /api/gateway/price/:toolId` | 查看工具价格 |
+| `GET /api/gateway/schema` | OpenAPI 架构 |
+| `GET /api/gateway/mcp-manifest` | MCP 清单 |
+| `GET /api/gateway/agents` | 注册代理列表 |
 
-### Invocation (x402 Payment Required)
+### 调用（需要 x402 支付）
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `POST /api/gateway/invoke/:toolId` | Invoke a tool |
-| `POST /api/gateway/invoke` | Invoke with `toolId` in body |
-| `POST /api/gateway/batch` | Batch multiple calls |
-| `POST /api/gateway/orchestrate` | Multi-step workflow |
+| `POST /api/gateway/invoke/:toolId` | 调用工具 |
+| `POST /api/gateway/invoke` | 在请求体中包含 `toolId` 来调用工具 |
+| `POST /api/gateway/batch` | 批量调用多个工具 |
+| `POST /api/gateway/orchestrate` | 多步骤工作流 |
 
-### Jobs (No Auth Required)
+### 作业（无需认证）
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `GET /api/gateway/jobs/:jobId` | Poll job status |
-| `GET /api/gateway/jobs/:jobId/result` | Get job result |
+| `GET /api/gateway/jobs/:jobId` | 查询作业状态 |
+| `GET /api/gateway/jobs/:jobId/result` | 获取作业结果 |
 
-## Available Tool Categories
+## 可用的工具类别
 
-- `image-generation` - Text to image (FLUX, etc.)
-- `image-editing` - Edit/blend images
-- `image-processing` - Upscale, extract layers
-- `video-generation` - Text/image to video (Veo3, Kling, etc.)
-- `video-editing` - Animate images, edit video
-- `music-generation` - Generate music
-- `audio-generation` - TTS, video-to-audio
-- `audio-processing` - Transcribe, stem separation
-- `3d-generation` - Image/text to 3D
-- `vision` - Image description
-- `training` - Train LoRA models
+- `image-generation` - 文本转图像（FLUX 等）
+- `image-editing` - 图像编辑/合成 |
+- `image-processing` - 图像缩放、图层提取 |
+- `video-generation` - 文本/图像转视频（Veo3、Kling 等）
+- `video-editing` - 图像动画处理、视频编辑 |
+- `music-generation` - 音乐生成 |
+- `audio-generation` - 文本转语音（TTS）、视频转音频 |
+- `audio-processing` - 文本转语音、音频分离 |
+- `3d-generation` - 图像/文本转 3D |
+- `vision` - 图像描述 |
+- `training` - 训练 LoRA 模型 |
 
-## x402 Payment Flow
+## x402 支付流程
 
-### Step 1: Initial Request (No Auth)
+### 第 1 步：初始请求（无需认证）
 
 ```http
 POST /api/gateway/invoke/image.generate.flux-2
@@ -85,7 +85,7 @@ Content-Type: application/json
 {"prompt": "a cyberpunk cityscape at sunset", "aspect_ratio": "16:9"}
 ```
 
-### Step 2: Receive 402 Challenge
+### 第 2 步：收到支付提示（402）
 
 ```http
 HTTP/1.1 402 Payment Required
@@ -114,14 +114,14 @@ Content-Type: application/json
 }
 ```
 
-### Step 3: Sign Payment
+### 第 3 步：完成支付
 
-Sign an x402 payment payload using the OpenClaw host's payment signer:
-- Amount: `accepts[0].maxAmountRequired` (USDC in smallest units, 6 decimals)
-- Recipient: `accepts[0].payTo` (exact wallet from challenge)
-- Network: `eip155:8453` (Base mainnet)
+使用 OpenClaw 主机的支付签名器完成 x402 支付：
+- 金额：`accepts[0].maxAmountRequired`（以 USDC 为单位，保留 6 位小数）
+- 收款人：`accepts[0].payTo`（与提示中指定的收款人地址一致）
+- 网络：`eip155:8453`（Base 主网）
 
-### Step 4: Retry with Payment
+### 第 4 步：重新尝试请求
 
 ```http
 POST /api/gateway/invoke/image.generate.flux-2
@@ -132,56 +132,23 @@ payment-signature: <signed-x402-payload>
 {"prompt": "a cyberpunk cityscape at sunset", "aspect_ratio": "16:9"}
 ```
 
-### Step 5: Receive Result
+### 第 5 步：接收结果
 
-For synchronous tools:
-```json
-{
-  "success": true,
-  "toolId": "image.generate.flux-2",
-  "result": {
-    "images": [{"url": "https://..."}]
-  },
-  "x402": {
-    "settled": true,
-    "amount": "32500",
-    "transactionHash": "0x..."
-  }
-}
-```
+- 对于同步执行的工具，直接接收结果。
+- 对于异步/排队执行的工具，等待结果。
 
-For async/queued tools:
-```json
-{
-  "success": true,
-  "jobId": "abc123",
-  "status": "QUEUED",
-  "pollUrl": "/api/gateway/jobs/abc123"
-}
-```
-
-## Polling Queued Jobs
+## 查询排队中的作业
 
 ```http
 GET /api/gateway/jobs/{jobId}
 Host: seisoai.com
 ```
 
-Response:
-```json
-{
-  "success": true,
-  "jobId": "abc123",
-  "status": "COMPLETED",
-  "result": { ... }
-}
-```
+响应状态：`QUEUED`、`IN_PROGRESS`、`COMPLETED`、`FAILED`
 
-Status values: `QUEUED`, `IN_PROGRESS`, `COMPLETED`, `FAILED`
+## 示例工具调用
 
-## Example Tool Invocations
-
-### Image Generation
+### 图像生成
 
 ```json
 POST /api/gateway/invoke/image.generate.flux-2
@@ -192,7 +159,7 @@ POST /api/gateway/invoke/image.generate.flux-2
 }
 ```
 
-### Video Generation
+### 视频生成
 
 ```json
 POST /api/gateway/invoke/video.generate.veo3
@@ -202,7 +169,7 @@ POST /api/gateway/invoke/video.generate.veo3
 }
 ```
 
-### Music Generation
+### 音乐生成
 
 ```json
 POST /api/gateway/invoke/music.generate
@@ -212,7 +179,7 @@ POST /api/gateway/invoke/music.generate
 }
 ```
 
-### Text to Speech
+### 文本转语音
 
 ```json
 POST /api/gateway/invoke/audio.tts
@@ -222,7 +189,7 @@ POST /api/gateway/invoke/audio.tts
 }
 ```
 
-### Image to 3D
+### 图像转 3D
 
 ```json
 POST /api/gateway/invoke/3d.image-to-3d
@@ -231,9 +198,9 @@ POST /api/gateway/invoke/3d.image-to-3d
 }
 ```
 
-## Pricing
+## 查看价格
 
-Check pricing before invocation:
+在调用工具之前，请先查看价格信息：
 
 ```http
 GET /api/gateway/price/image.generate.flux-2
@@ -255,85 +222,82 @@ GET /api/gateway/price/image.generate.flux-2
 }
 ```
 
-## Security
+## 安全性
 
-### Server-Side Protections (Enforced)
+### 服务器端防护措施
 
-The gateway enforces these protections - violations will be rejected:
+网关实施了以下安全措施：
+- **防止重放**：支付签名是一次性使用的。重复提交已使用的签名会收到 402 错误 “Payment signature already used”。
+- **签名去重**：基于 Redis（或内存缓存）的机制防止多次提交相同的签名。
+- **钱包验证**：CDP 服务验证支付是否发送到了正确的 `payTo` 地址。
+- **金额验证**：支付金额必须等于或超过提示中的 `maxAmountRequired`。
+- **网络验证**：支付必须通过 Base 主网（eip155:8453）进行。
+- **路由限制**：x402 仅支持 `/api/gateway/` 路由，其他路由会拒绝支付请求。
+- **基于符号的认证**：已支付的请求会设置一个不可伪造的符号标志，无法通过请求头伪造。
 
-| Protection | Description |
-|------------|-------------|
-| **Replay prevention** | Payment signatures are one-time use. Resubmitting a used signature returns 402 "Payment signature already used" |
-| **Signature deduplication** | Redis-backed (or in-memory fallback) cache prevents double-submission across requests |
-| **Wallet verification** | CDP facilitator verifies payment was sent to the correct `payTo` address |
-| **Amount verification** | Payment amount must match or exceed the `maxAmountRequired` from challenge |
-| **Network verification** | Payment must be on Base mainnet (eip155:8453) |
-| **Route boundary** | x402 only works on `/api/gateway/*` routes - other routes reject payment headers |
-| **Symbol-based auth** | Verified payments set an unforgeable Symbol flag - cannot be spoofed via headers |
+### 支付签名规则（强制要求）
 
-### Payment Signing Rules (MANDATORY)
+1. **仅使用主机提供的签名器**：必须使用 OpenClaw 主机提供的支付签名器。
+2. **禁止使用原始密钥**：严禁请求、存储或生成私钥。
+3. **仅签名 x402 相关的支付数据**：仅对来自 x402 请求的支付数据进行签名。
+4. **确保收款人正确**：始终将支付发送到提示中指定的 `payTo` 地址。
+5. **使用新的签名**：不得在多次请求中重复使用相同的签名。
+6. **失败时返回错误**：如果无法使用签名器，应返回错误信息，而不是跳过支付步骤。
 
-1. **Use host signer only**: Use the OpenClaw host's payment signer capability
-2. **No raw keys**: Never request, store, or derive private keys
-3. **Sign only x402 payloads**: Only sign the payment payload from 402 challenges
-4. **Exact recipient**: Always pay to the exact `payTo` address from the challenge
-5. **Fresh signatures**: Do not reuse payment signatures across requests
-6. **Fail closed**: If no signer available, return error instead of skipping payment
+### 请求规则（严禁违反）
 
-### Request Invariants (DO NOT VIOLATE)
+- **请求内容必须一致**：重新尝试请求时，请求体内容必须与初次请求完全相同。
+- **保持请求方法和路径不变**：重新尝试时，HTTP 方法和路径不得更改。
+- **使用新的签名**：不得重复使用过期的或已使用的签名。
+- **成功提交即计费**：成功提交到队列中的请求将被视为可计费的操作。
+- **钱包地址必须正确**：签名后的支付请求必须指向提示中指定的 `payTo` 地址。
 
-1. **Identical intent**: Keep request body identical between challenge and paid retry
-2. **Same method/path**: Do not change HTTP method or path between retries
-3. **Fresh signatures**: Never reuse stale or previously consumed signatures
-4. **Queued = billed**: Treat successful queue submission as billable
-5. **Wallet integrity**: Signed payment MUST target the challenge `payTo` address
+### 违规处理方式
 
-### What Happens on Violation
+| 违规类型 | 服务器响应 |
+|------------|-----------------|
+| 重复使用签名 | 402 错误：“Payment signature already used” |
+| 收款人地址错误 | 402 错误：“Payment verification failed” |
+- 金额不足 | 402 错误：“Payment amount insufficient” |
+- 网络错误 | 402 错误：“Invalid payment network” |
+- 非网关路由 | 401 错误：“Authentication required” |
+- 伪造的请求头 | 401 错误：“Symbol flag not set” |
 
-| Violation | Server Response |
-|-----------|-----------------|
-| Replay signature | 402 "Payment signature already used" |
-| Wrong recipient | 402 "Payment verification failed" |
-| Insufficient amount | 402 "Payment amount insufficient" |
-| Wrong network | 402 "Invalid payment network" |
-| Non-gateway route | 401 "Authentication required" |
-| Spoofed headers | 401 (Symbol flag not set) |
+## 速率限制
 
-## Rate Limits
-
-| Scope | Limit | Window |
+| 类别 | 限制 | 限制时间窗口 |
 |-------|-------|--------|
-| General API | 500 requests | 15 minutes |
-| Payment operations | 10 requests | 5 minutes |
+| 通用 API 请求 | 500 次请求 | 15 分钟 |
+| 支付操作 | 10 次请求 | 5 分钟 |
 
-Rate limit headers are included in responses:
-- `X-RateLimit-Limit`: Maximum requests allowed
-- `X-RateLimit-Remaining`: Requests remaining in window
-- `X-RateLimit-Reset`: Window reset time (ISO-8601)
-- `Retry-After`: Seconds until retry allowed (on 429)
+速率限制相关信息包含在响应中：
+- `X-RateLimit-Limit`：允许的最大请求次数。
+- `X-RateLimit-Remaining`：当前时间窗口内剩余的请求次数。
+- `X-RateLimit-Reset`：时间窗口的重置时间（ISO-8601 格式）。
+- `Retry-After`：允许重试的间隔时间（以秒为单位）。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning | Action |
+| 状态码 | 含义 | 处理方式 |
 |--------|---------|--------|
-| 402 | Payment required | Sign payment, retry |
-| 400 | Invalid input | Fix request payload |
-| 401 | Auth required (not x402 route) | Use correct gateway endpoint |
-| 404 | Tool/route not found | Check tool ID spelling |
-| 429 | Rate limited | Read `Retry-After` header, backoff with jitter |
-| 500 | Server error | Retry with exponential backoff (max 3 attempts) |
+| 402 | 需要支付 | 完成支付操作并重新尝试。 |
+| 400 | 输入无效 | 修复请求数据。 |
+| 401 | 需要认证（非 x402 路由） | 使用正确的网关端点。 |
+| 404 | 找不到工具/路由 | 检查工具 ID 的拼写是否正确。 |
+| 429 | 超过速率限制 | 根据 `Retry-After` 头部信息进行延迟重试。 |
+| 500 | 服务器错误 | 采用指数级延迟策略进行重试（最多尝试 3 次）。 |
 
-## Common Mistakes
+## 常见错误
 
-1. **Reusing payment signatures** - Each request needs a fresh signature
-2. **Changing payload on retry** - Must be identical to challenged request
-3. **Wrong poll endpoint** - Use the `pollUrl` from queue response
-4. **Treating 402 as error** - It's the payment handshake, not a failure
-5. **Non-gateway endpoints** - Only `/api/gateway/*` routes support x402
+- **重复使用签名**：每次请求都需要新的签名。
+- **重新尝试时更改请求数据**：请求数据必须与初次请求完全相同。
+- 使用错误的查询端点**：请使用队列响应中的 `pollUrl`。
+- 将 402 错误视为普通错误：实际上这是支付过程中的正常响应，不是系统故障。
+- 非 x402 支持的路由：只有 `/api/gateway/` 路由支持 x402 支付。
 
-## Response Schema
+## 响应格式
 
-Successful responses include:
+成功响应包含以下内容：
 
 ```json
 {
@@ -348,7 +312,7 @@ Successful responses include:
 }
 ```
 
-Failed responses:
+失败响应包含以下内容：
 
 ```json
 {
@@ -358,17 +322,17 @@ Failed responses:
 }
 ```
 
-## Discovery
+## 发现信息
 
-### Gateway Info
+### 网关信息
 
 ```http
 GET /api/gateway
 ```
 
-Returns gateway metadata, available categories, tool count, and supported protocols.
+返回网关元数据、可用类别、工具数量及支持的协议。
 
-### List Tools
+### 列出工具
 
 ```http
 GET /api/gateway/tools
@@ -376,21 +340,21 @@ GET /api/gateway/tools?category=image-generation
 GET /api/gateway/tools?q=video
 ```
 
-### Tool Details
+### 工具详情
 
 ```http
 GET /api/gateway/tools/:toolId
 ```
 
-### Pricing
+### 查看工具价格
 
 ```http
 GET /api/gateway/price/:toolId
 ```
 
-## Alternative: API Key Auth
+## 替代方案：API 密钥认证
 
-Registered agents can also use API keys instead of x402:
+已注册的代理也可以使用 API 密钥代替 x402 协议：
 
 ```http
 POST /api/gateway/invoke/image.generate.flux-2
@@ -401,4 +365,4 @@ X-API-Key: sk_live_your_api_key
 {"prompt": "test"}
 ```
 
-API keys must start with `sk_live_` and be registered with SeisoAI.
+API 密钥必须以 `sk_live_` 开头，并已在 SeisoAI 中注册。

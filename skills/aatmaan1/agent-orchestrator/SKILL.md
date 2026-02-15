@@ -6,15 +6,15 @@ description: |
   MANDATORY TRIGGERS: orchestrate, multi-agent, decompose task, spawn agents, sub-agents, parallel agents, agent coordination, task breakdown, meta-agent, agent factory, delegate tasks
 ---
 
-# Agent Orchestrator
+# 代理编排器（Agent Orchestrator）
 
-Orchestrate complex tasks by decomposing them into subtasks, spawning autonomous sub-agents, and consolidating their work.
+通过将复杂任务分解为子任务、创建自主的子代理，并整合它们的工作来协调这些任务。
 
-## Core Workflow
+## 核心工作流程（Core Workflow）
 
-### Phase 1: Task Decomposition
+### 第1阶段：任务分解（Task Decomposition）
 
-Analyze the macro task and break it into independent, parallelizable subtasks:
+分析宏观任务，并将其分解为独立且可并行执行的子任务：
 
 ```
 1. Identify the end goal and success criteria
@@ -24,21 +24,21 @@ Analyze the macro task and break it into independent, parallelizable subtasks:
 5. Create a dependency graph for sequential work
 ```
 
-**Decomposition Principles:**
-- Each subtask should be completable in isolation
-- Minimize inter-agent dependencies
-- Prefer broader, autonomous tasks over narrow, interdependent ones
-- Include clear success criteria for each subtask
+**分解原则（Decomposition Principles）：**
+- 每个子任务都应该能够独立完成。
+- 尽量减少代理之间的依赖关系。
+- 优先选择范围更广、更自主的任务，而非依赖性强的任务。
+- 为每个子任务设定明确的成功标准。
 
-### Phase 2: Agent Generation
+### 第2阶段：代理生成（Agent Generation）
 
-For each subtask, create a sub-agent workspace:
+为每个子任务创建一个子代理工作空间：
 
 ```bash
 python3 scripts/create_agent.py <agent-name> --workspace <path>
 ```
 
-This creates:
+这将生成：
 ```
 <workspace>/<agent-name>/
 âââ SKILL.md          # Generated skill file for the agent
@@ -48,23 +48,22 @@ This creates:
 âââ status.json       # Agent state tracking
 ```
 
-**Generate SKILL.md dynamically** with:
-- Agent's specific role and objective
-- Tools and capabilities needed
-- Input/output specifications
-- Success criteria
-- Communication protocol
+**动态生成SKILL.md文件**，其中包含以下内容：  
+- 代理的具体角色和目标  
+- 所需的工具和能力  
+- 输入/输出规范  
+- 成功标准  
+- 通信协议  
 
-See [references/sub-agent-templates.md](references/sub-agent-templates.md) for pre-built templates.
+有关预构建的模板，请参阅 [references/sub-agent-templates.md](references/sub-agent-templates.md)。
 
-### Phase 3: Agent Dispatch
+### 第3阶段：代理调度（Agent Dispatch）
 
-Initialize each agent by:
-
-1. Writing task instructions to `inbox/instructions.md`
-2. Copying required input files to `inbox/`
-3. Setting `status.json` to `{"state": "pending", "started": null}`
-4. Spawning the agent using the Task tool:
+通过以下步骤初始化每个代理：  
+1. 将任务指令写入 `inbox/instructions.md`。  
+2. 将所需的输入文件复制到 `inbox/` 目录中。  
+3. 将 `status.json` 文件的状态设置为 `{"state": "pending", "started": null}`。  
+4. 使用 Task 工具启动代理：
 
 ```python
 # Spawn agent with its generated skill
@@ -81,9 +80,9 @@ Task(
 )
 ```
 
-### Phase 4: Monitoring (Checkpoint-based)
+### 第4阶段：监控（基于检查点，Checkpoint-based Monitoring）
 
-For fully autonomous agents, minimal monitoring is needed:
+对于完全自主的代理，几乎不需要进行监控：
 
 ```python
 # Check agent completion
@@ -92,17 +91,16 @@ def check_agent_status(agent_path):
     return status.get("state") == "completed"
 ```
 
-Periodically check `status.json` for each agent. Agents update this file upon completion.
+定期检查每个代理的 `status.json` 文件。代理会在任务完成后更新该文件。
 
-### Phase 5: Consolidation
+### 第5阶段：整合（Consolidation）
 
-Once all agents complete:
-
-1. **Collect outputs** from each agent's `outbox/`
-2. **Validate deliverables** against success criteria
-3. **Merge/integrate** outputs as needed
-4. **Resolve conflicts** if multiple agents touched shared concerns
-5. **Generate summary** of all work completed
+所有代理完成任务后：  
+1. 从每个代理的 `outbox/` 目录中收集输出结果。  
+2. 根据成功标准验证交付成果。  
+3. 根据需要合并或整合输出结果。  
+4. 如果多个代理处理了相同的任务，解决可能出现的数据冲突。  
+5. 生成所有已完成工作的总结报告。
 
 ```python
 # Consolidation pattern
@@ -112,32 +110,31 @@ for agent in agents:
     consolidated_results.extend(outputs)
 ```
 
-### Phase 6: Dissolution & Summary
+### 第6阶段：解散与总结（Dissolution & Summary）
 
-After consolidation:
-
-1. **Archive agent workspaces** (optional)
-2. **Clean up temporary files**
-3. **Generate final summary**:
-   - What was accomplished per agent
-   - Any issues encountered
-   - Final deliverables location
-   - Time/resource metrics
+整合完成后：  
+1. （可选）归档代理的工作空间。  
+2. 清理临时文件。  
+3. 生成最终总结报告：  
+   - 每个代理完成了哪些工作。  
+   - 遇到的任何问题。  
+   - 最终交付成果的位置。  
+   - 时间/资源使用情况。
 
 ```python
 python3 scripts/dissolve_agents.py --workspace <path> --archive
 ```
 
-## File-Based Communication Protocol
+## 基于文件的通信协议（File-Based Communication Protocol）
 
-See [references/communication-protocol.md](references/communication-protocol.md) for detailed specs.
+有关详细规范，请参阅 [references/communication-protocol.md](references/communication-protocol.md)。
 
-**Quick Reference:**
-- `inbox/` - Read-only for agent, written by orchestrator
-- `outbox/` - Write-only for agent, read by orchestrator
-- `status.json` - Agent updates state: `pending` â `running` â `completed` | `failed`
+**快速参考（Quick Reference）：**  
+- `inbox/`：代理只能读取，由编排器写入。  
+- `outbox/`：代理只能写入，由编排器读取。  
+- `status.json`：代理用于更新状态（`pending` → `running` → `completed` → `failed`）。
 
-## Example: Research Report Task
+## 示例：研究报告任务（Example: Research Report Task）
 
 ```
 Macro Task: "Create a comprehensive market analysis report"
@@ -155,21 +152,19 @@ Decomposition:
 Dependency: data-collector â analyst â writer â reviewer
 ```
 
-## Sub-Agent Templates
+## 子代理模板（Sub-Agent Templates）
 
-Pre-built templates for common agent types in [references/sub-agent-templates.md](references/sub-agent-templates.md):
+[references/sub-agent-templates.md](references/sub-agent-templates.md) 中提供了常见代理类型的预构建模板：  
+- **研究代理（Research Agent）**：网络搜索、数据收集  
+- **代码代理（Code Agent）**：代码实现、测试  
+- **分析代理（Analysis Agent）**：数据处理、模式识别  
+- **写作代理（Writer Agent）**：内容创作、文档编写  
+- **审核代理（Review Agent）**：质量保证、编辑  
+- **集成代理（Integration Agent）**：合并输出结果、解决冲突  
 
-- **Research Agent** - Web search, data gathering
-- **Code Agent** - Implementation, testing
-- **Analysis Agent** - Data processing, pattern finding
-- **Writer Agent** - Content creation, documentation
-- **Review Agent** - Quality assurance, editing
-- **Integration Agent** - Merging outputs, conflict resolution
-
-## Best Practices
-
-1. **Start small** - Begin with 2-3 agents, scale as patterns emerge
-2. **Clear boundaries** - Each agent owns specific deliverables
-3. **Explicit handoffs** - Use structured files for agent communication
-4. **Fail gracefully** - Agents report failures; orchestrator handles recovery
-5. **Log everything** - Status files track progress for debugging
+## 最佳实践（Best Practices）：  
+1. **从小规模开始**：先使用2-3个代理，随着模式逐渐清晰再逐步扩展。  
+2. **明确职责边界**：每个代理负责特定的交付成果。  
+3. **使用结构化的文件进行通信**：确保代理之间的信息传递有条理。  
+4. **优雅地处理失败**：代理报告失败情况，由编排器负责恢复。  
+5. **记录所有操作**：状态文件有助于调试过程中的问题追踪。

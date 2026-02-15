@@ -1,227 +1,105 @@
 ---
 name: unsearch
 version: 1.0.0
-description: Search the web, scrape content, and conduct deep research using the UnSearch API. Use when the user needs real-time web search results, content extraction from URLs, fact verification, or multi-source research for AI agents, RAG pipelines, or LLM applications.
+description: 使用 UnSearch API 进行网络搜索、内容抓取以及深入研究。当用户需要实时网络搜索结果、从 URL 中提取内容、事实验证，或者为 AI 代理、RAG（Retrieval, Augmentation, and Generation）流程或 LLM（Large Language Model）应用程序进行多源研究时，可以使用该 API。
 metadata: {"openclaw":{"emoji":"🔍","homepage":"https://unsearch.dev","primaryEnv":"UNSEARCH_API_KEY","requires":{"env":["UNSEARCH_API_KEY"]}}}
 ---
 
-# UnSearch Web Search Skill
+# UnSearch：网络搜索工具
 
-Search the web, extract content, verify facts, and conduct deep research using the UnSearch API—an open-source Tavily/Exa alternative.
+UnSearch 是一个基于开源技术的 Web 搜索工具，可作为 Tavily 或 Exa 的替代方案，支持网络搜索、内容提取、事实验证以及深度研究等功能。
 
-## Quick Start
+## 快速入门
 
-Set your API key:
-```bash
+1. **设置 API 密钥：**
+   请将以下代码中的 ````bash
 export UNSEARCH_API_KEY="uns_your_api_key"
-```
+```` 替换为你的 API 密钥：
+   ```python
+   UNSEARCH_API_KEY = "your_api_key_here"
+   ```
 
-Get a free API key at https://unsearch.dev (5,000 queries/month free).
+2. 你可以在 [https://unsearch.dev](https://unsearch.dev) 免费获取一个 API 密钥（每月 5,000 次查询）。
 
-## API Endpoints
+## API 端点
 
-**Base URL:** `https://api.unsearch.dev/api/v1`
+**基础 URL：** `https://api.unsearch.dev/api/v1`
 
-All requests require header: `X-API-Key: $UNSEARCH_API_KEY`
-
----
-
-## 1. Web Search
-
-Search the web with optional content scraping.
-
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/search" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "your search query",
-    "engines": ["google", "bing", "duckduckgo"],
-    "max_results": 10,
-    "scrape_content": true
-  }'
-```
-
-### Key Parameters
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `query` | string | required | Search query (1-500 chars) |
-| `engines` | string[] | ["google","bing","duckduckgo"] | Search engines |
-| `max_results` | integer | 10 | Results to return (1-100) |
-| `scrape_content` | boolean | true | Extract full page content |
-| `language` | string | "en" | ISO 639-1 language code |
-
-### Response
-
-```json
-{
-  "results": [
-    {
-      "title": "Page Title",
-      "url": "https://example.com",
-      "snippet": "Search result snippet...",
-      "scraped_content": {
-        "text": "Full page content...",
-        "word_count": 2500
-      }
-    }
-  ],
-  "processing_time_ms": 1500
-}
-```
+所有请求都需要添加以下头部信息：`X-API-Key: $UNSEARCH_API_KEY`
 
 ---
 
-## 2. Agent Search (Tavily-Compatible)
+## 1. **网络搜索**  
+支持网络搜索，并可选择是否提取页面内容。
 
-AI-optimized search with optional answer generation.
+### 关键参数
 
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/agent/search" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "What is machine learning?",
-    "include_answer": true,
-    "max_results": 5,
-    "search_depth": "basic"
-  }'
-```
+| 参数 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `query` | 字符串 | 必填 | 搜索查询（1-500 个字符） |
+| `engines` | 字符串数组 | ["google", "bing", "duckduckgo"] | 搜索引擎 |
+| `max_results` | 整数 | 10 | 返回的结果数量（1-100） |
+| `scrape_content` | 布尔值 | true | 提取完整页面内容 |
+| `language` | 字符串 | "en" | ISO 639-1 语言代码 |
 
-### Key Parameters
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `query` | string | required | Search query |
-| `include_answer` | bool/string | false | Generate AI answer (`true`, `"basic"`, `"advanced"`, `"production"`) |
-| `search_depth` | string | "basic" | `basic`, `advanced`, `fast` |
-| `max_results` | integer | 5 | Results (1-20) |
-| `include_raw_content` | boolean | false | Include full page content |
-| `include_domains` | string[] | null | Only search these domains |
-| `exclude_domains` | string[] | null | Exclude these domains |
-
-### Response
-
-```json
-{
-  "query": "What is machine learning?",
-  "answer": "Machine learning is a subset of AI...",
-  "results": [
-    {
-      "title": "Machine Learning - Wikipedia",
-      "url": "https://en.wikipedia.org/wiki/Machine_learning",
-      "content": "Machine learning is a branch of AI...",
-      "score": 0.95
-    }
-  ],
-  "response_time": 1.25
-}
-```
+### 响应结果
 
 ---
 
-## 3. Content Extraction
+## 2. **智能搜索（兼容 Tavily）**  
+提供智能化的搜索功能，并可选择是否生成答案。
 
-Extract content from specific URLs.
+### 关键参数
 
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/agent/extract" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "urls": ["https://example.com/article"],
-    "extract_depth": "basic"
-  }'
-```
+| 参数 | 类型 | 默认值 | 描述 |
+|------|------|---------|-------------|
+| `query` | 字符串 | 必填 | 搜索查询 |
+| `include_answer` | 布尔值/字符串 | 是否生成 AI 答案（`true`, `"basic"`, `"advanced"`, `"production"`） |
+| `search_depth` | 字符串 | "basic", "advanced", "fast" | 搜索深度 |
+| `max_results` | 整数 | 5 | 返回的结果数量（1-20） |
+| `include_raw_content` | 布尔值 | 是否包含原始页面内容 |
+| `include_domains` | 字符串数组 | null | 仅搜索指定域名 |
+| `exclude_domains` | 字符串数组 | null | 排除指定域名 |
 
-### Response
-
-```json
-{
-  "results": [
-    {
-      "url": "https://example.com/article",
-      "raw_content": "Full article text...",
-      "failed": false
-    }
-  ]
-}
-```
+### 响应结果
 
 ---
 
-## 4. Deep Research
+## 3. **内容提取**  
+从指定 URL 中提取内容。
 
-Multi-source research with AI synthesis.
-
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/agent/research" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "Impact of AI on healthcare",
-    "depth": "deep",
-    "max_sources": 15,
-    "include_analysis": true
-  }'
-```
-
-### Depth Levels
-
-| Depth | Sources | Use Case |
-|-------|---------|----------|
-| `quick` | 3-5 | Fast overview |
-| `standard` | 5-10 | Balanced research |
-| `deep` | 10-20 | Thorough analysis |
-| `comprehensive` | 20-30 | Expert-level |
-
-### Response
-
-```json
-{
-  "executive_summary": "AI is transforming healthcare...",
-  "key_findings": ["AI diagnostics show 95% accuracy..."],
-  "sources": [...],
-  "model_used": "qwq-32b"
-}
-```
+### 响应结果
 
 ---
 
-## 5. Fact Verification
+## 4. **深度研究**  
+支持多源信息整合及 AI 合成分析。
 
-Verify claims against multiple sources.
+### 深度级别
 
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/verify/claim" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "claim": "GPT-4 was released in March 2023",
-    "depth": "thorough"
-  }'
-```
+| 深度 | 数据来源 | 适用场景 |
+|------|---------|----------|
+| `quick` | 3-5 | 快速概览 |
+| `standard` | 5-10 | 平衡性分析 |
+| `deep` | 10-20 | 详细分析 |
+| `comprehensive` | 20-30 | 专家级分析 |
 
-### Response
-
-```json
-{
-  "verdict": "true",
-  "confidence": 95,
-  "summary": "GPT-4 was released March 14, 2023.",
-  "supporting_evidence": [...],
-  "sources_checked": 12
-}
-```
-
-Verdict values: `true`, `false`, `partially_true`, `misleading`, `unverifiable`
+### 响应结果
 
 ---
 
-## Python Examples
+## 5. **事实验证**  
+可对比多个来源验证信息真实性。
 
-```python
+### 响应结果
+
+验证结果类型：`true`, `false`, `partially_true`, `misleading`, `unverifiable`
+
+---
+
+## Python 示例
+
+（示例代码请参见 [此处](```python
 import httpx
 import os
 
@@ -262,13 +140,11 @@ async def extract_urls(urls: list[str]):
             json={"urls": urls}
         )
         return response.json()
-```
+```)）
 
----
+## JavaScript 示例
 
-## JavaScript Examples
-
-```javascript
+（示例代码请参见 [此处](```javascript
 const API_KEY = process.env.UNSEARCH_API_KEY;
 const BASE_URL = "https://api.unsearch.dev/api/v1";
 
@@ -303,53 +179,44 @@ async function agentSearch(query, includeAnswer = true) {
   });
   return response.json();
 }
-```
+```)
 
 ---
 
-## Rate Limits
+## 使用限制
 
-| Plan | Queries/Month | Rate Limit |
+| 计划类型 | 每月查询次数 | 使用限制 |
 |------|---------------|------------|
-| Free | 5,000 | 10/min |
-| Pro | 25,000 | 60/min |
-| Growth | 100,000 | 200/min |
-| Scale | 500,000 | 1,000/min |
+| 免费 | 5,000 | 每分钟 10 次 |
+| 专业版 | 25,000 | 每分钟 60 次 |
+| 高级版 | 100,000 | 每分钟 200 次 |
+| 超级版 | 500,000 | 每分钟 1,000 次 |
 
-Rate limit headers in response:
-- `X-RateLimit-Remaining`: Requests left
-- `X-RateLimit-Reset`: Reset timestamp
-
----
-
-## Privacy Mode
-
-For sensitive queries, enable zero-retention:
-
-```bash
-curl -X POST "https://api.unsearch.dev/api/v1/search" \
-  -H "X-API-Key: $UNSEARCH_API_KEY" \
-  -H "X-Zero-Retention: true" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "sensitive query"}'
-```
+响应中的使用限制相关信息：
+- `X-RateLimit-Remaining`：剩余请求次数 |
+- `X-RateLimit-Reset`：重置时间戳 |
 
 ---
 
-## Error Handling
+## 隐私设置  
+对于敏感查询，可启用“零数据保留”模式。
 
-| Code | Description |
+---
+
+## 错误处理
+
+| 错误代码 | 描述 |
 |------|-------------|
-| 401 | Invalid API key |
-| 429 | Rate limited (check `Retry-After` header) |
-| 422 | Validation error |
-| 500 | Server error |
+| 401 | API 密钥无效 |
+| 429 | 使用次数达到限制（请查看 `Retry-After` 头部信息） |
+| 422 | 验证错误 |
+| 500 | 服务器错误 |
 
 ---
 
-## Additional Resources
+## 额外资源
 
-- **Documentation:** https://docs.unsearch.dev
-- **API Reference:** https://docs.unsearch.dev/api
-- **Self-hosting:** https://github.com/unsearch-org/unsearch
-- **Get API Key:** https://unsearch.dev
+- **文档：** [https://docs.unsearch.dev](https://docs.unsearch.dev) |
+- **API 参考：** [https://docs.unsearch.dev/api](https://docs.unsearch.dev/api) |
+- **自托管：** [https://github.com/unsearch-org/unsearch](https://github.com/unsearch-org/unsearch) |
+- **获取 API 密钥：** [https://unsearch.dev](https://unsearch.dev)

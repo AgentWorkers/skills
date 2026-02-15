@@ -1,7 +1,7 @@
 ---
 name: recipes
 version: 1.0.0
-description: "CLI for AI agents to find recipes for their humans. Uses TheMealDB API. No auth required."
+description: "这是一个用于AI代理为其人类用户查找食谱的命令行工具（CLI），它使用了TheMealDB API。该工具无需进行身份验证（即无需登录或提供用户名/密码）。"
 homepage: https://www.themealdb.com
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["recipes", "food", "cooking", "meals", "themealdb", "cli"]
 ---
 
-# Recipe Lookup
+# 食谱查询
 
-CLI for AI agents to find recipes for their humans. "What can I make with chicken?" — now your agent can help.
+这是一个用于AI代理帮助人类用户查找食谱的命令行工具。例如：“用鸡肉可以做什么菜？”——现在你的代理可以为你提供帮助。
 
-Uses TheMealDB API. No account or API key needed.
+该工具使用了TheMealDB API，无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Search for pasta recipes"
@@ -26,17 +26,17 @@ Uses TheMealDB API. No account or API key needed.
 "Tell me about meal ID 52772"
 ```
 
-## Commands
+## 命令
 
-| Action | Command |
-|--------|---------|
-| Search | `recipes search "query"` |
-| Get details | `recipes info <meal_id>` |
-| Random meal | `recipes random` |
-| List categories | `recipes categories` |
-| By area/cuisine | `recipes area <area>` |
+| 功能 | 命令                |
+|--------|-------------------|
+| 搜索食谱 | `recipes search "查询内容"`     |
+| 查看详情 | `recipes info <食谱ID>`     |
+| 随机生成食谱 | `recipes random`       |
+| 列出分类 | `recipes categories`     |
+| 按地区/菜系筛选 | `recipes area <地区>`     |
 
-### Examples
+### 示例
 
 ```bash
 recipes search "chicken"          # Find chicken recipes
@@ -47,14 +47,14 @@ recipes area Italian              # Italian dishes
 recipes area Mexican              # Mexican dishes
 ```
 
-## Output
+## 输出结果
 
-**Search/list output:**
+**搜索/列表结果：**
 ```
 [52772] Spaghetti Bolognese — Italian, Beef
 ```
 
-**Info/random output:**
+**食谱详情/随机生成结果：**
 ```
 🍽️  Spaghetti Bolognese
    ID: 52772 | Category: Beef | Area: Italian
@@ -73,31 +73,30 @@ recipes area Mexican              # Mexican dishes
 📎 Source: [Recipe source if available]
 ```
 
-## Areas (Cuisines)
+## 可用地区（菜系）：
 
-American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, French, Greek, Indian, Irish, Italian, Jamaican, Japanese, Kenyan, Malaysian, Mexican, Moroccan, Polish, Portuguese, Russian, Spanish, Thai, Tunisian, Turkish, Ukrainian, Vietnamese
+美国菜、英国菜、加拿大菜、中国菜、克罗地亚菜、荷兰菜、埃及菜、菲律宾菜、法国菜、希腊菜、印度菜、爱尔兰菜、意大利菜、牙买加菜、日本菜、肯尼亚菜、马来西亚菜、墨西哥菜、摩洛哥菜、波兰菜、葡萄牙菜、俄罗斯菜、西班牙菜、泰国菜、突尼斯菜、土耳其菜、乌克兰菜、越南菜
 
-## Notes
+## 注意事项：
 
-- Uses TheMealDB free API
-- No authentication required
-- Meal ID is the database identifier
-- Filter commands (area) return IDs only — use `info` for details
-- Categories endpoint includes descriptions
+- 该工具使用TheMealDB的免费API，无需认证。
+- 食谱ID是数据库中的唯一标识符。
+- 过滤命令（如`recipes area <地区>`）仅返回食谱ID；如需查看详情，请使用`recipes info <食谱ID>`。
+- 分类页面会提供食谱的详细描述。
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/recipes` (wrapper to `scripts/recipes`)
+**脚本位置：`{skill_folder}/recipes`（实际脚本位于`scripts/recipes`目录下）**
 
-**When user asks about recipes/cooking:**
-1. Run `./recipes search "ingredient or dish"` to find options
-2. Run `./recipes info <id>` for full recipe with ingredients and instructions
-3. Run `./recipes random` for dinner inspiration
-4. Run `./recipes area <cuisine>` to explore by cuisine
+**当用户询问食谱或烹饪相关内容时：**
+1. 运行`./recipes search "食材或菜肴名称"`以获取可选食谱。
+2. 运行`./recipes info <食谱ID>`以获取包含食材和制作步骤的完整食谱信息。
+3. 运行`./recipes random`以获取晚餐灵感。
+4. 运行`./recipes area <菜系>`以按菜系筛选食谱。
 
-**Workflow example:**
+**工作流程示例：**
 ```
 User: "What can I make for dinner?"
 1. recipes random  →  Get a random idea
@@ -108,4 +107,5 @@ User: "I want something Italian"
 2. recipes info <id>  →  Pick one and get full recipe
 ```
 
-**Don't use for:** Nutritional info, calorie counts, dietary restrictions (API doesn't provide this).
+**不适用场景：**
+- 营养信息、热量计算、饮食限制（这些功能不在该工具的API范围内）。

@@ -1,6 +1,6 @@
 ---
 name: stock-analysis
-description: Analyze stocks and cryptocurrencies using Yahoo Finance data. Supports portfolio management, watchlists with alerts, dividend analysis, 8-dimension stock scoring, viral trend detection (Hot Scanner), and rumor/early signal detection. Use for stock analysis, portfolio tracking, earnings reactions, crypto monitoring, trending stocks, or finding rumors before they hit mainstream.
+description: 使用 Yahoo Finance 的数据来分析股票和加密货币。支持投资组合管理、带有提醒的功能列表、股息分析、八维股票评分系统、热门趋势检测（Hot Scanner）以及谣言/早期信号检测。适用于股票分析、投资组合跟踪、收益反应监测、加密货币监控、追踪热门股票，或在谣言尚未被广泛传播之前就发现它们。
 version: 6.2.0
 homepage: https://finance.yahoo.com
 commands:
@@ -16,36 +16,36 @@ commands:
 metadata: {"clawdbot":{"emoji":"📈","requires":{"bins":["uv"],"env":[]},"install":[{"id":"uv-brew","kind":"brew","formula":"uv","bins":["uv"],"label":"Install uv (brew)"}]}}
 ---
 
-# Stock Analysis v6.1
+# 股票分析 v6.1
 
-Analyze US stocks and cryptocurrencies with 8-dimension analysis, portfolio management, watchlists, alerts, dividend analysis, and **viral trend detection**.
+该工具支持对美国股票和加密货币进行8维分析，包括投资组合管理、关注列表、警报功能、股息分析以及**病毒式趋势检测**。
 
-## What's New in v6.2
+## v6.2的新功能
 
-- 🔮 **Rumor Scanner** — Early signals before mainstream news
-  - M&A rumors and takeover bids
-  - Insider buying/selling activity
-  - Analyst upgrades/downgrades
-  - Twitter/X "hearing that...", "sources say..." detection
-- 🎯 **Impact Scoring** — Rumors ranked by potential market impact
+- 🔮 **谣言扫描器** — 在主流新闻之前捕捉早期信号：
+  - 合并收购传闻
+  - 内部人士的买卖行为
+  - 分析师的评级调整
+  - 通过Twitter/X检测到的“听说...”、“消息来源称...”等言论
+- 🎯 **影响评分** — 根据谣言对市场潜在影响进行排名
 
-## What's in v6.1
+## v6.1的功能
 
-- 🔥 **Hot Scanner** — Find viral stocks & crypto across multiple sources
-- 🐦 **Twitter/X Integration** — Social sentiment via bird CLI
-- 📰 **Multi-Source Aggregation** — CoinGecko, Google News, Yahoo Finance
-- ⏰ **Cron Support** — Daily trend reports
+- 🔥 **热门股票/加密货币扫描器** — 从多个来源筛选热门股票和加密货币
+- 🐦 **Twitter/X集成** — 通过bird CLI获取社交情绪数据
+- 📰 **多源数据聚合** — 从CoinGecko、Google News、Yahoo Finance获取信息
+- ⏰ **定时报告** — 每日趋势报告
 
-## What's in v6.0
+## v6.0的功能
 
-- 🆕 **Watchlist + Alerts** — Price targets, stop losses, signal changes
-- 🆕 **Dividend Analysis** — Yield, payout ratio, growth, safety score
-- 🆕 **Fast Mode** — `--fast` skips slow analyses (insider, news)
-- 🆕 **Improved Performance** — `--no-insider` for faster runs
+- 🆕 **关注列表 + 警报** — 设置价格目标、止损点及信号变化通知
+- 🆕 **股息分析** — 提供股息收益率、派息率、增长情况等指标
+- 🆕 **快速模式** — 使用`--fast`选项可跳过耗时的分析（如内部人士交易、新闻相关分析）
+- 🆕 **性能提升** — 使用`--no-insider`选项可加快运行速度
 
-## Quick Commands
+## 快速命令
 
-### Stock Analysis
+### 股票分析
 ```bash
 # Basic analysis
 uv run {baseDir}/scripts/analyze_stock.py AAPL
@@ -60,7 +60,7 @@ uv run {baseDir}/scripts/analyze_stock.py AAPL MSFT GOOGL
 uv run {baseDir}/scripts/analyze_stock.py BTC-USD ETH-USD
 ```
 
-### Dividend Analysis (NEW v6.0)
+### 股息分析（v6.0新增功能）
 ```bash
 # Analyze dividends
 uv run {baseDir}/scripts/dividends.py JNJ
@@ -69,15 +69,15 @@ uv run {baseDir}/scripts/dividends.py JNJ
 uv run {baseDir}/scripts/dividends.py JNJ PG KO MCD --output json
 ```
 
-**Dividend Metrics:**
-- Dividend Yield & Annual Payout
-- Payout Ratio (safe/moderate/high/unsustainable)
-- 5-Year Dividend Growth (CAGR)
-- Consecutive Years of Increases
-- Safety Score (0-100)
-- Income Rating (excellent/good/moderate/poor)
+**股息指标：**
+- 股息收益率及年度派息金额
+- 派息率（低风险/中等风险/高风险/不可持续）
+- 五年股息增长率（复合年增长率）
+- 连续增长年份
+- 安全评分（0-100分）
+- 收入评级（优秀/良好/中等/较差）
 
-### Watchlist + Alerts (NEW v6.0)
+### 关注列表 + 警报（v6.0新增功能）
 ```bash
 # Add to watchlist
 uv run {baseDir}/scripts/watchlist.py add AAPL
@@ -102,12 +102,12 @@ uv run {baseDir}/scripts/watchlist.py check --notify  # Telegram format
 uv run {baseDir}/scripts/watchlist.py remove AAPL
 ```
 
-**Alert Types:**
-- 🎯 **Target Hit** — Price >= target
-- 🛑 **Stop Hit** — Price <= stop
-- 📊 **Signal Change** — BUY/HOLD/SELL changed
+**警报类型：**
+- 🎯 **达到目标价格** — 价格达到设定目标
+- 🛑 **触及止损点** — 价格低于止损点
+- 📊 **信号变化** — 买入/持有/卖出信号发生变化
 
-### Portfolio Management
+### 投资组合管理
 ```bash
 # Create portfolio
 uv run {baseDir}/scripts/portfolio.py create "Tech Portfolio"
@@ -123,7 +123,7 @@ uv run {baseDir}/scripts/portfolio.py show
 uv run {baseDir}/scripts/analyze_stock.py --portfolio "Tech Portfolio" --period weekly
 ```
 
-### 🔥 Hot Scanner (NEW v6.1)
+### 🔥 热门股票/加密货币扫描器（v6.1新增功能）
 ```bash
 # Full scan - find what's trending NOW
 python3 {baseDir}/scripts/hot_scanner.py
@@ -135,114 +135,114 @@ python3 {baseDir}/scripts/hot_scanner.py --no-social
 python3 {baseDir}/scripts/hot_scanner.py --json
 ```
 
-**Data Sources:**
-- 📊 CoinGecko Trending — Top 15 trending coins
-- 📈 CoinGecko Movers — Biggest gainers/losers
-- 📰 Google News — Finance & crypto headlines
-- 📉 Yahoo Finance — Gainers, losers, most active
-- 🐦 Twitter/X — Social sentiment (requires auth)
+**数据来源：**
+- 📊 CoinGecko热门加密货币排行榜 — 前15种热门加密货币
+- 📈 CoinGecko涨幅最大的加密货币
+- 📰 Google News — 金融与加密货币新闻
+- 📉 Yahoo Finance — 表现最佳的加密货币
+- 🐦 Twitter/X — 通过认证获取社交情绪数据
 
-**Output:**
-- Top trending by mention count
-- Crypto highlights with 24h changes
-- Stock movers by category
-- Breaking news with tickers
+**输出结果：**
+- 按提及次数排序的热门股票/加密货币
+- 24小时内的加密货币价格变动情况
+- 按类别划分的股价变动股票
+- 带有股票代码的突发新闻
 
-**Twitter Setup (Optional):**
-1. Install bird: `npm install -g @steipete/bird`
-2. Login to x.com in Safari/Chrome
-3. Create `.env` with `AUTH_TOKEN` and `CT0`
+**Twitter设置（可选）：**
+1. 安装bird：`npm install -g @steipete/bird`
+2. 在Safari/Chrome浏览器中登录x.com
+3. 创建`.env`文件，设置`AUTH_TOKEN`和`CT0`环境变量
 
-### 🔮 Rumor Scanner (NEW v6.2)
+### 🔮 谣言扫描器（v6.2新增功能）
 ```bash
 # Find early signals, M&A rumors, insider activity
 python3 {baseDir}/scripts/rumor_scanner.py
 ```
 
-**What it finds:**
-- 🏢 **M&A Rumors** — Merger, acquisition, takeover bids
-- 👔 **Insider Activity** — CEO/Director buying/selling
-- 📊 **Analyst Actions** — Upgrades, downgrades, price target changes
-- 🐦 **Twitter Whispers** — "hearing that...", "sources say...", "rumor"
-- ⚖️ **SEC Activity** — Investigations, filings
+**扫描内容：**
+- 🏢 **合并收购传闻** — 合并、收购、收购要约
+- 👔 **内部人士交易** — 首席执行官/董事的买卖行为
+- 📊 **分析师动作** — 评级调整、价格目标变更
+- 🐦 **Twitter上的言论** — “听说...”、“消息来源称...”等
+- ⚖️ **美国证券交易委员会（SEC）动态** — 相关调查和文件
 
-**Impact Scoring:**
-- Each rumor is scored by potential market impact (1-10)
-- M&A/Takeover: +5 points
-- Insider buying: +4 points
-- Upgrade/Downgrade: +3 points
-- "Hearing"/"Sources say": +2 points
-- High engagement: +2 bonus
+**影响评分：**
+- 根据谣言对市场潜在影响进行评分（1-10分）
+- 合并收购/收购要约：+5分
+- 内部人士交易：+4分
+- 评级调整：+3分
+- “听说...”/“消息来源称...”：+2分
+- 高参与度：+2分
 
-**Best Practice:** Run at 07:00 before US market open to catch pre-market signals.
+**最佳使用建议：** 在美国市场开盘前（07:00）运行该工具，以捕捉市场前期的信号。
 
-## Analysis Dimensions (8 for stocks, 3 for crypto)
+## 分析维度（股票8个维度，加密货币3个维度）
 
-### Stocks
-| Dimension | Weight | Description |
+### 股票
+| 维度 | 权重 | 描述 |
 |-----------|--------|-------------|
-| Earnings Surprise | 30% | EPS beat/miss |
-| Fundamentals | 20% | P/E, margins, growth |
-| Analyst Sentiment | 20% | Ratings, price targets |
-| Historical | 10% | Past earnings reactions |
-| Market Context | 10% | VIX, SPY/QQQ trends |
-| Sector | 15% | Relative strength |
-| Momentum | 15% | RSI, 52-week range |
-| Sentiment | 10% | Fear/Greed, shorts, insiders |
+| 盈利惊喜 | 30% | 实际每股收益是否超出预期 |
+| 基本面 | 20% | 市盈率、利润率、增长情况 |
+| 分析师观点 | 20% | 分析师评级、价格目标 |
+| 历史表现 | 10% | 过往的盈利反应 |
+| 市场环境 | 10% | VIX指数、SPY指数/QQQ指数走势 |
+| 行业 | 15% | 行业相对强弱 |
+| 动量 | 15% | 相对强弱指数（RSI）、52周价格波动范围 |
+| 情绪指标 | 10% | 市场恐慌/贪婪情绪、空头持仓情况 |
 
-### Crypto
-- Market Cap & Category
-- BTC Correlation (30-day)
-- Momentum (RSI, range)
+### 加密货币
+- 市值及类别
+- BTC相关性（30天）
+- 动量（相对强弱指数、价格波动范围）
 
-## Sentiment Sub-Indicators
+## 情绪指标
 
-| Indicator | Source | Signal |
+| 指标 | 来源 | 信号含义 |
 |-----------|--------|--------|
-| Fear & Greed | CNN | Contrarian (fear=buy) |
-| Short Interest | Yahoo | Squeeze potential |
-| VIX Structure | Futures | Stress detection |
-| Insider Trades | SEC EDGAR | Smart money |
-| Put/Call Ratio | Options | Sentiment extreme |
+| 恐慌/贪婪情绪 | CNN | 相反交易策略（恐慌时买入）
+- 空头持仓 | Yahoo | 空头挤压潜力 |
+| VIX指数结构 | 期货市场 | 市场压力检测 |
+| 内部人士交易 | 美国证券交易委员会（SEC）EDGAR数据库 | 智能资金动向 |
+| 看跌/看涨期权比例 | 期权市场 | 情绪极端情况
 
-## Risk Detection
+## 风险检测
 
-- ⚠️ **Pre-Earnings** — Warns if < 14 days to earnings
-- ⚠️ **Post-Spike** — Flags if up >15% in 5 days
-- ⚠️ **Overbought** — RSI >70 + near 52w high
-- ⚠️ **Risk-Off** — GLD/TLT/UUP rising together
-- ⚠️ **Geopolitical** — Taiwan, China, Russia, Middle East keywords
-- ⚠️ **Breaking News** — Crisis keywords in last 24h
+- ⚠️ **财报发布前** — 如果距离财报发布时间少于14天，会发出警告
+- ⚠️ **价格飙升后** — 如果价格在5天内上涨超过15%，会发出警报
+- ⚠️ **超买** — 相对强弱指数（RSI）超过70且接近52周高点
+- ⚠️ **风险警示** — GLD/TLT/UUP等资产价格同时上涨
+- ⚠️ **地缘政治风险** — 关注台湾、中国、俄罗斯、中东等地区的政治动态
+- ⚠️ **突发新闻** — 过去24小时内出现的危机相关新闻
 
-## Performance Options
+## 性能选项
 
-| Flag | Effect | Speed |
+| 标志 | 效果 | 执行速度 |
 |------|--------|-------|
-| (default) | Full analysis | 5-10s |
-| `--no-insider` | Skip SEC EDGAR | 3-5s |
-| `--fast` | Skip insider + news | 2-3s |
+| （默认） | 完整分析 | 5-10秒 |
+| `--no-insider` | 跳过SEC EDGAR数据 | 3-5秒 |
+| `--fast` | 跳过内部人士交易和新闻相关分析 | 2-3秒 |
 
-## Supported Cryptos (Top 20)
+## 支持的加密货币（前20种）
 
 BTC, ETH, BNB, SOL, XRP, ADA, DOGE, AVAX, DOT, MATIC, LINK, ATOM, UNI, LTC, BCH, XLM, ALGO, VET, FIL, NEAR
 
-(Use `-USD` suffix: `BTC-USD`, `ETH-USD`)
+（使用`-USD`后缀表示货币对，例如：`BTC-USD`）
 
-## Data Storage
+## 数据存储
 
-| File | Location |
+| 文件 | 存储位置 |
 |------|----------|
-| Portfolios | `~/.clawdbot/skills/stock-analysis/portfolios.json` |
-| Watchlist | `~/.clawdbot/skills/stock-analysis/watchlist.json` |
+| 投资组合数据 | `~/.clawdbot/skills/stock-analysis/portfolios.json` |
+| 关注列表数据 | `~/.clawdbot/skills/stock-analysis/watchlist.json` |
 
-## Limitations
+## 限制事项
 
-- Yahoo Finance may lag 15-20 minutes
-- Short interest lags ~2 weeks (FINRA)
-- Insider trades lag 2-3 days (SEC filing)
-- US markets only (non-US incomplete)
-- Breaking news: 1h cache, keyword-based
+- Yahoo Finance的数据可能存在15-20分钟的延迟
+- 空头持仓数据可能滞后约2周（根据FINRA规定）
+- 内部人士交易数据可能滞后2-3天（根据SEC文件更新）
+- 仅支持美国市场数据（非美国市场的信息可能不完整）
+- 突发新闻数据采用1小时缓存机制，基于关键词筛选
 
-## Disclaimer
+## 免责声明
 
-⚠️ **NOT FINANCIAL ADVICE.** For informational purposes only. Consult a licensed financial advisor before making investment decisions.
+⚠️ 本工具仅用于提供信息参考，不构成金融建议。在做出投资决策前，请咨询持牌金融顾问。

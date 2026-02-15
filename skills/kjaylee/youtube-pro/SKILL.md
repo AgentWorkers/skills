@@ -1,31 +1,31 @@
 ---
 name: youtube-pro
-description: Advanced YouTube analysis, transcripts, and metadata extraction.
+description: 高级YouTube分析功能，包括字幕提取和元数据获取。
 metadata: {"clawdbot":{"emoji":"📺"}}
 ---
 
-# YouTube Pro (Miss Kim Edition)
+# YouTube Pro（Miss Kim 版）
 
-Deep dive into YouTube content. Uses `summarize` for transcripts and `web_fetch` for metadata.
+深入分析 YouTube 内容。使用 `summarize` 工具生成字幕，使用 `web_fetch` 获取元数据。
 
-## Workflow
+## 工作流程
 
-### 1. Fast Summary / Transcript
-Use the built-in `summarize` tool:
-- **Summary**: `summarize "URL"`
-- **Transcript**: `summarize "URL" --youtube auto --extract-only`
+### 1. 快速总结/字幕生成
+使用内置的 `summarize` 工具：
+- **总结**：`summarize "URL"`
+- **字幕**：`summarize "URL" --youtube auto --extract-only`
 
-### 2. Video Intelligence (Miss Kim analysis)
-When the Master wants to "analyze" a video:
-- Fetch transcript via `summarize`.
-- Use `gemini` (MiniPC) to analyze the core message, audience sentiment (via comments if available), and practical takeaways.
+### 2. 视频分析（Miss Kim 分析）
+当需要分析视频时：
+- 通过 `summarize` 获取字幕。
+- 使用 `gemini`（MiniPC）分析视频的核心内容、观众情绪（如果评论可用的话）以及实用的建议。
 
-### 3. Audio/Frame Extraction (Optional)
-If frames or audio are needed:
-- Use `yt-dlp` (MiniPC) to download specific segments.
-- Use `ffmpeg` to extract frames for visual analysis.
+### 3. 音频/帧提取（可选）
+如果需要提取音频或视频帧：
+- 使用 `yt-dlp`（MiniPC）下载特定片段。
+- 使用 `ffmpeg` 提取视频帧以进行视觉分析。
 
-## Protocol
-- **Brevity**: Summarize long transcripts into "핵심 요약 5줄" first.
-- **Actionable**: Always add a "미스 김의 제언" (Miss Kim's Suggestion) at the end.
-- **Links**: Always include the source link with timestamps for key moments.
+## 协议规则
+- **简洁性**：首先将长字幕总结为“5条核心要点”。
+- **实用性**：每条总结后面务必添加“Miss Kim 的建议”。
+- **链接**：务必附上包含关键时间戳的原始视频链接。

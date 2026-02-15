@@ -1,30 +1,29 @@
-# YBoard Operator
+# YBoard 操作员
 
-Operate **yboard.online** to edit video/presentation plans.
+使用 **yboard.online** 工具来编辑视频/演示文稿内容。
 
-## What this skill enables
-- Navigate scenes (including scrolling the Scenes sidebar)
-- Switch View/Edit/Markdown modes
-- Edit fields: title, goal, visual guide, narration, assets required
-- Add/replace scene illustrations using **Draw Custom Image**
-- Enforce clean visuals (avoid text overlap; prefer text-free images)
+## 该技能的功能：
+- 导航各个场景（包括滚动场景侧边栏）
+- 在“查看”、“编辑”和“Markdown”模式之间切换
+- 编辑相关字段：标题、目标、视觉引导元素、旁白内容以及所需资源
+- 使用 **Draw Custom Image** 功能添加或替换场景插图
+- 确保视觉效果清晰（避免文本重叠；优先使用无文字的图片）
 
-## Workflow (reliable)
-1) Ensure Browser Relay is attached to the yboard tab.
-2) Switch to **Edit** mode.
-3) Select the target scene from the **Scenes** sidebar.
-4) Edit text fields.
-5) Add/replace an image: **Draw Custom Image → Apply**.
-6) QA: correct scene number/title + image attached + visuals readable.
+## 可靠的工作流程：
+1. 确保浏览器插件（Browser Relay）已连接到 yboard 页面。
+2. 切换到“编辑”模式。
+3. 从“场景”侧边栏中选择目标场景。
+4. 编辑文本字段。
+5. 添加或替换图片：通过 **Draw Custom Image** 功能进行操作，然后点击 “Apply”（应用）。
+6. 进行质量检查（QA）：确认场景编号和标题正确，图片已添加，且视觉效果清晰可读。
 
-## Illustration rules (no overlap)
-- Prefer **no text inside images**.
-- One clear “hero visual” per scene.
-- Use simple icons/shapes: crate, cursor click, sound waves, HP bar, chunks.
+## 插图规则（避免文本重叠）：
+- 图片中尽量不要出现文字。
+- 每个场景应使用一个清晰的视觉元素作为主要展示内容。
+- 使用简单的图标或形状来表示不同的状态或效果，例如：箱子、光标点击效果、声波、生命值条、碎片等。
 
-## Common patterns
-- Click/impact: cursor + crate + sound waves
-- Skins: 3 stages (clean→damaged→broken)
-- Dents: crack line + dent circle
-- HP: bar above crate (green→yellow→red)
-- Break: chunks + outward arrows
+## 常见的设计模式：
+- 点击/碰撞效果：光标 + 箱子 + 声波
+- 物体损坏效果：显示裂纹线条和凹陷圆圈
+- 生命值显示：用绿色、黄色或红色条表示箱子上的生命值
+- 物体损坏：显示碎片以及向外箭头指示破坏方向

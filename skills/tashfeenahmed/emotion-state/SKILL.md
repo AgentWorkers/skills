@@ -1,38 +1,36 @@
 ---
 name: emotion-state
-description: NL emotion tracking + prompt injection via OpenClaw hook
+description: 通过 OpenClaw 挂钩实现 NL 情感追踪及提示信息注入
 ---
-# Emotion State (NL) Skill
+# 情绪状态（自然语言）技能
 
-This skill describes how to install and configure the Emotion State hook, which
-adds a compact `emotion_state` block to the system prompt.
+本技能介绍了如何安装和配置“情绪状态”钩子，该钩子会在系统提示中添加一个简洁的 `emotion_state` 块。
 
-## What it does
+## 功能介绍
 
-- Evaluates user and agent emotions as short natural-language phrases.
-- Stores per-user emotion state across sessions in the agent state directory.
-- Injects the latest entries plus a decayed trend line into the system prompt.
+- 将用户和代理的情绪以简短的自然语言短语的形式进行评估。
+- 将用户的情绪状态在会话之间保存在代理的状态目录中。
+- 将最新的情绪状态数据以及其变化趋势线显示在系统提示中。
 
-## Install & enable (workspace hook)
+## 安装与启用（工作区钩子）
 
-1) After installing the skill, copy the bundled hook into your workspace:
+1) 安装该技能后，将捆绑的钩子文件复制到您的工作区：
 
 ```bash
 cp -R ./skills/emotion-state/hooks/emotion-state ./hooks/
 ```
 
-2) Enable the hook in OpenClaw:
+2) 在 OpenClaw 中启用该钩子：
 
 ```bash
 openclaw hooks enable emotion-state
 ```
 
-3) Restart the OpenClaw gateway.
+3) 重启 OpenClaw 网关。
 
-## Configuration
+## 配置
 
-Set environment variables for the hook via OpenClaw config, e.g. in
-`~/.openclaw/openclaw.json`:
+通过 OpenClaw 的配置文件（例如 `~/.openclaw/openclaw.json`）设置钩子的相关环境变量：
 
 ```json
 {
@@ -63,8 +61,8 @@ Set environment variables for the hook via OpenClaw config, e.g. in
 }
 ```
 
-## Notes
+## 注意事项
 
-- The hook stores state at `~/.openclaw/agents/<agentId>/agent/emotion-state.json`.
-- It does not store raw user text; only model-inferred reasons.
-- If the classifier fails, entries fall back to `neutral/low/unsure`.
+- 该钩子将情绪状态数据保存在 `~/.openclaw/agents/<agentId>/agent/emotion-state.json` 文件中。
+- 它不存储用户的原始文本，仅保存模型推断出的情绪原因。
+- 如果分类器出现故障，情绪状态将默认显示为 `neutral/low/unsure`。

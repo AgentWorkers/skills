@@ -1,36 +1,32 @@
 ---
 name: sec-filing-watcher
-description: Monitor SEC EDGAR for new filings and get Telegram/Slack summaries via Clawdbot. Use when setting up SEC filing alerts, adding/removing tickers to monitor, configuring form types, starting/stopping the watcher, or troubleshooting filing notifications.
+description: 监控 SEC 的 EDGAR 系统以获取新的文件提交信息，并通过 Clawdbot 接收 Telegram 或 Slack 的通知摘要。该功能适用于设置 SEC 文件提交提醒、添加/删除需要监控的证券代码、配置文件类型、启动/停止监控任务，以及排查文件提交通知相关的问题。
 ---
 
-# SEC Filing Watcher
+# SEC 文件提交监控器
 
-Monitors SEC EDGAR for new filings from a watchlist of tickers. When a new filing appears, notifies Clawdbot which fetches, summarizes, and sends to Telegram.
+该工具会监控 SEC 的 EDGAR 系统，以检测监视列表中的股票代码是否有新的文件提交。一旦发现新文件提交，它会通知 Clawdbot，后者会下载这些文件、对其进行汇总，并通过 Telegram 将结果发送给用户。
 
-## Quick Setup
+## 快速设置
 
-### 1. Create watchlist
+### 1. 创建监视列表
 
 ```bash
 cp assets/watchlist.example.json watchlist.json
 # Edit watchlist.json with your tickers
 ```
 
-### 2. Configure webhook
+### 2. 配置 Webhook
 
-Edit `scripts/watcher.js` CONFIG section:
-- `webhookUrl`: Your Clawdbot hooks URL (default: `http://localhost:18789/hooks/agent`)
-- `webhookToken`: Your hook token (find in clawdbot.json under `hooks.token`)
+编辑 `scripts/watcher.js` 文件中的 `CONFIG` 部分：
+- `webhookUrl`：Clawdbot 的 webhook 地址（默认：`http://localhost:18789/hooks/agent`）
+- `webhookToken`：你的 webhook 令牌（在 `clawdbot.json` 文件的 `hooks.token` 部分可以找到）
 
-### 3. Test run
+### 3. 测试运行
 
-```bash
-node scripts/watcher.js
-```
+**第一次运行**：会加载现有的文件提交记录（不会发送通知）。**第二次运行**：会检查是否有新的文件提交。
 
-First run seeds existing filings (no notifications). Second run checks for new filings.
-
-### 4. Schedule (every 15 min)
+### 4. 定时执行（每 15 分钟一次）
 
 **macOS:**
 ```bash
@@ -45,9 +41,9 @@ crontab -e
 # Add: */15 * * * * /usr/bin/node /path/to/scripts/watcher.js >> /path/to/watcher.log 2>&1
 ```
 
-## Managing Tickers
+## 管理股票代码
 
-Add or remove tickers in `watchlist.json`:
+你可以在 `watchlist.json` 文件中添加或删除股票代码：
 
 ```json
 {
@@ -56,57 +52,57 @@ Add or remove tickers in `watchlist.json`:
 }
 ```
 
-New tickers are auto-seeded (existing filings won't spam you).
+新添加的股票代码会自动被加载到系统中（现有的文件提交记录不会重复发送通知）。
 
-See `references/form-types.md` for common SEC form types.
+有关常见的 SEC 文件提交类型，请参阅 `references/form-types.md`。
 
-## Commands
+## 命令
 
-**Check status:**
+**检查状态：**
 ```bash
 launchctl list | grep sec-watcher
 ```
 
-**View logs:**
+**查看日志：**
 ```bash
 cat ~/clawd/sec-filing-watcher/watcher.log
 ```
 
-**Stop:**
+**停止运行：**
 ```bash
 launchctl unload ~/Library/LaunchAgents/com.sec-watcher.plist
 ```
 
-**Start:**
+**启动运行：**
 ```bash
 launchctl load ~/Library/LaunchAgents/com.sec-watcher.plist
 ```
 
-**Manual run:**
+**手动运行：**
 ```bash
 node scripts/watcher.js
 ```
 
-## Files
+## 文件说明
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `scripts/watcher.js` | Main watcher script |
-| `watchlist.json` | Your tickers and form types |
-| `state.json` | Tracks seen filings (auto-created) |
-| `watcher.log` | Output log (if configured) |
+| `scripts/watcher.js` | 主监控脚本 |
+| `watchlist.json` | 要监控的股票代码列表及文件提交类型 |
+| `state.json` | 记录已处理的文件提交信息（自动生成） |
+| `watcher.log` | 日志输出文件（如果已启用） |
 
-## Troubleshooting
+## 故障排除
 
-**No notifications:**
-- Check `state.json` exists (first run seeds, second run notifies)
-- Verify webhook URL and token in watcher.js CONFIG
-- Check Clawdbot is running: `clawdbot status`
+**没有收到通知：**
+- 确保 `state.json` 文件存在（第一次运行时会加载文件提交记录，第二次运行时才会发送通知）
+- 检查 `watcher.js` 文件中配置的 webhook 地址和令牌是否正确
+- 确认 Clawdbot 是否正在运行：`clawdbot status`
 
-**SEC blocking requests:**
-- Script uses proper User-Agent header
-- If blocked, wait 10 minutes (SEC rate limit cooldown)
+**SEC 系统阻止请求：**
+- 脚本使用了正确的 User-Agent 头信息
+- 如果被阻止，请等待 10 分钟（SEC 系统的请求限制机制）
 
-**Duplicate notifications:**
-- Check `state.json` isn't corrupted
-- Delete `state.json` to re-seed (will seed all existing filings again)
+**收到重复通知：**
+- 确保 `state.json` 文件没有损坏
+- 删除 `state.json` 文件后重新运行脚本（系统会重新加载所有文件提交记录）

@@ -1,36 +1,38 @@
 ---
 name: splitxch
-description: Create SplitXCH royalty split addresses from plain language descriptions. Use when the user wants to split XCH payments, royalties, or revenue between multiple recipients. Triggers on "split royalties", "royalty split", "splitxch", "split XCH between", "revenue share", "payment split", "basis points split", or any request to divide Chia payments among wallets. Supports nested/cascading splits for complex hierarchies and 128+ recipients.
+description: 根据用户提供的描述，`Create SplitXCH` 功能用于生成用于分配 XCH（Chia Coin）支付、版税或收入的地址。当用户需要将这些资金分发给多个接收者时，可以使用该功能。该功能会在接收到以下请求时触发：`split royalties`、`royalty split`、`splitxch`、`split XCH between`、`revenue share`、`payment split`、`basis points split` 等。该系统支持嵌套/级联的分割方式，能够处理复杂的层级结构以及超过 128 个接收者的分配需求。
 ---
 
-# SplitXCH Royalty Split Builder
+# SplitXCH 代币分配工具
 
-Create complex XCH royalty distribution addresses from natural language descriptions.
+该工具可根据自然语言描述生成复杂的 XCH 代币分配地址。
 
-## How It Works
+## 工作原理
 
-SplitXCH creates special Chia blockchain addresses that automatically split incoming payments to multiple recipients based on configured percentages. The API computes a puzzle address; any XCH sent to that address gets distributed automatically on-chain.
+SplitXCH 会创建特殊的 Chia 区块链地址，这些地址能够根据配置的百分比自动将收到的付款分配给多个接收者。API 会生成一个特定的地址；任何发送到该地址的 XCH 代币都会在链上自动进行分配。
 
-## Workflow
+## 工作流程
 
-1. Parse the user's plain-language split description into recipients with percentages
-2. Convert percentages to basis points (scale to 9850 total, API adds 150 bps / 1.5% fee)
-3. For nested splits (splits-of-splits), build bottom-up: create leaf splits first, then use their addresses as recipients in parent splits
-4. Call the SplitXCH API via `scripts/splitxch.sh` or direct curl
-5. Return the generated split address and a summary
+1. 将用户提供的简单分配描述解析为包含接收者及其对应百分比的信息。
+2. 将百分比转换为基点（总基数为 9850，API 会收取 150 bps 的费用）。
+3. 对于嵌套的分配结构（即一次分配中包含多次分配），采用自下而上的方式进行处理：先创建最底层的分配地址，然后将这些地址作为上层分配的接收者。
+4. 通过 `scripts/splitxch.sh` 脚本或直接使用 `curl` 命令调用 SplitXCH API。
+5. 返回生成的分配地址及分配汇总信息。
 
-## Basis Points Conversion
+## 基点转换规则
 
-- 10,000 bps = 100%. API fee = 150 bps (1.5%). Recipients get 9,850 bps total.
-- Formula: `points = round(percentage / 100 * 9850)`
-- Adjust last recipient so points sum to exactly 9850.
+- 10,000 bps 等于 100%；API 费用为 150 bps（1.5%）。
+- 接收者最终获得的代币总数为 9,850 bps。
+- 计算公式：`points = round(percentage / 100 * 9850)`。
+- 确保所有接收者的代币总数恰好为 9,850 bps。
 
-Example: "Split 60/40 between Alice and Bob"
-- Alice: round(0.60 * 9850) = 5910
-- Bob: 9850 - 5910 = 3940
+**示例**：将 60% 的代币分配给 Alice，40% 分配给 Bob。
+- Alice 获得：`round(0.60 * 9850) = 5910` bps
+- Bob 获得：`9850 - 5910 = 3940` bps
 
-## Building the API Payload
+## 构建 API 请求数据
 
+将生成的请求数据保存到临时文件中，然后运行以下命令：
 ```json
 {
   "recipients": [
@@ -40,46 +42,40 @@ Example: "Split 60/40 between Alice and Bob"
 }
 ```
 
-Save to a temp file and run:
-```bash
-bash <skill_dir>/scripts/splitxch.sh /tmp/split-payload.json
-```
+## 嵌套分配结构（超过 128 个接收者或分层结构）
 
-## Nested Splits (>128 recipients or hierarchies)
+当用户需要处理多层分配时：
+1. 首先通过 API 创建每一层的分配地址。
+2. 使用返回的分配地址作为上层分配的接收者。
+- 每一层分配都会产生 150 bps 的费用。
 
-When the user describes groups within groups:
-1. Create each leaf-level split first via the API
-2. Use the returned `address` as a recipient in the parent split
-3. Each split level incurs its own 150 bps fee
+**示例**：将 70% 的代币分配给 Team A（Alice 和 Bob 各占 50%），剩余 30% 分配给 Charlie。
+- 创建 Team A 的分配地址：`Alice: 4925` bps, `Bob: 4925` bps → 返回地址 `xch1teamA...`
+- 创建最终分配地址：`TeamA: 4925` bps + `Charlie: 2955` bps = 9850` bps
 
-Example: "Team A (Alice 50%, Bob 50%) gets 70%, Charlie gets 30%"
-1. Create Team A split: Alice 4925 + Bob 4925 = 9850 → returns `xch1teamA...`
-2. Create parent split: TeamA address 6895 + Charlie 2955 = 9850
+## 验证规则
 
-## Validation Rules
+- 所有分配地址必须以 `xch1` 开头，并且必须是有效的 bech32m 格式地址。
+- 每次分配最多只能包含 128 个接收者。
+- 每个接收者的代币数量必须大于 0。
+- 所有接收者的代币总数必须恰好为 9,850 bps。
 
-- All addresses must start with `xch1` and be valid bech32m
-- Max 128 recipients per split
-- All addresses unique within a split
-- Each recipient's points > 0
-- Points must sum to exactly 9850
+## 输出格式
 
-## Output Format
+分配完成后，会显示以下内容：
+1. **分配地址**：生成的 `xch1...` 格式的分配地址。
+2. **汇总表**：每个接收者的名称、分配地址（部分隐藏）及分配百分比。
+3. **费用说明**：“SplitXCH 会对每一层分配收取 1.5% 的平台费用。”
+4. **使用说明**：“将 XCH 代币发送到此地址，系统会自动将其分配给所有接收者。”
 
-After creating a split, present:
-1. **Split Address**: The generated `xch1...` address
-2. **Summary Table**: Each recipient's name, address (truncated), and percentage
-3. **Fee Note**: "SplitXCH takes a 1.5% platform fee per split level"
-4. **Usage**: "Send XCH to this address and it will automatically distribute to all recipients"
+如果存在嵌套结构，会显示完整的分配树结构。
 
-If nested, show the full tree structure.
+## API 参考文档
 
-## API Reference
+有关详细的 API 文档、验证规则和错误处理信息，请参阅 [references/api.md](references/api.md)。
 
-For detailed API docs, validation rules, and error handling, see [references/api.md](references/api.md).
+## 重要提示
 
-## Important Notes
-
-- The user MUST provide valid XCH wallet addresses for all recipients. If addresses are missing, ask for them before calling the API.
-- If the user only provides names and percentages without addresses, list what's needed and ask.
-- For dry runs / previews, show the calculated basis points without calling the API.
+- 用户必须为所有接收者提供有效的 XCH 钱包地址。如果缺少地址，请在调用 API 之前要求用户提供。
+- 如果用户仅提供了名称和百分比而没有地址，请告知用户所需的信息并请求他们提供地址。
+- 在进行测试或预览时，可以不调用 API，直接显示计算出的基点结果。

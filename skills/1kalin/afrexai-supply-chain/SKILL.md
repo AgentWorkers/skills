@@ -1,39 +1,38 @@
-# Supply Chain Risk Monitor
+# 供应链风险监控工具
 
-Analyze supply chain vulnerabilities, map supplier dependencies, and generate risk mitigation plans.
+该工具用于分析供应链中的漏洞，绘制供应商依赖关系图，并生成风险缓解方案。
 
-## What It Does
+## 功能概述
 
-Given your supplier list or industry context, this skill:
+根据您提供的供应商列表或行业背景，该工具能够：
+1. **绘制供应商依赖关系图**：识别一级、二级、三级供应商的集中风险；
+2. **评估漏洞风险**：从地理位置、单一来源、交货时间、财务状况等方面进行综合评分；
+3. **制定缓解方案**：提供多元化采购策略、安全库存计算方法以及就近采购的选项；
+4. **生成可视化报告**：包括风险热力图、供应商评分卡以及供应链中断情景模型。
 
-1. **Maps dependencies** — Tier 1, 2, 3 supplier concentration risk
-2. **Scores vulnerabilities** — Geographic, single-source, lead time, financial health
-3. **Generates mitigation plans** — Dual-sourcing strategies, safety stock calculations, nearshoring options
-4. **Creates dashboards** — Risk heat maps, supplier scorecards, disruption scenario modeling
+## 使用方法
 
-## How to Use
+您可以告诉您的助手执行以下操作：
+- “评估我们前10大供应商的供应链风险”；
+- “制定供应商多元化采购计划”；
+- “模拟中国供应商中断30天可能带来的影响”；
+- “评估我们供应链的韧性”。
 
-Tell your agent:
-- "Assess supply chain risk for our top 10 suppliers"
-- "Create a supplier diversification plan"
-- "Model the impact of a 30-day disruption from our China suppliers"
-- "Score our supply chain resilience"
+## 风险评分框架
 
-## Risk Scoring Framework
+| 评分因素 | 权重 | 评分标准（1表示低风险，5表示高风险） |
+|--------|--------|-------------------|
+| 单一来源依赖 | 25% | 拥有3家及以上合格供应商 | 仅依赖一家供应商，无备用方案 |
+| 地理集中度 | 20% | 从多个地区采购 | 仅从某个国家或港口采购 |
+| 交货时间波动 | 15% | 交货时间波动小于5% | 交货时间波动大于30% |
+| 财务状况 | 15% | 财务状况稳健 | 财务状况不佳或信息不明确 |
+| 合规性风险 | 10% | 完全通过审计 | 无法核实供应商的合规性 |
+| 替代性 | 10% | 存在可替代的供应商 | 依赖定制或专有产品 |
+| 库存缓冲 | 5% | 安全库存超过60天 | 采用即时生产（JIT）模式，无库存缓冲 |
 
-| Factor | Weight | Score 1 (Low Risk) | Score 5 (Critical) |
-|--------|--------|-------------------|---------------------|
-| Single-source dependency | 25% | 3+ qualified suppliers | Sole source, no backup |
-| Geographic concentration | 20% | Multi-region sourcing | Single country/port |
-| Lead time volatility | 15% | <5% variance | >30% variance |
-| Financial health | 15% | Strong balance sheet | Distressed/unknown |
-| Compliance risk | 10% | Fully audited | No visibility |
-| Substitutability | 10% | Drop-in alternatives exist | Custom/proprietary |
-| Inventory buffer | 5% | 60+ days safety stock | JIT, no buffer |
+**综合评分**：各因素加权平均值 → 绿色（1-2分）、黄色（2.5-3.5分）、红色（4-5分）
 
-**Composite Score**: Weighted average → Green (1-2), Yellow (2.5-3.5), Red (4-5)
-
-## Disruption Cost Formula
+## 中断成本计算公式
 
 ```
 Daily Impact = (Revenue at Risk × Margin) + Expediting Costs + Customer Penalties + Brand Damage
@@ -41,20 +40,20 @@ Recovery Time = Lead Time × (1 + Qualification Factor)
 Total Exposure = Daily Impact × Recovery Time
 ```
 
-## Output Formats
+## 输出格式
 
-- **Executive summary** — Top 5 risks, total exposure, recommended actions
-- **Supplier scorecard** — Individual risk profiles with improvement targets
-- **Scenario analysis** — What-if modeling for major disruptions
-- **Action plan** — 30/60/90 day mitigation roadmap with owners and budgets
+- **执行摘要**：列出前5大风险、总风险敞口及建议的应对措施；
+- **供应商评分卡**：包含每个供应商的风险状况及改进目标；
+- **情景分析**：对重大供应链中断进行假设性分析；
+- **行动计划**：制定30天、60天、90天的风险缓解路线图，并明确责任人和预算安排。
 
-## Industry Benchmarks
+## 行业基准数据
 
-- Average company has 60% single-source exposure
-- Supply chain disruptions cost Fortune 500s $184M per event (2024)
-- Companies with formal risk programs recover 2.5x faster
-- Dual-sourcing reduces disruption impact by 40-60%
+- 平均公司的供应链存在60%的单一来源依赖风险；
+- 2024年，财富500强企业因供应链中断每起事件损失1.84亿美元；
+- 具有正式风险管理机制的公司恢复速度更快（恢复时间缩短2.5倍）；
+- 实施多元化采购策略可将供应链中断的影响降低40%-60%。
 
 ---
 
-Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI context packs for business automation.
+该工具由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发——专为业务自动化提供的人工智能解决方案。

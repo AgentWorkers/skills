@@ -1,24 +1,24 @@
 ---
 slug: "historical-cost-analyzer"
 display_name: "Historical Cost Analyzer"
-description: "Analyze historical construction costs for benchmarking, trend analysis, and estimating calibration. Compare projects, track escalation, identify patterns."
+description: "分析历史建筑成本，用于基准测试、趋势分析和校准估算。对比不同项目，跟踪成本上升情况，识别其中的规律和模式。"
 ---
 
-# Historical Cost Analyzer for Construction
+# 建筑历史成本分析工具
 
-## Overview
+## 概述
 
-Analyze historical construction cost data for benchmarking, escalation tracking, and estimating calibration. Compare similar projects, identify cost drivers, and improve future estimates.
+本工具用于分析历史建筑成本数据，以进行基准测试、成本上涨趋势跟踪以及估算精度校准。通过对比类似项目，可以识别成本影响因素，并优化未来的成本估算。
 
-## Business Case
+## 商业价值
 
-Historical cost analysis enables:
-- **Benchmarking**: Compare current estimates to past projects
-- **Calibration**: Improve estimating accuracy using actual data
-- **Trends**: Track cost escalation and market changes
-- **Risk Assessment**: Identify cost drivers and overrun patterns
+历史成本分析能够实现以下功能：
+- **基准测试**：将当前估算结果与过去的项目数据进行对比
+- **精度校准**：利用实际数据提高估算的准确性
+- **趋势分析**：监控成本上涨趋势及市场变化
+- **风险评估**：识别成本的主要驱动因素及超支模式
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -378,7 +378,7 @@ class HistoricalCostAnalyzer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -415,7 +415,7 @@ report = analyzer.generate_report('Office')
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy scipy

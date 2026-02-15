@@ -1,60 +1,59 @@
 ---
 name: EvoWeb.ai AI Website Builder
-description: Create a Website in 4 Minutes Designed to Bring Clients from ChatGPT, Gemini & Modern Search
+description: 在4分钟内创建一个网站，该网站旨在吸引来自ChatGPT、Gemini以及现代搜索引擎的客户。
 homepage: https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"bins":[],"env":["EVOWEB_API_KEY"]}}}
 ---
 
-# EvoWeb Website Builder
+# EvoWeb 网站构建器
 
-Create complete websites from text descriptions using AI-powered generation.
+使用人工智能技术，根据文本描述创建完整的网站。
 
-## Overview
+## 概述
 
-EvoWeb automatically generates modern, responsive websites from natural language prompts. Simply describe what you want, and the AI creates HTML, CSS, JavaScript, and content - delivering a complete, live website in ~4 minutes.
+EvoWeb 可以根据自然语言提示自动生成现代、响应式的网站。只需简单描述您的需求，AI 便会生成 HTML、CSS、JavaScript 以及内容——大约 4 分钟内即可为您提供一个完整的、可在线使用的网站。
 
-**Perfect for:** Landing pages, portfolios, online stores, blogs, business websites
+**适用场景：** 登录页、作品集、在线商店、博客、企业网站
 
-**API Base URL:** `https://api.evoweb.ai/openapi/api/v1`
+**API 基本地址：** `https://api.evoweb.ai/openapi/api/v1`
 
-## Authentication
+## 认证
 
-Get your API key at https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0
+请在 [https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0](https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0) 获取您的 API 密钥。
 
-**Important:** After registration, user MUST confirm the email address (this is required). The service won't work until email confirmation is complete.
- 
+**重要提示：** 注册完成后，用户必须确认电子邮件地址（这是必需的）。在电子邮件确认完成之前，服务将无法使用。
 
-Include this header in all requests:
+在所有请求中包含以下头部信息：
 ```
 Access-Token: your-api-key-here
 ```
 
-## How It Works
+## 工作原理
 
-The workflow is simple:
+工作流程非常简单：
 
-1. **Create** - Submit a text prompt describing your website
-2. **Poll** - Check generation status every 15-20 seconds
-3. **Get Result** - Receive live URL and editor link when ready
+1. **创建** - 提交一个描述您网站的文本提示。
+2. **检查生成进度** - 每 15-20 秒检查一次生成状态。
+3. **获取结果** - 网站生成完成后，您将收到网站的网址和编辑器链接。
 
-Typical generation time: **2-5 minutes**
+**典型生成时间：** 2-5 分钟
 
-## API Endpoints
+## API 端点
 
-### 1. Create Website
+### 1. 创建网站
 
 **POST** `/sites`
 
-Creates a new website generation task from a text description.
+根据文本描述创建一个新的网站生成任务。
 
-**Request Body:**
+**请求体：**
 ```json
 {
   "prompt": "Create a modern landing page for a coffee shop with menu section, gallery of drinks, contact form, and location map. Use warm brown tones and inviting imagery."
 }
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "site_id": "abc123xyz",
@@ -62,32 +61,32 @@ Creates a new website generation task from a text description.
 }
 ```
 
-**Status values:**
-- `queued` - Task is in queue, waiting to start
-- `building` - Website is being generated
+**状态值：**
+- `queued` - 任务已排队，等待开始。
+- `building` - 网站正在生成中。
 
-**Error Responses:**
-- `401 Unauthorized` - Invalid or missing API key
-- `402 Payment Required` - Insufficient credits on account
+**错误响应：**
+- `401 Unauthorized` - API 密钥无效或缺失。
+- `402 Payment Required` - 账户中的信用不足。
 
 ---
 
-### 2. Check Generation Status
+### 2. 检查生成进度
 
 **GET** `/sites/{site_id}`
 
-Check the current status of website generation.
+检查网站的当前生成状态。
 
-**Example:** `GET /sites/abc123xyz`
+**示例：** `GET /sites/abc123xyz`
 
-**Response when building:**
+**生成中时的响应：**
 ```json
 {
   "status": "building"
 }
 ```
 
-**Response when ready:**
+**生成完成时的响应：**
 ```json
 {
   "status": "ready",
@@ -96,7 +95,7 @@ Check the current status of website generation.
 }
 ```
 
-**Response when failed:**
+**生成失败时的响应：**
 ```json
 {
   "status": "failed",
@@ -104,26 +103,26 @@ Check the current status of website generation.
 }
 ```
 
-**Status values:**
-- `queued` - Waiting in queue
-- `building` - Currently generating (be patient!)
-- `ready` - Complete! URLs are available
-- `failed` - Generation encountered an error
+**状态值：**
+- `queued` - 在队列中等待。
+- `building` - 正在生成中（请稍候！）
+- `ready` - 生成完成！网址已准备好。
+- `failed` - 生成过程中遇到错误。
 
-**Error Responses:**
-- `404 Not Found` - Site ID doesn't exist
+**错误响应：**
+- `404 Not Found` - 网站 ID 不存在。
 
 ---
 
-### 3. Retry Failed Generation
+### 3. 重试失败的生成
 
 **POST** `/sites/{site_id}/remake`
 
-Restart generation for a failed website. Only works for sites with `failed` status.
+重新尝试生成失败的网站。仅适用于状态为 `failed` 的网站。
 
-**Example:** `POST /sites/abc123xyz/remake`
+**示例：** `POST /sites/abc123xyz/remake`
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "status": "queued",
@@ -131,73 +130,69 @@ Restart generation for a failed website. Only works for sites with `failed` stat
 }
 ```
 
-**Error Responses:**
-- `400 Bad Request` - Can only remake sites with 'failed' status
-- `404 Not Found` - Site ID doesn't exist
+**错误响应：**
+- `400 Bad Request` - 只能重新生成状态为 `failed` 的网站。
+- `404 Not Found` - 网站 ID 不存在。
 
-## Instructions for AI Assistant
+## 与 AI 助手的沟通指南
 
-When a user requests a website, follow this workflow:
+当用户请求创建网站时，请按照以下步骤操作：
 
-### Step 1: Enhance the Prompt
+### 第 1 步：完善提示
 
-Convert the user's request into a detailed, structured prompt that includes:
-- Purpose and type of website
-- Specific sections/pages needed (Home, About, Contact, etc.)
-- Features (forms, galleries, pricing tables, etc.)
-- Design style (modern, minimal, elegant, professional, etc.)
-- Color preferences
-- Target audience
+将用户的请求转化为详细的、结构化的提示，包括：
+- 网站的目的和类型
+- 需要的具体页面（首页、关于我们、联系我们等）
+- 功能（表格、图片库、价格表等）
+- 设计风格（现代、极简、优雅、专业等）
+- 颜色偏好
+- 目标受众
 
-**Example transformation:**
-- User: "Create a website for my yoga studio"
-- Enhanced: "Create a modern landing page for a yoga studio with class schedule section, pricing table for membership tiers, instructor bios with photos, contact form for inquiries, and location with embedded map. Use calming colors like soft blues and greens with natural imagery."
+**示例转换：**
+- 用户：**为我的瑜伽工作室创建一个网站**
+- 完善后的提示：**为瑜伽工作室创建一个现代风格的登录页，包含课程安排、会员等级的价格表、带有照片的教练简介、咨询联系表以及带有地图的位置信息。使用柔和的蓝色和绿色作为主色调，并搭配自然元素。**
 
-### Step 2: Create the Site
+### 第 2 步：创建网站
 
-Call `POST /sites` with the enhanced prompt.
+使用完善后的提示调用 `POST /sites`。
 
-Store the returned `site_id` - you'll need it for status checks.
+保存返回的 `site_id`——您需要它来检查网站生成进度。
 
-### Step 3: Inform the User
+### 第 3 步：通知用户
 
-Tell them:
-- Website generation has started
-- It will take approximately 4 minutes
-- You'll check progress automatically
+告知用户：
+- 网站生成已经开始。
+- 生成过程大约需要 4 分钟。
+- 我会自动检查进度并通知您。
 
-Example: "✨ Creating your website now! Generation typically takes 3-5 minutes. I'll check the status and let you know when it's ready."
+**示例：** “✨ 正在为您创建网站！生成通常需要 3-5 分钟。我会随时检查进度并告知您完成情况。”
 
-### Step 4: Poll for Status
+### 第 4 步：检查生成进度
 
-Call `GET /sites/{site_id}` to check progress:
+调用 `GET /sites/{site_id}` 来检查进度：
+- **检查间隔：** 每 17 秒（建议 15-20 秒）。
+- **最大尝试次数：** 20 次（总共约 6 分钟）。
+- **检查期间：** 可以向用户通报进度（例如：“网站仍在生成中……”）。
 
-- **Polling interval:** Every 17 seconds (between 15-20 seconds)
-- **Maximum attempts:** 20 polls (total ~6 minutes)
-- **Between polls:** You can inform user of progress ("Still building...")
+持续检查进度，直到：
+- 状态变为 `ready` → 进入第 5 步。
+- 状态变为 `failed` → 进入第 6 步。
+- 达到最大尝试次数 → 告知用户生成时间超过预期。
 
-Continue polling until:
-- Status is `ready` → Proceed to Step 5
-- Status is `failed` → Proceed to Step 6
-- Max attempts reached → Inform user generation is taking longer than expected
+### 第 5 步：交付结果
 
-### Step 5: Deliver Success
+当状态变为 `ready` 时：
+1. **提供网址：**
+   - `url` - 可在线使用的网站地址。
+   - `editor_url` - 可用于自定义网站的链接。
+2. **提出改进建议：**
+   提出 3 个具体的改进建议：
+   - “添加在线预订系统。”
+   - “调整颜色以匹配您的品牌风格。”
+   - “添加客户评价部分。”
+3. **回答要简洁且具有操作性。**
 
-When status is `ready`:
-
-1. **Provide URLs:**
-   - `url` - The live website
-   - `editor_url` - Link to customize the site
-
-2. **Suggest improvements:**
-   Offer 3 specific ways to enhance the site:
-   - "Add an online booking system"
-   - "Customize colors to match your brand"
-   - "Add customer testimonial section"
-
-3. **Be concise and actionable**
-
-**Example response:**
+**示例回答：**
 ```
 🎉 Your website is ready!
 
@@ -212,26 +207,25 @@ Quick improvements you might want:
 Would you like help with any of these?
 ```
 
-### Step 6: Handle Failures
+### 第 6 步：处理失败情况
 
-When status is `failed`:
+当状态为 `failed` 时：
+1. **显示 API 响应中的错误信息。**
+2. **提供重试选项：** 询问用户是否希望重新生成网站。
+3. **如果用户同意：** 调用 `POST /sites/{site_id}/remake` 并重新开始检查进度。
 
-1. **Show the error message** from the API response
-2. **Offer to retry:** Ask if they want you to remake the site
-3. **If they agree:** Call `POST /sites/{site_id}/remake` and restart polling
-
-**Example response:**
+**示例回答：**
 ```
 ❌ Website generation failed: [error message]
 
 Would you like me to try again? I can restart the generation process.
 ```
 
-If user agrees, call remake endpoint and resume polling from Step 4.
+如果用户同意，调用重试端点并重新开始检查进度。
 
-## Example Prompts & Use Cases
+## 示例提示及使用场景
 
-### Coffee Shop Landing Page
+### 咖啡店登录页
 ```
 User request: "Create a website for my coffee shop"
 
@@ -246,7 +240,7 @@ Enhanced prompt:
 Use warm brown and cream colors with inviting photography style"
 ```
 
-### Photographer Portfolio
+### 摄影师作品集
 ```
 User request: "I need a portfolio site"
 
@@ -261,7 +255,7 @@ Enhanced prompt:
 Use clean, elegant design with white space, black and white aesthetic, and large image displays"
 ```
 
-### Online Store
+### 在线商店
 ```
 User request: "Build an e-commerce site for my jewelry"
 
@@ -276,7 +270,7 @@ Enhanced prompt:
 Use elegant design with soft rose gold accents and luxury feel"
 ```
 
-### SaaS Landing Page
+### SaaS 产品登录页
 ```
 User request: "Landing page for my app"
 
@@ -291,7 +285,7 @@ Enhanced prompt:
 Use modern, professional design with blue primary color and clean interface"
 ```
 
-### Restaurant Website
+### 餐厅网站
 ```
 User request: "Website for our Italian restaurant"
 
@@ -307,66 +301,66 @@ Enhanced prompt:
 Use warm, inviting design with red and green accents, rustic Italian aesthetic"
 ```
 
-## Best Practices
+## 最佳实践
 
-### Writing Good Prompts
+### 撰写有效的提示
 
-✅ **Do:**
-- Be specific about sections and features
-- Mention design style and mood
-- Include color preferences
-- Specify the purpose and audience
-- List key pages/sections needed
+✅ **应该做到：**
+- 明确指定页面和功能。
+- 提及设计风格和整体氛围。
+- 包括颜色偏好。
+- 明确网站的目的和目标受众。
+- 列出所需的关键页面。
 
-❌ **Don't:**
-- Be too vague ("make a website")
-- Skip important details
-- Assume AI will guess preferences
+❌ **不应该这样做：**
+- 语言过于模糊（例如：“创建一个网站”）。
+- 省略重要细节。
+- 假设 AI 会自动理解用户的偏好。
 
-### Polling Strategy
+### 检查进度的策略
 
-- **Interval:** 15-20 seconds (recommend 17s)
-- **Maximum:** 20 attempts total
-- **Typical time:** 3-5 minutes (8-15 polls)
-- **Inform user:** Let them know you're checking progress
+- **检查间隔：** 每 15-20 秒（建议 17 秒）。
+- **最大尝试次数：** 共 20 次。
+- **典型生成时间：** 3-5 分钟（大约 8-15 次检查）。
+- **通知用户：** 告知用户您正在检查进度。
 
-### Error Handling
+### 错误处理
 
-- Show clear error messages
-- Offer to retry automatically
-- If multiple failures, suggest the user check their account at https://evoweb.ai/
+- 显示清晰的错误信息。
+- 自动提供重试选项。
+- 如果多次尝试失败，建议用户查看他们的账户信息（[https://evoweb.ai/](https://evoweb.ai/)。
 
-### User Experience
+### 用户体验
 
-- Set expectations (4 minute wait time)
-- Provide both view and edit URLs
-- Suggest concrete improvements
-- Be concise in responses
-- Always end with next-step options
+- 设定合理的等待时间（4 分钟）。
+- 提供网站的查看和编辑链接。
+- 提出具体的改进建议。
+- 回答要简洁明了。
+- 每次回复都要提供下一步的操作指南。
 
-## Technical Details
+## 技术细节
 
-- **Protocol:** HTTPS REST API
-- **Format:** JSON
-- **Authentication:** Header-based API key
-- **Rate limits:** Check with EvoWeb (may have per-account limits)
-- **Generation time:** Typically 2-5 minutes
-- **Costs:** Credits per generation (see https://evoweb.ai/ for pricing)
+- **协议：** HTTPS REST API。
+- **格式：** JSON。
+- **认证：** 基于头部的 API 密钥。
+- **速率限制：** 请咨询 EvoWeb（可能存在账户限制）。
+- **生成时间：** 通常需要 2-5 分钟。
+- **费用：** 每次生成需要消耗一定的信用点数（详情请参见 [https://evoweb.ai/](https://evoweb.ai/)）。
 
-## Support & Resources
+## 支持与资源
 
-- **Get API Key:** https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0
-- **API Issues:** Contact EvoWeb support
-- **Account/Billing:** Visit https://evoweb.ai/
+- **获取 API 密钥：** [https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0](https://evoweb.ai/?utm_source=claw&utm_medium=skill&utm_campaign=website&utm_content=v1.0)
+- **API 相关问题：** 联系 EvoWeb 客服。
+- **账户/计费：** 访问 [https://evoweb.ai/](https://evoweb.ai/)。
 
-## Notes
+## 注意事项
 
-- Each generation consumes credits from your EvoWeb account
-- Editor URL allows users to customize the generated site
-- Generated sites are hosted on EvoWeb infrastructure
-- Custom domains may be available (check EvoWeb documentation)
-- Sites remain live as long as account is active
+- 每次生成都会消耗您 EvoWeb 账户中的信用点数。
+- 编辑器链接允许用户自定义生成的网站。
+- 生成的网站托管在 EvoWeb 的基础设施上。
+- 可能支持自定义域名（详情请参阅 EvoWeb 的文档）。
+- 只要账户有效，网站就会保持在线状态。
 
 ---
 
-**Ready to create amazing websites with just a text description!** 🚀
+**只需一个文本描述，就能创建出令人惊叹的网站了！** 🚀

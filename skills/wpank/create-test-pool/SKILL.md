@@ -13,88 +13,90 @@ allowed-tools:
   - mcp__uniswap__search_tokens
 ---
 
-# Create Test Pool
+# 创建测试池
 
-## Overview
+## 概述
 
-Deploys a custom Uniswap pool on the local testnet with exact parameters you specify. This lets you create controlled test environments -- thin liquidity pools, extreme price ranges, specific fee tiers -- to test how agents behave under edge conditions.
+该工具会在本地测试网络上部署一个自定义的 Uniswap 池，参数由用户指定。这允许您创建受控的测试环境——例如流动性较低的池、价格范围极端的池、特定费用级别的池——以测试代理在极端条件下的行为。
 
-**Why this is 10x better than doing it manually:**
+**为什么这比手动操作好10倍：**
 
-1. **No Solidity scripting**: Creating a V3 pool manually requires calling `createAndInitializePoolIfNecessary`, computing `sqrtPriceX96`, calculating tick ranges, approving tokens, and calling `mint`. This does it all with natural language.
-2. **Token resolution**: Say "WETH/USDC" and it resolves addresses, decimals, and sorts tokens correctly. No need to look up contract addresses.
-3. **Automatic funding**: If the deployer account doesn't have enough tokens, the tool handles whale impersonation to fund the deployment.
-4. **Price-to-tick conversion**: Specify a price like "2000" (USDC per WETH) and the tool computes the correct `sqrtPriceX96` and tick range.
-5. **Edge case testing**: Create pools with $100 liquidity to test thin-market behavior, or pools at extreme prices to test boundary conditions.
-6. **Verification**: After deployment, you can immediately query the pool with `get_pool_info` to confirm state.
+1. **无需编写 Solidity 脚本**：手动创建 V3 池需要调用 `createAndInitializePoolIfNecessary`、计算 `sqrtPriceX96`、确定价格变动范围、批准代币以及调用 `mint` 等操作，而该工具可以自动完成这些步骤。
+2. **代币解析**：只需输入 “WETH/USDC” 等格式，工具就能正确解析地址、小数位数并排序代币，无需手动查找合约地址。
+3. **自动资金注入**：如果部署者账户的代币不足，工具会自动模拟“鲸鱼交易”来为部署提供资金。
+4. **价格到价格变动范围的转换**：指定价格（如 “2000” 表示每 WETH 2000 USDC），工具会自动计算出正确的 `sqrtPriceX96` 和价格变动范围。
+5. **边缘情况测试**：可以创建流动性仅为 100 美元的池来测试市场疲软时的行为，或者创建价格极端的池来测试边界条件。
+6. **验证**：部署完成后，可以使用 `get_pool_info` 立即查询池的状态。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户提出以下请求时，请使用此工具：
 
-- "Create a WETH/USDC pool with thin liquidity"
-- "Deploy a test pool with 0.05% fee"
-- "Set up a DAI/USDC pool at 1:1"
-- "Create a pool with only $1000 liquidity"
-- "Deploy a V2 pair for testing"
-- "I need a pool with a narrow tick range"
-- "Create a WBTC/WETH pool at the current price"
-- "Set up a pool to test high slippage scenarios"
+- “创建一个流动性较低的 WETH/USDC 池”
+- “部署一个费用为 0.05% 的测试池”
+- “设置一个 DAI/USDC 比例为 1:1 的池”
+- “创建一个仅有 1000 美元流动性的池”
+- “部署一个 V2 类型的池进行测试”
+- “我需要一个价格变动范围较小的池”
+- “创建一个当前价格下的 WBTC/WETH 池”
+- “设置一个用于测试高滑点情况的池”
 
-**Do NOT use** when no testnet is running (use `setup-local-testnet` first), or when the user wants to interact with existing mainnet pools (use `analyze-pool`).
+**不适用场景**：
+- 当本地测试网络未运行时（请先使用 `setup-local-testnet`）；
+- 当用户希望与现有的主网池交互时（请使用 `analyze-pool`）。
 
-## Parameters
+## 参数
 
-| Parameter    | Required | Default   | How to Extract                                                           |
-| ------------ | -------- | --------- | ------------------------------------------------------------------------ |
-| token0       | Yes      | --        | First token: "WETH", "USDC", or a 0x address                            |
-| token1       | Yes      | --        | Second token: "USDC", "DAI", or a 0x address                            |
-| version      | No       | v3        | "v2" or "v3"                                                             |
-| fee          | No       | 3000      | Fee tier: 100 (0.01%), 500 (0.05%), 3000 (0.3%), 10000 (1%)             |
-| initialPrice | No       | --        | Price of token0 in token1 terms (e.g. 2000 for ETH at $2000)            |
-| liquidityUsd | No       | 1,000,000 | Dollar value of initial liquidity                                        |
-| tickLower    | No       | auto      | V3 lower tick (advanced users only)                                      |
-| tickUpper    | No       | auto      | V3 upper tick (advanced users only)                                      |
+| 参数          | 是否必填 | 默认值     | 获取方式                                                                                              |
+|--------------|--------|---------|-------------------------------------------------------------------------------------------------------------------------|
+| token0        | 是      | --        | 第一种代币：WETH、USDC 或 0x 地址                                                                                         |
+| token1        | 是      | --        | 第二种代币：USDC、DAI 或 0x 地址                                                                                         |
+| version       | 否      | v3        | “v2” 或 “v3”                                                                                          |
+| fee           | 否      | 3000      | 费用级别：100（0.01%）、500（0.05%）、3000（0.3%）、10000（1%）                                                                                   |
+| initialPrice    | 否      | --        | token0 用 token1 表示的价格（例如：当 ETH 价格为 2000 时，initialPrice 为 2000）                                                                 |
+| liquidityUsd     | 否      | 1,000,000    | 初始流动性的美元价值                                                                                         |
+| tickLower       | 否      | 自动设置    | V3 版本下的价格变动下限（仅限高级用户使用）                                                                                   |
+| tickUpper       | 否      | 自动设置    | V3 版本下的价格变动上限（仅限高级用户使用）                                                                                   |
 
-## Workflow
+## 工作流程
 
-### Step 1: Verify Testnet is Running
+### 第一步：验证测试网络是否运行
 
-If the tool returns `TESTNET_NOT_RUNNING`, tell the user:
+如果工具返回 `TESTNET_NOT_RUNNING`，请告知用户：
 
 ```text
 No local testnet is running. Let me set one up first.
 ```
 
-Then suggest using `setup-local-testnet` or offer to do it for them.
+然后建议用户使用 `setup-local-testnet`，或者代为执行该操作。
 
-### Step 2: Extract Parameters
+### 第二步：解析参数
 
-Parse the user's request carefully:
+仔细解析用户的请求：
 
-- **Token pair**: "WETH/USDC", "ETH/DAI", "WBTC/WETH"
-  - Map "ETH" to "WETH" (Uniswap uses wrapped ETH)
-- **Fee tier**: "0.05% fee" → 500, "0.3%" → 3000, "1%" → 10000, "0.01%" → 100
-- **Price**: "at $2000" → initialPrice: 2000 (for WETH/USDC)
-- **Liquidity**: "thin liquidity" → liquidityUsd: 1000, "$10M" → liquidityUsd: 10000000
-- **Version**: "V2 pair" → version: "v2", default is "v3"
+- **代币对**：例如 “WETH/USDC”、“ETH/DAI”、“WBTC/WETH”：
+  - “ETH” 应被解析为 “WETH”（Uniswap 使用的是封装后的 ETH）。
+- **费用级别**：例如 “0.05%” 对应 500，依此类推。
+- **价格**：例如 “2000” 表示初始价格为 2000（WETH/USDC）。
+- **流动性**：例如 “thin liquidity” 对应 liquidityUsd 为 1000，或 “$10M” 对应 liquidityUsd 为 1,000,000。
+- **版本**：例如 “V2 pair” 对应 version 为 “v2”，默认为 “v3”。
 
-**Common liquidity descriptions:**
-- "thin" / "low" / "shallow" → $1,000 - $10,000
-- "moderate" / "normal" → $100,000 - $1,000,000
-- "deep" / "high" → $10,000,000+
+**常见的流动性描述**：
+- **thin** / **low** / **shallow**：流动性在 1,000 到 10,000 美元之间。
+- **moderate** / **normal**：流动性在 100,000 到 1,000,000 美元之间。
+- **deep** / **high**：流动性在 1,000,000 美元以上。
 
-### Step 3: Fund Deployer If Needed
+### 第三步：（如有必要）为部署者充值
 
-If the pool requires tokens the deployer might not have, call `mcp__uniswap__fund_test_account` first to ensure the deployer (account #1: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`) has sufficient tokens.
+如果池需要部署者没有的代币，先调用 `mcp__uniswap__fund_test_account` 确保部署者（账户号 #1：`0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`）拥有足够的代币。
 
-### Step 4: Deploy the Pool
+### 第四步：部署池
 
-Call `mcp__uniswap__deploy_mock_pool` with the extracted parameters.
+使用解析出的参数调用 `mcp__uniswap__deployMockPool`。
 
-### Step 5: Verify and Present
+### 第五步：验证并展示结果
 
-Present the deployed pool with full details:
+展示已部署的池的详细信息：
 
 ```text
 Test Pool Deployed
@@ -115,7 +117,7 @@ Test Pool Deployed
   - Time-dependent: "Advance 7 days and check fee accumulation"
 ```
 
-### Step 6: Suggest Follow-ups
+### 第六步：提供后续操作建议
 
 ```text
   Next Steps:
@@ -125,20 +127,20 @@ Test Pool Deployed
   - Advance time to test fee accumulation: "Time travel 7 days"
 ```
 
-## Important Notes
+## 重要说明
 
-- **Tokens are automatically sorted.** Uniswap requires token0 < token1 by address. The tool handles this.
-- **V3 pools need initialization.** The tool calls `createAndInitializePoolIfNecessary` which sets the initial price.
-- **Default tick range is ±50%.** If no tick range is specified, liquidity is spread across a wide range around the initial price.
-- **Deployer is Anvil account #1.** The first Anvil default account is used for deployment.
-- **Pool may already exist on fork.** If you fork Ethereum and try to create a WETH/USDC 0.05% pool, it already exists. The tool will add liquidity to the existing pool.
-- **V2 pools always have 0.3% fee.** The fee parameter is ignored for V2.
+- **代币会自动排序**：Uniswap 要求 token0 的地址在 token1 的地址之前。该工具会自动处理这一排序。
+- **V3 版本的池需要初始化**：工具会调用 `createAndInitializePoolIfNecessary` 来设置初始价格。
+- **默认的价格变动范围是 ±50%**：如果未指定价格变动范围，流动性会均匀分布在初始价格的附近。
+- **部署者使用的是 Anvil 账户 #1**：默认使用 Anvil 的第一个账户进行部署。
+- **池可能已经存在**：如果您在分叉后的以太坊网络上尝试创建某个池（例如 WETH/USDC 0.05% 的池），该池可能已经存在，工具会向现有池中添加流动性。
+- **V2 版本的池始终费用为 0.3%**：V2 版本的池会忽略费用参数。
 
-## Error Handling
+## 错误处理
 
-| Error                          | User-Facing Message                                                    | Suggested Action                                    |
-| ------------------------------ | ---------------------------------------------------------------------- | --------------------------------------------------- |
-| `TESTNET_NOT_RUNNING`          | "No local testnet is running."                                         | Run setup-local-testnet first                       |
-| `TESTNET_TOKEN_NOT_FOUND`      | "Cannot resolve token X."                                              | Use a well-known symbol or provide the 0x address   |
-| `TESTNET_CONTRACT_NOT_FOUND`   | "NonfungiblePositionManager not found on this chain."                   | Fork Ethereum mainnet which has all V3 contracts    |
-| `TESTNET_DEPLOY_POOL_FAILED`   | "Failed to deploy pool: {reason}"                                      | Check token balances, fund deployer if needed       |
+| 错误类型            | 显示给用户的消息                                      | 建议的操作                                      |
+|------------------|--------------------------------------------------|-----------------------------------------------------------|
+| `TESTNET_NOT_RUNNING`     | “本地测试网络未运行。”                                      | 先运行 `setup-local-testnet`                            |
+| `TESTNET_TOKEN_NOT_FOUND`     | “无法解析代币 X。”                                      | 使用常见的代币符号或提供 0x 地址                         |
+| `TESTNET_CONTRACT_NOT_FOUND`    | “该链上找不到 NonfungiblePositionManager 合约。”                   | 分叉以太坊主网（包含所有 V3 版本的合约）                   |
+| `TESTNET_DEPLOY_POOL_FAILED`     | “部署池失败：{原因}”                                      | 检查代币余额，如有需要为部署者充值                         |

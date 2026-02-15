@@ -1,57 +1,55 @@
-# Capacity Planner
+# 容量规划工具
 
-Plan team and infrastructure capacity before it becomes a crisis.
+在团队和基础设施出现危机之前，提前规划好其容量。
 
-## What It Does
+## 功能介绍
 
-Takes your current workload data — team size, utilization rates, project pipeline, seasonal patterns — and builds a forward-looking capacity model. Flags bottlenecks 4-8 weeks before they hit.
+该工具会根据您当前的工作负载数据（团队规模、利用率、项目进度、季节性趋势等）构建一个前瞻性的容量模型，并在潜在瓶颈出现前4到8周就发出预警。
 
-## When to Use
+## 使用场景
 
-- Sprint planning feels like guesswork
-- You're not sure if you can take on a new client/project
-- Hiring decisions need data, not gut feel
-- Infrastructure keeps getting slammed at predictable times
+- 当冲刺计划显得充满不确定性时  
+- 当您不确定是否能够承接新的客户或项目时  
+- 在做出招聘决策时，需要数据支持而非直觉判断  
+- 当基础设施在某些时段经常面临压力时  
 
-## How to Use
+## 使用方法
 
-Tell the agent about your situation:
-
+向客服人员描述您的具体情况：  
 ```
 "We have 8 engineers, 3 active projects, and a new client starting in March. Can we handle it?"
-```
+```  
 
-The agent will:
-1. **Audit current load** — Map people to commitments, calculate true utilization (not the number in your head)
-2. **Model scenarios** — What happens if the new project lands? What if two people quit? What if scope grows 30%?
-3. **Flag risks** — Identify single points of failure, overloaded roles, deadline clusters
-4. **Recommend actions** — Hire, redistribute, defer, or say no — with numbers behind each option
+客服人员将执行以下操作：  
+1. **审核当前工作负载**：将员工分配到具体任务中，计算实际利用率（而非您主观估计的数值）  
+2. **模拟不同情景**：分析新项目加入、员工离职或项目范围扩大30%等情况对容量的影响  
+3. **识别风险点**：找出可能导致系统崩溃的关键环节（如某些角色负担过重、多个截止日期集中等）  
+4. **提出建议**：根据分析结果，提供招聘、人员重新分配、延期或拒绝新项目的建议，并为每个方案提供具体的数据支持  
 
-## Capacity Framework
+## 容量规划框架  
 
-### Utilization Bands
-| Band | Rate | Meaning |
-|------|------|---------|
-| 🟢 Green | <70% | Healthy buffer for unplanned work |
-| 🟡 Yellow | 70-85% | Sustainable but tight |
-| 🔴 Red | >85% | Burnout zone — something will slip |
+### 利用率区间  
+| 区间 | 利用率 | 含义 |  
+|------|------|---------|  
+| 🟢 绿色 | <70% | 有足够的缓冲空间应对意外工作  
+| 🟡 黄色 | 70-85% | 可持续运营，但已接近极限  
+| 🔴 红色 | >85% | 处于资源枯竭状态，可能会出现问题  
 
-### Key Metrics
-- **Effective capacity** = headcount × available hours × efficiency factor (typically 0.7-0.8)
-- **Demand pipeline** = committed hours + probable hours (weighted by likelihood)
-- **Buffer ratio** = (capacity - demand) / capacity — target 15-25%
-- **Time to constraint** = weeks until demand exceeds capacity at current trajectory
+### 关键指标  
+- **有效容量** = 员工总数 × 可用工作时间 × 效率系数（通常为0.7-0.8）  
+- **需求预测** = 已承诺的工作时间 + 可能需要的工作时间（按可能性加权）  
+- **缓冲比例** = （容量 - 需求）/ 容量（目标值为15-25%）  
+- **资源紧张时间**：根据当前趋势，计算需求超出容量所需的时间（以周为单位）  
 
-### Scenario Template
-For each scenario, output:
-- Headcount needed vs. available
-- Skill gaps (specific roles/capabilities missing)
-- Timeline risk (which deadlines move)
-- Cost impact (overtime, contractors, lost revenue from saying no)
-- Recommended action with confidence level
+### 情景分析模板  
+针对每种情景，输出以下信息：  
+- 所需员工人数与现有员工人数  
+- 技能缺口（特定角色或能力的缺失）  
+- 时间线风险（哪些截止日期可能会受到影响）  
+- 成本影响（加班费用、外包成本、因拒绝新项目而损失的收入）  
+- 建议的措施及其置信度  
 
-## Output Format
-
+## 输出格式  
 ```
 CAPACITY SNAPSHOT — [Date]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -76,21 +74,17 @@ B) [Scenario]: [outcome summary]
 
 RECOMMENDATION
 [Clear action with reasoning]
-```
+```  
 
-## Tips
+## 使用建议  
+- 在规划过程中每周更新容量数据  
+- 监控实际利用率与预测值的差异，以调整效率系数  
+- 包括非项目相关的工作（会议、支持、行政工作）——这些工作通常占总容量的20-30%  
+- 不要规划超过80%的利用率；剩余的20%并非闲置资源，而是实际需要投入工作的部分。  
 
-- Refresh capacity snapshots weekly during planning
-- Track actual vs. predicted utilization to calibrate your efficiency factor
-- Include non-project work (meetings, support, admin) — it's usually 20-30% of capacity
-- Don't plan above 80% utilization. The remaining 20% isn't slack, it's where real work happens.
+## 深入了解  
 
-## Go Deeper
-
-Your capacity model is one piece of operational planning. For full business context packs covering finance, operations, and growth strategy across 10 industries:
-
-→ **[AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/)** — $47 each, built by operators who've done the work.
-
-→ **[AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/)** — Find out where your business is leaking money (free tool).
-
-→ **[Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)** — Get your AI agent configured for your specific business in 5 minutes.
+容量规划工具只是运营规划的一部分。如需涵盖财务、运营和增长策略的全面业务分析工具包，请参考以下资源：  
+→ **[AfrexAI业务分析工具包](https://afrexai-cto.github.io/context-packs/)** — 每个工具包售价47美元，由经验丰富的专家开发  
+→ **[AI收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/)** — 免费工具，帮助您了解业务中的资金流失情况  
+→ **[客服人员配置向导](https://afrexai-cto.github.io/agent-setup/)** — 仅需5分钟即可为您的业务配置合适的AI客服人员。

@@ -1,133 +1,128 @@
 ---
 name: request-approval
-description: Use Preloop's request_approval tool to get human approval before risky operations like deletions, production changes, or external modifications
+description: 使用 Preloop 的 `request_approval` 工具，在执行删除、生产环境中的更改或外部修改等高风险操作之前，先获取人工批准。
 compatibility: Requires Preloop MCP server configured and accessible
 metadata:
   author: preloop
   version: "1.0"
 ---
 
-# Request Approval Skill
+# 请求审批技能
 
-Use Preloop's `request_approval` MCP tool to get human approval before executing risky operations. Preloop will notify the user (via Slack, email, mobile apps, etc.) and wait for their response.
+在使用Preloop的`request_approval` MCP工具执行高风险操作之前，务必先获得人工审批。Preloop会通过Slack、电子邮件、移动应用等方式通知用户，并等待他们的回复。
 
-## Setup
+## 设置
 
-Preloop must be configured as an MCP server. See [references/SETUP.md](references/SETUP.md) for configuration details.
+Preloop必须被配置为MCP服务器。有关配置详情，请参阅[references/SETUP.md](references/SETUP.md)。
 
-## When to Request Approval
+## 何时需要请求审批
 
-### ALWAYS Request Approval For:
-- Deleting anything (files, directories, database records, cloud resources)
-- Production changes (deployments, config changes, environment variables)
-- Database operations (schema changes, migrations, bulk deletions/updates)
-- External modifications (creating/merging PRs, posting to APIs, sending emails)
-- Security changes (permissions, access controls, API keys)
-- Financial operations (purchases, charges, refunds)
-- System modifications (installing packages, changing system settings, CI/CD changes)
+### **必须始终请求审批的情况**：
+- 删除任何内容（文件、目录、数据库记录、云资源）
+- 生产环境中的变更（部署、配置更改、环境变量调整）
+- 数据库操作（模式更改、迁移、批量删除/更新）
+- 外部系统的修改（创建/合并Pull请求、发送API请求、发送电子邮件）
+- 安全相关设置（权限调整、访问控制、API密钥更改）
+- 财务操作（购买、收费、退款）
+- 系统修改（安装软件包、更改系统设置、持续集成/持续部署流程的更改）
 
-### Usually Request Approval For:
-- Creating pull requests or issues (unless explicitly requested)
-- Pushing commits to main/master branches
-- Modifying critical files (package.json, requirements.txt, docker-compose.yml, etc.)
-- Running commands that modify system state
-- Making bulk changes (affecting many files/records)
+### **通常需要请求审批的情况**：
+- 创建Pull请求或问题（除非另有明确指示）
+- 将提交推送到main/master分支
+- 修改关键文件（如package.json、requirements.txt、docker-compose.yml等）
+- 运行会修改系统状态的命令
+- 进行批量操作（影响多个文件/记录）
 
-### DON'T Request Approval For:
-- Reading files or data
-- Searching or querying
-- Creating feature branches
-- Running tests (in isolated environments)
-- Making commits to feature branches
+### **无需请求审批的情况**：
+- 读取文件或数据
+- 进行搜索或查询
+- 创建功能分支
+- 在隔离环境中运行测试
+- 向功能分支提交更改
 
-## How to Use
+## 使用方法
 
-Call the `request_approval` tool BEFORE executing the risky operation.
+在执行高风险操作之前，先调用`request_approval`工具。
 
-### Parameters
+### 参数
 
-**Required:**
-- `operation` (string): Clear, specific description of what you'll do
-  - ✅ Good: "Delete the logs/2024-01/ directory containing 1,234 log files (2.3GB)"
-  - ❌ Bad: "Delete some logs"
+**必填参数**：
+- `operation`（字符串）：对要执行的操作的清晰、具体描述
+  - ✅ 正确示例：`删除包含1,234个日志文件（2.3GB）的logs/2024-01/目录`
+  - ❌ 错误示例：`删除一些日志`
 
-- `context` (string): Additional details about what will be affected
-  - ✅ Good: "This directory contains archived application logs from January 2024. The logs have been backed up to S3. Deleting will free up 2.3GB."
-  - ❌ Bad: "Old logs"
+- `context`（字符串）：关于受影响内容的额外详细信息
+  - ✅ 正确示例：`该目录包含2024年1月的应用程序日志备份，这些日志已备份到S3。删除后可以释放2.3GB的磁盘空间。`
+  - ❌ 错误示例：`删除旧日志`
 
-- `reasoning` (string): Why this operation is necessary
-  - ✅ Good: "Disk usage is at 92% capacity. These logs are archived in S3 and no longer needed locally."
-  - ❌ Bad: "Need more space"
+- `reasoning`（字符串）：说明执行该操作的必要性
+  - ✅ 正确示例：`磁盘使用率已达到92%，这些日志已备份到S3，本地不再需要。`
+  - ❌ 错误示例：`需要更多磁盘空间`
 
-**Optional:**
-- `caller` (string): Auto-populated by Preloop
-- `approval_policy` (string): Specific approval policy name (uses account default if omitted)
+**可选参数**：
+- `caller`（字符串）：由Preloop自动填充
+- `approval_policy`（字符串）：具体的审批策略名称（如省略则使用账户默认设置）
 
-### Response
+### 回复结果
 
-The tool returns a string:
-- **Approved**: Success message → proceed with the operation
-- **Denied**: "Approval denied" or "Approval denied: {reason}" → STOP, don't execute
-- **Error**: Error message → check configuration or try again
+工具会返回以下字符串之一：
+- **Approved**：表示审批通过，可以继续执行操作
+- **Denied**：表示审批被拒绝，可能附带拒绝原因，此时应停止操作
+- **Error**：表示出现错误，请检查配置或重试
 
-## Quick Example
+## 快速示例
 
-**Task**: User asks to delete old cache files
+**任务**：用户请求删除旧的缓存文件
 
-**Your workflow**:
-1. Check what exists: 3,421 cache files, 1.8GB, from last week
-2. Call `request_approval`:
-   - operation: "Delete the temp-cache/ directory"
-   - context: "Contains 3,421 cache files totaling 1.8GB from batch jobs that ran last week. All jobs completed successfully."
-   - reasoning: "Cache is no longer needed and is consuming disk space. Results are in the database."
-3. Wait for response
-4. If "denied" in response → tell user it's cancelled, ask for alternatives
-5. If approved → proceed with deletion
+**工作流程**：
+1. 检查现有缓存文件的数量和大小：上周生成了3,421个缓存文件，总大小为1.8GB。
+2. 调用`request_approval`：
+   - `operation`：`删除temp-cache/目录`
+   - `context`：`该目录包含上周运行的批处理作业生成的3,421个缓存文件，总大小为1.8GB。所有作业均已完成。`
+   - `reasoning`：`这些缓存文件不再需要，且占用了磁盘空间。相关结果已保存在数据库中。`
+3. 等待回复。
+4. 如果收到“Denied”的回复，告知用户操作被取消，并询问其他替代方案。
+5. 如果获得批准，继续执行删除操作。
 
-See [references/EXAMPLES.md](references/EXAMPLES.md) for more examples.
+更多示例请参阅[references/EXAMPLES.md](references/EXAMPLES.md)。
 
-## Decision Framework
+## 决策框架
 
-When unsure:
+当不确定是否应该请求审批时，请参考以下原则：
+1. **这个操作是否容易撤销？** 如果不能，请求审批。
+2. **这个操作是否可能导致损害或数据丢失？** 如果会，请求审批。
+3. **这个操作是否会影响生产环境或外部系统？** 如果会，请求审批。
+4. **是否需要人工审核？** 如果需要，请求审批。
+5. **我对操作的安全性有疑问吗？** 如果有疑问，请求审批。
 
-1. **Can this be undone easily?** NO → Request approval
-2. **Could this cause harm or data loss?** YES → Request approval
-3. **Is this modifying production or external systems?** YES → Request approval
-4. **Would a human want to review this first?** YES → Request approval
-5. **Am I uncertain about the safety?** YES → Request approval
+**黄金法则**：如有疑问，就请求审批。宁可多问一次，也不要造成损失。
 
-**Golden Rule**: When in doubt, request approval. Better to ask unnecessarily than to cause harm.
+## 如果审批被拒绝
+1. **立即停止操作**。
+2. **查看拒绝原因**：拒绝原因可能包含具体解释。
+3. **通知用户**：解释操作被取消的原因。
+4. **寻找替代方案**：是否有其他方法可以完成目标？
+5. **不要重试**：除非情况发生变化，否则不要再次请求审批。
 
-## If Approval is Denied
+## 最佳实践
+- ✅ 在执行操作前务必请求审批。
+- ✅ 描述要执行的操作时要具体且详细。
+- ✅ 提供相关数据，如文件数量、文件大小、受影响的记录数量。
+- ✅ 说明操作的影响。
+- ✅ 尊重审批结果（无论是批准还是拒绝）。
 
-1. **Stop immediately** - do NOT proceed
-2. **Check for comments** - denial may include reasoning
-3. **Inform the user** - explain why it was cancelled
-4. **Look for alternatives** - can you accomplish the goal differently?
-5. **Don't retry** - don't ask again unless circumstances change
+**禁止的做法**
+- ❌ 先执行操作再请求审批。
+- ❌ 描述含糊不清。
+- ❌ 将多个操作合并在一起请求审批。
+- ❌ 即使被拒绝也继续执行操作。
+- ❌ 因为认为“应该没问题”而忽略审批。
 
-## Best Practices
-
-**DO:**
-- ✅ Request approval BEFORE executing
-- ✅ Be specific and detailed
-- ✅ Include numbers (file count, size, affected records)
-- ✅ Explain the impact
-- ✅ Respect denials
-
-**DON'T:**
-- ❌ Execute first, then ask
-- ❌ Be vague
-- ❌ Bundle multiple operations
-- ❌ Proceed if denied
-- ❌ Skip approval because you think it's "probably fine"
-
-## Additional Resources
-
-- [references/SETUP.md](references/SETUP.md) - Configuration and MCP server setup
-- [references/EXAMPLES.md](references/EXAMPLES.md) - Detailed examples and workflows
-- [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md) - Common errors and solutions
+## 额外资源
+- [references/SETUP.md](references/SETUP.md)：配置和MCP服务器设置指南
+- [references/EXAMPLES.md](references/EXAMPLES.md)：详细示例和工作流程
+- [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)：常见错误及解决方法
 
 ---
 
-**Remember**: Safety first! Trust is earned by being cautious and respectful of the user's systems and data.
+**记住**：安全第一！通过谨慎操作并尊重用户的系统和数据，才能赢得用户的信任。

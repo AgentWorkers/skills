@@ -12,23 +12,23 @@ metadata:
   tags: [biology, protein, genomics, chemistry, bioinformatics, drug-discovery]
 ---
 
-## Installation
+## 安装
 
 ```bash
 bunx skills add https://github.com/openbio-ai/skills --skill openbio
 ```
 
-## Authentication
+## 认证
 
-**Required**: `OPENBIO_API_KEY` environment variable.
+**必需**：设置 `OPENBIO_API_KEY` 环境变量。
 
 ```bash
 export OPENBIO_API_KEY=your_key_here
 ```
 
-**Base URL**: `https://openbio-api.fly.dev/`
+**基础 URL**：`https://openbio-api.fly.dev/`
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List available tools
@@ -46,7 +46,7 @@ curl -X POST "https://openbio-api.fly.dev/api/v1/tools" \
   -F 'params={"query": "CRISPR", "max_results": 5}'
 ```
 
-## Decision Tree: Which Tools to Use
+## 工具选择指南
 
 ```
 What do you need?
@@ -84,18 +84,18 @@ What do you need?
         → ClinicalTrials, ClinVar, FDA, Open Targets
 ```
 
-## Critical Rules
+## 重要规则
 
-### 1. Always Check Tool Schema First
+### 1. 必须先查看工具的接口规范（schema）
 ```bash
 # Before invoking ANY tool:
 curl -X GET "https://openbio-api.fly.dev/api/v1/tools/{tool_name}" \
   -H "X-API-Key: $OPENBIO_API_KEY"
 ```
-Parameter names vary (e.g., `pdb_ids` not `pdb_id`). Check schema to avoid errors.
+参数名称可能有所不同（例如，使用 `pdb_ids` 而不是 `pdb_id`）。请务必查看接口规范以避免错误。
 
-### 2. Long-Running Jobs (submit_* tools)
-Prediction tools return a `job_id`. Poll for completion:
+### 2. 长时间运行的任务（如 `submit_*` 系列工具）
+预测工具会返回一个 `job_id`。需要定期检查任务是否已完成：
 ```bash
 # Check status
 curl -X GET "https://openbio-api.fly.dev/api/v1/jobs/{job_id}/status" \
@@ -106,52 +106,49 @@ curl -X GET "https://openbio-api.fly.dev/api/v1/jobs/{job_id}" \
   -H "X-API-Key: $OPENBIO_API_KEY"
 ```
 
-### 3. Quality Thresholds
-Don't just retrieve data—interpret it:
+### 3. 数据质量标准
+不要仅仅获取数据，还要对其进行解读：
+- **AlphaFold pLDDT**：得分 > 70 表示结构较为稳定；得分 < 50 表示结构不稳定
+- **结合位点的实验分辨率**：需小于 2.5 Å
+- **GWAS p 值**：小于 5×10⁻⁸ 表示具有统计学意义
+- **Tanimoto 相似度**：大于 0.7 表示化合物结构相似
 
-**AlphaFold pLDDT**: > 70 = confident, < 50 = disordered
-**Experimental resolution**: < 2.5 Å for binding sites
-**GWAS p-value**: < 5×10⁻⁸ = genome-wide significant
-**Tanimoto similarity**: > 0.7 = similar compounds
+详细的质量标准请参阅相应的规则文件。
 
-See individual rule files for detailed thresholds.
-
-## Rule Files
-
-Read these for domain-specific knowledge:
-
-| File | Tools Covered |
+## 规则文件
+这些文件包含了特定领域的专业知识：
+| 文件名 | 涉及的工具 |
 |------|---------------|
-| [rules/api.md](rules/api.md) | Core endpoints, job management |
-| [rules/protein-structure.md](rules/protein-structure.md) | PDB, PDBe, AlphaFold, UniProt |
-| [rules/literature.md](rules/literature.md) | PubMed, arXiv, bioRxiv, OpenAlex |
-| [rules/genomics.md](rules/genomics.md) | Ensembl, ENA, Gene, GWAS, GEO |
-| [rules/cheminformatics.md](rules/cheminformatics.md) | RDKit, PubChem, ChEMBL |
-| [rules/molecular-biology.md](rules/molecular-biology.md) | Primers, PCR, restriction, assembly |
-| [rules/structure-prediction.md](rules/structure-prediction.md) | Boltz, Chai, ProteinMPNN, etc. |
-| [rules/pathway-analysis.md](rules/pathway-analysis.md) | KEGG, Reactome, STRING |
-| [rules/clinical-data.md](rules/clinical-data.md) | ClinicalTrials, ClinVar, FDA |
+| [rules/api.md](rules/api.md) | 核心接口、任务管理 |
+| [rules/protein-structure.md](rules/protein-structure.md) | PDB、PDBe、AlphaFold、UniProt |
+| [rules/literature.md](rules/literature.md) | PubMed、arXiv、bioRxiv、OpenAlex |
+| [rules/genomics.md](rules/genomics.md) | Ensembl、ENA、Gene、GWAS、GEO |
+| [rules/cheminformatics.md](rules/cheminformatics.md) | RDKit、PubChem、ChEMBL |
+| [rules/molecular-biology.md](rules/molecular-biology.md) | 引物设计、PCR、DNA切割、基因组组装 |
+| [rules/structure-prediction.md](rules/structure-prediction.md) | Boltz、Chai、ProteinMPNN 等 |
+| [rules/pathway-analysis.md](rules/pathway-analysis.md) | KEGG、Reactome、STRING |
+| [rules/clinical-data.md](rules/clinical-data.md) | ClinicalTrials、ClinVar、FDA |
 
-## Tool Categories Summary
+## 工具分类统计
 
-| Category | Count | Examples |
+| 分类 | 工具数量 | 示例 |
 |----------|-------|----------|
-| Protein structure | 23 | fetch_pdb_metadata, get_alphafold_prediction |
-| Literature | 14 | search_pubmed, arxiv_search, biorxiv_search_keywords |
-| Genomics | 27 | lookup_gene, vep_predict, search_gwas_associations_by_trait |
-| Cheminformatics | 20+ | calculate_molecular_properties, chembl_similarity_search |
-| Molecular biology | 15 | design_primers, restriction_digest, assemble_gibson |
-| Structure prediction | 15+ | submit_boltz_prediction, submit_proteinmpnn_prediction |
-| Pathway analysis | 24 | analyze_gene_list, get_string_network |
-| Clinical data | 22 | search_clinical_trials, search_clinvar |
+| 蛋白质结构 | 23 | fetch_pdb_metadata、get_alphafold_prediction |
+| 文献检索 | 14 | search_pubmed、arxiv_search、biorxiv_search_keywords |
+| 基因组学 | 27 | lookup_gene、vep_predict、search_gwas_associations_by_trait |
+| 化学信息学 | 20 多个 | calculate_molecular_properties、chembl_similarity_search |
+| 分子生物学 | 15 | design_primers、restriction_digest、assemble_gibson |
+| 结构预测 | 15 多个 | submit_boltz_prediction、submit_proteinmpnn_prediction |
+| 通路分析 | 24 | analyze_gene_list、get_string_network |
+| 临床数据 | 22 | search_clinical_trials、search_clinvar |
 
-## Common Mistakes
+## 常见错误
 
-1. **Not checking schemas** → Parameter errors
-2. **Ignoring quality metrics** → Using unreliable data
-3. **Wrong tool for task** → Check decision trees in rule files
-4. **Not polling jobs** → Missing prediction results
+1. **未查看工具的接口规范** → 导致参数使用错误
+2. **忽略数据质量指标** → 使用不可靠的数据
+3. **选择错误的工具** → 请参考规则文件中的工具选择指南
+4. **未定期检查任务进度** → 从而错过预测结果
 
 ---
 
-**Tip**: When in doubt, search for tools: `GET /api/v1/tools/search?q=your_query`
+**提示**：如有疑问，可以尝试使用以下接口查询工具信息：`GET /api/v1/tools/search?q=your_query`

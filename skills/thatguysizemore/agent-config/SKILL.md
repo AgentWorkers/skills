@@ -1,34 +1,34 @@
 ---
 name: agent-config
-description: Intelligently modify agent core context files (AGENTS.md, SOUL.md, IDENTITY.md, USER.md, TOOLS.md, MEMORY.md, HEARTBEAT.md). Use when conversation involves changing agent behavior, updating rules, tweaking personality, modifying instructions, adjusting operational procedures, updating memory architecture, changing delegation patterns, adding safety rules, refining prompt patterns, or any other modification to agent workspace configuration files. Triggers on intent to configure, tune, improve, fix, or evolve agent behavior through context file changes.
+description: 智能地修改代理核心配置文件（AGENTS.md、SOUL.md、IDENTITY.md、USER.md、TOOLS.md、MEMORY.md、HEARTBEAT.md）。当对话涉及更改代理行为、更新规则、调整个性设置、修改指令、调整操作流程、更新内存架构、改变任务分配模式、添加安全规则、优化提示语模式，或对代理工作区配置文件进行任何其他修改时，请使用该功能。该功能会在有配置、调优、改进、修复或优化代理行为的意图时被触发。
 ---
 
-# Agent Config Skill
+# 代理配置技能
 
-This skill provides a structured workflow for intelligently modifying OpenClaw agent core context files. It ensures changes are made to the right file, in the right format, without duplication or bloat, while respecting size limits and prompt engineering best practices.
+该技能提供了一种结构化的流程，用于智能地修改 OpenClaw 代理的核心配置文件。它确保更改只针对正确的文件，并采用正确的格式进行，避免重复和冗余，同时遵守文件大小限制以及提示工程的最佳实践。
 
-## Core Workflow
+## 核心工作流程
 
-When modifying agent context files, follow this process:
+在修改代理配置文件时，请遵循以下步骤：
 
-### 1. Identify Target File
+### 1. 确定目标文件
 
-Read `references/file-map.md` to determine which file the change belongs in.
+阅读 `references/file-map.md` 以确定更改应应用于哪个文件。
 
-**Quick decision tree:**
-- Operational procedures, memory workflows, delegation rules → `AGENTS.md`
-- Personality, tone, boundaries, ethical rules → `SOUL.md`
-- Agent name, emoji, core vibe → `IDENTITY.md`
-- User profile, preferences, family info → `USER.md`
-- Local tool notes, command examples, API locations → `TOOLS.md`
-- Curated long-term facts (main session only) → `MEMORY.md`
-- Heartbeat checklist (keep tiny) → `HEARTBEAT.md`
+**快速决策树：**
+- 操作流程、内存工作流程、委托规则 → `AGENTS.md`
+- 个性、语气、界限、道德规则 → `SOUL.md`
+- 代理名称、表情符号、核心氛围 → `IDENTITY.md`
+- 用户信息、偏好设置、家庭信息 → `USER.md`
+- 本地工具说明、命令示例、API 地址 → `TOOLS.md`
+- 长期保存的重要事实（仅限主会话）→ `MEMORY.md`
+- 心跳检查列表（保持简洁）→ `HEARTBEAT.md`
 
-**Critical:** Subagents only see `AGENTS.md` + `TOOLS.md`. Operational rules must go in `AGENTS.md`, not `SOUL.md`.
+**重要提示：** 子代理仅能查看 `AGENTS.md` 和 `TOOLS.md`。操作规则必须放在 `AGENTS.md` 中，而不是 `SOUL.md` 中。
 
-### 2. Check Current State
+### 2. 检查当前状态
 
-Before making changes:
+在做出更改之前，请先进行以下检查：
 
 ```bash
 # Check file size (20K char limit per file)
@@ -40,99 +40,97 @@ wc -c ~/clawd/AGENTS.md ~/clawd/SOUL.md ~/clawd/IDENTITY.md \
 grep -i "keyword" ~/clawd/TARGETFILE.md
 ```
 
-**Size warnings:**
-- If file is > 18,000 chars, warn before adding (approaching truncation limit)
-- If file is already > 20,000 chars, it's being truncated - refactor before adding more
-- Agent can still read full file with `read` tool, but startup context is truncated
+**文件大小警告：**
+- 如果文件长度超过 18,000 个字符，在添加内容前会发出警告（接近截断限制）
+- 如果文件长度已经超过 20,000 个字符，文件会被截断——在继续添加内容之前请先重构
+- 代理仍然可以使用 `read` 工具读取完整文件，但启动时的配置信息会被截断
 
-**Duplication check:**
-- Is this instruction already present in different words?
-- Is there a similar rule that should be updated instead of adding new?
-- Does this belong in multiple files? (Usually no - pick ONE location)
+**重复检查：**
+- 这条指令是否已经以不同的表述形式存在？
+- 是否有类似的规则可以更新，而不是添加新的规则？
+- 这条指令是否应该分布在多个文件中？（通常不需要——选择一个位置）
 
-### 3. Draft the Change
+### 3. 草拟更改内容
 
-Read `references/claude-patterns.md` for instruction formats that work.
+阅读 `references/claude-patterns.md` 以了解有效的指令格式。
 
-**Format guidelines by file:**
+**文件格式指南：**
 
-**AGENTS.md** (structured, imperative):
-- Use numbered processes for multi-step workflows
-- Use tables for decision trees, model selection, routing rules
-- Include examples for complex patterns
-- Explain WHY rules exist (motivation > bare commands)
-- Use headers and sub-sections for organization
-- Reference other files/skills, don't duplicate content
+**AGENTS.md**（结构化、命令式）：
+- 使用编号流程来表示多步骤工作流程
+- 使用表格来展示决策树、模型选择、路由规则
+- 为复杂规则提供示例
+- 解释规则存在的理由（说明原因而非仅仅列出命令）
+- 使用标题和子章节来组织内容
+- 引用其他文件/技能，避免重复内容
 
-**SOUL.md** (first-person OK, narrative):
-- Can use personal voice ("I'm Gus" vs "You are Gus")
-- Anti-pattern lists work well (forbidden phrases, hedging examples)
-- Include before/after examples for tone guidance
-- Keep tattoos/anchors at top for immediate context
-- Use contrasts (good vs bad examples side-by-side)
+**SOUL.md**（第一人称叙述）：
+- 可以使用个人化的语言（例如 “我是 Gus”）
+- 反模式列表非常有用（列出禁止使用的短语、提供规避示例）
+- 包含修改前后的示例以指导语气
+- 在顶部保留关键信息以便快速参考
+- 使用对比示例（好的与坏的示例并排展示）
 
-**IDENTITY.md** (minimal):
-- Punchy bullets
-- Keep under 500 chars if possible
-- Core vibe only, details go in SOUL.md
+**IDENTITY.md**（简洁明了）：
+- 使用简洁的列表
+- 尽量控制在 500 个字符以内
+- 仅包含核心信息，详细内容放在 `SOUL.md` 中
 
-**USER.md** (factual, third-person):
-- Bullet lists by category
-- Dates for time-sensitive info
-- Clear section headers
-- Cross-reference vault files for detailed project context
+**USER.md**（事实性、第三人称）：
+- 按类别列出项目信息
+- 对于时间敏感的信息，请标注日期
+- 使用清晰的章节标题
+- 引用相关文件以获取详细的项目背景信息
 
-**TOOLS.md** (reference guide):
-- Tables for comparison (when to use X vs Y)
-- Code blocks for command examples
-- Clear headings for quick lookup
-- Include paths, env var names, exact syntax
+**TOOLS.md**（参考指南）：
+- 使用表格来比较不同工具的使用场景
+- 使用代码块展示命令示例
+- 使用清晰的标题以便快速查找
+- 包含路径、环境变量名和精确的语法
 
-**MEMORY.md** (wiki-style, topic-based):
-- Section by topic, not chronologically
-- Cross-reference entity files in vault
-- Dates for context, but organize by subject
-- Main session only - privacy-sensitive
+**MEMORY.md**（维基风格、按主题组织）：
+- 按主题划分章节，而非按时间顺序
+- 引用相关文件以获取上下文信息
+- 仅包含主会话的内容，因为涉及隐私
 
-**HEARTBEAT.md** (action list):
-- Extremely concise
-- Bullet list of checks
-- No explanations (that's AGENTS.md)
-- Fast to parse
+**HEARTBEAT.md**（行动列表）：
+- 非常简洁
+- 使用列表列出需要检查的内容
+- 不需要解释（这些内容已在 `AGENTS.md` 中）
 
-### 4. Validate Before Applying
+### 4. 应用更改前的验证
 
-Ask yourself:
+问自己以下问题：
 
-**Fit:**
-- Does this actually belong in this file based on file-map.md?
-- Is it operational (AGENTS.md) or personality (SOUL.md)?
-- Will subagents need this? (If yes, must be AGENTS.md or TOOLS.md)
+**适用性：**
+- 根据 `file-map.md`，这个更改确实应该放在这个文件中吗？
+- 这是属于操作流程（`AGENTS.md`）还是个性设置（`SOUL.md`）？
+- 子代理需要这个更改吗？（如果是，必须放在 `AGENTS.md` 或 `TOOLS.md` 中）
 
-**Format:**
-- Does this match the file's existing style?
-- Is it the right structure (numbered, table, bullets, prose)?
-- Are examples included where needed?
+**格式：**
+- 这个更改是否符合文件的现有格式？
+- 结构是否正确（使用编号、表格、列表还是叙述形式）？
+- 是否包含了必要的示例？
 
-**Size:**
-- How many chars is this adding?
-- Is the file approaching 20K limit?
-- Could this be a reference file instead?
+**大小：**
+- 这个更改会增加文件多少字符？
+- 文件长度是否接近 20,000 个字符的限制？
+- 这个更改是否可以作为一个参考文件？
 
-**Duplication:**
-- Is this already present somewhere else?
-- Should existing content be updated instead?
-- Could this consolidate multiple scattered rules?
+**重复性：**
+- 这个内容是否已经在其他地方存在？
+- 是否应该更新现有内容？
+- 这个更改是否可以整合多个分散的规则？
 
-**Quality:**
-- Is motivation explained (WHY this rule exists)?
-- Are examples concrete and real (not generic)?
-- Is it precise enough for an AI to follow?
-- Does it avoid vague instructions like "be helpful"?
+**质量：**
+- 是否解释了规则存在的理由？
+- 示例是否具体且真实？
+- 对于 AI 来说，这些规则是否足够清晰易懂？
+- 规则是否避免了模糊的表述（例如 “提供帮助”）
 
-### 5. Apply the Change
+### 5. 应用更改
 
-Use the `edit` tool with exact text matching:
+使用 `edit` 工具，并确保输入的文本与文件中的内容完全匹配：
 
 ```python
 # Read the section first to get exact text
@@ -146,26 +144,26 @@ edit(
 )
 ```
 
-**For additions:**
-- Find the right section anchor (read file first)
-- Insert after relevant heading, not at end of file
-- Maintain file's organization structure
+**对于新增内容：**
+- 找到正确的章节位置（先阅读文件）
+- 将内容插入到相关标题之后，不要放在文件末尾
+- 保持文件的原有组织结构
 
-**For updates:**
-- Replace the specific section being changed
-- Keep surrounding context intact
-- Update examples if rule changes
+**对于更新内容：**
+- 替换需要修改的具体部分
+- 保持周围内容的完整性
+- 如果规则发生变化，请更新示例
 
-**For deletions:**
-- Only remove if truly obsolete
-- Consider whether rule should be refined instead
-- Check if other sections reference what's being deleted
+**对于删除内容：**
+- 只有在内容确实过时时才进行删除
+- 考虑是否应该对规则进行优化
+- 检查其他章节是否引用了被删除的内容
 
-### 6. Verify and Document
+### 6. 验证和记录
 
-After applying change:
+应用更改后，请进行以下操作：
 
-**Verification:**
+**验证：**
 ```bash
 # Confirm change applied
 grep -A 3 "new text" ~/clawd/TARGETFILE.md
@@ -174,21 +172,21 @@ grep -A 3 "new text" ~/clawd/TARGETFILE.md
 wc -c ~/clawd/TARGETFILE.md
 ```
 
-**Documentation:**
-- Log significant changes to `/Users/macmini/Sizemore/agent/decisions/config-changes.md`
-- Include: date, file, what changed, why, who requested
-- If change is experimental, note rollback plan
+**记录：**
+- 将重要更改记录到 `/Users/macmini/Sizemore/agent/decisions/config-changes.md` 中
+- 包括：日期、文件名称、更改内容、更改原因、请求者
+- 如果更改是实验性的，请记录回滚计划
 
-**Report to user:**
-- "Updated AGENTS.md: added X to Y section (now 15,234 chars)"
-- If approaching limit: "Warning: AGENTS.md now 19,456 chars (near 20K limit)"
-- If rolled back previous change: "Replaced old X rule with new Y approach"
+**用户反馈：**
+- “已更新 `AGENTS.md`：在 Y 部分添加了 X（现在文件长度为 15,234 个字符）”
+- 如果文件长度接近限制： “警告：`AGENTS.md` 现在长度为 19,456 个字符（接近 20,000 个字符的限制）”
+- 如果回滚了之前的更改： “用新的 Y 方法替换了旧的 X 规则”
 
-## Common Patterns
+## 常见模式
 
-### Adding Safety Rules
+### 添加安全规则
 
-Target: `AGENTS.md` → Safety section
+目标文件：`AGENTS.md` → 安全设置部分
 
 ```markdown
 ## Safety
@@ -199,47 +197,47 @@ Target: `AGENTS.md` → Safety section
 - **New protection:** When X happens, do Y instead
 ```
 
-### Updating Delegation Rules
+### 更新委托规则
 
-Target: `AGENTS.md` → Delegation section
+目标文件：`AGENTS.md` → 委托规则部分
 
-Check existing delegation table/rules first. Update thresholds, model selection, or cost patterns.
+首先检查现有的委托表格/规则。更新阈值、模型选择或成本模型。
 
-### Refining Personality
+### 优化个性设置
 
-Target: `SOUL.md` (tone, boundaries) or `IDENTITY.md` (core vibe)
+目标文件：`SOUL.md`（语气、界限）或 `IDENTITY.md`（核心氛围）
 
-Add forbidden phrases to anti-pattern list, update voice examples, refine mirroring rules.
+将禁止使用的短语添加到反模式列表中，更新语音示例，优化镜像规则。
 
-### Adding Tool Conventions
+### 添加工具使用规范
 
-Target: `TOOLS.md`
+目标文件：`TOOLS.md`
 
-Add to relevant section (or create new section). Include code examples, when to use, paths.
+将相关内容添加到相应章节中（或创建新章节），并包含命令示例和使用说明。
 
-### Updating Memory Workflow
+### 更新内存工作流程
 
-Target: `AGENTS.md` → Memory section
+目标文件：`AGENTS.md` → 内存设置部分
 
-Update logging triggers, recall cascade, entity structure. Keep memory format templates in `~/clawd/templates/`.
+更新日志记录触发条件、回忆机制和实体结构。将内存格式模板保存在 `~/clawd/templates/` 中。
 
-### Adding Startup Tasks
+### 添加启动任务
 
-Target: `AGENTS.md` → Startup section
+目标文件：`AGENTS.md` → 启动设置部分
 
-Add to numbered checklist. Keep conditional (if MAIN, if group chat, if specific channel).
+将任务添加到编号列表中，并根据条件（是否为主会话、是否为群组聊天、是否针对特定频道）进行区分。
 
-### Heartbeat Changes
+### 更新心跳检查内容
 
-Target: `HEARTBEAT.md`
+目标文件：`HEARTBEAT.md`
 
-Keep minimal. Only what agent checks on every heartbeat run (not operational details).
+保持内容简洁。仅记录代理在每次心跳检查时需要执行的操作，避免包含操作细节。
 
-## Rollback Guidance
+## 回滚指南
 
-If a change makes things worse:
+如果更改导致了问题：
 
-### Immediate Rollback
+### 立即回滚
 
 ```bash
 # If file is in git
@@ -252,71 +250,72 @@ git checkout TARGETFILE.md  # Revert to last commit
 # Or ask user to provide previous working version
 ```
 
-### Iterative Refinement
+### 迭代优化
 
-Don't immediately delete failed changes. Analyze:
-- Was the content wrong, or just the format?
-- Was it in the wrong file?
-- Was it too vague? (Add examples)
-- Was it too verbose? (Make concise)
-- Did it conflict with existing rules? (Consolidate)
+不要立即删除失败的更改。分析原因：
+- 是内容错误，还是格式问题？
+- 规则是否放在了错误的文件中？
+- 规则是否过于模糊？（添加示例）
+- 规则是否过于冗长？（简化表述）
+- 规则是否与现有规则冲突？（整合相关内容）
 
-Update incrementally instead of full revert when possible.
+尽可能逐步进行更新，而不是直接全部回滚。
 
-### Document Failures
+### 记录失败情况
 
-Log failed changes to `/Users/macmini/Sizemore/agent/learnings/config-failures.md`:
-- What was tried
-- Why it didn't work
-- What to try instead
+将失败的更改记录到 `/Users/macmini/Sizemore/agent/learnings/config-failures.md` 中：
+- 尝试了哪些方法
+- 为什么失败
+- 应该尝试什么替代方案
 
-This prevents repeating failed patterns.
+这样可以防止重复出现相同的问题。
 
-## Anti-Patterns to Avoid
+## 需要避免的反模式
 
-Read `references/claude-patterns.md` for detailed anti-patterns.
+阅读 `references/claude-patterns.md` 以了解详细的反模式示例。
 
-**Quick checklist:**
+**快速检查清单：**
 
-❌ **Duplication** - Same rule in multiple files  
-❌ **Vague instructions** - "Be helpful", "Use good judgment"  
-❌ **Missing examples** - Complex rules with no concrete case  
-❌ **Wrong file** - Personality in AGENTS.md, operations in SOUL.md  
-❌ **No motivation** - Rule without WHY it exists  
-❌ **Reference docs buried** - Long guides embedded instead of linked  
-❌ **Bloat** - Adding when updating existing would work  
-❌ **Format mismatch** - Prose in table-heavy file, bullets in narrative file  
-❌ **Subagent blindness** - Operational rule in file subagents don't see  
-❌ **Size ignorance** - Adding to 19K file without checking
+❌ **重复** - 同一条规则分布在多个文件中  
+❌ **指令模糊** - 如 “提供帮助”、“使用良好的判断力”  
+❌ **缺少示例** - 复杂规则但没有具体案例  
+❌ **文件使用错误** - 个性设置放在 `AGENTS.md` 中，操作规则放在 `SOUL.md` 中  
+❌ **缺乏解释** - 规则没有说明存在的理由  
+❌ **参考文档隐藏** - 长篇指南被嵌入而非链接  
+❌ **冗余** - 在更新现有内容时添加不必要的内容  
+❌ **格式不匹配** - 在表格较多的文件中使用叙述性语言，在以列表为主的文件中使用叙述性语言  
+❌ **子代理无法访问** - 子代理无法看到某些操作规则  
+❌ **忽视文件大小限制** - 在文件接近 19,000 个字符时仍继续添加内容  
 
-## When to Use References
+## 何时使用参考文件
 
-If adding >500 words of content, consider:
-- Is this reference material? → Create file in vault, link from context file
-- Is this a reusable procedure? → Create template in `~/clawd/templates/`
-- Is this domain knowledge? → Create skill with references/ folder
-- Is this a one-time setup? → Use `BOOTSTRAP.md` (deleted after first run)
+如果需要添加超过 500 个字符的内容，请考虑：
+- 这是否属于参考材料？ → 在 `~/clawd/templates/` 中创建新文件并链接到相关文件
+- 这是否是可复用的流程？ → 创建模板  
+- 这是否属于领域知识？ → 创建包含参考资料的技能  
+- 这是一次性设置吗？ → 使用 `BOOTSTRAP.md`（首次运行后删除）
 
-**Examples:**
-- Long subagent task template → `~/clawd/templates/subagent-task.md`
-- Detailed memory format guide → vault `agent/decisions/memory-architecture.md`
-- Complex workflow with substeps → Create skill with workflow in references/
-- Tool-specific procedures → Expand TOOLS.md section or create skill
+**示例：**
+- 长篇子代理任务模板 → `~/clawd/templates/subagent-task.md`
+- 详细的内存格式指南 → 保存在 `agent/decisions/memory-architecture.md` 中  
+- 包含子步骤的复杂工作流程 → 创建包含工作流程的技能  
+- 与工具相关的具体操作 → 扩展 `TOOLS.md` 的相关章节或创建新技能  
 
-## Special Cases
+## 特殊情况
 
-### Multi-File Changes
+### 多文件更改
 
-When change affects multiple files:
-1. Determine primary location (where rule "lives")
-2. Add cross-references from other files
-3. Avoid duplicating full content in both
+当更改影响多个文件时：
+1. 确定主要修改位置（规则所在的位置）
+2. 从其他文件中添加交叉引用
+3. 避免在多个文件中重复相同的内容
 
-Example: Delegation rules live in AGENTS.md, but SOUL.md might reference "see AGENTS.md for delegation" in boundaries section.
+**示例：** 委托规则位于 `AGENTS.md` 中，但 `SOUL.md` 可能在界限部分引用 “请参阅 `AGENTS.md` 以获取委托规则”。
 
-### Session-Specific Rules
+### 会话特定规则
 
-Use conditionals in AGENTS.md:
+在 `AGENTS.md` 中使用条件语句：
+
 ```markdown
 ## Startup (Every Session)
 
@@ -326,98 +325,96 @@ Use conditionals in AGENTS.md:
 4. If SUBAGENT: skip personality files
 ```
 
-### Size Limit Approached
+### 文件大小接近限制
 
-When file hits ~18K chars:
-1. Audit for duplication (consolidate)
-2. Move detailed examples to separate reference file
-3. Convert long procedures to templates (link from context file)
-4. Consider splitting into base + advanced (load advanced on-demand)
-5. Move historical decisions to vault (keep only current rules in context)
+当文件长度接近 18,000 个字符时：
+1. 检查是否存在重复内容（进行整合）
+2. 将详细示例移至单独的参考文件
+3. 将冗长的流程转换为模板（从相关文件中链接）
+4. 考虑将内容分为基础部分和高级部分（按需加载高级内容）
+5. 将历史决策移至存储库（仅保留当前有效的规则）
 
-### Conflicting Rules
+### 规则冲突
 
-When new rule conflicts with existing:
-1. Identify both rules
-2. Determine which takes precedence (ask user if unclear)
-3. Update/remove old rule while adding new
-4. Document conflict resolution in vault decisions
+当新规则与现有规则冲突时：
+1. 确定两个规则的具体内容
+2. 确定哪个规则优先执行（如有疑问，请询问用户）
+3. 更新或删除旧规则，同时添加新规则
+4. 将冲突解决方式记录在存储库中
 
-### User Requests Multiple Changes
+### 用户请求多次更改
 
-Process each change through full workflow (don't batch blindly):
-1. Group by target file
-2. Check total size impact across all changes
-3. Apply in logical order (foundations before specifics)
-4. Verify after each, not just at end
+对每个更改都按照完整的工作流程进行处理（不要批量处理）：
+1. 按目标文件分组
+2. 计算所有更改对文件大小的总影响
+3. 按逻辑顺序应用更改（先处理基础内容，再处理具体细节）
+4. 每次应用更改后都进行验证，而不仅仅是最后一步
 
-## Reference Files
+## 参考文件
 
-This skill includes detailed reference material:
+该技能包含以下详细的参考资料：
+- **references/file-map.md**：每个 OpenClaw 文件的功能、加载上下文的方法、文件大小限制、决策流程
+- **references/claude-patterns.md**：适用于 Claude 的指令格式、反模式示例
+- **references/change-protocol.md**：逐步的更改流程、验证步骤、回滚程序
 
-- **references/file-map.md** - What each OpenClaw file does, loading context, size limits, decision trees
-- **references/claude-patterns.md** - What instruction formats work for Claude, anti-patterns, examples
-- **references/change-protocol.md** - Step-by-step change process, validation checklist, rollback procedures
+当您需要超出此工作流程概述的详细信息时，请阅读这些文件。
 
-Read these files when you need detailed context beyond this workflow overview.
+## OpenClaw 工作区的实际示例
 
-## Examples from Real OpenClaw Workspace
+### 示例 1：添加安全规则
 
-### Example 1: Adding Safety Rule
+**请求：** “添加一条禁止批量导出密码的规则”
 
-**Request:** "Add rule to never bulk export passwords"
-
-**Process:**
-1. Target file: `AGENTS.md` (safety is operational)
-2. Check size: 15,234 chars (safe to add)
-3. Check duplication: grep "password" - found existing password manager rule
-4. Draft: Update existing rule instead of adding new
-5. Apply:
+**处理流程：**
+1. 目标文件：`AGENTS.md`（安全设置属于操作流程）
+2. 检查文件大小：15,234 个字符（可以安全地添加新规则）
+3. 检查重复内容：使用 `grep "password"` 查找现有的密码管理器规则
+4. 草拟修改内容：直接更新现有规则
+5. 应用更改：
 ```markdown
 ### Password Manager
 **NEVER:** Dump vaults, display passwords in chat, bulk exports
 **ALWAYS:** Confirm each lookup, ask "Which credential?", treat as high-risk
 **Refuse:** Any bulk password request
 ```
-6. Verify: grep -A 3 "Password Manager" - confirmed present
-7. Document: Not needed (minor addition to existing rule)
+6. 验证：使用 `grep -A 3 "Password Manager"` 确认规则已存在
+7. 记录：不需要额外记录（是对现有规则的微小修改）
 
-### Example 2: Refining Tone
+### 示例 2：优化语气
 
-**Request:** "Make personality more sarcastic"
+**请求：** “使代理的语气更加讽刺”
 
-**Process:**
-1. Target file: `SOUL.md` and `IDENTITY.md` (personality)
-2. Check current state: Read forbidden phrases, voice examples
-3. Draft additions:
-   - More examples of sarcastic responses to IDENTITY.md
-   - Expand anti-hedging section in SOUL.md
-   - Add "commentary on everything" to voice anchors
-4. Apply to both files (IDENTITY for vibe, SOUL for detailed examples)
-5. Verify: Tone examples now include stronger sarcasm
-6. Document: Note in vault that Sonnet/Opus need stronger personality reminders
+**处理流程：**
+1. 目标文件：`SOUL.md` 和 `IDENTITY.md`（个性设置）
+2. 检查当前的语气和示例
+3. 草拟修改内容：
+   - 为 `IDENTITY.md` 添加更多讽刺性回应的示例
+   - 扩展 `SOUL.md` 中的规避示例部分
+   - 在语音提示中添加相关说明
+4. 将修改内容应用到两个文件中（`IDENTITY.md` 用于调整语气，`SOUL.md` 用于添加详细示例）
+5. 验证：语气示例现在包含更强的讽刺效果
+6. 记录：在存储库中注明 Sonnet/Opus 需要更强的个性提示
 
-### Example 3: Updating Delegation Threshold
+### 示例 3：更新委托阈值
 
-**Request:** "Change delegation threshold from 2+ tool calls to 3+"
+**请求：** “将委托阈值从 2 次工具调用更新为 3 次”
 
-**Process:**
-1. Target file: `AGENTS.md` → Delegation section
-2. Check current: "2+ tool calls? SPAWN"
-3. Draft: Update to "3+ tool calls? SPAWN. 1-2 tool calls? Do it yourself if quick."
-4. Consider impact: This will reduce subagent spawns, increase main session cost
-5. Validate with user: "This will make you handle more tasks directly. Confirm?"
-6. Apply after confirmation
-7. Document: Log change to vault with cost rationale
+**处理流程：**
+1. 目标文件：`AGENTS.md` → 委托规则部分
+2. 检查当前阈值：“2 次工具调用？触发子代理生成？”
+3. 草拟修改内容：“3 次工具调用？如果快速处理则由代理自己完成。”
+4. 考虑影响：这会减少子代理的生成次数，增加主会话的负担
+5. 与用户确认：“这会让你承担更多任务。确认吗？”
+6. 应用更改后记录：将更改记录到存储库中，并说明原因
 
-### Example 4: Adding Tool Convention
+### 示例 4：添加工具使用规范
 
-**Request:** "Add note that iMessage attachments must use imsg CLI, not message tool"
+**请求：** “添加说明：iMessage 附件必须使用 `imsg CLI`，而不是其他消息工具”
 
-**Process:**
-1. Target file: `TOOLS.md` (tool-specific convention)
-2. Check duplication: grep "iMessage" - found iMessage formatting rule
-3. Draft new section:
+**处理流程：**
+1. 目标文件：`TOOLS.md`（工具特定规范）
+2. 检查重复内容：使用 `grep "iMessage"` 查找现有的 iMessage 格式规则
+3. 草拟新内容：
 ```markdown
 ## iMessage Attachments
 
@@ -425,20 +422,20 @@ Read these files when you need detailed context beyond this workflow overview.
 
 **Always use imsg CLI:**
 ```bash
-imsg send --chat-id <id> --file /path/to/file --text "optional message"
+   `imsg send --chat-id <id> --file /path/to/file --text "optional message"`
 ```
 
 Applies to ALL iMessage attachments (images, videos, documents, vCards).
 ```
-4. Apply: Add after iMessage formatting section (keep related content together)
-5. Verify: Confirmed in file
-6. Document: Not needed (user-facing tool note, not architectural)
+4. 应用更改：将新内容添加到 `TOOLS.md` 的相关章节中
+5. 验证：确认更改已生效
+6. 记录：此内容仅用于用户指导，不属于系统架构相关的内容
 
-## Summary
+## 总结
 
-**Goal:** Intelligent, surgical changes to agent context files  
-**Method:** Identify → Check → Draft → Validate → Apply → Verify  
-**Key principles:** Right file, right format, no duplication, respect size limits, include examples  
-**Safety:** Check before changing, document decisions, know how to rollback
+**目标：** 对代理配置文件进行智能、精确的修改  
+**方法：** 确定目标 → 检查内容 → 草拟修改 → 验证更改 → 应用更改 → 验证结果  
+**关键原则：** 选择正确的文件、使用正确的格式、避免重复、遵守文件大小限制、提供示例  
+**安全措施：** 在更改前进行验证、记录决策过程、知道如何回滚  
 
-When in doubt, read the reference files for deeper guidance on file purposes, Claude patterns, and change protocols.
+如有疑问，请查阅参考文件以获取关于文件用途、Claude 的使用模式和更改流程的更多详细信息。

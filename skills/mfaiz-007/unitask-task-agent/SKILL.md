@@ -1,6 +1,6 @@
 ---
 name: "unitask-task-agent"
-description: "Manage tasks + time blocks in Unitask (unitask.app) via scoped API token (CLI or MCP)."
+description: "在 Unitask (unitask.app) 中，可以通过带有作用域的 API 令牌（CLI 或 MCP）来管理任务和时间块。"
 homepage: https://unitask.app
 read_when:
   - User wants to manage Unitask tasks from an AI agent
@@ -8,77 +8,75 @@ read_when:
 metadata: {"clawdbot":{"emoji":"✅"}}
 ---
 
-# Unitask Task Agent
+# Unitask任务代理
 
-## Purpose
+## 目的
 
-This skill lets an AI agent safely manage a user's Unitask account using **scoped API tokens**.
+该功能允许AI代理使用**受限的API令牌**安全地管理用户的Unitask账户。  
+它专为在**unitask.app**上托管使用而设计，因此最终用户无需运行任何本地服务器代码。  
 
-It is designed for **hosted use on unitask.app**, so end users do not need to run any local server code.
+**支持的操作：**  
+- 列出任务  
+- 获取单个任务  
+- 创建任务  
+- 更新任务状态  
+- 删除任务（软删除）  
+- 读取/更新设置（可选的一次性设置）  
+- 规划每日时间块（预览/应用时间限制）  
 
-Supported operations:
-- List tasks
-- Get one task
-- Create task
-- Update task status
-- Delete task (soft delete)
-- Read/update settings (optional one-time setup)
-- Plan day time blocks (preview/apply time-blocking)
+**子任务：**  
+- 子任务被视为具有`parent_id`的任务。  
+- 通过创建`parent_id=<父任务ID>`的任务来创建子任务。  
 
-Subtasks:
-- Subtasks are supported as tasks with a `parent_id`.
-- Create a subtask by creating a task with `parent_id=<parent task id>`.
+## 适用场景  
 
-## When to use
+当用户提出以下请求时，请使用此功能：  
+- “列出我的任务”  
+- “为X创建一个任务”  
+- “将这些任务标记为已完成”  
+- “将我的时间从上午9点到下午5点设置为时间限制”  
 
-Use this skill when the user asks for things like:
-- "List my tasks / what's next?"
-- "Create a task for X"
-- "Mark these tasks done"
-- "Time-block my day from 9am to 5pm"
+## 必要的设置  
 
-## Required setup
+1. 用户需在“Unitask -> 仪表板 -> 设置 -> API”中生成Unitask API令牌。  
+2. 将该令牌作为`UNITASK_API_KEY=<token>`存储在代理/应用程序中的`secret/env`变量中。  
 
-1. User creates a Unitask API token from `Unitask -> Dashboard -> Settings -> API`.
-2. User stores it in their agent/app as a secret/env var: `UNITASK_API_KEY=<token>`.
+**注意：**  
+切勿要求用户在聊天记录中粘贴完整的API令牌，而是让他们设置环境变量。  
 
-Never ask users to paste full tokens in chat logs. Ask them to set environment variables instead.
+## 权限模型  
 
-## Scope model
+- `read`：用于读取/列出任务。  
+- `write`：用于创建/更新任务。  
+- `delete`：用于删除任务。  
+- 如果授予了`write`或`delete`权限，则必须同时授予`read`权限。  
 
-- `read`: required to read/list tasks.
-- `write`: create/update tasks.
-- `delete`: delete tasks.
-- If `write` or `delete` is granted, `read` must also be granted.
+## 托管MCP（unitask.app，HTTPS）  
 
-## Hosted MCP (unitask.app, HTTPS)
+使用托管的MCP端点：  
+`https://unitask.app/api/mcp`  
 
-Use the hosted MCP endpoint:
+**推荐的认证头：**  
+`Authorization: Bearer <UNITASK_API_KEY>`  
 
-- `https://unitask.app/api/mcp`
+## MCP工具  
 
-Auth header (recommended):
-- `Authorization: Bearer <UNITASK_API_KEY>`
+**提供的API接口：**  
+- `list_tasks` — 按`status`（待办|已完成|已归档）过滤任务，支持`limit`（1-500）、`offset`和`parent_id`参数  
+- `get_task` — 通过ID获取单个任务  
+- `create_task` — 需提供标题；可选参数：描述、parent_id、状态、优先级、截止日期、开始日期、重复频率、计划开始时间、持续时间（分钟）  
+- `update_task_status` — 更改任务状态（待办|已完成|已归档）  
+- `delete_task` — 软删除任务及其所有子任务  
+- `get_settings` — 获取用户设置和测验偏好  
+- `update_settings` — 部分更新设置/测验  
+- `plan_day_timeblocks` — 在指定时间段内规划时间块  
 
-## MCP tools
+**时间规划建议：**  
+- 先使用`plan_day_timeblocks`并设置`apply=false`进行预览。  
+- 用户确认计划后，再使用`apply=true`进行应用。  
 
-Exposed tools:
-- `list_tasks` — filter by `status` (todo|done|archived), `limit` (1-500), `offset`, `parent_id`
-- `get_task` — get one task by id
-- `create_task` — title required; optional: description, parent_id, status, priority, due_date, start_date, recurrence, scheduled_start, duration_minutes
-- `update_task_status` — change status (todo|done|archived)
-- `delete_task` — soft-delete task + descendants
-- `get_settings` — get user settings + quiz prefs
-- `update_settings` — partial update settings/quiz
-- `plan_day_timeblocks` — schedule time blocks in a window
-
-Recommended usage for time blocking:
-- Call `plan_day_timeblocks` with `apply=false` to preview.
-- Only call again with `apply=true` after the user confirms the plan.
-
-## Safety rules
-
-- Use smallest required scope for the requested action.
-- Confirm destructive actions (delete) unless user explicitly asks to proceed.
-- Prefer `status=done` over delete when user intent is completion, not removal.
-- For `plan_day_timeblocks`, prefer preview (`apply=false`) first; only apply after user confirms.
+## 安全规则：**  
+- 仅为请求的操作授予最低必要的权限范围。  
+- 除非用户明确要求，否则不要执行具有破坏性的操作（如删除）。  
+- 当用户的意图是完成任务而非删除任务时，优先选择`status=done`。  
+- 对于`plan_day_timeblocks`，建议先使用`apply=false`进行预览，用户确认后再应用。

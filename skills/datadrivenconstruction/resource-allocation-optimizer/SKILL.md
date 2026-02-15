@@ -1,18 +1,18 @@
 ---
 slug: "resource-allocation-optimizer"
 display_name: "Resource Allocation Optimizer"
-description: "Optimize construction resource allocation across activities. Level resources, resolve over-allocations, and balance workload while minimizing schedule impact."
+description: "优化各项活动之间的施工资源分配。调整资源分配情况，解决资源过度分配的问题，并在尽量减少对进度计划影响的同时平衡工作负荷。"
 ---
 
-# Resource Allocation Optimizer
+# 资源分配优化器
 
-## Overview
+## 概述
 
-Optimize resource allocation in construction schedules. Level workforce and equipment utilization, resolve over-allocations, and balance workload across the project duration.
+本工具用于优化施工计划中的资源分配，提升劳动力及设备的利用率，解决资源过度分配的问题，并在整个项目期间实现工作量的均衡分配。
 
-> "Resource leveling reduces peak demand by 30% and improves productivity" — DDC Community
+> “资源均衡化可降低高峰需求30%，并提高生产效率”——DDC社区
 
-## Resource Leveling Concept
+## 资源均衡化原理
 
 ```
 Before Leveling:                    After Leveling:
@@ -26,7 +26,7 @@ Workers                             Workers
                                        Peak reduced, duration extended
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -389,7 +389,7 @@ class ResourceOptimizer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize optimizer
@@ -436,7 +436,7 @@ for res_id, reduction in result.peak_reduction.items():
 print(optimizer.generate_resource_histogram("IRON"))
 ```
 
-## Requirements
+## 需求条件
 
 ```bash
 pip install (no external dependencies)

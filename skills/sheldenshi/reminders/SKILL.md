@@ -1,84 +1,72 @@
 ---
 name: reminders
-description: Search, create, complete, edit, and delete macOS Reminders. Use proactively — when the user asks to be reminded of something, mentions a task or to-do, or wants to check upcoming reminders.
+description: 搜索、创建、修改和删除 macOS 的提醒事项。主动使用这些功能——当用户请求接收提醒、提及某个任务或待办事项，或者想要查看即将到期的提醒时，都可以及时响应。
 ---
 
-# macOS Reminders
+# macOS 提醒事项管理
 
-Manage macOS Reminders via the `reminders` script. Returns JSON. Zero dependencies — uses built-in macOS tools.
+通过 `reminders` 脚本来管理 macOS 的提醒事项。返回 JSON 格式的数据。该脚本不依赖任何外部库，仅使用 macOS 自带的工具。
 
-## When to Use This Skill
+## 何时使用此功能
 
-Use this skill **proactively**, not only when the user explicitly asks:
+建议 **主动** 使用此功能，而不仅仅是在用户明确请求时：
 
-- **"Remind me to..."** — create a reminder with a due date.
-- **User mentions a task or to-do** — create a reminder or search for existing ones.
-- **"What do I need to do?"** — list upcoming/incomplete reminders.
-- **"I finished X"** or **"Done with X"** — mark the matching reminder as complete.
-- **User explicitly asks** to look up, add, complete, edit, or delete reminders.
+- 当用户说 “提醒我……” 时，创建一个带有到期时间的提醒事项。
+- 当用户提到某项任务或待办事项时，创建提醒事项或搜索现有的提醒事项。
+- 当用户询问 “我需要做什么？” 时，列出即将到期或未完成的提醒事项。
+- 当用户表示 “我已经完成了 X” 时，将相应的提醒事项标记为已完成。
+- 当用户请求查询、添加、修改或删除提醒事项时。
 
-## Running Commands
+## 命令使用方法
 
-All commands use the `reminders` script in this skill's `references/` directory. Determine the path relative to this SKILL.md file:
+所有命令都使用位于 `references/` 目录中的 `reminders` 脚本。请根据当前 SKILL.md 文件的路径来执行相应的命令：
 
 ```bash
 REMINDERS="$(dirname "<path-to-this-SKILL.md>")/references/reminders.sh"
 ```
 
-On first run, macOS will prompt for Reminders access — click **Allow**.
+首次运行时，macOS 会请求允许访问提醒事项功能——请点击 “允许”。
 
-## Commands
+## 命令列表
 
-### Lists
+### 列出所有提醒事项列表
 
 ```bash
 $REMINDERS lists
 ```
 
-Shows all reminder lists with total and incomplete counts.
+显示所有提醒事项列表，并统计已完成和未完成的提醒事项数量。
 
-### List Reminders
+### 显示具体提醒事项
 
 ```bash
 $REMINDERS ls [<list-name>] [--all]
 ```
 
-List reminders. By default shows only incomplete. If no list name given, shows across all lists.
+列出所有提醒事项。默认情况下仅显示未完成的提醒事项。如果未指定列表名称，则会显示所有列表中的提醒事项。
 
-| Flag | Description |
+| 标志 | 描述 |
 |------|-------------|
-| `--all` | Include completed reminders |
+| `--all` | 包括已完成的提醒事项 |
 
-```bash
-$REMINDERS ls
-$REMINDERS ls "Shopping"
-$REMINDERS ls "Work" --all
-```
-
-### Search (default)
+### 搜索提醒事项
 
 ```bash
 $REMINDERS search <query> [--all]
 $REMINDERS <query>                   # search is the default command
 ```
 
-Search reminders by name and notes across all lists. By default excludes completed.
+根据名称和备注在所有列表中搜索提醒事项。默认情况下，搜索结果中不会包含已完成的提醒事项。
 
-```bash
-$REMINDERS search "buy milk"
-$REMINDERS "dentist"
-$REMINDERS search "groceries" --all
-```
-
-### Add
+### 添加提醒事项
 
 ```bash
 $REMINDERS add --name <text> [--list <name>] [--due <datetime>] [--remind <datetime>] [--notes <text>] [--priority high|medium|low] [--flagged]
 ```
 
-`--name` is required. If `--list` is omitted, uses the default list. If `--due` is provided without `--remind`, the remind-me date is set to the same value.
+必须提供 `--name` 参数。如果省略 `--list` 参数，系统会使用默认的提醒事项列表。如果提供了 `--due` 参数但未提供 `--remind` 参数，系统会将该提醒事项的到期时间设置为当前时间。
 
-**Dates must be ISO 8601 with time** (e.g. `2025-02-15T10:00:00`). Convert relative dates (e.g. "tomorrow at 9am") to absolute ISO 8601 before calling.
+**日期必须使用 ISO 8601 格式（例如：2025-02-15T10:00:00）**。在调用命令之前，请将相对日期（例如 “明天上午 9 点”）转换为绝对的 ISO 8601 格式。
 
 ```bash
 $REMINDERS add --name "Buy milk"
@@ -86,73 +74,53 @@ $REMINDERS add --name "Call dentist" --due 2025-02-15T09:00:00 --priority high
 $REMINDERS add --name "Pick up package" --list "Errands" --notes "At the post office"
 ```
 
-### Complete
+### 将提醒事项标记为已完成
 
 ```bash
 $REMINDERS complete <query> [--list <name>]
 ```
 
-Mark a reminder as complete. Searches incomplete reminders by name. If multiple match, lists them.
+将提醒事项标记为已完成。系统会搜索未完成的提醒事项并根据名称进行匹配。如果找到多个匹配项，会列出所有匹配项。
 
-```bash
-$REMINDERS complete "Buy milk"
-$REMINDERS complete "Buy milk" --list "Shopping"
-```
-
-### Edit
+### 修改提醒事项
 
 ```bash
 $REMINDERS edit <query> [--list <name>] [options]
 ```
 
-Find a reminder by name and apply changes. If multiple match, lists them.
+根据名称查找提醒事项并进行修改。如果找到多个匹配项，会列出所有匹配项。
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--list <name>` | Narrow search to a specific list |
-| `--name <text>` | Set new name |
-| `--due <datetime>` | Set due date (`clear` to remove) |
-| `--remind <datetime>` | Set remind-me date (`clear` to remove) |
-| `--notes <text>` | Set notes (`clear` to remove) |
-| `--priority <level>` | Set priority (high, medium, low, none) |
-| `--flagged` | Set flagged |
-| `--unflagged` | Remove flag |
-| `--uncomplete` | Mark as incomplete |
+| `--list <名称>` | 将搜索范围限制在指定的列表内 |
+| `--name <文本>` | 设置新的名称 |
+| `--due <日期时间>` | 设置到期时间（使用 `--clear` 可删除该选项） |
+| `--remind <日期时间>` | 设置提醒时间（使用 `--clear` 可删除该选项） |
+| `--notes <文本>` | 设置备注（使用 `--clear` 可删除该选项） |
+| `--priority <优先级>` | 设置优先级（高、中、低、无） |
+| `--flagged` | 设置标记（使用 `--clear` 可删除该选项） |
+| `--unflagged` | 取消标记（使用 `--clear` 可删除该选项） |
+| `--uncomplete` | 将提醒事项标记为未完成（使用 `--clear` 可删除该选项） |
 
-```bash
-$REMINDERS edit "Buy milk" --name "Buy almond milk"
-$REMINDERS edit "Call dentist" --due 2025-02-20T14:00:00
-$REMINDERS edit "Old task" --uncomplete
-```
-
-### Delete
+### 删除提醒事项
 
 ```bash
 $REMINDERS delete <query> [--list <name>] [--yes]
 ```
 
-Find a reminder by name and delete it. Asks for confirmation unless `--yes` is passed. Always use `--yes` to skip the interactive prompt.
+根据名称查找并删除提醒事项。除非提供了 `--yes` 参数，否则系统会提示用户确认删除操作。建议始终使用 `--yes` 以跳过确认步骤。
 
-```bash
-$REMINDERS delete "Buy milk" --yes
-$REMINDERS delete "Old task" --list "Shopping" --yes
-```
-
-### Add List
+### 创建新的提醒事项列表
 
 ```bash
 $REMINDERS add-list --name <text>
 ```
 
-Create a new reminder list.
+创建一个新的提醒事项列表。
 
-```bash
-$REMINDERS add-list --name "Projects"
-```
+## 输出结果
 
-## Output
-
-All commands return JSON:
+所有命令都会返回 JSON 格式的数据：
 
 ```json
 // lists
@@ -189,18 +157,11 @@ All commands return JSON:
 { "created": true, "name": "Projects" }
 ```
 
-## Workflow
+## 工作流程
 
-```
-- [ ] 1. Set REMINDERS path relative to this SKILL.md
-- [ ] 2. Run the appropriate command
-- [ ] 3. If permission error → tell user to grant Reminders access in System Settings > Privacy & Security > Reminders
-- [ ] 4. Parse and present results to the user
-```
+### 主动服务行为：
 
-### Proactive behaviors
-
-- **"Remind me to...":** Create a reminder immediately. Parse the due date from context (e.g., "tomorrow morning" → next day at 9:00 AM). Confirm what you created.
-- **Task mentioned in conversation:** If the user mentions needing to do something, offer to create a reminder or do it proactively if the intent is clear.
-- **"Done with X" / "I finished X":** Search for matching reminders and mark them complete. Confirm what was completed.
-- **"What's on my list?":** List incomplete reminders. Summarize by list if there are many.
+- 当用户说 “提醒我……” 时，立即创建提醒事项。系统会从上下文中解析到期时间（例如：“明天早上” 被解析为 “次日上午 9:00”），并确认创建的内容。
+- 当用户在对话中提到需要完成某项任务时，主动提出创建提醒事项或直接完成任务。
+- 当用户表示 “我已经完成了 X” 或 “我完成了 X” 时，系统会搜索相应的提醒事项并将其标记为已完成，并确认具体完成了哪些任务。
+- 当用户询问 “我的列表里有什么？” 时，系统会列出所有未完成的提醒事项。如果提醒事项较多，系统会按列表进行分类显示。

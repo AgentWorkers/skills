@@ -1,26 +1,26 @@
 ---
 slug: "ml-model-retrainer"
 display_name: "ML Model Retrainer"
-description: "Automated pipeline for retraining ML models with new construction data. Monitor model drift, trigger retraining, and validate model performance."
+description: "用于使用新构建的数据自动重新训练机器学习模型的流程。监控模型性能的变化，触发重新训练，并验证模型的有效性。"
 ---
 
-# ML Model Retrainer for Construction
+# 建筑行业机器学习模型重新训练工具
 
-## Overview
+## 概述
 
-Automated pipeline for keeping construction ML models up-to-date. Monitor for data drift, trigger retraining when needed, validate performance, and manage model versions.
+这是一个自动化流程，用于确保建筑行业的机器学习模型始终保持最新状态。该工具能够监控数据的变化情况，在必要时触发模型重新训练，验证模型性能，并管理模型的不同版本。
 
-## Business Case
+## 商业价值
 
-ML models degrade over time as:
-- Market conditions change (material prices, labor rates)
-- New construction methods emerge
-- Project complexity evolves
-- Regional factors shift
+随着时间的推移，机器学习模型的准确性会下降，原因包括：
+- 市场环境的变化（材料价格、劳动力成本）
+- 新建筑方法的出现
+- 项目复杂性的增加
+- 地区因素的差异
 
-Continuous retraining ensures predictions remain accurate.
+通过持续重新训练，可以确保模型的预测结果始终准确无误。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -451,7 +451,7 @@ class MLModelRetrainer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from sklearn.ensemble import GradientBoostingRegressor
@@ -509,7 +509,7 @@ retrainer.save_model("schedule_delay")
 print(retrainer.generate_report("schedule_delay"))
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy scikit-learn

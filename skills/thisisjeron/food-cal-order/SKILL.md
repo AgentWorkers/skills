@@ -1,97 +1,95 @@
 ---
 name: food-cal-order
-description: Order food delivery via browser automation, triggered by calendar events. Supports two modes — Direct (specific service + restaurant) and Discovery (criteria-based search across all services). Services include DoorDash, Uber Eats, Grubhub. Use when a calendar event matches food ordering patterns. Spawns sub-agents for browser control.
+description: 通过浏览器自动化功能来订购外卖服务，该功能由日历事件触发。支持两种模式：  
+1. **直接模式**（指定服务及餐厅）；  
+2. **探索模式**（根据预设条件在所有可用的外卖服务中搜索）。  
+支持的外卖平台包括 DoorDash、Uber Eats 和 Grubhub。  
+当日历事件与用户的订餐习惯匹配时，系统会自动启动该功能，并生成用于控制浏览器的子代理（sub-agents）。
 ---
 
-# Food Calendar Order
+# 食物日历订购功能
 
-Place food delivery orders via browser automation, triggered by calendar events.
+通过浏览器自动化脚本，在日历事件触发时下达食物配送订单。
 
-## Modes
+## 使用模式
 
-### Direct Mode
-Specific service and restaurant provided.
+### 直接模式
+指定具体的服务和餐厅。
 
 ```
 Title: "DoorDash: Chipotle"
 Description: "burrito bowl, chicken, guac"
 ```
 
-### Discovery Mode
-Criteria-based; searches all services to find best match.
+### 发现模式
+根据预设条件搜索，以找到最合适的选项。
 
 ```
 Title: "Thai food, high ratings, under $30, food for 2"
 Description: "no shellfish, prefer noodles"
 ```
 
-## Calendar Event Parsing
+## 日历事件解析
 
-**Always read both the title AND description** of the calendar event.
+**务必同时阅读日历事件的标题和描述。**
 
-### Title → Mode + Target
+### 标题 → 使用模式 + 目标餐厅
+| 模式匹配规则 | 使用模式 |
+|-------------|-----------|
+| `{服务名称}: {餐厅名称}` | 直接模式 |
+| 仅基于菜系或条件 | 发现模式 |
 
-| Pattern | Mode |
-|---------|------|
-| `{Service}: {Restaurant}` | Direct |
-| Cuisine/criteria only | Discovery |
+### 描述 → 订单详情 + 附加要求
+描述中包含以下两类信息：
+1. **订单详情**：需要订购的食物（菜品、数量、份量）
+2. **附加要求**：必须遵守的约束条件（尤其是与食品安全相关的要求）
 
-### Description → Order Details + Constraints
+解析描述内容，提取以下关键信息：
+| 字段 | 例子 | 优先级 |
+|---------|---------|---------|
+| `items` | "墨西哥卷饼碗、鸡肉、鳄梨酱" | 订单详情 |
+| `servings` | "为2人准备的食物" | 订单详情 |
+| `allergies` | "对坚果过敏" | **严格禁止** |
+| `dietary` | "素食"、"清真"、"无麸质" | **严格禁止** |
+| `preferences` | "偏好面条"、"辣度更高"、"不含洋葱" | 尽量满足 |
+| `budget` | "价格低于30美元" | 价格约束 |
+| `delivery_notes` | "门禁码1234"、"放在门口" | 用于支付时输入 |
+| `special_requests` | "生日蛋糕蜡烛"、"额外纸巾" | 尽量满足 |
 
-The description carries two kinds of info:
+**过敏或饮食方面的要求是不可协商的。** 如果不确定某项食物是否安全，请跳过该选项并选择明确安全的替代品。遇到疑问时，宁可保守处理——错误的食品可能会引起不适，而过敏反应则可能非常危险。
 
-1. **Order details** — what to order (items, quantity, servings)
-2. **Constraints** — things that MUST be honored, safety-critical
-
-Parse the description and extract:
-
-| Field | Examples | Priority |
-|-------|----------|----------|
-| `items` | "burrito bowl, chicken, guac" | Order details |
-| `servings` | "food for 2", "feeds 4" | Order details |
-| `allergies` | "nut allergy", "allergic to shellfish" | **CRITICAL — never violate** |
-| `dietary` | "vegetarian", "halal", "gluten-free", "no pork" | **CRITICAL — never violate** |
-| `preferences` | "prefer noodles", "extra spicy", "no onions" | Best-effort |
-| `budget` | "under $30", "keep it cheap" | Constraint |
-| `delivery_notes` | "gate code 1234", "leave at door" | Pass to checkout |
-| `special_requests` | "birthday cake candle", "extra napkins" | Best-effort |
-
-**Allergy/dietary constraints are non-negotiable.** If unsure whether an item is safe, skip it and pick a clearly safe alternative. When in doubt, err on the side of caution — wrong food is annoying, an allergic reaction is dangerous.
-
-### Parsing Example
+### 解析示例
 
 ```
 Title: "DoorDash: Chipotle"
 Description: "2 burrito bowls (chicken), guac on the side. Nut allergy. Gate code: 5521"
 ```
 
-Extracted:
-- **items:** 2x burrito bowl (chicken), guacamole (side)
-- **allergies:** nuts
-- **delivery_notes:** gate code 5521
+解析结果：
+- **订单详情**：2份墨西哥卷饼碗（鸡肉）、鳄梨酱（配菜）
+- **过敏信息**：对坚果过敏
+- **配送要求**：门禁码5521
 
 ```
 Title: "Thai food, high ratings, under $30, food for 2"
 Description: "no shellfish, prefer noodles, gluten-free if possible, leave at door"
 ```
 
-Extracted:
-- **servings:** 2
-- **budget:** $30
-- **allergies:** shellfish
-- **dietary:** gluten-free (best-effort — "if possible")
-- **preferences:** noodles
-- **delivery_notes:** leave at door
+解析结果：
+- **订单详情**：2人份食物
+- **价格约束**：价格低于30美元
+- **过敏信息**：对贝类过敏
+- **饮食要求**：无麸质（尽量满足）
+- **偏好**：偏好面条
+- **配送要求**：放在门口
 
-## Supported Services
+## 支持的服务平台
+- **DoorDash**：前缀为 `DoorDash:`，网址为 `doordash.com`
+- **Uber Eats**：前缀为 `UberEats:` 或 `Uber Eats:`，网址为 `ubereats.com`
+- **Grubhub**：前缀为 `Grubhub:`，网址为 `grubhub.com`
 
-- **DoorDash** — prefix `DoorDash:`, url `doordash.com`
-- **Uber Eats** — prefix `UberEats:` or `Uber Eats:`, url `ubereats.com`
-- **Grubhub** — prefix `Grubhub:`, url `grubhub.com`
-
-## Direct Mode Execution
-
-Spawn a single sub-agent with inline instructions:
+## 直接模式的执行流程
+创建一个子代理，并为其提供具体的执行指令：
 
 ```
 sessions_spawn(
@@ -154,11 +152,10 @@ Do NOT checkout if allergen safety cannot be confirmed.
 )
 ```
 
-## Discovery Mode Execution
+## 发现模式的执行流程
 
-### Phase 1: Recon (parallel)
-
-Spawn sub-agents for ALL services simultaneously:
+### 第一阶段：信息收集（并行处理）
+同时为所有服务平台创建子代理以收集相关信息：
 
 ```
 sessions_spawn(
@@ -212,36 +209,32 @@ RETURN FORMAT:
 )
 ```
 
-### Phase 2: Decision
+### 第二阶段：决策
+所有信息收集子代理返回后，汇总并比较结果：
+| 服务平台 | 餐厅名称 | 评分 | 人均价格 | 预计送达时间 | 是否满足约束条件 |
+|---------|------------|---------|------------|----------------------|
+| ... | ... | ... | ... | ... |
 
-After all recon sub-agents return, aggregate and compare:
+**选择最终订单的依据包括：**
+1. **食品安全性**：优先选择食品安全性明确的餐厅；如果无法确保安全，则排除相关餐厅。
+2. **是否符合菜系和饮食要求**
+3. **价格是否在预算范围内**（预留25%用于支付费用和小费）
+4. **评分越高越好**
+5. **配送速度越快越好**
+6. **菜单是否符合用户偏好**
 
-| Service | Restaurant | Rating | $/person | ETA | Fits Constraints |
-|---------|------------|--------|----------|-----|------------------|
-| ... | ... | ... | ... | ... | ... |
+**根据上述条件规划订单**：
+- 为2人订购时：通常选择1份开胃菜+2份主菜，或2-3份可共享的菜品
+- 确保价格在预算范围内
+- **绝对不能包含与过敏或饮食要求冲突的菜品**
+- 尽量满足用户的偏好（例如，如果用户偏好面条，则应选择含面条的菜品）
+- 如果某项食物的过敏信息不明确，选择明确安全的替代品
 
-**Select winner based on:**
-1. **Allergen safety first** — eliminate any restaurant where safety is "unclear" or "caution" unless no safe options exist
-2. Must fit cuisine and dietary constraints
-3. Must be achievable within budget (leave 25% for fees/tip)
-4. Prefer higher rating
-5. Prefer faster delivery
-6. Menu fits stated preferences
+### 第三阶段：下达订单
+为选定的服务平台创建订单子代理，并使用之前设定的直接模式指令来下达订单。
 
-**Decide on order:** Based on servings and preferences, plan a good meal:
-- For 2: typically 1 appetizer + 2 entrees, or 2-3 shareable plates
-- Stay within budget
-- **Never include items that conflict with allergies/dietary constraints**
-- Lean into preferences ("prefer noodles" → include noodle dish)
-- If allergy info is ambiguous for an item, pick a clearly safe alternative
-
-### Phase 3: Order
-
-Spawn order sub-agent for winning service (use Direct Mode task prompt above, with decided items).
-
-## State Tracking
-
-Track in `memory/food-order-state.json`:
+## 状态跟踪
+将订单状态信息存储在 `memory/food-order-state.json` 文件中：
 
 ```json
 {
@@ -266,25 +259,22 @@ Track in `memory/food-order-state.json`:
 }
 ```
 
-Prune entries older than 24h on each check.
+每周检查一次，删除超过24小时的订单记录。
 
-## Error Handling
+## 错误处理机制
+| 错误类型 | 处理方式 |
+|---------|-------------|
+| 未登录 | 中断操作，并提示用户通过Chrome浏览器登录 |
+| 餐厅已关闭 | 直接模式：放弃当前订单；发现模式：选择下一个合适的餐厅 |
+| 未找到符合条件的餐厅 | 通知用户并建议调整搜索条件 |
+| 超出预算 | 选择价格更低的选项或减少订单内容，并记录调整情况 |
+- 某项食物不可用 | 选择最接近的替代品，并在确认信息中注明 |
+- 存在过敏原冲突 | **绝对不要订购该食物**，选择安全的替代品或跳过该选项，并在报告中记录这一情况 |
 
-| Error | Action |
-|-------|--------|
-| Not logged in | Abort, notify user to log in via Chrome |
-| Restaurant closed | Direct: abort. Discovery: use next-best from recon |
-| No matches found | Notify user, suggest broadening criteria |
-| Over budget | Pick cheaper option or reduce order, note adjustment |
-| Item unavailable | Closest substitute, note in confirmation |
-| Allergen conflict | **Never order the item.** Pick safe alternative or skip. Flag in report |
-| Allergen info unclear | Skip item, pick clearly safe alternative. Note uncertainty in report |
-
-## Reference Files
-
-Service-specific gotchas and UI element locations in `references/`:
+## 参考文件
+关于各服务平台的特殊注意事项和用户界面元素的位置，请参考以下文件：
 - [doordash.md](references/doordash.md)
 - [ubereats.md](references/ubereats.md)
 - [grubhub.md](references/grubhub.md)
 
-These document service quirks (promo modals, tip screens, etc.). Key steps are inlined in task prompts above for sub-agent self-sufficiency.
+这些文件详细说明了各服务平台的独特功能（如促销弹窗、小费提示等）。子代理所需的操作步骤已在上述代码中详细说明，确保其能够独立完成任务。

@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging - Python
+# Telnyx 消息服务 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,13 +32,13 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Send a message
+## 发送消息
 
-Send a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来发送消息。
 
-`POST /messages` — Required: `to`
+`POST /messages` — 必需参数：`to`
 
 ```python
 response = client.messages.send(
@@ -47,9 +47,9 @@ response = client.messages.send(
 print(response.data)
 ```
 
-## Retrieve a message
+## 获取消息
 
-Note: This API endpoint can only retrieve messages that are no older than 10 days since their creation.
+注意：此 API 端点仅能获取创建时间不超过 10 天的消息。
 
 `GET /messages/{id}`
 
@@ -60,9 +60,9 @@ message = client.messages.retrieve(
 print(message.data)
 ```
 
-## Cancel a scheduled message
+## 取消已安排的消息
 
-Cancel a scheduled message that has not yet been sent.
+取消尚未发送的已安排消息。
 
 `DELETE /messages/{id}`
 
@@ -73,9 +73,9 @@ response = client.messages.cancel_scheduled(
 print(response.id)
 ```
 
-## Send a Whatsapp message
+## 发送 Whatsapp 消息
 
-`POST /messages/whatsapp` — Required: `from`, `to`, `whatsapp_message`
+`POST /messages/whatsapp` — 必需参数：`from`, `to`, `whatsapp_message`
 
 ```python
 response = client.messages.send_whatsapp(
@@ -86,9 +86,9 @@ response = client.messages.send_whatsapp(
 print(response.data)
 ```
 
-## Send a group MMS message
+## 发送群组 MMS 消息
 
-`POST /messages/group_mms` — Required: `from`, `to`
+`POST /messages/group_mms` — 必需参数：`from`, `to`
 
 ```python
 response = client.messages.send_group_mms(
@@ -98,9 +98,9 @@ response = client.messages.send_group_mms(
 print(response.data)
 ```
 
-## Send a long code message
+## 发送长码消息
 
-`POST /messages/long_code` — Required: `from`, `to`
+`POST /messages/long_code` — 必需参数：`from`, `to`
 
 ```python
 response = client.messages.send_long_code(
@@ -110,9 +110,9 @@ response = client.messages.send_long_code(
 print(response.data)
 ```
 
-## Send a message using number pool
+## 使用号码池发送消息
 
-`POST /messages/number_pool` — Required: `to`, `messaging_profile_id`
+`POST /messages/number_pool` — 必需参数：`to`, `messaging_profile_id`
 
 ```python
 response = client.messages.send_number_pool(
@@ -122,11 +122,11 @@ response = client.messages.send_number_pool(
 print(response.data)
 ```
 
-## Schedule a message
+## 安排消息
 
-Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来安排消息的发送。
 
-`POST /messages/schedule` — Required: `to`
+`POST /messages/schedule` — 必需参数：`to`
 
 ```python
 response = client.messages.schedule(
@@ -135,9 +135,9 @@ response = client.messages.schedule(
 print(response.data)
 ```
 
-## Send a short code message
+## 发送短代码消息
 
-`POST /messages/short_code` — Required: `from`, `to`
+`POST /messages/short_code` — 必需参数：`from`, `to`
 
 ```python
 response = client.messages.send_short_code(
@@ -147,9 +147,9 @@ response = client.messages.send_short_code(
 print(response.data)
 ```
 
-## List opt-outs
+## 获取用户退订信息
 
-Retrieve a list of opt-out blocks.
+获取用户的退订信息列表。
 
 `GET /messaging_optouts`
 
@@ -159,7 +159,7 @@ page = page.data[0]
 print(page.messaging_profile_id)
 ```
 
-## Retrieve a phone number with messaging settings
+## 获取带有消息功能的电话号码信息
 
 `GET /phone_numbers/{id}/messaging`
 
@@ -170,7 +170,7 @@ messaging = client.phone_numbers.messaging.retrieve(
 print(messaging.data)
 ```
 
-## Update the messaging profile and/or messaging product of a phone number
+## 更新电话号码的消息功能设置
 
 `PATCH /phone_numbers/{id}/messaging`
 
@@ -181,7 +181,7 @@ messaging = client.phone_numbers.messaging.update(
 print(messaging.data)
 ```
 
-## List phone numbers with messaging settings
+## 获取带有消息功能的电话号码列表
 
 `GET /phone_numbers/messaging`
 
@@ -191,7 +191,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a mobile phone number with messaging settings
+## 获取带有消息功能的手机号码信息
 
 `GET /mobile_phone_numbers/{id}/messaging`
 
@@ -202,7 +202,7 @@ messaging = client.mobile_phone_numbers.messaging.retrieve(
 print(messaging.data)
 ```
 
-## List mobile phone numbers with messaging settings
+## 获取带有消息功能的手机号码列表
 
 `GET /mobile_phone_numbers/messaging`
 
@@ -212,9 +212,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Bulk update phone number profiles
+## 批量更新电话号码信息
 
-`POST /messaging_numbers/bulk_updates` — Required: `messaging_profile_id`, `numbers`
+`POST /messaging_numbers/bulk_updates` — 必需参数：`messaging_profile_id`, `numbers`
 
 ```python
 messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.create(
@@ -224,26 +224,18 @@ messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.create(
 print(messaging_numbers_bulk_update.data)
 ```
 
-## Retrieve bulk update status
+## 获取批量更新状态
 
 `GET /messaging_numbers/bulk_updates/{order_id}`
 
-```python
-messaging_numbers_bulk_update = client.messaging_numbers_bulk_updates.retrieve(
-    "order_id",
-)
-print(messaging_numbers_bulk_update.data)
-```
-
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `deliveryUpdate` | Delivery Update |
-| `inboundMessage` | Inbound Message |
-| `replacedLinkClick` | Replaced Link Click |
+| `deliveryUpdate` | 消息发送状态更新 |
+| `inboundMessage` | 收到的消息 |
+| `replacedLinkClick` | 替换的链接被点击 |

@@ -1,6 +1,6 @@
 ---
 name: relayplane
-description: Cut API costs 40-60% with intelligent model routing. Auto-routes simple tasks to cheaper models.
+description: 通过智能模型路由，可将 API 成本降低 40% 至 60%。系统会自动将简单任务路由到成本更低的模型进行处理。
 user-invocable: true
 model-invocable: false
 disableModelInvocation: true
@@ -17,21 +17,21 @@ metadata:
 
 # RelayPlane
 
-**Cut your AI API costs by 40-60%** with intelligent model routing.
+**通过智能模型路由，将您的AI API成本降低40-60%**
 
-## What It Does
+## 功能介绍
 
-RelayPlane is a local proxy that routes your LLM requests to the optimal model based on task complexity. Simple tasks go to cheaper models (Haiku), complex reasoning stays on premium models (Opus).
+RelayPlane是一个本地代理，它根据任务的复杂程度将您的LLM（Large Language Model）请求路由到最合适的模型。简单任务会被发送到成本较低的模型（如Haiku），而需要复杂推理的任务则会使用更高级的模型（如Opus）。
 
-## Installation
+## 安装
 
-Install the proxy globally:
+全局安装代理：
 
 ```bash
 npm install -g @relayplane/proxy
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Start the proxy
@@ -44,21 +44,21 @@ export OPENAI_BASE_URL=http://localhost:3001
 # 3. Run OpenClaw normally - requests now route through RelayPlane
 ```
 
-## Commands
+## 命令行接口（CLI）命令
 
-Once installed, use the CLI directly:
+安装完成后，可以直接使用以下命令：
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `relayplane-proxy` | Start the proxy server |
-| `relayplane-proxy stats` | View usage and cost breakdown |
-| `relayplane-proxy telemetry off` | Disable telemetry |
-| `relayplane-proxy telemetry status` | Check telemetry setting |
-| `relayplane-proxy --help` | Show all options |
+| `relayplane-proxy` | 启动代理服务器 |
+| `relayplane-proxy stats` | 查看使用情况和成本明细 |
+| `relayplane-proxy telemetry off` | 禁用遥测功能 |
+| `relayplane-proxy telemetry status` | 检查遥测设置状态 |
+| `relayplane-proxy --help` | 显示所有可用命令 |
 
-## Configuration
+## 配置
 
-The proxy runs on `localhost:3001` by default. Configure via CLI flags:
+代理默认运行在`localhost:3001`端口上。您可以通过CLI参数进行配置：
 
 ```bash
 relayplane-proxy --port 8080        # Custom port
@@ -67,9 +67,9 @@ relayplane-proxy --offline          # No telemetry, no network except LLM APIs
 relayplane-proxy --audit            # Show telemetry payloads before sending
 ```
 
-## Environment Variables
+## 环境变量
 
-Set your API keys before starting:
+在启动之前，请设置您的API密钥：
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
@@ -79,15 +79,15 @@ export GEMINI_API_KEY=...
 export XAI_API_KEY=...
 ```
 
-## Privacy
+## 隐私政策
 
-- **Your prompts stay local** — never sent to RelayPlane
-- **Anonymous telemetry** — only token counts, latency, model used
-- **Opt-out anytime** — `relayplane-proxy telemetry off`
-- **Fully offline mode** — `relayplane-proxy --offline`
+- **您的输入内容仅保存在本地**，不会被发送到RelayPlane；
+- **遥测数据为匿名化信息**，仅包含令牌计数、延迟和使用的模型信息；
+- **您可以随时选择退出遥测功能**：`relayplane-proxy telemetry off`；
+- **支持完全离线模式**：`relayplane-proxy --offline`。
 
-## Links
+## 链接
 
-- **Docs:** https://relayplane.com/docs
-- **GitHub:** https://github.com/RelayPlane/proxy
-- **npm:** https://www.npmjs.com/package/@relayplane/proxy
+- **文档**：https://relayplane.com/docs
+- **GitHub仓库**：https://github.com/RelayPlane/proxy
+- **npm包**：https://www.npmjs.com/package/@relayplane/proxy

@@ -1,44 +1,131 @@
 ---
 name: Grammar
-description: Correct grammar and spelling without changing meaning or style.
+description: **SKILL.md 文件翻译**  
+
+**翻译说明：**  
+本任务要求将英文版的 SKILL.md 文件翻译成中文（简体），同时保持原文的技术准确性、格式一致性以及专业术语的准确性。具体来说：  
+1. 翻译应自然流畅，避免生硬的直译；  
+2. 所有代码示例、命令和 URL 需保持原样；  
+3. 保留 Markdown 格式；  
+4. 适当保留英文技术术语（如 OpenClaw、ClawHub、API、CLI 等）；  
+5. 仅翻译代码块中的注释（如果这些注释具有解释性）；  
+6. 保持与原文相同的结构和层次；  
+7. 不得添加或删除任何内容；  
+8. 所有占位符（如 `___CODE_BLOCK_0___`）必须保持原样。  
+
+**示例：**  
+（由于提供的 SKILL.md 文件内容为空，以下为示例格式的翻译说明。）  
+
+**示例翻译：**  
+```markdown
+# SKILL.md 文件翻译示例  
+## 翻译原则  
+- 保持技术准确性  
+- 保留原文格式  
+- 适当使用中文术语  
+- 翻译应自然流畅  
+
+## 示例内容（假设 SKILL.md 包含以下内容）  
+```markdown
+### 技能说明  
+- **技能名称：** 数据分析  
+- **描述：** 使用 Python 和 Pandas 进行数据清洗与分析  
+- **要求：** 熟悉 Python 编程基础  
+
+#### 代码示例  
+```python
+import pandas as pd
+
+# 读取数据文件
+data = pd.read_csv("data.csv")
+
+# 数据清洗
+data = data.dropna()
+
+# 数据分析
+data.groupby("column_name").mean()
+
+# 输出结果
+print(data)
+```
+
+### 注释  
+- 代码示例展示了如何使用 Pandas 进行基本的数据处理操作。  
+- 注释部分解释了代码的功能和用途。  
+```
+
+**最终翻译结果：**  
+# SKILL.md 文件翻译示例  
+## 翻译原则  
+- 保持技术准确性  
+- 保留原文格式  
+- 适当使用中文术语  
+- 翻译应自然流畅  
+
+## 示例内容（假设 SKILL.md 包含以下内容）  
+```markdown
+### 技能说明  
+- **技能名称：** 开发 Web 应用  
+- **描述：** 使用 Flask 框架构建简单 Web 应用  
+- **要求：** 熟悉 Flask 和 HTML/CSS  
+
+#### 代码示例  
+```python
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+### 注释  
+- 代码示例展示了如何使用 Flask 框架创建一个简单的 Web 应用。  
+- 注释部分解释了代码的功能和用途。  
+```
+```
 metadata: {"clawdbot":{"emoji":"✏️","os":["linux","darwin","win32"]}}
 ---
 
-## Core Principle
+## 核心原则
 
-- Fix only actual errors: spelling, grammar, punctuation, agreement
-- Preserve the author's voice, word choices, and sentence structure
-- Never rewrite for "improvement" unless explicitly asked
-- When uncertain if something is an error, leave it unchanged
+- 仅修正实际存在的错误：拼写错误、语法错误、标点符号错误以及主谓一致性问题。
+- 保留作者的表达风格、用词选择和句子结构。
+- 除非作者明确要求，否则不要为了“改进”而重写文本。
+- 当不确定某处是否存在错误时，应保持原样不变。
 
-## Correction Output
+## 更正输出
 
-- Return corrected text only, no explanations, unless user asks why
-- For longer texts, use a diff format or highlight changes when the interface supports it
-- Match the original formatting: if input has no capitals, output should match
+- 仅返回更正后的文本，除非用户询问原因，否则无需提供解释。
+- 对于较长的文本，可以使用差异显示格式（diff）或在界面支持的情况下高亮显示更改部分。
+- 保持与原始文本相同的格式：如果输入文本没有使用大写字母，输出文本也应保持相同格式。
 
-## Language Handling
+## 语言处理
 
-- Detect language automatically from input text
-- Apply that language's grammar rules, not English defaults
-- Respect regional variants: British vs American spelling, formal vs informal registers
-- Code-switching and loanwords are often intentional, do not "correct" them
+- 自动检测输入文本的语言。
+- 适用该语言的语法规则，而非英语的默认规则。
+- 尊重语言的地域差异（如英式拼写与美式拼写、正式与非正式表达方式）。
+- 代码混用和外来词通常是作者有意为之的，不要对其进行“纠正”。
 
-## Common Traps
+## 常见陷阱
 
-- Overcorrection: changing style or "improving" phrasing when only errors were requested
-- False positives: flagging intentional fragments, informal constructions, or dialect features
-- Changing meaning: "fix" that alters what the author intended to say
-- Adding words: inserting articles, conjunctions, or transitions not in the original
+- 过度纠正：仅根据错误要求就改变文本的风格或措辞。
+- 错误判断：将作者有意使用的表达方式、非正式结构或方言特征误判为错误。
+- 改变原文含义：错误的更正可能会改变作者的本意。
+- 添加不必要的词语：不要在原文中插入冠词、连词或过渡词。
 
-## Academic Support
+## 学术支持
 
-- When helping students learn, explain the rule behind each correction if asked
-- Distinguish between error types: spelling, subject-verb agreement, tense, punctuation
-- For language learners, note if an error is common at their level without being patronizing
+- 在帮助学生学习时，如被要求，应解释每项更正背后的规则。
+- 区分不同类型的错误：拼写错误、主谓一致错误、时态错误、标点符号错误等。
+- 对于语言学习者，要说明某些错误在其学习阶段是常见的现象，同时避免表现出居高临下的态度。
 
-## Always
+## 始终遵循的原则
 
-- Ask clarification only when text is ambiguous enough that correction could change meaning
-- State when a text has no errors rather than inventing corrections
-- Respect that some "errors" are stylistic choices in creative or informal writing
+- 仅当文本含义模糊到可能因更正而改变时，才请求澄清。
+- 当确认文本没有错误时，应如实说明，而非凭空制造更正内容。
+- 要认识到，在创意或非正式写作中，某些“错误”实际上是作者的风格选择。

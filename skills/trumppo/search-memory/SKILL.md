@@ -1,28 +1,31 @@
 ---
 name: search-memory
-description: Local-first memory search and indexing for Openclaw. Use when you need to (1) index memory files, (2) search memory from the CLI, or (3) wire a slash command for memory lookup.
+description: OpenClaw支持以本地内存为优先的搜索和索引功能。当您需要执行以下操作时，可以使用该功能：  
+(1) 对内存文件进行索引；  
+(2) 通过命令行界面（CLI）搜索内存数据；  
+(3) 通过特定命令（如“/”命令）查询内存信息。
 ---
 
-# Search Memory
+# 搜索内存
 
-## Overview
+## 概述
 
-Index local memory files and run fast keyword search with recency boost.
+该功能用于索引本地内存文件，并支持快速关键词搜索，同时会考虑文件的更新时间（最近使用的文件优先显示）。
 
-## Quick Start
+## 快速入门
 
-1) Build/update index (incremental cache):
+1) 构建/更新索引（增量式缓存）：
 ```bash
 scripts/index-memory.py
 ```
 
-2) Search the index:
+2) 在索引中搜索：
 ```bash
 scripts/search-memory.py "your query" --top 5
 ```
 
-## Notes
+## 注意事项
 
-- Index includes `MEMORY.md` plus `memory/**/*.md`.
-- Cache lives under `memory/cache/`.
-- Search uses keyword scoring + recency boost (last 30/90 days).
+- 索引包含 `MEMORY.md` 文件以及所有以 `memory/` 开头的 `.md` 文件。
+- 缓存文件存储在 `memory/cache/` 目录下。
+- 搜索算法结合了关键词评分机制和文件更新时间的权重（最近 30/90 天内的文件优先显示）。

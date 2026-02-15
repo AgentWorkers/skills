@@ -18,9 +18,9 @@ metadata:
 
 # PDF.co
 
-Access the PDF.co API with managed authentication. Convert, merge, split, and edit PDFs with full document manipulation capabilities.
+使用受管理的身份验证方式访问 PDF.co API。支持转换、合并、分割和编辑 PDF 文件，并具备完整的文档操作功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get PDF info
@@ -34,39 +34,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/pdf-co/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual PDF.co API endpoint path. The gateway proxies requests to `api.pdf.co` and automatically injects your API credentials.
+请将 `{native-api-path}` 替换为实际的 PDF.co API 端点路径。该网关会将请求代理到 `api.pdf.co` 并自动插入您的 API 凭据。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your PDF.co connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 PDF.co 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -77,7 +77,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -90,7 +90,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -101,7 +101,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -116,9 +116,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete authorization.
+在浏览器中打开返回的 `url` 以完成身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -129,9 +129,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple PDF.co connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 PDF.co 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -145,13 +145,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略该头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### PDF Information
+### 获取 PDF 文件信息
 
-Get metadata and information about a PDF file.
+获取 PDF 文件的元数据和相关信息。
 
 ```bash
 POST /pdf-co/v1/pdf/info
@@ -162,7 +162,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to Text
+### 将 PDF 转换为文本
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/text
@@ -175,7 +175,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "body": "Extracted text content...",
@@ -188,7 +188,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to CSV
+### 将 PDF 转换为 CSV
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/csv
@@ -202,7 +202,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to JSON
+### 将 PDF 转换为 JSON
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/json
@@ -215,7 +215,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to HTML
+### 将 PDF 转换为 HTML
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/html
@@ -228,7 +228,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to XLSX (Excel)
+### 将 PDF 转换为 XLSX（Excel）
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/xlsx
@@ -241,7 +241,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to PNG
+### 将 PDF 转换为 PNG
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/png
@@ -254,7 +254,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert PDF to JPG
+### 将 PDF 转换为 JPG
 
 ```bash
 POST /pdf-co/v1/pdf/convert/to/jpg
@@ -267,7 +267,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert HTML to PDF
+### 将 HTML 转换为 PDF
 
 ```bash
 POST /pdf-co/v1/pdf/convert/from/html
@@ -282,7 +282,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "url": "https://pdf-temp-files.s3.amazonaws.com/...",
@@ -294,7 +294,7 @@ Content-Type: application/json
 }
 ```
 
-### Convert URL to PDF
+### 将 URL 转换为 PDF
 
 ```bash
 POST /pdf-co/v1/pdf/convert/from/url
@@ -308,9 +308,9 @@ Content-Type: application/json
 }
 ```
 
-### Merge PDFs
+### 合并 PDF 文件
 
-Combine multiple PDFs into a single document.
+将多个 PDF 文件合并为一个文档。
 
 ```bash
 POST /pdf-co/v1/pdf/merge
@@ -322,7 +322,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "url": "https://pdf-temp-files.s3.amazonaws.com/merged.pdf",
@@ -335,9 +335,9 @@ Content-Type: application/json
 }
 ```
 
-### Split PDF
+### 分割 PDF 文件
 
-Split a PDF into multiple files.
+将 PDF 文件分割成多个文件。
 
 ```bash
 POST /pdf-co/v1/pdf/split
@@ -349,7 +349,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "urls": [
@@ -364,7 +364,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Pages
+### 删除页面
 
 ```bash
 POST /pdf-co/v1/pdf/edit/delete-pages
@@ -376,10 +376,9 @@ Content-Type: application/json
 }
 ```
 
+### 添加文本和图片
 
-### Add Text and Images
-
-Add text, images, or other content to a PDF.
+向 PDF 文件中添加文本、图片或其他内容。
 
 ```bash
 POST /pdf-co/v1/pdf/edit/add
@@ -400,7 +399,7 @@ Content-Type: application/json
 }
 ```
 
-### Search and Replace Text
+### 搜索和替换文本
 
 ```bash
 POST /pdf-co/v1/pdf/edit/replace-text
@@ -413,7 +412,7 @@ Content-Type: application/json
 }
 ```
 
-### Search and Delete Text
+### 搜索和删除文本
 
 ```bash
 POST /pdf-co/v1/pdf/edit/delete-text
@@ -425,7 +424,7 @@ Content-Type: application/json
 }
 ```
 
-### Add Password
+### 添加密码
 
 ```bash
 POST /pdf-co/v1/pdf/security/add
@@ -438,7 +437,7 @@ Content-Type: application/json
 }
 ```
 
-### Remove Password
+### 删除密码
 
 ```bash
 POST /pdf-co/v1/pdf/security/remove
@@ -450,9 +449,9 @@ Content-Type: application/json
 }
 ```
 
-### AI Invoice Parser
+### AI 发票解析器
 
-Automatically extract structured data from invoices.
+自动从发票中提取结构化数据。
 
 ```bash
 POST /pdf-co/v1/ai-invoice-parser
@@ -463,9 +462,9 @@ Content-Type: application/json
 }
 ```
 
-### Document Parser
+### 文档解析器
 
-Extract data using templates.
+使用模板提取数据。
 
 ```bash
 POST /pdf-co/v1/pdf/documentparser
@@ -477,8 +476,7 @@ Content-Type: application/json
 }
 ```
 
-
-### Generate Barcode
+### 生成条形码
 
 ```bash
 POST /pdf-co/v1/barcode/generate
@@ -491,7 +489,7 @@ Content-Type: application/json
 }
 ```
 
-### Read Barcode
+### 读取条形码
 
 ```bash
 POST /pdf-co/v1/barcode/read/from/url
@@ -503,9 +501,9 @@ Content-Type: application/json
 }
 ```
 
-### Check Job Status (Async)
+### 检查作业状态（异步）
 
-For async operations, check job status.
+对于异步操作，请检查作业状态。
 
 ```bash
 POST /pdf-co/v1/job/check
@@ -516,9 +514,9 @@ Content-Type: application/json
 }
 ```
 
-## Async Processing
+## 异步处理
 
-For large files or batch operations, use async processing:
+对于大文件或批量操作，请使用异步处理：
 
 ```bash
 POST /pdf-co/v1/pdf/merge
@@ -531,7 +529,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "jobId": "abc123",
@@ -540,7 +538,7 @@ Content-Type: application/json
 }
 ```
 
-Then poll the job status:
+然后轮询作业状态：
 
 ```bash
 POST /pdf-co/v1/job/check
@@ -551,7 +549,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -592,36 +590,36 @@ result = response.json()
 print(result['url'])
 ```
 
-## Notes
+## 注意事项
 
-- All file URLs must be publicly accessible or use PDF.co temporary storage
-- Multiple URLs for merge operations should be comma-separated
-- Page indices are 0-based (first page is `0`)
-- Page ranges use format: `0-2` (pages 0,1,2), `3-` (page 3 to end), `0,2,4` (specific pages)
-- Output files are stored temporarily and expire after 60 minutes by default
-- Use `async: true` for large files to avoid timeout
-- Use `inline: true` to get content directly in response instead of URL
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有文件 URL 必须是公开可访问的，或者使用 PDF.co 的临时存储服务。
+- 合并操作时，多个 URL 应用逗号分隔。
+- 页面索引从 0 开始（第一页为 `0`）。
+- 页面范围格式如下：`0-2`（第 0、1、2 页），`3-`（从第 3 页开始），`0,2,4`（指定页面）。
+- 输出文件会临时存储，默认 60 分钟后过期。
+- 对于大文件，请使用 `async: true` 以避免超时。
+- 使用 `inline: true` 可以直接在响应中获取内容，而无需通过 URL。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以避免全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing PDF.co connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from PDF.co API |
+| 400 | 未找到 PDF.co 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 超过请求频率限制 |
+| 4xx/5xx | 来自 PDF.co API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -632,16 +630,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `pdf-co`. For example:
+1. 确保您的 URL 路径以 `pdf-co` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/pdf-co/v1/pdf/merge`
+- 错误格式：`https://gateway.maton.ai/v1/pdf/merge`
 
-- Correct: `https://gateway.maton.ai/pdf-co/v1/pdf/merge`
-- Incorrect: `https://gateway.maton.ai/v1/pdf/merge`
+## 资源
 
-## Resources
-
-- [PDF.co API Documentation](https://docs.pdf.co)
-- [PDF.co API Reference](https://docs.pdf.co/api-reference)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [PDF.co API 文档](https://docs.pdf.co)
+- [PDF.co API 参考](https://docs.pdf.co/api-reference)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

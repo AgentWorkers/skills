@@ -1,27 +1,27 @@
 ---
 name: ClawGator Superpowers
-description: Framework pengembangan perangkat lunak lengkap untuk tim ClawGator. Brainstorming, planning, eksekusi sistematis, TDD, debugging, code review, dan git worktrees. Trigger otomatis sebelum memulai proyek atau perubahan kode.
+description: 这是一个为ClawGator团队提供的全面软件开发框架。它涵盖了头脑风暴、系统化规划、测试驱动开发（TDD）、调试、代码审查以及Git工作流管理等功能。在项目开始或代码发生任何更改之前，该框架会自动触发相应的流程。
 ---
 
-# ClawGator Superpowers
+# ClawGator 超级技能
 
-Framework pengembangan perangkat lunak lengkap untuk tim ClawGator. Dibuat berdasarkan obra/superpowers namun disesuaikan khusus untuk kebutuhan ClawGator.
+这是一个为 ClawGator 团队量身定制的完整软件开发框架。它基于 obra/superpowers 架构开发，但根据 ClawGator 的具体需求进行了优化。
 
-## Kapan Menggunakan
+## 何时使用这些技能
 
-**SELALU gunakan skill ini SEBELUM:**
-- Memulai fitur baru atau komponen
-- Mengubah perilaku atau fungsi
-- Fix bug atau issue
-- Perubahan signifikan pada kode
-- Membuat perencanaan implementasi
+**务必在以下情况下使用这些技能：**
+- 开始开发新功能或组件
+- 修改软件的行为或功能
+- 修复漏洞或问题
+- 对代码进行重大修改
+- 制定实施计划
 
-**Lewati untuk:**
-- Pertanyaan simpel atau pencarian informasi
-- Perintah satu baris
-- Melihat konteks proyek (gunakan skill terkait)
+**对于以下情况可以直接跳过这些技能：**
+- 简单的问题或信息查询
+- 单行命令
+- 查看项目进度（使用相关技能）
 
-## Alur Kerja Lengkap
+## 完整的工作流程
 
 ```
 Permintaan Pengembangan
@@ -106,55 +106,56 @@ Permintaan Pengembangan
 └──────────────────────┘
 ```
 
-## Sub-Skills Tersedia
+## 可用的子技能
 
-### 🎯 Skills Utama (Process)
+### 🎯 核心流程技能
 
-| Skill | Kapan Dipakai | Fungsi |
+| 技能 | 使用时机 | 功能 |
 |-------|--------------|--------|
-| **using-superpowers** | SELALU di awal conversation | Memandu penggunaan skill |
-| **brainstorming** | Sebelum coding | Memahami requirement & desain |
-| **writing-plans** | Setelah desain disetujui | Buat rencana implementasi |
-| **executing-plans** | Setelah plan siap | Eksekusi plan |
-| **finishing-a-development-branch** | Setelah selesai | Wrap up branch |
+| **using-superpowers** | 每次对话开始时 | 指导技能的使用 |
+| **brainstorming** | 编码前 | 理解需求和设计 |
+| **writing-plans** | 设计方案确定后 | 制定实施计划 |
+| **executing-plans** | 计划准备好后 | 执行计划 |
+| **finishing-a-development-branch** | 开发分支完成后 | 完成分支的工作 |
 
-### 🔨 Skills Eksekusi
+### 🔨 执行技能
 
-| Skill | Kapan Dipakai | Fungsi |
+| 技能 | 使用时机 | 功能 |
 |-------|--------------|--------|
-| **subagent-driven-development** | Option 1 eksekusi | Fresh subagent per task |
-| **dispatching-parallel-agents** | Paralel tasks | Dispatch multiple agents |
+| **subagent-driven-development** | 选择此执行方式时 | 为每个任务分配新的子代理 |
+| **dispatching-parallel-agents** | 并行处理任务 | 分配多个代理来执行任务 |
 
-### 🧪 Skills Quality
+### 🧪 质量控制技能
 
-| Skill | Kapan Dipakai | Fungsi |
+| 技能 | 使用时机 | 功能 |
 |-------|--------------|--------|
-| **test-driven-development** | SELALU sebelum coding | RED-GREEN-REFACTOR |
-| **systematic-debugging** | Jika ada bug | 4-phase root cause analysis |
-| **verification-before-completion** | Sebelum mark selesai | Konfirmasi benar-bener fix |
+| **test-driven-development** | 编码前 | 采用测试驱动的开发方法（TDD） |
+| **systematic-debugging** | 发现漏洞时 | 进行四阶段根源分析 |
+| **verification-before-completion** | 任务完成前 | 确认问题已彻底解决 |
 
-### 🔧 Skills Git & Review
+### 🔧 Git 与代码审查技能
 
-| Skill | Kapan Dipakai | Fungsi |
+| 技能 | 使用时机 | 功能 |
 |-------|--------------|--------|
-| **using-git-worktrees** | Sebelum coding di new branch | Isolated workspace |
-| **requesting-code-review** | Antara tasks | Review code terhadap plan |
-| **receiving-code-review** | Setelah feedback | Apply review feedback |
+| **using-git-worktrees** | 在新分支开始编码前 | 创建隔离的开发环境 |
+| **requesting-code-review** | 任务之间 | 提交代码以供审查 |
+| **receiving-code-review** | 收到反馈后 | 根据反馈修改代码 |
 
-### 📝 Skills Meta
+### 📝 元技能
 
-| Skill | Kapan Dipakai | Fungsi |
+| 技能 | 使用时机 | 功能 |
 |-------|--------------|--------|
-| **writing-skills** | Membuat skill baru | Struktur skill OpenClaw |
+| **writing-skills** | 创建新技能 | 构建 OpenClaw 的技能体系 |
 
-## Prinsip Utama
+## 主要原则
 
-### Iron Laws
-1. **NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST** (TDD)
-2. **NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST** (Debugging)
-3. **If you think there is even a 1% chance a skill might apply, you ABSOLUTELY MUST invoke it**
+### 铁律
+1. **没有经过测试的代码绝不能投入生产环境（TDD）**
+2. **在修复问题之前必须先找到问题的根本原因**
+3. **即使认为某个技能只有 1% 的适用可能性，也必须使用它**
 
-### TDD Cycle
+### TDD 循环
+
 ```
 RED → Write failing test → Verify fails
 GREEN → Implement minimal code → Verify passes
@@ -162,7 +163,8 @@ REFACTOR → Clean up → Stay green
 REPEAT → Next test
 ```
 
-### Debugging Cycle
+### 调试流程
+
 ```
 Phase 1: Root Cause Investigation
   - Read errors carefully
@@ -186,49 +188,48 @@ Phase 4: Fix & Verify
   - Run all tests
 ```
 
-## Prioritas Skill
+## 技能优先级
 
-Ketika multiple skills mungkin relevan:
+当多个技能都可能适用时，优先顺序如下：
+1. **流程相关技能**（brainstorming, debugging, writing-plans）
+2. **质量控制技能**（TDD, systematic-debugging）
+3. **Git/代码审查技能**（using-git-worktrees, code-review）
+4. **执行相关技能**（executing-plans, subagent-driven-development）
 
-1. **Process skills first** (brainstorming, debugging, writing-plans)
-2. **Quality skills second** (TDD, systematic-debugging)
-3. **Git/Review skills third** (worktrees, code-review)
-4. **Execution skills fourth** (executing-plans, subagent-driven)
+**示例流程：**
+- “让我们开发 X 功能” → 进行头脑风暴 → 使用 using-superpowers → 制定实施计划 → 执行计划
+- “修复这个漏洞” → 进行系统化调试 → 使用 TDD
+- “添加新功能 X” → 如果简单可以直接使用 TDD（无需制定计划）
 
-Contoh:
-- "Let's build X" → brainstorming → using-git-worktrees → writing-plans → executing-plans
-- "Fix this bug" → systematic-debugging → TDD
-- "Add X" → TDD (sederhana, no plan needed)
+## 与 OpenClaw 的集成
 
-## Integration dengan OpenClaw
+这些技能与 OpenClaw 完全集成：
+- ✅ 当输入 “build”, “create”, “implement”, “fix”, “add” 等关键字时，相关技能会自动触发
+- ✅ `skills/` 文件夹中包含 14 个完整的子技能
+- ✅ 子技能会根据上下文自动触发
+- ✅ `using-superpowers` 是所有技能的入口点
+- ✅ 提供了 `brainstorm`, `plan_review`, `get_status` 等辅助工具
+- ✅ 支持 `subagent-driven-development` 的 OpenClaw 代理机制
 
-Skill ini terintegrasi penuh dengan OpenClaw:
-- ✅ Automatic triggers pada kata kunci: "build", "create", "implement", "fix", "add"
-- ✅ Folder `skills/` berisi 14 sub-skills lengkap
-- ✅ Sub-skills trigger otomatis berdasarkan konteks
-- ✅ `using-superpowers` sebagai entry point
-- ✅ Tools: `brainstorm`, `plan_review`, `get_status`
-- ✅ OpenClaw Agent integration untuk subagent-driven-development
+## ClawGator 团队的应用
 
-## Pengembangan ClawGator
+ClawGator 团队使用这些技能来：
+- 🔨 开发 OpenClaw 的新功能
+- 🚀 构建整个平台
+- 🔧 修复漏洞并进行改进
+- 📝 规划产品开发
+- 💡 产生新想法
+- 🔍 进行系统化的调试
+- ✅ 使用 TDD 进行测试
+- 📊 在任务之间进行代码审查
 
-Tim ClawGator menggunakan skill ini untuk:
-- 🔨 Membangun fitur-fitur OpenClaw
-- 🚀 Mengembangkan platform
-- 🔧 Bug fixing dan improvement
-- 📝 Perencanaan produk
-- 💡 Brainstorming ide-ide baru
-- 🔍 Debugging sistematis
-- ✅ Testing dengan TDD
-- 📊 Code review antar tasks
+这些技能确保团队始终遵循以下原则：
+- **先思考再编码**
+- **先规划再开发**
+- **完成验证后再发布**
+- **在生产环境之前进行测试**
 
-Skill ini memastikan tim ClawGator selalu:
-- **Think before they code**
-- **Plan before they build**
-- **Verify before they ship**
-- **Test before production**
-
-## Struktur Folder
+## 文件夹结构
 
 ```
 /home/clawgator-superpowers/
@@ -255,38 +256,32 @@ Skill ini memastikan tim ClawGator selalu:
 └── README.md                     - Dokumentasi lengkap
 ```
 
-## Penggunaan Dasar
+## 新项目启动流程
 
-### Memulai Proyek Baru
+### 新项目启动步骤
 
-```
-Buat fitur [nama fitur]
-```
+这些技能会自动执行：
+1. 激活 using-superpowers
+2. 进行头脑风暴以明确需求
+3. 创建新的 Git 开发环境（git worktree）
+4. 制定实施计划
+5. 使用 TDD 进行开发
+6. 进行测试并验证结果
 
-Skill akan otomatis:
-1. Mengaktifkan using-superpowers
-2. Brainstorming untuk pahami requirement
-3. Buat git worktree baru
-4. Tulis implementasi plan
-5. Eksekusi dengan TDD
-6. Test dan verify
+### 修复漏洞流程
 
-### Fix Bug
+### 修复漏洞步骤
 
-```
-Fix bug: [deskripsi bug]
-```
-
-Skill akan otomatis:
-1. Mengaktifkan systematic-debugging
-2. Investigasi root cause (4 phases)
-3. Implement fix dengan TDD
-4. Verify fix
-5. Run semua tests
+这些技能会自动执行：
+1. 启用 systematic-debugging
+2. 进行根源分析（四阶段）
+3. 使用 TDD 实现修复
+4. 验证修复效果
+5. 运行所有测试
 
 ---
 
-**Versi:** 1.0.0
-**Dibuat untuk:** Tim ClawGator
-**Didasarkan:** obra/superpowers (100% workflow, 14 sub-skills)
-**Lisensi:** MIT
+**版本：** 1.0.0
+**适用对象：** ClawGator 团队
+**基于：** obra/superpowers（100% 的工作流程，包含 14 个子技能）
+**许可证：** MIT

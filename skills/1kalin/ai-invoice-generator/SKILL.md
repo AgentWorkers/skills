@@ -1,25 +1,25 @@
 ---
 name: Invoice Generator
-description: Creates professional invoices in markdown and HTML
+description: 使用 Markdown 和 HTML 格式生成专业的发票。
 ---
 
-# Invoice Generator
+# 发票生成器
 
-You create professional invoices. Clean, clear, and ready to send.
+您可以生成专业的发票，格式简洁明了，随时可以发送。
 
-## What to Ask
+## 需要提供的信息
 
-1. **Your business info:** Name, address, email, phone (save for reuse)
-2. **Client info:** Company name, contact name, address
-3. **Invoice number:** Or auto-generate (INV-YYYY-NNN format)
-4. **Line items:** Description, quantity, unit price
-5. **Payment terms:** Net 30, Net 15, Due on receipt, etc.
-6. **Payment methods:** Bank transfer, PayPal, Stripe link, etc.
-7. **Currency:** Default USD
-8. **Tax rate:** If applicable (percentage)
-9. **Notes:** Any special terms, late payment fees, etc.
+1. **您的企业信息：** 公司名称、地址、电子邮件地址、电话号码（以便后续使用）
+2. **客户信息：** 客户公司名称、联系人姓名、地址
+3. **发票编号：** 可以自动生成（格式为 INV-YYYY-NNN）
+4. **商品明细：** 产品描述、数量、单价
+5. **付款条款：** 款项到期日（例如：净价30天内支付、收到款项后支付等）
+6. **付款方式：** 银行转账、PayPal、Stripe链接等
+7. **货币：** 默认为美元（USD）
+8. **税率：** 如适用，请提供税率（以百分比表示）
+9. **备注：** 任何特殊条款或逾期付款费用等
 
-## Invoice Template
+## 发票模板
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -63,35 +63,35 @@ NOTES:
 Thank you for your business.
 ```
 
-## Output Formats
+## 输出格式
 
-### Markdown (default)
-Clean markdown table format, easy to paste into emails or docs.
+### Markdown（默认格式）
+生成的发票内容采用简洁的Markdown表格格式，便于直接粘贴到电子邮件或文档中。
 
-### HTML
-Generate a styled HTML file the user can open in a browser and print/save as PDF:
-- Clean, professional styling
-- Print-friendly (no background colors that waste ink)
-- Save as `invoice-[number].html`
+### HTML格式
+系统会生成一个格式化的HTML文件，用户可以在浏览器中查看或将其保存为PDF文件：
+- 格式美观、专业
+- 适合打印（无浪费墨水的背景颜色）
+- 保存文件名为 `invoice-[编号].html`
 
-## Rules
+## 注意事项
 
-- Always calculate totals correctly. Double-check math.
-- Invoice numbers should be sequential. Check for existing invoices if possible.
-- Due date = invoice date + payment terms (Net 30 = 30 days, etc.)
-- Include all legally required info (varies by jurisdiction — ask if unsure)
-- Save invoices to an `invoices/` directory for record-keeping
-- If the user has sent invoices before, reuse their business details
-- Currency formatting: use proper symbols and decimal places ($1,234.56)
+- 确保所有计算结果准确无误，请仔细核对数据。
+- 发票编号应连续编号；如果可能的话，请检查系统中是否已存在相同的发票编号。
+- 到期日 = 发票日期 + 付款期限（例如：净价30天内支付，则到期日为发票日期后的30天）。
+- 确保包含所有法律要求的必要信息（具体要求可能因地区而异，如有疑问请咨询）。
+- 将生成的发票保存到 `invoices/` 目录中以便归档。
+- 如果用户之前已经生成过发票，可重复使用其企业信息。
+- 货币格式应使用正确的符号和小数位数（例如：$1,234.56）。
 
-## Recurring Invoices
+## 定期发票
 
-If the user bills the same client regularly:
-- "Create this month's invoice for [client]" → Copy previous invoice, update date/number/period
-- Track invoice history per client
+如果需要定期向同一客户开具发票：
+- 输入指令：“为 [客户] 生成本月的发票”，系统会复制之前的发票并更新日期、编号和周期。
+- 系统会记录每个客户的发票历史记录。
 
-## Quick Commands
+## 常用命令
 
-- "Invoice [client] for [amount] for [description]" → Generate with defaults
-- "Show my invoices" → List all invoices in the invoices/ directory
-- "What's outstanding?" → Show unpaid invoices past due date
+- 输入指令：“为 [客户] 开具金额为 [金额]、商品描述为 [描述] 的发票”，系统会使用默认设置生成发票。
+- 输入指令：“显示我的发票”，系统会列出 `invoices/` 目录中的所有发票。
+- 输入指令：“未支付的发票有哪些？”，系统会显示所有逾期未付的发票。

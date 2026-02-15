@@ -1,117 +1,110 @@
 ---
 name: Retention
-description: User retention strategy, cohort analysis, churn prevention, and reactivation campaigns
+description: 用户留存策略、群体分析、流失预防以及用户重新激活活动
 metadata:
   category: product
   skills: ["retention", "churn", "cohorts", "engagement", "lifecycle"]
 ---
 
-## Core Metrics
+## 核心指标
 
-| Metric | Formula | Healthy Range |
+| 指标 | 公式 | 合理范围 |
 |--------|---------|---------------|
-| Day 1 retention | Users active day 1 / signups | 40-60% |
-| Day 7 retention | Users active day 7 / signups | 20-35% |
-| Day 30 retention | Users active day 30 / signups | 10-20% |
-| Weekly retention | WAU this week / WAU last week | 85-95% |
-| Churn rate | Lost customers / start customers | <5%/month |
-| NRR (Net Revenue Retention) | (Start MRR + expansion - churn) / Start MRR | >100% |
+| 第1天留存率 | 第1天活跃用户数 / 注册用户数 | 40-60% |
+| 第7天留存率 | 第7天活跃用户数 / 注册用户数 | 20-35% |
+| 第30天留存率 | 第30天活跃用户数 / 注册用户数 | 10-20% |
+| 周留存率 | 本周活跃用户数 / 上周活跃用户数 | 85-95% |
+| 流失率 | 流失的客户数 / 新增客户数 | <5%/月 |
+| 净收入留存率（NRR） | （起始月收入 + 收入增长 - 流失收入） / 起始月收入 | >100% |
 
-## Cohort Analysis
+## 群组分析
 
-Track by signup week, not calendar week:
-- **Horizontal axis**: weeks since signup (0, 1, 2, 3...)
-- **Vertical axis**: signup cohort (Jan W1, Jan W2...)
-- **Cell value**: % of cohort still active
+按注册周进行跟踪（而非日历周）：
+- **横轴**：注册后的周数（0、1、2、3……）
+- **纵轴**：注册组别（1月第1周、1月第2周……）
+- **单元格值**：该组别中仍活跃的用户比例
 
-Identify:
-- Which cohorts retain better (product changes, marketing source)
-- At which week users drop off (week 2 cliff = aha moment too late)
-- Seasonal patterns (holiday signups retain worse)
+分析内容：
+- 哪些组别的用户留存率更高（与产品更新、营销渠道有关）
+- 用户在哪个周开始流失（第2周的流失率下降通常意味着用户尚未体验到产品的核心价值）
+- 季节性趋势（节假日注册的用户留存率较低）
 
-## Churn Signals
+## 流失预警信号
 
-Early warning indicators (flag before churn):
-- Login frequency drops 50%+ from baseline
-- Core feature usage stops
-- Support tickets spike then go silent
-- Billing page visits without upgrade
-- Team member removals
-- Data export requests
+流失前的早期预警指标：
+- 登录频率比基线下降50%以上
+- 停止使用核心功能
+- 支持请求激增后突然减少
+- 访问计费页面但未进行升级
+- 团队成员离职
+- 提出数据导出请求
 
-## Engagement Loops
+## 用户参与循环
 
-Retention requires habit formation:
+用户留存需要培养习惯：
 
-| Loop Type | Trigger | Action | Reward |
+| 循环类型 | 触发条件 | 行动 | 奖励 |
 |-----------|---------|--------|--------|
-| Personal | Email digest | Review updates | Progress visible |
-| Social | Notification | Respond to team | Recognition |
-| Content | New content alert | Consume | Knowledge gained |
-| Progress | Streak reminder | Complete task | Streak maintained |
+| 个人 | 电子邮件摘要 | 查看更新 | 看到自己的进展 |
+| 社交 | 通知 | 回复团队 | 获得认可 |
+| 内容 | 新内容提醒 | 阅读内容 | 获取新知识 |
+| 进度 | 连续完成任务提醒 | 维持完成任务的状态 |
 
-Design for variable rewards - predictable = boring.
+奖励设计应具有多样性——过于固定的奖励会降低用户的参与积极性。
 
-## Lifecycle Stages
+## 产品生命周期阶段
 
-| Stage | Timeframe | Goal | Tactics |
+| 阶段 | 时间范围 | 目标 | 策略 |
 |-------|-----------|------|---------|
-| Activation | Day 0-3 | Reach aha moment | Onboarding, setup wizard |
-| Engagement | Week 1-4 | Build habit | Usage nudges, tips |
-| Retention | Month 1+ | Maintain value | Feature discovery, check-ins |
-| Expansion | Ongoing | Increase usage | Upsell, team invites |
-| Reactivation | After churn | Win back | Campaigns, incentives |
+| 激活阶段 | 第0-3天 | 让用户体验产品的核心价值 | 提供入门指南、设置向导 |
+| 参与阶段 | 第1-4周 | 培养使用习惯 | 提供使用提示 |
+| 留存阶段 | 第1个月后 | 维持用户价值 | 发现新功能、定期检查用户使用情况 |
+| 扩展阶段 | 持续期间 | 提高用户使用频率 | 提供升级建议、邀请团队成员使用 |
+| 重新激活阶段 | 流失用户后 | 重新吸引用户 | 开展营销活动、提供激励 |
 
-## Reactivation Campaigns
+## 重新激活活动
 
-Timing matters:
-- **7 days inactive**: Soft nudge ("We miss you")
-- **14 days inactive**: Value reminder + what's new
-- **30 days inactive**: Incentive offer (discount, extended trial)
-- **90 days inactive**: Last chance + feedback ask
+时机至关重要：
+- **7天未活跃**：发送温和提醒（“我们想念您”）
+- **14天未活跃**：提醒产品价值及新功能
+- **30天未活跃**：提供激励措施（折扣、延长试用期）
+- **90天未活跃**：最后机会并提供反馈请求
 
-Message formula:
-```
-[Acknowledge absence] + [New value added] + [Easy re-entry CTA]
-"Your dashboard is waiting. We added [feature]. One click to resume →"
-```
+## 功能粘性
 
-## Feature Stickiness
+分析哪些功能有助于提高用户留存率：
+- **功能使用相关性**：使用功能X的用户留存率更高
+- **首次使用功能的时间**：首次使用功能X的用户留存率更高
+- **功能使用广度**：使用3个以上功能的用户留存率是使用1个功能的5倍
 
-Measure which features predict retention:
-- **Usage correlation**: Users of feature X retain 2x better
-- **Time to feature**: Users who reach feature X in day 1 retain 3x
-- **Feature breadth**: Users of 3+ features retain 5x vs 1 feature
+在用户入门阶段应重点推广这些高粘性的功能。
 
-Double down on sticky features in onboarding.
+## 防止用户流失
 
-## Churn Prevention
+检测到流失信号时，立即采取行动：
+1. **立即**：在应用内发送提示信息（“需要帮助吗？”）
+2. **第3天**：创始人发送私人邮件（非营销性质）
+3. **第7天**：提供电话支持或在线客服
+4. **续费前**：主动联系用户，总结其使用情况
 
-When churn signal detected:
-1. **Immediate**: In-app message acknowledging drop ("Need help?")
-2. **Day 3**: Email from founder (personal, not marketing)
-3. **Day 7**: Offer call or live support
-4. **Before renewal**: Proactive outreach with usage summary
+优化取消流程：
+- 询问用户取消原因（必填，提供4-5个选项）
+- 提供暂停服务而非直接取消的选项
+- 告知用户取消服务后会失去什么（数据、使用记录、价格锁定）
+- 提供便捷的退款政策（“随时可以重新激活，数据保留90天”）
 
-Cancel flow optimization:
-- Ask reason (required, 4-5 options)
-- Offer pause instead of cancel
-- Show what they'll lose (data, history, price lock)
-- Easy return policy ("reactivate anytime, data saved 90 days")
+## 不同业务模式的留存率基准
 
-## Retention Benchmarks by Model
-
-| Business Model | Good D30 | Good Monthly Churn |
+| 商业模式 | 第30天的留存率 | 月流失率 |
 |----------------|----------|-------------------|
-| B2C freemium | 10-15% | N/A (free) |
-| B2C subscription | 8-12% | 5-7% |
-| B2B SMB | 15-25% | 3-5% |
-| B2B Enterprise | 25-40% | 1-2% |
+| B2C免费模式 | 10-15% | 不适用（免费产品） |
+| B2C订阅模式 | 8-12% | 5-7% |
+| B2B中小企业 | 15-25% | 3-5% |
+| B2B企业级 | 25-40% | 1-2% |
 
-## Common Mistakes
-
-- Measuring retention from signup, not activation
-- Treating all churned users the same (voluntary vs involuntary)
-- Reactivation emails without new value proposition
-- Ignoring payment failures as churn (30-40% of churn is involuntary)
-- No segmentation in cohort analysis (power users mask problems)
+## 常见错误
+- 仅根据注册时间而非激活时间来衡量用户留存率
+- 对所有流失用户采取统一处理方式（忽略用户流失的自愿与非自愿原因）
+- 重新激活邮件中不提供新的价值主张
+- 将支付失败视为流失（实际上30-40%的流失是非自愿的）
+- 在群体分析中不进行用户细分（高活跃用户可能掩盖问题）

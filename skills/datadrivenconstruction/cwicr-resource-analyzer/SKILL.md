@@ -1,34 +1,33 @@
 ---
 slug: "cwicr-resource-analyzer"
 display_name: "CWICR Resource Analyzer"
-description: "Analyze construction resources (labor, materials, equipment) from DDC CWICR database. Calculate resource requirements, productivity metrics, and optimization recommendations."
+description: "从 DDC CWICR 数据库中分析建筑资源（劳动力、材料、设备）。计算资源需求、生产率指标，并提供优化建议。"
 ---
 
-# CWICR Resource Analyzer
+# CWICR 资源分析器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction projects require precise resource planning:
-- How many labor hours are needed?
-- What materials need to be procured?
-- What equipment is required and for how long?
+### 问题描述
+建设项目需要精确的资源规划：
+- 需要多少工时？
+- 需要采购哪些材料？
+- 需要哪些设备以及使用期限是多久？
 
-Traditional methods rely on experience-based estimates, leading to over/under allocation.
+传统方法依赖经验估算，导致资源分配可能过量或不足。
 
-### Solution
-Data-driven resource analysis using CWICR's 27,672 resources with detailed breakdowns of labor norms, material requirements, and equipment usage.
+### 解决方案
+使用 CWICR 提供的 27,672 种资源进行数据驱动的资源分析，这些资源包含了详细的劳动规范、材料需求和设备使用情况。
 
-### Business Value
-- **Accurate planning** - Based on validated resource norms
-- **Cost optimization** - Identify resource inefficiencies
-- **Procurement support** - Generate material lists
-- **Labor planning** - Calculate crew requirements
+### 商业价值
+- **精确规划**：基于经过验证的资源规范
+- **成本优化**：识别资源使用效率低下的环节
+- **采购支持**：生成材料清单
+- **劳动力规划**：计算所需劳动力数量
 
-## Technical Implementation
+## 技术实现
 
-### Python Implementation
-
+### Python 实现
 ```python
 import pandas as pd
 import numpy as np
@@ -410,8 +409,7 @@ class ResourceOptimizer:
         }
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from cwicr_data_loader import CWICRDataLoader
 
@@ -435,9 +433,9 @@ print(f"Total Labor Hours: {labor['total_labor_hours']}")
 print(f"Crew Days (8hr): {labor['crew_days_8hr']}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Crew Planning
+### 1. 劳动力规划
 ```python
 # Calculate required crew size
 labor = analyzer.analyze_labor_requirements(items)
@@ -449,13 +447,13 @@ print(f"Minimum Crew: {crew['minimum_crew_size']}")
 print(f"Recommended Crew: {crew['recommended_crew_size']}")
 ```
 
-### 2. Material Procurement
+### 2. 材料采购
 ```python
 materials = analyzer.analyze_material_requirements(items, include_waste=True)
 print(f"Total Material Cost: ${materials['total_material_cost']:,.2f}")
 ```
 
-### 3. Productivity Tracking
+### 3. 生产力跟踪
 ```python
 actual_hours = {
     'CONC-001': 280,
@@ -466,7 +464,6 @@ productivity = analyzer.analyze_productivity(items, actual_hours)
 print(f"Average Productivity: {productivity['average_productivity']}%")
 ```
 
-## Resources
-
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Resource-Based Cost Estimation
+## 资源信息来源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 基于资源的成本估算

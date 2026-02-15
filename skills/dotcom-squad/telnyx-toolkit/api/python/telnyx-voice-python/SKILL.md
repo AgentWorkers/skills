@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +33,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Answer call
+## 接听来电
 
-Answer an incoming call.
+接听来电。
 
 `POST /calls/{call_control_id}/actions/answer`
 
@@ -47,11 +48,11 @@ response = client.calls.actions.answer(
 print(response.data)
 ```
 
-## Bridge calls
+## 桥接通话
 
-Bridge two call control calls.
+将两个通话连接桥接在一起。
 
-`POST /calls/{call_control_id}/actions/bridge` — Required: `call_control_id`
+`POST /calls/{call_control_id}/actions/bridge` — 必需参数：`call_control_id`
 
 ```python
 response = client.calls.actions.bridge(
@@ -61,11 +62,11 @@ response = client.calls.actions.bridge(
 print(response.data)
 ```
 
-## Dial
+## 拨打电话
 
-Dial a number or SIP URI from a given connection.
+从指定的连接拨打一个号码或 SIP URI。
 
-`POST /calls` — Required: `connection_id`, `to`, `from`
+`POST /calls` — 必需参数：`connection_id`, `to`, `from`
 
 ```python
 response = client.calls.dial(
@@ -76,9 +77,9 @@ response = client.calls.dial(
 print(response.data)
 ```
 
-## Hangup call
+## 结束通话
 
-Hang up the call.
+挂断通话。
 
 `POST /calls/{call_control_id}/actions/hangup`
 
@@ -89,11 +90,11 @@ response = client.calls.actions.hangup(
 print(response.data)
 ```
 
-## Transfer call
+## 转接通话
 
-Transfer a call to a new destination.
+将通话转接到新的目的地。
 
-`POST /calls/{call_control_id}/actions/transfer` — Required: `to`
+`POST /calls/{call_control_id}/actions/transfer` — 必需参数：`to`
 
 ```python
 response = client.calls.actions.transfer(
@@ -103,9 +104,9 @@ response = client.calls.actions.transfer(
 print(response.data)
 ```
 
-## List all active calls for given connection
+## 列出指定连接的所有活动通话
 
-Lists all active calls for given connection.
+列出指定连接的所有活动通话。
 
 `GET /connections/{connection_id}/active_calls`
 
@@ -117,9 +118,9 @@ page = page.data[0]
 print(page.call_control_id)
 ```
 
-## List call control applications
+## 列出通话控制应用程序
 
-Return a list of call control applications.
+返回通话控制应用程序的列表。
 
 `GET /call_control_applications`
 
@@ -129,11 +130,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a call control application
+## 创建通话控制应用程序
 
-Create a call control application.
+创建一个新的通话控制应用程序。
 
-`POST /call_control_applications` — Required: `application_name`, `webhook_event_url`
+`POST /call_control_applications` — 必需参数：`application_name`, `webhook_event_url`
 
 ```python
 call_control_application = client.call_control_applications.create(
@@ -143,9 +144,9 @@ call_control_application = client.call_control_applications.create(
 print(call_control_application.data)
 ```
 
-## Retrieve a call control application
+## 获取通话控制应用程序的详细信息
 
-Retrieves the details of an existing call control application.
+获取现有通话控制应用程序的详细信息。
 
 `GET /call_control_applications/{id}`
 
@@ -156,11 +157,11 @@ call_control_application = client.call_control_applications.retrieve(
 print(call_control_application.data)
 ```
 
-## Update a call control application
+## 更新通话控制应用程序
 
-Updates settings of an existing call control application.
+更新现有通话控制应用程序的设置。
 
-`PATCH /call_control_applications/{id}` — Required: `application_name`, `webhook_event_url`
+`PATCH /call_control_applications/{id}` — 必需参数：`application_name`, `webhook_event_url`
 
 ```python
 call_control_application = client.call_control_applications.update(
@@ -171,9 +172,9 @@ call_control_application = client.call_control_applications.update(
 print(call_control_application.data)
 ```
 
-## Delete a call control application
+## 删除通话控制应用程序
 
-Deletes a call control application.
+删除通话控制应用程序。
 
 `DELETE /call_control_applications/{id}`
 
@@ -184,9 +185,9 @@ call_control_application = client.call_control_applications.delete(
 print(call_control_application.data)
 ```
 
-## List call events
+## 列出通话事件
 
-Filters call events by given filter parameters.
+根据指定的过滤参数筛选通话事件。
 
 `GET /call_events`
 
@@ -198,22 +199,23 @@ print(page.call_leg_id)
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callAnswered` | Call Answered |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `callBridged` | Call Bridged |
-| `callInitiated` | Call Initiated |
-| `callHangup` | Call Hangup |
-| `callRecordingSaved` | Call Recording Saved |
-| `callMachineDetectionEnded` | Call Machine Detection Ended |
-| `callMachineGreetingEnded` | Call Machine Greeting Ended |
-| `callMachinePremiumDetectionEnded` | Call Machine Premium Detection Ended |
-| `callMachinePremiumGreetingEnded` | Call Machine Premium Greeting Ended |
+| `callAnswered` | 通话已接听 |
+| `callStreamingStarted` | 通话流开始 |
+| `callStreamingStopped` | 通话流停止 |
+| `callStreamingFailed` | 通话流失败 |
+| `callBridged` | 通话被桥接 |
+| `callInitiated` | 通话开始 |
+| `callHangup` | 通话挂断 |
+| `callRecordingSaved` | 通话录音保存 |
+| `callMachineDetectionEnded` | 机器检测结束 |
+| `callMachineGreetingEnded` | 机器问候结束 |
+| `callMachinePremiumDetectionEnded` | 机器高级检测结束 |
+| `callMachinePremiumGreetingEnded` | 机器高级问候结束 |
+```
+```

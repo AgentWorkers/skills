@@ -1,6 +1,6 @@
 ---
 name: docx-manipulation
-description: Create, edit, and manipulate Word documents programmatically using python-docx
+description: 使用 `python-docx` 库，可以以编程方式创建、编辑和操作 Word 文档。
 author: claude-office-skills
 version: "1.0"
 tags: [document, word, docx, python-docx, automation]
@@ -12,28 +12,27 @@ library:
   stars: 5.4k
 ---
 
-# DOCX Manipulation Skill
+# DOCX 文档处理技能
 
-## Overview
+## 概述
 
-This skill enables programmatic creation, editing, and manipulation of Microsoft Word (.docx) documents using the **python-docx** library. Create professional documents with proper formatting, styles, tables, and images without manual editing.
+该技能利用 **python-docx** 库，实现 Microsoft Word (.docx) 文档的程序化创建、编辑和操作。无需手动编辑，即可生成具有正确格式、样式、表格和图片的专业文档。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to create or modify in a Word document
-2. Provide any source content (text, data, images)
-3. I'll generate python-docx code and execute it
+1. 描述您希望在 Word 文档中创建或修改的内容。
+2. 提供所需的源内容（文本、数据、图片）。
+3. 我将生成相应的 python-docx 代码并执行它。
 
-**Example prompts:**
-- "Create a professional report with title, headings, and a table"
-- "Add a header and footer to this document"
-- "Generate a contract document with placeholders"
-- "Convert this markdown content to a styled Word document"
+**示例提示：**
+- “创建一份包含标题、标题页和表格的专业报告”
+- “为该文档添加页眉和页脚”
+- “生成一份包含占位符的合同文档”
+- “将此 Markdown 内容转换为格式化的 Word 文档”
 
-## Domain Knowledge
+## 相关领域知识
 
-### python-docx Fundamentals
-
+### python-docx 基础知识
 ```python
 from docx import Document
 from docx.shared import Inches, Pt, Cm
@@ -47,7 +46,7 @@ doc = Document()
 doc = Document('existing.docx')
 ```
 
-### Document Structure
+### 文档结构
 ```
 Document
 ├── sections (margins, orientation, size)
@@ -57,9 +56,9 @@ Document
 └── styles (predefined formatting)
 ```
 
-### Adding Content
+### 添加内容
 
-#### Paragraphs & Headings
+#### 段落与标题
 ```python
 # Add heading (level 0-9)
 doc.add_heading('Main Title', level=0)
@@ -78,7 +77,7 @@ para.add_run(' and ')
 para.add_run('italic text').italic = True
 ```
 
-#### Tables
+#### 表格
 ```python
 # Create table
 table = doc.add_table(rows=3, cols=3)
@@ -98,7 +97,7 @@ b = table.cell(0, 2)
 a.merge(b)
 ```
 
-#### Images
+#### 图片
 ```python
 # Add image with size
 doc.add_picture('image.png', width=Inches(4))
@@ -109,9 +108,9 @@ run = para.add_run()
 run.add_picture('logo.png', width=Inches(1.5))
 ```
 
-### Formatting
+### 格式设置
 
-#### Paragraph Formatting
+#### 段落格式
 ```python
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, Inches
@@ -123,7 +122,7 @@ para.paragraph_format.space_after = Pt(12)
 para.paragraph_format.first_line_indent = Inches(0.5)
 ```
 
-#### Character Formatting
+#### 字符格式
 ```python
 run = para.add_run('Styled text')
 run.bold = True
@@ -134,7 +133,7 @@ run.font.size = Pt(14)
 run.font.color.rgb = RGBColor(0x00, 0x00, 0xFF)  # Blue
 ```
 
-#### Page Setup
+#### 页面设置
 ```python
 from docx.enum.section import WD_ORIENT
 from docx.shared import Inches
@@ -147,7 +146,7 @@ section.left_margin = Inches(1)
 section.right_margin = Inches(1)
 ```
 
-### Headers & Footers
+### 页眉与页脚
 ```python
 section = doc.sections[0]
 
@@ -168,7 +167,7 @@ run._r.append(fldChar1)
 # ... (field code for page number)
 ```
 
-### Styles
+### 样式
 ```python
 # Use built-in styles
 doc.add_paragraph('Heading', style='Heading 1')
@@ -181,17 +180,17 @@ doc.add_paragraph('List item', style='List Bullet')
 # - 'Table Grid', 'Light Shading', 'Medium Grid 1'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Structure First**: Plan document hierarchy before coding
-2. **Use Styles**: Consistent formatting via styles, not manual formatting
-3. **Save Often**: Call `doc.save()` periodically for large documents
-4. **Handle Errors**: Check file existence before opening
-5. **Clean Up**: Remove template placeholders after filling
+1. **先规划结构**：在编写代码之前先设计文档的层次结构。
+2. **使用样式**：通过样式进行统一的格式设置，而非手动调整。
+3. **频繁保存**：对于大型文档，定期调用 `doc.save()` 保存进度。
+4. **处理错误**：在打开文件前检查文件是否存在。
+5. **清理占位符**：填写内容后删除模板中的占位符。
 
-## Common Patterns
+## 常见应用模式
 
-### Report Template
+### 报告模板
 ```python
 def create_report(title, sections):
     doc = Document()
@@ -205,7 +204,7 @@ def create_report(title, sections):
     return doc
 ```
 
-### Table from Data
+### 根据数据生成表格
 ```python
 def add_data_table(doc, headers, rows):
     table = doc.add_table(rows=1, cols=len(headers))
@@ -225,7 +224,7 @@ def add_data_table(doc, headers, rows):
     return table
 ```
 
-### Mail Merge Pattern
+### 邮件合并功能
 ```python
 def fill_template(template_path, replacements):
     doc = Document(template_path)
@@ -238,9 +237,9 @@ def fill_template(template_path, replacements):
     return doc
 ```
 
-## Examples
+## 示例
 
-### Example 1: Create a Business Letter
+### 示例 1：创建商务信函
 ```python
 from docx import Document
 from docx.shared import Inches, Pt
@@ -290,7 +289,7 @@ doc.add_paragraph('CEO, ACME Corporation')
 doc.save('business_letter.docx')
 ```
 
-### Example 2: Create a Report with Table
+### 示例 2：创建包含表格的报告
 ```python
 from docx import Document
 from docx.shared import Inches
@@ -326,22 +325,21 @@ for row_data in data:
 doc.save('sales_report.docx')
 ```
 
-## Limitations
+## 限制
 
-- Cannot execute macros or VBA code
-- Complex templates may lose some formatting
-- Limited support for advanced features (SmartArt, Charts)
-- No direct PDF conversion (use separate tool)
-- Track changes reading is limited
+- 无法执行宏或 VBA 代码。
+- 复杂的模板可能会导致部分格式丢失。
+- 对高级功能（如 SmartArt、图表）的支持有限。
+- 不支持直接转换为 PDF 格式（需使用其他工具）。
+- 阅读时的版本跟踪功能有限。
 
-## Installation
-
+## 安装方法
 ```bash
 pip install python-docx
 ```
 
-## Resources
+## 资源
 
-- [python-docx Documentation](https://python-docx.readthedocs.io/)
-- [GitHub Repository](https://github.com/python-openxml/python-docx)
-- [Office Open XML Spec](https://docs.microsoft.com/en-us/office/open-xml/open-xml-sdk)
+- [python-docx 文档](https://python-docx.readthedocs.io/)
+- [GitHub 仓库](https://github.com/python-openxml/python-docx)
+- [Office Open XML 规范](https://docs.microsoft.com/en-us/office/open-xml/open-xml-sdk)

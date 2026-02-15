@@ -1,3 +1,2 @@
----
-name: morning-briefing
-description: Generate personalized morning report with today's reminders, Notion tasks (undone), and vault storage. Use when user asks for morning briefing, daily summary, or &quot;today's plan&quot;. Pulls from Apple Reminders (as calendar proxy) and Notion tasks DB (set NOTION_TASKS_DB or specify DB ID).
+**名称：晨间简报**  
+**描述：** 生成个性化的晨间报告，内容包括当天的提醒事项、未完成的 Notion 任务以及存储在 Vault 中的数据。适用于用户请求晨间简报、每日总结或“今日计划”时。该功能会从 Apple Reminders（作为日历代理）和 Notion 任务数据库（通过设置 `NOTION_TASKS_DB` 或指定数据库 ID）中获取信息。

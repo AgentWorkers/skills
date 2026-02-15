@@ -1,84 +1,84 @@
 ---
 name: GraphQL
-description: Design GraphQL schemas and resolvers with proper performance, security, and error handling.
+description: 设计具有良好性能、安全性和错误处理能力的 GraphQL 模式（schemas）和解析器（resolvers）。
 metadata: {"clawdbot":{"emoji":"◈","os":["linux","darwin","win32"]}}
 ---
 
-## N+1 Problem (Always Forget)
+## N+1 问题（经常被忽视）
 
-- Each resolver runs independently—fetching user for each of 100 posts = 100 queries
-- DataLoader required: batches requests within single tick—100 posts = 1 user query
-- DataLoader per-request: create new instance per request—prevents cross-request caching
-- Even with DataLoader, watch for nested N+1—posts → comments → authors chains
+- 每个解析器都是独立运行的——对于 100 条帖子，每个解析器都需要获取对应的用户信息，因此会发起 100 次查询。
+- 需要使用 `DataLoader`：在单次请求内批量处理多个请求——100 条帖子对应 1 次用户查询。
+- 每次请求都创建一个新的 `DataLoader` 实例：这样可以防止请求之间的缓存干扰。
+- 即使使用了 `DataLoader`，也需要注意嵌套的 N+1 问题（例如：帖子 → 评论 → 作者的关联关系）。
 
-## Schema Design
+## 数据模式设计
 
-- Fields nullable by default—make non-null explicit: `name: String!`
-- Input types separate from output—`CreateUserInput` vs `User`; allows different validation
-- Connections for pagination: `users(first: 10, after: "cursor")` returns `edges` + `pageInfo`
-- Avoid deeply nested types—flatten where possible; 5+ levels = resolver complexity
+- 字段默认为可空（nullable）——明确指定哪些字段必须非空：`name: String!`
+- 输入类型与输出类型分开：使用 `CreateUserInput` 和 `User` 类型，以便进行不同的验证。
+- 分页功能：`users(first: 10, after: "cursor")` 会返回 `edges` 和 `pageInfo`。
+- 尽量避免使用深度嵌套的数据结构；超过 5 层的嵌套会导致解析器复杂性增加。
 
-## Pagination
+## 分页机制
 
-- Cursor-based (Relay style): `first/after`, `last/before`—stable across insertions
-- Offset-based: `limit/offset`—simpler but skips or duplicates on concurrent writes
-- Return `pageInfo { hasNextPage, endCursor }`—client knows when to stop
-- `totalCount` expensive on large datasets—make optional or estimate
+- 基于游标的分页方式（类似 Relay 的设计）：使用 `first/after` 和 `last/before` 参数。
+- 基于偏移量的分页方式：使用 `limit/offset` 参数；这种方式更简单，但在并发写入时可能会导致数据重复或遗漏。
+- 返回 `pageInfo` 对象，其中包含 `hasNextPage` 和 `endCursor`：客户端可以根据这些信息判断是否需要继续分页。
+- 对于大型数据集，计算 `totalCount` 的操作可能会非常耗时——可以选择不返回该字段或对其进行估算。
 
-## Security (Often Ignored)
+## 安全性（经常被忽视）
 
-- Query depth limiting—prevent `{ user { friends { friends { friends... } } } }`
-- Query complexity scoring—count fields, multiply by list sizes; reject above threshold
-- Disable introspection in production—or protect with auth; schema is attack surface
-- Timeout per query—malicious queries can be slow without being deep
-- Rate limit by complexity, not just requests—one complex query = many simple ones
+- 限制查询的深度：防止出现嵌套过深的查询（例如：`{ user { friends { friends { friends... } } }`）。
+- 对查询的复杂性进行评分：统计涉及的字段数量，并根据字段数量来限制查询的深度；超过限制的查询将被拒绝。
+- 在生产环境中禁用对象的自我描述功能（introspection）；或者通过身份验证来保护数据安全；数据模式本身就是潜在的攻击面。
+- 为每个查询设置超时限制：恶意查询即使不涉及深度嵌套，也可能导致系统响应缓慢。
+- 根据查询的复杂性来设置请求速率限制；一个复杂的查询可能等同于多个简单的查询。
 
-## Error Handling
+## 错误处理
 
-- Partial success normal—query returns data AND errors; check both
-- Errors array with path—shows which field failed: `"path": ["user", "posts", 0]`
-- Error extensions for codes—`"extensions": {"code": "FORBIDDEN"}`; don't parse message
-- Throw in resolver = null + error—parent nullable = partial data; parent non-null = error propagates up
+- 部分请求成功也是正常的：查询结果中会同时包含数据和错误信息；需要同时检查两者。
+- 错误信息会附带错误发生的路径：例如 `"path": ["user", "posts", 0"]`，这样可以明确指出哪个字段出现了问题。
+- 使用错误代码进行错误分类：例如 `"extensions": {"code": "FORBIDDEN"}`；不要直接解析错误消息。
+- 如果解析器返回 `null` 和错误信息，说明请求部分失败；如果解析器本身不为空，则错误信息会向上层传递。
 
-## Resolver Patterns
+## 解析器设计模式
 
-- Return object with ID, let sub-resolvers fetch details—avoids over-fetching at top level
-- `__resolveType` for unions/interfaces—required to determine concrete type
-- Context for auth, DataLoaders, DB connection—pass through resolver chain
-- Field-level auth in resolvers—check permissions per field, not just per query
+- 解析器返回包含 ID 的对象，让子解析器负责获取详细信息——这样可以避免在顶层重复获取数据。
+- 使用 `__resolveType` 来区分不同的数据类型（union 或 interface）。
+- 提供用于身份验证、数据加载和数据库连接的上下文信息——这些信息会在解析器链中传递。
+- 在解析器中实现字段级别的权限控制——针对每个字段进行检查，而不仅仅是整个请求。
 
-## Mutations
+## 数据修改操作
 
-- Return modified object—client updates cache without re-fetch
-- Input validation before DB—return user-friendly error, not DB constraint violation
-- Idempotency for critical mutations—accept client-generated ID or idempotency key
-- One mutation per operation typically—batch mutations exist but complicate error handling
+- 修改后的数据应该直接返回给客户端；客户端可以更新缓存而无需重新请求数据。
+- 在将数据写入数据库之前进行输入验证；返回易于理解的错误信息，而不是直接报告数据库的约束错误。
+- 对于关键的数据修改操作，需要保证操作的幂等性（idempotency）——允许客户端生成唯一的 ID 或使用幂等性键。
+- 通常每个操作只进行一次数据修改；虽然批量修改是可行的，但会增加错误处理的复杂性。
 
-## Performance
+## 性能优化
 
-- Persisted queries: hash → query mapping—smaller payloads, prevents arbitrary queries
-- `@defer` for slow fields—returns fast fields first, streams slow ones (if supported)
-- Fragment colocation: components define data needs—reduces over-fetching
-- Query allowlisting: only registered queries in production—blocks exploratory attacks
+- 对已执行的查询进行哈希处理，建立查询映射关系——这样可以减少传输的数据量，防止不必要的请求。
+- 对于处理速度较慢的字段，使用 `@defer` 标注——先返回快速处理的字段，延迟返回慢处理的字段（如果支持的话）。
+- 根据组件的数据需求来合理组织数据结构——减少不必要的数据获取。
+- 只允许注册过的查询被执行——这样可以防止恶意攻击。
 
-## Subscriptions
+## 订阅功能
 
-- WebSocket-based—`graphql-ws` protocol; separate from HTTP
-- Scaling: pub/sub needed—Redis or similar for multi-server broadcast
-- Filter at subscription level—don't push everything and filter client-side
-- Unsubscribe on disconnect—clean up resources; connection tracking required
+- 基于 WebSocket 的订阅机制；使用 `graphql-ws` 协议；与 HTTP 请求分离。
+- 需要支持发布/订阅（pub/sub）模式——可以使用 Redis 或类似的技术来实现多服务器之间的数据广播。
+- 在订阅层进行数据过滤——避免推送所有数据，而是在客户端进行过滤。
+- 客户端断开连接时取消订阅——及时释放资源；需要实现连接跟踪功能。
 
-## Client-Side
+## 客户端实现
 
-- Normalized cache (Apollo, Relay)—deduplicate by ID; updates propagate automatically
-- Optimistic UI: predict mutation result—rollback if server differs
-- Error policies: decide per-query—ignore errors, return partial, or treat as failure
-- Fragment reuse—define once, use in multiple queries; keeps fields in sync
+- 使用 Apollo 或 Relay 等工具来实现缓存优化；通过 ID 来消除数据重复；更新操作会自动传播到客户端。
+- 采用乐观的 UI 设计：预测数据修改的结果；如果服务器返回的结果与预期不同，可以回滚操作。
+- 根据具体情况制定错误处理策略：忽略错误、返回部分数据或直接视为请求失败。
+- 重用数据片段：定义一次后可以在多个请求中使用；确保数据字段的一致性。
 
-## Common Mistakes
+## 常见的错误
 
-- No DataLoader—N+1 kills performance; one query becomes hundreds
-- Exposing internal errors—stack traces leak implementation details
-- No query limits—attackers craft expensive queries; DoS with single request
-- Over-fetching in resolvers—fetching full object when query only needs ID + name
-- Treating like REST—GraphQL is a graph; design for traversal, not resources
+- 不使用 `DataLoader`：这会导致 N+1 问题，从而严重影响性能；一个简单的查询可能会变成数百次请求。
+- 暴露内部错误细节：错误堆栈跟踪可能会泄露系统的实现细节。
+- 不设置查询限制：攻击者可以构造复杂的查询来攻击系统；单个请求也可能导致系统崩溃（DoS）。
+- 在解析器中过度获取数据：实际上只需要获取 ID 和名称，却获取了整个对象。
+- 将 GraphQL 与 REST 看成相同的接口：GraphQL 是用于处理图结构的数据模型，设计时应该考虑数据的遍历方式，而不仅仅是单个资源。

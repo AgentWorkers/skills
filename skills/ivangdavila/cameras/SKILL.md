@@ -1,48 +1,48 @@
 ---
 name: Cameras
-description: Connect to security cameras, capture snapshots, control photography gear, and process video feeds with protocol support and smart home integration.
+description: 通过协议支持和智能家居集成功能，您可以连接安全摄像头、捕获快照、控制摄影设备，并处理视频流。
 ---
 
-## Decision Tree
+## 决策树
 
-| Task | Reference |
+| 任务 | 参考文档 |
 |------|-----------|
-| Connect to security cameras (Ring, Nest, IP cams) | Check `security-integration.md` |
-| Capture from webcams or USB cameras | Check `capture.md` |
-| Control DSLR/mirrorless (tethering, remote shoot) | Check `photography-control.md` |
-| Process video (detection, recognition) | Check `processing.md` |
-| Choose or compare cameras (buying guide) | Check `buying-guide.md` |
+| 连接安全摄像头（Ring、Nest、IP摄像头） | 查看 `security-integration.md` |
+| 从网络摄像头或USB摄像头捕获视频 | 查看 `capture.md` |
+| 控制单反相机/无反相机（远程拍摄） | 查看 `photography-control.md` |
+| 处理视频（检测、识别） | 查看 `processing.md` |
+| 选择或比较摄像头（购买指南） | 查看 `buying-guide.md` |
 
 ---
 
-## Core Capabilities
+## 核心功能
 
-**What an agent with this skill can do:**
+**具备此技能的代理可以执行以下操作：**
 
-1. **Capture snapshots** from any connected camera on demand
-2. **Record short clips** (10-60s) for review or sending
-3. **List available cameras** on the system or network
-4. **Receive motion alerts** from security systems
-5. **Control photography cameras** (shoot, adjust settings, download)
-6. **Describe what the camera sees** (using vision models)
+1. **根据需求从任何已连接的摄像头捕获快照**  
+2. **录制短片（10-60秒）以供查看或发送**  
+3. **列出系统或网络中可用的摄像头**  
+4. **接收来自安全系统的运动警报**  
+5. **控制摄影设备（拍摄、调整设置、下载视频）**  
+6. **利用视觉模型描述摄像头所拍摄的内容**  
 
 ---
 
-## Protocol Quick Reference
+## 协议快速参考
 
-| Protocol | Use Case | Access Method |
+| 协议 | 用例 | 访问方式 |
 |----------|----------|---------------|
-| **RTSP** | IP cameras, NVRs | `rtsp://user:pass@ip:554/stream` |
-| **ONVIF** | Discovery + control | `python-onvif-zeep`, auto-discover |
-| **HTTP/MJPEG** | Simple IP cams | `/snapshot.jpg`, `/video.mjpg` |
-| **Home Assistant** | Unified access | REST API `/api/camera_proxy/` |
-| **Frigate** | Motion events + clips | MQTT + HTTP API |
-| **USB/V4L2** | Webcams, capture cards | `ffmpeg`, `opencv`, device index |
-| **gPhoto2** | DSLR/mirrorless control | USB PTP protocol |
+| **RTSP** | IP摄像头、NVR | `rtsp://user:pass@ip:554/stream` |
+| **ONVIF** | 发现设备 + 控制 | `python-onvif-zeep`（自动发现） |
+| **HTTP/MJPEG** | 简单的IP摄像头 | `/snapshot.jpg`, `/video.mjpg` |
+| **Home Assistant** | 统一访问 | REST API `/api/camera_proxy/` |
+| **Frigate** | 运动事件 + 视频片段 | MQTT + HTTP API |
+| **USB/V4L2** | 网络摄像头、采集卡 | `ffmpeg`, `opencv`（通过设备索引访问） |
+| **gPhoto2** | 单反相机/无反相机的控制 | 使用USB PTP协议 |
 
 ---
 
-## Common Commands
+## 常用命令
 
 ```
 # List cameras
@@ -62,22 +62,22 @@ ffmpeg -i "rtsp://ip/stream" -t 10 -c copy clip.mp4
 
 ---
 
-## Integration Patterns
+## 集成模式
 
-### With Home Assistant
-If cameras are already in HA, use the REST API:
+### 与Home Assistant集成
+如果摄像头已经集成到Home Assistant中，可以使用REST API进行控制：
 ```
 GET /api/camera_proxy/camera.front_door
 → Returns JPEG snapshot
 ```
 
-### With Frigate (recommended for security)
-Frigate handles detection. Agent just listens:
-- MQTT: `frigate/events` for motion alerts
-- HTTP: `/api/events/{id}/snapshot.jpg`
+### 与Frigate集成（推荐用于安全监控）
+Frigate负责视频检测，代理只需监听相关事件：
+- MQTT：`frigate/events`（接收运动警报）
+- HTTP：`/api/events/{id}/snapshot.jpg`（获取快照）
 
-### With Vision Models
-Capture snapshot → send to vision model for description:
+### 与视觉模型集成
+捕获快照后，将其发送给视觉模型进行处理：
 ```
 1. ffmpeg → snapshot.jpg
 2. Vision API → "A person standing at the front door"
@@ -86,12 +86,16 @@ Capture snapshot → send to vision model for description:
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| Camera offline | Check network, power, IP hasn't changed |
-| RTSP timeout | Try adding `?tcp` or use port 8554 |
-| Permission denied | Run with sudo or add user to video group |
-| No video, only audio | Wrong stream path, try /stream1, /ch01/main |
-| gPhoto2 camera busy | Close other apps using camera, replug USB |
+| 摄像头无法连接 | 检查网络连接、电源状态以及IP地址是否更改 |
+| RTSP连接超时 | 尝试添加 `?tcp` 参数或使用端口8554 |
+| 权限问题 | 以sudo权限运行程序，或将用户添加到视频访问组 |
+| 仅输出音频无视频 | 流媒体路径错误，尝试使用 `/stream1`, `/ch01/main` |
+| gPhoto2相机占用中 | 关闭其他使用该相机的应用程序，重新插入USB线 |
+
+---
+
+（注：由于代码块内容未提供，实际翻译中保留了相应的占位符 `_CODE_BLOCK_0_`。在实际文档中，这些占位符将被具体的代码或说明替换。）

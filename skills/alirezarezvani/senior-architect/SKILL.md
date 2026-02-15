@@ -1,30 +1,30 @@
 ---
 name: senior-architect
-description: This skill should be used when the user asks to "design system architecture", "evaluate microservices vs monolith", "create architecture diagrams", "analyze dependencies", "choose a database", "plan for scalability", "make technical decisions", or "review system design". Use for architecture decision records (ADRs), tech stack evaluation, system design reviews, dependency analysis, and generating architecture diagrams in Mermaid, PlantUML, or ASCII format.
+description: 此技能适用于以下场景：用户需要“设计系统架构”、“评估微服务与单体应用的优劣”、“创建架构图”、“分析系统依赖关系”、“选择数据库”、“规划系统可扩展性”、“做出技术决策”或“审查系统设计”时。该技能可用于记录技术决策（ADRs）、技术栈评估、系统设计审查、依赖关系分析，以及生成 Mermaid、PlantUML 或 ASCII 格式的架构图。
 ---
 
-# Senior Architect
+# 高级架构师
 
-Architecture design and analysis tools for making informed technical decisions.
+提供用于做出明智技术决策的架构设计和分析工具。
 
-## Table of Contents
+## 目录
 
-- [Quick Start](#quick-start)
-- [Tools Overview](#tools-overview)
-  - [Architecture Diagram Generator](#1-architecture-diagram-generator)
-  - [Dependency Analyzer](#2-dependency-analyzer)
-  - [Project Architect](#3-project-architect)
-- [Decision Workflows](#decision-workflows)
-  - [Database Selection](#database-selection-workflow)
-  - [Architecture Pattern Selection](#architecture-pattern-selection-workflow)
-  - [Monolith vs Microservices](#monolith-vs-microservices-decision)
-- [Reference Documentation](#reference-documentation)
-- [Tech Stack Coverage](#tech-stack-coverage)
-- [Common Commands](#common-commands)
+- [快速入门](#quick-start)
+- [工具概述](#tools-overview)
+  - [架构图生成器](#1-architecture-diagram-generator)
+  - [依赖关系分析器](#2-dependency-analyzer)
+  - [项目架构师](#3-project-architect)
+- [决策工作流程](#decision-workflows)
+  - [数据库选择](#database-selection-workflow)
+  - [架构模式选择](#architecture-pattern-selection-workflow)
+  - [单体应用与微服务](#monolith-vs-microservices-decision)
+- [参考文档](#reference-documentation)
+- [技术栈覆盖](#tech-stack-coverage)
+- [常用命令](#common-commands)
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generate architecture diagram from project
@@ -39,23 +39,23 @@ python scripts/project_architect.py ./my-project --verbose
 
 ---
 
-## Tools Overview
+## 工具概述
 
-### 1. Architecture Diagram Generator
+### 1. 架构图生成器
 
-Generates architecture diagrams from project structure in multiple formats.
+从项目结构生成多种格式的架构图。
 
-**Solves:** "I need to visualize my system architecture for documentation or team discussion"
+**解决的问题：**“我需要可视化系统架构以便于文档编写或团队讨论”
 
-**Input:** Project directory path
-**Output:** Diagram code (Mermaid, PlantUML, or ASCII)
+**输入：** 项目目录路径
+**输出：** 图表代码（Mermaid、PlantUML 或 ASCII）
 
-**Supported diagram types:**
-- `component` - Shows modules and their relationships
-- `layer` - Shows architectural layers (presentation, business, data)
-- `deployment` - Shows deployment topology
+**支持的图表类型：**
+- `component` - 显示模块及其关系
+- `layer` - 显示架构层次（表示层、业务层、数据层）
+- `deployment` - 显示部署拓扑
 
-**Usage:**
+**使用方法：**
 ```bash
 # Mermaid format (default)
 python scripts/architecture_diagram_generator.py ./project --format mermaid --type component
@@ -70,7 +70,7 @@ python scripts/architecture_diagram_generator.py ./project --format ascii
 python scripts/architecture_diagram_generator.py ./project -o architecture.md
 ```
 
-**Example output (Mermaid):**
+**示例输出（Mermaid）：**
 ```mermaid
 graph TD
     A[API Gateway] --> B[Auth Service]
@@ -81,28 +81,28 @@ graph TD
 
 ---
 
-### 2. Dependency Analyzer
+### 2. 依赖关系分析器
 
-Analyzes project dependencies for coupling, circular dependencies, and outdated packages.
+分析项目中的依赖关系，包括耦合度、循环依赖和过时的包。
 
-**Solves:** "I need to understand my dependency tree and identify potential issues"
+**解决的问题：**“我需要了解依赖关系树并识别潜在问题”
 
-**Input:** Project directory path
-**Output:** Analysis report (JSON or human-readable)
+**输入：** 项目目录路径
+**输出：** 分析报告（JSON 或人类可读格式）
 
-**Analyzes:**
-- Dependency tree (direct and transitive)
-- Circular dependencies between modules
-- Coupling score (0-100)
-- Outdated packages
+**分析内容：**
+- 依赖关系树（直接依赖和传递依赖）
+- 模块间的循环依赖
+- 耦合度评分（0-100）
+- 过时的包
 
-**Supported package managers:**
+**支持的包管理器：**
 - npm/yarn (`package.json`)
 - Python (`requirements.txt`, `pyproject.toml`)
 - Go (`go.mod`)
 - Rust (`Cargo.toml`)
 
-**Usage:**
+**使用方法：**
 ```bash
 # Human-readable report
 python scripts/dependency_analyzer.py ./project
@@ -117,7 +117,7 @@ python scripts/dependency_analyzer.py ./project --check circular
 python scripts/dependency_analyzer.py ./project --verbose
 ```
 
-**Example output:**
+**示例输出：**
 ```
 Dependency Analysis Report
 ==========================
@@ -135,22 +135,22 @@ Recommendations:
 
 ---
 
-### 3. Project Architect
+### 3. 项目架构师
 
-Analyzes project structure and detects architectural patterns, code smells, and improvement opportunities.
+分析项目结构，检测架构模式、代码问题以及改进机会。
 
-**Solves:** "I want to understand the current architecture and identify areas for improvement"
+**解决的问题：**“我想了解当前的架构并找出需要改进的地方”
 
-**Input:** Project directory path
-**Output:** Architecture assessment report
+**输入：** 项目目录路径
+**输出：** 架构评估报告
 
-**Detects:**
-- Architectural patterns (MVC, layered, hexagonal, microservices indicators)
-- Code organization issues (god classes, mixed concerns)
-- Layer violations
-- Missing architectural components
+**检测内容：**
+- 架构模式（MVC、分层架构、六边形架构、微服务指标）
+- 代码组织问题（如“上帝类”设计、职责混合）
+- 架构层违规
+- 缺失的架构组件
 
-**Usage:**
+**使用方法：**
 ```bash
 # Full assessment
 python scripts/project_architect.py ./project
@@ -165,7 +165,7 @@ python scripts/project_architect.py ./project --output json
 python scripts/project_architect.py ./project --check layers
 ```
 
-**Example output:**
+**示例输出：**
 ```
 Architecture Assessment
 =======================
@@ -189,39 +189,40 @@ Recommendations:
 
 ---
 
-## Decision Workflows
+## 决策工作流程
 
-### Database Selection Workflow
+### 数据库选择工作流程
 
-Use when choosing a database for a new project or migrating existing data.
+用于为新项目选择数据库或迁移现有数据。
 
-**Step 1: Identify data characteristics**
-| Characteristic | Points to SQL | Points to NoSQL |
+**步骤 1：确定数据特性**
+| 特性 | 适合 SQL 的理由 | 适合 NoSQL 的理由 |
 |----------------|---------------|-----------------|
-| Structured with relationships | ✓ | |
-| ACID transactions required | ✓ | |
-| Flexible/evolving schema | | ✓ |
-| Document-oriented data | | ✓ |
-| Time-series data | | ✓ (specialized) |
+| 具有结构化关系的数据 | ✓ | |
+| 需要满足 ACID 事务 | ✓ | |
+| 模式灵活/可扩展 | | ✓ |
+| 以文档为导向的数据 | | ✓ |
+| 时间序列数据 | | ✓（特定场景） |
 
-**Step 2: Evaluate scale requirements**
-- <1M records, single region → PostgreSQL or MySQL
-- 1M-100M records, read-heavy → PostgreSQL with read replicas
-- >100M records, global distribution → CockroachDB, Spanner, or DynamoDB
-- High write throughput (>10K/sec) → Cassandra or ScyllaDB
+**步骤 2：评估扩展需求**
+- 数据量 < 100 万条记录，单地区部署 → PostgreSQL 或 MySQL
+- 数据量 100 万至 1000 万条记录，读操作为主 → 使用带读副本的 PostgreSQL
+- 数据量 > 1000 万条记录，全球分布 → CockroachDB、Spanner 或 DynamoDB
+- 高写吞吐量（>10K/秒） → Cassandra 或 ScyllaDB
 
-**Step 3: Check consistency requirements**
-- Strong consistency required → SQL or CockroachDB
-- Eventual consistency acceptable → DynamoDB, Cassandra, MongoDB
+**步骤 3：检查一致性要求**
+- 需要强一致性 → SQL 或 CockroachDB
+- 可以接受最终一致性 → DynamoDB、Cassandra、MongoDB
 
-**Step 4: Document decision**
-Create an ADR (Architecture Decision Record) with:
-- Context and requirements
-- Options considered
-- Decision and rationale
-- Trade-offs accepted
+**步骤 4：记录决策**
 
-**Quick reference:**
+创建一个 ADR（架构决策记录），内容包括：
+- 背景和需求
+- 考虑的选项
+- 决策理由
+- 所接受的权衡
+
+**快速参考：**
 ```
 PostgreSQL → Default choice for most applications
 MongoDB    → Document store, flexible schema
@@ -232,90 +233,90 @@ TimescaleDB → Time-series data with SQL interface
 
 ---
 
-### Architecture Pattern Selection Workflow
+### 架构模式选择工作流程
 
-Use when designing a new system or refactoring existing architecture.
+用于设计新系统或重构现有架构。
 
-**Step 1: Assess team and project size**
-| Team Size | Recommended Starting Point |
+**步骤 1：评估团队规模和项目规模**
+| 团队规模 | 推荐的起始架构 |
 |-----------|---------------------------|
-| 1-3 developers | Modular monolith |
-| 4-10 developers | Modular monolith or service-oriented |
-| 10+ developers | Consider microservices |
+| 1-3 名开发人员 | 模块化单体应用 |
+| 4-10 名开发人员 | 模块化单体应用或面向服务的架构 |
+| 10 名以上开发人员 | 考虑微服务 |
 
-**Step 2: Evaluate deployment requirements**
-- Single deployment unit acceptable → Monolith
-- Independent scaling needed → Microservices
-- Mixed (some services scale differently) → Hybrid
+**步骤 2：评估部署需求**
+- 单一部署单元适用 → 单体应用
+- 需要独立扩展 → 微服务
+- 部分服务扩展需求不同 → 混合架构
 
-**Step 3: Consider data boundaries**
-- Shared database acceptable → Monolith or modular monolith
-- Strict data isolation required → Microservices with separate DBs
-- Event-driven communication fits → Event-sourcing/CQRS
+**步骤 3：考虑数据边界**
+- 数据可以共享 → 单体应用或模块化单体应用
+- 需要严格的数据隔离 → 使用独立数据库的微服务
+- 适合事件驱动的通信方式 → 事件源驱动/命令-查询-响应（CQRS）
 
-**Step 4: Match pattern to requirements**
+**步骤 4：选择合适的架构模式**
 
-| Requirement | Recommended Pattern |
+| 需求 | 推荐的架构模式 |
 |-------------|-------------------|
-| Rapid MVP development | Modular Monolith |
-| Independent team deployment | Microservices |
-| Complex domain logic | Domain-Driven Design |
-| High read/write ratio difference | CQRS |
-| Audit trail required | Event Sourcing |
-| Third-party integrations | Hexagonal/Ports & Adapters |
+| 快速开发 MVP | 模块化单体应用 |
+| 团队独立部署 | 微服务 |
+| 领域逻辑复杂 | 领域驱动设计 |
+| 读写操作比例差异大 | 命令-查询-响应（CQRS） |
+| 需要审计追踪 | 事件源驱动 |
+| 需要集成第三方服务 | 六边形架构/端口适配器（Port & Adapter） |
 
-See `references/architecture_patterns.md` for detailed pattern descriptions.
-
----
-
-### Monolith vs Microservices Decision
-
-**Choose Monolith when:**
-- [ ] Team is small (<10 developers)
-- [ ] Domain boundaries are unclear
-- [ ] Rapid iteration is priority
-- [ ] Operational complexity must be minimized
-- [ ] Shared database is acceptable
-
-**Choose Microservices when:**
-- [ ] Teams can own services end-to-end
-- [ ] Independent deployment is critical
-- [ ] Different scaling requirements per component
-- [ ] Technology diversity is needed
-- [ ] Domain boundaries are well understood
-
-**Hybrid approach:**
-Start with a modular monolith. Extract services only when:
-1. A module has significantly different scaling needs
-2. A team needs independent deployment
-3. Technology constraints require separation
+详细架构模式描述请参阅 `references/architecture_patterns.md`。
 
 ---
 
-## Reference Documentation
+### 单体应用与微服务决策
 
-Load these files for detailed information:
+**在以下情况下选择单体应用：**
+- [ ] 团队规模较小（<10 名开发人员）
+- [ ] 领域边界不明确
+- [ ] 需要快速迭代
+- [ ] 需要最小化运营复杂性
+- [ ] 可以使用共享数据库
 
-| File | Contains | Load when user asks about |
+**在以下情况下选择微服务：**
+- [ ] 团队可以端到端负责各个服务
+- [ ] 需要独立部署服务
+- [ ] 不同组件有不同的扩展需求
+- [ ] 需要使用多种技术
+- [ ] 领域边界清晰
+
+**混合架构：**
+- 从模块化单体应用开始。仅在以下情况下提取服务：
+  - 某个模块的扩展需求显著不同
+  - 团队需要独立部署服务
+  - 技术限制要求分离服务
+
+---
+
+## 参考文档
+
+请查阅以下文件以获取详细信息：
+
+| 文件 | 包含内容 | 用户询问时提供链接 |
 |------|----------|--------------------------|
-| `references/architecture_patterns.md` | 9 architecture patterns with trade-offs, code examples, and when to use | "which pattern?", "microservices vs monolith", "event-driven", "CQRS" |
-| `references/system_design_workflows.md` | 6 step-by-step workflows for system design tasks | "how to design?", "capacity planning", "API design", "migration" |
-| `references/tech_decision_guide.md` | Decision matrices for technology choices | "which database?", "which framework?", "which cloud?", "which cache?" |
+| `references/architecture_patterns.md` | 9 种架构模式及其权衡、代码示例和使用场景 | “应该选择哪种架构模式？”，“微服务与单体应用”，“事件驱动”，“CQRS” |
+| `references/system_design_workflows.md` | 6 个系统设计步骤 | “如何进行系统设计？”，“容量规划”，“API 设计”，“数据迁移” |
+| `references/tech_decision_guide.md` | 技术选型决策矩阵 | “应该选择哪种数据库？”，“哪种框架？”，“哪种云服务？”，“哪种缓存？” |
 
 ---
 
-## Tech Stack Coverage
+## 技术栈覆盖
 
-**Languages:** TypeScript, JavaScript, Python, Go, Swift, Kotlin, Rust
-**Frontend:** React, Next.js, Vue, Angular, React Native, Flutter
-**Backend:** Node.js, Express, FastAPI, Go, GraphQL, REST
-**Databases:** PostgreSQL, MySQL, MongoDB, Redis, DynamoDB, Cassandra
-**Infrastructure:** Docker, Kubernetes, Terraform, AWS, GCP, Azure
-**CI/CD:** GitHub Actions, GitLab CI, CircleCI, Jenkins
+**编程语言：** TypeScript、JavaScript、Python、Go、Swift、Kotlin、Rust
+**前端框架：** React、Next.js、Vue、Angular、React Native、Flutter
+**后端框架：** Node.js、Express、FastAPI、Go、GraphQL、REST
+**数据库：** PostgreSQL、MySQL、MongoDB、Redis、DynamoDB、Cassandra
+**基础设施：** Docker、Kubernetes、Terraform、AWS、GCP、Azure
+**持续集成/持续部署：** GitHub Actions、GitLab CI、CircleCI、Jenkins
 
 ---
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Architecture visualization
@@ -336,8 +337,8 @@ python scripts/project_architect.py . --output json
 
 ---
 
-## Getting Help
+## 获取帮助
 
-1. Run any script with `--help` for usage information
-2. Check reference documentation for detailed patterns and workflows
-3. Use `--verbose` flag for detailed explanations and recommendations
+1. 使用 `--help` 参数运行任何脚本以获取使用说明
+2. 查阅参考文档以了解详细的架构模式和工作流程
+3. 使用 `--verbose` 参数获取详细的解释和建议

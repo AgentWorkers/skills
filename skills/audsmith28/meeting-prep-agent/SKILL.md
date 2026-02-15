@@ -1,6 +1,6 @@
 ---
 name: meeting-prep
-description: Never walk into a meeting unprepared again. Your agent researches all attendees before calendar events—pulling LinkedIn profiles, recent company news, mutual connections, and conversation starters. Generates a briefing doc with talking points, icebreakers, and context so you show up informed and confident. Triggered automatically before meetings or on-demand. Configure research depth, advance timing, and output format. Walking into meetings blind is amateur hour—missed connections, generic small talk, zero leverage. Use when setting up meeting intelligence, researching specific attendees, generating pre-meeting briefs, or automating your prep workflow.
+description: 再也不要毫无准备地参加会议了。我们的智能助手会在会议日程确定之前，对所有参会者进行详细的背景调查——收集他们的 LinkedIn 个人资料、公司近期动态、彼此之间的联系信息，以及适合用于开场交流的话题。系统会生成一份包含讨论要点、破冰话题和会议背景信息的简报文件，让你能够充满自信地参加会议。该功能可以自动在会议开始前触发，也可以根据需要手动启动。你可以自定义调查的深度、提前准备的时间以及输出格式。毫无准备地参加会议简直就是“业余行为”：会错过重要的交流机会，只能进行一些泛泛而谈的闲聊，完全无法发挥自己的作用。这个工具非常适合用于收集会议相关信息、研究特定参会者的背景、生成会议前的简报，或者自动化你的准备工作流程。
 metadata:
   clawdbot:
     emoji: "🎯"
@@ -11,228 +11,127 @@ metadata:
         - GOOGLE_CALENDAR_ENABLED
 ---
 
-# Meeting Prep — Never Walk In Blind
+# 会议准备——切勿盲目参会
 
-**Walking into meetings unprepared is amateur hour.**
+**毫无准备地参加会议，只会显得你不够专业。**  
+你可能正忙于处理一连串的电话会议，根本没时间去了解会议室里的其他人。你只能选择一些泛泛的寒暄来打破沉默。但你可能忽略了这样一个事实：你要汇报的副总裁之前曾在你的理想客户公司工作过；你也没有注意到他们的公司刚刚筹集了5000万美元的资金——这些信息都会影响你的沟通效果。  
 
-You're juggling back-to-back calls, no time to research who's in the room. You default to generic small talk. You miss the fact that the VP you're pitching used to work at your dream client. You didn't see the news that their company just raised $50M. You fumble the connection.
+**“会议准备”功能可以解决这些问题。”** 在你参加会议之前，我们的代理会预先调查所有参会者的信息：他们的LinkedIn个人资料、公司背景、近期动态以及你们之间的共同联系点。系统还会生成一份包含讨论要点、破冰话题和背景信息的简报文件，让你能够带着充分的准备和自信进入会议。  
 
-**Meeting Prep fixes this.** Your agent researches every attendee before you join—LinkedIn profiles, company intel, recent news, mutual connections, conversation hooks. It generates a briefing doc with talking points, icebreakers, and context. You walk in informed, confident, and ready to connect.
+## 功能介绍：  
+- **自动触发**：在日历事件发生前自动启动准备流程（可配置提前时间）  
+- **调查参会者**：LinkedIn个人资料、职位、工作经历、近期活动  
+- **公司动态**：最新新闻、融资情况、产品发布、领导层变动  
+- **建立联系**：找出你们之间的共同联系人、共同兴趣点以及便于交流的话题  
+- **生成简报**：格式清晰、易于阅读的文档，包含讨论要点和破冰话题  
+- **按需查询**：可以即时查询特定人员或会议的详细信息  
 
-## What It Does
+**与其他工具的区别：**  
+大多数会议工具主要关注会议议程，而“会议准备”工具更注重了解参会者本身。在开口说话之前，先了解对方的情况至关重要。  
 
-- **Auto-triggers** before calendar events (configurable advance time)
-- **Researches attendees:** LinkedIn profiles, role, background, recent activity
-- **Company intelligence:** Recent news, funding, product launches, leadership changes
-- **Connection mapping:** Mutual contacts, shared interests, conversation hooks
-- **Generates brief:** Clean, scannable doc with talking points and icebreakers
-- **On-demand mode:** Research specific people or meetings instantly
+## 设置步骤：  
+1. 运行 `scripts/setup.sh` 命令以初始化配置和简报存储目录。  
+2. 编辑 `~/.config/meeting-prep/config.json` 文件，设置日历参数和调研偏好。  
+3. 确保已安装 `gog` 工具（用于与 Google 日历集成）。  
+4. 使用 `scripts/prep.sh "meeting-id-or-attendee-email" --dry-run` 命令进行测试。  
 
-**The difference:** Most meeting tools focus on *agendas*. Meeting Prep focuses on *people*. Know who you're talking to before you open your mouth.
+## 配置文件说明（`~/.config/meeting-prep/config.json`）：  
+- **日历设置**：需要监控的日历、事件筛选条件、提前通知时间  
+- **调研深度**：快速/标准/深入  
+- **数据来源**：LinkedIn、公司官网、新闻网站  
+- **输出格式**：Markdown、文本或 Telegram  
+- **交付渠道**：电子邮件、短信或其他指定方式  
+- **自动准备**：是否启用自动准备功能  
+- **时间阈值**：触发自动准备的事件条件  
+- **破冰话题**：交流风格（正式/随意/幽默）  
+- **其他选项**：更多个性化配置  
 
-## Setup
+## 相关脚本：  
+- `scripts/setup.sh`：初始化配置文件和简报生成目录  
+- `scripts/prep.sh`：按需查询特定会议的参会者信息  
+- `scripts/auto-prep.sh`：检查即将召开的日历事件并自动准备相关资料  
+- `scripts/brief.sh`：生成格式化的会议简报  
 
-1. Run `scripts/setup.sh` to initialize config and brief storage
-2. Edit `~/.config/meeting-prep/config.json` with calendar settings and research preferences
-3. Ensure `gog` skill is installed (for Google Calendar integration)
-4. Test with: `scripts/prep.sh "meeting-id-or-attendee-email" --dry-run`
+**自动准备工作流程：**  
+建议每2-4小时通过 cron 任务自动运行 `scripts/auto-prep.sh`：  
+1. 获取未来24-48小时内的日历事件  
+2. 筛选符合条件的事件（如外部参会者、会议时长超过15分钟等）  
+3. 检查是否已有相关简报（避免重复生成）  
+4. 调查每位参会者的相关信息  
+5. 生成包含参会者信息、公司背景、讨论要点和破冰话题的简报  
+6. 保存简报，并根据设置将其发送到指定渠道  
 
-## Config
+## 按需查询功能：  
+（此处为代码示例，具体实现细节未提供。）  
 
-Config lives at `~/.config/meeting-prep/config.json`. See `config.example.json` for full schema.
+## 简报内容结构：  
+生成的简报包含以下内容：  
 
-Key sections:
-- **calendar** — Which calendars to monitor, event filters, advance notice
-- **research** — Depth level (quick/standard/deep), data sources, focus areas
-- **output** — Format (markdown/text/telegram), delivery channel, storage location
-- **auto_prep** — Enable/disable automatic prep, time thresholds, event criteria
-- **icebreakers** — Tone preferences (professional/casual/witty), topic priorities
+**📋 会议概览**  
+- 会议标题、时间、时长、地点及链接  
+- 会议目的（自动识别或手动输入）  
 
-## Scripts
+**👥 参会者信息（每人）**  
+- 姓名、职位、公司信息  
+- 背景简介（教育背景、过往职位、工作年限）  
+- 最近动态（发布的文章、公司新闻）  
+- 共同联系人  
+- 便于交流的话题（如共同兴趣、近期取得的成就）  
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/setup.sh` | Initialize config and brief directories |
-| `scripts/prep.sh` | Research attendees for a specific meeting (on-demand) |
-| `scripts/auto-prep.sh` | Check upcoming calendar events and prep meetings that qualify |
-| `scripts/brief.sh` | Output formatted briefing doc for a meeting |
+**🏢 公司背景**  
+- 最新动态（融资情况、产品发布、领导层变动）  
+- 行业地位、竞争对手、面临的挑战  
+- 有助于交流的讨论要点  
 
-All scripts support `--dry-run` for testing without actually generating briefs.
+**💬 破冰话题与讨论要点**  
+- 为每位参会者准备的个性化开场白  
+- 可以提出的战略性问题  
+- 应避免的话题  
 
-## Auto-Prep Workflow
+**🎯 准备清单**  
+- 需要提及的关键内容  
+- 需要准备的问题  
+- 后续行动建议  
 
-Run `scripts/auto-prep.sh` on schedule (cron every 2-4h recommended). The workflow:
-1. Fetches upcoming calendar events (next 24-48h based on config)
-2. Filters for events matching criteria (external attendees, duration >15min, etc.)
-3. Checks if already prepped (dedup against brief history)
-4. Researches each attendee: web search for LinkedIn, company site, recent news
-5. Generates briefing doc with sections: Attendees, Company Context, Talking Points, Icebreakers
-6. Stores brief and optionally delivers to configured channel
+## 数据文件说明：  
+（此处为数据文件格式说明，具体内容未提供。）  
 
-## On-Demand Prep
+## 数据来源：  
+- LinkedIn 个人资料、公司官网、新闻文章  
+- 公司博客、新闻稿、LinkedIn 用户活动记录  
+- 日历元数据（如事件标题、描述、参会者列表）  
+- 可扩展功能：未来可能集成客户关系管理系统（CRM）和内部笔记  
 
-```bash
-# Research a specific meeting by calendar event ID
-scripts/prep.sh "meeting-id-from-calendar"
+## 隐私与伦理规范：  
+- **仅收集公开信息**：仅调研你计划会面的人员的公开资料  
+- **禁止未经授权的调研**：仅针对已确认的日历事件或明确请求进行准备  
+- **用户可随时选择退出**：在事件描述中添加 `#noprep` 即可取消准备  
+- **透明性**：简报会注明数据来源，让你了解代理的调查内容  
 
-# Research specific people by email
-scripts/prep.sh "john@acme.com,sarah@bigcorp.io"
+**专业提示：**  
+- **合理设置提前时间**：提前2-4小时最为合适  
+- **个性化破冰话题**：根据公司类型调整交流风格  
+- **审核简报内容**：代理负责调研，你负责补充个性化内容  
+- **反馈机制**：标记哪些简报有效，以便改进后续工作  
+- **结合使用其他工具**：结合 `Fellow/Hypercontext` 确定讨论内容，使用 “会议准备” 工具了解参会者背景  
 
-# Quick brief for imminent meeting
-scripts/prep.sh "john@acme.com" --format telegram --send
-```
+**示例简报：**  
+（此处为简报内容示例，实际内容未提供。）  
 
-## Brief Structure
+**适用场景：**  
+- **销售电话**：在汇报前了解潜在客户  
+- **投资者会议**：研究合作伙伴，了解他们的投资重点  
+- **新客户见面会**：提供背景信息，避免冷场  
+- **社交活动**：提前了解参会者信息  
+- **面试**：调研面试官背景  
+- **董事会会议**：在董事会成员加入前了解他们的背景  
 
-Generated briefs include:
-
-**📋 Meeting Overview**
-- Title, time, duration, location/link
-- Objective (auto-detected or manual)
-
-**👥 Attendees (per person)**
-- Name, title, company
-- Background highlights (education, previous roles, tenure)
-- Recent activity (posts, articles, company news)
-- Mutual connections (if detectable)
-- Conversation hooks (shared interests, recent wins)
-
-**🏢 Company Context**
-- Recent news (funding, launches, leadership changes)
-- Industry position, competitors, challenges
-- Relevant talking points
-
-**💬 Icebreakers & Talking Points**
-- Personalized conversation starters per attendee
-- Strategic questions to ask
-- Topics to avoid (if detected)
-
-**🎯 Your Prep Checklist**
-- Key things to mention
-- Questions to have ready
-- Follow-up actions
-
-## Data Files
-
-```
-~/.config/meeting-prep/
-├── config.json              # User configuration
-├── briefs/                  # Generated briefing docs
-│   ├── 2026-02-11-acme-intro.md
-│   └── 2026-02-15-bigcorp-pitch.md
-├── brief-history.json       # Dedup index (event → brief mapping)
-└── prep-log.json            # Prep run history
-```
-
-## Research Sources
-
-Meeting Prep uses:
-- **Web search:** LinkedIn profiles, company pages, news articles
-- **Web fetch:** Company blogs, press releases, LinkedIn activity
-- **Calendar metadata:** Event titles, descriptions, attendee lists (via gog)
-- **Future:** CRM integration, internal notes, past meeting context
-
-## Cron Setup Example
-
-```bash
-# Auto-prep upcoming meetings every 3 hours
-0 */3 * * * /Users/you/clawd/skills/meeting-prep/scripts/auto-prep.sh
-
-# Morning brief delivery (7 AM daily)
-0 7 * * * /Users/you/clawd/skills/meeting-prep/scripts/auto-prep.sh --morning-brief
-```
-
-## Privacy & Ethics
-
-- **Your data only:** Researches public info about people you're *scheduled* to meet
-- **No stalking:** Only preps for confirmed calendar events or explicit requests
-- **Opt-out friendly:** Skip specific events by adding `#noprep` to event description
-- **Transparent:** Briefs cite sources; you see what the agent found
-
-## Pro Tips
-
-- **Set advance time wisely:** 2-4 hours before works well (too early = stale, too late = useless)
-- **Customize icebreakers:** Adjust tone in config (corporate vs startup vs casual)
-- **Review briefs:** Agent does the research, you add the human touch
-- **Feedback loop:** Mark what worked in briefs to improve future prep
-- **Combine with agenda tools:** Use Fellow/Hypercontext for *what* to discuss, Meeting Prep for *who* you're discussing with
-
-## Example Brief
-
-```markdown
-# 🎯 Meeting Brief: Acme Corp Intro Call
-**When:** Today at 2:00 PM (30 min)  
-**Where:** Zoom (link in calendar)  
-**Objective:** Partnership exploration
-
-## 👥 Attendees
-
-### John Martinez — VP of Product, Acme Corp
-- **Background:** 8 years at Acme, prev. led product at DataFlow (acquired 2021)
-- **Education:** Stanford CS, MBA from Wharton
-- **Recent:** Posted on LinkedIn about AI integration challenges in SaaS (2 days ago)
-- **Hook:** Shares your interest in automation; Acme just launched API platform
-
-### Sarah Chen — Head of Partnerships, Acme Corp  
-- **Background:** Joined 6mo ago from Google Cloud partnerships
-- **Recent:** Spoke at SaaS Conference last week on strategic alliances
-- **Mutual:** Connected to Jamie Lee (your former colleague at XYZ)
-- **Hook:** Passionate about startups (angel investor, 5 companies)
-
-## 🏢 Company Context
-
-**Acme Corp** — B2B SaaS platform for workflow automation  
-- **Recent news:** Series B $50M (Jan 15), TechCrunch coverage
-- **Growth:** 200 → 350 employees in past year
-- **Challenges:** Scaling integrations (mentioned in John's post)
-- **Competitors:** Zapier, Make.com
-
-## 💬 Icebreakers & Talking Points
-
-**For John:**
-- "Saw your post on AI integration pain points—we've been tackling similar challenges"
-- Ask about the new API platform launch
-- Mention DataFlow (his prev. company) if relevant angle emerges
-
-**For Sarah:**
-- "Jamie Lee mentioned you were doing great things at Acme!"
-- Reference her SaaS Conference talk on alliances
-- Her startup/angel background = rapport opportunity
-
-**Strategic questions:**
-- What's driving the push for more integrations right now?
-- How do you typically evaluate partnership fit?
-- What's been your biggest challenge since the Series B?
-
-## 🎯 Your Prep Checklist
-
-- ✅ Review our partnership deck (focus on integration angle)
-- ✅ Have 2-3 customer stories ready (SaaS companies, automation wins)
-- ✅ Prepare questions about their API roadmap
-- ✅ Follow up: Connect with Sarah on LinkedIn post-call
-
----
-*Brief generated by Meeting Prep • Sources: LinkedIn, TechCrunch, Acme blog*
-```
-
-## When to Use Meeting Prep
-
-- **Sales calls:** Know your prospect before pitching
-- **Investor meetings:** Research partners, understand fund focus
-- **New client kickoffs:** Start with context, not cold
-- **Networking events:** Pre-game the attendee list
-- **Job interviews:** Research interviewers, not just the company
-- **Conference meetings:** Brief on everyone you're meeting at the event
-- **Board meetings:** Know new board members before they join
-
-## What Makes It Different
-
-- **People-first:** Most tools prep the *agenda*, this preps *the humans*
-- **Automated:** Runs in background, delivers briefs without you asking
-- **Contextual:** Not just LinkedIn stalking—connects dots, finds hooks
-- **Actionable:** Not a data dump—talking points you can actually use
-- **Respectful:** Public info only, ethically sourced, transparent
+**独特优势：**  
+- **以人为本**：其他工具多关注议程，而我们关注参会者本身  
+- **自动化处理**：在后台自动运行，无需人工干预  
+- **提供实用信息**：生成的简报包含可实际使用的讨论要点  
+- **尊重隐私**：仅使用公开信息，确保数据来源合法透明  
 
 ---
 
-**Stop walking into meetings blind.** Let your agent do the homework. You bring the human connection.
+**别再盲目参加会议了。** 让我们的代理帮你做好准备工作，让你在会议中展现出专业和热情的态度。

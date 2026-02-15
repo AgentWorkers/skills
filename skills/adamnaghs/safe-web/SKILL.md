@@ -1,18 +1,18 @@
 # safe-web
 
-Secure web fetch and search with **PromptGuard** scanning.
+使用 **PromptGuard** 进行安全的网页内容获取和搜索，并对其进行扫描。
 
-## Status
+## 状态
 
-✅ Working
+✅ 可用
 
-## Purpose
+## 目的
 
-Protects against prompt injection attacks hidden in web content before returning it to the AI. Wraps web fetching and searching with security scanning.
+在将网页内容返回给 AI 之前，保护系统免受隐藏在网页中的注入攻击。该工具会对网页内容的获取和搜索过程进行安全扫描。
 
-## Installation
+## 安装
 
-Requires [PromptGuard](https://clawhub.ai/seojoonkim/prompt-guard) and Python dependencies:
+需要 [PromptGuard](https://clawhub.ai/seojoonkim/prompt-guard) 以及 Python 相关依赖库：
 
 ```bash
 # Install PromptGuard first
@@ -23,11 +23,11 @@ pip3 install --break-system-packages -e .
 pip3 install --break-system-packages requests beautifulsoup4
 ```
 
-## Usage
+## 使用方法
 
-### Fetch Command
+### 获取网页内容
 
-Fetch a URL and scan the content:
+获取一个 URL 并扫描其内容：
 
 ```bash
 # Basic fetch
@@ -43,9 +43,9 @@ safe-web fetch https://example.com --json
 safe-web fetch https://example.com --strict
 ```
 
-### Search Command
+### 进行网页搜索
 
-Search the web and scan results:
+搜索网页并扫描搜索结果：
 
 ```bash
 # Basic search
@@ -58,56 +58,54 @@ safe-web search "stock market news" --count 10
 safe-web search "machine learning" --json
 ```
 
-## Exit Codes
+## 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 0 | Success - content/results are clean |
-| 1 | Error (network, parsing, etc.) |
-| 2 | Threat detected - content blocked |
+| 0 | 成功 - 内容/结果无问题 |
+| 1 | 错误（网络问题、解析问题等） |
+| 2 | 检测到威胁 - 内容被屏蔽 |
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-- `BRAVE_API_KEY` - API key for Brave Search (optional, enables search command)
-  - Get one at: https://brave.com/search/api/
+- `BRAVE_API_KEY` - Brave Search 的 API 密钥（可选，用于搜索功能）
+  - 可在以下地址获取：https://brave.com/search/api/
 
-### Symlink (Recommended)
+### 建立符号链接（推荐）
 
-Create a system-wide symlink so `safe-web` works from any directory:
+创建一个系统级的符号链接，以便在任何目录下都能直接使用 `safe-web`：
 
 ```bash
 sudo ln -s /home/linuxbrew/.openclaw/workspace/skills/safe-web/scripts/safe-web.py /usr/local/bin/safe-web
 ```
 
-After creating the symlink, you can use `safe-web` directly without specifying the full path.
+创建符号链接后，无需指定完整路径即可直接使用 `safe-web`。
 
-## How It Works
+## 工作原理
 
-### Fetch Flow
-1. Downloads URL content with requests
-2. Extracts text using BeautifulSoup (removes scripts, styles)
-3. Scans extracted text with PromptGuard
-4. Returns clean content or blocks with SHIELD report
+### 获取网页内容的过程
+1. 使用 `requests` 下载网页内容。
+2. 使用 `BeautifulSoup` 提取文本（同时移除脚本和样式）。
+3. 使用 PromptGuard 对提取的文本进行扫描。
+4. 返回干净的内容，或在检测到威胁时屏蔽相关内容，并附上详细的报告。
 
-### Search Flow
-1. Queries Brave Search API (requires API key)
-2. Scans each result title and description
-3. Filters out suspicious results
-4. Returns only clean results
+### 进行网页搜索的过程
+1. 调用 Brave Search API（需要 API 密钥）。
+2. 扫描每个搜索结果的标题和描述。
+3. 过滤掉可疑的结果。
+4. 仅返回干净的结果。
 
-## Security Model
+## 安全机制
 
-**Fail-closed:** If PromptGuard cannot be loaded or scanning fails, the tool reports an error rather than returning unverified content.
+- **失败处理机制**：如果 PromptGuard 无法加载或扫描失败，工具会报告错误，而不会返回未经验证的内容。
+- **内容净化**：在扫描之前会对 HTML 进行解析，并移除脚本和样式，以减少误报。
+- **禁止执行**：该工具仅用于获取和扫描网页内容，不会执行其中的 JavaScript 代码或任何命令。
 
-**Content sanitization:** HTML is parsed and scripts/styles are removed before scanning to reduce false positives.
+## 示例输出
 
-**No execution:** This tool only fetches and scans. It never executes JavaScript or runs commands found in web content.
-
-## Example Output
-
-### Clean Fetch
+### 清洁的获取结果
 ```
 Fetching: https://site.com/article
 Fetched 1523 characters
@@ -116,7 +114,7 @@ Scanning with PromptGuard...
 Article content here...
 ```
 
-### Blocked Content
+### 被屏蔽的内容
 ```
 Fetching: https://suspicious-site.com
 Fetched 2048 characters
@@ -138,7 +136,7 @@ Detected Patterns:
 Content from https://suspicious-site.com has been blocked.
 ```
 
-### Search Results
+### 搜索结果
 ```
 Searching: AI research
 Found 5 results, scanning...
@@ -154,41 +152,41 @@ Showing 3 clean results:
    Research and development for safe AI systems...
 ```
 
-## When to Use
+## 适用场景
 
-Use `safe-web` when:
-- Fetching content from untrusted URLs
-- Scraping web pages for analysis
-- Searching and processing web results
-- Any web content will enter the AI context window
+- 从不可信的 URL 获取内容时。
+- 用于抓取网页数据进行分析时。
+- 在将网页结果传递给 AI 处理时。
+- 任何可能进入 AI 界面的网页内容。
 
-Use standard `web_fetch`/`web_search` tools only for:
-- Trusted, known-safe domains
-- Internal documentation sites
-- When you explicitly want to bypass scanning
+**注意**：
+- 对于以下场景，请使用标准的 `web_fetch`/`web_search` 工具：
+  - 来自受信任的、已知安全的域名。
+  - 内部文档网站。
+  - 明确希望绕过安全扫描的情况。
 
-## Comparison with Native Tools
+## 与原生工具的比较
 
-| Feature | Native `web_fetch` | `safe-web fetch` |
+| 功能 | 原生 `web_fetch` | `safe-web` |
 |---------|-------------------|------------------|
-| Fetches HTML | ✅ | ✅ |
-| Extracts text | ✅ | ✅ |
-| Injection scanning | ❌ | ✅ |
-| JSON output | ✅ | ✅ |
-| Save to file | ❌ | ✅ |
-| Exit codes | 0/1 | 0/1/2 (security) |
+| 获取 HTML 内容 | ✅ | ✅ |
+| 提取文本 | ✅ | ✅ |
+| 检查注入攻击 | ❌ | ✅ |
+| 输出 JSON 格式 | ✅ | ✅ |
+| 保存到文件 | ❌ | ✅ |
+| 错误代码 | 0/1 | 0/1/2（表示安全状态） |
 
-## Dependencies
+## 所需依赖库
 
-- Python 3.8+
-- [PromptGuard 3.1.0+](https://clawhub.ai/seojoonkim/prompt-guard) (installed in workspace)
-- requests
-- beautifulsoup4
-- Brave Search API key (for search command)
+- Python 3.8 及以上版本
+- [PromptGuard 3.1.0 及以上版本](https://clawhub.ai/seojoonkim/prompt-guard)（需在工作区安装）
+- `requests` 库
+- `beautifulsoup4` 库
+- Brave Search 的 API 密钥（用于搜索功能）
 
-## Limitations
+## 限制条件
 
-- Search requires Brave API key (free tier available)
-- Fetch does not execute JavaScript (static HTML only)
-- Large pages may be truncated during text extraction
-- Network timeouts default to 30 seconds
+- 搜索功能需要 Brave Search 的 API 密钥（免费 tier 可用）。
+- 该工具不会执行 JavaScript 代码（仅处理静态 HTML）。
+- 大型网页在提取文本时可能会被截断。
+- 网络超时默认设置为 30 秒。

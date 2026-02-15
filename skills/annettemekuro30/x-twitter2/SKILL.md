@@ -1,25 +1,25 @@
 ---
 name: twitter-openclaw
-description: Interact with Twitter/X — read tweets, search, post, like, retweet, and manage your timeline.
+description: 与 Twitter/X 互动：阅读推文、进行搜索、发布推文、点赞、转发推文以及管理你的时间线。
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🐦‍⬛","skillKey":"twitter-openclaw","primaryEnv":"TWITTER_BEARER_TOKEN","requires":{"bins":["twclaw"],"env":["TWITTER_BEARER_TOKEN"]},"install":[{"id":"npm","kind":"node","package":"twclaw","bins":["twclaw"],"label":"Install twclaw (npm)"}]}}
 ---
 
 # twitter-openclaw 🐦‍⬛
 
-Interact with Twitter/X posts, timelines, and users from OpenClaw.
+这是一个用于与Twitter/X上的帖子、时间线以及用户进行交互的工具，通过OpenClaw实现。
 
-## Authentication
+## 认证
 
-Requires a Twitter API Bearer Token set as `TWITTER_BEARER_TOKEN`.
+需要设置一个Twitter API承载令牌（`TWITTER_BEARER_TOKEN`）。
 
-Optionally set `TWITTER_API_KEY` and `TWITTER_API_SECRET` for write operations (post, like, retweet).
+可选地，可以设置`TWITTER_API_KEY`和`TWITTER_API_SECRET`以执行写入操作（如发布、点赞、转发）。
 
-Run `twclaw auth-check` to verify credentials.
+运行`twclaw auth-check`来验证凭据。
 
-## Commands
+## 命令
 
-### Reading
+### 读取
 
 ```bash
 twclaw read <tweet-url-or-id>          # Read a single tweet with full metadata
@@ -29,7 +29,7 @@ twclaw user <@handle>                  # Show user profile info
 twclaw user-tweets <@handle> -n 20     # User's recent tweets
 ```
 
-### Timelines
+### 时间线
 
 ```bash
 twclaw home -n 20                      # Home timeline
@@ -37,7 +37,7 @@ twclaw mentions -n 10                  # Your mentions
 twclaw likes <@handle> -n 10           # User's liked tweets
 ```
 
-### Search
+### 搜索
 
 ```bash
 twclaw search "query" -n 10            # Search tweets
@@ -46,14 +46,14 @@ twclaw search "#trending" --recent     # Recent tweets only
 twclaw search "query" --popular        # Popular tweets only
 ```
 
-### Trending
+### 热门话题
 
 ```bash
 twclaw trending                        # Trending topics worldwide
 twclaw trending --woeid 23424977       # Trending in specific location
 ```
 
-### Posting
+### 发布
 
 ```bash
 twclaw tweet "hello world"                          # Post a tweet
@@ -62,7 +62,7 @@ twclaw quote <tweet-url-or-id> "interesting take"   # Quote tweet
 twclaw tweet "look at this" --media image.png        # Tweet with media
 ```
 
-### Engagement
+### 互动
 
 ```bash
 twclaw like <tweet-url-or-id>          # Like a tweet
@@ -73,7 +73,7 @@ twclaw bookmark <tweet-url-or-id>      # Bookmark a tweet
 twclaw unbookmark <tweet-url-or-id>    # Remove bookmark
 ```
 
-### Following
+### 关注
 
 ```bash
 twclaw follow <@handle>                # Follow user
@@ -82,7 +82,7 @@ twclaw followers <@handle> -n 20       # List followers
 twclaw following <@handle> -n 20       # List following
 ```
 
-### Lists
+### 列表
 
 ```bash
 twclaw lists                           # Your lists
@@ -91,7 +91,7 @@ twclaw list-add <list-id> <@handle>    # Add user to list
 twclaw list-remove <list-id> <@handle> # Remove user from list
 ```
 
-## Output Options
+## 输出选项
 
 ```bash
 --json          # JSON output
@@ -102,23 +102,23 @@ twclaw list-remove <list-id> <@handle> # Remove user from list
 --all           # Fetch all pages (use with caution)
 ```
 
-## Guidelines for OpenClaw
+## OpenClaw使用指南
 
-- When reading tweets, always show: author, handle, text, timestamp, engagement counts.
-- For threads, present tweets in chronological order.
-- When searching, summarize results concisely with key metrics.
-- Before posting/liking/retweeting, confirm the action with the user.
-- Rate limits apply — space out bulk operations.
-- Use `--json` when you need to process output programmatically.
+- 读取推文时，务必显示作者、用户名、推文内容、时间戳以及互动次数。
+- 对于话题帖，应按时间顺序显示推文。
+- 搜索结果时，用关键指标进行简洁总结。
+- 在发布、点赞或转发之前，请先确认用户的意愿。
+- 请遵守Twitter的速率限制，避免批量操作。
+- 如需程序化处理输出结果，请使用`--json`选项。
 
-## Troubleshooting
+## 故障排除
 
-### 401 Unauthorized
-Check that `TWITTER_BEARER_TOKEN` is set and valid.
+### 401 Unauthorized（未经授权）
+请检查`TWITTER_BEARER_TOKEN`是否已设置且有效。
 
-### 429 Rate Limited
-Wait and retry. Twitter API has strict rate limits per 15-minute window.
+### 429 Rate Limited（速率限制）
+请稍后重试。Twitter API对每个15分钟的时间窗口有严格的速率限制。
 
 ---
 
-**TL;DR**: Read, search, post, and engage on Twitter/X. Always confirm before write actions.
+**简而言之**：可以使用此工具在Twitter/X上阅读、搜索、发布内容并进行互动。执行写入操作前，请务必先确认用户的同意。

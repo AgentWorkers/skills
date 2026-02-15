@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由Telnix OpenAPI规范自动生成，请勿编辑。 -->
 
-# Telnyx Sip Integrations - Go
+# Telnyx Sip集成 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +38,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设`client`已按照上述方式初始化。
 
-## List all call recordings
+## 列出所有通话记录
 
-Returns a list of your call recordings.
+返回您的通话记录列表。
 
 `GET /recordings`
 
@@ -53,9 +54,9 @@ Returns a list of your call recordings.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a call recording
+## 获取通话记录
 
-Retrieves the details of an existing call recording.
+检索现有通话记录的详细信息。
 
 `GET /recordings/{recording_id}`
 
@@ -67,9 +68,9 @@ Retrieves the details of an existing call recording.
 	fmt.Printf("%+v\n", recording.Data)
 ```
 
-## Delete a call recording
+## 删除通话记录
 
-Permanently deletes a call recording.
+永久删除通话记录。
 
 `DELETE /recordings/{recording_id}`
 
@@ -81,9 +82,9 @@ Permanently deletes a call recording.
 	fmt.Printf("%+v\n", recording.Data)
 ```
 
-## Delete a list of call recordings
+## 删除通话记录列表
 
-Permanently deletes a list of call recordings.
+永久删除通话记录列表。
 
 `POST /recordings/actions/delete`
 
@@ -96,9 +97,9 @@ Permanently deletes a list of call recordings.
 	}
 ```
 
-## List all recording transcriptions
+## 列出所有通话转录记录
 
-Returns a list of your recording transcriptions.
+返回您的通话转录记录列表。
 
 `GET /recording_transcriptions`
 
@@ -110,9 +111,9 @@ Returns a list of your recording transcriptions.
 	fmt.Printf("%+v\n", recordingTranscriptions.Data)
 ```
 
-## Retrieve a recording transcription
+## 获取通话转录记录
 
-Retrieves the details of an existing recording transcription.
+检索现有通话转录记录的详细信息。
 
 `GET /recording_transcriptions/{recording_transcription_id}`
 
@@ -124,9 +125,9 @@ Retrieves the details of an existing recording transcription.
 	fmt.Printf("%+v\n", recordingTranscription.Data)
 ```
 
-## Delete a recording transcription
+## 删除通话转录记录
 
-Permanently deletes a recording transcription.
+永久删除通话转录记录。
 
 `DELETE /recording_transcriptions/{recording_transcription_id}`
 
@@ -138,9 +139,9 @@ Permanently deletes a recording transcription.
 	fmt.Printf("%+v\n", recordingTranscription.Data)
 ```
 
-## Retrieve a stored credential
+## 获取存储的凭据
 
-Returns the information about custom storage credentials.
+返回有关自定义存储凭据的信息。
 
 `GET /custom_storage_credentials/{connection_id}`
 
@@ -152,9 +153,9 @@ Returns the information about custom storage credentials.
 	fmt.Printf("%+v\n", customStorageCredential.ConnectionID)
 ```
 
-## Create a custom storage credential
+## 创建自定义存储凭据
 
-Creates a custom storage credentials configuration.
+创建自定义存储凭据配置。
 
 `POST /custom_storage_credentials/{connection_id}`
 
@@ -179,9 +180,9 @@ Creates a custom storage credentials configuration.
 	fmt.Printf("%+v\n", customStorageCredential.ConnectionID)
 ```
 
-## Update a stored credential
+## 更新存储的凭据
 
-Updates a stored custom credentials configuration.
+更新存储的自定义凭据配置。
 
 `PUT /custom_storage_credentials/{connection_id}`
 
@@ -206,9 +207,9 @@ Updates a stored custom credentials configuration.
 	fmt.Printf("%+v\n", customStorageCredential.ConnectionID)
 ```
 
-## Delete a stored credential
+## 删除存储的凭据
 
-Deletes a stored custom credentials configuration.
+删除存储的自定义凭据配置。
 
 `DELETE /custom_storage_credentials/{connection_id}`
 
@@ -219,9 +220,9 @@ Deletes a stored custom credentials configuration.
 	}
 ```
 
-## Retrieve stored Dialogflow Connection
+## 获取存储的Dialogflow连接信息
 
-Return details of the Dialogflow connection associated with the given CallControl connection.
+返回与给定CallControl连接关联的Dialogflow连接详细信息。
 
 `GET /dialogflow_connections/{connection_id}`
 
@@ -233,9 +234,9 @@ Return details of the Dialogflow connection associated with the given CallContro
 	fmt.Printf("%+v\n", dialogflowConnection.Data)
 ```
 
-## Create a Dialogflow Connection
+## 创建Dialogflow连接
 
-Save Dialogflow Credentiails to Telnyx, so it can be used with other Telnyx services.
+将Dialogflow凭据保存到Telnix，以便与其他Telnix服务一起使用。
 
 `POST /dialogflow_connections/{connection_id}`
 
@@ -264,9 +265,9 @@ Save Dialogflow Credentiails to Telnyx, so it can be used with other Telnyx serv
 	fmt.Printf("%+v\n", dialogflowConnection.Data)
 ```
 
-## Update stored Dialogflow Connection
+## 更新存储的Dialogflow连接
 
-Updates a stored Dialogflow Connection.
+更新存储的Dialogflow连接信息。
 
 `PUT /dialogflow_connections/{connection_id}`
 
@@ -295,9 +296,9 @@ Updates a stored Dialogflow Connection.
 	fmt.Printf("%+v\n", dialogflowConnection.Data)
 ```
 
-## Delete stored Dialogflow Connection
+## 删除存储的Dialogflow连接
 
-Deletes a stored Dialogflow Connection.
+删除存储的Dialogflow连接。
 
 `DELETE /dialogflow_connections/{connection_id}`
 
@@ -308,9 +309,9 @@ Deletes a stored Dialogflow Connection.
 	}
 ```
 
-## List all External Connections
+## 列出所有外部连接
 
-This endpoint returns a list of your External Connections inside the 'data' attribute of the response.
+此端点会返回响应中`data`属性内的所有外部连接列表。
 
 `GET /external_connections`
 
@@ -322,11 +323,11 @@ This endpoint returns a list of your External Connections inside the 'data' attr
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates an External Connection
+## 创建外部连接
 
-Creates a new External Connection based on the parameters sent in the request.
+根据请求中发送的参数创建新的外部连接。
 
-`POST /external_connections` — Required: `external_sip_connection`, `outbound`
+`POST /external_connections` — 必需参数：`external_sip_connection`, `outbound`
 
 ```go
 	externalConnection, err := client.ExternalConnections.New(context.TODO(), telnyx.ExternalConnectionNewParams{
@@ -339,9 +340,9 @@ Creates a new External Connection based on the parameters sent in the request.
 	fmt.Printf("%+v\n", externalConnection.Data)
 ```
 
-## Retrieve an External Connection
+## 获取外部连接信息
 
-Return the details of an existing External Connection inside the 'data' attribute of the response.
+返回响应中`data`属性内的现有外部连接详细信息。
 
 `GET /external_connections/{id}`
 
@@ -353,11 +354,11 @@ Return the details of an existing External Connection inside the 'data' attribut
 	fmt.Printf("%+v\n", externalConnection.Data)
 ```
 
-## Update an External Connection
+## 更新外部连接
 
-Updates settings of an existing External Connection based on the parameters of the request.
+根据请求的参数更新现有外部连接的设置。
 
-`PATCH /external_connections/{id}` — Required: `outbound`
+`PATCH /external_connections/{id}` — 必需参数：`outbound`
 
 ```go
 	externalConnection, err := client.ExternalConnections.Update(
@@ -375,9 +376,9 @@ Updates settings of an existing External Connection based on the parameters of t
 	fmt.Printf("%+v\n", externalConnection.Data)
 ```
 
-## Deletes an External Connection
+## 删除外部连接
 
-Permanently deletes an External Connection.
+永久删除外部连接。
 
 `DELETE /external_connections/{id}`
 
@@ -389,9 +390,9 @@ Permanently deletes an External Connection.
 	fmt.Printf("%+v\n", externalConnection.Data)
 ```
 
-## List all civic addresses and locations
+## 列出所有市民地址和位置信息
 
-Returns the civic addresses and locations from Microsoft Teams.
+从Microsoft Teams中返回市民地址和位置信息。
 
 `GET /external_connections/{id}/civic_addresses`
 
@@ -407,9 +408,9 @@ Returns the civic addresses and locations from Microsoft Teams.
 	fmt.Printf("%+v\n", civicAddresses.Data)
 ```
 
-## Retrieve a Civic Address
+## 获取市民地址信息
 
-Return the details of an existing Civic Address with its Locations inside the 'data' attribute of the response.
+返回现有市民地址的详细信息及其位置信息（包含在响应的`data`属性中）。
 
 `GET /external_connections/{id}/civic_addresses/{address_id}`
 
@@ -427,9 +428,9 @@ Return the details of an existing Civic Address with its Locations inside the 'd
 	fmt.Printf("%+v\n", civicAddress.Data)
 ```
 
-## Update a location's static emergency address
+## 更新位置的静态紧急地址
 
-`PATCH /external_connections/{id}/locations/{location_id}` — Required: `static_emergency_address_id`
+`PATCH /external_connections/{id}/locations/{location_id}` — 必需参数：`static_emergency_address_id`
 
 ```go
 	response, err := client.ExternalConnections.UpdateLocation(
@@ -446,9 +447,9 @@ Return the details of an existing Civic Address with its Locations inside the 'd
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all phone numbers
+## 列出所有电话号码
 
-Returns a list of all active phone numbers associated with the given external connection.
+返回与给定外部连接关联的所有活跃电话号码列表。
 
 `GET /external_connections/{id}/phone_numbers`
 
@@ -464,9 +465,9 @@ Returns a list of all active phone numbers associated with the given external co
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a phone number
+## 获取电话号码信息
 
-Return the details of a phone number associated with the given external connection.
+返回与给定外部连接关联的电话号码的详细信息。
 
 `GET /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -484,9 +485,9 @@ Return the details of a phone number associated with the given external connecti
 	fmt.Printf("%+v\n", phoneNumber.Data)
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
-Asynchronously update settings of the phone number associated with the given external connection.
+异步更新与给定外部连接关联的电话号码设置。
 
 `PATCH /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -504,9 +505,9 @@ Asynchronously update settings of the phone number associated with the given ext
 	fmt.Printf("%+v\n", phoneNumber.Data)
 ```
 
-## List all Releases
+## 列出所有发布记录
 
-Returns a list of your Releases for the given external connection.
+返回与给定外部连接关联的所有发布记录列表。
 
 `GET /external_connections/{id}/releases`
 
@@ -522,9 +523,9 @@ Returns a list of your Releases for the given external connection.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a Release request
+## 获取发布请求信息
 
-Return the details of a Release request and its phone numbers.
+返回发布请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/releases/{release_id}`
 
@@ -542,9 +543,9 @@ Return the details of a Release request and its phone numbers.
 	fmt.Printf("%+v\n", release.Data)
 ```
 
-## List all Upload requests
+## 列出所有上传请求
 
-Returns a list of your Upload requests for the given external connection.
+返回与给定外部连接关联的所有上传请求列表。
 
 `GET /external_connections/{id}/uploads`
 
@@ -560,11 +561,11 @@ Returns a list of your Upload requests for the given external connection.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates an Upload request
+## 创建上传请求
 
-Creates a new Upload request to Microsoft teams with the included phone numbers.
+创建新的上传请求并关联电话号码。
 
-`POST /external_connections/{id}/uploads` — Required: `number_ids`
+`POST /external_connections/{id}/uploads` — 必需参数：`number_ids`
 
 ```go
 	upload, err := client.ExternalConnections.Uploads.New(
@@ -580,9 +581,9 @@ Creates a new Upload request to Microsoft teams with the included phone numbers.
 	fmt.Printf("%+v\n", upload.TicketID)
 ```
 
-## Refresh the status of all Upload requests
+## 刷新所有上传请求的状态
 
-Forces a recheck of the status of all pending Upload requests for the given external connection in the background.
+强制重新检查给定外部连接的所有待处理上传请求的状态。
 
 `POST /external_connections/{id}/uploads/refresh`
 
@@ -594,9 +595,9 @@ Forces a recheck of the status of all pending Upload requests for the given exte
 	fmt.Printf("%+v\n", response.Success)
 ```
 
-## Get the count of pending upload requests
+## 获取待处理上传请求的数量
 
-Returns the count of all pending upload requests for the given external connection.
+返回给定外部连接的所有待处理上传请求的数量。
 
 `GET /external_connections/{id}/uploads/status`
 
@@ -608,9 +609,9 @@ Returns the count of all pending upload requests for the given external connecti
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve an Upload request
+## 获取上传请求详细信息
 
-Return the details of an Upload request and its phone numbers.
+返回上传请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/uploads/{ticket_id}`
 
@@ -628,9 +629,9 @@ Return the details of an Upload request and its phone numbers.
 	fmt.Printf("%+v\n", upload.Data)
 ```
 
-## Retry an Upload request
+## 重试上传请求
 
-If there were any errors during the upload process, this endpoint will retry the upload request.
+如果上传过程中出现错误，此端点将重试上传请求。
 
 `POST /external_connections/{id}/uploads/{ticket_id}/retry`
 
@@ -648,9 +649,9 @@ If there were any errors during the upload process, this endpoint will retry the
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all log messages
+## 列出所有日志消息
 
-Retrieve a list of log messages for all external connections associated with your account.
+检索与您的账户关联的所有外部连接的日志消息列表。
 
 `GET /external_connections/log_messages`
 
@@ -662,9 +663,9 @@ Retrieve a list of log messages for all external connections associated with you
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a log message
+## 获取日志消息
 
-Retrieve a log message for an external connection associated with your account.
+检索与您的账户关联的特定外部连接的日志消息。
 
 `GET /external_connections/log_messages/{id}`
 
@@ -676,9 +677,9 @@ Retrieve a log message for an external connection associated with your account.
 	fmt.Printf("%+v\n", logMessage.LogMessages)
 ```
 
-## Dismiss a log message
+## 删除日志消息
 
-Dismiss a log message for an external connection associated with your account.
+删除与您的账户关联的特定外部连接的日志消息。
 
 `DELETE /external_connections/log_messages/{id}`
 
@@ -690,9 +691,9 @@ Dismiss a log message for an external connection associated with your account.
 	fmt.Printf("%+v\n", response.Success)
 ```
 
-## Refresh Operator Connect integration
+## 刷新Operator Connect集成
 
-This endpoint will make an asynchronous request to refresh the Operator Connect integration with Microsoft Teams for the current user.
+此端点将异步请求以刷新当前用户与Microsoft Teams的Operator Connect集成。
 
 `POST /operator_connect/actions/refresh`
 
@@ -704,9 +705,9 @@ This endpoint will make an asynchronous request to refresh the Operator Connect 
 	fmt.Printf("%+v\n", response.Message)
 ```
 
-## List uploaded media
+## 列出上传的媒体文件
 
-Returns a list of stored media files.
+返回存储的媒体文件列表。
 
 `GET /media`
 
@@ -718,11 +719,11 @@ Returns a list of stored media files.
 	fmt.Printf("%+v\n", media.Data)
 ```
 
-## Upload media
+## 上传媒体文件
 
-Upload media file to Telnyx so it can be used with other Telnyx services
+将媒体文件上传到Telnix，以便与其他Telnix服务一起使用。
 
-`POST /media` — Required: `media_url`
+`POST /media` — 必需参数：`media_url`
 
 ```go
 	response, err := client.Media.Upload(context.TODO(), telnyx.MediaUploadParams{
@@ -734,9 +735,9 @@ Upload media file to Telnyx so it can be used with other Telnyx services
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve stored media
+## 获取存储的媒体文件信息
 
-Returns the information about a stored media file.
+返回存储的媒体文件详细信息。
 
 `GET /media/{media_name}`
 
@@ -748,9 +749,9 @@ Returns the information about a stored media file.
 	fmt.Printf("%+v\n", media.Data)
 ```
 
-## Update stored media
+## 更新存储的媒体文件
 
-Updates a stored media file.
+更新存储的媒体文件。
 
 `PUT /media/{media_name}`
 
@@ -766,9 +767,9 @@ Updates a stored media file.
 	fmt.Printf("%+v\n", media.Data)
 ```
 
-## Deletes stored media
+## 删除存储的媒体文件
 
-Deletes a stored media file.
+删除存储的媒体文件。
 
 `DELETE /media/{media_name}`
 
@@ -779,16 +780,9 @@ Deletes a stored media file.
 	}
 ```
 
-## Download stored media
+## 下载存储的媒体文件
 
-Downloads a stored media file.
+下载存储的媒体文件。
 
 `GET /media/{media_name}/download`
-
-```go
-	response, err := client.Media.Download(context.TODO(), "media_name")
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Printf("%+v\n", response)
 ```

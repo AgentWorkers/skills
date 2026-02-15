@@ -1,81 +1,82 @@
 ---
 name: focus-mode
-description: Help users stay focused on a specific goal or task. Activate with "/focus <goal>" to set a focus target. Monitors conversation for drift and gently redirects back to the focus area. Use when user wants accountability, has ADHD-style workflows, tends to go down rabbit holes, or explicitly asks to stay on track. Deactivate with "/focus off".
+description: 帮助用户专注于特定的目标或任务。使用 “/focus <目标>” 来设置关注目标。监控对话内容，若发现用户偏离主题，会适时引导他们回到关注范围内。适用于用户需要自我约束、具有类似注意力缺陷多动障碍（ADHD）的工作方式、容易走神，或明确要求保持专注的情况。使用 “/focus off” 可关闭该功能。
 ---
 
-# Focus Mode
+# 专注模式
 
-Keep users on track toward their stated goal by detecting conversation drift and providing gentle nudges.
+通过检测对话的偏离，并提供温和的提示，帮助用户保持对目标的关注。
 
-## Activation
+## 激活模式
 
-When user says `/focus <goal>`:
-1. Store the focus goal in `~/.config/clawdbot-focus/current.json`
-2. Acknowledge: "ð¯ Focus mode ON: *{goal}*. I'll help keep you on track."
-3. Note the start time
+当用户输入 `/focus <目标>` 时：
+1. 将专注目标存储到 `~/.config/clawdbot-focus/current.json` 文件中。
+2. 回应用户：“专注模式已开启：*{目标}*。我会帮助你保持专注。”
+3. 记录开始时间。
 
-When user says `/focus off` or `/focus done`:
-1. Calculate session duration and drift stats
-2. Show summary: time spent, tangents parked, redirects given
-3. Clear the focus state
+当用户输入 `/focus off` 或 `/focus done` 时：
+1. 计算会话时长及偏离情况。
+2. 显示总结：花费的时间、偏离的讨论内容以及提供的其他建议。
+3. 清除专注状态。
 
-When user says `/focus` (no args):
-1. Show current focus if active, or prompt to set one
+当用户再次输入 `/focus`（不带参数）时：
+1. 如果专注模式已开启，显示当前专注目标；否则提示用户设置一个目标。
 
-## Drift Detection
+## 偏离检测
 
-After each user message, evaluate:
+在用户每发送一条消息后，进行以下判断：
 
-**On-topic signals:**
-- Directly relates to the focus goal
-- Asks for help with a subtask of the goal
-- Reports progress on the goal
-- Asks clarifying questions about the goal
+**与目标相关的信号：**
+- 直接关联到专注目标
+- 请求帮助完成目标的某个子任务
+- 报告目标的进展
+- 提出关于目标的澄清问题
 
-**Drift signals:**
-- Completely unrelated topic introduced
-- Deep dive into tangent that doesn't serve the goal
-- Scope creep ("while we're at it, let's also...")
-- Procrastination patterns ("actually, first let me...")
+**偏离目标的信号：**
+- 引入完全不相关的主题
+- 深入讨论与目标无关的内容
+- 范围扩大（例如：“既然提到了这个，我们也顺便……”）
+- 拖延行为（例如：“其实，我先……”）
 
-## Response Patterns
+## 响应方式
 
-**Light drift (related but tangential):**
-- Continue helping, but add: "*(Noting this as a side thread â we can circle back after {goal})*"
+**轻微偏离（相关但偏离主题）：**
+- 继续提供帮助，同时说明：“将这个讨论暂时搁置——我们可以在完成 *{目标}* 后再回到这个话题。”
 
-**Medium drift (unrelated topic):**
-- Help briefly, then: "Want me to park this for later? Still have *{goal}* on deck."
+**中度偏离（不相关主题）：**
+- 简短地提供帮助，然后提示用户：“需要我稍后处理这个话题吗？你的主要目标仍然是 *{目标}*。”
 
-**Heavy drift (extended tangent, 3+ exchanges off-topic):**
-- Direct but kind: "We've drifted a bit from *{goal}*. Ready to refocus, or is this tangent worth pursuing?"
+**严重偏离（偏离主题的讨论持续超过3次）：**
+- 直截了当地提醒用户：“我们有点偏离了 *{目标}*。你想重新回到目标上，还是继续讨论这个无关的话题？”
 
-**Time-based nudge (30+ min on tangent):**
-- "You've been on this for a while. Still serving the main goal, or should we context-switch back?"
+**基于时间的提醒（偏离目标超过30分钟）：**
+- “你已经讨论这个话题一段时间了。这仍然有助于实现主要目标，还是我们应该切换回目标呢？”
 
-## Parking Lot
+## 讨论内容的存储
 
-When user says "park this" or you suggest parking a tangent:
-1. Append to `~/.config/clawdbot-focus/parked.json`: `{topic, timestamp, context}`
-2. Confirm: "Parked: *{topic}*. Will remind you after focus session."
+当用户输入 “park this” 或你建议用户暂时搁置某个讨论话题时：
+1. 将该话题及其讨论时间记录到 `~/.config/clawdbot-focus/parked.json` 文件中：`{话题, 时间戳, 讨论内容}`。
+2. 确认用户的操作：“已将 *{话题}* 搁置。专注模式结束后会提醒你。”
 
-After `/focus off`, list parked items:
+在用户输入 `/focus off` 之后，会列出所有被暂时搁置的讨论话题：
+
 ```
 ð Parked tangents:
 â¢ Research that API library (from 20min ago)
 â¢ Check Discord notification settings
 ```
 
-## Tone Modes
+## 语气设置
 
-User can set tone with `/focus tone <mode>`:
+用户可以通过 `/focus tone <语气>` 来设置对话的语气：
+- **温和**（默认值）：提出温和的建议，不会打断用户的思路。
+- **严格**：语气更直接，对偏离主题的讨论限制更多。
+- **有时间压力**：会提醒用户剩余的时间（例如：“你之前说要在晚上9点前完成，现在已经是8:30了。”）
 
-- **gentle** (default): Soft suggestions, doesn't interrupt flow
-- **strict**: More direct, shorter leash on tangents  
-- **accountability**: Includes time pressure ("You said by 9pm, it's 8:30")
+## 状态文件格式
 
-## State File Format
+`~/.config/clawdbot-focus/current.json` 文件用于存储当前的专注状态信息：
 
-`~/.config/clawdbot-focus/current.json`:
 ```json
 {
   "goal": "Ship Alithos news page",
@@ -87,9 +88,10 @@ User can set tone with `/focus tone <mode>`:
 }
 ```
 
-## Session Summary
+## 会话总结
 
-On `/focus off` or `/focus done`:
+在用户输入 `/focus off` 或 `/focus done` 时，系统会生成会话总结：
+
 ```
 ð¯ Focus session complete!
 
@@ -102,9 +104,9 @@ Parked: 2 tangents
 Nice work staying focused! ð
 ```
 
-## Integration Notes
+## 集成说明
 
-- Works alongside other skills â doesn't block anything
-- Drift detection runs passively, doesn't slow responses
-- State persists across session restarts via JSON file
-- Can be combined with Pomodoro-style timers if user requests
+- 该功能可以与其他技能同时使用，不会干扰其他功能的运行。
+- 偏离检测是被动进行的，不会影响系统的响应速度。
+- 会话状态会通过 JSON 文件在会话重启后继续保留。
+- 如果用户需要，该功能也可以与 Pomodoro 风格的计时器结合使用。

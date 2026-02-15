@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Ai Inference - Python
+# Telnyx AI 推理 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List conversations
+## 列出对话记录
 
-Retrieve a list of all AI conversations configured by the user.
+检索用户配置的所有 AI 对话记录。
 
 `GET /ai/conversations`
 
@@ -44,9 +45,9 @@ conversations = client.ai.conversations.list()
 print(conversations.data)
 ```
 
-## Create a conversation
+## 创建对话记录
 
-Create a new AI Conversation.
+创建一个新的 AI 对话记录。
 
 `POST /ai/conversations`
 
@@ -55,9 +56,9 @@ conversation = client.ai.conversations.create()
 print(conversation.id)
 ```
 
-## Get Insight Template Groups
+## 获取洞察模板组
 
-Get all insight groups
+获取所有洞察模板组。
 
 `GET /ai/conversations/insight-groups`
 
@@ -67,11 +68,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create Insight Template Group
+## 创建洞察模板组
 
-Create a new insight group
+创建一个新的洞察模板组。
 
-`POST /ai/conversations/insight-groups` — Required: `name`
+`POST /ai/conversations/insight-groups` — 必需参数：`name`
 
 ```python
 insight_template_group_detail = client.ai.conversations.insight_groups.insight_groups(
@@ -80,9 +81,9 @@ insight_template_group_detail = client.ai.conversations.insight_groups.insight_g
 print(insight_template_group_detail.data)
 ```
 
-## Get Insight Template Group
+## 获取洞察模板组
 
-Get insight group by ID
+通过 ID 获取洞察模板组。
 
 `GET /ai/conversations/insight-groups/{group_id}`
 
@@ -93,9 +94,9 @@ insight_template_group_detail = client.ai.conversations.insight_groups.retrieve(
 print(insight_template_group_detail.data)
 ```
 
-## Update Insight Template Group
+## 更新洞察模板组
 
-Update an insight template group
+更新洞察模板组。
 
 `PUT /ai/conversations/insight-groups/{group_id}`
 
@@ -106,9 +107,9 @@ insight_template_group_detail = client.ai.conversations.insight_groups.update(
 print(insight_template_group_detail.data)
 ```
 
-## Delete Insight Template Group
+## 删除洞察模板组
 
-Delete insight group by ID
+通过 ID 删除洞察模板组。
 
 `DELETE /ai/conversations/insight-groups/{group_id}`
 
@@ -118,9 +119,9 @@ client.ai.conversations.insight_groups.delete(
 )
 ```
 
-## Assign Insight Template To Group
+## 将洞察模板分配给组
 
-Assign an insight to a group
+将某个洞察模板分配给一个组。
 
 `POST /ai/conversations/insight-groups/{group_id}/insights/{insight_id}/assign`
 
@@ -131,9 +132,9 @@ client.ai.conversations.insight_groups.insights.assign(
 )
 ```
 
-## Unassign Insight Template From Group
+## 从组中解除洞察模板的分配
 
-Remove an insight from a group
+从组中移除某个洞察模板。
 
 `DELETE /ai/conversations/insight-groups/{group_id}/insights/{insight_id}/unassign`
 
@@ -144,9 +145,9 @@ client.ai.conversations.insight_groups.insights.delete_unassign(
 )
 ```
 
-## Get Insight Templates
+## 获取洞察模板
 
-Get all insights
+获取所有洞察模板。
 
 `GET /ai/conversations/insights`
 
@@ -156,11 +157,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create Insight Template
+## 创建洞察模板
 
-Create a new insight
+创建一个新的洞察模板。
 
-`POST /ai/conversations/insights` — Required: `instructions`, `name`
+`POST /ai/conversations/insights` — 必需参数：`instructions`, `name`
 
 ```python
 insight_template_detail = client.ai.conversations.insights.create(
@@ -170,9 +171,9 @@ insight_template_detail = client.ai.conversations.insights.create(
 print(insight_template_detail.data)
 ```
 
-## Get Insight Template
+## 获取洞察模板
 
-Get insight by ID
+通过 ID 获取某个洞察模板。
 
 `GET /ai/conversations/insights/{insight_id}`
 
@@ -183,9 +184,9 @@ insight_template_detail = client.ai.conversations.insights.retrieve(
 print(insight_template_detail.data)
 ```
 
-## Update Insight Template
+## 更新洞察模板
 
-Update an insight template
+更新某个洞察模板。
 
 `PUT /ai/conversations/insights/{insight_id}`
 
@@ -196,9 +197,9 @@ insight_template_detail = client.ai.conversations.insights.update(
 print(insight_template_detail.data)
 ```
 
-## Delete Insight Template
+## 删除洞察模板
 
-Delete insight by ID
+通过 ID 删除某个洞察模板。
 
 `DELETE /ai/conversations/insights/{insight_id}`
 
@@ -208,9 +209,9 @@ client.ai.conversations.insights.delete(
 )
 ```
 
-## Get a conversation
+## 获取对话记录
 
-Retrieve a specific AI conversation by its ID.
+通过 ID 获取特定的 AI 对话记录。
 
 `GET /ai/conversations/{conversation_id}`
 
@@ -221,9 +222,9 @@ conversation = client.ai.conversations.retrieve(
 print(conversation.data)
 ```
 
-## Update conversation metadata
+## 更新对话元数据
 
-Update metadata for a specific conversation.
+更新特定对话记录的元数据。
 
 `PUT /ai/conversations/{conversation_id}`
 
@@ -234,9 +235,9 @@ conversation = client.ai.conversations.update(
 print(conversation.data)
 ```
 
-## Delete a conversation
+## 删除对话记录
 
-Delete a specific conversation by its ID.
+通过 ID 删除特定的对话记录。
 
 `DELETE /ai/conversations/{conversation_id}`
 
@@ -246,9 +247,9 @@ client.ai.conversations.delete(
 )
 ```
 
-## Get insights for a conversation
+## 获取对话记录的洞察信息
 
-Retrieve insights for a specific conversation
+检索特定对话记录的洞察信息。
 
 `GET /ai/conversations/{conversation_id}/conversations-insights`
 
@@ -259,11 +260,11 @@ response = client.ai.conversations.retrieve_conversations_insights(
 print(response.data)
 ```
 
-## Create Message
+## 创建消息
 
-Add a new message to the conversation.
+向对话记录中添加新消息。
 
-`POST /ai/conversations/{conversation_id}/message` — Required: `role`
+`POST /ai/conversations/{conversation_id}/message` — 必需参数：`role`
 
 ```python
 client.ai.conversations.add_message(
@@ -272,9 +273,9 @@ client.ai.conversations.add_message(
 )
 ```
 
-## Get conversation messages
+## 获取对话记录中的消息
 
-Retrieve messages for a specific conversation, including tool calls made by the assistant.
+检索特定对话记录中的所有消息，包括助手执行的操作。
 
 `GET /ai/conversations/{conversation_id}/messages`
 
@@ -285,9 +286,9 @@ messages = client.ai.conversations.messages.list(
 print(messages.data)
 ```
 
-## Get Tasks by Status
+## 根据状态获取任务
 
-Retrieve tasks for the user that are either `queued`, `processing`, `failed`, `success` or `partial_success` based on the query string.
+根据查询字符串，检索用户的所有任务（状态包括：`queued`, `processing`, `failed`, `success`, `partial_success`）。
 
 `GET /ai/embeddings`
 
@@ -296,11 +297,11 @@ embeddings = client.ai.embeddings.list()
 print(embeddings.data)
 ```
 
-## Embed documents
+## 嵌入文档
 
-Perform embedding on a Telnyx Storage Bucket using an embedding model.
+使用嵌入模型对 Telnyx 存储桶中的文档进行嵌入处理。
 
-`POST /ai/embeddings` — Required: `bucket_name`
+`POST /ai/embeddings` — 必需参数：`bucket_name`
 
 ```python
 embedding_response = client.ai.embeddings.create(
@@ -309,9 +310,9 @@ embedding_response = client.ai.embeddings.create(
 print(embedding_response.data)
 ```
 
-## List embedded buckets
+## 列出嵌入桶
 
-Get all embedding buckets for a user.
+获取用户的所有嵌入桶。
 
 `GET /ai/embeddings/buckets`
 
@@ -320,9 +321,9 @@ buckets = client.ai.embeddings.buckets.list()
 print(buckets.data)
 ```
 
-## Get file-level embedding statuses for a bucket
+## 获取桶的文件级嵌入状态
 
-Get all embedded files for a given user bucket, including their processing status.
+获取指定用户桶中的所有嵌入文件及其处理状态。
 
 `GET /ai/embeddings/buckets/{bucket_name}`
 
@@ -333,9 +334,9 @@ bucket = client.ai.embeddings.buckets.retrieve(
 print(bucket.data)
 ```
 
-## Disable AI for an Embedded Bucket
+## 禁用嵌入桶的 AI 功能
 
-Deletes an entire bucket's embeddings and disables the bucket for AI-use, returning it to normal storage pricing.
+删除整个桶的嵌入数据，并将其恢复为普通存储模式。
 
 `DELETE /ai/embeddings/buckets/{bucket_name}`
 
@@ -345,11 +346,11 @@ client.ai.embeddings.buckets.delete(
 )
 ```
 
-## Search for documents
+## 搜索文档
 
-Perform a similarity search on a Telnyx Storage Bucket, returning the most similar `num_docs` document chunks to the query.
+对 Telnyx 存储桶中的文档进行相似性搜索，返回与查询内容最相似的 `num_docs` 个文档片段。
 
-`POST /ai/embeddings/similarity-search` — Required: `bucket_name`, `query`
+`POST /ai/embeddings/similarity-search` — 必需参数：`bucket_name`, `query`
 
 ```python
 response = client.ai.embeddings.similarity_search(
@@ -359,11 +360,11 @@ response = client.ai.embeddings.similarity_search(
 print(response.data)
 ```
 
-## Embed URL content
+## 嵌入 URL 内容
 
-Embed website content from a specified URL, including child pages up to 5 levels deep within the same domain.
+从指定的 URL 嵌入网页内容（包括同一域名下的最多 5 层子页面）。
 
-`POST /ai/embeddings/url` — Required: `url`, `bucket_name`
+`POST /ai/embeddings/url` — 必需参数：`url`, `bucket_name`
 
 ```python
 embedding_response = client.ai.embeddings.url(
@@ -373,9 +374,9 @@ embedding_response = client.ai.embeddings.url(
 print(embedding_response.data)
 ```
 
-## Get an embedding task's status
+## 获取嵌入任务的状态
 
-Check the status of a current embedding task.
+检查当前嵌入任务的状态。
 
 `GET /ai/embeddings/{task_id}`
 
@@ -386,7 +387,9 @@ embedding = client.ai.embeddings.retrieve(
 print(embedding.data)
 ```
 
-## List all clusters
+## 列出所有集群
+
+获取所有集群信息。
 
 `GET /ai/clusters`
 
@@ -396,11 +399,11 @@ page = page.data[0]
 print(page.task_id)
 ```
 
-## Compute new clusters
+## 计算新集群
 
-Starts a background task to compute how the data in an [embedded storage bucket](https://developers.telnyx.com/api-reference/embeddings/embed-documents) is clustered.
+启动后台任务，对 [嵌入存储桶](https://developers.telnyx.com/api-reference/embeddings/embed-documents) 中的数据进行聚类分析。
 
-`POST /ai/clusters` — Required: `bucket`
+`POST /ai/clusters` — 必需参数：`bucket`
 
 ```python
 response = client.ai.clusters.compute(
@@ -409,7 +412,9 @@ response = client.ai.clusters.compute(
 print(response.data)
 ```
 
-## Fetch a cluster
+## 获取集群信息
+
+获取某个集群的详细信息。
 
 `GET /ai/clusters/{task_id}`
 
@@ -420,7 +425,9 @@ cluster = client.ai.clusters.retrieve(
 print(cluster.data)
 ```
 
-## Delete a cluster
+## 删除集群
+
+删除某个集群。
 
 `DELETE /ai/clusters/{task_id}`
 
@@ -430,7 +437,9 @@ client.ai.clusters.delete(
 )
 ```
 
-## Fetch a cluster visualization
+## 获取集群可视化信息
+
+获取某个集群的可视化图表。
 
 `GET /ai/clusters/{task_id}/graph`
 
@@ -443,9 +452,9 @@ content = response.read()
 print(content)
 ```
 
-## Transcribe speech to text
+## 将语音转录为文本
 
-Transcribe speech to text.
+将语音内容转录为文本。
 
 `POST /ai/audio/transcriptions`
 
@@ -456,11 +465,11 @@ response = client.ai.audio.transcribe(
 print(response.text)
 ```
 
-## Create a chat completion
+## 创建聊天完成结果
 
-Chat with a language model.
+使用语言模型生成聊天完成结果。
 
-`POST /ai/chat/completions` — Required: `messages`
+`POST /ai/chat/completions` — 必需参数：`messages`
 
 ```python
 response = client.ai.chat.create_completion(
@@ -475,9 +484,9 @@ response = client.ai.chat.create_completion(
 print(response)
 ```
 
-## List fine tuning jobs
+## 列出微调任务
 
-Retrieve a list of all fine tuning jobs created by the user.
+检索用户创建的所有微调任务。
 
 `GET /ai/fine_tuning/jobs`
 
@@ -486,11 +495,11 @@ jobs = client.ai.fine_tuning.jobs.list()
 print(jobs.data)
 ```
 
-## Create a fine tuning job
+## 创建微调任务
 
-Create a new fine tuning job.
+创建一个新的微调任务。
 
-`POST /ai/fine_tuning/jobs` — Required: `model`, `training_file`
+`POST /ai/fine_tuning/jobs` — 必需参数：`model`, `training_file`
 
 ```python
 fine_tuning_job = client.ai.fine_tuning.jobs.create(
@@ -500,9 +509,9 @@ fine_tuning_job = client.ai.fine_tuning.jobs.create(
 print(fine_tuning_job.id)
 ```
 
-## Get a fine tuning job
+## 获取微调任务信息
 
-Retrieve a fine tuning job by `job_id`.
+通过 `job_id` 获取某个微调任务的详细信息。
 
 `GET /ai/fine_tuning/jobs/{job_id}`
 
@@ -513,9 +522,9 @@ fine_tuning_job = client.ai.fine_tuning.jobs.retrieve(
 print(fine_tuning_job.id)
 ```
 
-## Cancel a fine tuning job
+## 取消微调任务
 
-Cancel a fine tuning job.
+取消某个微调任务。
 
 `POST /ai/fine_tuning/jobs/{job_id}/cancel`
 
@@ -526,9 +535,9 @@ fine_tuning_job = client.ai.fine_tuning.jobs.cancel(
 print(fine_tuning_job.id)
 ```
 
-## Get available models
+## 获取可用模型
 
-This endpoint returns a list of Open Source and OpenAI models that are available for use.
+此接口返回可用的开源模型和 OpenAI 模型列表。
 
 `GET /ai/models`
 
@@ -537,11 +546,11 @@ response = client.ai.retrieve_models()
 print(response.data)
 ```
 
-## Summarize file content
+## 概述文件内容
 
-Generate a summary of a file's contents.
+生成文件的摘要。
 
-`POST /ai/summarize` — Required: `bucket`, `filename`
+`POST /ai/summarize` — 必需参数：`bucket`, `filename`
 
 ```python
 response = client.ai.summarize(
@@ -549,4 +558,5 @@ response = client.ai.summarize(
     filename="filename",
 )
 print(response.data)
+```
 ```

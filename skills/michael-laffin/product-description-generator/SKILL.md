@@ -1,72 +1,70 @@
 ---
 name: product-description-generator
-description: Generate SEO-optimized product descriptions for e-commerce platforms (Amazon, Shopify, eBay, Etsy). Create compelling, conversion-focused copy with keywords, features, benefits, and calls-to-action. Use when creating product listings, optimizing existing descriptions, or generating bulk product copy.
+description: 为电子商务平台（如 Amazon、Shopify、eBay、Etsy）生成优化过 SEO 的产品描述。撰写具有吸引力的内容，重点突出产品的特性、优势以及购买呼吁（Call-to-Action），同时包含相关关键词。这些描述可用于创建新的产品列表、优化现有产品描述或批量生成产品文案。
 ---
 
-# Product Description Generator
+# 产品描述生成器
 
-## Overview
+## 概述
 
-Generate high-converting, SEO-optimized product descriptions for any e-commerce platform. Create compelling copy that drives sales while improving search visibility across multiple marketplaces.
+该工具能够为任何电子商务平台生成转化率高的、经过SEO优化的产品描述。生成的文案不仅能够促进销售，还能提升产品在多个市场平台的搜索排名。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Platform-Specific Optimization
+### 1. 平台特定优化
 
-**Supported Platforms:**
-- **Amazon** - Title, bullet points, description, search terms, backend keywords
-- **Shopify** - Product title, description, SEO meta data
-- **eBay** - Item title, description, item specifics, condition description
-- **Etsy** - Listing title, description, tags, materials, attributes
-- **Shopify/WooCommerce** - Product name, description, SEO elements
-- **Custom** - Flexible format for any platform
+**支持的平台：**
+- **亚马逊**：产品标题、项目符号列表、产品描述、搜索关键词、后端关键词
+- **Shopify**：产品标题、产品描述、SEO元数据
+- **eBay**：商品标题、商品描述、商品详细信息、商品状况描述
+- **Etsy**：商品列表标题、商品描述、标签、材料信息、属性
+- **Shopify/WooCommerce**：产品名称、产品描述、SEO相关元素
+- **自定义**：适用于任何平台的灵活格式
 
-### 2. SEO Optimization
+### 2. SEO优化
 
-**Automatically includes:**
-- Primary keyword placement (title, first paragraph)
-- Secondary keywords throughout content
-- Long-tail keyword variations
-- Semantic keywords and related terms
-- Optimized character counts for each platform
-- Meta descriptions and titles for SEO
+**自动包含的内容：**
+- 主要关键词的放置（标题、首段）
+- 文本中的次要关键词
+- 长尾关键词变体
+- 语义关键词及相关术语
+- 为每个平台优化字符长度
+- 用于SEO的元描述和标题
 
-### 3. Conversion-Focused Copy
+### 3. 以转化为导向的文案
 
-**Elements that drive sales:**
-- Benefit-oriented features (not just specs)
-- Emotional triggers and storytelling
-- Social proof integration
-- Urgency and scarcity elements
-- Clear value propositions
-- Strong calls-to-action
-- Objection handling
+**促进销售的元素：**
+- 以利益为导向的功能描述（而不仅仅是技术规格）
+- 情感诉求和故事化表达
+- 社交证明的整合
+- 紧迫感和稀缺性元素
+- 明确的价值主张
+- 强有力的呼吁行动（CTA）
 
-### 4. Structure Templates
+### 4. 结构模板
 
-**Product description structure:**
-1. **Hook** - Attention-grabbing opening
-2. **Problem/Agitation** - Address pain points
-3. **Solution** - How your product helps
-4. **Features → Benefits** - What it does and why it matters
-5. **Social Proof** - Reviews, testimonials, stats
-6. **Use Cases** - When/how to use the product
-7. **Specifications** - Technical details
-8. **FAQ** - Common questions answered
-9. **CTA** - Clear action to take
+**产品描述结构：**
+1. **吸引注意力**：开篇部分，吸引读者的注意力
+2. **问题/痛点**：指出用户的需求或困扰
+3. **解决方案**：说明产品如何帮助解决问题
+4. **功能 → 利益**：产品具体能做什么以及为什么重要
+5. **社会证明**：用户评价、推荐信、统计数据
+6. **使用场景**：产品的使用方法和时机
+7. **技术规格**：产品的技术细节
+8. **常见问题解答（FAQ）**：常见问题的解答
+9. **呼吁行动（CTA）**：明确的行动建议
 
-### 5. Bulk Generation
+### 5. 批量生成
 
-**Generate descriptions for:**
-- Multiple products from CSV
-- Product variations (colors, sizes, models)
-- A/B testing variations
-- Multiple platforms simultaneously
-- International markets (localization)
+**支持的功能：**
+- 从CSV文件生成多个产品描述
+- 生成产品的多种变体（颜色、尺寸、型号）
+- 同时针对多个平台进行A/B测试
+- 支持国际市场的本地化
 
-## Quick Start
+## 快速入门
 
-### Generate Amazon Listing
+### 生成亚马逊商品列表
 
 ```python
 # Use scripts/generate_description.py
@@ -79,7 +77,7 @@ python3 scripts/generate_description.py \
   --output amazon_listing.md
 ```
 
-### Generate Shopify Product Description
+### 生成Shopify产品描述
 
 ```python
 python3 scripts/generate_description.py \
@@ -91,7 +89,7 @@ python3 scripts/generate_description.py \
   --output shopify_description.md
 ```
 
-### Bulk Generate from CSV
+### 从CSV文件批量生成描述
 
 ```python
 # Use scripts/bulk_generate.py
@@ -101,7 +99,7 @@ python3 scripts/bulk_generate.py \
   --output-dir ./descriptions
 ```
 
-### Optimize Existing Description
+### 优化现有描述
 
 ```python
 # Use scripts/optimize_description.py
@@ -112,24 +110,24 @@ python3 scripts/optimize_description.py \
   --output optimized.md
 ```
 
-## Scripts
+## 脚本
 
 ### `generate_description.py`
-Generate product description for a single product.
+为单个产品生成产品描述。
 
-**Parameters:**
-- `--product` (required): Product name/title
-- `--platform` (required): Target platform
-- `--features`: Product features (comma-separated)
-- `--benefits`: Benefits/value proposition (comma-separated)
-- `--tone`: Tone preference (professional, conversational, playful, luxury)
-- `--target-audience`: Who is this for?
-- `--keywords`: SEO keywords (comma-separated)
-- `--include-faq`: Include FAQ section
-- `--include-specs`: Include specifications section
-- `--output`: Output file
+**参数：**
+- `--product`（必填）：产品名称/标题
+- `--platform`（必填）：目标平台
+- `--features`：产品特性（用逗号分隔）
+- `--benefits`：产品带来的好处/价值主张（用逗号分隔）
+- `--tone`：语气风格（专业、对话式、轻松、奢华）
+- `--target-audience`：目标受众
+- `--keywords`：SEO关键词（用逗号分隔）
+- `--include-faq`：是否包含FAQ部分
+- `--include-specs`：是否包含技术规格部分
+- `--output`：输出文件路径
 
-**Example:**
+**示例：**
 ```bash
 python3 scripts/generate_description.py \
   --product "Smart WiFi Thermostat" \
@@ -144,9 +142,9 @@ python3 scripts/generate_description.py \
 ```
 
 ### `bulk_generate.py`
-Generate descriptions for multiple products from CSV.
+从CSV文件生成多个产品的描述。
 
-**CSV Format:**
+**CSV文件格式：**
 ```csv
 product,features,benefits,tone,target_audience,keywords
 "Wireless Headphones","40hr battery,noise cancelling","clear audio,comfort","professional","audiophiles","headphones,bluetooth"
@@ -154,122 +152,122 @@ product,features,benefits,tone,target_audience,keywords
 "Smart Thermostat","energy saving,app control","lower bills,remote control","professional","homeowners","thermostat,smart home"
 ```
 
-**Parameters:**
-- `--csv`: Path to CSV file
-- `--platform`: Target platform (applies to all products)
-- `--output-dir`: Output directory
-- `--format`: Output format (markdown, html, csv)
+**参数：**
+- `--csv`：CSV文件路径
+- `--platform`：目标平台（适用于所有产品）
+- `--output-dir`：输出目录
+- `--format`：输出格式（markdown、html、csv）
 
 ### `optimize_description.py`
-Optimize an existing product description for SEO and conversions.
+优化现有产品描述的SEO效果和转化率。
 
-**Parameters:**
-- `--input`: Input file path
-- `--target-keyword`: Primary keyword to optimize for
-- `--platform`: Target platform
-- `add-cta`: Add strong call-to-action
-- `add-social-proof`: Add social proof placeholders
-- `output`: Output file
+**参数：**
+- `--input`：输入文件路径
+- `--target-keyword`：要优化的关键词
+- `--platform`：目标平台
+- `add-cta`：是否添加强烈的呼吁行动
+- `add-social-proof`：是否添加社交证明元素
+- `output`：输出文件路径
 
 ### `generate_variations.py`
-Generate A/B testing variations of a description.
+生成产品描述的A/B测试变体。
 
-**Parameters:**
-- `--input`: Base description file
-- `--variations`: Number of variations to generate (default: 3)
-- `--test-elements`: Elements to test (cta, hook, benefits)
-- `--output-dir`: Output directory
+**参数：**
+- `--input`：基础描述文件
+- `--variations`：要生成的变体数量（默认：3个）
+- `--test-elements`：要测试的元素（如呼吁行动、开头部分、好处描述）
+- `--output-dir`：输出目录
 
 ### `seo_analyzer.py`
-Analyze SEO score of product description.
+分析产品描述的SEO评分。
 
-**Parameters:**
-- `--input`: Description to analyze
-- `--target-keyword`: Primary keyword
-- `--platform`: Platform-specific analysis
-- `--output`: Analysis report
+**参数：**
+- `--input`：需要分析的描述内容
+- `--target-keyword`：目标关键词
+- `--platform`：具体平台
+- `--output`：分析报告
 
-## Platform-Specific Guidelines
+## 平台特定指南
 
-### Amazon
-- **Title:** 150-200 characters, primary keyword first
-- **Bullet Points:** 5-7 points, benefit-focused
-- **Description:** 2000-3000 characters, full product story
-- **Backend Keywords:** 250 bytes, comma-separated
-- **Style:** Professional, informative, detailed
+### 亚马逊
+- **标题：** 150-200个字符，包含主要关键词
+- **项目符号列表：** 5-7项，重点突出产品优势
+- **描述：** 2000-3000个字符，全面介绍产品特点
+- **后端关键词：** 250个字节，用逗号分隔
+- **风格：** 专业、信息丰富、详细
 
 ### Shopify
-- **Title:** 70 characters for optimal display
-- **Description:** 300-500 words, HTML supported
-- **Meta Description:** 155 characters for SEO
-- **Handle:** 75 characters max, SEO-friendly URL
-- **Style:** Brand-consistent, visual, lifestyle-oriented
+- **标题：** 70个字符，适合显示
+- **描述：** 300-500个单词，支持HTML格式
+- **元描述：** 155个字符，用于SEO优化
+- **链接处理：** 75个字符以内，适合SEO的链接格式
+- **风格：** 与品牌一致，注重视觉效果和生活方式相关
 
 ### eBay
-- **Title:** 80 characters optimal, include key details
-- **Description:** 500-1000 words, HTML allowed
-- **Item Specifics:** Fill all relevant fields
-- **Condition:** Clearly state condition
-- **Style:** Auction-style urgency, detailed specs
+- **标题：** 80个字符最佳，包含关键信息
+- **描述：** 500-1000个单词，支持HTML格式
+- **商品详细信息：** 填写所有相关字段
+- **商品状况：** 明确说明商品状况
+- **风格：** 强调紧迫感和详细的技术规格
 
 ### Etsy
-- **Title:** 140 characters, front-load keywords
-- **Description:** 500+ words, handmade story
-- **Tags:** 13 tags, 20 characters each
-- **Materials:** Accurate listing
-- **Style:** Personal, story-driven, handmade emphasis
+- **标题：** 140个字符，开头部分包含关键词
+- **描述：** 500多个单词，强调产品的手工制作特点
+- **标签：** 使用13个标签，每个标签20个字符
+- **材料信息：** 确保标签准确
+- **风格：** 强调产品的手工制作和独特性
 
-## Best Practices
+## 最佳实践
 
-### Write Benefits, Not Just Features
-- **Bad:** "40-hour battery life"
-- **Good:** "40-hour battery means you can listen for days without charging"
+### 描述产品的好处，而不仅仅是特性
+- **错误示例：** “电池续航40小时”
+- **正确示例：** “40小时的电池续航意味着您可以连续使用数天而无需充电”
 
-### Use Emotional Triggers
-- "Transform your daily routine"
-- "Experience the difference quality makes"
-- "Join thousands of satisfied customers"
+### 使用情感诉求
+- “改变您的日常生活”
+- “体验品质带来的不同”
+- “加入数千名满意客户的行列”
 
-### Include Social Proof
-- "Trusted by 10,000+ customers"
-- "4.8/5 star average rating"
-- "30-day money-back guarantee"
+### 添加社交证明
+- “获得10,000多名客户的信任”
+- “平均评分4.8/5”
+- **30天退款保证”
 
-### Handle Objections
-- "Worried about fit? We offer free returns"
-- "Not sure? Try it risk-free for 30 days"
-- "Questions? Our US-based support is here 24/7"
+### 处理潜在异议
+- “担心尺寸合适吗？我们提供免费退货服务”
+- “不确定吗？免费试用30天”
+- **有问题吗？我们的美国客服24/7随时为您服务”
 
-### Strong CTAs
-- "Order now and get free shipping"
-- "Limited stock - add to cart today"
-- "Join the thousands who upgraded their experience"
+### 强有力的呼吁行动（CTA）
+- “立即下单，享受免费配送”
+- **库存有限 - 今天就加入购物车**
+- “加入那些提升体验的数千用户行列”
 
-## Tone Guidelines
+## 语气风格指南
 
-### Professional
-- **Best for:** B2B, tech products, high-ticket items
-- **Characteristics:** Authoritative, data-driven, precise
-- **Example:** "Engineered for performance. Backed by science."
+### 专业风格
+- **适合：** B2B业务、高科技产品、高价值商品
+- **特点：** 权威性、数据支持、精确表述
+- **示例：** “专为高性能设计。基于科学验证。”
 
-### Conversational
-- **Best for:** Consumer products, lifestyle items
-- **Characteristics:** Friendly, relatable, personal
-- **Example:** "You're going to love how this fits into your daily routine."
+### 对话式风格
+- **适合：** 消费者产品、生活类商品
+- **特点：** 友善、易于理解、贴近用户
+- **示例：** “您会喜欢它如何融入您的日常生活。”
 
-### Playful
-- **Best for:** Trendy items, younger audiences
-- **Characteristics:** Fun, energetic, emoji-friendly
-- **Example:** "Ready to level up? Let's do this! 🚀"
+### 轻松幽默的风格
+- **适合：** 流行产品、年轻受众
+- **特点：** 有趣、充满活力、使用表情符号
+- **示例：** “准备好升级了吗？让我们一起行动吧！🚀”
 
-### Luxury
-- **Best for:** Premium products, jewelry, designer items
-- **Characteristics:** Elegant, exclusive, sophisticated
-- **Example:** "Experience unparalleled craftsmanship. A masterpiece of design."
+### 奢华风格
+- **适合：** 高端产品、珠宝、设计师作品
+- **特点：** 优雅、独特、精致
+- **示例：** “体验无与伦比的手工工艺。设计的杰作。”
 
-## Automation
+## 自动化功能
 
-### Daily Bulk Generation
+### 每日批量生成描述
 
 ```bash
 # Generate descriptions for all products in catalog
@@ -279,7 +277,7 @@ Analyze SEO score of product description.
   --output-dir /path/to/output
 ```
 
-### A/B Testing Automation
+### A/B测试自动化
 
 ```bash
 # Generate variations for top-selling products
@@ -289,39 +287,22 @@ Analyze SEO score of product description.
   --output-dir /path/to/ab-tests
 ```
 
-## Integration Opportunities
+## 集成机会
 
-### With SEO Article Generator
-```bash
-# 1. Generate SEO-optimized article
-seo-article-gen --keyword "wireless headphones review"
+- **与SEO文章生成器集成**  
+- **与评论总结工具集成**  
 
-# 2. Extract key benefits and features
-# 3. Generate product description
-product-description-generator --product "[name]" --features "[extracted]"
-```
-
-### With Review Summarizer
-```bash
-# 1. Analyze reviews for insights
-review-summarizer/scrape_reviews.py --url "[product_url]"
-
-# 2. Extract top pros/cons
-# 3. Generate description addressing cons
-product-description-generator --product "[name]" --benefits "[address cons]"
-```
-
-## Output Formats
+## 输出格式
 
 ### Markdown
-Best for documentation, CMS without HTML support, easy reading.
+**最适合：** 文档编写、不支持HTML的CMS系统，便于阅读。
 
 ### HTML
-Best for Amazon, Shopify, eBay - formatted with tags.
+**最适合：** 亚马逊、Shopify、eBay平台，支持使用标签格式。
 
 ### CSV
-Best for bulk upload, catalog management systems.
+**最适合：** 批量上传、目录管理系统。
 
 ---
 
-**Drive sales. Rank higher. Convert visitors.**
+**提升销售效果。提高搜索排名。转化访客。**

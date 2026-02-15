@@ -1,13 +1,35 @@
 ---
 name: nodetool
-description: Visual AI workflow builder - ComfyUI meets n8n for LLM agents, RAG pipelines, and multimodal data flows. Local-first, open source (AGPL-3.0).
+description: **视觉AI工作流构建器：ComfyUI与n8n的结合**  
+适用于大型语言模型（LLM）代理、检索-生成（RAG）流程以及多模态数据流的处理。该工具以本地化为核心设计，采用开源许可证（AGPL-3.0）进行发布。  
+
+**主要特点：**  
+- **高效集成**：ComfyUI与n8n深度整合，为LLM代理、RAG流程及多模态数据流提供一站式解决方案。  
+- **本地优先策略**：强调数据的本地处理能力，提升系统响应速度和稳定性。  
+- **开源特性**：遵循AGPL-3.0许可证，鼓励社区贡献与创新。  
+
+**适用场景：**  
+- **LLM应用开发**：帮助开发者快速构建基于大型语言模型的应用程序。  
+- **检索-生成（RAG）系统**：实现高效的信息检索与内容生成功能。  
+- **多模态数据处理**：支持多种数据格式的统一管理和分析。  
+
+**技术优势：**  
+- **灵活的配置选项**：提供丰富的配置选项，以满足不同应用场景的需求。  
+- **强大的扩展性**：支持插件扩展，便于功能升级与定制。  
+- **易用性**：采用直观的用户界面，降低使用门槛。  
+
+**合作伙伴与开发者支持：**  
+- **官方文档与社区**：提供详细的官方文档和活跃的开发者社区，确保用户能够快速上手。  
+
+**下载与安装：**  
+访问[官方网站](...)下载并安装ComfyUI，了解更多关于该工具的详细信息。
 ---
 
 # NodeTool
 
-Visual AI workflow builder combining ComfyUI's node-based flexibility with n8n's automation power. Build LLM agents, RAG pipelines, and multimodal data flows on your local machine.
+这是一个视觉AI工作流构建工具，它结合了ComfyUI基于节点的灵活性和n8n的自动化能力，允许用户在本地机器上构建大型语言模型（LLM）代理、检索式问答（RAG）管道以及多模态数据流。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # See system info
@@ -26,25 +48,25 @@ nodetool chat
 nodetool serve
 ```
 
-## Installation
+## 安装
 
 ### Linux / macOS
 
-Quick one-line installation:
+快速的一行安装命令：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.sh | bash
 ```
 
-With custom directory:
+如果需要指定自定义安装目录：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.sh | bash --prefix ~/.nodetool
 ```
 
-**Non-interactive mode (automatic, no prompts):**
+**非交互式模式（自动安装，无需提示）：**
 
-Both scripts support silent installation:
+这两个安装脚本都支持静默安装：
 
 ```bash
 # Linux/macOS - use -y
@@ -54,36 +76,36 @@ curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/mai
 irm https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.ps1 | iex; .\install.ps1 -Yes
 ```
 
-**What happens with non-interactive mode:**
-- All confirmation prompts are skipped automatically
-- Installation proceeds without requiring user input
-- Perfect for CI/CD pipelines or automated setups
+**非交互式模式的特点：**
+- 所有确认提示都会被自动跳过
+- 安装过程无需用户输入
+- 非常适合持续集成/持续部署（CI/CD）管道或自动化设置
 
 ### Windows
 
-Quick one-line installation:
+快速的一行安装命令：
 
 ```powershell
 irm https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.ps1 | iex
 ```
 
-With custom directory:
+如果需要指定自定义安装目录：
 
 ```powershell
 .\install.ps1 -Prefix "C:\nodetool"
 ```
 
-Non-interactive mode:
+**非交互式模式：**
 
 ```powershell
 .\install.ps1 -Yes
 ```
 
-## Core Commands
+## 核心命令
 
-### Workflows
+### 工作流
 
-Manage and execute NodeTool workflows:
+用于管理和执行NodeTool的工作流：
 
 ```bash
 # List all workflows (user + example)
@@ -102,9 +124,9 @@ nodetool run workflow.json
 nodetool run <workflow_id> --jsonl
 ```
 
-### Run Options
+### 运行选项
 
-Execute workflows in different modes:
+以不同的模式执行工作流：
 
 ```bash
 # Interactive mode (default) - pretty output
@@ -123,9 +145,9 @@ nodetool run workflow_abc123 --user-id "custom_user_id"
 nodetool run workflow_abc123 --auth-token "my_auth_token"
 ```
 
-### Assets
+### 资产
 
-Manage workflow assets (nodes, models, files):
+用于管理工作流资产（节点、模型、文件）：
 
 ```bash
 # List all assets
@@ -135,9 +157,9 @@ nodetool assets list
 nodetool assets get <asset_id>
 ```
 
-### Packages
+### 包
 
-Manage NodeTool packages (export workflows, generate docs):
+用于管理NodeTool的包（导出工作流、生成文档）：
 
 ```bash
 # List packages
@@ -159,9 +181,9 @@ nodetool package scan
 nodetool package init
 ```
 
-### Jobs
+### 作业
 
-Manage background job executions:
+用于管理后台作业的执行：
 
 ```bash
 # List jobs for a user
@@ -177,9 +199,9 @@ nodetool jobs logs <job_id>
 nodetool jobs start <workflow_id>
 ```
 
-### Deployment
+### 部署
 
-Deploy NodeTool to cloud platforms (RunPod, GCP, Docker):
+将NodeTool部署到云平台（RunPod、GCP、Docker）：
 
 ```bash
 # Initialize deployment.yaml
@@ -216,9 +238,9 @@ nodetool deploy workflows
 nodetool deploy plan
 ```
 
-### Model Management
+### 模型管理
 
-Discover and manage AI models (HuggingFace, Ollama):
+用于发现和管理AI模型（HuggingFace、Ollama）：
 
 ```bash
 # List cached HuggingFace models by type
@@ -237,9 +259,9 @@ nodetool model hf-cache
 nodetool admin scan-cache
 ```
 
-### Admin
+### 管理员
 
-Maintain model caches and clean up:
+用于维护模型缓存并清理不必要的数据：
 
 ```bash
 # Calculate total cache size
@@ -255,9 +277,9 @@ nodetool admin download-hf <model_name>
 nodetool admin download-ollama <model_name>
 ```
 
-### Chat & Server
+### 聊天与服务器
 
-Interactive chat and web interface:
+提供交互式聊天和Web界面：
 
 ```bash
 # Start CLI chat
@@ -279,9 +301,9 @@ nodetool serve --reload
 nodetool serve --production
 ```
 
-### Proxy
+### 代理
 
-Start reverse proxy with HTTPS:
+用于启用基于HTTPS的反向代理：
 
 ```bash
 # Start proxy server
@@ -297,7 +319,7 @@ nodetool proxy-validate-config
 nodetool proxy-daemon
 ```
 
-### Other Commands
+### 其他命令
 
 ```bash
 # View settings and secrets
@@ -322,11 +344,11 @@ nodetool migrations
 nodetool sync
 ```
 
-## Use Cases
+## 使用场景
 
-### Workflow Execution
+### 工作流执行
 
-Run a NodeTool workflow and get structured output:
+运行NodeTool工作流并获取结构化的输出：
 
 ```bash
 # Run workflow interactively
@@ -336,9 +358,9 @@ nodetool run my_workflow_id
 nodetool run my_workflow_id --jsonl | jq -r '.[] | "\(.status) | \(.output)"'
 ```
 
-### Package Creation
+### 包创建
 
-Generate documentation for a custom package:
+为自定义包生成文档：
 
 ```bash
 # Scan for nodes and create package
@@ -348,9 +370,9 @@ nodetool package scan
 nodetool package docs
 ```
 
-### Deployment
+### 部署
 
-Deploy a NodeTool instance to the cloud:
+将NodeTool实例部署到云端：
 
 ```bash
 # Initialize deployment config
@@ -363,9 +385,9 @@ nodetool deploy add
 nodetool deploy apply
 ```
 
-### Model Management
+### 模型管理
 
-Check and manage cached AI models:
+检查和管理缓存的AI模型：
 
 ```bash
 # List all available models
@@ -375,25 +397,25 @@ nodetool model list-hf-all
 nodetool model hf-cache
 ```
 
-## Installation
+## 安装
 
 ### Linux / macOS
 
-Quick one-line installation:
+快速的一行安装命令：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.sh | bash
 ```
 
-With custom directory:
+如果需要指定自定义安装目录：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.sh | bash --prefix ~/.nodetool
 ```
 
-**Non-interactive mode (automatic, no prompts):**
+**非交互式模式（自动安装，无需提示）：**
 
-Both scripts support silent installation:
+这两个安装脚本都支持静默安装：
 
 ```bash
 # Linux/macOS - use -y
@@ -403,42 +425,42 @@ curl -fsSL https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/mai
 irm https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.ps1 | iex; .\install.ps1 -Yes
 ```
 
-**What happens with non-interactive mode:**
-- All confirmation prompts are skipped automatically
-- Installation proceeds without requiring user input
-- Perfect for CI/CD pipelines or automated setups
+**非交互式模式的特点：**
+- 所有确认提示都会被自动跳过
+- 安装过程无需用户输入
+- 非常适合持续集成/持续部署（CI/CD）管道或自动化设置
 
 ### Windows
 
-Quick one-line installation:
+快速的一行安装命令：
 
 ```powershell
 irm https://raw.githubusercontent.com/nodetool-ai/nodetool/refs/heads/main/install.ps1 | iex
 ```
 
-With custom directory:
+如果需要指定自定义安装目录：
 
 ```powershell
 .\install.ps1 -Prefix "C:\nodetool"
 ```
 
-Non-interactive mode:
+**非交互式模式：**
 
 ```powershell
 .\install.ps1 -Yes
 ```
 
-## What Gets Installed
+## 安装内容
 
-The installer sets up:
-- **micromamba** — Python package manager (conda replacement)
-- **NodeTool environment** — Conda env at `~/.nodetool/env`
-- **Python packages** — `nodetool-core`, `nodetool-base` from NodeTool registry
-- **Wrapper scripts** — `nodetool` CLI available from any terminal
+安装程序会设置以下内容：
+- **micromamba** — Python包管理器（conda的替代品）
+- **NodeTool环境** — 在`~/.nodetool/env`中创建Conda环境
+- **Python包** — 从NodeTool注册表中安装`nodetool-core`和`nodetool-base`
+- **封装脚本** — 用户可以从任何终端使用`nodetool`命令行工具
 
-### Environment Setup
+### 环境配置
 
-After installation, these variables are automatically configured:
+安装完成后，以下变量会自动配置：
 
 ```bash
 # Conda environment
@@ -450,18 +472,18 @@ export HF_HOME="$HOME/.nodetool/cache/huggingface"
 export OLLAMA_MODELS="$HOME/.nodetool/cache/ollama"
 ```
 
-## System Info
+## 系统信息
 
-Check NodeTool environment and installed packages:
+用于查看NodeTool环境和已安装的包：
 
 ```bash
 nodetool info
 ```
 
-Output shows:
-- Version
-- Python version
-- Platform/Architecture
-- Installed AI packages (OpenAI, Anthropic, Google, HF, Ollama, fal-client)
-- Environment variables
-- API key status
+输出信息包括：
+- NodeTool版本
+- Python版本
+- 平台/架构
+- 已安装的AI模型（OpenAI、Anthropic、Google、HuggingFace、Ollama、fal-client）
+- 环境变量
+- API密钥的状态

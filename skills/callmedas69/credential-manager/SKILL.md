@@ -1,76 +1,76 @@
 ---
 name: credential-manager
-description: MANDATORY security foundation for OpenClaw. Consolidate scattered API keys and credentials into a secure .env file with proper permissions. Use when setting up OpenClaw, migrating credentials, auditing security, or enforcing the .env standard. This is not optional — centralized credential management is a core requirement for secure OpenClaw deployments. Scans for credential files across common locations, backs up existing files, creates a unified .env with mode 600, validates security, and enforces best practices.
+description: OpenClaw的强制性安全基础要求：将分散的API密钥和凭据整合到一个具有适当权限的安全`.env`文件中。在设置OpenClaw、迁移凭据、进行安全审计或实施`.env`文件标准时，必须使用该文件。这并非可选功能——集中式凭据管理是确保OpenClaw安全部署的核心要求。系统会扫描常见位置中的凭据文件，备份现有文件，创建一个权限设置为600的统一`.env`文件，验证其安全性，并遵循最佳实践。
 ---
 
-# Credential Manager
+# 凭据管理器
 
-**STATUS: MANDATORY SECURITY FOUNDATION**
+**状态：强制性的安全基础**
 
-Consolidate scattered API keys and credentials into a secure, centralized `.env` file.
+将分散的 API 密钥和凭证整合到一个安全的、集中式的 `.env` 文件中。
 
-## ⚠️ This Is Not Optional
+## ⚠️ 这不是可选的
 
-Centralized `.env` credential management is a **core requirement** for OpenClaw security. If your credentials are scattered across multiple files, **stop and consolidate them now**.
+集中式的 `.env` 凭据管理是 OpenClaw 安全性的**核心要求**。如果您的凭证分散在多个文件中，请**立即停止并整合它们**。
 
-**THE RULE:** All credentials MUST be in `~/.openclaw/.env` ONLY. No workspace, no skills, no scripts directories.
+**规则：** 所有凭证必须仅保存在 `~/.openclaw/.env` 文件中，不允许保存在工作区、技能文件或脚本目录中。
 
-See:
-- [CORE-PRINCIPLE.md](CORE-PRINCIPLE.md) - Why this is non-negotiable
-- [CONSOLIDATION-RULE.md](CONSOLIDATION-RULE.md) - The single source principle
+请参阅：
+- [CORE-PRINCIPLE.md](CORE-PRINCIPLE.md) – 为什么这是不可协商的
+- [CONSOLIDATION-RULE.md](CONSOLIDATION-RULE.md) – 单一来源原则
 
-## The Foundation
+## 基础要求
 
-**Every OpenClaw deployment MUST have:**
+**每个 OpenClaw 部署都必须具备：**
 ```
 ~/.openclaw/.env (mode 600)
 ```
 
-This is your single source of truth for all credentials. No exceptions.
+这是您所有凭证的唯一来源，没有任何例外。
 
-**Why?**
-- Single location = easier to secure
-- File mode 600 = only you can read
-- Git-ignored = won't accidentally commit
-- Validated format = catches errors
-- Audit trail = know what changed
+**为什么？**
+- 单一存储位置 = 更容易保护
+- 文件权限设置为 600（仅所有者可读）
+- 被 Git 忽略（防止意外提交）
+- 格式经过验证（可检测错误）
+- 有审计跟踪（便于了解更改内容）
 
-Scattered credentials = scattered attack surface. This skill fixes that.
+凭证分散意味着攻击面也会分散。此功能可以解决这个问题。
 
-## What This Skill Does
+## 该功能的用途
 
-1. **Scans** for credentials in common locations
-2. **Backs up** existing credential files (timestamped)
-3. **Consolidates** into `~/.openclaw/.env`
-4. **Secures** with proper permissions (600)
-5. **Validates** security and format
-6. **Enforces** best practices
-7. **Cleans up** old files after migration
+1. **扫描** 常见位置中的凭证
+2. **备份** 现有的凭证文件（并添加时间戳）
+3. **整合** 到 `~/.openclaw/.env` 文件中
+4. **设置适当权限（600）以保护文件**
+5. **验证** 凭据的安全性和格式
+6. **遵循最佳实践**
+7. **迁移后清理** 旧文件
 
-## Detection Parameters
+## 检测参数
 
-The skill automatically detects credentials by scanning for:
+该功能通过扫描以下内容自动检测凭证：
 
-**File Patterns:**
-- `credentials.json` files in config directories
-- `.env` files
-- Memory files with `-creds` or `credentials` in the name
+**文件模式：**
+- 配置目录中的 `credentials.json` 文件
+- `.env` 文件
+- 名称中包含 `-creds` 或 `credentials` 的内存文件
 
-**Sensitive Key Patterns:**
-- API keys, access tokens, bearer tokens
-- Secrets, passwords, passphrases
-- OAuth consumer keys
-- Private keys, signing keys, wallet keys
-- Mnemonics and seed phrases
+**敏感密钥模式：**
+- API 密钥、访问令牌、承载令牌
+- 秘密信息、密码、短语
+- OAuth 消费者密钥
+- 私钥、签名密钥、钱包密钥
+- 备忘词和种子短语
 
-**Security Checks:**
-- File permissions (must be `600`)
-- Git-ignore protection
-- Format validation
+**安全检查：**
+- 文件权限（必须设置为 600）
+- 被 Git 忽略（防止意外提交）
+- 格式验证
 
-## Quick Start
+## 快速入门
 
-### Full Migration (Recommended)
+### 完整迁移（推荐）
 
 ```bash
 # Scan for credentials
@@ -83,7 +83,7 @@ The skill automatically detects credentials by scanning for:
 ./scripts/validate.py
 ```
 
-### Individual Operations
+### 单个操作
 
 ```bash
 # Scan only
@@ -99,9 +99,9 @@ The skill automatically detects credentials by scanning for:
 ./scripts/cleanup.py --confirm
 ```
 
-## Common Credential Locations
+## 常见凭证存储位置
 
-The skill scans these locations:
+该功能会扫描以下位置：
 
 ```
 ~/.config/*/credentials.json
@@ -110,17 +110,15 @@ The skill scans these locations:
 ~/.env (if exists, merges)
 ```
 
-## Security Features
+## 安全特性
 
-✅ **File permissions:** Sets `.env` to mode 600 (owner only)
-✅ **Git protection:** Creates/updates `.gitignore`
-✅ **Backups:** Timestamped backups before changes
-✅ **Validation:** Checks format, permissions, and duplicates
-✅ **Template:** Creates `.env.example` (safe to share)
+✅ **文件权限：** 将 `.env` 文件的权限设置为 600（仅所有者可读）
+✅ **Git 保护：** 创建/更新 `.gitignore` 文件
+✅ **备份：** 在更改前进行时间戳备份
+✅ **验证：** 检查格式、权限和重复项
+✅ **模板：** 创建 `.env.example` 文件（可安全共享）
 
-## Output Structure
-
-After migration:
+## 迁移后的文件结构
 
 ```
 ~/.openclaw/
@@ -132,34 +130,33 @@ After migration:
     └── credentials-old-YYYYMMDD/  # Backup of old files
 ```
 
-## Supported Services
+## 支持的服务
 
-Common services auto-detected:
+系统会自动检测以下服务：
+- **X (Twitter)：** OAuth 1.0a 凭据
+- **Molten：** 代理意图匹配
+- **Moltbook：** 代理社交网络
+- **Botchan/4claw：** 网络协议
+- **OpenAI, Anthropic, Google：** 人工智能服务提供商
+- **GitHub, GitLab：** 代码托管平台
+- **通用：** `API_KEY`, `*_TOKEN`, `*_SECRET` 等模式
 
-- **X (Twitter):** OAuth 1.0a credentials
-- **Molten:** Agent intent matching
-- **Moltbook:** Agent social network
-- **Botchan/4claw:** Net Protocol
-- **OpenAI, Anthropic, Google:** AI providers
-- **GitHub, GitLab:** Code hosting
-- **Generic:** `API_KEY`, `*_TOKEN`, `*_SECRET` patterns
+完整服务列表请参阅 [references/supported-services.md](references/supported-services.md)。
 
-See [references/supported-services.md](references/supported-services.md) for full list.
+## 安全最佳实践
 
-## Security Best Practices
+详细的安全指南请参阅 [references/security.md](references/security.md)。
 
-See [references/security.md](references/security.md) for detailed security guidelines.
+**快速检查清单：**
+- ✅ `.env` 文件的权限设置为 600
+- ✅ `.env` 文件被 Git 忽略
+- ✅ 代码和日志中不含凭证
+- ✅ 定期轮换密钥
+- ✅ 每个环境使用独立的密钥
 
-**Quick checklist:**
-- ✅ `.env` has 600 permissions
-- ✅ `.env` is git-ignored
-- ✅ No credentials in code or logs
-- ✅ Rotate keys periodically
-- ✅ Use separate keys per environment
+## 脚本
 
-## Scripts
-
-All scripts support `--help` for detailed usage.
+所有脚本都支持使用 `--help` 参数查看详细用法。
 
 ### scan.py
 ```bash
@@ -212,40 +209,40 @@ All scripts support `--help` for detailed usage.
 ./scripts/cleanup.py --confirm --keep-backups
 ```
 
-## Migration Workflow
+## 迁移工作流程
 
-**Step 1: Discovery**
+**步骤 1：发现**
 ```bash
 ./scripts/scan.py
 ```
-Review output to see what will be migrated.
+查看输出，了解哪些凭证需要迁移。
 
-**Step 2: Backup & Consolidate**
+**步骤 2：备份与整合**
 ```bash
 ./scripts/consolidate.py
 ```
-Creates backups, builds `.env`, sets permissions.
+创建备份文件，生成新的 `.env` 文件，并设置文件权限。
 
-**Step 3: Validation**
+**步骤 3：验证**
 ```bash
 ./scripts/validate.py
 ```
-Ensures everything is secure and correct.
+确保所有内容都安全且正确。
 
-**Step 4: Test**
-Test your applications/skills with the new `.env` file.
+**步骤 4：测试**
+使用新的 `.env` 文件测试您的应用程序/技能。
 
-**Step 5: Cleanup**
+**步骤 5：清理**
 ```bash
 ./scripts/cleanup.py --confirm
 ```
-Removes old credential files (backups remain).
+删除旧凭证文件（备份文件保留）。
 
-## For Skill Developers: Enforce This Standard
+## 对于技能开发者：强制执行此标准
 
-Other OpenClaw skills MUST validate credentials are secure before using them:
+其他 OpenClaw 技能在使用凭证之前必须验证其安全性：
 
-### Python Skills
+### Python 技能
 ```python
 #!/usr/bin/env python3
 import sys
@@ -263,7 +260,7 @@ require_secure_env()
 api_key = get_credential('SERVICE_API_KEY')
 ```
 
-### Bash Skills
+### Bash 技能
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -277,11 +274,11 @@ fi
 source ~/.openclaw/.env
 ```
 
-**This creates a fail-fast system:** If credentials aren't properly secured, skills refuse to run. Users are forced to fix it.
+**这会创建一个“快速失败”的系统**：如果凭证未得到妥善保护，相关技能将拒绝运行，迫使用户进行修复。
 
-## Loading Credentials
+## 加载凭证
 
-After migration, load from `.env`:
+迁移完成后，从 `.env` 文件中加载凭证：
 
 ### Python
 ```python
@@ -311,33 +308,32 @@ set +a
 echo "$SERVICE_API_KEY"
 ```
 
-### Using Existing Loaders
-If you migrated using OpenClaw scripts:
+### 使用现有的加载器
+如果您使用 OpenClaw 脚本进行了迁移：
 ```python
 from load_credentials import get_credentials
 creds = get_credentials('x')
 ```
 
-## Adding New Credentials
+## 添加新凭证
 
-Edit `~/.openclaw/.env`:
+编辑 `~/.openclaw/.env` 文件：
 ```bash
 # Add new service
 NEW_SERVICE_API_KEY=your_key_here
 NEW_SERVICE_SECRET=your_secret_here
 ```
 
-Update template too:
+同时更新模板文件：
 ```bash
 # Edit .env.example
 NEW_SERVICE_API_KEY=your_key_here
 NEW_SERVICE_SECRET=your_secret_here
 ```
 
-## Rollback
+## 回滚
 
-If something goes wrong:
-
+如果出现问题：
 ```bash
 # Find your backup
 ls -la ~/.openclaw/backups/
@@ -347,9 +343,9 @@ cp ~/.openclaw/backups/credentials-old-YYYYMMDD/x-credentials.json.bak \
    ~/.config/x/credentials.json
 ```
 
-## Notes
+## 注意事项
 
-- **Non-destructive by default:** Original files backed up before removal
-- **Idempotent:** Safe to run multiple times
-- **Extensible:** Add custom credential patterns in scripts
-- **Secure:** Never logs full credentials, only metadata
+- **默认情况下是非破坏性的：** 删除前会备份原始文件
+- **幂等操作：** 可多次安全运行
+- **可扩展性：** 可在脚本中添加自定义的凭证检测规则
+- **安全性：** 仅记录凭证的元数据，不记录完整内容

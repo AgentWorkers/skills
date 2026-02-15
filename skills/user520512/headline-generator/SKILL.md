@@ -1,3 +1,3 @@
-# Headline Generator
+# 标题生成器
 
-Generate viral headlines.
+生成能够迅速传播的标题（即具有高点击率的标题）。

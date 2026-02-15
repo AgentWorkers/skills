@@ -1,34 +1,59 @@
 ---
-description: Convert markdown into self-contained HTML slide presentations with keyboard navigation.
+description: 将 Markdown 文件转换为具有键盘导航功能的自包含 HTML 幻灯片演示文稿。
 ---
 
-# Markdown Slides
+# Markdown 幻灯片生成工具
 
-Convert markdown into standalone HTML slide decks — zero dependencies, works offline.
+该工具可将 Markdown 内容转换为独立的 HTML 幻灯片集，无需任何外部依赖，支持离线使用。
 
-**Use when** creating presentations from markdown, quick slide decks, or demo presentations.
+**适用场景**：  
+- 从 Markdown 文件创建演示文稿  
+- 快速制作幻灯片  
+- 展示型演示文稿  
 
-## Requirements
+## 使用要求  
+- 无需任何外部工具、构建步骤或 API 密钥  
+- 输出格式为单个 HTML 文件，可在任何浏览器中正常显示  
 
-- No external tools, build steps, or API keys
-- Output: single HTML file, works in any browser
+## 使用方法  
+1. **解析输入内容**：  
+   使用 `---`（水平线）将 Markdown 内容分割成多个独立的幻灯片。  
 
-## Instructions
+2. **将 Markdown 转换为 HTML**：  
+   - `# 标题` → `<h1>`（标题幻灯片）  
+   - `## 标题` → `<h2>`（子标题）  
+   - `- 列项` → `<ul><li>`（项目列表）  
+   - `**粗体**` → `<strong>`  
+   - `*斜体*` → `<em>`  
+   - ``` `代码` `` → `<code>`  
+   - `![图片链接](图片路径)` → `<img>`  
+   - 段落 → `<p>`  
 
-1. **Parse input** — Split markdown content on `---` (horizontal rule) to create individual slides.
+3. **将生成的 HTML 内容嵌入到包含 CSS 和 JavaScript 的模板中**：  
+   （具体模板代码见下方示例）  
 
-2. **Convert markdown to HTML** for each slide:
-   - `# heading` → `<h1>` (title slides)
-   - `## heading` → `<h2>` (section headers)
-   - `- item` → `<ul><li>` (bullet lists)
-   - `**bold**` → `<strong>`, `*italic*` → `<em>`
-   - `` `code` `` → `<code>`, code blocks → `<pre><code>`
-   - `![alt](url)` → `<img>`
-   - Paragraphs → `<p>`
+4. **保存结果**：  
+   保存为 `slides.html` 文件（或用户指定的路径）。  
 
-3. **Wrap in HTML template** with embedded CSS and JavaScript:
+5. **使用说明**：  
+   在浏览器中打开文件，使用 ←/→ 方向键或点击按钮进行导航，按 F11 键可全屏显示。  
 
-```html
+## 自定义选项  
+| 选项        | 默认值       | 可选值          |
+|------------|------------|-------------------|
+| 主题颜色     | #1a1a2e      | #fff (Light) 或 #fff (Solarized)   |
+| 字体类型     | 系统默认字体   | Monospace 或 Serif 字体     |
+| 强调颜色     | #667eea      | 任意十六进制颜色       |
+| 屏幕比例     | 16:9        | 可设置自定义比例       |
+
+## 注意事项  
+- 如果没有 `---` 分隔符，每个 `# 标题` 都会被视为一个独立的幻灯片。  
+- 如果幻灯片内容过长，可能会超出屏幕显示范围，建议拆分成多个幻灯片。  
+- 图片必须为 URL 或 Base64 编码的形式；本地文件路径在独立 HTML 文件中无法使用。  
+- 对于包含大量代码的幻灯片，可适当减小 `<pre>` 标签内的字体大小。  
+- 可在幻灯片中添加 `<!-- notes: ... -->` 注释（这些注释对用户不可见）。  
+
+### 示例代码（````html
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,25 +105,5 @@ show(0);
 </script>
 </body>
 </html>
-```
-
-4. **Save** as `slides.html` (or user-specified path).
-
-5. **Tell the user**: Open in browser, use ←/→ arrows or click to navigate, F11 for fullscreen.
-
-## Customization Options
-
-| Option | Default | Alternatives |
-|--------|---------|-------------|
-| Theme | Dark (#1a1a2e) | Light (#fff), Solarized |
-| Font | System UI | Monospace, Serif |
-| Accent | #667eea | Any hex color |
-| Ratio | 16:9 (viewport) | Can add letterboxing |
-
-## Edge Cases
-
-- **No `---` separators**: Treat each `# heading` as a slide break.
-- **Very long slides**: Content may overflow. Suggest splitting into multiple slides.
-- **Images**: Must be URLs or base64-encoded. Local file paths won't work in standalone HTML.
-- **Code-heavy slides**: Reduce font size for `<pre>` blocks on those slides.
-- **Speaker notes**: Can add `<!-- notes: ... -->` comments (hidden from view).
+````）  
+（此处应插入实际的 HTML 模板代码，用于将 Markdown 转换为幻灯片的结构。）

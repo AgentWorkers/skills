@@ -1,6 +1,6 @@
 ---
 name: data-extractor
-description: Extract structured data from any document format using unstructured - unified document processing
+description: 使用非结构化的、统一的文档处理方法，从任何文档格式中提取结构化数据。
 author: claude-office-skills
 version: "1.0"
 tags: [extraction, unstructured, data, parsing, documents]
@@ -12,27 +12,27 @@ library:
   stars: 14k
 ---
 
-# Data Extractor Skill
+# 数据提取技能
 
-## Overview
+## 概述
 
-This skill enables extraction of structured data from any document format using **unstructured** - a unified library for processing PDFs, Word docs, emails, HTML, and more. Get consistent, structured output regardless of input format.
+该技能能够使用 **unstructured** 库从任何文档格式中提取结构化数据。**unstructured** 是一个统一的库，可用于处理 PDF、Word 文档、电子邮件、HTML 等多种格式的文件。无论输入格式如何，都能获得一致且结构化的输出结果。
 
-## How to Use
+## 使用方法
 
-1. Provide the document to process
-2. Optionally specify extraction options
-3. I'll extract structured elements with metadata
+1. 提供需要处理的文档。
+2. （可选）指定提取选项。
+3. 该工具会提取包含元数据的结构化元素。
 
-**Example prompts:**
-- "Extract all text and tables from this PDF"
-- "Parse this email and get the body, attachments, and metadata"
-- "Convert this HTML page to structured elements"
-- "Extract data from these mixed-format documents"
+**示例提示：**
+- “从这份 PDF 中提取所有文本和表格。”
+- “解析这封电子邮件，获取邮件正文、附件和元数据。”
+- “将这页 HTML 页面转换为结构化数据。”
+- “从这些混合格式的文档中提取数据。”
 
-## Domain Knowledge
+## 领域知识
 
-### unstructured Fundamentals
+### unstructured 的基础知识
 
 ```python
 from unstructured.partition.auto import partition
@@ -47,21 +47,21 @@ for element in elements:
     print(f"Metadata: {element.metadata}")
 ```
 
-### Supported Formats
+### 支持的格式
 
-| Format | Function | Notes |
+| 格式 | 功能 | 备注 |
 |--------|----------|-------|
-| PDF | `partition_pdf` | Native + scanned |
-| Word | `partition_docx` | Full structure |
-| PowerPoint | `partition_pptx` | Slides & notes |
-| Excel | `partition_xlsx` | Sheets & tables |
-| Email | `partition_email` | Body & attachments |
-| HTML | `partition_html` | Tags preserved |
-| Markdown | `partition_md` | Structure preserved |
-| Plain Text | `partition_text` | Basic parsing |
-| Images | `partition_image` | OCR extraction |
+| PDF | `partition_pdf` | 支持原生 PDF 和扫描 PDF 格式 |
+| Word | `partition_docx` | 完整提取 Word 文档的结构 |
+| PowerPoint | `partition_pptx` | 提取 PowerPoint 幻灯片和备注 |
+| Excel | `partition_xlsx` | 提取 Excel 工作表的数据 |
+| 电子邮件 | `partition_email` | 提取邮件正文和附件 |
+| HTML | `partition_html` | 保留 HTML 标签 |
+| Markdown | `partition_md` | 保留 Markdown 的结构 |
+| 纯文本 | `partition_text` | 基本文本解析 |
+| 图片 | `partition_image` | 通过 OCR 技术提取图片中的文本 |
 
-### Element Types
+### 元数据类型
 
 ```python
 from unstructured.documents.elements import (
@@ -85,7 +85,7 @@ element.category       # Element type
 element.id            # Unique identifier
 ```
 
-### Auto Partition
+### 自动分割功能
 
 ```python
 from unstructured.partition.auto import partition
@@ -103,7 +103,7 @@ titles = [e for e in elements if isinstance(e, Title)]
 tables = [e for e in elements if isinstance(e, Table)]
 ```
 
-### Format-Specific Partitioning
+### 特定格式的分割方法
 
 ```python
 # PDF with options
@@ -134,7 +134,7 @@ elements = partition_html(
 )
 ```
 
-### Working with Tables
+### 处理表格数据
 
 ```python
 from unstructured.partition.auto import partition
@@ -152,7 +152,7 @@ for element in elements:
             print("HTML:", element.metadata.text_as_html)
 ```
 
-### Metadata Access
+### 元数据访问
 
 ```python
 from unstructured.partition.auto import partition
@@ -170,7 +170,7 @@ for element in elements:
     print(f"Languages: {meta.languages}")
 ```
 
-### Chunking for AI/RAG
+### 为 AI/RAG 应用进行数据分块
 
 ```python
 from unstructured.partition.auto import partition
@@ -199,7 +199,7 @@ for chunk in chunks:
     print(chunk.text[:100] + "...")
 ```
 
-### Batch Processing
+### 批量处理
 
 ```python
 from unstructured.partition.auto import partition
@@ -234,7 +234,7 @@ def batch_process(input_dir, max_workers=4):
     return results
 ```
 
-### Export Formats
+### 导出格式
 
 ```python
 from unstructured.partition.auto import partition
@@ -253,252 +253,35 @@ import pandas as pd
 df = pd.DataFrame(dicts)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Choose Strategy Wisely**: "fast" for speed, "hi_res" for accuracy
-2. **Enable Table Detection**: For documents with tables
-3. **Specify Language**: For better OCR on non-English docs
-4. **Chunk for RAG**: Use semantic chunking for AI applications
-5. **Handle Errors**: Some formats may fail gracefully
+1. **谨慎选择策略**：选择“fast”模式以加快处理速度，或选择“hi_res”模式以提高提取准确性。
+2. **启用表格检测**：对于包含表格的文档，启用此功能。
+3. **指定语言**：对于非英文文档，指定相应的语言以获得更好的 OCR 效果。
+4. **为 AI 应用进行数据分块**：使用语义分块技术来处理数据。
+5. **处理错误**：某些格式可能无法成功提取数据，但系统会优雅地处理这些错误情况。
 
-## Common Patterns
+## 常见应用场景
 
-### Document to JSON
-```python
-def document_to_json(file_path, output_path=None):
-    """Convert document to structured JSON."""
-    from unstructured.partition.auto import partition
-    from unstructured.staging.base import elements_to_json
-    import json
-    
-    elements = partition(file_path)
-    
-    # Create structured output
-    output = {
-        'source': file_path,
-        'elements': []
-    }
-    
-    for element in elements:
-        output['elements'].append({
-            'type': type(element).__name__,
-            'text': element.text,
-            'metadata': {
-                'page': element.metadata.page_number,
-                'coordinates': element.metadata.coordinates.to_dict() if element.metadata.coordinates else None
-            }
-        })
-    
-    if output_path:
-        with open(output_path, 'w') as f:
-            json.dump(output, f, indent=2)
-    
-    return output
-```
+- **将文档转换为 JSON 格式**  
+- **解析电子邮件内容**  
+- **构建文档语料库**  
 
-### Email Parser
-```python
-from unstructured.partition.email import partition_email
+## 示例
 
-def parse_email(email_path):
-    """Extract structured data from email."""
-    
-    elements = partition_email(email_path)
-    
-    email_data = {
-        'subject': None,
-        'from': None,
-        'to': [],
-        'date': None,
-        'body': [],
-        'attachments': []
-    }
-    
-    for element in elements:
-        meta = element.metadata
-        
-        # Extract headers from metadata
-        if meta.subject:
-            email_data['subject'] = meta.subject
-        if meta.sent_from:
-            email_data['from'] = meta.sent_from
-        if meta.sent_to:
-            email_data['to'] = meta.sent_to
-        
-        # Body content
-        email_data['body'].append({
-            'type': type(element).__name__,
-            'text': element.text
-        })
-    
-    return email_data
-```
+- **示例 1：研究论文数据提取**  
+- **示例 2：发票数据提取**  
+- **示例 3：文档语料库构建**  
 
-## Examples
+## 限制因素
 
-### Example 1: Research Paper Extraction
-```python
-from unstructured.partition.pdf import partition_pdf
-from unstructured.chunking.title import chunk_by_title
+- 复杂的文档布局可能需要人工审核。
+- OCR 的质量受图片质量影响。
+- 大文件可能需要分块处理。
+- 一些专有格式可能不被支持。
+- 云处理服务可能有 API 使用频率限制。
 
-def extract_paper(pdf_path):
-    """Extract structured data from research paper."""
-    
-    elements = partition_pdf(
-        filename=pdf_path,
-        strategy="hi_res",
-        infer_table_structure=True,
-        include_page_breaks=True
-    )
-    
-    paper = {
-        'title': None,
-        'abstract': None,
-        'sections': [],
-        'tables': [],
-        'references': []
-    }
-    
-    # Find title (usually first Title element)
-    for element in elements:
-        if element.category == "Title" and not paper['title']:
-            paper['title'] = element.text
-            break
-    
-    # Extract tables
-    for element in elements:
-        if element.category == "Table":
-            paper['tables'].append({
-                'page': element.metadata.page_number,
-                'content': element.text,
-                'html': element.metadata.text_as_html if hasattr(element.metadata, 'text_as_html') else None
-            })
-    
-    # Chunk into sections
-    chunks = chunk_by_title(elements, max_characters=2000)
-    
-    current_section = None
-    for chunk in chunks:
-        if chunk.category == "Title":
-            paper['sections'].append({
-                'title': chunk.text,
-                'content': ''
-            })
-        elif paper['sections']:
-            paper['sections'][-1]['content'] += chunk.text + '\n'
-    
-    return paper
-
-paper = extract_paper('research_paper.pdf')
-print(f"Title: {paper['title']}")
-print(f"Tables: {len(paper['tables'])}")
-print(f"Sections: {len(paper['sections'])}")
-```
-
-### Example 2: Invoice Data Extraction
-```python
-from unstructured.partition.auto import partition
-import re
-
-def extract_invoice_data(file_path):
-    """Extract key data from invoice."""
-    
-    elements = partition(file_path, strategy="hi_res")
-    
-    # Combine all text
-    full_text = '\n'.join([e.text for e in elements])
-    
-    invoice = {
-        'invoice_number': None,
-        'date': None,
-        'total': None,
-        'vendor': None,
-        'line_items': [],
-        'tables': []
-    }
-    
-    # Extract patterns
-    inv_match = re.search(r'Invoice\s*#?\s*:?\s*(\w+[-\w]*)', full_text, re.I)
-    if inv_match:
-        invoice['invoice_number'] = inv_match.group(1)
-    
-    date_match = re.search(r'Date\s*:?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', full_text, re.I)
-    if date_match:
-        invoice['date'] = date_match.group(1)
-    
-    total_match = re.search(r'Total\s*:?\s*\$?([\d,]+\.?\d*)', full_text, re.I)
-    if total_match:
-        invoice['total'] = float(total_match.group(1).replace(',', ''))
-    
-    # Extract tables
-    for element in elements:
-        if element.category == "Table":
-            invoice['tables'].append(element.text)
-    
-    return invoice
-
-invoice = extract_invoice_data('invoice.pdf')
-print(f"Invoice #: {invoice['invoice_number']}")
-print(f"Total: ${invoice['total']}")
-```
-
-### Example 3: Document Corpus Builder
-```python
-from unstructured.partition.auto import partition
-from unstructured.chunking.title import chunk_by_title
-from pathlib import Path
-import json
-
-def build_corpus(input_dir, output_path):
-    """Build searchable corpus from document collection."""
-    
-    input_path = Path(input_dir)
-    corpus = []
-    
-    # Support multiple formats
-    patterns = ['*.pdf', '*.docx', '*.html', '*.txt', '*.md']
-    files = []
-    for pattern in patterns:
-        files.extend(input_path.glob(pattern))
-    
-    for file in files:
-        print(f"Processing: {file.name}")
-        
-        try:
-            elements = partition(str(file))
-            chunks = chunk_by_title(elements, max_characters=1000)
-            
-            for i, chunk in enumerate(chunks):
-                corpus.append({
-                    'id': f"{file.stem}_{i}",
-                    'source': str(file),
-                    'type': type(chunk).__name__,
-                    'text': chunk.text,
-                    'page': chunk.metadata.page_number if chunk.metadata.page_number else None
-                })
-        
-        except Exception as e:
-            print(f"  Error: {e}")
-    
-    # Save corpus
-    with open(output_path, 'w') as f:
-        json.dump(corpus, f, indent=2)
-    
-    print(f"Corpus built: {len(corpus)} chunks from {len(files)} files")
-    return corpus
-
-corpus = build_corpus('./documents', 'corpus.json')
-```
-
-## Limitations
-
-- Complex layouts may need manual review
-- OCR quality depends on image quality
-- Large files may need chunking
-- Some proprietary formats not supported
-- API rate limits for cloud processing
-
-## Installation
+## 安装方法
 
 ```bash
 # Basic installation
@@ -514,8 +297,8 @@ pip install "unstructured[pdf]"
 pip install "unstructured[docx,pptx,xlsx]"
 ```
 
-## Resources
+## 资源
 
-- [unstructured GitHub](https://github.com/Unstructured-IO/unstructured)
-- [Documentation](https://unstructured-io.github.io/unstructured/)
-- [Unstructured API](https://unstructured.io/api-key)
+- [unstructured GitHub 仓库](https://github.com/Unstructured-IO/unstructured)
+- [官方文档](https://unstructured-io.github.io/unstructured/)
+- [Unstructured API 文档](https://unstructured.io/api-key)

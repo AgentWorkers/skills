@@ -1,15 +1,15 @@
 ---
 name: skill-evaluator
-description: Evaluate Clawdbot skills for quality, reliability, and publish-readiness using a multi-framework rubric (ISO 25010, OpenSSF, Shneiderman, agent-specific heuristics). Use when asked to review, audit, evaluate, score, or assess a skill before publishing, or when checking skill quality. Runs automated structural checks and guides manual assessment across 25 criteria.
+description: 使用多框架评估标准（ISO 25010、OpenSSF、Shneiderman以及特定于代理的启发式方法）来评估Clawdbot的各项技能，以判断其质量、可靠性和发布准备情况。该流程适用于在发布前对技能进行审查、审计、评估或打分，也可用于检查技能的质量。该过程会自动执行结构检查，并指导人工评估人员根据25项标准进行评估。
 ---
 
-# Skill Evaluator
+# 技能评估器
 
-Evaluate skills across 25 criteria using a hybrid automated + manual approach.
+该评估器采用自动化与手动相结合的方式，对技能进行25项标准的综合评估。
 
-## Quick Start
+## 快速入门
 
-### 1. Run automated checks
+### 1. 运行自动化检查
 
 ```bash
 python3 scripts/eval-skill.py /path/to/skill
@@ -17,53 +17,53 @@ python3 scripts/eval-skill.py /path/to/skill --json    # machine-readable
 python3 scripts/eval-skill.py /path/to/skill --verbose  # show all details
 ```
 
-Checks: file structure, frontmatter, description quality, script syntax, dependency audit, credential scan, env var documentation.
+检查内容：文件结构、前置内容（frontmatter）、描述质量、脚本语法、依赖项审计、凭证扫描、环境变量文档。
 
-### 2. Manual assessment
+### 2. 手动评估
 
-Use the rubric at [references/rubric.md](references/rubric.md) to score 25 criteria across 8 categories (0–4 each, 100 total). Each criterion has concrete descriptions per score level.
+根据 [references/rubric.md](references/rubric.md) 中的评分标准，对8个类别的25项指标进行评分（每个指标0–4分，总分100分）。每个指标都详细说明了不同评分级别的具体要求。
 
-### 3. Write the evaluation
+### 3. 编写评估报告
 
-Copy [assets/EVAL-TEMPLATE.md](assets/EVAL-TEMPLATE.md) to the skill directory as `EVAL.md`. Fill in automated results + manual scores.
+将 [assets/EVAL-TEMPLATE.md](assets/EVAL-TEMPLATE.md) 复制到技能目录中，并命名为 `EVAL.md`，然后填写自动化检查的结果和手动评分。
 
-## Evaluation Process
+## 评估流程
 
-1. **Run `eval-skill.py`** — get the automated structural score
-2. **Read the skill's SKILL.md** — understand what it does
-3. **Read/skim the scripts** — assess code quality, error handling, testability
-4. **Score each manual criterion** using [references/rubric.md](references/rubric.md) — concrete criteria per level
-5. **Prioritize findings** as P0 (blocks publishing) / P1 (should fix) / P2 (nice to have)
-6. **Write EVAL.md** in the skill directory with scores + findings
+1. **运行 `eval-skill.py`** — 获取自动化评估的得分。
+2. **阅读技能相关的 SKILL.md 文件** — 了解该技能的功能和用途。
+3. **阅读并浏览相关脚本** — 评估代码质量、错误处理能力以及可测试性。
+4. **根据 [references/rubric.md](references/rubric.md) 中的评分标准对每个指标进行打分**。
+5. **对发现的问题进行优先级划分**：P0（阻碍发布）、P1（需要修复）、P2（建议改进）。
+6. **在技能目录中编写 `EVAL.md` 文件，记录评分结果和问题详情**。
 
-## Categories (8 categories, 25 criteria)
+## 评估类别（8个类别，25项指标）
 
-| # | Category | Source Framework | Criteria |
+| 编号 | 类别 | 所用框架 | 评估标准 |
 |---|----------|-----------------|----------|
-| 1 | Functional Suitability | ISO 25010 | Completeness, Correctness, Appropriateness |
-| 2 | Reliability | ISO 25010 | Fault Tolerance, Error Reporting, Recoverability |
-| 3 | Performance / Context | ISO 25010 + Agent | Token Cost, Execution Efficiency |
-| 4 | Usability — AI Agent | Shneiderman, Gerhardt-Powals | Learnability, Consistency, Feedback, Error Prevention |
-| 5 | Usability — Human | Tognazzini, Norman | Discoverability, Forgiveness |
-| 6 | Security | ISO 25010 + OpenSSF | Credentials, Input Validation, Data Safety |
-| 7 | Maintainability | ISO 25010 | Modularity, Modifiability, Testability |
-| 8 | Agent-Specific | Novel | Trigger Precision, Progressive Disclosure, Composability, Idempotency, Escape Hatches |
+| 1   | 功能适用性 | ISO 25010 | 完整性、正确性、适用性 |
+| 2   | 可靠性 | ISO 25010 | 容错能力、错误报告机制、恢复能力 |
+| 3   | 性能/上下文 | ISO 25010 + 代理（Agent） | 令牌成本、执行效率 |
+| 4   | 可用性（AI代理） | Shneiderman, Gerhardt-Powals | 易学性、一致性、反馈机制、错误预防 |
+| 5   | 可用性（人类交互） | Tognazzini, Norman | 可发现性、容错性 |
+| 6   | 安全性 | ISO 25010 + OpenSSF | 凭证管理、输入验证、数据安全 |
+| 7   | 可维护性 | ISO 25010 | 模块化、可修改性、可测试性 |
+| 8   | 代理特定要求 | 新特性 | 触发机制的精确性、逐步披露信息、组合性、幂等性、安全退出机制 |
 
-## Interpreting Scores
+## 分数解读
 
-| Range | Verdict | Action |
+| 分数范围 | 评估结果 | 应采取的行动 |
 |-------|---------|--------|
-| 90–100 | Excellent | Publish confidently |
-| 80–89 | Good | Publishable, note known issues |
-| 70–79 | Acceptable | Fix P0s before publishing |
-| 60–69 | Needs Work | Fix P0+P1 before publishing |
-| <60 | Not Ready | Significant rework needed |
+| 90–100 | 优秀 | 可以放心发布 |
+| 80–89 | 良好 | 可以发布，但需注意已知问题 |
+| 70–79 | 可接受 | 在发布前修复需要修复的问题（P0级问题） |
+| 60–69 | 需要改进 | 在发布前修复 P0 和 P1 级问题 |
+| <60 | 尚未准备好 | 需要大幅修改 |
 
-## Deeper Security Scanning
+## 更深入的安全性扫描
 
-This evaluator covers security basics (credentials, input validation, data safety) but for thorough security audits of skills under development, consider [SkillLens](https://www.npmjs.com/package/skilllens) (`npx skilllens scan <path>`). It checks for exfiltration, code execution, persistence, privilege bypass, and prompt injection — complementary to the quality focus here.
+该评估器涵盖了基本的安全性方面（凭证管理、输入验证、数据安全），但对于正在开发的技能进行全面的安全审计，建议使用 [SkillLens](https://www.npmjs.com/package/skilllens)（命令：`npx skilllens scan <path>`）。它能够检测数据泄露、代码执行、权限绕过以及命令注入等安全风险，是对本评估内容的补充。
 
-## Dependencies
+## 所需软件依赖
 
-- Python 3.6+ (for eval-skill.py)
-- PyYAML (`pip install pyyaml`) — for frontmatter parsing in automated checks
+- Python 3.6 及以上版本（用于运行 `eval-skill.py`）
+- PyYAML（通过 `pip install pyyaml` 安装）——用于自动化检查中的前置内容解析。

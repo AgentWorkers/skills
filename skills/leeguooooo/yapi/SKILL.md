@@ -1,72 +1,72 @@
 ---
 name: yapi
-description: Query and sync YApi interface documentation. Use when user mentions "yapi 接口文档", YAPI docs, asks for request/response details, or needs docs sync. Also triggers when user pastes a YApi URL that matches the configured base_url.
+description: 查询和同步 YApi 接口文档。当用户提及“yapi 接口文档”或请求请求/响应的详细信息时，或者需要同步文档时，系统会执行此操作。此外，当用户粘贴的 YApi URL 与配置的 `base_url` 匹配时，系统也会触发该操作。
 ---
 
-# YApi interface docs
+# YApi接口文档
 
-## URL Detection
+## URL检测
 
-When user provides a URL, check if it matches the configured YApi instance:
+当用户提供一个URL时，需要检查该URL是否与配置的YApi实例匹配：
 
-1. Read config to get base_url:
+1. 读取配置文件以获取`base_url`：
 ```bash
 cat ~/.yapi/config.toml | grep base_url
 ```
 
-2. If the URL's origin matches `base_url`, use yapi CLI to operate:
-   - Extract `project_id` from URL path (e.g., `/project/123/...` → project_id=123)
-   - Extract `api_id` from URL path (e.g., `.../api/456` → api_id=456)
-   - Use `yapi --path /api/interface/get --query id=<api_id>` to fetch details
+2. 如果URL的源地址与`base_url`相同，使用`yapi` CLI来执行操作：
+   - 从URL路径中提取`project_id`（例如：`/project/123/...` → `project_id=123`
+   - 从URL路径中提取`api_id`（例如：`.../api/456` → `api_id=456`
+   - 使用`yapi --path /api/interface/get --query id=<api_id>`来获取详细信息
 
-3. Example URL patterns:
-   - `https://yapi.example.com/project/123/interface/api/456` → project=123, api=456
-   - `https://yapi.example.com/project/123/interface/api/cat_789` → project=123, category=789
+3. 示例URL模式：
+   - `https://yapi.example.com/project/123/interface/api/456` → `project=123, api=456`
+   - `https://yapi.example.com/project/123/interface/api/cat_789` → `project=123, category=789`
 
-## Prerequisites
+## 先决条件
 
-### Check if yapi CLI is installed
+### 检查是否已安装`yapi` CLI
 ```bash
 yapi --version
 ```
 
-### If not installed, ask user to install globally
+### 如果未安装，请提示用户全局安装`yapi` CLI
 ```bash
 npm install -g @leeguoo/yapi-mcp
 # or
 pnpm add -g @leeguoo/yapi-mcp
 ```
 
-### Check login status
+### 检查登录状态
 ```bash
 yapi whoami
 ```
 
-### If not logged in, login interactively
+### 如果未登录，请进行交互式登录
 ```bash
 yapi login
 ```
-This will prompt for:
-- YApi base URL (e.g., https://yapi.example.com)
-- Email
-- Password
+登录时需要提供：
+- YApi的基地址（例如：`https://yapi.example.com`
+- 电子邮件
+- 密码
 
-Config is saved to `~/.yapi/config.toml`.
+配置文件保存在`~/.yapi/config.toml`中。
 
-## Workflow
-1. If user provides a YApi URL, check if it matches configured `base_url` in `~/.yapi/config.toml`.
-2. Ensure yapi CLI is installed (prompt user to install globally if missing).
-3. Check login status with `yapi whoami`; if not logged in, run `yapi login`.
-4. Load config from `~/.yapi/config.toml` (base_url, auth_mode, email/password or token, optional project_id).
-5. Identify the target interface by id, URL, or keyword; ask for project/category ids if needed.
-6. Call YApi endpoints with the CLI (see examples below) to fetch raw JSON.
-7. Summarize method, path, headers, query/body schema, response schema, and examples.
+## 工作流程
+1. 如果用户提供了YApi的URL，检查该URL是否与`~/.yapi/config.toml`中配置的`base_url`匹配。
+2. 确保已安装`yapi` CLI（如果未安装，请提示用户全局安装）。
+3. 使用`yapi whoami`检查登录状态；如果未登录，请运行`yapi login`。
+4. 从`~/.yapi/config.toml`中加载配置信息（包括`base_url`、`auth_mode`、`email/password`或`token`，`project_id`为可选）。
+5. 根据ID、URL或关键词识别目标接口；如有需要，可以询问项目/类别ID。
+6. 使用CLI调用YApi的端点以获取原始JSON数据。
+7. 提供方法、路径、请求头、查询参数/响应数据结构以及示例信息。
 
-## CLI Usage
-- Config location: `~/.yapi/config.toml`
-- Auth cache: `~/.yapi-mcp/auth-*.json`
+## CLI使用方法
+- 配置文件位置：`~/.yapi/config.toml`
+- 认证缓存文件：`~/.yapi-mcp/auth-*.json`
 
-### Common commands
+### 常用命令
 ```bash
 # Check version
 yapi --version
@@ -90,17 +90,17 @@ yapi --path /api/interface/get --query id=123
 yapi --path /api/interface/list_cat --query catid=123
 ```
 
-## Docs sync
-- Bind local docs to YApi category with `yapi docs-sync bind add --name <binding> --dir <path> --project-id <id> --catid <id>` (stored in `.yapi/docs-sync.json`).
-- Sync with `yapi docs-sync --binding <binding>` or run all bindings with `yapi docs-sync`.
-- Default syncs only changed files; use `--force` to sync everything.
-- Mermaid rendering depends on `mmdc` (auto-installed if possible; failures do not block sync).
-- For full Markdown render, install `pandoc` (manual install required).
-- Extra mappings (generated after docs-sync run in binding mode):
-  - `.yapi/docs-sync.links.json`: local docs to YApi doc URLs.
-  - `.yapi/docs-sync.projects.json`: cached project metadata/envs.
-  - `.yapi/docs-sync.deployments.json`: local docs to deployed URLs.
+## 文档同步
+- 使用`yapi docs-sync bind add --name <binding> --dir <path> --project-id <id> --catid <id>`将本地文档绑定到YApi的相应类别（结果保存在`.yapi/docs-sync.json`文件中）。
+- 使用`yapi docs-sync --binding <binding>`同步文档，或使用`yapi docs-sync`同步所有绑定。
+- 默认情况下仅同步已更改的文件；使用`--force`选项可同步所有文件。
+- Mermaid渲染功能依赖于`mmdc`插件（如果可能的话会自动安装；即使安装失败也不会阻止同步过程）。
+- 如需完整的Markdown格式渲染，请安装`pandoc`插件（需手动安装）。
+- 在文档同步后生成的额外文件：
+  - `.yapi/docs-sync-links.json`：本地文档与YApi文档URL的映射关系。
+  - `.yapi/docs-sync.projects.json`：缓存的项目元数据和环境信息。
+  - `.yapi/docs-sync.deployments.json`：本地文档与部署后的URL的映射关系。
 
-## Interface creation tips
-- When adding interfaces, always set `req_body_type` (use `json` if unsure) and provide `res_body` (prefer JSON Schema). Empty values can make `/api/interface/add` fail.
-- Keep request/response structures in `req_*` / `res_body` instead of stuffing them into `desc` or `markdown`.
+## 接口创建提示
+- 在创建接口时，务必设置`req_body_type`（建议使用`json`格式），并提供`res_body`（建议使用JSON Schema格式）。如果这些字段为空，可能会导致`/api/interface/add`操作失败。
+- 将请求和响应的结构保存在`req_*`和`res_body`字段中，而不是直接写入`desc`或`markdown`内容中。

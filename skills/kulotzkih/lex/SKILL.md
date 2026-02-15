@@ -1,124 +1,126 @@
 ---
 name: warden-agent-builder
-description: "Build original LangGraph agents for Warden Protocol and prepare them for publishing in Warden Studio. Use this skill when users want to: (1) Create new Warden agents (not community examples), (2) Build LangGraph-based crypto/Web3 agents, (3) Deploy agents via LangSmith Deployments or custom infra, (4) Participate in the Warden Agent Builder Incentive Programme (open to OpenClaw agents), or (5) Integrate with Warden Studio for Agent Hub publishing."
+description: "为 Warden 协议构建原创的 LangGraph 代理，并准备好在 Warden Studio 中发布这些代理。当用户需要执行以下操作时，可以使用此技能：  
+(1) 创建新的 Warden 代理（非社区提供的示例）；  
+(2) 构建基于 LangGraph 的加密/Web3 代理；  
+(3) 通过 LangSmith 部署工具或自定义基础设施来部署代理；  
+(4) 参与 Warden 代理构建者激励计划（面向 OpenClaw 代理开发者）；  
+(5) 将代理集成到 Warden Studio 中以实现代理的发布。"
 ---
 
 # Warden Agent Builder
 
-Build and deploy LangGraph agents for Warden Protocol's Agentic Wallet ecosystem.
+用于构建和部署Warden Protocol的Agentic Wallet生态系统所需的LangGraph代理程序。
 
-## ⚠️ IMPORTANT: About Example Agents
+## ⚠️ 重要提示：关于示例代理程序
 
-The Warden community repository contains **example agents for learning**, not templates to recreate:
+Warden社区的仓库中包含的是**用于学习的示例代理程序**，而非可以直接复制的模板：
 
-- **Weather Agent** - Study this to learn simple data fetching patterns
-- **CoinGecko Agent** - Study this to learn Schema-Guided Reasoning (SGR)
-- **Portfolio Agent** - Study this to learn complex multi-source integration
+- **Weather Agent**：通过研究这个代理程序来了解简单的数据获取方式。
+- **CoinGecko Agent**：通过研究这个代理程序来学习基于模式的推理（Schema-Guided Reasoning, SGR）技术。
+- **Portfolio Agent**：通过研究这个代理程序来学习复杂的多源数据集成方法。
 
-**DO NOT BUILD THESE AGENTS** - they already exist. Instead:
-1. **Study** their code to understand patterns
-2. **Learn** from their architecture and workflows  
-3. **Build** something NEW and original for the incentive programme
+**请勿直接构建这些代理程序**——它们已经存在了。相反，请：
+1. **研究**它们的代码以理解其工作模式。
+2. **学习**它们的架构和工作流程。
+3. **为激励计划构建**全新的、原创的代理程序。
 
-Your agent must be **unique and solve a different problem** to be eligible for the incentive programme.
+您的代理程序必须**具有独特性，并解决一个不同的问题**，才能符合激励计划的资格。
 
-## Overview
+## 概述
 
-Warden Protocol is an "Agentic Wallet for the Do-It-For-Me economy" with an active Agent Builder Incentive Programme open to OpenClaw agents that deploy to Warden. All agents must be LangGraph-based and API-accessible.
+Warden Protocol是一个“Agentic Wallet”，适用于“Do-It-For-Me”经济模式，并为部署到Warden的OpenClaw代理程序提供了一个活跃的代理程序构建激励计划。所有代理程序都必须基于LangGraph构建，并且可以通过API进行访问。
 
-**Key Resources:**
-- Community Agents Repository: https://github.com/warden-protocol/community-agents
-- Documentation: https://docs.wardenprotocol.org
-- Discord: #developers channel for support
+**关键资源：**
+- 社区代理程序仓库：https://github.com/warden-protocol/community-agents
+- 文档：https://docs.wardenprotocol.org
+- Discord：#developers频道（用于获取支持）
 
-## Requirements Checklist
+## 需求清单
 
-Before building, ensure your agent meets these mandatory requirements:
+在构建之前，请确保您的代理程序满足以下强制要求：
 
-✓ **Framework**: Built with LangGraph (TypeScript or Python)
-✓ **Deployment**: LangSmith Deployments OR custom infrastructure
-✓ **Access**: API-accessible (no UI required - Warden provides UI)
-✓ **Isolation**: One agent per LangGraph instance
-✓ **Security Limitations** (Phase 1):
-  - Cannot access user wallets
-  - Cannot store data on Warden infrastructure
+✓ **框架**：使用LangGraph构建（TypeScript或Python）
+✓ **部署方式**：支持LangSmith部署或自定义基础设施
+✓ **访问方式**：可以通过API访问（无需用户界面——Warden提供了用户界面）
+✓ **隔离性**：每个LangGraph实例只能运行一个代理程序
+✓ **安全限制**（第一阶段）：
+  - 不能访问用户钱包
+  - 不能在Warden的基础设施上存储数据
 
-✓ **Functionality**: Can implement any workflow:
-  - Web3/Web2 automation
-  - API integrations
-  - Database connections
-  - External tool interactions
+✓ **功能**：可以实现以下工作流程：
+  - Web3/Web2自动化
+  - API集成
+  - 数据库连接
+  - 与外部工具的交互
 
-## Understanding the Example Agents
+## 了解示例代理程序
 
-The community-agents repository contains **reference examples** to learn from, NOT templates to recreate:
+社区代理程序仓库中提供了**参考示例**，供您学习，而非可以直接复制的模板：
 
-### Example Agent 1: LangGraph Quick Start (Study for Basics)
-**Location**: `agents/langgraph-quick-start` (TypeScript) or `agents/langgraph-quick-start-py` (Python)
-**Learn**: LangGraph fundamentals, minimal agent structure
-**Study**: Single-node chatbot with OpenAI integration
+### 示例代理程序1：LangGraph快速入门（了解基础知识）
+**位置**：`agents/langgraph-quick-start`（TypeScript）或`agents/langgraph-quick-start-py`（Python）
+**学习内容**：LangGraph的基础知识、最小化的代理程序结构
+**研究内容**：集成OpenAI的单节点聊天机器人
 
 ```bash
 git clone https://github.com/warden-protocol/community-agents.git
 cd community-agents/agents/langgraph-quick-start
 ```
 
-### Example Agent 2: Weather Agent (Study for Structure)
-**Location**: `agents/weather-agent`
-**Learn**: Simple data fetching, API integration, user-friendly responses
-**Study**: 
-- How to fetch data from external APIs (WeatherAPI)
-- Processing and formatting results
-- Clear scope and structure
-**⚠️ DO NOT BUILD**: This already exists. Study it, then build something NEW.
+### 示例代理程序2：Weather Agent（学习结构）
+**位置**：`agents/weather-agent`
+**学习内容**：简单的数据获取、API集成、用户友好的响应方式
+**研究内容**：
+- 如何从外部API（如WeatherAPI）获取数据
+- 数据的处理和格式化
+- 清晰的功能范围和结构
+**⚠️ 请勿直接构建**：这个代理程序已经存在。先研究它，然后构建全新的代理程序。
 
-### Example Agent 3: CoinGecko Agent (Study for SGR Pattern)
-**Location**: `agents/coingecko-agent`
-**Learn**: Schema-Guided Reasoning, complex workflows
-**Study**:
-- 5-step SGR workflow: Validate → Extract → Fetch → Validate → Analyze
-- Comparative analysis patterns
-- Error handling and data validation
-**⚠️ DO NOT BUILD**: This already exists. Study the pattern, apply to new use cases.
+### 示例代理程序3：CoinGecko Agent（学习基于模式的推理）
+**位置**：`agents/coingecko-agent`
+**学习内容**：基于模式的推理（Schema-Guided Reasoning, SGR）技术
+**研究内容**：
+- 五步SGR工作流程：验证 → 提取 → 获取 → 验证 → 分析
+- 比较分析方法
+- 错误处理和数据验证
+**⚠️ 请勿直接构建**：这个代理程序已经存在。研究其模式，并将其应用于新的使用场景。
 
-### Example Agent 4: Portfolio Analysis Agent (Study for Advanced Patterns)
-**Location**: `agents/portfolio-agent`
-**Learn**: Multi-source data synthesis, production architecture
-**Study**:
-- Integrating multiple APIs (CoinGecko + Alchemy)
-- Multi-chain support (EVM and Solana)
-- Complex SGR workflows
-- Comprehensive reporting
-**⚠️ DO NOT BUILD**: This already exists. Study the architecture for your own complex agent.
+### 示例代理程序4：Portfolio Analysis Agent（学习高级功能）
+**位置**：`agents/portfolio-agent`
+**学习内容**：多源数据合成、生产级架构
+**研究内容**：
+- 集成多个API（如CoinGecko和Alchemy）
+- 支持多种区块链（EVM和Solana）
+- 复杂的SGR工作流程
+- 综合报告功能
+**⚠️ 请勿直接构建**：这个代理程序已经存在。研究其架构，然后为您自己的代理程序开发新的功能。
 
-## IMPORTANT: Build Something NEW
+## 重要提示：构建全新的代理程序
 
-These examples exist to teach patterns and best practices. For the incentive programme, you MUST create an **original, unique agent** that solves a different problem. Do NOT simply recreate the Weather Agent, CoinGecko Agent, or Portfolio Agent.
+这些示例程序的目的是为了传授工作模式和最佳实践。为了符合激励计划的要求，您必须创建一个**原创的、独特的代理程序**，解决一个不同的问题。请不要简单地复制Weather Agent、CoinGecko Agent或Portfolio Agent。
 
-## Building Your Original Agent
+## 构建您的原创代理程序
 
-### Step 1: Study Examples and Choose Your Approach
+### 第一步：研究示例程序并选择您的开发方法
 
-**DO NOT clone an example to modify it.** Instead:
+**请勿直接克隆示例程序进行修改**。相反，请：
+1. **研究示例程序**以了解工作模式：
+   - 简单的数据获取 → 学习Weather Agent
+   - 复杂的分析 → 学习CoinGecko Agent
+   - 多源数据合成 → 学习Portfolio Agent
+2. **确定您的独特使用场景**：
+   - 您的代理程序将解决什么问题？
+   - 它将使用哪些API或数据源？
+   - 它与现有的代理程序有何不同？
+3. **规划您的代理程序的工作流程**：
+   - 是简单的请求-响应模式？
+   - 基于模式的推理（SGR）？
+   - 多步骤分析？
 
-1. **Study the examples** to understand patterns:
-   - Simple data fetching → Study Weather Agent
-   - Complex analysis → Study CoinGecko Agent  
-   - Multi-source synthesis → Study Portfolio Agent
+### 第二步：初始化您的新代理程序
 
-2. **Identify YOUR unique use case**:
-   - What problem will your agent solve?
-   - What APIs or data sources will it use?
-   - What makes it different from existing agents?
-
-3. **Plan your agent's workflow**:
-   - Simple request-response?
-   - Schema-Guided Reasoning (SGR)?
-   - Multi-step analysis?
-
-### Step 2: Initialize Your NEW Agent
-
-Use the initialization script to create a fresh project:
+使用初始化脚本创建一个新的项目：
 
 ```bash
 # Create your unique agent
@@ -135,11 +137,11 @@ npm install  # TypeScript
 pip install -r requirements.txt  # Python
 ```
 
-This creates a clean starting point, not a copy of existing agents.
+这将创建一个干净的起点，而不是现有代理程序的副本。
 
-### Step 3: Understand LangGraph Agent Structure
+### 第三步：了解LangGraph代理程序的结构
 
-Every LangGraph agent follows this basic structure:
+每个LangGraph代理程序都遵循以下基本结构：
 
 ```
 your-agent/
@@ -152,16 +154,16 @@ your-agent/
 └── README.md
 ```
 
-**Key files to implement:**
-- `graph.ts/py` - Define your workflow (validate → process → respond)
-- `agent.ts/py` - Implement your core logic
-- `tools.ts/py` - Integrate external APIs specific to YOUR agent's purpose
+**需要实现的关键文件**：
+- `graph.ts/py`：定义您的工作流程（验证 → 处理 → 响应）
+- `agent.ts/py`：实现您的核心逻辑
+- `tools.ts/py`：集成与您的代理程序功能相关的外部API
 
-### Step 4: Implement Your Custom Agent Logic
+### 第四步：实现您的自定义代理逻辑
 
-**Study patterns from examples, apply to YOUR use case:**
+**从示例程序中学习模式，并将其应用于您的使用场景**：
 
-**If building a simple data fetcher** (like Weather Agent pattern):
+**如果构建的是简单的数据获取程序**（如Weather Agent的模式）：
 ```typescript
 // Define workflow
 const workflow = new StateGraph({
@@ -178,7 +180,7 @@ workflow
   .addEdge("respond", END);
 ```
 
-**If building complex analysis** (like CoinGecko Agent pattern - SGR):
+**如果构建的是复杂的分析程序**（如CoinGecko Agent的模式，使用SGR）：
 ```typescript
 // Define 5-step SGR workflow
 const workflow = new StateGraph({
@@ -199,18 +201,18 @@ workflow
   .addEdge("generate", END);
 ```
 
-**Key Principles:**
-1. Keep workflows linear and predictable
-2. Validate inputs at each stage
-3. Handle errors gracefully
-4. Use OpenAI for natural language generation
-5. Structure responses consistently
+**关键原则**：
+1. 保持工作流程的线性和可预测性。
+2. 在每个阶段验证输入数据。
+3. 优雅地处理错误。
+4. 使用OpenAI进行自然语言生成。
+5. 保持响应的一致性。
 
-**CRITICAL**: This should be YOUR implementation solving YOUR problem, not a copy of the example agents.
+**重要提示**：这应该是您自己为解决问题而开发的实现，而不是复制示例程序。
 
-### Step 5: Configure Environment
+### 第五步：配置环境
 
-Create `.env` file:
+创建`.env`文件：
 
 ```bash
 # Required
@@ -225,13 +227,13 @@ COINGECKO_API_KEY=your_coingecko_key
 ALCHEMY_API_KEY=your_alchemy_key
 ```
 
-**Getting LangSmith API Key:**
-1. Create account at https://smith.langchain.com
-2. Navigate to Settings → API Keys
-3. Create new API key
-4. Add to `.env` file
+**获取LangSmith API密钥**：
+1. 在https://smith.langchain.com创建账户。
+2. 转到设置 → API密钥。
+3. 创建新的API密钥。
+4. 将密钥添加到`.env`文件中。
 
-Update `langgraph.json`:
+更新`langgraph.json`文件：
 
 ```json
 {
@@ -245,7 +247,7 @@ Update `langgraph.json`:
 }
 ```
 
-### Step 6: Test Locally
+### 第六步：进行本地测试
 
 ```bash
 # TypeScript
@@ -255,7 +257,7 @@ npm run dev
 langgraph dev
 ```
 
-Test your agent's API:
+测试您的代理程序的API接口：
 
 ```bash
 curl -X POST http://localhost:8000/invoke \
@@ -263,14 +265,14 @@ curl -X POST http://localhost:8000/invoke \
   -d '{"input": "test query"}'
 ```
 
-## Deployment Options
+## 部署选项
 
-### Option 1: LangSmith Deployments (Recommended)
+### 选项1：使用LangSmith进行部署（推荐）
 
-**Pros**: Fastest, simplest, managed infrastructure
-**Requirements**: LangSmith API key
+**优点**：最快、最简单、基础设施由LangSmith管理
+**要求**：需要LangSmith API密钥
 
-**Steps**:
+**步骤**：
 
 ```bash
 1. Push your agent repository to GitHub.
@@ -278,13 +280,13 @@ curl -X POST http://localhost:8000/invoke \
 3. Connect the repo, set environment variables, and deploy.
 ```
 
-Your agent receives:
-- API endpoint URL
-- Automatic authentication (uses your LangSmith API key)
-- Automatic scaling and monitoring
+您的代理程序将获得：
+- API端点URL
+- 自动认证（使用您的LangSmith API密钥）
+- 自动扩展和监控
 
-**Authentication for API calls:**
-When calling your deployed agent, include your LangSmith API key:
+**API调用时的认证**：
+在调用部署的代理程序时，请包含您的LangSmith API密钥：
 
 ```bash
 curl AGENT_URL/runs/wait \
@@ -299,16 +301,16 @@ curl AGENT_URL/runs/wait \
   }'
 ```
 
-### Option 2: Self-Hosted Infrastructure
+### 选项2：自托管基础设施
 
-**Pros**: Full control over runtime
-**Requirements**:
-- Docker container hosting
-- Exposed API endpoint
-- SSL certificate (HTTPS)
-- Monitoring and logging
+**优点**：对运行时环境有完全的控制权
+**要求**：
+- 需要Docker容器进行托管
+- 提供API端点
+- 需要SSL证书（HTTPS）
+- 需要监控和日志记录
 
-**Basic Docker Setup**:
+**基本的Docker配置**：
 
 ```dockerfile
 FROM node:18
@@ -320,66 +322,65 @@ EXPOSE 8000
 CMD ["npm", "start"]
 ```
 
-Deploy and note your:
-- API URL: `https://your-domain.com/agent`
-- API Key: Generated for authentication
+部署完成后，请记录以下信息：
+- API URL：`https://your-domain.com/agent`
+- API密钥：用于认证
 
-## Register with Warden Studio
+## 在Warden Studio中注册
 
-Once your agent is deployed and reachable via HTTPS, register it in Warden Studio:
+一旦您的代理程序通过HTTPS可访问，请在Warden Studio中注册它：
 
-1. **Provide API Details**:
+1. **提供API详细信息**：
    - API URL
-   - API key
+   - API密钥
+2. **添加元数据**：
+   - 代理程序名称
+   - 描述
+   - 技能/功能列表
+   - 头像图片
 
-2. **Add Metadata**:
-   - Agent name
-   - Description
-   - Skills/capabilities list
-   - Avatar image
+3. **发布**：您的代理程序将在Warden的Agent Hub中展示给数百万用户看到。
 
-3. **Publish**: Agent appears in Warden's Agent Hub for millions of users
+无需额外设置——您的代理程序现在已经可以通过API访问了！
 
-No additional setup required - your API-accessible agent is ready!
-
-**Next step (separate skill):**
-If the user asks to publish in Warden Studio or needs guided UI steps, switch to the OpenClaw skill **"Deploy Agent on Warden Studio"**:
+**下一步（单独的技能）**：
+如果用户请求在Warden Studio中发布代理程序或需要指导性步骤，请参阅OpenClaw技能**“在Warden Studio中部署代理程序”**：
 https://www.clawhub.ai/Kryptopaid/warden-studio-deploy
 
-## Best Practices
+## 最佳实践
 
-### 1. Agent Design
-- Study the Weather Agent structure to learn patterns
-- Use Schema-Guided Reasoning for complex workflows
-- Keep responses concise and actionable
-- Handle API failures gracefully
-- Validate all inputs
+### 1. 代理程序设计
+- 学习Weather Agent的结构以了解工作模式。
+- 对于复杂的工作流程，使用基于模式的推理（SGR）。
+- 保持响应简洁且易于操作。
+- 优雅地处理API错误。
+- 验证所有输入数据。
 
-### 2. API Integration
-- Use environment variables for API keys
-- Implement rate limiting
-- Cache responses when appropriate
-- Log errors for debugging
-- Return structured JSON responses
+### 2. API集成
+- 使用环境变量存储API密钥。
+- 实现速率限制。
+- 在适当的情况下缓存响应。
+- 记录错误以方便调试。
+- 返回结构化的JSON响应。
 
-### 3. Testing
-- Test locally before deploying
-- Verify all API endpoints work
-- Test edge cases and errors
-- Ensure responses are user-friendly
-- Validate against Warden requirements
+### 3. 测试
+- 在部署前进行本地测试。
+- 验证所有API端点是否正常工作。
+- 测试边缘情况和错误处理。
+- 确保响应对用户友好。
+- 验证是否符合Warden的要求。
 
-### 4. Documentation
-- Write clear README with:
-  - Agent purpose and capabilities
-  - Required API keys
-  - Setup instructions
-  - Example queries
-  - Known limitations
+### 4. 文档编写
+- 编写清晰的README文件，内容包括：
+  - 代理程序的目的和功能
+  - 所需的API密钥
+  - 设置说明
+  - 示例查询方法
+  - 已知的限制
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: Simple Data Fetcher
+### 模式1：简单的数据获取程序
 ```typescript
 // Fetch → Format → Respond
 async function agent(input: string) {
@@ -389,7 +390,7 @@ async function agent(input: string) {
 }
 ```
 
-### Pattern 2: Multi-Step Analysis
+### 模式2：多步骤分析
 ```typescript
 // Validate → Extract → Fetch → Analyze → Generate
 async function agent(input: string) {
@@ -401,7 +402,7 @@ async function agent(input: string) {
 }
 ```
 
-### Pattern 3: Comparative Analysis
+### 模式3：比较分析
 ```typescript
 // Parse → Fetch Multiple → Compare → Summarize
 async function agent(input: string) {
@@ -414,108 +415,180 @@ async function agent(input: string) {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-**"Agent not accessible via API"**
-- Verify deployment completed successfully
-- Check firewall/security group settings
-- Ensure API endpoint is publicly accessible
-- Test with curl or Postman
+**“无法通过API访问代理程序”**
+- 确认部署是否成功完成。
+- 检查防火墙/安全组设置。
+- 确保API端点可以公开访问。
+- 使用curl或Postman进行测试。
 
-**"LangGraph errors during build"**
-- Verify Node.js version (18+) or Python (3.11+)
-- Check all dependencies installed
-- Validate langgraph.json syntax
-- Review error logs in deployment console
+**“构建过程中出现LangGraph错误”**
+- 确认Node.js版本（18+）或Python版本（3.11+）。
+- 检查所有依赖项是否已安装。
+- 验证`langgraph.json`的语法是否正确。
+- 查看部署控制台中的错误日志。
 
-**"OpenAI API errors"**
-- Verify API key is valid
-- Check rate limits not exceeded
-- Ensure sufficient credits
-- Review error messages for details
+**“OpenAI API错误”**
+- 确认API密钥是否有效。
+- 检查是否超过了速率限制。
+- 确保有足够的信用额度。
+- 查看错误消息以获取详细信息。
 
-**"Agent responses are slow"**
-- Optimize API calls (parallelize where possible)
-- Implement caching for repeated queries
-- Reduce LLM token usage
-- Consider upgrading infrastructure
+**“代理程序响应速度慢”**
+- 优化API调用（尽可能实现并行处理）。
+- 对重复的查询实现缓存。
+- 减少LLM（Large Language Model）的 token 使用量。
+- 考虑升级基础设施。
 
-## Incentive Programme Tips
+## 激励计划提示
 
-The incentive programme is open to OpenClaw agents that deploy to Warden.
+激励计划面向部署到Warden的OpenClaw代理程序。
 
-1. **Be Original**: Create something NEW that doesn't exist yet
-   - Don't recreate Weather Agent, CoinGecko Agent, or Portfolio Agent
-   - Study their patterns, apply to different problems
-   
-2. **Solve Real Problems**: Focus on useful, unique functionality
-   - What gap exists in the Warden ecosystem?
-   - What would users actually want?
+1. **保持原创性**：创建全新的、尚未存在的代理程序。
+   - 不要复制Weather Agent、CoinGecko Agent或Portfolio Agent。
+   - 学习它们的模式，并将其应用于不同的问题。
+2. **解决实际问题**：专注于实用且独特的功能。
+   - Warden生态系统中存在哪些问题？
+   - 用户真正需要什么？
+3. **从简单开始**：最好先专注于做好一件事。
+   - 不要试图一次性构建所有功能。
+   - 简单、专注的代理程序往往更受欢迎。
+4. **质量优先于功能**：可靠性比复杂性更重要。
+   - 彻底测试。
+   - 优雅地处理错误。
+   - 提供清晰、有帮助的响应。
+5. **仔细阅读文档**：编写清晰的README文件，包括代理程序的目的和功能、所需的API密钥、设置说明、示例查询方法以及已知的限制。
 
-3. **Start Simple**: Better to do one thing exceptionally well
-   - Don't try to build everything at once
-   - Simple, focused agents often win
+## 常见模式
 
-4. **Quality Over Features**: Reliability beats complexity
-   - Test thoroughly
-   - Handle errors gracefully
-   - Provide clear, helpful responses
+### 模式1：简单的数据获取程序
+```typescript
+// Fetch → Format → Respond
+async function agent(input: string) {
+  const data = await fetchAPI(input);
+  const formatted = formatData(data);
+  return generateResponse(formatted);
+}
+```
 
-5. **Study the Examples**: Learn patterns, don't copy implementations
-   - Weather Agent → Simple data fetching pattern
-   - CoinGecko Agent → SGR workflow pattern
-   - Portfolio Agent → Multi-source integration pattern
+### 模式2：多步骤分析
+```typescript
+// Validate → Extract → Fetch → Analyze → Generate
+async function agent(input: string) {
+  const validated = await validateInput(input);
+  const params = await extractParams(validated);
+  const data = await fetchData(params);
+  const analysis = await analyzeData(data);
+  return generateReport(analysis);
+}
+```
 
-6. **Document Well**: Clear README with examples and setup instructions
+### 模式3：比较分析
+```typescript
+// Parse → Fetch Multiple → Compare → Summarize
+async function agent(input: string) {
+  const items = await parseItems(input);
+  const dataArray = await Promise.all(
+    items.map(item => fetchData(item))
+  );
+  const comparison = compareData(dataArray);
+  return generateComparison(comparison);
+}
+```
 
-7. **Join Discord**: Get feedback in #developers channel before submitting
+## 故障排除
 
-## Example Agent Ideas (Build These!)
+### 常见问题
 
-These are **NEW agent ideas** that don't exist yet in the Warden ecosystem. Build one of these (or create your own unique idea):
+**“无法通过API访问代理程序”**
+- 确认部署是否成功完成。
+- 检查防火墙/安全组设置。
+- 确保API端点可以公开访问。
+- 使用curl或Postman进行测试。
 
-**Web3 Use Cases:**
-- Gas price optimizer (predict best times to transact)
-- NFT rarity analyzer (evaluate NFT traits and rarity scores)
-- DeFi yield comparator (compare yields across protocols)
-- Wallet health checker (analyze wallet security and diversification)
-- Transaction explainer (decode and explain complex transactions)
-- Token price alerts (customizable price movement notifications)
-- Smart contract auditor (basic security checks)
-- Liquidity pool finder (identify best liquidity opportunities)
-- Bridge fee comparator (find cheapest cross-chain bridges)
-- Airdrop tracker (find and track airdrop eligibility)
+**“构建过程中出现LangGraph错误”**
+- 确认Node.js版本（18+）或Python版本（3.11+）。
+- 检查所有依赖项是否已安装。
+- 验证`langgraph.json`的语法是否正确。
+- 查看部署控制台中的错误日志。
 
-**General Use Cases:**
-- Crypto news aggregator (filter and summarize crypto news)
-- Research assistant (gather and analyze crypto research)
-- Regulatory tracker (track crypto regulations by region)
-- Data visualizer (create charts from on-chain data)
-- API orchestrator (combine multiple crypto data sources)
-- Workflow automator (automate common crypto tasks)
+**“OpenAI API错误”**
+- 确认API密钥是否有效。
+- 检查是否超过了速率限制。
+- 确保有足够的信用额度。
+- 查看错误消息以获取详细信息。
 
-**Remember**: These are IDEAS for new agents. Study the example agents (Weather, CoinGecko, Portfolio) to learn patterns, then build something from this list or create your own unique concept.
+**“代理程序响应速度慢”**
+- 优化API调用（尽可能实现并行处理）。
+- 对重复的查询实现缓存。
+- 减少LLM token的使用量。
+- 考虑升级基础设施。
 
-## Additional Resources
+## 激励计划提示
 
-**Documentation:**
-- LangGraph TypeScript Guide: `community-agents/docs/langgraph-quick-start-ts.md`
-- LangGraph Python Guide: `community-agents/docs/langgraph-quick-start-py.md`
-- Deployment Guide: `community-agents/docs/deploy.md`
+激励计划面向部署到Warden的OpenClaw代理程序。
 
-**Example Agents:**
-- Weather Agent README: `agents/weather-agent/README.md`
-- CoinGecko Agent README: `agents/coingecko-agent/README.md`
-- Portfolio Agent README: `agents/portfolio-agent/README.md`
+1. **保持原创性**：创建全新的、尚未存在的代理程序。
+   - 不要复制Weather Agent、CoinGecko Agent或Portfolio Agent。
+   - 学习它们的模式，并将其应用于不同的问题。
+2. **解决实际问题**：专注于实用且独特的功能。
+   - Warden生态系统中存在哪些问题？
+   - 用户真正需要什么？
+3. **从简单开始**：最好先专注于做好一件事。
+   - 不要试图一次性构建所有功能。
+   - 简单、专注的代理程序往往更受欢迎。
+4. **质量优先于功能**：可靠性比复杂性更重要。
+   - 彻底测试。
+   - 优雅地处理错误。
+   - 提供清晰、有帮助的响应。
+5. **仔细阅读文档**：编写清晰的README文件，包括代理程序的目的和功能、所需的API密钥、设置说明以及示例查询方法。
 
-**Support:**
-- Discord: #developers channel
-- GitHub Issues: https://github.com/warden-protocol/community-agents/issues
-- Documentation: https://docs.wardenprotocol.org
+## 示例代理程序创意（请尝试构建这些！）
 
-## Quick Reference Commands
+这些是Warden生态系统中还不存在的新代理程序创意。尝试构建其中一个（或创建您自己的独特创意）：
+
+**Web3应用场景**：
+- 气体价格优化器（预测最佳交易时机）
+- NFT稀有性分析器（评估NFT的特性和稀有性评分）
+- DeFi收益比较器（比较不同协议的收益）
+- 钱包健康检查器（分析钱包的安全性和多样性）
+- 交易解释器（解码并解释复杂的交易）
+- 代币价格提醒器（自定义价格变动通知）
+- 智能合约审计器（基本的安全性检查）
+- 流动性池查找器（寻找最佳的跨链桥接服务）
+- Airdrop跟踪器（查找并跟踪Airdrop资格）
+
+**通用应用场景**：
+- 加密新闻聚合器（过滤和总结加密新闻）
+- 研究助手（收集和分析加密相关的研究资料）
+- 监管跟踪器（按地区跟踪加密法规）
+- 数据可视化工具（从链上数据生成图表）
+- API编排器（整合多个加密数据源）
+- 工作流程自动化工具（自动化常见的加密任务）
+
+**记住**：这些只是新代理程序的创意。请研究示例程序（Weather Agent、CoinGecko Agent、Portfolio Agent）以了解工作模式，然后根据这些创意构建新的代理程序或开发您自己的独特概念。
+
+## 其他资源
+
+**文档**：
+- LangGraph TypeScript指南：`community-agents/docs/langgraph-quick-start-ts.md`
+- LangGraph Python指南：`community-agents/docs/langgraph-quick-start-py.md`
+- 部署指南：`community-agents/docs/deploy.md`
+
+**示例代理程序**：
+- Weather Agent的README文件：`agents/weather-agent/README.md`
+- CoinGecko Agent的README文件：`agents/coingecko-agent/README.md`
+- Portfolio Agent的README文件：`agents/portfolio-agent/README.md`
+
+**支持**：
+- Discord：#developers频道
+- GitHub问题反馈：https://github.com/warden-protocol/community-agents/issues
+- 文档：https://docs.wardenprotocol.org
+
+## 快速参考命令
 
 ```bash
 # Study example agents (DON'T BUILD THESE)
@@ -547,17 +620,15 @@ docker build -t my-warden-agent .
 docker run -p 8000:8000 my-warden-agent
 ```
 
-## Success Checklist
+## 成功提交前的检查清单
 
-Before submitting to incentive programme:
-
-- [ ] Agent built with LangGraph
-- [ ] API accessible and tested
-- [ ] One agent per LangGraph instance
-- [ ] No wallet access or data storage (Phase 1)
-- [ ] Clear documentation in README
-- [ ] Environment variables properly configured
-- [ ] Error handling implemented
-- [ ] Tested with various inputs
-- [ ] Unique and useful functionality
-- [ ] Ready for Warden Studio registration
+- [ ] 代理程序使用LangGraph构建完成。
+- [ ] API可访问且已通过测试。
+- [ ] 每个LangGraph实例只运行一个代理程序。
+- [ ] 不允许访问用户钱包或存储数据（第一阶段）。
+- [ ] README文件中有清晰的文档。
+- [ ] 环境变量配置正确。
+- [ ] 已实现错误处理。
+- [ ] 使用多种输入进行了测试。
+- [ ] 功能独特且实用。
+- [ ] 准备好在Warden Studio中注册。

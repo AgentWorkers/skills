@@ -1,37 +1,37 @@
 ---
 name: tdd-workflow
-description: Test-Driven Development discovery hub that detects TDD intent and guides the red-green-refactor cycle. Use when wanting to write tests first, implement TDD workflow, or learn test-first development practices. Routes to appropriate TDD commands (/sw:tdd-red, /sw:tdd-green, /sw:tdd-refactor).
+description: 这是一个基于测试驱动开发（Test-Driven Development, TDD）的发现平台，能够识别开发者的测试意图，并指导“编写测试 → 实现代码 → 重构代码”（red-green-refactor）的循环。适用于希望先编写测试、遵循TDD工作流程或学习TDD开发方法的情况。该平台提供了相应的TDD命令入口：/sw:tdd-red、/sw:tdd-green、/sw:tdd-refactor。
 ---
 
-# TDD Workflow - Discovery & Coordination Skill
+# TDD工作流程 - 发现与协调技能
 
-## Purpose
+## 目的
 
-This skill acts as a **discovery hub** for Test-Driven Development (TDD) in SpecWeave. It:
-- ✅ Detects when users want to implement features with TDD
-- ✅ Asks user preference for TDD workflow enforcement
-- ✅ Routes to appropriate TDD tools (commands vs agent)
-- ✅ Provides TDD education and best practices
+该技能在SpecWeave中充当测试驱动开发（Test-Driven Development, TDD）的**发现中心**。它：
+- ✅ 检测用户是否希望使用TDD来实现功能
+- ✅ 询问用户对TDD工作流程的偏好
+- ✅ 将用户引导至合适的TDD工具（命令或专家代理）
+- ✅ 提供TDD相关教育和最佳实践
 
-**NOT a full TDD implementation** - delegates to:
-- `tdd-orchestrator` agent (deep TDD expertise)
-- `/sw:tdd:cycle` command (enforced red-green-refactor)
-- Individual phase commands (`/sw:tdd:red`, `/sw:tdd:green`, `/sw:tdd:refactor`)
+**该技能并不提供完整的TDD实现**，而是将相关任务委托给其他组件：
+- `tdd-orchestrator` 代理（负责深入的TDD协调）
+- `/sw:tdd:cycle` 命令（负责执行红-绿-重构循环）
+- 单个阶段的命令（`/sw:tdd:red`、`/sw:tdd:green`、`/sw:tdd:refactor`）
 
 ---
 
-## When to Activate
+## 何时激活
 
-**Automatic activation when user mentions**:
-- "implement with TDD"
-- "use test-driven development"
-- "red-green-refactor"
-- "write tests first"
-- "test-first approach"
-- "Kent Beck style"
-- "TDD discipline"
+当用户提到以下内容时，该技能会自动激活：
+- “使用TDD来实现功能”
+- “采用测试驱动开发”
+- “红-绿-重构”
+- “先写测试”
+- “测试优先”
+- “Kent Beck风格”
+- “TDD规范”
 
-**Example triggers**:
+**示例触发条件**：
 ```
 User: "Implement authentication with TDD"
 User: "Use test-driven development for this feature"
@@ -40,12 +40,11 @@ User: "Let's do red-green-refactor for the payment module"
 
 ---
 
-## Workflow
+## 工作流程
 
-### Step 1: Detect TDD Intent
+### 第1步：检测TDD意图
 
-When activated, confirm user's TDD intent:
-
+激活后，确认用户的TDD意图：
 ```
 "I detected you want to use Test-Driven Development (TDD).
 
@@ -57,10 +56,9 @@ TDD follows the red-green-refactor cycle:
 Would you like to:"
 ```
 
-### Step 2: Offer TDD Options
+### 第2步：提供TDD选项
 
-**Use AskUserQuestion tool** to present choices:
-
+使用`AskUserQuestion`工具向用户展示可选方案：
 ```typescript
 Question: "How would you like to implement TDD for this feature?"
 Options:
@@ -77,9 +75,9 @@ Options:
                    You provide TDD advice when needed."
 ```
 
-### Step 3: Route Based on Choice
+### 第3步：根据用户选择进行引导
 
-**Option 1: Guided TDD Workflow**
+**选项1：引导式TDD工作流程**
 ```bash
 Invoke: /sw:tdd:cycle
 
@@ -94,7 +92,7 @@ Benefits:
 - Integrates with SpecWeave increment workflow
 ```
 
-**Option 2: Expert TDD Agent**
+**选项2：专家级TDD代理**
 ```bash
 Invoke: tdd-orchestrator agent (via Task tool)
 
@@ -113,7 +111,7 @@ Benefits:
 - Handles complex scenarios
 ```
 
-**Option 3: Manual TDD**
+**选项3：手动TDD**
 ```bash
 Provide TDD best practices:
 
@@ -129,38 +127,38 @@ I'll notify you at each phase transition."
 
 ---
 
-## TDD Best Practices (Reference)
+## TDD最佳实践（参考）
 
-### Red Phase 🔴
-- Write the simplest test that fails
-- Test should compile but fail on assertion
-- Focus on WHAT, not HOW
-- One test at a time
+### 红色阶段 🔴
+- 编写最简单的测试，使其无法通过
+- 测试应能编译，但在断言时失败
+- 专注于“做什么”，而不是“怎么做”
+- 每次只编写一个测试
 
-### Green Phase 🟢
-- Write minimal code to pass the test
-- Embrace "fake it till you make it"
-- Hardcoded values acceptable initially
-- Get to green FAST
+### 绿色阶段 🟢
+- 编写最少的代码以使测试通过
+- 采用“先假后真”的开发方法
+- 初始阶段可以使用硬编码的参数
+- 尽快让测试通过
 
-### Refactor Phase 🔵
-- Improve code structure
-- Extract methods, remove duplication
-- Tests must stay green
-- Commit after each refactor
+### 重构阶段 🔵
+- 改进代码结构
+- 提取方法，消除代码重复
+- 测试必须始终保持通过状态
+- 每次重构后提交代码
 
-### TDD Anti-Patterns to Avoid
-- ❌ Writing implementation before test
-- ❌ Writing multiple tests before implementation
-- ❌ Over-engineering in GREEN phase
-- ❌ Refactoring without tests passing
-- ❌ Skipping refactor phase
+### 需避免的TDD不良实践
+- ❌ 在编写测试之前先实现代码
+- ❌ 在实现代码之前编写多个测试
+- ❌ 在绿色阶段过度设计
+- ❌ 在没有通过测试的情况下进行重构
+- ❌ 跳过重构阶段
 
 ---
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
-**In Increment Workflow**:
+**在增量工作流程中**：
 ```
 /sw:inc "Authentication feature" → spec.md created
 ↓
@@ -179,7 +177,7 @@ User chooses: Guided TDD Workflow
 Increment tasks completed with TDD discipline
 ```
 
-**With spec-driven-debugging**:
+**结合规范驱动的调试功能**：
 ```
 Bug found → spec-driven-debugging activates
 ↓
@@ -190,45 +188,45 @@ tdd-workflow can coordinate test-first bug fixes
 
 ---
 
-## Commands Reference
+## 命令参考
 
-### Full Cycle
-- `/sw:tdd:cycle` - Complete red-green-refactor orchestration
+### 完整循环
+- `/sw:tdd:cycle` - 完整执行红-绿-重构循环
 
-### Individual Phases
-- `/sw:tdd:red` - RED phase only (write failing test)
-- `/sw:tdd:green` - GREEN phase only (make test pass)
-- `/sw:tdd:refactor` - REFACTOR phase only (improve code)
+### 单个阶段
+- `/sw:tdd:red` - 仅执行红色阶段（编写失败的测试）
+- `/sw:tdd:green` - 仅执行绿色阶段（使测试通过）
+- `/sw:tdd:refactor` - 仅执行重构阶段
 
-### When to Use Each
+### 各命令的适用场景
 
-**Use /sw:tdd:cycle when**:
-- ✅ Starting new feature from scratch
-- ✅ Learning TDD or teaching team
-- ✅ Want enforced discipline (gates)
-- ✅ Working in increment-based workflow
+- **使用 `/sw:tdd:cycle`**：
+  - ✅ 从零开始实现新功能
+  - ✅ 学习TDD或向团队传授TDD
+  - ✅ 需要强制遵循TDD规范
+  - ✅ 在基于增量的工作流程中
 
-**Use individual commands when**:
-- ✅ Already in middle of TDD cycle
-- ✅ Need to repeat a phase (e.g., multiple refactors)
-- ✅ Want finer control over cycle
-- ✅ Integrating with other workflows
+- **使用单个命令**：
+  - ✅ 已经处于TDD循环中
+  - ✅ 需要重复某个阶段（例如多次重构）
+  - ✅ 需要对流程有更精细的控制
+  - ✅ 需要与其它工作流程集成
 
-**Use tdd-orchestrator agent when**:
-- ✅ Complex scenarios (property-based testing)
-- ✅ Legacy code refactoring
-- ✅ Multi-agent coordination needed
-- ✅ Advanced TDD techniques required
+- **使用 `tdd-orchestrator` 代理**：
+  - ✅ 复杂场景（基于属性的测试）
+  - ✅ 重构遗留代码
+  - ✅ 需要多个代理的协同
+  - ✅ 需要高级的TDD技术
 
 ---
 
-## Example Interactions
+## 示例交互
 
-### Example 1: Beginner TDD User
+### 示例1：初学者使用TDD
 
-**User**: "I want to implement user registration with TDD"
+**用户**：“我想使用TDD来实现用户注册功能”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 Great! TDD (Test-Driven Development) follows red-green-refactor:
 🔴 RED: Write failing test
@@ -238,9 +236,9 @@ Great! TDD (Test-Driven Development) follows red-green-refactor:
 [Presents AskUserQuestion with 3 options]
 ```
 
-**User selects**: "Guided TDD Workflow"
+**用户选择**：“引导式TDD工作流程”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 Perfect! I'm invoking /sw:tdd:cycle to orchestrate your TDD workflow.
 
@@ -257,20 +255,20 @@ Ready to proceed to GREEN phase? (type 'yes' or run /sw:tdd:green)
 
 ---
 
-### Example 2: Experienced TDD User
+### 示例2：有经验的TDD用户
 
-**User**: "Refactor auth module with TDD safety nets"
+**用户**：“使用TDD对认证模块进行重构”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 I see you want to refactor with TDD discipline.
 
 [Presents AskUserQuestion]
 ```
 
-**User selects**: "Expert TDD Agent"
+**用户选择**：“专家级TDD代理”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 Invoking tdd-orchestrator agent for advanced refactoring support...
 
@@ -283,11 +281,11 @@ Invoking tdd-orchestrator agent for advanced refactoring support...
 
 ---
 
-### Example 3: Mid-Cycle TDD
+### 示例3：TDD进行到中间阶段
 
-**User**: "I'm in GREEN phase, tests passing, ready to refactor"
+**用户**：“我处于绿色阶段，测试通过了，准备进行重构”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 Great! Tests are passing. Time for REFACTOR phase.
 
@@ -298,9 +296,9 @@ You can:
 Which would you prefer?
 ```
 
-**User**: "I'll refactor manually"
+**用户**：“我将手动进行重构”
 
-**tdd-workflow**:
+**tdd-workflow**：
 ```
 Perfect! I'll monitor your refactoring:
 
@@ -314,10 +312,9 @@ Ready for next feature? Run /sw:tdd:cycle or continue manually.
 
 ---
 
-## Configuration
+## 配置
 
-**Optional**: Customize TDD preferences in `.specweave/config.yaml`:
-
+**可选**：在`.specweave/config.yaml`文件中自定义TDD偏好设置：
 ```yaml
 tdd:
   default_workflow: "cycle"  # Options: "cycle", "agent", "manual"
@@ -328,51 +325,48 @@ tdd:
 
 ---
 
-## Success Criteria
+## 成功标准
 
-**This skill succeeds when**:
-- ✅ Users are offered TDD workflow when appropriate
-- ✅ TDD choice is explicit (not assumed)
-- ✅ Clear routing to appropriate tool (command vs agent)
-- ✅ TDD education embedded in workflow
-- ✅ Flexible enough for beginners and experts
-- ✅ Integrates seamlessly with SpecWeave increments
-
----
-
-## Related Skills & Agents
-
-**Skills**:
-- `spec-driven-debugging` - Bug fixes can use TDD approach
-- `increment-planner` - Increments can specify TDD as methodology
-- `e2e-playwright` - E2E tests can follow TDD for acceptance tests
-
-**Agents**:
-- `tdd-orchestrator` - Deep TDD expertise (invoked by this skill)
-- `qa-lead` - Test strategy overlaps with TDD principles
-
-**Commands**:
-- `/sw:tdd:cycle` - Full red-green-refactor orchestration
-- `/sw:tdd:red`, `/sw:tdd:green`, `/sw:tdd:refactor` - Individual phases
+当以下条件满足时，说明该技能成功运行：
+- ✅ 在适当的情况下向用户提供TDD工作流程建议
+- ✅ 用户明确选择了TDD方式
+- ✅ 明确引导用户使用合适的工具（命令或专家代理）
+- ✅ 将TDD相关知识融入工作流程
+- ✅ 对初学者和专家都足够灵活
+- ✅ 与SpecWeave的增量工作流程无缝集成
 
 ---
 
-## Summary
+## 相关技能与代理
 
-**tdd-workflow** is a lightweight discovery skill that:
+**相关技能**：
+- `spec-driven-debugging`：可以使用TDD方法进行错误修复
+- `increment-planner`：可以在增量计划中指定使用TDD作为开发方法
+- `e2e-playwright`：可以使用TDD编写端到端测试
 
-1. ✅ **Detects** TDD intent from user messages
-2. ✅ **Asks** user preference for TDD enforcement level
-3. ✅ **Routes** to appropriate tool (guided commands vs expert agent)
-4. ✅ **Educates** on TDD principles and best practices
-5. ✅ **Integrates** with SpecWeave increment workflow
+**相关代理**：
+- `tdd-orchestrator`：具备深入的TDD协调能力
+- `qa-lead`：其测试策略与TDD原则相契合
 
-**Not a replacement for**:
-- `tdd-orchestrator` agent (deep expertise)
-- `/sw:tdd-*` commands (workflow enforcement)
-
-**Instead, it's the entry point** that helps users choose the right TDD tool for their context.
+**相关命令**：
+- `/sw:tdd:cycle`：执行完整的红-绿-重构循环
+- `/sw:tdd:red`、`/sw:tdd:green`、`/sw:tdd:refactor`：执行单个阶段的操作
 
 ---
 
-**Keywords**: TDD, test-driven development, red-green-refactor, test-first, Kent Beck, TDD cycle, property-based testing, mutation testing, refactoring, test discipline
+## 总结
+
+`tdd-workflow`是一个轻量级的辅助技能，它：
+- ✅ 从用户输入中检测TDD的意图
+- ✅ 询问用户对TDD实施程度的偏好
+- ✅ 将用户引导至合适的工具（命令或专家代理）
+- ✅ 教授TDD原则和最佳实践
+- ✅ 与SpecWeave的增量工作流程紧密集成
+
+**注意**：
+- 该技能不能替代`tdd-orchestrator`（负责复杂的TDD协调）或`/sw:tdd-*`命令（用于执行具体工作流程）
+- 它是一个入口点，帮助用户根据实际情况选择合适的TDD工具。
+
+---
+
+**关键词**：TDD、测试驱动开发、红-绿-重构、测试优先、Kent Beck、TDD循环、基于属性的测试、重构、测试规范

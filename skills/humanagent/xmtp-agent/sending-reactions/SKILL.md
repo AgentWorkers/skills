@@ -1,44 +1,44 @@
 ---
 name: sending-reactions
-description: Emoji reactions and thinking indicators for XMTP agents. Use when adding reactions to messages or showing processing state with thinking emoji. Triggers on emoji reactions, thinking indicator, or message acknowledgment.
+description: XMTP代理的emoji反应和思考指示器：用于在消息中添加反应效果，或通过思考表情来显示处理状态。这些功能会在用户发送emoji反应、显示思考指示器或确认收到消息时触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP reactions
+# XMTP 反应功能
 
-Send and receive emoji reactions, including thinking indicator patterns.
+支持发送和接收表情符号（emoji）作为反馈，包括用于表示思考状态的特定表情模式。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Reacting to user messages with emoji
-- Showing processing/thinking state
-- Receiving and handling reactions
-- Implementing acknowledgment patterns
+在以下情况下请参考这些指南：
+- 用表情符号回复用户消息
+- 显示处理或思考中的状态
+- 接收并处理用户的反馈
+- 实现确认用户反馈的机制
 
-## Rule categories by priority
+## 规则分类（按优先级）
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Send | HIGH | `send-` |
-| 2 | Receive | HIGH | `receive-` |
-| 3 | Patterns | MEDIUM | `patterns-` |
+| 优先级 | 规则类别 | 影响程度 | 前缀 |
+|---------|-----------|-----------|---------|
+| 1       | 发送       | 高        | `send-`     |
+| 2       | 接收       | 高        | `receive-`     |
+| 3       | 表情模式     | 中        | `patterns-`   |
 
-## Quick reference
+## 快速参考
 
-### Send (HIGH)
-- `send-reaction` - Send emoji reactions to messages
+### 发送（高优先级）
+- `send-reaction`  - 向消息发送表情符号作为反馈
 
-### Receive (HIGH)
-- `receive-reaction` - Handle incoming reactions
+### 接收（高优先级）
+- `receive-reaction` - 处理收到的用户反馈
 
-### Patterns (MEDIUM)
-- `patterns-thinking` - Thinking indicator pattern
+### 表情模式（中等优先级）
+- `patterns-thinking`  - 用于表示思考状态的表情模式
 
-## Quick start
+## 快速入门
 
 ```typescript
 // Send a reaction
@@ -67,13 +67,12 @@ await ctx.conversation.sendReaction({
 });
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+如需详细说明，请阅读相应的规则文件：
 
 ```
 rules/send-reaction.md
 rules/receive-reaction.md
 rules/patterns-thinking.md
 ```
-

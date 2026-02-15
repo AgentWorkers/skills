@@ -1,36 +1,36 @@
 ---
 name: agent-memory-ultimate
 version: 2.0.4
-description: AI agent persistent memory with SQLite, session recall, and long-term memory. Human-like architecture with daily logs, sleep consolidation, FTS5 search, importers for WhatsApp/ChatGPT/VCF. Everything an agent needs to remember across sessions.
+description: AI代理的持久性内存支持SQLite数据库，具备会话数据恢复（session recall）和长期数据存储（long-term memory）功能。该代理采用类似人类的处理架构，支持每日日志记录（daily logs）、睡眠状态管理（sleep consolidation），以及基于FTS5的文件搜索机制（FTS5 search）。同时，它还提供了与WhatsApp、ChatGPT、VCF等平台的导入功能（importers for WhatsApp/ChatGPT/VCF），确保代理能够跨会话保存所有需要记住的信息。
 homepage: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 repository: https://github.com/globalcaos/clawdbot-moltbot-openclaw
 ---
 
 # Agent Memory Ultimate
 
-**Platform:** [OpenClaw](https://github.com/globalcaos/clawdbot-moltbot-openclaw)  
-**Docs:** https://docs.openclaw.ai
+**平台：** [OpenClaw](https://github.com/globalcaos/clawdbot-moltbot-openclaw)  
+**文档：** https://docs.openclaw.ai
 
 ---
 
-## Overview
+## 概述
 
-AI agents wake fresh each session — no memory of yesterday. This skill solves that by implementing a memory system modeled on human cognition:
+AI代理在每次会话开始时都会“重置”自身状态——它们不会保留之前的记忆。本技能通过实现一个基于人类认知机制的记忆系统来解决这一问题：
 
-| Human Process | Agent Equivalent |
+| 人类认知过程 | 代理对应机制 |
 |---------------|------------------|
-| Short-term memory | Current session context |
-| Daily journal | `memory/YYYY-MM-DD.md` files |
-| Long-term memory | `MEMORY.md` (curated insights) |
-| Sleep consolidation | Scheduled memory review + transfer |
-| Forgetting curve | Session resets; only files persist |
-| Searchable recall | SQLite + FTS5 |
+| 短期记忆 | 当前会话上下文 |
+| 日志记录 | `memory/YYYY-MM-DD.md` 文件 |
+| 长期记忆 | `MEMORY.md`（精选的见解） |
+| 睡眠巩固 | 定期记忆回顾与信息转移 |
+| 遗忘机制 | 会话重置；只有文件会保留下来 |
+| 可搜索的回忆功能 | SQLite + FTS5（全文搜索引擎） |
 
-**Why it works:** Humans don't remember everything — they consolidate important patterns during sleep. This skill gives agents the same architecture.
+**工作原理：** 人类并不会记住所有事情——他们会在睡眠期间巩固重要的信息。本技能为代理提供了类似的记忆机制。
 
 ---
 
-## File Structure
+## 文件结构
 
 ```
 workspace/
@@ -56,13 +56,13 @@ workspace/
     └── knowledge/         # Topic-based docs
 ```
 
-For OpenClaw workspace setup, see the [workspace docs](https://github.com/globalcaos/clawdbot-moltbot-openclaw/tree/main/docs).
+关于OpenClaw工作空间的设置，请参阅[工作空间文档](https://github.com/globalcaos/clawdbot-moltbot-openclaw/tree/main/docs)。
 
 ---
 
-## Organizing by Person
+## 按人员分类存储信息
 
-Store entity profiles in `bank/entities/`:
+实体资料存储在 `bank/entities/` 目录下：
 
 ```markdown
 # PersonName.md
@@ -79,16 +79,16 @@ How you know them, key interactions, preferences
 Running log of important details learned
 ```
 
-**When to create an entity file:**
-- Recurring person in conversations
-- Someone with specific preferences to remember
-- Family members, close contacts
+**何时创建实体文件：**
+- 在对话中频繁出现的联系人
+- 需要特别记住的个体
+- 家庭成员、亲密联系人
 
 ---
 
-## Organizing by Project
+## 按项目分类存储信息
 
-Projects live in `memory/projects/<project-name>/`:
+项目资料存储在 `memory/projects/<project-name>/` 目录下：
 
 ```
 memory/projects/
@@ -104,7 +104,7 @@ memory/projects/
     └── devices.md
 ```
 
-**Project index.md template:**
+**`project-index.md` 模板：**
 ```markdown
 # Project Name
 
@@ -122,22 +122,22 @@ memory/projects/
 
 ---
 
-## SQLite for Structured Data
+## 使用 SQLite 存储结构化数据
 
-Use SQLite (`db/agent.db`) for data that needs queries. OpenClaw agents can execute SQL directly via the `exec` tool.
+对于需要查询的数据，使用 SQLite（`db/agent.db`）数据库。OpenClaw 代理可以通过 `exec` 工具直接执行 SQL 语句。
 
-### When to Use SQLite vs Markdown
+### 何时使用 SQLite 与 Markdown
 
-| Data Type | Use SQLite | Use Markdown |
+| 数据类型 | 使用 SQLite | 使用 Markdown |
 |-----------|------------|--------------|
-| Contacts (searchable) | ✅ | ❌ |
-| Conversation history | ✅ | ❌ |
-| Preferences | ❌ | ✅ |
-| Project notes | ❌ | ✅ |
-| Entity profiles | ❌ | ✅ |
-| Indexed documents | ✅ (FTS5) | ❌ |
+| 联系人信息（可搜索） | ✅ | ❌ |
+| 对话记录 | ✅ | ❌ |
+| 偏好设置 | ❌ | ✅ |
+| 项目笔记 | ❌ | ✅ |
+| 实体资料 | ❌ | ✅ |
+| 索引化的文档 | ✅ (FTS5) | ❌ |
 
-### Schema Example
+### 数据库模式示例
 
 ```sql
 -- Contacts table with full-text search
@@ -173,7 +173,7 @@ CREATE VIRTUAL TABLE messages_fts USING fts5(
 );
 ```
 
-### Query Examples
+### 查询示例
 
 ```sql
 -- Find contact by partial name
@@ -190,11 +190,11 @@ ORDER BY timestamp DESC LIMIT 20;
 
 ---
 
-## Daily Cycle
+## 日常工作流程
 
-### 1. Wake Up (Session Start)
+### 1. 会话开始（唤醒）
 
-Add this to your `AGENTS.md`:
+将以下内容添加到 `AGENTS.md` 文件中：
 
 ```markdown
 Before doing anything:
@@ -204,14 +204,14 @@ Before doing anything:
 4. If main session: Also read MEMORY.md
 ```
 
-### 2. During Day (Active Session)
-- Write significant events to `memory/YYYY-MM-DD.md`
-- Don't rely on "mental notes" — they don't survive restarts
-- When told to remember something: write it NOW
+### 2. 日常工作（活跃会话）
+- 将重要事件记录到 `memory/YYYY-MM-DD.md` 文件中
+- 不要依赖“头脑中的笔记”——这些笔记在重启后会被丢失
+- 当被告知需要记住某些内容时：立即记录下来
 
-### 3. Sleep Cycle (Consolidation)
+### 3. 睡眠巩固（信息整合）
 
-Schedule a daily "sleep" task using [OpenClaw cron](https://github.com/globalcaos/clawdbot-moltbot-openclaw/blob/main/docs/cron.md):
+使用 [OpenClaw 的 cron 任务](https://github.com/globalcaos/clawdbot-moltbot-openclaw/blob/main/docs/cron.md) 安排每日“睡眠”任务：
 
 ```json
 {
@@ -224,66 +224,65 @@ Schedule a daily "sleep" task using [OpenClaw cron](https://github.com/globalcao
 }
 ```
 
-**What consolidation does:**
-1. Reviews last 3-7 daily logs
-2. Extracts patterns and recurring lessons
-3. Adds distilled insights to MEMORY.md
-4. Removes outdated information
+**信息整合的作用：**
+1. 回顾过去 3-7 天的日志
+2. 提取模式和重复出现的规律
+3. 将精华内容添加到 `MEMORY.md` 中
+4. 删除过时的信息
 
 ---
 
-## Memory Types
+## 记忆类型
 
-### Raw Memory (Daily Logs)
-- Everything that happened
-- Decisions made and why
-- Errors and lessons
-- Technical details
+### 原始记忆（日常日志）
+- 发生的一切
+- 做出的决策及其原因
+- 错误及经验教训
+- 技术细节
 
-### Curated Memory (MEMORY.md)
-- Abstract principles (not specific fixes)
-- User preferences
-- Core lessons that apply broadly
-- Things that should survive months/years
+### 精选记忆（MEMORY.md）
+- 抽象出的原则（非具体解决方案）
+- 具有普遍适用性的核心知识
+- 应该长期保留的信息
 
-**Abstraction example:**
-- ❌ Daily log: "Fixed senderE164 bug in message-line.ts"
-- ✅ MEMORY.md: "Chat ID ≠ Sender — always verify actual sender field"
-
----
-
-## Why This Works (Cognitive Science)
-
-1. **Spaced repetition** — Daily review reinforces important memories
-2. **Active consolidation** — Humans consolidate during sleep; agents consolidate in scheduled tasks
-3. **Chunking** — MEMORY.md groups related concepts into retrievable chunks
-4. **Forgetting is useful** — Raw logs fade in relevance; curated memory persists
-5. **External memory** — Files ARE your memory (like notes for humans)
+**示例：**
+- ❌ 日常日志：“修复了 message-line.ts 中的 senderE164 错误”
+- ✅ `MEMORY.md`：“聊天 ID 与发送者不同——务必验证实际的发送者字段”
 
 ---
 
-## Memory Tiers Summary
+## 工作原理（认知科学角度）
 
-| Tier | Storage | Query Speed | Use For |
+1. **间隔重复**——每日回顾有助于巩固重要记忆
+2. **主动巩固**——人类在睡眠期间进行记忆巩固；代理通过定时任务完成这一过程
+3. **分块存储**——`MEMORY.md` 将相关概念分组以便查询
+4. **遗忘是有用的**——原始日志会逐渐失去重要性；精选的记忆会长期保留
+5. **外部存储**——文件就是你的记忆（就像人类的笔记一样）
+
+---
+
+## 记忆层次结构总结
+
+| 层级 | 存储方式 | 查询速度 | 适用场景 |
 |------|---------|-------------|---------|
-| **Hot** | Session context | Instant | Current task |
-| **Warm** | Daily logs (md) | Fast read | Recent events |
-| **Cold** | MEMORY.md | Fast read | Core principles |
-| **Indexed** | SQLite FTS5 | Query | Contacts, history |
-| **Archive** | Old daily logs | Slow | Historical reference |
+| **热点记忆** | 当前会话上下文 | 即时访问 | 当前任务所需信息 |
+| **温存记忆** | 日常日志（md 文件） | 快速读取 | 最近发生的事件 |
+| **冷存记忆** | `MEMORY.md` | 快速读取 | 核心原则 |
+| **索引化记忆** | SQLite FTS5 | 可查询 | 联系人信息、对话记录 |
+| **归档记忆** | 旧日志文件 | 慢速访问 | 历史参考资料 |
 
-**Rule of thumb:** 
-- Need to search across many records → SQLite
-- Need to read/update narrative context → Markdown
-- Need instant access → Session context (but dies on restart)
+**使用建议：**
+- 需要跨大量记录搜索时 → 使用 SQLite
+- 需要阅读或更新叙述性内容时 → 使用 Markdown
+- 需要即时访问信息时 → 使用当前会话上下文（但重启后会丢失）
 
 ---
 
-## Scripts & CLI
+## 脚本与命令行工具
 
-This skill includes ready-to-use Python scripts for managing your knowledge base.
+本技能提供了可用于管理知识库的 Python 脚本。
 
-### Quick Start
+### 快速入门
 
 ```bash
 # Initialize database (first time)
@@ -295,51 +294,51 @@ python3 scripts/query.py contact "+1555..."
 python3 scripts/query.py stats
 ```
 
-### Available Commands
+### 可用命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `search <term>` | Full-text search across all content |
-| `contact <phone\|name>` | Look up contact + their groups |
-| `groups <phone>` | List groups a phone is in |
-| `members <group>` | List members of a group |
-| `chatgpt <term>` | Search ChatGPT message history |
-| `doc <term>` | Search documents only |
-| `stats` | Database statistics |
-| `sql <query>` | Run raw SQL |
+| `search <术语>` | 在所有内容中进行全文搜索 |
+| `contact <电话号码\|姓名>` | 查找联系人及其所属群组 |
+| `groups <电话号码>` | 列出该电话号码所属的群组 |
+| `members <群组>` | 列出群组的成员 |
+| `chatgpt <术语>` | 搜索 ChatGPT 的对话记录 |
+| `doc <术语>` | 仅搜索文档内容 |
+| `stats` | 查看数据库统计信息 |
+| `sql <查询语句>` | 运行原始 SQL 语句 |
 
 ---
 
-## Data Sources
+## 数据来源
 
-### WhatsApp Contacts & Groups
-Export via the whatsapp-ultimate skill's contact extraction:
+### WhatsApp 联系人与群组信息
+通过 `whatsapp-ultimate` 技能导出联系人信息：
 ```bash
 python3 scripts/sync_whatsapp.py
 ```
-Indexes: contacts, groups, memberships (who is in which group).
+导出内容包括联系人、群组及成员关系。
 
-### ChatGPT Conversation History
-Export from ChatGPT and place in `chatgpt-export/` directory:
+### ChatGPT 对话记录
+从 ChatGPT 导出对话记录并保存到 `chatgpt-export/` 目录中：
 ```bash
 python3 scripts/init_db.py  # Will auto-detect and import
 ```
-Supports both native ChatGPT format and custom formats.
+支持 ChatGPT 的原生格式及自定义格式。
 
-### Phone Contacts (VCF)
-Export from your phone (Android: Contacts → Settings → Export):
+### 手机联系人信息（VCF 格式）
+从手机中导出联系人信息（Android 设备：设置 → 导出）：
 ```bash
 python3 scripts/import_vcf.py path/to/contacts.vcf
 ```
 
-### Documents
-Automatically indexes all `*.md` files in `memory/` directory.
+### 文档
+自动为 `memory/` 目录下的所有 `.md` 文件创建索引。
 
 ---
 
-## Advanced Queries
+## 高级查询功能
 
-### WhatsApp Group Management
+### WhatsApp 群组管理
 
 ```sql
 -- Find all groups someone is in
@@ -358,7 +357,7 @@ SELECT jid, name, participant_count
 FROM wa_groups WHERE name LIKE '%Project%';
 ```
 
-### ChatGPT Search
+### ChatGPT 搜索
 
 ```sql
 -- Search across all ChatGPT conversations
@@ -370,9 +369,10 @@ WHERE chatgpt_fts MATCH 'project meeting';
 
 ---
 
-## Re-indexing
+## 数据库重新索引
 
-To refresh the database with new data:
+### 如何更新数据库
+
 ```bash
 rm db/agent.db
 python3 scripts/init_db.py
@@ -380,46 +380,46 @@ python3 scripts/init_db.py
 
 ---
 
-## Tips
+## 使用技巧
 
-1. **No contact names?** WhatsApp only provides phone numbers. Import your phone's VCF to add names.
-2. **Search not finding?** FTS5 uses word boundaries. Use `*` for prefix matching: `Bas*` matches "Bashar".
-3. **Large exports?** ChatGPT exports can be 50MB+. First import may take 30-60 seconds.
-
----
-
-## Implementation Checklist
-
-- [ ] Create `memory/` directory structure
-- [ ] Set up daily log template
-- [ ] Create initial MEMORY.md with sections
-- [ ] Initialize SQLite database with schema
-- [ ] Schedule consolidation cron (2-4 AM recommended)
-- [ ] Add wake-up routine to AGENTS.md
-- [ ] Test: restart session, verify context loads correctly
+1. **没有联系人姓名？** WhatsApp 只提供电话号码。请导入手机中的 VCF 文件以获取姓名信息。
+2. **搜索结果为空？** FTS5 使用单词边界进行匹配。使用通配符 `*` 可实现模糊搜索（例如：`Bas*` 可匹配 “Bashar”）。
+3. **导出文件较大？** ChatGPT 的导出文件可能超过 50MB，首次导入可能需要 30-60 秒。
 
 ---
 
-## Best Practices
+## 实施检查清单
 
-1. **Write immediately** — If it matters, write it now
-2. **Abstract up** — Daily: specific. MEMORY.md: principles
-3. **Date everything** — Context decays; dates help
-4. **One source of truth** — Don't duplicate across files
-5. **Review regularly** — Schedule consolidation, don't skip it
-
----
-
-## Related
-
-- [OpenClaw Documentation](https://github.com/globalcaos/clawdbot-moltbot-openclaw/tree/main/docs)
-- [Cron Scheduling](https://github.com/globalcaos/clawdbot-moltbot-openclaw/blob/main/docs/cron.md)
-- [Workspace Setup](https://docs.openclaw.ai)
+- [ ] 创建 `memory/` 目录结构
+- [ ] 设置每日日志模板
+- [ ] 创建初始的 `MEMORY.md` 文件并划分章节
+- [ ] 使用数据库模式初始化 SQLite 数据库
+- [ ] 安排每日数据整合任务（建议在凌晨 2-4 点执行）
+- [ ] 将唤醒脚本添加到 `AGENTS.md` 文件中
+- [ ] 进行测试：重启会话后验证信息是否正确加载
 
 ---
 
-## Credits
+## 最佳实践
 
-Created by **Oscar Serra** with the help of **Claude** (Anthropic).
+1. **立即记录**——如果有价值，就立即写下
+2. **抽象化信息**——日常记录具体细节；`MEMORY.md` 保存核心原则
+3. **标注日期**——时间会模糊记忆；日期有助于信息保存
+4. **保持信息一致性**——避免在不同文件中重复记录相同内容
+5. **定期回顾**——安排定期数据整合任务，不要遗漏
 
-*Inspired by human cognitive architecture. We wake fresh each session, but files are our continuity.*
+---
+
+## 相关资源
+
+- [OpenClaw 文档](https://github.com/globalcaos/clawdbot-moltbot-openclaw/tree/main/docs)
+- [Cron 任务调度](https://github.com/globalcaos/clawdbot-moltbot-openclaw/blob/main/docs/cron.md)
+- [工作空间设置指南](https://docs.openclaw.ai)
+
+---
+
+## 致谢
+
+本技能由 **Oscar Serra** 在 **Claude**（Anthropic）的帮助下开发。
+
+*灵感来源于人类的认知架构。我们每次会话都会“重置”，但文件是我们记忆的延续。*

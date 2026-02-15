@@ -15,9 +15,9 @@ metadata:
 
 # Trello
 
-Access the Trello API with managed OAuth authentication. Manage boards, lists, cards, checklists, labels, and members for project and task management.
+通过管理的 OAuth 认证来访问 Trello API。您可以管理项目和工作任务中的看板（boards）、列表（lists）、卡片（cards）、待办事项列表（checklists）、标签（labels）以及成员（members）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get boards for current user
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/trello/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Trello API endpoint path. The gateway proxies requests to `api.trello.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Trello API 端点路径。该网关会将请求代理到 `api.trello.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Trello OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Trello OAuth 连接。
 
-### List Connections
+### 查看连接信息
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Trello connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Trello 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,43 +138,43 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Members
+### 成员（Members）
 
-#### Get Current Member
+#### 获取当前成员信息
 
 ```bash
 GET /trello/1/members/me
 ```
 
-#### Get Member's Boards
+#### 获取成员的看板信息
 
 ```bash
 GET /trello/1/members/me/boards
 ```
 
-Query parameters:
-- `filter` - Filter boards: `all`, `open`, `closed`, `members`, `organization`, `starred`
-- `fields` - Comma-separated fields to include
+查询参数：
+- `filter` - 筛选看板：`all`、`open`、`closed`、`members`、`organization`、`starred`
+- `fields` - 要包含的字段（用逗号分隔）
 
-### Boards
+### 看板（Boards）
 
-#### Get Board
+#### 获取看板信息
 
 ```bash
 GET /trello/1/boards/{id}
 ```
 
-Query parameters:
-- `fields` - Comma-separated fields
-- `lists` - Include lists: `all`, `open`, `closed`, `none`
-- `cards` - Include cards: `all`, `open`, `closed`, `none`
-- `members` - Include members: `all`, `none`
+查询参数：
+- `fields` - 要包含的字段（用逗号分隔）
+- `lists` - 是否包含列表：`all`、`open`、`closed`、`none`
+- `cards` - 是否包含卡片：`all`、`open`、`closed`、`none`
+- `members` - 是否包含成员：`all`、`none`
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -185,7 +185,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Board
+#### 创建看板
 
 ```bash
 POST /trello/1/boards
@@ -199,7 +199,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Board
+#### 更新看板信息
 
 ```bash
 PUT /trello/1/boards/{id}
@@ -211,42 +211,42 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Board
+#### 删除看板
 
 ```bash
 DELETE /trello/1/boards/{id}
 ```
 
-#### Get Board Lists
+#### 获取看板的列表信息
 
 ```bash
 GET /trello/1/boards/{id}/lists
 ```
 
-Query parameters:
-- `filter` - Filter: `all`, `open`, `closed`, `none`
+查询参数：
+- `filter` - 筛选：`all`、`open`、`closed`、`none`
 
-#### Get Board Cards
+#### 获取看板中的卡片信息
 
 ```bash
 GET /trello/1/boards/{id}/cards
 ```
 
-#### Get Board Members
+#### 获取看板的成员信息
 
 ```bash
 GET /trello/1/boards/{id}/members
 ```
 
-### Lists
+### 列表（Lists）
 
-#### Get List
+#### 获取列表信息
 
 ```bash
 GET /trello/1/lists/{id}
 ```
 
-#### Create List
+#### 创建列表
 
 ```bash
 POST /trello/1/lists
@@ -259,7 +259,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update List
+#### 更新列表信息
 
 ```bash
 PUT /trello/1/lists/{id}
@@ -270,7 +270,7 @@ Content-Type: application/json
 }
 ```
 
-#### Archive List
+#### 将列表归档
 
 ```bash
 PUT /trello/1/lists/{id}/closed
@@ -281,13 +281,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Cards in List
+#### 获取列表中的卡片信息
 
 ```bash
 GET /trello/1/lists/{id}/cards
 ```
 
-#### Move All Cards in List
+#### 将列表中的所有卡片移动到其他位置
 
 ```bash
 POST /trello/1/lists/{id}/moveAllCards
@@ -299,21 +299,21 @@ Content-Type: application/json
 }
 ```
 
-### Cards
+### 卡片（Cards）
 
-#### Get Card
+#### 获取卡片信息
 
 ```bash
 GET /trello/1/cards/{id}
 ```
 
-Query parameters:
-- `fields` - Comma-separated fields
-- `members` - Include members (true/false)
-- `checklists` - Include checklists: `all`, `none`
-- `attachments` - Include attachments (true/false)
+查询参数：
+- `fields` - 要包含的字段（用逗号分隔）
+- `members` - 是否包含成员（true/false）
+- `checklists` - 是否包含待办事项列表：`all`、`none`
+- `attachments` - 是否包含附件：`true/false`
 
-#### Create Card
+#### 创建卡片
 
 ```bash
 POST /trello/1/cards
@@ -330,7 +330,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Card
+#### 更新卡片信息
 
 ```bash
 PUT /trello/1/cards/{id}
@@ -344,7 +344,7 @@ Content-Type: application/json
 }
 ```
 
-#### Move Card to List
+#### 将卡片移动到其他列表
 
 ```bash
 PUT /trello/1/cards/{id}
@@ -356,13 +356,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Card
+#### 删除卡片
 
 ```bash
 DELETE /trello/1/cards/{id}
 ```
 
-#### Add Comment to Card
+#### 为卡片添加评论
 
 ```bash
 POST /trello/1/cards/{id}/actions/comments
@@ -373,7 +373,7 @@ Content-Type: application/json
 }
 ```
 
-#### Add Member to Card
+#### 为卡片添加成员
 
 ```bash
 POST /trello/1/cards/{id}/idMembers
@@ -384,13 +384,13 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Member from Card
+#### 从卡片中移除成员
 
 ```bash
 DELETE /trello/1/cards/{id}/idMembers/{idMember}
 ```
 
-#### Add Label to Card
+#### 为卡片添加标签
 
 ```bash
 POST /trello/1/cards/{id}/idLabels
@@ -401,15 +401,15 @@ Content-Type: application/json
 }
 ```
 
-### Checklists
+### 待办事项列表（Checklists）
 
-#### Get Checklist
+#### 获取待办事项列表信息
 
 ```bash
 GET /trello/1/checklists/{id}
 ```
 
-#### Create Checklist
+#### 创建待办事项列表
 
 ```bash
 POST /trello/1/checklists
@@ -421,7 +421,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Checklist Item
+#### 创建待办事项列表项
 
 ```bash
 POST /trello/1/checklists/{id}/checkItems
@@ -434,7 +434,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Checklist Item
+#### 更新待办事项列表项
 
 ```bash
 PUT /trello/1/cards/{cardId}/checkItem/{checkItemId}
@@ -445,21 +445,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Checklist
+#### 删除待办事项列表
 
 ```bash
 DELETE /trello/1/checklists/{id}
 ```
 
-### Labels
+### 标签（Labels）
 
-#### Get Board Labels
+#### 获取看板的标签信息
 
 ```bash
 GET /trello/1/boards/{id}/labels
 ```
 
-#### Create Label
+#### 创建标签
 
 ```bash
 POST /trello/1/labels
@@ -472,9 +472,9 @@ Content-Type: application/json
 }
 ```
 
-Colors: `yellow`, `purple`, `blue`, `red`, `green`, `orange`, `black`, `sky`, `pink`, `lime`, `null` (no color)
+可用颜色：`yellow`、`purple`、`blue`、`red`、`green`、`orange`、`black`、`sky`、`pink`、`lime`、`null`（无颜色）
 
-#### Update Label
+#### 更新标签信息
 
 ```bash
 PUT /trello/1/labels/{id}
@@ -486,28 +486,28 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Label
+#### 删除标签
 
 ```bash
 DELETE /trello/1/labels/{id}
 ```
 
-### Search
+### 搜索
 
-#### Search All
+#### 全部搜索
 
 ```bash
 GET /trello/1/search?query=keyword&modelTypes=cards,boards
 ```
 
-Query parameters:
-- `query` - Search query (required)
-- `modelTypes` - Comma-separated: `actions`, `boards`, `cards`, `members`, `organizations`
-- `board_fields` - Fields to return for boards
-- `card_fields` - Fields to return for cards
-- `cards_limit` - Max cards to return (1-1000)
+查询参数：
+- `query` - 搜索查询（必填）
+- `modelTypes` - 用逗号分隔的搜索类型：`actions`、`boards`、`cards`、`members`、`organizations`
+- `board_fields` - 要返回的看板字段
+- `card_fields` - 要返回的卡片字段
+- `cards_limit` - 返回的最大卡片数量（1-1000）
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -563,37 +563,36 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- IDs are 24-character alphanumeric strings
-- Use `me` to reference the authenticated user
-- Dates are in ISO 8601 format
-- `pos` can be `top`, `bottom`, or a positive number
-- Card positions within lists are floating point numbers
-- Use `fields` parameter to limit returned data and improve performance
-- Archived items can be retrieved with `filter=closed`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- ID 是由 24 个字母和数字组成的字符串。
+- 使用 `me` 来引用已认证的用户。
+- 日期采用 ISO 8601 格式。
+- `pos` 可以是 `top`、`bottom` 或一个正数，表示卡片在列表中的位置。
+- 使用 `fields` 参数可以限制返回的数据量并提高性能。
+- 可以通过 `filter=closed` 来检索已归档的卡片。
+- 重要提示：当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析，可能会导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Trello connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Board, list, or card not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Trello API |
+| 400 | 未找到 Trello 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 未找到看板、列表或卡片 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Trello API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接信息来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -604,22 +603,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `trello`. For example:
+1. 确保您的 URL 路径以 `trello` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/trello/1/members/me/boards`
+- 错误的路径：`https://gateway.maton.ai/1/members/me/boards`
 
-- Correct: `https://gateway.maton.ai/trello/1/members/me/boards`
-- Incorrect: `https://gateway.maton.ai/1/members/me/boards`
+## 资源
 
-## Resources
-
-- [Trello API Overview](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/)
-- [Boards](https://developer.atlassian.com/cloud/trello/rest/api-group-boards/)
-- [Lists](https://developer.atlassian.com/cloud/trello/rest/api-group-lists/)
-- [Cards](https://developer.atlassian.com/cloud/trello/rest/api-group-cards/)
-- [Checklists](https://developer.atlassian.com/cloud/trello/rest/api-group-checklists/)
-- [Labels](https://developer.atlassian.com/cloud/trello/rest/api-group-labels/)
-- [Members](https://developer.atlassian.com/cloud/trello/rest/api-group-members/)
-- [Search](https://developer.atlassian.com/cloud/trello/rest/api-group-search/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Trello API 概述](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/)
+- [看板](https://developer.atlassian.com/cloud/trello/rest/api-group-boards/)
+- [列表](https://developer.atlassian.com/cloud/trello/rest/api-group-lists/)
+- [卡片](https://developer.atlassian.com/cloud/trello/rest/api-group-cards/)
+- [待办事项列表](https://developer.atlassian.com/cloud/trello/rest/api-group-checklists/)
+- [标签](https://developer.atlassian.com/cloud/trello/rest/api-group-labels/)
+- [成员](https://developer.atlassian.com/cloud/trello/rest/api-group-members/)
+- [搜索](https://developer.atlassian.com/cloud/trello/rest/api-group-search/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

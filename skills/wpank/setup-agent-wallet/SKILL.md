@@ -1,73 +1,58 @@
 ---
 name: setup-agent-wallet
-description: Set up an agent wallet for Uniswap operations. Use when user needs to provision a wallet for an autonomous agent. Supports Privy (development), Turnkey (production), and Safe (maximum security). Configures spending limits, token allowlists, and funds the wallet for gas.
+description: 为 Uniswap 操作设置一个代理钱包。当用户需要为自主代理提供钱包时可以使用该功能。该钱包支持三种安全级别：Privy（开发环境）、Turnkey（生产环境）和 Safe（最高安全级别）。您可以配置支出限额、允许交易的代币列表，并为钱包充值以太坊（gas）以支持交易费用。
 model: opus
 allowed-tools: [Task(subagent_type:wallet-provisioner)]
 ---
 
-# Set Up Agent Wallet
+# 设置代理钱包
 
-## Overview
+## 概述
 
-Provision and configure a wallet for autonomous Uniswap agent operations. Supports three wallet providers at different security tiers. Handles the full lifecycle: provision wallet, configure safety policies, fund for gas, and validate the setup.
+为自主运行的Uniswap代理提供并配置钱包。支持三种不同安全级别的钱包提供商，涵盖整个钱包设置流程：创建钱包、配置安全策略、为交易费用（gas）充值以及验证设置是否正确。
 
-## When to Use
+## 使用场景
 
-Activate when the user says:
+当用户请求以下操作时使用此功能：
+- “设置钱包”
+- “配置代理钱包”
+- “创建钱包”
+- “为我的代理设置钱包”
+- “创建新的代理钱包”
 
-- "Set up a wallet"
-- "Configure agent wallet"
-- "Provision wallet"
-- "Initialize wallet"
-- "Set up a wallet for my agent"
-- "Create a new agent wallet"
+## 参数
 
-## Parameters
+从用户请求中提取以下参数：
+| 参数                | 是否必填 | 默认值         | 说明                                                                                          |
+|------------------|---------|--------------|--------------------------------------------------------------------------------------------|
+| `provider`           | 否       | `privy`         | 钱包提供商：`privy`（开发环境）、`turnkey`（生产环境）或`safe`（最高安全级别） |
+| `chains`            | 否       | `all`          | 需要配置的链名；输入“all”表示所有支持的链                     |
+| `environment`        | 否       | `development`     | 开发环境或生产环境                                                                                   |
+| `spendingLimit`       | 否       | `$1000/天`       | 每日消费限额（例如：“$1000/天”或“$500/天”）                        |
 
-Extract these from the user's request:
+### 提供商选择指南
 
-| Parameter       | Required | Default       | Description                                                                                  |
-| --------------- | -------- | ------------- | -------------------------------------------------------------------------------------------- |
-| `provider`      | No       | `privy`       | Wallet provider: `privy` (development), `turnkey` (production), or `safe` (maximum security) |
-| `chains`        | No       | `all`         | Chains to configure — chain names or "all" for all supported chains                          |
-| `environment`   | No       | `development` | Either `development` or `production`                                                         |
-| `spendingLimit` | No       | `$1000/day`   | Daily spending limit (e.g., "$1000/day", "$500/day")                                         |
+- **Privy**：最适合开发和测试环境。设置快速，易于管理。不推荐用于涉及大量资金的生产环境。
+- **Turnkey**：提供生产级密钥管理功能（使用TEE，即可信执行环境）。适用于中等资金量的实际交易。
+- **Safe**：通过多重签名智能账户实现最高级别的安全性。适用于高价值交易或机构级应用。
 
-### Provider Selection Guide
+## 工作流程
 
-- **Privy**: Best for development and testing. Fast setup, easy to manage. Not recommended for production with significant funds.
-- **Turnkey**: Production-grade key management with TEE (Trusted Execution Environment). Use for real trading with moderate funds.
-- **Safe**: Maximum security via multi-sig smart account. Use for high-value operations or institutional setups.
+1. **解析用户需求**：从用户请求中确定钱包提供商、目标链、环境以及消费限额。未指定的参数使用默认值。
+2. **委托给 `wallet-provisioner` 代理**：将参数传递给该代理，由其完成整个设置流程：
+   - **创建钱包**：通过选定的提供商的API创建钱包。
+   - **配置策略**：设置每笔交易的消费限额、每日消费限额、允许交易的代币列表以及交易速率限制。
+   - **充值**：向钱包发送每个目标链所需的交易费用（gas）。
+   - **验证**：通过检查钱包余额和策略配置来确认钱包是否正常使用。
+3. **反馈结果**：向用户展示钱包设置的详细信息。
 
-## Workflow
+## 代理职责
 
-1. **Parse user intent**: Determine the wallet provider, target chains, environment, and spending limit from the user's request. Apply defaults for any unspecified parameters.
+此功能将相关任务委托给 `wallet-provisioner` 代理，由该代理负责处理所有设置步骤，并返回最终的钱包配置信息。
 
-2. **Delegate to `wallet-provisioner` agent**: Hand off the provisioning task with the extracted parameters. The agent handles the full setup pipeline:
-   - **Provision**: Create the wallet via the selected provider's API
-   - **Configure policies**: Set spending limits (per-tx and daily), token allowlists, and rate limits
-   - **Fund**: Send gas tokens to the wallet on each requested chain
-   - **Validate**: Confirm the wallet is operational by verifying balances and policy configuration
+## 输出格式
 
-3. **Report results**: Present the wallet setup summary to the user.
-
-## Agent Delegation
-
-This skill delegates to the `wallet-provisioner` agent:
-
-```
-Task(subagent_type:wallet-provisioner)
-  provider: <privy|turnkey|safe>
-  chains: <chain list>
-  environment: <development|production>
-  spendingLimit: <daily limit>
-```
-
-The agent internally handles all provisioning steps and returns the final wallet configuration.
-
-## Output Format
-
-```text
+（输出格式的具体内容在文档的 **```text
 Agent Wallet Configured
 
   Address:    0x1234...ABCD
@@ -78,12 +63,12 @@ Agent Wallet Configured
   Gas:        Funded on all 3 chains
 
   Config: .uniswap/agent-wallet.json
-```
+```** 部分提供。）
 
-## Error Handling
+## 错误处理
 
-| Error                  | User-Facing Message                                              | Suggested Action                                     |
-| ---------------------- | ---------------------------------------------------------------- | ---------------------------------------------------- |
-| `PROVIDER_AUTH_FAILED` | "Could not authenticate with [provider]. Check API keys."        | Verify provider credentials in environment variables |
-| `FUNDING_FAILED`       | "Could not fund wallet on [chain]. Insufficient source balance." | Fund the source wallet first                         |
-| `CHAIN_NOT_SUPPORTED`  | "[chain] is not supported by [provider]."                        | Choose a different chain or provider                 |
+| 错误类型                | 显示给用户的消息                                                         | 建议的操作                                                         |
+|------------------|-------------------------------------------------------------------------|------------------------------------------------------------|
+| `PROVIDER_AUTH_FAILED`    | “无法与 [provider] 进行身份验证。请检查 API 密钥。”                        | 确认环境变量中的提供商凭证是否正确。                                      |
+| `FUNDING_FAILED`       | “无法为 [chain] 的钱包充值。源钱包余额不足。”                         | 先为源钱包充值。                                                    |
+| `CHAIN_NOT_SUPPORTED`    | “[chain] 不受 [provider] 支持。”                                      | 选择其他链或提供商。                                                    |

@@ -1,19 +1,19 @@
 ---
 name: moments-generator
-description: Generate a fake WeChat Moments (朋友圈) screenshot image. Use when user wants to simulate a social media post with avatar, text, images, likes, and comments.
+description: 生成一张伪造的微信朋友圈截图。当用户需要模拟带有头像、文字、图片、点赞和评论的社交媒体帖子时，可以使用此功能。
 ---
 
-# Moments Generator Skill
+# Moments Generator 技能
 
-This skill generates a realistic-looking WeChat Moments screenshot.
+该技能能够生成逼真的微信动态截图。
 
-## Usage
+## 使用方法
 
-1. **Prepare Resources**:
-   - Ensure the user's avatar and any content images are saved locally (e.g., using `web_fetch` or `read`).
+1. **准备资源**：
+   - 确保用户的头像和所有内容图片已保存在本地（例如，使用 `web_fetch` 或 `read` 函数）。
 
-2. **Create Configuration**:
-   Create a temporary JSON file (e.g., `temp_moments_config.json`) with the following structure:
+2. **创建配置文件**：
+   创建一个临时 JSON 文件（例如 `temp_moments_config.json`），其结构如下：
    ```json
    {
      "avatar": "/path/to/avatar.png",
@@ -31,18 +31,18 @@ This skill generates a realistic-looking WeChat Moments screenshot.
      "theme": "dark"
    }
    ```
-   *Note: Supports 1-9 images. `images` can be empty. `theme` defaults to "light".*
+   *注：支持 1-9 张图片。`images` 字段可以为空。`theme` 的默认值为 "light"。*
 
-3. **Generate Image**:
-   Run the generation script:
+3. **生成图片**：
+   运行生成脚本：
    ```bash
    node /home/crishaocredits/.openclaw/workspace/skills/moments-generator/scripts/generate.js temp_moments_config.json output_moments.png
    ```
 
-4. **Deliver**:
-   Send the resulting `output_moments.png` to the user.
+4. **交付结果**：
+   将生成的 `output_moments.png` 文件发送给用户。
 
-## Dependencies
+## 依赖项
 - Node.js
-- pureimage (Bundled)
-- Fonts (Bundled/System)
+- pureimage（已打包）
+- 字体（已打包/系统自带的）

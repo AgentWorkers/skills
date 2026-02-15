@@ -1,36 +1,36 @@
 ---
 name: serp-analysis
-description: Analyzes search engine results pages (SERPs) to understand ranking factors, SERP features, user intent patterns, and AI overview triggers. Essential for understanding what it takes to rank.
+description: 分析搜索引擎结果页面（SERPs），以了解排名因素、SERP页面的特点、用户意图模式以及与人工智能相关的触发条件。这对于理解影响页面排名的各种因素至关重要。
 geo-relevance: "high"
 ---
 
-# SERP Analysis
+# SERP分析
 
-This skill analyzes Search Engine Results Pages to reveal what's working for ranking content, which SERP features appear, and what triggers AI-generated answers. Understand the battlefield before creating content.
+该技能用于分析搜索引擎结果页面（Search Engine Results Pages），以揭示哪些内容在排名中表现良好、哪些SERP功能会被展示出来，以及哪些因素会触发人工智能生成的答案。在创建内容之前，了解这些信息至关重要。
 
-## When to Use This Skill
+## 适用场景
 
-- Before creating content for a target keyword
-- Understanding why certain pages rank #1
-- Identifying SERP feature opportunities (featured snippets, PAA)
-- Analyzing AI Overview/SGE patterns
-- Evaluating keyword difficulty more accurately
-- Planning content format based on what ranks
-- Identifying ranking factors for specific queries
+- 在为目标关键词创建内容之前
+- 了解为什么某些页面能够排在第1位
+- 识别SERP功能的应用机会（如特色片段、PAA等）
+- 分析人工智能生成的答案（AI Overview）的模式
+- 更准确地评估关键词的难度
+- 根据排名情况规划内容格式
+- 确定特定查询的排名因素
 
-## What This Skill Does
+## 功能概述
 
-1. **SERP Composition Analysis**: Maps what appears on the results page
-2. **Ranking Factor Identification**: Reveals why top results rank
-3. **SERP Feature Mapping**: Identifies featured snippets, PAA, knowledge panels
-4. **AI Overview Analysis**: Examines when and how AI answers appear
-5. **Intent Signal Detection**: Confirms user intent from SERP composition
-6. **Content Format Recommendations**: Suggests optimal format based on SERP
-7. **Difficulty Assessment**: Evaluates realistic ranking potential
+1. **SERP组成分析**：梳理结果页面上显示的所有元素
+2. **排名因素识别**：分析顶级结果为何能够获得高排名
+3. **SERP功能识别**：找出特色片段（Featured Snippet）、PAA（People Also Ask）等元素
+4. **人工智能生成答案分析**：研究人工智能生成的答案何时以及如何出现
+5. **用户意图检测**：从SERP的组成中判断用户的需求
+6. **内容格式建议**：根据SERP的展示情况提供最佳内容格式建议
+7. **难度评估**：评估内容的实际排名潜力
 
-## How to Use
+## 使用方法
 
-### Basic SERP Analysis
+### 基础SERP分析
 
 ```
 Analyze the SERP for [keyword]
@@ -40,7 +40,7 @@ Analyze the SERP for [keyword]
 What does it take to rank for [keyword]?
 ```
 
-### Feature-Specific Analysis
+### 特定功能分析
 
 ```
 Analyze featured snippet opportunities for [keyword list]
@@ -50,45 +50,42 @@ Analyze featured snippet opportunities for [keyword list]
 Which of these keywords trigger AI Overviews? [keyword list]
 ```
 
-### Competitive SERP Analysis
+### 竞争对手SERP分析
 
 ```
 Why does [URL] rank #1 for [keyword]?
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具的更多信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~SEO tool + ~~search console + ~~AI monitor connected:**
-Automatically fetch SERP snapshots for target keywords, extract ranking page metrics (domain authority, backlinks, content length), pull SERP feature data, and check AI Overview presence using ~~AI monitor. Historical SERP change data and mobile vs. desktop variations can be retrieved automatically.
+**当连接了 ~~SEO工具 + ~~搜索控制台 + ~~人工智能监控工具时：**
+可以自动获取目标关键词的SERP快照，提取排名页面的指标（如域名权威度、反向链接、内容长度），提取SERP功能数据，并使用 ~~人工智能监控工具** 检查是否存在人工智能生成的答案。还可以自动获取历史SERP变化数据以及移动设备与桌面设备上的显示差异。
 
-**With manual data only:**
-Ask the user to provide:
-1. Target keyword(s) to analyze
-2. SERP screenshots or detailed descriptions of search results
-3. URLs of top 10 ranking pages
-4. Search location and device type (mobile/desktop)
-5. Any observations about SERP features (featured snippets, PAA, AI Overviews)
+**仅使用手动数据时：**
+请用户提供以下信息：
+1. 需要分析的目标关键词
+2. SERP的截图或搜索结果的详细描述
+3. 排名前10位的页面URL
+4. 搜索位置和设备类型（移动设备/桌面设备）
+5. 对SERP功能的任何观察结果（如特色片段、PAA等）
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+使用提供的数据进行完整分析。在输出结果中明确标注哪些数据来自自动化收集，哪些数据来自用户提供。
 
-## Instructions
+## 操作步骤
 
-When a user requests SERP analysis:
+当用户请求SERP分析时：
 
-1. **Understand the Query**
+1. **理解查询意图**
+   如有需要，进一步确认：
+   - 需要分析的目标关键词
+   - 搜索位置/语言
+   - 设备类型（移动设备/桌面设备）
+   - 关于SERP的具体问题
 
-   Clarify if needed:
-   - Target keyword(s) to analyze
-   - Search location/language
-   - Device type (mobile/desktop)
-   - Specific questions about the SERP
-
-2. **Map SERP Composition**
-
-   Document all elements appearing:
-
+2. **梳理SERP组成**
+   记录结果页面上显示的所有元素：
    ```markdown
    ## SERP Analysis: "[keyword]"
    
@@ -102,19 +99,19 @@ When a user requests SERP analysis:
    
    ```
    ┌─────────────────────────────────────────┐
-   │ [AI Overview / SGE] (if present)        │
+   │ [人工智能生成答案 / SGE] （如果存在）        │
    ├─────────────────────────────────────────┤
-   │ [Ads] - [X] ads above fold              │
+   │ [广告] - 屏幕上方有[X]条广告              │
    ├─────────────────────────────────────────┤
-   │ [Featured Snippet] (if present)         │
+   │ [特色片段] （如果存在）         │
    ├─────────────────────────────────────────┤
-   │ [Organic Result #1]                     │
-   │ [Organic Result #2]                     │
-   │ [People Also Ask] (if present)          │
-   │ [Organic Result #3]                     │
+   │ [自然搜索结果 #1]                     │
+   │ [自然搜索结果 #2]                     │
+   │ [用户也问] （如果存在）          │
+   │ [自然搜索结果 #3]                     │
    │ ...                                     │
    ├─────────────────────────────────────────┤
-   │ [Related Searches]                      │
+   │ [相关搜索]                      │
    └─────────────────────────────────────────┘
    ```
    
@@ -134,10 +131,8 @@ When a user requests SERP analysis:
    | Sitelinks | Yes/No | [pos] | [analysis] |
    ```
 
-3. **Analyze Top Ranking Pages**
-
-   For top 10 results:
-
+3. **分析排名靠前的页面**
+   对于排名前10位的页面，进行详细分析：
    ```markdown
    ### Top 10 Organic Results Analysis
    
@@ -179,8 +174,7 @@ When a user requests SERP analysis:
    [Repeat for positions #2-10]
    ```
 
-4. **Identify Ranking Patterns**
-
+4. **识别排名模式**
    ```markdown
    ### Ranking Patterns Analysis
    
@@ -215,8 +209,7 @@ When a user requests SERP analysis:
    3. **[Factor 3]**: [Explanation + evidence]
    ```
 
-5. **Analyze SERP Features**
-
+5. **分析SERP功能**
    ```markdown
    ### Featured Snippet Analysis
    
@@ -268,8 +261,7 @@ When a user requests SERP analysis:
    3. [Specific recommendation]
    ```
 
-6. **Determine Search Intent**
-
+6. **判断搜索意图**
    ```markdown
    ### Search Intent Analysis
    
@@ -292,8 +284,7 @@ When a user requests SERP analysis:
    - CTA: [recommendation]
    ```
 
-7. **Calculate True Difficulty**
-
+7. **计算内容难度**
    ```markdown
    ### Difficulty Assessment
    
@@ -321,8 +312,7 @@ When a user requests SERP analysis:
    - [Alternative keyword 2] - Difficulty: [X]
    ```
 
-8. **Generate Recommendations**
-
+8. **生成优化建议**
    ```markdown
    ## SERP Analysis Summary & Recommendations
    
@@ -361,19 +351,19 @@ When a user requests SERP analysis:
    Based on SERP analysis:
    
    ```
-   Title: [Optimized title]
+   标题：[优化后的标题]
    
-   H1: [Main heading]
+   H1：[主要标题]
    
-   [Introduction - address intent immediately]
+   [引言 - 直接回应用户意图]
    
-   H2: [Section based on PAA/top results]
-   H2: [Section based on PAA/top results]
-   H2: [Section based on PAA/top results]
+   H2：[基于PAA/排名靠前内容的部分]
+   H2：[基于PAA/排名靠前内容的部分]
+   H2：[基于PAA/排名靠前内容的部分]
    
-   [FAQ section for PAA optimization]
+   [针对PAA优化的FAQ部分]
    
-   [Conclusion with CTA]
+   [包含呼吁行动（CTA）的结论]
    ```
    
    ### Next Steps
@@ -383,27 +373,26 @@ When a user requests SERP analysis:
    3. [Optimization action]
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Target keyword(s) clearly specified
-- [ ] Search location and device type confirmed
-- [ ] SERP data is current (date confirmed)
-- [ ] Top 10 ranking URLs identified or provided
+### 输入验证
+- [ ] 目标关键词已明确指定
+- [ ] 搜索位置和设备类型已确认
+- [ ] SERP数据是最新的（日期已确认）
+- [ ] 已识别或提供了排名前10位的页面URL
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] SERP composition mapped with all features documented
-- [ ] Ranking factors identified from actual top 10 analysis (not assumptions)
-- [ ] Content requirements based on observed patterns in current SERP
-- [ ] Source of each data point clearly stated (~~SEO tool data, ~~AI monitor data, user-provided, or manual observation)
+### 输出验证
+- [ ] 每条建议都引用了具体的数据
+- [ ] SERP的组成及所有功能均已记录在案
+- [ ] 排名因素是基于对排名前10位页面的实际分析得出的（而非猜测）
+- [ ] 内容要求基于当前SERP中的观察结果
+- [ ] 每个数据来源均已明确说明（来自SEO工具、人工智能监控工具或用户提供）
 
-## Example
+## 示例
 
-**User**: "Analyze the SERP for 'how to start a podcast'"
+**用户请求：** “分析‘如何开始播客’的SERP”
 
-**Output**:
-
+**输出结果：**
 ```markdown
 # SERP Analysis: "how to start a podcast"
 
@@ -480,114 +469,109 @@ Given high difficulty, consider:
 4. Focus on PAA optimization for quick wins
 ```
 
-## Advanced Analysis
+## 高级分析
 
-### Multi-Keyword SERP Comparison
-
+### 多关键词SERP对比
 ```
 Compare SERPs for [keyword 1], [keyword 2], [keyword 3]
 ```
 
-### Historical SERP Changes
-
+### 历史SERP变化
 ```
 How has the SERP for [keyword] changed over time?
 ```
 
-### Local SERP Variations
-
+### 地域SERP差异
 ```
 Compare SERP for [keyword] in [location 1] vs [location 2]
 ```
 
-### Mobile vs Desktop SERP
-
+### 移动设备与桌面设备的SERP差异
 ```
 Analyze mobile vs desktop SERP differences for [keyword]
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Always check SERP before writing** - Don't assume, verify
-2. **Match content format to SERP** - If lists rank, write lists
-3. **Identify SERP feature opportunities** - Lower competition than #1
-4. **Note SERP volatility** - Stable SERPs are harder to break into
-5. **Study the outliers** - Why does a weaker site rank? Opportunity!
-6. **Consider AI Overview optimization** - Growing importance
+1. **撰写内容前务必检查SERP** —— 不要盲目猜测，要核实实际情况
+2. **使内容格式与SERP相匹配** —— 如果列表在SERP中占主导地位，那么内容也应采用列表形式
+3. **识别SERP功能的应用机会** —— 这些功能的竞争程度通常低于排名第一的内容
+4. **注意SERP的稳定性** —— 稳定的SERP更难被打破
+5. **研究异常情况** —— 为什么排名较低的网站也能排在高位？这可能是优化机会！
+6. **考虑优化人工智能生成的答案** —— 这种功能的重要性日益增加
 
-## SERP Feature Taxonomy
+## SERP功能分类
 
-### Feature Types and Trigger Conditions
+### 功能类型及触发条件
 
-| SERP Feature | Trigger Conditions | Content Requirements | Optimization Approach |
+| SERP功能 | 触发条件 | 内容要求 | 优化方法 |
 |-------------|-------------------|---------------------|---------------------|
-| Featured Snippet (paragraph) | Question/definition queries | 40-60 word direct answer under H2 | Answer immediately, then elaborate |
-| Featured Snippet (list) | "How to", "best", "top" queries | Numbered/bulleted list with clear items | Use numbered steps or ranked lists |
-| Featured Snippet (table) | Comparison/data queries | Well-structured HTML table | Create comparison tables |
-| People Also Ask | Most informational queries | Concise answer paragraphs | Target PAA questions as H2/H3s |
-| Knowledge Panel | Entity queries | Schema markup, Wikipedia presence | Structured data + authoritative citations |
-| Image Pack | Visual/product queries | Optimized images with alt text | Descriptive filenames, proper alt text |
-| Video Carousel | How-to/tutorial queries | Video content with transcripts | YouTube optimization, video schema |
-| Local Pack | Location-based queries | Google Business Profile | Local SEO optimization |
-| Shopping Results | Product/purchase queries | Product schema, Google Merchant | Product feed optimization |
-| Sitelinks | Navigational/brand queries | Clear site structure | Logical hierarchy, breadcrumbs |
+| 特色片段（段落形式） | 包含问题或定义的查询 | 使用H2标签展示40-60字的直接答案 | 首先给出直接答案，再展开详细解释 |
+| 特色片段（列表形式） | 包含“如何”、“最佳”、“顶级”等关键词的查询 | 使用编号或项目符号列出内容 | 使用编号步骤或排名列表 |
+| 特色片段（表格形式） | 包含比较或数据的查询 | 使用结构良好的HTML表格展示 | 创建对比表格 |
+| 用户也问（People Also Ask） | 包含信息性的查询 | 使用H2或H3标签展示简洁的答案段落 |
+| 知识面板（Knowledge Panel） | 包含实体信息的查询 | 使用Schema标记和Wikipedia链接 | 提供结构化的数据和权威引用 |
+| 图片展示 | 包含图片或产品的查询 | 优化图片并添加alt文本 | 使用描述性的文件名和适当的alt文本 |
+| 视频轮播 | 包含操作指南或教程的查询 | 提供带有字幕的视频内容 | 优化视频并添加视频Schema标签 |
+| 本地信息展示 | 包含地理位置相关的查询 | 使用Google Business Profile | 优化本地SEO |
+| 购物结果 | 包含产品或购买信息的查询 | 使用产品Schema和Google Merchant数据 | 优化产品展示 |
+| 网站链接 | 包含导航或品牌相关的查询 | 确保网站结构清晰 | 使用合理的层次结构和面包屑导航 |
 
-### AI Overview Analysis Framework
+### 人工智能生成答案分析框架
 
-| Analysis Dimension | What to Look For | Why It Matters |
+| 分析维度 | 需要关注的内容 | 重要性说明 |
 |-------------------|-----------------|----------------|
-| **Trigger Rate** | Does this query generate an AI Overview? | Not all queries have AI responses |
-| **Source Selection** | Which domains are cited? How many? | Reveals authority signals AI uses |
-| **Citation Format** | Direct quotes vs. synthesized content | Shows what content format AI prefers |
-| **Answer Structure** | Bullet points, paragraphs, tables | Indicates optimal content formatting |
-| **Fact Patterns** | Statistics, definitions, lists cited | Shows what content elements get cited |
-| **Update Sensitivity** | How fresh are cited sources? | Reveals recency bias strength |
+| **触发频率** | 该查询是否会触发人工智能生成的答案？ | 并非所有查询都会触发人工智能回答 |
+| **引用来源** | 引用了哪些域名？数量是多少？ | 可以看出人工智能参考的权威来源 |
+| **引用格式** | 是直接引用还是合成内容？ | 可以看出人工智能偏好的内容格式 |
+| **答案结构** | 使用项目符号、段落还是表格？ | 可以判断最佳的内容格式 |
+| **事实呈现方式** | 是否包含统计数据、定义或列表？ | 可以看出哪些内容元素会被引用 |
+| **更新频率** | 引用的来源更新频率如何？ | 可以看出内容更新的及时性 |
 
-### Search Intent Signals from SERP Composition
+### 从SERP组成中判断搜索意图
 
-| SERP Composition | Implied Intent | Content Strategy |
+| SERP组成 | 预示的搜索意图 | 内容策略建议 |
 |-----------------|---------------|-----------------|
-| All blog posts / articles | Informational | Create comprehensive guide |
-| Product pages + shopping | Transactional | Optimize product/category page |
-| Mix of reviews + products | Commercial investigation | Create comparison/review content |
-| Videos dominate | Visual/instructional | Create video content + transcript |
-| Local pack present | Local intent | Local SEO optimization |
-| News results present | Trending/current | Timely, newsworthy content |
-| Forum/Reddit results | Community/opinion | Create opinionated, discussion-worthy content |
+| 全部博客文章 | 信息性内容 | 创建全面的指南 |
+| 产品页面或购物相关内容 | 交易相关内容 | 优化产品或分类页面 |
+| 包含评论和产品内容的页面 | 商业调查相关内容 | 创建比较或评论类内容 |
+| 视频占主导地位 | 视觉或教学类内容 | 创建带有字幕的视频内容 |
+| 显示本地信息的页面 | 本地相关内容 | 优化本地SEO |
+| 新闻类结果 | 时效性强或具有新闻价值的内容 | 及时发布相关内容 |
+| 论坛或Reddit上的结果 | 社区或观点相关的内容 | 创建有观点性的、适合讨论的内容 |
 
-## SERP Volatility Assessment
+## SERP稳定性评估
 
-### Volatility Indicators
+### 稳定性指标
 
-| Indicator | Stability Signal | Volatility Signal |
+| 指标 | 稳定性信号 | 波动性信号 |
 |-----------|-----------------|-------------------|
-| Top 3 age | Same pages for 6+ months | New pages in top 3 within 3 months |
-| Domain diversity | 2-3 domains dominate top 10 | 8+ different domains in top 10 |
-| SERP feature changes | Same features consistently | Features appearing/disappearing |
-| Algorithm sensitivity | Positions stable through updates | Major position shifts during updates |
+| 排名前3位的页面是否长期不变 | 排名前3位的页面是否连续6个月以上未变化 | 排名前3位中是否有新页面出现 |
+| 域名多样性 | 排名前10位的域名是否来自2-3个不同的网站 | 排名前10位的域名是否超过8个 |
+| SERP功能的变化 | 特定功能是否持续出现或消失 | 特定功能是否稳定出现或消失 |
+| 算法对页面排名的影响 | 算法更新后页面排名是否稳定 | 算法更新是否会导致页面排名大幅变动 |
 
-### Opportunity Assessment Based on SERP
+### 基于SERP的优化机会评估
 
-| SERP Signal | Opportunity Level | Recommended Action |
+| SERP信号 | 优化机会等级 | 建议采取的行动 |
 |------------|------------------|-------------------|
-| Low-authority sites in top 5 | High | Create superior content to outrank |
-| Outdated content ranking | High | Publish fresh, updated content |
-| Thin content ranking | High | Create comprehensive coverage |
-| Forums/UGC ranking | High | Create authoritative alternative |
-| All DR 90+ sites | Low | Target related long-tail instead |
-| AI Overview with few sources | Medium | Optimize for AI citation |
+| 排名前5位中权威度较低的网站 | 高 | 创建更优质的内容以超越这些网站 |
+| 内容过时的情况 | 高 | 发布新鲜、更新的内容 |
+| 内容较少的情况 | 高 | 创建更全面的内容 |
+| 论坛或用户生成内容（UGC）排名较高的情况 | 高 | 创建权威性的替代内容 |
+| 所有网站的权威度都低于90的情况 | 低 | 选择相关的长尾关键词进行优化 |
+| 人工智能生成答案的引用来源较少的情况 | 中等 | 优化内容以增加被引用的机会 |
 
-## Reference Materials
+## 参考资料
 
-- [SERP Feature Taxonomy](./references/serp-feature-taxonomy.md) — Complete taxonomy of SERP features with trigger conditions and optimization approaches
+- [SERP功能分类](./references/serp-feature-taxonomy.md) —— 完整的SERP功能分类，包括触发条件和优化方法
 
-## Related Skills
+## 相关技能
 
-- [keyword-research](../keyword-research/) — Find keywords to analyze
-- [competitor-analysis](../competitor-analysis/) — Deep dive on ranking competitors
-- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — Optimize based on findings
-- [geo-content-optimizer](../../build/geo-content-optimizer/) — Optimize for AI citations
-- [meta-tags-optimizer](../../build/meta-tags-optimizer/) — Optimize SERP appearance with meta tags
-- [rank-tracker](../../monitor/rank-tracker/) — Track keyword position changes in SERPs
-- [performance-reporter](../../monitor/performance-reporter/) — Track SERP visibility metrics over time
-
+- [关键词研究](../keyword-research/) —— 查找需要分析的关键词
+- [竞争对手分析](../competitor-analysis/) —— 深入研究竞争对手的排名情况
+- [页面SEO审计](../../optimize/on-page-seo-auditor/) —— 根据分析结果优化页面内容
+- [地理内容优化工具](../../build/geo-content-optimizer/) —— 优化内容以增加人工智能的引用
+- [元标签优化工具](../../build/meta-tags-optimizer/) —— 通过元标签优化SERP的显示效果
+- [排名追踪工具](../../monitor/rank-tracker/) —— 跟踪关键词在SERP中的排名变化
+- [性能报告工具](../../monitor/performance-reporter/) —— 长期跟踪SERP的可见性指标

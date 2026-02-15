@@ -1,70 +1,70 @@
 ---
 name: Fonts
-description: Choose and implement web typography avoiding common rendering, pairing, and hierarchy mistakes.
+description: 选择并实现符合网页排版规范的字体样式，避免常见的渲染问题、搭配错误以及层级结构上的失误。
 metadata: {"clawdbot":{"emoji":"🅰️","requires":{},"os":["linux","darwin","win32"]}}
 ---
 
-## Display vs Text Fonts
+## 显示字体与文本字体
 
-- Display fonts (Abril Fatface, Bebas Neue, Lobster) are for headings 24px+ only—using them for body text destroys readability
-- If a font looks decorative or has extreme thick/thin contrast, it's display—not for paragraphs
-- Text fonts (Inter, Roboto, Georgia) are designed for 12-18px—use these for body copy
+- 显示字体（如 Abril Fatface、Bebas Neue、Lobster）仅适用于 24px 及以上的标题；将其用于正文会破坏可读性。
+- 如果某种字体看起来过于装饰性，或者字体的粗细对比度极强，那么它应该被归类为显示字体（而非用于段落文本）。
+- 文本字体（如 Inter、Roboto、Georgia）专为 12–18px 的字号设计，应使用这些字体来显示正文内容。
 
-## Pairing Traps
+## 字体搭配的注意事项
 
-- Two fonts too similar look like a mistake—if you can't tell them apart instantly, use one font
-- Contrast in category works: serif heading + sans-serif body, or different weights of same family
-- Two decorative fonts clash—never pair Lobster with Pacifico
-- Safe pairs: same superfamily (Roboto + Roboto Slab) or proven combos (Playfair Display + Source Sans Pro)
+- 如果两种字体过于相似，容易引起视觉混乱；如果无法立即区分它们，最好使用同一种字体。
+- 可以通过字体类别的对比来实现良好的搭配效果（例如：使用衬线字体作为标题，无衬线字体作为正文；或者使用同一字体系列中不同粗细的字体）。
+- 绝不要将 Lobster 与 Pacifico 搭配使用——这两种字体风格截然不同。
+- 安全的字体搭配方案包括：使用同一字体系列中的不同字体（如 Roboto 和 Roboto Slab），或者经过验证的搭配组合（如 Playfair Display 和 Source Sans Pro）。
 
-## Weight and Rendering
+## 字体粗细与渲染效果
 
-- Thin weights (100-300) render poorly on Windows—avoid for body text, use 400+ for cross-platform
-- Light fonts on dark backgrounds look thinner—bump weight up one level for dark mode
-- Faux bold (browser-generated) looks wrong—only use weights the font actually includes
-- Check font has italic—faux italic (slanted roman) is noticeably worse than true italic
+- 细字体（粗细在 100–300 之间）在 Windows 系统上的渲染效果较差，不适合用于正文；对于跨平台应用，建议使用粗细在 400 及以上的字体。
+- 在深色背景上，浅色字体会显得更细；因此，在深色模式下应适当增加字体的粗细。
+- 浮动粗体（由浏览器生成的粗体效果）并不符合视觉习惯——请仅使用字体本身支持的真正粗体样式。
+- 确认字体是否支持斜体；模拟斜体（即倾斜的罗马字体）的视觉效果通常比真正的斜体差很多。
 
-## Line Height and Length
+## 行高与行长度
 
-- Body text needs 1.4-1.6 line-height—1.0 or 1.2 makes paragraphs unreadable walls
-- Headings need tighter line-height (1.1-1.3)—large text with 1.5 line-height has awkward gaps
-- Line length 45-75 characters max—wider than 75 chars causes readers to lose their place
-- Set `max-width` on text containers in ch units: `max-width: 65ch`
+- 正文文本的行高应设置在 1.4–1.6 之间；如果行高过低（如 1.0 或 1.2），段落会显得难以阅读。
+- 标题的行高应更紧凑（1.1–1.3 之间）；如果行高过高（如 1.5），大段文本会出现明显的间距问题。
+- 每行的字符数应控制在 45–75 个之间；超过 75 个字符会导致读者难以跟随阅读节奏。
+- 为文本容器设置 `max-width` 属性，单位为字符（ch）：`max-width: 65ch`。
 
-## All Caps
+## 全大写文本
 
-- ALL CAPS needs increased letter-spacing—without it, letters collide and look cramped
-- `text-transform: uppercase` + `letter-spacing: 0.05em` minimum
-- Never use all caps for more than a few words—extended caps text is significantly harder to read
-- Small caps (`font-variant: small-caps`) only if font supports it—faux small caps look amateurish
+- 全大写文本需要增加字母间距；否则字母会相互重叠，显得拥挤不堪。
+- 至少应使用 `text-transform: uppercase` 和 `letter-spacing: 0.05em` 来调整字母间距。
+- 避免将全大写文本用于超过几个词的场合——全大写文本的阅读难度会显著增加。
+- 只有在字体支持的情况下才能使用小写变体（`font-variant: small-caps`）；模拟的小写效果往往显得很不专业。
 
-## Widows and Orphans
+## 单词独行与断字问题
 
-- Single word alone on last line of paragraph looks broken—adjust text or container width
-- `text-wrap: balance` (CSS) distributes lines more evenly in headings
-- `text-wrap: pretty` for body text—prevents orphans in browsers that support it
-- Manual fix: non-breaking space (`&nbsp;`) between last two words
+- 如果段落最后一行只有一个单词，会破坏阅读体验——请调整文本内容或容器宽度。
+- 使用 `text-wrap: balance`（CSS 属性）可以使标题中的行分布得更均匀。
+- 对于正文文本，可以使用 `text-wrap: pretty`（CSS 属性）来避免断字现象（在支持该属性的浏览器中）。
+- 手动修复方法是在最后两个单词之间添加非断字符（`&nbsp;`）。
 
-## Loading and Performance
+## 字体加载与性能优化
 
-- `font-display: swap` prevents invisible text—without it, text is blank until font loads
-- Subset fonts to characters you need—Latin-only saves 60%+ over full Unicode
-- WOFF2 is the only format you need—universal support, best compression
-- Preload critical fonts: `<link rel="preload" href="font.woff2" as="font" crossorigin>`
+- 使用 `font-display: swap` 可以避免字体加载完成前的空白显示问题。
+- 仅加载实际需要的字符集，这样可以节省大量资源（例如，仅加载拉丁字符集的字体文件比加载完整 Unicode 字体文件节省 60% 以上的空间）。
+- WOFF2 是目前最常用的字体格式，具有广泛的兼容性和最佳的压缩效果。
+- 预加载关键字体：`<link rel="preload" href="font.woff2" as="font" crossorigin>`。
 
-## System Font Stack
+## 系统字体堆栈
 
 ```css
 font-family: system-ui, -apple-system, BlinkMacSystemFont, 
   'Segoe UI', Roboto, sans-serif;
 ```
-- Zero load time, native look per platform—use for UI-heavy apps
-- `system-ui` is now widely supported—simpler than listing all fallbacks
-- Always end with generic fallback (`sans-serif`, `serif`, `monospace`)
+- 通过使用系统字体，可以实现零加载时间，并保证每种平台上的字体显示效果与系统一致——特别适合界面复杂的应用程序。
+- `system-ui` 是目前广泛支持的字体方案，比列出所有备用字体更为简洁。
+- 字体堆栈的结尾应始终包含通用的备用字体（如 `sans-serif`、`serif`、`monospace`）。
 
-## Hierarchy Mistakes
+## 字体层次结构的常见错误
 
-- Using too many font sizes—stick to a type scale (1.25 or 1.333 ratio), not random sizes
-- Headings not distinct enough from body—skip at least one scale step between h1 and body
-- Overusing bold—if everything is emphasized, nothing is emphasized
-- Color as only differentiator—size and weight should establish hierarchy before color
+- 不要使用过多不同的字体大小；应遵循统一的字体比例规则（例如 1.25 或 1.333）。
+- 标题与正文的字体差异不够明显——在 h1 标题和正文之间至少应使用一个不同的字体大小级别。
+- 过度使用粗体效果；如果所有内容都使用粗体，反而会失去层次感。
+- 避免仅依赖颜色来区分不同元素——在颜色之前，应先通过字体大小和粗细来建立层次结构。

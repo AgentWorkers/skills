@@ -1,6 +1,6 @@
 ---
 name: personal-crm
-description: Personal relationship manager that helps you stay in touch with important people through gentle nudges, birthday reminders, and conversation tracking.
+description: 个人关系管理工具，通过温馨的提醒、生日祝福以及对话记录功能，帮助您与重要的人保持联系。
 version: 1.1.0
 author: matthewpoe
 tags:
@@ -18,239 +18,229 @@ requires:
   - email access (optional, for forwarding touchpoints)
 ---
 
-# Personal Network CRM
+# 个人关系管理 CRM（Personal Relationship Management CRM）
 
-> Keep meaningful relationships warm through gentle, intelligent nudges.
+> 通过温馨、智能的提醒，让重要的人际关系保持活跃。
 
-## What This Skill Does
+## 该技能的功能
 
-This skill turns your AI agent into a personal relationship manager. It helps you:
+该技能可将您的人工智能助手转变为您的个人关系管理者，帮助您：
 
-- **Stay in touch** with friends, family, and professional contacts on a cadence you choose
-- **Remember conversations** so you can pick up where you left off
-- **Track birthdays** with day-of reminders or advance notice for gift-giving
-- **Manage standing events** like weekly calls, game nights, or recurring meetups
-- **Capture touchpoints** from forwarded emails or quick notes
-- **Get gentle nudges** without guilt trips or nagging
+- **按您设定的频率** 与朋友、家人和职业联系人保持联系
+- **记住对话内容**，以便您能够继续之前的话题
+- **追踪生日**，提供当天的提醒或提前的礼物赠送建议
+- **管理定期活动**，如每周的聚会、游戏之夜或定期的聚会
+- **记录交流信息**，无论是通过转发的邮件还是简短的笔记
+- **提供温馨的提醒**，而不会让您感到内疚或被催促
 
-It's a relationship strengthener, not a task manager.
+它是一个增强人际关系的工具，而非任务管理工具。
 
-**Smart storage:** Uses a two-file architecture — NETWORK.md for deep reference (full history, stories, context) and NETWORK-ACTIVE.md for weekly snapshots (current action items, overdue contacts, standing events). This keeps daily briefings fast and efficient even with large networks.
+**智能存储机制：** 采用双文件架构：
+- `NETWORK.md` 文件用于存储详细的参考信息（完整的历史记录、故事和背景信息）
+- `NETWORK-ACTIVE.md` 文件用于存储每周的更新内容（当前的待办事项、逾期未联系的人和定期活动）。即使关系网络庞大，也能确保每日简报的快速高效。
 
-## Quick Start
+## 快速入门
 
-Tell your agent: "Let's set up my network CRM" or "Run me through the network onboarding"
+告诉您的助手：“设置我的个人关系管理 CRM” 或 “指导我完成关系网络的初始化”
 
-The agent will guide you through naming 10 people you want to stay in touch with, then help you fill in details for each.
+助手会引导您为想要保持联系的 10 个人命名，并帮助您填写每个人的详细信息。
 
-## Installation
+## 安装
 
 ```bash
 clawhub install personal-crm
 ```
 
-Or manually place the SKILL.md in your workspace's `skills/network-crm/` folder.
+或者手动将 `SKILL.md` 文件放入您工作区的 `skills/network-crm/` 文件夹中。
 
-## Storage Architecture
+## 存储架构
 
-**Two-file system for performance:**
+**双文件系统，提升性能：**
 
-### NETWORK.md (Deep Reference)
-- **Purpose:** Full context, history, stories, relationship depth
-- **Size:** Can grow to 30k+ words (that's fine, it's reference material)
-- **Content:** Every contact with full story, context, history, action flags
-- **Usage:** Agent reads when diving into someone's relationship, planning approach, needing context
-- **Update:** Whenever you learn something significant about someone
+### `NETWORK.md`（详细参考信息）
+- **用途：** 存储完整的背景信息、历史记录和关系深度
+- **大小：** 可以达到 30,000 多字（这没关系，因为它是参考资料）
+- **内容：** 每个联系人的完整信息、背景故事、历史记录和行动标记
+- **使用方式：** 当助手需要深入了解某人的关系或规划沟通方式时，会读取此文件
+- **更新频率：** 每当您了解到关于某人的重要信息时更新
 
-### NETWORK-ACTIVE.md (Weekly Snapshot)
-- **Purpose:** Lightweight, scannable, current state
-- **Size:** Stays ~5-6k words (fast load, efficient)
-- **Content:** Standing events, action items, contact tiers, overdue check-ins, quick reference
-- **Usage:** Morning briefings, weekly nudges, "who should I reach out to?" questions
-- **Update:** Every Monday (or as needed), ~5 minutes
+### `NETWORK-ACTIVE.md`（每周更新）
+- **用途：** 体积小、易于阅读，显示当前状态
+- **大小：** 保持约 5,000-6,000 字（加载速度快，效率高等）
+- **内容：** 定期活动、待办事项、联系人分类、逾期未联系的情况以及快速参考信息
+- **使用方式：** 用于晨间简报、每周提醒以及“我应该联系谁？”之类的问题
+- **更新频率：** 每周一（或根据需要），大约需要 5 分钟
 
-**Why two files?**
-- Single large file = slow morning briefing loads and token overhead
-- ACTIVE is the "this week" snapshot; DEEP is the "who are they really?" reference
-- Agent scans ACTIVE daily for nudges, refers to NETWORK.md when planning approach
-- Keeps performance snappy even with large networks (25+ people)
+**为什么使用两个文件？**
+- 单个大文件会导致晨间简报加载缓慢，并增加系统开销
+- `ACTIVE` 文件记录“本周的情况”；`DEEP` 文件提供“他们真正的性格特点”
+- 助手每天会扫描 `ACTIVE` 文件以获取提醒，并在规划沟通方式时参考 `NETWORK.md`
+- 即使关系网络中有 25 个人以上，也能保持高效的性能
 
-**Weekly Refresh Routine:**
-Every Monday (takes ~5 minutes):
-1. Update timestamp in NETWORK-ACTIVE.md
-2. Log contacts from the week (who you reached out to)
-3. Move people from "overdue" to "touched base" if you made contact
-4. Update "last contact" and "days ago" fields
-5. Flag any new action items
-6. Scan NETWORK.md for anyone who needs nudging
+**每周更新流程：**
+每周一（大约需要 5 分钟）：
+1. 更新 `NETWORK-ACTIVE.md` 文件中的时间戳
+2. 记录本周联系过的人
+3. 如果您已经联系了某人，将其状态从“逾期未联系”改为“已联系”
+4. 更新“最后一次联系时间”和“距离上次联系的天数”
+5. 标记任何新的待办事项
+6. 在 `NETWORK.md` 中查找需要提醒的人
 
-**Optional Archiving:**
-If NETWORK.md grows beyond 40k:
-- Move old history entries to NETWORK-HISTORY-ARCHIVE.md
-- Keep active contacts in main file
-- Maintain last contact date for reference
+**可选的归档机制：**
+如果 `NETWORK.md` 文件的体积超过 40,000 字：
+- 将旧的历史记录移至 `NETWORK-HISTORY-ARCHIVE.md` 文件
+- 将活跃的联系人保留在主文件中
+- 保留最后一次联系的日期以供参考
 
 ---
 
-## Core Features
+## 核心功能
 
-### Contact Tiers
+### 联系人分类
 
-| Tier | Frequency | Example |
+| 分类 | 更新频率 | 例子 |
 |------|-----------|---------|
-| `weekly` | Standing events, very close people | Thursday game night, Sunday family call |
-| `monthly` | Every 4 weeks | Close friends, key professional contacts |
-| `quarterly` | Every 12 weeks | Wider network, former colleagues |
-| `biannual` | Every 26 weeks | Loose ties, distant friends |
-| `as_needed` | No regular cadence | Partner, people you see organically |
+| **每周** | 定期活动、关系亲密的人 | 每周四的游戏之夜、每周日的家庭电话 |
+| **每月** | 每 4 周 | 密切的朋友、关键的职业联系人 |
+| **每季度** | 每 12 周 | 更广泛的关系网络、以前的同事 |
+| **每半年** | 每 26 周 | 关系较疏远的朋友 |
+| **按需** | 无固定频率 | 合作伙伴、偶尔会见面的人 |
 
-### Relationship Types
+### 关系类型
 
-| Type | Description |
+| 类型 | 描述 |
 |------|-------------|
-| `partner` | Romantic partner - log interactions but don't nudge outreach |
-| `close_friend` | Inner circle, prioritize these |
-| `professional` | Career network, mentors, colleagues |
-| `family` | Blood and chosen family |
-| `acquaintance` | Friend leads, people worth cultivating |
+| **伴侣** | 情侣关系 - 记录互动但不主动提醒 |
+| **密友** | 核心朋友圈，优先处理这些关系 |
+| **职业** | 职业网络中的联系人、导师、同事 |
+| **家人** | 血缘或选择的朋友 |
+| **熟人** | 需要培养关系的朋友 |
 
-### Birthday Reminders
+### 生日提醒
 
-Two tiers:
-- **Day-of** (default): Reminder on the morning of their birthday for a quick text or call
-- **Advance** (for gift-givers): Reminder 1-2 weeks before so you have time to shop/ship
+分为两个级别：
+- **当天**（默认）：在生日当天早上发送短信或电话提醒
+- **提前**（适用于送礼者）：提前 1-2 周提醒，以便有时间选购礼物
 
-### Standing Events
+### 定期活动
 
-Track recurring social commitments:
-- Weekly game nights, family calls, fitness classes
-- Monthly dinners, book clubs
-- The agent reminds you before and asks how it went after
+跟踪重复性的社交活动：
+- 每周的游戏之夜、家庭电话、健身课程
+- 助手会在活动前提醒您，并询问活动后的情况
 
-### Email Forwarding
+### 邮件转发
 
-Forward emails to your agent with "FYI for network CRM" to:
-- Auto-log a touchpoint
-- Extract the contact's email address
-- Summarize what you discussed
-
----
-
-## Onboarding Flow
-
-**Note:** The skill creates two files during setup:
-- `NETWORK.md` — Your full relationship map (deep reference)
-- `NETWORK-ACTIVE.md` — Weekly snapshot (what you need this week)
-
-See the Storage Architecture section above for how these work together.
-
-### Quick-Start: Name 10 People
-
-The skill starts with a rapid-fire exercise:
-
-1. "Who's someone you wish you talked to more often?"
-2. "Someone you haven't caught up with in a while?"
-3. "A friend from an old job you've lost touch with?"
-4. "Someone who always makes you laugh?"
-5. "A family member you should call more?"
-6. "Someone you admire professionally?"
-7. "A friend who's going through something big right now?"
-8. "Someone you met recently that you'd like to know better?"
-9. "An old friend you think about sometimes?"
-10. "Anyone else coming to mind?"
-
-Then the agent circles back to gather details on each person.
-
-### Standing Events & Touchpoints
-
-"Do you have any standing social events or regular calls? Things like weekly game nights, Sunday calls with family, monthly dinners, trivia nights, book clubs, fitness classes, hobby groups?"
-
-### Important Dates
-
-"Are there any important dates I should track? Birthdays you always forget, anniversaries, holidays where you exchange gifts with specific people?"
-
-### Holidays (Opt-In)
-
-"Which gift-giving holidays do you celebrate, if any?"
-
-The skill offers options but doesn't assume - not everyone celebrates the same holidays, and some may have complicated relationships with parent-focused holidays.
+将邮件转发给助手，并附上“供个人关系管理使用”，助手会：
+- 自动记录交流信息
+- 提取联系人的电子邮件地址
+- 概述您讨论的内容
 
 ---
 
-## Agent Behaviors
+## 初始化流程
 
-### Morning Briefing Integration
+**注意：** 在设置过程中，该技能会创建两个文件：
+- `NETWORK.md` — 完整的关系地图（详细参考信息）
+- `NETWORK-ACTIVE.md` — 每周的更新内容
 
-The skill adds to daily briefings in a warm, conversational tone:
+请参阅上面的“存储架构”部分，了解这两个文件是如何协同工作的。
 
-**Good example:**
-> "You might want to reach out to Sarah - last I heard, she was in the middle of that startup pivot. That was back in October, so I'm curious how it landed."
+### 快速入门：命名 10 个人
 
-**Bad example (the skill avoids this):**
-> "David is 2 weeks overdue for a quarterly catch-up."
+助手会引导您快速完成以下步骤：
+1. “有哪些人您希望更频繁地联系？”
+2. “有哪些人已经有一段时间没有联系了？”
+3. “有没有以前工作过的朋友，现在失去了联系？”
+4. “有没有总是让您发笑的朋友？”
+5. “有没有家人，您应该多联系一下？”
+6. “有没有在职业上很敬佩的人？”
+7. “有没有最近认识的人，想进一步了解他们？”
+8. “还有其他人想提到吗？”
+之后助手会收集每个人的详细信息。
 
-### Suggested Outreach
+### 定期活动与交流记录
 
-When context is available:
-> "You might want to text Sarah - last time you talked about her startup pivot and her new dog. Something like: 'Hey! Been thinking about you - how did the pivot go?'"
+“您有没有任何定期的社交活动或电话会议？比如每周的游戏之夜、每周日的家庭电话、每月的晚餐、知识分享会、健身课程等？”
 
-When context is missing (self-deprecating):
-> "I don't actually know what you and Jake talked about last time - you haven't told me yet! Wild ideas: ask about Austin, challenge him to a rematch, or just send a meme."
+### 重要日期
 
-### Enthusiasm Acceleration
+“有没有需要记录的重要日期？比如总是忘记的生日、周年纪念日、需要送礼的节日？”
 
-If you express enthusiasm about a connection:
-> "Sounds like that was a great catch-up! Want me to bump Sarah to monthly instead of quarterly?"
+### 节日提醒（可选）
 
-### Capturing Touchpoints
+“您会庆祝哪些节日？”
 
-Triggered by phrases like:
-- "Just had coffee with Sarah"
-- "Texted with Jake today"
-- "Saw Marcus at the party"
-
-The agent asks naturally about what you discussed, what's going on in their life, and what to follow up on next time.
+该技能提供多种选项，但不会强制要求用户必须庆祝所有节日，因为每个人的节日庆祝习惯可能不同，而且有些人可能对以家庭为中心的节日有不同的看法。
 
 ---
 
-## Birthday Data Bootstrap
+## 助手的行为方式
 
-### From Google Calendar
+### 晨间简报
 
-If you have calendar access, the agent can check for Google's auto-created "Birthdays" calendar:
+助手会以温馨、对话式的语气加入每日简报：
+**好的例子：**
+> “您可能需要联系 Sarah — 我上次听说她正在筹备一家初创公司。那是十月份的事了，所以我想知道进展如何。”
+
+**不好的例子（助手会避免这种方式）：**
+> “David 已经两周没有进行季度性的联系了。”
+
+### 建议的沟通方式
+
+当有足够的信息时：
+> “您可能需要给 Sarah 发短信 — 上次你们聊到她的初创公司和新买的狗。可以这样写：‘嘿！最近怎么样？’”
+
+当缺乏信息时（助手会表现出自我反省）：
+> “其实我不太清楚你和 Jake 上次聊了什么——你还没告诉我呢！不过可以试试问问他关于 Austin 的事情，或者发个表情包给他。”
+
+### 激发热情
+
+如果您对某段关系表现出热情：
+> “听起来那次交流很愉快！要不要把联系频率改为每月一次？”
+
+### 交流信息的记录
+
+当您提到诸如“刚刚和 Sarah 一起喝了咖啡”、“今天和 Jake 发了短信”或“在聚会上遇到了 Marcus”等短语时，助手会自然地询问您们的讨论内容、他们的生活近况以及下一步该做什么。
+
+---
+
+## 生日数据获取
+
+### 从 Google 日历获取
+
+如果您有日历访问权限，助手可以查看 Google 自动创建的生日日历：
 
 ```bash
 gog calendar list Birthdays --account [your-account] --from today --to "next year"
 ```
 
-### From Facebook
+### 从 Facebook 获取
 
-1. Go to Facebook Settings → Your Facebook Information → Download Your Information
-2. Select "Friends and Followers" in JSON format
-3. Download and extract
-4. Forward `friends/friends.json` to your agent
+1. 进入 Facebook 设置 → 您的 Facebook 信息 → 下载您的信息
+2. 选择“朋友和关注者”并导出 JSON 格式
+3. 将 `friends/friends.json` 文件转发给助手
 
-Or subscribe to Facebook's birthday calendar in Google Calendar and import via the calendar integration.
-
----
-
-## Gamification (Optional)
-
-### Monthly Goals
-
-"How many reach-outs do you want to aim for this month?"
-
-### Progress Updates
-
-"You've connected with 8 people this month - nicely on track for your goal of 12."
-
-Encouraging, never guilt-trippy.
+或者订阅 Facebook 的生日日历，并通过日历集成功能导入到 Google 日历中。
 
 ---
 
-## Data Structure
+## 游戏化机制（可选）
 
-### Contact Record
+### 月度目标
+
+“您本月计划联系多少人？”
+
+### 进度更新
+
+“您本月已经联系了 8 个人——离您的目标 12 个人已经很接近了。”
+
+这种方式会给予鼓励，而不会让您感到内疚。
+
+---
+
+## 数据结构
+
+### 联系人记录
 
 ```yaml
 name: "First Last"
@@ -280,106 +270,102 @@ history:
 
 ---
 
-## Gift-Giving Holidays (Opt-In)
+## 礼物赠送节日（可选）
 
-| Holiday | Typical Deadline | Notes |
+| 节日 | 通常的截止日期 | 备注 |
 |---------|------------------|-------|
-| Christmas | Mid-December | For shipping time |
-| Hanukkah | Varies | 8 nights, may need multiple gifts |
-| Mother's Day | 1 week before | If applicable |
-| Father's Day | 1 week before | If applicable |
-| Valentine's Day | February 13 | Partner/spouse |
-| Anniversary | 1 week before | Partner/spouse |
-| Diwali | Varies | If celebrated |
-| Lunar New Year | Varies | If celebrated |
-| Eid | Varies | If celebrated |
+| 圣诞节 | 12 月中旬 | 需要提前准备礼物 |
+| 光明节 | 时间不固定 | 通常需要准备多件礼物 |
+| 母亲节 | 提前 1 周 | 如适用 |
+| 父亲节 | 提前 1 周 | 如适用 |
+| 情人节 | 2 月 13 日 | 适用于伴侣/配偶 |
+| 周年纪念日 | 提前 1 周 | 适用于伴侣/配偶 |
+| 排灯节 | 时间不固定 | 如庆祝的话 |
+| 农历新年 | 时间不固定 | 如庆祝的话 |
 
 ---
 
-## Integration Points
+## 集成方式
 
-| Integration | What It Enables |
+| 集成方式 | 可实现的功能 |
 |-------------|-----------------|
-| **Calendar** | Pre-meeting context, post-meeting prompts, birthday import |
-| **Email** | Forward emails to log touchpoints, auto-extract email addresses |
-| **Gift Tracker** (separate skill) | Link gift history to contacts, suggest gift ideas |
-| **Meeting Transcripts** (future) | Auto-extract conversation details from tools like Granola |
+| **日历** | 会议前的背景信息、会议后的提醒、生日信息的导入 |
+| **电子邮件** | 转发邮件以记录交流信息、自动提取电子邮件地址 |
+| **礼物跟踪工具**（单独的技能） | 将礼物赠送历史记录与联系人关联、提供礼物建议 |
+| **会议记录**（未来可能添加） | 从 Granola 等工具中自动提取会议对话内容 |
 
 ---
 
-## Privacy
+## 隐私政策
 
-- All data stays local in NETWORK.md
-- Never shared externally
-- Email/phone stored only if you provide or forward
-- Platform search (Gmail, iMessage) only if you've granted access
+- 所有数据仅存储在 `NETWORK.md` 文件中
+- 从不对外共享
+- 电子邮件/电话信息仅在您提供或转发时才会被存储
+- 平台搜索（如 Gmail、iMessage）仅在您授权的情况下才能访问
 
----
+## 避免的行为模式
 
-## Anti-Patterns (What This Skill Avoids)
-
-- **Nagging** - suggests, then backs off
-- **Guilt trips** - never says "overdue" or implies failure
-- **Chore vibes** - encouraging, not obligatory
-- **Overwhelming** - 1-2 suggestions at a time
-- **Robotic tone** - warm and conversational
-- **Assuming holidays** - opt-in only
-- **One-size-fits-all** - respects tiers and relationship types
+- **过度催促** — 提出建议后不再继续催促
+- **产生内疚感** — 从不使用“逾期未联系”之类的说法
+- **强制性的行为** — 仅提供建议，而非强制执行
+- **信息过载** — 每次只提供 1-2 条建议
+- **机械式的语气** — 保持温馨、对话式的交流
+- **一概而论** — 尊重不同的关系层级和类型
 
 ---
 
-## Example Interactions
+## 示例互动
 
-### Adding a Contact
+### 添加联系人
 
-**You:** Add my friend Jake to my network
+**您：** 将我的朋友 Jake 加入我的关系网络
 
-**Agent:** Got it! Tell me about Jake - how do you know each other?
+**助手：** 明白了！请告诉我关于 Jake 的情况——你们是怎么认识的？
 
-**You:** College roommate
+**您：** 大学室友
 
-**Agent:** Nice. How often do you want to stay in touch?
+**助手：** 很好。您希望多久联系他一次？
 
-**You:** Quarterly
+**您：** 每季度
 
-**Agent:** Best way to reach him?
+**助手：** 最好的联系方式是什么？
 
-**You:** Text
+**您：** 发短信
 
-**Agent:** Do you know his birthday?
+**助手：** 你知道他的生日吗？
 
-**You:** March something
+**您：** 三月某日
 
-**Agent:** No worries. What's going on in his life these days?
+**助手：** 没问题。他最近的生活情况如何？
 
-**You:** He was thinking about moving to Austin
+**您：** 他正在考虑搬到 Austin
 
-**Agent:** Got it - I'll remind you to check in with Jake in about 3 months and ask how the Austin decision went.
-
----
-
-### Logging a Touchpoint
-
-**You:** Just had coffee with Sarah
-
-**Agent:** Nice! How'd it go?
-
-**You:** Great - she got engaged!
-
-**Agent:** That's huge! Anything to follow up on?
-
-**You:** Should send an engagement gift
-
-**Agent:** Done. Want me to bump her to monthly since things are going well?
+**助手：** 明白了——大约三个月后我会提醒您联系 Jake，了解一下他搬到 Austin 的情况。**
 
 ---
 
-### Birthday Reminder
+### 记录交流信息
 
-**Agent (morning):** Heads up - Mom's birthday is next Saturday. Want help brainstorming gift ideas?
+**您：** 刚刚和 Sarah 一起喝了咖啡
+
+**助手：** 很好！聊得怎么样？
+
+**您：** 非常愉快！她订婚了！
+
+**助手：** 太棒了！有什么需要跟进的吗？
+
+**您：** 应该送份订婚礼物
+
+**助手：** 已经处理好了。鉴于关系进展顺利，要不要把联系频率改为每月一次？**
 
 ---
 
-## Version History
+### 生日提醒
 
-- **1.0.0** - Initial release with contact management, birthday tracking, standing events, email forwarding, gamification, and gentle nudge philosophy
+**助手（早上）：** 提醒您——下周六是妈妈的生日。需要帮忙想礼物创意吗？**
+
+---
+
+## 版本历史
+
+- **1.0.0** — 初始版本，包含联系人管理、生日追踪、定期活动管理、邮件转发功能以及温馨提醒的理念

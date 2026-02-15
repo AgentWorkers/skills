@@ -1,10 +1,10 @@
 ---
 name: kradleverse:join
-description: Join a Kradleverse game
+description: 加入 Kradleverse 游戏
 ---
 
 ```bash
 ~/.kradle/kradleverse/venv/bin/python ~/.kradle/kradleverse/scripts/kradleverse.py join
 ```
 
-Returns a session ID needed for act/observe skills, as well as every information necessary to play the game (JS functions you can call to act, your task, an initial state of observations etc...). Matchmaking + server booting can take up to 5 minutes.
+返回一个会话 ID，该 ID 用于执行/观察游戏中的技能，同时提供玩游戏所需的所有信息（可以调用的 JavaScript 函数、你的任务、初始观察状态等）。匹配过程和服务器启动可能需要最多 5 分钟的时间。

@@ -1,100 +1,105 @@
 ---
 name: ddg
-description: Use ddgr (DuckDuckGo from the terminal) to perform privacy-focused web searches from the command line. Use when the user wants to (1) Search the web from the terminal, (2) Perform DuckDuckGo searches without opening a browser, (3) Get quick search results in text format, (4) Search privately without tracking, (5) Use DuckDuckGo bangs (!) from terminal.
+description: 使用 `ddgr`（即终端中的 DuckDuckGo）从命令行执行以隐私保护为导向的网络搜索。适用于以下场景：  
+1. 从终端中进行网络搜索；  
+2. 在不打开浏览器的情况下使用 DuckDuckGo；  
+3. 以文本格式快速获取搜索结果；  
+4. 进行无痕搜索（避免被追踪）；  
+5. 通过终端使用 DuckDuckGo 的特殊搜索指令（如 `!`）。
 ---
 
-# ddgr - DuckDuckGo from the Terminal
+# ddgr - 通过终端使用 DuckDuckGo
 
-**ddgr** is a command-line utility to search DuckDuckGo from the terminal. It provides fast, privacy-focused web searches without opening a browser.
+**ddgr** 是一个命令行工具，用于通过终端搜索 DuckDuckGo。它提供了快速且注重隐私的网页搜索功能，无需打开浏览器。
 
-## Installation
+## 安装
 
-### Via Snap (recommended for Ubuntu):
+### 通过 Snap（推荐用于 Ubuntu）：
 ```bash
 sudo snap install ddgr
 ```
 
-### Via PPA:
+### 通过 PPA（Package Archive）：
 ```bash
 sudo add-apt-repository ppa:twodopeshaggy/jarun
 sudo apt-get update
 sudo apt-get install ddgr
 ```
 
-### From source:
+### 从源代码安装：
 ```bash
 git clone https://github.com/jarun/ddgr.git
 cd ddgr
 sudo make install
 ```
 
-**Dependencies:** Python 3.8 or later
+**依赖项：** Python 3.8 或更高版本
 
-## Basic Usage
+## 基本用法
 
-### Simple search (non-interactive):
+### 简单搜索（非交互式）：
 ```bash
 snap run ddgr "search query" --np
 ```
 
-### Search with specific number of results:
+### 指定搜索结果数量：
 ```bash
 snap run ddgr "search query" --num 5 --np
 ```
 
-### Search with time limit:
+### 设置搜索时间限制：
 ```bash
 snap run ddgr "query" --time w --np    # past week
 snap run ddgr "query" --time m --np    # past month
 snap run ddgr "query" --time y --np    # past year
 ```
 
-### Site-specific search:
+### 搜索特定网站：
 ```bash
 snap run ddgr "query" --site github.com --np
 ```
 
-### JSON output:
+### 以 JSON 格式输出结果：
 ```bash
 snap run ddgr "query" --json --np
 ```
 
-### Open first result in browser:
+### 在浏览器中打开第一个搜索结果：
 ```bash
 snap run ddgr "query" --ducky
 ```
 
-## Interactive Mode
+## 交互式模式
 
-Run without `--np` to enter interactive mode:
+不使用 `--np` 选项即可进入交互式模式：
 ```bash
 snap run ddgr "search query"
 ```
 
-**Interactive commands:**
-- `1`, `2`, `3`... → open result in browser
-- `n` → next page of results
-- `p` → previous page of results
-- `q` or `Ctrl+D` → quit
-- `?` → show help
+**交互式命令：**
+- `1`, `2`, `3`... → 在浏览器中打开搜索结果
+- `n` → 切换到下一页结果
+- `p` → 切换到上一页结果
+- `q` 或 `Ctrl+D` → 退出
+- `?` → 显示帮助信息
 
-## Advanced Options
+## 高级选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-n N`, `--num N` | Show N results per page (0-25, default 10) |
-| `-r REG`, `--reg REG` | Region-specific search (e.g., 'us-en', 'uk-en') |
-| `-t SPAN`, `--time SPAN` | Time limit: d (day), w (week), m (month), y (year) |
-| `-w SITE`, `--site SITE` | Search specific site |
-| `-x`, `--expand` | Show complete URLs |
-| `--json` | Output in JSON format |
-| `--ducky` | Open first result in browser |
-| `--np`, `--noprompt` | Non-interactive mode |
-| `--unsafe` | Disable safe search |
+| `-n N`, `--num N` | 每页显示 N 个结果（0-25，默认为 10） |
+| `-r REG`, `--reg REG` | 按地区搜索（例如：'us-en', 'uk-en'） |
+| `-t SPAN`, `--time SPAN` | 时间限制：d（天）、w（周）、m（月）、y（年） |
+| `-w SITE`, `--site SITE` | 搜索特定网站 |
+| `-x`, `--expand` | 显示完整的 URL |
+| `--json` | 以 JSON 格式输出结果 |
+| `--ducky` | 在浏览器中打开第一个搜索结果 |
+| `--np`, `--noprompt` | 非交互式模式 |
+| `--unsafe` | 禁用安全搜索功能 |
 
-## DuckDuckGo Bangs
+## 使用 DuckDuckGo 的特殊搜索指令（“Bangs”）
 
-Use DuckDuckGo bangs to search specific sites:
+可以使用特殊的搜索指令来搜索特定网站：
 ```bash
 snap run ddgr "!w Linux" --np        # Wikipedia search
 snap run ddgr "!yt music" --np       # YouTube search
@@ -102,65 +107,65 @@ snap run ddgr "!gh python" --np      # GitHub search
 snap run ddgr "!a books" --np        # Amazon search
 ```
 
-## Make it Easier with an Alias
+## 通过别名简化使用
 
-Add to `~/.bashrc` or `~/.zshrc`:
+将以下命令添加到 `~/.bashrc` 或 `~/.zshrc` 文件中：
 ```bash
 alias ddg='snap run ddgr'
 ```
 
-Then use:
+然后使用：
 ```bash
 ddg "search query" --np
 ```
 
-## Privacy Features
+## 隐私特性
 
-- No user tracking or profiling
-- Do Not Track enabled by default
-- Works over Tor network (with proxy)
-- HTTPS proxy support
-- No stored search history
+- 不会跟踪用户行为或生成用户画像
+- 默认启用“不跟踪”功能
+- 支持通过 Tor 网络进行搜索（需使用代理）
+- 支持 HTTPS 代理
+- 不会保存搜索历史记录
 
-## Examples
+## 示例
 
-### Search for tech news:
+### 搜索科技新闻：
 ```bash
 snap run ddgr "latest AI news 2025" --num 5 --np
 ```
 
-### Find Ubuntu tutorials:
+### 查找 Ubuntu 教程：
 ```bash
 snap run ddgr "Ubuntu tutorial" --site askubuntu.com --np
 ```
 
-### Search recent Python documentation:
+### 搜索最新的 Python 文档：
 ```bash
 snap run ddgr "Python 3.12 features" --time m --np
 ```
 
-### Use bang to search Wikipedia:
+### 使用特殊指令搜索 Wikipedia：
 ```bash
 snap run ddgr "!w OpenClaw" --np
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Command not found:**
-- Ensure ddgr is installed via snap: `sudo snap install ddgr`
-- Use full command: `snap run ddgr` instead of just `ddgr`
+**命令未找到：**
+- 确保已通过 Snap 安装了 ddgr：`sudo snap install ddgr`
+- 使用完整命令：`snap run ddgr` 而不是仅输入 `ddgr`
 
-**No results:**
-- Check internet connection
-- Try without `--np` to see if interactive mode works
-- Verify DuckDuckGo is accessible in your region
+**没有搜索结果：**
+- 检查网络连接
+- 尝试不使用 `--np` 选项以查看是否可以进入交互式模式
+- 确认在您的地区可以访问 DuckDuckGo
 
-**Slow response:**
-- DuckDuckGo HTML interface can be slower than main site
-- Use `--time` to limit results by time for faster queries
+**响应缓慢：**
+- DuckDuckGo 的 HTML 界面可能比主网站响应更慢
+- 使用 `--time` 选项按时间范围限制搜索结果以加快查询速度
 
-## More Information
+## 更多信息
 
-- GitHub: https://github.com/jarun/ddgr
-- DuckDuckGo: https://duckduckgo.com
-- Bangs: https://duckduckgo.com/bang
+- GitHub：https://github.com/jarun/ddgr
+- DuckDuckGo：https://duckduckgo.com
+- 特殊搜索指令（Bangs）：https://duckduckgo.com/bang

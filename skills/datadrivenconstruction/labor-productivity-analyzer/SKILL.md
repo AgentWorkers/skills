@@ -1,12 +1,12 @@
 ---
 slug: "labor-productivity-analyzer"
 display_name: "Labor Productivity Analyzer"
-description: "Analyze labor productivity by trade, activity, and location. Track efficiency and identify improvement opportunities."
+description: "按行业、活动和地点分析劳动生产率。监控工作效率并识别改进机会。"
 ---
 
-# Labor Productivity Analyzer
+# 劳动生产率分析器
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -175,7 +175,7 @@ class LaborProductivityAnalyzer:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 analyzer = LaborProductivityAnalyzer("Office Tower")
@@ -200,5 +200,5 @@ print(f"Productivity factor: {entry.productivity_factor:.2f}")
 print(f"Status: {entry.status.value}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.2 - Resource Management
+## 资源参考
+- **DDC手册**：第3.2章 - 资源管理

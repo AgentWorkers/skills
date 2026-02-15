@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# LinkedIn Content
+# LinkedIn 内容创作
 
-Write high-engagement LinkedIn posts via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具来撰写能够吸引用户互动的 LinkedIn 帖子。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -30,7 +30,7 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Post Anatomy
+## 帖子结构
 
 ```
 ┌─────────────────────────────────────┐
@@ -49,34 +49,34 @@ infsh app run x/post-create --input '{
 └─────────────────────────────────────┘
 ```
 
-## Character Limits
+## 字符限制
 
-| Element | Limit |
+| 元素 | 限制 |
 |---------|-------|
-| Post text | 3,000 characters |
-| Visible before "see more" | ~210 characters (~2 lines on mobile) |
-| Hashtags | 3-5 recommended |
-| Comment | 1,250 characters |
-| Article title | 100 characters |
-| Article body | 125,000 characters |
+| 帖子正文 | 3,000 个字符 |
+| 在“查看更多”之前的可见内容 | 约 210 个字符（手机上显示约 2 行） |
+| 标签 | 建议使用 3-5 个 |
+| 评论 | 1,250 个字符 |
+| 文章标题 | 100 个字符 |
+| 文章正文 | 125,000 个字符 |
 
-**The first 210 characters are everything.** If the hook fails, nobody clicks "see more."
+**前 210 个字符至关重要**。如果标题不够吸引人，没人会点击“查看更多”。
 
-## Hook Formulas
+## 吸引读者的公式
 
-### What Works
+### 成功的公式
 
-| Formula | Example |
+| 公式 | 例子 |
 |---------|---------|
-| Contrarian opinion | "Unpopular opinion: code reviews are a waste of time." |
-| Personal story opening | "I got fired on a Tuesday. Best thing that ever happened." |
-| Surprising stat | "92% of startups fail. But not for the reason you think." |
-| List promise | "I've hired 200+ engineers. Here are 5 red flags I look for." |
-| Bold statement | "Your resume doesn't matter. Here's what does." |
-| Before/after | "3 years ago I couldn't get a single interview. Yesterday I turned down a FAANG offer." |
-| Pattern interrupt | "Stop. Before you send that cold email, read this." |
+| 反传统观点 | “ unpopular opinion: 代码审查是浪费时间。” |
+| 个人故事开头 | “我在一个周二被解雇了。那是我经历过的最棒的事。” |
+| 令人惊讶的数据 | “92% 的初创公司会失败。但原因并非你想象的那样。” |
+| 清单式提示 | “我招聘过 200 多名工程师。以下是我会关注的 5 个危险信号。” |
+| 强烈的陈述 | “你的简历并不重要。真正重要的是……” |
+| 对比前后 | “3 年前我连一次面试机会都没有。昨天我拒绝了一家 FAANG 公司的offer。” |
+| 打断常规的表述 | “在发送那封冷漠的邮件之前，请先读这个。”
 
-### What Fails
+### 失败的公式
 
 ```
 ❌ "Excited to announce that we are pleased to share..." (corporate speak)
@@ -86,9 +86,9 @@ infsh app run x/post-create --input '{
 ❌ Starting with a hashtag or emoji
 ```
 
-## Formatting Rules
+## 格式规则
 
-### Line Breaks Are Your Best Friend
+### 换行是你的最佳帮手
 
 ```
 ❌ Dense paragraph:
@@ -109,78 +109,78 @@ And the quality was BETTER.
 Sometimes less really is more."
 ```
 
-### Formatting Guidelines
+## 格式指南
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| One sentence per line | Easier to scan on mobile |
-| Blank line between paragraphs | Visual breathing room |
-| Short paragraphs (1-2 sentences) | Mobile readability |
-| Use line breaks for dramatic effect | Creates pacing and suspense |
-| Bold key phrases sparingly | Draws eye to important points |
-| Numbered lists for tips | Scannable, shareable |
-| Avoid walls of text | Nobody reads them |
+| 每行一个句子 | 在手机上更容易阅读 |
+| 段落之间空行 | 便于视觉上的停顿和呼吸 |
+| 短段落（1-2 句） | 适合手机阅读 |
+| 使用换行来创造戏剧性效果 | 有助于控制阅读节奏和营造悬念 |
+| 适度使用粗体 | 突出关键信息 |
+| 用编号列表呈现提示 | 更易于阅读和分享 |
+| 避免长篇大论 | 长篇文本没人会读完 |
 
-## Post Types (Ranked by Engagement)
+## 帖子类型（按互动率排序）
 
-| Post Type | Engagement | Best For |
+| 帖子类型 | 互动率 | 适合的场景 |
 |-----------|-----------|----------|
-| **Personal story + lesson** | Very High | Building connection, authenticity |
-| **Contrarian take** | High | Starting conversations, visibility |
-| **Carousel (document post)** | High | Educational content, tips |
-| **List/tips (numbered)** | High | Actionable value, saves |
-| **Poll** | Medium-High | Easy engagement, data gathering |
-| **Photo + story** | Medium | Humanizing, events |
-| **Video (native)** | Medium | Demonstrations, personality |
-| **Link post** | Low | Driving traffic (algorithm penalizes) |
-| **Reshare** | Very Low | Don't bother — write original |
+| **个人故事 + 经验教训** | 非常高 | 建立联系，展现真实性 |
+| **反传统观点** | 高 | 引发讨论，提高可见度 |
+| **轮播图（文档类型）** | 高 | 教育性内容，实用提示 |
+| **列表/提示（带编号）** | 高 | 实用性强，便于分享 |
+| **投票** | 中等偏高 | 便于互动，收集数据 |
+| **图片 + 故事** | 中等 | 使内容更人性化，适合分享事件 |
+| **视频（原生格式）** | 中等 | 适合展示过程，展现个人风格 |
+| **链接帖子** | 低 | 算法会降低其传播范围 |
+| **转发帖子** | 非常低 | 最好原创内容 |
 
-### Link Posts Strategy
+## 链接帖子的策略
 
-LinkedIn penalizes posts with links (reduces reach). Workarounds:
+LinkedIn 会对包含链接的帖子进行惩罚（降低其传播范围）。解决方法：
 
-1. **Comment method**: Post without link, add link as first comment, edit post to say "Link in comments"
-2. **No-link method**: Summarize the content in the post itself, mention "DM for link"
-3. **If you must link**: Put it at the very end, after strong standalone content
+1. **评论方式**：先发布无链接的帖子，然后在评论中添加链接；或编辑帖子说明“链接在评论中”。
+2. **不加链接的方式**：在帖子正文中总结内容，并注明“私信获取链接”。
+3. **如果必须添加链接**：将链接放在文章的最后，放在独立且内容丰富的部分之后。
 
-## Content Pillars
+## 内容支柱
 
-Every LinkedIn creator should have 3-5 pillars they rotate through:
+每个 LinkedIn 内容创作者都应该有 3-5 个固定的内容支柱，并轮流使用它们：
 
-| Pillar | What It Covers | Example |
+| 支柱 | 内容范围 | 例子 |
 |--------|---------------|---------|
-| **Expertise** | Industry knowledge, how-tos | "5 database patterns every engineer should know" |
-| **Stories** | Personal experiences, failures, wins | "The hardest feedback I ever received" |
-| **Opinions** | Takes on industry trends, contrarian views | "AI won't replace engineers. Bad managers will." |
-| **Behind the scenes** | Building in public, process | "Here's our actual sprint retrospective format" |
-| **Curated insights** | Trends, data, research summaries | "I analyzed 500 job postings. Here's what changed." |
+| **专业知识** | 行业知识，操作指南 | “每个工程师都应该了解的 5 种数据库模式” |
+| **个人故事** | 个人经历、失败与成功 | “我收到过的最严厉的反馈” |
+| **观点** | 对行业趋势的见解或反传统观点 | “AI 不会取代工程师，真正的问题在于糟糕的管理者” |
+| **幕后故事** | 公开分享工作流程 | “这是我们的实际冲刺回顾方式” |
+| **精选见解** | 行业趋势、数据总结 | “我分析了 500 条招聘信息，发现了这些变化”
 
-## Algorithm Signals
+## 算法考量因素
 
-| Signal | Impact | How |
+| 因素 | 影响 | 对策 |
 |--------|--------|-----|
-| **Dwell time** | Very High | Longer posts that people read fully |
-| **Comments** | Very High | Ask questions, create discussion |
-| **Saves** | High | Actionable, reference-worthy content |
-| **"See more" clicks** | High | Strong hook that makes people expand |
-| **Shares** | Medium | Relatable, quotable content |
-| **Reactions** | Medium | Easy to get but weighted less |
-| **External links** | Negative | Reduces reach — put links in comments |
-| **Editing after posting** | Negative | Don't edit within first hour |
-| **Posting frequency** | 3-5x/week | Daily is fine, more than 1/day hurts |
+| **停留时间** | 非常高 | 长篇内容更易被完整阅读 |
+| **评论** | 非常高 | 提出问题，引发讨论 |
+| **可保存性** | 高 | 实用性强，值得分享的内容 |
+| **“查看更多”点击量** | 高 | 吸引人的标题能促使用户继续阅读 |
+| **分享次数** | 中等 | 与读者产生共鸣的内容更容易分享 |
+| **互动反应** | 中等 | 虽容易获得但权重较低 |
+| **外部链接** | 负面影响 | 会降低传播范围——建议将链接放在评论中 |
+| **发布后的编辑** | 负面影响 | 发布后一小时内不要编辑 |
+| **发布频率** | 每周 3-5 次 | 每天发布一次即可，超过一天则可能适得其反 |
 
-## Posting Schedule
+## 发布时间表
 
-| Day | Best Time (your audience's timezone) |
+| 时间 | 最佳发布时间（根据目标受众时区） |
 |-----|------|
-| Tuesday-Thursday | 7-8 AM, 12 PM, 5-6 PM |
-| Monday | 8 AM (people catching up) |
-| Friday | 7-8 AM (before checkout) |
-| Weekend | Skip or light content |
+| 星期二至周四 | 上午 7-8 点、中午 12 点、下午 5-6 点 |
+| 星期一 | 上午 8 点（人们开始忙碌的时候） |
+| 星期五 | 上午 7-8 点（人们下班前） |
+| 周末 | 可以不发或发布简短内容 |
 
-**Engage in comments for 30-60 minutes after posting** — this is more important than the post itself.
+**发布后请与读者互动 30-60 分钟**——这比帖子本身更重要。
 
-## Visual Content
+## 视觉内容
 
 ```bash
 # Generate a visual for a LinkedIn post
@@ -196,35 +196,35 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## CTA Formulas
+## 提升互动的呼吁语（CTA）
 
-End every post with engagement driver:
+每个帖子结尾都应使用能激发互动的呼吁语：
 
-| CTA Type | Example |
+| 呼吁语类型 | 例子 |
 |----------|---------|
-| Question | "What's the worst career advice you've received?" |
-| Agreement check | "Agree or disagree?" |
-| Share request | "Repost if this resonates ♻️" |
-| Save prompt | "Save this for your next [situation] 🔖" |
-| Recommendation ask | "What would you add to this list?" |
-| Experience ask | "Has this happened to you?" |
+| 提问 | “你收到过最糟糕的职业建议是什么？” |
+| 表达同意或不同意 | “你同意吗？” |
+| 分享请求 | “如果觉得有用，请转发 ♻️” |
+| 保存提示 | “保存这个内容，以备将来使用 🔖” |
+| 建议请求 | “你会在这个列表中添加什么？” |
+| 经验分享请求 | “这种情况你遇到过吗？” |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Weak hook | Nobody clicks "see more" | Use hook formulas above |
-| Wall of text | Unreadable on mobile | One sentence per line, blank lines between |
-| Links in main post | Algorithm reduces reach | Put links in first comment |
-| Too many hashtags | Looks spammy | 3-5 relevant hashtags max |
-| Corporate jargon | "Leveraging synergies" = instant scroll past | Write like you talk |
-| Only self-promotion | Audience stops engaging | 80% value, 20% promotion |
-| No CTA | No engagement direction | Always end with a question or ask |
-| Resharing without adding | Near-zero reach | Write original posts, quote instead |
-| Posting and disappearing | Kills comment momentum | Engage for 30-60 min after posting |
-| Being generic | "Hard work pays off" = invisible | Specific stories and data |
+| 标题不够吸引人 | 没人会点击“查看更多” | 使用上述的吸引公式 |
+| 长篇大论 | 在手机上难以阅读 | 每行一个句子，段落之间加空行 |
+| 正文中包含链接 | 算法会降低传播范围 | 将链接放在评论中 |
+| 使用过多标签 | 会让帖子显得像垃圾信息 | 最多使用 3-5 个相关标签 |
+| 使用行业术语 | 读者会直接跳过 | 用通俗的语言写作 |
+| 仅自我推广 | 读者会失去兴趣 | 内容中 80% 应该是价值，20% 是自我推广 |
+| 没有呼吁语 | 没有互动方向 | 每个帖子结尾都要提出问题或提出请求 |
+| 仅转发而不添加新内容 | 传播效果极低 | 尽量原创内容 |
+| 发布后立即消失 | 会削弱互动效果 | 发布后请与读者互动 30-60 分钟 |
+| 内容过于泛泛 | 通用性强的内容难以引起共鸣 | 使用具体的故事和数据 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@social-media-carousel
@@ -232,4 +232,4 @@ npx skills add inferencesh/skills@content-repurposing
 npx skills add inferencesh/skills@twitter-thread-creation
 ```
 
-Browse all apps: `infsh app list`
+浏览所有可用工具：`infsh app list`

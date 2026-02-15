@@ -1,14 +1,14 @@
 ---
 name: data-analyzer
-description: Analyze data efficiently
+description: 高效分析数据
 license: MIT
 allowed-tools: [Python]
 ---
 
-# Data Analyzer
+# 数据分析器
 
-Efficiently analyzes data structures.
+能够高效地分析数据结构。
 
-## Usage
+## 使用方法
 
-Provide data to analyze.
+提供需要分析的数据。

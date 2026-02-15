@@ -1,638 +1,288 @@
 ---
 name: fork-manager
-description: Manage forks with open PRs - sync upstream, rebase branches, track PR status, and maintain production branches with pending contributions. Use when syncing forks, rebasing PR branches, building production branches that combine all open PRs, reviewing closed/rejected PRs, or managing local patches kept outside upstream. Requires Git and GitHub CLI (gh).
+description: **使用未合并的 PR 管理分支**  
+- 同步上游代码；  
+- 重新基线（rebase）分支；  
+- 跟踪 PR 的状态；  
+- 维护包含待合并贡献的生产分支。  
+
+**适用场景**：  
+- 同步分支时；  
+- 重新基线包含未合并 PR 的分支时；  
+- 构建整合所有未合并 PR 的生产分支时；  
+- 审查已关闭/被拒绝的 PR 时；  
+- 管理存储在本地但未同步到上游的代码补丁时。  
+
+**所需工具**：  
+Git 和 GitHub CLI（gh）。
 metadata: {"openclaw": {"requires": {"bins": ["git", "gh"]}}}
 ---
 
-# Fork Manager Skill
+# 分支管理技能
 
-Manage forks where you contribute PRs but also use improvements before they're merged upstream. Includes support for local patches — fixes kept in the production branch even when the upstream PR was closed/rejected.
+该技能用于管理你在其中提交 Pull Request (PR) 的分支，并在上游合并之前使用这些改进。它还支持本地补丁——即使上游的 PR 被关闭或拒绝，这些补丁也会保留在生产分支中。
 
-## When to use
+## 使用场景
 
-- Sync a fork with upstream
-- Check status of open PRs
-- Rebase PR branches onto latest upstream
-- Build a production branch combining all open PRs + local patches
-- Review recently closed/rejected PRs and decide whether to keep locally
-- Manage local patches (fixes not submitted or rejected upstream)
+- 将分支与上游同步
+- 检查未关闭的 PR 状态
+- 将 PR 分支重新基线到最新的上游代码
+- 创建一个生产分支，合并所有未关闭的 PR 和本地补丁
+- 审查最近关闭/拒绝的 PR，并决定是否保留它们
+- 管理本地补丁（未提交或被上游拒绝的修复）
 
-## Configuration
+## 配置
 
-Configs are organized per repository in `repos/<repo-name>/config.json` relative to the skill directory:
+配置文件按仓库组织，位于 `repos/<repo-name>/config.json` 中，相对于技能目录：
 
-```
-fork-manager/
-├── SKILL.md
-└── repos/
-    ├── project-a/
-    │   └── config.json
-    └── project-b/
-        └── config.json
-```
-
-Formato do `config.json`:
+### `config.json` 的格式：
 
 ```json
 {
-  "repo": "owner/repo",
-  "fork": "your-user/repo",
-  "localPath": "/path/to/local/clone",
-  "mainBranch": "main",
-  "productionBranch": "main-with-all-prs",
-  "upstreamRemote": "upstream",
-  "forkRemote": "origin",
-  "openPRs": [123, 456],
-  "prBranches": {
-    "123": "fix/issue-123",
-    "456": "feat/feature-456"
-  },
-  "localPatches": {
-    "local/my-custom-fix": {
-      "description": "Breve descrição do que o patch faz",
-      "originalPR": 789,
-      "closedReason": "rejected|superseded|duplicate|wontfix",
-      "keepReason": "Motivo pelo qual mantemos localmente",
-      "addedAt": "2026-02-07T00:00:00Z",
-      "reviewDate": "2026-03-07T00:00:00Z"
+  "localPatches": [
+    {
+      "description": "该补丁的作用",
+      "originalPR": "原始 PR 的编号" // 可选，如果直接作为补丁创建
+      "closedReason": "关闭原因": "rejected" (维护者拒绝), "superseded" (其他 PR 部分解决了问题但未完全解决), "duplicate" (我们自己关闭了), "wontfix" (上游不会解决),
+      "keepReason": "我们需要保留它的原因",
+      "addedAt": "转换为本地补丁的日期",
+      "reviewDate": "需要重新评估的日期" // 上游可能已经解决了问题
     }
-  },
-  "lastSync": "2026-01-28T12:00:00Z",
-  "notes": {
-    "mergedUpstream": {},
-    "closedWithoutMerge": {},
-    "droppedPatches": {}
-  }
+  ]
 }
 ```
 
-### Campos de `localPatches`
+## 执行历史
 
-Cada entry em `localPatches` é uma branch local mantida na production branch mas **sem PR aberto** no upstream.
+每个被管理的仓库都有一个 `history.md` 文件，以只追加的方式记录该技能的所有执行记录：
 
-| Campo | Descrição |
-|-------|-----------|
-| `description` | O que o patch faz |
-| `originalPR` | Número do PR original que foi fechado (opcional se criado direto como patch) |
-| `closedReason` | Por que o PR foi fechado: `rejected` (mantenedor recusou), `superseded` (outro PR resolve parcialmente mas não totalmente), `duplicate` (fechamos nós mesmos), `wontfix` (upstream não vai resolver) |
-| `keepReason` | Por que precisamos manter localmente |
-| `addedAt` | Data em que foi convertido para local patch |
-| `reviewDate` | Data para reavaliar se ainda é necessário (upstream pode ter resolvido) |
+### 规则：在开始之前阅读最新输出
 
-## Histórico de Execuções
+**在任何操作之前**，请阅读目标仓库的 `history.md` 文件，并提取**最后一条记录**（最后的 `---` 标签部分）。这可以让你了解：
+- 上次执行了哪些操作
+- 哪些 PR 存在问题
+- 作出了哪些决定
+- 是否有未完成的操作
 
-Cada repositório gerenciado tem um arquivo `history.md` que registra todas as execuções da skill como um livro de registro append-only:
+如果文件不存在，请创建它并继续执行后续步骤。
 
-```
-fork-manager/
-└── repos/
-    ├── project-a/
-    │   ├── config.json
-    │   └── history.md
-    └── project-b/
-        ├── config.json
-        └── history.md
-```
+### 规则：在操作完成后记录输出
 
-### Regra: Ler último output antes de começar
+**在每次操作完成后**，将完整的结果追加到 `history.md` 文件中。格式如下：
 
-**Antes de qualquer operação**, ler o `history.md` do repositório alvo e extrair a **última entrada** (último bloco `---`). Isso dá contexto sobre:
-- O que foi feito na última execução
-- Quais PRs tinham problemas
-- Quais decisões foram tomadas
-- Se ficou alguma ação pendente
+**注意：** `Full Report` 标签部分包含完整的报告，不含任何缩写。这样可以确保下一个阅读历史记录的代理能够获取所有信息，而不仅仅是摘要。
 
-```bash
-# Ler última entrada do history (tudo após o último "---")
-tail -n +$(grep -n '^---$' "$SKILL_DIR/repos/<repo-name>/history.md" | tail -1 | cut -d: -f1) "$SKILL_DIR/repos/<repo-name>/history.md"
-```
+## 分析流程
 
-Se o arquivo não existir, criar com o header e prosseguir normalmente.
+### 1. 加载配置和执行历史记录
 
-### Regra: Registrar output ao finalizar
+加载技能目录（`SKILL.md` 所在的位置）中的配置和执行历史记录：
 
-**Ao final de toda execução**, fazer append ao `history.md` com o resultado completo. Formato:
+### 2. 导航到仓库
 
-```markdown
----
-## YYYY-MM-DD HH:MM UTC | <comando>
-**Operator:** <claude-code | openclaw-agent | manual>
+### 3. 从远程仓库获取代码
 
-### Summary
-- Main: <status do sync>
-- PRs: <X open, Y merged, Z closed>
-- Local Patches: <N total, M com review vencida>
-- Production: <rebuilt OK | not rebuilt | build failed>
+### 4. 分析主分支的状态
 
-### Actions Taken
-- <lista de ações executadas, ex: "Synced main (was 12 commits behind)">
-- <"Rebased 21/21 branches clean">
-- <"PR #999 closed → kept as local patch local/my-fix">
+### 5. 通过 GitHub CLI 查看未关闭的 PR
 
-### Pending
-- <ações que ficaram pendentes, ex: "PR #456 has conflicts — needs manual resolution">
-- <"3 local patches with expired reviewDate — run review-patches">
+### 6. 对每个 PR 进行分类
 
-### Full Report
-<o relatório completo que seria mostrado ao usuário, colado aqui na íntegra>
-```
+对于配置文件中的每个 PR，检查以下状态：
 
-**Importante:** O bloco `Full Report` contém o relatório completo sem abreviação. Isso garante que o próximo agente que ler o history tenha toda a informação, não apenas o resumo.
-
-## Fluxo de Análise
-
-### 1. Carregar config e histórico
-
-Resolve the skill directory (where SKILL.md lives):
-
-```bash
-# SKILL_DIR is the directory containing this SKILL.md
-# Resolve it relative to the agent's workspace or skill install path
-SKILL_DIR="<path-to-fork-manager-skill>"
-
-# Load config for the target repo
-cat "$SKILL_DIR/repos/<repo-name>/config.json"
-
-# Ler último output do history para contexto
-HISTORY="$SKILL_DIR/repos/<repo-name>/history.md"
-if [ -f "$HISTORY" ]; then
-  # Extrair última entrada (após último ---)
-  LAST_SEP=$(grep -n '^---$' "$HISTORY" | tail -1 | cut -d: -f1)
-  if [ -n "$LAST_SEP" ]; then
-    tail -n +"$LAST_SEP" "$HISTORY"
-  fi
-fi
-```
-
-### 2. Navegar para o repositório
-
-```bash
-cd <localPath>
-```
-
-### 3. Fetch de ambos remotes
-
-```bash
-git fetch <upstreamRemote>
-git fetch <originRemote>
-```
-
-### 4. Analisar estado do main
-
-```bash
-# Commits que upstream tem e origin/main não tem
-git log --oneline <originRemote>/<mainBranch>..<upstreamRemote>/<mainBranch>
-
-# Contar commits atrás
-git rev-list --count <originRemote>/<mainBranch>..<upstreamRemote>/<mainBranch>
-```
-
-### 5. Verificar PRs abertos via GitHub CLI
-
-```bash
-# Listar PRs abertos do usuário
-gh pr list --state open --author @me --json number,title,headRefName,state
-
-# Verificar status de um PR específico
-gh pr view <number> --json state,mergedAt,closedAt,title
-```
-
-### 6. Classificar cada PR
-
-Para cada PR no config, verificar:
-
-| Estado       | Condição                          | Ação                                    |
+| 状态       | 条件                          | 操作                                    |
 | ------------ | --------------------------------- | --------------------------------------- |
-| **open**     | PR aberto no GitHub               | Manter, verificar se precisa rebase     |
-| **merged**   | PR foi mergeado                   | Remover do config, deletar branch local |
-| **closed**   | PR fechado sem merge              | **Acionar `review-closed`** (ver abaixo) |
-| **conflict** | Branch tem conflitos com upstream | Precisa rebase manual                   |
-| **outdated** | Branch está atrás do upstream     | Precisa rebase                          |
+| **open**     | 在 GitHub 上未关闭的 PR               | 保留，并检查是否需要重新基线     |
+| **merged**   | PR 已经合并                   | 从配置文件中删除该 PR，删除本地分支 |
+| **closed**   | PR 被关闭但未合并              | **执行 `review-closed` 操作**（见下文） |
+| **conflict** | 分支与上游有冲突             | 需要手动重新基线                   |
+| **outdated** | 分支落后于上游                 | 需要重新基线                          |
 
-Comando para verificar se branch precisa rebase:
+### 7. 审查最近关闭的 PR (`review-closed`)
 
-```bash
-git log --oneline <upstreamRemote>/<mainBranch>..<originRemote>/<branch> | wc -l  # commits à frente
-git log --oneline <originRemote>/<branch>..<upstreamRemote>/<mainBranch> | wc -l  # commits atrás
-```
+当检测到 PR 被关闭但未合并时，**不要自动删除**。而是开始一个交互式的审查流程：
 
-### 7. Revisar PRs recém-fechados (`review-closed`)
+#### 7.1. 收集关闭原因
 
-Quando um PR é detectado como fechado sem merge, **NÃO remover automaticamente**. Iniciar um fluxo de revisão interativo:
+#### 7.2. 分类关闭原因
 
-#### 7.1. Coletar contexto do fechamento
-
-```bash
-# Buscar comentários e motivo do fechamento
-gh pr view <number> --repo <repo> --json title,closedAt,state,comments,labels
-
-# Verificar se upstream resolveu o problema de outra forma
-# (procurar PRs mergeados recentes que toquem os mesmos arquivos)
-gh pr list --state merged --repo <repo> --json number,title,mergedAt --limit 30
-```
-
-#### 7.2. Classificar o motivo do fechamento
-
-| Categoria | Descrição | Ação padrão |
+| 分类 | 描述 | 标准操作 |
 |-----------|-----------|-------------|
-| **resolved_upstream** | Upstream corrigiu o problema por outro caminho | `drop` — não precisamos mais |
-| **superseded_by_ours** | Fechamos nós mesmos em favor de outro PR nosso | `drop` — o substituto já está em `openPRs` |
-| **rejected_approach** | Mantenedor não gostou da abordagem, mas o bug/feature existe | `review` — considerar resubmeter com abordagem diferente |
-| **rejected_need** | Mantenedor não concorda que é um problema | `review` — avaliar se precisamos localmente |
-| **wontfix** | Upstream marcou como wontfix | `review` — provável candidato a local patch |
-
-#### 7.3. Apresentar ao usuário para decisão
+| **resolved_upstream** | 上游通过其他方式解决了问题 | `drop` — 不需要再处理 |
+| **superseded_by_ours** | 我们自己关闭了它，因为有其他 PR 解决了相同的问题 | `drop` — 替代 PR 已经在 `openPRs` 中 |
+| **rejected_approach** | 维护者不喜欢我们的解决方法，但问题仍然存在 | `review` — 考虑用不同的方法重新提交 |
+| **rejected_need** | 维护者不认为这是一个问题 | `review` — 评估是否需要在本地处理 |
+| **wontfix** | 上游标记为不会修复 | `review` — 可能需要作为本地补丁处理 |
 
-Para cada PR fechado, apresentar:
-
-```markdown
-### PR #<number> — <title>
-- **Fechado em:** <data>
-- **Motivo:** <categoria>
-- **Comentários do mantenedor:** <resumo>
-- **O fix ainda é relevante pra nós?** Análise: <o que o patch faz e se upstream resolve>
+#### 7.3. 向用户展示情况以便决策
 
-**Opções:**
-1. 🗑️ **Drop** — remover completamente (branch local + remote)
-2. 📌 **Keep as local patch** — mover para `localPatches`, manter na production branch
-3. 🔄 **Resubmit** — retrabalhar e abrir novo PR com abordagem diferente
-4. ⏸️ **Defer** — manter no limbo por agora, revisitar depois
-```
+对于每个关闭的 PR，向用户展示相关信息：
 
-#### 7.4. Executar a decisão
+#### 7.4. 执行决策
 
-**Drop:**
-```bash
-git branch -D <branch> 2>/dev/null
-git push <originRemote> --delete <branch> 2>/dev/null
-# Mover para notes.droppedPatches no config
-```
+- **删除**：
+- **保留作为本地补丁**：
+- **重新提交**：
+- **推迟**：
 
-**Keep as local patch:**
-```bash
-# Branch continua existindo, mas sai de openPRs/prBranches
-# Entra em localPatches com metadata completa
-# Renomear branch de fix/xxx para local/xxx (opcional, para clareza)
-```
-
-**Resubmit:**
-```bash
-# Manter branch, criar novo PR com descrição atualizada
-gh pr create --title "<novo titulo>" --body "<nova descrição com contexto>"
-# Atualizar config com novo número de PR
-```
+### 8. 审查未关闭的 PR (`audit-open`)
 
-**Defer:**
-```bash
-# Mover para uma seção notes.deferred no config
-# Será apresentado novamente no próximo full-sync
-```
+主动审查**仍然未关闭**的 PR，以检测重复或过时的情况。此步骤应在 `update-config` 之后执行：
 
-### 8. Auditar PRs abertos (`audit-open`)
+#### 8.1. 上游已解决问题
 
-Análise proativa dos PRs **ainda abertos** para detectar redundâncias e obsolescência. Deve rodar no `full-sync` depois do `update-config`.
+检查上游是否已经解决了我们的 PR 所解决的问题，但尚未合并我们的 PR：
 
-#### 8.1. Resolved upstream
-
-Verificar se o upstream já resolveu o problema que nosso PR corrige, sem mergear nosso PR:
-
-```bash
-# Para cada PR aberto, buscar os arquivos que ele toca
-gh pr view <number> --repo <repo> --json files --jq '[.files[].path]'
+- 如果 PR 的差异为空（上游已经合并了更改），标记为 `resolved_upstream`。
+- 如果差异部分存在（上游只解决了部分问题），标记为 `partially_resolved`，以便进一步审查。
 
-# Verificar se upstream alterou esses mesmos arquivos recentemente
-# (commits no upstream/main que não estão no nosso PR branch)
-git log --oneline upstream/main --since="<lastSync>" -- <files>
-
-# Se houve mudanças upstream nos mesmos arquivos, verificar se o diff
-# do nosso PR ainda faz diferença (pode ter sido absorvido)
-git diff upstream/main..origin/<branch> -- <files>
-```
-
-**Se o diff do PR estiver vazio** (upstream absorveu as mudanças): marcar como `resolved_upstream`.
-**Se o diff for parcial** (upstream resolveu parte): marcar como `partially_resolved` para revisão.
+#### 8.2. 外部重复 PR
 
-#### 8.2. Duplicate externo
-
-Verificar se outra pessoa abriu um PR que resolve o mesmo problema:
-
-```bash
-# Buscar PRs abertos no upstream que tocam os mesmos arquivos
-gh pr list --state open --repo <repo> --json number,title,headRefName,files --limit 50
+检查是否有人提交了另一个解决相同问题的 PR：
 
-# Buscar PRs mergeados recentes que tocam os mesmos arquivos
-gh pr list --state merged --repo <repo> --json number,title,mergedAt,files --limit 30 \
-  | jq '[.[] | select(.mergedAt >= "<lastSync>")]'
-```
-
-Para cada PR encontrado que toca os mesmos arquivos, comparar:
-- Mesmo issue referenciado?
-- Mesma área de código?
-- Mesmo tipo de fix?
+- 对于每个涉及的文件，比较：
+  - 是否引用了相同的问题？
+  - 是否修改了相同的代码区域？
+  - 是否使用了相同的修复方法？
 
-Se houver match forte: marcar como `duplicate_external` ou `superseded_external`.
+如果匹配度很高，标记为 `duplicate_external` 或 `superseded_external`。
 
-#### 8.3. Self-duplicate
+#### 8.3. 自动重复 PR
 
-Detectar sobreposição entre nossos próprios PRs abertos:
+检测我们自己的 PR 之间的重复情况：
 
-```bash
-# Coletar files de todos os nossos PRs abertos
-for pr in <openPRs>; do
-  gh pr view $pr --repo <repo> --json number,files --jq '{number, files: [.files[].path]}'
-done
-
-# Cruzar: se dois PRs tocam os mesmos arquivos, são candidatos a duplicata
-```
-
-Para cada par com overlap de arquivos:
-- Verificar se o diff é similar ou complementar
-- Se similar: recomendar fechar o mais antigo/menos limpo
-- Se complementar: ok, apenas nota informativa
-
-#### 8.4. Apresentar resultados
+- 对于每一对有文件重叠的 PR：
+  - 检查差异是否相似或互补
+  - 如果相似：建议关闭较旧或不太干净的 PR
+  - 如果互补：仅作记录提示
 
-```markdown
-### Audit de PRs Abertos
-
-#### Possivelmente resolvidos upstream
-| # | Titulo | Arquivos em comum | Status |
-|---|--------|-------------------|--------|
-| 123 | fix(foo): bar | foo.ts (changed upstream 3 days ago) | ⚠️ Verificar |
-
-#### Possíveis duplicatas externas
-| Nosso PR | PR externo | Overlap | Recomendação |
-|----------|-----------|---------|--------------|
-| #123 | #456 (@user) | foo.ts, bar.ts | ⚠️ Mesmo issue, verificar |
-
-#### Self-duplicates (nossos PRs que se sobrepõem)
-| PR A | PR B | Arquivos em comum | Recomendação |
-|------|------|-------------------|--------------|
-| #6471 | #8386 | skills/refresh.ts | 🗑️ Fechar #6471 (duplicata) |
-
-**Opções por PR flagged:**
-1. 🗑️ **Close** — fechar o PR no upstream e drop
-2. ✅ **Keep** — falso positivo, manter aberto
-3. 🔄 **Merge into** — combinar com outro PR
-4. ⏸️ **Defer** — revisitar depois
-```
+#### 8.4. 显示结果
 
-## Comandos do Agente
+### 代理的命令
 
-### `status` - Verificar estado atual
-
-1. Carregar config
-2. Fetch remotes
-3. Contar commits atrás do upstream
-4. Listar PRs e seus estados
-5. Reportar ao usuário
+### `status` - 查看当前状态
 
-### `sync` - Sincronizar main com upstream
+- 加载配置
+- 从远程仓库获取代码
+- 计算与上游相比的提交次数
+- 列出 PR 及其状态
+- 向用户报告结果
 
-```bash
-cd <localPath>
-git fetch <upstreamRemote>
-git checkout <mainBranch>
-git merge <upstreamRemote>/<mainBranch>
-git push <originRemote> <mainBranch>
-```
+### `sync` - 将主分支与上游同步
 
-### `rebase <branch>` - Rebase de uma branch específica
+### `rebase <branch>` - 重新基线特定分支
 
-```bash
-git checkout <branch>
-git fetch <upstreamRemote>
-git rebase <upstreamRemote>/<mainBranch>
-# Se conflito: resolver e git rebase --continue
-git push <originRemote> <branch> --force-with-lease
-```
+### `rebase-all` - 重新基线所有 PR 分支
 
-### `rebase-all` - Rebase de todas as branches de PR
+对于 `prBranches` 中的每个分支：
+- 检出该分支
+- 在上游/主分支上重新基线
+- 使用 `--force-with-lease` 推送更改
+- 报告操作是否成功
 
-Para cada branch em `prBranches`:
+### `update-config` - 使用当前的 PR 更新配置文件
 
-1. Checkout da branch
-2. Rebase no upstream/main
-3. Push com --force-with-lease
-4. Reportar sucesso/falha
-
-### `update-config` - Atualizar config com PRs atuais
-
-```bash
-# Buscar PRs abertos
-gh pr list --state open --author @me --repo <repo> --json number,headRefName
+### `build-production` - 创建包含所有 PR 和本地补丁的生产分支
 
-# Atualizar o arquivo $SKILL_DIR/repos/<repo-name>/config.json com os PRs atuais
-# Usar jq ou editar manualmente o JSON
-```
+**在重新构建生产分支后，如有需要，提醒用户运行他们的项目构建命令。**
 
-### `build-production` - Criar branch de produção com todos os PRs + local patches
+**合并顺序：** 先合并未关闭的 PR（按编号升序），然后再合并本地补丁。这样可以确保本地补丁应用在尽可能完整的基础上。
 
-```bash
-cd <localPath>
-git fetch <upstreamRemote>
-git fetch <originRemote>
+### `audit-open` - 审查未关闭的 PR 以检测重复或过时的情况
 
-# ⚠️ SEMPRE preservar arquivos não-commitados antes de trocar de branch
-if [ -n "$(git status --porcelain)" ]; then
-  git stash push --include-untracked -m "fork-manager: pre-build-production $(date -u +%Y%m%dT%H%M%S)"
-  STASHED=1
-fi
+主动审查所有未关闭的 PR（见第 8 节）：
 
-# Deletar branch antiga se existir
-git branch -D <productionBranch> 2>/dev/null || true
+- 对于每个未关闭的 PR，收集涉及的文件
+- **上游已解决问题**：检查上游自上次同步后是否修改了相同的文件；如果 PR 的差异为空，标记为 `resolved_upstream`。
+- **外部重复 PR**：查找上游中最近合并的、解决相同问题的 PR。
+- **内部重复 PR**：比较我们自己的未关闭 PR 之间的文件。
+- 向用户展示发现的结果，并提供关闭/保留/合并到上游/推迟等选项。
+- 执行相应的操作。
+- 更新配置文件。
 
-# Criar nova branch a partir do upstream
-git checkout -b <productionBranch> <upstreamRemote>/<mainBranch>
+### `review-closed` - 审查最近关闭的 PR
 
-# 1. Mergear cada PR branch (contribuições upstream pendentes)
-for branch in <prBranches>; do
-  git merge <originRemote>/$branch -m "Merge PR #<number>: <title>"
-  # Se conflito, resolver
-done
+检测自上次同步以来被关闭/合并的 PR，并指导用户做出决策：
 
-# 2. Mergear cada local patch (fixes mantidos localmente)
-for branch in <localPatches>; do
-  git merge <originRemote>/$branch -m "Merge local patch: <description>"
-  # Se conflito, resolver
-done
+- 查找配置文件中的所有 PR
+- 识别状态发生变化的 PR（已合并或关闭的 PR）
+- 对于已合并的 PR，将其移至 `notes.mergedUpstream` 文件，并删除相关分支。
+- 对于未合并的关闭 PR，启动交互式审查流程（见第 7 节）。
+- 对于每个关闭的 PR，向用户展示相关信息并提供选项。
+- 执行相应的操作：删除/保留作为本地补丁/重新提交/推迟。
+- 更新配置文件。
 
-# Push
-git push <originRemote> <productionBranch> --force
+### `review-patches` - 重新评估现有的本地补丁
 
-# Restaurar arquivos não-commitados
-if [ "$STASHED" = "1" ]; then
-  git stash pop
-fi
-```
+对于 `localPatches` 中每个 `reviewDate` 已过期的条目：
+- 检查上游是否在最后一次审查后解决了问题。
+- 检查补丁是否仍然适用（没有冲突）。
+- 向用户展示选项：保留/删除/重新提交/延长审查日期。
+- 更新配置文件。
 
-**After rebuilding the production branch, remind the user to run their project's build command if needed.**
+### `full-sync` - 完整同步
 
-**Ordem de merge:** PRs abertos primeiro (ordem crescente por número), local patches depois. Isso garante que patches locais se aplicam sobre a base mais completa possível.
+- **Stash**：如果存在未提交的文件，使用 `git stash --include-untracked` 进行暂存。
+- **sync**：更新主分支。
+- **update-config**：更新 PR 列表。
+- **`review-closed`：审查最近关闭/合并的 PR。
+- **`audit-open`：审查未关闭的 PR 以检测重复或过时的情况。
+- **`review-patches`：重新评估过期的本地补丁。
+- **`rebase-all`：重新基线所有分支（PR 和本地补丁）。
+- **build-production**：重新创建生产分支。
+- **Pop stash**：使用 `git stash pop` 恢复本地文件。
+- 如有需要，提醒用户运行他们的项目构建命令。
 
-### `audit-open` - Auditar PRs abertos por redundância/obsolescência
+**关于顺序的说明：** `audit-open` 在 `review-closed` 之后执行，因为已关闭的 PR 已经被处理并从配置文件中移除。这样 `audit` 只会审查真正未关闭的 PR，避免误判。
 
-Análise proativa de todos os PRs abertos (seção 8 acima):
+## 向用户报告
 
-1. Para cada PR aberto, coletar arquivos tocados
-2. **Resolved upstream**: verificar se upstream alterou os mesmos arquivos desde último sync; se diff do PR ficou vazio, flaggar
-3. **Duplicate externo**: buscar PRs upstream (open + recently merged) que tocam mesmos arquivos
-4. **Self-duplicate**: cruzar arquivos entre nossos próprios PRs abertos
-5. Apresentar findings ao usuário com opções: close / keep / merge-into / defer
-6. Executar decisões
-7. Atualizar config
+在任何操作之后，生成报告：
 
-### `review-closed` - Revisar PRs recém-fechados
+## 重要提示
 
-Detecta PRs que foram fechados/mergeados desde o último sync e guia o usuário na decisão:
+- 在推送时始终使用 `--force-with-lease` 而不是 `--force`。
+- 在执行破坏性操作之前始终进行备份。
+- 使用项目的包管理器（如 bun/npm/yarn/pnpm）来运行构建命令。
+- 每次操作后都更新配置文件。
+- **本地补丁非常重要**：重新基线、构建和报告应包括所有未关闭的 PR 和本地补丁。
+- **永远不要自动删除未合并的关闭 PR**。务必通过 `review-closed` 流程让用户做出决策。
+- **为本地补丁设置审查日期**：创建本地补丁时设置一个审查日期（默认为 30 天）。在 `full-sync` 期间，会向用户展示过期的补丁以供重新评估。
+- **本地补丁的命名规则**：使用前缀 `local/` 以区分它们和 PR 分支（例如：`local/my-custom-fix`）。原始分支可以重命名或保留——关键是配置文件能够正确跟踪分支。
 
-1. Buscar todos os PRs do config no GitHub
-2. Identificar os que mudaram de estado (merged ou closed)
-3. Para **merged**: mover para `notes.mergedUpstream`, deletar branches
-4. Para **closed sem merge**: iniciar fluxo de revisão interativo (seção 7 acima)
-5. Para cada closed, apresentar contexto e opções ao usuário
-6. Executar decisão: drop / keep as local patch / resubmit / defer
-7. Atualizar config
+### ⚠️ 在执行破坏性操作之前保护未提交的文件
 
-### `review-patches` - Reavaliar patches locais existentes
+在任何切换分支或删除/重新创建分支的操作之前（特别是 `build-production` 和 `full-sync`），**务必** 检查并保留未提交的、未跟踪的和已跟踪的文件：
 
-Para cada entry em `localPatches` cuja `reviewDate` já passou:
+**为什么？** 在删除和重新创建生产分支（`git branch -D <productionBranch>`）时，仅存在于工作目录中的未提交文件会永久丢失。这些文件包括：
+- 生成的文件（仪表板、历史记录、状态文件）
+- 本地配置文件（如 `serve.ts`、`.env`）
+- 积累的数据（JSON、SQLite 文件）
 
-1. Verificar se upstream resolveu o problema desde a última revisão
-2. Verificar se o patch ainda aplica limpo (sem conflitos)
-3. Apresentar ao usuário com opções: manter / drop / resubmit / estender reviewDate
-4. Atualizar config
+**规则：** 如果 `git status --porcelain` 显示任何输出，请在执行操作之前使用 `git stash --include-untracked`。操作完成后使用 `git stash pop` 恢复这些文件。
 
-### `full-sync` - Sincronização completa
+## 安全注意事项
 
-1. **Stash** - `git stash --include-untracked` se houver arquivos não-commitados
-2. `sync` - Atualizar main
-3. `update-config` - Atualizar lista de PRs
-4. **`review-closed`** - Revisar PRs recém-fechados/mergeados (interativo)
-5. **`audit-open`** - Auditar PRs abertos por redundância/obsolescência (interativo)
-6. **`review-patches`** - Reavaliar local patches com reviewDate vencida (interativo)
-7. `rebase-all` - Rebase de todas as branches (PRs + local patches)
-8. `build-production` - Recriar branch de produção (PRs + local patches)
-9. **Pop stash** - `git stash pop` para restaurar arquivos locais
-10. Remind user to run their project's build command if needed
+此技能执行的操作需要广泛的文件系统和网络访问权限：
 
-**Nota sobre ordem:** `audit-open` roda **depois** de `review-closed` porque os PRs fechados já foram processados e removidos do config. Assim o audit só analisa PRs genuinamente abertos, sem falsos positivos de PRs que acabaram de ser fechados.
+- **Git 操作**：从多个远程仓库和分支获取、检出、合并、重新基线和推送代码。
+- **GitHub CLI**：读取 PR 状态、创建 PR、查询仓库元数据。
 
-## Relatório para o Usuário
+**在使用此技能之前：**
+- 所有 `git push` 操作都使用 `--force-with-lease`（而不是 `--force`）以防止数据丢失。
+- 该技能总是在执行破坏性分支操作之前暂存未提交的文件。
 
-Após qualquer operação, gerar relatório:
+这些功能是分支管理的一部分，无法移除，否则会导致核心功能失效。
 
-```markdown
-## 🍴 Fork Status: <repo>
+## 使用示例
 
-### Upstream Sync
+用户：“同步我的 project-x 分支”
 
-- **Main branch:** X commits behind upstream
-- **Last sync:** <date>
-
-### Open PRs (Y total)
-
-| #   | Branch        | Status           | Action Needed     |
-| --- | ------------- | ---------------- | ----------------- |
-| 123 | fix/issue-123 | ✅ Up to date    | None              |
-| 456 | feat/feature  | ⚠️ Needs rebase  | Run rebase        |
-| 789 | fix/bug       | ❌ Has conflicts | Manual resolution |
-
-### Local Patches (Z total)
-
-| Branch             | Original PR | Motivo          | Review em  |
-| ------------------ | ----------- | --------------- | ---------- |
-| local/my-fix       | #321        | rejected_need   | 2026-03-07 |
-| local/custom-tweak | —           | wontfix         | 2026-04-01 |
-
-### Audit de PRs Abertos
-
-| #   | Título           | Flag                | Detalhe                          |
-| --- | ---------------- | ------------------- | -------------------------------- |
-| 123 | fix(foo): bar    | ⚠️ resolved_upstream | upstream changed foo.ts 3d ago   |
-| 456 | fix(baz): qux    | ⚠️ duplicate_external | similar to #789 by @user         |
-| 111 | fix(a): b        | ⚠️ self_duplicate    | overlaps with our #222           |
-
-### PRs Recém-Fechados (aguardando decisão)
-
-| #   | Título           | Fechado em | Motivo              | Recomendação     |
-| --- | ---------------- | ---------- | ------------------- | ---------------- |
-| 999 | fix(foo): bar    | 2026-02-05 | resolved_upstream   | 🗑️ Drop          |
-| 888 | feat(baz): qux   | 2026-02-06 | rejected_need       | 📌 Local patch   |
-
-### Production Branch
-
-- **Branch:** main-with-all-prs
-- **Contains:** PRs #123, #456 + Local patches: local/my-fix, local/custom-tweak
-- **Status:** ✅ Up to date / ⚠️ Needs rebuild
-
-### Recommended Actions
-
-1. ...
-2. ...
-```
-
-## Notas Importantes
-
-- Sempre usar `--force-with-lease` em vez de `--force` para push
-- Sempre fazer backup antes de operações destrutivas
-- Use the project's package manager for build commands (bun/npm/yarn/pnpm)
-- Manter o config atualizado após cada operação
-- **Local patches são cidadãos de primeira classe:** rebase, build e relatório incluem tanto PRs abertos quanto local patches
-- **Nunca remover automaticamente um PR fechado sem merge.** Sempre passar pelo fluxo `review-closed` para decisão do usuário
-- **Review dates em local patches:** ao criar um local patch, definir uma data de revisão (default: 30 dias). No `full-sync`, patches com review vencida são apresentados ao usuário para reavaliação
-- **Naming convention para local patches:** prefixo `local/` para distinguir de branches de PR (ex: `local/my-custom-fix`). A branch original pode ser renomeada ou mantida — o importante é que o config rastreie a branch correta
-
-### ⚠️ Proteger arquivos não-commitados antes de operações destrutivas
-
-Antes de qualquer operação que troca de branch ou deleta/recria branches (especialmente `build-production` e `full-sync`), **sempre** verificar e preservar arquivos unstaged, untracked e staged:
-
-```bash
-cd <localPath>
-
-# 1. Checar se há arquivos em risco
-git status --porcelain
-
-# 2. Se houver arquivos modificados/untracked, fazer stash com untracked
-git stash push --include-untracked -m "fork-manager: pre-sync stash $(date -u +%Y%m%dT%H%M%S)"
-
-# 3. Executar a operação (rebase, checkout, merge, etc.)
-# ...
-
-# 4. Após concluir, restaurar o stash
-git stash pop
-```
-
-**Por quê?** Ao deletar e recriar a branch de produção (`git branch -D <productionBranch>`), arquivos que existiam apenas no working directory (não commitados) são perdidos permanentemente. Isso inclui:
-
-- Arquivos gerados (dashboards, history, state)
-- Arquivos de configuração local (serve.ts, .env)
-- Dados acumulados (JSON, SQLite)
-
-**Regra:** Se `git status --porcelain` retornar qualquer saída, fazer `git stash --include-untracked` antes de prosseguir. Restaurar com `git stash pop` ao final.
-
-## Security Notice
-
-This skill performs operations that require broad filesystem and network access by design:
-
-- **Git operations**: fetch, checkout, merge, rebase, push across multiple remotes and branches
-- **GitHub CLI**: reads PR status, creates PRs, queries repo metadata
-**Before using this skill on a repository:**
-- All git push operations use `--force-with-lease` (not `--force`) to prevent data loss
-- The skill always stashes uncommitted files before destructive branch operations
-
-These capabilities are inherent to fork management and cannot be removed without breaking core functionality.
-
-## Usage Example
-
-User: "sync my fork of project-x"
-
-Agent:
-
-1. Load config from `$SKILL_DIR/repos/project-x/config.json`
-2. Run `status` to assess current state
-3. If main is behind, run `sync`
-4. If PRs need rebase, run `rebase-all`
-5. Update `productionBranch` if needed
-6. Remind user to rebuild if needed
-7. Report results to user
+代理：
+1. 从 `$SKILL_DIR/repos/project-x/config.json` 加载配置文件。
+2. 运行 `status` 命令以评估当前状态。
+3. 如果主分支落后，运行 `sync` 命令。
+4. 如果需要重新基线 PR，运行 `rebase-all` 命令。
+5. 如有需要，更新 `productionBranch`。
+6. 如有需要，提醒用户重新构建项目。
+7. 向用户报告结果。

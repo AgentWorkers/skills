@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Customer Persona
+# 客户画像
 
-Create data-backed customer personas with research and visuals via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用调研数据和可视化工具来创建基于数据的客户画像。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -32,7 +32,7 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Persona Template
+## 画像模板
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -71,11 +71,11 @@ infsh app run falai/flux-dev-lora --input '{
 └──────────────────────────────────────────────────────┘
 ```
 
-## Building a Persona Step-by-Step
+## 逐步构建客户画像
 
-### Step 1: Research
+### 第一步：调研
 
-Start with data, not assumptions.
+从数据出发，而非假设。
 
 ```bash
 # Market demographics
@@ -99,36 +99,36 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-### Step 2: Demographics
+### 第二步：人口统计信息
 
-**Use ranges, not exact values.** Personas represent a segment, not one person.
+**使用范围值，而非具体数值。** 客户画像代表的是一个群体，而非单个个体。
 
-| Field | Format | Example |
+| 字段 | 格式 | 例 |
 |-------|--------|---------|
-| Age range | X-Y | 30-38 |
-| Income range | $X-$Y | $120,000-$160,000 |
-| Education | Common degrees | BS Computer Science, MBA |
-| Location | Region/type | Urban US, major tech hubs |
-| Job title | Role level | Senior PM, Product Lead |
-| Company size | Range | 50-500 employees |
-| Industry | Sector | B2B SaaS |
+| 年龄范围 | X-Y | 30-38岁 |
+| 收入范围 | $X-$Y | 120,000-$160,000美元 |
+| 教育背景 | 常见学位 | 计算机科学学士、MBA |
+| 地点 | 地区/类型 | 美国城市地区、主要科技枢纽 |
+| 职位 | 职务级别 | 高级产品经理、产品负责人 |
+| 公司规模 | 规模范围 | 50-500名员工 |
+| 行业 | 行业领域 | B2B SaaS |
 
-### Step 3: Psychographics
+### 第三步：心理特征
 
-What they think, value, and believe.
+他们的想法、价值观和信念。
 
-| Category | Questions to Answer |
+| 类别 | 需要回答的问题 |
 |----------|-------------------|
-| **Values** | What matters most to them professionally? |
-| **Attitudes** | How do they feel about their industry's direction? |
-| **Motivations** | What drives them at work? |
-| **Personality** | Analytical vs intuitive? Leader vs collaborator? |
-| **Interests** | What do they read/watch/listen to professionally? |
-| **Lifestyle** | Work-life balance preference? Remote/hybrid/office? |
+| **价值观** | 对他们来说，什么在职业上最重要？ |
+| **态度** | 他们对行业的发展方向有何看法？ |
+| **动机** | 是什么驱使他们工作？ |
+| **性格特点** | 分析型还是直觉型？领导型还是合作型？ |
+| **兴趣** | 他们在工作中喜欢阅读/观看/收听什么？ |
+| **生活方式** | 对工作与生活的平衡有何偏好？远程办公/混合办公/办公室办公？ |
 
-### Step 4: Goals
+### 第四步：目标
 
-What they're trying to achieve (both professional and personal).
+他们试图实现的目标（包括职业和个人目标）。
 
 ```
 Professional:
@@ -143,9 +143,9 @@ Personal:
 - Stay current with industry trends without information overload
 ```
 
-### Step 5: Pain Points
+### 第五步：痛点
 
-**Quantify whenever possible.** Vague pain = vague persona.
+**尽可能量化这些痛点。** 模糊的痛点意味着画像也不清晰。
 
 ```
 ❌ "Has trouble with reporting"
@@ -158,48 +158,39 @@ Personal:
 ✅ "Averages 6 hours of meetings per day, leaving only 2 hours for deep work"
 ```
 
-### Step 6: Jobs-to-be-Done (JTBD)
+### 第六步：待完成的任务（JTBD）
 
-Three types of jobs:
+三种类型的任务：
 
-| Job Type | Description | Example |
+| 任务类型 | 描述 | 例 |
 |----------|-------------|---------|
-| **Functional** | The task they need to accomplish | "Prioritize the product backlog based on customer impact data" |
-| **Emotional** | How they want to feel | "Feel confident presenting to the exec team" |
-| **Social** | How they want to be perceived | "Be seen as the person who makes data-driven decisions" |
+| **功能性任务** | 他们需要完成的具体任务 | “根据客户影响数据来优先处理产品待办事项” |
+| **情感性任务** | 他们希望获得的感受 | “在高管团队面前能够自信地展示” |
+| **社交性任务** | 他们希望别人如何看待自己 | “被看作是一个基于数据做出决策的人” |
 
-### Step 7: Buying Process
+### 第七步：购买流程
 
-| Stage | Behavior |
+| 阶段 | 行为表现 |
 |-------|----------|
-| **Awareness** | Reads blog posts, sees peer recommendations on LinkedIn |
-| **Consideration** | Compares 3-4 tools, reads G2/Capterra reviews, asks in Slack communities |
-| **Decision** | Requests demo, needs IT/security approval, evaluates team pricing |
-| **Influencers** | Engineering lead, VP of Product, CFO (for budget) |
-| **Objections** | "Will my team actually adopt it?", "Does it integrate with Jira?" |
-| **Trigger event** | New quarter with aggressive goals, new VP demanding better reporting |
+| **认知阶段** | 阅读博客文章，在LinkedIn上查看同行推荐 |
+| **考虑阶段** | 比较3-4个工具，阅读G2/Capterra的评论，在Slack社区中提问 |
+| **决策阶段** | 请求产品演示，需要IT部门或安全部门的批准，评估团队定价 |
+| **影响决策的因素** | 工程负责人、产品副总裁、首席财务官（涉及预算） |
+| **可能遇到的异议** | “我的团队真的会采用这个产品吗？”、“它能与Jira集成吗？” |
+| **触发因素** | 新季度有紧迫的目标，新的副总裁要求改进报告方式 |
 
-### Step 8: Generate Avatar
+### 第八步：生成头像
 
-```bash
-# Match demographics: age, gender, ethnicity, professional context
-infsh app run falai/flux-dev-lora --input '{
-  "prompt": "professional headshot photograph of a 34-year-old Asian American woman, product manager, warm confident smile, modern tech office background, natural lighting, wearing smart casual blouse, realistic portrait photography, sharp focus",
-  "width": 1024,
-  "height": 1024
-}'
-```
+**头像制作建议：**
+- 头像应符合年龄范围、种族特征以及职业背景 |
+- 使用“专业头像照片”以获得更真实的效果 |
+- 表情要友好、亲切（避免使用僵硬的库存照片） |
+- 背景应能反映他们的工作环境 |
+- 服装应符合商务休闲或行业规范
 
-**Avatar tips:**
-- Match the age range, ethnicity representation, and professional context
-- Use "professional headshot photograph" for realistic results
-- Friendly, approachable expression (not stock-photo-stiff)
-- Background suggests their work environment
-- Business casual or industry-appropriate attire
+## “反画像”
 
-## The Anti-Persona
-
-Equally important: who is NOT your customer.
+同样重要的是：明确哪些人不是你的目标客户。
 
 ```
 ANTI-PERSONA: "Enterprise Earl"
@@ -211,43 +202,43 @@ ANTI-PERSONA: "Enterprise Earl"
   Enterprise needs would require 2+ years of product investment.
 ```
 
-Anti-personas prevent wasted effort on customers you can't serve.
+“反画像”有助于避免在无法服务的客户身上浪费精力。
 
-## Multiple Personas
+## 多个客户画像
 
-Most products have 2-4 personas. More than 4 = too many to serve well.
+大多数产品需要2-4个客户画像。超过4个则难以有效服务所有客户。
 
-| Priority | Persona | Role |
+| 优先级 | 客户画像 | 角色 |
 |----------|---------|------|
-| **Primary** | The main user and buyer | Who you optimize for |
-| **Secondary** | Influences the buying decision | Who you need to convince |
-| **Tertiary** | Uses the product occasionally | Who you support, not target |
+| **主要画像** | 主要用户和购买决策者 | 你需要优化服务的对象 |
+| **次要画像** | 对购买决策有影响力的人 | 你需要说服的对象 |
+| **次要画像** | 偶尔使用该产品的人 | 你需要提供支持的对象，但不是主要目标 |
 
-## Validation
+## 验证
 
-Personas based on assumptions are fiction. Validate with:
+基于假设创建的客户画像可能是不准确的。可以通过以下方法进行验证：
 
-| Method | What You Learn |
+| 方法 | 可以了解的信息 |
 |--------|---------------|
-| Customer interviews (5-10) | Real language, real pain points |
-| Support ticket analysis | Actual problems, not assumed ones |
-| Analytics data | Actual behavior, not reported behavior |
-| Survey (50+ responses) | Quantified patterns across segments |
-| Sales call recordings | Objections, buying triggers, language |
+| 客户访谈（5-10次） | 客户的真实语言和实际痛点 |
+| 支持工单分析 | 真实存在的问题，而非假设的问题 |
+| 分析数据 | 客户的实际行为，而非报告中的行为 |
+| 调查（50份以上回复） | 不同客户群体的量化数据 |
+| 销售通话录音 | 客户的异议、购买决策的触发因素以及他们使用的语言 |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Based on assumptions | Fiction, not research | Start with data |
-| Too many personas (6+) | Can't serve everyone well | Max 3-4 |
-| Vague pain points | Not actionable | Quantify everything |
-| Demographics only | Misses motivations and behavior | Add psychographics, JTBD |
-| Never updated | Becomes outdated | Review quarterly |
-| No anti-persona | Wasted effort on wrong customers | Define who you're NOT for |
-| Single persona for all | Different users have different needs | Primary/secondary/tertiary |
+| 基于假设 | 画像缺乏真实性 | 从数据出发进行调研 |
+| 客户画像太多（6个以上） | 难以全面服务所有客户 | 保持3-4个画像 |
+| 痛点描述模糊 | 无法采取行动 | 尽量将所有痛点量化 |
+| 仅关注人口统计信息 | 忽略了客户的动机和行为 | 添加心理特征和待完成的任务 |
+| 从不更新画像 | 画像会过时 | 每季度更新一次 |
+| 没有“反画像” | 在错误的客户身上浪费精力 | 明确哪些人不是你的目标客户 |
+| 对所有用户使用相同的画像 | 不同用户有不同的需求 | 分别创建主要画像、次要画像和次要画像 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@web-search
@@ -255,4 +246,4 @@ npx skills add inferencesh/skills@ai-image-generation
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有应用程序：`infsh app list`

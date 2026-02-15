@@ -1,75 +1,75 @@
 ---
 name: veed-ugc
-description: Generate UGC-style promotional videos with AI lip-sync. Takes an image (person with product from Morpheus/Ad-Ready) and a script (pure dialogue), creates a video of the person speaking. Uses ElevenLabs for voice synthesis.
+description: **生成UGC风格的宣传视频（采用AI语音同步技术）**  
+该工具能够根据提供的图片（展示Morpheus/Ad-Ready品牌产品及使用该产品的个人）和对话脚本，生成一个人物进行演讲的视频。语音合成部分由ElevenLabs技术负责完成。
 ---
 
 # Veed-UGC
 
-Generate UGC (User Generated Content) style promotional videos with AI lip-sync using ComfyDeploy's Veed-UGC workflow.
+使用 ComfyDeploy 的 Veed-UGC 工作流程，通过 AI 语音合成技术生成具有用户生成内容（UGC）风格的宣传视频。
 
-## Overview
+## 概述
 
-Veed-UGC transforms static images into dynamic promotional videos:
-1. Takes a photo of a person with a product (from Morpheus or Ad-Ready)
-2. Receives a **script** (pure dialogue text)
-3. Creates a lip-synced video of the person speaking the script
+Veed-UGC 可将静态图片转换为动态的宣传视频：
+1. 从 Morpheus 或 Ad-Ready 中获取包含人物和产品信息的图片。
+2. 接收一段纯对话文本（即 **脚本**）。
+3. 根据该脚本生成人物说话的同步视频。
 
-Perfect for creating authentic-feeling promotional content at scale.
+非常适合大规模生成具有真实感的宣传内容。
 
-## API Details
+## API 详情
 
-**Endpoint:** `https://api.comfydeploy.com/api/run/deployment/queue`
-**Deployment ID:** `627c8fb5-1285-4074-a17c-ae54f8a5b5c6`
+**端点：** `https://api.comfydeploy.com/api/run/deployment/queue`
+**部署 ID：** `627c8fb5-1285-4074-a17c-ae54f8a5b5c6`
 
-## Required Inputs
+## 必需输入参数
 
-| Input | Description | Example |
-|-------|-------------|---------|
-| `image` | URL of person+product image | Output from Morpheus/Ad-Ready |
-| `script` | Pure dialogue text | `"Hola che! Cómo anda todo por allá?"` |
-| `voice_id` | ElevenLabs voice ID | Default: `PBi4M0xL4G7oVYxKgqww` |
+| 输入参数 | 描述 | 示例 |
+|---------|--------|---------|
+| `image` | 包含人物和产品的图片 URL | 从 Morpheus/Ad-Ready 获取的图片 |
+| `script` | 纯对话文本 | `"Hola che! Cómo anda todo por allá?"` |
+| `voice_id` | ElevenLabs 的语音 ID | 默认值：`PBi4M0xL4G7oVYxKgqww` |
 
-## ⚠️ CRITICAL: Script Format
+## ⚠️ 重要提示：脚本格式
 
-The `script` input must be **PURE DIALOGUE ONLY**:
+`script` 输入参数必须仅包含纯对话内容：
 
-✅ **CORRECT:**
+✅ **正确格式：**
 ```
 Hola che! Cómo anda todo por allá? Mirá esto que acabo de probar, una locura total.
 ```
 
-❌ **WRONG - No annotations:**
+❌ **错误示例 - 包含注释：**
 ```
 [Entusiasta] Hola che! (pausa) Cómo anda?
 ```
 
-❌ **WRONG - No tone directions:**
+❌ **错误示例 - 缺少语调指示：**
 ```
 Tono argentino informal: Hola che!
 ```
 
-❌ **WRONG - No stage directions:**
+❌ **错误示例 - 缺少舞台指示：**
 ```
 *sonríe* Hola che! *levanta el producto*
 ```
 
-❌ **WRONG - No titles/labels:**
+❌ **错误示例 - 包含标题/标签：**
 ```
 ESCENA 1:
 Hola che!
 ```
 
-**Just write exactly what the person should say. Nothing else.**
+**只需输入人物需要说的话，不要添加其他内容。**
 
-## Voice IDs (ElevenLabs)
+## ElevenLabs 提供的语音 ID
 
-| Voice | ID | Description |
-|-------|-----|-------------|
-| Default | `PBi4M0xL4G7oVYxKgqww` | Main voice |
+| 语音 | ID | 描述 |
+|------|------|---------|
+| 默认值 | `PBi4M0xL4G7oVYxKgqww` | 主要语音 |
+*可以从 ElevenLabs 获取更多语音资源*
 
-*More voices can be added from ElevenLabs*
-
-## Usage
+## 使用方法
 
 ```bash
 uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
@@ -78,7 +78,7 @@ uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
   --output "ugc-video.mp4"
 ```
 
-### With local image file:
+### 使用本地图片文件：
 ```bash
 uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
   --image "./morpheus-output.png" \
@@ -87,7 +87,7 @@ uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
   --output "promo-video.mp4"
 ```
 
-## Direct API Call
+## 直接调用 API
 
 ```javascript
 const response = await fetch("https://api.comfydeploy.com/api/run/deployment/queue", {
@@ -107,32 +107,31 @@ const response = await fetch("https://api.comfydeploy.com/api/run/deployment/que
 });
 ```
 
-## Workflow Integration
+## 工作流程集成
 
-### Typical Pipeline
+### 典型流程
 
-1. **Generate image with Morpheus/Ad-Ready**
+1. 使用 Morpheus/Ad-Ready 生成图片。
    ```bash
    uv run morpheus... --output product-shot.png
    ```
 
-2. **Write the script** (pure dialogue)
-
-3. **Create UGC video from the image**
+2. 编写脚本（纯对话内容）。
+3. 根据图片生成 UGC 视频。
    ```bash
    uv run veed-ugc... --image product-shot.png --script "..." --output promo.mp4
    ```
 
-## Output
+## 输出结果
 
-The workflow outputs an MP4 video file with:
-- The original image animated with lip-sync
-- AI-generated voiceover from the script
-- Natural head movements and expressions
+工作流程会生成一个 MP4 视频文件，其中包含：
+- 带有语音合成的原始图片
+- 根据脚本生成的 AI 旁白
+- 自然的人物头部动作和表情
 
-## Notes
+## 注意事项：
 
-- Image should clearly show a person's face (frontal or 3/4 view works best)
-- Script is spoken **exactly as written** - no interpretation
-- Video length depends on script length
-- Processing time: ~2-5 minutes depending on script length
+- 图片应清晰显示人物的面部（正面或 3/4 视角效果最佳）。
+- 脚本内容必须严格按照原文朗读，不得进行任何解释。
+- 视频长度取决于脚本的长度。
+- 处理时间约为 2-5 分钟（具体取决于脚本长度）。

@@ -1,175 +1,169 @@
-# ClawHub - YouTube Video Clipper & Downloader
+# ClawHub - YouTube 视频剪辑器与下载工具
 
-Extract specific sections from YouTube videos with precise timestamps. A powerful ClawHub skill that makes video clipping effortless - just provide a URL and time range.
+ClawHub 可以根据精确的时间戳从 YouTube 视频中提取特定片段。这款强大的工具让视频剪辑变得非常简单——只需提供视频 URL 和时间范围即可。
 
-## Overview
+## 概述
 
-ClawHub is designed primarily for **video clipping** - extracting specific time ranges from YouTube videos. Whether you need a 30-second highlight, a 5-minute tutorial segment, or any custom time range, ClawHub handles it with precision. It also supports full video downloads, audio extraction, and quality selection when needed.
+ClawHub 主要用于从 YouTube 视频中提取特定时间段的内容。无论是需要 30 秒的精彩片段、5 分钟的教程部分，还是任何自定义的时间范围，ClawHub 都能准确处理。此外，它还支持完整视频的下载、音频提取以及质量选择。
 
-## Key Features
+## 主要功能
 
-### Primary: Video Clipping
-- **Precise Timestamp-Based Clipping**: Extract any time range (MM:SS or HH:MM:SS)
-- **Quality Selection**: Clip in 720p, 1080p, or best available
-- **Audio Clipping**: Extract audio clips as MP3
-- **Fast Processing**: Optimized for quick clip extraction
+### 视频剪辑
+- **基于精确时间戳的剪辑**：可以提取任意时间范围（格式为 MM:SS 或 HH:MM:SS）
+- **质量选择**：可以选择 720p、1080p 或最佳可用质量进行剪辑
+- **音频提取**：可以将音频提取为 MP3 格式
+- **快速处理**：优化了剪辑速度
 
-### Secondary: Full Downloads
-- Download complete videos in various qualities
-- Extract full audio tracks
-- Custom output filenames and formats
+### 其他功能
+- **完整视频下载**：支持下载不同质量的完整视频
+- **提取完整音频**：可以提取视频中的所有音频
+- **自定义输出文件名和格式**：用户可以自定义输出文件的名称和格式
 
-## Usage
+## 使用方法
 
-### Basic Syntax
+### 基本语法
 ```
 /clawhub <youtube-url> [options]
 ```
 
-## Clipping Examples (Primary Use)
+## 剪辑示例（主要功能）
 
-### Clip a specific section
+### 提取特定时间段
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --clip 00:30-02:15
 ```
-Extracts from 30 seconds to 2 minutes 15 seconds.
+从视频的 30 秒到 2 分 15 秒的部分进行剪辑。
 
-### Clip with quality selection
+### 带质量选择的剪辑
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --clip 01:00-03:30 --quality 1080p
 ```
-Extracts a 1080p clip from 1 minute to 3 minutes 30 seconds.
+从视频的 1 分钟到 3 分 30 秒的部分提取 1080p 格式的视频。
 
-### Clip audio only
+### 仅提取音频
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --clip 00:10-01:00 --audio-only
 ```
-Extracts audio from 10 seconds to 1 minute as MP3.
+从视频的 10 秒到 1 分钟的部分提取音频，并保存为 MP3 格式。
 
-### Clip with custom filename
+### 自定义文件名
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --clip 02:00-04:30 --output highlight.mp4
 ```
 
-### Clip tutorial section
+### 提取教程片段
 ```
 /clawhub https://youtube.com/watch?v=tutorial123 --clip 05:20-12:45 --quality 720p
 ```
-Perfect for extracting specific tutorial steps.
+非常适合用于提取教程中的特定步骤。
 
-### Clip music section
+### 提取音乐片段
 ```
 /clawhub https://youtube.com/watch?v=music456 --clip 01:15-02:30 --audio-only --output chorus.mp3
 ```
 
-## Download Examples (Secondary Use)
+## 下载示例（其他功能）
 
-### Download full video
+### 下载完整视频
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
-### Download in specific quality
+### 下载指定质量的视频
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --quality 720p
 ```
 
-### Extract full audio
+### 提取完整音频
 ```
 /clawhub https://youtube.com/watch?v=dQw4w9WgXcQ --audio-only
 ```
 
-## Available Options
+## 可用选项
 
-| Option | Description | Example |
+| 选项 | 描述 | 示例 |
 |--------|-------------|---------|
-| `--clip <start>-<end>` | **PRIMARY FEATURE** - Clip from start to end time | `--clip 00:30-02:15` |
-| `--quality <resolution>` | Specify quality (720p, 1080p, best) | `--quality 1080p` |
-| `--audio-only` | Extract audio as MP3 | `--audio-only` |
-| `--output <filename>` | Custom output filename | `--output my_clip.mp4` |
-| `--format <format>` | Output format (mp4, mkv, webm, mp3) | `--format mkv` |
+| `--clip <开始时间>-<结束时间>` | **主要功能**：从开始时间到结束时间进行剪辑 | `--clip 00:30-02:15` |
+| `--quality <分辨率>` | 指定视频质量（720p、1080p 或最佳质量） | `--quality 1080p` |
+| `--audio-only` | 仅提取音频（MP3 格式） | `--audio-only` |
+| `--output <文件名>` | 自定义输出文件名 | `--output my_clip.mp4` |
+| `--format <格式>` | 输出格式（mp4、mkv、webm、mp3） | `--format mkv` |
 
-## Time Format for Clipping
+## 时间戳格式
 
-The skill accepts flexible timestamp formats:
-- **MM:SS**: `01:30` (1 minute 30 seconds)
-- **HH:MM:SS**: `01:15:30` (1 hour 15 minutes 30 seconds)
-- **M:SS**: `1:30` (same as 01:30)
-- **SS**: `90` (converted to 01:30)
+该工具支持多种时间戳格式：
+- **MM:SS**：例如 `01:30`（1 分 30 秒）
+- **HH:MM:SS**：例如 `01:15:30`（1 小时 15 分 30 秒）
+- **M:SS**：例如 `1:30`（与 `01:30` 同义）
+- **SS**：例如 `90`（自动转换为 `01:30`）
 
-## How Clipping Works
+## 剪辑流程
 
-1. You provide a YouTube URL and time range
-2. Claude parses your timestamps
-3. The skill extracts just that section using optimized methods:
-   - **Method 1**: yt-dlp's native clipping (fastest)
-   - **Method 2**: ffmpeg precise cutting (fallback)
-4. Your clip is saved to the current directory
+1. 用户提供 YouTube 视频的 URL 和时间范围
+2. ClawHub 会解析这些时间戳
+3. 通过优化后的方法提取指定片段：
+   - **方法 1**：使用 yt-dlp 的原生剪辑功能（最快）
+   - **方法 2**：使用 ffmpeg 进行精确切割（备用方案）
+4. 剪辑后的视频会保存在当前工作目录中
 
-## Use Cases
+## 使用场景
 
-### Content Creators
-- Extract highlights for shorts or reels
-- Clip reaction sections
-- Create compilation segments
-- Extract B-roll footage
+### 内容创作者
+- 提取短视频或集锦中的精彩片段
+- 剪辑观众的反应画面
+- 制作视频合集
 
-### Educators
-- Clip specific tutorial steps
-- Extract lecture segments
-- Create study materials
-- Share specific explanations
+### 教育工作者
+- 提取教程中的特定步骤
+- 提取讲座片段
+- 制作学习材料
+- 分享详细的讲解内容
 
-### Musicians
-- Extract song sections
-- Clip audio for remixes
-- Get specific verses or choruses
-- Create practice loops
+### 音乐家
+- 提取歌曲中的特定部分
+- 提取音频用于混音
+- 获取特定的副歌或重复段落
+- 创建练习用音频循环
 
-### Researchers
-- Extract relevant video segments
-- Create timestamped references
-- Archive specific content
-- Analyze particular sections
+### 研究人员
+- 提取相关的视频片段
+- 创建带有时间戳的参考资料
+- 归档特定内容
+- 分析视频中的关键部分
 
-## Output Location
+## 输出位置
 
-All clips and downloads are saved to your current working directory. You can specify a custom path using the `--output` flag.
+所有剪辑结果和下载文件都会保存在当前工作目录中。用户可以使用 `--output` 参数指定自定义的输出路径。
 
-## Important Notes
+## 重要说明
 
-- **Pure Python solution** - no binary dependencies, just Python
-- **Auto-installs dependencies** - yt-dlp Python module installed automatically if needed
-- **Clipping is optimized and fast** - no need to download full videos first
-- **Quality is maintained** - clips preserve the original video quality
-- **Copyright matters** - only clip content you have rights to access
-- **Flexible timestamps** - use whatever format is natural for you
-- **Minimal setup** - Python is usually pre-installed, everything else is automatic
+- **纯 Python 实现**：无需依赖任何二进制文件，仅使用 Python
+- **自动安装依赖库**：如果需要，会自动安装 yt-dlp Python 模块
+- **剪辑速度快**：无需先下载整个视频
+- **保持视频质量**：剪辑后的视频质量与原视频相同
+- **尊重版权**：仅剪辑用户有权访问的内容
+- **时间戳格式灵活**：用户可以选择最方便的时间戳格式
+- **设置简单**：通常 Python 已经预安装，其余依赖库会自动安装
 
-## Technical Details
+## 技术细节
 
-- **Language**: Pure Python implementation
-- **Primary Library**: yt-dlp Python module (auto-installed via pip)
-- **Audio Processing**: ffmpeg (required for audio extraction, usually pre-installed)
-- **Supported Formats**: All standard video and audio formats
-- **URL Support**: youtube.com, youtu.be, and all YouTube URL variants
-- **Installation**: Fully automatic - checks and installs yt-dlp module as needed
+- **语言**：纯 Python 实现
+- **主要使用的库**：yt-dlp Python 模块（通过 pip 自动安装）
+- **音频处理**：使用 ffmpeg 进行音频提取（通常已预安装）
+- **支持的格式**：所有标准的视频和音频格式
+- **支持的 URL**：youtube.com、youtu.be 及所有 YouTube 的变体链接
+- **安装过程**：完全自动化，会根据需要检查并安装 yt-dlp 模块
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Clip not extracting correctly
-The skill will automatically try alternate methods if the first approach fails.
+- **剪辑失败**：如果第一种方法失败，工具会自动尝试其他方法。
+- **时间戳格式错误**：请使用正确的格式（例如 MM:SS 或 HH:MM:SS）。
+- **视频无法访问**：请确认提供的 YouTube URL 是正确的，并且视频是公开可访问的。
 
-### Invalid timestamps
-Use format: MM:SS or HH:MM:SS (e.g., `01:30` or `01:15:30`)
+## 许可证
 
-### Video unavailable
-Verify the YouTube URL is correct and the video is publicly accessible.
+MIT 许可证
 
-## License
+## 技术支持
 
-MIT License
-
-## Support
-
-For issues or questions, visit the project repository or submit feedback through ClawHub.
+如有任何问题或需要帮助，请访问项目仓库或通过 ClawHub 提交反馈。

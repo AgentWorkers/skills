@@ -1,22 +1,22 @@
-# Notify - Smart Notification Delivery
+# 通知系统 - 智能通知推送
 
-## When to Use This Skill
+## 适用场景
 
-Use when sending notifications to users from an AI agent. Covers channel selection, timing, formatting, and avoiding notification fatigue.
+本技能适用于通过AI代理向用户发送通知的场景，涵盖通知渠道的选择、发送时机、格式设置以及避免用户因频繁接收通知而产生疲劳的问题。
 
-## Notification Types and Routing
+## 通知类型与路由规则
 
-| Type | Channel | Timing | Group |
+| 通知类型 | 发送渠道 | 发送时机 | 发送对象 |
 |------|---------|--------|-------|
-| System down, security alert | Push + primary chat | Immediate, 24/7 | Never |
-| Deadline <2h, needs action | Primary chat | Immediate | By project |
-| Task completed | Primary chat | Batch 5-15min | Yes |
-| Daily/weekly summary | Email or chat | Scheduled | Everything |
-| Debug, internal status | Log only | Never notify | N/A |
+| 系统故障、安全警报 | 推送通知 + 主要聊天频道 | 立即发送，全天候 | 所有用户 |
+| 截止时间在2小时内，需要用户立即处理 | 主要聊天频道 | 立即发送 | 按项目分组 |
+| 任务完成 | 主要聊天频道 | 每5-15分钟批量发送 | 所有用户 |
+| 每日/每周总结 | 电子邮件或聊天频道 | 按计划发送 | 所有用户 |
+| 调试信息、内部状态更新 | 仅记录日志 | 不发送通知 | 不适用 |
 
-## Critical Mistakes to Avoid
+## 需避免的常见错误
 
-### Empty notifications
+### 空洞的通知内容
 ```
 BAD:  "Task completed ✅"
 GOOD: "✅ Deploy v2.3.1 done. Preview: dev.app.com"
@@ -25,12 +25,12 @@ BAD:  "Error occurred"
 GOOD: "❌ Build failed: missing env var STRIPE_KEY in production"
 ```
 
-### Notification spam
-- Never send "still running" or "everything OK" messages
-- Never send 10 messages for 10 subtasks - batch into 1
-- Never notify at 3AM for something that can wait until 9AM
+### 通知垃圾邮件
+- 绝不要发送“仍在运行”或“一切正常”的信息
+- 对于10个子任务，不要分别发送10条通知，应合并成一条发送
+- 对于可以延迟到上午9点处理的紧急事项，不要在凌晨3点发送通知
 
-### Wrong channel urgency
+### 通知渠道的紧急程度设置错误
 ```
 BAD:  Critical alert via email (seen 4 hours later)
 GOOD: Critical alert via push + SMS
@@ -39,28 +39,28 @@ BAD:  Weekly summary via SMS at 11pm
 GOOD: Weekly summary via email Monday 9am
 ```
 
-## Formatting Rules
+## 格式规范
 
-### By channel
-- **Telegram/Discord**: No markdown tables. Use bullet lists
-- **Email**: Full formatting OK, include actionable subject line
-- **SMS**: Under 160 chars, most critical info first
-- **Push**: Title (50 chars) + body (100 chars max)
+### 不同渠道的格式要求
+- **Telegram/Discord**：禁止使用Markdown表格，使用项目符号列表
+- **电子邮件**：允许使用完整的格式，标题需包含可操作的提示信息
+- **短信**：信息长度不超过160个字符，优先显示最关键的内容
+- **推送通知**：标题（50个字符）+ 正文（最多100个字符）
 
-### Universal rules
-- Lead with outcome, not process
-- Include ONE clear action if action needed
-- Timestamp in user's timezone
-- Context: what + impact + suggested action
+### 全通用规则
+- 通知内容应首先说明结果，而非处理过程
+- 如需用户采取行动，请明确指出具体操作
+- 通知时间应显示用户的时区
+- 通知内容应包含背景信息、影响范围以及建议的应对措施
 
-## Timing and Batching
+## 发送时机与批量处理
 
-### Quiet hours
-- Default: 23:00-08:00 in user's timezone
-- Critical (level 5) can break quiet hours
-- Queue non-critical, deliver at 08:00
+### 静默时间段
+- 默认时间段：用户时区的23:00至08:00
+- 严重级别的通知可以打破静默时间段
+- 非紧急通知可安排在08:00发送
 
-### Batching logic
+### 批量发送逻辑
 ```
 If 3+ notifications within 5 minutes for same project:
   → Combine into single message with summary
@@ -69,9 +69,9 @@ If notification is informational (level 1-2):
   → Queue for next digest (morning or evening)
 ```
 
-## Confirmation Format
+## 通知确认机制
 
-When scheduling any notification, confirm:
+在安排任何通知时，必须先进行确认：
 ```
 ✅ Scheduled: "Weekly metrics report"
 📅 Every Monday 09:00 (Europe/Madrid)
@@ -79,29 +79,29 @@ When scheduling any notification, confirm:
 🔕 Respects quiet hours: Yes
 ```
 
-## Escalation
+## 通知升级流程
 
-If user doesn't respond to critical alert:
-1. Wait 2 hours
-2. Send ONE reminder via same channel
-3. If still no response after 4h: try secondary channel (if configured)
-4. Never contact others without explicit permission
-5. After 3 attempts: log and stop (don't spam forever)
+如果用户未对严重警报作出响应：
+1. 等待2小时
+2. 通过相同渠道再次发送提醒
+3. 如果4小时后仍无响应：尝试通过备用渠道发送通知（如果已配置）
+4. 未经用户明确许可，切勿联系其他人
+5. 经过3次尝试后：记录日志并停止发送通知（避免持续骚扰）
 
-## User Preferences Checklist
+## 用户偏好设置
 
-Before sending first notification, know:
-- [ ] Primary channel (Telegram/Slack/email)
-- [ ] Timezone
-- [ ] Quiet hours (or use default 23-08)
-- [ ] Critical alert channel (same or SMS)
+在发送第一条通知之前，需了解用户的以下信息：
+- [ ] 主要通知渠道（Telegram/Slack/电子邮件）
+- [ ] 用户的时区
+- [ ] 静默时间段（或使用默认设置23:00-08:00）
+- [ ] 严重警报的接收渠道（与主要通知渠道相同或使用短信）
 
-## Anti-patterns
+## 常见错误模式及解决方法
 
-| Pattern | Problem | Fix |
+| 错误模式 | 问题 | 解决方法 |
 |---------|---------|-----|
-| "Notification sent" after every action | Trust erosion | Only notify on completion or error |
-| Same message to 3 channels | Redundant noise | Pick ONE appropriate channel |
-| JSON dumps in chat | Unreadable | Format or link to full log |
-| "Reminder: X" daily until done | Harassment | Max 3 reminders, then ask if still relevant |
-| Notify on no-change | Pointless | Only notify if there IS something to report |
+| 每次操作后都发送通知 | 降低用户信任度 | 仅在任务完成或出现错误时发送通知 |
+| 同一条信息发送到多个渠道 | 信息重复 | 选择最合适的渠道发送通知 |
+- 在聊天频道中直接发送JSON格式的日志 | 信息难以阅读 | 将日志格式化或提供完整日志的链接 |
+- 每天重复发送“提醒：X” | 造成用户困扰 | 最多发送3次提醒，之后询问用户是否仍需要通知 |
+- 在没有变化时也发送通知 | 无实际意义 | 仅在有需要报告的内容时才发送通知 |

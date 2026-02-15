@@ -1,6 +1,6 @@
 ---
 name: emily-radix-assistant
-description: "Query Radix DLT blockchain data including wallet balances and performance, token prices and market movers, validator staking info, transaction history, network statistics, ecosystem news, DeFi yield pools, XRD trading venues, dApp directory, and developer resources. Use when users ask about Radix, XRD, wallets starting with account_rdx, tokens starting with resource_rdx, staking, DeFi on Radix, .xrd domains, Attos Earn, or buying/bridging XRD."
+description: "查询 Radix DLT 区块链数据，包括钱包余额和性能、代币价格及市场动态、验证器质押信息、交易历史、网络统计信息、生态系统新闻、去中心化金融（DeFi）收益池、XRD 交易场所、去中心化应用（dApp）目录以及开发者资源。当用户询问关于 Radix、XRD、以 `account_rdx` 开头的钱包、以 `resource_rdx` 开头的代币、Radix 上的 DeFi 服务、`.xrd` 域名、Attos Earn 服务，或 XRD 的购买/桥接方式时，可以使用此功能。"
 metadata:
   {
     "openclaw":
@@ -21,118 +21,116 @@ metadata:
   }
 ---
 
-# Emily Your Personal Radix Assistant
+# Emily：您的个人Radix辅助工具
 
-Query the Radix DLT blockchain for wallet balances, token prices, network stats, validators, transactions, ecosystem news, DeFi yield data, trading venues, dApps, and developer resources.
+您可以查询Radix DLT区块链上的钱包余额、代币价格、网络统计数据、验证者信息、交易记录、生态系统新闻、DeFi收益数据、交易场所、去中心化应用（dApps）以及开发者资源。
 
-Free to use. No API key required. Mainnet data only.
+完全免费使用，无需API密钥。仅提供主网（Babylon网络）的数据。
 
-## Setup (auto-configured)
+## 设置（自动配置）
 
-**On first use**, check if the `emily-radix-assistant` server is already registered:
+**首次使用**时，请检查`emily-radix-assistant`服务器是否已注册：
 
 ```bash
 mcporter list emily-radix-assistant
 ```
 
-If not found, register it (URL is the only required argument):
+如果未找到，请进行注册（只需提供URL作为参数）：
 
 ```bash
 mcporter config add emily-radix-assistant https://www.ineedemily.com/api/mcp/mcp
 ```
 
-Verify with a quick test:
+通过快速测试进行验证：
 
 ```bash
 mcporter call emily-radix-assistant.network_stats
 ```
 
-To see all available tools and their schemas:
+要查看所有可用工具及其功能，请执行以下操作：
 
 ```bash
 mcporter list emily-radix-assistant --schema --all-parameters
 ```
 
-## Address Formats
+## 地址格式
 
-- **Wallet addresses** start with `account_rdx` (66 characters total)
-- **Token addresses** start with `resource_rdx` (67 characters total)
-- **RNS domains** end with `.xrd` (e.g. `alice.xrd`)
-- All addresses are **mainnet only** (Babylon network)
+- **钱包地址**以`account_rdx`开头（共66个字符）
+- **代币地址**以`resource_rdx`开头（共67个字符）
+- **RNS域名**以`.xrd`结尾（例如`alice.xrd`）
+- 所有地址均仅适用于主网（Babylon网络）
 
-## Available Tools (35 total)
+## 可用工具（共35个）
 
-### Wallet Tools (7)
+### 钱包工具（7个）
 
-| Tool                      | Description                            | Required Params                | Optional Params                                                                                                |
-| ------------------------- | -------------------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| `tokens_in_wallet`        | All tokens with prices, 24H/7D changes | `address`                      | -                                                                                                              |
-| `performance_of_wallet`   | Total USD value, 24H/7D performance    | `address`                      | -                                                                                                              |
-| `distribution_of_wallet`  | Portfolio breakdown by %               | `address`                      | `limit` (1-20, default 5), `minUSDValue`                                                                       |
-| `historical_wallet_value` | Wallet value on a past date            | `address`, `date` (YYYY-MM-DD) | -                                                                                                              |
-| `latest_transactions`     | Most recent transactions               | `address`                      | `until` (ISO date)                                                                                             |
-| `search_transactions`     | Filter transaction history             | `address`                      | `resourceAddress`, `startDate`, `endDate`, `transactionType` (swap/stake/unstake/claim/deposit/withdrawal/all) |
-| `check_owned_rns_domains` | RNS (.xrd) domains owned               | `address`                      | -                                                                                                              |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `tokens_in_wallet`        | 显示所有代币及其24小时/7天的价格变化                    | `address`                                      |                                            |
+| `performance_of_wallet`   | 显示钱包的24小时/7天总价值及表现                    | `address`                                      |                                            |
+| `distribution_of_wallet`  | 按百分比显示钱包资产构成                            | `address`                                      | `limit`（1-20，默认5），`minUSDValue`                          |
+| `historical_wallet_value` | 显示指定日期的钱包价值                          | `address`, `date`（YYYY-MM-DD）                         |                                            |
+| `latest_transactions`     | 显示最近的交易记录                              | `address`                                      | `until`（ISO日期格式）                                      |
+| `search_transactions`     | 根据地址、资源地址、开始日期、结束日期和交易类型筛选交易记录       | `address`, `resourceAddress`, `startDate`, `endDate`, `transactionType` |                                      |
+| `checkOwned_rns_domains` | 显示拥有的RNS（.xrd）域名                          | `address`                                      |                                            |
 
-### Token Tools (7)
+### 代币工具（7个）
 
-| Tool                       | Description                                       | Required Params                                  | Optional Params                                                                                                                                                                                                                         |
-| -------------------------- | ------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tokens_on_radix`          | Search/list tokens (top by volume when no search) | -                                                | `search`, `limit` (default 10), `includeAddress`, `includePrice`, `includeVolume`, `includeSupply`, `includePriceChanges`, `includeTvl`, `includeType`, `includePriceXRD`, `includeDescription`, `includeInfoUrl`, `includeExplorerUrl` |
-| `token_gainers_and_losers` | Top/bottom performers                             | -                                                | `sortBy` (gained/lost/volume_high/volume_low/market_cap_high/market_cap_low), `timePeriod` (24h/7d), `currency` (USD/XRD), `limit` (1-100, default 5)                                                                                   |
-| `wrapped_assets`           | Bridged assets (xUSDC, xETH, xwBTC...)            | -                                                | `limit` (1-50, default 10), `sortBy` (volume/tvl/marketCap/name), `includePrice`, `includeVolume`, `includeSupply`, `includePriceChanges`, `includeTvl`                                                                                 |
-| `token_details`            | On-chain metadata for a specific token            | `address` (resource_rdx...)                      | `includeTopHolders` (0-100)                                                                                                                                                                                                             |
-| `tokens_on_cmc`            | Search CoinMarketCap listings                     | -                                                | `search`, `limit` (1-300, default 10), `includePrice`, `sortBy` (rank/name/symbol)                                                                                                                                                      |
-| `token_details_from_cmc`   | Detailed CMC data by IDs                          | `tokenIds` (array of ints)                       | -                                                                                                                                                                                                                                       |
-| `historical_token_data`    | Token price on a specific date                    | `address` (resource_rdx...), `date` (YYYY-MM-DD) | -                                                                                                                                                                                                                                       |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `tokens_on_radix`          | 搜索/列出代币（默认按交易量排序）                        | -                                          | `search`, `limit`（默认10），`includeAddress`, `includePrice`, ...                |
+| `token_gainers_and_losers` | 显示收益最高/最低的代币                          | -                                          | `sortBy`（收益/损失/交易量/市值等），`timePeriod`（24小时/7天），`currency`（USD/XRD） |                                      |
+| `wrapped_assets`           | 显示桥接资产（如xUSDC、xETH、xwBTC等）                   | -                                          | `limit`（1-50，默认10），`sortBy`（交易量/市值/名称）                   |
+| `token_details`            | 显示特定代币的链上元数据                          | `address`                                      | `includeTopHolders`（0-100）                                      |
+| `tokens_on_cmc`            | 在CoinMarketCap上搜索代币                          | -                                          | `search`, `limit`（1-300，默认10），`includePrice`                   |
+| `token_details_from_cmc`   | 根据ID获取CoinMarketCap的详细代币信息             | `tokenIds`（整数数组）                               |                                            |
+| `historical_token_data`    | 显示指定日期的代币价格                          | `address`（resource_rdx...），`date`（YYYY-MM-DD）                         |                                            |
 
-### Network Tools (3)
+### 网络工具（3个）
 
-| Tool             | Description                                  | Required Params            | Optional Params      |
-| ---------------- | -------------------------------------------- | -------------------------- | -------------------- |
-| `network_stats`  | XRD price, staking %, DEX volume, TVL, epoch | -                          | -                    |
-| `all_validators` | Validators with stake amounts and APY        | -                          | `limit` (default 50) |
-| `rns_to_address` | Resolve .xrd domain to wallet address        | `address` (e.g. alice.xrd) | -                    |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `network_stats`          | 显示XRD价格、质押百分比、DEX交易量及总市值（TVL）           | -                                          |                                            |
+| `all_validators`       | 显示所有验证者的质押金额及年化收益（APY）                   | -                                          | `limit`（默认50）                                      |
+| `rns_to_address`        | 将RNS域名解析为对应的钱包地址                        | `address`（例如`alice.xrd`）                             |                                            |
 
-### Ecosystem & News (8)
+### 生态系统与新闻（8个）
 
-| Tool                     | Description                                                                     | Required Params                     | Optional Params                                                   |
-| ------------------------ | ------------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------- |
-| `today_update`           | Today's ecosystem update (launches, protocol updates, market moves)             | -                                   | -                                                                 |
-| `recent_daily_updates`   | Daily summaries for recent days                                                 | -                                   | `days` (1-30, default 7)                                          |
-| `weekly_updates`         | Weekly ecosystem summaries                                                      | -                                   | `weeks` (1-12, default 4)                                         |
-| `monthly_updates`        | Monthly ecosystem summaries with growth metrics and milestones                  | -                                   | `months` (1-12, default 3)                                        |
-| `specific_date_range`    | Ecosystem summaries for a custom date range (auto-selects daily/weekly/monthly) | `startDate`, `endDate` (YYYY-MM-DD) | -                                                                 |
-| `specific_month`         | Ecosystem summary for a specific month                                          | `year` (e.g. 2025), `month` (1-12)  | -                                                                 |
-| `official_announcements` | Latest official announcements from the Radix Telegram channel                   | -                                   | -                                                                 |
-| `ecosystem_summary`      | Comprehensive summary across timeframes                                         | -                                   | `timeframe` (daily/weekly/monthly), `period` (e.g. "last 7 days") |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `today_update`           | 当日生态系统更新（新项目发布、协议更新、市场动态）                | -                                          |                                            |
+| `recent_daily_updates`   | 近几天的每日总结                            | `days`（1-30，默认7）                                  |                                            |
+| `weekly_updates`         | 每周生态系统总结                              | `weeks`（1-12，默认4）                                  |                                            |
+| `monthly_updates`        | 每月生态系统总结及增长指标                        | `months`（1-12，默认3）                                  |                                            |
+| `specific_date_range`    | 自定义日期范围的生态系统总结                        | `startDate`, `endDate`（YYYY-MM-DD）                         |                                            |
+| `specific_month`         | 某个月的生态系统总结                            | `year`（例如2025），`month`（1-12）                         |                                            |
+| `official_announcements` | Radix官方Telegram频道的最新公告                   | -                                          |                                            |
+| `ecosystem_summary`      | 跨时间段的综合生态系统总结                          | `timeframe`（每日/每周/每月），`period`（例如“过去7天”）          |                                            |
 
-### Glossary, dApps & Community (6)
+### 术语表、去中心化应用（dApps）与社区（6个）
 
-| Tool                        | Description                                                                             | Required Params | Optional Params                                                |
-| --------------------------- | --------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------------- |
-| `radix_glossary`            | Radix terminology (Cerberus, Scrypto, Xi'an, Radix Engine, etc.)                        | -               | `themes` (array of theme names; omit for available list)       |
-| `radix_core_concepts`       | Core blockchain and Radix technical concepts (sharding, consensus, atomic transactions) | -               | `concepts` (array of concept names; omit for available list)   |
-| `radix_dapps`               | Discover dApps in the ecosystem                                                         | -               | `name`, `tags` (array), `category` (DeFi/NFT/Utility/Meme/Dao) |
-| `radix_developer_resources` | Developer docs, SDKs, tools, and learning resources                                     | -               | -                                                              |
-| `xrd_trading_venues`        | Where to buy, trade, bridge, or leverage XRD                                            | -               | `type` (leverage/onramp/bridge/spot), `all` (boolean)          |
-| `radix_socials`             | Community channels, official accounts, developer chats                                  | -               | `category` (community/official/resources/developer/market)     |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `radix_glossary`            | Radix相关术语（如Cerberus、Scrypto、Xi'an、Radix Engine等）         | -                                          | `themes`（可选主题列表）                                      |
+| `radix_core_concepts`       | Radix核心概念（如分片技术、共识机制、原子交易等）           | -                                          | `concepts`（可选概念列表）                                      |
+| `radix_dapps`               | 发现生态系统中的去中心化应用                          | -                                          | `name`, `tags`（分类），`category`（DeFi/NFT/实用工具/娱乐等）            |
+| `radix_developer_resources` | 开发者文档、SDK、工具和学习资源                         | -                                          |                                            |
+| `xrd_trading_venues`        | 提供XRD的交易场所                            | `type`（杠杆/入场/桥接/现货），`all`（布尔值）                   |                                            |
+| `radix_socials`             | Radix的社区渠道、官方账号及开发者交流平台                   | -                                          | `category`（社区/官方/开发者/市场相关）                         |
 
-### Attos Earn - DeFi Yield (4)
+### Attos Earn：DeFi收益工具（4个）
 
-| Tool                      | Description                                                    | Required Params | Optional Params                                                                                                                                                         |
-| ------------------------- | -------------------------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `attos_earn_pools`        | Liquidity pools with TVL, volume, APR/bonuses                  | -               | `sortBy` (tvl/volume_24h/volume_7d/bonus_24h/bonus_7d), `limit` (default 10)                                                                                            |
-| `attos_earn_strategies`   | Yield strategies: lending, staking, liquidation with APR rates | -               | `strategyType` (Lending/Staking/Liquidation), `provider` (Weft Finance/Root Finance/Defiplaza/Flux), `sortBy` (bonus_value/total_stake/deposited), `limit` (default 10) |
-| `attos_earn_lp_positions` | LP positions for a wallet with PnL data                        | `walletAddress` | `sortBy` (invested/investedXrd/currentValue/pnlPercentage)                                                                                                              |
-| `attos_earn_stats`        | Platform overview: total pools and strategies count            | -               | -                                                                                                                                                                       |
+| 工具                        | 功能描述                                      | 必需参数                                      | 可选参数                                      |
+| ------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `attos_earn_pools`        | 显示带有总市值（TVL）和交易量的流动性池                   | `sortBy`（TVL/24小时交易量/7天交易量/奖励）                   |                                            |
+| `attos_earn_strategies`   | 提供借贷、质押等收益策略                         | `strategyType`（Lending/Staking/Liquidation），`provider`（提供方）       |                                            |
+| `attos_earn_lp_positions`     | 显示钱包的LP（Lending Pool）持仓信息                   | `walletAddress`                                   | `sortBy`（投资额/当前价值/收益百分比）                         |
+| `attos_earn_stats`        | 提供平台整体概览（包括池数量和策略数量）                   | -                                          |                                            |
 
-### CoinMarketCap Workflow (2 steps)
+### 在CoinMarketCap上获取详细市场数据（2步流程）
 
-To get detailed market data for any cryptocurrency:
-
-1. **Search first** with `tokens_on_cmc` to get CMC IDs
-2. **Then query details** with `token_details_from_cmc` using those IDs
+1. 首先使用`tokens_on_cmc`搜索代币ID。
+2. 然后使用这些ID通过`token_details_from_cmc`获取详细信息。
 
 ```bash
 mcporter call emily-radix-assistant.tokens_on_cmc search=Bitcoin limit=1
@@ -140,77 +138,69 @@ mcporter call emily-radix-assistant.tokens_on_cmc search=Bitcoin limit=1
 mcporter call emily-radix-assistant.token_details_from_cmc --args '{"tokenIds": [1]}'
 ```
 
-## Usage Examples
+## 使用示例
 
-**Wallet analysis:**
+**钱包分析：**
+- “account_rdx16x...钱包里有哪些代币？” → 使用`tokens_in_wallet`
+- “这个钱包的表现如何？” → 使用`performance_of_wallet`
+- “显示account_rdx...钱包的资产构成” → 使用`distribution_of_wallet`
+- “2024-06-15日这个钱包的价值是多少？” → 使用`historical_wallet_value`
+- “显示account_rdx...的最近交易记录” → 使用`search_transactions`并设置`transactionType=swap`
 
-- "What tokens are in account_rdx16x..." → `tokens_in_wallet`
-- "How is this wallet performing?" → `performance_of_wallet`
-- "Show portfolio breakdown for account_rdx..." → `distribution_of_wallet`
-- "What was this wallet worth on 2024-06-15?" → `historical_wallet_value`
-- "Show recent swaps for account_rdx..." → `search_transactions` with `transactionType=swap`
+**代币研究：**
+- “Radix上交易量最高的10个代币” → 使用`tokens_on_radix`
+- “本周收益最高的代币” → 使用`token_gainers_and_losers`并设置`sortBy=gained`，`timePeriod=7d`
+- “显示Radix上的桥接资产” → 使用`wrapped_assets`
+- “HUG代币的顶级持有者是谁？” → 使用`token_details`并设置`includeTopHolders=10`
+- “2024-01-01日XRD的价格是多少？” → 使用`historical_token_data`
 
-**Token research:**
+**网络与质押：**
+- “Radix网络统计数据” → 使用`network_stats`
+- “质押收益最高的10个验证者” → 使用`all_validators`并设置`limit=10`
+- “解析alice.xrd域名” → 使用`rns_to_address`
 
-- "Top 10 tokens on Radix by volume" → `tokens_on_radix`
-- "Biggest gainers this week" → `token_gainers_and_losers` with `sortBy=gained`, `timePeriod=7d`
-- "Show me wrapped assets on Radix" → `wrapped_assets`
-- "Who are the top holders of HUG?" → `token_details` with `includeTopHolders=10`
-- "What was XRD price on 2024-01-01?" → `historical_token_data`
+**DeFi收益：**
+- “Attos Earn平台上收益最高的流动性池” → 使用`attos_earn_pools`并设置`sortBy=bonus_24h`
+- “查看借贷策略” → 使用`attos_earn_strategies`并设置`strategyType=Lending`
+- “我的LP持仓情况” → 使用`attos_earn_lp_positions`并提供钱包地址
+- “Attos Earn平台概览” → 使用`attos_earn_stats`
 
-**Network & staking:**
+**生态系统与新闻：**
+- “Radix生态系统今天发生了什么？” → 使用`today_update`
+- “过去一个月的每周总结” → 使用`weekly_updates`并设置`weeks=4`
+- “2025年6月发生了什么？” → 使用`specific_month`并设置`year=2025`, `month=6`
+- “2025年1月至3月的生态系统总结” → 使用`specific_date_range`
+- “最新官方公告” → 使用`official_announcements`
+- “每月生态系统总结” → 使用`monthly_updates`
 
-- "Radix network stats" → `network_stats`
-- "Top 10 validators by APY" → `all_validators` with `limit=10`
-- "Resolve alice.xrd" → `rns_to_address`
+**知识与社区：**
+- “解释Cerberus共识机制” → 使用`radix_glossary`并设置`themes=["cerberus"]`
+- “什么是分片技术？” → 使用`radix_core_concepts`并设置`concepts=["sharding"]`
+- “查找DeFi应用” → 使用`radix_dapps`并设置`category="DeFi"`
+- “在哪里可以购买XRD？” → 使用`xrd_trading_venues`并设置`type="onramp"`
+- “Radix的Discord和Telegram链接” → 使用`radix_socials`
 
-**DeFi yield:**
+**多工具组合使用示例：**
+- 先解析RNS域名，再查看钱包中的代币：`rns_to_address` → `tokens_in_wallet`
+- 研究Radix上的代币，然后与CoinMarketCap的数据进行对比：`token_details` → `tokens_on_cmc` → `token_details_from_cmc`
+- 完整的钱包分析：`tokens_in_wallet` + `performance_of_wallet` + `distribution_of_wallet` + `latest_transactions`
+- DeFi收益概览：`attos_earn_stats` + `attos_earn_pools` + `attos_earn_strategies`
 
-- "Best pools by APR on Attos Earn" → `attos_earn_pools` with `sortBy=bonus_24h`
-- "Show lending strategies" → `attos_earn_strategies` with `strategyType=Lending`
-- "My LP positions" → `attos_earn_lp_positions` with wallet address
-- "Attos Earn overview" → `attos_earn_stats`
+## 数据来源与更新频率
 
-**Ecosystem & news:**
+- **代币价格**：来自Astrolescent API，数据缓存时长为24小时，每小时通过cron任务更新
+- **钱包数据**：来自Radix Gateway API（Babylon主网），实时数据
+- **CoinMarketCap**：通过API实时查询数据
+- **生态系统更新**：每日/每周/每月汇总自Telegram频道和官方来源
+- **验证者信息**：来自Radix Gateway API，实时数据
+- **去中心化应用目录**：定期更新的精选数据集
+- **Attos Earn**：通过earn-api.attos.world（测试版）实时查询数据
+- **交易场所与社区信息**：精选的静态数据集
 
-- "What happened in the Radix ecosystem today?" → `today_update`
-- "Weekly updates from the last month" → `weekly_updates` with `weeks=4`
-- "What happened in June 2025?" → `specific_month` with `year=2025`, `month=6`
-- "Ecosystem news from Jan to March 2025" → `specific_date_range`
-- "Latest official announcements" → `official_announcements`
-- "Monthly ecosystem summaries" → `monthly_updates`
+## 请求限制
 
-**Knowledge & community:**
+每IP每分钟允许60次请求。超出限制时将返回HTTP 429错误，并附带`Retry-After`头部信息。
 
-- "Explain Cerberus consensus" → `radix_glossary` with `themes=["cerberus"]`
-- "What is sharding?" → `radix_core_concepts` with `concepts=["sharding"]`
-- "Find DeFi dApps" → `radix_dapps` with `category="DeFi"`
-- "Where can I buy XRD?" → `xrd_trading_venues` with `type="onramp"`
-- "Radix Discord and Telegram links" → `radix_socials`
+## 关于Emily
 
-**Multi-tool workflows:**
-
-- Resolve an RNS domain, then check wallet tokens: `rns_to_address` → `tokens_in_wallet`
-- Research a token on Radix, then compare to CMC data: `token_details` → `tokens_on_cmc` → `token_details_from_cmc`
-- Full wallet analysis: `tokens_in_wallet` + `performance_of_wallet` + `distribution_of_wallet` + `latest_transactions`
-- DeFi overview: `attos_earn_stats` + `attos_earn_pools` + `attos_earn_strategies`
-
-## Data Sources & Freshness
-
-- **Token prices**: Astrolescent API, cached up to 24 hours, updated hourly via cron
-- **Wallet data**: Radix Gateway API (Babylon mainnet), real-time
-- **CoinMarketCap**: Live API queries
-- **Ecosystem updates**: Aggregated daily/weekly/monthly from Telegram channels and official sources
-- **Validators**: Radix Gateway API, real-time
-- **dApps directory**: Curated dataset, periodically updated
-- **Attos Earn**: Live API queries to earn-api.attos.world (Beta)
-- **Trading venues & socials**: Curated static datasets
-
-## Rate Limits
-
-60 requests per minute per IP. Returns HTTP 429 with `Retry-After` header when exceeded.
-
-## About
-
-Powered by [Emily](https://www.ineedemily.com) - an AI assistant for the Radix DLT ecosystem.
-Data sourced from the [Radix Gateway API](https://docs.radixdlt.com/docs/network-apis), [Astrolescent](https://astrolescent.com), [CoinMarketCap](https://coinmarketcap.com), and [Attos Earn](https://earn.attos.world).
+Emily是由[Emily](https://www.ineedemily.com)提供的人工智能助手，专为Radix DLT生态系统设计。数据来源于[Radix Gateway API](https://docs.radixdlt.com/docs/network-apis)、[Astrolescent](https://astrolescent.com)、[CoinMarketCap](https://coinmarketcap.com)和[Attos Earn](https://earn.attos.world)。

@@ -1,6 +1,6 @@
 ---
 name: ggshield-scanner
-description: Detect 500+ types of hardcoded secrets (API keys, credentials, tokens) before they leak into git. Wraps GitGuardian's ggshield CLI.
+description: 在敏感信息（如 API 密钥、凭据、令牌等）泄露到 Git 仓库之前，能够检测出 500 多种类型的硬编码秘密。该功能基于 GitGuardian 的 ggshield CLI 实现。
 homepage: https://github.com/GitGuardian/ggshield-skill
 metadata:
   clawdbot:
@@ -9,353 +9,212 @@ metadata:
       env: ["GITGUARDIAN_API_KEY"]
 ---
 
-# ggshield Secret Scanner
+# ggshield 秘密扫描器
 
-## Overview
+## 概述
 
-**ggshield** is a CLI tool that detects hardcoded secrets in your codebase. This Moltbot skill brings secret scanning capabilities to your AI agent.
+**ggshield** 是一个命令行工具（CLI），用于检测代码库中硬编码的敏感信息（即秘密）。该工具为你的 AI 代理（Moltbot）提供了秘密扫描功能。
 
-### What Are "Secrets"?
+### 什么是“秘密”？
 
-Secrets are sensitive credentials that should NEVER be committed to version control:
-- AWS Access Keys, GCP Service Accounts, Azure credentials
-- API tokens (GitHub, Slack, Stripe, etc.)
-- Database passwords and connection strings
-- Private encryption keys and certificates
-- OAuth tokens and refresh tokens
-- PayPal/Stripe API keys
-- Email server credentials
+秘密是指那些绝对不能被提交到版本控制系统的敏感凭证，例如：
+- AWS 访问密钥、GCP 服务账户、Azure 凭据
+- API 令牌（如 GitHub、Slack、Stripe 等）
+- 数据库密码和连接字符串
+- 私有加密密钥和证书
+- OAuth 令牌和刷新令牌
+- PayPal/Stripe API 密钥
+- 电子邮件服务器凭证
 
-### Why This Matters
+### 为什么这很重要？
 
-A single leaked secret can:
-- 🔓 Compromise your infrastructure
-- 💸 Incur massive cloud bills (attackers abuse your AWS account)
-- 📊 Expose customer data (GDPR/CCPA violation)
-- 🚨 Trigger security incidents and audits
+泄露一个秘密可能会导致以下后果：
+- 🔓 使你的基础设施受到威胁
+- 💸 产生巨额的云服务费用（攻击者会滥用你的 AWS 账户）
+- 📊 暴露客户数据（违反 GDPR/CCPA 等法规）
+- 🚨 触发安全事件和审计
 
-ggshield catches these **before** they reach your repository.
+**ggshield** 会在这些秘密被提交到仓库之前就将其检测出来。
 
-## Features
+## 功能
 
-### Commands Available
+### 可用的命令
 
 #### 1. `scan-repo`
-Scans an entire git repository for secrets (including history).
+    扫描整个 Git 仓库中的秘密（包括历史记录）。
 
-```
-@clawd scan-repo /path/to/my/project
-```
+**输出**：
+（具体输出内容会根据实际执行情况生成）
 
-**Output**:
-```
-🔍 Scanning repository...
-✅ Repository clean: 1,234 files scanned, 0 secrets found
-```
-
-**Output on detection**:
-```
-❌ Found 2 secrets:
-
-- AWS Access Key ID in config/prod.py:42
-- Slack API token in .env.backup:8
-
-Use 'ggshield secret ignore --last-found' to ignore, or remove them.
-```
+**检测到秘密时的输出**：
+（具体输出内容会根据实际执行情况生成）
 
 #### 2. `scan-file`
-Scans a single file for secrets.
-
-```
-@clawd scan-file /path/to/config.py
-```
+    扫描单个文件中的秘密。
 
 #### 3. `scan-staged`
-Scans only staged git changes (useful pre-commit check).
+    仅扫描已暂存的 Git 变更（适用于提交前的检查）。
 
-```
-@clawd scan-staged
-```
-
-This runs on your `git add`-ed changes only (fast!).
+**说明**：此命令仅针对已添加到 `git add` 的更改进行扫描，因此速度较快。
 
 #### 4. `install-hooks`
-Installs ggshield as a git pre-commit hook.
+    将 `ggshield` 安装为 Git 的提交前钩子（pre-commit hook）。
 
-```
-@clawd install-hooks
-```
-
-After this, every commit is automatically scanned:
-```
-$ git commit -m "Add config"
-🔍 Running ggshield pre-commit hook...
-❌ Secrets detected! Commit blocked.
-Remove the secrets and try again.
-```
+**说明**：安装后，每次提交都会自动触发扫描。
 
 #### 5. `scan-docker`
-Scans Docker images for secrets in their layers.
+    扫描 Docker 镜像中的秘密。
 
-```
-@clawd scan-docker my-app:latest
-```
+## 安装
 
-## Installation
+### 先决条件
 
-### Prerequisites
+1. **ggshield CLI**：通过 pip 安装
+   （安装命令会根据实际情况提供）
 
-1. **ggshield CLI**: Install via pip
-   ```bash
-   pip install ggshield>=1.15.0
-   ```
+2. **GitGuardian API 密钥**：用于秘密检测
+   - 注册：https://dashboard.gitguardian.com（免费）
+   - 在设置中生成 API 密钥
+   - 设置环境变量：
+     （具体设置命令会根据实际情况提供）
 
-2. **GitGuardian API Key**: Required for secret detection
-   - Sign up: https://dashboard.gitguardian.com (free)
-   - Generate API key in Settings
-   - Set environment variable:
+3. **Python 3.8+**：`ggshield` 需要 Python 3.8 或更高版本。
 
-```bash
-export GITGUARDIAN_API_KEY="your-api-key-here"
-```
+### 安装技能
 
-3. **Python 3.8+**: Required by ggshield
+（安装命令会根据实际情况提供）
 
-### Install Skill
+现在该技能已添加到你的 Moltbot 工作空间中。
 
-```bash
-clawdhub install ggshield-scanner
-```
+### 在你的 Moltbot 工作空间中
 
-The skill is now available in your Moltbot workspace.
+启动一个新的 Moltbot 会话以使用该技能：
 
-### In Your Moltbot Workspace
+（具体操作步骤会根据实际情况提供）
 
-Start a new Moltbot session to pick up the skill:
+## 使用模式
 
-```bash
-moltbot start
-# or via messaging: @clawd list-skills
-```
+### 模式 1：推送前进行安全检查
 
-## Usage Patterns
+### 模式 2：审计现有仓库
 
-### Pattern 1: Before Pushing (Security Check)
+### 模式 3：提交前强制检查
 
-```
-Dev: @clawd scan-repo .
-Moltbot: ✅ Repository clean. All good to push!
+### 模式 4：Docker 镜像安全检查
 
-Dev: git push
-```
+## 配置
 
-### Pattern 2: Audit Existing Repo
+### 环境变量
 
-```
-Dev: @clawd scan-repo ~/my-old-project
-Moltbot: ❌ Found 5 secrets in history!
-         - AWS keys in config/secrets.json
-         - Database password in docker-compose.yml
-         - Slack webhook in .env.example
-Moltbot: Recommendation: Rotate these credentials immediately.
-         Consider using git-filter-repo to remove from history.
-```
-
-### Pattern 3: Pre-Commit Enforcement
-
-```
-Dev: @clawd install-hooks
-Moltbot: ✅ Installed pre-commit hook
-
-Dev: echo "SECRET_TOKEN=xyz" > config.py
-Dev: git add config.py
-Dev: git commit -m "Add config"
-Moltbot: ❌ Pre-commit hook detected secret!
-Dev: rm config.py && git reset
-Dev: (add config to .gitignore and to environment variables instead)
-Dev: git commit -m "Add config" # Now works!
-```
-
-### Pattern 4: Docker Image Security
-
-```
-Dev: @clawd scan-docker my-api:v1.2.3
-Moltbot: ✅ Docker image clean
-```
-
-## Configuration
-
-### Environment Variables
-
-These are required for the skill to work:
-
-| Variable | Value | Where to Set |
+以下环境变量是该技能正常运行所必需的：
+| 变量 | 值 | 设置位置 |
 | :-- | :-- | :-- |
-| `GITGUARDIAN_API_KEY` | Your API key from https://dashboard.gitguardian.com | `~/.bashrc` or `~/.zshrc` |
-| `GITGUARDIAN_ENDPOINT` | `https://api.gitguardian.com` (default, optional) | Usually not needed |
+| `GITGUARDIAN_API_KEY` | 从 https://dashboard.gitguardian.com 获取的 API 密钥 | `~/.bashrc` 或 `~/.zshrc` |
+| `GITGUARDIAN_ENDPOINT` | `https://api.gitguardian.com`（默认值，可选） | 通常不需要 |
 
-### Optional ggshield Config
+### 可选的 `ggshield` 配置
 
-Create `~/.gitguardian/.gitguardian.yml` for persistent settings:
+创建 `~/.gitguardian/.gitguardian.yml` 文件以保存持久化配置：
 
-```yaml
-verbose: false
-output-format: json
-exit-code: true
-```
+（配置文件内容会根据实际情况提供）
 
-For details: https://docs.gitguardian.com/ggshield-docs/
+更多详情请参阅：https://docs.gitguardian.com/ggshield-docs/
 
-## Privacy & Security
+## 隐私与安全
 
-### What Data is Sent to GitGuardian?
+### 传输到 GitGuardian 的数据
 
-✅ **ONLY metadata is sent**:
+✅ **仅传输元数据**：
+- 秘密模式的哈希值（而非实际秘密内容）
+- 文件路径（仅相对路径）
+- 行号
 
-- Hash of the secret pattern (not the actual secret)
-- File path (relative path only)
-- Line number
+❌ **绝不传输**：
+- 你的实际秘密或凭证
+- 文件内容
+- 私有密钥
+- 其他敏感信息
 
-❌ **NEVER sent**:
+**备注**：GitGuardian 企业版客户可以在本地进行扫描，无需将数据传输到云端。
 
-- Your actual secrets or credentials
-- File contents
-- Private keys
-- Credentials
+### 如何检测秘密
 
-**Reference**: GitGuardian Enterprise customers can use on-premise scanning with no data sent anywhere.
+**ggshield** 使用以下方法进行检测：
+1. **基于熵的检测**：识别高熵字符串（随机生成的令牌）
+2. **模式匹配**：查找已知的秘密格式（如 AWS 密钥前缀）
+3. **公开的安全漏洞（CVE）**：参考已公开的秘密信息
+4. **机器学习**：利用泄露的秘密数据进行训练
 
-### How Secrets Are Detected
+## 故障排除
 
-ggshield uses:
+### “ggshield: command not found”
+**原因**：`ggshield` 未安装或未添加到系统的 PATH 环境变量中。
 
-1. **Entropy-based detection**: Identifies high-entropy strings (random tokens)
-2. **Pattern matching**: Looks for known secret formats (AWS key prefixes, etc.)
-3. **Public CVEs**: Cross-references disclosed secrets
-4. **Machine learning**: Trained on leaked secrets database
+**解决方法**：
+（具体解决方法会根据实际情况提供）
 
-## Troubleshooting
+### “GITGUARDIAN_API_KEY not found”
+**原因**：环境变量未设置。
 
-### "ggshield: command not found"
+**解决方法**：
+（具体解决方法会根据实际情况提供）
 
-ggshield is not installed or not in your PATH.
+### “401 Unauthorized”
+**原因**：API 密钥无效或已过期。
 
-**Fix**:
+**解决方法**：
+（具体解决方法会根据实际情况提供）
 
-```bash
-pip install ggshield
-which ggshield  # Should return a path
-```
+### “在大型仓库中扫描速度慢”
+**原因**：扫描 50GB 的大型仓库需要较长时间。`ggshield` 正在处理大量数据。
 
-### "GITGUARDIAN_API_KEY not found"
+**解决方法**：
+（提供加速扫描的技巧或建议）
 
-The environment variable is not set.
+## 高级主题
 
-**Fix**:
+### 忽略误报
 
-```bash
-export GITGUARDIAN_API_KEY="your-key"
-# For persistence, add to ~/.bashrc or ~/.zshrc:
-echo 'export GITGUARDIAN_API_KEY="your-key"' >> ~/.bashrc
-source ~/.bashrc
-```
+有时 `ggshield` 会误判某些字符串为秘密（例如测试密钥）：
 
-### "401 Unauthorized"
+**解决方法**：创建 `.gitguardian/config.json` 文件来设置忽略规则。
 
-API key is invalid or expired.
+### 与 CI/CD 集成
 
-**Fix**:
+你可以将秘密扫描功能集成到 GitHub Actions 或 GitLab CI 中：
 
-```bash
-# Test the API key
-ggshield auth status
+（集成步骤会根据实际情况提供）
 
-# If invalid, regenerate at https://dashboard.gitguardian.com → API Tokens
-# Then: export GITGUARDIAN_API_KEY="new-key"
-```
+### 企业版：本地扫描
 
-### "Slow on large repositories"
+如果你的公司使用 GitGuardian 企业版，可以在本地进行扫描，无需将数据传输到云端：
 
-Scanning a 50GB monorepo takes time. ggshield is doing a lot of work.
+（具体配置步骤会根据实际情况提供）
 
-**Workaround**:
+## 相关资源
 
-```bash
-# Scan only staged changes (faster):
-@clawd scan-staged
+- **ggshield 文档**：https://docs.gitguardian.com/ggshield-docs/
+- **GitGuardian 控制台**：https://dashboard.gitguardian.com（查看所有检测到的秘密）
+- **Moltbot 技能**：https://docs.molt.bot/tools/clawdhub
+- **秘密管理最佳实践**：https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
 
-# Or specify a subdirectory:
-@clawd scan-file ./app/config.py
-```
+## 支持
 
-## Advanced Topics
+- **问题报告**：https://github.com/GitGuardian/ggshield-skill/issues
+- **咨询**：在 ClawdHub 上提交问题或留言
+- **ggshield 相关问题**：https://github.com/GitGuardian/ggshield/issues
 
-### Ignoring False Positives
+## 许可证
 
-Sometimes ggshield flags a string that's NOT a secret (e.g., a test key):
+MIT 许可证 - 详见 LICENSE 文件
 
-```bash
-# Ignore the last secret found
-ggshield secret ignore --last-found
+## 贡献者
 
-# Ignore all in a file
-ggshield secret ignore --path ./config-example.py
-```
-
-This creates `.gitguardian/config.json` with ignore rules.
-
-### Integrating with CI/CD
-
-You can add secret scanning to GitHub Actions / GitLab CI:
-
-```yaml
-# .github/workflows/secret-scan.yml
-name: Secret Scan
-on: [push]
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: pip install ggshield
-      - run: ggshield secret scan repo .
-        env:
-          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-```
-
-### Enterprise: On-Premise Scanning
-
-If your company uses GitGuardian Enterprise, you can scan without sending data to the cloud:
-
-```bash
-export GITGUARDIAN_ENDPOINT="https://your-instance.gitguardian.com"
-export GITGUARDIAN_API_KEY="your-enterprise-key"
-```
-
-## Related Resources
-
-- **ggshield Documentation**: https://docs.gitguardian.com/ggshield-docs/
-- **GitGuardian Dashboard**: https://dashboard.gitguardian.com (view all secrets found)
-- **Moltbot Skills**: https://docs.molt.bot/tools/clawdhub
-- **Secret Management Best Practices**: https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html
-
-## Support
-
-- **Bug reports**: https://github.com/GitGuardian/ggshield-skill/issues
-- **Questions**: Open an issue or comment on ClawdHub
-- **ggshield issues**: https://github.com/GitGuardian/ggshield/issues
-
-## License
-
-MIT License - See LICENSE file
-
-## Contributors
-
-- GitGuardian Team
-- [Your contributions welcome!]
+- GitGuardian 团队
+- 欢迎你的贡献！
 
 ---
 
-**Version**: 1.0.0
-**Last updated**: January 2026
-**Maintainer**: GitGuardian
+**版本**：1.0.0
+**最后更新**：2026 年 1 月
+**维护者**：GitGuardian

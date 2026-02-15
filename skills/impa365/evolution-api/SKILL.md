@@ -1,6 +1,6 @@
 ---
 name: evolution-api-v2
-description: Complete WhatsApp automation via Evolution API v2.3 - instances, messages (text/media/polls/lists/buttons/status), groups, labels, chatbots (Typebot/OpenAI/Dify/Flowise/N8N/EvoAI), webhooks, proxy, S3 storage, and Chatwoot integration
+description: 通过 Evolution API v2.3 完成 WhatsApp 自动化操作：支持实例、消息（文本/媒体/投票/列表/按钮/状态）、群组、标签、聊天机器人（Typebot/OpenAI/Dify/Flowise/N8N/EvoAI）、Webhook、代理服务器、S3 存储以及与 Chatwoot 的集成。
 metadata:
   openclaw:
     requires:
@@ -14,13 +14,13 @@ metadata:
 
 # Evolution API v2.3
 
-Complete WhatsApp automation via Evolution API v2.3. Send messages, manage groups, integrate chatbots (Typebot, OpenAI, Dify, Flowise, N8N, Evo AI), configure webhooks, and connect with Chatwoot.
+通过Evolution API v2.3实现完整的WhatsApp自动化功能。您可以发送消息、管理群组、集成聊天机器人（如Typebot、OpenAI、Dify、Flowise、N8N、Evo AI）、配置Webhook，并与Chatwoot进行连接。
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Set Environment Variables
+### 1. 设置环境变量
 
 ```json5
 {
@@ -33,7 +33,7 @@ Complete WhatsApp automation via Evolution API v2.3. Send messages, manage group
 }
 ```
 
-### 2. Create Instance & Connect
+### 2. 创建实例并连接
 
 ```bash
 # Create instance (supports Baileys, Business, or Evolution integration)
@@ -51,9 +51,9 @@ curl -X GET "$EVO_API_URL/instance/connect/$EVO_INSTANCE" \
   -H "apikey: $EVO_API_KEY"
 ```
 
-Scan the QR code returned in `base64` field. Alternately pass `?number=5511999999999` for pairing code.
+扫描`base64`字段中返回的二维码。或者使用`?number=5511999999999`作为配对码。
 
-### 3. Send First Message
+### 3. 发送第一条消息
 
 ```bash
 curl -X POST "$EVO_API_URL/message/sendText/$EVO_INSTANCE" \
@@ -67,51 +67,52 @@ curl -X POST "$EVO_API_URL/message/sendText/$EVO_INSTANCE" \
 
 ---
 
-## Authentication
+## 认证
 
-Two authentication levels:
+Evolution API提供两种认证级别：
 
-| Type | Header | Usage |
-|------|--------|-------|
-| **Global API Key** | `apikey: $EVO_GLOBAL_KEY` | Admin: create/delete instances, fetch all |
-| **Instance API Key** | `apikey: $EVO_API_KEY` | Messaging, groups, chat, profile, labels |
+| 认证类型 | 头部字段 | 用途 |
+|--------|---------|-------|
+| **全局API密钥** | `apikey: $EVO_GLOBAL_KEY` | 管理员：创建/删除实例、获取所有信息 |
+| **实例API密钥** | `apikey: $EVO_API_KEY` | 发送消息、管理群组、聊天、个人资料、标签 |
 
-All instance endpoints use the path pattern: `/{resource}/{action}/{instanceName}`
+所有实例端点的路径模式为：`/{resource}/{action}/{instanceName}`
 
 ---
 
-## Core Concepts
+## 核心概念
 
-### Phone Number Formats
+### 手机号码格式
 
-| Context | Format | Example |
+| 使用场景 | 格式 | 示例 |
 |---------|--------|---------|
-| **Sending messages** | Country code + number | `5511999999999` |
-| **Group JID** | Group ID | `999999999999999999@g.us` |
-| **User JID** | Number + suffix | `5511999999999@s.whatsapp.net` |
+| **发送消息** | 国家代码 + 电话号码 | `5511999999999` |
+| **群组JID** | 群组ID | `999999999999999999@g.us` |
+| **用户JID** | 电话号码 + 后缀 | `5511999999999@s.whatsapp.net` |
 
-### Integration Types
+### 集成类型
 
-| Value | Description |
+| 值 | 描述 |
 |-------|-------------|
-| `WHATSAPP-BAILEYS` | Unofficial (default, full features) |
-| `WHATSAPP-BUSINESS` | Official Cloud API |
-| `EVOLUTION` | Evolution channel |
+| `WHATSAPP-BAILEYS` | 非官方版本（默认，支持全部功能） |
+| `WHATSAPP-BUSINESS` | 官方Cloud API |
+| `EVOLUTION` | Evolution专用通道 |
 
-### Message Delay
+### 消息延迟
 
-Add `delay` (milliseconds) to avoid rate limits:
+通过添加`delay`参数（单位：毫秒）来避免达到发送速率限制：
+
 ```json
 { "delay": 1200 }
 ```
 
 ---
 
-## Feature Reference
+## 功能参考
 
-### Instance Management
+### 实例管理
 
-#### Create Instance
+#### 创建实例
 ```bash
 POST /instance/create
 Header: apikey: $EVO_GLOBAL_KEY
@@ -140,8 +141,8 @@ Header: apikey: $EVO_GLOBAL_KEY
 }
 ```
 
-**Inline webhook** (optional during creation):
-```json
+**创建时可选配置：**
+- **内联Webhook**：```json
 {
   "webhook": {
     "url": "https://webhook.site/your-id",
@@ -154,17 +155,13 @@ Header: apikey: $EVO_GLOBAL_KEY
   }
 }
 ```
-
-**Inline RabbitMQ / SQS** (optional during creation):
-```json
+- **内联RabbitMQ / SQS**：```json
 {
   "rabbitmq": { "enabled": true, "events": ["MESSAGES_UPSERT"] },
   "sqs": { "enabled": true, "events": ["MESSAGES_UPSERT"] }
 }
 ```
-
-**Inline Chatwoot** (optional during creation):
-```json
+- **内联Chatwoot**：```json
 {
   "chatwootAccountId": "1",
   "chatwootToken": "TOKEN",
@@ -180,7 +177,7 @@ Header: apikey: $EVO_GLOBAL_KEY
 }
 ```
 
-#### Fetch Instances
+#### 获取实例信息
 ```bash
 GET /instance/fetchInstances
 Header: apikey: $EVO_GLOBAL_KEY
@@ -190,7 +187,7 @@ Header: apikey: $EVO_GLOBAL_KEY
 # ?instanceId=INSTANCE_ID
 ```
 
-#### Connect Instance (QR Code)
+#### 通过二维码连接实例
 ```bash
 GET /instance/connect/{instance}
 Header: apikey: $EVO_API_KEY
@@ -198,34 +195,34 @@ Header: apikey: $EVO_API_KEY
 # Optional: ?number=5511999999999 (for pairing code)
 ```
 
-#### Connection Status
+#### 检查实例连接状态
 ```bash
 GET /instance/connectionState/{instance}
 Header: apikey: $EVO_API_KEY
 ```
 
-#### Restart Instance
+#### 重启实例
 ```bash
 POST /instance/restart/{instance}
 Header: apikey: $EVO_API_KEY
 ```
 
-#### Set Presence
+#### 设置用户在线状态
 ```bash
 POST /instance/setPresence/{instance}
 Header: apikey: $EVO_API_KEY
 
 { "presence": "available" }
 ```
-**Options:** `available`, `unavailable`
+**可选状态：** `available`（在线），`unavailable`（离线）
 
-#### Logout Instance
+#### 退出实例
 ```bash
 DELETE /instance/logout/{instance}
 Header: apikey: $EVO_API_KEY
 ```
 
-#### Delete Instance
+#### 删除实例
 ```bash
 DELETE /instance/delete/{instance}
 Header: apikey: $EVO_GLOBAL_KEY
@@ -233,9 +230,9 @@ Header: apikey: $EVO_GLOBAL_KEY
 
 ---
 
-### Settings
+### 设置
 
-#### Set Settings
+#### 配置设置
 ```bash
 POST /settings/set/{instance}
 Header: apikey: $EVO_API_KEY
@@ -251,7 +248,7 @@ Header: apikey: $EVO_API_KEY
 }
 ```
 
-#### Find Settings
+#### 查看设置
 ```bash
 GET /settings/find/{instance}
 Header: apikey: $EVO_API_KEY
@@ -259,9 +256,9 @@ Header: apikey: $EVO_API_KEY
 
 ---
 
-### Proxy
+### 代理设置
 
-#### Set Proxy
+#### 设置代理
 ```bash
 POST /proxy/set/{instance}
 Header: apikey: $EVO_API_KEY
@@ -276,7 +273,7 @@ Header: apikey: $EVO_API_KEY
 }
 ```
 
-#### Find Proxy
+#### 查找代理信息
 ```bash
 GET /proxy/find/{instance}
 Header: apikey: $EVO_API_KEY
@@ -284,9 +281,9 @@ Header: apikey: $EVO_API_KEY
 
 ---
 
-### Send Messages
+### 发送消息
 
-#### Send Text
+#### 发送文本消息
 ```bash
 POST /message/sendText/{instance}
 
@@ -302,7 +299,7 @@ POST /message/sendText/{instance}
 }
 ```
 
-#### Send Media (URL)
+#### 发送媒体文件（URL）
 ```bash
 POST /message/sendMedia/{instance}
 
@@ -317,9 +314,9 @@ POST /message/sendMedia/{instance}
 }
 ```
 
-**Media types:** `image`, `video`, `document`
+**支持的媒体类型：** `image`（图片）、`video`（视频）、`document`（文档）
 
-#### Send Media (File Upload)
+#### 上传媒体文件
 ```bash
 POST /message/sendMedia/{instance}
 Content-Type: multipart/form-data
@@ -327,7 +324,7 @@ Content-Type: multipart/form-data
 # Use form-data with file field
 ```
 
-#### Send PTV (Round Video)
+#### 发送PTV（圆形视频）
 ```bash
 POST /message/sendPtv/{instance}
 
@@ -338,9 +335,9 @@ POST /message/sendPtv/{instance}
 }
 ```
 
-Also supports file upload via form-data.
+支持通过表单数据上传文件。
 
-#### Send Narrated Audio (Voice Note)
+#### 发送语音消息
 ```bash
 POST /message/sendWhatsAppAudio/{instance}
 
@@ -351,7 +348,7 @@ POST /message/sendWhatsAppAudio/{instance}
 }
 ```
 
-#### Send Status/Stories
+#### 发送状态/故事
 ```bash
 POST /message/sendStatus/{instance}
 
@@ -365,11 +362,11 @@ POST /message/sendStatus/{instance}
 }
 ```
 
-**Types:** `text`, `image`, `video`, `audio`  
-**Fonts (text only):** `1` SERIF, `2` NORICAN_REGULAR, `3` BRYNDAN_WRITE, `4` BEBASNEUE_REGULAR, `5` OSWALD_HEAVY  
-For image/video: use `content` as URL and `caption` for text.
+**状态/故事类型：** `text`（文本）、`image`（图片）、`video`（视频）、`audio`（音频）  
+**文本字体：** `1`（SERIF）、`2`（NORICAN_REGULAR）、`3`（BRYNDAN_WRITE）、`4`（BEBASNEUE_REGULAR）、`5`（OSWALD_HEAVY）  
+对于图片/视频，使用`content`作为URL，`caption`作为文字描述。
 
-#### Send Sticker
+#### 发送贴纸
 ```bash
 POST /message/sendSticker/{instance}
 
@@ -380,7 +377,7 @@ POST /message/sendSticker/{instance}
 }
 ```
 
-#### Send Location
+#### 发送位置信息
 ```bash
 POST /message/sendLocation/{instance}
 
@@ -394,7 +391,7 @@ POST /message/sendLocation/{instance}
 }
 ```
 
-#### Send Contact (vCard)
+#### 发送联系人信息（vCard）
 ```bash
 POST /message/sendContact/{instance}
 
@@ -413,9 +410,9 @@ POST /message/sendContact/{instance}
 }
 ```
 
-Multiple contacts can be sent in the array.
+可以一次性发送多个联系人信息。
 
-#### Send Reaction
+#### 发送反应表情
 ```bash
 POST /message/sendReaction/{instance}
 
@@ -429,9 +426,9 @@ POST /message/sendReaction/{instance}
 }
 ```
 
-Set `reaction: ""` to remove.
+将`reaction`设置为`""`可取消发送反应表情。
 
-#### Send Poll
+#### 发送投票
 ```bash
 POST /message/sendPoll/{instance}
 
@@ -444,7 +441,7 @@ POST /message/sendPoll/{instance}
 }
 ```
 
-#### Send List
+#### 发送列表信息
 ```bash
 POST /message/sendList/{instance}
 
@@ -475,7 +472,7 @@ POST /message/sendList/{instance}
 }
 ```
 
-#### Send Buttons
+#### 发送按钮
 ```bash
 POST /message/sendButtons/{instance}
 
@@ -495,14 +492,14 @@ POST /message/sendButtons/{instance}
 }
 ```
 
-**Button types:** `reply`, `copy`, `url`, `call`, `pix`  
-**Pix keyType:** `phone`, `email`, `cpf`, `cnpj`, `random`
+**按钮类型：** `reply`（回复）、`copy`（复制）、`url`（链接）、`call`（呼叫）、`pix`（图片链接）  
+**Pix键值类型：** `phone`（电话号码）、`email`（电子邮件地址）、`cpf`（加拿大法人身份证号）、`random`（随机）
 
 ---
 
-### Chat Operations
+### 聊天操作
 
-#### Check WhatsApp Numbers
+#### 检查WhatsApp号码是否可用
 ```bash
 POST /chat/whatsappNumbers/{instance}
 
@@ -515,7 +512,7 @@ POST /chat/whatsappNumbers/{instance}
 }
 ```
 
-#### Read Messages (Mark as Read)
+#### 阅读消息（标记为已读）
 ```bash
 POST /chat/markMessageAsRead/{instance}
 
@@ -530,7 +527,7 @@ POST /chat/markMessageAsRead/{instance}
 }
 ```
 
-#### Archive Chat
+#### 归档聊天记录
 ```bash
 POST /chat/archiveChat/{instance}
 
@@ -547,9 +544,9 @@ POST /chat/archiveChat/{instance}
 }
 ```
 
-Set `archive: false` to unarchive.
+将`archive`设置为`false`可取消归档。
 
-#### Mark Chat Unread
+#### 将聊天记录标记为未读
 ```bash
 POST /chat/markChatUnread/{instance}
 
@@ -565,7 +562,7 @@ POST /chat/markChatUnread/{instance}
 }
 ```
 
-#### Delete Message
+#### 删除消息
 ```bash
 DELETE /chat/deleteMessageForEveryone/{instance}
 
@@ -577,7 +574,7 @@ DELETE /chat/deleteMessageForEveryone/{instance}
 }
 ```
 
-#### Update Message (Edit)
+#### 更新消息内容
 ```bash
 POST /chat/updateMessage/{instance}
 
@@ -592,7 +589,7 @@ POST /chat/updateMessage/{instance}
 }
 ```
 
-#### Send Presence (Typing Indicator)
+#### 设置发送状态（输入中）
 ```bash
 POST /chat/sendPresence/{instance}
 
@@ -603,9 +600,9 @@ POST /chat/sendPresence/{instance}
 }
 ```
 
-**Options:** `composing`, `recording`, `paused`
+**状态选项：** `composing`（输入中）、`recording`（正在录制）、`paused`（暂停）
 
-#### Update Block Status
+#### 更新消息块状态
 ```bash
 POST /message/updateBlockStatus/{instance}
 
@@ -615,16 +612,16 @@ POST /message/updateBlockStatus/{instance}
 }
 ```
 
-**Options:** `block`, `unblock`
+**状态选项：** `block`（屏蔽）、`unblock`（解封）
 
-#### Fetch Profile Picture
+#### 获取个人资料图片
 ```bash
 POST /chat/fetchProfilePictureUrl/{instance}
 
 { "number": "5511999999999" }
 ```
 
-#### Get Base64 From Media Message
+#### 从媒体消息中提取Base64编码
 ```bash
 POST /chat/getBase64FromMediaMessage/{instance}
 
@@ -636,9 +633,9 @@ POST /chat/getBase64FromMediaMessage/{instance}
 }
 ```
 
-Extracts base64 from received media. Set `convertToMp4: true` for audio files to get MP4 instead of OGG.
+从接收到的媒体文件中提取Base64编码。将`convertToMp4`设置为`true`可获取MP4格式文件（而非OGG格式）。
 
-#### Find Contacts
+#### 查找联系人
 ```bash
 POST /chat/findContacts/{instance}
 
@@ -649,9 +646,9 @@ POST /chat/findContacts/{instance}
 }
 ```
 
-Omit `id` to list all contacts.
+省略`id`参数可列出所有联系人。
 
-#### Find Messages
+#### 查找消息
 ```bash
 POST /chat/findMessages/{instance}
 
@@ -666,7 +663,7 @@ POST /chat/findMessages/{instance}
 }
 ```
 
-#### Find Status Message
+#### 查找状态消息
 ```bash
 POST /chat/findStatusMessage/{instance}
 
@@ -680,16 +677,16 @@ POST /chat/findStatusMessage/{instance}
 }
 ```
 
-#### Find Chats
+#### 查找聊天记录
 ```bash
 POST /chat/findChats/{instance}
 ```
 
 ---
 
-### Calls
+### 呼叫功能
 
-#### Fake Call (Offer)
+#### 模拟电话呼叫
 ```bash
 POST /call/offer/{instance}
 
@@ -700,18 +697,18 @@ POST /call/offer/{instance}
 }
 ```
 
-Simulates a call offer to the number. `callDuration` is in seconds.
+模拟向指定号码发起电话呼叫。`callDuration`参数以秒为单位。
 
 ---
 
-### Labels
+### 标签管理
 
-#### Find Labels
+#### 查找标签
 ```bash
 GET /label/findLabels/{instance}
 ```
 
-#### Handle Labels (Add/Remove)
+#### 添加/删除标签
 ```bash
 POST /label/handleLabel/{instance}
 
@@ -722,58 +719,58 @@ POST /label/handleLabel/{instance}
 }
 ```
 
-**Actions:** `add`, `remove`
+**操作选项：** `add`（添加）、`remove`（删除）
 
 ---
 
-### Profile Settings
+### 个人资料设置
 
-#### Fetch Business Profile
+#### 获取企业资料
 ```bash
 POST /chat/fetchBusinessProfile/{instance}
 
 { "number": "5511999999999" }
 ```
 
-#### Fetch Profile
+#### 获取个人资料信息
 ```bash
 POST /chat/fetchProfile/{instance}
 
 { "number": "5511999999999" }
 ```
 
-#### Update Profile Name
+#### 更新个人资料名称
 ```bash
 POST /chat/updateProfileName/{instance}
 
 { "name": "My Bot Name" }
 ```
 
-#### Update Profile Status
+#### 更新个人资料状态
 ```bash
 POST /chat/updateProfileStatus/{instance}
 
 { "status": "Available 24/7" }
 ```
 
-#### Update Profile Picture
+#### 更新个人资料图片
 ```bash
 POST /chat/updateProfilePicture/{instance}
 
 { "picture": "https://example.com/avatar.jpg" }
 ```
 
-#### Remove Profile Picture
+#### 删除个人资料图片
 ```bash
 DELETE /chat/removeProfilePicture/{instance}
 ```
 
-#### Fetch Privacy Settings
+#### 获取隐私设置
 ```bash
 GET /chat/fetchPrivacySettings/{instance}
 ```
 
-#### Update Privacy Settings
+#### 更新隐私设置
 ```bash
 POST /chat/updatePrivacySettings/{instance}
 
@@ -787,19 +784,19 @@ POST /chat/updatePrivacySettings/{instance}
 }
 ```
 
-**Privacy values:**
-- `readreceipts`: `all`, `none`
-- `profile`: `all`, `contacts`, `contact_blacklist`, `none`
-- `status`: `all`, `contacts`, `contact_blacklist`, `none`
-- `online`: `all`, `match_last_seen`
-- `last`: `all`, `contacts`, `contact_blacklist`, `none`
-- `groupadd`: `all`, `contacts`, `contact_blacklist`
+**隐私设置选项：**
+- `readreceipts`：`all`（全部显示）、`none`（不显示）
+- `profile`：`all`（全部显示）、`contacts`（仅显示联系人）、`contact_blacklist`（仅显示黑名单联系人）
+- `status`：`all`（全部显示）、`contacts`（仅显示联系人）、`contact_blacklist`（仅显示黑名单联系人）
+- `online`：`all`（全部显示）、`match_last_seen`（仅显示最后联系时间）
+- `last`：`all`（全部显示）、`contacts`（仅显示联系人）、`contact_blacklist`（仅显示黑名单联系人）
+- `groupadd`：`all`（全部显示）、`contacts`（仅显示联系人）、`contact_blacklist`（仅显示黑名单联系人）
 
 ---
 
-### Group Management
+### 群组管理
 
-#### Create Group
+#### 创建群组
 ```bash
 POST /group/create/{instance}
 
@@ -813,38 +810,38 @@ POST /group/create/{instance}
 }
 ```
 
-#### Update Group Picture
+#### 更新群组图片
 ```bash
 POST /group/updateGroupPicture/{instance}?groupJid={groupJid}
 
 { "image": "https://example.com/group-photo.png" }
 ```
 
-#### Update Group Subject (Name)
+#### 更新群组名称
 ```bash
 POST /group/updateGroupSubject/{instance}?groupJid={groupJid}
 
 { "subject": "New Group Name" }
 ```
 
-#### Update Group Description
+#### 更新群组描述
 ```bash
 POST /group/updateGroupDescription/{instance}?groupJid={groupJid}
 
 { "description": "New group description" }
 ```
 
-#### Fetch Invite Code
+#### 获取群组邀请码
 ```bash
 GET /group/inviteCode/{instance}?groupJid={groupJid}
 ```
 
-#### Revoke Invite Code
+#### 取消群组邀请
 ```bash
 POST /group/revokeInviteCode/{instance}?groupJid={groupJid}
 ```
 
-#### Send Invite URL
+#### 发送群组邀请链接
 ```bash
 POST /group/sendInvite/{instance}
 
@@ -855,28 +852,28 @@ POST /group/sendInvite/{instance}
 }
 ```
 
-#### Find Group by Invite Code
+#### 通过邀请码查找群组
 ```bash
 GET /group/inviteInfo/{instance}?inviteCode={inviteCode}
 ```
 
-#### Find Group by JID
+#### 通过JID查找群组
 ```bash
 GET /group/findGroupInfos/{instance}?groupJid={groupJid}
 ```
 
-#### Fetch All Groups
+#### 查找所有群组
 ```bash
 GET /group/fetchAllGroups/{instance}
 # Optional: ?getParticipants=true
 ```
 
-#### Find Participants
+#### 查找群组成员
 ```bash
 GET /group/participants/{instance}?groupJid={groupJid}
 ```
 
-#### Update Participants
+#### 更新群组成员
 ```bash
 POST /group/updateParticipant/{instance}?groupJid={groupJid}
 
@@ -886,42 +883,42 @@ POST /group/updateParticipant/{instance}?groupJid={groupJid}
 }
 ```
 
-**Actions:** `add`, `remove`, `promote`, `demote`
+**操作选项：** `add`（添加成员）、`remove`（删除成员）、`promote`（提升成员权限）、`demote`（降低成员权限）
 
-#### Update Group Settings
+#### 更新群组设置
 ```bash
 POST /group/updateSetting/{instance}?groupJid={groupJid}
 
 { "action": "announcement" }
 ```
 
-**Actions:**  
-- `announcement` - Only admins send messages  
-- `not_announcement` - Everyone can send  
-- `locked` - Only admins edit group info  
-- `unlocked` - Everyone can edit group info
+**设置选项：**
+- `announcement`：仅管理员可发送消息 |
+- `not_announcement`：所有成员均可发送消息 |
+- `locked`：仅管理员可编辑群组信息 |
+- `unlocked`：所有成员均可编辑群组信息
 
-#### Toggle Ephemeral (Disappearing Messages)
+#### 设置消息自动消失功能
 ```bash
 POST /group/toggleEphemeral/{instance}?groupJid={groupJid}
 
 { "expiration": 86400 }
 ```
 
-**Expiration values (seconds):**  
-- `0` - Off  
-- `86400` - 24 hours  
-- `604800` - 7 days  
-- `7776000` - 90 days
+**消息消失时间（秒）：**
+- `0`：不启用 |
+- `86400`：24小时 |
+- `604800`：7天 |
+- `7776000`：90天 |
 
-#### Leave Group
+#### 退出群组
 ```bash
 DELETE /group/leaveGroup/{instance}?groupJid={groupJid}
 ```
 
 ---
 
-### Integrations - Events
+### 集成 - 事件通知
 
 #### Webhook
 ```bash
@@ -966,9 +963,9 @@ POST /webhook/set/{instance}
 GET /webhook/find/{instance}
 ```
 
-**Key options:**
-- `byEvents` - If `true`, sends to separate URLs per event type
-- `base64` - If `true`, media comes as base64 in payload
+**关键参数：**
+- `byEvents`：如果设置为`true`，则按事件类型发送通知到不同URL |
+- `base64`：如果设置为`true`，媒体文件将以Base64编码的形式包含在请求体中
 
 #### WebSocket
 ```bash
@@ -998,7 +995,7 @@ POST /rabbitmq/set/{instance}
 GET /rabbitmq/find/{instance}
 ```
 
-#### SQS (Amazon)
+#### SQS（Amazon）
 ```bash
 POST /sqs/set/{instance}
 
@@ -1017,25 +1014,25 @@ GET /sqs/find/{instance}
 POST /nats/set/{instance}
 GET /nats/find/{instance}
 ```
-Same payload structure as SQS/RabbitMQ.
+与SQS/RabbitMQ使用相同的请求体结构。
 
 #### Pusher
 ```bash
 POST /pusher/set/{instance}
 GET /pusher/find/{instance}
 ```
-Same payload structure as SQS/RabbitMQ.
+与SQS/RabbitMQ使用相同的请求体结构。
 
-**Available Events (all transports):**
-`APPLICATION_STARTUP`, `QRCODE_UPDATED`, `MESSAGES_SET`, `MESSAGES_UPSERT`, `MESSAGES_UPDATE`, `MESSAGES_DELETE`, `SEND_MESSAGE`, `CONTACTS_SET`, `CONTACTS_UPSERT`, `CONTACTS_UPDATE`, `PRESENCE_UPDATE`, `CHATS_SET`, `CHATS_UPSERT`, `CHATS_UPDATE`, `CHATS_DELETE`, `GROUPS_UPSERT`, `GROUP_UPDATE`, `GROUP_PARTICIPANTS_UPDATE`, `CONNECTION_UPDATE`, `LABELS_EDIT`, `LABELS_ASSOCIATION`, `CALL`, `TYPEBOT_START`, `TYPEBOT_CHANGE_STATUS`
+**支持的事件类型（所有传输方式）：**
+`APPLICATION_STARTUP`、`QRCODE_updated`、`MESSAGES_SET`、`MESSAGES_UPSERT`、`MESSAGES_UPDATE`、`MESSAGES_DELETE`、`SEND_MESSAGE`、`CONTACTS_SET`、`CONTACTS_UPSERT`、`CONTACTS_UPDATE`、`PRESENCE_UPDATE`、`CHATS_SET`、`CHATS_UPSERT`、`CHATS_UPDATE`、`CHATS_DELETE`、`GROUPS_UPSERT`、`GROUP_UPDATE`、`GROUP_PARTICIPANTS_UPDATE`、`CONNECTION_UPDATE`、`LABELS_EDIT`、`LABELS_ASSOCIATION`、`CALL`、`TYPEBOT_START`、`TYPEBOT_CHANGE_STATUS`
 
 ---
 
-### Integrations - Chatbots
+### 集成 - 聊天机器人
 
-All chatbot integrations share a common pattern with settings, session management, CRUD, and trigger configuration.
+所有聊天机器人的集成都遵循相同的模式，包括配置设置、会话管理、CRUD操作和触发器配置。
 
-**Common trigger options (all chatbots):**
+**通用触发器选项（所有聊天机器人）：**
 ```json
 {
   "triggerType": "keyword",
@@ -1053,20 +1050,20 @@ All chatbot integrations share a common pattern with settings, session managemen
 }
 ```
 
-| Field | Description |
+| 参数 | 描述 |
 |-------|-------------|
-| `triggerType` | `all` (every message) or `keyword` (matched) |
-| `triggerOperator` | `contains`, `equals`, `startsWith`, `endsWith`, `regex`, `none` |
-| `triggerValue` | The keyword/pattern to match |
-| `expire` | Session timeout (minutes) |
-| `keywordFinish` | Keyword to end bot session |
-| `delayMessage` | Delay between messages (ms) |
-| `unknownMessage` | Response for unrecognized input |
-| `listeningFromMe` | Process messages sent by you |
-| `stopBotFromMe` | Pause bot when you send a message |
-| `keepOpen` | Keep session alive after flow ends |
-| `debounceTime` | Debounce interval (seconds) |
-| `ignoreJids` | JIDs to ignore (e.g., `["@g.us"]` to ignore groups) |
+| `triggerType` | `all`（每条消息触发）或`keyword`（匹配特定关键词触发） |
+| `triggerOperator` | `contains`（包含）、`equals`（等于）、`startsWith`（以...开头）、`endsWith`（以...结尾）、`regex`（正则表达式匹配） |
+| `triggerValue` | 需要匹配的关键词/模式 |
+| `expire` | 会话超时时间（分钟） |
+| `keywordFinish` | 用于结束机器人会话的关键词 |
+| `delayMessage` | 消息发送间隔（毫秒） |
+| `unknownMessage` | 未识别输入时的响应内容 |
+| `listeningFromMe` | 处理来自您的消息 |
+| `stopBotFromMe` | 当您发送消息时暂停机器人 |
+| `keepOpen` | 会话结束后保持连接状态 |
+| `debounceTime` | 消息发送的延迟间隔（秒） |
+| `ignoreJids` | 需要忽略的JID列表（例如`"@g.us"`表示忽略群组消息）
 
 #### Chatwoot
 ```bash
@@ -1163,7 +1160,7 @@ GET  /typebot/fetchSettings/{instance}
 }
 ```
 
-**Session statuses:** `opened`, `paused`, `closed`
+**会话状态：** `opened`（打开）、`paused`（暂停）、`closed`（关闭）
 
 #### OpenAI
 ```bash
@@ -1211,7 +1208,7 @@ POST /openai/settings/{instance}
 GET  /openai/fetchSettings/{instance}
 ```
 
-**Bot types:** `assistant`, `chatCompletion`
+**机器人类型：** `assistant`（助手）、`chatCompletion`（聊天完成）
 
 #### Dify
 ```bash
@@ -1237,7 +1234,7 @@ POST /dify/settings/{instance}
 GET  /dify/fetchSettings/{instance}
 ```
 
-**Dify bot types:** `chatBot`, `textGenerator`, `agent`, `workflow`
+**Dify机器人类型：** `chatBot`（聊天机器人）、`textGenerator`（文本生成器）、`agent`（代理）、`workflow`（工作流）
 
 #### Flowise
 ```bash
@@ -1333,9 +1330,9 @@ GET  /evoai/fetchSettings/{instance}
 
 ---
 
-### Integrations - Channel (WhatsApp Business Cloud API)
+### 集成 - WhatsApp Business Cloud API
 
-#### Send Template
+#### 发送模板消息
 ```bash
 POST /message/sendTemplate/{instance}
 
@@ -1363,7 +1360,7 @@ POST /message/sendTemplate/{instance}
 }
 ```
 
-#### Create Template
+#### 创建模板
 ```bash
 POST /template/create/{instance}
 
@@ -1391,9 +1388,9 @@ POST /template/create/{instance}
 }
 ```
 
-**Categories:** `AUTHENTICATION`, `MARKETING`, `UTILITY`
+**模板分类：** `AUTHENTICATION`（认证）、`MARKETING`（营销）、`UTILITY`（实用工具）
 
-#### Find Templates
+#### 查找模板
 ```bash
 GET /template/find/{instance}
 ```
@@ -1417,13 +1414,13 @@ POST /webhook/evolution
 }
 ```
 
-**Message types:** `conversation`, `imageMessage`, `videoMessage`, `documentMessage`, `audioMessage`
+**消息类型：** `conversation`（普通消息）、`imageMessage`（图片消息）、`videoMessage`（视频消息）、`documentMessage`（文档消息）
 
 ---
 
-### Storage (S3/MinIO)
+### 存储（S3/MinIO）
 
-#### Get Media
+#### 获取媒体文件
 ```bash
 POST /s3/getMedia/{instance}
 
@@ -1434,7 +1431,7 @@ POST /s3/getMedia/{instance}
 }
 ```
 
-#### Get Media URL
+#### 获取媒体文件的URL
 ```bash
 POST /s3/getMediaUrl/{instance}
 
@@ -1445,16 +1442,14 @@ POST /s3/getMediaUrl/{instance}
 
 ---
 
-### System
+### 系统信息
 
-#### Get API Information
+#### 获取API版本和系统详情
 ```bash
 GET /
 ```
 
-Returns API version and system info.
-
-#### Metrics
+#### 获取指标数据
 ```bash
 GET /metrics
 Authorization: Basic (METRICS_USER:password)
@@ -1462,9 +1457,9 @@ Authorization: Basic (METRICS_USER:password)
 
 ---
 
-## Common Workflows
+## 常用工作流程
 
-### Broadcast Message
+### 广播消息
 ```bash
 for number in 5511999999999 5511888888888 5511777777777; do
   curl -X POST "$EVO_API_URL/message/sendText/$EVO_INSTANCE" \
@@ -1478,7 +1473,7 @@ for number in 5511999999999 5511888888888 5511777777777; do
 done
 ```
 
-### Auto-Create Group + Configure Bot
+### 自动创建群组并配置聊天机器人
 ```bash
 # 1. Create group
 curl -X POST "$EVO_API_URL/group/create/$EVO_INSTANCE" \
@@ -1501,7 +1496,7 @@ curl -X POST "$EVO_API_URL/typebot/create/$EVO_INSTANCE" \
   }'
 ```
 
-### Full Instance Setup (Instance + Webhook + Chatwoot)
+### 完整的实例设置（包括实例、Webhook和Chatwoot）
 ```bash
 # 1. Create instance with webhook inline
 curl -X POST "$EVO_API_URL/instance/create" \
@@ -1540,7 +1535,7 @@ curl -X POST "$EVO_API_URL/chatwoot/set/support-bot" \
   }'
 ```
 
-### Check Numbers Before Sending
+### 发送消息前检查号码是否可用
 ```bash
 # 1. Validate numbers
 curl -X POST "$EVO_API_URL/chat/whatsappNumbers/$EVO_INSTANCE" \
@@ -1553,45 +1548,46 @@ curl -X POST "$EVO_API_URL/chat/whatsappNumbers/$EVO_INSTANCE" \
 
 ---
 
-## Rate Limits & Best Practices
+## 发送速率限制与最佳实践
 
-### Delays
-Always add delays between messages:
+### 消息发送间隔
+
+始终在消息之间添加延迟：
 ```json
 { "delay": 1200 }
 ```
 
-**Recommended:**
-- 1-2 seconds between individual messages
-- 3-5 seconds between mass sends
-- Exponential backoff on errors
+**推荐设置：**
+- 单条消息之间间隔1-2秒 |
+- 批量发送之间间隔3-5秒 |
+- 出现错误时采用指数级退避策略
 
-### Error Handling
+### 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| `200` | Success |
-| `400` | Bad request (check body/params) |
-| `401` | Unauthorized (check API key) |
-| `404` | Not found (instance/resource) |
-| `500` | Server error |
+| `200` | 成功 |
+| `400` | 请求错误（检查请求参数） |
+| `401` | 未经授权（检查API密钥） |
+| `404` | 未找到资源 |
+| `500` | 服务器错误 |
 
-### Common Issues
+### 常见问题及解决方法
 
-| Error | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Instance not connected | Run `GET /instance/connect/{instance}` |
-| Invalid phone format | Use country code without `+`: `5511999999999` |
-| Message not sent | Check `GET /instance/connectionState/{instance}` |
-| Group operation failed | Verify you're admin |
-| Media extraction fails | Ensure MongoDB/file storage is enabled |
-| Chatwoot not syncing | Check token and URL, verify `importMessages` is true |
+| 实例无法连接 | 运行`GET /instance/connect/{instance}`命令 |
+| 手机号码格式错误 | 使用不带`+`的国家代码，例如`5511999999999` |
+| 消息无法发送 | 检查`GET /instance/connectionState/{instance}`命令 |
+| 群组操作失败 | 确认您具有管理员权限 |
+| 媒体文件提取失败 | 确保已启用MongoDB或文件存储功能 |
+| Chatwoot同步失败 | 检查token和URL，确认`importMessages`参数已设置 |
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Instance Won't Connect
+### 实例无法连接
 ```bash
 # 1. Check instances
 GET /instance/fetchInstances
@@ -1603,56 +1599,56 @@ POST /instance/restart/{instance}
 GET /instance/connect/{instance}
 ```
 
-### Chatbot Not Responding
-1. Check bot is enabled: `GET /{botType}/find/{instance}`
-2. Check trigger matches incoming message
-3. Check session status: `GET /{botType}/fetchSessions/{botId}/{instance}`
-4. Reset session: `POST /{botType}/changeStatus/{instance}` with `status: "closed"`
+### 聊天机器人无响应
+1. 确认聊天机器人已启用：运行`GET /{botType}/find/{instance}`命令 |
+2. 检查触发器是否与接收到的消息匹配 |
+3. 检查会话状态：运行`GET /{botType}/fetchSessions/{botId}/{instance}`命令 |
+4. 重置会话状态：运行`POST /{botType}/changeStatus/{instance}`，并将`status`设置为`closed` |
 
-### Messages Not Being Delivered
-1. Verify connection: `GET /instance/connectionState/{instance}`
-2. Check phone format (no `+`, no spaces)
-3. Verify recipient has WhatsApp: `POST /chat/whatsappNumbers/{instance}`
-4. Check webhook for delivery status events
+### 消息无法送达
+1. 检查连接状态：运行`GET /instance/connectionState/{instance}`命令 |
+2. 确认电话号码格式正确（不含`+`符号且无空格） |
+3. 确认接收方已安装WhatsApp |
+4. 检查Webhook是否收到发送状态通知
 
 ---
 
-## v2 vs v3 (Evolution Go) Differences
+## v2与v3（Evolution Go）的差异
 
-| Feature | v2.3 | v3 (Go) |
+| 特性 | v2.3 | v3（Go） |
 |---------|------|---------|
-| **Language** | Node.js/TypeScript | Go |
-| **Endpoints** | `/message/sendText/{instance}` | `/send/text` |
-| **Chatbot integrations** | 7 (Typebot, OpenAI, Dify, Flowise, N8N, EvolutionBot, EvoAI) | Fewer built-in |
-| **Chatwoot** | Native integration | Separate |
-| **Event transports** | 6 (Webhook, WS, RabbitMQ, SQS, NATS, Pusher) | Fewer |
-| **Lists/Buttons** | Supported | Deprecated |
-| **PTV (Round Video)** | Supported | Supported |
-| **Status/Stories** | Supported | Supported |
-| **Templates** | Business Cloud API | Business Cloud API |
-| **S3 Storage** | Built-in | Separate |
+| **编程语言** | Node.js/TypeScript | Go |
+| **API端点** | `/message/sendText/{instance}` | `/send/text` |
+| **支持的聊天机器人集成** | 7种（Typebot、OpenAI、Dify、Flowise、N8N、EvolutionBot、EvoAI） | 减少 |
+| **Chatwoot集成方式** | 内置集成 | 作为独立服务 |
+| **事件通知方式** | 6种（Webhook、WebSocket、RabbitMQ、SQS、NATS、Pusher） | 减少 |
+| **列表和按钮功能** | 支持 | 已弃用 |
+| **PTV（圆形视频）** | 支持 | 支持 |
+| **状态/故事功能** | 支持 | 支持 |
+| **模板功能** | 通过Business Cloud API实现 | 通过Business Cloud API实现 |
+| **S3存储** | 内置支持 | 需单独配置 |
 
 ---
 
-## Resources
+## 资源链接
 
-- **Evolution API:** https://github.com/EvolutionAPI/evolution-api
-- **Documentation:** https://doc.evolution-api.com
-- **Chatwoot:** https://www.chatwoot.com
-- **Typebot:** https://typebot.io
-- **WhatsApp Business API:** https://developers.facebook.com/docs/whatsapp
+- **Evolution API**：https://github.com/EvolutionAPI/evolution-api |
+- **文档**：https://doc.evolution-api.com |
+- **Chatwoot**：https://www.chatwoot.com |
+- **Typebot**：https://typebot.io |
+- **WhatsApp Business API**：https://developers.facebook.com/docs/whatsapp |
 
 ---
 
-## Tips
+## 使用建议
 
-1. **Always check connection** before operations
-2. **Use delays** to avoid rate limits (1.2s+ between messages)
-3. **Store keys** in environment variables, never hardcode
-4. **Handle disconnects** with webhook `CONNECTION_UPDATE` event
-5. **Validate numbers** with `whatsappNumbers` before bulk sends
-6. **Use `debounceTime`** in chatbots to group fast messages
-7. **Set `ignoreJids: ["@g.us"]`** in chatbots to ignore group messages
-8. **Test triggers** with `triggerType: "keyword"` before switching to `"all"`
-9. **Monitor sessions** - expired sessions stop chatbot responses
-10. **Use Chatwoot** for human handoff from chatbot flows
+1. **操作前务必检查连接状态** |
+2. **使用延迟机制**以避免达到发送速率限制（每条消息之间至少间隔1.2秒） |
+3. **将API密钥存储在环境变量中，切勿硬编码** |
+4. **使用Webhook的`CONNECTION_UPDATE`事件处理连接断开情况** |
+5. **在批量发送前使用`whatsappNumbers`函数验证电话号码格式** |
+6. **在聊天机器人中设置`debounceTime`以控制消息发送频率** |
+7. **在聊天机器人中设置`ignoreJids: ["@g.us"]`以忽略群组消息** |
+8. **在切换触发器类型时，先使用`triggerType: "keyword"`进行测试** |
+9. **监控会话状态**：过期会话可能导致聊天机器人停止响应 |
+10. **使用Chatwoot实现人工干预功能**

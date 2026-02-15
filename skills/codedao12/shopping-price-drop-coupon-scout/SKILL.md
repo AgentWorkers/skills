@@ -1,56 +1,56 @@
 ---
 name: shopping-price-drop-coupon-scout
-description: Track product prices and surface official coupons or discounts without purchasing or account access. Use when a user wants price alerts, deal summaries, or coupon lists for specific items or retailers.
+description: 无需购买产品或拥有账户权限，即可跟踪产品价格，并获取官方优惠券或折扣信息。适用于用户希望接收特定商品或零售商的价格提醒、优惠汇总或优惠券列表的情况。
 ---
 
-# Shopping Price Drop and Coupon Scout
+# 购物价格监控与优惠券搜索工具
 
-## Goal
-Provide a safe, read-only price watch and coupon summary for user-selected products.
+## 目标
+为用户选定的产品提供安全、仅限查看的价格监控信息和优惠券汇总。
 
-## Best fit
-- Use when the user provides product URLs or SKUs.
-- Use when the user wants a target price and alert plan.
-- Use when the user wants official coupon links or promo codes.
+## 适用场景
+- 当用户提供产品网址或SKU时使用。
+- 当用户需要设定目标价格并接收价格变动提醒时使用。
+- 当用户需要获取官方优惠券链接或促销代码时使用。
 
-## Not fit
-- Avoid when the user asks to auto purchase or auto add to cart.
-- Avoid when the only data source is prohibited scraping.
-- Avoid when payment or login credentials are requested.
+## 不适用场景
+- 当用户要求自动购买或自动将商品添加到购物车时，请避免使用该工具。
+- 当数据来源被禁止抓取时，请避免使用该工具。
+- 当需要用户提供支付信息或登录凭证时，请避免使用该工具。
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速了解
+- 请参考 `references/overview.md` 以了解工作流程和质量标准。
+- 请参考 `references/auth.md` 以了解访问权限和令牌处理方式。
+- 请参考 `references/endpoints.md` 以了解可选的集成方案和模板。
+- 请参考 `references/webhooks.md` 以了解异步事件处理方式。
+- 请参考 `references/ux.md` 以了解数据输入格式和输出格式。
+- 请参考 `references/troubleshooting.md` 以了解常见问题及其解决方法。
+- 请参考 `references/safety.md` 以了解安全性和隐私保护措施。
 
-## Required inputs
-- Product list with URLs, SKUs, or names.
-- Target price thresholds and currency.
-- Preferred retailers or regions.
-- Reminder cadence and timezone.
+## 必需输入
+- 包含产品网址、SKU或名称的产品列表。
+- 目标价格阈值及货币类型。
+- 用户偏好的零售商或地区。
+- 提醒通知的频率和时间区。
 
-## Expected output
-- Price watchlist with target thresholds.
-- Price history summary if provided by the user.
-- Coupon or promo list from official sources.
-- Draft alert messages.
+## 预期输出
+- 带有目标价格阈值的价格监控列表。
+- 如果用户提供了相关数据，还包括价格历史变化汇总。
+- 来自官方渠道的优惠券或促销信息列表。
+- 用于发送提醒通知的模板信息。
 
-## Operational notes
-- Use official retailer APIs or user-provided data exports.
-- Do not scrape sites that prohibit automated access.
-- Keep outputs as suggestions only.
+## 操作注意事项
+- 请使用官方零售商提供的API或用户提供的数据文件。
+- 请勿抓取禁止自动化访问的网站的数据。
+- 请确保所有输出内容仅作为建议提供给用户。
 
-## Security notes
-- Never handle payment details.
-- Do not log in to user accounts or store cookies.
+## 安全性注意事项
+- 请勿处理任何支付细节。
+- 请勿登录用户的账户或存储用户的Cookie信息。
 
-## Safe mode
-- Track and summarize only.
-- Provide coupon lists and alerts without purchases.
+## 安全模式
+- 仅负责数据跟踪和汇总功能。
+- 仅提供优惠券列表和价格变动提醒，不涉及任何购买操作。
 
-## Sensitive ops
-- Purchasing, checkout, or cart changes are out of scope.
+## 敏感操作
+- 购买、结账或购物车状态变更不在本工具的适用范围内。

@@ -1,6 +1,6 @@
 ---
 name: insecure-defaults
-description: "Detects fail-open insecure defaults (hardcoded secrets, weak auth, permissive security) that allow apps to run insecurely in production. Use when auditing security, reviewing config management, or analyzing environment variable handling."
+description: "检测存在“开启即用”（fail-open）的安全隐患：例如硬编码的密钥、弱密码机制或过于宽松的安全设置，这些隐患可能导致应用程序在生产环境中运行时存在安全风险。适用于安全审计、配置管理审查或环境变量处理分析等场景。"
 allowed-tools:
   - Read
   - Grep
@@ -8,76 +8,74 @@ allowed-tools:
   - Bash
 ---
 
-# Insecure Defaults Detection
+# 不安全默认值的检测
 
-Finds **fail-open** vulnerabilities where apps run insecurely with missing configuration. Distinguishes exploitable defaults from fail-secure patterns that crash safely.
+该功能用于识别应用程序因配置缺失而以不安全的方式运行的漏洞（即“fail-open”漏洞）。它能够区分可被利用的默认配置与那些会导致应用程序安全崩溃的默认配置。
 
-- **Fail-open (CRITICAL):** `SECRET = env.get('KEY') or 'default'` → App runs with weak secret
-- **Fail-secure (SAFE):** `SECRET = env['KEY']` → App crashes if missing
+- **“fail-open”漏洞（严重级）：** `SECRET = env.get('KEY') or 'default'` → 应用程序使用弱密钥运行
+- **“fail-secure”漏洞（安全级）：** `SECRET = env['KEY']` → 如果配置变量缺失，应用程序会崩溃
 
-## When to Use
+## 适用场景
 
-- **Security audits** of production applications (auth, crypto, API security)
-- **Configuration review** of deployment files, IaC templates, Docker configs
-- **Code review** of environment variable handling and secrets management
-- **Pre-deployment checks** for hardcoded credentials or weak defaults
+- **生产环境应用程序的安全审计**（包括认证、加密、API安全等方面）
+- **部署文件、基础设施即代码（IaC）模板以及Docker配置的配置审查**
+- **环境变量处理和密钥管理的代码审查**
+- **部署前的检查**（用于检测硬编码的凭据或弱默认配置）
 
-## When NOT to Use
+## 不适用场景
 
-Do not use this skill for:
-- **Test fixtures** explicitly scoped to test environments (files in `test/`, `spec/`, `__tests__/`)
-- **Example/template files** (`.example`, `.template`, `.sample` suffixes)
-- **Development-only tools** (local Docker Compose for dev, debug scripts)
-- **Documentation examples** in README.md or docs/ directories
-- **Build-time configuration** that gets replaced during deployment
-- **Crash-on-missing behavior** where app won't start without proper config (fail-secure)
+请勿将此功能用于以下情况：
+- **仅用于测试环境的测试用例**（位于`test/`、`spec/`或`__tests__`目录下的文件）
+- **示例/模板文件**（带有`.example`、`.template`或`.sample`后缀的文件）
+- **仅用于开发的工具**（如本地Docker Compose配置或调试脚本）
+- **README.md或docs/目录中的文档示例**
+- **在部署过程中会被替换的构建时配置**
+- **那些在没有正确配置时会导致应用程序崩溃的情况**（属于“fail-secure”漏洞）
 
-When in doubt: trace the code path to determine if the app runs with the default or crashes.
+**如有疑问，请通过代码追踪来确定应用程序是使用默认配置运行的，还是会崩溃的。**
 
-## Rationalizations to Reject
+## 可拒绝的理由
 
-- **"It's just a development default"** → If it reaches production code, it's a finding
-- **"The production config overrides it"** → Verify prod config exists; code-level vulnerability remains if not
-- **"This would never run without proper config"** → Prove it with code trace; many apps fail silently
-- **"It's behind authentication"** → Defense in depth; compromised session still exploits weak defaults
-- **"We'll fix it before release"** → Document now; "later" rarely comes
+- **“这只是开发阶段的默认设置”** → 如果这些设置被引入到生产代码中，仍属于安全漏洞
+- **“生产环境的配置会覆盖这些默认设置”** → 请验证生产环境的配置是否存在；如果不存在，代码层面的漏洞依然存在
+- **“没有正确配置，应用程序根本无法运行”** → 请通过代码追踪来证明这一点；实际上许多应用程序在缺少配置时仍能默默运行
+- **“这部分功能有身份验证保护”** → 即使有深度防御措施，攻击者仍可能利用这些弱默认设置
+- **“我们会在发布前修复这个问题”** **请现在就记录下来**；因为“以后修复”往往难以实现**
 
-## Workflow
+## 工作流程
 
-Follow this workflow for every potential finding:
+对于每个潜在的安全漏洞，请按照以下步骤进行处理：
 
-### 1. SEARCH: Perform Project Discovery and Find Insecure Defaults
+### 1. **搜索**：发现项目中的不安全默认配置
 
-Determine language, framework, and project conventions. Use this information to further discover things like secret storage locations, secret usage patterns, credentialed third-party integrations, cryptography, and any other relevant configuration. Further use information to analyze insecure default configurations.
+确定项目使用的语言、框架以及项目规范。利用这些信息来查找密钥的存储位置、密钥的使用方式、依赖的第三方服务、加密算法以及其他相关配置。进一步分析这些配置以识别不安全的默认设置。
 
-**Example**
-Search for patterns in `**/config/`, `**/auth/`, `**/database/`, and env files:
-- **Fallback secrets:** `getenv.*\) or ['"]`, `process\.env\.[A-Z_]+ \|\| ['"]`, `ENV\.fetch.*default:`
-- **Hardcoded credentials:** `password.*=.*['"][^'"]{8,}['"]`, `api[_-]?key.*=.*['"][^'"]+['"]`
-- **Weak defaults:** `DEBUG.*=.*true`, `AUTH.*=.*false`, `CORS.*=.*\*`
-- **Crypto algorithms:** `MD5|SHA1|DES|RC4|ECB` in security contexts
+**示例**：
+在`/config/`、`/auth/`、`/database/`和`env`文件中搜索以下模式：
+- **默认密钥**：`getenv.*()`或`['']`、`process.env.[A-Z_]+ \|\| ['']`、`ENV.fetch.*default:`  
+- **硬编码的凭据**：`password.*=.*[''][^'"]{8,}['']`、`api[_-]?key.*=.*[''][^'"]+['']`  
+- **弱默认设置**：`DEBUG.*=.*true`、`AUTH.*=.*false`、`CORS.*=.*\*`  
+- **加密算法**：在安全相关的上下文中出现的`MD5|SHA1|DES|RC4|ECB`  
 
-Tailor search approach based on discovery results.
+根据搜索结果调整搜索策略。重点关注可被生产环境访问的代码，而非测试用例或示例文件。
 
-Focus on production-reachable code, not test fixtures or example files.
+### 2. **验证**：实际运行行为
 
-### 2. VERIFY: Actual Behavior
-For each match, trace the code path to understand runtime behavior.
+对于每个匹配到的配置项，追踪其代码路径以了解应用程序在运行时的行为。
 
-**Questions to answer:**
-- When is this code executed? (Startup vs. runtime)
-- What happens if a configuration variable is missing?
-- Is there validation that enforces secure configuration?
+**需要回答的问题**：
+- 这段代码在什么情况下会被执行？（启动阶段还是运行时？）
+- 如果配置变量缺失，会发生什么？
+- 是否有机制来确保配置的安全性？
 
-### 3. CONFIRM: Production Impact
-Determine if this issue reaches production:
+### 3. **确认**：该问题是否会影响生产环境
 
-If production config provides the variable → Lower severity (but still a code-level vulnerability)
-If production config missing or uses default → CRITICAL
+- 如果生产环境的配置提供了该变量，那么漏洞的严重程度会降低（但仍属于代码层面的漏洞）
+- 如果生产环境的配置缺失或使用了默认值，那么漏洞的严重程度为“严重级”。
 
-### 4. REPORT: with Evidence
+### 4. **生成报告**：并提供证据
 
-**Example report:**
+**示例报告：**
 ```
 Finding: Hardcoded JWT Secret Fallback
 Location: src/auth/jwt.ts:15
@@ -88,30 +86,30 @@ Production Impact: Dockerfile missing JWT_SECRET
 Exploitation: Attacker forges JWTs using 'default', gains unauthorized access
 ```
 
-## Quick Verification Checklist
+## 快速验证检查清单
 
-**Fallback Secrets:** `SECRET = env.get(X) or Y`
-→ Verify: App starts without env var? Secret used in crypto/auth?
-→ Skip: Test fixtures, example files
+**默认密钥**：`SECRET = env.get(X) or Y`
+→ 验证：应用程序在没有该环境变量的情况下能否启动？该密钥是否被用于加密或认证功能？
+→ 如果是测试用例或示例文件，请跳过此步骤。
 
-**Default Credentials:** Hardcoded `username`/`password` pairs
-→ Verify: Active in deployed config? No runtime override?
-→ Skip: Disabled accounts, documentation examples
+**硬编码的凭据**：`username`/`password`对是否被硬编码？
+→ 验证：这些凭据是否存在于生产环境的配置中？运行时是否会被覆盖？
+→ 如果是禁用的账户或文档示例，请跳过此步骤。
 
-**Fail-Open Security:** `AUTH_REQUIRED = env.get(X, 'false')`
-→ Verify: Default is insecure (false/disabled/permissive)?
-→ Safe: App crashes or default is secure (true/enabled/restricted)
+**“fail-open”安全漏洞**：`AUTH_REQUIRED = env.get(X, 'false')`
+→ 验证：默认值是否不安全（为`false`、被禁用或允许使用默认值）？
+→ 如果应用程序会崩溃或默认值是安全的（为`true`、被启用或受到限制），则该漏洞属于安全漏洞。
 
-**Weak Crypto:** MD5/SHA1/DES/RC4/ECB in security contexts
-→ Verify: Used for passwords, encryption, or tokens?
-→ Skip: Checksums, non-security hashing
+**弱加密算法**：在安全相关的上下文中使用`MD5`/`SHA1`/`DES`/`RC4`/`ECB`？
+→ 验证：这些算法是否被用于密码、加密或令牌的生成？
+→ 如果用于校验和或非安全性的哈希操作，请跳过此步骤。
 
-**Permissive Access:** CORS `*`, permissions `0777`, public-by-default
-→ Verify: Default allows unauthorized access?
-→ Skip: Explicitly configured permissiveness with justification
+**过于宽松的访问权限**：CORS设置为`*`、权限设置为`0777`（允许所有访问）？
+→ 验证：默认设置是否允许未经授权的访问？
+→ 如果有明确的权限配置且理由合理，请跳过此步骤。
 
-**Debug Features:** Stack traces, introspection, verbose errors
-→ Verify: Enabled by default? Exposed in responses?
-→ Skip: Logging-only, not user-facing
+**调试功能**：是否默认启用堆栈追踪、代码内省功能或详细错误日志？
+→ 验证：这些功能是否默认启用？它们是否会在响应中显示给用户？
+→ 如果这些功能仅用于日志记录且不面向用户，请跳过此步骤。
 
-For detailed examples and counter-examples, see [examples.md](references/examples.md).
+有关详细示例和反例，请参阅[examples.md](references/examples.md)。

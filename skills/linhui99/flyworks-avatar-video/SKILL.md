@@ -1,41 +1,41 @@
 ---
 name: flyworks-avatar-video
-description: Generate videos using Flyworks (a.k.a HiFly) Digital Humans. Create talking photo videos from images, use public avatars with TTS, or clone voices for custom audio.
+description: 使用 Flyworks（又名 HiFly）数字人类技术生成视频。可以从图片中创建带语音的图片视频，使用带有文本转语音（TTS）功能的公共头像，或者克隆声音以生成自定义音频。
 license: MIT
 compatibility: Requires Python 3 and network access to hfw-api.hifly.cc
 ---
 
-# Avatar Video Generation Skill
+# 虚拟形象视频生成技能
 
-This skill allows you to generate videos using Flyworks (a.k.a HiFly 飞影数字人) Digital Humans. Available features:
-1.  **Public Avatar Video**: Create video from text or audio using pre-made highly realistic avatars.
-2.  **Talking Photo**: Create a "talking photo" video from a single image and text/audio.
-3.  **Voice Cloning**: Clone a voice from an audio sample to use in TTS.
+该技能允许您使用 Flyworks（又名 HiFly 飞影数字人）来生成视频。支持的功能包括：
+1. **公共虚拟形象视频**：使用预先制作的高逼真虚拟形象，根据文本或音频生成视频。
+2. **“会说话的照片”**：根据单张图片以及文本/音频生成“会说话的照片”视频。
+3. **语音克隆**：从音频样本中克隆语音，用于文本转语音（TTS）功能。
 
-For detailed documentation, see the [references/](references/) folder:
-- [authentication.md](references/authentication.md) - API token setup
-- [avatars.md](references/avatars.md) - Working with avatars
-- [voices.md](references/voices.md) - Voice selection and cloning
-- [video-generation.md](references/video-generation.md) - Video creation workflow
+有关详细文档，请参阅 [references/](references/) 文件夹：
+- [authentication.md](references/authentication.md) - API 令牌设置
+- [avatars.md](references/avatars.md) - 虚拟形象的使用方法
+- [voices.md](references/voices.md) - 语音选择与克隆
+- [video-generation.md](references/video-generation.md) - 视频生成流程
 
-## API Token & Limitations
+## API 令牌与限制
 
-This skill works with a default free-tier token, but it has limitations:
-- **Watermark**: Generated videos will have a watermark.
-- **Duration Limit**: Videos are limited to 30 seconds.
+该技能支持默认的免费级令牌，但存在以下限制：
+- **水印**：生成的视频会带有水印。
+- **时长限制**：视频时长最多为 30 秒。
 
-**To remove limitations:**
-1.  Register at [hifly.cc](https://hifly.cc) or [flyworks.ai](https://flyworks.ai).
-2.  Get your API key from [User Settings](https://hifly.cc/setting).
-3.  Set the environment variable: `export HIFLY_API_TOKEN="your_token_here"`
+**如需解除这些限制**：
+1. 在 [hifly.cc](https://hifly.cc) 或 [flyworks.ai](https://flyworks.ai) 注册。
+2. 从 [用户设置](https://hifly.cc/setting) 获取您的 API 密钥。
+3. 设置环境变量：`export HIFLY_API_TOKEN="your_token_here"`
 
-## Tools
+## 工具
 
 ### `scripts/hifly_client.py`
 
-The main entry point for all operations.
+所有操作的主要入口脚本。
 
-#### Usage
+#### 使用方法
 
 ```bash
 # List available public avatars
@@ -64,9 +64,9 @@ python scripts/hifly_client.py manage_memory add my_avatar "av_12345"
 python scripts/hifly_client.py manage_memory list
 ```
 
-## Examples
+## 示例
 
-### 1. Create a simple greeting video
+### 1. 创建一个简单的问候视频
 ```bash
 # First find a voice and avatar
 python scripts/hifly_client.py list_public_avatars
@@ -76,7 +76,7 @@ python scripts/hifly_client.py list_public_voices
 python scripts/hifly_client.py create_video --type tts --text "Welcome to our service." --avatar "av_public_01" --voice "voice_public_01"
 ```
 
-### 2. Use a custom talking photo
+### 2. 使用自定义的“会说话的照片”
 ```bash
 # Create the avatar from an image URL
 python scripts/hifly_client.py create_talking_photo --image "https://mysite.com/photo.jpg" --title "CEO Photo"
@@ -89,31 +89,28 @@ python scripts/hifly_client.py manage_memory add ceo av_custom_99
 python scripts/hifly_client.py create_video --type tts --text "Here is the quarterly report." --avatar ceo --voice "voice_public_01"
 ```
 
-## Agent Behavior Guidelines
+## 代理行为指南
 
-When assisting users with video generation, follow these guidelines:
+在协助用户生成视频时，请遵循以下指南：
 
-### Voice Selection Required
+### 必须选择语音
 
-**Video generation requires both text AND a voice.** If the user provides text but no voice:
+**视频生成需要同时提供文本和语音。** 如果用户提供了文本但未提供语音：
+1. **首先检查本地内存**：运行 `manage_memory list` 查看用户是否保存了任何语音文件。
+2. **询问用户选择**：
+   - “您希望使用文本 '[text]' 来生成视频。选择哪种语音？”
+   - 如果用户保存了语音文件： “您已保存的语音文件有：[list]。或者您想使用公共语音吗？”
+   - 如果没有保存的语音文件： “您想使用公共语音，还是先从音频样本中克隆自己的语音？”
+3. **帮助用户选择**：
+   - 查看公共语音文件：`list_public_voices`
+   - 克隆语音：`clone_voice --audio [file] --title [name]`
 
-1. **Check local memory first**: Run `manage_memory list` to see if the user has saved any voice aliases.
-2. **Ask the user to choose**:
-   - "I see you want to create a video with the text '[text]'. Which voice would you like to use?"
-   - If they have saved voices: "You have these saved voices: [list]. Or would you prefer a public voice?"
-   - If no saved voices: "Would you like to use a public voice, or clone your own voice from an audio sample first?"
+### 完整的工作流程示例
 
-3. **Help them select**:
-   - To see public voices: `list_public_voices`
-   - To clone a voice: `clone_voice --audio [file] --title [name]`
-
-### Complete Workflow Example
-
-For a prompt like *"Create a talking photo video from my photo saying 'this is my AI twin'"*:
-
-1. Ask: "Which voice would you like for your AI twin? You can use a public voice or clone your own."
-2. If they want to clone: Help them with `clone_voice`
-3. Create the talking photo with both text and voice:
+对于类似 “根据我的照片生成一句‘这是我的 AI 分身’的‘会说话的照片’视频” 的请求：
+1. 询问用户： “您希望为您的 AI 分身选择哪种语音？您可以使用公共语音，或者克隆自己的语音。”
+2. 如果用户选择克隆语音： 帮助他们使用 `clone_voice` 功能。
+3. 结合文本和语音生成“会说话的照片”视频：
    ```bash
    python scripts/hifly_client.py create_talking_photo \
      --image user_photo.jpg \
@@ -122,9 +119,9 @@ For a prompt like *"Create a talking photo video from my photo saying 'this is m
      --title "My AI Twin"
    ```
 
-### Saving for Later
+### 保存结果以供后续使用
 
-After creating avatars or cloning voices, offer to save them:
+在生成虚拟形象或克隆语音后，可以提供保存选项：
 ```bash
 python scripts/hifly_client.py manage_memory add my_avatar AVATAR_ID --kind avatar
 python scripts/hifly_client.py manage_memory add my_voice VOICE_ID --kind voice

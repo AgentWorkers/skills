@@ -1,15 +1,15 @@
 ---
 name: perplexity
-description: "Deep search via Perplexity API. Three modes: search (quick facts), reason (complex analysis), research (in-depth reports). Returns AI-grounded answers with citations."
+description: "通过 Perplexity API 进行深度搜索。提供三种模式：搜索（快速获取事实）、分析（复杂问题研究）和调研（生成深度报告）。返回基于人工智能的答案，并附有引用来源。"
 homepage: https://docs.perplexity.ai
 metadata: {"clawdbot":{"emoji":"🔮","requires":{"bins":["curl","jq"]},"primaryEnv":"PERPLEXITY_API_KEY"}}
 ---
 
-# Perplexity Deep Search
+# Perplexity 深度搜索
 
-AI-powered web search with three modes for different depth levels.
+这是一个基于人工智能的网页搜索工具，提供三种不同深度级别的搜索模式。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Quick search (sonar) - facts, summaries, current events
@@ -22,25 +22,25 @@ AI-powered web search with three modes for different depth levels.
 {baseDir}/scripts/search.sh --mode research "market analysis of AI in healthcare 2025"
 ```
 
-## Modes
+## 模式
 
-| Mode | Model | Best For | Cost |
+| 模式 | 模型 | 适用场景 | 成本 |
 |------|-------|----------|------|
-| `search` (default) | `sonar-pro` | Quick facts, summaries, current events | Low |
-| `reason` | `sonar-reasoning-pro` | Complex analysis, comparisons, problem-solving | Medium |
-| `research` | `sonar-deep-research` | In-depth reports, market analysis, literature reviews | High |
+| `search`（默认） | `sonar-pro` | 快速获取事实、摘要、时事信息 | 低成本 |
+| `reason` | `sonar-reasoning-pro` | 复杂分析、比较、问题解决 | 中等成本 |
+| `research` | `sonar-deep-research` | 深度报告、市场分析、文献综述 | 高成本 |
 
-## Options
+## 选项
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--mode` | `search`, `reason`, `research` | `search` |
-| `--recency` | `hour`, `day`, `week`, `month` | — |
-| `--domains` | Comma-separated domain filter | — |
-| `--lang` | Language code (`pt`, `en`, `es`, etc.) | — |
-| `--json` | Raw JSON output | off |
+| `--mode` | `search`、`reason`、`research` | `search` |
+| `--recency` | `小时`、`天`、`周`、`月` | — |
+| `--domains` | 用逗号分隔的域名过滤器 | — |
+| `--lang` | 语言代码（`pt`、`en`、`es`等） | — |
+| `--json` | 原始 JSON 输出 | 关闭 |
 
-## Examples
+## 示例
 
 ```bash
 # Search with recency filter
@@ -56,17 +56,17 @@ AI-powered web search with three modes for different depth levels.
 {baseDir}/scripts/search.sh --mode research --json "enterprise AI adoption trends"
 ```
 
-## API Key
+## API 密钥
 
-Set `PERPLEXITY_API_KEY` env var:
+设置 `PERPLEXITY_API_KEY` 环境变量：
 ```bash
 export PERPLEXITY_API_KEY="pplx-..."
 ```
 
-## Pricing Reference
+## 定价参考
 
-- **Search (sonar-pro):** ~$0.01/query
-- **Reasoning (sonar-reasoning-pro):** ~$0.02/query
-- **Deep Research (sonar-deep-research):** ~$0.40/query (uses many searches + reasoning)
+- **搜索（sonar-pro）：** 每次查询约 0.01 美元 |
+- **推理（sonar-reasoning-pro）：** 每次查询约 0.02 美元 |
+- **深度研究（sonar-deep-research）：** 每次查询约 0.40 美元（包含多次搜索和推理）
 
-Use `search` for everyday queries. Reserve `research` for when you truly need exhaustive analysis.
+建议日常查询使用 `search` 模式；只有在需要详尽分析时才使用 `research` 模式。

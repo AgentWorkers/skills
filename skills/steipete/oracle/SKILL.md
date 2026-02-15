@@ -1,111 +1,111 @@
 ---
 name: oracle
-description: Use the @steipete/oracle CLI to bundle a prompt plus the right files and get a second-model review (API or browser) for debugging, refactors, design checks, or cross-validation.
+description: 使用 @steipete/oracle CLI 将提示信息（prompt）以及相关的文件打包在一起，然后通过 API 或浏览器获取第二种模型的评审结果，以便进行调试、重构、设计检查或交叉验证。
 ---
 
-# Oracle (CLI) — best use
+# Oracle（CLI）——最佳使用方法
 
-Oracle bundles your prompt + selected files into one “one-shot” request so another model can answer with real repo context (API or browser automation). Treat outputs as advisory: verify against the codebase + tests.
+Oracle会将提示信息及选定的文件打包成一个“一次性”请求，以便其他模型能够根据实际的代码库上下文（通过API或浏览器自动化方式）进行响应。请将输出内容视为建议性信息，并根据代码库和测试结果进行验证。
 
-## Main use case (browser, GPT‑5.2 Pro)
+## 主要使用场景（浏览器、GPT-5.2 Pro）
 
-Default workflow here: `--engine browser` with GPT‑5.2 Pro in ChatGPT. This is the “human in the loop” path: it can take ~10 minutes to ~1 hour; expect a stored session you can reattach to.
+默认的工作流程是：使用`--engine browser`选项，并结合ChatGPT中的GPT-5.2 Pro模型。这种模式下需要大约10分钟到1小时的时间；系统会保存会话信息，以便后续使用。
 
-Recommended defaults:
-- Engine: browser (`--engine browser`)
-- Model: GPT‑5.2 Pro (either `--model gpt-5.2-pro` or a ChatGPT picker label like `--model "5.2 Pro"`)
-- Attachments: directories/globs + excludes; avoid secrets.
+**推荐的默认设置：**
+- **引擎**：浏览器 (`--engine browser`)
+- **模型**：GPT-5.2 Pro（可以使用`--model gpt-5.2-pro`，或者通过`--model "5.2 Pro"`等标签来选择）
+- **附件**：可以指定目录或文件模式；请避免包含敏感信息（如密钥）。
 
-## Golden path (fast + reliable)
+## 最优使用方法（快速且可靠）
 
-1. Pick a tight file set (fewest files that still contain the truth).
-2. Preview what you’re about to send (`--dry-run` + `--files-report` when needed).
-3. Run in browser mode for the usual GPT‑5.2 Pro ChatGPT workflow; use API only when you explicitly want it.
-4. If the run detaches/timeouts: reattach to the stored session (don’t re-run).
+1. 选择最能反映实际情况的文件集（即包含必要信息的最少文件数量）。
+2. 在发送请求前预览结果（必要时使用`--dry-run`和`--files-report`选项）。
+3. 通过浏览器模式执行GPT-5.2 Pro的常规工作流程；仅在确实需要时才使用API。
+4. 如果请求失败或超时，请重新连接到已保存的会话。
 
-## Commands (preferred)
+## 推荐命令：
 
-- Show help (once/session):
+- **显示帮助信息（仅一次）：**
   - `npx -y @steipete/oracle --help`
 
-- Preview (no tokens):
+- **预览结果（不生成令牌）：**
   - `npx -y @steipete/oracle --dry-run summary -p "<task>" --file "src/**" --file "!**/*.test.*"`
   - `npx -y @steipete/oracle --dry-run full -p "<task>" --file "src/**"`
 
-- Token/cost sanity:
+- **检查令牌数量及成本：**
   - `npx -y @steipete/oracle --dry-run summary --files-report -p "<task>" --file "src/**"`
 
-- Browser run (main path; long-running is normal):
+- **通过浏览器执行（常规方式；运行时间较长）：**
   - `npx -y @steipete/oracle --engine browser --model gpt-5.2-pro -p "<task>" --file "src/**"`
 
-- Manual paste fallback (assemble bundle, copy to clipboard):
+- **手动复制文件（备用方案）：**
   - `npx -y @steipete/oracle --render --copy -p "<task>" --file "src/**"`
-  - Note: `--copy` is a hidden alias for `--copy-markdown`.
+  - 注意：`--copy`实际上是`--copy-markdown`的别名。
 
-## Attaching files (`--file`)
+## 文件上传（`--file`选项）
 
-`--file` accepts files, directories, and globs. You can pass it multiple times; entries can be comma-separated.
+`--file`选项用于指定文件、目录或文件模式。可以多次指定文件，各文件之间用逗号分隔。
 
-- Include:
-  - `--file "src/**"` (directory glob)
-  - `--file src/index.ts` (literal file)
-  - `--file docs --file README.md` (literal directory + file)
+- **包含的文件：**
+  - `--file "src/**"`（目录模式）
+  - `--file src/index.ts`（具体文件）
+  - `--file docs --file README.md`（包含目录和文件的组合）
 
-- Exclude (prefix with `!`):
-  - `--file "src/**" --file "!src/**/*.test.ts" --file "!**/*.snap"`
+- **排除的文件：**
+  - `--file "src/**" --file "!src/**/*.test.ts" --file "!**/*.snap"`（使用`!`前缀来排除特定文件）
 
-- Defaults (important behavior from the implementation):
-  - Default-ignored dirs: `node_modules`, `dist`, `coverage`, `.git`, `.turbo`, `.next`, `build`, `tmp` (skipped unless you explicitly pass them as literal dirs/files).
-  - Honors `.gitignore` when expanding globs.
-  - Does not follow symlinks (glob expansion uses `followSymbolicLinks: false`).
-  - Dotfiles are filtered unless you explicitly opt in with a pattern that includes a dot-segment (e.g. `--file ".github/**"`).
-  - Hard cap: files > 1 MB are rejected (split files or narrow the match).
+- **实现中的默认行为：**
+  - 系统会自动忽略以下目录：`node_modules`、`dist`、`coverage`、`.git`、`.turbo`、`.next`、`build`、`tmp`（除非明确指定这些目录或文件）。
+  - 在处理文件模式时，系统会尊重`.gitignore`文件中的排除规则。
+  - 系统不会跟随符号链接（通过`followSymbolicLinks: false`选项来禁止）。
+  - 系统会过滤掉点文件（除非使用包含点号的文件模式，例如`--file ".github/**"`）。
+  - 文件大小超过1MB的文件会被拒绝；此时可以尝试分割文件或调整匹配条件。
 
-## Budget + observability
+## 成本控制与可观测性：
 
-- Target: keep total input under ~196k tokens.
-- Use `--files-report` (and/or `--dry-run json`) to spot the token hogs before spending.
-- If you need hidden/advanced knobs: `npx -y @steipete/oracle --help --verbose`.
+- **目标**：确保总输入的令牌数量不超过196,000个。
+- 使用`--files-report`（和/或`--dry-run json`）来提前发现占用过多令牌的文件。
+- 如需查看更多高级设置，请使用`npx -y @steipete/oracle --help --verbose`。
 
-## Engines (API vs browser)
+## 使用的引擎（API vs 浏览器）
 
-- Auto-pick: uses `api` when `OPENAI_API_KEY` is set, otherwise `browser`.
-- Browser engine supports GPT + Gemini only; use `--engine api` for Claude/Grok/Codex or multi-model runs.
-- **API runs require explicit user consent** before starting because they incur usage costs.
-- Browser attachments:
-  - `--browser-attachments auto|never|always` (auto pastes inline up to ~60k chars then uploads).
-- Remote browser host (signed-in machine runs automation):
-  - Host: `oracle serve --host 0.0.0.0 --port 9473 --token <secret>`
-  - Client: `oracle --engine browser --remote-host <host:port> --remote-token <secret> -p "<task>" --file "src/**"`
+- **自动选择引擎**：当设置了`OPENAI_API_KEY`时，系统会自动使用API引擎；否则使用浏览器引擎。
+- 浏览器引擎仅支持GPT和Gemini模型；如需使用Claude/Grok/Codex或多模型组合，请使用`--engine api`。
+- **API请求**：在开始前需要用户明确同意，因为这些请求会产生费用。
+- **浏览器附件处理**：
+  - `--browser-attachments auto|never|always`：默认情况下，系统会自动将附件内容粘贴到页面中（最多60,000个字符），之后再上传。
+- **远程浏览器执行**：
+  - 服务器地址：`oracle serve --host 0.0.0.0 --port 9473 --token <secret>`
+  - 客户端命令：`oracle --engine browser --remote-host <host:port> --remote-token <secret> -p "<task>" --file "src/**"`
 
-## Sessions + slugs (don’t lose work)
+## 会话管理（防止数据丢失）
 
-- Stored under `~/.oracle/sessions` (override with `ORACLE_HOME_DIR`).
-- Runs may detach or take a long time (browser + GPT‑5.2 Pro often does). If the CLI times out: don’t re-run; reattach.
-  - List: `oracle status --hours 72`
-  - Attach: `oracle session <id> --render`
-- Use `--slug "<3-5 words>"` to keep session IDs readable.
-- Duplicate prompt guard exists; use `--force` only when you truly want a fresh run.
+- 会话信息保存在`~/.oracle/sessions`目录下（可通过`ORACLE_HOME_DIR`覆盖此路径）。
+- 执行过程可能会中断或耗时较长（尤其是使用浏览器和GPT-5.2 Pro时）。如果命令行界面超时，请不要重新执行请求，而是重新连接到已保存的会话。
+- 查看会话状态：`oracle status --hours 72`
+- 附加会话信息：`oracle session <id> --render`
+- 使用`--slug "<3-5个单词>"`为会话ID添加描述性标签，便于识别。
+- 系统有防止重复执行的功能；只有在确实需要新会话时才使用`--force`选项。
 
-## Prompt template (high signal)
+## 提示信息模板（重要提示）
 
-Oracle starts with **zero** project knowledge. Assume the model cannot infer your stack, build tooling, conventions, or “obvious” paths. Include:
-- Project briefing (stack + build/test commands + platform constraints).
-- “Where things live” (key directories, entrypoints, config files, dependency boundaries).
-- Exact question + what you tried + the error text (verbatim).
-- Constraints (“don’t change X”, “must keep public API”, “perf budget”, etc).
-- Desired output (“return patch plan + tests”, “list risky assumptions”, “give 3 options with tradeoffs”).
+Oracle在开始处理任务时对项目情况一无所知。因此，提示信息应包含以下内容：
+- 项目概述（技术栈、构建工具、开发流程及平台限制）。
+- 代码资源的存放位置（关键目录、入口文件、配置文件、依赖关系）。
+- 具体的问题描述以及已经尝试过的操作和遇到的错误信息。
+- 重要的约束条件（例如“不得修改某些内容”、“必须保留公共API接口”、“性能限制”等）。
+- 需要的输出结果（例如“提供修复方案及测试内容”、“列出潜在风险”等）。
 
-### “Exhaustive prompt” pattern (for later restoration)
+### **详细提示信息模板（用于后续恢复）**
 
-When you know this will be a long investigation, write a prompt that can stand alone later:
-- Top: 6–30 sentence project briefing + current goal.
-- Middle: concrete repro steps + exact errors + what you already tried.
-- Bottom: attach *all* context files needed so a fresh model can fully understand (entrypoints, configs, key modules, docs).
+如果预计任务耗时较长，可以编写一个独立的提示信息，以便后续使用：
+- 上半部分：项目概述（6–30句话）和当前目标。
+- 中间部分：具体的重现步骤、遇到的错误以及已经尝试过的解决方法。
+- 下半部分：附加所有必要的上下文文件，以便新模型能够完全理解项目情况（入口文件、配置文件、关键模块、文档等）。
 
-If you need to reproduce the same context later, re-run with the same prompt + `--file …` set (Oracle runs are one-shot; the model doesn’t remember prior runs).
+- 如果需要再次重现相同的环境，请使用相同的提示信息和`--file`参数重新执行请求（Oracle的请求是一次性的，模型不会记住之前的执行结果）。
 
-## Safety
+## 安全性注意事项：
 
-- Don’t attach secrets by default (`.env`, key files, auth tokens). Redact aggressively; share only what’s required.
-- Prefer “just enough context”: fewer files + better prompt beats whole-repo dumps.
+- 系统默认不会上传包含敏感信息的文件（如`.env`文件、密钥文件或认证令牌）。请严格限制上传内容，仅分享必要的信息。
+- 建议提供“适量”的上下文信息：使用较少的文件和更清晰的提示信息，比上传整个代码库更为高效。

@@ -1,52 +1,49 @@
 ---
 name: jable
-description: Fetch and rank Jable latest-update videos by likes within a recent time window (default 48h). Use when asked to pull Jable recent updates, sort by likes/popularity, and return top N links in a formatted list.
+description: 在最近的时间窗口（默认为48小时）内，根据视频的点赞数来获取并排名Jable平台的最新更新视频。当需要获取Jable的最新更新内容时，可以使用该功能；按照点赞数或视频的受欢迎程度对视频进行排序，并以格式化列表的形式返回排名前N的视频链接。
 user-invocable: true
 ---
 
 # Jable
 
-Use this skill to produce "recent + top liked" lists from Jable quickly and repeatably.
+使用此技能可以快速且重复地从 Jable 获取“最近发布的内容”以及“点赞数最高的视频”列表。
 
-## Install
+## 安装
 
-From ClawHub:
+通过 ClawHub 安装：
 
 ```bash
 clawhub install jable
 ```
 
-(If you keep it in GitHub instead, clone/copy this folder into your OpenClaw workspace as `skills/jable/`.)
+（如果选择将代码托管在 GitHub 上，可以将该文件夹克隆/复制到您的 OpenClaw 工作空间中，路径为 `skills/jable/`。）
 
-## Quick Start
+## 快速入门
 
-Run:
+运行以下命令：
 
 ```bash
 python3 skills/jable/scripts/top_liked_recent.py --hours 48 --top 3 --pages 10
 ```
 
-Parameters:
-- `--hours`: recent window in hours (default `48`)
-- `--top`: number of items to output (default `3`)
-- `--pages`: number of `latest-updates` pages to scan for like counts (default `10`)
+参数说明：
+- `--hours`：指定最近查看的时间窗口（单位：小时，默认值为 48 小时）
+- `--top`：输出的视频数量，默认值为 3 个
+- `--pages`：用于扫描点赞计数的最新更新页面数量，默认值为 10 页
 
-## Workflow
+## 工作流程：
+1. 从 `https://jable.tv/rss/` 获取视频的发布时间。
+2. 从 `https://jable.tv/latest-updates/` 获取这些视频的点赞数。
+3. 仅保留位于指定时间窗口内的视频。
+4. 按点赞数降序排序。
+5. 返回前 N 个视频的信息，包括标题、点赞数和视频链接。
 
-1. Read publish times from `https://jable.tv/rss/`.
-2. Read like counts from `https://jable.tv/latest-updates/` pages.
-3. Keep only videos inside the requested recent window.
-4. Sort by likes descending.
-5. Return top N with title, likes, and URL.
+## 使用方法（在聊天中）：
+例如：请求列表时可以这样说：
+- “从 Jable 获取最近发布的视频，并显示过去 24 小时内点赞数最高的 5 个视频。”
 
-## Usage (in chat)
-
-Ask for a list like:
-- “Pull Jable latest updates and show top 5 by likes from last 24h”
-
-## Output Format
-
-Use this style when replying to users:
+## 输出格式：
+回复用户时请使用以下格式：
 
 ```text
 1️⃣ <title>
@@ -58,7 +55,6 @@ Use this style when replying to users:
 🔗 <url>
 ```
 
-## Notes
-
-- If a recent RSS item does not appear in scanned latest pages, it may miss like data and be skipped.
-- Increase `--pages` when needed.
+## 注意事项：
+- 如果某个最近发布的视频没有出现在被扫描的最新页面中，可能会遗漏其点赞数据，从而导致该视频被忽略。
+- 如有需要，可以增加 `--pages` 的参数值以扫描更多页面。

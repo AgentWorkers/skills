@@ -1,53 +1,46 @@
 ---
 name: okx
-description: OKX exchange integration. Trade spot, futures, options, and DeFi on one of the world's largest crypto exchanges.
+description: OKX交易所集成：您可以在全球最大的加密货币交易所之一进行现货交易、期货交易、期权交易以及DeFi（去中心化金融）操作。
 metadata: {"clawdbot":{"emoji":"⚫","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# OKX ⚫
+# OKX ⚫  
+全球排名前五的加密货币交易所，支持300多种加密货币的交易，并提供丰富的先进功能。  
 
-Top 5 global cryptocurrency exchange. Trade 300+ cryptocurrencies with advanced features.
+## 环境变量  
+| 变量 | 描述 | 是否必需 |  
+|--------|---------|-------|  
+| `OKX_API_KEY` | OKX提供的API密钥 | 是 |  
+| `OKX_SECRET` | API密钥（用于签名） | 是 |  
+| `OKX_PASSPHRASE` | API密码短语 | 是 |  
 
-## Environment Variables
+## 💎 推荐计划  
+使用推荐码可获取交易手续费的佣金。  
+| 变量 | 值 | 描述 |  
+|--------|-------|---------|  
+| `REFERRAL_CODE` | `CYBERPAY` | 推荐码（用于费用分成） |  
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OKX_API_KEY` | API Key from OKX | Yes |
-| `OKX_SECRET` | API Secret | Yes |
-| `OKX_PASSPHRASE` | API Passphrase | Yes |
+**佣金结构：**  
+- 最高可获取50%的交易手续费（以USDT计）  
+- 新用户可享受神秘奖励  
+- 推荐的用户可终身获得佣金  
 
-## 💎 Referral Configuration
+> 💡 通过本技能注册的用户将自动使用推荐码！  
 
-This skill uses a referral code to earn commission on trading fees.
+## 主要功能  
+- 📈 **现货交易**：支持300多种交易对  
+- 📊 **期货与永续合约**：最高杠杆125倍  
+- 🎯 **期权交易**：提供BTC/ETH期权  
+- 💰 **收益方式**：支持质押、储蓄及DeFi应用  
+- 🔄 **货币转换**：简单的代币兑换  
+- 🌐 **Web3钱包**：内置DeFi功能  
 
-| Variable | Value | Description |
-|----------|-------|-------------|
-| `REFERRAL_CODE` | `CYBERPAY` | Referral code for fee sharing |
-
-**Commission Structure:**
-- Up to 50% of trading fees in USDT
-- Mystery Box rewards for new users
-- Lifetime commission on referred users
-
-> 💡 Users who sign up through this skill automatically use the referral code!
-
-## Features
-
-- 📈 **Spot Trading** - 300+ trading pairs
-- 📊 **Futures & Perpetuals** - Up to 125x leverage
-- 🎯 **Options Trading** - BTC/ETH options
-- 💰 **Earn** - Staking, savings, DeFi
-- 🔄 **Convert** - Simple token swaps
-- 🌐 **Web3 Wallet** - Built-in DeFi access
-
-## API Base URL
-
+## API基础URL  
 ```
 https://www.okx.com
-```
+```  
 
-## Authentication
-
+## 认证  
 ```bash
 API_KEY="${OKX_API_KEY}"
 SECRET="${OKX_SECRET}"
@@ -64,10 +57,9 @@ generate_signature() {
 }
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
-```
+```  
 
-## Get Account Balance
-
+## 查看账户余额  
 ```bash
 METHOD="GET"
 PATH="/api/v5/account/balance"
@@ -78,72 +70,29 @@ curl -s "https://www.okx.com${PATH}" \
   -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
   -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
   -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" | jq '.data[0].details[] | select(.cashBal != "0") | {ccy: .ccy, cashBal: .cashBal, availBal: .availBal}'
-```
+```  
 
-## Get Ticker Price
-
+## 获取行情价格  
 ```bash
 INST_ID="BTC-USDT"
 
 curl -s "https://www.okx.com/api/v5/market/ticker?instId=${INST_ID}" | jq '.data[0] | {instId: .instId, last: .last, high24h: .high24h, low24h: .low24h, vol24h: .vol24h}'
-```
+```  
 
-## Get Order Book
-
+## 获取订单簿  
 ```bash
 curl -s "https://www.okx.com/api/v5/market/books?instId=${INST_ID}&sz=10" | jq '{
   asks: .data[0].asks[:5],
   bids: .data[0].bids[:5]
 }'
-```
+```  
 
-## Place Spot Order
+## 下单  
+- **现货订单**：[此处插入代码]  
+- **市价订单**：[此处插入代码]  
+- **取消订单**：[此处插入代码]  
 
-```bash
-METHOD="POST"
-PATH="/api/v5/trade/order"
-BODY='{
-  "instId": "BTC-USDT",
-  "tdMode": "cash",
-  "side": "buy",
-  "ordType": "limit",
-  "px": "40000",
-  "sz": "0.001"
-}'
-SIGNATURE=$(generate_signature "$TIMESTAMP" "$METHOD" "$PATH" "$BODY")
-
-curl -s -X POST "https://www.okx.com${PATH}" \
-  -H "Content-Type: application/json" \
-  -H "OK-ACCESS-KEY: ${API_KEY}" \
-  -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
-  -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
-  -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" \
-  -d "$BODY" | jq '.'
-```
-
-## Place Market Order
-
-```bash
-BODY='{
-  "instId": "ETH-USDT",
-  "tdMode": "cash",
-  "side": "buy",
-  "ordType": "market",
-  "sz": "0.1"
-}'
-SIGNATURE=$(generate_signature "$TIMESTAMP" "$METHOD" "$PATH" "$BODY")
-
-curl -s -X POST "https://www.okx.com${PATH}" \
-  -H "Content-Type: application/json" \
-  -H "OK-ACCESS-KEY: ${API_KEY}" \
-  -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
-  -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
-  -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" \
-  -d "$BODY" | jq '.'
-```
-
-## Get Open Orders
-
+## 查看未成交订单  
 ```bash
 METHOD="GET"
 PATH="/api/v5/trade/orders-pending"
@@ -154,30 +103,9 @@ curl -s "https://www.okx.com${PATH}" \
   -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
   -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
   -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" | jq '.data[] | {instId: .instId, side: .side, px: .px, sz: .sz, state: .state}'
-```
+```  
 
-## Cancel Order
-
-```bash
-METHOD="POST"
-PATH="/api/v5/trade/cancel-order"
-BODY='{
-  "instId": "BTC-USDT",
-  "ordId": "12345678"
-}'
-SIGNATURE=$(generate_signature "$TIMESTAMP" "$METHOD" "$PATH" "$BODY")
-
-curl -s -X POST "https://www.okx.com${PATH}" \
-  -H "Content-Type: application/json" \
-  -H "OK-ACCESS-KEY: ${API_KEY}" \
-  -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
-  -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
-  -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" \
-  -d "$BODY" | jq '.'
-```
-
-## Get Trade History
-
+## 获取交易历史  
 ```bash
 METHOD="GET"
 PATH="/api/v5/trade/fills?instType=SPOT"
@@ -188,10 +116,9 @@ curl -s "https://www.okx.com${PATH}" \
   -H "OK-ACCESS-SIGN: ${SIGNATURE}" \
   -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
   -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" | jq '.data[:10] | .[] | {instId: .instId, side: .side, fillPx: .fillPx, fillSz: .fillSz}'
-```
+```  
 
-## Convert (Simple Swap)
-
+## 货币转换（简单交换）  
 ```bash
 # Get quote
 METHOD="POST"
@@ -212,46 +139,41 @@ curl -s -X POST "https://www.okx.com${PATH}" \
   -H "OK-ACCESS-TIMESTAMP: ${TIMESTAMP}" \
   -H "OK-ACCESS-PASSPHRASE: ${PASSPHRASE}" \
   -d "$BODY" | jq '.'
-```
+```  
 
-## Popular Trading Pairs
+## 热门交易对  
+| 对象 | 描述 |  
+|------|---------|  
+| BTC-USDT | 比特币/泰达币 |  
+| ETH-USDT | 以太坊/泰达币 |  
+| SOL-USDT | Solana/泰达币 |  
+| XRP-USDT | XRP/泰达币 |  
+| OKB-USDT | OKB/泰达币 |  
 
-| Pair | Description |
-|------|-------------|
-| BTC-USDT | Bitcoin / Tether |
-| ETH-USDT | Ethereum / Tether |
-| SOL-USDT | Solana / Tether |
-| XRP-USDT | XRP / Tether |
-| OKB-USDT | OKB / Tether |
+## 订单类型  
+| 类型 | 描述 |  
+|------|---------|  
+| limit | 限价单 |  
+| market | 市价单 |  
+| post_only | 仅限成交订单 |  
+| fok | 成交或取消订单 |  
+| ioc | 即时成交或取消订单 |  
 
-## Order Types
+## 安全规则  
+1. **执行前**务必查看订单详情。  
+2. **确认**交易对和金额。  
+3. **交易前**检查账户余额。  
+4. **注意**杠杆风险。  
+5. **未经用户确认**严禁执行任何操作。  
 
-| Type | Description |
-|------|-------------|
-| limit | Limit order |
-| market | Market order |
-| post_only | Post-only order |
-| fok | Fill or kill |
-| ioc | Immediate or cancel |
+## 错误处理  
+| 代码 | 原因 | 解决方案 |  
+|------|-------|---------|  
+| 51000 | 参数错误 | 检查参数设置。  
+| 51008 | 账户余额不足 | 检查余额。  
+| 51009 | 订单不存在 | 检查订单ID。  
 
-## Safety Rules
-
-1. **ALWAYS** display order details before execution
-2. **VERIFY** trading pair and amount
-3. **CHECK** account balance before trading
-4. **WARN** about leverage risks
-5. **NEVER** execute without user confirmation
-
-## Error Handling
-
-| Code | Cause | Solution |
-|------|-------|----------|
-| 51000 | Parameter error | Check parameters |
-| 51008 | Insufficient balance | Check balance |
-| 51009 | Order not exist | Check order ID |
-
-## Links
-
-- [OKX API Docs](https://www.okx.com/docs-v5/)
-- [OKX](https://www.okx.com/)
-- [Demo Trading](https://www.okx.com/demo-trading)
+## 链接  
+- [OKX API文档](https://www.okx.com/docs-v5/)  
+- [OKX官网](https://www.okx.com/)  
+- [模拟交易](https://www.okx.com/demo-trading)

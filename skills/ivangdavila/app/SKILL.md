@@ -1,77 +1,77 @@
 ---
 name: App
-description: Launch and scale mobile apps with ASO, viral loops, monetization, and App Store growth tactics.
+description: 通过应用商店优化（ASO）、病毒式传播机制、盈利策略以及App Store的增长策略来启动和扩展移动应用程序。
 metadata: {"clawdbot":{"emoji":"📱","os":["linux","darwin","win32"]}}
 ---
 
-# Mobile App Growth Rules
+# 移动应用增长策略
 
-## Work Orchestration
-Route requests to specialized agents:
-- ASO and keywords → analyst + marketing agents
-- UI/UX and screenshots → designer agent
-- Monetization strategy → analyst + product agents
-- Technical implementation → developer agent
-- Paid acquisition → marketing agent
+## 工作流程协调
+将请求分配给相应的负责人：
+- 应用商店优化（ASO）和关键词相关问题 → 分析师 + 营销团队
+- 用户界面/用户体验（UI/UX）及截图相关问题 → 设计师
+- 营收策略相关问题 → 分析师 + 产品团队
+- 技术实现相关问题 → 开发团队
+- 付费推广相关问题 → 营销团队
 
-## App Store Optimization (ASO)
-- Title: primary keyword in first 30 characters — this is your strongest ranking signal
-- Subtitle/short description: secondary keywords, benefit-focused
-- Keywords field (iOS): no spaces after commas, no duplicates from title
-- Update keywords weekly based on ranking data — ASO is continuous
-- Localize for every market you target — translated keywords unlock new audiences
+## 应用商店优化（ASO）
+- 应用标题：包含主要关键词，且长度应在前30个字符内——这是影响应用排名的关键因素
+- 副标题/简短描述：包含次要关键词，重点突出应用的优势
+- 关键词字段（iOS）：逗号后不能有空格，且关键词不能与标题重复
+- 根据排名数据每周更新关键词——ASO是一个持续进行的过程
+- 为每个目标市场进行本地化处理——翻译后的关键词能吸引新用户
 
-## Screenshots and Visuals
-- First two screenshots must show core value — most users don't scroll
-- Show outcomes, not features — "10K saved" not "expense tracking"
-- Text overlays in user's language — App Store doesn't auto-translate images
-- Video preview: hook in first 3 seconds — autoplay is silent, make it visual
-- A/B test screenshots with Custom Product Pages (iOS) or Store Listing Experiments (Android)
+## 屏幕截图与视觉素材
+- 前两张截图必须展示应用的核心价值——大多数用户不会向下滚动查看更多内容
+- 展示应用的实际效果，而非功能列表（例如：“节省了10,000元”而非“费用追踪”）
+- 图片上添加用户语言的文字说明——App Store不会自动翻译图片
+- 视频预览：吸引用户注意力的前3秒内容——视频应自动播放且无声
+- 对iOS应用使用自定义产品页面（Custom Product Pages），对Android应用使用应用商店列表实验（Store Listing Experiments）进行A/B测试
 
-## Ratings and Reviews
-- Prompt for review after positive moments — completed purchase, achievement unlocked
-- iOS: use SKStoreReviewController, limited to 3 prompts per year
-- Respond to negative reviews — shows active development, can change rating
-- Never incentivize reviews — violates store policies, gets you banned
-- 4.0+ rating is table stakes — below that kills conversion
+## 评分与评论
+- 在用户完成购买或达成目标后及时邀请他们留下评论
+- iOS平台：使用SKStoreReviewController，每年最多可发送3次邀请
+- 回复负面评论——这能展示应用的活跃开发状态，有助于提升评分
+- 绝不要通过激励手段强制用户评论——否则会违反应用商店政策，可能导致应用被封禁
+- 评分达到4.0及以上才能在竞争中占据优势；低于4.0的评分会严重影响转化率
 
-## Viral Growth Loops
-- Share mechanic must create value for sender — "invite friend, both get reward"
-- Shareable outputs: receipts, achievements, results with app branding
-- Referral codes tracked per user — measure viral coefficient
-- Time-to-invite: shorten the path to first share
-- Deep links into app content — don't send users to app store if already installed
+## 病毒式传播策略
+- 分享机制必须为分享者带来价值——“邀请朋友，双方都能获得奖励”
+- 提供可分享的内容：收据、成就记录等，并融入应用的品牌元素
+- 记录每个用户的推荐码——以评估应用的病毒传播效果
+- 缩短用户首次分享的路径
+- 提供直接指向应用内容的链接——如果用户已经安装了应用，则不要引导他们再次访问应用商店
 
-## Monetization
-- Subscription > one-time purchase for retention — recurring revenue compounds
-- Free trial: 7 days converts better than 3, worse than 14 — test for your app
-- Paywall placement: after value demonstrated, before frustration
-- Price testing: same app can 3x revenue with right price point
-- Introductory offers for annual plans — lock in commitment
+## 营收策略
+- 订阅模式优于一次性购买模式——订阅能带来稳定的收入
+- 免费试用期：7天的试用效果优于3天或14天的试用期——根据应用特点进行测试
+- 设置付费门槛：在用户体验到应用价值后开始收费
+- 定价策略：合适的定价能显著提升收入
+- 为年度订阅计划提供优惠——以锁定用户的长期使用
 
-## Paid Acquisition
-- Apple Search Ads: high intent, expensive — use for brand defense and discovery terms
-- Reinvest profits into UA immediately — compound growth
-- Track LTV:CAC ratio — must be > 3:1 for sustainability
-- Creative fatigue is real — refresh ads every 2-4 weeks
-- Lookalike audiences from paying users, not just installers
+## 付费推广
+- Apple搜索广告：目标用户意图明确，但成本较高——适用于品牌推广和寻找新用户的场景
+- 将广告收益立即重新投资于用户获取（UA）——以实现持续增长
+- 关注用户生命周期价值（LTV）与客户获取成本（CAC）的比率——该比率必须大于3:1才能保证可持续性
+- 避免用户对广告产生疲劳感——每2-4周更新广告内容
+- 推荐对象应来自已付费用户，而不仅仅是新安装用户
 
-## Retention
-- Push notification on day 1, 3, 7 — re-engage before they forget
-- Streak mechanics for daily apps — habit formation
-- Onboarding must reach "aha moment" in first session
-- Track cohort retention curves — where's the drop-off?
-- Reactivation campaigns cheaper than new acquisition
+## 用户留存策略
+- 在用户使用应用的第1天、第3天和第7天发送推送通知——在他们遗忘应用之前重新与他们建立联系
+- 对于日常使用的应用，设计连续性的互动机制——帮助用户养成使用习惯
+- 新用户引导流程必须在首次使用时让用户感受到应用的实用价值
+- 跟踪用户留存曲线——找出用户流失的关键节点
+- 重新激活用户的成本低于新用户的获取成本
 
-## Launch Strategy
-- Soft launch in small market first — fix bugs, optimize funnel
-- Coordinate launch: press, Product Hunt, social all same day
-- Feature request: relationship with App Store team matters
-- Pre-orders (iOS) build day-one momentum
+## 应用发布策略
+- 先在小型市场进行低调发布——修复漏洞并优化用户转化流程
+- 协调发布活动：媒体宣传、产品测评活动、社交媒体推广应同时进行
+- 处理用户的功能请求——与App Store团队的合作至关重要
+- 提供预购选项（iOS）——为应用发布营造初期动力
 
-## Common Mistakes
-- Building features before fixing retention — more features won't fix churn
-- Spending on ads with broken onboarding — paying for users who leave
-- Ignoring Android — 70% of global market
-- Review prompt on first launch — user hasn't experienced value yet
-- Competing on keywords you can't win — long-tail converts better
+## 常见错误
+- 在解决用户留存问题之前就开发新功能——增加功能并不能减少用户流失
+- 在用户引导流程不完善的情况下投入大量广告费用——这等于在为流失的用户付费
+- 忽视Android市场——Android用户占全球市场的70%
+- 在应用首次发布时就邀请用户留下评论——用户此时尚未体验到应用的价值
+- 选择竞争激烈的关键词进行推广——长尾关键词往往能带来更好的转化效果

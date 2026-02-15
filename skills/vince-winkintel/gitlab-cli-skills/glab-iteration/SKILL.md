@@ -1,11 +1,11 @@
 ---
 name: glab-iteration
-description: Manage GitLab iterations for project planning and sprint management. Use when creating iterations, assigning issues to sprints, or viewing iteration progress. Triggers on iteration, sprint, iteration planning, sprint planning.
+description: 用于管理 GitLab 的迭代周期，以支持项目规划和冲刺管理。适用于创建迭代周期、将问题分配给冲刺任务，或查看迭代进度。该功能会在迭代周期、冲刺周期、迭代计划或冲刺计划阶段被触发。
 ---
 
-# glab iteration
+# glab 迭代（glab iteration）
 
-## Overview
+## 概述
 
 ```
 
@@ -25,12 +25,12 @@ description: Manage GitLab iterations for project planning and sprint management
     -R --repo       Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab iteration --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

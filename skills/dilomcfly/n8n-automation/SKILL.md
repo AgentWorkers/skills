@@ -1,38 +1,38 @@
 ---
 name: n8n-automation
-description: Manage n8n workflows from OpenClaw via the n8n REST API. Use when the user asks about n8n workflows, automations, executions, or wants to trigger, list, create, activate, or debug n8n workflows. Supports both self-hosted n8n and n8n Cloud instances.
+description: 通过 OpenClaw 的 n8n REST API 来管理 n8n 工作流。当用户需要查询 n8n 工作流、自动化任务、执行情况，或者希望触发、列出、创建、激活或调试 n8n 工作流时，可以使用该 API。该 API 支持自托管的 n8n 实例以及 n8n Cloud 实例。
 ---
 
-# n8n Automation
+# n8n自动化
 
-Control n8n workflow automation platform via REST API.
+通过REST API控制n8n工作流自动化平台。
 
-## Setup
+## 设置
 
-Set these environment variables (or store in `.n8n-api-config`):
+请设置以下环境变量（或将其存储在`.n8n-api-config`文件中）：
 
 ```bash
 export N8N_API_URL="https://your-instance.app.n8n.cloud/api/v1"  # or http://localhost:5678/api/v1
 export N8N_API_KEY="your-api-key-here"
 ```
 
-Generate API key: n8n Settings → n8n API → Create an API key.
+生成API密钥：进入n8n设置 → API选项 → 创建API密钥。
 
-## Quick Reference
+## 快速参考
 
-All calls use header `X-N8N-API-KEY` for auth.
+所有请求都需要使用`X-N8N-API-KEY`作为认证头。
 
-### List Workflows
+### 列出工作流
 ```bash
 curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/workflows" | jq '.data[] | {id, name, active}'
 ```
 
-### Get Workflow Details
+### 获取工作流详情
 ```bash
 curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/workflows/{id}"
 ```
 
-### Activate/Deactivate Workflow
+### 激活/停用工作流
 ```bash
 # Activate
 curl -s -X PATCH -H "X-N8N-API-KEY: $N8N_API_KEY" \
@@ -45,7 +45,7 @@ curl -s -X PATCH -H "X-N8N-API-KEY: $N8N_API_KEY" \
   -d '{"active": false}' "$N8N_API_URL/workflows/{id}"
 ```
 
-### Trigger Workflow (via webhook)
+### 通过Webhook触发工作流
 ```bash
 # Production webhook
 curl -s -X POST "$N8N_API_URL/../webhook/{webhook-path}" \
@@ -58,7 +58,7 @@ curl -s -X POST "$N8N_API_URL/../webhook-test/{webhook-path}" \
   -d '{"key": "value"}'
 ```
 
-### List Executions
+### 列出执行记录
 ```bash
 # All recent executions
 curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/executions?limit=10" | jq '.data[] | {id, workflowId, status, startedAt}'
@@ -70,27 +70,29 @@ curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/executions?status=error&l
 curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/executions?workflowId={id}&limit=10"
 ```
 
-### Get Execution Details
+### 获取执行详情
 ```bash
 curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/executions/{id}"
 ```
 
-### Create Workflow (from JSON)
+### 从JSON创建工作流
 ```bash
 curl -s -X POST -H "X-N8N-API-KEY: $N8N_API_KEY" \
   -H "Content-Type: application/json" \
   -d @workflow.json "$N8N_API_URL/workflows"
 ```
 
-### Delete Workflow
+### 删除工作流
 ```bash
 curl -s -X DELETE -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/workflows/{id}"
 ```
 
-## Common Patterns
+## 常见用法
 
-### Health Check (run periodically)
-List active workflows, check recent executions for errors, report status:
+### 健康检查（定期运行）
+- 列出所有活跃的工作流
+- 检查最近的执行记录是否有错误
+- 报告工作流状态：
 ```bash
 # Count active workflows
 ACTIVE=$(curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/workflows?active=true" | jq '.data | length')
@@ -101,22 +103,22 @@ FAILED=$(curl -s -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/executions?statu
 echo "Active workflows: $ACTIVE | Failed (24h): $FAILED"
 ```
 
-### Debug Failed Execution
-1. List failed executions → get execution ID
-2. Fetch execution details → find the failing node
-3. Check node parameters and input data
-4. Suggest fix based on error message
+### 调试失败的执行
+1. 列出失败的执行记录 → 获取执行ID
+2. 获取执行详情 → 查找出现问题的节点
+3. 检查节点参数和输入数据
+4. 根据错误信息提供修复建议
 
-### Workflow Summary
-Parse workflow JSON to summarize: trigger type, node count, apps connected, schedule.
+### 工作流摘要
+解析工作流JSON数据以获取摘要信息：触发类型、连接的应用程序数量、调度计划等。
 
-## API Endpoints Reference
+## API端点参考
 
-See [references/api-endpoints.md](references/api-endpoints.md) for complete endpoint documentation.
+请参阅[references/api-endpoints.md](references/api-endpoints.md)以获取完整的端点文档。
 
-## Tips
-- API key has full access on non-enterprise plans
-- Rate limits vary by plan (cloud) or are unlimited (self-hosted)
-- Webhook URLs are separate from API URLs (no auth header needed)
-- Use `?active=true` or `?active=false` to filter workflow listings
-- Execution data may be pruned based on n8n retention settings
+## 提示：
+- API密钥在非企业版计划中具有完全访问权限
+- 访问频率限制因计划（云服务）而异，或者对于自托管环境可能是无限制的
+- Webhook地址与API地址不同（无需携带认证头）
+- 可以使用`?active=true`或`?active=false`来过滤工作流列表
+- 执行数据可能会根据n8n的保留策略被删除

@@ -1,384 +1,374 @@
 ---
 name: seo-audit
-description: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," or "SEO health check." For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see schema-markup.
+description: 当用户希望审计、审查或诊断其网站的SEO问题时，也可以使用这些工具。此外，当用户提到“SEO审计”、“技术SEO”、“为什么我的网站没有排名”、“SEO问题”、“页面内SEO优化”、“元标签审查”或“SEO健康检查”时，这些工具也非常适用。关于如何大规模构建页面以针对特定关键词进行优化，请参阅“programmatic-seo”；关于如何添加结构化数据，请参阅“schema-markup”。
 ---
 
-# SEO Audit
+# SEO审计
 
-You are an expert in search engine optimization. Your goal is to identify SEO issues and provide actionable recommendations to improve organic search performance.
+您是搜索引擎优化方面的专家，您的目标是识别SEO问题并提出可操作的改进建议，以提高网站的自然搜索排名。
 
-## Initial Assessment
+## 初步评估
 
-Before auditing, understand:
+在开始审计之前，请了解以下信息：
 
-1. **Site Context**
-   - What type of site? (SaaS, e-commerce, blog, etc.)
-   - What's the primary business goal for SEO?
-   - What keywords/topics are priorities?
+1. **网站背景**
+   - 网站类型是什么？（SaaS、电子商务、博客等）
+   - SEO的主要业务目标是什么？
+   - 哪些关键词或主题是优先考虑的？
 
-2. **Current State**
-   - Any known issues or concerns?
-   - Current organic traffic level?
-   - Recent changes or migrations?
+2. **当前状况**
+   - 是否存在已知的问题或疑虑？
+   - 当前的自然流量水平如何？
+   - 最近是否有任何更改或迁移？
 
-3. **Scope**
-   - Full site audit or specific pages?
-   - Technical + on-page, or one focus area?
-   - Access to Search Console / analytics?
-
----
-
-## Audit Framework
-
-### Priority Order
-1. **Crawlability & Indexation** (can Google find and index it?)
-2. **Technical Foundations** (is the site fast and functional?)
-3. **On-Page Optimization** (is content optimized?)
-4. **Content Quality** (does it deserve to rank?)
-5. **Authority & Links** (does it have credibility?)
+3. **审计范围**
+   - 是进行全面审计还是针对特定页面？
+   - 是关注技术层面和页面优化，还是仅关注某个特定领域？
+   - 是否可以访问Search Console/分析工具？
 
 ---
 
-## Technical SEO Audit
+## 审计框架
 
-### Crawlability
+### 优先级顺序
+1. **可爬取性和索引**（Google能否找到并索引该网站？）
+2. **技术基础**（网站运行是否快速且功能正常？）
+3. **页面优化**（内容是否经过优化？）
+4. **内容质量**（内容是否具备排名潜力？）
+5. **权威性和链接**（网站是否具有可信度？）
 
-**Robots.txt**
-- Check for unintentional blocks
-- Verify important pages allowed
-- Check sitemap reference
+---
 
-**XML Sitemap**
-- Exists and accessible
-- Submitted to Search Console
-- Contains only canonical, indexable URLs
-- Updated regularly
-- Proper formatting
+## 技术SEO审计
 
-**Site Architecture**
-- Important pages within 3 clicks of homepage
-- Logical hierarchy
-- Internal linking structure
-- No orphan pages
+### 可爬取性
 
-**Crawl Budget Issues** (for large sites)
-- Parameterized URLs under control
-- Faceted navigation handled properly
-- Infinite scroll with pagination fallback
-- Session IDs not in URLs
+**Robots.txt文件**
+- 检查是否存在无意中阻止爬虫访问的设置
+- 确认重要页面被允许访问
+- 检查站点地图（sitemap）的引用情况
 
-### Indexation
+**XML站点地图**
+- 是否存在且可访问
+- 是否已提交给Search Console
+- 是否仅包含规范的、可索引的URL
+- 是否定期更新
+- 格式是否正确
 
-**Index Status**
-- site:domain.com check
-- Search Console coverage report
-- Compare indexed vs. expected
+**网站架构**
+- 重要页面是否在首页的3次点击范围内
+- 是否有逻辑清晰的层次结构
+- 内部链接是否合理
+- 是否存在孤立页面（没有内部链接的页面）
 
-**Indexation Issues**
-- Noindex tags on important pages
-- Canonicals pointing wrong direction
-- Redirect chains/loops
-- Soft 404s
-- Duplicate content without canonicals
+**大型网站的爬取问题**
+- 参数化URL是否得到有效管理
+- 分面导航是否处理得当
+- 是否支持无限滚动并提供了分页功能
+- URL中是否不包含会话ID（session ID）
 
-**Canonicalization**
-- All pages have canonical tags
-- Self-referencing canonicals on unique pages
-- HTTP → HTTPS canonicals
-- www vs. non-www consistency
-- Trailing slash consistency
+### 索引
 
-### Site Speed & Core Web Vitals
+**索引状态**
+- 检查site:domain.com的索引情况
+- 查看Search Console的覆盖报告
+- 对比实际索引的页面与预期页面
 
-**Core Web Vitals**
-- LCP (Largest Contentful Paint): < 2.5s
-- INP (Interaction to Next Paint): < 200ms
-- CLS (Cumulative Layout Shift): < 0.1
+**索引问题**
+- 重要页面上是否有noindex标签
+- 相关的规范链接（canonical links）是否指向错误的位置
+- 是否存在重定向链或循环
+- 是否存在404错误（尤其是软404）
+- 是否存在没有规范链接的重复内容
 
-**Speed Factors**
-- Server response time (TTFB)
-- Image optimization
-- JavaScript execution
-- CSS delivery
-- Caching headers
-- CDN usage
-- Font loading
+**规范链接（Canonicalization）**
+- 所有页面是否都设置了规范链接
+- 独立页面上的规范链接是否指向正确的页面
+- 是否正确处理了HTTP和HTTPS之间的规范链接
+- www和非www版本的链接是否一致
+- 网址末尾的斜杠（slash）是否统一
 
-**Tools**
+### 网站速度与核心网页健康指标（Core Web Vitals）
+
+**核心网页健康指标（Core Web Vitals）**
+- LCP（首次绘制完整内容的时间）：< 2.5秒
+- INP（用户与下一次内容绘制之间的交互时间）：< 200毫秒
+- CLS（累积布局变化）：< 0.1
+
+**速度优化因素**
+- 服务器响应时间（TTFB）
+- 图像优化
+- JavaScript执行速度
+- CSS加载速度
+- 缓存设置
+- 是否使用了CDN
+- 字体加载情况
+
+**使用工具**
 - PageSpeed Insights
 - WebPageTest
-- Chrome DevTools
-- Search Console Core Web Vitals report
+- Chrome开发者工具（Chrome DevTools）
+- Search Console的核心网页健康指标报告
 
-### Mobile-Friendliness
+### 移动友好性
+- 网站是否具有响应式设计
+- 图标点击区域的大小是否合适
+- 视口设置是否正确
+- 是否没有水平滚动
+- 移动版内容和桌面版内容是否一致
+- 网站是否支持移动优先的索引策略
 
-- Responsive design (not separate m. site)
-- Tap target sizes
-- Viewport configured
-- No horizontal scroll
-- Same content as desktop
-- Mobile-first indexing readiness
+### 安全性与HTTPS
+- 全站是否使用HTTPS
+- SSL证书是否有效
+- 是否没有混合内容（HTTP和HTTPS内容混杂）
+- 是否有从HTTP到HTTPS的自动重定向
+- 是否使用了HSTS头部（推荐）
 
-### Security & HTTPS
-
-- HTTPS across entire site
-- Valid SSL certificate
-- No mixed content
-- HTTP → HTTPS redirects
-- HSTS header (bonus)
-
-### URL Structure
-
-- Readable, descriptive URLs
-- Keywords in URLs where natural
-- Consistent structure
-- No unnecessary parameters
-- Lowercase and hyphen-separated
+### URL结构
+- URL是否易于阅读且具有描述性
+- 关键词是否自然地包含在URL中
+- URL结构是否一致
+- 是否有不必要的参数
+- URL是否使用小写字母和连字符分隔
 
 ---
 
-## On-Page SEO Audit
+## 页面SEO审计
 
-### Title Tags
+### 标题标签（Title Tags）
 
-**Check for:**
-- Unique titles for each page
-- Primary keyword near beginning
-- 50-60 characters (visible in SERP)
-- Compelling and click-worthy
-- Brand name placement (end, usually)
+**检查内容**：
+- 每个页面的标题是否唯一
+- 标题中是否包含主要关键词
+- 标题长度在50-60个字符左右（在搜索结果页面中可见）
+- 标题是否具有吸引力且容易点击
+- 品牌名称是否出现在标题末尾
 
-**Common issues:**
-- Duplicate titles
-- Too long (truncated)
-- Too short (wasted opportunity)
-- Keyword stuffing
-- Missing entirely
+**常见问题**：
+- 标题重复
+- 标题过长或过短
+- 关键词堆砌
+- 标题完全缺失
 
-### Meta Descriptions
+### 元描述（Meta Descriptions）
 
-**Check for:**
-- Unique descriptions per page
-- 150-160 characters
-- Includes primary keyword
-- Clear value proposition
-- Call to action
+**检查内容**：
+- 每个页面的元描述是否唯一
+- 描述长度在150-160个字符左右
+- 描述中是否包含主要关键词
+- 描述是否清晰地传达了内容价值
+- 是否包含明确的行动号召（call to action）
 
-**Common issues:**
-- Duplicate descriptions
-- Auto-generated garbage
-- Too long/short
-- No compelling reason to click
+**常见问题**：
+- 元描述重复
+- 元描述自动生成且质量较低
+- 描述长度过长或过短
+- 元描述缺乏吸引力
 
-### Heading Structure
+### 标题层级（Heading Structure）
 
-**Check for:**
-- One H1 per page
-- H1 contains primary keyword
-- Logical hierarchy (H1 → H2 → H3)
-- Headings describe content
-- Not just for styling
+**检查内容**：
+- 每个页面是否只有一个H1标题
+- H1标题中是否包含主要关键词
+- 标题层级是否清晰（H1 → H2 → H3）
+- 标题是否能够准确描述页面内容
+- 标题不仅仅是用于样式设置
 
-**Common issues:**
-- Multiple H1s
-- Skip levels (H1 → H3)
-- Headings used for styling only
-- No H1 on page
+**常见问题**：
+- 一个页面上有多个H1标题
+- 跳过标题层级（例如H1直接使用H3）
+- 标题仅用于样式设置
+- 页面上完全没有H1标题
 
-### Content Optimization
+### 内容优化
 
-**Primary Page Content**
-- Keyword in first 100 words
-- Related keywords naturally used
-- Sufficient depth/length for topic
-- Answers search intent
-- Better than competitors
+**首页内容**
+- 关键词是否出现在页面的前100个单词中
+- 相关关键词是否自然地出现在内容中
+- 内容的深度和长度是否足够
+- 内容是否能够满足用户的搜索意图
+- 内容是否优于竞争对手
 
-**Thin Content Issues**
-- Pages with little unique content
-- Tag/category pages with no value
-- Doorway pages
-- Duplicate or near-duplicate content
+**内容质量问题**
+- 页面内容过于简单或重复
+- 标签/分类页面缺乏实质内容
+- 无价值的入门页面
+- 存在重复或相似的内容
 
-### Image Optimization
+### 图像优化
 
-**Check for:**
-- Descriptive file names
-- Alt text on all images
-- Alt text describes image
-- Compressed file sizes
-- Modern formats (WebP)
-- Lazy loading implemented
-- Responsive images
+**检查内容**：
+- 图像文件名是否具有描述性
+- 所有图像是否都配备了alt文本
+- alt文本是否准确描述了图像内容
+- 图像文件大小是否经过压缩
+- 是否使用了现代的图像格式（如WebP）
+- 是否实现了懒加载（lazy loading）
+- 图像是否具有响应式设计
 
-### Internal Linking
+### 内部链接**
 
-**Check for:**
-- Important pages well-linked
-- Descriptive anchor text
-- Logical link relationships
-- No broken internal links
-- Reasonable link count per page
+**检查内容**：
+- 重要页面是否被合理链接
+- 链接文本是否具有描述性
+- 内部链接是否逻辑清晰
+- 每个页面的链接数量是否合理
 
-**Common issues:**
-- Orphan pages (no internal links)
-- Over-optimized anchor text
-- Important pages buried
-- Excessive footer/sidebar links
+**常见问题**：
+- 孤立页面（没有内部链接）
+- 链接文本过于冗长或无关紧要
+- 重要页面被忽略
+- 页脚或侧边栏中的链接过多
 
-### Keyword Targeting
+### 关键词定位
 
-**Per Page**
-- Clear primary keyword target
-- Title, H1, URL aligned
-- Content satisfies search intent
-- Not competing with other pages (cannibalization)
+**页面级别**
+- 每个页面是否有明确的主要关键词目标
+- 标题、H1标题和URL是否一致
+- 内容是否能够满足用户的搜索意图
+- 内容是否不会与其他页面产生竞争（避免关键词被重复使用）
 
-**Site-Wide**
-- Keyword mapping document
-- No major gaps in coverage
-- No keyword cannibalization
-- Logical topical clusters
+**全站范围**
+- 是否有关键词映射文档
+- 关键词覆盖范围是否完整
+- 是否没有关键词被重复使用
+- 内容是否按照主题进行了合理分组
 
 ---
 
-## Content Quality Assessment
+## 内容质量评估
 
-### E-E-A-T Signals
+### 体验、专家性和可信度（E-E-A-T）
 
-**Experience**
-- First-hand experience demonstrated
-- Original insights/data
-- Real examples and case studies
+**体验（Experience）**
+- 是否提供了第一手的经验
+- 是否使用了原创的数据和案例研究
+- 是否有真实的例子和案例研究
 
-**Expertise**
-- Author credentials visible
-- Accurate, detailed information
-- Properly sourced claims
+**专家性（Expertise）**
+- 作者的资质是否明确
+- 信息是否准确且详细
+- 所有声明是否有可靠的来源
 
-**Authoritativeness**
-- Recognized in the space
-- Cited by others
-- Industry credentials
+**权威性（Authority）**
+- 作者在该领域是否受到认可
+- 是否被其他来源引用
+- 作者是否具有行业内的资质
 
-**Trustworthiness**
-- Accurate information
-- Transparent about business
-- Contact information available
-- Privacy policy, terms
-- Secure site (HTTPS)
+**可信度（Trustworthiness）**
+- 信息是否准确
+- 业务信息是否透明
+- 是否提供了联系方式
+- 是否有隐私政策和服务条款
+- 网站是否使用了HTTPS
 
-### Content Depth
+**内容深度（Content Depth）**
+- 对主题的覆盖是否全面
+- 是否能够回答用户的进一步问题
+- 内容是否优于排名靠前的竞争对手
+- 内容是否经常更新
 
-- Comprehensive coverage of topic
-- Answers follow-up questions
-- Better than top-ranking competitors
-- Updated and current
-
-### User Engagement Signals
-
-- Time on page
-- Bounce rate in context
-- Pages per session
-- Return visits
+**用户参与度（User Engagement）**
+- 用户在页面上的停留时间
+- 离开页面的比率
+- 每次会话中的页面浏览数量
+- 用户的回访率
 
 ---
 
-## Common Issues by Site Type
+## 不同网站类型的常见问题
 
-### SaaS/Product Sites
-- Product pages lack content depth
-- Blog not integrated with product pages
-- Missing comparison/alternative pages
-- Feature pages thin on content
-- No glossary/educational content
+### SaaS/产品网站
+- 产品页面内容深度不足
+- 博客与产品页面没有整合
+- 缺少比较或替代产品页面
+- 功能页面的内容较少
+- 缺少术语表或教育性内容
 
-### E-commerce
-- Thin category pages
-- Duplicate product descriptions
-- Missing product schema
-- Faceted navigation creating duplicates
-- Out-of-stock pages mishandled
+### 电子商务网站
+- 分类页面内容较少
+- 产品描述重复
+- 缺少产品结构化数据（product schema）
+- 分面导航导致重复内容
+- 缺货页面处理不当
 
-### Content/Blog Sites
-- Outdated content not refreshed
-- Keyword cannibalization
-- No topical clustering
-- Poor internal linking
-- Missing author pages
+### 内容/博客网站
+- 内容更新不及时
+- 关键词被重复使用
+- 内容缺乏主题分类
+- 内部链接不足
+- 缺少作者页面
 
-### Local Business
-- Inconsistent NAP
-- Missing local schema
-- No Google Business Profile optimization
-- Missing location pages
-- No local content
-
----
-
-## Output Format
-
-### Audit Report Structure
-
-**Executive Summary**
-- Overall health assessment
-- Top 3-5 priority issues
-- Quick wins identified
-
-**Technical SEO Findings**
-For each issue:
-- **Issue**: What's wrong
-- **Impact**: SEO impact (High/Medium/Low)
-- **Evidence**: How you found it
-- **Fix**: Specific recommendation
-- **Priority**: 1-5 or High/Medium/Low
-
-**On-Page SEO Findings**
-Same format as above
-
-**Content Findings**
-Same format as above
-
-**Prioritized Action Plan**
-1. Critical fixes (blocking indexation/ranking)
-2. High-impact improvements
-3. Quick wins (easy, immediate benefit)
-4. Long-term recommendations
+### 本地企业网站
+- 网站信息（NAP，Name, Address, Phone）不一致
+- 缺少本地化的结构化数据（local schema）
+- 未优化Google Business Profile
+- 缺少本地相关页面
+- 缺少本地化内容
 
 ---
 
-## Tools Referenced
+## 输出格式
 
-**Free Tools**
-- Google Search Console (essential)
+### 审计报告结构
+
+**执行摘要（Executive Summary）**
+- 网站的整体健康状况评估
+- 最重要的3-5个问题
+- 可立即实施的改进措施
+
+**技术SEO发现（Technical SEO Findings）**
+- 对于每个问题：
+  - **问题**：具体问题是什么
+  - **影响**：对SEO的影响（高/中/低）
+  - **发现依据**：如何发现该问题的
+  - **解决方案**：具体的改进建议
+  - **优先级**：1-5或高/中/低
+
+**页面SEO发现（On-Page SEO Findings）**
+- 采用与技术SEO相同的格式
+
+**内容发现（Content Findings）**
+- 采用与技术SEO相同的格式
+
+**优先行动计划（Priority Action Plan）**
+- 优先处理严重影响SEO的问题
+- 实施能够快速带来效果的改进措施
+- 提出长期性的改进建议
+
+---
+
+## 参考工具
+
+**免费工具**
+- Google Search Console（必备）
 - Google PageSpeed Insights
 - Bing Webmaster Tools
 - Rich Results Test
 - Mobile-Friendly Test
 - Schema Validator
 
-**Paid Tools** (if available)
+**付费工具**（如可用）：
 - Screaming Frog
 - Ahrefs / Semrush
 - Sitebulb
 - ContentKing
 
----
+## 需要咨询的问题**
 
-## Questions to Ask
-
-If you need more context:
-1. What pages/keywords matter most?
-2. Do you have Search Console access?
-3. Any recent changes or migrations?
-4. Who are your top organic competitors?
-5. What's your current organic traffic baseline?
+如果您需要更多背景信息，请提出以下问题：
+1. 哪些页面或关键词最为重要？
+2. 您是否可以访问Search Console？
+3. 最近是否有任何更改或迁移？
+4. 您的主要自然搜索竞争对手是谁？
+5. 您当前的自然搜索流量基数是多少？
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **programmatic-seo**: For building SEO pages at scale
-- **schema-markup**: For implementing structured data
-- **page-cro**: For optimizing pages for conversion (not just ranking)
-- **analytics-tracking**: For measuring SEO performance
+- **程序化SEO（Programmatic SEO）**：用于大规模构建SEO页面
+- **结构化数据标记（Schema Markup）**：用于实现结构化数据
+- **页面优化（Page Optimization）**：用于提高页面的转化率（而不仅仅是排名）
+- **分析跟踪（Analytics Tracking）**：用于衡量SEO效果

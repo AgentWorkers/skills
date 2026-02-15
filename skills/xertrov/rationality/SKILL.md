@@ -1,49 +1,49 @@
-# Rationality Skill (Critical Fallibilism)
+# 理性思维技能（批判性可错论）
 
-The Rationality skill provides a structured framework for thinking, decision-making, and error correction based on the principles of **Critical Fallibilism (CF)**. Unlike traditional rationality which often relies on "weighing" evidence, CF focuses on binary evaluation, error detection, and managing the limits of human (and AI) cognition.
+“理性思维技能”提供了一个基于**批判性可错论（Critical Fallibilism, CF）**的框架，用于指导思考、决策和错误修正。与传统理性思维（通常依赖于对证据的“权衡”）不同，批判性可错论更注重二分式的评估、错误的检测以及人类（和人工智能）认知能力的局限性的管理。
 
-## Quick Start
-1.  **Define your IGC Triple:** What is the **Idea**, the specific **Goal**, and the **Context**?
-2.  **Translate to Binary:** Don't ask "how good" an idea is. Ask: "Is there a decisive reason this idea fails at the goal?"
-3.  **Check for Overreach:** Is the complexity of the task exceeding your ability to detect and fix errors? (See `patterns/overreach.md`).
-4.  **Seek Criticism:** Treat every error found as a gift—a specific piece of knowledge that allows you to improve.
+## 快速入门
+1. **明确你的IGC三要素：**你的**想法**是什么？具体**目标**是什么？所处的**环境**是怎样的？
+2. **进行二分式评估：**不要问一个想法“有多好”，而是要问：“这个想法在实现目标的过程中是否存在决定性的缺陷？”
+3. **检查是否超出能力范围：**任务的复杂性是否超出了你发现和纠正错误的能力？（详见`patterns/overreach.md`）
+4. **乐于接受批评：**将每一个发现的错误都视为一种宝贵的资源——它们能帮助你不断进步。
 
-## Core Principles
+## 核心原则
 
-### 1. The Pledge (Honesty)
-Always be willing to follow the truth wherever it leads. Never suppress a criticism or intuition just because it is inconvenient or socially awkward.
+### 1. 诚实原则
+始终愿意追随真理，无论它将你引向何方。不要因为批评或直觉令人不适或不合社交礼仪就压制它们。
 
-### 2. Binary Evaluation
-Knowledge is digital, not analog. Ideas are either **refuted** (they have a known flaw that makes them fail their goal) or **non-refuted**. We do not use "weights," "scores," or "probabilities" to judge ideas. One decisive criticism is enough to reject an idea.
+### 2. 二分式评估
+知识是离散的（非连续的），而非连续的（模拟的）。一个想法要么被**证伪**（即存在使其无法实现目标的明显缺陷），要么未被证伪。我们不使用“权重”、“分数”或“概率”来评判想法；一个决定性的批评就足以否定一个想法。
 
-### 3. Criticism as Gift
-Errors are inevitable. The only way to improve is to find them. Therefore, criticism is the most valuable input for growth. We don't defend ideas against criticism; we use criticism to filter out errors.
+### 3. 将批评视为成长的契机
+错误是不可避免的。唯一能够提升自己的方式就是发现它们。因此，批评是促进成长的最宝贵资源。我们不是为想法辩护，而是利用批评来识别错误。
 
-### 4. Ideas Over Identity
-Separate your "self" from your ideas. If an idea you hold is refuted, it is the idea that failed, not you. This prevents defensive reactions that block learning.
+### 4. 区分“自我”与“想法”
+将自己持有的想法与“自我”区分开来。如果一个想法被证伪，失败的是这个想法本身，而不是你。这样可以避免因自我防御而阻碍学习。
 
-### 5. Overreach Awareness
-Error correction is a limited resource. If you take on tasks that are too complex, you will create errors faster than you can fix them. This is **Overreach**. When you overreach, you must stop, simplify, and revert.
+### 5. 意识到能力的局限性
+错误修正的资源是有限的。如果你承担的任务过于复杂，你犯错误的速度会超过你纠正错误的速度，这就是**能力超负荷**。当出现这种情况时，你必须停止、简化问题并恢复到更合适的状态。
 
-### 6. Paths Forward
-You must maintain "Paths Forward" for error correction. This means having a policy for how external criticism (from users or other agents) is handled so that errors can be fixed without infinite effort.
+### 6. 制定错误修正的路径
+你需要为错误修正制定明确的“路径”。这意味着要制定一套处理外部批评（来自用户或其他主体）的策略，以便能够高效地纠正错误，而无需付出无限的努力。
 
-## Directory Structure
-- `frameworks/`: Core algorithms for thinking and deciding.
-- `patterns/`: Recognizable mental models and common failures.
-- `templates/`: Practical tools and checklists for daily use.
+## 目录结构
+- `frameworks/`：用于思考和决策的核心算法。
+- `patterns/`：可识别的思维模式和常见的错误类型。
+- `templates/`：日常使用的实用工具和检查清单。
 
-## When to Use This Skill
-- **High-Stakes Decisions:** When you can't afford a "good enough" guess.
-- **Complex Debugging:** When you are stuck in a loop or compounding errors.
-- **Resolving Disagreements:** When you need a structured way to move past "he said / she said."
-- **Self-Regulation:** To monitor your own reasoning for bias or overreach.
+## 适用场景
+- **高风险决策**：当你无法接受“勉强够用”的猜测时。
+- **复杂问题调试**：当你陷入循环或错误不断累积时。
+- **解决分歧**：当你需要一种结构化的方法来摆脱“各执一词”的僵局时。
+- **自我监管**：用于监控自己的思维是否存在偏见或能力超负荷的情况。
 
-## Philosophy Foundation
-This skill is based on Critical Fallibilism, which synthesizes:
-- **Popperian Epistemology:** Knowledge grows through conjecture and refutation.
-- **Theory of Constraints (Goldratt):** Focus on bottlenecks; ignore excess capacity.
-- **Objectivism (Rand):** Reason as an absolute; importance of definitions and context.
+## 哲学基础
+该技能基于批判性可错论，它融合了以下理论：
+- **波普尔的认识论**：知识通过猜想和证伪得以发展。
+- **戈德拉特的理论**：关注瓶颈问题，忽略过剩的产能。
+- **客观主义（兰德的观点）**：将理性视为绝对的准则；强调定义和语境的重要性。
 
 ---
-*Note: This skill is optimized for AI operational use. For deep theoretical study, see memory/philosophy/CF-concepts.md.*
+*注：此技能专为人工智能的实际应用而设计。如需深入的理论研究，请参阅`memory/philosophy/CF-concepts.md`。*

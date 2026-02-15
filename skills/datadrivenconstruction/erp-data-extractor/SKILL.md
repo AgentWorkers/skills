@@ -1,25 +1,24 @@
 ---
 slug: "erp-data-extractor"
 display_name: "Erp Data Extractor"
-description: "Extract and analyze data from construction ERP systems. Pull project data for analytics, reporting, and integration."
+description: "从建筑企业的ERP系统中提取并分析数据。获取项目数据，用于分析、报告和系统集成。"
 ---
 
-# ERP Data Extractor
+# ERP 数据提取器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-ERP data extraction challenges:
-- Complex database structures
-- Multiple interconnected modules
-- Data transformation needs
-- Integration with analytics
+### 问题描述
+ERP 数据提取面临的主要挑战包括：
+- 复杂的数据库结构
+- 多个相互连接的模块
+- 数据转换的需求
+- 与分析系统的集成
 
-### Solution
-Structured extraction and transformation of construction ERP data for analytics, reporting, and cross-system integration.
+### 解决方案
+对建筑行业 ERP 系统中的数据进行结构化提取和转换，以便用于分析、报告生成以及跨系统集成。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -290,8 +289,7 @@ class ERPDataExtractor:
         return query + ";"
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize extractor
 extractor = ERPDataExtractor("Procore")
@@ -313,9 +311,9 @@ summary = extractor.get_extraction_summary()
 print(f"Total records: {summary['total_records']}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Transform Data
+### 1. 数据转换
 ```python
 transformed = extractor.transform_data("cost_items", [
     {"action": "rename", "mapping": {"budgeted": "budget", "actual": "spent"}},
@@ -323,16 +321,16 @@ transformed = extractor.transform_data("cost_items", [
 ])
 ```
 
-### 2. Join Sources
+### 2. 数据源合并
 ```python
 joined = extractor.join_data("cost_items", "projects", "project_id", "id")
 ```
 
-### 3. Aggregate
+### 3. 数据聚合
 ```python
 by_project = extractor.aggregate_data("cost_items", ["project_id"], {"budgeted": "sum", "actual": "sum"})
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.4 - Construction ERP Systems
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC 书籍**：第 3.4 章 - 建筑行业 ERP 系统
+- **官方网站**：https://datadrivenconstruction.io

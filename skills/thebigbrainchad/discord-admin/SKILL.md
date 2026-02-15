@@ -1,15 +1,15 @@
 ---
 name: discord-server-ctrl
-description: Complete A-Z Discord server administration. Channel/role/member management, AutoMod, webhooks, templates, audit logs, scheduled events, threads, and full server control via CLI.
+description: 完成Discord服务器的全面管理功能，涵盖从A到Z的所有方面：频道/角色/成员管理、自动审核机制（AutoMod）、Webhook集成、模板设计、审计日志记录、定时事件调度，以及通过命令行界面（CLI）实现的对服务器的全面控制。
 ---
 
-# Discord Server Admin (Pro)
+# Discord 服务器管理员（专业版）
 
-A complete, enterprise-grade Discord server management skill. Everything a real server admin needs — from basic moderation to AutoMod, webhooks, templates, audit logs, and beyond.
+这是一套完整的企业级 Discord 服务器管理工具，涵盖了服务器管理员所需的所有功能——从基本的管理功能到自动审核（AutoMod）、Webhook、模板、审计日志等高级功能。
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
 ```bash
 # Set your bot token
@@ -24,9 +24,9 @@ chmod +x discord-admin.sh
 
 ---
 
-## 📋 Command Reference
+## 📋 命令参考
 
-### 1. Server Intelligence
+### 1. 服务器智能功能
 
 ```bash
 # Full server overview
@@ -44,7 +44,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh template-use <code>             # Create server from template
 ```
 
-### 2. Channel Management (All Types)
+### 2. 频道管理（所有类型）
 
 ```bash
 # List ALL channels (organized by category)
@@ -74,7 +74,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh channel-prune <guildId> <days:7>                         # Delete unused channels
 ```
 
-### 3. Role Management (Advanced)
+### 3. 角色管理（高级）
 
 ```bash
 # List all roles with hierarchy
@@ -103,7 +103,7 @@ chmod +x discord-admin.sh
 # ADMINISTRATOR, VIEW_AUDIT_LOG, VIEW_GUILD_INSIGHTS, MANAGE_GUILD, MANAGE_ROLES, MANAGE_CHANNELS, KICK_MEMBERS, BAN_MEMBERS, CREATE_INSTANT_INVITE, CHANGE_NICKNAME, MANAGE_NICKNAMES, MANAGE_EMOJIS, MANAGE_WEBHOOKS, MANAGE_GUILD_EXPRESSIONS, USE_APPLICATION_COMMANDS, MANAGE_EVENTS, MODERATE_MEMBERS
 ```
 
-### 4. Member Management
+### 4. 成员管理
 
 ```bash
 # Member info
@@ -136,7 +136,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh member-avatar-set <guildId> <userId> <imageUrl>
 ```
 
-### 5. AutoMod (Pro Feature)
+### 5. 自动审核（Pro 版本）
 
 ```bash
 # List AutoMod rules
@@ -175,7 +175,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh automod-delete <guildId> <ruleId>
 ```
 
-### 6. Message Management
+### 6. 消息管理
 
 ```bash
 # Send messages
@@ -209,7 +209,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh msg-history <channelId> [limit:100]
 ```
 
-### 7. Webhooks (Advanced)
+### 7. Webhook（高级）
 
 ```bash
 # List webhooks
@@ -236,7 +236,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh webhook-delete <webhookId>
 ```
 
-### 8. Emojis & Stickers
+### 8. 表情符号与贴纸
 
 ```bash
 # List emojis
@@ -265,7 +265,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh sticker-delete <guildId> <stickerId>
 ```
 
-### 9. Soundboard (Beta)
+### 9. 音效库（测试版）
 
 ```bash
 # List soundboard sounds
@@ -278,7 +278,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh soundboard-defaults <guildId>
 ```
 
-### 10. Scheduled Events
+### 10. 定时事件
 
 ```bash
 # List events
@@ -298,7 +298,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh event-delete <guildId> <eventId>
 ```
 
-### 11. Invites
+### 11. 邀请功能
 
 ```bash
 # List invites
@@ -319,7 +319,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh vanity-set <guildId> <code>
 ```
 
-### 12. Audit Logs
+### 12. 审计日志
 
 ```bash
 # Get audit logs
@@ -331,7 +331,7 @@ chmod +x discord-admin.sh
 # GUILD_UPDATE, CHANNEL_CREATE, CHANNEL_UPDATE, CHANNEL_DELETE, CHANNEL_OVERWRITE_CREATE, CHANNEL_OVERWRITE_UPDATE, CHANNEL_OVERWRITE_DELETE, MEMBER_KICK, MEMBER_PRUNE, BAN_ADD, BAN_REMOVE, MEMBER_UPDATE, MEMBER_ROLE_UPDATE, ROLE_CREATE, ROLE_UPDATE, ROLE_DELETE, INVITE_CREATE, INVITE_UPDATE, INVITE_DELETE, WEBHOOK_CREATE, WEBHOOK_UPDATE, WEBHOOK_DELETE, EMOJI_CREATE, EMOJI_UPDATE, EMOJI_DELETE, MESSAGE_DELETE, MESSAGE_BULK_DELETE, MESSAGE_PIN, MESSAGE_UNPIN, STAGE_INSTANCE_CREATE, STAGE_INSTANCE_UPDATE, STAGE_INSTANCE_DELETE, THREAD_CREATE, THREAD_UPDATE, THREAD_DELETE
 ```
 
-### 13. Thread Management
+### 13. 主题帖管理
 
 ```bash
 # List threads
@@ -354,7 +354,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh thread-leave <threadId>
 ```
 
-### 14. Stage Channels
+### 14. 舞台频道
 
 ```bash
 # Create stage instance
@@ -368,7 +368,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh stage-close <channelId>
 ```
 
-### 15. Integration Management
+### 15. 集成管理
 
 ```bash
 # List integrations (bots, apps)
@@ -379,7 +379,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh integration-delete <guildId> <integrationId>
 ```
 
-### 16. Guild Settings
+### 16. 公会设置
 
 ```bash
 # Edit server settings
@@ -402,7 +402,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh guild-transfer <guildId> <newOwnerId>
 ```
 
-### 17. Widget Management
+### 17. 小工具管理
 
 ```bash
 # Widget settings
@@ -410,7 +410,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh widget-edit <guildId> enabled:true channel:<channelId>
 ```
 
-### 18. Moderation Logging
+### 18. 管理日志
 
 ```bash
 # Setup moderation log
@@ -428,7 +428,7 @@ chmod +x discord-admin.sh
     invites:true
 ```
 
-### 19. Bulk/Mass Operations
+### 19. 批量操作
 
 ```bash
 # Mass ban
@@ -447,7 +447,7 @@ chmod +x discord-admin.sh
 ./discord-admin.sh role-clone <guildId> <roleId> <newName>
 ```
 
-### 20. Template Operations
+### 20. 模板操作
 
 ```bash
 # Templates
@@ -462,9 +462,9 @@ chmod +x discord-admin.sh
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 export DISCORD_BOT_TOKEN="your-bot-token"
@@ -474,12 +474,12 @@ export DISCORD_MAX_RETRIES=3             # Retry on rate limit
 export DISCORD_OUTPUT_FORMAT="json"      # json, pretty, minimal
 ```
 
-### Required Permissions
+### 所需权限
 
-**Option A: Administrator (easiest)**
-- Requires: `ADMINISTRATOR` permission
+**选项 A：管理员权限（最简单）**
+- 需要：`ADMINISTRATOR` 权限
 
-**Option B: Granular permissions**
+**选项 B：细粒度权限**
 ```
 MANAGE_CHANNELS
 MANAGE_ROLES
@@ -495,19 +495,19 @@ MANAGE_EVENTS
 MODERATE_MEMBERS
 ```
 
-### Rate Limiting
+### 速率限制
 
-The script handles Discord's rate limits automatically:
-- 1 req/1s per channel for message sends
-- 50 req/10s for other operations
-- Exponential backoff on 429 errors
-- Global rate limit detection
+该脚本会自动处理 Discord 的速率限制规则：
+- 每个频道每秒最多发送 1 条消息
+- 其他操作每 10 秒最多执行 50 次
+- 遇到 429 错误时采用指数级重试机制
+- 支持全局速率限制检测
 
 ---
 
-## 📊 Examples
+## 📊 示例
 
-### Complete Server Setup
+### 完整的服务器设置流程
 
 ```bash
 #!/bin/bash
@@ -537,7 +537,7 @@ echo "Server invite: discord.gg/$INVITE"
 ./discord-admin.sh modlog-set $GUILD 987654321
 ```
 
-### Daily Moderation Routine
+### 日常管理例程
 
 ```bash
 #!/bin/bash
@@ -564,20 +564,20 @@ TOKEN="your-token"
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-### Common Errors
+### 常见错误及解决方法
 
-| Error | Solution |
-|-------|----------|
-| `401: Unauthorized` | Check your bot token |
-| `403: Forbidden` | Bot lacks permissions |
-| `404: Not Found` | Invalid channel/guild/role ID |
-| `429: Too Many Requests` | Wait, script handles this |
-| `50013: Missing Permissions` | Bot role is below target role |
-| `50001: Missing Access` | Bot can't see the channel |
+| 错误代码 | 解决方案 |
+|---------|-------------------------|
+| `401: 未经授权` | 请检查你的机器人令牌是否有效 |
+| `403: 禁止访问` | 机器人缺乏所需权限 |
+| `404: 未找到` | 通道/公会/角色 ID 无效 |
+| `429: 请求过多` | 请稍等，脚本会自动处理 |
+| `50013: 权限不足` | 机器人的角色权限低于目标角色 |
+| `50001: 无访问权限` | 机器人无法访问该频道 |
 
-### Debug Mode
+### 调试模式
 
 ```bash
 ./discord-admin.sh --debug <command>
@@ -585,32 +585,31 @@ TOKEN="your-token"
 
 ---
 
-## 📝 Notes
+## 📝 注意事项
 
-- **14-day limit**: Bulk delete only works on messages from the last 14 days
-- **Role hierarchy**: Bot role must be higher than target roles
-- **Ownership**: Some operations require server owner
-- **Vanity URLs**: Require `DISCOVERABLE` feature and boosts
-- **Templates**: Only available to users with `MANAGE_GUILD`
-- **Audit logs**: Only viewable by bots with `VIEW_AUDIT_LOG`, retention is 90 days
+- **14 天限制**：批量删除操作仅适用于过去 14 天内的消息。
+- **角色层级**：机器人的角色必须高于目标角色。
+- **操作权限**：某些操作需要服务器所有者的权限。
+- **自定义链接（Vanity URLs）**：需要启用 `DISCOVERABLE` 功能并提升机器人权限。
+- **模板**：仅限具有 `MANAGE_GUILD` 权限的用户使用。
+- **审计日志**：仅机器人具有 `VIEW_AUDIT_LOG` 权限时才能查看，日志保留期限为 90 天。
 
 ---
 
-## 🤖 Supported API Endpoints
+## 🤖 支持的 API 端点
 
-- Guilds & Guild Members
-- Channels & Threads
-- Roles & Permissions
-- Messages & Reactions
-- AutoModeration Rules
-- Webhooks
-- Invites & Vanity URLs
-- Guild Templates
-- Emojis & Stickers
-- Guild Scheduled Events
-- Stage Instances
-- Soundboard Sounds
-- Audit Logs
-- Integrations
-- Guild Widgets
-- Application Commands (partial)
+- 公会与公会成员
+- 频道与主题帖
+- 角色与权限
+- 消息与反应
+- 自动审核规则
+- Webhook
+- 邀请功能与自定义链接
+- 公会模板
+- 表情符号与贴纸
+- 公会定时事件
+- 音效库
+- 审计日志
+- 集成功能
+- 公会小工具
+- 应用程序命令（部分功能）

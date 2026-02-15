@@ -1,69 +1,68 @@
 ---
 name: bun-runtime
-description: Bun runtime capabilities for filesystem, process, and network operations. Use when you need to execute Bun-specific operations like Bun.file(), Bun.write(), or Bun.glob() for optimized file handling, or when working with Bun's native process/network APIs. Triggered by requests for Bun runtime features, file operations with Bun, or high-performance I/O tasks.
+description: Bun运行时提供了针对文件系统、进程和网络操作的功能。当您需要执行特定于Bun的操作（如`Bun.file()`、`Bun.write()`或`Bun.glob()`）以实现优化的文件处理，或者在使用Bun的原生进程/网络API时，可以使用这些功能。这些功能会在请求Bun运行时特性、通过Bun进行文件操作，或执行高性能I/O任务时被触发。
 ---
 
-# Bun Runtime
+# Bun 运行时
 
-Native Bun runtime operations for filesystem, process, and network tasks.
+Bun 运行时提供了用于文件系统、进程和网络任务的原生操作功能。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- Working with Bun's native file APIs (`Bun.file()`, `Bun.write()`, `Bun.glob()`)
-- Need optimized I/O operations in Bun environment
-- Running Bun-specific process commands
-- Making network requests with Bun's fetch
+在以下情况下可以使用这些功能：
+- 使用 Bun 的原生文件 API（`Bun.file()`、`Bun.write()`、`Bun.glob()`）
+- 需要在 Bun 环境中实现优化的 I/O 操作
+- 运行 Bun 特定的进程命令
+- 使用 Bun 的 `fetch` 功能发起网络请求
 
-## Filesystem Operations
+## 文件系统操作
 
-### Read File
+### 读取文件
 
 ```bash
 scripts/bun-fs.sh read /path/to/file.txt
 ```
 
-Returns JSON: `{"content": "file contents"}`
+返回 JSON 格式的数据：`{"content": "文件内容"}`
 
-### Write File
+### 写入文件
 
 ```bash
 scripts/bun-fs.sh write /path/to/file.txt "content here"
 ```
 
-Creates parent directories automatically.
-Returns JSON: `{"written": true, "path": "/path/to/file.txt"}`
+会自动创建父目录。
+返回 JSON 格式的数据：`{"written": true, "path": "/path/to/file.txt"}`
 
-### Glob Files
+### 查找文件
 
 ```bash
 scripts/bun-glob.sh "/tmp/*.txt"
 ```
 
-Returns JSON: `{"files": ["/tmp/file1.txt", "/tmp/file2.txt"], "count": 2}`
+返回 JSON 格式的数据：`{"files": ["/tmp/file1.txt", "/tmp/file2.txt"], "count": 2}`
 
-## Process Operations
+## 进程操作
 
-### Execute Command
+### 执行命令
 
 ```bash
 scripts/bun-process.sh "ls -la"
 ```
 
-Runs shell command and returns output.
+运行 shell 命令并返回输出结果。
 
-## Network Operations
+## 网络操作
 
-### HTTP Request
+### HTTP 请求
 
 ```bash
 scripts/bun-fetch.sh "https://api.example.com" "GET"
 ```
 
-Makes HTTP request using Bun's native fetch.
+使用 Bun 的 `fetch` 功能发起 HTTP 请求。
 
-## Notes
-
-- All scripts use Bun's native APIs for better performance
-- File operations automatically handle encoding
-- Errors are returned with clear messages
+## 注意事项：
+- 所有脚本均使用 Bun 的原生 API 以提高性能
+- 文件操作会自动处理编码问题
+- 错误会以清晰的消息形式返回

@@ -1,118 +1,118 @@
 ---
 name: fabric-bridge
-description: "Run Fabric AI patterns for text transformation, analysis, and content creation. Use when the user asks to use a Fabric pattern, extract wisdom, analyze claims, improve writing, summarize with Fabric, or mentions 'fabric' CLI. Supports 242+ patterns for tasks like content analysis, writing improvement, code review, threat modeling, and structured extraction."
+description: "运行 Fabric AI 模式以进行文本转换、分析和内容创作。当用户请求使用 Fabric 模式、提取有价值的信息、分析声明、改进写作内容、使用 Fabric 进行总结，或提到 “fabric” CLI 时，请使用该功能。Fabric 支持 242 种以上的模式，可用于内容分析、写作改进、代码审查、威胁建模以及结构化数据提取等任务。"
 homepage: https://github.com/danielmiessler/fabric
 metadata: {"clawdbot":{"emoji":"🧶","requires":{"bins":["fabric-ai"]},"install":[{"id":"brew","kind":"brew","formula":"fabric-ai","bins":["fabric-ai"],"label":"Install Fabric AI (brew)"}]}}
 ---
 
 # Fabric Bridge
 
-Run Fabric AI patterns via the `fabric-ai` CLI. Each pattern is a reusable system prompt for a specific task.
+您可以通过 `fabric-ai` CLI 来运行 Fabric AI 模式。每个模式都是针对特定任务设计的可重用系统提示。
 
-> See `references/popular-patterns.md` for a curated list of high-quality patterns by category.
+> 请参阅 `references/popular-patterns.md`，以获取按类别分类的高质量模式列表。
 
-## Important Notes
+## 重要说明
 
-- The command is **`fabric-ai`**, not `fabric`.
-- First-time setup: run `fabric-ai -S` to configure API keys.
-- If pattern list is empty: run `fabric-ai -U` to update patterns.
-- Use `-s` (stream) for most calls to avoid long waits.
+- 命令是 **`fabric-ai`**，而不是 `fabric`。
+- 首次设置时：运行 `fabric-ai -S` 以配置 API 密钥。
+- 如果模式列表为空：运行 `fabric-ai -U` 以更新模式。
+- 对于大多数调用，建议使用 `-s`（流式输出）以避免长时间等待。
 
-## Core Commands
+## 核心命令
 
-### Basic usage
+### 基本用法
 
 ```bash
 echo "input text" | fabric-ai -p <pattern>
 ```
 
-### Stream output (recommended)
+### 流式输出（推荐）
 
 ```bash
 echo "input text" | fabric-ai -p <pattern> -s
 ```
 
-### Process a YouTube video
+### 处理 YouTube 视频
 
 ```bash
 fabric-ai -y "https://youtube.com/watch?v=..." -p extract_wisdom -s
 ```
 
-### Process a web page
+### 处理网页
 
 ```bash
 fabric-ai -u "https://example.com/article" -p summarize -s
 ```
 
-### Specify model
+### 指定模型
 
 ```bash
 echo "input" | fabric-ai -p <pattern> -m gpt-4o
 ```
 
-### Chinese output
+### 中文输出
 
 ```bash
 echo "input" | fabric-ai -p <pattern> -g zh -s
 ```
 
-### Chain patterns (pipe output to next pattern)
+### 链式调用模式（将输出传递给下一个模式）
 
 ```bash
 echo "input" | fabric-ai -p extract_wisdom | fabric-ai -p summarize
 ```
 
-### Reasoning strategy (requires setup)
+### 推理策略（需要预先设置）
 
 ```bash
 echo "input" | fabric-ai -p <pattern> --strategy cot -s
 ```
 
-### Process an image (multimodal)
+### 处理图像（多模态）
 
 ```bash
 echo "describe this image" | fabric-ai -p <pattern> -a /path/to/image.png -s
 ```
 
-### Use context
+### 使用上下文信息
 
 ```bash
 echo "input" | fabric-ai -p <pattern> -C my_context -s
 ```
 
-### Session continuity
+### 会话连续性
 
 ```bash
 echo "input" | fabric-ai -p <pattern> --session my_session -s
 ```
 
-### Save output to file
+### 将输出保存到文件
 
 ```bash
 echo "input" | fabric-ai -p extract_wisdom -o output.md
 ```
 
-### Copy output to clipboard
+### 将输出复制到剪贴板
 
 ```bash
 echo "input" | fabric-ai -p extract_wisdom -c
 ```
 
-### Dry run (preview without calling API)
+### 干运行（预览，不调用 API）
 
 ```bash
 fabric-ai -p <pattern> --dry-run
 ```
 
-### List all available patterns
+### 列出所有可用模式
 
 ```bash
 fabric-ai -l
 ```
 
-## Template Variables
+## 模板变量
 
-Patterns can contain `{{variable}}` placeholders. Pass values with `-v`:
+模式中可以包含 `{{variable}}` 占位符。使用 `-v` 传递值：
 
 ```bash
 # Single variable
@@ -122,24 +122,24 @@ echo "input" | fabric-ai -p <pattern> -v="#role:expert"
 echo "input" | fabric-ai -p <pattern> -v="#role:expert" -v="#points:30"
 ```
 
-## Custom Patterns
+## 自定义模式
 
-Create custom patterns at `~/.config/fabric/patterns/<name>/system.md`.
+您可以在 `~/.config/fabric/patterns/<name>/system.md` 文件中创建自定义模式。
 
-Each pattern directory contains a `system.md` file with the system prompt.
+每个模式目录都包含一个 `system.md` 文件，其中包含了该模式的系统提示。
 
-## Feeding File Content
+## 提供文件内容
 
 ```bash
 cat file.txt | fabric-ai -p <pattern> -s
 cat file1.md file2.md | fabric-ai -p <pattern> -s
 ```
 
-## Tips
+## 提示
 
-- Prefer `-s` (stream) for interactive use — output appears incrementally.
-- Chain patterns for multi-step processing (extract → summarize → translate).
-- Use `-g zh` when the user wants Chinese output.
-- Use `-o file.md` to save output, `-c` to copy to clipboard.
-- Use `--dry-run` to inspect what will be sent before making API calls.
-- Run `fabric-ai -U` periodically to get new community patterns.
+- 建议使用 `-s`（流式输出）进行交互式操作——输出会逐步显示。
+- 通过链式调用模式来实现多步骤处理（例如：提取 → 总结 → 翻译）。
+- 如果用户需要中文输出，请使用 `-g zh`。
+- 使用 `-o file.md` 将输出保存到文件，使用 `-c` 将输出复制到剪贴板。
+- 使用 `--dry-run` 来查看在调用 API 之前将要发送的数据。
+- 定期运行 `fabric-ai -U` 以获取新的社区模式。

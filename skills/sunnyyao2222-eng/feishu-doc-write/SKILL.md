@@ -1,296 +1,214 @@
 ---
 name: feishu-doc-writer
-description: Feishu (Lark) Document API writing spec. Converts Markdown content to Feishu Block structures and writes to cloud docs. Handles concurrency ordering. Use when syncing articles, creating document blocks, or writing long-form content to Feishu docs.
+description: Feishu（Lark）文档API编写规范：  
+该规范用于将Markdown格式的内容转换为Feishu的区块结构，并将其写入云端文档。同时支持并发处理和有序执行操作。适用于同步文章、创建文档区块，或向Feishu文档中编写长篇内容等场景。
 ---
 
-# Feishu Document Writer
+# Feishu 文档编写器
 
-Reference spec for writing content to Feishu (Lark) cloud documents via the Docx API. Feishu docs use a **Block tree model** — raw Markdown is not accepted.
+本文档提供了通过 Docx API 将内容写入 Feishu（Lark）云文档的参考规范。Feishu 文档采用 **块树模型**，因此不支持原始的 Markdown 格式。
 
-```
-Document (block_type=1, Page)
-  +-- Heading1 Block (block_type=3)
-  +-- Text Block (block_type=2)
-  +-- Callout Block (block_type=19)
-  |     +-- Text Block
-  |     +-- Bullet Block
-  +-- Image Block (block_type=27)
-  +-- Divider Block (block_type=22)
-```
+### 首选方法：使用转换 API
 
-## Preferred Approach: Convert API
+Feishu 提供了一个官方的 **Markdown -> 块** 转换接口，可以自动将 Markdown 内容转换为 Feishu 支持的块结构：
 
-Feishu provides an official **Markdown -> Blocks** conversion endpoint:
+**优点**：无需手动构建块 JSON 数据；支持大部分标准的 Markdown 格式。  
+**限制**：不支持 Feishu 特有的块类型（如 Callout 等），这些类型需要手动创建。
 
-```
-POST /open-apis/docx/v1/documents/{document_id}/convert
-```
+## 块类型参考
 
-```json
-{
-  "content": "# Title\n\nBody text\n\n- Item 1\n- Item 2\n\n> Quote",
-  "content_type": "markdown"
-}
-```
+| 块类型 | 名称 | JSON 键 | 说明 |
+|---------|------|---------|--------|
+| 1       | Page    | `page`   | 文档根节点 |
+| 2       | Text    | `text`   | 段落     |
+| 3-11     | Heading1-9 | `heading1`-`heading9` | 标题     |
+| 12       | Bullet   | `bullet`  | 无序列表   |
+| 13       | Ordered | `ordered` | 有序列表   |
+| 14       | Code    | `code`   | 代码块     |
+| 15       | Quote    | `quote`   | 引用      |
+| 17       | Todo    | `todo`   | 待办事项   |
+| 19       | Callout   | `callout` | 高亮框     |
+| 22       | Divider   | `divider` | 水平分隔线   |
+| 27       | Image    | `image`   | 两步上传图片  |
+| 31       | Table    | `table`   | 表格      |
+| 34       | QuoteContainer | `quote_container` | 引用容器   |
 
-**Pros**: No manual Block JSON construction. Handles most standard Markdown.
-**Limitation**: Does not support Feishu-specific blocks (Callout, etc.) — use manual Block creation for those.
+## 创建块的 API
 
-## Block Type Reference
-
-| block_type | Name | JSON Key | Notes |
-|-----------|------|----------|-------|
-| 1 | Page | `page` | Document root |
-| 2 | Text | `text` | Paragraph |
-| 3-11 | Heading1-9 | `heading1`-`heading9` | Headings |
-| 12 | Bullet | `bullet` | Unordered list (each item = separate block) |
-| 13 | Ordered | `ordered` | Ordered list |
-| 14 | Code | `code` | Code block (with `style.language` enum) |
-| 15 | Quote | `quote` | Blockquote |
-| 17 | Todo | `todo` | Checkbox item (with `style.done`) |
-| 19 | Callout | `callout` | Highlight box (Feishu-specific, container block) |
-| 22 | Divider | `divider` | Horizontal rule |
-| 27 | Image | `image` | Two-step: create placeholder, then upload |
-| 31 | Table | `table` | Table |
-| 34 | QuoteContainer | `quote_container` | Quote container |
-
-## Create Blocks API
-
-```
-POST /open-apis/docx/v1/documents/{document_id}/blocks/{block_id}/children?document_revision_id=-1
-
-Headers:
-  Content-Type: application/json
-  Authorization: Bearer <tenant_access_token>
-
-Body:
-{
-  "children": [ ...Block array... ],
-  "index": 0
-}
-```
-
-- `block_id`: Parent block ID (usually `document_id` itself for root)
-- `index`: Insert position (0 = beginning, -1 or omit = end)
-
-## Block JSON Examples
-
-### Text
+调用以下 API 来创建新的块：
 
 ```json
 {
-  "block_type": 2,
-  "text": {
-    "elements": [{
-      "text_run": {
-        "content": "Paragraph text here",
-        "text_element_style": { "bold": false, "italic": false }
-      }
-    }]
-  }
+  "block_id": "parent_block_id",  // 父块 ID（通常是文档 ID）
+  "index":     // 插入位置（0 表示开头，-1 表示末尾）
 }
 ```
 
-### Heading
+### 块的 JSON 示例
 
+- **文本块**：
 ```json
-{ "block_type": 3, "heading1": { "elements": [{ "text_run": { "content": "H1 Title" } }] } }
-{ "block_type": 4, "heading2": { "elements": [{ "text_run": { "content": "H2 Title" } }] } }
+{
+  "type": "Text",
+  "text": "这是示例文本"
+}
 ```
 
-### Bullet / Ordered List
-
+- **标题块**：
 ```json
-{ "block_type": 12, "bullet": { "elements": [{ "text_run": { "content": "List item" } }] } }
-{ "block_type": 13, "ordered": { "elements": [{ "text_run": { "content": "Numbered item" } }] } }
+{
+  "type": "Heading1",
+  "text": "这是一个标题"
+}
 ```
 
-Each list item is a **separate Block**.
+- **无序列表**：
+```json
+{
+  "type": "Bullet",
+  "items": ["项目1", "项目2", "项目3"]
+}
+```
 
-### Code Block
+- **有序列表**：
+```json
+{
+  "type": "Ordered",
+  "items": ["项目1", "项目2", "项目3"]
+}
+```
+
+- **代码块**：
+```json
+{
+  "type": "Code",
+  "language": "JavaScript",
+  "code": "console.log("Hello, world!")
+}
+```
+
+### Feishu 特有的 Callout 高亮框
+
+Callout 是一个 **容器块**，需要先创建容器，然后再添加子块：
 
 ```json
 {
-  "block_type": 14,
-  "code": {
-    "elements": [{ "text_run": { "content": "console.log('hello');" } }],
-    "style": { "language": 23, "wrap": false }
-  }
+  "type": "Callout",
+  "content": "这是一个高亮框",
+  "color": "red"
 }
 ```
 
-Common language enums: PlainText=1, JavaScript=23, Python=40, TypeScript=49, Go=20, Shell=46, SQL=47, Java=22, Rust=44, C=12, CSS=17, HTML=21, Docker=19.
+### 颜色设置
 
-### Callout (Feishu-specific highlight box)
+- `color`: 可选颜色（红色、橙色、黄色、绿色、蓝色、紫色、灰色）
 
-Callout is a **container block** — create it first, then add child blocks inside.
-
-```json
-// Step 1: Create callout as document child
-{ "block_type": 19, "callout": { "background_color": 3, "border_color": 3, "emoji_id": "star" } }
-
-// Step 2: POST .../blocks/{callout_block_id}/children
-{ "children": [{ "block_type": 2, "text": { "elements": [{ "text_run": { "content": "Highlight text" } }] } }] }
-```
-
-Color enums: Red=1, Orange=2, Yellow=3, Green=4, Blue=5, Purple=6, Grey=7.
-
-### Divider
-
-```json
-{ "block_type": 22, "divider": {} }
-```
-
-### Image (two-step)
-
-```
-Step 1: Create placeholder block { "block_type": 27, "image": {} }
-Step 2: Upload via POST /open-apis/drive/v1/medias/upload_all
-  - multipart/form-data: file, file_name, parent_type="docx_image", parent_node=<image_block_id>
-```
-
-## Text Styling
-
-Apply styles via `text_element_style` in `text_run`:
-
-| Property | Type | Effect |
-|----------|------|--------|
-| `bold` | bool | Bold |
-| `italic` | bool | Italic |
-| `strikethrough` | bool | Strikethrough |
-| `underline` | bool | Underline |
-| `inline_code` | bool | Inline code |
-| `text_color` | int | Text color (same enum as callout colors) |
-| `background_color` | int | Background color |
-| `link.url` | string | Hyperlink |
-
-Multiple `text_run` elements in one block = mixed styles in one paragraph.
-
-## Markdown to Block Mapping
-
-| Markdown | block_type | JSON Key |
-|----------|-----------|----------|
-| `# H1` | 3 | `heading1` |
-| `## H2` | 4 | `heading2` |
-| `### H3` | 5 | `heading3` |
-| Paragraph | 2 | `text` |
-| `- item` | 12 | `bullet` |
-| `1. item` | 13 | `ordered` |
-| Code fence | 14 | `code` |
-| `> quote` | 15 | `quote` |
-| `- [ ] todo` | 17 | `todo` |
-| `---` | 22 | `divider` |
-| `![](url)` | 27 | `image` (two-step) |
-| `**bold**` | -- | `text_element_style.bold: true` |
-| `*italic*` | -- | `text_element_style.italic: true` |
-| `` `code` `` | -- | `text_element_style.inline_code: true` |
-| `~~strike~~` | -- | `text_element_style.strikethrough: true` |
-| `[text](url)` | -- | `text_element_style.link.url` |
-| (no MD equivalent) | 19 | `callout` (Feishu-specific) |
-
-## Concurrency & Ordering (Critical)
-
-**Problem**: Concurrent Block creation API calls produce random ordering.
-
-### Solution A: Single Batch Request (Recommended)
-
-Put all blocks in one `children` array, single API call:
-
+### 分隔线：
 ```json
 {
-  "children": [
-    { "block_type": 3, "heading1": { "elements": [{"text_run": {"content": "Title"}}] } },
-    { "block_type": 2, "text": { "elements": [{"text_run": {"content": "Paragraph 1"}}] } },
-    { "block_type": 22, "divider": {} },
-    { "block_type": 4, "heading2": { "elements": [{"text_run": {"content": "Section 2"}}] } }
-  ],
-  "index": 0
+  "type": "Divider",
+  "style": "solid"
 }
 ```
 
-### Solution B: Serial Writes with Index
+### 图片上传（两步操作）
 
-For long content requiring multiple requests, execute **serially** with explicit `index`:
+- 首先创建图片占位符，然后上传图片文件。
 
-```
-Request 1: index=0, write block A
-Request 2: index=1, write block B (wait for A to succeed)
-Request 3: index=2, write block C (wait for B to succeed)
-```
+### 文本样式
 
-### Solution C: Collect-Then-Write (Recommended)
+可以通过 `text_element_style` 属性来设置文本样式：
 
-```
-LLM outputs complete Markdown -> Conversion layer -> Single API batch write
-```
+| 属性      | 类型      | 效果       |
+|-----------|---------|-----------|
+| bold       | bool      | 加粗        |
+| italic     | bool      | 斜体        |
+| strikethrough | bool      | 下划线      |
+| underline    | bool      | 下划线      |
+| inline_code   | bool      | 内联代码     |
+| text_color   | int       | 文本颜色     |
+| background_color | int       | 背景颜色     |
+| link.url    | string     | 超链接      |
 
-**Never** let the LLM write one paragraph at a time with concurrent API calls.
+在一个块中可以包含多个 `text_run` 元素，从而实现混合样式。
 
-## Complete Write Flow
+### Markdown 与块结构的对应关系
 
-1. **Create document**: `POST /open-apis/docx/v1/documents` with `{ "folder_token": "<token>", "title": "Title" }` -> returns `document_id`
-2. **Build Block array**: Convert full content to Block JSON
-3. **Batch write**: `POST .../documents/{doc_id}/blocks/{doc_id}/children?document_revision_id=-1` with all blocks
-4. **Container blocks** (optional): For Callout etc., get `block_id` from step 3 response, then add children
+| Markdown 格式 | Feishu 块类型 | JSON 键       |
+|------------|-------------|--------------|
+| #H1       | 3           | `heading1`      |
+| ##H2       | 4           | `heading2`      |
+| ###H3       | 5           | `heading3`      |
+| Paragraph    | 2           | `text`        |
+| -item       | 12          | `bullet`       |
+| 1. item     | 13          | `ordered`       |
+| Code       | 14          | `code`        |
+| >quote      | 15          | `quote`        |
+| [-[ ]todo     | 17          | `todo`       |
+| ---        | 22          | `divider`       |
+| ![](url)     | 27          | `image`        |
+| **bold**     | ```text_element_style.bold: true`` | **加粗**     |
+| *italic*     | ```text_element_style.italic: true`` | **斜体**     |
+| ```code` ``   | ```text_element_style.inline_code: true`` | **内联代码**   |
+| ~~strike~~    | ```text_element_style.strikethrough: true`` | **删除线**     |
+| `[text](url)`   | ```text_element_style.link.url`` | **超链接**     |
+| （无对应 Markdown 标签）| 19          | `callout`      | **高亮框**     |
 
-## Custom Callout Syntax
+### 并发与顺序问题
 
-Since Markdown has no Callout equivalent, use this custom markup:
+**问题**：同时调用创建块的 API 会导致块顺序混乱。
+
+**解决方案 A**：**批量请求**（推荐）：将所有块放入一个数组中，然后一次性发送 API 请求。
+
+**解决方案 B**：**按顺序发送请求**：对于较长的内容，使用明确的 `index` 值逐个发送请求。
+
+**解决方案 C**：**先收集数据再写入**：避免使用并发 API 请求同时写入一个段落。
+
+## 完整的写入流程
+
+1. **创建文档**：发送 POST 请求到 `/open-apis/docx/v1/documents`，参数为 `{ "folder_token": "<token>", "title": "文档标题" }`，返回 `document_id`。
+2. **构建块数组**：将所有内容转换为 JSON 格式的块数据。
+3. **批量写入**：发送 POST 请求到 `.../documents/{doc_id}/blocks/{doc_id}/children?documentrevision_id=-1`，传入所有块的 JSON 数据。
+4. **特殊块类型**（如 Callout）：从步骤 3 的响应中获取对应的 `block_id`，然后添加子块。
+
+### 自定义 Callout 标记语法
+
+由于 Markdown 中没有直接对应的 Callout 标签，可以使用以下自定义标记：
 
 ```markdown
-:::callout{color=yellow emoji=bulb}
-Highlight content here.
-Supports **bold**, *italic*, and lists.
-:::
+<callout color="yellow" emoji="bulb" border="red">
+  这是一个自定义的高亮框。
+</callout>
 ```
 
-| Param | Values | Default | Purpose |
-|-------|--------|---------|---------|
-| `color` | red, orange, yellow, green, blue, purple, grey | yellow | Background & border |
-| `emoji` | Any Feishu emoji_id (bulb, star, warning, fire) | bulb | Left icon |
-| `border` | Same as color values | Same as color | Border color (override) |
+### 注意事项
 
-Common templates:
+- 每个列表项都必须是一个独立的块。
+- 在编写文档时，不要尝试在列表中嵌套代码块，因为 Feishu 的架构对此有严格限制。
+- 使用自定义标记时，请遵循上述语法和参数。
 
-```markdown
-:::callout{color=yellow emoji=bulb}
-**Key Insight**: The most important takeaway
-:::
+## 其他注意事项
 
-:::callout{color=red emoji=warning}
-**Warning**: Common misconception
-:::
+- 每批最多建议创建 50 个块。
+- 长篇文章应按照 H2/H3 标题分段发送，每批请求之间间隔 200-500 毫秒。
+- 始终使用 `documentrevision_id=-1` 以获取最新版本的文档。
+- 令牌的有效期为约 2 小时，过期前请刷新令牌。
 
-:::callout{color=green emoji=check}
-**Action Item**: What to do next
-:::
-```
+## 认证机制
 
-## Rate Limits & Constraints
+Feishu 文档编写器需要用户认证。
 
-- Max blocks per batch: ~50 recommended
-- Long articles: Split by H2/H3 sections, 200-500ms between batches
-- Always use `document_revision_id=-1` (latest version)
-- Token validity: ~2 hours, cache and refresh before expiry
+## 常见问题与注意事项
 
-## Authentication
+- **注意事项**：
+  - 不支持在文档中插入 Markdown 表格，应使用无序列表代替。
+  - 不允许在列表中嵌套代码块，Feishu 对嵌套深度有严格要求。
+  - Callout 是一个容器块，必须先创建容器再添加子块。
+  - 每个列表项都必须是一个独立的块。
 
-```bash
-curl -X POST 'https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal' \
-  -H 'Content-Type: application/json' \
-  -d '{ "app_id": "<app_id>", "app_secret": "<app_secret>" }'
-```
+### 参考链接
 
-## Schema Pitfalls (Battle-tested)
-
-- **No Markdown tables in write ops** — use bullet lists instead (prevents schema errors)
-- **No nested code blocks inside lists** — Feishu schema validation is strict on nesting depth
-- **Callout is a container** — always requires a two-step create (container first, then children)
-- **Each list item = separate Block** — don't try to put multiple items in one block
-
-## References
-
-- Create Blocks API: https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/create
-- Block Data Structure: https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/data-structure/block
-- Convert API: https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document/convert
-- Extended API reference: See `FEISHU_API_HANDBOOK.md` in workspace root
+- 创建块的 API：[https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/create](...)
+- 块数据结构：[https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/data-structure/block](...)
+- 转换 API：[https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx-v1/document/convert](...)
+- 更详细的 API 参考：请查看工作区根目录下的 `FEISHU_API_HANDBOOK.md` 文件。

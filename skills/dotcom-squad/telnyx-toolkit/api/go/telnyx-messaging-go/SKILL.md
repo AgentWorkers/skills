@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
-# Telnyx Messaging - Go
+# Telnyx 消息服务 - Go 语言版本
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,13 +39,13 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化完成。
 
-## Send a message
+## 发送消息
 
-Send a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来发送消息。
 
-`POST /messages` — Required: `to`
+`POST /messages` — 必需参数：`to`
 
 ```go
 	response, err := client.Messages.Send(context.TODO(), telnyx.MessageSendParams{
@@ -56,9 +57,9 @@ Send a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve a message
+## 查取消息
 
-Note: This API endpoint can only retrieve messages that are no older than 10 days since their creation.
+注意：此 API 端点仅能检索创建时间不超过 10 天的消息。
 
 `GET /messages/{id}`
 
@@ -70,9 +71,9 @@ Note: This API endpoint can only retrieve messages that are no older than 10 day
 	fmt.Printf("%+v\n", message.Data)
 ```
 
-## Cancel a scheduled message
+## 取消已安排的消息
 
-Cancel a scheduled message that has not yet been sent.
+取消尚未发送的已安排消息。
 
 `DELETE /messages/{id}`
 
@@ -84,9 +85,9 @@ Cancel a scheduled message that has not yet been sent.
 	fmt.Printf("%+v\n", response.ID)
 ```
 
-## Send a Whatsapp message
+## 发送 Whatsapp 消息
 
-`POST /messages/whatsapp` — Required: `from`, `to`, `whatsapp_message`
+`POST /messages/whatsapp` — 必需参数：`from`, `to`, `whatsapp_message`
 
 ```go
 	response, err := client.Messages.SendWhatsapp(context.TODO(), telnyx.MessageSendWhatsappParams{
@@ -100,9 +101,9 @@ Cancel a scheduled message that has not yet been sent.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Send a group MMS message
+## 发送群组 MMS 消息
 
-`POST /messages/group_mms` — Required: `from`, `to`
+`POST /messages/group_mms` — 必需参数：`from`, `to`
 
 ```go
 	response, err := client.Messages.SendGroupMms(context.TODO(), telnyx.MessageSendGroupMmsParams{
@@ -115,9 +116,9 @@ Cancel a scheduled message that has not yet been sent.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Send a long code message
+## 发送长码消息
 
-`POST /messages/long_code` — Required: `from`, `to`
+`POST /messages/long_code` — 必需参数：`from`, `to`
 
 ```go
 	response, err := client.Messages.SendLongCode(context.TODO(), telnyx.MessageSendLongCodeParams{
@@ -130,9 +131,9 @@ Cancel a scheduled message that has not yet been sent.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Send a message using number pool
+## 使用号码池发送消息
 
-`POST /messages/number_pool` — Required: `to`, `messaging_profile_id`
+`POST /messages/number_pool` — 必需参数：`to`, `messaging_profile_id`
 
 ```go
 	response, err := client.Messages.SendNumberPool(context.TODO(), telnyx.MessageSendNumberPoolParams{
@@ -145,11 +146,11 @@ Cancel a scheduled message that has not yet been sent.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Schedule a message
+## 安排消息
 
-Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Number Pool.
+可以使用电话号码、字母数字发送者 ID、短代码或号码池来安排消息的发送。
 
-`POST /messages/schedule` — Required: `to`
+`POST /messages/schedule` — 必需参数：`to`
 
 ```go
 	response, err := client.Messages.Schedule(context.TODO(), telnyx.MessageScheduleParams{
@@ -161,9 +162,9 @@ Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Nu
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Send a short code message
+## 发送短代码消息
 
-`POST /messages/short_code` — Required: `from`, `to`
+`POST /messages/short_code` — 必需参数：`from`, `to`
 
 ```go
 	response, err := client.Messages.SendShortCode(context.TODO(), telnyx.MessageSendShortCodeParams{
@@ -176,9 +177,9 @@ Schedule a message with a Phone Number, Alphanumeric Sender ID, Short Code or Nu
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List opt-outs
+## 查取用户退订信息
 
-Retrieve a list of opt-out blocks.
+检索用户的退订信息。
 
 `GET /messaging_optouts`
 
@@ -190,7 +191,7 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a phone number with messaging settings
+## 获取带有消息功能的电话号码信息
 
 `GET /phone_numbers/{id}/messaging`
 
@@ -202,7 +203,7 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## Update the messaging profile and/or messaging product of a phone number
+## 更新电话号码的消息功能设置
 
 `PATCH /phone_numbers/{id}/messaging`
 
@@ -218,7 +219,7 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## List phone numbers with messaging settings
+## 查取带有消息功能的电话号码列表
 
 `GET /phone_numbers/messaging`
 
@@ -230,7 +231,7 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a mobile phone number with messaging settings
+## 获取带有消息功能的手机号码信息
 
 `GET /mobile_phone_numbers/{id}/messaging`
 
@@ -242,7 +243,7 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", messaging.Data)
 ```
 
-## List mobile phone numbers with messaging settings
+## 查取带有消息功能的手机号码列表
 
 `GET /mobile_phone_numbers/messaging`
 
@@ -254,9 +255,9 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Bulk update phone number profiles
+## 批量更新电话号码信息
 
-`POST /messaging_numbers/bulk_updates` — Required: `messaging_profile_id`, `numbers`
+`POST /messaging_numbers/bulk_updates` — 必需参数：`messaging_profile_id`, `numbers`
 
 ```go
 	messagingNumbersBulkUpdate, err := client.MessagingNumbersBulkUpdates.New(context.TODO(), telnyx.MessagingNumbersBulkUpdateNewParams{
@@ -269,27 +270,20 @@ Retrieve a list of opt-out blocks.
 	fmt.Printf("%+v\n", messagingNumbersBulkUpdate.Data)
 ```
 
-## Retrieve bulk update status
+## 查取批量更新状态
 
 `GET /messaging_numbers/bulk_updates/{order_id}`
 
-```go
-	messagingNumbersBulkUpdate, err := client.MessagingNumbersBulkUpdates.Get(context.TODO(), "order_id")
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Printf("%+v\n", messagingNumbersBulkUpdate.Data)
-```
-
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `deliveryUpdate` | Delivery Update |
-| `inboundMessage` | Inbound Message |
-| `replacedLinkClick` | Replaced Link Click |
+| `deliveryUpdate` | 消息送达更新 |
+| `inboundMessage` | 收到的消息 |
+| `replacedLinkClick` | 被替换的链接被点击 |
+```
+```

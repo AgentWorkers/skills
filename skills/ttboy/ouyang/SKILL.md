@@ -1,100 +1,93 @@
 ---
 name: jasper-recall
-description: Local RAG system for agent memory using ChromaDB and sentence-transformers. Provides semantic search over session logs, daily notes, and memory files. Use when you need persistent memory across sessions, want to search past conversations, or build agents that remember context. Commands: recall "query", index-digests, digest-sessions.
+description: 本地RAG（Retrieval-Augmentation-Generation）系统，用于管理代理的内存数据，该系统基于ChromaDB和sentence-transformers技术实现。它支持对会话日志、每日笔记以及内存文件进行语义搜索。当您需要跨会话保存数据、检索过去的对话内容，或构建能够记住上下文的代理时，可以使用该系统。可用命令包括：recall（查询）、index-digests（索引生成）、digest-sessions（会话摘要生成）。
 ---
 
 # Jasper Recall
 
-Local RAG (Retrieval-Augmented Generation) system for AI agent memory. Gives your agent the ability to remember and search past conversations.
+这是一个用于AI代理记忆的本地RAG（Retrieval-Augmented Generation，检索增强生成）系统，它使您的代理能够记住并搜索之前的对话内容。
 
-## When to Use
+## 使用场景
 
-- **Memory recall**: Search past sessions for context before answering
-- **Continuous learning**: Index daily notes and decisions for future reference
-- **Session continuity**: Remember what happened across restarts
-- **Knowledge base**: Build searchable documentation from your agent's experience
+- **记忆检索**：在回答问题之前，从过去的会话中搜索相关上下文。
+- **持续学习**：索引每日笔记和决策，以供将来参考。
+- **会话连续性**：在重启后仍能记住发生的事情。
+- **知识库**：从代理的经验中构建可搜索的文档。
 
-## Quick Start
+## 快速入门
 
-### Setup
+### 设置
 
-One command installs everything:
-
+只需一个命令即可完成全部安装：
 ```bash
 npx jasper-recall setup
 ```
 
-This creates:
-- Python venv at `~/.openclaw/rag-env`
-- ChromaDB database at `~/.openclaw/chroma-db`
-- CLI scripts in `~/.local/bin/`
+安装完成后会创建以下内容：
+- 在`~/.openclaw/rag-env`目录下创建一个Python虚拟环境。
+- 在`~/.openclaw/chroma-db`目录下创建一个ChromaDB数据库。
+- 在`~/.local/bin/`目录下生成CLI脚本。
 
-### Basic Usage
+### 基本用法
 
-**Search your memory:**
+- **搜索记忆**：
 ```bash
 recall "what did we decide about the API design"
 recall "hopeIDS patterns" --limit 10
 recall "meeting notes" --json
 ```
 
-**Index your files:**
+- **索引文件**：
 ```bash
 index-digests  # Index memory files into ChromaDB
 ```
 
-**Create session digests:**
+- **创建会话摘要**：
 ```bash
 digest-sessions          # Process new sessions
 digest-sessions --dry-run  # Preview what would be processed
 ```
 
-## How It Works
+## 工作原理
 
-### Three Components
+Jasper Recall由三个主要组件构成：
 
-1. **digest-sessions** — Extracts key info from session logs (topics, tools used)
-2. **index-digests** — Chunks and embeds markdown files into ChromaDB
-3. **recall** — Semantic search across your indexed memory
+1. **digest-sessions**：从会话日志中提取关键信息（主题、使用的工具等）。
+2. **index-digests**：将这些信息分割成小块，并将其嵌入到ChromaDB数据库中。
+3. **recall**：对索引后的记忆内容进行语义搜索。
 
-### What Gets Indexed
+### 被索引的文件
 
-By default, indexes files from `~/.openclaw/workspace/memory/`:
+默认情况下，以下文件会被索引：
+- `~/.openclaw/workspace/memory/`目录下的文件：
+  - `*.md`：每日笔记
+  - `session-digests/*.md`：会话摘要
+  - `repos/*.md`：项目文档
+  - `founder-logs/*.md`：开发日志（如果存在）
 
-- `*.md` — Daily notes, MEMORY.md
-- `session-digests/*.md` — Session summaries
-- `repos/*.md` — Project documentation
-- `founder-logs/*.md` — Development logs (if present)
+### 嵌入模型
 
-### Embedding Model
+Jasper Recall使用`sentence-transformers/all-MiniLM-L6-v2`模型进行文本嵌入：
+- 模型维度为384维。
+- 首次运行时需要下载约80MB的数据。
+- 该模型在本地运行，无需API支持。
 
-Uses `sentence-transformers/all-MiniLM-L6-v2`:
-- 384-dimensional embeddings
-- ~80MB download on first run
-- Runs locally, no API needed
+## 代理集成
 
-## Agent Integration
+Jasper Recall可以用于增强代理的响应能力，使其能够基于记忆提供更准确的回答。
 
-### Memory-Augmented Responses
+### 自动化索引（Heartbeat）
 
-```python
-# Before answering questions about past work
-results = exec("recall 'project setup decisions' --json")
-# Include relevant context in your response
-```
-
-### Automated Indexing (Heartbeat)
-
-Add to HEARTBEAT.md:
+将相关配置添加到`HEARTBEAT.md`文件中：
 ```markdown
 ## Memory Maintenance
 - [ ] New session logs? → `digest-sessions`
 - [ ] Memory files updated? → `index-digests`
 ```
 
-### Cron Job
+### 定时任务
 
-Schedule regular indexing:
+使用Cron作业来定期执行索引任务：
 ```json
 {
   "schedule": { "kind": "cron", "expr": "0 */6 * * *" },
@@ -106,80 +99,30 @@ Schedule regular indexing:
 }
 ```
 
-## CLI Reference
+## CLI参考
 
-### recall
+- **recall**：用于执行记忆检索的CLI命令。
+- **index-digests**：用于索引文件的CLI命令。
+- **digest-sessions**：用于生成会话摘要的CLI命令。
 
-```
-recall "query" [OPTIONS]
+## 配置
 
-Options:
-  -n, --limit N     Number of results (default: 5)
-  --json            Output as JSON
-  -v, --verbose     Show similarity scores
-```
+- **自定义路径**：可以通过设置环境变量来修改文件的存储路径。
 
-### index-digests
+### 分块设置
 
-```
-index-digests
+`index-digests`组件的默认设置如下：
+- 分块大小：500个字符。
+- 分块之间的重叠部分：100个字符。
 
-Indexes markdown files from:
-  ~/.openclaw/workspace/memory/*.md
-  ~/.openclaw/workspace/memory/session-digests/*.md
-  ~/.openclaw/workspace/memory/repos/*.md
-  ~/.openclaw/workspace/memory/founder-logs/*.md
+## 常见问题与解决方法
 
-Skips files that haven't changed (content hash check).
-```
+- **“未找到索引”**：请检查文件是否已正确添加到索引中。
+- **“集合未找到”**：可能是文件路径错误或文件已被删除。
+- **模型下载缓慢**：首次运行时需要下载大量数据，后续运行则很快。
 
-### digest-sessions
+## 链接
 
-```
-digest-sessions [OPTIONS]
-
-Options:
-  --dry-run    Preview without writing
-  --all        Process all sessions (not just new)
-  --recent N   Process only N most recent sessions
-```
-
-## Configuration
-
-### Custom Paths
-
-Set environment variables:
-
-```bash
-export RECALL_WORKSPACE=~/.openclaw/workspace
-export RECALL_CHROMA_DB=~/.openclaw/chroma-db
-export RECALL_SESSIONS_DIR=~/.openclaw/agents/main/sessions
-```
-
-### Chunking
-
-Default settings in index-digests:
-- Chunk size: 500 characters
-- Overlap: 100 characters
-
-## Troubleshooting
-
-**"No index found"**
-```bash
-index-digests  # Create the index first
-```
-
-**"Collection not found"**
-```bash
-rm -rf ~/.openclaw/chroma-db  # Clear and rebuild
-index-digests
-```
-
-**Model download slow**
-First run downloads ~80MB model. Subsequent runs are instant.
-
-## Links
-
-- **GitHub**: https://github.com/E-x-O-Entertainment-Studios-Inc/jasper-recall
-- **npm**: https://www.npmjs.com/package/jasper-recall
-- **ClawHub**: https://clawhub.ai/skills/jasper-recall
+- **GitHub仓库**：https://github.com/E-x-O-Entertainment-Studios-Inc/jasper-recall
+- **npm包**：https://www.npmjs.com/package/jasper-recall
+- **ClawHub文档**：https://clawhub.ai/skills/jasper-recall

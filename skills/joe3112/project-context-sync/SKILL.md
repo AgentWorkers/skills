@@ -1,8 +1,8 @@
-# project-context-sync
+# 项目状态同步（Project Context Sync）
 
-Keep a living project state document updated after each commit, so any agent (or future session) can instantly understand where things stand.
+在每次提交后，都会更新项目状态的文档，以便任何代理（或未来的会话）能够立即了解项目的当前状况。
 
-## What It Does
+## 功能介绍
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌─────────────────────┐
@@ -11,12 +11,12 @@ Keep a living project state document updated after each commit, so any agent (or
 └─────────────┘     └──────────────────┘     └─────────────────────┘
 ```
 
-After each commit, the hook:
-1. Gathers git info (last commit, recent history, branch, changed files)
-2. Optionally calls an LLM to generate a smart summary
-3. Updates `PROJECT_STATE.md` in the repo root
+每次提交后，该钩子会执行以下操作：
+1. 收集 Git 信息（最后一次提交、最近的历史记录、分支、更改的文件）
+2. （可选）调用大型语言模型（LLM）生成智能摘要
+3. 更新仓库根目录下的 `PROJECT_STATE.md` 文件
 
-## Installation
+## 安装
 
 ```bash
 # From the repo you want to enable:
@@ -24,36 +24,35 @@ cd /path/to/your/repo
 /path/to/skills/project-context-sync/scripts/install.sh
 ```
 
-Or if you have the skill in your path:
+如果你具备相关技能，也可以通过以下方式安装：
 ```bash
 project-context-sync install
 ```
 
-This will:
-1. Install a post-commit hook in `.git/hooks/`
-2. Create `.project-context.yml` with default config
-3. Create initial `PROJECT_STATE.md`
-4. Add `PROJECT_STATE.md` to `.gitignore`
+安装过程包括：
+1. 在 `.git/hooks/` 目录下创建一个提交后钩子
+2. 创建一个名为 `.project-context.yml` 的配置文件（包含默认配置）
+3. 生成初始的 `PROJECT_STATE.md` 文件
+4. 将 `PROJECT_STATE.md` 添加到 `.gitignore` 文件中
 
-## Uninstall
+## 卸载
 
 ```bash
 cd /path/to/your/repo
 /path/to/skills/project-context-sync/scripts/uninstall.sh
 ```
 
-## Manual Update
+## 手动更新
 
-Trigger an update without committing:
-
+无需提交即可触发更新：
 ```bash
 cd /path/to/your/repo
 /path/to/skills/project-context-sync/scripts/update-context.sh
 ```
 
-## Configuration
+## 配置
 
-Edit `.project-context.yml` in your repo root:
+在仓库根目录下编辑 `.project-context.yml` 文件以进行配置：
 
 ```yaml
 project_context:
@@ -74,23 +73,23 @@ project_context:
     - suggested_next   # AI-generated
 ```
 
-### AI Summary Mode
+### AI 摘要模式
 
-**With `ai_summary: true`** (default):
-- Generates intelligent summaries of what changed
-- Infers current focus from recent commit patterns
-- Suggests next steps
-- Costs tokens but provides rich context
-- **Requires:** Gateway HTTP API enabled (see below)
+**当 `ai_summary: true` 时**（默认设置）：
+- 生成关于更改内容的智能摘要
+- 根据最近的提交模式推断当前的项目重点
+- 提出下一步的操作建议
+- 需要消耗令牌（token），但能提供丰富的上下文信息
+- **要求**：必须启用 Gateway HTTP API（详见下文）
 
-**With `ai_summary: false`**:
-- Just logs raw git info
-- Fast and free
-- Less intelligent but still useful
+**当 `ai_summary: false` 时**：
+- 仅记录原始的 Git 信息
+- 执行速度快且无需额外费用
+- 智能性较低，但仍具有一定的实用性
 
-### Enabling the Gateway HTTP API
+### 启用 Gateway HTTP API
 
-AI mode uses Clawdbot's OpenAI-compatible endpoint (`/v1/chat/completions`). This is **disabled by default** for security. To enable:
+AI 模式会使用 Clawdbot 支持 OpenAI 的接口（`/v1/chat/completions`）。出于安全考虑，该接口默认是禁用的。要启用该功能，请按照以下步骤操作：
 
 ```json5
 // ~/.clawdbot/clawdbot.json
@@ -105,15 +104,15 @@ AI mode uses Clawdbot's OpenAI-compatible endpoint (`/v1/chat/completions`). Thi
 }
 ```
 
-**Security notes:**
-- The endpoint inherits gateway auth (requires bearer token)
-- With `bind: "loopback"` (default), only local processes can connect
-- The script reads the token from `~/.clawdbot/clawdbot.json` automatically
-- Risk is minimal for local development setups
+**安全注意事项：**
+- 该接口继承了 Clawdbot 的认证机制（需要使用 bearer token）
+- 当 `bind: "loopback"` 时（默认设置），只有本地进程可以访问该接口
+- 脚本会自动从 `~/.clawdbot/clawdbot.json` 文件中读取令牌
+- 对于本地开发环境来说，风险非常低
 
-## Output
+## 输出结果
 
-`PROJECT_STATE.md` will contain:
+`PROJECT_STATE.md` 文件将包含以下内容：
 
 ```markdown
 # Project State
@@ -138,8 +137,7 @@ AI mode uses Clawdbot's OpenAI-compatible endpoint (`/v1/chat/completions`). Thi
 [AI-suggested based on commit patterns]
 ```
 
-## Notes
-
-- `PROJECT_STATE.md` is gitignored by default (regenerated locally)
-- The hook requires Clawdbot to be running for AI summaries
-- Without Clawdbot, falls back to raw git info mode
+## 其他说明：
+- `PROJECT_STATE.md` 文件默认会被 Git 忽略（会在本地重新生成）
+- 使用 AI 摘要功能需要 Clawdbot 运行
+- 如果未启用 Clawdbot，系统将回退到仅记录原始 Git 信息的模式

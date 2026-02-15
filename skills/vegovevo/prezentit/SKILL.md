@@ -45,26 +45,30 @@ metadata:
 
 ### Step 1: Check Credits First
 
-```http
-GET /api/v1/me/credits
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/me/credits  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 **Response:**
-```json
-{
-  "credits": 100,
-  "pricing": {
-    "outlinePerSlide": 5,
-    "designPerSlide": 10,
-    "estimatedCostPerSlide": 15
-  },
-  "_ai": {
-    "canGenerate": true,
-    "maxSlidesAffordable": 6,
-    "nextSteps": ["..."]
-  }
-}
+```  
+json  
+{  
+  "credits": 100,  
+  "pricing": {  
+    "outlinePerSlide": 5,  
+    "designPerSlide": 10,  
+    "estimatedCostPerSlide": 15  
+  },  
+  "_ai": {  
+    "canGenerate": true,  
+    "maxSlidesAffordable": 6,  
+    "nextSteps": ["..."  
+  }  
+}  
+
 ```
 
 → If `_ai.canGenerate` is false, direct user to https://prezentit.net/buy-credits
@@ -74,33 +78,38 @@ Authorization: Bearer {PREZENTIT_API_KEY}
 
 **Option A — Browse all available themes and pick by ID:**
 
-```http
-GET /api/v1/themes
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/themes  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 **Response:**
-```json
-{
-  "themes": [
-    { "id": "corporate_blue", "name": "Corporate Blue", "category": "Corporate & Professional" },
-    { "id": "nature_earth", "name": "Nature Earth", "category": "Nature & Organic" }
-  ],
-  "categories": ["Corporate & Professional", "Creative & Visual", "Data & Analytics", ...],
-  "_ai": {
-    "totalThemes": 20,
-    "popularThemes": ["corporate_blue", "midnight_tech", "nature_earth", "storyteller", "data_dashboard"]
-  }
-}
+```  
+json  
+{  
+  "themes": [  
+    { "id": "corporate_blue", "name": "企业蓝", "category": "企业与专业" },  
+    { "id": "nature_earth", "name": "自然与有机" }  
+  ],  
+  "categories": ["企业与专业", "创意与视觉", "数据与分析", ...],  
+  "_ai": {  
+    "totalThemes": 20,  
+    "popularThemes": ["corporate_blue", "midnight_tech", "nature_earth", "storyteller", "data_dashboard" }  
+}  
+
 ```
 
 → Use the exact `id` value in your generation request
 
 **Option B — Search for a theme by keyword:**
 
-```http
-GET /api/v1/themes?search=minimalist
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/themes?search=minimalist  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 → Returns best matches ranked by relevance. Use the `id` from `bestMatch`.
@@ -111,17 +120,19 @@ Use the `customDesignPrompt` parameter instead. See the Custom Design Prompt sec
 
 ### Step 3: Generate Presentation
 
-```http
-POST /api/v1/presentations/generate
-Authorization: Bearer {PREZENTIT_API_KEY}
-Content-Type: application/json
+```  
+http  
+POST /api/v1/presentations/generate  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+Content-Type: application/json  
 
-{
-  "topic": "User's topic here",
-  "slideCount": 5,
-  "theme": "corporate_blue",
-  "stream": false
-}
+{  
+  "topic": "用户主题",  
+  "slideCount": 5,  
+  "theme": "corporate_blue",  
+  "stream": false  
+}  
+
 ```
 
 **⏱️ IMPORTANT: Generation takes 1-3 minutes. The API will return when complete.**
@@ -144,22 +155,26 @@ Content-Type: application/json
 ### Step 4: Get the Result
 
 **Success Response:**
-```json
-{
-  "presentationId": "uuid-here",
-  "viewUrl": "https://prezentit.net/view/abc123",
-  "creditsUsed": 75,
-  "remainingCredits": 25
-}
+```  
+json  
+{  
+  "presentationId": "uuid-here",  
+  "viewUrl": "https://prezentit.net/view/abc123",  
+  "creditsUsed": 75,  
+  "remainingCredits": 25  
+}  
+
 ```
 
 → Share the `viewUrl` with the user. That's their presentation!
 
 ### Step 5: Download (Optional)
 
-```http
-GET /api/v1/presentations/{presentationId}/download?format=pptx
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/presentations/{presentationId}/download?format=pptx  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 **Formats:** `pptx` (PowerPoint), `pdf`, `json` (raw data)
@@ -194,32 +209,63 @@ If no existing theme fits, use `customDesignPrompt` to describe a fully custom v
 
 **REQUIRED structure for customDesignPrompt** (include ALL of these sections):
 
-```
-COLOR SYSTEM: Primary [hex], secondary [hex], accent [hex], background [hex/gradient], text colors for headings and body.
+```  
+**颜色系统:**  
+主要颜色 [十六进制代码], 辅助颜色 [十六进制代码], 强调色 [十六进制代码], 背景颜色 [十六进制代码/渐变], 标题和正文的文字颜色。  
 
-TYPOGRAPHY: Heading font style [e.g., bold geometric sans-serif like Montserrat], body font style [e.g., clean humanist sans-serif like Open Sans], size hierarchy [large/medium/small], weight contrast.
+**排版系统:**  
+标题字体样式 [例如：粗体几何无衬线字体（如Montserrat）], 正文字体样式 [例如：简洁的人体主义无衬线字体（如Open Sans）, 字体大小层次结构 [大/中/小], 字体粗细对比。  
 
-LAYOUT SYSTEM: Slide structure [e.g., asymmetric split with 60/40 content-to-visual ratio], alignment [left-aligned text with right visual panel], spacing philosophy [generous whitespace vs. dense information], grid approach.
+**布局系统:**  
+幻灯片结构 [例如：内容与视觉元素的比例为60/40], 文本左对齐，右侧放置视觉元素, 间距处理 [保持足够的空白与紧凑的信息布局], 使用网格布局。  
 
-VISUAL ELEMENTS: Background treatment [solid/gradient/textured/patterned], decorative motifs [geometric shapes, organic curves, line art, etc.], image style [photography with overlay, illustrations, icons, data visualizations], border/frame treatments.
+**视觉元素:**  
+背景处理 [纯色/渐变/纹理/图案], 装饰性元素 [几何形状、有机曲线、线条艺术等], 图像风格 [带叠加效果的摄影、插图、图标、数据可视化], 边框/框架设计。  
 
-MOOD & TONE: Overall aesthetic [e.g., corporate authority, playful creativity, academic rigor, tech-forward], energy level [calm/dynamic/bold], intended audience impression.
+**氛围与风格:**  
+整体美学风格 [例如：企业权威感、富有创意、学术严谨性、科技前沿], 活力水平 [平静/动态/鲜明], 针对受众的印象。  
+
 ```
 
 **Example — Good customDesignPrompt:**
 
-```json
-{
-  "topic": "AI in Healthcare",
-  "customDesignPrompt": "COLOR SYSTEM: Primary deep medical blue (#1B3A5C), secondary teal (#2A9D8F), accent warm coral (#E76F51) for callouts, backgrounds alternate between clean white (#FAFAFA) and very subtle blue-gray (#F0F4F8), heading text dark navy, body text #333333. TYPOGRAPHY: Headings in bold geometric sans-serif (Montserrat style), body in clean humanist sans (Source Sans style), strong size hierarchy with 48pt titles, 24pt subtitles, 16pt body. LAYOUT SYSTEM: Asymmetric layouts with 60/40 content-to-visual split, left-aligned text blocks with right-side data visualizations or medical imagery, generous padding (60px margins), clean grid structure. VISUAL ELEMENTS: Subtle DNA helix watermark in corners at 5% opacity, thin teal accent lines as section dividers, medical iconography (stethoscope, heartbeat, molecular structures) as small decorative elements, photography with blue-tinted overlay for full-bleed backgrounds. MOOD & TONE: Professional medical authority balanced with approachable warmth, calm and trustworthy, designed for hospital executives and medical professionals.",
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "医疗领域的AI应用",  
+  "customDesignPrompt":  
+    "颜色系统":  
+      主要颜色：深医疗蓝 (#1B3A5C),  
+      辅助颜色：浅蓝绿色 (#2A9D8F),  
+      强调色：暖珊瑚色 (#E76F51)  
+    "背景颜色":  
+      交替使用纯白色 (#FAFAFA) 和微妙的蓝灰色 (#F0F4F8)  
+    "标题文字": 深海蓝色,  
+    "正文文字": #333333  
+    **排版系统:**  
+      标题使用粗体几何无衬线字体 (Montserrat 风格),  
+      正文使用简洁的人体主义无衬线字体 (Source Sans 风格),  
+      字体大小层次分明：标题 48pt, 子标题 24pt, 正文 16pt  
+    **布局系统:**  
+      非对称布局，内容与视觉元素的比例为60/40,  
+      左侧文本块与右侧的数据可视化或医疗相关图像对齐, 边距充足 (60px), 使用清晰的网格结构  
+    **视觉元素:**  
+      角落处有5%透明度的DNA螺旋水印,  
+      使用细浅蓝绿色线条作为章节分隔符,  
+      使用医疗相关的图标（听诊器、心跳图、分子结构）作为装饰元素,  
+      背景使用带蓝调的叠加效果  
+    **氛围与风格:**  
+    专业医疗权威感与亲切温暖相结合, 风格冷静可靠, 专为医院高管和医疗专业人士设计  
+    "stream": false  
+}  
+
 ```
 
 **Example — Bad customDesignPrompt (TOO VAGUE, will produce generic results):**
 
-```
-"blue and white medical theme"
+```  
+“蓝白医疗主题”  
+
 ```
 
 ---
@@ -232,25 +278,27 @@ Providing your own outline saves credits and gives you full control over content
 
 The outline is an object with a `slides` array. Each slide has these fields:
 
-```json
-{
-  "topic": "Your Presentation Topic",
-  "outline": {
-    "slides": [
-      {
-        "title": "Slide Title Here",
-        "mainIdea": "A clear sentence explaining the core message of this slide and what the audience should take away from it.",
-        "talkingPoints": [
-          "First key point with enough detail to be meaningful (at least 10 characters)",
-          "Second key point expanding on the main idea",
-          "Third key point providing supporting evidence or examples"
-        ],
-        "visualGuide": "Detailed description of the visual layout: background style, image placement, icon suggestions, chart types, color emphasis areas, and decorative elements for this specific slide."
-      }
-    ]
-  },
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "您的演示主题",  
+  "outline": {  
+    "slides": [  
+      {  
+        "title": "幻灯片标题",  
+        "mainIdea": "解释该幻灯片的核心信息以及观众应从中获得的要点。"  
+        "talkingPoints": [  
+          "第一个关键点：提供足够的细节以明确其含义（至少10个字符）",  
+          "第二个关键点：对主要观点进行扩展",  
+          "第三个关键点：提供支持性证据或示例"  
+        ],  
+        "visualGuide": "详细的视觉布局说明：背景风格、图片位置、图标建议、图表类型、颜色强调区域以及该幻灯片的装饰元素。"  
+      }  
+    ]  
+  },  
+  "stream": false  
+}  
+
 ```
 
 ### Slide Field Reference
@@ -273,63 +321,70 @@ The outline is an object with a `slides` array. Each slide has these fields:
 
 ### Complete Example
 
-```json
-{
-  "topic": "Introduction to Machine Learning",
-  "outline": {
-    "slides": [
-      {
-        "title": "Introduction to Machine Learning",
-        "mainIdea": "Machine learning is transforming how businesses operate by enabling systems to learn from data and improve automatically without explicit programming.",
-        "talkingPoints": [
-          "Machine learning is a subset of artificial intelligence focused on pattern recognition",
-          "ML systems improve through experience rather than manual rule-writing",
-          "Global ML market projected to reach $209 billion by 2029"
-        ],
-        "visualGuide": "Bold title slide with futuristic tech aesthetic. Dark gradient background transitioning from deep navy to midnight blue. Large bold title text centered with a subtle neural network node pattern behind it. Accent glow in electric blue."
-      },
-      {
-        "title": "How Machine Learning Works",
-        "mainIdea": "Machine learning algorithms are categorized into supervised, unsupervised, and reinforcement learning based on how they learn from data.",
-        "talkingPoints": [
-          "Supervised learning uses labeled data for classification and regression tasks",
-          "Unsupervised learning discovers hidden patterns in unlabeled data through clustering",
-          "Reinforcement learning optimizes decisions through trial, error, and reward signals"
-        ],
-        "visualGuide": "Three distinct visual sections showing each ML type with representative icons: labeled data pairs for supervised, clustered groups for unsupervised, and a game-like reward loop for reinforcement. Use consistent color coding with blue, green, and purple."
-      },
-      {
-        "title": "Business Applications",
-        "mainIdea": "Companies across industries are leveraging machine learning for competitive advantage in customer experience, operations, and decision-making.",
-        "talkingPoints": [
-          "Customer churn prediction reduces revenue loss by identifying at-risk accounts early",
-          "Fraud detection systems process millions of transactions in real-time",
-          "Personalized recommendation engines drive significant increases in engagement and sales"
-        ],
-        "visualGuide": "Clean content layout with left-aligned text and right-side icons or mini-charts for each application. Use a white background with subtle grid lines. Each talking point gets a small illustrative icon (shield for fraud, chart for prediction, user icon for personalization)."
-      },
-      {
-        "title": "Getting Started with ML",
-        "mainIdea": "Successful ML adoption requires starting with clear use cases, quality data, and the right team rather than jumping straight to complex algorithms.",
-        "talkingPoints": [
-          "Identify high-impact use cases where prediction or automation adds clear value",
-          "Invest in clean, well-structured data before selecting algorithms",
-          "Build or partner with ML expertise and start with proven frameworks"
-        ],
-        "visualGuide": "Conclusion slide with a numbered roadmap or step layout. Three large numbered circles (1, 2, 3) each containing a step. Background with subtle upward-pointing arrows suggesting progress. Call-to-action feel with bold accent color on the final step."
-      }
-    ]
-  },
-  "theme": "midnight_tech",
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "机器学习简介",  
+  "outline": {  
+    "slides": [  
+      {  
+        "title": "机器学习简介",  
+        "mainIdea": "机器学习通过使系统能够从数据中学习并自动改进，从而改变企业的运作方式，而无需进行显式编程。"  
+        "talkingPoints": [  
+          "机器学习是人工智能的一个子领域，专注于模式识别",  
+          "机器学习系统通过经验而非手动规则编写来改进",  
+          "预计到2029年，全球机器学习市场将达到2090亿美元"  
+        ],  
+        "visualGuide":  
+          **标题幻灯片**：采用未来主义科技风格，背景为深蓝色渐变，标题文字为粗体，背景中带有神经网络节点的图案，使用电蓝色作为强调色。  
+      },  
+      {  
+        "title": "机器学习的工作原理",  
+        "mainIdea": "机器学习算法根据其从数据中学习的方式分为监督学习、无监督学习和强化学习三种类型。"  
+        "talkingPoints": [  
+          "监督学习使用标记数据进行分类和回归任务",  
+          "无监督学习通过聚类在未标记数据中发现隐藏模式",  
+          "强化学习通过试错和奖励信号来优化决策"  
+        ],  
+        "visualGuide":  
+          **三个不同的视觉部分**：分别展示三种类型的机器学习，使用蓝色、绿色和紫色进行区分。  
+      },  
+      {  
+        "title": "商业应用",  
+        "mainIdea": "各行各业的公司都在利用机器学习来提升客户体验、运营效率和决策能力。"  
+        "talkingPoints": [  
+          "通过提前识别高风险账户来减少客户流失",  
+          "欺诈检测系统实时处理大量交易",  
+          "个性化推荐系统显著提升用户参与度和销售额"  
+        ],  
+        "visualGuide":  
+          **内容布局简洁**, 左侧文本对齐，右侧放置图标或迷你图表。背景为白色，带有细小的网格线。每个要点都配有相应的图标（欺诈防护、预测图表、个性化图标）。  
+      },  
+      {  
+        "title": "开始使用机器学习",  
+        "mainIdea": "成功采用机器学习需要从明确的使用场景、高质量的数据和合适的团队入手，而不是直接使用复杂的算法。"  
+        "talkingPoints": [  
+          "确定能够带来明显价值的高影响力使用场景",  
+          "在选择算法之前先投资于高质量、结构良好的数据",  
+          "与具有机器学习专业知识的团队合作或使用成熟的框架"  
+        ],  
+        "visualGuide":  
+          **结论幻灯片**：包含编号的路线图或步骤说明，三个大圆圈分别代表三个步骤，背景带有向上的箭头，表示进展方向，最后一步使用醒目的强调色。  
+      }  
+    ],  
+    "theme": "midnight_tech",  
+    "stream": false  
+}  
+
 ```
 
 ### Get Schema Programmatically
 
-```http
-GET /api/v1/docs/outline-format
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/docs/outline-format  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 Returns the full JSON schema with all constraints and example slides.
@@ -340,12 +395,14 @@ Returns the full JSON schema with all constraints and example slides.
 
 ### Error Response Format
 
-```json
-{
-  "error": "Human readable message",
-  "code": "ERROR_CODE",
-  "fix": "Guidance on how to resolve this"
-}
+```  
+json  
+{  
+  "error": "人类可读的信息",  
+  "code": "ERROR_CODE",  
+  "fix": "关于如何解决此问题的指导"  
+}  
+
 ```
 
 ### Common Errors & Solutions
@@ -366,14 +423,16 @@ Returns the full JSON schema with all constraints and example slides.
 
 ### Handling Insufficient Credits
 
-```json
-{
-  "error": "Insufficient credits",
-  "code": "INSUFFICIENT_CREDITS",
-  "required": 75,
-  "available": 50,
-  "purchaseUrl": "https://prezentit.net/buy-credits"
-}
+```  
+json  
+{  
+  "error": "信用不足",  
+  "code": "INSUFFICIENT_CREDITS",  
+  "required": 75,  
+  "available": 50,  
+  "purchaseUrl": "https://prezentit.net/buy-credits"  
+}  
+
 ```
 
 **AI Agent Response:** "You need 75 credits but only have 50. Purchase more at https://prezentit.net/buy-credits"
@@ -384,12 +443,14 @@ If the user has some credits but not enough for full generation, the API returns
 
 ### Handling Rate Limits
 
-```json
-{
-  "error": "Too many requests",
-  "code": "RATE_LIMITED",
-  "retryAfter": 30
-}
+```  
+json  
+{  
+  "error": "请求过多",  
+  "code": "RATE_LIMITED",  
+  "retryAfter": 30  
+}  
+
 ```
 
 **AI Agent Action:** Wait `retryAfter` seconds before retrying.
@@ -400,43 +461,52 @@ If the user has some credits but not enough for full generation, the API returns
 
 ### Check Generation Status
 
-```http
-GET /api/v1/me/generation/status
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/me/generation/status  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 Returns current progress if a generation is running: stage, percentage, designs completed.
 
 ### Cancel Active Generation
 
-```http
-POST /api/v1/me/generation/cancel
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+POST /api/v1/me/generation/cancel  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 Cancels the current generation in progress.
 
 ### Get Presentation Details
 
-```http
-GET /api/v1/presentations/{presentationId}
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/presentations/{presentationId}  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 ### List User's Presentations
 
-```http
-GET /api/v1/me/presentations
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/me/presentations  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 Optional: `?limit=20&offset=0`
 
 ### List All Themes
 
-```http
-GET /api/v1/themes
-Authorization: Bearer {PREZENTIT_API_KEY}
+```  
+http  
+GET /api/v1/themes  
+Authorization: Bearer {PREZENTIT_API_KEY}  
+
 ```
 
 Optional query params:
@@ -461,92 +531,125 @@ Optional query params:
 
 ### Minimal Generation
 
-```json
-POST /api/v1/presentations/generate
+```  
+POST /api/v1/presentations/generate  
+{  
+  "topic": "气候变化简介",  
+  "stream": false  
+}  
 
-{
-  "topic": "Introduction to Climate Change",
-  "stream": false
-}
 ```
 
 ### With Theme (Fetch ID First)
 
-```
-1. GET /api/v1/themes → find the theme ID
-2. POST /api/v1/presentations/generate
+```  
+1. GET /api/v1/themes → 查找主题ID  
+2. POST /api/v1/presentations/generate  
+
 ```
 
-```json
-{
-  "topic": "Q4 Sales Report",
-  "slideCount": 8,
-  "theme": "corporate_blue",
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "第四季度销售报告",  
+  "slideCount": 8,  
+  "theme": "corporate_blue",  
+  "stream": false  
+}  
+
 ```
 
 ### With Custom Design Prompt
 
-```json
-{
-  "topic": "Startup Pitch Deck",
-  "slideCount": 10,
-  "customDesignPrompt": "COLOR SYSTEM: Primary electric indigo (#4F46E5), secondary cyan (#06B6D4), accent hot pink (#EC4899), background dark charcoal (#111827) with subtle radial gradient to #1F2937, heading text white, body text #D1D5DB. TYPOGRAPHY: Headings in extra-bold wide-tracking sans-serif (Inter/Poppins style), body in medium-weight clean sans, dramatic size contrast with 56pt titles and 18pt body. LAYOUT SYSTEM: Full-bleed dark slides with asymmetric content placement, bold left-aligned headlines with supporting text below, large visual areas for mockups and charts, 80px margins. VISUAL ELEMENTS: Subtle dot grid pattern at 3% opacity on backgrounds, neon-glow accent lines, rounded corners on all containers, glassmorphism cards with frosted backgrounds for data callouts, gradient mesh blobs as decorative elements. MOOD & TONE: Bold tech-startup energy, confident and forward-looking, designed to impress venture capital investors.",
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "创业公司提案稿",  
+  "slideCount": 10,  
+  "customDesignPrompt":  
+    "颜色系统":  
+      主要颜色：电蓝色 (#4F46E5),  
+      辅助颜色：青色 (#06B6D4),  
+      强调色：亮粉色 (#EC4899),  
+      背景颜色：深炭灰色 (#111827) 伴微妙的渐变至 #1F2937,  
+      标题文字：白色,  
+      正文文字：#D1D5DB  
+    **排版系统:**  
+      标题使用粗体宽跟踪无衬线字体 (Inter/Poppins 风格),  
+      正文使用中等粗细的简洁无衬线字体,  
+      字体大小对比鲜明：标题 56pt, 正文 18pt  
+    **布局系统:**  
+      全屏幻灯片，内容与视觉元素的比例为60/40,  
+      标题左对齐，下方放置支持性文本,  
+      大面积的视觉元素用于展示原型图和图表, 边距 80px  
+    **视觉元素:**  
+      背景上有3%透明度的细点网格图案,  
+      使用霓虹色线条作为强调效果,  
+      所有容器边缘呈圆形,  
+      数据标注使用玻璃质感卡片和磨砂背景,  
+      使用渐变网格作为装饰元素  
+    **氛围与风格:**  
+    强烈的科技初创企业风格, 自信且具有前瞻性, 旨在给风险投资家留下深刻印象  
+    "stream": false  
+}  
+
 ```
 
 ### With Outline (~33% Savings)
 
-```json
-{
-  "topic": "Weekly Team Sync",
-  "outline": {
-    "slides": [
-      {
-        "title": "Weekly Team Sync",
-        "mainIdea": "Kickoff slide for the January 15, 2024 weekly team synchronization meeting covering accomplishments and upcoming goals.",
-        "talkingPoints": [
-          "Welcome the team and set the agenda for today's sync",
-          "Cover last week's wins and this week's priorities"
-        ],
-        "visualGuide": "Clean title slide with company colors. Bold centered title, date as subtitle below. Simple professional background with subtle geometric pattern."
-      },
-      {
-        "title": "Last Week's Accomplishments",
-        "mainIdea": "The team delivered significant progress across feature development, bug resolution, and performance optimization last week.",
-        "talkingPoints": [
-          "Feature X completed and merged into the main branch ahead of schedule",
-          "Resolved three critical production bugs affecting checkout flow",
-          "Database query optimization improved page load times by twenty percent"
-        ],
-        "visualGuide": "Content slide with checkmark icons next to each accomplishment. Green accent color for completed items. Left-aligned text with small celebration graphic in the corner."
-      },
-      {
-        "title": "This Week's Goals",
-        "mainIdea": "This week focuses on the beta launch, initial user testing, and completing documentation before the public release.",
-        "talkingPoints": [
-          "Launch beta version to internal testers by Wednesday",
-          "Conduct user testing sessions with five pilot customers",
-          "Complete API documentation and developer onboarding guide"
-        ],
-        "visualGuide": "Forward-looking slide with numbered steps or timeline visual. Blue accent color for upcoming items. Arrow or roadmap graphic showing progression from current state to launch."
-      },
-      {
-        "title": "Open Discussion",
-        "mainIdea": "Time for team questions, blockers, and any items not covered in the structured agenda.",
-        "talkingPoints": [
-          "Open floor for questions and discussion of blockers",
-          "Next sync meeting scheduled for Monday at ten AM"
-        ],
-        "visualGuide": "Simple closing slide with question mark icon or discussion bubble graphic. Calm colors, minimal text, large font for the key info. Meeting time prominently displayed."
-      }
-    ]
-  },
-  "theme": "corporate_blue",
-  "stream": false
-}
+```  
+json  
+{  
+  "topic": "每周团队同步会议",  
+  "outline": {  
+    "slides": [  
+      {  
+        "title": "2024年1月15日每周团队同步会议",  
+        "mainIdea": "介绍会议内容及本周目标。"  
+        "talkingPoints": [  
+          "欢迎团队成员并确定当天的议程",  
+          "回顾上周的成果和本周的重点任务"  
+        ],  
+        "visualGuide":  
+          **标题幻灯片**：使用公司颜色, 标题居中, 下方标注日期。背景简洁且带有几何图案。  
+      },  
+      {  
+        "title": "上周的成就",  
+        "mainIdea": "团队在功能开发、问题解决和性能优化方面取得了显著进展。"  
+        "talkingPoints": [  
+          "功能X提前完成并合并到主分支",  
+          "解决了三个影响结账流程的关键问题",  
+          "数据库查询优化使页面加载时间提高了20%"  
+        ],  
+        "visualGuide":  
+          **内容幻灯片**：每个成就旁边都有勾选图标, 完成的项目用绿色强调。左侧文本对齐, 角落处有庆祝图标。  
+      },  
+      {  
+        "title": "本周的目标",  
+        "mainIdea": "本周的重点是进行测试版发布、初步用户测试和完成文档工作。"  
+        "talkingPoints": [  
+          "在周三前向内部测试人员发布测试版",  
+          "与五位试点客户进行用户测试",  
+          "完成API文档和开发者入职指南"  
+        ],  
+        "visualGuide":  
+          **前瞻性幻灯片**：包含编号的步骤或时间线图示, 使用蓝色强调色表示接下来的任务。  
+      },  
+      {  
+        "title": "开放式讨论",  
+        "mainIdea": "现在是提问、讨论障碍和未在议程中涵盖的问题的时间。"  
+        "talkingPoints": [  
+          "鼓励自由提问和讨论障碍",  
+          "下一次同步会议安排在周一上午"  
+        ],  
+        "visualGuide":  
+          **简单的结束幻灯片**, 包含问号图标或讨论气泡图示, 颜色简洁, 关键信息用大字体显示, 会议时间醒目标注。  
+      }  
+    ],  
+    "theme": "corporate_blue",  
+    "stream": false  
+}  
+
 ```
 
 ---

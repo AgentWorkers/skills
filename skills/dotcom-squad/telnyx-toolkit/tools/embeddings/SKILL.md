@@ -1,32 +1,32 @@
 ---
 name: telnyx-embeddings
-description: Semantic search and text embeddings using Telnyx AI. Search any Telnyx Storage bucket with natural language — no OpenAI or Google API keys required.
+description: 使用 Telnyx AI 进行语义搜索和文本嵌入。您可以使用自然语言搜索任何 Telnyx 存储桶中的内容，无需使用 OpenAI 或 Google API 密钥。
 metadata: {"openclaw":{"emoji":"🔮","requires":{"bins":["python3"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# Telnyx Embeddings
+# Telnyx 嵌入技术
 
-Semantic search and text embeddings using Telnyx's native AI APIs. Search any Telnyx Storage bucket with natural language queries — the query embedding happens server-side, so you only need a `TELNYX_API_KEY`. No OpenAI or Google API keys required.
+Telnix 提供了原生的 AI API，支持语义搜索和文本嵌入功能。您可以使用自然语言查询来搜索任何 Telnix 存储桶中的内容——查询嵌入过程在服务器端完成，因此您只需要一个 `TELNYX_API_KEY` 即可。无需使用 OpenAI 或 Google 的 API 密钥。
 
-## Requirements
+## 系统要求
 
-- **Python 3.8+** — stdlib only, no external dependencies
-- **TELNYX_API_KEY** — get yours at [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys)
+- **Python 3.8+** — 仅需要标准库，无需外部依赖
+- **TELNYX_API_KEY** — 可在 [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys) 获取
 
-## Quick Start
+## 快速入门
 
 ```bash
 export TELNYX_API_KEY="KEY..."
 python3 {baseDir}/tools/embeddings/search.py "your query" --bucket your-bucket
 ```
 
-That's it. No pip install, no setup wizard, no external provider keys.
+无需安装任何软件包，也无需配置向导，更不需要外部服务提供商的密钥。
 
-## Search
+## 搜索功能
 
-Search any Telnyx Storage bucket that has embeddings enabled. The query is embedded server-side and matched against your indexed content.
+您可以搜索任何启用了嵌入功能的 Telnix 存储桶。查询会在服务器端被转换成嵌入格式，并与索引中的内容进行匹配。
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Search with default bucket (from config.json)
@@ -48,9 +48,9 @@ Search any Telnyx Storage bucket that has embeddings enabled. The query is embed
 ./search.py "details" --full
 ```
 
-### Output Format
+### 输出格式
 
-Results are ranked by certainty score with confidence indicators:
+搜索结果会根据置信度进行排序，并附带置信度指示：
 
 ```
 --- Result 1 [HIGH] (certainty: 0.923) ---
@@ -64,9 +64,9 @@ Source: notes/planning.md
 We discussed the requirements in the planning meeting...
 ```
 
-Confidence levels: `[HIGH]` >= 0.90, `[MED]` >= 0.85, `[LOW]` < 0.85
+置信度等级：`[HIGH]` >= 0.90, `[MED]` >= 0.85, `[LOW]` < 0.85
 
-### From Python
+### 从 Python 中进行搜索
 
 ```python
 from search import search, similarity_search
@@ -81,11 +81,11 @@ for doc in results.get("data", []):
     print(doc["content"][:200])
 ```
 
-## Index Content
+## 索引内容
 
-Upload files to a Telnyx Storage bucket and trigger embedding so they become searchable.
+将文件上传到 Telnix 存储桶后，这些文件就会自动被索引并支持搜索。
 
-### Upload Files
+### 上传文件
 
 ```bash
 # Upload a single file
@@ -104,9 +104,9 @@ Upload files to a Telnyx Storage bucket and trigger embedding so they become sea
 ./index.py upload path/to/dir/
 ```
 
-### Trigger Embedding
+### 触发嵌入过程
 
-After uploading files, trigger the embedding process to make them searchable:
+上传文件后，需要执行嵌入操作以使文件可被搜索：
 
 ```bash
 # Embed files in default bucket
@@ -116,13 +116,13 @@ After uploading files, trigger the embedding process to make them searchable:
 ./index.py embed --bucket my-bucket
 ```
 
-### Check Embedding Status
+### 检查嵌入状态
 
 ```bash
 ./index.py status <task_id>
 ```
 
-### List Files and Buckets
+### 列出文件和存储桶
 
 ```bash
 # List files in default bucket
@@ -141,7 +141,7 @@ After uploading files, trigger the embedding process to make them searchable:
 ./index.py buckets
 ```
 
-### Create a Bucket
+### 创建存储桶
 
 ```bash
 ./index.py create-bucket my-new-bucket
@@ -150,23 +150,23 @@ After uploading files, trigger the embedding process to make them searchable:
 ./index.py create-bucket my-new-bucket --region us-central-1
 ```
 
-### Delete a File
+### 删除文件
 
 ```bash
 ./index.py delete filename.md
 ./index.py delete filename.md --bucket my-bucket
 ```
 
-## Direct Embedding
+## 直接生成嵌入向量
 
-Generate embedding vectors for raw text. Useful for custom similarity comparisons, clustering, or building your own search index.
+可以为原始文本生成嵌入向量，适用于自定义相似性比较、聚类或构建自定义搜索索引。
 
-### Available Models
+### 可用的模型
 
-| Model | Description |
+| 模型 | 描述 |
 |-------|-------------|
-| `thenlper/gte-large` | General text embeddings (default) |
-| `intfloat/multilingual-e5-large` | Multilingual text embeddings |
+| `thenlper/gte-large` | 通用文本嵌入（默认模型） |
+| `intfloat/multilingual-e5-large` | 多语言文本嵌入 |
 
 ```bash
 # List available models
@@ -188,9 +188,9 @@ echo "text to embed" | ./embed.py --stdin
 ./embed.py "text" --json
 ```
 
-### OpenAI-Compatible Client
+### 兼容 OpenAI 的客户端
 
-The embeddings API is OpenAI-compatible, so you can use the OpenAI Python SDK with `base_url` pointed at Telnyx:
+Telnix 的嵌入 API 与 OpenAI 兼容，您可以将 `base_url` 设置为 Telnix 的地址，然后使用 OpenAI 的 Python SDK：
 
 ```python
 from openai import OpenAI
@@ -207,9 +207,9 @@ response = client.embeddings.create(
 print("Dimensions:", len(response.data[0].embedding))
 ```
 
-## Workflow
+## 工作流程
 
-The typical workflow for making content searchable:
+使内容可被搜索的典型工作流程如下：
 
 ```
 1. Upload files          2. Trigger embedding       3. Search
@@ -220,7 +220,7 @@ The typical workflow for making content searchable:
    (S3-compatible)       (server-side vectors)       (server-side matching)
 ```
 
-### Step-by-step Example
+### 逐步示例
 
 ```bash
 # 1. Create a bucket for your content
@@ -238,9 +238,9 @@ The typical workflow for making content searchable:
 ./search.py "how do I deploy?" --bucket my-knowledge
 ```
 
-## Configuration
+## 配置
 
-Edit `config.json` to set defaults:
+编辑 `config.json` 文件以设置默认值：
 
 ```json
 {
@@ -250,17 +250,17 @@ Edit `config.json` to set defaults:
 }
 ```
 
-| Field | Default | Description |
+| 参数 | 默认值 | 说明 |
 |-------|---------|-------------|
-| `bucket` | `openclaw-main` | Default bucket for search and index operations |
-| `region` | `us-central-1` | Telnyx Storage region |
-| `default_num_docs` | `5` | Default number of search results |
+| `bucket` | `openclaw-main` | 用于搜索和索引操作的默认存储桶 |
+| `region` | `us-central-1` | Telnix 存储区域 |
+| `default_num_docs` | `5` | 默认的搜索结果数量 |
 
-All settings can be overridden with CLI flags (`--bucket`, `--num`).
+所有设置都可以通过 CLI 参数（`--bucket`, `--num`）进行修改。
 
-## Integration
+## 集成
 
-### From Other Tools/Bots
+### 与其他工具/机器人的集成
 
 ```bash
 # Search and capture results
@@ -271,7 +271,7 @@ python3 {baseDir}/tools/embeddings/index.py upload /path/to/file.md --bucket my-
 python3 {baseDir}/tools/embeddings/index.py embed --bucket my-bucket
 ```
 
-### From Python
+### 从 Python 中进行集成
 
 ```python
 import subprocess, json
@@ -284,9 +284,9 @@ result = subprocess.run(
 data = json.loads(result.stdout)
 ```
 
-### Replacing OpenAI/Google Memory Search
+### 替代 OpenAI/Google 的记忆搜索功能
 
-If your bot uses `memory_search` with OpenAI or Google embeddings, switch to:
+如果您的机器人当前使用 OpenAI 或 Google 的嵌入服务，可以切换到 Telnix 的服务：
 
 ```bash
 # Before (requires OPENAI_API_KEY):
@@ -296,48 +296,55 @@ If your bot uses `memory_search` with OpenAI or Google embeddings, switch to:
 python3 {baseDir}/tools/embeddings/search.py "query" --bucket your-memory-bucket --json
 ```
 
-## Relationship to RAG Tool
+## 与 RAG 工具的关系
 
-This tool is **complementary** to `tools/rag/`, not a replacement:
+该工具与 `tools/rag/` 是互补的关系，而非替代关系：
 
-| Feature | Embeddings (this tool) | RAG (`tools/rag/`) |
+| 功能 | Telnix 嵌入技术 | RAG （tools/rag/） |
 |---------|----------------------|-------------------|
-| **Purpose** | Search primitives | Full RAG pipeline |
-| **Search** | Direct similarity search | Retrieve + rerank + generate |
-| **Indexing** | Upload + embed trigger | Auto-sync + smart chunking |
-| **Q&A** | No (returns raw results) | Yes (LLM-powered answers) |
-| **Use case** | Standalone search, integrations | Workspace-level knowledge base |
+| **用途** | 提供简单的直接搜索功能 | 提供完整的 RAG（检索 + 重新排序 + 生成答案）流程 |
+| **搜索方式** | 直接进行相似性搜索 | 检索 + 重新排序 + 生成答案 |
+| **索引方式** | 上传文件后自动嵌入 | 自动同步数据并智能分块处理 |
+| **问答支持** | 不支持（返回原始结果） | 支持（基于 LLM 的智能问答） |
+| **适用场景** | 独立搜索、集成应用 | 工作区级知识库 |
 
-Use **embeddings** when you need simple, direct search. Use **RAG** when you need AI-powered answers with source citations.
+- 当需要简单的直接搜索时，使用 Telnix 的嵌入技术。
+- 当需要基于 AI 的智能问答功能（包含来源引用）时，使用 RAG 工具。
 
-## Troubleshooting
+## 常见问题解决方法
 
-### "No Telnyx API key found"
-Set your API key:
+### “未找到 Telnix API 密钥”
+请确保您已正确设置 API 密钥：
 ```bash
 export TELNYX_API_KEY="KEY..."
 # or
 echo 'TELNYX_API_KEY=KEY...' > .env
 ```
 
-### "HTTP 401" or "HTTP 403"
-Your API key is invalid or expired. Get a new one at [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys).
+### “HTTP 401” 或 “HTTP 403”
+您的 API 密钥无效或已过期，请在 [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys) 重新获取。
 
-### "HTTP 404" on search
-The bucket doesn't exist or embeddings haven't been enabled:
-```bash
-./index.py create-bucket your-bucket
-./index.py embed --bucket your-bucket
-```
+### 搜索时出现 “HTTP 404”
+- 确保存储桶存在，且已启用嵌入功能：
+  ```
+  ./index.py list --bucket your-bucket
+  ```
+- 验证嵌入是否已生效：
+  ```
+  ./index.py list --embeddings --bucket your-bucket
+  ```
 
-### "No results found"
-- Wait 1-2 minutes after triggering embedding
-- Check that files were uploaded: `./index.py list --bucket your-bucket`
-- Verify embeddings are active: `./index.py list --embeddings --bucket your-bucket`
+### “未找到结果”
+- 等待 1-2 分钟后再尝试搜索。
+- 确认文件已成功上传。
+- 检查嵌入过程是否已完成：
+  ```
+  ./index.py list --embeddings --bucket your-bucket
+  ```
 
-### "Network error"
-Check your internet connection. The tool needs access to `api.telnyx.com` and `*.telnyxcloudstorage.com`.
+### “网络错误”
+请检查您的互联网连接。该工具需要访问 `api.telnyx.com` 和 `*.telnyxcloudstorage.com`。
 
-## Credits
+## 致谢
 
-Built for [OpenClaw](https://github.com/openclaw/openclaw) using [Telnyx Storage](https://telnyx.com/products/cloud-storage) and AI APIs.
+本功能基于 [OpenClaw](https://github.com/openclaw/openclaw) 开发，使用了 [Telnx Storage](https://telnyx.com/products/cloud-storage) 及其 AI API。

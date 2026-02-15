@@ -1,6 +1,6 @@
 ---
 name: resend
-description: Manage received (inbound) emails and attachments via Resend API. Use when user asks about their emails, received messages, or email attachments.
+description: 通过 Resend API 管理收到的（入站）电子邮件及其附件。当用户询问他们的电子邮件、收到的消息或电子邮件附件时，可以使用此功能。
 homepage: https://resend.com
 metadata:
   clawdbot:
@@ -10,26 +10,26 @@ metadata:
       env: ["RESEND_API_KEY"]
 ---
 
-# Resend CLI
+# 重新发送邮件（Resend Email）
 
-CLI for the Resend email API. Query received (inbound) emails and attachments.
+这是一个用于重新发送邮件的命令行工具（CLI），它支持查询接收到的（入站）邮件及其附件。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @mjrussell/resend-cli
 ```
 
-## Setup
+## 设置
 
-1. Sign up at [resend.com](https://resend.com)
-2. Set up inbound email routing for your domain
-3. Create API key at API Keys → Create API key (needs read permissions)
-4. Set environment variable: `export RESEND_API_KEY="re_your_key"`
+1. 在 [resend.com](https://resend.com) 注册账号。
+2. 为你的域名配置入站邮件路由。
+3. 在“API Keys”页面创建API密钥（需要具备读取权限）。
+4. 设置环境变量：`export RESEND_API_KEY="your_api_key"`。
 
-## Commands
+## 命令
 
-### List Emails
+### 列出所有邮件
 
 ```bash
 resend email list              # List recent emails (default 10)
@@ -37,14 +37,14 @@ resend email list -l 20        # List 20 emails
 resend email list --json       # Output as JSON
 ```
 
-### Get Email Details
+### 查看邮件详情
 
 ```bash
 resend email get <id>          # Show email details
 resend email get <id> --json   # Output as JSON
 ```
 
-### Attachments
+### 查看邮件附件
 
 ```bash
 resend email attachments <email_id>                    # List attachments
@@ -52,7 +52,7 @@ resend email attachment <email_id> <attachment_id>     # Get attachment metadata
 resend email attachments <email_id> --json             # Output as JSON
 ```
 
-### Domains
+### 查看已配置的域名
 
 ```bash
 resend domain list             # List configured domains
@@ -60,36 +60,36 @@ resend domain get <id>         # Get domain details with DNS records
 resend domain list --json      # Output as JSON
 ```
 
-## Usage Examples
+## 使用示例
 
-**User: "Do I have any new emails?"**
+**用户：“我有什么新邮件吗？”**
 ```bash
 resend email list -l 5
 ```
 
-**User: "Show me the latest email"**
+**用户：“显示最新的邮件。”**
 ```bash
 resend email list --json | jq -r '.data.data[0].id'  # Get ID
 resend email get <id>
 ```
 
-**User: "What attachments are on that email?"**
+**用户：“那封邮件里有哪些附件？”**
 ```bash
 resend email attachments <email_id>
 ```
 
-**User: "What domains do I have set up?"**
+**用户：“我配置了哪些域名？”**
 ```bash
 resend domain list
 ```
 
-**User: "Show me the full content of email X"**
+**用户：“显示邮件X的完整内容。”**
 ```bash
 resend email get <email_id>
 ```
 
-## Notes
+## 注意事项
 
-- This CLI only supports **received (inbound)** emails, not sending
-- Use `--json` flag and pipe to `jq` for scripting
-- Email IDs are UUIDs shown in list output
+- 该CLI仅支持接收到的（入站）邮件，不支持发送邮件。
+- 可使用 `--json` 标志并将输出结果通过管道（`|`）传递给 `jq` 工具进行脚本处理。
+- 邮件ID以UUID的形式显示在列表中。

@@ -1,35 +1,54 @@
 ---
 name: emergency-rescue
-description: Recover from developer disasters. Use when someone force-pushed to main, leaked credentials in git, ran out of disk space, killed the wrong process, corrupted a database, broke a deploy, locked themselves out of SSH, lost commits after a bad rebase, or hit any other "oh no" moment that needs immediate, calm, step-by-step recovery.
+description: **从开发人员引发的灾难中恢复**  
+当遇到以下情况时，请使用此方案：  
+- 有人将代码强制推送到主分支（main branch）；  
+- Git 中的凭据被泄露；  
+- 磁盘空间耗尽；  
+- 错误地终止了某个进程；  
+- 数据库被损坏；  
+- 部署失败；  
+- 用户因操作失误而无法通过 SSH 进入系统；  
+- 在执行错误的 `rebase` 操作后丢失了提交记录；  
+- 或者遇到任何其他需要立即、冷静且按步骤处理的紧急情况。  
+
+**使用步骤：**  
+1. 保持冷静，分析问题的根本原因。  
+2. 根据具体情况，采取相应的恢复措施（例如：重新配置 Git 仓库、恢复数据库数据、重新启动相关服务、修复系统错误等）。  
+3. 如果需要，记录整个恢复过程，以便将来参考。  
+
+**注意：**  
+- 请确保在恢复过程中遵循最佳实践和团队规范，以避免类似问题的再次发生。  
+- 如有疑问，请及时向团队成员或技术支持人员寻求帮助。
 metadata: {"clawdbot":{"emoji":"🚨","requires":{"anyBins":["git","bash"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Emergency Rescue Kit
+# 紧急救援工具包
 
-Step-by-step recovery procedures for the worst moments in a developer's day. Every section follows the same pattern: **diagnose → fix → verify**. Commands are non-destructive by default. Destructive steps are flagged.
+本工具包提供了针对开发者工作中可能遇到的各种紧急情况的逐步恢复流程。所有流程都遵循相同的步骤：**诊断 → 修复 → 验证**。默认情况下，执行的命令都是非破坏性的；具有破坏性的操作会特别标明。
 
-When something has gone wrong, find your situation below and follow the steps in order.
+当出现问题时，请根据实际情况选择相应的流程并按顺序执行操作。
 
-## When to Use
+## 使用场景
 
-- Someone force-pushed to main and overwrote history
-- Credentials were committed to a public repository
-- A rebase or reset destroyed commits you need
-- Disk is full and nothing works
-- A process is consuming all memory or won't die
-- A database migration failed halfway through
-- A deploy needs to be rolled back immediately
-- SSH access is locked out
-- SSL certificates expired in production
-- You don't know what went wrong, but it's broken
+- 有人强制推送代码到主分支（main）并覆盖了历史记录
+- 凭据被提交到了公共仓库
+- 使用 `git rebase` 或 `git reset --hard` 操作导致某些提交丢失
+- 磁盘空间已满，导致系统无法正常运行
+- 某个进程占用过多内存或无法终止
+- 数据库迁移中途失败
+- 需要立即回滚部署
+- SSH 访问被锁定
+- 生产环境中的 SSL 证书已过期
+- 无法确定问题所在，但系统明显出现故障
 
 ---
 
-## Git Disasters
+## Git 相关紧急情况
 
-### Force-pushed to main (or any shared branch)
+### 强制推送代码到主分支（或任何共享分支）
 
-Someone ran `git push --force` and overwrote remote history.
+有人执行了 `git push --force`，导致远程仓库的历史记录被覆盖。
 
 ```bash
 # DIAGNOSE: Check the reflog on any machine that had the old state
@@ -54,9 +73,9 @@ git log --oneline -10 origin/main
 # Confirm the history looks correct
 ```
 
-### Lost commits after rebase or reset --hard
+### 使用 `git rebase` 或 `git reset --hard` 后提交丢失
 
-You ran `git rebase` or `git reset --hard` and commits disappeared.
+执行 `git rebase` 或 `git reset --hard` 后，部分提交被删除。
 
 ```bash
 # DIAGNOSE: Your commits are NOT gone. Git keeps everything for 30+ days.
@@ -81,9 +100,9 @@ git log --oneline -10
 # Your commits should be back
 ```
 
-### Committed to the wrong branch
+### 提交到了错误的分支
 
-You made commits on `main` that should be on a feature branch.
+在主分支（main）上进行了本应提交到功能分支（feature branch）的修改。
 
 ```bash
 # DIAGNOSE: Check where you are and what you committed
@@ -106,9 +125,9 @@ git log --oneline main -5
 git log --oneline feature-branch -5
 ```
 
-### Merge gone wrong (conflicts everywhere, wrong result)
+### 合并操作失败（出现冲突，结果错误）
 
-A merge produced a bad result and you want to start over.
+合并操作导致错误结果，需要重新开始。
 
 ```bash
 # FIX (merge not yet committed — still in conflict state):
@@ -127,9 +146,9 @@ git log --oneline --graph -10
 git diff HEAD~1  # Review what changed
 ```
 
-### Corrupted git repository
+### Git 仓库损坏
 
-Git commands fail with "bad object", "corrupt", or "broken link" errors.
+Git 命令执行失败，提示“对象损坏”（bad object）或“链接失效”（broken link）等错误。
 
 ```bash
 # DIAGNOSE: Check repository integrity
@@ -158,11 +177,11 @@ git log --oneline -5
 
 ---
 
-## Credential Leaks
+## 凭据泄露
 
-### Secret committed to git (API key, password, token)
+### 重要信息被提交到了 Git 仓库（API 密钥、密码、访问令牌）
 
-A credential is in the git history. Every second counts — automated scrapers monitor public GitHub repos for leaked keys.
+敏感信息被记录在 Git 历史记录中。时间非常紧迫——自动化监控工具会实时扫描公共 GitHub 仓库以检测泄露的凭证。
 
 ```bash
 # STEP 1: REVOKE THE CREDENTIAL IMMEDIATELY
@@ -215,7 +234,9 @@ git log --all -p -S '<the-secret-string>' --diff-filter=A
 # Should return nothing
 ```
 
-### .env file pushed to public repo
+### `.env` 文件被提交到了公共仓库
+
+配置文件 `.env` 被意外提交到了公共仓库。
 
 ```bash
 # STEP 1: Revoke ALL credentials in that .env file. All of them. Now.
@@ -246,7 +267,9 @@ HOOK
 chmod +x .git/hooks/pre-commit
 ```
 
-### Secret visible in CI/CD logs
+### 机密信息出现在持续集成/持续部署（CI/CD）日志中
+
+机密信息被记录在 CI/CD 日志中。
 
 ```bash
 # STEP 1: Revoke the credential immediately
@@ -269,13 +292,11 @@ gh run delete <run-id>
 # Any connection strings with passwords
 ```
 
----
+## 磁盘空间不足的紧急情况
 
-## Disk Full Emergencies
+### 系统或容器磁盘空间已满
 
-### System or container disk is full
-
-Nothing works — builds fail, logs can't write, services crash.
+系统无法正常运行：构建任务失败，日志无法记录，服务崩溃。
 
 ```bash
 # DIAGNOSE: What's using space?
@@ -328,7 +349,9 @@ find / -xdev -type f -size +100M -exec ls -lh {} \; 2>/dev/null | sort -k5 -rh |
 df -h  # Check free space increased
 ```
 
-### Docker-specific disk full
+### Docker 容器磁盘空间不足
+
+Docker 容器内的磁盘空间已满，导致容器无法启动。
 
 ```bash
 # DIAGNOSE:
@@ -357,11 +380,11 @@ docker system df
 df -h
 ```
 
----
+## 进程相关紧急情况
 
-## Process Emergencies
+### 端口已被占用
 
-### Port already in use
+某个端口已被其他进程占用。
 
 ```bash
 # DIAGNOSE: What's using the port?
@@ -389,7 +412,9 @@ docker stop <container-id>
 lsof -i :8080  # Should return nothing
 ```
 
-### Process won't die
+### 进程无法终止
+
+某个进程无法正常终止。
 
 ```bash
 # DIAGNOSE:
@@ -416,7 +441,9 @@ pkill -f <pattern>          # Graceful
 pkill -9 -f <pattern>      # Force
 ```
 
-### Out of memory (OOM killed)
+### 内存不足（操作系统触发 OOM）
+
+系统因内存不足而自动关闭进程。
 
 ```bash
 # DIAGNOSE: Was your process OOM-killed?
@@ -454,11 +481,11 @@ free -h
 ps aux --sort=-%mem | head -5
 ```
 
----
+## 数据库相关紧急情况
 
-## Database Emergencies
+### 迁移操作失败（部分数据未正确应用）
 
-### Failed migration (partially applied)
+数据库迁移操作失败，导致数据不一致。
 
 ```bash
 # DIAGNOSE: What state is the database in?
@@ -505,7 +532,9 @@ npx knex migrate:rollback
 # Check the affected tables/columns exist correctly
 ```
 
-### Accidentally dropped a table or database
+### 误删除了表或整个数据库
+
+不小心删除了数据库中的表或整个数据库。
 
 ```bash
 # PostgreSQL:
@@ -534,7 +563,9 @@ DROP TABLE users;  -- oops
 ROLLBACK;          -- saved
 ```
 
-### Database locked / deadlocked
+### 数据库被锁定或出现死锁
+
+数据库操作被阻塞，无法正常访问。
 
 ```bash
 # PostgreSQL:
@@ -575,7 +606,9 @@ KILL <process_id>;
 SELECT 1;
 ```
 
-### Connection pool exhausted
+### 连接池耗尽
+
+数据库连接池中的连接资源被耗尽。
 
 ```bash
 # DIAGNOSE:
@@ -611,11 +644,11 @@ SELECT count(*) FROM pg_stat_activity;
 # Should be well below max_connections
 ```
 
----
+## 部署相关紧急情况
 
-## Deploy Emergencies
+### 快速回滚部署
 
-### Quick rollback
+需要立即回滚刚刚完成的部署操作。
 
 ```bash
 # Git-based deploys:
@@ -648,7 +681,9 @@ curl -s -o /dev/null -w "%{http_code}" https://myapp.example.com/health
 # Should return 200
 ```
 
-### Container won't start
+### 容器无法启动
+
+Docker 容器无法正常启动。
 
 ```bash
 # DIAGNOSE: Why did it fail?
@@ -687,7 +722,9 @@ docker ps  # Container should show "Up" status
 docker logs <container-id> --tail 5  # No errors
 ```
 
-### SSL certificate expired
+### SSL 证书过期
+
+SSL 证书已过期，导致连接失败。
 
 ```bash
 # DIAGNOSE: Check certificate expiry
@@ -721,11 +758,11 @@ curl -sI https://mysite.com | head -5
 # Should return HTTP/2 200, not certificate errors
 ```
 
----
+## 访问权限相关紧急情况
 
-## Access Emergencies
+### SSH 访问被锁定
 
-### SSH locked out
+SSH 访问被阻止，无法正常登录系统。
 
 ```bash
 # DIAGNOSE: Why can't you connect?
@@ -773,7 +810,9 @@ sudo fail2ban-client set sshd unbanip <your-ip>
 ssh user@host echo "connection works"
 ```
 
-### Lost sudo access
+### sudo 权限丢失
+
+用户失去了 `sudo` 权限，无法执行管理命令。
 
 ```bash
 # If you have physical/console access:
@@ -802,11 +841,11 @@ sudo usermod -aG sudo <locked-user>
 # AWS: Create an AMI, launch new instance, mount old root volume, fix
 ```
 
----
+## 网络相关紧急情况
 
-## Network Emergencies
+### 全局网络故障
 
-### Nothing connects (total network failure)
+整个网络无法正常通信。
 
 ```bash
 # DIAGNOSE: Isolate the layer
@@ -853,7 +892,9 @@ sudo systemctl restart docker    # Often fixes Docker networking
 # Or: docker network prune
 ```
 
-### DNS not propagating after change
+### DNS 更新失败
+
+DNS 服务器无法正确更新域名解析信息。
 
 ```bash
 # DIAGNOSE: Check what different DNS servers see
@@ -888,11 +929,11 @@ echo "93.184.216.34 mysite.com" | sudo tee -a /etc/hosts
 dig +short mysite.com  # Should show new IP/record
 ```
 
----
+## 文件相关紧急情况
 
-## File Emergencies
+### 误删文件（未保存在 Git 仓库中）
 
-### Accidentally deleted files (not in git)
+文件被意外删除，但未保存在 Git 仓库中。
 
 ```bash
 # DIAGNOSE: Are the files recoverable?
@@ -918,7 +959,9 @@ sudo extundelete /dev/sda1 --restore-file path/to/file
 # Or alias: alias rm='echo "Use trash instead"; false'
 ```
 
-### Wrong permissions applied recursively
+### 权限设置错误
+
+文件权限被错误地应用到了整个目录或文件上。
 
 ```bash
 # "I ran chmod -R 777 /" or "chmod -R 000 /important/dir"
@@ -945,11 +988,9 @@ chmod 644 ~/.ssh/config
 ls -la /path/to/fixed/directory
 ```
 
----
+## 通用诊断工具
 
-## The Universal Diagnostic
-
-When you don't know what's wrong, run this sequence:
+当无法确定问题所在时，可以运行以下诊断命令：
 
 ```bash
 #!/bin/bash
@@ -989,17 +1030,17 @@ echo -e "\n=== FAILED SERVICES ==="
 systemctl --failed 2>/dev/null || true
 ```
 
-Run it, read the output, then jump to the relevant section above.
+运行该命令后，请查看输出结果，然后根据输出内容跳转到相应的处理流程。
 
-## Tips
+## 提示
 
-- **Revoke credentials before cleaning git history.** The moment a secret is pushed publicly, automated scrapers have it within minutes. Cleaning the history is important but secondary to revocation.
-- **`git reflog` is your undo button.** It records every HEAD movement for 30+ days. Lost commits, bad rebases, accidental resets — the reflog has the recovery hash. Learn to read it before you need it.
-- **Truncate log files, don't delete them.** `truncate -s 0 file.log` frees disk space instantly while keeping the file handle open. Deleting a log file that a process has open won't free space until the process restarts.
-- **`--force-with-lease` instead of `--force`.** Always. It fails if someone else has pushed, preventing you from overwriting their work on top of your recovery.
-- **Every recovery operation should end with verification.** Run the diagnostic command, check the output, confirm the fix worked. Don't assume — confirm.
-- **Docker is the #1 disk space thief on developer machines.** `docker system prune -a` is almost always safe on development machines and can recover tens of gigabytes.
-- **Database emergencies: wrap destructive operations in transactions.** `BEGIN; DROP TABLE users; ROLLBACK;` costs nothing and saves everything. Make it muscle memory.
-- **When SSH is locked out, every cloud provider has a console escape hatch.** AWS Session Manager, GCP browser SSH, Azure Serial Console. Know where yours is *before* you need it.
-- **The order matters: diagnose → fix → verify.** Skipping diagnosis leads to wrong fixes. Skipping verification leads to false confidence. Follow the sequence every time.
-- **Keep this skill installed.** You won't need it most days. The day you do need it, you'll need it immediately.
+- **在清理 Git 历史记录之前，先撤销相关凭证。** 一旦敏感信息被公开提交，自动化监控工具会在几分钟内发现。虽然清理历史记录很重要，但撤销凭证是更紧迫的任务。
+- **`git reflog` 是你的“撤销按钮”。** 它会记录过去 30 天内的所有分支切换记录（HEAD 的移动历史）。如果提交了错误的提交或执行了错误的 `git rebase` 操作，`git reflog` 中会保存相应的恢复操作信息。学会如何使用它。
+- **截断日志文件，而不是直接删除它们。** 使用 `truncate -s 0 file.log` 可以立即释放磁盘空间，同时保留文件的打开状态。如果进程仍在使用该日志文件，直接删除会导致空间无法立即释放。
+- **始终使用 `--force-with-lease` 而不是 `--force`。** 这个选项可以防止在他人已经推送代码的情况下覆盖他们的修改。
+- **每个恢复操作都应包含验证步骤。** 运行诊断命令后，务必检查输出结果，确认修复操作是否有效。切勿盲目相信结果。
+- **Docker 是开发者机器上最大的磁盘空间占用者。** 在开发环境中，执行 `docker system prune -a` 命令通常很安全，可以释放大量磁盘空间。
+- **在处理数据库紧急情况时，将具有破坏性的操作封装在事务中。** 使用 `BEGIN; DROP TABLE users; ROLLBACK;` 可以确保数据安全。记住这个操作的重要性。
+- **当 SSH 访问被锁定时，每个云服务提供商都提供了相应的应急解决方案。** AWS 提供了 Session Manager，GCP 提供了浏览器 SSH 连接，Azure 提供了 Serial Console。在需要使用这些工具之前，请先了解它们的使用方法。
+- **操作顺序至关重要：诊断 → 修复 → 验证。** 跳过诊断步骤可能会导致错误的修复；跳过验证步骤则可能导致错误的判断。务必严格按照这个顺序操作。
+- **请确保这个工具包始终安装在你的开发环境中。** 在大多数情况下你可能用不到它，但一旦需要时，它会立刻派上用场。

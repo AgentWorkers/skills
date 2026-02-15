@@ -1,15 +1,15 @@
 ---
 name: mission-control
-description: macOS-native web dashboard for monitoring and controlling your OpenClaw agent. Live chat, cron management, task workshop, scout engine, cost tracking, and more.
+description: 专为 macOS 设计的 Web 仪表板，用于监控和控制您的 OpenClaw 代理。支持实时聊天、Cron 任务管理、任务调度、资源调度（Scout Engine）、成本跟踪等功能。
 homepage: https://github.com/Jzineldin/mission-control
 metadata: { "openclaw": { "emoji": "🖥️", "requires": { "bins": ["node", "npm"] } } }
 ---
 
-# Mission Control — Dashboard for OpenClaw
+# Mission Control — OpenClaw 的仪表盘
 
-A sleek, macOS-native-feel web dashboard for your OpenClaw agent. Monitor sessions, manage cron jobs, chat in real-time, delegate tasks to sub-agents, discover opportunities, and track costs — all from one beautiful interface.
+这是一个专为 OpenClaw 代理设计的、外观简洁且具有 macOS 原生风格的 Web 仪表盘。您可以通过这个仪表盘监控会话、管理定时任务（cron jobs）、实时聊天、将任务分配给子代理、发现新的机会以及跟踪成本——所有这些功能都集中在一个美观的界面中。
 
-## Quick Install
+## 快速安装
 
 ```bash
 # Clone the repo into your workspace
@@ -33,40 +33,40 @@ sudo cp mission-control.service /etc/systemd/system/
 sudo systemctl enable --now mission-control
 ```
 
-Visit `http://localhost:3333` — the Setup Wizard auto-detects your OpenClaw config.
+访问 `http://localhost:3333`，设置向导会自动检测您的 OpenClaw 配置。
 
-## What You Get
+## 功能介绍
 
-| Page | Description |
+| 页面 | 功能描述 |
 |------|-------------|
-| **Dashboard** | Agent status, quick actions (email/calendar/heartbeat), activity feed, channels |
-| **Conversations** | Browse all sessions, view history, continue conversations |
-| **Workshop** | Kanban task board — queue tasks, sub-agents research, you review reports |
-| **Cost Tracker** | Token usage per model, daily charts, budget alerts |
-| **Cron Monitor** | Toggle, run, create, delete scheduled jobs visually |
-| **Scout** | Auto-discover opportunities — gigs, skills, grants, bounties, news |
-| **Agent Hub** | All agents/sessions with token counts and management |
-| **Settings** | Model routing (main/sub-agent/heartbeat), config export/import |
-| **Skills** | Browse installed + available skills |
-| **AWS** | *(Optional)* Real costs, Bedrock models, image generation |
+| **仪表盘** | 代理状态、快速操作（发送邮件/日历通知/心跳检测）、活动动态、频道信息 |
+| **聊天记录** | 浏览所有会话记录、查看聊天历史、继续对话 |
+| **工作台** | Kanban 任务板：安排任务、让子代理进行研究、您可审阅报告 |
+| **成本追踪** | 每个模型的代币使用情况、每日图表、预算警报 |
+| **定时任务管理** | 可视化地切换、运行或删除定时任务 |
+| **机会发现** | 自动发现新的机会：工作项目、技能需求、资助信息、悬赏任务、新闻动态 |
+| **代理中心** | 显示所有代理/会话的代币数量及管理信息 |
+| **设置** | 模型路由设置（主代理/子代理/心跳检测机制）、配置文件导出/导入 |
+| **技能管理** | 浏览已安装的技能及可用技能 |
+| **AWS** | （可选）实际使用成本信息、Bedrock 模型、图像生成功能 |
 
-## Requirements
+## 系统要求
 
-- OpenClaw running with gateway HTTP enabled
-- Node.js 18+
-- Brave Search API key (for Scout — [free tier](https://brave.com/search/api/))
+- OpenClaw 已启用网关（gateway）功能
+- Node.js 18 及更高版本
+- Brave Search API 密钥（用于 “机会发现” 功能——[免费 tier](https://brave.com/search/api/)
 
-## Configuration
+## 配置信息
 
-Auto-detected from your OpenClaw setup:
-- Gateway token from `~/.openclaw/openclaw.json`
-- Agent name from `IDENTITY.md`
-- Model + channels from OpenClaw config
+系统会自动从您的 OpenClaw 配置中读取以下信息：
+- 来自 `~/.openclaw/openclaw.json` 的网关令牌（gateway token）
+- 来自 `IDENTITY.md` 的代理名称（agent name）
+- 来自 OpenClaw 配置文件的模型信息（model）和频道设置（channels）
 
-Fine-tune via `mc-config.json` or the in-app Settings page.
+您可以通过 `mc-config.json` 文件或应用程序内的设置页面进行进一步微调。
 
-## Links
+## 链接
 
 - **GitHub:** https://github.com/Jzineldin/mission-control
-- **Support:** https://ko-fi.com/kevinelzarka
-- **License:** BSL 1.1 (converts to MIT 2030)
+- **支持:** https://ko-fi.com/kevinelzarka
+- **许可证:** BSL 1.1（可转换为 MIT 2030 许可证）

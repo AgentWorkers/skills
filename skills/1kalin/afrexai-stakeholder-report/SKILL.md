@@ -1,50 +1,49 @@
-# Stakeholder Report Generator
+# 利益相关者报告生成器
 
-Generate executive-ready stakeholder reports from raw project data. Covers status updates, risk flags, milestone tracking, budget variance, and next-period outlook.
+该工具能够根据项目原始数据生成适合高管阅读的利益相关者报告，内容包括项目进度更新、风险提示、里程碑跟踪、预算偏差以及下一阶段的展望。
 
-## When to Use
-- Weekly/monthly stakeholder updates
-- Board meeting prep
-- Investor updates
-- Client project status reports
-- Internal leadership briefings
+## 使用场景
+- 每周/每月的利益相关者更新会议
+- 董事会会议准备
+- 投资者汇报
+- 客户项目进度报告
+- 内部领导层简报
 
-## How It Works
+## 工作原理
 
-The agent structures your raw inputs into a polished report with these sections:
+该工具会将您提供的原始数据整理成一份结构清晰的报告，包含以下部分：
 
-### 1. Executive Summary (3-5 sentences)
-- What happened this period
-- Key wins and blockers
-- Overall health: 🟢 On Track | 🟡 At Risk | 🔴 Off Track
+### 1. 高管摘要（3-5句话）
+- 本阶段的主要进展
+- 关键成功事项与阻碍因素
+- 项目整体状况：🟢 按计划进行 | 🟡 存在风险 | 🔴 偏离计划
 
-### 2. Milestone Tracker
-| Milestone | Target Date | Status | Notes |
+### 2. 里程碑跟踪
+| 里程碑 | 目标日期 | 状态 | 备注 |
 |-----------|------------|--------|-------|
-| (filled from your input) | | | |
+| （根据您的输入填写） | | | |
 
-### 3. Budget & Resource Snapshot
-- Spend vs. budget (% variance)
-- Burn rate trend
-- Resource utilization highlights
+### 3. 预算与资源概览
+- 实际支出与预算的对比（百分比偏差）
+- 资源使用情况
 
-### 4. Risk Register
-| Risk | Likelihood | Impact | Mitigation |
+### 4. 风险登记
+| 风险 | 发生概率 | 影响程度 | 应对措施 |
 |------|-----------|--------|------------|
-| (identified from your input) | H/M/L | H/M/L | Action plan |
+| （根据您的输入识别） | 高/中/低 | 高/中/低 | 行动计划 |
 
-### 5. Key Decisions Needed
-- Decisions that require stakeholder input this period
-- Deadlines for each decision
+### 5. 需要决策的事项
+- 本阶段需要利益相关者参与决策的事项
+- 每项决策的截止日期
 
-### 6. Next Period Outlook
-- Planned deliverables
-- Upcoming milestones
-- Known dependencies
+### 6. 下一阶段展望
+- 计划中的交付成果
+- 即将到来的里程碑
+- 已知的依赖关系
 
-## Usage
+## 使用方法
 
-Tell the agent:
+请向工具输入以下指令：
 ```
 Generate a stakeholder report for [project name].
 Period: [date range]
@@ -52,20 +51,20 @@ Key updates: [paste raw notes, metrics, or bullet points]
 Audience: [board / investors / client / internal leadership]
 ```
 
-The agent adapts tone and detail level based on audience:
-- **Board/Investors**: High-level, financial focus, strategic framing
-- **Client**: Deliverable-focused, professional, no internal details
-- **Internal leadership**: Candid, operational detail, resource asks
+该工具会根据受众类型调整报告的语气和详细程度：
+- **董事会/投资者**：注重整体情况、财务数据及战略分析
+- **客户**：侧重交付成果、保持专业性、不包含内部细节
+- **内部领导层**：提供坦诚的信息、运营细节及资源需求
 
-## Tips
-- Feed it messy notes — the agent structures them for you
-- Include numbers whenever possible (hours, dollars, percentages)
-- Mention blockers explicitly — the agent will flag them in the risk register
-- Run it weekly to build a paper trail of project health over time
+## 使用建议
+- 可以提供杂乱无章的笔记，工具会为您整理成清晰的结构
+- 尽可能包含具体数字（小时、金额、百分比）
+- 明确指出阻碍因素，工具会将其标记在风险登记中
+- 每周运行该工具，以便持续记录项目进展
 
-## Output Format
-Markdown by default. Ask for "slide-ready" to get condensed bullet points suitable for presentation decks.
+## 输出格式
+默认为Markdown格式。如需适合演示文稿的简洁格式，请请求“slide-ready”版本。
 
 ---
 
-Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI Context Packs for business teams that ship.
+由 [AfrexAI](https://afrexai-cto.github.io/context-packs/) 开发——专为业务团队打造的人工智能上下文包。

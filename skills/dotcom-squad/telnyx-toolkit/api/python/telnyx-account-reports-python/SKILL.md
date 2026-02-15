@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Reports - Python
+# Telnyx 账户报告 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +31,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get all MDR detailed report requests
+## 获取所有 MDR 详细报告请求
 
-Retrieves all MDR detailed report requests for the authenticated user
+检索已认证用户的所有 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging`
 
@@ -44,11 +44,11 @@ messagings = client.legacy.reporting.batch_detail_records.messaging.list()
 print(messagings.data)
 ```
 
-## Create a new MDR detailed report request
+## 创建新的 MDR 详细报告请求
 
-Creates a new MDR detailed report request with the specified filters
+使用指定的过滤器创建新的 MDR 详细报告请求
 
-`POST /legacy_reporting/batch_detail_records/messaging` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/messaging` — 必需参数：`start_time`、`end_time`
 
 ```python
 from datetime import datetime
@@ -60,9 +60,9 @@ messaging = client.legacy.reporting.batch_detail_records.messaging.create(
 print(messaging.data)
 ```
 
-## Get a specific MDR detailed report request
+## 获取特定的 MDR 详细报告请求
 
-Retrieves a specific MDR detailed report request by ID
+通过 ID 获取特定的 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -73,9 +73,9 @@ messaging = client.legacy.reporting.batch_detail_records.messaging.retrieve(
 print(messaging.data)
 ```
 
-## Delete a MDR detailed report request
+## 删除 MDR 详细报告请求
 
-Deletes a specific MDR detailed report request by ID
+通过 ID 删除特定的 MDR 详细报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -86,9 +86,9 @@ messaging = client.legacy.reporting.batch_detail_records.messaging.delete(
 print(messaging.data)
 ```
 
-## Get all CDR report requests
+## 获取所有 CDR 报告请求
 
-Retrieves all CDR report requests for the authenticated user
+检索已认证用户的所有 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice`
 
@@ -97,11 +97,11 @@ voices = client.legacy.reporting.batch_detail_records.voice.list()
 print(voices.data)
 ```
 
-## Create a new CDR report request
+## 创建新的 CDR 报告请求
 
-Creates a new CDR report request with the specified filters
+使用指定的过滤器创建新的 CDR 报告请求
 
-`POST /legacy_reporting/batch_detail_records/voice` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/voice` — 必需参数：`start_time`、`end_time`
 
 ```python
 from datetime import datetime
@@ -113,9 +113,9 @@ voice = client.legacy.reporting.batch_detail_records.voice.create(
 print(voice.data)
 ```
 
-## Get a specific CDR report request
+## 获取特定的 CDR 报告请求
 
-Retrieves a specific CDR report request by ID
+通过 ID 获取特定的 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -126,9 +126,9 @@ voice = client.legacy.reporting.batch_detail_records.voice.retrieve(
 print(voice.data)
 ```
 
-## Delete a CDR report request
+## 删除 CDR 报告请求
 
-Deletes a specific CDR report request by ID
+通过 ID 删除特定的 CDR 报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -139,9 +139,9 @@ voice = client.legacy.reporting.batch_detail_records.voice.delete(
 print(voice.data)
 ```
 
-## Get available CDR report fields
+## 获取可用的 CDR 报告字段
 
-Retrieves all available fields that can be used in CDR reports
+检索可用于 CDR 报告的所有可用字段
 
 `GET /legacy_reporting/batch_detail_records/voice/fields`
 
@@ -150,9 +150,9 @@ response = client.legacy.reporting.batch_detail_records.voice.retrieve_fields()
 print(response.billing)
 ```
 
-## List MDR usage reports
+## 列出 MDR 使用报告
 
-Fetch all previous requests for MDR usage reports.
+获取所有之前的 MDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/messaging`
 
@@ -162,9 +162,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a new legacy usage V2 MDR report request
+## 创建新的传统使用 V2 MDR 报告请求
 
-Creates a new legacy usage V2 MDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 MDR 报告请求
 
 `POST /legacy_reporting/usage_reports/messaging`
 
@@ -175,9 +175,9 @@ messaging = client.legacy.reporting.usage_reports.messaging.create(
 print(messaging.data)
 ```
 
-## Get an MDR usage report
+## 获取 MDR 使用报告
 
-Fetch single MDR usage report by id.
+通过 ID 获取单个 MDR 使用报告
 
 `GET /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -188,9 +188,9 @@ messaging = client.legacy.reporting.usage_reports.messaging.retrieve(
 print(messaging.data)
 ```
 
-## Delete a V2 legacy usage MDR report request
+## 删除 V2 传统使用 MDR 报告请求
 
-Deletes a specific V2 legacy usage MDR report request by ID
+通过 ID 删除特定的 V2 传统使用 MDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -201,9 +201,9 @@ messaging = client.legacy.reporting.usage_reports.messaging.delete(
 print(messaging.data)
 ```
 
-## List telco data usage reports
+## 列出电信数据使用报告
 
-Retrieve a paginated list of telco data usage reports
+获取分页的电信数据使用报告列表
 
 `GET /legacy_reporting/usage_reports/number_lookup`
 
@@ -212,9 +212,9 @@ number_lookups = client.legacy.reporting.usage_reports.number_lookup.list()
 print(number_lookups.data)
 ```
 
-## Submit telco data usage report
+## 提交电信数据使用报告
 
-Submit a new telco data usage report
+提交新的电信数据使用报告
 
 `POST /legacy_reporting/usage_reports/number_lookup`
 
@@ -223,9 +223,9 @@ number_lookup = client.legacy.reporting.usage_reports.number_lookup.create()
 print(number_lookup.data)
 ```
 
-## Get telco data usage report by ID
+## 通过 ID 获取电信数据使用报告
 
-Retrieve a specific telco data usage report by its ID
+通过 ID 获取特定的电信数据使用报告
 
 `GET /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -236,9 +236,9 @@ number_lookup = client.legacy.reporting.usage_reports.number_lookup.retrieve(
 print(number_lookup.data)
 ```
 
-## Delete telco data usage report
+## 删除电信数据使用报告
 
-Delete a specific telco data usage report by its ID
+通过 ID 删除特定的电信数据使用报告
 
 `DELETE /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -248,9 +248,9 @@ client.legacy.reporting.usage_reports.number_lookup.delete(
 )
 ```
 
-## Get speech to text usage report
+## 获取语音转文本使用报告
 
-Generate and fetch speech to text usage report synchronously.
+生成并同步获取语音转文本使用报告
 
 `GET /legacy_reporting/usage_reports/speech_to_text`
 
@@ -259,9 +259,9 @@ response = client.legacy.reporting.usage_reports.retrieve_speech_to_text()
 print(response.data)
 ```
 
-## List CDR usage reports
+## 列出 CDR 使用报告
 
-Fetch all previous requests for cdr usage reports.
+获取所有之前的 CDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/voice`
 
@@ -271,9 +271,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a new legacy usage V2 CDR report request
+## 创建新的传统使用 V2 CDR 报告请求
 
-Creates a new legacy usage V2 CDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 CDR 报告请求
 
 `POST /legacy_reporting/usage_reports/voice`
 
@@ -287,9 +287,9 @@ voice = client.legacy.reporting.usage_reports.voice.create(
 print(voice.data)
 ```
 
-## Get a CDR usage report
+## 获取 CDR 使用报告
 
-Fetch single cdr usage report by id.
+通过 ID 获取单个 CDR 使用报告
 
 `GET /legacy_reporting/usage_reports/voice/{id}`
 
@@ -300,9 +300,9 @@ voice = client.legacy.reporting.usage_reports.voice.retrieve(
 print(voice.data)
 ```
 
-## Delete a V2 legacy usage CDR report request
+## 删除 V2 传统使用 CDR 报告请求
 
-Deletes a specific V2 legacy usage CDR report request by ID
+通过 ID 删除特定的 V2 传统使用 CDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/voice/{id}`
 
@@ -313,9 +313,9 @@ voice = client.legacy.reporting.usage_reports.voice.delete(
 print(voice.data)
 ```
 
-## Fetch all Messaging usage reports
+## 获取所有消息使用报告
 
-Fetch all messaging usage reports.
+获取所有消息使用报告
 
 `GET /reports/mdr_usage_reports`
 
@@ -325,9 +325,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create MDR Usage Report
+## 创建 MDR 使用报告
 
-Submit request for new new messaging usage report.
+提交新的消息使用报告请求
 
 `POST /reports/mdr_usage_reports`
 
@@ -342,9 +342,9 @@ mdr_usage_report = client.reports.mdr_usage_reports.create(
 print(mdr_usage_report.data)
 ```
 
-## Retrieve messaging report
+## 获取消息使用报告
 
-Fetch a single messaging usage report by id
+通过 ID 获取单个消息使用报告
 
 `GET /reports/mdr_usage_reports/{id}`
 
@@ -355,9 +355,9 @@ mdr_usage_report = client.reports.mdr_usage_reports.retrieve(
 print(mdr_usage_report.data)
 ```
 
-## Delete MDR Usage Report
+## 删除 MDR 使用报告
 
-Delete messaging usage report by id
+通过 ID 删除消息使用报告
 
 `DELETE /reports/mdr_usage_reports/{id}`
 
@@ -368,9 +368,9 @@ mdr_usage_report = client.reports.mdr_usage_reports.delete(
 print(mdr_usage_report.data)
 ```
 
-## Generate and fetch MDR Usage Report
+## 生成并获取 MDR 使用报告
 
-Generate and fetch messaging usage report synchronously.
+同步生成并获取消息使用报告
 
 `GET /reports/mdr_usage_reports/sync`
 
@@ -381,9 +381,9 @@ response = client.reports.mdr_usage_reports.fetch_sync(
 print(response.data)
 ```
 
-## Generates and fetches CDR Usage Reports
+## 生成并获取 CDR 使用报告
 
-Generate and fetch voice usage report synchronously.
+同步生成并获取语音使用报告
 
 `GET /reports/cdr_usage_reports/sync`
 
@@ -395,9 +395,9 @@ response = client.reports.cdr_usage_reports.fetch_sync(
 print(response.data)
 ```
 
-## Get Telnyx product usage data (BETA)
+## 获取 Telnyx 产品使用数据（测试版）
 
-Get Telnyx usage data by product, broken out by the specified dimensions
+按指定维度获取 Telnyx 的使用数据
 
 `GET /usage_reports`
 
@@ -411,9 +411,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Get Usage Reports query options (BETA)
+## 获取使用报告查询选项（测试版）
 
-Get the Usage Reports options for querying usage, including the products available and their respective metrics and dimensions
+获取用于查询使用情况的报告选项，包括可用的产品及其相应的指标和维度
 
 `GET /usage_reports/options`
 

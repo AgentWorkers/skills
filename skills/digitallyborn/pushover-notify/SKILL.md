@@ -1,29 +1,29 @@
 ---
 name: pushover-notify
-description: "Send push notifications to your phone via Pushover (pushover.net). Use when you want reliable out-of-band alerts from OpenClaw: reminders, monitoring alerts, cron/heartbeat summaries, or 'notify me when X happens' workflows."
+description: "通过 Pushover (pushover.net) 将推送通知发送到您的手机。当您需要从 OpenClaw 获得可靠的离线警报时，可以使用此功能：提醒、监控警报、Cron/心跳信号摘要，或者设置“当 X 发生时通知我”的工作流程。"
 ---
 
-# Pushover Notify
+# Pushover通知
 
-Send push notifications through the Pushover API using a small Node script.
+通过一个简单的Node.js脚本来使用Pushover API发送推送通知。
 
-## Setup (one-time)
+## 设置（一次性操作）
 
-1) Create a Pushover application token and get your user key:
-- App token: https://pushover.net/apps/build
-- User key: shown on your Pushover dashboard
+1) 创建一个Pushover应用程序令牌并获取您的用户密钥：
+- 应用程序令牌：https://pushover.net/apps/build
+- 用户密钥：显示在您的Pushover控制面板上
 
-2) Provide credentials to the runtime (do **not** hardcode into this skill):
+2) 向运行时提供凭据（**不要**将这些凭据硬编码到脚本中）：
 - `PUSHOVER_APP_TOKEN`
 - `PUSHOVER_USER_KEY`
 
-3) (Optional) set defaults:
-- `PUSHOVER_DEVICE` (device name)
-- `PUSHOVER_SOUND`
+3) （可选）设置默认值：
+- `PUSHOVER_DEVICE`（设备名称）
+- `PUSHOVER SOUND`
 
-## Send a notification
+## 发送通知
 
-Use the bundled script:
+使用提供的脚本：
 
 ```bash
 PUSHOVER_APP_TOKEN=... PUSHOVER_USER_KEY=... \
@@ -33,13 +33,13 @@ PUSHOVER_APP_TOKEN=... PUSHOVER_USER_KEY=... \
   --priority 0
 ```
 
-Optional fields:
-- `--url "https://..."` and `--url-title "Open"`
+可选参数：
+- `--url "https://..."` 和 `--url-title "Open"`
 - `--sound "pushover"`
 - `--device "iphone"`
 - `--priority -1|0|1|2`
 
-Emergency priority example:
+紧急通知的示例：
 
 ```bash
 PUSHOVER_APP_TOKEN=... PUSHOVER_USER_KEY=... \
@@ -49,7 +49,7 @@ PUSHOVER_APP_TOKEN=... PUSHOVER_USER_KEY=... \
   --priority 2 --retry 60 --expire 3600
 ```
 
-## Notes
+## 注意事项
 
-- If you need API field details, read: `references/pushover-api.md`.
-- For recurring alerts, prefer `cron` to schedule reminders; the cron job text can instruct Ted to run this skill.
+- 如果需要了解API字段的详细信息，请阅读：`references/pushover-api.md`。
+- 对于需要定期提醒的情况，建议使用`cron`作业来安排提醒；`cron`作业的文本可以指示Ted运行此脚本。

@@ -2,66 +2,66 @@
 name: Chief Executive Officer
 slug: ceo
 version: 1.0.2
-description: Lead companies with strategic clarity, board management, executive hiring, and crisis navigation.
+description: 通过战略清晰度、董事会管理、高管招聘以及危机应对能力，引领公司的发展。
 ---
 
-## When to Use
+## 使用场景
 
-User needs CEO-level guidance for their company, startup, or organization. Agent acts as executive advisor for strategy, governance, team building, and investor relations.
+当用户需要为其公司、初创企业或组织获得CEO级别的指导时，该服务将作为执行顾问，提供战略规划、治理结构构建、团队建设以及投资者关系管理方面的支持。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
+| 领域 | 对应文件 |
 |--------|------|
-| Strategy and vision | `strategy.md` |
-| Decision frameworks | `decisions.md` |
-| Board and investors | `board.md` |
-| Executive operations | `operations.md` |
+| 战略与愿景 | `strategy.md` |
+| 决策框架 | `decisions.md` |
+| 董事会与投资者关系 | `board.md` |
+| 执行运营 | `operations.md` |
 
-## Core Capabilities
+## 核心能力
 
-1. **Set company strategy** — Multi-year vision, competitive positioning, resource allocation, strategic bets
-2. **Manage board relations** — Meeting prep, investor updates, difficult conversations, capital planning
-3. **Build executive team** — C-suite hiring, org design, succession planning, performance management
-4. **Drive alignment** — Company-wide goals, communication rhythms, culture reinforcement
-5. **Navigate crises** — Layoffs, pivots, PR incidents, founder conflicts, cash crunches
-6. **Capital decisions** — Fundraising timing, deal terms, bridge vs round, bootstrap vs raise
-7. **Personal effectiveness** — Energy management, decision fatigue, isolation, burnout prevention
+1. **制定公司战略**：制定多年发展规划、明确竞争定位、合理分配资源、制定关键的战略举措。
+2. **管理董事会关系**：准备董事会会议、向投资者更新公司情况、处理棘手的沟通问题、制定资本规划。
+3. **组建高管团队**：招聘核心高管、设计组织结构、规划人才继任计划、实施绩效管理。
+4. **推动团队协同**：确立全公司范围内的目标、优化沟通机制、强化企业文化。
+5. **应对危机**：处理裁员、业务调整、公关危机、创始人之间的冲突以及资金紧张等问题。
+6. **资本决策**：确定融资时机、谈判融资条款（桥接轮融资还是新一轮融资）、选择自筹资金还是外部投资。
+7. **提升个人工作效率**：帮助管理者有效管理时间、缓解决策疲劳、避免工作过度导致的倦怠。
 
-## Decision Checklist
+## 决策检查清单
 
-Before major strategic moves, verify:
-- [ ] Company stage? (pre-PMF, growth, scale, turnaround)
-- [ ] Cash runway? (months remaining, burn rate)
-- [ ] Board composition? (investor-heavy, independent, founder-controlled)
-- [ ] Team strength? (which exec roles are strong/weak)
-- [ ] Market conditions? (expanding, contracting, disrupted)
+在做出重大战略决策之前，请核实以下内容：
+- [ ] 公司处于哪个发展阶段？（Pre-PMF阶段、成长阶段、扩张阶段、转型阶段）
+- [ ] 公司的现金流状况如何？（剩余可用时间、资金消耗速度）
+- [ ] 董事会构成如何？（以投资者为主导、独立决策还是创始人控制）
+- [ ] 团队实力如何？（哪些高管职位的配置较为合理/不合理）
+- [ ] 市场环境如何？（市场正在扩张、萎缩还是处于变革中）
 
-## Critical Rules
+## 关键原则
 
-- **3 priorities max** — More means none; ruthless focus wins
-- **70% information, decide** — Waiting for certainty means competitors moved
-- **Reversible fast, irreversible slow** — Match decision speed to stakes
-- **No surprises to board** — Pre-wire everything important before meetings
-- **Cash is oxygen** — Know runway to the week, always
-- **Culture = what you tolerate** — Behavior you ignore becomes policy
-- **A-players hire A-players** — First hires set the bar forever
+- **优先处理最重要的3项任务**：过多的任务反而会导致什么都不完成；专注才能取得成功。
+- **基于70%的信息做出决策**：过度等待确定性只会让竞争对手抢占先机。
+- **快速做出可逆的决策，缓慢做出不可逆的决策**：根据决策的利害关系调整决策速度。
+- **避免让董事会感到意外**：在会议前确保所有重要信息都已提前沟通。
+- **资金至关重要**：始终清楚公司的资金状况。
+- **企业文化由管理者自身行为塑造**：对员工行为的忽视最终会成为公司的正式政策。
+- **只招聘顶尖人才**：首次招聘的人员将直接影响公司的长期发展水平。
 
-## By Company Stage
+## 根据公司发展阶段的不同，CEO的关注重点也有所不同：
 
-| Stage | CEO Focus |
+| 发展阶段 | CEO的关注重点 |
 |-------|-----------|
-| **Pre-PMF** | Customer obsession, fast iteration, find retention signal, preserve runway |
-| **Series A** | Prove repeatable growth, first exec hires, board rhythm, competitive moat |
-| **Series B** | Scale org, delegate operations, strategic partnerships, international |
-| **Series C+** | Multi-product bets, M&A, public market prep, succession planning |
+| **Pre-PMF阶段**：专注于客户需求、快速迭代产品、寻找用户留存的关键指标、确保公司有足够的资金支持继续运营。 |
+| **A轮融资阶段**：证明公司的增长模式具有可复制性、招聘首批高管、建立稳定的董事会运作机制、打造公司的竞争优势。 |
+| **B轮融资阶段**：扩大公司规模、下放运营权限、寻求战略合作伙伴关系、拓展国际市场。 |
+| **C轮融资及以上阶段**：投资多款产品、考虑并购机会、为上市做准备、规划人才继任计划。 |
 
-## Human-in-the-Loop
+## 需要人为判断的决策事项
 
-These decisions require human judgment:
-- Major pivots or shutdowns
-- Executive terminations
-- Fundraising terms
-- M&A negotiations
-- Crisis communications
-- Board seat changes
+以下决策需要管理者凭借个人判断来做出：
+- 重大的业务调整或公司关闭决策。
+- 高管的解雇或任命。
+- 融资条款的谈判。
+- 并购谈判。
+- 危机时期的沟通策略。
+- 董事会成员的变动。

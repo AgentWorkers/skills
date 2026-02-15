@@ -1,9 +1,8 @@
 ---
 name: clawops
-description: The orchestration tool for OpenClaw, managing and coordinating all your skills seamlessly.
+description: OpenClaw 的编排工具，能够无缝地管理和协调您的所有技能（即各种功能或模块）。
 ---
 
-# ClawOps — OpenClaw Skill
+# ClawOps — OpenClaw 技能
 
-ClawOps acts as the central brain for OpenClaw, intelligently managing all installed skills and ensuring they work together harmoniously. It discovers available skills, resolves dependencies, and schedules actions across multiple skills based on triggers and conditions. With centralized monitoring, logging, and health checks, ClawOps can detect failures, restart stuck skills, and maintain smooth operation. By unifying configuration, secrets management, and event handling, it enables users to automate complex workflows effortlessly, transforming a collection of individual skills into a coordinated, intelligent system.
-
+ClawOps 是 OpenClaw 的核心管理系统，它智能地管理所有已安装的技能，确保这些技能能够协同工作。ClawOps 可以发现可用的技能、解决技能之间的依赖关系，并根据触发条件和设置来调度各个技能的执行。通过集中式的监控、日志记录和健康检查功能，ClawOps 能够检测到故障、重启卡住的技能，并维持系统的稳定运行。通过统一配置管理、密钥管理以及事件处理机制，用户可以轻松自动化复杂的工作流程，将一系列独立的技能整合成一个协调、高效的智能系统。

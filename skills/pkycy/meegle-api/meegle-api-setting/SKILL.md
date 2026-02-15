@@ -6,12 +6,12 @@ metadata:
   { "openclaw": {} }
 ---
 
-# Meegle API — Setting
+# Meegle API — 设置
 
-Setting and configuration related OpenAPIs (e.g. work item types, fields, process templates). Use when you need to read or change space or work item settings.
+用于设置和配置相关的 OpenAPI（例如工作项类型、字段、流程模板）。当您需要读取或更改空间或工作项的设置时，请使用此 API。
 
-**Prerequisites:** Obtain domain and access token first; see skill **meegle-api-users** for domain, plugin_access_token / user_access_token, and request headers.
+**先决条件：** 首先获取域名和访问令牌；有关域名、plugin_access_token/user_access_token 以及请求头的信息，请参阅技能文档 **meegle-api-users**。
 
-## APIs (to be documented)
+## 待文档化的 API
 
-- Get work item creation metadata, field definitions, process settings, and related endpoints will be documented here.
+- 获取工作项创建元数据、字段定义、流程设置等相关端点的信息将在这里进行文档化。

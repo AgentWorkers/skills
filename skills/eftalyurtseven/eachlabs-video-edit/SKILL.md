@@ -1,101 +1,101 @@
 ---
 name: eachlabs-video-edit
-description: Edit, transform, extend, upscale, and enhance videos using EachLabs AI models. Supports lip sync, video translation, subtitle generation, audio merging, style transfer, and video extension. Use when the user wants to edit or transform existing video content.
+description: 使用 EachLabs 的 AI 模型来编辑、转换、扩展、提升视频质量，并对其进行增强处理。该工具支持唇形同步、视频翻译、字幕生成、音频合并、风格转换以及视频格式调整等功能。适用于用户需要对现有视频内容进行编辑或处理的场景。
 metadata:
   author: eachlabs
   version: "1.0"
 ---
 
-# EachLabs Video Edit
+# EachLabs 视频编辑
 
-Edit, transform, and enhance existing videos using 25+ AI models via the EachLabs Predictions API.
+通过 EachLabs 的 Predictions API，使用 25 种以上的 AI 模型来编辑、转换和优化现有视频。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Model Selection Guide
+## 模型选择指南
 
-### Video Extension
+### 视频扩展
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Veo 3.1 Extend | `veo3-1-extend-video` | Best quality extension |
-| Veo 3.1 Fast Extend | `veo3-1-fast-extend-video` | Fast extension |
-| PixVerse v5 Extend | `pixverse-v5-extend` | PixVerse extension |
-| PixVerse v4.5 Extend | `pixverse-v4-5-extend` | Older PixVerse extension |
+| Veo 3.1 Extend | `veo3-1-extend-video` | 用于提高视频质量 |
+| Veo 3.1 Fast Extend | `veo3-1-fast-extend-video` | 快速视频扩展工具 |
+| PixVerse v5 Extend | `pixverse-v5-extend` | PixVerse 视频扩展工具 |
+| PixVerse v4.5 Extend | `pixverse-v4-5-extend` | 适用于旧版本的 PixVerse 视频 |
 
-### Lip Sync & Talking Head
+### 唇部同步与语音合成
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Sync Lipsync v2 Pro | `sync-lipsync-v2-pro` | Best lip sync quality |
-| PixVerse Lip Sync | `pixverse-lip-sync` | PixVerse lip sync |
-| LatentSync | `latentsync` | Open-source lip sync |
-| Video Retalking | `video-retalking` | Audio-based lip sync |
+| Sync Lipsync v2 Pro | `sync-lipsync-v2-pro` | 提供最高质量的唇部同步效果 |
+| PixVerse Lip Sync | `pixverse-lip-sync` | PixVerse 提供的唇部同步功能 |
+| LatentSync | `latentsync` | 开源的唇部同步工具 |
+| Video Retalking | `video-retalking` | 基于音频的唇部同步功能 |
 
-### Video Transformation
+### 视频转换
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Runway Gen4 Aleph | `runway-gen4-aleph` | Video transformation |
-| Kling O1 Video Edit | `kling-o1-video-to-video-edit` | AI video editing |
-| Kling O1 V2V Reference | `kling-o1-video-to-video-reference` | Reference-based edit |
-| ByteDance Video Stylize | `bytedance-video-stylize` | Style transfer |
-| Wan v2.2 Animate Move | `wan-v2-2-14b-animate-move` | Motion animation |
-| Wan v2.2 Animate Replace | `wan-v2-2-14b-animate-replace` | Object replacement |
+| Runway Gen4 Aleph | `runway-gen4-aleph` | 视频转换工具 |
+| Kling O1 Video Edit | `kling-o1-video-to-video-edit` | AI 视频编辑工具 |
+| Kling O1 V2V Reference | `kling-o1-video-to-video-reference` | 基于参考帧的视频编辑工具 |
+| ByteDance Video Stylize | `bytedance-video-stylize` | 视频风格转换工具 |
+| Wan v2.2 Animate Move | `wan-v2-2-14b-animate-move` | 视频动画工具 |
+| Wan v2.2 Animate Replace | `wan-v2-2-14b-animate-replace` | 视频中的物体替换工具 |
 
-### Video Upscaling & Enhancement
+### 视频放大与优化
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Topaz Upscale Video | `topaz-upscale-video` | Best quality upscale |
-| Luma Ray 2 Video Reframe | `luma-dream-machine-ray-2-video-reframe` | Video reframing |
-| Luma Ray 2 Flash Reframe | `luma-dream-machine-ray-2-flash-video-reframe` | Fast reframing |
+| Topaz Upscale Video | `topaz-upscale-video` | 最高质量的视频放大工具 |
+| Luma Ray 2 Video Reframe | `luma-dream-machine-ray-2-video-reframe` | 视频重新帧工具 |
+| Luma Ray 2 Flash Reframe | `luma-dream-machine-ray-2-flash-video-reframe` | 快速视频重新帧工具 |
 
-### Audio & Subtitles
+### 音频与字幕
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| FFmpeg Merge Audio Video | `ffmpeg-api-merge-audio-video` | Merge audio track |
-| MMAudio V2 | `mm-audio-v-2` | Add audio to video |
-| MMAudio | `mmaudio` | Add audio to video |
-| Auto Subtitle | `auto-subtitle` | Generate subtitles |
-| Merge Videos | `merge-videos` | Concatenate videos |
+| FFmpeg Merge Audio Video | `ffmpeg-api-merge-audio-video` | 合并音频和视频文件 |
+| MMAudio V2 | `mm-audio-v-2` | 为视频添加音频 |
+| MMAudio | `mmaudio` | 为视频添加音频 |
+| Auto Subtitle | `auto-subtitle` | 生成字幕 |
+| Merge Videos | `merge-videos` | 连接多个视频文件 |
 
-### Video Translation
+### 视频翻译
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Heygen Video Translate | `heygen-video-translate` | Translate video speech |
+| Heygen Video Translate | `heygen-video-translate` | 视频语音翻译工具 |
 
-### Motion Transfer
+### 动作迁移
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Motion Fast | `motion-fast` | Fast motion transfer |
-| Infinitalk V2V | `infinitalk-video-to-video` | Talking head from video |
+| Motion Fast | `motion-fast` | 快速动作迁移工具 |
+| Infinitalk V2V | `infinitalk-video-to-video` | 从视频中提取语音并合成新的视频 |
 
-### Face Swap (Video)
+### 面部替换（视频）
 
-| Model | Slug | Best For |
+| 模型 | Slug | 适用场景 |
 |-------|------|----------|
-| Faceswap Video | `faceswap-video` | Swap face in video |
+| Faceswap Video | `faceswap-video` | 视频中的面部替换功能 |
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** the output video URL from the response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 确认模型存在，并获取包含精确输入参数的 `request_schema`。在创建预测请求之前，请务必执行此步骤以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，提供模型 slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **等待结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取输出结果**：从响应中提取输出视频的 URL。
 
-## Examples
+## 示例
 
-### Extend a Video with Veo 3.1
+### 使用 Veo 3.1 扩展视频质量
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -111,7 +111,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Lip Sync with Sync v2 Pro
+### 使用 Sync v2 Pro 进行唇部同步
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -127,7 +127,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Add Subtitles
+### 添加字幕
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -142,7 +142,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Merge Audio with Video
+### 将音频与视频合并
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -159,7 +159,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Upscale Video with Topaz
+### 使用 Topaz 工具放大视频
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -174,6 +174,6 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## Parameter Reference
+## 参数参考
 
-See [references/MODELS.md](references/MODELS.md) for complete parameter details for each model.
+有关每个模型的完整参数详情，请参阅 [references/MODELS.md](references/MODELS.md)。

@@ -1,18 +1,18 @@
 ---
 slug: "input-validation"
 display_name: "Input Validation"
-description: "Validate construction data inputs before processing: cost estimates, schedules, BIM data, field reports. Catch errors early with domain-specific rules."
+description: "在处理之前，需要验证所有构建数据输入的准确性：包括成本估算、进度计划、BIM数据以及现场报告等。通过针对特定领域的规则，尽早发现潜在的错误。"
 ---
 
-# Input Validation for Construction Data
+# 建筑数据的输入验证
 
-## Overview
+## 概述
 
-Validate incoming construction data before processing to catch errors early. Domain-specific validation rules for estimates, schedules, BIM exports, and field data.
+在处理之前对传入的建筑数据进行验证，以便尽早发现错误。针对估算、进度计划、BIM导出数据以及现场数据，提供特定领域的验证规则。
 
-## Validation Framework
+## 验证框架
 
-### Core Validator Class
+### 核心验证器类
 
 ```python
 from dataclasses import dataclass, field
@@ -72,7 +72,7 @@ class ValidationResult:
         return "\n".join(lines)
 ```
 
-### Cost Estimate Validation
+### 成本估算验证
 
 ```python
 class CostEstimateValidator:
@@ -174,7 +174,7 @@ class CostEstimateValidator:
                     )
 ```
 
-### Schedule Validation
+### 进度计划验证
 
 ```python
 class ScheduleValidator:
@@ -298,7 +298,7 @@ class ScheduleValidator:
                     )
 ```
 
-### BIM Data Validation
+### BIM数据验证
 
 ```python
 class BIMDataValidator:
@@ -370,7 +370,7 @@ class BIMDataValidator:
             result.add_warning("spatial_structure", "No levels/floors defined")
 ```
 
-### Field Data Validation
+### 现场数据验证
 
 ```python
 class FieldDataValidator:
@@ -441,7 +441,7 @@ class FieldDataValidator:
                                   f"{data['previous_percent']}% -> {data['percent_complete']}%")
 ```
 
-## Usage Examples
+## 使用示例
 
 ```python
 # Validate a cost estimate
@@ -469,7 +469,7 @@ else:
         print(f"  - {error.field}: {error.message}")
 ```
 
-## Integration with DDC Pipeline
+## 与DDC流程的集成
 
 ```python
 # Validate all inputs before pipeline execution
@@ -493,8 +493,8 @@ def validate_pipeline_inputs(inputs: dict) -> bool:
     return all_valid
 ```
 
-## Resources
+## 资源
 
-- **Data Quality Best Practices**: Validate early, validate often
-- **Construction Data Standards**: CSI, IFC, COBie specifications
-- **Error Handling**: Always provide actionable suggestions
+- **数据质量最佳实践**：尽早验证、频繁验证
+- **建筑数据标准**：CSI、IFC、COBie规范
+- **错误处理**：始终提供可操作的改进建议

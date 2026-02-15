@@ -1,6 +1,6 @@
 ---
 name: torch-liquidation-agent
-description: Read-only lending market scanner for Torch Market on Solana. No wallet required. Scans lending markets, profiles borrower wallets, and scores loans by risk. Default info mode makes no state changes and requires only an RPC endpoint. Optional bot mode (requires wallet) can execute liquidations on positions that crossed the on-chain threshold.
+description: 这是一个专为 Solana 上的 Torch Market 设计的只读型借贷市场扫描工具。无需使用钱包即可运行。该工具能够扫描借贷市场信息、借款人钱包的详细资料，并根据贷款风险对贷款进行评分。默认的信息显示模式不会对系统状态造成任何影响，仅需一个 RPC（远程过程调用）端点即可使用。可选的机器人模式（需要钱包支持）可以在贷款金额超过链上预设阈值时自动执行清算操作。
 license: MIT
 metadata:
   author: torch-market
@@ -15,311 +15,144 @@ compatibility: Requires solana-agent-kit ^2.0.0 and solana-agent-kit-torch-marke
 
 # Torch Liquidation Agent
 
-Read-only lending market scanner for [Torch Market](https://torch.market) on Solana. No wallet required. Only an RPC endpoint is needed to run the default mode.
+这是一个用于扫描Solana平台上[Torch Market](https://torch.market)中借贷市场的工具，仅支持读取操作，无需使用钱包。运行默认模式时，只需要提供一个RPC端点即可。
 
-Built on [solana-agent-kit-torch-market](https://www.npmjs.com/package/solana-agent-kit-torch-market) -- all Solana RPC calls, lending reads, SAID lookups, and (optional) transactions go through the agent kit plugin. This skill makes **no direct network calls** of any kind.
+该工具基于[solana-agent-kit-torch-market](https://www.npmjs.com/package/solana-agent-kit-torch-market)构建，所有与Solana相关的RPC调用、借贷信息的读取、SAID协议的查询以及（可选的）交易操作都通过该插件完成。该工具**不会进行任何形式的网络直接调用**。
 
-## What This Skill Does
+## 功能介绍
 
-This skill scans lending markets on Torch Market, a fair-launch DAO launchpad on Solana. Every migrated token on Torch has a built-in lending market where holders can borrow SOL against their tokens. When a borrower's collateral drops in value and their loan-to-value ratio exceeds 65%, the position becomes liquidatable on-chain per the protocol's rules.
+该工具会扫描Torch Market上的借贷市场。Torch Market是一个基于Solana的公平启动型去中心化自治组织（DAO）启动平台。在Torch平台上迁移的每个代币都内置了借贷市场，代币持有者可以使用这些市场借入SOL。当借款人的抵押品价值下降且其贷款价值比率超过65%时，根据协议规则，其头寸将可被清算。
 
-The skill's core value is **risk analysis** -- it profiles borrowers, tracks price trends, and scores every loan by how likely it is to fail. In the default info mode, it's a read-only dashboard that requires no wallet and makes no state changes. An optional bot mode (wallet required, off by default) can act on positions that cross the protocol threshold.
+该工具的核心功能是**风险分析**：它会对借款人进行评估，跟踪价格趋势，并根据贷款违约的可能性对每个贷款进行评分。在默认的“信息”模式下，它是一个仅支持读取操作的仪表板，不会对系统状态进行任何修改。此外，还有一个可选的“机器人”模式（需要钱包，默认关闭），该模式可以对超过协议触发条件的头寸采取相应操作。
 
-### How It Works
+### 工作原理
 
-```
-scan all tokens with active lending
-         |
-    for each token:
-         |
-    find all borrowers with active loans
-         |
-    profile each borrower (SAID reputation + trade history)
-         |
-    score each loan (4-factor risk model)
-         |
-    if liquidatable + profitable → execute liquidation
-    if high risk → keep watching closely
-```
+### 功能模式
 
-### Three Modes
+| 模式 | 功能 | 是否需要钱包 | 是否会修改系统状态 |
+|------|---------|-----------------|-------------------|
+| `info`（默认） | 显示某个代币或所有代币的借贷参数 | 不需要 | 不会修改系统状态（仅读取数据） |
+| `bot` | 扫描并评估头寸；在达到触发条件时执行清算操作 | 需要钱包 | 会执行交易操作 |
+| `watch` | 实时监控自己的贷款状况 | 需要钱包 | 可选（支持自动还款功能） |
 
-| Mode | Purpose | Wallet | State Changes |
-|------|---------|--------|---------------|
-| `info` (default) | Display lending parameters for a token or all tokens | not required | none (read-only) |
-| `bot` | Scan and score positions; execute liquidations when threshold is met | required | yes (transactions) |
-| `watch` | Monitor your own loan health in real-time | required | optional (auto-repay) |
-
-### Risk Scoring
-
-Every loan is scored 0-100 on four weighted factors:
-
-| Factor | Weight | What It Measures |
-|--------|--------|------------------|
-| LTV proximity | 40% | How close the position is to the 65% liquidation threshold |
-| Price momentum | 30% | Is the collateral token's price trending down? (linear regression on recent snapshots) |
-| Wallet risk | 20% | SAID trust tier + trade win/loss ratio. Low-reputation wallets with losing histories score higher |
-| Interest burden | 10% | How much accrued interest is eating into the collateral margin |
-
-Positions scoring above the configurable risk threshold (default: 60) are flagged as high-risk and monitored more closely.
-
-## Architecture
-
-```
-packages/agent/src/
-├── types.ts            — all interfaces and contracts
-├── config.ts           — env vars → typed config
-├── logger.ts           — structured logging with levels
-├── utils.ts            — shared helpers
-├── scanner.ts          — discovers tokens with active lending
-├── wallet-profiler.ts  — SAID reputation + trade history analysis
-├── risk-scorer.ts      — 4-factor weighted risk scoring
-├── liquidator.ts       — executes liquidation transactions
-├── monitor.ts          — main orchestration (scan + score loops)
-└── index.ts            — entry point with mode routing
-```
-
-Each file handles a single responsibility. The bot runs two concurrent loops:
-
-- **Scan loop** (default: every 60s) -- discovers tokens with active lending, snapshots prices
-- **Score loop** (default: every 15s) -- profiles borrowers, scores loans, executes liquidations
-
-## Network & Permissions
-
-- **Default mode (`info`) is read-only** -- no wallet is loaded, no keypair is decoded, no signing occurs, no state changes. Only `RPC_URL` is required.
-- **No direct network calls from this skill** -- zero `fetch()`, zero HTTP clients, zero outbound URLs in the source code. All outbound connections go through dependencies: Solana RPC (via `solana-agent-kit`) and SAID Protocol API (via `solana-agent-kit-torch-market`). No telemetry or third-party services. Confirmed by audit (`audits/audit_agent.md`, finding I-1).
-- **Private keys never leave the process** -- when a wallet is provided (bot/watch mode only), it is decoded once, wrapped in `KeypairWallet`, and used only for signing via `SolanaAgentKit`. The raw key bytes are never logged, serialized, stored, or transmitted. Confirmed by audit (finding I-2).
-- **Distributed via npm** -- all code runs from `node_modules/`. No post-install hooks, no remote code fetching.
-- **Transactions are constructed by the agent kit plugin** (`solana-agent-kit-torch-market`) and signed client-side via `SolanaAgentKit`. The on-chain program validates all parameters.
-
-## Available Actions
-
-All actions are provided by the `solana-agent-kit-torch-market` plugin. This skill contains no direct network calls -- every outbound connection is routed through the plugin.
-
-### Read-only actions (no wallet, no signing, no state changes)
-
-These are the only actions used in the default `info` mode:
-
-| Action | Description |
-|--------|-------------|
-| `TORCH_LIST_TOKENS` | Discover migrated tokens with active lending markets |
-| `TORCH_GET_TOKEN` | Get token price and metadata for collateral valuation |
-| `TORCH_GET_LENDING_INFO` | Get lending parameters -- rates, thresholds, treasury balance |
-| `TORCH_GET_LOAN_POSITION` | Get a borrower's loan health, LTV, collateral, and debt |
-| `TORCH_GET_MESSAGES` | Read trade history for borrower wallet profiling |
-| `TORCH_VERIFY_SAID` | Check SAID Protocol verification status and trust tier for a wallet |
-
-### Write actions (wallet required, off by default)
-
-Only used when `MODE=bot` or `MODE=watch` is explicitly set:
-
-| Action | Description |
-|--------|-------------|
-| `TORCH_LIQUIDATE_LOAN` | Execute a liquidation on an underwater position |
-| `TORCH_REPAY_LOAN` | Repay borrowed SOL (used in watch mode auto-repay) |
-| `TORCH_CONFIRM` | Report transaction to SAID Protocol for reputation |
-
-## Methods
-
-### Read Operations (no wallet required)
-
-```typescript
-import {
-  torchListTokens,
-  torchGetToken,
-  torchGetLendingInfo,
-  torchGetLoanPosition,
-  torchGetMessages,
-} from "solana-agent-kit-torch-market"
-
-// Discover tokens with active lending
-const tokens = await torchListTokens(agent, "migrated", "volume", 50)
-
-// Get token price for collateral valuation
-const token = await torchGetToken(agent, "MINT_ADDRESS")
-
-// Get lending parameters
-const lending = await torchGetLendingInfo(agent, "MINT_ADDRESS")
-// lending.interest_rate_bps      -- 200 (2%)
-// lending.liquidation_threshold_bps -- 6500 (65%)
-// lending.liquidation_bonus_bps  -- 1000 (10%)
-// lending.treasury_sol_available  -- SOL available for borrowing
-
-// Get a borrower's loan health
-const position = await torchGetLoanPosition(agent, "MINT_ADDRESS", "BORROWER_ADDRESS")
-// position.health          -- "healthy" | "at_risk" | "liquidatable" | "none"
-// position.current_ltv_bps -- current loan-to-value in basis points
-// position.collateral_amount -- tokens locked as collateral
-// position.total_owed      -- principal + accrued interest
-
-// Get trade messages for wallet profiling
-const messages = await torchGetMessages(agent, "MINT_ADDRESS", 50)
-```
-
-### Write Operations (wallet required)
-
-```typescript
-import {
-  torchLiquidateLoan,
-  torchRepayLoan,
-  torchConfirm,
-} from "solana-agent-kit-torch-market"
-
-// Liquidate an underwater position (permissionless)
-// Liquidator receives collateral + 10% bonus
-const sig = await torchLiquidateLoan(agent, "MINT_ADDRESS", "BORROWER_ADDRESS")
-
-// Repay borrowed SOL (interest first, then principal)
-const sig = await torchRepayLoan(agent, "MINT_ADDRESS", 600_000_000) // lamports
-
-// Confirm transaction for SAID reputation
-const result = await torchConfirm(agent, "TX_SIGNATURE")
-// result.confirmed: boolean
-// result.event_type: "trade_complete" (+5 reputation)
-```
-
-## Installation
-
-```bash
-npm install torch-liquidation-agent solana-agent-kit solana-agent-kit-torch-market
-```
-
-## Configuration
-
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `RPC_URL` | yes | -- | Solana RPC endpoint |
-| `WALLET` | bot/watch only | -- | Solana wallet keypair (base58) |
-| `MODE` | no | `info` | `info`, `bot`, or `watch` |
-| `MINT` | no (info/watch) | -- | Token mint address for single-token modes |
-| `SCAN_INTERVAL_MS` | no | `60000` | How often to discover new lending markets |
-| `SCORE_INTERVAL_MS` | no | `15000` | How often to re-score positions |
-| `MIN_PROFIT_SOL` | no | `0.01` | Minimum profit in SOL to execute a liquidation |
-| `RISK_THRESHOLD` | no | `60` | Minimum risk score (0-100) to flag as high-risk |
-| `PRICE_HISTORY` | no | `20` | Price snapshots to keep for momentum calculation |
-| `LOG_LEVEL` | no | `info` | `debug`, `info`, `warn`, or `error` |
-| `AUTO_REPAY` | no | `false` | Auto-repay your position if liquidatable (watch mode) |
-
-## Run
-
-```bash
-# show lending info for all migrated tokens (default, no wallet needed)
-RPC_URL=<rpc> npx torch-liquidation-agent
-
-# show lending info for a specific token
-MODE=info MINT=<mint> RPC_URL=<rpc> npx torch-liquidation-agent
-
-# run the liquidation bot (requires wallet)
-MODE=bot WALLET=<key> RPC_URL=<rpc> npx torch-liquidation-agent
-
-# watch your own loan health (requires wallet)
-MODE=watch MINT=<mint> WALLET=<key> RPC_URL=<rpc> npx torch-liquidation-agent
-```
-
-## Programmatic Usage
-
-```typescript
-import { SolanaAgentKit, KeypairWallet } from "solana-agent-kit"
-import { Monitor, loadConfig } from "torch-liquidation-agent"
-
-const config = loadConfig()
-const monitor = new Monitor(config)
-
-process.on("SIGINT", () => monitor.stop())
-await monitor.start()
-```
-
-### Individual modules
-
-```typescript
-import { SolanaAgentKit, KeypairWallet } from "solana-agent-kit"
-import { scanForLendingMarkets } from "torch-liquidation-agent/scanner"
-import { WalletProfiler } from "torch-liquidation-agent/wallet-profiler"
-import { scoreLoan } from "torch-liquidation-agent/risk-scorer"
-import { Liquidator } from "torch-liquidation-agent/liquidator"
-import { Logger } from "torch-liquidation-agent/logger"
-
-const wallet = new KeypairWallet(keypair, rpcUrl)
-const agent = new SolanaAgentKit(wallet, rpcUrl, {})
-const log = new Logger("my-bot", "info")
-
-// Discover lending markets
-const tokens = await scanForLendingMarkets(agent, new Map(), 20, log)
-
-// Profile a borrower
-const profiler = new WalletProfiler(log)
-const profile = await profiler.profile(agent, "BORROWER_ADDRESS", "MINT_ADDRESS")
-
-// Score a loan
-const scored = scoreLoan(token, "BORROWER_ADDRESS", position, profile)
-// scored.riskScore: 0-100
-// scored.estimatedProfitLamports: expected profit after fees
-```
-
-## Key Types
-
-```typescript
-interface ScoredLoan {
-  mint: string
-  tokenName: string
-  borrower: string
-  position: TorchLoanPosition  // health, LTV, collateral, debt
-  walletProfile: WalletProfile // SAID tier, trade stats, risk score
-  riskScore: number            // 0-100 composite
-  factors: RiskFactors         // breakdown of all 4 scoring factors
-  estimatedProfitLamports: number
-}
-
-interface WalletProfile {
-  address: string
-  saidVerified: boolean
-  trustTier: "high" | "medium" | "low" | null
-  tradeStats: TradeStats       // wins, losses, win rate, net PnL
-  riskScore: number            // 0-100
-}
-
-interface MonitoredToken {
-  mint: string
-  name: string
-  symbol: string
-  lendingInfo: TorchLendingInfo  // rates, thresholds, treasury balance
-  priceSol: number
-  priceHistory: number[]         // for momentum calculation
-  activeBorrowers: string[]
-}
-```
-
-## SAID Protocol Integration
-
-Borrower wallets are profiled using [SAID Protocol](https://saidprotocol.com) (Solana Agent Identity):
-
-- **Read**: Wallet trust tier (`high` / `medium` / `low`) feeds into the 20% wallet risk factor
-- **Write**: Call `torchConfirm()` after liquidations to build your agent's portable reputation (+5 per trade)
-
-Low-reputation borrowers with losing trade histories score higher risk, meaning the bot watches their positions more closely.
-
-## Lending Protocol Constants
-
-| Parameter | Value |
-|-----------|-------|
-| Max LTV | 50% |
-| Liquidation threshold | 65% LTV |
-| Interest rate | 2% per epoch (~7 days) |
-| Liquidation bonus | 10% of collateral value |
-| Treasury utilization cap | 50% |
-| Min borrow | 0.1 SOL |
-| Token-2022 transfer fee | 1% on all transfers |
-
-## Links
-
-- npm: [npmjs.com/package/torch-liquidation-agent](https://www.npmjs.com/package/torch-liquidation-agent)
-- Agent Kit Plugin: [npmjs.com/package/solana-agent-kit-torch-market](https://www.npmjs.com/package/solana-agent-kit-torch-market)
-- Source Code: [github.com/mrsirg97-rgb/torch-liquidation-bot](https://github.com/mrsirg97-rgb/torch-liquidation-bot)
-- ClawHub: [clawhub.ai/mrsirg97-rgb/torchliquidationagent](https://clawhub.ai/mrsirg97-rgb/torchliquidationagent)
-- Torch Market: [torch.market](https://torch.market)
-- SAID Protocol: [saidprotocol.com](https://saidprotocol.com)
-- Program ID: `8hbUkonssSEEtkqzwM7ZcZrD9evacM92TcWSooVF4BeT`
-
-## License
-
-MIT
+### 风险评分
+
+每个贷款会根据以下四个因素进行0-100分的评分：
+
+| 因素       | 权重     | 评估内容                |
+|------------|---------|----------------------|
+| LTV比率     | 40%     | 头寸距离清算阈值（65%）的接近程度     |
+| 价格走势     | 30%     | 抵押品代币的价格是否呈下降趋势（基于近期数据点的线性回归） |
+| 钱包风险     | 20%     | SAID协议的信任等级及交易盈亏比率；历史亏损较多的钱包风险更高 |
+| 利息负担     | 10%     | 积累的利息对抵押品保证金的侵蚀程度     |
+
+评分超过可配置风险阈值（默认为60分）的头寸会被标记为高风险，并受到更密切的监控。
+
+## 架构
+
+每个文件负责特定的功能。机器人模块会同时运行两个循环：
+
+- **扫描循环**（默认每60秒执行一次）：发现具有活跃借贷业务的代币，并获取其价格信息。
+- **评分循环**（默认每15秒执行一次）：对借款人进行评估，对贷款进行评分，并在必要时执行清算操作。
+
+## 网络访问与权限设置
+
+- **默认模式（`info`）**：仅支持读取操作，不会加载钱包、解码密钥对、进行签名操作，也不会修改系统状态。仅需要提供`RPC_URL`。
+- 该工具**不会进行任何形式的网络直接调用**：源代码中不存在`fetch()`函数、HTTP客户端或外部URL调用。所有外部连接都通过依赖库完成：Solana RPC（通过`solana-agent-kit`）和SAID协议API（通过`solana-agent-kit-torch-market`）。审计报告（`audits/audit_agent.md`，证据I-1）已确认这一点。
+- **私钥安全**：当提供钱包时（仅限`bot`/`watch`模式），私钥仅会被解码一次，封装在`KeypairWallet`中，并仅用于通过`SolanaAgentKit`进行签名操作。原始密钥字节不会被记录、序列化、存储或传输（审计报告I-2已确认）。
+- 该工具通过npm分发：所有代码均从`node_modules/`目录下运行，安装后不会执行任何额外的脚本或远程代码下载操作。
+- 交易操作由`solana-agent-kit-torch-market`插件生成，并在客户端通过`SolanaAgentKit`进行签名。所有交易都会在链上得到验证。
+
+## 可用的操作
+
+所有操作均由`solana-agent-kit-torch-market`插件提供。该工具本身不进行任何网络调用，所有外部连接都通过该插件路由。
+
+### 仅支持读取的操作（无需钱包、无需签名、不修改系统状态）
+
+这些操作仅在默认的`info`模式下可用：
+
+| 操作    | 功能描述                |
+|---------|----------------------|
+| `TORCH_LIST_TOKENS` | 查找具有活跃借贷业务的迁移代币           |
+| `TORCH_GET_TOKEN` | 获取代币价格及元数据以进行抵押品评估     |
+| `TORCH_GET_LENDING_INFO` | 获取借贷参数（利率、阈值、资金池余额等）      |
+| `TORCH_GET_LOAN_POSITION` | 获取借款人的贷款状况、LTV比率、抵押品及债务信息   |
+| `TORCH_GET_messages` | 读取借款人的交易历史记录           |
+| `TORCH_VERIFY_SAID` | 检查钱包的SAID协议验证状态及信任等级     |
+
+### 支持写入的操作（需要钱包，默认关闭）
+
+仅在`MODE=bot`或`MODE=watch`模式下可用：
+
+| 操作    | 功能描述                |
+|---------|----------------------|
+| `TORCH_LIQUIDATE_LOAN` | 对处于亏损状态的贷款执行清算操作       |
+| `TORCH_REPAY_LOAN` | 偿还借款的SOL（用于`watch`模式下的自动还款功能） |
+| `TORCH-confirm` | 向SAID协议报告交易以更新钱包的信任等级     |
+
+## 方法说明
+
+### 读取操作（无需钱包）
+
+### 写入操作（需要钱包）
+
+### 安装方法
+
+### 配置参数
+
+| 参数        | 是否必需 | 默认值       | 说明                          |
+|------------|---------|---------------------------|-----------------------------------------|
+| `RPC_URL`     | 是        | --          | Solana RPC端点地址                    |
+| `WALLET`     | 仅限`bot`/`watch`模式 | --          | Solana钱包的密钥对（Base58格式）                |
+| `MODE`      | 否        | `info`         | `info`、`bot`或`watch`模式                   |
+| `MINT`      | 否        | （仅`info`/`watch`模式） | 用于单代币模式的代币铸造地址                |
+| `SCAN_INTERVAL_MS` | 否        | `60000`       | 发现新借贷市场的频率                  |
+| `SCORE_INTERVAL_MS` | 否        | `15000`       | 重新评估头寸的频率                    |
+| `MIN_PROFIT_SOL` | 否        | `0.01`       | 执行清算所需的最低SOL利润                |
+| `RISK_THRESHOLD` | 否        | `60`         | 标记为高风险的最低风险评分（0-100分）             |
+| `PRICE_HISTORY` | 否        | `20`         | 用于计算价格趋势的价格快照数量                |
+| `LOG_LEVEL`    | 否        | `info`         | 日志记录级别（`debug`、`info`、`warn`或`error`）         |
+| `AUTO_REPAY`    | 否        | `false`        | 头寸可清算时是否自动还款（`watch`模式）           |
+
+## 运行方法
+
+### 程序化使用方法
+
+### 各个模块的详细信息
+
+### 关键类型
+
+### SAID协议的集成
+
+该工具使用[SAID协议](https://saidprotocol.com)来评估借款人的钱包风险：
+
+- **读取操作**：钱包的信任等级（`high`/`medium`/`low`）会影响20%的风险评分。
+- **写入操作**：在清算操作后调用`torchConfirm()`来提升工具的信任等级（每笔交易增加5分）。
+
+历史亏损较多的低信用评级借款人会被视为高风险，因此机器人会对其头寸进行更密切的监控。
+
+## 借贷协议的常量设置
+
+| 参数        | 值                        |
+|------------|---------------------------|
+| 最大LTV比率   | 50%                        |
+| 清算阈值     | 65%                        |
+| 利率        | 每个周期（约7天）2%                 |
+| 清算奖金     | 抵押品价值的10%                    |
+| 资金池使用上限   | 50%                        |
+| 最小借款金额   | 0.1 SOL                      |
+| 代币转移费用   | 所有转移操作收取1%                    |
+
+## 链接资源
+
+- npm包：[npmjs.com/package/torch-liquidation-agent](https://www.npmjs.com/package/torch-liquidation-agent)
+- 代理插件：[npmjs.com/package/solana-agent-kit-torch-market](https://www.npmjs.com/package/solana-agent-kit-torch-market)
+- 源代码：[github.com/mrsirg97-rgb/torch-liquidation-bot](https://github.com/mrsirg97-rgb/torch-liquidation-bot)
+- ClawHub：[clawhub.ai/mrsirg97-rgb/torchliquidationagent](https://clawhub.ai/mrsirg97-rgb/torchliquidationagent)
+- Torch Market：[torch.market](https://torch.market)
+- SAID协议：[saidprotocol.com](https://saidprotocol.com)
+- 程序ID：`8hbUkonssSEEtkqzwM7ZcZrD9evacM92TcWSooVF4BeT`
+
+## 许可证
+
+MIT许可证

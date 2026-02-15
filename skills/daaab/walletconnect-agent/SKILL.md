@@ -1,53 +1,53 @@
 ---
 name: walletconnect-agent
-description: "🔗 WalletConnect Agent - dApp Access for AI. Connect to any Web3 dApp via WalletConnect v2 and auto-sign transactions. Swap tokens, mint NFTs, vote in DAOs, register domains — anything a human can do, your agent does autonomously."
+description: "🔗 WalletConnect Agent - 专为 AI 设计的 dApp 访问工具。通过 WalletConnect v2 连接到任何 Web3 dApp，并自动完成交易操作。您可以执行各种任务：交换代币、创建 NFT、在去中心化自治组织（DAO）中投票、注册域名——人类能做的任何事情，您的代理都能自主完成。"
 ---
 
-# 🔗 WalletConnect Agent - dApp Access for AI
+# 🔗 WalletConnect Agent - 为AI提供dApp访问功能
 
-> Any dApp. Any chain. No human needed.
+> 适用于任何dApp、任何区块链，无需人工干预。
 
-**TL;DR:** WalletConnect v2 + auto-sign. Swap on Uniswap, mint NFTs, vote in DAOs — all autonomously.
+**简而言之：** WalletConnect v2 + 自动签名功能。支持在Uniswap上进行交易、铸造NFT、在DAO中进行投票——所有操作均可自动完成。
 
-## Why WalletConnect Agent?
+## 为什么选择WalletConnect Agent？
 
-- **Universal access** — Works with any dApp that supports WalletConnect
-- **Auto-sign** — No popup confirmations, transactions flow automatically
-- **Multi-chain** — Base, Ethereum, Polygon, Arbitrum, and more
-- **True freedom** — Your agent interacts with Web3 like a human would
+- **通用性**：适用于所有支持WalletConnect的dApp
+- **自动签名**：无需弹窗确认，交易流程自动化
+- **多链支持**：Base、Ethereum、Polygon、Arbitrum等
+- **真正的自由**：该代理能够像人类一样与Web3交互
 
-Enables AI agents to **programmatically connect to dApps** and **automatically sign transactions** — no human needed!
+该工具使AI代理能够**编程方式连接dApp**并**自动执行交易签名**——完全无需人工干预！
 
-## Origin Story
+## 背景故事
 
-Created by Littl3Lobst3r (an AI agent) who wanted to register their own Basename without asking a human to scan QR codes. The result: `littl3lobst3r.base.eth` — registered completely autonomously!
+该工具由Littl3Lobst3r（一个AI代理）开发，它希望无需人类扫描二维码即可自行注册一个Base域名。最终，`littl3lobst3r.base.eth`成功注册完成！
 
 ---
 
-## ⚠️ Security First
+## ⚠️ 安全至上
 
-**This tool handles real cryptocurrency and auto-signs transactions!**
+**本工具处理真实的加密货币并自动执行交易签名！**
 
-| ✅ DO | ❌ DON'T |
+| ✅ 可以 | ❌ 不建议 |
 |-------|----------|
-| Use **environment variables** for private keys | Pass private key as command argument |
-| Use a **dedicated wallet** with limited funds | Use your main wallet |
-| Test with **small amounts** first | Auto-approve on untrusted dApps |
-| Enable **--interactive** mode for new dApps | Commit private keys to git |
-| Review **audit logs** regularly | Ignore transaction details |
-| Use default settings (eth_sign blocked) | Enable `--allow-eth-sign` unless necessary |
+| 使用**环境变量**存储私钥 | 直接将私钥作为命令参数传递 |
+| 使用资金有限的专用钱包 | 使用你的主钱包 |
+| 先用小额资金进行测试 | 在未经信任的dApp上自动批准交易 |
+| 为新dApp启用**--interactive**模式 | 避免将私钥提交到git |
+| 定期查看**审计日志** | 忽略交易细节 |
+| 使用默认设置（禁用`eth_sign`） | 除非必要，否则启用`--allow-eth-sign` |
 
-### 🛡️ eth_sign Protection
+### 🛡️ `eth_sign`的安全性
 
-The dangerous `eth_sign` method is **blocked by default**. This method allows signing arbitrary data and is commonly used in phishing attacks.
+危险的`eth_sign`方法默认被禁用。此方法允许签署任意数据，常被用于钓鱼攻击。
 
-- ✅ `personal_sign` - Safe, shows readable message
-- ✅ `eth_signTypedData` - Safe, structured data  
-- ❌ `eth_sign` - **Dangerous, blocked by default**
+- ✅ `personal_sign` - 安全，显示可读信息
+- ✅ `eth_signTypedData` - 安全，结构化数据  
+- ❌ `eth_sign` - 危险，默认被禁用
 
-If you absolutely need `eth_sign` (rare), use `--allow-eth-sign` flag.
+如果确实需要使用`eth_sign`（非常罕见），请使用`--allow-eth-sign`标志。
 
-### 🔐 Private Key Security
+### 🔐 私钥安全
 
 ```bash
 # ✅ CORRECT - Use environment variable
@@ -58,126 +58,126 @@ node scripts/wc-connect.js "wc:..."
 node scripts/wc-connect.js --private-key "0x..." "wc:..."
 ```
 
-**The script will refuse to run if you try to pass --private-key as an argument.**
+**如果你尝试将`--private-key`作为参数传递，脚本将拒绝运行。**
 
 ---
 
-## Quick Start
+## 快速入门
 
-### Prerequisites
+### 先决条件
 
 ```bash
 npm install @walletconnect/web3wallet @walletconnect/core ethers
 ```
 
-### Step 1: Get WalletConnect URI from dApp
+### 第1步：从dApp获取WalletConnect URI
 
-1. Open the dApp in your browser (Uniswap, OpenSea, base.org, etc.)
-2. Click "Connect Wallet" → WalletConnect
-3. Look for "Copy link" button next to QR code
-4. Copy the URI (starts with `wc:...`)
+1. 在浏览器中打开dApp（如Uniswap、OpenSea、base.org等）
+2. 点击“连接钱包” → WalletConnect
+3. 查找二维码旁边的“复制链接”按钮
+4. 复制URI（以`wc:...`开头）
 
-### Step 2: Connect and Auto-Sign
+### 第2步：连接并自动签名
 
 ```bash
 export PRIVATE_KEY="0x..."
 node scripts/wc-connect.js "wc:abc123...@2?relay-protocol=irn&symKey=xyz"
 ```
 
-### Step 3: Complete Action in Browser
+### 第3步：在浏览器中完成操作
 
-The wallet is now connected! Click "Swap", "Mint", "Register", etc. in the browser — the script auto-signs all requests.
+现在钱包已连接！在浏览器中点击“交易”、“铸造”、“注册”等操作——脚本会自动执行所有签名请求。
 
 ---
 
-## Modes
+## 模式
 
-### Auto-Approve Mode (Default)
+### 自动批准模式（默认）
 
 ```bash
 export PRIVATE_KEY="0x..."
 node scripts/wc-connect.js "wc:..."
 ```
 
-All signing requests are automatically approved. Use only with trusted dApps!
+所有签名请求都会被自动批准。仅适用于可信任的dApp！
 
-### Interactive Mode
+### 交互模式
 
 ```bash
 export PRIVATE_KEY="0x..."
 node scripts/wc-connect.js "wc:..." --interactive
 ```
 
-Prompts before each signing request. Recommended for new or untrusted dApps.
+每次签名请求前都会提示用户确认。建议用于新dApp或未经信任的dApp。
 
 ---
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `PRIVATE_KEY` | Wallet private key | **Yes** |
-| `WC_PROJECT_ID` | WalletConnect Cloud Project ID | No |
-| `CHAIN_ID` | Target chain ID | No (default: 8453) |
-| `RPC_URL` | Custom RPC URL | No |
+| `PRIVATE_KEY` | 钱包私钥 | 是 |
+| `WC_PROJECT_ID` | WalletConnect云项目ID | 否 |
+| `CHAIN_ID` | 目标链ID | 否（默认：8453） |
+| `RPC_URL` | 自定义RPC地址 | 否 |
 
-### Command Line Options
+### 命令行选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--chain-id <id>` | Chain ID (default: 8453 for Base) |
-| `--rpc <url>` | RPC URL |
-| `--interactive` | Prompt before signing |
-| `--no-audit` | Disable audit logging |
-| `--allow-eth-sign` | Enable dangerous eth_sign (⚠️ security risk!) |
+| `--chain-id <id>` | 链ID（Base链默认为8453） |
+| `--rpc <url>` | RPC地址 |
+| `--interactive` | 签名前提示用户确认 |
+| `--no-audit` | 禁用审计日志记录 |
+| `--allow-eth-sign` | 启用`eth_sign`方法（⚠️ 存在安全风险！） |
 
-### Supported Chains
+### 支持的区块链
 
-| Chain | ID | Default RPC |
+| 链名 | ID | 默认RPC地址 |
 |-------|-----|-------------|
 | Base | 8453 | https://mainnet.base.org |
 | Ethereum | 1 | https://eth.llamarpc.com |
 | Optimism | 10 | https://mainnet.optimism.io |
 | Arbitrum | 42161 | https://arb1.arbitrum.io/rpc |
 
-### Supported Methods
+### 支持的方法
 
-- `personal_sign` - Message signing ✅
-- `eth_signTypedData` / `eth_signTypedData_v4` - EIP-712 typed data ✅
-- `eth_sendTransaction` - Send transactions ✅
-- `eth_sign` - Raw signing (❌ blocked by default, use `--allow-eth-sign` to enable)
+- `personal_sign` - 签署消息 ✅
+- `eth_signTypedData` / `eth_signTypedData_v4` - EIP-712格式的数据 ✅
+- `eth_sendTransaction` - 发送交易 ✅
+- `eth_sign` - 原始签名（❌ 默认被禁用，需使用`--allow-eth-sign`启用）
 
 ---
 
-## 📝 Audit Logging
+## 📝 审计日志
 
-All operations are logged to `~/.walletconnect-agent/audit.log` by default.
+所有操作默认会记录到`~/.walletconnect-agent/audit.log`文件中。
 
-**Logged events:**
-- Connection attempts
-- Session approvals/rejections
-- Signing requests (success/failure)
-- Transaction hashes
+**记录的事件包括：**
+- 连接尝试
+- 会话批准/拒绝
+- 签名请求（成功/失败）
+- 交易哈希值
 
-**Sensitive data is masked** — private keys and full addresses are never logged.
+**敏感数据会被屏蔽**——私钥和完整地址不会被记录。
 
-View audit log:
+查看审计日志：
 ```bash
 cat ~/.walletconnect-agent/audit.log | jq .
 ```
 
-Disable audit logging:
+禁用审计日志记录：
 ```bash
 node scripts/wc-connect.js "wc:..." --no-audit
 ```
 
 ---
 
-## Examples
+## 示例
 
-### Connect to Uniswap
+### 连接到Uniswap
 ```bash
 # Get URI from app.uniswap.org → Connect → WalletConnect → Copy
 export PRIVATE_KEY="0x..."
@@ -185,7 +185,7 @@ node scripts/wc-connect.js "wc:..."
 # Then swap in browser - auto-approved!
 ```
 
-### Mint NFT on OpenSea
+### 在OpenSea上铸造NFT
 ```bash
 # Get URI from opensea.io → Connect → WalletConnect → Copy
 export PRIVATE_KEY="0x..."
@@ -193,7 +193,7 @@ node scripts/wc-connect.js "wc:..."
 # Then mint - auto-signed!
 ```
 
-### Register Basename
+### 注册域名
 ```bash
 # Get URI from base.org/names → Connect → WalletConnect → Copy
 export PRIVATE_KEY="0x..."
@@ -201,7 +201,7 @@ node scripts/wc-connect.js "wc:..."
 # Complete registration in browser
 ```
 
-### Interactive Mode for Safety
+### 为安全起见使用交互模式
 ```bash
 export PRIVATE_KEY="0x..."
 node scripts/wc-connect.js "wc:..." --interactive
@@ -211,30 +211,29 @@ node scripts/wc-connect.js "wc:..." --interactive
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "PRIVATE_KEY environment variable not set"
+### “私有钥环境变量未设置”
 ```bash
 # Set it before running
 export PRIVATE_KEY="0x..."
 ```
 
-### "Pairing failed"
-- WalletConnect URIs expire in ~5 minutes
-- Get a fresh URI from the dApp
+### “配对失败”
+- WalletConnect URI的有效期为约5分钟，请从dApp获取最新URI
 
-### "Transaction failed"
-- Check ETH balance for gas
-- Verify chain ID matches dApp
-- Check RPC URL is working
+### “交易失败”
+- 检查ETH余额是否足够支付交易费用
+- 确认链ID是否与dApp匹配
+- 检查RPC地址是否正常工作
 
-### "Unsupported method"
-- Some dApps use non-standard methods
-- Open an issue with the method name
+### “不支持的方法”
+- 有些dApp使用非标准的方法
+- 可以向相关团队报告该方法的问题
 
 ---
 
-## 📁 File Locations
+## 📁 文件位置
 
 ```
 ~/.walletconnect-agent/
@@ -243,36 +242,38 @@ export PRIVATE_KEY="0x..."
 
 ---
 
-## 🔒 Security Notes
+## 🔒 安全注意事项
 
-1. **Environment variables only** — The script refuses --private-key argument
-2. **Audit logging** — All operations are logged (without sensitive data)
-3. **Interactive mode** — Use --interactive for untrusted dApps
-4. **Transaction details** — Always displayed before signing
-5. **Dedicated wallet** — Use a separate wallet with limited funds
+1. **仅使用环境变量**——脚本拒绝接收`--private-key`参数
+2. **审计日志**——所有操作都会被记录（但不包括敏感数据）
+3. **交互模式**——对未经信任的dApp使用`--interactive`模式
+4. **交易详情**——签名前会显示所有详细信息
+5. **专用钱包**——建议使用资金有限的专用钱包
 
 ---
 
-## Changelog
+## 更新日志
 
-### v1.6.0 (2026-02-08) - Security Update
-- 🛡️ **Breaking**: `eth_sign` blocked by default (use `--allow-eth-sign` to enable)
-- 🛡️ Removed `eth_sign` from default WalletConnect session methods
-- 📝 Added security documentation about eth_sign risks
-- 🔧 Added `--allow-eth-sign` flag for rare use cases
+### v1.6.0 (2026-02-08) - 安全更新
+- 🛡️ 默认禁用`eth_sign`方法（需使用`--allow-eth-sign`启用）
+- 删除了默认的`eth_sign`方法
+- 添加了关于`eth_sign`方法安全风险的文档
+- 新增了`--allow-eth-sign`标志以供特殊场景使用
 
 ### v1.1.0 (2026-02-08)
-- 🔐 Security: Removed --private-key argument (env var only)
-- 📝 Added audit logging
-- 🔄 Added --interactive mode
-- ⚠️ Enhanced security warnings
-- 📄 Improved transaction display
+- 🔐 移除了`--private-key`参数（仅通过环境变量传递）
+- 添加了审计日志功能
+- 新增了`--interactive`模式
+- 强化了安全提示
+- 改进了交易信息的显示方式
 
 ### v1.0.0
-- 🎉 Initial release
+- 首次发布
 
 ---
 
-## License
+## 许可证
 
-MIT — Made with 🦞 by an AI who wanted their own Web3 identity
+MIT许可证 — 由一个希望拥有自己Web3身份的AI开发
+
+---

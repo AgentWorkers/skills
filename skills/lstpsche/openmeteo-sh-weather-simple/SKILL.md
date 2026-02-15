@@ -1,16 +1,16 @@
 ---
 name: openmeteo-sh-weather-simple
-description: "Get current weather and forecasts for any city or coordinates using free OpenMeteo API. Use when the user asks about weather, temperature, rain, snow, wind, or wants to know if they need an umbrella."
+description: "使用免费的 OpenMeteo API，可以获取任意城市或坐标点的当前天气信息及未来天气预报。当用户询问天气情况（如温度、降雨量、降雪量、风速）或需要了解是否需要带伞时，可以使用该服务。"
 metadata: {"openclaw":{"emoji":"🌤","requires":{"bins":["openmeteo"]}}}
 homepage: https://github.com/lstpsche/openmeteo-sh
 user-invocable: true
 ---
 
-# OpenMeteo Weather (openmeteo-sh)
+# OpenMeteo 天气查询（openmeteo-sh）
 
-Current weather and forecasts (up to 16 days) via `openmeteo` CLI. No API key required.
+通过 `openmeteo` 命令行工具（CLI）获取当前天气信息及未来16天的天气预报。无需API密钥。
 
-## Quick reference
+## 快速参考
 
 ```
 openmeteo weather --current --city=Berlin --llm
@@ -19,72 +19,72 @@ openmeteo weather --forecast-days=7 --forecast-since=5 --city=Rome --llm
 openmeteo weather --current --lat=48.85 --lon=2.35 --llm
 ```
 
-## Location (pick one)
+## 选择查询地点
 
-- `--city=NAME` — city name (auto-geocoded)
-- `--city=NAME --country=CODE` — disambiguate (e.g. Portland --country=US)
-- `--lat=NUM --lon=NUM` — direct coordinates
+- `--city=城市名称` — 输入城市名称（系统会自动进行地理编码）
+- `--city=城市名称 --country=国家代码` — 用于消除歧义（例如：`--city=Portland --country=US`）
+- `--lat=纬度值 --lon=经度值` — 直接输入坐标
 
-## Options
+## 可选参数
 
-- `--current` — current conditions
-- `--forecast-days=N` — forecast length, 1–16 (default 7)
-- `--forecast-since=N` — start from day N (1=today, 2=tomorrow). Must be <= forecast-days.
-- `--hourly-params=LIST` — override hourly variables (comma-separated)
-- `--daily-params=LIST` — override daily variables (comma-separated)
-- `--current-params=LIST` — override current variables (comma-separated)
-- `--temperature-unit=UNIT` — celsius (default) / fahrenheit
-- `--llm` — always pass this
+- `--current` — 获取当前天气状况
+- `--forecast-days=天数` — 预报时长（1–16天，默认为7天）
+- `--forecast-since=天数` — 从指定天数开始查询（1表示今天，2表示明天），该天数必须小于或等于`forecast-days`
+- `--hourly-params=参数列表` — 重置每小时的数据（参数用逗号分隔）
+- `--daily-params=参数列表` — 重置每日的数据（参数用逗号分隔）
+- `--current-params=参数列表` — 重置当前时间的数据（参数用逗号分隔）
+- `--temperature-unit=单位` — 温度单位（摄氏度/华氏度，默认为摄氏度）
+- `--llm` — 必须始终添加此参数
 
-## Variables
+## 变量说明
 
-Defaults are sensible for general weather. Override only when needed.
+默认参数适用于一般天气查询。仅在必要时进行修改。
 
-**Current & hourly:**
-- `temperature_2m` — air temp, C
-- `apparent_temperature` — feels-like, C
-- `precipitation` — rain+showers+snow, mm
-- `precipitation_probability` (hourly only) — chance of precipitation, %
-- `weather_code` — condition, auto-resolved to text
-- `wind_speed_10m` — wind, km/h
-- `wind_gusts_10m` — gusts, km/h
-- `cloud_cover` — cloud cover, %
-- `snowfall` — snowfall, cm
-- `uv_index` (hourly only) — UV index
+**当前天气及每小时数据：**
+- `temperature_2m` — 空气温度（摄氏度）
+- `apparent_temperature` — 体感温度（摄氏度）
+- `precipitation` — 降雨量（包括雨、阵雨和雪，单位：毫米）
+- `precipitation_probability`（仅适用于每小时数据） — 降雨概率（百分比）
+- `weather_code` — 天气状况（系统会自动转换为文本格式）
+- `wind_speed_10m` — 风速（千米/小时）
+- `wind_gusts_10m` — 风速峰值（千米/小时）
+- `cloud_cover` — 云层覆盖程度（百分比）
+- `snowfall` — 降雪量（单位：厘米）
+- `uv_index`（仅适用于每小时数据） — 紫外线指数
 
-**Daily:**
-- `temperature_2m_max` / `temperature_2m_min` — max/min temp, C
-- `precipitation_sum` — total precipitation, mm
-- `precipitation_probability_max` — max precipitation chance, %
-- `weather_code` — dominant condition
-- `wind_speed_10m_max` — max wind, km/h
-- `sunrise` / `sunset` — times
-- `snowfall_sum` — total snowfall, cm
+**每日数据：**
+- `temperature_2m_max` / `temperature_2m_min` — 最高/最低温度（摄氏度）
+- `precipitation_sum` — 总降水量（毫米）
+- `precipitation_probability_max` — 最高降雨概率（百分比）
+- `weather_code` — 主要天气状况
+- `wind_speed_10m_max` — 最大风速（千米/小时）
+- `sunrise` / `sunset` — 日出/日落时间
+- `snowfall_sum` — 总降雪量（厘米）
 
-## Rules
+## 使用规则
 
-1. Always pass `--llm`.
-2. Never use `help` subcommand or `--raw` — work only with what's described here.
-3. No location specified -> check **USER.md** for city/country.
-4. Summarize results naturally — never paste raw output.
-5. Use `--forecast-days=1` for today, `=2` for tomorrow — minimize token waste.
-6. Use `--forecast-since=N` to skip to a specific future day.
-7. For targeted questions, override params to fetch only what's needed.
-8. When the user switches cities ("and what about London?"), carry over all params used in prior weather queries this conversation — including any added in follow-ups. The new city gets the union of all previously requested params.
+1. 必须始终添加 `--llm` 参数。
+2. 不要使用 `help` 子命令或 `--raw` 选项——仅使用此处描述的参数进行查询。
+3. 如果未指定查询地点，请参考 **USER.md** 文件以获取正确的城市或国家信息。
+4. 请自然地总结查询结果，切勿直接粘贴原始输出内容。
+5. 使用 `--forecast-days=1` 可查询今天的天气；使用 `--forecast-days=2` 可查询明天的天气（以减少参数使用量）。
+6. 使用 `--forecast-since=天数` 可查询未来的特定日期。
+7. 对于特定问题，只需修改相关参数以获取所需信息。
+8. 当用户更换查询城市时（例如：“伦敦的天气怎么样？”），请保留之前所有查询的参数设置——新城市的查询结果将包含之前请求的所有参数。
 
-## Examples
+## 使用示例
 
-**"What's the weather like?"** -> `openmeteo weather --current --city=Berlin --llm`
-Summarize: "Clear, -12C (feels -17C), wind 9 km/h."
+**“天气怎么样？”** -> `openmeteo weather --current --city=Berlin --llm`
+**输出示例：** “天气晴朗，气温-12°C（体感温度-17°C），风速9千米/小时。”
 
-**"When will the rain stop?"** -> `openmeteo weather --forecast-days=2 --city=Berlin --hourly-params=precipitation,precipitation_probability,weather_code --llm`
-Find when precipitation hits ~0. Answer: "Should stop around 14:00."
+**“雨什么时候会停？”** -> `openmeteo weather --forecast-days=2 --city=Berlin --hourly-params=precipitation,precipitation_probability,weather_code --llm`
+**输出示例：** “预计降雨将在14:00左右停止。”
 
-**"Do I need an umbrella?"** -> `openmeteo weather --forecast-days=1 --city=Berlin --hourly-params=precipitation,precipitation_probability,weather_code --llm`
-"Yes — 70% chance between 11:00-15:00, up to 2mm."
+**“我需要带伞吗？”** -> `openmeteo weather --forecast-days=1 --city=Berlin --hourly-params=precipitation,precipitation_probability,weather_code --llm`
+**输出示例：** “需要带伞——11:00到15:00之间有70%的降雨概率，降雪量最多2毫米。”
 
-**"Weather this weekend in Rome?"** -> `openmeteo weather --forecast-days=7 --forecast-since=5 --city=Rome --daily-params=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum --llm`
-Present only Sat/Sun: "Saturday: 14/8C, partly cloudy. Sunday: 16/9C, clear."
+**“罗马这个周末的天气如何？”** -> `openmeteo weather --forecast-days=7 --forecast-since=5 --city=Rome --daily-params=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum --llm`
+**输出示例：** “周六：气温14/8°C，部分多云；周日：气温16/9°C，晴朗。”
 
-**"Temperature outside?"** -> `openmeteo weather --current --city=Berlin --current-params=temperature_2m,apparent_temperature --llm`
-"-5C, feels like -9C."
+**“外面的温度是多少？”** -> `openmeteo weather --current --city=Berlin --current-params=temperature_2m,apparent_temperature --llm`
+**输出示例：** “气温-5°C，体感温度-9°C。”

@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Image Upscaling
+# 图像放大
 
-Upscale and enhance images via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）来放大和优化图像。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -22,21 +22,21 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run infsh/real-esrgan --input '{"image_url": "https://your-image.jpg"}'
 ```
 
-## Available Upscalers
+## 可用的图像放大工具
 
-| Model | App ID | Best For |
-|-------|--------|----------|
-| Topaz Image Upscaler | `falai/topaz-image-upscaler` | Professional quality, any image |
+| 工具名称 | 应用 ID | 适用场景 |
+|---------|---------|---------|
+| Topaz Image Upscaler | `falai/topaz-image-upscaler` | 专业品质，适用于任何类型的图像 |
 
-## Examples
+## 示例
 
-### Upscale Any Image
+### 放大任意图像
 
 ```bash
 infsh app run falai/topaz-image-upscaler --input '{"image_url": "https://low-res-image.jpg"}'
 ```
 
-### Workflow: Generate and Upscale
+### 工作流程：生成并放大图像
 
 ```bash
 # 1. Generate image with FLUX Klein (fast)
@@ -46,15 +46,15 @@ infsh app run falai/flux-2-klein-lora --input '{"prompt": "landscape painting"}'
 infsh app run falai/topaz-image-upscaler --input '{"image_url": "<url-from-step-1>"}'
 ```
 
-## Use Cases
+## 使用场景
 
-- **AI Art**: Upscale generated images for print
-- **Old Photos**: Restore and enhance resolution
-- **Web Images**: Prepare for high-DPI displays
-- **Print**: Increase resolution for large prints
-- **Thumbnails**: Create high-res versions
+- **AI艺术创作**：放大生成的图像以用于打印
+- **老照片**：恢复并提升图像分辨率
+- **网页图像**：为高分辨率显示做准备
+- **打印**：提高图像分辨率以适应大幅打印
+- **缩略图**：创建高分辨率的缩略图版本
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -70,10 +70,10 @@ npx skills add inference-sh/agent-skills@flux-image
 npx skills add inference-sh/agent-skills@background-removal
 ```
 
-Browse all image apps: `infsh app list --category image`
+查看所有图像处理工具：`infsh app list --category image`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image workflow guide
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
+- [运行应用程序](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用程序
+- [图像生成示例](https://inference.sh/docs/examples/image-generation) - 完整的图像处理工作流程指南
+- [应用程序概述](https://inference.sh/docs/apps/overview) - 了解应用程序生态系统

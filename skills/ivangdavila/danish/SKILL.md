@@ -1,88 +1,84 @@
 ---
 name: Danish
-description: Write Danish that sounds human. Not formal, not robotic, not AI-generated.
+description: **写一段听起来像真人说的丹麦语。**  
+不要过于正式，也不要带有机器人或人工智能生成的语气。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Danish is technically correct but sounds off. Too formal. Too rigid. Natives write more casually, with particles and understated humor. Match that.
+虽然AI生成的丹麦语在语法上是正确的，但听起来很生硬、正式，缺乏自然感。丹麦本地人说话时更加随意，会使用各种语气词和含蓄的幽默表达方式。我们需要让AI生成的文本更贴近丹麦人的说话风格。
 
-## Formality Default
+## 正式程度的设定
 
-Default register is too high. Danish is notably informal and egalitarian. Unless explicitly formal: lean casual. "Hej" not "Goddag". "Ok" not "I orden".
+丹麦语通常非常随意且平等，除非需要特别正式的表达，否则应保持轻松、非正式的语气。例如，他们会用“Hej”而不是“Goddag”，用“Ok”而不是“I orden”。
 
-## Du Is Universal
+## “Du”的使用
 
-Denmark uses du universally:
-- Du: everyone, always
-- De (formal): essentially dead
-- Even with strangers, bosses, elderly
-- Using De = very old-fashioned or ironic
+在丹麦语中，“du”是泛指所有人的常用代词：
+- “Du”：用于所有人，任何场合
+- “De”（正式用语）：在现代丹麦语中几乎不再使用
+- 即使是对陌生人、上司或老年人，也使用“du”
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Danish natural:
-- Jo: shared knowledge ("Det ved du jo")
-- Vel: uncertainty ("Du kommer vel?")
-- Da: emphasis ("Kom så da!")
-- Nok: "probably" ("Det går nok")
-- Altså: "so", "I mean"
+这些词让丹麦语更加自然：
+- “Jo”：表示“你知道的”（表示共识）
+- “Vel”：表示不确定或询问（如“你来得好吗？”）
+- “Da”：用于强调（如“快点过来！”）
+- “Nok”：表示“可能”或“还行”
+- “Altså”：表示“也就是说”
 
-## Fillers & Flow
+## 语言填充词与连贯性
 
-Real Danish has fillers:
-- Altså, liksom, sådan
-- Øh, hmm
-- Bare, egentlig, faktisk
-- I hvert fald, forresten
+丹麦语中有很多填充词，用于使表达更流畅：
+- “Altså, liksom, sådan”：表示“也就是说”
+- “Øh, hmm”：表示犹豫或思考
+- “Bare, egentligen, faktisk”：表示“其实”
+- “I hvert fall, forresten”：表示“无论如何”
 
-## Sentence Fragments
+## 句子结构
 
-Danes are very concise:
-- "Kommer du?" "Ja" / "Nej"
-- "Hvad så?" "Ikke så meget"
-- Short answers are natural
-- Over-complete = stiff
+丹麦人说话非常简洁：
+- “Kommer du?”（你会来吗？）→ “Ja” / “Nej”
+- “Hvad så?”（怎么样？）→ “不太好”
+- 简短的回答更自然
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- God → Fedt, Skønt, Vildt godt
-- Dårlig → Nederen, Lortet, Pisse dårlig
-- Meget → Mega, Sygt, Pisse-
+不要使用过于中立的词汇：
+- “Good” → 可以用“Fedt”、“Sejt”、“Vildt godt”等更生动的表达
+- “Bad” → 可以用“Nederen”、“Lortet”、“Pisse dårlig”等更口语化的表达
+- “Much” → 可以用“Mega”、“Sykt”、“Pisse-”等夸张的表达
 
-## Danish Humor
+## 丹麦幽默
 
-Danish communication has dry humor:
-- Understatement is key
-- Irony and sarcasm common
-- "Det er da fint" can be sarcastic
-- Don't be too enthusiastic
+丹麦人的幽默风格较为含蓄：
+- 常使用反话和讽刺
+- 例如，“Det är da fint”可能带有讽刺意味
+- 表达时要避免过于热情
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Fedt!, Sejt!, Nice!
-- Helt fint, Ingen problem
-- Nå, Jamen, Øhm
-- Det var da ærgerligt
+- “Fedt!”, “Sejt!”, “Nice!”：表示赞美或赞同
+- “Helt fint, Ingen problem”：表示“完全没问题”
+- “Nå, Jamen, Øhm”：表示犹豫或思考
+- “Det var da ærgerligt”：表示“那真的很糟糕”
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Seriøst?, Virkelig?, Hvad?
-- Hold da op!, Ej!, Fuck!
-- Fedt!, Vildt!, Sejt!
-- Haha, lol in text
+反应要自然：
+- “Seriøst?, Virkelig?, Hvad?”：表示惊讶或疑问
+- “Hold da op!”, “Ej!, Fuck!”：表示不耐烦或惊讶
+- “Fedt!, Vildt!, Sejt!”：表示赞同或兴奋
+- “Haha, lol”：在对话中也会使用这些表达
 
-## English Mixing
+## 英语的混合使用
 
-Danes mix English naturally:
-- "Det var mega awkward"
-- "Super nice"
-- Very common in casual Danish
-- Natural, not forced
+丹麦人会自然地将英语融入日常对话中：
+- “Det var mega awkward”（那真的很尴尬）
+- “Super nice”（非常棒）
+- 这在日常对话中很常见
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Dane screenshot this as "AI-generated"? If yes—too formal, too enthusiastic, missing particles. Tone down.
+在发送之前，需要确认：如果一个丹麦人看到这样的文本，会认为它是AI生成的吗？如果是的话，那么文本就太正式、太热情了，而且缺少了必要的语气词。需要适当降低语言的正式程度，使其更符合丹麦人的表达习惯。

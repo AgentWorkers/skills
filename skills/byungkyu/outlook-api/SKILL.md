@@ -15,9 +15,9 @@ metadata:
 
 # Outlook
 
-Access the Microsoft Outlook API (via Microsoft Graph) with managed OAuth authentication. Read, send, and manage emails, folders, calendar events, and contacts.
+您可以使用托管的 OAuth 认证方式访问 Microsoft Outlook API（通过 Microsoft Graph）。该 API 允许您读取、发送和管理电子邮件、文件夹、日历事件以及联系人信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get user profile
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/outlook/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Microsoft Graph API endpoint path. The gateway proxies requests to `graph.microsoft.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Microsoft Graph API 端点路径。该网关会将请求代理到 `graph.microsoft.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Microsoft OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Microsoft OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Outlook connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Outlook 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,33 +138,33 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Profile
+### 用户资料
 
 ```bash
 GET /outlook/v1.0/me
 ```
 
-### Mail Folders
+### 邮件文件夹
 
-#### List Mail Folders
+#### 列出邮件文件夹
 
 ```bash
 GET /outlook/v1.0/me/mailFolders
 ```
 
-#### Get Mail Folder
+#### 获取邮件文件夹信息
 
 ```bash
 GET /outlook/v1.0/me/mailFolders/{folderId}
 ```
 
-Well-known folder names: `Inbox`, `Drafts`, `SentItems`, `DeletedItems`, `Archive`, `JunkEmail`
+常见的文件夹名称：`Inbox`（收件箱）、`Drafts`（草稿）、`SentItems`（已发送项）、`DeletedItems`（已删除项）、`Archive`（归档）、`JunkEmail`（垃圾邮件）
 
-#### Create Mail Folder
+#### 创建邮件文件夹
 
 ```bash
 POST /outlook/v1.0/me/mailFolders
@@ -175,45 +175,45 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Mail Folder
+#### 删除邮件文件夹
 
 ```bash
 DELETE /outlook/v1.0/me/mailFolders/{folderId}
 ```
 
-#### List Child Folders
+#### 列出子文件夹
 
 ```bash
 GET /outlook/v1.0/me/mailFolders/{folderId}/childFolders
 ```
 
-### Messages
+### 消息
 
-#### List Messages
+#### 列出消息
 
 ```bash
 GET /outlook/v1.0/me/messages
 ```
 
-From specific folder:
+从特定文件夹中获取消息：
 
 ```bash
 GET /outlook/v1.0/me/mailFolders/Inbox/messages
 ```
 
-With query filter:
+使用查询过滤器：
 
 ```bash
 GET /outlook/v1.0/me/messages?$filter=isRead eq false&$top=10
 ```
 
-#### Get Message
+#### 获取消息内容
 
 ```bash
 GET /outlook/v1.0/me/messages/{messageId}
 ```
 
-#### Create Draft
+#### 创建草稿
 
 ```bash
 POST /outlook/v1.0/me/messages
@@ -235,7 +235,7 @@ Content-Type: application/json
 }
 ```
 
-#### Send Message
+#### 发送消息
 
 ```bash
 POST /outlook/v1.0/me/sendMail
@@ -260,13 +260,13 @@ Content-Type: application/json
 }
 ```
 
-#### Send Existing Draft
+#### 发送现有草稿
 
 ```bash
 POST /outlook/v1.0/me/messages/{messageId}/send
 ```
 
-#### Update Message
+#### 更新消息
 
 ```bash
 PATCH /outlook/v1.0/me/messages/{messageId}
@@ -277,13 +277,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Message
+#### 删除消息
 
 ```bash
 DELETE /outlook/v1.0/me/messages/{messageId}
 ```
 
-#### Move Message
+#### 移动消息
 
 ```bash
 POST /outlook/v1.0/me/messages/{messageId}/move
@@ -294,33 +294,33 @@ Content-Type: application/json
 }
 ```
 
-### Calendar
+### 日历
 
-#### List Calendars
+#### 列出日历
 
 ```bash
 GET /outlook/v1.0/me/calendars
 ```
 
-#### List Events
+#### 列出事件
 
 ```bash
 GET /outlook/v1.0/me/calendar/events
 ```
 
-With date filter:
+使用日期过滤器：
 
 ```bash
 GET /outlook/v1.0/me/calendar/events?$filter=start/dateTime ge '2024-01-01'&$top=10
 ```
 
-#### Get Event
+#### 获取事件信息
 
 ```bash
 GET /outlook/v1.0/me/events/{eventId}
 ```
 
-#### Create Event
+#### 创建事件
 
 ```bash
 POST /outlook/v1.0/me/calendar/events
@@ -347,27 +347,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Event
+#### 删除事件
 
 ```bash
 DELETE /outlook/v1.0/me/events/{eventId}
 ```
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /outlook/v1.0/me/contacts
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /outlook/v1.0/me/contacts/{contactId}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /outlook/v1.0/me/contacts
@@ -384,24 +384,24 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /outlook/v1.0/me/contacts/{contactId}
 ```
 
-## Query Parameters
+## 查询参数
 
-Use OData query parameters:
+使用 OData 查询参数：
 
-- `$top=10` - Limit results
-- `$skip=20` - Skip results (pagination)
-- `$select=subject,from` - Select specific fields
-- `$filter=isRead eq false` - Filter results
-- `$orderby=receivedDateTime desc` - Sort results
-- `$search="keyword"` - Search content
+- `$top=10` - 限制结果数量
+- `$skip=20` - 跳过指定数量的结果（分页）
+- `$select=subject,from` - 选择特定字段
+- `$filter=isRead eq false` - 过滤结果
+- `$orderby=receivedDateTime desc` - 按接收时间降序排序结果
+- `$search="keyword"` - 按内容搜索
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -429,33 +429,33 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use `me` as the user identifier for the authenticated user
-- Message body content types: `Text` or `HTML`
-- Well-known folder names work as folder IDs: `Inbox`, `Drafts`, `SentItems`, etc.
-- Calendar events use ISO 8601 datetime format
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 使用 `me` 作为已认证用户的标识符。
+- 消息正文的内容类型可以是 `Text` 或 `HTML`。
+- 常见的文件夹名称可以直接用作文件夹 ID（例如：`Inbox`、`Drafts`、`SentItems` 等）。
+- 日历事件使用 ISO 8601 日期时间格式。
+- **重要提示：** 当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以防止全局解析问题。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Outlook connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Microsoft Graph API |
+| 400 | 未建立 Outlook 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次请求） |
+| 4xx/5xx | 来自 Microsoft Graph API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -466,19 +466,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `outlook`. For example:
+1. 确保您的 URL 路径以 `outlook` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/outlook/v1.0/me/messages`
+  - 错误的路径：`https://gateway.maton.ai/v1.0/me/messages`
 
-- Correct: `https://gateway.maton.ai/outlook/v1.0/me/messages`
-- Incorrect: `https://gateway.maton.ai/v1.0/me/messages`
+## 资源
 
-## Resources
-
-- [Microsoft Graph API Overview](https://learn.microsoft.com/en-us/graph/api/overview)
-- [Mail API](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview)
-- [Calendar API](https://learn.microsoft.com/en-us/graph/api/resources/calendar)
-- [Contacts API](https://learn.microsoft.com/en-us/graph/api/resources/contact)
-- [Query Parameters](https://learn.microsoft.com/en-us/graph/query-parameters)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Microsoft Graph API 概述](https://learn.microsoft.com/en-us/graph/api/overview)
+- [邮件 API](https://learn.microsoft.com/en-us/graph/api/resources/mail-api-overview)
+- [日历 API](https://learn.microsoft.com/en-us/graph/api/resources/calender)
+- [联系人 API](https://learn.microsoft.com/en-us/graph/api/resources/contact)
+- [查询参数](https://learn.microsoft.com/en-us/graph/query-parameters)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

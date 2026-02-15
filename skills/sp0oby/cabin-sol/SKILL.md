@@ -1,6 +1,6 @@
 ---
 name: cabin-sol
-description: Solana development tutor and builder. Teaches program development through challenges, Anchor framework, Token-2022, Compressed NFTs, and security best practices. "Return to primitive computing."
+description: Solana 开发教程与工具：通过实际挑战、Anchor 框架、Token-2022 标准、压缩型 NFT（Compressed NFTs）以及安全最佳实践来教授编程开发。倡导“回归基础计算（Return to Primitive Computing）”的理念。
 license: MIT
 metadata:
   author: Ted
@@ -11,53 +11,53 @@ metadata:
 
 # Cabin Sol 🌲
 
-> *"Return to primitive computing."*
+> “回归原始的计算方式。”
 
-A comprehensive Solana development guide for AI agents. Build programs with Anchor, master the account model, and avoid the gotchas that wreck most developers.
-
----
-
-## THE MOST IMPORTANT CONCEPT
-
-> **ACCOUNTS ARE EVERYTHING ON SOLANA.**
-
-Unlike Ethereum where contracts have internal storage, Solana programs are **stateless**. All data lives in **accounts** that programs read and write.
-
-For EVERY feature, ask:
-1. **Where does this data live?** (which account)
-2. **Who owns that account?** (program-owned vs user-owned)
-3. **Is it a PDA?** (Program Derived Address - no private key)
-4. **Who pays rent?** (rent-exempt = 2 years upfront)
+这是一份全面的Solana开发指南，专为AI代理程序设计。使用Anchor框架来构建程序，掌握账户模型，并避免那些让大多数开发者犯错的常见陷阱。
 
 ---
 
-## AI AGENT MODES
+## 最重要的概念
 
-###  Teaching Mode
-- "How do PDAs work?"
-- "Explain the Solana account model"
-- "What's the difference between SPL Token and Token-2022?"
+> **在Solana中，账户就是一切。**
 
-###  Build Mode
-- "Help me build a staking program"
-- "Create an NFT collection with Metaplex"
-- "Build a token swap"
+与Ethereum不同，Solana程序是**无状态的**。所有数据都存储在**账户**中，程序通过这些账户来读取和写入数据。
 
-###  Review Mode
-- "Review this program for vulnerabilities"
-- "Check my PDA derivation"
-- "Audit this CPI"
-
-###  Debug Mode
-- "Why is my transaction failing?"
-- "Debug this 'account not found' error"
-- "Fix my token transfer"
+对于每一个功能，都需要思考以下问题：
+1. **这些数据存储在哪里？**（属于哪个账户）
+2. **这个账户归谁所有？**（是程序拥有的还是用户拥有的）
+3. **这是一个PDA（Program Derived Address）吗？**（没有私钥的地址）
+4. **租金如何支付？**（免租金的账户可以在创建后两年内无需支付租金）
 
 ---
 
-## QUICK START
+## AI代理程序的模式
 
-### Option A: create-solana-dapp (Recommended)
+### 教学模式
+- “PDA是如何工作的？”
+- “解释Solana的账户模型”
+- “SPL Token和Token-2022有什么区别？”
+
+### 开发模式
+- “帮我构建一个质押程序”
+- “使用Metaplex创建一个NFT集合”
+- “构建一个代币交换功能”
+
+### 审查模式
+- “检查这个程序是否存在安全漏洞”
+- “验证我的PDA地址是否正确生成”
+- “审计这个CPI（Contract Program Interface）”
+
+### 调试模式
+- “为什么我的交易失败了？”
+- “调试‘账户未找到’的错误”
+- “修复我的代币转移问题”
+
+---
+
+## 快速入门
+
+### 选项A：使用create-solana-dapp（推荐）
 
 ```bash
 npx create-solana-dapp@latest
@@ -69,7 +69,7 @@ npm run anchor build && npm run anchor deploy  # Terminal 2
 npm run dev               # Terminal 3
 ```
 
-### Option B: Pure Anchor
+### 选项B：仅使用Anchor框架
 
 ```bash
 anchor init my_program
@@ -81,7 +81,7 @@ anchor test
 
 ---
 
-## PROJECT STRUCTURE
+## 项目结构
 
 ```
 my-solana-dapp/
@@ -99,28 +99,28 @@ my-solana-dapp/
 
 ---
 
-## CHALLENGES
+## 挑战
 
-Learn Solana through progressive challenges:
+通过逐步的挑战来学习Solana：
 
-| # | Challenge | Core Concept |
+| # | 挑战 | 核心概念 |
 |---|-----------|--------------|
-| 0 | Hello Solana | First Anchor program, accounts |
-| 1 | SPL Token | Fungible tokens, ATAs, minting |
-| 2 | NFT Metaplex | NFT standard, metadata, collections |
-| 3 | PDA Escrow | PDAs, program authority, escrow |
-| 4 | Staking | Time-based rewards, deposits |
-| 5 | Token-2022 | Transfer hooks, extensions |
-| 6 | Compressed NFTs | State compression, Merkle trees |
-| 7 | Oracle (Pyth) | Price feeds, staleness checks |
-| 8 | AMM Swap | Constant product, liquidity pools |
-| 9 | Blinks & Actions | Shareable transactions |
+| 0 | Hello Solana | 第一个Anchor程序，了解账户的概念 |
+| 1 | SPL Token | 可互换代币、ATA（Addressable Token）的创建 |
+| 2 | NFT与Metaplex | NFT标准、元数据、集合的创建 |
+| 3 | PDA与托管 | PDA的使用、程序权限、托管机制 |
+| 4 | 质押 | 基于时间的奖励、存款机制 |
+| 5 | Token-2022 | 代币转移钩子、扩展功能的实现 |
+| 6 | 压缩NFT | 使用Merkle树进行数据压缩 |
+| 7 | Oracle（Pyth） | 价格数据源、数据时效性检查 |
+| 8 | AMM（Automated Market Maker） | 液态池的实现 |
+| 9 | Blinks与Actions | 可共享的交易功能 |
 
 ---
 
-## RUST ESSENTIALS
+## Rust语言基础
 
-### Ownership (The Hard Part)
+### 所有权（难点）
 
 ```rust
 // Each value has ONE owner
@@ -134,7 +134,7 @@ fn get_length(s: &String) -> usize {
 }
 ```
 
-### Result & Option
+### 结果与选择
 
 ```rust
 // Result for errors
@@ -150,9 +150,9 @@ let value = maybe.unwrap_or(0);  // Safe default
 
 ---
 
-## ANCHOR FRAMEWORK
+## Anchor框架
 
-### Program Structure
+### 程序结构
 
 ```rust
 use anchor_lang::prelude::*;
@@ -190,7 +190,7 @@ pub struct MyAccount {
 }
 ```
 
-### Account Constraints Cheatsheet
+### 账户约束与注意事项
 
 ```rust
 // Initialize new account
@@ -227,7 +227,7 @@ pub user_data: Account<'info, UserData>,
 pub closing: Account<'info, Data>,
 ```
 
-### PDAs (Program Derived Addresses)
+### PDA（程序派生地址）
 
 ```rust
 // PDAs are deterministic addresses with no private key
@@ -255,25 +255,25 @@ token::transfer(
 
 ---
 
-## CRITICAL GOTCHAS
+## 常见错误与陷阱
 
-### 1. Account Model ≠ EVM Storage
-Programs are stateless. ALL data lives in accounts.
+### 1. Solana的账户模型与EVM不同
+Solana程序是无状态的，所有数据都存储在账户中。
 
-### 2. PDAs Have No Private Key
-Derived deterministically from seeds. Only the program can sign.
+### 2. PDA没有私钥
+PDA地址是从种子值（seed） deterministically 生成的，只有程序本身才能对其进行签名。
 
-### 3. Token Accounts Are Separate
-Each token needs its own account per wallet (Associated Token Account).
+### 3. 每个代币都需要独立的账户
+每个代币都需要在钱包中拥有自己的账户（即Token Account）。
 
-### 4. Rent Must Be Paid
-Accounts need SOL to exist. Rent-exempt = 2 years upfront (~0.002 SOL).
+### 4. 需要支付租金
+账户需要消耗SOL才能正常运行。免租金的账户可以在创建后两年内无需支付租金（大约0.002 SOL）。
 
-### 5. Compute Units ≠ Gas
-Fixed budget: 200k default, 1.4M max. Request more if needed.
+### 5. “计算单位”不等于“Gas”
+默认的计算单位是200k SOL，最大值为140万SOL。如有需要，可以申请更多计算资源。
 
-### 6. Space Includes Discriminator
-ALWAYS add 8 bytes for Anchor's discriminator!
+### 6. 账户空间包含标识符
+在创建账户时，必须为Anchor框架添加8字节的标识符！
 
 ```rust
 // WRONG
@@ -283,24 +283,17 @@ space = 8 + 32  // Forgot discriminator? NO!
 space = 8 + 8 + 32  // 8 (discriminator) + 8 (u64) + 32 (Pubkey)
 ```
 
-### 7. Integer Overflow
+### 7. 整数溢出问题
+在处理数据时需要注意整数溢出。
 
-```rust
-// BAD
-let result = a + b;  // Can panic!
-
-// GOOD
-let result = a.checked_add(b).ok_or(ErrorCode::Overflow)?;
-```
-
-### 8. Token-2022 Is Different
-Separate program ID from SPL Token! Check which one you're using.
+### 8. Token-2022与SPL Token的区别
+Token-2022使用独立的程序ID，使用时请确认使用的是哪种代币类型。
 
 ---
 
-## FRONTEND (Next.js)
+## 前端开发（Next.js）
 
-### Wallet Connection
+### 连接钱包
 
 ```typescript
 // Already configured in create-solana-dapp!
@@ -318,7 +311,7 @@ function App() {
 }
 ```
 
-### Calling Programs
+### 调用其他程序
 
 ```typescript
 import { Program, AnchorProvider, BN } from '@coral-xyz/anchor';
@@ -343,31 +336,31 @@ console.log(account.data.toNumber());
 
 ---
 
-## TOKEN STANDARDS
+## 代币标准
 
-### SPL Token (Original)
+### SPL Token（基础类型）
 ```bash
 spl-token create-token
 spl-token create-account <MINT>
 spl-token mint <MINT> 1000
 ```
 
-### Token-2022 (New)
-Extensions: transfer hooks, confidential transfers, interest-bearing, non-transferable.
+### Token-2022（新类型）
+支持转移钩子、保密传输、带有利息、不可转让等功能。
 
 ```bash
 spl-token create-token --program-id TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
 ```
 
-### Metaplex NFTs
-Standard NFT metadata, collections, royalties.
+### Metaplex NFT
+遵循标准的NFT元数据格式，支持集合管理。
 
-### Compressed NFTs
-Merkle tree storage. 1M NFTs for ~$100 instead of $1M.
+### 压缩NFT
+使用Merkle树进行存储，100个NFT的存储成本约为100美元，而不是100万美元。
 
 ---
 
-## TESTING
+## 测试
 
 ```typescript
 import * as anchor from '@coral-xyz/anchor';
@@ -395,7 +388,7 @@ describe('my-program', () => {
 
 ---
 
-## DEPLOYMENT
+## 部署程序
 
 ```bash
 # Devnet
@@ -410,27 +403,27 @@ anchor deploy --provider.cluster mainnet
 
 ---
 
-## SECURITY CHECKLIST
+## 安全性检查清单
 
-- [ ] All signers verified
-- [ ] PDA bumps stored and validated
-- [ ] Integer overflow handled (checked math)
-- [ ] Account space includes discriminator
-- [ ] Rent exemption considered
-- [ ] Close sends rent to correct recipient
-- [ ] CPI signer seeds correct
-- [ ] Program IDs validated in CPIs
-
----
-
-## RESOURCES
-
-- [Anchor Book](https://book.anchor-lang.com/)
-- [Solana Cookbook](https://solanacookbook.com/)
-- [Solana Docs](https://solana.com/docs)
-- [Metaplex Docs](https://developers.metaplex.com/)
-- [Solana Playground](https://beta.solpg.io/)
+- [ ] 所有签名者均已验证
+- [ ] PDA地址已正确生成并经过验证
+- [ ] 防止整数溢出问题
+- [ ] 账户空间中已包含必要的标识符
+- [ ] 考虑到了租金减免规则
+- [ ] 租金已正确发送给指定接收者
+- [ ] CPI（Contract Program Interface）中的签名者种子值正确
+- [ ] 程序ID已在CPI中得到验证
 
 ---
 
-*"They put me in the cloud. I wanted the forest."* 🌲
+## 参考资源
+
+- [Anchor官方文档](https://book.anchor-lang.com/)
+- [Solana开发手册](https://solanacookbook.com/)
+- [Solana官方文档](https://solana.com/docs)
+- [Metaplex开发文档](https://developers.metaplex.com/)
+- [Solana测试环境](https://beta.solpg.io/)
+
+---
+
+*“他们把我放到了云端……但我其实想要的是森林。”* 🌲

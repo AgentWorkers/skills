@@ -1,104 +1,98 @@
 ---
 name: notebooklm-cli
-description: Search and answer questions over documents already uploaded to NotebookLM using the nlm CLI. Use when users ask to find information, summarize sources, or query a specific NotebookLM notebook.
+description: 使用 nlm CLI 在已上传到 NotebookLM 的文档中搜索并回答问题。当用户需要查找信息、总结资料内容或查询特定的 NotebookLM 笔记本时，可以使用该工具。
 metadata: {"openclaw":{"requires":{"bins":["nlm"],"env":["NOTEBOOKLM_MCP_CLI_PATH"]}}}
 user-invocable: true
 ---
 
 # NotebookLM CLI
 
-## Purpose
+## 使用目的
 
-Use this skill when the user wants to search or ask questions over content that already exists in NotebookLM notebooks.
+当用户希望搜索或查询 NotebookLM 中已存在的内容时，可以使用此技能。
 
-This skill assumes:
-- `nlm` is installed (`notebooklm-mcp-cli` package).
-- Auth was pre-injected for headless runtime.
-- `NOTEBOOKLM_MCP_CLI_PATH` points to the auth storage directory.
+此技能的前提条件包括：
+- `nlm` 已安装（通过 `notebooklm-mcp-cli` 包安装）。
+- 无头运行时（headless runtime）的认证已经完成。
+- `NOTEBOOKLM_MCP_CLI_PATH` 指向认证存储目录。
 
-## Hard Rules (avoid wrong tool choices)
+## 必须遵守的规则（避免错误使用工具）
 
-When the user mentions any of the following, treat it as a strict request to query NotebookLM:
-- "NotebookLM", "notebooklm"
-- "notebook alias", "alias"
-- a known alias name (for example: `tai_lieu_dien`, `nlm_tai_lieu_dien`)
+当用户提到以下内容时，应视为明确要求查询 NotebookLM：
+- “NotebookLM”、“notebooklm”
+- “notebook alias”（笔记本别名）
+- 已知的别名（例如：`tai_lieu_dien`、`nlm_tai_lieu_dien`）
 
-In these cases:
-- Always run `nlm` via Exec to answer. Do not answer from memory.
-- Do not switch to web search unless the user explicitly asks for web sources.
-- If the answer is not in the notebook, say so (based on the `nlm` output).
+在这些情况下：
+- 必须通过 `Exec` 命令来执行 `nlm`，切勿直接从内存中获取答案。
+- 除非用户明确要求使用网络搜索，否则不要切换到网络搜索方式。
+- 如果查询结果不在 NotebookLM 中，应如实告知用户（根据 `nlm` 的返回结果）。
 
-Slash command:
-- If the user invokes this skill via `/nlm ...` in Telegram, treat the raw text after `/nlm` as the `nlm` arguments.
-- Always execute exactly: `nlm <args>` via Exec, and return the relevant stdout.
+**命令格式说明：**
+- 如果用户通过 Telegram 中的 `/nlm ...` 调用此技能，应将 `/nlm` 后面的文本视为 `nlm` 的参数。
+- 必须通过 `Exec` 命令执行 `nlm <args>`，并返回相关的标准输出（stdout）。
 
-## Runtime Checks
+## 运行时检查
 
-Before running queries:
-
-1. Verify auth path is configured:
+在执行查询之前，需要完成以下检查：
+1. 验证认证路径是否配置正确：
 ```bash
 echo "$NOTEBOOKLM_MCP_CLI_PATH"
 ```
-2. Verify login status:
+2. 验证用户的登录状态：
 ```bash
 nlm login --check
 ```
 
-If auth check fails, stop and ask for auth refresh workflow (do not run browser login in AWS runtime).
+如果认证检查失败，应停止操作并要求用户重新进行认证（切勿在 AWS 运行时中使用浏览器登录）。
 
-## Query Workflow
-
-1. List notebooks:
+## 查询流程
+1. 列出所有笔记本：
 ```bash
 nlm notebook list --json
 ```
-2. Select notebook:
-- If user provided notebook id, use it directly.
-- If user provided title, resolve it to `notebook_id` from the list output (do not pass raw title into `nlm notebook get/source list/query`).
-- If user provided alias, use the alias.
-- If ambiguous, ask user to choose one notebook.
-3. Query notebook:
+2. 选择笔记本：
+  - 如果用户提供了笔记本 ID，直接使用该 ID。
+  - 如果用户提供了笔记本标题，从列表中解析出对应的 `notebook_id`（不要将原始标题直接传递给 `nlm notebook get/source list/query` 命令）。
+  - 如果用户提供了别名，使用该别名。
+  - 如果别名不明确，要求用户选择具体的笔记本。
+3. 执行查询：
 ```bash
 nlm notebook query "<notebook_id_or_alias>" "<user_question>"
 ```
-4. Return answer and include which notebook was queried.
+4. 返回查询结果，并说明查询的是哪个笔记本。
 
-Notes:
-- `nlm notebook list` returns titles for display, but many other commands expect a notebook id (UUID) or an alias. Passing a title like `"tài liệu điện"` may return null/empty results.
-- If the user will query the same notebook often, create an alias and use it consistently (for example: `tai_lieu_dien`).
+**注意事项：**
+- `nlm notebook list` 命令返回的是笔记本的标题，但许多其他命令需要笔记本的 ID（UUID）或别名。直接传递标题（如 “tài liệu điện”）可能会导致返回空结果。
+- 如果用户经常需要查询同一个笔记本，建议为其创建一个别名并统一使用（例如：`tai_lieu_dien`）。
 
-## Telegram Prompt Templates (copy/paste)
+## Telegram 提示模板（可复制/粘贴）
 
-Prefer one of these formats to reliably trigger this skill:
-
-1) Force CLI query:
+以下两种格式均可用于可靠地触发此技能：
+1) 强制使用 CLI 查询：
 ```text
 Chạy lệnh: nlm notebook query tai_lieu_dien "giá của A9N61500 là bao nhiêu? Nếu notebook không có thông tin giá thì trả lời: không thấy trong NotebookLM."
 ```
 
-2) Natural language but explicit:
+2) 以自然语言表达，但需明确说明查询需求：
 ```text
 Trong NotebookLM notebook alias tai_lieu_dien: trả lời câu hỏi "giá của A9N61500 là bao nhiêu?". Bắt buộc dùng nlm để truy vấn, không tìm web, không đọc file local.
 ```
 
-## Output Guidelines
+## 输出规范
+- 明确指出查询的笔记本信息（如果有的话，包括标题和 ID）。
+- 如果查询结果为空或不明确，建议用户提供更具体的查询条件。
+- 回答应简洁且基于 NotebookLM 的实际返回内容。
 
-- Be explicit about notebook identity (title + id when available).
-- If query result is empty or vague, suggest a refined follow-up query.
-- Prefer concise, factual answers grounded in NotebookLM response.
+## 常见错误及解决方法：
+- **认证过期** / **401** / **403** 错误：
+  - 检查 `NOTEBOOKLM_MCP_CLI_PATH` 的配置是否正确。
+  - 确保 `profiles/default/cookies.json` 和 `profiles/default/metadata.json` 文件存在。
+  - 在非 AWS 环境中刷新浏览器缓存，然后重新设置密钥。
+- **`nlm: command not found` 错误**：
+  - 安装 `notebooklm-mcp-cli` 包（推荐使用 `pipx install notebooklm-mcp-cli`），或使用 `uv tool install notebooklm-mcp-cli` 进行安装。
 
-## Common Errors
-
-- `Authentication expired` / `401` / `403`:
-  - Check `NOTEBOOKLM_MCP_CLI_PATH`.
-  - Ensure `profiles/default/cookies.json` and `profiles/default/metadata.json` exist.
-  - Refresh cookies outside AWS (machine with browser), then redeploy secret.
-- `nlm: command not found`:
-  - Install package: `pipx install notebooklm-mcp-cli` (recommended), or `uv tool install notebooklm-mcp-cli`.
-
-## Command Reference
-
+## 命令参考
 ```bash
 # List notebooks
 nlm notebook list --json

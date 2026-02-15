@@ -1,68 +1,68 @@
 ---
 name: avito
-description: Manage Avito.ru account, items, and messenger via API. Use for listing items, checking balance, reading chats, and getting account info.
+description: 通过 API 管理 Avito.ru 账户、商品以及消息功能。可用于发布商品信息、查看账户余额、阅读聊天记录以及获取账户信息。
 ---
 
 # Avito
 
-This skill provides tools to interact with the Avito.ru API.
+本技能提供了用于与 Avito.ru API 进行交互的工具。
 
-## Requirements
+## 所需条件
 
-- `requests` library for Python.
-- Avito Client ID and Client Secret.
+- Python 的 `requests` 库。
+- Avito 的客户端 ID（Client ID）和客户端密钥（Client Secret）。
 
-## Setup
+## 设置
 
-Set your credentials in your environment or provide them when prompted.
+请将您的凭据设置到环境中，或在系统提示时提供这些凭据。
 
-## Features
+## 功能
 
-### Authentication
+### 认证
 
-Get an access token using your client credentials.
+使用您的客户端凭据获取访问令牌。
 
 ```bash
 python3 scripts/auth.py <client_id> <client_secret>
 ```
 
-### Account Info
+### 账户信息
 
-Get information about your account, including your `user_id`.
+获取有关您的账户的信息，包括您的 `user_id`。
 
 ```bash
 python3 scripts/get_self.py <token>
 ```
 
-### Balance
+### 账户余额
 
-Check your account balance.
+查看您的账户余额。
 
 ```bash
 python3 scripts/get_balance.py <token> <user_id>
 ```
 
-### Items Management
+### 商品管理
 
-List your current advertisements.
+列出您当前发布的广告。
 
 ```bash
 python3 scripts/list_items.py <token>
 ```
 
-### Messenger
+### 消息系统（Messenger）
 
-List chats in your account.
+列出您账户中的聊天记录。
 
 ```bash
 python3 scripts/list_chats.py <token> <user_id>
 ```
 
-*Note: Messenger API access may require a specific Avito subscription.*
+*注意：使用消息系统 API 可能需要订阅 Avito 的特定服务。*
 
-## TODO
+## 待办事项
 
-- Implement item creation (POST /items).
-- Implement item status updates (editing, deleting).
-- Implement webhook registration.
-- Implement messenger message sending and retrieval.
+- 实现商品创建功能（POST /items）。
+- 实现商品状态更新功能（编辑、删除）。
+- 实现 Webhook 注册功能。
+- 实现消息发送和接收功能。

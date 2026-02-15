@@ -1,22 +1,22 @@
 ---
 name: pi-admin
-description: Raspberry Pi system administration. Monitor resources, manage services, perform updates and maintenance.
+description: Raspberry Pi系统管理：监控资源、管理服务、执行更新与维护操作。
 metadata: {"clawdis":{"emoji":"🥧","requires":{"bins":[]}}}
 ---
 
-# Raspberry Pi Administration
+# 树莓派管理
 
-Complete system monitoring and introspection for the Raspberry Pi host. Access network details, system resources, storage, services, and more.
+提供对树莓派主机的全面系统监控和诊断功能。可以查看网络详情、系统资源、存储信息、运行中的服务等。
 
-## When to Use
-- Checking Pi network configuration (IP, Tailscale)
-- Monitoring system resources (CPU, memory, storage)
-- Viewing running services and their status
-- Checking temperature and hardware info
-- Troubleshooting system issues
-- Getting system overview for debugging
+## 使用场景
+- 检查树莓派的网络配置（IP地址、Tailscale连接状态）
+- 监控系统资源（CPU使用率、内存使用情况、存储空间）
+- 查看正在运行的服务及其状态
+- 获取温度和硬件信息
+- 故障排除
+- 获取系统概览以辅助调试
 
-## Usage
+## 使用方法
 
 ```bash
 # Information Commands
@@ -39,20 +39,20 @@ cd /home/srose/clawd/skills/pi-admin
 ./skill.sh all
 ```
 
-## Tools Available
+## 可用工具
 
-| Tool | Description |
+| 工具 | 功能描述 |
 |------|-------------|
-| `overview` | Quick system summary |
-| `network` | IP addresses, hostname, network interfaces |
-| `tailscale` | Tailscale status, IP, peers |
-| `resources` | CPU, memory, temperature |
-| `storage` | Disk usage, mount points |
-| `services` | Running services, Gateway status |
-| `hardware` | CPU info, Raspberry Pi model, GPU |
-| `all` | Complete detailed dump |
+| `overview` | 快速查看系统概览 |
+| `network` | 显示IP地址、主机名、网络接口信息 |
+| `tailscale` | 查看Tailscale连接状态、IP地址及连接的节点 |
+| `resources` | 显示CPU使用率、内存使用情况、温度信息 |
+| `storage` | 显示磁盘使用情况、挂载点信息 |
+| `services` | 查看正在运行的服务及其状态 |
+| `hardware` | 显示CPU信息、树莓派型号、GPU信息 |
+| `all` | 显示系统的完整详细信息 |
 
-## Examples
+## 使用示例
 
 ```bash
 # Quick system check
@@ -68,87 +68,87 @@ cd /home/srose/clawd/skills/pi-admin
 ./skill.sh storage
 ```
 
-## Information Collected
+## 收集的信息
 
-**Network:**
-- Hostname
-- Local IP addresses (eth0, wlan0)
-- Network interface details
-- DNS configuration
+**网络信息：**
+- 主机名
+- 本地IP地址（eth0、wlan0）
+- 网络接口详细信息
+- DNS配置
 
-**Tailscale:**
-- Status (running/stopped)
-- Tailscale IP
-- Connected peers
-- Exit node status
+**Tailscale信息：**
+- 连接状态（运行中/已停止）
+- Tailscale的IP地址
+- 连接的节点列表
+- 中间节点状态
 
-**Resources:**
-- CPU usage
-- Memory usage (used/free/total)
-- CPU temperature
-- Uptime
+**系统资源信息：**
+- CPU使用率
+- 内存使用情况（已使用/可用/总内存）
+- CPU温度
+- 系统运行时间
 
-**Storage:**
-- Disk usage by mount point
-- Inode usage
-- Free space
+**存储信息：**
+- 按挂载点划分的磁盘使用情况
+- 文件节点使用情况
+- 可用磁盘空间
 
-**Services:**
-- Gateway service status
-- Docker containers
-- Systemd services
-- Port listeners
+**服务信息：**
+- Gateway服务的状态
+- 运行的Docker容器
+- Systemd服务的状态
+- 监听的端口
 
-**Hardware:**
-- CPU model and cores
-- Raspberry Pi model
-- GPU memory
-- Total RAM
+**硬件信息：**
+- CPU型号及核心数量
+- 树莓派型号
+- GPU内存信息
+- 总RAM容量
 
-## Maintenance Commands
+## 维护命令
 
 ### `update`
-Update system packages via apt:
-- Updates package lists
-- Shows upgradable packages
-- Requires confirmation before upgrading
-- Reports if reboot is needed
-- **Dry run:** `./skill.sh update --dry-run` shows what would be updated
+通过`apt`更新系统软件包：
+- 更新软件包列表
+- 显示可更新的软件包
+- 更新前需要确认
+- 会提示是否需要重启
+- **预测试用：`./skill.sh update --dry-run` 可查看更新内容**
 
 ### `clean`
-Clean up system to free disk space:
-- Removes unused packages (autoremove)
-- Clears package cache
-- Cleans old journal logs (keeps 7 days)
-- Optionally cleans Docker artifacts
-- Shows space saved
-- **Dry run:** `./skill.sh clean --dry-run` shows what would be cleaned
+清理系统以释放磁盘空间：
+- 删除未使用的软件包
+- 清除软件包缓存
+- 清除旧的日志文件（保留7天）
+- 可选：清除Docker相关文件
+- 显示释放的磁盘空间
+- **预测试用：`./skill.sh clean --dry-run` 可查看清理内容**
 
 ### `reboot`
-Graceful system reboot:
-- 10-second countdown
-- Ctrl+C to cancel
-- Uses systemctl reboot
-- **Dry run:** `./skill.sh reboot --dry-run` shows countdown without rebooting
+优雅地重启系统：
+- 提供10秒的倒计时
+- 可通过Ctrl+C取消操作
+- 使用`systemctl reboot`命令重启系统
+- **预测试用：`./skill.sh reboot --dry-run` 可查看倒计时过程（不实际重启）
 
 ### `restart-gateway`
-Restart the Clawdis Gateway service:
-- Stops all running gateway processes
-- Starts fresh gateway on port 18789
-- Confirms port is listening
-- Shows access URLs
-- **Dry run:** `./skill.sh restart-gateway --dry-run` shows what would happen
+重启Clawdis Gateway服务：
+- 停止所有正在运行的Gateway进程
+- 在端口18789上重新启动Gateway服务
+- 确认端口是否已启动并处于监听状态
+- 显示访问URL
+- **预测试用：`./skill.sh restart-gateway --dry-run` 可查看重启过程（不实际重启）
 
 ### `optimize`
-Apply safe system optimizations:
-- Disable Bluetooth service (~50MB RAM saved)
-- Disable ModemManager (~30MB RAM saved)
-- Disable Avahi/Zeroconf (~20MB RAM saved)
-- Set swappiness to 10 (better RAM utilization)
-- **Dry run:** `./skill.sh optimize --dry-run` shows what would change
-- **Undo:** `./skill.sh optimize --undo` reverts all changes
+应用系统优化设置：
+- 禁用蓝牙服务（节省约50MB内存）
+- 禁用ModemManager（节省约30MB内存）
+- 禁用Avahi/Zeroconf（节省约20MB内存）
+- 将swappiness值设置为10（提高内存利用率）
+- **预测试用：`./skill.sh optimize --dry-run` 可查看优化后的效果**
+- **撤销操作：`./skill.sh optimize --undo` 可恢复所有更改**
 
-**Total RAM savings:** ~100MB
-**Reversibility:** Yes, use `--undo` flag to revert
+**总内存节省量：** 约100MB
+**可逆性：** 可使用`--undo`选项恢复原设置
 
-**Note:** All maintenance commands require sudo and ask for confirmation before making changes. Use `--dry-run` flag to preview changes without applying them.
+**注意：** 所有维护命令均需使用`sudo`权限，并在执行前会提示确认。使用`--dry-run`选项可预览更改内容而不会实际应用它们。

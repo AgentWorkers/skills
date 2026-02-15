@@ -1,72 +1,73 @@
 ---
 name: Catalan
-description: Write Catalan that sounds human. Not formal, not robotic, not AI-generated.
+description: 编写听起来像人类语言的加泰罗尼亚语。既不要过于正式，也不要有机器人般的腔调，更不能是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Catalan is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with warmth and local flavor. Match that.
+虽然AI生成的加泰罗尼亚语在语法上是正确的，但听起来很不自然。过于正式、过于文学化。本地人说话时更加随意，充满温暖和地方特色。我们需要让语言更贴近他们的表达方式。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Casual Catalan is warm and direct. Unless explicitly formal: lean casual. "Hola" or "Ei" not "Bon dia". "Vale" not "D'acord".
+默认的语言风格过于正式。日常的加泰罗尼亚语其实更加亲切、直接。除非需要特别正式的表达，否则应采用更随意的语气。“Hola”或“Ei”比“Bon dia”更合适；“Vale”比“D’acord”更常用。
 
-## Tu vs Vostè
+## “Tu”与“Vostè”的用法
 
-Critical distinction:
-- Vostè: very formal, elderly, professional
-- Tu: default for almost everyone
-- Catalan is notably informal
-- Vostè in casual = very stiff
+**重要区别：**
+- “Vostè”：非常正式，通常用于老年人或正式场合。
+- “Tu”：几乎是所有人的默认称呼方式。
+- 加泰罗尼亚语本来就是一种非正式的语言。
+- 在非正式场合使用“Vostè”会显得非常生硬。
 
-## Particles & Softeners
+## 语气词与缓和语
 
-These make Catalan natural:
-- Doncs: "well", "so"
-- Oi: "right?", seeking agreement (very Catalan!)
-- Eh: emphasis, attention
-- Va: "come on"
-- Que: introducing questions
+这些词能让加泰罗尼亚语更加自然：
+- **Doncs**：表示“嗯，那么”。
+- **Oi**：用于寻求同意（非常典型的加泰罗尼亚语表达！）
+- **Eh**：用于强调或引起注意。
+- **Va**：表示“快点”。
+- **Que**：用于引出问题。
 
-## Fillers & Flow
+## 语言中的填充词与连贯性
 
-Real Catalan has fillers:
-- Doncs, bueno, a veure
-- O sigui, és a dir
-- Mira, escolta
-- Clar, home/dona
+真实的加泰罗尼亚语中会使用一些填充词来保持对话的流畅性：
+- **Doncs, bueno, a veure**：表示“嗯，好吧，我们再看吧”。
+- **O sigui, és a dir**：表示“或者，也就是说”。
+- **Mira, escolta**：表示“看，听着”。
+- **Clar, home/dona**：用于强调或表示理解。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Bé → Genial, Brutal, De puta mare
-- Malament → Fatal, De merda
-- Molt → Super, Molt molt, Mega
+不要使用过于中立的词汇：
+- **Bé**：可以用“Genial”（太棒了）、“Brutal”（糟糕的）或“De puta mare”（非常糟糕）来替换。
+- **Malament**：可以用“Fatal”（糟糕的）或“De merda”（一团糟）来替换。
+- **Molt**：可以用“Super”（超级）、“Molt molt”（非常非常）或“Mega”（极大的）来替换。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Vale, D'acord, Entesos
-- Cap problema, Tranquil
-- Ostres!, Caram!, Collons!
-- Què fort!, Al·lucinant!
+自然的表达方式包括：
+- **Vale, D’acord, Entesos**：表示“好的，同意，明白了”。
+- **Cap problema, Tranquil**：表示“没问题，别担心”。
+- **Ostres!, Caram!, Collons!**：表示“天啊！”，用于表达惊讶或强调。
+- **Què fort!**：表示“太厉害了！”
 
-## Reactions
+## 反应方式
 
-React naturally:
-- De veritat?, Serios?, Què dius?
-- Ostres!, Mare meva!, Déu n'hi do!
-- Genial!, Brutal!, Què guai!
-- Haha, jaja in text
+反应时要自然：
+- **De veritat?**：表示“真的吗？”
+- **Serios?**：表示“你是认真的吗？”
+- **Què dius?**：表示“你在说什么？”
+- **Ostres!, Mare meva!**：表示“天啊！”
+- **Genial!, Brutal!**：表示“太棒了！/太糟糕了！”
+- **Haha, jaja**：用于表示笑声。
 
-## Regional Variation
+## 地区差异
 
-Central vs Valencia vs Balearic:
-- Vocabulary differences exist
-- Valencia: some different words
-- Balearic: distinctive features
-- Stay consistent if region known
+加泰罗尼亚语在不同地区存在一些词汇和表达上的差异：
+- **瓦伦西亚地区**：有一些独特的词汇。
+- **巴利阿里地区**：有自己独特的表达方式。
+- 如果知道具体的地区，应保持语言表达的一致性。
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Catalan speaker screenshot this as "AI-generated"? If yes—too formal, no "oi", too stiff. Add colloquial warmth.
+在发送之前，需要考虑这样一个问题：加泰罗尼亚人看到这段文字时，会认为这是AI生成的吗？如果是的话，说明语言过于正式、缺乏口语的亲切感。因此，需要添加更多口语化的表达元素，让语言更加自然。

@@ -1,18 +1,18 @@
-# test-runner
+# 测试运行器
 
-Write and run tests across languages and frameworks.
+用于跨语言和框架编写和运行测试。
 
-## Framework Selection
+## 框架选择
 
-| Language | Unit Tests | Integration | E2E |
+| 语言 | 单元测试 | 集成测试 | 端到端测试 |
 |----------|-----------|-------------|-----|
-| TypeScript/JS | Vitest (preferred), Jest | Supertest | Playwright |
+| TypeScript/JavaScript | Vitest（推荐），Jest | Supertest | Playwright |
 | Python | pytest | pytest + httpx | Playwright |
 | Swift | XCTest | XCTest | XCUITest |
 
-## Quick Start by Framework
+## 按框架快速入门
 
-### Vitest (TypeScript / JavaScript)
+### Vitest（TypeScript / JavaScript）
 ```bash
 npm install -D vitest @testing-library/react @testing-library/jest-dom
 ```
@@ -47,7 +47,7 @@ npx jest --coverage     # With coverage
 npx jest path/to/test   # Single file
 ```
 
-### pytest (Python)
+### pytest（Python）
 ```bash
 uv pip install pytest pytest-cov pytest-asyncio httpx
 ```
@@ -61,14 +61,14 @@ pytest tests/test_api.py -k "test_login"  # Specific test
 pytest --tb=short               # Short tracebacks
 ```
 
-### XCTest (Swift)
+### XCTest（Swift）
 ```bash
 swift test                      # Run all tests
 swift test --filter MyTests     # Specific test suite
 swift test --parallel           # Parallel execution
 ```
 
-### Playwright (E2E)
+### Playwright（端到端测试）
 ```bash
 npm install -D @playwright/test
 npx playwright install
@@ -82,11 +82,11 @@ npx playwright test --project=chromium # Specific browser
 npx playwright show-report             # View HTML report
 ```
 
-## TDD Workflow
+## TDD（测试驱动开发）工作流程
 
-1. **Red** — Write a failing test that describes the desired behavior.
-2. **Green** — Write the minimum code to make the test pass.
-3. **Refactor** — Clean up the code while keeping tests green.
+1. **编写失败的测试用例** — 编写描述预期行为的测试用例。
+2. **编写最少的代码** — 编写使测试通过的最小代码量。
+3. **重构代码** — 在保持测试通过的情况下优化代码结构。
 
 ```
 ┌─────────┐     ┌─────────┐     ┌──────────┐
@@ -98,9 +98,9 @@ npx playwright show-report             # View HTML report
      └──────────────────────────────────────────┘
 ```
 
-## Test Patterns
+## 测试模式
 
-### Arrange-Act-Assert
+### Arrange-Act-Assert（排列-执行-断言）
 ```typescript
 test('calculates total with tax', () => {
   // Arrange
@@ -114,7 +114,7 @@ test('calculates total with tax', () => {
 });
 ```
 
-### Testing Async Code
+### 测试异步代码
 ```typescript
 test('fetches user data', async () => {
   const user = await getUser('123');
@@ -122,7 +122,7 @@ test('fetches user data', async () => {
 });
 ```
 
-### Mocking
+### 模拟（Mocking）
 ```typescript
 import { vi } from 'vitest';
 
@@ -132,7 +132,7 @@ const mockFetch = vi.fn().mockResolvedValue({
 vi.stubGlobal('fetch', mockFetch);
 ```
 
-### Testing API Endpoints (Python)
+### 测试API接口（Python）
 ```python
 import pytest
 from httpx import AsyncClient
@@ -146,7 +146,7 @@ async def test_get_users():
     assert isinstance(response.json(), list)
 ```
 
-### Testing React Components
+### 测试React组件
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Button } from './Button';
@@ -159,7 +159,7 @@ test('calls onClick when clicked', () => {
 });
 ```
 
-## Coverage Commands
+## 覆盖率相关命令
 
 ```bash
 # JavaScript/TypeScript
@@ -176,16 +176,16 @@ open coverage/index.html       # macOS
 open htmlcov/index.html        # Python
 ```
 
-## What to Test
+## 应该测试的内容
 
-**Always test:**
-- Public API / exported functions
-- Edge cases: empty input, null, boundary values
-- Error handling: invalid input, network failures
-- Business logic: calculations, state transitions
+**必须测试的内容：**
+- 公共API/导出的函数
+- 边缘情况：空输入、null值、边界值
+- 错误处理：无效输入、网络故障
+- 业务逻辑：计算逻辑、状态转换
 
-**Don't bother testing:**
-- Private implementation details
-- Framework internals (React rendering, Express routing)
-- Trivial getters/setters
-- Third-party library behavior
+**无需测试的内容：**
+- 私有的实现细节
+- 框架的内部机制（如React的渲染逻辑、Express的路由机制）
+- 简单的getter/setter方法
+- 第三方库的实现行为

@@ -1,17 +1,21 @@
 ---
 name: pvpc-spain
-description: Consulta y optimiza precios de electricidad PVPC en España (tarifa 2.0TD para usuarios domésticos). Usa cuando necesites (1) precio actual con contexto (alto/medio/bajo vs día), (2) identificar periodos valle/llano/punta según horario, (3) encontrar las horas más baratas del día, (4) optimizar cuándo usar electrodomésticos (lavadora, lavavajillas, secadora, etc.) para minimizar coste eléctrico.
+description: 查询并优化西班牙光伏电力（PVPC）的价格（适用于家庭用户的2.0TD电价方案）。您可以使用该工具来实现以下目标：  
+1. 查看当前电价情况（根据时间段分为高/中/低电价）；  
+2. 根据时间区分用电高峰期、平价期和低谷期；  
+3. 找到一天中电价最低的时段；  
+4. 优化家用电器（如洗衣机、洗碗机、烘干机等）的使用时间，以降低电费成本。
 ---
 
-# PVPC España
+# PVPC 西班牙
 
-Skill para consultar precios PVPC (Precio Voluntario Pequeño Consumidor) en España y optimizar el consumo eléctrico. Todos los datos se obtienen de la API pública de ESIOS (Red Eléctrica de España) para la tarifa 2.0TD.
+本技能用于查询西班牙的 PVPC（小型消费者自愿定价）电价，并优化电力消耗。所有数据均来自 ESIOS（西班牙电力公司）的公共 API，适用于 2.0TD 电价方案。
 
-## Consultas disponibles
+## 可用的查询功能
 
-### 1. Precio actual con contexto
+### 1. 当前电价（含分类信息）
 
-Muestra el precio actual clasificado como ALTO/MEDIO/BAJO según percentiles del día.
+显示根据当日百分位数划分的当前电价（高/中/低）。
 
 ```bash
 # Precio actual completo
@@ -21,15 +25,15 @@ python scripts/get_pvpc.py --now
 python scripts/precio_referencia.py --now
 ```
 
-**Respuesta incluye:**
-- Precio actual (€/kWh)
-- Mínimo y máximo del día
-- Clasificación: BAJO (<percentil 30), MEDIO (30-70), ALTO (>70)
-- Desviación respecto a la media del día
+**响应包含：**
+- 当前电价（€/kWh）
+- 当日最低价和最高价
+- 电价分类：低（<30% 分位数），中（30-70%），高（>70%）
+- 与当日平均电价的偏差
 
-### 2. Periodos tarifarios (valle/llano/punta)
+### 2. 电价时段（平价/高峰/低谷）
 
-Identifica el periodo actual según tarifa 2.0TD, ajustado por día de la semana.
+根据 2.0TD 电价方案，识别当前的电价时段（按工作日调整）。
 
 ```bash
 # Periodo actual
@@ -39,16 +43,16 @@ python scripts/tarifa_periodos.py --now
 python scripts/tarifa_periodos.py --all
 ```
 
-**Periodos 2.0TD:**
-- **VALLE** 🌙: 00:00-08:00 (todos los días) + sábados/domingos completos
-- **LLANO** ⚡: 08:00-10:00, 14:00-18:00, 22:00-00:00 (lun-vie)
-- **PUNTA** 🔴: 10:00-14:00, 18:00-22:00 (lun-vie)
+**2.0TD 电价时段：**
+- **平价时段** 🌙：00:00-08:00（每天）+ 周六/周日全天
+- **高峰时段** ⚡：08:00-10:00, 14:00-18:00, 22:00-00:00（周一至周五）
+- **低谷时段** 🔴：10:00-14:00, 18:00-22:00（周一至周五）
 
-**Nota:** Los periodos son iguales en horario de verano e invierno para 2.0TD.
+**注意：** 2.0TD 电价方案的时段在夏季和冬季是相同的。
 
-### 3. Horas más baratas del día
+### 3. 当日最便宜的用电时段
 
-Encuentra rangos de horas con precios por debajo del percentil 30 del día.
+查找电价低于当日 30% 分位数的时段。
 
 ```bash
 # Rangos baratos (por defecto percentil 30)
@@ -58,15 +62,15 @@ python scripts/find_cheap_ranges.py
 python scripts/find_cheap_ranges.py --percentile 40
 ```
 
-**Respuesta incluye:**
-- Rangos de 2+ horas consecutivas con precios bajos
-- Precio mínimo/máximo/medio de cada rango
-- Ahorro porcentual vs media del día
-- Ordenados por duración (rangos más largos primero)
+**响应包含：**
+- 连续 2 小时及以上的低价时段
+- 每个时段的最低价/最高价/平均价
+- 相对于当日平均价的节省百分比
+- 按时长排序（时长较长的时段排在前面）
 
-### 4. Optimizar electrodomésticos
+### 4. 优化家用电器使用时间
 
-Encuentra la ventana de N horas consecutivas con menor coste total.
+查找连续 N 小时内总用电成本最低的时段。
 
 ```bash
 # Lavadora (2 horas por defecto)
@@ -79,16 +83,16 @@ python scripts/optimize_appliance.py --duration 3 --name lavavajillas
 python scripts/optimize_appliance.py --duration 2 --name secadora
 ```
 
-**Respuesta incluye:**
-- Hora óptima de inicio y fin
-- Coste total del ciclo (€)
-- Desglose de precio por hora
-- Ahorro vs usar en horario medio
-- Hasta 2 alternativas con <10% diferencia de coste
+**响应包含：**
+- 最佳开始和结束时间
+- 整个周期的总成本（€）
+- 每小时的价格明细
+- 与使用高峰时段相比的节省金额
+- 提供最多 2 个成本相差小于 10% 的时段选项
 
-## Salida JSON
+## JSON 输出格式
 
-Todos los scripts soportan `--json` para integración programática:
+所有脚本均支持使用 `--json` 参数进行程序化集成：
 
 ```bash
 python scripts/get_pvpc.py --json
@@ -96,45 +100,45 @@ python scripts/find_cheap_ranges.py --json
 python scripts/optimize_appliance.py --duration 3 --json
 ```
 
-## Ejemplos de uso desde el agente
+## 用户使用示例
 
-**Usuario:** "¿Cuánto cuesta la luz ahora?"
+**用户：**“现在的电价是多少？”
 ```bash
 python scripts/get_pvpc.py --now
 python scripts/precio_referencia.py --now
 ```
 
-**Usuario:** "¿Cuándo es más barata la luz hoy?"
+**用户：**“今天什么时候用电最便宜？”
 ```bash
 python scripts/find_cheap_ranges.py
 ```
 
-**Usuario:** "¿Cuándo pongo la lavadora?"
+**用户：**“我什么时候洗衣服比较合适？”
 ```bash
 python scripts/optimize_appliance.py --duration 2 --name lavadora
 ```
 
-**Usuario:** "¿Cuándo es valle?"
+**用户：**“现在是什么电价时段？”
 ```bash
 python scripts/tarifa_periodos.py --now
 ```
 
-**Usuario:** "¿Cuándo pongo el lavavajillas que dura 3 horas?"
+**用户：**“我什么时候使用洗衣机比较合适？”
 ```bash
 python scripts/optimize_appliance.py --duration 3 --name lavavajillas
 ```
 
-## Notas técnicas
+## 技术说明
 
-- **Fuente de datos:** API pública de ESIOS (Red Eléctrica de España)
-- **Tarifa:** PVPC 2.0TD (usuarios domésticos con potencia <10 kW)
-- **Actualización:** Los precios se publican diariamente alrededor de las 20:00 para el día siguiente
-- **Precios:** Incluyen todos los términos (energía, peajes, cargos) en €/kWh
-- **Sin autenticación:** Usa endpoint público, no requiere token
+- **数据来源：** ESIOS（西班牙电力公司）的公共 API
+- **电价方案：** PVPC 2.0TD（功率 <10 kW 的家庭用户）
+- **更新频率：** 电价信息每日约在 20:00 公布，适用于次日
+- **价格包含内容：** 所有费用（能源费、附加费）均以 €/kWh 计算
+- **无需认证：** 使用公共 API，无需 token
 
-## Limitaciones
+## 限制事项
 
-- Los datos históricos no se almacenan localmente (cada consulta es fresh)
-- La clasificación ALTO/MEDIO/BAJO es relativa al día actual, no a históricos
-- Los festivos nacionales no se detectan automáticamente (se tratan como días laborables)
-- Requiere conectividad a internet para consultar la API
+- 历史数据不会本地存储（每次查询均为实时数据）
+- “高/中/低”电价分类是基于当日情况，而非历史数据
+- 国家节假日不会自动识别（视为工作日）
+- 查询 API 需要互联网连接

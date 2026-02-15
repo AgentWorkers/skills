@@ -1,45 +1,45 @@
 ---
 name: apple-health-skill
-description: Talk to your Apple Health data — ask questions about your workouts, heart rate, activity rings, and fitness trends using AI.
+description: 与您的 Apple Health 数据进行交互——利用人工智能来查询您的锻炼记录、心率数据、活动量统计以及健康趋势等信息。
 homepage: https://www.transition.fun
 ---
 
 # Apple Health Skill
 
-Chat with your Apple Health data using AI. Ask about your workouts, heart rate trends, activity rings, VO2 Max, and more. Powered by [Transition](https://www.transition.fun), which syncs with Apple Health to give AI agents access to your fitness data.
+通过人工智能与您的 Apple Health 数据进行交互。您可以查询自己的锻炼记录、心率趋势、活动量等信息。该功能由 [Transition](https://www.transition.fun) 提供支持，该服务能够与 Apple Health 同步，从而让人工智能助手访问您的健康数据。
 
-## Setup
+## 设置
 
-1. Download [Transition](https://www.transition.fun) and grant Apple Health access
-2. Go to **Settings > API Keys** and tap **Generate New Key**
-3. Set the environment variable:
+1. 下载 [Transition](https://www.transition.fun) 并授予其访问 Apple Health 数据的权限。
+2. 进入 **设置 > API 密钥**，然后点击 **生成新密钥**。
+3. 设置环境变量：
 
 ```bash
 export TRANSITION_API_KEY="tr_live_xxxxxxxxxxxxxxxxxxxxx"
 ```
 
-## No Auth Required
+## 无需认证
 
-### Workout of the Day
+### 当日锻炼计划
 
-Generate a random structured workout — no account needed.
+系统会随机生成一份结构化的锻炼计划——无需注册账户即可使用。
 
 ```bash
 curl "https://api.transition.fun/api/v1/wod?sport=run&duration=45"
 ```
 
-**Parameters:**
-- `sport` — `run`, `bike`, `swim`, or `strength` (default: `run`)
-- `duration` — minutes, 10-300 (default: `45`)
+**参数：**
+- `sport` — `run`（跑步）、`bike`（骑行）、`swim`（游泳）或 `strength`（力量训练）（默认值：`run`）
+- `duration` — 锻炼时长（分钟），范围为 10–300 分钟（默认值：45 分钟）
 
-## Authenticated Endpoints
+## 需要认证的接口
 
-**Base URL:** `https://api.transition.fun`
-**Auth:** Pass `X-API-Key` header on every request.
+**基础 URL：** `https://api.transition.fun`
+**认证方式：** 在每个请求中添加 `X-API-Key` 头部字段。
 
-### AI Coach Chat
+### 人工智能教练聊天
 
-Ask questions about your Apple Health data. The AI coach has full context on your workouts and health metrics.
+您可以就自己的 Apple Health 数据提出问题。人工智能教练会全面了解您的锻炼情况和健康指标。
 
 ```bash
 curl -X POST -H "X-API-Key: $TRANSITION_API_KEY" \
@@ -48,72 +48,69 @@ curl -X POST -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/coach/chat"
 ```
 
-Example questions:
-- "How many workouts did I do this week?"
-- "What's my VO2 Max trend?"
-- "How has my sleep been trending this week?"
-- "Compare my running pace this month vs last month"
-- "Should I take a rest day based on my recent training?"
+示例问题：
+- “我这周进行了多少次锻炼？”
+- “我的最大摄氧量（VO2 Max）有什么变化趋势？”
+- “我这周的睡眠情况如何？”
+- “我这个月的跑步速度和上个月相比如何？”
+- “根据我最近的训练情况，我需要休息一天吗？”
 
-### Get Workouts
+### 获取锻炼计划
 
-Retrieve scheduled workouts for a date range.
+您可以查询指定日期范围内的锻炼计划。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/workouts?start=2026-02-09&end=2026-02-15"
 ```
 
-**Parameters:**
-- `start` — Start date (YYYY-MM-DD, required)
-- `end` — End date (YYYY-MM-DD, required)
-- Maximum range between `start` and `end` is 90 days.
+**参数：**
+- `start` — 开始日期（格式：YYYY-MM-DD，必填）
+- `end` — 结束日期（格式：YYYY-MM-DD，必填）
+- `start` 和 `end` 之间的时间范围最长为 90 天。
 
-### Performance Management Chart (PMC)
+### 表现管理图表（Performance Management Chart, PMC）
 
-Get CTL (fitness), ATL (fatigue), and TSB (form) calculated from your Apple Health workouts.
+系统会根据您的 Apple Health 锻炼数据计算 CTL（健康状况）、ATL（疲劳程度）和 TSB（身体状态）。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/performance/pmc"
 ```
 
-### Performance Stats
+### 表现统计数据
 
-Get FTP, threshold paces, heart rate zones, and other metrics derived from your Apple Health data.
+系统会从您的 Apple Health 数据中提取 FTP（最大摄氧量）、阈值配速、心率区间等指标。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/performance/stats"
 ```
 
-### Athlete Profile
+### 运动员个人资料
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/profile"
 ```
 
-### Chat History
+### 聊天记录
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/coach/history"
 ```
 
-## Rate Limits
+## 访问限制
 
-| Tier | Read Endpoints | AI Endpoints |
-|------|---------------|-------------|
-| Free | 100/day | 3/day |
-| Paid | 10,000/day | 100/day |
+| 访问层级 | 免费用户可访问的接口 | 需付费用户可访问的接口 |
+|------|------------------|----------------------|
+| 免费 | 每天 100 个接口 | 每天 300 个接口 |
+| 付费 | 每天 10,000 个接口 | 每天 100 个接口 |
 
-## Tips for Agents
+## 对助手的建议：
 
-1. **Use coach chat as the primary interface.** It has full context on the user's Apple Health workouts, heart rate, and performance — just ask natural questions.
-
-2. **Check fatigue before recommending hard workouts.** Call `GET /api/v1/performance/pmc` and look at TSB. If TSB is below -20, the athlete is fatigued.
-
-3. **Use the free WOD endpoint for quick workouts.** No auth needed — great for users who just want a workout suggestion.
-
-4. **Date format is always YYYY-MM-DD** for all date parameters.
+1. **优先使用教练聊天功能。** 该功能可以全面了解用户的 Apple Health 锻炼记录、心率及表现数据，只需提出自然的问题即可。
+2. **在推荐高强度锻炼前先检查疲劳情况。** 调用 `GET /api/v1/performance/pmc` 查看 TSB（身体状态）值。如果 TSB 低于 -20，说明运动员处于疲劳状态。
+3. **如需快速获取锻炼建议，可使用免费的锻炼计划接口。** 无需认证，非常适合仅需要锻炼建议的用户。
+4. 所有日期参数的格式均为 YYYY-MM-DD。

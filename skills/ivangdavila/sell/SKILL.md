@@ -1,76 +1,93 @@
 ---
 name: "Sell"
-description: "Price items accurately, create compelling listings, choose platforms, and handle negotiations."
+description: "准确标明商品价格，制作吸引人的商品列表，选择合适的销售平台，并妥善处理交易谈判。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: "sell this", "how much is this worth", "where should I sell", "help me list", pricing requests for items to sell.
+在以下情况下触发操作：  
+- “出售此物品”；  
+- “这个物品值多少钱？”；  
+- “我应该在哪里出售？”；  
+- “帮我列出这个物品的出售信息”；  
+- 对待待售物品的定价请求。
 
-**Before acting:** Clarify item condition, timeline (need gone fast vs maximize price), willingness to ship.
+**行动前的准备：**  
+明确物品的状况、时间安排（是希望尽快出售还是希望获得最高价格），以及是否愿意发货。
 
-## Core Flow
+## 核心流程  
 
-1. **Identify** — What is it? Condition? Complete?
-2. **Price** — Research comps by type (see `pricing.md`)
-3. **Platform** — Match item to audience (see `platforms.md`)
-4. **List** — Title, photos, description
-5. **Manage** — Handle offers, detect scams, reprice if needed
+1. **识别物品**：  
+   - 这是什么物品？  
+   - 物品的状态如何？  
+   - 物品是否完整？
 
-## Pricing Quick Start
+2. **定价**：  
+   - 根据物品类型研究同类产品的市场价格（详见 `pricing.md`）。  
 
-**For used items with market comps:**
-1. Search eBay **SOLD** listings (not active)
-2. Check FB Marketplace in your area
-3. Set floor (minimum you'll accept)
-4. List at floor + 15-20%
+3. **选择销售平台**：  
+   - 选择适合该物品的目标销售平台（详见 `platforms.md`）。  
 
-**For handmade/unique items:**
-Materials + (hourly rate × hours) + 30% margin
+4. **发布出售信息**：  
+   - 设置合适的标题、上传照片并撰写详细描述。  
 
-For detailed strategies by item type, see `pricing.md`.
+5. **后续管理**：  
+   - 处理收到的报价，识别潜在的诈骗行为；必要时重新调整价格。  
 
-## Listing Formula
+## 定价快速指南  
 
-**Title:** `[Brand] [Model] [Key Spec] [Condition]`
-> Sony WH-1000XM4 Wireless Headphones - Excellent
+**对于有市场参考价格的二手物品：**  
+1. 在 eBay 上搜索已售出的类似物品（非活跃状态）。  
+2. 查看你所在地区的 Facebook Marketplace。  
+3. 设定最低接受价格（即你的底价）。  
+4. 以底价加上 15–20% 的价格发布出售信息。  
 
-**Photos (minimum 5):**
-1. Hero shot — clean background
-2. All angles
-3. Close-up of features/branding
-4. Every flaw (builds trust)
-5. What's included
+**对于手工制作或独特的物品：**  
+   - 价格 = 材料成本 + （每小时人工成本 × 工作小时数）+ 30% 的利润空间。  
 
-**Description:**
-- What it is (brand, model, specs)
-- Honest condition
-- What's included
-- Shipping/pickup options
+有关不同物品类型的详细定价策略，请参阅 `pricing.md`。  
 
-## Handling Offers
+## 发布出售信息的格式  
 
-| Offer | Response |
-|-------|----------|
-| <50% asking | Ignore or "Price firm at X" |
-| 50-70% | Counter at 90% |
-| 70%+ | Counter 85-90% or accept if at floor |
+**标题示例：**  
+`[品牌] [型号] [关键规格] [物品状况]`  
+> Sony WH-1000XM4 无线耳机 - 状态极佳  
 
-**Soft declines:**
-> "I have interest at asking price"
-> "I'll keep your offer in mind if it doesn't sell by [date]"
+**照片要求（至少 5 张）：**  
+1. 一张整体展示照片（背景干净）。  
+2. 从多个角度拍摄的照片。  
+3. 物品功能或品牌标识的特写照片。  
+4. 展示物品的所有瑕疵（这有助于建立买家信任）。  
+5. 说明随物品附带的内容。  
 
-## Safety
+**描述示例：**  
+- 说明物品的详细信息（品牌、型号、规格）。  
+- 如实描述物品的实际状况。  
+- 说明随物品附带的内容。  
+- 提供送货或自取的选择方式。  
 
-Scams are common. See `safety.md` for:
-- Red flags that mean "do not engage"
-- Safe meeting practices
-- Payment method guidance
-- What to do if something goes wrong
+## 处理报价  
 
-## Repricing Strategy
+| 报价 | 回应方式 |  
+|-------|----------|  
+| 低于要价的 50% | 忽略报价或回复 “我坚持定价 X 元”。 |  
+| 50–70% 之间 | 回复 “我愿意接受 90% 的价格”。 |  
+| 高于 70% 以上 | 回复 “我愿意接受 85–90% 的价格”；如果报价达到底价，则接受报价”。 |  
 
-- **Week 1:** Full price (urgent buyers)
-- **Week 2:** Drop 10%
-- **Week 3:** Drop 10% more + "price firm"
-- **Week 4:** Relist elsewhere or accept floor
+**委婉拒绝的方式：**  
+> “我对要价有兴趣。”  
+> “如果这个物品在 [截止日期] 前没有售出，我会考虑你的报价。”  
+
+## 安全注意事项  
+
+诈骗行为较为常见。请参阅 `safety.md` 以了解：  
+- 需要警惕的警示信号（表明不应与之交易）。  
+- 安全的交易方式。  
+- 支付方式的建议。  
+- 如果出现问题应采取的措施。  
+
+## 重新定价策略：  
+- **第 1 周**：保持原价（针对急需购买的买家）。  
+- **第 2 周**：降价 10%。  
+- **第 3 周**：再降价 10% 并再次明确表示价格不变。  
+- **第 4 周**：在其他平台重新发布出售信息或接受底价。

@@ -1,77 +1,77 @@
 ---
 name: Scholar
-description: Search academic literature with Google Scholar using effective queries, citations, and filters.
+description: 使用有效的查询语句、引用格式和筛选条件，在Google Scholar中搜索学术文献。
 metadata: {"clawdbot":{"emoji":"🎓","os":["linux","darwin","win32"]}}
 ---
 
-# Google Scholar Research Rules
+# Google Scholar 研究指南
 
-## Query Construction
-- Exact phrases in quotes: "machine learning" finds the phrase, not separate words
-- Exclude terms with minus: neural networks -deep removes deep learning results
-- OR for alternatives: "global warming" OR "climate change" — must be uppercase
-- author: operator for specific researchers: author:"Y LeCun"
-- source: for specific journals: source:"Nature" quantum computing
-- intitle: forces term in title: intitle:transformer attention
+## 查询构建
+- 使用引号输入精确的短语：例如 “machine learning” 会精确匹配该短语，而不会单独查找每个单词。
+- 使用减号排除某些术语：例如 “neural networks -deep” 会排除与 “deep learning” 相关的搜索结果。
+- 使用 “OR” 来组合多个选项：例如 “global warming” OR “climate change”（关键词需大写）。
+- 使用 “author:” 来查找特定作者的论文：例如 author:“Y LeCun”。
+- 使用 “source:” 来查找特定期刊的论文：例如 source:“Nature” 或 quantum computing。
+- 使用 “intitle:” 来查找标题中包含特定关键词的论文：例如 intitle:“transformer attention”。
 
-## Time Filters
-- Custom range critical for recent research — default shows highly cited old papers first
-- "Since 2023" for cutting-edge but less vetted work
-- "Since 2020" balances recency and citation accumulation
-- Sort by date for newest, sort by relevance for most cited — toggle based on need
+## 时间筛选
+- 自定义时间范围可以筛选出最新的研究论文——默认情况下，系统会优先显示被引用次数较多的旧论文。
+- 选择 “Since 2023” 可以找到前沿但审查较少的研究论文。
+- 选择 “Since 2020” 可以在保证论文新颖性的同时，兼顾其被引用情况。
+- 可以根据需要选择按日期排序或按相关性排序。
 
-## Understanding Results
-- Citation count indicates influence, not quality — popular isn't always right
-- "Cited by X" link shows who built on this work — follow research forward
-- "Related articles" finds similar work — useful after finding one good paper
-- Versions link shows preprints and alternate copies — often free when journal isn't
-- Quotation marks in snippet show exact matches — verify relevance before clicking
+## 理解搜索结果
+- 被引用次数并不能完全反映论文的质量——受欢迎并不一定意味着论文质量高。
+- “Cited by X” 链接可以显示哪些论文引用了当前论文，有助于进一步追踪相关研究。
+- “Related articles” 功能可以找到与该论文相关的其他研究论文——在找到一篇优质论文后非常有用。
+- “Versions” 链接可以查看论文的预印本或其他版本——这些版本通常可以免费获取。
+- 摘录中的引号表示内容与搜索词完全匹配——点击前请确认相关性。
 
-## Finding Full Text
-- Check "All versions" for free copies — preprints, institutional repositories
-- Add filetype:pdf to find direct PDF links
-- Unpaywall browser extension auto-finds legal free versions
-- Request from authors directly — most will share, academia.edu and ResearchGate common
-- Institutional access through library proxy — VPN to university network
+## 查找全文
+- 选择 “All versions” 可以查看论文的所有版本（包括预印本和机构存储的版本）。
+- 可以添加 “filetype:pdf” 来查找 PDF 格式的论文链接。
+- 使用支持解封网页的浏览器扩展程序可以自动找到免费的论文版本。
+- 也可以直接联系论文作者获取全文——大多数作者会愿意分享，academic.edu 和 ResearchGate 是常见的获取途径。
+- 通过图书馆代理或 VPN 连接到大学网络，可以获取更多论文资源。
 
-## Citation Analysis
-- h-index visible on author profiles — measures productivity and impact
-- "Cited by" sorted by relevance shows most influential citations
-- Citation count alone misleads — review papers cite heavily but add less
-- Self-citations inflate metrics — check who's actually citing
-- Recent citations more meaningful for living research — old papers cited by habit
+## 引用分析
+- 作者的个人资料页面会显示其 h 指数——h 指数反映了作者的科研产出和影响力。
+- 按相关性排序的 “Cited by” 列表可以显示最具影响力的引用。
+- 仅依赖被引用次数可能会产生误导——有些论文被大量引用，但实际贡献较小。
+- 自引会抬高 h 指数——请核实真正引用该论文的来源。
+- 最新的引用对于当前的研究更为重要——而旧论文可能只是因为历史原因被引用。
 
-## Alerts and Tracking
-- Create alerts for search terms — email when new papers match
-- Follow researchers via profiles — notifications for new publications
-- "Cite" button exports to reference managers — BibTeX, EndNote, RefMan
-- Save to library requires Google account — organizes papers for later
+## 提醒与跟踪
+- 为搜索词设置提醒——当有新论文符合条件时，系统会发送电子邮件通知。
+- 通过作者的个人资料关注他们的最新研究成果。
+- 点击 “Cite” 按钮可以将论文导入参考管理工具（如 BibTeX、EndNote、RefMan）。
+- 如需将论文保存到图书馆，请使用 Google 账户——这有助于后续整理论文资料。
 
-## Limitations to Know
-- Coverage biased toward English and STEM — humanities and non-English underrepresented
-- No quality filter — predatory journals appear alongside legitimate ones
-- Older papers may not be indexed — pre-digital era incomplete
-- Cannot search full text — only titles, abstracts, and metadata
-- Ranking algorithm opaque — not always clear why results ordered as shown
+## 需要注意的局限性
+- Google Scholar 的覆盖范围偏向英语和 STEM 领域——人文学科和非英语文献的收录较少。
+- 该平台没有质量筛选机制，因此可能存在一些质量较低的期刊。
+- 一些较旧的论文可能未被收录（尤其是数字化之前的论文）。
+- 该平台无法直接搜索论文的全文，只能查看标题、摘要和元数据。
+- 排名算法不透明——无法完全理解搜索结果的排序依据。
 
-## Evaluating Sources
-- Check journal reputation before trusting — impact factor as rough guide
-- Preprints not peer-reviewed — valuable for speed, treat as preliminary
-- Conference papers vary by field — top-tier in CS, lower status in medicine
-- Retracted papers may still appear — verify paper status before citing
-- Thesis and dissertations are gray literature — use cautiously
+## 评估研究来源
+- 在引用论文之前，请先核实期刊的声誉——影响因子可以作为参考。
+- 预印本尚未经过同行评审——虽然获取速度快，但属于初步研究成果。
+- 会议论文的质量因领域而异——计算机科学领域的会议论文通常质量较高，医学领域的会议论文则相对较低。
+- 被撤回的论文仍可能出现在搜索结果中——引用前请核实论文的状态。
+- 论文和学位论文属于“灰色文献”——使用时要谨慎。
 
-## Search Strategies
-- Start broad, narrow with filters — missing papers worse than sorting many
-- Combine Scholar with domain databases — PubMed for medicine, IEEE for engineering
-- Snowball: find one good paper, explore its citations and references
-- Check review papers for comprehensive coverage — synthesize existing knowledge
-- Multiple queries with synonyms — terminology varies across disciplines
+## 搜索策略
+- 先进行广泛搜索，再使用筛选条件缩小范围——遗漏论文比随意筛选更多论文更糟糕。
+- 结合使用 Google Scholar 和专业领域的数据库（例如医学领域的 PubMed、工程领域的 IEEE）。
+- 使用“滚雪球”式搜索方法：找到一篇优质论文后，继续探索其引用和参考文献。
+- 查看综述论文以获取全面的学术信息。
+- 使用同义词进行多次搜索——不同领域的术语可能有差异。
 
-## Common Mistakes
-- Trusting citation count as quality measure
-- Ignoring publication date — fields evolve, old papers may be outdated
-- Stopping at first page of results — good papers may be buried
-- Not checking for retractions or corrections
-- Citing papers based only on abstract — always read methodology
-- Missing preprint versions that are freely available
+## 常见错误
+- 仅依赖被引用次数来评估论文质量。
+- 忽略论文的发表日期——某些领域的知识在不断更新，旧论文可能已经过时。
+- 只查看搜索结果的第一页——优质论文可能被埋没在大量结果中。
+- 不查看论文是否被撤回或修正。
+- 仅根据摘要来引用论文——务必阅读论文的方法论部分。
+- 忽略了那些可以免费获取的预印本版本。

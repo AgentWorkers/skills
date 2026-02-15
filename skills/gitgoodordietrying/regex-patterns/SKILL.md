@@ -1,74 +1,74 @@
 ---
 name: regex-patterns
-description: Practical regex patterns across languages and use cases. Use when validating input (email, URL, IP), parsing log lines, extracting data from text, refactoring code with search-and-replace, or debugging why a regex doesn't match.
+description: 实用的正则表达式模式及其应用场景：可用于验证输入（如电子邮件、URL、IP地址）、解析日志行、从文本中提取数据、通过“查找并替换”功能重构代码，或调试正则表达式为何无法匹配目标内容。
 metadata: {"clawdbot":{"emoji":"🔤","requires":{"anyBins":["grep","python3","node"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Regex Patterns
+# 正则表达式模式
 
-Practical regular expression cookbook. Patterns for validation, parsing, extraction, and refactoring across JavaScript, Python, Go, and command-line tools.
+这是一本实用的正则表达式指南，涵盖了在 JavaScript、Python、Go 和命令行工具中用于验证、解析、提取数据以及重构代码的模式。
 
-## When to Use
+## 使用场景
 
-- Validating user input (email, URL, IP, phone, dates)
-- Parsing log lines or structured text
-- Extracting data from strings (IDs, numbers, tokens)
-- Search-and-replace in code (rename variables, update imports)
-- Filtering lines in files or command output
-- Debugging regexes that don't match as expected
+- 验证用户输入（电子邮件、URL、IP 地址、电话号码、日期）
+- 解析日志行或结构化文本
+- 从字符串中提取数据（如 ID、数字、标记）
+- 在代码中进行查找和替换操作（例如重命名变量、更新导入语句）
+- 过滤文件或命令输出中的行
+- 调试无法按预期匹配的正则表达式
 
-## Quick Reference
+## 快速参考
 
-### Metacharacters
+### 元字符
 
-| Pattern | Matches | Example |
+| 正则表达式 | 匹配内容 | 示例 |
 |---|---|---|
-| `.` | Any character (except newline) | `a.c` matches `abc`, `a1c` |
-| `\d` | Digit `[0-9]` | `\d{3}` matches `123` |
-| `\w` | Word char `[a-zA-Z0-9_]` | `\w+` matches `hello_123` |
-| `\s` | Whitespace `[ \t\n\r\f]` | `\s+` matches spaces/tabs |
-| `\b` | Word boundary | `\bcat\b` matches `cat` not `scatter` |
-| `^` | Start of line | `^Error` matches line starting with Error |
-| `$` | End of line | `\.js$` matches line ending with .js |
-| `\D`, `\W`, `\S` | Negated: non-digit, non-word, non-space | |
+| `.` | 任意字符（换行符除外） | `a.c` 匹配 `abc` 和 `a1c` |
+| `\d` | 数字 `[0-9]` | `\d{3}` 匹配 `123` |
+| `\w` | 字符 `[a-zA-Z0-9_>` | `\w+` 匹配 `hello_123` |
+| `\s` | 空白字符 `[ \t\n\r\f]` | `\s+` 匹配多个空白字符 |
+| `\b` | 单词边界 | `\bcat\b` 匹配 `cat` 而不是 `scatter` |
+| `^` | 行首 | `^Error` 匹配以 `Error` 开头的行 |
+| `$` | 行尾 | `\.js$` 匹配以 `.js` 结尾的行 |
+| `\D`, `\W`, `\S` | 表示非数字、非单词、非空白字符 |
 
-### Quantifiers
+### 量词
 
-| Pattern | Meaning |
+| 正则表达式 | 含义 |
 |---|---|
-| `*` | 0 or more (greedy) |
-| `+` | 1 or more (greedy) |
-| `?` | 0 or 1 (optional) |
-| `{3}` | Exactly 3 |
-| `{2,5}` | Between 2 and 5 |
-| `{3,}` | 3 or more |
-| `*?`, `+?` | Lazy (match as few as possible) |
+| `*` | 0 个或多个（贪婪匹配） |
+| `+` | 1 个或多个（贪婪匹配） |
+| `?` | 0 个或 1 个（可选） |
+| `{3}` | 恰好 3 个 |
+| `{2,5}` | 2 到 5 个 |
+| `{3,}` | 3 个或更多 |
+| `*?`, `+?` | 非贪婪匹配（尽可能少地匹配） |
 
-### Groups and Alternation
+### 组合和选择
 
-| Pattern | Meaning |
+| 正则表达式 | 含义 |
 |---|---|
-| `(abc)` | Capture group |
-| `(?:abc)` | Non-capturing group |
-| `(?P<name>abc)` | Named group (Python) |
-| `(?<name>abc)` | Named group (JS/Go) |
-| `a\|b` | Alternation (a or b) |
-| `[abc]` | Character class (a, b, or c) |
-| `[^abc]` | Negated class (not a, b, or c) |
-| `[a-z]` | Range |
+| `(abc)` | 捕获组 |
+| `(?:abc)` | 非捕获组 |
+| `(?P<name>abc)` | 命名捕获组（Python） |
+| `(?<name>abc)` | 命名捕获组（JavaScript/Go） |
+| `a\|b` | 选择（a 或 b） |
+| `[abc]` | 字符类（a、b 或 c） |
+| `[^abc]` | 非字符类（不是 a、b 或 c） |
+| `[a-z]` | 字符范围 |
 
-### Lookahead and Lookbehind
+### 前瞻和后瞻
 
-| Pattern | Meaning |
+| 正则表达式 | 含义 |
 |---|---|
-| `(?=abc)` | Positive lookahead (followed by abc) |
-| `(?!abc)` | Negative lookahead (not followed by abc) |
-| `(?<=abc)` | Positive lookbehind (preceded by abc) |
-| `(?<!abc)` | Negative lookbehind (not preceded by abc) |
+| `(?=abc)` | 正向前瞻（后面必须跟着 abc） |
+| `(?!abc)` | 负向前瞻（后面不能跟着 abc） |
+| `(?<=abc)` | 正向后瞻（前面必须跟着 abc） |
+| `(?<!abc)` | 负向后瞻（前面不能跟着 abc） |
 
-## Validation Patterns
+## 验证模式
 
-### Email
+### 电子邮件验证
 
 ```
 # Basic (covers 99% of real emails)
@@ -78,7 +78,7 @@ Practical regular expression cookbook. Patterns for validation, parsing, extract
 ^[a-zA-Z0-9]([a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z]{2,})+$
 ```
 
-### URL
+### URL 验证
 
 ```
 # HTTP/HTTPS URLs
@@ -88,7 +88,7 @@ https?://[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA
 https?://[^\s/]+(/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?
 ```
 
-### IP Addresses
+### IP 地址验证
 
 ```
 # IPv4
@@ -101,7 +101,7 @@ https?://[^\s/]+(/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?
 (?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}
 ```
 
-### Phone Numbers
+### 电话号码验证
 
 ```
 # US phone (various formats)
@@ -112,7 +112,7 @@ https?://[^\s/]+(/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?
 \+[1-9]\d{6,14}
 ```
 
-### Dates and Times
+### 日期和时间格式验证
 
 ```
 # ISO 8601 date
@@ -128,20 +128,20 @@ https?://[^\s/]+(/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?
 (?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d
 ```
 
-### Passwords (Strength Check)
+### 密码强度检查
 
 ```
 # At least 8 chars, 1 upper, 1 lower, 1 digit, 1 special
 ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$
 ```
 
-### UUIDs
+### UUID 验证
 
 ```
 [0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}
 ```
 
-### Semantic Version
+### 语义版本验证
 
 ```
 \bv?(\d+)\.(\d+)\.(\d+)(?:-([\w.]+))?(?:\+([\w.]+))?\b
@@ -149,9 +149,9 @@ https?://[^\s/]+(/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?
 # Matches: 1.2.3, v1.0.0-beta.1, 2.0.0+build.123
 ```
 
-## Parsing Patterns
+## 解析模式
 
-### Log Lines
+### 日志行解析
 
 ```bash
 # Apache/Nginx access log
@@ -170,7 +170,7 @@ grep -oP '"level"\s*:\s*"\K[^"]+' app.log
 grep -oP '"message"\s*:\s*"\K[^"]+' app.log
 ```
 
-### Code Patterns
+### 代码模式解析
 
 ```bash
 # Find function definitions (JavaScript/TypeScript)
@@ -189,7 +189,7 @@ grep -rnP '(?:TODO|FIXME|HACK|XXX|WARN)(?:\([^)]+\))?:?\s+' src/
 grep -rnP 'console\.(log|debug|info|warn|error)\(' src/ --include='*.ts' --include='*.js'
 ```
 
-### Data Extraction
+### 数据提取
 
 ```bash
 # Extract all email addresses from a file
@@ -214,7 +214,7 @@ grep -oP '#\w+' posts.txt
 grep -oP '#[0-9a-fA-F]{3,8}\b' styles.css
 ```
 
-## Language-Specific Usage
+## 特定语言的用法
 
 ### JavaScript
 
@@ -336,7 +336,7 @@ re.ReplaceAllStringFunc(text, strings.ToUpper)
 // Note: Go uses RE2 syntax — no lookahead/lookbehind
 ```
 
-### Command Line (grep/sed)
+### 命令行工具（grep/sed）
 
 ```bash
 # grep -P uses PCRE (Perl-compatible — full features)
@@ -359,9 +359,9 @@ sed -E 's/foo_([a-z]+)/bar_\1/g' file.txt     # Extended with capture group
 perl -pe 's/(?<=price:\s)\d+/0/g' file.txt    # Lookbehind works in Perl
 ```
 
-## Search-and-Replace Patterns
+## 查找和替换操作
 
-### Code Refactoring
+### 代码重构
 
 ```bash
 # Rename a variable across files
@@ -383,7 +383,7 @@ sed -i 's|from '\''../old-path/|from '\''../new-path/|g' src/*.ts
 perl -pe 's/_([a-z])/uc($1)/ge' file.txt
 ```
 
-### Text Cleanup
+### 文本清理
 
 ```bash
 # Remove trailing whitespace
@@ -405,9 +405,9 @@ sed 's/<[^>]*>//g' file.html
 sed 's/\x1b\[[0-9;]*m//g' output.txt
 ```
 
-## Common Gotchas
+## 常见问题
 
-### Greedy vs lazy matching
+### 贪婪匹配与非贪婪匹配
 
 ```
 Pattern: <.*>     Input: <b>bold</b>
@@ -416,7 +416,7 @@ Lazy    matches: <b>              (stops at first >)
 Pattern: <.*?>    (lazy version)
 ```
 
-### Escaping special characters
+### 转义特殊字符
 
 ```
 Characters that need escaping in regex: . * + ? ^ $ { } [ ] ( ) | \
@@ -428,7 +428,7 @@ In character classes []: only ] - ^ \ need escaping
 # To match [ or ]:         \[ or \]
 ```
 
-### Newlines and multiline
+### 换行符和多行文本
 
 ```
 By default . does NOT match newline.
@@ -445,7 +445,7 @@ Python: re.MULTILINE or re.M
 Go: (?m) inline flag
 ```
 
-### Backtracking and performance
+### 回溯和性能优化
 
 ```
 # Catastrophic backtracking (avoid these patterns on untrusted input):
@@ -459,13 +459,13 @@ a+           # Instead of (a|a)+
 [^a]*a       # Possessive/atomic instead of .*a
 ```
 
-## Tips
+## 提示
 
-- Start simple and add complexity. `\d+` is almost always enough — you rarely need `[0-9]+`.
-- Test your regex on real data, not just the happy path. Edge cases (empty strings, special characters, Unicode) break naive patterns.
-- Use non-capturing groups `(?:...)` when you don't need the captured value. It's slightly faster and cleaner.
-- In JavaScript, always use the `g` flag for `matchAll` and global `replace`. Without it, only the first match is found/replaced.
-- Go's `regexp` package uses RE2 (no lookahead/lookbehind). If you need those, use a different approach or the `regexp2` package.
-- `grep -P` (PCRE) is the most powerful command-line regex. Use it over `grep -E` when you need lookahead, `\d`, or `\b`.
-- For complex patterns, use verbose mode (`re.VERBOSE` in Python, `/x` in Perl) with comments explaining each part.
-- Regex is the wrong tool for parsing HTML, XML, or JSON. Use a proper parser. Regex works for extracting simple values from these formats, not for structural parsing.
+- 从简单模式开始，逐步增加复杂性。通常 `\\d+` 就足够了，很少需要使用 `[0-9]+`。
+- 在实际数据上测试正则表达式，而不仅仅是理想情况下的测试。边缘情况（空字符串、特殊字符、Unicode）会破坏简单的模式。
+- 当不需要捕获匹配结果时，使用非捕获组 `(?:...)`。这样会更快且更简洁。
+- 在 JavaScript 中，使用 `g` 标志进行全局匹配和替换。如果不使用 `g`，只会匹配并替换第一个匹配项。
+- Go 的 `regexp` 包使用 RE2 规则库（不支持前瞻/后瞻功能）。如果需要这些功能，请使用其他库或 `regexp2` 包。
+- `grep -P`（PCRE）是功能最强大的命令行正则表达式工具。当需要前瞻、`\d` 或 `\b` 时，使用它。
+- 对于复杂的正则表达式，使用详细模式（Python 中的 `re.VERBOSE`，Perl 中的 `/x`），并为每个部分添加注释。
+- 正则表达式不适合用于解析 HTML、XML 或 JSON。这些格式应该使用专门的解析器。正则表达式适用于从这些格式中提取简单的数据，但不适合结构化解析。

@@ -1,29 +1,29 @@
 ---
 name: audit-fixer
-description: Analyze npm audit output with AI and get actionable fix suggestions. Use when dealing with security vulnerabilities.
+description: 使用人工智能分析 npm 审计输出，并获取可操作的修复建议。在处理安全漏洞时可以使用此方法。
 ---
 
 # Audit Fixer
 
-npm audit shows 47 vulnerabilities. Half are in nested dependencies you can't control. This tool analyzes your audit results and gives you actionable fixes. Which ones matter, which to ignore, and exactly what to do about each.
+`npm audit` 报告了 47 个安全漏洞，其中一半存在于您无法控制的嵌套依赖项中。该工具会分析这些审计结果，并为您提供可行的修复建议，帮助您判断哪些漏洞需要关注、哪些可以忽略，以及针对每个漏洞应采取的具体措施。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npm audit --json | npx ai-audit-fix
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes npm audit output and prioritizes by real risk
-- Identifies which vulnerabilities actually affect your code
-- Provides specific fix commands for each issue
-- Explains when to override vs when to actually fix
-- Distinguishes between dev and production dependencies
+- 分析 `npm audit` 的输出结果，并根据实际风险对漏洞进行优先级排序
+- 确定哪些漏洞确实会影响您的代码
+- 为每个问题提供具体的修复命令
+- 指导您在何时需要覆盖现有配置、何时需要实际进行修复
+- 区分开发环境依赖项和生产环境依赖项
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Pipe audit output directly
@@ -39,42 +39,42 @@ npm audit --json | npx ai-audit-fix --severity high,critical
 npm audit --json | npx ai-audit-fix --fixes-only
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Focus on production deps first** - Dev dependencies don't ship to users
-- **Check if vulnerable code is actually called** - Many vulnerabilities are in code paths you never use
-- **Update parent packages first** - Often fixes multiple nested vulnerabilities at once
-- **Use overrides carefully** - Document why you're overriding and set a reminder to revisit
+- **优先处理生产环境依赖项**：开发环境依赖项不会被部署给用户
+- **检查是否存在被实际使用的漏洞代码**：许多漏洞存在于您从未使用的代码路径中
+- **先更新父包**：通常可以一次性修复多个嵌套的漏洞
+- **谨慎使用覆盖配置**：记录覆盖配置的原因，并设置提醒以便后续复查
 
-## When to Use This
+## 适用场景
 
-- npm audit shows a wall of red and you don't know where to start
-- CI is failing on security checks
-- Need to report on vulnerabilities to a security team
-- Deciding whether to delay a release for security fixes
+- 当 `npm audit` 显示大量红色警告时，您不知道从何入手
+- 当持续集成（CI）的安全检查失败时
+- 需要向安全团队报告漏洞时
+- 在决定是否推迟发布以进行安全修复时
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册，也无需使用 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-audit-fix --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool parses npm audit JSON output, analyzes each vulnerability's dependency chain and severity, determines if it affects your production code, then generates prioritized recommendations with specific fix commands.
+该工具会解析 `npm audit` 的 JSON 输出，分析每个漏洞的依赖链和严重程度，判断其是否会影响您的生产环境代码，然后生成带有具体修复命令的优先级建议。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+MIT 许可证。永久免费，您可以自由使用该工具。

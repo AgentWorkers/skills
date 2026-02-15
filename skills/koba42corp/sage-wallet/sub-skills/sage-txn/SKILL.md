@@ -1,23 +1,27 @@
 ---
 name: sage-txn
-description: Sage transaction operations. List transactions, sign coin spends, view without signing, submit transactions.
+description: Sage 交易操作：  
+- 列出所有交易；  
+- 签署硬币的支出记录；  
+- 查看未签署的交易；  
+- 提交交易。
 ---
 
 # Sage Transactions
 
-Transaction signing and submission.
+交易签名与提交
 
-## Endpoints
+## 接口（Endpoints）
 
-### Query Transactions
+### 查询交易（Query Transactions）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_transactions` | See below | List transactions |
-| `get_transaction` | `{"height": 1234567}` | Get by height |
-| `get_pending_transactions` | `{}` | List pending |
+| 接口 | 请求参数（Payload） | 描述 |
+|----------|----------------|-------------------|
+| `get_transactions` | 详见下文 | 列出所有交易记录 |
+| `get_transaction` | `{"height": 1234567}` | 根据交易高度查询特定交易 |
+| `get_pending_transactions` | `{}` | 获取待处理的交易记录 |
 
-#### get_transactions Payload
+#### `get_transactions` 的请求参数（Payload）  
 
 ```json
 {
@@ -28,15 +32,15 @@ Transaction signing and submission.
 }
 ```
 
-### Sign & Submit
+### 签名并提交交易（Sign & Submit）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `sign_coin_spends` | See below | Sign transaction |
-| `view_coin_spends` | `{"coin_spends": [...]}` | Preview without signing |
-| `submit_transaction` | `{"spend_bundle": {...}}` | Broadcast |
+| 接口 | 请求参数（Payload） | 描述 |
+|----------|----------------|-------------------|
+| `sign_coin_spends` | 详见下文 | 签名交易记录 |
+| `view_coin_spends` | `{"coin_spends": [...]}` | 预览交易记录（不进行签名） |
+| `submit_transaction` | `{"spend_bundle": {...}}` | 提交交易记录到网络 |
 
-#### sign_coin_spends
+#### `sign_coin_spends` 的请求参数（Payload）  
 
 ```json
 {
@@ -56,9 +60,9 @@ Transaction signing and submission.
 }
 ```
 
-- `partial: true` for multi-sig partial signatures
+- `partial: true`：用于多签名交易流程中的部分签名操作
 
-#### submit_transaction
+#### `submit_transaction` 的请求参数（Payload）  
 
 ```json
 {
@@ -69,7 +73,7 @@ Transaction signing and submission.
 }
 ```
 
-## Transaction Record Structure
+## 交易记录结构（Transaction Record Structure）  
 
 ```json
 {
@@ -81,7 +85,7 @@ Transaction signing and submission.
 }
 ```
 
-## Pending Transaction Structure
+## 待处理交易的结构（Pending Transaction Structure）  
 
 ```json
 {
@@ -92,7 +96,7 @@ Transaction signing and submission.
 }
 ```
 
-## Examples
+## 示例（Examples）  
 
 ```bash
 # List recent transactions
@@ -114,15 +118,15 @@ sage_rpc sign_coin_spends '{
 sage_rpc submit_transaction '{"spend_bundle": {...}}'
 ```
 
-## Workflow
+## 工作流程（Workflow）
 
-1. Build coin spends (from other endpoints with `auto_submit: false`)
-2. Optionally `view_coin_spends` to preview
-3. `sign_coin_spends` to create spend bundle
-4. `submit_transaction` to broadcast (or use `auto_submit: true`)
+1. 通过其他接口构建交易记录（`auto_submit: false`）；
+2. （可选）使用 `view_coin_spends` 预览交易记录；
+3. 使用 `sign_coin_spends` 创建交易签名包；
+4. 使用 `submit_transaction` 将交易记录提交到网络（或设置 `auto_submit: true` 以自动提交）。
 
-## Notes
+## 注意事项（Notes）：
 
-- `auto_submit: true` signs and broadcasts in one call
-- `partial: true` for multi-signature workflows
-- Pending transactions await mempool confirmation
+- 当 `auto_submit: true` 时，签名和提交操作会同时完成；
+- `partial: true` 适用于需要多签名验证的交易流程；
+- 待处理的交易记录会等待矿池的确认。

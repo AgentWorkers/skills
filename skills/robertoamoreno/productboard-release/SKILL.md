@@ -1,28 +1,28 @@
 ---
 name: productboard-release
-description: Manage ProductBoard releases and roadmap planning
+description: 管理 ProductBoard 的发布流程及路线图规划
 user-invocable: false
 homepage: https://github.com/robertoamoreno/openclaw-productboard
 metadata: {"openclaw":{"emoji":"🚀"}}
 ---
 
-# ProductBoard Release Planning Skill
+# ProductBoard 发布计划技能
 
-Plan and manage product releases by organizing features, tracking progress, and updating statuses in ProductBoard.
+通过组织功能、跟踪进度和更新 ProductBoard 中的状态来规划和管理产品发布。
 
-## Available Tools
+## 可用工具
 
-- `pb_feature_create` - Create new features for releases
-- `pb_feature_update` - Update feature status and details
-- `pb_feature_list` - List features by status or product
-- `pb_feature_get` - Get detailed feature information
-- `pb_product_list` - List products
-- `pb_product_hierarchy` - View product structure
-- `pb_user_list` - Find users to assign as owners
+- `pb_feature_create` - 为发布创建新功能
+- `pb_feature_update` - 更新功能的状态和详细信息
+- `pb_feature_list` - 按状态或产品列出功能
+- `pb_feature_get` - 获取详细的功能信息
+- `pb_product_list` - 列出产品
+- `pb_product_hierarchy` - 查看产品结构
+- `pb_user_list` - 查找可分配为负责人的用户
 
-## Release Planning Workflow
+## 发布计划工作流程
 
-### 1. Review Current State
+### 1. 查看当前状态
 
 ```
 1. pb_product_hierarchy - Understand workspace structure
@@ -30,9 +30,9 @@ Plan and manage product releases by organizing features, tracking progress, and 
 3. pb_feature_list with status "in-progress" - Check ongoing work
 ```
 
-### 2. Prioritize Features
+### 2. 对功能进行优先级排序
 
-Review candidates and update their status:
+审查候选功能并更新其状态：
 
 ```
 pb_feature_update:
@@ -40,9 +40,9 @@ pb_feature_update:
   - status: "in-progress"  // Move to active development
 ```
 
-### 3. Assign Owners
+### 3. 分配负责人
 
-Find users and assign feature ownership:
+查找用户并分配功能负责人：
 
 ```
 1. pb_user_list - Get available team members
@@ -51,9 +51,9 @@ Find users and assign feature ownership:
    - ownerEmail: "developer@company.com"
 ```
 
-### 4. Set Timeframes
+### 4. 设置时间框架
 
-Add planning dates to features:
+为功能设置计划日期：
 
 ```
 pb_feature_update:
@@ -62,52 +62,52 @@ pb_feature_update:
   - endDate: "2024-02-15"
 ```
 
-### 5. Track Progress
+### 5. 跟踪进度
 
-Monitor feature statuses:
+监控功能的状态：
 
 ```
 pb_feature_list with status "in-progress" - Active development
 pb_feature_list with status "shipped" - Completed features
 ```
 
-## Feature Status Lifecycle
+## 功能状态生命周期
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `new` | Just created, not yet evaluated |
-| `candidate` | Being considered for development |
-| `in-progress` | Actively being developed |
-| `shipped` | Released to customers |
-| `postponed` | Deferred to future planning |
-| `archived` | No longer relevant |
+| `new` | 新创建，尚未评估 |
+| `candidate` | 正在考虑开发中 |
+| `in-progress` | 正在积极开发中 |
+| `shipped` | 已发布给客户 |
+| `postponed` | 延期到未来的计划中 |
+| `archived` | 不再相关 |
 
-## Planning Scenarios
+## 计划场景
 
-### Sprint Planning
+### 断裂期计划
 
-1. List candidates: `pb_feature_list` with status "candidate"
-2. Review each feature: `pb_feature_get` for details
-3. Move selected features to in-progress: `pb_feature_update`
-4. Assign owners: `pb_feature_update` with ownerEmail
-5. Set sprint dates: `pb_feature_update` with startDate/endDate
+1. 列出候选功能：使用 `pb_feature_list`（状态为“candidate”）
+2. 查看每个功能的详细信息：使用 `pb_feature_get`
+3. 将选中的功能状态更改为“in-progress”：使用 `pb_feature_update`
+4. 分配负责人：使用 `pb_feature_update` 设置 `ownerEmail`
+5. 设置断裂期日期：使用 `pb_feature_update` 设置 `startDate/endDate`
 
-### Release Retrospective
+### 发布回顾
 
-1. List shipped features: `pb_feature_list` with status "shipped"
-2. Review feedback on features: Use feedback skill tools
-3. Archive completed work: `pb_feature_update` with status "archived"
+1. 列出已发布的功能：使用 `pb_feature_list`（状态为“shipped”）
+2. 查看关于功能的反馈：使用反馈工具
+3. 归档已完成的工作：使用 `pb_feature_update` 将状态更改为“archived”
 
-### Quarterly Planning
+### 季度计划
 
-1. Review product hierarchy: `pb_product_hierarchy`
-2. List all active features by product
-3. Reassess priorities and update statuses
-4. Create new features as needed: `pb_feature_create`
+1. 查看产品结构：使用 `pb_product_hierarchy`
+2. 按产品列出所有活跃的功能
+3. 重新评估优先级并更新状态
+4. 根据需要创建新功能：使用 `pb_feature_create`
 
-## Organizing Features
+## 组织功能
 
-### By Product
+### 按产品分类
 
 ```
 pb_feature_create:
@@ -116,7 +116,7 @@ pb_feature_create:
   - status: "candidate"
 ```
 
-### By Component
+### 按组件分类
 
 ```
 pb_feature_create:
@@ -125,7 +125,7 @@ pb_feature_create:
   - status: "candidate"
 ```
 
-### As Sub-feature
+### 作为子功能分类
 
 ```
 pb_feature_create:
@@ -133,11 +133,11 @@ pb_feature_create:
   - parentFeatureId: "parent-feature-id"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use consistent statuses**: Move features through the lifecycle systematically
-2. **Assign owners early**: Clear ownership improves accountability
-3. **Set realistic timeframes**: Update dates as plans change
-4. **Organize hierarchically**: Use products, components, and sub-features
-5. **Archive completed work**: Keep the backlog clean by archiving shipped features
-6. **Review regularly**: Use listing tools to audit feature states
+1. **使用一致的状态**：系统地推进功能通过生命周期
+2. **尽早分配负责人**：明确的责任制有助于提高效率
+3. **设置现实的时间框架**：根据计划的变化更新日期
+4. **分层组织**：使用产品、组件和子功能进行分类
+5. **归档已完成的工作**：通过归档已发布的功能来保持待办事项列表的整洁
+6. **定期审查**：使用列表工具来审核功能的状态

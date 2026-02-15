@@ -1,29 +1,29 @@
 ---
 name: odoo-manager
-description: Manage Odoo (contacts, any business objects, and metadata) via the official External XML-RPC API. Supports generic CRUD operations on any model using execute_kw, with ready-made flows for res.partner and model introspection. Features dynamic instance and database switching with context-aware URL, database, and credential resolution.
+description: 通过官方的 External XML-RPC API 管理 Odoo（联系人、任何业务对象以及元数据）。支持使用 `execute_kw` 对任何模型执行通用的 CRUD 操作，并提供了针对 `res.partner` 和模型内省的现成流程。具备动态实例和数据库切换功能，能够根据上下文自动解析 URL、数据库和凭据信息。
 homepage: https://www.odoo.com/documentation/
 metadata: {"openclaw":{"emoji":"🏢","requires":{"env":["ODOO_URL","ODOO_DB","ODOO_USERNAME","ODOO_PASSWORD"]},"primaryEnv":"ODOO_PASSWORD"}}
 ---
 
-# Odoo Manager Skill
+# Odoo 管理技能
 
-## 🔐 URL, Database & Credential Resolution
+## 🔐 URL、数据库与凭证解析
 
-### URL Resolution
+### URL 解析
 
-Odoo server URL precedence (highest to lowest):
+Odoo 服务器 URL 的优先级（从高到低）：
 
-1. `temporary_url` — one-time URL for a specific operation
-2. `user_url` — user-defined URL for the current session
-3. `ODOO_URL` — environment default URL
+1. `temporary_url` — 用于特定操作的一次性 URL
+2. `user_url` — 当前会话的用户自定义 URL
+3. `ODOO_URL` — 环境默认 URL
 
-This allows you to:
+这允许你：
 
-- Switch between multiple Odoo instances (production, staging, client-specific)
-- Test against demo databases
-- Work with different client environments without changing global config
+- 在多个 Odoo 实例（生产环境、测试环境、特定客户环境）之间切换
+- 在演示数据库上进行测试
+- 在不更改全局配置的情况下使用不同的客户环境
 
-**Examples (conceptual):**
+**示例（概念性）：**
 
 ```text
 // Default: uses ODOO_URL from environment
@@ -38,110 +38,110 @@ user_url = "https://client-xyz.odoo.com"
 {{resolved_url}}/xmlrpc/2/common
 ```
 
-### Database Resolution
+### 数据库解析
 
-Database name (`db`) precedence:
+数据库名称（`db`）的优先级：
 
 1. `temporary_db`
 2. `user_db`
 3. `ODOO_DB`
 
-Use this to:
+使用这些数据库名称，你可以：
 
-- Work with multiple databases on the same Odoo server
-- Switch between test and production databases
+- 在同一 Odoo 服务器上处理多个数据库
+- 在测试数据库和生产数据库之间切换
 
-### Username & Secret Resolution
+### 用户名与密码解析
 
-Username precedence:
+用户名的优先级：
 
 1. `temporary_username`
 2. `user_username`
 3. `ODOO_USERNAME`
 
-Secret (password or API key) precedence:
+密码（或 API 密钥）的优先级：
 
-1. `temporary_api_key` or `temporary_password`
-2. `user_api_key` or `user_password`
-3. `ODOO_API_KEY` (if set) or `ODOO_PASSWORD`
+1. `temporary_api_key` 或 `temporary_password`
+2. `user_api_key` 或 `user_password`
+3. `ODOO_API_KEY`（如果已设置）或 `ODOO_PASSWORD`
 
-**Important:**
+**重要提示：**
 
-- Odoo API keys are used **in place of** the password, with the usual login.
-- Store passwords / API keys like real passwords; never log or expose them.
+- Odoo API 密钥用于替代密码进行登录。
+- 请像处理真实密码一样保管密码/API 密钥；切勿泄露它们。
 
-Environment variables are handled via standard OpenClaw metadata: `requires.env` declares **required** variables (`ODOO_URL`, `ODOO_DB`, `ODOO_USERNAME`, `ODOO_PASSWORD`). `ODOO_API_KEY` is an **optional** environment variable used instead of the password when present; it is not listed in metadata and should simply be set in the environment when needed.
+环境变量通过标准的 OpenClaw 元数据来管理：`requires.env` 声明 **必需** 的变量（`ODOO_URL`、`ODOO_DB`、`ODOO_USERNAME`、`ODOO_PASSWORD`）。`ODOO_API_KEY` 是一个 **可选** 的环境变量，在需要时可以在环境中设置，但它不包含在元数据中。
 
-### Resolved Values
+### 解析后的值
 
-At runtime the skill always works with:
+在运行时，该技能始终使用以下值：
 
-- `{{resolved_url}}` — final URL
-- `{{resolved_db}}` — final database name
-- `{{resolved_username}}` — final login
-- `{{resolved_secret}}` — password **or** API key actually used to authenticate
+- `{{resolved_url}}` — 最终 URL
+- `{{resolved_db}}` — 最终数据库名称
+- `{{resolved_username}}` — 最终用户名
+- `{{resolved_secret}}` — 实际用于身份验证的密码 **或** API 密钥
 
-These are computed using the precedence rules above.
+这些值是根据上述优先级规则计算得出的。
 
 ---
 
-## 🔄 Context Management
+## 🔄 上下文管理
 
-> The `temporary_*` and `user_*` names are **runtime context variables used by the skill logic**, not OpenClaw metadata fields. OpenClaw does **not** have an `optional.context` metadata key; context is resolved dynamically at runtime as described below.
+> `temporary_*` 和 `user_*` 是 **由技能逻辑使用的运行时上下文变量**，而不是 OpenClaw 元数据字段。OpenClaw 没有 `optional.context` 元数据键；上下文是在运行时动态解析的，具体方式如下所述。
 
-### Temporary Context (One-Time Use)
+### 临时上下文（一次性使用）
 
-**User examples:**
+**用户示例：**
 
-- "Pour cette requête, utilise l’instance staging Odoo"
-- "Utilise la base `odoo_demo` juste pour cette opération"
-- "Connecte-toi avec cet utilisateur uniquement pour cette action"
+- “对于此请求，使用 staging Odoo 实例”
+- “仅在此操作中使用 odoo_demo 数据库”
+- “仅为此操作使用该用户名进行连接”
 
-**Behavior:**
+**行为：**
 
-- Set `temporary_*` (url, db, username, api_key/password)
-- Use them for **a single logical operation**
-- Automatically clear after use
+- 设置 `temporary_*`（url、db、username、api_key/password）
+- 仅用于 **一个逻辑操作**
+- 使用后自动清除
 
-This is ideal for:
+这适用于：
 
-- Comparing data between two environments
-- Running a single check on a different database
+- 在两个环境之间比较数据
+- 在不同的数据库上执行单一检查
 
-### Session Context (Current Session)
+### 会话上下文（当前会话）
 
-**User examples:**
+**用户示例：**
 
-- "Travaille sur l’instance Odoo du client XYZ"
-- "Utilise la base `clientx_prod` pour cette session"
-- "Connecte-toi avec mon compte administrateur pour les prochaines opérations"
+- “在客户 XYZ 的 Odoo 实例上工作”
+- “在此会话中使用 clientx_prod 数据库”
+- “使用我的管理员账户进行后续操作”
 
-**Behavior:**
+**行为：**
 
-- Set `user_*` (url, db, username, api_key/password)
-- Persist for the whole current session
-- Overridden only by `temporary_*` or by clearing `user_*`
+- 设置 `user_*`（url、db、username、api_key/password）
+- 在整个当前会话中保持这些值
+- 只有 `temporary_*` 或清除 `user_*` 时才会被覆盖
 
-### Resetting Context
+### 重置上下文
 
-**User examples:**
+**用户示例：**
 
-- "Reviens à la configuration Odoo par défaut"
-- "Efface mon contexte utilisateur Odoo"
+- “恢复到 Odoo 的默认配置”
+- “清除我的 Odoo 用户上下文”
 
-**Action:**
+**操作：**
 
-- Clear `user_url`, `user_db`, `user_username`, `user_password`, `user_api_key`
-- Skill falls back to environment variables (`ODOO_URL`, `ODOO_DB`, `ODOO_USERNAME`, `ODOO_PASSWORD` / `ODOO_API_KEY`)
+- 清除 `user_url`、`user_db`、`user_username`、`user_password`、`user_api_key`
+- 技能将回退到环境变量（`ODOO_URL`、`ODOO_DB`、`ODOO_USERNAME`、`ODOO_PASSWORD` / `ODOO_API_KEY`）
 
-### Viewing Current Context
+### 查看当前上下文
 
-**User examples:**
+**用户示例：**
 
-- "Sur quelle instance Odoo es-tu connecté ?"
-- "Montre la configuration Odoo actuelle"
+- “你连接到了哪个 Odoo 实例？”
+- “显示当前的 Odoo 配置”
 
-**Response should show (never full secrets):**
+**响应应显示（但不会显示完整密码）：**
 
 ```text
 Current Odoo Context:
@@ -155,26 +155,26 @@ Current Odoo Context:
 
 ---
 
-## ⚙️ Odoo XML-RPC Basics
+## ⚙️ Odoo XML-RPC 基础
 
-Odoo exposes part of its server framework over **XML-RPC** (not REST).
-The External API is documented here: https://www.odoo.com/documentation/18.0/fr/developer/reference/external_api.html
+Odoo 通过 **XML-RPC**（而非 REST）暴露部分服务器框架。
+外部 API 的文档位于：https://www.odoo.com/documentation/18.0/fr/developer/reference/external_api.html
 
-Two main endpoints:
+两个主要端点：
 
-- `{{resolved_url}}/xmlrpc/2/common` — authentication and meta calls
-- `{{resolved_url}}/xmlrpc/2/object` — model methods via `execute_kw`
+- `{{resolved_url}}/xmlrpc/2/common` — 身份验证和元数据调用
+- `{{resolved_url}}/xmlrpc/2/object` — 通过 `execute_kw` 调用模型方法
 
-### 1. Checking Server Version
+### 1. 检查服务器版本
 
-Call `version()` on the `common` endpoint to verify URL and connectivity:
+在 `common` 端点调用 `version()` 以验证 URL 和连接性：
 
 ```python
 common = xmlrpc.client.ServerProxy(f"{resolved_url}/xmlrpc/2/common")
 version_info = common.version()
 ```
 
-Example result:
+示例结果：
 
 ```json
 {
@@ -185,30 +185,30 @@ Example result:
 }
 ```
 
-### 2. Authenticating
+### 2. 身份验证
 
-Use `authenticate(db, username, password_or_api_key, {})` on the `common` endpoint:
+在 `common` 端点使用 `authenticate(db, username, password_or_api_key, {})` 进行身份验证：
 
 ```python
 uid = common.authenticate(resolved_db, resolved_username, resolved_secret, {})
 ```
 
-`uid` is an integer user ID and will be used in all subsequent calls.
+`uid` 是一个整数用户 ID，将在所有后续调用中使用。
 
-If authentication fails, `uid` is `False` / `0` — the skill should:
+如果身份验证失败，`uid` 为 `False` 或 `0` — 技能应：
 
-- Inform the user that credentials or database are invalid
-- Suggest checking `ODOO_URL`, `ODOO_DB`, username, and secret
+- 告知用户凭证或数据库无效
+- 建议检查 `ODOO_URL`、`ODOO_DB`、用户名和密码
 
-### 3. Calling Model Methods with execute_kw
+### 3. 使用 execute_kw 调用模型方法
 
-Build an XML-RPC client for the `object` endpoint:
+为 `object` 端点构建一个 XML-RPC 客户端：
 
 ```python
 models = xmlrpc.client.ServerProxy(f"{resolved_url}/xmlrpc/2/object")
 ```
 
-Then use `execute_kw` with the following signature:
+然后使用以下签名调用 `execute_kw`：
 
 ```python
 models.execute_kw(
@@ -222,55 +222,54 @@ models.execute_kw(
 )
 ```
 
-All ORM operations in this skill are expressed in terms of `execute_kw`.
+此技能中的所有 ORM 操作都是通过 `execute_kw` 来实现的。
 
 ---
 
-## 🔍 Domains & Data Types (Odoo ORM)
+## 🔍 域名与数据类型（Odoo ORM）
 
-### Domain Filters
+### 域名过滤器
 
-Domains are lists of conditions:
+域名是一组条件：
 
 ```python
 domain = [["field_name", "operator", value], ...]
 ```
 
-Examples:
+示例：
 
-- All companies: `[['is_company', '=', True]]`
-- Partners in France: `[['country_id', '=', france_id]]`
-- Leads with probability > 50%: `[['probability', '>', 50]]`
+- 所有公司：`[['is_company', '=', True]]`
+- 法国的合作伙伴：`[['country_id', '=', france_id]]`
+- 概率大于 50% 的潜在客户：`[['probability', '>', 50]]`
 
-Common operators:
+常用操作符：
 
 - `"="`, `"!="`, `">"`, `">="`, `"<"`, `"<="`
-- `"like"`, `"ilike"` (case-insensitive)
+- `"like"`, `"ilike"`（不区分大小写）
 - `"in"`, `"not in"`
-- `"child_of"` (hierarchical relations)
+- `"child_of"`（层次关系）
 
-### Field Value Conventions
+### 字段值约定
 
-- **Integer / Float / Char / Text**: use native types.
-- **Date / Datetime**: strings in `YYYY-MM-DD` or ISO 8601 format.
-- **Many2one**: usually send the **record ID** (`int`) when writing; reads often return `[id, display_name]`.
-- **One2many / Many2many**: use the Odoo **command list** protocol for writes (not fully detailed here; see Odoo docs if needed).
+- **整数 / 浮点数 / 字符串 / 文本**：使用原生类型。
+- **日期 / 时间日期**：字符串格式为 `YYYY-MM-DD` 或 ISO 8601。
+- **Many2one**：写入时通常发送 **记录 ID`（`int`）；读取时通常返回 `[id, display_name]`。
+- **One2many / Many2many**：写入时使用 Odoo 的 **命令列表** 协议（此处未详细说明；如需详细信息，请参阅 Odoo 文档）。
 
 ---
 
-## 🧩 Generic ORM Operations (execute_kw)
+## 🧩 通用 ORM 操作（execute_kw）
 
-Each subsection below shows typical user queries and the corresponding
-`execute_kw` usage. They are applicable to **any** model (not only `res.partner`).
+以下每个小节展示了典型的用户查询及其对应的 `execute_kw` 使用方法。这些方法适用于 **任何** 模型（而不仅仅是 `res.partner`）。
 
-### List / Search Records (search)
+### 列出/搜索记录（search）
 
-**User queries:**
+**用户查询：**
 
-- "Liste tous les partenaires société"
-- "Cherche les commandes de vente confirmées"
+- “列出所有公司合作伙伴”
+- “查找已确认的销售订单”
 
-**Action (generic):**
+**操作（通用）：**
 
 ```python
 ids = models.execute_kw(
@@ -281,19 +280,19 @@ ids = models.execute_kw(
 )
 ```
 
-Notes:
+注意：
 
-- `domain` is a list (can be empty `[]` to match all records).
-- Use `offset` and `limit` for pagination.
+- `domain` 是一个列表（可以为空 `[]` 以匹配所有记录）。
+- 使用 `offset` 和 `limit` 进行分页。
 
-### Count Records (search_count)
+### 统计记录数量（search_count）
 
-**User queries:**
+**用户查询：**
 
-- "Combien de partenaires sont des sociétés ?"
-- "Compte les tâches en cours"
+- “有多少公司是公司？”
+- “统计正在进行中的任务数量”
 
-**Action:**
+**操作：**
 
 ```python
 count = models.execute_kw(
@@ -303,14 +302,14 @@ count = models.execute_kw(
 )
 ```
 
-### Read Records by ID (read)
+### 根据 ID 读取记录（read）
 
-**User queries:**
+**用户查询：**
 
-- "Affiche les détails du partenaire 7"
-- "Donne-moi les champs name et country_id pour ces IDs"
+- “显示合作伙伴 7 的详细信息”
+- “提供这些 ID 对应的 name 和 country_id 字段”
 
-**Action:**
+**操作：**
 
 ```python
 records = models.execute_kw(
@@ -321,18 +320,18 @@ records = models.execute_kw(
 )
 ```
 
-If `fields` is omitted, Odoo returns all readable fields (often a lot).
+如果省略了 `fields`，Odoo 会返回所有可读字段（通常很多字段）。
 
-### Search and Read in One Step (search_read)
+### 一步搜索和读取（search_read）
 
-Shortcut for `search()` + `read()` in a single call.
+`search()` 和 `read()` 的快捷方式。
 
-**User queries:**
+**用户查询：**
 
-- "Liste les sociétés (nom, pays, commentaire)"
-- "Montre les 5 premiers partenaires avec leurs pays"
+- “列出公司（名称、国家）”
+- “显示前 5 个合作伙伴及其国家”
 
-**Action:**
+**操作：**
 
 ```python
 records = models.execute_kw(
@@ -348,14 +347,14 @@ records = models.execute_kw(
 )
 ```
 
-### Create Records (create)
+### 创建记录（create）
 
-**User queries:**
+**用户查询：**
 
-- "Crée un nouveau partenaire 'New Partner'"
-- "Crée une nouvelle tâche dans le projet X"
+- “创建一个新的合作伙伴 ‘New Partner’”
+- “在项目 X 中创建一个新的任务”
 
-**Action:**
+**操作：**
 
 ```python
 new_id = models.execute_kw(
@@ -368,16 +367,16 @@ new_id = models.execute_kw(
 )
 ```
 
-Returns the newly created record ID.
+返回新创建的记录 ID。
 
-### Update Records (write)
+### 更新记录（write）
 
-**User queries:**
+**用户查询：**
 
-- "Met à jour le partenaire 7, change son nom"
-- "Baisse la probabilité de ces leads"
+- “更新合作伙伴 7 的信息，更改其名称”
+- “降低这些潜在客户的概率”
 
-**Action:**
+**操作：**
 
 ```python
 success = models.execute_kw(
@@ -387,19 +386,19 @@ success = models.execute_kw(
 )
 ```
 
-Notes:
+注意：
 
-- `ids` is a list of record IDs.
-- All records in `ids` receive the **same** values.
+- `ids` 是记录 ID 的列表。
+- `ids` 中的所有记录都会收到 **相同的** 更新值。
 
-### Delete Records (unlink)
+### 删除记录（unlink）
 
-**User queries:**
+**用户查询：**
 
-- "Supprime ce partenaire de test"
-- "Efface ces tâches temporaires"
+- “删除这个测试合作伙伴”
+- “删除这些临时任务”
 
-**Action:**
+**操作：**
 
 ```python
 success = models.execute_kw(
@@ -409,15 +408,15 @@ success = models.execute_kw(
 )
 ```
 
-### Name-Based Search (name_search)
+### 基于名称的搜索（name_search）
 
-Useful for quick lookup on models with a display name (e.g. partners, products).
+适用于具有显示名称的模型（例如合作伙伴、产品）的快速查找。
 
-**User queries:**
+**用户查询：**
 
-- "Trouve le partenaire dont le nom contient 'Agrolait'"
+- “查找名称包含 ‘Agrolait’ 的合作伙伴”
 
-**Action:**
+**操作：**
 
 ```python
 results = models.execute_kw(
@@ -428,22 +427,22 @@ results = models.execute_kw(
 )
 ```
 
-Result is a list of `[id, display_name]`.
+结果是一个包含 `[id, display_name]` 的列表。
 
 ---
 
-## 👥 Contacts / Partners (res.partner)
+## 👥 联系人/合作伙伴（res.partner）
 
-`res.partner` is the core model for contacts, companies, and many business relations in Odoo.
+`res.partner` 是 Odoo 中联系人、公司和多种业务关系的核心模型。
 
-### List Company Partners
+### 列出公司合作伙伴
 
-**User queries:**
+**用户查询：**
 
-- "Liste toutes les sociétés"
-- "Montre les sociétés avec leur pays"
+- “列出所有公司”
+- “显示带有国家信息的公司”
 
-**Action:**
+**操作：**
 
 ```python
 companies = models.execute_kw(
@@ -454,14 +453,14 @@ companies = models.execute_kw(
 )
 ```
 
-### Get a Single Partner
+### 获取单个合作伙伴
 
-**User queries:**
+**用户查询：**
 
-- "Affiche le partenaire 7"
-- "Donne-moi le pays et le commentaire du partenaire 7"
+- “显示合作伙伴 7”
+- “提供合作伙伴 7 的国家信息和备注”
 
-**Action:**
+**操作：**
 
 ```python
 [partner] = models.execute_kw(
@@ -472,14 +471,14 @@ companies = models.execute_kw(
 )
 ```
 
-### Create a New Partner
+### 创建新合作伙伴
 
-**User queries:**
+**用户查询：**
 
-- "Crée un partenaire 'Agrolait 2' en tant que société"
-- "Crée un contact personne rattaché à la société X"
+- “创建一个名为 ‘Agrolait 2’ 的新公司”
+- “创建一个隶属于公司 X 的个人联系人”
 
-**Minimal body:**
+**最小化代码示例：**
 
 ```python
 partner_id = models.execute_kw(
@@ -492,20 +491,20 @@ partner_id = models.execute_kw(
 )
 ```
 
-**Additional fields examples:**
+**其他字段示例：**
 
-- `street`, `zip`, `city`, `country_id`
-- `email`, `phone`, `mobile`
-- `company_type` (`"person"` or `"company"`)
+- `street`、`zip`、`city`、`country_id`
+- `email`、`phone`、`mobile`
+- `company_type`（`"person"` 或 `"company"`）
 
-### Update a Partner
+### 更新合作伙伴
 
-**User queries:**
+**用户查询：**
 
-- "Change l’adresse du partenaire 7"
-- "Met à jour le pays et le téléphone"
+- “更改合作伙伴 7 的地址”
+- “更新国家和电话信息”
 
-**Action:**
+**操作：**
 
 ```python
 models.execute_kw(
@@ -518,13 +517,13 @@ models.execute_kw(
 )
 ```
 
-### Delete a Partner
+### 删除合作伙伴
 
-**User queries:**
+**用户查询：**
 
-- "Supprime le partenaire 999 de test"
+- “删除测试合作伙伴 999”
 
-**Action:**
+**操作：**
 
 ```python
 models.execute_kw(
@@ -536,16 +535,16 @@ models.execute_kw(
 
 ---
 
-## 🧱 Model Introspection (ir.model, ir.model.fields, fields_get)
+## 🧱 模型查询（ir.model, ir.model.fields, fields_get）
 
-### Discover Fields of a Model (fields_get)
+### 发现模型的字段（fields_get）
 
-**User queries:**
+**用户查询：**
 
-- "Quels sont les champs de res.partner ?"
-- "Montre les types et labels des champs pour ce modèle"
+- “res.partner 模型有哪些字段？”
+- “显示该模型的字段类型和标签”
 
-**Action:**
+**操作：**
 
 ```python
 fields = models.execute_kw(
@@ -556,7 +555,7 @@ fields = models.execute_kw(
 )
 ```
 
-The result is a mapping from field name to metadata:
+结果是一个从字段名称到元数据的映射：
 
 ```json
 {
@@ -566,13 +565,13 @@ The result is a mapping from field name to metadata:
 }
 ```
 
-### List All Models (ir.model)
+### 列出所有模型（ir.model）
 
-**User queries:**
+**用户查询：**
 
-- "Quels modèles sont disponibles dans ma base Odoo ?"
+- “我的 Odoo 数据库中有哪些模型？”
 
-**Action:**
+**操作：**
 
 ```python
 models_list = models.execute_kw(
@@ -583,15 +582,15 @@ models_list = models.execute_kw(
 )
 ```
 
-`state` indicates whether a model is defined in code (`"base"`) or created dynamically (`"manual"`).
+`state` 表示模型是在代码中定义的（`"base"`）还是动态创建的（`"manual"`）。
 
-### List Fields of a Specific Model (ir.model.fields)
+### 列出特定模型的字段（ir.model.fields）
 
-**User queries:**
+**用户查询：**
 
-- "Donne-moi la liste des champs du modèle res.partner via ir.model.fields"
+- “通过 ir.model.fields 获取 res.partner 模型的字段列表”
 
-**Action (simplified):**
+**操作（简化版）：**
 
 ```python
 partner_model_ids = models.execute_kw(
@@ -609,71 +608,70 @@ fields_meta = models.execute_kw(
 
 ---
 
-## ⚠️ Error Handling & Best Practices
+## ⚠️ 错误处理与最佳实践
 
-### Typical Errors
+### 常见错误
 
-- **Authentication failure**: wrong URL, DB, username, or secret → `authenticate` returns `False` or later calls fail.
-- **Access rights / ACLs**: user does not have permission on a model or record.
-- **Validation errors**: required fields missing, constraints violated.
-- **Connectivity issues**: network errors reaching `xmlrpc/2/common` or `xmlrpc/2/object`.
+- **身份验证失败**：URL、数据库、用户名或密码错误 → `authenticate` 返回 `False`，后续调用会失败。
+- **访问权限/ACL**：用户没有对某个模型或记录的访问权限。
+- **验证错误**：缺少必填字段或违反了约束条件。
+- **连接问题**：无法连接到 `xmlrpc/2/common` 或 `xmlrpc/2/object`。
 
-The skill should:
+该技能应：
 
-- Clearly indicate if the issue is with **connection**, **credentials**, or **business validation**.
-- Propose next steps (check env vars, context overrides, user rights).
+- 明确指出问题是在 **连接**、**凭证** 还是 **业务验证** 方面。
+- 提出下一步操作建议（检查环境变量、上下文覆盖、用户权限）。
 
-### Pagination
+### 分页
 
-- Use `limit` / `offset` on `search` and `search_read` to handle large datasets.
-- For interactive use, default `limit` to a reasonable value (e.g. 80).
+- 在 `search` 和 `search_read` 中使用 `limit` / `offset` 来处理大量数据。
+- 对于交互式使用，将默认的 `limit` 设置为一个合理的值（例如 80）。
 
-### Field Selection
+### 字段选择
 
-- Always send an explicit `fields` list for `read` / `search_read` when possible.
-- This reduces payload and speeds up responses.
+- 在可能的情况下，始终为 `read` / `search_read` 提供明确的 `fields` 列表。
+- 这可以减少数据量并加快响应速度。
 
-### Domains & Performance
+### 域名与性能
 
-- Prefer indexed fields and simple operators (`=`, `in`) for large datasets.
-- Avoid unbounded searches without domain on very big tables when possible.
-
----
-
-## 🚀 Quick End-to-End Examples
-
-### Example 1: Check Connection & List Company Partners
-
-1. Resolve context: `{{resolved_url}}`, `{{resolved_db}}`, `{{resolved_username}}`, `{{resolved_secret}}`
-2. Call `version()` on `{{resolved_url}}/xmlrpc/2/common`
-3. Authenticate to get `uid`
-4. Call `execute_kw` on `res.partner` with `search_read` and domain `[['is_company', '=', True]]`
-
-### Example 2: Create a Partner, Then Read It Back
-
-1. Authenticate via `common.authenticate`
-2. `create` a new `res.partner` with `{"name": "New Partner", "is_company": True}`
-3. `read` that ID with fields `["name", "is_company", "country_id"]`
-
-### Example 3: Work on Another Database for One Operation
-
-1. Set `temporary_url` and/or `temporary_db` to point to another Odoo environment.
-2. Authenticate and perform the requested operation using resolved context.
-3. Temporary context is cleared automatically.
+- 对于大型数据集，优先使用索引字段和简单的操作符（`=`, `in`）。
+- 尽量避免在没有域名的情况下对非常大的表进行无限制的搜索。
 
 ---
 
-## 📚 References & Capabilities Summary
+## 🚀 快速端到端示例
 
-- Official Odoo External API documentation (XML-RPC): https://www.odoo.com/documentation/18.0/fr/developer/reference/external_api.html
-- Requires an Odoo plan with External API access (Custom plans; not available on One App Free / Standard).
+### 示例 1：检查连接并列出公司合作伙伴
 
-**This skill can:**
+1. 解析上下文：`{{resolved_url}}`、`{{resolved_db}}`、`{{resolved_username}}`、`{{resolved_secret}}`
+2. 在 `{{resolved_url}}/xmlrpc/2/common` 上调用 `version()`
+3. 进行身份验证以获取 `uid`
+4. 使用 `search_read` 和域名 `[['is_company', '=', True]]` 调用 `execute_kw` 在 `res.partner` 上
 
-- Connect to Odoo via XML-RPC using password **or** API key.
-- Switch dynamically between multiple instances and databases using context.
-- Perform generic CRUD (`search`, `search_count`, `read`, `search_read`, `create`, `write`, `unlink`) on **any** Odoo model via `execute_kw`.
-- Provide ready-made flows for `res.partner` (contacts / companies).
-- Inspect model structures using `fields_get`, `ir.model`, and `ir.model.fields`.
-- Apply best practices regarding pagination, field selection, and error handling.
+### 示例 2：创建合作伙伴，然后读取其信息
 
+1. 通过 `common.authenticate` 进行身份验证
+2. 使用 `{"name": "New Partner", "is_company": True}` 创建一个新的 `res.partner`
+3. 使用 `["name", "is_company", "country_id"]` 读取该记录的详细信息
+
+### 示例 3：在另一个数据库上执行操作
+
+1. 设置 `temporary_url` 和/或 `temporary_db` 以指向另一个 Odoo 环境。
+2. 进行身份验证并使用解析后的上下文执行所需操作。
+3. 临时上下文会自动清除。
+
+---
+
+## 📚 参考资料与功能概述
+
+- 官方 Odoo 外部 API 文档（XML-RPC）：https://www.odoo.com/documentation/18.0/fr/developer/reference/external_api.html
+- 需要具有外部 API 访问权限的 Odoo 计划（自定义计划；One App Free / Standard 计划不包含此功能）。
+
+**此技能可以：**
+
+- 使用密码 **或** API 密钥通过 XML-RPC 连接到 Odoo。
+- 通过上下文动态切换多个实例和数据库。
+- 通过 `execute_kw` 对 **任何** Odoo 模型执行通用的 CRUD 操作（`search`、`search_count`、`read`、`search_read`、`create`、`write`、`unlink`）。
+- 为 `res.partner`（联系人/公司）提供现成的操作流程。
+- 使用 `fields_get`、`ir.model` 和 `ir.model.fields` 检查模型结构。
+- 遵循分页、字段选择和错误处理的最佳实践。

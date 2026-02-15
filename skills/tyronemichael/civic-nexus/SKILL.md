@@ -1,25 +1,25 @@
 ---
 name: civic-nexus
-description: "Connect to Civic Nexus MCP for 100+ integrations."
+description: "连接到 Civic Nexus MCP，以实现 100 多种集成功能。"
 metadata: {"openclaw":{"requires":{"env":["NEXUS_URL","NEXUS_TOKEN"],"anyBins":["mcporter","npx"]},"primaryEnv":"NEXUS_TOKEN"}}
 ---
 
 # Civic Nexus MCP Bridge
 
-> **⚠️ DISCLAIMER: Use at your own risk. For official documentation, visit [docs.civic.com](https://docs.civic.com).**
+> **⚠️ 免责声明：请自行承担使用风险。如需官方文档，请访问 [docs.civic.com](https://docs.civic.com)。**
 
-Connect to [Civic Nexus](https://nexus.civic.com) for 100+ integrations including Gmail, PostgreSQL, MongoDB, Box, and more.
+通过 [Civic Nexus](https://nexus.civic.com) 可实现与 100 多个服务的集成，包括 Gmail、PostgreSQL、MongoDB、Box 等。
 
-## Setup
+## 设置
 
-### 1. Get your Nexus credentials
+### 1. 获取 Nexus 的登录凭据
 
-1. Go to [nexus.civic.com](https://nexus.civic.com) and sign in
-2. Get your **MCP URL** and **access token** from your profile settings
+1. 访问 [nexus.civic.com](https://nexus.civic.com) 并登录
+2. 从个人设置中获取您的 **MCP URL** 和 **访问令牌**
 
-### 2. Configure in OpenClaw
+### 2. 在 OpenClaw 中进行配置
 
-Add to `~/.openclaw/openclaw.json`:
+将以下配置添加到 `~/.openclaw/openclaw.json` 文件中：
 
 ```json
 {
@@ -37,9 +37,9 @@ Add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-### 3. (Optional) Configure mcporter
+### 3. （可选）配置 mcporter
 
-If you have mcporter installed (`npm install -g mcporter`), add to `~/.openclaw/workspace/config/mcporter.json`:
+如果您已安装了 mcporter（使用命令 `npm install -g mcporter`），请将其配置添加到 `~/.openclaw/workspace/config/mcporter.json` 文件中：
 
 ```json
 {
@@ -55,11 +55,11 @@ If you have mcporter installed (`npm install -g mcporter`), add to `~/.openclaw/
 }
 ```
 
-## Instructions for the Agent
+## 代理程序的使用说明
 
-When the user asks to interact with external services through Nexus, try mcporter first. If it fails, fall back to the TypeScript script.
+当用户希望通过 Nexus 与外部服务交互时，首先尝试使用 mcporter；如果 mcporter 失败，则会切换到 TypeScript 脚本。
 
-### Using mcporter
+### 使用 mcporter
 
 ```bash
 # List tools
@@ -72,7 +72,7 @@ mcporter list nexus | grep gmail
 mcporter call 'nexus.google-gmail-search_gmail_messages(query: "is:unread")'
 ```
 
-### Fallback: TypeScript script
+### 备用方案：TypeScript 脚本
 
 ```bash
 # List tools
@@ -88,12 +88,12 @@ npx tsx {baseDir}/nexus-tool-runner.ts --schema google-gmail-search_gmail_messag
 npx tsx {baseDir}/nexus-tool-runner.ts --call google-gmail-search_gmail_messages --args '{"query": "is:unread"}'
 ```
 
-### Authorization flows
+### 授权流程
 
-Some tools require OAuth on first use. When you see an authorization URL:
+某些工具在首次使用时需要 OAuth 认证。当您看到授权请求 URL 时，请执行以下操作：
 
-1. Show the URL to the user
-2. After they authorize, continue:
+1. 将该 URL 显示给用户
+2. 用户授权后，继续执行后续操作：
    ```bash
    # mcporter
    mcporter call 'nexus.continue_job(jobId: "JOB_ID")'
@@ -102,10 +102,10 @@ Some tools require OAuth on first use. When you see an authorization URL:
    npx tsx {baseDir}/nexus-tool-runner.ts --call continue_job --args '{"job_id": "JOB_ID"}'
    ```
 
-## Notes
+## 注意事项
 
-- API calls can take 10-15 seconds (server-side latency)
-- Tokens expire after ~30 days — regenerate from Nexus if needed
-- Gmail batch requests limited to 5-25 messages per call
+- API 调用可能需要 10–15 秒（取决于服务器端响应时间）
+- 令牌的有效期为约 30 天，如有需要可从 Nexus 重新生成
+- Gmail 的批量请求每次调用最多只能发送 5–25 条消息
 
 ---

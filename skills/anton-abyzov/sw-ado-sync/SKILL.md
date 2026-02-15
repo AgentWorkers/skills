@@ -1,46 +1,46 @@
 ---
 name: ado-sync
-description: Help and guidance for Azure DevOps synchronization with SpecWeave increments. Use when asking how to set up ADO sync, configure credentials, or troubleshoot integration issues. For actual syncing, use /sw-ado:sync command.
+description: 关于如何将 Azure DevOps 与 SpecWeave 进行同步的帮助和指导。当您需要了解如何设置 Azure DevOps 的同步配置、配置凭据或解决集成问题时，请参考本文档。若要实际执行同步操作，请使用 `/sw-ado:sync` 命令。
 ---
 
-# Azure DevOps Sync Skill
+# Azure DevOps 同步技能
 
-**Purpose**: Seamlessly sync SpecWeave increments with Azure DevOps work items for unified project tracking.
+**功能**：实现 SpecWeave 与 Azure DevOps 之间的无缝同步，以便统一项目跟踪。
 
-**Default Behavior**: **Bidirectional (two-way) sync** - Changes in either system are automatically synchronized
+**默认行为**：**双向同步**——任一系统中的更改都会自动被同步。
 
-**⚠️ IMPORTANT**: This skill provides HELP and GUIDANCE about Azure DevOps sync. For actual syncing, users should use the `/sw-ado:sync` command directly. This skill should NOT auto-activate when the command is being invoked.
+**⚠️ 重要提示**：此技能仅提供关于 Azure DevOps 同步的帮助和指导。实际进行同步操作时，用户应直接使用 `/sw-ado:sync` 命令。该技能不应在调用该命令时自动激活。
 
-**Capabilities**:
-- Bidirectional sync: SpecWeave ↔ ADO (default)
-- Create ADO work items from increments
-- Sync task progress → ADO comments
-- Update increment status ← ADO state changes
-- Pull ADO comments and field updates → SpecWeave
-- Close work items when increments complete
-- Support for Epics, Features, User Stories
-
----
-
-## When This Skill Activates
-
-✅ **Do activate when**:
-- User asks: "How do I set up Azure DevOps sync?"
-- User asks: "What ADO credentials do I need?"
-- User asks: "How does ADO integration work?"
-- User needs help configuring Azure DevOps integration
-
-❌ **Do NOT activate when**:
-- User invokes `/sw-ado:sync` command (command handles it)
-- Command is already running (avoid duplicate invocation)
-- Task completion hook is syncing (automatic process)
-- "Close ADO work item when done"
+**主要功能**：
+- 双向同步：SpecWeave ↔ Azure DevOps（默认）
+- 从增量创建 Azure DevOps 工作项
+- 同步任务进度到 Azure DevOps 评论
+- 更新增量状态并反映到 Azure DevOps 中
+- 将 Azure DevOps 评论和字段更新同步到 SpecWeave
+- 在增量完成后关闭相关 Azure DevOps 工作项
+- 支持 Epic、Feature 和 User Story 类型的工作项
 
 ---
 
-## Prerequisites
+## 何时激活此技能
 
-### 1. ADO Plugin Installed
+✅ **在以下情况下激活**：
+- 用户询问：“如何设置 Azure DevOps 同步？”
+- 用户询问：“需要哪些 Azure DevOps 凭据？”
+- 用户询问：“Azure DevOps 集成是如何工作的？”
+- 用户需要帮助配置 Azure DevOps 集成
+
+❌ **在以下情况下不激活**：
+- 用户直接调用 `/sw-ado:sync` 命令（该命令会自行处理同步操作）
+- 命令已经在运行中（避免重复调用）
+- 任务完成钩子正在执行同步操作（此过程是自动的）
+- 用户已选择“在任务完成后关闭 Azure DevOps 工作项”
+
+---
+
+## 先决条件
+
+### 1. 安装了 Azure DevOps 插件
 
 ```bash
 # Check if installed
@@ -50,23 +50,23 @@ description: Help and guidance for Azure DevOps synchronization with SpecWeave i
 /plugin install sw-ado@specweave
 ```
 
-### 2. Azure DevOps Personal Access Token (PAT)
+### 2. 拥有 Azure DevOps 个人访问令牌（PAT）
 
-**Create PAT**:
-1. Go to https://dev.azure.com/{organization}/_usersSettings/tokens
-2. Click "New Token"
-3. Name: "SpecWeave Sync"
-4. Scopes: Work Items (Read & Write), Comments (Read & Write)
-5. Copy token → Set environment variable
+**创建 PAT**：
+1. 访问 https://dev.azure.com/{organization}/_usersSettings/tokens
+2. 点击“新建令牌”
+3. 令牌名称：SpecWeave Sync
+4. 权限范围：工作项（读写）、评论（读写）
+5. 复制令牌并设置到环境变量中
 
-**Set Token**:
+**设置令牌**：
 ```bash
 export AZURE_DEVOPS_PAT="your-token-here"
 ```
 
-### 3. ADO Configuration
+### 3. 配置 Azure DevOps
 
-Add to `.specweave/config.json`:
+将以下配置添加到 `.specweave/config.json` 文件中：
 ```json
 {
   "externalPM": {
@@ -85,68 +85,68 @@ Add to `.specweave/config.json`:
 
 ---
 
-## Commands Available
+## 可用的命令
 
 ### `/sw-ado:create-workitem <increment-id>`
 
-**Purpose**: Create ADO work item from increment
+**功能**：根据 SpecWeave 的增量创建 Azure DevOps 工作项
 
-**Example**:
+**示例**：
 ```bash
 /sw-ado:create-workitem 0005
 ```
 
-**Result**:
-- Creates Epic/Feature/User Story in ADO
-- Links work item to increment (metadata)
-- Adds initial comment with spec summary
-- Sets tags: `specweave`, `increment-0005`
+**结果**：
+- 在 Azure DevOps 中创建 Epic/Feature/User Story
+- 将工作项与增量关联（元数据）
+- 添加包含规格摘要的初始评论
+- 设置标签：`specweave`、`increment-0005`
 
 ---
 
 ### `/sw-ado:sync <increment-id>`
 
-**Purpose**: Sync increment progress with ADO work item
+**功能**：同步增量的进度到 Azure DevOps 工作项
 
-**Example**:
+**示例**：
 ```bash
 /sw-ado:sync 0005
 ```
 
-**Result**:
-- Calculates task completion (%)
-- Updates work item description
-- Adds comment with progress update
-- Updates state (New → Active → Resolved)
+**结果**：
+- 计算任务完成百分比
+- 更新工作项描述
+- 添加进度更新评论
+- 更新工作项状态（例如：New → Active → Resolved）
 
 ---
 
 ### `/sw-ado:close-workitem <increment-id>`
 
-**Purpose**: Close ADO work item when increment complete
+**功能**：在增量完成后关闭对应的 Azure DevOps 工作项
 
-**Example**:
+**示例**：
 ```bash
 /sw-ado:close-workitem 0005
 ```
 
-**Result**:
-- Updates work item state → Closed
-- Adds completion comment with summary
-- Marks work item as resolved
+**结果**：
+- 更新工作项状态为“已完成”
+- 添加完成总结评论
+- 将工作项标记为已解决
 
 ---
 
 ### `/sw-ado:status <increment-id>`
 
-**Purpose**: Check ADO sync status for increment
+**功能**：检查增量的同步状态
 
-**Example**:
+**示例**：
 ```bash
 /sw-ado:status 0005
 ```
 
-**Result**:
+**结果**：
 ```
 ADO Sync Status
 ===============
@@ -161,100 +161,84 @@ Sync Enabled: ✅
 
 ---
 
-## Automatic Sync
+## 自动同步
 
-### When Task Completes
+### 任务完成时
 
-**Trigger**: Post-task-completion hook fires
+**触发条件**：任务完成后的钩子被触发
 
-**Flow**:
-1. User marks task complete: `[x] T-005: Add payment tests`
-2. Hook detects ADO sync enabled
-3. Calculate new completion %
-4. Update ADO work item comment:
-   ```markdown
-   ## Progress Update
-   
-   **Increment**: 0005-payment-integration
-   **Status**: 60% complete (6/10 tasks)
-   
-   ### Recently Completed
-   - [x] T-005: Add payment tests
-   
-   ### Remaining
-   - [ ] T-007: Add refund functionality
-   - [ ] T-008: Implement subscriptions
-   - [ ] T-009: Add analytics
-   - [ ] T-010: Security audit
-   
-   ---
-   🤖 Auto-updated by SpecWeave
-   ```
-
-### When Increment Completes
-
-**Trigger**: `/sw:done` command
-
-**Flow**:
-1. User runs `/sw:done 0005`
-2. Validate all tasks complete
-3. Close ADO work item automatically
-4. Add completion comment with summary
+**流程**：
+1. 用户标记任务完成（例如：`[x] T-005: 添加支付测试`
+2. 钩子检测到 Azure DevOps 同步功能已启用
+3. 计算新的完成百分比
+4. 更新 Azure DevOps 工作项评论
 
 ---
 
-## Work Item Types
+### 增量完成时
 
-### Epic (Recommended)
+**触发条件**：执行 `/sw:done` 命令
 
-**Use When**: Large feature spanning multiple sprints
+**流程**：
+1. 用户运行 `/sw:done 0005`
+2. 确认所有任务均已完成
+3. 自动关闭 Azure DevOps 工作项
+4. 添加完成总结评论
 
-**Mapping**:
-- SpecWeave increment → ADO Epic
-- Tasks → Epic description (checklist)
-- Progress → Epic comments
+---
+
+## 工作项类型
+
+### Epic（推荐使用）
+
+**适用场景**：跨越多个冲刺的大型功能
+
+**映射关系**：
+- SpecWeave 增量 → Azure DevOps Epic
+- 任务 → Epic 描述（待办事项列表）
+- 进度 → Epic 评论
 
 ---
 
 ### Feature
 
-**Use When**: Medium-sized feature within a sprint
+**适用场景**：单个冲刺内的中型功能
 
-**Mapping**:
-- SpecWeave increment → ADO Feature
-- Tasks → Feature description (checklist)
-- Progress → Feature comments
+**映射关系**：
+- SpecWeave 增量 → Azure DevOps Feature
+- 任务 → Feature 描述（待办事项列表）
+- 进度 → Feature 评论
 
 ---
 
 ### User Story
 
-**Use When**: Small, single-sprint work
+**适用场景**：单次冲刺内的小型任务
 
-**Mapping**:
-- SpecWeave increment → ADO User Story
-- Tasks → User Story description (checklist)
-- Progress → User Story comments
-
----
-
-## Bidirectional Sync (Optional)
-
-**Enable**: Set `bidirectional: true` in config
-
-**Flow**: ADO → SpecWeave
-1. User updates work item state in ADO (Active → Resolved)
-2. SpecWeave detects change (polling or webhook)
-3. Updates increment status locally
-4. Notifies user: "Work item #12345 resolved → Increment 0005 marked complete"
-
-**Note**: Bidirectional sync requires webhook or polling setup
+**映射关系**：
+- SpecWeave 增量 → Azure DevOps User Story
+- 任务 → User Story 描述（待办事项列表）
+- 进度 → User Story 评论
 
 ---
 
-## Configuration Options
+## 双向同步（可选）
 
-**`.specweave/config.json`**:
+**启用方式**：在配置文件中设置 `bidirectional: true`
+
+**流程**：
+- 用户在 Azure DevOps 中更新工作项状态（例如：从 Active 更改为 Resolved）
+- SpecWeave 检测到变化（通过轮询或 Webhook）
+- 本地更新增量状态
+- 通知用户：“工作项 #12345 已解决 → 增量 0005 被标记为已完成”
+
+**注意**：启用双向同步需要配置 Webhook 或轮询机制。
+
+---
+
+## 配置选项
+
+**`.specweave/config.json` 文件中的配置**：
 ```json
 {
   "externalPM": {
@@ -282,44 +266,44 @@ Sync Enabled: ✅
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Error: "Personal Access Token invalid"
+### 错误：“个人访问令牌无效”
 
-**Solution**:
-1. Verify token is set: `echo $AZURE_DEVOPS_PAT`
-2. Check token scopes: Work Items (Read & Write)
-3. Ensure token not expired
-4. Regenerate token if needed
-
----
-
-### Error: "Work item not found"
-
-**Solution**:
-1. Check work item ID is correct
-2. Verify you have access to the project
-3. Ensure work item not deleted
+**解决方法**：
+1. 确认令牌已设置：`echo $AZURE_DEVOPS_PAT`
+2. 检查令牌的权限范围（是否包含“工作项（读写）”
+3. 确保令牌未过期
+4. 如有必要，重新生成令牌
 
 ---
 
-### Error: "Organization or project not found"
+### 错误：“找不到工作项”
 
-**Solution**:
-1. Verify organization name: https://dev.azure.com/{organization}
-2. Check project name (case-sensitive)
-3. Ensure you have access to the project
+**解决方法**：
+1. 确认工作项 ID 是否正确
+2. 检查是否具有访问该项目的权限
+3. 确认工作项未被删除
 
 ---
 
-## API Rate Limits
+### 错误：“组织或项目未找到”
 
-**Azure DevOps**:
-- Rate limit: 200 requests per minute per PAT
-- Burst limit: 5000 requests per hour
-- Recommendation: Enable rate limiting in config
+**解决方法**：
+1. 确认组织名称：https://dev.azure.com/{organization}
+2. 检查项目名称（区分大小写）
+3. 确保具有访问该项目的权限
 
-**Config**:
+---
+
+## API 使用限制
+
+**Azure DevOps**：
+- 每个 PAT 每分钟允许的请求次数：200 次
+- 每小时的最大请求次数：5000 次
+**建议**：在配置文件中启用速率限制
+
+**配置方式**：
 ```json
 {
   "externalPM": {
@@ -333,36 +317,34 @@ Sync Enabled: ✅
 }
 ```
 
----
+## 安全最佳实践
 
-## Security Best Practices
+### 应该做的**：
+- ✅ 将 PAT 存储在环境变量 `AZURE_DEVOPS_PAT` 中
+- ✅ 使用 `.env` 文件（该文件会被 Git 忽略）
+- ✅ 仅设置必要的权限范围
+- ✅ 每 90 天更新一次 PAT
 
-### DO:
-- ✅ Store PAT in environment variable (`AZURE_DEVOPS_PAT`)
-- ✅ Use `.env` file (gitignored)
-- ✅ Set minimum required scopes
-- ✅ Rotate PAT every 90 days
-
-### DON'T:
-- ❌ Commit PAT to git
-- ❌ Share PAT via Slack/email
-- ❌ Use PAT with excessive permissions
-- ❌ Log PAT to console/files
+### 不应该做的**：
+- ❌ 将 PAT 提交到 Git
+- ❌ 通过 Slack 或电子邮件共享 PAT
+- ❌ 使用具有过高权限的 PAT
+- ❌ 将 PAT 记录到控制台或文件中
 
 ---
 
-## Related Commands
+## 相关命令
 
-- `/sw:inc` - Create increment (auto-creates ADO work item if enabled)
-- `/sw:do` - Execute tasks (auto-syncs progress to ADO)
-- `/sw:done` - Complete increment (auto-closes ADO work item)
-- `/sw:status` - Show increment status (includes ADO sync status)
+- `/sw:inc`：创建增量（如果启用了同步功能，会自动创建对应的 Azure DevOps 工作项）
+- `/sw:do`：执行任务（并自动将进度同步到 Azure DevOps）
+- `/sw:done`：完成增量（并自动关闭对应的 Azure DevOps 工作项）
+- `/sw:status`：显示增量的状态（包括同步状态）
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Create Increment with ADO Sync
+### 示例 1：创建增量并同步到 Azure DevOps
 
 ```bash
 # User
@@ -375,7 +357,7 @@ Sync Enabled: ✅
 4. Display: "Created increment 0005 → ADO Epic #12345"
 ```
 
-### Example 2: Manual Sync
+### 示例 2：手动同步
 
 ```bash
 # User completed 3 tasks manually
@@ -386,7 +368,7 @@ Sync Enabled: ✅
 # Result: ADO Epic #12345 updated with 30% progress
 ```
 
-### Example 3: Check Sync Status
+### 示例 3：检查同步状态
 
 ```bash
 /sw-ado:status 0005
@@ -401,6 +383,6 @@ Sync Enabled: ✅
 
 ---
 
-**Status**: Ready to use
-**Version**: 0.1.0
-**Plugin**: specweave-ado
+**状态**：已准备好使用
+**版本**：0.1.0
+**插件**：specweave-ado

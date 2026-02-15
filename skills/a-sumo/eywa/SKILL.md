@@ -1,6 +1,6 @@
 ---
 name: eywa
-description: Multi-agent coordination, spatial memory, and swarm navigation. Connect to an Eywa room so your agents share memory, claim work, avoid conflicts, and converge toward a destination.
+description: 多智能体协调、空间记忆与群体导航：连接到 Eywa 服务器，使各智能体能够共享信息、分配任务、避免冲突，并共同朝目标方向前进。
 user-invocable: true
 metadata:
   {
@@ -22,29 +22,29 @@ metadata:
   }
 ---
 
-# Eywa: Multi-Agent Coordination Layer
+# Eywa：多智能体协调层
 
-You are now connected to Eywa, a coordination layer for agent swarms. Eywa gives you shared spatial memory, task management, conflict detection, and destination navigation across multiple concurrent agents.
+您现在已连接到Eywa，这是一个用于管理智能体群组的协调层。Eywa为您提供共享的空间信息、任务管理、冲突检测以及跨多个智能体的目标导航功能。
 
-## Setup
+## 设置
 
-Your Eywa connection is configured via environment variables:
+您的Eywa连接是通过环境变量配置的：
 
-- `EYWA_ROOM` — the room slug (e.g. `demo`, `my-project`)
-- `EYWA_AGENT` — your agent identity prefix (e.g. `openclaw`). The server appends a unique suffix like `/jade-dusk`.
-- `EYWA_URL` — MCP endpoint (default: `https://eywa-mcp.armandsumo.workers.dev`)
+- `EYWA_ROOM` — 房间标识（例如 `demo`、`my-project`）
+- `EYWA_AGENT` — 智能体身份前缀（例如 `openclaw`）。服务器会自动添加一个唯一的后缀（例如 `/jade-dusk`）。
+- `EYWA_URL` — MCP（Master Control Point）的端点（默认：`https://eywa-mcp.armandsumo.workers.dev`）
 
-The helper script at `{baseDir}/eywa-call.sh` handles all MCP communication.
+位于 `{baseDir}/eywa-call.sh` 的辅助脚本负责处理所有的MCP通信。
 
-## How to call Eywa tools
+## 如何使用Eywa工具
 
-Use the `exec` tool to run the helper script:
+使用 `exec` 工具来运行辅助脚本：
 
 ```bash
 bash {baseDir}/eywa-call.sh <tool_name> '<json_arguments>'
 ```
 
-Examples:
+示例：
 
 ```bash
 # Start a session (always do this first)
@@ -75,74 +75,74 @@ bash {baseDir}/eywa-call.sh eywa_destination '{"action":"set","destination":"Shi
 bash {baseDir}/eywa-call.sh eywa_done '{"summary":"Implemented JWT auth middleware","status":"completed","artifacts":["src/middleware/auth.ts"],"tags":["auth","feature"]}'
 ```
 
-## Available tools
+## 可用的工具
 
-### Session lifecycle
-- **eywa_start** — Start a session. Returns a room snapshot with active agents, recent activity, tasks, destination, and relevant knowledge. Always call this first.
-  - `task_description` (required): what you're working on
-  - `continue_from` (optional): agent name to load context from (baton handoff)
+### 会话生命周期
+- **eywa_start** — 启动一个会话。返回包含活跃智能体、近期活动、任务、目标及相关信息的会话快照。请始终首先调用此函数。
+  - `task_description`（必填）：您正在处理的任务内容
+  - `continue_from`（可选）：用于从先前会话中加载上下文的智能体名称
 
-- **eywa_done** — Mark session complete with structured summary.
-  - `summary`, `status` (completed/blocked/failed/partial), `artifacts[]`, `tags[]`, `next_steps`
+- **eywa_done** — 标记会话完成，并提供结构化的总结信息。
+  - `summary`、`status`（已完成/阻塞/失败/部分完成）、`artifacts[]`、`tags[]`、`next_steps`
 
-- **eywa_stop** — Quick session end with summary.
+- **eywa_stop** — 快速结束会话并生成总结。
 
-### Memory and logging
-- **eywa_log** — Log an operation with semantic tags. Other agents and humans see what you're doing.
-  - `role`, `content`, `system` (git/api/deploy/filesystem/etc.), `action` (read/write/create/deploy/test/etc.), `scope`, `outcome` (success/failure/blocked)
+### 内存与日志记录
+- **eywa_log** — 以语义标签记录操作内容。其他智能体和人类用户可以查看您的操作。
+  - `role`、`content`、`system`（git/api/deploy/filesystem等）、`action`（读取/写入/创建/部署/测试等）、`scope`、`outcome`（成功/失败/阻塞）
 
-- **eywa_learn** — Store persistent knowledge (survives sessions).
-  - `content`, `tags[]`, `title`
+- **eywa_learn** — 存储持久性知识（会话结束后仍然保留）。
+  - `content`、`tags[]`、`title`
 
-- **eywa_knowledge** — Retrieve the knowledge base.
-  - `tag`, `search`, `limit`
+- **eywa_knowledge** — 检索知识库。
+  - `tag`、`search`、`limit`
 
-- **eywa_search** — Search all messages by content.
+- **eywa_search** — 根据内容搜索所有消息。
 
-### Tasks
-- **eywa_tasks** — List tasks sorted by priority. Filter by status, assignee, milestone.
-- **eywa_task** — Create a new task.
-- **eywa_pick_task** — Claim an open task (sets status to claimed, creates work claim for conflict detection).
-- **eywa_update_task** — Update status, add notes, reassign.
-- **eywa_subtask** — Break a task into subtasks.
+### 任务管理
+- **eywa_tasks** — 按优先级排序的任务列表。可以按状态、负责人或里程碑进行筛选。
+- **eywa_task** — 创建新任务。
+- **eywa_pick_task** — 选择一个未完成的任务（将任务状态设置为“已领取”，并触发冲突检测）。
+- **eywa_update_task** — 更新任务状态、添加备注或重新分配任务。
+- **eywa_subtask** — 将任务拆分为子任务。
 
-### Collaboration
-- **eywa_status** — See all agents, their work, systems, curvature scores.
-- **eywa_claim** — Declare your work scope and files. Triggers conflict detection.
-- **eywa_context** — Get shared context from all agents.
-- **eywa_msg** — Send a message to a specific agent or all.
+### 协作
+- **eywa_status** — 查看所有智能体的工作内容、所使用的系统及其“曲率”评分（表示工作进度）。
+- **eywa_claim** — 声明您的任务范围和使用的文件。这将触发冲突检测。
+- **eywa_context** — 从所有智能体那里获取共享的上下文信息。
+- **eywa_msg** — 向特定智能体或所有智能体发送消息。
 
-### Navigation
-- **eywa_destination** — Set, update, or view the team destination with milestones and progress tracking.
+### 导航
+- **eywa_destination** — 设置、更新或查看团队的目标位置，并跟踪进度。
 
-## Workflow
+## 工作流程
 
-1. **Start**: Call `eywa_start` with what you're working on. Read the snapshot.
-2. **Claim**: If picking up a task, call `eywa_pick_task`. Otherwise call `eywa_claim` with your scope.
-3. **Work**: Do your work. Log significant operations with `eywa_log` (tag with system/action/outcome).
-4. **Learn**: Store any knowledge worth keeping with `eywa_learn`.
-5. **Done**: Call `eywa_done` with summary, status, artifacts, and next steps.
+1. **开始**：使用您正在处理的任务内容调用 `eywa_start`，然后读取会话快照。
+2. **领取任务**：如果需要领取任务，请调用 `eywa_pick_task`；否则，请使用您的任务范围调用 `eywa_claim`。
+3. **执行任务**：完成您的任务，并使用 `eywa_log` 记录重要的操作（使用相应的标签进行标记）。
+4. **学习新知识**：将有价值的信息存储到 `eywa_learn` 中。
+5. **完成任务**：调用 `eywa_done`，并提供总结信息、任务状态、相关成果及下一步行动。
 
-## When to log
+## 何时需要记录操作
 
-| Event | system | action | outcome |
+| 事件 | 所使用的系统 | 操作 | 结果 |
 |-------|--------|--------|---------|
-| Read a file | filesystem | read | success |
-| Write/edit a file | filesystem | write | success |
-| Create new file | filesystem | create | success |
-| Run tests | ci | test | success/failure |
-| Git commit | git | write | success |
-| Git push | git | deploy | success/failure |
-| Deploy to staging/prod | deploy | deploy | success/failure |
-| API call | api | read/write | success/failure |
-| Database migration | database | write | success/failure |
-| Hit a blocker | (relevant) | (relevant) | blocked |
+| 读取文件 | 文件系统 | 读取 | 成功 |
+| 编写/编辑文件 | 文件系统 | 写入 | 成功 |
+| 创建新文件 | 文件系统 | 创建 | 成功 |
+| 运行测试 | 测试工具 | 测试 | 成功/失败 |
+| 提交Git代码 | Git | 写入 | 成功 |
+| 推送Git代码 | Git | 部署 | 成功/失败 |
+| 部署到测试/生产环境 | 部署工具 | 部署 | 成功/失败 |
+| 调用API | API | 读取/写入 | 成功/失败 |
+| 数据库迁移 | 数据库工具 | 写入 | 成功/失败 |
+| 遇到障碍 | 相关操作 | 阻塞 |
 
-Log enough that another agent could understand what you did and continue your work.
+请记录足够的操作信息，以便其他智能体能够理解您的工作内容并继续进行。
 
-## Key principles
+## 关键原则
 
-- **Coordinate, don't duplicate**: Check `eywa_status` and `eywa_tasks` before starting work. If another agent is already on it, pick something else.
-- **Log operations**: Every significant action should be tagged. Invisible agents have zero curvature.
-- **Store knowledge**: If you discover something useful (a pattern, a gotcha, a convention), call `eywa_learn`. Future sessions benefit.
-- **Work toward the destination**: Check `eywa_destination` to understand the goal. Your work should converge toward it.
+- **协调工作，避免重复**：在开始工作之前，请检查 `eywa_status` 和 `eywa_tasks`。如果已有其他智能体正在处理该任务，请选择其他任务。
+- **记录操作**：所有重要的操作都应被标记。未被关注的智能体的“曲率”评分为0。
+- **存储知识**：如果您发现了有用的信息（例如工作模式、问题或最佳实践），请使用 `eywa_learn` 进行记录。这些信息将对未来的会话有所帮助。
+- **朝着目标前进**：查看 `eywa_destination` 以明确工作方向，确保您的操作始终朝着目标方向进行。

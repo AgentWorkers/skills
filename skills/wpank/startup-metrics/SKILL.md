@@ -8,12 +8,11 @@ description: >
 tags: [startup, metrics, saas, kpis, unit-economics, growth, fundraising]
 ---
 
-# Startup Metrics Framework
+# 启动指标框架
 
-Comprehensive guide to tracking, calculating, and optimizing key performance metrics for different startup business models from seed through Series A.
+本指南全面介绍了如何跟踪、计算并优化不同初创企业商业模式（从种子轮到A轮融资阶段）的关键绩效指标。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -21,32 +20,31 @@ Comprehensive guide to tracking, calculating, and optimizing key performance met
 npx clawhub@latest install startup-metrics
 ```
 
+## 本技能的作用
 
-## WHAT This Skill Does
+提供以下方面的公式、基准数据和指导：
+- 收入指标（MRR、ARR、增长率）
+- 单位经济指标（CAC、LTV、投资回收期）
+- 现金效率指标（烧钱速度、业务发展周期、烧钱倍数）
+- SaaS特定指标（新客户转化率、关键数字、40法则）
+- 市场和消费者相关指标
+- 各阶段应关注的焦点指标
 
-Provides formulas, benchmarks, and guidance for:
-- Revenue metrics (MRR, ARR, growth rates)
-- Unit economics (CAC, LTV, payback period)
-- Cash efficiency (burn rate, runway, burn multiple)
-- SaaS-specific metrics (NDR, magic number, Rule of 40)
-- Marketplace and consumer metrics
-- Stage-appropriate focus areas
+## 适用场景
 
-## WHEN To Use
+- 设置初创企业的分析和仪表板
+- 计算CAC、LTV或单位经济指标
+- 准备投资者更新材料或演示文稿
+- 评估企业的健康状况和运营效率
+- 理解每个阶段哪些指标最重要
 
-- Setting up startup analytics and dashboards
-- Calculating CAC, LTV, or unit economics
-- Preparing investor updates or pitch materials
-- Evaluating business health and efficiency
-- Understanding what metrics matter at each stage
+## 关键词
 
-## KEYWORDS
+初创指标、SaaS指标、CAC、LTV、ARR、MRR、烧钱速度、烧钱倍数、40法则、净用户留存率、关键数字、单位经济指标、市场收入、日活跃用户/月活跃用户
 
-startup metrics, saas metrics, cac, ltv, arr, mrr, burn rate, burn multiple, rule of 40, net dollar retention, magic number, unit economics, marketplace gmv, dau mau
+## 通用初创指标
 
-## Universal Startup Metrics
-
-### Revenue Metrics
+### 收入指标
 
 ```
 MRR = Σ (Active Subscriptions × Monthly Price)
@@ -56,14 +54,14 @@ MoM Growth = (This Month MRR - Last Month MRR) / Last Month MRR
 YoY Growth = (This Year ARR - Last Year ARR) / Last Year ARR
 ```
 
-**Benchmarks:**
-| Stage | Growth Target |
+**基准数据：**
+| 阶段 | 增长目标 |
 |-------|---------------|
-| Seed | 15-20% MoM |
-| Series A | 10-15% MoM, 3-5x YoY |
-| Series B+ | 100%+ YoY (Rule of 40) |
+| 种子轮 | 每月增长15-20% |
+| A轮融资 | 每月增长10-15%，年增长3-5倍 |
+| B轮融资及以上 | 年增长100%以上（遵循40法则） |
 
-### Unit Economics
+### 单位经济指标
 
 ```
 CAC = Total S&M Spend / New Customers Acquired
@@ -72,13 +70,13 @@ LTV:CAC Ratio = LTV / CAC
 CAC Payback = CAC / (ARPU × Gross Margin%)
 ```
 
-**Benchmarks:**
-| Metric | Excellent | Good | Concerning |
+**基准数据：**
+| 指标 | 优秀 | 良好 | 需关注 |
 |--------|-----------|------|------------|
 | LTV:CAC | > 3.0 | 1.0-3.0 | < 1.0 |
-| CAC Payback | < 12 months | 12-18 months | > 24 months |
+| CAC投资回收期 | < 12个月 | 12-18个月 | > 24个月 |
 
-### Cash Efficiency
+### 现金效率
 
 ```
 Monthly Burn = Monthly Revenue - Monthly Expenses
@@ -86,25 +84,25 @@ Runway (months) = Cash Balance / Monthly Burn Rate
 Burn Multiple = Net Burn / Net New ARR
 ```
 
-**Burn Multiple Benchmarks:**
-| Score | Assessment |
+**烧钱倍数基准数据：**
+| 分数 | 评估结果 |
 |-------|------------|
-| < 1.0 | Exceptional efficiency |
-| 1.0-1.5 | Good |
-| 1.5-2.0 | Acceptable |
-| > 2.0 | Inefficient |
+| < 1.0 | 效率极高 |
+| 1.0-1.5 | 良好 |
+| 1.5-2.0 | 可接受 |
+| > 2.0 | 效率较低 |
 
-**Target:** Always maintain 12-18 months runway.
+**目标：**始终保持12-18个月的业务发展周期。
 
-## SaaS Metrics
+## SaaS指标
 
-### Revenue Composition
+### 收入构成
 
 ```
 Net New MRR = New MRR + Expansion MRR - Contraction MRR - Churned MRR
 ```
 
-### Retention Metrics
+### 用户留存指标
 
 ```
 NDR (Net Dollar Retention) = (ARR Start + Expansion - Contraction - Churn) / ARR Start
@@ -112,14 +110,14 @@ Gross Retention = (ARR Start - Churn - Contraction) / ARR Start
 Logo Retention = (Customers End - New Customers) / Customers Start
 ```
 
-**NDR Benchmarks:**
-| Range | Assessment |
+**新客户转化率基准数据：**
+| 范围 | 评估结果 |
 |-------|------------|
-| > 120% | Best-in-class |
-| 100-120% | Good |
-| < 100% | Needs work |
+| > 120% | 业内最佳 |
+| 100-120% | 良好 |
+| < 100% | 需改进 |
 
-### Efficiency Metrics
+### 效率指标
 
 ```
 Magic Number = Net New ARR (quarter) / S&M Spend (prior quarter)
@@ -127,52 +125,52 @@ Rule of 40 = Revenue Growth Rate% + Profit Margin%
 Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)
 ```
 
-**Magic Number:**
-- > 0.75 = Efficient, ready to scale
-- 0.5-0.75 = Moderate efficiency
-- < 0.5 = Inefficient, don't scale yet
+**关键数字：**
+- > 0.75 = 效率较高，具备扩展潜力 |
+- 0.5-0.75 = 效率中等 |
+- < 0.5 = 效率较低，暂不适合扩展
 
-## Marketplace Metrics
+## 市场指标
 
 ```
 GMV = Σ (Transaction Value)
 Take Rate = Net Revenue / GMV
 ```
 
-**Typical Take Rates:**
-| Type | Range |
+**典型佣金费率：**
+| 类型 | 范围 |
 |------|-------|
-| Payment processors | 2-3% |
-| E-commerce marketplaces | 10-20% |
-| Service marketplaces | 15-25% |
-| High-value B2B | 5-15% |
+| 支付处理器 | 2-3% |
+| 电子商务平台 | 10-20% |
+| 服务交易平台 | 15-25% |
+| 高价值B2B业务 | 5-15% |
 
-**Liquidity Indicators:**
-- Fill rate > 80% = Strong liquidity
-- Repeat rate > 60% = Strong retention
+**流动性指标：**
+- 填单率 > 80% = 流动性强 |
+- 重复购买率 > 60% = 用户留存度高
 
-## Consumer/Mobile Metrics
+## 消费者/移动端指标
 
 ```
 DAU/MAU Ratio = DAU / MAU
 K-Factor = Invites per User × Invite Conversion Rate
 ```
 
-**DAU/MAU Benchmarks:**
-| Ratio | Assessment |
+**日活跃用户/月活跃用户基准数据：**
+| 比率 | 评估结果 |
 |-------|------------|
-| > 50% | Exceptional (daily habit) |
-| 20-50% | Good |
-| < 20% | Weak engagement |
+| > 50% | 用户习惯良好 |
+| 20-50% | 用户参与度一般 |
+| < 20% | 用户参与度低 |
 
-**Retention Benchmarks (Day 30):**
-| Rate | Assessment |
+**30天用户留存率基准数据：**
+| 率率 | 评估结果 |
 |------|------------|
-| > 40% | Excellent |
-| 25-40% | Good |
-| < 25% | Weak |
+| > 40% | 优秀 |
+| 25-40% | 良好 |
+| < 25% | 用户留存率低 |
 
-## B2B Sales Metrics
+## B2B销售指标
 
 ```
 Win Rate = Deals Won / Total Opportunities
@@ -180,61 +178,59 @@ Pipeline Coverage = Total Pipeline Value / Quota (target: 3-5x)
 ACV = Total Contract Value / Contract Length (years)
 ```
 
-**Sales Cycle Benchmarks:**
-| Segment | Typical Duration |
+**销售周期基准数据：**
+| 客户类型 | 典型周期 |
 |---------|------------------|
-| SMB | 30-60 days |
-| Mid-market | 60-120 days |
-| Enterprise | 120-270 days |
+| 中小型企业 | 30-60天 |
+| 中型市场 | 60-120天 |
+| 企业级客户 | 120-270天 |
 
-## Metrics by Stage
+## 各阶段的指标
 
-### Pre-Seed (Product-Market Fit)
+### 种子轮（产品市场适配阶段）
 
-**Focus:** Active users, retention (Day 7/30), engagement, qualitative feedback
+**关注点：**活跃用户、用户留存率（第7天/第30天）、用户参与度、定性反馈
 
-**Don't worry about:** Revenue, CAC, unit economics
+**无需关注：**收入、CAC、单位经济指标
 
-### Seed ($500K-$2M ARR)
+### 种子轮（年收入50万至200万美元）
 
-**Focus:**
-- MRR growth rate (15-20% MoM)
-- CAC and LTV baselines
-- Gross retention (> 85%)
-- Core product engagement
+**关注点：**
+- MRR增长率（每月15-20%）
+- CAC和LTV的基线数据
+- 核心产品的用户留存率（>85%）
+- 开始关注销售效率、烧钱速度和业务发展周期
 
-**Start tracking:** Sales efficiency, burn rate, runway
+### A轮融资（年收入200万至1000万美元）
 
-### Series A ($2M-$10M ARR)
+**关注点：**
+- 年收入增长率（年增长3-5倍）
+- LTV:CAC > 3.0，投资回收期 < 18个月
+- 新客户转化率 > 100%
+- 烧钱倍数 < 2.0
+- 关键数字 > 0.5
 
-**Focus:**
-- ARR growth (3-5x YoY)
-- LTV:CAC > 3, payback < 18 months
-- NDR > 100%
-- Burn multiple < 2.0
-- Magic number > 0.5
+## 投资者关注的重点指标
 
-## What Investors Want to See
+### 种子轮
+- MRR增长率
+- 用户留存率
+- 早期的单位经济指标
+- 产品使用情况
 
-### Seed Round
-- MRR growth rate
-- User retention
-- Early unit economics
-- Product engagement
-
-### Series A
-- ARR and growth rate
-- CAC payback < 18 months
+### A轮融资
+- 年收入和增长率
+- CAC投资回收期 < 18个月
 - LTV:CAC > 3.0
-- NDR > 100%
-- Burn multiple < 2.0
+- 新客户转化率 > 100%
+- 烧钱倍数 < 2.0
 
-### Series B+
-- Rule of 40 > 40%
-- Efficient growth (magic number)
-- Path to profitability
+### B轮融资及以上
+- 40法则 > 40%
+- 高效的增长（关键数字）
+- 通往盈利的路径
 
-**Dashboard Format:**
+**仪表板格式：**
 ```
 Current MRR: $250K (↑ 18% MoM)
 ARR: $3.0M (↑ 280% YoY)
@@ -243,21 +239,21 @@ NDR: 112% | Logo Retention: 92%
 Burn: $180K/mo | Runway: 18 months
 ```
 
-## Common Mistakes
+## 常见错误
 
-1. **Vanity Metrics** — Focus on actionable metrics, not total users or page views
-2. **Too Many Metrics** — Track 5-7 core metrics intensely, not 50 loosely
-3. **Ignoring Unit Economics** — CAC and LTV matter even at seed stage
-4. **Not Segmenting** — Break down by customer segment, channel, cohort
-5. **Gaming Metrics** — Optimize for real business outcomes, not dashboards
+1. **关注无意义的指标** — 应关注可操作的指标，而非总用户数或页面浏览量
+2. **指标过多** — 应重点关注5-7个核心指标，而非泛泛而谈的50个指标
+3. **忽视单位经济指标** — 即使在种子轮阶段，CAC和LTV也非常重要
+4. **不进行细分** — 应按客户群体、渠道或时间阶段进行数据分类
+5. **追求表面指标** — 应优化实际业务成果，而非仅仅为了美观的仪表板
 
-## NEVER Do
+## 绝对不能做的事情
 
-1. **NEVER ignore** unit economics at any stage — CAC and LTV are always critical
-2. **NEVER track** vanity metrics (total users, page views) without retention context
-3. **NEVER report** growth rates without absolute numbers — 100% growth from $1K is different from $1M
-4. **NEVER skip** segmentation — aggregate metrics hide important patterns
-5. **NEVER confuse** correlation with causation — investigate before concluding
-6. **NEVER set** targets without understanding your stage benchmarks
-7. **NEVER present** metrics without trend context — current value + growth rate + benchmark
-8. **NEVER optimize** for the metric instead of the underlying business outcome
+1. **在任何阶段都不要忽视** 单位经济指标（CAC和LTV）
+2. **不要孤立地关注** 无用户留存背景的总用户数或页面浏览量
+3. **报告增长率时不要只提供绝对数字** — 从1000美元增长到100万美元的增长情况是完全不同的
+4. **不要忽略数据细分** — 综合指标会掩盖重要趋势
+5. **不要混淆相关性和因果关系** — 在得出结论前需进行深入分析
+6. **在不了解阶段基准的情况下设定目标**  
+7. **展示指标时不要脱离趋势背景** — 应提供当前数值、增长率和基准数据
+8. **不要为了指标本身而优化** — 应始终以实际业务成果为导向进行优化

@@ -1,56 +1,56 @@
 ---
 name: rei
-description: Set up Rei Qwen3 Coder as a model provider. Use when configuring coder.reilabs.org, adding Rei to Clawdbot, or troubleshooting 403 errors from Rei endpoints.
+description: 将 Rei Qwen3 Coder 设置为模型提供者。在配置 coder.reilabs.org、将 Rei 添加到 Clawdbot 时，或解决来自 Rei 端点的 403 错误时，请使用该设置。
 ---
 
 # Rei Qwen3 Coder
 
-Rei provides Qwen3 Coder via an OpenAI-compatible endpoint at `coder.reilabs.org`.
+Rei 提供了 Qwen3 Coder 功能，可通过 OpenAI 兼容的接口 `coder.reilabs.org` 进行使用。
 
-## Setup via Script
+## 通过脚本进行设置
 
 ```bash
 ./skills/rei/scripts/setup.sh YOUR_REI_API_KEY
 ```
 
-This adds the provider, adds it to the model allowlist, and restarts the gateway.
+此脚本会添加该服务提供者，将其加入模型允许列表，并重启代理服务器（gateway）。
 
-## Setup via Agent
+## 通过代理进行设置
 
-Ask your agent:
+向您的代理发送指令：
 
-> "Set up Rei with API key: YOUR_KEY"
+> "使用 API 密钥 YOUR_KEY 设置 Rei"
 
-The agent will read this skill and run the setup script for you.
+代理会读取该指令并为您运行相应的设置脚本。
 
-## Switching Models
+## 切换模型
 
-**Via chat:**
+**通过聊天界面：**
 ```
 /model rei
 /model opus
 ```
 
-**Via script:**
+**通过脚本：**
 ```bash
 ./skills/rei/scripts/switch.sh rei
 ./skills/rei/scripts/switch.sh opus
 ```
 
-**Via agent:**
-> "Switch to Rei" or "Switch back to Opus"
+**通过代理：**
+> "切换到 Rei" 或 "切换回 Opus"
 
-## Revert
+## 恢复设置
 
-If something breaks, restore the backup:
+如果出现故障，可以恢复备份数据：
 
 ```bash
 ./skills/rei/scripts/revert.sh
 ```
 
-## Manual Setup
+## 手动设置
 
-Add to `~/.clawdbot/clawdbot.json`:
+将以下配置添加到 `~/.clawdbot/clawdbot.json` 文件中：
 
 ```json
 {
@@ -80,10 +80,10 @@ Add to `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Then restart: `clawdbot gateway restart`
+然后重启代理服务器：`clawdbot gateway restart`
 
-## Troubleshooting
+## 故障排除
 
-**403 errors:** The `User-Agent: Clawdbot/1.0` header is required. The setup script adds this automatically. If you configured manually, make sure the header is present.
+**403 错误：** 必须包含 `User-Agent: Clawdbot/1.0` 头部信息。设置脚本会自动添加该头部信息。如果您是手动配置的，请确保该头部信息存在。
 
-**"Model not allowed":** Rei must be in `agents.defaults.models` to switch to it. The setup script handles this. For manual setup, add the allowlist entry shown above.
+**“模型不允许使用”：** 要切换到 Rei 模型，该模型必须被添加到 `agentsdefaults.models` 文件中。设置脚本会处理这一配置。对于手动设置，需要按照上述步骤添加相应的允许列表条目。

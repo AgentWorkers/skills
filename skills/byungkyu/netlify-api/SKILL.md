@@ -18,9 +18,9 @@ metadata:
 
 # Netlify
 
-Access the Netlify API with managed OAuth authentication. Manage sites, deploys, builds, DNS zones, environment variables, and webhooks.
+您可以使用受管理的 OAuth 认证来访问 Netlify API。该 API 允许您管理网站、进行部署、构建项目、配置 DNS 区域、设置环境变量以及设置 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all sites
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/netlify/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Netlify API endpoint path. The gateway proxies requests to `api.netlify.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Netlify API 端点路径。网关会将请求代理到 `api.netlify.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Netlify OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Netlify OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Netlify connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Netlify 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,51 +141,51 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User & Accounts
+### 用户与账户
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /netlify/api/v1/user
 ```
 
-#### List Accounts
+#### 列出账户
 
 ```bash
 GET /netlify/api/v1/accounts
 ```
 
-#### Get Account
+#### 获取账户信息
 
 ```bash
 GET /netlify/api/v1/accounts/{account_id}
 ```
 
-### Sites
+### 网站
 
-#### List Sites
+#### 列出网站
 
 ```bash
 GET /netlify/api/v1/sites
 ```
 
-With filtering:
+支持过滤：
 
 ```bash
 GET /netlify/api/v1/sites?filter=all&page=1&per_page=100
 ```
 
-#### Get Site
+#### 获取网站信息
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}
 ```
 
-#### Create Site
+#### 创建网站
 
 ```bash
 POST /netlify/api/v1/{account_slug}/sites
@@ -196,7 +196,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Site
+#### 更新网站信息
 
 ```bash
 PUT /netlify/api/v1/sites/{site_id}
@@ -207,27 +207,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Site
+#### 删除网站
 
 ```bash
 DELETE /netlify/api/v1/sites/{site_id}
 ```
 
-### Deploys
+### 部署
 
-#### List Deploys
+#### 列出部署信息
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/deploys
 ```
 
-#### Get Deploy
+#### 获取部署详情
 
 ```bash
 GET /netlify/api/v1/deploys/{deploy_id}
 ```
 
-#### Create Deploy
+#### 创建部署任务
 
 ```bash
 POST /netlify/api/v1/sites/{site_id}/deploys
@@ -238,55 +238,55 @@ Content-Type: application/json
 }
 ```
 
-#### Lock Deploy
+#### 锁定部署任务
 
 ```bash
 POST /netlify/api/v1/deploys/{deploy_id}/lock
 ```
 
-#### Unlock Deploy
+#### 解锁部署任务
 
 ```bash
 POST /netlify/api/v1/deploys/{deploy_id}/unlock
 ```
 
-#### Restore Deploy (Rollback)
+#### 恢复部署（回滚）
 
 ```bash
 PUT /netlify/api/v1/deploys/{deploy_id}
 ```
 
-### Builds
+### 构建项目
 
-#### List Builds
+#### 列出构建记录
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/builds
 ```
 
-#### Get Build
+#### 获取构建详情
 
 ```bash
 GET /netlify/api/v1/builds/{build_id}
 ```
 
-#### Trigger Build
+#### 触发构建任务
 
 ```bash
 POST /netlify/api/v1/sites/{site_id}/builds
 ```
 
-### Environment Variables
+### 环境变量
 
-Environment variables are managed at the account level with optional site scope.
+环境变量在账户级别进行管理，支持可选的站点范围。
 
-#### List Environment Variables
+#### 列出环境变量
 
 ```bash
 GET /netlify/api/v1/accounts/{account_id}/env?site_id={site_id}
 ```
 
-#### Create Environment Variables
+#### 创建环境变量
 
 ```bash
 POST /netlify/api/v1/accounts/{account_id}/env?site_id={site_id}
@@ -302,9 +302,9 @@ Content-Type: application/json
 ]
 ```
 
-**Context values:** `all`, `production`, `deploy-preview`, `branch-deploy`, `dev`
+**环境变量范围：** `all`, `production`, `deploy-preview`, `branch-deploy`, `dev`
 
-#### Update Environment Variable
+#### 更新环境变量
 
 ```bash
 PUT /netlify/api/v1/accounts/{account_id}/env/{key}?site_id={site_id}
@@ -318,21 +318,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Environment Variable
+#### 删除环境变量
 
 ```bash
 DELETE /netlify/api/v1/accounts/{account_id}/env/{key}?site_id={site_id}
 ```
 
-### DNS Zones
+### DNS 区域
 
-#### List DNS Zones
+#### 列出 DNS 区域
 
 ```bash
 GET /netlify/api/v1/dns_zones
 ```
 
-#### Create DNS Zone
+#### 创建 DNS 区域
 
 ```bash
 POST /netlify/api/v1/dns_zones
@@ -344,27 +344,27 @@ Content-Type: application/json
 }
 ```
 
-#### Get DNS Zone
+#### 获取 DNS 区域信息
 
 ```bash
 GET /netlify/api/v1/dns_zones/{zone_id}
 ```
 
-#### Delete DNS Zone
+#### 删除 DNS 区域
 
 ```bash
 DELETE /netlify/api/v1/dns_zones/{zone_id}
 ```
 
-### DNS Records
+### DNS 记录
 
-#### List DNS Records
+#### 列出 DNS 记录
 
 ```bash
 GET /netlify/api/v1/dns_zones/{zone_id}/dns_records
 ```
 
-#### Create DNS Record
+#### 创建 DNS 记录
 
 ```bash
 POST /netlify/api/v1/dns_zones/{zone_id}/dns_records
@@ -378,21 +378,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete DNS Record
+#### 删除 DNS 记录
 
 ```bash
 DELETE /netlify/api/v1/dns_zones/{zone_id}/dns_records/{record_id}
 ```
 
-### Build Hooks
+### 构建触发器
 
-#### List Build Hooks
+#### 列出构建触发器
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/build_hooks
 ```
 
-#### Create Build Hook
+#### 创建构建触发器
 
 ```bash
 POST /netlify/api/v1/sites/{site_id}/build_hooks
@@ -404,23 +404,23 @@ Content-Type: application/json
 }
 ```
 
-Response includes a `url` that can be POSTed to trigger a build.
+响应中包含一个 URL，您可以通过 POST 请求来触发构建任务。
 
-#### Delete Build Hook
+#### 删除构建触发器
 
 ```bash
 DELETE /netlify/api/v1/hooks/{hook_id}
 ```
 
-### Webhooks
+### Webhook
 
-#### List Webhooks
+#### 列出 Webhook
 
 ```bash
 GET /netlify/api/v1/hooks?site_id={site_id}
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /netlify/api/v1/hooks?site_id={site_id}
@@ -435,67 +435,67 @@ Content-Type: application/json
 }
 ```
 
-**Events:** `deploy_created`, `deploy_building`, `deploy_failed`, `deploy_succeeded`, `form_submission`
+**事件：** `deploy_created`, `deploy_building`, `deploy_failed`, `deploy_succeeded`, `formsubmission`
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /netlify/api/v1/hooks/{hook_id}
 ```
 
-### Forms
+### 表单
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/forms
 ```
 
-#### List Form Submissions
+#### 列出表单提交记录
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/submissions
 ```
 
-#### Delete Form
+#### 删除表单
 
 ```bash
 DELETE /netlify/api/v1/sites/{site_id}/forms/{form_id}
 ```
 
-### Functions
+### 函数
 
-#### List Functions
+#### 列出可用的函数
 
 ```bash
 GET /netlify/api/v1/sites/{site_id}/functions
 ```
 
-### Services/Add-ons
+### 服务/插件
 
-#### List Available Services
+#### 列出可用的服务
 
 ```bash
 GET /netlify/api/v1/services
 ```
 
-#### Get Service Details
+#### 获取服务详情
 
 ```bash
 GET /netlify/api/v1/services/{service_id}
 ```
 
-## Pagination
+## 分页
 
-Use `page` and `per_page` query parameters:
+使用 `page` 和 `per_page` 查询参数进行分页：
 
 ```bash
 GET /netlify/api/v1/sites?page=1&per_page=100
 ```
 
-Default `per_page` varies by endpoint. Check response headers for pagination info.
+默认的 `per_page` 值因 API 端点而异。请查看响应头中的分页信息。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -524,7 +524,7 @@ response = requests.get(
 sites = response.json()
 ```
 
-### Create Site and Set Environment Variable
+### 创建网站并设置环境变量
 
 ```python
 import os
@@ -548,35 +548,35 @@ requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Site IDs are UUIDs (e.g., `d37d1ce4-5444-40f5-a4ca-a2c40a8b6835`)
-- Account slugs are used for creating sites within a team (e.g., `my-team-slug`)
-- Deploy IDs are returned when creating deploys and can be used to track deploy status
-- Build hooks return a URL that can be POSTed to externally trigger builds
-- Environment variable contexts control where variables are available: `all`, `production`, `deploy-preview`, `branch-deploy`, `dev`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 网站 ID 是 UUID（例如：`d37d1ce4-5444-40f5-a4ca-a2c40a8b6835`）。
+- 账户别名用于在团队内创建网站（例如：`my-team-slug`）。
+- 创建部署任务时会返回部署 ID，可用于跟踪部署状态。
+- 构建触发器返回的 URL 可以通过 POST 请求来触发外部构建任务。
+- 环境变量的作用范围可以通过 `all`, `production`, `deploy-preview`, `branch-deploy`, `dev` 来控制。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 命令可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Netlify connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Netlify API |
+| 400 | 未建立 Netlify 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Netlify API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -587,17 +587,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `netlify`. For example:
+1. 确保您的 URL 路径以 `netlify` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/netlify/api/v1/sites`
+  - 错误的路径：`https://gateway.maton.ai/api/v1/sites`
 
-- Correct: `https://gateway.maton.ai/netlify/api/v1/sites`
-- Incorrect: `https://gateway.maton.ai/api/v1/sites`
+## 资源
 
-## Resources
-
-- [Netlify API Documentation](https://open-api.netlify.com/)
+- [Netlify API 文档](https://open-api.netlify.com/)
 - [Netlify CLI](https://docs.netlify.com/cli/get-started/)
-- [Netlify Build Hooks](https://docs.netlify.com/configure-builds/build-hooks/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Netlify 构建触发器](https://docs.netlify.com/configure-builds/build-hooks/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 技术支持](mailto:support@maton.ai)

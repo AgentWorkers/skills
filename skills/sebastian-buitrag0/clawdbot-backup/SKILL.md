@@ -1,27 +1,27 @@
 ---
 name: clawdbot-backup
-description: Backup and restore ClawdBot configuration, skills, commands, and settings. Sync across devices, version control with git, automate backups, and migrate to new machines.
+description: 备份和恢复 ClawdBot 的配置、技能、命令及设置。实现跨设备的数据同步，通过 Git 进行版本控制，自动化备份流程，并能够将配置迁移到新机器上。
 homepage: https://github.com/clawdbot/backup-skill
 metadata: {"clawdbot":{"emoji":"💾","requires":{"bins":["git","tar","rsync"],"env":[]}}}
 ---
 
-# ClawdBot Backup Skill
+# ClawdBot 备份技能
 
-Backup, restore, and sync your ClawdBot configuration across devices directly from Clawdbot.
+您可以直接通过 Clawdbot 在不同设备之间备份、恢复和同步 ClawdBot 的配置。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Backup all ClawdBot data and settings
-- Restore from backups
-- Sync between multiple machines
-- Version control your configuration
-- Automate backup routines
-- Migrate to new devices
+此技能可帮助您：
+- 备份所有 ClawdBot 数据和设置
+- 从备份中恢复数据
+- 在多台机器之间同步配置
+- 对配置进行版本控制
+- 自动化备份流程
+- 将配置迁移到新设备
 
-## ClawdBot Directory Structure
+## ClawdBot 目录结构
 
-### Key Locations
+### 关键位置
 
 ```
 ~/.claude/                    # Main ClawdBot directory
@@ -48,7 +48,7 @@ This skill helps you:
 └── project-2/
 ```
 
-### What to Backup
+### 需要备份的内容
 
 ```
 ESSENTIAL (Always backup):
@@ -68,9 +68,9 @@ OPTIONAL (Case by case):
 ○ Log files                      # Usually not needed
 ```
 
-## Quick Backup Commands
+## 快速备份命令
 
-### Full Backup
+### 完整备份
 
 ```bash
 # Create timestamped backup
@@ -93,7 +93,7 @@ tar -czvf "$BACKUP_DIR/$BACKUP_NAME.tar.gz" \
 echo "Backup created: $BACKUP_DIR/$BACKUP_NAME.tar.gz"
 ```
 
-### Quick Skills-Only Backup
+### 仅备份所需内容的命令
 
 ```bash
 # Backup just skills
@@ -101,7 +101,7 @@ tar -czvf ~/clawdbot_skills_$(date +%Y%m%d).tar.gz \
   -C "$HOME" .claude/skills .claude/commands
 ```
 
-### Restore from Backup
+### 从备份中恢复
 
 ```bash
 # Restore full backup
@@ -116,9 +116,9 @@ tar -xzvf "$BACKUP_FILE" -C "$HOME"
 echo "Restore complete!"
 ```
 
-## Backup Script
+## 备份脚本
 
-### Full-Featured Backup Script
+### 全功能备份脚本
 
 ```bash
 #!/bin/bash
@@ -356,7 +356,7 @@ main() {
 main "$@"
 ```
 
-### Save and Use
+### 保存和使用备份文件
 
 ```bash
 # Save script
@@ -373,9 +373,9 @@ clawdbot-backup list            # List backups
 clawdbot-backup restore <file>  # Restore
 ```
 
-## Git Version Control
+## Git 版本控制
 
-### Initialize Git Repo
+### 初始化 Git 仓库
 
 ```bash
 cd ~/.claude
@@ -408,7 +408,7 @@ git add .
 git commit -m "Initial ClawdBot configuration backup"
 ```
 
-### Push to Remote
+### 将备份推送到远程仓库
 
 ```bash
 # Add remote (GitHub, GitLab, etc)
@@ -418,7 +418,7 @@ git remote add origin git@github.com:username/clawdbot-config.git
 git push -u origin main
 ```
 
-### Daily Workflow
+### 日常工作流程
 
 ```bash
 # After making changes to skills/settings
@@ -428,7 +428,7 @@ git commit -m "Updated skill: trading-bot"
 git push
 ```
 
-### Auto-Commit Script
+### 自动提交脚本
 
 ```bash
 #!/bin/bash
@@ -450,9 +450,9 @@ git commit -m "Auto-backup: $CHANGED ($(date +%Y-%m-%d))"
 git push 2>/dev/null || echo "Push failed (offline?)"
 ```
 
-## Sync Between Devices
+## 在设备之间同步配置
 
-### Method 1: Git Sync
+### 方法 1：使用 Git 进行同步
 
 ```bash
 # On new device
@@ -465,7 +465,7 @@ cd ~/.claude && git pull
 cd ~/.claude && git add . && git commit -m "Update" && git push
 ```
 
-### Method 2: Rsync
+### 方法 2：使用 Rsync 进行同步
 
 ```bash
 # Sync to remote server
@@ -479,7 +479,7 @@ rsync -avz --delete \
     ~/.claude/
 ```
 
-### Method 3: Cloud Storage
+### 方法 3：使用云存储进行同步
 
 ```bash
 # Backup to cloud folder (Dropbox, Google Drive, etc)
@@ -493,7 +493,7 @@ rsync -avz ~/.claude/commands/ "$CLOUD_DIR/commands/"
 cp ~/.claude/settings.json "$CLOUD_DIR/"
 ```
 
-### Sync Script
+### 同步脚本
 
 ```bash
 #!/bin/bash
@@ -540,9 +540,9 @@ case "$1" in
 esac
 ```
 
-## Automated Backups
+## 自动化备份
 
-### Cron Job (Linux/Mac)
+### 使用 Cron Job（Linux/Mac）
 
 ```bash
 # Edit crontab
@@ -558,7 +558,7 @@ crontab -e
 0 */6 * * * cd ~/.claude && git add . && git commit -m "Auto-backup $(date +\%Y-\%m-\%d)" && git push 2>/dev/null
 ```
 
-### Systemd Timer (Linux)
+### 使用 systemd 定时器（Linux）
 
 ```bash
 # Create service: ~/.config/systemd/user/clawdbot-backup.service
@@ -589,7 +589,7 @@ systemctl --user enable clawdbot-backup.timer
 systemctl --user start clawdbot-backup.timer
 ```
 
-### Launchd (macOS)
+### 使用 Launchd（macOS）
 
 ```bash
 # Create plist: ~/Library/LaunchAgents/com.clawdbot.backup.plist
@@ -621,9 +621,9 @@ EOF
 launchctl load ~/Library/LaunchAgents/com.clawdbot.backup.plist
 ```
 
-## Migration Guide
+## 迁移指南
 
-### Migrate to New Machine
+### 将配置迁移到新设备
 
 ```bash
 # === On OLD machine ===
@@ -652,7 +652,7 @@ git clone git@github.com:username/clawdbot-config.git ~/.claude
 ls -la ~/.claude/skills/
 ```
 
-### Export Single Skill
+### 导出单个技能
 
 ```bash
 # Export one skill for sharing
@@ -663,7 +663,7 @@ tar -czvf "${SKILL_NAME}.tar.gz" -C ~/.claude/skills "$SKILL_NAME"
 tar -xzvf "${SKILL_NAME}.tar.gz" -C ~/.claude/skills/
 ```
 
-### Export All Skills for Sharing
+### 导出所有技能以供共享
 
 ```bash
 # Create shareable skills bundle (no personal settings)
@@ -674,9 +674,9 @@ tar -czvf clawdbot-skills-share.tar.gz \
     --exclude='*personal*'
 ```
 
-## Backup Verification
+## 备份验证
 
-### Verify Backup Integrity
+### 验证备份文件的完整性
 
 ```bash
 # Test backup without extracting
@@ -689,7 +689,7 @@ tar -tzvf backup.tar.gz
 tar -tzvf backup.tar.gz | grep "skills/my-skill/SKILL.md"
 ```
 
-### Compare Backup to Current
+### 将备份文件与当前配置进行比较
 
 ```bash
 # Extract to temp dir
@@ -703,9 +703,9 @@ diff -rq ~/.claude/skills "$TEMP_DIR/.claude/skills"
 rm -rf "$TEMP_DIR"
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
 ```bash
 # Issue: Permission denied
@@ -727,7 +727,7 @@ git stash pop
 # Resolve conflicts manually if needed
 ```
 
-### Recovery from Corruption
+### 在数据损坏时进行恢复
 
 ```bash
 # If ~/.claude is corrupted
@@ -745,9 +745,9 @@ git clone git@github.com:username/clawdbot-config.git ~/.claude
 diff -rq ~/.claude ~/.claude.corrupted/
 ```
 
-## Quick Reference
+## 快速参考
 
-### Essential Commands
+### 常用命令
 
 ```bash
 # Backup
@@ -766,7 +766,7 @@ cd ~/.claude && git add . && git commit -m "Backup" && git push
 cd ~/.claude && git pull
 ```
 
-### Backup Checklist
+### 备份检查清单
 
 ```
 Before major changes:
@@ -781,16 +781,18 @@ Regular maintenance:
 □ Test restore procedure quarterly
 ```
 
-## Resources
+## 资源
 
-### Related Skills
+### 相关技能
+
 ```
 - skill-creator - Create new skills
 - mcp-builder - Configure MCP servers
 - dotfiles - General dotfile management
 ```
 
-### Documentation
+### 文档资料
+
 ```
 - ClawdBot Docs: docs.clawdbot.com
 - Skills Guide: docs.clawdbot.com/skills
@@ -799,4 +801,4 @@ Regular maintenance:
 
 ---
 
-**Tip:** Always test your backup restoration process before you actually need it. A backup you can't restore is worthless!
+**提示：** 在真正需要使用备份功能之前，请务必先测试其恢复过程。无法恢复的备份是没有意义的！

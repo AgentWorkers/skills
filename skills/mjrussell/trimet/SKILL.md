@@ -1,6 +1,6 @@
 ---
 name: trimet
-description: Get Portland transit information including arrivals, trip planning, and alerts. Use when user asks about buses, MAX, trains, or transit in Portland.
+description: 获取波特兰的公共交通信息，包括列车到达时间、行程规划以及相关提醒。当用户询问关于波特兰的公交车、MAX（轻轨系统）或火车的交通情况时，可以使用此功能。
 homepage: https://trimet.org
 metadata:
   clawdbot:
@@ -12,22 +12,22 @@ metadata:
 
 # TriMet CLI
 
-CLI for TriMet Portland transit data. Check arrivals, plan trips, and view alerts.
+TriMet CLI 是一个用于查询波特兰公共交通数据的命令行工具，支持查看列车到站信息、规划出行路线以及获取服务提醒等功能。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g trimet-cli
 ```
 
-## Setup
+## 设置
 
-1. Get free API key from https://developer.trimet.org/
-2. Set environment variable: `export TRIMET_APP_ID="your-key"`
+1. 从 [https://developer.trimet.org/](https://developer.trimet.org/) 获取免费的 API 密钥。
+2. 设置环境变量：`export TRIMET_APP_ID="your-key"`。
 
-## Commands
+## 命令
 
-### Arrivals
+### 查看列车到站信息
 
 ```bash
 trimet arrivals <stop-id>              # Real-time arrivals
@@ -35,7 +35,7 @@ trimet arrivals 8383 --line 90         # Filter by route
 trimet arrivals 8383 --json
 ```
 
-### Trip Planning
+### 规划出行路线
 
 ```bash
 trimet trip -f <from> -t <to>
@@ -46,7 +46,7 @@ trimet trip -f 8383 -t 9969 --depart-at "2:00 PM"
 trimet trip -f 8383 -t 9969 --json
 ```
 
-### Next Departures
+### 查看下一班列车发车时间
 
 ```bash
 trimet next -f <from> -t <to>          # Simplified view
@@ -54,7 +54,7 @@ trimet next -f 8383 -t 9969 -c 5       # Show 5 options
 trimet next -f 8383 -t 9969 --line 90  # Filter by route
 ```
 
-### Service Alerts
+### 查看服务提醒
 
 ```bash
 trimet alerts                          # All alerts
@@ -62,50 +62,50 @@ trimet alerts --route 90               # Alerts for route
 trimet alerts --json
 ```
 
-## Common Stop IDs
+## 常见站点代码
 
-- Pioneer Courthouse Square: 8383 (westbound), 8384 (eastbound)
-- PDX Airport: 10579
-- Portland Union Station: 7787
+- Pioneer Courthouse Square: 8383（西行），8384（东行）
+- PDX 机场: 10579
+- 波特兰联合车站: 7787
 - Beaverton TC: 9969
 
-## Usage Examples
+## 使用示例
 
-**User: "When's the next MAX?"**
+**用户：“下一班 MAX 列车是什么时候？”**
 ```bash
 trimet arrivals 8383
 ```
 
-**User: "How do I get to the airport?"**
+**用户：“我怎么去机场？”**
 ```bash
 trimet trip -f "Pioneer Square" -t "PDX Airport"
 ```
 
-**User: "I need to be downtown by 5pm"**
+**用户：“我需要在下午 5 点前到达市中心。”**
 ```bash
 trimet trip -f <user-location-stop> -t 8383 --arrive-by "5:00 PM"
 ```
 
-**User: "Are there any delays on the Blue Line?"**
+**用户：“蓝线有延误吗？”**
 ```bash
 trimet alerts --route 100
 ```
 
-**User: "Next trains to Beaverton"**
+**用户：“下一班去 Beaverton 的列车是哪一班？”**
 ```bash
 trimet next -f 8383 -t 9969
 ```
 
-## Route Numbers
+## 路线编号
 
-- MAX Blue Line: 100
-- MAX Red Line: 90
-- MAX Yellow Line: 190
-- MAX Orange Line: 290
-- MAX Green Line: 200
+- MAX 蓝线: 100
+- MAX 红线: 90
+- MAX 黄线: 190
+- MAX 橙线: 290
+- MAX 绿线: 200
 
-## Notes
+## 注意事项
 
-- Stop IDs are displayed at TriMet stops and on trimet.org
-- Addresses work for trip planning (e.g., "Pioneer Square, Portland")
-- Times support natural formats ("5:30 PM", "17:30")
+- 站点代码可以在 TriMet 的站点标识牌以及 [trimet.org](https://developer.trimet.org/) 上找到。
+- 地址可用于规划出行路线（例如：“Pioneer Square, Portland”）。
+- 时间支持自然格式（如 “5:30 PM” 或 “17:30”）。

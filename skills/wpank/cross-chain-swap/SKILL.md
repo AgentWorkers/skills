@@ -1,63 +1,64 @@
 ---
 name: cross-chain-swap
-description: Execute a cross-chain token swap via Uniswap's bridge infrastructure. Handles quoting, safety validation, bridge monitoring, and destination confirmation. Use when the user wants to swap tokens across different chains.
+description: 通过 Uniswap 的桥梁基础设施执行跨链代币交换。该流程包括报价、安全验证、桥梁监控以及目标链的确认等环节。适用于用户需要在不同区块链之间进行代币兑换的场景。
 model: opus
 allowed-tools: [Task(subagent_type:cross-chain-executor), mcp__uniswap__getSupportedChains, mcp__uniswap__getTokenInfo]
 ---
 
-# Cross-Chain Swap
+# 跨链交换（Cross-Chain Swap）
 
-## Overview
+## 概述
 
-Executes a cross-chain token swap — swapping a token on one chain for a different (or same) token on another chain. Delegates the full workflow to the `cross-chain-executor` agent, which handles quoting, route evaluation, safety checks, bridge monitoring, and destination confirmation.
+该功能支持跨链代币交换，即在一个链上交换代币为另一个链上的不同代币（或相同代币）。整个交换流程由 `cross-chain-executor` 代理负责处理，包括报价、路由评估、安全检查、桥接器监控以及目标链的确认等操作。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下请求时，可激活此功能：
+- “将 Arbitrum 上的 ETH 交换为 Base 上的 USDC”
+- “进行跨链交换”
+- “使用主网上的 ETH 在 Optimism 上购买 USDC”
+- “将我的 ETH 从 Ethereum 移动到 Arbitrum 并转换为 USDC”
+- “在不同链之间交换代币”
+- “在链 A 上交换 X 代币为链 B 上的 Y 代币”
 
-- "Swap ETH on Arbitrum for USDC on Base"
-- "Cross-chain swap"
-- "Buy USDC on Optimism using ETH from mainnet"
-- "Move my ETH from Ethereum to Arbitrum and convert to USDC"
-- "Swap tokens across chains"
-- "Exchange X on chain A for Y on chain B"
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值    | 说明                                                    |
+|------------------|--------|----------|----------------------------------------------------|
+| tokenIn             | 是      | —         | 来源链上的代币符号或地址                                      |
+| tokenOut            | 是      | —         | 目标链上的代币符号或地址                                      |
+| amount              | 是      | —         | 需要交换的代币数量（例如：“1.5”或“1000”）                             |
+| sourceChain           | 是      | —         | 来源链名称（例如：“ethereum”、“arbitrum”）                         |
+| destChain            | 是      | —         | 目标链名称（例如：“base”、“optimism”）                         |
+| slippage            | 否       | 自动设置   | 容忍的滑点率（例如：“0.5”表示 0.5%）                             |
+| recipient           | 否       | 同一钱包地址 | 目标链上的接收者地址                                      |
 
-| Parameter        | Required | Default    | Description                                          |
-| ---------------- | -------- | ---------- | ---------------------------------------------------- |
-| tokenIn          | Yes      | —          | Input token symbol or address on source chain        |
-| tokenOut         | Yes      | —          | Output token symbol or address on destination chain  |
-| amount           | Yes      | —          | Amount to swap (human-readable, e.g., "1.5" or "1000") |
-| sourceChain      | Yes      | —          | Source chain name (e.g., "ethereum", "arbitrum")     |
-| destChain        | Yes      | —          | Destination chain name (e.g., "base", "optimism")    |
-| slippage         | No       | auto       | Slippage tolerance (e.g., "0.5" for 0.5%)           |
-| recipient        | No       | Same wallet| Recipient address on destination chain               |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：
+   - 确定用户想要发送的代币及其所在链。
+   - 确定用户想要接收的代币及其所在链。
+   - 确定需要交换的代币数量。
+   - 解决链名之间的歧义（例如：“mainnet” 应理解为 “ethereum”）。
 
-1. **Extract parameters** from the user's request. Identify:
-   - Which token they want to send and on which chain.
-   - Which token they want to receive and on which chain.
-   - The amount to swap.
-   - Resolve ambiguous chain references (e.g., "mainnet" = "ethereum").
+2. **验证输入信息**：
+   - 通过 `mcp__uniswap__getSupportedChains` 确认两个链是否都受到支持。
+   - 通过 `mcp__uniswap__tokenInfo` 验证代币在相应链上是否存在。
+   - 如果来源链和目标链相同，则直接跳转到 `execute-swap` 功能进行处理。
 
-2. **Validate inputs**:
-   - Verify both chains are supported via `mcp__uniswap__getSupportedChains`.
-   - Verify tokens exist on their respective chains via `mcp__uniswap__getTokenInfo`.
-   - If source and destination chain are the same: redirect to `execute-swap` skill instead.
+3. **委托给 `cross-chain-executor` 代理**：
+   - 调用 `Task(subagent_type:cross-chain-executor)`，传递以下参数：
+     - `tokenIn`, `tokenOut`, `amount`, `sourceChain`, `destChain`, `slippage`, `recipient`。
+   - 代理将执行完整的交换流程，包括报价、风险评估、安全检查、执行、桥接器监控、确认以及结果报告。
 
-3. **Delegate to cross-chain-executor**: Invoke `Task(subagent_type:cross-chain-executor)` with:
-   - tokenIn, tokenOut, amount, sourceChain, destChain, slippage, recipient.
-   - The agent handles the full 7-step workflow: quote, risk assessment, safety check, execution, bridge monitoring, confirmation, and reporting.
+4. **向用户展示结果**：
+   - 显示交换的详细信息，包括：
+     - 发送和接收的代币数量。
+     - 总费用（包括 gas 费用和桥接器费用）。
+     - 结算时间。
+     - 安全检查或风险评估中出现的任何警告。
 
-4. **Present results**: Format the execution report for the user, highlighting:
-   - Amounts sent and received.
-   - Total fees (gas + bridge).
-   - Settlement time.
-   - Any warnings from safety or risk checks.
-
-## Output Format
+## 输出格式
 
 ```text
 Cross-Chain Swap Complete
@@ -74,21 +75,21 @@ Cross-Chain Swap Complete
   Risk: LOW | Safety: APPROVED
 ```
 
-## Important Notes
+## 重要说明
 
-- Cross-chain swaps involve bridge operations that take time to settle (typically 1-10 minutes).
-- The skill will monitor the bridge and report status updates during settlement.
-- Bridge fees and slippage apply in addition to normal swap fees.
-- If the bridge gets stuck, the executor will escalate with recovery instructions.
+- 跨链交换涉及桥接器操作，因此结算时间较长（通常为 1-10 分钟）。
+- 该功能会实时监控桥接器的状态并更新用户。
+- 除了正常的交换费用外，还需支付桥接器费用和滑点费。
+- 如果桥接器出现故障，系统会提供恢复指导。
 
-## Error Handling
+## 错误处理
 
-| Error                        | User-Facing Message                                              | Suggested Action                     |
-| ---------------------------- | ---------------------------------------------------------------- | ------------------------------------ |
-| Unsupported chain            | "Chain [name] is not supported for cross-chain swaps."           | Check supported chains               |
-| Same chain                   | "Source and destination are the same chain. Use a regular swap." | Use execute-swap skill               |
-| Safety veto                  | "This swap was blocked by safety checks: [reason]."             | Reduce amount or check token         |
-| Risk veto                    | "Risk assessment vetoed: [reason]."                              | Choose a different route or amount   |
-| Bridge stuck                 | "Bridge settlement is taking longer than expected."              | Wait or check order ID manually      |
-| Bridge failed                | "Bridge operation failed. Funds should remain on source chain."  | Check source wallet balance          |
-| Insufficient balance         | "Not enough [token] on [chain] to execute this swap."            | Check balance and reduce amount      |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|------------------|------------------------------------------------------|------------------------------------------------------|
+| 不支持的链             | “[链名] 不支持跨链交换。”                                      | 检查支持的链列表                              |
+| 来源链和目标链相同         | “来源链和目标链相同，请使用常规交换功能。”                         | 使用 `execute-swap` 功能                         |
+| 安全检查拒绝             | “此交换操作因安全原因被拒绝：[原因]。”                             | 减少交易金额或重新选择代币                         |
+| 风险评估拒绝             | “风险评估结果拒绝：[原因]。”                                      | 选择其他交易路径或调整交易金额                         |
+| 桥接器故障             | “桥接器结算时间过长。”                                      | 等待或手动检查订单状态                         |
+| 桥接器操作失败             | “桥接器操作失败。资金应保留在来源链上。”                         | 检查来源钱包余额                             |
+| 账户余额不足             | “[链] 上的 [代币] 数量不足，无法完成交换。”                         | 检查余额并调整交易金额                         |

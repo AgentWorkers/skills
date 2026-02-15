@@ -15,9 +15,9 @@ metadata:
 
 # Google Play
 
-Access the Google Play Developer API (Android Publisher) with managed OAuth authentication. Manage app listings, subscriptions, in-app purchases, reviews, and more.
+使用托管的 OAuth 认证方式访问 Google Play 开发者 API（Android Publisher）。您可以管理应用列表、订阅服务、应用内购买、用户评价等功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List in-app products
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-play/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Android Publisher API endpoint path. The gateway proxies requests to `androidpublisher.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Android Publisher API 端点路径。该网关会将请求代理到 `androidpublisher.googleapis.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Play connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Play 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,25 +138,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### In-App Products
+### 应用内产品
 
-#### List In-App Products
+#### 列出应用内产品
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/inappproducts
 ```
 
-#### Get In-App Product
+#### 获取应用内产品信息
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}
 ```
 
-#### Create In-App Product
+#### 创建应用内产品
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/inappproducts
@@ -180,7 +180,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update In-App Product
+#### 更新应用内产品
 
 ```bash
 PUT /google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}
@@ -198,27 +198,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete In-App Product
+#### 删除应用内产品
 
 ```bash
 DELETE /google-play/androidpublisher/v3/applications/{packageName}/inappproducts/{sku}
 ```
 
-### Subscriptions
+### 订阅服务
 
-#### List Subscriptions
+#### 列出订阅服务
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/subscriptions
 ```
 
-#### Get Subscription
+#### 获取订阅信息
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/subscriptions/{productId}
 ```
 
-#### Create Subscription
+#### 创建订阅服务
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/subscriptions
@@ -243,15 +243,15 @@ Content-Type: application/json
 }
 ```
 
-### Purchases
+### 购买记录
 
-#### Get Purchase (one-time product)
+#### 获取购买记录（一次性产品）
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}
 ```
 
-#### Acknowledge Purchase
+#### 确认购买
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{token}:acknowledge
@@ -262,39 +262,39 @@ Content-Type: application/json
 }
 ```
 
-#### Get Subscription Purchase
+#### 获取订阅购买记录
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}
 ```
 
-#### Cancel Subscription
+#### 取消订阅
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:cancel
 ```
 
-#### Refund Subscription
+#### 退款订阅
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:refund
 ```
 
-### Reviews
+### 用户评价
 
-#### List Reviews
+#### 列出评价
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/reviews
 ```
 
-#### Get Review
+#### 获取评价信息
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}
 ```
 
-#### Reply to Review
+#### 回复评价
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/reviews/{reviewId}:reply
@@ -305,33 +305,33 @@ Content-Type: application/json
 }
 ```
 
-### Edits (App Updates)
+### 应用更新
 
-#### Create Edit
+#### 创建更新请求
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/edits
 ```
 
-#### Get Edit
+#### 获取更新信息
 
 ```bash
 GET /google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}
 ```
 
-#### Commit Edit
+#### 提交更新
 
 ```bash
 POST /google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}:commit
 ```
 
-#### Delete Edit
+#### 删除更新请求
 
 ```bash
 DELETE /google-play/androidpublisher/v3/applications/{packageName}/edits/{editId}
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -369,34 +369,34 @@ products = response.json()
 print(products)
 ```
 
-## Notes
+## 注意事项
 
-- Replace `{packageName}` with your app's package name (e.g., `com.example.app`)
-- The Google Play Developer API requires the app to be published on Google Play
-- Subscription management requires the app to have active subscriptions configured
-- Edits are transactional - create an edit, make changes, then commit
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 请将 `{packageName}` 替换为您应用的包名（例如：`com.example.app`）。
+- 使用 Google Play 开发者 API 需要您的应用已发布到 Google Play。
+- 管理订阅服务的前提是您的应用已配置了有效的订阅功能。
+- 更新操作是事务性的——先创建更新请求，进行修改，然后提交。
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Play connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Package not found or no access |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Play API |
+| 400 | 未建立 Google Play 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 未找到相应的应用或无法访问 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Google Play API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -407,20 +407,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `google-play`. For example:
+1. 确保您的 URL 路径以 `google-play` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/google-play/androidpublisher/v3/applications/{packageName}/inappproducts`
+- 错误的路径：`https://gateway.maton.ai/androidpublisher/v3/applications/{packageName}/inappproducts`
 
-- Correct: `https://gateway.maton.ai/google-play/androidpublisher/v3/applications/{packageName}/inappproducts`
-- Incorrect: `https://gateway.maton.ai/androidpublisher/v3/applications/{packageName}/inappproducts`
+## 资源
 
-## Resources
-
-- [Android Publisher API Overview](https://developers.google.com/android-publisher)
-- [In-App Products](https://developers.google.com/android-publisher/api-ref/rest/v3/inappproducts)
-- [Subscriptions](https://developers.google.com/android-publisher/api-ref/rest/v3/monetization.subscriptions)
-- [Purchases](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.products)
-- [Reviews](https://developers.google.com/android-publisher/api-ref/rest/v3/reviews)
-- [Edits](https://developers.google.com/android-publisher/api-ref/rest/v3/edits)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Android Publisher API 概述](https://developers.google.com/android-publisher)
+- [应用内产品](https://developers.google.com/android-publisher/api-ref/rest/v3/inappproducts)
+- [订阅服务](https://developers.google.com/android-publisher/api-ref/rest/v3/monetizationsubscriptions)
+- [购买记录](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases/products)
+- [用户评价](https://developers.google.com/android-publisher/api-ref/rest/v3/reviews)
+- [应用更新](https://developers.google.com/android-publisher/api-ref/rest/v3/edits)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

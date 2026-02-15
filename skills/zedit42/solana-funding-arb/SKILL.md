@@ -1,36 +1,36 @@
 ---
 name: solana-funding-arb
-description: Solana perpetual DEX funding rate arbitrage - scanner and auto-trader. Compares funding rates across Drift and Flash Trade to find and execute cross-DEX arbitrage opportunities. Use when analyzing Solana perp funding rates, finding funding arbitrage, setting up delta-neutral strategies, or running automated funding collection. Includes Monte Carlo simulation, backtesting, and full auto-trading capabilities.
+description: Solana 永续性去中心化交易所（DEX）资金费率套利工具——扫描器与自动交易系统。该工具通过比较 Drift 和 Flash Trade 平台上的资金费率，来发现并执行跨去中心化交易所的套利机会。适用于分析 Solana 的资金费率、寻找资金套利机会、构建Delta中性策略或运行自动化资金收集任务。该工具具备蒙特卡洛模拟、回测以及全自动交易功能。
 ---
 
-# Solana Funding Rate Arbitrage (v2.0)
+# Solana资金利率套利（v2.0）
 
-Automated funding rate arbitrage bot for Solana perpetual DEXes.
+这是一个用于Solana永续DEXs的自动化资金利率套利机器人。
 
-## 🔥 What's New in v2.0
+## 🔥 v2.0的新功能
 
-- **Auto-Trading**: Fully automated position management
-- **Multi-DEX Support**: Drift Protocol + Flash Trade
-- **Position Manager**: Track PnL and funding collected
-- **Risk Management**: Stop-loss, max DD, auto-rebalancing
-- **Cron Integration**: Scheduled rate checks
+- **自动交易**：完全自动化的头寸管理
+- **多DEX支持**：Drift Protocol + Flash Trade
+- **头寸管理器**：跟踪盈亏和收取的资金
+- **风险管理**：止损、最大回撤限制、自动再平衡
+- **Cron任务集成**：定时检查利率
 
-## Supported DEXes
+## 支持的DEX
 
-| DEX | Markets | Trading | Data Source |
+| DEX | 市场 | 交易方式 | 数据来源 |
 |-----|---------|---------|-------------|
-| Drift Protocol | 64 | ✅ Full | Direct API |
+| Drift Protocol | 64 | ✅ 全部支持 | 直接API |
 | Flash Trade | 19 | 🔶 DRY_RUN | CoinGecko |
 
-## Strategy Options
+## 策略选项
 
-| Strategy | Leverage | Win Rate | APY | Max Drawdown |
+| 策略 | 杠杆倍数 | 胜率 | 年化收益率（APY） | 最大回撤率 |
 |----------|----------|----------|-----|--------------|
-| Ultra Safe | 1x | 96% | 126% | 2% |
-| Conservative | 1.5x | 89% | 203% | 4% |
-| Moderate | 2.5x | 85% | 411% | 9% |
+| 超级安全策略 | 1倍 | 96% | 126% | 2% |
+| 保守策略 | 1.5倍 | 89% | 203% | 4% |
+| 中等策略 | 2.5倍 | 85% | 411% | 9% |
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd scripts && npm install
@@ -53,9 +53,9 @@ npm run dashboard   # Web dashboard (:3456)
 npm run monte-carlo # Risk simulations
 ```
 
-## Configuration
+## 配置
 
-**Config file:** `~/.secrets/funding-arb-config.json`
+**配置文件：** `~/.secrets/funding-arb-config.json`
 
 ```json
 {
@@ -85,9 +85,9 @@ npm run monte-carlo # Risk simulations
 }
 ```
 
-## Environment Variables
+## 环境变量
 
-Create `.env` in scripts directory or `~/.secrets/.env`:
+在scripts目录下创建`.env`文件，或使用`~/.secrets/.env`文件：
 
 ```env
 # Required for live trading
@@ -99,26 +99,26 @@ SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
 DEBUG=true  # Verbose logging
 ```
 
-## Cron Setup
+## Cron任务设置
 
-Run every 4 hours:
+每4小时运行一次：
 
 ```bash
 # Add to crontab -e
 0 */4 * * * ~/clawd/skills/solana-funding-arb/scripts/cron-runner.sh
 ```
 
-## How It Works
+## 工作原理
 
-1. **Scan**: Compare funding rates on Drift vs Flash Trade
-2. **Identify**: Find pairs where one is paying and other is receiving
-3. **Execute**: 
-   - Go LONG on exchange with negative rate (receive funding)
-   - Go SHORT on exchange with positive rate (receive funding)
-4. **Collect**: Delta-neutral = collect funding from both sides
-5. **Rebalance**: Close when spread reverses or DD exceeded
+1. **扫描**：比较Drift Protocol和Flash Trade上的资金利率
+2. **识别**：找出一个市场支付资金、另一个市场接收资金的交易对
+3. **执行**：
+   - 在利率为负的市场买入（接收资金）
+   - 在利率为正的市场卖出（接收资金）
+4. **收集资金**：确保总盈亏为零（Delta-neutral）
+5. **再平衡**：当价差逆转或最大回撤率被超过时平仓
 
-### Example Trade
+### 示例交易
 
 ```
 SOL Funding Rates:
@@ -132,7 +132,7 @@ Action:
 → Net: Delta-neutral, collecting ~1300% APY in funding
 ```
 
-## Files
+## 相关文件
 
 ```
 scripts/
@@ -151,32 +151,32 @@ scripts/
 └── logs/                  # Cron logs
 ```
 
-## Risks
+## 风险
 
-⚠️ **Smart Contract Risk**: DEX bugs, hacks
-⚠️ **Rate Reversal**: 15-18% daily probability
-⚠️ **Execution Slippage**: 0.2-0.4%
-⚠️ **Liquidation**: Only with leverage >1x
+⚠️ **智能合约风险**：DEX可能出现漏洞或被黑客攻击
+⚠️ **利率逆转**：每日发生概率为15-18%
+⚠️ **执行滑点**：0.2-0.4%
+⚠️ **强制清算**：仅当杠杆倍数大于1倍时发生
 
-## Yield Comparison
+## 收益率对比
 
-| Platform | APY | vs Ultra Safe |
+| 平台 | 年化收益率（APY） | 与超级安全策略相比 |
 |----------|-----|---------------|
-| Ultra Safe (1x) | 126% | — |
-| US Bank (FDIC) | 4.5% | 28x less |
-| Aave V3 | 2.5% | 50x less |
-| Marginfi | 8.5% | 15x less |
+| 超级安全策略（1倍杠杆） | 126% | — |
+| 美国银行（FDIC） | 4.5% | 低28倍 |
+| Aave V3 | 2.5% | 低50倍 |
+| Marginfi | 8.5% | 低15倍 |
 
-## Testing
+## 测试步骤
 
-1. Start with `dry_run: true` (default)
-2. Run `npm run trade:scan` to verify opportunities
-3. Run `npm run trade:dry` to test execution flow
-4. When ready, set `dry_run: false` and `max_position_usd: 10`
-5. Monitor logs at `~/.clawd/funding-arb/logs/`
+1. 首先使用`dry_run: true`（默认设置）启动程序
+2. 运行`npm run trade:scan`来验证交易机会
+3. 运行`npm run trade:dry`来测试交易流程
+4. 准备就绪后，将`dry_run: false`和`max_position_usd: 10`设置为合适的值
+5. 在`~/.clawd/funding-arb/logs/`目录下查看日志
 
-## References
+## 参考资料
 
-- [Drift Protocol Docs](https://docs.drift.trade)
-- [Flash Trade](https://flash.trade)
-- [API Reference](references/api.md)
+- [Drift Protocol文档](https://docs.drift.trade)
+- [Flash Trade文档](https://flash.trade)
+- [API参考](references/api.md)

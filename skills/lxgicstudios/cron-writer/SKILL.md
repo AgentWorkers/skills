@@ -1,29 +1,29 @@
 ---
 name: cron-writer
-description: Convert natural language to cron expressions. Use when you need to schedule tasks.
+description: 将自然语言转换为 Cron 表达式。当您需要安排任务时可以使用这种方法。
 ---
 
-# Cron Writer
+# Cron 编写工具
 
-Cron syntax is one of those things that looks simple until you actually need to write one. Five asterisks staring back at you and you can't remember which field is the day of week. This tool converts plain English like "every Tuesday at 3pm" into the exact cron expression. It even shows you the next few run times so you can verify it's right.
+Cron 语法看起来很简单，但当你真正需要编写一个 Cron 任务时，就会发现其实并不容易。五个星号（*）让人感到困惑，而且你可能记不清哪个字段代表星期几。这个工具可以将像“每周二下午 3 点”这样的普通英文描述转换成精确的 Cron 表达式。它还会显示下几次任务的执行时间，以便你验证其正确性。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-cron-gen "every day at midnight"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts plain English schedule descriptions to cron expressions
-- Shows the human-readable meaning of the generated expression
-- Lists the next scheduled run times for verification
-- Handles complex schedules like "every other Friday" or "first Monday of each month"
-- Works instantly with zero configuration
+- 将普通的英文时间表描述转换为 Cron 表达式
+- 以人类可读的方式解释生成的 Cron 表达式的含义
+- 列出下几次预定的执行时间以供验证
+- 支持复杂的调度规则（如“每隔一个星期五”或“每月的第一个星期一”）
+- 无需任何配置即可立即使用
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Simple schedule
@@ -36,42 +36,42 @@ npx ai-cron-gen "every weekday at 9am and 5pm"
 npx ai-cron-gen "first Monday of every month at 10:30am"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Verify with the next runs output** - Always check the preview to make sure the schedule is what you wanted
-- **Be specific about time zones** - Cron expressions don't include timezone info. Know what zone your server runs in
-- **Test edge cases** - Schedules like "every other week" can be tricky. Double-check with the preview
-- **Copy directly into crontab** - The output is ready to paste straight into your crontab or scheduler
+- **通过预览结果进行验证**：务必检查预览结果，确保时间表符合你的需求
+- **明确指定时区**：Cron 表达式不包含时区信息，请确保你知道服务器所在的时区
+- **测试特殊情况**：像“每隔一个星期”这样的调度规则可能比较复杂，请务必仔细核对预览结果
+- **直接复制到 crontab 中**：生成的 Cron 表达式可以直接粘贴到你的 crontab 或调度器中
 
-## When to Use This
+## 适用场景
 
-- Setting up a new cron job and can't remember the syntax
-- Configuring CI/CD scheduled pipelines
-- Building a task scheduler and need to validate cron expressions
-- Documenting existing cron jobs in human-readable format
+- 设置新的 Cron 任务时忘记了语法
+- 配置持续集成/持续交付（CI/CD）的调度流程
+- 构建任务调度器时需要验证 Cron 表达式
+- 以人类可读的格式记录现有的 Cron 任务
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发者工具之一。免费版本没有任何付费门槛、注册要求或 API 密钥，只提供实用的功能。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-cron-gen --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool sends your schedule description to an AI model that understands cron syntax and time patterns. It generates the cron expression, explains what it means in plain English, and calculates the next several run times so you can verify the schedule is correct.
+该工具会将你的时间表描述发送给一个能够理解 Cron 语法和时间模式的 AI 模型。模型会生成相应的 Cron 表达式，并用通俗的语言解释其含义，同时计算出下几次执行的时间，以便你验证时间表的正确性。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可证，永久免费。你可以随意使用该工具。

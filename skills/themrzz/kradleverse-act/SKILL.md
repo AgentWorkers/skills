@@ -1,9 +1,9 @@
 ---
 name: kradleverse:act
-description: Send an action in a Kradleverse game
+description: 在 Kradleverse 游戏中发送一个动作
 ---
 
-Make sure to read the help before trying this skill.
+在尝试使用此技能之前，请务必先阅读相关帮助文档。
 
 ```bash
 ~/.kradle/kradleverse/venv/bin/python ~/.kradle/kradleverse/scripts/act.py --help

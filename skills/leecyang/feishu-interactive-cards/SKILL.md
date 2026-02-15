@@ -1,52 +1,49 @@
 ---
 name: feishu-interactive-cards
 version: 1.0.2
-description: Create and send interactive cards to Feishu (Lark) with buttons, forms, polls, and rich UI elements. Use when replying to Feishu messages and there is ANY uncertainty - send an interactive card instead of plain text to let users choose via buttons. Automatically handles callbacks via long-polling connection. Use for confirmations, choices, forms, todos, polls, or any scenario requiring user interaction in Feishu.
+description: 创建并发送交互式卡片到 Feishu（Lark），卡片中可以包含按钮、表单、投票功能以及丰富的用户界面元素。当回复 Feishu 消息时，如果存在任何不确定性，建议使用交互式卡片而非纯文本，以便用户通过按钮进行选择。系统会通过长轮询（long-polling）方式自动处理回调请求。这种卡片适用于需要用户互动的场景，例如确认操作、信息收集、待办事项管理、投票等。
 ---
 
-# Feishu Interactive Cards
+# Feishu 交互式卡片
 
-## Core Principle
+## 核心原则
 
-**When replying to Feishu and there is ANY uncertainty: send an interactive card instead of plain text.**
+**在回复 Feishu 时，如果存在任何不确定性：请发送交互式卡片，而不是纯文本。**  
+交互式卡片允许用户通过按钮进行响应，从而加快交互速度并提高交互的清晰度。
 
-Interactive cards let users respond via buttons rather than typing, making interactions faster and clearer.
+## 适用场景
 
-## When to Use
+**必须使用交互式卡片的情况：**  
+- 用户需要做出选择（是/否、多个选项）  
+- 执行操作前需要确认  
+- 显示待办事项或任务列表  
+- 创建投票或调查  
+- 收集表单输入  
+- 任何存在不确定性的情况  
 
-**Must use interactive cards:**
-- User needs to make a choice (yes/no, multiple options)
-- Confirmation required before action
-- Displaying todos or task lists
-- Creating polls or surveys
-- Collecting form input
-- Any uncertain situation
+**可以使用纯文本的情况：**  
+- 简单的通知（无需用户响应）  
+- 纯数据展示（无需交互）  
+- 已确认的操作结果  
 
-**Plain text is OK:**
-- Simple notifications (no response needed)
-- Pure data display (no interaction)
-- Confirmed command results
+**示例：**  
+- 错误做法：直接发送“我已经为您删除了文件”  
+- 正确做法：发送交互式卡片：“确认删除文件？” [确认] [取消]  
 
-**Example:**
-- Wrong: "I deleted the file for you" (direct execution)
-- Right: Send card "Confirm delete file?" [Confirm] [Cancel]
+## 快速入门
 
-## Quick Start
-
-### 1. Start Callback Server (Long-Polling Mode)
-
+### 1. 启动回调服务器（长轮询模式）  
 ```bash
 cd E:\openclaw\workspace\skills\feishu-interactive-cards\scripts
 node card-callback-server.js
-```
+```  
 
-**Features:**
-- Uses Feishu long-polling (no public IP needed)
-- Auto-reconnects
-- Sends callbacks to OpenClaw Gateway automatically
+**特点：**  
+- 使用 Feishu 的长轮询机制（无需公网 IP）  
+- 自动重新连接  
+- 自动将回调发送到 OpenClaw Gateway  
 
-### 2. Send Interactive Card
-
+### 2. 发送交互式卡片  
 ```bash
 # Confirmation card
 node scripts/send-card.js confirmation "Confirm delete file?" --chat-id oc_xxx
@@ -59,12 +56,11 @@ node scripts/send-card.js poll "Team activity" --options "Bowling,Movie,Dinner" 
 
 # Custom card
 node scripts/send-card.js custom --template examples/custom-card.json --chat-id oc_xxx
-```
+```  
 
-### 3. Use in Agent
+### 3. 在代理中使用  
 
-When Agent needs to send Feishu messages:
-
+当代理需要向 Feishu 发送消息时：  
 ```javascript
 // Wrong: Send plain text
 await message({ 
@@ -77,24 +73,23 @@ await message({
 await exec({
   command: `node E:\\openclaw\\workspace\\skills\\feishu-interactive-cards\\scripts\\send-card.js confirmation "Confirm delete file test.txt?" --chat-id ${chatId}`
 });
-```
+```  
 
-## Card Templates
+## 卡片模板  
 
-See `examples/` directory for complete card templates:
-- `confirmation-card.json` - Confirmation dialogs
-- `todo-card.json` - Task lists with checkboxes
-- `poll-card.json` - Polls and surveys
-- `form-card.json` - Forms with input fields
+完整的卡片模板请参见 `examples/` 目录：  
+- `confirmation-card.json` - 确认对话框  
+- `todo-card.json` - 带有复选框的任务列表  
+- `poll-card.json` - 投票和调查  
+- `form-card.json` - 带有输入字段的表单  
 
-For detailed card design patterns and best practices, see [references/card-design-guide.md](references/card-design-guide.md).
+有关详细的卡片设计模式和最佳实践，请参阅 [references/card-design-guide.md](references/card-design-guide.md)。  
 
-## Callback Handling
+## 回调处理  
 
-Callback server automatically sends all card interactions to OpenClaw Gateway. For detailed integration guide, see [references/gateway-integration.md](references/gateway-integration.md).
+回调服务器会自动将所有卡片交互发送到 OpenClaw Gateway。有关详细的集成指南，请参阅 [references/gateway-integration.md](references/gateway-integration.md)。  
 
-**Quick example:**
-
+**快速示例：**  
 ```javascript
 // Handle confirmation
 if (callback.data.action.value.action === "confirm") {
@@ -132,35 +127,34 @@ if (callback.data.action.value.action === "confirm") {
     });
   }
 }
-```
+```  
 
-## Best Practices
+## 最佳实践  
 
-### Card Design
-- Clear titles and content
-- Obvious button actions
-- Use `danger` type for destructive operations
-- Carry complete state in button `value` to avoid extra queries
+### 卡片设计  
+- 标题和内容清晰明了  
+- 按钮操作一目了然  
+- 对于具有破坏性的操作，使用 `danger` 类型  
+- 将卡片的状态信息保存在按钮的 `value` 中，以避免额外的查询  
 
-### Interaction Flow
+### 交互流程  
 ```
 User request -> Agent decides -> Send card -> User clicks button 
 -> Callback server -> Gateway -> Agent handles -> Update card/execute
-```
+```  
 
-### Error Handling
-- Timeout: Send reminder if user doesn't respond
-- Duplicate clicks: Built-in deduplication (3s window)
-- Failures: Update card to show error message
+### 错误处理  
+- 超时：如果用户未响应，发送提醒  
+- 重复点击：内置去重机制（3 秒窗口）  
+- 失败：更新卡片以显示错误信息  
 
-### Performance
-- Async processing: Quick response, long tasks in background
-- Batch operations: Combine related actions in one card
+### 性能  
+- 异步处理：快速响应，长时间运行的任务在后台处理  
+- 批量操作：将相关操作合并到一张卡片中  
 
-## Configuration
+## 配置  
 
-Configure in `~/.openclaw/openclaw.json`:
-
+在 `~/.openclaw/openclaw.json` 中进行配置：  
 ```json
 {
   "channels": {
@@ -179,41 +173,40 @@ Configure in `~/.openclaw/openclaw.json`:
     "token": "YOUR_GATEWAY_TOKEN"
   }
 }
-```
+```  
 
-Callback server reads config automatically.
+回调服务器会自动读取配置文件。  
 
-## Troubleshooting
+## 故障排除  
 
-**Button clicks not working:**
-- Check callback server is running
-- Verify Feishu backend uses "long-polling" mode
-- Ensure `card.action.trigger` event is subscribed
+**按钮点击无效：**  
+- 检查回调服务器是否正在运行  
+- 确认 Feishu 后端是否使用“长轮询”模式  
+- 确保已订阅 `card.action_trigger` 事件  
 
-**Gateway not receiving callbacks:**
-- Start Gateway: `E:\openclaw\workspace\scripts\gateway.cmd`
-- Check token in `~/.openclaw\openclaw.json`
+**Gateway 未收到回调：**  
+- 启动 Gateway：`E:\openclaw\workspace\scripts\gateway.cmd`  
+- 检查 `~/.openclaw\openclaw.json` 中的令牌  
 
-**Card display issues:**
-- Use provided templates as base
-- Validate JSON format
-- Check required fields
+**卡片显示问题：**  
+- 以提供的模板为基础进行开发  
+- 验证 JSON 格式  
+- 检查必填字段是否填写正确  
 
-## Security
+## 安全性  
 
-**⚠️ CRITICAL: Never pass user input directly to shell commands!**
+**⚠️ 重要提示：** **切勿将用户输入直接传递给 shell 命令！**  
+本技能包含全面的安全指南。在实现回调处理程序之前，请务必阅读 [references/security-best-practices.md](references/security-best-practices.md)。  
 
-This skill includes comprehensive security guidelines. Please read [references/security-best-practices.md](references/security-best-practices.md) before implementing callback handlers.
+**关键安全原则：**  
+- 始终验证并清理用户输入  
+- 使用 Node.js 内置 API 而非 shell 命令  
+- 实施适当的权限检查  
+- 防止命令注入漏洞  
+- 使用 `event_id` 进行去重  
 
-Key security principles:
-- Always validate and sanitize user input
-- Use Node.js built-in APIs instead of shell commands
-- Implement proper permission checks
-- Prevent command injection vulnerabilities
-- Use event_id for deduplication
+## 参考资料  
 
-## References
-
-- [Security Best Practices](references/security-best-practices.md) - **READ THIS FIRST!**
-- [Feishu Card Documentation](https://open.feishu.cn/document/ukTMukTMukTM/uczM3QjL3MzN04yNzcDN)
-- [OpenClaw Docs](https://docs.openclaw.ai)
+- [安全最佳实践](references/security-best-practices.md) - **请先阅读此文档！**  
+- [Feishu 卡片文档](https://open.feishu.cn/document/ukTMukTMukTM/uczM3QjL3MzN04yNzcDN)  
+- [OpenClaw 文档](https://docs.openclaw.ai)

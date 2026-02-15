@@ -8,18 +8,18 @@ description: |
 
 # Reddit Insights MCP
 
-Semantic search across millions of Reddit posts. Unlike keyword search, this understands intent and meaning.
+这是一个能够对数百万条Reddit帖子进行语义搜索的工具。与关键词搜索不同，它能够理解用户的意图和帖子的真实含义。
 
-## Setup
+## 设置
 
-### 1. Get API Key (free tier available)
-1. Sign up at https://reddit-insights.com
-2. Go to Settings → API
-3. Copy your API key
+### 1. 获取API密钥（免费 tier 可用）
+1. 访问 https://reddit-insights.com 注册
+2. 进入设置 → API
+3. 复制您的API密钥
 
-### 2. Install MCP Server
+### 2. 安装MCP服务器
 
-**For Claude Desktop** - add to `claude_desktop_config.json`:
+**对于Claude Desktop** - 添加到 `claude_desktop_config.json` 文件中：
 ```json
 {
   "mcpServers": {
@@ -34,7 +34,7 @@ Semantic search across millions of Reddit posts. Unlike keyword search, this und
 }
 ```
 
-**For Clawdbot** - add to `config/mcporter.json`:
+**对于Clawdbot** - 添加到 `config/mcporter.json` 文件中：
 ```json
 {
   "mcpServers": {
@@ -48,48 +48,48 @@ Semantic search across millions of Reddit posts. Unlike keyword search, this und
 }
 ```
 
-**Verify installation:**
+**验证安装：**
 ```bash
 mcporter list reddit-insights
 ```
 
-## Available Tools
+## 可用工具
 
-| Tool | Purpose | Key Params |
+| 工具 | 功能 | 关键参数 |
 |------|---------|------------|
-| `reddit_search` | Semantic search across posts | `query` (natural language), `limit` (1-100) |
-| `reddit_list_subreddits` | Browse available subreddits | `page`, `limit`, `search` |
-| `reddit_get_subreddit` | Get subreddit details + recent posts | `subreddit` (without r/) |
-| `reddit_get_trends` | Get trending topics | `filter` (latest/today/week/month), `category` |
+| `reddit_search` | 对帖子进行语义搜索 | `query`（自然语言查询），`limit`（1-100） |
+| `reddit_list_subreddits` | 浏览可用的子版块 | `page`，`limit`，`search` |
+| `reddit_get_subreddit` | 获取子版块详情及最新帖子 | `subreddit`（不包括前缀r/） |
+| `reddit_get_trends` | 获取热门话题 | `filter`（最新/今日/本周/本月），`category` |
 
-## Performance Notes
+## 性能说明
 
-- **Response time:** 12-25 seconds (varies by query complexity)
-  - Simple queries: ~12-15s
-  - Complex semantic queries: ~17-20s
-  - Heavy load periods: up to 25s
-- **Best results:** Specific products, emotional language, comparison questions
-- **Weaker results:** Abstract concepts, non-English queries, generic business terms
-- **Sweet spot:** Questions a real person would ask on Reddit
+- **响应时间：** 12-25秒（取决于查询的复杂度）
+  - 简单查询：约12-15秒
+  - 复杂的语义查询：约17-20秒
+  - 高负载时段：最长可达25秒
+- **最佳效果：** 适用于特定产品、涉及情感表达的查询，以及需要比较的查询
+- **效果较差的查询：** 涉及抽象概念、非英语内容的查询，或通用商业术语的查询
+- **最佳使用场景：** 适合在Reddit上人们会提出的问题
 
-## Best Use Cases (Tested)
+## 经过测试的最佳使用案例
 
-| Use Case | Effectiveness | Why |
+| 使用场景 | 效果 | 原因 |
 |----------|--------------|-----|
-| Product comparisons (A vs B) | ⭐⭐⭐⭐⭐ | Reddit loves debates |
-| Tool/app recommendations | ⭐⭐⭐⭐⭐ | High-intent discussions |
-| Side hustle/money topics | ⭐⭐⭐⭐⭐ | Engaged communities |
-| Pain point discovery | ⭐⭐⭐⭐ | Emotional posts rank well |
-| Health questions | ⭐⭐⭐⭐ | Active health subreddits |
-| Technical how-to | ⭐⭐⭐ | Better to search specific subreddits |
-| Abstract market research | ⭐⭐ | Too vague for semantic search |
-| Non-English queries | ⭐ | Reddit is English-dominant |
+| 产品对比（A vs B） | ⭐⭐⭐⭐⭐ | Reddit用户喜欢讨论产品优劣 |
+| 工具/应用推荐 | ⭐⭐⭐⭐⭐ | 这类问题通常具有较高的讨论热度 |
+| 业余副业/财务相关话题 | ⭐⭐⭐⭐⭐ | 这些话题的社区参与度较高 |
+| 发现用户痛点 | ⭐⭐⭐⭐ | 涉及情感表达的帖子更容易被搜索到 |
+| 健康相关问题 | ⭐⭐⭐⭐ | 健康相关的子版块活跃度较高 |
+| 技术教程 | ⭐⭐⭐ | 应在特定子版块中进行搜索 |
+| 抽象的市场研究 | ⭐⭐ | 这类问题较难通过语义搜索得到准确结果 |
+| 非英语查询 | ⭐ | Reddit主要以英语为主 |
 
-## Query Strategies (Tested with Real Data)
+## 经过实际数据测试的查询策略
 
-### ✅ Excellent Queries (relevance 0.70+)
+### ✅ 高效的查询（相关性0.70以上）
 
-**Product Comparisons** (best results!):
+**产品对比**（效果最佳！）：
 ```
 "Notion vs Obsidian for note taking which one should I use"
 → Relevance: 0.72-0.81 | Found: Detailed comparison discussions, user experiences
@@ -98,21 +98,21 @@ mcporter list reddit-insights
 → Relevance: 0.70-0.73 | Found: Migration stories, feature comparisons
 ```
 
-**Side Hustle/Money Topics:**
+**业余副业/财务相关话题：**
 ```
 "side hustle ideas that actually make money not scams"
 → Relevance: 0.70-0.77 | Found: Real experiences, specific suggestions
 ```
 
-**Niche App Research:**
+**细分领域应用研究：**
 ```
 "daily horoscope apps which one is accurate and why"
 → Relevance: 0.67-0.72 | Found: App recommendations, feature requests
 ```
 
-### ✅ Good Queries (relevance 0.60-0.69)
+### ✅ 较好的查询（相关性0.60-0.69）
 
-**Pain Point Discovery:**
+**发现用户痛点：**
 ```
 "I hate my current CRM it is so frustrating"
 → Relevance: 0.60-0.64 | Found: Specific CRM complaints, feature wishlists
@@ -121,48 +121,39 @@ mcporter list reddit-insights
 → Relevance: 0.60-0.63 | Found: Sleep remedies discussions, medical advice seeking
 ```
 
-**Tool Evaluation:**
+**工具评估：**
 ```
 "AI tools that actually save time not just hype"
 → Relevance: 0.64-0.65 | Found: Real productivity gains, tool recommendations
 ```
 
-### ❌ Weak Queries (avoid these patterns)
+### ✌ 应避免的无效查询模式
 
-**Too Abstract:**
-```
-"business opportunity growth potential"
-→ Relevance: 0.52-0.58 | Returns unrelated generic posts
-```
+- **过于抽象的查询**：难以被准确理解
+- **非英语查询**：Reddit主要使用英语
 
-**Non-English:**
-```
-"学习编程最好的方法" (Chinese)
-→ Relevance: 0.45-0.51 | Reddit is English-dominant, poor cross-lingual results
-```
+### 查询公式速查表
 
-### Query Formula Cheat Sheet
-
-| Goal | Pattern | Relevance |
+| 目标 | 查询模式 | 相关性 |
 |------|---------|-----------|
-| Compare products | "[Product A] vs [Product B] which should I use" | 0.70-0.81 |
-| Find switchers | "why I switched from [A] to [B]" | 0.70-0.73 |
-| Money/hustle topics | "[topic] that actually [works/makes money] not [scam/hype]" | 0.70-0.77 |
-| App recommendations | "[category] apps which one is [accurate/best] and why" | 0.67-0.72 |
-| Pain points | "I hate my current [tool] it is so [frustrating/slow]" | 0.60-0.64 |
-| Solutions seeking | "[problem] tried everything what actually works" | 0.60-0.63 |
+| 比较产品 | “[产品A] 和 [产品B]，我应该使用哪个？” | 0.70-0.81 |
+| 了解用户转换原因 | “我为什么从[A]切换到[B]？” | 0.70-0.73 |
+| 金融/副业相关话题 | “[某个主题]真的有效/能赚钱，而不是骗局/炒作？” | 0.70-0.77 |
+| 应用推荐 | “[某个类别]中哪个应用最准确/最好，为什么？” | 0.67-0.72 |
+| 描述问题 | “我讨厌现在的[工具]，因为它太[令人沮丧/效率低下]” | 0.60-0.64 |
+| 寻找解决方案 | “[某个问题]，我尝试过所有方法，什么方法真正有效？” | 0.60-0.63 |
 
-## Response Fields
+## 响应内容
 
-Each result includes:
-- `title`, `content` - Post text
-- `subreddit` - Source community  
-- `upvotes`, `comments` - Engagement metrics
-- `relevance` (0-1) - Semantic match score (0.5+ is good, 0.6+ is strong)
-- `sentiment` - Discussion/Q&A/Story Sharing/Original Content/News
-- `url` - Direct Reddit link
+每个搜索结果包含以下信息：
+- `title`，`content` - 帖子内容
+- `subreddit` - 帖子来源的子版块
+- `upvotes`，`comments` - 用户互动情况
+- `relevance`（0-1） - 语义匹配得分（0.5以上表示匹配度较高，0.6以上表示匹配度非常好）
+- `sentiment` - 帖子的类型（讨论、问答、故事分享、原创内容或新闻）
+- `url` - 帖子的Reddit链接
 
-**Example response:**
+**示例响应：**
 ```json
 {
   "id": "1oecf5e",
@@ -177,27 +168,27 @@ Each result includes:
 }
 ```
 
-## Tips
+## 使用技巧
 
-1. **Natural language works best** - Ask questions like a human would
-2. **Include context** - "for small business" or "as a developer" improves results
-3. **Combine emotion words** - "frustrated", "love", "hate", "wish" find stronger opinions
-4. **Filter by engagement** - High upvotes/comments = validated pain points
-5. **Check multiple subreddits** - Same topic discussed differently in r/startups vs r/smallbusiness
+1. **使用自然语言提问** - 尽量像人类一样提问
+2. **提供上下文** - 添加如“对于小型企业”或“作为开发者”等关键词，可以提高搜索效果
+3. **使用情感词汇** - 如“沮丧”、“喜欢”、“讨厌”、“希望”等词汇，有助于获取更具体的反馈
+4. **根据互动情况筛选结果** - 高点赞数/高评论数的帖子往往反映了真实的问题
+5. **多角度搜索** - 同一主题在不同子版块可能有不同的讨论结果
 
-## Example Workflows
+## 示例工作流程
 
-**Find SaaS opportunity:**
-1. `reddit_search`: "frustrated with project management tools for remote teams"
-2. Filter results with high engagement
-3. Identify recurring complaints → product opportunity
+**寻找SaaS产品机会：**
+1. 使用 `reddit_search`：搜索“对远程团队的项目管理工具感到不满”
+2. 筛选互动度高的结果
+3. 识别用户反复抱怨的问题，从而发现潜在的产品机会
 
-**Validate idea:**
-1. `reddit_search`: "[your product category] recommendations"
-2. See what alternatives people mention
-3. Note gaps in existing solutions
+**验证想法：**
+1. 使用 `reddit_search`：搜索“[你的产品类别]的相关推荐”
+2. 查看用户提到的替代方案
+3. 发现现有解决方案中的不足之处
 
-**Content research:**
-1. `reddit_get_subreddit`: Get posts from target community
-2. `reddit_search`: Find specific questions/discussions
-3. Create content answering real user questions
+**内容研究：**
+1. 使用 `reddit_get_subreddit` 获取目标子版块的帖子
+2. 使用 `reddit_search` 查找相关问题或讨论
+3. 根据用户需求创建有价值的内容

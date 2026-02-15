@@ -1,50 +1,49 @@
 ---
 name: rebalance-position
-description: Rebalance an out-of-range Uniswap V3/V4 LP position by closing the old position and opening a new one centered on the current price. Handles fee collection, removal, range calculation, and re-entry in a single workflow. Use when a position is out of range and needs adjustment.
+description: 通过平仓原有的Uniswap V3/V4杠杆交易头寸并重新开立一个以当前价格为基准的新头寸来重新平衡该头寸。该流程涵盖了费用收取、范围计算以及重新进入市场的所有步骤。适用于头寸超出预设范围且需要调整的情况。
 model: opus
 allowed-tools: [Task(subagent_type:liquidity-manager), mcp__uniswap__get_positions_by_owner, mcp__uniswap__get_position, mcp__uniswap__get_pool_info]
 ---
 
-# Rebalance Position
+# 重新平衡持仓
 
-## Overview
+## 概述
 
-When a V3/V4 LP position goes out of range, it stops earning fees. This skill handles the full rebalance workflow: collect accumulated fees, close the old position, calculate a new optimal range centered on the current price, and open a new position — all in a single operation.
+当一个 V3/V4 类型的长期合约（LP）持仓超出预设的范围时，该持仓将停止产生收益。此功能负责完成整个重新平衡的流程：收集累积的收益、关闭旧持仓、根据当前价格计算新的最佳范围，并开启新的持仓——所有这些操作都在一次操作中完成。
 
-This is a high-value skill because out-of-range positions are effectively dead capital. The difference between a monitored position that gets rebalanced promptly and an unmonitored one can be 15-30% APY in lost fee revenue.
+这是一个非常实用的功能，因为超出范围的持仓实际上相当于“死资本”。及时重新平衡的持仓与未受监控的持仓相比，可能会损失 15-30% 的年化收益（APY）。
 
-## When to Use
+## 适用场景
 
-Activate when the user says:
+在用户发出以下指令时激活此功能：
+- “重新平衡我的持仓”
+- “我的持仓超出了范围”
+- “调整我的长期合约范围”
+- “重新调整我的流动性”
+- “持仓 #12345 超出了范围，请处理”
+- “我的 ETH/USDC 持仓不再产生收益”
+- “将我的持仓范围调整到当前价格”
+- “我的长期合约不再盈利”
 
-- "Rebalance my position"
-- "My position is out of range"
-- "Adjust my LP range"
-- "Re-center my liquidity"
-- "Position #12345 is out of range, fix it"
-- "My ETH/USDC position stopped earning"
-- "Move my range to the current price"
-- "My LP isn't earning fees anymore"
+此外，在以下情况下也应主动建议用户进行重新平衡：
+- `track-performance` 或 `portfolio-report` 报告显示有持仓超出范围
+- 用户询问“为什么我无法获得收益？”
 
-Also proactively suggest rebalancing when:
-- A `track-performance` or `portfolio-report` shows an out-of-range position
-- The user asks "why am I not earning fees?"
+## 参数
 
-## Parameters
+| 参数            | 是否必填 | 默认值       | 获取方式                                              |
+| ------------------------- | -------- | ------------- | -------------------------------------------------------------- |
+| positionId     | 否       | —            | 持仓 ID；或 “my ETH/USDC position”（通过搜索确定）                |
+| chain         | 否       | ethereum      | 持仓所在的区块链                          |
+| newRange       | 否       | 自动计算的最佳范围    | “narrow”（±5%）、“medium”（±15%）、“wide”（±50%）                           |
 
-| Parameter    | Required | Default       | How to Extract                                           |
-| ------------ | -------- | ------------- | -------------------------------------------------------- |
-| positionId   | No*      | —             | Position ID, or "my ETH/USDC position" (resolved by search) |
-| chain        | No       | ethereum      | Chain where the position lives                            |
-| newRange     | No       | Auto-optimal  | "narrow" (±5%), "medium" (±15%), "wide" (±50%)           |
+*如果未提供持仓 ID：使用 `get_positions_by_owner` 进行搜索，筛选出超出范围的持仓，并与用户确认。*
 
-*If no position ID: search with `get_positions_by_owner`, filter for out-of-range positions, and confirm with the user.
+## 工作流程
 
-## Workflow
+### 重新平衡前的分析
 
-### Pre-Rebalance Analysis
-
-Before executing anything, gather data and present the situation to the user:
+在执行任何操作之前，先收集数据并向用户展示当前的情况：
 
 ```
 Step 1: IDENTIFY THE POSITION
@@ -73,9 +72,9 @@ Step 2: ANALYZE CURRENT SITUATION
     └── If break-even > 30 days → WARN that rebalancing may not be worth it
 ```
 
-### Present the Rebalance Plan
+### 展示重新平衡计划
 
-Before executing, show the user exactly what will happen:
+在执行前，向用户明确说明即将发生的具体操作：
 
 ```text
 Rebalance Plan for Position #12345
@@ -108,7 +107,7 @@ Rebalance Plan for Position #12345
   Proceed? (yes/no)
 ```
 
-### Execution (after user confirms)
+### 执行（用户确认后）
 
 ```
 Step 3: DELEGATE TO LIQUIDITY-MANAGER
@@ -133,34 +132,34 @@ Step 4: PRESENT RESULT
 └── Next steps for monitoring
 ```
 
-## Range Strategy Guide
+## 范围策略指南
 
-When the user doesn't specify a range, use this decision framework:
+当用户未指定范围时，可参考以下决策框架：
 
-| Pair Type             | Recommended Range | Width  | Rationale                                           |
-| --------------------- | ----------------- | ------ | --------------------------------------------------- |
-| Stable-stable         | Narrow            | ±0.5%  | Price barely moves; maximize capital efficiency     |
-| Stable-volatile       | Medium            | ±15%   | Balance between earning and avoiding rebalance      |
-| Volatile-volatile     | Wide              | ±30%   | Reduce rebalance frequency; accept lower APY        |
-| User says "aggressive"| Narrow            | ±5%    | Higher fees but frequent rebalancing needed         |
-| User says "passive"   | Wide              | ±50%   | Low maintenance, lower returns                      |
-| Small position (<$1K) | Wide              | ±50%   | Gas costs make frequent rebalancing uneconomical    |
+| 对象类型           | 推荐范围        | 范围宽度      | 原因                                                  |
+| ------------------------- | ---------------------- | ------------ | ----------------------------------------------------------- |
+| 稳定对稳定资产     | 较窄的范围      | ±0.5%        | 价格波动小，需最大化资本效率                          |
+| 稳定对波动性资产     | 中等范围      | ±15%        | 在盈利与减少重新平衡之间取得平衡                         |
+| 波动性对波动性资产     | 较宽的范围      | ±30%        | 减少重新平衡的频率，但可能降低年化收益                     |
+| 用户选择“激进策略”    | 较窄的范围      | ±5%        | 收益较高，但需要更频繁的重新平衡                     |
+| 用户选择“保守策略”    | 较宽的范围      | ±50%        | 维护成本较低，但收益也较低                         |
+| 持仓金额较小（<1000 美元） | 较宽的范围      | ±50%        | 高额的交易手续费使得频繁重新平衡不经济                    |
 
-## When NOT to Rebalance
+## 何时不应进行重新平衡
 
-Proactively advise against rebalancing in these situations:
+在以下情况下应主动建议用户不要重新平衡：
 
-| Situation                                 | Advice                                                       |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| Position size < 10x gas cost              | "Gas would cost ${gas} but your position is only ${value}."  |
-| Price is near range boundary (within 2%)  | "Price is close to your range — wait to see if it re-enters."|
-| Position went out of range < 1 hour ago   | "Give it time — price may return to your range."             |
-| User has no strong view on direction      | "Consider a wider range to reduce future rebalances."        |
-| Break-even time > 14 days                 | "At current fee rates, rebalancing won't pay for itself for {days} days." |
+| 情况                                      | 建议                                              |
+| ----------------------------------------- | ----------------------------------------------------------- |
+| 持仓成本高于交易手续费10倍             | “交易手续费为 ${gas}，而您的持仓价值仅为 ${value}。”                   |
+| 价格接近范围边界（在2%范围内）           | “价格接近您的范围范围，请等待价格再次进入范围。”                        |
+| 持仓超出范围时间不足1小时             | “给价格一些时间，它可能会重新回到范围内。”                         |
+| 用户对价格走势没有明确判断             | “建议设置较宽的范围以减少未来的重新平衡次数。”                     |
+| 持仓达到盈亏平衡时间超过14天             | “以当前的费用率计算，重新平衡在 {days} 天内无法盈利。”                   |
 
-## Output Format
+## 输出格式
 
-### Successful Rebalance
+### 重新平衡成功
 
 ```text
 Position Rebalanced Successfully
@@ -188,7 +187,7 @@ Position Rebalanced Successfully
   Monitor: "How are my positions doing?" or "Track position #67890"
 ```
 
-### Position Already In Range
+### 持仓已回到范围内
 
 ```text
 Position #12345 is IN RANGE ✓
@@ -204,25 +203,25 @@ Position #12345 is IN RANGE ✓
   Want to collect them? (This doesn't affect your position.)
 ```
 
-## Important Notes
+## 重要提示
 
-- **Always confirm before executing.** Rebalancing involves closing and reopening a position — it's irreversible.
-- **Gas matters.** On Ethereum mainnet, a full rebalance costs $30-60 in gas. On L2s (Base, Arbitrum), it's < $1. Factor this into recommendations.
-- **IL is locked in.** When you close a position, any impermanent loss becomes realized. Mention this if the position has significant IL.
-- **New NFT ID.** The rebalanced position gets a new NFT token ID. The old one is burned. Make sure the user understands this.
-- **V2 positions cannot be rebalanced** — they have full range. If a user asks to rebalance a V2 position, explain that V2 positions cover the entire price range and don't go "out of range."
-- **Slippage on exit.** For large positions relative to pool TVL, exiting may cause slippage. Warn if position is > 5% of pool TVL.
+- **执行前务必确认。** 重新平衡涉及关闭并重新开启持仓，这个过程是不可逆的。
+- **手续费很重要。** 在以太坊主网上，一次完整的重新平衡操作需要支付 30-60 美元的手续费。在 Layer-2 平台（如 Base、Arbitrum）上，手续费低于 1 美元。在提供建议时请考虑这一点。
+- **未实现利润（IL）会被锁定。** 关闭持仓时，任何未实现的利润都会变为实际损失。如果持仓有较大的未实现利润，请务必告知用户。
+- **重新平衡后的持仓会获得新的 NFT 令牌 ID。** 旧持仓的 NFT 令牌会被销毁。请确保用户了解这一点。
+- **V2 类型的持仓无法重新平衡**——它们的范围是固定的。如果用户请求重新平衡 V2 持仓，请解释 V2 持仓的覆盖范围是固定的，不会“超出范围”。
+- **退出时可能产生滑点。** 对于相对于池总价值（TVL）较大的持仓，退出操作可能会产生滑点。如果持仓金额超过池总价值的 5%，请提前警告用户。
 
-## Error Handling
+## 错误处理
 
-| Error                          | User-Facing Message                                        | Suggested Action                        |
-| ------------------------------ | ---------------------------------------------------------- | --------------------------------------- |
-| Position not found             | "Position #{id} not found."                                | Check ID and chain                      |
-| Position already in range      | "Position is already in range — no rebalance needed."      | Show position status instead            |
-| V2 position                    | "V2 positions cover the full price range and can't go out of range." | Explain V2 vs V3 differences  |
-| Wallet not configured          | "No wallet configured for transactions."                   | Set WALLET_TYPE + PRIVATE_KEY           |
-| Insufficient gas               | "Not enough ETH for gas."                                  | Fund wallet with ETH                    |
-| Safety check failed            | "Safety blocked the rebalance: {reason}"                   | Review safety configuration             |
-| Remove tx failed               | "Failed to remove liquidity: {reason}"                     | Check position status and try again     |
-| Add tx failed                  | "Removed old position but failed to add new one."          | Tokens are in wallet; retry add manually|
-| liquidity-manager unavailable  | "Liquidity agent is not available."                        | Check agent configuration               |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+| ---------------------- | ------------------------------------------------------ | ------------------------------------------------------ |
+| 未找到持仓                | “未找到持仓 #{id}。”                                      | 请检查持仓 ID 和所在的区块链                          |
+| 持仓已回到范围内             | “持仓已回到范围内，无需重新平衡。”                             | 直接显示持仓状态                               |
+| 该持仓为 V2 类型                | “V2 类型的持仓覆盖整个价格范围，因此不会超出范围。”                        | 解释 V2 和 V3 持仓的区别                         |
+| 未配置钱包                 | “未配置用于交易的钱包。”                                   | 请设置 WALLET_TYPE 和 PRIVATE_KEY                          |
+| 以太坊数量不足             | “以太坊数量不足，无法完成操作。”                               | 请为钱包充值以太坊                             |
+| 安全检查失败                | “安全系统阻止了重新平衡操作：{原因}。”                             | 请检查安全配置                         |
+| 移除持仓失败                | “尝试移除旧持仓失败：{原因}。”                               | 请检查持仓状态并重新尝试                         |
+| 添加新持仓失败                | “成功移除了旧持仓，但新持仓添加失败。”                             | 请确认以太坊已充值钱包，并手动尝试添加新持仓                   |
+| 流动性管理器不可用             | “流动性管理器当前不可用。”                                  | 请检查流动性管理器的配置                         |

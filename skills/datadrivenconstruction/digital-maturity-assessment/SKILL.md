@@ -1,25 +1,24 @@
 ---
 slug: "digital-maturity-assessment"
 display_name: "Digital Maturity Assessment"
-description: "Assess organization's digital transformation readiness. Evaluate data culture, technology adoption, and process maturity."
+description: "评估组织在数字化转型方面的准备情况。审查数据文化、技术采用情况以及流程的成熟度。"
 ---
 
-# Digital Maturity Assessment
+# 数字成熟度评估
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Digital transformation challenges:
-- Unclear current state of digitalization
-- Difficulty prioritizing investments
-- Lack of benchmarking capability
-- No roadmap for improvement
+### 问题陈述
+数字化转型面临的挑战：
+- 对当前数字化程度的认知不明确
+- 难以确定投资的优先级
+- 缺乏基准评估能力
+- 没有改进的路线图
 
-### Solution
-Comprehensive digital maturity assessment framework to evaluate technology adoption, data culture, and process maturity with actionable recommendations.
+### 解决方案
+提供一个全面的数字成熟度评估框架，用于评估技术采用情况、数据文化以及流程成熟度，并提供可操作的改进建议。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -557,8 +556,7 @@ class DigitalMaturityAssessment:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Create assessment
 assessment = DigitalMaturityAssessment("ABC Construction Inc.")
@@ -591,27 +589,27 @@ for rec in results['priority_recommendations']:
     print(f"  - {rec}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Dimension Analysis
+### 1. 维度分析
 ```python
 data_score = assessment.calculate_dimension_score(AssessmentDimension.DATA)
 print(f"Data Dimension: {data_score.score}/5 ({data_score.level.name})")
 print(f"Sub-scores: {data_score.sub_scores}")
 ```
 
-### 2. Export Report
+### 2. 导出报告
 ```python
 assessment.export_to_excel("maturity_assessment.xlsx")
 ```
 
-### 3. Get Questions
+### 3. 提取问题
 ```python
 questions = assessment.get_questions_list()
 print(questions)
 ```
 
-### 4. Bulk Response Import
+### 4. 批量导入回复
 ```python
 responses_df = pd.DataFrame([
     {'question_id': 'STR-01', 'score': 3, 'notes': 'In progress'},
@@ -620,7 +618,7 @@ responses_df = pd.DataFrame([
 assessment.record_responses_from_df(responses_df)
 ```
 
-## Resources
-- **DDC Book**: Chapter 5.1 - Uberization and Open Data
-- **Digital Maturity Models**: Various industry frameworks
-- **Website**: https://datadrivenconstruction.io
+## 资源
+- **DDC手册**：第5.1章 - 乌伯化（Uberization）与开放数据（Uberization and Open Data）
+- **数字成熟度模型**：各种行业框架
+- **官方网站**：https://datadrivenconstruction.io

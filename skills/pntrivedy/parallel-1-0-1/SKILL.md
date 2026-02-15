@@ -1,6 +1,6 @@
 ---
 name: parallel
-description: High-accuracy web search and research via Parallel.ai API. Optimized for AI agents with rich excerpts and citations.
+description: 通过 Parallel.ai API 进行高精度的网络搜索和研究。该服务专为 AI 代理优化，提供丰富的摘录和引用信息。
 triggers:
   - parallel
   - deep search
@@ -12,15 +12,15 @@ metadata:
 
 # Parallel.ai 🔬
 
-High-accuracy web search API built for AI agents. Outperforms Perplexity/Exa on research benchmarks.
+专为AI代理设计的高精度网络搜索API。在研究基准测试中，其性能优于Perplexity/Exa。
 
-## Setup
+## 设置
 
 ```bash
 pip install parallel-web
 ```
 
-API key is configured. Uses Python SDK.
+API密钥已配置。支持使用Python SDK进行开发。
 
 ```python
 from parallel import Parallel
@@ -32,7 +32,7 @@ response = client.beta.search(
 )
 ```
 
-## Quick Usage
+## 快速使用方法
 
 ```bash
 # Search with Python SDK
@@ -42,26 +42,26 @@ python3 {baseDir}/scripts/search.py "Who is the CEO of Anthropic?" --max-results
 python3 {baseDir}/scripts/search.py "latest AI news" --json
 ```
 
-## Response Format
+## 响应格式
 
-Returns structured results with:
-- `search_id` - unique search identifier
-- `results[]` - array of results with:
-  - `url` - source URL
-  - `title` - page title
-  - `excerpts[]` - relevant text excerpts
-  - `publish_date` - when available
-- `usage` - API usage stats
+返回结构化的搜索结果，包含以下内容：
+- `search_id`：唯一的搜索标识符
+- `results[]`：结果数组，包含：
+  - `url`：源网址
+  - `title`：页面标题
+  - `excerpts[]`：相关文本摘录
+  - `publish_date`：（如有的话）发布日期
+  - `usage`：API使用统计信息
 
-## When to Use
+## 适用场景
 
-- **Deep research** requiring cross-referenced facts
-- **Company/person research** with citations
-- **Fact-checking** with evidence-based outputs
-- **Complex queries** that need multi-hop reasoning
-- Higher accuracy than traditional search for research tasks
+- **深度研究**：需要跨引用事实的场景
+- **公司/人物研究**：包含引用的研究
+- **事实核查**：提供基于证据的核查结果
+- **复杂查询**：需要多步骤推理的查询
+- 对于研究任务而言，其搜索精度高于传统搜索引擎
 
-## API Reference
+## API参考文档
 
-Docs: https://docs.parallel.ai
-Platform: https://platform.parallel.ai
+文档链接：https://docs.parallel.ai
+平台官网：https://platform.parallel.ai

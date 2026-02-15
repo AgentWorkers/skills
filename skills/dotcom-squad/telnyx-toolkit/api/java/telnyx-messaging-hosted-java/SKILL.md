@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Hosted - Java
+# Telnyx 消息托管服务 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,9 +30,9 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List messaging hosted number orders
+## 列出托管消息服务的号码订单
 
 `GET /messaging_hosted_number_orders`
 
@@ -43,7 +43,7 @@ import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOr
 MessagingHostedNumberOrderListPage page = client.messagingHostedNumberOrders().list();
 ```
 
-## Create a messaging hosted number order
+## 创建托管消息服务的号码订单
 
 `POST /messaging_hosted_number_orders`
 
@@ -54,7 +54,7 @@ import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOr
 MessagingHostedNumberOrderCreateResponse messagingHostedNumberOrder = client.messagingHostedNumberOrders().create();
 ```
 
-## Retrieve a messaging hosted number order
+## 获取托管消息服务的号码订单信息
 
 `GET /messaging_hosted_number_orders/{id}`
 
@@ -65,9 +65,9 @@ import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOr
 MessagingHostedNumberOrderRetrieveResponse messagingHostedNumberOrder = client.messagingHostedNumberOrders().retrieve("id");
 ```
 
-## Delete a messaging hosted number order
+## 删除托管消息服务的号码订单
 
-Delete a messaging hosted number order and all associated phone numbers.
+删除托管消息服务的号码订单及其所有关联的电话号码。
 
 `DELETE /messaging_hosted_number_orders/{id}`
 
@@ -78,7 +78,7 @@ import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOr
 MessagingHostedNumberOrderDeleteResponse messagingHostedNumberOrder = client.messagingHostedNumberOrders().delete("id");
 ```
 
-## Upload hosted number document
+## 上传托管号码相关文档
 
 `POST /messaging_hosted_number_orders/{id}/actions/file_upload`
 
@@ -89,11 +89,11 @@ import com.telnyx.sdk.models.messaginghostednumberorders.actions.ActionUploadFil
 ActionUploadFileResponse response = client.messagingHostedNumberOrders().actions().uploadFile("id");
 ```
 
-## Validate hosted number codes
+## 验证托管号码的验证码
 
-Validate the verification codes sent to the numbers of the hosted order.
+验证发送到托管号码的验证码。
 
-`POST /messaging_hosted_number_orders/{id}/validation_codes` — Required: `verification_codes`
+`POST /messaging_hosted_number_orders/{id}/validation_codes` — 必需参数：`verification_codes`
 
 ```java
 import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOrderValidateCodesParams;
@@ -109,11 +109,11 @@ MessagingHostedNumberOrderValidateCodesParams params = MessagingHostedNumberOrde
 MessagingHostedNumberOrderValidateCodesResponse response = client.messagingHostedNumberOrders().validateCodes(params);
 ```
 
-## Create hosted number verification codes
+## 生成托管号码的验证码
 
-Create verification codes to validate numbers of the hosted order.
+为托管号码生成验证码。
 
-`POST /messaging_hosted_number_orders/{id}/verification_codes` — Required: `phone_numbers`, `verification_method`
+`POST /messaging_hosted_number_orders/{id}/verification_codes` — 必需参数：`phone_numbers`, `verification_method`
 
 ```java
 import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOrderCreateVerificationCodesParams;
@@ -127,9 +127,9 @@ MessagingHostedNumberOrderCreateVerificationCodesParams params = MessagingHosted
 MessagingHostedNumberOrderCreateVerificationCodesResponse response = client.messagingHostedNumberOrders().createVerificationCodes(params);
 ```
 
-## Check hosted messaging eligibility
+## 检查托管号码的适用性
 
-`POST /messaging_hosted_number_orders/eligibility_numbers_check` — Required: `phone_numbers`
+`POST /messaging_hosted_number_orders/eligibility_numbers_check` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.messaginghostednumberorders.MessagingHostedNumberOrderCheckEligibilityParams;
@@ -141,7 +141,7 @@ MessagingHostedNumberOrderCheckEligibilityParams params = MessagingHostedNumberO
 MessagingHostedNumberOrderCheckEligibilityResponse response = client.messagingHostedNumberOrders().checkEligibility(params);
 ```
 
-## Delete a messaging hosted number
+## 删除托管消息服务的号码
 
 `DELETE /messaging_hosted_numbers/{id}`
 
@@ -152,9 +152,9 @@ import com.telnyx.sdk.models.messaginghostednumbers.MessagingHostedNumberDeleteR
 MessagingHostedNumberDeleteResponse messagingHostedNumber = client.messagingHostedNumbers().delete("id");
 ```
 
-## Send an RCS message
+## 发送 RCS 消息
 
-`POST /messages/rcs` — Required: `agent_id`, `to`, `messaging_profile_id`, `agent_message`
+`POST /messages/rcs` — 必需参数：`agent_id`, `to`, `messaging_profile_id`, `agent_message`
 
 ```java
 import com.telnyx.sdk.models.messages.RcsAgentMessage;
@@ -170,7 +170,7 @@ RcSendParams params = RcSendParams.builder()
 RcSendResponse response = client.messages().rcs().send(params);
 ```
 
-## List all RCS agents
+## 列出所有 RCS 代理
 
 `GET /messaging/rcs/agents`
 
@@ -181,7 +181,7 @@ import com.telnyx.sdk.models.messaging.rcs.agents.AgentListParams;
 AgentListPage page = client.messaging().rcs().agents().list();
 ```
 
-## Retrieve an RCS agent
+## 获取单个 RCS 代理的信息
 
 `GET /messaging/rcs/agents/{id}`
 
@@ -192,7 +192,7 @@ import com.telnyx.sdk.models.rcsagents.RcsAgentResponse;
 RcsAgentResponse rcsAgentResponse = client.messaging().rcs().agents().retrieve("id");
 ```
 
-## Modify an RCS agent
+## 修改 RCS 代理的信息
 
 `PATCH /messaging/rcs/agents/{id}`
 
@@ -203,9 +203,9 @@ import com.telnyx.sdk.models.rcsagents.RcsAgentResponse;
 RcsAgentResponse rcsAgentResponse = client.messaging().rcs().agents().update("id");
 ```
 
-## Check RCS capabilities (batch)
+## 检查 RCS 功能（批量）
 
-`POST /messaging/rcs/bulk_capabilities` — Required: `agent_id`, `phone_numbers`
+`POST /messaging/rcs/bulk_capabilities` — 必需参数：`agent_id`, `phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.messaging.rcs.RcListBulkCapabilitiesParams;
@@ -218,7 +218,7 @@ RcListBulkCapabilitiesParams params = RcListBulkCapabilitiesParams.builder()
 RcListBulkCapabilitiesResponse response = client.messaging().rcs().listBulkCapabilities(params);
 ```
 
-## Check RCS capabilities
+## 检查单个 RCS 代理的功能
 
 `GET /messaging/rcs/capabilities/{agent_id}/{phone_number}`
 
@@ -233,9 +233,9 @@ RcRetrieveCapabilitiesParams params = RcRetrieveCapabilitiesParams.builder()
 RcRetrieveCapabilitiesResponse response = client.messaging().rcs().retrieveCapabilities(params);
 ```
 
-## Add RCS test number
+## 添加 RCS 测试号码
 
-Adds a test phone number to an RCS agent for testing purposes.
+为 RCS 代理添加测试电话号码以供测试使用。
 
 `PUT /messaging/rcs/test_number_invite/{id}/{phone_number}`
 
@@ -250,9 +250,9 @@ RcInviteTestNumberParams params = RcInviteTestNumberParams.builder()
 RcInviteTestNumberResponse response = client.messaging().rcs().inviteTestNumber(params);
 ```
 
-## Generate RCS deeplink
+## 生成 RCS 深链接
 
-Generate a deeplink URL that can be used to start an RCS conversation with a specific agent.
+生成可用于与特定代理发起 RCS 对话的深链接。
 
 `GET /messages/rcs_deeplinks/{agent_id}`
 
@@ -263,9 +263,9 @@ import com.telnyx.sdk.models.messages.rcs.RcGenerateDeeplinkResponse;
 RcGenerateDeeplinkResponse response = client.messages().rcs().generateDeeplink("agent_id");
 ```
 
-## List Verification Requests
+## 列出验证码请求
 
-Get a list of previously-submitted tollfree verification requests
+获取之前提交的免费电话号码验证码请求列表
 
 `GET /messaging_tollfree/verification/requests`
 
@@ -280,11 +280,11 @@ RequestListParams params = RequestListParams.builder()
 RequestListPage page = client.messagingTollfree().verification().requests().list(params);
 ```
 
-## Submit Verification Request
+## 提交验证码请求
 
-Submit a new tollfree verification request
+提交新的免费电话号码验证码请求
 
-`POST /messaging_tollfree/verification/requests` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`POST /messaging_tollfree/verification/requests` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```java
 import com.telnyx.sdk.models.messagingtollfree.verification.requests.RequestCreateParams;
@@ -329,9 +329,9 @@ TfVerificationRequest params = TfVerificationRequest.builder()
 VerificationRequestEgress verificationRequestEgress = client.messagingTollfree().verification().requests().create(params);
 ```
 
-## Get Verification Request
+## 获取验证码请求信息
 
-Get a single verification request by its ID.
+通过 ID 获取单个验证码请求的详细信息。
 
 `GET /messaging_tollfree/verification/requests/{id}`
 
@@ -342,11 +342,11 @@ import com.telnyx.sdk.models.messagingtollfree.verification.requests.Verificatio
 VerificationRequestStatus verificationRequestStatus = client.messagingTollfree().verification().requests().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update Verification Request
+## 更新验证码请求
 
-Update an existing tollfree verification request.
+更新现有的免费电话号码验证码请求。
 
-`PATCH /messaging_tollfree/verification/requests/{id}` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`PATCH /messaging_tollfree/verification/requests/{id}` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```java
 import com.telnyx.sdk.models.messagingtollfree.verification.requests.RequestUpdateParams;
@@ -394,11 +394,9 @@ RequestUpdateParams params = RequestUpdateParams.builder()
 VerificationRequestEgress verificationRequestEgress = client.messagingTollfree().verification().requests().update(params);
 ```
 
-## Delete Verification Request
+## 删除验证码请求
 
-Delete a verification request
-
-A request may only be deleted when when the request is in the "rejected" state.
+只有当验证码请求处于“被拒绝”状态时，才能删除该请求。
 
 `DELETE /messaging_tollfree/verification/requests/{id}`
 

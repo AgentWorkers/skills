@@ -1,21 +1,21 @@
 # Beanstalk Gateway
 
-Connect your local Clawdbot to [beans.talk](https://beans.talk) for remote monitoring and control.
+将您的本地 Clawdbot 连接到 [beans.talk](https://beans.talk)，以便进行远程监控和控制。
 
-## Install
+## 安装
 
 ```bash
 npm install -g beanstalk-gateway
 ```
 
-## Setup
+## 设置
 
-1. Go to [beans.talk](https://beans.talk) and click "Connect Gateway"
-2. Copy the setup command
-3. Run it on your machine
-4. Done!
+1. 访问 [beans.talk](https://beans.talk)，然后点击“Connect Gateway”。
+2. 复制设置命令。
+3. 在您的机器上运行该命令。
+4. 安装完成！
 
-## Manual Usage
+## 手动使用
 
 ```bash
 # Configure
@@ -28,7 +28,7 @@ beanstalk-gateway start
 beanstalk-gateway status
 ```
 
-## More Info
+## 更多信息
 
-- [npm package](https://www.npmjs.com/package/beanstalk-gateway)
+- [npm 包](https://www.npmjs.com/package/beanstalk-gateway)
 - [GitHub](https://github.com/tommygeoco/beanstalk-gateway)

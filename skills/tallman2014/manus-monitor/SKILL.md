@@ -1,36 +1,36 @@
 ---
 name: manus
-description: Create and manage AI agent tasks via Manus API. Manus is an autonomous AI agent that can browse the web, use tools, and deliver complete work products.
+description: 通过Manus API创建和管理AI代理任务。Manus是一个自主的AI代理，它可以浏览网页、使用各种工具，并完成整个工作流程。
 homepage: https://manus.im
 metadata: {"clawdbot":{"emoji":"🤖","requires":{"env":["MANUS_API_KEY"]},"primaryEnv":"MANUS_API_KEY"}}
 ---
 
 # Manus AI Agent
 
-Use the Manus API to create autonomous AI tasks. Manus can browse the web, use tools, and deliver complete results (reports, code, presentations, etc.).
+使用Manus API可以创建自主运行的AI任务。Manus能够浏览网页、使用各种工具，并生成完整的结果（如报告、代码、演示文稿等）。
 
-## API Base
+## API基础
 
 `https://api.manus.ai/v1`
 
-## Authentication
+## 认证
 
-Header: `API_KEY: <your-key>`
+请求头：`API_KEY: <your-key>`
 
-Set via:
-- `MANUS_API_KEY` env var
-- Or `skills.manus.apiKey` in clawdbot config
+认证方式：
+- 通过环境变量 `MANUS_API_KEY` 设置
+- 或者在 `clawdbot` 配置文件中设置 `skills.manus.apiKey`
 
-## Recommended Workflow
+## 推荐的工作流程
 
-When using Manus for tasks that produce files (slides, reports, etc.):
+当使用Manus执行需要生成文件（如幻灯片、报告等）的任务时，请按照以下步骤操作：
 
-1. **Create the task** with `createShareableLink: true`
-2. **Poll for completion** using the task_id
-3. **Extract output files** from the response and download them locally
-4. **Deliver to user** via direct file attachment (don't rely on manus.im share links)
+1. 使用 `createShareableLink: true` 创建任务。
+2. 通过任务ID (`task_id`) 查询任务完成情况。
+3. 从响应中提取输出文件并下载到本地。
+4. 通过直接文件附件的方式将文件发送给用户（不要依赖 `manus.im` 提供的共享链接）。
 
-## Create a Task
+## 创建任务
 
 ```bash
 curl -X POST "https://api.manus.ai/v1/tasks" \
@@ -44,7 +44,7 @@ curl -X POST "https://api.manus.ai/v1/tasks" \
   }'
 ```
 
-Response:
+响应内容：
 ```json
 {
   "task_id": "abc123",
@@ -53,41 +53,41 @@ Response:
 }
 ```
 
-## Agent Profiles
+## 代理配置文件（Agent Profiles）
 
-| Profile | Description | Use for |
-|---------|-------------|---------|
-| `manus-1.6` | Standard (default) | Most tasks |
-| `manus-1.6-lite` | Faster, lighter | Quick/simple stuff |
-| `manus-1.6-max` | Complex, thorough | Deep research/analysis |
+| 配置文件名 | 描述 | 适用场景 |
+|------------|-----------|-------------------|
+| `manus-1.6`    | 标准配置（默认） | 大多数任务 |
+| `manus-1.6-lite` | 更快速、占用资源更少 | 简单快捷的任务 |
+| `manus-1.6-max` | 复杂任务、需要深入分析 | 需要详细研究的任务 |
 
-**Default:** Always use `manus-1.6` unless user specifies otherwise.
+**建议：** 除非用户另有指定，否则始终使用 `manus-1.6` 配置文件。
 
-## Task Modes
+## 任务模式
 
-| Mode | Description |
-|------|-------------|
-| `chat` | Conversational mode |
-| `adaptive` | Auto-selects best approach |
-| `agent` | Full autonomous agent mode (recommended for file creation) |
+| 模式        | 描述                          |
+|-------------|--------------------------------------------|
+| `chat`       | 对话模式                          |
+| `adaptive`    | 自动选择最佳处理方式                   |
+| `agent`      | 全自主代理模式（推荐用于生成文件）                |
 
-## Get Task Status & Output
+## 查询任务状态及输出结果
 
 ```bash
 curl "https://api.manus.ai/v1/tasks/{task_id}" \
   -H "API_KEY: $MANUS_API_KEY"
 ```
 
-Status values: `pending`, `running`, `completed`, `failed`
+状态值：`pending`（待处理）、`running`（运行中）、`completed`（已完成）、`failed`（失败）
 
-**Important:** When status is `completed`, check the `output` array for files:
-- Look for `type: "output_file"` entries
-- Download files from `fileUrl` directly
-- Save locally and send to user as attachments
+**注意：** 当任务状态为 `completed` 时，请检查 `output` 数组中的文件信息：
+- 寻找类型为 `output_file` 的条目。
+- 直接从 `fileUrl` 下载文件。
+- 将文件保存到本地后作为附件发送给用户。
 
-## Extracting Output Files
+## 提取输出文件
 
-The task response includes output like:
+任务响应中包含以下格式的输出文件：
 ```json
 {
   "output": [
@@ -104,23 +104,23 @@ The task response includes output like:
 }
 ```
 
-Download these files with curl and deliver directly to the user rather than relying on share URLs.
+请使用 `curl` 命令下载这些文件，并直接发送给用户，不要依赖 `manus.im` 提供的共享链接。
 
-## List Tasks
+## 列出所有任务
 
 ```bash
 curl "https://api.manus.ai/v1/tasks" \
   -H "API_KEY: $MANUS_API_KEY"
 ```
 
-## Best Practices
+## 最佳实践：
 
-1. **Always poll for completion** before telling user the task is done
-2. **Download output files locally** instead of giving manus.im links (they can be unreliable)
-3. **Use `agent` mode** for tasks that create files/documents
-4. **Set reasonable expectations** — Manus tasks can take 2-10+ minutes for complex work
+1. 在告知用户任务完成之前，务必先查询任务是否已完成。
+2. 将输出文件下载到本地，而不是使用 `manus.im` 提供的链接（这些链接可能不可靠）。
+3. 对于需要生成文件或文档的任务，请使用 `agent` 模式。
+4. 设定合理的预期时间——复杂任务可能需要2到10分钟或更长时间才能完成。
 
-## Docs
+## 参考资料：
 
-- API Reference: https://open.manus.ai/docs
-- Main Docs: https://manus.im/docs
+- API参考文档：https://open.manus.ai/docs
+- 主要文档：https://manus.im/docs

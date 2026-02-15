@@ -2,83 +2,83 @@
 name: Excalidraw Flowchart
 slug: excalidraw-flowchart
 version: 1.1.0
-description: Create Excalidraw flowcharts from descriptions. Use when user asks to "create a flowchart", "draw a diagram", "visualize a process", "make a flow diagram", "architecture diagram", or discusses workflow/process visualization. Supports DSL, DOT/Graphviz, and JSON formats.
+description: 根据用户的需求（如“创建流程图”、“绘制图表”、“可视化流程”等），可以将文字描述转换为 Excalidraw 流程图。该工具支持 DSL、DOT/Graphviz 和 JSON 格式。
 repo: https://github.com/swiftlysingh/excalidraw-skill
 ---
 
-# Excalidraw Flowchart Skill
+# Excalidraw 流程图技能
 
-Create professional flowcharts and diagrams as Excalidraw files that can be opened in Excalidraw.
+能够使用 Excalidraw 创建专业的流程图和图表，并将这些文件保存为 Excalidraw 格式，以便在 Excalidraw 中直接打开。
 
-## When to Use This Skill
+## 适用场景
 
-- User asks to create a flowchart or diagram
-- User wants to visualize a process or workflow
-- User needs an architecture diagram
-- User mentions "excalidraw" or "flow diagram"
-- User wants to document decision trees
+- 用户需要创建流程图或图表
+- 用户希望可视化某个过程或工作流程
+- 用户需要架构图
+- 用户提到“Excalidraw”或“流程图”
+- 用户需要记录决策树
 
-## Prerequisites
+## 先决条件
 
-The `@swiftlysingh/excalidraw-cli` tool must be installed:
+必须安装 `@swiftlysingh/excalidraw-cli` 工具：
 
 ```bash
 npm install -g @swiftlysingh/excalidraw-cli
 ```
 
-Or use via npx (no installation needed):
+或者通过 `npx` 命令直接使用（无需安装）：
 
 ```bash
 npx @swiftlysingh/excalidraw-cli create --inline "DSL" -o output.excalidraw
 ```
 
-## How to Create a Flowchart
+## 创建流程图的步骤
 
-### Step 1: Analyze the Request
+### 第一步：分析需求
 
-Identify from the user's description:
-- What are the main steps/nodes?
-- What are the decision points?
-- What is the flow direction?
-- Are there any loops or branches?
+从用户的描述中确定以下信息：
+- 主要步骤/节点是什么？
+- 有哪些决策点？
+- 流程的方向是什么？
+- 是否存在循环或分支？
 
-### Step 2: Write the DSL
+### 第二步：编写 DSL 代码
 
-Use this DSL syntax to describe the flowchart:
+使用以下 DSL 语法来描述流程图：
 
-| Syntax | Element | Use For |
-|--------|---------|---------|
-| `[Label]` | Rectangle | Process steps, actions |
-| `{Label?}` | Diamond | Decisions, conditionals |
-| `(Label)` | Ellipse | Start/End points |
-| `[[Label]]` | Database | Data storage |
-| `![path]` | Image | Inline images |
-| `![path](WxH)` | Sized Image | Images with explicit dimensions |
-| `->` | Arrow | Connections |
-| `-> "text" ->` | Labeled Arrow | Connections with labels |
-| `-->` | Dashed Arrow | Optional/alternative paths |
+| 语法       | 元素            | 用途                         |
+|------------|-----------------|---------------------------|
+| `[标签]`      | 矩形            | 表示流程步骤或操作                |
+| `{标签?}`     | 菱形            | 表示决策点或条件判断                |
+| `(标签)`      | 椭圆            | 表示起点/终点                    |
+| `[[标签]]`     | 数据库            | 表示数据存储节点                  |
+| `![路径]`     | 图像             | 插入图像                      |
+| `![路径(WxH)`    | 带尺寸的图像        | 带明确尺寸的图像                  |
+| `->`       | 箭头            | 表示连接关系                    |
+| `-> "文本" ->`   | 带标签的箭头        | 表示带标签的连接关系              |
+| `-->`      | 虚线箭头          | 表示可选/替代路径                |
 
-### DSL Directives
+### DSL 指令
 
-| Directive | Description | Example |
-|-----------|-------------|---------|
-| `@direction` | Set flow direction | `@direction LR` |
-| `@spacing` | Set node spacing | `@spacing 60` |
-| `@image` | Position image | `@image logo.png at 100,50` |
-| `@decorate` | Attach decoration to node | `@decorate icon.png top-right` |
-| `@sticker` | Add sticker from library | `@sticker checkmark at 200,100` |
-| `@library` | Set sticker library path | `@library ./assets/stickers` |
-| `@scatter` | Scatter images on canvas | `@scatter star.png count:5` |
+| 指令        | 说明                          | 示例                          |
+|------------|---------------------------------|-----------------------------------------|
+| `@方向`      | 设置流程方向                      | `@方向 LR`                      |
+| `@间距`      | 设置节点间距                      | `@间距 60`                      |
+| `@图像`      | 定位图像                        | `@图像 logo.png 在 100,50`                 |
+| `@装饰`      | 为节点添加装饰                    | `@装饰 icon.png 在右上角`                 |
+| `@贴纸`      | 从贴纸库中添加贴纸                    | `@贴纸 checkmark 在 200,100`                 |
+| `@库`       | 设置贴纸库路径                      | `@库 ./assets/stickers`                 |
+| `@散布`      | 在画布上随机分布图像                  | `@散布 star.png 数量:5`                  |
 
-### Step 3: Generate the File
+### 第三步：生成文件
 
-Run the CLI to create the .excalidraw file:
+运行 CLI 命令来生成 `.excalidraw` 文件：
 
 ```bash
 npx @swiftlysingh/excalidraw-cli create --inline "YOUR_DSL_HERE" -o flowchart.excalidraw
 ```
 
-Or for multi-line DSL, use a heredoc:
+对于多行的 DSL 代码，可以使用 heredoc 格式：
 
 ```bash
 npx @swiftlysingh/excalidraw-cli create --inline "$(cat <<'EOF'
@@ -89,22 +89,22 @@ EOF
 )" -o flowchart.excalidraw
 ```
 
-### Step 4: Inform the User
+### 第四步：通知用户
 
-Tell the user:
-1. The file was created at the specified path
-2. They can open it in Excalidraw (https://excalidraw.com) via File > Open
-3. They can edit it further in Excalidraw if needed
+告知用户：
+1. 文件已生成在指定路径。
+2. 可以在 Excalidraw（https://excalidraw.com）中通过“文件”>“打开”来打开该文件。
+3. 如有需要，可以在 Excalidraw 中进一步编辑文件。
 
-## DSL Examples
+## DSL 示例
 
-### Simple Linear Flow
+### 简单线性流程图
 
 ```
 (Start) -> [Initialize] -> [Process Data] -> [Save Results] -> (End)
 ```
 
-### Decision Tree
+### 决策树
 
 ```
 (Start) -> [Receive Request] -> {Authenticated?}
@@ -112,7 +112,7 @@ Tell the user:
 {Authenticated?} -> "no" -> [Return 401] -> (End)
 ```
 
-### Loop/Retry Pattern
+### 循环/重试模式
 
 ```
 (Start) -> [Attempt Operation] -> {Success?}
@@ -122,7 +122,7 @@ Tell the user:
 {Retry Count < 3?} -> "no" -> [Log Failure] -> (Error)
 ```
 
-### Multi-Branch Flow
+### 多分支流程图
 
 ```
 (User Input) -> {Input Type?}
@@ -132,7 +132,7 @@ Tell the user:
 [Process] -> [Output Result] -> (Done)
 ```
 
-### With Database
+### 使用数据库的流程图
 
 ```
 [API Request] -> {Cache Hit?}
@@ -140,27 +140,27 @@ Tell the user:
 {Cache Hit?} -> "no" -> [[Query Database]] -> [[Update Cache]] -> [Return Data]
 ```
 
-## CLI Options
+## CLI 命令行选项
 
-- `-o, --output <file>` - Output file path (default: flowchart.excalidraw)
-- `-f, --format <type>` - Input format: dsl, json, dot (default: auto-detected)
-- `-d, --direction <TB|BT|LR|RL>` - Flow direction (default: TB = top to bottom)
-- `-s, --spacing <number>` - Node spacing in pixels (default: 50)
-- `--inline <dsl>` - Inline DSL/DOT string
-- `--stdin` - Read input from stdin
-- `--verbose` - Verbose output
+- `-o, --output <文件路径>` - 输出文件路径（默认：flowchart.excalidraw）
+- `-f, --format <格式>` - 输入格式：dsl、json、dot（默认：自动检测）
+- `-d, --方向 <TB|BT|LR|RL>` - 流程方向（默认：TB = 从上到下）
+- `-s, --间距 <数值>` - 节点间距（单位：像素）（默认：50）
+- `--inline <DSL>` - 将 DSL 代码内联显示
+- `--stdin` - 从标准输入读取数据
+- `--verbose` - 详细输出
 
-Example with options:
+示例命令：
 
 ```bash
 npx @swiftlysingh/excalidraw-cli create --inline "[A] -> [B] -> [C]" --direction LR --spacing 80 -o horizontal-flow.excalidraw
 ```
 
-## DOT/Graphviz Format (New in v1.1.0)
+## DOT/Graphviz 格式（1.1.0 版本新增）
 
-The CLI now supports DOT/Graphviz format for creating diagrams. This is useful when working with existing DOT files or when you prefer the DOT syntax.
+CLI 现在支持 DOT/Graphviz 格式来创建图表。这在使用现有的 DOT 文件或偏好 DOT 语法时非常有用。
 
-### DOT Syntax
+### DOT 语法示例
 
 ```dot
 digraph {
@@ -178,42 +178,33 @@ digraph {
 }
 ```
 
-### Supported DOT Features
+### 支持的 DOT 功能
 
-| Feature | DOT Syntax | Maps To |
-|---------|-----------|---------|
-| Rectangle | `shape=box` or `shape=rect` | `[Label]` |
-| Diamond | `shape=diamond` | `{Label}` |
-| Ellipse | `shape=ellipse` or `shape=circle` | `(Label)` |
-| Database | `shape=cylinder` | `[[Label]]` |
-| Direction | `rankdir=TB\|BT\|LR\|RL` | `@direction` |
-| Edge labels | `[label="text"]` | `-> "text" ->` |
-| Dashed edges | `[style=dashed]` | `-->` |
-| Colors | `[fillcolor="..." color="..."]` | Node styling |
+| 功能            | DOT 语法                         | 对应的 Excalidraw 元素                |
+|-----------------|---------------------------------|-----------------------------------------|
+| 矩形             | `shape=box` 或 `shape=rect`                | `[标签]`                      |
+| 菱形             | `shape=diamond`                      | `{标签}`                      |
+| 椭圆             | `shape=ellipse` 或 `shape=circle`                | `(标签)`                      |
+| 数据库             | `shape=cylinder`                      | `[[标签]]`                      |
+| 方向             | `rankdir=TB\|BT\|LR\|RL`                  | `@方向`                      |
+| 边缘标签           | `[label="文本"]`                     | `-> "文本" ->`                   |
+| 虚线边缘           | `[style=dashed]`                    | `-->`                      |
+| 颜色             | `[fillcolor="..." color="..."}`                | `@装饰`                      |
+| 使用 DOT 文件         | `--input-file <文件路径>`                | （直接使用 DOT 文件）                   |
 
-### Using DOT Files
+### 图像和装饰（1.1.0 版本新增）
 
-```bash
-# From file (auto-detected by .dot or .gv extension)
-npx @swiftlysingh/excalidraw-cli create diagram.dot -o output.excalidraw
+### 图像节点
 
-# Inline DOT
-npx @swiftlysingh/excalidraw-cli create --format dot --inline "digraph { A -> B -> C }" -o output.excalidraw
-```
-
-## Images and Decorations (New in v1.1.0)
-
-### Image Nodes
-
-Include images as flow elements:
+在流程图中插入图像：
 
 ```
 (Start) -> ![logo.png](100x50) -> [Process] -> (End)
 ```
 
-### Positioned Images
+### 定位图像
 
-Place images at specific positions:
+将图像放置在指定位置：
 
 ```
 @image background.png at 0,0
@@ -222,9 +213,9 @@ Place images at specific positions:
 (Start) -> [Process] -> (End)
 ```
 
-### Node Decorations
+### 节点装饰
 
-Attach small icons/badges to nodes:
+为节点添加小图标或徽章：
 
 ```
 [Deploy to Production]
@@ -234,11 +225,11 @@ Attach small icons/badges to nodes:
 @decorate warning.png top-left
 ```
 
-Decoration anchors: `top`, `bottom`, `left`, `right`, `top-left`, `top-right`, `bottom-left`, `bottom-right`
+装饰的定位方式：`top`（顶部）、`bottom`（底部）、`left`（左侧）、`right`（右侧）、`top-left`（左上角）、`top-right`（右上角）、`bottom-left`（左下角）、`bottom-right`（右下角）。
 
-### Sticker Library
+### 贴纸库
 
-Use a library of reusable stickers:
+使用可复用的贴纸库：
 
 ```
 @library ./assets/stickers
@@ -246,49 +237,41 @@ Use a library of reusable stickers:
 @sticker warning near (Error) top-right
 ```
 
-### Scatter Images
+### 随机分布图像
 
-Distribute images randomly across the canvas:
+在画布上随机分布图像：
 
 ```
 @scatter confetti.png count:10
 @scatter star.png count:5 width:20 height:20
 ```
 
-## Common Patterns
+## 常见流程图模板
 
-### API Request Flow
-
-```
+- **API 请求流程**                 | ```
 [Client Request] -> [API Gateway] -> {Auth Valid?}
 {Auth Valid?} -> "yes" -> [Route to Service] -> [[Database]] -> [Response]
 {Auth Valid?} -> "no" -> [401 Unauthorized]
-```
-
-### CI/CD Pipeline
-
-```
+```                 |
+- **持续集成/持续部署管道**           | ```
 (Push) -> [Build] -> [Test] -> {Tests Pass?}
 {Tests Pass?} -> "yes" -> [Deploy Staging] -> {Manual Approval?}
 {Manual Approval?} -> "yes" -> [Deploy Production] -> (Done)
 {Manual Approval?} -> "no" -> (Cancelled)
 {Tests Pass?} -> "no" -> [Notify Team] -> (Failed)
-```
-
-### User Registration
-
-```
+```                 |
+- **用户注册**                   | ```
 (Start) -> [Enter Details] -> {Email Valid?}
 {Email Valid?} -> "no" -> [Show Error] -> [Enter Details]
 {Email Valid?} -> "yes" -> {Password Strong?}
 {Password Strong?} -> "no" -> [Show Password Requirements] -> [Enter Details]
 {Password Strong?} -> "yes" -> [[Save to Database]] -> [Send Verification Email] -> (Success)
-```
+```                 |
 
-## Tips
+## 提示
 
-1. **Keep labels concise** - Use short, action-oriented text
-2. **End decisions with ?** - Makes it clear it's a conditional
-3. **Use consistent naming** - Helps with node deduplication
-4. **Start with (Start)** - Makes the entry point clear
-5. **Test complex flows** - Break into smaller parts if needed
+1. **标签要简洁** - 使用简短、具有操作性的文本。
+2. **决策节点以 `?` 结尾** - 表示这是一个条件判断。
+3. **使用一致的命名规则** - 有助于避免节点重复。
+4. **使用 `(Start)` 开头** - 明确表示流程的起点。
+5. **复杂流程需分解** - 如有必要，可将流程拆分成更小的部分进行设计。

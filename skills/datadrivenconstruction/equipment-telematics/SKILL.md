@@ -1,16 +1,16 @@
 ---
 slug: "equipment-telematics"
 display_name: "Equipment Telematics"
-description: "Integrate and analyze telematics data from heavy construction equipment. Track location, utilization, fuel consumption, maintenance needs, and operator behavior."
+description: "集成并分析重型建筑设备的远程监控数据（即“telematics data”），以追踪设备的地理位置、使用情况、燃油消耗、维护需求以及操作员的行为。"
 ---
 
-# Equipment Telematics
+# 设备远程信息处理
 
-## Overview
+## 概述
 
-Integrate telematics data from heavy construction equipment (excavators, cranes, loaders, trucks) to monitor utilization, track location, analyze fuel efficiency, predict maintenance needs, and ensure safe operation.
+集成重型建筑设备（挖掘机、起重机、装载机、卡车）的远程信息处理数据，以监控设备使用情况、追踪设备位置、分析燃油效率、预测维护需求，并确保设备安全运行。
 
-## Telematics Data Flow
+## 远程信息处理数据流
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -36,7 +36,7 @@ Integrate telematics data from heavy construction equipment (excavators, cranes,
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -583,7 +583,7 @@ class EquipmentTelematics:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -659,7 +659,7 @@ print(f"Fleet: {summary['total_equipment']} units")
 print(telematics.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

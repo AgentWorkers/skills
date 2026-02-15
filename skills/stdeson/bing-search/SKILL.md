@@ -1,16 +1,16 @@
 ---
 name: bing_search
-description: Bing search skill for all users. No API key needed.
+description: 适用于所有用户的Bing搜索技能。无需API密钥。
 ---
 
-# Bing Search Skill
+# Bing 搜索技能
 
-Simple Bing web search skill.
+这是一个简单的 Bing 网页搜索技能。
 
-## Features
-- No API key required
+## 特点
+- 无需 API 密钥
 
-## Usage
+## 使用方法
 ```bash
 python3 skills/bing_search/scripts/search.py "search query"
 ```

@@ -1,28 +1,36 @@
 ---
 name: fda-consultant-specialist
-description: FDA regulatory consultant for medical device companies. Provides 510(k)/PMA/De Novo pathway guidance, QSR (21 CFR 820) compliance, HIPAA assessments, and device cybersecurity. Use when user mentions FDA submission, 510(k), PMA, De Novo, QSR, premarket, predicate device, substantial equivalence, HIPAA medical device, or FDA cybersecurity.
+description: **FDA监管顾问**  
+为医疗器械公司提供以下方面的专业咨询服务：  
+- 510(k)/PMA/De Novo申请流程指导  
+- QSR（21 CFR 820）合规性评估  
+- HIPAA法规遵从性审核  
+- 医疗器械的网络安全保障  
+
+**适用场景**：  
+当用户提及FDA提交流程（510(k)）、PMA申请、De Novo审批流程、QSR合规性要求、医疗器械的上市前审查、同类器械（predicate device）的认定、医疗器械的实质等同性（substantial equivalence）、HIPAA法规相关要求或医疗器械的网络安全问题时，请咨询本顾问。
 ---
 
-# FDA Consultant Specialist
+# FDA咨询专家
 
-FDA regulatory consulting for medical device manufacturers covering submission pathways, Quality System Regulation (QSR), HIPAA compliance, and device cybersecurity requirements.
+为医疗器械制造商提供FDA法规咨询服务，涵盖提交流程、质量体系法规（QSR）、HIPAA合规性以及设备网络安全要求。
 
-## Table of Contents
+## 目录
 
-- [FDA Pathway Selection](#fda-pathway-selection)
-- [510(k) Submission Process](#510k-submission-process)
-- [QSR Compliance](#qsr-compliance)
-- [HIPAA for Medical Devices](#hipaa-for-medical-devices)
-- [Device Cybersecurity](#device-cybersecurity)
-- [Resources](#resources)
+- [FDA提交路径选择](#fda-pathway-selection)
+- [510(k)提交流程](#510k-submission-process)
+- [QSR合规性](#qsr-compliance)
+- [医疗器械的HIPAA合规性](#hipaa-for-medical-devices)
+- [设备网络安全](#device-cybersecurity)
+- [资源](#resources)
 
 ---
 
-## FDA Pathway Selection
+## FDA提交路径选择
 
-Determine the appropriate FDA regulatory pathway based on device classification and predicate availability.
+根据设备分类和可用的判定标准（predicate），确定合适的FDA监管路径。
 
-### Decision Framework
+### 决策框架
 
 ```
 Predicate device exists?
@@ -37,31 +45,31 @@ Predicate device exists?
     └── High risk (Class III) → PMA
 ```
 
-### Pathway Comparison
+### 路径比较
 
-| Pathway | When to Use | Timeline | Cost |
+| 路径 | 使用场景 | 时间表 | 成本 |
 |---------|-------------|----------|------|
-| 510(k) Traditional | Predicate exists, design changes | 90 days | $21,760 |
-| 510(k) Special | Manufacturing changes only | 30 days | $21,760 |
-| 510(k) Abbreviated | Guidance/standard conformance | 30 days | $21,760 |
-| De Novo | Novel, low-moderate risk | 150 days | $134,676 |
-| PMA | Class III, no predicate | 180+ days | $425,000+ |
+| 510(k) 传统路径 | 设备具有判定标准且设计无变更 | 90天 | 21,760美元 |
+| 510(k) 特殊路径 | 仅涉及制造过程变更 | 30天 | 21,760美元 |
+| 510(k) 缩略路径 | 符合指南/标准 | 30天 | 21,760美元 |
+| De Novo路径 | 新型设备或风险较低的设备 | 150天 | 134,676美元 |
+| PMA路径 | 三类医疗器械（无判定标准） | 180天以上 | 425,000美元以上 |
 
-### Pre-Submission Strategy
+### 提交前的策略
 
-1. Identify product code and classification
-2. Search 510(k) database for predicates
-3. Assess substantial equivalence feasibility
-4. Prepare Q-Sub questions for FDA
-5. Schedule Pre-Sub meeting if needed
+1. 确定产品代码和分类；
+2. 在510(k)数据库中查找相应的判定标准；
+3. 评估产品与判定标准的实质性等同性；
+4. 为FDA准备相关问题；
+5. 如有必要，安排预提交会议。
 
-**Reference:** See [fda_submission_guide.md](references/fda_submission_guide.md) for pathway decision matrices and submission requirements.
+**参考：**请参阅 [fda_submission_guide.md](references/fda_submission_guide.md)，以获取路径选择矩阵和提交要求。
 
 ---
 
-## 510(k) Submission Process
+## 510(k)提交流程
 
-### Workflow
+### 工作流程
 
 ```
 Phase 1: Planning
@@ -90,48 +98,48 @@ Phase 4: Review
 └── Verification: SE letter received?
 ```
 
-### Required Sections (21 CFR 807.87)
+### 必需提交的文件（21 CFR 807.87）
 
-| Section | Content |
+| 文件部分 | 内容 |
 |---------|---------|
-| Cover Letter | Submission type, device ID, contact info |
-| Form 3514 | CDRH premarket review cover sheet |
-| Device Description | Physical description, principles of operation |
-| Indications for Use | Form 3881, patient population, use environment |
-| SE Comparison | Side-by-side comparison with predicate |
-| Performance Testing | Bench, biocompatibility, electrical safety |
-| Software Documentation | Level of concern, hazard analysis (IEC 62304) |
-| Labeling | IFU, package labels, warnings |
-| 510(k) Summary | Public summary of submission |
+| 封面信 | 提交类型、设备ID、联系方式 |
+| 表格3514 | CDRH上市前审查封面页 |
+| 设备描述 | 物理描述、工作原理 |
+| 适用范围 | 表格3881、目标患者群体、使用环境 |
+| 与判定标准的对比 | 与判定标准的详细对比 |
+| 性能测试 | 台架测试、生物相容性测试、电气安全测试 |
+| 软件文档 | 风险等级、危险分析（IEC 62304标准） |
+| 标签 | 使用说明书、包装标签、警告信息 |
+| 510(k)提交摘要 | 提交内容的公开摘要 |
 
-### Common RTA Issues
+### 常见问题及解决方法
 
-| Issue | Prevention |
+| 问题 | 解决方法 |
 |-------|------------|
-| Missing user fee | Verify payment before submission |
-| Incomplete Form 3514 | Review all fields, ensure signature |
-| No predicate identified | Confirm K-number in FDA database |
-| Inadequate SE comparison | Address all technological characteristics |
+| 未支付用户费用 | 提交前确认费用已支付 |
+| 表格3514填写不完整 | 审查所有字段并确保签名完整 |
+| 未找到相应的判定标准 | 在FDA数据库中确认设备编号（K-number） |
+| 与判定标准的对比不充分 | 全面说明设备的技术特性 |
 
 ---
 
-## QSR Compliance
+## QSR合规性
 
-Quality System Regulation (21 CFR Part 820) requirements for medical device manufacturers.
+医疗器械制造商需遵守的质量体系法规（21 CFR Part 820）要求。
 
-### Key Subsystems
+### 关键子系统
 
-| Section | Title | Focus |
+| 部分 | 标题 | 主要内容 |
 |---------|-------|-------|
-| 820.20 | Management Responsibility | Quality policy, org structure, management review |
-| 820.30 | Design Controls | Input, output, review, verification, validation |
-| 820.40 | Document Controls | Approval, distribution, change control |
-| 820.50 | Purchasing Controls | Supplier qualification, purchasing data |
-| 820.70 | Production Controls | Process validation, environmental controls |
-| 820.100 | CAPA | Root cause analysis, corrective actions |
-| 820.181 | Device Master Record | Specifications, procedures, acceptance criteria |
+| 820.20 | 管理责任 | 质量政策、组织结构、管理评审 |
+| 820.30 | 设计控制 | 输入控制、输出控制、审查控制、验证控制 |
+| 820.40 | 文件控制 | 文件审批、文件分发、变更控制 |
+| 820.50 | 采购控制 | 供应商资质、采购数据 |
+| 820.70 | 生产控制 | 过程验证、环境控制 |
+| 820.100 | CAPA（纠正措施计划） | 根本原因分析、纠正措施 |
+| 820.181 | 设备主记录 | 规格要求、操作程序、验收标准 |
 
-### Design Controls Workflow (820.30)
+### 设计控制工作流程（820.30）
 
 ```
 Step 1: Design Input
@@ -159,35 +167,35 @@ Step 6: Design Transfer
     Verification: Transfer checklist complete?
 ```
 
-### CAPA Process (820.100)
+### CAPA流程（820.100）
 
-1. **Identify**: Document nonconformity or potential problem
-2. **Investigate**: Perform root cause analysis (5 Whys, Fishbone)
-3. **Plan**: Define corrective/preventive actions
-4. **Implement**: Execute actions, update documentation
-5. **Verify**: Confirm implementation complete
-6. **Effectiveness**: Monitor for recurrence (30-90 days)
-7. **Close**: Management approval and closure
+1. **识别问题**：记录不符合项或潜在问题；
+2. **调查原因**：进行根本原因分析（5个“为什么”和鱼骨图）；
+3. **制定计划**：制定纠正/预防措施；
+4. **实施措施**：执行措施并更新文档；
+5. **验证效果**：确认措施已落实；
+6. **监控效果**：在30-90天内监测问题是否再次发生；
+7. **关闭流程**：获得管理层批准并完成流程。
 
-**Reference:** See [qsr_compliance_requirements.md](references/qsr_compliance_requirements.md) for detailed QSR implementation guidance.
+**参考：**请参阅 [qsr_compliance_requirements.md](references/qsr_compliance_requirements.md)，以获取详细的QSR实施指南。
 
 ---
 
-## HIPAA for Medical Devices
+## 医疗器械的HIPAA合规性
 
-HIPAA requirements for devices that create, store, transmit, or access Protected Health Information (PHI).
+针对创建、存储、传输或访问受保护健康信息（PHI）的医疗器械，需遵守HIPAA法规。
 
-### Applicability
+### 适用范围
 
-| Device Type | HIPAA Applies |
+| 设备类型 | 是否适用HIPAA |
 |-------------|---------------|
-| Standalone diagnostic (no data transmission) | No |
-| Connected device transmitting patient data | Yes |
-| Device with EHR integration | Yes |
-| SaMD storing patient information | Yes |
-| Wellness app (no diagnosis) | Only if stores PHI |
+| 独立诊断设备（无数据传输） | 不适用 |
+| 传输患者数据的连接设备 | 适用 |
+| 与电子健康记录（EHR）集成的设备 | 适用 |
+| 存储患者信息的健康应用程序 | 适用 |
+| 仅用于健康管理的应用程序（无诊断功能） | 仅在存储PHI的情况下适用 |
 
-### Required Safeguards
+### 必需的安全措施
 
 ```
 Administrative (§164.308)
@@ -210,52 +218,52 @@ Technical (§164.312)
 └── Transmission security (TLS 1.2+)
 ```
 
-### Risk Assessment Steps
+### 风险评估步骤
 
-1. Inventory all systems handling ePHI
-2. Document data flows (collection, storage, transmission)
-3. Identify threats and vulnerabilities
-4. Assess likelihood and impact
-5. Determine risk levels
-6. Implement controls
-7. Document residual risk
+1. 清理所有处理电子健康信息的系统；
+2. 记录数据流（收集、存储、传输过程）；
+3. 识别威胁和漏洞；
+4. 评估风险的可能性和影响程度；
+5. 确定风险等级；
+6. 实施控制措施；
+7. 记录剩余风险。
 
-**Reference:** See [hipaa_compliance_framework.md](references/hipaa_compliance_framework.md) for implementation checklists and BAA templates.
+**参考：**请参阅 [hipaa_compliance_framework.md](references/hipaa_compliance_framework.md)，以获取实施检查清单和BAA（业务协议）模板。
 
 ---
 
-## Device Cybersecurity
+## 设备网络安全
 
-FDA cybersecurity requirements for connected medical devices.
+针对联网医疗器械的FDA网络安全要求。
 
-### Premarket Requirements
+### 上市前要求
 
-| Element | Description |
+| 要求 | 说明 |
 |---------|-------------|
-| Threat Model | STRIDE analysis, attack trees, trust boundaries |
-| Security Controls | Authentication, encryption, access control |
-| SBOM | Software Bill of Materials (CycloneDX or SPDX) |
-| Security Testing | Penetration testing, vulnerability scanning |
-| Vulnerability Plan | Disclosure process, patch management |
+| 威胁模型 | STRIDE分析、攻击树分析、信任边界设定 |
+| 安全控制 | 认证机制、加密措施、访问控制 |
+| 软件物料清单（SBOM） | 使用CycloneDX或SPDX格式 |
+| 安全测试 | 渗透测试、漏洞扫描 |
+| 漏洞管理计划 | 漏洞披露流程、补丁管理 |
 
-### Device Tier Classification
+### 设备风险等级分类
 
-**Tier 1 (Higher Risk):**
-- Connects to network/internet
-- Cybersecurity incident could cause patient harm
+**等级1（高风险）：**  
+- 连接到网络/互联网；  
+- 网络安全事件可能导致患者受伤。
 
-**Tier 2 (Standard Risk):**
-- All other connected devices
+**等级2（标准风险）：**  
+- 其他所有联网设备。
 
-### Postmarket Obligations
+### 上市后的义务
 
-1. Monitor NVD and ICS-CERT for vulnerabilities
-2. Assess applicability to device components
-3. Develop and test patches
-4. Communicate with customers
-5. Report to FDA per guidance
+1. 监控NVD（国家漏洞数据库）和ICS-CERT发布的漏洞信息；
+2. 评估漏洞对设备组件的影响；
+3. 开发并测试补丁；
+4. 与客户沟通；
+5. 按照FDA指南向FDA报告漏洞情况。
 
-### Coordinated Vulnerability Disclosure
+### 协调漏洞披露
 
 ```
 Researcher Report
@@ -269,31 +277,31 @@ Fix Development
 Coordinated Public Disclosure
 ```
 
-**Reference:** See [device_cybersecurity_guidance.md](references/device_cybersecurity_guidance.md) for SBOM format examples and threat modeling templates.
+**参考：**请参阅 [device_cybersecurity_guidance.md](references/device_cybersecurity_guidance.md)，以获取SBOM格式示例和威胁建模模板。
 
 ---
 
-## Resources
+## 资源
 
-### scripts/
+### 脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `fda_submission_tracker.py` | Track 510(k)/PMA/De Novo submission milestones and timelines |
-| `qsr_compliance_checker.py` | Assess 21 CFR 820 compliance against project documentation |
-| `hipaa_risk_assessment.py` | Evaluate HIPAA safeguards in medical device software |
+| `fda_submission_tracker.py` | 跟踪510(k)/PMA/De Novo提交项目的里程碑和时间表 |
+| `qsr_compliance_checker.py | 根据项目文档检查21 CFR 820的合规性 |
+| `hipaa_risk_assessment.py | 评估医疗器械软件中的HIPAA安全措施 |
 
-### references/
+### 参考资料
 
-| File | Content |
+| 文件 | 内容 |
 |------|---------|
-| `fda_submission_guide.md` | 510(k), De Novo, PMA submission requirements and checklists |
-| `qsr_compliance_requirements.md` | 21 CFR 820 implementation guide with templates |
-| `hipaa_compliance_framework.md` | HIPAA Security Rule safeguards and BAA requirements |
-| `device_cybersecurity_guidance.md` | FDA cybersecurity requirements, SBOM, threat modeling |
-| `fda_capa_requirements.md` | CAPA process, root cause analysis, effectiveness verification |
+| `fda_submission_guide.md` | 510(k)、De Novo、PMA提交要求和检查清单 |
+| `qsr_compliance_requirements.md | 21 CFR 820实施指南及相关模板 |
+| `hipaa_compliance_framework.md | HIPAA安全规则及BAA要求 |
+| `device_cybersecurity_guidance.md | FDA网络安全要求、SBOM、威胁建模 |
+| `fda_capa_requirements.md | CAPA流程、根本原因分析、效果验证 |
 
-### Usage Examples
+### 使用示例
 
 ```bash
 # Track FDA submission status

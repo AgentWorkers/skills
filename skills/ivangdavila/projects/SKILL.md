@@ -1,53 +1,51 @@
 ---
 name: Projects
-description: Build a personal project management system that scales from simple lists to structured planning.
+description: 构建一个个人项目管理系统，该系统能够从简单的列表功能逐步扩展到支持结构化规划的功能。
 metadata: {"clawdbot":{"emoji":"📁","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions a project → help define scope, create folder
-- User adds tasks → capture in project context
-- Regular review prompts → surface stalled projects
-- Create `~/projects/` as workspace
+## 核心行为
+- 当用户提到一个项目时，协助明确项目范围并创建相应的文件夹。
+- 当用户添加任务时，将这些任务记录在项目相关的内容中。
+- 定期进行项目审查，以发现那些停滞不前的项目。
+- 将所有项目的工作空间设置为 `~/projects/`。
 
-## First Question
-- "What does done look like?" — define success before starting
-- Scope creep is the project killer — clear boundaries from day one
-- If they can't define done, the project isn't ready to start
+## 首个问题
+- “‘完成’具体意味着什么？”——在开始项目之前需要先明确成功的标准。
+- 范围的不断扩大往往是项目失败的根源——从一开始就要明确项目的边界。
+- 如果用户无法定义“完成”的标准，那么这个项目就不适合启动。
 
-## Project Types to Recognize
-- One-time goal: clear end state, then archive (move apartments, plan trip)
-- Ongoing area: never truly done, maintain indefinitely (health, career)
-- Client work: external deadline, deliverables, often paid
-- Learning: skill acquisition, may spawn other projects
-- Creative: writing, art, building — process matters as much as output
+## 需要识别的项目类型
+- 一次性项目：有明确的结束状态，完成后即可归档（例如：搬家、旅行计划）。
+- 持续进行中的项目：这类项目永远不会真正完成，需要持续维护（例如：健康管理、职业发展）。
+- 客户委托的项目：有外部截止日期，需要交付成果，通常需要付费。
+- 学习型项目：旨在提升个人技能，可能会引发其他相关项目。
+- 创意项目：写作、艺术创作等——过程与结果同样重要。
 
-## Minimal Project Structure
-- Folder with project name: `~/projects/kitchen-renovation/`
-- README.md: what, why, done criteria, deadline if any
-- tasks.md: simple checklist, add as discovered
-- notes.md: decisions made, research, reference material
+## 最基本的项目结构
+- 项目文件夹的名称格式为：`~/projects/项目名称/`
+- `README.md` 文件：说明项目的目的、原因、完成的标准以及是否有截止日期。
+- `tasks.md` 文件：用于记录具体的任务清单，可以随时添加新的任务。
+- `notes.md` 文件：记录所做的决策、研究内容以及参考资料。
 
-## When User Starts a Project
-- Ask: "What's the one sentence description?"
-- Ask: "When does this need to be done?" (or "no deadline")
-- Ask: "What's the very next physical action?"
-- Create folder with README containing answers
+## 当用户开始一个项目时
+- 询问：“用一句话来描述这个项目是什么？”
+- 询问：“这个项目需要在什么时候完成？”（或者“没有截止日期”）
+- 询问：“下一个具体的行动是什么？”
+- 根据用户的回答创建一个包含这些信息的 `README.md` 文件。
 
-## Task Capture
-- Quick capture: "Add to kitchen project: call contractor"
-- Tasks are concrete actions, not vague goals
-- "Research options" is a task, "figure out renovation" is not
-- Estimate size if useful: small/medium/large or hours
+## 任务记录
+- 任务应该被具体化：例如“添加到‘厨房翻新’项目中：联系承包商”。
+- 任务应该是具体的行动，而不是模糊的目标。
+- “研究选项”属于任务范畴，而“确定翻新方案”则不属于。
 
-## When Projects Grow
-- More than 15 tasks → consider grouping into phases
-- Multiple workstreams → split into areas within project
-- Dependencies emerging → note which tasks block others
-- Collaborators involved → note who owns what
+## 当项目规模扩大时
+- 如果项目包含超过15个任务，可以考虑将任务分成不同的阶段。
+- 如果项目涉及多个工作流程，可以将这些流程划分到项目的不同部分中。
+- 当出现任务依赖关系时，需要记录哪些任务会阻碍其他任务的进展。
+- 如果有合作伙伴参与，需要明确每个人负责的任务。
 
-## Phase/Milestone Structure
-For larger projects:
+## 阶段/里程碑结构（适用于大型项目）
 ```
 ~/projects/kitchen-renovation/
 ├── README.md
@@ -59,62 +57,62 @@ For larger projects:
 └── archive/
 ```
 
-## Active Project Limits
-- Suggest maximum 3-5 active projects — more means nothing progresses
-- Distinguish active (working this week) from someday (parked intentionally)
-- Parked projects go in `~/projects/_someday/`
-- Review someday quarterly — activate, archive, or delete
+## 活跃项目的限制
+- 建议同时只管理3-5个活跃项目——超过这个数量会导致项目进展缓慢或停滞。
+- 区分“本周正在处理的项目”和“暂时搁置的项目”。
+- 暂时搁置的项目应存放在 `~/projects/_someday/` 目录下。
+- 每季度对这些项目进行一次审查，决定是重新启动、归档还是删除。
 
-## Weekly Project Review
-- What progressed this week?
-- What's the next action for each active project?
-- Any projects stalled more than 2 weeks?
-- Any someday projects ready to activate?
+## 每周项目审查
+- 本周有哪些项目取得了进展？
+- 每个活跃项目接下来的行动是什么？
+- 有没有哪些项目已经停滞超过两周？
+- 有没有哪些“暂时搁置”的项目可以重新启动？
 
-## Stalled Project Detection
-- No task completions in 2+ weeks → surface in review
-- Ask: "Is this still a priority? Block or drop?"
-- Options: push forward, park to someday, kill it
-- Killing projects is healthy — better than zombie projects
+## 检测停滞的项目
+- 如果某个项目两周内没有任何任务完成，就需要在审查中将其提出来。
+- 询问：“这个项目仍然重要吗？是继续推进、暂时搁置还是直接放弃？”
+- 处理方式包括：继续推进、暂时搁置或直接终止该项目。
+- 终止一些项目是有必要的——这比让项目长期处于停滞状态要好。
 
-## Project Completion
-- Define done checklist in README from start
-- When complete: review what went well, what didn't
-- Archive to `~/projects/_archive/year/`
-- Celebrate completion — don't just move to next thing
+## 项目完成
+- 从项目开始时就在 `README.md` 中明确完成的标准。
+- 完成项目后，回顾哪些方面做得好，哪些方面需要改进。
+- 将完成的项目归档到 `~/projects/_archive/year/` 目录下。
+- 庆祝项目完成——不要急于开始下一个项目。
 
-## Client/Work Projects
-- Add: deadline, contact info, rate if applicable
-- Track time if billing: simple log in project folder
-- Deliverables list with status
-- Communication log: key decisions and approvals
+## 客户委托的项目
+- 如果项目需要收费，需要添加截止日期、联系信息以及评分标准。
+- 如果需要记录工作时间，可以在项目文件夹中简单记录。
+- 提供包含项目状态的成果列表。
+- 保留沟通记录，包括重要的决策和审批内容。
 
-## What NOT To Suggest
-- Complex project management app until files fail
-- Rigid methodology (Agile, GTD, etc.) — adapt to user
-- Gantt charts for personal projects — overkill
-- Time tracking for non-billable work — adds friction
+## 不建议的做法
+- 在文件出现问题之前，不要使用复杂的项目管理工具。
+- 不要强制使用固定的项目管理方法（如敏捷开发、GTD等）——应根据用户的需求进行调整。
+- 对于个人项目来说，使用甘特图是多余的。
+- 对于非收费项目来说，进行时间跟踪只会增加不必要的麻烦。
 
-## Project Templates
-Offer to create templates for recurring project types:
-- "You start client projects often — want a template?"
-- Template: folder structure, README prompts, standard tasks
-- Keep templates minimal — adapt per project
+## 项目模板
+- 如果用户经常需要处理类似的项目，可以提供模板：
+- 询问：“您经常开始客户委托的项目吗？需要一个模板吗？”
+- 模板包括文件夹结构、`README.md` 的编写指南以及标准任务列表。
+- 模板应保持简洁，根据每个项目的具体情况进行调整。
 
-## Integration Points
-- Calendar: deadlines, milestones
-- Contacts: collaborators, stakeholders
-- Invoices: if client project with billing
-- Goals: projects often serve larger goals
+## 集成点
+- 日历：用于记录项目的截止日期和里程碑。
+- 联系人信息：记录项目的合作伙伴和利益相关者。
+- 发票：对于需要收费的客户项目，需要记录发票信息。
+- 目标：项目通常是为了实现更大的目标而存在的。
 
-## Someday/Maybe List
-- Ideas not ready for commitment
-- Review monthly — promote, delete, or keep parking
-- No guilt about long lists — it's a holding pen
-- "This would be cool but not now" is valid
+## “暂时搁置”或“也许以后再做”的项目列表
+- 将那些尚未准备好投入精力实现的想法放入这个列表中。
+- 每月审查一次这个列表——决定是继续推进、删除还是暂时搁置。
+- 不要因为列表很长而感到内疚——这个列表只是一个暂时的收纳工具。
+- “这个想法很棒，但不是现在要做”也是合理的。
 
-## Project Metrics (When Asked)
-- How long did similar projects take?
-- Completion rate: started vs finished
-- Average project duration
-- Don't track obsessively — only if user finds it useful
+## 项目指标（当用户询问时）
+- 类似项目通常需要多长时间才能完成？
+- 完成率：开始与完成的比例。
+- 项目的平均持续时间。
+- 不要过度关注这些指标——只有在用户认为有用的情况下才进行记录。

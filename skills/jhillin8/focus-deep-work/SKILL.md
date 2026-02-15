@@ -1,6 +1,6 @@
 ---
 name: focus-deep-work
-description: Maximize deep work with focus sessions, distraction logging, and productivity tracking
+description: 通过专注工作时段、记录干扰因素以及跟踪工作效率来最大化深度工作的效果。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,62 +11,56 @@ triggers:
   - "productivity session"
 ---
 
-# Focus & Deep Work
+# 专注与深度工作
 
-Do your best work when distractions fade away.
+当干扰因素消失时，尽你最大的努力去完成工作。
 
-## What it does
+## 功能介绍
 
-This skill turns your device into a focus machine. Start a deep work session and Clawd handles the rest: tracks your focus time, logs distractions as they arise (without breaking your flow), measures your productivity across sessions, and helps you optimize your environment for maximum concentration. Whether you're writing, coding, designing, or thinking hard—this skill removes friction and builds your deep work muscle.
+此功能可将你的设备转变为一个专注工作的工具。启动深度工作模式后，Clawd 会自动处理其余事务：记录你的专注时间、在干扰出现时进行记录（而不会打断你的工作流程）、衡量你的工作效率，并帮助你优化工作环境以获得最佳专注状态。无论你是写作、编程、设计还是进行需要深度思考的任务，该功能都能消除干扰，帮助你培养专注力。
 
-**Key capabilities:**
-- **Focus Sessions** - Timers based on proven productivity methods (Pomodoro, 52/17, 90-minute ultradian rhythms)
-- **Distraction Logging** - Quick-capture logging when interruptions occur, with zero context switching
-- **Deep Work Hours Tracking** - Weekly/monthly summaries of focused time by project or task
-- **Environment Setup** - Automatic silencing, app blocking, and notification management (when permissions allow)
+**主要功能：**
+- **专注时段**：基于经过验证的生产力方法（如 Pomodoro、52/17、90 分钟的超日节律）设置计时器。
+- **干扰记录**：在干扰发生时快速记录相关信息，无需切换上下文。
+- **深度工作时间统计**：按项目或任务统计每周/每月的专注时间。
+- **环境设置**：在权限允许的情况下，自动静音、屏蔽应用程序以及管理通知。
 
-## Usage
+## 使用方法
 
-### Start Session
-Trigger: *"Start a 90-minute deep work session"* or *"Begin focus mode"*
+### 启动专注时段
+触发指令：*“开始 90 分钟的深度工作时段”* 或 *“进入专注模式”*
 
-Clawd launches a countdown timer, blocks distracting apps, and silences notifications. You work uninterrupted. Timer notifications appear at natural breakpoints (every 25 min for Pomodoro, or at session end for longer blocks).
+Clawd 会启动倒计时器，屏蔽干扰性应用程序，并静音通知。你可以不受干扰地工作。计时器会在预设的时间点（Pomodoro 模式下为每 25 分钟，长时间工作模式下为时段结束时）提醒你。
 
-### Log Distraction
-Trigger: *"I got distracted"* or *"Log distraction: Slack notification"*
+### 记录干扰
+触发指令：*“我被干扰了”* 或 *“记录干扰：Slack 通知”*
 
-Quick-capture the distraction type without stopping the timer. Clawd records it with timestamp and category (internal/external). Build awareness of your distraction patterns over time.
+在记录干扰时无需停止计时器。Clawd 会记录干扰的类型、发生时间以及干扰的来源（内部/外部），帮助你了解自己的干扰模式。
 
-### End Session
-Trigger: *"End session"* or *"Stop focus"*
+### 结束专注时段
+触发指令：*“结束时段”* 或 *“停止专注”*
 
-Clawd records total focus time, distractions during the session, and saves a session summary. You can reflect on what worked and what didn't.
+Clawd 会记录你的总专注时间、期间遇到的干扰情况，并保存时段总结。你可以借此反思哪些方法有效，哪些需要改进。
 
-### Check Stats
-Trigger: *"Show my focus stats"* or *"Deep work summary this week"*
+### 查看统计数据
+触发指令：*“查看我的专注数据”* 或 *“本周的深度工作总结”*
 
-View total focus hours, distraction breakdown by category, average session length, and productivity trends. See which times of day you focus best.
+你可以查看总专注时间、按类别划分的干扰情况、平均时段长度以及工作效率趋势，了解自己一天中哪些时间段最容易集中注意力。
 
-### Set Environment
-Trigger: *"Minimize distractions"* or *"Lock me in"*
+### 设置工作环境
+触发指令：*“减少干扰”* 或 *“让我进入专注状态”*
 
-Clawd can: mute system notifications, close or minimize specified apps, dim screen brightness, enable do-not-disturb mode, block website access (if permission granted), or play focus music.
+Clawd 可以执行以下操作：静音系统通知、关闭或最小化指定应用程序、调暗屏幕亮度、开启免打扰模式、阻止网站访问（如权限允许），或播放有助于专注的音乐。
 
-## Session Types
+## 专注时段类型
+- **Pomodoro（25 分钟）**：适用于快速迭代工作的经典计时模式，配有自动休息时间。
+- **超日节律（52 分钟）**：52 分钟专注 + 17 分钟休息，符合人体的自然能量周期。
+- **深度工作时段（90 分钟）**：适合需要长时间专注的复杂任务，整个时段内无干扰。
+- **自定义**：你可以自行设置计时器，例如 *“开始 45 分钟的专注时段”*。
 
-- **Pomodoro (25 min)** - Classic timer for rapid-iteration work. Pairs with automatic breaks.
-- **Ultradian (52 min)** - 52 minutes focus + 17-minute break. Aligns with natural energy cycles.
-- **Deep Block (90 min)** - For complex thinking. One full cycle without interruption.
-- **Custom** - Set your own timer. *"Start a 45-minute focus session"*
-
-## Tips
-
-1. **Start small.** New to deep work? Begin with 25-minute Pomodoros. Build the habit before extending sessions.
-
-2. **Log early.** When a distraction hits, log it immediately—even mid-task. The friction of a quick log actually breaks the distraction's grip faster than ignoring it.
-
-3. **Review your patterns.** Check stats weekly. You'll spot which environments, times, and tasks trigger your biggest distractions. Optimize accordingly.
-
-4. **Use session types strategically.** Complex coding? 90 minutes. Administrative tasks? Pomodoro. Writing? 52 min. Match method to work.
-
-5. **All data stays local on your machine.** Your focus logs, session history, and productivity patterns are never sent to servers. Your deep work habits remain yours alone.
+## 使用建议：
+1. **从小处开始**：初次尝试深度工作？可以从 25 分钟的 Pomodoro 开始，逐渐延长专注时段。
+2. **及时记录干扰**：一旦遇到干扰，立即记录下来——即使是在任务进行中。快速记录实际上比忽略干扰更有效。
+3. **定期分析模式**：每周查看统计数据，找出哪些环境、时间或任务最容易分散你的注意力，并据此进行调整。
+4. **策略性地选择时段类型**：复杂编程任务适合使用 90 分钟的深度工作时段；行政任务适合 Pomodoro 模式；写作任务则适合 52 分钟的专注时段。根据工作内容选择合适的模式。
+5. **所有数据仅保存在本地**：你的专注记录、时段历史和效率数据不会被发送到服务器，你的专注习惯完全属于你自己。

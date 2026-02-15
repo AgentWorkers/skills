@@ -1,23 +1,23 @@
 ---
 name: book-salon
-description: Book salon services through Lokuli MCP. Use when user needs to find and book salon. Triggers on requests like "book a salon", "find salon near me", or any salon service request.
+description: 通过 Lokuli MCP 预订沙龙服务。当用户需要查找和预订沙龙时使用该功能。该功能会在用户发起“预订沙龙”、“查找附近的沙龙”或任何与沙龙服务相关的请求时被触发。
 ---
 
-# uook salon
+# uook沙龙
 
-Book salon services through Lokuli's MCP server.
+通过Lokuli的MCP服务器预订沙龙服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

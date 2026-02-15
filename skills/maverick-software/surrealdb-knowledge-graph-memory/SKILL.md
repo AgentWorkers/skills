@@ -1,76 +1,85 @@
-# SurrealDB Knowledge Graph Memory
+# SurrealDB知识图谱内存系统
 
-A knowledge graph memory system using SurrealDB with vectorized semantic search, confidence scoring, graph-aware fact relationships, MCP tools, and LLM-powered knowledge extraction.
+这是一个基于SurrealDB构建的知识图谱内存系统，它支持向量化语义搜索、置信度评分、图谱感知的事实关系管理、MCP工具以及由大型语言模型（LLM）驱动的知识提取功能。
 
-## Description
+## 描述
 
-Use this skill for:
-- Storing and retrieving knowledge as interconnected facts
-- Semantic memory search with confidence-weighted results  
-- Managing fact relationships (supports, contradicts, updates)
-- LLM-powered knowledge extraction from memory files
-- AI-driven relationship discovery between facts
-- Memory maintenance: decay, pruning, consolidation
+该系统可用于：
+- 以相互关联的事实形式存储和检索知识
+- 进行带有置信度权重的语义搜索
+- 管理事实之间的关系（支持、矛盾、更新）
+- 从内存文件中提取知识（利用LLM）
+- 通过人工智能发现事实之间的关联
+- 进行内存维护（包括数据衰减、修剪和整合）
 
-**Triggers:** "remember this", "store fact", "what do you know about", "memory search", "memory maintenance", "prune memory", "knowledge graph", "find relations"
+**触发命令**：
+- “记住这个”（remember this）
+- “存储事实”（store fact）
+- “你知道什么”（what do you know about）
+- “内存搜索”（memory search）
+- “内存维护”（memory maintenance）
+- “修剪内存”（prune memory）
+- “知识图谱”（knowledge graph）
+- “查找关系”（find relations）
 
-## ⚠️ Security & Installation Notes
+## ⚠️ 安全与安装注意事项
 
-This skill performs system-level operations. Review before installing:
+此系统执行系统级操作，请在安装前仔细阅读以下内容：
 
-| Behavior | Location | Description |
-|----------|----------|-------------|
-| **Network installer** | `install.sh`, `memory.ts` | Runs `curl https://install.surrealdb.com \| sh` |
-| **Source patching** | `integrate-clawdbot.sh` | Uses `sed -i` to patch Clawdbot source files |
-| **Service management** | `memory.ts` | Can start SurrealDB server, run schema imports |
-| **Python packages** | `install.sh`, `memory.ts` | Installs surrealdb, openai, pyyaml via pip |
-| **File access** | `extract-knowledge.py` | Reads `MEMORY.md` and `memory/*.md` for extraction |
+| 操作          | 执行位置        | 说明                          |
+|------------------|------------------|---------------------------------------------|
+| **网络安装**       | `install.sh`, `memory.ts`    | 运行 `curl https://install.surrealdb.com \| sh`                |
+| **源代码修补**     | `integrate-clawdbot.sh`    | 使用 `sed -i` 修补 Clawdbot 的源代码文件                |
+| **服务管理**       | `memory.ts`      | 可以启动 SurrealDB 服务器并导入数据库模式            |
+| **Python 包安装**     | `install.sh`, `memory.ts`    | 通过 pip 安装 surrealdb、openai 和 pyyaml                |
+| **文件访问**       | `extract-knowledge.py`    | 读取 `MEMORY.md` 及 `memory/*.md` 文件以提取数据           |
 
-**Default credentials:** Examples use `root/root` — change for production and bind to localhost only.
+**默认凭据**：
+示例中使用 `root/root` —— 请在生产环境中更换凭据，并确保仅绑定到本地主机。
 
-**API key:** `OPENAI_API_KEY` is required for embeddings (text-embedding-3-small) and LLM extraction (GPT-4o-mini). Use a scoped key.
+**API 密钥**：
+- `OPENAI_API_KEY` 是必需的，用于文本嵌入（text-embedding-3-small）和知识提取（GPT-4o-mini）功能。请使用具有适当权限的 API 密钥。
 
-**Safe install path:**
-1. Install SurrealDB manually from [surrealdb.com/install](https://surrealdb.com/install)
-2. Use a Python venv: `python3 -m venv .venv && source .venv/bin/activate`
-3. Review and run `pip install -r scripts/requirements.txt`
-4. Set `OPENAI_API_KEY` with minimal permissions
-5. Skip `integrate-clawdbot.sh` or review the diffs it will apply
+**安全安装步骤**：
+1. 从 [surrealdb.com/install](https://surrealdb.com/install) 手动安装 SurrealDB。
+2. 创建一个 Python 虚拟环境（venv）：`python3 -m venv .venv && source .venv/bin/activate`。
+3. 查看并运行 `pip install -r scripts/requirements.txt`。
+4. 设置 `OPENAI_API_KEY`，并确保其权限最小化。
+5. 可以跳过 `integrate-clawdbot.sh`，或查看它将应用的更改。
 
-## Features
+## 特点
 
-### MCP Tools
-The skill provides an MCP server with 4 tools for knowledge graph operations:
+### MCP 工具
+该系统提供了一个包含 4 个工具的 MCP 服务器，用于管理知识图谱：
+| 工具          | 说明                          |
+|------------------|---------------------------------------------|
+| `knowledge_search` | 根据查询进行语义搜索                        |
+| `knowledge_recall` | 带有完整上下文（关系、实体）的事实检索                |
+| `knowledge_store` | 带有置信度和标签的新事实存储                    |
+| `knowledge_stats` | 获取知识图谱的统计信息                        |
 
-| Tool | Description |
-|------|-------------|
-| `knowledge_search` | Semantic search for facts by query |
-| `knowledge_recall` | Recall a fact with full context (relations, entities) |
-| `knowledge_store` | Store a new fact with confidence and tags |
-| `knowledge_stats` | Get knowledge graph statistics |
+### 知识提取
+- 从 `MEMORY.md` 和 `memory/*.md` 文件中提取结构化事实。
+- 使用 LLM（GPT-4o-mini）识别实体和关系。
+- 支持基于文件变化的增量提取。
+- 需要时支持完全重新提取数据。
 
-### Knowledge Extraction
-- Extracts structured facts from MEMORY.md and memory/*.md files
-- Uses LLM (GPT-4o-mini) to identify entities and relationships
-- Tracks file changes for incremental extraction
-- Supports full re-extraction when needed
+### 置信度评分
+每个事实的置信度由以下因素综合计算得出：
+- **基础置信度**（0.0–1.0）
+- **来自高置信度支持事实的增强**  
+- **来自被广泛提及的实体的增强**  
+- **来自高置信度矛盾事实的减分**  
+- **时间衰减**：每月减少 5% 的置信度
 
-### Confidence Scoring
-Each fact has an **effective confidence** calculated from:
-- Base confidence (0.0–1.0)
-- **+ Inherited boost**: from high-confidence supporting facts
-- **+ Entity boost**: from well-established entities mentioned
-- **- Contradiction drain**: from high-confidence contradicting facts
-- **- Time decay**: 5% per month of staleness
+### 关系发现
+- 人工智能自动发现孤立事实之间的语义联系。
+- 创建表示支持、矛盾、更新或详细说明关系的边。
+- 可以手动执行，也可以通过每日定时任务自动执行。
 
-### Relationship Discovery
-- AI finds semantic connections between isolated facts
-- Creates `supports`, `contradicts`, `updates`, `elaborates` edges
-- Can run manually or via daily cron job
+## 先决条件
 
-## Prerequisites
-
-1. **SurrealDB** installed and running:
+1. **已安装并运行 SurrealDB**：
    ```bash
    # Option A: Use the installer (runs curl | sh - review first!)
    ./scripts/install.sh
@@ -82,7 +91,7 @@ Each fact has an **effective confidence** calculated from:
    surreal start --bind 127.0.0.1:8000 --user root --pass root file:~/.clawdbot/memory/knowledge.db
    ```
 
-2. **Python dependencies** (use the skill's venv):
+2. **Python 依赖项**（使用系统的虚拟环境）：
    ```bash
    cd /path/to/surrealdb-memory
    python3 -m venv .venv
@@ -90,14 +99,14 @@ Each fact has an **effective confidence** calculated from:
    pip install -r scripts/requirements.txt
    ```
 
-3. **OpenAI API key** (**required**) for embeddings and extraction:
+3. **OpenAI API 密钥**（**必需**）：用于嵌入和知识提取：
    ```bash
    # Used for: text-embedding-3-small (embeddings), GPT-4o-mini (extraction)
    # Recommendation: Use a scoped key with minimal permissions
    export OPENAI_API_KEY="sk-..."
    ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize the database schema
@@ -111,9 +120,9 @@ python3 scripts/extract-knowledge.py extract --full
 python3 scripts/extract-knowledge.py status
 ```
 
-## MCP Server Usage
+## MCP 服务器使用方法
 
-### Via mcporter (recommended)
+### 推荐使用 mcporter：
 ```bash
 # Stats
 mcporter call surrealdb-memory.knowledge_stats
@@ -129,8 +138,8 @@ mcporter call surrealdb-memory.knowledge_recall fact_id="fact:abc123"
 mcporter call surrealdb-memory.knowledge_store content="New fact" confidence:0.9
 ```
 
-### MCP Server Config
-Add to your MCP client config:
+### MCP 服务器配置
+请将以下配置添加到您的 MCP 客户端配置文件中：
 ```json
 {
   "surrealdb-memory": {
@@ -141,10 +150,9 @@ Add to your MCP client config:
 }
 ```
 
-## CLI Commands
+## 命令行接口（CLI）
 
-### knowledge-tool.py (simple CLI)
-
+### knowledge-tool.py（简单 CLI）
 ```bash
 # Search for facts
 python3 scripts/knowledge-tool.py search "query" --limit 10
@@ -162,48 +170,47 @@ python3 scripts/knowledge-tool.py stats
 
 ### extract-knowledge.py
 
-| Command | Description |
-|---------|-------------|
-| `extract` | Extract from changed files only |
-| `extract --full` | Full extraction (all files) |
-| `status` | Show extraction status and stats |
-| `reconcile` | Deep reconciliation (prune, decay, clean orphans) |
-| `discover-relations` | AI finds relationships between facts |
-| `dedupe` | Find and remove duplicate facts |
-| `rebuild-links` | Rebuild entity links for existing facts |
-| `check` | Check if extraction needed (for heartbeat) |
+| 命令            | 说明                          |
+|------------------|---------------------------------------------|
+| `extract`          | 仅从已更改的文件中提取数据                |
+| `extract --full`      | 提取所有文件中的数据                    |
+| `status`          | 显示提取状态和统计信息                    |
+| `reconcile`        | 进行深度数据整合（修剪、衰减、清理孤立数据）           |
+| `discover-relations` | 通过人工智能发现事实之间的关系             |
+| `dedupe`          | 查找并删除重复的事实                    |
+| `rebuild-links`      | 为现有事实重建实体链接                    |
+| `check`          | 检查是否需要数据提取（用于心跳检测）                |
 
 ### memory-cli.py
 
-| Command | Description |
-|---------|-------------|
-| `store <content>` | Store a new fact with optional `--source`, `--confidence`, `--tags` |
-| `search <query>` | Semantic search, returns facts weighted by similarity × confidence |
-| `get <fact_id>` | Get a fact with full context (related facts, entities) |
-| `relate <fact1> <rel> <fact2>` | Create relationship: `supports`, `contradicts`, `updates`, `elaborates` |
-| `decay` | Apply time decay to stale facts |
-| `prune` | Remove low-confidence stale facts |
-| `consolidate` | Merge near-duplicate facts |
-| `maintain` | Run full maintenance cycle (decay + prune + consolidate) |
-| `stats` | Show database statistics |
+| 命令            | 说明                          |
+|------------------|---------------------------------------------|
+| `store <内容>`       | 存储新事实（可选参数：--source, --confidence, --tags）       |
+| `search <查询>`       | 进行语义搜索，并返回按相似度和置信度加权的事实         |
+| `get <事实ID>`       | 获取包含相关事实和实体的完整事实信息             |
+| `relate <事实1> <关系> <事实2>` | 创建支持、矛盾、更新或详细说明的关系             |
+| `decay`          | 对过时的事实应用时间衰减                    |
+| `prune`          | 删除置信度低的事实                     |
+| `consolidate`      | 合并相似的事实                         |
+| `maintain`        | 运行完整维护周期（衰减、修剪、整合）                 |
+| `stats`          | 显示数据库统计信息                     |
 
-## Gateway Integration
+## 网关集成
 
-This skill includes gateway handlers for the Clawdbot control UI:
+该系统包含用于 Clawdbot 控制界面的网关处理程序：
+| 方法            | 说明                          |
+|------------------|---------------------------------------------|
+| `memory.health`      | 检查 SurrealDB 的状态、模式和依赖项                |
+| `memory.stats`      | 获取事实/实体/关系的数量统计                 |
+| `memory.repair`     | 自动修复：安装二进制文件、启动服务器、初始化模式         |
+| `memory.runExtraction`    | 运行数据提取、整合或关系发现操作             |
+| `memory.extractionProgress` | 监控提取进度                         |
+| `memory.activity`      | 获取最近的活动记录（查询、提取操作）                 |
+| `memory.maintenance`     | 运行衰减/修剪操作                         |
 
-| Method | Description |
-|--------|-------------|
-| `memory.health` | Check SurrealDB status, schema, dependencies |
-| `memory.stats` | Get fact/entity/relationship counts |
-| `memory.repair` | Auto-repair: install binary, start server, init schema |
-| `memory.runExtraction` | Run extraction, reconciliation, or relation discovery |
-| `memory.extractionProgress` | Poll extraction progress |
-| `memory.activity` | Get recent activity (queries, extractions) |
-| `memory.maintenance` | Run decay/prune operations |
+### 安装网关集成
 
-### Installing Gateway Integration
-
-Copy the gateway handler to Clawdbot source:
+将网关处理程序复制到 Clawdbot 的源代码中：
 ```bash
 cp clawdbot-integration/gateway/memory.ts /path/to/clawdbot/src/gateway/server-methods/
 
@@ -215,10 +222,9 @@ import { memoryHandlers } from "./server-methods/memory.js";
 cd /path/to/clawdbot && npm run build
 ```
 
-## Configuration
+## 配置
 
-Create `~/.clawdbot/surrealdb-memory.yaml`:
-
+创建 `~/.clawdbot/surrealdb-memory.yaml` 配置文件：
 ```yaml
 connection: "http://localhost:8000"
 namespace: clawdbot
@@ -241,7 +247,7 @@ maintenance:
   min_confidence: 0.2
 ```
 
-## Files
+## 相关文件
 
 ```
 surrealdb-memory/
@@ -266,41 +272,27 @@ surrealdb-memory/
     └── conflict-patterns.md # Contradiction detection rules
 ```
 
-## Maintenance Schedule
+## 维护计划
 
-Add to `HEARTBEAT.md` or create a cron job:
+请将相关配置添加到 `HEARTBEAT.md` 文件中，或创建一个定时任务来自动执行维护操作：
 ```markdown
 ## Memory Maintenance (weekly)
 - Run `surrealdb-memory` knowledge extraction check
 - Run reconciliation if facts are stale
 ```
 
-Or use the Control UI's "Daily auto-discovery" checkbox to enable automatic relation discovery.
+您也可以通过控制界面的“每日自动发现”选项来启用自动关系发现功能。
 
-## Troubleshooting
+## 故障排除
 
-**"Connection refused"** — Start SurrealDB:
-```bash
-surreal start --user root --pass root file:~/.clawdbot/memory/knowledge.db
-```
+- **“连接被拒绝”**：请确保 SurrealDB 正在运行。
+- **“surrealdb 包未安装”**：请安装所需的 Python 依赖项。
+- **“OPENAI_API_KEY 未设置”**：请导出 API 密钥。
+- **搜索速度慢**：请确认向量索引已正确创建（检查 `schema.sql` 文件是否已应用）。
+- **控制界面显示“正在启动...”且无响应**：尝试强制刷新浏览器（Ctrl+Shift+R）。
 
-**"surrealdb package not installed"** — Install Python deps:
-```bash
-source .venv/bin/activate
-pip install -r scripts/requirements.txt
-```
+## 版本历史
 
-**"OPENAI_API_KEY not set"** — Export the key:
-```bash
-export OPENAI_API_KEY="sk-..."
-```
-
-**Slow searches** — Ensure vector index exists (check schema.sql was applied)
-
-**Control UI shows "Starting..." stuck** — Hard refresh browser (Ctrl+Shift+R)
-
-## Version History
-
-- **v1.2.0** (2026-02-09): Added MCP server with 4 tools, fixed query bugs
-- **v1.1.0** (2026-02-09): Added gateway integration, relation discovery, control UI support
-- **v1.0.0** (2026-01-31): Initial release with extraction and CLI
+- **v1.2.0**（2026-02-09）：添加了 MCP 服务器及 4 个工具，修复了查询相关的问题。
+- **v1.1.0**（2026-02-09）：增加了网关集成和关系发现功能。
+- **v1.0.0**（2026-01-31）：初始版本，支持数据提取和命令行接口。

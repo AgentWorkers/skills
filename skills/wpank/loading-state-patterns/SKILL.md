@@ -1,25 +1,25 @@
 ---
 name: loading-state-patterns
 model: fast
-description: Patterns for skeleton loaders, shimmer effects, and loading states that match design system aesthetics. Covers skeleton components, shimmer animations, and progressive loading. Use when building polished loading experiences. Triggers on skeleton, loading state, shimmer, placeholder, loading animation.
+description: 这些模式涵盖了与设计系统美学相匹配的骨架加载器（skeleton loaders）、闪烁效果（shimmer effects）以及加载状态（loading states）的实现方式。包括骨架组件（skeleton components）、闪烁动画（shimmer animations）以及渐进式加载（progressive loading）的相关内容。适用于构建精致、用户体验良好的加载效果（loading experiences）。这些模式会在骨架组件加载完成时、加载状态发生变化时、出现闪烁效果时，或加载动画启动时被触发（triggered）。
 ---
 
-# Loading State Patterns
+# 加载状态设计
 
-Build loading states that feel intentional and match your design system aesthetic.
-
----
-
-## When to Use
-
-- Building skeleton loaders for content areas
-- Need shimmer effects for streaming content
-- Want progressive loading experiences
-- Building premium loading UX
+创建具有明确意图的加载状态，并使其与您的设计系统风格相匹配。
 
 ---
 
-## Pattern 1: Skeleton Base
+## 使用场景
+
+- 为内容区域构建基础加载框架
+- 需要为流式内容添加闪烁效果
+- 希望实现渐进式加载体验
+- 构建高级的加载用户体验
+
+---
+
+## 模式 1：基础骨架
 
 ```tsx
 import { cn } from '@/lib/utils';
@@ -42,7 +42,7 @@ export function Skeleton({ className, shimmer = true, ...props }: SkeletonProps)
 }
 ```
 
-### CSS Animation
+### CSS 动画
 
 ```css
 @keyframes shimmer {
@@ -57,9 +57,9 @@ export function Skeleton({ className, shimmer = true, ...props }: SkeletonProps)
 
 ---
 
-## Pattern 2: Content Skeleton Layouts
+## 模式 2：内容骨架布局
 
-### Card Skeleton
+### 卡片骨架
 
 ```tsx
 export function CardSkeleton() {
@@ -82,7 +82,7 @@ export function CardSkeleton() {
 }
 ```
 
-### Table Row Skeleton
+### 表格行骨架
 
 ```tsx
 export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
@@ -98,7 +98,7 @@ export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
 }
 ```
 
-### Metric Skeleton
+### 指标骨架
 
 ```tsx
 export function MetricSkeleton() {
@@ -113,9 +113,9 @@ export function MetricSkeleton() {
 
 ---
 
-## Pattern 3: Design System Skeleton
+## 模式 3：设计系统骨架
 
-Match skeleton to your aesthetic:
+将骨架设计与您的整体风格相协调：
 
 ```tsx
 // For retro-futuristic theme
@@ -142,9 +142,9 @@ export function CyberSkeleton({ className, ...props }: SkeletonProps) {
 
 ---
 
-## Pattern 4: Progressive Loading
+## 模式 4：渐进式加载
 
-Show content as it loads:
+在内容加载过程中逐步显示内容：
 
 ```tsx
 interface ProgressiveLoadProps {
@@ -178,9 +178,9 @@ export function ProgressiveLoad({
 
 ---
 
-## Pattern 5: Streaming Content Indicator
+## 模式 5：流式内容指示器
 
-For AI/LLM content that streams:
+适用于 AI/LLM 流式内容：
 
 ```tsx
 export function StreamingIndicator() {
@@ -205,7 +205,9 @@ export function StreamingIndicator() {
 
 ---
 
-## Pattern 6: Loading Progress Bar
+## 模式 6：加载进度条
+
+显示加载进度：
 
 ```tsx
 interface LoadingProgressProps {
@@ -241,7 +243,7 @@ export function LoadingProgress({ progress }: LoadingProgressProps) {
 
 ---
 
-## Pattern 7: Skeleton Grid
+## 模式 7：骨架网格
 
 ```tsx
 export function GridSkeleton({ 
@@ -266,23 +268,24 @@ export function GridSkeleton({
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — Complete design system workflow
-- [distinctive-design-systems](../distinctive-design-systems/) — Aesthetic matching for themed skeletons
----
-
-## NEVER Do
-
-- **Use gray skeletons on dark themes** — Match your surface colors
-- **Skip shimmer animation** — Static blocks look broken
-- **Make skeletons exact size** — Slight size variation is natural
-- **Forget aspect ratios** — Images need consistent skeleton ratios
-- **Show skeleton forever** — Add timeout fallbacks for errors
+- **元技能：** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — 完整的设计系统工作流程
+- [distinctive-design-systems/(../distinctive-design-systems/) — 为不同主题的设计框架提供美学匹配方案
 
 ---
 
-## Quick Reference
+## 绝对不要做
+
+- **在深色主题中使用灰色骨架** — 应与页面背景颜色保持一致
+- **省略闪烁动画** — 静态的骨架会显得不协调
+- **使骨架大小完全相同** — 适当的尺寸差异是自然的
+- **忽略宽高比** — 图像需要遵循统一的骨架比例
+- **永久显示骨架** — 为错误情况添加超时处理机制
+
+---
+
+## 快速参考
 
 ```tsx
 // Basic skeleton

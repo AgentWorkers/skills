@@ -1,79 +1,79 @@
 ---
 name: google-sheets
-description: Read, write, append, and manage Google Sheets via the Google Sheets API (Node.js SDK). Use when you need to interact with spreadsheets — reading data, writing/updating cells, appending rows, clearing ranges, formatting cells, managing sheets. Requires a Google Cloud service account with Sheets API enabled.
+description: 通过 Google Sheets API（Node.js SDK）来读取、写入、追加数据以及管理 Google Sheets 文档。当您需要与电子表格进行交互时（例如读取数据、写入/更新单元格内容、追加新行、清除数据范围、格式化单元格或管理整个工作表），可以使用该 SDK。使用前，请确保您拥有已启用 Sheets API 的 Google Cloud 服务账户。
 ---
 
-# Google Sheets Skill
+# Google Sheets 技能
 
-Interact with Google Sheets using a service account.
+使用服务账户与 Google Sheets 进行交互。
 
-## Setup (One-time)
+## 设置（一次性操作）
 
-1. **Google Cloud Console:**
-   - Create/select a project
-   - Enable "Google Sheets API"
-   - Create a Service Account (IAM → Service Accounts → Create)
-   - Download JSON key
+1. **Google Cloud 控制台：**
+   - 创建或选择一个项目
+   - 启用“Google Sheets API”
+   - 创建一个服务账户（IAM → 服务账户 → 创建）
+   - 下载 JSON 密钥
 
-2. **Configure credentials** (one of these):
-   - Set env: `GOOGLE_SERVICE_ACCOUNT_KEY=/path/to/key.json`
-   - Place `service-account.json` or `credentials.json` in the skill directory
-   - Place in `~/.config/google-sheets/credentials.json`
+2. **配置凭据**（选择以下其中一种方式）：
+   - 设置环境变量：`GOOGLE_SERVICE ACCOUNT_KEY=/path/to/key.json`
+   - 将 `service-account.json` 或 `credentials.json` 文件放入技能目录中
+   - 将文件放入 `~/.config/google-sheets/credentials.json`
 
-3. **Share sheets** with the service account email (found in JSON key as `client_email`)
+3. **使用服务账户的电子邮件地址（在 JSON 密钥中标记为 `client_email`）共享工作表**
 
-4. **Install dependencies:**
+4. **安装依赖项：**
    ```bash
    cd skills/google-sheets && npm install
    ```
 
-## Usage
+## 使用方法
 
 ```bash
 node scripts/sheets.js <command> [args]
 ```
 
-## Commands
+## 命令
 
-### Data Operations
+### 数据操作
 
-| Command | Args | Description |
+| 命令 | 参数 | 描述 |
 |---------|------|-------------|
-| `read` | `<id> <range>` | Read cells |
-| `write` | `<id> <range> <json>` | Write data |
-| `append` | `<id> <range> <json>` | Append rows |
-| `clear` | `<id> <range>` | Clear range |
+| `read` | `<id> <range>` | 读取指定范围内的单元格数据 |
+| `write` | `<id> <range> <json>` | 向指定范围内的单元格写入数据 |
+| `append` | `<id> <range> <json>` | 向指定范围内追加行 |
+| `clear` | `<id> <range>` | 清空指定范围内的单元格 |
 
-### Formatting
+### 格式设置
 
-| Command | Args | Description |
+| 命令 | 参数 | 描述 |
 |---------|------|-------------|
-| `format` | `<id> <range> <formatJson>` | Format cells |
-| `getFormat` | `<id> <range>` | Get cell formats |
-| `borders` | `<id> <range> [styleJson]` | Add borders |
-| `copyFormat` | `<id> <source> <dest>` | Copy format between ranges |
-| `merge` | `<id> <range>` | Merge cells |
-| `unmerge` | `<id> <range>` | Unmerge cells |
+| `format` | `<id> <range> <formatJson>` | 格式化指定范围内的单元格 |
+| `getFormat` | `<id> <range>` | 获取指定范围内单元格的格式 |
+| `borders` | `<id> <range> [styleJson]` | 为指定范围内的单元格添加边框 |
+| `copyFormat` | `<id> <source> <dest>` | 将格式从指定范围复制到另一个范围 |
+| `merge` | `<id> <range>` | 合并指定范围内的单元格 |
+| `unmerge` | `<id> <range>` | 分开指定范围内的单元格 |
 
-### Layout
+### 布局设置
 
-| Command | Args | Description |
+| 命令 | 参数 | 描述 |
 |---------|------|-------------|
-| `resize` | `<id> <sheet> <cols\|rows> <start> <end> <px>` | Resize columns/rows |
-| `autoResize` | `<id> <sheet> <startCol> <endCol>` | Auto-fit columns |
-| `freeze` | `<id> <sheet> [rows] [cols]` | Freeze rows/columns |
+| `resize` | `<id> <sheet> <cols\|rows> <start> <end> <px>` | 调整工作表的列/行大小 |
+| `autoResize` | `<id> <sheet> <startCol> <endCol>` | 自动调整列的宽度 |
+| `freeze` | `<id> <sheet> [rows] [cols]` | 冻结指定范围内的行/列 |
 
-### Sheet Management
+### 工作表管理
 
-| Command | Args | Description |
+| 命令 | 参数 | 描述 |
 |---------|------|-------------|
-| `create` | `<title>` | Create spreadsheet |
-| `info` | `<id>` | Get metadata |
-| `addSheet` | `<id> <title>` | Add sheet tab |
-| `deleteSheet` | `<id> <sheetName>` | Delete sheet tab |
-| `renameSheet` | `<id> <oldName> <newName>` | Rename sheet tab |
+| `create` | `<title>` | 创建新的电子表格 |
+| `info` | `<id>` | 获取工作表的元数据 |
+| `addSheet` | `<id> <title>` | 添加新的工作表标签 |
+| `deleteSheet` | `<id> <sheetName>` | 删除指定的工作表标签 |
+| `renameSheet` | `<id> <oldName> <newName>` | 重命名工作表标签 |
 
-## Examples
+## 示例
 
 ```bash
 # Read data
@@ -104,7 +104,7 @@ node scripts/sheets.js freeze "SPREADSHEET_ID" "Sheet1" 1 1
 node scripts/sheets.js addSheet "SPREADSHEET_ID" "NewSheet"
 ```
 
-## Format Options
+## 格式选项
 
 ```json
 {
@@ -121,22 +121,15 @@ node scripts/sheets.js addSheet "SPREADSHEET_ID" "NewSheet"
 }
 ```
 
-## Border Style
+## 边框样式
 
-```json
-{
-  "style": "SOLID",
-  "color": {"red": 0, "green": 0, "blue": 0}
-}
-```
+边框样式：点线（DOTTED）、虚线（DASHED）、实线（SOLID）、粗实线（SOLID_THICK）、双线（DOUBLE）
 
-Border styles: DOTTED, DASHED, SOLID, SOLID_MEDIUM, SOLID_THICK, DOUBLE
+## 查找电子表格 ID
 
-## Finding Spreadsheet ID
+通过以下 URL 获取：`https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`
 
-From URL: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`
+## 故障排除
 
-## Troubleshooting
-
-- **403 Forbidden**: Sheet not shared with service account email
-- **404 Not Found**: Wrong spreadsheet ID or sheet name
+- **403 Forbidden**：工作表未与服务账户的电子邮件地址共享
+- **404 Not Found**：提供的电子表格 ID 或工作表名称错误

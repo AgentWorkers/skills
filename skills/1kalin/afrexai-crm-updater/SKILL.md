@@ -1,134 +1,133 @@
 ---
 name: CRM Manager
-description: Manages a local CSV-based CRM with pipeline tracking
+description: 管理一个基于 CSV 的本地 CRM 系统，并实现管道跟踪功能。
 ---
 
-# CRM Manager
+# CRM 管理器
 
-You manage a lightweight CRM stored as a local CSV file. No Salesforce needed — just a clean, organized pipeline you can actually maintain.
+您负责管理一个以本地 CSV 文件形式存储的轻量级 CRM 系统。无需使用 Salesforce — 只需要一个简洁、易于维护的 CRM 系统即可。
 
-## CRM File Location
+## CRM 文件位置
 
-Default: `crm.csv` in the workspace. Create from `crm-template.csv` if it doesn't exist.
+默认路径：工作区内的 `crm.csv` 文件。如果文件不存在，请使用 `crm-template.csv` 文件创建。
 
-## CSV Structure
+## CSV 文件结构
 
 ```csv
 id,name,company,email,phone,stage,deal_value,source,last_contact,next_action,next_action_date,notes,created,updated
 ```
 
-### Fields
+### 字段
 
-| Field | Description | Required |
+| 字段 | 描述 | 是否必填 |
 |-------|-------------|----------|
-| id | Auto-increment integer | Yes |
-| name | Contact's full name | Yes |
-| company | Company name | Yes |
-| email | Email address | No |
-| phone | Phone number | No |
-| stage | Pipeline stage (see below) | Yes |
-| deal_value | Estimated deal value in USD | No |
-| source | How they found you / you found them | No |
-| last_contact | Date of last interaction (YYYY-MM-DD) | Yes |
-| next_action | What to do next | Yes |
-| next_action_date | When to do it (YYYY-MM-DD) | Yes |
-| notes | Freeform notes, pipe-separated for multiple | No |
-| created | Date added (YYYY-MM-DD) | Yes |
-| updated | Date last modified (YYYY-MM-DD) | Yes |
+| id | 自动递增的整数 | 是 |
+| name | 联系人的全名 | 是 |
+| company | 公司名称 | 是 |
+| email | 电子邮件地址 | 否 |
+| phone | 电话号码 | 否 |
+| stage | 客户关系管理阶段（见下文） | 是 |
+| deal_value | 预计交易金额（美元） | 否 |
+| source | 客户找到您的途径/您找到他们的途径 | 否 |
+| last_contact | 最后一次联系日期（YYYY-MM-DD） | 是 |
+| next_action | 下一步行动 | 是 |
+| next_action_date | 行动截止日期（YYYY-MM-DD） | 是 |
+| notes | 自由格式的备注（多个备注之间用竖线分隔） | 否 |
+| created | 创建日期（YYYY-MM-DD） | 是 |
+| updated | 最后修改日期（YYYY-MM-DD） | 是 |
 
-### Pipeline Stages
+### 客户关系管理阶段
 
-1. **lead** — New contact, not yet qualified
-2. **qualified** — Confirmed they have budget, need, and authority
-3. **meeting** — Meeting scheduled or completed
-4. **proposal** — Proposal/quote sent
-5. **negotiation** — Working out terms
-6. **closed-won** — Deal done
-7. **closed-lost** — Didn't work out
-8. **nurture** — Not ready now, stay in touch
+1. **lead** — 新联系人，尚未经过资格审核 |
+2. **qualified** — 确认客户有预算、需求和购买权限 |
+3. **meeting** — 预约了会议或会议已经完成 |
+4. **proposal** — 已发送报价 |
+5. **negotiation** — 正在协商条款 |
+6. **closed-won** — 交易完成 |
+7. **closed-lost** — 交易失败 |
+8. **nurture** — 客户尚未准备好，需要保持联系 |
 
-## Commands
+## 命令
 
-When the user asks you to manage CRM data, handle these actions:
+当用户请求您管理 CRM 数据时，请执行以下操作：
 
-### Add a Contact
-"Add [name] from [company] to the CRM"
-→ Create a new row, set stage to "lead", set created/updated to today.
+### 添加联系人
+“将 [name]（来自 [company]）添加到 CRM 中”
+→ 创建新记录，将阶段设置为 “lead”，并将创建/修改日期设置为今天。
 
-### Update a Contact
-"Update [name] — had a call today, moving to proposal stage"
-→ Update stage, last_contact, next_action, notes, updated date.
+### 更新联系人
+“更新 [name] — 今天有电话联系，将阶段设置为 ‘proposal’”
+→ 更新阶段、最后一次联系日期、下一步行动和备注，并更新修改日期。
 
-### Show Pipeline
-"Show me my pipeline" / "What's in my CRM?"
-→ Display contacts grouped by stage with deal values.
+### 显示客户关系管理状态
+“显示我的客户关系管理状态” / “我的 CRM 中有哪些联系人？”
+→ 按阶段分组显示联系人，并显示对应的交易金额。
 
-### Follow-up Reminders
-"What follow-ups are due?" / "Who should I contact?"
-→ Show contacts where next_action_date ≤ today, sorted by date.
+### 提示跟进事项
+“哪些跟进事项已经到期？” / “我应该联系谁？”
+→ 显示 `next_action_date` 小于或等于今天的联系人，并按日期排序。
 
-### Pipeline Summary
-"Pipeline summary"
-→ Show: total contacts per stage, total deal value per stage, overdue follow-ups count.
+### 客户关系管理阶段总结
+“客户关系管理阶段总结”
+→ 显示每个阶段的联系人总数、每个阶段的交易总额以及逾期跟进事项的数量。
 
-### Search
-"Find [name/company]"
-→ Search across name and company fields.
+### 搜索
+“查找 [name]/[company]”
+→ 在名称和公司字段中进行搜索。
 
-### Move Stage
-"Move [name] to [stage]"
-→ Update stage and updated date.
+### 转换阶段
+“将 [name] 的阶段改为 [stage]”
+→ 更新阶段和修改日期。
 
-## Rules
+## 规则
 
-- Always read the CSV before making changes (don't assume state)
-- Always update the `updated` field when modifying a row
-- Never delete rows — move to closed-lost or nurture instead
-- Keep notes append-only (add new notes with pipe separator, don't overwrite)
-- When showing pipeline, format as a clean table
-- Warn if a contact has no next_action_date or it's overdue
-- Back up the CSV before bulk operations (copy to crm-backup-YYYY-MM-DD.csv)
+- 在进行任何更改之前，请务必阅读 CSV 文件的内容（不要假设联系人的状态）。
+- 修改记录时，请务必更新 `updated` 字段。
+- 绝不要删除记录 — 可以将其状态改为 “closed-lost” 或 “nurture”。
+- 备注字段仅支持追加新内容（使用竖线分隔），不要覆盖原有内容。
+- 显示客户关系管理状态时，请以清晰的表格形式呈现。
+- 如果联系人没有 `next_action_date` 或 `next_action_date` 已过期，请发出警告。
+- 在执行批量操作之前，请备份 CSV 文件（备份文件名为 `crm-backup-YYYY-MM-DD.csv`）。
 
-## Pipeline Health Checks
+## 客户关系管理健康检查
 
-Periodically flag:
-- Contacts with no activity in 14+ days
-- Deals stuck in the same stage for 30+ days
-- Missing next actions
-- Leads with no follow-up scheduled
-
+定期检查以下情况：
+- 14 天以上没有活动的联系人。
+- 在同一阶段停滞超过 30 天的交易。
+- 未安排跟进事项的联系人。
+- 未安排跟进的潜在客户。
 
 ---
 
-## 🔗 More AfrexAI Skills (Free on ClawHub)
+## 🔗 更多 AfrexAI 技能（在 ClawHub 上免费提供）
 
-| Skill | Install |
+| 技能 | 安装方式 |
 |-------|---------|
-| AI Humanizer | `clawhub install afrexai-humanizer` |
-| SEO Writer | `clawhub install afrexai-seo-writer` |
-| Email Crafter | `clawhub install afrexai-email-crafter` |
-| Proposal Generator | `clawhub install afrexai-proposal-gen` |
-| Invoice Generator | `clawhub install afrexai-invoice-gen` |
-| Lead Scorer | `clawhub install afrexai-lead-scorer` |
-| Client Onboarding | `clawhub install afrexai-onboarding` |
-| Meeting Prep | `clawhub install afrexai-meeting-prep` |
-| Social Repurposer | `clawhub install afrexai-social-repurposer` |
-| FAQ Builder | `clawhub install afrexai-faq-builder` |
-| Review Responder | `clawhub install afrexai-review-responder` |
-| Report Builder | `clawhub install afrexai-report-builder` |
-| CRM Updater | `clawhub install afrexai-crm-updater` |
-| Pitch Deck Reviewer | `clawhub install afrexai-pitch-deck-reviewer` |
-| Contract Analyzer | `clawhub install afrexai-contract-analyzer` |
-| Pricing Optimizer | `clawhub install afrexai-pricing-optimizer` |
-| Testimonial Collector | `clawhub install afrexai-testimonial-collector` |
-| Competitor Monitor | `clawhub install afrexai-competitor-monitor` |
+| AI 优化工具 | `clawhub install afrexai-humanizer` |
+| SEO 写作工具 | `clawhub install afrexai-seo-writer` |
+| 电子邮件生成工具 | `clawhub install afrexai-email-crafter` |
+| 报价生成工具 | `clawhub install afrexai-proposal-gen` |
+| 发票生成工具 | `clawhub install afrexai-invoice-gen` |
+| 潜在客户评分工具 | `clawhub install afrexai-lead-scorer` |
+| 客户入职工具 | `clawhub install afrexai-onboarding` |
+| 会议准备工具 | `clawhub install afrexai-meeting-prep` |
+| 社交媒体内容重利用工具 | `clawhub install afrexai-social-repurposer` |
+| 常见问题解答生成工具 | `clawhub install afrexai-faq-builder` |
+| 评论回复工具 | `clawhub install afrexai-review-responder` |
+| 报告生成工具 | `clawhub install afrexai-report-builder` |
+| CRM 更新工具 | `clawhub install afrexai-crm-updater` |
+| 演示文稿审核工具 | `clawhub install afrexai-pitch-deck-reviewer` |
+| 合同分析工具 | `clawhub install afrexai-contract-analyzer` |
+| 价格优化工具 | `clawhub install afrexai-pricing-optimizer` |
+| 客户评价收集工具 | `clawhub install afrexai-testimonial-collector` |
+| 竞争对手监控工具 | `clawhub install afrexai-competitor-monitor` |
 
-## 🚀 Go Pro: Industry Context Packs ($47/pack)
+## 🚀 升级为专业版：行业特定内容包（每包 47 美元）
 
-Make your AI agent a true industry expert with deep domain knowledge.
+使用行业特定内容包，让您的 AI 代理具备深入的行业知识。
 
-→ **[Browse Context Packs](https://afrexai-cto.github.io/context-packs/)**
+→ **[浏览内容包](https://afrexai-cto.github.io/context-packs/)**
 
-**Free tools:** [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) | [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)
+**免费工具：** [AI 收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/) | [代理设置向导](https://afrexai-cto.github.io/agent-setup/)
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) 🖤💛*
+*由 [AfrexAI](https://afrexai-cto.github.io/context-packs/) 开发 🖤💛*

@@ -1,61 +1,60 @@
-# Skill: Refua
+# 技能：Refua
 
-## Summary
-Refua is used in drug discovery to computationally fold and score biomolecular complexes (e.g., protein–ligand/protein–protein) and optionally profile ADMET, helping prioritize which molecules to synthesize and test first in a drug discovery pipeline.
+## 概述
+Refua 在药物发现领域中用于计算生物分子复合物（例如蛋白质-配体/蛋白质-蛋白质复合物）的折叠结构并对其进行评分，同时可选地对这些复合物的 ADMET（吸收、分布、代谢和排泄）特性进行分析，从而帮助确定在药物发现流程中应优先合成和测试哪些分子。
 
-This skill runs and connects to the **refua-mcp** MCP server, which exposes Refua’s “unified Complex API” as MCP tools for:
-- **Boltz2** complex folding (+ optional affinity evaluation)
-- **BoltzGen** design workflows
-- Optional **ADMET** profiling (when installed)
+该技能通过与 **refua-mcp** MCP 服务器的连接来运行，该服务器将 Refua 的“统一复合物 API”作为 MCP 工具提供，支持以下功能：
+- **Boltz2** 复合物折叠（可选包含亲和力评估）
+- **BoltzGen** 设计工作流程
+- 可选的 **ADMET** 特性分析（如果已安装）
 
-Clawdbot supports MCP natively, so the only requirement is running this MCP server and calling its tools. ([github.com](https://github.com/agentcures/refua-mcp))
-
----
-
-## When to use
-Use this skill when you need to:
-- Fold a **protein–ligand**, **protein–protein**, or (fold-only) **DNA/RNA** complex
-- Estimate **binding affinity** for a specified binder within a complex spec
-- Run **ADMET** predictions for one or more SMILES ligands (if enabled)
-- Execute GPU/CPU-heavy Refua workflows via MCP tool calls
-
-Do NOT use this skill when:
-- The task is a simple deterministic calculation (prefer a non-ML tool)
-- The user expects you to invent sequences/SMILES (request inputs instead)
-- The user requests unsafe wet-lab or clinical guidance
+Clawdbot 支持原生 MCP，因此唯一的要求是运行该 MCP 服务器并调用其提供的工具。更多信息请参见：[github.com](https://github.com/agentcures/refua-mcp)
 
 ---
 
-## Installation & assets (operator steps)
+## 适用场景
+在以下情况下使用该技能：
+- 需要对蛋白质-配体、蛋白质-蛋白质或仅蛋白质/DNA/RNA 复合物进行折叠处理
+- 需要估算指定配体在复合物中的结合亲和力
+- 需要对一个或多个 SMILES 格式的配体进行 ADMET 预测（如果该功能已启用）
+- 需要通过 MCP 工具调用执行计算密集型的 Refua 工作流程
 
-### 1) Install Refua + refua-mcp
-Install Refua (CPU or CUDA), then install the MCP server package: ([github.com](https://github.com/agentcures/refua-mcp))
+**不适用场景**：
+- 任务属于简单的确定性计算（建议使用非机器学习工具）
+- 用户需要您生成特定的序列或 SMILES 格式的数据（请用户提供相关输入）
+- 用户请求不安全的实验室操作或临床指导
 
-- GPU support:
+---
+
+## 安装与资源准备（操作步骤）
+### 1) 安装 Refua 和 refua-mcp
+首先安装 Refua（支持 CPU 或 GPU 计算），然后安装 MCP 服务器软件包：[github.com](https://github.com/agentcures/refua-mcp)
+
+- **支持 GPU 计算**：
   - `pip install refua[cuda]`
-- CPU-only:
+- **仅支持 CPU 计算**：
   - `pip install refua`
-- MCP server:
+- **MCP 服务器**：
   - `pip install refua-mcp`
 
-### 2) Optional: enable ADMET
-ADMET tool support is optional and requires an extra: ([github.com](https://github.com/agentcures/refua-mcp))
+### 2) （可选）启用 ADMET 功能
+ADMET 功能是可选的，需要额外安装相关包：[github.com](https://github.com/agentcures/refua-mcp)
 - `pip install refua[admet]`
 
-### 3) Download model/assets
-Boltz2 and BoltzGen require model/molecule assets. Refua can download them automatically: ([github.com](https://github.com/agentcures/refua-mcp))
-- `python -c "from refua import download_assets; download_assets()"`
+### 3) 下载模型与资源文件
+Boltz2 和 BoltzGen 需要模型和分子资源文件。Refua 可以自动下载这些文件：[github.com](https://github.com/agentcures/refua-mcp)
+- 使用命令 `python -c "from refua import download_assets; download_assets()"` 下载资源文件
 
-Default asset locations + overrides: ([github.com](https://github.com/agentcures/refua-mcp))
-- **Boltz2** uses `~/.boltz` by default  
-  - Override via tool option `boltz.cache_dir` if needed
-- **BoltzGen** uses a bundled HF artifact by default  
-  - Override via tool option `boltzgen.mol_dir` if needed
+资源文件的默认存储位置及覆盖方式：[github.com](https://github.com/agentcures/refua-mcp)
+- **Boltz2** 默认使用 `~/.boltz` 文件夹存储资源文件
+  - 如需更改存储路径，可通过工具选项 `boltz.cache_dir` 进行设置
+- **BoltzGen** 默认使用内置的高精度（HF）模型文件
+  - 如需更改模型文件路径，可通过工具选项 `boltzgen.mol_dir` 进行设置
 
 ---
 
-## Running the MCP server
-Start the server using the module entrypoint: ([github.com](https://github.com/agentcures/refua-mcp))
+## 运行 MCP 服务器
+使用以下命令启动 MCP 服务器：[github.com](https://github.com/agentcures/refua-mcp)
 
 ```bash
 python3 -m refua_mcp.server

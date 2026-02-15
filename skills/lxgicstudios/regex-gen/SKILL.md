@@ -1,22 +1,22 @@
-# Regex Gen
+# 正则表达式生成器（Regex Gen）
 
-Generate regex patterns from plain English descriptions. Because nobody actually remembers regex syntax.
+根据简单的英文描述生成正则表达式模式。毕竟，没人真的能记住正则表达式的语法吧。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-regex "match email addresses"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts plain English to working regex
-- Explains what each part of the pattern does
-- Provides test cases for validation
-- Supports common patterns out of the box
-- Works for any programming language
+- 将简单的英文描述转换为可使用的正则表达式
+- 解释正则表达式各部分的功能
+- 提供测试用例以验证生成的表达式是否正确
+- 支持常见的正则表达式模式
+- 适用于任何编程语言
 
-## Usage
+## 使用方法
 
 ```bash
 # Generate regex from description
@@ -29,7 +29,7 @@ npx ai-regex "validate URLs including localhost"
 npx ai-regex "match dates in YYYY-MM-DD format"
 ```
 
-## Example Output
+## 示例输出
 
 ```
 Pattern: ^[\w.-]+@[\w.-]+\.\w{2,}$
@@ -41,16 +41,16 @@ Explanation:
 Test cases: ✓ test@example.com ✓ user.name@domain.co.uk
 ```
 
-## Part of the LXGIC Dev Toolkit
+## LXGIC 开发工具包的一部分
 
-One of 110+ free developer tools from LXGIC Studios. No paywalls, no sign-ups.
+LXGIC Studios 提供的 110 多款免费开发工具之一。无需付费，也无需注册。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/lxgic-studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。

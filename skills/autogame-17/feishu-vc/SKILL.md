@@ -1,18 +1,18 @@
-# Feishu Video Conference Skill
+# Feishu 视频会议功能
 
-Manage Feishu Video Conferences (VC).
+用于管理 Feishu 视频会议（VC）。
 
-## Usage
+## 使用方法
 
-### Reserve a Meeting
-Create a meeting reservation.
+### 预订会议
+创建会议预订。
 ```bash
 node skills/feishu-vc/reserve.js --subject "Meeting Title" --time "2026-02-04T10:00:00+08:00"
 ```
 
-## API Reference
-- Reserve: `POST /open-apis/vc/v1/reserve`
-- Permissions required: `vc:meeting:request` (Update meeting reservation info)
+## API 参考
+- `reserve` API: `POST /open-apis/vc/v1/reserve`
+- 所需权限: `vc:meeting:request`（更新会议预订信息）
 
-## Setup
-Requires `FEISHU_APP_ID` and `FEISHU_APP_SECRET`.
+## 设置要求
+需要 `FEISHU_APP_ID` 和 `FEISHU_APP_SECRET`。

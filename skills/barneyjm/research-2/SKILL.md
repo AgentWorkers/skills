@@ -1,17 +1,17 @@
 ---
 name: research
-description: "Get AI-synthesized research on any topic with citations, directly in your terminal. Supports structured JSON output for pipelines. Use when you need comprehensive research grounded in web data without writing code."
+description: "您可以在终端中直接获取关于任何主题的由 AI 合成的研究结果，并附带引用信息。该工具支持结构化的 JSON 输出格式，适用于数据管道（pipelines）的处理。当您需要基于网络数据进行全面的研究，而无需编写代码时，可以使用该工具。"
 ---
 
-# Research Skill
+# 研究技能
 
-Conduct comprehensive research on any topic with automatic source gathering, analysis, and response generation with citations.
+能够对任何主题进行全面的调研，支持自动收集信息、分析数据，并自动生成带有引用的调研结果。
 
-## Prerequisites
+## 先决条件
 
-**Tavily API Key Required** - Get your key at https://tavily.com
+**需要 Tavily API 密钥** - 请在 [https://tavily.com](https://tavily.com) 获取您的密钥。
 
-Add to `~/.claude/settings.json`:
+将密钥添加到 `~/.claude/settings.json` 文件中：
 ```json
 {
   "env": {
@@ -20,17 +20,17 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-## Quick Start
+## 快速入门
 
-> **Tip**: Research can take 30-120 seconds. Press **Ctrl+B** to run in the background.
+> **提示**：调研过程通常需要 30 至 120 秒。按 **Ctrl+B** 可以在后台运行调研任务。
 
-### Using the Script
+### 使用脚本
 
 ```bash
 ./scripts/research.sh '<json>' [output_file]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Basic research
 ./scripts/research.sh '{"input": "quantum computing trends"}'
@@ -48,7 +48,7 @@ Add to `~/.claude/settings.json`:
 ./scripts/research.sh '{"input": "fintech startups 2025", "model": "pro", "output_schema": {"properties": {"summary": {"type": "string"}, "companies": {"type": "array", "items": {"type": "string"}}}, "required": ["summary"]}}'
 ```
 
-### Basic Research
+### 基础调研
 
 ```bash
 curl --request POST \
@@ -63,9 +63,9 @@ curl --request POST \
   }'
 ```
 
-> **Note**: Streaming is disabled for token management. The call waits until research completes and returns clean JSON.
+> **注意**：为便于管理令牌，系统禁用了数据流功能。调研任务会等待完成后再返回格式化的 JSON 数据。
 
-### With Custom Schema
+### 使用自定义数据结构
 
 ```bash
 curl --request POST \
@@ -101,34 +101,34 @@ curl --request POST \
   }'
 ```
 
-## API Reference
+## API 参考
 
-### Endpoint
+### 端点
 
 ```
 POST https://api.tavily.com/research
 ```
 
-### Headers
+### 请求头
 
-| Header | Value |
-|--------|-------|
+| 头部字段 | 值         |
+|---------|------------|
 | `Authorization` | `Bearer <TAVILY_API_KEY>` |
 | `Content-Type` | `application/json` |
 
-### Request Body
+### 请求体
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `input` | string | Required | Research topic or question |
-| `model` | string | `"mini"` | Model: `mini`, `pro`, `auto` |
-| `stream` | boolean | `false` | Streaming disabled for token management |
-| `output_schema` | object | null | JSON schema for structured output |
-| `citation_format` | string | `"numbered"` | Citation format: `numbered`, `mla`, `apa`, `chicago` |
+| 字段        | 类型        | 默认值      | 说明                |
+|------------|------------|----------------|-------------------|
+| `input`      | string      | 必填        | 研究主题或问题            |
+| `model`      | string      | `"mini"`     | 可选模型：`mini`, `pro`, `auto`     |
+| `stream`      | boolean     | `false`     | 禁用数据流功能（用于令牌管理）     |
+| `output_schema` | object     | null       | 输出数据的 JSON 结构         |
+| `citation_format` | string      | `"numbered"` | 引用格式：`numbered`, `mla`, `apa`, `chicago` |
 
-### Response Format (JSON)
+### 响应格式（JSON）
 
-With `stream: false`, the response is clean JSON:
+当 `stream` 参数设置为 `false` 时，响应将以纯 JSON 格式返回：
 
 ```json
 {
@@ -138,19 +138,22 @@ With `stream: false`, the response is clean JSON:
 }
 ```
 
-## Model Selection
+## 模型选择
 
-**Rule of thumb**: "what does X do?" -> mini. "X vs Y vs Z" or "best way to..." -> pro.
+**经验法则**：
+- 如果只是询问“X 的功能是什么？”，建议使用 `mini` 模型。
+- 如果需要对比“X 与 Y 与 Z”，或寻找“最佳方法”，建议使用 `pro` 模型。
+- 如果问题较为复杂，系统会自动选择合适的模型 (`auto` 模型)。
 
-| Model | Use Case | Speed |
-|-------|----------|-------|
-| `mini` | Single topic, targeted research | ~30s |
-| `pro` | Comprehensive multi-angle analysis | ~60-120s |
-| `auto` | API chooses based on complexity | Varies |
+| 模型        | 使用场景            | 处理速度（秒）         |
+|------------|------------------|----------------------|
+| `mini`      | 单一主题的针对性调研     | 约 30 秒              |
+| `pro`      | 全面的多角度分析     | 约 60–120 秒             |
+| `auto`      | 系统根据复杂度自动选择模型 | 变化较大              |
 
-## Schema Usage
+## 数据结构的使用
 
-Schemas make output structured and predictable. Every property **MUST** include both `type` and `description`.
+使用数据结构可以使输出更加结构化且易于理解。每个字段都必须包含 `type` 和 `description` 两个属性。
 
 ```json
 {
@@ -169,9 +172,9 @@ Schemas make output structured and predictable. Every property **MUST** include 
 }
 ```
 
-## Examples
+## 示例
 
-### Market Research
+### 市场调研
 
 ```bash
 curl --request POST \
@@ -206,7 +209,7 @@ curl --request POST \
   }'
 ```
 
-### Technical Comparison
+### 技术对比
 
 ```bash
 curl --request POST \
@@ -221,7 +224,7 @@ curl --request POST \
   }'
 ```
 
-### Quick Overview
+### 快速概览
 
 ```bash
 curl --request POST \

@@ -1,45 +1,45 @@
 ---
 name: API
-description: Consume, debug, and integrate REST APIs with best practices.
+description: 按照最佳实践来使用、调试以及集成 REST API。
 metadata: {"clawdbot":{"emoji":"🔌","requires":{"anyBins":["curl","jq"]},"os":["linux","darwin","win32"]}}
 ---
 
-# API Integration Rules
+# API集成规则
 
-## Request Gotchas
-- Include `Content-Type: application/json` on POST/PUT/PATCH — omitting it causes silent 415 errors on many APIs
-- Add `Accept: application/json` unless the API specifies a different format — some default to XML without it
-- API keys in query params get logged in server access logs — prefer header-based auth when supported
-- Tokens can expire mid-flight between request and response — handle 401 with single retry + refresh
+## 请求注意事项
+- 在POST/PUT/PATCH请求中必须包含`Content-Type: application/json`；如果不包含该头，许多API会返回415错误（无声错误）。
+- 除非API明确指定其他格式，否则应添加`Accept: application/json`头；部分API默认使用XML格式。
+- 通过查询参数传递的API密钥会被记录在服务器的访问日志中；如果支持基于头部的认证方式，请优先使用该方式。
+- 令牌可能在请求和响应之间过期，请通过重试一次并刷新令牌来处理401错误。
 
-## Silent Failures
-- Some APIs return HTTP 200 with error in response body — validate response schema, not just status code
-- Watch for empty arrays vs null vs missing keys — each means something different per API
-- Paginated endpoints may return 200 with empty page when offset exceeds total — check total count first
+## 无声失败
+- 有些API会返回HTTP 200状态码，但响应体中包含错误信息；请验证响应数据的结构（而不仅仅是状态码）。
+- 注意响应中的数组是否为空、是否为`null`，或者某些键是否缺失——这些情况在不同API中可能有不同的含义。
+- 分页接口在偏移量超过总页数时可能会返回空页面（状态码200）；请先检查总页数。
 
-## Retry and Resilience
-- Use jittered exponential backoff: `delay = min(base * 2^attempt * (1 + random(0, 0.3)), max_delay)` with base=1s, max=30s
-- Generally only retry on 429, 500, 502, 503, 504 — avoid retrying 400, 401, 403, 404 unless the API documents otherwise
-- Read `Retry-After` header on 429 — it overrides your calculated backoff
-- After 5+ consecutive failures to the same endpoint, back off entirely for 60s before retrying (circuit breaker)
+## 重试与容错
+- 使用抖动指数退避算法：`delay = min(base * 2^attempt * (1 + random(0, 0.3)), max_delay)`，其中`base`默认为1秒，`max_delay`默认为30秒。
+- 通常只对429、500、502、503、504错误进行重试；除非API文档另有说明，否则不要对400、401、403、404错误进行重试。
+- 如果遇到429错误，请查看`Retry-After`头；该头会覆盖你计算出的退避时间。
+- 如果连续5次请求同一接口都失败，请暂停60秒后再进行重试（实现断路器机制）。
 
-## Pagination Traps
-- Cursor-based pagination can return duplicate items if data changes between pages — deduplicate by ID
-- Some APIs change `total_count` between requests — snapshot it on first page
-- If page returns fewer items than `per_page` but includes a `next` cursor, keep paginating — it's not necessarily the last page
+## 分页陷阱
+- 基于游标的分页方式可能导致数据重复；请通过ID来消除重复项。
+- 有些API会在不同请求之间更改`total_count`值；请在首页获取`total_count`的快照。
+- 如果某页返回的项数少于`per_page`指定的数量，但仍然显示“next”链接，请继续分页——这并不一定表示该页是最后一页。
 
-## Rate Limiting
-- Track quota via `X-RateLimit-Remaining` header — throttle proactively before hitting 0, don't wait for 429
-- Some APIs have hidden per-endpoint rate limits, not just global — monitor 429s per path
-- Distribute requests evenly across the rate window instead of bursting at the start
+## 速率限制
+- 通过`X-RateLimit-Remaining`头来监控请求配额；在配额用尽之前主动进行限流，不要等到收到429错误。
+- 有些API有针对特定端点的速率限制，而不仅仅是全局限制；请监控每个路径的429错误情况。
+- 将请求均匀分布在指定的速率窗口内，避免在开始时突然大量请求。
 
-## Webhooks
-- Implement idempotent handlers with event ID dedup — providers retry on timeout and you'll get duplicates
-- Return 200 immediately, process asynchronously — webhook providers timeout at 5-30s
-- Verify webhook signatures when the provider supports them — don't trust payload origin without cryptographic proof
-- Log the raw webhook body before parsing — invaluable when the provider changes their schema without notice
+## Webhook
+- 实现幂等处理逻辑，并通过事件ID来消除重复请求；如果提供者超时，它们可能会重新发送请求，从而导致数据重复。
+- 立即返回200状态码，并异步处理请求；Webhook提供者的超时时间通常为5-30秒。
+- 如果提供者支持签名验证，请验证Webhook的签名；在没有加密验证的情况下，不要轻信请求数据的来源。
+- 在解析Webhook数据之前，先记录原始数据内容；当提供者突然更改接口规范时，这会非常有用。
 
-## Debugging Production Issues
-- Log: method, URL, status code, response time, and `X-Request-Id` header for every API call
-- APIs that work in dev but fail in prod: check IP allowlists, TLS version, SNI, and egress proxy settings
-- When response data looks wrong, compare against the OpenAPI/Swagger spec — the spec is often more current than human-written docs
+## 调试生产环境中的问题
+- 对每个API调用记录方法、URL、状态码、响应时间和`X-Request-Id`头。
+- 如果API在开发环境中可以正常工作但在生产环境中失败，请检查IP白名单、TLS版本、SNI设置以及出站代理配置。
+- 当响应数据不正确时，与OpenAPI/Swagger规范进行对比；规范通常比手动编写的文档更准确。

@@ -1,34 +1,34 @@
 ---
 name: vap-media
-description: AI image, video, and music generation + editing via VAP API. Flux, Veo 3.1, Suno V5.
+description: 通过 VAP API 实现 AI 图像、视频和音乐的生成与编辑功能。支持 Flux、Veo 3.1 和 Suno V5 工具。
 metadata: {"openclaw":{"emoji":"🎬","requires":{"bins":["curl"]}},"source":"https://github.com/vapagentmedia/vap-showcase","homepage":"https://vapagent.com"}
 ---
 
-# VAP Media - AI Media Generation & Editing
+# VAP Media - 人工智能媒体生成与编辑服务
 
-> **Integration Note:** VAP Media is an API aggregator that provides unified access to multiple AI providers:
-> - **Images:** Generated via Black Forest Labs Flux.2 Pro
-> - **Videos:** Generated via Google Veo 3.1
-> - **Music:** Generated via Suno V5
+> **集成说明：** VAP Media 是一个 API 集成器，可统一访问多个人工智能生成服务：
+> - **图片：** 由 Black Forest Labs Flux.2 Pro 生成
+> - **视频：** 由 Google Veo 3.1 生成
+> - **音乐：** 由 Suno V5 生成
 > 
-> All generation requests go through VAP's API (`api.vapagent.com`), which routes to the appropriate backend provider.
+> 所有生成请求均通过 VAP 的 API (`api.vapagent.com`) 发送，该 API 会路由到相应的后端服务提供商。
 
-Generate images, videos, and music. Edit with inpaint, ai_edit, upscale, background removal, video trim/merge.
+VAP Media 支持图片、视频和音乐的生成，并提供多种编辑功能，如图像修复、人工智能编辑、画质提升、背景去除以及视频裁剪/合并等。
 
-## Mode Selection
+## 模式选择
 
-Check if `VAP_API_KEY` is set:
+请检查 `VAP_API_KEY` 是否已设置：
 
-- **VAP_API_KEY not set** → Use Free Mode (images only, 3/day)
-- **VAP_API_KEY set** → Use Full Mode (all features, unlimited)
+- **未设置 VAP_API_KEY** → 使用免费模式（仅支持图片生成，每天3次）
+- **已设置 VAP_API_KEY** → 使用全功能模式（所有功能均可使用，无使用次数限制）
 
 ---
 
-## Free Mode (No API Key)
+## 免费模式（无需 API 密钥）
 
-Generate images for free. No signup required. 3 per day.
+可免费生成图片，无需注册，每天最多生成3张图片。
 
-### Generate Image
+### 图片生成
 
 ```bash
 curl -s -X POST https://api.vapagent.com/v3/trial/generate \
@@ -36,28 +36,28 @@ curl -s -X POST https://api.vapagent.com/v3/trial/generate \
   -d '{"prompt":"PROMPT"}'
 ```
 
-Returns `{"task_id":"UUID","status":"pending","remaining":2}`.
+返回结果：`{"task_id":"UUID","status":"pending","remaining":2}`。
 
-### Poll Result
+### 结果查询
 
 ```bash
 curl -s https://api.vapagent.com/v3/trial/status/TASK_ID
 ```
 
-Returns `{"status":"completed","image_url":"https://..."}` when done.
+生成完成后返回：`{"status":"completed","image_url":"https://..."}`。
 
-### Free Mode Errors
+### 免费模式错误代码
 
-- `429` → Daily limit reached. Suggest upgrading: `export VAP_API_KEY=vap_xxx`
-- `503` → Trial service temporarily unavailable.
+- `429` → 达到每日使用限制。建议升级 API 密钥：`export VAP_API_KEY=vap_xxx`
+- `503` → 试用服务暂时不可用。
 
 ---
 
-## Full Mode (With API Key)
+## 全功能模式（需 API 密钥）
 
-Unlimited images, video, music, and editing operations.
+支持无限量的图片、视频和音乐生成及编辑操作。
 
-### Create Task
+### 创建任务
 
 ```bash
 curl -s -X POST https://api.vapagent.com/v3/tasks \
@@ -66,66 +66,66 @@ curl -s -X POST https://api.vapagent.com/v3/tasks \
   -d '{"type":"TYPE","params":{"description":"PROMPT"}}'
 ```
 
-Returns `{"task_id":"UUID","status":"pending"}`.
+返回结果：`{"task_id":"UUID","status":"pending"}`。
 
-### Poll Result
+### 结果查询
 
 ```bash
 curl -s https://api.vapagent.com/v3/tasks/TASK_ID \
   -H "Authorization: Bearer $VAP_API_KEY"
 ```
 
-Returns `{"status":"completed","result":{"output_url":"https://..."}}` when done.
+生成完成后返回：`{"status":"completed","result":{"output_url":"https://..."}`。
 
-### Task Types & Parameters
+### 任务类型及参数
 
-#### Image (`image` or `image_generation`)
+#### 图片（`image` 或 `image_generation`）
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 |-------|------|---------|-------------|
-| `description` | string | required | Image description |
-| `aspect_ratio` | enum | `1:1` | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `21:9`, `9:21` |
-| `quality` | enum | `standard` | `standard` or `high` |
+| `description` | 字符串 | 必填 | 图片描述 |
+| `aspect_ratio` | 枚举 | `1:1` | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `21:9`, `9:21` |
+| `quality` | 枚举 | `standard` | `standard` 或 `high` |
 
-**Tip:** Aspect ratio is auto-detected from prompt text. "a wide landscape photo" → 16:9 automatically.
+**提示：** 系统会自动根据描述内容设置图片的宽高比。例如：“一张宽屏风景照片”会自动设置为 16:9。
 
-#### Video (`video` or `video_generation`) — Tier 2+
+#### 视频（`video` 或 `video_generation`）——高级功能
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 |-------|------|---------|-------------|
-| `description` | string | required | Video description |
-| `duration` | int | `8` | `4`, `6`, or `8` seconds |
-| `aspect_ratio` | enum | `16:9` | `16:9` (landscape) or `9:16` (portrait) |
-| `generate_audio` | bool | `true` | Include audio track |
-| `resolution` | enum | `720p` | `720p` or `1080p` |
-| `negative_prompt` | string | `""` | What to avoid |
+| `description` | 字符串 | 必填 | 视频描述 |
+| `duration` | 整数 | `8` | 视频时长（秒） |
+| `aspect_ratio` | 枚举 | `16:9` | 横屏 | `9:16` | 纵屏 |
+| `generate_audio` | 布尔值 | `true` | 是否包含音频 |
+| `resolution` | 枚举 | `720p` | 分辨率（720p 或 1080p） |
+| `negative_prompt` | 字符串 | ```` | 需避免的内容 |
 
-#### Music (`music` or `music_generation`) — Tier 2+
+#### 音乐（`music` 或 `musicgeneration`）——高级功能
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 |-------|------|---------|-------------|
-| `description` | string | required | Music description (genre, mood, instruments) |
-| `duration` | int | `120` | 30-480 seconds |
-| `instrumental` | bool | `false` | No vocals |
-| `audio_format` | enum | `mp3` | `mp3` or `wav` (lossless) |
-| `loudness_preset` | enum | `streaming` | `streaming` (-14 LUFS), `apple` (-16 LUFS), `broadcast` (-23 LUFS) |
-| `style` | string | none | Genre/style (max 1000 chars) |
-| `title` | string | none | Song title |
-| `custom_mode` | bool | `false` | Enable custom lyrics + style mode |
+| `description` | 字符串 | 必填 | 音乐描述（类型、氛围、乐器） |
+| `duration` | 整数 | `120` | 音乐时长（秒） |
+| `instrumental` | 布尔值 | `false` | 是否去除人声 |
+| `audio_format` | 枚举 | `mp3` | 音频格式（mp3 或 wav，无损格式） |
+| `loudness_preset` | 枚举 | `streaming` | 音量预设（-14 LUFS, -16 LUFS, -23 LUFS） |
+| `style` | 字符串 | 最多1000个字符 | 音乐风格/类型 |
+| `title` | 字符串 | 最多1000个字符 | 歌曲标题 |
+| `custom_mode` | 布尔值 | 是否启用自定义歌词和风格 |
 
-### Full Mode Errors
+### 全功能模式错误代码
 
-- `401` → Invalid API key.
-- `402` → Insufficient balance. Top up at https://vapagent.com/dashboard/signup.html
-- `403` → Tier too low for this task type.
+- `401` | API 密钥无效 |
+- `402` | 账户余额不足。请在 [https://vapagent.com/dashboard/signup.html] 充值 |
+- `403` | 当前任务类型超出免费模式的权限限制。
 
 ---
 
-## Operations (Edit & Enhance)
+## 编辑与增强操作
 
-Post-production editing operations. Tier 1+ required.
+这些操作需要高级权限（Tier 1+）。
 
-### Create Operation
+### 创建编辑任务
 
 ```bash
 curl -s -X POST https://api.vapagent.com/v3/operations \
@@ -134,49 +134,49 @@ curl -s -X POST https://api.vapagent.com/v3/operations \
   -d '{"operation":"OPERATION","media_url":"URL","prompt":"INSTRUCTION"}'
 ```
 
-### Poll Operation
+### 操作结果查询
 
 ```bash
 curl -s https://api.vapagent.com/v3/operations/OPERATION_ID \
   -H "Authorization: Bearer $VAP_API_KEY"
 ```
 
-### Available Operations
+### 可用的编辑操作
 
-| Operation | Required Params | Description |
+| 操作 | 必需参数 | 说明 |
 |-----------|-----------------|-------------|
-| `inpaint` | `media_url`, `prompt` | AI editing (optional: `mask_url`) |
-| `ai_edit` | `media_url`, `prompt` | AI-powered image editing with text instructions (optional: `additional_images`) |
-| `background_remove` | `media_url` | Remove background |
-| `upscale` | `media_url` | Enhance resolution (`scale`: 2 or 4) |
-| `video_trim` | `media_url`, `start_time`, `end_time` | Trim video |
-| `video_merge` | `media_urls` (array, min 2) | Merge video clips |
+| `inpaint` | `media_url`, `prompt` | 人工智能图像编辑（可选：`mask_url`） |
+| `ai_edit` | `media_url`, `prompt` | 基于文本指令的人工智能图像编辑（可选：`additional_images`） |
+| `background_remove` | `media_url` | 去除背景 |
+| `upscale` | `media_url` | 提升图像分辨率（`scale`：2 或 4） |
+| `video_trim` | `media_url`, `start_time`, `end_time` | 裁剪视频 |
+| `video_merge` | `media_urls`（数组，至少2个） | 合并视频片段 |
 
 ---
 
-## Instructions
+## 操作指南
 
-When a user asks to create/generate/make an image, video, or music:
+当用户请求生成或编辑图片、视频或音乐时，请按照以下步骤操作：
 
-1. **Improve the prompt** — Add style, lighting, composition, mood details
-2. **Check mode** — Is `VAP_API_KEY` set?
-3. **Choose endpoint**:
-   - Single asset → `/v3/tasks` (or `/v3/trial/generate` for free)
-   - Edit/enhance → `/v3/operations`
-   - Campaign (video+music+thumbnail) → `/v3/execute` with preset
-4. **Set aspect ratio** — Match the content need (portrait for social, widescreen for YouTube)
-5. **Poll for result** — Check task/operation status until completed
-6. **Return the media URL** to the user
-7. If free mode limit is hit, tell the user: "You've used your 3 free generations today. For unlimited access, set up an API key: https://vapagent.com/dashboard/signup.html"
+1. **优化描述**：添加风格、光线、构图和氛围等细节。
+2. **检查模式**：确认是否已设置 `VAP_API_KEY`。
+3. **选择相应的 API 端点**：
+   - 单个资源生成 → `/v3/tasks`（或免费模式下的 `/v3/trial/generate`）
+   - 编辑/增强 → `/v3/operations`
+   - 多媒体内容（视频+音乐+缩略图） → 使用预设参数执行 `/v3/execute`
+4. **设置宽高比**：根据需求设置（例如，社交媒体使用竖屏，YouTube 使用宽屏）。
+5. **查询操作结果**：等待任务完成。
+6. **将生成的媒体文件链接提供给用户**。
+7. 如果达到免费模式的使用限制，告知用户：“您已使用完今天的免费生成次数。如需无限使用权限，请注册 API 密钥：[https://vapagent.com/dashboard/signup.html]”。
 
-When a user asks to edit/enhance/modify an existing image or video:
+当用户需要编辑或修改现有图片或视频时，请按照以下步骤操作：
 
-1. **Identify the operation** — inpaint, ai_edit, upscale, background remove, trim, merge
-2. **Get the media URL** — From a previous generation or user-provided URL
-3. **Submit operation** → `/v3/operations`
-4. **Poll for result** — Return the output URL
+1. 选择相应的编辑操作（如图像修复、人工智能编辑等）。
+2. 获取媒体文件的 URL（来自之前的生成结果或用户提供的 URL）。
+3. 提交编辑请求：`/v3/operations`。
+4. 查询编辑结果：获取处理后的媒体文件链接。
 
-### Free Mode Example
+### 免费模式示例
 
 ```bash
 # Create (no auth needed)
@@ -188,7 +188,7 @@ curl -s -X POST https://api.vapagent.com/v3/trial/generate \
 curl -s https://api.vapagent.com/v3/trial/status/TASK_ID
 ```
 
-### Full Mode Examples
+### 全功能模式示例
 
 ```bash
 # Image (widescreen)
@@ -232,9 +232,9 @@ curl -s https://api.vapagent.com/v3/tasks/TASK_ID \
   -H "Authorization: Bearer $VAP_API_KEY"
 ```
 
-### Production Presets (Multi-Asset)
+### 多媒体内容生成（批量操作）
 
-For content campaigns, use `/v3/execute` to generate multiple assets from one prompt:
+对于多媒体内容项目，可以使用 `/v3/execute` 根据一个描述生成多个媒体文件：
 
 ```bash
 curl -s -X POST https://api.vapagent.com/v3/execute \
@@ -243,37 +243,37 @@ curl -s -X POST https://api.vapagent.com/v3/execute \
   -d '{"preset":"streaming_campaign","prompt":"PROMPT"}'
 ```
 
-Returns all assets when complete:
+生成完成后返回所有文件：
 ```json
 {"status":"completed","outputs":{"video":"https://...","music":"https://...","thumbnail":"https://..."}}
 ```
 
-| Preset | Includes |
+| 预设名称 | 包含的内容 |
 |--------|----------|
-| `streaming_campaign` | video + music + thumbnail + metadata |
-| `full_production` | video + music + thumbnail + metadata + SEO |
-| `video.basic` | video only |
-| `music.basic` | music only |
-| `image.basic` | image only |
+| `streaming_campaign` | 视频 + 音乐 + 缩略图 + 元数据 |
+| `full_production` | 视频 + 音乐 + 缩略图 + 元数据 + SEO 优化 |
+| `video.basic` | 仅视频 |
+| `music.basic` | 仅音乐 |
+| `image.basic` | 仅图片 |
 
 ---
 
-## Prompt Tips
+## 提示建议
 
-- **Style:** "oil painting", "3D render", "watercolor", "photograph", "flat illustration"
-- **Lighting:** "golden hour", "neon lights", "soft diffused light", "dramatic shadows"
-- **Composition:** "close-up", "aerial view", "wide angle", "rule of thirds"
-- **Mood:** "serene", "energetic", "mysterious", "whimsical"
-- **Aspect ratio in prompt:** Mentioning "widescreen", "portrait", or "16:9" in your prompt auto-sets the aspect ratio.
+- **风格描述**：例如：“油画风格”、“3D渲染”、“水彩画”、“照片”、“平面插画”
+- **光线效果**：如“黄金时刻”、“霓虹灯光”、“柔和散射光”、“戏剧性阴影”
+- **构图技巧**：使用“特写”、“鸟瞰”、“广角”或“三分法则”
+- **氛围描述**：如“宁静”、“充满活力”、“神秘”、“奇幻”
+- **关于宽高比**：在描述中提及“宽屏”或“竖屏”，系统会自动调整宽高比。
 
-## Setup (Optional — for Full Mode)
+## 设置（全功能模式可选）
 
-1. Sign up: https://vapagent.com/dashboard/signup.html
-2. Get API key from dashboard
-3. Set: `export VAP_API_KEY=vap_xxxxxxxxxxxxxxxxxxxx`
+1. 注册账户：[https://vapagent.com/dashboard/signup.html]
+2. 从控制面板获取 API 密钥。
+3. 设置环境变量：`export VAP_API_KEY=vap_xxxxxxxxxxxxxxxxxxxx`
 
-## Links
+## 链接
 
-- [Try Free](https://vapagent.com/try)
-- [API Docs](https://api.vapagent.com/docs)
-- [GitHub](https://github.com/vapagentmedia/vap-showcase)
+- [免费试用](https://vapagent.com/try)
+- [API 文档](https://api.vapagent.com/docs)
+- [GitHub 项目](https://github.com/vapagentmedia/vap-showcase)

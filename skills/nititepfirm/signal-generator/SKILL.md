@@ -1,41 +1,41 @@
-# Signal Generator Skill
+# 信号生成器技能
 
-Generate automated trading signals and send alerts to Discord/Telegram.
+该技能能够自动生成交易信号，并将警报发送到 Discord 或 Telegram。
 
-## 📋 Overview
+## 📋 概述
 
-This skill generates trading signals based on technical indicators and automatically sends alerts to your configured channels (Discord, Telegram, etc.).
+该技能基于技术指标生成交易信号，并自动将警报发送到您配置的渠道（如 Discord、Telegram 等）。
 
-## 🚀 Features
+## 🚀 主要功能
 
-- **Multiple Strategies:**
-  - **BB Breakout** - Bollinger Bands squeeze + breakout with volume spike
-  - **RSI Reversal** - Overbought/Oversold reversal signals
+- **多种策略：**
+  - **BB Breakout**（布林带突破）：布林带收窄后出现价格突破，并伴有成交量激增
+  - **RSI 反转**：超买/超卖信号
 
-- **Multi-Timeframe Support** - Run on 15m, 1h, 4h, etc.
+- **支持多种时间框架**：可在 15 分钟、1 小时、4 小时等时间框架上运行
 
-- **Flexible Targets** - Send alerts to Discord, Telegram, or any OpenClaw channel
+- **灵活的发送目标**：可以将警报发送到 Discord、Telegram 或任何 OpenClaw 渠道
 
-- **Easy Configuration** - Simple JSON config, no coding required
+- **简单配置**：仅需使用 JSON 格式进行配置，无需编写代码
 
-## 📦 Installation
+## 📦 安装
 
-1. Copy the skill directory to your OpenClaw workspace:
+1. 将技能目录复制到您的 OpenClaw 工作区：
 ```bash
 cp -r signal-generator ~/.openclaw/workspace/skills/
 ```
 
-2. Configure your settings (see Configuration below)
+2. 配置相关设置（详见下方“配置”部分）
 
-3. Run the skill:
+3. 运行该技能：
 ```bash
 cd ~/.openclaw/workspace/skills/signal-generator
 python3 signal_generator.py
 ```
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-Copy `config.json.example` to `config.json` and edit:
+将 `config.json.example` 复制到 `config.json` 文件中并编辑：
 
 ```json
 {
@@ -53,92 +53,76 @@ Copy `config.json.example` to `config.json` and edit:
 }
 ```
 
-### Configuration Options
+### 配置选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `symbol` | Trading pair (e.g., BTC/USDT) | BTC/USDT |
-| `strategy` | Strategy: `bb_breakout` or `rsi_reversal` | bb_breakout |
-| `intervals` | Timeframes to check (e.g., `["15m", "1h"]`) | ["15m", "1h"] |
-| `targets` | Where to send alerts (channel IDs) | [] |
-| `filters.volume_spike` | Require volume spike for signals | true |
-| `filters.trend_filter` | Apply trend filter (coming soon) | false |
+| `symbol` | 交易对（例如：BTC/USDT） | BTC/USDT |
+| `strategy` | 策略：`bb_breakout` 或 `rsi_reversal` | `bb_breakout` |
+| `intervals` | 需要检查的时间框架（例如：`["15m", "1h"]`） | `["15m", "1h"]` |
+| `targets` | 警报发送的目标渠道 ID | [] |
+| `filters.volume_spike` | 是否需要成交量激增作为信号生成条件 | `true` |
+| `filters.trend_filter` | 是否应用趋势过滤（即将推出） | `false` |
 
-## 🎯 Strategies
+## 🎯 策略
 
-### BB Breakout (Default)
+### BB Breakout（默认策略）
 
-- **Logic:**
-  1. BB Squeeze detected (BB inside Keltner Channels)
-  2. Price closes outside Bollinger Bands
-  3. Volume > 20-period average
+- **逻辑：**
+  1. 检测到布林带收窄（布林带位于 Keltner 通道内）
+  2. 价格突破布林带
+  3. 成交量超过 20 个周期的平均值
 
-- **Long Signal:** Close > BB Upper + Volume Spike
-- **Short Signal:** Close < BB Lower + Volume Spike
+- **买入信号：** 价格收盘价高于布林带上轨且成交量激增
+- **卖出信号：** 价格收盘价低于布林带下轨且成交量激增
 
-### RSI Reversal
+### RSI 反转
 
-- **Logic:**
-  1. RSI < 30 (Oversold) → Long
-  2. RSI > 70 (Overbought) → Short
+- **逻辑：**
+  1. RSI 值低于 30（超卖）→ 买入信号
+  2. RSI 值高于 70（超买）→ 卖出信号
 
-- **Long Signal:** RSI crosses below 30 then rises
-- **Short Signal:** RSI crosses above 70 then falls
+- **买入信号：** RSI 值跌破 30 后再次上升
+- **卖出信号：** RSI 值突破 70 后再次下降
 
-## 📊 Example Usage
+## 📊 使用示例
 
-### Manual Run
+### 手动运行
 
 ```bash
 cd ~/.openclaw/workspace/skills/signal-generator
 python3 signal_generator.py
 ```
 
-Output:
-```
-📊 **BB Breakout** - BTC/USDT
-⏱️ Interval: 15m
-💰 Price: $77,564.10
+### 定时运行
 
-🟢 LONG: False
-🔴 SHORT: False
-
-📈 BB Upper: $78,234.50
-📉 BB Lower: $76,890.20
-🔢 RSI: 52.34
-
-🕐 2026-02-02T11:00:00
-```
-
-### Cron/Schedule
-
-Run every 5 minutes:
+每 5 分钟运行一次：
 ```bash
 */5 * * * * cd ~/.openclaw/workspace/skills/signal-generator && python3 signal_generator.py
 ```
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-**No signals generated?**
-- Check if `config.json` exists and is valid JSON
-- Verify symbol is correct (e.g., BTC/USDT, not BTCUSDT)
-- Check exchange connection (Binance API)
+**未生成信号？**
+- 检查 `config.json` 文件是否存在且格式正确（为有效的 JSON）
+- 确认交易对名称正确（例如：BTC/USDT，而非 BTCUSDT）
+- 检查与 Binance 的 API 连接是否正常
 
-**Import errors?**
-- Ensure `quant-trading-bot` is accessible:
+**导入错误？**
+- 确保 `quant-trading-bot` 可以正常访问：
 ```bash
 ls /root/quant-trading-bot/src/exchange_api.py
 ```
 
-## 📝 License
+## 📝 许可证
 
-This skill is provided as-is. Use at your own risk. Trading signals are not financial advice.
+本技能按“原样”提供，使用风险自负。交易信号不构成任何财务建议。
 
-## 🤝 Contributing
+## 🤝 贡献
 
-Have ideas for new strategies? Contributions welcome!
+如果您有新的策略想法，欢迎随时贡献！
 
 ---
 
-**Version:** 1.0.0
-**Last Updated:** 2026-02-02
+**版本：** 1.0.0
+**最后更新时间：** 2026-02-02

@@ -1,15 +1,15 @@
 ---
 name: Better Polymarket
-description: Query Polymarket prediction markets - check odds, trending markets, search events, track prices, list markets by volume.
+description: 查询 Polymarket 预测市场：查看赔率、热门市场、搜索事件、跟踪价格，并按交易量列出市场。
 homepage: https://polymarket.com
 metadata: {"clawdbot":{"emoji":"📊"}}
 ---
 
-# Better Polymarket
+# 更强大的 Polymarket
 
-Query [Polymarket](https://polymarket.com) prediction markets. Check odds, find trending markets, search events, get single market/event by slug, list active markets by volume (aligned with Gamma API usage as in PolyEdge).
+Polymarket 提供了丰富的预测市场功能：您可以查询市场赔率、查找热门市场、搜索特定事件，或者通过市场标识符（slug）获取详细信息，还可以按交易量列出活跃市场（该功能与 PolyEdge 中的 Gamma API 相一致）。
 
-## Commands
+## 命令
 
 ```bash
 # Trending/active events (by 24h volume)
@@ -36,30 +36,30 @@ python3 {baseDir}/scripts/polymarket.py category crypto
 python3 {baseDir}/scripts/polymarket.py category sports
 ```
 
-## Example Chat Usage
+## 示例对话：
 
-- "What are the odds Trump wins 2028?"
-- "Trending on Polymarket?"
-- "Search Polymarket for Bitcoin"
-- "What's the spread on the Fed rate decision?"
-- "Any interesting crypto markets?"
-- "Show me Polymarket market by slug will-trump-win-2024"
-- "List top active markets by volume on Polymarket"
+- “特朗普在 2028 年获胜的概率是多少？”
+- “Polymarket 上目前有哪些热门市场？”
+- “在 Polymarket 中搜索‘比特币’的相关信息。”
+- “美联储利率决议的赔率是多少？”
+- “有哪些值得关注的加密货币市场？”
+- “显示与‘特朗普在 2024 年获胜’相关的市场信息。”
+- “按交易量列出 Polymarket 上最活跃的市场。”
 
-## Output
+## 输出结果：
 
-- **Events**: title, total volume, list of markets with Yes price, event link.
-- **Markets**: question, Yes/No prices, volume, end date, resolution source when present, market link.
-- **markets** command: same as single market format, ordered by volume (or specified order).
+- **事件**：事件标题、总交易量、标记为“是”（Yes）的市场列表以及事件链接。
+- **市场**：问题内容、标记为“是”/“否”（Yes/No）的答案、交易量、结束日期（如有的话）、结果来源以及市场链接。
+- **markets** 命令：返回单个市场的详细信息，结果按交易量排序（或根据指定顺序排列）。
 
 ## API
 
-Uses the public Gamma API (no auth required for reading), same surface as PolyEdge:
-- Base URL: `https://gamma-api.polymarket.com`
-- Endpoints: `/events`, `/events/slug/:slug`, `/markets`, `/markets/slug/:slug`, `/search`
-- Params: `limit`, `offset`, `order`, `ascending`, `closed`, `active`
-- Docs: https://docs.polymarket.com
+Polymarket 使用公开的 Gamma API 进行数据查询（无需身份验证），其接口与 PolyEdge 完全兼容：
+- 基本 URL：`https://gamma-api.polymarket.com`
+- 端点：`/events`、`/events/slug/:slug`、`/markets`、`/markets/slug/:slug`、`/search`
+- 参数：`limit`、`offset`、`order`、`ascending`、`closed`、`active`
+- 文档：https://docs.polymarket.com
 
-## Note
+## 注意：
 
-This is read-only. Trading requires wallet authentication (not implemented).
+目前这些功能仅支持数据读取，进行交易操作需要使用钱包进行身份验证（该功能尚未实现）。

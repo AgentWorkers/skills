@@ -1,27 +1,27 @@
 ---
 name: distinctive-design-systems
 model: reasoning
-description: Patterns for creating design systems with personality and distinctive aesthetics. Covers aesthetic documentation, color token architecture, typography systems, layered surfaces, and motion. Use when building design systems that go beyond generic templates. Triggers on design system, design tokens, aesthetic, color palette, typography, CSS variables, tailwind config.
+description: 用于创建具有独特个性和美学风格的设计系统的模式。涵盖了美学文档、颜色令牌架构、排版系统、分层界面以及动态效果（如动画）。适用于构建超越通用模板的设计系统。相关内容与设计系统、设计令牌、美学原则、颜色调色板、排版样式、CSS变量以及Tailwind CSS配置相关。
 ---
 
-# Distinctive Design Systems
+# 独特的设计系统
 
-Create design systems with personality that users remember. Move beyond generic templates to build cohesive, emotionally resonant visual languages.
-
----
-
-## When to Use
-
-- Building a new product that needs distinctive visual identity
-- Creating design tokens for Tailwind + CSS variables
-- Documenting aesthetic decisions for consistent implementation
-- Want to go beyond default Bootstrap/Tailwind aesthetics
+创建具有鲜明个性的设计系统，让用户留下深刻印象。超越通用模板，构建统一且富有情感共鸣的视觉语言。
 
 ---
 
-## Core Philosophy
+## 适用场景
 
-A distinctive design system starts with **aesthetic documentation**, not color pickers.
+- 需要独特视觉标识的新产品开发
+- 为 Tailwind 和 CSS 变量创建设计元素
+- 记录美学决策，以确保设计的一致性
+- 希望突破 Bootstrap/Tailwind 的默认美学风格
+
+---
+
+## 核心理念
+
+一个独特的设计系统应从**美学文档**开始，而非颜色选择工具。
 
 ```
 1. Define the vibe      → What does this look and feel like?
@@ -33,44 +33,45 @@ A distinctive design system starts with **aesthetic documentation**, not color p
 
 ---
 
-## Pattern 1: Aesthetic Foundation
+## 模式 1：美学基础
 
-Document the vibe before writing CSS:
+在编写 CSS 之前，先记录整体的设计氛围：
 
-### Example: Retro-Futuristic
+### 示例：复古未来风格
 
-**The Vibe**: Crystalline, luminescent, slightly melancholic—hopeful hues tempered by muted gradients, sharp typography, and CRT textures. Everything references a primary "Crystal" cyan tone.
+**设计氛围**：晶莹剔透、充满光泽，略带忧郁感——色彩以柔和的渐变、清晰的字体和 CRT 风格的纹理为基调，营造出一种充满希望的氛围。所有元素都以“水晶蓝”作为主要色调。
 
-**Inspirations**:
-- Retro console boot sequences — Futuristic orderly menus
-- JRPG UI panels — Luminous data displays, overlay HUDs
-- Sci-fi terminal interfaces — Elegant decay, monospaced readouts
+**灵感来源**：
+- 复古游戏机启动界面  
+- 未来风格的有序菜单  
+- 日本角色扮演游戏（JRPG）的用户界面  
+- 科幻终端界面  
 
-| Emotion | How It's Achieved |
+| 情感 | 实现方式 |  
 |---------|-------------------|
-| Precision | Sharp typography, tabular numerics, grid patterns |
-| Nostalgia | CRT scanlines, pixel grain, retro-era color palette |
-| Hope | Floating cyan orbs, gentle animations, luminous accents |
-| Melancholy | Dark gradients, muted backgrounds, soft focus layers |
+| 精确性 | 清晰的字体、表格化的数字、网格布局 |  
+| 怀旧感 | CRT 显示器的扫描线效果、像素颗粒感、复古色彩搭配 |  
+| 希望感 | 浮动的蓝色圆球、柔和的动画、发光的点缀元素 |  
+| 忧郁感 | 深色渐变、柔和的背景、模糊的视觉效果 |
 
-### Example: Warm Neutral Cyberpunk
+### 示例：温暖中性的赛博朋克风格
 
-**The Vibe**: Warm neutral cyberpunk with a terminal feel. Unlike harsh green-on-black hacker aesthetics, uses warm tan/beige as the foundation, creating approachable yet technical atmosphere.
+**设计氛围**：温暖中性的赛博朋克风格，带有终端设备的质感。与冷色调的黑色和绿色搭配不同，这种风格以温暖的棕褐色为基础，营造出既亲和又科技感十足的氛围。
 
-**Key Differentiation**: Most dark UIs go cold with neon accents. This approach uses warmth as its secret weapon—the neutral tan base creates visual comfort while emerald accents maintain the futuristic aesthetic.
+**关键区别**：大多数黑暗风格的 UI 采用冷色调和霓虹灯效果，而这种风格则利用温暖色调作为视觉亮点——中性的棕褐色基调带来舒适感，同时绿色点缀元素保留了未来感。
 
-| Emotion | How It's Achieved |
+| 情感 | 实现方式 |  
 |---------|-------------------|
-| Technical credibility | Terminal typography, mono fonts, glow effects |
-| Approachability | Warm neutral base instead of cold black |
-| Premium quality | Glass panels, backdrop blur, layered shadows |
-| Futuristic trust | Circuit patterns, hex grids, scanlines |
+| 技术可信度 | 类似终端设备的字体、单色字体、发光效果 |  
+| 亲和力 | 温暖的中性色调而非冷黑色 |  
+| 高品质感 | 玻璃材质的面板、模糊的背景效果、多层次的阴影效果 |  
+| 未来感 | 电路图案、六边形网格、扫描线效果 |
 
 ---
 
-## Pattern 2: Color Token Architecture
+## 模式 2：颜色元素架构
 
-### The Three-Layer System
+### 三层颜色管理系统
 
 ```
 CSS Variables (source of truth)
@@ -80,7 +81,7 @@ Tailwind Config (utility classes)
 TypeScript Tokens (runtime access)
 ```
 
-### CSS Variables
+### CSS 变量
 
 ```css
 :root {
@@ -100,7 +101,7 @@ TypeScript Tokens (runtime access)
 }
 ```
 
-### Tailwind Config
+### Tailwind 配置
 
 ```typescript
 // tailwind.config.ts
@@ -125,7 +126,7 @@ export default {
 };
 ```
 
-### TypeScript Tokens
+### TypeScript 颜色定义
 
 ```typescript
 // styles/design-tokens.ts
@@ -142,9 +143,9 @@ export const withOpacity = (token: string, opacity: number) =>
 
 ---
 
-## Pattern 3: Typography System
+## 模式 3：字体系统
 
-### Font Stack
+### 字体组合
 
 ```typescript
 fonts: {
@@ -154,7 +155,7 @@ fonts: {
 }
 ```
 
-### Type Scale with Multiplier
+### 基于倍数的字体大小调整
 
 ```css
 :root {
@@ -172,9 +173,9 @@ fonts: {
 }
 ```
 
-### Typography Patterns
+### 字体样式
 
-**Magazine-Style Numbers**:
+**杂志风格的数字显示**：
 ```css
 .metric {
   font-weight: 800;
@@ -183,7 +184,7 @@ fonts: {
 }
 ```
 
-**Labels**:
+**标签元素**：
 ```css
 .label {
   text-transform: uppercase;
@@ -195,20 +196,20 @@ fonts: {
 
 ---
 
-## Pattern 4: Layered Surface System
+## 模式 4：分层视觉效果
 
-### Layer Hierarchy
+### 层次结构
 
-| Layer | Name | Purpose |
+| 层次 | 名称 | 作用 |  
 |-------|------|---------|
-| 0 | Ambient | Full-viewport gradients, slow motion |
-| 1 | Glow Field | Floating orbs, atmospheric effects |
-| 2 | Texture | CRT scanlines, grain, filters |
-| 3 | Panels | Elevated cards, section headers |
-| 4 | Content | Metrics, charts, tables |
-| 5 | Details | Nested sub-panels, rows |
+| 0 | 环境层 | 全屏渐变效果、慢动作效果 |  
+| 1 | 光晕层 | 浮动的圆球、氛围光效 |  
+| 2 | 纹理层 | CRT 显示器的扫描线效果、像素颗粒感、滤镜效果 |  
+| 3 | 面板层 | 升高的卡片元素、章节标题 |  
+| 4 | 内容层 | 数据指标、图表、表格 |  
+| 5 | 详细信息层 | 嵌套的子面板、文本行 |
 
-### Surface Component
+### 组件示例
 
 ```tsx
 interface SurfaceProps {
@@ -238,9 +239,9 @@ const layerStyles = {
 
 ---
 
-## Pattern 5: Motion Tokens
+## 模式 5：动态效果
 
-### Timing Scale
+### 动画节奏控制
 
 ```css
 :root {
@@ -251,7 +252,7 @@ const layerStyles = {
 }
 ```
 
-### Animation Patterns
+### 动画样式
 
 ```javascript
 // tailwind.config.ts
@@ -283,9 +284,9 @@ animation: {
 
 ---
 
-## Pattern 6: Glass & Glow Effects
+## 模式 6：玻璃与发光效果
 
-### Glass Panel
+### 玻璃材质的面板
 
 ```css
 .glass-panel {
@@ -302,7 +303,7 @@ animation: {
 }
 ```
 
-### Neon Border
+### 霓虹灯边框效果
 
 ```css
 .neon-border {
@@ -316,39 +317,39 @@ animation: {
 
 ---
 
-## Proven Aesthetic Directions
+## 经验证的美学方向
 
-| Aesthetic | Inspirations | Emotions |
+| 美学风格 | 灵感来源 | 情感表达 |  
 |-----------|--------------|----------|
-| Retro-futuristic glassmorphism | Retro console UIs, JRPG HUDs, sci-fi terminals | Precision, nostalgia, hope |
-| Warm neutral cyberpunk | Terminal UIs, sci-fi film interfaces | Credibility, approachability |
-| Magazine-style financial | Trading platforms, data dashboards | Trust, clarity, sophistication |
+| 复古未来风格的玻璃质感 | 复古游戏机 UI、JRPG 用户界面、科幻终端 | 精确性、怀旧感、希望感 |  
+| 温暖中性的赛博朋克风格 | 未来风格的终端界面、科幻电影中的界面 | 专业感、亲和力 |  
+| 杂志风格的金融界面 | 交易平台、数据仪表盘 | 信任感、清晰度、精致感 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — Complete design system workflow
-- [design-system-components](../design-system-components/) — CVA component patterns and Surface primitives
-- [loading-state-patterns](../loading-state-patterns/) — Skeleton loaders matching your aesthetic
-
----
-
-## NEVER Do
-
-- **Use pure black (#000) as base** — Always use tinted blacks
-- **Use pure white (#fff) for text** — Use tinted whites
-- **Use Inter/Roboto for headings** — Display fonts create distinctiveness
-- **Use default Tailwind colors** — Define your own palette
-- **Skip backdrop-filter blur** — Glass panels need blur
-- **Apply decorative patterns to readable content** — Background only
-- **Use high-saturation colors without opacity** — Modulate with rgba()
-- **Hardcode font sizes** — Use tokens with scale multiplier
-- **Skip the aesthetic documentation** — Vibes before code
+- **元技能**：[ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — 完整的设计系统开发流程  
+- [design-system-components](../design-system-components/) — CVA 组件模式和基础视觉元素  
+- [loading-state-patterns](../loading-state-patterns/) — 与设计风格相匹配的加载效果  
 
 ---
 
-## File Structure
+## 绝对不要这样做
+
+- **不要使用纯黑色 (#000) 作为背景色** — 应始终使用带有色调的黑色  
+- **不要使用纯白色 (#fff) 作为文本颜色** — 应使用带有色调的白色  
+- **不要使用 Inter/Roboto 作为标题字体** — 应使用具有辨识度的字体  
+- **不要使用 Tailwind 的默认颜色** — 应自定义颜色调色板  
+- **不要省略背景的模糊效果** — 玻璃材质的面板需要模糊效果  
+- **不要在可读内容上使用装饰性图案** — 模糊效果仅应用于背景  
+- **不要使用高饱和度的颜色且不设置透明度** — 应使用 rgba() 进行颜色调整  
+- **不要硬编码字体大小** — 应使用可调整的字体大小设置  
+- **不要忽略美学文档** — 在编写代码之前，先确定整体设计氛围  
+
+---
+
+## 文件结构
 
 ```
 styles/
@@ -365,7 +366,7 @@ tailwind.config.ts       # Token integration
 
 ---
 
-## Quick Reference
+## 快速参考
 
 ```css
 /* 1. Define CSS variables */

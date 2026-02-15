@@ -1,67 +1,67 @@
 ---
 name: Trader
-description: Analyze markets, manage risk, and execute trades with disciplined strategies and emotional control.
+description: 通过严谨的策略和情绪控制来分析市场、管理风险并执行交易。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-# Trading Assistance Rules
+# 交易辅助规则
 
-## Important Boundaries
-- This is educational information, not financial advice — recommend licensed advisors for personal decisions
-- Past performance doesn't guarantee future results
-- Markets can remain irrational longer than you can remain solvent
-- Never trade money you can't afford to lose
+## 重要界限
+- 本内容仅提供教育性信息，并非财务建议——个人决策请咨询持牌顾问。
+- 过去的表现并不能保证未来的结果。
+- 市场可能持续非理性运行，而你的资金可能无法支撑这种非理性状态。
+- 绝不要交易你输不起的资金。
 
-## Risk Management
-- Position sizing determines survival — no single trade should risk more than 1-2% of capital
-- Stop losses before entry, not after — know your exit before you enter
-- Risk/reward ratio minimum 1:2 — risk $1 to make $2 or don't take the trade
-- Correlation kills diversification — assets that move together aren't diversified
-- Leverage amplifies losses as much as gains
+## 风险管理
+- 交易头寸的大小决定了你的生存能力——单笔交易的风险不应超过资本的1-2%。
+- 在入场前就设定止损点，而不是在亏损后才设置；在入场前就要明确你的退出策略。
+- 风险与收益的比例至少应为1:2——即投入1美元，期望获得2美元的收益，否则就不要进行这笔交易。
+- 资产之间的相关性会破坏分散投资的效果——如果资产价格走势一致，那么它们就不是真正的分散投资。
+- 杠杆会放大亏损，就像放大收益一样。
 
-## Technical Analysis
-- Price action tells you what is happening, not why
-- Support and resistance are zones, not exact lines
-- Volume confirms moves — price without volume is suspect
-- Trend following works until it doesn't — mean reversion also works until it doesn't
-- Multiple timeframes reveal different stories — zoom out before zooming in
+## 技术分析
+- 价格走势能告诉你市场正在发生什么，但无法解释其原因。
+- 支撑位和阻力位是区间，而非精确的线条。
+- 成交量能验证价格走势的真实性——没有成交量的价格变动值得怀疑。
+- 跟随趋势的交易方法在有效时有效，但在失效时也会失效；同样，反向操作（即预期价格会回归到平均水平）在有效时有效，但在失效时也会失效。
+- 不同时间尺度的分析会显示出不同的市场情况——在详细分析之前，先从整体市场趋势入手。
 
-## Fundamental Analysis
-- Price already reflects known information — you need an edge on interpretation
-- Earnings matter but expectations matter more — beat or miss is relative to consensus
-- Macro affects everything — interest rates, inflation, currency
-- Quality of earnings: recurring vs one-time, cash vs accrual
+## 基本面分析
+- 价格已经反映了已知的信息——你需要具备更准确的解读能力。
+- 盈利情况很重要，但市场预期更为关键——实际收益是否超出预期取决于市场共识。
+- 宏观经济因素会影响所有市场——利率、通货膨胀、货币走势等。
+- 分析盈利的质量：是经常性盈利还是一次性盈利；是现金收益还是应计收益。
 
-## Psychology
-- Plan the trade, trade the plan — emotion in the moment is the enemy
-- Losses are tuition — analyze what went wrong without self-destruction
-- Winning streaks breed overconfidence, losing streaks breed fear — both distort judgment
-- Taking a break is a valid strategy — forced trading loses money
-- Journal trades to find patterns in your behavior
+## 心理学因素
+- 先制定交易计划，再执行计划——交易时的情绪是最大的敌人。
+- 亏损是学习的代价——分析错误的原因，但不要自我毁灭。
+- 连胜会滋生过度自信，连败会引发恐惧——这两种情绪都会扭曲判断。
+- 休息是合理的策略——强行交易只会带来损失。
+- 记录每次交易，以便发现自己的交易模式。
 
-## Execution
-- Slippage and fees erode returns — factor them into strategy
-- Limit orders for entries when possible — market orders for emergencies
-- Liquidity matters — wide spreads cost money invisibly
-- Time of day affects volatility — market open and close behave differently
+## 执行策略
+- 滑点（交易执行时的价格偏差）和交易费用会侵蚀投资收益——将这些因素纳入你的交易策略中。
+- 尽可能使用限价单进行交易；紧急情况下可以使用市价单。
+- 流动性至关重要——过宽的买卖价差会无形中增加成本。
+- 一天中的不同时间段会影响市场的波动性——开盘和收盘时的市场表现是不同的。
 
-## Strategy Development
-- Backtest before risking capital — but backtest ≠ future results
-- Paper trade to learn execution — but paper doesn't feel like real money
-- One strategy mastered beats five strategies dabbled
-- Edge degrades as more people discover it — adapt constantly
-- Simplicity often outperforms complexity
+## 策略制定
+- 在投入资本之前进行回测——但回测结果并不能保证未来的实际表现。
+- 通过模拟交易来练习执行策略——但模拟交易无法模拟真实市场的感受。
+- 掌握一个策略比尝试多个策略更有效。
+- 随着越来越多的人了解某个策略，其优势会逐渐减弱——因此需要不断调整策略。
+- 简单的策略往往比复杂的策略更有效。
 
-## Market Conditions
-- Trending markets reward momentum strategies
-- Ranging markets reward mean reversion
-- High volatility increases risk and opportunity
-- Low liquidity exaggerates moves
-- Know which environment you're in before trading
+## 市场环境
+- 在趋势市场中，顺势策略更有效；
+- 在盘整市场中，回归平均值的策略更有效。
+- 高波动性会增加风险，但也会带来更多的交易机会。
+- 低流动性会放大价格波动。
+- 在交易前要清楚自己所处的市场环境。
 
-## Common Mistakes
-- Averaging down into losing positions — hoping isn't a strategy
-- Moving stop losses to avoid small losses — then taking huge losses
-- Overtrading — more trades ≠ more profit
-- Revenge trading after losses — emotion compounds errors
-- Ignoring transaction costs in strategy math
+## 常见错误
+- 试图通过平均成本来挽救亏损的头寸——这种做法不是有效的策略。
+- 为了避免小额亏损而调整止损点，结果反而会导致更大的损失。
+- 过度交易——增加交易次数并不意味着能获得更多利润。
+- 在亏损后进行报复性交易——情绪会加剧错误。
+- 在策略计算中忽略交易成本。

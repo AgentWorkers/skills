@@ -1,6 +1,6 @@
 ---
 name: watch-my-money
-description: Analyze bank transactions, categorize spending, track monthly budgets, detect overspending and anomalies. Outputs interactive HTML report.
+description: 分析银行交易，对支出进行分类，跟踪每月预算，检测超支和异常情况。生成交互式的 HTML 报告。
 triggers:
   - "track spending"
   - "check my budget"
@@ -22,91 +22,87 @@ privacy: local-only
 
 # watch-my-money
 
-Analyze transactions, categorize spending, track budgets, flag overspending.
+本工具用于分析用户的交易记录，对支出进行分类，跟踪预算使用情况，并在超出预算时发出警报。
 
-## Workflow
+## 工作流程
 
-### 1. Get Transactions
+### 1. 获取交易数据
 
-Ask user for bank/card CSV export OR pasted text.
+- 从用户处获取银行或信用卡交易的CSV文件，或直接输入交易记录的文本。
+- 常见数据来源：
+  - 从银行在线门户下载CSV文件
+  - 从预算管理应用程序导出数据
+  - 从对账单中复制/粘贴交易记录
 
-Common sources:
-- Download CSV from your bank's online portal
-- Export from budgeting apps
-- Copy/paste transactions from statements
+**支持的格式：**
+  - 任何包含日期、描述和金额列的CSV文件
+  - 输入的文本格式示例：`2026-01-03 Starbucks -5.40 CHF`
 
-Supported formats:
-- Any CSV with date, description, amount columns
-- Pasted text: "2026-01-03 Starbucks -5.40 CHF"
+### 2. 解析和规范化数据
 
-### 2. Parse & Normalize
+- 读取输入数据，并将其转换为标准格式：
+  - 自动识别数据分隔符（逗号、分号、制表符）
+  - 解析日期格式（YYYY-MM-DD, DD/MM/YYYY, MM/DD/YYYY）
+  - 将金额统一为标准格式（支出为负数，收入为正数）
+  - 从交易描述中提取商家名称
+  - 识别重复出现的交易（如订阅服务）
 
-Read input, normalize to standard format:
-- Auto-detect delimiter (comma, semicolon, tab)
-- Parse dates (YYYY-MM-DD, DD/MM/YYYY, MM/DD/YYYY)
-- Normalize amounts (expenses negative, income positive)
-- Extract merchant from description
-- Detect recurring transactions (subscriptions)
+### 3. 对交易进行分类
 
-### 3. Categorize Transactions
+- 为每笔交易分配相应的类别：
+  - 租金、水电费、订阅服务、食品杂货、外出就餐
+  - 交通费用、旅行费用、购物费用、健康相关支出
+  - 收入、转账、其他费用
 
-For each transaction, assign category:
+**分类优先级：**
+  1. 查看用户自定义的商家分类规则
+  2. 应用预定义的关键词规则（详见 [common-merchants.md](references/common-merchants.md)
+  3. 使用模式匹配进行分类（如识别订阅服务）
+  4. 在无法确定分类时采用启发式方法
 
-**Categories:**
-- rent, utilities, subscriptions, groceries, eating_out
-- transport, travel, shopping, health
-- income, transfers, other
+- 对于分类不明确的交易（5-10笔交易），请用户进行确认。用户可以保存这些分类规则以供后续使用。
 
-Categorization order:
-1. Check saved merchant overrides
-2. Apply deterministic keyword rules (see [common-merchants.md](references/common-merchants.md))
-3. Pattern matching (subscriptions, utilities)
-4. Heuristic fallback
+### 4. 检查预算使用情况
 
-For ambiguous merchants (batch of 5-10), ask user to confirm.
-Save overrides for future runs.
+- 将实际支出与用户设定的预算进行对比。
 
-### 4. Check Budgets
+- 警报阈值：
+  - 花费达到预算的80%：黄色警告
+  - 花费达到预算的100%：红色警告
+  - 花费超过预算的120%：红色紧急警告
 
-Compare spending against user-defined budgets.
+- 预算模板请参考 [budget-templates.md](references/budget-templates.md)。
 
-Alert thresholds:
-- 80% - approaching limit (yellow)
-- 100% - at limit (red)
-- 120% - over budget (red, urgent)
+### 5. 发现异常支出
 
-See [budget-templates.md](references/budget-templates.md) for suggested budgets.
+- 标记异常支出情况：
+  - 某类别支出突然大幅增加（超过基线的1.5倍且增幅超过50%）
+  - 订阅服务费用增长超过20%
+  - 新出现的昂贵商家（首次出现且支出超过30元）
+  - 可能的重复性支出（定期收取相同金额的费用）
 
-### 5. Detect Anomalies
+- 基线数据为过去3个月的平均支出（如果没有历史数据，则使用当月的支出）
 
-Flag unusual spending:
-- Category spike: spend > 1.5x baseline AND delta > 50
-- Subscription growth: subscriptions up > 20%
-- New expensive merchant: first appearance AND spend > 30
-- Potential subscriptions: recurring same-amount charges
+### 6. 生成HTML报告
 
-Baseline = previous 3 months average (or current month if no history).
+- 生成本地HTML报告文件，内容包括：
+  - 每月的收入、支出和净余额统计
+  - 各类别的支出与预算对比情况
+  - 最高支出额的商家列表
+  - 警报信息
+  - 被识别的重复性交易记录
+  - 隐私设置（可选择隐藏金额或商家名称）
 
-### 6. Generate HTML Report
+- 可以复制 [template.html](assets/template.html) 并替换其中的数据。
 
-Create local HTML file with:
-- Month summary (income, expenses, net)
-- Category breakdown with budget status
-- Top merchants
-- Alerts section
-- Recurring transactions detected
-- Privacy toggle (blur amounts/merchants)
+### 7. 保存数据
 
-Copy [template.html](assets/template.html) and inject data.
+- 将处理后的数据保存在 `~/.watch_my_money/` 目录下：
+  - `state.json`：存储预算信息、商家分类规则和交易历史
+  - `reports/YYYY-MM.json`：存储每月的机器可读数据
+  - `reports/YYYY-MM.html`：生成交互式报告文件
 
-### 7. Save State
-
-Persist to `~/.watch_my_money/`:
-- `state.json` - budgets, merchant overrides, history
-- `reports/YYYY-MM.json` - machine-readable monthly data
-- `reports/YYYY-MM.html` - interactive report
-
-## CLI Commands
+## 命令行接口（CLI）
 
 ```bash
 # Analyze CSV
@@ -131,33 +127,30 @@ python -m watch_my_money export --month 2026-01 --out summary.json
 python -m watch_my_money reset-state
 ```
 
-## Output Structure
+## 输出结构
 
-Console shows:
-- Month summary with income/expenses/net
-- Category table with spend vs budget
-- Recurring transactions detected
-- Top 5 merchants
-- Alerts as bullet points
+控制台显示以下信息：
+- 每月的收入、支出和净余额统计
+- 各类别的支出与预算对比情况
+- 被识别的重复性交易记录
+- 支出最高的5家商家
 
-Files written:
+生成的文件包括：
 - `~/.watch_my_money/state.json`
 - `~/.watch_my_money/reports/2026-01.json`
 - `~/.watch_my_money/reports/2026-01.html`
 
-## HTML Report Features
+## HTML报告的特点
 
-- Collapsible category sections
-- Budget progress bars
-- Recurring transaction list
-- Month-over-month comparison
-- Privacy toggle (blur sensitive data)
-- Dark mode (respects system preference)
-- Floating action button
-- Screenshot-friendly layout
-- Auto-hide empty sections
+- 可折叠的类别部分
+- 预算进度条
+- 重复性交易列表
+- 月度数据对比功能
+- 隐私设置（可隐藏敏感信息）
+- 深色模式（符合系统设置）
+- 便于截图的布局
+- 空章节会自动隐藏
 
-## Privacy
+## 隐私保护
 
-All data stays local. No network calls. No external APIs.
-Transaction data is analyzed locally and stored only in `~/.watch_my_money/`.
+所有数据仅保存在本地，不进行网络传输，也不使用任何外部API。交易数据仅在 `~/.watch_my_money/` 目录内进行分析和存储。

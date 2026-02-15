@@ -17,9 +17,9 @@ metadata:
 
 # Zoho Bigin
 
-Access the Zoho Bigin API with managed OAuth authentication. Manage contacts, companies, pipelines, and products with full CRUD operations.
+您可以使用管理的 OAuth 认证来访问 Zoho Bigin API。该 API 支持对联系人、公司、销售流程和产品进行完整的创建（Create）、读取（Read）、更新（Update）和删除（Delete, CRUD）操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-bigin/bigin/v2/{endpoint}
 ```
 
-The gateway proxies requests to `www.zohoapis.com/bigin/v2` and automatically injects your OAuth token.
+该网关会将请求代理到 `www.zohoapis.com/bigin/v2`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho Bigin OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Zoho Bigin OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho Bigin connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho Bigin 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,43 +140,43 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Modules
+### 模块
 
-Zoho Bigin organizes data into modules. Available modules include:
+Zoho Bigin 将数据组织成不同的模块。可用的模块包括：
 
-| Module | API Name | Description |
+| 模块 | API 名称 | 描述 |
 |--------|----------|-------------|
-| Contacts | `Contacts` | Individual people |
-| Companies | `Accounts` | Organizations/businesses |
-| Pipelines | `Pipelines` | Sales opportunities/deals |
-| Products | `Products` | Items you sell |
-| Tasks | `Tasks` | To-do items (requires additional OAuth scope) |
-| Events | `Events` | Calendar appointments (requires additional OAuth scope) |
-| Calls | `Calls` | Phone call logs (requires additional OAuth scope) |
-| Notes | `Notes` | Notes attached to records (requires additional OAuth scope) |
+| 联系人 | `Contacts` | 单个联系人信息 |
+| 公司 | `Accounts` | 组织/企业信息 |
+| 销售流程 | `Pipelines` | 销售机会/交易信息 |
+| 产品 | `Products` | 您销售的产品信息 |
+| 任务 | `Tasks` | 待办事项（需要额外的 OAuth 权限） |
+| 事件 | `Events` | 日历预约（需要额外的 OAuth 权限） |
+| 通话 | `Calls` | 电话通话记录（需要额外的 OAuth 权限） |
+| 备注 | `Notes` | 附加到记录的备注（需要额外的 OAuth 权限） |
 
-### List Records
+### 列出记录
 
 ```bash
 GET /zoho-bigin/bigin/v2/{module_api_name}?fields={field1},{field2}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `fields` | string | **Required.** Comma-separated field API names to retrieve |
-| `sort_order` | string | `asc` or `desc` |
-| `sort_by` | string | Field API name to sort by |
-| `page` | integer | Page number (default: 1) |
-| `per_page` | integer | Records per page (default: 200, max: 200) |
-| `cvid` | string | Custom view ID for filtered results |
+| `fields` | 字符串 | **必填。** 以逗号分隔的字段名称，用于检索数据 |
+| `sort_order` | 字符串 | `asc` 或 `desc` | 排序方式 |
+| `sort_by` | 字符串 | 排序依据的字段名称 |
+| `page` | 整数 | 页码（默认：1） |
+| `per_page` | 整数 | 每页显示的记录数（默认：200，最大：200） |
+| `cvid` | 字符串 | 过滤结果的自定义视图 ID |
 
-**Example - List Contacts:**
+**示例 - 列出联系人：**
 
 ```bash
 python <<'EOF'
@@ -187,7 +187,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -207,7 +207,7 @@ EOF
 }
 ```
 
-**Example - List Companies (Accounts):**
+**示例 - 列出公司（Accounts）：**
 
 ```bash
 python <<'EOF'
@@ -218,13 +218,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Record
+### 获取记录信息
 
 ```bash
 GET /zoho-bigin/bigin/v2/{module_api_name}/{record_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -235,7 +235,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Records
+### 创建记录
 
 ```bash
 POST /zoho-bigin/bigin/v2/{module_api_name}
@@ -250,16 +250,16 @@ Content-Type: application/json
 }
 ```
 
-**Mandatory Fields by Module:**
+**各模块的必填字段：**
 
-| Module | Required Fields |
+| 模块 | 必填字段 |
 |--------|-----------------|
-| Contacts | `Last_Name` |
-| Accounts | `Account_Name` |
-| Pipelines | `Pipeline_Name`, `Stage` |
-| Products | `Product_Name` |
+| 联系人 | `Last_Name` | 姓氏 |
+| 公司 | `Account_Name` | 公司名称 |
+| 销售流程 | `Pipeline_Name` | 销售流程名称 |
+| 产品 | `Product_Name` | 产品名称 |
 
-**Example - Create Contact:**
+**示例 - 创建联系人：**
 
 ```bash
 python <<'EOF'
@@ -279,7 +279,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -305,7 +305,7 @@ EOF
 }
 ```
 
-**Example - Create Company (Account):**
+**示例 - 创建公司（Accounts）：**
 
 ```bash
 python <<'EOF'
@@ -323,7 +323,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Update Records
+### 更新记录
 
 ```bash
 PUT /zoho-bigin/bigin/v2/{module_api_name}
@@ -339,7 +339,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -357,7 +357,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -374,20 +374,20 @@ EOF
 }
 ```
 
-### Delete Records
+### 删除记录
 
 ```bash
 DELETE /zoho-bigin/bigin/v2/{module_api_name}?ids={record_id1},{record_id2}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `ids` | string | Comma-separated record IDs (required, max 100) |
-| `wf_trigger` | boolean | Execute workflows (default: true) |
+| `ids` | 字符串 | 以逗号分隔的记录 ID（最多 100 个） |
+| `wf_trigger` | 布尔值 | 是否执行工作流（默认：true） |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -398,7 +398,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -414,28 +414,28 @@ EOF
 }
 ```
 
-### Search Records
+### 搜索记录
 
 ```bash
 GET /zoho-bigin/bigin/v2/{module_api_name}/search
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `criteria` | string | Search criteria (e.g., `(Last_Name:equals:Smith)`) |
-| `email` | string | Search by email address |
-| `phone` | string | Search by phone number |
-| `word` | string | Global text search |
-| `page` | integer | Page number |
-| `per_page` | integer | Records per page (max 200) |
+| `criteria` | 字符串 | 搜索条件（例如：`(Last_Name:equals:Smith)` |
+| `email` | 字符串 | 按电子邮件地址搜索 |
+| `phone` | 字符串 | 按电话号码搜索 |
+| `word` | 字符串 | 全文搜索 |
+| `page` | 整数 | 页码 |
+| `per_page` | 整数 | 每页显示的记录数（最大：200） |
 
-**Criteria Format:** `((field_api_name:operator:value)and/or(...))`
+**搜索条件格式：** `((field_api_name:operator:value)and/or(...))`
 
-**Operators:** `equals`, `starts_with`
+**操作符：** `equals`, `starts_with`
 
-**Example - Search by email:**
+**示例 - 按电子邮件搜索：**
 
 ```bash
 python <<'EOF'
@@ -446,7 +446,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Example - Search by criteria:**
+**示例 - 根据条件搜索：**
 
 ```bash
 python <<'EOF'
@@ -459,15 +459,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Metadata APIs
+### 元数据 API
 
-#### Get Modules
+#### 获取模块信息
 
 ```bash
 GET /zoho-bigin/bigin/v2/settings/modules
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -478,21 +478,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Users
+#### 获取用户信息
 
 ```bash
 GET /zoho-bigin/bigin/v2/users
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `type` | string | `AllUsers`, `ActiveUsers`, `AdminUsers`, `CurrentUser` |
-| `page` | integer | Page number |
-| `per_page` | integer | Users per page (max 200) |
+| `type` | 字符串 | `AllUsers`, `ActiveUsers`, `AdminUsers`, `CurrentUser` |
+| `page` | 整数 | 页码 |
+| `per_page` | 整数 | 每页显示的用户数（最大：200） |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -503,15 +503,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Pagination
+## 分页
 
-Zoho Bigin uses page-based pagination with `page` and `per_page` parameters:
+Zoho Bigin 使用 `page` 和 `per_page` 参数进行分页：
 
 ```bash
 GET /zoho-bigin/bigin/v2/{module_api_name}?fields=First_Name,Last_Name&page=1&per_page=50
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -525,9 +525,9 @@ Response includes pagination info:
 }
 ```
 
-Continue fetching while `more_records` is `true`, incrementing `page` each time.
+当 `more_records` 为 `true` 时，继续获取更多记录，并每次迭代时增加 `page` 的值。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -557,52 +557,52 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项：
 
-- The `fields` parameter is **required** for list operations
-- Module API names are case-sensitive (e.g., `Contacts`, not `contacts`)
-- Companies are accessed via the `Accounts` module API name
-- Sales opportunities are accessed via the `Pipelines` module (not `Deals`)
-- Maximum 100 records per create/update request
-- Maximum 100 records per delete request
-- Maximum 200 records returned per GET request
-- Use field API names (not display names) in requests
-- Some modules (Tasks, Events, Calls, Notes) require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- `fields` 参数是列表操作所必需的。
+- 模块的 API 名称区分大小写（例如，使用 `Contacts` 而不是 `contacts`）。
+- 公司信息通过 `Accounts` 模块的 API 访问。
+- 销售机会信息通过 `Pipelines` 模块访问。
+- 每次创建/更新请求最多允许 100 条记录。
+- 每次删除请求最多允许 100 条记录。
+- 每次 GET 请求最多返回 200 条记录。
+- 在请求中使用字段的 API 名称（而不是显示名称）。
+- 一些模块（如任务、事件、通话、备注）需要额外的 OAuth 权限。如果遇到权限问题，请联系 Maton 支持团队（support@maton.ai），并提供具体的操作、API 和使用场景。
+- **重要提示：** 当 URL 中包含括号时，使用 `curl -g` 以避免全局解析问题。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho Bigin connection, missing required parameter, or invalid request |
-| 401 | Invalid or missing Maton API key, or OAuth scope mismatch |
-| 404 | Invalid URL pattern or resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho Bigin API |
+| 400 | 未建立 Zoho Bigin 连接，缺少必需参数，或请求无效 |
+| 401 | Maton API 密钥无效或缺失，或 OAuth 权限不匹配 |
+| 404 | URL 格式无效或资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Zoho Bigin API 的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| `REQUIRED_PARAM_MISSING` | Required parameter (like `fields`) is missing |
-| `INVALID_URL_PATTERN` | Invalid API endpoint path |
-| `INVALID_MODULE` | Module does not exist or is not API-supported |
-| `OAUTH_SCOPE_MISMATCH` | OAuth token lacks required permissions for the endpoint |
-| `NO_PERMISSION` | Insufficient privileges for the operation |
-| `MANDATORY_NOT_FOUND` | Required field is missing |
-| `INVALID_DATA` | Data type mismatch or format error |
-| `DUPLICATE_DATA` | Record violates unique field constraint |
+| `REQUIRED_PARAM_MISSING` | 必需参数（如 `fields`）缺失 |
+| `INVALID_URL_PATTERN` | API 端点路径无效 |
+| `INVALID_MODULE` | 模块不存在或不受 API 支持 |
+| `OAUTH_SCOPE_MISMATCH` | OAuth 令牌缺乏访问该端点所需的权限 |
+| `NO_PERMISSION` | 操作权限不足 |
+| `MANDATORY_NOT_FOUND` | 必需字段缺失 |
+| `INVALID_DATA` | 数据类型不匹配或格式错误 |
+| `DUPLICATE_DATA` | 记录违反了唯一性约束 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -613,17 +613,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `zoho-bigin`. For example:
+1. 确保您的 URL 路径以 `zoho-bigin` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/zoho-bigin/bigin/v2/Contacts`
+- 错误的路径：`https://gateway.maton.ai/bigin/v2/Contacts`
 
-- Correct: `https://gateway.maton.ai/zoho-bigin/bigin/v2/Contacts`
-- Incorrect: `https://gateway.maton.ai/bigin/v2/Contacts`
+## 资源
 
-## Resources
-
-- [Bigin API Overview](https://www.bigin.com/developer/docs/apis/v2/)
-- [Bigin REST API Documentation](https://www.bigin.com/developer/docs/apis/)
-- [Modules API](https://www.bigin.com/developer/docs/apis/modules-api.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Bigin API 概述](https://www.bigin.com/developer/docs/apis/v2/)
+- [Bigin REST API 文档](https://www.bigin.com/developer/docs/apis/)
+- [模块 API](https://www.bigin.com/developer/docs/apis/modules-api.html)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

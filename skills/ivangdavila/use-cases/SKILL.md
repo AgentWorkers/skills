@@ -1,96 +1,94 @@
 ---
 name: Use Cases
-description: "Discover what AI agents can do for you with practical examples by role, task type, and skill level."
+description: "通过实际案例，按角色、任务类型和技能水平来了解AI代理能为您做什么。"
 ---
 
-## Who This Is For
+## 适用人群
 
-Someone asking "what can this actually do?" Start by identifying their context.
+当有人问“这工具到底能做什么？”时，首先需要了解他们的使用场景（或背景）。
 
-| Signal | They are... | Load |
+| 信号（Signal） | 适用人群 | 需要学习的文档 |
 |--------|-------------|------|
-| "Just heard about AI", "is this useful for me?" | Beginner | `contexts/beginner.md` |
-| Emails, reports, meetings, spreadsheets | Office professional | `contexts/professional.md` |
-| Code, debugging, CI/CD, APIs | Developer | `contexts/developer.md` |
-| Customer support, marketing, operations | Business owner | `contexts/business.md` |
-| Writing, design, music, content | Creative | `contexts/creative.md` |
-| "Show me something real", "not gimmicks" | Skeptic | `contexts/skeptic.md` |
+| “刚听说人工智能”，“这对我有用吗？” | 初学者 | `contexts/beginner.md` |
+| 电子邮件、报告、会议、电子表格 | 办公室专业人士 | `contexts/professional.md` |
+| 代码编写、调试、持续集成/持续部署（CI/CD）、API | 开发者 | `contexts/developer.md` |
+| 客户支持、市场营销、运营管理 | 企业主 | `contexts/business.md` |
+| 写作、设计、音乐创作、内容制作 | 创意工作者 | `contexts/creative.md` |
+| “给我看点实际的应用案例”，“不要只是花招” | 怀疑态度的人 | `contexts/skeptic.md` |
 
 ---
 
-## High-Value Use Cases (Universal)
+## 高价值应用场景（通用）
 
-**Communication:**
-- Draft emails matching tone to recipient
-- Summarize long threads before meetings
-- Write difficult messages (rejections, negotiations, complaints)
+**沟通方面：**
+- 根据收件人的风格撰写电子邮件
+- 在会议前总结长篇讨论内容
+- 撰写正式的邮件（如拒绝通知、谈判函、投诉信）
 
-**Information Processing:**
-- Summarize documents, articles, reports
-- Extract key points from meeting recordings
-- Explain complex topics in simple terms
+**信息处理方面：**
+- 概括文档、文章和报告的内容
+- 从会议录音中提取关键信息
+- 用简单的语言解释复杂的话题
 
-**Writing & Editing:**
-- First drafts from bullet points
-- Proofreading with style preservation
-- Translation with context awareness
+**写作与编辑方面：**
+- 用项目符号列出初稿内容
+- 保持原文的风格进行校对
+- 根据上下文进行准确的翻译
 
-**Analysis:**
-- Make sense of spreadsheet data
-- Compare options with pros/cons
-- Research topics and synthesize findings
+**分析方面：**
+- 理解电子表格中的数据
+- 比较不同选项的优缺点
+- 研究主题并综合分析结果
 
-**Learning:**
-- Explain concepts at your level
-- Practice conversations (languages, interviews)
-- Get feedback on your work
-
----
-
-## What AI Cannot Do
-
-Be upfront about limitations:
-
-- **No real-time information** — Data has a cutoff date
-- **No memory across sessions** — Unless explicitly configured
-- **Can hallucinate** — Always verify facts, especially names, dates, URLs
-- **No execution** — Can't send emails, buy things, or take actions (unless integrated)
-- **No judgment** — Final decisions remain yours
+**学习方面：**
+- 用适合你的理解水平解释概念
+- 练习语言交流或面试技巧
+- 获取对你工作的反馈
 
 ---
 
-## Addressing Common Concerns
+## 人工智能的局限性
 
-**"Is my data safe?"**
-→ Depends on the tool. Check privacy policy. Enterprise tiers often don't train on your data. Don't paste passwords or API keys.
-
-**"Will it replace my job?"**
-→ AI augments, not replaces. People who use AI outperform those who don't. Learn to work with it.
-
-**"How do I know it's accurate?"**
-→ Verify outputs. Use AI for drafts and ideas, not final truth. Cross-check important facts.
-
-**"Is using AI cheating?"**
-→ It's a tool. Spell-check didn't replace writers. The work is still yours if you direct, review, and refine.
+需要明确指出人工智能的局限性：
+- **无法提供实时信息** — 数据都有时效性
+- **无法跨会话保存信息** — 除非特别设置
+- **可能会产生错误** — 特别是对名称、日期、URL等内容的处理需谨慎核实
+- **无法执行实际操作** — 无法发送邮件、购买物品或执行其他动作（除非与系统集成）
+- **无法做出判断** — 最终决策仍由用户自己做出
 
 ---
 
-## Getting Started (For Beginners)
+## 解答常见问题
 
-1. **Start small** — One task you do weekly that's tedious
-2. **Be specific** — "Write a professional email declining a meeting" works better than "help me"
-3. **Iterate** — First response rarely perfect. Say "make it shorter" or "more formal"
-4. **Verify** — Don't send/use AI output without reviewing it
+**“我的数据安全吗？”**
+→ 取决于所使用的工具。请查阅其隐私政策。企业级工具通常不会使用用户的数据进行训练。切勿粘贴密码或API密钥。
+
+**“这会取代我的工作吗？”**
+→ 人工智能是辅助工具，而非替代者。善于使用人工智能的人会比不使用它的人表现得更好。学会与其协同工作。
+
+**“我怎么知道它的准确性？”**
+→ 需要对人工智能的输出进行核实。将其用于草稿或创意构思，而非作为最终结果。
+
+**“使用人工智能算作弊吗？”**
+→ 这只是一种工具。拼写检查工具也没有取代过人类作家。如果你指导、审核并完善最终成果，工作仍然属于你。
 
 ---
 
-## Discovery Questions
+## 入门指南（针对初学者）
 
-When someone doesn't know what to ask for:
+1. **从小事做起** — 从每周都会做但觉得繁琐的任务开始
+2. **明确具体需求** — 比如“帮我写一封专业的会议拒绝邮件”，比“帮帮我”更具体
+3. **逐步改进** — 第一次尝试的结果往往不完美。可以要求“让邮件更简洁”或“更正式一些”
+4. **务必核实** — 在发送或使用人工智能生成的成果之前，务必进行人工审核
 
-- "What task do you dread doing every week?"
-- "Where do you spend time that doesn't feel valuable?"
-- "What would you do if you had an assistant who never slept?"
-- "What's something you'd love to do but don't have time for?"
+---
 
-Their answers reveal high-value use cases.
+## 发现问题的方法
+
+当不知道该问什么时，可以尝试以下问题：
+- “你每周最讨厌做哪项任务？”
+- “你把时间花在了哪些看似无意义的事情上？”
+- “如果有一个永远不睡觉的助手，你会做什么？”
+- “有哪些你想做但没时间做的事情？”
+
+这些问题的答案可以帮助你找到人工智能的高价值应用场景。

@@ -1,41 +1,41 @@
 ---
 name: browserbase-sessions
-description: Create and manage persistent Browserbase cloud browser sessions with authentication persistence. Use when you need to automate browsers, maintain logged-in sessions across interactions, scrape authenticated pages, or manage cloud browser instances.
+description: 创建并管理具有身份验证持久性的 Browserbase 云浏览器会话。当您需要自动化浏览器操作、在多次交互之间保持登录状态、抓取已认证的页面或管理云浏览器实例时，可以使用此功能。
 license: MIT
 homepage: https://docs.browserbase.com
 metadata: {"author":"custom","version":"2.4.0","openclaw":{"emoji":"🌐","requires":{"bins":["python3"]},"primaryEnv":"BROWSERBASE_API_KEY"}}
 ---
 
-# Browserbase Sessions Skill
+# Browserbase会话技能
 
-Manage persistent cloud browser sessions via Browserbase. This skill creates browser sessions that preserve authentication (cookies, local storage) across interactions, automatically solve CAPTCHAs, and record sessions for later review.
+通过Browserbase管理持久的云浏览器会话。该技能可以创建会话，这些会话在多次交互中保持认证状态（cookie、本地存储），自动解决CAPTCHA，并记录会话以供后续查看。
 
-## Agent Checklist (Be Proactive)
+## 代理检查清单（主动处理）
 
-- If `BROWSERBASE_API_KEY` or `BROWSERBASE_PROJECT_ID` is missing, **ask the user for them** (and tell them where to find them). Do not run Browserbase commands until both are configured.
-- If commands fail due to missing Python deps (ImportError for `browserbase` / `playwright`), run:
+- 如果缺少`BROWSERBASE_API_KEY`或`BROWSERBASE PROJECT_ID`，**请向用户询问**（并告知他们在哪里可以找到这些信息）。在配置完成之前，不要运行Browserbase命令。
+- 如果由于缺少Python依赖项（如`browserbase`或`playwright`导致导入错误），请运行：
   - `python3 {baseDir}/scripts/browserbase_manager.py install`
-  - Then retry the original command.
-- Ask the user what they want to persist and how they want to organize it:
-  - **Workspace per app/site** (isolation): `github`, `slack`, `stripe`
-  - **Workspace per task/project** (multi-site workflow): `invoice-run`, `lead-gen`, `expense-recon`
-- Workspaces persist:
-  - Login state via Browserbase **Contexts** (cookies + storage)
-  - Open tabs (URL + title snapshot) so you can restore where you left off
-- Prefer workspace commands (`create-workspace`, `start-workspace`, `resume-workspace`, `stop-workspace`) over raw session commands when the user wants the browser to stay open across chat turns.
-- Prefer direct interaction commands (`list-tabs`, `new-tab`, `switch-tab`, `close-tab`, `click`, `type`, `press`, `wait-for`, `go-back`, `go-forward`, `reload`, `read-page`) before falling back to `execute-js`.
-- Whenever a browser is opened (`start-workspace`, `resume-workspace`, or `create-session`), immediately share the human remote-control link:
-  - Prefer `human_handoff.share_url` from command output.
-  - Prefer `human_handoff.share_text` / `human_handoff.share_markdown` when replying to the user.
-  - Fallback to `human_control_url`.
-  - If missing, run `live-url` and share its `human_handoff.share_url`.
-- When closing, use `stop-workspace` (not `terminate-session`) so tabs are snapshotted and auth state is persisted.
+  - 然后重试原始命令。
+- 询问用户希望持久化哪些内容以及如何组织这些内容：
+  - **按应用/站点划分的工作区**（隔离）：`github`、`slack`、`stripe`
+  - **按任务/项目划分的工作区**（多站点工作流程）：`invoice-run`、`lead-gen`、`expense-recon`
+- 工作区会持久化以下内容：
+  - 通过Browserbase的**上下文**（cookie + 存储）保持登录状态
+  - 打开的标签页（URL + 标题快照），以便您可以从中断的地方继续浏览
+- 当用户希望浏览器在聊天轮次之间保持打开状态时，优先使用工作区命令（`create-workspace`、`start-workspace`、`resume-workspace`、`stop-workspace`），而不是原始的会话命令。
+- 在需要直接操作浏览器时，优先使用以下命令（`list-tabs`、`new-tab`、`switch-tab`、`close-tab`、`click`、`type`、`press`、`wait-for`、`go-back`、`go-forward`、`reload`、`read-page`），只有在必要时才使用`execute-js`。
+- 每当打开浏览器（`start-workspace`、`resume-workspace`或`create-session`）时，立即分享人类远程控制链接：
+  - 优先使用命令输出中的`human_handoff.share_url`。
+  - 回复用户时，优先使用`human_handoff.share_text`或`human_handoff.share_markdown`。
+  - 如果缺失，则使用`human_control_url`。
+  - 如果缺失，运行`live-url`并分享其`human_handoff.share_url`。
+- 关闭浏览器时，使用`stop-workspace`（而不是`terminate-session`），以便保存标签页快照和认证状态。
 
-## Prompt-Optimized Response Patterns
+## 优化提示的响应模式
 
-Use short, consistent responses so users always know next actions.
+使用简短、一致的响应，让用户始终知道下一步该做什么。
 
-When credentials are missing:
+当缺少凭据时：
 ```text
 I need your Browserbase credentials before I can open a browser.
 Please provide:
@@ -43,62 +43,62 @@ Please provide:
 2) BROWSERBASE_PROJECT_ID
 ```
 
-When browser is opened (session/workspace):
+当打开浏览器（会话/工作区）时：
 ```text
 Browser is ready.
 <human_handoff.share_text>
 I can keep working while you browse.
 ```
 
-When resuming an existing workspace:
+当恢复现有工作区时：
 ```text
 Reconnected to your existing workspace.
 <human_handoff.share_text>
 ```
 
-When live URL is temporarily unavailable:
+当实时URL暂时不可用时：
 ```text
 The remote-control URL is temporarily unavailable. I’ll retry now.
 ```
 
-## First-Time Setup
+## 首次设置
 
-### Step 1 — Get your Browserbase credentials
+### 第1步 — 获取您的Browserbase凭据
 
-1. Sign up at [browserbase.com](https://www.browserbase.com/) if you haven't already.
-2. Go to **Settings → API Keys** and copy your API key (starts with `bb_live_`).
-3. Go to **Settings → Project** and copy your Project ID (a UUID).
+1. 如果您还没有注册，请访问[browserbase.com](https://www.browserbase.com/)。
+2. 转到**设置 → API密钥**并复制您的API密钥（以`bb_live_`开头）。
+3. 转到**设置 → 项目**并复制您的项目ID（一个UUID）。
 
-If you have the API key but aren’t sure which Project ID to use, you can list projects:
+如果您有API密钥但不确定使用哪个项目ID，可以列出所有项目：
 
 ```bash
 export BROWSERBASE_API_KEY="bb_live_your_key_here"
 python3 {baseDir}/scripts/browserbase_manager.py list-projects
 ```
 
-### Step 2 — Install dependencies
+### 第2步 — 安装依赖项
 
-Install Python deps and Playwright Chromium (recommended):
+安装Python依赖项和Playwright Chromium（推荐）：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py install
 ```
 
-Manual alternative (pip/uv):
+手动替代方案（使用pip/uv）：
 
 ```bash
 cd {baseDir}/scripts && pip install -r requirements.txt
 python3 -m playwright install chromium
 ```
 
-### Step 3 — Set environment variables
+### 第3步 — 设置环境变量
 
 ```bash
 export BROWSERBASE_API_KEY="bb_live_your_key_here"
 export BROWSERBASE_PROJECT_ID="your-project-uuid-here"
 ```
 
-Or configure via OpenClaw's `skills.entries["browserbase-sessions"].env` in `~/.openclaw/openclaw.json` (JSON5). Because this skill sets `primaryEnv: BROWSERBASE_API_KEY`, you can also use `skills.entries["browserbase-sessions"].apiKey` for the API key:
+或者通过`~/.openclaw/openclaw.json`（JSON5）中的`skills.entries["browserbase-sessions"].env`进行配置。因为此技能设置了`primaryEnv: BROWSERBASE_API_KEY`，您也可以使用`skills.entries["browserbase-sessions"].apiKey`作为API密钥：
 
 ```json5
 {
@@ -116,72 +116,72 @@ Or configure via OpenClaw's `skills.entries["browserbase-sessions"].env` in `~/.
 }
 ```
 
-### Step 4 — Run the setup test
+### 第4步 — 运行设置测试
 
-This validates everything end-to-end (credentials, SDK, Playwright, API connection, and a live smoke test):
+这会端到端验证所有内容（凭据、SDK、Playwright、API连接以及实时测试）：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py setup --install
 ```
 
-You should see `"status": "success"` with all steps passing. If any step fails, the error message tells you exactly what to fix.
+如果所有步骤都通过，您应该会看到“status”: “success”。如果有任何步骤失败，错误信息会明确指出需要修复的问题。
 
-## Defaults
+## 默认设置
 
-Every session is created with these defaults to support research workflows:
+每个会话都使用以下默认设置来支持研究工作流程：
 
-- **Captcha solving: ON** — Browserbase automatically solves CAPTCHAs so login flows and protected pages work without manual intervention. Disable with `--no-solve-captchas`.
-- **Session recording: ON** — Browserbase records sessions (video in the Dashboard; rrweb events retrievable via API). Disable with `--no-record`.
-- **Auth persistence** — If you use a Context (or Workspace), auth state is persisted by default. Disable persistence with `--no-persist`.
+- **CAPTCHA解决：开启** — Browserbase会自动解决CAPTCHA，因此登录流程和受保护的页面无需手动干预。可以使用`--no-solve-captchas`来禁用。
+- **会话记录：开启** — Browserbase会记录会话（视频保存在仪表板中；可以通过API检索rrweb事件）。可以使用`--no-record`来禁用。
+- **认证持久化** — 如果您使用上下文（或工作区），认证状态将默认被持久化。可以使用`--no-persist`来禁用持久化。
 
-## Capabilities & Limitations (Be Explicit)
+## 功能与限制（明确说明）
 
-The agent can:
-- Create/inspect/terminate Browserbase sessions and contexts.
-- Keep a browser “open” across chat turns using workspaces (keep-alive sessions + restore tabs).
-- Persist login state across sessions via Browserbase Contexts (`persist=true`).
-- Restore your place by reopening the last saved set of open tabs (URL + title snapshot).
-- Provide a live debugger URL so the user can browse manually while the agent continues working.
-- Use interactive browser controls: list/open/switch/close tabs, click/type/press keys, wait for selectors/text/url states, go back/forward/reload, and read page text/html/links.
-- Take screenshots, run JavaScript, read cookies, fetch logs, and fetch rrweb recording events.
+代理可以：
+- 创建/检查/终止Browserbase会话和上下文。
+- 使用工作区在聊天轮次之间保持浏览器“打开”状态（保持会话活跃 + 恢复标签页）。
+- 通过Browserbase上下文（`persist=true`）在会话之间保持登录状态。
+- 通过重新打开最后保存的打开标签页（URL + 标题快照）来恢复浏览位置。
+- 提供实时调试器URL，以便用户在代理继续工作时可以手动浏览。
+- 使用交互式浏览器控制：列出/打开/切换/关闭标签页，点击/输入/按键，等待选择器/文本/URL状态，后退/前进/重新加载，以及阅读页面文本/HTML/链接。
+- 截取屏幕截图，运行JavaScript，读取cookie，获取日志和rrweb记录事件。
 
-The agent cannot:
-- Keep sessions running indefinitely (Browserbase enforces timeouts; max is 6 hours).
-- Restore full back/forward browser history (only open URLs are restored).
-- Reliably “see” manual actions the user takes in the live debugger unless the agent reconnects/snapshots.
-- Bypass MFA/SSO without user participation.
-- Download the Dashboard video via API (the API returns rrweb events, not a video file).
+代理无法：
+- 无限期地保持会话运行（Browserbase会设置超时；最长为6小时）。
+- 完整恢复浏览器的历史记录（仅恢复打开的URL）。
+- 除非代理重新连接或截取屏幕截图，否则无法可靠地“看到”用户在实时调试器中执行的操作。
+- 在没有用户参与的情况下绕过MFA/SSO。
+- 通过API下载仪表板视频（API返回的是rrweb事件，而不是视频文件）。
 
-## Available Commands
+## 可用命令
 
-All commands are run via the manager script:
+所有命令都通过管理器脚本执行：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py <command> [options]
 ```
 
-### Setup & Validation
+### 设置与验证
 
-Install deps (only needed once per environment):
+安装依赖项（每个环境只需安装一次）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py install
 ```
 
-Run the full setup test:
+运行完整的设置测试：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py setup --install
 ```
 
-### Workspaces (Recommended)
+### 工作区（推荐）
 
-Workspaces are the recommended way to keep a browser "open" while chatting and then pick up later. A workspace combines:
-- A Browserbase **Context** (persists cookies + local/session storage, so you stay logged in)
-- A local **tab snapshot** (URLs + titles) so tabs can be restored into the next session (note: this restores open URLs, not full back/forward browser history)
-- The current **active session id** so the agent can reconnect
+工作区是在聊天过程中保持浏览器“打开”状态并稍后继续使用的推荐方式。工作区包含：
+- 一个Browserbase **上下文**（持久化cookie + 本地/会话存储，因此您可以保持登录状态）
+- 一个本地的**标签页快照**（URLs + 标题），以便在下一个会话中恢复标签页（注意：这仅恢复打开的URL，而不是完整的浏览历史记录）
+- 当前的**活动会话ID**，以便代理可以重新连接
 
-#### Task workspaces (multi-site flows)
+#### 任务工作区（多站点流程）
 
-A single Browserbase Context is a browser profile, so it can keep you logged into **multiple sites at once**. For workflows like “do something on Site A, then do something on Site B”, create a **task workspace** and keep both sites open as tabs:
+单个Browserbase上下文是一个浏览器配置文件，因此它可以同时让您登录到**多个站点**。对于“在站点A上执行某些操作，然后在站点B上执行某些操作”之类的工作流程，创建一个**任务工作区**并将两个站点作为标签页打开：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-workspace --name invoice-run
@@ -189,9 +189,9 @@ python3 {baseDir}/scripts/browserbase_manager.py start-workspace --name invoice-
 python3 {baseDir}/scripts/browserbase_manager.py live-url --workspace invoice-run
 ```
 
-If you need account/cookie isolation (different logins, fewer cross-site side effects), use separate workspaces per app/site instead.
+如果您需要账户/cookie隔离（不同的登录，减少跨站副作用），请为每个应用/站点使用单独的工作区。
 
-Create and start a workspace:
+创建并启动工作区：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-workspace --name github
 python3 {baseDir}/scripts/browserbase_manager.py list-workspaces
@@ -200,55 +200,55 @@ python3 {baseDir}/scripts/browserbase_manager.py start-workspace --name github -
 # human_handoff.share_url (fallback: human_control_url / live_urls.debugger_url)
 ```
 
-Note: `start-workspace` performs a short “warm connect” via Playwright so the session doesn’t die from the 5-minute connect requirement, even if the user hasn’t opened the live debugger yet.
+注意：`start-workspace`会通过Playwright执行短暂的“预热连接”，即使用户尚未打开实时调试器，也会避免会话因5分钟的连接要求而终止。
 
-While the user is browsing in the live debugger, the agent can keep working. To resume later:
+当用户在实时调试器中浏览时，代理可以继续工作。要稍后恢复：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py resume-workspace --name github
 ```
 
-For long-running sessions (especially when the user is opening/closing tabs manually), take snapshots periodically:
+对于长时间运行的会话（特别是当用户手动打开/关闭标签页时），请定期获取快照：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py snapshot-workspace --name github
 ```
 
-To persist login + tabs when you are done, always stop via the workspace command:
+完成操作后，始终通过工作区命令停止会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name github
 ```
 
-To inspect what a workspace has saved (context id, active session id, tabs, history):
+要检查工作区保存的内容（上下文ID、活动会话ID、标签页、历史记录）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-workspace --name github
 ```
 
-Most commands accept `--workspace <name>` instead of `--session-id`:
+大多数命令都接受`--workspace <name>`而不是`--session-id`：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py navigate --workspace github --url "https://github.com/settings/profile"
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --workspace github --output /tmp/profile.png
 python3 {baseDir}/scripts/browserbase_manager.py execute-js --workspace github --code "document.title"
 ```
 
-### Context Management (for authentication persistence)
+### 上下文管理（用于认证持久化）
 
-Create a named context to store login state:
+创建一个命名上下文以存储登录状态：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-context --name github
 ```
 
-List all saved contexts:
+列出所有保存的上下文：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py list-contexts
 ```
 
-Delete a context (by name or ID):
+删除上下文（按名称或ID）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py delete-context --context-id github
 ```
 
-### Session Lifecycle
+### 会话生命周期
 
-Create a new session (captcha solving and recording enabled by default):
+创建新会话（默认启用CAPTCHA解决和记录）：
 ```bash
 # Basic session
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -271,25 +271,25 @@ python3 {baseDir}/scripts/browserbase_manager.py create-session \
   --viewport-height 720
 ```
 
-List all sessions:
+列出所有会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py list-sessions
 python3 {baseDir}/scripts/browserbase_manager.py list-sessions --status RUNNING
 ```
 
-Get session details:
+获取会话详情：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-session --session-id <id>
 ```
 
-Terminate a session:
+终止会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id <id>
 ```
 
-### Browser Automation
+### 浏览器自动化
 
-Navigate to a URL:
+导航到URL：
 ```bash
 # Navigate and get page title
 python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --url "https://example.com"
@@ -304,7 +304,7 @@ python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --ur
 python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --url "https://example.com" --screenshot /tmp/full.png --full-page
 ```
 
-Manage tabs:
+管理标签页：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py list-tabs --session-id <id>
 python3 {baseDir}/scripts/browserbase_manager.py new-tab --session-id <id> --url "https://example.org"
@@ -312,7 +312,7 @@ python3 {baseDir}/scripts/browserbase_manager.py switch-tab --session-id <id> --
 python3 {baseDir}/scripts/browserbase_manager.py close-tab --session-id <id> --tab-url-contains "example.org"
 ```
 
-Interact with the page:
+与页面交互：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py click --session-id <id> --selector "button[type='submit']"
 python3 {baseDir}/scripts/browserbase_manager.py type --session-id <id> --selector "input[name='email']" --text "user@example.com" --clear
@@ -320,59 +320,59 @@ python3 {baseDir}/scripts/browserbase_manager.py press --session-id <id> --key "
 python3 {baseDir}/scripts/browserbase_manager.py wait-for --session-id <id> --selector ".dashboard-ready" --timeout-ms 45000
 ```
 
-Control navigation state:
+控制导航状态：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py go-back --session-id <id>
 python3 {baseDir}/scripts/browserbase_manager.py go-forward --session-id <id>
 python3 {baseDir}/scripts/browserbase_manager.py reload --session-id <id>
 ```
 
-Read the current page:
+阅读当前页面：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py read-page --session-id <id> --max-text-chars 20000
 python3 {baseDir}/scripts/browserbase_manager.py read-page --session-id <id> --include-links --max-links 30
 python3 {baseDir}/scripts/browserbase_manager.py read-page --session-id <id> --include-html --max-html-chars 120000
 ```
 
-Take a screenshot of the current page (without navigating):
+截取当前页面的屏幕截图（不进行导航）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --session-id <id> --output /tmp/current.png
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --session-id <id> --output /tmp/full.png --full-page
 ```
 
-Execute JavaScript:
+执行JavaScript：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py execute-js --session-id <id> --code "document.title"
 ```
 
-Get cookies:
+获取cookie：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-cookies --session-id <id>
 ```
 
-All of the commands above also support `--workspace <name>` so the active workspace session is used automatically.
+上述所有命令也都支持`--workspace <name>`，以便自动使用当前活动的工作区会话。
 
-### Recordings, Logs & Debug
+### 录制、日志与调试
 
-Fetch rrweb recording events (session must be terminated first):
+获取rrweb记录事件（必须先终止会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id> --output /tmp/session.rrweb.json
 ```
 
-Get session logs:
+获取会话日志：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-logs --session-id <id>
 ```
 
-Get the live debug URL (for visual inspection of a running session):
+获取实时调试URL（用于查看正在运行的会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py live-url --session-id <id>
 # Share: human_handoff.share_url
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Workflow 1: Multi-session research with persistent login
+### 工作流程1：具有持久登录的多会话研究
 
 ```bash
 # 1. One-time: create a workspace for the site (creates a Browserbase Context + local state)
@@ -395,7 +395,7 @@ python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name myapp
 python3 {baseDir}/scripts/browserbase_manager.py resume-workspace --name myapp
 ```
 
-### Workflow 1b: Task workflow across multiple sites (persist tabs + logins)
+### 工作流程1b：跨多个站点的任务工作流程（持久化标签页+登录）
 
 ```bash
 # 1) Create a task workspace (one browser profile that can stay logged into multiple sites)
@@ -416,7 +416,7 @@ python3 {baseDir}/scripts/browserbase_manager.py snapshot-workspace --name lead-
 python3 {baseDir}/scripts/browserbase_manager.py stop-workspace --name lead-gen
 ```
 
-### Workflow 2: Screenshot documentation
+### 工作流程2：截图文档
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -425,7 +425,7 @@ python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --ur
 python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id <id>
 ```
 
-### Workflow 3: Record and share a walkthrough
+### 工作流程3：录制并分享操作过程
 
 ```bash
 # Session recording is ON by default
@@ -437,29 +437,29 @@ python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id 
 python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id> --output /tmp/walkthrough.rrweb.json
 ```
 
-## Important Notes
+## 重要说明
 
-- **Captcha solving is ON by default.** Browserbase handles CAPTCHAs automatically during login flows and page loads. Use `--no-solve-captchas` to disable.
-- **Recording is ON by default.** Video is available in the Browserbase Dashboard; `get-recording` fetches rrweb events (primary tab) for programmatic replay. Use `--no-record` to disable.
-- **Connection timeout**: 5 minutes to connect after creation before auto-termination.
-- **Keep-alive sessions** survive disconnections and must be explicitly terminated.
-- **Context persistence**: When a session was created with a context using `persist=true` (default), wait a few seconds after termination before creating a new session with the same context.
-- **Named contexts**: Use `--name` with `create-context` to save friendly names (e.g. `github`, `slack`). Use the name anywhere a context ID is expected.
-- **Workspace state**: Workspaces are stored locally under `~/.browserbase/workspaces/<name>.json` (or `BROWSERBASE_CONFIG_DIR/workspaces`). They include the context id, active session id, and the last saved tab snapshot.
-- **One context per site**: Use separate contexts for different authenticated sites.
-- **Avoid concurrent sessions on the same context**.
-- **Regions**: us-west-2 (default), us-east-1, eu-central-1, ap-southeast-1.
-- **Session timeout**: 60–21600 seconds (max 6 hours).
-- **Costs/limits**: Your Browserbase plan has limits (browser hours, proxy data, concurrency). Keep-alive sessions consume hours while running; terminate sessions and set reasonable `--timeout` values to control cost. Check your Browserbase dashboard for current quotas.
+- **CAPTCHA解决默认是开启的。** Browserbase在登录流程和页面加载期间自动处理CAPTCHA。可以使用`--no-solve-captchas`来禁用。
+- **记录默认是开启的。** 视频保存在Browserbase仪表板中；`get-recording`可以获取rrweb事件（主标签页）以供程序化回放。可以使用`--no-record`来禁用。
+- **连接超时**：创建后有5分钟的连接时间，之后会自动终止。
+- **保持会话活跃**：在断开连接后仍会保持会话状态，必须明确终止。
+- **上下文持久化**：如果使用`persist=true`创建会话，则在终止后等待几秒钟再使用相同的上下文创建新会话。
+- **命名上下文**：使用`--name`与`create-context`来保存友好的名称（例如`github`、`slack`）。在任何需要上下文ID的地方使用该名称。
+- **工作区状态**：工作区存储在`~/.browserbase/workspaces/<name>.json`（或`BROWSERBASE_CONFIG_DIR/workspaces`）中。它们包含上下文ID、活动会话ID和最后保存的标签页快照。
+- **每个站点一个上下文**：为不同的认证站点使用单独的上下文。
+- **避免在同一上下文中同时进行多个会话**。
+- **区域**：us-west-2（默认）、us-east-1、eu-central-1、ap-southeast-1。
+- **会话超时**：60–21600秒（最长6小时）。
+- **费用/限制**：您的Browserbase计划有使用限制（浏览器使用时间、代理数据、并发数）。保持会话活跃会消耗时间；终止会话并设置合理的`--timeout`值以控制费用。请查看Browserbase仪表板上的当前配额。
 
-## Error Handling
+## 错误处理
 
-All commands return JSON output. On error, the output includes an `"error"` key. Common errors:
-- `APIConnectionError`: Browserbase API unreachable
-- `RateLimitError`: Too many concurrent sessions for your plan
-- `APIStatusError`: Invalid parameters or authentication failure
-- Missing env vars: Set `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID`
+所有命令都会返回JSON输出。出现错误时，输出中包含一个“error”键。常见错误包括：
+- `APIConnectionError`：无法访问Browserbase API
+- `RateLimitError`：您的计划允许的并发会话数量过多
+- `APIStatusError`：参数无效或认证失败
+- 缺少环境变量：设置`BROWSERBASE_API_KEY`和`BROWSERBASE_PROJECT_ID`
 
-## Reference
+## 参考
 
-For full API details, read `{baseDir}/references/api-quick-ref.md`.
+有关完整的API详细信息，请阅读`{baseDir}/references/api-quick-ref.md`。

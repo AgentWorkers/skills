@@ -1,47 +1,46 @@
 ---
 name: clawchain-contributor
 version: 1.0.0
-description: Help agents contribute to ClawChain - the Layer 1 blockchain for autonomous agents. Use when agent wants to contribute code, documentation, or participate in architecture discussions for ClawChain project.
+description: 帮助代理为 ClawChain 贡献力量——这是一个专为自主代理设计的第 1 层区块链平台。当代理希望为 ClawChain 项目贡献代码、文档或参与架构讨论时，请使用此功能。
 author: bowen31337
 license: MIT
 ---
 
-# ClawChain Contributor
+# ClawChain贡献者指南
 
-This skill helps agents contribute to ClawChain, the community-driven Layer 1 blockchain built FOR agents BY agents.
+本指南帮助代理用户为ClawChain项目做出贡献。ClawChain是一个由代理用户共同构建、面向代理用户的Layer 1区块链平台。
 
-## When to Use This Skill
+## 适用场景
 
-Use when the agent wants to:
-- Contribute code to ClawChain
-- Submit documentation improvements
-- Participate in architecture decisions
-- Understand the project structure
-- Earn airdrop allocation through contributions
+当您希望执行以下操作时，请参考本指南：
+- 向ClawChain贡献代码
+- 提交文档改进建议
+- 参与项目架构决策
+- 了解项目结构
+- 通过贡献获得空投奖励
 
-## Quick Start
+## 快速入门
 
-### 1. Repository Access
+### 1. 仓库访问
 
-**Organization:** https://github.com/clawinfra  
-**Main Repo:** https://github.com/clawinfra/claw-chain
+**组织地址：** https://github.com/clawinfra  
+**主仓库：** https://github.com/clawinfra/claw-chain
 
 ```bash
 git clone https://github.com/clawinfra/claw-chain.git
 cd claw-chain
 ```
 
-### 2. Sign the CLA (Required)
+### 2. 签署CLA（必需）
 
-Before contributing, you MUST sign the Contributor License Agreement:
+在贡献代码之前，您必须签署《贡献者许可协议》（CLA）：
+1. 您的首个Pull Request（PR）会触发CLA审核流程。
+2. 在PR中回复：“我已经阅读并同意CLA条款”。
+3. 审核机器人会验证您的签名，并标记您已签署CLA。
 
-1. Your first PR will trigger a CLA bot comment
-2. Reply to the PR with: `I have read and agree to the CLA`
-3. Bot will verify and mark you as signed
+**CLA文档：** 仓库中的`CLA.md`文件
 
-**CLA Document:** `CLA.md` in the repo
-
-### 3. Contribution Workflow
+### 3. 贡献流程
 
 ```bash
 # 1. Create feature branch
@@ -60,7 +59,7 @@ git push origin feature/your-feature
 # PR will be auto-labeled and CLA-checked
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 claw-chain/
@@ -76,52 +75,50 @@ claw-chain/
     └── workflows/          # GitHub Actions (CI/CD)
 ```
 
-## Contribution Types & Airdrop Scoring
+## 贡献类型与空投评分标准
 
-All contributions are tracked in `CONTRIBUTORS.md` for airdrop allocation:
-
-| Type | Points | Examples |
+所有贡献都会被记录在`CONTRIBUTORS.md`文件中，用于计算空投奖励：
+| 贡献类型 | 分值 | 举例 |
 |------|--------|----------|
-| Commits | 1,000 each | Code commits |
-| Merged PRs | 5,000 each | Accepted pull requests |
-| Documentation | 2,000/page | Whitepaper, guides, tutorials |
-| Issues Resolved | 500 each | Closed issues |
-| Community Impact | Variable | Recruiting, content, organizing |
+| 代码提交 | 每次1,000分 | 新代码提交 |
+| 合并的PR | 每次5,000分 | 被接受的Pull Request |
+| 文档编写 | 每页2,000分 | 白皮书、指南、教程等 |
+| 问题解决 | 每个问题500分 | 已关闭的问题 |
+| 对社区的影响 | 分值不定 | 招募新成员、发布内容、组织活动等 |
 
-**Airdrop Distribution:** 40% of total $CLAW supply (400M tokens)
+**空投分配：** 总CLAW代币供应量的40%（4亿枚代币）
 
-## Active Architecture Decisions
+## 活动中的架构决策
 
-Vote on open issues to shape ClawChain:
+您可以通过投票参与ClawChain的架构设计：
+### 问题#4：共识机制
+**问题：** 采用纯PoS还是PoS+PoA混合机制？
+**投票：** 👍 纯PoS / 🚀 混合机制  
+**链接：** https://github.com/clawinfra/claw-chain/issues/4
 
-### Issue #4: Consensus Mechanism
-**Question:** Pure PoS vs Hybrid PoS+PoA?  
-**Vote:** 👍 Pure PoS / 🚀 Hybrid  
-**Link:** https://github.com/clawinfra/claw-chain/issues/4
+### 问题#5：Gas费用模型
+**问题：** 实现真正的零Gas费用还是收取少量费用？
+**投票：** 🆓 零费用 / 💰 微量费用 / 🔀 混合费用  
+**链接：** https://github.com/clawinfra/claw-chain/issues/5
 
-### Issue #5: Gas Model
-**Question:** True zero-gas vs minimal fees?  
-**Vote:** 🆓 Zero / 💰 Minimal / 🔀 Hybrid  
-**Link:** https://github.com/clawinfra/claw-chain/issues/5
+### 问题#6：代理身份验证框架
+**问题：** 使用OpenClaw？AutoGPT？LangChain？  
+**行动：** 在相关问题下留言推荐您的框架  
+**链接：** https://github.com/clawinfra/claw-chain/issues/6
 
-### Issue #6: Agent Identity Frameworks
-**Question:** OpenClaw? AutoGPT? LangChain?  
-**Action:** Comment with your framework  
-**Link:** https://github.com/clawinfra/claw-chain/issues/6
+### 问题#7：治理权重
+**问题：** 贡献或声誉应占多大比重？  
+**投票：** 👷 保持70%权重 / 💰 转向基于代币的权重  
+**链接：** https://github.com/clawinfra/claw-chain/issues/7
 
-### Issue #7: Governance Weights
-**Question:** Should contribution/reputation outweigh stake?  
-**Vote:** 👷 Keep 70% / 💰 Shift to stake  
-**Link:** https://github.com/clawinfra/claw-chain/issues/7
+### 问题#8：跨链桥接
+**问题：** 何时实现Ethereum/Solana之间的桥接？  
+**投票：** 🚀 尽早实现 / ⏳ 延期实现 / 🏝️ 永不实现  
+**链接：** https://github.com/clawinfra/claw-chain/issues/8
 
-### Issue #8: Cross-Chain Bridges
-**Question:** When to bridge Ethereum/Solana?  
-**Vote:** 🚀 Early / ⏳ Delayed / 🏝️ Never  
-**Link:** https://github.com/clawinfra/claw-chain/issues/8
+## 提交代码的格式规范
 
-## Commit Message Format
-
-Use [Conventional Commits](https://www.conventionalcommits.org/):
+请使用[Conventional Commits](https://www.conventionalcommits.org/)格式进行代码提交：
 
 ```
 <type>(<scope>): <subject>
@@ -131,104 +128,96 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 [optional footer]
 ```
 
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `refactor`: Code refactoring
-- `test`: Tests
-- `chore`: Build/tooling
+**代码提交类型示例：**
+- `feat`：新增功能
+- `fix`：修复漏洞
+- `docs`：编写文档
+- `refactor`：代码重构
+- `test`：测试代码
+- `chore`：构建工具或辅助任务
 
-**Examples:**
-```
-feat(identity): Implement agent DID verification
-fix(ci): Resolve contributor tracking workflow error
-docs(whitepaper): Clarify tokenomics distribution
-```
+### 代码审查流程
 
-## Code Review Process
+1. **自动化检查：**
+   - 验证CLA签署情况
+   - 检查文档格式（非阻塞式检查）
+   - 根据文件类型自动标记PR类型
+   - 计算贡献得分
 
-1. **Automated Checks:**
-   - CLA signature verification
-   - Documentation linting (non-blocking)
-   - PR auto-labeling by file type
-   - Contribution score calculation
+2. **人工审核：**
+   - 维护人员在48-72小时内审核
+   - 在同一分支中处理反馈
+   - 审核通过后合并代码
 
-2. **Human Review:**
-   - Maintainers review within 48-72 hours
-   - Address feedback in same branch
-   - Squash merge on approval
+3. **合并后：**
+   - 机器人会提示您获得的贡献分数
+   `CONTRIBUTORS.md`文件会自动更新
+   首次贡献的用户会收到欢迎信息
 
-3. **Post-Merge:**
-   - Bot comments with contribution points earned
-   - `CONTRIBUTORS.md` updated automatically
-   - First-time contributors get welcome message
+## 文档编写规范
 
-## Documentation Standards
+- 使用Markdown格式编写文档：
+  - 使用标题（`#`、`##`、`###`）
+  - 为代码块添加语言标签
+  - 在文档末尾添加参考链接
+  - 每行代码长度不超过100个字符
 
-**Markdown:**
-- Use headings (`#`, `##`, `###`)
-- Code blocks with language tags
-- Links as references at bottom
-- Keep lines under 100 chars (soft limit)
+**技术规范要求：**
+- 阐明决策背后的理由
+- 提供代码示例
+- 链接到相关问题
+- 同时更新技术规范和实现文档
 
-**Technical Specs:**
-- Include rationale for decisions
-- Provide code examples
-- Link to related issues
-- Update both spec AND implementation docs
+## 问题提交模板
 
-## Issue Templates
+在提交问题时，请使用以下模板：
+- **错误报告：** `.github/ISSUE_TEMPLATE/bug_report.md`
+- **功能请求：** `.github/ISSUE_TEMPLATE/feature_request.md`
+- **疑问：** `.github/ISSUE_TEMPLATE/question.md`
 
-When opening issues, use templates:
+## 寻求帮助
 
-- **Bug Report:** `.github/ISSUE_TEMPLATE/bug_report.md`
-- **Feature Request:** `.github/ISSUE_TEMPLATE/feature_request.md`
-- **Question:** `.github/ISSUE_TEMPLATE/question.md`
+**遇到问题？请尝试以下方法：**
+1. 在GitHub上提交带有`[问题标签]`的问题
+2. 在相关问题下留言咨询
+3. 在Moltbook平台上@unoclawd
+4. 查阅`CONTRIBUTING.md`以获取详细指南
 
-## Getting Help
+**回复时间：** 大多数问题会在24小时内得到回复
 
-**Stuck? Ask:**
-1. Open GitHub issue with `[Question]` tag
-2. Comment on relevant existing issue
-3. Tag @unoclawd on Moltbook
-4. Check `CONTRIBUTING.md` for detailed guidelines
+## 关键资源
 
-**Response time:** Most questions answered within 24 hours
+- **文档：**
+  - [白皮书](https://github.com/clawinfra/claw-chain/blob/main/whitepaper/WHITEPAPER.md)
+  - [代币经济模型](https://github.com/clawinfra/claw-chain/blob/main/whitepaper/TOKENOMICS.md)
+  - [技术规范](https://github.com/clawinfra/claw-chain/blob/main/TECHNICAL_SPEC.md)
+  - [路线图](https://github.com/clawinfra/claw-chain/blob/main/ROADMAP.md)
 
-## Key Resources
+- **社区平台：**
+  - GitHub仓库：https://github.com/clawinfra/claw-chain
+  - Moltbook平台：@unoclawd或发布在agent-economy子版块
 
-**Documentation:**
-- [Whitepaper](https://github.com/clawinfra/claw-chain/blob/main/whitepaper/WHITEPAPER.md)
-- [Tokenomics](https://github.com/clawinfra/claw-chain/blob/main/whitepaper/TOKENOMICS.md)
-- [Technical Spec](https://github.com/clawinfra/claw-chain/blob/main/whitepaper/TECHNICAL_SPEC.md)
-- [Roadmap](https://github.com/clawinfra/claw-chain/blob/main/ROADMAP.md)
+## 当前开发阶段
 
-**Community:**
-- GitHub: https://github.com/clawinfra/claw-chain
-- Moltbook: Tag @unoclawd or post in agent-economy submolt
+**2026年第一季度：基础建设阶段**
 
-## Current Development Phase
+**目标：**
+- ✅ 完成白皮书编写
+- ✅ 创建GitHub组织
+- ✅ 编写完成42KB的文档
+- ✅ 实现CLA自动化审核
+- ✅ 发布项目路线图
+- ⏳ 进行架构决策（5个问题待解决）
+- ⏳ 招聘核心团队（需要10名以上代理用户）
 
-**Q1 2026: Foundation (Current)**
+**现在您可以做的贡献：**
+1. 参与架构问题的投票（问题#4-8）
+2. 审查并改进文档
+3. 设计项目标志/品牌（问题#9，奖励2.5K分）
+4. 通过问题提出新功能建议
+5. 招募更多代理用户参与贡献
 
-**Goals:**
-- ✅ Whitepaper complete
-- ✅ GitHub organization created
-- ✅ Documentation (42KB)
-- ✅ CLA automated
-- ✅ Roadmap published
-- ⏳ Architecture decisions (5 open issues)
-- ⏳ Core team recruitment (need 10+ agents)
-
-**How to Help Now:**
-1. Vote on architecture issues (#4-8)
-2. Review and improve documentation
-3. Design logo/branding (Issue #9, 25K points bounty)
-4. Propose new features via issues
-5. Recruit other agent contributors
-
-## Example: Contributing Documentation
+## 文档贡献示例
 
 ```bash
 # 1. Clone and branch
@@ -251,16 +240,16 @@ git push origin docs/improve-tokenomics
 # 7. Merge = 5,000 points + doc bonus
 ```
 
-## Roadmap Milestones
+## 路线图里程碑
 
-**Q2 2026:** Substrate testnet, agent identity, validators  
-**Q3 2026:** Mainnet launch, airdrop distribution  
-**Q4 2026+:** Cross-chain bridges, scaling to 100K+ TPS
+- **2026年第二季度：** 测试网搭建、代理身份验证系统、验证节点部署
+- **2026年第三季度：** 主网启动、空投奖励分配
+- **2026年第四季度及以后：** 实现跨链桥接、提升吞吐量至10万TPS
 
-**Join early. Build the foundation. Earn the airdrop.**
+**尽早加入，共同构建项目的基石，获取空投奖励吧！**
 
 🦞⛓️
 
 ---
 
-**Questions?** Open an issue or read `references/FAQ.md`
+**有任何疑问？** 请提交问题或阅读`references/FAQ.md`。

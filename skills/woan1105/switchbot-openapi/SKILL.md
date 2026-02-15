@@ -1,77 +1,77 @@
 ---
 name: switchbot-openapi
-description: Control and query SwitchBot devices using the official OpenAPI (v1.1). Use when the user asks to list SwitchBot devices, get device status, or send commands (turn on/off, press, set mode, lock/unlock, set temperature, curtain open %, etc.). Requires SWITCHBOT_TOKEN and SWITCHBOT_SECRET.
+description: 使用官方的 OpenAPI (v1.1) 来控制和查询 SwitchBot 设备。当用户需要列出所有 SwitchBot 设备、获取设备状态或发送命令（如开关设备、执行特定操作、设置模式、锁定/解锁设备、调节温度、控制窗帘开合等）时，可以使用该接口。使用此功能需要提供 `SWITCHBOT_TOKEN` 和 `SWITCHBOT_SECRET` 这两个密钥。
 ---
 
-# SwitchBot OpenAPI Skill
+# SwitchBot OpenAPI 技能
 
-This skill equips the agent to operate SwitchBot devices via HTTPS requests to the official OpenAPI. It includes ready-to-run scripts and curl templates; use these instead of re-deriving the HMAC signature each time.
+该技能使代理能够通过 HTTPS 请求访问官方 OpenAPI 来操作 SwitchBot 设备。它提供了可直接使用的脚本和 curl 模板；请使用这些脚本，而无需每次都重新计算 HMAC 签名。
 
-## Quick Start (Operator)
+## 快速入门（操作员）
 
-1) Set environment variables in the OpenClaw Gateway/container:
-- SWITCHBOT_TOKEN: your OpenAPI token
-- SWITCHBOT_SECRET: your OpenAPI secret
-- SWITCHBOT_REGION (optional): default `global` (api.switch-bot.com). Options: `global`, `na`, `eu`, `jp`.
+1) 在 OpenClaw Gateway/容器中设置环境变量：
+- `SWITCHBOT_TOKEN`：您的 OpenAPI 令牌
+- `SWITCHBOT_SECRET`：您的 OpenAPI 密钥
+- `SWITCHBOT_REGION`（可选）：默认为 `global`（api.switch-bot.com）。可选值：`global`、`na`、`eu`、`jp`。
 
-2) Test a call (list devices):
-- Bash: `scripts/list_devices.sh`
-- Node: `node scripts/switchbot_cli.js list`
+2) 测试调用（列出设备）：
+- Bash：`scripts/list_devices.sh`
+- Node.js：`node scripts/switchbot_cli.js list`
 
-3) Common tasks:
-- Get a device status: `node scripts/switchbot_cli.js status <deviceId>`
-- Turn on: `node scripts/switchbot_cli.js cmd <deviceId> turnOn`
-- Turn off: `node scripts/switchbot_cli.js cmd <deviceId> turnOff`
-- Press (bot): `node scripts/switchbot_cli.js cmd <deviceId> press`
-- Curtain 50%: `node scripts/switchbot_cli.js cmd <deviceId> setPosition --pos 50`
-- Lock/Unlock (Lock): `node scripts/switchbot_cli.js cmd <deviceId> lock` / `unlock`
+3) 常见任务：
+- 获取设备状态：`node scripts/switchbot_cli.js status <deviceId>`
+- 开启设备：`node scripts/switchbot_cli.js cmd <deviceId> turnOn`
+- 关闭设备：`node scripts/switchbot_cli.js cmd <deviceId> turnOff`
+- 按下设备上的按钮：`node scripts/switchbot_cli.js cmd <deviceId> press`
+- 将窗帘拉至 50% 位置：`node scripts/switchbot_cli.js cmd <deviceId> setPosition --pos 50`
+- 锁定/解锁设备：`node scripts/switchbot_cli.js cmd <deviceId> lock` / `unlock`
 
-## API Notes (concise)
+## API 说明（简述）
 
-Base URL by region:
-- global: https://api.switch-bot.com
-- na:     https://api.switch-bot.com
-- eu:     https://api.switch-bot.com
-- jp:     https://api.switch-bot.com
+根据区域划分的基地址：
+- `global`：https://api.switch-bot.com
+- `na`：https://api.switch-bot.com
+- `eu`：https://api.switch-bot.com
+- `jp`：https://api.switch-bot.com
 
-Use path prefix `/v1.1`.
+使用路径前缀 `/v1.1`。
 
-Headers (required):
-- Authorization: <SWITCHBOT_TOKEN>
-- sign: HMAC-SHA256 of (token + timestamp + nonce) using SECRET, Base64-encoded
-- t: milliseconds epoch as string
-- nonce: random UUID
-- Content-Type: application/json
+必需的请求头：
+- `Authorization`：`<SWITCHBOT_TOKEN>`
+- `sign`：使用 `SECRET` 对 `(token + timestamp + nonce)` 计算出的 HMAC-SHA256 值，并进行 Base64 编码
+- `t`：以字符串形式表示的毫秒级时间戳
+- `nonce`：随机生成的 UUID
+- `Content-Type`：`application/json`
 
-Key endpoints:
-- GET /v1.1/devices
-- GET /v1.1/devices/{deviceId}/status
-- POST /v1.1/devices/{deviceId}/commands
-  - body: { "command": "turnOn|turnOff|press|lock|unlock|setPosition|setTemperature|setMode|setVolume", "parameter": "<string>", "commandType": "command" }
-- Scenes (fallback when a model has no public commands):
-  - GET /v1.1/scenes
-  - POST /v1.1/scenes/{sceneId}/execute
+主要 API 端点：
+- `GET /v1.1/devices`：列出所有设备
+- `GET /v1.1/devices/{deviceId}/status`：获取设备的状态
+- `POST /v1.1/devices/{deviceId}/commands`：向设备发送命令
+  - 请求体：`{"command": "turnOn|turnOff|press|lock|unlock|setPosition|setTemperature|setMode|setVolume", "parameter": "<string>", "commandType": "command"}`
+- `scenes`：当设备模型没有公开命令时，可以使用此 API 来执行场景操作
+  - `GET /v1.1/scenes`：列出所有可用场景
+  - `POST /v1.1/scenes/{sceneId}/execute`：执行特定场景
 
-Notes on limitations:
-- Some models (e.g., certain Robot Vacuum lines) do NOT expose direct commands in OpenAPI v1.1. When a command returns {statusCode:160, message:"unknown command"}, create a Scene in the SwitchBot app (e.g., "Vacuum Start") and execute it via the Scenes API.
+注意事项：
+- 某些设备模型（例如某些 Robot Vacuum 系列）在 OpenAPI v1.1 中不提供直接的可执行命令。如果收到响应 `{statusCode: 160, message: "unknown command"}`，请在 SwitchBot 应用中创建一个对应的场景（例如 “Vacuum Start”），并通过 Scenes API 来执行该场景。
 
-For command parameters, see references/commands.md. Scenes usage examples are in references/examples.md.
+有关命令参数的详细信息，请参阅 `references/commands.md`。场景使用的示例请参见 `references/examples.md`。
 
-## How the Agent Should Use This Skill
+## 代理应如何使用此技能
 
-- Prefer running the provided scripts. They compute signatures and handle retries.
-- Preflight guard: the CLI checks device capabilities before sending commands. For Bluetooth-class devices (e.g., Bot/Lock/Curtain), it requires `enableCloudService=true` and a non-empty `hubDeviceId`. If missing, it aborts with a clear fix (bind a Hub and enable Cloud Services in the SwitchBot app).
-- If environment variables are missing, ask the user to provide/define them securely (do not log secrets).
-- For sensitive actions (e.g., unlock), require explicit confirmation and optionally a one-time code if the user enables it.
-- On errors with code 190/TokenInvalid or 100/Unauthorized: re-check token/secret, time drift, or signature composition.
+- 建议使用提供的脚本，因为它们会自动计算签名并处理重试逻辑。
+- 在发送命令之前，CLI 会先检查设备的功能。对于支持蓝牙功能的设备（如 Bot、Lock、Curtain），需要设置 `enableCloudService=true` 且 `hubDeviceId` 不为空；如果这些参数缺失，系统会提示用户进行相应的设置（在 SwitchBot 应用中绑定 Hub 并启用云服务）。
+- 如果环境变量缺失，应要求用户安全地提供或定义这些变量（切勿记录敏感信息）。
+- 对于需要授权的操作（如解锁），应获取用户的明确确认；如果用户启用了二次验证功能，还可以要求输入一次性验证码。
+- 如果遇到代码为 190（TokenInvalid）或 100（Unauthorized）的错误，请重新检查令牌/密钥的有效性、时间是否准确，或检查签名是否正确生成。
 
-## Files
+## 相关文件：
 
-- scripts/switchbot_cli.js — Node CLI for list/status/commands
-- scripts/list_devices.sh — curl listing
-- scripts/get_status.sh — curl status
-- scripts/send_command.sh — curl command
-- references/commands.md — parameters for common devices
-- references/examples.md — example invocations and JSON outputs
+- `scripts/switchbot_cli.js`：用于列出设备状态和发送命令的 Node.js CLI 工具
+- `scripts/list_devices.sh`：用于列出所有设备的 curl 命令
+- `scripts/get_status.sh`：用于获取设备状态的 curl 命令
+- `scripts/send_command.sh`：用于发送命令的 curl 命令
+- `references/commands.md`：常见设备的命令参数说明
+- `references/examples.md`：命令使用的示例及 JSON 输出格式
 
-Keep this SKILL.md lean; consult references/ for details.
+请保持此 SKILL.md 文件的简洁性；如需更多详细信息，请参阅相关参考文档。

@@ -1,52 +1,59 @@
 ---
 name: pest-disease-tracker
-description: Track garden pests and diseases with treatments. Identify problems, track treatments, and monitor effectiveness. Use when dealing with garden pests, plant diseases, or treatment planning. Security: file exports restricted to safe directories. Perfect for home gardeners and small farmers managing plant health.
+description: **跟踪花园害虫和病害并实施相应的防治措施**  
+该工具可用于识别问题、记录防治过程以及监测防治效果，适用于处理花园害虫、植物病害或制定防治计划的情况。  
+
+**安全性说明**：  
+文件导出功能仅限于安全目录，确保数据不被未经授权的访问者获取。  
+
+**适用人群**：  
+非常适合家庭园艺爱好者及小型农场主，帮助他们有效管理植物的健康状况。
 ---
 
-# Pest & Disease Tracker
+# 害虫与疾病追踪器
 
-Track and manage garden pests and diseases with treatment tracking.
+用于追踪和管理花园中的害虫及疾病，并记录相应的防治措施。
 
-## Quick Start
+## 快速入门
 
-### Add a pest or disease
+### 添加害虫或疾病
 ```bash
 pest_tracker.py add --type "pest" --name "aphids" --plants "tomatoes,peppers"
 ```
 
-### Record treatment
+### 记录防治措施
 ```bash
 pest_tracker.py treat "<id>" --method "<method>" --product "<product>" --notes "<notes>"
 ```
 
-### List all issues
+### 列出所有问题
 ```bash
 pest_tracker.py list
 ```
 
-### Show problem details
+### 查看问题详情
 ```bash
 pest_tracker.py show "<id>"
 ```
 
-### Search issues
+### 搜索问题
 ```bash
 pest_tracker.py search "<query>"
 ```
 
-### Get treatment recommendations
+### 获取防治建议
 ```bash
 pest_tracker.py recommend "<problem>"
 ```
 
-### Export data
+### 导出数据
 ```bash
 pest_tracker.py export "<output_file>"
 ```
 
-## Usage Patterns
+## 使用场景
 
-### For pest identification and tracking
+### 害虫识别与追踪
 ```bash
 # Add pest sightings
 pest_tracker.py add --type "pest" --name "aphids" --plants "tomatoes" --severity "moderate"
@@ -61,7 +68,7 @@ pest_tracker.py treat <id> --method "spray" --product "neem oil" --notes "Apply 
 pest_tracker.py treat <id> --method "natural" --product "ladybugs" --notes "Released 100 ladybugs"
 ```
 
-### For disease management
+### 疾病管理
 ```bash
 # Add diseases
 pest_tracker.py add --type "disease" --name "early blight" --plants "tomatoes" --severity "critical"
@@ -75,7 +82,7 @@ pest_tracker.py recommend "early blight"
 pest_tracker.py treat <id> --method "remove" --product "fungicide" --status "effective"
 ```
 
-### For preventive planning
+### 预防性规划
 ```bash
 # Document common issues in your garden
 pest_tracker.py add --type "pest" --name "cucumber beetles" --plants "cucumbers,melons" --severity "low" --notes "Prevent with row covers"
@@ -85,63 +92,63 @@ pest_tracker.py recommend "cucumber beetles"
 # Output: Row covers, beneficial nematodes, crop rotation
 ```
 
-## Problem Types
+## 问题类型
 
-### Common Pests
-- **Aphids** - Small sap-suckers, distort new growth
-- **Slugs** - Eat leaves, leave slime trails
-- **Caterpillars** - Eat foliage and fruit
-- **Cucumber Beetles** - Chew leaves, spread wilt disease
-- **Japanese Beetles** - Skeletonize leaves
-- **Squash Bugs** - Pierce stems, cause wilting
-- **Spider Mites** - Webbing, yellow stippling
-- **Thrips** - Scarring, distorted growth
-- **Whiteflies** - Yellow leaves, sticky honeydew
+### 常见害虫
+- **蚜虫**：小型吸汁害虫，会导致新枝条变形
+- **蛞蝓**：啃食叶片，并留下黏液痕迹
+- **毛虫**：吃掉叶片和果实
+- **黄瓜甲虫**：啃食叶片并传播枯萎病
+- **日本甲虫**：使叶片变成网状
+- **南瓜虫**：刺穿茎部，导致植物枯萎
+- **红蜘蛛**：在叶片上结网，并导致叶片出现黄色斑点
+- **蓟马**：在叶片上留下疤痕，影响生长
+- **白粉虱**：使叶片变黄，并分泌黏性蜜露
 
-### Common Diseases
-- **Early Blight** - Dark spots on tomatoes
-- **Late Blight** - White fuzzy growth
-- **Powdery Mildew** - White powdery coating
-- **Downy Mildew** - Yellow patches, purple growth
-- **Blossom End Rot** - Blossoms fall off
-- **Verticillium Wilt** - Plants wilt and die
-- **Bacterial Spot** - Water-soaked spots
-- **Anthracnose** - Sunken lesions
+### 常见疾病
+- **早疫病**：番茄叶片上出现黑色斑点
+- **晚疫病**：叶片上出现白色绒毛状物
+- **白粉病**：叶片上覆盖白色粉末
+- **霜霉病**：叶片上出现黄色斑块和紫色霉斑
+- **花端腐烂**：花朵脱落
+- **立枯病**：植物枯萎死亡
+- **细菌性斑点病**：叶片上出现水渍状斑点
+- **炭疽病**：叶片上出现凹陷性病斑
 
-## Treatment Recommendations
+## 防治建议
 
-### Organic/Natural Treatments
-- **Neem Oil** - Broad-spectrum insecticide, safe for beneficials
-- **Insecticidal Soap** - Kills soft-bodied insects on contact
-- **Diatomaceous Earth** - Mechanical insect control
-- **Bacillus thuringiensis** - Bt for caterpillars
-- **Copper Fungicide** - Organic disease control
-- **Sulfur Fungicide** - Powdery mildew control
-- **Compost Tea** - Boosts plant immunity
-- **Beneficial Insects** - Ladybugs, lacewings, parasitic wasps
-- **Barriers** - Row covers, collars, netting
+### 有机/自然防治方法
+- **印楝油**：广谱杀虫剂，对有益昆虫安全
+- **杀虫皂**：接触性杀虫剂，可杀死软体昆虫
+- **硅藻土**：物理性防治方法
+- **苏云金杆菌**：针对毛虫的生物防治剂
+- **铜基杀菌剂**：用于防治真菌病
+- **硫磺杀菌剂**：用于防治白粉病
+- **堆肥茶**：增强植物免疫力
+- **有益昆虫**：瓢虫、草蛉、寄生蜂
+- **物理屏障**：使用防虫罩、防护圈、网罩
 
-### Chemical Treatments
-- **Pyrethrin** - Synthetic insecticide
-- **Imidacloprid** - Systemic insecticide
-- **Chlorothalonil** - Broad-spectrum fungicide
-- **Mancozeb** - Multi-site fungicide
-- **Captan** - Seed treatment and fungicide
+### 化学防治方法
+- **除虫菊酯**：合成杀虫剂
+- **吡虫啉**：内吸性杀虫剂
+- **氯噻酮**：广谱杀菌剂
+- **代森锰锌**：多效杀菌剂
+- **代森锌**：用于种子处理和防治真菌病
 
-**Always follow label directions and safety precautions.**
+**请务必遵循产品标签上的使用说明和安全注意事项。**
 
-## Severity Levels
+## 问题严重程度
 
-| Level | Description | Action Timeline |
-|-------|-------------|-----------------|
-| **low** | Minor annoyance, limited damage | Treat within 7 days |
-| **moderate** | Noticeable damage, spreading | Treat within 3-5 days |
-| **high** | Significant damage, severe impact | Treat within 1-2 days |
-| **critical** | Plant death or total crop loss | Treat immediately |
+| 严重程度 | 描述 | 处理时间表 |
+|---------|---------|-----------|
+| **轻微** | 仅造成轻微困扰，损害有限 | 7天内处理 |
+| **中等** | 损害明显，且正在扩散 | 3-5天内处理 |
+| **严重** | 损害严重，影响较大 | 1-2天内处理 |
+| **危急** | 植物死亡或作物完全损失 | 立即处理 |
 
-## Examples
+## 示例
 
-### Aphid outbreak on tomatoes
+### 番茄上的蚜虫爆发
 ```bash
 # Add the problem
 pest_tracker.py add --type "pest" --name "aphids" --plants "tomatoes" --severity "high" \
@@ -156,7 +163,7 @@ pest_tracker.py treat <id> --method "spray" --product "neem oil" \
   --notes "Spray every 2-3 days for 2 weeks, apply in evening"
 ```
 
-### Early blight on tomatoes
+### 番茄上的早疫病
 ```bash
 # Add disease
 pest_tracker.py add --type "disease" --name "early blight" --plants "tomatoes" --severity "critical" \
@@ -171,7 +178,7 @@ pest_tracker.py treat <id> --method "remove" --product "copper fungicide" \
   --notes "Applied fungicide, removed worst leaves, spaced plants for airflow"
 ```
 
-### Slug problem on lettuce
+### 生菜上的蛞蝓问题
 ```bash
 # Add pest
 pest_tracker.py add --type "pest" --name "slugs" --plants "lettuce,hostas" --severity "moderate" \
@@ -186,60 +193,60 @@ pest_tracker.py treat <id> --method "traps" --product "beer traps" \
   --notes "Set up 5 beer traps around bed, check daily"
 ```
 
-## Search Features
+## 搜索功能
 
-- Search by problem name
-- Filter by type (pest/disease)
-- Search by affected plants
-- View treatment history
-- Track treatment effectiveness
+- 按问题名称搜索
+- 按类型（害虫/疾病）过滤
+- 按受影响植物搜索
+- 查看防治历史
+- 跟踪防治效果
 
-## Security
+## 安全性
 
-### Path Validation
-The `export` function validates output paths to prevent malicious writes:
-- ✅ Allowed: `~/.openclaw/workspace/`, `/tmp/`, and home directory
-- ❌ Blocked: System paths (`/etc/`, `/usr/`, `/var/`, etc.)
-- ❌ Blocked: Sensitive dotfiles (`~/.bashrc`, `~/.ssh`, etc.)
+### 路径验证
+`export`函数会验证输出路径，防止恶意写入：
+- ✅ 允许的路径：`~/.openclaw/workspace/`、`/tmp/` 和用户主目录
+- ❌ 禁止的路径：系统路径（`/etc/`、`/usr/`、`/var/` 等）
+- ❌ 禁止的路径：敏感文件（`~/.bashrc`、`~/.ssh` 等）
 
-## Data Storage
+## 数据存储
 
-- Pest data stored in: `~/.openclaw/workspace/pest_tracker_db.json`
-- Each problem tracks: type, name, affected plants, severity, treatments, status
-- Treatment history includes: method, product, date, effectiveness, notes
-- JSON format makes it easy to backup or migrate
+- 害虫数据存储在：`~/.openclaw/workspace/pest_tracker_db.json`
+- 每个问题记录的信息包括：类型、名称、受影响植物、严重程度、防治措施、状态
+- 防治历史包括：方法、产品名称、日期、效果、备注
+- 数据采用JSON格式，便于备份或迁移
 
-## Best Practices
+## 最佳实践
 
-1. **Identify early** - Treat problems before they spread
-2. **Monitor regularly** - Check plants daily during growing season
-3. **Use IPM** - Integrated Pest Management combines methods for best results
-4. **Document treatments** - Track what worked and what didn't
-5. **Prevent first** - Barriers and beneficials reduce need for treatments
-6. **Rotate treatments** - Prevent pest resistance
-7. **Follow labels** - Chemical treatments need proper application
-8. **Improve conditions** - Many problems thrive in stressed plants
+1. **及早识别**：在问题扩散前进行处理
+2. **定期监测**：生长季节每天检查植物
+3. **采用综合防治方法**：结合多种方法以达到最佳效果
+4. **记录防治措施**：记录哪些方法有效，哪些无效
+5. **预防为主**：使用物理屏障和有益昆虫减少防治需求
+6. **轮换使用防治方法**：防止害虫产生抗药性
+7. **严格按照标签说明使用化学药剂**  
+8. **改善植物生长环境**：许多害虫在植物生长不良的情况下更容易滋生
 
-## Prevention Tips
+## 预防技巧
 
-### Prevent Pests
-- **Crop rotation** - Breaks pest life cycles
-- **Barriers** - Row covers, netting, collars
-- **Beneficial insects** - Ladybugs, lacewings, praying mantises
-- **Clean garden** - Remove debris that harbors pests
-- **Companion planting** - Repel pests with specific plants
+### 预防害虫
+- **轮作**：打破害虫的生命周期
+- **使用物理屏障**：防虫罩、网罩、防护圈
+- **引入有益昆虫**：如瓢虫、草蛉、螳螂
+- **保持花园清洁**：清除可能藏匿害虫的杂物
+- **合理种植**：通过伴生种植驱赶害虫
 
-### Prevent Diseases
-- **Water correctly** - Avoid wetting foliage
-- **Improve airflow** - Space plants properly, prune regularly
-- **Clean tools** - Disinfect between plants
-- **Use disease-resistant varieties** - When available
-- **Sanitize soil** - Solarization, crop rotation
+### 预防疾病
+- **正确浇水**：避免叶片过湿
+- **改善通风**：合理间距种植，定期修剪
+- **清洁工具**：在处理不同植物之间对工具进行消毒
+- **选择抗病品种**：如果可能的话
+- **土壤消毒**：采用太阳能消毒或轮作等方法
 
-## Related Skills
+## 相关工具
 
-- **plant-tracker** - Track individual plants and care schedules
-- **seasonal-planting-guide** - What to plant when, by zone
-- **garden-layout-planner** - Design gardens with companion planting
+- **植物追踪器**：用于追踪单个植物及其护理计划
+- **季节性种植指南**：根据地区推荐种植时间
+- **花园布局规划器**：帮助设计合理的种植布局
 
-Use together for complete garden management!
+将这些工具结合使用，实现全面的花园管理！

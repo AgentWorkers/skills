@@ -1,11 +1,11 @@
 ---
 name: glab-version
-description: Display glab CLI version information and build details. Use when checking installed glab version or troubleshooting installation issues. Triggers on version, glab version, check version, CLI version.
+description: 显示 `glab` 命令行工具（CLI）的版本信息及构建详情。适用于检查已安装的 `glab` 版本或排查安装问题。该命令会在以下情况下被触发：`version`、`glab version`、`check version`、`CLI version`。
 ---
 
-# glab version
+# glab 版本
 
-## Overview
+## 概述
 
 ```
 
@@ -20,12 +20,12 @@ description: Display glab CLI version information and build details. Use when ch
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab version --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

@@ -15,9 +15,9 @@ metadata:
 
 # HubSpot
 
-Access the HubSpot CRM API with managed OAuth authentication. Create and manage contacts, companies, deals, and their associations.
+您可以使用托管的 OAuth 认证来访问 HubSpot CRM API，从而创建和管理联系人、公司、交易及其关联关系。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/hubspot/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual HubSpot API endpoint path. The gateway proxies requests to `api.hubapi.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 HubSpot API 端点路径。该网关会将请求代理到 `api.hubapi.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your HubSpot OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 HubSpot OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple HubSpot connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 HubSpot 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,31 +138,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname,lastname,phone
 ```
 
-With pagination:
+支持分页：
 
 ```bash
 GET /hubspot/crm/v3/objects/contacts?limit=100&properties=email,firstname&after={cursor}
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /hubspot/crm/v3/objects/contacts/{contactId}?properties=email,firstname,lastname
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /hubspot/crm/v3/objects/contacts
@@ -178,7 +178,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PATCH /hubspot/crm/v3/objects/contacts/{contactId}
@@ -191,13 +191,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /hubspot/crm/v3/objects/contacts/{contactId}
 ```
 
-#### Search Contacts
+#### 搜索联系人
 
 ```bash
 POST /hubspot/crm/v3/objects/contacts/search
@@ -215,21 +215,21 @@ Content-Type: application/json
 }
 ```
 
-### Companies
+### 公司
 
-#### List Companies
+#### 列出公司
 
 ```bash
 GET /hubspot/crm/v3/objects/companies?limit=100&properties=name,domain,industry
 ```
 
-#### Get Company
+#### 获取公司信息
 
 ```bash
 GET /hubspot/crm/v3/objects/companies/{companyId}?properties=name,domain,industry
 ```
 
-#### Create Company
+#### 创建公司
 
 ```bash
 POST /hubspot/crm/v3/objects/companies
@@ -244,9 +244,9 @@ Content-Type: application/json
 }
 ```
 
-**Note:** The `industry` property requires specific enum values (e.g., `COMPUTER_SOFTWARE`, `FINANCE`, `HEALTHCARE`). Use the List Properties endpoint to get valid values.
+**注意：** `industry` 属性需要特定的枚举值（例如 `COMPUTER_SOFTWARE`、`FINANCE`、`HEALTHCARE`）。请使用 `List Properties` 端点获取有效的值。
 
-#### Update Company
+#### 更新公司信息
 
 ```bash
 PATCH /hubspot/crm/v3/objects/companies/{companyId}
@@ -260,13 +260,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Company
+#### 删除公司
 
 ```bash
 DELETE /hubspot/crm/v3/objects/companies/{companyId}
 ```
 
-#### Search Companies
+#### 搜索公司
 
 ```bash
 POST /hubspot/crm/v3/objects/companies/search
@@ -285,21 +285,21 @@ Content-Type: application/json
 }
 ```
 
-### Deals
+### 交易
 
-#### List Deals
+#### 列出交易
 
 ```bash
 GET /hubspot/crm/v3/objects/deals?limit=100&properties=dealname,amount,dealstage
 ```
 
-#### Get Deal
+#### 获取交易信息
 
 ```bash
 GET /hubspot/crm/v3/objects/deals/{dealId}?properties=dealname,amount,dealstage
 ```
 
-#### Create Deal
+#### 创建交易
 
 ```bash
 POST /hubspot/crm/v3/objects/deals
@@ -314,7 +314,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Deal
+#### 更新交易信息
 
 ```bash
 PATCH /hubspot/crm/v3/objects/deals/{dealId}
@@ -328,15 +328,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Deal
+#### 删除交易
 
 ```bash
 DELETE /hubspot/crm/v3/objects/deals/{dealId}
 ```
 
-### Associations (v4 API)
+### 关联关系（v4 API）
 
-#### Associate Objects
+#### 关联对象
 
 ```bash
 PUT /hubspot/crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}
@@ -345,20 +345,20 @@ Content-Type: application/json
 [{"associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 279}]
 ```
 
-Common association type IDs:
-- `279` - Contact to Company
-- `3` - Deal to Contact
-- `341` - Deal to Company
+常见的关联类型 ID：
+- `279` - 联系人与公司之间的关联
+- `3` - 交易与联系人之间的关联
+- `341` - 交易与公司之间的关联
 
-#### List Associations
+#### 列出关联关系
 
 ```bash
 GET /hubspot/crm/v4/objects/{objectType}/{objectId}/associations/{toObjectType}
 ```
 
-### Batch Operations
+### 批量操作
 
-#### Batch Read
+#### 批量读取
 
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/read
@@ -370,7 +370,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Create
+#### 批量创建
 
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/create
@@ -384,7 +384,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Update
+#### 批量更新
 
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/update
@@ -398,7 +398,7 @@ Content-Type: application/json
 }
 ```
 
-#### Batch Archive
+#### 批量归档
 
 ```bash
 POST /hubspot/crm/v3/objects/{objectType}/batch/archive
@@ -409,26 +409,26 @@ Content-Type: application/json
 }
 ```
 
-### Properties
+### 属性
 
-#### List Properties
+#### 列出属性
 
 ```bash
 GET /hubspot/crm/v3/properties/{objectType}
 ```
 
-## Search Operators
+## 搜索操作符
 
-- `EQ` - Equal to
-- `NEQ` - Not equal to
-- `LT` / `LTE` - Less than / Less than or equal
-- `GT` / `GTE` - Greater than / Greater than or equal
-- `CONTAINS_TOKEN` - Contains token
-- `NOT_CONTAINS_TOKEN` - Does not contain token
+- `EQ` - 等于
+- `NEQ` - 不等于
+- `LT` / `LTE` - 小于 / 小于或等于
+- `GT` / `GTE` - 大于 / 大于或等于
+- `CONTAINS_TOKEN` - 包含指定字符串
+- `NOT_CONTAINS_TOKEN` - 不包含指定字符串
 
-## Pagination
+## 分页
 
-List endpoints return a `paging.next.after` cursor:
+列表端点会返回一个 `paging.next.after` 值，用于获取下一页数据：
 
 ```json
 {
@@ -441,13 +441,13 @@ List endpoints return a `paging.next.after` cursor:
 }
 ```
 
-Use the `after` query parameter to fetch the next page:
+使用 `after` 查询参数来获取下一页数据：
 
 ```bash
 GET /hubspot/crm/v3/objects/contacts?limit=100&after=12345
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -477,33 +477,33 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Batch operations support up to 100 records per request
-- Archive/Delete is a soft delete - records can be restored within 90 days
-- Delete endpoints return HTTP 204 (No Content) on success
-- The `industry` property on companies requires specific enum values
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 每次请求最多支持 100 条记录的批量操作。
+- 归档/删除操作属于“软删除”操作——记录可以在 90 天内恢复。
+- 删除操作成功时返回 HTTP 204（无内容）状态码。
+- 公司的 `industry` 属性需要特定的枚举值。
+- **重要提示：** 当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 参数来禁用全局解析。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing HubSpot connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from HubSpot API |
+| 400 | 未找到 HubSpot 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次请求） |
+| 4xx/5xx | 来自 HubSpot API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -514,25 +514,24 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `hubspot`. For example:
+1. 确保您的 URL 路径以 `hubspot` 开头。例如：
+  - 正确的路径：`https://gateway.maton.ai/hubspot/crm/v3/objects/contacts`
+  - 错误的路径：`https://gateway.maton.ai/crm/v3/objects/contacts`
 
-- Correct: `https://gateway.maton.ai/hubspot/crm/v3/objects/contacts`
-- Incorrect: `https://gateway.maton.ai/crm/v3/objects/contacts`
+## 资源
 
-## Resources
-
-- [HubSpot API Overview](https://developers.hubspot.com/docs/api/overview)
-- [List Contacts](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/basic/get-crm-v3-objects-contacts.md)
-- [Create Contact](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/basic/post-crm-v3-objects-contacts.md)
-- [Search Contacts](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/search/post-crm-v3-objects-contacts-search.md)
-- [List Companies](https://developers.hubspot.com/docs/api-reference/crm-companies-v3/basic/get-crm-v3-objects-companies.md)
-- [Create Company](https://developers.hubspot.com/docs/api-reference/crm-companies-v3/basic/post-crm-v3-objects-companies.md)
-- [List Deals](https://developers.hubspot.com/docs/api-reference/crm-deals-v3/basic/get-crm-v3-objects-0-3.md)
-- [Create Deal](https://developers.hubspot.com/docs/api-reference/crm-deals-v3/basic/post-crm-v3-objects-0-3.md)
-- [Associations API](https://developers.hubspot.com/docs/api-reference/crm-associations-v4/basic/get-crm-v4-objects-objectType-objectId-associations-toObjectType.md)
-- [Properties API](https://developers.hubspot.com/docs/api-reference/crm-properties-v3/core/get-crm-v3-properties-objectType.md)
-- [Search Reference](https://developers.hubspot.com/docs/api/crm/search)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [HubSpot API 概述](https://developers.hubspot.com/docs/api/overview)
+- [列出联系人](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/basic/get-crm-v3-objects-contacts.md)
+- [创建联系人](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/basic/post-crm-v3-objects-contacts.md)
+- [搜索联系人](https://developers.hubspot.com/docs/api-reference/crm-contacts-v3/search/post-crm-v3-objects-contacts-search.md)
+- [列出公司](https://developers.hubspot.com/docs/api-reference/crm-companies-v3/basic/get-crm-v3-objects-companies.md)
+- [创建公司](https://developers.hubspot.com/docs/api-reference/crm-companies-v3/basic/post-crm-v3-objects-companies.md)
+- [列出交易](https://developers.hubspot.com/docs/api-reference/crm-deals-v3/basic/get-crm-v3-objects-0-3.md)
+- [创建交易](https://developers.hubspot.com/docs/api-reference/crm-deals-v3/basic/post-crm-v3-objects-0-3.md)
+- [关联关系 API](https://developers.hubspot.com/docs/api-reference/crm-associations-v4/basic/get-crm-v4-objects-objectType-objectId-associations-toObjectType.md)
+- [属性 API](https://developers.hubspot.com/docs/api-reference/crm-properties-v3/core/get-crm-v3-properties-objectType.md)
+- [搜索参考](https://developers.hubspot.com/docs/api/crm/search)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

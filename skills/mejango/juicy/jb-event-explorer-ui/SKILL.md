@@ -1,24 +1,24 @@
 ---
 name: jb-event-explorer-ui
-description: Browse and decode Juicebox project events. Filter by type, project, time. Decode Pay, CashOut, DistributePayouts, and all JB events.
+description: 浏览并解码 Juicebox 项目的事件。可以根据事件类型、项目名称或时间进行筛选。可以解码与支付（Pay）、提款（CashOut）、分配收益（DistributePayouts）相关的事件，以及 Juicebox 项目中的所有其他事件。
 ---
 
-# Juicebox V5 Event Explorer UI
+# Juicebox V5 事件浏览器 UI
 
-Browse, filter, and decode all Juicebox protocol events. See payment history, redemptions, distributions, and configuration changes.
+您可以浏览、筛选和解码所有使用 Juicebox 协议的事件，查看支付历史、代币兑换记录、分配情况以及配置变更。
 
-## Uses Shared Components
+## 使用的共享组件
 
-This skill uses components from `/shared/`:
+此功能使用了 `/shared/` 目录下的以下组件：
 
-| Component | Purpose |
-|-----------|---------|
-| `styles.css` | Dark theme, buttons, cards, badges |
-| `wallet-utils.js` | Chain config, formatting utilities |
-| `chain-config.json` | RPC URLs, contract addresses |
-| `abis/*.json` | Event signatures |
+| 组件          | 用途                |
+|---------------|-------------------|
+| `styles.css`     | 深色主题、按钮、卡片、徽章           |
+| `wallet-utils.js` | 链路配置、格式化工具           |
+| `chain-config.json` | RPC 请求地址、合约地址           |
+| `abis/*.json`     | 事件签名文件             |
 
-## Overview
+## 概述
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -38,7 +38,7 @@ This skill uses components from `/shared/`:
 
 ---
 
-## Complete Event Explorer Template
+## 完整的事件浏览器模板
 
 ```html
 <!DOCTYPE html>
@@ -504,25 +504,25 @@ This skill uses components from `/shared/`:
 
 ---
 
-## Event Types Reference
+## 事件类型参考
 
-| Event | Contract | Description |
-|-------|----------|-------------|
-| `Pay` | Terminal | Payment received |
-| `CashOutTokens` | Terminal | Token redemption |
-| `SendPayouts` | Terminal | Payout distribution |
-| `UseAllowance` | Terminal | Surplus allowance used |
-| `AddToBalance` | Terminal | Balance added without minting |
-| `MintTokens` | Controller | Direct token mint |
-| `BurnTokens` | Controller | Token burn |
-| `LaunchProject` | Controller | New project created |
-| `QueueRulesets` | Controller | Ruleset queued |
-| `SendReservedTokensToSplits` | Controller | Reserved tokens distributed |
+| 事件类型         | 对应合约           | 事件描述                          |
+|-----------------|------------------|-------------------------------------------|
+| `Pay`         | Terminal           | 收到付款                         |
+| `CashOutTokens`    | Terminal           | 兑换代币                         |
+| `SendPayouts`    | Terminal           | 分配代币                         |
+| `UseAllowance`    | Terminal           | 使用剩余代币                         |
+| `AddToBalance`    | Terminal           | 增加余额（无需新生成代币）                 |
+| `MintTokens`     | Controller         | 直接生成代币                         |
+| `BurnTokens`     | Controller         | 烧毁代币                         |
+| `LaunchProject`    | Controller         | 创建新项目                         |
+| `QueueRulesets`    | Controller         | 将规则集加入队列                     |
+| `SendReservedTokensToSplits` | Controller         | 分配预留代币                         |
 
 ---
 
-## Related Skills
+## 相关功能
 
-- `/jb-explorer-ui` - Contract read/write interface
-- `/jb-ruleset-timeline-ui` - Ruleset history
-- `/jb-bendystraw` - Indexed event queries
+- `/jb-explorer-ui`   | 合约读写接口                         |
+- `/jb-ruleset-timeline-ui` | 规则集历史记录                         |
+- `/jb-bendystraw`   | 基于索引的事件查询功能                     |

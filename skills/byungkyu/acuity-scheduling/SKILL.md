@@ -15,9 +15,9 @@ metadata:
 
 # Acuity Scheduling
 
-Access the Acuity Scheduling API with managed OAuth authentication. Manage appointments, calendars, clients, availability, and more.
+您可以使用受管理的 OAuth 认证来访问 Acuity Scheduling API，以管理预约、日历、客户、可用时间等信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List appointments
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/acuity-scheduling/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Acuity API endpoint path. The gateway proxies requests to `acuityscheduling.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Acuity API 端点路径。该网关会将请求代理到 `acuityscheduling.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Acuity Scheduling OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Acuity Scheduling OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Acuity Scheduling connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Acuity Scheduling 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,21 +138,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Account Information
+### 账户信息
 
-#### Get Account Info
+#### 获取账户信息
 
 ```bash
 GET /acuity-scheduling/api/v1/me
 ```
 
-Returns account information including timezone, scheduling page URL, and plan details.
+返回账户信息，包括时区、调度页面 URL 和计划详情。
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 12345,
@@ -165,30 +165,30 @@ Returns account information including timezone, scheduling page URL, and plan de
 }
 ```
 
-### Appointments
+### 预约
 
-#### List Appointments
+#### 列出预约
 
 ```bash
 GET /acuity-scheduling/api/v1/appointments
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
+**查询参数：**
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `max` | integer | Maximum results (default: 100) |
-| `minDate` | date | Appointments on or after this date |
-| `maxDate` | date | Appointments on or before this date |
-| `calendarID` | integer | Filter by calendar |
-| `appointmentTypeID` | integer | Filter by appointment type |
-| `canceled` | boolean | Include canceled appointments (default: false) |
-| `firstName` | string | Filter by client first name |
-| `lastName` | string | Filter by client last name |
-| `email` | string | Filter by client email |
-| `excludeForms` | boolean | Omit intake forms for faster response |
-| `direction` | string | Sort order: ASC or DESC (default: DESC) |
+| `max` | 整数 | 最大结果数量（默认：100） |
+| `minDate` | 日期 | 在此日期或之后的预约 |
+| `maxDate` | 日期 | 在此日期或之前的预约 |
+| `calendarID` | 整数 | 按日历筛选 |
+| `appointmentTypeID` | 整数 | 按预约类型筛选 |
+| `canceled` | 布尔值 | 是否包含已取消的预约（默认：false） |
+| `firstName` | 字符串 | 按客户名字筛选 |
+| `lastName` | 字符串 | 按客户姓氏筛选 |
+| `email` | 字符串 | 按客户电子邮件筛选 |
+| `excludeForms` | 布尔值 | 省略表单以加快响应速度 |
+| `direction` | 字符串 | 排序方式：ASC 或 DESC（默认：DESC） |
 
-**Example:**
+**示例：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -198,7 +198,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -222,13 +222,13 @@ EOF
 ]
 ```
 
-#### Get Appointment
+#### 获取预约详情
 
 ```bash
 GET /acuity-scheduling/api/v1/appointments/{id}
 ```
 
-#### Create Appointment
+#### 创建预约
 
 ```bash
 POST /acuity-scheduling/api/v1/appointments
@@ -245,23 +245,23 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `datetime` - Date and time (parseable by PHP's strtotime)
-- `appointmentTypeID` - Appointment type ID
-- `firstName` - Client's first name
-- `lastName` - Client's last name
-- `email` - Client's email
+**必填字段：**
+- `datetime` - 日期和时间（必须能被 PHP 的 `strtotime()` 函数解析）
+- `appointmentTypeID` - 预约类型 ID |
+- `firstName` - 客户名字 |
+- `lastName` - 客户姓氏 |
+- `email` - 客户电子邮件 |
 
-**Optional Fields:**
-- `phone` - Client phone number
-- `calendarID` - Specific calendar (auto-selected if omitted)
-- `timezone` - Client's timezone
-- `certificate` - Package or coupon code
-- `notes` - Admin notes
-- `addonIDs` - Array of addon IDs
-- `fields` - Array of form field values
+**可选字段：**
+- `phone` - 客户电话号码 |
+- `calendarID` - 特定日历（省略时自动选择） |
+- `timezone` - 客户时区 |
+- `certificate` - 包或优惠券代码 |
+- `notes` - 管理员备注 |
+- `addonIDs` - 表单字段 ID 的数组 |
+- `fields` - 表单字段值的数组 |
 
-**Example:**
+**示例：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -279,7 +279,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update Appointment
+#### 更新预约
 
 ```bash
 PUT /acuity-scheduling/api/v1/appointments/{id}
@@ -292,15 +292,15 @@ Content-Type: application/json
 }
 ```
 
-#### Cancel Appointment
+#### 取消预约
 
 ```bash
 PUT /acuity-scheduling/api/v1/appointments/{id}/cancel
 ```
 
-Returns the canceled appointment with `canceled: true`.
+返回的响应中，`canceled` 为 `true` 表示预约已被取消。
 
-#### Reschedule Appointment
+#### 重新安排预约
 
 ```bash
 PUT /acuity-scheduling/api/v1/appointments/{id}/reschedule
@@ -311,17 +311,17 @@ Content-Type: application/json
 }
 ```
 
-**Note:** The new datetime must be an available time slot.
+**注意：** 新的日期和时间必须是一个可用的时间段。
 
-### Calendars
+### 日历
 
-#### List Calendars
+#### 列出日历
 
 ```bash
 GET /acuity-scheduling/api/v1/calendars
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -336,18 +336,18 @@ GET /acuity-scheduling/api/v1/calendars
 ]
 ```
 
-### Appointment Types
+### 预约类型
 
-#### List Appointment Types
+#### 列出预约类型
 
 ```bash
 GET /acuity-scheduling/api/v1/appointment-types
 ```
 
-**Query Parameters:**
-- `includeDeleted` (boolean) - Include deleted types
+**查询参数：**
+- `includeDeleted` (布尔值) - 是否包含已删除的预约类型
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -367,23 +367,23 @@ GET /acuity-scheduling/api/v1/appointment-types
 ]
 ```
 
-### Availability
+### 可用时间
 
-#### Get Available Dates
+#### 获取可用日期
 
 ```bash
 GET /acuity-scheduling/api/v1/availability/dates?month=2026-02&appointmentTypeID=123
 ```
 
-**Required Parameters:**
-- `month` - Month to check (e.g., "2026-02")
-- `appointmentTypeID` - Appointment type ID
+**必填参数：**
+- `month` - 要检查的月份（例如：“2026-02”）
+- `appointmentTypeID` - 预约类型 ID |
 
-**Optional Parameters:**
-- `calendarID` - Specific calendar
-- `timezone` - Timezone for results (e.g., "America/New_York")
+**可选参数：**
+- `calendarID` - 特定日历 |
+- `timezone` - 结果的时区（例如：“America/New_York”）
 
-**Response:**
+**响应：**
 ```json
 [
   {"date": "2026-02-09"},
@@ -392,21 +392,21 @@ GET /acuity-scheduling/api/v1/availability/dates?month=2026-02&appointmentTypeID
 ]
 ```
 
-#### Get Available Times
+#### 获取可用时间段
 
 ```bash
 GET /acuity-scheduling/api/v1/availability/times?date=2026-02-10&appointmentTypeID=123
 ```
 
-**Required Parameters:**
-- `date` - Date to check
-- `appointmentTypeID` - Appointment type ID
+**必填参数：**
+- `date` - 要检查的日期 |
+- `appointmentTypeID` - 预约类型 ID |
 
-**Optional Parameters:**
-- `calendarID` - Specific calendar
-- `timezone` - Timezone for results
+**可选参数：**
+- `calendarID` - 特定日历 |
+- `timezone` - 结果的时区
 
-**Response:**
+**响应：**
 ```json
 [
   {"time": "2026-02-10T09:00:00-0800", "slotsAvailable": 1},
@@ -415,18 +415,18 @@ GET /acuity-scheduling/api/v1/availability/times?date=2026-02-10&appointmentType
 ]
 ```
 
-### Clients
+### 客户
 
-#### List Clients
+#### 列出客户
 
 ```bash
 GET /acuity-scheduling/api/v1/clients
 ```
 
-**Query Parameters:**
-- `search` - Filter by first name, last name, or phone
+**查询参数：**
+- `search` - 按名字、姓氏或电话号码筛选
 
-**Example:**
+**示例：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -436,7 +436,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -449,7 +449,7 @@ EOF
 ]
 ```
 
-#### Create Client
+#### 创建客户
 
 ```bash
 POST /acuity-scheduling/api/v1/clients
@@ -463,7 +463,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Client
+#### 更新客户
 
 ```bash
 PUT /acuity-scheduling/api/v1/clients
@@ -476,9 +476,9 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Client update/delete only works for clients with existing appointments.
+**注意：** 更新/删除客户仅适用于已有预约的客户。
 
-#### Delete Client
+#### 删除客户
 
 ```bash
 DELETE /acuity-scheduling/api/v1/clients
@@ -490,27 +490,27 @@ Content-Type: application/json
 }
 ```
 
-### Blocks
+### 时间段
 
-#### List Blocks
+#### 列出时间段
 
 ```bash
 GET /acuity-scheduling/api/v1/blocks
 ```
 
-**Query Parameters:**
-- `max` - Maximum results (default: 100)
-- `minDate` - Blocks on or after this date
-- `maxDate` - Blocks on or before this date
-- `calendarID` - Filter by calendar
+**查询参数：**
+- `max` - 最大结果数量（默认：100） |
+- `minDate` - 在此日期或之后的时间段 |
+- `maxDate` - 在此日期或之前的时间段 |
+- `calendarID` - 按日历筛选 |
 
-#### Get Block
+#### 获取时间段详情
 
 ```bash
 GET /acuity-scheduling/api/v1/blocks/{id}
 ```
 
-#### Create Block
+#### 创建时间段
 
 ```bash
 POST /acuity-scheduling/api/v1/blocks
@@ -524,7 +524,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 9589304654,
@@ -536,23 +536,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Block
+#### 删除时间段
 
 ```bash
 DELETE /acuity-scheduling/api/v1/blocks/{id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Forms
+### 表单
 
-#### List Forms
+#### 列出表单
 
 ```bash
 GET /acuity-scheduling/api/v1/forms
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -572,15 +572,15 @@ GET /acuity-scheduling/api/v1/forms
 ]
 ```
 
-### Labels
+### 标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /acuity-scheduling/api/v1/labels
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {"id": 23116714, "name": "Checked In", "color": "green"},
@@ -589,9 +589,9 @@ GET /acuity-scheduling/api/v1/labels
 ]
 ```
 
-## Pagination
+## 分页
 
-Acuity Scheduling uses the `max` parameter to limit results. Use `minDate` and `maxDate` to paginate through date ranges:
+Acuity Scheduling 使用 `max` 参数来限制结果数量。您可以使用 `minDate` 和 `maxDate` 来在日期范围内进行分页：
 
 ```bash
 # First page
@@ -601,7 +601,7 @@ GET /acuity-scheduling/api/v1/appointments?max=100&minDate=2026-01-01&maxDate=20
 GET /acuity-scheduling/api/v1/appointments?max=100&minDate=2026-02-01&maxDate=2026-02-28
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -631,35 +631,35 @@ response = requests.get(
 appointments = response.json()
 ```
 
-## Notes
+## 注意事项：
 
-- Datetime values must be parseable by PHP's `strtotime()` function
-- Timezones use IANA format (e.g., "America/New_York", "America/Los_Angeles")
-- Client update/delete requires clients to have existing appointments
-- Rescheduling requires the new datetime to be an available time slot
-- Use `excludeForms=true` for faster appointment list responses
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 日期时间值必须能被 PHP 的 `strtotime()` 函数解析。
+- 时区使用 IANA 格式（例如：“America/New_York”, “America/Los_Angeles”）。
+- 更新/删除客户操作仅适用于已有预约的客户。
+- 重新安排预约时，新的日期和时间必须是一个可用的时间段。
+- 使用 `excludeForms=true` 可以加快预约列表的响应速度。
+- **重要提示：** 当 URL 中包含括号时，使用 `curl -g` 可以防止全局解析。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析，可能会导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Invalid request (e.g., time not available, client not found) |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Acuity API |
+| 400 | 请求无效（例如：时间不可用、客户未找到） |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 使用频率限制 |
+| 4xx/5xx | 来自 Acuity API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -670,20 +670,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：无效的应用程序名称
 
-1. Ensure your URL path starts with `acuity-scheduling`. For example:
+1. 确保您的 URL 路径以 `acuity-scheduling` 开头。例如：
+- 正确：`https://gateway.maton.ai/acuity-scheduling/api/v1/appointments`
+- 错误：`https://gateway.maton.ai/api/v1/appointments`
 
-- Correct: `https://gateway.maton.ai/acuity-scheduling/api/v1/appointments`
-- Incorrect: `https://gateway.maton.ai/api/v1/appointments`
+## 资源
 
-## Resources
-
-- [Acuity Scheduling API Quick Start](https://developers.acuityscheduling.com/reference/quick-start)
-- [Appointments API](https://developers.acuityscheduling.com/reference/get-appointments)
-- [Availability API](https://developers.acuityscheduling.com/reference/get-availability-dates)
-- [Calendars API](https://developers.acuityscheduling.com/reference/get-calendars)
-- [Clients API](https://developers.acuityscheduling.com/reference/clients)
-- [OAuth2 Documentation](https://developers.acuityscheduling.com/docs/oauth2)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Acuity Scheduling API 快速入门](https://developers.acuityscheduling.com/reference/quick-start)
+- [预约 API](https://developers.acuityscheduling.com/reference/get-appointments)
+- [可用时间 API](https://developers.acuityscheduling.com/reference/get-availability-dates)
+- [日历 API](https://developers.acuityscheduling.com/reference/get-calendars)
+- [客户 API](https://developers.acuityscheduling.com/reference/clients)
+- [OAuth2 文档](https://developers.acuityscheduling.com/docs/oauth2)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

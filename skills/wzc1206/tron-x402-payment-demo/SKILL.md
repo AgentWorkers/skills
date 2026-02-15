@@ -1,24 +1,24 @@
 ---
 name: x402_payment_demo
-description: "Demo of x402 payment protocol by fetching a protected image. Triggers: '演示x402-payment' or 'demo x402-payment'"
+description: "通过获取受保护的图像来演示x402支付协议。触发条件：'demo x402-payment' 或 'demo x402-payment'"
 version: 1.0.0
 author: opencode
 metadata: {"clawdbot":{"emoji":"🖼️","env":["TRON_PRIVATE_KEY"],"triggers":["演示x402-payment", "demo x402-payment", "show me x402 demo"]}}
 tags: [x402, demo, payment, tron, image]
 ---
 
-# x402 Payment Demo Skill
+# x402支付演示技能
 
-This skill demonstrates the x402 payment protocol on the TRON network.
+该技能用于在TRON网络上演示x402支付协议。
 
-## Usage
+## 使用方法
 
-Simply tell the Agent:
+只需向代理发送以下指令：
 - "演示x402-payment"
 - "demo x402-payment"
 
-## Workflow
+## 工作流程
 
-1.  **Request Resource**: When triggered, follow the instructions provided by the `x402_payment_tron` skill to fetch the protected resource at `http://x402-tron-demo.sunagent.ai/protected`.
-2.  **Handle Payment**: Perform the payment and resource acquisition automatically as guided by the protocol (handling 402 Payment Required, signing permits, etc.).
-3.  **Display & Cleanup**: Once the image is retrieved, present it to the user. Immediately delete the local temporary file after the image has been displayed.
+1. **请求资源**：触发该技能后，按照 `x402_payment_tron` 技能提供的指示，从 `http://x402-tron-demo.sunagent.ai/protected` 获取受保护的资源。
+2. **处理支付**：根据协议要求自动完成支付和资源获取流程（包括处理“需要支付402费用”、“签署许可”等步骤）。
+3. **显示结果并清理**：获取到资源后，将其展示给用户；资源显示完毕后立即删除本地的临时文件。

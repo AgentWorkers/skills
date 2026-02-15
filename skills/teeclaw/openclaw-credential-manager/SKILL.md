@@ -1,96 +1,94 @@
 ---
 name: credential-manager
-description: MANDATORY security foundation for OpenClaw. Consolidate scattered API keys and credentials into a secure .env file with proper permissions. Includes GPG encryption for high-value secrets, credential rotation tracking, deep scanning, and backup hardening. Use when setting up OpenClaw, migrating credentials, auditing security, or enforcing the .env standard. This is not optional — centralized credential management is a core requirement for secure OpenClaw deployments.
+description: OpenClaw的强制性安全基础配置。将分散的API密钥和凭据整合到一个具有适当权限的安全`.env`文件中。该配置支持对高价值敏感信息进行GPG加密、跟踪凭据轮换情况、进行深度安全扫描以及加强系统备份措施。在设置OpenClaw、迁移凭据、进行安全审计或强制执行`.env`文件规范时，必须使用此配置。这并非可选项——集中式凭据管理是确保OpenClaw安全部署的核心要求。
 ---
 
-# Credential Manager
+# 凭据管理器
 
-**STATUS: MANDATORY SECURITY FOUNDATION**
+**状态：强制性的安全基础**
 
-Consolidate scattered API keys and credentials into a secure, centralized `.env` file.
+将分散的API密钥和凭据整合到一个安全的、集中式的`.env`文件中。
 
-## ⚠️ This Is Not Optional
+## ⚠️ 这不是可选的
 
-Centralized `.env` credential management is a **core requirement** for OpenClaw security. If your credentials are scattered across multiple files, **stop and consolidate them now**.
+集中式的`.env`凭据管理是OpenClaw安全性的**核心要求**。如果您的凭据分散在多个文件中，请**立即停止并整合它们**。
 
-**THE RULE:** All credentials MUST be in `~/.openclaw/.env` ONLY. No workspace, no skills, no scripts directories.
+**规则：**所有凭据必须仅保存在`~/.openclaw/.env`文件中。禁止保存在工作区、技能或脚本目录中。
 
-See:
-- [CORE-PRINCIPLE.md](CORE-PRINCIPLE.md) - Why this is non-negotiable
-- [CONSOLIDATION-RULE.md](CONSOLIDATION-RULE.md) - The single source principle
+请参阅：
+- [CORE-PRINCIPLE.md](CORE-PRINCIPLE.md) — 为什么这是不可商量的
+- [CONSOLIDATION-RULE.md](CONSOLIDATION-RULE.md) — 单一来源原则
 
-## The Foundation
+## 基础要求
 
-**Every OpenClaw deployment MUST have:**
+**每个OpenClaw部署都必须具备：**
 ```
 ~/.openclaw/.env (mode 600)
 ```
 
-This is your single source of truth for all credentials. No exceptions.
+这是您所有凭据的单一、权威来源。没有任何例外。
 
-**Why?**
-- Single location = easier to secure
-- File mode 600 = only you can read
-- Git-ignored = won't accidentally commit
-- Validated format = catches errors
-- Audit trail = know what changed
+**为什么？**
+- 单一存储位置 = 更容易保护
+- 文件权限设置为600（仅所有者可读）
+- 被Git忽略（防止意外提交）
+- 验证过的格式 = 可以发现错误
+- 审计追踪 = 可以了解哪些内容发生了变化
 
-Scattered credentials = scattered attack surface. This skill fixes that.
+分散的凭据意味着分散的攻击面。此技能可以解决这个问题。
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Scans** for credentials in common locations (including deep scan for hardcoded secrets)
-2. **Backs up** existing credential files (timestamped, mode 600)
-3. **Consolidates** into `~/.openclaw/.env`
-4. **Secures** with proper permissions (600 files, 700 directories)
-5. **Validates** security, format, and entropy
-6. **Encrypts** high-value secrets with GPG (wallet keys, private keys, mnemonics)
-7. **Tracks** credential rotation schedules
-8. **Enforces** best practices via fail-fast checks
-9. **Cleans up** old files after migration
+1. **扫描**常见位置的凭据（包括深度扫描硬编码的秘密）
+2. **备份**现有的凭据文件（带有时间戳，权限设置为600）
+3. **整合**到`~/.openclaw/.env`中
+4. **使用适当的权限进行保护（文件权限600，目录权限700）
+5. **验证**安全性、格式和熵值
+6. **使用GPG加密**高价值秘密（钱包密钥、私钥、助记词）
+7. **跟踪**凭据轮换计划
+8. **通过快速失败检查**强制执行最佳实践
+9. **迁移后清理**旧文件
 
-## Detection Parameters
+## 检测参数
 
-The skill automatically detects credentials by scanning for:
+该技能通过扫描以下位置自动检测凭据：
 
-**File Patterns:**
-- `~/.config/*/credentials.json` — Service config directories
-- `~/.config/*/*.credentials.json` — Nested credential files
-- `~/.openclaw/*.json` — Credential files in OpenClaw root
-- `~/.openclaw/*-credentials*` — Named credential files (e.g., farcaster-credentials.json)
-- `~/.openclaw/workspace/memory/*-creds.json` — Memory credential files
-- `~/.openclaw/workspace/memory/*credentials*.json` — Memory credential files
-- `~/.openclaw/workspace/.env` — Workspace env files
-- `~/.openclaw/workspace/*/.env` — Subdirectory env files
-- `~/.openclaw/workspace/skills/*/.env` — Skill env files
-- `~/.local/share/*/credentials.json` — Local share directories
+**文件模式：**
+- `~/.config/*/credentials.json` — 服务配置目录
+- `~/.config/*/*.credentials.json` — 嵌套的凭据文件
+- `~/.openclaw/*.json` — OpenClaw根目录下的凭据文件
+- `~/.openclaw/*-credentials*` — 带有名称的凭据文件（例如，farcaster-credentials.json）
+- `~/.openclaw/workspace/memory/*-creds.json` — 内存凭据文件
+- `~/.openclaw/workspace/memory/*credentials*.json` — 内存凭据文件
+- `~/.openclaw/workspace/.env` — 工作区环境文件
+- `~/.openclaw/workspace/*/.env` — 子目录环境文件
+- `~/.openclaw/workspace/skills/*/.env` — 技能环境文件
+- `~/.local/share/*/credentials.json` — 本地共享目录
 
-**Sensitive Key Patterns:**
-- API keys, access tokens, bearer tokens
-- Secrets, passwords, passphrases
-- OAuth consumer keys
-- Private keys, signing keys, wallet keys
-- Mnemonics and seed phrases
+**敏感密钥模式：**
+- API密钥、访问令牌、bearer令牌
+- 秘密、密码、口令短语
+- OAuth消费者密钥
+- 私钥、签名密钥、钱包密钥
+- 助记词和种子短语
 
-**Deep Scan (--deep flag):**
-- Greps `.sh`, `.js`, `.py`, `.mjs`, `.ts` files for hardcoded secrets
-- Detects high-entropy strings matching common key prefixes (`sk_`, `pk_`, `Bearer`, `0x` + 64 hex)
-- Excludes `node_modules/`, `.git/`
-- Reports file, line number, and key pattern matched
+**深度扫描（--deep标志）：**
+- 在`.sh`、`.js`、`.py`、`.mjs`、`.ts`文件中搜索硬编码的秘密
+- 检测符合常见密钥前缀的高熵字符串（`sk_`、`pk_`、`Bearer`、`0x` + 64 hex）
+- 排除`node_modules/`、`.git/`目录
 
-**Security Checks:**
-- File permissions (must be `600` for files, `700` for directories)
-- Backup permissions (must be `600` for backup files, `700` for backup dirs)
-- Git-ignore protection
-- Format validation (allows quoted values with spaces)
-- Entropy analysis (flags suspiciously low-entropy secrets)
-- Private key detection (flags `0x` + 64 hex char values)
-- Mnemonic detection (flags 12/24 word values)
-- Symlink detection (validates symlinked .env targets)
+**安全检查：**
+- 文件权限（文件必须设置为600，目录必须设置为700）
+- 备份权限（备份文件必须设置为600，备份目录必须设置为700）
+- 被Git忽略（防止意外提交）
+- 格式验证（允许包含空格的引用值）
+- 熵值分析（标记出低熵值的秘密）
+- 私钥检测（标记出`0x` + 64 hex字符值的密钥）
+- 助记词检测（标记出12/24个单词的助记词）
 
-## Quick Start
+## 快速入门
 
-### Full Migration (Recommended)
+### 完整迁移（推荐）
 
 ```bash
 # Scan for credentials
@@ -112,7 +110,7 @@ The skill automatically detects credentials by scanning for:
 ./scripts/rotation-check.py
 ```
 
-### Individual Operations
+### 单个操作
 
 ```bash
 # Scan only
@@ -128,9 +126,9 @@ The skill automatically detects credentials by scanning for:
 ./scripts/cleanup.py --confirm
 ```
 
-## Common Credential Locations
+## 常见的凭据位置
 
-The skill scans these locations:
+该技能会扫描以下位置：
 
 ```
 ~/.config/*/credentials.json
@@ -143,23 +141,23 @@ The skill scans these locations:
 ~/.env (if exists, merges)
 ```
 
-## Security Features
+## 安全特性
 
-✅ **File permissions:** Sets `.env` to mode 600 (owner only)
-✅ **Directory permissions:** Sets backup dirs to mode 700 (owner only)
-✅ **Backup permissions:** Sets backup files to mode 600 (owner only)
-✅ **Git protection:** Creates/updates `.gitignore`
-✅ **Backups:** Timestamped backups before changes (secured)
-✅ **Validation:** Checks format, permissions, entropy, and duplicates
-✅ **Template:** Creates `.env.example` (safe to share)
-✅ **GPG encryption:** Encrypts high-value secrets at rest
-✅ **Rotation tracking:** Warns when credentials need rotation
-✅ **Deep scan:** Detects hardcoded secrets in source files
-✅ **Symlink-aware:** Validates symlinked .env targets
+✅ **文件权限：**将`.env`文件的权限设置为600（仅所有者可读）
+✅ **目录权限：**将备份目录的权限设置为700（仅所有者可读）
+✅ **备份权限：**将备份文件的权限设置为600（仅所有者可读）
+✅ **Git保护：**创建/更新`.gitignore`文件
+✅ **备份：**在更改前进行时间戳备份（确保安全）
+✅ **验证：**检查格式、权限、熵值和重复项
+✅ **模板：**创建`.env.example`文件（可安全共享）
+✅ **GPG加密：**对高价值秘密进行加密
+✅ **轮换跟踪：**在需要轮换凭据时发出警告
+✅ **深度扫描：**检测源文件中的硬编码秘密
+✅ **支持符号链接：**验证符号链接的`.env`目标文件
 
-## Output Structure
+## 输出结构
 
-After migration:
+迁移完成后：
 
 ```
 ~/.openclaw/
@@ -173,18 +171,18 @@ After migration:
         └── *.bak            # Backup files (mode 600)
 ```
 
-## GPG Encryption for High-Value Secrets
+## 高价值秘密的GPG加密
 
-Private keys, wallet keys, and mnemonics should **never** exist as plaintext on disk. Use GPG encryption for these.
+私钥、钱包密钥和助记词**绝不应**以明文形式存在于磁盘上。应使用GPG对其进行加密。
 
-### Setup GPG
+### 设置GPG
 
 ```bash
 # First-time setup (generates OpenClaw GPG key, configures agent cache)
 ./scripts/setup-gpg.sh
 ```
 
-### Encrypt High-Value Keys
+### 加密高价值密钥
 
 ```bash
 # Encrypt specific keys (moves them from .env to .env.secrets.gpg)
@@ -194,9 +192,9 @@ Private keys, wallet keys, and mnemonics should **never** exist as plaintext on 
 # MAIN_WALLET_PRIVATE_KEY=GPG:MAIN_WALLET_PRIVATE_KEY
 ```
 
-### How Scripts Access Encrypted Keys
+### 脚本如何访问加密密钥
 
-The `enforce.py` module handles this transparently:
+`enforce.py`模块会透明地处理这些操作：
 
 ```python
 from enforce import get_credential
@@ -206,33 +204,33 @@ key = get_credential('MAIN_WALLET_PRIVATE_KEY')
 # If value starts with "GPG:", decrypts from .env.secrets.gpg automatically
 ```
 
-### GPG Agent Caching
+### GPG代理缓存
 
-On headless servers (VPS), the GPG agent caches the passphrase:
-- Default cache TTL: 8 hours
-- Configurable via `setup-gpg.sh`
-- Passphrase required once after reboot, then cached
+在无头服务器（VPS）上，GPG代理会缓存密码短语：
+- 默认缓存有效期：8小时
+- 可通过`setup-gpg.sh`进行配置
+- 重启后需要输入一次密码短语，之后会自动缓存
 
-### What to Encrypt
+### 需要加密的密钥类型
 
-| Key Type | Encrypt? | Why |
+| 密钥类型 | 是否需要加密？ | 原因 |
 |----------|----------|-----|
-| Wallet private keys | ✅ Yes | Controls funds |
-| Custody/signer private keys | ✅ Yes | Controls identity |
-| Mnemonics / seed phrases | ✅ Yes | Master recovery |
-| API keys (services) | ❌ No | Revocable, low damage |
-| Agent IDs, names, URLs | ❌ No | Not secrets |
+| 钱包私钥 | ✅ 是 | 控制资金 |
+| 托管/签名私钥 | ✅ 是 | 控制身份 |
+| 助记词/种子短语 | ✅ 是 | 用于恢复 |
+| API密钥（服务） | ❌ 否 | 可撤销，损害较小 |
+| 代理ID、名称、URL | ❌ 否 | 不属于敏感信息 |
 
-## Credential Rotation Tracking
+## 凭据轮换跟踪
 
-### Setup Rotation Metadata
+### 设置轮换元数据
 
 ```bash
 # Initialize rotation tracking for all keys
 ./scripts/rotation-check.py --init
 ```
 
-Creates `~/.openclaw/.env.meta`:
+创建`~/.openclaw/.env.meta`文件：
 ```json
 {
   "MAIN_WALLET_PRIVATE_KEY": {
@@ -250,7 +248,7 @@ Creates `~/.openclaw/.env.meta`:
 }
 ```
 
-### Check Rotation Status
+### 检查轮换状态
 
 ```bash
 # Check which keys need rotation
@@ -261,17 +259,17 @@ Creates `~/.openclaw/.env.meta`:
 # ✅ MOLTBOOK_API_KEY: 7 days old (low, rotate every 180 days)
 ```
 
-### Rotation Schedules
+### 轮换计划
 
-| Risk Level | Rotation Period | Examples |
+| 风险等级 | 轮换周期 | 例子 |
 |------------|----------------|----------|
-| Critical | 90 days | Wallet keys, private keys |
-| Standard | 180 days | API keys for paid services |
-| Low | 365 days | Free-tier API keys, agent IDs |
+| 关键 | 90天 | 钱包密钥、私钥 |
+| 标准 | 180天 | 收费服务的API密钥 |
+| 低风险 | 365天 | 免费 tier 的API密钥、代理ID |
 
-### Add to Heartbeat (Optional)
+### 添加到Heartbeat中（可选）
 
-Add rotation checks to `HEARTBEAT.md` for periodic monitoring:
+将轮换检查添加到`HEARTBEAT.md`文件中，以便定期监控：
 ```markdown
 ## Credential Rotation (weekly)
 If 7+ days since last rotation check:
@@ -280,25 +278,24 @@ If 7+ days since last rotation check:
 3. Update lastRotationCheck timestamp
 ```
 
-## Supported Services
+## 支持的服务
 
-Common services auto-detected:
+系统会自动检测以下服务：
+- **X（Twitter）：** OAuth 1.0a凭据
+- **Farcaster：** 托管密钥、签名密钥、FID凭据
+- **Molten：** 代理意图匹配
+- **Moltbook：** 代理社交网络
+- **Botchan/4claw：** Net Protocol
+- **OpenAI、Anthropic、Google：** AI提供商
+- **GitHub、GitLab：** 代码托管服务
+- **Coinbase/CDP：** 加密钱包凭据
+- **通用：** `API_KEY`、`*_TOKEN`、`*_SECRET`等模式
 
-- **X (Twitter):** OAuth 1.0a credentials
-- **Farcaster:** Custody keys, signer keys, FID credentials
-- **Molten:** Agent intent matching
-- **Moltbook:** Agent social network
-- **Botchan/4claw:** Net Protocol
-- **OpenAI, Anthropic, Google:** AI providers
-- **GitHub, GitLab:** Code hosting
-- **Coinbase/CDP:** Crypto wallet credentials
-- **Generic:** `API_KEY`, `*_TOKEN`, `*_SECRET` patterns
+请参阅[references/supported-services.md](references/supported-services.md)以获取完整列表。
 
-See [references/supported-services.md](references/supported-services.md) for full list.
+## 脚本
 
-## Scripts
-
-All scripts support `--help` for detailed usage.
+所有脚本都支持`--help`参数以获取详细使用说明。
 
 ### scan.py
 ```bash
@@ -387,11 +384,11 @@ All scripts support `--help` for detailed usage.
 ./scripts/cleanup.py --confirm --keep-backups
 ```
 
-## Migration Workflow
+## 迁移工作流程
 
-This is the exact step-by-step flow, tested and verified on a live OpenClaw deployment.
+这是经过测试和验证的详细步骤流程，适用于实际的开源Claw部署。
 
-### Step 1: Scan for Scattered Credentials
+### 第1步：扫描分散的凭据
 
 ```bash
 cd /path/to/openclaw/skills/credential-manager
@@ -403,13 +400,13 @@ cd /path/to/openclaw/skills/credential-manager
 ./scripts/scan.py --deep
 ```
 
-**What to look for in output:**
-- ⚠️ files with mode != 600 (insecure permissions)
-- Symlinked `.env` files (should point to main `~/.openclaw/.env`)
-- JSON credential files outside `~/.openclaw/.env`
-- Deep scan hits on hardcoded keys in scripts
+**输出中需要注意的内容：**
+- ⚠️ 权限设置为非600的文件（不安全的权限）
+- 指向主`.env`文件的符号链接`.env`文件
+- 位于`~/.openclaw/.env`之外的JSON格式凭据文件
+- 脚本中发现的硬编码密钥
 
-**Example output:**
+**示例输出：**
 ```
 ⚠️ /home/user/.openclaw/farcaster-credentials.json
    Type: json
@@ -423,26 +420,26 @@ cd /path/to/openclaw/skills/credential-manager
    Mode: 600
 ```
 
-### Step 2: Consolidate into .env
+### 第2步：整合到`.env`文件中
 
 ```bash
 ./scripts/consolidate.py
 ```
 
-**Interactive flow:**
-1. Script scans and lists all credential files found
-2. Backs up existing `.env` to `~/.openclaw/backups/credentials-old-YYYYMMDD/`
-3. Loads existing `.env` keys
-4. Processes each credential file:
-   - Auto-detects service (x, farcaster, moltbook, molten, etc.)
-   - Normalizes key names (e.g., `custodyPrivateKey` → `FARCASTER_CUSTODY_PRIVATE_KEY`)
-   - Shows mapping: `key → ENV_KEY`
-5. Asks for confirmation: `Proceed? [y/N]`
-6. Writes merged `.env` (mode 600)
-7. Creates `.env.example` template (safe to share)
-8. Updates `.gitignore`
+**交互式流程：**
+1. 脚本扫描并列出所有找到的凭据文件
+2. 将现有的`.env`文件备份到`~/.openclaw/backups/credentials-old-YYYYMMDD/`
+3. 加载现有的`.env`文件中的密钥
+4. 处理每个凭据文件：
+   - 自动检测服务类型（如x、farcaster、moltbook等）
+   - 规范化密钥名称（例如，`custodyPrivateKey` → `FARCASTER_CUSTODY_PRIVATE_KEY`
+   - 显示映射关系：`密钥 → 环境变量名`
+5. 请求确认：`继续？[y/N]`
+6. 写入合并后的`.env`文件（权限设置为600）
+7. 创建`.env.example`模板（可安全共享）
+8. 更新`.gitignore`文件
 
-**For credentials not auto-detected** (e.g., nested JSON like `farcaster-credentials.json` with multiple accounts), manually add to `.env`:
+**对于未被自动检测到的凭据**（例如，嵌套的JSON文件`farcaster-credentials.json`中包含多个账户），需要手动将其添加到`.env`文件中：
 ```bash
 cat >> ~/.openclaw/.env << 'EOF'
 
@@ -465,31 +462,30 @@ EOF
 chmod 600 ~/.openclaw/.env
 ```
 
-### Step 3: Validate
+### 第3步：验证
 
 ```bash
 ./scripts/validate.py
 ```
 
-**Checks performed:**
-- ✅ `.env` permissions (must be 600)
-- ✅ `.gitignore` coverage
-- ✅ Format validation (key format, quoting, duplicates)
-- ✅ Security analysis:
-  - Detects plaintext private keys (`0x` + 64 hex chars) → recommends GPG
-  - Detects mnemonic/seed phrases (12/24 word values) → recommends GPG
-  - Entropy analysis on SECRET/PRIVATE_KEY/PASSWORD fields
-  - Flags weak/placeholder values
-- ✅ Backup permissions (files must be 600, directories 700)
+**执行的检查：**
+- ✅ `.env`文件的权限是否设置为600
+- `.gitignore`文件是否正确配置
+- 格式是否正确（包括引号和重复项）
+- 安全性分析：
+  - 检测明文私钥（`0x` + 64 hex字符） → 建议使用GPG加密
+  - 检测助记词/种子短语（12/24个单词） → 建议使用GPG加密
+  - 对`SECRET/PRIVATE_KEY/PASSWORD`字段进行熵值分析
+  - 标记出弱或占位符形式的密钥
+- 备份权限是否正确（文件权限为600，目录权限为700）
 
-**Fix issues automatically:**
+**自动修复问题：**
 ```bash
 ./scripts/validate.py --fix
 ```
-This fixes: file permissions, directory permissions, backup permissions, gitignore.
-It does NOT auto-fix format issues or encrypt keys — those require manual action.
+该步骤会修复文件权限、目录权限和备份权限问题。但它不会自动修复格式问题或加密密钥——这些需要手动处理。
 
-### Step 4: Setup GPG and Encrypt Private Keys
+### 第4步：设置GPG并加密私钥
 
 ```bash
 # First-time GPG setup (configures agent cache, tests encrypt/decrypt)
@@ -497,26 +493,26 @@ It does NOT auto-fix format issues or encrypt keys — those require manual acti
 # Optional: --cache-hours 12 (default: 8)
 ```
 
-**Encrypt high-value keys:**
+**加密高价值密钥：**
 ```bash
 # Encrypt wallet + Farcaster private keys
 ./scripts/encrypt.py --keys MAIN_WALLET_PRIVATE_KEY,FARCASTER_CUSTODY_PRIVATE_KEY,FARCASTER_SIGNER_PRIVATE_KEY,FARCASTER_LEGACY_CUSTODY_PRIVATE_KEY,FARCASTER_LEGACY_SIGNER_PRIVATE_KEY
 ```
 
-**What happens:**
-1. Prompts for a GPG passphrase (or reads `OPENCLAW_GPG_PASSPHRASE` env var)
-2. Extracts specified key values from `.env`
-3. Stores them encrypted in `~/.openclaw/.env.secrets.gpg` (AES256, mode 600)
-4. Replaces `.env` values with `GPG:KEY_NAME` placeholders
-5. Scripts using `get_credential()` or `_load_cred()` decrypt transparently
+**操作过程：**
+1. 提示输入GPG密码短语（或读取环境变量`OPENCLAW_GPG_PASSPHRASE`）
+2. 从`.env`文件中提取指定的密钥值
+3. 将它们加密后存储在`~/.openclaw/.env.secrets.gpg`文件中（使用AES256算法，权限设置为600）
+4. 用`GPG:KEY_NAME`替换`.env`文件中的原始密钥值
+5. 使用`get_credential()`或 `_load_cred()`函数的脚本可以透明地解密这些密钥
 
-**Save passphrase to .env for automated decryption:**
+**将密码短语保存到`.env`文件中以供自动解密：**
 ```bash
 echo 'OPENCLAW_GPG_PASSPHRASE=your-passphrase-here' >> ~/.openclaw/.env
 chmod 600 ~/.openclaw/.env
 ```
 
-**Verify encryption:**
+**验证加密效果：**
 ```bash
 # Check .env has GPG placeholders
 grep "GPG:" ~/.openclaw/.env
@@ -525,25 +521,25 @@ grep "GPG:" ~/.openclaw/.env
 ./scripts/encrypt.py --list
 ```
 
-### Step 5: Initialize Rotation Tracking
+### 第5步：初始化轮换跟踪
 
 ```bash
 ./scripts/rotation-check.py --init
 ```
 
-**Auto-classifies all keys by risk:**
-- **Critical** (90-day rotation): `*PRIVATE_KEY`, `*MNEMONIC`, `*SEED`, `*WALLET_KEY`, `*CUSTODY*`, `*SIGNER*`
-- **Standard** (180-day rotation): `*API_KEY`, `*SECRET`, `*TOKEN`, `*BEARER`, `*CONSUMER*`, `*ACCESS*`
-- **Low** (365-day rotation): Everything else
+**自动对所有密钥进行分类：**
+- **关键级别**（90天轮换）：`*PRIVATE_KEY`、`*MNEMONIC`、`*SEED`、`*WALLET_KEY`、`*CUSTODY`、`*SIGNER`**
+- **标准级别**（180天轮换）：`*API_KEY`、`*SECRET`、`*TOKEN`、`*BEARER`、`*CONSUMER`、`*ACCESS`**
+- **低风险级别**（365天轮换）：其他所有密钥
 
-Creates `~/.openclaw/.env.meta` (mode 600) with creation dates and rotation schedules.
+创建`~/.openclaw/.env.meta`文件（权限设置为600），其中包含创建日期和轮换计划。
 
-**Check rotation status anytime:**
+**随时可以检查轮换状态：**
 ```bash
 ./scripts/rotation-check.py
 ```
 
-### Step 6: Cleanup Old Credential Files
+### 第6步：清理旧凭据文件
 
 ```bash
 # Dry run first — see what would be deleted
@@ -553,7 +549,7 @@ Creates `~/.openclaw/.env.meta` (mode 600) with creation dates and rotation sche
 ./scripts/cleanup.py --confirm
 ```
 
-**Also manually remove migrated files not caught by the scanner:**
+**还需要手动删除扫描未发现的旧文件：**
 ```bash
 # Example: farcaster-credentials.json was manually migrated
 cp ~/.openclaw/farcaster-credentials.json ~/.openclaw/backups/credentials-old-YYYYMMDD/farcaster-credentials.json.bak
@@ -561,11 +557,11 @@ chmod 600 ~/.openclaw/backups/credentials-old-YYYYMMDD/farcaster-credentials.jso
 rm ~/.openclaw/farcaster-credentials.json
 ```
 
-### Step 7: Update Scripts That Referenced Old Files
+### 第7步：更新引用旧文件的脚本
 
-Any scripts that loaded from JSON credential files or hardcoded paths need updating.
+任何从JSON凭据文件或硬编码路径加载数据的脚本都需要更新。
 
-**Pattern — Bash scripts:**
+**Bash脚本的更新方式：**
 ```bash
 # OLD (insecure):
 FARCASTER_CREDS="/home/user/.openclaw/farcaster-credentials.json"
@@ -595,7 +591,7 @@ fid=$(_load_cred "FARCASTER_FID")
 private_key=$(_load_cred "FARCASTER_CUSTODY_PRIVATE_KEY")
 ```
 
-**Pattern — Node.js scripts:**
+**Node.js脚本的更新方式：**
 ```javascript
 // OLD (insecure):
 const creds = JSON.parse(fs.readFileSync('~/.openclaw/farcaster-credentials.json'));
@@ -628,7 +624,7 @@ function loadCred(key) {
 const privateKey = loadCred('FARCASTER_CUSTODY_PRIVATE_KEY');
 ```
 
-**Pattern — Python scripts:**
+**Python脚本的更新方式：**
 ```python
 # Use the enforce module (recommended):
 import sys
@@ -639,23 +635,9 @@ from enforce import get_credential
 private_key = get_credential('FARCASTER_CUSTODY_PRIVATE_KEY')  # Auto-decrypts GPG
 ```
 
-### Step 8: Final Validation
+### 第8步：最终验证
 
-```bash
-# Run full validation — should show all green
-./scripts/validate.py
-
-# Verify encrypted keys
-./scripts/encrypt.py --list
-
-# Check rotation status
-./scripts/rotation-check.py
-
-# Test a script that uses credentials
-bash /path/to/your/script.sh
-```
-
-**Expected final state:**
+**预期的最终状态：**
 ```
 ~/.openclaw/
 ├── .env                     # All credentials (mode 600, private keys = GPG:*)
@@ -668,11 +650,11 @@ bash /path/to/your/script.sh
         └── *.bak            # Backup files (mode 600)
 ```
 
-## For Skill Developers: Enforce This Standard
+## 对于技能开发者：强制执行此标准
 
-Other OpenClaw skills MUST validate credentials are secure before using them:
+其他OpenClaw技能在使用凭据之前必须验证其安全性：
 
-### Python Skills
+### Python技能
 ```python
 #!/usr/bin/env python3
 import sys
@@ -691,7 +673,7 @@ api_key = get_credential('SERVICE_API_KEY')
 wallet_key = get_credential('MAIN_WALLET_PRIVATE_KEY')  # Auto-decrypts from GPG
 ```
 
-### Bash Skills
+### Bash技能
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -705,11 +687,11 @@ fi
 source ~/.openclaw/.env
 ```
 
-**This creates a fail-fast system:** If credentials aren't properly secured, skills refuse to run. Users are forced to fix it.
+**这会创建一个快速失败的系统：**如果凭据未得到适当保护，相关技能将拒绝运行。用户必须修复这些问题。
 
-## Loading Credentials
+## 加载凭据
 
-After migration, load from `.env`:
+迁移完成后，从`.env`文件中加载凭据：
 
 ### Python
 ```python
@@ -739,53 +721,54 @@ set +a
 echo "$SERVICE_API_KEY"
 ```
 
-### Using Existing Loaders
-If you migrated using OpenClaw scripts:
+### 使用现有的加载器
+
+如果您使用OpenClaw脚本进行了迁移：
 ```python
 from load_credentials import get_credentials
 creds = get_credentials('x')
 ```
 
-## Adding New Credentials
+### 添加新凭据
 
-Edit `~/.openclaw/.env`:
+编辑`~/.openclaw/.env`文件：
 ```bash
 # Add new service
 NEW_SERVICE_API_KEY=your_key_here
 NEW_SERVICE_SECRET=your_secret_here
 ```
 
-Update template too:
+同时更新模板文件：
 ```bash
 # Edit .env.example
 NEW_SERVICE_API_KEY=your_key_here
 NEW_SERVICE_SECRET=your_secret_here
 ```
 
-If the new credential is high-value (private key, wallet key):
+如果新凭据具有高价值（如私钥或钱包密钥）：
 ```bash
 # Add to .env first, then encrypt
 ./scripts/encrypt.py --keys NEW_SERVICE_PRIVATE_KEY
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-See [references/security.md](references/security.md) for detailed security guidelines.
+请参阅[references/security.md](references/security.md)以获取详细的安全指南。
 
-**Quick checklist:**
-- ✅ `.env` has 600 permissions
-- ✅ `.env` is git-ignored
-- ✅ Backup files have 600 permissions
-- ✅ Backup directories have 700 permissions
-- ✅ No credentials in code or logs (use `--deep` scan to verify)
-- ✅ Private keys encrypted with GPG
-- ✅ Rotation schedule established and tracked
-- ✅ Symlinked .env files point to the main .env only
-- ✅ No credentials in shell history (use `source`, not `export KEY=val`)
+**快速检查清单：**
+- ✅ `.env`文件的权限设置为600
+- `.env`文件被Git忽略
+- 备份文件的权限设置为600
+- 备份目录的权限设置为700
+- 代码或日志中不存在凭据（使用`--deep`选项进行扫描验证）
+- 私钥已使用GPG加密
+- 已建立并跟踪轮换计划
+- 符号链接的`.env`文件仅指向主`.env`文件
+- 命令行历史记录中不存在凭据（使用`source`命令加载，而不是`export KEY=value`
 
-## Rollback
+## 回滚
 
-If something goes wrong:
+如果出现问题：
 
 ```bash
 # Find your backup
@@ -799,12 +782,12 @@ cp ~/.openclaw/backups/credentials-old-YYYYMMDD/x-credentials.json.bak \
 ./scripts/encrypt.py --decrypt --keys MAIN_WALLET_PRIVATE_KEY
 ```
 
-## Notes
+## 注意事项
 
-- **Non-destructive by default:** Original files backed up before removal
-- **Idempotent:** Safe to run multiple times
-- **Extensible:** Add custom credential patterns in scripts
-- **Secure:** Never logs full credentials, only metadata
-- **GPG-aware:** Transparently handles encrypted and plaintext credentials
-- **Backup-hardened:** All backups secured with proper permissions
-- **Symlink-aware:** Detects and validates symlinked credential files
+- **默认情况下操作是非破坏性的：**在删除原始文件之前会先进行备份
+- **操作是幂等的：**可以多次安全执行
+- **可扩展性：**可以在脚本中添加自定义的凭据匹配规则
+- **安全性：**从不记录完整的凭据内容，只记录元数据
+- **支持GPG：**透明地处理加密和明文凭据
+- **备份措施完善：**所有备份文件都设置了适当的权限
+- **支持符号链接：**能够检测和验证符号链接的凭据文件

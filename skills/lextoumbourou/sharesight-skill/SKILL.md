@@ -1,24 +1,24 @@
 ---
 name: sharesight
 version: 1.0.0
-description: Manage Sharesight portfolios, holdings, and custom investments via the API
+description: 通过 API 管理 Shareight 的投资组合、持仓以及自定义投资。
 metadata: {"openclaw": {"category": "finance", "requires": {"env": ["SHARESIGHT_CLIENT_ID", "SHARESIGHT_CLIENT_SECRET"]}, "optional_env": ["SHARESIGHT_ALLOW_WRITES"]}}
 ---
 
 # Sharesight Skill
 
-Manage Sharesight portfolios, holdings, custom investments, prices, and coupon rates. Supports full CRUD operations.
+用于管理Sharesight的投资组合、持仓、自定义投资、价格以及票息率。支持完整的CRUD（创建、读取、更新、删除）操作。
 
-## Prerequisites
+## 先决条件
 
-Set these environment variables:
-- `SHARESIGHT_CLIENT_ID` - Your Sharesight API client ID
-- `SHARESIGHT_CLIENT_SECRET` - Your Sharesight API client secret
-- `SHARESIGHT_ALLOW_WRITES` - Set to `true` to enable create, update, and delete operations (disabled by default for safety)
+请设置以下环境变量：
+- `SHARESIGHT_CLIENT_ID`：您的Sharesight API客户端ID
+- `SHARESIGHT_CLIENT_SECRET`：您的Sharesight API客户端密钥
+- `SHARESIGHT_ALLOW_WRITES`：设置为`true`以启用创建、更新和删除操作（出于安全考虑，默认为禁用状态）
 
-## Commands
+## 命令
 
-### Authentication
+### 认证
 
 ```bash
 # Authenticate (required before first use)
@@ -31,7 +31,7 @@ sharesight auth status
 sharesight auth clear
 ```
 
-### Portfolios
+### 投资组合
 
 ```bash
 # List all portfolios
@@ -54,7 +54,7 @@ sharesight portfolios chart <portfolio_id>
 sharesight portfolios chart <portfolio_id> --benchmark SPY.NYSE
 ```
 
-### Holdings
+### 持仓
 
 ```bash
 # List all holdings across portfolios
@@ -73,7 +73,7 @@ sharesight holdings update <holding_id> --enable-drp true --drp-mode up
 sharesight holdings delete <holding_id>
 ```
 
-### Custom Investments
+### 自定义投资
 
 ```bash
 # List custom investments
@@ -94,7 +94,7 @@ sharesight investments update <investment_id> --name "New Name"
 sharesight investments delete <investment_id>
 ```
 
-### Prices (Custom Investment Prices)
+### 价格（自定义投资价格）
 
 ```bash
 # List prices for a custom investment
@@ -111,7 +111,7 @@ sharesight prices update <price_id> --price 101.00
 sharesight prices delete <price_id>
 ```
 
-### Coupon Rates (Fixed Interest)
+### 票息率（固定收益）
 
 ```bash
 # List coupon rates for a fixed interest investment
@@ -128,7 +128,7 @@ sharesight coupon-rates update <coupon_rate_id> --rate 5.75
 sharesight coupon-rates delete <coupon_rate_id>
 ```
 
-### Reference Data
+### 参考数据
 
 ```bash
 # List country codes
@@ -136,9 +136,9 @@ sharesight countries
 sharesight countries --supported
 ```
 
-## Output Format
+## 输出格式
 
-All commands output JSON. Example portfolio list response:
+所有命令的输出均为JSON格式。例如，投资组合列表的响应格式如下：
 
 ```json
 {
@@ -153,39 +153,39 @@ All commands output JSON. Example portfolio list response:
 }
 ```
 
-## Date Format
+## 日期格式
 
-All dates use `YYYY-MM-DD` format (e.g., `2024-01-15`).
+所有日期均使用`YYYY-MM-DD`格式（例如，`2024-01-15`）。
 
-## Grouping Options
+## 分组选项
 
-Performance reports support these grouping options:
-- `country` - Group by country
-- `currency` - Group by currency
-- `market` - Group by market (default)
-- `portfolio` - Group by portfolio
-- `sector_classification` - Group by sector
-- `industry_classification` - Group by industry
-- `investment_type` - Group by investment type
-- `ungrouped` - No grouping
+性能报告支持以下分组方式：
+- `country`：按国家分组
+- `currency`：按货币分组
+- `market`：按市场分组（默认）
+- `portfolio`：按投资组合分组
+- `sector_classification`：按行业分类分组
+- `industry_classification`：按行业分类分组
+- `investment_type`：按投资类型分组
+- `ungrouped`：不进行分组
 
-## Write Protection
+## 写入保护
 
-Write operations (create, update, delete) are **disabled by default** for safety. To enable them:
+出于安全考虑，写入操作（创建、更新、删除）默认是禁用的。要启用这些操作，请执行以下操作：
 
 ```bash
 export SHARESIGHT_ALLOW_WRITES=true
 ```
 
-Without this, write commands will fail with:
+如果不设置此选项，写入命令将会失败，并显示相应的错误信息：
 
 ```json
 {"error": "Write operations are disabled by default. Set SHARESIGHT_ALLOW_WRITES=true to enable create, update, and delete operations.", "hint": "export SHARESIGHT_ALLOW_WRITES=true"}
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### View Portfolio Performance
+### 查看投资组合表现
 
 ```bash
 # Get current year performance
@@ -195,14 +195,14 @@ sharesight portfolios performance 12345 --start-date 2024-01-01
 sharesight portfolios chart 12345 --benchmark SPY.NYSE
 ```
 
-### Analyze Holdings
+### 分析持仓情况
 
 ```bash
 # List all holdings with cost information
 sharesight holdings get 67890 --avg-price --cost-base
 ```
 
-### Track Custom Investments
+### 跟踪自定义投资
 
 ```bash
 # Create a custom investment for tracking unlisted assets
@@ -213,7 +213,7 @@ sharesight prices create 123456 --price 500000.00 --date 2024-01-01
 sharesight prices create 123456 --price 520000.00 --date 2024-06-01
 ```
 
-### Manage Fixed Interest Investments
+### 管理固定收益投资
 
 ```bash
 # Create a term deposit
@@ -226,7 +226,7 @@ sharesight coupon-rates create 123456 --rate 4.5 --date 2024-01-01
 sharesight coupon-rates update 789 --rate 4.75
 ```
 
-### Configure Dividend Reinvestment
+### 配置股息再投资
 
 ```bash
 # Enable DRP and round up purchases

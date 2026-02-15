@@ -1,24 +1,24 @@
 ---
 slug: "big-data-analysis"
 display_name: "Big Data Analysis"
-description: "Analyze large-scale construction datasets. Process thousands of projects for patterns, benchmarks, and predictive insights."
+description: "分析大规模的建筑数据集。处理数千个项目，以发现其中的规律、进行性能测试，并获得预测性洞察。"
 ---
 
-# Big Data Analysis
+# 大数据分析
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Large-scale data analysis challenges:
-- Processing millions of records
-- Cross-project benchmarking
-- Pattern recognition at scale
-- Memory and performance constraints
+### 问题描述
+大规模数据分析面临的挑战：
+- 处理数百万条记录
+- 跨项目的数据基准测试
+- 大规模的模式识别
+- 内存和性能限制
 
-### Solution
-Scalable big data analysis framework for construction data using efficient data structures and parallel processing patterns.
+### 解决方案
+使用高效的数据结构和并行处理模式，构建可扩展的大数据分析框架，专门用于建筑行业的数据分析。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -337,7 +337,7 @@ class BigDataAnalyzer:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create analyzer
@@ -367,33 +367,33 @@ for segment, stats in benchmarks.items():
     print(f"{segment}: ${stats.mean:.2f}/SF (median: ${stats.median:.2f}/SF)")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Find Anomalies
+### 1. 发现异常值
 ```python
 anomalies = analyzer.find_anomalies('cost_per_sf', threshold_std=2.0)
 print(f"Found {len(anomalies)} anomalous projects")
 ```
 
-### 2. Trend Analysis
+### 2. 趋势分析
 ```python
 trends = analyzer.analyze_trends('cost_per_sf', 'start_date', 'Y')
 print(trends)
 ```
 
-### 3. Project Ranking
+### 3. 项目排名
 ```python
 ranking = analyzer.percentile_rank('P001', 'cost_per_sf')
 print(f"Project is at {ranking['percentile']}th percentile")
 ```
 
-### 4. Segment Analysis
+### 4. 组段分析
 ```python
 segments = analyzer.segment_analysis('cost_per_sf', 'project_type')
 print(segments)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.4 - Modern Data Technologies
-- **Apache Parquet**: https://parquet.apache.org/
-- **Website**: https://datadrivenconstruction.io
+## 资源参考
+- **DDC书籍**：第4.4章 - 现代数据技术
+- **Apache Parquet**：https://parquet.apache.org/
+- **官方网站**：https://datadrivenconstruction.io

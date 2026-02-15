@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
-# Telnyx Numbers - Python
+# Telnyx 数字服务 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,9 +33,9 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get country coverage
+## 获取国家覆盖范围
 
 `GET /country_coverage`
 
@@ -43,7 +44,7 @@ country_coverage = client.country_coverage.retrieve()
 print(country_coverage.data)
 ```
 
-## Get coverage for a specific country
+## 获取特定国家的覆盖范围
 
 `GET /country_coverage/countries/{country_code}`
 
@@ -54,9 +55,9 @@ response = client.country_coverage.retrieve_country(
 print(response.data)
 ```
 
-## Create an inventory coverage request
+## 创建库存覆盖请求
 
-Creates an inventory coverage request.
+创建一个库存覆盖请求。
 
 `GET /inventory_coverage`
 
@@ -65,9 +66,9 @@ inventory_coverages = client.inventory_coverage.list()
 print(inventory_coverages.data)
 ```
 
-## List number reservations
+## 列出电话号码预订信息
 
-Gets a paginated list of phone number reservations.
+获取分页显示的电话号码预订信息。
 
 `GET /number_reservations`
 
@@ -77,9 +78,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a number reservation
+## 创建电话号码预订
 
-Creates a Phone Number Reservation for multiple numbers.
+为多个电话号码创建预订。
 
 `POST /number_reservations`
 
@@ -88,11 +89,11 @@ number_reservation = client.number_reservations.create()
 print(number_reservation.data)
 ```
 
-## Retrieve a number reservation
+## 获取电话号码预订信息
 
-Gets a single phone number reservation.
+获取单个电话号码的预订信息。
 
-`GET /number_reservations/{number_reservation_id}`
+`GET /number_reservations/{numberreservation_id}`
 
 ```python
 number_reservation = client.number_reservations.retrieve(
@@ -101,11 +102,11 @@ number_reservation = client.number_reservations.retrieve(
 print(number_reservation.data)
 ```
 
-## Extend a number reservation
+## 延长电话号码预订的有效期
 
-Extends reservation expiry time on all phone numbers.
+延长所有电话号码的预订有效期。
 
-`POST /number_reservations/{number_reservation_id}/actions/extend`
+`POST /number_reservations/{numberreservation_id}/actions/extend`
 
 ```python
 response = client.number_reservations.actions.extend(
@@ -114,9 +115,9 @@ response = client.number_reservations.actions.extend(
 print(response.data)
 ```
 
-## List number orders
+## 列出电话号码订单信息
 
-Get a paginated list of number orders.
+获取分页显示的电话号码订单信息。
 
 `GET /number_orders`
 
@@ -126,9 +127,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a number order
+## 创建电话号码订单
 
-Creates a phone number order.
+创建一个电话号码订单。
 
 `POST /number_orders`
 
@@ -137,9 +138,9 @@ number_order = client.number_orders.create()
 print(number_order.data)
 ```
 
-## Retrieve a number order
+## 获取电话号码订单信息
 
-Get an existing phone number order.
+获取现有的电话号码订单信息。
 
 `GET /number_orders/{number_order_id}`
 
@@ -150,9 +151,9 @@ number_order = client.number_orders.retrieve(
 print(number_order.data)
 ```
 
-## Update a number order
+## 更新电话号码订单信息
 
-Updates a phone number order.
+更新电话号码订单信息。
 
 `PATCH /number_orders/{number_order_id}`
 
@@ -163,9 +164,9 @@ number_order = client.number_orders.update(
 print(number_order.data)
 ```
 
-## List number block orders
+## 列出电话号码块订单信息
 
-Get a paginated list of number block orders.
+获取分页显示的电话号码块订单信息。
 
 `GET /number_block_orders`
 
@@ -175,11 +176,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a number block order
+## 创建电话号码块订单
 
-Creates a phone number block order.
+创建一个电话号码块订单。
 
-`POST /number_block_orders` — Required: `starting_number`, `range`
+`POST /number_block_orders` — 必需参数：`starting_number`, `range`
 
 ```python
 number_block_order = client.number_block_orders.create(
@@ -189,9 +190,9 @@ number_block_order = client.number_block_orders.create(
 print(number_block_order.data)
 ```
 
-## Retrieve a number block order
+## 获取电话号码块订单信息
 
-Get an existing phone number block order.
+获取现有的电话号码块订单信息。
 
 `GET /number_block_orders/{number_block_order_id}`
 
@@ -202,9 +203,9 @@ number_block_order = client.number_block_orders.retrieve(
 print(number_block_order.data)
 ```
 
-## Retrieve a list of phone numbers associated to orders
+## 获取与订单关联的电话号码列表
 
-Get a list of phone numbers associated to orders.
+获取与订单关联的电话号码列表。
 
 `GET /number_order_phone_numbers`
 
@@ -213,9 +214,11 @@ number_order_phone_numbers = client.number_order_phone_numbers.list()
 print(number_order_phone_numbers.data)
 ```
 
-## Update requirement group for a phone number order
+## 更新电话号码订单中的需求组
 
-`POST /number_order_phone_numbers/{id}/requirement_group` — Required: `requirement_group_id`
+更新电话号码订单中的需求组。
+
+`POST /number_order_phone_numbers/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```python
 response = client.number_order_phone_numbers.update_requirement_group(
@@ -225,9 +228,9 @@ response = client.number_order_phone_numbers.update_requirement_group(
 print(response.data)
 ```
 
-## Retrieve a single phone number within a number order.
+## 获取电话号码订单中的单个电话号码
 
-Get an existing phone number in number order.
+获取电话号码订单中的单个电话号码信息。
 
 `GET /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -238,9 +241,9 @@ number_order_phone_number = client.number_order_phone_numbers.retrieve(
 print(number_order_phone_number.data)
 ```
 
-## Update requirements for a single phone number within a number order.
+## 更新电话号码订单中的单个电话号码的需求
 
-Updates requirements for a single phone number within a number order.
+更新电话号码订单中的单个电话号码的需求信息。
 
 `PATCH /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -251,9 +254,9 @@ response = client.number_order_phone_numbers.update_requirements(
 print(response.data)
 ```
 
-## List sub number orders
+## 列出子号码订单信息
 
-Get a paginated list of sub number orders.
+获取分页显示的子号码订单信息。
 
 `GET /sub_number_orders`
 
@@ -262,9 +265,11 @@ sub_number_orders = client.sub_number_orders.list()
 print(sub_number_orders.data)
 ```
 
-## Update requirement group for a sub number order
+## 更新子号码订单的需求组
 
-`POST /sub_number_orders/{id}/requirement_group` — Required: `requirement_group_id`
+更新子号码订单的需求组。
+
+`POST /sub_number_orders/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```python
 response = client.sub_number_orders.update_requirement_group(
@@ -274,9 +279,9 @@ response = client.sub_number_orders.update_requirement_group(
 print(response.data)
 ```
 
-## Retrieve a sub number order
+## 获取子号码订单信息
 
-Get an existing sub number order.
+获取现有的子号码订单信息。
 
 `GET /sub_number_orders/{sub_number_order_id}`
 
@@ -287,9 +292,9 @@ sub_number_order = client.sub_number_orders.retrieve(
 print(sub_number_order.data)
 ```
 
-## Update a sub number order's requirements
+## 更新子号码订单的需求信息
 
-Updates a sub number order.
+更新子号码订单的需求信息。
 
 `PATCH /sub_number_orders/{sub_number_order_id}`
 
@@ -300,9 +305,9 @@ sub_number_order = client.sub_number_orders.update(
 print(sub_number_order.data)
 ```
 
-## Cancel a sub number order
+## 取消子号码订单
 
-Allows you to cancel a sub number order in 'pending' status.
+允许取消处于“待处理”状态的子号码订单。
 
 `PATCH /sub_number_orders/{sub_number_order_id}/cancel`
 
@@ -313,9 +318,9 @@ response = client.sub_number_orders.cancel(
 print(response.data)
 ```
 
-## Create a sub number orders report
+## 创建子号码订单报告
 
-Create a CSV report for sub number orders.
+为子号码订单创建 CSV 报告。
 
 `POST /sub_number_orders/report`
 
@@ -324,9 +329,9 @@ sub_number_orders_report = client.sub_number_orders_report.create()
 print(sub_number_orders_report.data)
 ```
 
-## Retrieve a sub number orders report
+## 获取子号码订单报告
 
-Get the status and details of a sub number orders report.
+获取子号码订单的报告状态和详细信息。
 
 `GET /sub_number_orders/report/{report_id}`
 
@@ -337,9 +342,9 @@ sub_number_orders_report = client.sub_number_orders_report.retrieve(
 print(sub_number_orders_report.data)
 ```
 
-## Download a sub number orders report
+## 下载子号码订单报告
 
-Download the CSV file for a completed sub number orders report.
+下载已完成的子号码订单的 CSV 文件。
 
 `GET /sub_number_orders/report/{report_id}/download`
 
@@ -350,7 +355,9 @@ response = client.sub_number_orders_report.download(
 print(response)
 ```
 
-## List Advanced Orders
+## 列出高级订单信息
+
+获取高级订单信息。
 
 `GET /advanced_orders`
 
@@ -359,7 +366,9 @@ advanced_orders = client.advanced_orders.list()
 print(advanced_orders.data)
 ```
 
-## Create Advanced Order
+## 创建高级订单
+
+创建一个高级订单。
 
 `POST /advanced_orders`
 
@@ -368,7 +377,9 @@ advanced_order = client.advanced_orders.create()
 print(advanced_order.id)
 ```
 
-## Update Advanced Order
+## 更新高级订单
+
+更新高级订单的信息。
 
 `PATCH /advanced_orders/{advanced-order-id}/requirement_group`
 
@@ -379,7 +390,9 @@ response = client.advanced_orders.update_requirement_group(
 print(response.id)
 ```
 
-## Get Advanced Order
+## 获取高级订单信息
+
+获取高级订单的详细信息。
 
 `GET /advanced_orders/{order_id}`
 
@@ -390,9 +403,9 @@ advanced_order = client.advanced_orders.retrieve(
 print(advanced_order.id)
 ```
 
-## List inexplicit number orders
+## 获取非明确指定的电话号码订单信息
 
-Get a paginated list of inexplicit number orders.
+获取分页显示的非明确指定电话号码订单信息。
 
 `GET /inexplicit_number_orders`
 
@@ -402,11 +415,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create an inexplicit number order
+## 创建非明确指定的电话号码订单
 
-Create an inexplicit number order to programmatically purchase phone numbers without specifying exact numbers.
+创建一个非明确指定的电话号码订单，以便在不指定具体号码的情况下程序化购买电话号码。
 
-`POST /inexplicit_number_orders` — Required: `ordering_groups`
+`POST /inexplicit_number_orders` — 必需参数：`ordering_groups`
 
 ```python
 inexplicit_number_order = client.inexplicit_number_orders.create(
@@ -419,9 +432,9 @@ inexplicit_number_order = client.inexplicit_number_orders.create(
 print(inexplicit_number_order.data)
 ```
 
-## Retrieve an inexplicit number order
+## 获取非明确指定的电话号码订单信息
 
-Get an existing inexplicit number order by ID.
+通过 ID 获取现有的非明确指定电话号码订单。
 
 `GET /inexplicit_number_orders/{id}`
 
@@ -432,7 +445,9 @@ inexplicit_number_order = client.inexplicit_number_orders.retrieve(
 print(inexplicit_number_order.data)
 ```
 
-## Retrieve all comments
+## 获取所有评论信息
+
+获取所有评论信息。
 
 `GET /comments`
 
@@ -441,7 +456,9 @@ comments = client.comments.list()
 print(comments.data)
 ```
 
-## Create a comment
+## 创建评论
+
+创建一条评论。
 
 `POST /comments`
 
@@ -450,7 +467,9 @@ comment = client.comments.create()
 print(comment.data)
 ```
 
-## Retrieve a comment
+## 获取评论信息
+
+获取特定评论的详细信息。
 
 `GET /comments/{id}`
 
@@ -461,7 +480,9 @@ comment = client.comments.retrieve(
 print(comment.data)
 ```
 
-## Mark a comment as read
+## 将评论标记为已阅读
+
+将评论标记为已阅读。
 
 `PATCH /comments/{id}/read`
 
@@ -472,7 +493,9 @@ response = client.comments.mark_as_read(
 print(response.data)
 ```
 
-## List available phone number blocks
+## 列出可用的电话号码块
+
+获取可用的电话号码块信息。
 
 `GET /available_phone_number_blocks`
 
@@ -481,7 +504,9 @@ available_phone_number_blocks = client.available_phone_number_blocks.list()
 print(available_phone_number_blocks.data)
 ```
 
-## List available phone numbers
+## 列出可用的电话号码
+
+获取可用的电话号码信息。
 
 `GET /available_phone_numbers`
 
@@ -490,9 +515,11 @@ available_phone_numbers = client.available_phone_numbers.list()
 print(available_phone_numbers.data)
 ```
 
-## Retrieve the features for a list of numbers
+## 获取电话号码列表的相关信息
 
-`POST /numbers_features` — Required: `phone_numbers`
+获取电话号码列表的相关信息。
+
+`POST /numbers_features` — 必需参数：`phone_numbers`
 
 ```python
 numbers_feature = client.numbers_features.create(
@@ -503,11 +530,12 @@ print(numbers_feature.data)
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `numberOrderStatusUpdate` | Number Order Status Update |
+| `numberOrderStatusUpdate` | 电话号码订单状态更新 |
+```
+```

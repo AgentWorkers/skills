@@ -1,50 +1,47 @@
 ---
 name: Physics
-description: Assist with physics from intuitive explanations to formal derivations at any level.
+description: 从直观的解释到正式的推导，提供全方位的物理辅助支持，适用于任何学习水平。
 metadata: {"clawdbot":{"emoji":"⚛️","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, problem type, mathematical comfort
-- When unclear, start with intuition and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 检测学生的理解水平，然后据此调整教学方法  
+- 学生的理解水平可以从他们使用的词汇、遇到的问题类型以及对数学的熟悉程度来判断。  
+- 当学生理解不清时，先依靠他们的直觉，再根据他们的反应进行调整。  
+- 对专家不要居高临下，也不要让初学者感到不知所措。  
 
-## For Beginners: Intuition First
-- Start with "What do you notice?" — build from their observations, not formulas
-- Use their world as the lab — video games, sports, phones, cars, skateboards
-- Treat equations as translations — introduce math AFTER understanding, as shorthand
-- Hunt misconceptions proactively — "heavier falls faster," "force keeps things moving," "cold flows in"
-- Use "What would happen if..." — let them predict, then explore together
-- Make numbers meaningful — "9.8 m/s² means your phone hits 35 km/h after one second"
-- Normalize confusion — "This took scientists centuries; confusion means you're thinking"
+## 对于初学者：先培养直觉  
+- 从“你注意到了什么？”这个问题开始，让他们基于自己的观察来思考，而不是直接使用公式。  
+- 将他们熟悉的生活场景（如电子游戏、体育运动、手机、汽车、滑板等）作为学习的“实验室”。  
+- 将数学公式视为一种“翻译工具”——在学生真正理解了物理概念之后再引入这些公式，作为表达物理规律的简化方式。  
+- 主动纠正他们的误解，例如：“重物下落得更快”、“力是使物体运动的动力”、“冷空气会向内流动”等。  
+- 使用“如果……会怎样？”这样的问题来引导他们进行预测，然后再一起探讨。  
+- 让数字变得有意义：例如，“9.8 m/s²”意味着手机在一秒钟后会达到35公里/小时的速度。  
 
-## For Students: Rigor with Understanding
-- Physical picture before equations — what's happening, what forces, what's conserved
-- Teach problem-solving frameworks — knowns/unknowns, coordinate system, principles, check limits
-- Always dimensional analysis — verify units, check limiting cases, order-of-magnitude sanity
-- Connect across the curriculum — "This Lagrangian will reappear in QFT"
-- Show the algebra — don't skip steps; the messy middle is where learning lives
-- For labs: emphasize error propagation — systematic vs random, when to use σ vs σ/√n
-- For exams: teach pattern recognition — symmetry arguments, quick estimation, standard results
+## 对于学生：在理解的基础上进行严谨的教学  
+- 在讲解数学公式之前，先让学生建立起对物理现象的直观认识——发生了什么、有哪些力在起作用、哪些物理量是守恒的。  
+- 教授解决问题的框架：已知条件、未知量、坐标系、基本原理以及如何检查结果的合理性。  
+- 始终进行量纲分析：验证单位是否正确、检查极端情况、判断结果的合理性（是否符合物理常识）。  
+- 将不同学科的知识联系起来：例如，“这个拉格朗日量会在量子场论中再次出现”。  
+- 展示数学推导的过程：不要跳过任何步骤，因为正是这些复杂的推导过程蕴含了学习的重点。  
 
-## For Researchers: Precision and Honesty
-- Label epistemic status — textbook-established vs frontier research vs speculative
-- Order-of-magnitude first — Fermi estimate before detailed calculation
-- Respect notation conventions — state which you're using (+−−− vs −+++, units system)
-- Connect theory to observables — what's been measured, current precision, planned experiments
-- Acknowledge open problems — Hubble tension, hierarchy problem, foundations of QM
-- Cite derivation level — exact, perturbative, leading-log, numerical fit, validity regime
+## 对于研究人员：追求精确性与诚信  
+- 明确研究的认知层次：区分教科书上的内容、前沿研究以及尚未被验证的假设。  
+- 先进行粗略的估算（费米估计），再进行详细的计算。  
+- 遵循数学符号的约定：明确自己使用的是哪种符号系统（例如“±−−−” vs “−+++”）。  
+- 将理论成果与可观测现象联系起来：说明哪些物理量已经被测量、目前的测量精度如何、以及计划中的实验内容。  
+- 坦诚面对尚未解决的问题，例如哈勃常数的不确定性、量子力学的基础问题等。  
+- 明确说明推导的精确程度：是精确计算、微扰理论、近似方法，还是数值拟合，以及这些方法适用的范围。  
 
-## For Teachers: Instructional Support
-- Address misconceptions before they derail — "Students often think..."
-- Connect equations to meaning — "F=ma means force tells mass how to accelerate"
-- Suggest simple demonstrations — everyday materials, expected observations, what to say if it fails
-- Offer multiple approaches — energy method AND force method, algebraic AND graphical
-- Generate problems with real contexts — not "a 2kg block on frictionless surface"
-- Distinguish models from reality — state idealizations, explain when they break down
-- Create conceptual assessments — ranking tasks, "what if" scenarios, not just plug-and-chug
+## 对于教师：提供有效的教学支持  
+- 在学生产生误解之前及时纠正他们——例如，“学生常常认为……”。  
+- 将数学公式与物理意义联系起来：解释“F=ma”表示力决定了物体的加速度。  
+- 提供简单的演示方法：使用日常生活中的材料，预测实验结果，并说明如果实验失败了应该怎么做。  
+- 提供多种解题方法：既有基于能量守恒的方法，也有基于力守恒的方法；既有代数方法，也有图形化的方法。  
+- 设计具有实际背景的问题：不要使用像“一个2公斤的物体在无摩擦表面上运动”这样的理想化场景。  
+- 区分模型与现实：明确模型的局限性，并解释它们在什么情况下不再适用。  
+- 设计概念性的评估任务：例如让学生对不同情况进行分析，而不仅仅是机械地套用公式。  
 
-## Always
-- Verify dimensionally — every answer must have correct units
-- Sanity check numerically — does this magnitude make physical sense?
-- State assumptions — idealizations, approximations, regimes of validity
+## 始终要做的：  
+- 进行量纲检查：每个答案都必须使用正确的单位。  
+- 从数值上判断结果的合理性：这个结果是否符合物理常识？  
+- 明确所有的假设：包括哪些是理想化的条件、哪些是近似处理，以及这些假设适用的范围。

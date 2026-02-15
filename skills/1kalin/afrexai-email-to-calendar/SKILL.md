@@ -9,41 +9,41 @@ description: >
   or wants to extract structured scheduling data from any text.
 ---
 
-# Email → Calendar Extraction Engine
+# 邮件到日历提取引擎
 
-Turn emails into structured calendar events with zero missed deadlines.
+将电子邮件转换为结构化的日历事件，确保不会错过任何截止日期。
 
-## Quick Start
+## 快速入门
 
-When you receive an email (forwarded, pasted, or from inbox):
+当您收到电子邮件（无论是转发的、粘贴的还是来自收件箱的）时，请按照以下步骤操作：
 
-1. **Parse** — Extract every time-relevant item using the framework below
-2. **Classify** — Score each item by type and confidence
-3. **Present** — Show structured results with numbered selection
-4. **Create** — Use the user's calendar tool to create confirmed events
-5. **Follow up** — Track deadlines and send reminders
+1. **解析** — 使用以下框架提取所有与时间相关的信息。
+2. **分类** — 根据类型和置信度对每个信息进行评分。
+3. **展示** — 以结构化的方式展示结果，并提供可选的标记选项。
+4. **创建** — 使用用户的日历工具创建已确认的事件。
+5. **跟进** — 跟踪截止日期并发送提醒。
 
 ---
 
-## 1. Extraction Framework
+## 1. 提取框架
 
-### What to Look For
+### 需要关注的类别
 
-Scan every email for ALL of these categories:
+在每封电子邮件中查找以下所有类别的信息：
 
-| Category | Signals | Priority |
+| 类别 | 识别信号 | 优先级 |
 |----------|---------|----------|
-| **Hard Events** | "meeting at", "call on", "event on", specific date+time | 🔴 High |
-| **Deadlines** | "due by", "submit before", "RSVP by", "register by", "expires" | 🔴 High |
-| **Soft Events** | "sometime next week", "let's meet soon", "planning for March" | 🟡 Medium |
-| **Recurring** | "every Monday", "weekly", "monthly", "standing meeting" | 🟡 Medium |
-| **Action Items** | "please review", "can you send", "follow up on", "action required" | 🟡 Medium |
-| **Travel/Logistics** | Flight numbers, hotel confirmations, check-in times, gate info | 🔴 High |
-| **Implicit Deadlines** | Event is Feb 20 → ticket deadline is likely 1-2 weeks before | 🟡 Medium |
+| **固定事件** | “在……时间开会”、“请……联系我”、“……日期的活动” | 🔴 高优先级 |
+| **截止日期** | “必须在……之前完成”、“请在……之前提交”、“请在……之前回复”、“截止日期为……” | 🔴 高优先级 |
+| **非固定事件** | “下周的某个时间”、“我们尽快见面吧”、“计划于三月……” | 🟡 中等优先级 |
+| **重复事件** | “每周一”、“每月一次”、“定期会议” | 🟡 中等优先级 |
+| **待办事项** | “请查看”、“你能发送……吗”、“需要跟进” | 🟡 中等优先级 |
+| **旅行/物流信息** | 航班号、酒店确认信息、入住/退房时间、登机口信息 | 🔴 高优先级 |
+| **隐含的截止日期** | 如果活动日期是2月20日，则机票的截止日期可能在1-2周前 | 🟡 中等优先级 |
 
-### Extraction Template
+### 提取模板
 
-For each item found, extract:
+对于找到的每个信息，使用以下模板进行提取：
 
 ```yaml
 - title: "Descriptive name (max 80 chars)"
@@ -68,52 +68,52 @@ For each item found, extract:
   reminder_minutes: 30    # Suggested reminder (15 for calls, 60 for travel, 1440 for deadlines)
 ```
 
-### Confidence Scoring
+### 置信度评分
 
-| Confidence | Criteria |
+| 置信度 | 评分标准 |
 |------------|----------|
-| **High** | Explicit date + time + clear event type. E.g. "Meeting on Feb 15 at 2pm" |
-| **Medium** | Date but no time, or time but approximate date. E.g. "next Tuesday afternoon" |
-| **Low** | Vague reference. E.g. "we should catch up soon", "sometime in March" |
+| **高** | 明确的日期和时间以及具体的活动类型。例如：“2月15日下午2点的会议” |
+| **中** | 有日期但没有时间，或者有时间但日期不准确。例如：“下周二下午” |
+| **低** | 描述模糊。例如：“我们应该尽快见面” |
 
-### Smart Defaults
+### 智能默认值
 
-- **No time given for meeting** → 09:00-10:00 (mark confidence: medium)
-- **No time given for deadline** → 23:59 (end of day)
-- **No timezone** → Use user's default timezone, note assumption
-- **"Morning"** → 09:00, **"Afternoon"** → 14:00, **"Evening"** → 18:00, **"EOD"** → 17:00
-- **"Next week"** → Following Monday (mark confidence: medium)
-- **Multi-day event** → Set is_multi_day: true, include start and end dates
+- **会议时间未提供** → 设定为09:00-10:00（置信度：中等）
+- **截止日期未提供** → 设定为23:59（当天结束）
+- **未指定时区** → 使用用户的默认时区（请注意这只是一个假设）
+- **“上午”** → 设定为09:00，**“下午”** → 设定为14:00，**“晚上”** → 设定为18:00，**“当天结束”** → 设定为17:00
+- **“下周”** → 设定为下周一（置信度：中等）
+- **多日事件** → 将`is_multi_day`设置为`true`，并包含开始和结束日期
 
 ---
 
-## 2. Email Classification
+## 2. 邮件分类
 
-Before extracting, classify the email:
+在提取信息之前，先对邮件进行分类：
 
-| Email Type | How to Handle |
+| 邮件类型 | 处理方式 |
 |------------|---------------|
-| **Calendar notification** (from calendar-notification@google.com, outlook, etc.) | SKIP — these are responses to existing events |
-| **Newsletter/marketing** | Extract only if contains relevant event dates |
-| **Personal/work email** | Full extraction |
-| **Travel confirmation** | Extract ALL logistics: flights, hotels, car rentals, check-ins |
-| **Meeting invite** (ICS attachment or structured invite) | Extract directly, high confidence |
-| **Thread/reply** | Only extract NEW events, not ones from quoted text |
-| **Forwarded email** | Process the forwarded content, note original sender |
+| **日历通知**（来自calendar-notification@google.com、Outlook等） | 跳过——这些是对已有事件的回复 |
+| **新闻通讯/营销邮件** | 仅提取包含相关活动日期的内容 |
+| **个人/工作邮件** | 全部提取信息 |
+| **旅行确认邮件** | 提取所有旅行相关信息：航班、酒店、租车、入住信息 |
+| **会议邀请**（ICS附件或结构化邀请） | 直接提取，置信度较高 |
+| **主题邮件/回复邮件** | 仅提取新的事件，不处理引用文本中的事件 |
+| **转发邮件** | 处理转发的内容，并注明原始发送者 |
 
-### Ignore Patterns (Skip These)
+### 忽略的邮件类型
 
-- Automated calendar responses (Accepted, Declined, Tentative)
-- Unsubscribe confirmations
-- Read receipts
-- Auto-replies / Out of office
-- Spam/promotional (unless user explicitly forwards it)
+- 自动化的日历回复（如“已接受”、“已拒绝”、“待定”）
+- 取消订阅确认邮件
+- 阅读回执邮件
+- 自动回复邮件/邮件作者不在办公
+- 垃圾邮件/促销邮件（除非用户明确转发）
 
 ---
 
-## 3. Presentation Format
+## 3. 展示格式
 
-Always present extracted items in this format:
+始终以以下格式展示提取的信息：
 
 ```
 📧 From: [sender] | Subject: [subject] | Date: [received date]
@@ -140,22 +140,22 @@ Reply with numbers to create (e.g. "1, 2"), "all", or "none".
 Type "edit 3" to modify before creating.
 ```
 
-### Presentation Rules
+### 展示规则
 
-1. **Always show day of week** — humans verify dates by day name
-2. **Group by date** when >5 items
-3. **Flag conflicts** — if new event overlaps existing calendar
-4. **Highlight deadlines** with ⚠️ and days remaining
-5. **Show source quote** for medium/low confidence items
-6. **Never auto-create** without user confirmation
+1. **始终显示星期几** — 人类通常通过星期几来验证日期。
+2. **当有多个事件时**，按日期分组展示。
+3. **标记冲突** — 如果新事件与日历中的现有事件冲突。
+4. **用⚠️标记截止日期** 并显示剩余天数。
+5. **对于置信度较低的信息**，显示来源信息。
+6. **未经用户确认，切勿自动创建事件**。
 
 ---
 
-## 4. Calendar Creation
+## 4. 日历创建
 
-After user confirms, create events using their calendar tool:
+用户确认后，使用他们的日历工具创建事件：
 
-### Google Calendar (via `gog` or API)
+### Google日历（通过`gog`或API）
 ```bash
 gog calendar create \
   --title "Event Title" \
@@ -165,7 +165,7 @@ gog calendar create \
   --location "Zoom link or address"
 ```
 
-### Apple Calendar (via `osascript`)
+### Apple日历（通过`osascript`）
 ```bash
 osascript -e 'tell application "Calendar"
   tell calendar "Work"
@@ -174,11 +174,11 @@ osascript -e 'tell application "Calendar"
 end tell'
 ```
 
-### Notion / Other
-- Format as structured data and use the appropriate API
-- Or output as .ics file the user can import anywhere
+### Notion或其他工具
+- 将数据格式化为结构化格式，并使用相应的API。
+- 或者将结果输出为用户可以导入的.ics文件。
 
-### ICS Export (Universal)
+### ICS文件导出（通用格式）
 ```
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -194,12 +194,12 @@ END:VCALENDAR
 
 ---
 
-## 5. Duplicate Detection
+## 5. 重复检测
 
-Before creating any event, check for duplicates:
+在创建任何事件之前，请检查是否存在重复项：
 
-1. **Search calendar** for events on the same date with similar title (fuzzy match)
-2. **Check tracking file** — maintain a log of created events:
+1. **在日历中搜索** 在相同日期且标题相似的事件（允许一定程度的模糊匹配）。
+2. **查看跟踪文件** — 记录已创建的事件：
 
 ```json
 // memory/email-calendar-log.json
@@ -217,67 +217,67 @@ Before creating any event, check for duplicates:
 }
 ```
 
-3. **If duplicate found**: Show user and ask — "This looks similar to [existing event]. Skip, update, or create anyway?"
+**如果发现重复项**：向用户询问：“这个事件与[现有事件]相似。是跳过、更新还是创建新的事件？”
 
 ---
 
-## 6. Deadline & Reminder Engine
+## 6. 截止日期与提醒功能
 
-### Deadline Patterns to Detect
+### 需要检测的截止日期模式
 
-| Pattern | Example | Action |
+| 模式 | 例子 | 处理方式 |
 |---------|---------|--------|
-| RSVP deadline | "RSVP by Feb 10" | Create reminder 3 days before |
-| Registration | "Register by March 1" | Create reminder 1 week before |
-| Early bird | "Early bird ends Feb 15" | Create reminder 2 days before |
-| Ticket sales | "Tickets on sale until..." | Create reminder + calendar event |
-| Submission | "Submit proposal by..." | Create reminder 3 days before |
-| Expiration | "Offer expires..." | Create reminder 1 day before |
+| 回复截止日期 | “请在2月10日前回复” | 在3天前创建提醒 |
+| 注册截止日期 | “请在3月1日前注册” | 在1周前创建提醒 |
+| 早鸟优惠截止日期 | “早鸟优惠截止日期为2月15日” | 在2天前创建提醒 |
+| 票票销售截止日期 | “票票销售截止日期为……” | 创建提醒并添加日历事件 |
+| 提交截止日期 | “请在……之前提交提案” | 在3天前创建提醒 |
+| 到期日期 | “优惠有效期至……” | 在1天前创建提醒 |
 
-### Reminder Strategy
+### 提醒策略
 
-- **>30 days away**: Remind 1 week before
-- **7-30 days away**: Remind 3 days before
-- **<7 days away**: Remind 1 day before
-- **Deadlines with URLs**: Include the action URL in the reminder
-- Create reminder as separate calendar event: "⚠️ DEADLINE: [action] for [event]"
-
----
-
-## 7. Travel Email Handling
-
-Travel confirmations get special treatment:
-
-### Extract ALL of these:
-- ✈️ **Flights**: airline, flight #, departure/arrival times+airports, terminal, gate, confirmation #
-- 🏨 **Hotels**: name, address, check-in/out times, confirmation #
-- 🚗 **Car rentals**: company, pickup/dropoff times+locations, confirmation #
-- 📋 **Transfers**: shuttle times, train bookings
-
-### Create these calendar events:
-1. **Flight departure** — include terminal, gate, flight # in description
-2. **Flight arrival** — for connecting flights too
-3. **Hotel check-in** — with address and confirmation #
-4. **Hotel check-out** — with reminder to pack
-5. **Car pickup/dropoff** — with location details
-
-### Travel-specific reminders:
-- Flight: 3 hours before (domestic), 4 hours before (international)
-- Hotel check-out: Morning of departure
-- Include all confirmation numbers in event descriptions
+- **超过30天**：在1周前提醒
+- **7-30天**：在3天前提醒
+- **少于7天**：在1天前提醒
+- **包含URL的截止日期**：在提醒中包含相关链接
+- 创建单独的日历事件，提醒内容为：“⚠️ 截止日期：[事件名称]，请在……之前完成”
 
 ---
 
-## 8. Batch Processing
+## 7. 旅行相关邮件的处理
 
-When scanning an inbox for events:
+旅行确认邮件需要特殊处理：
 
-1. **Fetch unread emails** (or emails from last N days)
-2. **Filter out noise** — apply ignore patterns
-3. **Extract from each** — run extraction framework
-4. **Deduplicate across emails** — same event mentioned in multiple threads
-5. **Sort by date** — nearest first
-6. **Present grouped summary**:
+### 提取以下所有信息：
+- ✈️ **航班**：航空公司、航班号、出发/到达时间、机场、登机口、确认编号
+- 🏨 **酒店**：酒店名称、地址、入住/退房时间、确认编号
+- 🚗 **租车**：租车公司、接送时间、地点、确认编号
+- 📋 **交通接送**：班车时间、火车预订信息
+
+### 创建相应的日历事件：
+- **航班出发**：在事件描述中包含登机口、航班号等信息
+- **航班到达**：对于转机航班也需包含这些信息
+- **酒店入住**：包含酒店地址和确认编号
+- **酒店退房**：包含退房提醒
+- **租车接送**：包含接送地点的详细信息
+
+### 旅行相关的提醒：
+- 航班：国内航班提前3小时提醒，国际航班提前4小时提醒
+- 酒店退房：在出发当天早上提醒
+- 在事件描述中包含所有确认信息
+
+---
+
+## 8. 批量处理
+
+在扫描收件箱中的事件时，请执行以下操作：
+
+1. **获取未读邮件**（或过去N天内的邮件）
+2. **过滤无关信息** — 应用上述忽略规则
+3. **从每封邮件中提取信息** — 运行提取框架
+4. **消除重复项** — 处理多个邮件中提到的相同事件
+5. **按日期排序** — 先显示最近的事件
+6. **以分组的形式展示结果**：
 
 ```
 📬 Inbox Scan: 47 unread → 12 with calendar items → 18 events found
@@ -298,26 +298,26 @@ DEADLINES:
 
 ---
 
-## 9. Edge Cases
+## 9. 特殊情况处理
 
-| Situation | How to Handle |
+| 情况 | 处理方式 |
 |-----------|---------------|
-| **Multiple timezones in one email** | Extract each event in its stated timezone, convert to user's TZ for display |
-| **"TBD" or "TBA" times** | Create all-day event, flag for follow-up |
-| **Cancelled events** | Check if already in calendar → offer to delete |
-| **Rescheduled events** | Find original → offer to update (not create new) |
-| **Recurring with exceptions** | Note specific exception dates in description |
-| **Date ambiguity (02/03 = Feb 3 or Mar 2?)** | Use email's locale/origin for MM/DD vs DD/MM, ask if unclear |
-| **Events in quoted/forwarded text** | Only process if user explicitly forwarded it |
-| **Attachments with .ics files** | Parse ICS directly — highest confidence source |
-| **"Save the date" emails** | Create tentative event, mark as placeholder |
-| **Conference with multiple sessions** | Extract all sessions as separate events with shared description |
+| **一封邮件中包含多个时区** | 按邮件中指定的时区提取每个事件，并转换为用户的时区显示 |
+| **时间未确定**（如“待定”或“TBA”） | 创建全天事件，并标记为待跟进 |
+- **已取消的事件** | 检查日历中是否已有该事件——建议删除 |
+- **重新安排的会议** | 找到原始会议信息后，建议更新（而非创建新事件） |
+- **有特殊安排的重复事件**：在描述中注明具体的例外日期 |
+- **日期不明确**（如“02/03”是指2月3日还是3月2日？） | 根据邮件的地区设置判断日期格式（MM/DD或DD/MM），如不确定则询问用户 |
+- **引用或转发的邮件中的事件**：仅处理用户明确转发的邮件 |
+- **附件为.ics文件**：直接解析ICS文件（置信度最高的来源）
+- **“保存日期”类型的邮件**：创建临时事件，并标记为待处理状态 |
+- **包含多个会议的会议**：将所有会议环节作为单独的事件提取，并使用相同的描述
 
 ---
 
-## 10. Session Memory
+## 10. 用户偏好记录
 
-Track user preferences across sessions:
+跟踪用户在不同会话中的偏好设置：
 
 ```yaml
 # memory/email-calendar-prefs.yaml
@@ -334,4 +334,4 @@ preferred_format: "12h"  # or "24h"
 travel_reminder_hours: 3
 ```
 
-Update preferences when user corrects you or states a preference.
+当用户更正信息或明确表达偏好时，及时更新用户的偏好设置。

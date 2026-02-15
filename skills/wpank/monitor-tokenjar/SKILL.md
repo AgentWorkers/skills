@@ -16,58 +16,59 @@ allowed-tools:
   - mcp__uniswap__get_token_price
 ---
 
-# Monitor TokenJar
+# 监控 TokenJar
 
-## Overview
+## 概述
 
-A monitoring dashboard for Uniswap's protocol fee system. The TokenJar accumulates fees from all Uniswap sources (V2, V3, V4, UniswapX, Unichain native fees). This skill provides a comprehensive view of what's in the jar, how fast it's growing, and when the next burn will be profitable -- the single most actionable question for protocol fee seekers.
+这是一个用于监控 Uniswap 协议费用系统的仪表板。TokenJar 会收集来自所有 Uniswap 源（V2、V3、V4、UniswapX 以及 Unichain 原生费用）的费用。该工具可以提供关于 TokenJar 中费用总量、费用增长速度以及下一次费用燃烧何时能够盈利的全面信息——这对于关注协议费用的人来说是最重要的信息。
 
-Two modes: **one-shot** (instant snapshot with analytics) and **streaming** (real-time deposit tracking with live updates).
+该工具提供两种模式：**一次性查询**（包含分析结果）和**实时流式监控**（实时跟踪存款事件并更新数据）。
 
-**Why this is 10x better than calling tools individually:**
+**为什么这个工具比单独使用其他工具好 10 倍：**
 
-1. **Actionable projection**: The key output is "estimated time to next profitable burn" -- a compound calculation that requires TokenJar balances, UNI price, gas estimates, and accumulation rates. No single tool provides this. Manually computing it requires calling 4-5 tools and doing the math yourself.
-2. **Compound dashboard**: Instead of raw JSON from separate tools, you get a single formatted view combining balances, rates, burn economics, and history. The agent cross-references all data sources to produce insights none of them provide alone.
-3. **Streaming mode with context**: Raw `subscribe_tokenjar` returns deposit events without context. This skill enriches each deposit with a running total, updated profitability estimate, and alert when the threshold is crossed -- turning raw events into actionable intelligence.
-4. **Historical context**: The dashboard includes recent burn history and competitive intelligence, so you understand not just the current state but the dynamics of the system.
+1. **可操作的预测结果**：核心输出是“下一次费用燃烧能够盈利的预计时间”——这一结果需要结合 TokenJar 的余额、UNI 的价格、gas 费用以及费用积累速率进行复合计算。没有任何单一工具能够提供这样的信息；手动计算则需要调用 4-5 个工具并自行进行计算。
+2. **综合性的仪表板**：它不是简单地展示来自不同工具的原始 JSON 数据，而是提供了一个格式统一、包含余额、积累速率、费用燃烧机制以及历史数据的视图。该工具会交叉参考所有数据源，从而提供其他工具无法单独提供的洞察。
+3. **实时流式监控**：原始的 `subscribe_tokenjar` 命令仅返回存款事件，但没有上下文信息。而该工具会为每个存款事件添加累计总额、更新的盈利预测以及在达到阈值时发出的警报，从而将原始数据转化为可操作的情报。
+4. **历史数据支持**：仪表板还包含了最近的费用燃烧记录以及市场竞争情况，帮助用户了解系统的动态变化。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户有以下需求时，可以使用该工具：
+- “监控 TokenJar 的状态”
+- “跟踪协议费用”
+- “了解费用积累情况”
+- “下一次费用燃烧何时能够盈利？”
+- “显示 TokenJar 的分析结果”
+- “费用积累的速度有多快？”
+- “在费用燃烧盈利时提醒我”
+- “查看 TokenJar 仪表板”
+- “费用积累的速率是多少？”
 
-- "Watch the TokenJar"
-- "Monitor protocol fees"
-- "Track fee accumulation"
-- "When is the next profitable burn?"
-- "Show me TokenJar analytics"
-- "How fast are fees accumulating?"
-- "Alert me when a burn is profitable"
-- "TokenJar dashboard"
-- "What's the accumulation rate?"
+**不适用场景**：
+- 当用户需要执行费用燃烧操作时（请使用 `seek-protocol-fees` 工具）；
+- 当用户需要对费用燃烧的经济情况進行深入的历史分析时（请使用 `analyze-burn-economics` 工具）。
 
-**Do NOT use** when the user wants to execute a burn (use `seek-protocol-fees` instead) or wants deep historical analysis of burn economics (use `analyze-burn-economics` instead).
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值 | 获取方式                                      |
+|-------------------|--------|--------|-----------------------------------------|
+| chain             | 否       | ethereum | TokenJar 始终使用以太坊主网数据                         |
+| streaming           | 否       | false    | “watch”、“stream”、“live”、“real-time” 表示启用实时流式监控       |
+| duration           | 否       | 60       | 流式监控的持续时间（以秒为单位，范围 1-300 秒）；例如：“监控 5 分钟”表示 300 秒 |
+| alert-threshold-usd     | 否       | --       | 设置为 “50K” 时，系统会在 TokenJar 余额达到 50,000 美元时发出警报       |
+| include-history     | 否       | true     | “Skip history” 或 “just current state” 表示不显示历史数据       |
 
-| Parameter           | Required | Default  | How to Extract                                                      |
-| ------------------- | -------- | -------- | ------------------------------------------------------------------- |
-| chain               | No       | ethereum | Always Ethereum mainnet for TokenJar                                |
-| streaming           | No       | false    | "watch", "stream", "live", "real-time" implies true                 |
-| duration            | No       | 60       | Streaming duration in seconds (1-300). "Watch for 5 minutes" = 300  |
-| alert-threshold-usd | No       | --       | "Alert me when jar hits $50K" extracts 50000                        |
-| include-history     | No       | true     | "Skip history" or "just current state" implies false                |
+## 工作流程
 
-## Workflow
+### 一次性查询模式（默认）
 
-### One-Shot Mode (default)
+1. **并行数据收集**：为了提高效率，同时调用以下 MCP 函数：
+   - `mcp__uniswap__get_tokenjar_balances` ：获取当前的 TokenJar 余额
+   - `mcp__uniswap__get_firepit_state`：获取费用燃烧的阈值、随机数以及是否可以执行燃烧操作
+   - `mcp__uniswap__get_fee_accumulation_rate`：获取每日/每周/每月的费用积累速率
+   - `mcp__uniswap__get_burn_history`（如果设置了 `include-history`）：获取最近的费用燃烧记录
 
-1. **Parallel data collection**: Make all MCP calls simultaneously for speed:
-   - `mcp__uniswap__get_tokenjar_balances` -- current jar contents
-   - `mcp__uniswap__get_firepit_state` -- threshold, nonce, readiness
-   - `mcp__uniswap__get_fee_accumulation_rate` -- daily/weekly/monthly rates
-   - `mcp__uniswap__get_burn_history` (if `include-history: true`) -- recent burns
-
-2. **Compound analysis**: Delegate to `Task(subagent_type:protocol-fee-seeker)` in monitoring mode:
+2. **综合分析**：将数据传递给 `Task(subagent_type:protocol-fee-seeker)` 进行进一步处理：
 
    ```
    Produce a TokenJar monitoring dashboard.
@@ -91,30 +92,30 @@ Activate when the user says anything like:
    Return a structured dashboard report.
    ```
 
-3. **Format and present**: Display the dashboard with all sections.
+3. **数据展示**：以仪表板的形式展示所有分析结果。
 
-### Streaming Mode
+### 实时流式监控模式
 
-1. **Initial snapshot**: Run the same one-shot workflow above to establish a baseline.
+1. **初始数据收集**：首先执行一次一次性查询，以建立基准数据。
 
-2. **Start streaming**: Call `mcp__uniswap__subscribe_tokenjar` with the user's duration:
-   - If `alert-threshold-usd` is set, include `minDepositUsd` filter.
-   - Default duration: 60 seconds.
+2. **开始流式监控**：调用 `mcp__uniswap__subscribe_tokenjar` 并设置用户指定的监控时长：
+   - 如果设置了 `alert-threshold-usd`，则需要使用 `minDepositUsd` 过滤条件。
+   - 默认监控时长为 60 秒。
 
-3. **Enrich deposits**: For each deposit event received:
-   - Price the deposited token in USD.
-   - Update the running jar total.
-   - Recalculate profitability with the new total.
-   - If the jar value crosses the burn cost threshold, alert: "Burn is now profitable!"
+3. **处理存款事件**：对于接收到的每个存款事件：
+   - 将存款的代币价格转换为美元
+   - 更新 TokenJar 的累计总额
+   - 根据新的总额重新计算盈利情况
+   - 如果 TokenJar 的价值超过了费用燃烧的阈值，发出警报：“费用燃烧现在可以盈利！”
 
-4. **Final summary**: After streaming ends, present an updated dashboard with:
-   - Deposits observed during the session.
-   - Updated jar total.
-   - Updated profitability estimate.
+4. **最终总结**：监控结束后，展示更新后的仪表板内容，包括：
+   - 监控期间发生的所有存款事件
+   - 更新后的 TokenJar 总余额
+   - 更新后的盈利预测
 
-## Output Format
+## 输出格式
 
-### One-Shot Dashboard
+### 一次性查询模式的仪表板输出
 
 ```text
 TokenJar Dashboard (Ethereum)
@@ -171,7 +172,7 @@ TokenJar Dashboard (Ethereum)
   Competitor Risk:  HIGH — avg burn interval is 5.2 days, currently at 7 days
 ```
 
-### Streaming Output
+### 实时流式监控的输出结果
 
 ```text
 TokenJar Live Feed (streaming for 60s)
@@ -192,7 +193,7 @@ TokenJar Live Feed (streaming for 60s)
   Status:        PROFITABLE — ready to burn
 ```
 
-### Alert Output (when threshold crossed)
+### 警报输出（当达到阈值时）
 
 ```text
   ALERT: TokenJar value ($50,125) has crossed your alert threshold ($50,000).
@@ -200,23 +201,23 @@ TokenJar Live Feed (streaming for 60s)
   Consider running: seek-protocol-fees
 ```
 
-## Important Notes
+## 重要说明
 
-- **Read-only skill.** This skill never executes transactions. It only reads data and produces analysis. To execute a burn, use `seek-protocol-fees`.
-- **Ethereum mainnet only.** The TokenJar and Firepit are mainnet contracts.
-- **Accumulation rates are estimates.** They are based on historical Transfer events over a lookback window (default ~7 days). Actual rates vary with protocol volume and fee settings.
-- **Streaming duration is capped at 300 seconds** (5 minutes) by the MCP tool. For longer monitoring, re-run the skill periodically.
-- **Competitor intelligence is approximate.** Burn frequency is derived from on-chain history, not mempool monitoring. Another searcher could burn at any time.
-- **UNI price volatility affects projections.** The "time to profitable burn" projection assumes stable UNI price. A UNI price spike could make a currently-profitable burn unprofitable.
+- **仅用于数据读取**：该工具不会执行任何交易操作，仅负责读取数据并生成分析结果。如需执行费用燃烧操作，请使用 `seek-protocol-fees` 工具。
+- **仅支持以太坊主网**：TokenJar 和 Firepit 都是运行在以太坊主网上的智能合约。
+- **费用积累速率是估算值**：这些速率基于过去 7 天内的交易数据计算得出；实际速率可能会因协议流量和费用设置而变化。
+- **实时流式监控的时长上限为 300 秒**：MCP 工具会自动限制监控时长。如需更长时间的监控，需要定期重新执行该工具。
+- **市场竞争情况仅供参考**：费用燃烧的频率是根据链上数据估算的，实际燃烧时间可能随时发生变化。
+- **UNI 价格波动会影响预测结果**：盈利预测基于稳定的 UNI 价格；如果 UNI 价格突然上涨，当前盈利的费用燃烧可能会变得无利可图。
 
-## Error Handling
+## 错误处理
 
-| Error                        | User-Facing Message                                                    | Suggested Action                          |
-| ---------------------------- | ---------------------------------------------------------------------- | ----------------------------------------- |
-| TokenJar empty               | "TokenJar is empty. No fees have accumulated yet."                     | Wait for protocol activity                |
-| No accumulation data         | "Insufficient data to calculate accumulation rates."                   | Try a larger lookback window              |
-| No burn history              | "No burn history found. This may be a new deployment."                 | Set include-history: false                |
-| Streaming timeout            | "Streaming session ended after {duration}s."                           | Re-run for another session                |
-| No deposits during stream    | "No deposits observed during the {duration}s streaming window."        | Try a longer duration or check later      |
-| Token price unavailable      | "Could not price {token}. Dashboard values may be incomplete."         | Token may be exotic or illiquid           |
-| RPC connection failed        | "Cannot connect to Ethereum RPC. Dashboard unavailable."               | Check RPC configuration                   |
+| 错误类型                | 显示给用户的消息                                      | 建议的操作                                      |
+|-------------------|-------------------------------------------------|-----------------------------------------|
+| TokenJar 为空             | “TokenJar 为空，尚未积累到任何费用。”                         | 等待协议活动恢复后再进行监控                         |
+| 无法获取积累数据           | “数据不足，无法计算费用积累速率。”                         | 增加数据收集的时间范围                         |
+| 未找到费用燃烧记录         | “未找到费用燃烧记录，可能是新部署的合约。”                         | 设置 `include-history` 为 `false`                         |
+| 流式监控超时             | “流式监控在 {duration} 秒后结束。”                         | 重新开始监控                         |
+| 监控期间没有发生存款           | “在 {duration} 秒的监控期间未检测到任何存款。”                         | 增加监控时长或稍后再次尝试                         |
+| 无法获取代币价格           | “无法获取 {token} 的价格，仪表板数据可能不完整。”                         | 可能是某些特殊或流动性较低的代币                     |
+| RPC 连接失败             | “无法连接到以太坊的 RPC 服务，仪表板无法使用。”                         | 检查 RPC 配置                         |

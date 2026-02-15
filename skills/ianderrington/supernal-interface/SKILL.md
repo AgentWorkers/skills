@@ -1,23 +1,23 @@
 ---
 name: supernal-interface
-description: Universal AI Interface framework for making applications AI-controllable. Use when adding AI tool decorators, setting up chat adapters, creating AI-callable functions, or integrating CopilotKit.
+description: 通用AI接口框架，用于实现应用程序的可AI控制功能。适用于添加AI工具装饰器、配置聊天适配器、创建可被AI调用的函数，或集成CopilotKit等场景。
 ---
 
-# Supernal Interface - AI Controllability Framework
+# Supernal Interface - 人工智能可控性框架
 
-## Installation
+## 安装
 
 ```bash
 npm install @supernal/interface
 ```
 
-## Core Concept
+## 核心概念
 
-Decorate functions → AI can call them with full type safety.
+通过装饰函数，人工智能能够以完全类型安全的方式调用这些函数。
 
-## Quick Start
+## 快速入门
 
-### 1. Decorate Functions
+### 1. 装饰函数
 
 ```typescript
 import { Tool } from '@supernal/interface';
@@ -42,7 +42,7 @@ class TodoApp {
 }
 ```
 
-### 2. Set Up Adapter
+### 2. 设置适配器
 
 ```typescript
 import { createCopilotKitAdapter, ChatUIProvider } from '@supernal/interface';
@@ -61,21 +61,21 @@ function App() {
 }
 ```
 
-### 3. Done
+### 3. 安装完成
 
-AI assistants can now discover and call your decorated functions.
+现在，人工智能助手可以发现并调用你装饰过的函数了。
 
-## Decorators
+## 装饰器
 
-| Decorator | Purpose |
+| 装饰器 | 用途 |
 |-----------|---------|
-| `@Tool` | Expose function as AI-callable tool |
-| `@ToolProvider` | Class containing multiple tools |
-| `@Component` | React component with AI context |
+| `@Tool` | 将函数暴露为可供人工智能调用的工具 |
+| `@ToolProvider` | 包含多个工具的类 |
+| `@Component` | 具备人工智能上下文的 React 组件 |
 
-## Adapters
+## 适配器
 
-### CopilotKit (recommended)
+### CopilotKit（推荐使用）
 ```typescript
 import { createCopilotKitAdapter } from '@supernal/interface';
 
@@ -84,7 +84,7 @@ const adapter = createCopilotKitAdapter({
 });
 ```
 
-### Custom Adapter
+### 自定义适配器
 ```typescript
 import { ChatUIAdapter } from '@supernal/interface';
 
@@ -110,7 +110,7 @@ const [prefs, setPrefs] = usePersistedState('user-prefs', defaults);
 const { messages, send } = useChatWithContext();
 ```
 
-## Storage Adapters
+## 存储适配器
 
 ```typescript
 import { StateManager, LocalStorageAdapter } from '@supernal/interface/storage';
@@ -119,7 +119,7 @@ const storage = StateManager.getInstance('myapp', new LocalStorageAdapter());
 await storage.setState('user', { name: 'Alice' });
 ```
 
-## Testing
+## 测试
 
 ```typescript
 import { GherkinParser, TestRunner } from '@supernal/interface/testing';
@@ -128,11 +128,11 @@ const feature = GherkinParser.parseFeature(gherkinText);
 const tests = await TestRunner.generateTests({ framework: 'jest' });
 ```
 
-## Enterprise Features
+## 企业级功能
 
-Available at supernal.ai/enterprise:
-- Auto test generation from decorators
-- Story system (50-80% performance boost)
-- Architecture visualization
-- Multi-model routing
-- Audit & compliance logging
+在 supernal.ai/enterprise 上可享受以下企业级功能：
+- 通过装饰器自动生成测试用例
+- 故事系统（性能提升 50-80%）
+- 架构可视化
+- 多模型路由
+- 审计与合规性日志记录

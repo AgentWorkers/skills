@@ -1,22 +1,22 @@
 ---
 name: travelclaw
-description: Track flight prices using Google Flights data. Search flights, track routes over time, and get alerts when prices drop. Requires Python 3.10+ and the 'flights' pip package. Run setup.sh to install dependencies.
+description: 使用 Google Flights 数据来追踪航班价格。您可以搜索航班信息、随时间跟踪航线变化，并在价格下降时收到提醒。该功能需要 Python 3.10 及以上的版本以及 `flights` 这个 Python 包。请运行 `setup.sh` 命令来安装所需的依赖项。
 ---
 
-# Flight Tracker
+# 航班价格追踪器
 
-Track flight prices from Google Flights. Search routes, monitor prices over time, and get alerts when prices drop.
+从 Google Flights 中追踪航班价格。搜索航线、监控价格变化，并在价格下降时收到警报。
 
-## Setup
+## 设置
 
 ```bash
 bash skills/flight-tracker/setup.sh
 ```
 
-## Scripts
+## 脚本
 
-### Search Flights
-Find flights for a specific route and date.
+### 搜索航班
+查找特定航线和日期的航班信息。
 
 ```bash
 python skills/flight-tracker/scripts/search-flights.py LHR JFK 2025-07-01
@@ -25,17 +25,17 @@ python skills/flight-tracker/scripts/search-flights.py LHR JFK 2025-07-01 --retu
 python skills/flight-tracker/scripts/search-flights.py LHR JFK 2025-07-01 --stops NON_STOP --results 10
 ```
 
-Arguments:
-- `origin` - IATA airport code (e.g. LHR, JFK, SFO)
-- `destination` - IATA airport code
-- `date` - Departure date (YYYY-MM-DD)
-- `--return-date` - Return date for round trips (YYYY-MM-DD)
-- `--cabin` - ECONOMY (default), PREMIUM_ECONOMY, BUSINESS, FIRST
-- `--stops` - ANY (default), NON_STOP, ONE_STOP, TWO_STOPS
-- `--results` - Number of results (default: 5)
+参数：
+- `origin` - 起飞机场的 IATA 代码（例如：LHR、JFK、SFO）
+- `destination` - 目的地机场的 IATA 代码
+- `date` - 出发日期（YYYY-MM-DD）
+- `--return-date` - 往返旅行的返回日期（YYYY-MM-DD）
+- `--cabin` - 航班等级（ECONOMY、PREMIUM_ECONOMY、BUSINESS、FIRST）
+- `--stops` - 停靠次数（ANY、NON_STOP、ONE_STOP、TWO_STOPS）
+- `--results` - 显示结果的数量（默认：5）
 
-### Track a Flight
-Add a route to the price tracking list and record the current price.
+### 追踪航班
+将航线添加到价格追踪列表中，并记录当前价格。
 
 ```bash
 python skills/flight-tracker/scripts/track-flight.py LHR JFK 2025-07-01
@@ -43,30 +43,29 @@ python skills/flight-tracker/scripts/track-flight.py LHR JFK 2025-07-01 --target
 python skills/flight-tracker/scripts/track-flight.py LHR JFK 2025-07-01 --return-date 2025-07-08 --cabin BUSINESS
 ```
 
-Arguments:
-- Same as search-flights, plus:
-- `--target-price` - Alert when price drops below this amount
+参数：
+与搜索航班的参数相同，另外需要提供：
+- `--target-price` - 当价格低于此金额时触发警报
 
-### Check Prices
-Check all tracked flights for price changes. Designed to run on a schedule (cron).
+### 检查价格
+定期检查所有被追踪航班的价格变化（建议使用 cron 任务自动执行）。
 
 ```bash
 python skills/flight-tracker/scripts/check-prices.py
 python skills/flight-tracker/scripts/check-prices.py --threshold 5
 ```
 
-Arguments:
-- `--threshold` - Percentage drop to trigger alert (default: 10)
+参数：
+- `--threshold` - 触发警报的价格下降百分比（默认：10%）
 
-Output: Reports price changes for tracked flights. Highlights drops and alerts when target prices are reached.
+输出：报告被追踪航班的价格变化情况，突出显示价格下降的情况，并在达到目标价格时发出警报。
 
-### List Tracked Flights
-Show all flights being tracked with current vs original prices.
+### 列出被追踪的航班
+显示所有被追踪的航班及其当前价格与原始价格。
 
 ```bash
 python skills/flight-tracker/scripts/list-tracked.py
 ```
 
-## Data
-
-Price history is stored in `skills/flight-tracker/data/tracked.json` and persists via R2 backup.
+## 数据存储
+价格历史数据存储在 `skills/flight-tracker/data/tracked.json` 文件中，并通过 R2 备份机制进行持久化。

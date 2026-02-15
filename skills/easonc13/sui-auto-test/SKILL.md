@@ -1,13 +1,13 @@
 ---
 name: sui-coverage
-description: Analyze Sui Move test coverage, identify untested code, write missing tests, and perform security audits. Includes Python tools for parsing coverage output and generating reports.
+description: 分析 Sui Move 测试的覆盖率，识别未测试的代码，编写缺失的测试用例，并进行安全审计。提供用于解析测试覆盖率输出和生成报告的 Python 工具。
 ---
 
-# Sui Coverage Skill
+# Sui 覆盖率提升技巧
 
-Analyze and automatically improve Sui Move test coverage with security analysis.
+通过安全分析来分析和自动提升 Sui Move 测试的覆盖率。
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Location of tools
@@ -19,9 +19,9 @@ sui move test --coverage --trace
 python3 $SKILL_DIR/analyze_source.py -m <module> -o coverage.md
 ```
 
-## Workflow: Auto-Improve Test Coverage
+## 工作流程：自动提升测试覆盖率
 
-### Step 1: Run Coverage Analysis
+### 第一步：运行覆盖率分析
 
 ```bash
 cd <package_path>
@@ -29,18 +29,18 @@ sui move test --coverage --trace
 python3 ~/clawd/skills/sui-coverage/analyze_source.py -m <module_name> -o coverage.md
 ```
 
-### Step 2: Read the Coverage Report
+### 第二步：阅读覆盖率报告
 
-Read the generated `coverage.md` to identify:
-- 🔴 **Uncalled functions** - Functions never executed
-- 🔴 **Uncovered assertions** - `assert!()` failure paths not tested
-- 🔴 **Uncovered branches** - `if/else` paths not taken
+阅读生成的 `coverage.md` 文件，以识别以下问题：
+- 🔴 **未调用的函数** - 从未被执行的函数
+- 🔴 **未覆盖的断言** - 未经过测试的 `assert!()` 失败路径
+- 🔴 **未覆盖的分支** - 未执行的 `if/else` 分支
 
-### Step 3: Write Missing Tests
+### 第三步：编写缺失的测试用例
 
-For each uncovered item, write a test:
+对于每个未覆盖的项，编写相应的测试用例：
 
-#### A. Uncalled Function
+#### A. 未调用的函数
 ```move
 #[test]
 fun test_<function_name>() {
@@ -52,7 +52,7 @@ fun test_<function_name>() {
 }
 ```
 
-#### B. Assertion Failure Path (expect_failure)
+#### B. 断言失败路径（预期失败）
 ```move
 #[test]
 #[expected_failure(abort_code = <ERROR_CODE>)]
@@ -63,7 +63,7 @@ fun test_<function>_fails_when_<condition>() {
 }
 ```
 
-#### C. Branch Coverage (if/else)
+#### C. 分支覆盖（if/else）
 ```move
 #[test]
 fun test_<function>_when_<condition_true>() { ... }
@@ -72,7 +72,7 @@ fun test_<function>_when_<condition_true>() { ... }
 fun test_<function>_when_<condition_false>() { ... }
 ```
 
-### Step 4: Verify Coverage Improved
+### 第四步：验证覆盖率是否提升
 
 ```bash
 sui move test --coverage --trace
@@ -81,9 +81,9 @@ python3 ~/clawd/skills/sui-coverage/analyze_source.py -m <module_name>
 
 ---
 
-## Tools
+## 工具
 
-### 1. analyze_source.py (Primary Tool)
+### 1. analyze_source.py（主要工具）
 
 ```bash
 python3 ~/clawd/skills/sui-coverage/analyze_source.py --module <name> [options]
@@ -96,7 +96,7 @@ Options:
   --markdown      Markdown to stdout
 ```
 
-### 2. analyze.py (LCOV Statistics)
+### 2. analyze.py（LCOV 统计工具）
 
 ```bash
 sui move coverage lcov
@@ -109,7 +109,7 @@ Options:
   -j, --json         JSON output
 ```
 
-### 3. parse_bytecode.py (Low-level)
+### 3. parse_bytecode.py（底层分析工具）
 
 ```bash
 sui move coverage bytecode --module <name> | python3 ~/clawd/skills/sui-coverage/parse_bytecode.py
@@ -117,9 +117,9 @@ sui move coverage bytecode --module <name> | python3 ~/clawd/skills/sui-coverage
 
 ---
 
-## Common Patterns
+## 常见模式
 
-### Testing Assertion Failures
+### 测试断言失败
 
 ```move
 // Source code:
@@ -137,7 +137,7 @@ fun test_withdraw_insufficient_balance() {
 }
 ```
 
-### Testing All Branches
+### 测试所有分支
 
 ```move
 // Source code:
@@ -168,7 +168,7 @@ fun test_classify_large() {
 }
 ```
 
-### Testing Object Lifecycle
+### 测试对象生命周期
 
 ```move
 #[test]
@@ -190,9 +190,9 @@ fun test_full_lifecycle() {
 
 ---
 
-## Error Code Reference
+## 错误代码参考
 
-When writing `#[expected_failure]` tests, use the error constant name:
+在编写 `#[expected_failure]` 标记的测试用例时，请使用以下错误代码常量名称：
 
 ```move
 // If the module defines:
@@ -210,7 +210,7 @@ fun test_invalid_input() { ... }
 
 ---
 
-## Example: Full Auto-Coverage Session
+## 示例：完整的自动覆盖率提升流程
 
 ```bash
 # 1. Analyze current coverage
@@ -236,19 +236,18 @@ python3 ~/clawd/skills/sui-coverage/analyze_source.py -m my_module
 
 ---
 
-## Integration with Agent Workflow
+## 与代理工作流程的集成
 
-When asked to improve test coverage:
+当需要提升测试覆盖率时，请按照以下步骤操作：
+1. **运行分析** - 获取当前的覆盖率状态
+2. **阅读源代码** - 理解模块的逻辑
+3. **识别不足之处** - 列出未覆盖的函数/分支/断言
+4. **安全审查** - 在编写测试用例的同时分析潜在的安全漏洞
+5. **编写测试用例** - 为每个不足之处及安全边缘情况创建测试用例
+6. **报告发现的问题** - 记录所有发现的安全问题
+7. **验证** - 重新运行测试以确认覆盖率是否提升
 
-1. **Run analysis** - Get current coverage state
-2. **Read source** - Understand the module's logic
-3. **Identify gaps** - List uncovered functions/branches/assertions
-4. **Security review** - Analyze for vulnerabilities while writing tests
-5. **Write tests** - Create tests for each gap + security edge cases
-6. **Report findings** - Document any security concerns discovered
-7. **Verify** - Re-run coverage to confirm improvement
-
-Always commit test improvements:
+请务必提交所有测试用例的修改：
 ```bash
 git add sources/ tests/
 git commit -m "Improve test coverage for <module>"
@@ -256,13 +255,13 @@ git commit -m "Improve test coverage for <module>"
 
 ---
 
-## Security Analysis During Testing
+## 测试过程中的安全分析
 
-**Writing tests = Understanding the contract = Finding vulnerabilities**
+**编写测试用例 = 理解代码逻辑 = 发现安全漏洞**
 
-When writing tests, actively look for these issues:
+在编写测试用例时，需重点关注以下问题：
 
-### 1. Access Control
+### 1. 访问控制
 ```
 Questions to ask:
 - Who can call this function?
@@ -274,7 +273,7 @@ Red flags:
 - Missing capability/witness patterns
 ```
 
-### 2. Integer Overflow/Underflow
+### 2. 整数溢出/下溢
 ```
 Questions to ask:
 - What happens at u64::MAX?
@@ -288,7 +287,7 @@ fun test_overflow_boundary() {
 }
 ```
 
-### 3. State Manipulation
+### 3. 状态操作
 ```
 Questions to ask:
 - Can state be left in inconsistent state?
@@ -300,7 +299,7 @@ Red flags:
 - Shared objects without proper locking
 ```
 
-### 4. Economic Exploits
+### 4. 经济漏洞（利用系统漏洞进行攻击）
 ```
 Questions to ask:
 - Can someone extract more value than deposited?
@@ -312,7 +311,7 @@ Red flags:
 - Unbounded loops over user-controlled data
 ```
 
-### 5. Denial of Service
+### 5. 拒绝服务攻击（DoS）
 ```
 Questions to ask:
 - Can someone block legitimate users?
@@ -324,9 +323,9 @@ Red flags:
 - Loops over external data
 ```
 
-### Security Report Template
+### 安全报告模板
 
-When analyzing a module, generate a security report:
+在分析模块时，生成一份安全报告：
 
 ```markdown
 ## Security Analysis: <module_name>
@@ -351,7 +350,7 @@ When analyzing a module, generate a security report:
 - [ ] Reentrancy scenarios
 ```
 
-### Example: Security-Aware Test
+### 示例：具备安全意识的测试用例
 
 ```move
 // SECURITY: Testing that non-owner cannot withdraw
@@ -380,7 +379,7 @@ fun test_total_supply_invariant() {
 
 ---
 
-## Full Workflow with Security
+## 全面的安全测试工作流程
 
 ```bash
 # 1. Coverage analysis

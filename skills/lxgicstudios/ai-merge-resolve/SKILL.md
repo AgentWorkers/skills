@@ -1,26 +1,26 @@
 ---
 name: merge-resolve
-description: AI-powered git merge conflict resolution
+description: 基于人工智能的 Git 合并冲突解决
 ---
 
-# Merge Resolver
+# 合并冲突解决工具
 
-Got merge conflicts? This tool understands both versions and picks the right resolution.
+遇到合并冲突了吗？这款工具可以理解两个版本的代码差异，并选择合适的解决方式。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-merge-resolve
 ```
 
-## What It Does
+## 功能介绍
 
-- Finds all merge conflicts in repo
-- Analyzes both versions semantically
-- Suggests intelligent resolutions
-- Can auto-resolve simple conflicts
+- 查找仓库中的所有合并冲突  
+- 从语义层面分析两个版本的代码差异  
+- 提出智能的解决方案  
+- 能够自动解决简单的冲突  
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Resolve all conflicts
@@ -36,11 +36,11 @@ npx ai-merge-resolve --auto
 npx ai-merge-resolve --interactive
 ```
 
-## How It Works
+## 工作原理
 
-Doesn't just pick "theirs" or "ours". Actually reads the code, understands intent, and merges the functionality properly.
+该工具不会简单地选择“对方的代码”或“我们的代码”，而是会实际读取代码内容，理解开发者的意图，并正确地合并代码功能。  
 
-## Output
+## 输出结果
 
 ```
 Resolving src/utils.ts...
@@ -49,17 +49,18 @@ Resolving src/utils.ts...
 ✓ Resolved 2 conflicts
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required. Must have active merge conflicts.
+- 必须安装 Node.js 18 及以上版本。  
+- 需要配置 OPENAI_API_KEY。  
+- 仓库中必须存在有效的合并冲突。  
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。  
 
 ---
 
-**Built by LXGIC Studios**
-
-- GitHub: [github.com/lxgicstudios/ai-merge-resolve](https://github.com/lxgicstudios/ai-merge-resolve)
+**开发团队：LXGIC Studios**  
+- GitHub: [github.com/lxgicstudios/ai-merge-resolve](https://github.com/lxgicstudios/ai-merge-resolve)  
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

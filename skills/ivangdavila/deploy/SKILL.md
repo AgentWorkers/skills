@@ -1,83 +1,83 @@
 ---
 name: Deploy
-description: Ship applications reliably with CI/CD, rollback strategies, and zero-downtime deployment patterns.
+description: 通过持续集成（CI/CD）流程、回滚策略以及零停机时间的部署模式，确保应用程序能够可靠地部署。
 metadata: {"clawdbot":{"emoji":"🚀","os":["linux","darwin","win32"]}}
 ---
 
-# Deployment Rules
+# 部署规则
 
-## Pre-Deploy Checklist
-- Tests passing in CI — never deploy with failing tests
-- Environment variables set in target — missing secrets cause silent failures
-- Database migrations run before code deploy — new code expecting new schema fails
-- Rollback plan ready — know exactly how to revert before you need to
+## 部署前检查清单
+- 持续集成（CI）中的测试必须通过——切勿在测试失败的情况下进行部署
+- 目标环境中已设置环境变量——缺少环境变量会导致系统无声故障
+- 在代码部署前执行数据库迁移——新代码需要新的数据库架构，否则会失败
+- 准备好回滚计划——在需要时能够迅速恢复系统状态
 
-## Deployment Strategies
-- **Rolling**: update instances one by one — safe, slower, no extra resources
-- **Blue-green**: full parallel environment, instant switch — fast rollback, 2x resources
-- **Canary**: route percentage to new version — catch issues early, complex routing
-- Choose based on risk tolerance and resources — no universal best
+## 部署策略
+- **滚动部署（Rolling）**：逐个更新实例——安全性较高，但速度较慢，且不会占用额外资源
+- **蓝绿部署（Blue-green）**：使用完全平行的环境环境，可立即切换——部署速度快，但需要双倍的资源
+- **金丝雀部署（Canary）**：将部分流量路由到新版本——有助于尽早发现潜在问题，但配置较为复杂
+- 根据风险承受能力和资源情况选择合适的部署策略——没有适用于所有情况的最佳方案
 
-## Zero-Downtime Deploys
-- Health checks must pass before traffic routes — unhealthy instances stay out
-- Graceful shutdown: finish in-flight requests before terminating
-- Database changes must be backwards compatible — old code still running during deploy
-- Session handling: sticky sessions or external session store — don't lose user state
+## 零停机时间部署
+- 在流量路由到新系统之前，必须通过健康检查——不健康的实例应被隔离
+- 优雅关闭：在终止服务前完成正在处理的请求
+- 数据库变更必须具备向后兼容性——在新版本部署期间，旧版本仍可正常运行
+- 会话管理：使用持久化会话或外部会话存储机制——确保用户数据不会丢失
 
-## CI/CD Pipeline
-- Build once, deploy everywhere — same artifact to staging and prod
-- Cache dependencies between builds — save minutes per deploy
-- Parallel steps where possible — tests, linting, security scans
-- Fail fast: quick checks first — don't wait for slow tests to catch typos
-- Pin action versions with SHA — tags can change unexpectedly
+## 持续集成/持续部署（CI/CD）流程
+- 编译一次代码，即可部署到所有环境（包括测试环境和生产环境）——使用相同的代码包
+- 在不同构建过程中缓存依赖项——每次部署可节省大量时间
+- 尽可能并行执行构建步骤（如测试、代码检查、安全扫描）
+- 快速发现错误：先进行快速检查——不要等待耗时的测试来发现代码错误
+- 使用SHA值来固定代码版本——标签可能会意外更改
 
-## Environment Management
-- Staging mirrors prod — different configs cause "works in staging" bugs
-- Secrets in secret manager, not environment files — rotation without redeploy
-- Feature flags decouple deploy from release — ship dark, enable later
-- Config as code in version control — except secrets
+## 环境管理
+- 测试环境应与生产环境保持一致——不同的配置可能导致在测试环境中正常运行的代码在生产环境中出现问题
+- 环境变量应存储在专用管理工具中（而非环境配置文件中）——便于定期轮换而无需重新部署
+- 通过功能标志（Feature Flags）来控制功能的启用或禁用——可以在后续阶段再启用新功能
+- 除环境变量外，所有配置信息都应作为代码进行版本控制
 
-## Database Migrations
-- Migrations must be backwards compatible during deploy window
-- Add columns nullable first, then backfill, then add constraint
-- Never rename columns in one step — add new, migrate data, remove old
-- Test migrations on prod-size data — 10 rows is fast, 10 million isn't
-- Rollback script for every migration
+## 数据库迁移
+- 迁移操作必须在部署期间保持向后兼容性
+- 先添加可为空的列，然后填充数据，最后添加约束条件
+- 绝不要一步完成列名的修改——先添加新列，再迁移数据，最后删除旧列
+- 使用生产环境规模的数据进行迁移测试——少量数据（如10条记录）的迁移速度较快，而大量数据（如1000万条记录）的迁移速度较慢
+- 每次迁移都应准备相应的回滚脚本
 
-## Rollback
-- Automated rollback on health check failure
-- Keep previous version artifacts available — can't rollback what you deleted
-- Database rollbacks are hard — design migrations to not need them
-- Feature flags for instant rollback of functionality without deploy
-- Document rollback procedure — panic time is not learning time
+## 回滚机制
+- 在健康检查失败时自动执行回滚操作
+- 确保旧版本的代码和配置文件仍可访问——无法恢复已删除的数据
+- 数据库回滚操作较为复杂——应设计合理的迁移方案以避免需要回滚
+- 使用功能标志来实现功能的即时回滚（无需重新部署）
+- 详细记录回滚步骤——在紧急情况下，时间就是生命
 
-## Monitoring Post-Deploy
-- Watch error rates for 15 minutes after deploy — most issues surface quickly
-- Compare key metrics to pre-deploy baseline
-- Alerting on anomalies: latency spike, error rate increase
-- Log correlation: trace requests through systems
-- User-facing smoke tests after deploy
+## 部署后的监控
+- 部署后15分钟内密切关注错误率——大多数问题会在这段时间内显现
+- 将关键指标与部署前的基准值进行对比
+- 对异常情况（如延迟骤增、错误率上升）及时发出警报
+- 追踪系统中的请求日志以分析问题原因
+- 部署完成后进行用户体验测试（如简单的功能测试）
 
-## Platform-Specific
+## 平台特定要求
 
-### Containers
-- Image tagged with git SHA — know exactly what's running
-- Health check endpoint that verifies dependencies
-- Resource limits set — prevent runaway containers
+### 容器化部署
+- 使用Git的SHA值对容器镜像进行标记——以便明确了解正在运行的容器版本
+- 设置资源限制以防止容器资源耗尽
+- 为对延迟敏感的路径配置适当的并发处理能力
 
-### Serverless
-- Cold start optimization — keep bundles small
-- Provisioned concurrency for latency-sensitive paths
-- Timeout set appropriately — default is often too short
+### 无服务器（Serverless）架构
+- 优化容器启动速度——保持容器包的大小尽可能小
+- 为延迟敏感的路径配置适当的并发处理能力
+- 为请求设置合适的超时时间——默认的超时时间通常过短
 
-### Static Sites
-- CDN cache invalidation after deploy
-- Immutable assets with content hashes — cache forever
-- Preview deploys for PRs
+### 静态网站部署
+- 部署后更新CDN缓存
+- 使用内容哈希值来确保静态资源的缓存有效性——使缓存长期有效
+- 提供预发布版本供代码审查（PR）时使用
 
-## Common Mistakes
-- Deploying Friday afternoon — issues surface when nobody's watching
-- No rollback plan — hoping nothing goes wrong isn't a strategy
-- Mixing code and migration deploys — one thing at a time
-- Manual deploy steps — if it's not automated, it's wrong sometimes
-- Deploying without monitoring — you won't know it's broken until users complain
+## 常见错误
+- 在周五下午进行部署——问题往往在无人关注时才会被发现
+- 没有制定回滚计划——寄希望于一切顺利并不是一个可靠的策略
+- 将代码更新和数据库迁移操作混在一起进行——应分步骤进行
+- 依赖手动部署——如果依赖关系处理不当，可能会导致问题
+- 在没有监控的情况下进行部署——只有在用户反馈问题后才会发现系统故障

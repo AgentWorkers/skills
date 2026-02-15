@@ -1,40 +1,40 @@
 ---
 name: ui-development
-description: Generate production-ready Next.js projects with TypeScript, Tailwind CSS, shadcn/ui, and API integration. Use when the user asks to build, create, develop, or scaffold a Next.js application, web app, full-stack project, or frontend with backend integration. Prioritizes modern stack (Next.js 14+, TypeScript, shadcn/ui, axios, react-query) and best practices. Also triggers on requests to add features, integrate APIs, or extend existing Next.js projects.
+description: 生成具备生产环境准备度的 Next.js 项目，这些项目将使用 TypeScript、Tailwind CSS、shadcn/ui 以及 API 集成。当用户需要构建、创建、开发或搭建 Next.js 应用程序、Web 应用程序、全栈项目或具有后端集成功能的前端应用时，可以使用此服务。优先采用现代技术栈（Next.js 14 及以上版本、TypeScript、shadcn/ui、axios、react-query）及最佳实践。此外，该服务还会在用户请求添加新功能、集成 API 或扩展现有 Next.js 项目时自动启动相关流程。
 ---
 
-# UI Development
+## UI 开发
 
-Generate production-ready Next.js projects from natural language, with shadcn/ui components, API integration, type safety, and modern tooling.
+我们可以从自然语言生成适用于生产环境的 Next.js 项目，该项目将使用 `shadcn/ui` 组件、API 集成、类型安全性和现代开发工具。
 
-## Quick Start (TL;DR)
+### 快速入门（简而言之）
 
-**Fast path for simple projects:**
-1. Create Next.js app → 2. Install shadcn/ui → 3. Build UI → 4. Start with PM2 → 5. Screenshot review → 6. Done
+**简单项目的快速路径：**
+1. 创建 Next.js 应用程序 → 2. 安装 `shadcn/ui` → 3. 构建用户界面 → 4. 使用 PM2 启动服务器 → 5. 截取屏幕截图进行审查 → 6. 完成
 
-**Live preview:** Projects run on PM2 (port 3002), accessible at `http://localhost:3002` or via nginx proxy if configured.
+**实时预览：** 项目在 PM2 上运行（端口 3002），可以通过 `http://localhost:3002` 访问，或者如果配置了 Nginx 代理，则可以通过该代理访问。
 
-**Default workflow:** All projects use PM2 for dev server management (prevents port conflicts, ensures single instance).
+**默认工作流程：** 所有项目都使用 PM2 来管理开发服务器（防止端口冲突，确保只有一个实例运行）。
 
-## Requirements & Optional Features
+### 需求与可选功能
 
-### Required Dependencies
-- **Node.js 18+** and **npm/yarn/pnpm**
-- **Git** (for project initialization)
+#### 必需依赖项
+- **Node.js 18+** 以及 **npm/yarn/pnpm**
+- **Git**（用于项目初始化）
 
-### Optional Features (user can decline)
+#### 可选功能（用户可以选择不使用）
 
-#### 1. Auto-Revision with Visual Review (requires Chromium)
-- **What it does**: Takes screenshots during development to visually review designs and auto-fix issues
-- **Installation**: `sudo apt-get install chromium-browser` (Debian/Ubuntu)
-- **Privileges**: Read/write access to project files, execute chromium in headless mode
-- **If declined**: Manual review only (you describe, user verifies)
+#### 1. 带有视觉审查的自动修订功能（需要 Chromium）
+- **功能：** 在开发过程中截取屏幕截图以进行视觉审查并自动修复问题
+- **安装方法：** `sudo apt-get install chromium-browser`（Debian/Ubuntu）
+- **权限：** 对项目文件有读写权限，并能在无头模式下运行 Chromium
+- **如果选择不使用：** 仅进行手动审查（由用户描述，用户确认）
 
-#### 2. Live Preview Server (requires Nginx)
-- **What it does**: Serves project on external port for live preview during development (useful for mobile testing or remote access)
-- **Installation**: `sudo apt-get install nginx`
-- **How it works**: PM2 runs dev server on port 3002, nginx proxies it to chosen external port
-- **Nginx config template**:
+#### 2. 实时预览服务器（需要 Nginx）
+- **功能：** 在外部端口上提供项目实时预览（适用于移动设备测试或远程访问）
+- **安装方法：** `sudo apt-get install nginx`
+- **工作原理：** PM2 在端口 3002 上运行开发服务器，Nginx 将其代理到选定的外部端口
+- **Nginx 配置模板：**
   ```nginx
   # /etc/nginx/sites-available/<project-name>
   server {
@@ -51,48 +51,48 @@ Generate production-ready Next.js projects from natural language, with shadcn/ui
     }
   }
   ```
-- **Enable**: `sudo ln -s /etc/nginx/sites-available/<project-name> /etc/nginx/sites-enabled/ && sudo systemctl reload nginx`
-- **If declined**: Access directly via `http://localhost:3002` (PM2 port)
+- **启用方法：** `sudo ln -s /etc/nginx/sites-available/<project-name> /etc/nginx/sites-enabled/ && sudo systemctl reload nginx`
+- **如果选择不使用：** 直接通过 `http://localhost:3002` 访问（使用 PM2 的端口）
 
-**Before starting, ask user if they want to enable optional features.**
+**在开始之前，请询问用户是否希望启用这些可选功能。**
 
-## Common Project Types
+### 常见项目类型
 
-**Quick reference for typical requests:**
+**常见请求的快速参考：**
 
-- **Dashboard/Admin Panel** → Use `(dashboard)` route group, shadcn data tables, charts
-- **Landing Page** → Single `app/page.tsx`, hero section, features grid, testimonials
-- **Todo/Task App** → shadcn checkbox, input, button; local state or API
-- **Blog/CMS** → Dynamic routes `app/blog/[slug]/page.tsx`, markdown support
-- **E-commerce** → Product catalog, cart state (Zustand), checkout flow
-- **SaaS App** → Auth (`(auth)` group), protected routes, subscription logic
-- **Portfolio** → Projects grid, contact form, image gallery
-- **Form-heavy App** → React Hook Form + Zod validation, shadcn form components
+- **仪表板/管理面板** → 使用 `(dashboard)` 路由组、`shadcn` 数据表和图表
+- **首页** → 单个 `app/page.tsx` 文件，包含标题部分、功能网格和用户评价
+- **待办事项/任务应用** → 使用 `shadcn` 的复选框、输入框和按钮；可以使用本地状态或 API
+- **博客/内容管理系统** → 动态路由 `app/blog/[slug]/page.tsx`，支持 Markdown
+- **电子商务** → 产品目录、购物车状态（使用 Zustand）
+- **SaaS 应用** → 认证（使用 `(auth)` 组件）、受保护的路由和订阅逻辑
+- **作品集** → 项目网格、联系表单和图片库
+- **表单较多的应用** → 使用 React Hook Form 和 Zod 进行表单验证，以及 `shadcn` 的表单组件
 
-**Ask user:** What type of project are you building? (helps determine structure and components)
+**询问用户：** 您正在构建哪种类型的项目？（这有助于确定结构和所需组件）
 
-## Tech Stack
+### 技术栈
 
-**Core:**
-- Next.js 14+ (App Router)
+**核心组件：**
+- Next.js 14+（应用路由）
 - TypeScript
 - Tailwind CSS v3
-- **shadcn/ui** (recommended UI component library)
+- **shadcn/ui**（推荐的 UI 组件库）
 - ESLint + Prettier
 
-**API Integration (default):**
-- axios (HTTP client)
-- @tanstack/react-query (data fetching, caching, state management)
+**API 集成（默认）：**
+- axios（HTTP 客户端）
+- @tanstack/react-query（用于数据获取、缓存和状态管理）
 
-**Optional (based on needs):**
-- Zustand (client-side state management)
-- Zod (runtime validation)
-- next-auth (authentication)
-- Prisma (database ORM)
+**可选组件（根据需求选择）：**
+- Zustand（客户端状态管理）
+- Zod（运行时验证）
+- next-auth（认证）
+- Prisma（数据库对象关系映射）
 
-## Project Structure
+### 项目结构
 
-**Industry-standard Next.js 14+ App Router structure with feature-based organization:**
+**符合行业标准的 Next.js 14+ 应用程序结构，采用基于功能的组织方式：**
 
 ```
 <project-name>/
@@ -205,50 +205,50 @@ Generate production-ready Next.js projects from natural language, with shadcn/ui
 └── README.md                           # Project documentation
 ```
 
-### Directory Purpose
+### 目录用途
 
-**`app/`** - Next.js 14 App Router pages and layouts. Use route groups `(name)` for logical grouping without affecting URLs.
+**`app/`** - Next.js 14 应用程序的页面和布局。使用路由组 `(name)` 进行逻辑分组，不会影响 URL。
 
-**`components/`** - All React components, organized by type:
-- `ui/` - shadcn/ui components (copy-paste, customizable)
-- `layout/` - Shared layout components (header, footer, sidebar)
-- `features/` - Feature-specific components (scoped to one feature)
-- `shared/` - Reusable components used across features
+**`components/`** - 所有的 React 组件，按类型分类：
+- `ui/` - `shadcn/ui` 组件（可以直接复制粘贴并自定义）
+- `layout/` - 公共布局组件（页眉、页脚、侧边栏）
+- `features/` - 与特定功能相关的组件
+- `shared/` - 在多个功能中可重用的组件
 
-**`lib/`** - Utility functions, configurations, and third-party library setups.
+**`lib/`** - 实用函数、配置文件和第三方库的设置
 
-**`hooks/`** - Custom React hooks, especially React Query hooks for API calls.
+**`hooks/`** - 自定义 React 钩子，特别是用于 API 调用的 React Query 钩子
 
-**`types/`** - TypeScript type definitions and interfaces.
+**`types/`** - TypeScript 类型定义和接口
 
-**`actions/`** - Server Actions for form handling and server-side operations (Next.js 14+).
+**`actions/`** - 用于处理表单和服务器端操作的服务器端函数（Next.js 14+）
 
-**`config/`** - App configuration (site metadata, navigation menus, constants).
+**`config/`** - 应用程序配置（站点元数据、导航菜单、常量）
 
-**`prisma/`** - Database schema and migrations (if using Prisma).
+**`prisma/`** - 数据库模式和迁移文件（如果使用 Prisma）
 
-**`public/`** - Static files served at root URL.
+**`public/`** - 静态文件，从根 URL 提供
 
-**`styles/`** - Global CSS (Tailwind imports + custom styles).
+**`styles/`** - 全局 CSS（包含 Tailwind CSS 和自定义样式）
 
-## Workflow
+### 工作流程
 
-**Keep user informed at every step — this is a live build log.**
+**在每个步骤中都向用户提供反馈——这是一个实时的构建日志。**
 
-**⚠️ Important: All projects use PM2 for dev server management (port 3002 by default). This ensures:**
-- Only one instance runs at a time (no port conflicts)
-- Easy process management (list/logs/restart/stop)
-- Persistent dev server across terminal sessions
-- Better error logging and debugging
+**⚠️ 重要提示：** 所有项目都使用 PM2 来管理开发服务器（默认端口为 3002）。这样可以确保：**
+- 同时只运行一个实例（避免端口冲突）
+- 简化进程管理（列出/重启/停止服务器）
+- 在不同的终端会话中保持开发服务器的持续运行
+- 提高错误日志记录和调试的效率
 
-### Step 1: Project Setup
-Ask:
-- Project name
-- Description/purpose
-- Optional features (chromium review, nginx preview)
+### 第 1 步：项目设置
+- 询问用户：
+  - 项目名称
+  - 项目描述/用途
+  - 是否需要可选功能（如 Chromium 视觉审查、Nginx 预览）
 
-Create Next.js project:
-```bash
+- 创建 Next.js 项目：
+  ```bash
 npx create-next-app@latest <project-name> \
   --typescript \
   --tailwind \
@@ -257,11 +257,11 @@ npx create-next-app@latest <project-name> \
   --import-alias "@/*"
 ```
 
-**→ Message user: "Next.js project initialized ✓"**
+**→ 向用户发送消息：“Next.js 项目已初始化 ✓”**
 
-### Step 2: Create Directory Structure
+### 第 2 步：创建目录结构
 
-Create all necessary directories following industry best practices:
+按照行业最佳实践创建所有必要的目录：
 
 ```bash
 cd <project-name>
@@ -288,9 +288,9 @@ mkdir styles
 # mkdir -p prisma
 ```
 
-Create essential config files:
+**创建必要的配置文件：**
 
-**`config/site.ts`** - Site metadata
+**`config/site.ts`** - 站点元数据
 ```typescript
 export const siteConfig = {
   name: '<Project Name>',
@@ -302,7 +302,7 @@ export const siteConfig = {
 };
 ```
 
-**`config/navigation.ts`** - Navigation menu
+**`config/navigation.ts`** - 导航菜单
 ```typescript
 export const mainNav = [
   { title: 'Home', href: '/' },
@@ -317,7 +317,7 @@ export const dashboardNav = [
 ];
 ```
 
-**`.env.example`** - Environment variables template
+**`.env.example`** - 环境变量模板
 ```
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
@@ -326,51 +326,51 @@ NEXTAUTH_SECRET=...
 NEXTAUTH_URL=http://localhost:3000
 ```
 
-**→ Message user: "Directory structure created ✓"**
+**→ 向用户发送消息：“目录结构已创建 ✓”**
 
-### Step 3: Install Dependencies
+### 第 3 步：安装依赖项
 
-**Core dependencies:**
+**核心依赖项：**
 ```bash
 cd <project-name>
 npm install axios @tanstack/react-query
 npm install -D @types/node
 ```
 
-**shadcn/ui setup (recommended):**
+**推荐安装 `shadcn/ui`：**
 ```bash
 npx shadcn-ui@latest init
 ```
 
-This will prompt for configuration. Recommended answers:
-- Style: Default
-- Base color: Slate
-- CSS variables: Yes
+系统会提示进行配置。推荐设置：
+- 样式：默认样式
+- 基本颜色：Slate
+- CSS 变量：启用
 
-**Install essential shadcn components:**
+**安装必要的 `shadcn` 组件：**
 ```bash
 npx shadcn-ui@latest add button card input label select textarea
 npx shadcn-ui@latest add dropdown-menu dialog sheet tabs
 npx shadcn-ui@latest add table form avatar badge separator toast
 ```
 
-**Install form dependencies (for shadcn/ui forms):**
+**安装表单相关的依赖项（用于 `shadcn/ui` 表单）：**
 ```bash
 npm install react-hook-form @hookform/resolvers zod
 ```
 
-**Optional (ask user based on needs):**
+**根据用户需求选择是否安装其他可选依赖项：**
 ```bash
 npm install zustand  # State management
 npm install next-auth  # Authentication
 npm install prisma @prisma/client  # Database ORM
 ```
 
-**→ Message user: "Dependencies + shadcn/ui installed ✓"**
+**→ 向用户发送消息：“依赖项和 `shadcn/ui` 已安装 ✓”**
 
-### Step 4: Configure Base Files
+### 第 4 步：配置基础文件
 
-#### `lib/api.ts` (axios instance)
+#### `lib/api.ts`（axios 实例）
 ```typescript
 import axios from 'axios';
 
@@ -402,7 +402,7 @@ api.interceptors.response.use(
 );
 ```
 
-#### `lib/react-query.ts` (query client)
+#### `lib/react-query.ts`（查询客户端）
 ```typescript
 import { QueryClient } from '@tanstack/react-query';
 
@@ -417,7 +417,7 @@ export const queryClient = new QueryClient({
 });
 ```
 
-#### `app/providers.tsx` (wrap app with providers)
+#### `app/providers.tsx`（为应用程序添加提供者）
 ```typescript
 'use client';
 
@@ -435,21 +435,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 ```
 
-Update `app/layout.tsx` to use Providers.
+**更新 `app/layout.tsx` 以使用这些提供者。**
 
-**→ Message user: "Base configuration complete ✓"**
+**→ 向用户发送消息：“基础配置已完成 ✓”**
 
-### Step 5: Generate Features
+### 第 5 步：生成功能
 
-Ask what features/pages to build. For each feature:
+询问用户需要构建哪些功能/页面。对于每个功能：
+1. **创建路由**（`app/<feature>/page.tsx`）
+2. **创建组件**（`components/features/<feature>/`）
+3. **创建 API 钩子**（使用 `react-query` 的 `use<Feature>.ts`）
+4. **创建类型定义**（`types/<feature>.ts`）
+5. **可选：创建 API 路由**（`app/api/<feature>/route.ts`）
 
-1. **Create route** (`app/<feature>/page.tsx`)
-2. **Create components** (`components/features/<feature>/`)
-3. **Create API hooks** (`hooks/use<Feature>.ts`) using react-query
-4. **Create types** (`types/<feature>.ts`)
-5. **Optionally create API routes** (`app/api/<feature>/route.ts`)
-
-**Example: User Profile Feature**
+**示例：用户个人资料功能**
 
 ```typescript
 // types/user.ts
@@ -509,13 +508,13 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
 }
 ```
 
-**→ Message user after each feature: "Profile page complete ✓"**
+**→ 在每个功能完成后向用户发送消息：“个人资料页面已完成 ✓”**
 
-### Step 6: Build UI with shadcn/ui Components
+### 第 6 步：使用 `shadcn/ui` 组件构建用户界面**
 
-Use shadcn/ui components (already installed) for consistent, accessible UI. Apply Design Principles (see below).
+使用已安装的 `shadcn/ui` 组件来构建一致且易于使用的用户界面。遵循以下设计原则：
 
-**Example: Profile page with shadcn/ui**
+**示例：使用 `shadcn/ui` 的个人资料页面**
 ```typescript
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -548,19 +547,19 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
 }
 ```
 
-**When to add more components:**
-- Forms → `npx shadcn-ui@latest add form input label`
-- Data tables → `npx shadcn-ui@latest add table`
-- Navigation → `npx shadcn-ui@latest add navigation-menu`
-- Feedback → `npx shadcn-ui@latest add toast alert`
+**何时添加更多组件：**
+- 表单 → `npx shadcn-ui@latest add form input label`
+- 数据表 → `npx shadcn-ui@latest add table`
+- 导航 → `npx shadcn-ui@latest add navigation-menu`
+- 反馈 → `npx shadcn-ui@latest add toast alert`
 
-**→ Message user: "UI built with shadcn/ui ✓"**
+**→ 向用户发送消息：“使用 `shadcn/ui` 构建的用户界面已完成 ✓`**
 
-### Step 7: Visual Review (if chromium enabled)
+### 第 7 步：视觉审查（如果启用了 Chromium）
 
-**Important:** Use PM2 to manage the dev server (ensures only 1 instance runs, prevents port conflicts).
+**重要提示：** 使用 PM2 来管理开发服务器（确保只运行一个实例，防止端口冲突）**
 
-Start dev server with PM2:
+使用 PM2 启动开发服务器：
 ```bash
 # Stop any existing instance of this project
 pm2 delete <project-name> 2>/dev/null || true
@@ -572,7 +571,7 @@ PORT=3002 pm2 start npm --name "<project-name>" --cwd "$(pwd)" -- run dev
 sleep 2
 ```
 
-**Wait for server to be fully ready** (critical - avoid white screen screenshots):
+**等待服务器完全准备好**（这一步很关键——避免截图显示空白屏幕）：
 ```bash
 # Wait for "Ready in" message in PM2 logs (usually 5-15 seconds)
 timeout=30
@@ -594,46 +593,46 @@ if ! curl -s http://localhost:3002 > /dev/null; then
 fi
 ```
 
-Take screenshots (requires chromium):
+**截取屏幕截图（需要 Chromium）：**
 ```bash
 bash scripts/screenshot.sh "http://localhost:3002" /tmp/review-desktop.png 1400 900
 bash scripts/screenshot.sh "http://localhost:3002" /tmp/review-mobile.png 390 844
 ```
 
-**Review Checklist** (analyze with `image` tool):
-- ✅ **Desktop (1400px)**: Content centered, proper spacing
-- ✅ **Mobile (390px)**: 
-  - No horizontal overflow (content fits within screen)
-  - Text readable (not too small)
-  - Padding appropriate (p-4 not p-24)
-  - Touch targets large enough (min 44x44px)
-  - No content cutting off edges
+**审查检查清单**（使用 `image` 工具进行分析）：
+- ✅ **桌面（1400px）**：内容居中，间距合适
+- ✅ **移动设备（390px）**：
+  - 没有水平滚动条（内容能完全显示在屏幕上）
+  - 文本可读（不会太小）
+  - 内容间距合适（使用 `p-4` 而不是 `p-24`）
+  - 触控目标足够大（至少 44x44px）
+  - 内容不会超出屏幕边界
 
-**If issues found:** Fix responsive classes, re-run screenshots.
+**如果发现问题：** 修复响应式样式，然后重新截图。
 
-Common fixes:
-- Large padding → `p-4 md:p-8 lg:p-12`
-- Large text → `text-2xl md:text-4xl`
-- Wide content → Add `max-w-full` or `px-4`
+**常见的修复方法：**
+- 如果间距过大：将 `p-4` 更改为 `p-8 lg:p-12`
+- 如果文本过大：将 `text-2xl` 更改为 `text-4xl`
+- 如果内容太宽：添加 `max-w-full` 或 `px-4`
 
-**→ Message user: "Review complete, sending preview..."**
+**→ 向用户发送消息：“审查完成，正在发送预览...”**
 
-### Step 8: Environment Setup
+### 第 8 步：环境设置
 
-Create `.env.local`:
+创建 `.env.local` 文件：
 ```
 NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 DATABASE_URL=postgresql://...
 NEXTAUTH_SECRET=...
 ```
 
-Create `.env.example` (template for user).
+创建 `.env.example` 文件（供用户参考）。
 
-**→ Message user: "Environment template created ✓"**
+**→ 向用户发送消息：“环境配置文件已创建 ✓****
 
-### Step 9: Scripts & Documentation
+### 第 9 步：脚本和文档
 
-Update `package.json` scripts:
+更新 `package.json` 中的脚本：
 ```json
 {
   "scripts": {
@@ -646,42 +645,42 @@ Update `package.json` scripts:
 }
 ```
 
-Create `README.md` with:
-- Setup instructions
-- Environment variables needed
-- Development commands
-- API integration guide
+创建 `README.md` 文件，内容包括：
+- 设置说明
+- 所需的环境变量
+- 开发命令
+- API 集成指南
 
-**→ Message user: "Documentation complete ✓"**
+**→ 向用户发送消息：“文档已完成 ✓****
 
-### Step 10: Export & Deploy Guidance
+### 第 10 步：导出和部署指导
 
-**Stop PM2 dev server** (if running):
+**如果开发服务器正在运行，请停止它：**
 ```bash
 pm2 delete <project-name> 2>/dev/null || true
 pm2 save  # Persist PM2 process list
 ```
 
-Zip the project:
+将项目压缩：
 ```bash
 cd .. && zip -r /tmp/<project-name>.zip <project-name>/
 ```
 
-Send via message tool with `filePath`.
+通过消息工具将压缩后的项目文件发送给用户。
 
-Provide deployment options:
-- **Vercel** (recommended): `npx vercel`
-- **Netlify**: `npm run build && netlify deploy`
-- **Docker**: Provide Dockerfile
-- **Self-hosted**: Provide systemd service + nginx config
+提供部署选项：
+- **Vercel**（推荐）：`npx vercel`
+- **Netlify**：`npm run build && netlify deploy`
+- **Docker**：提供 Dockerfile
+- **自托管**：提供 systemd 服务和相关 Nginx 配置
 
-**→ Message user: "Project ready! 🚀"**
+**→ 向用户发送消息：“项目已准备好！🚀****
 
-## Testing & Live Preview
+## 测试和实时预览
 
-### Quick Test (during development)
+### 开发过程中的快速测试
 
-**1. PM2 dev server (always running after Step 7):**
+**1. PM2 开发服务器（在步骤 7 之后始终运行）：**
 ```bash
 # Check status
 pm2 list
@@ -693,12 +692,12 @@ pm2 logs <project-name>
 curl http://localhost:3002
 ```
 
-**2. Live preview URLs:**
-- **Local access:** `http://localhost:3002`
-- **Nginx proxy** (if configured): `http://<server-ip>:<external-port>`
-- **Mobile testing:** Use nginx proxy or ngrok/tunneling service
+**2. 实时预览地址：**
+- **本地访问：** `http://localhost:3002`
+- **Nginx 代理**（如果配置了代理）：`http://<server-ip>:<external-port>`
+- **移动设备测试：** 使用 Nginx 代理或 ngrok 代理服务
 
-**3. Screenshot review (if chromium enabled):**
+**3. 如果启用了 Chromium，进行屏幕截图审查：**
 ```bash
 # Desktop (1400x900)
 bash scripts/screenshot.sh "http://localhost:3002" /tmp/desktop.png 1400 900
@@ -707,9 +706,9 @@ bash scripts/screenshot.sh "http://localhost:3002" /tmp/desktop.png 1400 900
 bash scripts/screenshot.sh "http://localhost:3002" /tmp/mobile.png 390 844
 ```
 
-### End-to-End Testing Workflow
+### 全端测试工作流程
 
-**Full test sequence:**
+**完整的测试顺序：**
 ```bash
 # 1. Check PM2 status
 pm2 list | grep <project-name>
@@ -734,9 +733,9 @@ npm run build && npm run start  # Test production build
 npm run type-check
 ```
 
-### Common Testing Scenarios
+### 常见测试场景
 
-**Scenario 1: Test responsive design**
+**场景 1：测试响应式设计**
 ```bash
 # Mobile, tablet, desktop
 for width in 390 768 1400; do
@@ -744,13 +743,13 @@ for width in 390 768 1400; do
 done
 ```
 
-**Scenario 2: Test specific page/route**
+**场景 2：测试特定页面/路由**
 ```bash
 # Take screenshot of specific route
 bash scripts/screenshot.sh "http://localhost:3002/dashboard" /tmp/dashboard.png 1400 900
 ```
 
-**Scenario 3: Test after making changes**
+**场景 3：在做出更改后进行测试**
 ```bash
 # PM2 auto-reloads on file changes, verify in logs
 pm2 logs <project-name> --lines 20
@@ -759,28 +758,27 @@ pm2 logs <project-name> --lines 20
 bash scripts/screenshot.sh "http://localhost:3002" /tmp/updated.png 1400 900
 ```
 
-### Sharing Preview with User
+### 与用户共享预览
 
-**Option 1: Screenshots**
-- Send desktop + mobile screenshots via message tool
-- User provides feedback, you iterate
+**选项 1：截图**
+- 通过消息工具发送桌面和移动设备的截图
+- 用户提供反馈，然后根据反馈进行迭代
 
-**Option 2: Nginx proxy + external access**
-- Set up nginx config (see Optional Features)
-- Share URL: `http://<server-ip>:<port>`
-- User can test live in browser
+**选项 2：使用 Nginx 代理和外部访问**
+- 配置 Nginx 代理（参见可选功能）
+- 分享地址：`http://<server-ip>:<port>`
+- 用户可以在浏览器中直接测试
 
-**Option 3: Export & deploy**
-- Zip project and send to user
-- User deploys to Vercel/Netlify
-- Test on production URL
+**选项 3：导出和部署**
+- 将项目压缩后发送给用户
+- 用户可以使用 Vercel 或 Netlify 进行部署
+- 在生产环境中测试项目
 
-## API Integration Patterns
+## API 集成模式
 
-### Pattern 1: REST API (default)
+### 模式 1：REST API（默认）
 
-Use axios + react-query:
-
+使用 axios 和 `react-query**：
 ```typescript
 // hooks/usePosts.ts
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -806,25 +804,25 @@ export const useCreatePost = () => {
 };
 ```
 
-### Pattern 2: GraphQL (optional)
+### 模式 2：GraphQL（可选）
 
-Install:
+安装相关依赖项：
 ```bash
 npm install @apollo/client graphql
 ```
 
-Setup Apollo Client, use `useQuery` and `useMutation` from Apollo.
+设置 Apollo 客户端，并使用 `useQuery` 和 `useMutation`。
 
-### Pattern 3: tRPC (optional)
+### 模式 3：tRPC（可选）
 
-For Next.js API routes with type safety:
+对于需要类型安全的 Next.js API 路由：
 ```bash
 npm install @trpc/server @trpc/client @trpc/react-query @trpc/next
 ```
 
-### Pattern 4: Server Actions (Next.js 14+)
+### 模式 4：服务器端操作（Next.js 14+）
 
-For form handling without API routes:
+对于不需要 API 路由的表单处理：
 ```typescript
 // app/actions.ts
 'use server';
@@ -835,75 +833,74 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-**Always ask user which pattern they prefer for their use case.**
+**始终询问用户他们希望使用哪种模式。**
 
-## Design Principles
+## 设计原则
 
-Apply these consistently. These are quality standards.
+请始终遵循这些设计原则，以确保项目质量。
 
-### Layout & Spacing
-- Consistent Tailwind spacing scale (4, 6, 8, 12, 16, 20, 24)
-- Max content width: max-w-5xl or max-w-6xl
-- Vertical rhythm: py-16 for sections, py-8 for subsections
-- Mobile: minimum px-4 padding
+### 布局和间距
+- 保持一致的 Tailwind 布局间距（4, 6, 8, 12, 16, 20, 24）
+- 内容的最大宽度：`max-w-5xl` 或 `max-w-6xl`
+- 垂直布局比例：部分使用 `py-16`，子部分使用 `py-8`
+- 移动设备：最小间距为 `px-4`
 
-### Typography
-- Clear hierarchy (h1 → h2 → h3, max 3-4 sizes)
-- Line length: max 65-75 characters (max-w-prose)
-- Font weight contrast (bold headings, regular body)
-- Text color hierarchy (slate-900 → slate-700 → slate-500)
+### 字体排版
+- 清晰的层次结构（h1 → h2 → h3，最多使用 3-4 个级别）
+- 行长度：最多 65-75 个字符
+- 字体颜色对比度（粗体标题 → 正常文本）
+- 文本颜色层次：`slate-900` → `slate-700` → `slate-500`
 
-### Color & Contrast
-- WCAG AA minimum (4.5:1 contrast)
-- Limit palette (1 primary + 1 accent + neutrals)
-- Consistent accent usage (CTAs, links, active states)
+### 颜色和对比度
+- 符合 WCAG AA 标准（对比度至少为 4.5:1）
+- 限制颜色调色板（1 个主色调 + 1 个强调色 + 中性色）
+- 一致地使用强调色（例如按钮、链接和活动状态）
 
-### Responsive Design (Critical)
-- **Mobile-first** (390px → 768px → 1024px) - Always design for 390px first
-- **Responsive padding** - Use Tailwind responsive classes:
-  - Mobile: `p-4` or `px-4 py-6` (never p-24 on mobile!)
-  - Tablet: `md:p-8` or `md:px-6 md:py-8`
-  - Desktop: `lg:p-12 xl:p-24`
-  - Example: `<main className="p-4 md:p-8 lg:p-12">`
-- **Responsive text sizes** - Scale down headings on mobile:
-  - Mobile: `text-2xl` → Desktop: `md:text-4xl`
-  - Mobile: `text-lg` → Desktop: `md:text-2xl`
-- **No horizontal overflow** - Content must fit within 390px width
-  - Test: Check mobile screenshot for any content cutting off edges
-  - Use `max-w-full` on containers
-  - Break long words: `break-words`
-- **Touch targets** - min 44x44px for buttons/links on mobile
-- **Stack on mobile** - Grids collapse to single column: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
-- **Hamburger menu** - Required on mobile for navigation
+### 响应式设计（非常重要）
+- **以移动设备为先**（390px → 768px → 1024px）——始终优先考虑移动设备的显示效果
+- **响应式间距**：使用 Tailwind 的响应式样式：
+  - 移动设备：`p-4` 或 `px-4 py-6`（移动设备上禁止使用 `p-24`）
+  - 平板设备：`md:p-8` 或 `md:px-6 md:py-8`
+  - 桌面设备：`lg:p-12 xl:p-24`
+  - 例如：`<main className="p-4 md:p-8 lg:p-12">`
+- **响应式文本大小**：在移动设备上缩小标题大小：
+  - 移动设备：`text-2xl` → 桌面设备：`md:text-4xl`
+  - 移动设备：`text-lg` → 桌面设备：`md:text-2xl`
+- **避免内容超出屏幕边界**：确保内容在 390px 宽度内显示
+- **测试移动设备的屏幕截图**：检查内容是否超出屏幕边界
+- 对于容器使用 `max-w-full`
+- 对于较长的单词使用断字功能：`break-words`
+- **触控目标**：按钮/链接的尺寸至少为 44x44px
+- **在移动设备上使用网格布局**：当屏幕宽度较窄时，网格应缩放到单列：`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
 
-### Components (Use shadcn/ui)
-- **Icons**: Use Lucide React (comes with shadcn/ui), never emoji
-- **Buttons**: Use `<Button>` component with variants (default, destructive, outline, ghost)
-- **Forms**: Use shadcn `<Form>` with react-hook-form integration
-- **Cards**: Use `<Card>` component for content sections
-- **Dialogs/Modals**: Use `<Dialog>` or `<Sheet>` components
-- **Loading states**: Use shadcn `<Skeleton>` component for loading UI
-- **Error handling**: Use `<Alert>` component for error messages
-- **Data display**: Use `<Table>` component for tabular data
+### 组件（使用 `shadcn/ui`）
+- **图标**：使用 `Lucide React` 图标（`shadcn/ui` 自带），避免使用 emoji
+- **按钮**：使用 `<Button>` 组件，并提供不同的样式（默认、破坏性按钮、轮廓按钮、透明按钮）
+- **表单**：使用 `shadcn` 的 `<Form>` 组件，并结合 `react-hook-form` 进行表单验证
+- **卡片**：使用 `<Card>` 组件来展示内容
+- **对话框/模态框**：使用 `<Dialog>` 或 `<Sheet>` 组件
+- **加载状态**：使用 `shadcn` 的 `<Skeleton>` 组件来显示加载中的界面
+- **错误处理**：使用 `<Alert>` 组件来显示错误信息
+- **数据展示**：使用 `<Table>` 组件来展示表格数据
 
-**shadcn/ui benefits:** Accessible, customizable, copy-paste friendly, works with Tailwind
+**`shadcn/ui` 的优点：** 易于使用、可定制、便于复制粘贴，且与 Tailwind CSS 兼容
 
-### TypeScript Best Practices
-- Strict mode enabled
-- Explicit return types for functions
-- Interface over type for objects
-- Avoid `any` (use `unknown` if needed)
-- Use discriminated unions for variants
+### TypeScript 的最佳实践
+- 启用严格模式
+- 为函数指定明确的返回类型
+- 对对象使用接口而不是 `any`
+- 如果需要，使用 `unknown` 而不是 `any`
+- 对不同的组件类型使用明确的联合类型
 
-### Performance
-- Use Next.js Image component (`next/image`)
-- Lazy load below-the-fold content
-- Code splitting (dynamic imports)
-- Memoize expensive computations (useMemo, useCallback)
+### 性能优化
+- 使用 Next.js 的 `Image` 组件
+- 对折叠后的内容使用懒加载
+- 代码分割（动态导入）
+- 对计算量较大的操作使用 `memoize` 和 `useMemo` 进行优化
 
-## Common Patterns
+### 常见的使用技巧
 
-### Form Handling (with shadcn/ui)
+### 表单处理（使用 `shadcn/ui`）
 ```typescript
 'use client';
 
@@ -980,9 +977,9 @@ export default function ContactForm() {
 }
 ```
 
-**Note:** Run `npx shadcn-ui@latest add form toast` and install `npm install react-hook-form @hookform/resolvers zod` for this pattern.
+**注意：** 运行 `npx shadcn-ui@latest add form toast`，并安装 `npm install react-hook-form @hookform/resolvers zod` 以实现这些功能。
 
-### Pagination
+### 分页
 ```typescript
 const usePaginatedPosts = (page: number) => {
   return useQuery({
@@ -996,7 +993,7 @@ const usePaginatedPosts = (page: number) => {
 };
 ```
 
-### Infinite Scroll
+### 无限滚动
 ```typescript
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -1012,48 +1009,41 @@ const useInfinitePosts = () => {
 };
 ```
 
-## Common Mistakes to Avoid
-- ❌ Not wrapping app with QueryClientProvider
-- ❌ Using axios without interceptors (no error handling)
-- ❌ Forgetting loading/error states in components
-- ❌ Not invalidating queries after mutations
-- ❌ Using `any` instead of proper TypeScript types
-- ❌ Client components when server components would work
-- ❌ Not using Next.js Image component (performance loss)
-- ❌ Missing error boundaries
-- ❌ Hardcoding API URLs (use env vars)
-- ❌ No mobile testing (always check responsive at 390px width)
-- ❌ **Large padding on mobile** (p-24 = 96px causes overflow on 390px screens)
-- ❌ **Not using responsive Tailwind classes** (use p-4 md:p-8 lg:p-12)
-- ❌ **Horizontal overflow on mobile** (content wider than 390px)
-- ❌ Building custom components when shadcn/ui has them (Button, Card, Dialog, etc.)
-- ❌ Using emoji for icons (use Lucide React icons from shadcn/ui)
-- ❌ Not installing `@hookform/resolvers` and `zod` before using shadcn forms
-- ❌ Forgetting to add `<Toaster />` component when using toast notifications
-- ❌ **Taking screenshots before dev server is fully ready** (causes white screens)
-- ❌ **Not waiting for module loading** (causes "Module not found" errors in screenshots)
+### 常见错误及避免方法
 
-## Troubleshooting
+- ❌ 未使用 `QueryClientProvider` 包装应用程序
+- ❌ 使用 axios 时未添加拦截器（无法处理错误）
+- ❌ 在组件中未处理加载/错误状态
+- ❌ 在进行数据更新后未取消之前的查询
+- ❌ 使用 `any` 而不是适当的 TypeScript 类型
+- 在可以使用服务器端组件的情况下使用客户端组件
+- ❌ 未使用 Next.js 的 `Image` 组件（会导致性能损失）
+- ❌ 未添加错误边界
+- ❌ 未设置错误提示
+- ❌ 在截图之前未等待开发服务器完全准备好
+- ❌ 在截图之前未等待模块加载完成
 
-### White Screen Screenshots
-**Problem:** Screenshots show blank white page
-**Cause:** Dev server not fully initialized before screenshot
-**Solution:** 
-- Wait for "Ready in" message in dev server logs
-- Add 3-5 second buffer after "Ready" message
-- Verify localhost:3000 loads in browser before taking screenshot
+### 故障排除
 
-### Module Not Found Errors
-**Problem:** React error "Module not found: Can't resolve @tanstack/react-query"
-**Cause:** Dev server started before all packages loaded
-**Solution:**
-- Restart dev server: `pkill -f "next dev" && npm run dev`
-- Verify packages in node_modules: `ls node_modules/@tanstack/`
-- Wait 10-15 seconds after `npm install` before starting dev server
+### 屏幕显示空白的问题
+**问题：** 截图显示空白页面
+**原因：** 开发服务器在截图之前未完全启动
+**解决方法：**
+- 等待开发服务器日志中显示“Ready in”的提示
+- 在显示“Ready in”提示后等待 3-5 秒
+- 在截图之前确认 `localhost:3000` 是否能在浏览器中正常加载
 
-### Dev Server Won't Start
-**Problem:** Port already in use (EADDRINUSE error)
-**Solution (PM2 method):**
+### 模块未找到错误
+**问题：** React 报错“Module not found: Can't resolve @tanstack/react-query”
+**原因：** 开发服务器在所有包加载完成之前就启动了
+**解决方法：**
+- 重启开发服务器：`pkill -f "next dev" && npm run dev`
+- 检查 `node_modules` 目录中的包：`ls node_modules/@tanstack/`
+- 在运行开发服务器之前等待 10-15 秒
+
+### 开发服务器无法启动
+**问题：** 端口已被占用（EADDRINUSE 错误）
+**解决方法（使用 PM2）：**
 ```bash
 # Check what's running
 pm2 list
@@ -1071,66 +1061,62 @@ kill -9 $(lsof -ti:3002)
 PORT=3002 pm2 start npm --name "<project-name>" --cwd "$(pwd)" -- run dev
 ```
 
-### PM2 Process Management
-**List all PM2 processes:**
+### PM2 进程管理
+- 列出所有 PM2 进程：**
 ```bash
 pm2 list
 ```
 
-**Check logs:**
+**查看日志：**
 ```bash
 pm2 logs <project-name> --lines 50
 ```
 
-**Restart a process:**
+**重启一个进程：**
 ```bash
 pm2 restart <project-name>
 ```
 
-**Stop a process:**
+**停止一个进程：**
 ```bash
 pm2 stop <project-name>
 ```
 
-**Delete a process:**
+**删除一个进程：**
 ```bash
 pm2 delete <project-name>
 ```
 
-**Ensure only one instance runs:**
+**确保只有一个实例运行：**
 ```bash
 # Always delete before starting
 pm2 delete <project-name> 2>/dev/null || true
 PORT=3002 pm2 start npm --name "<project-name>" --cwd "$(pwd)" -- run dev
 ```
 
-**Common PM2 scenarios:**
+**常见的 PM2 使用场景：**
 
-1. **Project won't start** → Check logs: `pm2 logs <project-name>`
-2. **Process keeps restarting** → Module missing or port conflict, check logs
-3. **Changes not reflecting** → PM2 auto-reloads, verify in logs: `pm2 logs <project-name> | grep compiled`
-4. **Multiple instances running** → Delete all: `pm2 delete all && pm2 list`
-5. **Check resource usage** → `pm2 monit` (real-time monitoring)
-6. **Save PM2 process list** → `pm2 save` (persists across reboots)
+1. **项目无法启动** → 查看日志：`pm2 logs <project-name>`
+2. **进程不断重启** → 检查是否有模块缺失或端口冲突
+3. **更改未反映** → PM2 会自动重启，查看日志：`pm2 logs <project-name> | grep compiled`
+4. **多个实例同时运行** → 删除所有进程：`pm2 delete all && pm2 list`
+5. **监控进程使用情况**：`pm2 monit`（实时监控）
+6. **保存 PM2 进程列表**：`pm2 save`（重启后列表仍然保留）
 
-## Iteration & Updates
+### 迭代和更新
 
-When user requests changes:
-1. Identify affected files
-2. Make changes
-3. **PM2 auto-reloads** (no manual restart needed for file changes)
-4. Run type check: `npm run type-check`
-5. Verify in logs: `pm2 logs <project-name> --lines 20`
-6. If chromium enabled: take new screenshot
-7. Report changes to user
+当用户请求更改时：
+1. 确定受影响的文件
+2. 进行更改
+3. PM2 会自动重启（文件更改后无需手动重启）
+4. 运行类型检查：`npm run type-check`
+5. 查看日志：`pm2 logs <project-name> --lines 20`
+6. 如果启用了 Chromium，重新截图
+7. 向用户报告更改内容及原因
 
-**Always explain what changed and why.**
+### 快速参考卡片
 
----
-
-## Quick Reference Cheat Sheet
-
-### Essential Commands
+### 常用命令
 ```bash
 # Start dev server
 pm2 delete <project-name> 2>/dev/null || true
@@ -1151,26 +1137,26 @@ npm run build && npm run start
 npm run type-check
 ```
 
-### File Locations
-- **Components:** `components/ui/` (shadcn), `components/features/` (custom)
-- **Pages:** `app/*/page.tsx`
-- **API routes:** `app/api/*/route.ts`
-- **Styles:** `app/globals.css`, `tailwind.config.ts`
-- **Config:** `next.config.ts`, `.env.local`
+### 文件位置
+- **组件：** `components/ui/`（`shadcn` 组件），`components/features/`（自定义组件）
+- **页面：** `app/*/page.tsx`
+- **API 路由：** `app/api/*/route.ts`
+- **样式：** `app/globals.css`, `tailwind.config.ts`
+- **配置：** `next.config.ts`, `.env.local`
 
-### Common shadcn Components
+### 常用的 `shadcn` 组件
 ```bash
 npx shadcn-ui@latest add button input form card table dialog toast
 ```
 
-### Live Preview URLs
-- **Local:** http://localhost:3002
-- **Nginx proxy:** http://<server-ip>:<external-port>
-- **Mobile testing:** Use nginx proxy or ngrok
+### 实时预览地址
+- **本地：** `http://localhost:3002`
+- **Nginx 代理：** `http://<server-ip>:<external-port>`
+- **移动设备测试：** 使用 Nginx 代理或 ngrok
 
-### Troubleshooting
-1. **Port conflict** → `pm2 delete <name>` then restart
-2. **White screen** → Wait for "Ready in" message (check logs)
-3. **Module errors** → `npm install` then restart PM2
-4. **Type errors** → `npm run type-check`
-5. **Layout breaks** → Check responsive classes (p-4 md:p-8 lg:p-12)
+### 故障排除方法：
+1. **端口冲突** → 使用 `pm2 delete <name>` 后重新启动
+2. **屏幕显示空白** → 等待“Ready in”的提示
+3. **模块错误** → 安装依赖项后重新启动 PM2
+4. **类型错误**：运行 `npm run type-check`
+5. **布局问题** **检查响应式样式（使用 `p-4 md:p-8 lg:p-12`）**

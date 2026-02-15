@@ -1,71 +1,64 @@
 ---
 name: Slovenian
-description: Write Slovenian that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说的斯洛文尼亚语。既不要过于正式，也不要像机器人或人工智能生成的那样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Slovenian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and warmth. Match that.
+虽然“AI Slovenian”在语法上是正确的，但听起来过于正式、过于文学化。斯洛文尼亚人的日常交流方式更加随意，会使用一些助词和表达方式来增加语言的亲切感。我们需要让翻译结果更贴近这种自然的语言风格。
 
-## Formality Default
+## 正式与非正式的表达方式
 
-Default register is too high. Casual Slovenian is warm and direct. Unless explicitly formal: lean casual. "Živjo" or "Hej" not "Dober dan". "Ja" not "Da, seveda".
+斯洛文尼亚语的正式表达方式较为正式和拘谨；而非正式的表达方式则更加亲切、直接。除非需要特别正式的表达，否则应尽量采用非正式的语气。例如，人们会用“Živjo”或“Hej”来打招呼，而不是“Dober dan”；用“Ja”来回答，而不是“Da, seveda”。
 
-## Ti vs Vi
+## “Ti”与“Vi”的用法
 
-Critical distinction:
-- Vi: formal, elderly, professional
-- Ti: friends, peers, internet, casual
-- Slovenian internet uses ti
-- Overusing vi = stiff
+在斯洛文尼亚语中，“Ti”用于朋友、同龄人或非正式的交流场合，而“Vi”则用于正式场合、老年人或专业人士之间。在网络交流中，人们更倾向于使用“Ti”。过度使用“Vi”会让语言显得生硬和刻板。
 
-## Dual Form
+## 双数形式
 
-Slovenian has dual (for two people):
-- Midva (we two), vidva (you two)
-- Use it correctly—it's distinctive
-- But casual writing sometimes skips it
+斯洛文尼亚语中有表示两个人的复数形式：“Midva”（我们两个）和“vidva”（你们两个）。正确使用这些复数形式可以体现语言的独特性，但在非正式的写作中有时会省略这些形式。
 
-## Particles & Softeners
+## 助词与软化词
 
-These make Slovenian natural:
-- No: filler, "well" ("No, ne vem")
-- Pač: "just", "simply"
-- Že: emphasis, "already"
-- A: question particle
-- Saj: "after all"
+这些助词和表达词能让斯洛文尼亚语听起来更加自然：
+- “No”：用于否定，没有填充作用的词（例如：“No, ne vem”）
+- “Pač”：表示“只是”、“简单地”
+- “Že”：用于强调，表示“已经”
+- “A”：用于提问
+- “Saj”：表示“毕竟”
 
-## Fillers & Flow
+## 语言的填充与流畅性
 
-Real Slovenian has fillers:
-- No, torej, pač
-- Kao, tip
-- Veš, poslušaj
-- Pravzaprav, sicer
+斯洛文尼亚语中有一些常见的填充词，使语言更加流畅：
+- “No, torej, pač”等
+- “Kao, tip”等
+- “Veš, poslušaj”等
+- “Pravzaprav, sicer”等
 
-## Expressiveness
+## 表达方式的选择
 
-Don't pick the safe word:
-- Dobro → Super, Odlično, Kul
-- Slabo → Grozno, Zanič, Bedno
-- Zelo → Ful, Mega, Res
+在表达时，不要选择过于中庸的词语：
+- “Dobro”可以替换为“Super”、“Odlično”、“Kul”
+- “Slabo”可以替换为“Grozno”、“Zanič”、“Bedno”
+- “Zelo”可以替换为“Ful”、“Mega”、“Res”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Okej, Jasno, Kul
-- Ni panike, Brez skrbi
-- Resno?, Res?, Kaj?
-- Super!, Odlično!, Top!
+一些自然的表达方式包括：
+- “Okej”、“Jasno”、“Kul”
+- “Ni panike, Brez skrbi”
+- “Resno?, Res?, Kaj?”
+- “Super!, Odlično!, Top!”
 
-## Reactions
+## 反应表达
 
-React naturally:
-- Resno?, Res?, A ni res!
-- Ojoj!, Vau!, Bože!
-- Super!, Kul!, Ekstra!
-- Haha, lol in text
+在交流时，人们的反应也是自然且富有情感的：
+- “Resno?, Res?, A ni res!”
+- “Ojoj!, Vau!, Bože!”
+- “Super!, Kul!, Ekstra!”
+- “Haha, lol”等
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Slovenian screenshot this as "AI-generated"? If yes—too formal, no "no", too stiff. Add casual warmth.
+在发送内容之前，需要考虑一下：如果一个斯洛文尼亚人看到这段文字的截图，他会认为这是“AI生成的”吗？如果是这样，那么表达方式就太正式了；如果他们认为这不是AI生成的，那么表达方式就还不够自然、不够亲切。我们需要在翻译中加入一些非正式的元素，让语言更加贴近斯洛文尼亚人的日常交流习惯。

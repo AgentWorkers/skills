@@ -1,27 +1,27 @@
 ---
 slug: "data-profiler"
 display_name: "Data Profiler"
-description: "Profile construction data to understand characteristics, distributions, quality metrics, and patterns. Essential for data quality assessment and ETL planning."
+description: "用于构建数据档案的信息，以了解数据的特征、分布情况、质量指标及模式。这些信息对于数据质量评估和数据提取、转换、加载（ETL）流程的规划至关重要。"
 ---
 
-# Data Profiler for Construction
+# 建筑数据分析工具
 
-## Overview
+## 概述
 
-Analyze construction data to understand its characteristics, distributions, quality, and patterns. Essential for data quality assessment, ETL planning, and identifying data issues before they impact projects.
+本工具用于分析建筑数据，以了解其特征、分布情况、质量及数据模式。这对于数据质量评估、数据提取与转换（ETL）流程的规划，以及在问题影响项目之前及时发现数据异常至关重要。
 
-## Business Case
+## 商业价值
 
-Before using any construction data, you need to understand:
-- What data types are present
-- Distribution of values
-- Missing data patterns
-- Anomalies and outliers
-- Referential integrity issues
+在使用任何建筑数据之前，您需要了解以下信息：
+- 数据中包含哪些类型的数据
+- 数据值的分布情况
+- 数据缺失的模式
+- 异常值和离群值
+- 参考完整性方面的问题
 
-This skill profiles data to answer these questions and provides actionable insights.
+本工具通过对数据进行剖析，帮助您回答这些问题并提供可操作的洞察。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -436,7 +436,7 @@ class ConstructionDataProfiler:
         return comparison
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -463,20 +463,20 @@ comparison = profiler.compare_profiles(old_profile, profile)
 print(f"Quality changed by: {comparison['quality_change']}")
 ```
 
-## Common Use Cases
+## 常见应用场景
 
-1. **Pre-ETL Analysis**: Profile source data before building pipelines
-2. **Quality Monitoring**: Track data quality over time
-3. **Schema Validation**: Detect unexpected changes in data structure
-4. **Anomaly Detection**: Find outliers and data quality issues
+1. **ETL前分析**：在构建数据管道之前对源数据进行分析
+2. **质量监控**：跟踪数据质量的变化趋势
+3. **模式验证**：检测数据结构的意外变化
+4. **异常检测**：识别离群值和数据质量问题
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy
 ```
 
-## Resources
+## 参考资源
 
-- **Data Profiling Best Practices**: DAMA DMBOK
-- **Construction Data Standards**: CSI MasterFormat, UniFormat
+- **数据分析最佳实践**：DAMA DMBOK
+- **建筑数据标准**：CSI MasterFormat、UniFormat

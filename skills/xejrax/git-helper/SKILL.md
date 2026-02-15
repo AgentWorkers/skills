@@ -1,6 +1,6 @@
 ---
 name: git-helper
-description: "Common git operations as a skill (status, pull, push, branch, log)"
+description: "常见的 Git 操作（状态查看、拉取代码、推送代码、创建分支、查看日志）"
 metadata:
   {
     "openclaw":
@@ -12,11 +12,11 @@ metadata:
   }
 ---
 
-# Git Helper
+# Git 辅助工具
 
-Common git operations as a skill. Provides convenient wrappers for frequently used git commands including status, pull, push, branch management, and log viewing.
+本工具提供了一些常见的 Git 操作功能，为常用的 Git 命令（如查看状态、拉取代码、推送代码、分支管理以及查看日志等）提供了便捷的封装。
 
-## Commands
+## 命令
 
 ```bash
 # Show working tree status
@@ -35,6 +35,6 @@ git-helper branch
 git-helper log [--limit 10]
 ```
 
-## Install
+## 安装
 
-No installation needed. `git` is always present on the system.
+无需安装。系统上通常已经预装了 `git` 工具。

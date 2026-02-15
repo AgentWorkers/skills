@@ -1,6 +1,6 @@
 ---
 name: codeberg
-description: "Interact with Codeberg using the `tea` CLI. Use `tea issue`, `tea pr`, `tea actions`, and `tea api` for issues, PRs, Actions, and advanced queries."
+description: "使用 `tea` CLI 与 Codeberg 进行交互。可以通过 `tea issue`、`tea pr`、`tea actions` 和 `tea api` 来处理问题（issues）、 pull 请求（PRs）、自动化任务（Actions）以及执行高级查询。"
 metadata:
   {
     "openclaw":
@@ -28,77 +28,77 @@ metadata:
   }
 ---
 
-# Codeberg Skill
+# Codeberg 技能
 
-Use the `tea` CLI to interact with Codeberg. Codeberg is a Forgejo instance, and the `tea` CLI is fully compatible with it.
+使用 `tea` 命令行工具（CLI）与 Codeberg 进行交互。Codeberg 是一个 Forgejo 实例，而 `tea` CLI 与之完全兼容。
 
-## Pull Requests
+## 提交请求（Pull Requests）
 
-List open pull requests:
+列出所有未解决的提交请求（Pull Requests）：
 
 ```bash
 tea pulls --repo owner/repo
 ```
 
-Check details of a PR:
+查看某个提交请求的详细信息：
 
 ```bash
 tea pr 55 --repo owner/repo
 ```
 
-## Issues
+## 问题（Issues）
 
-List open issues:
+列出所有未解决的问题（Issues）：
 
 ```bash
 tea issues --repo owner/repo
 ```
 
-View an issue:
+查看某个问题（Issue）的详细信息：
 
 ```bash
 tea issue 123 --repo owner/repo
 ```
 
-## Actions (CI/CD)
+## 操作（持续集成/持续部署，CI/CD）
 
-List repository secrets:
+列出仓库的秘密信息（repository secrets）：
 
 ```bash
 tea actions secrets list --repo owner/repo
 ```
 
-List repository variables:
+列出仓库的变量（repository variables）：
 
 ```bash
 tea actions variables list --repo owner/repo
 ```
 
-## API for Advanced Queries
+## 高级查询 API
 
-The `tea api` command is useful for accessing data not available through other subcommands.
+`tea api` 命令可用于获取其他子命令无法提供的数据。
 
-Get PR with specific fields (requires `jq` for filtering):
+获取包含特定字段的提交请求（需要使用 `jq` 进行过滤）：
 
 ```bash
 tea api repos/owner/repo/pulls/55 | jq '.title, .state, .user.login'
 ```
 
-## Logins
+## 登录
 
-To use `tea` with Codeberg, you first need to add your login:
+要使用 `tea` 命令与 Codeberg 交互，首先需要登录：
 
 ```bash
 tea login add --name codeberg --url https://codeberg.org --token <your-token>
 ```
 
-Then you can use `--login codeberg` in your commands:
+之后，你可以在命令中添加 `--login codeberg` 选项来指定登录信息：
 
 ```bash
 tea pulls --repo owner/repo --login codeberg
 ```
 
-List all configured logins:
+列出所有已配置的登录账户：
 
 ```bash
 tea logins

@@ -1,6 +1,6 @@
 ---
 name: voice-assistant
-description: Real-time voice assistant for OpenClaw. Streams mic audio through configurable STT (Deepgram or ElevenLabs) into your OpenClaw agent, then speaks the response via configurable TTS (Deepgram Aura or ElevenLabs). Sub-2s time-to-first-audio with full streaming at every stage.
+description: OpenClaw的实时语音助手：该功能可将麦克风采集的音频通过可配置的文本转语音（STT）服务（Deepgram或ElevenLabs）传输到OpenClaw代理，随后通过可配置的语音合成（TTS）服务（Deepgram Aura或ElevenLabs）生成并播放响应语音。从音频采集到首次播放的整个过程耗时不到2秒，并且支持全程实时流式传输。
 metadata:
   openclaw:
     emoji: "🎙️"
@@ -16,11 +16,11 @@ metadata:
         label: "Install uv (brew)"
 ---
 
-# Voice Assistant
+# 语音助手
 
-Real-time voice interface for your OpenClaw agent. Talk to your agent and hear it respond — with configurable STT and TTS providers, full streaming at every stage, and sub-2 second time-to-first-audio.
+这是一个用于您的 OpenClaw 代理的实时语音接口。您可以通过它与代理进行对话，并听到代理的回应。该接口支持配置不同的语音转文本（STT）和文本转语音（TTS）服务提供商，确保在整个过程中实现全流式传输，并且从用户开始说话到听到声音的延迟低于 2 秒。
 
-## Architecture
+## 架构
 
 ```
 Browser Mic → WebSocket → STT (Deepgram / ElevenLabs) → Text
@@ -28,9 +28,9 @@ Browser Mic → WebSocket → STT (Deepgram / ElevenLabs) → Text
   → TTS (Deepgram Aura / ElevenLabs) → Audio chunks → Browser Speaker
 ```
 
-The voice interface connects to your running OpenClaw gateway's OpenAI-compatible endpoint. It's the same agent with all its context, tools, and memory — just with a voice.
+该语音接口连接到正在运行的 OpenClaw 网关的 OpenAI 兼容端点。它使用的是同一个代理，具备所有的上下文、工具和内存功能——只不过增加了语音交互的能力。
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd {baseDir}
@@ -40,23 +40,23 @@ uv run scripts/server.py
 # Open http://localhost:7860 and click the mic
 ```
 
-## Supported Providers
+## 支持的提供商
 
-### STT (Speech-to-Text)
-| Provider   | Model            | Latency  | Notes                        |
+### 语音转文本（STT）
+| 提供商   | 模型            | 延迟      | 备注                        |
 |-----------|------------------|----------|------------------------------|
-| Deepgram  | nova-2 (streaming) | ~200-300ms | WebSocket streaming, best accuracy/speed |
-| ElevenLabs | Scribe v1        | ~300-500ms | REST-based, good multilingual |
+| Deepgram  | nova-2 (流式)       | ~200-300ms   | 基于 WebSocket 的流式传输，具有最高的准确率和速度 |
+| ElevenLabs | Scribe v1        | ~300-500ms   | 基于 REST 的接口，支持多种语言         |
 
-### TTS (Text-to-Speech)
-| Provider    | Model        | Latency  | Notes                          |
+### 文本转语音（TTS）
+| 提供商    | 模型        | 延迟      | 备注                          |
 |------------|--------------|----------|--------------------------------|
-| Deepgram   | aura-2       | ~200ms   | WebSocket streaming, low cost  |
-| ElevenLabs | Turbo v2.5   | ~300ms   | Best voice quality, streaming   |
+| Deepgram   | aura-2       | ~200ms   | 基于 WebSocket 的流式传输，成本低廉         |
+| ElevenLabs | Turbo v2.5   | ~300ms   | 提供最佳的语音质量，支持流式传输         |
 
-## Configuration
+## 配置
 
-All configuration is via environment variables in `.env`:
+所有配置均通过 `.env` 文件中的环境变量来完成：
 
 ```bash
 # === Required ===
@@ -81,32 +81,32 @@ VOICE_SERVER_PORT=7860                           # Server port
 VOICE_SYSTEM_PROMPT=""                           # Optional system prompt override
 ```
 
-## Provider Combinations
+## 提供商组合
 
-| Setup                              | Best For                        |
+| 配置方式                         | 最适合的场景                         |
 |------------------------------------|---------------------------------|
-| Deepgram STT + ElevenLabs TTS     | Best quality voice output        |
-| Deepgram STT + Deepgram TTS       | Lowest latency, single vendor    |
-| ElevenLabs STT + ElevenLabs TTS   | Best multilingual support        |
+| Deepgram STT + ElevenLabs TTS     | 最佳的语音输出质量                 |
+| Deepgram STT + Deepgram TTS       | 最低的延迟，使用同一供应商的服务           |
+| ElevenLabs STT + ElevenLabs TTS   | 最佳的多语言支持                     |
 
-## How It Works
+## 工作原理
 
-1. **Browser captures mic audio** via Web Audio API and streams raw PCM over a WebSocket
-2. **Server receives audio** and pipes it to the configured STT provider's streaming endpoint
-3. **STT returns partial transcripts** in real-time; on end-of-utterance the full text is sent to the OpenClaw gateway
-4. **OpenClaw gateway streams** the LLM response token-by-token via SSE (Server-Sent Events)
-5. **Tokens are accumulated** into sentence-sized chunks and streamed to the TTS provider
-6. **TTS returns audio chunks** that are immediately forwarded to the browser over the same WebSocket
-7. **Browser plays audio** using the Web Audio API with a jitter buffer for smooth playback
+1. 浏览器通过 Web Audio API 捕获麦克风音频，并通过 WebSocket 流式传输原始 PCM 数据。
+2. 服务器接收音频数据后，将其发送到配置好的 STT 服务提供商的流式传输端点。
+3. STT 服务会实时返回部分转录结果；用户说完话后，完整文本会被发送到 OpenClaw 网关。
+4. OpenClaw 网关通过 SSE（Server-Sent Events）协议逐个字符地将 LLM 的响应发送给浏览器。
+5. 这些字符会被组合成句子大小的片段，然后发送给 TTS 服务提供商。
+6. TTS 服务将处理后的音频片段通过相同的 WebSocket 通道发送回浏览器。
+7. 浏览器使用 Web Audio API 播放音频，并通过抖动缓冲机制实现流畅的播放效果。
 
-## Interruption Handling (Barge-In)
+## 中断处理（用户插话）
 
-When the user starts speaking while the agent is still talking:
-- Current TTS audio is immediately cancelled
-- The agent stops its current response
-- New STT session begins capturing the user's interruption
+当用户在代理仍在说话时开始讲话时：
+- 当前的 TTS 播放会立即停止。
+- 代理会暂停当前的响应。
+- 系统会启动新的 STT 会话来捕获用户的插话内容。
 
-## Usage Examples
+## 使用示例
 
 ```
 User: "Hey, set up my voice assistant"
@@ -122,19 +122,19 @@ User: "Switch TTS to Deepgram"
 → Restarts the server
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **No audio output?** Check that your TTS API key is valid and the provider is set correctly
-- **High latency?** Use Deepgram for both STT and TTS; ensure your gateway is on the same network
-- **Cuts off speech?** Increase `VOICE_VAD_SILENCE_MS` to 600-800ms
-- **Echo/feedback?** Use headphones, or enable the built-in echo cancellation in the browser UI
+- **没有音频输出？** 确保您的 TTS API 密钥有效，并且配置的提供商正确无误。
+- **延迟过高？** 尝试同时使用 Deepgram 作为 STT 和 TTS 服务提供商；确保网关位于同一网络环境中。
+- **语音传输中断？** 将 `VOICE_VAD_SILENCE_MS` 的值设置为 600-800 毫秒。
+- **出现回声/反馈？** 使用耳机，或启用浏览器 UI 中的内置回声消除功能。
 
-## Latency Budget
+## 延迟预算
 
-| Stage                    | Target    | Actual (typical) |
+| 环节                        | 目标延迟    | 实际延迟（典型值）                |
 |-------------------------|-----------|------------------|
-| Audio capture + VAD     | <200ms    | ~100-150ms       |
-| STT transcription       | <400ms    | ~200-400ms       |
-| OpenClaw LLM first token| <1500ms   | ~500-1500ms      |
-| TTS first audio chunk   | <400ms    | ~200-400ms       |
-| **Total first audio**   | **<2.5s** | **~1.0-2.5s**    |
+| 音频捕获 + 语音检测（VAD）        | <200ms    | ~100-150ms                     |
+| 语音转文本（STT）            | <400ms    | ~200-400ms                     |
+| OpenClaw LLM 的第一个响应字符    | <1500ms   | ~500-1500ms                     |
+| TTS 的第一个音频片段          | <400ms    | ~200-400ms                     |
+| **从开始到听到声音的总延迟**       | **<2.5 秒** | **约 1.0-2.5 秒**                 |

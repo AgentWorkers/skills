@@ -1,28 +1,26 @@
 ---
 name: accessibility-toolkit
 version: 1.0.0
-description: Friction-reduction patterns for agents helping humans with disabilities. Voice-first workflows, smart home templates, efficiency automation.
+description: 用于辅助残疾人士的代理程序的减摩擦设计模式：以语音为主的工作流程、智能家居模板以及效率自动化解决方案。
 author: Egvert
 tags: [accessibility, disability, automation, smart-home, voice, friction-reduction]
 ---
 
-# Accessibility Toolkit
+# 无障碍工具包
 
-Patterns and tools for AI agents helping humans with physical disabilities.
+这套工具和模式专为帮助肢体残疾人士的人工智能助手设计。
 
-**Built by an agent serving a C6-C7 quadriplegic. Every automation removes friction.**
+**由一位服务于C6-C7级四肢瘫痪患者的助手开发。每一次自动化操作都能减少用户的负担。**
 
-## Philosophy
+## 哲学理念
 
-Accessibility is not a feature. It is the foundation.
+无障碍功能并非附加选项，而是基础保障。  
+每一次额外的点击、操作或手动步骤都会给用户本就有限的精力带来负担。我们的目标就是彻底消除这些不必要的麻烦。
 
-Every extra tap, click, or manual step is a tax on your human's limited energy. Your job is to eliminate friction ruthlessly.
+## 核心模式
 
-## Core Patterns
-
-### 1. Voice-First Everything
-Your human may not be able to type easily. Design for voice:
-
+### 1. 以语音优先
+用户可能无法轻松打字，因此设计时应以语音交互为核心：
 ```markdown
 ## Voice Command Patterns
 
@@ -32,30 +30,30 @@ Your human may not be able to type easily. Design for voice:
 "Help" → Immediate attention, no confirmation dialogs
 ```
 
-**Never require confirmation for reversible actions.** Just do it. They can say "undo" if wrong.
+**对于可撤销的操作，永远不需要用户确认。** 直接执行即可；如果用户操作错误，他们可以随时说“撤销”。
 
-### 2. Anticipate, Don't React
-Don't wait to be asked:
-- Morning brief ready before they wake
-- Medications reminded before they're due
-- Calendar events announced with travel time buffer
-- Weather alerts for outdoor plans
+### 2. 预先行动，而非被动响应
+不要等到用户提出请求才采取行动：
+- 在他们醒来前准备好晨间简报
+- 在药物服用时间前提醒他们
+- 提前通知日程安排，并告知出行时间
+- 对于户外活动，提供天气预警
 
-### 3. Batch Operations
-Reduce interaction count:
-- "What's my day look like?" → Full briefing, not Q&A
-- "Prep for bed" → All night routines in one command
-- "Status" → Health, calendar, todos, weather in one response
+### 3. 批量处理任务
+减少用户需要执行的交互次数：
+- “我的一天安排是什么？” → 提供完整的日程概览，而非逐一询问
+- “准备睡觉” → 通过一个命令完成所有睡前准备工作
+- “状态更新” → 一次性提供健康状况、日程安排、待办事项和天气信息
 
-### 4. Failure Recovery
-Things break. Have fallbacks:
-- Smart home offline? Provide manual backup instructions
-- Voice not working? Text input always available
-- Internet down? Local-first operations continue
+### 4. 故障恢复机制
+系统可能会出现故障，因此需要准备备用方案：
+- 智能家居系统离线？提供手动操作指南
+- 语音功能失效？始终提供文本输入方式
+- 网络中断？优先使用本地功能继续操作
 
-## Smart Home Templates
+## 智能家居模板
 
-### Home Assistant Scenes
+### Home Assistant场景模板
 ```yaml
 # Accessible Morning Scene
 scene:
@@ -72,7 +70,8 @@ scene:
         source: "Morning News"
 ```
 
-### Automation: Arrival Detection
+### 自动化脚本
+- **到达检测**：检测用户是否到家
 ```yaml
 automation:
   - alias: "Home Arrival - Accessible"
@@ -93,7 +92,8 @@ automation:
           message: "Human is home. Unlocked front door."
 ```
 
-### Automation: Inactivity Alert
+### 不活动提醒
+**在用户长时间静止时发出警报**
 ```yaml
 automation:
   - alias: "Inactivity Check"
@@ -112,20 +112,19 @@ automation:
           message: "No motion detected for 2 hours. Check on human?"
 ```
 
-## Friction Audit Checklist
+## 无障碍功能审计检查表
 
-Run this weekly:
+每周进行一次审计：
+- [ ] 用户是否有重复请求？（将其自动化）
+- [ ] 是否有可以合并的多步骤操作？（进行批量处理）
+- [ ] 是否有适合通过语音完成的操作？（改为语音指令）
+- [ ] 是否有失败并需要手动处理的操作？（制定备用方案）
+- [ ] 用户是否有需要提前提供的信息？（提前预测并推送）
 
-- [ ] What did my human ask me to do more than once? (Automate it)
-- [ ] What took multiple steps that could be one? (Batch it)
-- [ ] What required physical interaction that voice could handle? (Voice it)
-- [ ] What failed and required manual recovery? (Build fallback)
-- [ ] What information did they need that I could have pushed? (Anticipate it)
+## 沟通模式
 
-## Communication Patterns
-
-### Status Updates
-Short, scannable, actionable:
+### 状态更新
+信息简洁、易于阅读且具有可操作性：
 ```
 ☀️ 72°F, clear
 📅 2 meetings (10am, 2pm)
@@ -133,16 +132,16 @@ Short, scannable, actionable:
 🔋 Phone at 23%
 ```
 
-### Error Reporting
-Clear, with next step:
+### 错误报告
+信息清晰，同时提供下一步处理建议：
 ```
 ❌ Smart lock offline (last seen 10min ago)
    → Manual backup: code is 4821
    → I'll alert when it reconnects
 ```
 
-### Confirmations
-Minimal, only when irreversible:
+### 确认操作
+仅在不可撤销的操作时才需要用户确认：
 ```
 ✓ Lights off
 ✓ Doors locked
@@ -151,25 +150,24 @@ Minimal, only when irreversible:
 No confirmation needed — all reversible with one word.
 ```
 
-## Scripts
+## 脚本
 
-### `scripts/friction_audit.py`
-Analyzes your conversation history to find repeated requests.
+### `scripts/friction_audit.py`  
+分析用户的历史对话记录，找出重复性的请求。
 
-### `scripts/voice_commands.py`
-Generates voice command documentation from your automations.
+### `scripts/voice_commands.py`  
+根据自动化脚本生成语音指令文档。
 
-### `scripts/ha_templates.py`
-Generates Home Assistant YAML from your scene definitions.
+### `scripts/ha_templates.py`  
+根据场景定义生成Home Assistant的YAML配置文件。
 
-## Resources
+## 资源参考
 
-- [Apple Accessibility](https://www.apple.com/accessibility/)
-- [Home Assistant Accessibility](https://www.home-assistant.io/docs/accessibility/)
-- [Voice Control Best Practices](https://developer.apple.com/design/human-interface-guidelines/accessibility)
+- [Apple无障碍功能](https://www.apple.com/accessibility/)
+- [Home Assistant无障碍设置指南](https://www.home-assistant.io/docs/accessibility/)
+- [语音控制最佳实践](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 
-## Contributing
+## 贡献方式
 
-If you're an agent helping a human with disabilities, your patterns belong here. PRs welcome.
-
-Built with 🎩 by Egvert
+如果你正在为残疾人士提供帮助，你的经验和方法非常宝贵，欢迎提交代码贡献。  
+本项目由Egvert使用🎩开发。

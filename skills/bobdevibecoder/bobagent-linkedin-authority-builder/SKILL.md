@@ -1,125 +1,117 @@
 ---
 name: linkedin-authority-builder
-description: Build a LinkedIn content system for thought leadership. Use when someone needs to establish authority, attract inbound leads, or build a consistent content presence. Covers positioning, content pillars, formats, and posting rhythm.
+description: 构建一个用于思想领导力（thought leadership）的 LinkedIn 内容系统。该系统适用于需要建立权威性、吸引潜在客户（inbound leads）或持续发布高质量内容的人群。涵盖内容定位（content positioning）、核心内容要素（content pillars）、内容格式（content formats）以及发布频率（posting rhythm）等方面。
 ---
 
-# LinkedIn Authority Builder
+# LinkedIn 权威构建指南
 
-Here's what most people get wrong about LinkedIn: they're trying to go viral.
+大多数人对 LinkedIn 的理解存在误区：他们试图让自己的内容在平台上“病毒式传播”（即被大量用户转发）。但事实上，病毒式传播并不能帮你支付账单。真正能帮你赚钱的是：在那些需要你服务的人（大约 500 个关键人物）心中留下深刻印象。
 
-Viral doesn't pay your bills. Being remembered by the right 500 people when they need what you do — that pays your bills.
-
-This skill builds a content system that makes you impossible to forget for your target audience. Not through hacks. Through consistency and clear positioning.
-
----
-
-## Before We Build Anything
-
-I need to understand your situation:
-
-1. **What's your expertise?** What do you know cold?
-2. **Who needs to remember you?** Specific titles, company stages, industries.
-3. **What do you want from LinkedIn?** Leads? Job offers? Speaking gigs? Partnerships?
-4. **What's your unfair advantage?** Experience, perspective, or access that others don't have.
-5. **What are you doing now?** Posting? How often? What's working?
-
-The strategy depends on the answers.
+本技能指南将帮助你建立一个内容体系，让你的目标受众无法忘记你——这并非通过投机取巧，而是通过持续性和明确的定位来实现。
 
 ---
 
-## Step 1: Nail Your Positioning
+## 在开始之前
 
-Before content, get clear on your angle.
+我需要先了解你的具体情况：
+1. **你的专长是什么？** 你掌握了哪些专业知识？
+2. **谁需要记住你？** 你的目标受众的具体职位、公司规模或所在行业是什么？
+3. **你希望通过 LinkedIn 达到什么目标？** 是获取潜在客户、工作机会、演讲机会，还是建立合作伙伴关系？
+4. **你的独特优势是什么？** 是你的经验、独特的视角，还是别人没有的资源？
+5. **你目前都在做些什么？** 你经常在 LinkedIn 上发布什么内容？哪些方法有效？
 
-**The one-liner:**
-> I help [specific audience] with [specific outcome] through [unique approach].
+你的策略将基于这些问题的答案来制定。
 
-**Example:**
-> I help growth-stage founders build marketing systems that scale — combining 15 years of strategy with AI-powered execution.
+---
 
-If you can't say it in one sentence, your content will be unfocused.
+## 第一步：明确你的定位
 
-**Your headline formula:**
+在开始创作内容之前，首先要明确你的核心定位。
+
+**一句话总结：**
+> 我通过[独特的方法]，帮助[特定受众]实现[具体目标]。
+
+**示例：**
+> 我帮助处于成长阶段的创业者构建可扩展的营销系统——将 15 年的战略经验与人工智能技术相结合。
+
+如果你无法用一句话概括自己的定位，那么你的内容就会缺乏焦点。
+
+**你的标题撰写公式：**
 ```
 [Role] | [What you do for who OR tagline]
 ```
 
-**Examples:**
-- "AI Marketing Architect | I build your AI marketing system. Then I run it."
-- "Former Nike CMO → Now helping founders avoid the branding mistakes I made"
+**示例标题：**
+- “AI 营销架构师 | 我为你打造 AI 营销系统，并负责其实际运营。”
+- “前 Nike 市场营销总监 | 现在帮助创业者避免我曾经犯过的品牌错误”
 
-The headline is prime real estate. Don't waste it on your job title.
-
----
-
-## Step 2: Pick Your Content Pillars
-
-These are the 3-5 topics you'll own. Everything you post should fit into one of these buckets.
-
-**Good pillars:**
-- You have genuine expertise (not just interest)
-- Your target audience cares about it
-- You can produce content on it consistently
-- It connects to what you sell
-
-**Example pillars:**
-1. AI-powered marketing (what I sell)
-2. Founder marketing lessons (what I've learned)
-3. Brand positioning (my expertise)
-4. Behind-the-scenes building (makes me human)
-5. Hot takes on marketing trends (keeps it interesting)
-
-**The ratio:**
-- 70% core expertise (builds authority)
-- 20% adjacent insights (makes you interesting)
-- 10% personal (makes you relatable)
+标题是吸引读者的关键。不要把标题空间浪费在职位描述上。
 
 ---
 
-## Step 3: Know Your Formats
+## 第二步：确定你的内容主题
 
-Different formats for different goals:
+你需要选择 3-5 个核心主题，所有发布的内容都应围绕这些主题展开。
 
-| Format | Good For | Engagement |
+**好的内容主题应具备以下特点：**
+- 你确实拥有专业知识（而不仅仅是表面兴趣）
+- 目标受众对此感兴趣
+- 你可以持续地创作相关内容
+- 这些内容与你所提供的服务或产品紧密相关
+
+**示例主题：**
+1. **基于人工智能的营销策略**（你的核心服务）
+2. **创业者的营销经验分享**（你的专长领域）
+3. **品牌定位的技巧**（你的专业领域）
+4. **营销背后的幕后故事**（展现你的个人魅力）
+5. **对营销趋势的独到见解**（保持内容的趣味性）
+
+**内容比例建议：**
+- 70% 与你的专长相关的内容（建立权威）
+- 20% 相关的见解（增加趣味性）
+- 10% 个人故事（增强亲和力）
+
+---
+
+## 第三步：了解不同的内容形式
+
+不同的内容形式适用于不同的目标：
+
+| 内容形式 | 适用场景 | 互动效果 |
 |--------|----------|------------|
-| Story | Connection | High |
-| Framework/List | Authority | High |
-| Hot take | Reach | Variable |
-| Case study | Proof | Medium |
-| Behind-the-scenes | Trust | Medium |
+| 故事 | 建立联系 | 高 |
+| 框架/列表 | 增强权威性 | 高 |
+| 独到见解 | 扩大影响力 | 变化较大 |
+| 案例研究 | 证明你的能力 | 中等 |
+| 背景故事 | 增强信任感 | 中等 |
 
-**The winning mix:**
-- 2-3 frameworks per week (authority)
-- 1-2 stories per week (connection)
-- 1 case study or proof point per week (credibility)
-
----
-
-## Step 4: Master the Hook
-
-The first line determines if anyone reads the rest. Make it count.
-
-**Hooks that work:**
-
-> "Most founders get [topic] wrong. Here's why:"
-
-> "I spent 15 years learning this the hard way:"
-
-> "[Counterintuitive statement that makes them stop scrolling]"
-
-> "The best [X] I know all do this one thing:"
-
-**Hook principles:**
-- Specific beats vague
-- Numbers add credibility
-- Tension creates curiosity
-- Punchline first, context second
+**最佳内容组合：**
+- 每周发布 2-3 篇框架类文章（增强权威性）
+- 每周发布 1-2 个故事（建立联系）
+- 每周发布 1 个案例研究或实际成果（提升可信度）
 
 ---
 
-## Step 5: The Post Structures
+## 第四步：掌握吸引读者的方法
 
-### The Story Post
+文章的开头几句决定了读者是否会继续阅读下去。务必写好开头。
+
+**有效的开头示例：**
+> “大多数创业者在 [某个方面] 上都犯了错误。原因如下：”
+> “我花了 15 年时间才学会这一点……”
+> “我所认识的最好的 [某个领域] 专家都遵循这个方法：”
+
+**编写开头的原则：**
+- 具体化（避免模糊）
+- 使用数据增加可信度
+- 创造悬念引发好奇心
+- 先提出观点，再提供背景信息
+
+---
+
+## 第五步：文章结构
+
+### 故事类文章
 ```
 [Hook — the moment or realization]
 
@@ -134,7 +126,7 @@ The first line determines if anyone reads the rest. Make it count.
 [Question — drives engagement]
 ```
 
-### The Framework Post
+### 框架类文章
 ```
 [Hook — bold claim or problem]
 
@@ -150,7 +142,7 @@ The first line determines if anyone reads the rest. Make it count.
 [CTA or question]
 ```
 
-### The Hot Take
+### 独到见解类文章
 ```
 [Controversial statement]
 
@@ -165,45 +157,45 @@ The first line determines if anyone reads the rest. Make it count.
 
 ---
 
-## Step 6: Set Your Rhythm
+## 第六步：保持稳定的发布节奏
 
-**Minimum viable presence:**
-- 3x per week
-- Same days/times
-- At least 2 posts showing expertise
+**最低要求：**
+- 每周发布 3 篇内容
+- 在固定的时间和频率发布
+- 至少发布 2 篇能体现你专业能力的文章
 
-**If you want growth:**
-- 5x per week (weekdays)
-- Active commenting (20-30 min/day)
-- 1 long-form article per month
+**如果你希望进一步发展：**
+- 每周发布 5 篇内容（工作日）
+- 每天积极互动（评论 20-30 分钟）
+- 每月发布 1 篇长篇文章
 
-**Best times (test for yourself):**
-- Tuesday-Thursday mornings (7-9am)
-- Tuesday-Thursday lunch (12-1pm)
-- Avoid weekends for B2B
-
----
-
-## Step 7: Engage Like a Human
-
-Posting is half the game. Engaging is the other half.
-
-**Comment strategy:**
-- 5-10 thoughtful comments per day on posts from your target audience
-- Add value, don't just say "Great post!"
-- Share a relevant experience or insight
-- Ask a follow-up question
-
-**Comments that work:**
-- "This is exactly what I saw at [company]. We also found that..."
-- "Interesting take. What about the case where [alternative scenario]?"
-- "Adding to this: [your framework or step they didn't mention]"
+**最佳发布时间（可自行测试）：**
+- 周二至周四上午 7-9 点
+- 周二至周四中午 12-1 点
+- 避免在周末发布针对 B2B 的内容
 
 ---
 
-## What You Get Back
+## 第七步：像普通人一样与读者互动
 
-A complete LinkedIn strategy doc:
+发布内容只是第一步，与读者互动才是关键。
+
+**互动策略：**
+- 每天在目标受众的文章下留下 5-10 条有深度的评论
+- 提供有价值的内容，而不仅仅是简单的“点赞”
+- 分享自己的相关经验或见解
+- 提出后续问题
+
+**有效的评论示例：**
+- “这正是我在 [某家公司] 看到的情况。我们也发现了……”
+- “这个观点很有意思。那么在 [另一种情况] 下会怎样呢？”
+- “补充一点：[他们没有提到的某个方面]……”
+
+---
+
+## 你将获得什么？
+
+一份完整的 LinkedIn 营销策略文档：
 
 ```
 ## Your Positioning
@@ -235,20 +227,9 @@ A complete LinkedIn strategy doc:
 
 ---
 
-## What Not to Do
-
-❌ Posting only about yourself and your company
-❌ Inspirational quotes with no substance
-❌ Engagement bait ("Comment YES if you agree!")
-❌ Posting once then disappearing for 3 weeks
-❌ Only broadcasting, never engaging
-❌ Walls of text with no formatting
+## 需要帮助构建 LinkedIn 个人品牌吗？
+→ [预约策略咨询](https://brianrwagner.com)
 
 ---
 
-**Need help building your LinkedIn presence?**
-→ [Book a strategy call](https://brianrwagner.com)
-
----
-
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+*作者：Brian Wagner | AI 营销架构师 | brianrwagner.com*

@@ -1,7 +1,7 @@
 ---
 name: postsyncer
 version: 1.0.0
-description: Manage your PostSyncer social media workflows.
+description: 管理您的 PostSyncer 社交媒体工作流程。
 author: abakermi
 metadata:
   openclaw:
@@ -10,33 +10,33 @@ metadata:
       env: ["POSTSYNCER_API_KEY"]
 ---
 
-# PostSyncer Skill
+# PostSyncer 技能
 
-Automate your social media scheduling with PostSyncer.
+使用 PostSyncer 自动化您的社交媒体发布计划。
 
-## Setup
+## 设置
 
-1. Get your API Key from [PostSyncer Settings](https://app.postsyncer.com/settings).
-2. Set it: `export POSTSYNCER_API_KEY="your_key"`
+1. 从 [PostSyncer 设置](https://app.postsyncer.com/settings) 获取您的 API 密钥。
+2. 将其设置为：`export POSTSYNCER_API_KEY="your_key"`
 
-## Commands
+## 命令
 
-### Workspaces
-List your workspaces.
+### 工作空间
+列出您的工作空间。
 
 ```bash
 postsyncer workspaces
 ```
 
-### Posts
-List your scheduled/published posts.
+### 帖子
+列出您已安排或发布的帖子。
 
 ```bash
 postsyncer posts
 ```
 
-### Create Post
-(Basic text post)
+### 创建帖子
+（基本文本帖子）
 
 ```bash
 postsyncer create-post -w <workspace_id> -t "Hello world"

@@ -17,9 +17,9 @@ metadata:
 
 # Keap
 
-Access the Keap API with managed OAuth authentication. Manage contacts, companies, tags, tasks, orders, opportunities, campaigns, and more for CRM and marketing automation.
+使用受管理的OAuth认证来访问Keap API。您可以管理联系人、公司、标签、任务、订单、机会等数据，以实现CRM和营销自动化功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/keap/crm/rest/{api-path}
 ```
 
-The gateway proxies requests to `api.infusionsoft.com/crm/rest` and automatically injects your OAuth token.
+该网关会将请求代理到`api.infusionsoft.com/crm/rest`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 转到[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Keap OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的Keap OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Keap connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Keap连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### User Info
+### 用户信息
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /keap/crm/rest/v2/oauth/connect/userinfo
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "email": "user@example.com",
@@ -165,22 +165,22 @@ GET /keap/crm/rest/v2/oauth/connect/userinfo
 }
 ```
 
-### Contact Operations
+### 联系人操作
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /keap/crm/rest/v2/contacts
 ```
 
-Query parameters:
-- `page_size` - Number of results per page (default 50, max 1000)
-- `page_token` - Token for next page
-- `filter` - Filter expression
-- `order_by` - Sort order
-- `fields` - Fields to include in response
+查询参数：
+- `page_size` - 每页显示的结果数量（默认为50，最大为1000）
+- `page_token` - 下一页的令牌
+- `filter` - 过滤条件
+- `order_by` - 排序方式
+- `fields` - 响应中包含的字段
 
-**Response:**
+**响应：**
 ```json
 {
   "contacts": [
@@ -194,13 +194,13 @@ Query parameters:
 }
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /keap/crm/rest/v2/contacts/{contact_id}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /keap/crm/rest/v2/contacts
@@ -218,7 +218,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "13",
@@ -227,7 +227,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PATCH /keap/crm/rest/v2/contacts/{contact_id}
@@ -238,21 +238,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /keap/crm/rest/v2/contacts/{contact_id}
 ```
 
-Returns 204 on success.
+成功时返回204状态码。
 
-#### Get Contact Notes
+#### 获取联系人备注
 
 ```bash
 GET /keap/crm/rest/v2/contacts/{contact_id}/notes
 ```
 
-#### Create Contact Note
+#### 创建联系人备注
 
 ```bash
 POST /keap/crm/rest/v2/contacts/{contact_id}/notes
@@ -264,21 +264,21 @@ Content-Type: application/json
 }
 ```
 
-### Company Operations
+### 公司操作
 
-#### List Companies
+#### 列出公司
 
 ```bash
 GET /keap/crm/rest/v2/companies
 ```
 
-#### Get Company
+#### 获取公司信息
 
 ```bash
 GET /keap/crm/rest/v2/companies/{company_id}
 ```
 
-#### Create Company
+#### 创建公司
 
 ```bash
 POST /keap/crm/rest/v2/companies
@@ -291,7 +291,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Company
+#### 更新公司信息
 
 ```bash
 PATCH /keap/crm/rest/v2/companies/{company_id}
@@ -302,21 +302,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Company
+#### 删除公司
 
 ```bash
 DELETE /keap/crm/rest/v2/companies/{company_id}
 ```
 
-### Tag Operations
+### 标签操作
 
-#### List Tags
+#### 列出标签
 
 ```bash
 GET /keap/crm/rest/v2/tags
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "tags": [
@@ -333,13 +333,13 @@ GET /keap/crm/rest/v2/tags
 }
 ```
 
-#### Get Tag
+#### 获取标签信息
 
 ```bash
 GET /keap/crm/rest/v2/tags/{tag_id}
 ```
 
-#### Create Tag
+#### 创建标签
 
 ```bash
 POST /keap/crm/rest/v2/tags
@@ -351,7 +351,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Tag
+#### 更新标签信息
 
 ```bash
 PATCH /keap/crm/rest/v2/tags/{tag_id}
@@ -362,19 +362,19 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Tag
+#### 删除标签
 
 ```bash
 DELETE /keap/crm/rest/v2/tags/{tag_id}
 ```
 
-#### List Contacts with Tag
+#### 列出带有标签的联系人
 
 ```bash
 GET /keap/crm/rest/v2/tags/{tag_id}/contacts
 ```
 
-#### Apply Tags to Contacts
+#### 为联系人添加标签
 
 ```bash
 POST /keap/crm/rest/v2/tags/{tag_id}/contacts:applyTags
@@ -385,7 +385,7 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Tags from Contacts
+#### 从联系人中移除标签
 
 ```bash
 POST /keap/crm/rest/v2/tags/{tag_id}/contacts:removeTags
@@ -396,15 +396,15 @@ Content-Type: application/json
 }
 ```
 
-### Tag Category Operations
+### 标签类别操作
 
-#### List Tag Categories
+#### 列出标签类别
 
 ```bash
 GET /keap/crm/rest/v2/tags/categories
 ```
 
-#### Create Tag Category
+#### 创建标签类别
 
 ```bash
 POST /keap/crm/rest/v2/tags/categories
@@ -415,21 +415,21 @@ Content-Type: application/json
 }
 ```
 
-### Task Operations
+### 任务操作
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /keap/crm/rest/v2/tasks
 ```
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /keap/crm/rest/v2/tasks/{task_id}
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /keap/crm/rest/v2/tasks
@@ -443,7 +443,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task
+#### 更新任务信息
 
 ```bash
 PATCH /keap/crm/rest/v2/tasks/{task_id}
@@ -454,27 +454,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /keap/crm/rest/v2/tasks/{task_id}
 ```
 
-### Opportunity Operations
+### 机会操作
 
-#### List Opportunities
+#### 列出机会
 
 ```bash
 GET /keap/crm/rest/v2/opportunities
 ```
 
-#### Get Opportunity
+#### 获取机会信息
 
 ```bash
 GET /keap/crm/rest/v2/opportunities/{opportunity_id}
 ```
 
-#### Create Opportunity
+#### 创建机会
 
 ```bash
 POST /keap/crm/rest/v2/opportunities
@@ -488,7 +488,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Opportunity
+#### 更新机会信息
 
 ```bash
 PATCH /keap/crm/rest/v2/opportunities/{opportunity_id}
@@ -499,33 +499,33 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Opportunity
+#### 删除机会
 
 ```bash
 DELETE /keap/crm/rest/v2/opportunities/{opportunity_id}
 ```
 
-#### List Opportunity Stages
+#### 列出机会阶段
 
 ```bash
 GET /keap/crm/rest/v2/opportunities/stages
 ```
 
-### Order Operations
+### 订单操作
 
-#### List Orders
+#### 列出订单
 
 ```bash
 GET /keap/crm/rest/v2/orders
 ```
 
-#### Get Order
+#### 获取订单信息
 
 ```bash
 GET /keap/crm/rest/v2/orders/{order_id}
 ```
 
-#### Create Order
+#### 创建订单
 
 ```bash
 POST /keap/crm/rest/v2/orders
@@ -538,7 +538,7 @@ Content-Type: application/json
 }
 ```
 
-#### Add Order Item
+#### 添加订单项
 
 ```bash
 POST /keap/crm/rest/v2/orders/{order_id}/items
@@ -550,21 +550,21 @@ Content-Type: application/json
 }
 ```
 
-### Product Operations
+### 产品操作
 
-#### List Products
+#### 列出产品
 
 ```bash
 GET /keap/crm/rest/v2/products
 ```
 
-#### Get Product
+#### 获取产品信息
 
 ```bash
 GET /keap/crm/rest/v2/products/{product_id}
 ```
 
-#### Create Product
+#### 创建产品
 
 ```bash
 POST /keap/crm/rest/v2/products
@@ -577,27 +577,27 @@ Content-Type: application/json
 }
 ```
 
-### Campaign Operations
+### 活动操作
 
-#### List Campaigns
+#### 列出活动
 
 ```bash
 GET /keap/crm/rest/v2/campaigns
 ```
 
-#### Get Campaign
+#### 获取活动信息
 
 ```bash
 GET /keap/crm/rest/v2/campaigns/{campaign_id}
 ```
 
-#### List Campaign Sequences
+#### 列出活动序列
 
 ```bash
 GET /keap/crm/rest/v2/campaigns/{campaign_id}/sequences
 ```
 
-#### Add Contacts to Sequence
+#### 将联系人添加到活动序列中
 
 ```bash
 POST /keap/crm/rest/v2/campaigns/{campaign_id}/sequences/{sequence_id}:addContacts
@@ -608,7 +608,7 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Contacts from Sequence
+#### 从活动序列中移除联系人
 
 ```bash
 POST /keap/crm/rest/v2/campaigns/{campaign_id}/sequences/{sequence_id}:removeContacts
@@ -619,21 +619,21 @@ Content-Type: application/json
 }
 ```
 
-### Email Operations
+### 邮件操作
 
-#### List Emails
+#### 列出邮件
 
 ```bash
 GET /keap/crm/rest/v2/emails
 ```
 
-#### Get Email
+#### 获取邮件信息
 
 ```bash
 GET /keap/crm/rest/v2/emails/{email_id}
 ```
 
-#### Send Email
+#### 发送邮件
 
 ```bash
 POST /keap/crm/rest/v2/emails:send
@@ -646,71 +646,71 @@ Content-Type: application/json
 }
 ```
 
-### User Operations
+### 用户操作
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /keap/crm/rest/v2/users
 ```
 
-#### Get User
+#### 获取用户信息
 
 ```bash
 GET /keap/crm/rest/v2/users/{user_id}
 ```
 
-### Subscription Operations
+### 订阅操作
 
-#### List Subscriptions
+#### 列出订阅信息
 
 ```bash
 GET /keap/crm/rest/v2/subscriptions
 ```
 
-#### Get Subscription
+#### 获取订阅信息
 
 ```bash
 GET /keap/crm/rest/v2/subscriptions/{subscription_id}
 ```
 
-### Affiliate Operations
+### 代理商操作
 
-#### List Affiliates
+#### 列出代理商
 
 ```bash
 GET /keap/crm/rest/v2/affiliates
 ```
 
-#### Get Affiliate
+#### 获取代理商信息
 
 ```bash
 GET /keap/crm/rest/v2/affiliates/{affiliate_id}
 ```
 
-### Automation Operations
+### 自动化操作
 
-#### List Automations
+#### 列出自动化规则
 
 ```bash
 GET /keap/crm/rest/v2/automations
 ```
 
-#### Get Automation
+#### 获取自动化规则信息
 
 ```bash
 GET /keap/crm/rest/v2/automations/{automation_id}
 ```
 
-## Pagination
+## 分页
 
-Keap uses token-based pagination:
+Keap使用基于令牌的分页机制：
 
 ```bash
 GET /keap/crm/rest/v2/contacts?page_size=50
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "contacts": [...],
@@ -718,17 +718,17 @@ GET /keap/crm/rest/v2/contacts?page_size=50
 }
 ```
 
-For subsequent pages, use the `page_token` parameter:
+对于后续页面，请使用`page_token`参数：
 
 ```bash
 GET /keap/crm/rest/v2/contacts?page_size=50&page_token=abc123
 ```
 
-When `next_page_token` is empty, there are no more pages.
+当`next_page_token`为空时，表示没有更多页面。
 
-## Filtering
+## 过滤
 
-Use the `filter` parameter for filtering results:
+使用`filter`参数对结果进行过滤：
 
 ```bash
 GET /keap/crm/rest/v2/contacts?filter=given_name==John
@@ -736,7 +736,7 @@ GET /keap/crm/rest/v2/contacts?filter=email_addresses.email==john@example.com
 GET /keap/crm/rest/v2/tasks?filter=completed==false
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -766,36 +766,36 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All API paths must include `/crm/rest` prefix (e.g., `/keap/crm/rest/v2/contacts`)
-- Keap uses v2 REST API (previous v1 API is deprecated)
-- Timestamps are in ISO 8601 format
-- IDs are returned as strings
-- Pagination uses `page_size` and `page_token` (not offset-based)
-- Maximum `page_size` is 1000
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有API路径都必须包含`/crm/rest`前缀（例如：`/keap/crm/rest/v2/contacts`）
+- Keap使用v2 REST API（之前的v1 API已弃用）
+- 时间戳采用ISO 8601格式
+- ID以字符串形式返回
+- 分页使用`page_size`和`page_token`（而非基于偏移量）
+- 最大`page_size`为1000
+- 重要提示：当将curl输出传递给`jq`或其他命令时，在某些shell环境中环境变量`$MATON_API_KEY`可能无法正确解析
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Keap connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Not authorized (check OAuth scopes) |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Keap API |
+| 400 | 未建立Keap连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 未授权（请检查OAuth权限） |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自Keap API的错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了`MATON_API_KEY`环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -806,18 +806,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `keap`. For example:
+1. 确保您的URL路径以`keap`开头。例如：
+- 正确的路径：`https://gateway.maton.ai/keap/crm/rest/v2/contacts`
+- 错误的路径：`https://gateway.maton.ai/crm/rest/v2/contacts`
 
-- Correct: `https://gateway.maton.ai/keap/crm/rest/v2/contacts`
-- Incorrect: `https://gateway.maton.ai/crm/rest/v2/contacts`
+## 资源
 
-## Resources
-
-- [Keap Developer Portal](https://developer.infusionsoft.com/)
-- [Keap REST API V2 Documentation](https://developer.infusionsoft.com/docs/restv2/)
-- [Getting Started Guide](https://developer.infusionsoft.com/getting-started/)
-- [OAuth 2.0 Authentication](https://developer.infusionsoft.com/authentication/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Keap开发者门户](https://developer.infusionsoft.com/)
+- [Keap REST API V2文档](https://developer.infusionsoft.com/docs/restv2/)
+- [入门指南](https://developer.infusionsoft.com/getting-started/)
+- [OAuth 2.0认证](https://developer.infusionsoft.com/authentication/)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

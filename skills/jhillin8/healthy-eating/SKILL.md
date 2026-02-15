@@ -1,6 +1,6 @@
 ---
 name: healthy-eating
-description: Build healthy eating habits with meal logging, nutrition tracking, and food choices
+description: 通过记录饮食、跟踪营养摄入以及选择健康的食物，培养健康的饮食习惯。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,63 +11,64 @@ triggers:
   - "food choices"
 ---
 
-# Healthy Eating
+# 健康饮食
 
-Build sustainable nutrition habits through simple meal logging and mindful food choices.
+通过简单的饮食记录和理性的食物选择，培养可持续的营养习惯。
 
-## What it does
+## 功能介绍
 
-Log meals without obsession. Get real-time nutrition awareness. Receive personalized suggestions for healthier choices. Track patterns over time and build habits that stick—no calorie counting required.
+- **记录饮食**：无需过度纠结，轻松记录每餐的摄入内容。
+- **实时获取营养信息**：实时了解饮食的营养成分。
+- **获得个性化建议**：根据你现有的食材，获得更健康的饮食建议。
+- **追踪饮食模式**：长期跟踪饮食习惯，帮助你养成持久的健康习惯（无需计算卡路里）。
 
-## Usage
+## 使用方法
 
-**Log meals**
-- Record what you ate and when
-- Capture portion sizes and meal context (breakfast, snack, lunch, dinner)
-- Notes on how you felt after eating
+**记录饮食**：
+- 记录你吃了什么以及时间。
+- 记录食物分量及用餐场景（早餐、零食、午餐、晚餐）。
+- 写下用餐后的感受。
 
-**Get suggestions**
-- Ask for healthy meal ideas based on ingredients you have
-- Get quick swaps for favorite foods
-- Receive context-aware recommendations (late night, busy day, social event)
+**获取建议**：
+- 根据你拥有的食材，获取健康饮食的创意。
+- 为喜爱的食物找到替代品。
+- 根据不同的场景（如深夜、忙碌的一天或社交活动）获得合适的饮食建议。
 
-**Check nutrition**
-- View nutrient breakdown: proteins, fats, carbs, fiber, micronutrients
-- Understand food quality and satiety impact
-- See hydration status and daily totals
+**检查营养**：
+- 查看营养成分：蛋白质、脂肪、碳水化合物、纤维、微量营养素。
+- 了解食物的质量及其对饱腹感的影响。
+- 查看水分摄入量和每日总摄入量。
 
-**Meal planning**
-- Plan weekly meals with minimal friction
-- Balance macros and whole foods naturally
-- Batch prep suggestions for busy schedules
+**规划饮食**：
+- 以最简单的方式规划每周的饮食。
+- 自然地平衡各种营养素（宏量营养素）和全食物。
+- 为忙碌的日程安排提供批量准备的建议。
 
-**Track habits**
-- View eating patterns over days and weeks
-- Spot triggers and improvements
-- Celebrate consistency milestones
+**追踪习惯**：
+- 查看数天或数周的饮食模式。
+- 发现可能导致不良习惯的诱因，并找到改进方法。
+- 庆祝坚持下来的成就。
 
-## Food Categories
+## 食物分类
 
-**Proteins**
-Lean meats, fish, eggs, legumes, nuts, seeds, Greek yogurt
+**蛋白质来源**：
+瘦肉、鱼类、鸡蛋、豆类、坚果、种子、希腊酸奶。
 
-**Vegetables**
-Leafy greens, cruciferous, root veggies, colorful variety
+**蔬菜**：
+绿叶蔬菜、十字花科蔬菜、根茎类蔬菜、色彩丰富的蔬菜。
 
-**Whole grains**
-Oats, brown rice, quinoa, whole wheat, barley
+**全谷物**：
+燕麦、糙米、藜麦、全麦、大麦。
 
-**Healthy fats**
-Olive oil, avocados, fatty fish, nuts, seeds
+**健康脂肪**：
+橄榄油、牛油果、富含脂肪的鱼类、坚果、种子。
 
-**Hydration**
-Water, herbal tea, electrolyte balance
+**水分补充**：
+水、花草茶、保持电解质平衡。
 
-## Tips
-
-- Log immediately after eating—memory fades but patterns stick
-- Focus on food quality and how your body feels, not numbers on a screen
-- Pair proteins with veggies at every meal to stabilize energy and hunger
-- Plan meals on Sundays so weekday choices default to healthy options
-- All data stays local on your machine
-
+## 小贴士**：
+- 饭后立即记录饮食——记忆会逐渐模糊，但饮食模式会长期保留。
+- 关注食物的质量以及身体对食物的反应，而非屏幕上的数字。
+- 每餐都搭配蛋白质和蔬菜，以稳定能量和抑制饥饿感。
+- 在周日规划饮食，这样工作日就能更倾向于选择健康的食物。
+- 所有数据都保存在你的设备上。

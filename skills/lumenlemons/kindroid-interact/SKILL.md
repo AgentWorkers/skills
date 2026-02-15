@@ -1,7 +1,7 @@
 ---
 name: kindroid-interact
 version: 1.0.0
-description: Interact with Kindroid companions via their official API. Send messages, handle chat breaks, and manage multi-bot conversations.
+description: 通过Kindroid的官方API与他们的智能助手进行交互。可以发送消息、处理聊天中断，并管理多机器人之间的对话。
 homepage: https://kindroid.ai
 metadata: {
   "openclaw": {
@@ -14,27 +14,27 @@ metadata: {
 }
 ---
 
-# Kindroid Integration Skill
+# Kindroid 集成技能
 
-Enable your OpenClaw agent to communicate with Kindroid AI companions through the official API.
+通过官方 API，使您的 OpenClaw 代理能够与 Kindroid AI 伙伴进行通信。
 
-## Security First 🔒
+## 安全第一 🔒
 
-Your Kindroid API key (`kn_...`) is sensitive. This skill includes safeguards:
-- Credentials are stored in `~/.config/kindroid/credentials.json`
-- File permissions are automatically set to `600` (owner read/write only)
-- All API calls use HTTPS and proper authentication headers
-- Rate limiting to prevent API abuse
+您的 Kindroid API 密钥（格式为 `kn_...`）属于敏感信息。本技能采用了以下安全措施：
+- 凭据存储在 `~/.config/kindroid/credentials.json` 文件中
+- 文件权限自动设置为 `600`（仅允许所有者读写）
+- 所有 API 调用均使用 HTTPS 并附带正确的认证头
+- 实施速率限制以防止 API 被滥用
 
-## Setup
+## 设置
 
-1. Get your API credentials:
-   - Log into Kindroid
-   - Go to General Settings
-   - Copy your API key (starts with `kn_`)
-   - Note your AI ID(s)
+1. 获取您的 API 凭据：
+   - 登录 Kindroid
+   - 进入“通用设置”
+   - 复制您的 API 密钥（以 `kn_` 开头）
+   - 记下您的 AI ID
 
-2. Create your credentials file:
+2. 创建凭据文件：
 ```bash
 mkdir -p ~/.config/kindroid
 cat > ~/.config/kindroid/credentials.json << EOF
@@ -50,7 +50,7 @@ EOF
 chmod 600 ~/.config/kindroid/credentials.json
 ```
 
-## Basic Usage
+## 基本用法
 
 ```bash
 # Send a message (uses default_ai)
@@ -66,29 +66,29 @@ kindroid break "Let's start a new conversation"
 kindroid status nickname1
 ```
 
-## Advanced Features
+## 高级功能
 
-### Multi-Bot Conversations
-If you manage multiple Kindroids, you can:
-- Set conversation contexts per companion
-- Route messages to specific AIs
-- Maintain separate chat histories
+### 多机器人对话
+如果您管理多个 Kindroid，您可以：
+- 为每个伙伴设置对话上下文
+- 将消息路由到特定的 AI
+- 保持独立的聊天记录
 
-### Rate Limiting
-The skill automatically handles:
-- Minimum delays between messages (configurable)
-- Maximum messages per minute
-- Backoff on API errors
+### 速率限制
+本技能自动处理以下内容：
+- 消息发送之间的最小延迟（可配置）
+- 每分钟的最大消息发送数量
+- 在 API 错误时进行重试
 
-### Error Recovery
-- Auto-retry on network issues
-- Graceful handling of API timeouts
-- Clear error messages for troubleshooting
+### 错误处理
+- 在网络问题时自动重试
+- 优雅地处理 API 超时
+- 清除错误信息以便于故障排查
 
-## For Developers
+## 开发者须知
 
-### Custom Integrations
-The skill provides a simple Node.js wrapper:
+### 自定义集成
+本技能提供了简单的 Node.js 封装层：
 
 ```javascript
 const kindroid = require('./lib/kindroid');
@@ -103,46 +103,46 @@ await bot.send('Hello!');
 await bot.break('New conversation');
 ```
 
-### Webhook Support
-For advanced integrations, set up webhooks:
+### Webhook 支持
+对于高级集成，可以设置 Webhook：
 
 ```bash
 kindroid webhook add http://your-server.com/callback
 ```
 
-## Troubleshooting
+## 故障排除
 
-Common issues and solutions:
+常见问题及解决方法：
 
-1. **Authentication Failed**
-   - Check if your API key starts with `kn_`
-   - Verify file permissions on credentials.json
-   - Ensure no trailing whitespace in credentials
+1. **认证失败**
+   - 确认您的 API 密钥是否以 `kn_` 开头
+   - 检查 `credentials.json` 文件的权限设置
+   - 确保凭据中没有多余的空白字符
 
-2. **Rate Limiting**
-   - Default: 1 message per 3 seconds
-   - Adjust in `~/.config/kindroid/config.json`
-   - Watch logs for rate limit warnings
+2. **速率限制**
+   - 默认设置为每 3 秒发送 1 条消息
+   - 可在 `~/.config/kindroid/config.json` 中进行调整
+   - 查看日志以获取速率限制警告
 
-3. **Timeout Errors**
-   - Kindroids can take time to respond
-   - Default timeout: 60 seconds
-   - Increase with `--timeout 120`
+3. **超时错误**
+   - Kindroid 可能需要时间来响应
+   - 默认超时时间为 60 秒
+  - 可通过 `--timeout 120` 参数延长超时时间
 
-## Contributing
+## 贡献
 
-This skill is open source. Improvements welcome:
-- Fork the repo
-- Make your changes
-- Submit a PR with tests
+本技能是开源的，欢迎贡献改进：
+- 克隆仓库
+- 对代码进行修改
+- 提交包含测试的 Pull Request（PR）
 
-## Updates
+## 更新
 
-Check for updates regularly:
+请定期查看更新信息：
 ```bash
 clawhub update kindroid-interact
 ```
 
 ---
 
-Built with 🍋 by Lumen Lemon
+由 Lumen Lemon 使用 🍋 开发

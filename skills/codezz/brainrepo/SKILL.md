@@ -9,168 +9,131 @@ description: >
 
 # BrainRepo
 
-Your personal knowledge repository. Capture fast, organize automatically, retrieve instantly.
+这是您的个人知识管理仓库。它能快速捕获信息、自动进行组织，并支持即时检索。
 
-## Brain Location
+## 数据存储位置
 
-**Fixed path:** `~/Documents/brainrepo/`
+**固定路径：** `~/Documents/brainrepo/`
 
-This is not configurable. All brain data lives here.
+此路径无法配置。所有数据都存储在这里。
 
-## First Run Check
+## 首次使用时的检查
 
-**Before any action**, check if brainrepo is initialized:
+**在采取任何操作之前**，请检查 brainrepo 是否已初始化：
 
-1. Check if `~/Documents/brainrepo/` exists with expected structure (Inbox/, Projects/, Areas/)
-2. If NOT found → **Run onboarding automatically**
-3. If found → Proceed with user request
+1. 确认 `~/Documents/brainrepo/` 是否存在，并且具有预期的文件夹结构（`Inbox/`, `Projects/`, `Areas/`）。
+2. 如果未找到 → **自动执行初始化流程**。
+3. 如果已找到 → 可以根据用户需求继续使用。
 
-## Onboarding
+## 初始化流程
 
-Triggers automatically on first interaction, or when user says "set up brainrepo":
+在首次使用或用户请求时自动触发初始化流程：
 
-1. Create brain at `~/Documents/brainrepo/`
-2. Create the folder structure:
-
-```bash
-mkdir -p <path>/{Inbox,Projects,Areas/personal-growth,Areas/family,Notes,Resources,Journal,People,Tasks,Archive}
-```
-
-3. Create initial files from templates in `assets/templates/`:
-   - `Tasks/index.md` — task hub
-   - `Areas/personal-growth/index.md` — personal growth area
-   - `Areas/family/index.md` — family area
-
-4. Initialize git (optional):
-```bash
+1. 在 `~/Documents/brainrepo/` 下创建相应的文件夹结构。
+2. 使用 `assets/templates/` 中的模板创建初始文件：
+   - `Tasks/index.md` — 任务管理文件夹
+   - `Areas/personal-growth/index.md` — 个人成长相关文件
+   - `Areas/family/index.md` — 家庭相关文件
+3. （可选）初始化 Git 仓库：
+   ```bash
 cd <path> && git init && git add -A && git commit -m "init: brainrepo"
 ```
 
-5. Confirm setup and show quick start commands
+4. 确认初始化完成，并向用户展示快速使用指南。
 
-## Core Concept
+## 核心工作流程
 
-**DUMP → PROCESS → RETRIEVE**
+**数据捕获 → 处理 → 检索**
 
-1. **Dump** — Capture everything to Inbox/ (don't organize yet)
-2. **Process** — Evening review: Inbox → permanent home
-3. **Retrieve** — Ask AI to find anything
+1. **捕获数据**：将所有信息放入 `Inbox/` 文件夹（暂时不进行分类）。
+2. **处理数据**：在晚上对 `Inbox/` 中的内容进行整理，将其移至相应的永久存储位置。
+3. **检索信息**：通过系统请求 AI 来查找所需的内容。
 
-## Repository Structure
+## 仓库结构
 
-```
-brainrepo/
-├── Inbox/          # Quick capture (clear daily)
-├── Projects/       # Active work with deadlines
-├── Areas/          # Ongoing responsibilities (no deadline)
-├── Notes/          # Permanent atomic knowledge
-├── Resources/      # External links, articles, references
-├── Journal/        # Daily notes (YYYY-MM-DD.md)
-├── People/         # One note per person
-├── Tasks/          # Centralized task tracking
-└── Archive/        # Completed projects
-```
+详细结构请参阅 [references/structure.md](references/structure.md)。
 
-See [references/structure.md](references/structure.md) for detailed breakdown.
+## 数据捕获规则
 
-## Capture Rules
+### 应立即捕获的内容
 
-### What to Capture (Immediately)
-
-| Type | Destination | Example |
+| 类型 | 存储位置 | 示例 |
 |------|-------------|---------|
-| Quick thought | `Inbox/` | "Maybe we should..." |
-| Decision made | `Inbox/` or `Notes/` | "Decided to use Next.js" |
-| Person info | `People/` | New contact or update |
-| Project update | `Projects/<name>/` | Meeting notes, progress |
-| Task/Todo | `Tasks/index.md` | "Need to finish X" |
-| Link/Article | `Resources/` or `Inbox/` | URL with context |
-| Personal growth | `Areas/personal-growth/` | Health, habits, learning |
-| Family info | `Areas/family/` | Important dates, notes |
+| 随机想法 | `Inbox/` | “也许我们应该……” |
+| 做出决定 | `Inbox/` 或 `Notes/` | “决定使用 Next.js” |
+| 个人信息 | `People/` | 新联系人信息或更新 |
+| 项目更新 | `Projects/<项目名称>/` | 会议记录、项目进度 |
+| 任务/待办事项 | `Tasks/index.md` | “需要完成 X 任务” |
+| 链接/文章 | `Resources/` 或 `Inbox/` | 带有上下文的网址 |
+| 个人成长 | `Areas/personal-growth/` | 健康、习惯、学习相关内容 |
+| 家庭信息 | `Areas/family/` | 重要日期、家庭相关事项 |
 
-### What NOT to Capture
+### 不应捕获的内容
 
-- Casual chat without information value
-- Temporary queries ("what time is it")
-- Information easily searchable online
+- 无实际信息价值的随意聊天记录
+- 临时性的查询（如“现在几点了”）
+- 可以在线轻松搜索到的信息
 
-## Note Format
+## 笔记格式
 
-Every note uses minimal frontmatter:
+所有笔记都采用简洁的格式编写，具体格式请参考 [CODE_BLOCK_3___]。
 
-```markdown
----
-created: YYYY-MM-DD
-tags: [tag1, tag2]
-related: ["[[Other Note]]"]
----
+创建新笔记时，请使用 `assets/templates/` 中提供的模板。
 
-# Title
+## 日常工作流程
 
-Content here. Link to [[Related Notes]] freely.
-```
+### 白天
+- 将所有信息捕获到 `Inbox/` 文件夹中。
+- 不要立即进行分类，只需先保存下来。
 
-Use templates from `assets/templates/` when creating new notes.
+### 晚上（5-10 分钟）
+- 处理 `Inbox/` 中的笔记：
+  - 将需要长期保存的内容移至相应文件夹，或直接删除。
+- 在 `Journal/YYYY-MM-DD.md` 文件中记录处理总结。
+- 执行 `git commit -am "daily processing"` 命令。
 
-## Daily Workflow
+## 周期性回顾（每周日，15 分钟）
 
-### During Day
-- Dump everything to `Inbox/`
-- Don't organize — just capture
+- 回顾所有项目：是否有项目仍然在进行中？
+- 检查各个分类下的内容：是否有被忽视的部分？
+- 将已完成的项目移至 `Archive/` 文件夹。
+- 更新 `Tasks/index.md` 文件。
 
-### Evening (5-10 min)
-Process Inbox/:
-1. Each item → permanent home or delete
-2. Update `Journal/YYYY-MM-DD.md` with summary
-3. `git commit -am "daily processing"`
+详细的工作流程请参阅 [references/workflows.md](references/workflows.md)。
 
-## Weekly Review (Sunday, 15 min)
+## 常用命令
 
-1. Review all Projects/ — still active?
-2. Check Areas/ — anything neglected?
-3. Move completed projects to Archive/
-4. Update `Tasks/index.md`
-
-See [references/workflows.md](references/workflows.md) for detailed workflows.
-
-## Commands
-
-| User says | Action |
+| 用户指令 | 执行操作 |
 |-----------|--------|
-| "Set up brainrepo" | Run onboarding, create structure |
-| "Save this: [text]" | Capture to Inbox/ |
-| "New project: [name]" | Create Projects/name/ with template |
-| "Add person: [name]" | Create People/name.md with template |
-| "What do I know about X?" | Search & retrieve |
-| "Daily review" | Process Inbox/, update Journal/ |
-| "Weekly review" | Full system review |
+| “设置 BrainRepo” | 自动执行初始化流程并创建文件夹结构 |
+| “保存这个内容：[文本]” | 将内容捕获到 `Inbox/` |
+| “新建项目：[项目名称]” | 使用模板创建新项目 |
+| “添加人员：[姓名]” | 使用模板创建人员信息文件 |
+| “关于 X，我知道什么？” | 通过系统查询相关信息 |
+| “进行日常回顾” | 处理 `Inbox/` 中的笔记并更新日志文件 |
+| “进行每周回顾” | 全面检查整个知识管理系统 |
 
-## Linking
+## 链接管理
 
-Use `[[wiki-links]]` to connect notes:
+使用 `[[wiki-links]]` 标签来关联笔记之间的内容。
 
-```markdown
-Met with [[People/john]] about [[Projects/acme/index|ACME Project]].
-Relevant insight: [[Notes/negotiation-tactics]]
-```
+## 项目与分类的区别
 
-## Projects vs Areas
+| 项目 | 分类 |
+|------|-------|
+| 有截止日期 | 分类没有固定结束日期 |
+| 可以“完成” | 分类中的内容会长期保留 |
+| 需要达到特定结果 | 分类中的内容需要持续维护 |
 
-| Projects | Areas |
-|----------|-------|
-| Have deadlines | No end date |
-| Can be "done" | Maintained forever |
-| Specific outcome | Standard to uphold |
+## 文件命名规则
 
-## File Naming
+- 文件夹名称：使用驼峰式命名法（例如 `Projects/MyNewProject`）
+- 文件名称：使用驼峰式命名法（例如 `my-task.md`）
+- 日期文件：格式为 `YYYY-MM-DD.md`
+- 人员信息文件：格式为 `firstname-lastname.md`
 
-- Folders: `kebab-case/`
-- Files: `kebab-case.md`
-- Dates: `YYYY-MM-DD.md`
-- People: `firstname-lastname.md`
+## 参考资料
 
-## References
-
-- [Structure Guide](references/structure.md) — Detailed folder breakdown
-- [Workflows](references/workflows.md) — Daily/weekly/monthly workflows
-- [Templates](assets/templates/) — Note templates
+- [结构指南](references/structure.md) — 仓库文件夹的详细划分规则
+- [工作流程](references/workflows.md) — 日常/每周/每月的工作流程
+- [模板](assets/templates/) — 笔记模板

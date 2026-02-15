@@ -1,39 +1,39 @@
 ---
 name: goldenseed
-description: Deterministic entropy streams for reproducible testing and procedural generation. Perfect 50/50 statistical distribution with hash verification. Not cryptographically secure - use for testing, worldgen, and scenarios where reproducibility matters more than unpredictability.
+description: 用于可重复测试和程序化生成的确定性熵流。该熵流能够实现完美的50/50统计分布，并支持哈希验证功能。虽然不具备加密安全性，但适用于测试、世界生成（world generation）以及那些可重复性比不可预测性更重要的场景。
 tags: [testing, procedural-generation, deterministic, reproducibility, golden-ratio]
 version: 1.0.0
 author: beanapologist
 license: GPL-3.0+
 ---
 
-# GoldenSeed - Deterministic Entropy for Agents
+# GoldenSeed - 用于代理程序的确定性熵生成工具
 
-**Reproducible randomness when you need identical results every time.**
+**在需要每次都获得相同结果时，提供可复现的随机性。**
 
-## What This Does
+## 功能概述
 
-GoldenSeed generates infinite deterministic byte streams from tiny fixed seeds. Same seed → same output, always. Perfect for:
+GoldenSeed 通过一个固定的种子值生成无限的确定性字节流。相同的种子值始终会产生相同的输出。非常适合以下场景：
 
-- ✅ **Testing reproducibility**: Debug flaky tests by replaying exact random sequences
-- ✅ **Procedural generation**: Create verifiable game worlds, art, music from seeds
-- ✅ **Scientific simulations**: Reproducible Monte Carlo, physics engines
-- ✅ **Statistical testing**: Perfect 50/50 coin flip distribution (provably fair)
-- ✅ **Hash verification**: Prove output came from declared seed
+- ✅ **测试可复现性**：通过重放精确的随机序列来调试那些结果不稳定的测试
+- ✅ **程序化内容生成**：使用种子值创建可验证的游戏世界、艺术作品或音乐
+- ✅ **科学模拟**：实现可复现的蒙特卡洛模拟和物理引擎
+- ✅ **统计测试**：提供完美的 50/50 概率分布（可证明公平性）
+- ✅ **哈希验证**：确认输出确实来源于指定的种子值
 
-## What This Doesn't Do
+## 注意事项
 
-⚠️ **NOT cryptographically secure** - Don't use for passwords, keys, or security tokens. Use `os.urandom()` or `secrets` module for crypto.
+⚠️ **不具备加密安全性** - 不适用于密码、密钥或安全令牌的生成。请使用 `os.urandom()` 或 `secrets` 模块进行加密操作。
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 pip install golden-seed
 ```
 
-### Basic Usage
+### 基本用法
 
 ```python
 from gq import UniversalQKD
@@ -51,7 +51,7 @@ gen2 = UniversalQKD()
 assert next(gen1) == next(gen2)  # Always identical
 ```
 
-### Statistical Quality - Perfect 50/50 Coin Flip
+### 统计质量 - 完美的 50/50 概率分布
 
 ```python
 from gq import UniversalQKD
@@ -73,7 +73,7 @@ def coin_flip_test(n=1_000_000):
 assert coin_flip_test()  # ✓ Passes every time
 ```
 
-### Reproducible Testing
+### 可复现的测试
 
 ```python
 from gq import UniversalQKD
@@ -105,7 +105,7 @@ def test_user_pipeline():
     assert user1 == user1_again  # ✓ Reproducible!
 ```
 
-### Procedural World Generation
+### 程序化内容生成
 
 ```python
 from gq import UniversalQKD
@@ -133,7 +133,7 @@ print(f"Biome: {chunk['biome']}, Elevation: {chunk['elevation']}")
 print(f"Verifiable hash: {chunk['seed_hash']}")
 ```
 
-### Hash Verification
+### 哈希验证
 
 ```python
 from gq import UniversalQKD
@@ -159,11 +159,11 @@ assert data1 == data2      # ✓ Same output
 assert proof1 == proof2    # ✓ Same hash
 ```
 
-## Agent Use Cases
+## 代理程序应用案例
 
-### Debugging Flaky Tests
+### 调试不稳定的测试
 
-When your tests pass sometimes and fail sometimes, replace random values with GoldenSeed to reproduce exact scenarios:
+当您的测试有时通过、有时失败时，可以使用 GoldenSeed 替换随机值，以重现相同的测试场景：
 
 ```python
 # Instead of:
@@ -176,9 +176,9 @@ gen = UniversalQKD()
 value = next(gen)[0] % 100 + 1  # Same value for same seed
 ```
 
-### Procedural Art Generation
+### 程序化艺术创作
 
-Generate art, music, or NFTs with verifiable seeds:
+使用可验证的种子值生成艺术作品、音乐或非同质化代币（NFT）：
 
 ```python
 def generate_art(seed):
@@ -196,9 +196,9 @@ def generate_art(seed):
 art = generate_art(seed=42)
 ```
 
-### Competitive Game Fairness
+### 竞技游戏的公平性验证
 
-Prove game outcomes were fair by sharing the seed:
+通过共享种子值来证明游戏结果的公平性：
 
 ```python
 class FairDice:
@@ -216,26 +216,24 @@ rolls = [dice.roll() for _ in range(100)]
 # Share seed 99999 - anyone can verify identical sequence
 ```
 
-## References
+## 参考资料
 
 - **GitHub**: https://github.com/COINjecture-Network/seed
 - **PyPI**: https://pypi.org/project/golden-seed/
-- **Examples**: See `examples/` directory in repository
-- **Statistical Tests**: See `docs/ENTROPY_ANALYSIS.md`
+- **示例代码**：请查看仓库中的 `examples/` 目录
+- **统计测试**：请参阅 `docs/ENTROPY_ANALYSIS.md`
 
-## Multi-Language Support
+## 多语言支持
 
-Identical output across platforms:
-- Python (this skill)
-- JavaScript (`examples/binary_fusion_tap.js`)
-- C, C++, Go, Rust, Java (see repository)
+支持多种编程语言，确保在不同平台上生成相同的输出：
+- Python（本工具的核心实现）
+- JavaScript（`examples/binary_fusion_tap.js` 示例）
+- C、C++、Go、Rust、Java（详见仓库文档）
 
-## License
+## 许可证
 
-GPL-3.0+ with restrictions on military applications.
-
-See LICENSE in repository for details.
+遵循 GPL-3.0+ 许可协议，但军事应用受到限制。详细许可条款请参阅仓库中的 `LICENSE` 文件。
 
 ---
 
-**Remember**: GoldenSeed is for *reproducibility*, not *security*. When debugging fails, need identical test data, or generating verifiable procedural content, GoldenSeed gives you determinism with statistical quality. For crypto, use `secrets` module.
+**请注意**：GoldenSeed 的主要用途是确保测试结果的可复现性和程序化内容的可验证性，而非提供加密安全功能。如需进行加密操作，请使用 `secrets` 模块。

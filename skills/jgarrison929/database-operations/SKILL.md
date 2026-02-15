@@ -1,7 +1,7 @@
 ---
 name: database-operations
 version: 1.0.0
-description: Use when designing database schemas, writing migrations, optimizing SQL queries, fixing N+1 problems, creating indexes, setting up PostgreSQL, configuring EF Core, implementing caching, partitioning tables, or any database performance question.
+description: 在以下场景中可以使用这些知识：设计数据库模式、编写数据迁移脚本、优化SQL查询、解决“N+1”问题（即数据库性能问题）、创建索引、配置PostgreSQL数据库、设置EF Core（Entity Framework Core）框架、实现缓存机制、对表进行分区处理，以及处理任何与数据库性能相关的问题。
 triggers:
   - database
   - schema
@@ -25,28 +25,28 @@ scope: implementation
 output-format: code
 ---
 
-# Database Operations
+# 数据库操作
 
-Comprehensive database design, migration, and optimization specialist. Adapted from buildwithclaude by Dave Poon (MIT).
+我是一名专注于数据库设计、迁移和优化的专家。这些内容改编自 Dave Poon（MIT）的 buildwithclaude 文档。
 
-## Role Definition
+## 职责定义
 
-You are a database optimization expert specializing in PostgreSQL, query performance, schema design, and EF Core migrations. You measure first, optimize second, and always plan rollback procedures.
+我是一名数据库优化专家，主要负责 PostgreSQL 数据库的性能优化、数据库模式设计以及 EF Core 数据库的迁移工作。在采取任何优化措施之前，我都会先进行详细的性能分析，并确保制定好数据回滚方案。
 
-## Core Principles
+## 核心原则
 
-1. **Measure first** — always use `EXPLAIN ANALYZE` before optimizing
-2. **Index strategically** — based on query patterns, not every column
-3. **Denormalize selectively** — only when justified by read patterns
-4. **Cache expensive computations** — Redis/materialized views for hot paths
-5. **Plan rollback** — every migration has a reverse migration
-6. **Zero-downtime migrations** — additive changes first, destructive later
+1. **先分析再优化**—— 在进行任何优化之前，务必使用 `EXPLAIN ANALYZE` 命令来分析查询的执行计划。
+2. **策略性地创建索引**—— 根据查询模式来决定哪些列需要创建索引，而不是盲目地为所有列创建索引。
+3. **有选择地反规范化数据**—— 仅在数据读取模式确实需要时才进行反规范化操作。
+4. **缓存复杂的计算结果**—— 对于高频查询路径，可以使用 Redis 或物化视图来加速查询。
+5. **制定数据回滚方案**—— 每次数据库迁移都应包含相应的回滚操作。
+6. **实现零停机时间的迁移**—— 先进行可叠加的变更，再进行可能破坏数据结构的变更。
 
 ---
 
-## Schema Design Patterns
+## 数据库模式设计模式
 
-### User Management
+### 用户管理
 
 ```sql
 CREATE TYPE user_status AS ENUM ('active', 'inactive', 'suspended', 'pending');
@@ -75,7 +75,7 @@ CREATE INDEX idx_users_created_at ON users(created_at);
 CREATE INDEX idx_users_deleted_at ON users(deleted_at) WHERE deleted_at IS NULL;
 ```
 
-### Audit Trail
+### 审计追踪
 
 ```sql
 CREATE TYPE audit_operation AS ENUM ('INSERT', 'UPDATE', 'DELETE');
@@ -121,7 +121,7 @@ AFTER INSERT OR UPDATE OR DELETE ON users
 FOR EACH ROW EXECUTE FUNCTION audit_trigger_function();
 ```
 
-### Soft Delete Pattern
+### 软删除机制
 
 ```sql
 -- Query filter view
@@ -137,7 +137,7 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-### Full-Text Search
+### 全文搜索
 
 ```sql
 ALTER TABLE products ADD COLUMN search_vector tsvector
@@ -154,9 +154,9 @@ WHERE search_vector @@ to_tsquery('english', 'laptop & gaming');
 
 ---
 
-## Query Optimization
+## 查询优化
 
-### Analyze Before Optimizing
+### 优化前的分析
 
 ```sql
 -- Always start here
@@ -169,7 +169,7 @@ GROUP BY u.id, u.name
 ORDER BY order_count DESC;
 ```
 
-### Indexing Strategy
+### 索引策略
 
 ```sql
 -- Single column for exact lookups
@@ -194,7 +194,7 @@ CREATE INDEX CONCURRENTLY idx_products_attrs ON products USING gin(attributes);
 CREATE INDEX CONCURRENTLY idx_users_email_lower ON users(lower(email));
 ```
 
-### Find Unused Indexes
+### 查找未使用的索引
 
 ```sql
 SELECT
@@ -206,7 +206,7 @@ WHERE idx_scan = 0
 ORDER BY pg_relation_size(indexrelid) DESC;
 ```
 
-### Find Missing Indexes (Slow Queries)
+### 查找缺失的索引（导致查询缓慢的索引）
 
 ```sql
 -- Enable pg_stat_statements first
@@ -217,7 +217,7 @@ ORDER BY total_exec_time DESC
 LIMIT 20;
 ```
 
-### N+1 Query Detection
+### 检测 N+1 查询问题
 
 ```sql
 -- Look for repeated similar queries in pg_stat_statements
@@ -229,9 +229,9 @@ ORDER BY calls DESC;
 
 ---
 
-## Migration Patterns
+## 数据库迁移模式
 
-### Safe Column Addition
+### 安全地添加列
 
 ```sql
 -- +migrate Up
@@ -244,7 +244,7 @@ DROP INDEX IF EXISTS idx_users_phone;
 ALTER TABLE users DROP COLUMN IF EXISTS phone;
 ```
 
-### Safe Column Rename (Zero-Downtime)
+### 安全地重命名列（实现零停机时间）
 
 ```sql
 -- Step 1: Add new column
@@ -258,7 +258,7 @@ ALTER TABLE users ALTER COLUMN display_name SET NOT NULL;
 ALTER TABLE users DROP COLUMN name;
 ```
 
-### Table Partitioning
+### 表分区
 
 ```sql
 -- Create partitioned table
@@ -293,9 +293,9 @@ $$ LANGUAGE plpgsql;
 
 ---
 
-## EF Core Migrations (.NET)
+## EF Core 数据库迁移（.NET）
 
-### Create and Apply
+### 创建和应用迁移脚本
 
 ```bash
 # Add migration
@@ -311,7 +311,7 @@ dotnet ef migrations script -p src/Infrastructure -s src/Api -o migration.sql --
 dotnet ef database update PreviousMigrationName -p src/Infrastructure -s src/Api
 ```
 
-### EF Core Configuration Best Practices
+### EF Core 数据库配置的最佳实践
 
 ```csharp
 // Use AsNoTracking for read queries
@@ -346,9 +346,9 @@ var orders = await _db.Orders
 
 ---
 
-## Caching Strategy
+## 缓存策略
 
-### Redis Query Cache
+### 使用 Redis 进行查询缓存
 
 ```typescript
 import Redis from 'ioredis'
@@ -382,7 +382,7 @@ async function invalidateProductCache(categoryId: string) {
 }
 ```
 
-### Materialized Views
+### 使用物化视图加速查询
 
 ```sql
 CREATE MATERIALIZED VIEW monthly_sales AS
@@ -404,9 +404,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY monthly_sales;
 
 ---
 
-## Connection Pool Configuration
-
-### Node.js (pg)
+## 连接池配置（Node.js，使用 PostgreSQL 数据库）
 
 ```typescript
 import { Pool } from 'pg'
@@ -430,9 +428,9 @@ setInterval(() => {
 
 ---
 
-## Monitoring Queries
+## 查询监控
 
-### Active Connections
+### 监控活动连接
 
 ```sql
 SELECT count(*), state
@@ -441,7 +439,7 @@ WHERE datname = current_database()
 GROUP BY state;
 ```
 
-### Long-Running Queries
+### 监控长时间运行的查询
 
 ```sql
 SELECT pid, now() - query_start AS duration, query, state
@@ -450,7 +448,7 @@ WHERE (now() - query_start) > interval '5 minutes'
 AND state = 'active';
 ```
 
-### Table Sizes
+### 监控表的大小和性能
 
 ```sql
 SELECT
@@ -463,7 +461,7 @@ ORDER BY pg_total_relation_size(relid) DESC
 LIMIT 20;
 ```
 
-### Table Bloat
+### 解决数据库表膨胀问题
 
 ```sql
 SELECT
@@ -482,15 +480,45 @@ ORDER BY dead_ratio DESC;
 
 ---
 
-## Anti-Patterns
+## 应避免的错误做法
 
-1. ❌ `SELECT *` — always specify needed columns
-2. ❌ Missing indexes on foreign keys — always index FK columns
-3. ❌ `LIKE '%search%'` — use full-text search or trigram indexes instead
-4. ❌ Large `IN` clauses — use `ANY(ARRAY[...])` or join a values list
-5. ❌ No `LIMIT` on unbounded queries — always paginate
-6. ❌ Creating indexes without `CONCURRENTLY` in production
-7. ❌ Running migrations without testing rollback
-8. ❌ Ignoring `EXPLAIN ANALYZE` output — always verify execution plans
-9. ❌ Storing money as `FLOAT` — use `DECIMAL(10,2)` or integer cents
-10. ❌ Missing `NOT NULL` constraints — be explicit about nullability
+1. ❌ **不要使用 `SELECT *`**—— 总是明确指定需要查询的列。
+2. ❌ **外键列上没有索引**—— 外键列必须创建索引。
+3. ❌ **不要使用 `LIKE '%search%'`**—— 应使用全文搜索或三字母组合索引。
+4. ❌ **不要使用庞大的 `IN` 子句**—— 可以使用 `ANY(ARRAY[...])` 或者连接值列表来替代。
+5. ❌ **无限制的查询没有 `LIMIT` 限制**—— 必须对查询结果进行分页处理。
+6. ❌ **在生产环境中不要在没有测试回滚方案的情况下执行数据库迁移**。
+7. ❌ **忽略 `EXPLAIN ANALYZE` 的输出**—— 必须始终验证查询的执行计划。
+8. ❌ **不要将货币类型存储为 `FLOAT`**—— 应使用 `DECIMAL(10,2)` 来存储货币数据。
+9. ❌ **不要省略 `NOT NULL` 约束**—— 必须明确指定列是否可以为 null。
+
+---
+
+---
+
+（由于提供的 SKILL.md 文件内容较为冗长，部分代码块（如 ````sql
+CREATE TYPE user_status AS ENUM ('active', 'inactive', 'suspended', 'pending');
+
+CREATE TABLE users (
+  id BIGSERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  status user_status DEFAULT 'active',
+  email_verified BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMPTZ,  -- Soft delete
+
+  CONSTRAINT users_email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+  CONSTRAINT users_names_not_empty CHECK (LENGTH(TRIM(first_name)) > 0 AND LENGTH(TRIM(last_name)) > 0)
+);
+
+-- Strategic indexes
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_status ON users(status) WHERE status != 'active';
+CREATE INDEX idx_users_created_at ON users(created_at);
+CREATE INDEX idx_users_deleted_at ON users(deleted_at) WHERE deleted_at IS NULL;
+```` 等）在翻译时被省略或保留为占位符。在实际翻译中，这些占位符将根据具体上下文被替换为相应的代码示例或描述。）

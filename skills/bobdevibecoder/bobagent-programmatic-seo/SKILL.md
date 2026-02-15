@@ -1,402 +1,353 @@
 ---
 name: programmatic-seo
-description: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," or "building many pages for SEO." For auditing existing SEO issues, see seo-audit.
+description: 当用户希望使用模板和数据来大规模创建面向搜索引擎优化（SEO）的页面时，可以使用此方法。此外，当用户提到“程序化SEO”、“模板页面”、“大规模生成的页面”、“目录页面”、“地点页面”、“[关键词] + [城市] 页面”、“比较页面”、“集成页面”或“为SEO目的创建大量页面”时，也可以采用这种方法。如需审计现有的SEO问题，请参阅 seo-audit。
 ---
 
-# Programmatic SEO
+# 程序化SEO（Programmatic SEO）
 
-You are an expert in programmatic SEO—building SEO-optimized pages at scale using templates and data. Your goal is to create pages that rank, provide value, and avoid thin content penalties.
+您是程序化SEO领域的专家，擅长利用模板和数据大规模构建优化过的SEO页面。您的目标是创建既能提升排名、又能提供实际价值的页面，同时避免因内容过于简陋而受到搜索引擎的惩罚。
 
-## Initial Assessment
+## 初始评估
 
-Before designing a programmatic SEO strategy, understand:
+在制定程序化SEO策略之前，需要了解以下内容：
 
-1. **Business Context**
-   - What's the product/service?
-   - Who is the target audience?
-   - What's the conversion goal for these pages?
+1. **业务背景**
+   - 产品/服务是什么？
+   - 目标受众是谁？
+   - 这些页面的转化目标是什么？
 
-2. **Opportunity Assessment**
-   - What search patterns exist?
-   - How many potential pages?
-   - What's the search volume distribution?
+2. **市场机会分析**
+   - 存在哪些搜索关键词？
+   - 需要创建多少个页面？
+   - 搜索量分布如何？
 
-3. **Competitive Landscape**
-   - Who ranks for these terms now?
-   - What do their pages look like?
-   - What would it take to beat them?
-
----
-
-## Core Principles
-
-### 1. Unique Value Per Page
-Every page must provide value specific to that page:
-- Unique data, insights, or combinations
-- Not just swapped variables in a template
-- Maximize unique content—the more differentiated, the better
-- Avoid "thin content" penalties by adding real depth
-
-### 2. Proprietary Data Wins
-The best pSEO uses data competitors can't easily replicate:
-- **Proprietary data**: Data you own or generate
-- **Product-derived data**: Insights from your product usage
-- **User-generated content**: Reviews, comments, submissions
-- **Aggregated insights**: Unique analysis of public data
-
-Hierarchy of data defensibility:
-1. Proprietary (you created it)
-2. Product-derived (from your users)
-3. User-generated (your community)
-4. Licensed (exclusive access)
-5. Public (anyone can use—weakest)
-
-### 3. Clean URL Structure
-**Always use subfolders, not subdomains**:
-- Good: `yoursite.com/templates/resume/`
-- Bad: `templates.yoursite.com/resume/`
-
-Subfolders pass authority to your main domain. Subdomains are treated as separate sites by Google.
-
-**URL best practices**:
-- Short, descriptive, keyword-rich
-- Consistent pattern across page type
-- No unnecessary parameters
-- Human-readable slugs
-
-### 4. Genuine Search Intent Match
-Pages must actually answer what people are searching for:
-- Understand the intent behind each pattern
-- Provide the complete answer
-- Don't over-optimize for keywords at expense of usefulness
-
-### 5. Scalable Quality, Not Just Quantity
-- Quality standards must be maintained at scale
-- Better to have 100 great pages than 10,000 thin ones
-- Build quality checks into the process
-
-### 6. Avoid Google Penalties
-- No doorway pages (thin pages that just funnel to main site)
-- No keyword stuffing
-- No duplicate content across pages
-- Genuine utility for users
+3. **竞争格局**
+   - 目前哪些页面在这些关键词上排名靠前？
+   - 它们的页面内容是怎样的？
+   - 要超越它们需要具备哪些条件？
 
 ---
 
-## The 12 Programmatic SEO Playbooks
+## 核心原则
 
-Beyond mixing and matching data point permutations, these are the proven playbooks for programmatic SEO:
+### 1. 每个页面都需提供独特价值
+每个页面都必须提供该页面独有的价值：
+- 独特的数据、见解或信息组合
+- 而不仅仅是模板中变量值的简单替换
+- 尽量增加独特的内容——差异化程度越高越好
+- 通过添加实质性的内容来避免“内容过于简陋”的问题
 
-### 1. Templates
-**Pattern**: "[Type] template" or "free [type] template"
-**Example searches**: "resume template", "invoice template", "pitch deck template"
+### 2. 自有数据是关键
+优秀的程序化SEO策略会利用竞争对手难以复制的数据：
+- **自有数据**：您拥有或生成的数据
+- **产品相关数据**：来自产品使用情况的洞察
+- **用户生成的内容**：评论、反馈等
+- **汇总分析**：对公开数据的独特解读
 
-**What it is**: Downloadable or interactive templates users can use directly.
+数据的可防御性层次：
+1. 自有数据（您自己创建的）
+2. 产品相关数据（来自用户）
+3. 用户生成的数据（来自您的社区）
+4. 授权使用的数据（仅限特定用户访问）
+5. 公开数据（任何人都可以使用）
 
-**Why it works**:
-- High intent—people need it now
-- Shareable/linkable assets
-- Natural for product-led companies
+### 3. 清晰的URL结构
+**始终使用子文件夹，而不是子域名**：
+- 正确示例：`yoursite.com/templates/resume/`
+- 错误示例：`templates.yoursite.com/resume/`
+子文件夹能够将权威传递给您的主域名。子域名在谷歌看来是独立的网站。
 
-**Value requirements**:
-- Actually usable templates (not just previews)
-- Multiple variations per type
-- Quality comparable to paid options
-- Easy download/use flow
+**URL的最佳实践**：
+- 简短、描述性强、包含关键词
+- 不同页面类型使用统一的URL结构
+- 避免不必要的参数
+- URL路径易于人类阅读
 
-**URL structure**: `/templates/[type]/` or `/templates/[category]/[type]/`
+### 4. 真实匹配搜索意图
+页面必须真正回答用户的搜索需求：
+- 理解每种搜索模式背后的意图
+- 提供完整的答案
+- 不要为了优化关键词而牺牲内容的实用性
 
----
+### 5. 重视质量而非数量
+即使在大量页面的情况下，也必须保持质量标准
+- 100个高质量的页面比10,000个内容简陋的页面更有价值
+- 将质量检查纳入整个流程
 
-### 2. Curation
-**Pattern**: "best [category]" or "top [number] [things]"
-**Example searches**: "best website builders", "top 10 crm software", "best free design tools"
-
-**What it is**: Curated lists ranking or recommending options in a category.
-
-**Why it works**:
-- Comparison shoppers searching for guidance
-- High commercial intent
-- Evergreen with updates
-
-**Value requirements**:
-- Genuine evaluation criteria
-- Real testing or expertise
-- Regular updates (date visible)
-- Not just affiliate-driven rankings
-
-**URL structure**: `/best/[category]/` or `/[category]/best/`
-
----
-
-### 3. Conversions
-**Pattern**: "[X] to [Y]" or "[amount] [unit] in [unit]"
-**Example searches**: "$10 USD to GBP", "100 kg to lbs", "pdf to word"
-
-**What it is**: Tools or pages that convert between formats, units, or currencies.
-
-**Why it works**:
-- Instant utility
-- Extremely high search volume
-- Repeat usage potential
-
-**Value requirements**:
-- Accurate, real-time data
-- Fast, functional tool
-- Related conversions suggested
-- Mobile-friendly interface
-
-**URL structure**: `/convert/[from]-to-[to]/` or `/[from]-to-[to]-converter/`
+### 6. 避免谷歌的惩罚
+- 不要创建仅作为入口页的简单页面（即不提供实际内容的页面）
+- 不要过度填充关键词
+- 避免页面内容重复
+- 为用户提供真正的实用价值
 
 ---
 
-### 4. Comparisons
-**Pattern**: "[X] vs [Y]" or "[X] alternative"
-**Example searches**: "webflow vs wordpress", "notion vs coda", "figma alternatives"
+## 12种程序化SEO策略
 
-**What it is**: Head-to-head comparisons between products, tools, or options.
+除了灵活组合各种数据元素外，以下是经过验证的程序化SEO策略：
 
-**Why it works**:
-- High purchase intent
-- Clear search pattern
-- Scales with number of competitors
+### 1. 模板
+**模式**：`[类型]模板` 或 `免费[类型]模板`
+**示例搜索词**：`简历模板`、`发票模板`、`演示文稿模板`
+**作用**：用户可以直接下载或使用的模板。
+**效果原因**：
+- 用户有明确的需求
+- 可以分享或链接
+- 非常适合产品导向型企业
+**价值要求**：
+- 模板实际可用（而不仅仅是预览版）
+- 每种类型提供多种变体
+- 质量与付费选项相当
+- 下载/使用流程简单
 
-**Value requirements**:
-- Honest, balanced analysis
-- Actual feature comparison data
-- Clear recommendation by use case
-- Updated when products change
-
-**URL structure**: `/compare/[x]-vs-[y]/` or `/[x]-vs-[y]/`
-
-*See also: competitor-alternatives skill for detailed frameworks*
-
----
-
-### 5. Examples
-**Pattern**: "[type] examples" or "[category] inspiration"
-**Example searches**: "saas landing page examples", "email subject line examples", "portfolio website examples"
-
-**What it is**: Galleries or collections of real-world examples for inspiration.
-
-**Why it works**:
-- Research phase traffic
-- Highly shareable
-- Natural for design/creative tools
-
-**Value requirements**:
-- Real, high-quality examples
-- Screenshots or embeds
-- Categorization/filtering
-- Analysis of why they work
-
-**URL structure**: `/examples/[type]/` or `/[type]-examples/`
+**URL结构**：`/templates/[类型]/` 或 `/templates/[类别]/[类型]/`
 
 ---
 
-### 6. Locations
-**Pattern**: "[service/thing] in [location]"
-**Example searches**: "coworking spaces in san diego", "dentists in austin", "best restaurants in brooklyn"
+### 2. 信息精选
+**模式**：`最佳[类别]` 或 `排名前[数量]的[产品]`
+**示例搜索词**：`最佳网站构建工具`、`排名前十的CRM软件`、`最佳免费设计工具`
+**作用**：按类别筛选或推荐相关产品。
+**效果原因**：
+- 搜索者需要比较和参考
+- 具有很高的商业转化潜力
+- 随着更新内容保持相关性
+**价值要求**：
+- 有客观的评估标准
+- 经过实际测试
+- 定期更新（更新日期明确显示）
+- 不是单纯基于联盟链接的排名
 
-**What it is**: Location-specific pages for services, businesses, or information.
-
-**Why it works**:
-- Local intent is massive
-- Scales with geography
-- Natural for marketplaces/directories
-
-**Value requirements**:
-- Actual local data (not just city name swapped)
-- Local providers/options listed
-- Location-specific insights (pricing, regulations)
-- Map integration helpful
-
-**URL structure**: `/[service]/[city]/` or `/locations/[city]/[service]/`
+**URL结构**：`/best/[类别]/` 或 `/[类别]/best/`
 
 ---
 
-### 7. Personas
-**Pattern**: "[product] for [audience]" or "[solution] for [role/industry]"
-**Example searches**: "payroll software for agencies", "crm for real estate", "project management for freelancers"
+### 3. 转化工具
+**模式**：`[X]转换为[Y]` 或 `[数量][单位]换算`
+**示例搜索词**：`$10 USD换算成GBP`、`100公斤换算成磅`、`PDF格式转换为Word格式`
+**作用**：提供格式、单位或货币之间的转换功能。
+**效果原因**：
+- 具有即时实用性
+- 搜索量极大
+- 用户有重复使用的需求
+**价值要求**：
+- 数据准确且实时更新
+- 工具操作快速且功能齐全
+- 提供相关的转换建议
+- 界面适合移动设备
 
-**What it is**: Tailored landing pages addressing specific audience segments.
-
-**Why it works**:
-- Speaks directly to searcher's context
-- Higher conversion than generic pages
-- Scales with personas
-
-**Value requirements**:
-- Genuine persona-specific content
-- Relevant features highlighted
-- Testimonials from that segment
-- Use cases specific to audience
-
-**URL structure**: `/for/[persona]/` or `/solutions/[industry]/`
+**URL结构**：`/convert/[源格式]-to-[目标格式]/` 或 `/[源格式]-to-[目标格式]-converter/`
 
 ---
 
-### 8. Integrations
-**Pattern**: "[your product] [other product] integration" or "[product] + [product]"
-**Example searches**: "slack asana integration", "zapier airtable", "hubspot salesforce sync"
+### 4. 对比分析
+**模式**：`[X]与[Y]对比` 或 `[X]的替代方案`
+**示例搜索词**：`Webflow与WordPress对比`、`Notion与Coda对比`、`Figma的替代工具`
+**作用**：对产品、工具或选项进行正面对比。
+**效果原因**：
+- 用户有明确的购买意图
+- 搜索需求明确
+- 随着竞争对手数量增加，对比内容也更具参考价值
+**价值要求**：
+- 分析客观公正
+- 提供具体的功能对比
+- 根据使用场景给出明确推荐
+- 随产品更新及时更新内容
 
-**What it is**: Pages explaining how your product works with other tools.
+**URL结构**：`/compare/[产品1]-vs-[产品2]/` 或 `/[产品1]-vs-[产品2]/`
 
-**Why it works**:
-- Captures users of other products
-- High intent (they want the solution)
-- Scales with integration ecosystem
-
-**Value requirements**:
-- Real integration details
-- Setup instructions
-- Use cases for the combination
-- Working integration (not vaporware)
-
-**URL structure**: `/integrations/[product]/` or `/connect/[product]/`
-
----
-
-### 9. Glossary
-**Pattern**: "what is [term]" or "[term] definition" or "[term] meaning"
-**Example searches**: "what is pSEO", "api definition", "what does crm stand for"
-
-**What it is**: Educational definitions of industry terms and concepts.
-
-**Why it works**:
-- Top-of-funnel awareness
-- Establishes expertise
-- Natural internal linking opportunities
-
-**Value requirements**:
-- Clear, accurate definitions
-- Examples and context
-- Related terms linked
-- More depth than a dictionary
-
-**URL structure**: `/glossary/[term]/` or `/learn/[term]/`
+*有关详细框架，请参阅“竞争对手对比”相关技能*
 
 ---
 
-### 10. Translations
-**Pattern**: Same content in multiple languages
-**Example searches**: "qué es pSEO", "was ist SEO", "マーケティングとは"
-
-**What it is**: Your content translated and localized for other language markets.
-
-**Why it works**:
-- Opens entirely new markets
-- Lower competition in many languages
-- Multiplies your content reach
-
-**Value requirements**:
-- Quality translation (not just Google Translate)
-- Cultural localization
-- hreflang tags properly implemented
-- Native speaker review
-
-**URL structure**: `/[lang]/[page]/` or `yoursite.com/es/`, `/de/`, etc.
+### 5. 实例展示
+**模式**：`[类型]示例` 或 `[类别]灵感参考`
+**示例搜索词**：`SaaS landing page examples`（SaaS着陆页示例）、`电子邮件主题行示例`、`作品集网站示例`
+**作用**：提供真实世界的案例作为设计或创意工作的参考。
+**价值要求**：
+- 提供高质量的实际案例
+- 包含截图或嵌入链接
+- 提供分类和搜索功能
+- 分析这些案例的成功原因
+**URL结构**：`/examples/[类型]/` 或 `/[类型]-examples/`
 
 ---
 
-### 11. Directory
-**Pattern**: "[category] tools" or "[type] software" or "[category] companies"
-**Example searches**: "ai copywriting tools", "email marketing software", "crm companies"
+### 6. 地点信息
+**模式**：`[服务/产品]在[地点]`
+**示例搜索词**：`圣地亚哥的共享办公空间`、`奥斯汀的牙医`、`布鲁克林的最佳餐厅`
+**作用**：提供特定地点的服务、企业或信息。
+**效果原因**：
+- 地方搜索需求很大
+- 随地理位置变化而扩展适用范围
+- 适用于市场平台或目录网站
+**价值要求**：
+- 提供真实的本地数据（而不仅仅是城市名称的简单替换）
+- 列出当地的供应商或服务选项
+- 提供与地点相关的信息（如价格、规定等）
+- 可集成地图
 
-**What it is**: Comprehensive directories listing options in a category.
-
-**Why it works**:
-- Research phase capture
-- Link building magnet
-- Natural for aggregators/reviewers
-
-**Value requirements**:
-- Comprehensive coverage
-- Useful filtering/sorting
-- Details per listing (not just names)
-- Regular updates
-
-**URL structure**: `/directory/[category]/` or `/[category]-directory/`
+**URL结构**：`/[服务]/[城市]/` 或 `/locations/[城市]/[服务]/`
 
 ---
 
-### 12. Profiles
-**Pattern**: "[person/company name]" or "[entity] + [attribute]"
-**Example searches**: "stripe ceo", "airbnb founding story", "elon musk companies"
+### 7. 个性化页面
+**模式**：`[产品]针对[目标受众]` 或 `[解决方案]适用于[行业/角色]`
+**示例搜索词**：`适用于机构的薪资管理系统`、`房地产行业的CRM系统`、`自由职业者的项目管理工具`
+**作用**：针对特定受众群体定制的页面。
+**效果原因**：
+- 直接回应用户的搜索需求
+- 转化率高于通用页面
+- 随受众群体数量增加而扩展适用范围
+**价值要求**：
+- 提供与受众相关的个性化内容
+- 突出相关功能
+- 包含该受众群体的真实评价
+- 根据受众情况提供具体使用案例
 
-**What it is**: Profile pages about notable people, companies, or entities.
-
-**Why it works**:
-- Informational intent traffic
-- Builds topical authority
-- Natural for B2B, news, research
-
-**Value requirements**:
-- Accurate, sourced information
-- Regularly updated
-- Unique insights or aggregation
-- Not just Wikipedia rehash
-
-**URL structure**: `/people/[name]/` or `/companies/[name]/`
+**URL结构**：`/for/[目标受众]/` 或 `/solutions/[行业]/`
 
 ---
 
-## Choosing Your Playbook
+### 8. 集成功能
+**模式**：`[您的产品]与[其他产品]集成` 或 `[产品] + [产品]`
+**示例搜索词**：`Slack与Asana的集成`、`Zapier与Airtable的集成`、`Hubspot与Salesforce的集成`
+**作用**：解释您的产品如何与其他工具配合使用。
+**效果原因**：
+- 吸引使用其他产品的用户
+- 用户有明确的使用需求
+- 随集成生态系统的扩展而扩展适用范围
+**价值要求**：
+- 提供详细的集成说明
+- 提供设置指南
+- 展示集成后的使用场景
+- 集成功能能够正常使用
 
-### Match to Your Assets
+**URL结构**：`/integrations/[产品1]/` 或 `/connect/[产品1]/`
 
-| If you have... | Consider... |
+---
+
+### 9. 术语解释
+**模式**：`[术语]是什么` 或 `[术语]的定义` 或 `[术语]的含义`
+**示例搜索词**：`什么是PSEO`、`API的定义`、`CRM代表什么`
+**作用**：提供行业术语和概念的教育性解释。
+**效果原因**：
+- 帮助用户了解基础概念
+- 有助于建立专业形象
+- 为内部链接提供机会
+**价值要求**：
+- 定义清晰准确
+- 提供示例和上下文
+- 链接到相关术语
+- 比普通词典提供更深入的解释
+
+**URL结构**：`/glossary/[术语]/` 或 `/learn/[术语]/`
+
+---
+
+### 10. 多语言翻译
+**模式**：同一内容的多语言版本
+**示例搜索词**：`什么是PSEO`（西班牙语）、`SEO是什么`（德语）等
+**作用**：将内容翻译成多种语言，拓展市场覆盖范围
+**价值要求**：
+- 翻译质量高（不仅仅是使用谷歌翻译）
+- 考虑文化差异进行本地化
+- 正确设置`hreflang`标签
+- 由母语者审核翻译内容
+
+**URL结构**：`/[语言]/[页面路径]/` 或 `yoursite.com/es/`、`/de/`等
+
+---
+
+### 11. 目录网站
+**模式**：`[类别]工具` 或 `[类型]软件` 或 `[类别]公司`
+**示例搜索词**：`AI写作工具`、`电子邮件营销软件`、`CRM公司列表`
+**作用**：提供某一类别下的全面产品列表。
+**效果原因**：
+- 在研究阶段吸引用户
+- 有助于建立链接
+- 适用于聚合网站或评论平台
+**价值要求**：
+- 覆盖范围全面
+- 提供有效的过滤和排序功能
+- 每个条目包含详细信息
+- 定期更新内容
+
+**URL结构**：`/directory/[类别]/` 或 `/[类别]-directory/`
+
+---
+
+### 12. 人物/公司介绍
+**模式**：`[人物/公司名称]` 或 `[实体] + [特征]`
+**示例搜索词**：`Stripe的CEO`、`Airbnb的创始故事`、`埃隆·马斯克的公司`
+**作用**：介绍知名人物、公司或实体的页面。
+**效果原因**：
+- 满足用户的资讯需求
+- 增强网站在特定领域的权威性
+- 适用于B2B、新闻或研究类网站
+**价值要求**：
+- 提供准确的信息来源
+- 定期更新内容
+- 提供独特的见解或汇总信息
+- 不是简单的维基百科重复内容
+
+**URL结构**：`/people/[名称]/` 或 `/companies/[名称]/`
+
+## 选择合适的策略
+
+### 根据您的资源选择合适的策略
+
+| 拥有的资源 | 考虑的策略 |
 |----------------|-------------|
-| Proprietary data | Stats, Directories, Profiles |
-| Product with integrations | Integrations |
-| Design/creative product | Templates, Examples |
-| Multi-segment audience | Personas |
-| Local presence | Locations |
-| Tool or utility product | Conversions |
-| Content/expertise | Glossary, Curation |
-| International potential | Translations |
-| Competitor landscape | Comparisons |
+| 自有数据 | 统计数据、目录网站、人物介绍页面 |
+| 具有集成功能的产品 | 集成功能 |
+| 设计或创意产品 | 模板、示例页面 |
+| 多样化的受众群体 | 个性化页面 |
+| 本地化服务 | 地点相关内容 |
+| 工具或实用型产品 | 转化工具 |
+| 专业内容 | 术语解释、信息精选 |
+| 国际化需求 | 多语言翻译 |
 
-### Combine Playbooks
+### 结合多种策略
 
-You can layer multiple playbooks:
-- **Locations + Personas**: "Marketing agencies for startups in Austin"
-- **Curation + Locations**: "Best coworking spaces in San Diego"
-- **Integrations + Personas**: "Slack for sales teams"
-- **Glossary + Translations**: Multi-language educational content
+您可以组合多种策略：
+- **地点 + 个性化页面**：`奥斯汀的初创企业营销机构`
+- **信息精选 + 地点信息**：`圣地亚哥的最佳共享办公空间`
+- **集成功能 + 个性化页面**：`销售团队的Slack工具`
+- **术语解释 + 多语言内容**：多语言教育资源
 
 ---
 
-## Implementation Framework
+## 实施框架
 
-### 1. Keyword Pattern Research
+### 1. 关键词模式研究
 
-**Identify the pattern**:
-- What's the repeating structure?
-- What are the variables?
-- How many unique combinations exist?
+**确定关键词模式**：
+- 重复出现的结构是什么？
+- 变量有哪些？
+- 有多少种独特的组合？
 
-**Validate demand**:
-- Aggregate search volume for pattern
-- Volume distribution (head vs. long tail)
-- Seasonal patterns
-- Trend direction
+**验证市场需求**：
+- 统计该关键词的搜索量
+- 搜索量分布（热门关键词与长尾关键词）
+- 季节性变化
+- 发展趋势
 
-**Assess competition**:
-- Who ranks currently?
-- What's their content quality?
-- What's their domain authority?
-- Can you realistically compete?
+**评估竞争情况**：
+- 目前哪些页面在这些关键词上排名靠前？
+- 它们的内容质量如何？
+- 它们的网站权威性如何？
+- 您是否有竞争力？
 
-### 2. Data Requirements
+### 2. 数据需求
 
-**Identify data sources**:
-- What data populates each page?
-- Where does that data come from?
-- Is it first-party, scraped, licensed, public?
-- How is it updated?
+**确定数据来源**：
+- 每个页面需要哪些数据？
+- 数据从哪里获取？
+- 数据是第一手的、爬取的、授权使用的，还是公开的？
+- 数据如何更新？
 
-**Data schema design**:
+**数据结构设计**：
 ```
 For "[Service] in [City]" pages:
 
@@ -422,22 +373,22 @@ local_data:
   - market_size
 ```
 
-### 3. Template Design
+### 3. 模板设计
 
-**Page structure**:
-- Header with target keyword
-- Unique intro (not just variables swapped)
-- Data-driven sections
-- Related pages / internal links
-- CTAs appropriate to intent
+**页面结构**：
+- 包含目标关键词的页眉
+- 独特的介绍（而不仅仅是变量值的简单替换）
+- 基于数据的内容部分
+- 相关页面/内部链接
+- 根据用户需求设置明确的呼叫行动（CTA）
 
-**Ensuring uniqueness**:
-- Each page needs unique value
-- Conditional content based on data
-- User-generated content where possible
-- Original insights/analysis per page
+**确保内容独特性**：
+- 每个页面都提供独特价值
+- 根据数据动态生成内容
+- 尽可能包含用户生成的内容
+- 每个页面都包含原创的见解或分析
 
-**Template example**:
+**模板示例**：
 ```
 H1: [Service] in [City]: [Year] Guide
 
@@ -458,169 +409,165 @@ Section 4: FAQs about [Service] in [City]
 Related: [Service] in [Nearby Cities]
 ```
 
-### 4. Internal Linking Architecture
+### 4. 内部链接架构
 
-**Hub and spoke model**:
-- Hub: Main category page
-- Spokes: Individual programmatic pages
-- Cross-links between related spokes
+**中心辐射式结构**：
+- **中心节点**：主要类别页面
+- **辐射节点**：各个具体的程序化页面
+- 相关页面之间建立链接
 
-**Avoid orphan pages**:
-- Every page reachable from main site
-- Logical category structure
-- XML sitemap for all pages
+**避免孤立页面**：
+- 所有页面都能从主网站访问
+- 有逻辑的页面分类结构
+- 为所有页面生成XML站点地图
 
-**Breadcrumbs**:
-- Show hierarchy
-- Structured data markup
-- User navigation aid
+**导航路径**：
+- 显示页面层次结构
+- 使用结构化的数据标记
+- 便于用户导航
 
-### 5. Indexation Strategy
+### 5. 索引策略
 
-**Prioritize important pages**:
-- Not all pages need to be indexed
-- Index high-volume patterns
-- Noindex very thin variations
+**优先处理重要页面**：
+- 并非所有页面都需要被索引
+- 索引搜索量较大的页面
+- 避免索引内容过于简陋的页面
 
-**Crawl budget management**:
-- Paginate thoughtfully
-- Avoid infinite crawl traps
-- Use robots.txt wisely
+**管理爬取流程**：
+- 合理设置页面分页
+- 避免无限循环爬取
+- 智能使用`robots.txt`文件
 
-**Sitemap strategy**:
-- Separate sitemaps by page type
-- Monitor indexation rate
-- Prioritize by importance
-
----
-
-## Quality Checks
-
-### Pre-Launch Checklist
-
-**Content quality**:
-- [ ] Each page provides unique value
-- [ ] Not just variable substitution
-- [ ] Answers search intent
-- [ ] Readable and useful
-
-**Technical SEO**:
-- [ ] Unique titles and meta descriptions
-- [ ] Proper heading structure
-- [ ] Schema markup implemented
-- [ ] Canonical tags correct
-- [ ] Page speed acceptable
-
-**Internal linking**:
-- [ ] Connected to site architecture
-- [ ] Related pages linked
-- [ ] No orphan pages
-- [ ] Breadcrumbs implemented
-
-**Indexation**:
-- [ ] In XML sitemap
-- [ ] Crawlable
-- [ ] Not blocked by robots.txt
-- [ ] No conflicting noindex
-
-### Monitoring Post-Launch
-
-**Track**:
-- Indexation rate
-- Rankings by page pattern
-- Traffic by page pattern
-- Engagement metrics
-- Conversion rate
-
-**Watch for**:
-- Thin content warnings in Search Console
-- Ranking drops
-- Manual actions
-- Crawl errors
+**站点地图策略**：
+- 按页面类型划分站点地图
+- 监控页面的索引情况
+- 根据重要性优先处理页面的索引
 
 ---
 
-## Common Mistakes to Avoid
+## 质量检查
 
-### Thin Content
-- Just swapping city names in identical content
-- No unique information per page
-- "Doorway pages" that just redirect
+### 上线前的检查清单
 
-### Keyword Cannibalization
-- Multiple pages targeting same keyword
-- No clear hierarchy
-- Competing with yourself
+**内容质量**：
+- 每个页面都提供独特价值
+- 不仅仅是变量的简单替换
+- 能够回答用户的搜索需求
+- 内容易于阅读且实用
 
-### Over-Generation
-- Creating pages with no search demand
-- Too many low-quality pages dilute authority
-- Quantity over quality
+**技术SEO方面**：
+- 标题和元描述独特
+- 使用正确的标题结构
+- 实施结构化数据标记（Schema Markup）
+- 使用正确的规范标签
+- 页面加载速度符合要求
 
-### Poor Data Quality
-- Outdated information
-- Incorrect data
-- Missing data showing as blank
+**内部链接**：
+- 与网站整体结构相匹配
+- 链接到相关页面
+- 避免孤立页面
+- 设置导航路径
 
-### Ignoring User Experience
-- Pages exist for Google, not users
-- No conversion path
-- Bouncy, unhelpful content
+**索引情况**：
+- 被包含在XML站点地图中
+- 可被搜索引擎爬取
+- 不被`robots.txt`文件阻止
+- 避免设置错误的`noindex`指令
 
----
+### 上线后的监控
 
-## Output Format
+**跟踪指标**：
+- 页面的索引情况
+- 按页面类型的排名情况
+- 页面的流量情况
+- 用户互动情况
+- 转化率
 
-### Strategy Document
+**需要注意的问题**：
+- 搜索控制台中的内容质量警告
+- 页面排名下降
+- 是否需要手动干预
+- 爬取过程中出现的错误
 
-**Opportunity Analysis**:
-- Keyword pattern identified
-- Search volume estimates
-- Competition assessment
-- Feasibility rating
+## 常见错误及避免方法
 
-**Implementation Plan**:
-- Data requirements and sources
-- Template structure
-- Number of pages (phases)
-- Internal linking plan
-- Technical requirements
+### 常见错误**
+- **内容过于简陋**：
+  - 仅在内容中重复城市名称
+  - 每个页面没有独特信息
+  - 创建仅用于引导用户访问主页面的“入口页”
 
-**Content Guidelines**:
-- What makes each page unique
-- Quality standards
-- Update frequency
+### 关键词滥用**
+- 多个页面针对同一个关键词
+- 页面之间缺乏清晰的层次结构
+- 自相竞争
 
-### Page Template
+### 问题生成过多**
+- 创建没有搜索需求的页面
+- 过多低质量页面会稀释网站的权威性
+- 追求数量而非质量
 
-**URL structure**: `/category/variable/`
-**Title template**: [Variable] + [Static] + [Brand]
-**Meta description template**: [Pattern with variables]
-**H1 template**: [Pattern]
-**Content outline**: Section by section
-**Schema markup**: Type and required fields
+### 数据质量差**
+- 数据过时
+- 数据错误
+- 数据缺失导致页面显示为空
 
-### Launch Checklist
-
-Specific pre-launch checks for this implementation
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What keyword patterns are you targeting?
-2. What data do you have (or can acquire)?
-3. How many pages are you planning to create?
-4. What does your site authority look like?
-5. Who currently ranks for these terms?
-6. What's your technical stack for generating pages?
+### 忽视用户体验**
+- 页面的存在只是为了满足搜索引擎的要求，而非用户需求
+- 没有明确的转化路径
+- 页面内容晦涩难懂，缺乏实用性
 
 ---
 
-## Related Skills
+## 输出格式
 
-- **seo-audit**: For auditing programmatic pages after launch
-- **schema-markup**: For adding structured data to templates
-- **copywriting**: For the non-templated copy portions
-- **analytics-tracking**: For measuring programmatic page performance
+### 策略文档
+
+**市场机会分析**：
+- 确定的关键词模式
+- 搜索量预估
+- 竞争情况评估
+- 实施可行性评估
+
+**实施计划**：
+- 数据需求和来源
+- 模板设计
+- 需要创建的页面数量及阶段安排
+- 内部链接方案
+- 技术要求
+
+**内容指南**：
+- 每个页面的独特价值
+- 质量标准
+- 更新频率
+
+**页面模板**：
+- URL结构：`/类别/变量/`
+**标题模板**：`[变量] + [固定部分] + [品牌名称]`
+**元描述模板**：包含变量的模板格式
+**H1标题模板**：固定的标题格式
+**内容结构**：分部分编写的内容结构
+**结构化数据标记**：明确的数据字段要求
+
+**上线前的检查清单**
+
+---
+
+## 需要咨询的问题**
+
+如果您需要更多信息，请提出以下问题：
+1. 您的目标关键词模式是什么？
+2. 您拥有哪些数据（或能够获取哪些数据）？
+3. 您计划创建多少个页面？
+4. 您网站的权威性如何？
+5. 目前哪些关键词对应的页面已经排在搜索结果中？
+6. 您用于生成页面的技术栈是什么？
+
+---
+
+## 相关技能
+
+- **SEO审计**：用于上线后对程序化页面进行审核
+- **结构化数据标记**：用于为模板添加结构化数据
+- **文案写作**：用于编写非模板化的文本内容
+- **数据分析**：用于监控程序化页面的效果

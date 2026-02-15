@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Profiles - Ruby
+# Telnyx 消息传递配置文件 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,9 +31,9 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List messaging profiles
+## 列出消息传递配置文件
 
 `GET /messaging_profiles`
 
@@ -43,9 +43,9 @@ page = client.messaging_profiles.list
 puts(page)
 ```
 
-## Create a messaging profile
+## 创建消息传递配置文件
 
-`POST /messaging_profiles` — Required: `name`, `whitelisted_destinations`
+`POST /messaging_profiles` — 必需参数：`name`、`whitelisted_destinations`
 
 ```ruby
 messaging_profile = client.messaging_profiles.create(name: "My name", whitelisted_destinations: ["US"])
@@ -53,9 +53,9 @@ messaging_profile = client.messaging_profiles.create(name: "My name", whiteliste
 puts(messaging_profile)
 ```
 
-## Retrieve a messaging profile
+## 获取消息传递配置文件
 
-`GET /messaging_profiles/{id}`
+`GET /messagingprofiles/{id}`
 
 ```ruby
 messaging_profile = client.messaging_profiles.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -63,9 +63,9 @@ messaging_profile = client.messaging_profiles.retrieve("182bd5e5-6e1a-4fe4-a799-
 puts(messaging_profile)
 ```
 
-## Update a messaging profile
+## 更新消息传递配置文件
 
-`PATCH /messaging_profiles/{id}`
+`PATCH /messagingprofiles/{id}`
 
 ```ruby
 messaging_profile = client.messaging_profiles.update("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -73,9 +73,9 @@ messaging_profile = client.messaging_profiles.update("182bd5e5-6e1a-4fe4-a799-aa
 puts(messaging_profile)
 ```
 
-## Delete a messaging profile
+## 删除消息传递配置文件
 
-`DELETE /messaging_profiles/{id}`
+`DELETE /messagingprofiles/{id}`
 
 ```ruby
 messaging_profile = client.messaging_profiles.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -83,9 +83,9 @@ messaging_profile = client.messaging_profiles.delete("182bd5e5-6e1a-4fe4-a799-aa
 puts(messaging_profile)
 ```
 
-## List phone numbers associated with a messaging profile
+## 列出与消息传递配置文件关联的电话号码
 
-`GET /messaging_profiles/{id}/phone_numbers`
+`GET /messagingprofiles/{id}/phone_numbers`
 
 ```ruby
 page = client.messaging_profiles.list_phone_numbers("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -93,9 +93,9 @@ page = client.messaging_profiles.list_phone_numbers("182bd5e5-6e1a-4fe4-a799-aa6
 puts(page)
 ```
 
-## List short codes associated with a messaging profile
+## 列出与消息传递配置文件关联的短代码
 
-`GET /messaging_profiles/{id}/short_codes`
+`GET /messagingprofiles/{id}/short_codes`
 
 ```ruby
 page = client.messaging_profiles.list_short_codes("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -103,9 +103,9 @@ page = client.messaging_profiles.list_short_codes("182bd5e5-6e1a-4fe4-a799-aa6d9
 puts(page)
 ```
 
-## List Auto-Response Settings
+## 列出自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs`
+`GET /messagingprofiles/{profile_id}/autoresp_configs`
 
 ```ruby
 autoresp_configs = client.messaging_profiles.autoresp_configs.list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -113,9 +113,9 @@ autoresp_configs = client.messaging_profiles.autoresp_configs.list("182bd5e5-6e1
 puts(autoresp_configs)
 ```
 
-## Create auto-response setting
+## 创建自动应答设置
 
-`POST /messaging_profiles/{profile_id}/autoresp_configs` — Required: `op`, `keywords`, `country_code`
+`POST /messagingprofiles/{profile_id}/autoresp_configs` — 必需参数：`op`、`keywords`、`country_code`
 
 ```ruby
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.create(
@@ -128,9 +128,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.create(
 puts(auto_resp_config_response)
 ```
 
-## Get Auto-Response Setting
+## 获取自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`GET /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```ruby
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.retrieve(
@@ -141,9 +141,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.retrieve(
 puts(auto_resp_config_response)
 ```
 
-## Update Auto-Response Setting
+## 更新自动应答设置
 
-`PUT /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — Required: `op`, `keywords`, `country_code`
+`PUT /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — 必需参数：`op`、`keywords`、`country_code`
 
 ```ruby
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.update(
@@ -157,9 +157,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.update(
 puts(auto_resp_config_response)
 ```
 
-## Delete Auto-Response Setting
+## 删除自动应答设置
 
-`DELETE /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`DELETE /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```ruby
 autoresp_config = client.messaging_profiles.autoresp_configs.delete(
@@ -170,7 +170,7 @@ autoresp_config = client.messaging_profiles.autoresp_configs.delete(
 puts(autoresp_config)
 ```
 
-## List short codes
+## 列出所有短代码
 
 `GET /short_codes`
 
@@ -180,7 +180,7 @@ page = client.short_codes.list
 puts(page)
 ```
 
-## Retrieve a short code
+## 获取特定短代码的信息
 
 `GET /short_codes/{id}`
 
@@ -190,11 +190,9 @@ short_code = client.short_codes.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 puts(short_code)
 ```
 
-## Update short code
+## 更新短代码的设置
 
-Update the settings for a specific short code.
-
-`PATCH /short_codes/{id}` — Required: `messaging_profile_id`
+`PATCH /short_codes/{id}` — 必需参数：`messaging_profile_id`
 
 ```ruby
 short_code = client.short_codes.update(

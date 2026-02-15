@@ -1,11 +1,11 @@
-# My First Skill
+# 我的第一个技能（My First Skill）
 
-## Description
-This is a demo MoltHub skill.
+## 描述
+这是一个用于演示 MoltHub 功能的示例技能。
 
-## Capabilities
-- Responds to prompts
-- Demonstrates publishing workflow
+## 功能特性
+- 能够响应用户的指令
+- 可以展示发布内容的工作流程
 
-## Usage
-Use this skill to test publishing.
+## 使用方法
+使用此技能来测试发布功能。

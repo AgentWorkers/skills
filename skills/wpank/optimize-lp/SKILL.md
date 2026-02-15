@@ -1,57 +1,55 @@
 ---
 name: optimize-lp
-description: Get the optimal LP strategy for a token pair — recommends version (V2/V3/V4), fee tier, range width, and rebalance approach based on pair characteristics, historical data, and risk tolerance. Use when the user asks how to LP, what range to use, or which version/fee tier is best.
+description: 根据代币对的特征、历史数据以及用户的风险承受能力，为用户推荐最佳的长期持有（LP, Long Position）策略。该策略会考虑版本（V2/V3/V4）、费用等级、价格波动范围以及再平衡方法等因素。适用于用户询问如何进行长期持有、应选择何种价格波动范围或哪种版本/费用等级的情况。
 model: opus
 allowed-tools: [Task(subagent_type:lp-strategist)]
 ---
 
-# Optimize LP
+# 优化流动性提供（LP Optimization）
 
-## Overview
+## 概述
 
-Provides a focused, actionable LP strategy recommendation for a specific token pair. Delegates to the `lp-strategist` agent, which analyzes pair volatility, evaluates version options, selects the optimal fee tier, calculates the best range width, and designs a rebalance strategy — all backed by on-chain data and risk analysis.
+本技能为特定的代币对提供针对性的、可执行的流动性提供（LP）策略建议。该建议由 `lp-strategist` 代理负责执行，该代理会分析代币对的波动性、评估不同版本的费用结构、选择最优的费用等级、计算最佳的价格波动范围，并设计相应的再平衡策略——所有这些决策都基于链上数据和风险分析。
 
-This skill answers the question: **"How should I LP into X/Y?"** with a concrete, implementable answer.
+本技能能够回答如下问题：“我应该如何将 **X** 代币转换为 **Y** 代币以实现流动性提供？” 并给出具体、可操作的解决方案。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，可激活此技能：
+- “ETH/USDC 的最佳流动性提供策略是什么？”
+- “我应该如何将 1 万美元转换为 ETH/USDC？”
+- “WETH/USDC 的价格波动范围应该设置得窄还是宽？”
+- “对于这个代币对，应该选择 V2 版本还是 V3 版本？”
+- “UNI/ETH 的费用等级应该设为多少？”
+- “如何优化我的 ETH/USDC 流动性提供策略？”
+- “我应该为我的 ETH/USDC 持仓设置多大的价格波动范围？”
+- “对于这个代币对，是否应该使用集中式流动性提供方式？”
 
-- "Best LP strategy for ETH/USDC"
-- "How should I LP $10K into ETH/USDC?"
-- "Tight or wide range for WETH/USDC?"
-- "V2 or V3 for this pair?"
-- "What fee tier should I use for UNI/WETH?"
-- "Optimize my LP approach for X/Y"
-- "What range should I set for my ETH/USDC position?"
-- "Should I use concentrated liquidity for this pair?"
+## 参数
 
-## Parameters
+| 参数                          | 是否必填 | 默认值         | 提取方式                                      |
+| --------------------------- | -------- | ------------ | ------------------------------------------------------- |
+| token0         | 是       | —            | 第一个代币：ETH、WETH、USDC 或者 0x 地址                       |
+| token1         | 是       | —            | 第二个代币                                      |
+| capital        | 否       | —            | 流动性提供金额：例如 “1 万美元”、“5 个 ETH” 或 “5 万美元”                |
+| chain          | 否       | ethereum      | 交易链，例如 “ethereum”、“base”、“arbitrum” 等                    |
+| riskTolerance  | 否       | 中等（moderate）     | 风险容忍度：保守（conservative）、中等（moderate）、激进（aggressive）           |
 
-| Parameter      | Required | Default    | How to Extract                                          |
-| -------------- | -------- | ---------- | ------------------------------------------------------- |
-| token0         | Yes      | —          | First token: "ETH", "WETH", "USDC", or 0x address      |
-| token1         | Yes      | —          | Second token                                            |
-| capital        | No       | —          | Amount to LP: "$10K", "5 ETH", "$50,000"                |
-| chain          | No       | ethereum   | "ethereum", "base", "arbitrum", etc.                    |
-| riskTolerance  | No       | moderate   | "conservative", "moderate", "aggressive"                |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：确定代币对、流动性提供金额（如果已提供）、交易链以及风险容忍度。
+2. **委托给 `lp-strategist` 代理**：使用相关参数调用 `Task(subagent_type:lp-strategist)`。代理将执行以下 7 个步骤的分析：
+   - 对代币对进行分类（稳定-稳定、稳定-波动、波动-波动）
+   - 评估 V2、V3 和 V4 版本之间的优缺点
+   - 根据数据选择最优的费用等级
+   - 计算价格波动范围，确保该范围在 80% 的时间内处于指定范围内
+   - 设计再平衡策略，并考虑交易手续费成本
+   | 获取独立的风险评估结果
+   | 提供保守/中等/乐观的策略建议
 
-1. **Extract parameters** from the user's request. Identify the token pair, capital amount (if mentioned), chain, and risk tolerance.
+3. **以清晰、可操作的形式呈现策略**：将分析结果以具体的数字和步骤形式呈现给用户。
 
-2. **Delegate to lp-strategist**: Invoke `Task(subagent_type:lp-strategist)` with the parameters. The agent performs a 7-step analysis:
-   - Classifies the pair (stable-stable, stable-volatile, volatile-volatile)
-   - Evaluates V2 vs V3 vs V4 tradeoffs
-   - Selects optimal fee tier with data backing
-   - Calculates range width targeting >80% time-in-range
-   - Designs rebalance strategy with gas cost analysis
-   - Gets independent risk assessment from risk-assessor
-   - Produces a recommendation with conservative/moderate/optimistic estimates
-
-3. **Present the strategy** as a clear, actionable recommendation with specific numbers.
-
-## Output Format
+## 输出格式
 
 ```text
 LP Strategy for WETH/USDC
@@ -87,19 +85,19 @@ LP Strategy for WETH/USDC
   Ready to add liquidity? Say "Add liquidity to WETH/USDC"
 ```
 
-## Important Notes
+## 重要说明
 
-- This skill provides a **strategy recommendation**, not execution. To act on it, use the `manage-liquidity` skill.
-- All APY estimates are based on historical data. Past performance does not guarantee future returns.
-- IL estimates are always shown alongside fee APY — never fee APY alone.
-- For small positions (<$1K), the recommendation accounts for gas costs eating into returns.
-- The lp-strategist internally delegates to `pool-researcher` for data and `risk-assessor` for risk evaluation.
+- 本技能仅提供策略建议，不负责实际的执行。如需执行该策略，请使用 `manage-liquidity` 技能。
+- 所有的年化收益率（APY）估计值均基于历史数据。过去的表现并不能保证未来的回报。
+- 在显示年化收益率时，会同时显示手续费年化收益率（IL）和费用年化收益率（fee APY），绝不会单独显示其中一项。
+- 对于小额持仓（<1 万美元），建议会考虑手续费对回报的影响。
+- `lp-strategist` 代理内部会委托 `pool-researcher` 负责数据收集，委托 `risk-assessor` 进行风险评估。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                                      | Suggested Action                     |
-| -------------------- | -------------------------------------------------------- | ------------------------------------ |
-| Token not found      | "Could not find token X on Uniswap."                    | Provide contract address             |
-| No pools exist       | "No pools found for X/Y on this chain."                  | Try different chain or check tokens  |
-| Insufficient data    | "Not enough historical data to produce a reliable strategy." | Pool may be too new              |
-| Agent unavailable    | "LP strategist is not available."                        | Check agent configuration            |
+| 错误类型                | 用户看到的提示信息                                      | 建议采取的措施                                      |
+| ---------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| 代币未找到                | “在 Uniswap 上找不到 X 代币。”                                      | 提供代币的合约地址                              |
+| 未找到合适的流动性提供池         | “在该交易链上找不到 X/Y 代币的流动性提供池。”                        | 尝试其他交易链或检查代币是否可用                        |
+| 数据不足                | “历史数据不足，无法生成可靠的策略。”                                  | 可能是因为流动性提供池成立时间较短                          |
+| 代理不可用                | “流动性提供策略代理当前不可用。”                                    | 检查代理的配置是否正常                            |

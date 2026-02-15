@@ -1,30 +1,30 @@
 ---
 name: k8s-multicluster
-description: Manage multiple Kubernetes clusters, switch contexts, and perform cross-cluster operations. Use when working with multiple clusters, comparing environments, or managing cluster lifecycle.
+description: 管理多个 Kubernetes 集群，切换上下文，并执行跨集群操作。适用于需要处理多个集群、比较不同环境或管理集群生命周期的场景。
 ---
 
-# Multi-Cluster Kubernetes Management
+# 多集群Kubernetes管理
 
-Cross-cluster operations and context management using kubectl-mcp-server's multi-cluster support.
+使用`kubectl-mcp-server`的多集群支持进行跨集群操作和上下文管理。
 
-## Context Management
+## 上下文管理
 
-### List Available Contexts
+### 列出可用上下文
 ```
 list_contexts_tool()
 ```
 
-### View Current Context
+### 查看当前上下文
 ```
 kubeconfig_view()  # Shows sanitized kubeconfig
 ```
 
-### Switch Context
-CLI: `kubectl-mcp-server context <context-name>`
+### 切换上下文
+CLI：`kubectl-mcp-server context <上下文名称>`
 
-## Cross-Cluster Operations
+## 跨集群操作
 
-All kubectl-mcp-server tools support the `context` parameter:
+所有`kubectl-mcp-server`工具都支持`context`参数：
 
 ```python
 # Get pods from production cluster
@@ -34,10 +34,9 @@ get_pods(namespace="default", context="production-cluster")
 get_pods(namespace="default", context="staging-cluster")
 ```
 
-## Common Multi-Cluster Patterns
+## 常见的多集群模式
 
-### Compare Environments
-
+### 比较环境
 ```
 # Compare deployment across clusters
 compare_namespaces(
@@ -48,9 +47,8 @@ compare_namespaces(
 )
 ```
 
-### Parallel Queries
-Query multiple clusters simultaneously:
-
+### 并发查询
+同时查询多个集群：
 ```
 # Production cluster
 get_pods(namespace="app", context="prod-us-east")
@@ -60,7 +58,7 @@ get_pods(namespace="app", context="prod-eu-west")
 get_pods(namespace="app", context="development")
 ```
 
-### Cross-Cluster Health Check
+### 跨集群健康检查
 ```
 # Check all clusters
 for context in ["prod-1", "prod-2", "staging"]:
@@ -68,32 +66,32 @@ for context in ["prod-1", "prod-2", "staging"]:
     get_pods(namespace="kube-system", context=context)
 ```
 
-## Cluster API (CAPI) Management
+## 集群API（CAPI）管理
 
-For managing cluster lifecycle:
+用于管理集群生命周期：
 
-### List Managed Clusters
+### 列出管理的集群
 ```
 capi_clusters_list_tool(namespace="capi-system")
 ```
 
-### Get Cluster Details
+### 获取集群详细信息
 ```
 capi_cluster_get_tool(name="prod-cluster", namespace="capi-system")
 ```
 
-### Get Workload Cluster Kubeconfig
+### 获取工作负载集群的Kubeconfig文件
 ```
 capi_cluster_kubeconfig_tool(name="prod-cluster", namespace="capi-system")
 ```
 
-### Machine Management
+### 机器管理
 ```
 capi_machines_list_tool(namespace="capi-system")
 capi_machinedeployments_list_tool(namespace="capi-system")
 ```
 
-### Scale Cluster
+### 扩展集群
 ```
 capi_machinedeployment_scale_tool(
     name="prod-cluster-md-0",
@@ -102,11 +100,11 @@ capi_machinedeployment_scale_tool(
 )
 ```
 
-See [CONTEXT-SWITCHING.md](CONTEXT-SWITCHING.md) for detailed patterns.
+有关详细模式，请参阅[CONTEXT-SWITCHING.md](CONTEXT-SWITCHING.md)。
 
-## Multi-Cluster Helm
+## 多集群Helm
 
-Deploy charts to specific clusters:
+将Helm图表部署到特定集群：
 ```
 install_helm_chart(
     name="nginx",
@@ -121,9 +119,9 @@ list_helm_releases(
 )
 ```
 
-## Multi-Cluster GitOps
+## 多集群GitOps
 
-### Flux Across Clusters
+### 在集群间传输数据流
 ```
 flux_kustomizations_list_tool(
     namespace="flux-system",
@@ -138,14 +136,14 @@ flux_reconcile_tool(
 )
 ```
 
-### ArgoCD Across Clusters
+### 在集群间使用ArgoCD
 ```
 argocd_apps_list_tool(namespace="argocd", context="management-cluster")
 ```
 
-## Federation Patterns
+## 联邦模式
 
-### Secret Synchronization
+### 机密同步
 ```
 # Read from source cluster
 get_secrets(namespace="app", context="source-cluster")
@@ -154,33 +152,33 @@ get_secrets(namespace="app", context="source-cluster")
 apply_manifest(secret_manifest, namespace="app", context="target-cluster")
 ```
 
-### Cross-Cluster Service Discovery
-With Cilium ClusterMesh or Istio multi-cluster:
+### 跨集群服务发现
+使用Cilium ClusterMesh或Istio实现多集群服务发现：
 ```
 cilium_nodes_list_tool(context="cluster-1")
 istio_proxy_status_tool(context="cluster-2")
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Naming Convention**: Use descriptive context names
-   - `prod-us-east-1`, `staging-eu-west-1`
+1. **命名规范**：使用描述性的上下文名称
+   - `prod-us-east-1`、`staging-eu-west-1`
 
-2. **Access Control**: Different kubeconfigs per environment
-   - Prod: Read-only for most users
-   - Dev: Full access for developers
+2. **访问控制**：为每个环境配置不同的Kubeconfig文件
+   - 生产环境：大多数用户仅具有读取权限
+   - 开发环境：开发人员具有完全访问权限
 
-3. **Always Specify Context**: Avoid accidental cross-cluster operations
+3. **始终指定上下文**：避免意外进行跨集群操作
    ```
    # Explicit is better
    get_pods(namespace="app", context="production")
    ```
 
-4. **Cluster Groups**: Organize by purpose
-   - Production: `prod-*`
-   - Staging: `staging-*`
-   - Development: `dev-*`
+4. **集群分组**：按用途进行分类
+   - 生产环境：`prod-*`
+   - 预发布环境：`staging-*`
+   - 开发环境：`dev-*`
 
-## Related Skills
-- [k8s-troubleshoot](../k8s-troubleshoot/SKILL.md) - Debug across clusters
-- [k8s-gitops](../k8s-gitops/SKILL.md) - GitOps multi-cluster
+## 相关技能
+- [k8s-troubleshoot](../k8s-troubleshoot/SKILL.md) - 跨集群调试
+- [k8s-gitops](../k8s-gitops/SKILL.md) - 多集群GitOps操作

@@ -1,40 +1,39 @@
 ---
 name: beeper
-description: Search chats, list/read messages, and send messages via Beeper Desktop using the beeper-cli.
+description: 使用 beeper-cli 在 Beeper Desktop 中搜索聊天记录、查看/阅读消息以及发送消息。
 metadata: {"clawdbot":{"requires":{"bins":["beeper"]}}}
 ---
 
 # beeper
 
-Use this skill when you need to search chats, list/read messages, or send messages via **Beeper Desktop**.
+当您需要通过 **Beeper Desktop** 搜索聊天记录、查看/读取消息或发送消息时，请使用此技能。
 
-## What this is
-A CLI wrapper around the Beeper Desktop API. No MCP, no curl — just `beeper` commands.
+## 功能简介
+这是一个基于 Beeper Desktop API 的命令行工具（CLI）封装层。无需使用 MCP 或 curl，只需使用 `beeper` 命令即可完成操作。
 
-Requires [beeper-cli](https://github.com/foeken/beeper-cli).
+**依赖项：** [beeper-cli](https://github.com/foeken/beeper-cli)
 
-## Prereqs
-- Beeper Desktop running with API enabled: Settings > Developers
-- [beeper-cli](https://github.com/foeken/beeper-cli) installed
-- Env var: `BEEPER_ACCESS_TOKEN` set (get from Beeper Desktop: Settings > Developers > API Access Token)
+## 先决条件
+- 确保 Beeper Desktop 已启用 API 功能（设置 > 开发者选项）
+- 安装 [beeper-cli](https://github.com/foeken/beeper-cli)
+- 设置环境变量 `BEEPER_ACCESS_TOKEN`（可在 Beeper Desktop 的设置 > 开发者 > API 访问令牌中获取）
 
-## Install beeper-cli
-
-Download from [releases](https://github.com/foeken/beeper-cli/releases), or build:
+## 安装 beeper-cli
+您可以从 [releases](https://github.com/foeken/beeper-cli/releases) 下载 beeper-cli，或自行编译安装：
 
 ```bash
 go install github.com/foeken/beeper-cli@latest
 ```
 
-## Commands
+## 命令列表
 
-### Accounts
+### 账户操作
 ```bash
 beeper accounts list
 beeper accounts list -o table
 ```
 
-### Chats
+### 聊天记录操作
 ```bash
 # List all chats (sorted by last activity)
 beeper chats list
@@ -57,7 +56,7 @@ beeper chats reminders create "<chatID>" --time "2025-01-26T10:00:00Z"
 beeper chats reminders delete "<chatID>"
 ```
 
-### Messages
+### 消息操作
 ```bash
 # List messages in a chat
 beeper messages list "<chatID>"
@@ -79,7 +78,7 @@ beeper messages send "<chatID>" "Thanks!" --reply-to "<messageID>"
 beeper messages edit "<chatID>" "<messageID>" "Corrected text"
 ```
 
-### Assets (attachments)
+### 附件操作
 ```bash
 # Upload a file
 beeper assets upload /path/to/image.png
@@ -92,7 +91,7 @@ beeper assets upload /path/to/photo.jpg  # returns uploadID
 beeper messages send "<chatID>" "Check this!" --upload-id "<uploadID>"
 ```
 
-### Other
+### 其他操作
 ```bash
 # Focus Beeper window
 beeper focus
@@ -102,19 +101,19 @@ beeper focus --chat-id "<chatID>"
 beeper search "important"
 ```
 
-## Output formats
+## 输出格式
 ```bash
 beeper chats list -o json   # default
 beeper chats list -o table  # human-readable
 ```
 
-## Workflow
-1. Find the chat: `beeper chats search --query "Name"`
-2. Read messages: `beeper messages list "<chatID>"`
-3. Search content: `beeper messages search --query "phrase"`
-4. Send: `beeper messages send "<chatID>" "message"`
+## 使用流程
+1. 查找聊天记录：`beeper chats search --query "名称"`
+2. 查看消息：`beeper messages list "<chatID>"`
+3. 搜索特定内容：`beeper messages search --query "关键词"`
+4. 发送消息：`beeper messages send "<chatID>" "消息内容"`
 
-## Safety
-- Store `BEEPER_ACCESS_TOKEN` securely (e.g., in a password manager)
-- When quoting messages, include only what's needed
-- Confirm message text before sending unless explicit
+## 安全提示
+- 请妥善保管 `BEEPER_ACCESS_TOKEN`（建议使用密码管理工具进行存储）。
+- 在引用消息内容时，仅包含必要的信息。
+- 除非另有说明，否则在发送消息前请先确认消息内容是否正确。

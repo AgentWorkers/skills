@@ -1,16 +1,16 @@
 ---
 name: flight-tracker
 version: 1.0.0
-description: Track flights in real-time with detailed status, gate info, delays, and live position. Use when user asks to track a flight, check flight status, look up flight information by flight number (e.g., "track AA100", "what's the status of United 2402", "check my flight BA123"), or wants to display flight data in a formatted view similar to Flighty app.
+description: 实时追踪航班信息，包括详细的航班状态、登机口信息、延误情况以及航班的实时位置。适用于用户请求查询航班动态、查看航班状态、根据航班编号查找航班信息（例如：“追踪AA100航班”、“联合航空2402航班的状态如何？”、“查看我的BA123航班”），或希望以类似Flighty应用程序的格式展示航班数据的情况。
 ---
 
-# Flight Tracker
+# 航班追踪器
 
-Track any flight worldwide using AviationStack API and display in a clean, Flighty-style format.
+使用 AviationStack API 可以追踪全球任何航班，并以清晰、美观的格式展示航班信息。
 
-## Quick Start
+## 快速入门
 
-Track a flight by its IATA code:
+通过航班的 IATA 代码来追踪航班：
 
 ```bash
 scripts/track_flight.py AA100
@@ -18,87 +18,87 @@ scripts/track_flight.py UA2402
 scripts/track_flight.py BA123
 ```
 
-## First-Time Setup
+## 首次使用前的设置
 
-Before using this skill, you need an API key (one-time setup):
+在使用此功能之前，您需要一个 API 密钥（只需设置一次）：
 
-1. **Get a free API key** at https://aviationstack.com/signup/free (100 requests/month)
-2. **Set environment variable:**
+1. **在 https://aviationstack.com/signup/free 获取免费 API 密钥**（每月 100 次请求）
+2. **设置环境变量：**
    ```bash
    export AVIATIONSTACK_API_KEY='your-key-here'
    ```
-3. **Install dependencies:**
+3. **安装依赖项：**
    ```bash
    pip3 install requests
    ```
 
-For detailed setup instructions, see [api-setup.md](references/api-setup.md).
+有关详细设置说明，请参阅 [api-setup.md](references/api-setup.md)。
 
-## Output Format
+## 输出格式
 
-The skill displays flight information in a clean, readable format with:
+该功能以清晰、易读的格式显示航班信息，包括：
 
-- ✈️ Airline and flight number
-- 🛩️ Aircraft type and registration
-- 🛫 Departure airport, terminal, gate, times
-- 🛬 Arrival airport, terminal, gate, times
-- 📊 Flight status with visual indicators
-- ⏱️ Delay calculations (if applicable)
-- 🌐 Live position, altitude, speed (when airborne)
+- ✈️ 航空公司和航班编号
+- 🛩️ 飞机类型和注册号
+- 🛫 起飞机场、航站楼、登机口及出发时间
+- 🛬 到达机场、航站楼、登机口及到达时间
+- 📊 航班状态（配有视觉指示器）
+- ⏱️ 延误情况（如适用）
+- 🌐 实时位置、高度、速度（飞行中时）
 
-Status indicators:
-- 🟢 Active/Airborne/En-route
-- ✅ Landed/Arrived
-- 🟡 Scheduled
-- 🟠 Delayed
-- 🔴 Cancelled
+状态指示器：
+- 🟢 正在飞行中/已起飞/途中
+- ✅ 已降落/已到达
+- 🟡 按计划飞行
+- 🟠 延误
+- 🔴 被取消
 
-## Advanced Usage
+## 高级用法
 
-**Get raw JSON data:**
+**获取原始 JSON 数据：**
 ```bash
 scripts/track_flight.py AA100 --json
 ```
 
-**Check help:**
+**查看帮助文档：**
 ```bash
 scripts/track_flight.py --help
 ```
 
-## Workflow
+## 工作流程
 
-When a user asks to track a flight:
+当用户请求追踪航班时：
 
-1. Extract the flight number from the request
-2. Run the tracking script with the flight number
-3. Present the formatted output to the user
-4. If data is needed for further processing, use `--json` flag
+1. 从请求中提取航班编号
+2. 使用航班编号运行追踪脚本
+3. 向用户展示格式化后的结果
+4. 如果需要进一步处理数据，可以使用 `--json` 标志
 
-## Flight Number Formats
+## 航班编号格式
 
-Accept IATA flight codes:
-- AA100 (American Airlines)
-- UA2402 (United)
-- BA123 (British Airways)
-- DL456 (Delta)
+支持以下 IATA 航班代码：
+- AA100（美国航空）
+- UA2402（联合航空）
+- BA123（英国航空）
+- DL456（达美航空）
 
-The script automatically converts to uppercase and handles the lookup.
+脚本会自动将航班代码转换为大写并进行查询。
 
-## Error Handling
+## 错误处理
 
-The script handles common errors:
-- Missing API key → Shows setup instructions
-- Flight not found → Suggests verification
-- API errors → Displays error message
-- Rate limit exceeded → Indicates limit reached
+脚本能够处理以下常见错误：
+- 未找到 API 密钥 → 显示设置说明
+- 未找到航班 → 建议用户验证信息
+- API 错误 → 显示错误信息
+- 超过 API 使用限制 → 提示已达到使用上限
 
-## API Limits
+## API 使用限制
 
-Free tier: 100 requests/month. Track usage to stay within limits. For heavy usage, consider upgrading or alternative APIs (see references/api-setup.md).
+免费 tier 每月 100 次请求。请监控使用情况以确保不超过限制。如需更高频率的查询，请考虑升级或使用其他 API（详见 references/api-setup.md）。
 
-## Notes
+## 注意事项
 
-- Uses AviationStack free tier (no HTTPS on free plan)
-- Real-time data updated frequently
-- Historical flight data available
-- Worldwide coverage (250+ countries, 13,000+ airlines)
+- 该功能使用 AviationStack 的免费 tier（免费计划不支持 HTTPS）
+- 实时数据会频繁更新
+- 提供历史航班数据
+- 全球覆盖范围（250 多个国家，13,000 多家航空公司）

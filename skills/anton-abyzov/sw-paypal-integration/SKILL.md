@@ -1,56 +1,56 @@
 ---
 name: paypal-integration
-description: PayPal payment integration for Express Checkout, subscriptions, and IPN webhooks. Use when adding PayPal as payment option, implementing PayPal recurring billing, or handling PayPal refunds and disputes. Covers Smart Payment Buttons, order capture, and subscription plan management.
+description: **PayPal支付集成**：适用于Express Checkout、订阅服务以及IPN（Instant Payment Notification）网络钩子。适用于将PayPal作为支付选项添加到系统中、实现PayPal自动续订功能，以及处理PayPal退款和争议。涵盖智能支付按钮（Smart Payment Buttons）的使用、订单捕获（order capture）以及订阅计划管理（subscription plan management）等环节。
 ---
 
-# PayPal Integration
+# PayPal集成
 
-Master PayPal payment integration including Express Checkout, IPN handling, recurring billing, and refund workflows.
+掌握PayPal支付集成技术，包括Express Checkout、IPN处理、定期付款以及退款流程。
 
-## When to Use This Skill
+## 适用场景
 
-- Integrating PayPal as a payment option
-- Implementing express checkout flows
-- Setting up recurring billing with PayPal
-- Processing refunds and payment disputes
-- Handling PayPal webhooks (IPN)
-- Supporting international payments
-- Implementing PayPal subscriptions
+- 将PayPal作为支付选项进行集成
+- 实现快速结账流程
+- 设置PayPal定期付款功能
+- 处理退款和支付纠纷
+- 处理PayPal的Webhook（IPN）通知
+- 支持国际支付
+- 实现PayPal订阅服务
 
-## Core Concepts
+## 核心概念
 
-### 1. Payment Products
+### 1. 支付产品
 **PayPal Checkout**
-- One-time payments
-- Express checkout experience
-- Guest and PayPal account payments
+- 一次性支付
+- 快速结账体验
+- 客户和PayPal账户支付
 
 **PayPal Subscriptions**
-- Recurring billing
-- Subscription plans
-- Automatic renewals
+- 定期付款
+- 订阅计划
+- 自动续订
 
 **PayPal Payouts**
-- Send money to multiple recipients
-- Marketplace and platform payments
+- 向多个收款人转账
+- 市场平台支付
 
-### 2. Integration Methods
-**Client-Side (JavaScript SDK)**
-- Smart Payment Buttons
-- Hosted payment flow
-- Minimal backend code
+### 2. 集成方式
+**客户端（JavaScript SDK）**
+- 智能支付按钮
+- 托管式支付流程
+- 最小化的后端代码
 
-**Server-Side (REST API)**
-- Full control over payment flow
-- Custom checkout UI
-- Advanced features
+**服务器端（REST API）**
+- 完全控制支付流程
+- 自定义结账界面
+- 高级功能
 
-### 3. IPN (Instant Payment Notification)
-- Webhook-like payment notifications
-- Asynchronous payment updates
-- Verification required
+### 3. IPN（即时支付通知）
+- 类似Webhook的支付通知
+- 异步支付更新
+- 需要验证
 
-## Quick Start
+## 快速入门
 
 ```javascript
 // Frontend - PayPal Smart Buttons
@@ -115,9 +115,9 @@ def capture_paypal_order(order_id):
         }
 ```
 
-## Express Checkout Implementation
+## Express Checkout实现
 
-### Server-Side Order Creation
+### 服务器端订单创建
 ```python
 import requests
 import json
@@ -186,9 +186,9 @@ class PayPalClient:
         return response.json()
 ```
 
-## IPN (Instant Payment Notification) Handling
+## IPN（即时支付通知）处理
 
-### IPN Verification and Processing
+### IPN验证与处理
 ```python
 from flask import Flask, request
 import requests
@@ -265,9 +265,9 @@ def handle_chargeback(ipn_data):
     print(f"Chargeback: {txn_id}, Reason: {reason_code}")
 ```
 
-## Subscription/Recurring Billing
+## 订阅/定期付款
 
-### Create Subscription Plan
+### 创建订阅计划
 ```python
 def create_subscription_plan(name, amount, interval='MONTH'):
     """Create a subscription plan."""
@@ -344,7 +344,7 @@ def create_subscription(plan_id, subscriber_email):
             }
 ```
 
-## Refund Workflows
+## 退款流程
 
 ```python
 def create_refund(capture_id, amount=None, note=None):
@@ -383,7 +383,7 @@ def get_refund_details(refund_id):
     return response.json()
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 class PayPalError(Exception):
@@ -410,7 +410,7 @@ except PayPalError as e:
     log_error(e)
 ```
 
-## Testing
+## 测试
 
 ```python
 # Use sandbox credentials
@@ -438,20 +438,20 @@ def test_payment_flow():
     # assert captured['status'] == 'COMPLETED'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always Verify IPN**: Never trust IPN without verification
-2. **Idempotent Processing**: Handle duplicate IPN notifications
-3. **Error Handling**: Implement robust error handling
-4. **Logging**: Log all transactions and errors
-5. **Test Thoroughly**: Use sandbox extensively
-6. **Webhook Backup**: Don't rely solely on client-side callbacks
-7. **Currency Handling**: Always specify currency explicitly
+1. **始终验证IPN**：未经验证的IPN通知不可信任。
+2. **幂等处理**：正确处理重复的IPN通知。
+3. **错误处理**：实现强大的错误处理机制。
+4. **日志记录**：记录所有交易和错误信息。
+5. **全面测试**：充分利用沙箱环境进行测试。
+6. **Webhook备份**：不要仅依赖客户端回调。
+7. **货币处理**：始终明确指定货币类型。
 
-## Common Pitfalls
+## 常见问题
 
-- **Not Verifying IPN**: Accepting IPN without verification
-- **Duplicate Processing**: Not checking for duplicate transactions
-- **Wrong Environment**: Mixing sandbox and production URLs/credentials
-- **Missing Webhooks**: Not handling all payment states
-- **Hardcoded Values**: Not making configurable for different environments
+- **未验证IPN**：未经验证就接受IPN通知。
+- **重复处理**：未检查重复的交易。
+- **环境混淆**：将沙箱环境和生产环境的URL/凭证混淆。
+- **遗漏Webhook**：未处理所有支付状态。
+- **硬编码值**：未根据不同环境进行配置。

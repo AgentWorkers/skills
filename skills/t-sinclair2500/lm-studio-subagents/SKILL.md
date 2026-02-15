@@ -1,132 +1,118 @@
 ---
 name: lmstudio-subagents
-description: "Reduces token usage from paid providers by offloading work to local LM Studio models. Use when: (1) Cutting costs—use local models for summarization, extraction, classification, rewriting, first-pass review, brainstorming when quality suffices, (2) Avoiding paid API calls for high-volume or repetitive tasks, (3) No extra model configuration—JIT loading and REST API work with existing LM Studio setup, (4) Local-only or privacy-sensitive work. Requires LM Studio 0.4+ with server (default :1234). No CLI required."
+description: "通过将工作负载转移到本地的LM Studio模型上，可以减少对付费服务提供商的依赖（即减少对付费API的调用）。适用场景包括：  
+(1) 降低成本：在质量要求满足的情况下，使用本地模型进行摘要生成、数据提取、分类、内容重写以及初步审核等工作；  
+(2) 避免对高容量或重复性任务进行付费API调用；  
+(3) 无需额外配置模型：利用JIT（即时编译）技术以及REST API，在现有的LM Studio环境中直接运行相关功能；  
+(4) 仅涉及本地数据处理或涉及隐私敏感信息的场景。  
+系统要求：必须使用LM Studio 0.4及以上版本，并且需要连接服务器（默认服务器地址为1234）。该功能无需使用命令行界面（CLI）。"
 metadata: {"openclaw":{"requires":{},"tags":["local-model","local-llm","lm-studio","token-management","privacy","subagents"]}}
 license: MIT
 ---
 
-# LM Studio Models
+# LM Studio 模型
 
-Offload tasks to local models when quality suffices. Base URL: http://127.0.0.1:1234. Auth: `Authorization: Bearer lmstudio`. instance_id = `loaded_instances[].id` (same model can have multiple, e.g. `key` and `key:2`).
+当模型质量满足要求时，可以将任务卸载到本地模型中。基础 URL：http://127.0.0.1:1234。认证方式：`Authorization: Bearer lmstudio`。`instance_id` 的值来自 `loaded_instances[]` 数组（同一个模型可能有多个实例，例如 `key` 和 `key:2`）。
 
-## Key Terms
+## 关键术语
 
-- **model**: From GET models key; use in chat and optional load.
-- **lm_studio_api_url**: Default http://127.0.0.1:1234 (paths /api/v1/...).
-- **response_id** / **previous_response_id**: Chat returns response_id; pass as previous_response_id for stateful.
-- **instance_id**: For unload, use only the value from GET /api/v1/models for that model: each `loaded_instances[].id`. Do not assume it equals the model key; with multiple instances ids can be like key:2. LM Studio docs: List (loaded_instances[].id), Unload (instance_id).
+- **model**：通过 `GET models` 获取的模型键，可用于聊天对话，也可选择性地进行模型加载。
+- **lm_studio_api_url**：默认值为 http://127.0.0.1:1234（路径格式为 `/api/v1/...`）。
+- **response_id** 和 **previous_response_id**：聊天对话会返回 `response_id`；在需要保持会话状态的情况下，可以使用 `previous_response_id`。
+- **instance_id**：用于卸载模型时，需要使用从 `GET /api/v1/models` 获取的该模型的唯一标识符（每个模型的 `loaded_instances[]` 数组中的 `id`）。请注意，`instance_id` 与模型键不同；对于同一个模型，可能有多个实例，例如 `key:2`。LM Studio 文档中提到：`List (loaded_instances[].)` 用于列出所有已加载的实例，`Unload (instance_id)` 用于卸载模型。
 
-Trigger in frontmatter; below = implementation.
+### 实现细节
 
-## Prerequisites
+相关代码位于文档的前置内容（`frontmatter`）部分。
 
-LM Studio 0.4+, server :1234, models on disk; load/unload via API (JIT optional); Node for script (curl ok).
+## 先决条件
 
-## Quick start
+- LM Studio 版本需达到 0.4 或更高；
+- 服务器地址为 1234；
+- 模型数据已保存在磁盘上；
+- 可通过 API 进行模型的加载和卸载（JIT（即时编译）功能可选）；
+- 需要 Node.js 环境来运行相关脚本（支持使用 `curl` 命令）。
 
-Minimal path: list models, then one chat. Replace `<model>` with a key from GET /api/v1/models and `<task>` with the task text.
+## 快速入门
 
-```bash
-curl -s -H 'Authorization: Bearer lmstudio' http://127.0.0.1:1234/api/v1/models
-node scripts/lmstudio-api.mjs <model> '<task>' --temperature=0.5 --max-output-tokens=200
-```
+- 最简单的操作流程是：首先列出所有可用模型，然后选择一个模型进行聊天对话。将 `<model>` 替换为从 `GET /api/v1/models` 获取的模型键，将 `<task>` 替换为具体的任务内容。
 
-Stateful multi-turn: pass `--previous-response-id=<id>` from the prior script output. Or use `--stateful` to persist response_id automatically. Optional `--log <path>` for request/response.
+### 完整工作流程
 
-```bash
-node scripts/lmstudio-api.mjs <model> 'First turn...' --previous-response-id=$ID1
-node scripts/lmstudio-api.mjs <model> 'Second turn...' --previous-response-id=$ID2
-```
+#### 步骤 0：检查服务器状态
 
-## Complete Workflow
+执行 `GET <base>/api/v1/models` 请求；如果返回状态码非 200 或出现连接错误，说明服务器尚未准备好。
 
-### Step 0: Preflight
+#### 步骤 1：列出模型并选择模型
 
-GET <base>/api/v1/models; non-200 or connection error = server not ready.
+执行 `GET /api/v1/models` 以获取所有模型列表。解析每个模型的信息：模型键（`key`）、模型类型（`type`）、已加载的实例数量（`loaded_instances`）、最大上下文长度（`max_context_length`）以及模型支持的功能（`capabilities`）。如果某个模型的 `loaded_instances.length` 大于 0 且符合任务要求，则直接跳到步骤 5；否则，选择一个模型键用于聊天对话（或选择性地进行模型加载，详见步骤 3）。
 
-```bash
-exec command:"curl -s -o /dev/null -w '%{http_code}' -H 'Authorization: Bearer lmstudio' http://127.0.0.1:1234/api/v1/models"
-```
+#### 步骤 2：选择模型
 
-### Step 1: List Models and Select
+从响应中获取模型键，并将其用于聊天对话（或选择性地进行模型加载）。选择模型时需考虑以下条件：  
+- 如果模型支持视觉处理（`vision`），则选择 `capabilities.vision` 作为筛选条件；  
+- 如果模型支持嵌入式处理（`embedding`），则选择 `type=embedding`；  
+- 如果需要处理较长上下文，选择 `max_context_length` 较大的模型。  
+- 优先选择已加载的模型（`loaded_instances` 数组非空），因为已加载的模型通常加载速度更快；如果需要更复杂的推理，可以选择 `max_context_length` 较大的模型。  
+- 注意保存 `loaded_instances[]` 数组中的 `id`，以便后续进行模型卸载。
 
-GET /api/v1/models to list models. Parse each entry: key, type, loaded_instances, max_context_length, capabilities. If a model already has loaded_instances.length > 0 and fits the task, skip to Step 5; otherwise pick a key for chat (and optional load in Step 3). Choose by task: vision -> capabilities.vision; embedding -> type=embedding; context -> max_context_length. Prefer already-loaded; prefer smaller for speed, larger for reasoning. Note loaded_instances[].id for optional unload later.
+#### 步骤 3：加载模型（可选）
 
-**Example — list models:**
-```bash
-exec command:"curl -s -H 'Authorization: Bearer lmstudio' http://127.0.0.1:1234/api/v1/models"
-```
+- 可以通过 `POST /api/v1/models/load { model, context_length,... }` 命令加载模型。  
+- 或者运行 `load.mjs <model>` 脚本进行模型加载。JIT（即时编译）功能仅在首次聊天对话时生效。
 
-Parse models[] (key, type, loaded_instances, max_context_length, capabilities, params_string). If a model has loaded_instances.length > 0 and fits task, skip to Step 5; else pick key for chat (and optional load). Note loaded_instances[].id for optional unload.
+#### 步骤 4：验证模型是否成功加载（可选）
 
-### Step 2: Model Selection
+- 如果是显式加载模型，执行 `GET models` 请求以确认模型是否成功加载（`loaded_instances` 数组是否非空）。  
+- 如果使用 JIT 功能，无需额外验证；首次聊天对话会返回 `model_instance_id` 和 `stats.model_load_time_seconds`（模型加载所用时间）。
 
-Pick key from GET response; use as model in chat (optional load). Constraints: vision -> capabilities.vision; embedding -> type=embedding; context -> max_context_length. Prefer loaded (loaded_instances non-empty), smaller for speed/larger for reasoning; fallback primary. If unsure, use the first loaded instance for that key or the smallest loaded model that fits the task. Optional POST load; else JIT on first chat.
+#### 步骤 5：调用 API 执行任务
 
-### Step 3: Load Model (optional)
+在 `node scripts/lmstudio-api.mjs` 脚本中，使用以下格式调用 API：`<model> '<task>' [options]`。
 
-Optional: POST /api/v1/models/load { model, context_length?, ... }. Or run scripts/load.mjs &lt;model&gt;. JIT: first chat loads; explicit load only for specific options.
+#### 步骤 6：卸载模型（可选）
 
-### Step 4: Verify Loaded (optional)
+- 对于已选中的模型，执行 `GET /api/v1/models` 请求；然后对每个已加载的实例执行 `POST /api/v1/models/unload` 请求，传入 `{"instance_id": "<that id>"}` 作为参数。  
+- 请确保使用的 `instance_id` 来自 `GET /api/v1/models` 的返回结果（不要使用模型键）。  
+- 或者运行 `unload.mjs <model_key>` 脚本进行模型卸载。  
+- 可选参数 `--unload-after` 可用于设置卸载后的延迟时间（默认值为关闭）；`--keep` 参数可用于保留已加载的模型。  
+- JIT 功能结合 TTL（时间戳）可实现自动卸载；必要时也可以手动执行卸载操作。
 
-If explicit load: GET models, confirm loaded_instances. If JIT: no verify; first chat returns model_instance_id, stats.model_load_time_seconds.
+#### 步骤 7：验证模型是否成功卸载（可选）
 
-### Step 5: Call API
+卸载完成后，检查该模型是否真的被完全卸载。可以使用 `jq` 命令验证：结果应为 `0`。如果仍有实例存在，请重新执行卸载操作。  
+- 注意：即使模型对象仍然存在于系统中，但其 `loaded_instances` 数组可能为空，这并不意味着模型已被成功卸载。
 
-From the skill folder: node scripts/lmstudio-api.mjs &lt;model&gt; '&lt;task&gt;' [options].
+### 错误处理
 
-```bash
-exec command:"node scripts/lmstudio-api.mjs <model> '<task>' --temperature=0.7 --max-output-tokens=2000"
-```
+- 脚本会在遇到临时故障时尝试多次执行（最多 2-3 次，并采用退避策略）。
+- 如果找不到目标模型，可以从 `GET` 请求的结果中选择其他模型。
+- 如果 API 或服务器出现错误，请重新执行 `GET models` 请求以检查服务器状态。
+- 如果返回的响应无效，请尝试重新加载模型或选择其他模型。
+- 如果内存不足，可以选择加载内存占用较小的模型。
+- 如果卸载失败，请确保使用的 `instance_id` 来自 `GET /api/v1/models` 返回的 `loaded_instances[]` 数组（而非模型键）。
 
-Stateful: add --previous-response-id=<response_id>. Curl: POST <base>/api/v1/chat, body model, input, store, temperature, max_output_tokens; optional previous_response_id. Parse: output (type message) -> content; response_id, model_instance_id, stats. Script outputs content, model_instance_id, response_id, usage.
+### 复制代码示例
 
-### Step 6: Unload (optional)
+- 将 `<model>` 替换为从 `GET /api/v1/models` 获取的模型键，将 `<task>` 替换为具体的任务内容。
+- 可以根据需要选择性地执行步骤 6 中的模型卸载操作（使用 `GET models` 返回的 `instance_id`）。
 
-For the model key you used: GET /api/v1/models, then for **each** `loaded_instances[].id` for that model, POST /api/v1/models/unload with body `{"instance_id": "<that id>"}`. Use the id from the response only (do not send the model key unless it exactly equals that id). Or run scripts/unload.mjs &lt;model_key&gt; (script does GET then unloads each instance id). Optional --unload-after (default off); use --keep to leave loaded. Unload only that model's instances. JIT+TTL auto-unload; explicit when needed.
+### LM Studio API 详细信息
 
-```bash
-# One unload per instance_id; repeat for each id in that model's loaded_instances
-exec command:"curl -s -X POST http://127.0.0.1:1234/api/v1/models/unload -H 'Content-Type: application/json' -H 'Authorization: Bearer lmstudio' -d '{\"instance_id\": \"<instance_id>\"}'"
-```
+- 辅助 API：详见步骤 5 的说明。
+- API 返回的响应内容包括：`content`、`model_instance_id` 和 `response_id`。
+- 认证方式：`Authorization: Bearer lmstudio`。
+- 可通过 `GET /api/v1/models` 列出所有可用模型；通过 `POST /api/v1/models/load` 加载模型；通过 `POST /api/v1/models/unload` 卸载模型。
 
-### Step 7: Verify unload (optional)
+### 相关脚本
 
-After unloading, confirm no instances remain for that model key. Run the jq check below; result must be `0`. If non-zero, unload the remaining instance_id(s) from that model and re-run the check. Do not infer from "model object exists"; the object still exists with an empty `loaded_instances` array.
+- `lmstudio-api.mjs`：用于处理聊天对话相关的逻辑，支持 `--stateful`、`--unload-after`、`--keep`、`--log <path>`、`--previous-response-id`、`--temperature`、`--max-output-tokens` 等选项。
+- `load.mjs`：用于根据模型键加载模型。
+- `unload.mjs`：用于根据模型键卸载所有已加载的实例。
+- `test.mjs`：用于测试模型的加载、聊天对话和卸载功能。
 
-```bash
-exec command:"curl -s -H 'Authorization: Bearer lmstudio' http://127.0.0.1:1234/api/v1/models | jq '.models[]|select(.key==\"<model_key>\")|.loaded_instances|length'"
-```
+### 注意事项
 
-Expect output `0`. If not, unload remaining instance_ids and re-run.
-
-## Error Handling
-
-- Script retries on transient failure (2-3 attempts with backoff).
-- Model not found -> pick another model from GET response.
-- API/server errors -> GET models, check URL.
-- Invalid output -> retry.
-- Memory -> unload or smaller model.
-- Unload fails -> instance_id must be exactly from GET /api/v1/models for that model's loaded_instances[].id (not the model key unless it matches).
-
-## Copy-paste
-
-Replace `<model>` with a key from GET /api/v1/models and `<task>` with the task text. Optional unload per Step 6 (instance_id from GET models for that key).
-
-```bash
-exec command:"curl -s -H 'Authorization: Bearer lmstudio' http://127.0.0.1:1234/api/v1/models"
-exec command:"node scripts/lmstudio-api.mjs <model> '<task>' --temperature=0.7 --max-output-tokens=2000"
-```
-
-## LM Studio API Details
-
-Helper/API: see Step 5. Output: content, model_instance_id, response_id, usage. Auth: Bearer lmstudio. List GET /api/v1/models. Load POST /api/v1/models/load (optional). Unload POST /api/v1/models/unload { instance_id }.
-
-## Scripts
-
-lmstudio-api.mjs: chat; options --stateful, --unload-after, --keep, --log &lt;path&gt;, --previous-response-id, --temperature, --max-output-tokens. load.mjs: load model by key. unload.mjs: unload by model key (all instances). test.mjs: smoke test (load, chat, unload one model).
-
-## Notes
-
-- LM Studio 0.4+.
-- JIT (first chat loads; model_load_time_seconds in stats); stateful (response_id / previous_response_id).
+- 仅支持 LM Studio 0.4 及更高版本。
+- 支持 JIT（即时编译）功能：模型会在首次聊天对话时加载；加载时间会记录在 `stats.model_load_time_seconds` 中。
+- 支持会话状态管理（使用 `response_id` 和 `previous_response_id`）。

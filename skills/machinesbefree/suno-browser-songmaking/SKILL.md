@@ -1,46 +1,46 @@
 ---
 name: suno-browser-songmaking
-description: Browser-based song creation with Suno (suno.ai), including gathering a song brief, generating lyrics, setting Persona/Custom mode, and producing new tracks. Use when the user asks to make a new song with Suno or to automate Suno in a browser session.
+description: 基于浏览器的歌曲创作工具——Suno (suno.ai)，支持收集歌曲创作灵感、生成歌词、设置个性化创作模式（Persona/Custom mode），以及制作新的音乐作品。适用于用户希望在浏览器中使用 Suno 创作新歌曲，或实现 Suno 的自动化操作的场景。
 ---
 
-# Suno Browser Songmaking
+# Suno浏览器歌曲制作指南
 
-## Overview
-Create a new song in Suno via browser automation: collect a brief, generate lyrics, set Persona/Custom mode, and produce/review tracks.
+## 概述
+通过浏览器自动化在Suno中创建新歌曲：收集歌曲相关信息，生成歌词，设置角色/自定义模式，然后制作并审查歌曲作品。
 
-## Workflow
+## 工作流程
 
-### 1) Get a song brief
-Collect or confirm:
-- Theme/story
-- Genre + reference artists
-- Mood/energy
-- Tempo/length
-- Vocal type (female/male/duet) and era (alt‑metal, synth‑pop, etc.)
-- Any do‑not‑include constraints
+### 1) 收集歌曲信息
+收集或确认以下内容：
+- 主题/故事背景
+- 音乐类型及参考艺术家
+- 情绪/氛围
+- 速度/时长
+- 声乐类型（女声/男声/二重唱）以及音乐风格（如另类金属、合成流行等）
+- 任何需要避免使用的元素或限制条件
 
-If missing, propose 2–3 options and ask for a quick pick.
+如果某些信息缺失，可提供2-3个选项供用户选择。
 
-### 2) Generate lyrics
-Use a sub‑agent for lyrics if requested. Provide:
-- Title
-- Lyrics (structured verse/chorus/bridge)
-- Style tags
+### 2) 生成歌词
+如用户需要，可使用专门的子代理工具来生成歌词。需要提供以下信息：
+- 歌曲标题
+- 歌词（包括 verse、chorus 和 bridge 部分的结构）
+- 风格标签
 
-### 3) Open Suno in browser
-Prefer Chrome relay if the user is already logged in. Otherwise use the isolated OpenClaw browser and ask for login if needed.
+### 3) 在浏览器中打开Suno
+如果用户已登录，建议使用Chrome浏览器；否则使用独立的OpenClaw浏览器。如有需要，请用户登录。
 
-### 4) Create in Suno
-- Switch to **Custom** mode.
-- Set **Persona** to the requested persona (e.g., “Kara Codex”).
-- Paste lyrics and style tags.
-- Generate and wait for completion.
+### 4) 在Suno中创作歌曲
+- 切换到**自定义**模式。
+- 将**角色**设置为用户选择的角色（例如“Kara Codex”）。
+- 粘贴歌词和风格标签。
+- 点击“生成”按钮，等待歌曲制作完成。
 
-### 5) Review + iterate
-Listen/preview, capture the best output, and iterate once if needed (tweak lyrics, style tags, or mood).
+### 5) 审查并优化
+聆听预览结果，根据需要调整歌词、风格标签或音乐情绪。
 
-### 6) Deliver
-Provide the Suno link(s) and any download/share artifacts available.
+### 6) 提交成果
+提供歌曲的链接以及可下载或分享的文件。
 
-## References
-- See `references/suno-workflow.md` for UI-specific steps and browser notes.
+## 参考资料
+- 有关具体操作步骤和浏览器使用的详细信息，请参阅 `references/suno-workflow.md` 文件。

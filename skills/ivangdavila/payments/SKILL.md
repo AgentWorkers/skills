@@ -1,73 +1,73 @@
 ---
 name: Payments
-description: Integrate payments with provider selection, checkout flows, subscription billing, and security best practices.
+description: 将支付功能与供应商选择、结账流程、订阅计费以及安全最佳实践集成在一起。
 ---
 
-## Situation Detection
+## 情况检测
 
-| Context | Load |
-|---------|------|
-| Choosing Stripe vs Paddle vs LemonSqueezy | `providers.md` |
-| Implementing checkout, webhooks, refunds | `integration.md` |
-| Subscription billing, trials, upgrades | `subscriptions.md` |
-| PCI compliance, fraud prevention | `security.md` |
-
----
-
-## Universal Rules
-
-**Never store card data.** Use provider-hosted checkout or tokenization. PCI compliance burden explodes the moment raw card numbers touch your server.
-
-**Webhooks are truth.** Client-side success callbacks lie. A payment succeeded only when your webhook confirms it. Design for webhook-first verification.
-
-**Test mode exists for a reason.** Use test cards, simulate failures, verify webhook handling. Production surprises cost real money and real customers.
-
-**Pricing psychology:** $9.99/mo feels cheaper than $120/year, but annual retention is 2-3x higher. Default to annual with monthly option, not the reverse.
+| 上下文 | 需要查阅的文件 |
+|---------|-------------------|
+| 选择 Stripe、Paddle 还是 LemonSqueezy | `providers.md` |
+| 实现结账功能、Webhook、退款处理 | `integration.md` |
+| 订阅 billing、试用期、升级管理 | `subscriptions.md` |
+| PCI 合规性、欺诈预防 | `security.md` |
 
 ---
 
-## Provider Quick Compare
+## 通用规则
 
-| Need | Recommendation |
-|------|----------------|
-| US/global B2C | Stripe (best docs, widest coverage) |
-| SaaS selling to EU (VAT headache) | Paddle, LemonSqueezy (merchant of record) |
-| Simple product, no dev resources | Gumroad, Lemonsqueezy hosted |
-| Marketplace with splits | Stripe Connect |
-| High-risk or adult | Specialized processors (CCBill, Epoch) |
+**切勿存储信用卡信息。** 应使用由提供商提供的结账服务或进行令牌化处理。一旦原始信用卡号码接触到您的服务器，PCI 合规性的风险就会急剧增加。
 
-See `providers.md` for detailed comparison.
+**Webhook 的可靠性至关重要。** 客户端的成功回调可能并不准确；只有当 Webhook 确认支付成功后，才能认为支付完成。设计系统时应优先依赖 Webhook 进行验证。
+
+**测试模式的存在是有原因的。** 使用测试信用卡、模拟故障情况，验证 Webhook 的处理能力。生产环境中的意外问题会直接导致实际损失和客户流失。
+
+**定价策略的心理学：** 每月 9.99 美元看起来比每年 120 美元更便宜，但实际上年度用户的留存率会高出 2-3 倍。默认设置应为年度订阅，同时提供按月订阅的选项，而非相反。
 
 ---
 
-## Integration Checklist
+## 提供商快速对比
 
-Before going live:
-- [ ] Webhook endpoint secured and verified
-- [ ] Idempotency keys on all charges
-- [ ] Failure states handled (declined, expired, insufficient)
-- [ ] Receipts and invoices configured
-- [ ] Refund flow tested
-- [ ] Subscription lifecycle events handled (upgrade, downgrade, cancel)
-- [ ] Currency handling explicit (store in cents/smallest unit)
+| 需求 | 推荐的提供商 |
+|------|----------------------|
+| 面向美国/全球的 B2C 业务 | Stripe（文档最完善，覆盖范围最广） |
+| 向欧盟销售 SaaS 产品（涉及 VAT 处理） | Paddle、LemonSqueezy（具有商户记录） |
+| 产品简单、无需开发资源 | Gumroad、LemonSqueezy 提供托管服务 |
+| 需要处理费用分摊的市场平台 | Stripe Connect |
+| 高风险业务或面向成年用户的业务 | 专业支付处理服务商（如 CCBill、Epoch） |
 
----
-
-## Red Flags
-
-- Storing CVV anywhere, ever → Instant PCI violation
-- Trusting client-side payment confirmation → Fraud vector
-- No retry logic for failed webhooks → Lost transactions
-- Hardcoding prices in frontend → Easy manipulation
-- Missing `cancel_at_period_end` handling → Angry customers
+详细对比请参阅 `providers.md`。
 
 ---
 
-## When to Load More
+## 集成检查清单
 
-| Situation | Reference |
-|-----------|-----------|
-| Evaluating payment processors | `providers.md` |
-| Building checkout, handling webhooks | `integration.md` |
-| Recurring billing, metering, trials | `subscriptions.md` |
-| Fraud, PCI, chargebacks | `security.md` |
+在上线之前，请确保：
+- [ ] Webhook 端点已加密并经过验证
+- [ ] 所有交易都使用了幂等性校验机制
+- [ ] 已妥善处理各种失败情况（如交易被拒绝、卡片过期、余额不足）
+- [ ] 已配置好收据和发票
+- [ ] 已测试退款流程
+- [ ] 已处理订阅生命周期中的各种事件（如升级、降级、取消）
+- [ ] 明确处理货币单位（以分或最小货币单位存储）
+
+---
+
+## 需警惕的警示信号
+
+- 任何情况下都不要存储信用卡的 CVV 数字 → 这会立即违反 PCI 合规性要求
+- 依赖客户端的支付确认结果 → 这是潜在的欺诈风险
+- Webhook 失败时没有重试机制 → 会导致交易失败
+- 在前端代码中硬编码价格 → 容易被恶意篡改
+- 未实现 `cancel_at_period_end` 的处理逻辑 → 会导致客户不满
+
+---
+
+## 何时需要进一步深入了解
+
+| 情况 | 参考文件 |
+|---------|-----------|
+| 评估支付处理服务商 | `providers.md` |
+| 构建结账系统、处理 Webhook | `integration.md` |
+| 实现定期收费、计费功能、试用期管理 | `subscriptions.md` |
+| 应对欺诈行为、确保 PCI 合规性、处理退款问题 | `security.md` |

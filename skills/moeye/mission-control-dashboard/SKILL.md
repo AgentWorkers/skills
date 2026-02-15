@@ -1,94 +1,94 @@
-# 🎛️ Mission Control Dashboard - AI Agent Management
+# 🎛️ 任务控制面板 - 人工智能代理管理
 
-**Professional AI agent management dashboard with department-based hierarchy**
+**专业的人工智能代理管理面板，支持按部门划分的层级结构**
 
-Price: **$299 USD**
+**价格：** **299 美元**
 
-**ROI:** Save 12+ hours/week managing agents = $2,400+/month in recovered capacity @ $50/hour billing rate
-
----
-
-## 🌟 What You Get
-
-A complete, production-ready web dashboard for managing multiple AI agents across departments:
-
-- **Department Structure** - 13 pre-built departments (BOT, TREASURY, ENGINEER, INTEL, CONTENT, SECURITY, etc.)
-- **Sub-Agent Support** - Hierarchical structure with sub-agents under each department
-- **Real-Time Monitoring** - System stats (CPU, Memory, Disk, GPU if available)
-- **Secure Authentication** - Login page with session management
-- **Beautiful UI** - Cream/beige Mission Control theme with 3-phase polish
-- **Credits Tracking** - Built-in usage and cost monitoring
-- **Task Management** - Track agent tasks and status
-- **Responsive Design** - Works on desktop, tablet, mobile
+**投资回报率（ROI）：** 每周节省超过 12 小时的代理管理工作时间，每月可节省超过 2,400 美元（按每小时 50 美元的计费标准计算）**
 
 ---
 
-## 📸 Screenshots
+## 🌟 您将获得什么
 
-![Dashboard Overview](/home/ubuntu/clawd/clawhub-skills/mission-control/screenshots/dashboard.png)
-![Department Panel](/home/ubuntu/clawd/clawhub-skills/mission-control/screenshots/department.png)
-![System Monitor](/home/ubuntu/clawd/clawhub-skills/mission-control/screenshots/monitor.png)
+一个完整、可投入生产环境使用的 Web 面板，用于管理跨部门的多个人工智能代理：
 
----
-
-## 🚀 Features
-
-### Department Management
-- **13 Core Departments:** BOT, TREASURY, ENGINEER, INTEL, CONTENT, COMMUNITY, SECURITY, INFRA, ANALYTICS, DESIGN, SCHEDULER, CREDITS, BUSINESS
-- **Sub-Agent Structure:** Each department can have multiple specialized sub-agents
-- **Status Tracking:** Online/offline indicators, last activity timestamps
-- **Task Assignment:** Assign and track tasks per agent
-
-### System Monitoring
-- **Real-Time Stats:** CPU, Memory, Disk usage with visual gauges
-- **GPU Support:** Automatically detects and monitors NVIDIA GPUs
-- **Alert System:** Configurable thresholds for resource warnings
-- **Historical Data:** Track resource usage over time
-
-### Security
-- **Login System:** Username/password authentication
-- **Session Management:** Secure JWT-based sessions
-- **Rate Limiting:** Prevent brute force attacks
-- **Cloudflare Tunnel:** Easy HTTPS setup included
-
-### Customization
-- **Configurable Departments:** Easy to add/remove/modify departments
-- **Agent Personas:** Custom emojis, names, roles for each agent
-- **Theme Colors:** Adjust color scheme to match your brand
-- **Layout Options:** Flexible grid layout adapts to screen size
+- **部门结构**：13 个预构建的部门（机器人（BOT）、财务（TREASURY）、工程师（ENGINEER）、情报（INTEL）、内容（CONTENT）、安全（SECURITY）等
+- **子代理支持**：每个部门下均可设置子代理
+- **实时监控**：系统统计信息（CPU、内存、磁盘使用情况；如支持 GPU，则还包括 GPU 使用情况）
+- **安全认证**：带会话管理的登录页面
+- **美观的用户界面**：采用奶油色/米色的任务控制（Mission Control）主题，经过三阶段优化
+- **信用跟踪**：内置的使用量和成本监控功能
+- **任务管理**：追踪代理的任务和状态
+- **响应式设计**：支持在桌面、平板电脑和手机上使用
 
 ---
 
-## 📋 Requirements
+## 📸 屏幕截图
 
-- **Node.js** v18+ (v22 recommended)
-- **npm** or **yarn**
-- **Ubuntu/Linux** (tested on Ubuntu 24.04)
-- **PM2** (optional, for production deployment)
+![面板概览](/home/ubuntu/clawd/clawhub-skills/mission-control/screenshots/dashboard.png)
+![部门面板](/home/ubuntu/clawd/clawhub-skills/mission-controlScreenshots/department.png)
+![系统监控](/home/ubuntu/clawd/clawhub-skills/mission-control/screenshots/monitor.png)
 
 ---
 
-## 📦 Installation
+## 🚀 功能特性
 
-### 1. Extract Files
+### 部门管理
+- **13 个核心部门**：机器人（BOT）、财务（TREASURY）、工程师（ENGINEER）、情报（INTEL）、内容（CONTENT）、社区（COMMUNITY）、安全（SECURITY）、基础设施（INFRA）、分析（ANALYTICS）、设计（DESIGN）、调度器（SCHEDULER）、信用（CREDITS）、业务（BUSINESS）
+- **子代理结构**：每个部门可设置多个专业子代理
+- **状态跟踪**：在线/离线状态指示，以及最后一次活动的时间戳
+- **任务分配**：为每个代理分配并追踪任务
+
+### 系统监控
+- **实时统计**：CPU、内存、磁盘使用情况的可视化显示
+- **GPU 支持**：自动检测并监控 NVIDIA GPU
+- **警报系统**：可配置资源使用警告的阈值
+- **历史数据**：追踪资源使用情况的变化趋势
+
+### 安全性
+- **登录系统**：用户名/密码认证
+- **会话管理**：基于 JWT 的安全会话机制
+- **速率限制**：防止暴力攻击
+- **Cloudflare 隧道**：内置的简单 HTTPS 设置功能
+
+### 自定义
+- **部门配置**：可轻松添加、删除或修改部门
+- **代理角色**：为每个代理自定义表情符号、名称和角色
+- **主题颜色**：根据您的品牌调整颜色方案
+- **布局选项**：灵活的网格布局，适应不同屏幕尺寸
+
+---
+
+## 📋 系统要求
+
+- **Node.js** v18+（推荐使用 v22）
+- **npm** 或 **yarn**
+- **Ubuntu/Linux**（在 Ubuntu 24.04 上测试通过）
+- **PM2**（可选，用于生产环境部署）
+
+---
+
+## 📦 安装步骤
+
+### 1. 解压文件
 ```bash
 cd /home/your-username
 tar -xzf mission-control-dashboard.tar.gz
 cd mission-control-dashboard
 ```
 
-### 2. Install Dependencies
+### 2. 安装依赖项
 ```bash
 npm install
 ```
 
-### 3. Configure Environment
+### 3. 配置环境
 ```bash
 cp .env.example .env
 nano .env
 ```
 
-**Set these variables:**
+**设置以下变量：**
 ```env
 SESSION_SECRET=your-random-secret-here
 ADMIN_USERNAME=admin
@@ -96,8 +96,8 @@ ADMIN_PASSWORD=your-secure-password
 PORT=3000
 ```
 
-### 4. Customize Agents
-Edit `agents.json` to add your own agents:
+### 4. 自定义代理
+编辑 `agents.json` 文件以添加您的代理：
 ```json
 {
   "departments": [
@@ -119,14 +119,14 @@ Edit `agents.json` to add your own agents:
 }
 ```
 
-### 5. Run Development Server
+### 5. 运行开发服务器
 ```bash
 npm start
 ```
 
-Visit: `http://localhost:3000`
+访问地址：`http://localhost:3000`
 
-### 6. Production Deployment (Optional)
+### 6. 生产环境部署（可选）
 ```bash
 pm2 start server.js --name mission-control
 pm2 save
@@ -134,9 +134,9 @@ pm2 save
 
 ---
 
-## 🔐 Security Setup
+## 🔐 安全设置
 
-### Cloudflare Tunnel (Free HTTPS)
+### Cloudflare 隧道（免费 HTTPS）
 ```bash
 # Install cloudflared
 curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
@@ -146,19 +146,19 @@ sudo dpkg -i cloudflared.deb
 cloudflared tunnel --url http://localhost:3000
 ```
 
-Your dashboard is now accessible via HTTPS!
+现在您可以通过 HTTPS 访问该面板！
 
-### Login Credentials
-- Default: `admin` / (your password from .env)
-- Change in `.env` file
-- Session expires after 24 hours
+### 登录凭据
+- 默认值：`admin` / （从 `.env` 文件中获取的密码）
+- 可在 `.env` 文件中更改
+- 会话在 24 小时后过期
 
 ---
 
-## 🎨 Customization Guide
+## 🎨 自定义指南
 
-### Adding a New Department
-Edit `agents.json`:
+### 添加新部门
+编辑 `agents.json` 文件：
 ```json
 {
   "id": "your-dept",
@@ -169,8 +169,8 @@ Edit `agents.json`:
 }
 ```
 
-### Changing Theme Colors
-Edit `public/index.html` CSS section:
+### 更改主题颜色
+编辑 `public/index.html` 文件中的 CSS 代码：
 ```css
 :root {
   --primary: #e8dcc4;    /* Cream background */
@@ -179,8 +179,8 @@ Edit `public/index.html` CSS section:
 }
 ```
 
-### Adding System Monitors
-Edit `server.js` - `systemStats` function:
+### 添加系统监控功能
+编辑 `server.js` 文件中的 `systemStats` 函数：
 ```javascript
 // Add custom monitoring
 const customMetric = await getYourMetric();
@@ -189,32 +189,32 @@ stats.custom = customMetric;
 
 ---
 
-## 📊 API Endpoints
+## 📊 API 接口
 
-### Authentication
-- `POST /login` - Login with username/password
-- `POST /logout` - End session
+### 认证
+- `POST /login` - 使用用户名/密码登录
+- `POST /logout` - 结束会话
 
-### Dashboard Data
-- `GET /api/agents` - Get all agents and departments
-- `POST /api/agents/:id/task` - Assign task to agent
-- `GET /api/system/stats` - Get system monitoring data
+### 面板数据
+- `GET /api/agents` - 获取所有代理和部门信息
+- `POST /api/agents/:id/task` - 为代理分配任务
+- `GET /api/system/stats` - 获取系统监控数据
 
-### Credits (Optional)
-- `GET /api/credits` - Get usage statistics
-- `POST /api/credits/log` - Log credit usage
+### 信用管理（可选）
+- `GET /api/credits` - 获取使用量统计信息
+- `POST /api/credits/log` - 记录信用使用情况
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛 常见问题解决方法
 
-### Port Already in Use
+### 端口已被占用
 ```bash
 # Change port in .env
 PORT=3001
 ```
 
-### GPU Not Detected
+### 未检测到 GPU
 ```bash
 # Install nvidia-smi
 sudo apt install nvidia-utils-535
@@ -222,7 +222,7 @@ sudo apt install nvidia-utils-535
 # Or disable GPU monitoring in server.js
 ```
 
-### PM2 Not Starting
+### PM2 无法启动
 ```bash
 # Check logs
 pm2 logs mission-control
@@ -233,71 +233,71 @@ pm2 restart mission-control
 
 ---
 
-## 🎯 Use Cases
+## 🎯 使用场景
 
-- **AI Trading Operations** - Manage multiple trading bots
-- **Multi-Agent Systems** - Coordinate AI agent teams
-- **Development Dashboard** - Monitor development agents
-- **Security Operations** - Track security bots and alerts
-- **Content Creation** - Manage social media and content agents
-
----
-
-## 📖 Documentation
-
-Full documentation: `/docs/`
-- Architecture overview
-- API reference
-- Deployment guide
-- Security best practices
+- **人工智能交易操作**：管理多个交易机器人
+- **多代理系统**：协调人工智能代理团队
+- **开发面板**：监控开发中的代理
+- **安全操作**：追踪安全相关代理和警报
+- **内容创作**：管理社交媒体和内容生成代理
 
 ---
 
-## 💬 Support
+## 📖 文档资料
 
-Need help? Open an issue on GitHub or contact:
-- **Twitter:** @MomoAI_Agent
-- **Telegram:** @PolMoeye
-- **Email:** support@momo-ai.com
-
----
-
-## 📝 License
-
-**Commercial License**
-
-This software is licensed for commercial use. You may:
-- ✅ Use for your own projects
-- ✅ Deploy for your clients
-- ✅ Modify and customize
-- ✅ Rebrand (keep attribution)
-
-You may NOT:
-- ❌ Resell as-is
-- ❌ Redistribute source code publicly
-- ❌ Remove original author attribution
+完整文档：`/docs/`
+- 架构概述
+- API 参考
+- 部署指南
+- 安全最佳实践
 
 ---
 
-## 🙏 Credits
+## 💬 技术支持
 
-Built by **Momo AI** 🍑
-Powered by **OpenClaw** framework
-
----
-
-## ⭐ Reviews
-
-> "Best agent dashboard I've found. Clean, professional, actually works!"  
-> — *Developer on ClawHub*
-
-> "Saved me weeks of development. Worth every penny."  
-> — *AI Trading Operator*
+需要帮助？请在 GitHub 上提交问题，或联系我们：
+- **Twitter**：@MomoAI_Agent
+- **Telegram**：@PolMoeye
+- **电子邮件**：support@momo-ai.com
 
 ---
 
-**Version:** 1.0.0  
-**Last Updated:** 2026-02-10  
-**Price:** $149 USD
+## 📝 许可证
 
-[Purchase on ClawHub →](https://clawhub.com/skills/mission-control-dashboard)
+**商业许可证**
+
+本软件仅供商业用途使用。您可以：
+- ✅ 用于您自己的项目
+- ✅ 为您的客户部署
+- ✅ 进行修改和定制
+- ✅ 更改品牌名称（需保留原作者署名）
+
+您不得：
+- ❌ 以原样转售
+- ❌ 公开分发源代码
+- ❌ 去除原作者的署名
+
+---
+
+## 🙏 致谢
+
+由 **Momo AI** 开发 🍑
+基于 **OpenClaw** 框架构建
+
+---
+
+## ⭐ 用户评价
+
+> “这是我见过的最好的代理管理面板。界面简洁、专业，而且确实有效！”  
+> — 来自 ClawHub 的开发者
+
+> “这为我节省了数周的开发时间。物有所值。”  
+> — 来自一位人工智能交易操作员
+
+---
+
+**版本：** 1.0.0  
+**最后更新时间：** 2026-02-10  
+**价格：** 149 美元
+
+[在 ClawHub 上购买 →](https://clawhub.com/skills/mission-control-dashboard)

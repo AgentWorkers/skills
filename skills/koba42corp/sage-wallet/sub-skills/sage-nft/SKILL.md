@@ -1,50 +1,37 @@
 ---
 name: sage-nft
-description: Sage NFT operations. List NFTs and collections, mint NFTs, transfer, add URIs, assign to DIDs, manage visibility.
+description: Sage NFT操作：列出NFT和收藏集、铸造NFT、转移NFT、添加URL、将NFT关联到DID（Digital Identifiers）、管理NFT的可见性。
 ---
 
 # Sage NFTs
 
-NFT operations for Chia NFT1 standard.
+提供针对Chia NFT1标准的NFT操作功能。
 
-## Endpoints
+## 端点（Endpoints）
 
-### Query NFTs
+### 查询NFTs
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_nfts` | See below | List NFTs with filters |
-| `get_nft` | `{"nft_id": "nft1..."}` | Get NFT details |
-| `get_nft_icon` | `{"nft_id": "nft1..."}` | Get icon (base64) |
-| `get_nft_thumbnail` | `{"nft_id": "nft1..."}` | Get thumbnail (base64) |
-| `get_nft_data` | `{"nft_id": "nft1..."}` | Get raw data |
+| 端点          | 报文格式（Payload） | 描述                          |
+|--------------|-----------------|-------------------------------------------|
+| `get_nfts`     | 见下文           | 使用过滤器列出NFTs                   |
+| `get_nft`     | `{"nft_id": "nft1..."}`    | 获取NFT详细信息                   |
+| `get_nft_icon`   | `{"nft_id": "nft1..."}`    | 获取NFT图标（base64编码）                 |
+| `get_nft_thumbnail` | `{"nft_id": "nft1..."}`    | 获取NFT缩略图（base64编码）                 |
+| `get_nft_data`   | `{"nft_id": "nft1..."}`    | 获取NFT原始数据                     |
 
-#### get_nfts Payload
+#### `get_nfts` 的报文格式（Payload）
 
-```json
-{
-  "collection_id": null,
-  "minter_did_id": null,
-  "owner_did_id": null,
-  "name": null,
-  "offset": 0,
-  "limit": 50,
-  "sort_mode": "recent",
-  "include_hidden": false
-}
-```
+支持以下排序方式：`"name"`、`"recent"`
 
-Sort modes: `"name"`, `"recent"`
+### 集合（Collections）
 
-### Collections
+| 端点          | 报文格式（Payload） | 描述                          |
+|--------------|-----------------|-------------------------------------------|
+| `get_nft_collections` | `{"offset": 0, "limit": 50, "include_hidden": false}` | 列出所有集合                     |
+| `get_nft_collection` | `{"collection_id": "col1..."}` | 获取特定集合                     |
+| `update_nft_collection` | `{"collection_id": "col1...", "visible": true}` | 更新集合的可见性                     |
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_nft_collections` | `{"offset": 0, "limit": 50, "include_hidden": false}` | List collections |
-| `get_nft_collection` | `{"collection_id": "col1..."}` | Get collection |
-| `update_nft_collection` | `{"collection_id": "col1...", "visible": true}` | Update visibility |
-
-### Mint NFTs
+### 铸造NFTs（Mint NFTs）
 
 ```json
 {
@@ -69,21 +56,21 @@ Sort modes: `"name"`, `"recent"`
 }
 ```
 
-Response includes `nft_ids` array.
+响应中包含一个 `nft_ids` 数组。
 
-### Transfer & Manage
+### 转移与管理（Transfer & Manage）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `transfer_nfts` | `{"nft_ids": [...], "address": "xch1...", "fee": "...", "auto_submit": true}` | Transfer |
-| `add_nft_uri` | `{"nft_id": "...", "uri": "https://...", "kind": "data", "fee": "..."}` | Add URI |
-| `assign_nfts_to_did` | `{"nft_ids": [...], "did_id": "did:chia:...", "fee": "..."}` | Assign to DID |
-| `update_nft` | `{"nft_id": "...", "visible": true}` | Update visibility |
-| `redownload_nft` | `{"nft_id": "..."}` | Re-fetch data |
+| 端点          | 报文格式（Payload） | 描述                          |
+|--------------|-----------------|-------------------------------------------|
+| `transfer_nfts` | `{"nft_ids": [...], "address": "xch1...", "fee": "...", "auto_submit": true}` | 转移NFTs                     |
+| `add_nft_uri`   | `{"nft_id": "...", "uri": "https://...", "kind": "data", "fee": "..."}` | 添加NFT的URI                     |
+| `assign_nfts_to_did` | `{"nft_ids": [...], "did_id": "did:chia:...", "fee": "..."}` | 将NFTs分配给DID                     |
+| `update_nft`     | `{"nft_id": "...", "visible": true}` | 更新NFT的可见性                     |
+| `redownload_nft`   | `{"nft_id": "..."}`     | 重新获取NFT数据                     |
 
-URI kinds: `"data"`, `"metadata"`, `"license"`
+URI类型：`"data"`, `"metadata"`, `"license"`
 
-## NFT Record Structure
+## NFT记录结构（NFT Record Structure）
 
 ```json
 {
@@ -102,7 +89,7 @@ URI kinds: `"data"`, `"metadata"`, `"license"`
 }
 ```
 
-## Examples
+## 示例（Examples）
 
 ```bash
 # List NFTs
@@ -131,8 +118,8 @@ sage_rpc transfer_nfts '{
 }'
 ```
 
-## Notes
+## 注意事项（Notes）
 
-- Royalty is in ten-thousandths: 300 = 3%, 500 = 5%
-- `did_id: null` in `assign_nfts_to_did` unassigns from DID
-- Minting requires a DID for provenance
+- 版权费用以万分之一为单位：300表示3%，500表示5%
+- 在 `assign_nfts_to_did` 请求中，如果 `did_id` 为 `null`，则表示将NFT从指定的DID中解绑
+- 铸造NFT需要使用DID来记录其来源信息

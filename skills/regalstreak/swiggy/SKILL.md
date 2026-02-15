@@ -1,32 +1,31 @@
 ---
 name: swiggy
-description: "Order food, groceries, and book restaurants in India via Swiggy's MCP servers. Food delivery, Instamart groceries, and Dineout restaurant bookings with safety-first confirmation workflow."
+description: "在印度，您可以通过 Swiggy 的 MCP 服务器订购食物、杂货，并预订餐厅。Swiggy 提供食物配送服务、Instamart 的杂货购物服务以及 Dineout 的餐厅预订服务，所有流程都遵循以安全为首要目标的确认机制。"
 ---
 
-# Swiggy Skill
+# Swiggy 技能
 
-Order food, groceries, and book restaurants in India via Swiggy's MCP servers.
+通过 Swiggy 的 MCP 服务器，在印度订购食物、生活用品并预订餐厅。
 
-## Installation
+## 安装
 
-The skill includes a `swiggy` CLI binary. After installing the skill:
+该技能包含一个名为 `swiggy` 的命令行工具（CLI）二进制文件。安装完成后：
 ```bash
 cd skills/swiggy
 npm link
 ```
 
-This creates a global `swiggy` command. Verify with: `which swiggy`
+这将创建一个全局可用的 `swiggy` 命令。可以通过 `which swiggy` 来验证其是否已安装。
 
-## When to Use
+## 使用场景
 
-- Food delivery: "Order biryani", "What's open late?", "Team lunch for 8"
-- Groceries (Instamart): "Get eggs and milk", "Weekly groceries", "Recipe ingredients"
-- Restaurant bookings (Dineout): "Book dinner Saturday 8pm", "Italian in Koramangala"
+- **食物配送**：例如：“订购印度香饭”、“哪些餐厅营业到很晚？”、“为团队预订午餐”
+- **生活用品（Instamart）**：例如：“购买鸡蛋和牛奶”、“购买一周所需的生活用品”、“查询食谱所需食材”
+- **餐厅预订（Dineout）**：例如：“预订周六晚上8点的晚餐”、“预订科拉曼加拉地区的意大利餐厅”
 
-## Available Commands
+## 可用命令
 
-### Food Delivery
-
+### 食物配送
 ```bash
 # Search restaurants
 swiggy food search "biryani" --location "Koramangala, Bengaluru"
@@ -43,8 +42,7 @@ swiggy food cart clear
 swiggy food order --address "home" --confirm
 ```
 
-### Instamart (Groceries)
-
+### Instamart（生活用品）
 ```bash
 # Search products
 swiggy im search "eggs" --location "HSR Layout, Bengaluru"
@@ -58,8 +56,7 @@ swiggy im cart clear
 swiggy im order --address "home" --confirm
 ```
 
-### Dineout (Restaurant Bookings)
-
+### Dineout（餐厅预订）
 ```bash
 # Search restaurants
 swiggy dineout search "Italian Indiranagar"
@@ -74,18 +71,18 @@ swiggy dineout slots <restaurant-id> --date 2026-01-30
 swiggy dineout book <restaurant-id> --date 2026-01-30 --time 20:00 --guests 2 --confirm
 ```
 
-## CRITICAL: Safety Rules
+## 重要提示：安全规则
 
-### ⚠️ NEVER Auto-Order
-**ALWAYS get explicit confirmation before placing orders.**
+### ⚠️ **切勿自动下单！**
+**在下单前务必获得用户的明确确认。**
 
-1. **Show cart preview first:**
-   - All items with quantities and prices
-   - Total amount
-   - Delivery address
-   - Estimated delivery time (food/groceries)
+1. **先查看购物车预览**：
+   - 所有商品及其数量和价格
+   - 总金额
+   - 送货地址
+   - 预计送达时间（针对食物/生活用品）
 
-2. **Ask for confirmation:**
+2. **请求用户确认**：
    ```
    Ready to order:
    - 2x Chicken Biryani (₹500)
@@ -97,21 +94,21 @@ swiggy dineout book <restaurant-id> --date 2026-01-30 --time 20:00 --guests 2 --
    Confirm order? (yes/no)
    ```
 
-3. **Only after user says YES:**
-   - Run the order command with `--confirm` flag
-   - Log to `memory/swiggy-orders.json`
+3. **只有在用户确认后**：
+   - 使用 `--confirm` 标志执行下单命令
+   - 将订单信息记录到 `memory/swiggy-orders.json` 文件中
 
-### COD Warning
-Swiggy MCP currently supports **Cash on Delivery only**. Orders **cannot be cancelled** once placed. Always double-check before confirming.
+### 注意事项：
+Swiggy MCP 目前仅支持 **货到付款**（COD）方式。一旦下单，订单**无法取消**。请务必在确认前再次核对信息。
 
-### Address Handling
-- User may say "home", "office", etc. - map to actual addresses from USER.md or ask
-- Always confirm delivery location in preview
-- For Dineout, location is used for search only (not delivery)
+### 地址处理
+- 用户可能会输入“家”、“办公室”等地址——系统会从 `USER.md` 文件中获取实际地址，或请求用户提供更详细的地址信息。
+- 在预览界面中务必确认送货地址。
+- 对于餐厅预订，地址仅用于搜索，不用于实际配送。
 
-## Workflow Examples
+## 工作流程示例
 
-### Food Order Flow
+- **食物订购流程**
 ```bash
 # 1. Search
 swiggy food search "biryani near Koramangala"
@@ -131,7 +128,7 @@ swiggy food cart show
 swiggy food order --address "HSR Layout, Sector 2, Bengaluru" --confirm
 ```
 
-### Grocery Shopping Flow
+- **生活用品购买流程**
 ```bash
 # 1. Search items
 swiggy im search "eggs" --location "Koramangala"
@@ -150,7 +147,7 @@ swiggy im cart show
 swiggy im order --address "Koramangala, Bengaluru" --confirm
 ```
 
-### Restaurant Booking Flow
+- **餐厅预订流程**
 ```bash
 # 1. Search
 swiggy dineout search "Italian Indiranagar"
@@ -167,23 +164,23 @@ swiggy dineout slots rest_99999 --date 2026-01-30
 swiggy dineout book rest_99999 --date 2026-01-30 --time 20:00 --guests 2 --confirm
 ```
 
-## Error Handling
+## 错误处理
 
-- **No results:** Suggest broader search or different location
-- **Out of stock:** Show alternatives
-- **No slots available:** Suggest different times/dates
-- **Authentication required:** User needs to authenticate via OAuth (handled by MCP)
+- **无搜索结果**：建议用户扩大搜索范围或更换地址。
+- **商品缺货**：提供替代商品建议。
+- **无可用时间段**：建议用户更改预订时间或日期。
+- **需要身份验证**：用户需要通过 OAuth 进行身份验证（由 MCP 负责处理）。
 
-## Tips
+## 使用技巧
 
-- For team orders: build cart iteratively, ask for preferences
-- For budget shopping: filter results by price, show running total
-- For recipe-to-cart: search each ingredient, add progressively
-- For late night: mention delivery time in search criteria
+- **团队订单**：逐步构建购物车，询问团队成员的偏好。
+- **预算购物**：按价格筛选搜索结果，并实时显示总金额。
+- **根据食谱购物**：逐个搜索所需食材，再逐步添加到购物车中。
+- **夜间配送**：在搜索条件中注明配送时间。
 
-## Order Logging
+## 订单记录
 
-After successful order, append to `memory/swiggy-orders.json`:
+订单成功后，将相关信息追加到 `memory/swiggy-orders.json` 文件中：
 ```json
 {
   "timestamp": "2026-01-28T21:16:00+05:30",
@@ -195,22 +192,22 @@ After successful order, append to `memory/swiggy-orders.json`:
 }
 ```
 
-## Authentication
+## 身份验证
 
-Swiggy MCP uses OAuth. First use will trigger auth flow. The `swiggy` CLI handles this via mcporter.
+Swiggy MCP 使用 OAuth 进行身份验证。首次使用该技能时系统会自动触发身份验证流程。`swiggy` CLI 通过 `mcporter` 工具来处理身份验证过程。
 
-## Dependencies
+## 依赖项
 
-- Requires `mcporter` skill (uses it under the hood)
-- Node.js runtime for the CLI wrapper
+- 该技能依赖于 `mcporter` 技能（在后台使用该技能）。
+- 需要 Node.js 运行环境来运行 `swiggy` CLI 工具。
 
-## Known Limitations
+## 已知限制
 
-- COD only (no online payment yet)
-- Orders cannot be cancelled
-- Dineout: free bookings only
-- Don't open Swiggy app while using MCP (session conflicts)
+- 目前仅支持货到付款方式（不支持在线支付）。
+- 订单一旦提交无法取消。
+- Dineout 服务仅提供免费预订服务。
+- 使用 MCP 时请勿同时打开 Swiggy 应用程序（以避免会话冲突）。
 
 ---
 
-**Remember: Confirmation BEFORE ordering. Every. Single. Time.** 🐾
+**请记住：每次下单前都必须获得用户的确认。** 🐾

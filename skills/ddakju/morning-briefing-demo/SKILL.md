@@ -1,21 +1,27 @@
 ---
 name: morning-briefing-demo
-description: Get a weather-only morning briefing using the free `briefing` CLI. No API tokens consumed. For full briefing with calendar, news, and reminders, upgrade to the full morning-briefing.
+description: 您可以使用免费的 `briefing` CLI 获取仅包含天气信息的晨间简报。该服务不会消耗任何 API 令牌。如需包含日历、新闻和提醒的完整晨间简报，请升级到高级版本。
 metadata: { "openclaw": { "emoji": "🌤️", "requires": { "bins": ["briefing"] }, "install": [{ "id": "node", "kind": "node", "package": "@openclaw-tools/morning-briefing", "bins": ["briefing"], "label": "Install morning-briefing (npm)" }] } }
 ---
 
-# Morning Briefing (Demo)
+# 早晨简报（演示版）
 
-Free weather briefing with zero API token cost.
+提供免费的天气信息，无需支付任何 API 许可费。
 
-## Usage
-`briefing weather`
-`briefing weather --location "Seoul"`
-`briefing weather --format compact`
+## 使用方法
+```bash
+briefing weather
+briefing weather --location "首尔"
+briefing weather --format compact
+```
 
-## Setup
-`briefing config init`
+## 设置
+```bash
+briefing config init
+```
 
-## Upgrade
-Full version (calendar, news, reminders): https://roistore.lemonsqueezy.com
-`briefing activate <license-key>`
+## 升级版本
+完整版功能包括日历、新闻和提醒：https://roistore.lemonsqueezy.com
+```bash
+briefing activate <license-key>
+```

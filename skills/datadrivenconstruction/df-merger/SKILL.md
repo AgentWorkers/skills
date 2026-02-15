@@ -1,15 +1,15 @@
 ---
 slug: "df-merger"
 display_name: "Df Merger"
-description: "Merge pandas DataFrames from multiple construction sources. Handle different schemas, keys, and data quality issues."
+description: "从多个数据源合并 pandas DataFrame。处理不同的数据结构、键以及数据质量问题。"
 ---
 
-# DataFrame Merger for Construction Data
+# 用于建筑数据的 DataFrame 合并
 
-## Overview
-Construction projects combine data from BIM, schedules, costs, and sensors. This skill merges DataFrames from disparate sources with intelligent key matching and schema reconciliation.
+## 概述
+建筑项目整合了来自 BIM、进度计划、成本数据和传感器的数据。本技能通过智能的键匹配和模式协调功能，将来自不同来源的 DataFrame 合并在一起。
 
-## Python Implementation
+## Python 实现
 
 ```python
 import pandas as pd
@@ -276,7 +276,7 @@ class CostQTOMerger(ConstructionDFMerger):
         )
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 merger = ConstructionDFMerger()
@@ -289,22 +289,22 @@ print(f"Matched: {result.matched_rows}, Quality: {result.merge_quality}")
 merged = result.merged_df
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. BIM + Schedule Integration
+### 1. BIM 与进度计划的集成
 ```python
 bim_schedule = BIMScheduleMerger()
 integrated = bim_schedule.merge_bim_schedule(bim_elements, schedule_activities)
 ```
 
-### 2. Cost + QTO
+### 2. 成本数据与报价单（QTO）的整合
 ```python
 cost_merger = CostQTOMerger()
 priced_qto = cost_merger.merge_cost_qto(cost_database, quantities)
 print(f"Total: ${priced_qto['extended_cost'].sum():,.2f}")
 ```
 
-### 3. Multiple Sources
+### 3. 多个数据源的整合
 ```python
 all_data = merger.merge_multiple(
     [bim_df, schedule_df, cost_df, resource_df],
@@ -312,5 +312,5 @@ all_data = merger.merge_multiple(
 )
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.3 - Pandas DataFrame
+## 参考资源
+- **DDC Book**: 第 2.3 章 - Pandas DataFrame

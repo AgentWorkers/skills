@@ -1,21 +1,20 @@
 # SOTA Tracker
 
-**The definitive open-source database of State-of-the-Art AI models.**
+**这是一个权威的、开源的AI模型最新技术（State-of-the-Art, SOTA）数据库。**
 
-Auto-updated daily from [LMArena](https://lmarena.ai), [Artificial Analysis](https://artificialanalysis.ai), and [HuggingFace](https://huggingface.co).
+数据每日自动从 [LMArena](https://lmarena.ai)、[Artificial Analysis](https://artificialanalysis.ai) 和 [HuggingFace](https://huggingface.co) 更新。
 
-## Why This Exists
+## 项目存在的意义
 
-AI models are released weekly. Keeping track is impossible. This project:
+AI模型每周都有新的发布，手动跟踪这些模型的更新情况几乎是不可能的。本项目旨在：
+1. **整理权威的数据**——包括 LMArena 的 Elo 排名以及针对视频/图像/音频模型的手动审核结果；
+2. **通过 GitHub Actions 每日更新数据库**；
+3. **提供多种数据导出格式**（JSON、CSV、SQLite），方便用户在自己的项目中使用；
+4. **提供多种访问接口**——静态文件、REST API 或 MCP 服务器。
 
-1. **Curates authoritative data** - LMArena Elo rankings, manual curation for video/image/audio models
-2. **Updates daily** via GitHub Actions
-3. **Exports to JSON/CSV/SQLite** - Use in your own projects
-4. **Provides multiple interfaces** - Static files, REST API, or MCP server
+## 快速入门：如何使用数据
 
-## Quick Start: Use the Data
-
-### Option 1: Download JSON/CSV
+### 选项 1：下载 JSON/CSV 数据
 
 ```bash
 # Latest data (updated daily)
@@ -23,7 +22,7 @@ curl -O https://raw.githubusercontent.com/romancircus/sota-tracker-mcp/main/data
 curl -O https://raw.githubusercontent.com/romancircus/sota-tracker-mcp/main/data/sota_export.csv
 ```
 
-### Option 2: Clone and Query Locally
+### 选项 2：克隆代码并在本地查询数据
 
 ```bash
 git clone https://github.com/romancircus/sota-tracker-mcp.git
@@ -36,9 +35,9 @@ sqlite3 data/sota.db "SELECT name, sota_rank FROM models WHERE category='llm_api
 sqlite3 data/sota.db "SELECT name, reason, replacement FROM forbidden"
 ```
 
-### Option 3: Use with Claude Code (Recommended)
+### 选项 3：结合 Claude Code 使用（推荐）
 
-The recommended approach for Claude Code users is **static file embedding** (lower token cost than MCP):
+对于 Claude Code 用户，推荐使用 **静态文件嵌入** 的方式（这种方式比使用 MCP 服务器更节省 API 带宽）：
 
 ```bash
 # Set up daily auto-update of CLAUDE.md
@@ -51,9 +50,9 @@ systemctl --user enable --now sota-update.timer
 python ~/scripts/update_sota_claude_md.py --update
 ```
 
-This embeds a compact SOTA summary directly in your `~/.claude/CLAUDE.md` file.
+通过这种方式，您可以直接将 SOTA 模型的相关信息嵌入到您的 `~/.claude/CLAUDE.md` 文件中。
 
-### Option 4: REST API
+### 选项 4：使用 REST API
 
 ```bash
 # Start the API server
@@ -65,9 +64,9 @@ curl "http://localhost:8000/api/v1/forbidden"
 curl "http://localhost:8000/api/v1/models/FLUX.1-dev/freshness"
 ```
 
-### Option 5: MCP Server (Optional)
+### 选项 5：使用 MCP 服务器（可选）
 
-MCP support is available but disabled by default (higher token cost). To enable:
+虽然支持 MCP 服务器，但默认是关闭的（使用 MCP 服务器会消耗更多的 API 带宽）。如需启用，请按照以下步骤操作：
 
 ```bash
 # Edit .mcp.json to add the server config
@@ -83,42 +82,42 @@ cat > .mcp.json << 'EOF'
 EOF
 ```
 
-## Data Sources
+## 数据来源
 
-| Source | Data | Update Frequency |
-|--------|------|------------------|
-| [LMArena](https://lmarena.ai/leaderboard) | LLM Elo rankings (6M+ human votes) | Daily |
-| [Artificial Analysis](https://artificialanalysis.ai) | LLM benchmarks, pricing, speed | Daily |
-| [HuggingFace](https://huggingface.co) | Model downloads, trending | Daily |
-| Manual curation | Video, Image, Audio, Video2Audio models | As needed |
+| 数据来源 | 提供的数据类型 | 更新频率 |
+|--------|------------------|------------------|
+| [LMArena](https://lmarena.ai/leaderboard) | 大语言模型（LLM）Elo 排名（基于 600 万条人类评分） | 每日 |
+| [Artificial Analysis](https://artificialanalysis.ai) | LLM 基准测试结果、模型定价信息 | 每日 |
+| [HuggingFace](https://huggingface.co) | 模型下载信息、模型热度排名 | 每日 |
+| 手动审核数据 | 视频、图像、音频模型 | 根据需要更新 |
 
-## Categories
+## 分类
 
-| Category | Description | Top Models (Feb 2026) |
+| 分类 | 描述 | 2026 年 2 月的顶级模型 |
 |----------|-------------|----------------------|
-| `llm_api` | Cloud LLM APIs | Gemini 3 Pro, Grok 4.1, Claude Opus 4.5 |
-| `llm_local` | Local LLMs (GGUF) | Qwen3, Llama 3.3, DeepSeek-V3 |
-| `llm_coding` | Code-focused LLMs | Qwen3-Coder, DeepSeek-V3 |
-| `image_gen` | Image generation | Z-Image-Turbo, FLUX.2-dev, Qwen-Image |
-| `video` | Video generation | LTX-2, Wan 2.2, HunyuanVideo 1.5 |
-| `video2audio` | Video-to-audio (foley) | MMAudio V2 Large |
-| `tts` | Text-to-speech | ChatterboxTTS, F5-TTS |
-| `stt` | Speech-to-text | Whisper Large v3 |
-| `embeddings` | Vector embeddings | BGE-M3 |
+| `llm_api` | 云端大语言模型 API | Gemini 3 Pro、Grok 4.1、Claude Opus 4.5 |
+| `llm_local` | 本地大语言模型 | Qwen3、Llama 3.3、DeepSeek-V3 |
+| `llm_coding` | 专注于代码生成的大语言模型 | Qwen3-Coder、DeepSeek-V3 |
+| `image_gen` | 图像生成模型 | Z-Image-Turbo、FLUX.2-dev、Qwen-Image |
+| `video` | 视频生成模型 | LTX-2、Wan 2.2、HunyuanVideo 1.5 |
+| `video2audio` | 视频转音频模型 | MMAudio V2 Large |
+| `tts` | 文本转语音模型 | ChatterboxTTS、F5-TTS |
+| `stt` | 语音转文本模型 | Whisper Large v3 |
+| `embeddings` | 向量嵌入模型 | BGE-M3 |
 
-## REST API Endpoints
+## REST API 端点
 
-| Endpoint | Description |
+| 端点 | 功能描述 |
 |----------|-------------|
-| `GET /api/v1/models?category=X` | Get SOTA for a category |
-| `GET /api/v1/models/:name/freshness` | Check if model is current or outdated |
-| `GET /api/v1/forbidden` | List outdated models to avoid |
-| `GET /api/v1/compare?model_a=X&model_b=Y` | Compare two models |
-| `GET /api/v1/recent?days=30` | Models released in past N days |
-| `GET /api/v1/recommend?task=chat` | Get recommendation for a task |
-| `GET /health` | Health check |
+| `GET /api/v1/models?category=X` | 获取指定分类下的最新模型信息 |
+| `GET /api/v1/models/:name/freshness` | 检查模型是否为最新版本 |
+| `GET /api/v1/forbidden` | 获取需要避免使用的过时模型列表 |
+| `GET /api/v1/compare?model_a=X&model_b=Y` | 比较两个模型 |
+| `GET /api/v1/recent?days=30` | 获取过去 N 天内发布的模型 |
+| `GET /api/v1/recommend?task=chat` | 根据任务需求推荐模型 |
+| `GET /health` | 检查系统运行状态 |
 
-## Run Your Own Scraper
+## 运行自己的数据抓取脚本
 
 ```bash
 # Install dependencies
@@ -135,18 +134,18 @@ python scrapers/run_all.py --export
 # data/lmarena_latest.json
 ```
 
-## GitHub Actions (Auto-Update)
+## 使用 GitHub Actions 自动更新数据
 
-This repo uses GitHub Actions to:
-- **Daily**: Scrape all sources, update database, commit changes
-- **Weekly**: Create a tagged release with JSON/CSV exports
+该项目通过 GitHub Actions 实现以下功能：
+- **每日**：从所有数据来源抓取最新数据，更新数据库，并提交更改；
+- **每周**：生成包含 JSON/CSV 数据的版本，并发布到仓库。
 
-To enable on your fork:
-1. Fork this repo
-2. Go to Settings → Actions → Enable workflows
-3. Data will auto-update daily at 6 AM UTC
+若要在您的代码仓库中启用自动更新功能，请按照以下步骤操作：
+1. 克隆本项目；
+2. 进入项目设置 → Actions，启用相关的工作流程；
+3. 数据将在 UTC 时间 6 点自动更新。
 
-## File Structure
+## 项目文件结构
 
 ```
 sota-tracker-mcp/
@@ -170,19 +169,18 @@ sota-tracker-mcp/
     └── daily-scrape.yml         # GitHub Actions workflow
 ```
 
-## Contributing
+## 如何贡献代码
 
-Found a model that's missing or incorrectly ranked?
+如果您发现某个模型未被收录或排名有误，可以：
+1. **手动添加数据**：修改 `init_db.py` 文件并提交 Pull Request；
+2. **改进数据抓取脚本**：修改 `scrapers/` 目录下的相关文件；
+3. **添加新的数据来源**：开发新的数据抓取脚本，并更新 `run_all.py` 文件。
 
-1. **For manual additions**: Edit `init_db.py` and submit a PR
-2. **For scraper improvements**: Edit files in `scrapers/`
-3. **For new data sources**: Add a new scraper and update `run_all.py`
+详细开发指南和 Pull Request 提交流程请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full developer setup and PR process.
+## 与 OpenCode / Agents.md 的集成
 
-## OpenCode / Agents.md Integration
-
-The repo now supports updating `agents.md` files for OpenCode agents:
+该项目支持更新 OpenCode 代理相关的 `agents.md` 文件：
 
 ```bash
 # Update your agents.md with latest SOTA data
@@ -198,16 +196,16 @@ python update_agents_md.py --categories llm_local image_gen --limit 3
 python update_agents_md.py --refresh
 ```
 
-### Automation
+### 自动化更新
 
-Add to your cron or systemd timer for daily updates:
+您可以通过 cron 任务或 systemd 定时任务来实现数据的每日自动更新：
 
 ```cron
 # ~: crontab -e
 @daily python ~/Apps/sota-tracker-mcp/update_agents_md.py
 ```
 
-Or systemd:
+或者使用 systemd 服务：
 
 ```bash
 # ~/.config/systemd/user/sota-update.service
@@ -234,39 +232,36 @@ WantedBy=timers.target
 systemctl --user enable --now sota-update.timer
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full setup guide
+完整的使用指南请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## Data Attribution & Legal
+## 数据来源与版权声明
 
-This project aggregates **publicly available benchmark data** from third-party sources. We do not claim ownership of rankings, Elo scores, or benchmark results.
+本项目汇总了来自第三方来源的 **公开可用的基准测试数据**。我们不对这些数据的排名、Elo 分数或测试结果拥有所有权。
 
-### Data Sources (Used With Permission)
+### 数据来源的使用许可
 
-| Source | Data | Permission |
+| 数据来源 | 提供的数据类型 | 使用许可 |
 |--------|------|------------|
-| [LMArena](https://lmarena.ai) | Chatbot Arena Elo rankings | `robots.txt: Allow: /` |
-| [Artificial Analysis](https://artificialanalysis.ai) | LLM quality benchmarks | `robots.txt: Allow: /` (explicitly allows AI crawlers) |
-| [HuggingFace](https://huggingface.co) | Model metadata, downloads | Public API |
-| [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard) | Open-source LLM benchmarks | CC-BY license |
+| [LMArena](https://lmarena.ai) | 聊天机器人竞技场 Elo 排名 | `robots.txt: Allow: /` |
+| [Artificial Analysis](https://artificialanalysis.ai) | LLM 基准测试结果 | `robots.txt: Allow: /`（明确允许 AI 爬虫访问） |
+| [HuggingFace](https://huggingface.co) | 模型元数据、模型下载信息 | 公开 API |
+| [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm-leaderboard) | 开源大语言模型基准测试结果 | CC-BY 许可协议 |
 
-### Disclaimer
+### 免责声明
 
-- All benchmark scores and rankings are the intellectual work of their respective sources
-- This project provides aggregation and tooling, not original benchmark data
-- Data is scraped once daily to minimize server load
-- If you are a data source and wish to be excluded, please open an issue
+- 所有的基准测试分数和排名结果均属于其原始来源的知识产权；
+- 本项目仅提供数据汇总和工具支持，不生成新的基准测试数据；
+- 为减轻服务器负担，数据每天仅抓取一次；
+- 如果您是数据来源的提供者且希望自己的数据不被收录，请提交问题。
 
-### Fair Use
+## 公平使用原则
 
-This project:
-- Aggregates factual data (not copyrightable)
-- Adds value through tooling (API server, unified format, forbidden list)
-- Attributes all sources with links
-- Does not compete commercially with sources
-- Respects robots.txt permissions
+- 本项目仅汇总事实性数据（不受版权保护）；
+- 通过提供 API 服务、统一的数据格式和过时模型列表等方式增加数据价值；
+- 所有数据来源都会在文档中明确标注；
+- 本项目不会与数据来源进行商业竞争；
+- 严格遵守所有数据来源的 robots.txt 许可规定。
 
-## License
+## 许可协议
 
-MIT - See [LICENSE](LICENSE) for details.
-
-The **code** in this repository is MIT licensed. The **data** belongs to its respective sources (see attribution above).
+本项目采用 MIT 许可协议。代码部分遵循 MIT 许可协议；数据部分归属于其原始来源（详见上述数据来源说明）。

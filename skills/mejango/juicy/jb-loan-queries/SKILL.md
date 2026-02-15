@@ -7,26 +7,25 @@ description: |
   permission checking, and multi-chain loan aggregation.
 ---
 
-# Querying REVLoans via Bendystraw
+# 通过 Bendystraw 查询 REVLoans
 
-## Problem
+## 问题
 
-Displaying loan data in revnet UIs requires querying Bendystraw's GraphQL API with the correct
-queries and understanding how to filter/aggregate loans across chains and projects.
+在 revnet 用户界面中显示贷款信息，需要使用正确的 GraphQL 查询来访问 Bendystraw 的 API，并了解如何跨链和项目筛选/汇总贷款数据。
 
-## Context / Trigger Conditions
+## 背景/触发条件
 
-- Building UI to show a user's outstanding loans
-- Displaying all loans for a specific revnet
-- Checking if a user has permission to borrow
-- Calculating loan headroom (refinanceable amount)
-- Multi-chain loan aggregation
+- 构建用户界面以显示用户的未偿还贷款
+- 显示特定 revnet 的所有贷款信息
+- 检查用户是否有借款权限
+- 计算贷款的可用额度（可再融资金额）
+- 多链贷款数据的汇总
 
-## Solution
+## 解决方案
 
-### GraphQL Queries
+### GraphQL 查询
 
-#### Get All Loans for a User
+#### 获取用户的全部贷款信息
 
 ```graphql
 query LoansByAccount($owner: String!, $version: Int!) {
@@ -49,11 +48,11 @@ query LoansByAccount($owner: String!, $version: Int!) {
 }
 ```
 
-**Variables:**
-- `owner`: User's wallet address (lowercase)
-- `version`: Protocol version (5 for V5)
+**参数：**
+- `owner`：用户的钱包地址（小写）
+- `version`：协议版本（V5 为 `5`）
 
-#### Get Loans for Specific Project
+#### 获取特定项目的贷款信息
 
 ```graphql
 query LoansDetailsByAccount($owner: String!, $projectId: Int!, $version: Int!) {
@@ -76,7 +75,7 @@ query LoansDetailsByAccount($owner: String!, $projectId: Int!, $version: Int!) {
 }
 ```
 
-#### Check Borrow Permission
+#### 检查借款权限
 
 ```graphql
 query HasPermission(
@@ -98,9 +97,9 @@ query HasPermission(
 }
 ```
 
-**Permission ID 1 = Borrow permission.** Check if `permissions` array includes `1`.
+**权限 ID 1 表示具有借款权限**：检查 `permissions` 数组中是否包含 `1`。
 
-### Loan Entity Fields
+### 贷款实体字段
 
 ```typescript
 type Loan = {
@@ -122,7 +121,7 @@ type Loan = {
 }
 ```
 
-### React Hook Usage (revnet-app pattern)
+### React Hook 的使用（revnet-app 模式）
 
 ```typescript
 import { useBendystrawQuery } from 'juice-sdk-react'
@@ -145,9 +144,9 @@ function useUserLoans(address: string, version: number = 5) {
 }
 ```
 
-### Filter Loans by Revnet
+### 按 revnet 筛选贷款
 
-When showing loans for a specific revnet (which may span multiple chains):
+在显示特定 revnet 的贷款信息时（这些贷款可能分布在多个链上）：
 
 ```typescript
 function filterLoansByRevnet(
@@ -167,9 +166,9 @@ const revnetProjectIds = projectData.project.suckerGroup?.projects_rel
 const filteredLoans = filterLoansByRevnet(loans, revnetProjectIds)
 ```
 
-### Calculate Loan Headroom (Refinanceable Amount)
+### 计算贷款的可用额度（可再融资金额）
 
-Use contract call to get borrowable amount for existing collateral:
+通过调用合约来获取现有抵押品的可借款金额：
 
 ```typescript
 import { useReadContract } from 'wagmi'
@@ -197,9 +196,9 @@ function useLoanHeadroom(loan: Loan) {
 }
 ```
 
-### Multi-Chain Token Resolution
+### 多链代币处理
 
-Loans may use different tokens on different chains. Get token config from suckerGroup:
+不同链上的贷款可能使用不同的代币。从 suckerGroup 获取代币配置：
 
 ```graphql
 query GetSuckerGroup($id: String!) {
@@ -226,16 +225,16 @@ function getTokenConfigForLoan(loan: Loan, suckerGroup: SuckerGroup) {
 }
 ```
 
-## Verification
+## 验证
 
-Test with known loan data:
-1. Query loans for an address known to have loans
-2. Verify `borrowAmount` matches on-chain `REVLoans.loanOf()`
-3. Check that `prepaidDuration` decreases over time (fee time consumed)
+使用已知的贷款数据进行测试：
+1. 查询已知有贷款的用户的贷款信息
+2. 确认 `borrowAmount` 与链上的 `REVLoans.loanOf()` 返回的值一致
+3. 检查 `prepaidDuration` 随时间减少（表示费用消耗情况）
 
-## Example
+## 示例
 
-Complete component for displaying user loans:
+用于显示用户贷款信息的完整组件：
 
 ```typescript
 function UserLoansTable({ address, revnetProjectIds }) {
@@ -268,17 +267,17 @@ function UserLoansTable({ address, revnetProjectIds }) {
 }
 ```
 
-## Notes
+## 注意事项
 
-- Loans are ERC-721 NFTs - each loan has a unique `tokenUri`
-- `prepaidDuration` is in seconds, decreases as time passes
-- After 10 years (`LOAN_LIQUIDATION_DURATION`), loans can be liquidated
-- Permission checking uses Bendystraw, but actual borrow calls use on-chain contracts
-- Poll interval of 3 seconds keeps UI responsive to loan state changes
+- 贷款是 ERC-721 NFT——每笔贷款都有一个唯一的 `tokenUri`
+- `prepaidDuration` 以秒为单位，会随时间减少
+- 贷款在 10 年后（`LOAN_LIQUIDATION_DURATION`）可以清算
+- 权限检查使用 Bendystraw，但实际的借款操作是通过链上合约完成的
+- 每 3 秒进行一次轮询，以确保用户界面能够实时反映贷款状态的变化
 
-## References
+## 参考资料
 
-- [loansByAccount.graphql](https://github.com/rev-net/revnet-app/blob/main/src/graphql/loansByAccount.graphql)
+- [loansByAccount.graphql](https://github.com/rev-net/revnet-app/blob/main/srcgraphql/loansByAccount.graphql)
 - [LoansDetailsTable.tsx](https://github.com/rev-net/revnet-app/blob/main/src/app/[slug]/components/Value/LoansDetailsTable.tsx)
 - [useHasBorrowPermission.ts](https://github.com/rev-net/revnet-app/blob/main/src/hooks/useHasBorrowPermission.ts)
-- REVLoans contract: `/jb-revloans` skill for contract mechanics
+- REVLoans 合约：`/jb-revloans`，用于处理合约逻辑

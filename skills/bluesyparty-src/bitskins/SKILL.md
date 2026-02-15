@@ -12,32 +12,31 @@ metadata:
   env_vars: "BITSKINS_API_KEY"
 ---
 
-# BitSkins API Skill
+# BitSkins API 使用指南
 
-## Authentication
+## 认证
 
-All requests to the BitSkins API require authentication via the `x-apikey` header.
+所有对 BitSkins API 的请求都需要通过 `x-apikey` 头部进行认证。
 
-The API key must be set in the environment variable `BITSKINS_API_KEY`.
-The user can obtain their API key from BitSkins account settings after enabling API access.
+API 密钥必须设置在环境变量 `BITSKINS_API_KEY` 中。用户可以在启用 API 访问权限后，从 BitSkins 账户设置中获取自己的 API 密钥。
 
-**Important:** Some endpoints (wallet withdrawals, 2FA operations) also require a `twofa_code` parameter. Always ask the user for their 2FA code when calling these endpoints rather than storing it.
+**重要提示：** 某些接口（如钱包提款、双因素认证操作）还需要 `twofa_code` 参数。在调用这些接口时，务必向用户索取他们的双因素认证代码，而不要将其存储在系统中。
 
-## Base URL
+## 基本 URL
 
 ```
 https://api.bitskins.com
 ```
 
-## Making Requests
+## 发送请求
 
-Use the helper script to make API calls:
+使用辅助脚本来发送 API 请求：
 
 ```bash
 bash bitskins-api/scripts/bitskins-api.sh <METHOD> <PATH> [JSON_BODY]
 ```
 
-Examples:
+**示例：**
 
 ```bash
 # GET request (no body)
@@ -50,81 +49,82 @@ bash bitskins-api/scripts/bitskins-api.sh POST /account/profile/balance
 bash bitskins-api/scripts/bitskins-api.sh POST /market/search/730 '{"limit":10,"offset":0,"where":{}}'
 ```
 
-## Rate Limits
+## 请求限制
 
-- **Global:** 50 requests per 10 seconds
-- **Market search (`/market/search/*`):** 1 request per second
-- These limits are dynamic and may be reduced under heavy server load.
+- **全局限制：** 每 10 秒内最多 50 次请求
+- **市场搜索 (`/market/search/*`)：** 每秒 1 次请求
+- 在服务器负载较重的情况下，这些限制可能会降低。
 
-## Request Format
+## 请求格式
 
-- The API accepts JSON format
-- GET requests: no body required
-- POST requests: JSON body with required parameters
+- API 接受 JSON 格式的数据
+- **GET 请求：** 不需要请求体
+- **POST 请求：** 需要包含所需参数的 JSON 请求体
 
-## Response Format
+## 响应格式
 
-All responses are JSON. Successful responses contain the data directly. Error responses include error codes documented in [references/api-endpoints.md](references/api-endpoints.md).
+所有响应均为 JSON 格式。成功响应会直接返回数据；错误响应会包含错误代码，具体信息请参阅 [references/api-endpoints.md](references/api-endpoints.md)。
 
-## API Sections Overview
+## API 分类
 
-The API is organized into the following sections. See [references/api-endpoints.md](references/api-endpoints.md) for the full endpoint reference.
+API 分为以下几类，请参阅 [references/api-endpoints.md](references/api-endpoints.md) 以获取完整的接口列表：
 
-### Account
-- **Profile:** Get session info, balance, update account settings, update trade link, block account
-- **Affiliate:** Get affiliate info, claim money, view reward history, set affiliate code
-- **2FA:** Create, verify, disable, lock/unlock two-factor authentication
-- **API Access:** Create or disable API keys
+### 账户
+- **个人资料：** 获取会话信息、余额、更新账户设置、更新交易链接、冻结账户
+- **联盟计划：** 获取联盟计划相关信息、领取奖励、查看奖励历史、设置联盟代码
+- **双因素认证：** 创建/验证/禁用双因素认证
+- **API 访问权限：** 创建或禁用 API 密钥
 
-### Config
-- **Currency rates:** Get current exchange rates
-- **Fee plans:** Get available fee plans
-- **Platform status:** Check if platform is operational
+### 配置
+- **汇率：** 获取当前汇率
+- **费用计划：** 获取可用的费用计划
+- **平台状态：** 检查平台是否正常运行
 
-### Market (CS2 app_id=730, Dota 2 app_id=570)
-- **Pricing:** Get sales history, pricing summaries
-- **Search:** Browse CS2/Dota 2 markets, search own items, get item details, search by skin name, get filters
-- **Buy:** Buy single item, multiple items, or bulk buy
-- **Withdraw:** Withdraw single or multiple purchased items to Steam
-- **Delist:** Remove single or multiple items from sale
-- **Relist:** Relist single or multiple delisted items
-- **Update price:** Change price on single or multiple listed items
-- **History:** View item transaction history
-- **Receipt:** Get purchase receipt
-- **Bump:** Bump items for visibility, manage bump settings, buy bump packages
-- **Skins catalog:** Get all available skin names for a game
-- **In-sell items:** Get all currently listed items for a game
+### 市场（CS2 app_id=730，Dota 2 app_id=570）
+- **价格信息：** 获取销售历史、价格汇总
+- **搜索：** 浏览 CS2/Dota 2 市场、搜索物品、获取物品详情、按皮肤名称搜索、设置搜索条件
+- **购买：** 单个购买、批量购买物品
+- **提款：** 将购买的物品提款到 Steam
+- **下架：** 从市场上移除物品
+- **重新上架：** 将下架的物品重新上架
+- **修改价格：** 修改单个或多个物品的价格
+- **交易历史：** 查看物品交易记录
+- **购买收据：** 获取购买收据
+- **提升物品可见度：** 提升物品的可见性、管理提升设置、购买提升套餐
+- **皮肤目录：** 获取游戏中所有可用的皮肤名称
+- **在售物品：** 查看游戏中当前在售的所有物品
 
 ### Steam
-- **Inventory:** List Steam inventory items
-- **Deposit:** Deposit items from Steam to BitSkins
-- **Trades:** View Steam trade offers and their status
+- **库存：** 列出 Steam 库存中的物品
+- **存入：** 将 Steam 中的物品存入 BitSkins
+- **交易：** 查看 Steam 交易报价及其状态
 
-### Wallet
-- **Stats:** Get wallet statistics, KYC limits
-- **Transactions:** List completed and pending transactions
-- **Reports:** Generate and download wallet reports
+### 钱包
+- **统计信息：** 获取钱包统计信息、了解 KYC（了解客户）相关限制
+- **交易记录：** 列出已完成和待处理的交易
+- **报告：** 生成并下载钱包报告
 
-### Wallet Deposit
-- **Binance Pay:** Create Binance Pay deposit
-- **Cryptocurrency:** Get deposit addresses for BTC, LTC, ETH
-- **Gift codes:** Redeem gift codes, view used codes
-- **Zen:** Create Zen deposit
-- **Card (Unlimint):** Add cards, list cards, deposit via card
+### 钱包存入
+- **Binance Pay：** 创建 Binance Pay 存款
+- **加密货币：** 获取 BTC、LTC、ETH 的存款地址
+- **礼品码：** 兑换礼品码、查看已使用的礼品码
+- **Zen：** 创建 Zen 存款
+- **银行卡（无限制）：** 添加银行卡、查看银行卡信息、通过银行卡存款
 
-### Wallet Withdraw
-- **Cryptocurrency:** Withdraw to BTC, LTC, ETH addresses
-- **Binance Pay:** Withdraw via Binance Pay
-- **Card (Unlimint):** Withdraw to Visa card
+### 钱包提款
+- **加密货币：** 提款到 BTC、LTC、ETH 地址
+- **Binance Pay：** 通过 Binance Pay 提款
+- **银行卡（无限制）：** 提款到 Visa 卡
 
 ### WebSocket
-Real-time updates via `wss://ws.bitskins.com`. See [references/websocket.md](references/websocket.md) for details.
 
-## Common Patterns
+实时更新通过 `wss://ws_bitskins.com` 提供。详情请参阅 [references/websocket.md](references/websocket.md)。
 
-### Searching the Market
+## 常见操作模式
 
-The market search endpoints accept `where` objects for filtering and support `limit`/`offset` pagination:
+### 市场搜索
+
+市场搜索接口支持使用 `where` 对象进行过滤，并支持 `limit`/`offset` 分页：
 
 ```json
 {
@@ -139,35 +139,36 @@ The market search endpoints accept `where` objects for filtering and support `li
 }
 ```
 
-Note: Prices are in **cents** (e.g., 1000 = $10.00).
+**注意：** 价格单位为 **分**（例如，1000 分 = $10.00）。
 
-### Buying Items
+### 购买物品
 
-To buy an item, you need its `id` and `app_id`. Use market search to find items, then:
+要购买物品，您需要知道物品的 `id` 和 `app_id`。首先使用市场搜索功能找到物品，然后执行相应的购买操作：
 
 ```json
 {"app_id": 730, "id": "ITEM_ID", "max_price": 1500}
 ```
 
-The `max_price` parameter protects against price changes between search and purchase.
+`max_price` 参数用于防止在搜索和购买过程中价格发生变化。
 
-### Listing/Depositing Items
+### 上架/存入物品
 
-1. Get Steam inventory: `POST /steam/inventory/list`
-2. Deposit items: `POST /steam/deposit/many` with item IDs and prices
-3. Monitor trade status: `POST /steam/trade/active`
+1. 获取 Steam 库存中的物品：`POST /steam/inventory/list`
+2. 存入物品：`POST /steam/deposit/many`，并提供物品 ID 和价格信息
+3. 监控交易状态：`POST /steam/trade/active`
 
-### Withdrawing Purchased Items
+### 提取购买的物品
 
-After buying, withdraw to Steam:
+购买物品后，可以将物品提款到 Steam：
+
 ```json
 {"app_id": 730, "id": "ITEM_ID"}
 ```
 
-## Important Notes
+## 重要提示
 
-- Always confirm with the user before executing buy, sell, withdraw, or any financial operation
-- Prices are in cents (integer values)
-- Game IDs: CS2 = 730, Dota 2 = 570
-- The `where_mine` filter on "mine" endpoints accepts: `listed`, `pending_withdrawal`, `in_queue`, `given`, `need_to_withdraw`
-- 2FA codes are time-sensitive; always request fresh codes from the user
+- 在执行任何购买、销售、提款或财务操作之前，请务必先与用户确认。
+- 价格单位为分（整数形式）。
+- 游戏 ID：CS2 = 730，Dota 2 = 570。
+- 在 “mine” 相关接口中，`where_mine` 过滤器支持以下状态：`listed`（已上架）、`pending_withdrawal`（待提款）、`in_queue`（排队中）、`given`（已赠送）、`need_to_withdraw`（需要提款）。
+- 双因素认证代码具有时效性；请始终向用户索取最新的认证代码。

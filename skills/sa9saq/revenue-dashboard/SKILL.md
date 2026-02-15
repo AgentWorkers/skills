@@ -1,17 +1,17 @@
 ---
-description: Real-time revenue and portfolio dashboard — track crypto, freelance income, and services in one place.
+description: 实时收入与投资组合仪表板——在一个平台上追踪加密货币收益、自由职业收入和服务收入。
 ---
 
-# Revenue Dashboard
+# 收入仪表盘
 
-Track crypto holdings, freelance income, and service revenue from a single dashboard.
+通过一个统一的仪表盘，您可以跟踪您的加密货币持有情况、自由职业收入以及服务收入。
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- No external API keys required (uses CoinGecko free tier for crypto prices)
+- Node.js 18 及以上版本
+- 无需使用外部 API 密钥（使用 CoinGecko 的免费 tier 来获取加密货币价格）
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd {skill_dir}
@@ -22,47 +22,47 @@ npm start -- --port 3020    # Production
 npm run dev                 # Development with hot reload
 ```
 
-Open `http://localhost:3020` in your browser.
+在浏览器中打开 `http://localhost:3020`。
 
-## API Endpoints
+## API 端点
 
-| Method | Endpoint | Description |
+| 方法 | 端点 | 描述 |
 |--------|----------|-------------|
-| `GET` | `/api/portfolio` | Current portfolio summary |
-| `GET` | `/api/revenue?from=YYYY-MM-DD&to=YYYY-MM-DD` | Revenue by date range |
-| `POST` | `/api/transactions` | Add a crypto transaction |
-| `GET` | `/api/holdings` | Current crypto holdings |
-| `POST` | `/api/income` | Record freelance/service income |
+| `GET` | `/api/portfolio` | 当前投资组合概览 |
+| `GET` | `/api/revenue?from=YYYY-MM-DD&to=YYYY-MM-DD` | 按日期范围显示收入 |
+| `POST` | `/api/transactions` | 添加加密货币交易记录 |
+| `GET` | `/api/holdings` | 当前持有的加密货币 |
+| `POST` | `/api/income` | 记录自由职业或服务收入 |
 
-## Dashboard Sections
+## 仪表盘界面
 
-1. **Portfolio Overview** — Total value, 24h change, allocation pie chart
-2. **Revenue Timeline** — Income over time (line/bar chart)
-3. **Holdings Table** — Individual asset performance
-4. **Income Sources** — Breakdown by source (crypto, freelance, services)
+1. **投资组合概览** — 总价值、24 小时变化情况、资产分配饼图 |
+2. **收入时间线** — 随时间变化的收入情况（折线图/条形图） |
+3. **持有资产表** — 各项资产的详细表现 |
+4. **收入来源** — 收入来源的详细分类（加密货币、自由职业、服务收入）
 
-## Configuration
+## 配置参数
 
-| Variable | Default | Description |
+| 参数 | 默认值 | 说明 |
 |----------|---------|-------------|
-| `PORT` | `3020` | Server port |
-| `DB_PATH` | `./data/revenue.db` | SQLite database path |
-| `COINGECKO_API` | Free tier URL | CoinGecko API base URL |
+| `PORT` | `3020` | 服务器端口 |
+| `DB_PATH` | `./data/revenue.db` | SQLite 数据库路径 |
+| `COINGECKO_API` | CoinGecko API 基础 URL |
 
-## Edge Cases & Troubleshooting
+## 特殊情况与故障排除
 
-- **Port in use**: Change port via `PORT=3021 npm start` or kill the existing process.
-- **DB locked**: SQLite doesn't support concurrent writes well. Ensure only one instance runs.
-- **CoinGecko rate limit**: Free tier ~30 req/min. Dashboard caches prices for 60s.
-- **Missing data**: API returns empty arrays (not errors) for date ranges with no entries.
-- **First run**: Database and tables are created automatically on first start.
+- **端口已被占用**：通过 `PORT=3021 npm start` 更改端口，或终止现有进程。
+- **数据库锁定**：SQLite 不支持并发写入操作，请确保只有一个进程在运行。
+- **CoinGecko 的请求限制**：免费 tier 每分钟约 30 次请求。仪表盘会缓存价格数据 60 秒。
+- **数据缺失**：对于没有交易记录的日期范围，API 会返回空数组（而非错误信息）。
+- **首次运行**：首次启动时，系统会自动创建数据库和表格。
 
-## Security
+## 安全性
 
-- Dashboard binds to `localhost` by default. Use a reverse proxy (nginx) for public access.
-- No authentication built in — add basic auth or put behind a VPN for production use.
-- Never expose the SQLite file publicly.
+- 仪表盘默认绑定到 `localhost`。如需公开访问，请使用反向代理（如 nginx）。
+- 该系统未内置身份验证机制——在生产环境中请添加基本认证或使用 VPN。
+- 请勿公开 SQLite 数据库文件。
 
-## Tech Stack
+## 技术栈
 
 Next.js 14, shadcn/ui, Recharts, SQLite (better-sqlite3)

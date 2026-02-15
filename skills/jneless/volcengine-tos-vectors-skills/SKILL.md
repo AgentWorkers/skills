@@ -1,16 +1,15 @@
 ---
 name: tos-vectors
-description: Manage vector storage and similarity search using TOS Vectors service. Use when working with embeddings, semantic search, RAG systems, recommendation engines, or when the user mentions vector databases, similarity search, or TOS Vectors operations.
+description: 使用 TOS Vectors 服务来管理向量存储和相似性搜索。当处理嵌入数据、语义搜索、RAG（Retrieval with Adaptive Generation）系统、推荐引擎，或者用户提到向量数据库、相似性搜索或 TOS Vectors 操作时，可以使用该服务。
 ---
 
-# TOS Vectors Skill
+# TOS Vectors 技能
 
-Comprehensive skill for managing vector storage, indexing, and similarity search using the TOS Vectors service - a cloud-based vector database optimized for AI applications.
+这是一套全面的技能，用于使用 TOS Vectors 服务管理向量存储、索引及相似性搜索。TOS Vectors 是一个专为人工智能应用优化的云原生向量数据库。
 
-## Quick Start
+## 快速入门
 
-### Initialize Client
-
+### 初始化客户端
 ```python
 import os
 import tos
@@ -28,8 +27,7 @@ region = 'cn-beijing'
 client = tos.VectorClient(ak, sk, endpoint, region)
 ```
 
-### Basic Workflow
-
+### 基本工作流程
 ```python
 # 1. Create vector bucket (like a database)
 client.create_vector_bucket('my-vectors')
@@ -72,30 +70,30 @@ results = client.query_vectors(
 )
 ```
 
-## Core Operations
+## 核心操作
 
-### Vector Bucket Management
+### 向量桶管理
 
-**Create Bucket**
+- **创建向量桶**
 ```python
 client.create_vector_bucket(bucket_name)
 ```
 
-**List Buckets**
+- **列出向量桶**
 ```python
 result = client.list_vector_buckets(max_results=100)
 for bucket in result.vector_buckets:
     print(bucket.vector_bucket_name)
 ```
 
-**Delete Bucket** (must be empty)
+- **删除向量桶**（必须为空）
 ```python
 client.delete_vector_bucket(bucket_name, account_id)
 ```
 
-### Vector Index Management
+### 向量索引管理
 
-**Create Index**
+- **创建索引**
 ```python
 client.create_index(
     account_id=account_id,
@@ -107,16 +105,16 @@ client.create_index(
 )
 ```
 
-**List Indexes**
+- **列出索引**
 ```python
 result = client.list_indexes(bucket_name, account_id)
 for index in result.indexes:
     print(f"{index.index_name}: {index.dimension}d")
 ```
 
-### Vector Data Operations
+### 向量数据操作
 
-**Insert Vectors** (batch up to 500)
+- **插入向量**（每次最多 500 个）
 ```python
 vectors = []
 for i in range(100):
@@ -135,7 +133,7 @@ client.put_vectors(
 )
 ```
 
-**Query Similar Vectors** (KNN search)
+- **查询相似向量**（KNN 搜索）
 ```python
 results = client.query_vectors(
     vector_bucket_name=bucket_name,
@@ -152,7 +150,7 @@ for vec in results.vectors:
     print(f"Key: {vec.key}, Distance: {vec.distance}")
 ```
 
-**Get Vectors by Keys**
+- **按键获取向量**
 ```python
 result = client.get_vectors(
     vector_bucket_name=bucket_name,
@@ -164,7 +162,7 @@ result = client.get_vectors(
 )
 ```
 
-**Delete Vectors**
+- **删除向量**
 ```python
 client.delete_vectors(
     vector_bucket_name=bucket_name,
@@ -174,11 +172,10 @@ client.delete_vectors(
 )
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Semantic Search
-Build a semantic search system for documents:
-
+### 1. 语义搜索
+- 为文档构建语义搜索系统：
 ```python
 # Index documents
 for doc in documents:
@@ -209,9 +206,8 @@ results = client.query_vectors(
 )
 ```
 
-### 2. RAG (Retrieval Augmented Generation)
-Retrieve relevant context for LLM prompts:
-
+### 2. RAG（检索增强生成）
+- 为大型语言模型（LLM）的提示检索相关上下文：
 ```python
 # Retrieve relevant documents
 question_embedding = get_embedding(user_question)
@@ -233,9 +229,8 @@ context = "\n\n".join([
 prompt = f"Context:\n{context}\n\nQuestion: {user_question}"
 ```
 
-### 3. Recommendation System
-Find similar items based on user preferences:
-
+### 3. 推荐系统
+- 根据用户偏好查找相似项目：
 ```python
 # Query with metadata filtering
 results = client.query_vectors(
@@ -249,19 +244,19 @@ results = client.query_vectors(
 )
 ```
 
-## Best Practices
+## 最佳实践
 
-### Naming Conventions
-- **Bucket names**: 3-32 chars, lowercase letters, numbers, hyphens only
-- **Index names**: 3-63 chars
-- **Vector keys**: 1-1024 chars, use meaningful identifiers
+### 命名规范
+- **向量桶名称**：3-32 个字符，仅包含小写字母、数字和连字符
+- **索引名称**：3-63 个字符
+- **向量键**：1-1024 个字符，使用有意义的标识符
 
-### Batch Operations
-- Insert up to 500 vectors per call
-- Delete up to 100 vectors per call
-- Use pagination for listing operations
+### 批量操作
+- 每次调用最多插入 500 个向量
+- 每次调用最多删除 100 个向量
+- 列表操作时使用分页
 
-### Error Handling
+### 错误处理
 ```python
 try:
     result = client.create_vector_bucket(bucket_name)
@@ -271,22 +266,22 @@ except tos.exceptions.TosServerError as e:
     print(f'Server error: {e.code}, Request ID: {e.request_id}')
 ```
 
-### Performance Tips
-- Choose appropriate vector dimensions (balance accuracy vs performance)
-- Use metadata filtering to reduce search space
-- Use cosine similarity for normalized vectors
-- Use Euclidean distance for absolute distances
+### 性能技巧
+- 选择合适的向量维度（在准确性和性能之间取得平衡）
+- 使用元数据过滤来缩小搜索范围
+- 对标准化向量使用余弦相似度
+- 对绝对距离使用欧几里得距离
 
-## Important Limits
+## 重要限制
 
-- **Vector buckets**: Max 100 per account
-- **Vector dimensions**: 1-4096
-- **Batch insert**: 1-500 vectors per call
-- **Batch get/delete**: 1-100 vectors per call
-- **Query TopK**: 1-30 results
+- **每个账户最多拥有 100 个向量桶**
+- **向量维度**：1-4096
+- **批量插入**：每次调用最多 1000 个向量
+- **批量获取/删除**：每次调用最多 100 个向量
+- **查询前 K 个结果**：最多返回 30 个结果
 
-## Additional Resources
+## 额外资源
 
-For detailed API reference, see [REFERENCE.md](REFERENCE.md)
-For complete workflows, see [WORKFLOWS.md](WORKFLOWS.md)
-For example scripts, see the `scripts/` directory
+- 详细 API 参考，请参阅 [REFERENCE.md]
+- 完整的工作流程，请参阅 [WORKFLOWS.md]
+- 示例脚本，请查看 `scripts/` 目录

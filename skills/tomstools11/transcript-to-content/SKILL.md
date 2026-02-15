@@ -1,147 +1,131 @@
 ---
 name: transcript-to-content
-description: This skill transforms training and onboarding meeting transcripts into structured learning materials, documentation, and actionable review content. Use this skill when processing meeting transcripts from onboarding sessions, training meetings, or knowledge transfer conversations to extract key information and generate study guides, quick reference sheets, checklists, FAQ documents, action item lists, and training effectiveness assessments.
+description: 该技能能够将培训及入职会议的记录转化为结构化学习材料、文档以及可执行的审核内容。在处理入职会议、培训会议或知识传递过程中的会议记录时，可运用该技能来提取关键信息，并生成学习指南、快速参考表、检查清单、常见问题解答文档、待办事项列表以及培训效果评估报告。
 ---
 
-# Transcript to Content
+# 将会议记录和培训视频转换为结构化学习材料、文档及可操作的见解
 
-Transform raw meeting transcripts and training session recordings into structured learning materials, documentation, and actionable insights.
+## 适用场景
 
-## When to Use This Skill
+当用户提供会议记录、培训视频或入职指南时；  
+当用户希望从口头交流或对话数据中提取结构化学习材料时；  
+当用户需要从会议中提取关键信息、操作步骤或待办事项时；  
+当用户需要根据记录创建培训文档、标准操作程序（SOP）或参考资料时；  
+当用户希望生成学习指南、检查表或常见问题解答（FAQ）时，可以使用此技能。
 
-Use this skill when:
-- User provides meeting transcripts, training session recordings, or onboarding notes
-- User requests structured learning materials from verbal/conversational data
-- User asks to extract key information, procedures, or action items from meetings
-- User needs to create training documentation, SOPs, or reference materials from transcripts
-- User wants to generate study guides, checklists, or FAQ documents from training sessions
+## 核心工作流程
 
-## Core Workflow
+### 第一步：理解用户需求  
+确定用户需要哪种类型的内容：
 
-### Step 1: Understand the Request
-
-Identify what type of content the user needs:
-
-| Output Type | When to Use |
+| 输出类型 | 适用场景 |
 |------------|-------------|
-| **Master Knowledge Source** | Comprehensive structured learning module with metadata, terminology, SOPs, nuances, and assessments |
-| **Presentation/Slide Deck** | Visual training presentation for delivery or reference |
-| **SOP Document** | Step-by-step procedural documentation |
-| **Quick Reference Sheet** | Concise one-page summary of key points and procedures |
-| **Study Guide** | Organized review material for learners |
-| **Checklist** | Actionable task list extracted from procedures |
-| **FAQ Document** | Common questions and answers from training content |
-| **Action Items List** | Tasks, owners, and deadlines from meeting discussions |
+| **完整学习资料** | 包含元数据、术语、标准操作程序、注意事项及评估的综合性结构化学习模块 |
+| **演示文稿/幻灯片** | 用于展示或参考的可视化培训材料 |
+| **标准操作程序文档** | 详细的步骤说明文档 |
+| **快速参考表** | 关键点和步骤的简洁一页总结 |
+| **学习指南** | 为学习者组织的复习材料 |
+| **检查表** | 从步骤中提取的可操作任务列表 |
+| **FAQ文档** | 培训内容中的常见问题及答案 |
+| **待办事项列表** | 会议讨论中产生的任务、负责人及截止日期 |
 
-### Step 2: Locate and Analyze Source Material
-
-**If transcripts are in project directory:**
+### 第二步：查找并分析原始材料  
+**如果记录位于项目目录中：**  
 ```bash
 ls -lah /home/ubuntu/projects/[project-name]/
-```
-
-**Search for relevant content by keyword:**
+```  
+**通过关键词搜索相关内容：**  
 ```bash
 grep -ri "keyword" /home/ubuntu/projects/[project-name]/*.md
-```
+```  
+**阅读并识别以下内容：**  
+- 主要主题和概念  
+- 详细步骤  
+- 重要警告或注意事项  
+- 术语和定义  
+- 实际案例或场景  
+- 待办事项和决策  
+- 问题和答案  
 
-**Read and identify:**
-- Main topics and concepts
-- Step-by-step procedures
-- Critical warnings or nuances
-- Terminology and definitions
-- Real examples or scenarios
-- Action items and decisions
-- Questions and answers
+### 第三步：提取结构化内容  
+应用**思维链处理方法**：  
+1. **通读整个记录**，了解整体内容和主题。  
+2. **区分不同主题**，并将相关信息分组。  
+3. **精确提取事实、步骤和定义。**  
+4. **删除冗余的对话内容（如“嗯”、“呃”、“我认为”、“也许”、“让我们试试”等）。**  
+5. **使用命令式、权威性的语言进行表述。**  
+6. **用`[MISSING INFO]`标记未知信息，避免虚构内容。**  
 
-### Step 3: Extract Structured Content
+**对于“完整学习资料”格式：**  
+请参阅`/home/ubuntu/skills/transcript-to-content/references/master-knowledge-source-format.md`以获取完整的格式和示例。  
 
-Apply **Chain of Thought processing:**
+需要提取以下内容：  
+- **模块元数据**：主题和学习目标（1句话）  
+- **关键术语**：专业术语、缩写及工具的定义  
+- **标准操作程序**：以“步骤 > 结果”格式编号的步骤说明  
+- **重要注意事项**：警告、后果及最佳实践  
+- **评估数据**：基于内容的3-5道选择题  
 
-1. **Read entire transcript(s)** for macro-context and overall themes
-2. **Isolate distinct topics** and group related information
-3. **Extract facts, steps, and definitions** with precision
-4. **Remove conversational filler** ("um," "uh," "I think," "maybe," "let's try")
-5. **Convert to imperative, authoritative language** (use action verbs)
-6. **Flag unknowns** with `[MISSING INFO]` rather than fabricating
+**对于其他文档类型：**  
+- **检查表**：提取带有复选框的可操作任务。  
+- **FAQ**：整理提问和回答。  
+- **学习指南**：按主题组织关键概念和示例。  
+- **待办事项**：提取任务、负责人及截止日期。  
 
-**For Master Knowledge Source format:**
+### 第四步：应用品牌元素（如适用）  
+**如果用户提供了品牌素材：**  
+- 询问徽标文件、品牌颜色和字体偏好。  
+- 将徽标保存在工作目录中。  
+- 一致使用品牌颜色（主色用于强调和标注）。  
+- 使用指定的字体（如Inter、Roboto、Open Sans）。  
+**如果没有提供品牌元素：**  
+- 选择简洁、专业的中性色调。  
+- 确保内容清晰易读。  
+- 保持整体风格的统一性。  
 
-Read `/home/ubuntu/skills/transcript-to-content/references/master-knowledge-source-format.md` for complete schema and examples.
+### 第五步：创建最终成果  
 
-Extract these sections:
-- **Module Metadata:** Topic and learning objective (1 sentence)
-- **Key Terminology:** Definitions of jargon, acronyms, tools
-- **Standard Operating Procedures:** Numbered steps in "Action > Result" format
-- **Critical Nuances:** Warnings, consequences, best practices, context
-- **Assessment Data:** 3-5 multiple-choice questions based strictly on content
-
-**For other document types:**
-
-- **Checklists:** Extract sequential action items with checkboxes
-- **FAQs:** Identify questions asked and answers provided
-- **Study Guides:** Organize by topic with key concepts and examples
-- **Action Items:** Extract tasks with owners and deadlines
-
-### Step 4: Apply Branding (if applicable)
-
-**If user provides brand assets:**
-- Ask for logo file, brand colors, and font preferences
-- Store logo in working directory
-- Apply brand colors consistently (primary color for accents, highlights, charts)
-- Use specified fonts or professional web fonts (Inter, Roboto, Open Sans)
-
-**If no branding provided:**
-- Use clean, professional neutral palette
-- Focus on clarity and readability
-- Apply consistent styling throughout
-
-### Step 5: Create Deliverables
-
-#### For Presentations
-
-Read `/home/ubuntu/skills/transcript-to-content/references/presentation-guidelines.md` for detailed guidelines.
-
-**Workflow:**
-1. Initialize presentation using `slide_initialize` tool
-2. Create outline (max 12 slides by default unless user specifies)
-3. Copy logo to project directory if provided:
+#### 对于演示文稿  
+请参阅`/home/ubuntu/skills/transcript-to-content/references/presentation-guidelines.md`以获取详细指南。  
+**工作流程：**  
+1. 使用`slide_initialize`工具初始化演示文稿。  
+2. 创建大纲（默认最多12张幻灯片，除非用户另有要求）。  
+3. 如果提供了徽标，请将其复制到项目目录中：  
    ```bash
    cp [logo-path] [project-dir]/logo.png
-   ```
-4. Edit slides one by one using `slide_edit` tool
-5. Present using `slide_present` tool
-6. Export to PDF if requested:
+   ```  
+4. 使用`slide_edit`工具逐张编辑幻灯片。  
+5. 使用`slide_present`工具进行展示。  
+6. 如需导出为PDF，请执行以下操作：  
    ```bash
    manus-export-slides manus-slides://[version-id] pdf
-   ```
+   ```  
 
-**Standard presentation structure:**
-1. Title slide
-2. Definition/overview
-3. Step-by-step content (4-6 steps)
-4. Critical success factors
-5. Common pitfalls
-6. Key takeaways
-7. Closing slide
+**标准演示文稿结构：**  
+1. 标题页  
+2. 定义/概述  
+3. 详细步骤（4-6步）  
+4. 成功的关键因素  
+5. 常见问题  
+6. 重要结论  
+7. 结束页  
 
-**Design requirements:**
-- Use brand color (if provided) or professional neutral palette
-- Include logo on every slide (if provided)
-- Maintain 720px height limit
-- Use clean, grid-based layouts
-- No excessive shadows, rounded corners, or animations
+**设计要求：**  
+- 使用品牌颜色（如提供）或专业中性色调。  
+- 在每张幻灯片上显示徽标（如提供）。  
+- 保持高度限制在720px以内。  
+- 使用简洁的网格布局。  
+- 避免过多的阴影、圆角或动画效果。  
 
-#### For SOP Documents
+#### 对于标准操作程序文档：**  
+创建Markdown格式的文档，包含：  
+- 明确的层次结构（H1、H2、H3）  
+- 用命令式语言编号的步骤  
+- 用引号标注警告/注意事项  
+- 用于参考的数据表格  
+- 适当使用内联引用。  
 
-Create Markdown documents with:
-- Clear hierarchical structure (H1, H2, H3)
-- Numbered procedures with imperative language
-- Warning/caution callouts in blockquotes
-- Tables for reference data
-- Inline citations where applicable
-
-**Example structure:**
+**示例结构：**  
 ```markdown
 # [Procedure Name]
 
@@ -159,114 +143,88 @@ Create Markdown documents with:
 ## Troubleshooting
 - **Issue:** [Problem]
   **Solution:** [Resolution]
-```
+```  
 
-#### For Quick Reference Sheets
+#### 对于快速参考表：**  
+创建简洁的一页文档，包含：  
+- 以定义列表形式呈现关键术语  
+- 用编号列表列出关键步骤  
+- 用高亮框标注重要警告  
+- 提供常见问题的解决方案  
 
-Create concise one-page documents with:
-- Key terminology in definition list format
-- Essential steps in numbered lists
-- Critical warnings in highlighted boxes
-- Common scenarios with solutions
+#### 对于学习指南：**  
+按主题组织内容，包括：  
+- 学习目标  
+- 关键概念及解释  
+- 示例和场景  
+- 练习题  
+- 额外资源  
 
-#### For Study Guides
+#### 对于检查表：**  
+提取任务，使用复选框格式（`- [ ]`）  
+- 使用清晰、可操作的语言。  
+- 保持逻辑顺序。  
+- 可选：添加优先级指示或时间估计。  
 
-Organize by topic with:
-- Learning objectives
-- Key concepts with explanations
-- Examples and scenarios
-- Practice questions
-- Additional resources
+#### 对于FAQ文档：**  
+结构如下：  
+- 用粗体显示问题  
+- 用简洁明了的语言回答问题。  
+- 可选：提供相关问题或资源。  
 
-#### For Checklists
+#### 对于完整学习资料：**  
+严格遵循`references/master-knowledge-source-format.md`中的格式要求：  
+- 仅输出结构化内容（不含前言或后记）。  
+- 使用严格的Markdown格式。  
+- 将所有对话内容转换为权威性的指令。  
+- 用`[MISSING INFO]`标记未知信息。  
 
-Extract action items with:
-- Checkbox format (`- [ ]`)
-- Clear, actionable language
-- Logical sequence
-- Optional: Priority indicators or time estimates
+## 质量标准  
 
-#### For FAQ Documents
+**内容准确性：**  
+- 所有内容均严格基于原始材料。  
+- 不得虚构步骤、数据或信息。  
+- 用`[MISSING INFO]`明确标注不完整的步骤。  
+- 核对术语定义的准确性。  
 
-Structure as:
-- Question in bold
-- Answer in clear, concise language
-- Optional: Related questions or resources
+**清晰度和可读性：**  
+- 使用命令式语言编写指令（如“点击”、“导航”、“设置”）。  
+- 保持清晰的视觉层次结构。  
+- 使用标题和列表提高可读性。  
+- 删除所有冗余的对话内容。  
 
-#### For Master Knowledge Source
+**一致性：**  
+- 全文保持统一的格式和术语。  
+- 类似部分保持一致的样式。  
 
-Follow the schema in `references/master-knowledge-source-format.md` exactly:
-- Output ONLY the structured content (no preamble or postscript)
-- Use strict Markdown formatting
-- Convert all conversational language to authoritative instructions
-- Flag unknowns with `[MISSING INFO]`
+**品牌应用（如适用）：**  
+- 一致使用品牌颜色。  
+- 在所有品牌材料中显示徽标。  
+- 使用指定的字体。  
+- 遵循品牌设计规范。  
 
-## Quality Standards
+## 常见应用模式：  
+- **单主题培训演示文稿**：用户提供关于一个主题的记录 → 提取关键内容 → 创建8-12张幻灯片的演示文稿。  
+- **多主题学习模块**：用户提供多个记录 → 分别提取每个主题并创建结构化文档。  
+- **快速参考SOP**：用户需要特定步骤 → 提取相关步骤 → 创建简洁的SOP文档。  
+- **培训总结**：用户请求主题概述 → 搜索记录 → 提取并总结关键点 → 以Markdown格式呈现。  
+- **入职检查表**：用户提供入职记录 → 提取任务 → 创建带有复选框的检查表。  
+- **会议待办事项**：用户提供会议记录 → 提取决策和任务 → 创建带有负责人的待办事项列表。  
 
-**Content Accuracy:**
-- Base all content strictly on source material
-- Never fabricate steps, data, or information
-- Flag incomplete procedures clearly with `[MISSING INFO]`
-- Verify terminology definitions against source
+## 常见问题及解决方法：  
+- **问题：PDF中的幻灯片为空**：  
+  **解决方法：** 检查填充值，减少间距，确保内容高度在720px以内。  
+- **问题：徽标未显示**：  
+  **解决方法：** 确保徽标已复制到项目目录，并在HTML中使用绝对路径。  
+- **问题：内容不完整**：  
+  **解决方法：** 用`[MISSING INFO]`标记未知信息，必要时向用户询问。  
+- **问题：演示文稿超出高度限制**：  
+  **解决方法：** 减小字体大小，减少间距，压缩内容或分页展示。  
+- **问题：输出中包含过多冗余对话**：  
+  **解决方法：** 严格过滤内容，删除不必要的对话词句。  
+- **问题：步骤描述不明确**：  
+  **解决方法：** 使用命令式语言，对重要步骤添加“CRITICAL”前缀。  
 
-**Clarity and Readability:**
-- Use imperative voice for instructions ("Click", "Navigate", "Set")
-- Maintain clear visual hierarchy
-- Ensure scannability with headings and lists
-- Remove all conversational filler
-
-**Consistency:**
-- Apply formatting standards throughout
-- Use consistent terminology
-- Maintain uniform structure across similar sections
-
-**Branding (if applicable):**
-- Use brand colors consistently
-- Include logo on all branded materials
-- Apply specified fonts
-- Follow brand style guidelines
-
-## Common Patterns
-
-### Pattern 1: Single Topic Training Presentation
-User provides transcript(s) on one topic → Extract key content → Create 8-12 slide presentation
-
-### Pattern 2: Multiple Topics to Learning Modules
-User provides multiple transcripts → Extract each as separate module → Deliver as structured documents
-
-### Pattern 3: Quick Reference SOP
-User needs specific procedure → Extract relevant steps → Create concise SOP document
-
-### Pattern 4: Training Overview Summary
-User requests summary of topic → Search transcripts → Extract and synthesize key points → Deliver as Markdown
-
-### Pattern 5: Onboarding Checklist
-User provides onboarding transcript → Extract sequential tasks → Create checklist with checkboxes
-
-### Pattern 6: Meeting Action Items
-User provides meeting notes → Extract decisions and tasks → Create action items list with owners
-
-## Troubleshooting
-
-**Issue:** Slide appears empty in PDF
-**Solution:** Check padding values. Reduce padding, adjust spacing, ensure content fits within 720px height.
-
-**Issue:** Logo not displaying
-**Solution:** Verify logo was copied to project directory. Use absolute path in HTML.
-
-**Issue:** Content seems incomplete
-**Solution:** Flag with `[MISSING INFO]` rather than guessing. Ask user for clarification if critical.
-
-**Issue:** Presentation exceeds height limit
-**Solution:** Reduce font sizes, decrease spacing, condense content, or split into additional slides.
-
-**Issue:** Too much conversational filler in output
-**Solution:** Apply stricter filtering. Remove phrases like "I think," "maybe," "um," "uh," "let's try."
-
-**Issue:** Procedures lack clarity
-**Solution:** Convert to imperative voice. Use action verbs. Add "CRITICAL" prefix to important steps.
-
-## Resources
-
-- **Master Knowledge Source Format:** `references/master-knowledge-source-format.md` - Complete schema for structured learning modules
-- **Presentation Guidelines:** `references/presentation-guidelines.md` - Detailed presentation design and creation guidelines
+## 资源：  
+- **完整学习资料格式**：`references/master-knowledge-source-format.md`——结构化学习模块的完整格式指南。  
+- **演示文稿指南**：`references/presentation-guidelines.md`——详细的演示文稿设计和制作指南。

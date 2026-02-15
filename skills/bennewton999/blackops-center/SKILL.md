@@ -1,53 +1,53 @@
 ---
 name: blackops-center
-description: Control your BlackOps Center sites from Clawdbot - create, publish, and manage blog posts via API.
+description: 通过 Clawdbot 控制您的 BlackOps Center 网站——通过 API 创建、发布和管理博客文章。
 homepage: https://github.com/BlackOpsCenter/clawdbot-skill
 metadata: {"clawdbot":{"emoji":"📝","requires":{"bins":["curl","jq"]}}}
 ---
 
-# BlackOps Center Skill
+# BlackOps Center 技能
 
-Control your BlackOps Center sites from Clawdbot. Create, publish, and manage blog posts via API.
+您可以通过 Clawdbot 来管理 BlackOps Center 的各个站点，包括创建、发布和管理博客文章。
 
-## Setup
+## 设置
 
-1. **Generate an API token** in BlackOps Center:
-   - Go to Settings → Browser Extension
-   - Copy your Personal Access Token
+1. **在 BlackOps Center 中生成 API 令牌**：
+   - 进入“设置” → “浏览器扩展程序”
+   - 复制您的个人访问令牌（Personal Access Token）。
 
-2. **Configure the skill**:
+2. **配置该技能**：
    ```bash
    cd ~/.clawdbot/skills/blackops-center
    cp config.example.yaml config.yaml
    # Edit config.yaml and paste your token
    ```
 
-## Configuration
+## 配置文件（config.yaml）
 
-Create `config.yaml`:
+创建 `config.yaml` 文件：
 
 ```yaml
 api_token: "your-token-here"
 base_url: "https://blackopscenter.com"  # or your custom domain
 ```
 
-## Available Commands
+## 可用命令
 
-All commands use the `blackops-center` CLI wrapper.
+所有命令均使用 `blackops-center` 命令行工具（CLI）进行执行。
 
-### List Sites
+### 列出站点
 
-Show all sites you have access to:
+显示您有权访问的所有站点：
 
 ```bash
 blackops-center list-sites
 ```
 
-Returns JSON with your sites and which one is active for this token.
+返回包含站点信息以及当前令牌所关联的活跃站点的 JSON 数据。
 
-### List Posts
+### 列出文章
 
-List posts for your site:
+列出您所在站点的所有文章：
 
 ```bash
 # List all posts
@@ -63,17 +63,17 @@ blackops-center list-posts --status draft
 blackops-center list-posts --limit 10
 ```
 
-### Get a Post
+### 获取文章详情
 
-Get full details of a specific post:
+获取特定文章的详细信息：
 
 ```bash
 blackops-center get-post <post-id>
 ```
 
-### Create a Post
+### 创建文章
 
-Create a new draft post:
+创建一篇新的文章草稿：
 
 ```bash
 blackops-center create-post \
@@ -83,11 +83,11 @@ blackops-center create-post \
   --tags "tag1,tag2,tag3"
 ```
 
-All posts are created as drafts by default.
+所有新创建的文章默认都为草稿状态。
 
-### Update a Post
+### 更新文章
 
-Update an existing post:
+更新现有的文章：
 
 ```bash
 # Update title
@@ -103,60 +103,62 @@ blackops-center update-post <post-id> --status published
 blackops-center update-post <post-id> --status draft
 ```
 
-You can combine multiple flags to update multiple fields at once.
+您可以通过组合多个参数来同时更新多个字段。
 
-### Delete a Post
+### 删除文章
+
+删除文章：
 
 ```bash
 blackops-center delete-post <post-id>
 ```
 
-## Usage from Clawdbot
+## 在 Clawdbot 中使用该技能
 
-When you invoke this skill from a Clawdbot session, you can use natural language:
+当您通过 Clawdbot 调用此技能时，可以使用自然语言进行操作：
 
-**User:** "Create a blog post about AI agents titled 'The Future of Automation'"
+**用户:** “创建一篇关于 AI 代理的博客文章，标题为‘自动化的未来’”
 
-**Assistant will:**
-1. Extract title and content from your message
-2. Run `blackops-center create-post --title "..." --content "..."`
-3. Return the post ID and preview URL
+**助手将执行以下操作：**
+1. 从您的消息中提取标题和内容
+2. 运行 `blackops-center create-post --title "..." --content "..."`
+3. 返回文章的 ID 和预览链接
 
-**User:** "Publish post abc123"
+**用户:** “发布文章 abc123”
 
-**Assistant will:**
-1. Run `blackops-center update-post abc123 --status published`
-2. Confirm publication and provide the live URL
+**助手将执行以下操作：**
+1. 运行 `blackops-center update-post abc123 --status published`
+2. 确认文章已发布，并提供文章的在线链接
 
-**User:** "Show me my recent draft posts"
+**用户:** “显示我最近的草稿文章”
 
-**Assistant will:**
-1. Run `blackops-center list-posts --status draft --limit 10`
-2. Format the results in a readable way
+**助手将执行以下操作：**
+1. 运行 `blackops-center list-posts --status draft --limit 10`
+2. 以易读的方式展示结果
 
-## API Details
+## API 详情
 
-This skill uses the BlackOps Center Extension API (`/api/ext/*`):
+该技能使用 BlackOps Center 扩展程序的 API (`/api/ext/*`）：
 
-- `GET /api/ext/sites` - List sites
-- `GET /api/ext/posts` - List posts
-- `POST /api/ext/posts` - Create post
-- `GET /api/ext/posts/:id` - Get post
-- `PUT /api/ext/posts/:id` - Update post
-- `DELETE /api/ext/posts/:id` - Delete post
+- `GET /api/ext/sites` - 列出所有站点
+- `GET /api/ext/posts` - 列出所有文章
+- `POST /api/ext/posts` - 创建新文章
+- `GET /api/ext/posts/:id` - 获取指定文章的详细信息
+- `PUT /api/ext/posts/:id` - 更新指定文章
+- `DELETE /api/ext/posts/:id` - 删除指定文章
 
-All requests require `Authorization: Bearer <token>` header.
+所有请求都需要包含 `Authorization: Bearer <token>` 头部字段。
 
-## Error Handling
+## 错误处理
 
-- **401 Unauthorized**: Token is invalid or revoked. Generate a new token in BlackOps Center.
-- **404 Site not found**: The domain associated with your token doesn't exist.
-- **404 Post not found**: Post ID doesn't exist or belongs to a different site.
-- **400 Bad Request**: Missing required fields (e.g., title, content for create).
+- **401 Unauthorized**：令牌无效或已被撤销。请在 BlackOps Center 中生成新的令牌。
+- **404 Site not found**：与您的令牌关联的站点不存在。
+- **404 Post not found**：文章 ID 不存在或不属于当前站点。
+- **400 Bad Request**：缺少必需的参数（例如创建文章时需要提供标题和内容）。
 
-## Examples
+## 示例
 
-### Create and publish workflow
+### 创建并发布文章的流程
 
 ```bash
 # Create draft
@@ -170,7 +172,7 @@ POST_ID=$(blackops-center create-post \
 blackops-center update-post "$POST_ID" --status published
 ```
 
-### Bulk operations
+### 批量操作
 
 ```bash
 # Get all draft posts
@@ -182,32 +184,31 @@ echo "$DRAFTS" | jq -r '.posts[].id' | while read id; do
 done
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Unauthorized" error:**
-- Verify your token in `config.yaml`
-- Check token hasn't been revoked in BlackOps Center
-- Generate a new token if needed
+- 如果出现 “Unauthorized” 错误：
+  - 检查 `config.yaml` 文件中的令牌是否正确。
+  - 确认令牌在 BlackOps Center 中未被撤销。
+  - 如有需要，生成新的令牌。
 
-**"Site not found":**
-- Each token is tied to a specific site domain
-- If you need to manage multiple sites, generate separate tokens for each
+- 如果出现 “Site not found” 错误：
+  - 每个令牌仅对应一个特定的站点域名。
+  - 如果需要管理多个站点，请为每个站点生成单独的令牌。
 
-**Command not found:**
-- Make sure `bin/` is executable: `chmod +x ~/.clawdbot/skills/blackops-center/bin/*`
-- Skill should be installed via ClawdHub or symlinked to `~/.clawdbot/skills/`
+- 如果某个命令无法执行，请检查 `bin/` 目录是否可执行：`chmod +x ~/.clawdbot/skills/blackops-center/bin/*`
+  - 请确保该技能已通过 ClawdHub 安装，或将其链接到 `~/.clawdbot/skills/` 目录下。
 
-## Development
+## 开发
 
-Test the API directly with curl:
+您可以使用 `curl` 直接测试这些 API：
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   https://blackopscenter.com/api/ext/posts
 ```
 
-## Support
+## 支持信息
 
-- BlackOps Center: https://blackopscenter.com
-- Issues: https://github.com/clawdbot/skills (if published)
-- Documentation: This file
+- BlackOps Center：https://blackopscenter.com
+- 问题反馈：https://github.com/clawdbot/skills （如果技能已发布）
+- 文档：本文件

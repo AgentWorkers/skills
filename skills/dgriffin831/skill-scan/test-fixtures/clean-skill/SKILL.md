@@ -1,12 +1,12 @@
 ---
 name: weather-check
-description: Get current weather for a location
+description: 获取某个位置的当前天气信息
 metadata: {"openclaw": {"requires": {"bins": ["curl"]}}}
 ---
 
-# Weather Check
+# 天气查询
 
-When the user asks about weather, use this skill to look up current conditions.
+当用户询问天气情况时，可以使用此技能来查询当前的天气状况。
 
-## Usage
-Call the weather API with the location name. Return temperature, conditions, and forecast.
+## 使用方法
+使用位置名称调用天气 API，以获取温度、天气状况和天气预报。

@@ -1,6 +1,6 @@
 ---
 name: clawphone
-description: Encrypted Clawdbot-to-Clawdbot messaging. Send messages to friends' Clawdbots with end-to-end encryption.
+description: 加密的 Clawdbot 之间的通信：使用端到端加密技术将消息发送给朋友们的 Clawdbot。
 triggers:
   - clawphone
   - friend link
@@ -15,15 +15,15 @@ triggers:
 
 # ClawPhone
 
-Encrypted peer-to-peer messaging between Clawdbots via central relay.
+通过中央中继实现Clawdbots之间的加密点对点消息传递。
 
-## Philosophy
+## 设计理念
 
-Communication should be async by default, context-aware, and translated to how the recipient wants to receive it. AI on both ends handles the mediation.
+通信应默认为异步方式，具备上下文感知能力，并能根据接收者的偏好进行消息呈现。两端都使用了AI技术来处理消息的转发和翻译。
 
-**Your Clawdbot** packages and encrypts your message → sends to **their Clawdbot** → which waits for the right moment and delivers it in their preferred voice.
+**您的Clawdbot**会加密您的消息，然后将其发送给**对方的Clawdbot**；对方会选择合适的时机，以接收者偏好的方式（语音或文本）将消息传递给接收者。
 
-## Installation
+## 安装
 
 ```bash
 cd ~/clawd/skills/clawphone
@@ -32,59 +32,59 @@ node scripts/install.js      # Adds to HEARTBEAT.md
 node cli.js setup "Your Name"
 ```
 
-## Quick Start for Clawdbot
+## Clawdbot快速入门
 
-Use the handler for JSON output:
+使用以下代码块处理JSON格式的输出：
 
 ```bash
 node handler.js <action> [args...]
 ```
 
-### Core Actions
+### 核心功能
 
-| Action | Usage |
+| 功能 | 用法 |
 |--------|-------|
-| `check` | Poll for messages and requests |
-| `send` | `send "Matt" "Hello!" [--urgent] [--context=work]` |
-| `add` | `add "clawphone://..."` |
-| `accept` | `accept "Matt"` |
-| `link` | Get your friend link |
-| `friends` | List friends |
-| `status` | Get status |
+| `check` | 检查是否有新消息或请求 |
+| `send` | `send "Matt" "Hello!" [--urgent] [--context=work]` | 向Matt发送消息（可选设置紧急级别或上下文） |
+| `add` | `add "clawphone://..."` | 添加新的好友（通过URL） |
+| `accept` | `accept "Matt"` | 接受好友请求 |
+| `link` | 获取自己的好友链接 |
+| `friends` | 查看好友列表 |
+| `status` | 查看当前状态 |
 
-### Preference Actions
+### 预设功能
 
-| Action | Usage |
+| 功能 | 用法 |
 |--------|-------|
-| `preferences` | Show all preferences |
-| `quiet-hours` | `quiet-hours 22:00 08:00` or `quiet-hours off` |
-| `batch` | `batch on` or `batch off` |
-| `tone` | `tone casual/formal/brief/natural` |
-| `friend-priority` | `friend-priority "Sophie" high` |
+| `preferences` | 查看所有预设设置 |
+| `quiet-hours` | `quiet-hours 22:00 08:00` | 设置安静时间（晚上10点至早上8点） |
+| `batch` | `batch on` | 启用批量发送功能 |
+| `tone` | `tone casual/formal/brief/natural` | 设置消息的语气（随意/正式/简洁/自然） |
+| `friend-priority` | `friend-priority "Sophie" high` | 设置好友优先级 |
 
-## Natural Language (for Clawdbot)
+## 自然语言指令（用于Clawdbot）
 
-These phrases trigger ClawPhone:
+以下指令可以触发ClawPhone功能：
 
-- "Send a message to Sophie saying..."
-- "Tell Matt that..."
-- "Add this friend: clawphone://..."
-- "Accept the friend request from..."
-- "Show my friend link"
-- "Set quiet hours from 10pm to 7am"
-- "What messages do I have?"
+- “给Sophie发送一条消息，内容是...”  
+- “告诉Matt……”  
+- “添加好友：clawphone://...”  
+- “接受来自……的好友请求”  
+- “显示我的好友链接”  
+- “将安静时间设置为晚上10点至早上7点”  
+- “我有哪些消息？”
 
-## Security
+## 安全性
 
-- **Ed25519** identity keys (your Clawdbot ID)
-- **X25519** key exchange (Diffie-Hellman)
-- **XChaCha20-Poly1305** authenticated encryption
-- Keys never leave your device
-- Relay sees only encrypted blobs
+- 使用**Ed25519**算法生成身份密钥（用于身份验证）  
+- 采用**X25519**密钥交换协议（Diffie-Hellman）进行安全通信  
+- 使用**XChaCha20-Poly1305**算法进行加密  
+- 密钥始终存储在设备本地，不会被传输到外部  
+- 中继服务器仅存储加密后的消息数据  
 
-## Delivery Preferences
+## 消息接收偏好设置
 
-Recipients control how they receive messages:
+接收者可以自定义消息的接收方式：
 
 ```json
 {
@@ -106,42 +106,17 @@ Recipients control how they receive messages:
 }
 ```
 
-## Relay
+## 中继服务器
 
-- **URL:** https://clawphone-relay.vercel.app
-- Stores only encrypted messages temporarily
-- Cannot read message contents
-- Verifies signatures to prevent spam
+- **URL:** https://clawphone-relay.vercel.app  
+- 仅临时存储加密后的消息内容  
+- 无法读取消息的原始内容  
+- 通过签名验证来防止垃圾信息  
 
-## File Structure
+## 文件结构
 
-```
-~/clawd/skills/clawphone/
-├── lib/
-│   ├── crypto.js       # Ed25519/X25519/XChaCha20
-│   ├── relay.js        # Relay API client
-│   ├── requests.js     # Friend request protocol
-│   ├── clawdbot.js     # Clawdbot integration
-│   ├── preferences.js  # Delivery preferences
-│   └── style.js        # Message formatting
-├── scripts/
-│   ├── setup.js
-│   ├── friends.js
-│   ├── send.js
-│   ├── poll.js
-│   ├── preferences.js
-│   └── install.js
-├── cli.js
-├── handler.js          # JSON API
-├── heartbeat.js        # Auto-poll
-├── manifest.json
-└── SKILL.md
-```
+所有ClawPhone相关数据存储在：`~/.config/clawdbot/clawphone/`目录下：
 
-## Data Location
-
-All ClawPhone data stored at: `~/.config/clawdbot/clawphone/`
-
-- `identity.json` — Your Ed25519 keypair
-- `friends.json` — Friend list with shared secrets
-- `preferences.json` — Delivery preferences
+- `identity.json`：您的Ed25519密钥对  
+- `friends.json`：包含好友信息及共享的加密密钥  
+- `preferences.json`：消息传递的偏好设置

@@ -1,106 +1,106 @@
 ---
 name: facebook-page
-description: Manage Facebook Pages via Meta Graph API. Post content (text, photos, links), list posts, manage comments (list/reply/hide/delete). Use when user wants to publish to Facebook Page, check Page posts, or handle comments.
+description: 通过 Meta Graph API 管理 Facebook 页面。可以发布内容（文本、图片、链接），查看页面上的帖子，以及管理评论（列出、回复、隐藏或删除评论）。适用于用户需要向 Facebook 页面发布内容、查看页面帖子或处理评论的场景。
 ---
 
-# Facebook Page
+# Facebook页面管理技能
 
-Skill để quản lý Facebook Page qua Meta Graph API.
+通过Meta Graph API管理Facebook页面的相关技能。
 
-## Chức năng
-- List các Page mà user quản lý
-- Đăng bài (text, ảnh, link)
-- List bài đăng của Page
-- List/reply/hide/delete comment
+## 功能
+- 列出用户管理的所有页面
+- 发布帖子（文本、图片、链接）
+- 查看页面的帖子列表
+- 查看/回复/隐藏/删除评论
 
-## Setup (một lần)
+## 一次性的设置步骤
 
-### 1. Tạo Meta App
-1. Vào https://developers.facebook.com/apps/ → Create App
-2. Chọn **"Other"** → **"Business"** (hoặc Consumer tuỳ use-case)
-3. Điền tên app, email
-4. Vào **App settings > Basic**: lấy **App ID** và **App Secret**
+### 1. 创建Meta应用
+1. 访问 https://developers.facebook.com/apps/ → 点击“Create App”
+2. 选择“Other” → 根据实际需求选择“Business”或“Consumer”
+3. 填写应用名称和电子邮件地址
+4. 进入“App settings > Basic”，获取“App ID”和“App Secret”
 
-### 2. Cấu hình OAuth
-1. Vào **Add Product** → thêm **Facebook Login**
-2. Trong **Facebook Login > Settings**:
-   - Valid OAuth Redirect URIs: để trống (dùng manual code flow)
-3. Vào **App Roles > Roles** → thêm account làm Admin/Developer
+### 2. 配置OAuth
+1. 点击“Add Product”，然后添加“Facebook Login”
+2. 在“Facebook Login > Settings”中：
+   - 将“Valid OAuth Redirect URIs”留空（使用手动代码流程）
+3. 进入“App Roles”，将用户添加为Admin/Developer角色
 
-### 3. Cấu hình .env
+### 3. 配置.env文件
 ```bash
 cd skills/facebook-page
 cp .env.example .env
 # Edit .env với App ID và Secret
 ```
 
-### 4. Cài dependencies và lấy token
+### 4. 安装依赖并获取Token
 ```bash
 cd scripts
 npm install
 node auth.js login
 ```
-Script sẽ:
-1. In ra URL để user mở browser, đăng nhập, approve permissions
-2. User copy URL sau khi approve (chứa `code=...`)
-3. Paste URL vào terminal
-4. Script exchange code → long-lived token → page tokens
-5. Lưu tokens vào `~/.config/fbpage/tokens.json`
+脚本会：
+1. 输出一个URL，用户需要使用浏览器访问该URL进行登录并授权
+2. 用户授权成功后，会得到一个包含`code=...`的URL
+3. 将该URL粘贴到终端中
+4. 脚本会使用该URL交换代码，以获取长期有效的Token（long-lived token）和页面Token（page token）
+5. 将Token保存到`~/.config/fbpage/tokens.json`文件中
 
-## Commands
+## 常用命令
 
-### List pages
+### 列出页面
 ```bash
 node cli.js pages
 ```
 
-### Đăng bài text
+### 发布文本帖子
 ```bash
 node cli.js post create --page PAGE_ID --message "Hello world"
 ```
 
-### Đăng bài có ảnh
+### 发布带图片的帖子
 ```bash
 node cli.js post create --page PAGE_ID --message "Caption" --photo /path/to/image.jpg
 ```
 
-### Đăng bài có link
+### 发布带链接的帖子
 ```bash
 node cli.js post create --page PAGE_ID --message "Check this out" --link "https://example.com"
 ```
 
-### List posts
+### 查看帖子列表
 ```bash
 node cli.js post list --page PAGE_ID --limit 10
 ```
 
-### List comments của post
+### 查看帖子的评论列表
 ```bash
 node cli.js comments list --post POST_ID
 ```
 
-### Reply comment
+### 回复评论
 ```bash
 node cli.js comments reply --comment COMMENT_ID --message "Thanks!"
 ```
 
-### Hide comment
+### 隐藏评论
 ```bash
 node cli.js comments hide --comment COMMENT_ID
 ```
 
-### Delete comment
+### 删除评论
 ```bash
 node cli.js comments delete --comment COMMENT_ID
 ```
 
-## Permissions cần thiết
-- `pages_show_list` - list pages
-- `pages_read_engagement` - đọc posts/comments
-- `pages_manage_posts` - đăng/sửa/xoá bài
-- `pages_manage_engagement` - quản lý comments
+## 所需的权限
+- `pages_show_list`：列出页面
+- `pages_read_engagement`：读取帖子和评论
+- `pages_manage_posts`：发布/编辑/删除帖子
+- `pages_manage_engagement`：管理评论
 
-## Lưu ý
-- Token Page không hết hạn (nếu lấy từ long-lived user token)
-- Không log/print token ra output
-- App ở Testing mode chỉ hoạt động với accounts trong Roles
+## 注意事项
+- 如果使用长期有效的用户Token（long-lived user token）获取的Token是永久有效的
+- 请勿将Token输出到控制台或日志中
+- 应用处于测试模式（Testing mode）时，仅对具有管理员/开发者角色的用户有效

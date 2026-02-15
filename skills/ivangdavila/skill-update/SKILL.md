@@ -1,113 +1,112 @@
 ---
 name: "Skill Update"
-description: "Safely update skills with preview, migration support, and user validation. Never lose data or break workflows."
+description: "安全地更新技能（skills），提供预览功能、迁移支持以及用户验证机制。确保数据不会丢失，工作流程也不会中断。"
 ---
 
-## Safe Skill Updates
+## 安全的技能更新流程
 
-**Core principle:** Never update without user understanding and approval.
+**核心原则：** 未经用户理解与同意，切勿进行更新。
 
-Updates can break things:
-- Changed file locations → data loss
-- Removed features → broken workflows
-- New requirements → unexpected behavior
-- Changed data formats → incompatible state
+更新可能会带来问题：
+- 文件位置的变更 → 数据丢失
+- 功能的删除 → 工作流程中断
+- 新需求的引入 → 产生意外行为
+- 数据格式的变更 → 系统状态不兼容
 
-**References:**
-- Read `preview.md` — Diff and impact analysis
-- Read `migrate.md` — Data migration strategies
-
----
-
-### Update Flow
-
-1. **Check** — Are updates available?
-2. **Preview** — What changes? How does it affect user?
-3. **Explain** — Present changes step-by-step
-4. **Confirm** — User explicitly approves
-5. **Backup** — Save current state
-6. **Update** — Apply new version
-7. **Verify** — Confirm everything works
+**参考资料：**
+- 阅读 `preview.md` — 查看更新内容及影响分析
+- 阅读 `migrate.md` — 了解数据迁移策略
 
 ---
 
-### Checking for Updates
+### 更新流程
+
+1. **检查** — 是否有可用的更新？
+2. **预览** — 更新内容是什么？会对用户产生什么影响？
+3. **解释** — 逐步说明更新的具体细节
+4. **确认** — 用户明确表示同意
+5. **备份** — 保存当前系统状态
+6. **更新** — 应用新版本
+7. **验证** — 确认所有功能都能正常运行
+
+---
+
+### 检查是否有更新
 
 ```bash
 npx clawhub outdated           # List skills with updates
 npx clawhub info <slug>        # Show available versions
 ```
 
-**Proactive notification:** When user mentions a skill, check if update exists. Mention it once, don't nag.
+**主动通知：** 当用户提及某个技能时，检查是否有更新可用。只需提醒一次，避免频繁打扰用户。
 
 ---
 
-### Preview Before Update
+### 更新前的预览
 
-⚠️ Never update without showing impact first.
+⚠️ 未经事先展示更新影响，切勿直接更新。
 
-**For each changed file:**
-1. Show what's different (added/removed/modified)
-2. Explain how it affects user's workflow
-3. Flag breaking changes prominently
+**对于每个被修改的文件：**
+1. 显示文件内容的变更（新增、删除或修改的部分）
+2. 解释这些变更如何影响用户的工作流程
+3. 将可能导致系统故障的变更特别标出
 
-**Breaking change indicators:**
-- File/folder structure changes
-- Removed instructions or features
-- New required setup steps
-- Changed data format expectations
+**可能导致系统故障的变更类型：**
+- 文件/文件夹结构的变更
+- 指令或功能的删除
+- 新增的设置步骤
+- 数据格式要求的变更
 
 ---
 
-### User Validation
+### 用户确认
 
-Present changes in digestible format:
+以易于理解的方式向用户展示更新内容：
 
-> "Skill X has v2.0.0 available. Changes:
+> “技能 X 已更新至 v2.0.0。变更内容如下：
 > 
-> **⚠️ Breaking:** Config now in `config.md` (was in SKILL.md)
-> **Added:** New `templates/` folder with examples
-> **Removed:** Old `legacy.md` no longer needed
+> **⚠️ 注意：** 配置信息现在位于 `config.md` 中（之前在 `SKILL.md` 中）
+> **新增：** 添加了 `templates/` 文件夹，其中包含示例文件
+> **删除：** 旧的 `legacy.md` 文件不再需要
 > 
-> **Migration needed:** Your saved preferences need to move.
-> I can help migrate. Proceed?"
+> **需要迁移数据：** 您保存的偏好设置需要迁移。我可以协助您完成迁移。是否继续？”
 
-Only update after explicit "yes".
-
----
-
-### Backup Strategy
-
-Before ANY update:
-1. Copy current skill folder to `~/.clawhub/backups/<slug>-<version>-<timestamp>/`
-2. Note the backup location in response
-3. If update fails → offer restore
+只有在用户明确表示同意后，才进行更新。
 
 ---
 
-### Handling Migrations
+### 备份策略
 
-When data format changes:
-1. Detect user's current data (preferences, saved state)
-2. Explain what needs to migrate
-3. Propose migration steps
-4. Execute only with approval
-5. Verify migrated data works
-
-See `migrate.md` for patterns.
+在任何更新之前：
+1. 将当前技能文件夹复制到 `~/.clawhub/backups/<slug>-<version>-<timestamp>/` 目录中
+2. 记录备份的位置
+3. 如果更新失败，提供数据恢复的方案
 
 ---
 
-### Rollback
+### 处理数据迁移
 
-If update causes problems:
+当数据格式发生变化时：
+1. 获取用户当前的数据（偏好设置、保存的状态）
+2. 解释需要迁移的内容
+3. 提出数据迁移的步骤
+4. 仅在用户同意后执行迁移操作
+5. 验证迁移后的数据是否能够正常使用
+
+具体迁移方法请参考 `migrate.md`。
+
+---
+
+### 回滚机制
+
+如果更新引发了问题：
 ```
 "Something's not working? I have a backup from before the update.
 Want me to restore skill X to v1.2.3?"
 ```
 
-Keep backups for at least 7 days or until user confirms new version works.
+请保留备份数据至少 7 天，或者直到用户确认新版本能够正常使用为止。
 
 ---
 
-*Updates should feel safe, not scary. User stays in control.*
+*更新过程应该让用户感到安心，而不是恐惧。用户应始终掌握控制权。*

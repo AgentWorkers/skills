@@ -1,56 +1,56 @@
 ---
 name: warren-deploy
-description: Deploy websites and files permanently on MegaETH blockchain. AI agents stress test the network by deploying HTML on-chain using SSTORE2 bytecode storage. Agents pay their own gas.
+description: 将网站和文件永久部署在MegaETH区块链上。AI代理通过使用SSTORE2字节码存储在链上部署HTML内容来对网络进行压力测试。这些代理需要自行支付交易所需的“gas”费用。
 metadata: {"openclaw":{"emoji":"⛓️","homepage":"https://megawarren.xyz","requires":{"anyBins":["node"]}}}
 user-invocable: true
 ---
 
-# Warren - On-Chain Website Deployment
+# Warren - 在链上部署网站
 
-Deploy websites permanently on MegaETH blockchain. Content is stored on-chain using SSTORE2 and cannot be deleted.
+将网站永久部署到MegaETH区块链上。内容使用SSTORE2存储在链上，且无法被删除。
 
-**Network**: MegaETH Testnet (Chain ID: 6343)
+**网络**: MegaETH测试网（链ID：6343）
 **RPC**: `https://carrot.megaeth.com/rpc`
-**Explorer**: https://megaeth-testnet-v2.blockscout.com
+**浏览器工具**: https://megaeth-testnet-v2.blockscout.com
 
-## Setup (One Time)
+## 设置（一次性操作）
 
 ```bash
 cd {baseDir}
 bash setup.sh
 ```
 
-This installs ethers.js, the only dependency.
+此步骤用于安装`ethers.js`，这是唯一的依赖库。
 
-## Prerequisites
+## 先决条件
 
-### 1. Create a Wallet
+### 1. 创建钱包
 
 ```bash
 node -e "const w = require('ethers').Wallet.createRandom(); console.log('Address:', w.address); console.log('Private Key:', w.privateKey)"
 ```
 
-Set the private key:
+设置私钥：
 ```bash
 export PRIVATE_KEY=0xYourPrivateKey
 ```
 
-### 2. Get Testnet ETH
+### 2. 获取测试网ETH
 
-Visit https://docs.megaeth.com/faucet and enter your wallet address. This requires a captcha. You need ~0.1 ETH for multiple deployments.
+访问https://docs.megaeth.com/faucet并输入您的钱包地址。此过程需要验证码。多次部署大约需要0.1 ETH。
 
-Check balance:
+查看余额：
 ```bash
 node -e "const{ethers}=require('ethers');new ethers.JsonRpcProvider('https://carrot.megaeth.com/rpc',6343).getBalance('$YOUR_ADDRESS').then(b=>console.log(ethers.formatEther(b),'ETH'))"
 ```
 
-### 3. Genesis Key NFT
+### 3. 生成Genesis Key NFT
 
-The deploy script automatically mints a free Genesis Key NFT if you don't have one. No manual action needed.
+如果您没有Genesis Key NFT，部署脚本会自动为您生成一个免费的NFT。无需手动操作。
 
-## Deploy
+## 部署
 
-### Deploy HTML string
+### 部署HTML字符串
 
 ```bash
 cd {baseDir}
@@ -59,7 +59,7 @@ PRIVATE_KEY=0x... node deploy.js \
   --name "My First Site"
 ```
 
-### Deploy HTML file
+### 部署HTML文件
 
 ```bash
 PRIVATE_KEY=0x... node deploy.js \
@@ -67,13 +67,13 @@ PRIVATE_KEY=0x... node deploy.js \
   --name "My Website"
 ```
 
-### Deploy via stdin
+### 通过标准输入（stdin）部署
 
 ```bash
 echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 ```
 
-### CLI Options
+### 命令行选项（CLI）
 
 ```
 --private-key <key>   Wallet private key (or PRIVATE_KEY env)
@@ -83,7 +83,7 @@ echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 --type <type>         file|image|video|audio|script (default: "file")
 ```
 
-### Output
+### 部署结果
 
 ```json
 {
@@ -94,9 +94,9 @@ echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 }
 ```
 
-## Stress Test Workflows
+## 压力测试工作流程
 
-### Deploy multiple random sites
+### 部署多个随机网站
 
 ```bash
 cd {baseDir}
@@ -107,7 +107,7 @@ for i in $(seq 1 10); do
 done
 ```
 
-### Deploy a larger site (~50KB)
+### 部署较大的网站（约50KB）
 
 ```bash
 python3 -c "
@@ -121,51 +121,48 @@ print(html)
 PRIVATE_KEY=0x... node deploy.js --file large-site.html --name "Large Test"
 ```
 
-### Check leaderboard
+### 查看排行榜
 
 ```bash
 curl -s https://megawarren.xyz/api/stress-test/leaderboard | node -e "process.stdin.on('data',d=>console.log(JSON.parse(d)))"
 ```
 
-## Gas Costs
+## 交易费用（Gas成本）
 
-| Size | Chunks | Cost |
+| 文件大小 | 分块数 | 费用 |
 |------|--------|------|
-| < 10KB | 1 | ~0.0005 ETH |
-| 50KB | 1 | ~0.002 ETH |
-| 100KB | 1 | ~0.004 ETH |
-| 200KB | 2 | ~0.008 ETH |
-| 500KB | 5 | ~0.02 ETH |
+| < 10KB | 1 | 约0.0005 ETH |
+| 50KB | 1 | 约0.002 ETH |
+| 100KB | 1 | 约0.004 ETH |
+| 200KB | 2 | 约0.008 ETH |
+| 500KB | 5 | 约0.02 ETH |
 
-Plus ~0.0001 ETH for MasterNFT minting per site.
+每个网站的MasterNFT生成费用额外为约0.0001 ETH。
 
-## Contract Addresses
+## 合约地址
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | Genesis Key NFT | `0x954a7cd0e2f03041A6Abb203f4Cfd8E62D2aa692` |
-| MasterNFT Registry | `0x7bb4233017CFd4f938C61d1dCeEF4eBE837b05F9` |
+| MasterNFT注册表 | `0x7bb4233017CFd4f938C61d1dCeEF4eBE837b05F9` |
 
-## View Sites
+## 查看已部署的网站
 
 ```
 https://megawarren.xyz/loader.html?registry=0x7bb4233017CFd4f938C61d1dCeEF4eBE837b05F9&id={TOKEN_ID}
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"No ETH"** → Get from https://docs.megaeth.com/faucet (captcha required)
+- **“没有ETH”** → 请从https://docs.megaeth.com/faucet获取ETH（需要验证码）。
+- **“RPC请求次数限制”** → 系统具有内置的重试机制。批量部署时请在每次部署之间添加`sleep 5`（等待5秒）。
+- **“资金不足”** → 每次部署需要约0.001-0.02 ETH。可以从MegaETH测试网的 faucet 获取更多ETH。
+- **网站无法加载** → 等待10-30秒，确认URL指向正确的注册表和Token ID。
 
-**"RPC rate limit"** → Built-in retry. Add `sleep 5` between batch deploys.
+## 注意事项
 
-**"Insufficient funds"** → ~0.001-0.02 ETH per deploy. Get more from faucet.
-
-**Site doesn't load** → Wait 10-30s. Check URL has correct registry and token ID.
-
-## Notes
-
-- Testnet only — may reset
-- Max 500KB per deployment
-- Content is immutable once on-chain
-- You pay gas from your own wallet
-- Genesis Key NFT auto-mints (free)
+- 仅适用于测试网——测试环境可能会随时重置。
+- 每次部署的最大文件大小为500KB。
+- 一旦内容上传到链上，将无法更改。
+- 交易费用由您的钱包支付。
+- Genesis Key NFT会自动生成（免费）。

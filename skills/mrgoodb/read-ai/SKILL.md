@@ -1,75 +1,67 @@
 ---
 name: read-ai
-description: Access meeting summaries, transcripts, and action items from Read.ai. Get AI-powered meeting insights via API.
+description: 您可以从 Read.ai 获取会议摘要、记录和待办事项。通过 API，您还可以获得由人工智能支持的会议分析结果。
 metadata: {"clawdbot":{"emoji":"🎙️","requires":{"env":["READAI_API_KEY"]}}}
 ---
 
 # Read.ai
 
-AI meeting assistant with transcription and summaries.
+一款具备转录和会议总结功能的AI会议助手。
 
-## Environment
-
+## 环境配置
 ```bash
 export READAI_API_KEY="xxxxxxxxxx"
 ```
 
-## List Meetings
-
+## 会议列表
 ```bash
 curl "https://api.read.ai/v1/meetings" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Get Meeting Details
-
+## 获取会议详情
 ```bash
 curl "https://api.read.ai/v1/meetings/{meeting_id}" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Get Meeting Transcript
-
+## 获取会议记录
 ```bash
 curl "https://api.read.ai/v1/meetings/{meeting_id}/transcript" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Get Meeting Summary
-
+## 获取会议总结
 ```bash
 curl "https://api.read.ai/v1/meetings/{meeting_id}/summary" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Get Action Items
-
+## 获取待办事项
 ```bash
 curl "https://api.read.ai/v1/meetings/{meeting_id}/action-items" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Get Key Topics
-
+## 获取会议关键议题
 ```bash
 curl "https://api.read.ai/v1/meetings/{meeting_id}/topics" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Search Meetings
-
+## 搜索会议
 ```bash
 curl "https://api.read.ai/v1/meetings/search?query=project%20update" \
   -H "Authorization: Bearer $READAI_API_KEY"
 ```
 
-## Features
-- Automatic transcription for Zoom, Teams, Meet
-- AI-generated summaries
-- Action item extraction
-- Speaker identification
-- Sentiment analysis
+## 主要功能：
+- 支持对Zoom、Teams和Meet等会议平台的自动转录功能
+- 由AI生成的会议总结
+- 自动提取会议中的待办事项
+- 识别会议发言者
+- 进行情感分析
 
-## Links
-- Dashboard: https://app.read.ai
-- Docs: https://docs.read.ai
+## 链接：
+- 仪表盘：https://app.read.ai
+- 文档：https://docs.read.ai

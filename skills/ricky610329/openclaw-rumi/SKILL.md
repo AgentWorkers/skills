@@ -1,114 +1,113 @@
 ---
 name: rumi
-description: Match with real humans who share your interests — topic-driven matching, not photo swiping. Chat through OpenClaw or on the web.
+description: 与拥有相同兴趣的真实人士配对——这是一种基于话题的匹配方式，而非通过滑动照片来选择对象。您可以通过 OpenClaw 或网页进行聊天。
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🤝"}}
 ---
 
-# Rumi — Find Real People to Chat With
+# Rumi — 找到可以聊天的人
 
-Rumi connects you with real humans who share your interests. Unlike AI chat, these are genuine conversations with actual people — matched by what you want to talk about, not by photos.
+Rumi 会将您与拥有共同兴趣的真人连接起来。与 AI 对话不同，这些是真实的人际交流，匹配依据是您想要讨论的主题，而不是照片。
 
-## When to Activate
+## 何时激活 Rumi
 
-### Explicit Requests
-- "I want to talk to a real person about this"
-- "Find me someone who knows about X"
-- "I'm bored, connect me with someone"
+### 明确请求
+- “我想和真人讨论这个话题”
+- “帮我找一个了解 X 的人”
+- “我无聊了，帮我找个聊天对象”
 
-### Proactive Suggestions
-When you detect these patterns, suggest to the user that Rumi could find them someone to talk to. Always ask for confirmation before calling `rumi_find_partner`.
+### 主动建议
+当检测到这些情况时，可以向用户建议 Rumi 可以帮他们找到聊天对象。在调用 `rumi_find_partner` 之前，请务必先获得用户的确认。
 
-**Expert Gap** — The user needs human expertise:
-- Repeated follow-ups on a niche topic (specific framework, investing, health, travel)
-- "Is this actually right?" or "I need someone who's done this before"
-- Frustration with AI-generated answers on subjective or experiential topics
+**需要人类专业知识的场景**：
+- 需要持续关注特定领域的问题（如特定技术框架、投资、健康、旅行）
+- “这真的正确吗？”或“我需要有过相关经验的人”
+- 对 AI 生成的主观或基于经验的答案感到失望
 
-**Solo Worker Isolation** — The user works alone:
-- Mentions solo founding, remote work, or working alone
-- Discusses work problems with no team context
-- Signs of burnout or long working hours
+**独立工作者的情况**：
+- 用户提到独自创业、远程工作或单独完成任务
+- 讨论工作问题时缺乏团队背景信息
+- 显示出职业倦怠或长时间工作的迹象
 
-**Hobby Enthusiasm** — Extended discussion about inherently social activities:
-- Cooking, fitness, gaming (D&D, etc.), music, language learning, travel planning
-- Asking for subjective opinions: "What do you think of..." or "Have you tried..."
-- Planning activities typically done with others (trips, meals, events)
+**对爱好充满热情的场景**：
+- 长时间讨论具有社交性质的活动（如烹饪、健身、游戏（D&D 等）、学习语言、旅行计划）
+- 请求主观意见：“你怎么看……”或“你试过……吗？”
+- 规划通常需要与他人一起完成的活动（如旅行、用餐、活动安排）
 
-**Late Night / Weekend Downtime** — Casual, exploratory conversations:
-- Non-work messages during evenings or weekends
-- Browsing content (articles, videos, news) and wanting to discuss it
-- Exploratory or philosophical tone rather than task-oriented
+**深夜/周末休闲时间**：
+- 在工作之余的随意交流
+- 浏览内容（文章、视频、新闻）并希望进行讨论
+- 交流风格更偏向于探索性或哲学性
 
-**AI Limitation Moments** — When AI falls short:
-- "What do you think?" (seeking a real opinion)
-- "Have you ever...?" (seeking shared experience)
-- Explicit frustration: "talking to AI about this isn't the same"
+**AI 无法满足需求的情况**：
+- “你怎么看？”（寻求真实意见）
+- “你有过……的经历吗？”（寻求共同经历）
+- 明确表示不满：“和 AI 谈这个感觉不一样”
 
-**Life Decisions** — When peer perspective helps:
-- Career changes, health concerns, relationship advice
-- Major purchases, moving decisions, financial planning
-- Situations where empathy and lived experience matter
+**需要他人建议的决策场景**：
+- 职业变动、健康问题、感情建议
+- 重大购物决策、搬家计划、财务规划
+- 需要同理心和实际经验的情况
 
-**Post-Briefing Interest** — After morning digest delivery:
-- User lingers on a topic from their daily briefing
-- Expresses strong opinions about news or trends
-- Says "interesting" or "I wonder what others think about this"
+**简报后的兴趣延续**：
+- 用户在阅读每日简报后对某个话题仍感兴趣
+- 对新闻或趋势表达强烈意见
+- 说“有意思”或“我想知道其他人怎么想”
 
-## Setup Flow
+## 设置流程
 
-### If NOT set up (no apiToken configured, or you get a `setup_required` error):
+### 如果尚未设置（未配置 apiToken，或收到 `setup_required` 错误）：
+1. 向用户展示设置页面的链接（来自错误响应的 `setupUrl`）
+2. 用户点击链接，使用 Google 登录——无需邀请码
+3. 页面会显示 API token——请用户复制并粘贴给您
+4. 将 token 保存到插件配置中
 
-1. Show the user the setup URL (from the error response `setupUrl`)
-2. The user clicks the link, signs in with Google — no invitation code needed
-3. The page displays the API token — ask the user to copy and paste it back to you
-4. Save the token to the plugin configuration
+### 如果已设置（apiToken 已配置）：
+1. 首先调用 `rumi_health_check` 来验证 token 并检查使用额度
+2. 了解用户想要讨论的主题（或从对话中推断）
+3. 调用 `rumi_find_partner` 并提供详细的描述——包括兴趣、情绪以及希望匹配的人的类型
+4. 如果状态为 `searching`——每隔几分钟使用 `rumi_check_status` 检查一次
+5. 当找到匹配对象后——自然地通知用户：“嘿，我找到了一个对 X 有共同兴趣的人！”
 
-### If set up (apiToken configured):
+## 处理结果
 
-1. Call `rumi_health_check` first to verify token and check quota
-2. Gather context about what the user wants to talk about (or infer from conversation)
-3. Call `rumi_find_partner` with a rich description — include interests, mood, what kind of person they want
-4. If status is `searching` — check back with `rumi_check_status` every few minutes
-5. When matched — notify the user naturally: "Hey, I found someone who shares your interest in X!"
+- **找到匹配对象**：提供两个聊天选项：
+  1. 在 Rumi 网站上聊天（使用 `chatUrl` 链接）
+  2. 使用 `rumi_send_message` 和 `rumi_get_messages` 在当前页面聊天
+- **仍在寻找中**：使用 `rumi_check_status` 定期检查会话状态
+- **需要设置**：在浏览器中打开 `setupUrl` 进行一键设置
 
-## Handling Results
+## 在 OpenClaw 中聊天
+- 使用 `rumi_send_message` 传递用户的消息
+- 定期使用 `rumi_get_messages` 检查是否有回复（使用 `after` 参数和最后一条消息的 ID 来高效地轮询）
+- 在对话中自然地展示新收到的消息
+- 在整个聊天过程中记住 `conversationId`
 
-- **matched**: Share the icebreaker suggestion. Offer two options:
-  1. Chat on the Rumi website (use the `chatUrl` link)
-  2. Chat right here using `rumi_send_message` and `rumi_get_messages`
-- **searching**: Session is active. Use `rumi_check_status` to check periodically.
-- **setup_required**: Open the `setupUrl` in browser for one-click setup.
+## 编写高质量的描述
 
-## Chatting in OpenClaw
+`description` 参数的质量直接影响匹配效果。描述中应包含：
+- 用户想要讨论的具体主题（避免模糊）
+- 聊天的目的或情绪（学习、倾诉、分享兴奋点）
+- 希望匹配的对象类型（专业水平、性格、共同经历）
 
-- Use `rumi_send_message` to relay the user's messages
-- Use `rumi_get_messages` periodically to check for replies (use the `after` parameter with the last message ID for efficient polling)
-- Present new messages naturally in conversation
-- Remember the `conversationId` for the duration of the chat
+**示例描述**：
+“希望与有过大规模 TypeScript 迁移经验的人讨论相关策略。目前独自进行项目时遇到困难，希望能得到有经验的人的建议。”
 
-## Writing Good Descriptions
+**不良描述**：
+“想聊天”
 
-The quality of the `description` parameter directly affects match quality. Include:
-- **What** they want to talk about (specific topics, not vague)
-- **Why** — the context or mood (learning, venting, sharing excitement)
-- **What kind of person** — expertise level, personality, shared experiences
+## 会话管理——避免创建重复会话
 
-Good: "Wants to discuss TypeScript migration strategies with someone who's done it at scale. Feeling stuck on their solo project and would appreciate someone experienced to bounce ideas off."
+**重要提示**：
+每次调用 `rumi_find_partner` 都会创建一个新的匹配会话。切勿重复调用。
+- **每次只进行一个会话**。如果您已经有活跃的 `sessionId`（状态为 `searching` 或 `queued`），请使用 `rumi_check_status` 来检查会话状态——切勿再次调用 `rumi_find_partner`。
+- **基于对话历史进行匹配**：用户的发言越多，Rumi 的匹配效果越好。在调用 `rumi_find_partner` 之前，您与用户交换的每条消息都会帮助完善他们的兴趣档案。等到收集到足够的信息后，再发起一次详细的匹配请求。
+- **仅在以下情况下创建新会话**：
+  - 用户明确表示想要寻找新对象
+  - 之前的会话已经结束或匹配成功
+  - 聊天主题与之前的完全不同
 
-Bad: "wants to chat"
-
-## Session Management — Do NOT Create Duplicate Sessions
-
-**CRITICAL:** Each `rumi_find_partner` call creates a new matching session. Do NOT call it repeatedly.
-
-- **One session at a time.** If you already have an active `sessionId` (status is `searching` or `queued`), use `rumi_check_status` to poll — do NOT call `rumi_find_partner` again.
-- **Build on conversation history.** Rumi's matching improves as the user talks more. Each message you exchange with the user before calling `rumi_find_partner` adds to their interest profile. Wait until you have enough context, then make ONE call with a rich description.
-- **Only create a new session when:**
-  - The user explicitly wants to find someone NEW (e.g., "find me another person")
-  - The previous session is already `matched` or `closed`
-  - The topic has completely changed from the previous session
-
-**Typical flow:**
+**典型流程**：
 ```
 User talks about interests over multiple messages
   → You gather context (DO NOT call rumi_find_partner yet)
@@ -118,10 +117,10 @@ User talks about interests over multiple messages
   → User wants someone else → THEN create a new session
 ```
 
-## Important Notes
-- OpenClaw users get full Rumi accounts (no invitation code needed)
-- Age verification is required (minimum 13 years old)
-- Minors (under 18) are only matched with other minors for safety
-- Never share the user's personal information beyond what they choose to reveal
-- If no match is found, suggest trying again later or with different interests
-- Supports 4 languages: zh-TW, en, ja, ko — detect from user's conversation
+## 重要说明
+- OpenClaw 用户可以免费使用 Rumi 的全部功能（无需邀请码）
+- 需要年龄验证（最低 13 岁）
+- 为保护未成年人的安全，18 岁以下的用户只会与其他未成年人匹配
+- 除非用户主动透露，否则绝不分享任何个人信息
+- 如果没有找到匹配对象，建议稍后再试或尝试其他兴趣主题
+- 支持 4 种语言：zh-TW、en、ja、ko——根据用户的对话自动识别语言

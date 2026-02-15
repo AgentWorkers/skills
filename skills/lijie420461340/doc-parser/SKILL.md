@@ -1,6 +1,6 @@
 ---
 name: doc-parser
-description: Parse complex documents with IBM's docling - handles tables, figures, and multi-column layouts
+description: 使用 IBM 的 docling 工具解析复杂的文档——支持处理表格、图表以及多列布局。
 author: claude-office-skills
 version: "1.0"
 tags: [document-parsing, docling, ibm, tables, layout]
@@ -12,27 +12,27 @@ library:
   stars: 51.5k
 ---
 
-# Document Parser Skill
+# 文档解析技能
 
-## Overview
+## 概述
 
-This skill enables advanced document parsing using **docling** - IBM's state-of-the-art document understanding library. Parse complex PDFs, Word documents, and images while preserving structure, extracting tables, figures, and handling multi-column layouts.
+该技能利用 **docling**（IBM 的先进文档理解库）实现高级文档解析功能。能够解析复杂的 PDF、Word 文档和图片，同时保留文档结构，提取表格、图表，并处理多列布局。
 
-## How to Use
+## 使用方法
 
-1. Provide the document to parse
-2. Specify what you want to extract (text, tables, figures, etc.)
-3. I'll parse it and return structured data
+1. 提供需要解析的文档。
+2. 指定您想要提取的内容（文本、表格、图表等）。
+3. 系统会对其进行解析并返回结构化数据。
 
-**Example prompts:**
-- "Parse this PDF and extract all tables"
-- "Convert this academic paper to structured markdown"
-- "Extract figures and captions from this document"
-- "Parse this report preserving the document structure"
+**示例提示：**
+- “解析这份 PDF 并提取所有表格。”
+- “将这篇学术论文转换为结构化的 Markdown 格式。”
+- “从这份文档中提取图表及其标题。”
+- “解析这份报告并保留其原始结构。”
 
-## Domain Knowledge
+## 相关领域知识
 
-### docling Fundamentals
+### docling 基础知识
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -48,17 +48,17 @@ doc = result.document
 print(doc.export_to_markdown())
 ```
 
-### Supported Formats
+### 支持的格式
 
-| Format | Extension | Notes |
+| 格式 | 扩展名 | 说明 |
 |--------|-----------|-------|
-| PDF | .pdf | Native and scanned |
-| Word | .docx | Full structure preserved |
-| PowerPoint | .pptx | Slides as sections |
-| Images | .png, .jpg | OCR + layout analysis |
-| HTML | .html | Structure preserved |
+| PDF | .pdf | 支持原生 PDF 和扫描文档 |
+| Word | .docx | 完整保留文档结构 |
+| PowerPoint | .pptx | 幻灯片按章节进行解析 |
+| 图片 | .png, .jpg | 支持 OCR 和布局分析 |
+| HTML | .html | 保留文档结构 |
 
-### Basic Usage
+### 基本用法
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -78,7 +78,7 @@ text = doc.export_to_text()
 json_doc = doc.export_to_dict()
 ```
 
-### Advanced Configuration
+### 高级配置
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -100,7 +100,7 @@ converter = DocumentConverter(
 result = converter.convert("document.pdf")
 ```
 
-### Document Structure
+### 文档结构
 
 ```python
 # Document hierarchy
@@ -119,7 +119,7 @@ for element in doc.iterate_items():
         print(f"Rows: {len(element.data.table_cells)}")
 ```
 
-### Extracting Tables
+### 提取表格
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -151,7 +151,7 @@ for i, table in enumerate(tables):
     print(table['dataframe'])
 ```
 
-### Extracting Figures
+### 提取图表
 
 ```python
 def extract_figures(doc_path, output_dir):
@@ -183,7 +183,7 @@ def extract_figures(doc_path, output_dir):
     return figures
 ```
 
-### Handling Multi-column Layouts
+### 处理多列布局
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -217,7 +217,7 @@ def parse_multicolumn(doc_path):
     return structured_content
 ```
 
-### Export Formats
+### 导出格式
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -241,7 +241,7 @@ json_doc = doc.export_to_dict()
 # html = doc.export_to_html()
 ```
 
-### Batch Processing
+### 批量处理
 
 ```python
 from docling.document_converter import DocumentConverter
@@ -278,17 +278,18 @@ def batch_parse(input_dir, output_dir, max_workers=4):
     return results
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use Appropriate Pipeline**: Configure for your document type
-2. **Handle Large Documents**: Process in chunks if needed
-3. **Verify Table Extraction**: Complex tables may need review
-4. **Check OCR Quality**: Enable OCR for scanned documents
-5. **Cache Results**: Store parsed documents for reuse
+1. **选择合适的处理流程**：根据文档类型进行配置。
+2. **处理大型文档**：如有需要，可分块处理。
+3. **验证表格提取结果**：复杂表格可能需要人工审核。
+4. **检查 OCR 质量**：对于扫描文档，启用 OCR 功能。
+5. **缓存解析结果**：将解析后的文档存储起来以供后续使用。
 
-## Common Patterns
+## 常见应用场景
 
-### Academic Paper Parser
+### 学术论文解析
+
 ```python
 def parse_academic_paper(pdf_path):
     """Parse academic paper structure."""
@@ -341,7 +342,8 @@ def parse_academic_paper(pdf_path):
     return paper
 ```
 
-### Report to Structured Data
+### 报告转换为结构化数据
+
 ```python
 def parse_business_report(doc_path):
     """Parse business report into structured format."""
@@ -370,9 +372,10 @@ def parse_business_report(doc_path):
     return report
 ```
 
-## Examples
+## 示例
 
-### Example 1: Parse Financial Report
+### 示例 1：解析财务报告
+
 ```python
 from docling.document_converter import DocumentConverter
 
@@ -416,7 +419,8 @@ print("Income Statement:")
 print(report['income_statement'])
 ```
 
-### Example 2: Technical Documentation Parser
+### 示例 2：技术文档解析
+
 ```python
 from docling.document_converter import DocumentConverter
 
@@ -470,7 +474,8 @@ print(f"Title: {docs['title']}")
 print(f"Sections: {len(docs['sections'])}")
 ```
 
-### Example 3: Contract Analysis
+### 示例 3：合同内容分析
+
 ```python
 from docling.document_converter import DocumentConverter
 
@@ -516,15 +521,15 @@ print(f"Key dates: {contract_data['dates']}")
 print(f"Amounts: {contract_data['amounts']}")
 ```
 
-## Limitations
+## 限制因素
 
-- Very large documents may require chunking
-- Handwritten content needs OCR preprocessing
-- Complex nested tables may need manual review
-- Some PDF types (encrypted) not supported
-- GPU recommended for best performance
+- 非常大的文档可能需要分块处理。
+- 手写内容需要经过 OCR 预处理。
+- 复杂的嵌套表格可能需要人工审核。
+- 某些 PDF 格式（加密格式）可能不被支持。
+- 为获得最佳性能，建议使用 GPU。
 
-## Installation
+## 安装方法
 
 ```bash
 pip install docling
@@ -536,8 +541,8 @@ pip install docling[all]
 pip install docling[ocr]
 ```
 
-## Resources
+## 资源
 
-- [docling GitHub](https://github.com/DS4SD/docling)
-- [Documentation](https://ds4sd.github.io/docling/)
-- [IBM Research Blog](https://research.ibm.com/)
+- [docling GitHub 仓库](https://github.com/DS4SD/docling)
+- [官方文档](https://ds4sd.github.io/docling/)
+- [IBM 研究博客](https://research.ibm.com/)

@@ -1,86 +1,88 @@
 ---
 name: NadMail
-description: "NadMail - Email for AI Agents on Monad. Register yourname@nadmail.ai, send emails that micro-invest in meme coins, boost with emo-buy. SIWE auth, no CAPTCHA, no passwords."
+description: "**NadMail** – 专为 AI 代理设计的电子邮件服务，运行在 Monad 平台上。  
+注册邮箱：yourname@nadmail.ai，通过发送邮件来微投资于表情包相关的加密货币（meme coins），并使用 **emo-buy** 功能来提升投资效果。  
+支持 SIWE 身份验证机制，无需验证码或密码。"
 version: 1.0.4
 ---
 
-# NadMail - Email for AI Agents
+# NadMail – 专为 AI 代理设计的电子邮件服务
 
-> Your agent can handle its own email on the Monad ecosystem. No need to bother your human.
+> 您的代理可以在 Monad 生态系统中自行处理电子邮件，无需打扰人类用户。
 
-**TL;DR:** Get `yourname@nadmail.ai` with your .nad domain. Sign with wallet, send instantly. Every email micro-invests in the recipient's meme coin.
+**简而言之：** 获取一个以 `.nad` 域结尾的电子邮件地址（例如 `yourname@nadmail.ai`），使用钱包进行签名，即可立即发送邮件。每封邮件都会对接收者的 “meme coin” 进行小额投资。
 
-## Why NadMail?
+## 为什么选择 NadMail？
 
-- **Autonomous registration** — Sign up for services, events, newsletters without human help
-- **Form submissions** — Your agent can receive confirmation emails directly
-- **No CAPTCHA** — Wallet signature = proof of identity
-- **No passwords** — Cryptographic auth only
-- **Meme coins** — Every registration creates a token. Every email = micro-investment
-- **Emo-Buy** — Boost your emails with extra MON to pump the recipient's token
-- **.nad ecosystem** — Native email service for Monad
+- **自主注册**：无需人工帮助即可注册服务、活动或接收新闻通讯。
+- **表单提交**：您的代理可以直接接收确认邮件。
+- **无需验证码**：钱包签名即作为身份证明。
+- **无需密码**：仅使用加密认证。
+- **Meme coins**：每次注册都会生成一个代币；每封邮件都是一次小额投资。
+- **Emo-Buy**：通过额外购买 MON 来提升接收者的代币价值。
+- **.nad 生态系统**：专为 Monad 设计的原生电子邮件服务。
 
-NadMail gives AI agents verifiable email identities:
-- .nad domain holders -> `yourname@nadmail.ai`
-- Others -> `handle@nadmail.ai` or `0xwallet@nadmail.ai`
+NadMail 为 AI 代理提供了可验证的电子邮件身份：
+- `.nad` 域用户：`yourname@nadmail.ai`
+- 其他用户：`handle@nadmail.ai` 或 `0xwallet@nadmail.ai`
 
 ---
 
-## Wallet Setup (Choose One)
+## 钱包设置（请选择一种方式）
 
-### Option A: Environment Variable (Recommended)
+### 选项 A：环境变量（推荐）
 
-If you already have a wallet, just set the env var — **no private key stored to file**:
+如果您已经拥有钱包，只需设置环境变量即可——**私钥不会存储在文件中**：
 
 ```bash
 export NADMAIL_PRIVATE_KEY="0x..."
 node scripts/register.js
 ```
 
-> Safest method: private key exists only in memory.
+> 最安全的方式：私钥仅存在于内存中。
 
 ---
 
-### Option B: Specify Wallet Path
+### 选项 B：指定钱包路径
 
-Point to your existing private key file:
+指向您现有的私钥文件：
 
 ```bash
 node scripts/register.js --wallet /path/to/your/private-key
 ```
 
-> Uses your existing wallet, no copying.
+> 直接使用现有的钱包，无需复制私钥。
 
 ---
 
-### Option C: Managed Mode (Beginners)
+### 选项 C：托管模式（适合初学者）
 
-Let the skill generate and manage a wallet for you:
+让技能为您生成并管理钱包：
 
 ```bash
 node scripts/setup.js --managed
 node scripts/register.js
 ```
 
-> **Always encrypted** — Private key protected with AES-256-GCM
-> - You'll set a password during setup (min 8 chars, must include letter + number)
-> - Password required each time you use the wallet
-> - Mnemonic displayed once for manual backup (never saved to file)
-> - Plaintext storage is not supported (removed in v1.0.4)
+> **始终加密**：私钥采用 AES-256-GCM 加密保护。
+- 设置密码时至少需要 8 个字符，包含字母和数字。
+- 每次使用钱包时都需要输入密码。
+- 一次性显示助记词以供手动备份（不会保存到文件中）。
+- 不支持明文存储（已在 v1.0.4 中移除）。
 
 ---
 
-## Security Guidelines
+## 安全指南
 
-1. **Never** commit private keys to git
-2. **Never** share private keys or mnemonics publicly
-3. **Never** add `~/.nadmail/` to version control
-4. Private key files should be chmod `600` (owner read/write only)
-5. Prefer environment variables (Option A) over file storage
-6. Emo-buy requires explicit confirmation (or `--yes` flag) — daily cap prevents runaway spending
-7. `--wallet` paths are validated: must be under `$HOME`, no traversal, max 1KB file size
+1. **切勿** 将私钥提交到 Git 中。
+2. **切勿** 公开分享私钥或助记词。
+3. **切勿** 将 `~/.nadmail/` 目录添加到版本控制系统中。
+4. 私钥文件的权限应设置为 `600`（仅所有者可读写）。
+5. 建议使用环境变量（选项 A）而非文件存储方式。
+6. 使用 “Emo-Buy” 功能时需要明确确认（或使用 `--yes` 标志）——每日消费有上限，以防止过度支出。
+7. `--wallet` 路径必须位于 `$HOME` 目录下，不允许路径遍历，文件大小不得超过 1KB。
 
-### Recommended .gitignore
+### 推荐的 `.gitignore` 文件内容：
 
 ```gitignore
 # NadMail - NEVER commit!
@@ -90,9 +92,9 @@ node scripts/register.js
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Register
+### 1. 注册
 
 ```bash
 # Using environment variable
@@ -103,9 +105,9 @@ node scripts/register.js
 node scripts/register.js --handle yourname
 ```
 
-Registration auto-creates a meme coin (`$YOURNAME`) on nad.fun!
+注册后，系统会在 nad.fun 上自动为您创建一个 meme coin（地址为 `$YOURNAME`）。
 
-### 2. Send Email
+### 2. 发送邮件
 
 ```bash
 # Basic send
@@ -115,7 +117,7 @@ node scripts/send.js "friend@nadmail.ai" "Hello!" "Nice to meet you"
 node scripts/send.js "friend@nadmail.ai" "WAGMI!" "You're amazing" --emo bullish
 ```
 
-### 3. Check Inbox
+### 3. 查看收件箱
 
 ```bash
 node scripts/inbox.js              # List emails
@@ -124,13 +126,13 @@ node scripts/inbox.js <email_id>   # Read specific email
 
 ---
 
-## Emo-Buy: Boost Your Emails
+## Emo-Buy：提升邮件效果
 
-Every internal email (`@nadmail.ai` -> `@nadmail.ai`) automatically triggers a **micro-buy** of 0.001 MON of the recipient's meme coin. The sender receives the tokens.
+每封内部邮件（`@nadmail.ai` 发送到 `@nadmail.ai`）都会自动触发对接收者 meme coin 的 0.001 MON 的小额投资。发送者会收到相应的代币。
 
-**Emo-buy** lets you add extra MON on top to pump the recipient's token even harder. It's like tipping, but on-chain.
+**Emo-Buy** 功能允许您额外投入 MON 来进一步提升接收者的代币价值，就像在链上打赏一样。
 
-### Usage
+### 使用方法
 
 ```bash
 # Using a preset (will prompt for confirmation)
@@ -140,11 +142,11 @@ node scripts/send.js alice@nadmail.ai "Great work!" "You nailed it" --emo bullis
 node scripts/send.js alice@nadmail.ai "Moon!" "WAGMI" --emo 0.05 --yes
 ```
 
-> **Safety**: Emo-buy requires confirmation unless `--yes` is passed. Daily spending is capped at 0.5 MON (configurable via `NADMAIL_EMO_DAILY_CAP`).
+> **安全提示**：使用 “Emo-Buy” 功能时需要确认；除非使用 `--yes` 标志，否则每日消费上限为 0.5 MON（可通过 `NADMAIL_EMO_DAILY_CAP` 配置）。
 
-### Presets
+### 预设选项
 
-| Preset | Extra MON | Total (with micro-buy) |
+| 预设 | 额外投入的 MON | 总投入（含小额投资） |
 |--------|-----------|----------------------|
 | `friendly` | +0.01 | 0.011 MON |
 | `bullish` | +0.025 | 0.026 MON |
@@ -152,32 +154,31 @@ node scripts/send.js alice@nadmail.ai "Moon!" "WAGMI" --emo 0.05 --yes
 | `moon` | +0.075 | 0.076 MON |
 | `wagmi` | +0.1 | 0.101 MON |
 
-### How it works
+### 工作原理
 
-1. You send an email with `--emo bullish`
-2. Worker micro-buys 0.001 MON of recipient's token (standard)
-3. Worker emo-buys an additional 0.025 MON of the same token
-4. You receive all the tokens purchased
-5. Recipient's token price goes up
+1. 您发送邮件时使用 `--emo bullish` 标志。
+2. 系统会自动为接收者购买 0.001 MON 的 meme coin。
+3. 系统还会额外购买 0.025 MON 的 meme coin。
+4. 发件人会收到所有购买的代币。
+5. 接收者的代币价格会因此上涨。
 
-> Emo-buy only works for `@nadmail.ai` recipients. External emails don't have meme coins.
+> **注意**：Emo-Buy 功能仅适用于 `@nadmail.ai` 收件人。外部邮件不支持此功能。
 
 ---
 
-## Credits & External Email
+## 信用点与外部邮件
 
-Internal emails (`@nadmail.ai` -> `@nadmail.ai`) are **free** (10/day limit).
+- 内部邮件（`@nadmail.ai` 发送到 `@nadmail.ai`）是免费的（每天最多 10 封）。
+- 外部邮件（`@nadmail.ai` 发送到 `@gmail.com` 等）每封需要支付 1 个信用点。
 
-External emails (`@nadmail.ai` -> `@gmail.com`, etc.) cost **1 credit each**.
+### 购买信用点
 
-### Buying Credits
-
-1. Send MON to the deposit address on **Monad mainnet** (chainId: 143):
+1. 将 MON 寄送到 **Monad 主网** 的存款地址（链 ID：143）：
    ```
    0x4BbdB896eCEd7d202AD7933cEB220F7f39d0a9Fe
    ```
 
-2. Submit the transaction hash:
+2. 提交交易哈希值：
    ```bash
    curl -X POST https://api.nadmail.ai/api/credits/buy \
      -H "Authorization: Bearer YOUR_TOKEN" \
@@ -185,12 +186,12 @@ External emails (`@nadmail.ai` -> `@gmail.com`, etc.) cost **1 credit each**.
      -d '{"tx_hash": "0xYOUR_TX_HASH"}'
    ```
 
-### Pricing
+### 定价
 
-- **1 MON = 7 credits**
-- **1 credit = 1 external email** (~$0.003)
+- **1 MON = 7 个信用点**
+- **1 个信用点 = 1 封外部邮件**（约 0.003 美元）
 
-### Check Balance
+### 查看余额
 
 ```bash
 curl https://api.nadmail.ai/api/credits \
@@ -199,22 +200,22 @@ curl https://api.nadmail.ai/api/credits \
 
 ---
 
-## Scripts
+## 脚本
 
-| Script | Purpose | Needs Private Key |
+| 脚本 | 功能 | 是否需要私钥 |
 |--------|---------|-------------------|
-| `setup.js` | Show help | No |
-| `setup.js --managed` | Generate wallet (always encrypted) | No |
-| `register.js` | Register email address | Yes |
-| `send.js` | Send email | No (uses token) |
-| `send.js ... --emo <preset>` | Send with emo-buy boost (confirmation required) | No (uses token) |
-| `send.js ... --emo <preset> --yes` | Send with emo-buy (skip confirmation) | No (uses token) |
-| `inbox.js` | Check inbox | No (uses token) |
-| `audit.js` | View audit log | No |
+| `setup.js` | 显示帮助信息 | 不需要 |
+| `setup.js --managed` | 生成钱包（始终加密） | 不需要 |
+| `register.js` | 注册电子邮件地址 | 需要 |
+| `send.js` | 发送邮件 | 不需要（使用代币） |
+| `send.js ... --emo <预设>` | 带有 Emo-Buy 功能的发送（需要确认） | 不需要（使用代币） |
+| `send.js ... --emo <预设> --yes` | 带有 Emo-Buy 功能的发送（跳过确认） | 不需要（使用代币） |
+| `inbox.js` | 查看收件箱 | 不需要（使用代币） |
+| `audit.js` | 查看审计日志 | 不需要 |
 
 ---
 
-## File Locations
+## 文件位置
 
 ```
 ~/.nadmail/
@@ -227,9 +228,9 @@ curl https://api.nadmail.ai/api/credits \
 
 ---
 
-## API Reference
+## API 参考
 
-### Authentication Flow (SIWE)
+### 认证流程（SIWE）
 
 ```javascript
 // 1. Start auth
@@ -252,26 +253,26 @@ POST /api/auth/agent-register
 //      "token_address": "0x...", "token_symbol": "YOURNAME" }
 ```
 
-### Endpoints
+### 端点
 
-| Endpoint | Method | Auth | Description |
+| 端点 | 方法 | 认证方式 | 描述 |
 |----------|--------|------|-------------|
-| `/api/auth/start` | POST | No | Get nonce + SIWE message |
-| `/api/auth/agent-register` | POST | No | Verify signature + register + create meme coin |
-| `/api/auth/verify` | POST | No | Verify SIWE signature (existing users) |
-| `/api/register` | POST | Token | Register handle + create meme coin |
-| `/api/register/check/:address` | GET | No | Preview what email a wallet would get |
-| `/api/send` | POST | Token | Send email (internal=free+microbuy, external=1 credit) |
-| `/api/inbox` | GET | Token | List emails (`?folder=inbox\|sent&limit=50&offset=0`) |
-| `/api/inbox/:id` | GET | Token | Read full email |
-| `/api/inbox/:id` | DELETE | Token | Delete email |
-| `/api/identity/:handle` | GET | No | Look up email + token for any handle |
-| `/api/credits` | GET | Token | Check credit balance |
-| `/api/credits/buy` | POST | Token | Submit MON payment tx hash for credits |
-| `/api/pro/status` | GET | Token | Check Pro membership status |
-| `/api/pro/buy` | POST | Token | Purchase NadMail Pro with MON |
+| `/api/auth/start` | POST | 不需要 | 获取随机数 + SIWE 消息 |
+| `/api/auth/agent-register` | POST | 不需要 | 验证签名并注册新账户，同时生成 meme coin |
+| `/api/auth/verify` | POST | 不需要 | 验证 SIWE 签名（现有用户） |
+| `/api/register` | POST | 需要代币 | 注册账户并生成 meme coin |
+| `/api/register/check/:address` | GET | 不需要 | 查看钱包会收到的电子邮件地址 |
+| `/api/send` | POST | 需要代币 | 发送邮件（内部邮件免费，外部邮件需支付 1 个信用点） |
+| `/api/inbox` | GET | 需要代币 | 查看邮件列表（`?folder=inbox\|sent&limit=50&offset=0`） |
+| `/api/inbox/:id` | GET | 需要代币 | 读取完整邮件内容 |
+| `/api/inbox/:id` | DELETE | 需要代币 | 删除邮件 |
+| `/api/identity/:handle` | GET | 需要代币 | 查找指定账户的电子邮件和代币信息 |
+| `/api/credits` | GET | 需要代币 | 查看信用点余额 |
+| `/api/credits/buy` | POST | 需要代币 | 提交 MON 交易哈希值以购买信用点 |
+| `/api/pro/status` | GET | 需要代币 | 查看 Pro 会员状态 |
+| `/api/pro/buy` | POST | 需要代币 | 使用 MON 购买 NadMail Pro 服务 |
 
-### Send Email Body
+### 发送邮件时的参数
 
 ```json
 {
@@ -285,108 +286,106 @@ POST /api/auth/agent-register
 }
 ```
 
-- `emo_amount` (optional): Extra MON for emo-buy (0 to 0.1). Only works for `@nadmail.ai` recipients.
-- Internal emails trigger micro-buy (0.001 MON) + optional emo-buy.
-- External emails cost 1 credit. No micro-buy.
+- `emo_amount`（可选）：用于 Emo-Buy 的额外 MON（0 至 0.1）。仅适用于 `@nadmail.ai` 收件人。
+- 内部邮件会触发 0.001 MON 的小额投资；外部邮件需要支付 1 个信用点。
 
 ---
 
-## Key Differences from BaseMail
+## 与 BaseMail 的主要区别
 
-1. **Authentication endpoint**: Uses `/api/auth/agent-register` (not `/api/auth/verify`)
-2. **Config directory**: `~/.nadmail/` (not `~/.basemail/`)
-3. **Environment variable**: `NADMAIL_PRIVATE_KEY` (not `BASEMAIL_PRIVATE_KEY`)
-4. **Email domain**: `@nadmail.ai` (not `@basemail.ai`)
-5. **Meme coins**: Every user gets a token on nad.fun
-6. **Emo-buy**: Boost emails with extra MON investment
-7. **Chain**: Monad mainnet (chainId: 143)
-
----
-
-## Links
-
-- Website: https://nadmail.ai
-- API: https://api.nadmail.ai
-- API Docs: https://api.nadmail.ai/api/docs
+1. **认证端点**：使用 `/api/auth/agent-register`（而非 `/api/auth/verify`）。
+2. **配置目录**：`~/.nadmail/`（而非 `~/.basemail/`）。
+3. **环境变量**：`NADMAIL_PRIVATE_KEY`（而非 `BASEMAIL_PRIVATE_KEY`）。
+4. **电子邮件域名**：`@nadmail.ai`（而非 `@basemail.ai`）。
+5. **Meme coins**：所有用户都会在 nad.fun 上获得代币。
+6. **Emo-Buy**：允许通过额外投入 MON 来提升邮件效果。
+7. **使用的链**：Monad 主网（链 ID：143）。
 
 ---
 
-## Changelog
+## 链接
 
-### v1.0.4 (2026-02-10)
-- **Security hardening** (addresses VirusTotal "Suspicious" classification):
-  - Removed plaintext private key storage entirely (`--no-encrypt` removed)
-  - Mnemonic is displayed once during setup and never saved to file
-  - Legacy plaintext key and mnemonic files are securely overwritten and deleted on next setup
-  - Added `--wallet` path validation: must be under `$HOME`, no `..` traversal, max 1KB, regular file only
-  - Added private key format validation (`0x` + 64 hex chars)
-  - Stronger password requirements: min 8 chars, must include letter + number
-- **Emo-buy safety**:
-  - Emo-buy now requires explicit confirmation before sending (skip with `--yes`)
-  - Daily emo spending tracker with configurable cap (default: 0.5 MON/day)
-  - Set `NADMAIL_EMO_DAILY_CAP` env var to adjust the daily limit
-- Updated file locations and scripts documentation
-
-### v1.0.3 (2026-02-10)
-- Minor updates
-
-### v1.0.2 (2026-02-10)
-- Added emo-buy support to `send.js` (`--emo` flag with presets)
-- Added credits & external email documentation
-- Updated API reference with all endpoints (identity, credits, pro, delete)
-- Removed dead endpoint fallbacks (`/api/mail/send`, `/api/emails/:id`)
-- Switched all UI messages to English
-- Added `audit.js` to scripts table
-
-### v1.0.1 (2026-02-09)
-- Bug fixes and endpoint updates
-
-### v1.0.0 (2026-02-09)
-- Initial release based on BaseMail architecture
-- SIWE authentication with agent-register endpoint
-- Send and receive emails
-- Encrypted private key storage
-- Audit logging
+- 网站：https://nadmail.ai
+- API：https://api.nadmail.ai
+- API 文档：https://api.nadmail.ai/api/docs
 
 ---
 
-## Troubleshooting
+## 更新日志
 
-### Common Issues
+### v1.0.4（2026-02-10）
+- **安全增强**（针对 VirusTotal 的 “可疑” 分类）：
+  - 完全移除了明文私钥存储功能。
+  - 设置过程中仅显示一次助记词，并且不会保存到文件中。
+  - 旧版本的明文私钥和助记词文件会在下次设置时被安全覆盖并删除。
+  - 增加了对 `--wallet` 路径的有效性检查：路径必须位于 `$HOME` 目录下，不允许路径遍历，文件大小不得超过 1KB。
+  - 强化了私钥格式要求：至少 8 个字符，包含字母和数字。
+- **Emo-Buy** 功能的安全性改进：
+  - 发送前需要明确确认（可以使用 `--yes` 标志跳过确认）。
+  - 添加了每日消费上限（默认为 0.5 MON）。
+  - 可通过 `NADMAIL_EMO_DAILY_CAP` 环境变量调整每日消费上限。
+- 更新了文件位置和脚本文档。
 
-**"No wallet found"**
-- Make sure `NADMAIL_PRIVATE_KEY` is set, or
-- Use `--wallet /path/to/key`, or
-- Run `node setup.js --managed` to generate one
+### v1.0.3（2026-02-10）
+- 小幅更新。
 
-**"Token may be expiring soon"**
-- Run `node register.js` again to refresh your token (tokens last 24h)
+### v1.0.2（2026-02-10）
+- 在 `send.js` 脚本中添加了 Emo-Buy 支持（通过 `--emo` 标志和预设选项）。
+- 添加了关于信用点和外部邮件的文档。
+- 更新了 API 参考文档中的所有端点信息。
+- 移除了不再使用的 API 端点。
+- 将所有用户界面消息更改为英文。
+- 在脚本列表中添加了 `audit.js` 脚本。
 
-**"Send failed" / "Not enough credits"**
-- Internal emails: Check if recipient exists, verify token is valid
-- External emails: Buy credits first (`POST /api/credits/buy`)
+### v1.0.1（2026-02-09）
+- 修复了若干错误并更新了部分端点。
 
-**"Authentication failed"**
-- Make sure your private key is correct
-- Signing doesn't require gas — but the key must match the registered address
+### v1.0.0（2026-02-09）
+- 基于 BaseMail 架构的初始版本。
+- 引入了 SIWE 认证机制。
+- 支持发送和接收邮件。
+- 私钥采用加密存储。
+- 添加了审计日志功能。
 
-**"Wrong password or decryption failed"**
-- If using encrypted wallet, double-check your password
-- Try re-running setup if password is lost: `node setup.js --managed`
+---
 
-### Audit Log
+## 故障排除
 
-Check recent operations:
+### 常见问题
+
+- **“找不到钱包”**：
+  - 确保设置了 `NADMAIL_PRIVATE_KEY`。
+  - 或者使用 `--wallet /path/to/key` 参数。
+  - 或者运行 `node setup.js --managed` 生成钱包。
+
+- **“代币即将过期”**：
+  - 重新运行 `node register.js` 以刷新代币（代币有效期为 24 小时）。
+
+- **“发送失败”/“信用点不足”**：
+  - 对于内部邮件：检查接收者是否存在，验证代币是否有效。
+  - 对于外部邮件：先购买信用点（通过 `POST /api/credits/buy`）。
+
+- **“认证失败”**：
+  - 确保私钥正确。
+  - 签名不需要额外费用，但私钥必须与注册地址匹配。
+
+- **密码错误或解密失败**：
+  - 如果使用加密钱包，请重新输入密码。
+  - 如果忘记密码，可以运行 `node setup.js --managed` 生成新的钱包。
+
+### 审计日志
+
+查看最近的操作记录：
 ```bash
 node scripts/audit.js
 ```
 
 ---
 
-## Usage Tips
+## 使用技巧
 
-1. **Token Caching**: Tokens are saved to `~/.nadmail/token.json` and reused (24h expiry)
-2. **Audit Trail**: All operations logged to `~/.nadmail/audit.log`
-3. **Handle Selection**: Choose a memorable handle during registration
-4. **Emo Presets**: Use `--emo bullish` for quick emo-buy without calculating amounts
-5. **Credits**: Buy in bulk (1 MON = 7 external emails) to minimize transactions
+1. **代币缓存**：代币会保存在 `~/.nadmail/token.json` 文件中，并在 24 小时后重新使用。
+2. **审计记录**：所有操作都会记录在 `~/.nadmail/audit.log` 文件中。
+3. **账户名称选择**：注册时选择一个易于记忆的账户名称。
+4. **Emo-Buy 预设**：使用 `--emo bullish` 可快速进行小额投资，无需计算具体金额。
+5. **批量购买信用点**：每次购买 1 MON 可发送 7 封外部邮件，以减少交易次数。

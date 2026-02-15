@@ -17,9 +17,9 @@ metadata:
 
 # Dropbox
 
-Access the Dropbox API with managed OAuth authentication. Manage files and folders, search content, retrieve metadata, and work with file revisions.
+使用托管的 OAuth 认证来访问 Dropbox API。您可以管理文件和文件夹、搜索内容、检索元数据以及处理文件的版本信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List files in root folder
@@ -33,41 +33,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基础 URL
 
 ```
 https://gateway.maton.ai/dropbox/2/{endpoint}
 ```
 
-The gateway proxies requests to `api.dropboxapi.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `api.dropboxapi.com`，并自动插入您的 OAuth 令牌。
 
-**Important:** Dropbox API v2 uses POST for all endpoints with JSON request bodies.
+**重要提示：** Dropbox API v2 的所有端点都使用 POST 方法，并且请求体必须是 JSON 格式。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Dropbox OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Dropbox OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -78,7 +78,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -91,7 +91,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -102,7 +102,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -117,9 +117,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -130,9 +130,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Dropbox connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Dropbox 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -146,13 +146,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略该头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Users
+### 用户
 
-#### Get Current Account
+#### 获取当前账户信息
 
 ```bash
 POST /dropbox/2/users/get_current_account
@@ -161,7 +161,7 @@ Content-Type: application/json
 null
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "account_id": "dbid:AAA-AdT84WzkyLw5s590DbYF1nGomiAoO8I",
@@ -188,7 +188,7 @@ null
 }
 ```
 
-#### Get Space Usage
+#### 获取空间使用情况
 
 ```bash
 POST /dropbox/2/users/get_space_usage
@@ -197,7 +197,7 @@ Content-Type: application/json
 null
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "used": 538371,
@@ -208,31 +208,19 @@ null
 }
 ```
 
-### Files and Folders
+### 文件和文件夹
 
-#### List Folder
+#### 列出文件夹
 
-```bash
-POST /dropbox/2/files/list_folder
-Content-Type: application/json
+使用空字符串 `""` 作为根文件夹路径。
 
-{
-  "path": "",
-  "recursive": false,
-  "include_deleted": false,
-  "include_has_explicit_shared_members": false
-}
-```
+**可选参数：**
+- `recursive` - 包含子目录的内容（默认值：false）
+- `include_deleted` - 包含已删除的文件（默认值：false）
+- `include_media_info` - 包含照片/视频的媒体信息
+- `limit` - 每次响应的最大条目数（1-2000）
 
-Use empty string `""` for the root folder.
-
-**Optional Parameters:**
-- `recursive` - Include contents of subdirectories (default: false)
-- `include_deleted` - Include deleted files (default: false)
-- `include_media_info` - Include media info for photos/videos
-- `limit` - Maximum entries per response (1-2000)
-
-**Response:**
+**响应：**
 ```json
 {
   "entries": [
@@ -262,7 +250,7 @@ Use empty string `""` for the root folder.
 }
 ```
 
-#### Continue Listing Folder
+#### 继续列出文件夹
 
 ```bash
 POST /dropbox/2/files/list_folder/continue
@@ -273,9 +261,9 @@ Content-Type: application/json
 }
 ```
 
-Use when `has_more` is true in the previous response.
+当上一次响应中的 `has_more` 为 `true` 时使用此方法。
 
-#### Get Metadata
+#### 获取元数据
 
 ```bash
 POST /dropbox/2/files/get_metadata
@@ -289,7 +277,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   ".tag": "file",
@@ -306,7 +294,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Folder
+#### 创建文件夹
 
 ```bash
 POST /dropbox/2/files/create_folder_v2
@@ -318,7 +306,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "metadata": {
@@ -330,7 +318,7 @@ Content-Type: application/json
 }
 ```
 
-#### Copy File or Folder
+#### 复制文件或文件夹
 
 ```bash
 POST /dropbox/2/files/copy_v2
@@ -343,7 +331,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "metadata": {
@@ -356,7 +344,7 @@ Content-Type: application/json
 }
 ```
 
-#### Move File or Folder
+#### 移动文件或文件夹
 
 ```bash
 POST /dropbox/2/files/move_v2
@@ -369,7 +357,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "metadata": {
@@ -382,7 +370,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete File or Folder
+#### 删除文件或文件夹
 
 ```bash
 POST /dropbox/2/files/delete_v2
@@ -393,7 +381,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "metadata": {
@@ -406,7 +394,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Temporary Download Link
+#### 获取临时下载链接
 
 ```bash
 POST /dropbox/2/files/get_temporary_link
@@ -417,7 +405,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "metadata": {
@@ -432,11 +420,11 @@ Content-Type: application/json
 }
 ```
 
-The link is valid for 4 hours.
+该链接的有效时间为 4 小时。
 
-### Search
+### 搜索
 
-#### Search Files
+#### 搜索文件
 
 ```bash
 POST /dropbox/2/files/search_v2
@@ -453,7 +441,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "has_more": false,
@@ -478,7 +466,7 @@ Content-Type: application/json
 }
 ```
 
-#### Continue Search
+#### 继续搜索
 
 ```bash
 POST /dropbox/2/files/search/continue_v2
@@ -489,9 +477,9 @@ Content-Type: application/json
 }
 ```
 
-### File Revisions
+### 文件版本
 
-#### List Revisions
+#### 列出文件版本
 
 ```bash
 POST /dropbox/2/files/list_revisions
@@ -504,7 +492,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "is_deleted": false,
@@ -525,7 +513,7 @@ Content-Type: application/json
 }
 ```
 
-#### Restore File
+#### 恢复文件
 
 ```bash
 POST /dropbox/2/files/restore
@@ -537,9 +525,9 @@ Content-Type: application/json
 }
 ```
 
-### Tags
+### 标签
 
-#### Get Tags
+#### 获取标签信息
 
 ```bash
 POST /dropbox/2/files/tags/get
@@ -550,7 +538,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "paths_to_tags": [
@@ -571,7 +559,7 @@ Content-Type: application/json
 }
 ```
 
-#### Add Tag
+#### 添加标签
 
 ```bash
 POST /dropbox/2/files/tags/add
@@ -583,11 +571,11 @@ Content-Type: application/json
 }
 ```
 
-Returns `null` on success.
+成功时返回 `null`。
 
-**Note:** Tag text must match pattern `[\w]+` (alphanumeric and underscores only, no hyphens or spaces).
+**注意：** 标签文本必须符合 `[\w]+` 的模式（仅包含字母、数字和下划线，不允许使用连字符或空格）。
 
-#### Remove Tag
+#### 删除标签
 
 ```bash
 POST /dropbox/2/files/tags/remove
@@ -599,11 +587,11 @@ Content-Type: application/json
 }
 ```
 
-Returns `null` on success.
+成功时返回 `null`。
 
-### Batch Operations
+### 批量操作
 
-#### Delete Batch
+#### 删除批量文件
 
 ```bash
 POST /dropbox/2/files/delete_batch
@@ -617,9 +605,9 @@ Content-Type: application/json
 }
 ```
 
-Returns async job ID. Check status with `/files/delete_batch/check`.
+返回异步作业 ID。使用 `/files/delete_batch/check` 查看作业状态。
 
-#### Copy Batch
+#### 复制批量文件
 
 ```bash
 POST /dropbox/2/files/copy_batch_v2
@@ -634,7 +622,7 @@ Content-Type: application/json
 }
 ```
 
-#### Move Batch
+#### 移动批量文件
 
 ```bash
 POST /dropbox/2/files/move_batch_v2
@@ -649,9 +637,9 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-Dropbox uses cursor-based pagination. When `has_more` is true, use the `/continue` endpoint with the returned cursor.
+Dropbox 使用基于游标的分页机制。当 `has_more` 为 `true` 时，使用返回的游标通过 `/continue` 端点继续分页。
 
 ```python
 import os
@@ -684,7 +672,7 @@ while result.get('has_more'):
 print(f"Total entries: {len(all_entries)}")
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -722,7 +710,7 @@ data = response.json()
 print(data['entries'])
 ```
 
-### Python (Create Folder and Search)
+### Python（创建文件夹和搜索）
 
 ```python
 import os
@@ -752,30 +740,30 @@ results = response.json()
 print(f"Found {len(results['matches'])} matches")
 ```
 
-## Notes
+## 注意事项
 
-- All Dropbox API v2 endpoints use HTTP POST method
-- Request bodies are JSON (not form-urlencoded)
-- Use empty string `""` for the root folder path
-- Paths are case-insensitive but case-preserving
-- File IDs (e.g., `id:Awe3Av8A8YYAAAAAAAAABQ`) persist even when files are moved or renamed
-- Tag text must match pattern `[\w]+` (alphanumeric and underscores only)
-- Temporary download links expire after 4 hours
-- Rate limits are generous and per-user
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有 Dropbox API v2 端点都使用 HTTP POST 方法。
+- 请求体必须是 JSON 格式（而非表单编码格式）。
+- 使用空字符串 `""` 作为根文件夹路径。
+- 路径不区分大小写，但会保留大小写差异。
+- 文件 ID（例如 `id:Awe3Av8A8YYAAAAAAAAABQ`）在文件被移动或重命名后仍然保持不变。
+- 标签文本必须符合 `[\w]+` 的模式（仅包含字母、数字和下划线）。
+- 临时下载链接的有效时间为 4 小时。
+- 每个用户的请求速率限制较为宽松。
+- **重要提示：** 当将 curl 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Dropbox connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 409 | Conflict (path doesn't exist, already exists, etc.) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Dropbox API |
+| 400 | 未建立 Dropbox 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 409 | 冲突（路径不存在、已存在等） |
+| 429 | 请求速率受限 |
+| 4xx/5xx | 来自 Dropbox API 的传递错误 |
 
-Error responses include details:
+错误响应会包含详细信息：
 ```json
 {
   "error_summary": "path/not_found/...",
@@ -788,17 +776,17 @@ Error responses include details:
 }
 ```
 
-### Troubleshooting: Invalid API Key
+### 故障排除：API 密钥无效
 
-**When you receive an "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
+**当收到“API 密钥无效”的错误时，请务必按照以下步骤操作，再确定是否存在问题：**
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 检查 `MATON_API_KEY` 环境变量是否已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -809,9 +797,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Resources
+## 资源
 
-- [Dropbox HTTP API Overview](https://www.dropbox.com/developers/documentation/http/overview)
-- [Dropbox Developer Portal](https://www.dropbox.com/developers)
-- [Dropbox API Explorer](https://dropbox.github.io/dropbox-api-v2-explorer/)
-- [DBX File Access Guide](https://developers.dropbox.com/dbx-file-access-guide)
+- [Dropbox HTTP API 概述](https://www.dropbox.com/developers/documentation/http/overview)
+- [Dropbox 开发者门户](https://www.dropbox.com/developers)
+- [Dropbox API 探索器](https://dropbox.github.io/dropbox-api-v2-explorer/)
+- [DBX 文件访问指南](https://developers.dropbox.com/dbx-file-access-guide)

@@ -1,6 +1,6 @@
 ---
 name: forgejo
-description: "Interact with Forgejo using the `tea` CLI. Use `tea issue`, `tea pr`, `tea actions`, and `tea api` for issues, PRs, Actions, and advanced queries."
+description: "使用 `tea` CLI 与 Forgejo 进行交互。可以通过 `tea issue`、`tea pr`、`tea actions` 和 `tea api` 命令来处理问题（issues）、合并请求（PRs）、执行操作（actions）以及执行高级查询。"
 metadata:
   {
     "openclaw":
@@ -28,77 +28,77 @@ metadata:
   }
 ---
 
-# Forgejo Skill
+# Forgejo 技能
 
-Use the `tea` CLI to interact with Forgejo instances. The `tea` CLI is compatible with Forgejo.
+使用 `tea` 命令行工具（CLI）与 Forgejo 实例进行交互。`tea` CLI 与 Forgejo 兼容。
 
-## Pull Requests
+## 提交请求（Pull Requests）
 
-List open pull requests:
+列出所有未处理的提交请求（Pull Requests）：
 
 ```bash
 tea pulls --repo owner/repo
 ```
 
-Check details of a PR:
+查看某个提交请求的详细信息：
 
 ```bash
 tea pr 55 --repo owner/repo
 ```
 
-## Issues
+## 问题（Issues）
 
-List open issues:
+列出所有未处理的问题（Issues）：
 
 ```bash
 tea issues --repo owner/repo
 ```
 
-View an issue:
+查看某个问题：
 
 ```bash
 tea issue 123 --repo owner/repo
 ```
 
-## Actions (CI/CD)
+## 自动化构建/部署流程（CI/CD）
 
-List repository secrets:
+列出仓库中的敏感信息（repository secrets）：
 
 ```bash
 tea actions secrets list --repo owner/repo
 ```
 
-List repository variables:
+列出仓库中的配置变量（repository variables）：
 
 ```bash
 tea actions variables list --repo owner/repo
 ```
 
-## API for Advanced Queries
+## 高级查询 API
 
-The `tea api` command is useful for accessing data not available through other subcommands.
+`tea api` 命令可用于获取其他子命令无法提供的数据。
 
-Get PR with specific fields (requires `jq` for filtering):
+获取包含特定字段的提交请求（需要使用 `jq` 进行过滤）：
 
 ```bash
 tea api repos/owner/repo/pulls/55 | jq '.title, .state, .user.login'
 ```
 
-## Logins
+## 登录
 
-To use `tea` with a specific Forgejo instance, you first need to add a login:
+要使用 `tea` 命令与特定的 Forgejo 实例进行交互，首先需要完成登录操作：
 
 ```bash
 tea login add --name my-forgejo --url https://forgejo.example.com --token <your-token>
 ```
 
-Then you can use `--login my-forgejo` in your commands:
+之后，你可以在命令中添加 `--login my-forgejo` 选项来指定登录信息：
 
 ```bash
 tea pulls --repo owner/repo --login my-forgejo
 ```
 
-List all configured logins:
+列出所有已配置的登录信息：
 
 ```bash
 tea logins

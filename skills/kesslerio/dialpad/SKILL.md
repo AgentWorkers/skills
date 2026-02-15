@@ -1,40 +1,40 @@
 ---
 name: dialpad
-description: Send SMS and make voice calls via Dialpad API. Supports single/batch SMS, voice calls with TTS, and caller ID selection.
+description: 通过 Dialpad API 发送短信和进行语音通话。支持单条/批量发送短信、带有 TTS（文本转语音）功能的语音通话，以及选择来电显示号码。
 homepage: https://developers.dialpad.com/
 ---
 
-# Dialpad Skill
+# Dialpad技能
 
-Send SMS and make voice calls via the Dialpad API.
+通过Dialpad API发送短信和进行语音通话。
 
-## Available Phone Numbers
+## 可用的电话号码
 
-| Number | Purpose | Format |
+| 数字 | 用途 | 格式 |
 |--------|---------|--------|
-| (415) 520-1316 | Sales Team | Default for sales context |
-| (415) 360-2954 | Work/Personal | Default for work context |
-| (415) 991-7155 | Support SMS Only | SMS only (no voice) |
+| (415) 520-1316 | 销售团队 | 销售场景的默认号码 |
+| (415) 360-2954 | 工作/个人 | 工作场景的默认号码 |
+| (415) 991-7155 | 仅支持短信 | 仅支持短信（不支持语音通话） |
 
-Use `--from <number>` to specify which number appears as caller ID.
+使用`--from <数字>`来指定显示在来电显示中的号码。
 
-## Setup
+## 设置
 
-**Required environment variable:**
+**必需的环境变量：**
 ```
 DIALPAD_API_KEY=your_api_key_here
 ```
 
-**Optional (for ElevenLabs TTS in calls):**
+**可选（用于ElevenLabs TTS语音合成）：**
 ```
 ELEVENLABS_API_KEY=your_elevenlabs_api_key
 ```
 
-Get your Dialpad API key from [Dialpad API Settings](https://dialpad.com/api/settings).
+从[Dialpad API设置](https://dialpad.com/api/settings)获取您的Dialpad API密钥。
 
-## Usage
+## 使用方法
 
-### Send SMS
+### 发送短信
 
 ```bash
 # Basic SMS
@@ -47,7 +47,7 @@ python3 send_sms.py --to "+14155551234" --message "Hello!" --from "+14153602954"
 python3 send_sms.py --to "+14155551234" "+14155555678" --message "Group update"
 ```
 
-### Make Voice Calls
+### 进行语音通话
 
 ```bash
 # Basic call (ring recipient - they'll answer to speak with you)
@@ -63,64 +63,64 @@ python3 make_call.py --to "+14155551234" --from "+14153602954" --text "Meeting r
 python3 make_call.py --to "+14155551234" --voice "Adam" --text "Premium voice test"
 ```
 
-### From Agent Instructions
+### 代理使用说明
 
-**SMS:**
+**短信：**
 ```bash
 python3 send_sms.py --to "+14155551234" --message "Your message here"
 ```
 
-**Voice Call:**
+**语音通话：**
 ```bash
 python3 make_call.py --to "+14155551234" --text "Optional TTS message"
 ```
 
-## Voice Options
+## 语音选项
 
-### Low-Cost Voices (Recommended for Budget)
-| Voice | Style | Notes |
+### 经济实惠的语音（推荐用于预算有限的情况）
+| 语音 | 风格 | 说明 |
 |-------|-------|-------|
-| **Eric** ⭐ | Male, smooth, trustworthy | Low-cost, available! |
-| Daniel | Male, British, steady | Budget |
-| Sarah | Female, mature | Budget |
-| River | Male, neutral | Budget |
-| Alice | Female, clear | Budget |
-| Brian | Male, deep | Budget |
-| Bill | Male, wise | Budget |
+| **Eric** ⭐ | 男性，声音平稳，值得信赖 | 经济实惠，可用！ |
+| Daniel | 男性，英式发音，语气稳重 | 经济实惠 |
+| Sarah | 女性，成熟稳重 | 经济实惠 |
+| River | 男性，语气中性 | 经济实惠 |
+| Alice | 女性，发音清晰 | 经济实惠 |
+| Brian | 男性，声音低沉 | 经济实惠 |
+| Bill | 男性，声音沉稳 | 经济实惠 |
 
-### Premium Voices (Higher Quality)
-| Voice | Style | Notes |
+### 高端语音（音质更高）
+| 语音 | 风格 | 说明 |
 |-------|-------|-------|
-| **Adam** | Male, deep, clear | Best for professional |
-| Antoni | Male, warm | Friendly tone |
-| Bella | Female, soft | Warm, engaging |
+| **Adam** | 男性，声音低沉，发音清晰 | 最适合专业场合 |
+| Antoni | 男性，语气温暖 | 语气友好 |
+| Bella | 女性，声音柔和 | 语气温暖，易于交流 |
 
-To use a specific voice, add `--voice "VoiceName"`.
+要使用特定的语音，请添加`--voice "语音名称"`。
 
-## API Capabilities
+## API功能
 
 ### SMS
-- **Endpoint:** `POST https://dialpad.com/api/v2/sms`
-- **Max recipients:** 10 per request
-- **Max message length:** 1600 characters
-- **Rate limits:** 100-800 requests/minute (tier-dependent)
+- **端点：`POST https://dialpad.com/api/v2/sms`
+- **每条消息的最大接收人数：** 每次请求最多10人
+- **每条消息的最大长度：** 1600个字符
+- **速率限制：** 每分钟100-800次请求（根据套餐不同而异）
 
-### Voice Calls
-- **Endpoint:** `POST https://dialpad.com/api/v2/call`
-- **Requires:** `phone_number` + `user_id`
-- **Features:** Outbound calling, Text-to-Speech
-- **Caller ID:** Must be assigned to your Dialpad account
+### 语音通话
+- **端点：`POST https://dialpad.com/api/v2/call`
+- **所需参数：** `phone_number` + `user_id`
+- **功能：** 出站通话、文本转语音
+- **来电显示：** 必须为您的Dialpad账户分配一个来电显示号码
 
-### Known Users (Auto-Detected)
-| Name | Phone | User ID |
+### 已知用户（自动检测）
+| 名称 | 电话号码 | 用户ID |
 |------|-------|---------|
 | Martin | (415) 360-2954 | `5765607478525952` |
 | Lilla | (415) 870-1945 | `5625110025338880` |
 | Scott | (415) 223-0323 | `5964143916400640` |
 
-## Response
+## 响应
 
-### SMS Response
+### SMS响应
 ```json
 {
   "id": "4612924117884928",
@@ -132,7 +132,7 @@ To use a specific voice, add `--voice "VoiceName"`.
 }
 ```
 
-### Call Response
+### 通话响应
 ```json
 {
   "call_id": "6342343299702784",
@@ -140,26 +140,26 @@ To use a specific voice, add `--voice "VoiceName"`.
 }
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Meaning | Action |
+| 错误 | 含义 | 处理方式 |
 |-------|---------|--------|
-| `invalid_destination` | Invalid phone number | Verify E.164 format |
-| `invalid_source` | Caller ID not available | Check `--from` number assignment |
-| `no_route` | Cannot deliver | Check carrier/recipient |
-| `user_id required` | Missing user ID | Use `--from` with known number |
+| `invalid_destination` | 无效的电话号码 | 验证E.164格式 |
+| `invalid_source` | 来电显示号码未设置 | 检查`--from`参数的设置 |
+| `no_route` | 无法送达 | 检查运营商/接收方信息 |
+| `user_id required` | 缺少用户ID | 使用`--from`参数并指定用户ID |
 
-## SMS Storage (SQLite with FTS5)
+## SMS存储（使用SQLite和FTS5）
 
-Messages are stored in a single SQLite database with full-text search.
+短信存储在单个SQLite数据库中，并支持全文搜索。
 
-### Storage
+### 存储方式
 
 ```
 ~/.dialpad/sms.db  # Single file with messages + FTS5 index
 ```
 
-### Commands
+### 命令
 
 ```bash
 # List all SMS conversations
@@ -184,15 +184,15 @@ python3 sms_sqlite.py read "+14155551234"
 python3 sms_sqlite.py migrate
 ```
 
-### Features
+### 功能特性
 
-- **Full-text search** via FTS5 (`search "keyword"`)
-- **Fast queries** with indexes on contact, timestamp, direction
-- **ACID transactions** — no corruption on concurrent writes
-- **Unread tracking** with per-contact counts
-- **Denormalized contact stats** for instant list views
+- **全文搜索**（使用FTS5技术，例如：`search "关键词"`）
+- **快速查询**：通过联系人信息、时间戳和通话方向进行查询
+- **ACID事务**：支持并发写入，数据不会损坏
+- **未读消息跟踪**：可查看每个联系人的未读消息数量
+- **非规范化联系人信息**：便于快速查看联系人列表
 
-### Webhook Integration
+### Webhook集成
 
 ```python
 from webhook_sqlite import handle_sms_webhook, format_notification, get_inbox_summary
@@ -205,28 +205,28 @@ notification = format_notification(result)
 summary = get_inbox_summary()
 ```
 
-### Legacy JSON Storage (Deprecated)
+### 旧版JSON存储（已弃用）
 
-The original JSON-based storage is still available but not recommended:
+虽然仍支持基于JSON的存储方式，但不推荐使用：
 
 ```bash
 python3 sms_storage.py [list|thread|search|unread]
 ```
 
-## Requirements
+## 系统要求
 
-- Python 3.7+
-- No external dependencies (uses stdlib only)
-- Valid `DIALPAD_API_KEY` environment variable
-- For ElevenLabs TTS: `ELEVENLABS_API_KEY` + webhook setup for audio playback
+- Python 3.7及以上版本
+- 无需外部依赖（仅使用标准库）
+- 必须设置有效的`DIALPAD_API_KEY`环境变量
+- 如果使用ElevenLabs TTS语音合成服务，还需设置`ELEVENLABS_API_KEY`并配置Webhook
 
-## Reading SMS Messages
+## 阅读短信消息
 
-Dialpad doesn't provide a direct "GET /sms" endpoint. Instead, use:
+Dialpad没有提供直接的`GET /sms`端点。您可以使用以下方法来获取短信信息：
 
-### 1. Real-Time: SMS Webhooks
+### 1. 实时获取：短信Webhook
 
-Receive SMS events in real-time when messages are sent/received.
+当短信发送或接收时，通过Webhook实时接收通知。
 
 ```bash
 # Create a webhook subscription
@@ -236,15 +236,15 @@ python3 create_sms_webhook.py create --url "https://your-server.com/webhook/dial
 python3 create_sms_webhook.py list
 ```
 
-**Webhook Events:**
-- `sms_sent` — Outgoing SMS
-- `sms_received` — Incoming SMS
+**Webhook事件：**
+- `sms_sent` — 发出的短信
+- `sms_received` — 收到的短信
 
-**Note:** Add `message_content_export` scope to receive message text in events.
+**注意：** 需要添加`message_content_export`权限才能在事件中获取短信内容。
 
-### 2. Historical: Stats Export API
+### 2. 历史记录：统计信息导出
 
-Export past SMS messages as CSV.
+可以将过去的短信信息导出为CSV文件。
 
 ```bash
 # Export all SMS
@@ -257,14 +257,14 @@ python3 export_sms.py --start-date 2026-01-01 --end-date 2026-01-31 --output jan
 python3 export_sms.py --office-id 6194013244489728 --output office_sms.csv
 ```
 
-**Output:** CSV file with columns:
-- `date` — Timestamp
-- `from_number` — Sender
-- `to_number` — Recipient
-- `text` — Message content
-- `status` — Delivery status
+**输出文件格式：**
+- `date` — 时间戳
+- `from_number` — 发件人
+- `to_number` — 收件人
+- `text` — 短信内容
+- `status` — 短信送达状态
 
-## Architecture
+## 架构
 
 ```
 Dialpad SMS Skill

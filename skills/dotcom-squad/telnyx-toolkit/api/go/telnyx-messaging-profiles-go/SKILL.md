@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Profiles - Go
+# Telnyx 消息传递配置文件 - Go 语言实现
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,9 +38,9 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List messaging profiles
+## 列出消息传递配置文件
 
 `GET /messaging_profiles`
 
@@ -52,9 +52,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a messaging profile
+## 创建消息传递配置文件
 
-`POST /messaging_profiles` — Required: `name`, `whitelisted_destinations`
+`POST /messagingprofiles` — 必需参数：`name`、`whitelisted_destinations`
 
 ```go
 	messagingProfile, err := client.MessagingProfiles.New(context.TODO(), telnyx.MessagingProfileNewParams{
@@ -67,9 +67,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingProfile.Data)
 ```
 
-## Retrieve a messaging profile
+## 获取消息传递配置文件
 
-`GET /messaging_profiles/{id}`
+`GET /messagingprofiles/{id}`
 
 ```go
 	messagingProfile, err := client.MessagingProfiles.Get(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -79,9 +79,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingProfile.Data)
 ```
 
-## Update a messaging profile
+## 更新消息传递配置文件
 
-`PATCH /messaging_profiles/{id}`
+`PATCH /messagingprofiles/{id}`
 
 ```go
 	messagingProfile, err := client.MessagingProfiles.Update(
@@ -95,9 +95,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingProfile.Data)
 ```
 
-## Delete a messaging profile
+## 删除消息传递配置文件
 
-`DELETE /messaging_profiles/{id}`
+`DELETE /messagingprofiles/{id}`
 
 ```go
 	messagingProfile, err := client.MessagingProfiles.Delete(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -107,9 +107,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", messagingProfile.Data)
 ```
 
-## List phone numbers associated with a messaging profile
+## 获取与消息传递配置文件关联的电话号码
 
-`GET /messaging_profiles/{id}/phone_numbers`
+`GET /messagingprofiles/{id}/phone_numbers`
 
 ```go
 	page, err := client.MessagingProfiles.ListPhoneNumbers(
@@ -123,9 +123,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List short codes associated with a messaging profile
+## 获取与消息传递配置文件关联的短代码
 
-`GET /messaging_profiles/{id}/short_codes`
+`GET /messagingprofiles/{id}/short_codes`
 
 ```go
 	page, err := client.MessagingProfiles.ListShortCodes(
@@ -139,9 +139,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List Auto-Response Settings
+## 查看自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs`
+`GET /messagingprofiles/{profile_id}/autoresp_configs`
 
 ```go
 	autorespConfigs, err := client.MessagingProfiles.AutorespConfigs.List(
@@ -155,9 +155,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", autorespConfigs.Data)
 ```
 
-## Create auto-response setting
+## 创建自动应答设置
 
-`POST /messaging_profiles/{profile_id}/autoresp_configs` — Required: `op`, `keywords`, `country_code`
+`POST /messagingprofiles/{profile_id}/autoresp_configs` — 必需参数：`op`、`keywords`、`country_code`
 
 ```go
 	autoRespConfigResponse, err := client.MessagingProfiles.AutorespConfigs.New(
@@ -177,9 +177,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", autoRespConfigResponse.Data)
 ```
 
-## Get Auto-Response Setting
+## 获取自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`GET /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```go
 	autoRespConfigResponse, err := client.MessagingProfiles.AutorespConfigs.Get(
@@ -195,9 +195,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", autoRespConfigResponse.Data)
 ```
 
-## Update Auto-Response Setting
+## 更新自动应答设置
 
-`PUT /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — Required: `op`, `keywords`, `country_code`
+`PUT /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — 必需参数：`op`、`keywords`、`country_code`
 
 ```go
 	autoRespConfigResponse, err := client.MessagingProfiles.AutorespConfigs.Update(
@@ -218,9 +218,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", autoRespConfigResponse.Data)
 ```
 
-## Delete Auto-Response Setting
+## 删除自动应答设置
 
-`DELETE /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`DELETE /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```go
 	autorespConfig, err := client.MessagingProfiles.AutorespConfigs.Delete(
@@ -236,7 +236,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", autorespConfig)
 ```
 
-## List short codes
+## 列出所有短代码
 
 `GET /short_codes`
 
@@ -248,7 +248,7 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a short code
+## 获取特定短代码的信息
 
 `GET /short_codes/{id}`
 
@@ -260,11 +260,9 @@ All examples below assume `client` is already initialized as shown above.
 	fmt.Printf("%+v\n", shortCode.Data)
 ```
 
-## Update short code
+## 更新短代码的设置
 
-Update the settings for a specific short code.
-
-`PATCH /short_codes/{id}` — Required: `messaging_profile_id`
+`PATCH /short_codes/{id}` — 必需参数：`messaging_profile_id`
 
 ```go
 	shortCode, err := client.ShortCodes.Update(

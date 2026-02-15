@@ -1,35 +1,35 @@
 ---
 name: x-api
-description: Post to X (Twitter) using the official API with OAuth 1.0a. Use when you need to tweet, post updates, or publish content. Bypasses rate limits and bot detection that affect cookie-based approaches like bird CLI.
+description: 使用官方 API 和 OAuth 1.0a 在 X（Twitter）上发布内容。当您需要发推文、更新状态或发布内容时，可以使用此方法。该方法可以绕过基于 Cookie 的方法（如 bird CLI）所遇到的速率限制和机器人检测问题。
 ---
 
 # x-api 🐦
 
-Post to X using the official API (OAuth 1.0a).
+使用官方API（OAuth 1.0a）在X平台上发布内容。
 
-## When to Use
+## 使用场景
 
-- Posting tweets (cookie-based `bird tweet` gets blocked by bot detection)
-- Official API access is needed for reliability
+- 发布推文：基于cookie的`bird tweet`方法会被机器人检测到并阻止；
+- 为确保数据可靠性，需要使用官方API。
 
-For **reading** (timeline, search, mentions), use `bird` CLI instead — it's free and works well for reads.
+**阅读功能**（时间线、搜索、提及）建议使用`bird` CLI——它免费且适用于阅读操作。
 
-## Setup
+## 设置
 
-### 1. Get API Credentials
+### 1. 获取API凭证
 
-1. Go to https://developer.x.com/en/portal/dashboard
-2. Create a Project and App
-3. Set App permissions to **Read and Write**
-4. Get your keys from "Keys and tokens" tab:
-   - API Key (Consumer Key)
-   - API Key Secret (Consumer Secret)
-   - Access Token
-   - Access Token Secret
+1. 访问 https://developer.x.com/en/portal/dashboard
+2. 创建一个项目和应用程序
+3. 将应用程序权限设置为“读取和写入”
+4. 从“Keys and tokens”选项卡中获取以下凭证：
+   - API Key（消费者密钥）
+   - API Key Secret（消费者密钥）
+   - Access Token（访问令牌）
+   - Access Token Secret（访问令牌密钥）
 
-### 2. Configure Credentials
+### 2. 配置凭证
 
-**Option A: Environment variables**
+**选项A：环境变量**
 ```bash
 export X_API_KEY="your-api-key"
 export X_API_SECRET="your-api-secret"
@@ -37,34 +37,25 @@ export X_ACCESS_TOKEN="your-access-token"
 export X_ACCESS_SECRET="your-access-token-secret"
 ```
 
-**Option B: Config file** at `~/.clawdbot/secrets/x-api.json`
-```json
-{
-  "consumerKey": "your-api-key",
-  "consumerSecret": "your-api-secret",
-  "accessToken": "your-access-token",
-  "accessTokenSecret": "your-access-token-secret"
-}
-```
+**选项B：配置文件**（位于`~/.clawdbot/secrets/x-api.json`）
 
-### 3. Install Dependency
-
+### 3. 安装依赖项
 ```bash
 npm install -g twitter-api-v2
 ```
 
-## Post a Tweet
+## 发布推文
 
 ```bash
 x-post "Your tweet text here"
 ```
 
-Or with full path:
+或使用完整路径：
 ```bash
 node /path/to/skills/x-api/scripts/x-post.mjs "Your tweet text here"
 ```
 
-Supports multi-line tweets:
+支持多行推文：
 ```bash
 x-post "Line one
 
@@ -73,17 +64,16 @@ Line two
 Line three"
 ```
 
-Returns the tweet URL on success.
+成功后，系统会返回推文的URL。
 
-## Limits
+## 使用限制
 
-- Free tier: 1,500 posts/month (requires credits in X Developer Portal)
-- Basic tier ($100/mo): Higher limits
+- 免费 tier：每月1,500次发布（需要在X开发者门户中购买信用点数）；
+- 基础 tier（每月100美元）：提供更高的使用限制。
 
-## Reading (use bird)
+## 阅读功能（使用bird）
 
-For reading, searching, and monitoring — use the `bird` CLI:
-
+如需阅读、搜索和监控内容，请使用`bird` CLI：
 ```bash
 bird home                    # Timeline
 bird mentions                # Mentions
@@ -92,10 +82,8 @@ bird user-tweets @handle     # User's posts
 bird read <tweet-url>        # Single tweet
 ```
 
-## Troubleshooting
+## 故障排除
 
-**402 Credits Depleted**: Add credits in X Developer Portal → Dashboard
-
-**401 Unauthorized**: Regenerate Access Token (ensure Read+Write permissions are set first)
-
-**No credentials found**: Set env vars or create config file (see Setup above)
+- **402：信用点数耗尽**：在X开发者门户的仪表板中补充信用点数；
+- **401：未经授权**：重新生成访问令牌（请确保已设置“读取+写入”权限）；
+- **未找到凭证**：请设置环境变量或创建配置文件（参见上述设置步骤）。

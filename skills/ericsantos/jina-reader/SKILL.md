@@ -1,46 +1,50 @@
 ---
 name: jina-reader
-description: "Web content extraction via Jina AI Reader API. Three modes: read (URL to markdown), search (web search + full content), ground (fact-checking). Extracts clean content without exposing server IP."
+description: "通过 Jina AI Reader API 提取网页内容。提供三种模式：  
+1. **读取模式（Read Mode）**：将 URL 转换为 Markdown 格式。  
+2. **搜索模式（Search Mode）**：结合网页搜索功能提取完整内容。  
+3. **事实核查模式（Ground Mode）**：用于对提取的内容进行事实核查。  
+该工具能够安全地提取网页内容，同时不会暴露服务器的 IP 地址。"
 homepage: https://jina.ai/reader
 metadata: {"clawdbot":{"emoji":"📖","requires":{"bins":["curl","jq"]},"primaryEnv":"JINA_API_KEY"}}
 ---
 
 # Jina Reader
 
-Extract clean web content via Jina AI — without exposing your server IP.
+通过 Jina AI 提取干净的网络内容——无需暴露您的服务器 IP。
 
-## Read a URL
+## 阅读一个 URL
 
 ```bash
 {baseDir}/scripts/reader.sh "https://example.com/article"
 ```
 
-## Search the web (top 5 results with full content)
+## 在网页中搜索（显示前 5 个结果及完整内容）
 
 ```bash
 {baseDir}/scripts/reader.sh --mode search "latest AI news 2025"
 ```
 
-## Fact-check a statement
+## 核实某个陈述的真实性
 
 ```bash
 {baseDir}/scripts/reader.sh --mode ground "OpenAI was founded in 2015"
 ```
 
-## Options
+## 选项
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--mode` | `read`, `search`, `ground` | `read` |
-| `--selector` | CSS selector to extract specific region | — |
-| `--wait` | CSS selector to wait for before extraction | — |
-| `--remove` | CSS selectors to remove (comma-separated) | — |
-| `--proxy` | Country code for geo-proxy (`br`, `us`, etc.) | — |
-| `--nocache` | Force fresh content (skip cache) | off |
-| `--format` | `markdown`, `html`, `text`, `screenshot` | `markdown` |
-| `--json` | Raw JSON output | off |
+| `--mode` | `read`（阅读）、`search`（搜索）、`ground`（验证） | `read` |
+| `--selector` | 用于提取特定内容的 CSS 选择器 | — |
+| `--wait` | 在提取内容前需要等待的 CSS 选择器 | — |
+| `--remove` | 需要移除的 CSS 选择器（用逗号分隔） | — |
+| `--proxy` | 地理代理的国家代码（如 `br`、`us` 等） | — |
+| `--nocache` | 强制获取最新内容（跳过缓存） | 关闭 |
+| `--format` | 输出格式：`markdown`、`html`、`text`、`screenshot` | `markdown` |
+| `--json` | 原始 JSON 格式输出 | 关闭 |
 
-## Examples
+## 示例
 
 ```bash
 # Extract article content
@@ -62,23 +66,23 @@ Extract clean web content via Jina AI — without exposing your server IP.
 {baseDir}/scripts/reader.sh --mode ground "Tesla is the most valuable car company"
 ```
 
-## API Key
+## API 密钥
 
 ```bash
 export JINA_API_KEY="jina_..."
 ```
 
-Free tier: 10M tokens (no signup needed). Get key at https://jina.ai/reader/
+免费 tier：提供 1000 万个令牌（无需注册）。获取密钥请访问：https://jina.ai/reader/
 
-## Pricing
+## 价格
 
-- **Read:** ~$0.005/page (standard) | 3x for ReaderLM-v2
-- **Search:** 10K tokens fixed + variable per result
-- **Ground:** ~300K tokens/request (~30s latency)
+- **阅读**：每页约 0.005 美元（标准价格） | ReaderLM-v2 的价格为每页 0.15 美元 |
+- **搜索**：固定费用为 1 万个令牌，每个搜索结果额外收取费用 |
+- **验证**：每次请求消耗约 30 万个令牌（延迟约 30 秒）
 
-## Why Jina Reader?
+## 为什么选择 Jina Reader？
 
-- **IP protection** — requests route through Jina's infra, not your server
-- **Clean markdown** — readability extraction + optional ReaderLM-v2
-- **Dynamic content** — headless Chrome renders JavaScript
-- **Structured extraction** — JSON schema support for data extraction
+- **IP 保护**：请求通过 Jina 的基础设施传输，而非您的服务器 |
+- **易于阅读的格式**：提取的内容为格式良好的 Markdown 格式，支持可选的 ReaderLM-v2 处理 |
+- **动态内容处理**：使用无头 Chrome 浏览器执行 JavaScript 动作 |
+- **结构化提取**：支持使用 JSON 模式进行数据提取

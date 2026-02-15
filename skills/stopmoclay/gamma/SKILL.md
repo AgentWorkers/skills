@@ -1,20 +1,20 @@
 ---
 name: gamma
-description: Generate AI-powered presentations, documents, and social posts using Gamma.app API. Use when user asks to create a presentation, pitch deck, slide deck, document, or social media carousel. Triggers on requests like "create a presentation about X", "make a pitch deck", "generate slides", or "create a Gamma about X".
+description: 使用 Gamma.app API 生成由 AI 支持的演示文稿、文档和社交媒体帖子。当用户请求创建演示文稿、提案资料、幻灯片集、文档或社交媒体轮播图时，可调用此 API。触发条件包括：“创建关于 X 的演示文稿”、“制作提案资料”、“生成幻灯片”或“创建关于 X 的社交媒体内容”。
 metadata: {"clawdbot":{"requires":{"env":["GAMMA_API_KEY"]}}}
 ---
 
 # Gamma.app API
 
-Generate beautiful presentations, documents, and social posts with AI.
+使用人工智能生成精美的演示文稿、文档和社交媒体帖子。
 
-## Setup
+## 设置
 
 ```bash
 export GAMMA_API_KEY="sk-gamma-xxxxx"
 ```
 
-## Quick Commands
+## 快速命令
 
 ```bash
 # Generate a presentation
@@ -30,9 +30,9 @@ export GAMMA_API_KEY="sk-gamma-xxxxx"
 {baseDir}/scripts/gamma.sh list
 ```
 
-## Script Usage
+## 脚本使用方法
 
-### Generate
+### 生成内容
 
 ```bash
 {baseDir}/scripts/gamma.sh generate "<content>" [options]
@@ -49,7 +49,7 @@ Options:
   --wait         Wait for completion and return URL
 ```
 
-### Examples
+### 示例
 
 ```bash
 # Simple presentation
@@ -77,21 +77,20 @@ Options:
   --wait
 ```
 
-## API Reference
+## API 参考
 
-### Endpoint
+### 端点
 ```
 POST https://public-api.gamma.app/v1.0/generations
 ```
 
-### Headers
+### 请求头
 ```
 X-API-KEY: <your-api-key>
 Content-Type: application/json
 ```
 
-### Request Body
-
+### 请求体
 ```json
 {
   "inputText": "Your content (1-750,000 chars)",
@@ -115,19 +114,19 @@ Content-Type: application/json
 }
 ```
 
-### Response
+### 响应
 
-Initial response:
+- 初始响应：
 ```json
 {"generationId": "abc123"}
 ```
 
-Poll for status:
+- 检查任务状态：
 ```
 GET https://public-api.gamma.app/v1.0/generations/<generationId>
 ```
 
-Completed response:
+- 任务完成后的响应：
 ```json
 {
   "generationId": "abc123",
@@ -137,17 +136,17 @@ Completed response:
 }
 ```
 
-## Format Options
+## 格式选项
 
-| Format | Dimensions | Use Case |
+| 格式 | 尺寸 | 用途 |
 |--------|------------|----------|
-| presentation | fluid, 16x9, 4x3 | Pitch decks, slide shows |
-| document | fluid, pageless, letter, a4 | Reports, docs |
-| social | 1x1, 4x5, 9x16 | Instagram, LinkedIn carousels |
+| 演示文稿 | fluid, 16x9, 4x3 | 用于 pitching 或幻灯片展示 |
+| 文档 | fluid, pageless, letter, a4 | 用于报告或文档编写 |
+| 社交媒体帖子 | 1x1, 4x5, 9x16 | 适用于 Instagram 或 LinkedIn 的轮播图 |
 
-## Notes
+## 注意事项
 
-- Generation typically takes 1-3 minutes
-- Credits are deducted per generation (~150-300 per deck)
-- Input text can be markdown formatted
-- Use `--wait` flag to block until completion and get URL directly
+- 生成内容通常需要 1-3 分钟的时间。
+- 每生成一份内容会扣除一定的费用（每份演示文稿约 150-300 单位费用）。
+- 输入文本可以使用 Markdown 格式。
+- 可以使用 `--wait` 标志来等待生成完成，并直接获取生成的 URL。

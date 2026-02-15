@@ -1,6 +1,7 @@
 ---
 name: youtube-music-cast
-description: Download music from YouTube/YouTube Music and stream to Chromecast via Home Assistant. Complete CLI toolset with web server integration, configuration wizard, and playback controls.
+description: **从 YouTube/YouTube Music 下载音乐，并通过 Home Assistant 将音乐流媒体传输到 Chromecast。**  
+该工具集提供了完整的命令行界面（CLI），支持与 Web 服务器的集成、配置向导以及播放控制功能。
 version: "6.0.0"
 author: Wobo
 license: MIT
@@ -45,48 +46,48 @@ metadata:
 
 # YouTube Music Cast
 
-YouTube music → your Chromecast. Simple, free, works.
+将YouTube上的音乐流媒体传输到您的Chromecast设备上。简单、免费，且无需任何额外费用。
 
-Download audio from YouTube or YouTube Music and stream it through Home Assistant to any Cast-enabled device. No subscriptions, no cloud services, just your local network.
+您可以从YouTube或YouTube Music下载音频文件，然后通过Home Assistant将其流式传输到任何支持Cast功能的设备上。无需订阅服务或使用云存储服务，所有数据都存储在您的本地网络中。
 
-## Features
+## 主要特点
 
-- ✅ **Free forever** — No subscriptions, no premium accounts needed
-- ✅ **High quality** — 320K MP3, crystal clear audio
-- ✅ **Video mode** — Create MP4 videos with album art and text overlays
-- ✅ **Radio mode** — Auto-discover and play related songs
-- ✅ **Local storage** — Your music stays on your machine, no cloud
-- ✅ **Multi-room** — Cast to any Chromecast device in your home
-- ✅ **Batch download** — Download entire playlists, stream anytime
-- ✅ **Simple CLI** — Fast commands, no browser required
-- ✅ **Works offline** — Once downloaded, music is yours to keep
+- ✅ **永久免费** — 无需订阅或高级账户
+- ✅ **高音质** — 320K比特率的MP3格式，音质清晰
+- ✅ **视频模式** — 可生成包含专辑封面和文字字幕的MP4视频
+- ✅ **电台模式** — 自动发现并播放相关歌曲
+- ✅ **本地存储** — 音乐文件保存在您的设备上，不会上传到云端
+- ✅ **多房间支持** — 可将音乐流式传输到家中的任意Chromecast设备
+- ✅ **批量下载** — 可下载整个播放列表，并随时播放
+- ✅ **简洁的命令行接口** — 无需浏览器，命令简单易用
+- ✅ **离线播放** — 下载完成后，音乐文件将永久保存在您的设备上
 
-## Use Cases
+## 使用场景
 
-### Daily Music
-Download your favorite tracks in the morning, cast them throughout the day. No waiting, no buffering.
+### 日常音乐播放
+早上下载喜欢的歌曲，然后全天播放。无需等待，也不会出现缓冲问题。
 
-### Party Mode
-Download a playlist before guests arrive, then queue up songs without fumbling with phones or apps.
+### 派对模式
+在客人到来之前下载播放列表，之后直接通过该列表播放歌曲，无需使用手机或应用程序。
 
-### Background Audio
-Play ambient music or podcasts while you work without worrying about ads or interruptions.
+### 背景音乐
+在工作时播放轻柔的音乐或播客，无需担心广告或干扰。
 
-### Multi-Room Sync
-Stream the same track to multiple Chromecasts simultaneously (bedroom + living room + kitchen).
+### 多房间同步
+同时将同一首歌曲流式传输到多个Chromecast设备（例如卧室、客厅和厨房）。
 
-## Why This Over Premium Services?
+## 为什么选择这个工具而非高级服务？
 
-| Feature | YouTube Music Cast | Spotify Premium | YouTube Premium |
+| 特点 | YouTube Music Cast | Spotify Premium | YouTube Premium |
 |---------|-------------------|------------------|------------------|
-| Cost | Free forever | $10.99/month | $13.99/month |
-| Quality | 320K MP3 | Up to 320K | Up to 1080p video |
-| Offline | Yes, forever | Download limit | Download limit |
-| Ads | None | None | None |
-| Platforms | Any Chromecast | Spotify Connect devices | YouTube apps |
-| Privacy | Local only | Cloud-based | Cloud-based |
+| 成本 | 永久免费 | 每月10.99美元 | 每月13.99美元 |
+| 音质 | 320K比特率的MP3 | 最高320K比特率 | 最高1080p分辨率的视频 |
+| 离线播放 | 支持 | 有限制 | 不支持 |
+| 广告 | 无 | 无 | 无 |
+| 支持平台 | 任何Chromecast设备 | Spotify Connect设备 | YouTube应用程序 |
+| 隐私保护 | 本地存储 | 基于云的存储 | 基于云的存储 |
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Setup (one time, takes 2 minutes)
@@ -102,24 +103,24 @@ cast-server start
 cast-play never-gonna-give-you-up.mp3
 ```
 
-That's it. Your music is playing through your Chromecast.
+就这样，您的音乐就可以通过Chromecast设备播放了。
 
-## What This Does
+## 使用方法
 
-Three simple steps, one command each:
+只需三个简单步骤，每个步骤对应一个命令：
 
-### 1. Download
-`yt-dlp` grabs audio from YouTube or YouTube Music, extracts it as MP3 (320K quality).
+### 1. 下载音乐
+`yt-dlp`工具从YouTube或YouTube Music下载音频文件，并将其转换为320K比特率的MP3格式。
 
-### 2. Host
-A lightweight Python HTTP server makes your downloaded files accessible over your local network. No setup required — just Python 3.
+### 2. 提供下载内容
+一个轻量级的Python HTTP服务器会将下载的文件发布到您的本地网络中。无需额外设置，只需安装Python 3即可。
 
-### 3. Cast
-Home Assistant's `media_player.play_media` service sends the HTTP URL to your Chromecast, which streams the audio.
+### 3. 流式传输
+Home Assistant的`media_player.play_media`服务会将HTTP地址发送到Chromecast设备，从而实现音乐播放。
 
-### Why a Web Server?
+## 为什么使用Web服务器？
 
-Home Assistant's `play_media` service requires a URL, not a file path. The web server bridges that gap.
+Home Assistant的`play_media`服务需要一个URL地址，而不是文件路径。Web服务器起到了桥梁作用。
 
 ```yaml
 # ✅ This works — HA can fetch via HTTP
@@ -129,20 +130,20 @@ media_content_id: "http://192.168.1.81:8735/song.mp3"
 media_content_id: "/tmp/youtube-music/song.mp3"
 ```
 
-**Architecture:**
+**系统架构：**
 ```
 YouTube URL → yt-dlp → MP3 file → Python HTTP server → Home Assistant API → Chromecast
 ```
 
-## Installation
+## 安装说明
 
-### What You Need
+### 所需工具
 
-- **Home Assistant** with Google Cast integration
-- **Chromecast** or Cast-enabled device (Nest speakers, Google Home, TV)
-- **System tools:** `yt-dlp`, Python 3, `curl`, `jq`
+- 安装了Google Cast功能的Home Assistant
+- Chromecast设备或支持Cast功能的设备（如Nest音箱、Google Home或电视）
+- 系统工具：`yt-dlp`、Python 3、`curl`、`jq`
 
-### Step 1: Install Scripts
+### 第一步：安装脚本
 
 ```bash
 # Clone or download the skill
@@ -158,19 +159,19 @@ chmod +x scripts/*
 ./install.sh
 ```
 
-### Step 2: Run Setup Wizard
+### 第二步：运行设置向导
 
 ```bash
 cast-setup
 ```
 
-The wizard will ask for:
-- **Home Assistant URL** — e.g., `http://homeassistant.local:8123`
-- **Long-Lived Access Token** — Generate in HA → Profile → Long-Lived Access Tokens
-- **Server IP** — The machine running these scripts
-- **Default media player** — e.g., `media_player.bedroom_display`
+设置向导会要求您提供以下信息：
+- Home Assistant的URL地址（例如：`http://homeassistant.local:8123`
+- 长期访问令牌（在Home Assistant的“配置”→“长期访问令牌”中生成）
+- 服务器的IP地址
+- 默认媒体播放器（例如：`media_player.bedroom_display`
 
-### Step 3: Test Your Setup
+### 第三步：测试设置
 
 ```bash
 # Download a test song
@@ -183,26 +184,26 @@ cast-server start
 cast-play song.mp3
 ```
 
-If music plays, you're ready!
+如果音乐能够正常播放，说明设置成功！
 
-## Commands
+## 常用命令
 
-| Command | Description | Example |
+| 命令 | 功能 | 例子 |
 |---------|-------------|----------|
-| `cast-setup` | Run configuration wizard | `cast-setup` |
-| `cast-download <URL> [options]` | Download from YouTube/YouTube Music | `cast-download https://youtube.com/watch?v=... --video` |
-| `cast-radio <URL> [options]` | Start radio mode with related songs | `cast-radio https://youtube.com/watch?v=... --count 10` |
-| `cast-server [start|stop|status]` | Manage HTTP server | `cast-server start` |
-| `cast-play <file> [device]` | Cast music or video file to device | `cast-play song.mp4` |
-| `cast-stop [device]` | Stop playback | `cast-stop` |
-| `cast-status [device]` | Show player status | `cast-status` |
-| `cast-devices` | List all available media players | `cast-devices` |
-| `cast-list` | List downloaded files | `cast-list` |
-| `cast-help` | Show help | `cast-help` |
+| `cast-setup` | 运行配置向导 | `cast-setup` |
+| `cast-download <URL> [选项]` | 从YouTube/YouTube Music下载文件 | `cast-download https://youtube.com/watch?v=... --video` |
+| `cast-radio <URL> [选项]` | 启动电台模式并播放相关歌曲 | `cast-radio https://youtube.com/watch?v=... --count 10` |
+| `cast-server [start|stop|status]` | 管理HTTP服务器 | `cast-server start` |
+| `cast-play <文件> [设备]` | 将音乐或视频文件传输到设备 | `cast-play song.mp4` |
+| `cast-stop [设备]` | 停止播放 | `cast-stop` |
+| `cast-status [设备]` | 查看设备播放状态 | `cast-status` |
+| `cast-devices` | 列出所有可用的媒体播放器 | `cast-devices` |
+| `cast-list` | 列出已下载的文件 | `cast-list` |
+| `cast-help` | 显示帮助信息 | `cast-help` |
 
-## Usage Guide
+## 使用指南
 
-### Your First Song
+### 首次使用
 
 ```bash
 # Download from YouTube
@@ -219,7 +220,7 @@ cast-server start
 cast-play never-gonna-give-you-up.mp3
 ```
 
-### Cast to Different Rooms
+### 将音乐流式传输到不同房间
 
 ```bash
 # Living room TV
@@ -236,7 +237,7 @@ cast-play song.mp3 media_player.living_room & \
 cast-play song.mp3 media_player.bedroom_display
 ```
 
-### Check What's Playing
+### 查看当前正在播放的歌曲
 
 ```bash
 # Default device
@@ -246,23 +247,7 @@ cast-status
 cast-status media_player.bedroom_display
 ```
 
-Output:
-```
-📺 media_player.bedroom_display
-
-State: playing
-Friendly Name: Bedroom display
-Volume: 22%
-
-Now Playing:
-  Title: Never Gonna Give You Up
-  Artist: Rick Astley
-  Duration: 3:32
-
-App: Default Media Receiver
-```
-
-### Stop Playback
+### 停止播放
 
 ```bash
 # Stop default device
@@ -272,54 +257,25 @@ cast-stop
 cast-stop media_player.living_room
 ```
 
-### See What You've Downloaded
+### 查看已下载的文件
 
 ```bash
 # List all music files with sizes
 cast-list
 ```
 
-Output:
-```
-🎵 Downloaded Music
-
-boneheads-bank-holiday.mp3                                    9.3M
-never-gonna-give-you-up.mp3                                 8.2M
-song-for-nary.mp3                                          7.8M
-
-Total: 3 files
-```
-
-### See Available Devices
+### 查看可用的设备
 
 ```bash
 cast-devices
 ```
 
-Output:
-```
-📺 Available Media Players
+### 新功能：电台模式与视频模式
 
-media_player.bedroom_display
-  Name: Bedroom display
-  State: idle
-  Supported: play_media, volume_set, volume_mute, ...
+### 📻 电台模式
+电台模式会根据YouTube的推荐自动发现并下载相关歌曲。下载一首种子歌曲后，系统会搜索类似的歌曲并添加到播放列表中。
 
-media_player.living_room
-  Name: Living room TV
-  State: off
-  Supported: play_media, volume_set, ...
-
-Default device: media_player.bedroom_display
-```
-
-## New Features: Radio Mode & Video Mode
-
-### 📻 Radio Mode
-
-Radio mode automatically discovers and downloads related songs based on YouTube recommendations. After downloading a seed song, it searches for similar tracks and adds them to your queue.
-
-**Start radio mode:**
+**启动电台模式：**
 
 ```bash
 # Basic radio (downloads seed + 3 related songs)
@@ -332,7 +288,7 @@ cast-radio https://youtube.com/watch?v=dQw4w9WgXcQ --count 10
 cast-radio https://youtube.com/watch?v=dQw4w9WgXcQ --video --count 5
 ```
 
-**Or use cast-download with --radio flag:**
+**或者使用`--radio`参数：**
 
 ```bash
 # Download with radio mode
@@ -345,14 +301,14 @@ cast-download https://youtube.com/watch?v=dQw4w9WgXcQ --radio --radio-count 5
 cast-download https://youtube.com/watch?v=dQw4w9WgXcQ --radio --video
 ```
 
-**How it works:**
-1. Downloads the seed song you specify
-2. Extracts artist/title from metadata
-3. Searches YouTube for similar videos
-4. Downloads related songs (prefixed with `radio_`)
-5. Related songs are ready to cast in sequence
+**工作原理：**
+1. 下载您指定的种子歌曲
+2. 从元数据中提取艺术家和歌曲名称
+3. 在YouTube上搜索类似的歌曲
+4. 下载相关歌曲（文件名前会加上`radio_`前缀）
+5. 相关歌曲会按顺序播放
 
-**Play your radio queue:**
+**播放电台列表中的歌曲：**
 
 ```bash
 # Start server
@@ -367,21 +323,20 @@ cast-play radio_another-song.mp3
 # ... etc
 ```
 
-**Tips:**
-- Related songs are prefixed with `radio_` for easy identification
-- The radio mode searches based on the artist name from the seed song
-- Use `--count` to control how many related songs to download
-- Combine with `--video` flag for visual radio mode
+**提示：**
+- 相关歌曲的文件名前会加上`radio_`前缀，便于识别
+- 电台模式会根据种子歌曲的艺术家名称进行搜索
+- 使用`--count`参数来控制下载的歌曲数量
+- 结合`--video`参数可以使用视频模式
 
-### 🎬 Video Mode with Visuals
+### 🎬 带视频的字幕模式
+视频模式会生成包含专辑封面和文字字幕的MP4视频。每个视频包含：
+- 原始音频文件
+- 来自YouTube的专辑封面缩略图
+- 显示歌曲名称和艺术家的文字字幕
+- 音质清晰
 
-Video mode creates MP4 videos instead of plain MP3 files. Each video includes:
-- The original audio track
-- Album art thumbnail from YouTube
-- Text overlay showing song title and artist
-- Smooth, high-quality encoding
-
-**Download a video:**
+**下载视频文件：**
 
 ```bash
 # Download as MP4 with album art and text
@@ -392,7 +347,7 @@ cast-server start
 cast-play "Never Gonna Give You Up.mp4"
 ```
 
-**Radio mode with videos:**
+**使用视频模式的电台：**
 
 ```bash
 # Download seed + related songs as videos
@@ -404,31 +359,30 @@ cast-play "radio_Together Forever.mp4"
 # ... etc
 ```
 
-**How it works:**
-1. Downloads the audio track (320K MP3 quality)
-2. Downloads the album art thumbnail from YouTube
-3. Uses ffmpeg to create an MP4 video with:
-   - Looping album art background
-   - Audio track encoded as AAC
-   - Text overlay (song title and artist name) at bottom
-4. Cast the MP4 to your Chromecast (TVs with video support)
+**工作原理：**
+1. 下载音频文件（320K比特率）
+2. 从YouTube下载专辑封面缩略图
+3. 使用`ffmpeg`工具生成MP4视频：
+   - 背景使用循环播放的专辑封面
+   - 音频编码为AAC格式
+   - 文字字幕显示歌曲名称和艺术家名称
+4. 将MP4视频流式传输到Chromecast设备（支持视频的电视）
 
-**Video output:**
-- Codec: H.264 (libx264)
-- Audio: AAC (192K)
-- Resolution: Same as thumbnail (usually 480p or 720p)
-- Text: White text with semi-transparent black box
-- Compatible with all Chromecast devices with video support
+**视频输出参数：**
+- 编码格式：H.264（libx264）
+- 音频格式：AAC（192K比特率）
+- 分辨率：与封面图片相同（通常为480p或720p）
+- 文字显示：白色文本，使用DejaVu Sans Bold字体
 
-**Notes:**
-- Videos take more space than MP3s (~2-3x larger)
-- Requires ffmpeg to be installed on your system
-- Text overlay uses DejaVu Sans Bold font (included on most Linux systems)
-- Chromecast audio devices (like Google Home Mini) will play audio only
-- Chromecast with displays (TVs, Google Nest Hub) will show the full video
+**注意事项：**
+- 视频文件比MP3文件占用更多存储空间（通常大2-3倍）
+- 系统需要安装`ffmpeg`工具
+- 文字字幕使用DejaVu Sans Bold字体（大多数Linux系统已预装）
+- 仅支持音频的Chromecast设备（如Google Home Mini）只能播放音频
+- 支持视频显示的Chromecast设备（如Google Nest Hub）可以显示完整视频
 
-**Requirements for video mode:**
-- `ffmpeg` must be installed on your system
+**视频模式的要求：**
+- 系统必须安装`ffmpeg`工具
   ```bash
   # Debian/Ubuntu
   sudo apt install ffmpeg
@@ -437,13 +391,11 @@ cast-play "radio_Together Forever.mp4"
   brew install ffmpeg
   ```
 
-### Mixed MP3 and MP4
-
-`cast-play` automatically detects the file type:
-- `.mp3`, `.wav`, `.ogg`, `.m4a`, `.flac` → music
-- `.mp4`, `.mkv`, `.webm`, `.mov` → video
-
-You can mix both formats in the same directory:
+### 支持多种文件格式
+`cast-play`命令可以自动识别以下文件类型：
+- `.mp3`, `.wav`, `.ogg`, `.m4a`, `.flac` — 音频文件
+- `.mp4`, `.mkv`, `.webm`, `.mov` — 视频文件
+您可以在同一个目录中同时下载这两种类型的文件：
 ```bash
 # Download some as MP3
 cast-download https://youtube.com/watch?v=VIDEO_ID_1
@@ -456,462 +408,149 @@ cast-play song.mp3
 cast-play video.mp4
 ```
 
-## Configuration
+## 配置文件
 
-Config file: `~/.youtube-music-cast/config.sh`
+配置文件位于`~/.youtube-music-cast/config.sh`：
 
-```bash
-# Home Assistant
-HA_URL="http://homeassistant.local:8123"
-HA_TOKEN="your-long-lived-access-token-here"
+**直接编辑该文件**或**重新运行`cast-setup`命令以更新配置。
 
-# Web Server
-SERVER_IP="192.168.1.81"
-SERVER_PORT="8735"
+## 文件命名规范
 
-# Default Device (override per command)
-DEFAULT_DEVICE="media_player.bedroom_display"
+保持文件名简洁明了，这样可以避免后续使用时的麻烦。
 
-# Directories
-DOWNLOAD_DIR="/tmp/youtube-music"
-CAST_DIR="$HOME/.youtube-music-cast"
-```
+### 常见问题及解决方法
 
-**Edit the file directly** or **re-run `cast-setup`** to update.
+### 问题：**文件名问题**
+❌ 不规范的文件名会导致URL难以输入或编码错误。
 
-## File Naming Best Practices
+**解决方案：** 使用规范的文件名，避免特殊字符和空格，使用小写字母和连字符。
 
-Keep URLs clean. Simple filenames save you from headaches later.
+### 实用技巧
 
-### The Problem
+- 文件名应使用小写字母
+- 使用连字符代替空格
+- 避免使用特殊字符（如@、#、?等）
+- 文件名应简短
 
-❌ Bad filenames:
-```
-http://192.168.1.81:8735/Bonehead's%20Bank%20Holiday%20(Remastered).mp3
-```
-This URL is messy, hard to type, and prone to encoding errors.
+## 故障排除
 
-### The Solution
+### Chromecast设备未在Home Assistant中显示
+**问题：** `cast-devices`列表中看不到Chromecast设备。
 
-✅ Good filenames:
-```
-http://192.168.1.81:8735/boneheads-bank-holiday.mp3
-```
-Clean, easy to type, no issues.
+**解决方法：** 安装Google Cast插件：
+1. 进入Home Assistant的“设置”→“设备与服务”
+2. 点击“+ 添加插件”
+3. 搜索“Google Cast”并安装
+4. 按照向导完成配置
 
-### Practical Tips
+### 服务器无法启动
+**问题：** `cast-server start`命令失败或显示“端口已被占用”。
 
-```bash
-# After download, rename immediately
-mv "Oasis - Bonehead's Bank Holiday (Remastered 1995).mp3" \
-   "oasis-boneheads-bank-holiday.mp3"
+**解决方法：**
+检查`~/.youtube-music-cast/config.sh`文件中的服务器IP地址是否正确。
 
-# Use lowercase, hyphens only
-mv "My Awesome Song.mp3" "my-awesome-song.mp3"
+### 文件未找到
+**问题：** `cast-play`命令提示文件未找到。
 
-# No special characters
-mv "song@remix#.mp3" "song-remix.mp3"
-```
+**解决方法：**
+- 确保文件名拼写正确（例如：`song.mp3`而非`Song.mp3`）
+- 检查配置文件中的`DOWNLOAD_DIR`设置是否正确
 
-**Rule of thumb:**
-- Lowercase
-- Hyphens instead of spaces
-- No special characters (@, #, ?, etc.)
-- Keep it short
+### 下载失败
+**问题：** `cast-download`命令出现错误或卡顿。
 
-## Troubleshooting
+**解决方法：**
+- 如果遇到地理限制，尝试使用VPN或寻找其他来源的音频文件。
 
-### Chromecast Not in Home Assistant
+### Home Assistant连接问题
+**问题：`curl`命令在连接Home Assistant时出现错误。
 
-**Problem:** `cast-devices` shows no Chromecast devices.
+**解决方法：** 重新生成长期访问令牌。
 
-**Solution:** Add Google Cast integration
-1. Home Assistant → Settings → Devices & Services
-2. Click "+ Add Integration"
-3. Search "Google Cast" → Select it
-4. Follow the discovery wizard
+### 视频模式问题
+**问题：** 使用`cast-download --video`命令时出现错误。
 
-**If discovery fails:**
-- Ensure Chromecast and Home Assistant are on the same network
-- Try adding manually with Chromecast IP address
+**解决方法：**
+- 视频生成过程可能较慢。首次生成视频可能需要10-30秒。
+- 可以尝试使用仅音频模式的`cast-download`命令（不使用`--video`参数）以加快下载速度。
+- 可以在脚本中调整视频质量设置（例如将`-preset ultrafast`改为`-preset fast`）。
 
-### Server Won't Start
+### 其他问题
 
-**Problem:** `cast-server start` fails or says "port in use".
+- Chromecast设备无法显示视频
+- 音频-only的Chromecast设备（如Google Home Mini）只能播放音频。
+- 如果需要显示视频，请确保使用MP3模式。
 
-**Solution:**
-```bash
-# Check if port 8735 is in use
-netstat -tlnp | grep 8735
-# or
-ss -tlnp | grep 8735
+- 如果视频文件过大，可以尝试降低视频质量（例如将`-b:a 192k`改为`-b:a 128k`）。
 
-# Stop any existing server
-cast-server stop
+### 电台模式相关问题
+- 有时电台模式会下载不相关的歌曲。
+- 确保种子歌曲的元数据完整（包含歌曲名称）。
+- 可以尝试使用不同的种子歌曲。
+- 如果搜索结果较少，可以增加`--radio-count`参数的值。
 
-# Try starting manually to see error
-cd /tmp/youtube-music
-python3 -m http.server 8735
-```
+### 命令执行缓慢
+- `cast-play`命令可能无法执行或无法开始播放。
 
-**If port is in use by another process:**
-Edit `~/.youtube-music-cast/config.sh`:
-```bash
-SERVER_PORT="8736"  # Change to something else
-```
+**解决方法：**
+- 检查媒体播放器的状态（使用`cast-devices`命令）
+- 确保服务器可访问
+- 如果需要，可以手动重新启动Chromecast设备
+- 确保配置中的`SERVER_IP`地址正确
 
-### "File Not Found" Error
+## 项目结构
 
-**Problem:** `cast-play song.mp3` says file not found.
+### 所需软件及版本
 
-**Solution:**
-```bash
-# List what's actually there
-cast-list
+- `yt-dlp`（YouTube下载工具）：`pip install --upgrade yt-dlp`
+- Python 3（HTTP服务器）：确保已安装
+- `curl`（用于调用Home Assistant API）
+- `jq`（用于处理JSON数据）
+- `ffmpeg`（可选，用于视频模式）
 
-# Check exact spelling (case-sensitive!)
-cast-play "Exact-Filename.mp3"  # Not "exact-filename.mp3"
-
-# Verify server is running
-cast-server status
-```
-
-**Common mistakes:**
-- Wrong case: `Song.mp3` vs `song.mp3`
-- Wrong extension: `song.MP3` vs `song.mp3`
-- File in wrong directory: Check `DOWNLOAD_DIR` in config
-
-### Download Fails
-
-**Problem:** `cast-download` errors or hangs.
-
-**Solution:**
-```bash
-# Update yt-dlp (YouTube changes often)
-pip install --upgrade yt-dlp
-
-# Check version
-yt-dlp --version
-
-# Try verbose output to see what's wrong
-yt-dlp --verbose "URL"
-
-# Try different URL format
-# YouTube: https://youtube.com/watch?v=VIDEO_ID
-# YouTube Music: https://music.youtube.com/watch?v=VIDEO_ID
-```
-
-**If it's a geo-blocked video:**
-Use a VPN or find an alternative upload of the same track.
-
-### Home Assistant Connection Error
-
-**Problem:** `curl` errors when contacting HA.
-
-**Solution:**
-```bash
-# Test your HA token manually
-curl -H "Authorization: Bearer YOUR_TOKEN" \
-     -H "Content-Type: application/json" \
-     "http://homeassistant.local:8123/api/states"
-
-# If you see JSON → token is good
-# If 401 Unauthorized → token is wrong or expired
-# If connection refused → URL is wrong or HA is down
-```
-
-**Regenerate token if needed:**
-HA → Profile → Scroll down → Long-Lived Access Tokens → Generate new
-
-### Video Mode Issues
-
-**Problem:** `cast-download --video` fails with "ffmpeg not found" or similar error.
-
-**Solution:**
-```bash
-# Check if ffmpeg is installed
-ffmpeg -version
-
-# If not found, install it
-# Debian/Ubuntu
-sudo apt install ffmpeg
-
-# macOS
-brew install ffmpeg
-```
-
-**Problem:** Video creation is slow or takes too long.
-
-**Solution:**
-- Video encoding is CPU-intensive. First-time creation may take 10-30 seconds per song.
-- Use MP3 mode (`cast-download` without `--video`) for faster downloads.
-- Consider lowering video quality in the script (edit `cast-download` and change `-preset ultrafast` to `-preset fast` for better quality but slower encoding).
-
-**Problem:** Text overlay doesn't appear or looks wrong.
-
-**Solution:**
-- The script uses DejaVu Sans Bold font. If it's not installed, text won't appear.
-- Install the font:
-  ```bash
-  # Debian/Ubuntu
-  sudo apt install fonts-dejavu
-
-  # macOS (usually pre-installed)
-  ```
-- Or edit the script to use a different font path.
-
-**Problem:** Chromecast audio device plays video without visuals.
-
-**Solution:**
-- This is expected behavior. Audio-only Chromecast devices (Google Home Mini, Chromecast Audio) will play the audio track from MP4 files but cannot display video.
-- Use MP3 mode for audio-only devices to save bandwidth and storage.
-
-**Problem:** MP4 files are too large.
-
-**Solution:**
-- Videos are larger than MP3s (typically 2-3x the size).
-- Reduce video bitrate by editing `cast-download` and changing `-b:a 192k` to `-b:a 128k` for audio, or adjust video codec settings.
-- Use MP3 mode if storage is a concern.
-
-### Radio Mode Issues
-
-**Problem:** Radio mode downloads unrelated songs.
-
-**Solution:**
-- Radio mode searches YouTube using the artist name from the seed song.
-- Sometimes the search may return mixed results due to ambiguous artist names.
-- Try using a different seed song with a clearer artist name.
-- The `radio_` prefix makes it easy to identify and remove unwanted downloads.
-
-**Problem:** Radio mode doesn't find any related songs.
-
-**Solution:**
-- Ensure you have a stable internet connection.
-- Check that the seed song has proper metadata (title/uploader).
-- Try a different seed song — some videos have limited search results.
-- Increase the count with `--radio-count 10` to get more results.
-
-**Problem:** Related songs don't play in sequence automatically.
-
-**Solution:**
-- Radio mode downloads the songs but doesn't auto-play them in sequence.
-- You need to manually play each related song, or create a simple playlist script:
-  ```bash
-  # Play all radio songs in sequence
-  for file in /tmp/youtube-music/radio_*.mp3; do
-      cast-play "$(basename "$file")"
-      sleep 5  # Wait between songs
-  done
-  ```
-
-### Cast Commands Hang
-
-**Problem:** `cast-play` doesn't return or music never starts.
-
-**Common causes:**
-1. **Media player is offline** — Check `cast-devices` for state
-2. **Server isn't accessible from HA** — Verify `SERVER_IP` in config matches current IP
-3. **Chromecast network issue** — Restart Chromecast
-4. **Wrong device ID** — Copy exact ID from `cast-devices` output
-
-**Quick fix:**
-```bash
-# Restart everything
-cast-server stop
-cast-server start
-cast-play song.mp3
-
-# Check device is online
-cast-devices
-
-# Try casting from HA UI to isolate issue
-```
-
-## Project Structure
-
-```
-youtube-music-cast/
-├── scripts/
-│   ├── cast-setup      # Configuration wizard (interactive)
-│   ├── cast-download   # Download from YouTube (uses yt-dlp)
-│   ├── cast-server     # HTTP server manager (start/stop/status)
-│   ├── cast-play       # Cast to device (HA API)
-│   ├── cast-stop       # Stop playback
-│   ├── cast-status     # Player status query
-│   ├── cast-devices    # List all HA media players
-│   ├── cast-list       # List downloaded files
-│   └── cast-help       # Help documentation
-├── install.sh          # Installation script (--global, --help)
-├── SKILL.md           # This file (ClawdHub skill definition)
-├── README.md          # User-facing documentation
-├── CHANGELOG.md       # Version history
-├── LICENSE            # MIT license
-├── .gitignore        # Protects secrets and state
-└── .clawdhub/
-    └── origin.json    # ClawdHub metadata
-
-~/.youtube-music-cast/
-└── config.sh         # Your configuration (don't commit to Git)
-
-/tmp/youtube-music/
-└── *.mp3            # Downloaded music files
-```
-
-## Requirements
-
-### yt-dlp (YouTube downloader)
-
-```bash
-pip install yt-dlp
-```
-
-**Update regularly:** `pip install --upgrade yt-dlp`
-
-### Python 3 (HTTP server)
-
-```bash
-# Check version (usually pre-installed)
-python3 --version
-```
-
-### curl (HTTP client for HA API)
-
-```bash
-# Check version (usually pre-installed)
-curl --version
-```
-
-### jq (JSON processor)
-
-```bash
-# Debian/Ubuntu
-sudo apt install jq
-
-# macOS
-brew install jq
-```
-
-### ffmpeg (Video mode - optional)
-
-Required for `--video` flag to create MP4 videos with album art and text overlays.
-
-```bash
-# Debian/Ubuntu
-sudo apt install ffmpeg
-
-# macOS
-brew install ffmpeg
-```
-
-**Check installation:**
-```bash
-ffmpeg -version
-```
-
-**Note:** Video mode is optional. If you only download MP3s, you don't need ffmpeg.
-
-## Performance Tips
-
-### 1. Batch Downloads
-Download multiple tracks or entire playlists at once:
-```bash
-# Download playlist
-yt-dlp -x --audio-format mp3 --audio-quality 320K \
-  -o "/tmp/youtube-music/%(playlist_index)s-%(title)s.%(ext)s" \
-  "https://youtube.com/playlist?list=PLAYLIST_ID"
-
-# Then cast them without waiting
-cast-play 01-song.mp3
-cast-play 02-song.mp3
-cast-play 03-song.mp3
-```
-
-### 2. Keep Server Running
-The HTTP server is lightweight (~5MB RAM). No need to stop/start between casts:
-```bash
-# Start once
-cast-server start
-
-# Cast as many songs as you want
-cast-play song1.mp3
-cast-play song2.mp3
-# ... etc
-```
-
-### 3. Use Default Device
-Set `DEFAULT_DEVICE` in config to avoid typing it every time:
-```bash
-# In ~/.youtube-music-cast/config.sh
-DEFAULT_DEVICE="media_player.bedroom_display"
-
-# Now just cast
-cast-play song.mp3  # Automatically uses bedroom_display
-```
-
-### 4. Clean Up Occasionally
-Files in `/tmp/` are cleared on reboot by design, but you can manually clean:
-```bash
-# List all files with sizes
-cast-list
-
-# Remove old files
-rm /tmp/youtube-music/*.mp3
-```
-
-### 5. WiFi Matters
-If streaming glitches:
-- Move Chromecast to 5GHz WiFi
-- Reduce distance between Chromecast and server
-- Check for WiFi interference
-
-### 6. Alias Commands
-Add shell aliases for faster access:
-```bash
-# Add to ~/.bashrc or ~/.zshrc
-alias cs='cast-server'
-alias cd='cast-download'
-alias cp='cast-play'
-alias cl='cast-list'
-alias cst='cast-status'
-
-# Now just type
-cs      # Start server
-cd URL   # Download
-cp song  # Cast
-cl       # List
-```
-
-## Notes
-
-- Files are stored in `/tmp/youtube-music/` — cleared on reboot (by design)
-- Web server runs in background, persists across sessions
-- Keep filenames simple: lowercase, hyphens, no spaces/special chars
-- Server and Chromecast must be on same network
-- HA token is stored locally in `config.sh` — **don't commit to Git**
-- Quality is 320K MP3 — good balance of quality and file size
-- No cloud services, no subscriptions, no tracking
-
-## Comparison: This vs Alternatives
-
-| Feature | YouTube Music Cast | Spotify Free | YouTube Premium |
+**版本更新：**
+定期更新这些工具：
+
+### 性能优化建议
+
+- **批量下载**：可以一次性下载多首歌曲或整个播放列表。
+- **保持服务器运行**：HTTP服务器占用内存较少（约5MB），无需在每次传输时重启服务器。
+- **设置默认播放设备**：在配置文件中设置`DEFAULT_DEVICE`，避免每次都需要手动输入。
+- **定期清理临时文件**：`/tmp/`目录中的文件会在系统重启时自动清除，但也可以手动清理。
+- **WiFi网络**：确保Chromecast和服务器连接在同一WiFi网络上，避免干扰。
+- **使用别名**：为常用命令创建shell别名以提高使用效率。
+
+## 其他注意事项
+
+- 文件存储在`/tmp/youtube-music/`目录中，系统重启时会自动清除。
+- Web服务器在后台运行，会持续保存配置。
+- 文件名应简洁明了。
+- 服务器和Chromecast设备必须在同一网络中。
+- 长期访问令牌存储在`config.sh`文件中，不要将其提交到Git仓库。
+- 音质设置为320K比特率的MP3格式，兼顾音质和文件大小。
+- 该工具不使用云服务，也不需要订阅。
+
+## 与其他服务的比较
+
+| 特点 | YouTube Music Cast | Spotify Free | YouTube Premium |
 |---------|-------------------|----------------|-----------------|
-| Cost | Free | Free (with ads) | $13.99/month |
-| Ads | None | Yes, every few songs | None |
-| Offline | Yes, forever | No (premium only) | Yes, with limit |
-| Quality | 320K MP3 | 160K (variable) | Up to 1080p video |
-| Privacy | Local only | Cloud-based | Cloud-based |
-| Platform | Any Chromecast | Spotify Connect | YouTube apps |
-| Queue management | Manual | Built-in | Built-in |
-| Multi-room | Manual | Premium feature | No |
+| 成本 | 免费 | 免费（含广告） | 每月13.99美元 |
+| 广告 | 无 | 有（每隔几首歌曲会出现广告） | 有（有限制） |
+| 离线播放 | 支持 | 不支持 | 不支持 |
+| 音质 | 320K比特率的MP3 | 160K比特率（可变） | 最高1080p视频 |
+| 隐私保护 | 本地存储 | 基于云的存储 | 基于云的存储 |
+| 支持平台 | 任何Chromecast设备 | Spotify Connect | YouTube应用程序 |
+| 播放列表管理 | 手动 | 内置 | 内置 |
+| 多房间支持 | 不支持 | 需要高级账户 | 不支持 |
 
-**Bottom line:** If you value privacy, want to own your music, and don't need cloud features, this is for you.
+**总结：** 如果您重视隐私、希望拥有自己的音乐资源且不需要云服务，那么这个工具非常适合您。
 
-## License
+## 许可证
 
-MIT License — use it, modify it, share it.
+本项目采用MIT许可证，允许自由使用、修改和分享。
 
 ---
 
-**Version:** 6.0.0
-**Author:** Wobo
-**License:** MIT
+**版本：** 6.0.0
+**作者：** Wobo
+**许可证：** MIT许可证

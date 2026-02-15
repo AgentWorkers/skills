@@ -15,9 +15,9 @@ metadata:
 
 # Google Slides
 
-Access the Google Slides API with managed OAuth authentication. Create and manage presentations, add slides, insert text and images, and control formatting.
+您可以使用托管的 OAuth 认证来访问 Google Slides API。该 API 允许您创建和管理演示文稿、添加幻灯片、插入文本和图片，并控制格式设置。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create a new presentation
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-slides/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Slides API endpoint path. The gateway proxies requests to `slides.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Slides API 端点路径。该网关会将请求代理到 `slides.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Slides connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Slides 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,13 +142,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Presentations
+### 演示文稿
 
-#### Create Presentation
+#### 创建演示文稿
 
 ```bash
 POST /google-slides/v1/presentations
@@ -159,35 +159,35 @@ Content-Type: application/json
 }
 ```
 
-#### Get Presentation
+#### 获取演示文稿信息
 
 ```bash
 GET /google-slides/v1/presentations/{presentationId}
 ```
 
-### Pages (Slides)
+### 幻灯片（Pages）
 
-#### Get Page
+#### 获取幻灯片信息
 
 ```bash
 GET /google-slides/v1/presentations/{presentationId}/pages/{pageId}
 ```
 
-#### Get Page Thumbnail
+#### 获取幻灯片缩略图
 
 ```bash
 GET /google-slides/v1/presentations/{presentationId}/pages/{pageId}/thumbnail
 ```
 
-With custom size:
+**自定义尺寸：**
 
 ```bash
 GET /google-slides/v1/presentations/{presentationId}/pages/{pageId}/thumbnail?thumbnailProperties.mimeType=PNG&thumbnailProperties.thumbnailSize=LARGE
 ```
 
-### Batch Update
+### 批量更新
 
-The batchUpdate endpoint is used for most modifications. It accepts an array of requests that are applied atomically.
+`batchUpdate` 端点用于执行大多数修改操作。它接受一个请求数组，并将这些请求原子性地应用到演示文稿中。
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -198,7 +198,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Slide
+#### 创建幻灯片
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -218,7 +218,7 @@ Content-Type: application/json
 }
 ```
 
-Available predefined layouts:
+可用的预定义布局：
 - `BLANK`
 - `TITLE`
 - `TITLE_AND_BODY`
@@ -229,7 +229,7 @@ Available predefined layouts:
 - `MAIN_POINT`
 - `BIG_NUMBER`
 
-#### Insert Text
+#### 插入文本
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -248,7 +248,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Text
+#### 删除文本
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -268,7 +268,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Shape
+#### 创建形状
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -300,7 +300,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Image
+#### 创建图片
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -332,7 +332,7 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Object
+#### 删除对象
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -349,7 +349,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Text Style
+#### 更新文本样式
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -379,7 +379,7 @@ Content-Type: application/json
 }
 ```
 
-#### Replace All Text
+#### 替换所有文本
 
 ```bash
 POST /google-slides/v1/presentations/{presentationId}:batchUpdate
@@ -400,7 +400,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -479,35 +479,35 @@ requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Object IDs must be unique within a presentation
-- Use batchUpdate for all modifications (adding slides, text, shapes, etc.)
-- Multiple requests in a batchUpdate are applied atomically
-- Sizes and positions use PT (points) as the unit (72 points = 1 inch)
-- Use `replaceAllText` for template-based presentation generation
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 对象 ID 在整个演示文稿中必须是唯一的。
+- 所有修改操作（添加幻灯片、文本、形状等）都应使用 `batchUpdate` 方法。
+- `batchUpdate` 中的多个请求会原子性地应用。
+- 尺寸和位置以 PT（点）为单位（72 点 = 1 英寸）。
+- 使用 `replaceAllText` 方法生成基于模板的演示文稿。
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 选项可以禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Slides connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Presentation not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Slides API |
+| 400 | 未找到 Google Slides 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 演示文稿未找到 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Google Slides API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -518,19 +518,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-slides`. For example:
+1. 确保您的 URL 路径以 `google-slides` 开头。例如：
+- 正确：`https://gateway.maton.ai/google-slides/v1/presentations`
+- 错误：`https://gateway.maton.ai/slides/v1/presentations`
 
-- Correct: `https://gateway.maton.ai/google-slides/v1/presentations`
-- Incorrect: `https://gateway.maton.ai/slides/v1/presentations`
+## 资源
 
-## Resources
-
-- [Slides API Overview](https://developers.google.com/slides/api/reference/rest)
-- [Presentations](https://developers.google.com/slides/api/reference/rest/v1/presentations)
-- [Pages](https://developers.google.com/slides/api/reference/rest/v1/presentations.pages)
-- [BatchUpdate Requests](https://developers.google.com/slides/api/reference/rest/v1/presentations/batchUpdate)
-- [Page Layouts](https://developers.google.com/slides/api/reference/rest/v1/presentations/create#predefinedlayout)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Slides API 概述](https://developers.google.com/slides/api/reference/rest)
+- [演示文稿](https://developers.google.com/slides/api/reference/rest/v1/presentations)
+- [幻灯片（Pages）](https://developers.google.com/slides/api/reference/rest/v1/presentations/pages)
+- [批量更新请求](https://developers.google.com/slides/api/reference/rest/v1/presentations/batchUpdate)
+- [幻灯片布局](https://developers.google.com/slides/api/reference/rest/v1/presentations/create#predefinedlayout)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

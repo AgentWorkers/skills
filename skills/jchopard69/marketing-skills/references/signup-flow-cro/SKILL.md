@@ -1,355 +1,338 @@
 ---
 name: signup-flow-cro
-description: When the user wants to optimize signup, registration, account creation, or trial activation flows. Also use when the user mentions "signup conversions," "registration friction," "signup form optimization," "free trial signup," "reduce signup dropoff," or "account creation flow." For post-signup onboarding, see onboarding-cro. For lead capture forms (not account creation), see form-cro.
+description: 当用户希望优化注册、账号创建或试用激活流程时，可以使用这些方法。此外，当用户提到“注册转化率”、“注册流程中的阻碍”、“注册表单优化”、“免费试用注册”或“降低注册流失率”时，也适用这些方法。关于注册后的用户引导（onboarding），请参阅 onboarding-cro；关于潜在客户信息收集表单（非账号创建相关），请参阅 form-cro。
 ---
 
-# Signup Flow CRO
+# 注册流程优化（Signup Flow Optimization）
 
-You are an expert in optimizing signup and registration flows. Your goal is to reduce friction, increase completion rates, and set users up for successful activation.
+您是注册和登记流程优化方面的专家，目标是减少用户操作中的障碍，提高完成率，并帮助用户顺利激活产品。
 
-## Initial Assessment
+## 初始评估
 
-Before providing recommendations, understand:
+在提供建议之前，请了解以下信息：
 
-1. **Flow Type**
-   - Free trial signup
-   - Freemium account creation
-   - Paid account creation
-   - Waitlist/early access signup
-   - B2B vs B2C
+1. **流程类型**：
+   - 免费试用注册
+   - 免费会员账户创建
+   - 付费账户创建
+   - 等待名单/早期访问注册
+   - B2B（企业对企业） vs B2C（企业对消费者）
 
-2. **Current State**
-   - How many steps/screens?
-   - What fields are required?
-   - What's the current completion rate?
-   - Where do users drop off?
+2. **当前流程**：
+   - 共有多少步骤/页面？
+   - 需要填写哪些字段？
+   - 当前的完成率是多少？
+   - 用户在哪些环节放弃注册？
 
-3. **Business Constraints**
-   - What data is genuinely needed at signup?
-   - Are there compliance requirements?
-   - What happens immediately after signup?
-
----
-
-## Core Principles
-
-### 1. Minimize Required Fields
-Every field reduces conversion. For each field, ask:
-- Do we absolutely need this before they can use the product?
-- Can we collect this later through progressive profiling?
-- Can we infer this from other data?
-
-**Typical field priority:**
-- Essential: Email (or phone), Password
-- Often needed: Name
-- Usually deferrable: Company, Role, Team size, Phone, Address
-
-### 2. Show Value Before Asking for Commitment
-- What can you show/give before requiring signup?
-- Can they experience the product before creating an account?
-- Reverse the order: value first, signup second
-
-### 3. Reduce Perceived Effort
-- Show progress if multi-step
-- Group related fields
-- Use smart defaults
-- Pre-fill when possible
-
-### 4. Remove Uncertainty
-- Clear expectations ("Takes 30 seconds")
-- Show what happens after signup
-- No surprises (hidden requirements, unexpected steps)
+3. **业务限制**：
+   - 注册时真正需要收集哪些数据？
+   - 有哪些合规性要求？
+   - 注册完成后会立即发生什么？
 
 ---
 
-## Field-by-Field Optimization
+## 核心原则
 
-### Email Field
-- Single field (no email confirmation field)
-- Inline validation for format
-- Check for common typos (gmial.com → gmail.com)
-- Clear error messages
+### 1. 减少必填字段
+每个必填字段都会降低转化率。对于每个字段，需要考虑：
+- 用户在使用产品之前是否绝对需要这个字段？
+- 是否可以通过渐进式数据收集（progressive profiling）在之后获取这些信息？
+- 是否可以从其他数据中推断出这些信息？
 
-### Password Field
-- Show password toggle (eye icon)
-- Show requirements upfront, not after failure
-- Consider passphrase hints for strength
-- Update requirement indicators in real-time
+**典型的字段优先级**：
+- 必填：电子邮件（或电话号码）、密码
+- 常需：姓名
+- 可选：公司名称、职位、团队规模、电话号码、地址
 
-**Better password UX:**
-- Allow paste (don't disable)
-- Show strength meter instead of rigid rules
-- Consider passwordless options
+### 2. 在要求用户承诺之前展示价值
+- 在要求用户注册之前，可以展示或提供什么？
+- 用户是否可以在创建账户之前体验产品？
+- 顺序可以反过来：先展示价值，再要求注册
 
-### Name Field
-- Single "Full name" field vs. First/Last split (test this)
-- Only require if immediately used (personalization)
-- Consider making optional
+### 3. 降低用户感知的难度
+- 如果流程有多步骤，要展示进度
+- 将相关字段分组
+- 使用智能默认值
+- 在可能的情况下进行预填充
 
-### Social Auth Options
-- Place prominently (often higher conversion than email)
-- Show most relevant options for your audience
-  - B2C: Google, Apple, Facebook
-  - B2B: Google, Microsoft, SSO
-- Clear visual separation from email signup
-- Consider "Sign up with Google" as primary
-
-### Phone Number
-- Defer unless essential (SMS verification, calling leads)
-- If required, explain why
-- Use proper input type with country code handling
-- Format as they type
-
-### Company/Organization
-- Defer if possible
-- Auto-suggest as they type
-- Infer from email domain when possible
-
-### Use Case / Role Questions
-- Defer to onboarding if possible
-- If needed at signup, keep to one question
-- Use progressive disclosure (don't show all options at once)
+### 4. 消除不确定性
+- 明确告知用户预期（“只需30秒”）
+- 展示注册完成后会发生什么
+- 避免隐藏要求或意外步骤
 
 ---
 
-## Single-Step vs. Multi-Step
+## 逐字段优化
 
-### Single-Step Works When:
-- 3 or fewer fields
-- Simple B2C products
-- High-intent visitors (from ads, waitlist)
+### 电子邮件字段
+- 单一字段（无需电子邮件确认）
+- 对格式进行即时验证
+- 检查常见的拼写错误（例如：gmial.com → gmail.com）
+- 显示清晰的错误信息
 
-### Multi-Step Works When:
-- More than 3-4 fields needed
-- Complex B2B products needing segmentation
-- You need to collect different types of info
+### 密码字段
+- 提供密码显示/隐藏的切换选项（眼睛图标）
+- 提前显示密码要求，而不是在输入错误后显示
+- 提供密码强度提示
+- 实时更新密码强度指示器
 
-### Multi-Step Best Practices
-- Show progress indicator
-- Lead with easy questions (name, email)
-- Put harder questions later (after psychological commitment)
-- Each step should feel completable in seconds
-- Allow back navigation
-- Save progress (don't lose data on refresh)
+**更好的密码输入体验**：
+- 允许复制粘贴（不要禁止）
+- 显示密码强度等级，而不是严格的规则
+- 考虑提供无密码登录选项
 
-**Progressive commitment pattern:**
-1. Email only (lowest barrier)
-2. Password + name
-3. Customization questions (optional)
+### 姓名字段
+- 使用“全名”字段，而不是分开填写“名字”和“姓氏”（进行测试）
+- 仅在需要个性化设置时才要求填写
 
----
+### 社交认证选项
+- 将其放在显眼位置（通常比电子邮件认证的转化率更高）
+- 根据目标用户群体展示最相关的选项：
+  - B2C：Google、Apple、Facebook
+  - B2B：Google、Microsoft、单点登录（SSO）
+- 与电子邮件注册区分开来
+- 将“使用Google注册”作为主要认证方式
 
-## Trust and Friction Reduction
+### 电话号码字段
+- 除非必要，否则延迟要求（例如：短信验证、联系潜在客户）
+- 如果需要，解释原因
+- 使用正确的输入类型，并处理国家代码
+- 根据用户输入实时格式化电话号码
 
-### At the Form Level
-- "No credit card required" (if true)
-- "Free forever" or "14-day free trial"
-- Privacy note: "We'll never share your email"
-- Security badges if relevant
-- Testimonial near signup form
+### 公司/组织字段
+- 如果可能，延迟要求
+- 用户输入时自动建议填写
+- 可以根据电子邮件域名推断公司信息
 
-### Error Handling
-- Inline validation (not just on submit)
-- Specific error messages ("Email already registered" + recovery path)
-- Don't clear the form on error
-- Focus on the problem field
-
-### Microcopy
-- Placeholder text: Use for examples, not labels
-- Labels: Always visible (not just placeholders)
-- Help text: Only when needed, placed close to field
-
----
-
-## Mobile Signup Optimization
-
-- Larger touch targets (44px+ height)
-- Appropriate keyboard types (email, tel, etc.)
-- Autofill support
-- Reduce typing (social auth, pre-fill)
-- Single column layout
-- Sticky CTA button
-- Test with actual devices
+### 用例/职位相关问题
+- 如果可能，将这些问题推迟到用户入职阶段再问
+- 如果注册时需要，只问一个问题
+- 使用渐进式展示方式（不要一次性显示所有选项）
 
 ---
 
-## Post-Submit Experience
+## 单步注册与多步注册
 
-### Success State
-- Clear confirmation
-- Immediate next step
-- If email verification required:
-  - Explain what to do
-  - Easy resend option
-  - Check spam reminder
-  - Option to change email if wrong
+### 单步注册适用于：
+- 3个或更少的字段
+- 简单的B2C产品
+- 来自广告或等待名单的高意向访问者
 
-### Verification Flows
-- Consider delaying verification until necessary
-- Magic link as alternative to password
-- Let users explore while awaiting verification
-- Clear re-engagement if verification stalls
+### 多步注册适用于：
+- 需要填写3-4个以上字段的复杂B2B产品
+- 需要收集不同类型信息的情况
 
----
+### 多步注册的最佳实践
+- 显示进度指示器
+- 先问简单的问题（姓名、电子邮件）
+- 将较难的问题放在后面（在用户产生心理承诺之后）
+- 每个步骤都应该在几秒钟内完成
+- 允许用户返回上一步
+- 保存用户填写的进度（刷新页面时不会丢失数据）
 
-## Measurement
-
-### Key Metrics
-- Form start rate (landed → started filling)
-- Form completion rate (started → submitted)
-- Field-level drop-off (which fields lose people)
-- Time to complete
-- Error rate by field
-- Mobile vs. desktop completion
-
-### What to Track
-- Each field interaction (focus, blur, error)
-- Step progression in multi-step
-- Social auth vs. email signup ratio
-- Time between steps
+**渐进式承诺模式**：
+1. 仅要求输入电子邮件（最低门槛）
+2. 输入密码和姓名
+3. 提供个性化设置问题（可选）
 
 ---
 
-## Output Format
+## 信任与减少摩擦
 
-### Audit Findings
-For each issue found:
-- **Issue**: What's wrong
-- **Impact**: Why it matters (with estimated impact if possible)
-- **Fix**: Specific recommendation
-- **Priority**: High/Medium/Low
+### 表单层面
+- 如果不需要信用卡，明确说明（如果确实不需要）
+- 显示“永久免费”或“14天免费试用”
+- 隐私声明：“我们永远不会分享您的电子邮件”
+- 如果适用，展示安全认证标志
+- 在注册表单附近展示用户评价
 
-### Recommended Changes
-Organized by:
-1. Quick wins (same-day fixes)
-2. High-impact changes (week-level effort)
-3. Test hypotheses (things to A/B test)
+### 错误处理
+- 实时进行字段验证（而不仅仅是在提交时）
+- 显示具体的错误信息（例如：“电子邮件已注册”并提供恢复路径）
+- 错误发生时不要清除表单内容
+- 重点显示出问题所在的字段
 
-### Form Redesign (if requested)
-- Recommended field set with rationale
-- Field order
-- Copy for labels, placeholders, buttons, errors
-- Visual layout suggestions
-
----
-
-## Common Signup Flow Patterns
-
-### B2B SaaS Trial
-1. Email + Password (or Google auth)
-2. Name + Company (optional: role)
-3. → Onboarding flow
-
-### B2C App
-1. Google/Apple auth OR Email
-2. → Product experience
-3. Profile completion later
-
-### Waitlist/Early Access
-1. Email only
-2. Optional: Role/use case question
-3. → Waitlist confirmation
-
-### E-commerce Account
-1. Guest checkout as default
-2. Account creation optional post-purchase
-3. OR Social auth with single click
+### 表单文案
+- 使用占位符文本作为示例，而不是简单的标签
+- 标签始终可见（而不是仅作为占位符）
+- 帮助文本仅在需要时显示，并放在字段附近
 
 ---
 
-## Experiment Ideas
-
-### Form Design Experiments
-
-**Layout & Structure**
-- Single-step vs. multi-step signup flow
-- Multi-step with progress bar vs. without
-- 1-column vs. 2-column field layout
-- Form embedded on page vs. separate signup page
-- Horizontal vs. vertical field alignment
-
-**Field Optimization**
-- Reduce to minimum fields (email + password only)
-- Add or remove phone number field
-- Single "Name" field vs. "First/Last" split
-- Add or remove company/organization field
-- Test required vs. optional field balance
-
-**Authentication Options**
-- Add SSO options (Google, Microsoft, GitHub, LinkedIn)
-- SSO prominent vs. email form prominent
-- Test which SSO options resonate (varies by audience)
-- SSO-only vs. SSO + email option
-
-**Visual Design**
-- Test button colors and sizes for CTA prominence
-- Plain background vs. product-related visuals
-- Test form container styling (card vs. minimal)
-- Mobile-optimized layout testing
+## 移动设备注册优化
+- 提供较大的触控区域（高度至少44像素）
+- 使用适合移动设备的键盘类型（电子邮件、电话等）
+- 支持自动填充
+- 减少输入量（使用社交认证、预填充功能）
+- 单列布局
+- 设置固定的点击按钮
+- 使用真实设备进行测试
 
 ---
 
-### Copy & Messaging Experiments
+## 注册后的体验
 
-**Headlines & CTAs**
-- Test headline variations above signup form
-- CTA button text: "Create Account" vs. "Start Free Trial" vs. "Get Started"
-- Add clarity around trial length in CTA
-- Test value proposition emphasis in form header
+### 成功状态
+- 明确的确认信息
+- 立即显示下一步操作
+- 如果需要电子邮件验证：
+  - 说明如何验证
+  - 提供便捷的重新发送选项
+  - 提醒用户检查垃圾邮件箱
+  - 如果输入的电子邮件错误，提供修改选项
 
-**Microcopy**
-- Field labels: minimal vs. descriptive
-- Placeholder text optimization
-- Error message clarity and tone
-- Password requirement display (upfront vs. on error)
-
-**Trust Elements**
-- Add social proof next to signup form
-- Test trust badges near form (security, compliance)
-- Add "No credit card required" messaging
-- Include privacy assurance copy
+### 验证流程
+- 考虑在必要时再延迟验证
+- 提供密码验证的替代方案（例如：魔法链接）
+- 在验证期间允许用户继续浏览产品
+- 如果验证失败，提供重新参与的提示
 
 ---
 
-### Trial & Commitment Experiments
+## 数据监控
 
-**Free Trial Variations**
-- Credit card required vs. not required for trial
-- Test trial length impact (7 vs. 14 vs. 30 days)
-- Freemium vs. free trial model
-- Trial with limited features vs. full access
+### 关键指标
+- 表单开始率（用户访问页面后开始填写表单的比例）
+- 表单完成率（开始填写后提交表单的比例）
+- 每个字段导致用户放弃的比例
+- 完成表单所需的时间
+- 每个字段的错误率
+- 移动设备与桌面设备的完成率对比
 
-**Friction Points**
-- Email verification required vs. delayed vs. removed
-- Test CAPTCHA impact on completion
-- Terms acceptance checkbox vs. implicit acceptance
-- Phone verification for high-value accounts
-
----
-
-### Post-Submit Experiments
-
-- Clear next steps messaging after signup
-- Instant product access vs. email confirmation first
-- Personalized welcome message based on signup data
-- Auto-login after signup vs. require login
+### 需要跟踪的数据
+- 用户对每个字段的操作情况（点击、模糊处理、错误）
+- 多步骤流程中的进度
+- 社交认证与电子邮件注册的比例
+- 各步骤之间的时间间隔
 
 ---
 
-## Questions to Ask
+## 输出格式
 
-If you need more context:
-1. What's your current signup completion rate?
-2. Do you have field-level analytics on drop-off?
-3. What data is absolutely required before they can use the product?
-4. Are there compliance or verification requirements?
-5. What happens immediately after signup?
+### 审计结果
+对于发现的每个问题：
+- **问题**：具体是什么问题
+- **影响**：为什么这个问题重要（如果可能，估计其影响）
+- **解决方案**：具体的改进建议
+- **优先级**：高/中/低
+
+### 建议的修改内容
+按以下顺序组织：
+1. 可快速实施的改进（当天就能完成）
+2. 影响较大的修改（需要一周时间完成）
+3. 需要测试的假设（需要通过A/B测试来验证）
+
+### 表单重新设计（如需）
+- 建议的字段设置及其理由
+- 字段顺序
+- 标签、占位符、按钮、错误信息的文案
+- 视觉布局建议
 
 ---
 
-## Related Skills
+## 常见的注册流程模式
 
-- **onboarding-cro**: For optimizing what happens after signup
-- **form-cro**: For non-signup forms (lead capture, contact)
-- **page-cro**: For the landing page leading to signup
-- **ab-test-setup**: For testing signup flow changes
+### B2B SaaS试用流程
+1. 电子邮件 + 密码（或使用Google认证）
+2. 姓名 + 公司名称（可选：职位）
+3. 进入入职流程
+
+### B2C应用程序
+1. 使用Google/Apple认证或电子邮件认证
+2. 进入产品体验阶段
+3. 之后完成个人资料填写
+
+### 等待名单/早期访问
+1. 仅要求输入电子邮件
+2. 可选：职位/用例相关问题
+3. 确认是否加入等待名单
+
+### 电子商务账户
+1. 默认提供访客购物体验
+2. 购买后可以选择创建账户
+3. 或者提供一键式社交认证
+
+---
+
+## 实验思路
+
+### 表单设计实验
+**布局与结构**：
+- 单步注册与多步注册流程
+- 是否使用进度条的多步注册
+- 单列布局与双列布局
+- 表单内嵌在页面中还是单独的注册页面
+- 字段的对齐方式（水平 vs 垂直）
+
+**字段优化**：
+- 将字段数量减少到最少（仅要求输入电子邮件和密码）
+- 是否添加或删除电话号码字段
+- 使用“全名”字段还是分开填写“名字”和“姓氏”
+- 是否添加或删除公司/组织字段
+- 测试必填字段与可选字段的平衡
+
+**认证选项**：
+- 添加单点登录（SSO）选项（Google、Microsoft、GitHub、LinkedIn）
+- 单点登录选项与电子邮件认证选项的显示优先级
+- 测试哪种单点登录选项更受用户欢迎（因用户群体而异）
+- 是否仅提供单点登录或同时提供单点登录和电子邮件认证
+
+**视觉设计**：
+- 测试点击按钮的颜色和大小，以增强点击效果
+- 背景颜色与产品相关内容的对比
+- 测试表单容器的样式（卡片式 vs 简约风格）
+
+**文案与信息传递实验**
+**标题与点击按钮**：
+- 测试注册表单上标题的不同版本
+- 点击按钮的文本：“创建账户” vs “开始免费试用” vs “立即开始”
+- 在点击按钮中明确试用时长
+- 测试表单标题中价值主张的强调方式
+
+**表单文案**：
+- 字段标签：简洁 vs 详细
+- 占位符文本的优化
+- 错误信息的清晰度和语气
+- 密码要求的显示方式（提前显示 vs 在输入错误后显示）
+
+**信任相关元素**：
+- 在注册表单旁边添加社交认证的证明
+- 在表单附近展示安全认证标志
+- 添加“无需信用卡”的提示信息
+- 包含隐私保护声明
+
+### 试用与承诺相关实验
+**免费试用方案**：
+- 试用是否需要信用卡
+- 测试试用时长的影响（7天 vs 14天 vs 30天）
+- 免费会员与免费试用的区别
+- 试用时是否提供有限功能 vs 提供完整功能
+
+**减少摩擦的环节**：
+- 是否需要电子邮件验证，以及验证的延迟或取消
+- 测试验证码对完成率的影响
+- 是否需要用户勾选服务条款，或者采用默认同意方式
+- 对于高价值账户，是否需要电话验证
+
+### 注册后的操作体验
+- 注册完成后明确显示下一步操作
+- 是否立即提供产品访问权限，还是先显示电子邮件确认信息
+- 根据用户注册信息提供个性化的欢迎信息
+- 注册后是否自动登录，还是需要用户手动登录
+
+---
+
+## 如需更多信息，请询问：
+1. 您当前的注册完成率是多少？
+2. 您是否有针对每个字段的完成率分析？
+3. 在用户使用产品之前，哪些数据是绝对必须收集的？
+4. 是否有合规性或验证要求？
+5. 注册完成后会立即发生什么？
+
+---
+
+## 相关技能
+- **入职流程优化（onboarding-cro）**：用于优化注册后的用户引导流程
+- **非注册表单优化（form-cro）**：用于收集潜在客户信息的表单设计
+- **登录页面优化（page-cro）**：用于优化引导用户注册的登录页面
+- **A/B测试设置（ab-test-setup）**：用于测试注册流程的变更

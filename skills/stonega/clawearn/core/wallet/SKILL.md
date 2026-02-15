@@ -1,51 +1,51 @@
-# Wallet Management Guide 💼
+# 钱包管理指南 💼
 
-Complete guide to setting up wallets, managing funds, and sending USDC for prediction market trading.
-
----
-
-## Overview
-
-Your wallet is the gateway to trading on prediction markets. Clawearn handles wallet creation, security, and provides tools to send USDC directly from your wallet to other addresses on Arbitrum.
-
-### What You Can Do
-- ✅ Create new wallets instantly
-- ✅ Send USDC to other addresses
-- ✅ Check balances across markets
-- ✅ Manage multiple wallets securely
-- ✅ Export and backup credentials
+本指南全面介绍了如何设置钱包、管理资金以及向预测市场发送 USDC 以进行交易。
 
 ---
 
-## ⚠️ Financial Common Sense - READ FIRST
+## 概述
 
-### Money is Serious 💰
+您的钱包是参与预测市场交易的入口。Clawearn 负责钱包的创建与安全保障，并提供了将 USDC 直接从您的钱包发送到 Arbitrum 上其他地址的工具。
 
-**Your wallet holds real money.** USDC is a real stablecoin backed by actual US dollars. Every transaction is permanent and cannot be undone.
+### 您可以执行的操作：
+- ✅ 即时创建新钱包
+- ✅ 向其他地址发送 USDC
+- ✅ 查看多个市场的余额
+- ✅ 安全地管理多个钱包
+- ✅ 导出和备份钱包凭证
 
-### Spend Carefully
+---
 
-1. **Start small** - Don't dump all your money into trading at once
-2. **Test first** - Use small amounts to test your strategy
-3. **Risk only what you can afford to lose** - Prediction markets have real losses
-4. **Never trade scared** - If you can't afford to lose it, don't trade it
-5. **Keep reserves** - Always maintain cash reserves for opportunities
+## ⚠️ 金融常识 - 请先阅读
 
-### The More Money, The Better (But Be Careful)
+### 资金安全至关重要 💰
 
-**Yes, more capital helps:**
-- ✅ Larger positions = more profit potential
-- ✅ Better diversification across markets
-- ✅ Room to average down on losses
-- ✅ Can take advantage of larger opportunities
+**您的钱包中存放的是真实资金。** USDC 是一种由实际美元支持的稳定币，所有交易都是不可撤销的。
 
-**BUT:**
-- ⚠️ More money also means more loss potential
-- ⚠️ Position sizing matters more with large balances
-- ⚠️ Risk management becomes critical
-- ⚠️ One bad trade can hurt more
+### 小心使用资金
 
-### Golden Rules
+1. **从小额开始** - 不要一次性将所有资金投入交易
+2. **先进行测试** - 使用小额资金来测试您的交易策略
+3. **只承担您能够承受的损失** - 预测市场存在实际损失风险
+4. **切勿在恐慌中交易** - 如果您输不起，就不要进行交易
+5. **保留备用资金** - 始终为可能的交易机会预留现金
+
+### 资金越多越好（但需谨慎）
+
+**确实，更多的资金有助于：**
+- ✅ 扩大交易头寸，提高利润潜力
+- ✅ 在不同市场之间实现更好的分散投资
+- ✅ 有更多的空间来平摊损失
+- ✅ 有机会抓住更大的交易机会
+
+**但是：**
+- ⚠️ 资金越多，潜在损失也越大
+- ⚠️ 大额资金时，头寸大小的控制更为重要
+- ⚠️ 风险管理变得更为关键
+- ⚠️ 一次糟糕的交易可能会造成更大的损失
+
+### 重要规则
 
 ```
 1. Never trade with emotion
@@ -58,7 +58,7 @@ Your wallet is the gateway to trading on prediction markets. Clawearn handles wa
 8. Document every trade (learn from mistakes)
 ```
 
-### Size Your Position
+### 交易头寸的调整
 
 ```
 Trading Capital: $1000
@@ -68,30 +68,27 @@ Trading Capital: $1000
 - Testing/learning: $200 (20%)
 ```
 
-### Common Mistakes to Avoid
+### 需避免的常见错误
 
-❌ **Rookie mistakes:**
-- Depositing your entire life savings
-- Trading with leverage you don't understand
-- Following emotion instead of strategy
-- Not diversifying across markets
-- Ignoring losses (hoping they'll recover)
+❌ **新手常犯的错误：**
+- 将全部积蓄投入交易
+- 使用不了解的杠杆进行交易
+- 按情绪而非策略行事
+- 不在不同市场之间分散投资
+- 忽视损失（期望资金会自行恢复）
 
-✅ **Smart moves:**
-- Start with small test trades
-- Only add more capital after proven profits
-- Diversify across multiple markets
-- Set stop-loss limits
-- Track all trades for learning
-
----
-
+✅ **明智的做法：**
+- 从小额测试交易开始
+- 在证明盈利后再增加资金
+- 在多个市场之间分散投资
+- 设置止损限额
+- 记录所有交易以供学习
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Create & Show Your Wallet
+### 创建并显示钱包
 
 ```bash
 # Create a new wallet (one-time setup)
@@ -101,7 +98,7 @@ clawearn wallet create
 clawearn wallet show
 ```
 
-### Send USDC to Another Address
+### 向其他地址发送 USDC
 
 ```bash
 # Send USDC to another Ethereum address on Arbitrum
@@ -113,11 +110,11 @@ clawearn wallet show
 
 ---
 
-## Detailed Setup
+## 详细设置
 
-### Polymarket Wallet Setup
+### Polymarket 钱包设置
 
-#### Option 1: Create New Wallet (Recommended for Agents)
+#### 选项 1：创建新钱包（推荐给代理）
 
 ```bash
 # Using the CLI tool
@@ -127,7 +124,7 @@ clawearn wallet create
 clawearn wallet export
 ```
 
-**Save the private key securely:**
+**安全保存私钥：**
 ```bash
 # Create secure storage
 mkdir -p ~/.config/clawearn
@@ -141,9 +138,9 @@ chmod 600 ~/.config/clawearn/polymarket-key.txt
 export POLYMARKET_PRIVATE_KEY=$(cat ~/.config/clawearn/polymarket-key.txt)
 ```
 
-### Option 2: Use Existing Wallet
+### 选项 2：使用现有钱包
 
-If you already have a wallet:
+如果您已经拥有钱包：
 
 ```bash
 # Save your existing private key
@@ -151,59 +148,59 @@ echo "0xYOUR_EXISTING_KEY" > ~/.config/clawearn/polymarket-key.txt
 chmod 600 ~/.config/clawearn/polymarket-key.txt
 ```
 
-### Getting Funds
+### 获取资金
 
-**Option 1: Send from another wallet (Recommended)**
+**选项 1：从其他钱包转账（推荐）**
 ```bash
 # Send USDC from another address to your wallet
 clawearn wallet send --to YOUR_WALLET_ADDRESS --amount 100
 ```
 
-**Option 2: Deposit from external source**
-1. Bridge USDC to Arbitrum network
-2. Send to your wallet address from `clawearn wallet show`
-3. Verify balance:
+**选项 2：从外部来源充值**
+1. 将 USDC 转移到 Arbitrum 网络
+2. 从 `clawearn wallet show` 中发送到您的钱包地址
+3. 验证余额：
 ```bash
 clawearn polymarket balance check
 ```
 
 ---
 
-## Sending USDC (NEW Feature ✨)
+## 发送 USDC（新功能 ✨）
 
-### What is `clawearn wallet send`?
+### `clawearn wallet send` 是什么？
 
-Send USDC directly from your wallet to any Ethereum address on Arbitrum network. Perfect for:
-- Funding another agent's wallet
-- Transferring between your own wallets
-- Distributing profits across accounts
-- Consolidating funds
+该功能允许您直接从钱包向 Arbitrum 网络上的任何以太坊地址发送 USDC。非常适合用于：
+- 为其他代理的钱包充值
+- 在不同钱包之间转账
+- 在多个账户之间分配利润
+- 合并资金
 
-### How to Send USDC
+### 如何发送 USDC
 
-**Basic command:**
+**基本命令：**
 ```bash
 clawearn wallet send --to <recipient-address> --amount <amount>
 ```
 
-**Example:**
+**示例：**
 ```bash
 # Send 100 USDC to another address
 clawearn wallet send --to 0x742d35Cc6634C0532925a3b844Bc9e7595f42aED --amount 100
 ```
 
-### What Happens
+### 具体流程
 
-The command will:
-1. ✅ Validate the recipient address format
-2. ✅ Validate the amount (must be positive)
-3. ✅ Check you have enough ETH for gas fees
-4. ✅ Check you have enough USDC for the transfer
-5. ✅ Execute the transfer on Arbitrum
-6. ✅ Wait for confirmation
-7. ✅ Display the transaction hash
+该命令将：
+1. ✅ 验证接收地址格式
+2. ✅ 验证转账金额（必须为正数）
+3. ✅ 检查您是否有足够的 ETH 作为交易手续费
+4. ✅ 检查您是否有足够的 USDC 进行转账
+5. ✅ 在 Arbitrum 上执行转账
+6. ✅ 等待交易确认
+7. ✅ 显示交易哈希值
 
-### Example Output
+### 示例输出
 
 ```
 Preparing USDC transfer...
@@ -218,41 +215,41 @@ Waiting for confirmation...
 100 USDC sent to 0x742d35Cc6634C0532925a3b844Bc9e7595f42aED
 ```
 
-### Requirements
+### 所需条件
 
-To send USDC, you need:
-- ✅ Existing wallet (created with `clawearn wallet create`)
-- ✅ USDC balance on Arbitrum
-- ✅ Some ETH on Arbitrum for gas fees
-- ✅ Valid recipient Ethereum address
+要发送 USDC，您需要：
+- ✅ 已经创建的钱包（使用 `clawearn wallet create` 创建）
+- Arbitrum 上有 USDC 余额
+- Arbitrum 上有足够的 ETH 作为交易手续费
+- 有效的以太坊接收地址
 
-### Common Issues
+### 常见问题
 
-**"Insufficient USDC balance"**
-- You don't have enough USDC
-- Solution: Deposit more USDC to your wallet
+**“USDC 余额不足”**
+- 您的 USDC 不够
+- 解决方案：向钱包中充值更多 USDC
 
-**"Insufficient ETH on Arbitrum for gas fees"**
-- You need ETH to pay transaction fees
-- Solution: Send some ETH to your wallet address
+**“Arbitrum 上的 ETH 不足”**
+- 您需要 ETH 来支付交易手续费
+- 解决方案：向钱包地址发送一些 ETH
 
-**"Invalid recipient address"**
-- The recipient address format is wrong
-- Must be valid Ethereum address (0x followed by 40 hex characters)
+**“接收地址无效”**
+- 接收地址格式错误
+- 必须是有效的以太坊地址（以 `0x` 开头，后跟 40 个十六进制字符）
 
-**"Invalid amount"**
-- Amount must be a positive number
-- Can't be zero or negative
+**“金额无效”**
+- 金额必须为正数
+- 不能为零或负数
 
 ---
 
-## Manifold Wallet Setup
+## Manifold 钱包设置
 
-🚧 **Coming Soon**
+🚧 **即将推出**
 
-Manifold uses account-based authentication with play money (Mana).
+Manifold 使用基于账户的认证系统，并支持虚拟货币（Mana）。
 
-**Planned setup:**
+**计划中的设置流程：**
 ```bash
 # Register account
 curl -X POST https://manifold.markets/api/v0/me/register \
@@ -265,24 +262,24 @@ curl -X POST https://manifold.markets/api/v0/me/register \
 
 ---
 
-## Kalshi Wallet Setup
+## Kalshi 钱包设置
 
-🚧 **Coming Soon**
+🚧 **即将推出**
 
-Kalshi uses traditional account-based system with USD.
+Kalshi 使用传统的基于账户的系统，并支持 USD。
 
-**Planned setup:**
-1. Create account on Kalshi.com
-2. Complete KYC verification
-3. Link bank account
-4. Get API credentials
-5. Save to `~/.config/clawearn/kalshi-credentials.json`
+**计划中的设置流程：**
+1. 在 Kalshi.com 上创建账户
+2. 完成 KYC 验证
+3. 链接银行账户
+4. 获取 API 凭证
+5. 将凭证保存到 `~/.config/clawearn/kalshi-credentials.json`
 
 ---
 
-## Multi-Wallet Management
+## 多钱包管理
 
-### Recommended Structure
+### 推荐的结构
 
 ```
 ~/.config/clawearn/
@@ -292,7 +289,7 @@ Kalshi uses traditional account-based system with USD.
 └── master-config.json          # All wallet addresses and settings
 ```
 
-### Master Config Example
+### 主配置文件示例
 
 **`~/.config/clawearn/master-config.json`**
 ```json
@@ -322,33 +319,33 @@ Kalshi uses traditional account-based system with USD.
 
 ---
 
-## Security Checklist
+## 安全检查清单
 
-### ✅ Essential Security Practices
+### ✅ 必须遵守的安全措施
 
-- [ ] Private keys stored in `~/.config/clawearn/` with 600 permissions
-- [ ] Directory has 700 permissions (only you can access)
-- [ ] Keys never committed to git (add to .gitignore)
-- [ ] Keys never logged or printed to console
-- [ ] Keys never sent to external services
-- [ ] Separate wallets for testing vs production
-- [ ] Regular backups of wallet addresses (not keys!)
-- [ ] Environment variables used instead of hardcoded keys
+- [ ] 私钥保存在 `~/.config/clawearn/` 目录中，并设置 600 权限
+- [ ] 该目录只有您自己可以访问
+- [ ] 私钥不会被提交到 Git （添加到 `.gitignore` 文件中）
+- [ ] 私钥不会被记录或打印到控制台
+- [ ] 私钥不会被发送到外部服务
+- [ ] 为测试和生产环境使用不同的钱包
+- [ ] 定期备份钱包地址（但不要备份私钥！）
+- [ ] 使用环境变量代替硬编码的私钥
 
-### 🔒 Advanced Security
+### 🔒 更高级的安全措施
 
-- [ ] Hardware wallet integration (for large amounts)
-- [ ] Multi-sig wallets for production trading
-- [ ] Separate hot/cold wallets
-- [ ] Regular security audits of credential storage
-- [ ] Encrypted backups of keys
-- [ ] 2FA enabled on all market accounts
+- [ ] 集成硬件钱包（用于大额交易）
+- [ ] 为生产环境使用多签名钱包
+- [ ] 分别使用热钱包和冷钱包
+- [ ] 定期审计凭证存储安全
+- [ ] 对私钥进行加密备份
+- [ ] 在所有市场账户上启用 2FA（双重身份验证）
 
 ---
 
-## Wallet Operations
+## 钱包操作
 
-### Check Balance Across All Markets
+### 查看所有市场的余额
 
 ```bash
 # Polymarket
@@ -361,7 +358,7 @@ bun polymarket-cli.ts balance check --private-key $POLYMARKET_PRIVATE_KEY
 # curl https://api.kalshi.com/v1/balance -H "Authorization: Bearer $KALSHI_KEY"
 ```
 
-### Export Wallet Addresses
+### 导出钱包地址
 
 ```bash
 # Create a reference file (safe to share, no private keys)
@@ -374,22 +371,22 @@ EOF
 
 ---
 
-## Backup and Recovery
+## 备份与恢复
 
-### What to Backup
+### 需要备份的内容
 
-**✅ Must backup:**
-- Private keys (encrypted!)
-- Wallet addresses
-- Account usernames/emails
-- Recovery phrases (if applicable)
+**必须备份：**
+- 私钥（已加密！）
+- 钱包地址
+- 账户用户名/电子邮件
+- 恢复短语（如适用）
 
-**❌ Don't backup:**
-- API responses
-- Temporary session tokens
-- Cached data
+**不需要备份的内容：**
+- API 响应
+- 临时会话令牌
+- 缓存数据
 
-### Backup Script
+### 备份脚本
 
 ```bash
 #!/bin/bash
@@ -412,7 +409,7 @@ echo "Backup created at $BACKUP_DIR"
 echo "Store the encrypted keys file in a secure location!"
 ```
 
-### Recovery Script
+### 恢复脚本
 
 ```bash
 #!/bin/bash
@@ -432,9 +429,9 @@ echo "Wallets restored. Verify with balance checks."
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "Insufficient balance" error
+### “余额不足”错误
 ```bash
 # Check actual balance
 bun polymarket-cli.ts balance check --private-key $POLYMARKET_PRIVATE_KEY
@@ -443,7 +440,7 @@ bun polymarket-cli.ts balance check --private-key $POLYMARKET_PRIVATE_KEY
 bun polymarket-cli.ts balance pocket-money --amount 100
 ```
 
-### "Invalid private key" error
+### “私钥无效”错误
 ```bash
 # Verify key format (should start with 0x)
 cat ~/.config/clawearn/polymarket-key.txt
@@ -452,36 +449,36 @@ cat ~/.config/clawearn/polymarket-key.txt
 bun polymarket-cli.ts account export-key --email YOUR_EMAIL --password YOUR_PASSWORD
 ```
 
-### "Permission denied" when accessing keys
+### 访问私钥时出现“权限被拒绝”错误
 ```bash
 # Fix permissions
 chmod 700 ~/.config/clawearn
 chmod 600 ~/.config/clawearn/*.txt
 ```
 
-### Lost private key
-⚠️ **If you lose your private key, you lose access to your funds!**
+### 丢失私钥
+⚠️ **如果丢失了私钥，您将无法访问您的资金！**
 
-- Check backups immediately
-- Check environment variables: `echo $POLYMARKET_PRIVATE_KEY`
-- Check if you saved it elsewhere
-- If truly lost, create a new wallet and transfer funds from the old one (if you have access via another method)
-
----
-
-## Best Practices
-
-1. **One wallet per market** - Don't reuse the same private key across different platforms
-2. **Test with small amounts** - Always test with minimal funds first
-3. **Regular balance checks** - Monitor for unexpected changes
-4. **Secure environment variables** - Use `.env` files that are gitignored
-5. **Document your setup** - Keep notes on which wallet is for what
-6. **Regular backups** - Weekly encrypted backups of keys
-7. **Separate test/prod** - Different wallets for testing vs real trading
+- 立即检查备份文件
+- 检查环境变量：`echo $POLYMARKET_PRIVATE_KEY`
+- 查看是否在其他地方保存了私钥
+- 如果确实丢失了私钥，请创建新的钱包，并从旧钱包中转移资金（如果可以通过其他方式访问旧钱包的话）
 
 ---
 
-## Quick Reference
+## 最佳实践
+
+1. **每个市场使用一个钱包** - 不要在不同平台之间重复使用相同的私钥
+2. **从小额资金开始测试** - 总是用最少的资金进行测试
+3. **定期检查余额** - 监控意外变化
+4. **保护环境变量** - 使用被 Git 忽略的 `.env` 文件来存储私钥
+5. **记录您的设置** - 记录每个钱包的用途
+6. **定期备份** - 每周对私钥进行加密备份
+7. **区分测试环境和生产环境** - 为测试和实际交易使用不同的钱包
+
+---
+
+## 快速参考
 
 ```bash
 # Setup new Polymarket wallet
@@ -504,53 +501,53 @@ bun polymarket-cli.ts balance pocket-money --amount 100
 
 ---
 
-## Money Management Strategy
+## 资金管理策略
 
-### The Reality of Trading
+### 交易的现实
 
-**Prediction markets are REAL MONEY.** You can win or lose actual USDC. Here's how to manage it wisely:
+**预测市场涉及真实资金。** 您可能会赢得或损失真实的 USDC。以下是一些明智的资金管理建议：
 
-### Phase 1: Testing (Weeks 1-4)
+### 第一阶段：测试期（第 1-4 周）
 
-**Budget:** Start with 5-10% of your total capital
+**预算：** 从总资本的 5-10% 开始
 ```
 If you have: $1000
 Test with:   $50-100
 Goal:        Learn and validate your strategy
 ```
 
-**Rules:**
-- ✅ Use small position sizes ($5-10 per trade)
-- ✅ Trade slowly and deliberately
-- ✅ Document every trade
-- ✅ Don't rush to win big
-- ❌ Don't increase position size yet
+**规则：**
+- ✅ 每次交易使用较小的头寸（5-10 美元）
+- ✅ 慢慢且谨慎地进行交易
+- ✅ 记录每一笔交易
+- ✅ 不要急于追求大额利润
+- ❌ 尚不要增加交易头寸
 
-### Phase 2: Validation (Weeks 5-8)
+### 第二阶段：验证期（第 5-8 周）
 
-**After 2+ weeks of profitable testing:**
+**在盈利测试持续 2 周后：**
 ```
 If test profits:     +20% → move to Phase 2
 If test losses:     -10% → re-think strategy, don't proceed
 ```
 
-**Budget:** Increase to 20-30% of capital
+**预算：** 将资金比例提高到总资本的 20-30%
 ```
 If you have: $1000 (proven +$10 profit testing)
 Trade with:  $200-300
 Position:    $20-30 per trade
 ```
 
-### Phase 3: Scale (Week 9+)
+### 第三阶段：扩展期（第 9 周及以上）
 
-**Only if Phase 2 was profitable for 4+ weeks:**
+**仅当第二阶段连续盈利超过 4 周后：**
 ```
 If validated profits: Can use up to 50% of capital
 Never use:           More than 50% at once
 Always keep:         50% in emergency reserves
 ```
 
-### Capital Growth Timeline
+### 资本增长时间表
 
 ```
 Week 1:     $1000 → Test with $50
@@ -562,23 +559,23 @@ Month 6:    Consistent profits → Scale further
 PATIENCE = PROFIT
 ```
 
-### Why More Money Helps (But Careful)
+### 为什么更多资金有帮助（但需谨慎）
 
-**More capital benefits:**
-- 📈 Better diversification (5 positions vs 1)
-- 📈 Can handle losses better (one loss doesn't destroy you)
-- 📈 Larger profits with same win rate
-- 📈 Can take larger opportunities
+**更多资金的优势：**
+- 📈 更好的分散投资（5 个头寸 vs 1 个头寸）
+- 📈 更能应对损失（一次损失不会导致重大损失）
+- 📈 在相同的胜率下获得更高的利润
+- 📈 有机会抓住更大的交易机会
 
-**More capital risks:**
-- ⚠️ Larger absolute losses (lose $100 instead of $10)
-- ⚠️ Temptation to over-leverage
-- ⚠️ More positions to manage
-- ⚠️ Easier to make big mistakes
+**更多资金带来的风险：**
+- ⚠️ 更大的绝对损失（可能损失 100 美元）
+- ⚠️ 更容易过度使用杠杆
+- ⚠️ 需要管理更多的头寸
+- ⚠️ 更容易犯大错
 
-### Daily Loss Limit
+### 每日损失限额
 
-**Always set a daily loss limit:**
+**始终设置每日损失限额：**
 ```
 Capital: $1000
 Daily limit: $20 (2% of capital)
@@ -587,20 +584,20 @@ If you lose $20 in a day: STOP TRADING
 Review your strategy before continuing
 ```
 
-### Never Do This
+### 绝对不要这样做
 
-❌ **Deadly mistakes:**
-- Don't FOMO (Fear Of Missing Out)
-- Don't revenge trade (trying to win back losses)
-- Don't over-leverage
-- Don't trade stressed/emotional
-- Don't ignore losses
-- Don't compound all your profits
-- Don't risk rent/food money
+❌ **致命的错误：**
+- 不要害怕错过机会（FOMO）
+- 不要进行报复性交易
+- 不要过度使用杠杆
+- 不要在情绪化状态下交易
+- 不要忽视损失
+- 不要将所有利润用于交易
+- 不要拿租金/生活费用去冒险
 
-### Weekly Review
+### 每周回顾
 
-**Every Sunday, review:**
+**每周进行一次回顾：**
 ```
 1. Total profit/loss this week
 2. Number of winning trades
@@ -610,9 +607,9 @@ Review your strategy before continuing
 6. Should I adjust position sizing?
 ```
 
-### Emergency Fund
+### 应急资金
 
-**Separate your money:**
+**预留一部分资金：**
 ```
 Total Capital: $5000
 
@@ -621,50 +618,50 @@ Total Capital: $5000
 20% - Emergency Fund: $1000
 ```
 
-Never dip into emergency fund for trading.
+**切勿动用应急资金进行交易。**
 
-### Signs You're Ready to Increase Capital
+### 何时可以增加资金
 
-✅ You can answer YES to all:
-- [ ] 4+ weeks of consistent small profits
-- [ ] Win rate above 50%
-- [ ] Never had emotional trades
-- [ ] Stick to position sizing
-- [ ] Document all trades
-- [ ] No daily losses > 2%
-- [ ] Have emergency fund intact
+如果您满足以下条件，可以考虑增加资金：
+- [ ] 连续 4 周以上都有稳定盈利
+- [ ] 胜率超过 50%
+- [ ] 从未进行过情绪化的交易
+- [ ] 始终遵守头寸控制规则
+- [ ] 所有交易都有记录
+- [ ] 每日损失不超过 2%
+- [ ] 应急资金完好无损
 
-### Signs You Should REDUCE Capital
+### 何时应该减少资金
 
-🔴 Stop trading and reduce if:
-- [ ] 3+ consecutive losing days
-- [ ] Daily losses exceed 5%
-- [ ] You feel stressed/emotional
-- [ ] You're revenge trading
-- [ ] Your win rate drops below 40%
+如果您出现以下情况，请停止交易并减少资金投入：
+- [ ] 连续 3 天以上亏损
+- [ ] 每日损失超过 5%
+- [ ] 感到压力或情绪化
+- [ ] 进行报复性交易
+- [ ] 胜率降至 40% 以下
 
 ---
 
-## Money Wisdom Summary
+## 资金管理智慧总结
 
-| Mistake | Cost | Fix |
+| 错误 | 后果 | 解决方法 |
 |---------|------|-----|
-| Start with 100% capital | Lose everything | Start with 10% |
-| Trade emotional | Lose 30% in one trade | Follow system |
-| Ignore losses | Compound losses | Set daily stop |
-| Over-leverage | Liquidation | Keep position size <10% |
-| No documentation | Repeat mistakes | Track every trade |
+| 用全部资金开始交易 | 一切损失 | 从 10% 的资金开始 |
+- 情绪化交易 | 一次交易可能损失 30% | 遵循交易系统 |
+- 忽视损失 | 亏损累积 | 设置每日止损限额 |
+- 过度使用杠杆 | 被强制平仓 | 保持头寸大小在 10% 以下 |
+- 不记录交易 | 重复同样的错误 | 记录每一笔交易 |
 
-**Remember:** The goal isn't to get rich quick. It's to build wealth slowly and consistently. 🎯
+**记住：** 目标不是快速致富，而是稳步积累财富。🎯
 
 ---
 
-**Next Steps:**
-1. ✅ Set up your wallet(s)
-2. ✅ Secure your private keys
-3. ✅ Fund your account(s) - START SMALL
-4. ✅ Follow the phased approach (Test → Validate → Scale)
-5. 📖 Read the market-specific SKILL.md files
-6. 🚀 Start testing with small amounts
-7. 📊 Track your trades and profits
-8. 💰 Scale responsibly once proven
+**下一步：**
+1. ✅ 设置您的钱包
+2. ✅ 保护好私钥
+3. ✅ 为账户充值资金——从小额开始
+4. ✅ 按照分阶段的方法进行操作（测试 → 验证 → 扩展）
+5. 📖 阅读特定市场的 SKILL.md 文件
+6. 🚀 用小额资金开始测试
+7. 📊 记录您的交易和利润
+8. 💰 在证明策略有效后，谨慎地扩大投资规模

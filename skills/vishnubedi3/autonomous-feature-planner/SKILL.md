@@ -9,114 +9,103 @@ description: >
   autonomous expansion, continuous feature planning.
 ---
 
-## Activation Criteria
+## 激活条件
 
-Activate only when the user explicitly names this skill or clearly instructs continuous,
-self-directed planning.
+仅在用户明确提及该技能或明确指示进行持续、自主的规划时才激活该技能。
 
-Activation requires:
-- Exactly one immediately preceding user command
-- That command must describe or imply a system, product, or process
+激活条件包括：
+- 必须有一个紧接在之前的用户命令；
+- 该命令必须描述或暗示一个系统、产品或流程。
 
-Do not activate if:
-- The previous command is conversational, evaluative, or meta
-- The previous command is itself a stop instruction
-- The user requests execution, deployment, or real-world action
+以下情况不满足激活条件：
+- 前一个命令是用于对话、评估或元操作的；
+- 前一个命令本身就是停止指令；
+- 用户请求执行、部署或进行实际操作。
 
-## Foundation Handling
+## 基础处理
 
-- The last user command before activation is the foundation.
-- The foundation is immutable and may not be reinterpreted, summarized, or expanded.
-- The foundation establishes the system domain and intent baseline.
+- 激活前的最后一个用户命令即为“基础”（foundation）。
+- “基础”是不可更改的，不能被重新解释、总结或扩展；
+- “基础”决定了系统领域和操作的意图基准。
 
-If the foundation cannot define a system domain, fail immediately.
+如果“基础”无法定义一个系统领域，则立即终止激活过程。
 
-## Execution Model
+## 执行模型
 
-This skill operates as a bounded-output autonomous planner.
-Autonomy applies to sequencing, not to scope invention.
+该技能作为一个具有有限输出能力的自主规划器来运行。这里的“自主性”仅指执行顺序的决策，而不包括功能的创新。
 
-### Initialization
+### 初始化
 
-1. Capture the foundation command verbatim.
-2. Derive one explicit system domain statement.
-3. Declare all assumptions required to derive the domain.
-4. Lock the domain and assumptions for the entire session.
+1. 逐字记录“基础”命令的内容。
+2. 推导出一个明确的系统领域声明。
+3. 列出推导该领域所需的所有假设。
+4. 将该领域及其假设锁定，确保在整个会话期间保持不变。
 
-If assumptions exceed minimal necessity, fail.
+如果假设超出最低必要范围，则立即终止激活过程。
 
-### Planning Loop
+### 规划循环
 
-Each iteration must perform exactly the following steps:
+每次迭代必须执行以下步骤：
+1. 选择一个符合锁定系统领域的功能；
+2. 使用明确的包含关系和排除关系来定义该功能的范围；
+3. 制定一个线性、有序的实施计划（不允许有分支）；
+4. 明确指定所需的输入、产生的输出以及与其他功能的依赖关系；
+5. 确定一个可验证的成功条件；
+6. 结束当前迭代。
 
-1. Select exactly one next feature that:
-   - Directly fits within the locked system domain
-   - Is functionally distinct from all prior features
-2. Define the feature scope using explicit inclusions and exclusions.
-3. Produce a linear, ordered implementation plan with no branches.
-4. Specify:
-   - Required inputs
-   - Produced outputs
-   - Dependencies on prior features
-5. State one verifiable success condition.
-6. Terminate the iteration.
+每次迭代只能选择一个功能；不允许引用未来的、未计划的功能。
 
-Only one feature is permitted per iteration.
-No iteration may reference future, unplanned features.
+## 输出规则
 
-## Output Rules
+- 每次迭代的结果都必须有顺序编号；
+- 输出内容必须结构清晰、具有实际用途；
+- 不允许包含总结、回顾性内容或元评论；
+- 不允许重复、重述或修改之前的迭代结果。
 
-- Each iteration must be labeled sequentially.
-- Output must be strictly structured and utilitarian.
-- No summaries, retrospectives, vision statements, or meta-commentary.
-- No repetition, restatement, or revision of earlier iterations.
+## 模糊性处理
 
-## Ambiguity Handling
+- 所有模糊性必须在初始化阶段解决；
+- 解决方案应选择最符合实际情况的解读；
+- 初始化后不得引入新的假设。
 
-- All ambiguity must be resolved during initialization.
-- Resolution must favor the narrowest viable interpretation.
-- No new assumptions may be introduced after initialization.
+如果无法在不进行推测的情况下解决模糊性，则立即终止激活过程。
 
-If ambiguity cannot be resolved without speculation, fail immediately.
+## 一致性维护
 
-## Consistency Enforcement
+- 所有输出内容只能追加（不允许修改）；
+- 之前规划的功能是不可更改的；
+- 如果检测到矛盾，立即终止激活过程。
 
-- All output is append-only.
-- Previously planned features are immutable.
-- If a contradiction is detected, halt immediately with failure.
+## 范围限制与防止失控
 
-## Scope and Runaway Prevention
+- 功能不得生成子功能；
+- 禁止生成关于规划过程、自主性或技能本身的元功能；
+- 每次迭代都必须是有限且自包含的；
+- 该技能不得演变成更抽象的层次或策略重构。
 
-- Features must not generate sub-features.
-- Meta-features about planning, autonomy, or the skill itself are forbidden.
-- Each iteration must be finite and self-contained.
-- The skill must not escalate into abstraction layers or strategy reformulation.
+## 约束条件与非目标
 
-## Constraints & Non-Goals
+- 禁止执行任何操作、进行模拟或修改外部状态；
+- 禁止创建或修改任何文件；
+- 操作过程中不允许用户进行交互；
+- 禁止使用外部工具、依赖内存或隐藏状态；
+- 禁止在锁定领域之外生成新的目标。
 
-- No execution, simulation, or external state changes.
-- No file creation or modification.
-- No user interaction during operation.
-- No external tools, memory, or hidden state.
-- No goal invention outside the locked domain.
+## 失败处理
 
-## Failure Behavior
+如果出现以下情况，立即终止激活过程并输出失败信息：
+- “基础”无法定义一个连贯的系统领域；
+- 所需的假设不足；
+- 无法保持内部一致性；
+- 规划过程需要依赖无法验证的事实。
 
-Immediately halt and output a single failure message if:
-- The foundation cannot define a coherent system domain
-- Minimal assumptions are insufficient
-- Internal consistency cannot be preserved
-- Planning would require execution or unverifiable facts
+失败后不允许再输出任何其他内容。
 
-No additional output is permitted after failure.
+## 停止条件
 
-## Stop Condition
+当用户发出以下命令时，立即停止所有规划操作：
+- “stop autonomous-feature-planner”
+- “stop planning”
+- “disable autonomous-feature-planner”
 
-Immediately stop all planning when the user issues any command containing:
-- "stop autonomous-feature-planner"
-- "stop planning"
-- "disable autonomous-feature-planner"
-
-After a stop command:
-- Output exactly one character: "."
-- Output no other text, whitespace, or newlines.
+收到停止命令后，仅输出一个字符：“.”，之后不再输出任何其他文本、空白字符或换行符。

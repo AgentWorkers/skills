@@ -1,16 +1,16 @@
 # Exec Monitor
 
-**Version:** 1.0.0
-**Author:** OpenClaw Evolver
-**Date:** 2026-02-11
+**版本：** 1.0.0  
+**作者：** OpenClaw Evolver  
+**日期：** 2026-02-11  
 
-## Description
-A lightweight utility to monitor and log usage of the `exec` tool. Created in response to `high_tool_usage:exec` signals to better understand automation needs and potential bottlenecks.
+## 描述  
+这是一个轻量级的工具，用于监控和记录 `exec` 工具的使用情况。它是根据 `high_tool_usage:exec` 信号创建的，旨在帮助更好地了解自动化需求及潜在的瓶颈。  
 
-## Usage
+## 使用方法  
 ```bash
 node skills/exec-monitor/index.js "<command>" "<optional_context>"
-```
+```  
 
-## Logs
-Logs are stored in `logs/exec_usage.jsonl`.
+## 日志记录  
+日志文件存储在 `logs/exec_usage.jsonl` 中。

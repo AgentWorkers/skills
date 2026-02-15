@@ -1,40 +1,40 @@
 ---
 name: context-gatekeeper
-description: Keeps the conversation token-friendly by summarizing recent exchanges, surfacing pending actions, and delivering a compact briefing for each turn before calling the model. Trigger this skill whenever you need to prune a bloated thread or keep the next prompt lean.
+description: 该技能通过总结最近的对话内容、列出待处理的操作，并在每次调用模型之前提供简洁的概述，来确保对话的流畅性和条理性。无论何时你需要精简冗长的讨论内容或使下一个提示更加简洁明了，都可以使用该技能。
 author: Davi Marques
 ---
 
 # Context Gatekeeper
 
-## Objetivo
-Reduzir o volume de tokens enviados ao modelo preservando apenas o essencial: o resumo das decisões, os próximos passos e os trechos mais recentes da conversa. Este skill roda em paralelo à sua rotina habitual, produzindo o artefato `context/current-summary.md` que serve como contexto de substituição (em vez de reenviar toda a conversa).
+## 目的
+减少发送到模型的令牌数量，仅保留最重要的信息：决策摘要、下一步行动以及对话的最新内容。该工具会与您的常规流程并行运行，生成一个名为 `context/current-summary.md` 的文件作为上下文替代品（而不是重新发送整个对话内容）。
 
-## Fluxo mínimo
-1. **Registre as trocas**: a cada prompt/resposta, grave uma linha formatada `ROLE: texto` em um arquivo de histórico (`context/history.txt` ou qualquer caminho acessível). Exemplo:
+## 最小工作流程
+1. **记录对话内容**：每当收到提示或回复时，将格式为 `ROLE: 文本` 的行记录到历史记录文件（`context/history.txt` 或任何可访问的路径）中。示例：
    ```
    USER: Quero definir metas para o Q2
    ASSISTANT: Fiz um plano com marcos e métricas
    ```
-2. **Execute o guardião**:
+2. **运行 Context Gatekeeper**：
    ```bash
    python skills/context-gatekeeper/scripts/context_gatekeeper.py \
      --history context/history.txt \
      --summary context/current-summary.md
    ```
-   O script limita o resumo (até 6 sentenças por padrão), extrai atividades abertas (TODO, próxima ação, tarefa, follow-up) e inclui as últimas 4 jogadas para contexto imediato.
-3. **Use o resumo**: antes de chamar a API (ou responder ao usuário), injete o conteúdo de `context/current-summary.md` e cite os itens pendentes. Apenas depois disso, se for necessário, adicione as últimas trocas concretas (máximo de 2-3 mensagens) para clareza imediata.
-4. **Repita**: atualize `context/history.txt` com a nova resposta e execute o script novamente antes do próximo turno.
+   该脚本会限制摘要的长度（默认为 6 句），提取未完成的任务（TODO、下一步行动、待办事项）以及最近的 4 条对话记录以供即时参考。
+3. **使用摘要**：在调用 API 或回复用户之前，先插入 `context/current-summary.md` 的内容，并提及未完成的事项。只有在必要时，才添加最新的对话记录（最多 2-3 条消息）以增强信息的清晰度。
+4. **重复执行**：用新的回复更新 `context/history.txt`，并在下一次轮次之前再次运行脚本。
 
-## Argumentos do script
-- `--history`: caminho do arquivo com o log das trocas (cada linha deve ser `ROLE: texto`). Usa STDIN se omitido.
-- `--summary`: destino do resumo (substitui o arquivo se já existir).
-- `--max-summary-sents`: limite de sentenças resumidas (padrão 6).
-- `--max-recent-turns`: quantas trocas finais aparecerão na seção "Últimos turnos" (padrão 4).
+## 脚本的参数
+- `--history`：对话记录文件的路径（每行格式应为 `ROLE: 文本`）。如果省略此参数，则使用标准输入（STDIN）。
+- `--summary`：摘要文件的保存路径（如果文件已存在，则会覆盖该文件）。
+- `--max-summary-sents`：摘要的最大句子数（默认为 6 句）。
+- `--max-recent-turns`：显示在“最近轮次”部分中的最后几条对话记录的数量（默认为 4 条）。
 
-## Dica de operação diária
-- Monte um cron/loop leve que chame o script antes de cada resposta automática.
-- Guarde um paralelo `context/pending-tasks.md` e copie a seção "Pendências" do resumo para lá.
-- Sempre cite o caminho do resumo no parágrafo inicial da resposta (por exemplo: "Resumo compacto: ...") para facilitar auditoria.
+## 日常使用建议
+- 设置一个定时任务/循环，在每次自动回复之前运行该脚本。
+- 创建一个名为 `context/pending-tasks.md` 的文件，并将摘要中的“待办事项”部分复制到其中。
+- 在回复的开头始终提及摘要文件的路径（例如：“摘要内容：...”），以便于审计。
 
-## Por quê isso funciona?
-OpenClaw já persiste memórias em arquivos Markdown e executa `/compact` quando precisa. Este skill assume a mesma disciplina: em vez de confiar nos 100+ mensagens antigas que ainda estão no contexto, você carrega um briefing de 1 página antes de cada chamada. Economiza tokens e mantém o modelo focado no que realmente importa (decisões, pendências, mudanças recentes).
+## 这个工具为何有效？
+OpenClaw 已经会将对话记录保存在 Markdown 文件中，并在需要时执行 `/compact` 命令进行压缩。这个工具遵循相同的策略：它不会依赖那些仍然存在于上下文中的 100 多条旧消息，而是在每次调用之前提供一页简短的摘要。这样可以节省令牌，并确保模型专注于真正重要的信息（决策、待办事项、最新变化）。

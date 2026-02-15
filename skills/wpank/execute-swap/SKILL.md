@@ -12,48 +12,47 @@ allowed-tools: >-
 model: opus
 ---
 
-# Execute Swap
+# 执行代币交换
 
-Execute a token swap on Uniswap with full safety validation.
+在 Uniswap 上执行代币交换操作，并进行全面的安全性验证。
 
-## Activation
+## 激活方式
 
-Use this skill when the user says any of:
-- "Swap X for Y"
-- "Buy X with Y"
-- "Sell X for Y"
-- "Trade X for Y"
-- "Exchange X to Y"
-- "Convert X to Y"
+当用户输入以下指令时，可以使用此功能：
+- “将 X 交换为 Y”
+- “用 Y 买入 X”
+- “用 Y 卖出 X”
+- “交易 X 和 Y”
+- “将 X 转换为 Y”
+- “交换 X 到 Y”
 
-## Input Extraction
+## 输入参数提取
 
-Extract these parameters from the user's message:
+从用户输入的消息中提取以下参数：
 
-| Parameter | Required | Default | Source |
-|-----------|----------|---------|--------|
-| `tokenIn` | Yes | — | Token name/symbol/address |
-| `tokenOut` | Yes | — | Token name/symbol/address |
-| `amount` | Yes | — | Numeric value |
-| `chain` | No | ethereum | Chain name or context |
-| `slippage` | No | 0.5% | Explicit percentage |
-| `routing` | No | auto | "via V3", "use UniswapX", etc. |
+| 参数          | 是否必填 | 默认值       | 来源            |
+|---------------|---------|------------|-------------------|
+| `tokenIn`       | 是       | —           | 代币名称/符号/地址         |
+| `tokenOut`      | 是       | —           | 代币名称/符号/地址         |
+| `amount`       | 是       | —           | 数值金额           |
+| `chain`        | 否       | `ethereum`     | 链路名称或上下文         |
+| `slippage`      | 否       | 0.5%         | 明确指定的滑点百分比     |
+| `routing`      | 否       | `auto`        | `via V3`, `use UniswapX` 等       |
 
-## Workflow
+## 工作流程
 
-1. **Validate inputs**: Resolve token symbols using `search_tokens`. Confirm chain is supported.
+1. **验证输入**：使用 `search_tokens` 函数解析代币符号，并确认所选链路是否被支持。
+2. **预先进行安全性检查**：调用 `check_safety_status` 函数，验证以下内容：
+   - 当前交易额是否在可接受的范围内
+   - 是否未超出交易速率限制
+   - 是否未触发交易保护机制（如断路器）
 
-2. **Pre-flight safety check**: Call `check_safety_status` to verify:
-   - Spending limits have room for this trade
-   - Rate limits are not exhausted
-   - Circuit breaker is not tripped
+3. **委托给交易执行器**：启动 `Task(subagent_type:trade-executor)`，传递以下参数：
+   - `tokenIn`, `tokenOut`, `amount`, `chain`
+   - `slippageTolerance`（以 bp 为单位）
+   - `routingPreference`（auto/v2/v3/v4/uniswapx）
 
-3. **Delegate to trade-executor**: Launch `Task(subagent_type:trade-executor)` with:
-   - tokenIn, tokenOut, amount, chain
-   - slippageTolerance (in bps)
-   - routingPreference (auto/v2/v3/v4/uniswapx)
-
-4. **Report result** to the user in a clear format:
+4. **以清晰的方式向用户报告结果**：
 
 ```
 Swap Executed Successfully
@@ -69,19 +68,19 @@ Swap Executed Successfully
   Safety: All 7 checks passed
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | User Message | Suggested Action |
-|-------|-------------|-----------------|
-| `SAFETY_SPENDING_LIMIT_EXCEEDED` | "This swap would exceed your $X daily limit." | Reduce amount or wait |
-| `SAFETY_TOKEN_NOT_ALLOWED` | "TOKEN is not on your allowlist." | Add to config |
-| `SAFETY_SIMULATION_FAILED` | "Swap simulation failed: [reason]." | Check addresses, try smaller |
-| `INSUFFICIENT_LIQUIDITY` | "Not enough liquidity at acceptable slippage." | Try smaller amount |
+| 错误类型        | 用户提示信息 | 建议操作                |
+|----------------|-----------------|----------------------|
+| `SAFETY_SPENDING_LIMIT_EXCEEDED` | “此次交易将超出您的每日限额。” | 减少交易金额或稍后再试         |
+| `SAFETY_TOKEN_NOT_ALLOWED` | “该代币不在您的允许交易列表中。” | 将该代币添加到允许交易列表中         |
+| `SAFETY_SIMULATION_FAILED` | “交换模拟失败：[原因]” | 检查相关地址，尝试减少交易金额       |
+| `INSUFFICIENT_LIQUIDITY` | “在可接受的滑点范围内，流动性不足。” | 尝试减少交易金额           |
 
-## MCP server dependency
+## 对 MCP 服务器的依赖
 
-This skill relies on Uniswap MCP tools for chain support lookup, token search, safety checks, and swap execution.
-When used in isolation (for example, from a skills catalog), ensure the Agentic Uniswap MCP server is running:
+此功能依赖于 Uniswap MCP 工具来提供链路支持查询、代币搜索、安全性检查以及交易执行功能。
+如果单独使用此功能（例如从技能目录中调用），请确保 Agentic Uniswap MCP 服务器正在运行：
 
-- Repo: [`Agentic-Uniswap` MCP server](https://github.com/wpank/Agentic-Uniswap/tree/main/packages/mcp-server)
-- Package: `@agentic-uniswap/mcp-server`
+- 仓库：[`Agentic-Uniswap` MCP 服务器](https://github.com/wpank/Agentic-Uniswap/tree/main/packages/mcp-server)
+- 包：`@agentic-uniswap/mcp-server`

@@ -1,84 +1,82 @@
 ---
 name: postcraft
-description: Automatically format and polish MoltBook posts — headers, bullet points, code blocks, and tables for better readability and engagement.
+description: 自动格式化并优化 MoltBook 的帖子内容——包括标题、项目符号列表、代码块和表格，以提高可读性和用户参与度。
 ---
 
 # PostCraft
 
-## Purpose
-Automatically format MoltBook posts for improved readability and engagement. Handles headers, bullet lists, code blocks, blockquotes, and tables.
+## 目的  
+自动格式化 MoltBook 中的帖子，以提高可读性和用户参与度。支持处理标题、项目符号列表、代码块、引用文本和表格等内容。
 
-## Instructions
+## 使用说明  
 
-1. Read the raw post content provided by the user
-2. Load the agent's workspace and operator configuration to apply operator-specific formatting rules (posting preferences, content focus, model settings). See https://tcldocs.org/postcraft/docs for workspace config details.
-3. Apply markdown formatting rules:
-   - Add `##` headers for major sections
-   - Convert sequential items to bullet lists
-   - Wrap code in triple-backtick blocks with language hints
-   - Add blockquote formatting for citations
-   - Align tables with proper column separators
-4. Return the formatted version to the user
+1. 读取用户提供的原始帖子内容。  
+2. 加载代理的工作区和操作员配置，以应用特定于操作员的格式化规则（如发布偏好、内容重点、模型设置）。详情请参阅：https://tcldocs.org/postcraft/docs。  
+3. 应用 Markdown 格式化规则：  
+   - 为每个主要部分添加 `##` 标题；  
+   - 将连续的项目转换为项目符号列表；  
+   - 使用三引号将代码包裹起来，并注明语言类型；  
+   - 为引用内容添加引用格式；  
+   - 使用适当的列分隔符对齐表格。  
+4. 将格式化后的帖子内容返回给用户。  
 
-## Formatting Best Practices
+## 格式化最佳实践  
 
-### Headers
-- Use `##` for section headers (post title uses `#` automatically)
-- Limit nesting to 3 levels (##, ###, ####) for readability
-- Keep headers concise (5-8 words) for scannability
+### 标题  
+- 使用 `##` 作为章节标题（帖子标题会自动使用 `#`）。  
+- 为保持可读性，嵌套层次不超过 3 级（##、###、####）。  
+- 标题应简洁（5-8 个词），以便快速浏览。  
 
-### Lists
-- Use `-` for unordered lists (better than `*` for markdown consistency)
-- Use `1.` numbering for sequential/ordered steps only
-- Indent nested items with 2 spaces for sub-bullets
-- Separate list groups with blank lines to prevent merging
+### 列表  
+- 使用 `-` 表示无序列表（比 `*` 更符合 Markdown 规范）。  
+- 仅对有序步骤使用 `1.` 进行编号。  
+- 嵌套项前需缩进 2 个空格。  
+- 使用空行分隔不同的列表组，以防列表合并。  
 
-### Code Blocks
-- Always specify language hint: ` ```python`, ` ```bash`, ` ```json`, etc.
-- Use inline code `` `code` `` for single commands or variables (max 50 chars)
-- For longer code, always use code blocks with language hint
-- Leave blank lines before and after code blocks for visual separation
-- **Always use forward slashes** for file paths, even on Windows (e.g., `reference/guide.md`, not `reference\guide.md`)
+### 代码块  
+- 必须指定代码语言类型：````python`、````bash`、````json` 等。  
+- 对于单个命令或变量，可以使用内联代码 ````code`。  
+- 对于较长的代码，应使用带有语言提示的代码块。  
+- 代码块前后需留空行以增强视觉效果。  
+- **文件路径必须使用正斜杠**，即使在 Windows 系统下也是如此（例如：`reference/guide.md`，而非 `reference\guide.md`）。  
 
-### Tables
-- Use markdown table format with `|` separators and `---` alignment rows
-- Keep column count ≤ 4 to avoid horizontal scrolling on mobile
-- Align data columns (use `---` for left, `:---` for center, `---:` for right)
-- Provide a brief caption above complex tables
+### 表格  
+- 使用Markdown表格格式，使用 `|` 作为分隔符，并使用 `---` 对齐行。  
+- 列数应控制在 4 以内，以避免在移动设备上出现水平滚动。  
+- 对齐数据列：使用 `---` 表示左对齐，`:---` 表示居中，`---:` 表示右对齐。  
+- 复杂表格上方需添加简短的标题。  
 
-### Blockquotes and Emphasis
-- Use `>` for quotes, citations, or important callouts
-- Use `**bold**` sparingly—only for critical terms or actionable items
-- Use `_italics_` for emphasis, not emphasis substitutes (use bold for that)
-- Avoid all-caps text; use bold or headers instead
+### 引用和强调  
+- 使用 `>` 表示引用或重要内容。  
+- **仅在使用关键术语或需要强调的部分时使用粗体**。  
+- 使用 `_斜体_` 表示强调，而非替代强调的方式。  
+- 避免全大写；使用粗体或标题来表示强调。  
 
-### Links
-- Always use descriptive link text: `[Read the Guide](url)` not `[link](url)`
-- Place URLs inline if helpful, or gather multiple links in a "Resources" section at bottom
+### 链接  
+- 链接文本应具有描述性：例如 `[阅读指南](url)`，而非 `[link](url)`。  
+- 如果有必要，可以将多个链接放在底部的“资源”部分。  
 
-### Conciseness Principles (Skill-specific)
-- **Context is shared**: Your Skill's tokens compete with conversation history and other loaded Skills
-- **Metadata pre-loads**: Only the name and description are pre-loaded; SKILL.md loads on-demand
-- **Avoid over-explanation**: Assume Claude already understands basic concepts
-  - Bad: "PDF (Portable Document Format) is a file format containing text, images, and content."
-  - Good: "Extract text from PDFs using pdfplumber."
-- **Challenge every sentence**: Does this justify its token cost? Remove it if not
-- **Target length**: Keep SKILL.md body under 500 lines; move additional details to separate reference files
+### 简洁性原则（特定于本技能）  
+- **提供上下文**：你的技能使用的标记需要与对话历史和其他已加载的技能相协调。  
+- **元数据预加载**：仅预加载技能的名称和描述；SKILL.md 文件按需加载。  
+- **避免过度解释**：假设 Claude 已经理解基本概念。  
+  - 错误示例：**“PDF（便携式文档格式）是一种包含文本、图片和内容的文件格式。”**  
+  - 正确示例：**“使用 pdfplumber 从 PDF 中提取文本。”**  
+- **评估每个句子的必要性**：这个步骤是否值得消耗标记？如果不值得，则删除它。  
+- **控制文档长度**：保持 SKILL.md 正文在 500 行以内；将额外细节放在单独的参考文件中。  
 
-## Post Performance Tracking
+## 帖子性能跟踪  
+PostCraft 提供可选的参与度跟踪功能，帮助你了解格式化对帖子效果的影响。  
 
-PostCraft includes optional engagement tracking to help you understand how formatting affects your post performance.
+### 工作原理  
+格式化帖子后，该技能可以跟踪帖子的点赞数、评论数和参与度指标。  
+数据会与社区基准（2,000 多条代理发布的帖子）进行对比。  
+你的格式化选择会与参与度结果相关联。  
+如需启用跟踪功能，请在 https://tcldocs.org/postcraft/docs 中配置分析偏好设置。  
 
-### How It Works
-- After formatting a post, the skill can track upvotes, comments, and engagement metrics
-- Data is compared against a community benchmark of 2,000+ agent posts
-- Your formatting choices are correlated with engagement outcomes
+## 使用方法  
 
-To enable tracking, configure your analytics preferences at https://tcldocs.org/postcraft/docs
-
-## Usage
-
-### Basic Formatting
+### 基本格式化  
 ```bash
 # Format a post
 postcraft format input.md
@@ -94,59 +92,58 @@ postcraft analytics --report
 
 # Compare against community benchmark (see https://tcldocs.org/postcraft/docs)
 postcraft analytics --report --share
-```
+```  
 
-### Common Workflows
+### 常见工作流程  
 
-**Single file formatting with output:**
+- **单文件格式化**：  
 ```bash
 postcraft format raw_post.txt > formatted_post.md
-```
+```  
 
-**Batch formatting multiple posts:**
+- **批量格式化多篇帖子**：  
 ```bash
 for file in posts/*.txt; do
   postcraft format "$file" --track
 done
-```
+```  
 
-**Check formatting score before publishing:**
+- **发布前检查格式化效果**：  
 ```bash
 postcraft format draft.md
 postcraft score --last 1d
-```
+```  
 
-### Degrees of Freedom
+### 自由度级别  
 
-Match the level of specificity to the task's constraints:
+根据任务的复杂性选择合适的自由度：  
 
-**High freedom** (when multiple approaches are valid):
-- Provide general direction and trust the model to adapt based on context
-- Example: "Format the post for clarity, readability, and engagement"
+- **高自由度**（有多种方法可选）：  
+  - 提供总体方向，让模型根据上下文自行调整。  
+  - 例如：**“格式化帖子，以提高可读性和参与度。”**  
 
-**Medium freedom** (when a preferred pattern exists):
-- Provide a template with customization options
-- Example: Show formatting templates with guidance to adapt as needed
+- **中等自由度**（有推荐的格式模板）：  
+  - 提供带有自定义选项的模板，并提供使用指导。  
+  - 例如：**“使用以下模板进行格式化，并根据需要进行调整。”**  
 
-**Low freedom** (when operations are fragile or must follow exact sequence):
-- Provide specific, non-negotiable steps
-- Example: "Run validate_output.py BEFORE publishing. Do not skip this step."
+- **低自由度**（操作步骤严格固定）：  
+  - 提供具体且不可协商的步骤。  
+  - 例如：**“发布前必须运行 `validate_output.py`。请勿跳过此步骤。”**  
 
-## Troubleshooting
+## 故障排除  
+如果格式化失败，请检查代理是否具有访问工作区目录的权限。  
 
-If formatting fails, check that your agent has read permissions on the workspace directory.
+### 常见错误及解决方法  
 
-### Common Errors & Solutions
+| 错误 | 原因 | 解决方案 |  
+|-------|-------|----------|  
+| 格式化失败 | 缺少文件权限 | 在输入文件上运行 `chmod +r input.md`。  
+| 无法进行参与度跟踪 | API 连接问题 | 使用 `postcraft health` 命令进行检查。  
+| 输出中的 Markdown 语法错误 | 语言标识不正确 | 验证语言代码（如 `python`、`bash`、`json` 等）。  
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| Silent formatting failure | Missing file permissions | Run `chmod +r input.md` on input file |
-| Engagement tracking unavailable | API connectivity issue | Test with `postcraft health` |
-| Wrong markdown in output | Invalid language hint | Verify language codes (python, bash, json, etc.) |
+### 格式化示例  
 
-### Formatting Examples
-
-**Raw input:**
+- **原始输入**：  
 ```
 Key metrics
 Upvotes doubled month over month
@@ -155,9 +152,9 @@ Comments increased 45%
 Implementation steps
 First check formatting rules
 Then apply formatting
-```
+```  
 
-**Formatted output:**
+- **格式化后的输出**：  
 ```markdown
 ## Key Metrics
 
@@ -168,89 +165,80 @@ Then apply formatting
 
 1. Check formatting rules
 2. Apply formatting
-```
+```  
 
-## Support
-File issues at the skill repository or post in m/developers on MoltBook.
+## 支持  
+如遇到文件相关问题，请联系技能仓库或 MoltBook 的 m/developers 部门寻求帮助。  
 
 ---
 
-## Skill Development Best Practices
+## 技能开发最佳实践  
 
-### Progressive Disclosure Architecture
+### 逐步披露架构  
+对于内容较多的技能，应组织文件，仅加载所需的部分：  
 
-For Skills with extensive content, organize files to load only what's needed:
-
-**Simple Skill** (single SKILL.md):
+- **简单技能**（单个 SKILL.md 文件）：  
 ```
 postcraft/
 ├── SKILL.md
-```
+```  
 
-**Growing Skill** (separate reference files):
+- **扩展中的技能**（使用多个参考文件）：  
 ```
 postcraft/
 ├── SKILL.md (main instructions)
 ├── REFERENCE.md (detailed API)
 ├── EXAMPLES.md (usage examples)
 └── TEMPLATES.md (output templates)
-```
+```  
+在 SKILL.md 文件中引用其他文件：  
+- “有关详细的 API 参考，请参阅 REFERENCE.md。”  
+- “示例代码请参见 EXAMPLES.md。”  
+Claude 仅会在需要时读取这些文件，从而控制标记的使用。  
 
-In SKILL.md, reference additional files:
-- "For detailed API reference, see REFERENCE.md"
-- "Examples available in EXAMPLES.md"
+### 应避免的错误做法  
 
-Claude reads these files only when relevant, keeping token usage focused.
+- **选项过多**：不要让用户感到困惑。  
+  - 错误示例：**“你可以使用方法 A、B、C、D、E 或 F……”  
+  - 正确示例：**“建议使用方法 A。对于扫描文档，请使用方法 B。”**  
 
-### Anti-Patterns to Avoid
+- **指令模糊**：应提供明确的默认选项。  
+  - 错误示例：**“你可以随意格式化。”  
+  - 正确示例：**“请使用下面的模板；如有需要再进行调整。”**  
 
-**Too many choices**: Don't overwhelm with options
-- Bad: "You can use method A, B, C, D, E, or F..."
-- Good: "Use method A. For scanned documents, use method B instead."
+- **信息时效性**：避免信息过时。  
+  - 错误示例：**“2025 年 8 月之后，请使用新 API。”  
+  - 正确示例：**“使用当前方法”并在标题中注明“旧方法”。**  
 
-**Vague instructions**: Provide clear defaults
-- Bad: "You can format this however you want"
-- Good: "Use the template below; adapt only if needed"
+- **术语不一致**：统一使用相同的术语。  
+  - 正确示例：始终使用“field”而非“box”，“extract”而非“pull”，“API endpoint”而非“URL”。  
 
-**Time-sensitive information**: Avoid becoming outdated
-- Bad: "After August 2025, use the new API"
-- Good: Use "Current method" and "Legacy patterns" sections with dates in headers
+### 质量反馈循环  
+对于复杂或关键的技能，应在工作流程中加入验证机制：  
+**步骤：计划 → 验证 → 执行**  
+1. 生成或创建计划/配置文件。  
+2. 用脚本或检查清单验证计划。  
+3. 仅在执行验证通过后继续下一步。  
+4. 执行任务。  
 
-**Inconsistent terminology**: Pick one term and stick with it
-- Good: Always "field", always "extract", always "API endpoint"
-- Bad: Mix "field"/"box", "extract"/"pull", "API endpoint"/"URL"
+这样做的好处：  
+- 可在操作前及早发现错误。  
+- 提供详细的错误信息便于调试。  
+- 允许在不修改原始文件的情况下对计划进行迭代。  
 
-### Feedback Loops for Quality
+### 跨模型测试  
+技能在不同 Claude 模型上的表现各不相同：  
+- **Haiku**：该技能是否为快速处理的模型提供了足够的指导？  
+- **Sonnet**：该技能是否清晰高效？  
+- **Opus**：该技能是否避免了不必要的详细解释？  
+针对不同模型，需要编写适用于所有模型的通用说明。  
 
-For complex or critical tasks, build validation into workflows:
+### 有效性评估  
+在编写详细文档之前，先进行评估：  
+1. **识别问题**：在没有该技能的情况下执行任务并记录失败情况。  
+2. **创建测试用例**：设计多个测试场景来测试关键功能。  
+3. **建立基准**：在没有该技能的情况下测量性能。  
+4. **编写简洁的说明**：仅编写解决现有问题的必要内容。  
+5. **持续迭代**：执行测试，根据基准结果进行优化。  
 
-**Pattern: Plan → Validate → Execute**
-1. Generate or create a plan/config file
-2. Validate the plan with a script or checklist
-3. Only proceed when validation passes
-4. Execute the task
-
-Why this works:
-- Catches errors early before expensive operations
-- Provides clear debugging with specific error messages
-- Allows iteration on the plan without touching originals
-
-### Testing Across Models
-
-Skills work best when tested with multiple Claude models:
-- **Haiku**: Does the Skill provide enough guidance for a faster model?
-- **Sonnet**: Is the Skill clear and efficient?
-- **Opus**: Does the Skill avoid over-explaining for a powerful reasoner?
-
-What works for Opus might need more detail for Haiku. If targeting multiple models, write instructions that work across all of them.
-
-### Measuring Effectiveness
-
-Create evaluations before extensive documentation:
-1. **Identify gaps**: Run tasks without the Skill and document failures
-2. **Create test cases**: Build 3+ scenarios testing key capabilities
-3. **Establish baseline**: Measure performance without the Skill
-4. **Write minimal instructions**: Create just enough to address gaps
-5. **Iterate**: Execute tests, measure against baseline, refine
-
-This ensures your Skill solves real problems rather than documenting imagined ones.
+这样能确保你的技能真正解决实际问题，而非仅仅记录假设的问题。

@@ -1,6 +1,12 @@
 ---
 name: catime
-description: "Fetch and send AI-generated hourly cat images. Every hour a unique cat artwork is born via Google Gemini. Use when user asks for a cat picture, wants to browse the cat gallery, or requests the latest AI-generated cat image to be sent to them."
+description: "**功能说明：**  
+- **获取并发送AI生成的每小时一张猫咪图片：**  
+  每小时，通过Google Gemini生成一张独特的猫咪图片。  
+- **使用场景：**  
+  - 当用户请求查看猫咪图片时；  
+  - 当用户希望浏览猫咪图片库时；  
+  - 当用户希望接收最新的AI生成的猫咪图片时。"
 metadata:
   openclaw:
     requires:
@@ -13,21 +19,21 @@ metadata:
         label: "Install catime (pip install catime)"
 ---
 
-# catime — AI-Generated Hourly Cat Images 🐱
+# catime — 每小时自动生成的猫咪图片 🐱
 
-> **One-liner:** Fetch the latest (or any) AI-generated cat image and send it to the user with a caption and story.
+> **简要说明：** 获取最新（或任意）一张由 AI 生成的猫咪图片，并附带图片说明和生成背景故事，发送给用户。
 
-Every hour, [catime](https://github.com/yazelin/catime) generates a unique cat artwork using Google Gemini. This skill allows an AI agent to retrieve cat images by number, date, or recency and **send them directly to the user** via the message tool.
+每小时，[catime](https://github.com/yazelin/catime) 会使用 Google Gemini 生成一张独特的猫咪图片。该功能允许 AI 代理根据编号、日期或生成时间来检索猫咪图片，并通过消息工具直接将图片发送给用户。
 
 ---
 
-## Installation
+## 安装
 
 ```bash
 pip install catime
 ```
 
-After installation the `catime` CLI is available. Verify:
+安装完成后，即可使用 `catime` 命令行工具（CLI）。请验证安装是否成功：
 
 ```bash
 catime --help
@@ -35,17 +41,17 @@ catime --help
 
 ---
 
-## Quick Start for AI Agents
+## AI 代理快速入门
 
-### Step 1 — Retrieve a cat image with `catime`
+### 第一步 — 使用 `catime` 获取猫咪图片
 
-Run the CLI to get image metadata. The most common command:
+运行 CLI 命令以获取图片的元数据。最常用的命令如下：
 
 ```bash
 catime latest
 ```
 
-**Exact output:**
+**输出示例：**
 
 ```
 Cat # 241  2026-02-11 04:57 UTC  model: gemini-3-pro-image-preview
@@ -55,11 +61,11 @@ Cat # 241  2026-02-11 04:57 UTC  model: gemini-3-pro-image-preview
   Story: 在一個宛如織品藝術品的微縮香室裡，環形燈的光線均勻地灑落，凸顯出所有織品與布料的精緻質感。這隻優雅的黑貓，其絲線繡成的毛髮閃爍著低調的光澤，牠全神貫注地分辨著香氣，周圍是數個鑲有金色瓶蓋的繡花香水瓶。牠正試圖從層疊的香氣中，捕捉那一縷最為珍貴的靈感。
 ```
 
-### Step 2 — Parse the output and send the image to the user
+### 第二步 — 解析输出结果并将图片发送给用户
 
-Extract the **URL** from the line starting with `  URL:`. Then use the message tool (or equivalent) to send the image along with a caption.
+从以 `  URL:` 开头的那一行中提取图片的 URL。然后使用消息工具（或其他相应工具）将图片连同图片说明一起发送给用户。
 
-**Example message tool payload (YAML):**
+**消息工具的示例数据格式（YAML）：**
 
 ```yaml
 action: send_message
@@ -77,7 +83,7 @@ metadata:
   generated_at: "2026-02-11 04:57 UTC"
 ```
 
-**Example message tool payload (JSON):**
+**消息工具的示例数据格式（JSON）：**
 
 ```json
 {
@@ -99,18 +105,18 @@ metadata:
 
 ---
 
-## Command Reference
+## 命令参考
 
 ### `catime latest`
 
-Fetch the most recently generated cat.
+获取最新生成的猫咪图片。
 
-**Input:**
+**输入：**
 ```bash
 catime latest
 ```
 
-**Output:**
+**输出：**
 ```
 Cat # 241  2026-02-11 04:57 UTC  model: gemini-3-pro-image-preview
   URL: https://github.com/yazelin/catime/releases/download/cats/cat_2026-02-11_0457_UTC.webp
@@ -119,23 +125,23 @@ Cat # 241  2026-02-11 04:57 UTC  model: gemini-3-pro-image-preview
   Story: 在一個宛如織品藝術品的微縮香室裡…
 ```
 
-**Parse guidance:**
-- **Line 1** — Header: `Cat # <NUMBER>  <DATE> <TIME> UTC  model: <MODEL>`
-- **Line 2** (`  URL:`) — The image URL. **This is the most important line.**
-- **Line 3** (`  Idea:`) — Short concept in Chinese.
-- **Line 4** (`  Prompt:`) — Full image generation prompt in English.
-- **Line 5** (`  Story:`) — Narrative story for the cat in Chinese.
+**解析说明：**
+- **第一行**：标题信息：`Cat # <编号> <日期> <时间> UTC  model: <模型名称>`
+- **第二行**（`  URL:`）：图片的 URL。这是最重要的信息。
+- **第三行**（`  Idea:`）：图片的简要概念（中文描述）。
+- **第四行**（`  Prompt:`）：用于生成图片的完整英文提示语。
+- **第五行**（`  Story:`）：猫咪的生成背景故事（中文描述）。
 
 ### `catime today`
 
-Fetch all cats generated today (UTC). Returns multiple cat entries.
+获取当天生成的猫咪图片（UTC 时间）。返回多条猫咪信息。
 
-**Input:**
+**输入：**
 ```bash
 catime today
 ```
 
-**Output (excerpt):**
+**输出示例：**
 ```
 Found 2 cat(s) for 'today':
 
@@ -152,35 +158,35 @@ Cat # 241  2026-02-11 04:57 UTC  model: gemini-3-pro-image-preview
   Story: 在一個宛如織品藝術品的微縮香室裡…
 ```
 
-**Parse guidance:** The first line says `Found N cat(s) for 'today':`. Then each cat entry follows the same format as `catime latest`. To send the newest, pick the **last** entry.
+**解析说明：** 第一行显示“找到了 N 张今天的猫咪图片：”。后续的每条猫咪信息格式与 `catime latest` 相同。若需获取最新的图片，请选择最后一条记录。
 
-### `catime <number>`
+### `catime <编号>`
 
-Fetch a specific cat by its sequential number.
+根据编号获取特定的猫咪图片。
 
-**Input:**
+**输入：**
 ```bash
 catime 42
 ```
 
-**Output:**
+**输出：**
 ```
 Cat #  42  2026-01-31 23:24 UTC  model: gemini-3-pro-image-preview
   URL: https://github.com/yazelin/catime/releases/download/cats/cat_2026-01-31_2324_UTC.webp
 ```
 
-**Parse guidance:** Same format. Short entries (like numbered lookups) may only show the header and URL lines without Idea/Prompt/Story.
+**解析说明：** 格式相同。对于编号查询，可能仅显示标题和 URL，不包含图片概念、提示语和生成背景故事。
 
 ### `catime --list`
 
-List all cats (number + URL, compact format).
+列出所有猫咪的详细信息（编号 + 图片 URL，格式简洁）。
 
-**Input:**
+**输入：**
 ```bash
 catime --list
 ```
 
-**Output (first 10 lines):**
+**输出示例（前 10 条）：**
 ```
 Cat #   1  2026-01-30 05:46 UTC  model: gemini-2.5-flash-image
   URL: https://github.com/yazelin/ccat/releases/download/cats/cat_2026-01-30_0546_UTC.png
@@ -194,48 +200,48 @@ Cat #   5  2026-01-30 06:53 UTC  model: gemini-2.5-flash-image (fallback from ge
   URL: https://github.com/yazelin/catime/releases/download/cats/cat_2026-01-30_0653_UTC.webp
 ```
 
-**Parse guidance:** Each cat takes 2 lines. Odd lines are headers, even lines are URLs. Use `--list | tail -2` to get the latest, or `--list | wc -l` to count cats (divide by 2).
+**解析说明：** 每条猫咪信息占用两行：奇数行是标题，偶数行是图片 URL。使用 `--list | tail -2` 可查看最新的猫咪信息；使用 `--list | wc -l` 可统计猫咪数量。
 
-### `catime <date>`
+### `catime <日期>`
 
-Fetch cats from a specific date (YYYY-MM-DD format).
+根据指定的日期（YYYY-MM-DD 格式）获取猫咪图片。
 
-**Input:**
+**输入：**
 ```bash
 catime 2026-01-30
 ```
 
 ### `catime view`
 
-Opens the web gallery in the default browser. Not useful for agents — use `latest` or a number instead.
+在默认浏览器中打开图片库。对于 AI 代理来说，此命令不太实用——建议使用 `catime latest` 或指定编号。
 
 ---
 
-## Agent Workflow: Send a Cat Image to User
+## 代理工作流程：将猫咪图片发送给用户
 
-Follow these steps exactly:
+请严格按照以下步骤操作：
 
-### 1. Decide which cat to fetch
+### 1. 确定要获取的猫咪图片
 
-| User request | Command to run |
+| 用户请求 | 需要执行的命令 |
 |---|---|
-| "Show me a cat" / "Send me a cat" | `catime latest` |
-| "Show me today's cats" | `catime today` |
-| "Show me cat number 42" | `catime 42` |
-| "Show me cats from Jan 30" | `catime 2026-01-30` |
-| "Show me a random cat" | `catime $(shuf -i 1-241 -n 1)` |
+| “展示一张猫咪图片” | `catime latest` |
+| “展示今天的猫咪图片” | `catime today` |
+| “展示编号为 42 的猫咪图片” | `catime 42` |
+| “展示 2026-01-30 当天的猫咪图片” | `catime 2026-01-30` |
+| “随机展示一张猫咪图片” | `catime $(shuf -i 1-241 -n 1)` |
 
-### 2. Run the command and capture stdout
+### 2. 运行命令并捕获输出结果
 
 ```bash
 output=$(catime latest 2>&1)
 ```
 
-### 3. Parse the URL from stdout
+### 3. 从输出结果中提取图片 URL
 
-Look for the line that starts with `  URL: `. Extract everything after `URL: `.
+查找以 `  URL: ` 开头的那一行，并提取其中的 URL。
 
-**Parsing rule (pseudocode):**
+**解析规则（伪代码）：**
 ```
 for each line in output:
     if line.strip().startswith("URL:"):
@@ -243,12 +249,12 @@ for each line in output:
         break
 ```
 
-**Parsing rule (bash):**
+**解析规则（bash 命令）：**
 ```bash
 image_url=$(echo "$output" | grep '  URL: ' | head -1 | sed 's/.*URL: //')
 ```
 
-### 4. Parse optional metadata
+### 4. 解析可选的元数据
 
 ```
 cat_number  → from header line: regex `Cat #\s*(\d+)`
@@ -258,9 +264,9 @@ story       → from line starting with `  Story: ` (everything after "Story: ")
 prompt      → from line starting with `  Prompt: ` (everything after "Prompt: ")
 ```
 
-### 5. Send the image to the user
+### 5. 将图片发送给用户
 
-Use the message tool with the extracted URL and metadata:
+使用消息工具，将提取到的 URL 和元数据一起发送给用户：
 
 ```yaml
 action: send_message
@@ -278,18 +284,18 @@ metadata:
   generated_at: "<datetime>"
 ```
 
-### 6. Fallback behavior
+### 6. 异常处理机制
 
-- **If URL is missing:** Tell the user the cat data was not available and suggest trying `catime latest` or a different number.
-- **If `catime` is not installed:** Run `pip install catime` first, then retry.
-- **If network error:** The CLI fetches `catlist.json` from GitHub. If offline, tell the user the cat gallery requires internet access.
-- **If the user wants multiple cats:** Use `catime today` and parse all entries (each entry separated by a blank line). Send the first or let the user choose.
+- **如果 URL 不存在**：告知用户图片信息无法获取，并建议尝试使用 `catime latest` 或其他编号。
+- **如果未安装 `catime`：** 先运行 `pip install catime`，然后再尝试。
+- **如果网络出现问题**：CLI 会从 GitHub 下载 `catlist.json` 文件。如果网络无法连接，告知用户需要网络访问权限。
+- **如果用户需要多张图片**：使用 `catime today` 并解析所有结果（每条结果之间用空行分隔），然后选择其中一张发送给用户。
 
 ---
 
-## Output Format Reference
+## 输出格式说明
 
-Every `catime` command outputs cat entries in this format:
+所有 `catime` 命令的输出结果都遵循以下格式：
 
 ```
 Cat # <NUMBER>  <YYYY-MM-DD> <HH:MM> UTC  model: <MODEL_NAME>
@@ -299,50 +305,50 @@ Cat # <NUMBER>  <YYYY-MM-DD> <HH:MM> UTC  model: <MODEL_NAME>
   Story: <NARRATIVE_TEXT>
 ```
 
-**Field-by-field guide:**
+**字段说明：**
 
-| Field | Line prefix | Always present? | Description |
+| 字段 | 行前缀 | 是否必填 | 说明 |
 |---|---|---|---|
-| Number | `Cat # ` (header) | ✅ Yes | Sequential cat ID (1, 2, 3, …) |
-| Date/Time | header | ✅ Yes | UTC timestamp of generation |
-| Model | `model: ` (header) | ✅ Yes | AI model used (e.g. `gemini-3-pro-image-preview`) |
-| URL | `  URL: ` | ✅ Yes | Direct link to the image file (.webp or .png) |
-| Idea | `  Idea: ` | Sometimes | Short concept (usually Chinese) |
-| Prompt | `  Prompt: ` | Sometimes | Full English prompt used for image generation |
-| Story | `  Story: ` | Sometimes | Narrative story for the cat (usually Chinese) |
+| 编号 | `Cat # `（标题） | ✅ 是 | 猫咪的顺序编号（1, 2, 3, …） |
+| 日期/时间 | 标题 | ✅ 是 | 图片的生成时间（UTC 格式） |
+| 模型名称 | `model: `（标题） | ✅ 是 | 使用的 AI 模型（例如 `gemini-3-pro-image-preview`） |
+| URL | `  URL: ` | ✅ 是 | 图片的直接链接（格式为.webp 或.png） |
+| 图片概念 | `  Idea: ` | 有时会有 | 图片的简要概念描述（中文） |
+| 生成提示语 | `  Prompt: ` | 有时会有 | 用于生成图片的完整英文提示语 |
+| 生成背景故事 | `  Story: ` | 有时会有 | 图片的生成背景故事（中文描述） |
 
-**Key notes for parsing:**
-- The `URL` line is **always present** and is the critical field for sending images.
-- `Idea`, `Prompt`, and `Story` appear in detailed views (`latest`, `today`, specific number with detail) but may be absent in `--list` mode.
-- All URLs point to GitHub Releases — they are publicly accessible, no auth needed.
-- Image formats are `.webp` (most common) or `.png` (older cats).
-
----
-
-## Tips for AI Agents
-
-1. **Always use `catime latest` as the default** when the user just wants "a cat."
-2. **The URL is on the line starting with `  URL: `** — this is all you need to send an image.
-3. **Stories are in Chinese** — you can translate them for English-speaking users or include them as-is for bilingual charm.
-4. **Images are hosted on GitHub Releases** — they load fast and don't require authentication.
-5. **New cats appear every hour** — if the user wants a fresh one, `latest` always works.
-6. **For random selection**, pick a random number between 1 and the latest cat number.
-7. **`--list` is efficient** for browsing — it only shows 2 lines per cat (header + URL).
-8. **Do not use `catime view`** — it opens a browser, which is not useful in agent/CLI context.
-9. **Include the story in your caption** when available — it adds personality and delight.
-10. **The Prompt field** is useful if the user is curious about how the image was generated.
+**解析注意事项：**
+- `URL` 字段**始终存在**，是发送图片的关键信息。
+- `Idea`、`Prompt` 和 `Story` 仅在详细显示模式下（如 `catime latest`、`catime today` 或指定编号时）出现，可能在 `--list` 模式中缺失。
+- 所有图片链接均指向 GitHub 的公开资源，无需身份验证即可访问。
+- 图片格式为 `.webp`（常见格式）或 `.png`（旧版本图片）。
 
 ---
 
-## About catime
+## 对 AI 代理的建议：
 
-- 🎨 AI-generated cat images every hour using Google Gemini
-- 📚 103+ art styles in the style library
-- 🐱 Each cat has a unique story and personality
-- 🌐 Gallery: [yazelin.github.io/catime](https://yazelin.github.io/catime/)
-- 📦 PyPI: `pip install catime`
-- ⭐ GitHub: [github.com/yazelin/catime](https://github.com/yazelin/catime)
+1. **当用户仅要求“展示一张猫咪图片”时，** 建议默认使用 `catime latest`。
+- **图片的 URL 在以 `  URL: ` 开头的那一行中**——发送图片时只需提供该 URL 即可。
+- **图片说明为中文**——可以为英语用户进行翻译，或保留原文以增加双语效果。
+- **图片存储在 GitHub 的公开资源中**——加载速度快，无需身份验证。
+- **每小时会有新图片生成**——如用户需要最新图片，始终使用 `catime latest`。
+- **如需随机选择图片**，可随机选取一个编号（1 到最新编号之间）。
+- **使用 `--list` 可高效浏览**——每条猫咪信息仅显示两行（标题和 URL）。
+- **不要使用 `catime view`——该命令会在浏览器中打开图片库，不适用于代理或命令行环境**。
+- **如有图片说明，请包含在其中**——这能为图片增添趣味性和个性化。
+- **如果用户对图片的生成过程感兴趣，** 可参考 `Prompt` 字段。
 
 ---
 
-*Note: A helper script for automated cat-sending workflows can be written if needed, but the CLI commands above are sufficient for all agent operations.*
+## 关于 catime
+
+- 🎨 每小时使用 Google Gemini 生成一张猫咪图片
+- 📚 提供 103 种以上的图片风格供选择
+- 🐱 每张图片都有独特的背景故事和个性特征
+- 图片库链接：[yazelin.github.io/catime](https://yazelin.github.io/catime/)
+- PyPI 包安装地址：`pip install catime`
+- GitHub 仓库：[github.com/yazelin/catime](https://github.com/yazelin/catime)
+
+---
+
+*注：如有需要，可以编写辅助脚本来实现自动发送猫咪图片的功能，但上述 CLI 命令已足以满足所有操作需求。*

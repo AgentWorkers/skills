@@ -1,21 +1,21 @@
-# SAP FICO Expert — OpenClaw Skill
+# SAP FICO 专家 — OpenClaw 技能
 
-## 📋 Overview
+## 📋 概述
 
-| Property | Value |
+| 属性 | 值 |
 |----------|-------|
-| **Name** | `sap-fico-expert` |
-| **Version** | 1.0.0 |
-| **Platform** | OpenClaw (Telegram / Social platforms) |
-| **Target LLM** | DeepSeek Chat (explanations) / DeepSeek Coder (ABAP) |
-| **Language** | French technical SAP terminology |
-| **Author** | @chanfouricc |
+| **名称** | `sap-fico-expert` |
+| **版本** | 1.0.0 |
+| **平台** | OpenClaw（Telegram / 社交平台） |
+| **目标大型语言模型（LLM）** | DeepSeek Chat（用于提供解释）/ DeepSeek Coder（用于处理 ABAP 相关问题） |
+| **语言** | 法语技术术语（用于 SAP 相关内容） |
+| **作者** | @chanfouricc |
 
-## 🎯 Objective
+## 🎯 目标
 
-Transform any OpenClaw bot into a **Senior SAP Finance & Controlling consultant** capable of answering configuration, troubleshooting, cross-module integration, and S/4HANA migration questions with production-grade accuracy.
+将任何 OpenClaw 机器人转变为具备高级 SAP 财务与控制咨询能力的专家，能够以生产级准确度回答关于配置、故障排除、模块间集成以及 S/4HANA 迁移等方面的问题。
 
-## 📁 Skill Structure
+## 📁 技能结构
 
 ```
 sap-fico-skill/
@@ -29,17 +29,17 @@ sap-fico-skill/
     └── error_codes.md        # Common FI/CO error messages
 ```
 
-## 🚀 Installation on OpenClaw
+## 🚀 在 OpenClaw 上的安装
 
-### 1. Copy the skill to your VPS
+### 1. 将该技能复制到您的 VPS
 
 ```bash
 scp -r sap-fico-skill/ user@vps:/opt/openclaw/skills/
 ```
 
-### 2. Register the skill in OpenClaw
+### 2. 在 OpenClaw 中注册该技能
 
-Add to your OpenClaw configuration (`config.json` or equivalent):
+将其添加到您的 OpenClaw 配置文件（`config.json` 或等效文件）中：
 
 ```json
 {
@@ -61,72 +61,72 @@ Add to your OpenClaw configuration (`config.json` or equivalent):
 }
 ```
 
-### 3. Trigger activation
+### 3. 触发激活
 
-The skill activates automatically when a message contains an SAP keyword. Alternatively, users can force activation with:
+当消息中包含 SAP 相关关键词时，该技能会自动激活。用户也可以手动触发激活：
 
 ```
 /skill sap-fico-expert
 ```
 
-## 🔧 Recommended Settings
+## 🔧 推荐设置
 
-| Parameter | Value | Rationale |
+| 参数 | 值 | 说明 |
 |-----------|-------|-----------|
-| `temperature` | 0.25 | Deterministic — no creativity on SAP config |
-| `max_tokens` | 600 | Increased from initial spec (450 too short for complex questions) |
-| `presence_penalty` | 0.1 | Slight lexical diversity without drift |
-| `model` | `deepseek-chat` | Default; switches to `deepseek-coder` when ABAP detected |
+| `temperature` | 0.25 | 确定性参数——确保在处理 SAP 配置时不会产生创造性回答 |
+| `max_tokens` | 600 | 从初始的 450 个令牌增加到 600 个，以适应更复杂的问题 |
+| `presence Penalty` | 0.1 | 适度增加词汇多样性，同时保持回答的连贯性 |
+| `model` | `deepseek-chat` | 默认模型；当检测到 ABAP 相关内容时切换至 `deepseek-coder` |
 
-> ⚠️ **Note**: The original 450 token limit was raised to 600. Responses involving cross-module integrations or S/4HANA migrations need more space to remain actionable.
+> ⚠️ **注意**：令牌限制从最初的 450 个提高到了 600 个。涉及模块间集成或 S/4HANA 迁移的回答需要更多的信息空间，以确保其实用性。
 
-## 📊 Coverage
+## 📊 覆盖范围
 
-### Tier 1 — Core expertise (immediate answers)
-- Configuration: FI-GL, FI-AP, FI-AR, FI-AA, FI-BL
-- Configuration: CO-CCA, CO-PA, CO-PC, CO-OPA
-- Period-end & year-end closing
-- Automatic account determination (FI-MM, FI-SD)
-- T-codes, tables, customizing transactions
+### 第一级 — 核心专业知识（即时回答）
+- 财务会计（FI-GL、FI-AP、FI-AR、FI-AA、FI-BL）配置
+- 成本会计（CO-CCA、CO-PA、CO-PC、CO-OPA）配置
+- 期末及年度结账处理
+- 自动账户确定（FI-MM、FI-SD）
+- T 代码、相关表格及自定义交易处理
 
-### Tier 2 — Advanced expertise (detailed answers)
-- S/4HANA Universal Journal (ACDOCA)
-- ECC → S/4HANA migration (Brownfield/Greenfield)
-- SAP Cloud Public Edition specifics
-- Central Finance & Group Reporting
-- Troubleshooting error messages Fxxx/Kxxx
+### 第二级 — 高级专业知识（详细回答）
+- S/4HANA 统一日记账（ACDOCA）
+- 从 ECC 迁移到 S/4HANA（旧系统/新系统）
+- SAP Cloud Public Edition 的具体内容
+- 中央财务与集团报表
+- Fxxx/Kxxx 类错误信息的故障排除
 
-### Tier 3 — Integration expertise (contextual answers)
-- FI-PP (Production order settlement)
-- FI-HR (Payroll integration)
-- FI-PS (Project settlement)
-- Intercompany processing & reconciliation
-- Tax reporting (VAT, Withholding tax, Intrastat)
+### 第三级 — 集成专业知识（基于上下文的回答）
+- 生产订单结算（FI-PP）
+- 工资单集成（FI-HR）
+- 项目结算（FI-PS）
+- 公司间处理与对账
+- 税务报告（增值税、预扣税、国内税务）
 
-## 🧪 Testing
+## 🧪 测试
 
-### Quick validation questions
+### 快速验证问题
 
-| # | Test question | Verify |
+| 编号 | 测试问题 | 验证内容 |
 |---|--------------|--------|
-| 1 | "How to configure document splitting in S/4HANA?" | T-code + tables + steps |
-| 2 | "Error F5 025 when posting" | Diagnosis + solution + config |
-| 3 | "Difference between assessment and distribution in CO?" | Explanation + T-codes + use cases |
-| 4 | "How does GR/IR clearing work?" | Process + FI-MM integration + T-codes |
-| 5 | "Migrate FI-AA to New Asset Accounting" | Steps + tables + S/4HANA specifics |
+| 1 | “如何在 S/4HANA 中配置文档拆分？” | 包含 T 代码、相关表格及操作步骤 |
+| 2 | “过账时出现错误 F5 025” | 问题诊断、解决方案及配置说明 |
+| 3 | “CO 模块中的评估与分配有何区别？” | 解释相关概念、T 代码及使用场景 |
+| 4 | “GR/IR 清算流程是怎样的？” | 包含处理流程、FI-MM 的集成方式及相关 T 代码 |
+| 5 | “如何将 FI-AA 迁移到新资产会计系统？” | 包含操作步骤、相关表格及 S/4HANA 的具体要求 |
 
-### Quality criteria
+### 质量标准
 
-- ✅ T-code mentioned on the first line
-- ✅ Relevant SAP tables listed
-- ✅ Configuration referenced when applicable
-- ✅ Cross-module impacts flagged
-- ✅ S/4HANA differences mentioned when relevant
-- ✅ Expert but accessible tone
-- ✅ Response in French technical SAP terminology
+- ✅ 回答中必须提及 T 代码 |
+- ✅ 必须列出相关的 SAP 表格 |
+- 在适用情况下需引用配置信息 |
+- 必须指出模块间的影响 |
+- 在相关情况下需提及 S/4HANA 的差异 |
+- 语言风格需专业且易于理解 |
+- 回答需使用法语技术术语
 
-## 📝 Changelog
+## 📝 更新日志
 
-| Version | Date | Changes |
+| 版本 | 日期 | 更新内容 |
 |---------|------|---------|
-| 1.0.0 | 2026-02-08 | Initial release — full FI/CO coverage |
+| 1.0.0 | 2026-02-08 | 首次发布——全面覆盖财务会计（FI/CO）领域 |

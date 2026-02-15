@@ -15,26 +15,26 @@ metadata:
       env: ["VIRUSTOTAL_API_KEY"]
 ---
 
-# Skill Review (ClawHub Security Scan scraper)
+# 技能审核（ClawHub 安全扫描工具）
 
-Use this when you want to **review ClawHub Security Scan results** for your skills.
+当你需要**审核 ClawHub 安全扫描结果**以评估自己的技能水平时，可以使用此工具。
 
-## What it does
+## 功能介绍
 
-- Enumerates local skills under `~/Developer/Skills` (folders that contain `SKILL.md`).
-- For each skill, opens the ClawHub page `https://clawhub.ai/<owner>/<slug>`.
-- Extracts:
-  - Security Scan (VirusTotal status + report link, OpenClaw status/confidence/reason)
-  - Runtime requirements block
-  - Comments block
-- Writes a single markdown report under `/tmp/`.
+- 遍历 `~/Developer/Skills` 目录下的所有技能文件（这些文件都是 `.SKILL.md` 格式）。
+- 对于每个技能文件，会访问对应的 ClawHub 页面（网址格式为 `https://clawhub.ai/<owner>/<slug>`）。
+- 从该页面提取以下信息：
+  - 安全扫描结果（VirusTotal 的状态及报告链接、OpenClaw 的状态/置信度/原因）
+  - 运行时环境要求
+  - 评论信息
+- 将所有提取到的信息写入 `/tmp/` 目录下的一个 Markdown 报告文件中。
 
-## Key config behavior (no surprises)
+## 配置要点（无需额外说明）
 
-- Each local skill’s `SKILL.md` frontmatter `name:` is treated as the **ClawHub slug**.
-- Supports non-standard cases via `--slug-map path/to/map.json`.
+- 每个技能文件中的 `.SKILL.md` 文件的 `name:` 部分将被视为对应的 ClawHub 页面的 URL（即 **slug**）。
+- 通过 `--slug-map path/to/map.json` 参数支持非标准的情况（即本地文件夹名称与 ClawHub 页面 URL 不匹配的情况）。
 
-## Run
+## 使用方法
 
 ```bash
 python3 scripts/skill_review.py \
@@ -43,9 +43,9 @@ python3 scripts/skill_review.py \
   --out /tmp/clawhub-skill-review.md
 ```
 
-### Optional: slug map
+### 可选：slug 映射文件
 
-If a local folder name doesn’t match the ClawHub slug, pass a mapping file:
+如果本地文件夹的名称与 ClawHub 的 URL 不匹配，可以使用以下命令提供映射关系：
 
 ```json
 {
@@ -57,11 +57,11 @@ If a local folder name doesn’t match the ClawHub slug, pass a mapping file:
 python3 scripts/skill_review.py --slug-map ./slug-map.json
 ```
 
-## Requirements
+## 系统要求
 
-- Installs/uses Playwright internally (Python package + Chromium).
-  
-If it’s missing, follow the error message; typical setup:
+- 需要安装并使用 Playwright（一个 Python 包）以及 Chromium 浏览器。
+
+如果这些依赖项未安装，请根据错误提示进行安装。典型的安装步骤如下：
 
 ```bash
 python3 -m pip install playwright

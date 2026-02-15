@@ -1,8 +1,8 @@
-# Email Auto-Reply Generator
+# 电子邮件自动回复生成器
 
-Generate context-aware email replies.
+生成具有上下文意识的电子邮件回复。
 
-## Usage
+## 使用方法
 
 ```bash
 npx email-autoreply

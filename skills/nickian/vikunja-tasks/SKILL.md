@@ -1,26 +1,26 @@
 ---
 name: vikunja
-description: Manage tasks and projects on a self-hosted Vikunja instance. Use when the user wants to create, view, complete, or manage tasks, check what's due or overdue, list projects, or get task notifications. Also use for to-do lists, reminders, and task tracking.
+description: 在自托管的Vikunja实例上管理任务和项目。适用于用户需要创建、查看、完成任务、管理任务状态（如已到期或未到期）、列出项目列表，或接收任务通知的场景。同时也可用于创建待办事项列表、设置提醒以及进行任务跟踪。
 ---
 
-# Vikunja Task Manager
+# Vikunja 任务管理器
 
-Manage tasks and projects on a self-hosted Vikunja instance via REST API.
+通过 REST API 在自托管的 Vikunja 实例上管理任务和项目。
 
-## Setup
+## 设置
 
-Set these environment variables:
+请设置以下环境变量：
 
 ```bash
 export VIKUNJA_URL="https://your-vikunja-instance.com"
 export VIKUNJA_TOKEN="your-api-token"
 ```
 
-Get your API token: Vikunja → Settings → API Tokens → Create token.
+获取您的 API 令牌：Vikunja → 设置 → API 令牌 → 创建令牌。
 
-## Commands
+## 命令
 
-### List tasks
+### 列出任务
 
 ```bash
 {baseDir}/scripts/vikunja.sh tasks --count 10
@@ -29,60 +29,60 @@ Get your API token: Vikunja → Settings → API Tokens → Create token.
 {baseDir}/scripts/vikunja.sh tasks --sort priority --order desc
 ```
 
-### Overdue tasks
+### 过期任务
 
 ```bash
 {baseDir}/scripts/vikunja.sh overdue
 ```
 
-### Tasks due soon (next N hours)
+### 即将到期的任务（接下来的 N 小时）
 
 ```bash
 {baseDir}/scripts/vikunja.sh due --hours 24
 {baseDir}/scripts/vikunja.sh due --hours 48
 ```
 
-### Create a task
+### 创建任务
 
 ```bash
 {baseDir}/scripts/vikunja.sh create-task --project "Tasks" --title "Buy milk" --due "2026-02-01" --priority 3
 ```
 
-Priority: 1 (low) to 5 (urgent). Due date format: YYYY-MM-DD.
+优先级：1（低）到 5（紧急）。截止日期格式：YYYY-MM-DD。
 
-### Complete a task
+### 完成任务
 
 ```bash
 {baseDir}/scripts/vikunja.sh complete --id 123
 ```
 
-### Get task details
+### 获取任务详情
 
 ```bash
 {baseDir}/scripts/vikunja.sh task --id 123
 ```
 
-### List projects
+### 列出项目
 
 ```bash
 {baseDir}/scripts/vikunja.sh projects
 ```
 
-### Create a project
+### 创建项目
 
 ```bash
 {baseDir}/scripts/vikunja.sh create-project --title "New Project" --description "Optional description"
 ```
 
-### Get notifications
+### 获取通知
 
 ```bash
 {baseDir}/scripts/vikunja.sh notifications
 ```
 
-## Due Date Monitoring
+## 截止日期监控
 
-To get proactive notifications about due/overdue tasks, set up a cron job:
+要接收关于到期/过期任务的主动通知，请设置一个 cron 作业：
 
 ```bash
 clawdbot cron add \
@@ -95,8 +95,8 @@ clawdbot cron add \
   --channel telegram
 ```
 
-## Notes
+## 注意事项
 
-- Project names in `--project` are case-insensitive
-- Filter expressions follow Vikunja filter syntax (see https://vikunja.io/docs/filters)
-- All times are handled in America/Denver timezone
+- `--project` 参数中的项目名称不区分大小写
+- 过滤表达式遵循 Vikunja 的过滤语法（请参阅 https://vikunja.io/docs/filters）
+- 所有时间均以美国/丹佛时区为准

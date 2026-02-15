@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Podcast Creation
+# AI播客制作
 
-Create AI-powered podcasts and audio content via [inference.sh](https://inference.sh) CLI.
+通过[inference.sh](https://inference.sh)命令行工具（CLI），您可以创建由AI驱动的播客和音频内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,34 +27,34 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Available Voices
+## 可用的语音合成引擎
 
 ### Kokoro TTS
 
-| Voice ID | Description | Best For |
+| 语音ID | 描述 | 适合的场景 |
 |----------|-------------|----------|
-| `af_sarah` | American female, warm | Host, narrator |
-| `af_nicole` | American female, professional | News, business |
-| `am_michael` | American male, authoritative | Documentary, tech |
-| `am_adam` | American male, conversational | Casual podcast |
-| `bf_emma` | British female, refined | Audiobooks |
-| `bm_george` | British male, classic | Formal content |
+| `af_sarah` | 美国女性，温暖的语音 | 主播、旁白 |
+| `af_nicole` | 美国女性，专业的语音 | 新闻、商业内容 |
+| `am_michael` | 美国男性，权威的语音 | 纪录片、科技类内容 |
+| `am_adam` | 美国男性，日常对话风格 | 休闲播客 |
+| `bf_emma` | 英国女性，优雅的语音 | 有声书 |
+| `bm_george` | 英国男性，经典的语音 | 正式场合的内容 |
 
-### DIA TTS (Conversational)
+### DIA TTS（对话风格）
 
-| Voice ID | Description | Best For |
+| 语音ID | 描述 | 适合的场景 |
 |----------|-------------|----------|
-| `dia-conversational` | Natural conversation | Dialogue, interviews |
+| `dia-conversational` | 自然对话风格 | 对话、访谈 |
 
 ### Chatterbox
 
-| Voice ID | Description | Best For |
+| 语音ID | 描述 | 适合的场景 |
 |----------|-------------|----------|
-| `chatterbox-default` | Expressive | Casual, entertainment |
+| `chatterbox-default` | 表情丰富的语音 | 休闲、娱乐类内容 |
 
-## Podcast Workflows
+## 播客工作流程
 
-### Simple Narration
+### 简单的旁白制作
 
 ```bash
 # Single voice podcast segment
@@ -64,7 +64,7 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-### Multi-Voice Conversation
+### 多语音对话
 
 ```bash
 # Host introduction
@@ -86,7 +86,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Full Episode Pipeline
+### 完整的播客制作流程
 
 ```bash
 # 1. Generate script with Claude
@@ -128,9 +128,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### NotebookLM-Style Content
-
-Generate podcast-style discussions from documents.
+### 从文档生成播客风格的讨论内容
 
 ```bash
 # 1. Extract key points
@@ -157,7 +155,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Audiobook Chapter
+### 有声书章节制作
 
 ```bash
 # Long-form narration
@@ -168,9 +166,9 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Audio Enhancement
+## 音频优化
 
-### Add Background Music
+### 添加背景音乐
 
 ```bash
 # 1. Generate podcast audio
@@ -192,7 +190,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Add Sound Effects
+### 添加音效
 
 ```bash
 # Transition sounds between segments
@@ -201,9 +199,9 @@ infsh app run infsh/ai-music --input '{
 }' > transition.json
 ```
 
-## Script Writing Tips
+## 脚本编写技巧
 
-### Prompt for Claude
+### 如何使用Claude生成脚本
 
 ```bash
 infsh app run openrouter/claude-sonnet-45 --input '{
@@ -219,9 +217,9 @@ infsh app run openrouter/claude-sonnet-45 --input '{
 }'
 ```
 
-## Podcast Templates
+## 播客模板
 
-### Interview Format
+### 面试格式
 
 ```
 HOST: Introduction and welcome
@@ -236,7 +234,7 @@ GUEST: Final thoughts
 HOST: Thank you and outro
 ```
 
-### Solo Episode
+### 单人播客
 
 ```
 Introduction with hook
@@ -249,7 +247,7 @@ Call to action
 Outro
 ```
 
-### News Roundup
+### 新闻汇总
 
 ```
 Intro music
@@ -261,16 +259,16 @@ Analysis/opinion segment
 Outro
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Natural punctuation** - Use commas and periods for pacing
-2. **Short sentences** - Easier to speak and listen
-3. **Varied voices** - Different speakers prevent monotony
-4. **Background music** - Subtle, at 10-15% volume
-5. **Crossfades** - Smooth transitions between segments
-6. **Edit scripts** - Remove filler before generating
+1. **使用自然的标点符号** – 用逗号和句号来控制语速和节奏。
+2. **使用简短的句子** – 更易于朗读和聆听。
+3. **使用多种语音** – 不同的语音可以避免单调感。
+4. **背景音乐** – 音量控制在10-15%之间。
+5. **平滑过渡** – 在不同段落之间实现无缝切换。
+6. **编辑脚本** – 在生成音频之前删除冗余内容。
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Text-to-speech models
@@ -289,4 +287,4 @@ npx skills add inference-sh/agent-skills@ai-content-pipeline
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all apps: `infsh app list --category audio`
+查看所有应用程序：`infsh app list --category audio`

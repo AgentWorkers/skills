@@ -1,112 +1,108 @@
 ---
 name: taskmaster
-description: Project manager and task delegation system. Use when you need to break down complex work into smaller tasks, assign appropriate AI models based on complexity, spawn sub-agents for parallel execution, track progress, and manage token budgets. Ideal for research projects, multi-step workflows, or when you want to delegate routine tasks to cheaper models while handling complex coordination yourself.
+description: 项目经理与任务分配系统：当您需要将复杂的工作分解为更小的任务时，可以根据任务的复杂性分配相应的AI模型，创建子代理以实现并行执行，跟踪进度，并管理代币预算。该系统非常适合研究项目、多步骤工作流程，或者当您希望将常规任务委托给成本较低的模型，同时自己负责复杂的协调工作时使用。
 ---
 
-# TaskMaster: AI Project Manager & Task Delegation
+# TaskMaster：人工智能项目管理系统与任务分配工具  
+通过智能的模型选择和子代理协调机制，将复杂的项目转化为可管理的工作流程。  
 
-Transform complex projects into managed workflows with smart model selection and sub-agent orchestration.
+## 核心功能  
 
-## Core Capabilities
+**🎯 智能任务分类**  
+- 分析任务复杂性，选择合适的模型（Haiku/Sonnet/Opus）  
+- 将大型项目分解为更小、更易于管理的任务  
+- 避免过度设计（简单的网络搜索任务无需使用Opus模型）  
 
-**🎯 Smart Task Triage**
-- Analyze complexity → assign appropriate model (Haiku/Sonnet/Opus)
-- Break large projects into smaller, manageable tasks
-- Prevent over-engineering (don't use Opus for simple web searches)
+**🤖 子代理协调**  
+- 创建具有特定模型限制的独立子代理  
+- 并行执行任务以提高完成速度  
+- 将结果整合为连贯的交付物  
 
-**🤖 Sub-Agent Orchestration**
-- Spawn isolated sub-agents with specific model constraints
-- Run tasks in parallel for faster completion
-- Consolidate results into coherent deliverables
+**💰 预算管理**  
+- 记录每个任务的代币成本及项目总成本  
+- 设置预算限制以防止开支失控  
+- 优化模型选择以提升成本效益  
 
-**💰 Budget Management**
-- Track token costs per task and total project
-- Set budget limits to prevent runaway spending
-- Optimize model selection for cost-efficiency
+**📊 进度跟踪**  
+- 实时显示所有活跃任务的进度  
+- 失败的任务会自动重试，并由人工进行审核  
+- 最终生成统一的交付物  
 
-**📊 Progress Tracking**
-- Real-time status of all active tasks
-- Failed task retry with escalation
-- Final deliverable compilation
+## 快速入门  
 
-## Quick Start
-
-### 1. Basic Task Delegation
+### 1. 基本任务分配  
 ```markdown
 TaskMaster: Research PDF processing libraries
 - Budget: $2.00
 - Priority: medium
 - Deadline: 2 hours
-```
+```  
 
-### 2. Complex Project Breakdown
+### 2. 复杂项目分解  
 ```markdown
 TaskMaster: Build recipe app MVP
 - Components: UI mockup, backend API, data schema, deployment
 - Budget: $15.00
 - Timeline: 1 week
 - Auto-assign models based on complexity
-```
+```  
 
-## Model Selection Rules
+## 模型选择规则  
 
-**Haiku ($0.25/$1.25)** - Simple, repetitive tasks:
-- Web searches & summarization
-- Data formatting & extraction
-- Basic file operations
-- Status checks & monitoring
+**Haiku（0.25美元/1.25美元）** – 简单、重复性任务：  
+- 网络搜索与信息汇总  
+- 数据格式化与提取  
+- 基本文件操作  
+- 状态检查与监控  
 
-**Sonnet ($3/$15)** - Most development work:
-- Research & analysis
-- Code writing & debugging
-- Documentation creation
-- Technical design
+**Sonnet（3美元/15美元）** – 大多数开发工作：  
+- 研究与分析  
+- 代码编写与调试  
+- 文档编写  
+- 技术设计  
 
-**Opus ($15/$75)** - Complex reasoning:
-- Architecture decisions
-- Creative problem-solving
-- Code reviews & optimization
-- Strategic planning
+**Opus（15美元/75美元）** – 复杂的推理任务：  
+- 架构决策  
+- 创造性问题解决  
+- 代码审查与优化  
+- 战略规划  
 
-## Advanced Usage
+## 高级用法  
 
-### Custom Model Assignment
-Override automatic selection when you know better:
+### 自定义模型选择  
+在您更了解任务需求时，可覆盖自动模型选择机制：  
 ```markdown
 TaskMaster: Debug complex algorithm [FORCE: Opus]
-```
+```  
 
-### Parallel Execution
-Run multiple tasks simultaneously:
+### 并行执行  
+同时运行多个任务：  
 ```markdown
 TaskMaster: Multi-research project
 - Task A: Library comparison
 - Task B: Performance benchmarks  
 - Task C: Security analysis
 [PARALLEL: true]
-```
+```  
 
-### Budget Controls
-Set spending limits:
+### 预算控制  
+设置支出限制：  
 ```markdown
 TaskMaster: Market research
 - Max budget: $5.00
 - Escalate if >$3.00 spent
 - Stop if any single task >$1.00
-```
+```  
 
-## Key Resources
+## 关键资源  
 
-- **Model Selection**: See [references/model-selection-rules.md](references/model-selection-rules.md) for detailed complexity guidelines
-- **Task Templates**: See [references/task-templates.md](references/task-templates.md) for common task patterns
-- **Delegation Engine**: Uses `scripts/delegate_task.py` for core orchestration logic
+- **模型选择**：详见 [references/model-selection-rules.md](references/model-selection-rules.md) 中的复杂性指南  
+- **任务模板**：参考 [references/task-templates.md](references/task-templates.md) 中的常见任务模板  
+- **任务分配引擎**：使用 `scripts/delegate_task.py` 实现核心协调逻辑  
 
-## Implementation Notes
+## 实施说明  
 
-**Sessions Management**: Each sub-agent gets isolated session with specific model constraints. No cross-talk unless explicitly designed.
-
-**Error Handling**: Failed tasks automatically retry once on Sonnet, then escalate to human review.
-
-**Result Aggregation**: TaskMaster compiles all sub-agent results into a single, coherent deliverable for the user.
-
-**Token Tracking**: Real-time cost monitoring with alerts when approaching budget limits.
+**会话管理**：每个子代理都拥有独立的会话环境，并遵循特定的模型限制；除非另有设计，否则各子代理之间不会互相通信。  
+**错误处理**：失败的任务在Sonnet模型下会自动重试一次，之后会转交人工审核。  
+**结果整合**：TaskMaster会将所有子代理的结果整合为用户可用的统一交付物。  
+**代币监控**：实时跟踪成本，并在接近预算限制时发出警报。

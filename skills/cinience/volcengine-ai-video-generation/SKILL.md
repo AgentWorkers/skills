@@ -1,25 +1,25 @@
 ---
 name: volcengine-ai-video-generation
-description: AI video generation workflow on Volcengine. Use when users need text-to-video, image-to-video, generation parameter tuning, or async task troubleshooting for video jobs.
+description: Volcengine上的AI视频生成工作流程：适用于用户需要进行文本转视频、图像转视频、生成参数调整，或解决视频任务相关异步问题时使用。
 ---
 
 # volcengine-ai-video-generation
 
-Run video generation jobs with deterministic task submission and status polling.
+用于执行视频生成任务，支持确定性的任务提交和状态监控。
 
-## Execution Checklist
+## 执行流程
 
-1. Confirm input mode (text-to-video or image-to-video).
-2. Set duration, resolution, fps, and style constraints.
-3. Submit task and poll status until completion.
-4. Return final video URL/path and task metadata.
+1. 确认输入模式（文本转视频或图片转视频）。
+2. 设置视频的时长、分辨率、帧率（fps）以及风格要求。
+3. 提交任务并持续监控任务状态，直到任务完成。
+4. 返回最终的视频URL或路径以及任务的相关元数据。
 
-## Reliability Rules
+## 可靠性规则
 
-- Always log task ID for retries.
-- Use bounded polling intervals.
-- Surface failure reason and rerun suggestions.
+- 为每个任务生成唯一的ID，以便后续的重试操作。
+- 使用固定的轮询间隔来监控任务状态。
+- 显示任务失败的原因，并提供重试建议。
 
-## References
+## 参考资料
 
 - `references/sources.md`

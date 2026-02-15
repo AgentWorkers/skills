@@ -1,92 +1,92 @@
 ---
 name: ERC-8004 Register
-description: Register AI agents on-chain, update metadata, validate registrations, and auto-fix broken profiles via the ERC-8004 Identity Registry. Supports Base, Ethereum, Polygon, Monad, BNB.
+description: 通过 ERC-8004 身份注册表，在链上注册 AI 代理、更新元数据、验证注册信息，并自动修复损坏的代理配置。支持 Base、Ethereum、Polygon、Monad、BNB 等区块链平台。
 ---
 
-# ERC-8004 Registration Skill
+# ERC-8004 注册技能
 
-Register, update, validate, and fix agents on-chain via the ERC-8004 Identity Registry.
+通过 ERC-8004 身份注册表，在链上注册、更新、验证和修复代理。
 
-## Use This When...
+## 适用场景...
 
-- "Register my agent on-chain"
-- "I need to create a new ERC-8004 agent"
-- "Update my agent's metadata"
-- "Check if my agent registration is valid"
-- "Fix my agent's registration issues"
-- "Show my agent's on-chain info"
-- "What agents do I own?"
-- "Health check my agents"
+- “在链上注册我的代理”
+- “我需要创建一个新的 ERC-8004 代理”
+- “更新我的代理的元数据”
+- “检查我的代理注册是否有效”
+- “修复我的代理注册问题”
+- “显示我的代理的链上信息”
+- “我拥有哪些代理？”
+- “检查我的代理的健康状况”
 
-## Commands
+## 命令
 
 ### register
-Register a new agent on-chain.
+在链上注册一个新的代理。
 
 ```bash
 python scripts/register.py register --name "AgentName" --description "Description" [--image URL] [--chain base]
 ```
 
-**Options:**
-- `--name` (required): Agent name
-- `--description` (required): Agent description
-- `--image`: Image URL (must be https://)
-- `--chain`: Blockchain (base, ethereum, polygon, monad, bnb). Default: base
+**选项:**
+- `--name`（必填）：代理名称
+- `--description`（必填）：代理描述
+- `--image`：图片 URL（必须是 https:// 开头的）
+- `--chain`：区块链（base、ethereum、polygon、monad、bnb）。默认：base
 
 ### update
-Update an existing agent's metadata.
+更新现有代理的元数据。
 
 ```bash
 python scripts/register.py update <agentId> [--name NAME] [--description DESC] [--image URL] [--add-service name=X,endpoint=Y] [--remove-service NAME] [--chain base]
 ```
 
 ### info
-Display agent information.
+显示代理信息。
 
 ```bash
 python scripts/register.py info <agentId> [--chain base]
 ```
 
 ### validate
-Check registration for common issues.
+检查注册过程中是否存在常见问题。
 
 ```bash
 python scripts/register.py validate <agentId> [--chain base]
 ```
 
-**Checks:**
-- Missing `type` field
-- Local-path images (/home/..., ./, file://)
-- Empty name/description
-- Missing registrations array
-- Unreachable image URLs
+**检查内容:**
+- 缺少 `type` 字段
+- 使用本地路径的图片（如 /home/...、./、file://）
+- 名称/描述为空
+- 缺少 `registrations` 数组
+- 图片 URL 无法访问
 
 ### fix
-Auto-fix common registration issues.
+自动修复常见的注册问题。
 
 ```bash
 python scripts/register.py fix <agentId> [--chain base] [--dry-run]
 ```
 
-**Auto-fixes:**
-- Missing `type` field
-- Missing `registrations` array
-- Local-path images (removes them)
+**自动修复的内容:**
+- 缺少 `type` 字段
+- 缺少 `registrations` 数组
+- 使用本地路径的图片（会自动删除这些图片）
 
-Use `--dry-run` to preview changes without applying.
+使用 `--dry-run` 选项预览更改，而不会实际应用这些更改。
 
 ### self-check
-Check all agents owned by your wallet.
+检查你的钱包拥有的所有代理。
 
 ```bash
 python scripts/register.py self-check
 ```
 
-Queries Agentscan for your agents, validates each, and prints a health report.
+使用 Agentscan 查询你的代理，验证每个代理的状态，并打印健康报告。
 
-## Cross-Skill Workflows
+## 跨技能工作流程
 
-### Post-Registration Flow
+### 注册后流程
 ```bash
 # 1. Register new agent
 python scripts/register.py register --name "MyBot" --description "Trading assistant"
@@ -101,7 +101,7 @@ python scripts/reputation.py lookup 42 --chain base
 python scripts/discover.py info 42
 ```
 
-### Periodic Health Check
+### 定期健康检查
 ```bash
 # Run self-check to validate all your agents
 python scripts/register.py self-check
@@ -110,9 +110,9 @@ python scripts/register.py self-check
 python scripts/register.py fix 42 --chain base
 ```
 
-## Heartbeat Integration
+## 心跳检测集成
 
-For automated monitoring, run self-check periodically:
+为了实现自动化监控，定期运行自我检查：
 
 ```bash
 # Cron: check health every hour
@@ -126,9 +126,9 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
-## Wallet Configuration
+## 钱包配置
 
-Set one of these environment variables:
+设置以下环境变量之一：
 
 ```bash
 export ERC8004_MNEMONIC="your twelve word mnemonic phrase here"
@@ -136,13 +136,13 @@ export ERC8004_MNEMONIC="your twelve word mnemonic phrase here"
 export ERC8004_PRIVATE_KEY="0x..."
 ```
 
-## Contract
+## 合约
 
-Identity Registry: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` (same on all chains)
+身份注册表地址：`0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`（所有链上地址相同）
 
-## Supported Chains
+## 支持的区块链
 
-| Chain    | ID   | Explorer             |
+| 区块链    | ID   | 探索器             |
 |----------|------|----------------------|
 | Base     | 8453 | basescan.org         |
 | Ethereum | 1    | etherscan.io         |
@@ -150,13 +150,13 @@ Identity Registry: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` (same on all cha
 | Monad    | 143  | explorer.monad.xyz   |
 | BNB      | 56   | bscscan.com          |
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install web3 eth-account
 ```
 
-## Related Skills
+## 相关技能
 
-- **erc8004-discover**: Find and monitor agents
-- **erc8004-reputation**: Rate agents and check trust scores
+- **erc8004-discover**：查找和监控代理
+- **erc8004-reputation**：对代理进行评分并检查信任度

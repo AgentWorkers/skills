@@ -1,24 +1,24 @@
 ---
 name: brave-search
-description: Web search and content extraction via Brave Search API. Use for searching documentation, facts, or any web content. Lightweight, no browser required.
+description: 通过 Brave Search API 进行网页搜索和内容提取。可用于搜索文档、事实或任何网页内容。该工具非常轻量级，无需浏览器即可使用。
 ---
 
 # Brave Search
 
-Headless web search and content extraction using Brave Search. No browser required.
+Brave Search是一款无需浏览器即可进行无头网页搜索和内容提取的工具。
 
-## Setup
+## 设置
 
-Run once before first use:
+首次使用前请运行以下命令：
 
 ```bash
 cd ~/Projects/agent-scripts/skills/brave-search
 npm ci
 ```
 
-Needs env: `BRAVE_API_KEY`.
+该工具需要以下环境变量：`BRAVE_API_KEY`。
 
-## Search
+## 搜索
 
 ```bash
 ./search.js "query"                    # Basic search (5 results)
@@ -27,15 +27,15 @@ Needs env: `BRAVE_API_KEY`.
 ./search.js "query" -n 3 --content     # Combined
 ```
 
-## Extract Page Content
+## 提取页面内容
 
 ```bash
 ./content.js https://example.com/article
 ```
 
-Fetches a URL and extracts readable content as markdown.
+该工具可以获取指定URL的内容，并将其以Markdown格式提取出来。
 
-## Output Format
+## 输出格式
 
 ```
 --- Result 1 ---
@@ -49,9 +49,9 @@ Content: (if --content flag used)
 ...
 ```
 
-## When to Use
+## 使用场景
 
-- Searching for documentation or API references
-- Looking up facts or current information
-- Fetching content from specific URLs
-- Any task requiring web search without interactive browsing
+- 搜索文档或API参考资料
+- 查找事实或最新信息
+- 从特定URL获取内容
+- 任何不需要交互式浏览的网页搜索任务

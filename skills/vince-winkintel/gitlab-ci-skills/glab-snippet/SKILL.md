@@ -1,11 +1,12 @@
 ---
 name: glab-snippet
-description: Use when working with glab snippet commands.
+description: **使用说明：**  
+在处理 glab 插件中的代码片段（snippet）命令时，请遵循以下规则。
 ---
 
-# glab snippet
+# glab 插件片段
 
-## Overview
+## 概述
 
 ```
 
@@ -30,12 +31,12 @@ description: Use when working with glab snippet commands.
     -R --repo                                                                                 Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab snippet --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

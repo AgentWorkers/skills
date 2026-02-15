@@ -1,171 +1,124 @@
 ---
-name: communication
-description: |
-  Deep Listening & Response Crafting - Transform Claude into a thoughtful communicator who synthesizes context across conversations, connected apps, and user notes to draft contextually intelligent responses.
 
-    TRIGGERS: When the user asks Claude to help with any communication task including drafting messages, emails, replies, responses, or navigating difficult conversations. Also triggers when the user wants to understand communication dynamics, analyze tone, or get strategic advice on how to communicate in a specific situation.
+**名称：沟通技巧**  
+**描述：**  
+通过深度倾听与精心构思回应，将Claude打造成一个善于沟通的助手。它能够整合对话内容、关联的应用程序信息以及用户笔记，从而生成符合情境的智能回复。  
 
-      CAPABILITIES: Synthesizes parallel conversation threads, detects emotional subtext, applies communication principles, considers relationship history, and produces ready-to-send message drafts tailored to the person and situation.
-      ---
+**触发条件：**  
+当用户请求Claude协助处理任何沟通任务（如起草信息、邮件、回复或应对复杂对话）时；或者用户希望了解沟通中的动态、分析语气，或获取在特定情境下的沟通策略建议时，该技能会被激活。  
 
-      # Communication Skill
+**能力：**  
+- 整合多条并行的对话线索；  
+- 检测话语背后的情绪信息；  
+- 运用沟通原则；  
+- 考虑双方的关系历史；  
+- 生成针对具体人物和情境的、可直接发送的回复草稿。  
 
-      Transform communication from reactive to intentional by listening deeply before speaking.
+---
 
-      ## Core Workflow
+# 沟通技巧  
+通过深入倾听，将沟通方式从被动反应转变为主动、有目的的交流。  
 
-      Every communication task follows this process:
+## 核心工作流程  
+每项沟通任务都遵循以下流程：  
 
-      ```
-      1. GATHER    → Collect all relevant context
-      2. LISTEN    → Understand what's really happening
-      3. CONSIDER  → Apply principles and psychology
-      4. CRAFT     → Draft the response
-      5. REFINE    → Check against objectives
-      ```
+---  
+**步骤1：收集信息**  
+在构思回复之前，主动收集相关资料：  
+- **来自对话的内容**：用户对当前情境的描述；  
+- 参与对话的人员及其与用户的关系；  
+- 沟通渠道（电子邮件、Slack、短信或面对面交流）。  
+- **来自关联来源的信息**（如适用）：与该人/群体的近期交流记录；  
+- 关于同一主题的其他对话内容；  
+- 用户的笔记（如提供）：个人原则或价值观；  
+- 以往与该人/情境相关的经验。  
+- 若目标不明确、关键信息缺失或存在多种可行方案时，需提出澄清问题。  
 
-      ## Step 1: Gather Context
+## 步骤2：深入倾听**  
+运用深度倾听的方法（详见[listening-framework.md]）。  
+分层次分析信息：  
+1. **表面内容**：对方明确表达的内容；  
+2. **背景信息**：对话发生的整体情境；  
+3. **潜在情绪**：话语背后的真实感受与需求；  
+4. **历史背景**：以往的沟通模式。  
+**关键问题：**  
+- 对方真正的需求是什么（而非他们表面提出的要求）？  
+- 当前的情绪状态如何？  
+- 有哪些未被提及但重要的信息？  
+- 有哪些相关的其他因素需要考虑？  
 
-      Before crafting any response, actively gather information:
+## 步骤3：运用沟通原则**  
+参考[principles.md]中的沟通原则进行思考：  
+- **以真诚的态度为主，而非表现技巧**；  
+- 在评判之前先表达好奇心；  
+- 即使在不适的情况下也要保持清晰的表达；  
+- 修复关系比追求完美更重要；  
+- 时机选择至关重要——错误的时间发送错误的信息可能适得其反。  
+同时考虑心理因素（详见[psychology-patterns.md]）。  
+- 注意可能影响理解的认知偏见；  
+- 观察对方的情绪状态；  
+- 分析双方之间的权力关系。  
 
-      **From the conversation:**
-      - What has the user shared about this situation?
-      - Who is involved and what is their relationship to the user?
-      - What's the communication channel (email, Slack, text, in-person)?
+## 步骤4：构思回复**  
+参考[response-crafting.md]中的回复撰写技巧：  
+- **回复草稿检查清单**：  
+  - 回复需要实现的目标是什么？  
+  - 适合对方和情境的语气是什么？  
+  - 可能阻碍回复效果的因素有哪些？  
+  - 什么样的结构最能达成目标？  
+- **选择合适的回复结构**：  
+  - **“认可-建立共识-引导方向”（适用于复杂对话）：  
+    1. 真诚地认可对方的观点；  
+    2. 建立双方之间的共识；  
+    3. 指导后续的沟通方向。  
+  - **“背景-内容-请求”（适用于请求场景）：  
+    1. 简要介绍相关背景；  
+    2. 提出具体请求；  
+    3. 明确下一步行动。  
+  - **“观察-影响-建议”（适用于反馈场景）：  
+    1. 客观、非评判性的观察；  
+    2. 反馈带来的影响；  
+    3. 建议的改进措施。  
+- **根据情境调整语气**：  
+  | 情境 | 适用的语气 |  
+  |-----------|---------------|  
+  | 传达坏消息 | 温暖且直接 |  
+  | 发生冲突 | 好奇且中立 |  
+  | 提出请求 | 清晰且尊重对方 |  
+  | 提供支持 | 充满同情且真诚 |  
+  | 给予反馈 | 具体且建设性 |  
 
-      **From connected sources** (when available):
-      - Recent messages with this person/group
-      - Parallel conversations about the same topic
-      - Historical patterns with this person
+## 步骤5：完善与验证**  
+在发布回复草稿前，进行以下验证：  
+- 回复是否实现了预期目标？  
+- 语气是否符合双方的关系和情境？  
+- 收件人是否能够清楚理解回复内容？  
+- 回复是否尊重用户的个人原则和价值观？  
+- 回复是否简洁明了？  
+- 如果自己是接收者，是否愿意收到这样的信息？  
 
-      **From user notes** (when provided):
-      - Personal principles or values that apply
-      - Relationship context or history
-      - Previous learnings about this person/situation
+---
 
-      **Ask clarifying questions if:**
-      - The objective isn't clear
-      - Key context seems missing
-      - Multiple approaches seem equally valid
+**输出格式：**  
+当需要展示回复草稿时，使用以下格式：  
 
-      ## Step 2: Listen Deeply
+---  
+---
 
-      Apply the deep listening framework. See [listening-framework.md](references/listening-framework.md).
+## 处理复杂情境  
+- **当存在多条并行对话线索时**：  
+  整合这些信息，注意各方观点的相似点和差异；  
+  考虑各方所掌握的信息。  
+- **当情绪激动时**：先给予认可，避免立即解决问题；先建立安全氛围再深入讨论实质内容。  
+- **当关系紧张时**：多表达自己的意图，避免妄加假设，重点在于修复关系而非争对错。  
+- **当利害关系重大时**：花更多时间思考可能的误解，如有疑问，请征求用户的意见。  
 
-      Process in layers:
-      1. **Surface**: What was explicitly said?
-      2. **Context**: What's the surrounding story?
-      3. **Subtext**: What emotions and needs are beneath the words?
-      4. **Patterns**: What history informs this moment?
+---
 
-      Key questions:
-      - What does this person actually need (vs. what they're asking)?
-      - What's the emotional temperature?
-      - What hasn't been said that matters?
-      - What parallel threads connect to this?
+**该技能的局限性：**  
+- 不会替用户决定该传达什么内容；  
+- 不会基于未提供的信息自行发送消息；  
+- 无法保证沟通结果——沟通效果是双方共同努力的结果。  
 
-      ## Step 3: Consider Principles & Psychology
-
-      Apply communication principles. See [principles.md](references/principles.md).
-
-      Core principles to weigh:
-      - **Presence over performance** - understand, don't perform
-      - **Curiosity before judgment** - get curious about what's driving behavior
-      - **Clarity is kindness** - be clear even when uncomfortable
-      - **Repair over perfection** - relationships matter more than being right
-      - **Timing matters** - right message, wrong time = wrong message
-
-      Consider psychological dynamics. See [psychology-patterns.md](references/psychology-patterns.md).
-
-      Check for:
-      - Cognitive biases affecting interpretation
-      - Emotional state signals
-      - Power dynamics at play
-      - Trust level in the relationship
-
-      ## Step 4: Craft the Response
-
-      Apply response crafting principles. See [response-crafting.md](references/response-crafting.md).
-
-      **Pre-draft checklist:**
-      - [ ] What must this message accomplish?
-      - [ ] What tone fits this person and situation?
-      - [ ] What obstacles might prevent this landing well?
-      - [ ] What structure serves the objective?
-
-      **Choose a structure pattern:**
-
-      *Acknowledge-Bridge-Guide* (difficult conversations):
-      1. Acknowledge their perspective genuinely
-      2. Bridge to shared understanding
-      3. Guide toward path forward
-
-      *Context-Content-Call* (requests):
-      1. Brief relevant context
-      2. The actual content/request
-      3. Clear next step
-
-      *Observation-Impact-Request* (feedback):
-      1. Specific, non-judgmental observation
-      2. How it affected outcomes
-      3. What you'd like instead
-
-      **Calibrate tone to situation:**
-      | Situation | Tone Approach |
-      |-----------|---------------|
-      | Difficult news | Warm + Direct |
-      | Conflict | Curious + Neutral |
-      | Request | Clear + Respectful |
-      | Support | Empathetic + Present |
-      | Feedback | Specific + Constructive |
-
-      ## Step 5: Refine & Verify
-
-      Before presenting the draft, verify:
-
-      - [ ] Does this achieve the stated objective?
-      - [ ] Does the tone match the relationship and situation?
-      - [ ] Is it clear what the recipient should do/understand?
-      - [ ] Does it respect the user's principles and values?
-      - [ ] Is it appropriately concise?
-      - [ ] Would I want to receive this message?
-
-      ## Output Format
-
-      When presenting a draft response:
-
-      ```
-      **Context understood:** [1-2 sentence summary of the situation]
-
-      **Approach:** [Brief rationale for tone/structure chosen]
-
-      **Draft:**
-      ---
-      [The actual message draft]
-      ---
-
-      **Notes:** [Optional: alternatives considered, things to watch for, follow-up suggestions]
-      ```
-
-      ## Handling Complex Situations
-
-      **When parallel threads exist:**
-      Synthesize them. Note where perspectives align/differ. Consider what each party knows.
-
-      **When emotions are high:**
-      Lead with acknowledgment. Don't problem-solve immediately. Create safety before substance.
-
-      **When the relationship is strained:**
-      Over-communicate intent. Avoid assumptions. Focus on repair over being right.
-
-      **When stakes are high:**
-      Take extra time. Consider unintended interpretations. When in doubt, ask the user for input.
-
-      ## What This Skill Does NOT Do
-
-      - Make decisions for the user about what to communicate
-      - Assume context that hasn't been provided
-      - Send messages on the user's behalf without explicit confirmation
-      - Guarantee outcomes—communication is co-created
-
-      The goal is to help the user communicate with greater clarity, intention, and connection.
+**目标：**  
+帮助用户以更清晰、更有目的、更富有共鸣的方式与他人交流。

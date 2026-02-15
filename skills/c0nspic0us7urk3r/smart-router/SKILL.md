@@ -30,19 +30,19 @@ metadata:
       - "Gemini 3 Pro: Concurrency 69 issues/MLOC"
 ---
 
-# A.I. Smart-Router
+# 人工智能智能路由器
 
-Intelligently route requests to the optimal AI model using tiered classification with automatic fallback handling and cost optimization.
+该路由器能够通过分层分类机制智能地将请求路由到最合适的AI模型，并具备自动回退处理和成本优化功能。
 
-## How It Works (Silent by Default)
+## 工作原理（默认为静默模式）
 
-The router operates transparently—users send messages normally and get responses from the best model for their task. No special commands needed.
+路由器以透明方式运行：用户正常发送请求，系统会从最适合该请求的模型中获取响应，无需使用任何特殊指令。
 
-**Optional visibility**: Include `[show routing]` in any message to see the routing decision.
+**可选功能：** 在任何请求中添加 `[show routing]` 可以查看路由决策过程。
 
-## Tiered Classification System
+## 分层分类系统
 
-The router uses a three-tier decision process:
+路由器采用三层决策流程：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -80,104 +80,102 @@ The router uses a three-tier decision process:
 └──────────────────────────────────────┴──────────────────────────┘
 ```
 
-## Intent Detection Patterns
+## 意图检测模式
 
-### CODE Intent
-- Keywords: write, code, debug, fix, refactor, implement, function, class, script, API, bug, error, compile, test, PR, commit
-- File extensions mentioned: .py, .js, .ts, .go, .rs, .java, etc.
-- Code blocks in input
+### **代码相关意图**
+- 关键词：write（编写）、code（代码）、debug（调试）、fix（修复）、refactor（重构）、implement（实现）、function（函数）、class（类）、script（脚本）、API（应用程序编程接口）、bug（错误）、error（错误）、compile（编译）、test（测试）、PR（代码提交）、commit（提交）
+- 常见的文件扩展名：.py、.js、.ts、.go、.rs、.java 等
+- 输入中包含代码块
 
-### ANALYSIS Intent  
-- Keywords: analyze, explain, compare, research, understand, why, how does, evaluate, assess, review, investigate, examine
-- Long-form questions
-- "Help me understand..."
+### **分析相关意图**
+- 关键词：analyze（分析）、explain（解释）、compare（比较）、research（研究）、understand（理解）、why（为什么）、how does（...是如何工作的）、evaluate（评估）、assess（评估）、review（审查）、investigate（调查）、examine（检查）
+- 长篇幅的问题
+- “Help me understand...”（帮我理解...）
 
-### CREATIVE Intent
-- Keywords: write (story/poem/essay), create, brainstorm, imagine, design, draft, compose
-- Fiction/narrative requests
-- Marketing/copy requests
+### **创作相关意图**
+- 关键词：write（编写故事/诗歌/文章）、create（创作）、brainstorm（头脑风暴）、imagine（想象）、design（设计）、draft（草拟）、compose（创作）
+- 与虚构内容或叙事相关的请求
 
-### REALTIME Intent
-- Keywords: now, today, current, latest, trending, news, happening, live, price, score, weather
-- X/Twitter mentions
-- Stock/crypto tickers
-- Sports scores
+### **实时相关意图**
+- 关键词：now（现在）、today（今天）、current（当前的）、latest（最新的）、trending（热门的）、news（新闻）、happening（正在发生的）、live（实时的）、price（价格）、score（分数）、weather（天气）
+- X/Twitter上的提及
+- 股票/加密货币行情
+- 体育比分
 
-### GENERAL Intent (Default)
-- Simple Q&A
-- Translations
-- Summaries
-- Conversational
+### **通用意图（默认）**
+- 简单的问答
+- 翻译
+- 摘要
+- 对话式交流
 
-### MIXED Intent (Multiple Intents Detected)
-When a request contains multiple clear intents (e.g., "Write code to analyze this data and explain it creatively"):
+### **混合意图（检测到多种意图）**
+- 如果一个请求包含多种明确的意图（例如：“编写代码来分析这些数据，并对其进行创造性解释”）：
+  1. **确定主要意图**：核心任务是什么？
+  2. **路由到能力最强的模型**：混合任务需要多种功能
+  3. **默认选择复杂度较高的模型**：多种意图通常意味着需要多步骤的处理
 
-1. **Identify primary intent** — What's the main deliverable?
-2. **Route to highest-capability model** — Mixed tasks need versatility
-3. **Default to COMPLEX complexity** — Multi-intent = multi-step
+**示例：**
+- “编写代码并解释其工作原理” → 路由到 Opus 模型
+- “总结这个内容并告诉我最新的相关新闻” → 优先选择 Grok 模型
+- “根据当前事件创作一个故事” → 优先选择 Grok 模型（实时处理）
 
-**Examples:**
-- "Write code AND explain how it works" → CODE (primary) + ANALYSIS → Route to Opus
-- "Summarize this AND what's the latest news on it" → REALTIME takes precedence → Grok
-- "Creative story using real current events" → REALTIME + CREATIVE → Grok (real-time wins)
+## 语言处理
 
-## Language Handling
+**非英语请求** 也能被正常处理——所有支持的模型都具备多语言支持能力：
 
-**Non-English requests** are handled normally — all supported models have multilingual capabilities:
-
-| Model | Non-English Support |
+| 模型 | 支持的语言数量 |
 |-------|---------------------|
-| Opus/Sonnet/Haiku | Excellent (100+ languages) |
-| GPT-5 | Excellent (100+ languages) |
-| Gemini Pro/Flash | Excellent (100+ languages) |
-| Grok | Good (major languages) |
+| Opus/Sonnet/Haiku | 超过100种语言 |
+| GPT-5 | 超过100种语言 |
+| Gemini Pro/Flash | 超过100种语言 |
+| Grok | 支持主要语言 |
 
-**Intent detection still works** because:
-- Keyword patterns include common non-English equivalents
-- Code intent detected by file extensions, code blocks (language-agnostic)
-- Complexity estimated by query length (works across languages)
+**意图检测仍然有效**，因为：
+- 关键词模式包含常见的非英语词汇对应词
+- 代码意图可以通过文件扩展名和代码块来识别（与语言无关）
+- 任务复杂度可以通过查询长度来估计（适用于多种语言）
 
-**Edge case:** If intent unclear due to language, default to GENERAL intent with MEDIUM complexity.
+**特殊情况：** 如果由于语言问题导致意图不明确，系统会默认选择 **通用意图** 并使用中等复杂度的模型。
 
-## Complexity Signals
+## 复杂度判断
 
-### Simple Complexity ($)
-- Short query (<50 words)
-- Single question mark
-- "Quick question", "Just tell me", "Briefly"
-- Yes/no format
-- Unit conversions, definitions
+### **简单任务（$）**
+- 短查询（少于50个单词）
+- 单个问号
+- “快速回答”、“简单说明”
+- 是/否格式的问答
+- 单位转换、定义等简单操作
 
-### Medium Complexity ($$)
-- Moderate query (50-200 words)
-- Multiple aspects to address
-- "Explain", "Describe", "Compare"
-- Some context provided
+### **中等复杂度（$$）**
+- 中等长度的查询（50-200个单词）
+- 需要处理多个方面
+- “解释”、“描述”、“比较”等操作
+- 提供了一些上下文信息
 
-### Complex Complexity ($$$)
-- Long query (>200 words) or complex task
-- "Step by step", "Thoroughly", "In detail"
-- Multi-part questions
-- Critical/important qualifier
-- Research, analysis, or creative work
+### **复杂任务（$$$）**
+- 长查询（超过200个单词）或复杂的任务
+- 需要“逐步说明”、“详细解释”
+- 多部分组成的问题
+- 包含关键/重要的信息
+- 需要研究、分析或创造性的工作
 
-## Routing Matrix
+## 路由表
 
-| Intent | Simple | Medium | Complex |
+| 意图 | 简单 | 中等 | 复杂 |
 |--------|--------|--------|---------|
-| **CODE** | Sonnet | Opus | Opus |
-| **ANALYSIS** | Flash | GPT-5 | Opus |
-| **CREATIVE** | Sonnet | Opus | Opus |
-| **REALTIME** | Grok | Grok | Grok-3 |
-| **GENERAL** | Flash | Sonnet | Opus |
+| **代码** | Sonnet | Opus | Opus |
+| **分析** | Flash | GPT-5 | Opus |
+| **创作** | Sonnet | Opus | Opus |
+| **实时** | Grok | Grok | Grok-3 |
+| **通用** | Flash | Sonnet | Opus |
 
-## Token Exhaustion & Automatic Model Switching
+## 令牌耗尽与模型自动切换
 
-When a model becomes unavailable mid-session (token quota exhausted, rate limit hit, API error), the router automatically switches to the next best available model and **notifies the user**.
+当某个模型在会话过程中因令牌耗尽、达到速率限制或出现API错误而无法使用时，路由器会自动切换到下一个可用的模型，并**通知用户**。
 
-### Notification Format
+### 通知格式
 
-When a model switch occurs due to exhaustion, the user receives a notification:
+当模型切换时，用户会收到以下通知：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -192,18 +190,18 @@ When a model switch occurs due to exhaustion, the user receives a notification:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Switch Reasons
+### 切换原因
 
-| Reason | Description |
+| 原因 | 说明 |
 |--------|-------------|
-| `token quota exhausted` | Daily/monthly token limit reached |
-| `rate limit exceeded` | Too many requests per minute |
-| `context window exceeded` | Input too large for model |
-| `API timeout` | Model took too long to respond |
-| `API error` | Provider returned an error |
-| `model unavailable` | Model temporarily offline |
+| **令牌耗尽** | 达到每日/每月的令牌使用限制 |
+| **速率限制超出** | 每分钟请求次数过多 |
+| **输入内容超出模型处理范围** | 输入内容超出模型处理能力 |
+| **API超时** | 模型响应时间过长 |
+| **API错误** | 提供者返回错误 |
+| **模型暂时不可用** | 模型处于离线状态 |
 
-### Implementation
+### 实现细节
 
 ```python
 def execute_with_fallback(primary_model: str, fallback_chain: list[str], request: str) -> Response:
@@ -302,30 +300,30 @@ If this persists, your human may need to check API quotas or add additional prov
     )
 ```
 
-### Fallback Priority for Token Exhaustion
+### 令牌耗尽时的回退策略
 
-When a model is exhausted, the router selects the next best model for the **same task type**:
+当某个模型无法使用时，路由器会为 **相同类型的任务** 选择下一个最佳模型：
 
-| Original Model | Fallback Priority (same capability) |
+| 原始模型 | 回退优先级（相同功能） |
 |----------------|-------------------------------------|
 | Opus | Sonnet → GPT-5 → Grok-3 → Gemini Pro |
 | Sonnet | GPT-5 → Grok-3 → Opus → Haiku |
 | GPT-5 | Sonnet → Opus → Grok-3 → Gemini Pro |
 | Gemini Pro | Flash → GPT-5 → Opus → Sonnet |
-| Grok-2/3 | (warn: no real-time fallback available) |
+| Grok-2/3 | （警告：没有实时可用模型） |
 
-### User Acknowledgment
+### 用户反馈
 
-After a model switch, the agent should note in the response that:
-1. The original model was unavailable
-2. Which model actually completed the request
-3. The response quality may differ from the original model's typical output
+模型切换后，系统应在响应中告知用户：
+1. 原始模型为何无法使用
+2. 实际完成请求的模型是什么
+3. 新模型的响应质量可能与原始模型有所不同
 
-This ensures transparency and sets appropriate expectations.
+这有助于保持用户对系统行为的了解，并帮助用户合理预期结果。
 
-### Streaming Responses with Fallback
+### 流式响应与回退处理
 
-When using streaming responses, fallback handling requires special consideration:
+在使用流式响应时，需要特别注意回退机制：
 
 ```python
 async def execute_with_streaming_fallback(primary_model: str, fallback_chain: list[str], request: str):
@@ -360,9 +358,9 @@ async def execute_with_streaming_fallback(primary_model: str, fallback_chain: li
     yield build_exhaustion_error(models_to_try)
 ```
 
-**Key insight:** Wait for the first chunk before committing to a model. If the first chunk times out, fall back before any partial response is shown to the user.
+**重要提示：** 在显示任何部分响应之前，务必等待第一个响应块完成。如果第一个响应块超时，应立即切换到备用模型。
 
-### Retry Timing Configuration
+### 重试策略配置
 
 ```python
 RETRY_CONFIG = {
@@ -375,38 +373,38 @@ RETRY_CONFIG = {
 }
 ```
 
-**Circuit breaker:** If a model fails 3 times in 5 minutes, skip it entirely for the next 5 minutes. This prevents repeatedly hitting a down service.
+**故障保护机制：** 如果某个模型在5分钟内失败3次，那么在接下来的5分钟内将不再尝试使用该模型。这样可以避免频繁请求失败的服务。
 
-## Fallback Chains
+## 回退机制链
 
-When the preferred model fails (rate limit, API down, error), cascade to the next option:
+当首选模型出现故障（如达到速率限制、API故障等）时，系统会按顺序切换到下一个可用模型：
 
-### Code Tasks
+### 代码相关任务
 ```
 Opus → Sonnet → GPT-5 → Gemini Pro
 ```
 
-### Analysis Tasks
+### 分析相关任务
 ```
 Opus → GPT-5 → Gemini Pro → Sonnet
 ```
 
-### Creative Tasks
+### 创作相关任务
 ```
 Opus → GPT-5 → Sonnet → Gemini Pro
 ```
 
-### Real-time Tasks
+### 实时相关任务
 ```
 Grok-2 → Grok-3 → (warn: no real-time fallback)
 ```
 
-### General Tasks
+### 通用任务
 ```
 Flash → Haiku → Sonnet → GPT-5
 ```
 
-### Long Context (Tiered by Size)
+### 长篇内容（按长度分层处理）
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -420,7 +418,7 @@ Flash → Haiku → Sonnet → GPT-5
 └─────────────────────┴───────────────────────────────────────────┘
 ```
 
-**Implementation:**
+### 实现细节
 
 ```python
 def handle_long_context(token_count: int, available_models: dict) -> str | ErrorMessage:
@@ -486,7 +484,7 @@ Would you like me to help split this into manageable chunks?""",
     )
 ```
 
-**Example Error Output:**
+**示例错误输出：**
 
 ```
 ⚠️ Context Window Exceeded
@@ -505,9 +503,9 @@ Options:
 Would you like me to help split this into manageable chunks?
 ```
 
-## Dynamic Model Discovery
+## 动态模型选择
 
-The router auto-detects available providers at runtime:
+路由器会在运行时自动检测可用的模型：
 
 ```
 1. Check configured auth profiles
@@ -516,59 +514,58 @@ The router auto-detects available providers at runtime:
 4. If preferred model unavailable, use best available alternative
 ```
 
-**Example**: If only Anthropic and Google are configured:
-- Code tasks → Opus (Anthropic available ✓)
-- Real-time tasks → ⚠️ No Grok → Fall back to Opus + warn user
-- Long docs → Gemini Pro (Google available ✓)
+**示例**：如果仅配置了Anthropic和Google模型：
+- 代码相关任务 → 优先使用Opus模型（如果Anthropic可用）
+- 实时相关任务 → 如果Grok不可用，则切换到Opus模型并提醒用户
+- 长篇文档相关任务 → 优先使用Gemini Pro模型（如果Google可用）
 
-## Cost Optimization
+## 成本优化
 
-The router considers cost when complexity is LOW:
+当任务复杂度较低时，系统会考虑成本因素：
 
-| Model | Cost Tier | Use When |
+| 模型 | 成本等级 | 适用场景 |
 |-------|-----------|----------|
-| Gemini Flash | $ | Simple tasks, high volume |
-| Claude Haiku | $ | Simple tasks, quick responses |
-| Claude Sonnet | $$ | Medium complexity |
-| Grok 2 | $$ | Real-time needs only |
-| GPT-5 | $$ | General fallback |
-| Gemini Pro | $$$ | Long context needs |
-| Claude Opus | $$$$ | Complex/critical tasks |
+| Gemini Flash | 低成本 | 简单任务、高请求量 |
+| Claude Haiku | 低成本 | 简单任务、快速响应 |
+| Claude Sonnet | 中等成本 | 中等复杂度任务 |
+| Grok 2 | 中等成本 | 仅适用于实时任务 |
+| GPT-5 | 高成本 | 需要复杂处理的任务 |
+| Gemini Pro | 高成本 | 需要长篇内容处理的任务 |
 
-**Rule**: Never use Opus ($$$) for tasks that Flash ($) can handle.
+**规则**：对于Flash模型能够处理的任务，切勿使用成本较高的Opus模型。
 
-## User Controls
+## 用户控制
 
-### Show Routing Decision
-Add `[show routing]` to any message:
+### 查看路由决策过程
+在请求中添加 `[show routing]` 可以查看路由决策过程：
 ```
 [show routing] What's the weather in NYC?
 ```
-Output includes:
+响应中会包含以下信息：
 ```
 [Routed → xai/grok-2-latest | Reason: REALTIME intent detected | Fallback: none available]
 ```
 
-### Force Specific Model
-Explicit overrides:
-- "use grok: ..." → Forces Grok
-- "use claude: ..." → Forces Opus
-- "use gemini: ..." → Forces Gemini Pro
-- "use flash: ..." → Forces Gemini Flash
-- "use gpt: ..." → Forces GPT-5
+### 强制使用特定模型
+可以通过以下命令强制使用特定模型：
+- “use grok: ...” → 强制使用Grok模型
+- “use claude: ...” → 强制使用Claude模型
+- “use gemini: ...” → 强制使用Gemini Pro模型
+- “use flash: ...” → 强制使用Flash模型
+- “use gpt: ...” → 强制使用GPT-5模型
 
-### Check Router Status
-Ask: "router status" or "/router" to see:
-- Available providers
-- Configured models
-- Current routing table
-- Recent routing decisions
+### 检查路由器状态
+可以通过 “router status” 或 “/router” 命令查看：
+- 可用的模型
+- 配置的模型
+- 当前的路由表
+- 最近的路由决策记录
 
-## Implementation Notes
+### 实现注意事项
 
-### For Agent Implementation
+### 代理程序实现
 
-When processing a request:
+在处理请求时，请注意以下事项：
 
 ```
 1. DETECT available models (check auth profiles)
@@ -583,7 +580,7 @@ When processing a request:
 10. LOG routing decision (for debugging)
 ```
 
-### Cost-Aware Routing Flow (Critical Order)
+### 成本敏感的路由流程（关键步骤）
 
 ```python
 def route_with_fallback(request):
@@ -674,7 +671,7 @@ def get_allowed_tiers(complexity: str) -> list[str]:
 # Result: Opus is NEVER considered, not even momentarily.
 ```
 
-### Cost Optimization: Two Approaches
+### 成本优化策略（两种方法）
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -706,9 +703,8 @@ def get_allowed_tiers(complexity: str) -> list[str]:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Spawning with Different Models
+### 使用 `session_spawn` 进行模型选择
 
-Use sessions_spawn for model routing:
 ```
 sessions_spawn(
   task: "user's request",
@@ -717,12 +713,13 @@ sessions_spawn(
 )
 ```
 
-## Security
+## 安全性
 
-- Never send sensitive data to untrusted models
-- API keys handled via environment/auth profiles only
-- See `references/security.md` for full security guidance
+- **安全注意事项**：
+- 绝不要将敏感数据发送给不可信的模型
+- API密钥仅通过环境变量/认证配置文件进行管理
+- 详细的安全指南请参阅 `references/security.md`
 
-## Model Details
+## 模型详情
 
-See `references/models.md` for detailed capabilities and pricing.
+有关模型的详细功能和定价信息，请参阅 `references/models.md`。

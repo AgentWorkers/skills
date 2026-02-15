@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-rate-updater"
 display_name: "CWICR Rate Updater"
-description: "Update CWICR resource rates with current market prices. Integrate external price data, apply inflation adjustments, and maintain rate history."
+description: "根据当前市场价格更新 CWICR 资源费率。整合外部价格数据，应用通货膨胀调整，并维护费率历史记录。"
 ---
 
-# CWICR Rate Updater
+# CWICR费率更新器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Resource rates become outdated:
-- Material prices fluctuate with market
-- Labor rates change annually
-- Equipment costs vary by region
-- Historical rates need adjustment
+### 问题描述
+资源费率容易过时：
+- 材料价格随市场波动
+- 劳动力费率每年都会变化
+- 设备成本因地区而异
+- 历史费率需要根据实际情况进行调整
 
-### Solution
-Systematic rate updates integrating market data, inflation indices, and regional factors while maintaining audit trail.
+### 解决方案
+通过系统化的方式更新费率，整合市场数据、通货膨胀指数和地区因素，同时保留审计追踪记录。
 
-### Business Value
-- **Accuracy** - Current market pricing
-- **Flexibility** - Update specific resources or categories
-- **Audit trail** - Track rate changes over time
-- **Automation** - Integrate with price APIs
+### 商业价值
+- **准确性**：确保费率反映当前市场价格
+- **灵活性**：可以针对特定资源或类别进行更新
+- **审计追踪**：能够记录费率随时间的变化情况
+- **自动化**：可与价格API集成
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -439,7 +439,7 @@ class RateScheduler:
         return results
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load CWICR data
@@ -459,9 +459,9 @@ print(f"Updated {result.updated} labor rates")
 print(f"Average adjustment: {result.summary.get('adjustment_percent')}%")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Inflation Adjustment
+### 1. 通货膨胀调整
 ```python
 inflation_rates = {
     2020: 0.012, 2021: 0.047, 2022: 0.065, 2023: 0.034
@@ -474,7 +474,7 @@ result = updater.apply_inflation_index(
 print(f"Cumulative adjustment: {result.summary['total_adjustment_percent']}%")
 ```
 
-### 2. Regional Factors
+### 2. 地区因素
 ```python
 berlin_factors = {
     'labor': 1.15,
@@ -484,7 +484,7 @@ berlin_factors = {
 result = updater.apply_regional_factors(berlin_factors)
 ```
 
-### 3. Import External Prices
+### 3. 导入外部价格数据
 ```python
 market_prices = pd.read_excel("current_prices.xlsx")
 result = updater.import_external_rates(
@@ -495,11 +495,11 @@ result = updater.import_external_rates(
 )
 ```
 
-### 4. Export Audit Trail
+### 4. 导出审计追踪记录
 ```python
 updater.export_change_log("rate_changes_2024.xlsx")
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Rate Management
+## 资源信息
+- **GitHub仓库**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC手册**：第3.1章 - 费率管理

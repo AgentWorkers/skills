@@ -1,23 +1,23 @@
-# GuavaMemory — Episodic Memory System for OpenClaw
+# GuavaMemory — OpenClaw 的情节记忆系统
 
-Structured episodic memory with Q-value scoring. Remember what worked, forget what didn't.
+这是一个基于情节记忆的算法，支持 Q 值评分机制，能够帮助系统记住哪些方法有效，哪些方法无效。
 
-## What It Does
+## 功能介绍
 
-- Records task episodes with success/failure patterns and Q-values
-- Searches past episodes via `memory_search` (Voyage AI compatible)
-- Promotes repeated successes into reusable skill procedures
-- Tracks anti-patterns to avoid repeating mistakes
+- 记录任务执行的详细过程（包括成功/失败情况）以及对应的 Q 值。
+- 通过 `memory_search` 功能查询过去的任务记录（该功能兼容 Voyage AI）。
+- 将多次成功的操作整合成可复用的技能流程。
+- 识别常见的错误模式，以避免重复犯错。
 
-## Quick Start
+## 快速入门
 
-### 1. Set Up Memory Directories
+### 1. 设置记忆存储目录
 
 ```bash
 mkdir -p memory/episodes memory/skills memory/meta
 ```
 
-### 2. Initialize Index
+### 2. 初始化索引
 
 ```bash
 cat > memory/episodes/index.json << 'EOF'
@@ -36,9 +36,9 @@ cat > memory/episodes/index.json << 'EOF'
 EOF
 ```
 
-### 3. Add to AGENTS.md
+### 3. 将相关规则添加到 AGENTS.md 文件中
 
-Paste the following rules into your AGENTS.md:
+将以下规则复制并粘贴到您的 AGENTS.md 文件中：
 
 ```markdown
 ### Episodic Memory Rules
@@ -51,9 +51,9 @@ Paste the following rules into your AGENTS.md:
 7. **Update index** → Keep `memory/episodes/index.json` in sync
 ```
 
-## Episode Format
+## 任务记录格式
 
-Create files like `memory/episodes/ep_20260211_001.md`:
+创建如下结构的文件：`memory/episodes/ep_20260211_001.md`
 
 ```markdown
 # EP-20260211-001: Short description
@@ -81,29 +81,24 @@ What you were trying to do
 - feel: flow | grind | frustration | eureka
 ```
 
-## Q-Value Update
+## Q 值更新机制
 
-```
-Q_new = Q_old + 0.3 * (reward - Q_old)
-```
+- `1.0`：一次性成功
+- `0.7`：经过多次尝试后成功
+- `0.3`：虽然成功但过程较为繁琐
+- `0.0`：失败，但采用了不同的解决方法
+- `-0.5`：失败，问题仍未解决
 
-Reward scale:
-- `1.0` → One-shot success
-- `0.7` → Success with some trial and error
-- `0.3` → Success but very roundabout
-- `0.0` → Failed, solved differently
-- `-0.5` → Failed, unresolved
+## 技能优化流程
 
-## Skill Promotion
+当某个操作连续成功 3 次以上且 Q 值 ≥ 0.85 时：
+1. 将相关任务记录合并到 `memory/skills/skill-name.md` 文件中。
+2. 提取最优的操作流程。
+3. 将原始任务记录标记为 `status: "graduated"`（已完成优化）。
 
-When the same intent succeeds 3+ times with Q ≥ 0.85:
-1. Merge episodes into `memory/skills/skill-name.md`
-2. Extract the optimal procedure
-3. Mark source episodes as `status: "graduated"`
+## 搜索脚本
 
-## Search Script
-
-Copy `scripts/ep-search.sh` to your workspace:
+将 `scripts/ep-search.sh` 复制到您的工作目录中：
 
 ```bash
 #!/bin/bash
@@ -113,12 +108,12 @@ echo "🔍 Searching episodes for: $1"
 cat "$INDEX" | jq -r '.episodes | sort_by(-.q_value) | .[] | select(.status == "active") | "Q:\(.q_value) | \(.feel) | \(.intent) → \(.file)"'
 ```
 
-## Requirements
+## 系统要求
 
-- OpenClaw (any version)
-- `jq` (for search script)
-- No other dependencies
+- 支持 OpenClaw（任意版本）。
+- 需要 `jq` 工具（用于执行搜索脚本）。
+- 无需其他额外依赖。
 
-## How It Works With memory_search
+## 与 `memory_search` 的配合使用方式
 
-Episodes are plain Markdown files in `memory/`. OpenClaw's `memory_search` (Voyage AI) indexes them automatically. When you search for a task, episodes rank by semantic similarity. Then filter by Q-value to find what actually worked.
+所有任务记录都保存在 `memory/` 目录下的 Markdown 文件中。OpenClaw 的 `memory_search`（Voyage AI）会自动对这些文件进行索引。在搜索任务时，系统会根据语义相似性对记录进行排序，然后通过 Q 值筛选出真正有效的解决方案。

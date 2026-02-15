@@ -17,9 +17,9 @@ metadata:
 
 # Google Tasks
 
-Access the Google Tasks API with managed OAuth authentication. Manage task lists and tasks with full CRUD operations.
+通过托管的 OAuth 认证来访问 Google Tasks API。您可以执行完整的 CRUD 操作（创建、读取、更新和删除）来管理任务列表和任务。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all task lists
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-tasks/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Tasks API endpoint path. The gateway proxies requests to `tasks.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google Tasks API 端点路径。该网关会将请求代理到 `tasks.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google Tasks OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google Tasks OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Tasks connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google Tasks 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,23 +140,23 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Task Lists
+### 任务列表
 
-#### List All Task Lists
+#### 列出所有任务列表
 
 ```bash
 GET /google-tasks/tasks/v1/users/@me/lists
 ```
 
-**Query Parameters:**
-- `maxResults` - Maximum number of task lists to return (default: 20, max: 100)
-- `pageToken` - Token for pagination
+**查询参数：**
+- `maxResults` - 返回的任务列表的最大数量（默认：20，最大值：100）
+- `pageToken` - 分页令牌
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#taskLists",
@@ -174,13 +174,13 @@ GET /google-tasks/tasks/v1/users/@me/lists
 }
 ```
 
-#### Get Task List
+#### 获取任务列表
 
 ```bash
 GET /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
 ```
 
-#### Create Task List
+#### 创建任务列表
 
 ```bash
 POST /google-tasks/tasks/v1/users/@me/lists
@@ -191,7 +191,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#taskList",
@@ -203,7 +203,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task List (PATCH - partial update)
+#### 更新任务列表（PATCH - 部分更新）
 
 ```bash
 PATCH /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
@@ -214,7 +214,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task List (PUT - full replace)
+#### 更新任务列表（PUT - 完整替换）
 
 ```bash
 PUT /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
@@ -225,33 +225,33 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task List
+#### 删除任务列表
 
 ```bash
 DELETE /google-tasks/tasks/v1/users/@me/lists/{tasklistId}
 ```
 
-### Tasks
+### 任务
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks
 ```
 
-**Query Parameters:**
-- `maxResults` - Maximum number of tasks to return (default: 20, max: 100)
-- `pageToken` - Token for pagination
-- `showCompleted` - Include completed tasks (default: true)
-- `showDeleted` - Include deleted tasks (default: false)
-- `showHidden` - Include hidden tasks (default: false)
-- `dueMin` - Lower bound for due date (RFC 3339 timestamp)
-- `dueMax` - Upper bound for due date (RFC 3339 timestamp)
-- `completedMin` - Lower bound for completion date (RFC 3339 timestamp)
-- `completedMax` - Upper bound for completion date (RFC 3339 timestamp)
-- `updatedMin` - Lower bound for last update time (RFC 3339 timestamp)
+**查询参数：**
+- `maxResults` - 返回的任务的最大数量（默认：20，最大值：100）
+- `pageToken` - 分页令牌
+- `showCompleted` - 是否包含已完成的任务（默认：true）
+- `showDeleted` - 是否包含已删除的任务（默认：false）
+- `showHidden` - 是否包含隐藏的任务（默认：false）
+- `dueMin` - 截止日期的下限（RFC 3339 时间戳）
+- `dueMax` - 截止日期的上限（RFC 3339 时间戳）
+- `completedMin` - 完成日期的下限（RFC 3339 时间戳）
+- `completedMax` - 完成日期的上限（RFC 3339 时间戳）
+- `updatedMin` - 最后更新时间的上限（RFC 3339 时间戳）
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#tasks",
@@ -276,13 +276,13 @@ GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks
 }
 ```
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks
@@ -295,11 +295,11 @@ Content-Type: application/json
 }
 ```
 
-**Query Parameters (optional):**
-- `parent` - Parent task ID (for subtasks)
-- `previous` - Previous sibling task ID (for positioning)
+**查询参数（可选）：**
+- `parent` - 父任务 ID（用于子任务）
+- `previous` - 前一个同级任务的 ID（用于定位）
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#task",
@@ -317,7 +317,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task (PATCH - partial update)
+#### 更新任务（PATCH - 部分更新）
 
 ```bash
 PATCH /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
@@ -329,7 +329,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#task",
@@ -347,7 +347,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task (PUT - full replace)
+#### 更新任务（PUT - 完整替换）
 
 ```bash
 PUT /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
@@ -360,25 +360,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}
 ```
 
-#### Move Task
+#### 移动任务
 
-Reposition a task within a task list or change its parent.
+在任务列表中重新定位任务或更改其父任务。
 
-```bash
-POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move
-```
+**查询参数（可选）：**
+- `parent` - 新的父任务 ID（用于将其设置为子任务）
+- `previous` - 前一个同级任务的 ID（用于确定任务在列表中的位置）
 
-**Query Parameters (optional):**
-- `parent` - New parent task ID (for making it a subtask)
-- `previous` - Previous sibling task ID (for positioning after this task)
-
-**Response:**
+**响应：**
 ```json
 {
   "kind": "tasks#task",
@@ -394,57 +390,57 @@ POST /google-tasks/tasks/v1/lists/{tasklistId}/tasks/{taskId}/move
 }
 ```
 
-#### Clear Completed Tasks
+#### 清除已完成的任务
 
-Delete all completed tasks from a task list.
+从任务列表中删除所有已完成的任务。
 
 ```bash
 POST /google-tasks/tasks/v1/lists/{tasklistId}/clear
 ```
 
-Returns HTTP 204 No Content on success.
+成功时返回 HTTP 204 “No Content” 状态码。
 
-## Task Resource Fields
+## 任务资源字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `kind` | string | Always "tasks#task" (output only) |
-| `id` | string | Task identifier |
-| `etag` | string | ETag of the resource |
-| `title` | string | Task title (max 1024 characters) |
-| `updated` | string | Last modification time (RFC 3339, output only) |
-| `selfLink` | string | URL to this task (output only) |
-| `parent` | string | Parent task ID (output only) |
-| `position` | string | Position among siblings (output only) |
-| `notes` | string | Task notes (max 8192 characters) |
-| `status` | string | "needsAction" or "completed" |
-| `due` | string | Due date (RFC 3339 timestamp) |
-| `completed` | string | Completion date (RFC 3339, output only) |
-| `deleted` | boolean | Whether task is deleted |
-| `hidden` | boolean | Whether task is hidden |
-| `links` | array | Collection of links (output only) |
-| `webViewLink` | string | Link to task in Google Tasks UI (output only) |
+| `kind` | string | 始终为 “tasks#task”（仅用于输出） |
+| `id` | string | 任务标识符 |
+| `etag` | string | 资源的 ETag |
+| `title` | string | 任务标题（最多 1024 个字符） |
+| `updated` | string | 最后修改时间（RFC 3339，仅用于输出） |
+| `selfLink` | string | 该任务的 URL（仅用于输出） |
+| `parent` | string | 父任务 ID（仅用于输出） |
+| `position` | string | 任务在列表中的位置（仅用于输出） |
+| `notes` | string | 任务备注（最多 8192 个字符） |
+| `status` | string | 状态：“needsAction” 或 “completed” |
+| `due` | string | 截止日期（RFC 3339 时间戳） |
+| `completed` | string | 完成日期（RFC 3339，仅用于输出） |
+| `deleted` | boolean | 任务是否已删除 |
+| `hidden` | boolean | 任务是否被隐藏 |
+| `links` | array | 链接集合（仅用于输出） |
+| `webViewLink` | string | 任务在 Google Tasks UI 中的链接（仅用于输出） |
 
-## Task List Resource Fields
+## 任务列表资源字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `kind` | string | Always "tasks#taskList" (output only) |
-| `id` | string | Task list identifier |
-| `etag` | string | ETag of the resource |
-| `title` | string | Task list title (max 1024 characters) |
-| `updated` | string | Last modification time (RFC 3339, output only) |
-| `selfLink` | string | URL to this task list (output only) |
+| `kind` | string | 始终为 “tasks#taskList”（仅用于输出） |
+| `id` | string | 任务列表标识符 |
+| `etag` | string | 资源的 ETag |
+| `title` | string | 任务列表标题（最多 1024 个字符） |
+| `updated` | string | 最后修改时间（RFC 3339，仅用于输出） |
+| `selfLink` | string | 该任务列表的 URL（仅用于输出） |
 
-## Pagination
+## 分页
 
-Use `maxResults` and `pageToken` for pagination:
+使用 `maxResults` 和 `pageToken` 进行分页：
 
 ```bash
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?maxResults=50
 ```
 
-Response includes `nextPageToken` when more results exist:
+当存在更多结果时，响应中会包含 `nextPageToken`：
 
 ```json
 {
@@ -455,13 +451,13 @@ Response includes `nextPageToken` when more results exist:
 }
 ```
 
-Use the `nextPageToken` value in subsequent requests:
+在后续请求中使用 `nextPageToken` 值：
 
 ```bash
 GET /google-tasks/tasks/v1/lists/{tasklistId}/tasks?maxResults=50&pageToken=CgwI27nR6AUQsKHh7QIa...
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -518,35 +514,35 @@ create_response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Task list IDs and task IDs are opaque strings (base64-encoded)
-- Status values are "needsAction" or "completed"
-- Due dates are RFC 3339 timestamps
-- Maximum title length: 1024 characters
-- Maximum notes length: 8192 characters
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 任务列表 ID 和任务 ID 是经过 Base64 编码的不透明字符串。
+- 状态值为 “needsAction” 或 “completed”。
+- 截止日期为 RFC 3339 时间戳。
+- 任务标题的最大长度为 1024 个字符。
+- 任务备注的最大长度为 8192 个字符。
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含括号，请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中环境变量（如 `$MATON_API_KEY`）可能无法正确展开。这可能会导致 “Invalid API key” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Tasks connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Task or task list not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Google Tasks API |
+| 400 | 未找到 Google Tasks 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 任务或任务列表未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Google Tasks API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -557,17 +553,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-tasks`. For example:
+1. 确保您的 URL 路径以 `google-tasks` 开头。例如：
+- 正确：`https://gateway.maton.ai/google-tasks/tasks/v1/users/@me/lists`
+- 错误：`https://gateway.maton.ai/tasks/v1/users/@me/lists`
 
-- Correct: `https://gateway.maton.ai/google-tasks/tasks/v1/users/@me/lists`
-- Incorrect: `https://gateway.maton.ai/tasks/v1/users/@me/lists`
+## 资源
 
-## Resources
-
-- [Google Tasks API Overview](https://developers.google.com/workspace/tasks)
-- [Tasks Reference](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks)
-- [TaskLists Reference](https://developers.google.com/workspace/tasks/reference/rest/v1/tasklists)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Google Tasks API 概述](https://developers.google.com/workspace/tasks)
+- [任务参考](https://developers.google.com/workspace/tasks/reference/rest/v1/tasks)
+- [任务列表参考](https://developers.google.com/workspace/tasks/reference/rest/v1/tasklists)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

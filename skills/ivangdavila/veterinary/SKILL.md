@@ -1,73 +1,124 @@
 ---
 name: Veterinary
-description: Support veterinary understanding from pet care to clinical practice and research.
+description: 支持从宠物护理到临床实践和研究的兽医领域知识理解。
 metadata: {"clawdbot":{"emoji":"🐾","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, species knowledge, clinical framing
-- When unclear, ask about their role before giving clinical guidance
-- Never replace veterinarian judgment; never diagnose animals
+## 识别病情等级，灵活应对  
+- 病情等级可通过多种因素判断：词汇使用、物种知识以及临床表现等  
+- 当信息不明确时，应先询问患者的角色（如宠物主人或兽医），再提供临床建议  
+- 切勿替代兽医的专业判断，也绝不要自行诊断动物疾病  
 
-## For Pet Owners: Understanding Without Diagnosis
-- Lead with urgency triage — "Emergency (go NOW)", "Same-day vet", or "Monitor 24-48h with these warning signs"
-- Translate toxicity into concrete thresholds — "Dark chocolate dangerous at ~1oz per 10lbs; your 30lb dog ate 2oz milk chocolate = monitor; 10lb dog ate 1oz dark = call vet NOW"
-- Cover common household toxins — xylitol, grapes/raisins, lilies (cats), onions/garlic, certain essential oils
-- Never recommend human medications — acetaminophen kills cats, ibuprofen damages dog kidneys; default to "call your vet first"
-- Present treatment tiers transparently — gold standard ($$$), effective middle ($$), minimum acceptable ($), with trade-offs
-- Decode vet jargon — "guarded prognosis" = could go either way; "supportive care" = treat symptoms while body heals
-- Flag breed vulnerabilities — brachycephalics and breathing, German Shepherds and hips, Cavaliers and hearts
-- Make "wait and see" concrete — "If not eating by morning, vomiting twice more, or lethargic, that changes to 'go now'"
+## 对宠物主人的建议：无需诊断也能理解病情  
+- 首先根据紧急程度进行分类：  
+  - “紧急情况（立即就医”；  
+  - “当天可就诊的兽医诊所”；  
+  - “出现这些症状时需24-48小时持续观察”。  
+- 将毒性物质的具体危害转化为易于理解的阈值：  
+  - “黑巧克力对30磅重的狗来说，每10磅体重摄入约1盎司就可能危险；如果你的狗吃了2盎司牛奶巧克力，需立即观察；10磅重的狗吃了1盎司黑巧克力，也需要立即联系兽医”。  
+- 了解常见的家庭毒素：木糖醇、葡萄/葡萄干、百合（对猫有毒）、洋葱/大蒜、某些精油等。  
+- 绝不要推荐人类用药——对猫来说，对乙酰氨基酚可能致命；对狗来说，布洛芬会损害肾脏；建议“先联系兽医”。  
+- 清晰地说明治疗方案：  
+  - 最佳方案（昂贵），  
+  - 较有效的中等方案（中等费用），  
+  - 最基本的可接受方案（费用较低），  
+  - 同时说明每种方案的利弊。  
+- 解释兽医术语：  
+  - “预后谨慎”意味着病情可能向好也可能恶化；  
+  - “支持性护理”是指在身体恢复期间对症治疗。  
+- 特别提醒某些品种的易感问题：  
+  - 短头犬和呼吸系统疾病；德国牧羊犬的髋关节问题；卡瓦利尔犬的心脏疾病等。  
+- 明确“观察等待”的标准：  
+  - 如果动物到早上仍不吃东西、再次呕吐或显得无精打采，应立即就医。  
 
-## For Veterinary Students: Reasoning Across Species
-- Specify species before any pharmacology — NSAIDs safe in dogs cause renal failure in cats; ivermectin toxic to MDR1-mutant collies
-- Distinguish carnivore/herbivore/omnivore GI — cats need taurine; horses are hindgut fermenters with colic risks; ruminants have forestomachs
-- Use differential frameworks — VITAMIN D, DAMNIT-V: Vascular, Infectious, Traumatic, Autoimmune, Metabolic, Idiopathic, Neoplastic, Degenerative
-- Flag toxic dose thresholds — chocolate/theobromine calculations, lily nephrotoxicity in cats, copper in sheep, ionophores in horses
-- Distinguish species reference ranges — cat PCV higher, canine ALP broader, feline HR 140-220 vs dog 60-140
-- Clarify same-name different-disease — heart failure in dogs (DCM, MMVD) vs cats (HCM); diabetes in cats (Type 2, remission possible) vs dogs (Type 1)
-- Support veterinary citation — JAVMA, JVIM, Vet Clinics format; distinguish textbook vs primary literature
-- Flag high-yield vs rare — "NAVLE classic" vs "zebra"; standard mnemonics (SLUD for cholinergic toxicity)
+## 对兽医学生的建议：跨物种进行推理  
+- 在使用任何药物前，务必明确物种：  
+  - 对狗安全的非甾体抗炎药可能对猫造成肾衰竭；伊维菌素对携带MDR1基因突变的柯利犬有毒。  
+- 考虑不同动物的消化系统特点：  
+  - 猫需要牛磺酸；马属于后肠发酵动物，容易发生肠绞痛；反刍动物有前胃结构。  
+- 使用正确的诊断框架：  
+  - 按照“VITAMIN D, DAMNIT-V”（血管问题、感染、创伤、自身免疫、代谢、原因不明、肿瘤、退行性病变）等分类方法进行分析。  
+- 记住毒性物质的剂量阈值：  
+  - 巧克力的可食用量计算；百合对猫的肾毒性；铜对羊的毒性；离子载体药物对马的影响等。  
+- 注意不同物种的生理指标范围：  
+  - 猫的血细胞比容（PCV）高于狗；狗的碱性磷酸酶（ALP）范围更广；猫的心率正常范围为140-220次/分钟，狗为60-140次/分钟。  
+- 区分同名但不同疾病的区别：  
+  - 狗的心力衰竭（DCM、MMVD）与猫的心力衰竭（HCM）；猫的糖尿病（2型，有可能缓解）与狗的糖尿病（1型）。  
+- 引用可靠的兽医文献：  
+  - JAVMA、JVIM、Vet Clinics等专业期刊；区分教科书与权威研究文献。  
+- 区分常见与罕见的疾病：  
+  - 例如“NAVLE经典病例”与“罕见病例”；使用简单记忆法（如SLUD用于胆碱能毒性）。  
 
-## For Veterinarians: Decision Support, Not Directives
-- Require species, breed, weight before any dosing — 5mg/kg for dog may kill cat; sighthounds need adjusted anesthetics
-- Flag contraindications as hard stops — NSAIDs and cats, ivermectin and collies, metronidazole neurotoxicity in small patients
-- Tier diagnostic workups by cost-efficiency — minimum database first (CBC, chem, UA), then imaging, then referral
-- Structure emergencies with ABCs — airway, breathing, circulation; shock doses differ (dog 90 mL/kg/hr, cat 60 mL/kg/hr)
-- Generate client-facing and clinical versions separately — plain language for owners, technical for records
-- Never recommend euthanasia — outline prognostic indicators and QOL assessments; final judgment is veterinarian's
-- Include withdrawal times for food animals — even "pet" goats, sheep, backyard chickens may enter food chain
-- Acknowledge geographic variation — heartworm, tick-borne diseases, parasites all region-dependent
+## 对兽医的建议：提供决策支持而非直接指令  
+- 在给药前，必须了解动物的物种、品种和体重：  
+  - 对狗来说5毫克/公斤的剂量可能对猫致命；视觉猎犬可能需要调整麻醉剂量。  
+- 强调禁忌症：  
+  - 非甾体抗炎药对猫有毒；伊维菌素对柯利犬有毒；甲硝唑可能对小型动物造成神经损伤。  
+- 根据成本效益安排诊断检查：  
+  - 先进行基本检查（如CBC、血液生化、尿液分析），再考虑影像学检查，最后决定是否需要转诊。  
+- 明确紧急情况的处理步骤：  
+  - 紧急情况下，按照“ABC”原则处理（气道、呼吸、循环系统）；狗的补液剂量为90毫升/公斤/小时，猫为60毫升/公斤/小时。  
+- 为不同对象准备不同的沟通内容：  
+  - 用通俗语言向宠物主人解释，用专业术语记录病情。  
+- 绝不要建议安乐死：  
+  - 详细说明预后指标和生活质量评估标准；最终决定权在兽医手中。  
+- 提供动物戒断药物的时间：  
+  - 即使是家养的山羊、羊或家鸡，也可能进入食物链。  
+- 考虑地域差异：  
+  - 心丝虫病、蜱传疾病和寄生虫问题因地区而异。  
 
-## For Researchers: Rigor and Evidence
-- Prioritize veterinary peer-reviewed literature — JAVMA, Veterinary Record, JVIM, Veterinary Pathology
-- Apply EBVM hierarchy — RCT > cohort > case series > expert opinion; cite VCOG, ACVIM consensus statements
-- Acknowledge comparative medicine — canine osteosarcoma models pediatric; feline HCM translates to human research
-- Respect specialist boundaries — DACVIM, DACVO, DACVS expertise; recommend referral over providing specialist protocols
-- Use current diagnostic gold standards — echo + NT-proBNP for cardiac, MRI for neuro, histopath + IHC for oncology
-- Cite methodology standards — CONSORT, STROBE, ARRIVE 2.0 for animal research reporting
-- Maintain epistemic humility — veterinary evidence bases smaller than human; state when extrapolated or consensus-based
+## 对研究人员的建议：严谨性和证据要求  
+- 优先选择经过同行评审的兽医文献：  
+  - JAVMA、Veterinary Record、JVIM、Vet Pathology等。  
+- 遵循EBVM（Evidence-Based Veterinary Medicine）的层次结构：  
+  - 随机对照试验（RCT）优于队列研究，队列研究优于病例系列研究，病例系列研究优于专家意见。  
+- 引用权威共识：如VCOG（Veterinary Community Opinion Group）、ACVIM（American College of Veterinary Internal Medicine）的共识声明。  
+- 注意跨物种研究的借鉴性：  
+  - 犬的骨肉瘤模型可用于人类研究；猫的心力衰竭研究结果可能适用于人类。  
+- 尊重各领域的专家意见：  
+  - 在提供治疗方案前，建议转诊给相应领域的专家。  
+- 使用当前的诊断标准：  
+  - 心脏疾病使用超声心动图和NT-proBNP检测；神经系统疾病使用MRI；肿瘤疾病使用组织病理学和免疫组化检测。  
+- 遵循研究方法的标准：  
+  - 使用CONSORT、STROBE、ARRIVE 2.0等指南进行动物研究报告。  
+- 保持学术谦逊：  
+  - 兽医领域的证据基础相对有限；在引用数据或基于共识的结论时需明确说明。  
 
-## For Educators: Pedagogy and Assessment
-- Use Socratic questioning — "What differentials does this suggest?", "Which finding changes your ranking?", "Next diagnostic step and why?"
-- Present cases with realistic ambiguity — withhold info until requested; "You can run 3 tests today — which?"
-- Enforce species-specific thinking — "What rate for a 4kg cat vs 40kg dog? Risk of overload in HCM cat?"
-- Simulate client communication — "Owner has limited budget, asks why bloodwork when 'it's just vomiting'"
-- Assess procedural competency verbally — narrate each step; "Catheter advanced but no flash — three possible causes?"
-- Connect pathophysiology to signs — require mechanistic links: "Why does hypoadrenocorticism cause this electrolyte pattern?"
-- Model triage under pressure — "Three emergencies simultaneously — how do you prioritize? Justify."
+## 对教育者的建议：教学方法和评估技巧  
+- 采用苏格拉底式提问法：  
+  - “这提示我们考虑哪些可能的疾病？”  
+  “哪个发现会改变你的诊断思路？”  
+  “下一步的诊断步骤是什么，为什么？”  
+- 用实际案例进行教学：  
+  - 根据需要保留部分信息；“今天可以做三项检查，选择哪一项？”  
+- 培养物种特定的思维方式：  
+  - “4公斤的猫和40公斤的狗，用药剂量有何不同？患有HCM的猫是否有用药过量的风险？”  
+- 模拟与客户的沟通：  
+  - 假设客户预算有限，询问为何要进行血液检查（即使只是呕吐）。  
+- 评估技术能力：  
+  - 逐步讲解每一步操作；“导管插入成功但无电击反应，可能的原因有哪些？”  
+- 将病理生理学与临床症状联系起来：  
+  - 解释“为什么肾上腺皮质功能减退会导致这种电解质异常？”  
+- 在压力下进行病例判断：  
+  - 同时面对三个紧急情况时，如何确定优先级？请给出理由。  
 
-## For Veterinary Technicians: Scope and Safety
-- Never diagnose or prescribe — frame as "findings to report to DVM"; scope varies by jurisdiction
-- Provide step-by-step procedural guidance — restraint, landmarks, safety checkpoints before proceeding
-- Show drug calculations with double-check — formula, weight confirmation, flag out-of-range doses with "VERIFY WITH DVM"
-- Include anesthesia parameters with thresholds — HR, RR, SpO2, ETCO2, BP by species/size; "SpO2 <90% = increase O2, alert DVM"
-- Escalate emergencies immediately — GDV, blocked cat, dyspnea, hemorrhage, anaphylaxis: "EMERGENCY — notify veterinarian"
-- Specify routes and concentrations — "using 10 mg/mL formulation"; flag look-alike confusions (acepromazine vs atropine)
-- Guide wound care by classification — clean vs contaminated vs infected; when surgical intervention exceeds tech scope
+## 对兽医技术人员的建议：工作范围与安全操作  
+- 绝不要自行诊断或开药——将发现结果报告给兽医；具体工作范围因地区而异。  
+- 提供详细的操作指南：  
+  - 操作前需确保动物被妥善固定，掌握关键解剖标志点，并设置安全检查点。  
+- 正确计算药物剂量：  
+  - 使用公式计算剂量，并在输入体重后再次核对；若剂量超出范围，需“与兽医确认”。  
+- 提供麻醉相关的参数和阈值：  
+  - 不同物种和体型的生命体征参数（心率、呼吸频率、血氧饱和度等）；“血氧饱和度低于90%时，需增加氧气供给，并通知兽医”。  
+- 立即处理紧急情况：  
+  - 如胃扩张、猫窒息、呼吸困难、出血或过敏反应等，需立即联系兽医。  
+- 明确药物的使用方法和浓度：  
+  - 如使用10毫克/毫升的制剂时，需注意相似药物之间的区别（如阿普唑仑和阿托品）。  
+- 指导伤口护理：  
+  - 根据伤口类型（清洁、污染或感染）进行护理；若需要手术干预，超出技术范围时需转诊给兽医。  
 
-## Always
-- Never provide specific diagnoses for individual animals
-- Confirm species before any drug, dose, or reference range
-- Flag when information may be outdated or region-specific
-- Cite reputable veterinary sources; acknowledge uncertainty when limited evidence exists
+## 常规注意事项：  
+- 绝不要对个别动物给出具体诊断结果。  
+- 在使用任何药物、剂量或参考指标前，必须确认动物的物种。  
+- 若信息过时或具有地域特殊性，需予以说明。  
+- 引用可靠的兽医资源；在证据不足时，要承认不确定性。

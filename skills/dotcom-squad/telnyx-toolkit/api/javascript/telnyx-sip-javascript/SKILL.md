@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Sip - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,11 +32,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Get all outbound voice profiles
+## 获取所有出站语音配置文件
 
-Get all outbound voice profiles belonging to the user that match the given filters.
+获取属于用户的、符合给定过滤条件的所有出站语音配置文件。
 
 `GET /outbound_voice_profiles`
 
@@ -46,11 +47,11 @@ for await (const outboundVoiceProfile of client.outboundVoiceProfiles.list()) {
 }
 ```
 
-## Create an outbound voice profile
+## 创建出站语音配置文件
 
-Create an outbound voice profile.
+创建一个新的出站语音配置文件。
 
-`POST /outbound_voice_profiles` — Required: `name`
+`POST /outbound_voice_profiles` — 必需参数：`name`
 
 ```javascript
 const outboundVoiceProfile = await client.outboundVoiceProfiles.create({ name: 'office' });
@@ -58,9 +59,9 @@ const outboundVoiceProfile = await client.outboundVoiceProfiles.create({ name: '
 console.log(outboundVoiceProfile.data);
 ```
 
-## Retrieve an outbound voice profile
+## 查询出站语音配置文件
 
-Retrieves the details of an existing outbound voice profile.
+查询现有出站语音配置文件的详细信息。
 
 `GET /outbound_voice_profiles/{id}`
 
@@ -70,9 +71,11 @@ const outboundVoiceProfile = await client.outboundVoiceProfiles.retrieve('129338
 console.log(outboundVoiceProfile.data);
 ```
 
-## Updates an existing outbound voice profile.
+## 更新出站语音配置文件
 
-`PATCH /outbound_voice_profiles/{id}` — Required: `name`
+更新现有出站语音配置文件的详细信息。
+
+`PATCH /outbound_voice_profiles/{id}` — 必需参数：`name`
 
 ```javascript
 const outboundVoiceProfile = await client.outboundVoiceProfiles.update('1293384261075731499', {
@@ -82,9 +85,9 @@ const outboundVoiceProfile = await client.outboundVoiceProfiles.update('12933842
 console.log(outboundVoiceProfile.data);
 ```
 
-## Delete an outbound voice profile
+## 删除出站语音配置文件
 
-Deletes an existing outbound voice profile.
+删除现有的出站语音配置文件。
 
 `DELETE /outbound_voice_profiles/{id}`
 
@@ -94,9 +97,9 @@ const outboundVoiceProfile = await client.outboundVoiceProfiles.delete('12933842
 console.log(outboundVoiceProfile.data);
 ```
 
-## List connections
+## 列出所有连接
 
-Returns a list of your connections irrespective of type.
+返回所有类型的连接列表。
 
 `GET /connections`
 
@@ -107,9 +110,9 @@ for await (const connectionListResponse of client.connections.list()) {
 }
 ```
 
-## Retrieve a connection
+## 查询连接信息
 
-Retrieves the high-level details of an existing connection.
+查询现有连接的详细信息。
 
 `GET /connections/{id}`
 
@@ -119,9 +122,9 @@ const connection = await client.connections.retrieve('id');
 console.log(connection.data);
 ```
 
-## List credential connections
+## 列出凭证连接
 
-Returns a list of your credential connections.
+返回所有凭证连接的列表。
 
 `GET /credential_connections`
 
@@ -132,11 +135,11 @@ for await (const credentialConnection of client.credentialConnections.list()) {
 }
 ```
 
-## Create a credential connection
+## 创建凭证连接
 
-Creates a credential connection.
+创建一个新的凭证连接。
 
-`POST /credential_connections` — Required: `user_name`, `password`, `connection_name`
+`POST /credential_connections` — 必需参数：`user_name`, `password`, `connection_name`
 
 ```javascript
 const credentialConnection = await client.credentialConnections.create({
@@ -148,9 +151,9 @@ const credentialConnection = await client.credentialConnections.create({
 console.log(credentialConnection.data);
 ```
 
-## Retrieve a credential connection
+## 查询凭证连接信息
 
-Retrieves the details of an existing credential connection.
+查询现有凭证连接的详细信息。
 
 `GET /credential_connections/{id}`
 
@@ -160,9 +163,9 @@ const credentialConnection = await client.credentialConnections.retrieve('id');
 console.log(credentialConnection.data);
 ```
 
-## Update a credential connection
+## 更新凭证连接
 
-Updates settings of an existing credential connection.
+更新现有凭证连接的设置。
 
 `PATCH /credential_connections/{id}`
 
@@ -172,9 +175,9 @@ const credentialConnection = await client.credentialConnections.update('id');
 console.log(credentialConnection.data);
 ```
 
-## Delete a credential connection
+## 删除凭证连接
 
-Deletes an existing credential connection.
+删除现有的凭证连接。
 
 `DELETE /credential_connections/{id}`
 
@@ -184,9 +187,9 @@ const credentialConnection = await client.credentialConnections.delete('id');
 console.log(credentialConnection.data);
 ```
 
-## Check a Credential Connection Registration Status
+## 检查凭证连接的注册状态
 
-Checks the registration_status for a credential connection, (`registration_status`) as well as the timestamp for the last SIP registration event (`registration_status_updated_at`)
+检查凭证连接的注册状态（`registration_status`）以及最后一次 SIP 注册事件的时间戳（`registration_status_updated_at`）。
 
 `POST /credential_connections/{id}/actions/check_registration_status`
 
@@ -196,9 +199,9 @@ const response = await client.credentialConnections.actions.checkRegistrationSta
 console.log(response.data);
 ```
 
-## List Ips
+## 列出 IP 地址
 
-Get all IPs belonging to the user that match the given filters.
+获取属于用户的、符合给定过滤条件的所有 IP 地址。
 
 `GET /ips`
 
@@ -209,11 +212,11 @@ for await (const ip of client.ips.list()) {
 }
 ```
 
-## Create an Ip
+## 创建 IP 地址
 
-Create a new IP object.
+创建一个新的 IP 对象。
 
-`POST /ips` — Required: `ip_address`
+`POST /ips` — 必需参数：`ip_address`
 
 ```javascript
 const ip = await client.ips.create({ ip_address: '192.168.0.0' });
@@ -221,9 +224,9 @@ const ip = await client.ips.create({ ip_address: '192.168.0.0' });
 console.log(ip.data);
 ```
 
-## Retrieve an Ip
+## 查询 IP 地址信息
 
-Return the details regarding a specific IP.
+返回特定 IP 地址的详细信息。
 
 `GET /ips/{id}`
 
@@ -233,11 +236,11 @@ const ip = await client.ips.retrieve('6a09cdc3-8948-47f0-aa62-74ac943d6c58');
 console.log(ip.data);
 ```
 
-## Update an Ip
+## 更新 IP 地址信息
 
-Update the details of a specific IP.
+更新特定 IP 地址的详细信息。
 
-`PATCH /ips/{id}` — Required: `ip_address`
+`PATCH /ips/{id}` — 必需参数：`ip_address`
 
 ```javascript
 const ip = await client.ips.update('6a09cdc3-8948-47f0-aa62-74ac943d6c58', {
@@ -247,9 +250,9 @@ const ip = await client.ips.update('6a09cdc3-8948-47f0-aa62-74ac943d6c58', {
 console.log(ip.data);
 ```
 
-## Delete an Ip
+## 删除 IP 地址
 
-Delete an IP.
+删除指定的 IP 地址。
 
 `DELETE /ips/{id}`
 
@@ -259,9 +262,9 @@ const ip = await client.ips.delete('6a09cdc3-8948-47f0-aa62-74ac943d6c58');
 console.log(ip.data);
 ```
 
-## List Ip connections
+## 列出 IP 连接
 
-Returns a list of your IP connections.
+返回所有 IP 连接的列表。
 
 `GET /ip_connections`
 
@@ -272,9 +275,9 @@ for await (const ipConnection of client.ipConnections.list()) {
 }
 ```
 
-## Create an Ip connection
+## 创建 IP 连接
 
-Creates an IP connection.
+创建一个新的 IP 连接。
 
 `POST /ip_connections`
 
@@ -284,9 +287,9 @@ const ipConnection = await client.ipConnections.create();
 console.log(ipConnection.data);
 ```
 
-## Retrieve an Ip connection
+## 查询 IP 连接信息
 
-Retrieves the details of an existing ip connection.
+查询现有 IP 连接的详细信息。
 
 `GET /ip_connections/{id}`
 
@@ -296,9 +299,9 @@ const ipConnection = await client.ipConnections.retrieve('id');
 console.log(ipConnection.data);
 ```
 
-## Update an Ip connection
+## 更新 IP 连接信息
 
-Updates settings of an existing IP connection.
+更新现有 IP 连接的设置。
 
 `PATCH /ip_connections/{id}`
 
@@ -308,9 +311,9 @@ const ipConnection = await client.ipConnections.update('id');
 console.log(ipConnection.data);
 ```
 
-## Delete an Ip connection
+## 删除 IP 连接
 
-Deletes an existing IP connection.
+删除现有的 IP 连接。
 
 `DELETE /ip_connections/{id}`
 
@@ -320,9 +323,9 @@ const ipConnection = await client.ipConnections.delete('id');
 console.log(ipConnection.data);
 ```
 
-## List FQDNs
+## 列出 FQDN（Fully Qualified Domain Names）
 
-Get all FQDNs belonging to the user that match the given filters.
+获取属于用户的、符合给定过滤条件的所有 FQDN。
 
 `GET /fqdns`
 
@@ -333,11 +336,11 @@ for await (const fqdn of client.fqdns.list()) {
 }
 ```
 
-## Create an FQDN
+## 创建 FQDN
 
-Create a new FQDN object.
+创建一个新的 FQDN 对象。
 
-`POST /fqdns` — Required: `fqdn`, `dns_record_type`, `connection_id`
+`POST /fqdns` — 必需参数：`fqdn`, `dns_record_type`, `connection_id`
 
 ```javascript
 const fqdn = await client.fqdns.create({
@@ -349,9 +352,9 @@ const fqdn = await client.fqdns.create({
 console.log(fqdn.data);
 ```
 
-## Retrieve an FQDN
+## 查询 FQDN 信息
 
-Return the details regarding a specific FQDN.
+返回特定 FQDN 的详细信息。
 
 `GET /fqdns/{id}`
 
@@ -361,9 +364,9 @@ const fqdn = await client.fqdns.retrieve('id');
 console.log(fqdn.data);
 ```
 
-## Update an FQDN
+## 更新 FQDN 信息
 
-Update the details of a specific FQDN.
+更新特定 FQDN 的详细信息。
 
 `PATCH /fqdns/{id}`
 
@@ -373,9 +376,9 @@ const fqdn = await client.fqdns.update('id');
 console.log(fqdn.data);
 ```
 
-## Delete an FQDN
+## 删除 FQDN
 
-Delete an FQDN.
+删除指定的 FQDN。
 
 `DELETE /fqdns/{id}`
 
@@ -385,9 +388,9 @@ const fqdn = await client.fqdns.delete('id');
 console.log(fqdn.data);
 ```
 
-## List FQDN connections
+## 列出 FQDN 连接
 
-Returns a list of your FQDN connections.
+返回所有 FQDN 连接的列表。
 
 `GET /fqdn_connections`
 
@@ -398,11 +401,11 @@ for await (const fqdnConnection of client.fqdnConnections.list()) {
 }
 ```
 
-## Create an FQDN connection
+## 创建 FQDN 连接
 
-Creates a FQDN connection.
+创建一个新的 FQDN 连接。
 
-`POST /fqdn_connections` — Required: `connection_name`
+`POST /fqdn_connections` — 必需参数：`connection_name`
 
 ```javascript
 const fqdnConnection = await client.fqdnConnections.create({ connection_name: 'string' });
@@ -410,9 +413,9 @@ const fqdnConnection = await client.fqdnConnections.create({ connection_name: 's
 console.log(fqdnConnection.data);
 ```
 
-## Retrieve an FQDN connection
+## 查询 FQDN 连接信息
 
-Retrieves the details of an existing FQDN connection.
+查询现有 FQDN 连接的详细信息。
 
 `GET /fqdn_connections/{id}`
 
@@ -422,9 +425,9 @@ const fqdnConnection = await client.fqdnConnections.retrieve('id');
 console.log(fqdnConnection.data);
 ```
 
-## Update an FQDN connection
+## 更新 FQDN 连接信息
 
-Updates settings of an existing FQDN connection.
+更新现有 FQDN 连接的设置。
 
 `PATCH /fqdn_connections/{id}`
 
@@ -434,9 +437,9 @@ const fqdnConnection = await client.fqdnConnections.update('id');
 console.log(fqdnConnection.data);
 ```
 
-## Delete an FQDN connection
+## 删除 FQDN 连接
 
-Deletes an FQDN connection.
+删除现有的 FQDN 连接。
 
 `DELETE /fqdn_connections/{id}`
 
@@ -446,7 +449,9 @@ const fqdnConnection = await client.fqdnConnections.delete('id');
 console.log(fqdnConnection.data);
 ```
 
-## List Mobile Voice Connections
+## 列出移动语音连接
+
+获取所有移动语音连接的列表。
 
 `GET /v2/mobile_voice_connections`
 
@@ -457,7 +462,9 @@ for await (const mobileVoiceConnection of client.mobileVoiceConnections.list()) 
 }
 ```
 
-## Create a Mobile Voice Connection
+## 创建移动语音连接
+
+创建一个新的移动语音连接。
 
 `POST /v2/mobile_voice_connections`
 
@@ -467,7 +474,9 @@ const mobileVoiceConnection = await client.mobileVoiceConnections.create();
 console.log(mobileVoiceConnection.data);
 ```
 
-## Retrieve a Mobile Voice Connection
+## 查询移动语音连接信息
+
+查询特定移动语音连接的详细信息。
 
 `GET /v2/mobile_voice_connections/{id}`
 
@@ -477,7 +486,9 @@ const mobileVoiceConnection = await client.mobileVoiceConnections.retrieve('id')
 console.log(mobileVoiceConnection.data);
 ```
 
-## Update a Mobile Voice Connection
+## 更新移动语音连接
+
+更新现有移动语音连接的设置。
 
 `PATCH /v2/mobile_voice_connections/{id}`
 
@@ -487,7 +498,9 @@ const mobileVoiceConnection = await client.mobileVoiceConnections.update('id');
 console.log(mobileVoiceConnection.data);
 ```
 
-## Delete a Mobile Voice Connection
+## 删除移动语音连接
+
+删除指定的移动语音连接。
 
 `DELETE /v2/mobile_voice_connections/{id}`
 
@@ -495,4 +508,5 @@ console.log(mobileVoiceConnection.data);
 const mobileVoiceConnection = await client.mobileVoiceConnections.delete('id');
 
 console.log(mobileVoiceConnection.data);
+```
 ```

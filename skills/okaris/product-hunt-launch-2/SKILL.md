@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Product Hunt Launch
+# 产品发布攻略
 
-Optimize your Product Hunt launch with research and visuals via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用研究和视觉元素来优化你的产品发布。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -32,39 +32,39 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## Listing Specifications
+## 产品信息规范
 
-| Element | Spec | Notes |
+| 项目元素 | 规格 | 备注 |
 |---------|------|-------|
-| Product name | — | Keep it short, memorable |
-| Tagline | **60 character limit** | No period at end |
-| Description | First **260 chars** show in preview | Full description can be longer |
-| Gallery images | Up to **8 images** | 1270 x 760 px recommended |
-| Topics | **Max 3** | Pick the most specific ones |
-| Makers | Tag all team members | They can engage in comments |
-| Link | Product URL | Where upvoters go |
+| 产品名称 | — | 保持简洁易记 |
+| 标语 | **限制在60个字符以内** | 末尾不要加句号 |
+| 产品描述 | 预览中显示前260个字符 | 完整描述可以更长 |
+| 图库图片 | 最多8张图片 | 建议使用1270 x 760像素的图片 |
+| 关键词 | 最多3个 | 选择最相关的关键词 |
+| 开发者信息 | 标注所有团队成员 | 他们可以参与评论 |
+| 链接 | 产品网址 | 点赞者会通过此链接访问产品 |
 
-## Gallery Images
+## 图库图片
 
-### The First Image Is Everything
+### 第一张图片至关重要
 
-The first gallery image shows in the feed, email digest, and social shares. It IS your first impression.
+第一张图库图片会出现在信息流、邮件摘要和社交媒体分享中。它就是你的第一印象。
 
-| Position | Content | Goal |
+| 位置 | 内容 | 目标 |
 |----------|---------|------|
-| **1 (Hero)** | Product in action, core value visible | Stop the scroll, communicate what it does |
-| **2** | Key feature demonstration | Show the "aha moment" |
-| **3** | Before/after or problem/solution | Show the transformation |
-| **4** | Social proof or metrics | Build credibility |
-| **5** | Technical differentiator or integrations | For evaluators |
+| **第1张（首页图片）** | 产品使用场景，核心价值一目了然 | 让用户停下滚动，了解产品的功能 |
+| **第2张** | 关键功能演示 | 展示产品的“惊艳瞬间” |
+| **第3张** | 使用前后的对比或问题与解决方案 | 展示产品的变化 |
+| **第4张** | 社交证明或数据指标 | 增强产品可信度 |
+| **第5张** | 技术优势或集成情况 | 供评估者参考 |
 
-### Dimensions
+### 图片尺寸
 
-- Recommended: **1270 x 760 px** (16:9 ish)
-- Minimum: 600px wide
-- Supports GIF for animated demos
+- 建议尺寸：1270 x 760像素（约16:9比例）
+- 最小宽度：600像素
+- 支持使用GIF格式的动画演示图片
 
-### Generating Gallery Images
+### 生成图库图片
 
 ```bash
 # Image 1: Hero product shot
@@ -95,21 +95,21 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Tagline
+## 标语
 
-60 characters. No period. Must communicate what the product does AND why someone should care.
+60个字符。不要加句号。必须清楚地说明产品的功能以及用户为何应该关注它。
 
-### Formulas That Work
+### 有效的标语编写公式
 
-| Formula | Example |
+| 公式 | 例子 |
 |---------|---------|
-| [Action] for [audience] | "AI writing assistant for developers" |
-| [Result] without [pain] | "Beautiful docs without the design skills" |
-| [Tool] that [benefit] | "Analytics that explain themselves" |
-| [Adjective] [category] | "Instant customer feedback surveys" |
-| The [category] for [niche] | "The Figma for data visualization" |
+| [目标受众] + [功能] | “专为开发者设计的AI写作助手” |
+| [结果] + [避免的痛点] | “无需设计技能即可生成美观的文档” |
+| [工具] + [带来的好处] | “自解释式的分析工具” |
+| [形容词] + [类别] | “即时客户反馈调查工具” |
+| [类别] + [特定需求] | “数据可视化的Figma替代品” |
 
-### Examples
+### 标语示例
 
 ```
 ❌ "The best project management tool ever created" (superlative, 52 chars)
@@ -121,29 +121,29 @@ infsh app run falai/flux-dev-lora --input '{
 ✅ "The open-source Calendly alternative" (37 chars)
 ```
 
-## Timing
+## 发布时机
 
-### When to Launch
+### 何时发布
 
-| Factor | Recommendation |
+| 考虑因素 | 推荐时间 |
 |--------|----------------|
-| Day | **Tuesday, Wednesday, or Thursday** (highest traffic) |
-| Time | **12:01 AM PT** (Pacific Time) — start of the PH day |
-| Avoid | Weekends, holidays, major Apple/Google events |
-| Duration | PH day = midnight PT to midnight PT |
+| 发布日 | **周二、周三或周四**（流量最高） |
+| 时间 | **太平洋时间凌晨12:01**（产品发布日的开始时间） |
+| 避免时间 | 周末、节假日、苹果/谷歌的重大活动 |
+| 发布时长 | 产品发布日从太平洋时间午夜持续到午夜 |
 
-### Why 12:01 AM PT
+### 为什么选择太平洋时间凌晨12:01？
 
-- Maximum time in the running for daily top spot
-- Accumulate upvotes throughout the full day
-- Morning email digest (US time) includes your product
-- Allows engagement across all US time zones
+- 可以在当天获得最长的展示时间 |
+- 全天都能积累点赞 |
+- 美国时间的早晨邮件摘要中会包含你的产品信息 |
+- 能够覆盖所有美国时区用户
 
-## Maker Comment
+## 开发者评论
 
-Post within **5 minutes** of going live. This is your pitch.
+产品发布后**5分钟内**必须发布评论。这是你的宣传机会。
 
-### Structure
+### 评论结构
 
 ```
 Hey Product Hunt! 👋
@@ -159,58 +159,39 @@ Hey Product Hunt! 👋
 Would love to hear your thoughts — happy to answer any questions!
 ```
 
-### Example
+### 发布日流程
 
-```
-Hey Product Hunt!
+### 发布前（1-2周）
 
-DataFlow turns raw SQL queries into visual dashboards in seconds.
+- [ ] 图库图片最终确定（建议5张）
+- [ ] 与5人以上测试标语（他们是否理解其含义？）
+- [ ] 草拟并校对开发者评论 |
+- [ ] 准备好带有产品徽标的登录页面 |
+- [ ] 准备好早期支持者名单（希望尝试产品的人）
+- [ ] 草拟好社交媒体公告内容
 
-As a data engineer, I was frustrated spending more time formatting
-reports than actually analyzing data. Every BI tool I tried required
-a PhD in their configuration. So I built DataFlow — paste your SQL,
-get a dashboard.
+### 发布日时间表
 
-It auto-detects chart types, handles large datasets, and exports
-to PDF/PNG with one click.
-
-We're offering 50% off the first year for PH users. Would love
-your feedback — what reporting pain points do you have?
-```
-
-## Launch Day Playbook
-
-### Before Launch (1-2 weeks)
-
-- [ ] Gallery images finalized (5 recommended)
-- [ ] Tagline tested with 5+ people (do they understand what it does?)
-- [ ] Maker comment drafted and proofread
-- [ ] Landing page with PH badge ready
-- [ ] Early supporter list ready (people who want to check it out)
-- [ ] Social media announcement posts drafted
-
-### Launch Day Timeline
-
-| Time (PT) | Action |
+| 时间（太平洋时间） | 行动 |
 |-----------|--------|
-| 12:01 AM | Product goes live, post maker comment immediately |
-| 12:15 AM | Share on personal social media |
-| 6:00 AM | First engagement check — reply to all comments |
-| 9:00 AM | Share in relevant communities (naturally, not spammy) |
-| 12:00 PM | Mid-day check — reply to all new comments |
-| 3:00 PM | Share any early traction or interesting feedback |
-| 6:00 PM | Evening engagement — reply to remaining comments |
-| 11:59 PM | Day ends — results are final |
+| 凌晨12:01 | 产品上线，立即发布开发者评论 |
+| 凌晨12:15 | 在个人社交媒体上分享 |
+| 上午6:00 | 检查首次互动情况——回复所有评论 |
+| 上午9:00 | 在相关社区分享（自然发布，避免刷屏） |
+| 下午12:00 | 中午检查——回复所有新评论 |
+| 下午3:00 | 分享任何早期反馈或有趣的内容 |
+| 下午6:00 | 晚间互动——回复剩余的评论 |
+| 晚上11:59 | 发布日结束——总结结果 |
 
-### Engagement Rules
+### 互动规则
 
-- **Reply to every comment** — makers who engage get more visibility
-- **Ask questions back** — creates conversation threads
-- **Be genuine** — don't use canned responses
-- **Never ask for upvotes** — against PH terms of service
-- **Share the link naturally** — "Check it out at [url]" not "Please upvote"
+- **回复每一条评论**——积极参与的开发者会获得更多曝光机会 |
+- **提出问题**——引发讨论 |
+- **真诚交流**——避免使用模板化回复 |
+- **切勿索要点赞**——违反产品使用条款 |
+- **自然分享链接**——使用“请访问[链接]”而非“请点赞”
 
-## Research for Preparation
+## 发布前的准备工作
 
 ```bash
 # Study similar product launches
@@ -229,29 +210,29 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## Post-Launch
+## 发布后的行动
 
-| When | Action |
+| 时间 | 行动 |
 |------|--------|
-| Day 1-3 | Reply to all remaining comments, thank supporters |
-| Week 1 | Publish a "lessons learned" blog post / Twitter thread |
-| Week 2 | Follow up with interested users from comments |
-| Month 1 | Check if you're eligible for "Product of the Week/Month" |
+| 第1-3天 | 回复所有剩余评论，感谢支持者 |
+| 第1周 | 发布“经验分享”博客文章/推特帖子 |
+| 第2周 | 联系评论中感兴趣的用户 |
+| 第1个月 | 查看是否有机会入选“本周/本月最佳产品”
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Launching on Friday/weekend | Low traffic, wasted launch | Tue-Thu only |
-| Launching at noon | Half the day already gone | 12:01 AM PT |
-| No maker comment | Looks abandoned | Post within 5 minutes |
-| Asking for upvotes | Against TOS, can get flagged | Share naturally, let product speak |
-| Generic gallery images | Doesn't show the product | Show real UI, real features |
-| Not replying to comments | Low engagement signal | Reply to every single comment |
-| Too many topics | Dilutes discoverability | Max 3, pick the most specific |
-| Tagline with buzzwords | Nobody knows what you do | Clear, specific, benefit-focused |
+| 在周五/周末发布 | 流量低，发布效果不佳 | 仅限周二至周四发布 |
+| 在中午发布 | 一半时间已经过去 | 选择太平洋时间凌晨12:01发布 |
+| 未发布开发者评论 | 产品看起来被遗弃 | 发布后5分钟内必须发布评论 |
+| 索要点赞 | 违反使用条款，可能被标记 | 自然分享，让产品本身说话 |
+| 图库图片千篇一律 | 无法展示产品实际效果 | 使用真实的用户界面和功能图片 |
+| 不回复评论 | 互动率低 | 回复每一条评论 |
+| 关键词过多 | 降低产品被发现的机会 | 选择最多3个关键词，确保具体明确 |
+| 标语使用流行词 | 用户不明白产品功能 | 使用清晰、具体的表述，突出产品优势 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -259,4 +240,4 @@ npx skills add inferencesh/skills@web-search
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

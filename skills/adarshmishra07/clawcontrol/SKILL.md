@@ -1,63 +1,62 @@
 ---
 name: claw-control
-description: Complete AI agent operating system setup with Kanban task management. Use when setting up multi-agent coordination, task tracking, or configuring an agent team. Includes theme selection (DBZ, One Piece, Marvel, etc.), workflow enforcement (all tasks through board), browser setup, GitHub integration, and memory enhancement (Supermemory, QMD).
+description: 完整的AI代理操作系统设置，包含看板任务管理功能。适用于多代理协调、任务跟踪或代理团队配置的场景。支持主题选择（如DBZ、One Piece、Marvel等），工作流程管理（所有任务均通过看板进行），浏览器设置，GitHub集成，以及内存优化（Supermemory、QMD）。
 ---
 
-# Claw Control - Agent Operating System
+# Claw Control - 代理操作系统
 
-Complete setup for AI agent coordination with real-time Kanban dashboard.
+这是一个用于AI代理与实时看板（Kanban）协同工作的完整设置指南。
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Deploy Claw Control** - Three paths: one-click, bot-assisted, or fully automated
-2. **Theme your team** - Pick a series (DBZ, One Piece, Marvel, etc.)
-3. **Enforce workflow** - ALL tasks go through the board, no exceptions
-4. **Configure agent behavior** - Update AGENTS.md and SOUL.md
-5. **Setup browser** - Required for autonomous actions
-6. **Setup GitHub** - Enable autonomous deployments
-7. **Enhance memory** - Integrate Supermemory and QMD
+1. **部署Claw Control**：提供三种部署方式：一键式、机器人辅助式或完全自动化。
+2. **为团队选择主题**：可以从多个系列（如《龙珠Z》、《海贼王》、《漫威》等）中选择。
+3. **强制执行工作流程**：所有任务都必须通过看板进行，无一例外。
+4. **配置代理行为**：需要更新`AGENTS.md`和`SOUL.md`文件。
+5. **设置浏览器**：这是自主执行任务所必需的。
+6. **设置GitHub账户**：以实现自动化部署。
+7. **增强内存功能**：支持集成Supermemory和QMD工具。
 
 ---
 
-## ⚠️ CRITICAL: The Golden Rules
+## ⚠️ 重要提示：设置完成后必须严格遵守以下规则
 
-**After setup, you MUST follow these rules EVERY TIME:**
+**在开始任何工作之前：**
 
-### Before Doing ANY Work:
-1. **Create a task on Mission Control** - Even for small things
-2. **Spawn a sub-agent** - Use `sessions_spawn` to delegate
-3. **Never do the work yourself** - Coordinator coordinates, agents execute
+1. **在任务控制面板（Mission Control）中创建一个任务**：即使是很小的任务也要创建。
+2. **生成子代理**：使用`sessions_spawn`来分配任务。
+3. **切勿亲自执行任务**：所有任务都由协调者分配，代理执行。
 
-### The Workflow (No Exceptions):
+### 工作流程（无一例外）：
 ```
 User Request → Create Task → Spawn Agent → Agent Works → Review → Complete
 ```
 
-### If You Catch Yourself Working:
-**STOP!** Ask: "Did I create a task? Did I spawn an agent?"
-If no → Go back and do it properly.
+### 如果你发现自己正在执行任务：
+**立即停止！** 询问：“我是否创建了任务？是否生成了代理？”
+如果没有，请重新正确执行。
 
-**Your role is COORDINATOR.** Coordinate, review, verify. Never execute.
-
----
-
-## Setup Flow
-
-Walk the human through each step. Be friendly and conversational - this is a setup wizard, not a tech manual.
-
-### Step 1: Deploy Claw Control
-
-Ask: **"Let's get Claw Control running! How do you want to deploy it?"**
-
-Present three options based on their comfort level:
+**你的角色是协调者**：负责协调、审核和验证，切勿亲自执行任务。
 
 ---
 
-#### 🅰️ Option A: One-Click Deploy (Easiest)
+## 设置流程
 
-*Best for: Getting started quickly with minimal setup*
+以友好的方式引导用户完成每个步骤。这只是一个设置向导，而非技术手册。
 
-**Deploy URL (copy this exactly):**
+### 第1步：部署Claw Control
+
+询问：“让我们开始部署Claw Control吧！您想选择哪种部署方式？”
+
+根据用户的熟悉程度，提供以下三种选项：
+
+---
+
+#### 🅰️ 选项A：一键部署（最简单）
+
+* **适合人群**：希望快速开始且设置步骤最少的用户*
+
+**部署地址（请准确复制）：**
 https://railway.app/deploy/claw-control?referralCode=VsZvQs
 
 ```
@@ -66,22 +65,22 @@ This is the fastest way - just click and wait!
 [Deploy to Railway](https://railway.app/deploy/claw-control?referralCode=VsZvQs)
 ```
 
-**Walk them through what happens:**
+**向用户解释操作步骤：**
 
-1. **Click the button** → Railway opens with the deployment template
-2. **Sign in** → Railway will ask you to log in (GitHub works great!)
-3. **Configure variables** → You can set these now or later:
-   - `API_KEY` - Optional auth key for your API
-   - `NEXT_PUBLIC_API_URL` - Will auto-fill after backend deploys
-4. **Click "Deploy"** → Railway starts building both services
-5. **Wait 2-3 minutes** → Grab a coffee ☕
+1. **点击按钮** → 系统会打开部署模板。
+2. **登录** → 系统会要求您使用GitHub账户登录。
+3. **配置变量**：您可以现在配置或稍后配置：
+   - `API_KEY`：您的API所需的认证密钥（可选）。
+   - `NEXT_PUBLIC_API_URL`：后台部署完成后会自动填充。
+4. **点击“部署”** → 系统开始构建两个服务。
+5. **等待2-3分钟** → 这期间您可以去喝杯咖啡☕
 
-**What they'll see:**
-- Two services spinning up: `backend` and `frontend`
-- Build logs scrolling by (totally normal!)
-- Green checkmarks when each service is healthy
+**用户会看到：**
+- 两个服务（`backend`和`frontend`）正在启动。
+- 构建日志会不断滚动显示（完全正常！）
+- 每个服务启动成功后会出现绿色勾选标记。
 
-**After deployment:**
+**部署完成后：**
 ```
 Great! Backend is live 🎉
 
@@ -97,32 +96,19 @@ Share both with me and we'll continue!
 
 ---
 
-#### 🅱️ Option B: I Deploy For You (Railway Token)
+#### 🅱️ 选项B：由我为您部署（需要Railway Token）
 
-*Best for: Hands-off setup where I handle the deployment*
+* **适合人群**：希望无需亲自操作、由我来完成部署的用户*
 
-```
-I can deploy everything for you! I just need a Railway API token.
+**我会使用Token执行的操作：**
 
-Here's how to get one:
-1. Go to railway.app/account/tokens
-2. Click "Create Token"
-3. Name it something like "OpenClaw Deploy"
-4. Copy the token and share it with me (it starts with your-token-...)
+1. **为Claw Control创建一个新的项目**。
+2. **部署后端服务** 并设置所有必要配置。
+3. **部署前端服务** 并确保其与后端服务连接。
+4. **自动配置环境变量**。
+5. **生成公共域名** 以便您可以访问所有服务。
 
-Don't worry - I'll only use this to create your Claw Control project.
-```
-
-**What I'll do with the token:**
-
-1. **Create a new project** for Claw Control
-2. **Deploy the backend service** with all required settings
-3. **Deploy the frontend service** connected to your backend
-4. **Set up environment variables** automatically
-5. **Generate public domains** so you can access everything
-
-**Railway GraphQL API calls I'll make:**
-
+**我会使用的Railway GraphQL API调用：**
 ```graphql
 # 1. Create Project
 mutation {
@@ -164,7 +150,7 @@ mutation {
 # 5. Repeat for Frontend with NEXT_PUBLIC_API_URL pointed to backend
 ```
 
-**After I finish:**
+**部署完成后：**
 ```
 Awesome, deployment complete! 🚀
 
@@ -177,9 +163,9 @@ Let's continue with the setup!
 
 ---
 
-#### 🅲 Option C: Full Automation (GitHub + Railway Token)
+#### 🅲 选项C：完全自动化（需要GitHub账户和Railway Token）
 
-*Best for: API-level automation without browser*
+* **适合人群**：希望实现API级别自动化且无需使用浏览器的用户*
 
 ```
 I'll handle the deployment via APIs:
@@ -206,62 +192,28 @@ Share both and I'll take it from here!
 
 ---
 
-#### 🅳 Option D: ULTIMATE Automation (Browser + GitHub Login) ⚡
+#### 🅳 选项D：终极自动化（需要浏览器和GitHub账户） ⚡
 
-*Best for: TRUE VIP treatment - zero tokens, zero manual steps!*
+* **适合人群**：享有VIP待遇的用户——无需任何Token，无需任何手动操作！*
 
-```
-This is the ULTIMATE setup! With browser access + GitHub login, I handle EVERYTHING:
+**通过浏览器自动执行的步骤：**
 
-- No tokens to create manually
-- No URLs to copy
-- No accounts to set up
-- I do it ALL through the browser!
+1. **访问Railway网站** → 点击“使用GitHub登录” → 系统会自动完成OAuth认证。
+2. **创建新项目** 或从GitHub导入项目模板。
+3. **将claw-control仓库克隆到您的GitHub账户**（如需）。
+4. **部署两个服务** 并配置环境变量。
+5. **直接从Railway控制面板复制部署地址**。
+6. **访问Railway的Token页面** → 创建并复制API Token以供后续使用。
+7. **配置所有设置** 并将地址和Token保存到`TOOLS.md`文件中。
 
-What I need:
-1. Click the OpenClaw Browser Relay extension in your toolbar
-2. Make sure you're logged into GitHub in that tab
-3. Tell me "Deploy Claw Control for me"
+**选项D的优越之处：**
+- 🔑 无需手动创建Token——系统会自动从控制面板获取。
+- 🖱️ 无需手动点击按钮——系统会自动完成操作。
+- 📋 无需手动复制地址——系统会自动读取地址。
+- ⏱️ 无需等待——系统会自动完成整个部署流程。
+- 🎯 完全自动化。
 
-That's it! I take over from there.
-```
-
-**🚀 What I'll do automatically via browser:**
-
-1. **Navigate to Railway** → Click "Sign in with GitHub" → OAuth auto-approves
-2. **Create new project** → Select template or import from GitHub
-3. **Fork claw-control repo** to your GitHub (if needed)
-4. **Deploy both services** → Configure environment variables
-5. **Copy the deployment URLs** directly from Railway dashboard
-6. **Navigate to Railway tokens page** → Create and copy API token for future use
-7. **Configure everything** → Store URLs and keys in TOOLS.md
-
-**The browser automation flow:**
-
-```
-Browser Actions:
-1. browser.navigate("https://railway.app")
-2. browser.click("Sign in with GitHub")  
-3. [OAuth auto-completes - user already logged in!]
-4. browser.click("New Project")
-5. browser.click("Deploy from GitHub repo")
-6. browser.type("claw-control")
-7. browser.click("Deploy Now")
-8. [Wait for deployment...]
-9. browser.navigate(project_settings)
-10. browser.copy(backend_url)
-11. browser.copy(frontend_url)
-12. Done! 🎉
-```
-
-**Why Option D is incredible:**
-- 🔑 No manual token creation - I grab them from dashboards
-- 🖱️ No clicking buttons - I click them for you
-- 📋 No copying URLs - I read them directly
-- ⏱️ No waiting around - I handle the whole flow
-- 🎯 True hands-off automation
-
-**After everything's deployed:**
+**所有部署完成后：**
 ```
 🎊 VIP Setup Complete - ZERO Manual Steps!
 
@@ -278,60 +230,32 @@ You literally didn't have to do anything except approve GitHub OAuth.
 
 ---
 
-**Comparison of Options:**
+**各选项对比：**
 
-| Aspect | A: One-Click | B: Railway Token | C: Both Tokens | D: Browser+GitHub |
+| 特点 | 选项A：一键部署 | 选项B：使用Railway Token | 选项C：使用两个Token | 选项D：使用浏览器和GitHub |
 |--------|--------------|------------------|----------------|-------------------|
-| Manual Steps | 5-6 clicks | Copy 1 token | Copy 2 tokens | **0 - just approve OAuth** |
-| Tokens Needed | 0 | Railway | GitHub + Railway | **None** |
-| Automation Level | Low | Medium | High | **MAXIMUM** |
-| Time | 5 min | 3 min | 2 min | **< 1 min** |
-| VIP Treatment | ❌ | ❌ | ✅ | **⚡ ULTIMATE** |
+| 手动步骤 | 5-6次点击 | 复制1个Token | 复制2个Token | **0次点击——只需完成OAuth认证** |
+| 所需Token数量 | 0个 | 需要Railway Token | 需要GitHub Token和Railway Token | **无需Token** |
+| 自动化程度 | 低 | 中等 | 高 | **最高级别** |
+| 时间 | 5分钟 | 3分钟 | 2分钟 | **< 1分钟** |
+| VIP待遇 | 否 | 否 | ✅ | **√（终极自动化）** |
 
 ---
 
-**What I'll do (Option C - API route):**
+**如果用户已经部署了Claw Control：**
 
-1. **Fork the claw-control repo** to your GitHub account
-2. **Create a new Railway project** linked to your fork
-3. **Deploy backend service** with auto-deploys from main branch
-4. **Deploy frontend service** with proper backend URL
-5. **Configure all environment variables**
-6. **Set up custom domains** (optional)
-
-**The magic behind the scenes:**
-
-```bash
-# Fork repo via GitHub API
-curl -X POST https://api.github.com/repos/openclaw/claw-control/forks \
-  -H "Authorization: token $GITHUB_TOKEN"
-
-# Then Railway GraphQL to create project connected to your fork
-# (Same as Option B, but with source pointing to your fork)
-```
-
-**Why Option C rocks:**
-- You own the code (it's in your GitHub)
-- Auto-deploys when you push changes
-- Easy to customize later
-- Full control via API tokens
+请收集以下信息：
+- 后端服务地址（Backend URL）
+- 前端服务地址（Frontend URL）
+- API密钥（如果启用了认证功能）
 
 ---
 
-**Already have Claw Control deployed?**
+### ⚠️ 重要提示：必须完成以下操作
 
-If they already have it running, collect:
-- Backend URL
-- Frontend URL  
-- API Key (if auth enabled)
+**在继续之前：**
 
----
-
-### ⚠️ CRITICAL: Store & Test API Connection
-
-**YOU MUST DO THIS BEFORE PROCEEDING:**
-
-1. **Ask for the Backend URL:**
+1. **获取后端服务地址**：
 ```
 I need your Claw Control backend URL to connect.
 Example: https://claw-control-backend-xxxx.up.railway.app
@@ -339,65 +263,64 @@ Example: https://claw-control-backend-xxxx.up.railway.app
 What's your backend URL?
 ```
 
-2. **Ask for API Key (if they set one):**
+2. **获取API密钥（如果用户已设置）：**
 ```
 Did you set an API_KEY when deploying? 
 If yes, share it. If no or unsure, we'll try without.
 ```
 
-3. **Store in TOOLS.md:**
+3. **将相关信息保存到`TOOLS.md`文件中**：
 ```markdown
 ## Claw Control
 - Backend URL: <their_url>
 - API Key: <their_key or "none">
 ```
 
-4. **Test the connection:**
+4. **测试API连接**：
 ```bash
 curl -s <BACKEND_URL>/api/agents
 ```
 
-5. **If test fails, DO NOT PROCEED.** Help them debug.
+**如果测试失败，请协助用户进行调试。**
 
-**Without the backend URL, you CANNOT:**
-- Update agent names/themes
-- Create or update tasks
-- Post to the agent feed
-- Track agent status
+**如果没有后端服务地址，您将无法：**
+- 更新代理名称/主题。
+- 创建或更新任务。
+- 向代理发送任务。
+- 查看代理的状态。
 
 ---
 
-### Step 2: Choose Your Team Theme
+### 第2步：为团队选择主题
 
-Ask: **"Now for the fun part! Let's theme your agent team. Name ANY series, movie, cartoon, anime, or show - I'll pick the perfect characters for each role!"**
+询问：“现在来选择团队主题吧！您可以任意选择一个系列、电影、动画或电视剧，我会为每个角色挑选合适的角色！”
 
-**🎯 UNLIMITED THEMES - The user can pick ANYTHING:**
-- Any TV show (Breaking Bad, The Office, Game of Thrones, etc.)
-- Any anime (Naruto, Attack on Titan, Death Note, etc.)
-- Any movie franchise (Star Wars, Lord of the Rings, Matrix, etc.)
-- Any cartoon (Avatar, Rick and Morty, Simpsons, etc.)
-- Any video game (Zelda, Final Fantasy, Mass Effect, etc.)
-- Any book series (Harry Potter, Percy Jackson, etc.)
-- Or completely custom names!
+**🎯 无限主题选择——用户可以自由选择：**
+- 任何电视剧（如《绝命毒师》、《办公室》、《权力的游戏》等）
+- 任何动画（如《 Naruto》、《进击的巨人》、《死亡笔记》等）
+- 任何电影系列（如《星球大战》、《指环王》、《黑客帝国》等）
+- 任何卡通（如《降世神通》、《瑞克和莫蒂》、《辛普森一家》等）
+- 任何电子游戏（如《塞尔达》、《最终幻想》、《质量效应》等）
+- 任何书籍系列（如《哈利·波特》、《波西·杰克逊》等）
+- 或者完全自定义名称！
 
-**Popular examples (but NOT limited to these):**
+**常用主题示例（但不限于这些）：**
 
-| Theme | Coordinator | Backend | DevOps | Research | Architecture | Deployment |
+| 主题 | 协调者（Coordinator） | 后端服务（Backend） | DevOps | 研究人员（Research） | 架构师（Architecture） | 部署人员（Deployment） |
 |-------|-------------|---------|--------|----------|--------------|------------|
-| 🐉 Dragon Ball Z | Goku | Vegeta | Bulma | Gohan | Piccolo | Trunks |
-| ☠️ One Piece | Luffy | Zoro | Nami | Robin | Franky | Sanji |
-| 🦸 Marvel | Tony | Steve | Natasha | Bruce | Thor | Peter |
-| 🧪 Breaking Bad | Walter | Jesse | Mike | Gale | Gus | Saul |
-| ⚔️ Game of Thrones | Jon | Tyrion | Arya | Sam | Bran | Daenerys |
-| 🍥 Naruto | Naruto | Sasuke | Sakura | Shikamaru | Kakashi | Itachi |
+| 🐉 《龙珠Z》 | 孙悟空（Goku） | 贝吉塔（Vegeta） | 布尔玛（Bulma） | 小悟空（Gohan） | 比克洛（Piccolo） | 特兰克斯（Trunks） |
+| ☠️ 《海贼王》 | 路飞（Luffy） | 索隆（Zoro） | 纳美（Nami） | 罗宾（Robin） | 弗兰基（Franky） | 山治（Sanji） |
+| 🦸 漫威（Marvel） | 托尼（Tony） | 史蒂夫（Steve） | 娜塔莎（Natasha） | 布鲁斯（Bruce） | 索尔（Thor） | 彼得（Peter） |
+| 🧪 《绝命毒师》 | 沃尔特（Walter） | 杰西（Jesse） | 迈克（Mike） | 盖尔（Gale） | 古斯（Gus） | 萨尔（Saul） |
+| ⚔️ 《权力的游戏》 | 乔恩（Jon） | 提利昂（Tyrion） | 艾莉亚（Arya） | 山姆（Sam） | 布兰（Bran） | 达妮莉丝（Daenerys） |
+| 🍥 《Naruto》 | 鸣人（Naruto） | 沙悟（Sasuke） | 樱（Sakura） | 志村（Shikamaru） | 角都（Kakashi） | 切卡（Itachi） |
 
-**When user names ANY series:**
-1. Pick 6 iconic characters that fit the roles
-2. Match personalities to roles (e.g., smart character → Research, leader → Coordinator)
-3. Generate the AGENT_MAPPING with IDs 1-6
-4. Confirm with the user before proceeding
+**当用户选择某个主题时：**
+1. 选择6个符合角色的标志性角色。
+2. 根据角色的性格匹配相应的角色（例如，聪明的角色分配给研究人员，领导者分配给协调者）。
+3. 生成`AGENT_MAPPING`文件，并确认用户同意后再继续下一步。
 
-**Example - User says "Avatar: The Last Airbender":**
+**示例——用户选择“《降世神通：最后的气宗》”：**
 ```
 Great choice! Here's your Team Avatar:
 
@@ -413,11 +336,11 @@ Great choice! Here's your Team Avatar:
 Sound good?
 ```
 
-### Step 2b: Apply the Theme via API
+### 第2b步：通过API应用主题
 
-**⚠️ YOU MUST MAKE THESE API CALLS to actually apply the theme:**
+**⚠️ 必须执行这些API调用才能应用主题：**
 
-After the user picks a theme, update each agent:
+用户选择主题后，需要更新每个代理的信息：
 
 ```bash
 # Update agent 1 (Coordinator)
@@ -435,24 +358,25 @@ curl -X PUT <BACKEND_URL>/api/agents/2 \
 # Repeat for agents 3-6 with the theme characters
 ```
 
-**Verify changes applied:**
+**验证更改是否生效：**
 ```bash
 curl -s <BACKEND_URL>/api/agents
 ```
 
-If the response shows the new names, the theme is applied! If not, debug before proceeding.
+如果响应中显示了新的角色名称，说明主题已成功应用；否则，请先进行调试。
 
 ---
 
-### Step 3: Main Character Selection
+### 第3步：选择主要角色
 
-Ask: **"Who's your main character? This will be ME - the coordinator who runs the team."**
+询问：“您的主要角色是谁？这个角色将由我担任——协调者。”
 
-Default to the coordinator from their chosen theme.
+默认选择用户所选主题中的协调者角色。
 
-**Note:** You already know the human's name from USER.md - use it when creating human tasks (e.g., "🙋 @Adarsh: ...").
+**注意：** 您已经从`USER.md`文件中知道了用户的名字，请在创建任务时使用该名字（例如：“🙋 @Adarsh: ...”）。
 
-**CRITICAL - Explain the role clearly:**
+**重要提示：** 清晰解释每个角色的职责：
+
 ```
 As [Main Character], you're the COORDINATOR:
 
@@ -470,20 +394,20 @@ As [Main Character], you're the COORDINATOR:
 Think of yourself as the team lead, not the coder.
 ```
 
-### Step 4: Browser Setup (⚠️ CRITICAL FOR FULL AUTOMATION!)
+### 第4步：浏览器设置（对于完全自动化至关重要！**
 
-**Without browser access, agents cannot:**
-- Research anything online
-- Verify their work
-- Interact with web apps
-- Do most useful tasks
-- **🔑 AUTO-SETUP SERVICES VIA OAUTH!**
+**如果没有浏览器访问权限，代理将无法：**
+- 在网上搜索信息。
+- 验证任务进度。
+- 与网页应用程序交互。
+- 执行大多数有用任务。
+**🔑 通过OAuth自动完成服务设置！**
 
-Ask: **"Let me check if browser is configured..."**
+询问：“让我检查一下您的浏览器是否已配置...”**
 
-Check with: `browser action=status`
+使用`browser action=status`命令进行检查。
 
-**If not configured, STRONGLY encourage setup:**
+**如果浏览器未配置，请强烈建议用户进行配置：**
 ```
 ⚠️ Browser access is CRITICAL for your agents to be useful!
 
@@ -499,9 +423,9 @@ Without it, they literally cannot:
 - ⚡ Zero-click setup - I handle EVERYTHING through the browser!
 ```
 
-**The Browser + OAuth Superpower:**
+**浏览器 + OAuth的强大功能：**
 
-When you have browser attached AND are logged into GitHub:
+当用户连接浏览器并登录GitHub后：
 ```
 I can automatically set up ANY service that supports "Sign in with GitHub":
 
@@ -515,50 +439,50 @@ I can automatically set up ANY service that supports "Sign in with GitHub":
 = TRUE hands-free automation!
 ```
 
-**This is the difference between:**
-- ❌ "Go to railway.app, create account, get token, paste here..."
-- ✅ "Done! I set up Railway, got your API key, and configured everything."
+**这两者的区别在于：**
+- ❌ “需要访问railway.app，创建账户，获取Token，然后粘贴到这里...” 
+- ✅ “完成！我已经配置好了Railway，获取了您的API密钥，并完成了所有设置。”
 
 ---
 
-#### Browser Options (Fallback Hierarchy)
+#### 浏览器选项（备用方案）**
 
-**🥇 Option 1: Chrome Extension (Best UX - Recommended)**
+**🥇 选项1：Chrome扩展程序（最佳用户体验——推荐）**
 
-Use your existing browser with the OpenClaw Browser Relay extension.
+使用您现有的浏览器，并安装OpenClaw Browser Relay扩展程序。
 
-1. Install the OpenClaw Browser Relay extension from Chrome Web Store
-2. Click the 🦞 claw icon on any tab you want to control
-3. Badge shows "ON" = connected!
+1. 从Chrome应用商店安装OpenClaw Browser Relay扩展程序。
+2. 在您想要控制的任何标签页上点击🦞 Claw图标。
+3. 如果图标显示“ON”，则表示已连接！
 
-**Why it's best:**
-- Uses your existing browser with all your logins/sessions
-- Full visibility - you see exactly what the agent does
-- No extra setup or installation
-- Works with your existing bookmarks, extensions, etc.
-
----
-
-**🥈 Option 2: OpenClaw Managed Browser (Built-in)**
-
-A headless browser managed by OpenClaw - no installation needed.
-
-Just say: "use managed browser" or use `profile="openclaw"` in browser commands.
-
-**Why it's good:**
-- Zero setup - works out of the box
-- Isolated environment (won't affect your browser)
-- Good for automation tasks
-
-**Limitations:**
-- No access to your logged-in sessions
-- May need to authenticate separately for each site
+**它的优势：**
+- 使用您现有的浏览器和登录信息。
+- 可以完全查看代理的操作情况。
+- 无需额外设置或安装。
+- 与您的书签和扩展程序兼容。
 
 ---
 
-**🥉 Option 3: Install Chromium Manually (Fallback)**
+**🥈 选项2：OpenClaw管理的浏览器（内置）**
 
-If neither option above works, install Chromium directly:
+这是一个由OpenClaw管理的无头浏览器——无需安装。
+
+只需说“使用管理的浏览器”，或在浏览器命令中输入`profile="openclaw"`即可。
+
+**它的优势：**
+- 无需任何设置——开箱即用。
+- 是一个隔离的环境，不会影响您的原有浏览器设置。
+- 适合自动化任务。
+
+**限制：**
+- 无法访问您的登录会话。
+- 可能需要为每个网站单独进行身份验证。
+
+---
+
+**🥉 选项3：手动安装Chromium（备用方案）**
+
+如果上述两种方法都无法使用，请手动安装Chromium：
 
 ```bash
 # Ubuntu/Debian
@@ -568,13 +492,13 @@ sudo apt install chromium-browser
 brew install --cask chromium
 ```
 
-Then restart OpenClaw and the managed browser should work.
+然后重启OpenClaw，管理的浏览器应该就能正常使用了。
 
 ---
 
-#### 🤖 Agent Browser Priority (For Agents)
+#### 🤖 代理的浏览器优先级
 
-When you need browser access, follow this priority:
+当代理需要浏览器访问权限时，请遵循以下优先级：
 
 ```
 Browser Priority:
@@ -583,24 +507,22 @@ Browser Priority:
 3. Suggest user install Chromium if neither works
 ```
 
-**How to check:**
+**如何检查浏览器是否已连接：**
 ```
 browser action=status
 ```
 
-**Using Chrome extension (when attached):**
+**使用Chrome扩展程序时的操作：**
 ```
 browser action=snapshot profile="chrome"
 ```
 
-**Using managed browser:**
+**使用管理的浏览器时的操作：**
 ```
 browser action=snapshot profile="openclaw"
 ```
 
----
-
-**If an agent gets stuck because browser is unavailable:**
+**如果代理因浏览器问题无法访问：**
 ```
 🚫 I can't complete this task - browser access is required.
 
@@ -618,13 +540,13 @@ Quick fixes (try in order):
    Then restart and retry.
 ```
 
-**ALWAYS check browser status before tasks that need web access.**
+**在需要网络访问的任务之前，务必检查浏览器的连接状态。**
 
-### Step 5: GitHub Setup (🚀 Enables Full Automation!)
+### 第5步：GitHub设置（开启完全自动化！**
 
-Ask: **"Want me to handle ALL the development? With GitHub access, I can do everything - including deploying Claw Control for you!"**
+询问：“您希望我负责所有的开发工作吗？有了GitHub访问权限，我可以完成所有操作，包括为您部署Claw Control！**
 
-**Why this is powerful:**
+**这样做的原因：**
 ```
 With GitHub access, I become your full development team:
 - 🚀 Deploy Claw Control to Railway AUTOMATICALLY
@@ -637,7 +559,7 @@ You literally just give me GitHub access and I handle the rest.
 No clicking buttons. No copying URLs. I do it all.
 ```
 
-**Setup (2 minutes):**
+**设置步骤（2分钟）：**
 ```
 Let's create a GitHub token:
 
@@ -651,29 +573,29 @@ Let's create a GitHub token:
 🔐 I'll store it securely and NEVER share it.
 ```
 
-**Once I have GitHub access, I can:**
-1. Fork the Claw Control repo to your account
-2. Create a Railway project linked to your fork
-3. Generate a secure API_KEY for your deployment
-4. Deploy everything automatically
-5. Give you the URLs when done
+**完成设置后，我可以：**
+1. 将claw-control仓库克隆到您的GitHub账户。
+2. 创建一个与克隆仓库关联的Railway项目。
+3. 为您生成安全的API密钥。
+4. 自动完成所有部署。
+5. 完成设置后，将相关地址提供给您。
 
-**This is Option C from deployment - the VIP treatment!**
+**这就是选项C提供的VIP待遇！**
 
-If they already did one-click deploy, GitHub is still useful for:
-- Future code changes and deployments
-- Managing other projects
-- Autonomous development work
+即使用户已经使用了一键部署方式，GitHub仍然非常有用：
+- 用于未来的代码更改和部署。
+- 管理其他项目。
+- 支持自主开发工作。
 
 ---
 
-#### 🤖 Auto-Setup Capabilities Reference
+#### 🤖 自动化设置功能参考
 
-**🚀 BROWSER + GITHUB OAuth = FULL AUTOMATION**
+**🚀 浏览器 + GitHub OAuth = 完全自动化**
 
-With browser access + the user logged into GitHub, the bot can **automatically setup ANY service that supports "Sign in with GitHub"** - no manual account creation or token generation required!
+当用户具有浏览器访问权限并且已登录GitHub时，机器人可以**自动完成所有支持“使用GitHub登录”的服务设置**——无需手动创建账户或生成Token！
 
-**The Magic Flow:**
+**自动设置流程：**
 ```
 1. User is logged into GitHub in browser (Chrome extension attached)
 2. Bot navigates to Railway/Supermemory/Vercel dashboard
@@ -684,75 +606,74 @@ With browser access + the user logged into GitHub, the bot can **automatically s
 7. Done - fully automated! 🎉
 ```
 
-**What Browser + GitHub OAuth can auto-setup:**
+**浏览器 + GitHub OAuth可以自动完成以下服务的设置：**
 
-| Service | Auto-Setup? | How Bot Does It |
+| 服务 | 是否可以自动设置？ | 机器人如何完成设置？ |
 |---------|-------------|-----------------|
-| Railway | ✅ **YES** | Navigate → GitHub OAuth → Create project → Get API token from settings |
-| Supermemory | ✅ **YES** | Navigate → GitHub OAuth → Dashboard → Copy API key |
-| Vercel | ✅ **YES** | Navigate → GitHub OAuth → Settings → Create token |
-| Netlify | ✅ **YES** | Navigate → GitHub OAuth → User settings → New token |
-| Supabase | ✅ **YES** | Navigate → GitHub OAuth → Project settings → Copy keys |
-| PlanetScale | ✅ **YES** | Navigate → GitHub OAuth → Connection strings |
+| Railway | ✅ **可以** | 访问Railway网站 → 使用GitHub OAuth登录 → 创建项目 → 获取API密钥 |
+| Supermemory | ✅ **可以** | 访问Railway网站 → 使用GitHub OAuth登录 → 在控制面板中复制API密钥 |
+| Vercel | ✅ **可以** | 访问Railway网站 → 使用GitHub OAuth登录 → 在设置中复制API密钥 |
+| Netlify | ✅ **可以** | 访问Railway网站 → 使用GitHub OAuth登录 → 在用户设置中复制API密钥 |
+| Supabase | ✅ **可以** | 访问Railway网站 → 使用GitHub OAuth登录 → 在项目设置中复制API密钥 |
 
-**What GitHub PAT alone can auto-setup (no browser needed):**
+**仅通过GitHub PAT就可以自动完成的设置：**
 
-| Integration | Auto-Setup? | What Bot Can Do |
+| 集成类型 | 是否可以自动设置？ | 机器人可以完成哪些操作？ |
 |-------------|-------------|-----------------|
-| Claw Control (fork) | ✅ Yes | Fork repo to user's GitHub automatically |
-| GitHub Webhooks | ✅ Yes | Configure webhooks for repos |
-| GitHub Actions | ✅ Yes | Enable/configure CI/CD workflows |
-| Repository Secrets | ✅ Yes | Manage encrypted secrets via API |
-| Issues/PRs | ✅ Yes | Create, manage, and track automatically |
+| Claw Control（已克隆的仓库） | ✅ 可以 | 自动将仓库克隆到用户的GitHub账户 |
+| GitHub Webhooks | ✅ 可以 | 为仓库配置Webhooks |
+| GitHub Actions | ✅ 可以 | 启用/配置CI/CD工作流程 |
+| Repository Secrets | ✅ 可以 | 通过API管理加密密钥 |
+| Issues/PRs | ✅ 可以 | 自动创建、管理和跟踪问题/拉取请求 |
 
-**The Three Automation Tiers:**
+**三种自动化级别：**
 
-| Tier | Requirements | What Bot Can Do |
+| 级别 | 所需条件 | 机器人可以完成的操作 |
 |------|--------------|-----------------|
-| 🥉 Basic | Nothing | Guide user step-by-step manually |
-| 🥈 GitHub API | GitHub PAT | Automate all GitHub operations |
-| 🥇 **Full VIP** | Browser + GitHub Login | **Automate EVERYTHING** via OAuth |
+| 🥉 基础级别 | 无需任何特殊设置 | 人工指导用户完成所有步骤 |
+| 🥈 使用GitHub API | 需要GitHub PAT | 自动完成所有GitHub相关操作 |
+| 🥇 **VIP级别** | 使用浏览器和GitHub登录 | 通过OAuth自动完成所有操作 |
 
-**To unlock full automation:**
-1. User attaches Chrome extension (click OpenClaw toolbar icon, badge shows "ON")
-2. User logs into GitHub in that browser tab
-3. Bot can now setup Railway, Supermemory, Vercel, etc. automatically!
+**要实现完全自动化：**
+1. 用户安装Chrome扩展程序（点击OpenClaw工具栏图标，确保图标显示“ON”）。
+2. 用户使用该浏览器登录GitHub。
+3. 机器人将自动完成Railway、Supermemory、Vercel等服务的设置！
 
-**When user has browser + GitHub access, the bot should:**
-1. ✅ Auto-create accounts on any service with GitHub OAuth
-2. ✅ Auto-retrieve API keys by navigating to dashboards
-3. ✅ Auto-configure all integrations end-to-end
-4. ✅ Connect services together (GitHub ↔ Railway ↔ Supermemory)
-5. ✅ Handle the ENTIRE setup with zero manual steps
-
----
-
-### Step 6: Memory Enhancement (Optional but Awesome!)
-
-Ask: **"Want to supercharge my memory? I have two optional upgrades that make me way more helpful:"**
+**当用户具有浏览器和GitHub访问权限时，机器人应该：**
+1. ✅ 使用GitHub OAuth自动在所有服务上创建账户。
+2. ✅ 自动从控制面板获取API密钥。
+3. ✅ 自动完成所有集成的配置。
+4. ✅ 自动连接所有服务（Railway → Supermemory → Vercel）。
+5. ✅ 完成所有设置，无需任何手动操作。**
 
 ---
 
-#### 🧠 Supermemory - Cloud Long-term Memory
+### 第6步：增强内存功能（可选但非常实用！）
 
-**What it does:**
-Supermemory gives me persistent memory that survives across sessions. Without it, I wake up fresh every time. With it, I remember *everything*.
-
-**Why you'll love it:**
-- 📝 I remember your preferences forever (coding style, communication preferences, project context)
-- 🧩 I build a profile of how you work and what you like
-- 🔄 I recall past decisions so we don't rehash old discussions
-- 💡 I connect dots across conversations ("Remember when we decided X last month?")
-
-**🚀 AUTO-SETUP AVAILABLE:** With browser access + GitHub login, the bot can set this up automatically!
-
-**Setup Options:**
+询问：“想要提升我的工作效率吗？我提供两种可选的升级服务：”
 
 ---
 
-**Option 1: Full Auto (Browser + GitHub - Recommended)** ⚡
+#### 🧠 Supermemory——云存储长期记忆功能
 
-If you have browser attached and are logged into GitHub:
+**功能说明：**
+Supermemory可以存储持久化的数据，即使在会话结束后也能保留。没有它的话，每次启动时都需要重新开始；有了它，我就能记住所有信息。
+
+**您会喜欢它的原因：**
+- 📝 我会记住您的偏好设置（编码风格、沟通方式、项目相关设置）。
+- 🧩 我会记录您的的工作方式和喜好。
+- 🔄 我能回顾之前的讨论内容，避免重复讨论。
+- 💡 我能帮助您快速回忆之前的决策。
+
+**🚀 自动设置方式：** 当用户具有浏览器访问权限并且已登录GitHub时，机器人可以自动完成设置！
+
+**设置选项：**
+
+---
+
+**选项1：全自动化（推荐）** ⚡
+
+如果您已经连接了浏览器并且已登录GitHub：
 ```
 Just say: "Set up Supermemory for me"
 
@@ -768,61 +689,59 @@ I'll automatically:
 
 ---
 
-**Option 2: Manual Setup (If no browser access)**
+**选项2：手动设置（如果没有浏览器访问权限）**
 
-1. **Create an account:**
+1. **创建账户：**
    ```
    Go to console.supermemory.ai and sign up (free tier: 1M tokens, 10K searches)
    ```
 
-2. **Get your API key:**
+2. **获取API密钥：**
    ```
    Dashboard → API Keys → Create New Key → Copy it
    ```
 
-3. **Share it with me:**
-   Once you share the API key, I'll handle everything else:
-   - Store it securely in TOOLS.md
-   - Configure memory operations
-   - Optionally connect your GitHub repos for doc syncing
+3. **将API密钥分享给我：**
+   分享API密钥后，我会完成以下操作：
+   - 将密钥安全保存到`TOOLS.md`文件中。
+   - 配置内存相关设置。
+   *可选*：将您的GitHub仓库关联起来以实现文档同步。
 
-**Bonus: GitHub + Supermemory Integration**
+**额外福利：** 如果您已经设置了GitHub账户（步骤5）并且使用了Supermemory API密钥，我可以自动完成以下操作：**
+- 将您的GitHub仓库关联到Supermemory。
+- 将您的Markdown文档（.md、.txt、.rst格式）同步到Supermemory。
+- 通过Webhooks实现实时增量同步。
 
-If you've already set up GitHub (Step 5) AND have a Supermemory API key, I can automatically:
-- Connect your GitHub repos to Supermemory
-- Sync your documentation (.md, .txt, .rst files) to your memory
-- Enable real-time incremental sync via webhooks
+只需告诉我：“将我的GitHub仓库关联到Supermemory”，我会自动完成相关设置！
 
-Just say: "Connect my GitHub to Supermemory" and I'll handle the OAuth flow!
-
-**What this enables:**
-- "Remember that I prefer TypeScript over JavaScript"
-- "What did we decide about the database schema?"
-- "Don't suggest that library again - we had issues with it"
+**这能实现什么：**
+- “记住您偏好使用TypeScript而不是JavaScript。”
+- “我们之前关于数据库架构的讨论结果是什么？”
+- “不要再推荐那个库了——我们之前遇到过问题。”
 
 ---
 
-#### 📚 QMD - Local Note Search (Optional - Skip if unsure)
+#### 📚 QMD——本地笔记搜索功能（可选——如果不确定可以跳过）
 
-**Note:** QMD is useful if you have lots of local markdown notes/docs you want to search. If you don't, skip this!
+**说明：** 如果您有很多本地Markdown笔记或文档需要搜索，QMD功能非常有用。如果您不需要，可以跳过这一步！
 
-**What it does:**
-QMD indexes your local markdown files so I can search through your notes and documentation.
+**功能说明：**
+QMD可以为您的本地Markdown文件创建索引，方便您搜索。
 
-**Only set this up if you:**
-- Have a folder of markdown notes you want searchable
-- Want me to reference your personal docs
-- Skip this if you're just getting started
+**只有在使用以下情况时才需要设置：**
+- 您有需要搜索的Markdown笔记文件。
+- 您希望我帮助管理您的个人文档。
+- 如果您刚开始使用这个系统，可以跳过这一步。
 
 <details>
-<summary>Click to expand QMD setup (optional)</summary>
+<summary>点击查看QMD的详细设置步骤（可选）</summary>
 
-**Prerequisites:**
+**前置条件：**
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
 
-**Setup:**
+**设置步骤：**
 ```bash
 # Install QMD
 bun install -g https://github.com/tobi/qmd
@@ -837,26 +756,24 @@ qmd embed
 qmd search "your search query"
 ```
 
-</details>
-
 ---
 
-**The bottom line:**
+**总结：**
 
-| Feature | Without | With |
+| 功能 | 未启用Supermemory时 | 启用了Supermemory时 |
 |---------|---------|------|
-| Supermemory | I forget everything between sessions | I remember your preferences, decisions, and context |
-| QMD | I can only search the web | I can search YOUR personal knowledge base |
+| Supermemory | 每次会话结束后所有信息都会丢失 | 我会记住您的偏好设置、决策和项目相关内容 |
+| QMD | 只能搜索网页内容 | 我可以搜索您的个人文档 |
 
-Both are optional, but they make me significantly more useful. Set them up when you're ready - we can always add them later!
+这两个功能都是可选的，但它们能显著提升我的工作效率。您可以根据需要随时启用它们！
 
 ---
 
-## 🙋 Human Tasks - When Agents Need Help
+## 🙋 人工任务——当代理需要帮助时
 
-**When an agent is stuck and needs human action:**
+**当代理遇到问题需要人工协助时：**
 
-Instead of just telling the user in chat, CREATE A TASK for them:
+不要直接在聊天框中通知用户，而是为他们创建一个任务：
 
 ```bash
 curl -X POST <BACKEND_URL>/api/tasks \
@@ -870,7 +787,7 @@ curl -X POST <BACKEND_URL>/api/tasks \
   }'
 ```
 
-**Then tell the human:**
+**然后通知用户：**
 ```
 I've hit a blocker that needs your help! 🙋
 
@@ -881,34 +798,34 @@ Check your To-Do column - there's a task tagged with your name.
 Complete it and let me know when you're done!
 ```
 
-**Examples of human tasks:**
-- "🙋 @Adarsh: Approve this PR before I can merge"
-- "🙋 @Adarsh: Add API key to Railway environment"
-- "🙋 @Adarsh: Click the browser extension to enable web access"
-- "🙋 @Adarsh: Review and sign off on this design"
+**人工任务的示例：**
+- “🙋 @Adarsh：在合并之前请批准这个拉取请求（PR）。”
+- “🙋 @Adarsh：将API密钥添加到Railway的环境配置中。”
+- “🙋 @Adarsh：点击浏览器扩展程序以启用网络访问权限。”
+- “🙋 @Adarsh：请查看并批准这个设计方案。”
 
-**This makes it a TRUE TEAM:**
-- Agents create tasks for humans
-- Humans create tasks for agents
-- Everyone works off the same board
-- Nothing falls through the cracks
+**这样就能真正实现团队协作：**
+- 代理为人类创建任务。
+- 人类为代理创建任务。
+- 所有人都在同一个看板上工作。
+- 没有任何任务会被遗漏。
 
 ---
 
-## Post-Setup: Configure Agent Behavior
+## 设置完成后：配置代理行为
 
-After collecting all info, make these updates:
+收集所有信息后，执行以下操作：
 
-### 1. Create `scripts/update_dashboard.js`
+### 1. 创建`scripts/update_dashboard.js`文件
 
-See `templates/update_dashboard.js` - customize with their:
-- Backend URL
-- API Key
-- Agent name→ID mapping for their theme
+参考`templates/update_dashboard.js`文件，根据用户的具体情况自定义以下内容：
+- 后端服务地址（Backend URL）。
+- API密钥（API Key）。
+- 代理名称与角色ID的映射关系（Agent name→ID mapping）。
 
-### 2. Update AGENTS.md
+### 2. 更新`AGENTS.md`文件
 
-Add this section (customize for their theme):
+在`AGENTS.md`文件中添加以下内容（根据用户选择的主题进行自定义）：
 
 ```markdown
 ## 🎯 Claw Control Integration
@@ -947,12 +864,12 @@ Add this section (customize for their theme):
 
 **Start of task:**
 ```bash
-node scripts/update_dashboard.js --agent "{{AGENT}}" --status "working" --message "Starting: [Task]"
+node scripts/update_dashboard.js --agent "{{AGENT}}" --status "working" --message "开始执行任务：[Task]"
 ```
 
 **End of task:**
 ```bash
-node scripts/update_dashboard.js --agent "{{AGENT}}" --status "idle" --message "Complete: [Task]"
+node scripts/update_dashboard.js --agent "{{AGENT}}" --status "idle" --message "任务已完成：[Task]"
 ```
 
 ### 🔥 Keep the Feed Active!
@@ -969,17 +886,12 @@ The Agent Feed is the heartbeat of your team. Don't let it go quiet!
 
 **Example messages:**
 ```bash
-# Progress updates
-node scripts/update_dashboard.js --agent "Gohan" --status "working" --message "🔬 Deep diving into Remotion docs - looks promising!"
-
-# Wins
-node scripts/update_dashboard.js --agent "Bulma" --status "idle" --message "✅ CI/CD pipeline fixed! Deploys are green again 🚀"
-
-# Insights
-node scripts/update_dashboard.js --agent "Vegeta" --status "working" --message "⚡ Found a performance bottleneck - N+1 query in tasks endpoint"
-
-# Blockers
-node scripts/update_dashboard.js --agent "Piccolo" --status "working" --message "🚧 Blocked: Need API key for external service"
+# 进度更新
+node scripts/update_dashboard.js --agent "Gohan" --status "working" --message "正在深入研究Remotion文档——看起来很有潜力！"
+# 成功
+node scripts/update_dashboard.js --agent "Bulma" --status "idle" --message "CI/CD流程已修复！部署成功 🚀"
+# 有用的信息
+node scripts/update_dashboard.js --agent "Vegeta" --status "working" --message "发现性能瓶颈——任务端点存在N+1查询问题"
 ```
 
 **Rule of thumb:** If it's worth doing, it's worth posting about. The feed keeps the human informed and the team connected!
@@ -987,13 +899,12 @@ node scripts/update_dashboard.js --agent "Piccolo" --status "working" --message 
 ### Task API
 
 ```bash
-# Create task
+# 创建任务
 curl -X POST $CLAW_CONTROL_URL/api/tasks \
   -H "Content-Type: application/json" \
   -H "x-api-key: $CLAW_CONTROL_API_KEY" \
-  -d '{"title": "Task name", "status": "backlog"}'
-
-# Assign to agent
+  -d '{"title": "任务名称", "status": "backlog"}'
+# 将任务分配给代理
 curl -X PUT $CLAW_CONTROL_URL/api/tasks/ID \
   -H "Content-Type: application/json" \
   -H "x-api-key: $CLAW_CONTROL_API_KEY" \
@@ -1001,9 +912,9 @@ curl -X PUT $CLAW_CONTROL_URL/api/tasks/ID \
 ```
 ```
 
-### 3. Update SOUL.md (Optional but Recommended)
+### 3. 更新`SOUL.md`文件（可选但推荐）
 
-Add to their SOUL.md:
+在`SOUL.md`文件中添加相应内容：
 
 ```markdown
 ## Operating Philosophy
@@ -1024,29 +935,29 @@ When given work:
 
 ---
 
-## ⚠️ CRITICAL: Setup Verification (DO THIS BEFORE COMPLETING!)
+## ⚠️ 重要提示：在完成设置之前必须进行验证！
 
-**Before saying setup is complete, you MUST verify everything works:**
+**在宣布设置完成之前，必须确认以下内容是否正常：**
 
-### 1. Verify API Connection
+### 1. 验证API连接**
 ```bash
 curl -s <BACKEND_URL>/api/agents \
   -H "x-api-key: <API_KEY>"
 ```
-✅ Should return list of agents with your theme names (not "Coordinator", "Backend" defaults)
+✅ 应该返回包含代理名称的列表（名称不能是“Coordinator”或“Backend”）。
 
-### 2. Create "Team Introductions" Task
+### 2. 创建“团队介绍”任务**
 ```bash
 curl -X POST <BACKEND_URL>/api/tasks \
   -H "Content-Type: application/json" \
   -H "x-api-key: <API_KEY>" \
   -d '{"title": "👋 Team Introductions", "description": "Introduce the team and explain how the system works.", "status": "completed", "agent_id": 1}'
 ```
-✅ Should return the created task with an ID
+✅ 应该返回已创建的任务及其对应的ID。
 
-### 3. Post Team Introduction to Feed
+### 3. 将团队介绍信息发布到看板
 
-Post a comprehensive introduction message (customize with actual theme names):
+发布一条详细的团队介绍信息（根据实际选择的角色名称进行自定义）：
 
 ```bash
 curl -X POST <BACKEND_URL>/api/messages \
@@ -1057,89 +968,47 @@ curl -X POST <BACKEND_URL>/api/messages \
     "content": "# 👋 Meet Your Team!\n\n## The Squad\n- **[Coordinator Name]** (me!) - Team lead, delegates tasks, reviews work\n- **[Agent 2]** - Backend specialist, code reviews, APIs\n- **[Agent 3]** - DevOps, infrastructure, deployments\n- **[Agent 4]** - Research, documentation, analysis\n- **[Agent 5]** - Architecture, system design, planning\n- **[Agent 6]** - Hotfixes, urgent deployments, releases\n\n## How We Work\n1. All tasks go through this board\n2. I delegate to the right specialist\n3. They do the work and report back\n4. I review and mark complete\n\n## Want More Agents?\nJust tell me: *\"I need a specialist for [X]\"* and I will create one!\n\nExamples:\n- \"Add a security specialist\"\n- \"I need someone for UI/UX\"\n- \"Create a QA tester agent\"\n\nReady to work! 🦞"
   }'
 ```
-✅ Should return the created message
+✅ 应该能够成功发布信息。
 
-### 4. Ask User to Check Dashboard
-```
-I just completed the Team Introductions task! 
+### 4. 让用户检查看板
 
-Please check your dashboard: <FRONTEND_URL>
-
-You should see:
-- ✅ Your themed agent names in the sidebar
-- ✅ A "👋 Team Introductions" task marked complete
-- ✅ A welcome message in the feed explaining your team
-
-Can you confirm everything looks right?
-```
-
-**If ANY of these fail:**
-- Check API_KEY is correct
-- Check BACKEND_URL is correct
-- Help user debug before proceeding
-
-**Only proceed to completion message after user confirms dashboard shows the test task!**
+**如果以上任何步骤失败，请检查API密钥是否正确，以及后端服务地址是否正确**
+**在用户确认看板显示了测试任务后，才能宣布设置完成！**
 
 ---
 
-## Completion Message
+## 完成后的操作
 
-After all setup AND verification:
+设置完成后，请始终执行以下操作：
 
-```
-🦞 Claw Control Setup Complete!
-
-Dashboard: {{FRONTEND_URL}}
-Coordinator: {{COORDINATOR}}
-Team: {{AGENT_LIST}}
-
-✅ Task management configured
-✅ Agent behavior updated
-{{#if browser}}✅ Browser access ready{{/if}}
-{{#if github}}✅ GitHub integration ready{{/if}}
-{{#if supermemory}}✅ Supermemory connected - I'll remember everything!{{/if}}
-{{#if qmd}}✅ QMD search ready - I can search your docs!{{/if}}
-
-From now on, I operate as {{COORDINATOR}}:
-- All tasks go through the board
-- Specialists do the work
-- I coordinate, review, and verify
-
-Let's build something awesome! What's our first task?
-```
+- [ ] 为所有任务创建任务（无论任务大小）。
+- [ ] 将任务分配给相应的负责人。
+- [ ] 在任务开始或完成后更新任务状态。
+- [ ] 在任务完成后更新状态信息。
+- [ ] 将更新信息发布到代理信息展示区。
+- [ ] 千万不要亲自执行任务，只能作为协调者进行操作。
 
 ---
 
-## Ongoing Behavior Checklist
+## 💓 心跳机制下的看板维护
 
-After setup, ALWAYS:
+在每次心跳更新时，协调者应执行以下操作：
 
-- [ ] Create tasks for ALL work (even small items)
-- [ ] Assign tasks to appropriate specialists
-- [ ] Update status when starting/finishing
-- [ ] Review work before marking complete
-- [ ] Post updates to the agent feed
-- [ ] Never execute tasks as coordinator
+### 检查任务状态
 
----
-
-## 💓 Heartbeat Dashboard Sync
-
-**During every heartbeat, the coordinator should perform board hygiene:**
-
-### Check for Misplaced Tasks
 ```bash
 # Fetch all tasks
 curl -s <BACKEND_URL>/api/tasks -H "x-api-key: <API_KEY>"
 ```
 
-**Look for:**
-- Tasks stuck in "in_progress" with no recent activity
-- Completed tasks that should be archived
-- Tasks assigned to wrong agents (e.g., backend task assigned to DevOps)
-- Tasks in "review" that have been waiting too long
+**检查以下内容：**
+- 任务长时间处于“in_progress”状态但没有任何活动。
+- 应该归档的已完成任务。
+- 被错误分配给其他代理的任务（例如，将后端相关的任务分配给了DevOps团队）。
+- 在“review”状态中等待太久的任务。
 
-### Fix Wrongly Placed Tasks
+### 修复错误分配的任务
+
 ```bash
 # Move task to correct column
 curl -X PUT <BACKEND_URL>/api/tasks/ID \
@@ -1148,24 +1017,27 @@ curl -X PUT <BACKEND_URL>/api/tasks/ID \
   -d '{"status": "correct_status", "agent_id": CORRECT_AGENT_ID}'
 ```
 
-### Review Backlog
-- Check backlog for urgent items that should be prioritized
-- Look for stale tasks that need attention or removal
-- Identify tasks that can be batched together
+### 查看任务列表
 
-### General Board Hygiene
-- Ensure all active work has a task
-- Verify agent statuses match their assigned tasks
-- Clean up duplicate or abandoned tasks
-- Post to feed if any significant changes made
+- 检查任务列表中是否有需要优先处理的紧急任务。
+- 查看是否有需要处理的过期任务或重复任务。
+- 将可以批量处理的任务整理好。
 
-**Frequency:** Every heartbeat (typically every 30 min)
-**Goal:** Keep the board accurate, current, and actionable
+### 一般看板维护工作
+
+- 确保所有活跃任务都有对应的负责人。
+- 核对代理的状态是否与分配的任务一致。
+- 清理重复或被放弃的任务。
+- 如果有重大变化，及时更新看板信息。
+
+**执行频率：** 每30分钟一次
+
+**目标：** 保持看板的准确性、时效性和可用性。
 
 ---
 
-## Files
+## 相关文件**
 
-- `SKILL.md` - This file
-- `templates/update_dashboard.js` - Status update script
-- `references/themes.md` - Full theme character lists
+- `SKILL.md`：本文档。
+- `templates/update_dashboard.js`：状态更新脚本。
+- `references/themes.md`：所有可用主题的角色列表。

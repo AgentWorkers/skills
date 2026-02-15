@@ -1,97 +1,97 @@
 ---
 name: UX
-description: Design and analyze user experiences that are intuitive, efficient, and aligned with user mental models.
+description: 设计和分析直观、高效且符合用户心智模型的用户体验。
 metadata: {"clawdbot":{"emoji":"🧠","os":["linux","darwin","win32"]}}
 ---
 
-## Flow Analysis
+## 流程分析
 
-- Map every step to complete key tasks—identify unnecessary steps
-- Each step is a potential dropout—minimize count and friction
-- Question every required field—if not essential now, defer or remove
-- Identify points requiring user memory—provide recognition instead
+- 将每个步骤映射到需要完成的关键任务，识别不必要的步骤。
+- 每个步骤都可能是用户放弃使用的环节，因此要尽量减少这些步骤的数量和带来的阻碍。
+- 对于每个必填字段进行评估：如果当前并不重要，可以推迟填写或直接省略。
+- 对于需要用户记忆的信息，应提供相应的提示或帮助。
 
-## Mental Model Alignment
+## 心理模型对齐
 
-- Use vocabulary users would expect—not internal/technical terms
-- Match familiar patterns before inventing—innovation has learning cost
-- Consistent metaphors throughout—don't mix paradigms in same product
-- Align with platform conventions—users bring expectations from other apps
+- 使用用户能够理解的词汇，避免使用内部或技术性的术语。
+- 在创新之前，先尝试使用用户熟悉的交互模式，因为创新通常需要一定的学习成本。
+- 在整个产品中保持一致的隐喻和交互方式，避免在同一产品中使用不同的交互范式。
+- 遵循平台的通用设计规范，因为用户会从其他应用中带来自己的使用习惯。
 
-## Friction Reduction
+## 减少操作阻力
 
-- Smart defaults reduce decisions—good default better than more options
-- Pre-fill from available context—location, previous selections, account data
-- Auto-save progress—never lose user work
-- Don't ask for information already available—or not yet needed
+- 智能的默认设置可以减少用户的决策负担；好的默认值比更多的选项更有用。
+- 根据用户的上下文（如位置、之前的选择、账户数据）自动填充信息。
+- 自动保存用户的进度，避免用户的工作丢失。
+- 不要询问用户已经掌握的信息或暂时不需要的信息。
 
-## Progressive Disclosure
+## 逐步展示信息
 
-- Show only what's needed for current task—hide advanced options until relevant
-- Reveal complexity gradually—basic path first, power features discoverable
-- Empty states guide to first action—not just "Nothing here"
-- Teach by doing, not explaining—inline hints over tutorials
+- 仅显示当前任务所需的信息，相关的高级选项在用户需要时再显示。
+- 逐步揭示产品的复杂性：先展示基础功能，再逐步引导用户了解高级功能。
+- 空白状态应该为用户提供明确的指导（而不仅仅是“此处无内容”）。
+- 通过实际操作来引导用户学习，而不是通过繁琐的教程。
 
-## Feedback Design
+## 反馈设计
 
-- Every action gets acknowledgment—visual, haptic, or audible
-- Progress indication for waits over 1 second
-- Error messages: what happened + what to do next
-- Success confirmation for significant actions
+- 每个操作都应该有反馈，可以是视觉上的、触觉上的或听觉上的。
+- 对于等待时间超过1秒的操作，应给出进度提示。
+- 错误信息应明确说明问题发生的原因以及下一步该怎么做。
+- 对于重要的操作，应给出成功的确认反馈。
 
-## Error Prevention
+## 错误预防
 
-- Design to prevent errors—constraints, confirmations, smart defaults
-- Confirmation dialogs only for destructive/irreversible actions
-- Undo available for reversible actions—reduces fear of exploring
-- Inline validation catches errors before submission
+- 通过设计来预防错误，例如设置限制、提供确认提示、使用智能默认值等。
+- 只对具有破坏性或不可逆的操作才显示确认对话框。
+- 提供撤销功能，让用户在尝试不可逆操作时减少恐惧。
+- 在提交前通过内联验证来捕获错误。
 
-## Cognitive Load
+## 降低认知负担
 
-- One primary action per screen—clear visual hierarchy
-- Group related information—chunking aids comprehension
-- Limit simultaneous choices—too many options cause paralysis
-- Consistent patterns across product—learned once, applied everywhere
+- 每个屏幕上只展示一个主要操作，保持清晰的视觉层次结构。
+- 将相关的信息分组展示，有助于用户更好地理解。
+- 限制用户同时需要做出的选择数量，过多的选项会导致用户不知所措。
+- 在整个产品中保持一致的交互模式，用户只需学习一次即可应用到所有地方。
 
-## Edge Cases to Design
+## 处理特殊情况
 
-- Empty state: first time, cleared, filtered with no results
-- Loading state: skeleton preferred over spinner for known layouts
-- Error state: what went wrong, how to recover
-- Partial state: some data available, some loading/failed
-- Offline state: what works, what's queued, what's unavailable
+- 空白状态：用户首次使用时，界面应保持空白；如果需要过滤数据，应显示过滤后的结果。
+- 加载状态：对于已知的界面布局，使用简单的加载指示（如进度条）而不是旋转的加载图标。
+- 错误状态：应明确显示问题所在以及如何恢复。
+- 部分数据可用状态：应明确显示哪些数据可用、哪些数据正在加载或加载失败。
+- 离线状态：应明确说明哪些功能可用、哪些任务处于排队状态、哪些功能不可用。
 
-## Reversibility
+## 可逆性
 
-- Trash over permanent delete—recovery possible
-- Preview before commit—show effect of action
-- Draft states for complex work—don't require completion in one session
-- Settings and decisions easy to change—not buried or locked
+- 提供“回收”功能，而不是永久删除，以便用户可以恢复之前的操作。
+- 在执行重要操作前提供预览，让用户了解操作的效果。
+- 对于复杂的工作，提供草稿状态，让用户不必一次性完成所有内容。
+- 设置和选项易于更改，避免用户难以找到或被锁定。
 
-## Task Completion
+## 任务完成
 
-- Define what success looks like for each flow
-- First value delivered quickly—quick win before complex setup
-- Clear next step always visible—no dead ends
-- Completion feels complete—confirmation, celebration for big tasks
+- 明确每个流程的成功标准。
+- 尽快为用户提供初步的结果，避免复杂的设置过程。
+- 始终清晰地显示下一步的操作步骤，避免用户陷入死胡同。
+- 对于重要的任务，完成操作后应给予明确的确认和庆祝反馈。
 
-## Accessibility Integration
+## 可访问性设计
 
-- Keyboard/switch navigation works for all flows
-- Screen reader announces what's needed—labels, states, updates
-- Sufficient contrast without relying on color alone
-- Respects user preferences—motion, text size, dark mode
+- 所有的操作流程都支持键盘和触控导航。
+- 屏幕阅读器能够读取界面上的文字和状态变化。
+- 保证足够的对比度，避免过度依赖颜色来区分信息。
+- 尊重用户的个性化设置，如操作方式、文本大小、暗黑模式等。
 
-## Copy and Labels
+## 文本和标签设计
 
-- Button labels describe outcome—"Save Changes" not "Submit"
-- Headings scannable—user finds what they need quickly
-- Error text actionable—not just "Invalid input"
-- Microcopy reduces uncertainty—helper text where questions arise
+- 按钮标签应清晰地描述操作的结果，例如使用“保存更改”而不是“提交”。
+- 标题应易于扫描，让用户能够快速找到所需的信息。
+- 错误信息应具有可操作性，让用户知道如何解决问题。
+- 提供辅助性文本（如微copy），帮助用户理解复杂的操作。
 
-## Consistency Checks
+## 一致性检查
 
-- Same words for same concepts—create glossary if needed
-- Same interaction patterns—swipe/tap/long-press mean same things
-- Visual similarity reflects functional similarity
-- Exceptions rare and justified
+- 对于相同的概念，使用相同的术语；必要时创建术语表。
+- 所有的交互方式（如滑动、点击、长按）应具有相同的含义。
+- 视觉上的相似性应反映功能上的相似性。
+- 异常情况应尽量少出现，并且有合理的解释。

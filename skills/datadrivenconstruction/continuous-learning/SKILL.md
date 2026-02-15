@@ -1,25 +1,25 @@
 ---
 slug: "continuous-learning-construction"
 display_name: "Continuous Learning Construction"
-description: "Automatically extract patterns, best practices, and reusable knowledge from construction automation sessions to improve future performance."
+description: "从构建自动化过程中自动提取模式、最佳实践和可复用的知识，以提高未来的性能。"
 ---
 
-# Continuous Learning for Construction Automation
+# 建筑自动化的持续学习
 
-This skill enables automatic extraction of valuable patterns, solutions, and best practices from construction automation sessions to build institutional knowledge.
+该技能能够自动从建筑自动化过程中提取有价值的模式、解决方案和最佳实践，从而构建机构知识库。
 
-## When to Use
+## 使用场景
 
-Activate this skill:
-- At the end of complex estimation sessions
-- After solving non-trivial data processing problems
-- When discovering new integration patterns
-- After completing successful document processing
-- When developing new automation workflows
+在以下情况下可激活该技能：
+- 复杂估算会议结束时
+- 解决复杂的数据处理问题后
+- 发现新的集成模式时
+- 成功完成文档处理后
+- 开发新的自动化工作流程时
 
-## Pattern Extraction Framework
+## 模式提取框架
 
-### 1. Session Analysis
+### 1. 会议分析
 
 ```python
 class ConstructionSessionAnalyzer:
@@ -68,9 +68,9 @@ class ConstructionSessionAnalyzer:
         return patterns
 ```
 
-### 2. Knowledge Categories for Construction
+### 2. 建筑相关知识类别
 
-#### 2.1 Cost Estimation Patterns
+#### 2.1 成本估算模式
 
 ```yaml
 # Example learned pattern
@@ -90,7 +90,7 @@ pattern:
   validations: 3
 ```
 
-#### 2.2 BIM Data Processing Patterns
+#### 2.2 BIM数据处理模式
 
 ```yaml
 pattern:
@@ -119,7 +119,7 @@ pattern:
   confidence: 0.92
 ```
 
-#### 2.3 Integration Patterns
+#### 2.3 集成模式
 
 ```yaml
 pattern:
@@ -149,7 +149,7 @@ pattern:
   confidence: 0.95
 ```
 
-#### 2.4 Error Resolution Patterns
+#### 2.4 错误解决模式
 
 ```yaml
 pattern:
@@ -172,7 +172,7 @@ pattern:
   confidence: 0.88
 ```
 
-### 3. Learning Pipeline
+### 3. 学习流程
 
 ```python
 class ConstructionLearningPipeline:
@@ -243,7 +243,7 @@ class ConstructionLearningPipeline:
         return True
 ```
 
-### 4. Knowledge Base Structure
+### 4. 知识库结构
 
 ```
 knowledge_base/
@@ -277,9 +277,9 @@ knowledge_base/
     └── success_rates.json
 ```
 
-### 5. Session End Learning Prompt
+### 5. 会议结束时的学习提示
 
-At the end of each construction automation session:
+在每次建筑自动化会议结束时，请：
 
 ```markdown
 ## Session Learning Review
@@ -310,9 +310,9 @@ At the end of each construction automation session:
 - [Automation opportunities identified]
 ```
 
-### 6. Pattern Application
+### 6. 模式应用
 
-When starting new construction tasks:
+在开始新的建筑任务时，请：
 
 ```python
 def suggest_approaches(task_context: dict) -> list:
@@ -335,15 +335,15 @@ def suggest_approaches(task_context: dict) -> list:
     return suggestions
 ```
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-This skill works with:
-- **verification-loop-construction**: Learn from verification failures
-- **security-review-construction**: Capture security patterns
-- **estimation skills**: Build estimation knowledge base
-- **integration skills**: Capture API patterns
+该技能可与其他技能协同使用：
+- **验证循环构建**（verification-loop-construction）：从验证失败中学习
+- **安全审查构建**（security-review-construction）：收集安全相关模式
+- **估算技能**（estimation skills）：构建估算知识库
+- **集成技能**（integration skills）：收集API相关模式
 
-## Usage Commands
+## 使用命令
 
 ```bash
 # Extract learnings from current session
@@ -361,4 +361,4 @@ This skill works with:
 
 ---
 
-**Every session is an opportunity to learn. Capture knowledge to compound expertise over time.**
+**每一次会议都是学习的机会。通过积累知识，不断提升专业能力。**

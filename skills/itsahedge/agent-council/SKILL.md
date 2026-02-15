@@ -1,31 +1,31 @@
 ---
 name: agent-council
-description: Complete toolkit for creating autonomous AI agents and managing Discord channels for OpenClaw. Use when setting up multi-agent systems, creating new agents, or managing Discord channel organization.
+description: 这是一个用于创建自主AI代理和管理OpenClaw Discord频道的完整工具包。适用于设置多代理系统、创建新代理或管理Discord频道组织时使用。
 ---
 
-# Agent Council
+# 代理委员会（Agent Council）
 
-Complete toolkit for creating and managing autonomous AI agents with Discord integration for OpenClaw.
+这是一个完整的工具包，用于创建和管理具有 Discord 集成的自主 AI 代理，适用于 OpenClaw。
 
-## What This Skill Does
+## 该工具包的功能
 
-**Agent Creation:**
-- Creates autonomous AI agents with self-contained workspaces
-- Generates SOUL.md (personality & responsibilities)
-- Generates HEARTBEAT.md (cron execution logic)
-- Sets up memory system (hybrid architecture)
-- Configures gateway automatically
-- Binds agents to Discord channels (optional)
-- Sets up daily memory cron jobs (optional)
+**代理创建：**
+- 创建具有独立工作空间的自主 AI 代理
+- 生成 SOUL.md 文件（包含代理的个性和职责）
+- 生成 HEARTBEAT.md 文件（包含定时执行逻辑）
+- 设置内存系统（混合架构）
+- 自动配置网关
+- 将代理绑定到 Discord 频道（可选）
+- 设置每日内存定时任务（可选）
 
-**Discord Channel Management:**
-- Creates Discord channels via API
-- Configures OpenClaw gateway allowlists
-- Sets channel-specific system prompts
-- Renames channels and updates references
-- Optional workspace file search
+**Discord 频道管理：**
+- 通过 API 创建 Discord 频道
+- 配置 OpenClaw 网关的允许列表
+- 设置特定频道的系统提示信息
+- 重命名频道并更新相关引用
+- 提供工作空间文件搜索功能（可选）
 
-## Installation
+## 安装
 
 ```bash
 # Install from ClawHub
@@ -42,9 +42,9 @@ openclaw gateway config.patch --raw '{
 }'
 ```
 
-## Part 1: Agent Creation
+## 第一部分：代理创建
 
-### Quick Start
+### 快速入门
 
 ```bash
 scripts/create-agent.sh \
@@ -57,21 +57,19 @@ scripts/create-agent.sh \
   --discord-channel "1234567890"
 ```
 
-### Workflow
+### 工作流程
 
-#### 1. Gather Requirements
+#### 1. 收集信息
+向用户询问以下内容：
+- **代理名称**（例如：“Watson”）
+- **代理 ID**（小写，用连字符分隔，例如：“watson”）
+- **表情符号**（例如：“🔬”）
+- **专业领域**（代理的职责）
+- **使用的模型**（LLM 模型）
+- **工作空间位置**（用于存储代理文件的目录）
+- **Discord 频道 ID**（可选）
 
-Ask the user:
-- **Agent name** (e.g., "Watson")
-- **Agent ID** (lowercase, hyphenated, e.g., "watson")
-- **Emoji** (e.g., "🔬")
-- **Specialty** (what the agent does)
-- **Model** (which LLM to use)
-- **Workspace** (where to create agent files)
-- **Discord channel ID** (optional)
-
-#### 2. Run Creation Script
-
+#### 2. 运行创建脚本
 ```bash
 scripts/create-agent.sh \
   --name "Agent Name" \
@@ -83,24 +81,23 @@ scripts/create-agent.sh \
   --discord-channel "1234567890"  # Optional
 ```
 
-The script automatically:
-- ✅ Creates workspace with memory subdirectory
-- ✅ Generates SOUL.md and HEARTBEAT.md
-- ✅ Updates gateway config (preserves existing agents)
-- ✅ Adds Discord channel binding (if specified)
-- ✅ Restarts gateway to apply changes
-- ✅ Prompts for daily memory cron setup
+脚本将自动完成以下操作：
+- ✅ 创建包含内存子目录的工作空间
+- ✅ 生成 SOUL.md 和 HEARTBEAT.md 文件
+- ✅ 更新网关配置（保留现有代理）
+- ✅ 如果指定了频道，将代理绑定到该频道
+- ✅ 重启网关以应用更改
+- ✅ 提示用户设置每日内存定时任务
 
-#### 3. Customize Agent
+#### 3. 自定义代理
+创建代理后，可以进一步自定义：
+- **SOUL.md**：完善代理的个性、职责和行为规范
+- **HEARTBEAT.md**：添加定期检查逻辑和定时执行任务
+- **工作空间文件**：添加针对该代理的特定配置
 
-After creation:
-- **SOUL.md** - Refine personality, responsibilities, boundaries
-- **HEARTBEAT.md** - Add periodic checks and cron logic
-- **Workspace files** - Add agent-specific configuration
+### 代理架构
 
-### Agent Architecture
-
-**Self-contained structure:**
+**独立结构：**
 ```
 agents/
 ├── watson/
@@ -113,21 +110,19 @@ agents/
 │       └── skills/          # Agent-specific skills (optional)
 ```
 
-**Memory system:**
-- Agent-specific memory: `<workspace>/memory/YYYY-MM-DD.md`
-- Shared memory access: Agents can read shared workspace
-- Daily updates: Optional cron job for summaries
+**内存系统：**
+- **代理专属内存**：`<工作空间>/memory/YYYY-MM-DD.md`
+- **共享内存访问**：代理可以访问共享的工作空间
+- **每日更新**：通过定时任务生成摘要
 
-**Cron jobs:**
-If your agent needs scheduled tasks:
-1. Create HEARTBEAT.md with execution logic
-2. Add cron jobs with `--session <agent-id>`
-3. Document in SOUL.md
+**定时任务：**
+如果代理需要执行定时任务：
+1. 创建包含执行逻辑的 HEARTBEAT.md 文件
+2. 使用 `--session <代理 ID>` 添加定时任务
+3. 在 SOUL.md 文件中记录这些任务
 
-### Examples
-
-**Research agent:**
-```bash
+### 示例
+- **研究代理**：```bash
 scripts/create-agent.sh \
   --name "Watson" \
   --id "watson" \
@@ -137,9 +132,7 @@ scripts/create-agent.sh \
   --workspace "$HOME/agents/watson" \
   --discord-channel "1234567890"
 ```
-
-**Image generation agent:**
-```bash
+- **图像生成代理**：```bash
 scripts/create-agent.sh \
   --name "Picasso" \
   --id "picasso" \
@@ -149,9 +142,7 @@ scripts/create-agent.sh \
   --workspace "$HOME/agents/picasso" \
   --discord-channel "9876543210"
 ```
-
-**Health tracking agent:**
-```bash
+- **健康监控代理**：```bash
 scripts/create-agent.sh \
   --name "Nurse Joy" \
   --id "nurse-joy" \
@@ -162,11 +153,11 @@ scripts/create-agent.sh \
   --discord-channel "5555555555"
 ```
 
-## Part 2: Discord Channel Management
+## 第二部分：Discord 频道管理
 
-### Channel Creation
+### 频道创建
 
-#### Quick Start
+#### 快速入门
 
 ```bash
 python3 scripts/setup-channel.py \
@@ -174,9 +165,8 @@ python3 scripts/setup-channel.py \
   --context "Deep research and competitive analysis"
 ```
 
-#### Workflow
-
-1. Run setup script:
+### 工作流程
+1. 运行设置脚本：
 ```bash
 python3 scripts/setup-channel.py \
   --name <channel-name> \
@@ -184,32 +174,29 @@ python3 scripts/setup-channel.py \
   [--category-id <discord-category-id>]
 ```
 
-2. Apply gateway config (command shown by script):
+2. 应用网关配置（脚本提供的命令）：
 ```bash
 openclaw gateway config.patch --raw '{"channels": {...}}'
 ```
 
-#### Options
-
-**With category:**
-```bash
+#### 选项
+- **按类别创建频道**：```bash
 python3 scripts/setup-channel.py \
   --name research \
   --context "Deep research and competitive analysis" \
   --category-id "1234567890"
 ```
 
-**Use existing channel:**
-```bash
+- **使用现有频道**：```bash
 python3 scripts/setup-channel.py \
   --name personal-finance \
   --id 1466184336901537897 \
   --context "Personal finance management"
 ```
 
-### Channel Renaming
+### 频道重命名
 
-#### Quick Start
+#### 快速入门
 
 ```bash
 python3 scripts/rename-channel.py \
@@ -218,9 +205,8 @@ python3 scripts/rename-channel.py \
   --new-name new-name
 ```
 
-#### Workflow
-
-1. Run rename script:
+### 工作流程
+1. 运行重命名脚本：
 ```bash
 python3 scripts/rename-channel.py \
   --id <channel-id> \
@@ -229,12 +215,10 @@ python3 scripts/rename-channel.py \
   [--workspace <workspace-dir>]
 ```
 
-2. Apply gateway config if systemPrompt needs updating (shown by script)
+2. 如果需要更新系统提示信息，应用网关配置（脚本提供指导）
+3. 提交工作空间文件的更改（如果使用了 `--workspace` 参数）
 
-3. Commit workspace file changes (if `--workspace` used)
-
-#### With Workspace Search
-
+#### 带有工作空间搜索功能的频道管理
 ```bash
 python3 scripts/rename-channel.py \
   --id 1234567890 \
@@ -243,16 +227,15 @@ python3 scripts/rename-channel.py \
   --workspace "$HOME/my-workspace"
 ```
 
-This will:
-- Rename Discord channel via API
-- Update gateway config systemPrompt
-- Search and update workspace files
-- Report files changed for git commit
+该功能将：
+- 通过 API 重命名 Discord 频道
+- 更新网关的系统提示信息
+- 搜索并更新工作空间文件
+- 报告文件更改以便进行 Git 提交
 
-## Complete Multi-Agent Setup
+## 完整的多代理设置流程
 
-**Full workflow from scratch:**
-
+**从零开始的完整工作流程：**
 ```bash
 # 1. Create Discord channel
 python3 scripts/setup-channel.py \
@@ -278,11 +261,11 @@ scripts/create-agent.sh \
 # Done! Agent is created and bound to the channel
 ```
 
-## Configuration
+## 配置
 
-### Discord Category ID
+### Discord 频道类别 ID
 
-**Option 1: Command line**
+**方法 1：命令行**
 ```bash
 python3 scripts/setup-channel.py \
   --name channel-name \
@@ -290,71 +273,60 @@ python3 scripts/setup-channel.py \
   --category-id "1234567890"
 ```
 
-**Option 2: Environment variable**
+**方法 2：环境变量**
 ```bash
 export DISCORD_CATEGORY_ID="1234567890"
 python3 scripts/setup-channel.py --name channel-name --context "Purpose"
 ```
 
-### Finding Discord IDs
+### 查找 Discord 频道 ID
+- 打开 Discord 设置 → 高级选项 → 开发者模式
+- 右键点击频道或类别 → 复制 ID
 
-**Enable Developer Mode:**
-- Settings → Advanced → Developer Mode
-
-**Copy IDs:**
-- Right-click channel → Copy ID
-- Right-click category → Copy ID
-
-## Scripts Reference
+## 脚本参考
 
 ### create-agent.sh
+**参数：**
+- `--name`（必填）- 代理名称
+- `--id`（必填）- 代理 ID（小写，用连字符分隔）
+- `--emoji`（必填）- 代理的表情符号
+- `--specialty`（必填）- 代理的职责
+- `--model`（必填）- 使用的 LLM 模型
+- `--workspace`（必填）- 代理文件的工作空间位置
+- `--discord-channel`（可选）- 要绑定的 Discord 频道 ID
 
-**Arguments:**
-- `--name` (required) - Agent name
-- `--id` (required) - Agent ID (lowercase, hyphenated)
-- `--emoji` (required) - Agent emoji
-- `--specialty` (required) - What the agent does
-- `--model` (required) - LLM to use (provider/model-name)
-- `--workspace` (required) - Where to create agent files
-- `--discord-channel` (optional) - Discord channel ID to bind
-
-**Output:**
-- Creates agent workspace
-- Generates SOUL.md and HEARTBEAT.md
-- Updates gateway config
-- Optionally creates daily memory cron
+**输出：**
+- 创建代理的工作空间
+- 生成 SOUL.md 和 HEARTBEAT.md 文件
+- 更新网关配置
+- （可选）设置每日内存定时任务
 
 ### setup-channel.py
+**参数：**
+- `--name`（必填）- 频道名称
+- `--context`（必填）- 频道的用途/上下文
+- `--id`（可选）- 现有频道 ID
+- `--category-id`（可选）- Discord 频道类别 ID
 
-**Arguments:**
-- `--name` (required) - Channel name
-- `--context` (required) - Channel purpose/context
-- `--id` (optional) - Existing channel ID
-- `--category-id` (optional) - Discord category ID
-
-**Output:**
-- Creates Discord channel (if doesn't exist)
-- Generates gateway config.patch command
+**输出：**
+- 如果频道不存在，则创建新的频道
+- 生成网关配置文件（`config.patch`）
 
 ### rename-channel.py
+**参数：**
+- `--id`（必填）- 频道 ID
+- `--old-name`（必填）- 原频道名称
+- `--new-name`（必填）- 新频道名称
+- `--workspace`（可选）- 用于搜索的工作空间目录
 
-**Arguments:**
-- `--id` (required) - Channel ID
-- `--old-name` (required) - Current channel name
-- `--new-name` (required) - New channel name
-- `--workspace` (optional) - Workspace directory to search
+**输出：**
+- 重命名 Discord 频道
+- （如果需要）更新网关的系统提示信息
+- 列出已更新的文件（如果启用了工作空间搜索功能）
 
-**Output:**
-- Renames Discord channel
-- Updates gateway systemPrompt (if needed)
-- Lists updated files (if workspace search enabled)
-
-## Gateway Integration
-
-This skill integrates with OpenClaw's gateway configuration:
-
-**Agents:**
-```json
+## 网关集成
+该工具包支持与 OpenClaw 的网关配置集成：
+- **代理管理**：```json
 {
   "agents": {
     "list": [
@@ -374,27 +346,7 @@ This skill integrates with OpenClaw's gateway configuration:
   }
 }
 ```
-
-**Bindings:**
-```json
-{
-  "bindings": [
-    {
-      "agentId": "watson",
-      "match": {
-        "channel": "discord",
-        "peer": {
-          "kind": "channel",
-          "id": "1234567890"
-        }
-      }
-    }
-  ]
-}
-```
-
-**Channels:**
-```json
+- **频道管理**：```json
 {
   "channels": {
     "discord": {
@@ -414,14 +366,11 @@ This skill integrates with OpenClaw's gateway configuration:
 }
 ```
 
-## Agent Coordination
+## 代理协调
+您可以使用 OpenClaw 内置的会话管理工具来协调各个代理：
 
-Your main agent coordinates with specialized agents using OpenClaw's built-in session management tools.
-
-### List Active Agents
-
-See all active agents and their recent activity:
-
+### 查看活跃代理
+查看所有活跃代理及其最近的活动：
 ```typescript
 sessions_list({
   kinds: ["agent"],
@@ -430,9 +379,8 @@ sessions_list({
 })
 ```
 
-### Send Messages to Agents
-
-**Direct communication:**
+### 向代理发送消息
+**直接通信：**
 ```typescript
 sessions_send({
   label: "watson",  // Agent ID
@@ -440,7 +388,7 @@ sessions_send({
 })
 ```
 
-**Wait for response:**
+**等待代理回复：**
 ```typescript
 sessions_send({
   label: "watson",
@@ -449,10 +397,8 @@ sessions_send({
 })
 ```
 
-### Spawn Sub-Agent Tasks
-
-For complex work, spawn a sub-agent in an isolated session:
-
+### 创建子代理
+对于复杂任务，可以在隔离的会话中创建子代理：
 ```typescript
 sessions_spawn({
   agentId: "watson",  // Optional: use specific agent
@@ -463,15 +409,13 @@ sessions_spawn({
 })
 ```
 
-The sub-agent will:
-1. Execute the task in isolation
-2. Announce completion back to your session
-3. Self-delete (if `cleanup: "delete"`)
+子代理将：
+1. 在隔离环境中执行任务
+2. 向主会话报告任务完成情况
+3. （如果设置了 `cleanup: "delete"`，则自动删除自身
 
-### Check Agent History
-
-Review what an agent has been working on:
-
+### 查看代理历史记录
+查看代理的工作记录：
 ```typescript
 sessions_history({
   sessionKey: "watson-session-key",
@@ -479,14 +423,13 @@ sessions_history({
 })
 ```
 
-### Coordination Patterns
+### 协调模式
+**1. 直接委托（绑定到 Discord 的代理）：**
+- 用户通过 Discord 频道向代理发送消息
+- 代理直接在该频道回复
+- 主代理无需进行额外协调
 
-**1. Direct delegation (Discord-bound agents):**
-- User messages agent's Discord channel
-- Agent responds directly in that channel
-- Main agent doesn't need to coordinate
-
-**2. Programmatic delegation (main agent → sub-agent):**
+**2. 程序化委托（主代理 → 子代理）：**
 ```typescript
 // Main agent delegates task
 sessions_send({
@@ -498,7 +441,7 @@ sessions_send({
 // Main agent checks later or Watson reports back
 ```
 
-**3. Spawn for complex tasks:**
+**3. 为复杂任务创建子代理：**
 ```typescript
 // For longer-running, isolated work
 sessions_spawn({
@@ -509,8 +452,8 @@ sessions_spawn({
 })
 ```
 
-**4. Agent-to-agent communication:**
-Agents can send messages to each other:
+**4. 代理间的通信：**
+代理之间可以互相发送消息：
 ```typescript
 // In Watson's context
 sessions_send({
@@ -519,26 +462,23 @@ sessions_send({
 })
 ```
 
-### Best Practices
+### 最佳实践
+- **何时使用 Discord 集成：**
+  - ✅ 需要特定领域知识的代理（如研究、健康监控、图像生成）
+  - 用户希望直接与代理交流
+  - 代理需要响应频道内的消息
 
-**When to use Discord bindings:**
-- ✅ Domain-specific agents (research, health, images)
-- ✅ User wants direct access to agent
-- ✅ Agent should respond to channel activity
+- **何时使用 `sessions_send`：**
+  - 需要程序化协调时
+  - 主代理需要将任务委托给专家代理
+  - 需要在同一会话中接收代理的回复
 
-**When to use sessions_send:**
-- ✅ Programmatic coordination
-- ✅ Main agent delegates to specialists
-- ✅ Need response in same session
+- **何时使用 `sessions_spawn`：**
+  - 执行耗时较长的任务（超过 5 分钟）
+  - 需要隔离处理的任务
+  - 需要在后台运行的任务
 
-**When to use sessions_spawn:**
-- ✅ Long-running tasks (>5 minutes)
-- ✅ Complex multi-step work
-- ✅ Want isolation from main session
-- ✅ Background processing
-
-### Example: Research Workflow
-
+### 示例：研究工作流程
 ```typescript
 // Main agent receives request: "Research competitor X"
 
@@ -564,10 +504,8 @@ const results = Read("agents/watson/memory/research-X.md")
 "Research complete! Watson found: [summary]"
 ```
 
-### Communication Flow
-
-**Main Agent (You) ↔ Specialized Agents:**
-
+### 通信流程
+**主代理（您） ↔ 专业代理：**
 ```
 User Request
     ↓
@@ -586,8 +524,7 @@ Responds to main session
 Main Agent synthesizes and replies
 ```
 
-**Discord-Bound Agents:**
-
+**绑定到 Discord 的代理：**
 ```
 User posts in #research channel
     ↓
@@ -598,8 +535,7 @@ Watson Agent (bound to channel)
 - No main agent involvement
 ```
 
-**Hybrid Approach:**
-
+**混合使用方式：**
 ```
 User: "Research X" (main channel)
     ↓
@@ -616,88 +552,77 @@ Main Agent: "@watson post your full findings in #research"
 Watson posts detailed report in #research channel
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Agent Creation Issues:**
+**代理创建问题：**
+- **代理未出现在 Discord 中**：
+  - 确认频道 ID 是否正确
+  - 检查网关配置中的绑定设置
+  - 重启网关：`openclaw gateway restart`
 
-**"Agent not appearing in Discord"**
-- Verify channel ID is correct
-- Check gateway config bindings section
-- Restart gateway: `openclaw gateway restart`
+**模型相关问题：**
+- **模型错误**：
+  - 确认模型名称的格式（`provider/model-name`）
+  - 检查模型是否在网关配置中可用
 
-**"Model errors"**
-- Verify model name format: `provider/model-name`
-- Check model is available in gateway config
+**频道管理问题：**
+- **创建频道失败**：
+  - 确保机器人具有“管理频道”的权限
+  - 检查 OpenClaw 配置中的机器人令牌
+  - 确认类别 ID 是否正确
 
-**Channel Management Issues:**
+- **找不到频道**：
+  - 确认类别 ID 是否正确
+  - 检查机器人是否具有访问该类别的权限
+  - 可以尝试不使用类别 ID（此时会创建未分类的频道）
 
-**"Failed to create channel"**
-- Check bot has "Manage Channels" permission
-- Verify bot token in OpenClaw config
-- Ensure category ID is correct (if specified)
+**使用场景**
+- **领域专家代理**：研究、健康监控、财务分析、代码编写
+- **创意代理**：图像生成、内容创作、设计
+- **任务自动化**：定期监控、报告生成、警报发送
+- **多代理系统**：由多个专业代理组成的协作团队
+- **Discord 组织**：为不同类型的代理创建结构化的频道
 
-**"Category not found"**
-- Verify category ID is correct
-- Check bot has access to category
-- Try without category ID (creates uncategorized)
+## 高级功能：多代理协调
+对于大型多代理系统：
+- **协调模式**：
+  - 主代理将任务委托给专家代理
+  - 代理报告进度并请求帮助
+  - 共享知识库以共享信息
+  - 通过 `sessions_send` 实现代理间的通信
 
-**"Channel already exists"**
-- Use `--id <channel-id>` to configure existing channel
-- Or script will auto-detect and configure it
+**任务管理：**
+- 与任务跟踪系统集成
+- 根据代理的专业领域分配任务
+- 跟踪任务的状态和完成情况
 
-## Use Cases
+**文档记录：**
+- 在主工作空间中维护代理列表
+- 记录代理的职责和协作模式
+- 为常见工作流程编写操作手册
 
-- **Domain specialists** - Research, health, finance, coding agents
-- **Creative agents** - Image generation, writing, design
-- **Task automation** - Scheduled monitoring, reports, alerts
-- **Multi-agent systems** - Coordinated team of specialized agents
-- **Discord organization** - Structured channels for different agent domains
+## 最佳实践：
+1. **按类别组织频道**：将相关代理频道分组
+2. **使用描述性强的频道名称**：确保频道名称能够清晰反映其用途
+3. **设置具体的系统提示信息**：为每个频道提供明确的上下文
+4. **更新代理的职责信息**：保持 SOUL.md 文件的准确性
+5. **设置内存定时任务**：为需要持续运行的代理设置定时任务
+6. **单独测试每个代理**：在集成到团队之前进行测试
+7. **安全地更新网关配置**：始终使用 `config.patch`，避免手动编辑
 
-## Advanced: Multi-Agent Coordination
+## 所需权限和工具：
+- **机器人权限：**
+  - `Manage Channels`：用于创建/重命名频道
+  - `View Channels`：用于查看频道列表
+  - `Send Messages`：用于在频道中发送消息
 
-For larger multi-agent systems:
+**系统要求：**
+- 安装并配置了 OpenClaw
+- 安装并配置 Node.js 和 npm（通过 nvm）
+- Python 3.6 或更高版本（仅使用标准库）
+- Discord 机器人令牌（用于频道管理）
 
-**Coordination Patterns:**
-- Main agent delegates tasks to specialists
-- Agents report progress and request help
-- Shared knowledge base for common information
-- Cross-agent communication via `sessions_send`
-
-**Task Management:**
-- Integrate with task tracking systems
-- Route work based on agent specialty
-- Track assignments and completions
-
-**Documentation:**
-- Maintain agent roster in main workspace
-- Document delegation patterns
-- Keep runbooks for common workflows
-
-## Best Practices
-
-1. **Organize channels in categories** - Group related agent channels
-2. **Use descriptive channel names** - Clear purpose from the name
-3. **Set specific system prompts** - Give each channel clear context
-4. **Document agent responsibilities** - Keep SOUL.md updated
-5. **Set up memory cron jobs** - For agents with ongoing work
-6. **Test agents individually** - Before integrating into team
-7. **Update gateway config safely** - Always use config.patch, never manual edits
-
-## Requirements
-
-**Bot Permissions:**
-- `Manage Channels` - To create/rename channels
-- `View Channels` - To read channel list
-- `Send Messages` - To post in channels
-
-**System:**
-- OpenClaw installed and configured
-- Node.js/npm via nvm
-- Python 3.6+ (standard library only)
-- Discord bot token (for channel management)
-
-## See Also
-
-- OpenClaw documentation: https://docs.openclaw.ai
-- Multi-agent patterns: https://docs.openclaw.ai/agents
-- Discord bot setup: https://docs.openclaw.ai/channels/discord
+**相关资源：**
+- OpenClaw 文档：https://docs.openclaw.ai
+- 多代理使用指南：https://docs.openclaw.ai/agents
+- Discord 机器人设置指南：https://docs.openclaw.ai/channels/discord

@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Compliance - Ruby
+# Telnyx 数字合规性 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +30,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Retrieve Bundles
+## 获取套餐信息
 
-Get all allowed bundles.
+获取所有允许的套餐信息。
 
 `GET /bundle_pricing/billing_bundles`
 
@@ -44,9 +44,9 @@ page = client.bundle_pricing.billing_bundles.list
 puts(page)
 ```
 
-## Get Bundle By Id
+## 根据 ID 获取套餐
 
-Get a single bundle by ID.
+根据 ID 获取单个套餐。
 
 `GET /bundle_pricing/billing_bundles/{bundle_id}`
 
@@ -56,9 +56,9 @@ billing_bundle = client.bundle_pricing.billing_bundles.retrieve("8661948c-a386-4
 puts(billing_bundle)
 ```
 
-## Get User Bundles
+## 获取用户套餐
 
-Get a paginated list of user bundles.
+获取分页显示的用户套餐列表。
 
 `GET /bundle_pricing/user_bundles`
 
@@ -68,9 +68,9 @@ page = client.bundle_pricing.user_bundles.list
 puts(page)
 ```
 
-## Create User Bundles
+## 创建用户套餐
 
-Creates multiple user bundles for the user.
+为用户创建多个套餐。
 
 `POST /bundle_pricing/user_bundles/bulk`
 
@@ -80,9 +80,9 @@ user_bundle = client.bundle_pricing.user_bundles.create
 puts(user_bundle)
 ```
 
-## Get Unused User Bundles
+## 获取未使用的用户套餐
 
-Returns all user bundles that aren't in use.
+返回所有未使用的用户套餐。
 
 `GET /bundle_pricing/user_bundles/unused`
 
@@ -92,9 +92,9 @@ response = client.bundle_pricing.user_bundles.list_unused
 puts(response)
 ```
 
-## Get User Bundle by Id
+## 根据 ID 获取用户套餐
 
-Retrieves a user bundle by its ID.
+根据 ID 获取用户套餐。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -104,9 +104,9 @@ user_bundle = client.bundle_pricing.user_bundles.retrieve("ca1d2263-d1f1-43ac-ba
 puts(user_bundle)
 ```
 
-## Deactivate User Bundle
+## 取消激活用户套餐
 
-Deactivates a user bundle by its ID.
+根据 ID 取消激活用户套餐。
 
 `DELETE /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -116,9 +116,9 @@ response = client.bundle_pricing.user_bundles.deactivate("ca1d2263-d1f1-43ac-ba5
 puts(response)
 ```
 
-## Get User Bundle Resources
+## 获取用户套餐资源
 
-Retrieves the resources of a user bundle by its ID.
+根据 ID 获取用户套餐的资源信息。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}/resources`
 
@@ -128,9 +128,9 @@ response = client.bundle_pricing.user_bundles.list_resources("ca1d2263-d1f1-43ac
 puts(response)
 ```
 
-## List all document links
+## 列出所有文档链接
 
-List all documents links ordered by created_at descending.
+按创建时间降序列出所有文档链接。
 
 `GET /document_links`
 
@@ -140,9 +140,9 @@ page = client.document_links.list
 puts(page)
 ```
 
-## List all documents
+## 列出所有文档
 
-List all documents ordered by created_at descending.
+按创建时间降序列出所有文档。
 
 `GET /documents`
 
@@ -152,9 +152,9 @@ page = client.documents.list
 puts(page)
 ```
 
-## Upload a document
+## 上传文档
 
-Upload a document.<br /><br />Uploaded files must be linked to a service within 30 minutes or they will be automatically deleted.
+上传文档。<br /><br />上传的文件必须在 30 分钟内关联到某个服务，否则将被自动删除。
 
 `POST /documents`
 
@@ -164,9 +164,9 @@ response = client.documents.upload_json(document: {})
 puts(response)
 ```
 
-## Retrieve a document
+## 获取文档
 
-Retrieve a document.
+获取文档信息。
 
 `GET /documents/{id}`
 
@@ -176,9 +176,9 @@ document = client.documents.retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(document)
 ```
 
-## Update a document
+## 更新文档
 
-Update a document.
+更新文档内容。
 
 `PATCH /documents/{id}`
 
@@ -188,9 +188,9 @@ document = client.documents.update("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(document)
 ```
 
-## Delete a document
+## 删除文档
 
-Delete a document.<br /><br />A document can only be deleted if it's not linked to a service.
+删除文档。<br /><br />只有未关联到任何服务的文档才能被删除。
 
 `DELETE /documents/{id}`
 
@@ -200,9 +200,9 @@ document = client.documents.delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(document)
 ```
 
-## Download a document
+## 下载文档
 
-Download a document.
+下载文档。
 
 `GET /documents/{id}/download`
 
@@ -212,9 +212,9 @@ response = client.documents.download("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(response)
 ```
 
-## Generate a temporary download link for a document
+## 生成文档的临时下载链接
 
-Generates a temporary pre-signed URL that can be used to download the document directly from the storage backend without authentication.
+生成一个临时预签名 URL，可以直接从存储后端下载文档（无需认证）。
 
 `GET /documents/{id}/download_link`
 
@@ -224,9 +224,9 @@ response = client.documents.generate_download_link("550e8400-e29b-41d4-a716-4466
 puts(response)
 ```
 
-## List all requirements
+## 列出所有需求
 
-List all requirements with filtering, sorting, and pagination
+支持过滤、排序和分页功能，列出所有需求。
 
 `GET /requirements`
 
@@ -236,9 +236,9 @@ page = client.requirements.list
 puts(page)
 ```
 
-## Retrieve a document requirement
+## 获取需求记录
 
-Retrieve a document requirement record
+根据 ID 获取需求记录。
 
 `GET /requirements/{id}`
 
@@ -248,9 +248,9 @@ requirement = client.requirements.retrieve("a9dad8d5-fdbd-49d7-aa23-39bb08a5ebaa
 puts(requirement)
 ```
 
-## List all requirement types
+## 列出所有需求类型
 
-List all requirement types ordered by created_at descending
+按创建时间降序列出所有需求类型。
 
 `GET /requirement_types`
 
@@ -260,9 +260,9 @@ requirement_types = client.requirement_types.list
 puts(requirement_types)
 ```
 
-## Retrieve a requirement types
+## 根据 ID 获取需求类型
 
-Retrieve a requirement type by id
+根据 ID 获取需求类型。
 
 `GET /requirement_types/{id}`
 
@@ -272,7 +272,9 @@ requirement_type = client.requirement_types.retrieve("a38c217a-8019-48f8-bff6-0f
 puts(requirement_type)
 ```
 
-## Retrieve regulatory requirements
+## 获取监管要求
+
+获取所有监管要求信息。
 
 `GET /regulatory_requirements`
 
@@ -282,7 +284,9 @@ regulatory_requirement = client.regulatory_requirements.retrieve
 puts(regulatory_requirement)
 ```
 
-## List requirement groups
+## 列出需求组
+
+列出所有需求组。
 
 `GET /requirement_groups`
 
@@ -292,9 +296,9 @@ requirement_groups = client.requirement_groups.list
 puts(requirement_groups)
 ```
 
-## Create a new requirement group
+## 创建新的需求组
 
-`POST /requirement_groups` — Required: `country_code`, `phone_number_type`, `action`
+创建新的需求组。<br />必需参数：`country_code`、`phone_number_type`、`action`
 
 ```ruby
 requirement_group = client.requirement_groups.create(action: :ordering, country_code: "US", phone_number_type: :local)
@@ -302,7 +306,9 @@ requirement_group = client.requirement_groups.create(action: :ordering, country_
 puts(requirement_group)
 ```
 
-## Get a single requirement group by ID
+## 根据 ID 获取单个需求组
+
+根据 ID 获取单个需求组。
 
 `GET /requirement_groups/{id}`
 
@@ -312,7 +318,9 @@ requirement_group = client.requirement_groups.retrieve("id")
 puts(requirement_group)
 ```
 
-## Update requirement values in requirement group
+## 更新需求组中的需求信息
+
+更新需求组中的需求信息。
 
 `PATCH /requirement_groups/{id}`
 
@@ -322,7 +330,9 @@ requirement_group = client.requirement_groups.update("id")
 puts(requirement_group)
 ```
 
-## Delete a requirement group by ID
+## 根据 ID 删除需求组
+
+根据 ID 删除需求组。
 
 `DELETE /requirement_groups/{id}`
 
@@ -332,7 +342,9 @@ requirement_group = client.requirement_groups.delete("id")
 puts(requirement_group)
 ```
 
-## Submit a Requirement Group for Approval
+## 提交需求组以供审批
+
+提交需求组以供审批。
 
 `POST /requirement_groups/{id}/submit_for_approval`
 
@@ -342,9 +354,9 @@ requirement_group = client.requirement_groups.submit_for_approval("id")
 puts(requirement_group)
 ```
 
-## List all Verified Numbers
+## 列出所有已验证的号码
 
-Gets a paginated list of Verified Numbers.
+获取已验证号码的分页列表。
 
 `GET /verified_numbers`
 
@@ -354,11 +366,11 @@ page = client.verified_numbers.list
 puts(page)
 ```
 
-## Request phone number verification
+## 请求电话号码验证
 
-Initiates phone number verification procedure.
+启动电话号码验证流程。
 
-`POST /verified_numbers` — Required: `phone_number`, `verification_method`
+`POST /verified_numbers` — 必需参数：`phone_number`、`verification_method`
 
 ```ruby
 verified_number = client.verified_numbers.create(phone_number: "+15551234567", verification_method: :sms)
@@ -366,7 +378,9 @@ verified_number = client.verified_numbers.create(phone_number: "+15551234567", v
 puts(verified_number)
 ```
 
-## Retrieve a verified number
+## 获取已验证的号码
+
+获取已验证的号码信息。
 
 `GET /verified_numbers/{phone_number}`
 
@@ -376,7 +390,9 @@ verified_number_data_wrapper = client.verified_numbers.retrieve("+15551234567")
 puts(verified_number_data_wrapper)
 ```
 
-## Delete a verified number
+## 删除已验证的号码
+
+删除已验证的号码。
 
 `DELETE /verified_numbers/{phone_number}`
 
@@ -386,9 +402,11 @@ verified_number_data_wrapper = client.verified_numbers.delete("+15551234567")
 puts(verified_number_data_wrapper)
 ```
 
-## Submit verification code
+## 提交验证码
 
-`POST /verified_numbers/{phone_number}/actions/verify` — Required: `verification_code`
+提交验证码。
+
+`POST /verified_numbers/{phone_number}/actions/verify` — 必需参数：`verification_code`
 
 ```ruby
 verified_number_data_wrapper = client.verified_numbers.actions.submit_verification_code("+15551234567", verification_code: "123456")

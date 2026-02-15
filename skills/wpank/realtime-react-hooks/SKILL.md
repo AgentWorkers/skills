@@ -1,15 +1,14 @@
 ---
 name: realtime-react-hooks
 model: standard
-description: React hooks for real-time data with SSE, WebSocket, and SWR integration. Covers connection management, reconnection logic, and optimistic updates. Use when building React apps with real-time features. Triggers on SSE hook, WebSocket hook, real-time React, useEventSource, live updates.
+description: React 钩子用于实现实时数据功能，支持与 SSE（Server-Sent Events）、WebSocket 和 SWR（Server-Wide React）的集成。涵盖了连接管理、重新连接逻辑以及乐观更新（optimistic updates）等关键方面。适用于开发具有实时功能的 React 应用程序。可以通过 SSE 钩子、WebSocket 钩子以及 `useEventSource` 来触发实时数据更新，实现数据的实时同步与展示。
 ---
 
-# Real-Time React Hooks
+# 实时 React Hooks
 
-Production patterns for real-time data in React applications using SSE, WebSocket, and SWR.
+在 React 应用程序中，使用 SSE（Server-Side Rendering）、WebSocket 和 SWR（Server-Wide React）来实现实时数据更新的常用模式。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,16 +19,16 @@ npx clawhub@latest install realtime-react-hooks
 
 ---
 
-## When to Use
+## 适用场景
 
-- React apps needing live data updates
-- Dashboards with real-time metrics
-- Chat interfaces, notifications
-- Any UI that should update without refresh
+- 需要实时数据更新的 React 应用程序
+- 显示实时指标的仪表板
+- 聊天界面、通知功能
+- 任何无需刷新即可更新的用户界面
 
 ---
 
-## Pattern 1: SSE Hook
+## 模式 1：SSE Hook
 
 ```typescript
 import { useEffect, useRef, useState, useCallback } from 'react';
@@ -93,7 +92,7 @@ export function useSSE<T>({
 
 ---
 
-## Pattern 2: WebSocket Hook with Reconnection
+## 模式 2：带自动重连功能的 WebSocket Hook
 
 ```typescript
 interface UseWebSocketOptions {
@@ -162,7 +161,7 @@ export function useWebSocket({
 
 ---
 
-## Pattern 3: SWR with Real-Time Updates
+## 模式 3：使用 SWR 实现实时更新
 
 ```typescript
 import useSWR from 'swr';
@@ -197,7 +196,7 @@ export function useRealtimeData<T>(
 
 ---
 
-## Pattern 4: Subscription Hook
+## 模式 4：订阅式更新 Hook
 
 ```typescript
 interface UseSubscriptionOptions {
@@ -236,7 +235,7 @@ export function useSubscription({ channels, onEvent }: UseSubscriptionOptions) {
 
 ---
 
-## Pattern 5: Connection Status Indicator
+## 模式 5：连接状态指示器
 
 ```tsx
 export function ConnectionStatus({ isConnected }: { isConnected: boolean }) {
@@ -258,25 +257,25 @@ export function ConnectionStatus({ isConnected }: { isConnected: boolean }) {
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — Complete realtime dashboard guide
-- [resilient-connections](../resilient-connections/) — Retry logic
-- [design-systems/animated-financial-display](../../design-systems/animated-financial-display/) — Number animations
-
----
-
-## NEVER Do
-
-- **NEVER forget cleanup** — Always close connections on unmount
-- **NEVER reconnect infinitely** — Use max retries with exponential backoff
-- **NEVER parse without try/catch** — Server might send malformed data
-- **NEVER mutate and revalidate** — Use `mutate(data, false)` for optimistic updates
-- **NEVER ignore connection state** — Show users when they're disconnected
+- **元技能：** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — 完整的实时仪表板指南
+- [resilient-connections](../resilient-connections/) — 重试逻辑
+- [design-systems/animated-financial-display](../../design-systems/animated-financial-display/) — 数字动画效果
 
 ---
 
-## Quick Reference
+## 绝对不要做的事情
+
+- **务必清理资源** — 在组件卸载时关闭连接
+- **不要无限重连** — 使用指数级退避策略设置最大重试次数
+- **不要不加异常处理就解析数据** — 服务器可能发送格式错误的数据
+- **不要直接修改数据后重新验证** — 使用 `mutate(data, false)` 进行乐观更新
+- **不要忽略连接状态** — 当用户断开连接时必须通知用户
+
+---
+
+## 快速参考
 
 ```typescript
 // SSE

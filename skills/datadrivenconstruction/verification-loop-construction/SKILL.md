@@ -1,27 +1,28 @@
 ---
 slug: "verification-loop-construction"
 display_name: "Verification Loop Construction"
-description: "Comprehensive verification system for construction automation deliverables. Use after completing estimates, schedules, reports, or data processing tasks to ensure quality."
+description: "**建筑自动化交付成果的全面验证系统**  
+在完成估算、进度安排、报告编制或数据处理任务后，使用该系统来确保交付成果的质量。"
 ---
 
-# Verification Loop for Construction Automation
+# 建筑自动化验证流程
 
-A systematic verification framework ensuring quality of construction automation outputs before delivery or deployment.
+这是一个系统化的验证框架，用于在交付或部署之前确保建筑自动化输出的质量。
 
-## When to Use
+## 使用时机
 
-Invoke this skill:
-- After generating cost estimates
-- After creating or updating schedules
-- After processing BIM/CAD data
-- After generating reports (daily, weekly, monthly)
-- After running data pipelines
-- Before submitting documents to clients
-- Before deploying automation workflows
+在以下情况下应执行此验证流程：
+- 生成成本估算后
+- 创建或更新进度计划后
+- 处理 BIM/CAD 数据后
+- 生成报告（每日、每周、每月）后
+- 运行数据管道后
+- 在将文档提交给客户之前
+- 在部署自动化工作流程之前
 
-## Verification Phases
+## 验证阶段
 
-### Phase 1: Data Integrity Check
+### 第 1 阶段：数据完整性检查
 
 ```python
 def verify_data_integrity(output: dict) -> VerificationResult:
@@ -57,15 +58,15 @@ def verify_data_integrity(output: dict) -> VerificationResult:
     return VerificationResult(checks)
 ```
 
-#### Data Integrity Checklist
-- [ ] All required fields populated
-- [ ] No duplicate records
-- [ ] Foreign keys resolve correctly
-- [ ] Date formats consistent
-- [ ] Currency values formatted correctly
-- [ ] Units of measure standardized
+#### 数据完整性检查清单
+- [ ] 所有必填字段均已填写
+- [ ] 无重复记录
+- [ ] 外键引用正确
+- [ ] 日期格式一致
+- [ ] 货币值格式正确
+- [ ] 度量单位标准化
 
-### Phase 2: Business Logic Verification
+### 第 2 阶段：业务逻辑验证
 
 ```python
 def verify_business_logic(output: dict) -> VerificationResult:
@@ -120,32 +121,32 @@ def verify_business_logic(output: dict) -> VerificationResult:
     return VerificationResult(checks)
 ```
 
-#### Business Logic Checklist
+#### 业务逻辑检查清单
 
-**For Cost Estimates:**
-- [ ] Line item totals = declared subtotals
-- [ ] Subtotals + markups = grand total
-- [ ] Tax calculations correct
-- [ ] Contingency applied consistently
-- [ ] Unit prices within expected ranges
-- [ ] Quantities match QTO
+**对于成本估算：**
+- [ ] 各项目金额之和等于相应的子总计
+- [ ] 子总计加上附加费用等于总金额
+- [ ] 税务计算正确
+- [ ] 应急储备金的计算一致
+- [ ] 单价在预期范围内
+- [ ] 数量与采购订单（QTO）一致
 
-**For Schedules:**
-- [ ] Dependencies respected (no backwards links)
-- [ ] Critical path calculated correctly
-- [ ] No resource over-allocation
-- [ ] Milestones properly dated
-- [ ] Working days/calendar correct
-- [ ] Float values logical
+**对于进度计划：**
+- [ ] 依赖关系得到正确处理（无反向链接）
+- [ ] 关键路径计算准确
+- [ ] 资源分配合理
+- [ ] 里程碑日期正确
+- [ ] 工作日/日历设置正确
+- [ ] 浮动数值逻辑合理
 
-**For BIM Data:**
-- [ ] Element counts match expected
-- [ ] Property values within ranges
-- [ ] Spatial relationships valid
-- [ ] Level associations correct
-- [ ] Classification codes valid
+**对于 BIM 数据：**
+- [ ] 元素数量与预期相符
+- [ ] 属性值在指定范围内
+- [ ] 空间关系正确
+- [ ] 层级关联正确
+- [ ] 分类代码有效
 
-### Phase 3: Format & Standards Compliance
+### 第 3 阶段：格式与标准合规性检查
 
 ```python
 def verify_standards_compliance(output: dict) -> VerificationResult:
@@ -187,15 +188,15 @@ def verify_standards_compliance(output: dict) -> VerificationResult:
     return VerificationResult(checks)
 ```
 
-#### Standards Compliance Checklist
-- [ ] CSI MasterFormat codes valid (6-digit)
-- [ ] UniFormat codes valid (if used)
-- [ ] CWICR mappings present
-- [ ] ISO dates (YYYY-MM-DD)
-- [ ] Currency format consistent
-- [ ] Measurement units consistent (metric/imperial)
+#### 标准合规性检查清单
+- [ ] CSI MasterFormat 代码有效（6 位）
+- [ ] 如果使用了 UniFormat 代码，则其格式正确
+- [ ] CWICR 映射关系存在
+- [ ] 日期格式为 ISO 格式（YYYY-MM-DD）
+- [ ] 货币格式一致
+- [ ] 测量单位统一（公制/英制）
 
-### Phase 4: Output Quality Check
+### 第 4 阶段：输出质量检查
 
 ```python
 def verify_output_quality(output: dict) -> VerificationResult:
@@ -254,15 +255,15 @@ def verify_output_quality(output: dict) -> VerificationResult:
     return VerificationResult(checks)
 ```
 
-#### Output Quality Checklist
-- [ ] Headers/footers present
-- [ ] Page numbers correct
-- [ ] Company branding applied
-- [ ] Charts readable
-- [ ] Tables properly aligned
-- [ ] Links/references working
+#### 输出质量检查清单
+- [ ] 有页眉和页脚
+- [ ] 页码正确
+- [ ] 公司品牌标识已添加
+- [ ] 图表可读
+- [ ] 表格对齐整齐
+- [ ] 链接和参考文献有效
 
-### Phase 5: Cross-Reference Validation
+### 第 5 阶段：交叉引用验证
 
 ```python
 def verify_cross_references(output: dict, sources: list) -> VerificationResult:
@@ -292,17 +293,17 @@ def verify_cross_references(output: dict, sources: list) -> VerificationResult:
     return VerificationResult(checks)
 ```
 
-#### Cross-Reference Checklist
-- [ ] QTO matches BIM model
-- [ ] Estimate matches specifications
-- [ ] Schedule aligns with estimate
-- [ ] Budget matches contract
-- [ ] Progress matches field data
-- [ ] Actuals match projections (within tolerance)
+#### 交叉引用检查清单
+- [ ] 采购订单（QTO）与 BIM 模型一致
+- [ ] 估算结果与技术规范相符
+- [ ] 进度计划与估算结果一致
+- [ ] 预算与合同要求一致
+- [ ] 进度情况与现场数据一致
+- [ ] 实际数据与预测值在允许的范围内一致
 
-## Verification Report Format
+## 验证报告格式
 
-After running all phases, produce a verification report:
+完成所有阶段后，生成一份验证报告：
 
 ```
 ═══════════════════════════════════════════════════════════════
@@ -367,7 +368,7 @@ Recommendations:
 ═══════════════════════════════════════════════════════════════
 ```
 
-## Automated Verification Pipeline
+## 自动化验证流程
 
 ```python
 class ConstructionVerificationPipeline:
@@ -408,18 +409,17 @@ report = pipeline.verify(estimate_output, sources=[bim_model, specifications])
 print(report.to_markdown())
 ```
 
-## Integration with DDC Workflows
+## 与 DDC 工作流程的集成
 
-This verification skill integrates with other DDC skills:
+此验证流程可与其他 DDC 工作流程集成：
+1. **估算完成后**：在 `cost-estimation-*` 流程之后执行
+2. **采购订单生成完成后**：在 `qto-report` 流程之后执行
+3. **进度计划生成完成后**：在 `gantt-chart` 或 `4d-simulation` 流程之后执行
+4. **数据管道处理完成后**：在 `etl-pipeline` 流程之后执行
 
-1. **Post-Estimation**: Run after `cost-estimation-*` skills
-2. **Post-QTO**: Run after `qto-report` skill
-3. **Post-Scheduling**: Run after `gantt-chart` or `4d-simulation` skills
-4. **Post-Pipeline**: Run after `etl-pipeline` skill
+## 持续验证模式
 
-## Continuous Verification Mode
-
-For long automation sessions, run verification at checkpoints:
+对于长时间的自动化流程，应在关键节点执行验证：
 
 ```markdown
 Recommended checkpoints:
@@ -433,4 +433,4 @@ Command: /verify-construction
 
 ---
 
-**Quality is not negotiable in construction. Verify before you deliver.**
+**在建筑项目中，质量是不可妥协的。请在交付前完成所有验证工作。**

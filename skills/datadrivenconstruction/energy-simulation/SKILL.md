@@ -1,24 +1,24 @@
 ---
 slug: "energy-simulation"
 display_name: "Energy Simulation"
-description: "Building energy simulation and analysis for construction. Calculate heating/cooling loads, evaluate envelope performance, optimize HVAC sizing, and ensure energy code compliance."
+description: "为建筑项目提供能源模拟与分析服务。包括计算供暖/制冷负荷、评估建筑围护结构的性能、优化暖通空调（HVAC）系统的规模设计，并确保项目符合相关能源法规的要求。"
 ---
 
-# Energy Simulation
+# 能源模拟
 
-## Overview
+## 概述
 
-This skill implements building energy simulation and analysis. Calculate thermal loads, evaluate building envelope performance, and optimize systems for energy efficiency and code compliance.
+该技能用于实现建筑能源的模拟与分析，包括计算热负荷、评估建筑围护结构的性能，并优化系统以提高能源效率和符合相关规范要求。
 
-**Capabilities:**
-- Heating/cooling load calculations
-- Envelope thermal analysis
-- HVAC system sizing
-- Energy code compliance
-- Renewable energy integration
-- Life cycle cost analysis
+**功能包括：**
+- 供暖/制冷负荷计算
+- 围护结构热分析
+- HVAC（暖通空调）系统设计
+- 能源规范合规性检查
+- 可再生能源集成
+- 生命周期成本分析
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -92,9 +92,9 @@ heat_loss = calculate_heat_loss(envelope, climate)
 print(f"Design heat loss: {heat_loss/1000:.1f} kW")
 ```
 
-## Comprehensive Energy Analysis
+## 全面能源分析
 
-### Building Thermal Model
+### 建筑热模型
 
 ```python
 from dataclasses import dataclass, field
@@ -318,7 +318,7 @@ class ThermalCalculator:
         return irradiance.get(orientation.lower(), 300)
 ```
 
-### HVAC System Sizing
+### HVAC系统设计
 
 ```python
 class HVACSizer:
@@ -418,7 +418,7 @@ class HVACSizer:
         }
 ```
 
-### Energy Code Compliance
+### 能源规范合规性检查
 
 ```python
 @dataclass
@@ -540,24 +540,24 @@ class ComplianceChecker:
         return results
 ```
 
-## Quick Reference
+## 参考信息
 
-| Component | Good U-Value | Code Maximum |
+| 组件 | 最佳U值（W/m²K） | 规范允许的最大值（W/m²K） |
 |-----------|--------------|--------------|
-| Wall | < 0.25 W/m²K | 0.35-0.45 |
-| Roof | < 0.15 W/m²K | 0.20-0.27 |
-| Floor | < 0.20 W/m²K | 0.25-0.32 |
-| Window | < 1.2 W/m²K | 1.7-2.0 |
+| 墙体 | < 0.25 | 0.35–0.45 |
+| 屋顶 | < 0.15 | 0.20–0.27 |
+| 地板 | < 0.20 | 0.25–0.32 |
+| 窗户 | < 1.2 | 1.7–2.0 |
 
-## Resources
+## 资源参考
 
-- **ASHRAE 90.1**: Energy standard for buildings
-- **IECC**: International Energy Conservation Code
-- **EnergyPlus**: DOE building simulation
-- **DDC Website**: https://datadrivenconstruction.io
+- **ASHRAE 90.1**: 建筑能源标准
+- **IECC**: 国际节能规范
+- **EnergyPlus**: 美国能源部（DOE）的建筑模拟工具
+- **DDC网站**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `co2-estimation` for carbon analysis
-- See `cost-prediction` for energy cost modeling
-- See `bim-validation-pipeline` for model integration
+- 如需进行碳排放分析，请参考`co2-estimation`模块。
+- 如需进行能源成本建模，请参考`cost-prediction`模块。
+- 如需进行模型集成，请参考`bim-validation-pipeline`模块。

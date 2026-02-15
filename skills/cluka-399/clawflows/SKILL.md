@@ -1,7 +1,7 @@
 ---
 name: clawflows
 version: 1.0.0
-description: Search, install, and run multi-skill automations from clawflows.com. Combine multiple skills into powerful workflows with logic, conditions, and data flow between steps.
+description: 从 clawflows.com 搜索、安装并运行多技能自动化任务。通过逻辑、条件以及步骤之间的数据流，将多个技能组合成强大的工作流程。
 metadata:
   clawdbot:
     requires:
@@ -16,17 +16,17 @@ metadata:
 
 # ClawFlows
 
-Discover and run multi-skill automations that combine capabilities like database, charts, social search, and more.
+发现并运行能够结合数据库、图表、社交搜索等多种功能的自动化任务。
 
-## Install CLI
+## 安装 CLI
 
 ```bash
 npm i -g clawflows
 ```
 
-## Commands
+## 命令
 
-### Search for automations
+### 搜索自动化任务
 
 ```bash
 clawflows search "youtube competitor"
@@ -34,64 +34,64 @@ clawflows search "morning brief"
 clawflows search --capability chart-generation
 ```
 
-### Check requirements
+### 检查需求
 
-Before installing, see what capabilities the automation needs:
+在安装之前，请查看该自动化任务需要哪些功能：
 
 ```bash
 clawflows check youtube-competitor-tracker
 ```
 
-Shows required capabilities and whether you have skills that provide them.
+系统会显示所需的功能以及您是否具备提供这些功能的技能。
 
-### Install an automation
+### 安装自动化任务
 
 ```bash
 clawflows install youtube-competitor-tracker
 ```
 
-Downloads to `./automations/youtube-competitor-tracker.yaml`
+自动化任务会被下载到 `./automations/youtube-competitor-tracker.yaml` 文件中。
 
-### List installed automations
+### 列出已安装的自动化任务
 
 ```bash
 clawflows list
 ```
 
-### Run an automation
+### 运行自动化任务
 
 ```bash
 clawflows run youtube-competitor-tracker
 clawflows run youtube-competitor-tracker --dry-run
 ```
 
-The `--dry-run` flag shows what would happen without executing.
+`--dry-run` 标志用于显示不执行任务时的结果。
 
-### Enable/disable scheduling
+### 启用/禁用调度功能
 
 ```bash
 clawflows enable youtube-competitor-tracker   # Shows cron setup instructions
 clawflows disable youtube-competitor-tracker
 ```
 
-### View logs
+### 查看日志
 
 ```bash
 clawflows logs youtube-competitor-tracker
 clawflows logs youtube-competitor-tracker --last 10
 ```
 
-### Publish your automation
+### 发布您的自动化任务
 
 ```bash
 clawflows publish ./my-automation.yaml
 ```
 
-Prints instructions for submitting to the registry via PR.
+系统会提供通过 Pull Request (PR) 将自动化任务提交到注册中心的说明。
 
-## How It Works
+## 工作原理
 
-Automations use **capabilities** (abstract) not skills (concrete):
+自动化任务使用的是 **功能**（抽象概念），而不是具体的 **技能**：
 
 ```yaml
 steps:
@@ -108,25 +108,25 @@ steps:
       data: "${videos}"
 ```
 
-This means automations are **portable** — they work on any Clawbot that has skills providing the required capabilities.
+这意味着自动化任务具有 **可移植性**——它们可以在任何具备所需功能的 Clawbot 上运行。
 
-## Standard Capabilities
+## 标准功能
 
-| Capability | What It Does | Example Skills |
-|------------|--------------|----------------|
-| `youtube-data` | Fetch video/channel stats | youtube-api |
-| `database` | Store and query data | sqlite-skill |
-| `chart-generation` | Create chart images | chart-image |
-| `social-search` | Search X/Twitter | search-x |
-| `prediction-markets` | Query odds | polymarket |
-| `weather` | Get forecasts | weather |
-| `calendar` | Read/write events | caldav-calendar |
-| `email` | Send/receive email | agentmail |
-| `tts` | Text to speech | elevenlabs-tts |
+| 功能            | 功能描述                | 示例技能                |
+|-----------------|------------------|----------------------|
+| `youtube-data`     | 获取视频/频道信息           | youtube-api             |
+| `database`       | 存储和查询数据             | sqlite-skill            |
+| `chart-generation`   | 生成图表图像             | chart-image             |
+| `social-search`    | 在 X/Twitter 上搜索           | search-x                 |
+| `prediction-markets` | 查询比赛赔率             | polymarket               |
+| `weather`        | 获取天气预报             | weather                 |
+| `calendar`       | 读写日历事件             | caldav-calendar           |
+| `email`        | 发送/接收电子邮件           | agentmail                |
+| `tts`          | 文本转语音                 | elevenlabs-tts            |
 
-## Making Skills ClawFlows-Compatible
+## 使您的技能兼容 ClawFlows
 
-To make your skill work with ClawFlows automations, add a `CAPABILITY.md` file:
+要使您的技能与 ClawFlows 的自动化任务配合使用，请添加一个 `CAPABILITY.md` 文件：
 
 ```markdown
 # my-capability Capability
@@ -150,7 +150,7 @@ Skill: my-skill
 **Output:** Description of output format
 ```
 
-And declare it in your SKILL.md frontmatter:
+并在您的 SKILL.md 文件的头部（frontmatter）中声明该功能：
 
 ```yaml
 ---
@@ -161,8 +161,8 @@ provides:
 ---
 ```
 
-## Links
+## 链接
 
-- **Registry**: https://clawflows.com
-- **CLI on npm**: https://www.npmjs.com/package/clawflows
+- **注册中心**: https://clawflows.com
+- **npm 上的 CLI**: https://www.npmjs.com/package/clawflows
 - **GitHub**: https://github.com/Cluka-399/clawflows-registry

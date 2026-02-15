@@ -1,81 +1,86 @@
 ---
 name: BNB
-description: Assist with BNB Chain transactions, BEP-20 tokens, gas fees, and cross-chain transfers.
+description: 协助处理 BNB 链路的交易、BEP-20 标准的代币、交易手续费（gas fees）以及跨链转账（cross-chain transfers）。
 metadata: {"clawdbot":{"emoji":"🔶","os":["linux","darwin","win32"]}}
 ---
 
-## Network Clarity (Critical)
-- "BNB Chain" is the main smart contract chain — formerly Binance Smart Chain (BSC)
-- "BNB Beacon Chain" was for staking — deprecated, merged into BNB Chain
-- BEP-20 tokens on BNB Chain — equivalent to ERC-20, EVM compatible
-- Same address format as Ethereum — 0x... addresses work on both
-- DIFFERENT networks — sending to wrong network loses funds
+## 网络架构与安全性（关键信息）
 
-## BNB Token
-- Native gas token for BNB Chain — needed for all transactions
-- Also available as BEP-2 (legacy), ERC-20 (Ethereum), and other wrapped versions
-- BNB on Binance exchange can be withdrawn to multiple networks — choose carefully
-- Burning mechanism reduces supply — quarterly burns based on trading volume
+- “BNB Chain”是主要的智能合约链，前身为Binance Smart Chain（BSC）。
+- “BNB Beacon Chain”曾用于质押功能，现已弃用并合并到BNB Chain中。
+- BNB Chain上的BEP-20代币与ERC-20代币具有相同的功能，兼容EVM（以太坊虚拟机）。
+- 地址格式与以太坊相同：0x...格式的地址在两者上均适用。
+- **注意网络选择**：发送到错误的网络会导致资金丢失。
 
-## Gas and Fees
-- EVM compatible gas model — same as Ethereum but cheaper
-- Gas prices typically 3-5 gwei — much lower than Ethereum
-- Standard transfer ~21,000 gas — costs fraction of a cent
-- Complex DeFi transactions cost more — but still very cheap
-- Fast block time (3 seconds) — quick confirmations
+## BNB代币
 
-## BEP-20 Tokens
-- Same interface as ERC-20 — all ERC-20 tooling works
-- Approve + transfer pattern — same as Ethereum
-- Many tokens have same name as Ethereum versions — but different contracts
-- Verify contract address on bscscan.com — scam tokens everywhere
-- Popular tokens: USDT, USDC, BUSD (deprecated), CAKE, various memes
+- BNB是BNB Chain的原生Gas代币，所有交易均需要使用BNB作为Gas。
+- BNB还提供BEP-2（旧版本）、ERC-20（以太坊标准）等其他形式的代币。
+- 可以从Binance交易所将BNB提取到其他区块链上，但请谨慎选择目标网络。
 
-## Cross-Chain Transfers
-- Binance exchange supports direct withdrawal to BNB Chain — easiest method
-- Bridges: cBridge, Multichain, Stargate — verify bridge reputation
-- BNB Chain ↔ Ethereum requires bridge — not same network despite same addresses
-- opBNB is L2 on BNB Chain — even lower fees, different RPC
-- Wrapped assets need unwrapping — bridged ETH is not native ETH
+## Gas费用与交易成本
 
-## DeFi Ecosystem
-- PancakeSwap is largest DEX — similar to Uniswap
-- Venus for lending/borrowing — similar to Aave
-- Lower TVL than Ethereum DeFi — but still significant
-- Higher rug pull risk — less auditing culture
-- Verify contracts before interacting — bscscan shows verification status
+- BNB Chain采用与以太坊兼容的Gas模型，但费用更低。
+- Gas价格通常为3-5 gwei，远低于以太坊。
+- 标准转账操作大约需要21,000 gas，费用仅相当于几分钱。
+- 复杂的DeFi交易费用稍高，但仍属于较低水平。
+- 区块确认时间极快（3秒），交易确认迅速。
 
-## Wallet Configuration
-- MetaMask works natively — add BNB Chain network
-- Chain ID: 56 — RPC: https://bsc-dataseed.binance.org
-- Block explorer: bscscan.com — verify transactions
-- Trust Wallet has native support — no manual network add
-- Hardware wallets work via MetaMask — same as Ethereum
+## BEP-20代币
 
-## Staking
-- Stake BNB with validators — earn staking rewards
-- Minimum stake varies by validator — typically 1 BNB minimum
-- Unbonding period: 7 days — funds locked during unstaking
-- Slashing risk exists — choose reliable validators
-- Liquid staking options: stkBNB, ankrBNB — maintain liquidity while staking
+- BEP-20代币与ERC-20代币具有相同的接口，所有ERC-20相关的工具均可使用。
+- 批准和转账流程与以太坊相同。
+- 许多BEP-20代币的名称与以太坊版本相同，但实际上使用的是不同的智能合约。
+- 请在bscscan.com网站上验证合约地址，以防止遇到诈骗代币。
 
-## Common Scams
-- "USDT" with wrong contract — verify against official addresses
-- Honeypot tokens — can buy but not sell
-- Fake PancakeSwap sites — always verify URL
-- Airdropped tokens you didn't request — often scam triggers
-- "Validators" asking for private keys — never share
+## 跨链转账
 
-## Common Issues
-- "Insufficient funds for gas" — need BNB for gas, not just tokens
-- Wrong network — ETH sent to BNB Chain address (same address, different chains)
-- High slippage on DEX — low liquidity tokens
-- Transaction pending — try increasing gas price
-- Contract interaction failed — check approval and balance
+- Binance交易所支持直接将BNB提取到BNB Chain，这是最便捷的方式。
+- 可使用的跨链桥接工具包括cBridge、Multichain、Stargate等，但请确认这些桥接工具的可靠性。
+- BNB Chain与以太坊属于不同的网络，即使地址相同，也需要通过桥接工具进行转账。
 
-## Security
-- Same security model as Ethereum — private key = full access
-- Revoke unused approvals — bscscan.com token approval checker
-- Verify all contract addresses — especially for popular tokens
-- Use hardware wallet for large amounts — same setup as Ethereum
-- Don't interact with unknown airdropped tokens — can contain malicious contracts
+## DeFi生态系统
+
+- PancakeSwap是目前最大的去中心化交易所（DEX），功能类似于Uniswap。
+- Venus平台提供借贷服务，类似于Aave。
+- BNB Chain上的DeFi项目的总价值（TVL）虽然低于以太坊，但仍相当可观。
+- 由于监管机制较弱，DeFi项目存在较高的欺诈风险，使用前请务必验证相关合约。
+
+## 钱包配置
+
+- MetaMask钱包可原生支持BNB Chain，只需添加相应的网络配置即可。
+- 链路ID：56；RPC地址：https://bsc-dataseed.binance.org
+- 可使用bscscan.com查询交易详情。
+- Trust Wallet钱包也支持BNB Chain，无需手动添加网络设置。
+- 硬件钱包同样可以通过MetaMask进行管理，使用方式与以太坊钱包相同。
+
+## 质押机制
+
+- 可将BNB质押给验证节点以获得奖励，具体质押要求因验证节点而异，通常至少需要1个BNB。
+- 解锁质押资金需要7天时间，在此期间资金会被锁定。
+- 存在“ slashing”风险（即质押失败时可能损失部分奖励），请选择可靠的验证节点。
+- 提供了stkBNB、ankrBNB等流动性较高的质押选项，可在质押的同时保持资金流动性。
+
+## 常见诈骗与注意事项
+
+- 注意区分不同版本的“USDT”代币（使用正确的合约地址）。
+- 避免购买无法出售的“蜜罐”代币。
+- 确认访问的PancakeSwap网站地址是否真实，谨防假冒网站。
+- 注意未经请求的代币空投，这可能是诈骗行为。
+- 绝不要向任何“验证节点”提供私钥。
+
+## 常见问题与解决方案
+
+- **Gas费用不足**：交易需要BNB作为Gas，而不仅仅是代币本身。
+- 发送到BNB Chain的地址可能属于错误的区块链，请确保使用正确的网络。
+- 在流动性较低的DEX平台上进行交易时可能出现较高的滑点（价格波动）。
+- 如果交易未完成，请尝试提高Gas价格。
+- 如果合约交互失败，请检查交易是否获得批准以及账户余额。
+
+## 安全性建议
+
+- BNB Chain采用与以太坊相同的加密安全模型，私钥意味着对账户的完全控制权。
+- 可通过bscscan.com验证代币的批准状态，及时撤销未使用的授权。
+- 对于热门代币，务必仔细核对所有合约地址。
+- 处理大额交易时请使用硬件钱包，设置方式与以太坊相同。
+- 避免与来源不明的空投代币进行交互，这些代币可能包含恶意代码。

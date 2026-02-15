@@ -1,6 +1,6 @@
 ---
 name: searxng
-description: Search the web using a self-hosted SearXNG instance. Privacy-respecting metasearch that aggregates results from multiple engines.
+description: 使用自托管的 SearXNG 实例在网络上进行搜索。SearXNG 是一款尊重用户隐私的元搜索引擎，能够汇总来自多个搜索引擎的结果。
 metadata:
   clawdbot:
     config:
@@ -8,14 +8,13 @@ metadata:
         - SEARXNG_URL
 ---
 
-# SearXNG Search Skill
+# SearXNG 搜索工具
 
-Search the web using your self-hosted SearXNG instance. Privacy-respecting metasearch that aggregates results from Google, DuckDuckGo, Brave, Startpage, and 70+ other engines.
+使用您自托管的 SearXNG 实例来搜索网页。这是一个注重隐私的元搜索引擎，能够整合来自 Google、DuckDuckGo、Brave、Startpage 以及 70 多个其他搜索引擎的结果。
 
-## Prerequisites
+## 先决条件
 
-SearXNG running locally or on a server. Quick Docker setup:
-
+SearXNG 需要在本地或服务器上运行。快速搭建 Docker 环境的方法如下：
 ```bash
 mkdir -p ~/Projects/searxng/searxng
 cd ~/Projects/searxng
@@ -55,21 +54,21 @@ EOF
 docker compose up -d
 ```
 
-## Configuration
+## 配置
 
-Set the SearXNG URL (defaults to http://localhost:8080):
+设置 SearXNG 的 URL（默认为 http://localhost:8080）：
 ```bash
 export SEARXNG_URL="http://localhost:8080"
 ```
 
-## Usage Examples
+## 使用示例
 
-### Basic Search
+### 基本搜索
 ```bash
 curl "http://localhost:8080/search?q=your+query&format=json" | jq '.results[:5]'
 ```
 
-### Search with Categories
+### 按类别搜索
 ```bash
 # General web search
 curl "http://localhost:8080/search?q=query&categories=general&format=json"
@@ -90,32 +89,31 @@ curl "http://localhost:8080/search?q=query&categories=it&format=json"
 curl "http://localhost:8080/search?q=query&categories=science&format=json"
 ```
 
-### Search with Language/Region
+### 按语言/地区搜索
 ```bash
 curl "http://localhost:8080/search?q=query&language=en-US&format=json"
 curl "http://localhost:8080/search?q=query&language=de-DE&format=json"
 ```
 
-### Paginated Results
+### 分页显示结果
 ```bash
 # Page 2 (results 11-20)
 curl "http://localhost:8080/search?q=query&pageno=2&format=json"
 ```
 
-## Response Format
+## 结果格式
 
-Each result includes:
-- `title` - Result title
-- `url` - Link to the result  
-- `content` - Snippet/description
-- `engines` - Array of search engines that returned this result
-- `score` - Relevance score (higher = better)
-- `category` - Result category
+每个搜索结果包含以下信息：
+- `title`：结果标题
+- `url`：结果链接
+- `content`：结果片段/描述
+- `engines`：返回该结果的搜索引擎列表
+- `score`：相关性评分（分数越高，相关性越强）
+- `category`：结果所属的类别
 
-## Shell Function
+## Shell 函数
 
-Add to your `.zshrc` or `.bashrc`:
-
+将以下代码添加到您的 `.zshrc` 或 `.bashrc` 文件中：
 ```bash
 searxng() {
   local query="$*"
@@ -125,9 +123,9 @@ searxng() {
 }
 ```
 
-Usage: `searxng how to make sourdough bread`
+使用方法：`searxng how to make sourdough bread`
 
-## Docker Management
+## Docker 管理
 
 ```bash
 # Start
@@ -143,23 +141,21 @@ docker compose logs -f searxng
 docker compose restart
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Container won't start:**
-```bash
-docker compose logs searxng
-```
+**容器无法启动：**
+检查日志以确定问题原因。
 
-**JSON format not working:**
-Ensure `formats: [html, json]` is in your settings.yml
+**JSON 格式无法正常使用：**
+确保您的 `settings.yml` 文件中配置了 `formats: [html, json]`。
 
-**No results:**
-Some engines may be rate-limited. Check logs for errors.
+**没有找到结果：**
+可能是某些搜索引擎设置了访问限制。请查看日志以获取错误信息。
 
-## Why SearXNG?
+## 为什么选择 SearXNG？
 
-- **Privacy**: No tracking, no ads, no data collection
-- **Aggregation**: Combines results from 70+ search engines
-- **Self-hosted**: Your data stays on your machine
-- **API**: JSON output for automation
-- **Free**: No API keys or rate limits
+- **隐私保护**：不进行用户跟踪，无广告，不收集用户数据。
+- **结果整合**：汇集来自 70 多个搜索引擎的结果。
+- **自托管**：所有数据都保存在您的设备上。
+- **API 支持**：提供 JSON 格式的输出，便于自动化操作。
+- **免费**：无需购买 API 密钥，也没有访问限制。

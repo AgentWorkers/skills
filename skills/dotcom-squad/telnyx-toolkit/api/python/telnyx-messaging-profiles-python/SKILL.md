@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Profiles - Python
+# Telnyx 消息传递配置文件 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List messaging profiles
+## 列出消息传递配置文件
 
-`GET /messaging_profiles`
+`GET /messagingprofiles`
 
 ```python
 page = client.messaging_profiles.list()
@@ -44,9 +44,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a messaging profile
+## 创建消息传递配置文件
 
-`POST /messaging_profiles` — Required: `name`, `whitelisted_destinations`
+`POST /messagingprofiles` — 必需参数：`name`, `whitelisted_destinations`
 
 ```python
 messaging_profile = client.messaging_profiles.create(
@@ -56,9 +56,9 @@ messaging_profile = client.messaging_profiles.create(
 print(messaging_profile.data)
 ```
 
-## Retrieve a messaging profile
+## 获取消息传递配置文件
 
-`GET /messaging_profiles/{id}`
+`GET /messagingprofiles/{id}`
 
 ```python
 messaging_profile = client.messaging_profiles.retrieve(
@@ -67,9 +67,9 @@ messaging_profile = client.messaging_profiles.retrieve(
 print(messaging_profile.data)
 ```
 
-## Update a messaging profile
+## 更新消息传递配置文件
 
-`PATCH /messaging_profiles/{id}`
+`PATCH /messagingprofiles/{id}`
 
 ```python
 messaging_profile = client.messaging_profiles.update(
@@ -78,9 +78,9 @@ messaging_profile = client.messaging_profiles.update(
 print(messaging_profile.data)
 ```
 
-## Delete a messaging profile
+## 删除消息传递配置文件
 
-`DELETE /messaging_profiles/{id}`
+`DELETE /messagingprofiles/{id}`
 
 ```python
 messaging_profile = client.messaging_profiles.delete(
@@ -89,9 +89,9 @@ messaging_profile = client.messaging_profiles.delete(
 print(messaging_profile.data)
 ```
 
-## List phone numbers associated with a messaging profile
+## 列出与消息传递配置文件关联的电话号码
 
-`GET /messaging_profiles/{id}/phone_numbers`
+`GET /messagingprofiles/{id}/phone_numbers`
 
 ```python
 page = client.messaging_profiles.list_phone_numbers(
@@ -101,9 +101,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## List short codes associated with a messaging profile
+## 列出与消息传递配置文件关联的短代码
 
-`GET /messaging_profiles/{id}/short_codes`
+`GET /messagingprofiles/{id}/short_codes`
 
 ```python
 page = client.messaging_profiles.list_short_codes(
@@ -113,9 +113,9 @@ page = page.data[0]
 print(page.messaging_profile_id)
 ```
 
-## List Auto-Response Settings
+## 列出自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs`
+`GET /messagingprofiles/{profile_id}/autoresp_configs`
 
 ```python
 autoresp_configs = client.messaging_profiles.autoresp_configs.list(
@@ -124,9 +124,9 @@ autoresp_configs = client.messaging_profiles.autoresp_configs.list(
 print(autoresp_configs.data)
 ```
 
-## Create auto-response setting
+## 创建自动应答设置
 
-`POST /messaging_profiles/{profile_id}/autoresp_configs` — Required: `op`, `keywords`, `country_code`
+`POST /messagingprofiles/{profile_id}/autoresp_configs` — 必需参数：`op`, `keywords`, `country_code`
 
 ```python
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.create(
@@ -138,9 +138,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.create(
 print(auto_resp_config_response.data)
 ```
 
-## Get Auto-Response Setting
+## 获取自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`GET /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```python
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.retrieve(
@@ -150,9 +150,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.retrieve(
 print(auto_resp_config_response.data)
 ```
 
-## Update Auto-Response Setting
+## 更新自动应答设置
 
-`PUT /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — Required: `op`, `keywords`, `country_code`
+`PUT /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — 必需参数：`op`, `keywords`, `country_code`
 
 ```python
 auto_resp_config_response = client.messaging_profiles.autoresp_configs.update(
@@ -165,9 +165,9 @@ auto_resp_config_response = client.messaging_profiles.autoresp_configs.update(
 print(auto_resp_config_response.data)
 ```
 
-## Delete Auto-Response Setting
+## 删除自动应答设置
 
-`DELETE /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`DELETE /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```python
 autoresp_config = client.messaging_profiles.autoresp_configs.delete(
@@ -177,7 +177,7 @@ autoresp_config = client.messaging_profiles.autoresp_configs.delete(
 print(autoresp_config)
 ```
 
-## List short codes
+## 列出所有短代码
 
 `GET /short_codes`
 
@@ -187,7 +187,7 @@ page = page.data[0]
 print(page.messaging_profile_id)
 ```
 
-## Retrieve a short code
+## 获取特定短代码的信息
 
 `GET /short_codes/{id}`
 
@@ -198,11 +198,9 @@ short_code = client.short_codes.retrieve(
 print(short_code.data)
 ```
 
-## Update short code
+## 更新短代码的设置
 
-Update the settings for a specific short code.
-
-`PATCH /short_codes/{id}` — Required: `messaging_profile_id`
+`PATCH /short_codes/{id}` — 必需参数：`messaging_profile_id`
 
 ```python
 short_code = client.short_codes.update(

@@ -1,15 +1,15 @@
 ---
 name: flowise
-description: Interact with Flowise AI workflows via REST API. Use when user mentions Flowise, chatflows, or wants to send messages to Flowise bots/agents. Supports listing flows, sending predictions, and managing conversations.
+description: 通过 REST API 与 Flowise AI 工作流程进行交互。当用户提到 Flowise、聊天流程（chatflows），或希望向 Flowise 的机器人/代理发送消息时，可以使用此功能。该 API 支持列出工作流程、发送预测结果以及管理对话内容。
 ---
 
-# Flowise Skill
+# Flowise 技能
 
-Interact with Flowise AI platform via REST API.
+通过 REST API 与 Flowise AI 平台进行交互。
 
-## Configuration
+## 配置
 
-Store Flowise settings in `TOOLS.md`:
+将 Flowise 的设置存储在 `TOOLS.md` 文件中：
 
 ```markdown
 ### Flowise
@@ -26,17 +26,17 @@ Store Flowise settings in `TOOLS.md`:
 | ghi789 | 文档助手 | 文档总结、RAG知识库查询 | - |
 ```
 
-## Flow Selection
+## 流选择
 
-When calling Flowise, match the user's request to the appropriate flow:
-1. Check `TOOLS.md` for the Flows table
-2. Select the flow whose "用途" best matches the task
-3. If no specific match, use the Default Flow ID
-4. If user explicitly names a flow, use that one
+在调用 Flowise 时，将用户的请求与相应的流程匹配：
+1. 查看 `TOOLS.md` 文件中的 `Flows` 表格。
+2. 选择“用途”最符合用户需求的流程。
+3. 如果没有匹配的流程，使用默认流程 ID。
+4. 如果用户指定了具体的流程名称，使用该流程名称。
 
-## Quick Reference
+## 快速参考
 
-### Send a message (Prediction)
+### 发送消息（预测）
 
 ```bash
 curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
@@ -45,7 +45,7 @@ curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
   -d '{"question": "Hello, how are you?"}'
 ```
 
-### Send with streaming
+### 带流式响应发送
 
 ```bash
 curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
@@ -54,7 +54,7 @@ curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
   -d '{"question": "Tell me a story", "streaming": true}'
 ```
 
-### Send with session/conversation memory
+### 带会话/对话记录发送
 
 ```bash
 curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
@@ -63,34 +63,34 @@ curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
   -d '{"question": "What did I ask before?", "sessionId": "user-123"}'
 ```
 
-### List all chatflows
+### 列出所有聊天流程
 
 ```bash
 curl -X GET "${FLOWISE_URL}/api/v1/chatflows" \
   -H "Authorization: Bearer ${API_KEY}"
 ```
 
-### Get chatflow details
+### 获取聊天流程详情
 
 ```bash
 curl -X GET "${FLOWISE_URL}/api/v1/chatflows/${FLOW_ID}" \
   -H "Authorization: Bearer ${API_KEY}"
 ```
 
-## Common Parameters for Prediction
+## 预测的常用参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `question` | string | The message to send |
-| `streaming` | boolean | Enable streaming response (default: false) |
-| `sessionId` | string | Session ID for conversation memory |
-| `overrideConfig` | object | Override flow configuration (temperature, maxTokens, etc.) |
-| `history` | array | Provide conversation history manually |
-| `uploads` | array | File uploads (images, documents) |
+| `question` | 字符串 | 要发送的消息 |
+| `streaming` | 布尔值 | 是否启用流式响应（默认：false） |
+| `sessionId` | 字符串 | 会话 ID（用于存储对话记录） |
+| `overrideConfig` | 对象 | 覆盖流程配置（如温度、最大令牌数等） |
+| `history` | 数组 | 手动提供对话历史记录 |
+| `uploads` | 数组 | 上传的文件（图片、文档） |
 
-### Flow-specific Variables
+### 流程特定的变量
 
-Some flows accept custom variables. Pass them in the request:
+某些流程支持自定义变量。请在请求中传递这些变量：
 
 ```json
 {
@@ -104,23 +104,23 @@ Some flows accept custom variables. Pass them in the request:
 }
 ```
 
-### Using Parameters from TOOLS.md
+### 使用 `TOOLS.md` 中的参数
 
-Check `TOOLS.md` for flow-specific parameters. The "参数" column indicates:
-- Required parameters (必填)
-- Default values to use
-- Custom variables needed for that flow
+查看 `TOOLS.md` 文件中的“参数”列，以了解以下信息：
+- 必填参数
+- 默认值
+- 该流程所需的自定义变量
 
-Example entry:
+示例条目：
 ```
 | abc123 | RAG知识库 | 文档查询 | sessionId=必填, variables={"namespace": "docs"} |
 ```
 
-When calling this flow, include the specified parameters.
+调用该流程时，请包含指定的参数。
 
-## Override Config Example
+## 覆盖配置示例
 
-Override model settings or other flow parameters:
+覆盖模型设置或其他流程参数：
 
 ```json
 {
@@ -132,7 +132,7 @@ Override model settings or other flow parameters:
 }
 ```
 
-## With File Upload
+## 上传文件
 
 ```bash
 curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
@@ -141,9 +141,9 @@ curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
   -F "files=@/path/to/document.pdf"
 ```
 
-## Form Object Request
+## 使用 `form` 对象进行请求
 
-Some flows use a `form` object for structured input parameters:
+某些流程使用 `form` 对象来接收结构化输入参数：
 
 ```bash
 curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
@@ -157,31 +157,31 @@ curl -X POST "${FLOWISE_URL}/api/v1/prediction/${FLOW_ID}" \
   }'
 ```
 
-Check `TOOLS.md` "参数" column for `form格式` to identify these flows. Pass parameters inside the `form` object.
+查看 `TOOLS.md` 文件中的“参数”列，以识别需要使用 `form` 对象的流程。将参数传递到 `form` 对象中。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 200 | Success |
-| 400 | Bad request - check input format |
-| 401 | Unauthorized - check API key |
-| 404 | Flow not found - verify flow ID |
-| 500 | Server error - check Flowise logs |
+| 200 | 成功 |
+| 400 | 请求错误 - 检查输入格式 |
+| 401 | 未经授权 - 检查 API 密钥 |
+| 404 | 流程未找到 - 核实流程 ID |
+| 500 | 服务器错误 - 查看 Flowise 日志 |
 
-## Workflow
+## 工作流程
 
-1. Check `TOOLS.md` for Flowise server URL and API key
-2. If not configured, ask user for:
-   - Flowise server URL (e.g., `http://localhost:3000`)
-   - API key (if authentication is enabled)
-   - Flow ID to use
-3. Use `exec` with `curl` to call the API
-4. Parse JSON response and present results
+1. 查看 `TOOLS.md` 文件中的 Flowise 服务器 URL 和 API 密钥。
+2. 如果未配置，请询问用户以下信息：
+   - Flowise 服务器 URL（例如：`http://localhost:3000`）
+   - API 密钥（如果启用了身份验证）
+   - 要使用的流程 ID
+3. 使用 `curl` 和 `exec` 命令调用 API。
+4. 解析 JSON 响应并展示结果。
 
-## Tips
+## 提示
 
-- Use `sessionId` consistently to maintain conversation context
-- For long responses, enable `streaming: true`
-- Test connectivity with `/api/v1/ping` endpoint first
-- List available flows if user doesn't specify a flow ID
+- 一致使用 `sessionId` 以保持对话上下文。
+- 对于较长的响应，启用 `streaming: true`。
+- 先使用 `/api/v1/ping` 端点测试连接是否正常。
+- 如果用户未指定流程 ID，列出所有可用的流程。

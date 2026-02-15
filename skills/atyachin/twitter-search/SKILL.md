@@ -1,6 +1,6 @@
 ---
 name: xpoz-social-search
-description: "Search Twitter, Instagram, and Reddit posts in real time. Find social media mentions, track hashtags, discover influencers, and analyze engagement — 1.5B+ posts indexed. Social listening, brand monitoring, and competitor research made easy for AI agents."
+description: "实时搜索 Twitter、Instagram 和 Reddit 上的帖子。查找社交媒体中的提及内容，追踪话题标签（hashtags），发现具有影响力的用户（influencers），并分析用户互动情况——索引了超过 15 亿条帖子。AI 代理可以轻松实现社交监听（social listening）、品牌监控（brand monitoring）和竞争对手研究（competitor research）。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -32,62 +32,61 @@ tags:
   - trending
 ---
 
-# Xpoz Social Search
+# Xpoz 社交媒体搜索
 
-**Multi-platform social media search powered by 1.5 billion+ indexed posts.**
+**基于超过15亿条已索引帖子的多平台社交媒体搜索工具。**
 
-Search posts, find people, and discover conversations across Twitter, Instagram, and Reddit using natural language queries. Built on Xpoz MCP — the social intelligence server that makes cross-platform research as easy as a function call.
-
----
-
-## ⚡ Setup (READ THIS FIRST)
-
-**Before using this skill, ensure the Xpoz MCP server is configured and authenticated.**
-
-👉 **Read and follow [`xpoz-setup/SKILL.md`](https://clawhub.ai/skills/xpoz-setup)** — it handles everything automatically. The user won't need to run any commands; at most they click "Authorize" in a browser.
-
-Once `mcporter call xpoz.checkAccessKeyStatus` returns `hasAccessKey: true`, come back here and continue with **Usage Patterns** below.
+您可以使用自然语言查询在 Twitter、Instagram 和 Reddit 上搜索帖子、查找用户并发现相关讨论。该功能基于 Xpoz MCP（社交智能服务器）构建，使得跨平台数据检索变得像调用一个函数一样简单。
 
 ---
 
-## What This Skill Does
+## ⚡ 设置（请先阅读此部分）
 
-This skill teaches OpenClaw agents to:
+**在使用此功能之前，请确保 Xpoz MCP 服务器已配置并完成身份验证。**
 
-✅ **Search posts** by keywords across Twitter, Instagram, and Reddit  
-✅ **Find people** who talk about specific topics  
-✅ **Look up profiles** by username or ID  
-✅ **Search by name** to discover accounts  
-✅ **Filter by date range** for time-sensitive research  
-✅ **Find relevant subreddits** about any topic  
-✅ **Export results to CSV** for analysis  
+👉 请阅读并遵循 [`xpoz-setup/SKILL.md`](https://clawhub.ai/skills/xpoz-setup) 文档——所有步骤都将自动完成。用户无需运行任何命令，最多只需在浏览器中点击“授权”即可。
 
-### Why Multi-Platform Matters
-
-Unlike single-platform tools, Xpoz lets you search across Twitter, Instagram, and Reddit simultaneously. Find where conversations are actually happening — not just where you think they are.
-
-**Indexed Data:**
-- 🐦 Twitter: 1B+ posts
-- 📸 Instagram: 400M+ posts (captions + video subtitles)
-- 🗨️ Reddit: 100M+ posts & comments
+当 `mcporter call xpoz.checkAccessKeyStatus` 返回 `hasAccessKey: true` 时，再返回此处继续阅读下面的**使用模式**。
 
 ---
 
-## Setup
+## 该功能的用途
 
-See the **[xpoz-setup](https://clawhub.ai/skills/xpoz-setup)** skill for full setup and authentication instructions.
+该功能可指导 OpenClaw 代理执行以下操作：
+- 根据关键词在 Twitter、Instagram 和 Reddit 上搜索帖子
+- 查找讨论特定主题的用户
+- 通过用户名或 ID 查找用户资料
+- 通过名称搜索账户
+- 按日期范围筛选数据以进行时效性研究
+- 查找与特定主题相关的相关子版块
+- 将结果导出为 CSV 格式以供分析
 
-**TL;DR:** The agent handles everything. You just click "Authorize" when the browser opens (or tap a link your agent sends you).
+### 为什么选择多平台搜索？
+
+与单平台工具不同，Xpoz 可同时搜索 Twitter、Instagram 和 Reddit，帮助您找到真正的讨论热点，而不仅仅是您认为存在讨论的地方。
+
+**已索引的数据量：**
+- 🐦 Twitter：超过 10 亿条帖子
+- 📸 Instagram：超过 4 亿条帖子（包含标题和视频字幕）
+- 🗨️ Reddit：超过 1 亿条帖子和评论
 
 ---
 
-## Usage Patterns
+## 设置
 
-### Pattern 1: Search Posts by Topic (Cross-Platform)
+请参阅 [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup) 文档以获取完整的设置和身份验证说明。
 
-**Use Case:** Find recent discussions about a product, trend, or event.
+**简而言之：** 所有操作均由代理自动完成。您只需在浏览器打开页面后点击“授权”（或点击代理发送的链接）即可。
 
-**Example: Find posts about "Model Context Protocol" on Twitter**
+---
+
+## 使用模式
+
+### 模式 1：按主题跨平台搜索帖子
+
+**用例：** 查找关于某个产品、趋势或事件的最新讨论。
+
+**示例：** 在 Twitter 上查找关于“Model Context Protocol”的帖子**
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
@@ -96,13 +95,13 @@ mcporter call xpoz.getTwitterPostsByKeywords \
   limit=50
 ```
 
-The response includes an `operationId`. **Always poll for results:**
+响应中会包含一个 `operationId`。**请务必定期轮询结果：**
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId=op_abc123
 ```
 
-**Cross-Platform Search:**
+**跨平台搜索：**
 
 ```bash
 # Twitter
@@ -117,11 +116,11 @@ mcporter call xpoz.getRedditPostsByKeywords query="AI agents"
 
 ---
 
-### Pattern 2: Find People Who Talk About Something
+### 模式 2：查找讨论特定主题的用户
 
-**Use Case:** Identify potential leads, influencers, or community members.
+**用例：** 寻找潜在联系人、影响者或社区成员。
 
-**Example: Find Twitter users posting about "open source LLMs"**
+**示例：** 查找在 Twitter 上发布关于“开源 LLM”内容的用户**
 
 ```bash
 mcporter call xpoz.getTwitterUsersByKeywords \
@@ -129,15 +128,15 @@ mcporter call xpoz.getTwitterUsersByKeywords \
   limit=100
 ```
 
-Then poll:
+然后轮询结果：
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId=op_xyz789
 ```
 
-**Result:** List of users with post counts, follower stats, and relevance scores.
+**结果：** 显示用户列表，包括帖子数量、粉丝数量和相关性评分。
 
-**Cross-Platform:**
+**跨平台搜索：**
 
 ```bash
 # Find Instagram users posting about fitness
@@ -149,11 +148,11 @@ mcporter call xpoz.getRedditUsersByKeywords query="python programming"
 
 ---
 
-### Pattern 3: Look Up a Specific Profile
+### 模式 3：查找特定用户资料
 
-**Use Case:** Get detailed profile data for a known account.
+**用例：** 获取已知账户的详细信息。
 
-**Example: Look up a Twitter user by username**
+**示例：** 通过用户名查找 Twitter 用户**
 
 ```bash
 mcporter call xpoz.getTwitterUser \
@@ -161,7 +160,7 @@ mcporter call xpoz.getTwitterUser \
   identifierType=username
 ```
 
-**Example: Look up by Twitter user ID**
+**示例：** 通过 Twitter 用户 ID 查找用户**
 
 ```bash
 mcporter call xpoz.getTwitterUser \
@@ -169,7 +168,7 @@ mcporter call xpoz.getTwitterUser \
   identifierType=id
 ```
 
-**Other Platforms:**
+**其他平台：**
 
 ```bash
 # Instagram profile
@@ -181,17 +180,17 @@ mcporter call xpoz.getRedditUser identifier=spez identifierType=username
 
 ---
 
-### Pattern 4: Search for Accounts by Name
+### 模式 4：按名称搜索账户
 
-**Use Case:** Find accounts when you don't know the exact username.
+**用例：** 在不知道确切用户名时查找账户。
 
-**Example: Find Twitter accounts named "OpenAI"**
+**示例：** 查找名为“OpenAI”的 Twitter 账户**
 
 ```bash
 mcporter call xpoz.searchTwitterUsers query="OpenAI" limit=20
 ```
 
-**Cross-Platform:**
+**跨平台搜索：**
 
 ```bash
 # Search Instagram users
@@ -203,29 +202,21 @@ mcporter call xpoz.searchRedditUsers query="AutoModerator"
 
 ---
 
-### Pattern 5: Search Within a Date Range
+### 模式 5：在指定日期范围内搜索
 
-**Use Case:** Analyze sentiment during a specific event or time period.
+**用例：** 分析特定事件或时间段内的舆论趋势。
 
-**Example: Find tweets about "Super Bowl" during game day**
+**示例：** 在超级碗比赛当天查找相关推文**
 
-```bash
-mcporter call xpoz.getTwitterPostsByKeywords \
-  query="Super Bowl" \
-  startDate=2026-02-09 \
-  endDate=2026-02-10 \
-  limit=200
-```
-
-**Note:** Current year is **2026**. Use `YYYY-MM-DD` format.
+**注意：** 当前年份为 2026 年，使用 `YYYY-MM-DD` 格式。
 
 ---
 
-### Pattern 6: Find Relevant Subreddits
+### 模式 6：查找相关子版块
 
-**Use Case:** Discover communities discussing a topic.
+**用例：** 发现讨论某个主题的子版块。
 
-**Example: Find subreddits about "machine learning"**
+**示例：** 查找关于“机器学习”的子版块**
 
 ```bash
 mcporter call xpoz.getRedditSubredditsByKeywords \
@@ -233,35 +224,35 @@ mcporter call xpoz.getRedditSubredditsByKeywords \
   limit=30
 ```
 
-Then poll:
+然后轮询结果：
 
 ```bash
 mcporter call xpoz.checkOperationStatus operationId=op_reddit123
 ```
 
-**Result:** List of subreddits with subscriber counts, descriptions, and activity metrics.
+**结果：** 显示子版块列表，包括订阅者数量、描述和活动指标。
 
 ---
 
-### Pattern 7: Advanced Boolean Queries
+### 模式 7：高级布尔查询
 
-**Use Case:** Precise filtering with boolean operators.
+**用例：** 使用布尔运算符进行精确过滤。
 
-**Operators:**
-- `AND` — Both terms must appear
-- `OR` — Either term must appear
-- `NOT` — Exclude a term
-- `"exact phrase"` — Match exact phrase
-- `()` — Group expressions
+**运算符说明：**
+- `AND` — 两个条件都必须满足
+- `OR` — 至少有一个条件必须满足
+- `NOT` — 排除某个条件
+- `"exact phrase"` — 匹配完整短语
+- `()` — 对表达式进行分组
 
-**Example: Find tweets about Tesla but not stock discussion**
+**示例：** 查找关于特斯拉的推文，但不包括关于股票的内容**
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
   query="Tesla AND (cars OR vehicles) NOT stock NOT TSLA"
 ```
 
-**Example: Find Instagram posts about travel OR adventure**
+**示例：** 查找关于旅行或冒险的 Instagram 帖子**
 
 ```bash
 mcporter call xpoz.getInstagramPostsByKeywords \
@@ -270,11 +261,11 @@ mcporter call xpoz.getInstagramPostsByKeywords \
 
 ---
 
-### Pattern 8: Export to CSV
+### 模式 8：导出结果为 CSV
 
-**Use Case:** Export large result sets for external analysis.
+**用例：** 将大量结果导出以供外部分析。
 
-Every search operation returns a `dataDumpExportOperationId`. Use it to export results:
+每次搜索操作都会返回一个 `dataDumpExportOperationId`。使用该 ID 可以导出结果：
 
 ```bash
 # Step 1: Get search results
@@ -287,79 +278,79 @@ mcporter call xpoz.checkOperationStatus operationId=op_search123
 mcporter call xpoz.checkOperationStatus operationId=export_op_abc
 ```
 
-The export URL will be in the `result.url` field when complete.
+导出链接将在 `result.url` 字段中提供。
 
 ---
 
-## Tool Reference
+## 工具参考
 
-### Search Posts
+### 搜索帖子
 
-| Tool | Platform | What It Searches |
+| 工具 | 平台 | 搜索内容 |
 |------|----------|------------------|
-| `getTwitterPostsByKeywords` | Twitter | Tweets and retweets |
-| `getInstagramPostsByKeywords` | Instagram | Posts, reels (captions + subtitles) |
-| `getRedditPostsByKeywords` | Reddit | Posts only |
-| `getRedditCommentsByKeywords` | Reddit | Comments only |
+| `getTwitterPostsByKeywords` | Twitter | 推文和转推 |
+| `getInstagramPostsByKeywords` | Instagram | 帖子、Reels（包含标题和字幕） |
+| `getRedditPostsByKeywords` | Reddit | 仅帖子 |
+| `getRedditCommentsByKeywords` | Reddit | 仅评论 |
 
-**Key Parameters:**
-- `query` (required) — Search terms (supports boolean operators)
-- `startDate` / `endDate` (optional) — Date range (YYYY-MM-DD)
-- `limit` (optional) — Max results (default: 100)
-- `language` (optional) — Language code (e.g., `en`, `es`)
-- `fields` (optional) — Specify fields to return (improves performance)
+**关键参数：**
+- `query`（必填）— 搜索关键词（支持布尔运算符）
+- `startDate` / `endDate`（可选）— 日期范围（格式：YYYY-MM-DD） |
+- `limit`（可选）— 最大结果数量（默认：100 条） |
+- `language`（可选）— 语言代码（例如：`en`、`es`） |
+- `fields`（可选）— 指定返回的字段（可提高查询性能）
 
-### Find People
+### 查找用户
 
-| Tool | Platform | What It Returns |
+| 工具 | 平台 | 返回内容 |
 |------|----------|-----------------|
-| `getTwitterUsersByKeywords` | Twitter | Users who posted matching content |
-| `getInstagramUsersByKeywords` | Instagram | Users who posted matching content |
-| `getRedditUsersByKeywords` | Reddit | Users who posted matching content |
+| `getTwitterUsersByKeywords` | Twitter | 发布匹配内容的用户 |
+| `getInstagramUsersByKeywords` | Instagram | 发布匹配内容的用户 |
+| `getRedditUsersByKeywords` | Reddit | 发布匹配内容的用户 |
 
-**Key Parameters:**
-- `query` (required) — Search terms
-- `limit` (optional) — Max users (default: 100)
+**关键参数：**
+- `query`（必填）— 搜索关键词 |
+- `limit`（可选）— 最大用户数量（默认：100 人）
 
-### Profile Lookup
+### 查找用户资料
 
-| Tool | Platform | Identifier Types |
+| 工具 | 平台 | 识别方式 |
 |------|----------|------------------|
-| `getTwitterUser` | Twitter | `username` or `id` |
-| `getInstagramUser` | Instagram | `username` or `id` |
+| `getTwitterUser` | Twitter | `username` 或 `id` |
+| `getInstagramUser` | Instagram | `username` 或 `id` |
 | `getRedditUser` | Reddit | `username` |
 
-**Parameters:**
-- `identifier` (required) — Username or ID
-- `identifierType` (required) — Type of identifier
+**参数：**
+- `identifier`（必填）— 用户名或 ID |
+- `identifierType`（必填）— 识别方式类型
 
-### Search by Name
+### 按名称搜索
 
-| Tool | Platform | Purpose |
+| 工具 | 平台 | 功能 |
 |------|----------|---------|
-| `searchTwitterUsers` | Twitter | Find accounts by display name |
-| `searchInstagramUsers` | Instagram | Find accounts by display name |
-| `searchRedditUsers` | Reddit | Find accounts by username |
+| `searchTwitterUsers` | Twitter | 通过显示名称查找账户 |
+| `searchInstagramUsers` | Instagram | 通过显示名称查找账户 |
+| `searchRedditUsers` | Reddit | 通过用户名查找账户 |
 
-**Parameters:**
-- `query` (required) — Search query
-- `limit` (optional) — Max results
+**参数：**
+- `query`（必填）— 搜索关键词 |
+- `limit`（可选）— 最大结果数量
 
-### Utility
+### 辅助工具
 
-| Tool | Purpose |
-|------|---------|
-| `checkOperationStatus` | Poll for async operation results (REQUIRED) |
-| `checkAccessKeyStatus` | Verify your API key is configured |
-| `getRedditSubredditsByKeywords` | Find subreddits about a topic |
+| 工具 | 功能 | |
+|------|---------| |
+| `checkOperationStatus` | 轮询异步操作结果（必填） |
+| `checkAccessKeyStatus` | 验证 API 密钥是否已配置 |
+| `getRedditSubredditsByKeywords` | 查找与特定主题相关的子版块 |
 
 ---
 
-## Important Notes
+## 重要说明
 
-### ⚠️ Always Poll for Results
+### ⚠️ 请务必定期轮询结果
 
-**All search tools return an `operationId` — you MUST call `checkOperationStatus` to get the actual data.**
+**所有搜索工具都会返回一个 `operationId`——您必须调用 `checkOperationStatus` 来获取实际数据。**
 
 ```bash
 # ❌ WRONG: This doesn't return results immediately
@@ -373,9 +364,9 @@ mcporter call xpoz.checkOperationStatus operationId=op_123
 # Returns: { status: "completed", result: { posts: [...] } }
 ```
 
-### 🚀 Use `fields` Parameter for Performance
+### 🚀 使用 `fields` 参数提升性能
 
-If you only need specific fields (e.g., username and followers), specify them:
+如果您只需要某些字段（例如用户名和粉丝数量），请明确指定：
 
 ```bash
 mcporter call xpoz.getTwitterUsersByKeywords \
@@ -383,11 +374,11 @@ mcporter call xpoz.getTwitterUsersByKeywords \
   fields="username,displayName,followerCount"
 ```
 
-This reduces response size and speeds up queries.
+这样可以减少响应数据量并加快查询速度。
 
-### 📅 Date Format
+### 📅 日期格式
 
-Always use `YYYY-MM-DD` format:
+请始终使用 `YYYY-MM-DD` 格式：
 
 ```bash
 # ✅ Correct
@@ -397,26 +388,25 @@ startDate=2026-01-15
 startDate="Jan 15, 2026"
 ```
 
-**Current year is 2026** — important for calculating relative dates.
+**当前年份为 2026 年**——这对于计算相对日期非常重要。
 
-### 📊 CSV Exports
+### 📊 CSV 导出
 
-Large datasets (>1000 results) can be exported to CSV:
+当数据量较大（超过 1000 条结果）时，可以将其导出为 CSV 格式：
+1. 每次搜索都会返回一个 `dataDumpExportOperationId`。
+2. 使用 `checkOperationStatus` 轮询该操作 ID。
+3. 完成后从 `result.url` 下载 CSV 文件。
 
-1. Every search returns a `dataDumpExportOperationId`
-2. Poll that operation ID with `checkOperationStatus`
-3. Download the CSV from the `result.url` when ready
+### 🔍 布尔查询语法
 
-### 🔍 Boolean Query Syntax
+- `AND`、`OR`、`NOT` 必须大写。
+- 使用引号标注完整短语：`"artificial intelligence"`。
+- 使用括号分组条件：`(AI OR ML) AND startups`。
+**示例：`"climate change" AND (policy OR regulation) NOT conspiracy`。
 
-- `AND`, `OR`, `NOT` must be uppercase
-- Use quotes for exact phrases: `"artificial intelligence"`
-- Group with parentheses: `(AI OR ML) AND startups`
-- Example: `"climate change" AND (policy OR regulation) NOT conspiracy`
+### 🌍 语言过滤
 
-### 🌍 Language Filtering
-
-Specify language codes for better results:
+指定语言代码以获得更准确的结果：
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
@@ -424,15 +414,15 @@ mcporter call xpoz.getTwitterPostsByKeywords \
   language=en
 ```
 
-Common codes: `en`, `es`, `fr`, `de`, `pt`, `ja`, `ko`
+常用语言代码：`en`、`es`、`fr`、`de`、`pt`、`ja`、`ko`
 
 ---
 
-## Example Workflows
+## 示例工作流程
 
-### Workflow 1: Competitive Intelligence
+### 工作流程 1：竞争情报
 
-**Goal:** Track competitor mentions over the last 30 days.
+**目标：** 查找过去 30 天内关于竞争对手的提及内容。
 
 ```bash
 # Search Twitter
@@ -454,9 +444,9 @@ mcporter call xpoz.getTwitterUsersByKeywords \
 mcporter call xpoz.checkOperationStatus operationId=op_comp_users456
 ```
 
-### Workflow 2: Influencer Discovery
+### 工作流程 2：影响者发现
 
-**Goal:** Find micro-influencers in the fitness niche.
+**目标：** 找到健身领域的微影响者。
 
 ```bash
 # Find Instagram users posting about fitness
@@ -473,9 +463,9 @@ mcporter call xpoz.getInstagramUser \
   identifierType=username
 ```
 
-### Workflow 3: Community Research
+### 工作流程 3：社区研究
 
-**Goal:** Understand where your audience hangs out on Reddit.
+**目标：** 了解您的目标受众在 Reddit 上的活动情况。
 
 ```bash
 # Find relevant subreddits
@@ -496,9 +486,9 @@ mcporter call xpoz.getRedditPostsByKeywords \
 mcporter call xpoz.checkOperationStatus operationId=op_posts456
 ```
 
-### Workflow 4: Trend Analysis
+### 工作流程 4：趋势分析
 
-**Goal:** See how sentiment changed during a product launch.
+**目标：** 分析产品发布期间的舆论变化。
 
 ```bash
 # Week before launch
@@ -518,83 +508,76 @@ mcporter call xpoz.getTwitterPostsByKeywords \
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "Operation not found"
+### “操作未找到”
 
-You're polling an invalid `operationId`. Make sure you're using the exact ID returned from the search call.
+您可能使用了无效的 `operationId`。请确保使用的 ID 是搜索请求返回的正确值。
 
-### "Access key invalid"
+### “访问密钥无效”
 
-Your API key isn't configured or is expired:
+您的 API 密钥未配置或已过期：
 
-```bash
-mcporter call xpoz.checkAccessKeyStatus
-```
+**解决方法：** 设置 `XPOZ_ACCESS_KEY` 环境变量（详见设置部分）。
 
-Fix by setting `XPOZ_ACCESS_KEY` environment variable (see Setup section).
+### 结果为空
 
-### Empty results
+- **检查查询语法** — 布尔运算符必须大写。
+- **验证日期范围** — 日期格式必须为 `YYYY-MM-DD`。
+- **尝试使用更宽泛的关键词** — 完整短语可能过于具体。
 
-- **Check your query syntax** — boolean operators must be uppercase
-- **Verify date range** — dates must be in `YYYY-MM-DD` format
-- **Try broader terms** — exact phrases may be too specific
+### 查询速度慢
 
-### Slow queries
-
-- **Use the `fields` parameter** to request only what you need
-- **Reduce `limit`** for faster initial results
-- **Add date filters** to narrow the search scope
+- **使用 `fields` 参数仅请求所需数据**。
+- **减少 `limit` 值以加快初始查询速度**。
+- **添加日期筛选条件以缩小搜索范围**。
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **[xpoz-marketing](../xpoz-marketing)** — Content creation workflows for Xpoz
-- **[find-influencers](../find-influencers)** — Influencer outreach automation
-- **[xpoz-social](../xpoz-social)** — Social media management for Xpoz channels
-
----
-
-## Resources
-
-- **Website:** [xpoz.ai](https://xpoz.ai)
-- **MCP Package:** [@xpozinc/xpoz-mcp](https://www.npmjs.com/package/@xpozinc/xpoz-mcp)
-- **Dashboard:** [xpoz.ai/dashboard](https://xpoz.ai/dashboard)
-- **Support:** support@xpoz.ai
+- **[xpoz-marketing](../xpoz-marketing)** — 用于 Xpoz 的内容创作工作流程。
+- **[find-influencers](../find-influencers)** — 自动化影响者联系工具。
+- **[xpoz-social](../xpoz-social)** — 用于管理 Xpoz 社交媒体渠道的工具。
 
 ---
 
-## License & Usage
+## 资源
 
-This skill is open source. The Xpoz MCP server requires a free or paid account at [xpoz.ai](https://xpoz.ai).
-
-**Free Tier Limits:**
-- 100 searches/month
-- 1,000 results per search
-- All platforms included
-
-**Upgrade for:**
-- Unlimited searches
-- Bulk exports (up to 500K results per query)
-- Historical data (back to 2019)
-- Custom retention
-- Priority support
+- **官方网站：** [xpoz.ai](https://xpoz.ai)
+- **MCP 包：** [@xpozinc/xpoz-mcp](https://www.npmjs.com/package/@xpozinc/xpoz-mcp)
+- **控制面板：** [xpoz.ai/dashboard](https://xpoz.ai/dashboard)
+- **支持：** support@xpoz.ai
 
 ---
 
-## Responsible Use
+## 许可证与使用说明
 
-This skill searches publicly available social media data. When using it:
+该功能为开源代码。使用 Xpoz MCP 服务器需要 [xpoz.ai](https://xpoz.ai) 提供的免费或付费账户。
 
-- **Comply with platform terms of service** for Twitter, Instagram, and Reddit
-- **Respect privacy laws** applicable to your jurisdiction (GDPR, CCPA, etc.)
-- **Do not use for harassment, stalking, or unauthorized surveillance**
-- **Consider data minimization** — only collect what you need for your use case
-- **Disclose data collection** where required by law or ethical guidelines
+**免费 tier 的限制：**
+- 每月 100 次搜索
+- 每次搜索最多 1,000 条结果
+- 支持所有平台
 
-Xpoz indexes only publicly available posts and profiles. No private messages, protected accounts, or non-public data is accessible.
+**升级后可享受：**
+- 无限次搜索
+- 批量导出（每次查询最多 500,000 条结果）
+- 查看 2019 年以来的历史数据
+- 自定义数据保留策略
+- 优先支持
+
+## 负责任的使用
+
+该功能会搜索公开可用的社交媒体数据。使用时应遵守：
+- Twitter、Instagram 和 Reddit 的平台服务条款
+- 遵守适用于您的地区的隐私法律（如 GDPR、CCPA 等）
+- 不得用于骚扰、跟踪或未经授权的监控
+- 仅收集满足您使用需求的数据
+- 在法律或道德规范要求的情况下公开数据收集情况
+
+Xpoz 仅索引公开可用的帖子和用户资料。无法访问私人消息、受保护账户或非公开数据。
 
 ---
 
-**Built for ClawHub • Published 2026-02-11**
+**由 ClawHub 开发 • 发布于 2026-02-11**

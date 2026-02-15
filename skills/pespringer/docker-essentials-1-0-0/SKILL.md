@@ -1,17 +1,17 @@
 ---
 name: docker-essentials
-description: Essential Docker commands and workflows for container management, image operations, and debugging.
+description: 用于容器管理、镜像操作和调试的基本 Docker 命令和工作流程。
 homepage: https://docs.docker.com/
 metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["docker"]}}}
 ---
 
-# Docker Essentials
+# Docker基础
 
-Essential Docker commands for container and image management.
+Docker的核心命令，用于容器和镜像的管理。
 
-## Container Lifecycle
+## 容器生命周期
 
-### Running containers
+### 运行容器
 ```bash
 # Run container from image
 docker run nginx
@@ -38,7 +38,7 @@ docker run --rm alpine echo "Hello"
 docker run -it ubuntu bash
 ```
 
-### Managing containers
+### 管理容器
 ```bash
 # List running containers
 docker ps
@@ -65,9 +65,9 @@ docker rm -f container_name
 docker container prune
 ```
 
-## Container Inspection & Debugging
+## 容器检查与调试
 
-### Viewing logs
+### 查看日志
 ```bash
 # Show logs
 docker logs container_name
@@ -82,7 +82,7 @@ docker logs --tail 100 container_name
 docker logs -t container_name
 ```
 
-### Executing commands
+### 执行命令
 ```bash
 # Execute command in running container
 docker exec container_name ls -la
@@ -97,7 +97,7 @@ docker exec -u root -it container_name bash
 docker exec -e VAR=value container_name env
 ```
 
-### Inspection
+### 容器检查
 ```bash
 # Inspect container details
 docker inspect container_name
@@ -115,9 +115,9 @@ docker stats container_name
 docker top container_name
 ```
 
-## Image Management
+## 镜像管理
 
-### Building images
+### 构建镜像
 ```bash
 # Build from Dockerfile
 docker build -t myapp:1.0 .
@@ -132,7 +132,7 @@ docker build --build-arg VERSION=1.0 -t myapp .
 docker build --no-cache -t myapp .
 ```
 
-### Managing images
+### 管理镜像
 ```bash
 # List images
 docker images
@@ -158,7 +158,7 @@ docker image prune -a
 
 ## Docker Compose
 
-### Basic operations
+### 基本操作
 ```bash
 # Start services
 docker-compose up
@@ -182,7 +182,7 @@ docker-compose logs -f web
 docker-compose up -d --scale web=3
 ```
 
-### Service management
+### 服务管理
 ```bash
 # List services
 docker-compose ps
@@ -200,8 +200,7 @@ docker-compose build web
 docker-compose up -d --build
 ```
 
-## Networking
-
+## 网络配置
 ```bash
 # List networks
 docker network ls
@@ -222,8 +221,7 @@ docker network inspect mynetwork
 docker network rm mynetwork
 ```
 
-## Volumes
-
+## 卷（Volume）管理
 ```bash
 # List volumes
 docker volume ls
@@ -244,8 +242,7 @@ docker volume prune
 docker run -v myvolume:/data -d app
 ```
 
-## System Management
-
+## 系统管理
 ```bash
 # View disk usage
 docker system df
@@ -266,9 +263,9 @@ docker info
 docker version
 ```
 
-## Common Workflows
+## 常见工作流程
 
-**Development container:**
+**开发容器：**
 ```bash
 docker run -it --rm \
   -v $(pwd):/app \
@@ -278,7 +275,7 @@ docker run -it --rm \
   npm run dev
 ```
 
-**Database container:**
+**数据库容器：**
 ```bash
 docker run -d \
   --name postgres \
@@ -289,7 +286,7 @@ docker run -d \
   postgres:15
 ```
 
-**Quick debugging:**
+**快速调试：**
 ```bash
 # Shell into running container
 docker exec -it container_name sh
@@ -301,7 +298,7 @@ docker cp container_name:/path/to/file ./local/path
 docker cp ./local/file container_name:/path/in/container
 ```
 
-**Multi-stage build:**
+**多阶段构建：**
 ```dockerfile
 # Dockerfile
 FROM node:18 AS builder
@@ -315,35 +312,35 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 ```
 
-## Useful Flags
+## 有用的标志（Flags）
 
-**`docker run` flags:**
-- `-d`: Detached mode (background)
-- `-it`: Interactive terminal
-- `-p`: Port mapping (host:container)
-- `-v`: Volume mount
-- `-e`: Environment variable
-- `--name`: Container name
-- `--rm`: Auto-remove on exit
-- `--network`: Connect to network
+**`docker run` 的标志：**
+- `-d`：分离模式（在后台运行）
+- `-it`：交互式终端
+- `-p`：端口映射（主机到容器）
+- `-v`：挂载卷
+- `-e`：环境变量
+- `--name`：容器名称
+- `--rm`：容器退出后自动删除
+- `--network`：连接到网络
 
-**`docker exec` flags:**
-- `-it`: Interactive terminal
-- `-u`: User
-- `-w`: Working directory
+**`docker exec` 的标志：**
+- `-it`：交互式终端
+- `-u`：指定用户
+- `-w`：工作目录
 
-## Tips
+## 提示：
 
-- Use `.dockerignore` to exclude files from build context
-- Combine `RUN` commands in Dockerfile to reduce layers
-- Use multi-stage builds to reduce image size
-- Always tag your images with versions
-- Use `--rm` for one-off containers
-- Use `docker-compose` for multi-container apps
-- Clean up regularly with `docker system prune`
+- 使用 `.dockerignore` 文件排除构建过程中的文件
+- 在 Dockerfile 中组合 `RUN` 命令以减少镜像层数
+- 使用多阶段构建来减小镜像大小
+- 为镜像添加版本标签
+- 对于一次性使用的容器，使用 `--rm` 命令
+- 使用 `docker-compose` 管理多容器应用
+- 定期使用 `docker system prune` 清理系统资源
 
-## Documentation
+## 文档参考
 
-Official docs: https://docs.docker.com/
-Dockerfile reference: https://docs.docker.com/engine/reference/builder/
-Compose file reference: https://docs.docker.com/compose/compose-file/
+官方文档：https://docs.docker.com/
+Dockerfile 参考：https://docs.docker.com/engine/reference/builder/
+Compose 文件参考：https://docs.docker.com/compose/compose-file/

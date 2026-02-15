@@ -1,27 +1,27 @@
 ---
 name: infra-as-code
-description: Define and manage cloud infrastructure with code. Use when writing Terraform, CloudFormation, or Pulumi configs, managing state, planning deployments, setting up networking/compute/storage resources, or debugging infrastructure drift.
+description: 使用代码来定义和管理云基础设施。这在编写 Terraform、CloudFormation 或 Pulumi 配置文件时非常有用，可以帮助你管理基础设施的状态、规划部署、配置网络/计算/存储资源，以及排查基础设施配置的差异（即基础设施与预期配置之间的不一致）。
 metadata: {"clawdbot":{"emoji":"🏗️","requires":{"anyBins":["terraform","aws","pulumi"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Infrastructure as Code
+# 基础设施即代码（Infrastructure as Code）
 
-Define, deploy, and manage cloud infrastructure using declarative configuration. Covers Terraform (multi-cloud), AWS CloudFormation, and Pulumi (code-first), with patterns for compute, networking, storage, databases, and state management.
+通过声明式配置来定义、部署和管理云基础设施。涵盖Terraform（支持多云平台）、AWS CloudFormation和Pulumi（以代码为中心的基础设施管理工具），并提供了针对计算、网络、存储、数据库和状态管理的最佳实践。
 
-## When to Use
+## 使用场景
 
-- Setting up cloud infrastructure (VPCs, EC2, Lambda, S3, RDS, etc.)
-- Writing or modifying Terraform configurations
-- Managing Terraform state (remote backends, workspaces, imports)
-- Creating CloudFormation templates
-- Using Pulumi for infrastructure in TypeScript/Python/Go
-- Planning and previewing infrastructure changes safely
-- Debugging drift between declared state and actual resources
-- Setting up multi-environment deployments (dev/staging/prod)
+- 设置云基础设施（VPC、EC2实例、Lambda函数、S3存储、RDS数据库等）
+- 编写或修改Terraform配置文件
+- 管理Terraform的状态数据（远程存储、工作区设置、配置导入等）
+- 创建CloudFormation模板
+- 使用Pulumi进行TypeScript/Python/Go语言的基础设施管理
+- 安全地规划和预览基础设施变更
+- 查找声明状态与实际资源之间的差异
+- 设置多环境部署（开发环境、测试环境、生产环境）
 
 ## Terraform
 
-### Quick Start
+### 快速入门
 
 ```bash
 # Install: https://developer.hashicorp.com/terraform/install
@@ -40,7 +40,7 @@ terraform fmt -recursive    # Auto-format all .tf files
 terraform validate          # Check syntax and config validity
 ```
 
-### Project Structure
+### 项目结构
 
 ```
 infra/
@@ -61,7 +61,7 @@ infra/
       outputs.tf
 ```
 
-### Provider Configuration
+### 提供者配置（Provider Configuration）
 
 ```hcl
 # providers.tf
@@ -88,7 +88,7 @@ provider "aws" {
 }
 ```
 
-### Variables and Outputs
+### 变量与输出（Variables and Outputs）
 
 ```hcl
 # variables.tf
@@ -129,7 +129,7 @@ output "api_endpoint" {
 }
 ```
 
-### VPC + Networking
+### VPC与网络配置（VPC + Networking）
 
 ```hcl
 # Networking module
@@ -210,7 +210,7 @@ data "aws_availability_zones" "available" {
 }
 ```
 
-### Compute (EC2)
+### 计算资源管理（Compute Resources: EC2）
 
 ```hcl
 resource "aws_instance" "app" {
@@ -242,7 +242,7 @@ data "aws_ami" "ubuntu" {
 }
 ```
 
-### S3 + Static Website
+### S3存储与静态网站（S3 Storage + Static Websites）
 
 ```hcl
 resource "aws_s3_bucket" "website" {
@@ -283,7 +283,7 @@ resource "aws_s3_bucket_policy" "website" {
 }
 ```
 
-### RDS Database
+### RDS数据库（RDS Databases）
 
 ```hcl
 resource "aws_db_subnet_group" "main" {
@@ -323,7 +323,7 @@ resource "aws_db_instance" "main" {
 }
 ```
 
-### Lambda Function
+### Lambda函数（Lambda Functions）
 
 ```hcl
 data "archive_file" "lambda_zip" {
@@ -369,7 +369,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 }
 ```
 
-### State Management
+### 状态管理（State Management）
 
 ```hcl
 # backend.tf - Remote state in S3
@@ -384,25 +384,7 @@ terraform {
 }
 ```
 
-```bash
-# State operations
-terraform state list                    # List all resources in state
-terraform state show aws_instance.app   # Show resource details
-terraform state mv aws_instance.app aws_instance.web  # Rename resource
-terraform state rm aws_instance.old     # Remove from state (doesn't destroy)
-
-# Import existing resource into Terraform
-terraform import aws_instance.app i-1234567890abcdef0
-
-# Workspaces (multiple environments, same config)
-terraform workspace new dev
-terraform workspace new staging
-terraform workspace new prod
-terraform workspace select dev
-terraform workspace list
-```
-
-### Multi-Environment Pattern
+### 多环境部署模式（Multi-Environment Deployment Patterns）
 
 ```hcl
 # Use workspaces + tfvars files
@@ -424,7 +406,7 @@ terraform apply -var-file="env/$ENV.tfvars"
 
 ## AWS CloudFormation
 
-### Template Structure
+### 模板结构（Template Structure）
 
 ```yaml
 # cloudformation.yaml
@@ -491,7 +473,7 @@ Outputs:
     Value: !GetAtt AppInstance.PublicIp
 ```
 
-### CloudFormation CLI
+### CloudFormation命令行工具（CloudFormation CLI）
 
 ```bash
 # Validate template
@@ -530,9 +512,9 @@ aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMP
 aws cloudformation describe-stack-events --stack-name myapp-dev | head -50
 ```
 
-## Pulumi (Code-First IaC)
+## Pulumi（基于代码的基础设施管理）
 
-### Quick Start (TypeScript)
+### TypeScript语言快速入门（Pulumi with TypeScript）
 
 ```bash
 # Install: https://www.pulumi.com/docs/install/
@@ -545,7 +527,7 @@ pulumi destroy    # Tear down
 pulumi stack ls   # List stacks
 ```
 
-### TypeScript Example
+### TypeScript示例（TypeScript Example）
 
 ```typescript
 // index.ts
@@ -608,7 +590,7 @@ export const bucketName = bucket.id;
 export const lambdaArn = lambdaFunc.arn;
 ```
 
-### Python Example
+### Python示例（Python Example）
 
 ```python
 # __main__.py
@@ -632,7 +614,7 @@ pulumi.export("vpc_id", vpc.id)
 pulumi.export("bucket_name", bucket.id)
 ```
 
-### Pulumi State and Stacks
+### Pulumi的状态管理与资源堆栈（Pulumi State and Resource Stacks）
 
 ```bash
 # Create per-environment stacks
@@ -654,9 +636,9 @@ const infra = new pulumi.StackReference("org/infra/prod");
 const vpcId = infra.getOutput("vpcId");
 ```
 
-## Debugging Infrastructure
+## 基础设施调试（Infrastructure Debugging）
 
-### Terraform plan issues
+### Terraform计划执行问题（Terraform Plan Execution Issues）
 
 ```bash
 # Detailed plan output
@@ -674,7 +656,7 @@ terraform plan -refresh-only
 terraform apply -refresh-only
 ```
 
-### Common issues
+### 常见问题与解决方法（Common Issues and Solutions）
 
 ```bash
 # Resource stuck in "tainted" state
@@ -692,7 +674,7 @@ terraform init -upgrade     # Upgrade providers
 # Fix: use depends_on explicitly, or break the cycle with data sources
 ```
 
-### Cost estimation
+### 成本估算（Cost Estimation）
 
 ```bash
 # Infracost (estimates monthly cost from Terraform plans)
@@ -701,14 +683,14 @@ infracost breakdown --path .
 infracost diff --path . --compare-to infracost-base.json
 ```
 
-## Tips
+## 使用技巧
 
-- Always run `terraform plan` before `apply`. Read the plan output carefully — especially lines showing `destroy` or `replace`.
-- Use remote state from day one. Local state files get lost, can't be shared, and have no locking.
-- Tag everything. At minimum: Project, Environment, ManagedBy. Tags make cost tracking and cleanup possible.
-- Never store secrets in `.tf` files or `terraform.tfvars`. Use environment variables (`TF_VAR_name`), secrets managers, or Vault.
-- Use `prevent_destroy` lifecycle rules on stateful resources (databases, S3 buckets with data) to prevent accidental deletion.
-- Pin provider versions (`~> 5.0` not `>= 5.0`) to avoid surprise breaking changes.
-- For multi-environment setups, prefer workspaces + var files over duplicated configurations.
-- CloudFormation change sets are the equivalent of `terraform plan` — always create one before updating a stack.
-- Pulumi's advantage is using real programming languages (loops, conditionals, type checking). Use it when Terraform's HCL feels limiting.
+- 在执行`terraform apply`之前，务必先运行`terraform plan`命令。仔细阅读计划输出结果，尤其是包含`destroy`或`replace`操作的行。
+- 从项目开始就使用远程状态存储机制（remote state）。本地状态文件容易丢失、无法共享，且不具备锁定机制。
+- 为所有资源添加标签（至少包括“项目”、“环境”和“管理者”等信息）。标签有助于成本追踪和资源清理。
+- 绝不要将敏感信息存储在`.tf`文件或`terraform.tfvars`中，应使用环境变量（如`TF_VAR_NAME`）或专门的密钥管理工具（如Vault）。
+- 为具有状态的数据资源（如数据库、包含数据的S3桶）设置`prevent_destroy`生命周期规则，以防意外删除。
+- 固定提供者版本（使用`~> 5.0`而非`>= 5.0`），以避免版本升级带来的意外问题。
+- 在多环境部署中，建议使用工作区（workspaces）和变量文件（var files）而非重复配置。
+- CloudFormation的“变更集”（change sets）相当于Terraform的`terraform plan`功能——在更新资源堆栈前务必先创建变更集。
+- 如果Terraform的HCL语法限制了你的开发需求，可以选择使用Pulumi（它支持循环、条件语句和类型检查等功能）。

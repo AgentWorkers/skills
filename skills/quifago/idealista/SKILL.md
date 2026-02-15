@@ -1,6 +1,6 @@
 ---
 name: idealista
-description: Query Idealista API via idealista-cli (OAuth2 client credentials).
+description: 通过 `idealista-cli`（OAuth2 客户端凭据）查询 Idealista API。
 license: MIT
 homepage: https://github.com/quifago/idealista-cli
 metadata: {"clawdbot": {"emoji": "🏠", "requires": {"bins": ["python3"], "env": ["IDEALISTA_API_KEY", "IDEALISTA_API_SECRET"], "primaryEnv": "IDEALISTA_API_KEY"}, "install": [{"id": "git", "kind": "git", "label": "Install idealista-cli (git clone)", "url": "https://github.com/quifago/idealista-cli", "bins": ["python3"]}]}}
@@ -8,29 +8,29 @@ metadata: {"clawdbot": {"emoji": "🏠", "requires": {"bins": ["python3"], "env"
 
 # idealista
 
-This skill documents how to query the Idealista API using the local `idealista-cli`.
+本文档介绍了如何使用本地的 `idealista-cli` 工具来查询 Idealista 的 API。
 
-## Local project location
+## 本地项目位置
 
-- CLI source (example): `~/idealista-cli`
+- `idealista-cli` 的源代码位于：`~/idealista-cli`
 
-## Credentials (client_id / client_secret)
+## 凭据（client_id / client_secret）
 
-Idealista uses OAuth2 **Client Credentials**.
+Idealista 使用 OAuth2 客户端凭证进行身份验证。
 
-Use environment variables (recommended):
+建议使用环境变量来存储这些凭证：
 
 - `IDEALISTA_API_KEY` = `client_id`
 - `IDEALISTA_API_SECRET` = `client_secret`
 
-Example:
+示例：
 
 ```bash
 export IDEALISTA_API_KEY="<CLIENT_ID>"
 export IDEALISTA_API_SECRET="<CLIENT_SECRET>"
 ```
 
-Or persist them via the CLI:
+或者通过 `idealista-cli` 自动设置这些凭证：
 
 ```bash
 python3 -m idealista_cli config set \
@@ -38,24 +38,22 @@ python3 -m idealista_cli config set \
   --api-secret "<CLIENT_SECRET>"
 ```
 
-Config file path:
+配置文件路径：
 - `~/.config/idealista-cli/config.json`
 
-Token cache:
+令牌缓存路径：
 - `~/.cache/idealista-cli/token.json`
 
-## Common commands
+## 常用命令
 
-Get a token:
-
-```bash
+- 获取令牌：
+  ```bash
 python3 -m idealista_cli token
 python3 -m idealista_cli token --refresh
 ```
 
-Search listings:
-
-```bash
+- 搜索房源：
+  ```bash
 python3 -m idealista_cli search \
   --center "39.594,-0.458" \
   --distance 5000 \
@@ -65,9 +63,8 @@ python3 -m idealista_cli search \
   --format summary
 ```
 
-Compute stats:
-
-```bash
+- 计算房源统计数据：
+  ```bash
 python3 -m idealista_cli avg \
   --center "39.594,-0.458" \
   --distance 5000 \
@@ -76,10 +73,10 @@ python3 -m idealista_cli avg \
   --group-by propertyType
 ```
 
-## Example queries (natural language)
+## 示例查询（自然语言）
 
-Use these as “prompt” examples for an agent that calls the CLI:
+以下是一些可以作为调用 `idealista-cli` 的代理程序的查询示例：
 
-- "Find a flat in A Coruña under 200.000€"
-- "Tell me the average price of a house around here: 39°34'33.5\"N 0°30'10.0\"W"
-- "Búscame un apartamento de 3 habs en Tapia de Casariego para comprar"
+- “在拉科鲁尼亚（A Coruña）寻找价格低于 20 万欧元的公寓”
+- “告诉我位于北纬 39°34'33.5”，西经 0°30'10.0”附近的房屋的平均价格”
+- “帮我找一套位于塔皮亚-德卡萨里埃戈（Tapia de Casariego）的三居室公寓以便购买”

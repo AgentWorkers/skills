@@ -1,32 +1,28 @@
-# Job Search MCP Skill
+# MCP求职技能
 
-This skill enables AI agents to search for job listings across multiple job boards
-using the JobSpy MCP server.
+该技能使AI代理能够使用JobSpy MCP服务器在多个招聘平台上搜索职位信息。
 
-JobSpy aggregates listings from sources such as LinkedIn, Indeed, Glassdoor,
-ZipRecruiter, Google Jobs, and more into a unified interface.
+JobSpy将来自LinkedIn、Indeed、Glassdoor、ZipRecruiter、Google Jobs等来源的职位信息汇总到一个统一的界面中。
 
+## 何时使用此技能
 
-## When to Use This Skill
+当您需要执行以下操作时，请使用此技能：
+- 根据特定条件（职位类型、地点、公司）查找职位信息
+- 搜索远程或现场工作的职位
+- 在多个招聘平台之间比较职位信息
+- 获取可用的薪资信息
+- 查找最近发布的职位
+- 筛选“易于申请”的职位
 
-Use this skill when you want to:
-- Find job listings matching specific criteria (role, location, company)
-- Search for remote or on-site positions
-- Compare opportunities across job boards
-- Retrieve salary information when available
-- Find recently posted jobs
-- Filter for “Easy Apply” roles
+## 先决条件
+- Python 3.10及以上版本
+- 已安装并配置了JobSpy MCP服务器
 
-## Prerequisites
-- Python 3.10+
-- JobSpy MCP server installed and configured
+## 安装与设置
 
-## Installation & Setup
+### macOS环境下的设置（使用Homebrew安装Python）
 
-### macOS Setup (Homebrew Python)
-
-Homebrew-managed Python is externally managed (PEP 668).
-Create and activate a virtual environment before installing dependencies:
+Homebrew管理的Python版本遵循PEP 668规范。在安装依赖项之前，请先创建并激活一个虚拟环境：
 
 ```bash
 python3 -m venv .venv
@@ -34,9 +30,3 @@ source .venv/bin/activate
 pip install mcp python-jobspy pandas pydantic
 
 ```
-
-
-
-
-
-

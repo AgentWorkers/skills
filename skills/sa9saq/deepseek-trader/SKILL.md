@@ -1,12 +1,12 @@
 ---
-description: Hybrid crypto analysis combining technical indicators with DeepSeek AI reasoning.
+description: 混合式加密分析方法：将技术指标与 DeepSeek AI 的推理能力相结合。
 ---
 
 # DeepSeek Trader
 
-Cryptocurrency analysis combining technical indicators (RSI, MACD, SMA, Bollinger Bands) with DeepSeek AI interpretation for buy/sell/hold signals.
+这是一个结合了多种技术指标（RSI、MACD、SMA、Bollinger Bands）与DeepSeek AI技术的加密货币分析工具，用于生成买入/卖出/持有信号。
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd {skill_dir}
@@ -25,7 +25,7 @@ node dist/cli.js analyze --coins bitcoin,ethereum,solana
 node dist/cli.js signals --coin bitcoin
 ```
 
-## Output Format
+## 输出格式
 
 ```
 🔍 BTC Analysis — ¥15,234,567
@@ -43,37 +43,37 @@ Risk: Medium
 Action: Wait for RSI < 35 for entry
 ```
 
-## Architecture
+## 架构
 
 ```
 CoinGecko → Price Data → Technical Indicators → DeepSeek API → Signal
 ```
 
-## Security
+## 安全性
 
-- **Never pass API keys on command line** — use `export` or `.env` file
-- Add `.env` to `.gitignore`
-- API key is sent only to DeepSeek API endpoint
+- **切勿在命令行中传递API密钥**——请使用`export`命令或`.env`文件来存储密钥；
+- 将`.env`文件添加到`.gitignore`列表中；
+- API密钥仅会被发送到DeepSeek的API端点。
 
-## Edge Cases
+## 特殊情况处理
 
-- **DeepSeek API down**: Fall back to technical-only analysis without AI interpretation
-- **CoinGecko rate limit**: Cached data used if available; warn user
-- **Conflicting signals**: AI weighs indicators and provides reasoning for its decision
+- **DeepSeek API不可用**：此时将切换为仅使用技术指标进行分析，不依赖AI结果；
+- **CoinGecko的请求限制**：如果可用，将使用缓存的数据；同时会向用户发出警告；
+- **指标信号冲突**：AI会综合多个指标的信号，并提供决策依据。
 
-## ⚠️ Disclaimer
+## ⚠️ 免责声明
 
-**For informational/educational purposes only.** Not financial advice. Always DYOR.
+本工具仅供信息参考或学习用途，不构成任何财务建议。请自行进行充分研究后再做出投资决策（DYOR：Do Your Own Research）。
 
-## Configuration
+## 配置参数
 
-| Variable | Required | Description |
+| 参数名 | 是否必填 | 说明 |
 |----------|----------|-------------|
-| `DEEPSEEK_API_KEY` | Yes | DeepSeek API key |
-| `COINGECKO_API` | No | CoinGecko base URL (default: free tier) |
+| `DEEPSEEK_API_KEY` | 是 | DeepSeek API密钥 |
+| `COINGECKO_API` | 否 | CoinGecko的API基础URL（默认为免费层级） |
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- DeepSeek API key
-- Internet connection
+- Node.js 18及以上版本；
+- 拥有DeepSeek API密钥；
+- 必须能够访问互联网。

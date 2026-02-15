@@ -1,32 +1,31 @@
 ---
 name: auth-patterns
 model: standard
-description: Authentication and authorization patterns — JWT, OAuth 2.0, sessions, RBAC/ABAC, password security, MFA, and vulnerability prevention. Use when implementing login flows, protecting routes, managing tokens, or auditing auth security.
+description: 身份验证和授权模式：JWT（JSON Web Tokens）、OAuth 2.0、会话（sessions）、RBAC（Role-Based Access Control）/ABAC（Attribute-Based Access Control）、密码安全（password security）、多因素认证（MFA）以及漏洞预防（vulnerability prevention）。这些模式适用于实现登录流程（login flows）、保护路由（protecting routes）、管理令牌（managing tokens）或审计身份验证安全性（auditing auth security）。
 ---
 
-# Auth Patterns — Authentication & Authorization
+# 认证与授权模式（Authentication & Authorization Patterns）
 
-> **SECURITY-CRITICAL SKILL** — Auth is the front door. Get it wrong and nothing else matters.
+> **关键安全技能** — 认证（Authentication）是整个系统的“入口”。如果这个环节出问题，其他所有环节都将变得毫无意义。
 
-## Authentication Methods
+## 认证方法（Authentication Methods）
 
-| Method | How It Works | Best For |
+| 方法 | 工作原理 | 适用场景 |
 |--------|-------------|----------|
-| **JWT** | Signed token sent with each request | SPAs, microservices, mobile APIs |
-| **Session-based** | Server stores session, client holds cookie | Traditional web apps, SSR |
-| **OAuth 2.0** | Delegated auth via authorization server | "Login with Google/GitHub", API access |
-| **API Keys** | Static key sent in header | Internal services, public APIs |
-| **Magic Links** | One-time login link via email | Low-friction onboarding, B2C |
-| **Passkeys/WebAuthn** | Hardware/biometric challenge-response | High-security apps, passwordless |
+| **JWT** | 每个请求都会附带一个签名过的令牌 | 单页应用程序（SPA）、微服务、移动应用程序 API |
+| **基于会话的认证（Session-based）** | 服务器存储会话信息，客户端保存会话cookie | 传统Web应用程序、服务器端渲染（SSR） |
+| **OAuth 2.0** | 通过授权服务器进行代理认证 | “使用Google/GitHub登录”、API访问 |
+| **API密钥（API Keys）** | 在请求头中发送静态密钥 | 内部服务、公共API |
+| **一次性登录链接（Magic Links）** | 通过电子邮件发送的一次性登录链接 | 低摩擦度的用户注册流程、B2C场景 |
+| **Passkeys/WebAuthn** | 基于硬件/生物特征的认证方式 | 高安全性的应用程序、无密码登录 |
 
 ---
 
-## JWT Patterns
+## JWT模式（JWT Patterns）
 
-### Dual-Token Strategy
+### 双令牌策略（Dual-Token Strategy）
 
-Short-lived access token + long-lived refresh token:
-
+- 短期访问令牌 + 长期刷新令牌：
 ```
 Client → POST /auth/login → Server
 Client ← { access_token, refresh_token }
@@ -38,8 +37,7 @@ Client → POST /auth/refresh { refresh_token } → Server
 Client ← { new_access_token, rotated_refresh_token }
 ```
 
-### Token Structure
-
+### 令牌结构（Token Structure）
 ```json
 {
   "header": { "alg": "RS256", "typ": "JWT", "kid": "key-2024-01" },
@@ -56,51 +54,50 @@ Client ← { new_access_token, rotated_refresh_token }
 }
 ```
 
-### Signing Algorithms
+### 签名算法（Signing Algorithms）
 
-| Algorithm | Type | When to Use |
+| 算法 | 类型 | 适用场景 |
 |-----------|------|-------------|
-| **RS256** | Asymmetric (RSA) | Microservices — only auth server holds private key |
-| **ES256** | Asymmetric (ECDSA) | Same as RS256, smaller keys and signatures |
-| **HS256** | Symmetric | Single-server apps — all verifiers share secret |
+| **RS256** | 非对称加密（RSA） | 适用于微服务——仅认证服务器持有私钥 |
+| **ES256** | 非对称加密（ECDSA） | 与RS256类似，但密钥和签名更小 |
+| **HS256** | 对称加密 | 单服务器应用程序——所有验证方共享密钥 |
 
-Prefer RS256/ES256 in distributed systems.
+在分布式系统中，建议使用RS256/ES256算法。
 
-### Token Storage
+### 令牌存储（Token Storage）
 
-| Storage | XSS Safe | CSRF Safe | Recommendation |
+| 存储方式 | 是否安全 | 是否能防止CSRF攻击 | 推荐使用 |
 |---------|----------|-----------|----------------|
-| **httpOnly cookie** | Yes | No (add CSRF token) | **Best for web apps** |
-| **localStorage** | No | Yes | Avoid — XSS exposes tokens |
-| **In-memory** | Yes | Yes | Good for SPAs, lost on refresh |
+| **httpOnly cookie** | 是 | 否（需要添加CSRF令牌） | **最适合Web应用程序** |
+| **localStorage** | 否 | 是 | 避免使用——XSS攻击可能导致令牌泄露 |
+| **内存中的存储（In-memory）** | 是 | 是 | 适用于单页应用程序，但刷新会丢失令牌 |
 
 ```
 Set-Cookie: access_token=eyJ...; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=900
 ```
 
-### Expiration Strategy
+### 令牌过期策略（Token Expiration Strategy）
 
-| Token | Lifetime | Rotation |
+| 令牌类型 | 寿命 | 令牌更新频率 |
 |-------|----------|----------|
-| **Access token** | 5–15 minutes | Issued on refresh |
-| **Refresh token** | 7–30 days | Rotate on every use |
-| **ID token** | Match access token | Not refreshed |
+| **访问令牌（Access Token）** | 5–15分钟 | 每次请求时更新 |
+| **刷新令牌（Refresh Token）** | 7–30天 | 每次使用后更新 |
+| **ID令牌（ID Token）** | 与访问令牌相同 | 不需要更新 |
 
 ---
 
-## OAuth 2.0 Flows
+## OAuth 2.0流程（OAuth 2.0 Flows）
 
-| Flow | Client Type | When to Use |
+| 流程 | 客户端类型 | 适用场景 |
 |------|-------------|-------------|
-| **Authorization Code + PKCE** | Public (SPA, mobile) | **Default for all public clients** |
-| **Authorization Code** | Confidential (server) | Server-rendered web apps with backend |
-| **Client Credentials** | Machine-to-machine | Service-to-service, cron jobs |
-| **Device Code** | Input-constrained | Smart TVs, IoT, CLI on headless servers |
+| **授权码+PKCE（Authorization Code + PKCE）** | 公开客户端（如单页应用程序、移动设备） | **所有公开客户端的默认方式** |
+| **授权码（Authorization Code）** | 服务器端处理的客户端 | 需要后端支持的Web应用程序 |
+| **客户端凭证（Client Credentials）** | 机器对机器的通信 | 服务之间的通信、定时任务 |
+| **设备代码（Device Code）** | 对输入有要求的场景 | 智能电视、物联网设备、无头服务器上的命令行接口 |
 
-> **Implicit flow is deprecated.** Always use Authorization Code + PKCE for public clients.
+> **隐式授权流程（Implicit Flow）已被弃用。** 对于公开客户端，始终使用“授权码+PKCE”流程。
 
-### PKCE Flow
-
+### PKCE流程（PKCE Flow）
 ```
 1. Client generates code_verifier (random 43-128 chars)
 2. Client computes code_challenge = BASE64URL(SHA256(code_verifier))
@@ -112,45 +109,44 @@ Set-Cookie: access_token=eyJ...; HttpOnly; Secure; SameSite=Strict; Path=/; Max-
 
 ---
 
-## Session Management
+## 会话管理（Session Management）
 
-### Server-Side Sessions
+### 服务器端会话管理（Server-Side Sessions）
 
 ```
 Client Cookie:  session_id=a1b2c3d4 (opaque, random, no user data)
 Server Store:   { "a1b2c3d4": { userId: 123, roles: ["admin"], expiresAt: ... } }
 ```
 
-| Store | Speed | When to Use |
+| 存储方式 | 存储速度 | 适用场景 |
 |-------|-------|-------------|
-| **Redis** | Fast | Production default — TTL support, horizontal scaling |
-| **PostgreSQL** | Moderate | When Redis is overkill, need audit trail |
-| **In-memory** | Fastest | Development only |
+| **Redis** | 存储速度快 | 生产环境的首选方案——支持过期时间设置、支持水平扩展 |
+| **PostgreSQL** | 存储速度中等 | 当Redis不适用时使用，需要审计记录 |
+| **内存中的存储（In-memory）** | 存储速度最快 | 仅适用于开发环境 |
 
-### Session Security
+### 会话安全（Session Security）
 
-| Threat | Prevention |
+| 威胁 | 防范措施 |
 |--------|------------|
-| Session fixation | Regenerate session ID after login |
-| Session hijacking | httpOnly + Secure cookies, bind to IP/user-agent |
-| CSRF | SameSite cookies + CSRF tokens |
-| Idle timeout | Expire after 15–30 min inactivity |
-| Absolute timeout | Force re-auth after 8–24 hours |
+| 会话固定（Session Fixation） | 登录后重新生成会话ID |
+| 会话劫持（Session Hijacking） | 使用`httpOnly`cookie并设置安全策略，将cookie与IP地址/用户代理绑定 |
+| CSRF攻击（CSRF） | 使用`SameSite`cookie和CSRF令牌 |
+| 会话闲置超时（Idle Session Timeout） | 15–30分钟无活动后令牌失效 |
+| 绝对超时（Absolute Timeout） | 8–24小时后强制重新认证 |
 
 ---
 
-## Authorization Patterns
+## 授权模式（Authorization Patterns）
 
-| Pattern | Granularity | When to Use |
+| 授权模式 | 权限粒度 | 适用场景 |
 |---------|-------------|-------------|
-| **RBAC** | Coarse (admin, editor, viewer) | Most apps — simple role hierarchy |
-| **ABAC** | Fine (attributes: dept, time, location) | Enterprise — context-dependent access |
-| **Permission-based** | Medium (post:create, user:delete) | APIs — decouple permissions from roles |
-| **Policy-based (OPA/Cedar)** | Fine | Microservices — externalized, auditable rules |
-| **ReBAC** | Fine (owner, member, shared-with) | Social apps, Google Drive-style sharing |
+| **RBAC（Role-Based Access Control）** | 权限粒度较粗（管理员、编辑者、查看者） | 大多数应用程序——简单的角色层级结构 |
+| **ABAC（Attribute-Based Access Control）** | 权限粒度更细（如部门、时间、位置） | 企业级应用——基于上下文的访问控制 |
+| **基于权限的授权（Permission-Based）** | 权限控制较为精细 | API——将权限与角色分离 |
+| **基于策略的授权（Policy-Based）** | 权限控制灵活 | 微服务——规则可外部化、可审计 |
+| **ReBAC（Reversible Role-Based Access Control）** | 权限控制灵活 | 社交应用程序、Google Drive式的共享功能 |
 
-### RBAC Implementation
-
+### RBAC实现（RBAC Implementation）
 ```typescript
 const ROLE_PERMISSIONS: Record<string, string[]> = {
   admin:  ["user:read", "user:write", "user:delete", "post:read", "post:write", "post:delete"],
@@ -173,76 +169,76 @@ app.delete("/api/users/:id", requirePermission("user:delete"), deleteUser);
 
 ---
 
-## Password Security
+## 密码安全（Password Security）
 
-| Algorithm | Recommended | Memory-Hard | Notes |
+| 算法 | 推荐使用 | 不推荐使用 | 备注 |
 |-----------|------------|-------------|-------|
-| **Argon2id** | **First choice** | Yes | Resists GPU/ASIC attacks |
-| **bcrypt** | Yes | No | Battle-tested, 72-byte limit |
-| **scrypt** | Yes | Yes | Good alternative |
-| **PBKDF2** | Acceptable | No | NIST approved, weaker vs GPU |
-| **SHA-256/MD5** | **Never** | No | Not password hashing |
+| **Argon2id** | **首选算法** | 支持GPU/ASIC攻击防御 |
+| **bcrypt** | 可以使用 | 不推荐——已被证明安全性较低 |
+| **scrypt** | 可以使用 | 可以使用 | 是一个不错的替代方案 |
+| **PBKDF2** | 可以使用 | 不推荐——NIST标准中推荐，但安全性较弱 |
+| **SHA-256/MD5** | **绝对不推荐** | 不适合用于密码哈希 |
 
-**NIST 800-63B:** Favor length (12+ chars) over complexity rules. Check against breached password lists. Don't force periodic rotation unless breach suspected.
+**NIST 800-63B建议：** 更倾向于使用较长的密码长度（12个字符以上），而非依赖复杂的加密算法。定期检查密码是否存在于已知泄露列表中。除非怀疑发生密码泄露，否则无需强制定期更换密码。
 
 ---
 
-## Multi-Factor Authentication
+## 多因素认证（Multi-Factor Authentication）
 
-| Factor | Security | Notes |
+| 认证因素 | 安全性 | 备注 |
 |--------|----------|-------|
-| **TOTP (Authenticator app)** | High | Offline-capable, Google Authenticator / Authy |
-| **WebAuthn/Passkeys** | Highest | Phishing-resistant, hardware-backed |
-| **SMS OTP** | Medium | Vulnerable to SIM swap — avoid for high-security |
-| **Hardware keys (FIDO2)** | Highest | YubiKey — best for admin accounts |
-| **Backup codes** | Low (fallback) | One-time use, generate 10, store hashed |
+| **TOTP（时间基于令牌的认证）** | 高安全性 | 支持离线认证，例如Google Authenticator/Authy |
+| **WebAuthn/Passkeys** | 最高安全性 | 防止钓鱼攻击，依赖硬件设备 |
+| **短信验证码（SMS OTP）** | 中等安全性 | 易受SIM卡更换攻击——不适合高安全要求的应用 |
+| **硬件密钥（FIDO2）** | 最高安全性 | YubiKey适用于管理员账户 |
+| **备用验证码** | 较低安全性 | 仅用于备用，一次性使用，生成后应立即销毁 |
 
 ---
 
-## Security Headers
+## 安全头信息（Security Headers）
 
-| Header | Value |
-|--------|-------|
-| **Strict-Transport-Security** | `max-age=63072000; includeSubDomains; preload` |
-| **Content-Security-Policy** | Restrict script sources, no inline scripts |
-| **X-Content-Type-Options** | `nosniff` |
-| **X-Frame-Options** | `DENY` |
-| **Referrer-Policy** | `strict-origin-when-cross-origin` |
-| **CORS** | Whitelist specific origins, never `*` with credentials |
+| 头信息 | 值 | 说明 |
+|--------|-------|-------|
+| **Strict-Transport-Security** | `max-age=63072000; includeSubDomains; preload` | 限制传输过程中的安全设置 |
+| **Content-Security-Policy** | 限制脚本来源，禁止内联脚本 |
+| **X-Content-Type-Options** | `nosniff` | 防止脚本注入 |
+| **X-Frame-Options** | `DENY` | 防止跨域脚本执行 |
+| **Referrer-Policy** | `strict-origin-when-cross-origin` | 控制跨域请求的来源 |
+| **CORS** | 允许特定的跨域请求来源，禁止使用通配符 |
 
----
+## 常见安全漏洞（Common Vulnerabilities）
 
-## Common Vulnerabilities
-
-| # | Vulnerability | Prevention |
+| 编号 | 漏洞类型 | 防范措施 |
 |---|--------------|------------|
-| 1 | Broken authentication | MFA, strong password policy, breach detection |
-| 2 | Session fixation | Regenerate session ID on login |
-| 3 | JWT `alg:none` attack | Reject `none`, validate `alg` against allowlist |
-| 4 | JWT secret brute force | Use RS256/ES256, strong secrets (256+ bits) |
-| 5 | CSRF | SameSite cookies, CSRF tokens |
-| 6 | Credential stuffing | Rate limiting, breached password check, MFA |
-| 7 | Insecure password storage | Argon2id/bcrypt, never encrypt (hash instead) |
-| 8 | Insecure password reset | Signed time-limited tokens, invalidate after use |
-| 9 | Open redirect | Validate redirect URIs against allowlist |
-| 10 | Token leakage in URL | Send tokens in headers or httpOnly cookies only |
-| 11 | Privilege escalation | Server-side role checks on every request |
-| 12 | OAuth redirect_uri mismatch | Exact match redirect URI validation, no wildcards |
-| 13 | Timing attacks | Constant-time comparison for secrets |
+| 1 | 认证机制缺陷 | 使用多因素认证（MFA）、设置强密码策略、定期检查密码泄露情况 |
+| 2 | 会话固定漏洞 | 登录后重新生成会话ID |
+| 3 | JWT中的`alg:none`设置 | 拒绝使用`alg:none`，确保使用有效的签名算法 |
+| 4 | JWT密钥被暴力破解 | 使用RS256/ES256算法，设置足够长的密钥长度（至少256位） |
+| 5 | CSRF攻击 | 使用`SameSite`cookie和CSRF令牌 |
+| 6 | 凭据填充攻击（Credential Stuffing） | 实施速率限制、定期检查密码是否泄露、使用多因素认证 |
+| 7 | 密码存储不安全 | 使用Argon2id/bcrypt进行哈希处理 |
+| 8 | 密码重置机制不安全 | 生成带时间限制的令牌，使用后及时失效 |
+| 9 | 不安全的重定向机制 | 验证重定向URL是否在允许的范围内 |
+| 10 | 令牌在URL中泄露 | 仅通过HTTP头或`httpOnly`cookie传输令牌 |
+| 11 | 权限提升漏洞 | 在每次请求时进行服务器端角色验证 |
+| 12 | OAuth重定向URL不匹配 | 确保重定向URL正确匹配，避免使用通配符 |
+| 13 | 时间攻击（Timing Attacks） | 对密码进行恒定时间的比较处理 |
+
+## 绝对禁止的行为（Never Do）
+
+| 编号 | 禁止的行为 | 原因 |
+|---|------|-----|
+| 1 | **绝不要以明文或可逆加密方式存储密码** | 一旦密码泄露，所有用户都会受到威胁 |
+| 2 | **绝不要将令牌放在URL或查询参数中** | 服务器、代理服务器、引用头都会记录这些信息 |
+| 3 | **绝不要在JWT中使用`alg: none`或允许切换签名算法** | 防止攻击者伪造令牌 |
+| 4 | **绝不要信任客户端的角色/权限声明** | 客户端可以修改这些信息 |
+| 5 | **绝不要使用MD5、SHA-1或简单的SHA-256进行密码哈希** | 这些算法安全性较低 |
+| 6 | **绝不要在生产环境中省略HTTPS** | 令牌和密码必须通过HTTPS传输 |
+| 7 | **绝不要记录令牌、密码或敏感信息** | 日志可能被广泛访问和保存 |
+| 8 | **绝不要使用长期有效的令牌** | 单次泄露可能导致永久性访问权限 |
+| 9 | **绝不要自行实现加密算法** | 使用成熟的加密库（如jose、bcrypt、passport） |
+| 10 | **绝不要对“用户未找到”和“密码错误”返回不同的错误信息** | 这可能导致用户信息被泄露 |
 
 ---
 
-## NEVER Do
-
-| # | Rule | Why |
-|---|------|-----|
-| 1 | **NEVER store passwords in plaintext or reversible encryption** | One breach exposes every user |
-| 2 | **NEVER put tokens in URLs or query parameters** | Logged by servers, proxies, referrer headers |
-| 3 | **NEVER use `alg: none` or allow algorithm switching in JWTs** | Attacker forges tokens |
-| 4 | **NEVER trust client-side role/permission claims** | Users can modify any client-side value |
-| 5 | **NEVER use MD5, SHA-1, or plain SHA-256 for password hashing** | No salt, no work factor — cracked in seconds |
-| 6 | **NEVER skip HTTPS in production** | Tokens and credentials sent in cleartext |
-| 7 | **NEVER log tokens, passwords, or secrets** | Logs are broadly accessible and retained |
-| 8 | **NEVER use long-lived tokens without rotation** | A single leak grants indefinite access |
-| 9 | **NEVER implement your own crypto** | Use established libraries — jose, bcrypt, passport |
-| 10 | **NEVER return different errors for "user not found" vs "wrong password"** | Enables user enumeration |
+这些内容涵盖了认证与授权相关的关键技术和最佳实践，对于确保应用程序的安全性至关重要。

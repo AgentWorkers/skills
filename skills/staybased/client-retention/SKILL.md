@@ -1,69 +1,74 @@
-# Client Retention — Keep Clients Paying Monthly
+# 客户留存——让客户持续付费
 
-Turn one-time projects into recurring revenue and reduce churn. The cheapest client to acquire is the one you already have.
-Sources: SerpSculpt (B2B retention stats 2025), Breakthrough3x (recurring revenue models), Recurly (churn data), Outreach.io, AvidTrak.
-All outputs go to `workspace/artifacts/`.
+将一次性项目转化为持续的收入来源，降低客户流失率。最容易获取的客户其实就是你已有的那些客户。
 
-## Use when
-- Designing a recurring revenue model (retainers, subscriptions, managed services)
-- A client's renewal is coming up and you want to ensure they stay
-- Building onboarding flows for new clients (first 30 days = highest churn risk)
-- Analyzing why clients leave and building prevention systems
-- Planning upsells or expansion revenue from existing clients
-- Structuring service tiers to maximize lifetime value
+数据来源：SerpSculpt（2025年B2B客户留存统计数据）、Breakthrough3x（持续收入模式研究）、Recurly（客户流失数据分析工具）、Outreach.io、AvidTrak。
 
-## Don't use when
-- Acquiring new clients (use cold-outreach, lead-magnets, client-discovery)
-- Client has already churned and you're trying to win them back (different playbook — winback campaigns)
-- One-time product sales with no recurring component
-- The client is genuinely a bad fit (let them go gracefully)
+所有相关资料均保存在 `workspace/artifacts/` 目录下。
 
-## Negative examples
-- "Help me find new clients" → No. This is about keeping existing ones.
-- "Write a cold email" → No. Use cold-outreach skill.
-- "A client is angry" → Borderline. If it's a churn risk, yes. If it's a support ticket, handle the ticket first.
+## 适用场景：
+- 设计持续收入模式（如定期付费服务、订阅服务、托管服务等）
+- 客户的续费期限临近，需要确保他们继续使用你的服务
+- 为新客户制定入职流程（前30天是流失风险最高的时期）
+- 分析客户流失的原因并制定预防措施
+- 规划如何从现有客户那里提升收入
+- 构建服务层级以最大化客户生命周期价值
 
-## Edge cases
-- Converting a one-time Upwork project into ongoing retainer → YES. This is the highest-value retention play.
-- Client asks to pause service → YES. Pause management prevents full churn.
-- Client wants to downgrade tier → YES. Downgrade retention is better than full churn.
+## 不适用场景：
+- 获取新客户（此时应使用冷启动营销策略、潜在客户挖掘工具等）
+- 客户已经流失，需要尝试挽回他们（此时应采用不同的策略）
+- 产品仅为一次性销售，没有持续付费的成分
+- 客户确实不适合使用你的服务（应优雅地让他们离开）
 
----
+## 错误做法示例：
+- “帮我找新客户”——不合适。本文档的重点是留住现有客户。
+- “发一封冷邮件”——不合适。应使用冷启动营销策略。
+- “客户很生气”——这种情况需视具体情况而定。如果是流失风险，可以尝试沟通；如果是支持问题，应先处理支持请求。
 
-## Why Retention > Acquisition
-
-**The math:**
-- Acquiring a new client costs 5-7x more than retaining an existing one
-- Increasing retention by 5% increases profits by 25-95% (Bain & Co, widely cited)
-- Business consulting firms average 83-85% annual retention (SerpSculpt 2025)
-- Top SaaS performers push NRR (Net Revenue Retention) past 120% — meaning existing clients PAY MORE over time
-
-**For our $2,000 goal:** One client at $149/mo = $1,788/year. Keeping them for 12 months is worth more than acquiring 3 clients who churn after 2 months each.
+## 特殊情况：
+- 将一次性Upwork项目转化为长期付费服务——完全可行。这是最具价值的留存策略。
+- 客户请求暂停服务——可以接受。暂停服务可以避免客户完全流失。
+- 客户希望降低服务等级——也可以接受。降低服务等级总比客户完全流失要好。
 
 ---
 
-## The 4 Pillars of Client Retention
+## 为什么留存比获取新客户更重要？
 
-### Pillar 1: Onboarding (First 30 Days = Make or Break)
+**数据支持：**
+- 获取新客户的成本是留存现有客户的5到7倍。
+- 客户留存率提高5%，利润就能增加25%到95%（来源：Bain & Company）。
+- 商业咨询公司的年均客户留存率约为83%到85%（SerpSculpt数据）。
+- 表现最好的SaaS企业净收入留存率（NRR）超过120%，这意味着现有客户的长期价值更高。
 
-**20%+ of voluntary churn is linked to poor onboarding** (Recurly). The first 30 days set the trajectory.
+**以我们的2000美元收入目标为例：** 每位客户每月支付149美元，一年就能带来1788美元的收入。让他们使用服务12个月，比获取3位在两个月后流失的客户更有价值。
 
-**Onboarding checklist:**
-- [ ] **Day 1**: Welcome message + clear expectations (what happens when, what they need to do)
-- [ ] **Day 1-3**: Setup/implementation begins (show immediate progress)
-- [ ] **Day 7**: First check-in — "How's it going? Any questions?"
-- [ ] **Day 14**: First measurable result shared ("Here's what's happened so far")
-- [ ] **Day 30**: Full review — show ROI, confirm value, discuss next steps
+---
 
-**Key principle:** Get them a quick win FAST. The sooner they see value, the stickier they become.
+## 客户留存的四大支柱
 
-**For Alfred:** Day 1 = SMS auto-responder active. Day 7 = first auto-booked appointment. Day 14 = share stats (X messages handled, Y bookings captured).
+### 第一支柱：入职引导（前30天至关重要）
 
-### Pillar 2: Ongoing Value Delivery (Monthly Proof)
+**超过20%的主动流失客户是因为入职引导不佳**（数据来源：Recurly）。前30天决定了客户是否会继续使用你的服务。
 
-Clients don't churn because your service stopped working. They churn because they forgot it was working.
+**入职引导 checklist：**
+- [ ] **第1天**：发送欢迎信息，明确服务预期及客户需要完成的任务。
+- [ ] **第1-3天**：开始服务设置和实施，展示即时进展。
+- [ ] **第7天**：进行首次回访，询问使用情况。
+- [ ] **第14天**：分享首次可量化的成果。
+- [ ] **第30天**：进行全面评估，展示服务价值，讨论下一步计划。
 
-**Monthly value report (automated):**
+**关键原则：** 让客户尽快看到服务价值。他们越早感受到价值，就越有可能持续使用你的服务。
+
+**以Alfred为例：**
+- **第1天**：激活短信自动回复功能。
+- **第7天**：安排第一次自动预约。
+- **第14天**：分享服务使用情况（处理了多少信息、完成了多少预约）。
+
+### 第二支柱：持续的价值交付（每月提供反馈）
+
+客户流失的原因往往不是你的服务停止了，而是他们忘记了服务的存在。
+
+**每月自动发送的价值报告：**
 ```
 Hi [Client],
 
@@ -77,76 +82,80 @@ Here's your [Month] recap:
 Anything you'd like to adjust for next month?
 ```
 
-**Rules:**
-- Send this EVERY month without fail (automate it)
-- Show real numbers, not vague "things are going well"
-- Always end with a question (keeps the conversation open)
-- Highlight one thing you improved or optimized (shows you're actively working)
+**规则：**
+- 每月务必发送（自动化处理）。
+- 展示具体数据，而不仅仅是笼统的“一切顺利”。
+- 每次报告都以一个问题结尾，保持沟通的开放性。
+- 强调你已经做出的改进或优化，表明你在积极解决问题。
 
-### Pillar 3: Proactive Check-Ins (Quarterly Business Reviews)
+### 第三支柱：主动回访（每季度进行业务评估）
 
-Don't wait for problems. Surface them before they become churn.
+不要等到问题出现才处理，要提前发现并解决它们。
 
-**Quarterly check-in framework:**
-1. "What's working well?" (reinforce value)
-2. "What could be better?" (surface issues early)
-3. "What's changed in your business since we started?" (spot expansion opportunities)
-4. "Are there other areas where we could help?" (upsell naturally)
+**季度回访内容：**
+1. “哪些服务表现良好？”（强化服务价值）
+2. “哪些方面可以改进？”（提前发现问题）
+3. “自我们合作以来，您的业务发生了哪些变化？”（寻找业务扩展的机会）
+4. “还有哪些方面我们可以提供帮助？”（自然引导客户进行升级或追加购买）
 
-**Churn signals to watch:**
-- Usage drops (they're not using the service)
-- Response times slow (they're disengaging)
-- They ask about contract terms or cancellation (actively considering leaving)
-- A key contact leaves the company (relationship risk)
-- They stop responding to check-ins (silent churn incoming)
+**需要注意的流失迹象：**
+- 服务使用量下降（说明客户不再使用服务）
+- 回应时间变慢（表示客户开始疏远服务）
+- 客户询问合同条款或取消服务（表示他们正在考虑离开）
+- 关键联系人离职（影响合作关系）
+- 客户不再回复回访（表明客户可能即将流失）
 
-### Pillar 4: Expansion Revenue (Upsells That Feel Natural)
+### 第四支柱：自然引导的扩展收入（通过追加销售实现）
 
-The best retention strategy is making the client MORE successful over time, which naturally leads to them wanting more.
+最好的留存策略是让客户随着时间的推移变得更加成功，从而自然产生更多消费需求。
 
-**Expansion revenue models:**
-- **Tier upgrades:** "You've maxed out the Growth plan. Scale unlocks [features]."
-- **Add-on services:** "Based on your results, [new service] could add another $X/mo."
-- **Volume expansion:** "You're handling 200 messages/mo now. At 500+, the Premium tier makes more sense."
-- **Referral incentives:** "Know another [business type]? We'll give you a month free for referrals."
+**常见的扩展收入模式：**
+- **服务等级升级**：“您已经使用了基础服务，升级后可以解锁更多功能。”
+- **附加服务**：“根据您的使用情况，[新服务]每月可为您带来额外收入。”
+- **服务量扩展**：“您目前每月处理200条信息，使用高级服务会更划算。”
+- **推荐激励**：“如果您认识其他类似的企业，我们可以为您提供一个月的免费试用。”
 
-**Top B2B SaaS performers generate 50%+ of new ARR from upsells** (SerpSculpt). This means half their growth comes from existing clients, not new ones.
+**表现最好的B2B SaaS企业中，50%以上的新增收入来自追加销售**（数据来源：SerpSculpt）。这意味着它们一半的增长来自现有客户。
 
 ---
 
-## Recurring Revenue Models
+## 持续收入模式
 
-| Model | Best For | Example |
+| 模型 | 适用场景 | 示例 |
 |-------|----------|---------|
-| Monthly retainer | Ongoing managed service | Alfred SMS automation at $149/mo |
-| Subscription tiers | Productized service | Basic/Growth/Scale pricing |
-| Usage-based | Variable demand | Per-message, per-booking pricing |
-| Annual contract (discounted) | Cash flow stability | $149/mo or $1,490/year (save 17%) |
-| Retainer + project | Hybrid | Base retainer + one-off builds as needed |
+| 月度付费服务 | 需要持续管理的服务 | Alfred的短信自动化服务（每月149美元） |
+| 订阅服务 | 产品化服务 | 提供不同的服务等级（基础级/高级/扩展级） |
+| 基于使用量的服务 | 需求不稳定的服务 | 按信息量或预约次数收费 |
+| 年度合同（打折） | 稳定的现金流 | 每月149美元或每年1490美元（节省17%） |
+| 综合服务（包含一次性项目） | 混合模式 | 基础服务+按需提供的个性化服务 |
 
-**Best practice:** Start with monthly, no long-term commitment. Once they see value (month 2-3), offer annual at a discount. This locks in revenue AND signals their commitment.
-
----
-
-## Churn Prevention Playbook
-
-**When you detect a churn signal:**
-
-1. **Reach out immediately** — Don't wait. "Hey [name], noticed [signal]. Everything okay?"
-2. **Listen first** — Don't defend. Understand what changed.
-3. **Offer solutions** — Tier adjustment, pause, scope change — anything beats full cancellation.
-4. **Quantify what they'll lose** — "Over the last 3 months, the system captured $X in bookings for you."
-5. **If they still want to leave** — Be gracious. "Totally understand. We're here if things change. Can I ask what we could have done better?" (This feedback is gold.)
-
-**Pause > Cancel:** Always offer a pause option (1-2 months) before cancellation. Many "I want to cancel" clients just need a breather.
+**最佳实践：** 先提供月度付费服务，避免要求客户做出长期承诺。当客户看到服务价值后（通常在第2到3个月），再提供折扣后的年度服务。这样既能确保收入，也能体现客户的忠诚度。
 
 ---
 
-## Key Numbers
-- New client acquisition costs 5-7x more than retention
-- 5% retention increase → 25-95% profit increase (Bain & Co)
-- 20%+ of voluntary churn linked to poor onboarding (Recurly)
-- Business consulting average retention: 83-85% annually
-- Top performers: NRR >120% (clients pay more over time)
-- 50%+ of growth at top companies comes from existing client expansion
-- First 30 days = highest churn risk period
+## 客户流失预防策略
+
+**发现流失迹象时：**
+1. **立即联系客户**——不要拖延。例如：“您好[客户姓名]，注意到[流失迹象]，一切还好吗？”
+2. **先倾听客户的想法**——不要辩解，了解情况变化的原因。
+3. **提供解决方案**——可以调整服务等级、暂停服务或调整服务范围，总之任何措施都比直接取消服务要好。
+4. **向客户说明他们将失去什么**：“在过去3个月里，我们的系统为您带来了X美元的收入。”
+5. **如果客户仍决定离开**——要态度诚恳。例如：“我们完全理解。如果情况有变化，我们会随时为您提供帮助。请问我们哪里做得不够好吗？”（这样的反馈对挽回客户非常有用。）
+
+**建议：** 在取消服务之前，总是先提供暂停服务的选项（1到2个月）。许多客户其实只是需要一段时间的缓冲。
+
+---
+
+## 关键数据：
+- 获取新客户的成本是留存现有客户的5到7倍。
+- 客户留存率提高5%，利润可增加25%到95%（来源：Bain & Company）。
+- 超过20%的主动流失客户是因为入职引导不佳（数据来源：Recurly）。
+- 商业咨询公司的年均客户留存率为83%到85%。
+- 表现最好的企业净收入留存率超过120%，这意味着现有客户的长期价值更高。
+- 最优秀企业的增长中有超过50%来自现有客户的扩展。
+
+---
+
+---
+
+---

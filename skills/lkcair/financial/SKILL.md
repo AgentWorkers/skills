@@ -1,22 +1,26 @@
-# Financial Skill (YFinance-AI)
+# 金融技能（YFinance-AI）
 
-Scope: 56+ financial data tools via Yahoo Finance. Stock prices, fundamentals, earnings, dividends, options, crypto, forex, commodities, news, and more.
+**功能范围：**  
+通过 Yahoo Finance 提供的 56 种以上金融数据工具，包括股票价格、基本财务数据、收益信息、股息信息、期权交易、加密货币、外汇市场、大宗商品数据以及相关新闻等。
 
-Author: lucas0 | Version: 3.0.4 | License: MIT
+**作者：** lucas0  
+**版本：** 3.0.4  
+**许可证：** MIT  
 
-How to use (human-friendly):
-- Get a stock price: say "price of AAPL" or "stock price for MSFT". The system will auto-route to this skill and return the current price and key metrics.
-- Other data: ask for a specific tool, e.g., "earnings for TWTR", "dividends for KO", or "history for GOOGL". The skill supports 56+ functions (see references).
+**使用说明（适用于人类用户）：**  
+- 查询股票价格：例如输入 “AAPL 的价格” 或 “MSFT 的股票价格”，系统会自动调用该技能并返回当前价格及关键财务指标。  
+- 查询其他数据：例如请求 “TWTR 的收益信息”、“KO 的股息信息” 或 “GOOGL 的历史数据”。该技能支持 56 种以上的功能（详见参考资料）。  
 
-Auto-routing (AI-friendly):
-- This skill is discovered and wired via skill.json. Requests matching price/stock/quote/ticker trigger this skill automatically. If unavailable, a graceful fallback is provided.
+**自动路由机制（适用于人工智能系统）：**  
+该技能通过 `skill.json` 文件进行配置和关联。任何与股票价格、股票代码或报价相关的请求都会自动触发该技能；如果该技能无法提供所需信息，系统会提供友好的错误提示或替代方案。  
 
-First-run tips:
-- Ensure the OpenClaw environment has the finance venv and the dependencies from requirements.txt installed.
-- Fresh installs should auto-route a price query without prompting.
+**首次使用提示：**  
+- 确保 OpenClaw 环境中已安装 `finance` 环境变量以及 `requirements.txt` 文件中列出的所有依赖项。  
+- 新安装的用户在首次使用该技能时，系统应能自动完成价格查询，而无需额外提示。  
 
-Example:
-- User: price of AAPL
-- System: current price and key metrics for AAPL are returned.
+**示例：**  
+- 用户：AAPL 的价格  
+- 系统：返回 AAPL 的当前价格及关键财务指标。  
 
-Internal notes: This document focuses on human readability and AI comprehension; the actual routing is defined in skill.json.
+**内部说明：**  
+本文档侧重于提升人类用户的阅读体验和人工智能系统的理解能力；实际的请求路由逻辑由 `skill.json` 文件定义。

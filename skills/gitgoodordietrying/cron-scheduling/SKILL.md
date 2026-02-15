@@ -1,25 +1,25 @@
 ---
 name: cron-scheduling
-description: Schedule and manage recurring tasks with cron and systemd timers. Use when setting up cron jobs, writing systemd timer units, handling timezone-aware scheduling, monitoring failed jobs, implementing retry patterns, or debugging why a scheduled task didn't run.
+description: 使用 cron 和 systemd 定时器来安排和管理重复性任务。这些工具适用于设置 cron 作业、编写 systemd 定时器单元文件、处理时区相关的调度问题、监控失败的任务、实现重试机制，以及调试为什么某个定时任务没有执行的原因。
 metadata: {"clawdbot":{"emoji":"⏰","requires":{"anyBins":["crontab","systemctl","at"]},"os":["linux","darwin"]}}
 ---
 
-# Cron & Scheduling
+# Cron与任务调度
 
-Schedule and manage recurring tasks. Covers cron syntax, crontab management, systemd timers, one-off scheduling, timezone handling, monitoring, and common failure patterns.
+用于安排和管理重复性任务。内容包括Cron语法、crontab管理、systemd定时器、一次性任务调度、时区处理、任务监控以及常见的故障模式。
 
-## When to Use
+## 使用场景
 
-- Running scripts on a schedule (backups, reports, cleanup)
-- Setting up systemd timers (modern cron alternative)
-- Debugging why a scheduled job didn't run
-- Handling timezones in scheduled tasks
-- Monitoring and alerting on job failures
-- Running one-off delayed commands
+- 定时运行脚本（如备份、生成报告、清理文件）
+- 设置systemd定时器（现代版的Cron）
+- 调试定时任务未执行的原因
+- 处理定时任务中的时区问题
+- 监控任务执行情况并发送警报
+- 运行一次性延迟执行的命令
 
-## Cron Syntax
+## Cron语法
 
-### The five fields
+### Cron的五个字段
 
 ```
 ┌───────── minute (0-59)
@@ -31,7 +31,7 @@ Schedule and manage recurring tasks. Covers cron syntax, crontab management, sys
 * * * * * command
 ```
 
-### Common schedules
+### 常见的时间调度表达式
 
 ```bash
 # Every minute
@@ -68,7 +68,7 @@ Schedule and manage recurring tasks. Covers cron syntax, crontab management, sys
 0 3 * * 0 /path/to/script.sh
 ```
 
-### Special strings (shorthand)
+### 特殊字符串（简写形式）
 
 ```bash
 @reboot    /path/to/script.sh   # Run once at startup
@@ -79,7 +79,7 @@ Schedule and manage recurring tasks. Covers cron syntax, crontab management, sys
 @hourly    /path/to/script.sh   # 0 * * * *
 ```
 
-## Crontab Management
+## crontab管理
 
 ```bash
 # Edit current user's crontab
@@ -101,7 +101,7 @@ crontab mycrontab.txt
 crontab -l > crontab-backup-$(date +%Y%m%d).txt
 ```
 
-### Crontab best practices
+### crontab的最佳实践
 
 ```bash
 # Set PATH explicitly (cron has minimal PATH)
@@ -128,9 +128,9 @@ SHELL=/bin/bash
 */5 * * * * /opt/scripts/healthcheck.sh || /opt/scripts/alert.sh "Health check failed"
 ```
 
-## Systemd Timers
+## systemd定时器
 
-### Create a timer (modern cron replacement)
+### 创建定时器（现代版的Cron）
 
 ```ini
 # /etc/systemd/system/backup.service
@@ -159,27 +159,7 @@ RandomizedDelaySec=300
 WantedBy=timers.target
 ```
 
-```bash
-# Enable and start the timer
-sudo systemctl daemon-reload
-sudo systemctl enable --now backup.timer
-
-# Check timer status
-systemctl list-timers
-systemctl list-timers --all
-
-# Check last run
-systemctl status backup.service
-journalctl -u backup.service --since today
-
-# Run manually (for testing)
-sudo systemctl start backup.service
-
-# Disable timer
-sudo systemctl disable --now backup.timer
-```
-
-### OnCalendar syntax
+### OnCalendar语法
 
 ```ini
 # Systemd calendar expressions
@@ -212,7 +192,7 @@ systemd-analyze calendar "*:0/15"
 systemd-analyze calendar --iterations=5 "Mon..Fri *-*-* 08:00:00"
 ```
 
-### Advantages over cron
+### systemd定时器相比Cron的优势
 
 ```
 Systemd timers vs cron:
@@ -226,43 +206,12 @@ Systemd timers vs cron:
 - More verbose configuration
 ```
 
-## One-Off Scheduling
+## 一次性任务调度
 
-### at (run once at a specific time)
+- `at`：在指定时间点运行一次任务
+- `sleep`：基于延迟时间运行的简单方式
 
-```bash
-# Schedule a command
-echo "/opt/scripts/deploy.sh" | at 2:00 AM tomorrow
-echo "reboot" | at now + 30 minutes
-echo "/opt/scripts/report.sh" | at 5:00 PM Friday
-
-# Interactive (type commands, Ctrl+D to finish)
-at 10:00 AM
-> /opt/scripts/task.sh
-> echo "Done" | mail -s "Task complete" admin@example.com
-> <Ctrl+D>
-
-# List pending jobs
-atq
-
-# View job details
-at -c <job-number>
-
-# Remove a job
-atrm <job-number>
-```
-
-### sleep-based (simplest)
-
-```bash
-# Run something after a delay
-(sleep 3600 && /opt/scripts/task.sh) &
-
-# With nohup (survives logout)
-nohup bash -c "sleep 7200 && /opt/scripts/task.sh" &
-```
-
-## Timezone Handling
+## 时区处理
 
 ```bash
 # Cron runs in the system timezone by default
@@ -288,7 +237,7 @@ timedatectl list-timezones
 timedatectl list-timezones | grep America
 ```
 
-### DST pitfalls
+### 处理夏令时（DST）相关问题
 
 ```
 Problem: A job scheduled for 2:30 AM may run twice or not at all
@@ -304,119 +253,23 @@ Mitigation:
 4. Systemd timers handle DST correctly
 ```
 
-## Monitoring and Debugging
+## 任务监控与调试
 
-### Why didn't my cron job run?
+- 为什么我的Cron任务没有执行？
+- 使用带有日志记录和警报功能的任务封装机制
+- 采用锁定机制防止任务重复执行
 
-```bash
-# 1. Check cron daemon is running
-systemctl status cron    # Debian/Ubuntu
-systemctl status crond   # CentOS/RHEL
+## 任务的可重复性（Idempotent Jobs）
 
-# 2. Check cron logs
-grep CRON /var/log/syslog           # Debian/Ubuntu
-grep CRON /var/log/cron             # CentOS/RHEL
-journalctl -u cron --since today    # systemd
+- 确保任务的可重复性：即使任务因夏令时、手动触发或系统崩溃等原因重复执行，也应产生相同的结果
 
-# 3. Check crontab actually exists
-crontab -l
+## 提示
 
-# 4. Test the command manually (with cron's environment)
-env -i HOME=$HOME SHELL=/bin/sh PATH=/usr/bin:/bin /opt/scripts/backup.sh
-# If it fails here but works normally → PATH or env issue
-
-# 5. Check permissions
-ls -la /opt/scripts/backup.sh   # Must be executable
-ls -la /var/spool/cron/         # Crontab file permissions
-
-# 6. Check for syntax errors in crontab
-# cron silently ignores lines with errors
-
-# 7. Check if output is being discarded
-# By default, cron emails output. If no MTA, output is lost.
-# Always redirect: >> /var/log/myjob.log 2>&1
-```
-
-### Job wrapper with logging and alerting
-
-```bash
-#!/bin/bash
-# cron-wrapper.sh — Run a command with logging, timing, and error alerting
-# Usage: cron-wrapper.sh <job-name> <command> [args...]
-
-set -euo pipefail
-
-JOB_NAME="${1:?Usage: cron-wrapper.sh <job-name> <command> [args...]}"
-shift
-COMMAND=("$@")
-
-LOG_DIR="/var/log/cron-jobs"
-mkdir -p "$LOG_DIR"
-LOG_FILE="$LOG_DIR/$JOB_NAME.log"
-
-log() { echo "[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] $*" >> "$LOG_FILE"; }
-
-log "START: ${COMMAND[*]}"
-START_TIME=$(date +%s)
-
-if "${COMMAND[@]}" >> "$LOG_FILE" 2>&1; then
-    ELAPSED=$(( $(date +%s) - START_TIME ))
-    log "SUCCESS (${ELAPSED}s)"
-else
-    EXIT_CODE=$?
-    ELAPSED=$(( $(date +%s) - START_TIME ))
-    log "FAILED with exit code $EXIT_CODE (${ELAPSED}s)"
-    # Alert (customize as needed)
-    echo "Cron job '$JOB_NAME' failed with exit $EXIT_CODE" | \
-        mail -s "CRON FAIL: $JOB_NAME" admin@example.com 2>/dev/null || true
-    exit $EXIT_CODE
-fi
-```
-
-```bash
-# Use in crontab:
-0 2 * * * /opt/scripts/cron-wrapper.sh daily-backup /opt/scripts/backup.sh
-*/5 * * * * /opt/scripts/cron-wrapper.sh health-check /opt/scripts/healthcheck.sh
-```
-
-### Lock to prevent overlap
-
-```bash
-# Prevent concurrent runs (job takes longer than interval)
-# Method 1: flock
-* * * * * flock -n /tmp/myjob.lock /opt/scripts/slow-job.sh
-
-# Method 2: In the script
-LOCKFILE="/tmp/myjob.lock"
-exec 200>"$LOCKFILE"
-flock -n 200 || { echo "Already running"; exit 0; }
-# ... do work ...
-```
-
-## Idempotent Job Patterns
-
-```bash
-# Idempotent backup (only creates if newer than last backup)
-#!/bin/bash
-BACKUP_DIR="/backups/$(date +%Y%m%d)"
-[[ -d "$BACKUP_DIR" ]] && { echo "Backup already exists"; exit 0; }
-mkdir -p "$BACKUP_DIR"
-pg_dump mydb > "$BACKUP_DIR/mydb.sql"
-
-# Idempotent cleanup (safe to run multiple times)
-find /tmp/uploads -mtime +7 -type f -delete 2>/dev/null || true
-
-# Idempotent sync (rsync only transfers changes)
-rsync -az /data/ backup-server:/backups/data/
-```
-
-## Tips
-
-- Always redirect output in cron jobs: `>> /var/log/job.log 2>&1`. Without this, output goes to mail (if configured) or is silently lost.
-- Test cron jobs by running them with `env -i` to simulate cron's minimal environment. Most failures are caused by missing `PATH` or environment variables.
-- Use `flock` to prevent overlapping runs when a job might take longer than its schedule interval.
-- Make all scheduled jobs idempotent. If a job runs twice (DST, manual trigger, crash recovery), it should produce the same result.
-- `systemd-analyze calendar` is invaluable for verifying timer schedules before deploying.
-- Never schedule critical jobs between 1:00 AM and 3:00 AM if DST applies. Use UTC schedules instead.
-- Log the start time, end time, and exit code of every cron job. Without this, debugging failures after the fact is guesswork.
-- Prefer systemd timers over cron for production services: you get journald logging, missed-run catchup (`Persistent=true`), and resource limits for free.
+- 在Cron任务中务必重定向输出：`>> /var/log/job.log 2>&1`。否则，输出会发送到邮件（如果配置了邮件发送功能）或被忽略。
+- 使用`env -i`模拟Cron的最低配置环境来测试任务，多数故障是由于缺少`PATH`或环境变量引起的。
+- 使用`flock`命令防止任务在超时后仍继续执行。
+- 确保所有定时任务都是可重复执行的。
+- 使用`systemd-analyze calendar`工具在部署前验证定时器的正确性。
+- 如果地区使用夏令时，切勿在凌晨1:00至3:00之间安排关键任务，建议使用UTC时间格式。
+- 记录每个Cron任务的开始时间、结束时间和退出代码，以便事后排查故障。
+- 对于生产环境的服务，优先选择systemd定时器：它提供了journald日志记录、错过任务的自动补发功能（`Persistent=true`）以及资源限制功能。

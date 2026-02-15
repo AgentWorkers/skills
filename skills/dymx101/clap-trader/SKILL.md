@@ -1,59 +1,59 @@
 ---
 name: Crypto Trader & Analyst
-description: A skill for OpenClaw to research crypto market trends (technical & sentiment) and trade ETH on Binance.
+description: 这是一项OpenClaw技能，用于研究加密货币市场的趋势（包括技术面和情绪面），并在Binance平台上交易ETH（以太坊）。
 ---
 
-# Crypto Trader & Analyst Skill
+# 加密货币交易员与分析师技能
 
-This skill allows OpenClaw to analyze the crypto market using technical indicators and news sentiment, record its findings, and execute trades on Binance.
+该技能使 OpenClaw 能够利用技术指标和新闻情感分析来研判加密货币市场，记录分析结果，并在 Binance 平台上执行交易。
 
-## Dependencies
+## 依赖项
 
-Ensure the following Python packages are installed:
+请确保已安装以下 Python 包：
 ```bash
 pip install ccxt pandas pandas-ta requests TextBlob
 ```
-*Note: `TextBlob` is suggested for basic sentiment analysis if needed, though simple keyword matching might suffice.*
+*注：如果需要基本的情感分析，建议使用 `TextBlob`；不过简单的关键词匹配也可能足够使用。*
 
-## Environment Variables
+## 环境变量
 
-You must set the following environment variables for trading:
-- `BINANCE_API_KEY`: Your Binance API Key.
-- `BINANCE_API_SECRET`: Your Binance API Secret.
+您必须设置以下用于交易的环境变量：
+- `BINANCE_API_KEY`：您的 Binance API 密钥。
+- `BINANCE_API_SECRET`：您的 Binance API 密钥。
 
-**WARNING**: Never share these keys or commit them to version control.
+**警告**：切勿共享这些密钥，也切勿将它们提交到版本控制系统中。
 
-## Workflow
+## 工作流程
 
-### 1. Market Analysis
+### 1. 市场分析
 
-**Technical Analysis**
-Run the market data script to get current indicators for a symbol (default ETH/USDT).
+**技术分析**
+运行市场数据脚本，获取指定货币（默认为 ETH/USDT）的当前技术指标。
 ```bash
 python skills/crypto_trader/scripts/market_data.py --symbol ETH/USDT
 ```
-*Output: JSON containing RSI, MACD, close price, etc.*
+*输出：包含 RSI、MACD、收盘价等信息的 JSON 数据。*
 
-**Sentiment Analysis**
-Run the sentiment script to fetch latest news headers and forum buzz.
+**情感分析**
+运行情感分析脚本，获取最新的新闻标题和论坛讨论内容。
 ```bash
 python skills/crypto_trader/scripts/sentiment_data.py
 ```
-*Output: Text/JSON summary of positive/negative news.*
+*输出：关于正面/负面新闻的文本/JSON 摘要。*
 
-### 2. Decision Making & Logging
+### 2. 决策与记录
 
-**Analyze & Record**
-Based on the outputs from step 1, form a hypothesis. Is the market Bullish, Bearish, or Neutral?
-Before trading, you **MUST** save your analysis.
+**分析并记录**
+根据第一步的输出结果，形成一个交易策略（市场是看涨、看跌还是中性？）
+在交易之前，**必须**保存您的分析结果。
 ```bash
 python skills/crypto_trader/scripts/logger.py "Your detailed analysis here. E.g., RSI is 30 (oversold) and news is positive. Planning to BUY."
 ```
 
-### 3. Execution
+### 3. 执行交易
 
-**Trade**
-If the analysis supports a trade, execute it.
+**交易**
+如果分析结果支持进行交易，请执行相应的交易操作。
 ```bash
 # Buy 0.01 ETH at Market Price
 python skills/crypto_trader/scripts/trade.py --symbol ETH/USDT --side buy --amount 0.01 --type market
@@ -61,11 +61,11 @@ python skills/crypto_trader/scripts/trade.py --symbol ETH/USDT --side buy --amou
 # Dry Run (Test without real money)
 python skills/crypto_trader/scripts/trade.py --symbol ETH/USDT --side buy --amount 0.01 --dry-run
 ```
-*The trade script will automatically append the transaction to `skills/crypto_trader/logs/trade_history.csv`.*
+*交易脚本会自动将交易记录添加到 `skills/crypto_trader/logs/trade_history.csv` 文件中。*
 
-## Files structure
-- `scripts/market_data.py`: Fetches OHLCV and calculates indicators.
-- `scripts/sentiment_data.py`: Fetches news/forum data.
-- `scripts/logger.py`: Appends analysis to `logs/analysis_journal.md`.
-- `scripts/trade.py`: Executes trades and logs to `logs/trade_history.csv`.
-- `logs/`: Directory storing your analysis history and trade logs.
+## 文件结构
+- `scripts/market_data.py`：获取开盘价（Open）、最高价（High）、收盘价（Close）和最低价（Low）以及计算技术指标。
+- `scripts/sentiment_data.py`：获取新闻和论坛讨论数据。
+- `scripts/logger.py`：将分析结果记录到 `logs/analysis_journal.md` 文件中。
+- `scripts/trade.py`：执行交易操作，并将交易记录保存到 `logs/trade_history.csv` 文件中。
+- `logs/`：存储您的分析历史记录和交易日志的目录。

@@ -1,35 +1,34 @@
 # SKILL.md - DM Outreach
 
-## Purpose
-Draft Instagram DMs for qualified leads. Ben sends manually.
+## 目的
+为符合条件的潜在客户起草Instagram私信内容，由Ben手动发送。
 
-## Model to Use
-**sonnet** for drafting (quality matters)
+## 使用的模板
+**sonnet**模板用于起草私信内容（质量至关重要）
 
-## IMPORTANT: Skynet Does NOT Send DMs
+## 重要提示：Skynet不会自动发送私信
+Skynet仅负责以下任务：
+1. 起草个性化的私信内容
+2. 将草稿保存到文件中
+3. 提供Instagram用户的个人资料链接
+4. 由Ben通过Instagram应用程序手动发送私信
 
-Skynet only:
-1. Drafts personalized DMs
-2. Saves drafts to file
-3. Provides Instagram profile links
-4. Ben manually sends via Instagram app
+**原因：**Instagram能检测到自动化行为，并可能封禁相关账户。
 
-**Why:** Instagram detects automation and bans accounts.
+## 私信发送策略
 
-## DM Strategy
+### 第1周（2月4日至9日）：密集发送私信
+- 每天发送25-35条私信
+- 首先关注优先级最高的潜在客户
+- 分为上午和下午两个发送批次
 
-### Week 1 (Feb 4-9): Heavy DMs
-- 25-35 DMs per day
-- Focus on Priority A leads first
-- Morning batch + afternoon batch
+### 第2周及以后：维持发送频率
+- 每天发送15-25条私信
+- 包括新潜在客户和之前的跟进信息
 
-### Week 2+: Maintenance
-- 15-25 DMs per day
-- Mix new leads + follow-ups
+## 私信模板
 
-## DM Templates
-
-### First Touch (Short)
+### 初次联系（简短版）
 ```
 Hey {{name}}! 
 
@@ -40,7 +39,7 @@ I help {{niche}} brands upgrade their visuals in 72h using existing photos.
 Want a quick 60-sec audit of your {{product}} page?
 ```
 
-### First Touch (Specific)
+### 初次联系（详细版）
 ```
 Hey {{name}}!
 
@@ -51,37 +50,36 @@ A cleaner hero image + consistent gallery would really make it pop. I can show y
 Interested?
 ```
 
-### Follow-up (Day 3)
+### 第3天跟进
 ```
 Hey {{name}} — circling back!
 
 Still happy to do that quick visual audit for {{brand_name}} if you're interested. Takes me 60 seconds to record. 🎥
 ```
 
-### Follow-up (Day 7 - Last)
+### 最后一次跟进（第7天）
 ```
 Last ping! If product visuals aren't a focus right now, totally get it.
 
 If you have a launch coming up and need quick turnaround, I'm here. ✌️
 ```
 
-## Output Format
-
-Save to workspace/dm-drafts-YYYY-MM-DD.csv:
+## 输出格式
+将所有私信草稿保存到文件：`dm-drafts-YYYY-MM-DD.csv`
 ```csv
 ig_handle,brand_name,dm_text,dm_type,profile_link
 @brandname,Brand Name,"Hey...",first_touch,https://instagram.com/brandname
 ```
 
-## Batching
-- Draft 10-15 DMs at a time
-- Group by niche for efficiency
-- Save all drafts before moving on
+## 批量发送
+- 每次发送10-15条私信
+- 按行业或需求进行分类以提高效率
+- 在继续发送之前，务必保存所有草稿
 
-## Quality Rules
-- Max 50 words
-- Conversational tone (not salesy)
-- One clear CTA
-- No links in first DM (Instagram flags)
-- No "I" at the start
-- Use emojis sparingly (1-2 max)
+## 质量要求：
+- 每条私信不超过50个单词
+- 采用对话式语气（避免过于销售化）
+- 包含一个明确的行动号召（CTA）
+- 首条私信中不得包含链接（否则可能被Instagram标记为自动化行为）
+- 开头不要使用“我”字
+- 尽量少使用表情符号（最多1-2个）

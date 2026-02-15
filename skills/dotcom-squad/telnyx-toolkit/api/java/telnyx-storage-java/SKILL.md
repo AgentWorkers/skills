@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Storage - Java
+# Telnyx 存储 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Create Presigned Object URL
+## 创建预签名对象 URL
 
-Returns a timed and authenticated URL to download (GET) or upload (PUT) an object.
+返回一个带时间戳和认证信息的 URL，用于下载（GET）或上传（PUT）对象。
 
 `POST /storage/buckets/{bucketName}/{objectName}/presigned_url`
 
@@ -48,9 +48,9 @@ BucketCreatePresignedUrlParams params = BucketCreatePresignedUrlParams.builder()
 BucketCreatePresignedUrlResponse response = client.storage().buckets().createPresignedUrl(params);
 ```
 
-## Get Bucket SSL Certificate
+## 获取桶的 SSL 证书
 
-Returns the stored certificate detail of a bucket, if applicable.
+（如适用）返回桶的存储证书详细信息。
 
 `GET /storage/buckets/{bucketName}/ssl_certificate`
 
@@ -61,9 +61,9 @@ import com.telnyx.sdk.models.storage.buckets.sslcertificate.SslCertificateRetrie
 SslCertificateRetrieveResponse sslCertificate = client.storage().buckets().sslCertificate().retrieve("");
 ```
 
-## Add SSL Certificate
+## 添加 SSL 证书
 
-Uploads an SSL certificate and its matching secret so that you can use Telnyx's storage as your CDN.
+上传 SSL 证书及其对应的密钥，以便将 Telnyx 的存储服务用作 CDN。
 
 `PUT /storage/buckets/{bucketName}/ssl_certificate`
 
@@ -74,22 +74,15 @@ import com.telnyx.sdk.models.storage.buckets.sslcertificate.SslCertificateCreate
 SslCertificateCreateResponse sslCertificate = client.storage().buckets().sslCertificate().create("");
 ```
 
-## Remove SSL Certificate
+## 删除 SSL 证书
 
-Deletes an SSL certificate and its matching secret.
+删除 SSL 证书及其对应的密钥。
 
 `DELETE /storage/buckets/{bucketName}/ssl_certificate`
 
-```java
-import com.telnyx.sdk.models.storage.buckets.sslcertificate.SslCertificateDeleteParams;
-import com.telnyx.sdk.models.storage.buckets.sslcertificate.SslCertificateDeleteResponse;
+## 获取 API 使用情况
 
-SslCertificateDeleteResponse sslCertificate = client.storage().buckets().sslCertificate().delete("");
-```
-
-## Get API Usage
-
-Returns the detail on API usage on a bucket of a particular time period, group by method category.
+按方法类别统计指定时间段的 API 使用情况。
 
 `GET /storage/buckets/{bucketName}/usage/api`
 
@@ -108,9 +101,9 @@ UsageGetApiUsageParams params = UsageGetApiUsageParams.builder()
 UsageGetApiUsageResponse response = client.storage().buckets().usage().getApiUsage(params);
 ```
 
-## Get Bucket Usage
+## 获取桶的使用情况
 
-Returns the amount of storage space and number of files a bucket takes up.
+返回桶所占用的存储空间和文件数量。
 
 `GET /storage/buckets/{bucketName}/usage/storage`
 
@@ -121,7 +114,7 @@ import com.telnyx.sdk.models.storage.buckets.usage.UsageGetBucketUsageResponse;
 UsageGetBucketUsageResponse response = client.storage().buckets().usage().getBucketUsage("");
 ```
 
-## List Migration Source coverage
+## 列出迁移源覆盖范围
 
 `GET /storage/migration_source_coverage`
 
@@ -132,7 +125,7 @@ import com.telnyx.sdk.models.storage.StorageListMigrationSourceCoverageResponse;
 StorageListMigrationSourceCoverageResponse response = client.storage().listMigrationSourceCoverage();
 ```
 
-## List all Migration Sources
+## 列出所有迁移源
 
 `GET /storage/migration_sources`
 
@@ -143,11 +136,11 @@ import com.telnyx.sdk.models.storage.migrationsources.MigrationSourceListRespons
 MigrationSourceListResponse migrationSources = client.storage().migrationSources().list();
 ```
 
-## Create a Migration Source
+## 创建迁移源
 
-Create a source from which data can be migrated from.
+创建一个可用于数据迁移的源。
 
-`POST /storage/migration_sources` — Required: `provider`, `provider_auth`, `bucket_name`
+`POST /storage/migration_sources` — 必需参数：`provider`、`provider_auth`、`bucket_name`
 
 ```java
 import com.telnyx.sdk.models.storage.migrationsources.MigrationSourceCreateParams;
@@ -162,7 +155,7 @@ MigrationSourceParams params = MigrationSourceParams.builder()
 MigrationSourceCreateResponse migrationSource = client.storage().migrationSources().create(params);
 ```
 
-## Get a Migration Source
+## 获取迁移源信息
 
 `GET /storage/migration_sources/{id}`
 
@@ -173,7 +166,7 @@ import com.telnyx.sdk.models.storage.migrationsources.MigrationSourceRetrieveRes
 MigrationSourceRetrieveResponse migrationSource = client.storage().migrationSources().retrieve("");
 ```
 
-## Delete a Migration Source
+## 删除迁移源
 
 `DELETE /storage/migration_sources/{id}`
 
@@ -184,7 +177,7 @@ import com.telnyx.sdk.models.storage.migrationsources.MigrationSourceDeleteRespo
 MigrationSourceDeleteResponse migrationSource = client.storage().migrationSources().delete("");
 ```
 
-## List all Migrations
+## 列出所有迁移记录
 
 `GET /storage/migrations`
 
@@ -195,11 +188,11 @@ import com.telnyx.sdk.models.storage.migrations.MigrationListResponse;
 MigrationListResponse migrations = client.storage().migrations().list();
 ```
 
-## Create a Migration
+## 创建迁移任务
 
-Initiate a migration of data from an external provider into Telnyx Cloud Storage.
+启动从外部提供者到 Telnyx 云存储的数据迁移。
 
-`POST /storage/migrations` — Required: `source_id`, `target_bucket_name`, `target_region`
+`POST /storage/migrations` — 必需参数：`source_id`、`target_bucket_name`、`target_region`
 
 ```java
 import com.telnyx.sdk.models.storage.migrations.MigrationCreateParams;
@@ -214,7 +207,7 @@ MigrationParams params = MigrationParams.builder()
 MigrationCreateResponse migration = client.storage().migrations().create(params);
 ```
 
-## Get a Migration
+## 获取迁移任务信息
 
 `GET /storage/migrations/{id}`
 
@@ -225,7 +218,7 @@ import com.telnyx.sdk.models.storage.migrations.MigrationRetrieveResponse;
 MigrationRetrieveResponse migration = client.storage().migrations().retrieve("");
 ```
 
-## Stop a Migration
+## 停止迁移任务
 
 `POST /storage/migrations/{id}/actions/stop`
 

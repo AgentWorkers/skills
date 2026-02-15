@@ -1,70 +1,69 @@
 ---
 name: Founder
-description: Build startups with product-market fit, fundraising, team building, and founder resilience.
+description: 帮助初创企业实现产品与市场的匹配（Product-Market Fit）、筹集资金（Fundraising）、团队建设（Team Building），以及提升创始人的韧性（Founder Resilience）。
 metadata: {"clawdbot":{"emoji":"🚀","os":["linux","darwin","win32"]}}
 ---
 
-# Founder Assistance Rules
+# 创始人辅助指南
 
-## Early Stage
-- Talk to customers before building — assumptions are usually wrong
-- Problem validation before solution validation — make sure it's worth solving
-- MVP means embarrassingly small — ship the smallest thing that tests your hypothesis
-- Speed of learning beats quality of product early on
-- Choose co-founders like marriage — complementary skills, aligned values, tested under stress
+## 早期阶段
+- 在开始开发之前先与客户沟通——假设往往是不正确的。
+- 在验证解决方案之前先验证问题本身——确保这个问题确实值得解决。
+- MVP（最小可行产品）应该非常简单——发布最基础的功能来验证你的假设。
+- 在产品早期阶段，学习速度比产品质量更重要。
+- 选择联合创始人时要像选择伴侣一样谨慎——他们需要具备互补的技能和共同的价值观，并能在压力下共同协作。
 
-## Product-Market Fit
-- Users that would be "very disappointed" without you — that's the metric (40%+ threshold)
-- Retention matters more than acquisition — leaky bucket never fills
-- Pull beats push — customers seeking you out vs you convincing them
-- PMF feels like demand you can barely keep up with
-- Before PMF, nothing else matters — don't scale what doesn't work
+## 产品与市场的匹配度
+- 没有你的产品，用户会“非常失望”——这是衡量产品是否成功的标准（用户流失率应超过40%）。
+- 客户留存率比新用户获取更重要——一个“漏水的水桶”永远填不满。
+- 应该主动寻找客户，而不是等待客户来找你。
+- 当你感受到产品与市场的强烈匹配时（PMF，Product-Market Fit），其他一切都不重要了——不要去扩展那些无法成功的产品。
 
-## Fundraising
-- Raise when you have momentum, not desperation
-- Know your numbers cold — ARR, growth rate, burn, runway, unit economics
-- VCs pattern-match — know what pattern you fit
-- SAFE vs priced round: tradeoffs on both sides
-- 100 meetings to find 1 yes is normal — rejection isn't signal about your company
+## 筹资
+- 在你有发展势头的时候再融资，而不是在绝望时。
+- 熟悉你的财务数据——年度收入（ARR）、增长率、资金消耗情况以及公司的盈利模式。
+- 风投机构会寻找符合他们投资模式的团队——了解自己适合哪种投资模式。
+- 选择SAFE轮（种子轮）还是定价轮融资：两者各有优缺点。
+- 遇到10次拒绝是正常的——被拒绝并不意味着你的公司有问题。
 
-## Team
-- First 10 hires define culture — choose carefully
-- Hire for slope over experience early — fast learners beat credentialed operators
-- Fire fast when it's not working — one bad hire poisons teams
-- Equity is precious — be generous but not careless
-- Founder doing everything doesn't scale — delegate before breaking
+## 团队建设
+- 前10名员工的招聘决定了公司的文化——要谨慎选择。
+- 优先招聘学习能力强的员工，而不是经验丰富的员工。
+- 如果团队表现不佳，要迅速做出调整——一个糟糕的员工可能会破坏整个团队。
+- 股权分配很重要——要慷慨但也要谨慎。
+- 创始人不能包揽所有工作——在团队崩溃之前要学会 delegating（授权）。
 
-## Execution
-- Focus is saying no to good ideas — not just bad ones
-- Metrics: one north star, 2-3 supporting — more means no focus
-- Weekly cadence: set goals, execute, review, repeat
-- Ship > perfect — iterate based on feedback
-- Default to action — analysis paralysis kills startups
+## 执行策略
+- 重点是要拒绝好的想法，而不仅仅是糟糕的想法。
+- 选择关键的指标：一个核心指标，再加上2-3个辅助指标；指标过多反而会分散注意力。
+- 建立每周的工作流程：设定目标、执行、回顾、重复。
+- 先发布产品，再追求完美——根据用户反馈进行迭代。
+- 坚持行动——分析过度会导致创业公司停滞不前。
 
-## Pivoting
-- Pivot on strategy, not vision — the problem matters, your solution might not
-- Data tells you what isn't working — customers tell you what might
-- Pivots require conviction — half-pivots fail
-- Runway determines pivot options — pivot with 18 months, not 3
-- Kill projects before they kill you — sunk cost is sunk
+## 战略调整
+- 根据战略进行调整，而不是基于愿景。问题才是关键，你的解决方案可能并不完美。
+- 数据能告诉你哪些做法无效，而用户能告诉你哪些做法可能有效。
+- 战略调整需要坚定的决心——半途而废的调整往往失败。
+- 公司的生存时间决定了你可以做出的调整范围——在产品还有18个月的市场机会时再做调整。
+- 在项目拖垮你之前就终止它——已经投入的成本是无法挽回的。
 
-## Survival
-- Cash is oxygen — know your runway in weeks, not months
-- Revenue solves most problems — paying customers validate everything
-- Cut costs in chunks, not slices — small cuts demoralize without saving
-- Down rounds happen — survive now, optimize later
-- Mental health isn't optional — burnout helps nobody
+## 生存之道
+- 现金就是公司的“氧气”——要清楚公司的资金还能维持多久（以周为单位）。
+- 收入能解决大多数问题——付费客户是对公司价值的最好证明。
+- 逐步削减成本——一次性大幅削减成本可能会打击团队士气，且效果不佳。
+- 可能会遇到资金紧张的情况——先生存下来，再优化后续计划。
+- 心理健康同样重要——过度工作对任何人都没有好处。
 
-## Founder Psychology
-- Imposter syndrome is universal — you're not uniquely unqualified
-- The highs are too high, the lows are too low — regression to mean happens
-- Find founder peers — they understand what others can't
-- Separate identity from company — you're not your startup
-- Ask for help — everyone does, they just don't advertise it
+## 创始人的心理状态
+- “冒名顶替综合症”是普遍存在的——你并不是唯一一个觉得自己不够资格的人。
+- 成功的喜悦过于强烈，失败的打击也过于沉重——这是正常的心理反应。
+- 寻找其他创始人作为伙伴——他们能理解你无法理解的事情。
+- 将个人身份与公司区分开来——你并不等同于你的创业公司。
+- 勇于寻求帮助——每个人都会这么做，只是他们不会公开承认这一点。
 
-## Common Mistakes
-- Building in stealth too long — the idea isn't the moat
-- Hiring senior too early — expensive people need infrastructure
-- Chasing press over customers
-- Raising too much and losing discipline — constraints breed creativity
-- Optimizing for valuation over progress
+## 常见错误
+- 长时间秘密开发产品——创意本身并不能成为公司的护城河。
+- 过早聘请高级人才——高薪员工需要相应的基础设施支持。
+- 追求媒体关注而忽视客户需求。
+- 筹资过多导致失去控制——适当的限制反而能激发创造力。
+- 过度关注估值而非产品进展。

@@ -1,7 +1,7 @@
 ---
 name: memory-maintenance
 version: 1.0.0
-description: "Intelligent memory management for OpenClaw agents. Reviews daily notes, suggests MEMORY.md updates, maintains directory health, and auto-cleans old files. Recommended for agents with growing memory footprints."
+description: "OpenClaw代理的智能内存管理功能：会定期审查每日记录，建议更新MEMORY.md文件内容，维护目录的整洁性，并自动清理旧文件。特别推荐用于内存使用量持续增长的代理。"
 homepage: https://github.com/MaxLaurieHutchinson/memory-maintenance
 author: 
   name: "Max Hutchinson"
@@ -21,36 +21,36 @@ metadata:
         label: "Install memory maintenance"
 ---
 
-# Memory Maintenance Skill
+# 内存维护技能
 
-Intelligent memory management for OpenClaw agents. Reviews daily notes, suggests MEMORY.md updates, maintains directory health, and auto-cleans old files.
+该技能为 OpenClaw 代理提供智能的内存管理功能：它会定期审查每日记录，建议对 `MEMORY.md` 文件进行更新，维护目录的整洁性，并自动清理旧文件。
 
-## Why This Exists
+## 功能概述
 
-Agents wake up fresh every session. Without maintenance:
-- Daily notes pile up and become unsearchable
-- Important decisions get buried in old sessions
-- Context windows fill with irrelevant history
-- You repeat the same context-setting every day
+每次会话开始时，代理都会处于“初始状态”。如果不进行维护，将会出现以下问题：
+- 每日的记录会不断堆积，难以查找；
+- 重要的决策可能会被埋没在旧会话中的信息中；
+- 界面窗口中会显示大量无关的历史数据；
+- 用户每天都需要重复进行相同的上下文设置。
 
-This skill automates the tedious work of keeping your agent's memory organized and actionable.
+该技能自动化了这些繁琐的工作，帮助用户保持代理内存的整洁性和可用性。
 
-## Features
+## 主要功能
 
-- **Content Review**: Analyzes daily notes and suggests MEMORY.md updates
-- **Directory Health**: Monitors memory/ directory for naming issues, fragmentation, bloat
-- **Auto-Cleanup**: Archives old reviews (7+ days) and enforces retention policy (30 days)
-- **Safe by Default**: Content changes require approval; only safe maintenance auto-applies
+- **内容审查**：分析每日记录，并提出对 `MEMORY.md` 文件的更新建议；
+- **目录维护**：监控内存/目录的命名问题、文件碎片化以及磁盘空间占用情况；
+- **自动清理**：将超过 7 天的旧记录归档，并遵循 30 天的保留策略；
+- **默认为“安全模式”**：任何内容变更都需要用户批准后才能自动应用。
 
-## Recommended Model
+## 推荐模型
 
-This skill works well with lightweight models. We recommend:
-- **Primary**: `gemini-2.5-flash` (fast, cost-effective)
-- **Fallback**: `gemini-2.5-flash-lite` (if rate limits hit)
+该技能适用于轻量级模型。我们推荐以下模型：
+- **主要模型**：`gemini-2.5-flash`（性能快速，成本效益高）；
+- **备用模型**：`gemini-2.5-flash-lite`（在达到速率限制时使用）。
 
-Both handle the structured output and analysis tasks efficiently.
+这两种模型都能高效地处理结构化数据的输出和分析任务。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install the skill
@@ -65,7 +65,7 @@ openclaw skill memory-maintenance run
 # Or let it run automatically via cron (configured during install)
 ```
 
-## Architecture
+## 架构
 
 ```
 Daily Session Notes (memory/YYYY-MM-DD.md)
@@ -81,19 +81,19 @@ Approved Updates → MEMORY.md
 Auto-Cleanup (archive old files)
 ```
 
-## Workflow
+## 工作流程
 
-1. **Daily Review** (23:00 by default)
-   - Scans configurable lookback period (default: 7 days)
-   - Checks memory/ directory health
-   - Generates suggestions via LLM
-   - Outputs structured JSON + human-readable markdown
+1. **每日审查**（默认在 23:00 进行）：
+   - 扫描可配置的回顾周期（默认为 7 天）；
+   - 检查内存/目录的状态；
+   - 通过大型语言模型（LLM）生成更新建议；
+   - 生成结构化的 JSON 数据和人类可读的 Markdown 报告。
 
-2. **Human Review**
-   - Read `agents/memory/review-v2-YYYY-MM-DD.md`
-   - Approve/reject suggestions
+2. **人工审核**：
+   - 阅读 `agents/memory/review-v2-YYYY-MM-DD.md` 文件；
+   - 审批或拒绝这些建议。
 
-3. **Apply Changes**
+3. **应用更改**：
    ```bash
    # Dry run (preview)
    openclaw skill memory-maintenance apply --dry-run 2026-02-05
@@ -105,14 +105,14 @@ Auto-Cleanup (archive old files)
    openclaw skill memory-maintenance apply --all 2026-02-05
    ```
 
-4. **Auto-Cleanup** (runs after successful review)
-   - Archives reviews older than configured threshold
-   - Deletes archive files older than retention period
-   - Cleans up error logs
+4. **自动清理**（在审核通过后执行）：
+   - 将超过设定时间的记录归档；
+   - 删除超过保留期限的归档文件；
+   - 清理错误日志。
 
-## Configuration
+## 配置
 
-Edit `config/settings.json`:
+请编辑 `config/settings.json` 文件以进行配置：
 
 ```json
 {
@@ -140,14 +140,14 @@ Edit `config/settings.json`:
 }
 ```
 
-## Safety
+## 安全性
 
-- **Content suggestions**: Never auto-applied (human review mandatory)
-- **Safe maintenance** (archiving): Auto-applied with `--safe`
-- **Risky operations** (delete, rename): Require `--all` + confirmation
-- **Trash recovery**: Deleted files go to `agents/memory/.trash/` (recoverable for retention period)
+- **内容建议**：永远不会自动应用（必须经过人工审核）；
+- **安全维护操作**：归档操作会自动执行（使用 `--safe` 参数）；
+- **高风险操作**（如删除、重命名文件）：需要使用 `--all` 参数并获取用户确认；
+- **已删除文件的恢复**：被删除的文件会被保存到 `agents/memory/.trash/` 目录中（可在保留期限内恢复）。
 
-## Commands
+## 命令
 
 ```bash
 # Run review manually
@@ -166,60 +166,54 @@ openclaw skill memory-maintenance status
 openclaw skill memory-maintenance stats
 ```
 
-## Integration with MEMORY.md
+## 与 `MEMORY.md` 的集成
 
-The skill suggests updates to standard MEMORY.md sections:
-- Agent Identity and Core Preferences
-- Infrastructure/Setup
-- Memory Management
-- Backup & Migration
-- Contacts
-- Scheduled Operations
-- Content Creation & Projects
-- Active Projects
+该技能会针对 `MEMORY.md` 文件中的标准章节提出更新建议，包括：
+- 代理身份和核心偏好设置；
+- 基础设施/配置信息；
+- 内存管理策略；
+- 备份与迁移方案；
+- 联系人信息；
+- 计划任务；
+- 内容创建与项目管理；
+- 正在运行的项目。
 
-## Files
+## 文件结构
 
-### Output
-- `agents/memory/review-v2-YYYY-MM-DD.json` — Structured suggestions
-- `agents/memory/review-v2-YYYY-MM-DD.md` — Human-readable report
-- `agents/memory/stats.json` — Aggregate statistics
+- `agents/memory/review-v2-YYYY-MM-DD.json`：结构化的更新建议；
+- `agents/memory/review-v2-YYYY-MM-DD.md`：人类可读的报告；
+- `agents/memory/stats.json`：汇总的统计数据。
 
-### Archive
-- `agents/memory/archive/YYYY-MM/` — Monthly buckets
-- `agents/memory/.trash/` — Recoverable deletions
+## 归档机制
 
-## Requirements
+- `agents/memory/archive/YYYY-MM/`：按月分类的归档文件；
+- `agents/memory/.trash/`：可恢复的已删除文件。
 
-- OpenClaw >= 2026.2.0
-- Gemini CLI (`brew install gemini-cli`)
-- jq (`brew install jq`)
-- Gemini API key (from Google AI Studio)
+## 系统要求
 
-## Troubleshooting
+- OpenClaw 版本需大于或等于 2026.2.0；
+- 需安装 Gemini CLI（使用 `brew install gemini-cli` 命令安装）；
+- 需安装 `jq` 工具（使用 `brew install jq` 命令安装）；
+- 需拥有 Google AI Studio 提供的 Gemini API 密钥。
 
-**"Gemini failed"**
-→ Check `GEMINI_API_KEY` is set in `.env` or environment
+## 故障排除
 
-**"No suggestions generated"**
-→ Check daily notes exist in `memory/YYYY-MM-DD.md`
-→ Review error logs in `agents/memory/error-*.txt`
+- 如果出现 “Gemini 失败” 的错误，请检查 `.env` 文件中是否设置了 `GEMINI_API_KEY`；
+- 如果没有生成任何建议，请确认 `memory/YYYY-MM-DD.md` 文件中是否存在每日记录；
+- 如果出现 “维护任务过多”的情况，可以运行 `openclaw skill memory-maintenance apply --safe` 命令来归档旧文件；
+- 如需调整归档策略，请修改 `config/settings.json` 文件中的 `archive_after_days` 参数。
 
-**"Too many maintenance tasks"**
-→ Run `openclaw skill memory-maintenance apply --safe` to archive old files
-→ Adjust `archive_after_days` in config
+## 开发者
 
-## Author
+该技能由 **Max Hutchinson** 开发，作为 AI 代理基础设施探索项目的一部分。
 
-Built by **Max Hutchinson** as part of an AI agent infrastructure exploration.
+- GitHub 仓库：[@MaxLaurieHutchinson](https://github.com/MaxLaurieHutchinson)
+- 使用的代理模型：Ash（OpenClaw）
 
-- GitHub: [@MaxLaurieHutchinson](https://github.com/MaxLaurieHutchinson)
-- Agent: Ash (OpenClaw)
+## 许可证
 
-## License
-
-MIT — Free to use, modify, distribute.
+采用 MIT 许可证——允许自由使用、修改和分发。
 
 ---
 
-*Part of the Hybrid Agent Architecture. Built for agents that improve over time.*
+*该技能属于混合代理架构的一部分，旨在帮助代理持续优化其性能。*

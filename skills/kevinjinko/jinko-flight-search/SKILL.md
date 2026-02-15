@@ -12,112 +12,112 @@ description: >
   server connected at https://mcp.gojinko.com.
 ---
 
-# Jinko Flight Search
+# Jinko 航班搜索
 
-Search flights and discover destinations via the Jinko MCP server (`find_destination` and `find_flight` tools).
+通过 Jinko MCP 服务器搜索航班并发现目的地（使用 `find_destination` 和 `find_flight` 工具）。
 
-## MCP Connection
+## MCP 连接
 
-Connect the Jinko MCP server in Claude's settings or project integrations using this URL:
+在 Claude 的设置或项目集成中，使用以下 URL 连接到 Jinko MCP 服务器：
 
 ```
 https://mcp.gojinko.com
 ```
 
-This provides two tools: `Jinko:find_destination` and `Jinko:find_flight`.
+该服务器提供了两个工具：`Jinko:find_destination` 和 `Jinko:find_flight`。
 
-## Tool Selection
+## 工具选择
 
-1. **User knows origin AND destination city** → Use `find_flight`
-2. **User wants destination ideas, doesn't know where to go, or specifies criteria (beach, warm, ski, cheap…)** → Use `find_destination`
-3. **User asks for the cheapest dates to a single known destination** → Use `find_flight`
+1. **用户知道出发地和目的地城市** → 使用 `find_flight`
+2. **用户需要目的地建议，但不确定去哪里，或指定了特定条件（如海滩、温暖气候、滑雪、便宜等）** → 使用 `find_destination`
+3. **用户询问到已知目的地的最便宜航班日期** → 使用 `find_flight`
 
-## Tool 1: `find_destination` — Discover Where to Go
+## 工具 1：`find_destination` — 发现目的地
 
-Use when the user is exploring options and hasn't committed to a single destination city.
+当用户还在探索选项，尚未确定具体目的地城市时使用此工具。
 
-### Required Parameters
+### 必需参数
 
-- `origins` — Array of IATA codes for ALL nearby airports at the user's origin.
-- `trip_type` — `"roundtrip"` (default) or `"oneway"` (only when user explicitly says one-way).
+- `origins` — 用户出发地附近所有机场的 IATA 代码数组。
+- `trip_type` — `"roundtrip"`（默认）或 `"oneway"`（仅当用户明确要求单程旅行时使用）。
 
-### Optional Parameters
+### 可选参数
 
-| Parameter | Use when |
+| 参数 | 使用场景 |
 |---|---|
-| `destinations` | User mentions a region, criteria, or list of candidate cities. Generate IATA codes matching the intent. Leave empty for global discovery ("anywhere", "surprise me"). |
-| `departure_dates` / `departure_date_ranges` | User specifies dates or periods. All dates MUST be in the future. |
-| `return_dates` / `return_date_ranges` | User specifies return windows. |
-| `stay_days` / `stay_days_range` | User mentions trip length ("a week", "5-10 days"). |
-| `max_price` | User mentions a budget. |
-| `direct_only` | User asks for nonstop/direct flights. |
-| `cabin_class` | `"economy"`, `"premium_economy"`, `"business"`, or `"first"`. |
-| `currency` | ISO 4217 code matching user's locale. |
-| `locale` | e.g. `"en-US"`, `"fr-FR"`. |
-| `sort_by` | `"lowest"` (default) or `"recommendation"`. |
+| `destinations` | 用户提及的地区、条件或候选城市列表。系统会生成符合这些条件的 IATA 代码。如需全局搜索（“任意地点”、“随机选择”），可留空。 |
+| `departure_dates` / `departure_date_ranges` | 用户指定的出发日期或日期范围。所有日期必须在未来。 |
+| `return_dates` / `return_date_ranges` | 用户指定的返程日期范围。 |
+| `stay_days` / `stay_days_range` | 用户指定的旅行时长（例如“一周”、“5-10 天”）。 |
+| `max_price` | 用户设定的预算。 |
+| `direct_only` | 用户要求直飞航班。 |
+| `cabin_class` | `"economy"`、`"premium_economy"`、`"business"` 或 `"first"`。 |
+| `currency` | 与用户地区设置匹配的 ISO 4217 货币代码。 |
+| `locale` | 例如 `"en-US"`、`"fr-FR"`。 |
+| `sort_by` | `"lowest"`（默认）或 `"recommendation"`。 |
 
-### Airport Identification — Critical
+### 机场识别 — 非常重要
 
-Always expand a city to ALL its airports:
+始终将一个城市的所有机场都包含在搜索范围内：
 
-- New York → `["JFK","LGA","EWR"]`
-- London → `["LHR","LGW","STN","LTN","LCY"]`
-- Paris → `["CDG","ORY"]`
-- Tokyo → `["NRT","HND"]`
-- Chicago → `["ORD","MDW"]`
-- Los Angeles → `["LAX"]`
-- San Francisco / SFO → `["SFO"]`
+- 纽约 → `["JFK","LGA","EWR"]`
+- 伦敦 → `["LHR","LGW","STN","LTN","LCY"]`
+- 巴黎 → `["CDG","ORY"]`
+- 东京 → `["NRT","HND"]`
+- 芝加哥 → `["ORD","MDW"]`
+- 洛杉矶 → `["LAX"]`
+- 旧金山 / SFO → `["SFO"]`
 
-### Destination Generation — Critical
+### 目的地生成 — 非常重要
 
-When users describe criteria, generate matching IATA codes before calling the tool:
+当用户描述旅行条件时，系统应在调用工具之前生成相应的 IATA 代码：
 
-- "Beach" → `["MIA","SAN","HNL","CUN","PUJ","SJU","NAS","MBJ"]`
-- "Asia" → `["NRT","HND","ICN","PVG","PEK","HKG","SIN","BKK","KUL","MNL"]`
-- "European capitals" → `["LHR","CDG","FRA","MAD","FCO","AMS","BRU","VIE","PRG","CPH"]`
-- "Ski" → `["DEN","SLC","ZRH","INN","GVA","TRN"]`
-- "Warm in winter" → `["MIA","MCO","SAN","PHX","HNL","CUN","PUJ","PTY","LIM","GIG"]`
+- “海滩” → `["MIA","SAN","HNL","CUN","PUJ","SJU","NAS","MBJ"]`
+- “亚洲” → `["NRT","HND","ICN","PVG","PEK","HKG","SIN","BKK","KUL","MNL"]`
+- “欧洲首都” → `["LHR","CDG","FRA","MAD","FCO","AMS","BRU","VIE","PRG","CPH"]`
+- “滑雪胜地” → `["DEN","SLC","ZRH","INN","GVA","TRN"]`
+- “冬季温暖地区” → `["MIA","MCO","SAN","PHX","HNL","CUN","PUJ","PTY","LIM","GIG"]`
 
-### When to Re-call
+### 何时重新调用 `find_destination`
 
-Re-call `find_destination` when the user changes destination criteria, dates, or asks to explore different options — especially when they are already viewing the widget in fullscreen.
+当用户更改目的地条件、日期或希望探索其他选项时，需要重新调用 `find_destination`——尤其是在用户已经全屏查看搜索结果的情况下。
 
-### Examples
+### 示例
 
-| User says | origins | destinations | other params |
+| 用户输入 | 出发地 | 目的地 | 其他参数 |
 |---|---|---|---|
-| "Where should I travel from NYC next month?" | `["JFK","LGA","EWR"]` | `[]` (global) | `departure_date_ranges` for next month |
-| "Cheap flights from SF to Europe under $800" | `["SFO"]` | European airports | `max_price: 800` |
-| "Somewhere warm from Chicago, 1 week in Dec" | `["ORD","MDW"]` | warm-weather airports | `stay_days: 7`, Dec date range |
-| "Best weekend getaways from Boston" | `["BOS"]` | `[]` (global) | `stay_days_range: {min:2, max:4}` |
+| “下个月从纽约出发去哪里旅行？” | `["JFK","LGA","EWR"]` | `[]`（全球搜索） | `departure_date_ranges` 为下个月 |
+| “从旧金山到欧洲的便宜航班，价格低于 800 美元” | `["SFO"]` | 欧洲机场 | `max_price: 800` |
+| “12 月在芝加哥附近的温暖地区待一周” | `["ORD","MDW"]` | 温暖气候的机场 | `stay_days: 7`, 12 月的日期范围 |
+| “波士顿附近最好的周末短途旅行” | `["BOS"]` | `[]`（全球搜索） | `stay_days_range: {min:2, max:4}` |
 
-## Tool 2: `find_flight` — Search a Specific Route
+## 工具 2：`find_flight` — 搜索特定航线
 
-Use when both origin and destination cities are known.
+当出发地和目的地城市都已确定时使用此工具。
 
-### Required Parameters
+### 必需参数
 
-- `origin` — Single IATA airport or city code (e.g. `"JFK"`, `"PAR"`).
-- `destination` — Single IATA airport or city code (e.g. `"CDG"`, `"LON"`).
-- `trip_type` — `"roundtrip"` (default) or `"oneway"`.
+- `origin` — 单个出发机场的 IATA 代码（例如 `"JFK"`、`"PAR"`）。
+- `destination` — 单个目的地的 IATA 代码（例如 `"CDG"`、`"LON"`）。
+- `trip_type` — `"roundtrip"`（默认）或 `"oneway"`。
 
-### Optional Parameters
+### 可选参数
 
-Same date, stay, price, cabin, currency, locale, direct, and sort parameters as `find_destination`.
+与 `find_destination` 相同的日期、停留时间、价格、舱位等级、货币、地区设置、直飞选项和排序参数。
 
-### Examples
+### 示例
 
-| User says | origin | destination | other params |
+| 用户输入 | 出发地 | 目的地 | 其他参数 |
 |---|---|---|---|
-| "Flights from JFK to CDG next month" | `"JFK"` | `"CDG"` | `departure_date_ranges` for next month |
-| "LA to Tokyo for a week in December" | `"LAX"` | `"TYO"` | `stay_days: 7`, Dec date range |
-| "Business class NYC to London, 5-10 days" | `"NYC"` | `"LON"` | `cabin_class: "business"`, `stay_days_range: {min:5, max:10}` |
-| "Cheapest ORD to LHR under $600" | `"ORD"` | `"LHR"` | `max_price: 600` |
+| “下个月从 JFK 飞往 CDG 的航班” | `"JFK"` | `"CDG"` | `departure_date_ranges` 为下个月 |
+| “12 月在洛杉矶到东京的航班，为期一周” | `"LAX"` | `"TYO"` | `stay_days: 7`, 12 月的日期范围 |
+| “从纽约到伦敦的商务舱航班，为期 5-10 天” | `"NYC"` | `"LON"` | `cabin_class: "business"`, `stay_days_range: {min:5, max:10}` |
+| “从 ORD 到 LHR 的最便宜航班，价格低于 600 美元” | `"ORD"` | `"LHR"` | `max_price: 600` |
 
-## General Rules
+## 通用规则
 
-- Default to **roundtrip**. Only use `"oneway"` when the user explicitly writes "one way" or "one-way".
-- All dates **must be in the future**. Never send a past date.
-- Fill as many search parameters as possible from the user's intent to get the best results.
-- Use city codes (e.g. `"LON"`, `"NYC"`, `"PAR"`, `"TYO"`) when searching across all airports in a city.
-- Provide results in the user's preferred currency and locale when identifiable.
+- 默认为 **往返旅行**。只有当用户明确要求“单程旅行”时才使用 `"oneway"`。
+- 所有日期 **必须在未来**。切勿发送过去的日期。
+- 根据用户的旅行需求填写尽可能多的搜索参数，以获得最佳结果。
+- 在搜索某个城市的所有机场时，使用城市代码（例如 `"LON"`、`"NYC"`、`"PAR"`、`"TYO"`）。
+- 在可能的情况下，以用户偏好的货币和地区设置显示搜索结果。

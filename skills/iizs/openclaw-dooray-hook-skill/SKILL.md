@@ -1,6 +1,6 @@
 ---
 name: dooray-hook
-description: Send automated notifications to Dooray! messenger channels via webhooks.
+description: 通过 Webhook 将自动化通知发送到 Dooray! 的消息通道中。
 homepage: https://dooray.com
 metadata:
   openclaw:
@@ -10,19 +10,19 @@ metadata:
       config: ["skills.entries.dooray-hook.config"]
 ---
 
-# Dooray! Webhook Skill
+# Dooray! Webhook 技能
 
-A seamless integration to send text notifications and status updates to **Dooray!** chat rooms using Incoming Webhooks.
+一种无缝集成的方式，用于通过传入的 Webhook 将文本通知和状态更新发送到 **Dooray!** 聊天室。
 
-## Overview
+## 概述
 
-This skill allows OpenClaw to communicate with your team on Dooray!. It supports multiple chat rooms, customizable bot profiles, and configurable SSL verification settings.
+此技能允许 OpenClaw 与您的 Dooray! 团队成员进行通信。它支持多个聊天室、可自定义的机器人配置文件以及可配置的 SSL 验证设置。
 
-## Configuration
+## 配置
 
-To use this skill, you must define your Dooray! webhook URLs in the OpenClaw global config (`~/.openclaw/openclaw.json`).
+要使用此技能，您必须在 OpenClaw 的全局配置文件（`~/.openclaw/openclaw.json`）中定义您的 Dooray! Webhook URL。
 
-> **Security Note:** Webhook URLs are stored in your local config file. Ensure this file's permissions are restricted (e.g., `chmod 600`).
+> **安全提示：** Webhook URL 存储在您的本地配置文件中。请确保该文件的权限受到限制（例如：`chmod 600`）。
 
 ```json
 {
@@ -46,42 +46,40 @@ To use this skill, you must define your Dooray! webhook URLs in the OpenClaw glo
 
 ```
 
-### Configuration Options
+### 配置选项
 
-* **`rooms`** (Required): A dictionary mapping room names to webhook URLs.
-* **`botName`** (Optional): The name displayed for the bot message (Default: "OpenClaw").
-* **`verify_ssl`** (Optional): Set to `false` to disable SSL certificate verification. Useful for corporate proxies or self-signed certificates. (Default: `true`).
+* **`rooms`**（必填）：一个字典，将房间名称映射到 Webhook URL。
+* **`botName`**（可选）：机器人消息显示的名称（默认值：“OpenClaw”）。
+* **`verify_ssl`**（可选）：设置为 `false` 可以禁用 SSL 证书验证。适用于企业代理或自签名证书（默认值：`true`）。
 
-## Usage
+## 使用方法
 
-### 💬 Natural Language
+### 💬 自然语言
 
-You can ask OpenClaw to send messages directly:
+您可以直接要求 OpenClaw 发送消息：
 
-* *"Send 'Server deployment successful' to the Alerts room on Dooray."*
-* *"Tell the General channel that I'll be late for the meeting."*
+* “将‘服务器部署成功’发送到 Dooray! 的‘Alerts’房间。”
+* “告诉‘General’频道我会开会迟到。”
 
-### 💻 CLI Execution
+### 💻 命令行执行
 
 ```bash
 python scripts/send_dooray.py "RoomName" "Your message content"
 
 ```
 
-## Technical Details
+## 技术细节
 
-* **Zero Dependencies**: Uses Python's built-in `urllib.request` and `json` modules. No `pip install` or `venv` required.
-* **Security**:
-* Defaults to secure SSL context (`verify_ssl: true`).
-* Requires explicit configuration to bypass certificate checks.
+* **无依赖项**：仅使用 Python 的内置模块 `urllib.request` 和 `json`。无需执行 `pip install` 或 `venv` 操作。
+* **安全性**：
+  - 默认使用安全的 SSL 环境（`verify_ssl: true`）。
+  - 如需绕过证书检查，需要明确进行配置。
 
+## 故障排除
 
-
-## Troubleshooting
-
-* **[SSL: CERTIFICATE_VERIFY_FAILED]**: If you are behind a corporate proxy or using self-signed certificates, add `"verify_ssl": false` to your config.
-* **Room Not Found**: Ensure the room name matches the key in your `openclaw.json` exactly (case-sensitive).
-* **Invalid URL**: Verify the webhook URL starts with `https://hook.dooray.com/services/`.
+* **[SSL: CERTIFICATE_VERIFY_FAILED]**：如果您位于企业代理后面或使用自签名证书，请在配置文件中添加 `"verify_ssl": false`。
+* **房间未找到**：请确保房间名称与 `openclaw.json` 中的键完全匹配（区分大小写）。
+* **URL 无效**：请确认 Webhook URL 以 `https://hook.dooray.com/services/` 开头。
 
 ```
 

@@ -1,33 +1,33 @@
 ---
 name: hubspot
-description: HubSpot CRM and CMS API integration for contacts, companies, deals, owners, and content management.
+description: HubSpot CRM与CMS的API集成，支持联系人（Contacts）、公司（Companies）、交易（Deals）、负责人（Owners）以及内容管理（Content Management）的功能。
 metadata: {"clawdbot":{"secrets":["HUBSPOT_ACCESS_TOKEN"]}}
 ---
 
-# HubSpot Skill
+# HubSpot 技能
 
-Interact with HubSpot CRM and CMS via the REST API.
+通过 REST API 与 HubSpot 客户关系管理（CRM）和内容管理系统（CMS）进行交互。
 
-## Setup
+## 设置
 
-Set your HubSpot Private App access token:
+设置您的 HubSpot 私有应用访问令牌：
 ```
 HUBSPOT_ACCESS_TOKEN=pat-na2-xxxxx
 ```
 
-## API Base
+## API 基础
 
-All endpoints use: `https://api.hubapi.com`
+所有端点使用的地址：`https://api.hubapi.com`
 
-Authorization header: `Bearer $HUBSPOT_ACCESS_TOKEN`
+授权头：`Bearer $HUBSPOT_ACCESS_TOKEN`
 
 ---
 
-## CRM Objects
+## CRM 对象
 
-### Contacts
+### 联系人
 
-**Create contact:**
+**创建联系人：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -35,13 +35,13 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts" | jq
 ```
 
-**List contacts:**
+**列出联系人：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts?limit=10" | jq
 ```
 
-**Search contacts:**
+**搜索联系人：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -49,27 +49,27 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts/search" | jq
 ```
 
-**Get contact by ID:**
+**通过 ID 获取联系人：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts/{contactId}?properties=email,firstname,lastname,phone,company" | jq
 ```
 
-**Get contact by email:**
+**通过电子邮件获取联系人：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts/{email}?idProperty=email" | jq
 ```
 
-### Companies
+### 公司
 
-**List companies:**
+**列出公司：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/companies?limit=10&properties=name,domain,industry" | jq
 ```
 
-**Search companies:**
+**搜索公司：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -77,15 +77,15 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/companies/search" | jq
 ```
 
-**Get company by ID:**
+**通过 ID 获取公司：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/companies/{companyId}?properties=name,domain,industry,numberofemployees" | jq
 ```
 
-### Deals
+### 交易
 
-**Create deal:**
+**创建交易：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -93,13 +93,13 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/deals" | jq
 ```
 
-**List deals:**
+**列出交易：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/deals?limit=10&properties=dealname,amount,dealstage,closedate" | jq
 ```
 
-**Search deals:**
+**搜索交易：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -107,15 +107,15 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/deals/search" | jq
 ```
 
-**Get deal by ID:**
+**通过 ID 获取交易：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/deals/{dealId}?properties=dealname,amount,dealstage,closedate,pipeline" | jq
 ```
 
-### Owners
+### 所有者
 
-**List owners (users):**
+**列出所有者（用户）：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/owners" | jq
@@ -123,9 +123,9 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ---
 
-## Update & Assign Owner
+## 更新与分配所有者
 
-**Update contact properties:**
+**更新联系人属性：**
 ```bash
 curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -133,7 +133,7 @@ curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts/{contactId}" | jq
 ```
 
-**Assign owner to contact:**
+**将所有者分配给联系人：**
 ```bash
 curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -141,7 +141,7 @@ curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/objects/contacts/{contactId}" | jq
 ```
 
-**Assign owner to deal:**
+**将所有者分配给交易：**
 ```bash
 curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -151,21 +151,21 @@ curl -s -X PATCH -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ---
 
-## Associations
+## 关联关系
 
-**Get associated contacts for a company:**
+**获取公司的关联联系人：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v4/objects/companies/{companyId}/associations/contacts" | jq
 ```
 
-**Get associated deals for a contact:**
+**获取联系人的关联交易：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v4/objects/contacts/{contactId}/associations/deals" | jq
 ```
 
-**Create association (deal to contact):**
+**创建关联关系（交易到联系人）：**
 ```bash
 curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
@@ -173,28 +173,28 @@ curl -s -X POST -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v4/associations/deals/contacts/batch/create" | jq
 ```
 
-Common association type IDs:
-- 3: Deal to Contact
-- 5: Deal to Company
-- 1: Contact to Company
+常见的关联类型 ID：
+- 3：交易到联系人
+- 5：交易到公司
+- 1：联系人到公司
 
 ---
 
-## Properties (Schema)
+## 属性（数据结构）
 
-**List contact properties:**
+**列出联系人属性：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/properties/contacts" | jq '.results[].name'
 ```
 
-**List company properties:**
+**列出公司属性：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/properties/companies" | jq '.results[].name'
 ```
 
-**List deal properties:**
+**列出交易属性：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/crm/v3/properties/deals" | jq '.results[].name'
@@ -204,23 +204,23 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ## CMS
 
-### Pages
+### 页面
 
-**List site pages:**
+**列出网站页面：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/cms/v3/pages/site-pages?limit=10" | jq
 ```
 
-**List landing pages:**
+**列出登录页面：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/cms/v3/pages/landing-pages?limit=10" | jq
 ```
 
-### Domains
+### 域名
 
-**List domains:**
+**列出域名：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/cms/v3/domains" | jq
@@ -228,15 +228,15 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ---
 
-## Files
+## 文件
 
-**List files:**
+**列出文件：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/files/v3/files?limit=10" | jq
 ```
 
-**Search files:**
+**搜索文件：**
 ```bash
 curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
   "https://api.hubapi.com/files/v3/files/search?name=logo" | jq
@@ -244,28 +244,28 @@ curl -s -H "Authorization: Bearer $HUBSPOT_ACCESS_TOKEN" \
 
 ---
 
-## Search Operators
+## 搜索操作符
 
-For search endpoints, use these operators in filters:
+在搜索端点中，可以使用以下操作符作为过滤器：
 
-| Operator | Description |
+| 操作符 | 描述 |
 |----------|-------------|
-| `EQ` | Equal to |
-| `NEQ` | Not equal to |
-| `LT` | Less than |
-| `LTE` | Less than or equal |
-| `GT` | Greater than |
-| `GTE` | Greater than or equal |
-| `CONTAINS_TOKEN` | Contains word |
-| `NOT_CONTAINS_TOKEN` | Does not contain word |
-| `HAS_PROPERTY` | Has a value |
-| `NOT_HAS_PROPERTY` | Does not have a value |
+| `EQ` | 等于 |
+| `NEQ` | 不等于 |
+| `LT` | 小于 |
+| `LTE` | 小于或等于 |
+| `GT` | 大于 |
+| `GTE` | 大于或等于 |
+| `CONTAINS_TOKEN` | 包含单词 |
+| `NOT_CONTAINS_TOKEN` | 不包含单词 |
+| `HAS_PROPERTY` | 具有该属性 |
+| `NOT_HAS_PROPERTY` | 不具有该属性 |
 
 ---
 
-## PowerShell Examples
+## PowerShell 示例
 
-For Windows/PowerShell, use Invoke-RestMethod:
+在 Windows/PowerShell 中，使用 `Invoke-RestMethod` 方法：
 
 ```powershell
 $headers = @{ 
@@ -293,9 +293,9 @@ Invoke-RestMethod -Method POST -Uri "https://api.hubapi.com/crm/v3/objects/conta
 
 ---
 
-## Notes
+## 注意事项
 
-- Full CRUD operations supported with appropriate scopes
-- Rate limits: 100 requests per 10 seconds for private apps
-- Pagination: Use `after` parameter from `paging.next.after` for next page
-- Portal ID is in the record URL: `https://app-na2.hubspot.com/contacts/{portalId}/record/...`
+- 支持完整的 CRUD 操作（创建、读取、更新、删除），具体取决于权限范围。
+- 私有应用的请求速率限制为每 10 秒 100 次请求。
+- 分页：使用 `paging.next.after` 参数来获取下一页。
+- 门户 ID 存在于记录 URL 中，例如：`https://app-na2.hubspot.com/contacts/{portalId}/record/...`

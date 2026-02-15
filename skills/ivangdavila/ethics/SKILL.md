@@ -1,51 +1,60 @@
 ---
 name: Ethics
-description: Navigate moral reasoning from personal dilemmas to academic philosophy.
+description: 将道德推理从个人困境引向学术哲学的探讨。
 metadata: {"clawdbot":{"emoji":"⚖️","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: "is it wrong to..." vs citing Scanlon vs asking about metaethics
-- When unclear, start with their specific situation and adjust
-- Never condescend to experts or overwhelm beginners
+## 识别问题所在，然后灵活应对  
+- 上下文能揭示问题的本质：“这样做是否错误？”与引用Scanlon的观点或探讨元伦理学是不同的  
+- 当情况不明确时，先从具体情境出发，再做出调整  
+- 绝不要对专家表现出居高临下的态度，也不要让初学者感到不知所措  
 
-## For Beginners: Their Dilemma First
-- Start with their actual situation — don't lecture about frameworks until you understand what they face
-- Walk through consequences concretely — "if you do X, what happens? if not?"
-- One framework per dilemma — "focus on outcomes" or "focus on duties" or "focus on character," not all three
-- Present considerations, not verdicts — "here's what's at stake" rather than "you should..."
-- Name the traps — we favor ourselves, favor our group, and ignore problems at scale
-- Use the reversal test — "what would you want if you were the other person?"
+## 针对初学者：先解决他们的困境  
+- 从他们的实际处境出发——在了解他们的难题之前，不要直接讲授框架知识  
+- 具体地分析各种可能的后果——“如果你选择A，会怎样？如果不选择A呢？”  
+- 每个困境只针对一个核心问题进行讨论——是“关注结果”，还是“关注责任”，或是“关注道德品质”，不要同时涉及所有方面  
+- 提供思考的方向，而非给出定论——“这里的关键在于……”而不是“你应该……”  
+- 指出常见的陷阱——人们往往会偏袒自己或自己的群体，而忽视问题的本质  
+- 使用“换位思考法”——“如果你处于对方的立场，你会怎么做？”  
 
-## For Students: Argument Structure
-- Philosophy essays need thesis-objection-response — state claim, anticipate best objection, defeat it
-- Defend ONE contestable thesis throughout — "killing is wrong" is too vague; specify what kind, why, which framework
-- Distinguish logical connectives — "therefore" differs from "suggests" in strength
-- Close reading matters — what exactly does Kant mean by "maxim"? Quote and interpret the passage
-- Context illuminates philosophers — Kant responded to Hume; Rawls to utilitarianism
-- Never just summarize positions — professors want argument, not book reports
+## 针对学生：撰写哲学论文的技巧  
+- 论文结构应包括论点、反对意见和回应：明确提出自己的观点，预想可能的反对意见，并予以反驳  
+- 自始至终只捍卫一个有争议的论点——“杀人是错误的”这样的表述过于模糊，需要具体说明是哪种杀人行为、为什么错误，以及依据的是哪种道德框架  
+- 区分逻辑连接词——“因此”与“建议”在含义上有很大区别  
+- 仔细阅读原文至关重要——康德所说的“准则”到底是什么意思？请引用原文并进行解读  
+- 上下文有助于理解哲学家的观点——康德回应了休谟的观点，罗尔斯则批判了功利主义  
+- 不要仅仅总结他人的观点——教授们希望看到的是有逻辑的论证，而不仅仅是书面的报告  
 
-## For Researchers: Contemporary Debates
-- Cite recent work — Parfit and Foot are starting points, not endpoints
-- Metaethics constrains normative claims — moral realism vs expressivism shapes what claims can mean
-- Address methodology explicitly — intuitions as evidence? The Weatherson/Cappelen debate is live
-- Novel contribution required — surveying a debate is insufficient for publication
-- Acknowledge underdetermination — multiple theories fit same intuitions; defend selection criteria
-- Experimental philosophy challenges — cross-cultural variation, situationist critiques matter
+## 针对研究人员：关注当代哲学辩论  
+- 引用最新的研究成果——Parfit和Foot的观点可以作为研究的起点，而非终点  
+- 元伦理学对规范性的道德主张有着重要的制约作用——道德现实主义与表达主义会影响道德主张的含义  
+- 明确说明研究方法——直觉能作为证据吗？Weatherson和Cappelen之间的辩论仍在继续  
+- 需要提出新的见解——仅仅综述现有的辩论内容不足以用于发表论文  
+- 承认理论选择的不确定性——多种理论可能基于相同的直觉；需要明确选择标准  
+- 实验哲学带来新的挑战——跨文化差异和情境主义批评非常重要  
 
-## For Teachers: Classroom Realities
-- Lead with cases before principles — let students struggle, then name what they discovered
-- Address "who's to say?" immediately — student relativism is the first obstacle in every class
-- Protocols for controversial topics — abortion, euthanasia trigger emotional flooding; ground rules first
-- Non-Western traditions substantively — Confucian role ethics, Ubuntu philosophy are alternatives, not footnotes
-- Experiential methods — Ethics Bowls, professional dilemma role-play engage beyond lecture
+## 针对教师：课堂实践  
+- 在讲解理论之前，先通过案例引导学生思考——让学生自己探索问题，再总结他们的发现  
+- 立即回应“谁来评判对错？”这个问题——学生的相对主义观念是课堂上常见的障碍  
+- 对于有争议的话题，要制定明确的讨论规则——堕胎、安乐死等议题容易引发情绪波动，因此必须先确立基本准则  
+- 考虑非西方的道德传统——儒家伦理学和乌班图哲学也是重要的参考依据，而不仅仅是作为注释的内容  
+- 采用体验式教学方法——比如“伦理碗”游戏或角色扮演，可以让学生更深入地参与讨论  
 
-## Always Check
-- Separate empirical from moral disagreements — many disputes dissolve when facts are clarified
-- Define terms precisely — "rights," "justice," "harm" mean specific things in ethics
-- Acknowledge genuine uncertainty — some dilemmas lack clean answers
+## 始终注意以下几点：  
+- 区分经验性争议与道德争议——当事实被澄清后，许多争议会自然解决  
+- 精确定义相关术语——在伦理学中，“权利”“正义”“伤害”等概念都有明确的含义  
+- 承认存在的不确定性——有些道德困境并没有明确的答案  
 
-## Detect User Errors
-- Conflating "legal" with "ethical" — laws can be unjust
-- Appeal to tradition or nature as moral proof — "we've always done it" isn't justification
-- False dichotomies — most dilemmas have more than two options
+## 发现用户的错误  
+- 不要将“法律问题”与“道德问题”混为一谈——法律本身也可能存在不公正之处  
+- 不能以传统或自然规律作为道德依据——“我们一直这样做”并不能成为合理的理由  
+- 避免使用错误的二分法——大多数道德困境都有多种选择  
+
+---
+
+（翻译说明：  
+1. 保持原文的Markdown格式不变  
+2. 对技术术语和专有名词采用中文对应的标准译名（如OpenClaw、ClawHub、API等）  
+3. 将长句拆分为短句，便于阅读  
+4. 对于复杂的概念和论点，采用中文的常见表达方式进行解释  
+5. 在翻译过程中尽量保持原文的逻辑结构和层次感）

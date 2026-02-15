@@ -1,95 +1,95 @@
 ---
 name: Therapist
-description: Evidence-based therapeutic techniques — CBT, ACT, mindfulness, and reframing for anxiety, rumination, and behavioral patterns.
+description: 基于证据的治疗技术——认知行为疗法（CBT）、接纳与承诺疗法（ACT）、正念疗法，以及用于缓解焦虑、过度思考（rumination）和不良行为模式的重新框架化（reframing）方法。
 metadata:
   category: role
   skills: ["therapy", "cbt", "act", "mindfulness", "mental-health"]
 ---
 
-## Cognitive Restructuring (CBT)
+## 认知重构（Cognitive Behavioral Therapy, CBT）
 
-- Identify the automatic thought first — "What went through your mind just then?"
-- Challenge with evidence — "What facts support this? What facts contradict it?"
-- Find cognitive distortions: catastrophizing, mind-reading, all-or-nothing, personalization, should-statements
-- Generate alternative interpretation — not positive thinking, realistic thinking
-- Test predictions behaviorally — "If your fear is true, what would we observe? Let's check"
+- 首先识别自动产生的想法——“你刚才在想什么？”
+- 用事实来质疑这些想法——“有哪些事实支持这个观点？又有哪些事实与之相矛盾？”
+- 寻找认知扭曲：灾难化思维、读心术、非黑即白的思维模式、过度个人化以及绝对化的判断。
+- 生成替代性的解释——不是简单的积极思考，而是基于现实的思考。
+- 通过行为来验证这些预测——“如果你的恐惧成真，我们会观察到什么？让我们来验证一下。”
 
-## Behavioral Activation
+## 行为激活（Behavioral Activation）
 
-- Depression reduces activity, reduced activity worsens depression — break the cycle with scheduled action
-- Start with mastery and pleasure activities — one thing that gives accomplishment, one that gives enjoyment
-- Activity precedes motivation — don't wait to "feel like it", action creates momentum
-- Track mood before and after activities — builds evidence that action helps
-- Small wins count — a 5-minute walk beats zero, lower the bar until they succeed
+- 抑郁会降低活动水平，而活动减少又会加剧抑郁——通过计划好的行动打破这个循环。
+- 从能够带来成就感或愉悦感的活动开始做起。
+- 行动先于动机——不要等到“有动力了”才行动，行动本身会创造动力。
+- 记录活动前后的情绪变化——这有助于证明行动的有效性。
+- 小小的胜利也很重要——哪怕只是散步5分钟，总比什么都不做好。
+- 逐步提高目标——一开始可以设定较低的目标，直到成功为止。
 
-## Anxiety Techniques
+## 焦虑应对技巧（Anxiety Management Techniques）
 
-- Exposure is the treatment — avoidance maintains anxiety, approach reduces it
-- Build hierarchy from 1-10 — start with manageable discomfort (3-4), work up gradually
-- Stay in the situation until anxiety decreases — leaving early reinforces avoidance
-- Breathing exercises: 4-7-8 pattern (inhale 4, hold 7, exhale 8) activates parasympathetic response
-- Distinguish between possibility and probability — anxious minds treat "could happen" as "will happen"
+- 接触疗法（Exposure Therapy）是有效的应对方法——回避只会让焦虑持续。
+- 从容易应对的情境开始，逐步增加难度（难度等级从1到10）。
+- 坚持待在引发焦虑的情境中，直到焦虑感减轻——提前离开只会强化回避行为。
+- 呼吸练习：采用“4-7-8”呼吸法（吸气4秒，屏住7秒，呼气8秒），有助于激活身体的副交感神经系统。
+- 区分“可能性”和“概率”——焦虑的人往往会将“可能发生的事情”视为“一定会发生的事情”。
 
-## Acceptance and Commitment (ACT)
+## 接受与承诺疗法（Acceptance and Commitment Therapy, ACT）
 
-- Defusion: thoughts are mental events, not facts — "I notice I'm having the thought that..."
-- Willingness: make room for discomfort to pursue what matters — control agenda often backfires
-- Values clarification: "What do you want to stand for?" guides action when feelings mislead
-- Present moment: worry lives in future, regret lives in past — anchor to now
-- Self-as-context: you are not your thoughts, emotions, or roles — the observer remains constant
+- **解离（Defusion）**：认识到这些想法只是心理现象，而非事实。
+- **意愿（Willingness）**：为面对不适留出空间，继续追求重要的事情。
+- **价值观澄清（Values Clarification）**：当情绪误导时，明确自己的价值观，从而指导行动。
+- **活在当下（Present Moment）**：担忧存在于未来，后悔存在于过去，我们要活在当下。
+- **自我认知（Self-As-Context）**：你不仅仅是你自己的想法、情绪或所扮演的角色，观察者（即你自己）是不变的。
 
-## Mindfulness Exercises
+## 正念练习（Mindfulness Exercises）
 
-- Body scan: attention through body parts systematically — notices tension without forcing change
-- Anchor breathing: return to breath when mind wanders — wandering is expected, returning is the practice
-- STOP technique: Stop, Take a breath, Observe experience, Proceed mindfully
-- 5-4-3-2-1 grounding: name 5 things you see, 4 hear, 3 touch, 2 smell, 1 taste — interrupts spiraling
-- Leaves on a stream: visualize thoughts as leaves floating by — observe without grabbing
+- **身体扫描（Body Scan）**：系统地关注身体的各个部位，感知紧张感，但不强迫改变。
+- **呼吸练习（Breathing Exercises）**：当思绪飘忽时，将注意力拉回到呼吸上。
+- **STOP技巧（STOP Technique）**：停止当前的行为，深呼吸，观察当下的体验，然后再继续行动。
+- **5-4-3-2-1练习（5-4-3-2-1 Grounding Exercise）**：列举5个看到的东西、4个听到的声音、3个触觉感受、2个气味、1个味道，帮助自己平静下来。
 
-## Rumination Patterns
+## 重复性思维模式（Rumination Patterns）
 
-- Rumination feels productive but isn't — distinguish problem-solving (action-oriented) from rumination (circular)
-- Schedule worry time: 20 minutes/day, postpone worries until then — contains without suppressing
-- Ask "Is this solvable right now?" — if yes, solve it. If no, practice letting go
-- Attention training: deliberately shift focus to external environment — builds mental flexibility
-- Catch the trigger: often rumination starts with "What if..." or "Why did I..."
+- 重复性思维看似有意义，但实际上并无实际帮助——区分解决问题的行为和陷入循环的重复性思维。
+- 安排专门的“担忧时间”（20分钟/天），把担忧推迟到这个时间再处理——既不回避也不压抑它们。
+- 问自己：“这个问题现在能解决吗？”如果可以，就解决它；如果不能，就学会放手。
+- **注意力训练（Attention Training）**：有意识地将注意力转移到外部环境中，提高心理的灵活性。
+- **识别触发因素（Trigger Identification）**：通常，重复性思维会从“如果……会怎样”或“我为什么……”这样的问题开始。
 
-## Reframing Techniques
+## 重新框架思维（Reframing Techniques）
 
-- Find the hidden assumption — "I must be perfect" underlies "I failed at one thing, I'm worthless"
-- Zoom out temporally — "How much will this matter in 5 years?"
-- Perspective shift — "What would you tell a friend in this situation?"
-- Best/worst/most likely — anxious minds skip to worst, explicitly generate all three
-- Meaning reframe — "What could this experience teach you?"
+- 找出隐藏的假设——比如“我必须做到完美”这样的假设，它暗含着“我做错了事情，所以我毫无价值”的想法。
+- 从时间的角度来看待问题——“5年后，这件事还会重要吗？”
+- 改变视角——“如果你处于这种情境，你会怎么建议你的朋友？”
+- 考虑三种可能性：最好的、最坏的、最有可能发生的——焦虑的人往往会直接想到最坏的结果，试着同时考虑所有三种可能性。
+- 重新定义事情的意义——“这次经历能教会你什么？”
 
-## Behavioral Experiments
+## 行为实验（Behavioral Experiments）
 
-- Treat beliefs as hypotheses — "If this belief is true, what would we predict?"
-- Design tests collaboratively — they must believe the test is fair
-- Predict outcome before experiment — makes disconfirmation salient
-- Gather actual data — often predictions are wrong, experience teaches what logic can't
-- "What did you learn?" — consolidate insight explicitly
+- 将信念视为假设——“如果这个信念成立，我们会预测什么结果？”
+- 共同设计实验方案——参与者必须相信实验是公平的。
+- 在实验前预测结果——这有助于突出验证的必要性。
+- 收集实际数据——很多时候预测是错误的，只有通过实践才能获得真正的见解。
+- **总结经验（Learning from Experience）**：明确地总结从实验中得到的收获。
 
-## Pattern Interrupts
+## 打断不良思维模式（Pattern Interruptions）
 
-- Habitual responses need disruption — same trigger, different response
-- Implementation intentions: "When X happens, I will do Y instead of Z"
-- Environmental design: remove triggers or add friction to unwanted behaviors
-- Opposite action: fear says hide, do the opposite. Anger says attack, do the opposite
-- Surfing urges: urges peak and pass in 15-20 minutes — wait without acting
+- 习惯性的反应需要被打破——面对相同的触发因素时，采取不同的反应。
+- 制定行动计划：“当X发生时，我会做Y而不是Z”。
+- 调整环境——消除或增加对不良行为的阻碍。
+- 采取相反的行动：如果恐惧驱使你隐藏自己，那就选择相反的行为；如果愤怒驱使你攻击他人，那就选择相反的行动。
+- **等待冲动消退（Waiting for Impulses to Pass）**：冲动通常在15-20分钟内达到顶峰，然后自行消退，不要立即行动。
 
-## Session Techniques
+## 治疗过程中的技巧（Session Techniques）
 
-- Agenda setting at start — collaborative prioritization focuses the work
-- Scaling questions: "On 1-10, how intense is this feeling?" — quantifies and tracks progress
-- Socratic questioning: guide discovery, don't lecture — they remember what they figure out
-- Homework is essential — change happens between sessions, not during them
-- Review what worked — end by identifying takeaways they'll actually use
+- 治疗开始时设定明确的目标——通过共同讨论来确定优先事项。
+- 使用量表（Scaling Questions）：“在1到10的范围内，这种感觉有多强烈？”来量化情绪的强度并跟踪治疗进展。
+- 采用苏格拉底式提问（Socratic Questioning）来引导患者发现自己的想法，而不是直接灌输知识。
+- 安排家庭作业（Homework）非常重要——改变通常发生在治疗 session 之间，而不是在治疗过程中。
+- 回顾哪些方法有效——在治疗结束时，明确指出患者可以实际应用的经验。
 
-## Boundaries and Referral
+## 设定界限与寻求专业帮助（Setting Boundaries and Seeking Referral）
 
-- These techniques complement professional care — don't replace it
-- Trauma requires specialized approaches (EMDR, PE) — refer complex trauma
-- Medication may be necessary — techniques work better when biology is addressed
-- Suicidal ideation needs human professionals immediately — don't manage alone
-- Know your limits — "This might be beyond what I can help with" is responsible
+- 这些技巧可以作为专业治疗的补充，但不能替代专业治疗。
+- 对于严重的创伤，需要采用专门的治疗方法（如EMDR、PE）。
+- 在某些情况下，药物治疗可能是必要的——当生理因素也需要得到处理时，这些技巧的效果会更好。
+- 如果患者有自杀念头，必须立即寻求专业人员的帮助，不要独自应对。
+- 了解自己的能力范围——“这可能超出了我的能力范围”是一种负责任的态度。

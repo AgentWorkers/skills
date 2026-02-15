@@ -1,21 +1,21 @@
 ---
 name: uk-prayer-times
 version: 1.0.0
-description: Get instant, accurate Islamic prayer times for any UK location. Auto-detects your city or accepts any UK location name (cities, towns, boroughs). Handles typos with smart fuzzy search. Shows Fajr, Sunrise, Dhuhr, Asr, Maghrib, and Isha times in 12-hour format. Uses ISNA calculation method (UK standard) via Aladhan API. Perfect for UK Muslims checking daily salah times.
+description: 获取英国任何地点的即时、准确的伊斯兰教祷告时间。系统会自动检测您的所在城市，或接受您输入的任何英国地点名称（包括城市、城镇、行政区）。通过智能模糊搜索功能处理拼写错误。显示晨礼（Fajr）、日出（Sunrise）、正午（Dhuhr）、下午（Asr）、日落（Maghrib）和宵礼（Isha）的时间，采用12小时制格式。使用Aladhan API和ISNA计算方法（英国标准）进行时间计算。非常适合英国的穆斯林查询每日祷告时间。
 ---
 
-# UK Prayer Times
+# 英国祈祷时间
 
-Get instant, accurate Islamic prayer times for any UK location. Auto-detects your city or accepts any UK location name (cities, towns, boroughs). Handles typos with smart fuzzy search. Shows Fajr, Sunrise, Dhuhr, Asr, Maghrib, and Isha times in 12-hour format. Uses ISNA calculation method (UK standard) via Aladhan API. Perfect for UK Muslims checking daily salah times.
+获取英国任何地点的即时、准确的伊斯兰祈祷时间。系统会自动检测您的所在城市，或接受您输入的任何英国地点名称（如城市、城镇、行政区）。通过智能模糊搜索功能处理拼写错误。以12小时制显示晨礼（Fajr）、日出时间（Sunrise）、正午礼（Dhuhr）、下午礼（Asr）、日落礼（Maghrib）和宵礼（Isha）的时间。使用Aladhan API的ISNA计算方法（英国标准），非常适合英国穆斯林查询每日祈祷时间。
 
-## Usage
+## 使用方法
 
-**Gives prayer times in the UK based on your location:**
+**根据您的位置获取英国的祈祷时间：**
 ```
 prayer times
 ```
 
-**Specify any UK city:**
+**指定英国的某个城市：**
 ```
 prayer times Birmingham
 prayer times Leicester
@@ -23,25 +23,25 @@ prayer times Woolwich
 prayer times Tower Hamlets
 ```
 
-**Specific prayers:**
+**查询特定类型的祈祷时间：**
 ```
 Asr in Leicester
 Maghrib in Leicester
 Fajr in Woolwich
 ```
 
-Works with typos: "Leicestr", "Bimringham" - fuzzy search finds it!
+系统能够识别拼写错误，例如“Leicestr”或“Bimringham”等名称也能被正确搜索到！
 
-## Features
+## 主要特点
 
-✅ Auto-detects your location (via IP)
-✅ Works for ANY UK city, town, or area
-✅ Handles typos and misspellings
-✅ Shows location clearly at top of results
-✅ 12-hour format (AM/PM)
-✅ Uses ISNA calculation method (UK standard)
+✅ 通过IP地址自动检测您的位置  
+✅ 支持英国的任何城市、城镇或地区  
+✅ 能够处理拼写错误  
+✅ 结果顶部会清晰显示地点名称  
+✅ 采用12小时制（AM/PM）  
+✅ 使用ISNA计算方法（英国标准）  
 
-## Examples
+## 示例  
 ```bash
 python uk_prayer_times.py
 # Auto-detects and shows times
@@ -54,19 +54,19 @@ python uk_prayer_times.py Woolwich
 
 python uk_prayer_times.py "Tower Hamlets"
 # Shows times for Tower Hamlets (multi-word works!)
-```
+```  
 
-## Data Sources
+## 数据来源  
 
-- **Prayer Times:** Aladhan API (ISNA method)
+- **祈祷时间数据来源：** Aladhan API（ISNA计算方法）  
 
-## Permissions
+## 权限要求  
 
-- Internet access (to fetch location and prayer times)
-- No file system access
-- No personal data stored
+- 需要互联网连接以获取位置信息和祈祷时间  
+- 不需要访问文件系统  
+- 不会存储任何个人数据  
 
-## Output Format
+## 输出格式  
 ```
 ==================================================
 🕌 PRAYER TIMES - BIRMINGHAM
@@ -81,17 +81,17 @@ Maghrib: 05:08 PM
 Isha:    06:44 PM
 
 ==================================================
-```
+```  
 
-Location name is displayed clearly at top so you always know which location's times are shown.
+地点名称会清晰地显示在页面顶部，让您随时知道当前显示的是哪个地点的祈祷时间。  
 
-## Perfect For
+## 适用人群  
 
-- UK Muslims checking daily prayer times
-- Travelers wanting local times
-- Anyone who wants fast, accurate salah times
-- Works with any UK location - cities, towns, boroughs, neighborhoods
+- 需要查询每日祈祷时间的英国穆斯林  
+- 希望获取当地祈祷时间的旅行者  
+- 需要快速、准确祈祷时间信息的用户  
+- 适用于英国的任何地点（城市、城镇、行政区、社区）  
 
-## Version
+## 版本信息  
 
-1.0.0 - Initial release
+1.0.0 – 初始版本

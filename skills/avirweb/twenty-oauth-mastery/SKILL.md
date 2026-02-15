@@ -1,12 +1,12 @@
-# Twenty CRM OAuth Mastery Skill
+# Twenty CRM OAuth 精通技能
 
-**Author**: Generated from extensive OAuth debugging sessions in OpenCode  
-**Last Updated**: 2026-02-08  
-**Version**: 1.0
+**作者**：基于在 OpenCode 中进行的广泛 OAuth 调试会话生成  
+**最后更新**：2026-02-08  
+**版本**：1.0  
 
 ---
 
-## Skill Metadata
+## 技能元数据  
 
 ```yaml
 name: twenty-oauth-mastery
@@ -32,42 +32,41 @@ keywords:
   - token-refresh
   - sync-integration
   - domain-restriction
-```
+```  
 
 ---
 
-## Quick Start
+## 快速入门  
 
-### When to Use This Skill
+### 何时使用此技能  
 
-You should use this skill when working on:
+在以下情况下应使用此技能：  
+✅ **实现**新的 OAuth 提供者  
+✅ **修复** OAuth 登录问题  
+✅ **设置** OAuth 后的自动 Gmail/日历同步  
+✅ **调试** 令牌刷新失败  
+✅ **配置** 域名限制  
+✅ **排查** 重定向循环问题  
 
-✅ **Implementing** new OAuth providers  
-✅ **Fixing** OAuth login issues  
-✅ **Setting up** automatic Gmail/Calendar sync after OAuth  
-✅ **Debugging** token refresh failures  
-✅ **Configuring** domain restrictions  
-✅ **Troubleshooting** redirect loops  
+### 常见问题的快速参考  
 
-### Quick Reference for Common Issues
-
-| Issue | File to Check | Quick Fix |
-|-------|---------------|-----------|
-| Redirect loop | `auth.service.ts` | Rebuild: `npx nx build twenty-server` |
-| .co domain blocked | `google-auth.controller.ts` | Add to allowlist: `['company.com', 'company.co']` |
-| Sync not starting | `google.auth.strategy.ts` | Return tokens in validate() |
-| Cookie not readable | Controller cookie settings | Set `httpOnly: false` |
-| Infinite loop | `SignInUpGlobalScopeFormEffect.tsx` | Track processed token signatures |
+| 问题 | 需检查的文件 | 快速解决方法 |  
+|-------|---------------|-----------|  
+| 重定向循环 | `auth.service.ts` | 重新构建：`npx nx build twenty-server` |  
+| .co 域名被阻止 | `google-auth.controller.ts` | 添加到允许列表：`['company.com', 'company.co']` |  
+| 同步未启动 | `google.auth.strategy.ts` | 在 `validate()` 方法中返回令牌 |  
+| Cookie 无法读取 | 控制器 Cookie 设置 | 将 `httpOnly` 设置为 `false` |  
+| 无限循环 | `SignInUpGlobalScopeFormEffect.tsx` | 跟踪已处理的令牌签名 |  
 
 ---
 
-## Core Knowledge
+## 核心知识  
 
-### 1. Twenty CRM OAuth Architecture
+### 1. Twenty CRM OAuth 架构  
 
-**Key Files**: `twenty/packages/twenty-server/src/engine/core-modules/auth/`
+**关键文件**：`twenty/packages/twenty-server/src/engine/core-modules/auth/`  
 
-**Structure**:
+**结构**：  
 ```
 auth/
 ├── strategies/         # Passport strategies (Google, Microsoft)
@@ -75,13 +74,13 @@ auth/
 ├── services/          # Auth logic, sync setup, token management
 ├── guards/            # Auth guards and validation
 └── utils/             # Scope configuration, utilities
-```
+```  
 
 ---
 
-### 2. Critical Code Patterns
+### 2. 关键代码模式  
 
-#### Passport Strategy Pattern (MUST FOLLOW)
+#### Passport 策略模式（必须遵循）  
 
 ```typescript
 @Injectable()
@@ -112,41 +111,40 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     };
   }
 }
-```
+```  
 
-**Why This Matters**:
-- `passReqToCallback: true`: Enables access to request state
-- Token preservation: Required for OAuthSyncService to work
+**为什么这很重要**：  
+- `passReqToCallback: true`：允许访问请求状态  
+- 令牌保存：对于 OAuthSyncService 的正常运行是必需的  
 
 ---
 
-### 3. Common Issues & Solutions
+### 3. 常见问题及解决方案  
 
-#### Issue 1: Redirect Loop After OAuth
+#### 问题 1：OAuth 后出现重定向循环  
 
-**Symptoms**: OAuth completes but user stuck on welcome page
+**症状**：OAuth 完成后用户仍停留在欢迎页面  
 
-**Root Causes**:
+**根本原因**：  
+1. **后端未编译**：源代码有修复，但容器运行的是旧版本的 JavaScript  
 
-1. **Backend not compiled**: Source has fix, container running old JavaScript
-  
-   **Fix**:
-   ```bash
+**解决方法**：  
+```bash
    npx nx build twenty-server
    docker restart fratres-twenty
-   ```
+   ```  
 
-2. **Missing isSingleDomainMode**: Redirect logic not in compiled code
+2. **缺少 `isSingleDomainMode`：重定向逻辑未包含在编译后的代码中  
 
-   **Check**:
-   ```bash
+**检查**：  
+```bash
    docker exec fratres-twenty cat /app/dist/engine/core-modules/auth/services/auth.service.js | grep isSingleDomainMode
-   ```
+   ```  
 
-3. **Cookie domain mismatch**: Cookie not accessible
+3. **Cookie 域名不匹配**：Cookie 无法访问  
 
-   **Fix**:
-   ```typescript
+**解决方法**：  
+```typescript
    // auth.service.ts - Remove explicit domain attribute
    res.cookie('tokenPair', JSON.stringify(authTokens), {
      path: '/',
@@ -154,27 +152,26 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
      sameSite: 'lax',
      httpOnly: false, // 🔴 Must be false for JavaScript access
    });
-   ```
+   ```  
 
 ---
 
-#### Issue 2: Domain Enforcement Blocking .co Users
+#### 问题 2：.co 域名的用户被拒绝登录  
 
-**Symptoms**: `@company.co` rejected, only `@company.com` allowed
+**症状**：仅允许访问 `.com` 域名的用户  
 
-**Three Places to Fix**:
-
-1. **Google Strategy** (`google.auth.strategy.ts`):
-   ```typescript
+**三个可能的解决方法**：  
+1. **Google 策略**（`google.auth.strategy.ts`）：  
+```typescript
    // ❌ WRONG - Hardcoded
    hd: 'company.com'
    
    // ✅ CORRECT - Remove hd parameter
    // (no hd parameter)
-   ```
+   ```  
 
-2. **Controller** (`google-auth.controller.ts`):
-   ```typescript
+2. **控制器**（`google-auth.controller.ts`）：  
+```typescript
    // ❌ WRONG - Hardcoded check
    if (hostedDomain !== 'company.com') { throw ... }
    
@@ -185,23 +182,23 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
        `Only ${allowedOAuthDomains.map(d => `@${d}`).join(', ')} allowed`
      );
    }
-   ```
+   ```  
 
-3. **Database** (`workspaceMetadata` table):
-   ```sql
+3. **数据库**（`workspaceMetadata` 表）：  
+```sql
    INSERT INTO "workspaceMetadata" ("id", "workspaceId", "key", "value", "createdAt", "updatedAt")
    VALUES (gen_random_uuid(), 'workspace-id', 'approvedAccessDomains', '["company.com", "company.co"]', NOW(), NOW());
-   ```
+   ```  
 
 ---
 
-#### Issue 3: Automatic Sync Not Triggered
+#### 问题 3：自动同步未触发  
 
-**Symptoms**: User logs in but connected account/sync channels not created
+**症状**：用户登录后，关联的账户或同步渠道未创建  
 
-**Root Cause**: Tokens lost in validate() method
+**根本原因**：`validate()` 方法中丢失了令牌  
 
-**Fix**:
+**解决方法**：  
 ```typescript
 // google.auth.strategy.ts validate()
 async validate(request, accessToken, refreshToken, profile) {
@@ -215,24 +212,23 @@ async validate(request, accessToken, refreshToken, profile) {
     refreshToken,
   };
 }
-```
+```  
 
-**Additional Checks**:
-
-1. Verify `auth.service.ts` calls `oauthSyncService.setupSyncForOAuthUser()` after login
-2. Verify tokens are passed to sync service
-3. Check Google scopes include `gmail.readonly` and `calendar.events`
-4. Verify `CALENDAR_PROVIDER_GOOGLE_ENABLED=true`
+**其他检查**：  
+1. 确认 `auth.service.ts` 在登录后调用了 `oauthSyncService.setupSyncForOAuthUser()`  
+2. 确认令牌已传递给同步服务  
+3. 确认 Google 的权限范围包含 `gmail.readonly` 和 `calendar.events`  
+4. 确认 `CALENDAR_PROVIDER_GOOGLE_ENABLED` 为 `true`  
 
 ---
 
-#### Issue 4: Frontend Token Processing Loop
+#### 问题 4：前端令牌处理循环  
 
-**Symptoms**: `SignInUpGlobalScopeFormEffect` runs repeatedly, infinite API calls
+**症状`：`SignInUpGlobalScopeFormEffect` 不停运行，导致 API 调用无限次  
 
-**Root Cause**: Same token processed multiple times
+**根本原因**：同一个令牌被多次处理  
 
-**Fix**:
+**解决方法**：  
 ```typescript
 // SignInUpGlobalScopeFormEffect.tsx
 useEffect(() => {
@@ -253,18 +249,17 @@ useEffect(() => {
     setAuthTokens(tokenPairFromUrl);
   }
 }, []);
-```
+```  
 
 ---
 
-### 4. OAuth Sync Integration
+### 4. OAuth 同步集成  
 
-**When to Use**: Users should have Gmail/Calendar auto-connected after OAuth login
+**使用场景**：用户应在 OAuth 登录后自动连接到 Gmail/日历  
 
-**Implementation**:
-
-1. **Create OAuthSyncService**:
-   ```typescript
+**实现步骤**：  
+1. **创建 OAuthSyncService**：  
+```typescript
    async setupSyncForOAuthUser(input: {
      workspaceId: string;
      userId: string;
@@ -279,10 +274,9 @@ useEffect(() => {
      // 3. Create calendar channel (if enabled)
      // 4. Queue initial sync jobs
    }
-   ```
-
-2. **Integrate into AuthService**:
-   ```typescript
+   ```  
+2. **集成到 AuthService**：  
+```typescript
    // auth.service.ts:signInUpWithSocialSSO()
    const { redirectUrl, authTokens } = await this.generateTokens(...);
    
@@ -304,18 +298,18 @@ useEffect(() => {
    }
    
    return { redirectUrl, authTokens };
-   ```
+   ```  
 
-**Critical**:
-- Use try/catch to prevent sync setup from failing login
-- Check for existing channels (prevent duplication)
-- Only run for specific providers/domains if needed
+**注意事项**：  
+- 使用 `try/catch` 防止同步设置过程中登录失败  
+- 检查是否存在重复的同步渠道  
+- 仅在需要时为特定提供者/域名运行同步  
 
 ---
 
-### 5. Token Refresh Management
+### 5. 令牌刷新管理  
 
-**Token Refresh Pattern**:
+**令牌刷新模式**：  
 ```typescript
 async refreshTokens(refreshToken: string): Promise<ConnectedAccountTokens> {
   const oAuth2Client = new google.auth.OAuth2(clientId, clientSecret);
@@ -334,9 +328,9 @@ async refreshTokens(refreshToken: string): Promise<ConnectedAccountTokens> {
     throw parseGoogleOAuthError(error);
   }
 }
-```
+```  
 
-**Error Handling**:
+**错误处理**：  
 ```typescript
 export const parseGoogleOAuthError = (error: unknown) => {
   const gaxiosError = error as GaxiosError;
@@ -368,13 +362,13 @@ export const parseGoogleOAuthError = (error: unknown) => {
   
   return new ConnectedAccountRefreshAccessTokenException('unknown', ...);
 };
-```
+```  
 
 ---
 
-### 6. Testing Strategies
+### 6. 测试策略  
 
-#### Unit Testing (Token Refresh)
+#### 单元测试（令牌刷新）  
 ```typescript
 describe('GoogleAPIRefreshAccessTokenService', () => {
   it('should refresh token successfully', async () => {
@@ -392,9 +386,9 @@ describe('GoogleAPIRefreshAccessTokenService', () => {
     expect(result.refreshToken).toBe(mockRefreshToken); // Original preserved
   });
 });
-```
+```  
 
-#### Cookie Injection Test (Playwright)
+#### Cookie 注入测试（Playwright）  
 ```typescript
 // Test: frontend reads and processes cookie
 await context.addCookies([{
@@ -412,13 +406,13 @@ await page.goto('https://isearch.1791technology.com');
 const logs = await page.evaluate(() => window.tokenPairLogs || []);
 assert(logs.includes('tokenPairPayload from cookies: found'));
 assert(logs.includes('Setting auth tokens...'));
-```
+```  
 
 ---
 
-### 7. Configuration
+### 7. 配置  
 
-**Required Environment Variables**:
+**所需的环境变量**：  
 ```bash
 # Google OAuth
 AUTH_GOOGLE_ENABLED=true
@@ -432,61 +426,61 @@ MESSAGING_PROVIDER_GMAIL_ENABLED=true
 
 # Billing (disable for self-hosted)
 IS_BILLING_ENABLED=false
-```
+```  
 
-**Google Cloud Console**:
-- Redirect URIs: `https://yourdomain.com/auth/google/redirect`
-- Authorized Origins: `https://yourdomain.com`
-
----
-
-### 8. Deployment Checklist
-
-**Before Deploying**:
-- [ ] TypeScript source updated
-- [ ] Unit tests passing
-- [ ] Type check: `npx nx typecheck twenty-server`
-- [ ] Build: `npx nx build twenty-server`
-- [ ] Verify compiled JavaScript has changes (check dist/ folder)
-- [ ] Copy dist/ to container
-- [ ] Restart container
-- [ ] Check health: `curl -f /healthz`
-
-**After Deploying**:
-- [ ] Test OAuth flow manually
-- [ ] Check browser console
-- [ ] Verify redirect to dashboard (not welcome)
-- [ ] Check connected account in database
-- [ ] Verify sync channels created (if applicable)
+**Google Cloud 控制台**：  
+- 重定向 URI：`https://yourdomain.com/auth/google/redirect`  
+- 授权来源：`https://yourdomain.com`  
 
 ---
 
-### 9. Troubleshooting Workflow
+### 8. 部署检查清单  
 
-**Step 1: Verify Container Running New Code**
+**部署前**：  
+- [ ] TypeScript 源代码已更新  
+- [ ] 单元测试通过  
+- [ ] 使用 `npx nx typecheck twenty-server` 进行类型检查  
+- [ ] 使用 `npx nx build twenty-server` 进行构建  
+- [ ] 确认编译后的 JavaScript 有更改（检查 `dist/` 文件夹）  
+- [ ] 将 `dist/` 文件夹复制到容器中  
+- [ ] 重启容器  
+- [ ] 检查健康状态：`curl -f /healthz`  
+
+**部署后**：  
+- [ ] 手动测试 OAuth 流程  
+- [ ] 检查浏览器控制台  
+- [ ] 确认重定向到仪表板  
+- [ ] 检查数据库中是否有关联的账户  
+- [ ] 确认是否创建了同步渠道（如适用）  
+
+---
+
+### 9. 故障排除工作流程  
+
+**步骤 1：确认容器正在运行新代码**  
 ```bash
 docker ps | grep fratres-twenty
 docker exec fratres-twenty cat /app/dist/engine/core-modules/auth/services/auth.service.js | grep isSingleDomainMode
-```
+```  
 
-**Step 2: Check Google Cloud Console**
-- Redirect URIs match production URL
-- Client ID and secret correct
-- OAuth consent screen configured
+**步骤 2：检查 Google Cloud 控制台**  
+- 重定向 URI 是否与生产环境匹配  
+- 客户端 ID 和密钥是否正确  
+- OAuth 同意屏幕是否配置正确  
 
-**Step 3: Check Environment**
+**步骤 3：检查环境**  
 ```bash
 docker exec fratres-twenty env | grep AUTH_GOOGLE
 docker exec fratres-twenty env | grep CALENDAR_PROVIDER
-```
+```  
 
-**Step 4: Test OAuth Entry Point**
+**步骤 4：测试 OAuth 入口点**  
 ```bash
 curl -v https://yourdomain.com/auth/google | grep Location
 # Should redirect to accounts.google.com with correct client_id
-```
+```  
 
-**Step 5: Check Database (Sync Issues)**
+**步骤 5：检查数据库（同步问题）**  
 ```sql
 -- Check connected accounts
 SELECT id, handle, provider, "accessToken" IS NOT NULL
@@ -497,75 +491,73 @@ WHERE handle = 'user@example.com';
 SELECT id, "syncStatus"
 FROM "messageChannel"
 WHERE "connectedAccountId" = 'account-id';
-```
+```  
 
-**Step 6: Check Logs**
+**步骤 6：检查日志**  
 ```bash
 docker logs fratres-twenty --tail 100 | grep -i oauth
-```
+```  
 
 ---
 
-### 10. Common Pitfalls ❌
-
-1. **Forgetting to rebuild** - Source changes don't auto-compile
-2. **Hardcoding domains** - Use allowlists instead
-3. **Setting httpOnly: true** - Frontend can't read tokenPair cookie
-4. **Losing tokens in validate()** - Must return accessToken/refreshToken
-5. **Not preserving refresh tokens** - Google may not return new ones
-6. **Missing passReqToCallback: true** - Can't access request state
-7. **Not testing with real OAuth** - Mock tests miss edge cases
-8. **Skipping health checks** - Container running old code unnoticed
-
----
-
-## Expert Insights
-
-### When OAuth Works But Sync Doesn't
-
-**Debug Path**:
-1. Check `oauth-sync.service.ts` exists and is called
-2. Verify tokens passed through validate()
-3. Check scopes include `gmail.readonly` and `calendar.events`
-4. Verify `CALENDAR_PROVIDER_GOOGLE_ENABLED=true`
-5. Check connected account in database
-6. Verify sync channels with `syncStatus=ONGOING`
-
-**Common Fix**: Return tokens in validate() method
+### 10. 常见陷阱 ❌**  
+1. **忘记重新构建**：源代码更改不会自动编译  
+2. **硬编码域名**：使用允许列表代替  
+3. **将 `httpOnly` 设置为 `true`：前端无法读取 `tokenPair` Cookie  
+4. **在 `validate()` 方法中丢失令牌**：必须返回 `accessToken`/`refreshToken`  
+5. **未保存刷新令牌**：Google 可能不会返回新的令牌  
+6. **未设置 `passReqToCallback: true`：无法访问请求状态  
+7. **未使用真实的 OAuth 进行测试**：模拟测试会遗漏边缘情况  
+8. **跳过健康检查**：容器可能仍在运行旧代码  
 
 ---
 
-### When .co Domain Users Can't Login
+## 专家见解  
 
-**Debug Path**:
-1. Check `google.auth.strategy.ts` for hardcoded `hd` parameter
-2. Check `google-auth.controller.ts` domain validation
-3. Check `auth.service.ts` domain allowlist
-4. Check `workspaceMetadata.approvedAccessDomains` in database
+### 当 OAuth 可用但同步失败时  
 
-**Common Fixes**:
-- Remove hardcoded `hd` parameter
-- Update controller/service allowlists
-- Insert domain into database
+**调试步骤**：  
+1. 检查 `oauth-sync.service.ts` 是否存在并已被调用  
+2. 确认令牌已通过 `validate()` 方法  
+3. 确认权限范围包含 `gmail.readonly` 和 `calendar.events`  
+4. 确认 `CALENDAR_PROVIDER_GOOGLE_ENABLED` 为 `true`  
+5. 检查数据库中是否有关联的账户  
 
----
-
-### When Frontend Gets Stuck on Welcome Page
-
-**Debug Path**:
-1. Check `isSingleDomainMode` logic in `auth.service.ts`
-2. Check compiled `auth.service.js` has logic
-3. Check `computeRedirectURI` returns `AppPath.Index`
-4. Check cookie `httpOnly` attribute
-
-**Common Fixes**:
-- Rebuild backend: `npx nx build twenty-server`
-- Ensure redirect to dashboard: `AppPath.Index`
-- Set `httpOnly: false` on cookie
+**常见解决方法**：在 `validate()` 方法中返回令牌  
 
 ---
 
-## Quick Commands
+### 当 .co 域名的用户无法登录时  
+
+**调试步骤**：  
+1. 检查 `google.auth_strategy.ts` 中是否硬编码了 `hd` 参数  
+2. 检查 `google-auth.controller.ts` 中的域名验证逻辑  
+3. 检查 `auth.service.ts` 中的域名允许列表  
+4. 检查数据库中的 `workspaceMetadata.approvedAccessDomains`  
+
+**常见解决方法**：  
+- 删除硬编码的 `hd` 参数  
+- 更新控制器/服务的允许列表  
+- 将域名添加到数据库中  
+
+---
+
+### 当前端停留在欢迎页面时  
+
+**调试步骤**：  
+1. 检查 `auth.service.ts` 中的 `isSingleDomainMode` 逻辑  
+2. 检查编译后的 `auth.service.js` 是否包含相关逻辑  
+3. 检查 `computeRedirectURI` 是否返回 `AppPath.Index`  
+4. 检查 Cookie 的 `httpOnly` 属性  
+
+**常见解决方法**：  
+- 重新构建后端：`npx nx build twenty-server`  
+- 确保重定向到仪表板：`AppPath.Index`  
+- 将 Cookie 的 `httpOnly` 属性设置为 `false`  
+
+---
+
+## 快速命令  
 
 ```bash
 # Build backend
@@ -588,27 +580,26 @@ curl -f https://yourdomain.com/healthz
 
 # Test OAuth redirect
 curl -v https://yourdomain.com/auth/google
-```
+```  
 
 ---
 
-## Summary
+## 总结  
 
-This skill provides expert-level OAuth knowledge for Twenty CRM covering:
+本技能提供了关于 Twenty CRM 的高级 OAuth 知识，涵盖：  
+1. **架构**：使用 Passport 策略的 OAuth 架构  
+2. **常见问题**：5 大问题及详细的解决方法  
+3. **自动同步**：OAuth 后的 Gmail/日历同步  
+4. **令牌管理**：令牌刷新模式和错误处理  
+5. **测试**：单元测试和集成测试方法  
+6. **配置**：所需的环境变量  
+7. **部署**：详细的部署步骤  
+8. **故障排除**：系统的故障排除流程  
 
-1. **Architecture**: Twenty's OAuth using Passport strategies
-2. **Common Issues**: 5+ major issues with detailed fixes
-3. **Automatic Sync**: Gmail/Calendar sync after OAuth
-4. **Token Management**: Refresh patterns and error handling
-5. **Testing**: Unit and integration test patterns
-6. **Configuration**: Required environment variables
-7. **Deployment**: Step-by-step checklist
-8. **Troubleshooting**: Systematic workflow
-
-**Use this skill when**:
-- Implementing new OAuth provider
-- Fixing OAuth login issues
-- Setting up automatic sync integration
-- Debugging token refresh failures
-- Configuring domain restrictions
-- Troubleshooting redirect loops
+**在以下情况下使用此技能**：  
+- 实现新的 OAuth 提供者  
+- 修复 OAuth 登录问题  
+- 设置自动同步集成  
+- 调试令牌刷新失败  
+- 配置域名限制  
+- 排查重定向循环问题

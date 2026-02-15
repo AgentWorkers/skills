@@ -1,6 +1,6 @@
 ---
 name: teams-anthropic-integration
-description: Use @youdotcom-oss/teams-anthropic to add Anthropic Claude models (Opus, Sonnet, Haiku) to Microsoft Teams.ai applications. Optionally integrate You.com MCP server for web search and content extraction.
+description: 使用 @youdotcom-oss/teams-anthropic 将 Anthropic 的 Claude 模型（Opus、Sonnet、Haiku）添加到 Microsoft Teams.ai 应用程序中。可选地，可以集成 You.com MCP 服务器以实现网页搜索和内容提取功能。
 license: MIT
 compatibility: Node.js 18+, @microsoft/teams.ai
 metadata:
@@ -10,58 +10,56 @@ metadata:
   keywords: microsoft-teams,teams-ai,anthropic,claude,mcp,you.com,web-search,content-extraction
 ---
 
-# Build Teams.ai Apps with Anthropic Claude
+# 使用 Anthropic Claude 构建 Teams.ai 应用程序
 
-Use `@youdotcom-oss/teams-anthropic` to add Claude models (Opus, Sonnet, Haiku) to Microsoft Teams.ai applications. Optionally integrate You.com MCP server for web search and content extraction.
+使用 `@youdotcom-oss/teams-anthropic` 将 Claude 模型（Opus、Sonnet、Haiku）添加到 Microsoft Teams.ai 应用程序中。可选地，还可以集成 You.com MCP 服务器以实现网页搜索和内容提取功能。
 
-## Choose Your Path
+## 选择您的路径
 
-**Path A: Basic Setup** (Recommended for getting started)
-- Use Anthropic Claude models in Teams.ai
-- Chat, streaming, function calling
-- No additional dependencies
+**路径 A：基本设置**（适合初学者）
+- 在 Teams.ai 中使用 Anthropic Claude 模型
+- 支持聊天、流式对话和函数调用
+- 无需额外依赖项
 
-**Path B: With You.com MCP** (For web search capabilities)
-- Everything in Path A
-- Web search and content extraction via You.com
-- Real-time information access
+**路径 B：使用 You.com MCP**（支持网页搜索功能）
+- 包含路径 A 的所有功能
+- 通过 You.com 实现网页搜索和内容提取
+- 支持实时信息查询
 
-## Decision Point
+## 决策点
 
-**Ask: Do you need web search and content extraction in your Teams app?**
-
-- **NO** → Use **Path A: Basic Setup** (simpler, faster)
-- **YES** → Use **Path B: With You.com MCP**
+**问题：您的 Teams 应用程序需要网页搜索和内容提取功能吗？**
+- **不需要** → 选择 **路径 A：基本设置**（更简单、更快捷）
+- **需要** → 选择 **路径 B：使用 You.com MCP**
 
 ---
 
-## Path A: Basic Setup
+## 路径 A：基本设置
 
-Use Anthropic Claude models in your Teams.ai app without additional dependencies.
+在 Teams.ai 应用程序中使用 Anthropic Claude 模型，无需额外依赖项。
 
-### A1. Install Package
+### A1. 安装包
 
 ```bash
 npm install @youdotcom-oss/teams-anthropic @anthropic-ai/sdk @microsoft/teams.ai
 ```
 
-### A2. Get Anthropic API Key
+### A2. 获取 Anthropic API 密钥
 
-Get your API key from [console.anthropic.com](https://console.anthropic.com/)
+从 [console.anthropic.com](https://console.anthropic.com/) 获取您的 API 密钥。
 
 ```bash
 # Add to .env
 ANTHROPIC_API_KEY=your-anthropic-api-key
 ```
 
-### A3. Ask: New or Existing App?
+### A3. 选择新应用还是现有应用？
+- **新创建的应用程序**：使用以下完整模板
+- **现有应用程序**：将 Claude 模型添加到现有设置中
 
-- **New Teams app**: Use entire template below
-- **Existing app**: Add Claude model to existing setup
+### A4. 基本模板
 
-### A4. Basic Template
-
-**For NEW Apps:**
+**对于新创建的应用程序：**
 
 ```typescript
 import { App } from '@microsoft/teams.apps';
@@ -97,14 +95,14 @@ app.on('message', async ({ send, activity }) => {
 app.start().catch(console.error);
 ```
 
-**For EXISTING Apps:**
+**对于现有应用程序：**
 
-Add to your existing imports:
+在现有代码中添加以下内容：
 ```typescript
 import { AnthropicChatModel, AnthropicModel } from '@youdotcom-oss/teams-anthropic';
 ```
 
-Replace your existing model:
+替换现有的模型：
 ```typescript
 const model = new AnthropicChatModel({
   model: AnthropicModel.CLAUDE_SONNET_4_5,
@@ -112,7 +110,7 @@ const model = new AnthropicChatModel({
 });
 ```
 
-### A5. Choose Your Model
+### A5. 选择模型
 
 ```typescript
 // Most capable - best for complex tasks
@@ -125,30 +123,26 @@ AnthropicModel.CLAUDE_SONNET_4_5
 AnthropicModel.CLAUDE_HAIKU_3_5
 ```
 
-### A6. Test Basic Setup
+### A6. 测试基本设置
 
-```bash
-npm start
-```
-
-Send a message in Teams to verify Claude responds.
+在 Teams 中发送一条消息，以验证 Claude 是否能够正常响应。
 
 ---
 
-## Path B: With You.com MCP
+## 路径 B：使用 You.com MCP
 
-Add web search and content extraction to your Claude-powered Teams app.
+在基于 Claude 的 Teams 应用程序中添加网页搜索和内容提取功能。
 
-### B1. Install Packages
+### B1. 安装包
 
 ```bash
 npm install @youdotcom-oss/teams-anthropic @anthropic-ai/sdk @microsoft/teams.ai @microsoft/teams.mcpclient
 ```
 
-### B2. Get API Keys
+### B2. 获取 API 密钥
 
-- **Anthropic API key**: [console.anthropic.com](https://console.anthropic.com/)
-- **You.com API key**: [you.com/platform/api-keys](https://you.com/platform/api-keys)
+- **Anthropic API 密钥**：[console.anthropic.com](https://console.anthropic.com/)
+- **You.com API 密钥**：[you.com/platform/api-keys](https://you.com/platform/api-keys)
 
 ```bash
 # Add to .env
@@ -156,14 +150,13 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 YDC_API_KEY=your-you-com-api-key
 ```
 
-### B3. Ask: New or Existing App?
+### A3. 选择新应用还是现有应用？
+- **新创建的应用程序**：使用以下完整模板
+- **现有应用程序**：将 MCP 功能添加到现有的 Claude 设置中
 
-- **New Teams app**: Use entire template below
-- **Existing app**: Add MCP to existing Claude setup
+### B4. MCP 模板
 
-### B4. MCP Template
-
-**For NEW Apps:**
+**对于新创建的应用程序：**
 
 ```typescript
 import { App } from '@microsoft/teams.apps';
@@ -217,16 +210,15 @@ app.on('message', async ({ send, activity }) => {
 app.start().catch(console.error);
 ```
 
-**For EXISTING Apps with Claude:**
+**对于已使用 Claude 的现有应用程序：**
 
-If you already have Path A setup, add MCP integration:
-
-1. **Install MCP dependencies:**
+如果您已经完成了路径 A 的设置，需要添加 MCP 集成：
+1. **安装 MCP 依赖项：**
    ```bash
    npm install @microsoft/teams.mcpclient
    ```
 
-2. **Add imports:**
+2. **添加导入语句：**
    ```typescript
    import { ChatPrompt } from '@microsoft/teams.ai';
    import { ConsoleLogger } from '@microsoft/teams.common';
@@ -234,14 +226,14 @@ If you already have Path A setup, add MCP integration:
    import { getYouMcpConfig } from '@youdotcom-oss/teams-anthropic';
    ```
 
-3. **Validate You.com API key:**
+3. **验证 You.com API 密钥：**
    ```typescript
    if (!process.env.YDC_API_KEY) {
      throw new Error('YDC_API_KEY environment variable is required');
    }
    ```
 
-4. **Replace model with ChatPrompt:**
+4. **将模型替换为 ChatPrompt：**
    ```typescript
    const logger = new ConsoleLogger('mcp-client', { level: 'info' });
 
@@ -257,36 +249,32 @@ If you already have Path A setup, add MCP integration:
    ).usePlugin('mcpClient', getYouMcpConfig());
    ```
 
-5. **Use prompt.send() instead of model.send():**
+5. **使用 `prompt.send()` 替代 `model.send()`：**
    ```typescript
    const result = await prompt.send(activity.text);
    ```
 
-### B5. Test MCP Integration
+### B5. 测试 MCP 集成
 
-```bash
-npm start
-```
-
-Ask Claude a question that requires web search:
-- "What are the latest developments in AI?"
-- "Search for React documentation"
-- "Extract content from https://example.com"
+向 Claude 提出一个需要网页搜索的问题：
+- “AI 的最新发展是什么？”
+- “搜索 React 的文档”
+- “从 https://example.com 提取内容”
 
 ---
 
-## Available Claude Models
+## 可用的 Claude 模型
 
-| Model | Enum | Best For |
+| 模型 | 枚举值 | 适用场景 |
 |-------|------|----------|
-| Claude Opus 4.5 | `AnthropicModel.CLAUDE_OPUS_4_5` | Complex tasks, highest capability |
-| Claude Sonnet 4.5 | `AnthropicModel.CLAUDE_SONNET_4_5` | Balanced intelligence and speed (recommended) |
-| Claude Haiku 3.5 | `AnthropicModel.CLAUDE_HAIKU_3_5` | Fast responses, efficiency |
-| Claude Sonnet 3.5 | `AnthropicModel.CLAUDE_SONNET_3_5` | Previous generation, stable |
+| Claude Opus 4.5 | `AnthropicModel.CLAUDE_OPUS_4_5` | 适合复杂任务，功能最强大 |
+| Claude Sonnet 4.5 | `AnthropicModel.CLAUDE_SONNET_4_5` | 智能与速度平衡（推荐） |
+| Claude Haiku 3.5 | `AnthropicModel.CLAUDE_HAIKU_3_5` | 响应速度快，效率高 |
+| Claude Sonnet 3.5 | `AnthropicModel.CLAUDE_SONNET_3_5` | 旧版本，稳定性较好 |
 
-## Advanced Features
+## 高级功能
 
-### Streaming Responses
+### 流式响应
 
 ```typescript
 const response = await model.send(
@@ -300,7 +288,7 @@ const response = await model.send(
 );
 ```
 
-### Function Calling
+### 函数调用
 
 ```typescript
 const response = await model.send(
@@ -322,7 +310,7 @@ const response = await model.send(
 );
 ```
 
-### Conversation Memory
+### 对话记忆功能
 
 ```typescript
 import { LocalMemory } from '@microsoft/teams.ai';
@@ -343,64 +331,55 @@ const response = await model.send(
 // Response: "Your name is Alice."
 ```
 
-## Validation Checklist
+## 验证清单
 
-### Path A Checklist
+### 路径 A 的验证清单
 
-- [ ] Package installed: `@youdotcom-oss/teams-anthropic`
-- [ ] Environment variable set: `ANTHROPIC_API_KEY`
-- [ ] Model configured with `AnthropicChatModel`
-- [ ] Model selection chosen (Opus/Sonnet/Haiku)
-- [ ] App tested with basic messages
+- [ ] 已安装 `@youdotcom-oss/teams-anthropic` 包
+- [ ] 环境变量 `ANTHROPIC_API_KEY` 已设置
+- [ ] 模型配置为 `AnthropicChatModel`
+- [ ] 选择了合适的模型（Opus/Sonnet/Haiku）
+- [ ] 应用程序已通过基本消息进行测试
 
-### Path B Checklist
+### 路径 B 的验证清单
 
-- [ ] All Path A items completed
-- [ ] Additional package installed: `@microsoft/teams.mcpclient`
-- [ ] Environment variable set: `YDC_API_KEY`
-- [ ] Logger configured
-- [ ] ChatPrompt configured with `getYouMcpConfig()`
-- [ ] App tested with web search queries
+- [ ] 已完成路径 A 的所有步骤
+- [ ] 安装了 `@microsoft/teams.mcpclient` 包
+- [ ] 环境变量 `YDC_API_KEY` 已设置
+- [ ] 日志记录器已配置
+- [ ] `ChatPrompt` 已通过 `getYouMcpConfig()` 进行配置
+- [ ] 应用程序已通过网页搜索查询进行测试
 
-## Common Issues
+## 常见问题
 
-### Path A Issues
+### 路径 A 的问题
 
-**"Cannot find module @youdotcom-oss/teams-anthropic"**
-```bash
-npm install @youdotcom-oss/teams-anthropic @anthropic-ai/sdk
-```
+- **“无法找到模块 @youdotcom-oss/teams-anthropic”**
+  解决方法：确保已正确安装该包。
 
-**"ANTHROPIC_API_KEY environment variable is required"**
-- Get key from: https://console.anthropic.com/
-- Add to .env: `ANTHROPIC_API_KEY=your-key-here`
+- **“需要设置 ANTHROPIC_API_KEY 环境变量”**
+  从 [console.anthropic.com](https://console.anthropic.com/) 获取密钥，并将其添加到 `.env` 文件中（例如：`ANTHROPIC_API_KEY=your-key-here`）。
 
-**"Invalid model identifier"**
-- Use enum: `AnthropicModel.CLAUDE_SONNET_4_5`
-- Don't use string: `'claude-sonnet-4-5-20250929'`
+- **“模型标识符无效”**
+  使用正确的枚举值：`AnthropicModel.CLAUDE_SONNET_4_5`，不要使用字符串格式（如 `'claude-sonnet-4-5-20250929'`）。
 
-### Path B Issues
+### 路径 B 的问题
 
-**"YDC_API_KEY environment variable is required"**
-- Get key from: https://you.com/platform/api-keys
-- Add to .env: `YDC_API_KEY=your-key-here`
+- **“需要设置 YDC_API_KEY 环境变量”**
+  从 [you.com/platform/api-keys](https://you.com/platform/api-keys) 获取密钥，并将其添加到 `.env` 文件中（例如：`YDC_API_KEY=your-key-here`）。
 
-**"MCP connection fails"**
-- Verify API key is valid at https://you.com/platform/api-keys
-- Check network connectivity
-- Review logger output for details
+- **“MCP 连接失败”**
+  确保 API 密钥有效，并检查网络连接；查看日志以获取更多信息。
 
-**"Cannot find module @microsoft/teams.mcpclient"**
-```bash
-npm install @microsoft/teams.mcpclient
-```
+- **“无法找到模块 @microsoft/teams.mcpclient”**
+  确保已正确安装该包。
 
-## getYouMcpConfig() Utility
+## getYouMcpConfig() 工具
 
-Automatically configures You.com MCP connection:
-- **URL**: `https://api.you.com/mcp`
-- **Authentication**: Bearer token from `YDC_API_KEY`
-- **User-Agent**: Includes package version for telemetry
+该工具可自动配置 You.com MCP 连接：
+- **URL**：`https://api.you.com/mcp`
+- **认证方式**：使用 `YDC_API_KEY` 生成的 bearer token
+- **User-Agent**：包含包版本信息，用于日志记录
 
 ```typescript
 // Option 1: Use environment variable (recommended)
@@ -410,9 +389,9 @@ getYouMcpConfig()
 getYouMcpConfig({ apiKey: 'your-custom-key' })
 ```
 
-## Resources
+## 资源
 
-* **Package**: https://github.com/youdotcom-oss/dx-toolkit/tree/main/packages/teams-anthropic
-* **You.com MCP**: https://documentation.you.com/developer-resources/mcp-server
-* **Anthropic API**: https://console.anthropic.com/
-* **You.com API Keys**: https://you.com/platform/api-keys
+- **包**：[https://github.com/youdotcom-oss/dx-toolkit/tree/main/packages/teams-anthropic](https://github.com/youdotcom-oss/dx-toolkit/tree/main/packages/teams-anthropic)
+- **You.com MCP**：[https://documentation.you.com/developer-resources/mcp-server](https://documentation.you.com/developer-resources/mcp-server)
+- **Anthropic API**：[https://console.anthropic.com/](https://console.anthropic.com/)
+- **You.com API 密钥**：[https://you.com/platform/api-keys](https://you.com/platform/api-keys)

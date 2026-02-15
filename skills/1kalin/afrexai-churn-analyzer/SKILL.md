@@ -1,60 +1,60 @@
-# Churn Risk Analyzer
+# 客户流失风险分析器
 
-Identify customers most likely to churn before they leave. Uses behavioral signals, usage patterns, and engagement data to score accounts and recommend retention actions.
+该工具能够识别出最有可能在离开前的客户，并通过分析其行为信号、使用模式和参与度数据来对账户进行评分，并推荐相应的留存策略。
 
-## When to Use
-- Customer success reviews
-- Quarterly retention planning
-- When usage data or support ticket logs are available
-- Proactive outreach prioritization
+## 使用场景
+- 客户成功度评估
+- 季度留存计划制定
+- 当有使用数据或支持工单记录时
+- 主动联系客户的优先级排序
 
-## How It Works
+## 工作原理
 
-### 1. Gather Data
-Ask the user for available data sources:
-- **Usage metrics** (logins, feature adoption, API calls)
-- **Support tickets** (frequency, sentiment, resolution time)
-- **Billing history** (downgrades, late payments, discount requests)
-- **Engagement signals** (email opens, meeting attendance, NPS scores)
+### 1. 数据收集
+向用户询问可用的数据来源：
+- **使用指标**（登录次数、功能使用情况、API调用次数）
+- **支持工单**（工单频率、情绪倾向、解决时间）
+- **账单历史**（降级情况、逾期付款、折扣申请）
+- **参与度信号**（邮件打开情况、会议出席率、净推荐值）
 
-If no structured data, work from what the user describes qualitatively.
+如果没有结构化数据，可以根据用户的描述进行定性分析。
 
-### 2. Score Each Account
-Apply this risk framework:
+### 2. 为每个账户评分
+应用以下风险评分框架：
 
-| Signal | Weight | High Risk Indicator |
-|--------|--------|-------------------|
-| Usage decline (30d) | 25% | >30% drop |
-| Support ticket spike | 20% | 2x+ above baseline |
-| Champion departure | 20% | Key contact left |
-| Contract timing | 15% | <90 days to renewal |
-| Payment behavior | 10% | Late/disputed invoices |
-| Engagement drop | 10% | No response to last 3 outreach |
+| 信号          | 权重    | 高风险指标                |
+|---------------|--------|----------------------|
+| 使用量下降（30天内）    | 25%    | 使用量下降超过30%             |
+| 支持工单激增      | 20%    | 工单数量超过基线2倍以上           |
+| 关键联系人离职     | 20%    | 关键联系人离开             |
+| 合同到期时间      | 15%    | 合同到期时间少于90天           |
+| 支付行为        | 10%    | 逾期付款或存在争议的发票         |
+| 参与度下降      | 10%    | 最近三次联系均未响应           |
 
-**Score**: 0-100 (higher = more likely to churn)
+**评分范围**：0-100（分数越高，流失风险越大）
 
-### 3. Categorize
-- **🔴 Critical (75-100)**: Immediate intervention needed
-- **🟡 At Risk (50-74)**: Schedule check-in this week
-- **🟢 Healthy (25-49)**: Monitor monthly
-- **💚 Thriving (0-24)**: Expansion opportunity
+### 3. 分类
+- **🔴 高风险（75-100分）**：需要立即采取干预措施
+- **🟡 有风险（50-74分）**：安排本周进行复查
+- **🟢 状态良好（25-49分）**：每月进行监控
+- **💚 进展顺利（0-24分）**：存在扩展机会
 
-### 4. Recommend Actions
-For each at-risk account, suggest specific retention plays:
-- Executive sponsor call
-- Custom success plan
-- Feature training session
-- Pricing review / loyalty offer
-- Roadmap preview (show upcoming value)
+### 4. 推荐行动
+针对每个有风险的账户，建议以下具体的留存策略：
+- 联系高层负责人
+- 制定定制的成功计划
+- 开展功能培训
+- 审查定价策略/提供忠诚度优惠
+- 展示产品路线图（展示未来的价值）
 
-### 5. Output
-Generate a retention report with:
-- Ranked list of accounts by churn risk
-- Top 3 actions per critical account
-- Estimated revenue at risk
-- 30/60/90 day retention calendar
+### 5. 输出结果
+生成一份留存报告，内容包括：
+- 按流失风险排序的账户列表
+- 每个高风险账户的前三项推荐行动
+- 预计流失的收入损失
+- 30天/60天/90天的留存计划安排
 
-## Integration Notes
-- Works with CSV exports, CRM data, or manual input
-- Pair with the [AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/) for industry-specific retention strategies ($47/pack)
-- For a full AI-powered retention system built for your business, try the [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) to see what you're leaving on the table
+## 集成说明
+- 支持CSV文件导出、CRM数据导入或手动输入
+- 可与[AfrexAI Context Packs](https://afrexai-cto.github.io/context-packs/)结合使用，以获取特定行业的留存策略（每包47美元）
+- 如需构建完全基于AI的留存系统，请尝试[AfrexAI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/)，了解您可能错失的收益机会

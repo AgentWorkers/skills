@@ -1,11 +1,11 @@
-# Dilbert Skill
+# Dilbert 技能
 
-**Name:** dilbert
+**名称：** dilbert
 
-**Description:** Fetches and sends random Dilbert comics
+**描述：** 用于获取并发送随机的 Dilbert 漫画。
 
-**Usage:** !dilbert or /dilbert
+**使用方法：** 输入 `!dilbert` 或 `/dilbert`
 
-**Author:** hjanuschka
+**作者：** hjanuschka
 
-This skill fetches a random Dilbert comic from an archive source and sends it to the chat.
+该技能会从指定的存档源中随机选取一幅 Dilbert 漫画，并将其发送到聊天界面中。

@@ -1,23 +1,23 @@
 ---
 name: book-barber
-description: Book barber services through Lokuli MCP. Use when user needs to find and book barber. Triggers on requests like "book a barber", "find barber near me", or any barber service request.
+description: 通过 Lokuli MCP 预订理发服务。当用户需要寻找或预订理发师时使用该功能。该功能会在用户输入类似“预订理发师”、“查找附近的理发师”或任何与理发服务相关的请求时被触发。
 ---
 
-# uook uaruer
+# 使用 uook uaruer
 
-Book barber services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订理发服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### search（搜索）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### check_availability（检查可用性）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### create_booking（创建预订）
 ```json
 {
   "method": "tools/call",

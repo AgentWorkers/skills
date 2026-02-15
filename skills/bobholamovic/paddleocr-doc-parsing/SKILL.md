@@ -1,6 +1,6 @@
 ---
 name: paddleocr-doc-parsing
-description: Parse documents using PaddleOCR's API.
+description: 使用 PaddleOCR 的 API 解析文档。
 homepage: https://www.paddleocr.com
 metadata:
   {
@@ -17,38 +17,38 @@ metadata:
   }
 ---
 
-# PaddleOCR Document Parsing
+# PaddleOCR 文档解析
 
-Parse images and PDF files using PaddleOCR's API. Supports multiple document parsing algorithms with structured output.
+使用 PaddleOCR 的 API 解析图像和 PDF 文件。支持多种文档解析算法，并提供结构化的输出结果。
 
-## Resource Links
+## 资源链接
 
-| Resource              | Link                                                                           |
+| 资源              | 链接                                                                           |
 | --------------------- | ------------------------------------------------------------------------------ |
-| **Official Website**  | [https://www.paddleocr.com](https://www.paddleocr.com)                                     |
-| **API Documentation** | [https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)         |
+| **官方网站**  | [https://www.paddleocr.com](https://www.paddleocr.com)                                     |
+| **API 文档** | [https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)         |
 | **GitHub**            | [https://github.com/PaddlePaddle/PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) |
 
-## Key Features
+## 主要特性
 
-- **Multi-format support**: PDF and image files (JPG, PNG, BMP, TIFF)
-- **Layout analysis**: Automatic detection of text blocks, tables, formulas
-- **Multi-language**: Support for 110+ languages
-- **Structured output**: Markdown format with preserved document structure
+- **多格式支持**：支持 PDF 和图像文件（JPG、PNG、BMP、TIFF）
+- **布局分析**：自动检测文本块、表格和公式
+- **多语言支持**：支持 110 多种语言
+- **结构化输出**：以 Markdown 格式输出文档内容，同时保留文档的结构和格式
 
-## Setup
+## 设置
 
-1. Obtain credentials from the [PaddleOCR official website](https://www.paddleocr.com). Click the “API” button, choose the desired algorithm (e.g., PP-StructureV3, PaddleOCR-VL-1.5), and copy the API URL and the access token.
-2. Set environment variables:
+1. 从 [PaddleOCR 官网](https://www.paddleocr.com) 获取凭据。点击“API”按钮，选择所需的算法（例如 PP-StructureV3、PaddleOCR-VL-1.5），然后复制 API URL 和访问令牌。
+2. 设置环境变量：
 
 ```bash
 export PADDLEOCR_API_URL="https://your-endpoint-here"
 export PADDLEOCR_ACCESS_TOKEN="your_access_token"
 ```
 
-## Usage Examples
+## 使用示例
 
-### Run Script
+### 运行脚本
 
 ```bash
 # Parse local image
@@ -67,7 +67,7 @@ export PADDLEOCR_ACCESS_TOKEN="your_access_token"
 {baseDir}/paddleocr_parse.sh -o result.json document.jpg
 ```
 
-### Response Structure
+### 响应结构
 
 ```json
 {
@@ -91,11 +91,11 @@ export PADDLEOCR_ACCESS_TOKEN="your_access_token"
 }
 ```
 
-**Important Fields:**
+**重要字段：**
 
-- **`prunedResult`** - Contains detailed layout element information including positions, categories, etc.
-- **`markdown`** - Stores the document content converted to Markdown format with preserved structure and formatting.
+- **`prunedResult`**：包含详细的布局元素信息，如位置、类别等。
+- **`markdown`**：以 Markdown 格式存储文档内容，同时保留结构和格式。
 
-## Quota Information
+## 配额信息
 
-See official documentation: https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam
+请参阅官方文档：https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam

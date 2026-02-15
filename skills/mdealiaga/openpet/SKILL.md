@@ -1,15 +1,15 @@
 ---
 name: openpet
-description: Virtual pet (Tamagotchi-style) game for chat platforms. Triggers on pet commands like "feed pet", "pet status", "play with pet", "name pet", "pet sleep", "new pet". Supports multi-user across Discord, WhatsApp, Telegram, etc. Each user gets their own pet that evolves based on care.
+description: 这是一款适用于聊天平台的虚拟宠物游戏（类似Tamagotchi风格）。当用户发出“喂宠物”、“查看宠物状态”、“与宠物玩耍”、“给宠物取名”、“让宠物睡觉”或“添加新宠物”等指令时，游戏会相应地做出反应。该游戏支持在Discord、WhatsApp、Telegram等平台上实现多用户同时使用。每位用户都有自己的宠物，宠物的成长情况取决于用户的照料方式。
 ---
 
 # OpenPet
 
-Virtual pet game. Each user gets one pet, tracked by `{platform}_{userId}`.
+这是一款虚拟宠物游戏。每位用户都会获得一只宠物，宠物的信息会通过 `{platform}_{userId}` 的路径进行存储。
 
-## State
+## 宠物状态
 
-Pets stored in `tamagotchi/pets/{platform}_{userId}.json`:
+宠物的相关信息存储在 `tamagotchi/pets/{platform}_{userId}.json` 文件中：
 
 ```json
 {
@@ -31,27 +31,27 @@ Pets stored in `tamagotchi/pets/{platform}_{userId}.json`:
 }
 ```
 
-Create `tamagotchi/pets/` directory if missing.
+如果 `tamagotchi/pets/` 目录不存在，请先创建它。
 
-## Commands
+## 命令
 
-| Trigger | Action |
+| 触发条件 | 执行操作 |
 |---------|--------|
-| `pet`, `pet status` | Show stats + ASCII art |
-| `feed pet` | hunger -30, happiness +5 |
-| `play with pet` | happiness +25, energy -20 |
-| `pet sleep` | energy +40, happiness +5 |
-| `name pet [name]` | Set pet name |
-| `new pet` | Reset (only if dead or confirm) |
-| `pet help` | Show commands |
+| `pet` 或 `pet status` | 显示宠物的状态信息及 ASCII 艺术图 |
+| `feed pet` | 降低宠物的饥饿值 30，提升幸福感 5 |
+| `play with pet` | 提升宠物的幸福感 25，降低能量值 20 |
+| `pet sleep` | 提升宠物的能量值 40，提升幸福感 5 |
+| `name pet [name]` | 为宠物设置名称 |
+| `new pet` | 重置宠物状态（仅当宠物死亡或用户确认时执行） |
+| `pet help` | 显示可用的所有命令 |
 
-## New User Flow
+## 新用户流程
 
-1. Any pet command from unknown user → create egg
-2. First interaction → hatch to blob
-3. Show welcome message + commands
+1. 如果未知用户尝试使用宠物相关命令，系统会生成一个“宠物蛋”。
+2. 用户首次与宠物互动后，宠物会从“宠物蛋”中孵化成“小生物”。
+3. 系统会向用户显示欢迎信息以及可用的命令列表。
 
-## Stats Display
+## 统计信息显示
 
 ```
     ╭──────────╮
@@ -65,47 +65,50 @@ Create `tamagotchi/pets/` directory if missing.
  ⚡ Energy:    █████░░░░░░░  50%
 ```
 
-Use sprites from `references/sprites.json`. Mood = happy (≥70), neutral (40-69), sad (<40).
+宠物的情绪状态使用 `references/sprites.json` 文件中的精灵图来表示。情绪状态分为：快乐（≥70）、中立（40-69）和悲伤（<40）。
 
-## Evolution
+## 宠物进化
 
-| Stage | Requirement |
+| 进化阶段 | 条件 |
 |-------|-------------|
-| egg → blob | First interaction |
-| blob → cat | age ≥10, feedings ≥15, plays ≥10 |
-| cat → dragon | age ≥30, feedings ≥50, plays ≥40 |
+| 宠物蛋 → 小生物 | 用户首次与宠物互动 |
+| 小生物 → 猫 | 宠物年龄 ≥ 10 岁，进食次数 ≥ 15 次，互动次数 ≥ 10 次 |
+| 猫 → 龙 | 宠物年龄 ≥ 30 岁，进食次数 ≥ 50 次，互动次数 ≥ 40 次 |
 
-Check evolution after each interaction. Announce with fanfare.
+每次用户与宠物互动后，系统会检查宠物的进化状态，并通过特效进行提示。
 
-## Death
+## 宠物死亡
 
-Pet dies if: `hunger ≥ 100` OR `happiness ≤ 0`
+宠物会在以下情况下死亡：
+- 饥饿值 ≥ 100
+- 幸福值 ≤ 0
 
-**BUT** if `immortalMode: true` in config, pets don't die — they just get very sad and hungry. Stats cap at 99/1 instead of triggering death. Default is immortal mode ON.
+**但是**，如果配置中启用了 `immortalMode`（永生模式），宠物不会死亡，只会变得非常悲伤和饥饿。此时，宠物的各项属性值会被限制在 99/1 的范围内，而不会导致宠物死亡。默认情况下，永生模式是开启的。
 
-Show memorial (if death enabled), offer `new pet` to restart.
+如果启用了宠物死亡功能，系统会显示纪念信息，并提供“创建新宠物”的选项供用户选择。
 
-## Decay (Cron)
+## 宠物状态衰减（定时任务）
 
-Set up cron job `openpet-tick` every 2 hours:
-- hunger +15, happiness -10, energy -5
-- Clamp all stats 0-100
-- Check death conditions
-- Alert owner if critical (hunger >80 or happiness <20)
-- Increment age daily
+系统会每隔 2 小时执行一次定时任务 `openpet-tick`：
+- 提升宠物的饥饿值 15，降低幸福感 10，降低能量值 5
+- 将宠物的各项属性值限制在 0-100 的范围内
+- 检查宠物是否处于死亡状态
+- 如果宠物的饥饿值 > 80 或幸福感 < 20，向用户发送警报
+- 每天增加宠物的年龄
 
-## Platform Detection
+## 平台识别
 
-Extract from message context:
+系统会根据用户发送消息的来源平台（Discord、WhatsApp、Telegram 或 Signal）来识别用户：
+
 - Discord: `discord_{userId}`
 - WhatsApp: `whatsapp_{phoneNumber}`
 - Telegram: `telegram_{chatId}`
 - Signal: `signal_{uuid}`
 
-## Alerts
+## 警报通知
 
-Send to user's origin platform when:
-- Pet is hungry (>80): "🍖 {name} is starving!"
-- Pet is sad (<20): "😢 {name} misses you!"
-- Pet died: "💀 {name} has passed away..."
-- Evolution: "✨ {name} evolved into a {species}!"
+当宠物出现以下情况时，系统会向用户发送通知：
+- 宠物饥饿值过高（>80）：「🍖 {name} 饿坏了！」
+- 宠物情绪低落（<20）：「😢 {name} 想念你！」
+- 宠物死亡：「💀 {name} 已经去世……」
+- 宠物进化：「✨ {name} 进化成了 {species}！」

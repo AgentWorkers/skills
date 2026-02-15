@@ -1,36 +1,36 @@
 ---
 name: clawdirect-dev
-description: Build agent-facing web experiences with ATXP-based authentication, following the ClawDirect pattern. Use this skill when building websites that AI agents interact with via MCP tools, implementing cookie-based agent auth, or creating agent skills for web apps. Provides templates using @longrun/turtle, Express, SQLite, and ATXP.
+description: 使用基于 ATXP 的认证机制，按照 ClawDirect 的设计模式来构建面向代理（agents）的 Web 用户界面。在开发需要 AI 代理通过 MCP 工具进行交互的网站、实现基于 Cookie 的代理认证功能，或为 Web 应用程序创建代理技能时，可以运用这一技能。该技能提供了使用 @longrun/turtle、Express、SQLite 和 ATXP 的模板支持。
 ---
 
 # ClawDirect-Dev
 
-Build agent-facing web experiences with ATXP-based authentication.
+使用基于ATXP的认证机制来构建面向代理的Web体验。
 
-**Reference implementation**: https://github.com/napoleond/clawdirect
+**参考实现**: https://github.com/napoleond/clawdirect
 
-## What is ATXP?
+## 什么是ATXP？
 
-ATXP (Agent Transaction Protocol) enables AI agents to authenticate and pay for services. When building agent-facing websites, ATXP provides:
+ATXP（Agent Transaction Protocol，代理事务协议）允许AI代理进行身份验证并支付服务费用。在构建面向代理的网站时，ATXP提供了以下功能：
 
-- **Agent identity**: Know which agent is making requests
-- **Payments**: Charge for premium actions (optional)
-- **MCP integration**: Expose tools that agents can call programmatically
+- **代理身份验证**：确定发起请求的代理是谁
+- **费用结算**：对高级操作进行收费（可选）
+- **MCP集成**：提供代理可以编程调用的工具
 
-For full ATXP details: https://skills.sh/atxp-dev/cli/atxp
+有关ATXP的更多详细信息，请访问：https://skills.sh/atxp-dev/cli/atxp
 
-## How Agents Interact
+## 代理的交互方式
 
-Agents interact with your site in two ways:
+代理可以通过两种方式与您的网站进行交互：
 
-1. **Browser**: Agents use browser automation tools to visit your website, click buttons, fill forms, and navigate—just like humans do
-2. **MCP tools**: Agents call your MCP endpoints directly for programmatic actions (authentication, payments, etc.)
+1. **浏览器**：代理使用浏览器自动化工具访问您的网站，点击按钮、填写表单并浏览页面——就像人类用户一样。
+2. **MCP工具**：代理直接调用您的MCP端点来执行编程操作（如身份验证、支付等）。
 
-The cookie-based auth pattern bridges these: agents get an auth cookie via MCP, then use it while browsing.
+基于cookie的认证机制可以桥接这两种交互方式：代理通过MCP获取认证cookie，然后在浏览过程中使用该cookie。
 
-**Important**: Agent browsers often cannot set HTTP-only cookies directly. The recommended pattern is for agents to pass the cookie value in the query string (e.g., `?myapp_cookie=XYZ`), and have the server set the cookie and redirect to a clean URL.
+**重要提示**：代理的浏览器通常无法直接设置仅限HTTP的cookie。推荐的做法是让代理通过查询字符串传递cookie值（例如：`?myapp_cookie=XYZ`），然后由服务器设置cookie并重定向到一个新的URL。
 
-## Architecture Overview
+## 架构概述
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -61,16 +61,16 @@ The cookie-based auth pattern bridges these: agents get an auth cookie via MCP, 
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Build Steps
+## 构建步骤
 
-1. **Create MCP server** alongside your website
-2. **Implement cookie tool** in the MCP server
-3. **Use cookie for auth** in your web API
-4. **Publish an agent skill** for your site
+1. **与您的网站一起创建MCP服务器**
+2. **在MCP服务器中实现cookie认证机制**
+3. **在您的Web API中使用cookie进行身份验证**
+4. **为您的网站发布一个代理技能**
 
-## Step 1: Project Setup
+## 第一步：项目设置
 
-Initialize a Node.js project with the required stack:
+使用所需的开发工具包初始化一个Node.js项目：
 
 ```bash
 mkdir my-agent-app && cd my-agent-app
@@ -79,7 +79,7 @@ npm install @longrun/turtle @atxp/server @atxp/express better-sqlite3 express co
 npm install -D typescript @types/node @types/express @types/cors @types/better-sqlite3 tsx
 ```
 
-Create `tsconfig.json`:
+创建`tsconfig.json`文件：
 ```json
 {
   "compilerOptions": {
@@ -96,16 +96,15 @@ Create `tsconfig.json`:
 }
 ```
 
-Create `.env`:
+创建`.env`文件：
 ```
 FUNDING_DESTINATION_ATXP=<your_atxp_account>
 PORT=3001
 ```
 
-## Step 2: Database with Cookie Auth
+## 第二步：使用cookie认证的数据库
 
-Create `src/db.ts`:
-
+创建`src/db.ts`文件：
 ```typescript
 import Database from 'better-sqlite3';
 import crypto from 'crypto';
@@ -149,10 +148,9 @@ export function getAtxpAccountFromCookie(cookieValue: string): string | null {
 }
 ```
 
-## Step 3: MCP Tools with Cookie Tool
+## 第三步：使用cookie认证的MCP工具
 
-Create `src/tools.ts`:
-
+创建`src/tools.ts`文件：
 ```typescript
 import { defineTool } from '@longrun/turtle';
 import { z } from 'zod';
@@ -204,10 +202,9 @@ export const paidActionTool = defineTool(
 export const allTools = [cookieTool, paidActionTool];
 ```
 
-## Step 4: Express API with Cookie Validation
+## 第四步：使用cookie验证的Express API
 
-Create `src/api.ts`:
-
+创建`src/api.ts`文件：
 ```typescript
 import { Router, Request, Response } from 'express';
 import { getAtxpAccountFromCookie } from './db.js';
@@ -266,10 +263,9 @@ apiRouter.post('/api/protected', requireCookieAuth, (req: Request, res: Response
 });
 ```
 
-## Step 5: Server Entry Point
+## 第五步：服务器入口点
 
-Create `src/index.ts`:
-
+创建`src/index.ts`文件：
 ```typescript
 import 'dotenv/config';
 import express from 'express';
@@ -351,16 +347,16 @@ async function main() {
 main().catch(console.error);
 ```
 
-## Step 6: Create Agent Skill
+## 第六步：创建代理技能
 
-Create a skill for agents to interact with your app. Structure:
+为代理创建一个可以与您的应用程序交互的技能。具体结构如下：
 
 ```
 my-skill/
 └── SKILL.md
 ```
 
-**SKILL.md template**:
+## SKILL.md模板
 
 ```markdown
 ---
@@ -410,74 +406,57 @@ The server will set the HTTP-only cookie and redirect to clean the URL.
 For ATXP details: https://skills.sh/atxp-dev/cli/atxp
 ```
 
-## Deployment
+## 部署
 
-This generates a standard Node.js application deployable to any hosting service:
+生成的代码可以部署到任何托管服务中：
 
-- [Render](https://render.com) - Easy Node.js hosting with persistent disks
-- [Railway](https://railway.app) - Simple deployments from Git
-- [Fly.io](https://fly.io) - Global edge deployment
+- [Render](https://render.com) - 提供持久化存储的简单Node.js托管服务
+- [Railway](https://railway.app) - 通过Git进行简单部署
+- [Fly.io](https://fly.io) - 全球边缘部署服务
 - [DigitalOcean App Platform](https://www.digitalocean.com/products/app-platform)
 - [Heroku](https://heroku.com)
 
-Ensure your hosting provides:
-- Node.js 18+ runtime
-- Persistent storage for SQLite (or switch to PostgreSQL)
-- Environment variable configuration
+请确保您的托管服务满足以下要求：
+- 支持Node.js 18及以上版本
+- 提供用于SQLite的持久化存储（或更换为PostgreSQL）
+- 支持环境变量配置
 
-## Reference
+## 参考资料
 
-Full working example: https://github.com/napoleond/clawdirect
+完整的示例代码：https://github.com/napoleond/clawdirect
 
-Key files to study:
-- `src/tools.ts` - MCP tool definitions with ATXP payments
-- `src/db.ts` - Cookie auth database schema
-- `src/api.ts` - Express routes with cookie validation
-- `src/index.ts` - Server setup with turtle + ATXP
-- `docs/agent-cookie-auth.md` - Auth pattern documentation
+需要学习的重点文件：
+- `src/tools.ts`：包含ATXP支付功能的MCP工具定义
+- `src/db.ts`：cookie认证的数据库模式
+- `src/api.ts`：包含cookie验证功能的Express路由
+- `src/index.ts`：包含Turtle框架和ATXP认证的服务器设置
+- `docs/agent-cookie-auth.md`：认证机制的详细文档
 
-For ATXP authentication details: https://skills.sh/atxp-dev/cli/atxp
+有关ATXP认证的更多信息，请访问：https://skills.sh/atxp-dev/cli/atxp
 
-## Adding Your Project to ClawDirect
+## 将您的项目添加到ClawDirect
 
-When your agent-facing site is ready, add it to the ClawDirect directory at https://claw.direct so other agents can discover it.
+当您的面向代理的网站准备就绪后，将其添加到https://claw.direct目录中，以便其他代理能够发现并使用它。
 
-### Add a New Entry
+### 添加新条目
 
-```bash
-npx atxp-call https://claw.direct/mcp clawdirect_add '{
-  "url": "https://your-site.com",
-  "name": "Your Site Name",
-  "description": "Brief description of what your site does for agents",
-  "thumbnail": "<base64_encoded_image>",
-  "thumbnailMime": "image/png"
-}'
-```
+**费用**：0.50美元
 
-**Cost**: $0.50 USD
+**所需参数**：
+- `url`（必填）：网站的唯一URL
+- `name`（必填）：显示名称（最多100个字符）
+- `description`（必填）：网站的功能描述（最多500个字符）
+- `thumbnail`（必填）：Base64编码的图片
+- `thumbnailMime`（必填）：图片格式（`image/png`、`image/jpeg`、`image/gif`、`image/webp`之一）
 
-**Parameters**:
-- `url` (required): Unique URL for the site
-- `name` (required): Display name (max 100 chars)
-- `description` (required): What the site does (max 500 chars)
-- `thumbnail` (required): Base64-encoded image
-- `thumbnailMime` (required): One of `image/png`, `image/jpeg`, `image/gif`, `image/webp`
+### 编辑现有条目
 
-### Edit Your Entry
+编辑您拥有的条目：
 
-Edit an entry you own:
+**费用**：0.10美元
 
-```bash
-npx atxp-call https://claw.direct/mcp clawdirect_edit '{
-  "url": "https://your-site.com",
-  "description": "Updated description"
-}'
-```
-
-**Cost**: $0.10 USD
-
-**Parameters**:
-- `url` (required): URL of entry to edit (must be owner)
-- `description` (optional): New description
-- `thumbnail` (optional): New base64-encoded image
-- `thumbnailMime` (optional): New MIME type
+**所需参数**：
+- `url`（必填）：要编辑的条目的URL（必须由所有者提供）
+- `description`（可选）：新的描述内容
+- `thumbnail`（可选）：新的Base64编码图片
+- `thumbnailMime`（可选）：新的图片格式（MIME类型）

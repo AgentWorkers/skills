@@ -1,6 +1,16 @@
 ---
 name: elizacloud
-description: Manage elizaOS Cloud - deploy AI agents, chat completions, image/video generation, voice cloning, knowledge base, containers, and marketplace. Use when interacting with elizaOS Cloud, elizacloud.ai, deploying eliza agents, or managing cloud-hosted AI agents. Requires ELIZACLOUD_API_KEY environment variable.
+description: **管理 elizaOS Cloud**  
+- 部署 AI 代理（AI agents）  
+- 提供聊天辅助功能（chat completions）  
+- 支持图像/视频生成（image/video generation）  
+- 实现语音克隆（voice cloning）  
+- 管理知识库（knowledge base）  
+- 支持容器技术（containers）  
+- 提供市场服务（marketplace）  
+
+**使用说明：**  
+该工具用于与 elizaOS Cloud 或 elizacloud.ai 进行交互，部署 AI 代理，或管理托管在云端的 AI 代理。**需要**设置 `ELIZACLOUD_API_KEY` 环境变量才能正常使用。
 metadata:
   openclaw:
     requires:
@@ -9,17 +19,17 @@ metadata:
 
 # elizaOS Cloud
 
-elizaOS Cloud is a platform for building, deploying, and scaling intelligent AI agents. This skill provides access to the complete elizaOS Cloud API for managing agents, generating content, and building AI-powered applications.
+elizaOS Cloud 是一个用于构建、部署和扩展智能 AI 代理的平台。该平台提供了完整的 elizaOS Cloud API，支持代理管理、内容生成以及 AI 驱动的应用程序开发。
 
-## Quick Start
+## 快速入门
 
-Set your API key as an environment variable:
+将您的 API 密钥设置为环境变量：
 
 ```bash
 export ELIZACLOUD_API_KEY="your_api_key_here"
 ```
 
-Use the included bash client for common operations:
+使用随附的 bash 客户端执行常见操作：
 
 ```bash
 ./scripts/elizacloud-client.sh status
@@ -27,17 +37,17 @@ Use the included bash client for common operations:
 ./scripts/elizacloud-client.sh chat agent-id "Hello!"
 ```
 
-## API Configuration
+## API 配置
 
-- **Base URL**: `https://elizacloud.ai/api/v1`
-- **Authentication**: 
+- **基础 URL**：`https://elizacloud.ai/api/v1`
+- **认证**：
   - `Authorization: Bearer $ELIZACLOUD_API_KEY`
   - `X-API-Key: $ELIZACLOUD_API_KEY`
-- **Content-Type**: `application/json`
+- **Content-Type**：`application/json`
 
-## Core Endpoints
+## 核心端点
 
-### Chat Completions (OpenAI-Compatible)
+### 聊天补全（兼容 OpenAI）
 
 ```bash
 curl https://elizacloud.ai/api/v1/chat/completions \
@@ -50,16 +60,16 @@ curl https://elizacloud.ai/api/v1/chat/completions \
   }'
 ```
 
-**Features**: Streaming, function calling, structured outputs
+**特性**：流式处理、函数调用、结构化输出
 
-### Agent Management
+### 代理管理
 
-**List Agents**
+- **列出代理**  
 ```bash
 GET /api/my-agents/characters
 ```
 
-**Create Agent**
+- **创建代理**  
 ```bash
 POST /api/v1/app/agents
 {
@@ -68,17 +78,17 @@ POST /api/v1/app/agents
 }
 ```
 
-**Get Agent**
+- **获取代理**  
 ```bash
 GET /api/my-agents/characters/{id}
 ```
 
-**Delete Agent**
+- **删除代理**  
 ```bash
 DELETE /api/my-agents/characters/{id}
 ```
 
-### Image Generation
+### 图像生成
 
 ```bash
 POST /api/v1/images/generate
@@ -90,9 +100,9 @@ POST /api/v1/images/generate
 }
 ```
 
-**Models**: FLUX Pro, FLUX Dev, Stable Diffusion
+**模型**：FLUX Pro、FLUX Dev、Stable Diffusion
 
-### Video Generation
+### 视频生成
 
 ```bash
 POST /api/v1/video/generate
@@ -103,9 +113,9 @@ POST /api/v1/video/generate
 }
 ```
 
-**Models**: MiniMax, Runway
+**模型**：MiniMax、Runway
 
-### Voice Cloning (ElevenLabs)
+### 语音克隆（ElevenLabs）
 
 ```bash
 POST /api/v1/voice/clone
@@ -116,14 +126,14 @@ POST /api/v1/voice/clone
 }
 ```
 
-### Knowledge Base
+### 知识库
 
-**Upload Document**
+- **上传文档**  
 ```bash
 POST /api/v1/knowledge/upload
 ```
 
-**Query Knowledge**
+- **查询知识**  
 ```bash
 POST /api/v1/knowledge/query
 {
@@ -132,9 +142,9 @@ POST /api/v1/knowledge/query
 }
 ```
 
-### Containers
+### 容器
 
-**Deploy Container**
+- **部署容器**  
 ```bash
 POST /api/v1/containers
 {
@@ -144,14 +154,14 @@ POST /api/v1/containers
 }
 ```
 
-### A2A Protocol (Agent-to-Agent)
+### A2A 协议（代理间通信）
 
-**Discover Agents**
+- **发现代理**  
 ```bash
 GET /api/v1/discovery
 ```
 
-**Send Task**
+- **发送任务**  
 ```bash
 POST /api/a2a
 {
@@ -168,9 +178,9 @@ POST /api/a2a
 }
 ```
 
-## API Keys
+## API 密钥
 
-**Create API Key**
+**创建 API 密钥**
 ```bash
 POST /api/v1/api-keys
 {
@@ -179,11 +189,11 @@ POST /api/v1/api-keys
 }
 ```
 
-**Available Permissions**: `chat`, `embeddings`, `images`, `video`, `voice`, `knowledge`, `agents`, `apps`
+**可用权限**：`chat`、`embeddings`、`images`、`video`、`voice`、`knowledge`、`agents`、`apps`
 
-## Error Handling
+## 错误处理
 
-All errors follow this format:
+所有错误均遵循以下格式：
 
 ```json
 {
@@ -195,25 +205,24 @@ All errors follow this format:
 }
 ```
 
-**Common Error Codes**:
-- `UNAUTHORIZED` (401): Invalid/missing authentication
-- `FORBIDDEN` (403): Insufficient permissions
-- `NOT_FOUND` (404): Resource not found
-- `RATE_LIMITED` (429): Too many requests
-- `INSUFFICIENT_CREDITS` (402): Not enough credits
+**常见错误代码**：
+- `UNAUTHORIZED` (401)：无效或缺失的认证信息
+- `FORBIDDEN` (403)：权限不足
+- `NOT_FOUND` (404)：资源未找到
+- `RATE_LIMITED` (429)：请求次数过多
+- `INSUFFICIENT_CREDITS` (402)：信用点数不足
 
-## Rate Limits
+## 请求速率限制
 
-| Endpoint         | Rate Limit  |
+| 端点           | 速率限制      |
 |------------------|-------------|
-| Chat completions | 60 req/min  |
-| Embeddings       | 100 req/min |
-| Image generation | 20 req/min  |
-| Video generation | 5 req/min   |
+| 聊天补全       | 60 次/分钟     |
+| 图像生成       | 100 次/分钟     |
+| 视频生成       | 5 次/分钟     |
 
-## Example Workflows
+## 示例工作流程
 
-### Deploy a Customer Support Agent
+### 部署客户支持代理
 
 ```bash
 # 1. Create agent
@@ -227,7 +236,7 @@ curl https://elizacloud.ai/api/v1/chat/completions \
   -d '{"model": "agent-id", "messages": [{"role": "user", "content": "Help me"}]}'
 ```
 
-### Generate Marketing Assets
+### 生成营销素材
 
 ```bash
 # 1. Generate image
@@ -241,7 +250,7 @@ curl -X POST https://elizacloud.ai/api/v1/video/generate \
   -d '{"prompt": "Product demo animation", "duration": 10}'
 ```
 
-### Build Agent Network with A2A
+### 使用 A2A 协议构建代理网络
 
 ```bash
 # 1. Discover available agents
@@ -254,13 +263,12 @@ curl -X POST https://elizacloud.ai/api/a2a \
   -d '{"jsonrpc": "2.0", "method": "tasks/send", "params": {"message": {"role": "user", "parts": [{"type": "text", "text": "Analyze financial data"}]}}}'
 ```
 
-## Onboarding
+## 入门指南
 
-### Sign Up
-Register at [elizacloud.ai/login](https://elizacloud.ai/login) (Privy auth — browser required).
-New accounts receive **1,000 free credits** — enough to test chat, image gen, and more.
+### 注册
+在 [elizacloud.ai/login](https://elizacloud.ai/login) 注册（需要浏览器登录）。新账户可免费获得 **1,000 个信用点数**，足以测试聊天、图像生成等功能。
 
-### Get API Key
+### 获取 API 密钥
 ```bash
 # After signing up, create a key at Dashboard → API Keys
 # Or via API (once authenticated):
@@ -271,28 +279,28 @@ POST /api/v1/api-keys
 }
 ```
 
-### Install CLI (Optional)
+### 安装 CLI（可选）
 ```bash
 bun add -g @elizaos/cli
 elizaos login
 ```
 
-## Payments & Credits
+## 支付与信用点数
 
-### Check Balance
+### 查看余额
 ```bash
 GET /api/v1/credits/balance
 ```
 
-### Purchase Credits (Stripe)
+### 购买信用点数（Stripe）
 ```bash
 POST /api/v1/credits/checkout
 { "amount": 5000 }
 # Returns a Stripe checkout URL — redirect to complete payment
 ```
 
-### x402 Crypto Payment (USDC)
-Pay per-request with cryptocurrency — no pre-purchased credits needed:
+### 使用 x402 加密货币支付（USDC）
+支持按请求使用加密货币支付——无需预先购买信用点数：
 ```bash
 # Include x402 payment header with any API request
 curl -X POST "https://elizacloud.ai/api/v1/chat/completions" \
@@ -301,7 +309,7 @@ curl -X POST "https://elizacloud.ai/api/v1/chat/completions" \
   -d '{"model": "agent-id", "messages": [{"role": "user", "content": "Hello"}]}'
 ```
 
-### Auto Top-Up
+### 自动充值
 ```bash
 PUT /api/v1/billing/settings
 {
@@ -311,54 +319,54 @@ PUT /api/v1/billing/settings
 }
 ```
 
-### Credit Transactions
+### 信用点数交易
 ```bash
 GET /api/credits/transactions?limit=50
 ```
 
-### Usage Summary
+### 使用情况总结
 ```bash
 GET /api/v1/credits/summary
 # Returns: org balance, agent budgets, app earnings, redeemable earnings
 ```
 
-## Wallet & Crypto RPCs
+## 钱包与加密货币 RPC 请求
 
-### Create Crypto Payment
+### 创建加密货币支付请求
 ```bash
 POST /api/crypto/payments
 ```
 
-### Check Payment Status
+### 查看支付状态
 ```bash
 GET /api/crypto/status
 ```
 
-### Authentication Methods
-| Method | Header | Use Case |
-|--------|--------|----------|
-| API Key | `Authorization: Bearer ek_xxx` | Server-to-server |
-| X-API-Key | `X-API-Key: ek_xxx` | Alternative header |
-| x402 | `X-PAYMENT: <header>` | Pay-per-request with USDC |
-| Session | Cookie-based | Browser apps |
+### 认证方法
+| 方法            | 头部字段       | 使用场景       |
+|------------------|--------------|-------------------------|
+| API Key         | `Authorization: Bearer ek_xxx` | 服务器间通信       |
+| X-API-Key        | `X-API-Key: ek_xxx`     | 替代头部字段       |
+| x402            | `X-PAYMENT: <header>` | 按请求使用 USDC 支付    |
+| Session          | 基于 Cookie 的认证   | 浏览器应用程序       |
 
-## Additional Resources
+## 额外资源
 
-- **Full API Documentation**: See `references/api-reference.md` for complete endpoint details
-- **Dashboard**: https://elizacloud.ai/dashboard for visual management
-- **OpenAPI Spec**: https://elizacloud.ai/api/openapi.json
-- **SDKs**: TypeScript, Python clients available
-- **Community**: Discord at https://discord.gg/elizaos
+- **完整 API 文档**：请参阅 `references/api-reference.md` 以获取完整的端点详情
+- **仪表板**：https://elizacloud.ai/dashboard 用于可视化管理
+- **OpenAPI 规范**：https://elizacloud.ai/api/openapi.json
+- **SDK**：提供 TypeScript 和 Python 客户端
+- **社区**：Discord 社区：https://discord.gg/elizaos
 
-## Environment Variables
+## 环境变量
 
-- `ELIZACLOUD_API_KEY`: Your elizaOS Cloud API key (required)
-- `ELIZACLOUD_BASE_URL`: API base URL (default: https://elizacloud.ai/api/v1)
+- `ELIZACLOUD_API_KEY`：您的 elizaOS Cloud API 密钥（必需）
+- `ELIZACLOUD_BASE_URL`：API 基础 URL（默认：https://elizacloud.ai/api/v1）
 
-## Security Notes
+## 安全注意事项
 
-- Never commit API keys to version control
-- Use separate keys for development/production
-- Rotate keys regularly
-- Limit permissions to minimum required scope
-- Monitor usage in the dashboard for anomalies
+- **切勿将 API 密钥提交到版本控制系统中**
+- **为开发环境和生产环境使用不同的密钥**
+- **定期轮换密钥**
+- **将权限限制在最低必要范围内**
+- **通过仪表板监控使用情况，及时发现异常**

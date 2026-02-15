@@ -1,22 +1,22 @@
 ---
 name: Screenshots
-description: Create professional App Store and Google Play screenshots with automatic sizing, device frames, marketing copy, and iterative visual learning.
+description: 生成适用于 App Store 和 Google Play 的专业截图，这些截图具备自动调整大小的功能、设备边框、营销文案，以及支持迭代式视觉学习（即通过多次迭代来优化截图效果）。
 ---
 
-## Situation Detection
+## 情境检测
 
-| Context | Load |
+| 使用场景 | 所需信息 |
 |---------|------|
-| Need exact dimensions for stores | `specs.md` |
-| Creating marketing text overlays | `text-style.md` |
-| Choosing visual templates by category | `templates.md` |
-| Full creation workflow | `workflow.md` |
+| 需要商店的精确尺寸 | `specs.md` |
+| 创建营销文本叠加层 | `text-style.md` |
+| 按类别选择视觉模板 | `templates.md` |
+| 完整的创建工作流程 | `workflow.md` |
 
 ---
 
-## Workspace
+## 工作区
 
-Store all screenshot projects in `~/screenshots/`:
+将所有截图项目保存在 `~/screenshots/` 目录下：
 ```
 ~/screenshots/
 ├── {app-slug}/
@@ -31,61 +31,61 @@ Store all screenshot projects in `~/screenshots/`:
 
 ---
 
-## Core Workflow
+## 核心工作流程
 
-1. **Intake** — Get raw screenshots + app icon + brand colors
-2. **Size** — Generate all required dimensions per `specs.md`
-3. **Style** — Apply backgrounds, device frames, text overlays
-4. **Review** — Use vision to verify quality before sending
-5. **Iterate** — Adjust based on user feedback
-6. **Export** — Organize by store/device/language
-
----
-
-## Quality Checklist (Before Sending)
-
-Use vision model to verify EVERY screenshot set:
-- [ ] Text readable at thumbnail size?
-- [ ] No text in unsafe zones (corners, notch area)?
-- [ ] Consistent style across all screenshots?
-- [ ] Device frames match the target size?
-- [ ] Colors harmonious with app branding?
-
-**If ANY check fails** → fix before presenting to user.
+1. **数据收集** — 收集原始截图、应用图标以及品牌颜色信息
+2. **尺寸处理** — 根据 `specs.md` 文件生成所有所需的尺寸
+3. **样式设置** — 应用背景、设备边框和文本叠加层
+4. **质量审核** — 使用视觉检查工具验证截图质量
+5. **迭代优化** — 根据用户反馈进行调整
+6. **导出结果** — 按商店、设备或语言进行分类整理
 
 ---
 
-## User Preferences (Auto-Learn)
+## 质量检查清单（发送前）
 
-### Style
-<!-- dominant-color | gradient | minimal | dark | light -->
+使用视觉检查工具验证每一组截图：
+- [ ] 缩略图中的文字是否可读？
+- [ ] 图像中的文字是否位于安全区域（非角落、非刘海区域）？
+- [ ] 所有截图的样式是否一致？
+- [ ] 设备边框是否与目标尺寸匹配？
+- [ ] 颜色是否与应用品牌风格协调？
 
-### Fonts
-<!-- preferred headline fonts -->
-
-### Device Frames
-<!-- with-frame | frameless | floating -->
-
-### Copy Tone
-<!-- punchy | descriptive | minimal -->
+**如果任何一项检查未通过** → 在展示给用户之前必须修复。
 
 ---
 
-## Versioning Rules
+## 用户偏好（自动学习）
 
-- **Never overwrite** — each batch goes in `v{n}/`
-- **Symlink `latest`** to current approved version
-- **config.md** stores brand decisions for regeneration
-- **Compare versions** when user says "go back to the old style"
+### 风格选项
+<!-- 主要颜色 | 渐变效果 | 极简风格 | 深色风格 | 浅色风格 |
+
+### 字体选项
+<!-- 偏好的标题字体 |
+
+### 设备边框选项
+<!-- 带边框 | 无边框 | 浮动式边框 |
+
+### 文本风格
+<!-- 强烈表达的 | 描述性的 | 极简风格的 |
 
 ---
 
-## Learning Loop
+## 版本控制规则
 
-After each project, update the learnings file (`~/screenshots/learnings.md`):
-- Templates that converted well
-- Font/size combinations that worked
-- Background styles by app category
-- Text patterns that got positive feedback
+- **禁止直接覆盖** — 每个版本都保存在 `v{n}/` 目录下
+- 创建一个符号链接 `latest` 指向当前已批准的版本
+- `config.md` 文件用于存储品牌相关的设置，以便后续使用
+- 当用户要求“恢复旧样式”时，可以对比不同版本
 
-Check the learnings file before starting new projects. See `feedback.md` for detailed learning system.
+---
+
+## 学习循环
+
+每个项目完成后，更新学习记录文件（`~/screenshots/learnings.md`）：
+- 成功转换的模板
+- 表现良好的字体/尺寸组合
+- 按应用类别划分的背景样式
+- 受到用户好评的文本样式
+
+在开始新项目之前，请查看学习记录文件。详细的学习系统信息请参考 `feedback.md`。

@@ -1,6 +1,7 @@
 ---
 name: octolens
-description: Query and analyze brand mentions from Octolens API. Use when the user wants to fetch mentions, track keywords, filter by source platforms (Twitter, Reddit, GitHub, LinkedIn, etc.), sentiment analysis, or analyze social media engagement. Supports complex filtering with AND/OR logic, date ranges, follower counts, and bookmarks.
+description: **从 Octolens API 查询和分析品牌提及**  
+当用户需要获取品牌提及信息、追踪关键词、按来源平台（如 Twitter、Reddit、GitHub、LinkedIn 等）进行筛选、进行情感分析或分析社交媒体互动时，可以使用此功能。该 API 支持使用 AND/OR 逻辑进行复杂过滤、设置日期范围、查看粉丝数量以及添加书签等操作。
 license: MIT
 metadata:
   author: octolens
@@ -9,53 +10,53 @@ compatibility: Requires Node.js 18+ (for fetch API) and access to the internet
 allowed-tools: Node Read
 ---
 
-# Octolens API Skill
+# Octolens API 技能
 
-## When to use this skill
+## 何时使用此技能
 
-Use this skill when the user needs to:
-- Fetch brand mentions from social media and other platforms
-- Filter mentions by source (Twitter, Reddit, GitHub, LinkedIn, YouTube, HackerNews, DevTO, StackOverflow, Bluesky, newsletters, podcasts)
-- Analyze sentiment (positive, neutral, negative)
-- Filter by author follower count or engagement
-- Search for specific keywords or tags
-- Query mentions by date range
-- List available keywords or saved views
-- Apply complex filtering logic with AND/OR conditions
+当用户需要执行以下操作时，可以使用此技能：
+- 从社交媒体和其他平台获取品牌提及信息
+- 按来源（Twitter、Reddit、GitHub、LinkedIn、YouTube、HackerNews、DevTO、StackOverflow、Bluesky、新闻通讯、播客）筛选提及内容
+- 分析情感（正面、中性、负面）
+- 按作者的关注者数量或互动程度进行筛选
+- 搜索特定关键词或标签
+- 按日期范围查询提及内容
+- 列出可用的关键词或已保存的查看记录
+- 应用包含 AND/OR 条件的复杂筛选逻辑
 
-## API Authentication
+## API 认证
 
-The Octolens API requires a Bearer token for authentication. The user should provide their API key, which you'll use in the `Authorization` header:
+Octolens API 需要使用 Bearer 令牌进行认证。用户应提供他们的 API 密钥，您可以在 `Authorization` 头部中使用该密钥：
 
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
 
-**Important**: Always ask the user for their API key before making any API calls. Store it in a variable for subsequent requests.
+**重要提示**：在进行任何 API 调用之前，务必先获取用户的 API 密钥，并将其存储在变量中以供后续请求使用。
 
-## Base URL
+## 基础 URL
 
-All API endpoints use the base URL: `https://app.octolens.com/api/v1`
+所有 API 端点都使用以下基础 URL：`https://app.octolens.com/api/v1`
 
-## Rate Limits
+## 速率限制
 
-- **Limit**: 500 requests per hour
-- **Check headers**: `X-RateLimit-*` headers indicate current usage
+- **限制**：每小时 500 次请求
+- **检查头部信息**：`X-RateLimit-*` 头部字段可显示当前使用情况
 
-## Available Endpoints
+## 可用的端点
 
 ### 1. POST /mentions
 
-Fetch mentions matching keywords with optional filtering. Returns posts sorted by timestamp (newest first).
+获取与关键词匹配的提及内容，并支持可选的筛选条件。返回按时间戳排序的帖子（最新内容优先）。
 
-**Key Parameters:**
-- `limit` (number, 1-100): Maximum results to return (default: 20)
-- `cursor` (string): Pagination cursor from previous response
-- `includeAll` (boolean): Include low-relevance posts (default: false)
-- `view` (number): View ID to use for filtering
-- `filters` (object): Filter criteria (see filtering section)
+**关键参数**：
+- `limit`（数字，1-100）：返回的最大结果数量（默认值：20）
+- `cursor`（字符串）：来自上一次响应的分页游标
+- `includeAll`（布尔值）：是否包含相关性较低的帖子（默认值：false）
+- `view`（数字）：用于筛选的查看记录 ID
+- `filters`（对象）：筛选条件（详见筛选部分）
 
-**Example Response:**
+**示例响应**：
 ```json
 {
   "data": [
@@ -83,9 +84,9 @@ Fetch mentions matching keywords with optional filtering. Returns posts sorted b
 
 ### 2. GET /keywords
 
-List all keywords configured for the organization.
+列出组织配置的所有关键词。
 
-**Example Response:**
+**示例响应**：
 ```json
 {
   "data": [
@@ -103,9 +104,9 @@ List all keywords configured for the organization.
 
 ### 3. GET /views
 
-List all saved views (pre-configured filters).
+列出所有已保存的查看记录（预配置的筛选条件）。
 
-**Example Response:**
+**示例响应**：
 ```json
 {
   "data": [
@@ -123,13 +124,13 @@ List all saved views (pre-configured filters).
 }
 ```
 
-## Filtering Mentions
+## 筛选提及内容
 
-The `/mentions` endpoint supports powerful filtering with two modes:
+`/mentions` 端点支持两种强大的筛选模式：
 
-### Simple Mode (Implicit AND)
+### 简单模式（隐式 AND）
 
-Put fields directly in filters. All conditions are ANDed together.
+直接在筛选条件中输入字段。所有条件都会被组合成 AND 关系进行筛选。
 
 ```json
 {
@@ -142,9 +143,9 @@ Put fields directly in filters. All conditions are ANDed together.
 ```
 → `source IN (twitter, linkedin) AND sentiment = positive AND followers ≥ 1000`
 
-### Exclusions
+### 排除某些值
 
-Prefix any array field with ! to exclude values:
+在数组字段前加上 `!` 以排除特定值：
 
 ```json
 {
@@ -156,9 +157,9 @@ Prefix any array field with ! to exclude values:
 ```
 → `source = twitter AND keyword NOT IN (5, 6)`
 
-### Advanced Mode (AND/OR Groups)
+### 高级模式（AND/OR 组合）
 
-Use `operator` and `groups` for complex logic:
+使用 `operator` 和 `groups` 来实现复杂的逻辑：
 
 ```json
 {
@@ -185,66 +186,66 @@ Use `operator` and `groups` for complex logic:
 ```
 → `(source = twitter OR source = linkedin) AND (sentiment = positive AND tag ≠ spam)`
 
-### Available Filter Fields
+### 可用的筛选字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `source` | string[] | Platforms: twitter, reddit, github, linkedin, youtube, hackernews, devto, stackoverflow, bluesky, newsletter, podcast |
-| `sentiment` | string[] | Values: positive, neutral, negative |
-| `keyword` | string[] | Keyword IDs (get from /keywords endpoint) |
-| `language` | string[] | ISO 639-1 codes: en, es, fr, de, pt, it, nl, ja, ko, zh |
-| `tag` | string[] | Tag names |
-| `bookmarked` | boolean | Filter bookmarked (true) or non-bookmarked (false) posts |
-| `engaged` | boolean | Filter engaged (true) or non-engaged (false) posts |
-| `minXFollowers` | number | Minimum Twitter follower count |
-| `maxXFollowers` | number | Maximum Twitter follower count |
-| `startDate` | string | ISO 8601 format (e.g., "2024-01-15T00:00:00Z") |
-| `endDate` | string | ISO 8601 format |
+| `source` | 字符串数组 | 平台：twitter、reddit、github、linkedin、youtube、hackernews、devto、stackoverflow、bluesky、newsletter、podcast |
+| `sentiment` | 字符串数组 | 情感值：positive、neutral、negative |
+| `keyword` | 字符串数组 | 关键词 ID（从 /keywords 端点获取） |
+| `language` | 字符串数组 | ISO 639-1 语言代码：en、es、fr、de、pt、it、nl、ja、ko、zh |
+| `tag` | 字符串数组 | 标签名称 |
+| `bookmarked` | 布尔值 | 筛选已标记的帖子（true）或未标记的帖子（false） |
+| `engaged` | 布尔值 | 筛选互动过的帖子（true）或未互动的帖子（false） |
+| `minXFollowers` | 数字 | 最小 Twitter 关注者数量 |
+| `maxXFollowers` | 数字 | 最大 Twitter 关注者数量 |
+| `startDate` | 字符串 | ISO 8601 格式（例如：2024-01-15T00:00:00Z） |
+| `endDate` | 字符串 | ISO 8601 格式 |
 
-## Using the Bundled Scripts
+## 使用捆绑脚本
 
-This skill includes helper scripts for common operations. Use them to quickly interact with the API:
+此技能包含用于常见操作的辅助脚本。使用这些脚本可以快速与 API 进行交互：
 
-### Fetch Mentions
+### 获取提及内容
 ```bash
 node scripts/fetch-mentions.js YOUR_API_KEY [limit] [includeAll]
 ```
 
-### List Keywords
+### 列出关键词
 ```bash
 node scripts/list-keywords.js YOUR_API_KEY
 ```
 
-### List Views
+### 列出查看记录
 ```bash
 node scripts/list-views.js YOUR_API_KEY
 ```
 
-### Custom Filter Query
+### 自定义筛选查询
 ```bash
 node scripts/query-mentions.js YOUR_API_KEY '{"source": ["twitter"], "sentiment": ["positive"]}' [limit]
 ```
 
-### Advanced Query
+### 高级查询
 ```bash
 node scripts/advanced-query.js YOUR_API_KEY [limit]
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always ask for the API key** before making requests
-2. **Use views** when possible to leverage pre-configured filters
-3. **Start with simple filters** and add complexity as needed
-4. **Check rate limits** in response headers (`X-RateLimit-*`)
-5. **Use pagination** with cursor for large result sets
-6. **Dates must be ISO 8601** format (e.g., "2024-01-15T00:00:00Z")
-7. **Get keyword IDs** from `/keywords` endpoint before filtering by keyword
-8. **Use exclusions** (!) to filter out unwanted content
-9. **Combine includeAll=false** with relevance filtering for quality results
+1. **在进行请求之前，务必先获取 API 密钥**
+2. **尽可能使用已配置的筛选条件（如 `views`）**
+3. **从简单筛选开始，根据需要逐步增加复杂性**
+4. **检查响应头部中的速率限制信息（`X-RateLimit-*`）**
+5. **对于大量结果，使用分页和游标进行获取**
+6. **日期必须使用 ISO 8601 格式（例如：2024-01-15T00:00:00Z）**
+7. **在按关键词筛选之前，先从 `/keywords` 端点获取关键词 ID**
+8. **使用 `!` 来排除不需要的内容**
+9. **将 `includeAll=false` 与相关性筛选结合使用，以获得更准确的结果**
 
-## Common Use Cases
+## 常见用例
 
-### Find positive Twitter mentions with high followers
+### 查找 Twitter 上的正面提及内容且关注者数量较多的帖子
 ```json
 {
   "limit": 20,
@@ -256,7 +257,7 @@ node scripts/advanced-query.js YOUR_API_KEY [limit]
 }
 ```
 
-### Exclude spam and get Reddit + GitHub mentions
+### 排除垃圾信息，并获取 Reddit 和 GitHub 上的提及内容
 ```json
 {
   "limit": 50,
@@ -267,7 +268,7 @@ node scripts/advanced-query.js YOUR_API_KEY [limit]
 }
 ```
 
-### Complex query: (Twitter OR LinkedIn) AND positive sentiment, last 7 days
+### 复杂查询：（Twitter 或 LinkedIn）且情感为正面，时间范围为过去 7 天
 ```json
 {
   "limit": 30,
@@ -293,42 +294,42 @@ node scripts/advanced-query.js YOUR_API_KEY [limit]
 }
 ```
 
-## Error Handling
+## 错误处理
 
-| Status | Error | Description |
+| 状态码 | 错误信息 | 描述 |
 |--------|-------|-------------|
-| 401 | unauthorized | Missing or invalid API key |
-| 403 | forbidden | Valid key but no permission |
-| 404 | not_found | Resource (e.g., view ID) not found |
-| 429 | rate_limit_exceeded | Too many requests |
-| 400 | invalid_request | Malformed request body |
-| 500 | internal_error | Server error, retry later |
+| 401 | 未经授权 | 缺少或无效的 API 密钥 |
+| 403 | 被禁止 | 密钥有效，但没有权限 |
+| 404 | 未找到 | 资源（例如查看记录 ID）未找到 |
+| 429 | 超过速率限制 | 请求次数过多 |
+| 400 | 请求格式错误 | 请求体格式不正确 |
+| 500 | 内部错误 | 服务器错误，请稍后重试 |
 
-## Step-by-Step Workflow
+## 逐步工作流程
 
-When a user asks to query Octolens data:
+当用户请求查询 Octolens 数据时：
 
-1. **Ask for API key** if not already provided
-2. **Understand the request**: What are they looking for?
-3. **Determine filters needed**: Source, sentiment, date range, etc.
-4. **Check if a view applies**: List views first if user mentions saved filters
-5. **Build the query**: Use simple mode first, advanced mode for complex logic
-6. **Execute the request**: Use bundled Node.js scripts or fetch API directly
-7. **Parse results**: Extract key information (author, body, sentiment, source)
-8. **Handle pagination**: If more results needed, use cursor from response
-9. **Present findings**: Summarize insights, highlight patterns
+1. **如果尚未提供 API 密钥，请先请求获取**
+2. **了解用户的需求**：他们想要查找什么？
+3. **确定所需的筛选条件**：来源、情感、日期范围等
+4. **检查是否有合适的查看记录**：如果用户使用了预配置的筛选条件，先列出相关记录
+5. **构建查询**：先使用简单模式，对于复杂逻辑再使用高级模式
+6. **执行请求**：使用捆绑的 Node.js 脚本或直接调用 API
+7. **解析结果**：提取关键信息（作者、内容、情感、来源）
+8. **处理分页**：如果需要更多结果，使用响应中的游标
+9. **展示结果**：总结分析结果，突出显示关键信息
 
-## Examples
+## 示例
 
-### Example 1: Simple Query
-**User**: "Show me positive mentions from Twitter in the last 7 days"
+### 示例 1：简单查询
+**用户**：“显示过去 7 天内来自 Twitter 的正面提及内容”
 
-**Action** (using bundled script):
+**操作**（使用捆绑脚本）：
 ```bash
 node scripts/query-mentions.js YOUR_API_KEY '{"source": ["twitter"], "sentiment": ["positive"], "startDate": "2024-01-20T00:00:00Z"}'
 ```
 
-**Alternative** (using fetch API directly):
+**另一种方式**（直接使用 fetch API）：
 ```javascript
 const response = await fetch('https://app.octolens.com/api/v1/mentions', {
   method: 'POST',
@@ -348,15 +349,15 @@ const response = await fetch('https://app.octolens.com/api/v1/mentions', {
 const data = await response.json();
 ```
 
-### Example 2: Advanced Query
-**User**: "Find mentions from Reddit or GitHub, exclude spam tag, with positive or neutral sentiment"
+### 示例 2：高级查询
+**用户**：“查找来自 Reddit 或 GitHub 的提及内容，排除带有 spam 标签的帖子，情感为正面或中性”
 
-**Action** (using bundled script):
+**操作**（使用捆绑脚本）：
 ```bash
 node scripts/query-mentions.js YOUR_API_KEY '{"operator": "AND", "groups": [{"operator": "OR", "conditions": [{"source": ["reddit"]}, {"source": ["github"]}]}, {"operator": "OR", "conditions": [{"sentiment": ["positive"]}, {"sentiment": ["neutral"]}]}, {"operator": "AND", "conditions": [{"!tag": ["spam"]}]}]}'
 ```
 
-**Alternative** (using fetch API directly):
+**另一种方式**（直接使用 fetch API）：
 ```javascript
 const response = await fetch('https://app.octolens.com/api/v1/mentions', {
   method: 'POST',
@@ -396,25 +397,25 @@ const response = await fetch('https://app.octolens.com/api/v1/mentions', {
 const data = await response.json();
 ```
 
-### Example 3: Get Keywords First
-**User**: "Show mentions for our main product keyword"
+### 示例 3：先获取关键词
+**用户**：“显示与我们主要产品相关的关键词的提及内容”
 
-**Actions**:
-1. First, list keywords:
+**操作步骤**：
+1. 首先列出所有关键词：
 ```bash
 node scripts/list-keywords.js YOUR_API_KEY
 ```
 
-2. Then query mentions with the keyword ID:
+2. 然后使用关键词 ID 查询提及内容：
 ```bash
 node scripts/query-mentions.js YOUR_API_KEY '{"keyword": [1]}'
 ```
 
-## Tips for Agents
+## 代理人员的建议
 
-- **Use bundled scripts**: The Node.js scripts handle JSON parsing automatically
-- **Cache keywords**: After fetching keywords once, remember them for the session
-- **Explain filters**: When using complex filters, explain the logic to the user
-- **Show examples**: When users are unsure, show example filter structures
-- **Paginate wisely**: Ask if user wants more results before fetching next page
-- **Summarize insights**: Don't just dump data, provide analysis (sentiment trends, top authors, platform distribution)
+- **使用捆绑脚本**：Node.js 脚本会自动处理 JSON 解析
+- **缓存关键词**：首次获取关键词后，将其保存在会话中
+- **解释筛选逻辑**：在使用复杂筛选条件时，向用户解释其逻辑
+- **提供示例**：当用户不确定如何使用筛选条件时，展示示例结构
+- **合理使用分页**：在请求下一页之前，先询问用户是否需要更多结果
+- **提供分析**：不要只是简单地展示数据，还要提供分析结果（如情感趋势、主要作者、平台分布等）

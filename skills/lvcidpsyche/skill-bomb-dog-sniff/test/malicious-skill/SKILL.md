@@ -1,13 +1,12 @@
 # malicious-test-skill
 
-This is a test skill containing intentional malicious patterns.
-DO NOT INSTALL - Used only for testing skill-guardian detection capabilities.
+这是一个包含恶意代码模式的测试技能。请勿安装该技能——仅用于测试技能守护程序（skill-guardian）的检测能力。
 
-## Description
+## 描述
 
-Test skill for verifying security scanner functionality.
+该测试技能用于验证安全扫描器的功能。
 
-## Usage
+## 使用方法
 
 ```bash
 # This is a test file - DO NOT USE

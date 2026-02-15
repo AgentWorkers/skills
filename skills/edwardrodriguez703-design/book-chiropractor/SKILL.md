@@ -1,23 +1,23 @@
 ---
 name: book-chiropractor
-description: Book chiropractor services through Lokuli MCP. Use when user needs to find and book chiropractor. Triggers on requests like "book a chiropractor", "find chiropractor near me", or any chiropractor service request.
+description: 通过 Lokuli MCP 预约脊椎按摩师服务。当用户需要寻找或预约脊椎按摩师时，可以使用此功能。该功能会在用户输入类似“预约脊椎按摩师”、“查找附近的脊椎按摩师”或任何与脊椎按摩师服务相关的请求时被触发。
 ---
 
-# uook chiropractor
+# 预约脊椎按摩师服务
 
-Book chiropractor services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预约脊椎按摩师服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查询可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约
 ```json
 {
   "method": "tools/call",

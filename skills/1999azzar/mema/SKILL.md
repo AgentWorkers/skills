@@ -1,62 +1,63 @@
 ---
 name: mema
-description: Mema's personal brain - SQLite document index + Redis mental buffer. Use for indexing MD files, storing short-term mental state, and organizing memory across sessions.
+description: Mema的个人大脑系统：基于SQLite的文档索引机制与Redis的临时存储功能。该系统用于对MD格式的文件进行索引管理、存储用户的短期思维状态，并在不同会话之间协调记忆信息。
 ---
-# Mema Brain (Centralized Memory)
+# Mema Brain（集中式记忆系统）
 
-This skill provides the **Long-Term Memory** (SQLite) and **Short-Term Context** (Redis) for the agent.
-It is integrated directly into the Agent's core database.
+该功能为代理提供了**长期记忆**（存储在 SQLite 数据库中）和**短期上下文数据**（存储在 Redis 数据库中）。这些数据直接集成到了代理的核心数据库中。
 
-## Architecture
+## 架构
 
-### 1. Long-Term Memory (SQLite)
+### 1. 长期记忆（SQLite）
 
-- **Path:** `~/.openclaw/memory/main.sqlite`
-- **Tables:**
-  - `documents`: Index of knowledge files (path, title, tags).
-  - `skills`: Tracking skill usage and success rates.
-- **Why?** Persistent storage that survives restarts and is backed up with the agent state.
+- **存储路径：** `~/.openclaw/memory/main.sqlite`
+- **数据库表：**
+  - `documents`：知识文件的索引（包含文件的路径、标题和标签）。
+  - `skills`：记录技能的使用情况及其成功率。
+- **作用：** 提供持久化的存储空间，数据在代理重启后仍可保留，并会与代理的状态一起被备份。
 
-### 2. Short-Term Memory (Redis)
+### 2. 短期记忆（Redis）
 
-- **Key Prefix:** `mema:mental:*`
-- **Usage:** Passing context between sessions, caching thoughts, temporary scratchpad.
-- **TTL:** 6 hours (matches Agent Session cycle).
+- **键前缀：** `mema:mental:*`
+- **用途：** 在不同会话之间传递上下文信息、缓存临时数据以及作为临时工作区。
+- **过期时间：** 6 小时（与代理会话的生命周期相同）。
 
-## Usage
+## 使用方法
 
-### Indexing Knowledge
+### 索引知识
 
-When you learn something new or create a doc:
+当你学习新内容或创建文档时：
 
 ```bash
 scripts/mema.py index "docs/NEW_FEATURE.md" --tag "feature"
 ```
 
-### Searching Memory
+### 搜索记忆
 
-Find relevant docs:
+查找相关的文档：
 
 ```bash
 scripts/mema.py list --tag "iot"
 ```
 
-### Mental State (Context)
+### 保存当前状态（上下文）
 
-Save context for the next turn/session:
+为下一次会话保存当前的处理状态：
 
 ```bash
 scripts/mema.py mental set context:summary "Working on Hub Redesign..."
 ```
 
-Recall it:
+### 检索状态
+
+在需要时重新获取之前保存的状态：
 
 ```bash
 scripts/mema.py mental get context:summary
 ```
 
-## Setup
+## 设置步骤
 
-1. Copy `.env.example` to `.env` and configure Redis connection if needed.
-2. Install dependencies: `pip install -r requirements.txt` (or use a venv).
-3. **Init:** Run `scripts/mema.py init` once to create tables in `main.sqlite`.
+1. 将 `.env.example` 文件复制到 `.env` 文件中，并根据需要配置 Redis 连接信息。
+2. 安装依赖项：`pip install -r requirements.txt`（或使用虚拟环境）。
+3. **初始化：** 运行 `scripts/mema.py init` 命令，以在 `main.sqlite` 中创建所需的数据库表。

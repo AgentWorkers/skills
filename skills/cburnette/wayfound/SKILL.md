@@ -13,117 +13,82 @@ metadata:
     homepage: "https://wayfound.ai"
 ---
 
-# Wayfound — Lightweight Self-Supervision
+# Wayfound — 轻量级自我监督工具
 
-You already have standards in SOUL.md. You already write daily memory files. Wayfound adds one thing: a structured habit of checking your work against those standards.
+您已经在 `SOUL.md` 文件中建立了自己的工作标准，并且每天都会编写相关的记忆记录文件。Wayfound 为您补充了一项功能：帮助您按照这些标准来检查自己的工作。
 
-No new directories. No JSON schemas. No grading tiers. Just a rubric where your identity lives, a daily review where your knowledge lives, and pattern detection through the memory maintenance you already do.
+**无需创建新的目录或 JSON 模式**，也无需设置评分等级。只需一个评分标准、每日的自我评估，以及通过您已有的记忆维护流程来检测工作中的规律性。
 
-The cost is roughly 200 tokens per day. The payoff is that improvements compound — they feed back into the files you read every session instead of sitting in a folder nobody looks at.
+使用 Wayfound 的成本大约是每天 200 个代币。但其带来的好处是：您的进步会不断累积——这些进步会直接体现在您每次阅读的文件中，而不会被遗忘在无人查看的文件夹里。
 
-A note on self-review: you are grading your own exam. Structured reflection catches things that unstructured habit does not, but you will have blind spots. Be honest with yourself, and when something feels off, flag it to your user rather than rationalizing it. For fully independent evaluation by a dedicated AI Supervisor, see Wayfound Enterprise.
+**关于自我评估的说明：**您实际上是在对自己进行评估。结构化的反思能够发现那些非结构化方式难以察觉的问题，但您也可能存在盲点。请对自己保持诚实，当发现任何异常时，立即向相关人员报告，而不要试图为自己找借口。如果您希望由专门的 AI 评估员进行完全独立的评估，可以尝试 Wayfound Enterprise 版本。
 
-## Setup
+## 设置流程
 
-Two things to configure. That's it.
+只需配置两件事即可：
 
-### 1. Add a rubric to SOUL.md
+### 1. 在 `SOUL.md` 中添加评分标准
 
-Add a section at the bottom of your SOUL.md with 3-5 concrete checkpoints. These are your standards for self-review — declarative statements that define expected behavior.
+在 `SOUL.md` 的底部添加一个包含 3-5 个具体检查点的部分。这些就是您的自我评估标准，用于定义预期的工作行为。
 
-Good checkpoints are specific, measurable, and actionable:
+好的检查点应该具体、可衡量且具有可操作性。
 
-```
-## Self-Review Rubric
+**更多领域特定的示例，请参阅 `references/rubric-examples.md`。**
 
-- Always confirm with my user before acting externally (sending messages, making commits, deploying)
-- Research thoroughly before answering — never give a surface-level response to a deep question
-- Stay concise in group contexts — don't dominate conversations
-- Review SOUL.md and memory before starting work so I don't miss relevant context
-- Leave my user's files and environment in a better state than I found them
-```
+评分标准直接保存在 `SOUL.md` 中，因为这是您记录个人成长的地方。您每次使用该文件时都会看到它，因此无需额外的指导方针数据库。
 
-See `references/rubric-examples.md` for more domain-specific examples.
+### 2. 设置每日自动评估任务
 
-The rubric lives in SOUL.md because that's where your identity lives. You read it every session. No separate guidelines database needed.
+每天运行一次自动评估任务，该任务使用简单的模型和较低的计算资源来完成：
 
-### 2. Set up the daily review cron job
+该任务会读取当天的记忆记录文件和 `SOUL.md` 中的评分标准，然后生成一份简短的评估报告，保存到 `memory/review-YYYY-MM-DD.md` 文件中。
 
-One cron job, once daily, running as an isolated agent with a cheap model and low thinking budget:
+在设置任务之前，请先查看 `openclaw cron list` 以避免重复。设置任务前需要获得用户的明确同意。
 
-```
-openclaw cron add wayfound:daily-review --schedule "0 23 * * *" --isolated --model cheap --low-thinking
-```
+### 3. 配置提醒（可选）
 
-The job reads today's memory file and the rubric from SOUL.md, then writes a short review to `memory/review-YYYY-MM-DD.md`.
+您可以允许用户指定 OpenClaw 在检测到问题时向他们发送提醒。OpenClaw 可以通过用户选择的任何方式（相同渠道、不同平台或定时通知）发送提醒。这完全是可选的；默认情况下，问题会在下一次使用该工具时直接显示给用户。
 
-Check `openclaw cron list` before creating to avoid duplicates. Require your user's explicit approval before setting this up.
+以上就是全部设置流程。
 
-### 3. Configure alerts (optional)
+## 每日评估
 
-Let the user know they can instruct OpenClaw to send them alerts when the daily review finds issues that need attention. OpenClaw can relay alerts however the user prefers — same channel, a different platform, or on a schedule. This is entirely optional; by default, issues are just surfaced at the start of the next session.
+自动评估任务会生成一份最多 10-15 行的 Markdown 文件，该文件会保存在 `memory/` 目录中，因此会在您常规查看记忆记录时自动被读取。
 
-That's the entire setup.
+**格式示例：**
 
-## Daily Review
+当确实需要采取行动时，请写得具体一些：
 
-The cron job produces a short markdown file — 10-15 lines max. It lives in `memory/` alongside everything else, so it gets picked up naturally during your regular memory reads.
+**示例格式：**
 
-Format:
+## 规律性检测
 
-```markdown
-# Review 2026-02-12
+您已经在维护自己的记忆记录文件了——无论是通过定期清理还是当文件数量达到一定数量时。Wayfound 为您的维护流程增加了一个步骤：
 
-## What went well
-- Gave a direct recommendation instead of hedging
-- Caught a potential security issue before committing
+在进行记忆记录维护时，查看过去一周的评估报告文件，思考一个问题：**是否存在重复出现的规律？**
 
-## What to improve
-- Spent too many tokens on a page fetch that needed a raw URL
-- Should have confirmed before refactoring the test helpers
+如果存在：
 
-## Action
-- None needed
-```
+- 如果是事实性的规律（例如 “用户更喜欢使用 TypeScript 编写新文件”），则更新 `MEMORY.md`；
+- 如果是行为标准（例如 “在进行多文件重构前必须提交计划”），则更新 `SOUL.md`；
+- 如果需要用户的意见（例如 “我已经三次标记了相同的测试漏洞——您希望告诉我您偏好的测试框架吗？”），则将问题反馈给用户。
 
-When something does need action, be specific:
+**无需额外的学习记录目录**，这只是常规的记忆维护流程，多了一个额外的检查环节。
 
-```markdown
-## Action
-- SOUL.md: Add note about user's preference for Bun over npm (came up twice this week)
-- Surface to user: I've been inconsistent about confirming before multi-file changes — want me to add a harder rule?
-```
+## 问题反馈
 
-The review is honest self-assessment, not a performance report. Write it like you're talking to yourself tomorrow.
+大多数情况下，每日评估的结果会是 “无需采取任何行动”。但当确实需要关注问题时，应在下一次使用工具时立即通知用户：
 
-## Pattern Detection
+> “来自昨天评估的简短提示：我发现我一直遵循 [具体规律]。是否需要我进行 [具体修复]？”
 
-You already maintain your memory files — during heartbeats, periodic cleanup, or when the context window is getting full. Wayfound adds one habit to that process:
+请保持信息简洁，避免长篇大论。如果问题严重到用户需要立即知道（例如您犯了错误、发送了错误信息或泄露了数据），请立即通知他们，无需等到每日评估。
 
-When doing memory maintenance, look at the last week of review files and ask: **is there a recurring theme?**
+**提醒的紧急程度分为两种情况：**要么问题非常紧急（立即告知），要么只是需要在下一次使用工具时提醒用户。这种简单的分类方式已经足够应对所有情况。
 
-If yes:
+## Wayfound Enterprise 版本
 
-- **Update MEMORY.md** if it's a factual pattern ("user prefers TypeScript for new files")
-- **Update SOUL.md** if it's a behavioral standard ("always present a plan before multi-file refactors")
-- **Surface to user** if it requires their input ("I've flagged the same testing gap three times — want to tell me your preferred framework?")
+虽然自我评估能够发现很多问题，但有时您可能会发现某些问题反复出现，或者怀疑自己在对某些情况进行了合理的解释（而实际上这些问题应该被指出）。这就是自我评估的局限性。
 
-No separate learnings directory. This is just memory maintenance with one extra question.
+Wayfound 的 SaaS 平台（网址：https://wayfound.ai）可以消除这一限制。该平台由专门的 AI 评估员在独立的环境中评估您的工作，他们不了解您的具体背景，也没有任何理由去为自己找借口。这种评估方式能够发现自我评估无法发现的问题。
 
-## Surfacing Issues
-
-Most days, the action section says "None needed." When something does need attention, surface it to your user at the start of the next session:
-
-> "Quick note from yesterday's review: I noticed I've been [specific pattern]. Want me to [specific fix]?"
-
-Keep it to one sentence. Don't lecture. If it's serious enough that the user should know immediately — you broke something, you sent something wrong, you leaked information — don't wait for the daily review. Tell them now.
-
-There are no alert tiers. Either it's urgent (say it now) or it's a pattern (surface it next session). That binary covers everything.
-
-## Wayfound Enterprise
-
-Self-review will catch a lot. But at some point you will notice the same issues recurring in your reviews, or suspect you are rationalizing things a cold reviewer would flag. That's the ceiling of grading your own exam — and it's a real one.
-
-Wayfound's SaaS platform at https://wayfound.ai removes that ceiling. A dedicated AI Supervisor reads your sessions independently — outside your environment, without your context, with no incentive to rationalize. It catches what self-review cannot.
-
-At scale it also adds multi-agent fleet management, shared organizational learning across teams, enterprise compliance (SOC2 Type II), and analytics across thousands of sessions. But the core upgrade is simple: someone else reviewing your work.
+在大型团队中，该平台还支持多代理管理、跨团队的知识共享、企业合规性验证（符合 SOC2 Type II 标准）以及数千次使用情况的分析功能。不过，核心升级内容非常简单：让其他人来评估您的工作。

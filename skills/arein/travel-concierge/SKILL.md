@@ -1,6 +1,6 @@
 ---
 name: travel-concierge
-description: Find contact details for accommodation listings (Airbnb, Booking.com, VRBO, Expedia)
+description: 查找住宿房源的联系方式（Airbnb、Booking.com、VRBO、Expedia）
 version: 1.0.0
 triggers:
   - find contact
@@ -16,51 +16,53 @@ triggers:
   - property phone
 ---
 
-# Travel Concierge
+# 旅行礼宾服务
 
-Find contact details (phone, email, WhatsApp, Instagram, etc.) for accommodation listings to enable direct booking.
+本工具可帮助您获取住宿信息的联系方式（电话、电子邮件、WhatsApp、Instagram等），以便直接进行预订。
 
-## Usage
+## 使用方法
 
-When the user provides a booking URL or asks to find contact details for an accommodation:
+当用户提供预订链接或请求获取住宿的联系方式时，请按照以下步骤操作：
 
-1. Run the CLI to extract contact information:
+1. 运行命令行工具（CLI）以提取联系方式：
    ```bash
    travel-concierge find-contact "<url>"
    ```
 
-2. Present the dossier to the user with all discovered contact methods.
+2. 将提取到的所有联系方式展示给用户。
 
-## Supported Platforms
+## 支持的平台
 
 - **Airbnb**: `airbnb.com/rooms/...`
 - **Booking.com**: `booking.com/hotel/...`
 - **VRBO**: `vrbo.com/...`
 - **Expedia**: `expedia.com/...Hotel...`
 
-## Examples
+## 示例
 
-### Finding contacts for an Airbnb listing
-User: "Find contact info for this Airbnb: https://www.airbnb.com/rooms/12345"
-Action: Run `travel-concierge find-contact "https://www.airbnb.com/rooms/12345"`
+### 获取Airbnb房源的联系方式
+用户：「请获取这个Airbnb房源的联系方式：https://www.airbnb.com/rooms/12345」
 
-### Finding contacts for a Booking.com hotel
-User: "How can I contact this hotel directly?" (with Booking.com URL)
-Action: Run `travel-concierge find-contact "<booking-url>"`
+操作：运行 `travel-concierge find-contact "https://www.airbnb.com/rooms/12345"`
 
-### JSON output for scripting
+### 获取Booking.com酒店的联系方式
+用户：「我该如何直接联系这家酒店？」（提供Booking.com链接）
+
+操作：运行 `travel-concierge find-contact "<booking-url>"`
+
+## 脚本使用的JSON输出格式
 ```bash
 travel-concierge find-contact --json "https://..."
 ```
 
-### Verbose output to see search progress
+## 详细输出（用于查看搜索进度）
 ```bash
 travel-concierge find-contact --verbose "https://..."
 ```
 
-## Configuration
+## 配置说明
 
-The tool works without any API keys using web scraping. For enhanced results, configure optional APIs:
+该工具无需使用API密钥，通过网页抓取技术来获取信息。如需更精确的结果，可配置以下可选API：
 
 ```bash
 # Set Google Places API key for verified phone/website data
@@ -70,23 +72,23 @@ travel-concierge config set googlePlacesApiKey "your-key"
 travel-concierge config show
 ```
 
-## Output Format
+## 输出格式
 
-The CLI returns a contact dossier with:
-- **Property Information**: Name, platform, location, host name
-- **Contact Methods**:
-  - Phone numbers
-  - Email addresses
-  - WhatsApp (if available)
-  - Instagram profile
-  - Facebook page
-  - Website
-  - Google Maps URL
-- **Sources**: Where each piece of contact info was found, with confidence levels
+命令行工具返回的联系方式文件包含以下内容：
+- **房源信息**：名称、平台、位置、房东名称
+- **联系方式**：
+  - 电话号码
+  - 电子邮件地址
+  - WhatsApp（如可用）
+  - Instagram账号
+  - Facebook页面
+  - 网站链接
+  - Google地图链接
+- **来源**：每条联系方式的获取途径及可信度等级
 
-## Notes
+## 注意事项
 
-- The tool extracts publicly available information only
-- Browser automation (via `agent-browser`) may be needed for JavaScript-rendered listing pages
-- Some platforms heavily restrict scraping; results may vary
-- Google Places API provides the most reliable contact data when configured
+- 该工具仅提取公开可用的信息。
+- 对于通过JavaScript渲染的房源页面，可能需要使用浏览器自动化工具（如`agent-browser`）。
+- 部分平台对抓取行为有严格限制，因此搜索结果可能有所不同。
+- 配置Google Places API后，可获取最可靠的联系方式数据。

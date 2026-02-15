@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account - Go
+# Telnyx 账户 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List Audit Logs
+## 列出审计日志
 
-Retrieve a list of audit log entries.
+检索审计日志条目的列表。
 
 `GET /audit_events`
 
@@ -53,7 +53,7 @@ Retrieve a list of audit log entries.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get user balance details
+## 获取用户余额详情
 
 `GET /balance`
 
@@ -65,9 +65,9 @@ Retrieve a list of audit log entries.
 	fmt.Printf("%+v\n", balance.Data)
 ```
 
-## Search detail records
+## 搜索详细记录
 
-Search for any detail record across the Telnyx Platform
+在 Telnyx 平台上搜索任何详细记录。
 
 `GET /detail_records`
 
@@ -79,9 +79,9 @@ Search for any detail record across the Telnyx Platform
 	fmt.Printf("%+v\n", page)
 ```
 
-## List invoices
+## 列出发票
 
-Retrieve a paginated list of invoices.
+检索分页显示的发票列表。
 
 `GET /invoices`
 
@@ -93,9 +93,9 @@ Retrieve a paginated list of invoices.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get invoice by ID
+## 根据 ID 获取发票
 
-Retrieve a single invoice by its unique identifier.
+根据唯一的标识符检索单张发票。
 
 `GET /invoices/{id}`
 
@@ -111,9 +111,9 @@ Retrieve a single invoice by its unique identifier.
 	fmt.Printf("%+v\n", invoice.Data)
 ```
 
-## List auto recharge preferences
+## 列出自动充值偏好设置
 
-Returns the payment auto recharge preferences.
+返回支付自动充值偏好设置。
 
 `GET /payments/auto_recharge_prefs`
 
@@ -125,9 +125,9 @@ Returns the payment auto recharge preferences.
 	fmt.Printf("%+v\n", autoRechargePrefs.Data)
 ```
 
-## Update auto recharge preferences
+## 更新自动充值偏好设置
 
-Update payment auto recharge preferences.
+更新支付自动充值偏好设置。
 
 `PATCH /payments/auto_recharge_prefs`
 
@@ -139,9 +139,9 @@ Update payment auto recharge preferences.
 	fmt.Printf("%+v\n", autoRechargePref.Data)
 ```
 
-## List User Tags
+## 列出用户标签
 
-List all user tags.
+列出所有用户标签。
 
 `GET /user_tags`
 
@@ -153,9 +153,9 @@ List all user tags.
 	fmt.Printf("%+v\n", userTags.Data)
 ```
 
-## List webhook deliveries
+## 列出 Webhook 交付记录
 
-Lists webhook_deliveries for the authenticated user
+列出已认证用户的 Webhook 交付记录。
 
 `GET /webhook_deliveries`
 
@@ -167,9 +167,9 @@ Lists webhook_deliveries for the authenticated user
 	fmt.Printf("%+v\n", page)
 ```
 
-## Find webhook_delivery details by ID
+## 根据 ID 查找 Webhook 交付详情
 
-Provides webhook_delivery debug data, such as timestamps, delivery status and attempts.
+提供 Webhook 交付的调试数据，如时间戳、交付状态和尝试次数。
 
 `GET /webhook_deliveries/{id}`
 

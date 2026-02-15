@@ -1,6 +1,6 @@
 ---
 name: nano-triple
-description: Generate 3 images with Nano Banana Pro using the same prompt. Pick the best, or give feedback on any option to get 3 refined versions.
+description: 使用 Nano Banana Pro 根据相同的提示生成 3 张图片。选择其中最满意的一张，或者对任何一张图片提出反馈，以便进一步优化生成 3 张更高质量的图片。
 triggers:
   - make me an image
   - generate an image
@@ -10,21 +10,21 @@ metadata:
     emoji: "🎨"
 ---
 
-# Nano Triple: 3 Images, Same Prompt, You Pick
+# Nano Triple：3张图片，相同提示，由用户选择
 
-When user wants an image, generate 3 versions and let them pick or refine.
+当用户请求生成一张图片时，系统会生成3个版本，供用户选择或进一步修改。
 
-## Flow
+## 流程
 
-### Step 1: User Gives Their Prompt
+### 第1步：用户提供提示
 
-User says: "make me an image of a sunset over mountains"
+用户输入：“生成一张山间日落的图片。”
 
-### Step 2: Generate 3 Images with THE SAME PROMPT
+### 第2步：使用相同的提示生成3张图片
 
-Use the user's EXACT prompt for all 3. Don't modify it, don't get creative. The model's inherent randomness will produce 3 different results.
+系统会严格使用用户提供的提示来生成3张图片，不得进行任何修改或创意发挥。模型自身的随机性会生成3个不同的结果。
 
-Run all 3 in parallel:
+同时运行这3个生成任务：
 
 ```bash
 # Same prompt, 3 times
@@ -41,45 +41,43 @@ uv run ~/.npm-global/lib/node_modules/clawdbot/skills/nano-banana-pro/scripts/ge
   --filename "option-3.png" --resolution 1K
 ```
 
-### Step 3: Send All 3 Images Labeled 1, 2, 3
+### 第3步：发送标记为1、2、3的图片
 
-Send each image with just the number:
+每张图片仅附上对应的编号：
 
-- **1** [image]
-- **2** [image]
-- **3** [image]
+- **1** [图片]
+- **2** [图片]
+- **3** [图片]
 
-**NO descriptions. NO creativity. Just 1, 2, 3 and the images.**
+**无需任何描述或创意说明，只需标注数字1、2、3以及图片本身。**
 
-### Step 4: User Picks or Gives Feedback
+### 第4步：用户进行选择或提供反馈
 
-- "2" → Done, that's the winner
-- "1 but warmer colors" → Generate 3 MORE with their feedback applied
-- "none, try again" → Generate 3 more with same prompt
+- 选择“2” → 选择该图片作为最终结果。
+- 选择“1，但颜色更暖和一些” → 根据用户反馈再生成3张新图片。
+- 选择“无，重新生成” → 再使用相同的提示生成3张新图片。
 
-**Key: Feedback on any option = 3 new images with that feedback applied**
+**注意：** 对任何选项的反馈都会导致系统生成3张新的图片。
 
-## Example
+## 示例
 
-**User:** make me an image of a cat wearing a top hat
+**用户：** 生成一张戴着高礼帽的猫的图片。
 
-**You:** Generate 3 images using that exact prompt, send as 1, 2, 3
+**系统：** 根据用户提示生成3张图片，并分别标记为1、2、3发送给用户。
 
-**User:** 2 but bigger hat
+**用户：** 选择“2”，表示喜欢第二张图片（帽子更大一些）。
 
-**You:** Generate 3 MORE images with "bigger hat" added to prompt, send as 1, 2, 3
+**系统：** 根据用户反馈，在提示中添加“帽子更大一些”，再生成3张新图片，并分别标记为1、2、3发送给用户。
 
-**User:** 3
+**用户：** 选择“3”，表示对所有图片都满意。
 
-**You:** 👍
+## 规则
 
-## Rules
+1. **始终生成3张图片**：使用相同的提示，得到3个不同的结果。
+2. **禁止创意发挥**：必须严格使用用户提供的提示。
+3. **标注图片编号**：图片仅附上数字1、2、3。
+4. **反馈机制**：用户对任何一张图片的修改都会触发系统生成3张新的图片。
 
-1. **Always 3 images** - Same prompt, 3 outputs
-2. **No creativity** - Use user's exact prompt
-3. **Label 1, 2, 3** - No descriptions
-4. **Feedback = 3 more** - Any edit request generates 3 new options
+## API密钥
 
-## API Key
-
-Uses `GEMINI_API_KEY` from environment or clawdbot config.
+使用环境变量或clawdbot配置中的`GEMINI_API_KEY`。

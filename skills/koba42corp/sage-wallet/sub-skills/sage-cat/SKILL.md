@@ -1,35 +1,35 @@
 ---
 name: sage-cat
-description: Sage CAT (Chia Asset Token) operations. List tokens, send CATs, issue new tokens, combine CAT coins, resync balances.
+description: Sage CAT（Chia Asset Token）的操作包括：列出所有token、发送CATs、发行新token、合并CAT coins以及重新同步账户余额。
 ---
 
-# Sage CAT Tokens
+# Sage CAT 代币
 
-CAT (Chia Asset Token) operations.
+## CAT（Chia 资产代币）相关操作
 
-## Endpoints
+### API 端点
 
-### Query CATs
+#### 查询 CAT 代币
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_cats` | `{}` | List wallet CATs |
-| `get_all_cats` | `{}` | List all known CATs |
-| `get_token` | `{"asset_id": "a628..."}` | Get token details |
+| 端点        | 请求参数    | 描述                          |
+|------------|-----------|-----------------------------------|
+| `get_cats`    | `{}`       | 列出钱包中的 CAT 代币              |
+| `get_all_cats` | `{}`       | 列出所有已知的 CAT 代币              |
+| `get_token`    | `{"asset_id": "a628..."}` | 获取代币详细信息                    |
 
-### Token Metadata
+#### 代币元数据
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `update_cat` | `{"record": {...}}` | Update CAT metadata |
-| `resync_cat` | `{"asset_id": "a628..."}` | Resync CAT balance |
+| 端点        | 请求参数    | 描述                          |
+|------------|-----------|-----------------------------------|
+| `update_cat`    | `{"record": {...}}` | 更新 CAT 代币的元数据                |
+| `resync_cat`    | `{"asset_id": "a628..."}` | 同步 CAT 代币的余额                    |
 
-### Send CAT
+#### 发送 CAT 代币
 
-| Endpoint | Description |
-|----------|-------------|
-| `send_cat` | Send to single address |
-| `bulk_send_cat` | Send to multiple addresses |
+| 端点        | 描述                          |                          |
+|------------|-----------|-----------------------------------|
+| `send_cat`    | 向单个地址发送 CAT 代币                |
+| `bulk_send_cat` | 向多个地址批量发送 CAT 代币            |
 
 #### send_cat
 
@@ -60,72 +60,24 @@ CAT (Chia Asset Token) operations.
 }
 ```
 
-### Issue CAT
+#### 发行新的 CAT 代币
 
-Create new token:
+（相关代码块请在此处添加）
 
-```json
-{
-  "name": "My Token",
-  "ticker": "MYT",
-  "amount": "1000000",
-  "fee": "100000000",
-  "auto_submit": true
-}
-```
+#### 合并 CAT 代币
 
-### Combine CAT Coins
+（相关代码块请在此处添加）
 
-```json
-{
-  "asset_id": "a628...",
-  "max_coins": 100,
-  "max_coin_amount": "1000000",
-  "fee": "100000000",
-  "auto_submit": true
-}
-```
+## 代币记录结构
 
-## Token Record Structure
+（相关代码块请在此处添加）
 
-```json
-{
-  "asset_id": "a628c1c2...",
-  "name": "Spacebucks",
-  "ticker": "SBX",
-  "balance": "1000000",
-  "icon_url": "https://...",
-  "visible": true
-}
-```
+## 示例
 
-## Examples
+（相关示例代码请在此处添加）
 
-```bash
-# List CATs
-sage_rpc get_cats '{}'
+## 注意事项
 
-# Send CAT
-sage_rpc send_cat '{
-  "asset_id": "a628c1c2c6fcb74d53746157e438e108eab5c0bb3e5c80ff9b1910b3e4832913",
-  "address": "xch1recipient...",
-  "amount": "100",
-  "fee": "100000000",
-  "auto_submit": true
-}'
-
-# Issue new token
-sage_rpc issue_cat '{
-  "name": "Community Token",
-  "ticker": "COM",
-  "amount": "21000000",
-  "fee": "100000000",
-  "auto_submit": true
-}'
-```
-
-## Notes
-
-- CAT amounts are in the token's smallest unit (no decimals)
-- `include_hint` adds the asset_id to help receivers identify the token
-- Asset IDs are 64-character hex strings
+- CAT 代币的数量以代币的最小单位计算（不支持小数）。
+- 使用 `include_hint` 参数可以添加资产 ID，以便接收者识别代币。
+- 资产 ID 为 64 位的十六进制字符串。

@@ -1,15 +1,15 @@
 ---
 slug: "price-api"
 display_name: "Price API"
-description: "Fetch construction material prices from open APIs. Track price trends, regional variations, and update cost databases."
+description: "从开放的 API 中获取建筑材料的价格信息。跟踪价格趋势、地区差异，并更新成本数据库。"
 ---
 
-# Price API for Construction Materials
+# 建筑材料价格API
 
-## Overview
-Material prices fluctuate constantly. This skill fetches prices from open sources, tracks trends, and updates cost databases with current market data.
+## 概述
+建筑材料的价格会不断波动。该功能从开源数据源获取价格信息，跟踪价格趋势，并使用最新的市场数据更新成本数据库。
 
-## Python Implementation
+## Python实现
 
 ```python
 import requests
@@ -277,7 +277,7 @@ class MaterialPriceEstimator:
         return pd.DataFrame(estimates)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize price API
@@ -294,9 +294,9 @@ trend = tracker.calculate_trend(df)
 print(f"Steel trend: {trend.trend_direction}, YoY: {trend.year_change}%")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Update Cost Database
+### 1. 更新成本数据库
 ```python
 tracker = ConstructionPriceTracker()
 
@@ -307,14 +307,14 @@ updates = {'steel': 1250, 'concrete': 135, 'lumber': 480}
 updated_db = tracker.update_cost_database(cost_df, updates)
 ```
 
-### 2. Regional Pricing
+### 2. 区域定价
 ```python
 base_price = 120  # concrete USD/m3
 berlin_price = tracker.apply_regional_factor(base_price, 'Germany')
 print(f"Berlin price: ${berlin_price}/m3")
 ```
 
-### 3. Bulk Estimation
+### 3. 批量估算
 ```python
 estimator = MaterialPriceEstimator()
 
@@ -323,6 +323,6 @@ estimates = estimator.bulk_estimate(materials, region='US_West')
 print(estimates)
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.2 - Open Data Sources
-- **FRED API**: https://fred.stlouisfed.org/docs/api/
+## 参考资源
+- **DDC手册**：第2.2章 - 开源数据源
+- **FRED API**：https://fred.stlouisfed.org/docs/api/

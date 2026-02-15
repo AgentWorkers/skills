@@ -1,6 +1,6 @@
 ---
 name: whisper-mlx-local
-description: "Free local speech-to-text for Telegram and WhatsApp using MLX Whisper on Apple Silicon. Private, no API costs."
+description: "使用 Apple Silicon 上的 MLX Whisper，为 Telegram 和 WhatsApp 提供免费的本地语音转文本功能。该服务是私密的，且无需支付任何 API 费用。"
 metadata:
   openclaw:
     emoji: "🎤"
@@ -18,51 +18,50 @@ metadata:
         instructions: "pip3 install -r requirements.txt"
 ---
 
-# Local Whisper
+# 本地语音转录工具
 
-**Transcribe voice messages for free on Telegram and WhatsApp.** No API keys. No costs. Runs on your Mac.
+**在 Telegram 和 WhatsApp 上免费转录语音消息。** 无需 API 密钥，完全免费，可在您的 Mac 上运行。
 
-## The Problem
+## 问题
 
-Voice transcription APIs cost money:
-- OpenAI Whisper: **$0.006/minute**
-- Groq: **$0.001/minute**  
-- AssemblyAI: **$0.01/minute**
+语音转录 API 需要付费：
+- OpenAI Whisper：**每分钟 0.006 美元**
+- Groq：**每分钟 0.001 美元**
+- AssemblyAI：**每分钟 0.01 美元**
 
-If you transcribe a lot of Telegram voice messages, it adds up.
+如果您需要转录大量的 Telegram 语音消息，费用会相当可观。
 
-## The Solution
+## 解决方案
 
-This skill runs Whisper **locally on your Mac**. Same quality, **zero cost**.
+该工具在您的 Mac 上本地运行 Whisper 服务，质量相同，且完全免费。
 
-- ✅ Free forever
-- ✅ Private (audio never leaves your Mac)
-- ✅ Fast (~1 second per message)
-- ✅ Works offline
+- ✅ 永久免费
+- ✅ 保密性高（音频数据不会离开您的 Mac）
+- ✅ 转录速度快（每条消息约 1 秒）
+- ✅ 支持离线模式
 
-## ⚠️ Important Notes
+## ⚠️ 重要说明
 
-- **First run downloads ~1.5GB model** — be patient, this only happens once
-- **First transcription is slow** — model loads into memory (~10-30 seconds), then it's instant
-- **Already using OpenAI API for transcription?** Replace your existing `tools.media.audio` config with the one below
+- **首次运行时会下载约 1.5GB 的模型文件** — 请耐心等待，此过程仅发生一次
+- **首次转录速度较慢** — 模型加载到内存中需要约 10-30 秒，之后转录速度会很快
+- **如果您已经在使用 OpenAI API 进行语音转录**，请将 `tools.media.audio` 的配置文件替换为以下内容
 
-## Quick Start
+## 快速入门
 
-### 1. Install dependencies
+### 1. 安装依赖项
 ```bash
 pip3 install -r requirements.txt
 ```
 
-### 2. Start the daemon
+### 2. 启动守护进程
 ```bash
 python3 scripts/daemon.py
 ```
-First run will download the Whisper model (~1.5GB). Wait for "Ready" message.
+首次运行时会下载 Whisper 模型（约 1.5GB）。等待“Ready”提示即可。
 
-### 3. Add to OpenClaw config
+### 3. 添加到 OpenClaw 配置文件中
 
-Add this to your `~/.openclaw/openclaw.json`:
-
+将以下配置添加到您的 `~/.openclaw/openclaw.json` 文件中：
 ```json
 {
   "tools": {
@@ -83,51 +82,49 @@ Add this to your `~/.openclaw/openclaw.json`:
 }
 ```
 
-### 4. Restart gateway
+### 4. 重启 OpenClaw 服务
 ```bash
 openclaw gateway restart
 ```
 
-Now voice messages from Telegram, WhatsApp, etc. will be transcribed locally for free!
+现在，来自 Telegram、WhatsApp 等应用的语音消息将可以在本地免费转录！
 
-### Manual test
+### 手动测试
 ```bash
 ./scripts/transcribe.sh voice_message.ogg
 ```
 
-## Use Case: Telegram Voice Messages
+## 使用场景：Telegram 语音消息
 
-Instead of paying for OpenAI API to transcribe incoming voice messages, point OpenClaw to this local daemon. Free transcription forever.
+无需支付 OpenAI API 的费用，只需将 OpenClaw 指向这个本地守护进程即可实现免费转录。
 
-## Auto-Start on Login
-
+## 登录时自动启动
 ```bash
 cp com.local-whisper.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.local-whisper.plist
 ```
 
-## API
+## API 信息
 
-Daemon runs at `localhost:8787`:
-
+守护进程运行在 `localhost:8787` 端口：
 ```bash
 curl -X POST http://localhost:8787/transcribe -F "file=@audio.ogg"
 # {"text": "Hello world", "language": "en"}
 ```
 
-## Translation
+## 语言支持
 
-Any language → English:
+支持任意语言到英语的转录：
 
 ```bash
 ./scripts/transcribe.sh spanish_audio.ogg --translate
 ```
 
-## Requirements
+## 系统要求
 
-- macOS with Apple Silicon (M1/M2/M3/M4)
-- Python 3.9+
+- 需要安装支持 Apple Silicon（M1/M2/M3/M4）的 macOS 系统
+- Python 3.9 或更高版本
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

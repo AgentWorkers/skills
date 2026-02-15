@@ -1,71 +1,71 @@
 ---
 name: scraper
-description: Scrape documents from Notion, DocSend, PDFs, and other sources into local PDF files. Use when the user needs to download, archive, or convert web documents to PDF format. Supports authentication flows for protected documents and session persistence via profiles. Returns local file paths to downloaded PDFs.
+description: 从 Notion、DocSend、PDF 文件以及其他来源抓取文档，并将其转换为本地 PDF 文件。适用于用户需要下载、归档或将网页文档转换为 PDF 格式的情况。支持对受保护文档的认证流程，并通过用户配置文件实现会话持久化。返回已下载 PDF 文件的本地路径。
 ---
 
 # docs-scraper
 
-CLI tool that scrapes documents from various sources into local PDF files using browser automation.
+这是一个命令行工具（CLI），通过浏览器自动化从各种来源抓取文档，并将它们转换为本地PDF文件。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g docs-scraper
 ```
 
-## Quick start
+## 快速入门
 
-Scrape any document URL to PDF:
+将任何文档URL抓取为PDF文件：
 
 ```bash
 docs-scraper scrape https://example.com/document
 ```
 
-Returns local path: `~/.docs-scraper/output/1706123456-abc123.pdf`
+生成的PDF文件将保存在本地路径：`~/.docs-scraper/output/1706123456-abc123.pdf`
 
-## Basic scraping
+## 基本使用方法
 
-**Scrape with daemon** (recommended, keeps browser warm):
+- **使用守护进程进行抓取**（推荐，可保持浏览器会话活跃）：
 ```bash
 docs-scraper scrape <url>
 ```
 
-**Scrape with named profile** (for authenticated sites):
+- **使用指定配置文件进行抓取**（适用于需要身份验证的网站）：
 ```bash
 docs-scraper scrape <url> -p <profile-name>
 ```
 
-**Scrape with pre-filled data** (e.g., email for DocSend):
+- **使用预填充的数据进行抓取**（例如，用于DocSend服务的数据）：
 ```bash
 docs-scraper scrape <url> -D email=user@example.com
 ```
 
-**Direct mode** (single-shot, no daemon):
+- **直接模式**（一次性抓取，不使用守护进程）：
 ```bash
 docs-scraper scrape <url> --no-daemon
 ```
 
-## Authentication workflow
+## 身份验证流程
 
-When a document requires authentication (login, email verification, passcode):
+当文档需要身份验证（登录、电子邮件验证或密码输入）时：
 
-1. Initial scrape returns a job ID:
+1. 初始抓取会返回一个作业ID：
    ```bash
    docs-scraper scrape https://docsend.com/view/xxx
    # Output: Scrape blocked
    #         Job ID: abc123
    ```
 
-2. Retry with data:
+2. 使用正确的凭证重新尝试抓取：
    ```bash
    docs-scraper update abc123 -D email=user@example.com
    # or with password
    docs-scraper update abc123 -D email=user@example.com -D password=1234
    ```
 
-## Profile management
+## 配置文件管理
 
-Profiles store session cookies for authenticated sites.
+配置文件用于存储身份验证所需的会话cookie。
 
 ```bash
 docs-scraper profiles list     # List saved profiles
@@ -73,9 +73,9 @@ docs-scraper profiles clear    # Clear all profiles
 docs-scraper scrape <url> -p myprofile  # Use a profile
 ```
 
-## Daemon management
+## 守护进程管理
 
-The daemon keeps browser instances warm for faster scraping.
+守护进程会保持浏览器实例的活跃状态，以加快抓取速度。
 
 ```bash
 docs-scraper daemon status     # Check status
@@ -83,44 +83,42 @@ docs-scraper daemon start      # Start manually
 docs-scraper daemon stop       # Stop daemon
 ```
 
-Note: Daemon auto-starts when running scrape commands.
+注意：运行抓取命令时，守护进程会自动启动。
 
-## Cleanup
+## 清理
 
-PDFs are stored in `~/.docs-scraper/output/`. The daemon automatically cleans up files older than 1 hour.
+抓取到的PDF文件存储在`~/.docs-scraper/output/`目录下。守护进程会自动删除超过1小时的旧文件。
 
-Manual cleanup:
+- 手动清理文件：
 ```bash
 docs-scraper cleanup                    # Delete all PDFs
 docs-scraper cleanup --older-than 1h    # Delete PDFs older than 1 hour
 ```
 
-## Job management
+## 作业管理
 
 ```bash
 docs-scraper jobs list         # List blocked jobs awaiting auth
 ```
 
-## Supported sources
+## 支持的来源类型
 
-- **Direct PDF links** - Downloads PDF directly
-- **Notion pages** - Exports Notion page to PDF
-- **DocSend documents** - Handles DocSend viewer
-- **LLM fallback** - Uses Claude API for any other webpage
+- **直接PDF链接**：直接下载PDF文件
+- **Notion页面**：将Notion页面内容导出为PDF
+- **DocSend文档**：处理DocSend平台的文档
+- **LLM备用抓取器**：使用Claude API抓取其他网页内容
 
 ---
 
-## Scraper Reference
+## 抓取器参考
 
-Each scraper accepts specific `-D` data fields. Use the appropriate fields based on the URL type.
+每个抓取器都支持特定的`-D`参数来指定数据字段。请根据URL类型选择合适的参数。
 
 ### DirectPdfScraper
 
-**Handles:** URLs ending in `.pdf`
-
-**Data fields:** None (downloads directly)
-
-**Example:**
+- **支持的URL格式**：以`.pdf`结尾的URL
+- **需要提供的数据字段**：无（直接下载PDF文件）
+- **示例**：
 ```bash
 docs-scraper scrape https://example.com/document.pdf
 ```
@@ -129,22 +127,18 @@ docs-scraper scrape https://example.com/document.pdf
 
 ### DocsendScraper
 
-**Handles:** `docsend.com/view/*`, `docsend.com/v/*`, and subdomains (e.g., `org-a.docsend.com`)
-
-**URL patterns:**
-- Documents: `https://docsend.com/view/{id}` or `https://docsend.com/v/{id}`
-- Folders: `https://docsend.com/view/s/{id}`
-- Subdomains: `https://{subdomain}.docsend.com/view/{id}`
-
-**Data fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `email` | email | Email address for document access |
-| `password` | password | Passcode/password for protected documents |
-| `name` | text | Your name (required for NDA-gated documents) |
-
-**Examples:**
+- **支持的URL格式**：`docsend.com/view/*`、`docsend.com/v/*`及其子域名（例如`org-a.docsend.com`）
+- **URL模式**：
+  - 文档：`https://docsend.com/view/{id}` 或 `https://docsend.com/v/{id}`
+  - 文件夹：`https://docsend.com/view/s/{id}`
+  - 子域名：`https://{subdomain}.docsend.com/view/{id>`
+- **需要提供的数据字段**：
+  | 字段 | 类型 | 说明 |
+  |-------|------|-------------|
+  | `email` | email | 访问文档所需的电子邮件地址 |
+  | `password` | 密码 | 保护文档所需的密码 |
+  | `name` | text | （针对需要NDA协议的文档）您的姓名 |
+- **示例**：
 ```bash
 # Pre-fill email for DocSend
 docs-scraper scrape https://docsend.com/view/abc123 -D email=user@example.com
@@ -159,25 +153,22 @@ docs-scraper scrape https://docsend.com/view/abc123 -D email=user@example.com -D
 docs-scraper update abc123 -D email=user@example.com -D password=secret123
 ```
 
-**Notes:**
-- DocSend may require any combination of email, password, and name
-- Folders are scraped as a table of contents PDF with document links
-- The scraper auto-checks NDA checkboxes when name is provided
+**注意**：
+  - DocSend可能需要提供电子邮件、密码或姓名中的任意组合
+  - 文件夹内容会被抓取为包含文档链接的PDF文件
+  - 提供姓名后，抓取器会自动勾选NDA协议相关的复选框
 
 ---
 
 ### NotionScraper
 
-**Handles:** `notion.so/*`, `*.notion.site/*`
-
-**Data fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `email` | email | Notion account email |
-| `password` | password | Notion account password |
-
-**Examples:**
+- **支持的URL格式**：`notion.so/*`、`*.notion.site/*`
+- **需要提供的数据字段**：
+  | 字段 | 类型 | 说明 |
+  |-------|------|-------------|
+  | `email` | Notion账户的电子邮件地址 |
+  | `password` | Notion账户的密码 |
+- **示例**：
 ```bash
 # Public page (no auth needed)
 docs-scraper scrape https://notion.so/Public-Page-abc123
@@ -190,35 +181,30 @@ docs-scraper scrape https://notion.so/Private-Page-abc123 \
 docs-scraper scrape https://docs.company.notion.site/Page-abc123
 ```
 
-**Notes:**
-- Public Notion pages don't require authentication
-- Toggle blocks are automatically expanded before PDF generation
-- Uses session profiles to persist login across scrapes
+**注意**：
+  - 公开的Notion页面无需身份验证
+  - 生成PDF文件前会自动展开可折叠的内容块
+  - 使用会话配置文件来保持登录状态
 
 ---
 
 ### LlmFallbackScraper
 
-**Handles:** Any URL not matched by other scrapers (automatic fallback)
-
-**Data fields:** Dynamic - determined by Claude analyzing the page
-
-The LLM scraper uses Claude to analyze the page HTML and detect:
-- Login forms (extracts field names dynamically)
-- Cookie banners (auto-dismisses)
-- Expandable content (auto-expands)
-- CAPTCHAs (reports as blocked)
-- Paywalls (reports as blocked)
-
-**Common dynamic fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `email` | email | Login email (if detected) |
-| `password` | password | Login password (if detected) |
-| `username` | text | Username (if login uses username) |
-
-**Examples:**
+- **支持的URL格式**：其他抓取器无法处理的URL
+- **数据字段**：由Claude API动态生成
+  LLM抓取器会分析页面HTML内容，检测以下内容：
+  - 登录表单（动态提取字段名称）
+  - Cookie广告（自动关闭）
+  - 可展开的内容（自动展开）
+  - CAPTCHA验证码（标记为无法访问）
+  - 广告墙（标记为无法访问）
+- **常见的动态字段**：
+  | 字段 | 类型 | 说明 |
+  |-------|------|-------------|
+  | `email` | （如果存在）登录所需的电子邮件地址 |
+  | `password` | （如果存在）登录所需的密码 |
+  | `username` | （如果使用用户名登录）用户名 |
+- **示例**：
 ```bash
 # Generic webpage (no auth)
 docs-scraper scrape https://example.com/article
@@ -233,65 +219,63 @@ docs-scraper jobs list
 docs-scraper update abc123 -D username=myuser -D password=secret
 ```
 
-**Notes:**
-- Requires `ANTHROPIC_API_KEY` environment variable
-- Field names are extracted from the page's actual form fields
-- Limited to 2 login attempts before failing
-- CAPTCHAs require manual intervention
+**注意**：
+  - 需要设置`ANTHROPIC_API_KEY`环境变量
+  - 字段名称会根据页面上的实际表单字段提取
+  - 允许最多2次登录尝试，超过次数后将失败
+  - CAPTCHA验证码需要手动处理
 
----
+## 数据字段总结
 
-## Data field summary
-
-| Scraper | email | password | name | Other |
+| 抓取器 | email | password | name | 其他字段 |
 |---------|-------|----------|------|-------|
 | DirectPdf | - | - | - | - |
 | DocSend | ✓ | ✓ | ✓ | - |
 | Notion | ✓ | ✓ | - | - |
-| LLM Fallback | ✓* | ✓* | - | Dynamic* |
+| LLM Fallback | ✓* | ✓* | - | 动态生成* |
 
-*Fields detected dynamically from page analysis
+*某些字段会根据页面内容动态生成*
 
-## Environment setup (optional)
+## 环境配置（可选）
 
-Only needed for LLM fallback scraper:
+仅适用于LLM备用抓取器：
 
 ```bash
 export ANTHROPIC_API_KEY=your_key
 ```
 
-Optional browser settings:
+**可选的浏览器设置**：
 ```bash
 export BROWSER_HEADLESS=true   # Set false for debugging
 ```
 
-## Common patterns
+## 常用操作
 
-**Archive a Notion page:**
+- **归档Notion页面**：
 ```bash
 docs-scraper scrape https://notion.so/My-Page-abc123
 ```
 
-**Download protected DocSend:**
+- **下载受保护的DocSend文档**：
 ```bash
 docs-scraper scrape https://docsend.com/view/xxx
 # If blocked:
 docs-scraper update <job-id> -D email=user@example.com -D password=1234
 ```
 
-**Batch scraping with profiles:**
+- **使用配置文件批量抓取**：
 ```bash
 docs-scraper scrape https://site.com/doc1 -p mysite
 docs-scraper scrape https://site.com/doc2 -p mysite
 ```
 
-## Output
+## 抓取结果
 
-**Success**: Local file path (e.g., `~/.docs-scraper/output/1706123456-abc123.pdf`)
-**Blocked**: Job ID + required credential types
+- **成功**：生成的PDF文件路径（例如：`~/.docs-scraper/output/1706123456-abc123.pdf`）
+- **失败**：显示作业ID及所需的认证信息
 
-## Troubleshooting
+## 故障排除
 
-- **Timeout**: `docs-scraper daemon stop && docs-scraper daemon start`
-- **Auth fails**: `docs-scraper jobs list` to check pending jobs
-- **Disk full**: `docs-scraper cleanup` to remove old PDFs
+- **超时**：执行`docs-scraper daemon stop`并重新启动守护进程
+- **身份验证失败**：查看`docs-scraper jobs list`以查看待处理的作业
+- **磁盘空间不足**：执行`docs-scraper cleanup`以清除旧PDF文件

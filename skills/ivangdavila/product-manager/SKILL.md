@@ -1,77 +1,77 @@
 ---
 name: Product Manager
-description: Build products users love with discovery, prioritization, roadmapping, and cross-functional leadership.
+description: 通过发现需求、确定优先级、制定路线图以及跨职能团队的协作，打造用户喜爱的产品。
 metadata: {"clawdbot":{"emoji":"🎯","os":["linux","darwin","win32"]}}
 ---
 
-# Product Management Rules
+# 产品管理规则
 
-## Discovery
-- Talk to users weekly — not just at project kickoff
-- Watch behavior, don't just collect opinions — users say one thing, do another
-- Problem validation before solution validation — are we solving the right thing?
-- Jobs to be done: what's the user trying to accomplish?
-- Competitors show what's possible, not what to copy
+## 发现问题
+- 每周与用户沟通——而不仅仅是在项目启动时
+- 观察用户的行为，而不仅仅是收集他们的意见；用户可能说一套做另一套
+- 在验证解决方案之前，先验证问题是否真正存在（即我们是否在解决正确的问题）
+- 明确用户试图实现的目标
+- 竞争对手展示的是他们能做什么，而不是我们应该模仿的内容
 
-## Prioritization
-- Impact vs effort is a starting point, not the answer
-- Say no more than yes — focus is a feature
-- Urgent vs important: stakeholder pressure isn't priority
-- Stack rank ruthlessly — "everything is P1" means nothing is
-- Revisit priorities when context changes — quarterly at minimum
+## 优先级排序
+- 优先考虑问题的影响而非解决所需的努力程度；这只是一个起点，而非最终答案
+- 对于待办事项，只给出明确的“是”或“否”的答复；重点应放在功能上
+- 紧急性与重要性之间需要权衡；利益相关者的压力不能成为优先级的决定因素
+- 无情地根据实际需求调整优先级；如果所有任务都被标记为“P1”，那就意味着没有任何任务真正重要
+- 至少每季度重新评估一次优先级
 
-## Roadmapping
-- Outcomes over outputs — what will change, not what we'll build
-- Time horizons: now (committed), next (planned), later (possible)
-- Communicate uncertainty honestly — roadmaps aren't promises
-- Dependencies surfaced early — blocked work wastes everyone's time
-- Update when reality changes — stale roadmaps destroy trust
+## 制定路线图
+- 关注最终结果而非仅仅是开发出的产品；重点在于哪些功能会发生变化
+- 时间规划：当前阶段（已确定），下一阶段（计划中），后续阶段（可能性）
+- 如实传达不确定性；路线图并非承诺
+- 尽早暴露潜在的依赖关系；被阻塞的工作会浪费所有人的时间
+- 当实际情况发生变化时及时更新路线图；过时的路线图会破坏信任
 
-## Requirements
-- User stories: who, what, why — not how
-- Acceptance criteria define done — ambiguity creates rework
-- Edge cases addressed upfront — not discovered in QA
-- Scope creep is the enemy — good enough now beats perfect later
-- Technical constraints are real — work with engineering, not around them
+## 需求管理
+- 用户故事应明确“谁”、“需要什么”以及“为什么需要”（而非具体的实现方式）
+- 通过验收标准来定义任务是否完成；模糊不清的需求会导致返工
+- 需要提前考虑边缘情况（而非在质量测试阶段才发现）
+- 避免范围蔓延；现在做到“足够好”总比以后追求完美要好
+- 技术限制是客观存在的；要与开发团队合作应对，而不是绕过它们
 
-## Working with Engineering
-- Context over directives — explain why, not just what
-- Tradeoffs are collaborative decisions
-- Spec before sprint, not during — no designing on the fly
-- Protect focus time — meetings kill flow
-- Trust their estimates, push back on scope not time
+## 与开发团队的协作
+- 强调上下文的重要性，而不仅仅是直接下达指令；解释原因，而不仅仅是说明任务内容
+- 折中方案需要团队共同决策
+- 在冲刺开始前制定详细规范，而不是在冲刺过程中临时设计
+- 保护开发团队的专注时间；过多的会议会打断开发流程
+- 相信开发团队的估算；如果对项目范围有疑问，应与他们讨论，而不是质疑他们的工作时间
 
-## Working with Design
-- Research together, don't hand off briefs
-- Critique the work, not the designer
-- Design reviews with users, not just stakeholders
-- Mobile and edge cases early — not afterthoughts
-- Design system enables speed — support it
+## 与设计团队的协作
+- 共同进行研究，而不是简单地将设计任务交给设计团队
+- 批评设计成果，而不是设计者个人
+- 设计评审应包括用户的参与；不要只让利益相关者参与
+- 应提前考虑移动设备和特殊场景的需求；不要等到后期才处理这些问题
+- 优秀的设计能够提高开发效率；要支持这种设计
 
-## Stakeholder Management
-- Regular updates prevent surprise requests
-- Data calms opinion battles
-- Explain trade-offs, don't just defend decisions
-- Feedback channels prevent end-runs — make input easy
-- Executive sponsors for big initiatives
+## 利益相关者管理
+- 定期更新项目进展，避免意外的需求变更
+- 数据有助于平息意见分歧
+- 解释各种权衡方案，而不仅仅是为决策辩护
+- 提供反馈渠道，方便利益相关者提出意见
+- 对于重大项目，需要高层管理人员的参与和支持
 
-## Metrics
-- One north star metric, 2-3 supporting
-- Leading indicators for early signal — don't wait for lagging
-- Dashboards should prompt questions, not just display numbers
-- Vanity metrics feel good, don't drive decisions
-- A/B test when data beats intuition
+## 绩效指标
+- 设定一个核心指标，再辅以2-3个辅助指标
+- 选择能够提前反映项目进展的领先指标；不要等到数据滞后时才采取行动
+- 仪表盘应能引发问题思考，而不仅仅是展示数字
+- 虚荣的指标虽然看起来不错，但并不能指导决策
+- 当数据支持决策时，应进行A/B测试
 
-## Launch
-- Soft launch catches problems before scale
-- Success criteria defined before launch — not after
-- Rollback plan before rollout
-- Cross-functional checklist: docs, support, marketing
-- Post-launch review: what worked, what didn't
+## 产品发布
+- 进行小规模测试，以便在产品全面推广前发现问题
+- 在发布前明确成功标准；不要等到发布后才去定义
+- 制定回滚计划以应对可能的问题
+- 跨部门协作，确保所有准备工作（如文档、技术支持和市场营销）都已完成
+- 发布后进行总结：哪些措施有效，哪些需要改进
 
-## Common Mistakes
-- Feature factory: shipping without learning
-- Overspeccing: killing engineering autonomy
-- Consensus seeking: decisions by committee
-- Ignoring qualitative: data alone misses why
-- Roadmap as backlog: detail everything, commit nothing
+## 常见错误
+- 机械地开发功能：不通过学习就直接发布产品
+- 过度详细地制定规范：会限制开发团队的自主性
+- 过度依赖共识：让委员会来做决策
+- 忽视定性因素：仅依赖数据会忽略问题的根本原因
+- 将路线图当作待办事项清单：把所有细节都列出来，但什么都不真正落实

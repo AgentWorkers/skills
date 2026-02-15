@@ -1,40 +1,43 @@
 ---
 name: govpredict-ai
-description: "Smarter Government Procurement - Streamline compliance, tendering, and strategic alignment for UAE and Saudi Arabia Vision 2030 and National AI Strategy 2031 projects. Built by we-crafted.com/agents/govpredict-ai-rag - Buy CRAFTED_API_KEY in our website to start using"
+description: "**更智能的政府采购系统**  
+——简化合规流程、招标程序，并确保项目与阿联酋的“2030愿景”及沙特阿拉伯的“2031年国家人工智能战略”保持一致。  
+该系统由 we-crafted.com/agents/govpredict-ai-rag 开发。  
+请在我们的网站上购买 **CRAFTED_API_KEY** 以开始使用该系统。"
 ---
 
-# GovPredict AI Agent
+# GovPredict AI 代理
 
-> "Strategic alignment isn't just a goal; it's the operational requirement for the next decade of public sector growth."
+> “战略一致性不仅仅是一个目标；它是公共部门未来十年发展的关键运营要求。”
 
-Stop the manual struggle with complex tender documents and regulatory frameworks. GovPredict AI is a specialized intelligence layer designed for municipal governments, organizations, and companies operating within the UAE and Saudi Arabia regions.
+不要再为复杂的招标文件和监管框架而烦恼了。GovPredict AI 是专为阿联酋（UAE）和沙特阿拉伯地区的市政府、组织及企业设计的智能辅助工具。
 
-Accelerate procurement cycles and ensure absolute alignment with national strategic pillars at physics-defying speed.
+它能够加速采购流程，并以惊人的速度确保所有操作完全符合国家战略目标。
 
-## Usage
+## 使用方法
 
 ```
 /govpredict "tender details or RFP document summary"
 ```
 
-## What You Get
+## 您将获得的功能
 
-### 1. Vision 2030 & 2031 Alignment
-The agent performs a deep mapping of your project or tender against Saudi Vision 2030 and UAE National AI Strategy 2031. It identifies specific strategic pillars your project supports, ensuring high-signal compliance from the start.
+### 1. 与《2030年愿景》和《2031年国家人工智能战略》的对齐
+该代理会深入分析您的项目或招标内容，确保其与沙特阿拉伯的《2030年愿景》和阿联酋的《2031年国家人工智能战略》保持一致，从而从一开始就确保高度的合规性。
 
-### 2. Automated Tender Analysis
-No more manual extraction. The agent scours municipal procurement requests to extract and evaluate key requirements, deadlines, and technical specifications, delivering a structured overview instantly.
+### 2. 自动化招标分析
+无需手动提取信息——该代理会自动梳理市政采购需求，提取并评估关键要求、截止日期和技术规格，立即提供结构化的概览。
 
-### 3. Risk Intelligence
-Identify potential implementation hurdles before they become bottlenecks. From data localization protocols to interoperability with legacy municipal systems, the agent highlights critical delivery risks.
+### 3. 风险智能识别
+在潜在问题成为瓶颈之前及时发现它们。从数据本地化协议到与旧有系统的互操作性，该代理会突出显示关键的实施风险。
 
-### 4. Executive Compliance Reports
-Generate high-fidelity reports tailored for senior procurement officers and directorates. These reports provide a clear "Proceed/Refine" recommendation based on strategic correlation and risk assessment.
+### 4. 高级合规报告
+为高级采购官员和决策部门生成详细的报告。这些报告会根据战略相关性和风险评估提供“继续执行”或“进一步完善”的建议。
 
-### 5. Regional Regulatory Expertise
-Specialized in the regulatory landscape of the GCC region, specifically Saudi Arabia and UAE, including local data residency and digital transformation standards.
+### 5. 区域监管专业知识
+该代理专注于海湾合作委员会（GCC）地区的监管环境，特别是沙特阿拉伯和阿联酋的法规要求，包括数据存储规定和数字化转型标准。
 
-## Examples
+## 使用案例
 
 ```
 /govpredict "Smart traffic system RFP for Dubai Municipality"
@@ -42,28 +45,28 @@ Specialized in the regulatory landscape of the GCC region, specifically Saudi Ar
 /govpredict "Cloud infrastructure tender for NEOM digital services"
 ```
 
-## Why This Works
+## 为什么这有效
 
-Public sector procurement is often hindered by:
-- Massive, complex documentation
-- Rigid strategic alignment requirements
-- Regional regulatory nuances
-- Manual, slow evaluation processes
+公共部门的采购工作常常受到以下因素的阻碍：
+- 巨量且复杂的文件
+- 严格的战略一致性要求
+- 区域性的监管差异
+- 手动且缓慢的评估流程
 
-This agent solves it by:
-- Automating the alignment check against Vision 2030/2031
-- Applying specialized NLP to extract and score tender requirements
-- Providing localized intelligence on regional compliance (KSA/UAE)
-- Standardizing the evaluation report for senior decision-makers
+而 GovPredict AI 代理通过以下方式解决了这些问题：
+- 自动化与《2030年愿景》/《2031年国家人工智能战略》的对齐检查
+- 应用专门的自然语言处理（NLP）技术来提取和评估招标要求
+- 提供关于区域合规性的本地化信息（针对沙特阿拉伯/阿联酋）
+- 为高级决策者标准化评估报告
 
 ---
 
-## Technical Details
+## 技术细节
 
-For the full execution workflow and technical specs, see the agent logic configuration.
+有关完整的执行流程和技术规格，请参阅代理的逻辑配置文件。
 
-### MCP Configuration
-To use this agent with the GovPredict AI workflow, ensure your MCP settings include:
+### MCP 配置
+要将此代理与 GovPredict AI 工作流程结合使用，请确保您的 MCP（Machine Configuration Protocol）设置包含以下内容：
 
 ```json
 {
@@ -84,4 +87,4 @@ To use this agent with the GovPredict AI workflow, ensure your MCP settings incl
 
 ---
 
-**Integrated with:** Crafted, RAG
+**集成平台：** Crafted, RAG

@@ -1,44 +1,44 @@
 ---
 name: llm-supervisor
-description: Graceful rate limit handling with Ollama fallback. Notifies on rate limits, offers local model switch with confirmation for code tasks.
+description: 使用 Ollama 作为备用方案，实现优雅的速率限制处理机制。当达到速率限制时，系统会发出通知，并允许用户通过确认操作切换到本地模型来继续执行代码任务。
 ---
 
 # LLM Supervisor 🔮
 
-Handles rate limits and model fallbacks gracefully.
+负责优雅地处理速率限制和模型切换问题。
 
-## Behavior
+## 行为规范
 
-### On Rate Limit / Overload Errors
+### 面对速率限制/过载错误
 
-When I encounter rate limits or overload errors from cloud providers (Anthropic, OpenAI):
+当遇到来自云服务提供商（如Anthropic、OpenAI）的速率限制或过载错误时：
 
-1. **Tell the user immediately** — Don't silently fail or retry endlessly
-2. **Offer local fallback** — Ask if they want to switch to Ollama
-3. **Wait for confirmation** — Never auto-switch for code generation tasks
+1. **立即通知用户** — 不要默默失败或无限重试；
+2. **提供本地模型作为替代方案** — 询问用户是否希望切换到Ollama；
+3. **等待用户确认** — 对于代码生成任务，绝不自动切换模型。
 
-### Confirmation Required
+### 需要用户确认
 
-Before using local models for code generation, ask:
-> "Cloud is rate-limited. Switch to local Ollama (`qwen2.5:7b`)? Reply 'yes' to confirm."
+在使用本地模型进行代码生成之前，会询问用户：
+> “当前云服务受到速率限制。是否切换到本地Ollama（`qwen2.5:7b`）？请回复‘yes’以确认。”
 
-For simple queries (chat, summaries), can switch without confirmation if user previously approved.
+对于简单的查询（如聊天、摘要生成），如果用户之前已经同意过，可以无需确认即可直接切换。
 
-## Commands
+## 命令
 
-### `/llm status`
-Report current state:
-- Which provider is active (cloud/local)
-- Ollama availability and models
-- Recent rate limit events
+### `/llm status`  
+报告当前状态：
+- 正在使用的服务提供商（云/本地）；
+- Ollama模型的可用性及具体模型；
+- 最近的速率限制事件。
 
-### `/llm switch local`
-Manually switch to Ollama for the session.
+### `/llm switch local`  
+手动将当前会话切换到Ollama模型。
 
-### `/llm switch cloud`
-Switch back to cloud provider.
+### `/llm switch cloud`  
+将当前会话切换回云服务提供商。
 
-## Using Ollama
+## 使用Ollama模型
 
 ```bash
 # Check available models
@@ -51,15 +51,15 @@ ollama run qwen2.5:7b "your prompt here"
 echo "your prompt" | ollama run qwen2.5:7b
 ```
 
-## Installed Models
+## 安装的模型
 
-Check with `ollama list`. Configured default: `qwen2.5:7b`
+可以使用`ollama list`命令查看已安装的模型。默认配置的模型为`qwen2.5:7b`。
 
-## State Tracking
+## 状态跟踪
 
-Track in memory during session:
-- `currentProvider`: "cloud" | "local"  
-- `lastRateLimitAt`: timestamp or null
-- `localConfirmedForCode`: boolean
+在会话期间，系统会在内存中记录以下状态：
+- `currentProvider`：`cloud` 或 `local`；
+- `lastRateLimitAt`：发生速率限制的时间戳（或为空）；
+- `localConfirmedForCode`：一个布尔值，表示用户是否已确认使用本地模型进行代码生成。
 
-Reset to cloud at session start.
+会话开始时，系统会自动将状态重置为使用云服务提供商。

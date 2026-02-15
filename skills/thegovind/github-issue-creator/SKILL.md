@@ -1,13 +1,13 @@
 ---
 name: github-issue-creator
-description: Convert raw notes, error logs, voice dictation, or screenshots into crisp GitHub-flavored markdown issue reports. Use when the user pastes bug info, error messages, or informal descriptions and wants a structured GitHub issue. Supports images/GIFs for visual evidence.
+description: 将原始笔记、错误日志、语音转录内容或截图转换为格式规范的 GitHub 问题报告。适用于用户粘贴错误信息、错误消息或非正式描述时，需要创建结构化 GitHub 问题的场景。支持添加图片/GIF 作为视觉证据。
 ---
 
-# GitHub Issue Creator
+# GitHub 问题创建工具
 
-Transform messy input (error logs, voice notes, screenshots) into clean, actionable GitHub issues.
+该工具可将杂乱无章的输入内容（如错误日志、语音记录、截图等）转换为格式清晰、便于处理的 GitHub 问题。
 
-## Output Template
+## 输出模板
 
 ```markdown
 ## Summary
@@ -31,7 +31,7 @@ Transform messy input (error logs, voice notes, screenshots) into clean, actiona
 
 ## Error Details
 ```
-[Error message/code if applicable]
+[错误信息/相关代码（如适用）]
 ```
 
 ## Visual Evidence
@@ -44,34 +44,30 @@ Transform messy input (error logs, voice notes, screenshots) into clean, actiona
 [Any other relevant details]
 ```
 
-## Output Location
+## 输出位置
 
-**Create issues as markdown files** in `/issues/` directory at the repo root. Use naming convention: `YYYY-MM-DD-short-description.md`
+请将生成的 Markdown 文件保存在仓库根目录下的 `/issues/` 目录中。文件命名规则为：`YYYY-MM-DD-简短描述.md`
 
-## Guidelines
+## 使用指南
 
-**Be crisp**: No fluff. Every word should add value.
+1. **简洁明了**：避免冗余信息，每个字都应具有实际意义。
+2. **从混乱中提取关键信息**：语音记录和原始笔记中往往隐藏着有用的信息，请将其提取出来。
+3. **补充缺失的上下文**：如果用户提到了“同一个项目”或“仪表盘”等词汇，请根据对话或记忆中的信息补充具体细节。
+4. **处理敏感数据**：对于可能包含敏感信息的字段（如 `[PROJECT_NAME]`、`[USER_ID]` 等），请使用占位符进行替换。
+5. **根据影响程度划分问题等级**：
+   - **严重**：服务中断、数据丢失、安全问题
+   - **高**：核心功能失效且无解决方法
+   - **中**：功能受到限制但仍有解决方法
+   - **低**：仅造成轻微不便（外观或功能上的问题）
 
-**Extract structure from chaos**: Voice dictation and raw notes often contain the facts buried in casual language. Pull them out.
+6. **图片/GIF 的处理**：直接在文本中引用附件，格式为：`![描述](附件名称.png)`
 
-**Infer missing context**: If user mentions "same project" or "the dashboard", use context from conversation or memory to fill in specifics.
+## 示例
 
-**Placeholder sensitive data**: Use `[PROJECT_NAME]`, `[USER_ID]`, etc. for anything that might be sensitive.
+**输入（语音记录）**：
+> 我尝试部署代理程序，但它却无声无息地失败了，没有任何错误提示，工作流程也正常运行，但之后该代理程序就从列表中消失了。我不得不刷新页面并重新尝试了三次。
 
-**Match severity to impact**:
-- Critical: Service down, data loss, security issue
-- High: Major feature broken, no workaround
-- Medium: Feature impaired, workaround exists
-- Low: Minor inconvenience, cosmetic
-
-**Image/GIF handling**: Reference attachments inline. Format: `![Description](attachment-name.png)`
-
-## Examples
-
-**Input (voice dictation)**:
-> so I was trying to deploy the agent and it just failed silently no error nothing the workflow ran but then poof gone from the list had to refresh and try again three times
-
-**Output**:
+**输出**：
 ```markdown
 ## Summary
 Agent deployment fails silently - no error displayed, agent disappears from list
@@ -101,10 +97,10 @@ Required 3 retry attempts before successful deployment
 
 ---
 
-**Input (error paste)**:
-> Error: PERMISSION_DENIED when publishing to Teams channel. Code: 403. Was working yesterday.
+**输入（错误日志）**：
+> 错误：尝试将内容发布到 Teams 频道时被拒绝。代码：403。昨天还能正常使用。
 
-**Output**:
+**输出**：
 ```markdown
 ## Summary
 403 PERMISSION_DENIED error when publishing to Teams channel
@@ -125,8 +121,8 @@ Returns `PERMISSION_DENIED` with code 403
 
 ## Error Details
 ```
-Error: PERMISSION_DENIED
-Code: 403
+错误：权限被拒绝
+代码：403
 ```
 
 ## Impact

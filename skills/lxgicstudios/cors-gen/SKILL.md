@@ -1,28 +1,28 @@
 ---
 name: cors-gen
-description: Generate CORS configuration for your stack. Use when cross-origin requests are blocked.
+description: 为您的软件堆栈生成 CORS（跨源资源共享）配置。当跨源请求被阻止时，可以使用此配置。
 ---
 
-# CORS Generator
+# CORS 生成器
 
-CORS errors are the bane of frontend development. Describe your setup and get the exact configuration you need for your stack.
+CORS（跨源资源共享）错误是前端开发中的常见难题。本文将介绍如何使用该工具进行配置，以确保您的应用程序能够顺利处理跨源请求。
 
-**One command. Zero config. Just works.**
+**仅需一条命令，无需任何额外配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-cors "frontend on localhost:3000, API on localhost:8080"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates CORS config for your specific server/framework
-- Handles complex setups with multiple origins
-- Includes credentials, headers, and method configuration
-- Works with Express, Fastify, Next.js, and more
+- 为您的特定服务器或框架生成 CORS 配置
+- 支持处理具有多个来源（ origins）的复杂场景
+- 包含凭证（credentials）、请求头（headers）以及请求方法（methods）的配置
+- 兼容 Express、Fastify、Next.js 等主流框架
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Local development
@@ -38,42 +38,42 @@ npx ai-cors "allow requests from app.example.com and admin.example.com"
 npx ai-cors "frontend on vercel, API on heroku, needs cookies"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Be specific about origins** - don't use * in production
-- **Allow only needed methods** - GET, POST, not everything
-- **Consider credentials** - cookies require specific config
-- **Test in incognito** - browser caching can hide issues
+- **明确指定请求来源**：在生产环境中请避免使用通配符（*）
+- **仅允许必要的请求方法**：仅允许 GET、POST 等必要方法
+- **考虑是否需要凭证**：如果需要使用 cookies，需进行相应的配置
+- **在无痕模式下进行测试**：浏览器缓存可能会掩盖问题
 
-## When to Use This
+## 适用场景
 
-- "CORS blocked" errors in the console
-- Setting up a new API endpoint
-- Migrating frontend or backend to new domain
-- Adding authentication to an existing API
+- 控制台出现 “CORS 被阻止” 错误时
+- 设置新的 API 端点时
+- 将前端或后端迁移到新域名时
+- 为现有 API 添加身份验证功能时
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无需支付费用、无需注册，也无需使用 API 密钥。这些工具都能直接使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-cors --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your plain English description of your frontend and backend setup, then generates the correct CORS configuration for your server framework. The AI handles the nuances of preflight requests, allowed headers, and credential handling.
+该工具会根据您对前端和后端架构的描述，自动生成适用于您所使用服务器框架的 CORS 配置。AI 会自动处理预检请求（preflight requests）、允许的请求头（allowed headers）以及凭证处理（credentials）等细节。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随心所欲地使用该工具。

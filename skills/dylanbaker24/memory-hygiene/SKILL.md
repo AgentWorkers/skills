@@ -1,35 +1,34 @@
 ---
 name: memory-hygiene
-description: Audit, clean, and optimize Clawdbot's vector memory (LanceDB). Use when memory is bloated with junk, token usage is high from irrelevant auto-recalls, or setting up memory maintenance automation.
+description: 审计、清理并优化 Clawdbot 的向量内存（LanceDB）。当内存因大量无用数据而膨胀，或者由于不必要的自动召回操作导致令牌使用量过高时，可以使用此方法；同时，也可以用于设置内存维护的自动化流程。
 homepage: https://github.com/xdylanbaker/memory-hygiene
 ---
 
-# Memory Hygiene
+# 内存管理
 
-Keep vector memory lean. Prevent token waste from junk memories.
+保持向量内存的简洁性，防止因垃圾内存而造成资源浪费。
 
-## Quick Commands
+## 快速命令
 
-**Audit:** Check what's in memory
+**审计：** 检查内存中的内容  
 ```
 memory_recall query="*" limit=50
 ```
 
-**Wipe:** Clear all vector memory
+**清除：** 清空所有向量内存  
 ```bash
 rm -rf ~/.clawdbot/memory/lancedb/
-```
-Then restart gateway: `clawdbot gateway restart`
+```  
+然后重启网关：`clawdbot gateway restart`  
 
-**Reseed:** After wipe, store key facts from MEMORY.md
+**重新填充数据：** 清除内存后，从 `MEMORY.md` 文件中读取关键信息并重新存储  
 ```
 memory_store text="<fact>" category="preference|fact|decision" importance=0.9
 ```
 
-## Config: Disable Auto-Capture
+## 配置：禁用自动捕获功能  
 
-The main source of junk is `autoCapture: true`. Disable it:
-
+自动捕获功能（`autoCapture: true`）是产生垃圾数据的主要来源。请禁用该功能：  
 ```json
 {
   "plugins": {
@@ -43,40 +42,37 @@ The main source of junk is `autoCapture: true`. Disable it:
     }
   }
 }
-```
+```  
+使用 `gateway action=config.patch` 来应用更改。  
 
-Use `gateway action=config.patch` to apply.
+## 应该存储的内容（有意为之）  
 
-## What to Store (Intentionally)
+✅ 应该存储的内容：  
+- 用户偏好设置（工具、工作流程、沟通方式）  
+- 关键决策（项目选择、架构设计）  
+- 重要信息（账户信息、凭证位置、联系人）  
+- 经验教训  
 
-✅ Store:
-- User preferences (tools, workflows, communication style)
-- Key decisions (project choices, architecture)
-- Important facts (accounts, credentials locations, contacts)
-- Lessons learned
+❌ 绝对不要存储的内容：  
+- 心跳状态（如 “HEARTBEAT_OK”、“无新消息”）  
+- 短暂性信息（当前时间、临时状态）  
+- 原始消息日志（已保存在文件中）  
+- OAuth URL 或令牌  
 
-❌ Never store:
-- Heartbeat status ("HEARTBEAT_OK", "No new messages")
-- Transient info (current time, temp states)
-- Raw message logs (already in files)
-- OAuth URLs or tokens
+## 每月维护任务  
 
-## Monthly Maintenance Cron
-
-Set up a monthly wipe + reseed:
-
+设置每月一次的清除和重新填充数据任务：  
 ```
 cron action=add job={
   "name": "memory-maintenance",
   "schedule": "0 4 1 * *",
   "text": "Monthly memory maintenance: 1) Wipe ~/.clawdbot/memory/lancedb/ 2) Parse MEMORY.md 3) Store key facts to fresh LanceDB 4) Report completion"
 }
-```
+```  
 
-## Storage Guidelines
+## 存储指南  
 
-When using memory_store:
-- Keep text concise (<100 words)
-- Use appropriate category
-- Set importance 0.7-1.0 for valuable info
-- One concept per memory entry
+使用 `memory_store` 时，请遵循以下原则：  
+- 保持文本简洁（少于 100 个单词）  
+- 为重要信息设置合适的分类等级（0.7–1.0）  
+- 每条内存记录只记录一个概念或信息点

@@ -1,13 +1,13 @@
 ---
 name: instapaper-import
-description: Import reading notes from Instapaper exports into the slipbox. Use when user pastes an Instapaper highlight export with article title and notes. Parses title/URL from header, extracts user's own notes (plain text lines), skips original highlights (> lines), then runs slipbot for each.
+description: 将来自 Instapaper 导出的阅读笔记导入 slipbox。当用户粘贴包含文章标题和笔记的 Instapaper 高亮内容时，该功能会自动执行：从头部解析文章标题/URL，提取用户自己的笔记（纯文本行），忽略原始的高亮内容，然后针对每条笔记运行 slipbot 处理程序。
 ---
 
-# Instapaper Import
+# 从 Instapaper 导入内容
 
-Parse Instapaper highlight exports and create slipbox entries for user's notes.
+解析 Instapaper 中的高亮内容，并将其转换为用户笔记的形式（以 Slipbox 格式存储）。
 
-## Input Format
+## 输入格式
 
 ```
 # [[Article Title](url)]
@@ -17,38 +17,37 @@ User's note about the highlight (IMPORT)
 Another user note (IMPORT)
 ```
 
-**Key distinction:**
-- `> lines` = Original article highlights → **Skip these**
-- Plain text lines = User's own ideas/takeaways → **Import these as notes**
+**关键区别：**
+- 以 `>` 开头的行：表示原文的高亮部分 → **跳过这些行**
+- 纯文本行：表示用户的想法或总结 → **将这些行导入为笔记**
 
-## Parsing Rules
+## 解析规则
 
-### Header Line
-1. Extract title from: `# [[Title](url)]`
-2. URL may be `instapaper-private://...` (private) or regular URL
-3. Source type: `article`
-4. Author: `null` (Instapaper doesn't include author)
+### 标题行
+1. 从 `# [[标题](链接)]` 中提取标题。
+2. 链接可以是 `instapaper-private://...`（私有链接）或普通链接。
+3. 文章类型：`article`。
+4. 作者：`null`（Instapaper 不提供作者信息）。
 
-### Content Lines
-1. Lines starting with `>` = original highlights → **skip**
-2. Plain text lines after `>` lines = user notes → **import**
-3. Empty lines → skip
-4. Each user note becomes a separate slipbox entry
+### 内容行
+1. 以 `>` 开头的行：表示原文的高亮部分 → **跳过这些行**。
+2. `>` 后面的纯文本行：表示用户的笔记 → **将这些行导入**。
+3. 空行：跳过。
+4. 每条用户笔记都会成为一条独立的 Slipbox 条目。
 
-## Workflow
+## 工作流程
+1. **解析标题行**：提取文章标题和链接。
+2. **提取用户笔记**：收集所有不以 `>` 开头的纯文本行。
+3. **预检查**：向用户显示文章标题和笔记数量，并请求确认。
+4. **确认后**：对每条笔记执行以下操作：
+   - 使用 `slipbot` 创建笔记：前缀为 `-`。
+   - 指定笔记的来源为 `~ 文章, {标题}`。
+   - 由 `slipbot` 负责处理文件的命名、添加标签、处理链接以及更新图表。
+5. **报告**：显示创建的笔记数量。
 
-1. **Parse header** → extract article title and URL
-2. **Extract user notes** → collect plain text lines (not starting with `>`)
-3. **Precheck** → show user: article title, note count, ask for confirmation
-4. **On confirmation** → for each note, invoke slipbot:
-   - Type: note (`-` prefix)
-   - Source: `~ article, {title}`
-   - Let slipbot handle: filename, tags, links, graph update
-5. **Report** → count of notes created
+## 示例
 
-## Example
-
-**Input:**
+**输入：**
 ```
 # [[How to Learn Faster](https://example.com/article)]
 > Get feedback more often
@@ -57,18 +56,17 @@ To learn faster we need faster feedback loops.
 Testing yourself proactively speeds up learning.
 ```
 
-**Extracted notes:**
-1. "To learn faster we need faster feedback loops."
-2. "Testing yourself proactively speeds up learning."
+**提取的笔记：**
+1. “要更快地学习，我们需要更快的反馈循环。”
+2. “主动进行自我测试可以加快学习速度。”
 
-**Slipbot calls:**
+**Slipbot 的执行内容：**
 ```
 - To learn faster we need faster feedback loops. ~ article, How to Learn Faster
 - Testing yourself proactively speeds up learning. ~ article, How to Learn Faster
 ```
 
-## Edge Cases
-
-- **No user notes** (only `>` lines): Report "no notes to import"
-- **Multi-line user notes**: Treat each paragraph as separate note
-- **Title with special chars**: Preserve as-is for source metadata
+## 特殊情况
+- **没有用户笔记**（只有 `>` 行）：报告“没有笔记可供导入”。
+- **多行用户笔记**：将每段文字视为独立的笔记。
+- **包含特殊字符的标题**：保持原样作为来源元数据。

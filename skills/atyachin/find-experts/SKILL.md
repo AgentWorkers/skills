@@ -1,6 +1,6 @@
 ---
 name: expert-finder
-description: "Find domain experts, thought leaders, and subject-matter authorities on any topic. Searches Twitter and Reddit for people who demonstrate deep knowledge, frequent discussion, and above-average expertise in a specific field. Expert discovery, talent sourcing, researcher identification, and KOL (Key Opinion Leader) mapping."
+description: "寻找任何领域的专家、思想领袖和行业权威人士。在 Twitter 和 Reddit 上搜索那些在特定领域展现出深厚知识、频繁参与讨论以及超出平均水平的专业能力的人。这项工作包括专家的发现、人才的挖掘、研究人员的识别，以及关键意见领袖（KOL）的定位。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -35,38 +35,37 @@ tags:
   - xpoz
 ---
 
-# Expert Finder
+# 专家查找器
 
-Find domain experts, thought leaders, and subject-matter authorities on any topic by analyzing social media activity across Twitter and Reddit.
+通过分析 Twitter 和 Reddit 上的社交媒体活动，可以找到任何领域的专家、思想领袖和主题权威人士。
 
-**What it does:** Given a domain, topic, or set of keywords, this skill expands them into comprehensive search terms, searches social media for people who frequently discuss the subject with above-average knowledge, classifies them by type (deep expert vs thought leader vs practitioner), ranks them, and produces a detailed report.
+**功能说明：** 给定一个领域、主题或一组关键词，该工具会将其扩展为全面的搜索词，然后在社交媒体中搜索那些频繁讨论该主题且具备超出平均水平知识的人，根据类型（深度专家、思想领袖或实践者）对这些人进行分类，并生成详细的报告。
 
 ---
 
-## Phase 1: Domain Research & Query Expansion
+## 第一阶段：领域研究与查询扩展
 
-### Step 1: Understand the Domain
+### 第一步：了解领域
 
-The user provides one of:
-- A **topic/domain** (e.g., "quantum computing", "kubernetes security", "regenerative agriculture")
-- **Keywords** (e.g., "LLM fine-tuning, RLHF, preference optimization")
-- A **URL** to a paper, project, or product that defines the domain
+用户可以提供以下信息之一：
+- **一个领域/主题**（例如：“量子计算”、“Kubernetes 安全”、“再生农业”）
+- **关键词**（例如：“LLM 微调”、“RLHF”、“偏好优化”）
+- 定义该领域的论文、项目或产品的 **URL**
 
-If a URL is provided, research it:
+如果提供了 URL，请对其进行研究：
 ```
 web_fetch url="<provided URL>"
 ```
 
-If only keywords/topic, expand understanding:
+如果只提供了关键词/主题，请进一步扩展理解：
 ```
 web_search query="<topic> overview key concepts terminology"
 web_search query="<topic> leading researchers practitioners"
 ```
 
-### Step 2: Build Domain Profile
+### 第二步：构建领域概况
 
-Create a domain profile with:
-
+创建一个领域概况：
 ```json
 {
   "domain": "Short domain name",
@@ -80,31 +79,30 @@ Create a domain profile with:
 }
 ```
 
-### Step 3: Generate Search Queries
+### 第三步：生成搜索查询
 
-Expand the domain into tiered search queries:
+将领域信息扩展为多层次的搜索查询：
 
-| Tier | Purpose | Example (for "RLHF") |
+| 层级 | 目的 | 例如（以“RLHF”为例） |
 |------|---------|----------------------|
-| **Tier 1: Core** | Exact domain terms | `"RLHF"`, `"reinforcement learning from human feedback"` |
-| **Tier 2: Technical** | Deep jargon only experts use | `"reward model overfitting"`, `"KL divergence penalty"`, `"PPO vs DPO"` |
-| **Tier 3: Adjacent** | Related expertise signals | `"preference optimization"`, `"constitutional AI"`, `"alignment research"` |
-| **Tier 4: Discussion** | Opinion/debate markers | `"RLHF vs" OR "the problem with RLHF"`, `"hot take" AND "alignment"` |
+| **第一层级：核心** | 精确的领域术语 | `"RLHF"`、`“基于人类反馈的强化学习"` |
+| **第二层级：技术性** | 仅专家使用的专业术语 | `"奖励模型过拟合"`、`“KL 散度惩罚"`、`“PPO 与 DPO”` |
+| **第三层级：相关领域** | 相关的专业知识信号 | `"偏好优化"`、`“宪法式 AI"`、`“对齐研究"` |
+| **第四层级：讨论** | 意见/辩论的标记 | `"RLHF 与..."` 或 `“RLHF 的问题"`、`“热门观点” AND `“对齐...”` |
 
-**Generate 10-20 queries** covering all tiers. Tier 2 (technical jargon) is the most valuable — people using niche terminology are more likely genuine experts.
+**生成 10-20 条覆盖所有层级的查询。第二层级（技术性术语）的信息最为重要——使用专业术语的人更有可能是真正的专家。**
 
-### Step 4: Run Autonomously
+### 第四步：自动执行
 
-Do NOT stop to ask the user for validation. Proceed directly to Phase 2 with the generated queries. Send brief progress updates only (one line per phase, e.g., "🔍 Searching Twitter for 16 queries..." or "📊 Analyzing 24 candidates...").
+不要停下来询问用户的确认，直接使用生成的查询进入第二阶段。只需发送简短的进度更新（每个阶段一行，例如：“🔍 正在 Twitter 上搜索 16 条查询...” 或 “📊 正在分析 24 位候选人...”）。
 
 ---
 
-## Phase 2: Social Media Search
+## 第二阶段：社交媒体搜索
 
-### Step 5: Search Twitter
+### 第五步：搜索 Twitter
 
-Run each query group through Xpoz:
-
+使用 Xpoz 工具搜索每一组查询：
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
   query='"RLHF" OR "reinforcement learning from human feedback"' \
@@ -112,15 +110,13 @@ mcporter call xpoz.getTwitterPostsByKeywords \
   fields='["id","text","authorUsername","likeCount","retweetCount","replyCount","impressionCount","createdAtDate"]'
 ```
 
-**CRITICAL: Always use the full CSV dataset, never just the first 100 paginated results.**
+**重要提示：** 必须使用完整的 CSV 数据集，而不仅仅是前 100 页的分页结果。**
 
-Every Xpoz search automatically generates a `dataDumpExportOperationId` in the response. You MUST:
-
-1. Note the `dataDumpExportOperationId` from each search result
-2. Poll it with `checkOperationStatus` until complete
-3. Download the CSV from the returned S3 URL
-4. Analyze ALL rows with Python/pandas — not just the paginated first page
-
+每次 Xpoz 搜索都会在响应中生成一个 `dataDumpExportOperationId`。你必须：
+1. 记下每个搜索结果的 `dataDumpExportOperationId`
+2. 使用 `checkOperationStatus` 命令检查搜索是否完成
+3. 从返回的 S3 URL 下载 CSV 文件
+4. 使用 Python/pandas 分析所有数据行（而不仅仅是分页显示的第一页）
 ```bash
 # Step 1: Run search (returns first 100 + dataDumpExportOperationId)
 mcporter call xpoz.getTwitterPostsByKeywords \
@@ -139,9 +135,9 @@ curl -o /tmp/expert-search-q1.csv "<S3_URL>"
 python3 analyze_experts.py /tmp/expert-search-q1.csv
 ```
 
-**Why this matters:** A search returning 2,000 posts only shows 100 in the paginated response. The other 1,900 contain additional experts you'll completely miss. The CSV has the full dataset (up to 64K rows per query).
+**原因说明：** 如果搜索返回 2,000 条帖子，分页结果中只显示 100 条。其余 1,900 条帖子中可能包含其他专家的信息，但你会错过这些信息。CSV 文件中包含完整的数据集（每个查询最多 64,000 行）。
 
-### Step 6: Search Reddit
+### 第六步：搜索 Reddit
 
 ```bash
 mcporter call xpoz.getRedditPostsByKeywords \
@@ -149,17 +145,16 @@ mcporter call xpoz.getRedditPostsByKeywords \
   fields='["id","title","text","authorUsername","subredditName","score","numComments","createdAtDate"]'
 ```
 
-Also search for prolific commenters (often the deepest experts comment rather than post):
+同时搜索活跃的评论者（通常是那些深入讨论问题的专家）：
 ```bash
 mcporter call xpoz.getRedditCommentsByKeywords \
   query='"reward hacking" OR "KL penalty" OR "PPO training"' \
   fields='["id","text","authorUsername","subredditName","score","createdAtDate"]'
 ```
 
-### Step 7: Extract Candidate Authors (Code Analysis)
+### 第七步：提取候选作者（代码分析）
 
-**Download all CSV files first** (from Step 5 & 6 datadump operations), then run Python/pandas to build the author frequency table from the FULL dataset:
-
+**首先下载所有 CSV 文件**（来自第 5 和第 6 步的操作），然后使用 Python/pandas 从完整数据集中构建作者频率表：
 ```python
 import pandas as pd
 from collections import defaultdict
@@ -190,23 +185,23 @@ print(f"Found {len(candidates)} candidates from {len(all_posts)} total posts")
 print(candidates.head(30).to_string())
 ```
 
-**Key signal: authors who appear across MULTIPLE query tiers, especially Tier 2 (technical jargon), are more likely genuine experts.**
+**关键提示：** 在多个查询层级中出现的作者，尤其是第二层级（技术性术语）的作者，更有可能是真正的专家。**
 
-Additional filters:
-- **Minimum 3 posts** on-topic in the timeframe
-- **Hit at least 2 query tiers** (breadth of domain coverage)
-- Remove obvious bots (`isInauthentic` check on Twitter)
-- Weight Tier 2 matches higher — using niche jargon naturally is the strongest expertise signal
+其他筛选条件：
+- 在指定时间范围内至少发布 3 条相关帖子
+- 至少涉及 2 个查询层级（覆盖广泛的领域）
+- 过滤掉明显的机器人（在 Twitter 上使用 `isInauthentic` 进行检查）
+- 第二层级的匹配结果权重更高——自然使用专业术语是 strongest 的专业知识信号
 
 ---
 
-## Phase 3: Expert Analysis & Classification
+## 第三阶段：专家分析与分类
 
-### Step 8: Deep-Dive Top Candidates
+### 第八步：深入分析顶级候选人
 
-For top 20-30 candidates by frequency + engagement, fetch full profiles:
+根据出现频率和参与度，选取前 20-30 位候选人，获取他们的完整资料：
 
-**Twitter:**
+**Twitter：**
 ```bash
 mcporter call xpoz.getTwitterUser \
   identifier="USERNAME" \
@@ -214,20 +209,20 @@ mcporter call xpoz.getTwitterUser \
   fields='["username","name","description","followersCount","followingCount","tweetCount","verified","verifiedType","avgTweetsPerDayLastMonth","isInauthentic","isInauthenticProbScore"]'
 ```
 
-**Reddit:**
+**Reddit：**
 ```bash
 mcporter call xpoz.getRedditUser \
   username="USERNAME" \
   fields='["username","totalKarma","linkKarma","commentKarma","profileDescription","isMod","createdAt"]'
 ```
 
-⚠️ **Rate Limit:** Space API requests at least 1 second apart.
+⚠️ **速率限制：** API 请求之间至少间隔 1 秒。
 
-### Step 9: Analyze Content Depth
+### 第九步：分析内容深度
 
-Fetch recent posts for each candidate:
+获取每位候选人的最新帖子：
 
-**Twitter:**
+**Twitter：**
 ```bash
 mcporter call xpoz.getTwitterPostsByAuthor \
   identifier="USERNAME" \
@@ -236,95 +231,94 @@ mcporter call xpoz.getTwitterPostsByAuthor \
   fields='["id","text","likeCount","retweetCount","replyCount","impressionCount","createdAtDate"]'
 ```
 
-**Reddit:**
+**Reddit：**
 ```bash
 mcporter call xpoz.getRedditPostsByAuthor \
   username="USERNAME" \
   fields='["id","title","text","subredditName","score","numComments","createdAtDate"]'
 ```
 
-### Step 10: Classify Expert Type
+### 第十步：分类专家类型
 
-Analyze each candidate's content to classify them into one of these types:
+分析每位候选人的内容，将其归类为以下类型之一：
 
-| Type | Signals | Example |
+| 类型 | 识别信号 | 例子 |
 |------|---------|---------|
-| **🔬 Deep Expert** | Uses advanced jargon naturally, shares original research/findings, explains complex concepts, references papers/data, corrects others' misconceptions | PhD researcher, core contributor |
-| **💡 Thought Leader** | High-level strategic takes, predicts trends, large audience, quoted by others, speaks at conferences | Industry analyst, CEO/CTO |
-| **🛠️ Practitioner** | Shares hands-on experience, tutorials, "I built this", troubleshooting tips, real-world use cases | Senior engineer, consultant |
-| **📣 Evangelist/Curator** | Aggregates and shares others' work, summarizes developments, high posting frequency, good at distilling | Newsletter author, community manager |
-| **🎓 Educator** | Explains concepts clearly, creates learning content, threads/guides, answers beginner questions | Professor, course creator, tech writer |
+| **🔬 深度专家** | 自然使用专业术语，分享原创研究/发现，解释复杂概念，引用论文/数据，纠正他人的误解 | 博士研究员、核心贡献者 |
+| **💡 思想领袖** | 提出高水平的战略观点，预测趋势，拥有大量受众，被他人引用，在会议上发言 | 行业分析师、CEO/CTO |
+| **🛠️ 实践者** | 分享实际经验、教程、“这是我开发的”、故障排除技巧、实际应用案例 | 高级工程师、顾问 |
+| **📣 传播者/整理者** | 整理并分享他人的工作，总结发展动态，发布频率高，擅长提炼信息 | 通讯作者、社区经理 |
+| **🎓 教育者** | 清晰解释概念，创建学习内容，发布教程/指南，回答初学者的问题 | 教授、课程创建者、技术作家 |
 
-**Classification heuristics:**
+**分类依据：**
 
-**Deep Expert signals:**
-- Uses Tier 2 (technical jargon) terms naturally, not just quoting
-- Posts contain original analysis, numbers, or data
-- Other experts engage with their posts (reply quality > reply quantity)
-- Bio mentions research, PhD, specific technical role
-- Reddit: high comment karma relative to link karma (explains more than links)
-- Posts corrections or nuanced takes ("actually, the issue is...")
+**深度专家的识别信号：**
+- 自然使用第二层级（技术性术语），而不仅仅是引用
+- 帖子包含原创分析、数据或数字
+- 其他专家会与他们的帖子互动（回复质量高于回复数量）
+- 个人简介中提到研究经历、博士学位或具体技术职位
+- 在 Reddit 上的评论 karma 高于链接 karma（说明他们提供了更多有价值的内容）
+- 帖子中包含纠正或细致的观点（例如：“实际上，问题在于...”）
 
-**Thought Leader signals:**
-- High follower count relative to posting frequency
-- Posts get high impressions/engagement with non-technical language
-- Makes predictions, shares opinions on industry direction
-- Bio mentions advisory roles, speaking, investing
-- Engages with broad themes, not just technical details
+**思想领袖的识别信号：**
+- 相对于帖子发布频率，粉丝数量较多
+- 使用非技术性语言也能获得高关注度和互动
+- 预测行业趋势，分享观点
+- 个人简介中提到咨询角色、演讲经历或投资经历
+- 关注广泛的主题，而不仅仅是技术细节
 
-**Practitioner signals:**
-- "I built", "we shipped", "in production", "at scale"
-- Shares code, configs, architecture decisions
-- Discusses tradeoffs and real-world limitations
-- Bio mentions specific company/product/project
+**实践者的识别信号：**
+- 使用“这是我开发的”、“我们已经上线了”、“在实践中使用”等表述
+- 分享代码、配置信息、架构决策
+- 讨论权衡和实际限制
+- 个人简介中提到具体的公司/产品/项目
 
-**Evangelist/Curator signals:**
-- High posting frequency
-- Mostly shares/retweets others' content with commentary
-- "Thread 🧵", "roundup", "this week in..."
-- Links to many different sources
+**传播者/整理者的识别信号：**
+- 发布频率高
+- 主要分享/转发他人的内容并添加评论
+- 使用标签如“Thread 🧵”、“汇总”、“本周热点...”等
+- 链接到多种不同的来源
 
-**Educator signals:**
-- "Explained simply", "beginner's guide", "ELI5"
-- Step-by-step breakdowns
-- Creates visual explanations
-- Active in help/question threads on Reddit
+**教育者的识别信号：**
+- 用简单的语言解释概念，创建学习资源，发布教程/指南
+- 逐步分解复杂内容
+- 在 Reddit 的帮助/问答帖子中活跃
 
-A person can be multiple types (e.g., Deep Expert + Educator). Assign primary and optional secondary type.
+一个人可以同时属于多种类型（例如：深度专家 + 教育者）。可以为他们分配主要类型和可选的次要类型。
 
-### Step 11: Score & Rank
+### 第十一步：评分与排名
 
-**Expertise Score (0-100):**
+**专业知识评分（0-100 分）：**
 
-| Factor | Weight | How to Measure |
+| 因素 | 权重 | 评估方法 |
 |--------|--------|----------------|
-| **Domain depth** | 30 | Tier 2 query matches, jargon usage, original analysis |
-| **Consistency** | 20 | How regularly they post about the domain (not just one viral post) |
-| **Peer recognition** | 20 | Engagement FROM other experts (replies, quotes), not just raw likes |
-| **Breadth** | 15 | Number of query tiers hit, adjacent topics covered |
-| **Credentials** | 15 | Bio signals (title, company, education, verified status) |
+| **领域深度** | 30 | 是否使用了第二层级的查询术语、专业术语，以及是否有原创分析 |
+| **一致性** | 20 | 他们在该领域发布的频率（而不仅仅是一条火爆的帖子） |
+| **同行认可度** | 20 | 来自其他专家的互动（回复、引用），而不仅仅是点赞数量 |
+| **覆盖范围** | 15 | 涉及的查询层级数量，以及覆盖的相关领域范围 |
+| **资质** | 15 | 个人简介中的信息（头衔、公司、教育背景、验证状态） |
 
-**Scoring guidelines:**
+**评分标准：**
 
-| Score | Meaning |
+| 分数 | 含义 |
 |-------|---------|
-| 80-100 | Definitive authority — one of the top voices in this domain |
-| 60-79 | Strong expert — deeply knowledgeable, regularly contributes |
-| 40-59 | Solid practitioner — good knowledge, some influence |
-| 20-39 | Engaged participant — discusses the topic but limited depth |
+| 80-100 | 绝对权威——该领域的顶尖人物 |
+| 60-79 | 强大的专家——知识渊博，经常发表见解 |
+| 40-59 | 稳定的实践者——知识扎实，有一定影响力 |
+| 20-39 | 积极参与的参与者——讨论该主题但深度有限 |
 
-**Engagement quality matters more than quantity:**
-- 10 replies from domain experts > 1000 likes from general audience
-- Consistent posting about the topic > one viral thread
-- Original insights > resharing others' work
+**互动质量比数量更重要：**
+- 来自领域专家的回复数量 > 来自普通用户的点赞数量 |
+- 关于该主题的持续发布内容 > 只是一条火爆的帖子 |
+- 原创见解 > 仅仅转发他人的内容 |
 
 ---
 
-## Phase 4: Report
+## 第四阶段：生成报告
 
-### Step 12: Generate Expert Report
+### 第十二步：生成专家报告
 
-Present results grouped by expert type, ranked by score within each group.
+按专家类型分组展示结果，并在每个组内按评分排序。
 
 ```markdown
 ## Expert Report: [Domain]
@@ -363,10 +357,9 @@ Found **N experts** across X candidates analyzed.
 ...
 ```
 
-### Email Format (if requested)
+### 如果需要，使用电子邮件格式
 
-Use himalaya MML format with card-based layout:
-
+使用 himalaya MML 格式，并采用卡片布局：
 ```
 From: Expert Finder <net-service@xpoz.ai>
 To: recipient@example.com
@@ -427,11 +420,11 @@ Found N experts across Twitter and Reddit.
 
 ---
 
-## Tips for Best Results
+## 获取最佳结果的技巧：
 
-1. **Narrow beats broad** — "kubernetes network policy debugging" finds deeper experts than just "kubernetes"
-2. **Technical jargon is gold** — Tier 2 queries are the best expert signal
-3. **Reddit comments > Reddit posts** — The deepest experts often comment rather than post
-4. **6-month window is ideal** — Long enough for consistency, recent enough for relevance
-5. **Cross-platform presence** — Someone active on both Twitter AND Reddit in the same domain is a strong signal
-6. **Check who experts engage with** — If expert A replies to person B's technical posts, person B is likely also an expert
+1. **具体领域比宽泛领域更有效**——例如，“Kubernetes 网络策略调试”比“Kubernetes”能找到更深入的专家 |
+2. **技术性术语至关重要**——第二层级的查询是识别专家的最佳信号 |
+3. **Reddit 上的评论比帖子更重要**——深入的专家通常会发表评论而不是发布新帖子 |
+4. **6 个月的搜索时间范围是最理想的**——既保证了一定的持续性，又确保了结果的时效性 |
+5. **跨平台活跃**——在同一领域同时在 Twitter 和 Reddit 上活跃的人是强有力的候选者 |
+6. **查看专家之间的互动情况**——如果专家 A 回复了专家 B 的技术帖子，那么专家 B 也很可能是专家 |

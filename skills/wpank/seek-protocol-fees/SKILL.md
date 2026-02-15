@@ -15,48 +15,48 @@ allowed-tools:
   - mcp__uniswap__get_agent_balance
 ---
 
-# Seek Protocol Fees
+# 获取协议费用
 
-## Overview
+## 概述
 
-This is the autonomous burn-and-claim pipeline for Uniswap's protocol fee system. The TokenJar (`0xf38521f130fcCF29dB1961597bc5d2B60F995f85`) accumulates fees from V2, V3, V4, UniswapX, and Unichain. The Firepit (`0x0D5Cd355e2aBEB8fb1552F56c965B867346d6721`) allows anyone to burn 4,000 UNI to release those accumulated assets. When the jar's value exceeds the burn cost plus gas, a profit opportunity exists.
+这是一个用于处理Uniswap协议费用系统的自动化流程：TokenJar（地址：`0xf38521f130fcCF29dB1961597bc5d2B60F995f85`）会收集来自V2、V3、V4、UniswapX和Unichain的费用。Firepit（地址：`0x0D5Cd355e2aBEB8fb1552F56c965B867346d6721`）允许任何人通过燃烧4,000个UNI来释放这些累积的资产。当TokenJar的资产价值超过燃烧成本加上Gas费用时，就会出现盈利机会。
 
-This skill runs the full pipeline in one command: check balances, price assets, calculate profitability, simulate the burn, and -- only if the user explicitly opts in -- execute it.
+该工具可以通过一个命令完成整个流程：检查余额、计算资产价格、计算盈利能力、模拟燃烧过程，并且只有在用户明确同意的情况下才会执行实际的燃烧操作。
 
-**Why this is 10x better than calling tools individually:**
+**为什么这个工具比单独使用各个工具要好10倍：**
 
-1. **9-step workflow compressed to one command**: Without this skill, a user must manually check TokenJar balances, price each token in USD, check the Firepit threshold, calculate UNI burn cost at current prices, estimate gas, determine net profitability, select optimal assets, simulate the burn, and finally execute. This skill does all of it with compound context flowing between each step.
-2. **Safety-gated execution**: Default mode is preview-only (`auto-execute: false`). Even when execution is enabled, the pipeline simulates first, validates through `safety-guardian`, and checks nonce freshness for race conditions -- protections that are easy to skip when calling tools manually.
-3. **Profitability dashboard**: The output is a structured profitability report, not raw JSON from 6 different tools. You see gross value, burn cost, gas cost, net profit, ROI, and per-asset breakdown in one view.
-4. **Post-burn conversion**: Optionally converts received tokens to stablecoins in the same pipeline, calculating the true net profit after conversion slippage.
+1. **将9个步骤压缩为一个命令**：如果没有这个工具，用户需要手动检查TokenJar的余额、将每种代币的价格转换为美元、检查Firepit的阈值、根据当前价格计算UNI的燃烧成本、估算Gas费用、确定净利润、选择最佳资产、模拟燃烧过程，最后才能执行燃烧操作。而这个工具可以自动完成这些步骤，并在每个步骤之间保持数据的一致性。
+2. **安全防护机制**：默认模式下仅提供预览功能（`auto-execute: false`）。即使启用了执行功能，系统也会先进行模拟，通过“安全守护者”（safety-guardian）进行验证，并检查nonce值的有效性，以防止竞态条件（race conditions）——这些在手动使用工具时很容易被忽略。
+3. **盈利报告**：输出的是结构化的盈利报告，而不是来自6个不同工具的原始JSON数据。用户可以一目了然地看到总价值、燃烧成本、Gas费用、净利润、投资回报率（ROI）以及每种资产的详细情况。
+4. **燃烧后的转换**：用户可以选择在同一流程中将获得的代币转换为稳定币（stablecoins），从而计算出转换后的实际净利润。
 
-## When to Use
+## 使用场景
 
-Activate when the user says anything like:
+当用户提出以下问题时，可以使用此工具：
+- “燃烧TokenJar是否有盈利？”
+- “检查协议费用的盈利能力”
+- “执行Firepit的燃烧操作”
+- “燃烧UNI并领取协议费用”
+- “TokenJar里有多少资产？燃烧是否值得？”
+- “从TokenJar中领取费用”
+- “获取协议费用”
+- “运行燃烧和领取费用的流程”
 
-- "Is the TokenJar profitable to burn?"
-- "Check protocol fee profitability"
-- "Execute a Firepit burn"
-- "Burn UNI and claim protocol fees"
-- "How much is in the TokenJar? Is it worth burning?"
-- "Claim fees from the TokenJar"
-- "Seek protocol fees"
-- "Run the burn-and-claim pipeline"
+**注意不要使用的情况**：
+- 如果用户只是想监控费用积累情况（请使用`monitor-tokenjar`），或者需要历史燃烧数据分析（请使用`analyze-burn-economics`）。
 
-**Do NOT use** when the user just wants to monitor accumulation over time (use `monitor-tokenjar` instead) or wants historical burn analysis (use `analyze-burn-economics` instead).
+## 参数
 
-## Parameters
-
-| Parameter      | Required | Default          | How to Extract                                                        |
+| 参数          | 是否必填 | 默认值          | 获取方式                                                         |
 | -------------- | -------- | ---------------- | --------------------------------------------------------------------- |
-| chain          | No       | ethereum         | Always Ethereum mainnet for TokenJar/Firepit                          |
-| auto-execute   | No       | false            | "execute the burn", "claim fees" implies true; "check", "preview" implies false |
-| post-burn-swap | No       | false            | "convert to stables", "swap to USDC" implies true                     |
-| recipient      | No       | connected wallet | Explicit address if provided, otherwise agent's wallet                |
+| chain          | 否       | ethereum         | TokenJar和Firepit始终使用Ethereum主网                         |
+| auto-execute   | 否       | false            | 如果选择“执行燃烧”或“领取费用”，则设置为true；选择“检查”或“预览”则设置为false |
+| post-burn-swap | 否       | false            | 如果选择“转换为稳定币”或“兑换为USDC”，则设置为true                     |
+| recipient      | 否       | 连接的钱包         | 如果提供了具体地址，则使用该地址；否则使用代理的钱包                         |
 
-If the user's intent is ambiguous between preview and execution, **default to preview** and present the profitability report. Let the user explicitly confirm before any UNI is burned.
+如果用户的意图不明确（是预览还是执行），**系统将默认显示预览结果**，并在执行任何操作前要求用户明确确认。
 
-## Workflow
+## 工作流程
 
 ```
                         SEEK-PROTOCOL-FEES PIPELINE
@@ -111,23 +111,21 @@ If the user's intent is ambiguous between preview and execution, **default to pr
   └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Pre-Flight (direct MCP calls)
+### 第1步：预检查（直接调用MCP）
 
-Make three parallel MCP calls to quickly assess feasibility before invoking the agent:
+在调用代理之前，同时执行三个MCP调用以快速评估可行性：
+1. 调用`mcp__uniswap__get_tokenjar_balances`获取TokenJar的当前余额。
+2. 调用`mcp__uniswap__get_firepit_state`获取Firepit的阈值、nonce值以及钱包的准备状态。
+3. 调用`mcp__uniswap__get_agent_balance`检查代理的UNI余额。
 
-1. Call `mcp__uniswap__get_tokenjar_balances` to get current jar contents.
-2. Call `mcp__uniswap__get_firepit_state` to get threshold, nonce, and wallet readiness.
-3. Call `mcp__uniswap__get_agent_balance` to check the agent's UNI balance.
-
-**Gate checks** (stop immediately if any fail):
-
-| Check                        | Condition                                   | Action if Failed                                                    |
+**异常处理**（如果任何步骤失败，立即停止流程）：
+| 检查项                        | 条件                                      | 失败时的处理方式                                                    |
 | ---------------------------- | ------------------------------------------- | ------------------------------------------------------------------- |
-| TokenJar empty               | All balances are zero                       | "TokenJar is empty. No fees to claim."                              |
-| Agent lacks UNI              | UNI balance < threshold (4,000 UNI)         | "Insufficient UNI: have {X}, need {threshold}. Acquire UNI first." |
-| Firepit not ready            | Contract state indicates unavailability      | "Firepit contract is not ready: {reason}."                          |
+| TokenJar为空               | 所有余额均为零                             | “TokenJar为空，无法领取费用。”                                      |
+| 代理的UNI不足                | UNI余额低于阈值（4,000 UNI）                         | “UNI不足：当前有{X}个，需要{threshold}个UNI，请先获取足够的UNI。”            |
+| Firepit未准备好             | 合同状态显示未准备好                         | “Firepit合约未准备好：原因：{reason}。”                                   |
 
-**Present to user after pre-flight:**
+**预检查完成后向用户展示结果：**
 
 ```text
 Step 1/5: Pre-Flight Complete
@@ -139,9 +137,9 @@ Step 1/5: Pre-Flight Complete
   Analyzing profitability...
 ```
 
-### Step 2: Profitability Analysis (protocol-fee-seeker)
+### 第2步：盈利能力分析（protocol-fee-seeker）
 
-Delegate to `Task(subagent_type:protocol-fee-seeker)` with all pre-flight data:
+将所有预检查数据传递给`Task(subagent_type:protocol-fee-seeker)`进行计算：
 
 ```
 Analyze the profitability of a Firepit burn-and-claim.
@@ -162,7 +160,7 @@ Tasks:
 Return a structured profitability report with per-asset breakdown.
 ```
 
-**Present to user after completion:**
+**分析完成后向用户展示结果：**
 
 ```text
 Step 2/5: Profitability Analysis Complete
@@ -186,7 +184,7 @@ Step 2/5: Profitability Analysis Complete
   Verdict:     PROFITABLE
 ```
 
-**If NOT_PROFITABLE:**
+**如果分析结果显示无盈利：**
 
 ```text
 Step 2/5: Profitability Analysis Complete
@@ -202,9 +200,9 @@ Step 2/5: Profitability Analysis Complete
   Pipeline stopped. No burn executed.
 ```
 
-### Step 3: User Confirmation
+### 第3步：用户确认
 
-If the burn is profitable and `auto-execute` is `false` (default), present the full profitability report and ask for explicit confirmation:
+如果燃烧操作是有盈利的，并且`auto-execute`设置为`false`（默认值），则向用户展示完整的盈利报告并请求明确确认：
 
 ```text
 Burn Confirmation Required
@@ -219,11 +217,11 @@ Burn Confirmation Required
   This will permanently burn 4,000 UNI. Proceed? (yes/no)
 ```
 
-**Only proceed to Step 4 if the user explicitly confirms.** If `auto-execute` is `true`, still present the report but proceed without waiting.
+**只有在使用者明确确认后，才继续执行第4步。** 如果`auto-execute`设置为`true`，仍然会展示报告，但会直接执行燃烧操作。
 
-### Step 4: Simulate + Execute (protocol-fee-seeker)
+### 第4步：模拟 + 执行（protocol-fee-seeker）
 
-Delegate to `Task(subagent_type:protocol-fee-seeker)` for the execution pipeline:
+将执行流程委托给`Task(subagent_type:protocol-fee-seeker)`：
 
 ```
 Execute the Firepit burn-and-claim.
@@ -244,7 +242,7 @@ Execute the following sequence:
 If any step fails, report the failure point and do not proceed.
 ```
 
-**Present to user during execution:**
+**执行过程中向用户展示进度：**
 
 ```text
 Step 4/5: Executing Burn
@@ -257,7 +255,7 @@ Step 4/5: Executing Burn
   Tx: https://etherscan.io/tx/0xabcd...1234
 ```
 
-**If race condition detected:**
+**如果检测到竞态条件：**
 
 ```text
 Step 4/5: Execution ABORTED — Race Condition
@@ -268,9 +266,9 @@ Step 4/5: Execution ABORTED — Race Condition
   Returning to profitability analysis with fresh data...
 ```
 
-### Step 5: Post-Burn Report
+### 第5步：燃烧后的结果报告
 
-**Present final result:**
+**向用户展示最终结果：**
 
 ```text
 Step 5/5: Burn Complete
@@ -296,7 +294,7 @@ Step 5/5: Burn Complete
   Est. Next Profitable Burn: ~3.8 days
 ```
 
-**If `post-burn-swap: true`, append conversion details:**
+**如果`post-burn-swap`设置为`true`，则添加转换细节：**
 
 ```text
   Post-Burn Conversions:
@@ -310,9 +308,9 @@ Step 5/5: Burn Complete
   True Net Profit:    $23,878 (after all costs)
 ```
 
-## Output Format
+## 输出格式
 
-### Preview Mode (default)
+### 预览模式（默认）
 
 ```text
 Protocol Fee Analysis
@@ -332,7 +330,7 @@ Protocol Fee Analysis
   {if not profitable: "Est. time to profitability: {days} days."}
 ```
 
-### Execution Mode
+### 执行模式
 
 ```text
 Protocol Fee Burn Complete
@@ -346,26 +344,26 @@ Protocol Fee Burn Complete
   Pipeline: Pre-flight -> Analysis -> Confirm -> Simulate -> Execute (all passed)
 ```
 
-## Important Notes
+## 重要说明：
 
-- **Default is preview-only.** The skill never burns UNI unless the user explicitly enables execution. This is a destructive, irreversible action -- 4,000 UNI is sent to the dead address.
-- **Ethereum mainnet only.** The TokenJar and Firepit contracts are deployed on Ethereum mainnet. The `chain` parameter exists for forward compatibility but currently only `ethereum` is valid.
-- **Race conditions are real.** Other searchers monitor the same TokenJar. The nonce freshness check before execution is critical. If another burn happens between analysis and execution, the pipeline aborts safely.
-- **UNI is permanently burned.** Unlike a swap where you can swap back, the UNI burn is irreversible. The skill makes this very clear in the confirmation step.
-- **Gas costs matter on mainnet.** Ethereum gas can significantly impact profitability. The agent factors current gas prices into the analysis and may recommend waiting for lower gas if the margin is thin.
-- **LP tokens are excluded by default.** Some TokenJar assets may be LP tokens that require additional redemption. The agent excludes these unless specifically instructed to handle them.
+- **默认情况下仅提供预览功能。** 除非用户明确启用执行，否则该工具不会燃烧UNI。这是一个具有破坏性的、不可逆的操作——4,000个UNI将被发送到一个无法使用的地址。
+- **仅支持Ethereum主网。** TokenJar和Firepit合约部署在Ethereum主网上。`chain`参数的存在是为了未来的兼容性，但目前仅支持`ethereum`主网。
+- **竞态条件是真实存在的。** 其他工具也会监控同一个TokenJar。在执行前检查nonce值的有效性非常重要；如果在分析和执行之间有其他燃烧操作发生，系统会安全地中止流程。
+- **UNI一旦燃烧将无法恢复。** 与可以重新交易的Swap操作不同，UNI的燃烧是不可逆的。工具会在确认步骤中明确告知用户这一点。
+- **主网上的Gas费用至关重要。** Ethereum的Gas费用会显著影响盈利能力。系统会在分析中考虑当前的Gas价格，并在利润空间较小时建议用户等待更低的Gas费用。
+- **默认情况下排除LP代币。** TokenJar中的一些资产可能是需要额外赎回的LP代币。除非另有指示，否则系统会自动排除这些代币。
 
-## Error Handling
+## 错误处理
 
-| Error                        | User-Facing Message                                                          | Suggested Action                          |
+| 错误类型                        | 向用户显示的消息                                      | 建议的操作                                      |
 | ---------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------- |
-| TokenJar empty               | "TokenJar is empty. No fees to claim."                                       | Wait for fees to accumulate               |
-| Insufficient UNI             | "Insufficient UNI: have {X}, need {threshold}."                              | Acquire UNI or wait for price drop        |
-| Not profitable               | "Burn is not profitable. Jar value ${X} < burn cost ${Y}."                   | Wait for more accumulation                |
-| Simulation failed            | "Burn simulation failed: {reason}."                                          | Check Firepit state, try again            |
-| Safety check failed          | "Safety validation rejected the burn: {reason}."                             | Review safety configuration               |
-| Race condition               | "Another searcher burned first. Nonce changed from {X} to {Y}."             | Re-run to analyze with fresh data         |
-| Transaction reverted         | "Burn transaction reverted: {reason}."                                       | Check gas, nonce, and Firepit state       |
-| Wallet not configured        | "No wallet configured. Cannot execute burns."                                | Set up wallet with setup-agent-wallet     |
-| Post-burn swap failed        | "Burn succeeded but token conversion failed for {token}: {reason}."          | Manually swap via execute-swap            |
-| Gas price spike              | "Gas prices elevated (${gas}). Burn is marginally profitable."               | Wait for lower gas or accept lower profit |
+| TokenJar为空               | “TokenJar为空，无法领取费用。”                                      | 等待费用积累足够后再尝试                              |
+| UNI不足                         | “UNI不足：当前有{X}个，需要{threshold}个UNI。”                        | 获取足够的UNI或等待价格下降                              |
+| 无盈利                         | “燃烧操作无盈利：TokenJar的价值{X}低于燃烧成本{Y}。”                        | 等待更多费用积累后再尝试                              |
+| 模拟失败                         | “燃烧模拟失败：原因：{reason}。”                                  | 重新检查Firepit的状态并重试                              |
+| 安全检查失败                         | “安全验证拒绝执行燃烧操作：原因：{reason}。”                           | 重新检查安全配置                                  |
+| 检测到竞态条件                     | “其他工具先进行了燃烧操作，nonce值从{X}变为{Y}。”                         | 用新的数据重新运行模拟                              |
+| 交易被撤销                         | “燃烧交易被撤销：原因：{reason}。”                                  | 检查Gas费用、nonce值和Firepit的状态                         |
+| 未配置钱包                         | “未配置钱包，无法执行燃烧操作。”                                  | 使用`setup-agent-wallet`工具配置钱包                         |
+| 燃烧后的转换失败                     | “燃烧操作成功，但{token}的转换失败：原因：{reason}。”                        | 手动通过`execute-swap`进行转换                         |
+| Gas费用突然上涨                     | “Gas费用升高（{gas}），当前燃烧操作勉强有利可图。”                         | 等待Gas费用降低或接受较低的利润                         |

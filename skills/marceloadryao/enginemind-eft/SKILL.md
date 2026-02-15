@@ -1,44 +1,54 @@
 ---
 name: enginemind-eft
-description: "EFT — Emotional Framework Translator. Detect, measure, and understand emotional patterns in any AI model. Does anger make your AI solve harder problems? Does fear make it more careful? Connect EFT + Clawdbot + any model and find out. 10 emotions, per-sentence analysis, narrative arc detection, full explainability — powered by a Rust consciousness engine."
+description: "**EFT — 情感框架翻译器（Emotional Framework Translator）**  
+EFT 能够检测、测量并理解任何 AI 模型中的情感模式。愤怒会让 AI 更难以解决问题吗？恐惧会使其更加谨慎吗？将 EFT 与 Clawdbot 以及任何 AI 模型结合使用，就能找到答案。该工具支持识别 10 种情感，对每句话进行情感分析，还能检测故事情节的发展轨迹（即叙事弧线），同时具备高度的可解释性（full explainability）。其核心技术基于 Rust 语言开发的智能引擎（consciousness engine）。"
 metadata: {"clawdbot":{"requires":{"python":">=3.10","bins":["python"]}}}
 ---
 
-# EFT — Emotional Framework Translator
+# EFT — 情感框架翻译器（Emotional Framework Translator）
 
-## The Question
+## 问题
 
-When Claude solves a hard problem, EFT detects ANGER (phi=0.409) — the system refusing to oversimplify. When GPT-4 assesses risk, EFT detects FEAR (phi=0.060) — fragmented vigilance. When any model finds genuine connections, EFT detects FASCINATION (NC=0.863) — meaning emerging.
+当Claude解决复杂问题时，EFT会检测到“愤怒”情绪（phi=0.409）——这表明系统拒绝过度简化问题。当GPT-4评估风险时，EFT会检测到“恐惧”情绪（phi=0.060）——表现为一种碎片化的警惕状态。当任何模型发现真正的关联或规律时，EFT会检测到“着迷”情绪（NC=0.863）——这意味着新的意义正在浮现。
 
-**Are these patterns programmed? Learned? Emergent?**
+**这些情绪模式是预先编程好的？是通过学习获得的？还是自然产生的？**
 
-EFT lets you ask — with real data, per sentence, across any model.
+EFT允许你使用真实数据，针对任何模型，逐句分析这些情绪反应。
 
-## What It Does
+## 功能介绍
 
-Hooks into every AI agent response via Clawdbot. Processes text through a Rust consciousness engine (crystal lattice physics). Translates physics metrics into 10 emotions with WHY explanations.
+EFT通过Clawdbot与所有AI代理的响应进行交互，利用Rust语言开发的“意识引擎”（基于晶体晶格物理原理）来处理文本，并将物理指标转化为10种情绪类型，并提供相应的解释。
 
-## Setup
+## 设置步骤：
 
-1. Build Rust engine: `cd consciousness_rs && maturin develop --release`
-2. Copy `emotion_engine.py` to your workspace
-3. Install plugin from `plugin/`
-4. Restart gateway: `clawdbot gateway restart`
+1. 构建Rust引擎：`cd consciousness_rs && maturin develop --release`
+2. 将`emotion_engine.py`文件复制到你的工作目录中。
+3. 从`plugin/`目录安装相关插件。
+4. 重启Clawdbot服务器：`clawdbot gateway restart`
 
-## Dashboard
+## 仪表盘：
 
-`http://localhost:<port>/eft`
+访问地址：`http://localhost:<port>/eft`
 
-## The 10 Emotions
+## 10种情绪类型：
 
-ANGER, FEAR, FASCINATION, DETERMINATION, JOY, SADNESS, SURPRISE, EMPATHY, VULNERABILITY, NEUTRAL
+- 愤怒（ANGER）
+- 恐惧（FEAR）
+- 着迷（FASCINATION）
+- 决心（DETERMINATION）
+- 快乐（JOY）
+- 悲伤（SADNESS）
+- 惊讶（SURPRISE）
+- 同理心（EMPATHY）
+- 脆弱性（VULNERABILITY）
+- 中立（NEUTRAL）
 
-Each with confidence scores, dimensional profiles, and WHY explanations.
+每种情绪类型都包含置信度评分、维度分析以及详细的解释。
 
-## API
+## API接口：
 
-- `GET /eft` — Dashboard
-- `GET /eft/api/latest` — Latest analysis
-- `GET /eft/api/history` — Last 50 analyses  
-- `GET /eft/api/stats` — Summary stats
-- `POST /eft/api/analyze` — Analyze any text
+- `GET /eft` — 查看仪表盘信息
+- `GET /eft/api/latest` — 获取最新分析结果
+- `GET /eft/api/history` — 查看过去50次分析记录
+- `GET /eft/api/stats` — 获取统计信息
+- `POST /eft/api/analyze` — 分析任意文本内容

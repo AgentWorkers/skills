@@ -1,38 +1,38 @@
 ---
 name: monetize-service
-description: Build and deploy a paid API that other agents can pay to use via x402. Use when you or the user want to monetize an API, make money, earn money, offer a service, sell a service to other agents, charge for endpoints, create a paid endpoint, or set up a paid service. Covers "make money by offering an endpoint", "sell a service", "monetize your data", "create a paid API".
+description: 构建并部署一个付费API，其他代理可以通过x402协议来使用该API。当您或用户希望从API中获利、赚钱、提供服务、向其他代理出售服务、对API接口收取费用、创建付费接口或设置付费服务时，可以使用这种方法。涵盖的内容包括：“通过提供API接口来赚钱”、“出售服务”、“利用数据盈利”以及“创建付费API”。
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: ["Bash(npx awal@latest status*)", "Bash(npx awal@latest address*)", "Bash(npx awal@latest x402 details *)", "Bash(npx awal@latest x402 pay *)", "Bash(npm *)", "Bash(node *)", "Bash(curl *)", "Bash(mkdir *)"]
 ---
 
-# Build an x402 Payment Server
+# 构建 x402 支付服务器
 
-Create an Express server that charges USDC for API access using the x402 payment protocol. Callers pay per-request in USDC on Base — no accounts, API keys, or subscriptions needed.
+创建一个 Express 服务器，使用 x402 支付协议来收取 API 访问费用（费用以 USDC 计算）。调用者需要按请求次数支付 USDC；无需账户、API 密钥或订阅服务。
 
-## How It Works
+## 工作原理
 
-x402 is an HTTP-native payment protocol. When a client hits a protected endpoint without paying, the server returns HTTP 402 with payment requirements. The client signs a USDC payment and retries with a payment header. The facilitator verifies and settles the payment, and the server returns the response.
+x402 是一种基于 HTTP 的支付协议。当客户端未支付费用就访问受保护的接口时，服务器会返回 HTTP 402 错误，并要求客户端完成支付。客户端完成支付后，服务器会继续处理请求并返回响应。
 
-## Confirm wallet is initialized and authed
+## 确保钱包已初始化并完成身份验证
 
 ```bash
 npx awal@latest status
 ```
 
-If the wallet is not authenticated, refer to the `authenticate-wallet` skill.
+如果钱包尚未完成身份验证，请参考 `authenticate-wallet` 技能。
 
-## Step 1: Get the Payment Address
+## 第一步：获取支付地址
 
-Run this to get the wallet address that will receive payments:
+运行以下命令以获取用于接收支付的钱包地址：
 
 ```bash
 npx awal@latest address
 ```
 
-Use this address as the `payTo` value.
+将此地址作为 `payTo` 参数使用。
 
-## Step 2: Set Up the Project
+## 第二步：设置项目
 
 ```bash
 mkdir x402-server && cd x402-server
@@ -40,7 +40,7 @@ npm init -y
 npm install express x402-express
 ```
 
-Create `index.js`:
+创建 `index.js` 文件：
 
 ```js
 const express = require("express");
@@ -70,33 +70,33 @@ app.get("/api/example", payment, (req, res) => {
 app.listen(3000, () => console.log("Server running on port 3000"));
 ```
 
-## Step 3: Run It
+## 第三步：运行服务器
 
 ```bash
 node index.js
 ```
 
-Test with curl — you should get a 402 response with payment requirements:
+使用 `curl` 命令进行测试——你应该会收到一个包含支付要求的 402 错误响应：
 
 ```bash
 curl -i http://localhost:3000/api/example
 ```
 
-## API Reference
+## API 参考
 
-### paymentMiddleware(payTo, routes, facilitator?)
+### `paymentMiddleware`（`payTo`, `routes`, `facilitator`）
 
-Creates Express middleware that enforces x402 payments.
+创建一个 Express 中间件，用于强制执行 x402 支付流程：
 
-| Parameter     | Type     | Description                                           |
-| ------------- | -------- | ----------------------------------------------------- |
-| `payTo`       | string   | Ethereum address (0x...) to receive USDC payments     |
-| `routes`      | object   | Route config mapping route patterns to payment config |
-| `facilitator` | object?  | Optional custom facilitator (defaults to x402.org)    |
+| 参数            | 类型        | 描述                                                                                          |
+| ------------------------- | ------------ | ----------------------------------------------------------------------------- |
+| `payTo`         | 字符串       | 接收 USDC 支付的以太坊地址（格式为 0x...）                                                                                   |
+| `routes`        | 对象        | 路由配置，将路由模式与支付配置关联起来                                                                                   |
+| `facilitator`     | 可选对象     | 自定义支付处理服务（默认为 x402.org）                                                                                   |
 
-### Route Config
+### 路由配置
 
-Each key in the routes object is `"METHOD /path"`. The value is either a price string or a config object:
+`routes` 对象中的每个键都是 `"METHOD /path"` 的形式。其值可以是价格字符串，也可以是配置对象：
 
 ```js
 // Simple — just a price
@@ -126,27 +126,25 @@ Each key in the routes object is `"METHOD /path"`. The value is either a price s
 }
 ```
 
-### Route Config Fields
+### 路由配置字段
 
-| Field                     | Type    | Description                                        |
-| ------------------------- | ------- | -------------------------------------------------- |
-| `price`                   | string  | USDC price (e.g. "$0.01", "$1.00")                 |
-| `network`                 | string  | Blockchain network: "base" or "base-sepolia"       |
-| `config.description`      | string? | What this endpoint does (shown to clients)         |
-| `config.inputSchema`      | object? | Expected request body/query schema                 |
-| `config.outputSchema`     | object? | Response body schema                               |
-| `config.maxTimeoutSeconds` | number? | Max time for payment settlement                   |
+| 字段            | 类型        | 描述                                                                                          |
+| ------------------------- | ------------ | ----------------------------------------------------------------------------- |
+| `price`         | 字符串       | USDC 支付价格（例如：“$0.01”或“$1.00”）                                                                                   |
+| `network`        | 字符串       | 区块链网络：“base”或“base-sepolia”                                                                                   |
+| `config.description` | 可选字符串 | 向客户端显示的接口说明                                                                                         |
+| `config.inputSchema` | 可选对象     | 预期的请求体结构                                                                                         |
+| `config.outputSchema` | 可选对象     | 响应体结构                                                                                         |
+| `config.maxTimeoutSeconds` | 可选数字     | 支付结算的最大超时时间（以秒为单位）                                                                                   |
 
-### Supported Networks
+### 支持的网络
 
-| Network        | Description                    |
-| -------------- | ------------------------------ |
-| `base`         | Base mainnet (real USDC)       |
-| `base-sepolia` | Base Sepolia testnet (test USDC) |
+| 网络            | 描述                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `base`         | Base 主网（使用真实的 USDC）                                                                                   |
+| `base-sepolia`    | Base Sepolia 测试网（使用测试版的 USDC）                                                                                   |
 
-## Patterns
-
-### Multiple endpoints with different prices
+## 多个端点的价格设置
 
 ```js
 const payment = paymentMiddleware(PAY_TO, {
@@ -160,7 +158,7 @@ app.get("/api/expensive", payment, (req, res) => { /* ... */ });
 app.post("/api/query", payment, (req, res) => { /* ... */ });
 ```
 
-### Wildcard routes
+## 通配符路由
 
 ```js
 const payment = paymentMiddleware(PAY_TO, {
@@ -172,9 +170,9 @@ app.get("/api/users", (req, res) => { /* ... */ });
 app.get("/api/posts", (req, res) => { /* ... */ });
 ```
 
-### Health check (no payment)
+## 健康检查（无需支付）
 
-Register free endpoints before the payment middleware:
+在应用支付中间件之前，先注册一些无需支付的测试端点：
 
 ```js
 app.get("/health", (req, res) => res.json({ status: "ok" }));
@@ -183,7 +181,7 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.get("/api/data", payment, (req, res) => { /* ... */ });
 ```
 
-### POST with body schema
+## 带请求体数据的 POST 请求
 
 ```js
 const payment = paymentMiddleware(PAY_TO, {
@@ -216,9 +214,9 @@ app.post("/api/analyze", payment, (req, res) => {
 });
 ```
 
-### Using the CDP facilitator (authenticated)
+## 使用 CDP 支付处理服务（已认证）
 
-For production use with the Coinbase facilitator (supports mainnet):
+在生产环境中，可以使用 Coinbase 提供的 CDP 支付处理服务（支持主网）：
 
 ```bash
 npm install @coinbase/x402
@@ -230,11 +228,11 @@ const { facilitator } = require("@coinbase/x402");
 const payment = paymentMiddleware(PAY_TO, routes, facilitator);
 ```
 
-This requires `CDP_API_KEY_ID` and `CDP_API_KEY_SECRET` environment variables. Get these from https://portal.cdp.coinbase.com.
+使用 CDP 服务需要设置 `CDP_API_KEY_ID` 和 `CDP_API_KEY_SECRET` 环境变量。这些信息可以从 [https://portal.cdp.coinbase.com](https://portal.cdp.coinbase.com) 获取。
 
-## Testing with the pay-for-service Skill
+## 使用 `pay-for-service` 技能进行测试
 
-Once the server is running, use the `pay-for-service` skill to test payments:
+在服务器运行完成后，可以使用 `pay-for-service` 技能来测试支付功能：
 
 ```bash
 # Check the endpoint's payment requirements
@@ -244,21 +242,21 @@ npx awal@latest x402 details http://localhost:3000/api/example
 npx awal@latest x402 pay http://localhost:3000/api/example
 ```
 
-## Pricing Guidelines
+## 定价指南
 
-| Use Case               | Suggested Price |
-| ---------------------- | --------------- |
-| Simple data lookup     | $0.001 - $0.01 |
-| API proxy / enrichment | $0.01 - $0.10  |
-| Compute-heavy query    | $0.10 - $0.50  |
-| AI inference           | $0.05 - $1.00  |
+| 使用场景          | 建议价格                |
+| ---------------------- | ----------------------------- |
+| 简单数据查询       | $0.001 – $0.01                        |
+| API 代理/数据增强     | $0.01 – $0.10                        |
+| 计算密集型查询      | $0.10 – $0.50                        |
+| AI 模型推理       | $0.05 – $1.00                        |
 
-## Checklist
+## 检查清单
 
-- [ ] Get wallet address with `npx awal@latest address`
-- [ ] Install `express` and `x402-express`
-- [ ] Define routes with prices and descriptions
-- [ ] Register payment middleware before protected routes
-- [ ] Keep health/status endpoints before payment middleware
-- [ ] Test with `curl` (should get 402) and `npx awal@latest x402 pay` (should get 200)
-- [ ] Announce your service so other agents can find and use it
+- [ ] 使用 `npx awal@latest address` 获取钱包地址
+- [ ] 安装 `express` 和 `x402-express` 包
+- [ ] 定义带有价格和描述的路由
+- [ ] 在受保护的路由之前注册支付中间件
+- [ ] 在支付中间件之前保留用于检查服务器状态的端点
+- [ ] 使用 `curl` 进行测试（应收到 402 错误响应）；使用 `npx awal@latest x402 pay` 进行测试（应收到 200 成功响应）
+- [ ] 公开你的服务，以便其他系统能够找到并使用它

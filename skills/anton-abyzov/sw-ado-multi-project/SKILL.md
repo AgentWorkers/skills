@@ -1,26 +1,26 @@
 ---
 name: ado-multi-project
-description: Organize specs and tasks across multiple Azure DevOps projects with intelligent content-based mapping. Use when working with project-per-team, area-path-based, or team-based ADO architectures. Handles cross-project coordination and folder structure organization.
+description: 通过智能的基于内容的映射功能，可以在多个 Azure DevOps 项目中组织和协调规范（specifications）与任务。该功能适用于采用“项目按团队划分”（project-per-team）、“按区域路径划分”（area-path-based）或“按团队划分”（team-based）的 Azure DevOps 架构的场景。同时，它能够处理跨项目之间的协作以及文件夹结构的组织管理工作。
 allowed-tools: Read, Write, Edit, Glob
 ---
 
-# Azure DevOps Multi-Project Skill
+# Azure DevOps 多项目管理技能
 
-**Purpose**: Organize specs and increments across multiple Azure DevOps projects with intelligent mapping and folder organization.
+**用途**：通过智能的映射和文件夹组织方式，管理多个 Azure DevOps 项目中的规范和增量内容。
 
-## What This Skill Does
+## 该技能的功能
 
-This skill handles complex multi-project Azure DevOps organizations by:
+该技能能够处理复杂的多项目 Azure DevOps 环境，具体包括：
 
-1. **Analyzing increment content** to determine which project it belongs to
-2. **Creating project-specific folder structures** in `.specweave/docs/internal/specs/`
-3. **Mapping user stories to correct projects** based on keywords and context
-4. **Splitting tasks across projects** when increments span multiple teams
-5. **Maintaining bidirectional sync** between local specs and Azure DevOps work items
+1. **分析增量内容**，以确定其所属项目；
+2. 在 `.specweave/docs/internal/specs/` 目录下创建特定于项目的文件夹结构；
+3. 根据关键词和上下文将用户故事分配到正确的项目中；
+4. 当增量涉及多个团队时，将任务分配到相应的项目中；
+5. 维护本地规范与 Azure DevOps 工作项之间的双向同步。
 
-## Supported Architectures
+## 支持的架构
 
-### 1. Project-per-team (Recommended for Microservices)
+### 1. 每个团队对应一个项目（推荐用于微服务架构）
 
 ```
 Organization: mycompany
@@ -37,7 +37,7 @@ Local Structure:
 └── NotificationService/
 ```
 
-### 2. Area-path-based (Monolithic Applications)
+### 2. 基于区域路径的架构（单体应用程序）
 
 ```
 Organization: enterprise
@@ -55,7 +55,7 @@ Local Structure:
 └── Sales/
 ```
 
-### 3. Team-based (Small Organizations)
+### 3. 基于团队的架构（小型组织）
 
 ```
 Organization: startup
@@ -71,11 +71,11 @@ Local Structure:
 └── GammaTeam/
 ```
 
-## Intelligent Project Detection
+## 智能项目检测
 
-The skill analyzes increment content to determine the correct project:
+该技能通过分析增量内容来识别正确的项目：
 
-### Detection Patterns
+### 检测规则
 
 ```typescript
 const projectPatterns = {
@@ -107,22 +107,21 @@ const selectedProject = Object.entries(projectPatterns)
   .sort((a, b) => b[1].confidence - a[1].confidence)[0][0];
 ```
 
-### Confidence Calculation
+### 信任度计算
 
-- **Keyword match**: +0.2 per keyword found
-- **File pattern match**: +0.3 per pattern
-- **Explicit mention**: +1.0 if project name in spec
-- **Team mention**: +0.5 if team name matches
+- **关键词匹配**：每个匹配的关键词加 0.2 分；
+- **文件模式匹配**：每个匹配的模式加 0.3 分；
+- **明确提及项目名称**：项目名称在规范文件中时加 1.0 分；
+- **提及团队名称**：团队名称与项目名称匹配时加 0.5 分；
+**阈值**：信任度大于 0.7 时自动分配，否则提示用户手动选择项目。
 
-**Threshold**: Confidence > 0.7 = auto-assign, otherwise prompt user
+## 使用示例
 
-## Usage Examples
+### 示例 1：单项目增量
 
-### Example 1: Single-Project Increment
+**场景**：为 AuthService 功能实现身份验证功能
 
-**Scenario**: Authentication feature for AuthService
-
-**Spec Analysis**:
+**规范分析**：
 ```
 Title: "Add OAuth 2.0 authentication"
 Keywords found: authentication, oauth, jwt
@@ -130,7 +129,7 @@ File patterns: src/auth/oauth-provider.ts
 Confidence: AuthService = 0.9 ✅
 ```
 
-**Action**:
+**操作**：
 ```bash
 # Auto-creates folder structure
 .specweave/docs/internal/specs/AuthService/
@@ -141,11 +140,11 @@ Project: AuthService
 Work Item: Epic "OAuth 2.0 Authentication"
 ```
 
-### Example 2: Multi-Project Increment
+### 示例 2：多项目增量
 
-**Scenario**: Checkout flow spanning multiple services
+**场景**：涉及多个服务的签出流程
 
-**Spec Analysis**:
+**规范分析**：
 ```
 Title: "Implement checkout flow with payment processing"
 Keywords found: user, cart, payment, stripe, notification
@@ -155,7 +154,7 @@ Confidence:
   - NotificationService = 0.5
 ```
 
-**Action**:
+**操作**：
 ```bash
 # Creates multi-project structure
 .specweave/docs/internal/specs/
@@ -172,25 +171,25 @@ UserService: Feature "User Cart Management" (links to primary)
 NotificationService: Feature "Order Notifications" (links to primary)
 ```
 
-### Example 3: Area Path Organization
+### 示例 3：基于区域路径的架构
 
-**Scenario**: ERP system with module-based organization
+**场景**：采用模块化组织的 ERP 系统
 
-**Configuration**:
+**配置**：
 ```bash
 AZURE_DEVOPS_STRATEGY=area-path-based
 AZURE_DEVOPS_PROJECT=ERP
 AZURE_DEVOPS_AREA_PATHS=Finance,HR,Inventory
 ```
 
-**Spec Analysis**:
+**规范分析**：
 ```
 Title: "Add payroll calculation engine"
 Keywords found: payroll, salary, tax, employee
 Area match: HR (confidence = 0.85)
 ```
 
-**Action**:
+**操作**：
 ```bash
 # Creates area-based structure
 .specweave/docs/internal/specs/ERP/HR/
@@ -202,11 +201,11 @@ Area Path: ERP\HR
 Work Item: Epic "Payroll Calculation Engine"
 ```
 
-## Task Splitting Across Projects
+## 任务跨项目分配
 
-When an increment spans multiple projects, tasks are intelligently split:
+当一个增量涉及多个项目时，系统会智能地分配任务：
 
-### Input: Unified tasks.md
+### 输入：UnifiedTasks.md 文件
 ```markdown
 # Tasks for Checkout Flow
 
@@ -217,25 +216,24 @@ When an increment spans multiple projects, tasks are intelligently split:
 - T-005: Process payment webhook (PaymentService)
 ```
 
-### Output: Project-specific work items
+**输出**：各项目的工作项
 
-**UserService** (2 tasks):
-- Task: Create shopping cart API
-- Task: Update user order history
+**UserService**（2 个任务）：
+- 任务：创建购物车 API
+- 任务：更新用户订单历史
 
-**PaymentService** (2 tasks):
-- Task: Implement Stripe integration
-- Task: Process payment webhook
+**PaymentService**（2 个任务）：
+- 任务：实现 Stripe 集成
+- 任务：处理支付 Webhook
 
-**NotificationService** (1 task):
-- Task: Add order confirmation email
+**NotificationService**（1 个任务）：
+- 任务：发送订单确认邮件
 
-## Folder Structure Creation
+## 文件夹结构创建
 
-The skill automatically creates and maintains folder structure:
+该技能会自动创建并维护文件夹结构：
 
-### On Increment Creation
-
+### 增量创建时
 ```typescript
 async function createProjectFolders(increment: Increment) {
   const projects = detectProjects(increment);
@@ -256,8 +254,7 @@ async function createProjectFolders(increment: Increment) {
 }
 ```
 
-### Project README Template
-
+### 项目 README 模板
 ```markdown
 # {Project} Specifications
 
@@ -279,10 +276,9 @@ This folder contains specifications for the {Project} project.
 - Repository: {git-url}
 ```
 
-## Sync Commands
+## 同步命令
 
-### Sync Increment to Projects
-
+### 将增量内容同步到项目中
 ```bash
 /sw-ado:sync-increment 0014
 
@@ -291,8 +287,7 @@ This folder contains specifications for the {Project} project.
 # Links work items together
 ```
 
-### Sync Spec to Project
-
+### 将规范文件同步到项目中
 ```bash
 /sw-ado:sync-spec AuthService/spec-001
 
@@ -300,8 +295,7 @@ This folder contains specifications for the {Project} project.
 # Updates existing work item or creates new
 ```
 
-### Sync All Specs
-
+### 同步所有规范文件
 ```bash
 /sw-ado:sync-all
 
@@ -310,10 +304,9 @@ This folder contains specifications for the {Project} project.
 # Updates bidirectionally
 ```
 
-## Project Mapping Configuration
+## 项目映射配置
 
-### Manual Mapping (config.json)
-
+### 手动配置（config.json 文件）
 ```json
 {
   "ado": {
@@ -329,8 +322,7 @@ This folder contains specifications for the {Project} project.
 }
 ```
 
-### Auto-Detection Rules
-
+### 自动检测规则
 ```typescript
 const autoDetectionRules = [
   {
@@ -348,11 +340,11 @@ const autoDetectionRules = [
 ];
 ```
 
-## Cross-Project Coordination
+## 跨项目协调
 
-### Dependency Management
+### 依赖关系管理
 
-When increments span projects, dependencies are tracked:
+当增量涉及多个项目时，系统会跟踪项目间的依赖关系：
 
 ```yaml
 # .specweave/increments/0014-checkout-flow/metadata.yml
@@ -374,8 +366,7 @@ ado_mappings:
     work_items: [12352]
 ```
 
-### Cross-Project Queries
-
+### 跨项目查询
 ```typescript
 // Find all work items for an increment across projects
 async function getIncrementWorkItems(incrementId: string) {
@@ -391,20 +382,20 @@ async function getIncrementWorkItems(incrementId: string) {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Consistent Naming
+### 1. 保持命名一致性
 
-Use consistent naming across projects:
+在所有项目中使用统一的命名规范：
 ```
 spec-001-oauth-authentication.md    # Good
 spec-001-auth.md                    # Too vague
 SPEC_001_OAuth.md                   # Inconsistent format
 ```
 
-### 2. Clear Project Boundaries
+### 2. 明确项目边界
 
-Define clear boundaries between projects:
+清晰界定各项目之间的边界：
 ```yaml
 AuthService:
   owns: [authentication, authorization, sessions]
@@ -415,9 +406,9 @@ UserService:
   not: [authentication, passwords]
 ```
 
-### 3. Link Related Specs
+### 3. 链接相关规范文件
 
-Link specs that span projects:
+链接跨项目的规范文件：
 ```markdown
 # spec-002-checkout-payment.md
 
@@ -426,19 +417,18 @@ Related Specs:
 - [Notifications](../NotificationService/spec-002-checkout-notifications.md)
 ```
 
-### 4. Use Project Prefixes
+### 4. 使用项目前缀
 
-Prefix increment names with primary project:
+在增量文件名前添加主要项目的名称作为前缀：
 ```bash
 /sw:increment "payment-stripe-integration"
 /sw:increment "auth-oauth-provider"
 /sw:increment "user-profile-redesign"
 ```
 
-## Error Handling
+## 错误处理
 
-### Project Not Found
-
+### 项目未找到
 ```
 ❌ Project "AuthService" not found in Azure DevOps
 
@@ -450,8 +440,7 @@ Options:
 Your choice [1]:
 ```
 
-### Ambiguous Project Detection
-
+### 项目识别不明确
 ```
 ⚠️ Cannot determine project for increment 0014
 
@@ -467,8 +456,7 @@ Please select primary project:
 Your choice [3]:
 ```
 
-### Sync Conflicts
-
+### 同步冲突
 ```
 ⚠️ Sync conflict detected
 
@@ -484,10 +472,9 @@ Options:
 Your choice [3]:
 ```
 
-## Integration with CI/CD
+## 与 CI/CD 的集成
 
-### Auto-sync on Commit
-
+### 提交时自动同步
 ```yaml
 # .github/workflows/specweave-sync.yml
 on:
@@ -505,8 +492,7 @@ jobs:
           AZURE_DEVOPS_PAT: ${{ secrets.ADO_PAT }}
 ```
 
-### Project-specific Pipelines
-
+### 为每个项目配置独立的管道
 ```yaml
 # azure-pipelines.yml
 trigger:
@@ -522,20 +508,20 @@ steps:
   - script: npx specweave ado-sync-project $(project)
 ```
 
-## Summary
+## 总结
 
-This skill enables sophisticated multi-project Azure DevOps organizations by:
+该技能通过以下方式实现高效的多项目管理：
 
-1. ✅ **Intelligent project detection** from spec content
-2. ✅ **Automatic folder organization** by project/area/team
-3. ✅ **Task splitting** across multiple projects
-4. ✅ **Cross-project linking** and dependency tracking
-5. ✅ **Bidirectional sync** with Azure DevOps work items
+1. ✅ 从规范内容中智能识别项目；
+2. ✅ 按项目/区域/团队自动组织文件夹结构；
+3. ✅ 在多个项目中分配任务；
+4. ✅ 实现跨项目链接和依赖关系管理；
+5. ✅ 与 Azure DevOps 工作项保持双向同步。
 
-**Result**: Seamless multi-project coordination with zero manual overhead!
+**结果**：实现无缝的多项目协作，无需任何人工干预！
 
 ---
 
-**Skill Version**: 1.0.0
-**Introduced**: SpecWeave v0.17.0
-**Last Updated**: 2025-11-11
+**技能版本**：1.0.0
+**首次引入**：SpecWeave v0.17.0
+**最后更新时间**：2025-11-11

@@ -1,49 +1,49 @@
 ---
 name: openpond-cli
-description: Use the OpenPond CLI to create repos, watch deployments, and run tools without the web UI.
+description: 使用 OpenPond CLI 来创建仓库（repositories）、监控部署（deployments）以及运行工具（tools），而无需使用 Web 界面。
 metadata:
   short-description: OpenPond CLI workflows
 ---
 
 # OpenPond CLI
 
-Use this skill when an agent needs to create or manage OpenPond apps via the CLI, without MCP.
+当代理需要通过 CLI（命令行界面）创建或管理 OpenPond 应用程序时，请使用此技能，无需使用 MCP（管理控制面板）。
 
-## Quick setup
+## 快速设置
 
-- Install: `npm i -g openpond-code` (or `npx --package openpond-code openpond <cmd>`)
-- Auth: run `openpond login` or set `OPENPOND_API_KEY`
-- Non-interactive login: `openpond login --api-key opk_...`
+- 安装：`npm i -g openpond-code`（或 `npx --package openpond-code openpond <cmd>`）
+- 登录：运行 `openpond login` 或设置 `OPENPOND_API_KEY`
+- 非交互式登录：`openpond login --api-key opk_...`
 
-## Common workflows
+## 常见工作流程
 
-- Create internal repo and attach remote:
+- 创建内部仓库并关联远程仓库：
   - `openpond repo create --name my-repo --path .`
-- Non-interactive push (tokenized remote):
+- 非交互式推送（使用令牌化身份验证）：
   - `openpond repo create --name my-repo --path . --token`
   - `git add . && git commit -m "init"`
   - `openpond repo push --path . --branch main`
-  - `openpond repo push` reads `.git/config`, temporarily tokenizes `origin`, and restores it after push.
-- Watch deployments:
+  - `openpond repo push` 会读取 `.git/config` 文件，临时使用令牌进行身份验证，并在推送完成后恢复原设置。
+- 监控部署情况：
   - `openpond deploy watch handle/repo --branch main`
-- List and run tools:
+- 列出并运行工具：
   - `openpond tool list handle/repo`
   - `openpond tool run handle/repo myTool --body '{"foo":"bar"}'`
-- Account-level APIs:
+- 账户级 API：
   - `openpond apps list [--handle <handle>] [--refresh]`
   - `openpond apps tools`
   - `openpond apps performance --app-id app_123`
   - `openpond apps agent create --prompt "Build a daily digest agent"`
 
-## OpenTool passthrough
+## OpenTool 代理
 
-Use the CLI to run OpenTool commands via `npx`:
+可以使用 CLI 通过 `npx` 来运行 OpenTool 命令：
 
 - `openpond opentool init --dir .`
 - `openpond opentool validate --input tools`
 - `openpond opentool build --input tools --output dist`
 
-## Config and URLs
+## 配置和 URL
 
-- Optional env vars: `OPENPOND_BASE_URL`, `OPENPOND_API_URL`, `OPENPOND_TOOL_URL`, `OPENPOND_API_KEY`
-- Cache file: `~/.openpond/cache.json` (auto-refreshes on next use)
+- 可选的环境变量：`OPENPOND_BASE_URL`、`OPENPOND_API_URL`、`OPENPOND_TOOL_URL`、`OPENPOND_API_KEY`
+- 缓存文件：`~/.openpond/cache.json`（下次使用时会自动更新）

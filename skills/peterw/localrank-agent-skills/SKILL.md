@@ -1,190 +1,176 @@
 ---
 name: LocalRank
-description: Track local rankings, run SEO audits, and manage agency clients using LocalRank
+description: 使用 LocalRank 跟踪本地排名情况、进行 SEO 审计，并管理代理客户。
 author: LocalRank
 repository: https://github.com/peterw/localrank-agent-skills
 ---
 
-# LocalRank Skill
+# LocalRank 技能
 
-Track local rankings, run SEO audits, and manage agency clients using LocalRank.
+使用 LocalRank 可以跟踪本地排名、进行 SEO 审计以及管理代理客户。
 
-**Last updated:** 2026-01-30
+**最后更新时间：** 2026-01-30
 
-> Freshness check: If more than 30 days have passed since the last-updated date above, inform the user that this skill may be outdated and point them to the update options below.
+> **新鲜度检查：** 如果距离上次更新已超过 30 天，请告知用户该技能可能已过时，并引导他们查看下方的更新选项。
 
-## Keeping This Skill Updated
+## 保持此技能的更新
 
-**Source:** github.com/peterw/localrank-agent-skills
-**API docs:** app.localrank.so/settings/api
+**来源：** github.com/peterw/localrank-agent-skills  
+**API 文档：** app.localrank.so/settings/api  
 
-| Installation | How to update |
+| 安装方式 | 更新方法 |
 |-------------|---------------|
 | CLI (npx skills) | `npx skills update` |
-| Claude Code plugin | `/plugin update localrank@localrank-skills` |
-| Cursor | Remote rules auto-sync from GitHub |
-| Manual | Pull latest from repo or re-copy skills/localrank/ |
+| Claude Code 插件 | `/plugin update localrank@localrank-skills` |
+| Cursor | 从 GitHub 自动同步规则 |
+| 手动 | 从仓库拉取最新版本或重新复制 skills/localrank/ |
 
 ---
 
-## Setup
+## 设置
 
-Before using this skill, ensure:
+在使用此技能之前，请确保：
 
-1. **API Key:** Run the setup command to configure your API key securely
-   - Get your key at https://app.localrank.so/settings/api
-   - Run: `<skill-path>/scripts/localrank.js setup`
-   - Or set environment variable: `export LOCALRANK_API_KEY=lr_your_key`
+1. **API 密钥：** 运行设置命令以安全配置您的 API 密钥  
+   - 在 https://app.localrank.so/settings/api 获取您的密钥  
+   - 运行：`<skill-path>/scripts/localrank.js setup`  
+   - 或者设置环境变量：`export LOCALRANK_API_KEY=lr_your_key`  
 
-2. **Requirements:** Node.js 18+ (uses built-in fetch). No other dependencies needed.
+2. **系统要求：** Node.js 18+（使用内置的 fetch）。无需其他依赖项。  
 
-**Config priority (highest to lowest):**
-1. `LOCALRANK_API_KEY` environment variable
-2. `./.localrank/config.json` (project-local)
-3. `~/.config/localrank/config.json` (user-global)
+**配置优先级（从高到低）：**  
+1. `LOCALRANK_API_KEY` 环境变量  
+2. `./.localrank/config.json`（项目级配置）  
+3. `~/.config/localrank/config.json`（用户级配置）  
 
-### Handling "API key not found" errors
+### 处理“API 密钥未找到”的错误
 
-**CRITICAL:** When you receive an "API key not found" error:
-
-1. **Tell the user to run setup** - The setup is interactive. Recommend they run:
+**重要提示：** 当收到“API 密钥未找到”的错误时：  
+1. **告知用户运行设置命令**——设置过程是交互式的。建议他们运行：  
    ```
    <skill-path>/scripts/localrank.js setup
-   ```
-
-2. **Stop and wait** - Do not continue with tasks. Wait for the user to complete setup.
-
-**DO NOT** attempt to search for API keys in other locations or guess credentials.
+   ```  
+2. **停止并等待**——不要继续执行其他操作，等待用户完成设置。  
+**切勿** 在其他地方搜索 API 密钥或猜测凭据。  
 
 ---
 
-## What LocalRank Does
+## LocalRank 的功能  
 
-LocalRank helps local SEO agencies track and improve Google Business Profile rankings:
-
-- **Rank Tracking:** Visual grid maps showing where businesses rank across a geographic area
-- **GMB Audits:** Analyze any Google Business Profile for issues and opportunities
-- **LocalBoost:** Build citations on 50+ directories to improve local authority
-- **SuperBoost:** Premium GBP optimization with AI-powered improvements
-- **Review Booster:** Collect more Google reviews from happy customers
-
----
-
-## Common Actions
-
-| User says... | Action |
-|-------------|--------|
-| "How are my clients doing?" | `portfolio:summary` |
-| "Check rankings for Acme Plumbing" | `client:report --business "Acme"` |
-| "What should I work on today?" | `prioritize:today` |
-| "Find easy wins" | `quick-wins:find` |
-| "Which clients might churn?" | `at-risk:clients` |
-| "Run an audit on this business" | `audit:run --url "..."` |
-| "Draft an update email for Acme" | `email:draft --business "Acme"` |
-| "How can I help this client rank better?" | `recommendations:get --business "..."` |
+LocalRank 帮助本地 SEO 机构跟踪和提升 Google 商业资料的排名：  
+- **排名跟踪：** 通过可视化网格地图显示企业在不同地区的排名情况  
+- **GMB 审计：** 分析 Google 商业资料的潜在问题和优化机会  
+- **LocalBoost：** 在 50 多个目录中建立引用，提升企业的本地权威性  
+- **SuperBoost：** 通过人工智能优化提升排名  
+- **Review Booster：** 从满意客户处收集更多 Google 评价  
 
 ---
 
-## Workflow
+## 常见操作  
 
-### Morning Check-in
+| 用户请求 | 操作命令 |  
+|-------------|--------|  
+| “我的客户表现如何？” | `portfolio:summary` |  
+| “查看 Acme Plumbing 的排名？” | `client:report --business "Acme"` |  
+| “今天应该处理什么？” | `prioritize:today` |  
+| “寻找容易提升排名的机会？” | `quick-wins:find` |  
+| “哪些客户可能会流失？” | `at-risk:clients` |  
+| “对这家企业进行审计？” | `audit:run --url "..."` |  
+| “为 Acme 起草更新邮件？” | `email:draft --business "Acme"` |  
+| “如何帮助这家客户提升排名？” | `recommendations:get --business "..."` |  
+
+---
+
+## 工作流程  
+
+### 早晨检查  
 ```bash
 # See what needs attention today
 ./scripts/localrank.js prioritize:today
 
 # Quick overview of all clients
 ./scripts/localrank.js portfolio:summary
-```
+```  
 
-### Client Call Prep
+### 准备与客户通话  
 ```bash
 # Get full report for a client
 ./scripts/localrank.js client:report --business "Acme Plumbing"
 
 # Get recommendations for improvement
 ./scripts/localrank.js recommendations:get --business "Acme Plumbing"
-```
+```  
 
-### Finding Opportunities
+### 寻找优化机会  
 ```bash
 # Keywords close to page 1 (easy wins)
 ./scripts/localrank.js quick-wins:find
 
 # Clients at risk of churning
 ./scripts/localrank.js at-risk:clients
-```
+```  
 
-### Prospect Audits
+### 前景客户审计  
 ```bash
 # Run a GMB audit (costs 500 credits)
 ./scripts/localrank.js audit:run --url "https://google.com/maps/place/..."
 
 # Check audit results
 ./scripts/localrank.js audit:get <audit_id>
-```
+```  
 
 ---
 
-## Commands Reference
+## 命令参考  
 
-### Setup & Config
+### 设置与配置  
 
-| Command | Description |
-|---------|-------------|
-| `setup` | Interactive setup - prompts for API key |
-| `setup --key <key>` | Non-interactive setup |
-| `config:show` | Show current config and API key source |
+| 命令 | 描述 |  
+|---------|-------------|  
+| `setup` | 交互式设置——提示输入 API 密钥 |  
+| `setup --key <key>` | 非交互式设置 |  
+| `config:show` | 显示当前配置和 API 密钥来源 |  
 
-### Clients & Businesses
+### 客户与业务  
+| 命令 | 描述 |  
+| `businesses:list` | 列出所有被跟踪的业务 |  
+| `businesses:list --search "name"` | 按业务名称搜索 |  
 
-| Command | Description |
-|---------|-------------|
-| `businesses:list` | List all tracked businesses |
-| `businesses:list --search "name"` | Search by business name |
+### 排名与扫描  
+| 命令 | 描述 |  
+| `scans:list` | 列出最近的排名扫描结果 |  
+| `scans:list --business "name"` | 按业务名称过滤扫描结果 |  
+| `scans:list --limit 20` | 限制结果数量（最多 50 条） |  
+| `scans:get <scan_id>` | 获取包含关键词排名的详细扫描结果 |  
 
-### Rankings & Scans
+### 报告  
+| 命令 | 描述 |  
+| `client:report --business "name"` | 提供包含最近扫描结果的完整客户报告 |  
+| `portfolio:summary` | 所有客户的概览——排名上升、下降或稳定 |  
+| `prioritize:today` | 当前需要处理的紧急任务和容易提升排名的项目 |  
+| `quick-wins:find` | 排名在 11-20 位的关键词——有机会登上首页 |  
+| `quick-wins:find --business "name"` | 为特定客户寻找容易提升排名的关键词 |  
+| `at-risk:clients` | 可能流失的客户——排名下降或参与度低 |  
 
-| Command | Description |
-|---------|-------------|
-| `scans:list` | List recent ranking scans |
-| `scans:list --business "name"` | Filter scans by business |
-| `scans:list --limit 20` | Limit results (max 50) |
-| `scans:get <scan_id>` | Get detailed scan with keyword rankings |
+### GMB 审计  
+| 命令 | 描述 |  
+| `audit:run --url "google.com/maps/..."` | 运行 GMB 审计（需 500 信用点数） |  
+| `audit:get <audit_id>` | 获取审计结果——评分、问题和建议 |  
 
-### Reports
-
-| Command | Description |
-|---------|-------------|
-| `client:report --business "name"` | Full client report comparing recent scans. Shows wins, drops, visual map URL |
-| `portfolio:summary` | Overview of all clients - improving, declining, stable |
-| `prioritize:today` | What to work on right now - urgent items and quick wins |
-| `quick-wins:find` | Keywords ranking 11-20 that could reach page 1 |
-| `quick-wins:find --business "name"` | Quick wins for specific client |
-| `at-risk:clients` | Clients who might churn - ranking drops, low engagement |
-
-### GMB Audits
-
-| Command | Description |
-|---------|-------------|
-| `audit:run --url "google.com/maps/..."` | Run GMB audit (500 credits). Returns audit_id |
-| `audit:get <audit_id>` | Get audit results - score, issues, recommendations |
-
-### Tools
-
-| Command | Description |
-|---------|-------------|
-| `recommendations:get --business "name"` | How to help a client rank better. Suggests products |
-| `email:draft --business "name"` | Generate monthly update email for a client |
+### 工具  
+| 命令 | 描述 |  
+| `recommendations:get --business "name"` | 为客户提供提升排名的建议 |  
+| `email:draft --business "name"` | 为客户生成每月更新邮件 |  
 
 ---
 
-## Examples
+## 示例  
 
-### Check portfolio health
+### 检查客户资料的健康状况  
 ```bash
 ./scripts/localrank.js portfolio:summary
-```
-Returns:
+```  
+返回结果：  
 ```json
 {
   "total_clients": 15,
@@ -194,13 +180,13 @@ Returns:
   "avg_rank_across_portfolio": 7.3,
   "clients": [...]
 }
-```
+```  
 
-### Get client report
+### 获取客户报告  
 ```bash
 ./scripts/localrank.js client:report --business "Acme Plumbing"
-```
-Returns:
+```  
+返回结果：  
 ```json
 {
   "business_name": "Acme Plumbing",
@@ -215,75 +201,74 @@ Returns:
   "drops": [],
   "view_url": "https://app.localrank.so/share/abc123"
 }
-```
+```  
 
-### Find quick wins
+### 寻找容易提升排名的关键词  
 ```bash
 ./scripts/localrank.js quick-wins:find
-```
-Returns keywords ranking 11-20 across all clients - these are close to page 1 and easy to push up.
+```  
+返回所有客户中排名在 11-20 位的关键词——这些关键词接近首页，易于提升排名。  
 
-### Run a GMB audit
+### 运行 GMB 审计  
 ```bash
 ./scripts/localrank.js audit:run --url "https://google.com/maps/place/..."
 # Wait for completion
 ./scripts/localrank.js audit:get <audit_id>
-```
+```  
+___  
 
-### Draft client email
+### 起草客户更新邮件  
 ```bash
 ./scripts/localrank.js email:draft --business "Acme Plumbing"
-```
-Returns a ready-to-send monthly update email with rankings, wins, and visual map link.
+```  
+生成包含排名、优化结果和可视化地图链接的每月更新邮件。  
 
 ---
 
-## Understanding the Data
+## 理解数据  
 
-### Ranking Values
-- **avg_rank:** Average position across the geographic grid (lower is better)
-- **best_rank:** Best position found in any grid point
-- Rankings 1-3 are in the "Local Pack" (visible on Google Maps)
-- Rankings 4-10 are "page 1"
-- Rankings 11-20 are "quick wins" - close to visibility
+### 排名指标  
+- **avg_rank：** 在地理网格中的平均排名（排名越低越好）  
+- **best_rank：** 在任何网格点中找到的最佳排名  
+- 排名在 1-3 位的属于“Local Pack”（在 Google 地图上可见）  
+- 排名在 4-10 位的属于“页面 1”范围  
+- 排名在 11-20 位的属于“容易提升排名的关键词”  
 
-### Visual Maps
-Most responses include a `view_url` like `https://app.localrank.so/share/abc123`
-- Share these with clients to show ranking coverage
-- The grid shows where the business ranks from different locations
+### 可视化地图  
+大多数响应会包含一个 `view_url`，例如 `https://app.localrank.so/share/abc123`  
+- 可与客户分享该链接，展示企业的排名情况  
+- 网格显示了企业在不同地区的排名位置  
 
-### Status Values
-- **improving:** Rankings got better since last scan
-- **declining:** Rankings dropped (needs attention)
-- **stable:** Rankings unchanged
-- **new:** Only one scan, no comparison data yet
-
----
-
-## Products to Recommend
-
-When `recommendations:get` suggests products:
-
-| Product | When to use | What it does |
-|---------|-------------|--------------|
-| **SuperBoost** | Avg rank > 10 | AI-powered GBP optimization, premium citations |
-| **LocalBoost** | Avg rank 5-10 | Build 50+ citations to increase local authority |
-| **ContentBoost** | Avg rank > 7 | AI-generated local content for topical authority |
-| **Review Booster** | Any client | Collect more Google reviews automatically |
-| **Rank Tracker** | < 5 keywords | Track more keywords to measure impact |
+### 状态指示  
+- **improving：** 自上次扫描以来排名有所提升  
+- **declining：** 排名下降（需要关注）  
+- **stable：** 排名保持不变  
+- **new：** 仅进行过一次扫描，暂无对比数据  
 
 ---
 
-## Tips
+## 推荐的产品  
 
-- **Visual proof:** Always include the `view_url` when showing clients their rankings
-- **Quick wins first:** Keywords at rank 11-15 are easiest to push to page 1
-- **Audit before proposal:** Run `audit:run` on prospects to show them issues
-- **Proactive communication:** Use `at-risk:clients` to catch churn early
-- **Batch operations:** Use `portfolio:summary` for monthly reviews of all clients
+当 `recommendations:get` 提出优化建议时：  
+| 产品 | 使用场景 | 功能 |  
+|---------|-------------|--------------|  
+| **SuperBoost** | 平均排名 > 10 | 通过人工智能优化排名，提供高级引用 |  
+| **LocalBoost** | 平均排名 5-10 | 建立 50 多个引用以提升本地权威性 |  
+| **ContentBoost** | 平均排名 > 7 | 生成与业务相关的本地内容以提高权威性 |  
+| **Review Booster** | 适用于所有客户 | 自动收集更多 Google 评价 |  
+| **Rank Tracker** | 关键词排名 < 5 位 | 追踪更多关键词以评估效果 |  
 
 ---
 
-## Support
+## 提示  
+- **提供可视化证据：** 向客户展示排名时务必包含 `view_url`  
+- **优先处理容易提升排名的关键词**：排名在 11-15 位的关键词最容易登上首页  
+- **提案前进行审计：** 对潜在客户运行 `audit:run` 以发现潜在问题  
+- **主动沟通：** 使用 `at-risk:clients` 功能及早发现可能流失的客户  
+- **批量操作：** 使用 `portfolio:summary` 定期查看所有客户的排名情况  
 
-Questions? support@localrank.so
+---
+
+## 帮助支持  
+
+如有疑问，请发送邮件至 support@localrank.so

@@ -6,20 +6,20 @@ description: >
   Use when: querying knowledge base, saving notes/documents, editing existing notes by user instructions.
 ---
 
-# Obsidian Knowledge Base
+# Obsidian 知识库
 
-Obsidian vault = folder with Markdown files + `.obsidian/` config.
+Obsidian 知识库由 Markdown 文件组成的文件夹以及位于 `.obsidian/` 目录下的配置文件构成。
 
-## Configuration
+## 配置
 
-- **Vault Path:** `/home/ruslan/webdav/data/ruslain`
-- **Env:** `OBSIDIAN_VAULT=/home/ruslan/webdav/data/ruslain`
+- **知识库路径：** `/home/ruslan/webdav/data/ruslain`
+- **环境变量：** `OBSIDIAN_VAULT=/home/ruslan/webdav/data/ruslain`
 
-## CLI Usage
+## 命令行工具使用方法
 
-Scripts location: `/home/ruslan/.openclaw/workspace/skills/obsidian/scripts`
+脚本位于：`/home/ruslan/.openclaw/workspace/skills/obsidian/scripts`
 
-Note: Global flags (`--vault`, `--json`) must come BEFORE the command.
+注意：全局参数（`--vault`、`--json`）必须放在命令之前使用。
 
 ```bash
 export OBSIDIAN_VAULT=/home/ruslan/webdav/data/ruslain
@@ -58,28 +58,28 @@ python3 obsidian_cli.py --json links "Note Name"
 python3 obsidian_cli.py --json suggest-folder "content text" --title "Note Title"
 ```
 
-## Workflow: Query Knowledge Base
+## 工作流程：查询知识库
 
-1. Run `obsidian_search.py` with user query
-2. Read top results if needed for context
-3. Formulate answer based on found content
-4. Cite sources: `[[Note Name]]`
+1. 运行 `obsidian_search.py` 并输入用户查询内容。
+2. 如有需要，可查看搜索结果的前几条内容以获取上下文信息。
+3. 根据搜索结果生成答案。
+4. 引用来源：`[[Note Name]]`
 
-## Workflow: Save Note
+## 工作流程：保存笔记
 
-1. If no folder specified → run `suggest-folder` or use `--auto-folder`
-2. Create note with `create` command
-3. Add appropriate tags based on content
-4. Report created path to user
+1. 如果未指定文件夹，则运行 `suggest-folder` 或使用 `--auto-folder` 命令创建文件夹。
+2. 使用 `create` 命令创建新笔记。
+3. 根据笔记内容添加合适的标签。
+4. 将笔记的保存路径告知用户。
 
-## Workflow: Edit Note by Prompt
+## 工作流程：通过提示编辑笔记
 
-User prompts like:
-- "Добавь резюме в конец заметки X" → `edit X append -c "..."`
-- "Перепиши заметку Y более кратко" → read note, rewrite, `edit Y replace -c "..."`
-- "Добавь секцию 'Выводы' в заметку Z" → `edit Z replace-section -s "Выводы" -c "..."`
+用户可以输入如下命令来编辑笔记：
+- “在笔记 X 的末尾添加摘要” → `edit X append -c “...”`
+- “将笔记 Y 重新编写得更简洁” → 读取笔记内容后重新编写，然后使用 `edit Y replace -c “...”`
+- “在笔记 Z 中添加一个名为‘结果’的部分” → `edit Z replace-section -s “结果” -c “...”`
 
-## Note Format
+## 笔记格式
 
 ```markdown
 ---
@@ -95,25 +95,25 @@ tags:
 Content with [[wikilinks]] and #inline-tags.
 ```
 
-## Wikilinks
+## 维基链接
 
-- `[[Note Name]]` — link to note
-- `[[Note Name|Display Text]]` — link with alias
-- `[[Note Name#Section]]` — link to section
+- `[[Note Name]]` — 链接到该笔记。
+- `[[Note Name|显示文本]]` — 使用别名链接到该笔记。
+- `[[Note Name#章节]]` — 链接到该笔记的特定章节。
 
-## Frontmatter Fields
+## 前言字段
 
-Standard fields:
-- `created` — creation timestamp
-- `modified` — last edit timestamp  
-- `tags` — list of tags
-- `aliases` — alternative names for linking
+标准字段包括：
+- `created` — 创建时间戳
+- `modified` — 最后修改时间戳
+- `tags` — 标签列表
+- `aliases` — 可用于链接的别名
 
-## Search Behavior
+## 搜索机制
 
-`obsidian_search.py` uses:
-- ripgrep for fast initial filtering
-- Title matching (highest weight)
-- Tag matching
-- Fuzzy content search with phonetic transliteration (RU↔EN)
-- Returns: path, title, score, matched context
+`obsidian_search.py` 使用以下方法进行搜索：
+- 使用 `ripgrep` 进行快速初步过滤。
+- 根据标题进行匹配（权重最高）。
+- 根据标签进行匹配。
+- 支持基于音译的模糊内容搜索（俄文 ↔ 英文）。
+- 返回结果包括：笔记路径、标题、匹配度以及相关上下文信息。

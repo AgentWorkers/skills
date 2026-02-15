@@ -1,6 +1,6 @@
 ---
 name: servicenow-docs
-description: Search and retrieve ServiceNow documentation, release notes, and developer docs (APIs, references, guides). Uses docs.servicenow.com via Zoomin and developer.servicenow.com APIs for developer topics.
+description: 搜索并获取 ServiceNow 的文档、发布说明以及开发者文档（包括 API、参考资料和指南）。通过 Zoomin 使用 docs.servicenow.com，以及通过 developer.servicenow.com 的 API 来获取与开发者相关的内容。
 metadata:
   clawdbot:
     emoji: "📘"
@@ -11,128 +11,128 @@ metadata:
       - Researching ServiceNow platform capabilities
 ---
 
-# ServiceNow Documentation Skill
+# ServiceNow 文档技能
 
-Search and retrieve documentation from docs.servicenow.com and developer.servicenow.com. This skill provides access to ServiceNow's release notes, platform documentation, and developer-focused API references and guides.
+该技能用于从 `docs.servicenow.com` 和 `developer.servicenow.com` 网站中搜索和检索文档。它提供了对 ServiceNow 的发布说明、平台文档以及面向开发者的 API 参考和指南的访问权限。
 
-## When to Use
+## 使用场景
 
-Use this skill when the user asks about:
-- ServiceNow API documentation (GlideRecord, GlideAjax, GlideQuery, etc.)
-- Release notes, patches, or new features
-- Platform configuration or administration
-- Scripting patterns or best practices
-- Accessibility, UI, or user preferences
-- Any ServiceNow product or feature documentation
-- Developer topics like openFrameAPI, ScriptLoader, spContextManager, or mobile APIs
+当用户询问以下内容时，可以使用此技能：
+- ServiceNow API 文档（如 GlideRecord、GlideAjax、GlideQuery 等）
+- 发布说明、补丁或新功能
+- 平台配置或管理
+- 脚本编写模式或最佳实践
+- 可访问性、用户界面或用户偏好设置
+- 任何 ServiceNow 产品或功能的文档
+- 开发者相关主题，如 openFrameAPI、ScriptLoader、spContextManager 或移动 API
 
-## Tools
+## 工具
 
 ### servicenow_search
-Search the ServiceNow documentation database.
+用于搜索 ServiceNow 的文档数据库。
 
-**Args:**
-- `query` (string, required) - Search terms (e.g., "GlideRecord", "accessibility preferences", "patch notes")
-- `limit` (number, default: 10) - Maximum results to return
-- `version` (string, optional) - Filter by version (e.g., "Washington DC", "Zurich", "Yokohama")
+**参数：**
+- `query`（字符串，必填）- 搜索关键词（例如：“GlideRecord”、“accessibility preferences”、“patch notes”）
+- `limit`（数字，默认值：10）- 返回的最大结果数量
+- `version`（字符串，可选）- 按版本过滤（例如：“Washington DC”、“Zurich”、“Yokohama”）
 
-**Example:**
+**示例：**
 ```json
 {"query": "GlideAjax client script", "limit": 5}
 ```
 
 ### servicenow_get_article
-Fetch the full content of a documentation article.
+用于获取文档文章的完整内容。
 
-**Args:**
-- `url` (string, required) - The article URL (automatically converted from Zoomin to docs.servicenow.com)
+**参数：**
+- `url`（字符串，必填）- 文章的 URL（会自动转换为 `docs.servicenow.com`）
 
-**Example:**
+**示例：**
 ```json
 {"url": "https://docs.servicenow.com/bundle/zurich-release-notes/page/release-notes/quality/zurich-patch-5.html"}
 ```
 
 ### servicenow_list_versions
-List available ServiceNow documentation versions/releases.
+列出所有可用的 ServiceNow 文档版本/发布信息。
 
-**Args:** None required
+**参数：** 无
 
 ### servicenow_latest_release
-Get release notes for the latest ServiceNow version (automatically detects most recent).
+获取最新 ServiceNow 版本的发布说明（系统会自动检测最新版本）。
 
-**Args:** None required
+**参数：** 无
 
 ### servicenow_dev_suggest
-Get autocomplete suggestions from ServiceNow Developer Documentation.
+从 ServiceNow 开发者文档中提供自动完成建议。
 
-**Args:**
-- `term` (string, required) - Partial search term (e.g., "Gli", "openFrame", "spCon")
+**参数：**
+- `term`（字符串，必填）- 部分搜索词（例如：“Gli”、“openFrame”、“spCon”）
 
-**Example:**
+**示例：**
 ```json
 {"term": "openFrame"}
 ```
 
 ### servicenow_dev_search
-Search ServiceNow Developer Documentation (APIs, guides, references). Returns URLs to API reference pages.
+用于搜索 ServiceNow 开发者文档（API、指南、参考资料）。返回 API 参考页面的 URL。
 
-**Args:**
-- `query` (string, required) - Search terms (e.g., "openFrameAPI", "spContextManager")
-- `limit` (number, default: 10) - Maximum results to return
+**参数：**
+- `query`（字符串，必填）- 搜索关键词（例如：“openFrameAPI”、“spContextManager”）
+- `limit`（数字，默认值：10）- 返回的最大结果数量
 
-**Example:**
+**示例：**
 ```json
 {"query": "ScriptLoader", "limit": 5}
 ```
 
 ### servicenow_dev_guide
-Fetch a ServiceNow Developer Guide by path. Works for PDI guides, developer program docs, etc.
+根据路径获取 ServiceNow 开发者指南。适用于 PDI 指南、开发者程序文档等。
 
-**Args:**
-- `path` (string, required) - Guide path (e.g., "developer-program/getting-instance-assistance", "pdi-guide/requesting-an-instance")
-- `release` (string, default: "zurich") - Release version
+**参数：**
+- `path`（字符串，必填）- 指南路径（例如：“developer-program/getting-instance-assistance”、“pdi-guide/requesting-an-instance”）
+- `release`（字符串，默认值：“zurich”）- 发布版本
 
-**Example:**
+**示例：**
 ```json
 {"path": "developer-program/getting-instance-assistance"}
 ```
 
-## URL Handling
+## URL 处理
 
-- **Search API:** Uses Zoomin API (servicenow-be-prod.servicenow.com) for searching
-- **User-facing URLs:** Automatically converted to docs.servicenow.com for readability
-- **Article content:** Fetched via the Zoomin API endpoint with proper headers
-- **Developer Docs Search:** developer.servicenow.com GraphQL + databroker search APIs
-- **Developer Docs Content:** fetched directly from developer.servicenow.com pages
+- **搜索 API：** 使用 `servicenow-be-prod.servicenow.com` 上的 Zoomin API 进行搜索
+- **用户可见的 URL：** 为了便于阅读，会自动转换为 `docs.servicenow.com`
+- **文章内容：** 通过 Zoomin API 端点获取，并附带正确的请求头
+- **开发者文档搜索：** 使用 `developer.servicenow.com` 上的 GraphQL 和 databroker 搜索 API
+- **开发者文档内容：** 直接从 `developer.servicenow.com` 页面获取
 
-## Example Usage
+## 示例用法
 
-User: "What are the accessibility preferences in ServiceNow?"
-→ Use servicenow_search to find accessibility documentation
-→ Use servicenow_get_article to fetch the full content
-→ Summarize the preferences for the user
+用户：“ServiceNow 的可访问性设置是什么？”
+→ 使用 `servicenow_search` 查找相关文档
+→ 使用 `servicenow_get_article` 获取完整内容
+→ 向用户总结可访问性设置
 
-User: "Tell me about the latest ServiceNow patch"
-→ Use servicenow_latest_release to get the most recent release notes
-→ Fetch and summarize the patch details
+用户：“请告诉我最新的 ServiceNow 补丁信息”
+→ 使用 `servicenow_latest_release` 获取最新的发布说明
+→ 获取并总结补丁详情
 
-User: "How do I use openFrameAPI?"
-→ Use servicenow_dev_suggest or servicenow_dev_search to find the best developer docs topic
-→ Returns URLs to API reference pages (requires browser access for full content)
+用户：“如何使用 openFrameAPI？”
+→ 使用 `servicenow_dev_suggest` 或 `servicenow_dev_search` 查找相关的开发者文档
+→ 返回 API 参考页面的 URL（需要浏览器访问才能查看完整内容）
 
-User: "Show me the PDI guide for getting an instance"
-→ Use servicenow_dev_guide with path "pdi-guide/requesting-an-instance"
-→ Returns full guide content
+用户：“请展示获取实例的 PDI 指南”
+→ 使用 `servicenow_dev_guide` 并指定路径 “pdi-guide/requesting-an-instance”
+→ 显示完整的指南内容
 
-## APIs Used
+## 使用的 API
 
-- **Zoomin Search API:** `https://servicenow-be-prod.servicenow.com/search`
-- **Content Source:** docs.servicenow.com (accessed via Zoomin API)
-- **Developer Search API:** `https://developer.servicenow.com/api/now/uxf/databroker/exec`
-- **Developer Suggest API:** `https://developer.servicenow.com/api/now/graphql`
-- **Developer Guides API:** `https://developer.servicenow.com/api/snc/v1/guides` (public, no auth needed)
+- **Zoomin 搜索 API：** `https://servicenow-be-prod.servicenow.com/search`
+- **内容来源：** `docs.servicenow.com`（通过 Zoomin API 访问）
+- **开发者搜索 API：** `https://developer.servicenow.com/api/now/uxf/databroker/exec`
+- **开发者建议 API：** `https://developer.servicenow.com/api/nowgraphql`
+- **开发者指南 API：** `https://developer.servicenow.com/api/snc/v1/guides`（公开访问，无需认证）
 
-## Limitations
+## 限制
 
-- **API Reference Content:** The developer.servicenow.com API reference pages require browser access. `servicenow_dev_search` returns URLs but cannot fetch the full API documentation content.
-- **Guide Content:** Guides are fully available via `servicenow_dev_guide` without authentication.
+- **API 参考内容：** `developer.servicenow.com` 上的 API 参考页面需要浏览器访问。`servicenow_dev_search` 仅返回 URL，无法获取完整的 API 文档内容。
+- **指南内容：** 可以通过 `servicenow_dev_guide` 无需认证即可完整获取指南内容。

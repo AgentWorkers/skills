@@ -1,28 +1,29 @@
 ---
-description: Detect risk clauses, summarize terms, and rate legal documents for contract review.
+description: 检测风险条款，汇总相关术语，并对法律文件进行评级，以便进行合同审查。
 ---
 
-# Contract Reviewer
+# 合同审核员
 
-Analyze contracts and legal documents for risks, unusual terms, and key obligations.
+负责分析合同和法律文件中的风险、异常条款以及关键义务。
 
-## Instructions
+## 指令
 
-1. **Accept input**: File path, pasted text, or URL. Supported: plain text, PDF, markdown, HTML.
-2. **Analyze and flag** risk clauses in these categories:
+1. **接收输入**：文件路径、粘贴的文本或URL。支持的格式包括：纯文本、PDF、Markdown、HTML。
+2. **分析并标记**以下类别中的风险条款：
 
-   | Category | What to Look For |
+   | 类别 | 需要关注的内容 |
    |----------|-----------------|
-   | Liability | Caps, exclusions, indemnification |
-   | Termination | Penalties, notice periods, auto-renewal |
-   | IP Assignment | Broad IP transfers, work-for-hire clauses |
-   | Data/Privacy | Data sharing, retention, GDPR compliance |
-   | Non-compete | Scope, duration, geographic limits |
-   | Dispute Resolution | Arbitration, jury waiver, venue |
-   | Payment | Late fees, net terms, currency |
+   | 责任条款 | 大写词汇、责任免除条款、赔偿条款 |
+   | 终止条款 | 罚款条款、通知期限、自动续期条款 |
+   | 知识产权转让条款 | 广泛的知识产权转让范围、雇佣合同条款 |
+   | 数据/隐私条款 | 数据共享、数据保留、GDPR合规性 |
+   | 竞业禁止条款 | 竞业禁止的范围、期限、地理限制 |
+   | 争议解决条款 | 仲裁条款、陪审团放弃权、争议解决地点 |
+   | 付款条款 | 迟延付款费用、付款方式、货币种类 |
 
-3. **Rate each clause**: 🟢 Standard, 🟡 Review recommended, 🔴 High risk
-4. **Output format**:
+3. **对每个条款进行评级**：🟢 标准风险；🟡 建议审核；🔴 高风险
+
+4. **输出格式**：
    ```
    ## Summary
    One-paragraph plain-English overview of the contract.
@@ -41,18 +42,18 @@ Analyze contracts and legal documents for risks, unusual terms, and key obligati
    - Narrow §7.1 to project-specific deliverables
    ```
 
-5. **Compare contracts**: If two versions provided, highlight what changed between them
+5. **比较合同**：如果提供两个合同版本，需突出显示它们之间的差异。
 
-## Security
+## 安全性
 
-- Never store or transmit contract contents beyond the current session
-- Mask sensitive parties' names in logs if requested
+- 严禁在当前会话结束后存储或传输合同内容。
+- 如有要求，应在日志中屏蔽敏感方的名称。
 
-## ⚠️ Disclaimer
+## ⚠️ 免责声明
 
-**This is AI analysis, not legal advice.** Always have important contracts reviewed by a qualified attorney.
+**本工具仅提供人工智能分析结果，不构成法律建议。** 重要合同请务必由专业律师进行审核。
 
-## Requirements
+## 要求
 
-- No dependencies or API keys
-- For PDF parsing: `pdftotext` (from `poppler-utils`) or read as file
+- 无需依赖任何外部库或API密钥。
+- 对于PDF文件的解析，可使用`pdftotext`（来自`poppler-utils`工具）或直接读取文件内容。

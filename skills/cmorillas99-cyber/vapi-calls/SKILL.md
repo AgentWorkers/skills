@@ -1,6 +1,6 @@
 ---
 name: vapi-calls
-description: Advanced AI voice assistant for phone calls. Capable of persuasion, sales, restaurant bookings, reminders, and notifications.
+description: 高级AI语音助手，适用于电话通话。具备说服力、销售能力，可协助预订餐厅、发送提醒以及接收通知等功能。
 emoji: 📞
 author: César Morillas
 version: 1.0.0
@@ -37,45 +37,45 @@ tools:
       required: [phone_number, first_message, system_prompt]
 ---
 
-# Vapi Calls - Agent Instructions
+# Vapi 调用 - 代理指令
 
-Use this skill to perform any task that requires voice interaction over the phone.
+使用此技能执行任何需要通过电话进行语音交互的任务。
 
-## Configuration & Network Requirements
+## 配置与网络要求
 
-⚠️ **IMPORTANT:** This skill requires your machine to be reachable from the internet to receive real-time call updates.
+⚠️ **重要提示：** 此技能要求您的机器能够被互联网访问，以便接收实时的通话更新。
 
-### 1. Environment Variables
-Configure these in your OpenClaw `config.json` (or Gateway env):
+### 1. 环境变量
+在您的 OpenClaw `config.json`（或 Gateway 环境配置文件）中配置以下变量：
 
-- `VAPI_API_KEY`: Your Vapi Private API Key.
-- `VAPI_ASSISTANT_ID`: The ID of the Vapi Assistant to use as a base.
-- `VAPI_PHONE_NUMBER_ID`: The ID of the Vapi Phone Number.
-- `WEBHOOK_BASE_URL`: **Crucial.** The public HTTPS URL where this agent is reachable (e.g., `https://my-claw.com` or `https://xyz.ngrok-free.app`). **Do not include a trailing slash.**
-- `WEBHOOK_PORT` (Optional): The local port to listen on (Default: `4430`).
-- `VAPI_LLM_PROVIDER`: (Optional) Provider for Custom Mode (Default: `openai`).
-- `VAPI_LLM_MODEL`: (Optional) Model for Custom Mode (Default: `gpt-4o-mini`).
+- `VAPI_API_KEY`：您的 Vapi 私有 API 密钥。
+- `VAPI_ASSISTANT_ID`：要使用的 Vapi 助手的 ID。
+- `VAPI_PHONE_NUMBER_ID`：Vapi 电话号码的 ID。
+- `WEBHOOK_BASE_URL`：**至关重要。** 该代理可访问的公共 HTTPS URL（例如，`https://my-claw.com` 或 `https://xyz.ngrok-free.app`）。**请不要在 URL 末尾添加斜杠。**
+- `WEBHOOK_PORT`（可选）：监听的本地端口（默认值：`4430`）。
+- `VAPI_LLM_PROVIDER`（可选）：自定义模式的提供者（默认值：`openai`）。
+- `VAPI_LLM_MODEL`（可选）：自定义模式的模型（默认值：`gpt-4o-mini`）。
 
-### 2. Connectivity Setup
-You must expose the `WEBHOOK_PORT` (default 4430) to the internet.
+### 2. 连接设置
+您必须将 `WEBHOOK_PORT`（默认值 4430）暴露到互联网上。
 
-**Option A: Cloudflare Tunnel (Recommended)**
+**选项 A：Cloudflare Tunnel（推荐）**
 `cloudflared tunnel --url http://localhost:4430`
 
-**Option B: Ngrok**
+**选项 B：Ngrok**
 `ngrok http 4430`
 
-Set `WEBHOOK_BASE_URL` to the generated URL (e.g., `https://random-name.trycloudflare.com`).
+将 `WEBHOOK_BASE_URL` 设置为生成的 URL（例如，`https://random-name.trycloudflare.com`）。
 
-## Usage
+## 使用方法
 
-### Custom Mission (Dynamic)
-Provide a specific `system_prompt`. The system will automatically use **GPT-4o Mini** and enable the **endCall** tool. The AI will be able to hang up autonomously.
+### 自定义任务（动态）
+提供一个特定的 `system_prompt`。系统将自动使用 **GPT-4o Mini** 并启用 **endCall** 工具。AI 将能够自主挂断电话。
 
-### Native Agent (Static)
-Pass `"DEFAULT"` for `first_message`, `system_prompt`, and `end_message`. The system will use the exact configuration (Model, Voice, Prompt) defined in the Vapi Dashboard.
+### 原生代理（静态）
+将 `first_message`、`system_prompt` 和 `end_message` 设置为 `"DEFAULT"`。系统将使用 Vapi 仪表板中定义的配置（模型、语音、提示）。
 
-## Troubleshooting
+## 故障排除
 
-- **Call hangs / No report:** Check if `WEBHOOK_BASE_URL` is reachable from the internet. The Python script spins up a temporary server on `WEBHOOK_PORT` only during the call.
-- **API 400 Error:** Check your `VAPI_PHONE_NUMBER_ID` and `VAPI_ASSISTANT_ID`.
+- **通话挂断 / 无报告：** 检查 `WEBHOOK_BASE_URL` 是否可以从互联网访问。Python 脚本仅在通话期间在 `WEBHOOK_PORT` 上启动临时服务器。
+- **API 400 错误：** 检查您的 `VAPI_PHONE_NUMBER_ID` 和 `VAPI_ASSISTANT_ID` 是否正确。

@@ -1,24 +1,24 @@
 ---
 slug: "lifecycle-carbon-calculator"
 display_name: "Lifecycle Carbon Calculator"
-description: "Calculate embodied carbon and lifecycle emissions for construction materials and projects. Support sustainable design decisions with carbon data."
+description: "计算建筑材料和项目的隐含碳（embodied carbon）及生命周期排放量。利用碳数据为可持续设计决策提供支持。"
 ---
 
-# Lifecycle Carbon Calculator for Construction
+# 建筑生命周期碳计算器
 
-## Overview
+## 概述
 
-Calculate embodied carbon (EC) and lifecycle carbon emissions for construction materials, assemblies, and projects. Support sustainable design decisions and carbon reduction targets.
+该工具用于计算建筑材料、建筑组件及整个项目的隐含碳（Embodied Carbon, EC）和生命周期碳排放量，有助于制定可持续的设计决策并实现碳减排目标。
 
-## Business Case
+## 应用场景
 
-Carbon calculation supports:
-- **Regulatory Compliance**: Meet carbon reporting requirements
-- **Green Certifications**: LEED, BREEAM, Living Building Challenge
-- **Design Optimization**: Choose lower-carbon alternatives
-- **Sustainability Goals**: Track progress toward net-zero
+碳计算功能支持以下方面：
+- **法规遵从**：满足碳报告要求
+- **绿色认证**：LEED、BREEAM、Living Building Challenge等认证标准
+- **设计优化**：选择低碳替代方案
+- **可持续发展目标**：跟踪实现净零排放的进展
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -423,7 +423,7 @@ class LifecycleCarbonCalculator:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize calculator
@@ -458,7 +458,7 @@ report = calc.generate_report(project)
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas

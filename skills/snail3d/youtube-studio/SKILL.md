@@ -1,38 +1,38 @@
-# YouTube Studio Skill
+# YouTube Studio 技能
 
-Comprehensive YouTube channel management skill for Clawdbot. Monitor analytics, upload videos, manage comments, and generate content ideas.
+Clawdbot 提供全面的 YouTube 频道管理功能，包括监控分析数据、上传视频、管理评论以及生成内容创意。
 
-## Overview
+## 概述
 
-**youtube-studio** provides full-featured YouTube channel management:
-- Real-time channel statistics and analytics
-- Video upload with metadata and scheduling
-- Comment monitoring and AI-powered reply suggestions
-- Content idea generation based on trends and niche
-- Rate limiting and error recovery
-- OAuth 2.0 authentication
+**youtube-studio** 提供以下全面的 YouTube 频道管理功能：
+- 实时频道统计和分析数据
+- 带元数据的视频上传及上传计划设置
+- 评论监控及基于 AI 的回复建议
+- 根据趋势和受众群体生成内容创意
+- 速率限制与错误恢复机制
+- 支持 OAuth 2.0 认证
 
-## Setup
+## 设置
 
-### 1. YouTube Data API v3 Credentials
+### 1. YouTube Data API v3 凭据
 
-#### Get API Key & OAuth Credentials
+#### 获取 API 密钥和 OAuth 凭据
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project (e.g., "Clawdbot YouTube Studio")
-3. Enable **YouTube Data API v3**:
-   - Search for "YouTube Data API v3"
-   - Click "Enable"
-4. Create OAuth 2.0 credentials:
-   - Go to "Credentials"
-   - Click "Create Credentials" → "OAuth client ID"
-   - Choose "Desktop application"
-   - Download JSON (save as `credentials.json`)
-5. Create an API Key (for public requests):
-   - Click "Create Credentials" → "API Key"
-   - Copy the key
+1. 访问 [Google Cloud Console](https://console.cloud.google.com/)
+2. 创建一个新的项目（例如：“Clawdbot YouTube Studio”）
+3. 启用 **YouTube Data API v3**：
+   - 搜索 “YouTube Data API v3”
+   - 点击 “启用”
+4. 创建 OAuth 2.0 凭据：
+   - 转到 “凭据” 部分
+   - 点击 “创建凭据” → “OAuth 客户端 ID”
+   - 选择 “桌面应用程序”
+   - 下载 JSON 文件（保存为 `credentials.json`）
+5. 创建 API 密钥（用于公共请求）：
+   - 点击 “创建凭据” → “API 密钥”
+   - 复制密钥
 
-#### File Structure
+#### 文件结构
 ```
 ~/.clawd-youtube/
 ├── credentials.json       # OAuth credentials (from step 4)
@@ -40,9 +40,9 @@ Comprehensive YouTube channel management skill for Clawdbot. Monitor analytics, 
 └── config.env            # API keys and settings
 ```
 
-### 2. Environment Setup
+### 2. 环境配置
 
-Copy `.env.example` to `~/.clawd-youtube/config.env`:
+将 `.env.example` 文件复制到 `~/.clawd-youtube/config.env`：
 
 ```bash
 # YouTube API
@@ -68,9 +68,9 @@ LOG_LEVEL=info
 LOG_DIR=./logs
 ```
 
-### 3. OAuth 2.0 Flow
+### 3. OAuth 2.0 流程
 
-The skill handles OAuth automatically on first run:
+该技能在首次运行时会自动处理 OAuth 认证流程：
 
 ```bash
 youtube-studio auth
@@ -79,24 +79,24 @@ youtube-studio auth
 # Saves tokens to tokens.json
 ```
 
-**Subsequent runs** use the saved refresh token (no re-auth needed).
+**后续运行** 会使用已保存的刷新令牌，无需重新认证。
 
-## Commands
+## 命令
 
-### Check Channel Statistics
+### 检查频道统计数据
 ```bash
 youtube-studio stats
 youtube-studio stats --days 7        # Last 7 days
 youtube-studio stats --json          # JSON output
 ```
 
-**Output:**
-- Total views, subscribers, watch time
-- Recent video performance (top 5)
-- Growth trends
-- Engagement metrics (avg views, likes, comments per video)
+**输出内容：**
+- 总播放量、订阅者数量、观看时长
+- 最新视频的播放表现（前 5 个）
+- 增长趋势
+- 互动指标（平均播放量、点赞数、每视频的评论数）
 
-### Upload Video
+### 上传视频
 ```bash
 youtube-studio upload \
   --file video.mp4 \
@@ -107,18 +107,18 @@ youtube-studio upload \
   --schedule "2024-01-15T10:00:00Z"
 ```
 
-**Options:**
-- `--file` (required): Video file path (mp4, mov, avi, mkv)
-- `--title` (required): Video title
-- `--description`: Full description (supports markdown)
-- `--tags`: Comma-separated tags (max 500 chars)
-- `--privacy`: public, unlisted, private (default: unlisted)
-- `--thumbnail`: Custom thumbnail image path
-- `--playlist`: Add to existing playlist by name
-- `--schedule`: ISO 8601 datetime for scheduled upload
-- `--category`: Video category (Music, People, etc.)
+**选项：**
+- `--file`（必选）：视频文件路径（mp4、mov、avi、mkv 格式）
+- `--title`（必选）：视频标题
+- `--description`：完整描述（支持 Markdown 格式）
+- `--tags`：用逗号分隔的标签（最多 500 个字符）
+- `--privacy`：公开、未公开、私有（默认：未公开）
+- `--thumbnail`：自定义缩略图路径
+- `--playlist`：按名称添加到现有播放列表
+- `--schedule`：指定上传时间的 ISO 8601 格式字符串
+- `--category`：视频类别（音乐、人物等）
 
-### List Recent Comments
+### 列出最新评论
 ```bash
 youtube-studio comments
 youtube-studio comments --video-id xxxxx    # Specific video
@@ -127,7 +127,7 @@ youtube-studio comments --limit 50          # Limit results
 youtube-studio comments --json              # JSON output
 ```
 
-### Reply to Comment
+### 回复评论
 ```bash
 youtube-studio reply \
   --comment-id Qmxxxxxxxxxxxxxxxx \
@@ -135,12 +135,12 @@ youtube-studio reply \
   --suggest                    # Show AI suggestions first
 ```
 
-**Flags:**
-- `--suggest`: Generate 3 reply suggestions before responding
-- `--template`: Use preset template (grateful, educational, promotional)
-- `--dry-run`: Preview without sending
+**标志参数：**
+- `--suggest`：在回复前生成 3 个回复建议
+- `--template`：使用预设的回复模板（感谢、教育性、推广性）
+- `--dry-run`：预览回复内容而不实际发送
 
-### Generate Video Ideas
+### 生成视频创意
 ```bash
 youtube-studio ideas
 youtube-studio ideas --niche devotional
@@ -149,49 +149,48 @@ youtube-studio ideas --json              # JSON output
 youtube-studio ideas --count 10          # Number of ideas
 ```
 
-**Output:**
-- Title suggestions
-- Description hooks
-- Target audience analysis
-- SEO keywords
-- Estimated search volume
-- Thumbnail ideas
+**输出内容：**
+- 视频标题建议
+- 描述模板
+- 目标受众分析
+- SEO 关键词
+- 预计搜索量
+- 缩略图创意
 
-## Rate Limiting
+## 速率限制
 
-YouTube API quotas:
-- **Daily quota:** 1,000,000 units (default)
-- **Per-method costs:**
-  - `channels.list`: 1 unit
-  - `videos.list`: 1 unit
-  - `videos.insert`: 1,600 units (upload)
-  - `commentThreads.list`: 1 unit
-  - `comments.insert`: 1 unit
+YouTube API 的使用配额如下：
+- **每日配额：** 1,000,000 个请求单位（默认值）
+- **各方法的成本：**
+  - `channels.list`：1 个请求单位
+  - `videos.list`：1 个请求单位
+  - `videos.insert`：1,600 个请求单位（用于视频上传）
+  - `commentThreads.list`：1 个请求单位
+  - `comments.insert`：1 个请求单位
 
-**Skill handles:**
-- Automatic quota tracking
-- Request batching
-- Exponential backoff on 403 errors
-- Daily reset monitoring
-- Quota alerts when >80% used
+**该技能具备以下功能：**
+- 自动跟踪使用配额
+- 批量处理请求
+- 在遇到 403 错误时采用指数级重试策略
+- 每日自动重置配额使用情况
+- 当配额使用量超过 80% 时发出警报
 
 ```bash
 youtube-studio quota-status    # Check remaining quota
 ```
 
-## Error Recovery
+## 错误处理
 
-| Error | Handling |
-|-------|----------|
-| `401 Unauthorized` | Refresh OAuth token automatically |
-| `403 Quota Exceeded` | Wait until next day, show alert |
-| `429 Rate Limited` | Exponential backoff (1s, 2s, 4s...) |
-| `500 Server Error` | Retry up to 3 times |
-| Network timeout | Graceful retry with circuit breaker |
-| Upload interrupted | Resume from last chunk |
+| 错误类型 | 处理方式 |
+|---------|-----------|
+| `401 Unauthorized` | 自动刷新 OAuth 令牌 |
+| `403 Quota Exceeded` | 等待次日再尝试，并显示警报 |
+| `429 Rate Limited` | 采用指数级重试策略（1 秒、2 秒、4 秒……） |
+| `500 Server Error` | 最多尝试 3 次 |
+| 网络超时 | 使用断路器机制进行优雅重试 |
+| 上传中断 | 从上次中断的位置继续上传 |
 
-## File Structure
-
+## 文件结构
 ```
 youtube-studio/
 ├── SKILL.md                           # This file
@@ -213,9 +212,9 @@ youtube-studio/
 └── logs/                              # Runtime logs
 ```
 
-## Templates
+## 模板
 
-### Video Description Template
+### 视频描述模板
 ```json
 {
   "devoted_journey": {
@@ -226,14 +225,13 @@ youtube-studio/
 }
 ```
 
-### Comment Reply Templates
-- `grateful`: Thank subscribers for support
-- `educational`: Explain concepts deeper
-- `promotional`: Link to related videos
-- `engagement`: Ask follow-up questions
+### 评论回复模板
+- `grateful`：感谢订阅者的支持
+- `educational`：深入解释相关概念
+- `promotional`：链接到相关视频
+- `engagement`：提出后续问题
 
-## Dependencies
-
+## 依赖项
 ```json
 {
   "googleapis": "^120.0.0",
@@ -243,63 +241,63 @@ youtube-studio/
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Invalid grant" error
-- Delete `tokens.json`
-- Run `youtube-studio auth` again
-- Check credentials.json is valid
+### 出现 “Invalid grant” 错误
+- 删除 `tokens.json` 文件
+- 重新运行 `youtube-studio auth` 命令
+- 确保 `credentials.json` 文件有效
 
-### Quota exceeded
-- Check `youtube-studio quota-status`
-- Wait until midnight UTC (quota resets)
-- Consider raising API quota in Cloud Console
+### 配额超出
+- 查看 `youtube-studio quota-status` 命令的输出
+- 等待午夜（UTC 时间）以重置配额
+- 考虑在 Google Cloud Console 中增加 API 配额
 
-### Upload fails
-- Check file exists and is readable
-- Verify file format is supported
-- Check video doesn't violate YouTube policies
-- Use `--dry-run` to test metadata first
+### 上传失败
+- 确认文件存在且可读取
+- 验证文件格式是否被 YouTube 支持
+- 检查视频内容是否违反 YouTube 的规定
+- 先使用 `--dry-run` 命令测试元数据是否正确
 
-### Comments not appearing
-- Ensure channel is authenticated with owner account
-- Check comment moderation settings
-- Verify YOUTUBE_CHANNEL_ID matches your channel
+### 评论未显示
+- 确保频道已使用所有者账户进行认证
+- 检查评论审核设置
+- 确认 `YOUTUBE_CHANNEL_ID` 与你的频道匹配
 
-## API Reference
+## API 参考
 
-### Core Methods
+### 核心方法
 
 #### `authenticateOAuth()`
-Initiates OAuth 2.0 flow. Returns refresh token.
+- 启动 OAuth 2.0 认证流程，并返回刷新令牌。
 
 #### `getChannelStats(options = {})`
-- `days`: Number of days to look back (default: 30)
-- Returns: `{ views, subscribers, watchHours, videos, topVideos[] }`
+- `days`：查看的日期范围（默认：30 天）
+- 返回值：`{ views, subscribers, watchHours, videos, topVideos[] }`
 
 #### `uploadVideo(metadata, filePath, options = {})`
-- `metadata`: title, description, tags, privacy
-- `filePath`: Path to video file
-- Returns: `{ videoId, status, scheduledTime }`
+- `metadata`：视频的标题、描述、标签、隐私设置
+- `filePath`：视频文件路径
+- 返回值：`{ videoId, status, scheduledTime }`
 
 #### `listComments(videoId = null, options = {})`
-- `videoId`: Specific video or null for all
-- `unread`: Boolean, get unread only
-- Returns: `{ comments[], total, pageToken }`
+- `videoId`：指定视频 ID；如未指定则查看所有视频
+- `unread`：布尔值，仅显示未读评论
+- 返回值：`{ comments[], total, pageToken }`
 
 #### `replyToComment(commentId, text, options = {})`
-- `template`: Use preset template
-- `suggestFirst`: Get AI suggestions
-- Returns: `{ replyId, text }`
+- `template`：使用预设的回复模板
+- `suggestFirst`：获取 AI 提供的回复建议
+- 返回值：`{ replyId, text }`
 
 #### `generateVideoIdeas(options = {})`
-- `niche`: Channel niche/category
-- `trending`: Include trending topics
-- Returns: `{ ideas[], keywords[], thumbnail_prompts[] }`
+- `niche`：频道所属的类别/领域
+- `trending`：包含热门话题
+- 返回值：`{ ideas[], keywords[], thumbnail_prompts[] }`
 
-## Examples
+## 示例
 
-### Full Daily Workflow
+### 完整的每日工作流程
 ```bash
 # Check stats
 youtube-studio stats --days 1
@@ -314,7 +312,7 @@ youtube-studio ideas --trending --count 5
 youtube-studio quota-status
 ```
 
-### Automated Upload (Scripting)
+### 自动上传（脚本实现）
 ```bash
 #!/bin/bash
 youtube-studio upload \
@@ -325,33 +323,33 @@ youtube-studio upload \
   --tags "devotional,daily,faith"
 ```
 
-## Limitations
+## 限制条件
 
-- YouTube API quota: 1M units/day (sufficient for ~600 uploads/day)
-- Videos must be <256GB
-- Title limited to 100 characters
-- Description limited to 5,000 characters
-- Comment replies limited to 10,000 characters
-- No live stream management (yet)
+- YouTube API 的每日配额为 1,000,000 个请求单位（足以支持每天大约 600 次上传）
+- 视频文件大小不能超过 256GB
+- 视频标题长度限制为 100 个字符
+- 视频描述长度限制为 5,000 个字符
+- 每条评论的回复长度限制为 10,000 个字符
+- 目前不支持实时流媒体管理功能
 
-## Future Enhancements
+## 未来改进计划
 
-- [ ] Live stream monitoring and chat moderation
-- [ ] Playlist automation
-- [ ] Subtitle generation (using Whisper)
-- [ ] Thumbnail optimization with CV
-- [ ] Analytics dashboards
-- [ ] Multi-channel support
-- [ ] Scheduled content calendar
+- [ ] 实时流媒体监控和评论管理
+- [ ] 自动化播放列表管理
+- [ ] 使用 Whisper 工具生成字幕
+- [ ] 优化缩略图质量
+- [ ] 提供分析仪表板
+- [ ] 支持多频道管理
+- [ ] 提供内容调度功能
 
-## License
+## 许可证
 
-MIT - Use freely within Clawdbot ecosystem
+MIT 许可证——可在 Clawdbot 生态系统中自由使用
 
-## Support
+## 技术支持
 
-Issues? Check:
-1. `~/.clawd-youtube/logs/` for debug output
-2. Credentials validity: `youtube-studio auth`
-3. API quotas: `youtube-studio quota-status`
-4. Network: Ping Google API servers
+如有问题，请查看：
+1. 在 `~/.clawd-youtube/logs/` 文件中查看调试日志
+2. 通过 `youtube-studio auth` 命令检查凭据的有效性
+3. 使用 `youtube-studio quota-status` 命令查看 API 配额使用情况
+4. 检查网络连接是否正常（可以尝试 Ping Google API 服务器）

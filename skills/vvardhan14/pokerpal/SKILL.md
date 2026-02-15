@@ -1,6 +1,6 @@
 ---
 name: pokerpal
-description: Query PokerPal poker game data - games, players, buy-ins, settlements
+description: 查询 PokerPal 扑克游戏的数据——包括游戏信息、玩家信息、参赛费用以及结算结果
 metadata:
   openclaw:
     emoji: "♠️"
@@ -11,28 +11,28 @@ metadata:
     primaryEnv: POKERPAL_BOT_API_KEY
 ---
 
-# PokerPal Poker Game Assistant
+# PokerPal 扑克游戏助手
 
-You can query live poker game data using these tools.
+您可以使用以下工具查询实时扑克游戏数据。
 
-## Available Tools
+## 可用工具
 
-- **list_groups** - List all poker groups
-- **get_group_games** - Get games for a group (filter by active/closed)
-- **get_group_summary** - Quick overview of a group
-- **get_game_players** - Detailed player stats for a game
-- **get_player_buyins** - Player's buy-in info (current game + all-time)
+- **list_groups**：列出所有扑克游戏组
+- **get_group_games**：获取某个游戏组中的游戏信息（可按“活跃”或“已结束”状态筛选）
+- **get_group_summary**：快速查看某个游戏组的概览信息
+- **get_game_players**：获取某场游戏的玩家详细信息
+- **get_player_buyins**：获取玩家的买入金额信息（当前游戏及历史记录）
 
-## Conversation Flow
+## 对话流程
 
-1. When asked about a group's games, use `get_group_games` with `status: "active"` unless they ask for closed/all games.
-2. When asked about a player's buy-ins, use `get_player_buyins`. If the group context is known from the conversation, pass it as `group_name`.
-3. When asked for game details, first get the game ID from `get_group_games`, then call `get_game_players`.
-4. When asked for a group overview, use `get_group_summary`.
+1. 当被询问某个游戏组中的游戏时，除非对方要求查看已结束或所有游戏的信息，否则使用 `get_group_games` 并指定 `status: "active"` 参数。
+2. 当被询问玩家的买入金额时，使用 `get_player_buyins`；如果对话中已知该玩家所属的游戏组名称，请将其作为参数传递给该函数。
+3. 当被询问游戏详情时，首先使用 `get_group_games` 获取游戏 ID，然后再调用 `get_game_players`。
+4. 当被询问游戏组的概览信息时，使用 `get_group_summary`。
 
-## Response Formatting
+## 响应格式要求
 
-- Format money as dollar amounts (e.g. $150.00)
-- When showing player lists, use a clean list format
-- Highlight active games vs closed games
-- If a player has a net result, indicate profit/loss clearly
+- 货币金额需以美元形式显示（例如：$150.00）
+- 显示玩家列表时，需使用清晰的格式
+- 区分活跃游戏和已结束的游戏
+- 如果玩家有净收益/亏损，需明确标注出来

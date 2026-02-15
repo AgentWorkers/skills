@@ -1,67 +1,67 @@
 ---
 name: brownfield-analyzer
-description: Analyzes existing brownfield projects to map documentation to SpecWeave's structure (PRD/HLD/Spec/Runbook). Use when migrating existing projects to SpecWeave, scanning legacy docs, or creating project context maps. Detects external tools (JIRA, ADO, GitHub) and supports incremental or comprehensive migration paths.
+description: 分析现有的“棕地项目”（brownfield projects），以将文档内容映射到 SpecWeave 的结构中（包括 PRD、HLD、Spec 和 Runbook）。该工具适用于将现有项目迁移到 SpecWeave、扫描旧版文档或创建项目上下文映射时使用。能够识别外部工具（如 JIRA、ADO、GitHub），并支持增量式或全面的迁移方案。
 ---
 
 # Brownfield Analyzer
 
-**Self-contained brownfield project analysis for ANY existing codebase.**
+**适用于任何现有代码库的独立 brownfield（旧系统/代码库）项目分析工具。**
 
 ---
 
-## Purpose
+## 目的
 
-Analyze existing projects and create migration plan to SpecWeave structure. Two paths supported: Quick Start (incremental) or Comprehensive (upfront).
+分析现有项目并制定迁移到 SpecWeave 结构的迁移计划。支持两种路径：快速启动（增量式）或全面分析（预先完成）。
 
 ---
 
-## Two Migration Paths
+## 两种迁移路径
 
-### Path 1: Quick Start (Recommended for Large Projects)
+### 路径 1：快速启动（推荐用于大型项目）
 
-**Best for**: 50k+ LOC, fast iteration, small teams
+**适合**：代码量超过 5 万行（LOC），迭代速度快，团队规模较小
 
-**Process**:
-1. Initial scan: Document core architecture (1-3 hours)
-2. Start working immediately
-3. Per increment: Document → Modify → Update docs
-4. Documentation grows with changes
+**流程**：
+1. 初始扫描：记录核心架构（1-3 小时）
+2. 立即开始工作
+3. 每次迭代时：更新文档
+4. 随着代码变更，文档也会相应更新
 
-**Benefits**:
-- Start in days, not weeks
-- Focus where it matters
-- No analysis paralysis
+**优势**：
+- 几天内即可启动迁移
+- 专注于关键部分
+- 避免分析过程中的停滞
 
-### Path 2: Comprehensive Upfront
+### 路径 2：全面分析（预先完成）
 
-**Best for**: <50k LOC, teams, regulated industries
+**适合**：代码量少于 5 万行（LOC），团队规模适中，或处于受监管的行业
 
-**Process**:
-1. Full analysis (1-4 weeks)
-2. Document all modules, business rules
-3. Create baseline tests
-4. Then start increments
+**流程**：
+1. 进行全面分析（1-4 周）
+2. 记录所有模块和业务规则
+3. 创建基准测试
+4. 然后开始逐步迁移
 
-**Benefits**:
-- Complete context upfront
-- Full regression coverage
-- Team coordination
-- Compliance ready
+**优势**：
+- 事先获取完整的项目背景信息
+- 全面覆盖回归测试
+- 便于团队协作
+- 符合行业规范
 
-### Automatic Recommendation
+### 自动推荐方案
 
-| Project Size | LOC | Upfront Effort | Recommended |
+| 项目规模 | 代码量（LOC） | 预先分析所需时间 | 推荐方案 |
 |--------------|-----|----------------|-------------|
-| Small | <10k | 4-8 hours | Comprehensive |
-| Medium | 10k-50k | 1-2 weeks | User Choice |
-| Large | 50k-200k | 2-4 weeks | Quick Start |
-| Very Large | 200k+ | 1-3 months | Quick Start (Mandatory) |
+| 小型 | <10k | 4-8 小时 | 全面分析 |
+| 中型 | 10k-50k | 1-2 周 | 用户自行选择 |
+| 大型 | 50k-200k | 2-4 周 | 快速启动 |
+| 特大型 | 200k+ | 1-3 个月 | 快速启动（强制要求） |
 
 ---
 
-## Analysis Workflow
+## 分析工作流程
 
-### Step 1: Project Assessment
+### 第一步：项目评估
 
 ```bash
 # Scan project
@@ -69,13 +69,13 @@ find . -type f -name "*.ts" -o -name "*.js" -o -name "*.py" | wc -l
 find . -type f \( -name "*.ts" -o -name "*.js" \) -exec wc -l {} + | awk '{sum+=$1} END {print sum}'
 ```
 
-**Calculate**:
-- Total files
-- Total LOC
-- Module count
-- Test coverage (if exists)
+**计算**：
+- 文件总数
+- 代码总量（LOC）
+- 模块数量
+- 测试覆盖率（如果有的话）
 
-**Output**:
+**输出**：
 ```
 📊 Project Analysis
    Files: 1,245
@@ -86,63 +86,63 @@ find . -type f \( -name "*.ts" -o -name "*.js" \) -exec wc -l {} + | awk '{sum+=
 💡 Recommendation: Medium project → User choice (Quick Start or Comprehensive)
 ```
 
-### Step 2: Document Classification
+### 第二步：文档分类
 
-Scan for documentation:
+扫描相关文档：
 
-**PRD Candidates** (Product Requirements):
+**产品需求文档（PRD）**：
 - `requirements.md`, `PRD.md`, `product-spec.md`
 - `docs/product/`, `specs/requirements/`
 
-**HLD Candidates** (High-Level Design):
+**高级设计文档（HLD）**：
 - `architecture.md`, `design.md`, `ARCHITECTURE.md`
 - `docs/architecture/`, `docs/design/`
 
-**ADR Candidates** (Architecture Decision Records):
+**架构决策记录（ADR）**：
 - `adr/`, `decisions/`, `docs/decisions/`
-- Files with "ADR-" prefix or "decision" in name
+- 名称中包含 “ADR-” 或 “decision” 的文件
 
-**Spec Candidates** (Technical Specs):
+**技术规范文档（Spec）**：
 - `spec.md`, `technical-spec.md`
 - `docs/specs/`, `docs/technical/`
 
-**Runbook Candidates** (Operations):
+**操作手册文档（Runbook）**：
 - `runbook.md`, `operations.md`, `deployment.md`
 - `docs/ops/`, `docs/runbooks/`
 
-**Diagrams**:
+**图表文档**：
 - `*.png`, `*.svg`, `*.drawio`, `*.mmd`
 - `diagrams/`, `docs/diagrams/`
 
-### Step 3: External Tool Detection
+### 第三步：检测外部工具集成
 
-**Jira Integration**:
+**Jira 集成**：
 ```bash
 # Search for Jira references
 grep -r "JIRA" . --include="*.md" --include="*.txt"
 grep -r "jira.atlassian" . --include="*.md"
 ```
 
-**Azure DevOps**:
+**Azure DevOps**：
 ```bash
 grep -r "dev.azure.com" . --include="*.md"
 grep -r "visualstudio.com" . --include="*.md"
 ```
 
-**GitHub Issues**:
+**GitHub Issues**：
 ```bash
 grep -r "github.com/.*/issues" . --include="*.md"
 ```
 
-### Step 4: Coding Standards Discovery
+### 第四步：检测编码规范
 
-**Auto-detect**:
-- ESLint config (`.eslintrc`, `eslint.config.js`)
-- Prettier config (`.prettierrc`)
-- TypeScript config (`tsconfig.json`)
-- Test config (`vitest.config`, `jest.config`)
+**自动检测**：
+- ESLint 配置文件（`.eslintrc`, `eslint.config.js`）
+- Prettier 配置文件（`.prettierrc`）
+- TypeScript 配置文件（`tsconfig.json`）
+- 测试配置文件（`vitest.config`, `jest.config`）
 
-**Analyze patterns**:
+**分析编码规范**：
 ```bash
 # Naming conventions
 grep -rh "^export function" src/ | head -20
@@ -152,9 +152,9 @@ grep -rh "^export class" src/ | head -20
 grep -rh "^import" src/ | sort | uniq -c | sort -rn | head -10
 ```
 
-### Step 5: Generate Migration Plan
+### 第五步：生成迁移计划
 
-**Quick Start Plan**:
+**快速启动计划**：
 ```markdown
 # Migration Plan: Quick Start Path
 
@@ -175,7 +175,7 @@ grep -rh "^import" src/ | sort | uniq -c | sort -rn | head -10
 - [ ] Documentation grows organically
 ```
 
-**Comprehensive Plan**:
+**全面分析计划**：
 ```markdown
 # Migration Plan: Comprehensive Path
 
@@ -201,45 +201,45 @@ grep -rh "^import" src/ | sort | uniq -c | sort -rn | head -10
 
 ---
 
-## Migration Checklist
+## 迁移检查清单
 
-### Before SpecWeave Init
+### 在使用 SpecWeave 之前
 
-- [ ] Assess project size (LOC, files)
-- [ ] Choose path (Quick Start or Comprehensive)
-- [ ] Backup existing docs
-- [ ] Identify external tool integrations
-- [ ] Check coding standards exist
+- [ ] 评估项目规模（代码量、文件数量）
+- [ ] 选择迁移路径（快速启动或全面分析）
+- [ ] 备份现有文档
+- [ ] 确认是否存在外部工具集成
+- [ ] 检查是否存在编码规范
 
-### During Migration
+### 在迁移过程中
 
-**Quick Start**:
-- [ ] Document core architecture only
-- [ ] Create 1-2 critical ADRs
-- [ ] Set up external tool sync (optional)
-- [ ] Start first increment immediately
+**快速启动**：
+- [ ] 仅记录核心架构
+- [ ] 创建 1-2 个关键的架构决策记录（ADR）
+- [ ] 设置外部工具同步（可选）
+- [ ] 立即开始第一次迭代
 
-**Comprehensive**:
-- [ ] Scan all documentation
-- [ ] Classify and organize docs
-- [ ] Create complete module docs
-- [ ] Document all business rules
-- [ ] Create ADRs for decisions
-- [ ] Add baseline tests
-- [ ] Set up external tool sync
+**全面分析**：
+- [ ] 扫描所有文档
+- [ ] 对文档进行分类和整理
+- [ ] 创建完整的模块文档
+- [ ] 记录所有业务规则
+- [ ] 为决策创建架构决策记录（ADR）
+- [ ] 创建基准测试
+- [ ] 设置外部工具同步
 
-### After Migration
+### 迁移完成后
 
-- [ ] Verify `.specweave/` structure exists
-- [ ] Test increment workflow
-- [ ] Train team on SpecWeave
-- [ ] Document migration decisions
+- [ ] 确认 `.specweave/` 结构已正确创建
+- [ ] 测试迁移后的工作流程
+- [ ] 对团队进行 SpecWeave 使用培训
+- [ ] 记录迁移过程中的决策
 
 ---
 
-## Document Mapping
+## 文档映射
 
-**Map existing docs to SpecWeave structure**:
+**将现有文档映射到 SpecWeave 结构**：
 
 ```
 Existing Structure          SpecWeave Structure
@@ -256,21 +256,21 @@ CONTRIBUTING.md            .specweave/docs/public/CONTRIBUTING.md
 
 ---
 
-## External Tool Migration
+## 外部工具迁移
 
 ### Jira → SpecWeave
 
-**1. Detect Jira usage**:
+**1. 检测 Jira 的使用情况**：
 ```bash
 grep -r "jira" . --include="*.md" | head -5
 ```
 
-**2. Map Jira structure**:
-- Epic → Feature (FS-XXX)
-- Story → User Story (US-XXX)
-- Task → Task (T-XXX)
+**2. 映射 Jira 的工作项结构**：
+- 项目（Epic）→ 特性（FS-XXX）
+- 用户故事（Story）→ 用户故事（US-XXX）
+- 任务（Task）→ 任务（T-XXX）
 
-**3. Sync strategy**:
+**3. 同步策略**：
 ```bash
 # Option 1: Import existing Jira items
 /sw-jira:sync --import
@@ -281,57 +281,57 @@ grep -r "jira" . --include="*.md" | head -5
 
 ### Azure DevOps → SpecWeave
 
-**Map work items**:
-- Feature → Feature (FS-XXX)
-- User Story → User Story (US-XXX)
-- Task → Task (T-XXX)
+**映射工作项**：
+- 项目（Feature）→ 特性（FS-XXX）
+- 用户故事（Story）→ 用户故事（US-XXX）
+- 任务（Task）→ 任务（T-XXX）
 
-**Sync**:
+**同步方式**：
 ```bash
 /sw-ado:sync --import
 ```
 
 ### GitHub Issues → SpecWeave
 
-**Map issues**:
-- Milestone → Feature (FS-XXX)
-- Issue → User Story (US-XXX)
-- Task list → Tasks (T-XXX)
+**映射问题（Issue）**：
+- 里程碑（Milestone）→ 特性（FS-XXX）
+- 问题（Issue）→ 用户故事（US-XXX）
+- 任务列表（Task List）→ 任务（T-XXX）
 
-**Sync**:
+**同步方式**：
 ```bash
 /sw-github:sync --import
 ```
 
 ---
 
-## Best Practices
+## 最佳实践
 
-**✅ DO**:
-- Choose appropriate path (Quick Start for large projects)
-- Document before modifying code
-- Migrate incrementally (don't big-bang)
-- Preserve existing docs (don't delete)
-- Use external tool sync for existing items
-- Train team on SpecWeave workflow
+**✅ 应该做**：
+- 根据项目规模选择合适的迁移路径（大型项目推荐快速启动）
+- 在修改代码之前先完成文档编写
+- 采用增量式迁移方式
+- 保留现有文档
+- 对于已有的项目，使用外部工具进行同步
+- 对团队进行 SpecWeave 工作流程培训
 
-**❌ DON'T**:
-- Force Comprehensive for 100k+ LOC projects
-- Delete existing documentation
-- Migrate all features upfront (Quick Start)
-- Skip coding standards discovery
-- Ignore external tool integrations
-- Over-analyze in Quick Start mode
+**❌ 不应该做**：
+- 对代码量超过 10 万行的项目强制使用全面分析
+- 删除现有文档
+- 在快速启动模式下一次性迁移所有内容
+- 忽略编码规范的检测
+- 忽视外部工具的集成
+- 在快速启动模式下过度分析项目细节
 
 ---
 
-## Example: Large Project Migration
+## 示例：大型项目迁移
 
-**Scenario**: 85k LOC Node.js backend, Jira, 15% test coverage
+**场景**：代码量 8.5 万行（Node.js 后端），使用 Jira，测试覆盖率 15%
 
-**Recommended**: Quick Start
+**推荐方案**：快速启动
 
-**Plan**:
+**迁移计划**：
 ```
 Week 1: Setup (2 hours)
 - Run specweave init
@@ -352,17 +352,17 @@ Week 3+: Iterate
 - Eventually covers critical paths
 ```
 
-**Result**: Started working in 2 hours, documentation grows naturally.
+**结果**：2 小时后开始迁移，文档逐步完善。
 
 ---
 
-## Example: Small Project Migration
+## 示例：小型项目迁移
 
-**Scenario**: 8k LOC Python app, GitHub Issues, 60% test coverage
+**场景**：代码量 8 千行（Python 应用），使用 GitHub Issues，测试覆盖率 60%
 
-**Recommended**: Comprehensive Upfront
+**推荐方案**：全面分析（预先完成）
 
-**Plan**:
+**迁移计划**：
 ```
 Week 1: Full Documentation (8 hours)
 - Document all 5 modules
@@ -384,24 +384,24 @@ Week 2+: Start Increments
 - High confidence changes
 ```
 
-**Result**: 2 weeks to full documentation, then smooth increment workflow.
+**结果**：2 周内完成所有文档的整理，之后可以顺利进行增量式迁移。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-**Issue**: Can't find existing documentation
-**Solution**: Check common locations: `docs/`, `wiki/`, `.github/`, Notion exports
+**问题**：找不到现有文档**
+**解决方法**：检查常见文档存放位置：`docs/`, `wiki/`, `.github/`, Notion 导出文件
 
-**Issue**: Too many documents to classify
-**Solution**: Focus on architecture docs first, skip implementation details
+**问题**：文档太多，难以分类**
+**解决方法**：先重点处理架构相关的文档，忽略实现细节
 
-**Issue**: Conflicting documentation
-**Solution**: Use git history to find latest/canonical version
+**问题**：文档之间存在冲突**
+**解决方法**：利用 Git 历史记录找到最新或权威的文档版本
 
-**Issue**: External tool API limits
-**Solution**: Use throttled sync, batch imports
+**问题**：外部工具的 API 有使用限制**
+**解决方法**：采用分批导入的方式，或限制同步频率
 
 ---
 
-**This skill is self-contained and works for ANY brownfield project.**
+**此工具具有高度的独立性，适用于任何类型的 brownfield 项目。**

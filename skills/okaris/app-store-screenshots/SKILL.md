@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# App Store Screenshots
+# 应用商店截图
 
-Create app store screenshots and preview videos via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行工具来生成应用商店截图和预览视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,59 +27,59 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Platform Specifications
+## 平台规格
 
 ### Apple App Store (iOS)
 
-| Device | Dimensions (px) | Required |
+| 设备 | 尺寸（像素） | 必需 |
 |--------|-----------------|----------|
-| iPhone 6.7" (15 Pro Max) | 1290 x 2796 | Required |
-| iPhone 6.5" (11 Pro Max) | 1284 x 2778 | Required |
-| iPhone 5.5" (8 Plus) | 1242 x 2208 | Optional |
-| iPad Pro 12.9" (6th gen) | 2048 x 2732 | If iPad app |
-| iPad Pro 11" | 1668 x 2388 | If iPad app |
+| iPhone 6.7" (15 Pro Max) | 1290 x 2796 | 必需 |
+| iPhone 6.5" (11 Pro Max) | 1284 x 2778 | 必需 |
+| iPhone 5.5" (8 Plus) | 1242 x 2208 | 可选 |
+| iPad Pro 12.9" (第6代) | 2048 x 2732 | 如果是iPad应用 |
+| iPad Pro 11" | 1668 x 2388 | 如果是iPad应用 |
 
-- Up to **10 screenshots** per localization
-- First **3 screenshots** are visible without scrolling (critical)
-- Formats: PNG or JPEG (no alpha/transparency for JPEG)
+- 每个本地化版本最多需要 **10张截图** |
+- 前 **3张截图** 在不滚动的情况下即可显示（非常重要） |
+- 格式：PNG或JPEG（JPEG格式不支持透明度）
 
 ### Google Play Store (Android)
 
-| Spec | Value |
+| 规格 | 要求 |
 |------|-------|
-| Min dimensions | 320 px (any side) |
-| Max dimensions | 3840 px (any side) |
-| Aspect ratio | 16:9 or 9:16 |
-| Max screenshots | 8 per device type |
-| Formats | PNG or JPEG (24-bit, no alpha) |
+| 最小尺寸 | 320像素（任意边长） |
+| 最大尺寸 | 3840像素（任意边长） |
+| 宽高比 | 16:9或9:16 |
+| 每种设备类型最多8张截图 |
+| 格式 | PNG或JPEG（24位，不支持透明度） |
 
-- Feature graphic: 1024 x 500 px (required for featuring)
-- Promo video: YouTube URL (optional but recommended)
+- 特色图片：1024 x 500像素（用于展示应用特色） |
+- 宣传视频：YouTube链接（可选，但推荐）
 
-## The First 3 Rule
+## “前3张截图”的重要性
 
-**80% of App Store impressions show only the first 3 screenshots** (before the user scrolls). These three must:
+**80% 的应用商店展示中，用户只会看到前3张截图**（在滚动之前）。这三张截图必须：
 
-1. Communicate the core value proposition
-2. Show the best feature/outcome
-3. Differentiate from competitors
+1. 传达核心价值主张 |
+2. 展示最佳功能/效果 |
+3. 与竞争对手区分开来
 
-### Screenshot Gallery Order
+### 截图展示顺序
 
-| Position | Content | Purpose |
+| 位置 | 内容 | 目的 |
 |----------|---------|---------|
-| **1** | Hero — core value, best feature | Stop the scroll, communicate what the app does |
-| **2** | Key differentiator | What makes you unique vs competitors |
-| **3** | Most popular feature | The thing users love most |
-| **4** | Social proof or outcome | Ratings, results, testimonials |
-| **5-8** | Additional features | Supporting features, settings, integrations |
-| **9-10** | Edge cases | Specialized features for niche users |
+| **1** | 核心价值/最佳功能 | 阻止用户滚动，展示应用的功能 |
+| **2** | 主要差异化点 | 与竞争对手的不同之处 |
+| **3** | 最受欢迎的功能 | 用户最喜爱的功能 |
+| **4** | 社交证明或效果展示 | 评分、结果、用户评价 |
+| **5-8** | 其他功能 | 辅助功能、设置、集成 |
+| **9-10** | 专业功能 | 面向特定用户群体的功能 |
 
-## Screenshot Styles
+## 截图样式
 
-### 1. Device Frame with Caption
+### 1. 带标题的设备框架
 
-The standard: device mockup showing the app, caption text above/below.
+标准样式：设备模型图，应用显示在图片中，标题位于上方或下方。
 
 ```
 ┌──────────────────────────┐
@@ -97,27 +97,25 @@ The standard: device mockup showing the app, caption text above/below.
 └──────────────────────────┘
 ```
 
-### 2. Full-Bleed UI (No Device Frame)
+### 全屏UI（无设备框架）
 
-The app UI fills the entire screenshot. Works for immersive apps.
+应用界面占据整个截图，适用于沉浸式应用。
 
-### 3. Lifestyle Context
+### 实际使用场景
 
-The device shown in a real-world context (person holding phone, on desk, etc.).
+设备展示在真实环境中（例如：有人手持手机、放在桌子上等）。
 
-### 4. Feature Highlight with Callouts
+### 功能亮点（带有标注）
 
-UI screenshot with arrows/circles pointing to specific features.
+UI截图中用箭头或圆圈标注特定功能。
 
-## Caption Writing
+## 标题编写规则
 
-### Rules
+- **最多2行文字** |
+- **侧重于好处，而非功能** |
+- **字体大小至少30pt**（在应用商店中必须可读）
 
-- **Max 2 lines** of text
-- **Benefit-focused**, not feature-focused
-- **30pt+ equivalent** font size (must be readable in store)
-
-### Examples
+### 示例
 
 ```
 ❌ Feature-focused:
@@ -131,9 +129,9 @@ UI screenshot with arrows/circles pointing to specific features.
 "Share Reports in One Tap"
 ```
 
-## Generating Screenshots
+## 生成截图
 
-### Hero Screenshot (Position 1)
+### 核心价值截图（位置1）
 
 ```bash
 # Clean device mockup with hero feature
@@ -144,7 +142,7 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-### Feature Highlight
+### 功能亮点截图
 
 ```bash
 # Feature callout style
@@ -154,7 +152,7 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-### Lifestyle Context
+### 实际使用场景截图
 
 ```bash
 # Device in real-world setting
@@ -165,7 +163,7 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-### Before/After
+### 功能对比（使用前/使用后）
 
 ```bash
 # Split comparison
@@ -175,34 +173,34 @@ infsh app run infsh/stitch-images --input '{
 }'
 ```
 
-## Preview Videos
+## 预览视频
 
 ### Apple App Store
 
-| Spec | Value |
+| 规格 | 要求 |
 |------|-------|
-| Duration | 15-30 seconds |
-| Orientation | Portrait or landscape (match app) |
-| Audio | Optional (loops silently in store) |
-| Format | H.264, .mov or .mp4 |
+| 时长 | 15-30秒 |
+| 方向 | 纵屏或横屏（与应用一致） |
+| 音频 | 可选（在应用商店中自动循环播放） |
+| 格式 | H.264、.mov或.mp4 |
 
 ### Google Play
 
-| Spec | Value |
+| 规格 | 要求 |
 |------|-------|
-| Source | YouTube URL |
-| Duration | 30s-2min recommended |
-| Orientation | Landscape preferred |
+| 来源 | YouTube链接 |
+| 时长 | 建议30秒-2分钟 |
+| 方向 | 横屏优先 |
 
-### Preview Video Structure
+### 预览视频结构
 
-| Segment | Duration | Content |
+| 部分 | 时长 | 内容 |
 |---------|----------|---------|
-| Hook | 0-3s | Show the core outcome/wow moment |
-| Feature 1 | 3-10s | Demonstrate top feature in action |
-| Feature 2 | 10-18s | Second key feature |
-| Feature 3 | 18-25s | Third feature or social proof |
-| CTA | 25-30s | End screen with app icon |
+| 开场部分 | 0-3秒 | 展示核心功能或令人惊叹的效果 |
+| 功能1 | 3-10秒 | 演示主要功能 |
+| 功能2 | 10-18秒 | 第二个关键功能 |
+| 功能3 | 18-25秒 | 第三个功能或用户评价 |
+| 呼吁行动 | 25-30秒 | 结尾屏幕显示应用图标 |
 
 ```bash
 # Generate preview video scenes
@@ -211,54 +209,54 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Localization
+## 本地化
 
-Each language gets its own set of screenshots. Priorities:
+每种语言都需要对应的截图。优先级如下：
 
-| Market | Localization Level |
+| 市场 | 本地化程度 |
 |--------|-------------------|
-| Primary markets | Full: new screenshots + translated captions |
-| Secondary markets | Translated captions, same screenshots |
-| Other | English defaults |
+| 主要市场 | 完整本地化：新的截图 + 翻译后的标题 |
+| 次要市场 | 翻译后的标题，使用相同的截图 |
+| 其他市场 | 默认使用英文 |
 
-Key localization markets: English, Japanese, Korean, Chinese (Simplified), German, French, Spanish, Portuguese (Brazilian)
+主要本地化语言：英文、日文、韩文、简体中文、德文、法文、西班牙文、葡萄牙文（巴西）
 
-## A/B Testing (Google Play)
+## A/B测试（Google Play）
 
-Google Play Console supports store listing experiments:
+Google Play控制台支持应用商店列表的实验：
 
-- Test different screenshot orders
-- Test with/without device frames
-- Test different captions
-- Test different color schemes
-- Run for 7+ days with 50%+ traffic for significant results
+- 测试不同的截图展示顺序 |
+- 测试是否使用设备框架 |
+- 测试不同的标题 |
+- 测试不同的颜色方案 |
+- 运行7天以上，且流量达到50%以上才能获得显著效果
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Settings screen as screenshot | Nobody cares about settings | Show core value, not infrastructure |
-| Onboarding flow screenshots | Shows friction, not value | Show the app in-use state |
-| Too much text | Unreadable in store | Max 2 lines, 30pt+ font |
-| Wrong dimensions | Rejected by store | Use exact platform specs |
-| All screenshots look the same | No reason to scroll | Vary composition and content |
-| Feature-focused captions | Doesn't communicate benefit | "Never Miss a Deadline" > "Push Notifications" |
-| Outdated UI | Looks abandoned | Update screenshots with each major release |
-| No hero screenshot | Weak first impression | Position 1 = your best shot |
+| 将设置界面作为截图 | 没有人关心设置界面 | 展示核心价值，而非应用的基础功能 |
+| 新手引导流程的截图 | 展示了使用过程中的麻烦，而非应用的价值 | 展示应用的实际使用状态 |
+| 文字过多 | 在应用商店中难以阅读 | 最多2行，字体大小至少30pt |
+| 尺寸不正确 | 被应用商店拒绝 | 使用平台规定的尺寸 |
+| 所有截图看起来都一样 | 用户没有理由滚动 | 变换截图的构图和内容 |
+| 标题侧重于功能 | 无法传达应用的好处 | 例如：“Never Miss a Deadline”（不错过任何截止日期）优于“Push Notifications”（推送通知） |
+| UI过时 | 会让应用显得被抛弃 | 每次重大更新时更新截图 |
+| 没有核心价值截图 | 第一印象不佳 | 第1张截图应该是最好的展示 |
 
-## Checklist
+## 检查清单
 
-- [ ] Correct dimensions for target platform
-- [ ] First 3 screenshots communicate core value
-- [ ] Captions are benefit-focused, max 2 lines
-- [ ] No onboarding or settings screens
-- [ ] Preview video is 15-30s with hook in first 3s
-- [ ] Localized for top markets
-- [ ] Feature graphic (1024x500) for Google Play
-- [ ] Screenshots updated for current app version
-- [ ] A/B test variant prepared
+- [ ] 使用目标平台的正确尺寸 |
+- [ ] 前3张截图能够传达核心价值 |
+- [ ] 标题侧重于好处，最多2行 |
+- [ ] 不包含新手引导或设置界面 |
+- [ ] 预览视频时长为15-30秒，开头3秒内有吸引人的内容 |
+- [ ] 为主要市场进行本地化 |
+- [ ] Google Play需要特色图片（1024x500像素） |
+- [ ] 截图与当前应用版本保持一致 |
+- [ ] 准备了A/B测试的多种版本 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -267,4 +265,4 @@ npx skills add inferencesh/skills@image-upscaling
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用：`infsh app list`

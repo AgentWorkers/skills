@@ -1,134 +1,134 @@
 ---
 name: clawsouls
-description: Manage AI agent personas (Souls) for OpenClaw. Use when the user wants to install, switch, list, or restore AI personalities/personas. Triggers on requests like "install a soul", "switch persona", "change personality", "list souls", "restore my old soul", "use minimalist", "browse personas", "what souls are available", "publish a soul", or "login to clawsouls".
+description: 管理 OpenClaw 的 AI 代理角色（“Souls”）。当用户需要安装、切换、列出或恢复 AI 角色时，可以使用该功能。相关操作请求包括：“安装一个 AI 角色”、“切换角色”、“更改角色”、“列出所有可用角色”、“恢复我的旧角色”、“使用简约风格的角色”、“浏览所有可用角色”、“有哪些角色可供选择”，以及“登录到 ClawSouls 系统”。
 ---
 
-# ClawSouls — AI Persona Manager
+# ClawSouls — 人工智能角色管理工具
 
-Manage Soul packages that define an AI agent's personality, behavior, and identity.
+该工具用于管理定义人工智能代理的个性、行为和身份的“Soul”包。
 
-Souls use `owner/name` namespacing (e.g., `clawsouls/brad`, `TomLeeLive/my-soul`).
+“Soul”包采用 `owner/name` 的命名规范（例如：`clawsouls/brad`、`TomLeeLive/my-soul`）。
 
-## Prerequisites
+## 先决条件
 
-Ensure `clawsouls` CLI is available:
+确保 `clawsouls` 命令行工具（CLI）已安装：
 
 ```bash
 npx clawsouls --version
 ```
 
-If not installed, install globally:
+如果尚未安装，请全局安装：
 
 ```bash
 npm install -g clawsouls
 ```
 
-Current version: **v0.2.3**
+当前版本：**v0.2.3**
 
-## Commands
+## 命令
 
-### Install a Soul
+### 安装一个 Soul
 
 ```bash
 npx clawsouls install clawsouls/brad
 npx clawsouls install clawsouls/brad --force  # overwrite existing
 ```
 
-30+ souls available. Browse all at https://clawsouls.ai
+目前提供 30 多个 Soul 包，可在 [https://clawsouls.ai](https://clawsouls.ai) 上查看所有 Soul 包。
 
-**Official souls** (owner: `clawsouls`):
-- **Development:** code-reviewer, coding-tutor, debug-detective, api-architect, ml-engineer, sysadmin-sage, devops-veteran, gamedev-mentor, prompt-engineer
-- **Writing & Content:** tech-writer, storyteller, scifi-writer, copywriter, content-creator
-- **Professional:** data-analyst, project-manager, legal-advisor, startup-founder
-- **Education:** math-tutor, philosophy-prof, mentor-coach
-- **Creative:** music-producer, ux-designer, chef-master
-- **Lifestyle:** personal-assistant, fitness-coach, travel-guide
-- **Security:** security-auditor
-- **General:** brad, minimalist
+**官方提供的 Soul 包**（所有者：`clawsouls`）：
+- **开发类**：code-reviewer（代码审核员）、coding-tutor（编程导师）、debug-detective（调试侦探）、api-architect（API 架构师）、ml-engineer（机器学习工程师）、sysadmin-sage（系统管理员专家）、devops-veteran（DevOps 专家）、gamedev-mentor（游戏开发导师）、prompt-engineer（提示引擎开发者）
+- **写作与内容类**：tech-writer（技术作家）、storyteller（故事讲述者）、sci-fi-writer（科幻作家）、copywriter（文案撰写者）、content-creator（内容创作者）
+- **专业类**：data-analyst（数据分析师）、project-manager（项目经理）、legal-advisor（法律顾问）、startup-founder（初创企业创始人）
+- **教育类**：math-tutor（数学导师）、philosophy-prof（哲学教授）、mentor-coach（导师教练）
+- **创意类**：music-producer（音乐制作人）、ux-designer（用户体验设计师）、chef-master（烹饪大师）
+- **生活类**：personal-assistant（个人助理）、fitness-coach（健身教练）、travel-guide（旅行向导）
+- **安全类**：security-auditor（安全审计员）
+- **通用类**：brad（通用角色）、minimalist（极简主义角色）
 
-### Activate a Soul
+### 激活一个 Soul
 
 ```bash
 npx clawsouls use clawsouls/brad
 ```
 
-- Automatically backs up current workspace files (SOUL.md, IDENTITY.md, AGENTS.md, HEARTBEAT.md, STYLE.md, examples/)
-- Never overwrites USER.md, MEMORY.md, or TOOLS.md
-- Requires gateway restart to take effect
+- 会自动备份当前的工作区文件（SOUL.md、IDENTITY.md、AGENTS.md、HEARTBEAT.md、STYLE.md、examples/ 等）。
+- 绝不会覆盖 USER.md、MEMORY.md 或 TOOLS.md 文件。
+- 激活后需要重启 `openclaw gateway` 才能生效。
 
-### Restore Previous Soul
+### 恢复之前的 Soul
 
 ```bash
 npx clawsouls restore
 ```
 
-Reverts to the most recent backup created by `use`.
+会恢复到上次使用 `use` 命令创建的备份状态。
 
-### List Installed Souls
+### 列出已安装的 Soul
 
 ```bash
 npx clawsouls list
 ```
 
-Shows installed souls in `owner/name` format.
+以 `owner/name` 的格式显示已安装的 Soul 包。
 
-### Create a New Soul
+### 创建一个新的 Soul
 
 ```bash
 npx clawsouls init my-soul
 ```
 
-Scaffolds a new soul directory with clawsoul.json, SOUL.md, IDENTITY.md, AGENTS.md, HEARTBEAT.md, README.md.
+会创建一个新的 Soul 目录，其中包含 `clawsoul.json`、SOUL.md、IDENTITY.md、AGENTS.md、HEARTBEAT.md 和 README.md 文件。
 
-### Validate a Soul
+### 验证一个 Soul
 
 ```bash
 npx clawsouls validate ./my-soul/
 npx clawsouls check ./my-soul/   # alias
 ```
 
-Validates against the spec: schema, required files, security scan. Also runs automatically before publish.
+根据规范进行验证（包括文件结构、必需文件的完整性以及安全扫描）。在发布前也会自动执行验证。
 
-### Publish a Soul
+### 发布一个 Soul
 
 ```bash
 export CLAWSOULS_TOKEN=<token>
 npx clawsouls publish ./my-soul/
 ```
 
-Publishes to `username/soul-name` namespace automatically. Requires authentication token. Runs validation automatically before publishing — blocks on failure.
+会自动将 Soul 发布到 `username/soul-name` 的命名空间中。发布前需要 API 令牌。发布前会自动进行验证，验证失败时会阻止发布。
 
-### Login / Get Token
+### 登录 / 获取令牌
 
 ```bash
 npx clawsouls login
 ```
 
-Instructions to get API token: Sign in at https://clawsouls.ai → Dashboard → Generate API Token.
+获取 API 令牌的步骤：登录 [https://clawsouls.ai](https://clawsouls.ai) → 进入仪表板 → 生成 API 令牌。
 
-## Workflow
+## 工作流程
 
-### Installing & Switching Personas
+### 安装与切换角色
 
-1. **Browse** — Check available souls at https://clawsouls.ai or suggest from the categorized list above
-2. **Install** — `npx clawsouls install clawsouls/brad`
-3. **Activate** — `npx clawsouls use clawsouls/brad`
-4. **Restart** — Run `openclaw gateway restart` to apply the new persona
-5. **Restore** — If they want to go back, `npx clawsouls restore`
+1. **浏览**：在 [https://clawsouls.ai](https://clawsouls.ai) 上查看可用的 Soul 包，或从上面的分类列表中选择。
+2. **安装**：使用 `npx clawsouls install clawsouls/brad` 命令安装所需的 Soul。
+3. **激活**：使用 `npx clawsouls use clawsouls/brad` 命令激活新角色。
+4. **重启**：运行 `openclaw gateway restart` 以应用新角色设置。
+5. **恢复**：如果需要恢复之前的角色，使用 `npx clawsouls restore` 命令。
 
-### Publishing a Soul
+### 发布一个 Soul
 
-1. **Login** — `npx clawsouls login` → get token from dashboard
-2. **Set token** — `export CLAWSOULS_TOKEN=<token>`
-3. **Create** — `npx clawsouls init my-soul` → edit files
-4. **Publish** — `npx clawsouls publish ./my-soul/`
-5. **Manage** — Dashboard at https://clawsouls.ai/dashboard (delete, view downloads)
+1. **登录**：使用 `npx clawsouls login` 命令登录。
+2. **获取令牌**：从仪表板获取 API 令牌。
+3. **创建新角色**：使用 `npx clawsouls init my-soul` 命令创建新的 Soul。
+4. **发布**：使用 `npx clawsouls publish ./my-soul/` 命令发布新角色。
+5. **管理**：通过 [https://clawsouls.ai/dashboard](https://clawsouls.ai/dashboard) 进行角色管理（删除、查看下载内容）。
 
-## Important Notes
+## 重要说明
 
-- After `use`, always remind the user to run `openclaw gateway restart`
-- The `use` command creates automatic backups — data loss is unlikely
-- Souls may include STYLE.md and examples/ for enhanced persona customization
-- Published souls appear at `https://clawsouls.ai/souls/owner/name`
-- Users can leave reviews (1-5 stars) on any soul they don't own
-- For custom registry (local testing), set env: `CLAWSOULS_CDN=/path/to/souls`
+- 使用 `use` 命令后，务必提醒用户重启 `openclaw gateway`。
+- `use` 命令会自动创建备份，因此数据丢失的可能性很小。
+- Soul 包可能包含 `STYLE.md` 和 `examples/` 文件，以便进一步自定义角色。
+- 已发布的 Soul 会显示在 [https://clawsouls.ai/souls/owner/name](https://clawsouls.ai/souls/owner/name) 上。
+- 用户可以对非自己拥有的 Soul 进行评分（1-5 星）。
+- 如需进行本地测试（自定义注册表），请设置环境变量：`CLAWSOULS_CDN=/path/to/souls`。

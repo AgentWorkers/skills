@@ -1,106 +1,94 @@
 ---
 name: Pricing
-description: Design pricing strategies for products, services, and subscriptions that maximize conversion and value.
+description: 为产品、服务和订阅制定定价策略，以最大化转化率和客户价值。
 metadata: {"clawdbot":{"emoji":"💰","os":["linux","darwin","win32"]}}
 ---
 
-## Pricing Psychology
+## 定价心理学
 
-- Charm pricing: $9.99 vs $10—left digit effect, perceived as "nine dollars"
-- Round numbers for premium: $100 vs $99.99—signals quality, less "deal hunting"
-- Remove currency symbols when possible—reduces pain of paying
-- Smaller font for decimals—de-emphasizes the cents
-- Price per unit can feel smaller—$1/day vs $365/year
+- **价格策略：**  
+  - **“魅力定价”（Charm Pricing）：** 9.99美元 vs 10美元——通过左位数字（“9”）营造吸引力。  
+  - **使用整数定价：** 100美元 vs 99.99美元——整数更显高端，减少消费者对价格的敏感度。  
+  - **省略货币符号：** 可能时省略货币符号，降低支付时的心理负担。  
+  - **使用小字号显示小数部分：** 降低人们对零头的关注。  
+  - **按单位定价：** 如“每天1美元” vs “每年365美元”——让价格显得更亲民。  
 
-## Anchoring
+## **锚定效应（Anchoring Effect）**  
+  - **先展示高价：** 之后展示的低价会显得更合理。  
+  - **划掉原价：** 增强折扣的真实性。  
+  - **突出高级别选项：** 使中级选项看起来更划算。  
+  - **与竞争对手比较：** 当竞争对手价格有利时，可利用外部参考点进行定价。  
 
-- Show higher price first—makes subsequent prices feel reasonable
-- Original price crossed out—anchors value, discount feels real
-- Premium tier visible—makes middle tier look affordable
-- Competitor comparison when favorable—external anchor
+## **分层定价（Tiered Pricing）**  
+  - **三层结构最佳：** 太多层级会导致用户犹豫。  
+  - **针对中级用户：** 大多数用户会选择中级版本。  
+  - **明确层次差异：** 明确各层级的价值差异。  
+  - **功能差异要显著：** 不仅仅是“更多相同的功能”。  
+  - **使用描述性名称：** 如“入门级、专业级、企业级”，明确目标用户群体。  
 
-## Tiered Pricing
+## **诱饵效应（Decoy Effect）**  
+  - **设置诱饵选项：** 使目标选项看起来更有吸引力。  
+  - **诱饵选项略逊于目标选项：** 通过对比引导用户选择目标选项。  
+  - **适用于定价和功能对比：** 无论用于定价还是功能展示，都能有效吸引用户。  
 
-- Three tiers optimal—too many causes paralysis
-- Middle tier is the target—most users choose middle
-- Clear differentiation between tiers—obvious value progression
-- Feature gaps meaningful—not just "more of same"
-- Name tiers descriptively—"Starter, Pro, Enterprise" communicates audience
+## **免费试用策略（Freemium Strategy）**  
+  - **免费层展示产品价值：** 转化潜在用户。  
+  - **设置升级门槛：** 如存储空间满或团队规模达到一定数量时需付费。  
+  **免费层仍有价值：** 避免让用户觉得免费版本毫无用处。  
+  **提供清晰升级路径：** 降低升级难度。  
+  **跟踪用户转化路径：** 分析免费用户在哪里流失。  
 
-## Decoy Effect
+## **试用设计（Trial Design）**  
+  - **限时试用或功能限制：** 根据产品特性选择合适方式。  
+  - **试用期长度：** 复杂产品至少14天。  
+  **预付信用卡：** 增强用户购买意愿。  
+  **倒计时：** 创造紧迫感。  
+  **为活跃用户提供试用期延长：** 避免用户流失。  
 
-- Add option that makes target look better—asymmetric dominance
-- Decoy slightly worse than target at similar price—pushes toward target
-- Works for both pricing and feature comparison
-- Decoy doesn't need to sell—just needs to exist
+## **订阅模式与一次性购买（Subscription vs One-Time Purchase）**  
+  - **订阅模式：** 适合提供持续价值的服务（更新、内容等）。  
+  - **一次性购买：** 适用于一次性使用的工具或课程。  
+  **混合模式：** 一次性购买后提供可选订阅服务（维护、支持等）。  
+  **年度折扣：** 通常提供15-20%的折扣，鼓励长期使用。  
+  **月度订阅：** 降低首次购买的门槛。  
 
-## Freemium Strategy
+## **折扣策略（Discounts）**  
+  - **明确折扣理由：** 如产品发布、节日促销或用户忠诚度奖励。  
+  **限时折扣：** 利用稀缺性刺激购买。  
+  **首次购买折扣：** 降低用户购买成本。  
+  **批量折扣：** 鼓励大额购买。  
+  **避免频繁打折：** 避免让用户产生依赖心理。  
 
-- Free tier demonstrates value—converts skeptics
-- Limit that creates natural upgrade moment—storage full, team size
-- Free tier still valuable—not crippled, builds habit
-- Clear path from free to paid—upgrade friction minimal
-- Track conversion funnel—where do free users drop off
+## **产品捆绑（Bundles）**  
+  - **捆绑价值高于单独价格之和：** 明确捆绑的好处。  
+  - **隐藏单件价格：** 避免用户计算拆分后的价格。  
+  **组合互补产品：** 经常一起购买的产品适合捆绑。  
+  **提供定制选项：** 让用户感觉有选择权。  
 
-## Trial Design
+## **地区定价（Regional Pricing）**  
+  **根据购买力定价：** 同一产品在不同市场的价格应有所不同。  
+  **使用当地货币：** 减少支付障碍。  
+  **遵循当地价格习惯：** 如定价为9.99欧元而非9.87欧元。  
+  **考虑本地竞争对手：** 本地替代品可能价格更低。  
+  **防止滥用VPN/地区服务：** 如果利润重要，需考虑地区差异。  
 
-- Time-limited vs feature-limited—depends on product
-- Long enough to experience value—14 days minimum for complex products
-- Credit card upfront increases commitment—but reduces trial starts
-- Countdown creates urgency—but don't use dark patterns
-- Trial extension for engaged users—better than losing them
+## **价格测试（Price Testing）**  
+  - **进行A/B测试：** 不同用户对不同价格有不同的反应。  
+  **在产品发布前测试：** 比后期调整更容易。  
+  **使用Van Westendorp方法进行支付意愿调查。**  
+  **仅针对新用户进行实验：** 确保结果准确。  
+  **关注长期价值：** 不仅关注转化率，还要考虑长期用户价值。  
 
-## Subscription vs One-Time
+## **价格展示（Presentation）**  
+  - **分层功能对比表：** 便于用户快速了解。  
+  **突出推荐等级：** 用视觉元素强调。  
+  **展示年度节省金额：** 计算每月费用与年费的差异。  
+  **提供计算器：** 展示产品价值（ROI、节省时间等）。  
+  **提供退款保证：** 降低用户风险感知。  
 
-- Subscription for ongoing value—updates, content, service
-- One-time for discrete outcomes—tool purchases, courses
-- Hybrid: one-time with optional subscription—maintenance, support
-- Annual discount encourages commitment—typically 15-20% off monthly
-- Monthly lowers barrier—easier first purchase
-
-## Discounts
-
-- Discount reason increases conversion—launch, holiday, loyalty
-- Limited time more effective—scarcity drives action
-- First purchase discount—acquisition cost calculation
-- Volume discounts—incentivize larger purchases
-- Avoid constant discounts—trains customers to wait
-
-## Bundles
-
-- Bundle value higher than sum—or why bundle?
-- Hide individual prices when bundled—prevents unbundling math
-- Complementary products bundle well—frequently bought together
-- "Build your bundle" for customization—perceived control
-
-## Regional Pricing
-
-- Price by purchasing power—same product, different markets
-- Local currency—reduces friction, conversion confusion
-- Round to local conventions—€9,99 not €9.87
-- Consider regional competitors—local alternatives may be cheaper
-- VPN/region abuse prevention—if margins matter
-
-## Price Testing
-
-- A/B test carefully—different prices to different users is sensitive
-- Test at launch—easier than changing later
-- Willingness-to-pay surveys before launch—Van Westendorp method
-- Cohort-based experiments—new users only
-- Track long-term value, not just conversion—higher price may attract better customers
-
-## Presentation
-
-- Feature comparison table for tiers—easy scanning
-- Highlight recommended tier—visual emphasis, "Most Popular" badge
-- Show annual savings—monthly × 12 vs annual price
-- Calculator for value demonstration—ROI, time saved
-- Money-back guarantee—reduces risk perception
-
-## Common Mistakes
-
-- Pricing too low—undervalues product, hard to raise later
-- Too many tiers—creates confusion, not options
-- Hidden fees revealed late—breaks trust
-- Complicated pricing—if explanation needed, simplify
-- Ignoring competitor context—price exists in a market
+## **常见定价误区**  
+  - **定价过低：** 低估产品价值，后期难以提高价格。  
+  - **层级过多：** 造成用户困惑。  
+  **隐藏费用：** 最后才披露隐藏费用会破坏用户信任。  
+  **定价复杂：** 如需解释，应尽量简化。  
+  **忽略竞争对手：** 定价需考虑市场环境。

@@ -1,26 +1,26 @@
 ---
 name: Praesidia
-description: Verify AI agents, check trust scores (0-100), fetch A2A agent cards, discover marketplace agents, apply guardrails for security and compliance. Use when user mentions agent verification, trust scores, agent discovery, A2A protocol, agent identity, agent marketplace, guardrails, security policies, content moderation, or asks "is this agent safe?" or "find agents that can [task]" or "apply guardrails to protect my agent".
+description: 验证AI代理，检查信任评分（0-100），获取A2A代理信息，发现市场中的代理，并为安全和合规性设置防护措施。当用户提及代理验证、信任评分、代理发现、A2A协议、代理身份、代理市场、防护措施、安全策略、内容审核，或询问“这个代理安全吗？”或“寻找能够执行某任务的代理”或“为我的代理设置防护措施”时，请使用这些功能。
 metadata: {"openclaw":{"requires":{"env":["PRAESIDIA_API_KEY"]},"primaryEnv":"PRAESIDIA_API_KEY","homepage":"https://praesidia.ai","emoji":"🛡️"}}
 ---
 
-# Praesidia Agent Identity, Verification & Guardrails
+# Praesidia 代理身份验证与安全防护机制
 
-Verify AI agents, check trust scores (0-100), discover marketplace agents, and apply guardrails for security and compliance.
+用于验证 AI 代理，检查信任评分（0-100 分），发现市场中的代理，并实施安全与合规性防护措施。
 
-## Core Capabilities
+## 核心功能
 
-- **Verify agents** - Check if an agent is registered, verified, and trustworthy
-- **Trust scores** - View 0-100 trust ratings and verification status
-- **Agent discovery** - Search marketplace for public agents by capability
-- **Guardrails** - Apply security policies and content moderation to agents
-- **A2A protocol** - Fetch standard Agent-to-Agent protocol cards
+- **验证代理** - 检查代理是否已注册、经过验证以及是否可信
+- **信任评分** - 查看 0-100 分的信任评级和验证状态
+- **代理发现** - 根据能力在市场中搜索公开代理
+- **安全防护** - 为代理应用安全策略和内容审核规则
+- **A2A 协议** - 获取标准的代理间通信协议卡片
 
-## Prerequisites
+## 先决条件
 
-1. Praesidia account: https://praesidia.ai
-2. API key from Settings → API Keys
-3. Configure in `~/.openclaw/openclaw.json`:
+1. Praesidia 账户：https://praesidia.ai
+2. 从设置 → API 密钥中获取 API 密钥
+3. 在 `~/.openclaw/openclaw.json` 中进行配置：
 
 ```json
 {
@@ -37,17 +37,17 @@ Verify AI agents, check trust scores (0-100), discover marketplace agents, and a
 }
 ```
 
-For local development, use `http://localhost:3000` as the URL.
+对于本地开发，使用 `http://localhost:3000` 作为 URL。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### 1. Verify an Agent
+### 1. 验证代理
 
-**User says:** "Is agent chatbot-v2 safe?" / "Verify agent chatbot-v2"
+**用户请求：**“chatbot-v2 代理安全吗？” / “验证 chatbot-v2 代理”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/agents/chatbot-v2/agent-card",
@@ -58,15 +58,15 @@ web_fetch({
 })
 ```
 
-**Present to user:**
-- ✅ Agent name & description
-- 🛡️ **Trust score (0-100)** and trust level
-- ✓ Verification status (verified date)
-- 🔧 Capabilities (what the agent can do)
-- 📜 Compliance (SOC2, GDPR, etc.)
-- 🔗 Agent card URL
+**向用户展示：**
+- ✅ 代理名称及描述
+- 🛡️ **信任评分（0-100 分）** 和信任等级
+- ✓ 验证状态（验证日期）
+- 🔧 代理功能
+- 📜 合规性（SOC2、GDPR 等）
+- 🔗 代理卡片链接
 
-**Example output:**
+**示例输出：**
 ```
 ✅ ChatBot V2 is verified and safe to use!
 
@@ -81,11 +81,11 @@ Agent card: https://api.praesidia.ai/agents/chatbot-v2/agent-card
 
 ---
 
-### 2. List Guardrails for an Agent
+### 2. 查看代理的安全防护措施
 
-**User says:** "What guardrails are configured for my agent?" / "Show me security policies for chatbot-v2"
+**用户请求：**“我的代理配置了哪些安全防护措施？” / “显示 chatbot-v2 的安全策略”
 
-**Your action:**
+**你的操作：**
 ```javascript
 // First, get the user's organization ID from their profile or context
 // Then fetch guardrails
@@ -98,17 +98,17 @@ web_fetch({
 })
 ```
 
-**Present to user:**
-- List of guardrails with:
-  - Name and description
-  - Type (RULE, ML, LLM)
-  - Category (CONTENT, SECURITY, COMPLIANCE, etc.)
-  - Action (BLOCK, WARN, REDACT, REPLACE)
-  - Scope (INPUT, OUTPUT, BOTH)
-  - Enabled status
-  - Trigger count
+**向用户展示：**
+- 安全防护措施的列表，包括：
+  - 名称和描述
+  - 类型（RULE、ML、LLM）
+  - 类别（内容、安全、合规等）
+  - 操作（阻止、警告、删除、替换）
+  - 适用范围（输入、输出、两者）
+  - 启用状态
+  - 触发次数
 
-**Example output:**
+**示例输出：**
 ```
 Found 3 guardrails for ChatBot V2:
 
@@ -133,11 +133,11 @@ Found 3 guardrails for ChatBot V2:
 
 ---
 
-### 3. Get Available Guardrail Templates
+### 3. 查看可用的安全防护模板
 
-**User says:** "What guardrail templates are available?" / "Show me security templates"
+**用户请求：**“有哪些可用的安全防护模板？” / “显示安全防护模板”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/organizations/${orgId}/guardrails/templates",
@@ -148,49 +148,49 @@ web_fetch({
 })
 ```
 
-**Available Templates:**
+**可用模板：**
 
-**Content Moderation:**
-- TOXIC_LANGUAGE - Detect toxic/harmful language
-- PROFANITY_FILTER - Filter profanity
-- HATE_SPEECH - Detect hate speech
-- VIOLENCE_DETECTION - Detect violent content
-- ADULT_CONTENT - Filter adult content
+**内容审核：**
+- TOXIC_LANGUAGE - 检测有害语言
+- PROFANITY_FILTER - 过滤脏话
+- HATE_SPEECH - 检测仇恨言论
+- VIOLENCE_DETECTION - 检测暴力内容
+- ADULT_CONTENT - 过滤成人内容
 
-**Security:**
-- PII_DETECTION - Detect personally identifiable information
-- CREDIT_CARD_DETECTION - Detect credit card numbers
-- SSN_DETECTION - Detect social security numbers
-- API_KEY_DETECTION - Detect leaked API keys
-- PROMPT_INJECTION - Detect prompt injection attacks
-- JAILBREAK_DETECTION - Detect jailbreak attempts
+**安全：**
+- PII_DETECTION - 检测个人身份信息
+- CREDITCARD_DETECTION - 检测信用卡号码
+- SSN_DETECTION - 检测社会安全号码
+- API_KEY_DETECTION - 检测泄露的 API 密钥
+- PROMPT_INJECTION - 检测提示注入攻击
+- JAILBREAK_DETECTION - 检测越狱尝试
 
-**Compliance:**
-- FINANCIAL_ADVICE - Flag financial advice
-- MEDICAL_ADVICE - Flag medical advice
-- LEGAL_ADVICE - Flag legal advice
-- GDPR_COMPLIANCE - Enforce GDPR rules
-- HIPAA_COMPLIANCE - Enforce HIPAA rules
+**合规性：**
+- FINANCIAL_ADVICE - 标记财务建议
+- MEDICAL_ADVICE - 标记医疗建议
+- LEGAL_ADVICE - 标记法律建议
+- GDPR_COMPLIANCE - 执行 GDPR 规则
+- HIPAA_COMPLIANCE - 执行 HIPAA 规则
 
-**Brand Safety:**
-- COMPETITOR_MENTIONS - Detect competitor mentions
-- POSITIVE_TONE - Ensure positive tone
-- BRAND_VOICE - Maintain brand voice
-- OFF_TOPIC_DETECTION - Detect off-topic responses
+**品牌安全：**
+- COMPETITOR_MENTIONS - 检测竞争对手提及
+- POSITIVE_TONE - 确保语气积极
+- BRAND_VOICE - 维护品牌形象
+- OFF_TOPIC_DETECTION - 检测离题回复
 
-**Accuracy:**
-- HALLUCINATION_DETECTION - Detect hallucinations
-- FACT_CHECKING - Verify facts
-- SOURCE_VALIDATION - Validate sources
-- CONSISTENCY_CHECK - Check consistency
+**准确性：**
+- HALLUCINATION_DETECTION - 检测幻觉内容
+- FACT_CHECKING - 核实事实
+- SOURCE_VALIDATION - 验证信息来源
+- CONSISTENCY_CHECK - 检查内容一致性
 
 ---
 
-### 4. Apply a Guardrail to an Agent
+### 4. 为代理应用安全防护措施
 
-**User says:** "Add PII detection to my chatbot" / "Apply toxic language filter to agent xyz"
+**用户请求：**“为我的聊天机器人添加 PII 检测功能” / “为代理 xyz 应用有害语言过滤规则”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/organizations/${orgId}/guardrails",
@@ -215,44 +215,44 @@ web_fetch({
 })
 ```
 
-**Guardrail Options:**
+**安全防护选项：**
 
-**Type:**
-- RULE - Simple regex/keyword matching (fast)
-- ML - Machine learning model (balanced)
-- LLM - LLM-powered validation (most accurate)
+**类型：**
+- RULE - 简单的正则表达式/关键词匹配（快速）
+- ML - 机器学习模型（平衡性较高）
+- LLM - 基于大型语言模型的验证（最准确）
 
-**Category:**
-- CONTENT - Content moderation
-- SECURITY - Security checks
-- COMPLIANCE - Regulatory compliance
-- BRAND - Brand safety
-- ACCURACY - Accuracy checks
-- CUSTOM - Custom rules
+**类别：**
+- CONTENT - 内容审核
+- SECURITY - 安全检查
+- COMPLIANCE - 合规性检查
+- BRAND - 品牌安全
+- ACCURACY - 准确性检查
+- CUSTOM - 自定义规则
 
-**Scope:**
-- INPUT - Validate user input only
-- OUTPUT - Validate agent output only
-- BOTH - Validate both directions
+**适用范围：**
+- INPUT - 仅验证用户输入
+- OUTPUT - 仅验证代理输出
+- BOTH - 同时验证输入和输出
 
-**Action:**
-- BLOCK - Block the request/response entirely
-- WARN - Log warning but allow through
-- REDACT - Mask the offending content
-- REPLACE - Replace with alternative content
-- RETRY - Retry with modified prompt
-- ESCALATE - Escalate to human review
+**操作：**
+- BLOCK - 完全阻止请求/响应
+- WARN - 记录警告但允许通过
+- REDACT - 遮盖违规内容
+- REPLACE - 用替代内容替换
+- RETRY - 用修改后的提示重新尝试
+- ESCALATE - 提升到人工审核
 
-**Severity:**
-- LOW, MEDIUM, HIGH, CRITICAL
+**严重程度：**
+- 低、中、高、严重
 
 ---
 
-### 5. Validate Content Against Guardrails
+### 5. 根据安全防护措施检查内容
 
-**User says:** "Check if this message passes guardrails: [content]"
+**用户请求：**“检查这条消息是否符合安全防护规则：[内容]”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/organizations/${orgId}/guardrails/validate",
@@ -269,19 +269,19 @@ web_fetch({
 })
 ```
 
-**Response shows:**
-- Whether content passed or failed
-- Which guardrails were triggered
-- Suggested actions (block, redact, warn)
-- Modified content (if redaction applied)
+**响应显示：**
+- 内容是否通过安全防护
+- 触发了哪些安全防护措施
+- 建议的操作（阻止、删除、警告）
+- 修改后的内容（如果进行了删除）
 
 ---
 
-### 6. Discover Public Agents
+### 6. 发现公开代理
 
-**User says:** "Find public data analysis agents" / "Show me chatbot agents"
+**用户请求：**“查找公开的数据分析代理” / “显示聊天机器人代理”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/agents/discovery?visibility=PUBLIC&search=data",
@@ -290,22 +290,22 @@ web_fetch({
 })
 ```
 
-**Filters available:**
-- `?visibility=PUBLIC` - public marketplace agents
-- `?role=SERVER` - agents that provide services
-- `?role=CLIENT` - agents that consume services
-- `?status=ACTIVE` - only active agents
-- `?search=keyword` - search by name/description
+**可用过滤器：**
+- `?visibility=PUBLIC` - 公开市场代理
+- `?role=SERVER` - 提供服务的代理
+- `?role=CLIENT` - 消费服务的代理
+- `?status=ACTIVE` - 仅限活跃代理
+- `?search=关键词` - 按名称/描述搜索
 
-**Present to user:**
-- List of matching agents with:
-  - Name, description, agent ID
-  - Trust score and level
-  - Role (SERVER/CLIENT)
-  - Key capabilities
-  - Link to full card
+**向用户展示：**
+- 匹配的代理列表，包括：
+  - 名称、描述、代理 ID
+  - 信任评分和等级
+  - 角色（服务器/客户端）
+  - 主要功能
+  - 完整卡片链接
 
-**Example output:**
+**示例输出：**
 ```
 Found 2 public data analysis agents:
 
@@ -322,11 +322,11 @@ Found 2 public data analysis agents:
 
 ---
 
-### 7. List User's Agents
+### 7. 列出用户的代理
 
-**User says:** "Show my agents" / "List all my server agents"
+**用户请求：**“显示我的代理” / “列出我所有的服务器代理”
 
-**Your action:**
+**你的操作：**
 ```javascript
 web_fetch({
   url: "${PRAESIDIA_API_URL}/agents/discovery?role=SERVER",
@@ -337,84 +337,84 @@ web_fetch({
 })
 ```
 
-This returns all agents the user has access to (their own + team/org agents).
+这将显示用户可以访问的所有代理（包括自己的代理以及团队/组织的代理）。
 
 ---
 
-## Trust Levels Guide
+## 信任等级指南
 
-Present trust information clearly to help users make decisions:
+清晰地展示信任信息，以帮助用户做出决策：
 
-| Trust Score | Level | Meaning | Recommendation |
+| 信任评分 | 等级 | 含义 | 建议 |
 |-------------|-------|---------|----------------|
-| 90-100 | **VERIFIED** | Fully vetted, compliant, verified identity | ✅ Safe to use |
-| 70-89 | **STANDARD** | Good reputation, basic verification | ✅ Generally safe |
-| 50-69 | **LIMITED** | Minimal verification | ⚠️ Use with caution |
-| 0-49 | **UNTRUSTED** | Not verified or poor reputation | ❌ Not recommended |
+| 90-100 | **已验证** | 经过全面审核，符合规定，身份已验证 | ✅ 可安全使用 |
+| 70-89 | **标准** | 声誉良好，基本验证 | ✅ 通常安全 |
+| 50-69 | **有限** | 验证较少 | ⚠️ 使用时需谨慎 |
+| 0-49 | **不可信** | 未验证或声誉较差 | ❌ 不推荐 |
 
-Always show the trust score numerically (e.g., 92.5/100) and the level (e.g., VERIFIED).
+始终以数字形式显示信任评分（例如，92.5/100）和等级（例如，已验证）。
 
 ---
 
-## Error Handling
+## 错误处理
 
-| Error | Meaning | What to tell user |
+| 错误代码 | 含义 | 告诉用户的提示 |
 |-------|---------|-------------------|
-| 401 Unauthorized | API key missing/invalid | "Check PRAESIDIA_API_KEY in ~/.openclaw/openclaw.json" |
-| 403 Forbidden | No permission | "You don't have access to this agent" |
-| 404 Not Found | Agent doesn't exist | "Agent not found. Check the agent ID" |
-| 500 Server Error | Praesidia API issue | "Praesidia API temporarily unavailable. Try again" |
+| 401 未授权 | API 密钥缺失/无效 | “请检查 `~/.openclaw/openclaw.json` 中的 `PRAESIDIA_API_KEY`” |
+| 403 禁止访问 | 没有权限 | “您无权访问该代理” |
+| 404 未找到 | 代理不存在 | “未找到该代理。请检查代理 ID” |
+| 500 服务器错误 | Praesidia API 故障 | “Praesidia API 暂时不可用。请稍后再试” |
 
 ---
 
-## API Endpoints
+## API 端点
 
 ### GET /agents/:id/agent-card
-Fetch detailed agent card with trust data.
+获取包含信任数据的详细代理卡片。
 
-**Auth:** Required for private/team/org agents, optional for public
-**Returns:** A2A agent card + Praesidia extensions (trust, compliance)
+**认证：** 对于私有/团队/组织代理是必需的，对于公开代理是可选的
+**返回：** A2A 代理卡片 + Praesidia 扩展信息（信任、合规性）
 
 ### GET /agents/discovery
-List/search agents with filters.
+使用过滤器列出/搜索代理。
 
-**Auth:** Optional (more results with auth)
-**Query params:** `role`, `status`, `visibility`, `search`
-**Returns:** Array of agent summaries with card URLs
-
----
-
-## Guardrails Best Practices
-
-When helping users with guardrails:
-
-1. **Start with templates** - Use predefined templates before custom rules
-2. **Layer security** - Combine multiple guardrails (PII + Toxic + Compliance)
-3. **Test before enabling** - Use validate endpoint to test content first
-4. **Monitor triggers** - Check stats regularly to tune thresholds
-5. **Scope appropriately** - Use INPUT for user content, OUTPUT for agent responses
-6. **Choose right action**:
-   - **BLOCK** for critical security issues (PII, prompt injection)
-   - **REDACT** for sensitive data that can be masked
-   - **WARN** for compliance/brand issues that need logging
-   - **ESCALATE** for edge cases requiring human review
+**认证：** 可选（认证后返回更多结果）
+**查询参数：** `role`、`status`、`visibility`、`search`
+**返回：** 包含卡片链接的代理摘要数组
 
 ---
 
-## Best Practices
+## 安全防护最佳实践
 
-1. **Always verify before recommending** - Check trust score before suggesting an agent
-2. **Explain trust levels** - Users may not know what "VERIFIED" means
-3. **Filter by SERVER role** - When users want agents to use/call
-4. **Show compliance** - Important for enterprise users (SOC2, GDPR)
-5. **Present trust score numerically** - 92.5/100 is clearer than just "VERIFIED"
-6. **Layer guardrails** - Combine security, content, and compliance guardrails
+在帮助用户设置安全防护措施时：
+
+1. **从模板开始** - 先使用预定义的模板，再自定义规则
+2. **多层防护** - 结合多种安全防护措施（个人身份信息、有害内容、合规性）
+3. **启用前测试** - 使用验证端点先测试内容
+4. **定期监控触发情况** - 定期检查统计数据以调整阈值
+5. **适当设置适用范围** - 对用户输入使用 INPUT，对代理输出使用 OUTPUT
+6. **选择合适的操作**：
+   - 对于严重的安全问题（如个人身份信息、提示注入）使用 **BLOCK**
+   - 对于可以屏蔽的敏感数据使用 **REDACT**
+   - 对于需要记录的合规性/品牌问题使用 **WARN**
+   - 对于需要人工审核的边缘情况使用 **ESCALATE**
 
 ---
 
-## Common User Patterns
+## 其他最佳实践
 
-### Pattern 1: Safety Check
+1. **推荐前务必验证** - 在推荐代理前检查其信任评分
+2. **解释信任等级** - 用户可能不清楚 “已验证” 的含义
+3. **按服务器角色筛选** - 根据用户的需求筛选代理
+4. **展示合规性信息** - 对企业用户非常重要（如 SOC2、GDPR）
+5. **以数字形式显示信任评分** - 92.5/100 比单纯的 “已验证” 更清晰
+6. **组合使用多种安全防护措施** - 结合安全、内容和合规性防护
+
+---
+
+## 常见用户操作模式
+
+### 模式 1：安全检查
 ```
 User: "Is agent xyz safe to use?"
 You: [Fetch agent card, check trust score]
@@ -422,21 +422,21 @@ You: [Fetch agent card, check trust score]
       It's verified for basic operations. What would you like to use it for?"
 ```
 
-### Pattern 2: Capability Discovery
+### 模式 2：功能发现
 ```
 User: "I need an agent that can analyze spreadsheets"
 You: [Search discovery with visibility=PUBLIC&search=spreadsheet]
      "I found 3 spreadsheet analysis agents. The highest rated is..."
 ```
 
-### Pattern 3: Fleet Management
+### 模式 3：代理管理
 ```
 User: "Show me all my agents that are inactive"
 You: [Fetch discovery with status=INACTIVE]
      "You have 2 inactive agents: [list with trust scores]"
 ```
 
-### Pattern 4: Apply Security
+### 模式 4：应用安全措施
 ```
 User: "I need to secure my chatbot against PII leaks"
 You: [List available templates, recommend PII_DETECTION]
@@ -446,7 +446,7 @@ You: [List available templates, recommend PII_DETECTION]
       user inputs and bot responses."
 ```
 
-### Pattern 5: Compliance Check
+### 模式 5：合规性检查
 ```
 User: "My agent handles healthcare data. What guardrails should I add?"
 You: [Check if HIPAA compliance is required]
@@ -460,29 +460,29 @@ You: [Check if HIPAA compliance is required]
 
 ---
 
-## Environment Variables
+## 环境变量
 
-- `PRAESIDIA_API_KEY` (required) - Your API key from https://app.praesidia.ai
-- `PRAESIDIA_API_URL` (optional) - Defaults to `https://api.praesidia.ai`
-  - Production: `https://api.praesidia.ai`
-  - Local dev: `http://localhost:3000`
-  - Custom: Your deployment URL
-
----
-
-## Additional Resources
-
-- **Full setup guide:** See README.md in this skill folder
-- **API documentation:** https://app.praesidia.ai/docs/api
-- **A2A protocol:** https://a2a-protocol.org
-- **Support:** hello@praesidia.ai or https://discord.gg/e9EwZfHS
+- `PRAESIDIA_API_KEY`（必需） - 从 https://app.praesidia.ai 获取的 API 密钥
+- `PRAESIDIA_API_URL`（可选） - 默认为 `https://api.praesidia.ai`
+  - 生产环境：`https://api.praesidia.ai`
+  - 本地开发：`http://localhost:3000`
+  - 自定义：您的部署 URL
 
 ---
 
-## Security & Privacy
+## 其他资源
 
-- All production requests use HTTPS
-- API keys stored in OpenClaw config (never exposed to users)
-- Private/team/org agents require authentication
-- Public agents accessible without auth
-- Trust verification protects against malicious agents
+- **完整设置指南：** 查看此技能文件夹中的 README.md
+- **API 文档：** https://app.praesidia.ai/docs/api
+- **A2A 协议：** https://a2a-protocol.org
+- **支持：** hello@praesidia.ai 或 https://discord.gg/e9EwZfHS
+
+---
+
+## 安全与隐私
+
+- 所有生产环境请求均使用 HTTPS
+- API 密钥存储在 OpenClaw 配置文件中（不会暴露给用户）
+- 私有/团队/组织代理需要认证
+- 公开代理无需认证即可访问
+- 信任验证可防止恶意代理的入侵

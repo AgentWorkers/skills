@@ -1,6 +1,6 @@
 ---
 name: pottery-skills
-description: Expert guidance for pottery-skills.
+description: 陶艺技能的专业指导。
 version: 1.0.0
 tags: [crafts,diy,learning]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# upottery skills
+# upottery 技能指南
 
-Practical skill guidance.
+实用技能指导。
 
-## Capabilities
+## 功能
 
-- Step-by-step tutorials
-- Tips and techniques
-- Project ideas
-- Resource recommendations
+- 分步教程
+- 技巧与建议
+- 项目创意
+- 资源推荐
 
-## Usage
-Help with this skill
-Learning guidance
+## 使用方法
+- 帮助学习该技能
+- 学习指导

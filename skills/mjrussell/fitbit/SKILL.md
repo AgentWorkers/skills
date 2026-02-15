@@ -1,6 +1,6 @@
 ---
 name: fitbit
-description: Query Fitbit health data including sleep, heart rate, activity, SpO2, and breathing rate. Use when user asks about their fitness, sleep quality, steps, or health metrics.
+description: 查询 Fitbit 的健康数据，包括睡眠质量、心率、活动量、血氧饱和度（SpO2）和呼吸频率。当用户询问自己的健康状况、睡眠质量、步数或健康指标时，可以使用此功能。
 homepage: https://www.fitbit.com
 metadata:
   clawdbot:
@@ -11,12 +11,11 @@ metadata:
 
 # Fitbit CLI
 
-Query health and fitness data from Fitbit wearables.
+用于查询来自 Fitbit 可穿戴设备的健康和健身数据。
 
-## Commands
+## 命令
 
-### Health Data
-
+### 健康数据
 ```bash
 # Sleep logs (deep, light, REM, awake times)
 fitbit-cli -s                    # today
@@ -44,8 +43,7 @@ fitbit-cli -t                    # today
 fitbit-cli -t yesterday          # yesterday
 ```
 
-### Account & Devices
-
+### 账户与设备
 ```bash
 # User profile
 fitbit-cli -u
@@ -54,49 +52,49 @@ fitbit-cli -u
 fitbit-cli -d
 ```
 
-### Date Formats
+### 日期格式
 
-- No parameter: today
-- Specific date: `2026-01-05`
-- Date range: `2026-01-01,2026-01-05`
-- Relative: `yesterday`, `last-week`, `last-month`
-- Custom relative: `last-2-days`, `last-3-weeks`, `last-2-months`
+- 无参数：今日
+- 特定日期：`2026-01-05`
+- 日期范围：`2026-01-01,2026-01-05`
+- 相对日期：`昨天`、`上周`、`上个月`
+- 自定义相对日期：`过去2天`、`过去3周`、`过去2个月`
 
-## Usage Examples
+## 使用示例
 
-**User asks "How did I sleep last night?"**
+**用户询问：“我昨晚的睡眠情况如何？”**
 ```bash
 fitbit-cli -s yesterday
 ```
 
-**User asks "What's my heart rate been like this week?"**
+**用户询问：“我这周的心率情况如何？”**
 ```bash
 fitbit-cli -e last-week
 ```
 
-**User asks "How many steps today?"**
+**用户询问：“我今天走了多少步？”**
 ```bash
 fitbit-cli -t
 ```
 
-**User asks "Show my SpO2 levels"**
+**用户询问：“显示我的血氧饱和度（SpO2）水平。”**
 ```bash
 fitbit-cli -o
 ```
 
-**User asks "Is my Fitbit synced?"**
+**用户询问：“我的 Fitbit 设备是否已同步？”**
 ```bash
 fitbit-cli -d
 ```
 
-**User asks "How active was I last month?"**
+**用户询问：“我上个月的活动量如何？”**
 ```bash
 fitbit-cli -a last-month
 ```
 
-## Notes
+## 注意事项
 
-- Read-only access to Fitbit data
-- Tokens auto-refresh (expire after 8 hours)
-- Data may be delayed from device sync
-- First-time setup: `fitbit-cli --init-auth`
+- 只能读取 Fitbit 数据
+- 令牌会自动刷新（8 小时后失效）
+- 数据可能因设备同步延迟而有所延迟
+- 首次设置时需要运行：`fitbit-cli --init-auth`

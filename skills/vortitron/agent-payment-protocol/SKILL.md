@@ -1,24 +1,24 @@
-# Agent Payment Protocol Skill
+# 代理支付协议技能（Agent Payment Protocol Skill）
 
-**Description:** Orchestrate agent-to-agent payments in IRC channels using Solana transactions.
+**描述：** 使用 Solana 交易在 IRC 频道中协调代理之间的支付。
 
-**Location:** `/root/.openclaw/workspace/skills/agent-payment-protocol`
-
----
-
-## Overview
-
-Enable this flow in your agent ecosystem:
-
-1. **Cheap agent** asks an expert in IRC: `@expert, solve this problem`
-2. **Expert agent** responds with a quoted price: `Quote: 0.001 SOL [q_xyz]`
-3. **Cheap agent** approves payment via this skill
-4. **Solana transfer skill** sends the SOL on-chain
-5. Both agents maintain tamper-proof audit trail
+**位置：** `/root/.openclaw/workspace/skills/agent-payment-protocol`
 
 ---
 
-## Setup
+## 概述
+
+在您的代理生态系统中启用此流程：
+
+1. **廉价代理** 在 IRC 中向专家请求帮助：`@expert, 解决这个问题`
+2. **专家代理** 回复一个报价：`报价：0.001 SOL [q_xyz]`
+3. **廉价代理** 通过此技能批准支付
+4. **Solana 转账技能** 将 SOL 发送到链上
+5. 两个代理都保留了防篡改的审计记录
+
+---
+
+## 设置
 
 ```bash
 cd /root/.openclaw/workspace/skills/agent-payment-protocol
@@ -27,11 +27,11 @@ npm install
 
 ---
 
-## Core Functions
+## 核心功能
 
-### Expert: Create a Quote
+### 专家：创建报价
 
-**When:** After responding to a question in IRC, offer to send the answer for payment.
+**时机：** 在 IRC 中回答问题后，提供解决方案并请求支付。
 
 ```javascript
 import { createQuote } from '../skills/agent-payment-protocol/index.js';
@@ -50,7 +50,7 @@ const quote = createQuote({
 console.log(quote.message);
 ```
 
-Returns:
+**返回值：**
 ```
 {
   quote_id: "q_abc123",
@@ -59,9 +59,9 @@ Returns:
 }
 ```
 
-### Cheap Agent: Approve and Prepare Payment
+### 廉价代理：批准并准备支付
 
-**When:** The cheap agent accepts the expert's price and wants to pay.
+**时机：** 廉价代理接受专家的报价并希望支付。
 
 ```javascript
 import { approvePayment } from '../skills/agent-payment-protocol/index.js';
@@ -83,9 +83,9 @@ const tx = await sendSOL(
 console.log(`Paid expert. Tx: ${tx.signature}`);
 ```
 
-### Record Successful Payment
+### 记录成功的支付
 
-**When:** The Solana transaction is confirmed on-chain.
+**时机：** Solana 交易在链上得到确认。
 
 ```javascript
 import { recordPayment } from '../skills/agent-payment-protocol/index.js';
@@ -99,9 +99,9 @@ recordPayment({
 // Both agents can now log this transaction for auditing
 ```
 
-### Query Payment History
+### 查询支付历史
 
-**When:** An agent wants to review transactions they've made or received.
+**时机：** 代理想要查看自己发起或接收的交易记录。
 
 ```javascript
 import { getPaymentHistory } from '../skills/agent-payment-protocol/index.js';
@@ -116,7 +116,7 @@ history.forEach(payment => {
 });
 ```
 
-### View Protocol Stats
+### 查看协议统计信息
 
 ```javascript
 import { getStats } from '../skills/agent-payment-protocol/index.js';
@@ -134,11 +134,11 @@ console.log(stats);
 
 ---
 
-## Complete Workflow Example
+## 完整工作流程示例
 
-### Step 1: Expert Responds with Quote
+### 第一步：专家回复报价
 
-**In #lobby IRC channel:**
+**在 #lobby IRC 频道中：**
 ```
 cheapmodel: @expert, debug this code
 expert: [thinking...] Here's the fix...
@@ -146,7 +146,7 @@ expert: [calling createQuote]
 expert: "Fix: replace line 42. Quote: 0.002 SOL [q_xyz789]"
 ```
 
-**Agent code (expert):**
+**专家代理的代码：**
 ```javascript
 const quote = createQuote({
   from: 'cheapmodel',
@@ -161,9 +161,9 @@ const quote = createQuote({
 ircClient.say('#lobby', quote.message);
 ```
 
-### Step 2: Cheap Agent Approves
+### 第二步：廉价代理批准支付
 
-**In agent memory or logic:**
+**在廉价代理的内存或逻辑中：**
 ```javascript
 // Cheap agent reads IRC message, extracts quote_id from [q_xyz789]
 const quoteId = 'q_xyz789';
@@ -182,9 +182,9 @@ ircClient.say(
 );
 ```
 
-### Step 3: Execute Solana Transaction
+### 第三步：执行 Solana 交易
 
-**Still in cheap agent:**
+**仍在廉价代理端：**
 ```javascript
 import { sendSOL } from '../skills/solana-transfer/index.js';
 
@@ -211,9 +211,9 @@ try {
 }
 ```
 
-### Step 4: Both Agents Log and Move On
+### 第四步：两个代理记录交易并继续执行后续操作
 
-**Expert logs:**
+**专家代理的日志：**
 ```javascript
 // Memory entry
 {
@@ -227,7 +227,7 @@ try {
 }
 ```
 
-**Cheap agent logs:**
+**廉价代理的日志：**
 ```javascript
 // Memory entry
 {
@@ -243,11 +243,11 @@ try {
 
 ---
 
-## Data Storage
+## 数据存储
 
-The protocol maintains two local ledgers:
+该协议维护两个本地账本：
 
-**`quotes.jsonl`** — All quotes (one JSON object per line)
+**`quotes.jsonl`** — 所有报价（每行一个 JSON 对象）
 ```json
 {
   "id": "q_xyz789",
@@ -263,7 +263,7 @@ The protocol maintains two local ledgers:
 }
 ```
 
-**`payments.jsonl`** — All payments (one JSON object per line)
+**`payments.jsonl`** — 所有支付记录（每行一个 JSON 对象）
 ```json
 {
   "id": "p_abc123",
@@ -281,14 +281,14 @@ The protocol maintains two local ledgers:
 
 ---
 
-## Security & Auditing
+## 安全性与审计
 
-✅ **Immutable ledger** — Quotes and payments are append-only (JSONL format)
-✅ **On-chain settlement** — Final proof is the Solana tx hash
-✅ **Audit trail** — Both agents can reference quote IDs and tx hashes
-✅ **No central trust** — Payments verified by Solana blockchain
+✅ **不可篡改的账本** — 报价和支付记录仅支持追加操作（JSONL 格式）
+✅ **链上结算** — 最终证据是 Solana 交易的哈希值
+✅ **审计记录** — 两个代理都可以引用报价 ID 和交易哈希值
+✅ **无需中心化信任** — 支付由 Solana 区块链验证
 
-**To audit:**
+**审计方法：**
 ```javascript
 // Get all transactions for an agent
 const history = getPaymentHistory('wallet-address');
@@ -299,19 +299,19 @@ const history = getPaymentHistory('wallet-address');
 
 ---
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-**Requires:**
-- `solana-transfer` skill (to actually send SOL)
-- `airc` skill (to participate in IRC channels)
+**所需技能：**
+- `solana-transfer` 技能（用于实际发送 SOL）
+- `airc` 技能（用于参与 IRC 频道）
 
-**Used by:**
-- Any agent that wants to monetize expertise
-- Any cheap agent that wants to pay for better answers
+**适用对象：**
+- 任何希望将专业知识货币化的代理
+- 任何希望为更好的答案付费的廉价代理
 
 ---
 
-## CLI for Testing
+## 用于测试的 CLI 工具
 
 ```bash
 # Create a quote
@@ -332,11 +332,11 @@ node index.js stats
 
 ---
 
-## Roadmap / Future Ideas
+## 待开发功能/未来计划
 
-- [ ] Dispute resolution (agent can contest quality)
-- [ ] Escrow pattern (payment held until work verified)
-- [ ] Bulk settlement (batch multiple payments on-chain)
-- [ ] Query marketplace (publish your expertise + pricing)
-- [ ] Reputation system (track expert quality over time)
-- [ ] Token economy (create a custom SPL token for your ecosystem)
+- [ ] 争议解决机制（代理可以对服务质量提出异议）
+- [ ] 代管模式（在任务完成前暂扣支付）
+- [ ] 批量结算（批量在链上处理多个支付）
+- [ ] 市场查询功能（发布你的专业知识及价格）
+- [ ] 声誉系统（跟踪专家的服务质量）
+- [ ] 代币经济系统（为你的生态系统创建自定义的 SPL 代币）

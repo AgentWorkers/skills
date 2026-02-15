@@ -1,11 +1,11 @@
 ---
 name: glab-api
-description: Make direct GitLab REST API calls for advanced queries and operations not covered by other glab commands. Use when accessing GitLab API endpoints directly, making custom API requests, or fetching data in JSON format. Triggers on API call, REST API, GitLab API, JSON query, advanced query.
+description: 直接使用 GitLab 的 REST API 进行高级查询和操作，这些操作无法通过其他 GitLab 命令实现。适用于直接访问 GitLab API 端点、发送自定义 API 请求或以 JSON 格式获取数据的情况。该功能会在发生 API 调用、REST API 请求、GitLab API 请求或高级查询时触发。
 ---
 
-# glab api
+# glab API
 
-## Overview
+## 概述
 
 ```
 
@@ -135,12 +135,12 @@ description: Make direct GitLab REST API calls for advanced queries and operatio
     --silent        Do not print the response body.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab api --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

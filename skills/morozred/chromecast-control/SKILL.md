@@ -1,28 +1,28 @@
 ---
 name: chromecast
-description: Control Chromecast devices on your local network - discover, cast media, control playback, manage queues, and save/restore states
+description: 控制本地网络中的 Chromecast 设备：发现设备、投射媒体内容、控制播放、管理播放队列以及保存/恢复设备状态
 homepage: https://github.com/skorokithakis/catt
 metadata: {"clawdbot":{"emoji":"📺","requires":{"bins":["catt"]},"install":[{"id":"pip","kind":"uv","package":"catt","bins":["catt"],"label":"Install via pip/uv"}]}}
 ---
 
-# Chromecast Control
+# Chromecast 控制
 
-Control Chromecast and Google Cast-enabled devices on your local network using `catt` (Cast All The Things).
+使用 `catt`（Cast All The Things）工具，可以控制本地网络中的 Chromecast 及支持 Google Cast 功能的设备。
 
-## Quick Reference
+## 快速参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `catt scan` | Find all Chromecasts on network |
-| `catt cast <url>` | Cast video/audio |
-| `catt pause` / `play` | Pause/resume |
-| `catt stop` | Stop playback |
-| `catt status` | Current playback info |
-| `catt volume <0-100>` | Set volume |
+| `catt scan` | 查找网络中的所有 Chromecast 设备 |
+| `catt cast <url>` | 播放指定的视频/音频内容 |
+| `catt pause` / `play` | 暂停/继续播放 |
+| `catt stop` | 停止播放 |
+| `catt status` | 查看当前的播放信息 |
+| `catt volume <0-100>` | 设置音量（0-100 分贝） |
 
-Use `-d <device>` to target a specific device by name or IP.
+使用 `-d <设备名称>` 或 `-d <IP地址>` 可以指定目标设备。
 
-## Discovery & Device Management
+## 设备发现与管理工作
 
 ```bash
 # Find all devices
@@ -39,9 +39,9 @@ catt -d tv del_alias
 catt del_default
 ```
 
-## Casting Media
+## 媒体投射
 
-### Basic Casting
+### 基本投射功能
 ```bash
 # Cast from URL (YouTube, Vimeo, and hundreds of yt-dlp supported sites)
 catt cast "https://www.youtube.com/watch?v=VIDEO_ID"
@@ -53,7 +53,7 @@ catt cast ./video.mp4
 catt cast_site "https://example.com"
 ```
 
-### Advanced Cast Options
+### 高级投射选项
 ```bash
 # Cast with subtitles
 catt cast -s ./subtitles.srt ./video.mp4
@@ -77,8 +77,7 @@ catt cast -y format=best "https://youtube.com/watch?v=VIDEO_ID"
 catt cast -b "https://example.com/video.mp4"
 ```
 
-## Playback Control
-
+## 播放控制
 ```bash
 catt play              # Resume playback
 catt pause             # Pause playback
@@ -93,8 +92,7 @@ catt ffwd 30           # Fast forward 30 seconds
 catt rewind 30         # Rewind 30 seconds
 ```
 
-## Volume Control
-
+## 音量控制
 ```bash
 catt volume 50         # Set volume to 50%
 catt volumeup 10       # Increase by 10
@@ -103,8 +101,7 @@ catt volumemute on     # Mute
 catt volumemute off    # Unmute
 ```
 
-## Queue Management (YouTube)
-
+## 队列管理（适用于 YouTube）
 ```bash
 # Add video to end of queue
 catt add "https://youtube.com/watch?v=VIDEO_ID"
@@ -119,8 +116,7 @@ catt remove "https://youtube.com/watch?v=VIDEO_ID"
 catt clear
 ```
 
-## State Management
-
+## 设备状态管理
 ```bash
 # Save current state (position, volume, what's playing)
 catt save
@@ -129,16 +125,15 @@ catt save
 catt restore
 ```
 
-## Device Information
-
+## 设备信息查询
 ```bash
 catt status    # Brief: time, volume, mute status
 catt info      # Full: title, URL, player state, media type, etc.
 ```
 
-## Configuration
+## 配置设置
 
-Config file: `~/.config/catt/catt.cfg`
+配置文件：`~/.config/catt/catt.cfg`
 
 ```ini
 [options]
@@ -149,17 +144,17 @@ tv = Living Room TV
 bedroom = Bedroom Speaker
 ```
 
-## Network Requirements
+## 网络要求
 
-- Chromecast and computer must be on same network
-- For local file casting: TCP ports 45000-47000 must be open
-- Some networks block mDNS - use IP address directly if `catt scan` fails
+- Chromecast 和计算机必须在同一网络内；
+- 对于本地文件的投射，需要确保 TCP 端口 45000-47000 是开放的；
+- 有些网络会阻止 mDNS 通信——如果 `catt scan` 失败，请直接使用设备的 IP 地址。
 
-## Supported Sources
+## 支持的媒体源
 
-Catt uses yt-dlp internally, supporting:
-- YouTube (videos, playlists, live streams)
-- Vimeo, Dailymotion, Twitch
-- Direct video URLs (MP4, MKV, WebM, etc.)
-- Local files (video, audio, images)
-- Hundreds more sites (see yt-dlp supported sites)
+`catt` 内部使用 `yt-dlp` 工具，支持以下媒体源：
+- YouTube（视频、播放列表、直播）
+- Vimeo、Dailymotion、Twitch
+- 直接的视频 URL（MP4、MKV、WebM 等格式）
+- 本地文件（视频、音频、图片）
+- 更多网站（详见 yt-dlp 的支持列表）

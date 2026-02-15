@@ -1,13 +1,13 @@
 ---
 name: veo3-video-gen
-description: Generate and stitch short videos via Google Veo 3.x using the Gemini API (google-genai). Use when you need to create video clips from prompts (ads, UGC-style clips, product demos) and want a reproducible CLI workflow (generate, poll, download MP4, optionally stitch multiple segments).
+description: 使用 Gemini API (google-genai) 通过 Google Veo 3.x 生成并拼接短视频。当您需要根据提示创建视频片段（如广告、用户生成内容风格的视频片段、产品演示等），并且希望拥有一个可复制的命令行界面（CLI）工作流程时（包括生成、投票、下载 MP4 文件，以及可选的多段视频拼接功能），请使用此方法。
 ---
 
-# Veo 3 Video Generation (Gemini API)
+# Veo 3 视频生成（Gemini API）
 
-Use the bundled script to generate an MP4 from a text prompt.
+使用随附的脚本，根据文本提示生成 MP4 视频。
 
-## Generate (text → video)
+## 从文本生成视频
 
 ```bash
 uv run {baseDir}/scripts/generate_video.py \
@@ -18,11 +18,11 @@ uv run {baseDir}/scripts/generate_video.py \
   --poll-seconds 10
 ```
 
-## Generate a longer video by stitching segments
+## 通过拼接多个片段来生成更长的视频
 
-Veo commonly outputs ~8s clips per request. Use `--segments` to generate multiple clips and concatenate them with ffmpeg.
+Veo 通常每次请求会生成约 8 秒的片段。可以使用 `--segments` 选项生成多个片段，然后使用 ffmpeg 将它们合并在一起。
 
-**Important:** This skill sends **one prompt per segment** (one Veo request per segment). Use `--base-style` to keep style consistent across segments.
+**重要提示：** 每个片段需要提供一个单独的提示（即每次请求都需要发送一个 Veo 请求）。使用 `--base-style` 选项可以确保所有片段的风格保持一致。
 
 ```bash
 uv run {baseDir}/scripts/generate_video.py \
@@ -34,22 +34,20 @@ uv run {baseDir}/scripts/generate_video.py \
   --segment-style continuation
 ```
 
-Options:
-- `--base-style "..."`: prepended to every segment prompt (recommended).
-- `--segment-prompt "..."` (repeatable): provide one prompt per segment (overrides `--prompt`).
-- `--segment-style continuation` (default): appends continuity instructions per segment (only when using `--prompt`).
-- `--segment-style same`: uses the exact same prompt for each segment (only when using `--prompt`).
-- `--use-last-frame`: for segment >=2, extract previous segment last frame and pass it as `lastFrame` for continuity.
-- `--emit-segment-media`: print `MEDIA:` for each segment as it finishes (useful for progress).
-- `--keep-segments`: keep intermediate `*.segXX.mp4` files.
-- `--reference-image path.jpg` (repeatable): guide generation with product/style references.
+可选参数：
+- `--base-style "..."`：添加到每个片段的提示前面（推荐使用）。
+- `--segment-prompt "..."`（可重复使用）：为每个片段提供一个提示（会覆盖 `--prompt` 的设置）。
+- `--segment-style continuation`（默认值）：为每个片段添加连续性提示（仅在使用 `--prompt` 时生效）。
+- `--segment-style same`：为每个片段使用完全相同的提示（仅在使用 `--prompt` 时生效）。
+- `--use-last-frame`：对于包含多个片段的视频，提取前一个片段的最后一帧，并将其作为 `lastFrame` 用于保持视频的连续性。
+- `--emit-segment-media`：在每个片段生成完成后输出 `MEDIA:` 信息（有助于监控生成进度）。
+- `--keep-segments`：保留中间的 `.segXX.mp4` 文件。
+- `--reference-image path.jpg`（可重复使用）：提供产品/风格的参考图片以指导视频生成过程。
 
-## Requirements
+## 使用要求：
+- 必须设置环境变量 `GEMINI_API_KEY`（或使用 `--api-key`）。
+- 当使用 `--segments > 1` 时，确保 `ffmpeg` 已添加到系统的 PATH 环境变量中。
 
-- `GEMINI_API_KEY` env var (or `--api-key`).
-- `ffmpeg` on PATH when using `--segments > 1`.
-
-## Troubleshooting
-
-- 429/RESOURCE_EXHAUSTED: API key has no quota/billing for video.
-- 503/UNAVAILABLE: model overloaded; retry later.
+## 常见问题解决方法：
+- 429/RESOURCE_EXHAUSTED：API 密钥没有用于视频生成的配额或计费权限。
+- 503/UNAVAILABLE：模型当前处于过载状态，请稍后重试。

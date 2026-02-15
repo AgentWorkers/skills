@@ -1,15 +1,15 @@
 ---
 name: mailgun
-description: Send emails via Mailgun API. Use when the user needs to send emails programmatically, such as newsletters, notifications, alerts, or automated reports. Requires MAILGUN_API_KEY and MAILGUN_DOMAIN environment variables to be configured.
+description: 通过 Mailgun API 发送电子邮件。适用于需要以编程方式发送电子邮件的场景，例如发送新闻通讯、通知、警报或自动化报告等。使用此功能前，必须配置 `MAILGUN_API_KEY` 和 `MAILGUN_DOMAIN` 环境变量。
 ---
 
-# Mailgun Email Sender
+# Mailgun 邮件发送工具
 
-Send emails programmatically using Mailgun's HTTP API.
+使用 Mailgun 的 HTTP API 以编程方式发送电子邮件。
 
-## Prerequisites
+## 前提条件
 
-Configure the following environment variables in `~/.zshrc` or `~/.bash_profile`:
+在 `~/.zshrc` 或 `~/.bash_profile` 中配置以下环境变量：
 
 ```bash
 export MAILGUN_API_KEY="key-xxxxx"      # Your Mailgun private API key
@@ -18,59 +18,59 @@ export MAILGUN_FROM="Sender <noreply@mg.yourdomain.com>"  # Default sender
 export MAILGUN_DEFAULT_TO="you@email.com"  # Default recipient (optional)
 ```
 
-Then reload your shell configuration:
+然后重新加载 shell 配置：
 ```bash
 source ~/.zshrc
 ```
 
-## Usage
+## 使用方法
 
-### Send a simple email
+### 发送简单邮件
 
 ```bash
 mailgun/scripts/send_email.sh "Subject" "Email body text"
 ```
 
-### Send to a specific recipient
+### 发送给特定收件人
 
 ```bash
 mailgun/scripts/send_email.sh "Newsletter" "Content here" "recipient@email.com"
 ```
 
-### Send with custom sender
+### 使用自定义发件人发送邮件
 
 ```bash
 mailgun/scripts/send_email.sh "Alert" "System down" "admin@company.com" "alerts@company.com"
 ```
 
-## Features
+## 特点
 
-- Simple command-line interface
-- Uses environment variables for configuration
-- Supports custom sender and recipient
-- Returns success/error status codes
-- Works with HTML content (pass HTML in body parameter)
+- 简单的命令行界面
+- 通过环境变量进行配置
+- 支持自定义发件人和收件人
+- 返回成功/错误状态码
+- 支持 HTML 内容（将 HTML 传递给 `body` 参数）
 
-## Common Use Cases
+## 常见使用场景
 
-- Daily/weekly newsletters
-- System alerts and notifications
-- Automated reports
-- Confirmation emails
-- Scheduled reminders
+- 日/周新闻通讯
+- 系统警报和通知
+- 自动化报告
+- 确认邮件
+- 定时提醒
 
-## Troubleshooting
+## 故障排除
 
-**Error: MAILGUN_API_KEY and MAILGUN_DOMAIN must be set**
-→ Configure environment variables as shown in Prerequisites
+**错误：MAILGUN_API_KEY 和 MAILGUN_DOMAIN 必须设置**
+→ 按照前提条件中的说明配置环境变量
 
-**Error: 401 Unauthorized**
-→ Check that your API key is correct and active
+**错误：401 未授权**
+→ 确认您的 API 密钥是否正确且有效
 
-**Error: 404 Not Found**
-→ Verify your MAILGUN_DOMAIN is correct
+**错误：404 未找到**
+→ 验证您的 `MAILGUN_DOMAIN` 是否正确
 
-## References
+## 参考资料
 
-- Mailgun Documentation: https://documentation.mailgun.com/
-- API Reference: See [references/api.md](references/api.md)
+- Mailgun 文档：https://documentation.mailgun.com/
+- API 参考：请参阅 [references/api.md](references/api.md)

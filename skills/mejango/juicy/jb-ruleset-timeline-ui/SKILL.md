@@ -1,33 +1,33 @@
 ---
 name: jb-ruleset-timeline-ui
-description: Visual timeline explorer for Juicebox project ruleset history. Shows configuration evolution, upcoming changes, and enables ruleset comparison.
+description: Juicebox项目规则集历史的可视化时间线探索器。该工具可展示配置的演变过程、即将发生的变更，并支持规则集之间的比较功能。
 ---
 
-# Juicebox V5 Ruleset Timeline UI
+# Juicebox V5 规则集时间线 UI
 
-Visual timeline explorer for Juicebox project ruleset history. Shows the evolution of project configurations over time.
+这是一个用于可视化 Juicebox 项目规则集历史的界面工具，可以展示项目配置随时间的变化情况。
 
-## Uses Shared Components
+## 使用的共享组件
 
-This skill uses components from `/shared/`:
+该功能使用了 `/shared/` 目录下的以下组件：
 
-| Component | Purpose |
-|-----------|---------|
-| `styles.css` | Dark theme, cards, buttons, badges |
-| `wallet-utils.js` | Chain config, formatting utilities |
-| `chain-config.json` | RPC URLs, contract addresses |
-| `abis/JBController.json` | Ruleset query functions |
+| 组件          | 用途                |
+|---------------|-------------------|
+| `styles.css`     | 深色主题、卡片、按钮、徽章          |
+| `wallet-utils.js`   | 链路配置、格式化工具          |
+| `chain-config.json` | RPC 地址、合约地址           |
+| `abis/JBController.json` | 规则集查询函数           |
 
-## Overview
+## 概述
 
-This skill generates vanilla JS/HTML interfaces for visualizing:
-- Complete ruleset history for any project
-- Timeline of configuration changes
-- Upcoming queued rulesets
-- Ruleset approval status
-- Parameter comparisons between rulesets
+该功能生成简单的 JS/HTML 界面，用于展示以下内容：
+- 任意项目的完整规则集历史记录
+- 配置变更的时间线
+- 即将发布的规则集
+- 规则集的审批状态
+- 不同规则集之间的参数对比
 
-## Ruleset Timeline UI Template
+## 规则集时间线 UI 模板
 
 ```html
 <!DOCTYPE html>
@@ -353,33 +353,33 @@ This skill generates vanilla JS/HTML interfaces for visualizing:
 </html>
 ```
 
-## Key Features
+## 主要特性
 
-### Timeline Visualization
-- Vertical timeline with visual indicators
-- Color-coded status (current, upcoming, past)
-- Chronological ordering
+### 时间线可视化
+- 垂直时间线，带有视觉指示器
+- 颜色编码的状态显示（当前、即将发布、过去）
+- 按时间顺序排列
 
-### Ruleset Comparison
-- Side-by-side parameter comparison
-- Highlights changed values
-- Compare any two rulesets
+### 规则集对比
+- 并排显示参数对比结果
+- 突出显示变更的数值
+- 可以对比任意两个规则集
 
-### Detailed Information
-- Expandable details for each ruleset
-- All metadata fields displayed
-- Approval hook status
+### 详细信息
+- 每个规则集的详细信息可展开查看
+- 显示所有元数据字段
+- 显示规则的审批状态
 
-## Data Sources
+## 数据来源
 
-The timeline uses on-chain data via:
-- `currentRulesetOf()` - Active ruleset
-- `upcomingRulesetOf()` - Next ruleset
-- `latestQueuedRulesetOf()` - Queued with approval status
-- `allRulesetsOf()` - Historical rulesets
+时间线数据来源于链上的信息：
+- `currentRulesetOf()`：当前生效的规则集
+- `upcomingRulesetOf()`：下一个即将发布的规则集
+- `latestQueuedRulesetOf()`：已排队且处于审批状态的规则集
+- `allRulesetsOf()`：所有历史规则集
 
-## Related Skills
+## 相关功能
 
-- `/jb-explorer-ui` - Contract read/write interface
-- `/jb-event-explorer-ui` - Event history
-- `/jb-query` - Query project data via CLI
+- `/jb-explorer-ui`：合约读写接口
+- `/jb-event-explorer-ui`：事件历史记录
+- `/jb-query`：通过 CLI 查询项目数据

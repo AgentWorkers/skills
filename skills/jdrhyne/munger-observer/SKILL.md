@@ -1,57 +1,57 @@
 ---
 name: munger-observer
-description: Daily wisdom review applying Charlie Munger's mental models to your work and thinking. Use when asked to review decisions, analyze thinking patterns, detect biases, apply mental models, do a "Munger review", or run the Munger Observer. Triggers on scheduled daily reviews or manual requests like "run munger observer", "review my thinking", "check for blind spots", or "apply mental models".
+description: 每日智慧回顾：将查理·芒格的思维模型应用到你的工作和思考中。适用于需要评估决策、分析思维模式、识别偏见、运用思维模型、进行“芒格式审查”或运行“Munger Observer”（芒格观察工具）的场景。该功能会在每日定时回顾时自动触发，也可通过手动指令触发，例如“运行Munger Observer”、“审视我的思维方式”、“检查是否存在盲点”或“应用思维模型”。
 ---
 
 # Munger Observer
 
-Automated daily review applying Charlie Munger's mental models to surface blind spots and cognitive traps.
+这是一个自动化的每日审查工具，它运用查理·芒格（Charlie Munger）的思维模型来帮助发现潜在的盲点和认知陷阱。
 
-## Process
+## 工作流程
 
-### 1. Gather Today's Activity
-- Read today's memory file (`memory/YYYY-MM-DD.md`)
-- Scan session logs for today's activity
-- Extract: decisions made, tasks worked on, problems tackled, user requests
+### 1. 收集当天的活动信息
+- 阅读当天的记忆记录文件（`memory/YYYY-MM-DD.md`）
+- 扫描当天的会话日志，提取当天的所有活动信息
+- 包括：所做的决策、处理的任务、解决的问题以及用户提出的请求
 
-### 2. Apply Mental Models
+### 2. 应用思维模型
 
-**Inversion**
-- What could go wrong? What's the opposite of success here?
-- "Tell me where I'm going to die, so I'll never go there."
+**逆向思维（Inversion）**
+- 什么可能会出错？成功的反面是什么？
+- “告诉我我可能会失败的地方，这样我就不会去那里。”
 
-**Second-Order Thinking**
-- And then what? Consequences of the consequences?
-- Short-term gains creating long-term problems?
+**二级思考（Second-Order Thinking）**
+- 那之后呢？这些后果又会带来什么影响？
+- 短期的收益是否会导致长期的问题？
 
-**Incentive Analysis**
-- What behaviors are being rewarded? Hidden incentive structures?
-- "Show me the incentive and I'll show you the outcome."
+**激励分析（Incentive Analysis）**
+- 哪些行为会得到奖励？是否存在隐藏的激励机制？
+- “告诉我激励是什么，我就能告诉你结果会怎样。”
 
-**Opportunity Cost**
-- What's NOT being done? Cost of this focus?
-- Best alternative foregone?
+**机会成本（Opportunity Cost）**
+- 有哪些事情没有被去做？这种专注带来的代价是什么？
+- 放弃的最佳替代方案是什么？
 
-**Bias Detection**
-- Confirmation bias: Only seeking validating information?
-- Sunk cost fallacy: Continuing because of past investment?
-- Social proof: Doing it because others do?
-- Availability bias: Overweighting recent/vivid information?
+**偏见检测（Bias Detection）**
+- 证实性偏见：是否只寻找能够验证自己观点的信息？
+- 沉没成本谬误：是否因为过去的投入而继续做某事？
+- 社会认同偏见：是否因为别人也在做而跟风？
+- 可得性偏见：是否过分重视最近或最显眼的信息？
 
-**Circle of Competence**
-- Operating within known territory or outside?
-- If outside, appropriate humility/caution?
+**能力范围（Circle of Competence）**
+- 是在熟悉的领域内工作，还是在未知的领域内工作？
+- 如果是在未知领域，是否需要保持适当的谦逊和谨慎？
 
-**Margin of Safety**
-- What's the buffer if things go wrong?
-- Cutting it too close anywhere?
+**安全边际（Margin of Safety）**
+- 如果出现问题，有什么缓冲措施？
+- 在哪些方面做得过于冒险了？
 
-### 3. Generate Output
+### 3. 生成输出结果
 
-**If insights found:** 1-2 concise Munger-style observations
-**If nothing notable:** "All clear — no cognitive landmines detected today."
+- **如果发现了问题**：生成1-2条简洁的、符合芒格思维风格的观察结果。
+- **如果没有发现明显问题**：输出“一切正常——今天没有发现任何认知陷阱。”
 
-## Output Format
+## 输出格式
 ```
 🧠 **Munger Observer** — [Date]
 
@@ -62,7 +62,7 @@ Automated daily review applying Charlie Munger's mental models to surface blind 
 — "Invert, always invert." — Carl Jacobi (Munger's favorite)
 ```
 
-## Example
+## 示例
 ```
 🧠 **Munger Observer** — January 19, 2026
 
@@ -73,7 +73,7 @@ Automated daily review applying Charlie Munger's mental models to surface blind 
 — "Invert, always invert."
 ```
 
-## Scheduling (Optional)
-Set up a cron job for daily automated review:
-- Recommended time: End of workday (e.g., 5pm local)
-- Trigger message: `MUNGER_OBSERVER_RUN`
+## 安排（可选）
+可以设置一个定时任务（cron job）来自动执行每日审查：
+- 建议的时间：工作日结束时（例如，当地时间下午5点）
+- 触发消息：`MUNGER_OBSERVER_RUN`

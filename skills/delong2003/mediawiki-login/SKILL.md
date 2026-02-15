@@ -1,8 +1,8 @@
 ---
 name: mediawiki-login-test
-description: Test skill for ClawHub
+description: 测试 ClawHub 的技能
 ---
 
-# Test Skill
+# 测试技能
 
-Test content.
+测试内容。

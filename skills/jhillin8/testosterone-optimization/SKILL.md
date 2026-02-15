@@ -1,6 +1,6 @@
 ---
 name: testosterone-optimization
-description: Optimize natural testosterone with sleep, exercise, nutrition, and lifestyle tracking
+description: 通过睡眠、锻炼、营养以及生活方式的跟踪来优化体内自然产生的睾酮水平。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,48 +11,44 @@ triggers:
   - "test levels"
 ---
 
-# Testosterone Optimization
+# 睾酮优化
 
-Naturally optimize hormone balance through evidence-based lifestyle factors and persistent progress tracking.
+通过基于证据的生活方式调整以及持续的健康状况追踪，自然地优化激素平衡。
 
-## What it does
+## 功能介绍
 
-Tracks the core lifestyle variables that influence testosterone production: sleep quality, resistance training volume, micronutrient intake, stress levels, and body composition. Logs symptom changes (energy, recovery, mood, libido) against adherence to each protocol factor. Builds a personal baseline, detects patterns, and highlights which interventions move the needle most for your biology.
+该工具会监测影响睾酮分泌的关键生活方式因素：睡眠质量、抗阻训练量、微量营养素摄入量、压力水平以及身体成分。同时记录与这些因素相关的症状变化（如精力、恢复情况、情绪、性欲），并帮助用户建立个人健康基线，识别哪些干预措施对自身生理状态最有效。
 
-## Usage
+## 使用方法
 
-**Log Lifestyle Factors**
-Record daily: sleep hours and quality, compound lifts performed, Vitamin D intake, Zinc intake, stress level (1-10), and body fat estimates. Simple entries—no precision required.
+**记录生活方式数据**
+- 每日记录：睡眠时长和质量、进行的复合动作训练（如深蹲、硬拉、卧推等）、维生素D摄入量、锌摄入量、压力水平（1-10分）以及体脂百分比。记录简单即可，无需追求精确数据。
 
-**Check Protocol**
-Review current targets for sleep (7-9 hours), compound lift frequency (3x/week minimum), Vitamin D (2000-4000 IU), Zinc (30mg), stress management practice, and body fat range. Get a quick summary of where you stand today.
+**检查健康目标**
+- 查看当前的健康目标：睡眠时间（7-9小时）、每周进行复合动作训练的频率（至少3次）、维生素D摄入量（2000-4000国际单位）、锌摄入量（30毫克）、压力管理方法以及体脂范围，快速了解自己的健康状况。
 
-**Track Symptoms**
-Log subjective markers: energy levels, workout recovery speed, mood stability, libido, morning erections, muscle hardness. Compare these against the lifestyle data to isolate what actually works for you.
+**追踪症状变化**
+- 记录主观感受：精力水平、训练后的恢复速度、情绪稳定性、性欲以及晨勃情况，并将这些数据与生活方式数据对比，找出真正适合自己的调整方法。
 
-**Set Goals**
-Define personal targets: "Sleep 8 hours 5 nights/week," "Hit 3 compound sessions weekly," "Reduce stress score by 2 points," "Drop 3% body fat." Goals anchor your tracking to actionable objectives.
+**设定目标**
+- 明确个人健康目标，例如“每周5晚睡眠8小时”、“每周完成3次复合动作训练”、“将压力评分降低2分”、“减少3%的体脂”。
 
-**Review Progress**
-View 4-week rolling summaries. See correlations between lifestyle adherence and symptom improvements. Identify your biggest leverage points (e.g., "Sleep consistency correlates strongest with energy and recovery").
+**回顾进展**
+- 查看4周的持续数据总结，分析生活方式改变与症状改善之间的关联，找出最能产生积极效果的因素（例如“睡眠规律性与精力和恢复能力密切相关”）。
 
-## Key Factors
+## 关键因素
 
-- **Sleep (7-9 hours)** — Testosterone peaks during REM; insufficient sleep tanks production. Consistency matters more than perfection.
-- **Compound Lifts** — Squats, deadlifts, bench press 3x weekly. Triggers testosterone and luteinizing hormone response.
-- **Vitamin D** — 2000-4000 IU daily. Deficiency directly suppresses free testosterone; most people are deficient.
-- **Zinc** — 30mg daily. Essential cofactor for testosterone synthesis and sexual function.
-- **Stress Management** — Cortisol suppresses testosterone. Daily meditation, walks, or cold exposure mitigates this.
-- **Body Fat** — Aromatase in fat tissue converts testosterone to estrogen. 10-15% body fat range optimizes hormonal balance.
+- **睡眠（7-9小时）**：睾酮在快速眼动（REM）睡眠阶段达到峰值；睡眠不足会抑制睾酮分泌。保持睡眠规律比追求完美睡眠更重要。
+- **复合动作训练**：每周进行3次深蹲、硬拉、卧推等复合动作训练，能有效刺激睾酮和黄体生成素的分泌。
+- **维生素D**：每日摄入2000-4000国际单位。缺乏维生素D会直接抑制睾酮分泌，大多数人存在维生素D不足的问题。
+- **锌**：每日摄入30毫克。锌是睾酮合成和性功能的重要辅助因子。
+- **压力管理**：皮质醇会抑制睾酮分泌。每天进行冥想、散步或暴露在寒冷环境中有助于缓解压力。
+- **体脂**：脂肪组织中的芳香化酶会将睾酮转化为雌激素。体脂百分比保持在10-15%范围内有助于维持激素平衡。
 
-## Tips
+## 使用建议
 
-1. **Start with one factor.** Don't overhaul everything at once. Pick sleep or one lift per week, nail it for 3 weeks, then add the next lever.
-
-2. **Symptoms lag lifestyle changes by 2-4 weeks.** Testosterone adapts slowly. Track anyway—patterns emerge in month 2.
-
-3. **Track don't obsess.** Simple daily log takes 2 minutes. Use the data to make one decision per month, then let biology work.
-
-4. **Compound lifts beat cardio.** Heavy resistance training (squats, deadlifts, bench) drives testosterone more than steady-state cardio. Prioritize strength.
-
-5. **All data stays local on your machine.** Your hormone tracking, logs, and personal health data never leave your device. Complete privacy.
+1. **从单一因素开始**：不要一次性改变所有习惯。先选择睡眠或某一项训练内容，坚持3周后再添加新的调整措施。
+2. **症状变化需要2-4周的时间才能显现**：睾酮水平的变化较为缓慢，但持续记录有助于发现规律。
+3. **记录而非过度纠结**：每日简单记录只需2分钟。利用数据每月做出一次决策，然后让身体自然调整。
+4. **复合动作训练优于有氧运动**：高强度的抗阻训练（如深蹲、硬拉、卧推）比持续的有氧运动更能促进睾酮分泌，应优先选择力量训练。
+5. **所有数据均存储在设备上**：你的激素数据、记录以及个人健康信息将严格保密，不会被泄露。

@@ -8,61 +8,56 @@ metadata:
   {"clawdbot":{"emoji":"🐦","requires":{"env":["TYPEFULLY_API_KEY"]}}}
 ---
 
-# Typefully Skill
-Schedule and publish content to X, LinkedIn, Mastodon, Threads, and Bluesky through the Typefully API.
+# Typefully Skill  
+通过 Typefully API，您可以安排并发布内容到 X（原帖平台）、LinkedIn、Mastodon、Threads 和 Bluesky 等平台。  
 
-## Setup
-- Create a Typefully account at https://typefully.com
-- Connect social media accounts in Typefully
-- Generate an API key in Typefully settings
-- Set the environment variable
+## 设置  
+1. 在 [https://typefully.com](https://typefully.com) 注册一个 Typefully 账户。  
+2. 在 Typefully 中连接您的社交媒体账户。  
+3. 在 Typefully 设置中生成 API 密钥。  
+4. 设置 `TYPEFULLY_API_KEY` 环境变量。  
 
 ```bash
 export TYPEFULLY_API_KEY="your-typefully-api-key"
-```
+```  
 
-## Environment Variables
+## 环境变量  
+| 变量 | 是否必需 | 说明 |  
+|---------|---------|---------|  
+| TYPEFULLY_API_KEY | 是 | 您的 Typefully API 密钥 |  
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| TYPEFULLY_API_KEY | Yes | Your Typefully API key |
+## 命令  
 
-## Commands
-
-### User and Accounts
-
+### 用户与账户  
 ```bash
 typefully me                    # Get current user info
 typefully social-sets           # List connected social accounts
 typefully social-set <id>       # Get details for a specific account
-```
+```  
 
-### Drafts
-
+### 草稿  
 ```bash
 typefully drafts                     # List all drafts for an account
 typefully draft <id>                 # Get a specific draft
 typefully create-draft "content"     # Create a new draft
 typefully update-draft <id> "text"   # Update a draft
 typefully delete-draft <id>          # Delete a draft
-```
+```  
 
-### Draft Options
+### 草稿选项  
+| 选项 | 说明 |  
+|--------|---------|  
+| --social-set-id <id> | 草稿所需的账户 ID |  
+| --schedule <time> | ISO 8601 格式的日期时间 |  
+| --now | 创建后立即发布 |  
+| --next-free-slot | 选择最佳发布时间进行安排 |  
+| --title <text> | 草稿的标题 |  
+| --share | 生成公共分享链接 |  
+| --thread | 将内容作为多行帖子发布 |  
+| --reply-to <url> | 回复到指定的帖子 URL |  
+| --community <id> | 在指定社区中发布 |  
 
-| Option | Description |
-|--------|-------------|
-| --social-set-id <id> | Account ID required for drafts |
-| --schedule <time> | ISO 8601 datetime |
-| --now | Publish immediately after creating |
-| --next-free-slot | Schedule for optimal posting time |
-| --title <text> | Internal draft title |
-| --share | Generate public share URL |
-| --thread | Treat content as multi-line thread |
-| --reply-to <url> | Reply to an existing post URL |
-| --community <id> | Post to a community |
-
-### Filtering Drafts
-
+### 过滤草稿  
 ```bash
 typefully drafts                  # Default 10 drafts sorted by updated
 typefully drafts --status draft   # Only draft status
@@ -71,27 +66,23 @@ typefully drafts --status published  # Only published
 typefully drafts --limit 25       # More results per page
 typefully drafts --offset 10      # Skip first 10 results
 typefully drafts --order-by created_at  # Sort by date
-```
+```  
 
-### Tags
-
+### 标签  
 ```bash
 typefully tags                  # List tags for an account
 typefully create-tag "name"     # Create a new tag
 typefully delete-tag "slug"     # Delete a tag
-```
+```  
 
-### Media
-
+### 媒体  
 ```bash
 typefully upload-media <filename>    # Get upload URL for media
 typefully media-status <id>          # Check media processing status
-```
+```  
 
-## Examples
-
-### Create a Simple Post
-
+## 示例  
+### 创建简单帖子  
 ```bash
 # Get your account ID
 typefully social-sets
@@ -103,20 +94,18 @@ typefully create-draft "Hello world! This is my first post." \
 # Create and publish immediately
 typefully create-draft "Breaking news!" \
   --social-set-id 12345 --now
-```
+```  
 
-### Create a Thread
-
+### 创建多行帖子（Thread）  
 ```bash
 typefully create-draft "1/ I am excited to share some updates...
 2/ We have been working hard on new features...
 3/ Here is what we have been building...
 4/ Stay tuned for more!" \
   --social-set-id 12345 --thread
-```
+```  
 
-### Schedule for Later
-
+### 延迟发布  
 ```bash
 # Schedule for specific time
 typefully create-draft "Mark your calendars! Launching next week." \
@@ -127,26 +116,23 @@ typefully create-draft "Mark your calendars! Launching next week." \
 typefully create-draft "Best time to post..." \
   --social-set-id 12345 \
   --next-free-slot
-```
+```  
 
-### Reply to a Post
-
+### 回复帖子  
 ```bash
 typefully create-draft "Great thread! I completely agree." \
   --social-set-id 12345 \
   --reply-to "https://x.com/username/status/1234567890"
-```
+```  
 
-### Post to a Community
-
+### 在社区中发布  
 ```bash
 typefully create-draft "Sharing with the community..." \
   --social-set-id 12345 \
   --community 1493446837214187523
-```
+```  
 
-### Work with Tags
-
+### 使用标签  
 ```bash
 # List available tags
 typefully tags --social-set-id 12345
@@ -158,65 +144,64 @@ typefully create-tag "announcements" --social-set-id 12345
 typefully create-draft "Big announcement!" \
   --social-set-id 12345 \
   --tags announcements
-```
+```  
 
-### Upload Media
-
+### 上传媒体  
 ```bash
 # Get upload URL
 typefully upload-media screenshot.png --social-set-id 12345
 
 # Check status
 typefully media-status <media-id> --social-set-id 12345
-```
+```  
 
-## API Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /v2/me | Get current user |
-| GET | /v2/social-sets | List social sets |
-| GET | /v2/social-sets/{id} | Get social set details |
-| GET | /v2/social-sets/{id}/drafts | List drafts |
-| POST | /v2/social-sets/{id}/drafts | Create draft |
-| GET | /v2/social-sets/{id}/drafts/{id} | Get draft |
-| PATCH | /v2/social-sets/{id}/drafts/{id} | Update draft |
-| DELETE | /v2/social-sets/{id}/drafts/{id} | Delete draft |
-| GET | /v2/social-sets/{id}/tags | List tags |
-| POST | /v2/social-sets/{id}/tags | Create tag |
-| DELETE | /v2/social-sets/{id}/tags/{slug} | Delete tag |
-| POST | /v2/social-sets/{id}/media/upload | Get upload URL |
-| GET | /v2/social-sets/{id}/media/{id} | Check media status |
+## API 端点  
+| 方法 | 端点 | 说明 |  
+|--------|---------|---------|  
+| GET | /v2/me | 获取当前用户信息 |  
+| GET | /v2/social-sets | 列出所有社交媒体设置 |  
+| GET | /v2/social-sets/{id} | 获取特定社交媒体设置的详细信息 |  
+| GET | /v2/social-sets/{id}/drafts | 列出该设置的草稿 |  
+| POST | /v2/social-sets/{id}/drafts | 创建新草稿 |  
+| GET | /v2/social-sets/{id}/drafts/{id} | 获取特定草稿的详细信息 |  
+| PATCH | /v2/social-sets/{id}/drafts/{id} | 更新草稿 |  
+| DELETE | /v2/social-sets/{id}/drafts/{id} | 删除草稿 |  
+| GET | /v2/social-sets/{id}/tags | 列出该设置的标签 |  
+| POST | /v2/social-sets/{id}/tags | 创建新标签 |  
+| DELETE | /v2/social-sets/{id}/tags/{slug} | 删除标签 |  
+| POST | /v2/social-sets/{id}/media/upload | 上传媒体文件并获取上传链接 |  
+| GET | /v2/social-sets/{id}/media/{id} | 检查媒体文件的上传状态 |  
 
-## Supported Platforms
-- X
-- LinkedIn
-- Mastodon
-- Threads
-- Bluesky
+## 支持的平台  
+- X  
+- LinkedIn  
+- Mastodon  
+- Threads  
+- Bluesky  
 
-## X Automation Compliance
-Adhere to the X Automation Rules when using this skill with X:
-- Do not post similar content across multiple accounts.
-- Do not use automation to manipulate trending topics.
-- Send automated replies only to users who have opted in.
-- Send only one automated response per user interaction.
-- Automated likes and bulk following are prohibited.
-- Automated bulk adding to lists is prohibited.
-- Follow the X media policy for all automated content.
-- Mark accounts as sensitive if posting graphic media.
-- Do not use automation to impersonate others.
-- Do not post misleading links.
+## X 自动化规则  
+在使用此功能时，请遵守 X 的自动化规则：  
+- 不要在多个账户上发布相似内容。  
+- 不要使用自动化工具操纵热门话题。  
+- 仅向已同意接收自动回复的用户发送自动回复。  
+- 每次用户互动仅发送一次自动回复。  
+- 禁止自动点赞和批量关注。  
+- 禁止自动将用户添加到列表中。  
+- 所有自动化内容必须遵守 X 的媒体政策。  
+- 如果发布包含图片的媒体，请将相关账户标记为敏感账户。  
+- 不得使用自动化工具冒充他人。  
+- 不得发布误导性链接。  
 
-## Notes
-- All requests require the TYPEFULLY_API_KEY environment variable.
-- Drafts are private by default.
-- Use --share for a public URL.
-- The --now flag publishes immediately without saving a draft.
-- Drafts are saved for review when you do not use --now.
-- Rate limits apply per user and per social set.
-- Do not attempt to bypass rate limits.
+## 注意事项  
+- 所有请求都需要 `TYPEFULLY_API_KEY` 环境变量。  
+- 草稿默认为私密状态。  
+- 使用 `--share` 选项可生成公共分享链接。  
+- 使用 `--now` 选项会立即发布内容（不保存草稿）。  
+- 如果未使用 `--now`，草稿会被保存以供后续审核。  
+- 每个用户和每个社交媒体设置都有速率限制，请遵守这些限制。  
+- 禁止尝试绕过速率限制。  
 
-## Resources
-- Typefully at https://typefully.com
-- Typefully API Docs at https://docs.typefully.com
-- X Automation Rules at https://help.x.com/en/rules-and-policies/x-automation
+## 资源  
+- Typefully 官网：[https://typefully.com](https://typefully.com)  
+- Typefully API 文档：[https://docs.typefully.com](https://docs.typefully.com)  
+- X 自动化规则：[https://help.x.com/en/rules-and-policies/x-automation](https://help.x.com/en/rules-and-policies/x-automation)

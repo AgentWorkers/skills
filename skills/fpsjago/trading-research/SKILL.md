@@ -1,40 +1,40 @@
 ---
 name: trading-research
-description: Binance cryptocurrency trading research, technical analysis, and position management. Triggers on requests for crypto prices, market data, trading analysis, DCA planning, position sizing, whale activity, or any trading research questions about Bitcoin, altcoins, or crypto markets.
+description: 币安（Binance）的加密货币交易研究、技术分析以及仓位管理服务。当用户提出关于加密货币价格、市场数据、交易分析、定期定额投资（DCA）计划、仓位规模调整、大户交易行为，或任何与比特币、山寨币及加密货币市场相关的问题时，这些服务便会自动启动。
 ---
 
-# Trading Research Skill
+# 交易研究技能
 
-Comprehensive cryptocurrency trading research and analysis focused on Binance markets. Designed for conservative-moderate risk traders using DCA (Dollar Cost Averaging) strategies with technical analysis support.
+这是一套全面的加密货币交易研究和分析工具，专注于Binance市场。专为采用定期定额投资（DCA）策略、且风险偏好较为保守或中等的投资者设计，同时提供技术分析支持。
 
-## When to Use This Skill
+## 适用场景
 
-Activate when user requests:
-- Current crypto prices or market data
-- Technical analysis (RSI, MACD, Bollinger Bands, etc.)
-- DCA strategy planning or schedule calculation
-- Position sizing with risk management
-- Market scanning for opportunities
-- Whale tracking or large order monitoring
-- Trading strategy advice or risk assessment
+当用户需要以下信息时，可激活此技能：
+- 当前加密货币价格或市场数据
+- 技术分析结果（如RSI、MACD、Bollinger Bands等）
+- DCA策略规划或投资计划计算
+- 基于风险管理的持仓规模确定
+- 市场机会扫描
+- 大额交易（“鲸鱼交易”）监控
+- 交易策略建议或风险评估
 
-## Core Philosophy
+## 核心理念
 
-- **Conservative first**: Preserve capital, minimize risk
-- **DCA-focused**: Time in market > timing the market
-- **Risk management**: Never risk more than 1-2% per trade
-- **Data-driven**: Use technical indicators for confirmation, not prediction
-- **Transparent**: Show calculations, explain reasoning
+- **保守优先**：保护资本，最小化风险
+- **以DCA为核心**：长期持有优于市场时机选择
+- **风险管理**：每次交易的风险不超过1-2%
+- **数据驱动**：使用技术指标进行确认，而非预测
+- **透明化**：展示计算过程，解释分析逻辑
 
-## Available Tools
+## 可用工具
 
-### 1. Market Data (`binance_market.py`)
+### 1. 市场数据（`binance_market.py`）
 
-Fetch real-time Binance market data.
+获取Binance市场的实时数据。
 
-**Use when**: User asks for price, volume, orderbook, recent trades, or funding rates.
+**使用场景**：用户查询价格、成交量、订单簿、近期交易记录或资金费率。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Current price and 24h stats (default)
 python3 scripts/binance_market.py --symbol BTCUSDT
@@ -58,15 +58,15 @@ python3 scripts/binance_market.py --symbol BTCUSDT --all
 python3 scripts/binance_market.py --symbol BTCUSDT --json > btc_data.json
 ```
 
-**Intervals**: 1m, 5m, 15m, 30m, 1h, 4h, 1d, 1w
+**时间间隔**：1分钟、5分钟、15分钟、30分钟、1小时、4小时、1天、1周
 
-### 2. Technical Analysis (`technical_analysis.py`)
+### 2. 技术分析（`technical_analysis.py`
 
-Calculate and interpret technical indicators.
+计算并解读技术指标。
 
-**Use when**: User asks for TA, indicators, buy/sell signals, or market analysis.
+**使用场景**：用户需要技术分析结果、指标数据、买卖信号或市场趋势分析。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Full analysis (default: 1h timeframe, 200 candles)
 python3 scripts/technical_analysis.py --symbol BTCUSDT
@@ -84,22 +84,22 @@ python3 scripts/technical_analysis.py --input btc_klines.json
 python3 scripts/technical_analysis.py --symbol BTCUSDT --json
 ```
 
-**What it analyzes**:
-- Trend direction (SMA 20/50, EMA 12/26)
-- RSI (14) - overbought/oversold
-- MACD - momentum and crossovers
-- Bollinger Bands - volatility and position
-- Support/resistance levels
-- Volume analysis
-- Trading signals and recommendations
+**分析内容**：
+- 趋势方向（SMA 20/50、EMA 12/26）
+- RSI（14）：超买/超卖信号
+- MACD：动量及交叉点
+- Bollinger Bands：波动性及买卖信号
+- 支撑/阻力位
+- 成交量分析
+- 交易建议
 
-### 3. DCA Calculator (`dca_calculator.py`)
+### 3. 定期定额投资计算器（`dca_calculator.py`
 
-Plan Dollar Cost Averaging strategies.
+帮助用户规划定期定额投资策略。
 
-**Use when**: User wants to set up DCA, calculate investment schedules, or compare strategies.
+**使用场景**：用户希望设置DCA计划、计算投资时间表或比较不同策略。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Basic DCA plan
 python3 scripts/dca_calculator.py --total 5000 --frequency weekly --duration 180
@@ -117,21 +117,21 @@ python3 scripts/dca_calculator.py --total 5000 --frequency weekly --duration 180
 python3 scripts/dca_calculator.py --total 5000 --frequency weekly --duration 180 --json
 ```
 
-**Frequencies**: daily, weekly, biweekly, monthly
+**投资频率**：每日、每周、每两周、每月
 
-**Output includes**:
-- Purchase schedule with dates and amounts
-- Number of purchases and amount per purchase
-- Scenario analysis (flat, bull, bear markets)
-- Comparison to lump sum approach
+**输出内容**：
+- 显示每次投资的日期和金额
+- 总投资次数及每次投资金额
+- 不同市场环境（牛市/熊市）下的投资效果
+- 与一次性投资的对比
 
-### 4. Position Sizer (`position_sizer.py`)
+### 4. 持仓规模确定器（`position_sizer.py**
 
-Calculate safe position sizes using risk management rules.
+根据风险管理规则计算安全持仓规模。
 
-**Use when**: User wants to enter a trade and needs to know position size, stop loss, or take profit levels.
+**使用场景**：用户准备入场交易时，需要确定持仓规模、止损点或止盈点。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Basic position sizing (2% risk recommended)
 python3 scripts/position_sizer.py --balance 10000 --risk 2 --entry 100000 --stop-loss 95000
@@ -149,27 +149,26 @@ python3 scripts/position_sizer.py --balance 10000 --risk 2 --entry 100000 --stop
 python3 scripts/position_sizer.py --balance 10000 --risk 2 --entry 100000 --stop-loss 95000 --json
 ```
 
-**Output includes**:
-- Position size in units and dollar value
-- Risk amount in dollars
-- Stop loss percentage
-- Take profit levels at multiple R:R ratios
-- Position as percentage of account
-- Warnings if position too large
+**输出内容**：
+- 持仓规模（单位及美元金额）
+- 风险金额（美元）
+- 多个止盈比例下的止盈点
+- 持仓比例（占账户资金的百分比）
+- 如果持仓过大时的警告提示
 
-**Rules**:
-- Conservative: Risk 1% per trade
-- Moderate: Risk 2% per trade
-- Never exceed 3% risk per trade
-- Position should be <50% of account
+**规则**：
+- 保守策略：每次交易风险不超过1%
+- 中等风险策略：每次交易风险不超过2%
+- 总风险不超过3%
+- 持仓比例应低于账户资金的50%
 
-### 5. Market Scanner (`market_scanner.py`)
+### 5. 市场扫描器（`market_scanner.py**
 
-Scan all Binance USDT pairs for opportunities.
+扫描Binance所有USDT交易对，寻找交易机会。
 
-**Use when**: User wants to find top movers, volume spikes, or new opportunities.
+**使用场景**：用户希望发现价格波动较大的交易对或新的投资机会。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Full market scan (default)
 python3 scripts/market_scanner.py
@@ -193,20 +192,20 @@ python3 scripts/market_scanner.py --min-volume 500000
 python3 scripts/market_scanner.py --json
 ```
 
-**Categories scanned**:
-- Top gainers (24h price change)
-- Top losers (24h price change)
-- Highest volume pairs
-- Most volatile pairs (high-low spread)
-- Potential breakouts (near 24h high + volume)
+**扫描类别**：
+- 24小时内涨幅最大的交易对
+- 24小时内跌幅最大的交易对
+- 成交量最大的交易对
+- 波动性最高的交易对
+- 可能的突破点（接近24小时高点且成交量大的交易对）
 
-### 6. Whale Tracker (`whale_tracker.py`)
+### 6. 大额交易监控器（`whale_tracker.py**
 
-Monitor large trades and orderbook imbalances.
+监控大额交易和订单簿不平衡情况。
 
-**Use when**: User asks about whale activity, large orders, or orderbook pressure.
+**使用场景**：用户关注大额交易或订单簿的异常情况。
 
-**Common commands**:
+**常用命令**：
 ```bash
 # Full whale analysis (default)
 python3 scripts/whale_tracker.py --symbol BTCUSDT
@@ -227,26 +226,22 @@ python3 scripts/whale_tracker.py --symbol BTCUSDT --threshold 95
 python3 scripts/whale_tracker.py --symbol BTCUSDT --json
 ```
 
-**Output includes**:
-- Large trades (top 10% by value)
-- Buy vs sell pressure from large trades
-- Orderbook bid/ask imbalance
-- Orderbook walls (large orders)
-- Market sentiment (bullish/bearish/neutral)
+**输出内容**：
+- 按金额排名前十的大额交易
+- 大额交易的买卖压力
+- 订单簿的买卖不平衡情况
+- 市场情绪（看涨/看跌/中性）
 
-## Quick Start Workflows
+## 快速操作流程
 
-### "What's BTC doing?"
-```bash
+- **查询BTC价格**：```bash
 # Get overview
 python3 scripts/binance_market.py --symbol BTCUSDT --ticker
 
 # Technical analysis
 python3 scripts/technical_analysis.py --symbol BTCUSDT --interval 1h
 ```
-
-### "Should I buy now?"
-```bash
+- **是否现在买入？**：```bash
 # Check technicals first
 python3 scripts/technical_analysis.py --symbol BTCUSDT
 
@@ -256,17 +251,13 @@ python3 scripts/whale_tracker.py --symbol BTCUSDT
 # If signals look good, calculate position size
 python3 scripts/position_sizer.py --balance 10000 --risk 2 --entry <CURRENT_PRICE> --stop-loss <SUPPORT_LEVEL>
 ```
-
-### "Set up a DCA plan"
-```bash
+- **设置DCA计划**：```bash
 # Plan the strategy
 python3 scripts/dca_calculator.py --total 5000 --frequency weekly --duration 180 --current-price <CURRENT_PRICE> --scenarios
 
 # Show them the schedule and explain
 ```
-
-### "Find me opportunities"
-```bash
+- **寻找投资机会**：```bash
 # Scan market
 python3 scripts/market_scanner.py
 
@@ -274,9 +265,7 @@ python3 scripts/market_scanner.py
 python3 scripts/technical_analysis.py --symbol <PAIR>
 python3 scripts/whale_tracker.py --symbol <PAIR>
 ```
-
-### "What's the market sentiment?"
-```bash
+- **市场情绪如何？**：```bash
 # Check whale activity
 python3 scripts/whale_tracker.py --symbol BTCUSDT
 
@@ -284,165 +273,153 @@ python3 scripts/whale_tracker.py --symbol BTCUSDT
 python3 scripts/market_scanner.py --volume --volatile
 ```
 
-## Reference Materials
+## 参考资料
 
-Located in `references/` directory:
+相关资料位于`references/`目录下：
 
 ### `binance-api.md`
-- API endpoints and parameters
-- Rate limits
-- Authentication for signed requests
-- Order types and time-in-force
-- Error codes
-- Python examples
+- API接口及参数
+- 请求速率限制
+- 认证流程
+- 订单类型及有效期
+- 错误代码
+- Python代码示例
 
-**Use when**: Need API details, building custom queries, or troubleshooting
+**使用场景**：需要API详细信息、构建自定义查询或解决技术问题
 
 ### `indicators.md`
-- Technical indicator formulas
-- Interpretation guidelines
-- Common settings per timeframe
-- Combining indicators
-- Reliability assessment
-- Common mistakes
+- 技术指标公式及解读方法
+- 不同时间段的常用设置
+- 指标组合使用方法
+- 指标可靠性评估
+- 常见错误及避免方法
 
-**Use when**: Explaining indicators, interpreting signals, or educating user
+**使用场景**：向用户解释技术指标、解读交易信号或提供培训
 
 ### `strategies.md`
-- DCA variations (fixed, value-based, RSI-based, ladder)
-- Risk management (1-2% rule, stop loss strategies)
-- Trend following strategies
-- Entry/exit strategies
-- Position sizing examples
-- Performance tracking
+- 各种DCA策略（固定金额、基于价值的策略、基于RSI的策略等）
+- 风险管理方法（每次交易风险不超过1-2%）
+- 跟踪趋势的策略
+- 入场/出场策略示例
+- 持仓规模计算方法
+- 绩效跟踪方法
 
-**Use when**: Planning trades, explaining strategies, or risk management questions
+**使用场景**：制定交易计划、解释交易策略或解答风险管理相关问题
 
-## Trading Guidance
+## 交易指导
 
-### For Conservative Traders
+### 适合保守型投资者的策略
 
-**DCA Approach**:
-- Start with weekly or monthly purchases
-- Fixed amount: $50-200 per purchase
-- Duration: 6-12 months minimum
-- Don't try to time the market
-- Accumulate and hold long-term
+- **定期定额投资（DCA）**：
+- 从每周或每月一次的投资开始
+- 每次投资金额固定（50-200美元）
+- 投资期限至少6-12个月
+- 不要试图预测市场时机
+- 长期持有
 
-**Risk Management**:
-- No leverage
-- 50%+ of account in cash/stablecoins
-- Risk 1% per trade maximum
-- Only trade with 3+ confirmations
-- Stop losses always active
+- **风险管理**：
+- 不使用杠杆
+- 账户资金中至少50%用于现金或稳定币
+- 每次交易风险不超过1%
+- 只在有多个技术确认信号时才进行交易
+- 始终设置止损
 
-### For Moderate Risk Traders
+### 适合中等风险投资者的策略
 
-**Enhanced DCA**:
-- Adjust amounts based on RSI (buy more when oversold)
-- Use technical analysis for better entries
-- 60-70% DCA, 30-40% active trading
-- Risk 2% per trade on active positions
+- **优化后的DCA**：
+- 根据RSI调整投资金额（超卖时增加投资）
+- 结合技术分析优化入场时机
+- 60-70%的资金用于DCA，30-40%用于主动交易
+- 活动中的持仓每次交易风险不超过2%
 
-**Position Trading**:
-- Wait for confluence of indicators
-- Use position_sizer.py for every trade
-- Risk:Reward ratio minimum 2:1
-- Trail stops as profit grows
+- **趋势交易**：
+- 等待多个指标一致发出买入/卖出信号
+- 使用`position_sizer.py`确定每次交易的持仓规模
+- 风险回报比至少为2:1
+- 随着利润增长调整止损点
 
-### Red Flags (Don't Trade)
+### 需避免的交易信号
 
-- RSI >70 and rising (overbought)
-- Low volume breakout (likely false)
-- Against major trend (don't short bull market)
-- Multiple indicators conflicting
-- No clear support level for stop loss
-- Risk:Reward ratio <1.5:1
-- During extreme fear or greed
+- RSI超过70且持续上升（超买信号）
+- 低成交量下的价格突破（可能为假信号）
+- 逆势交易（在牛市中不要做空）
+- 多个指标出现矛盾信号
+- 没有明确的止损支撑位
+- 风险回报比低于1.5:1
+- 在极端恐惧或贪婪的情绪下不要交易
 
-## Response Format
+## 回答格式
 
-When user asks for analysis:
+当用户请求分析时，提供以下信息：
+- **当前市场状况**：价格、趋势及关键技术指标
+- **技术分析结果**：指标数值及其含义
+- **市场情绪**：大额交易活动、成交量及市场压力
+- **交易建议**：包括买入/等待/卖出的理由及依据
+- **风险管理建议**：持仓规模、止损点及止盈点
+- **注意事项**：可能出现的风险及替代方案
 
-1. **Current State**: Price, trend, key levels
-2. **Technical View**: Indicator readings and what they mean
-3. **Sentiment**: Whale activity, volume, market pressure
-4. **Recommendation**: Buy/wait/sell with reasoning
-5. **Risk Management**: Position size, stop loss, take profit if applicable
-6. **Caveats**: What could go wrong, alternative scenarios
+**必包含内容**：
+- 具体数据（例如“RSI为28”）
+- 对交易的风险提示
+- 明确的下一步操作建议
+- 适用的交易时间范围（日内交易、波段交易或长期投资）
 
-Always include:
-- Specific numbers (don't just say "oversold", say "RSI at 28")
-- Risk warnings for trades
-- Clear next steps
-- Timeframe context (day trade vs swing trade vs long-term)
+## 重要说明
 
-## Important Notes
+- **API访问**：
+  所有脚本均使用Binance的公共API（无需额外认证）
+  脚本中已设置请求速率限制
+  如果因地理位置限制导致API无法访问，脚本会友好地提示错误
 
-### API Access
-- All scripts use Binance public API (no authentication needed for data)
-- Respect rate limits (built into scripts)
-- If API blocked by geo-restrictions, scripts will error gracefully
+**限制事项**：
+- **仅用于研究**：这些工具不支持实际交易执行
+- **非实时数据**：数据基于快照（REST API）
+- **不支持期货交易**：主要针对现货市场（资金费率除外）
+- **无回测功能**：策略评估需手动完成
 
-### Limitations
-- **No trading execution**: These tools are for research only
-- **No real-time WebSocket**: Data is snapshot-based (REST API)
-- **No futures-specific features**: Primarily spot market focused (except funding rates)
-- **No backtesting engine**: Manual strategy evaluation
+**需要认证的操作**：
+- 下单
+- 查看账户余额
+- 查看未成交订单
+- 访问交易历史记录
 
-### Authentication Required For
-- Placing orders
-- Checking account balance
-- Viewing open orders
-- Accessing trade history
+**提示**：建议用户参考Binance的API文档（`references/binance-api.md`）以了解认证流程。
 
-**Note**: Guide users to Binance API documentation (see `references/binance-api.md`) for authenticated trading setup.
+## 错误处理
 
-## Error Handling
+如果脚本执行失败，请检查：
+- 网络连接是否正常
+- 确认输入的符号格式正确（例如，使用大写形式，如BTCUSDT）
+- 确认用户所在地区是否可以访问Binance API
+- 检查脚本路径及Python环境的安装情况
+- 检查参数是否输入正确
 
-If script fails:
-1. Check internet connection
-2. Verify symbol format (uppercase, e.g., BTCUSDT not btc-usdt)
-3. Check if Binance API accessible in user's location
-4. Verify script path and Python availability
-5. Check for typos in parameters
+**常见错误**：
+- **HTTP 451**：所在地区被限制访问API（建议使用VPN）
+- 输入的符号不存在于Binance平台
+- 请求速率达到限制（等待60秒后重试）
+- 连接超时（可能是网络问题或API暂时不可用）
 
-Common errors:
-- **HTTP 451**: API blocked in location (suggest VPN)
-- **Invalid symbol**: Check symbol exists on Binance
-- **Rate limit**: Wait 60 seconds and retry
-- **Connection timeout**: Network issue or API down
+**最佳实践**：
+- **展示操作过程**：显示用户执行的命令
+- **解释结果**：不仅仅是展示数据，还要解释其含义
+- **区分交易类型**：针对日内交易和长期投资提供不同建议
+- **强调风险**：在给出交易建议前先说明风险管理措施
+- **诚实沟通**：如果指标结果矛盾，要如实告知
+- **及时更新**：如果市场情况发生变化，及时调整建议
+- **避免预测**：仅说明“如果满足条件则……”，而非“一定会发生……”
+- **提供多种方案**：提供看涨/看跌的多种可能性
 
-## Best Practices
+## 技能维护
 
-1. **Always show your work**: Display the command you ran
-2. **Interpret results**: Don't just dump data, explain what it means
-3. **Context matters**: Different advice for day trade vs DCA accumulation
-4. **Risk first**: Mention risk management before entry signals
-5. **Be honest**: If indicators conflict, say so
-6. **Update knowledge**: If market conditions changed, acknowledge it
-7. **No predictions**: Frame as "if X then Y", not "X will happen"
-8. **Show alternatives**: Bull and bear case scenarios
+- **定期测试**：每月运行所有脚本，确保其与Binance API的兼容性。
 
-## Skill Maintenance
-
-### Testing
-Run each script monthly to ensure API compatibility:
-```bash
-python3 scripts/binance_market.py --symbol BTCUSDT --help
-python3 scripts/technical_analysis.py --help
-python3 scripts/dca_calculator.py --help
-python3 scripts/position_sizer.py --help
-python3 scripts/market_scanner.py --help
-python3 scripts/whale_tracker.py --help
-```
-
-### Updates Needed If
-- Binance changes API endpoints
-- New technical indicators requested
-- Additional risk management tools needed
-- User feedback suggests improvements
+**更新说明**：
+- 如果Binance修改API接口
+- 用户提出新的技术指标需求
+- 需要额外的风险管理工具
+- 根据用户反馈进行功能改进
 
 ---
 
-**Remember**: This skill helps users make informed decisions. It does not make decisions for them. Always emphasize personal responsibility and risk disclosure.
+**提醒**：此技能旨在帮助用户做出明智的交易决策，但不能替代用户的判断。始终强调个人责任和风险披露的重要性。

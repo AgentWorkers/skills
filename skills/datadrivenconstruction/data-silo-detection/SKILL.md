@@ -1,18 +1,18 @@
 ---
 slug: "data-silo-detection"
 display_name: "Data Silo Detection"
-description: "Detect and map data silos in construction organizations. Identify disconnected data sources and integration opportunities"
+description: "检测并绘制建筑组织中的数据孤岛分布图。识别那些彼此孤立的数据源以及潜在的集成机会。"
 ---
 
-# Data Silo Detection
+# 数据孤岛检测
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 1.2), this skill detects and maps data silos in construction organizations, identifying disconnected data sources, duplicate data, and integration opportunities.
+本技能基于DDC方法论（第1.2章），用于检测和识别建筑组织中的数据孤岛，包括断开连接的数据源、重复数据以及数据整合的潜在机会。
 
-**Book Reference:** "Технологии и системы управления в современном строительстве" / "Technologies and Management Systems in Modern Construction"
+**参考书籍**：《现代建筑中的技术与管理系统》（"Технологии и системы управления в современном строительстве"）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -596,9 +596,9 @@ Detected **{len(analysis.silos_detected)}** data silos and **{len(analysis.dupli
         return report
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Detect Data Silos
+### 检测数据孤岛
 
 ```python
 detector = DataSiloDetector()
@@ -652,7 +652,7 @@ print(f"Silos detected: {len(analysis.silos_detected)}")
 print(f"Connectivity score: {analysis.connectivity_score:.0%}")
 ```
 
-### Generate Silo Report
+### 生成孤岛报告
 
 ```python
 report = detector.generate_report(analysis)
@@ -663,7 +663,7 @@ with open("silo_report.md", "w") as f:
     f.write(report)
 ```
 
-### View Priority Actions
+### 查看优先级行动项
 
 ```python
 print("Priority Actions:")
@@ -677,24 +677,24 @@ for phase, items in analysis.integration_roadmap.items():
         print(f"  - {item}")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `DataSiloDetector` | Main detection engine |
-| `DataSource` | Data source definition |
-| `DataSilo` | Detected silo with details |
-| `DuplicateData` | Duplicate data detection |
-| `SiloAnalysis` | Complete analysis results |
-| `SiloSeverity` | Severity classification |
+| 组件          | 功能                |
+|---------------|-------------------|
+| `DataSiloDetector` | 主要检测引擎           |
+| `DataSource`     | 数据源定义             |
+| `DataSilo`     | 检测到的数据孤岛及其详细信息     |
+| `DuplicateData`   | 重复数据检测           |
+| `SiloAnalysis`   | 完整的分析结果           |
+| `SiloSeverity`   | 数据孤岛的严重程度分类       |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 1.2
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第1.2章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [erp-integration-analysis](../erp-integration-analysis/SKILL.md) for system integration
-- Use [data-evolution-analysis](../../Chapter-1.1/data-evolution-analysis/SKILL.md) for maturity assessment
-- Use [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) to connect silos
+- 使用 [erp-integration-analysis](../erp-integration-analysis/SKILL.md) 进行系统集成
+- 使用 [data-evolution-analysis](../../Chapter-1.1/data-evolution-analysis/SKILL.md) 进行成熟度评估
+- 使用 [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) 连接各个数据孤岛

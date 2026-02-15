@@ -1,6 +1,6 @@
 ---
 name: charger
-description: Check EV charger availability (favorites, nearby search) via Google Places.
+description: 通过 Google Places 检查电动汽车充电器的可用性（包括常用充电器和附近的充电器）。
 metadata:
   clawdbot:
     config:
@@ -11,69 +11,59 @@ metadata:
         - .cache
 ---
 
-# charger
+# 充电器
 
-Higher-level EV charger checker built on Google Places (New) EV charge data.
+这是一个基于 Google Places（新功能）提供的电动汽车充电器信息查询工具。该工具包含一个名为 `bin/charger` 的命令行工具（使用 Node.js 开发），用于查询充电器的可用性。
 
-This skill includes a `bin/charger` CLI (Node.js) for checking charger availability.
+## 设置要求
 
-## Setup
+- 确保已安装 Node.js 18 及更高版本（Clawdbot 已经内置了 Node.js）。
+- 需要 `GOOGLE_PLACES_API_KEY`（建议将其配置在 `~/.clawdbot/.env` 文件中）。
 
-- Requirements:
-  - Node.js 18+ (Clawdbot already has Node)
-  - `GOOGLE_PLACES_API_KEY` (recommended in `~/.clawdbot/.env`)
+- 将 `bin/charger` 命令行工具添加到系统的 `PATH` 环境变量中（示例命令：`ln -sf "$(pwd)"/bin/charger /home/claw/clawd/bin/charger`）。
 
-- Put the CLI on your PATH (example):
-  - `ln -sf "$(pwd)"/bin/charger /home/claw/clawd/bin/charger`
-
-- Add a favorite:
+- 可以将某个充电器添加为常用充电站：
   - `charger favorites add home --place-id <placeId>`
 
-## Commands
+## 命令
 
-- Check a favorite / place id / query:
+- 查询常用充电站或特定充电站的可用性：
   - `charger check home`
   - `charger check "Wien Energie Charging Station Liniengasse 2 1060 Wien"`
 
-- Find nearby:
+- 查找附近的充电器：
   - `charger nearby --lat 48.188472 --lng 16.348854 --radius 2000 --max 10`
 
-## Notifications
+## 通知机制
 
-The recommended pattern is:
+推荐的通知方式如下：
+1. `charger` 工具会直接返回一个明确的提示信息（例如：“Any free: YES|NO”），表示充电器的可用性。
+2. 通过定时任务（如 Gateway 的 cron 作业）运行一个辅助脚本，仅在确实需要通知时才输出相关信息。
 
-1) `charger` (this skill) produces a clear `Any free: YES|NO` result.
-2) A scheduled job (Gateway cron) runs a small helper that only prints output when it should notify.
+### 辅助脚本（负责发送通知）
 
-### Helper script (what actually decides to notify)
+该工具包中包含 `scripts/charger-notify.sh` 脚本，其功能如下：
+- 执行 `charger check <target>` 命令来查询充电器状态。
+- 如果查询结果显示“Any free: YES”，且上一次查询结果为“NO”，则发送通知。
+- 否则，不发送任何通知。
 
-This bundle includes `scripts/charger-notify.sh`.
+**注意**：如果没有输出，即表示当前充电器处于可用状态，因此不会触发通知。
 
-What it does:
-- Runs `charger check <target>`
-- If `Any free: YES` **and** the last run was not `YES`, it prints a single notification line.
-- Otherwise it prints **nothing**.
+**状态记录**：
+- 脚本会将充电器的可用状态保存在 `~/.cache/charger-notify/<target>.state` 文件中，因此只有在状态从“NO”变为“YES”时才会发送通知。
 
-So: **no output = no notification**.
+**使用方法**：
+- 运行 `bash scripts/charger-notify.sh home` 来查询并接收通知。
 
-State:
-- Stores last state in `~/.cache/charger-notify/<target>.state` so it only notifies on the change `NO/UNKNOWN → YES`.
+**示例通知内容**：
+- “EV 充电器可用：Wien Energie 充电站（地址：Amtshausgasse 9, 1050 Wien, Austria）——目前有 1 个车位可用（0 个车位正在使用中），更新时间：2026-01-21T21:05:00Z”
 
-Usage:
-- `bash scripts/charger-notify.sh home`
+### 定时任务设置（如何接收 Telegram 通知）
 
-Example notification output:
-- `EV charger available: Tanke Wien Energie Charging Station — Amtshausgasse 9, 1050 Wien, Austria — 1/2 available (OOS 0) (updated 2026-01-21T21:05:00Z)`
+使用 cron 作业来定时执行 `charger-notify.sh` 脚本，并将脚本的输出内容发送到您的 Telegram 账户。典型设置如下：
+- 每 10 分钟执行一次查询：`*/10 * * * *`
 
-### Typical cron schedule (how you actually get Telegram pings)
-
-Cron is the scheduler. It runs the helper script on a timer and sends you whatever the script prints.
-Because the helper prints **only when it becomes available**, you only get messages when it matters.
-
-Check every 10 minutes:
-- `*/10 * * * *`
-
-If you want me to wire this into Clawdbot Gateway cron (so you get Telegram pings), tell me:
-- target (`home`)
-- interval (every 5/10/20 min)
-- quiet hours (optional)
+如果您希望将此功能集成到 Clawdbot 的 cron 任务中以接收 Telegram 通知，请提供以下信息：
+- 需要查询的充电站名称（例如：`home`）
+- 定时间隔（例如：每 5 分钟、10 分钟或 20 分钟）
+- 通知的禁用时间（可选）

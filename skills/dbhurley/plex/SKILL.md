@@ -1,74 +1,74 @@
 ---
 name: plex
-description: Control Plex Media Server - browse libraries, search, play media, manage playback.
+description: 控制 Plex 媒体服务器：浏览媒体库、搜索媒体文件、播放媒体内容以及管理播放设置。
 homepage: https://plex.tv
 metadata: {"clawdis":{"emoji":"🎬","requires":{"bins":["curl"],"env":["PLEX_TOKEN","PLEX_SERVER"]},"primaryEnv":"PLEX_TOKEN"}}
 ---
 
 # Plex Media Server
 
-Control Plex Media Server using the Plex API.
+使用 Plex API 来控制 Plex Media Server。
 
-## Setup
+## 设置
 
-Set environment variables:
-- `PLEX_SERVER`: Your Plex server URL (e.g., `http://192.168.1.100:32400`)
-- `PLEX_TOKEN`: Your Plex auth token (find it at plex.tv/claim or in Plex app XML)
+配置环境变量：
+- `PLEX_SERVER`：您的 Plex 服务器地址（例如：`http://192.168.1.100:32400`）
+- `PLEX_TOKEN`：您的 Plex 认证令牌（可以在 plex.tv/claim 或 Plex 应用程序的 XML 文件中找到）
 
-## Common Commands
+## 常用命令
 
-### Get Server Info
+### 获取服务器信息
 ```bash
 curl -s "$PLEX_SERVER/?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### Browse Libraries
+### 浏览媒体库
 ```bash
 curl -s "$PLEX_SERVER/library/sections?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### List Library Contents
+### 列出媒体库内容
 ```bash
 # Replace 1 with your library section key (from browse above)
 curl -s "$PLEX_SERVER/library/sections/1/all?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### Search
+### 搜索
 ```bash
 curl -s "$PLEX_SERVER/search?query=SEARCH_TERM&X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### Get Recently Added
+### 获取最近添加的媒体文件
 ```bash
 curl -s "$PLEX_SERVER/library/recentlyAdded?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### Get On Deck (Continue Watching)
+### 继续观看（Get On Deck）
 ```bash
 curl -s "$PLEX_SERVER/library/onDeck?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### Get Active Sessions (What's Playing Now)
+### 查看当前正在播放的内容（Active Sessions）
 ```bash
 curl -s "$PLEX_SERVER/status/sessions?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-### List Available Clients/Players
+### 列出可用的客户端/播放器
 ```bash
 curl -s "$PLEX_SERVER/clients?X-Plex-Token=$PLEX_TOKEN" -H "Accept: application/json"
 ```
 
-## Library Section Types
+## 媒体库类型
 
-- Movies (usually section 1)
-- TV Shows (usually section 2)
-- Music
-- Photos
+- 电影（通常为第 1 个分类）
+- 电视节目（通常为第 2 个分类）
+- 音乐
+- 照片
 
-## Notes
+## 注意事项
 
-- Add `-H "Accept: application/json"` for JSON output (default is XML)
-- Library section keys (1, 2, 3...) vary by server setup — list sections first
-- Media keys look like `/library/metadata/12345`
-- Always confirm before starting playback on a device
-- Get your token: plex.tv → Account → Authorized Devices → XML link
+- 添加 `-H "Accept: application/json"` 以获取 JSON 格式的输出（默认为 XML 格式）
+- 媒体库的分类键（1、2、3 等）可能因服务器设置而异——请先列出所有分类
+- 媒体文件的路径格式为 `/library/metadata/12345`
+- 在设备上开始播放前，请务必先确认相关信息
+- 获取您的认证令牌：访问 plex.tv → 账户（Account）→ 授权设备（Authorized Devices）→ 查看 XML 链接

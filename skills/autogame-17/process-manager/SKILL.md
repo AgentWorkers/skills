@@ -1,13 +1,13 @@
-# Process Manager Skill
+# 进程管理技能
 
-> Safe process management utility.
+> 一个用于安全管理进程的工具。
 
-## Description
-A utility skill to manage, list, and kill processes safely. Replaces manual `ps aux | grep` and `kill` patterns.
+## 描述
+这是一个用于安全地管理、列出和终止进程的工具技能。它可以替代手动使用的 `ps aux | grep` 和 `kill` 命令。
 
-## Commands
-- `list`: List running processes (supports filtering).
-- `kill`: Terminate processes by PID or pattern (safeguarded).
+## 命令
+- `list`：列出正在运行的进程（支持过滤）。
+- `kill`：根据进程 ID 或特定模式终止进程（操作过程受到保护）。
 
-## Usage
-See `README.md` or run with no args for help.
+## 使用方法
+请参阅 `README.md` 文件，或直接运行该工具而不带任何参数以获取帮助。

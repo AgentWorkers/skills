@@ -1,23 +1,23 @@
 ---
 name: tRPC
-description: Expert guidance for tRPC (TypeScript Remote Procedure Call) including router setup, procedures, middleware, context, client configuration, and Next.js integration. Use this when building type-safe APIs, integrating tRPC with Next.js, or implementing client-server communication with full TypeScript inference.
+description: 关于 tRPC（TypeScript 远程过程调用）的专家指南，内容包括路由器设置、相关流程、中间件、上下文管理、客户端配置以及与 Next.js 的集成。本指南适用于构建类型安全的 API、将 tRPC 与 Next.js 集成，或实现具有完整 TypeScript 推断功能的客户端-服务器通信。
 ---
 
 # tRPC
 
-Expert assistance with tRPC - End-to-end typesafe APIs with TypeScript.
+tRPC 提供了基于 TypeScript 的端到端、类型安全的 API 开发解决方案，帮助开发者轻松构建高性能、可维护的微服务。
 
-## Overview
+## 概述
 
-tRPC enables building fully typesafe APIs without schemas or code generation:
-- Full TypeScript inference from server to client
-- No code generation needed
-- Excellent DX with autocomplete and type safety
-- Works great with Next.js, React Query, and more
+tRPC 允许在无需模式定义或代码生成的情况下构建完全类型安全的 API：
+- 从服务器到客户端都支持 TypeScript 的类型推断
+- 无需进行任何代码生成
+- 提供出色的开发体验，包括自动补全和类型安全功能
+- 非常适合与 Next.js、React Query 等框架配合使用
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 ```bash
 # Core packages
 npm install @trpc/server@next @trpc/client@next @trpc/react-query@next
@@ -26,9 +26,9 @@ npm install @trpc/server@next @trpc/client@next @trpc/react-query@next
 npm install @tanstack/react-query@latest zod
 ```
 
-### Basic Setup (Next.js App Router)
+### 基本设置（Next.js 应用程序路由）
 
-**1. Create tRPC Router**
+**1. 创建 tRPC 路由器**
 ```typescript
 // server/trpc.ts
 import { initTRPC } from '@trpc/server'
@@ -40,7 +40,7 @@ export const router = t.router
 export const publicProcedure = t.procedure
 ```
 
-**2. Define API Router**
+**2. 定义 API 路由**
 ```typescript
 // server/routers/_app.ts
 import { router, publicProcedure } from '../trpc'
@@ -67,7 +67,7 @@ export const appRouter = router({
 export type AppRouter = typeof appRouter
 ```
 
-**3. Create API Route**
+**3. 创建 API 路由条目**
 ```typescript
 // app/api/trpc/[trpc]/route.ts
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
@@ -84,7 +84,7 @@ const handler = (req: Request) =>
 export { handler as GET, handler as POST }
 ```
 
-**4. Setup Client Provider**
+**4. 设置客户端提供者**
 ```typescript
 // app/providers.tsx
 'use client'
@@ -116,7 +116,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 ```
 
-**5. Create tRPC Client**
+**5. 创建 tRPC 客户端**
 ```typescript
 // lib/trpc.ts
 import { createTRPCReact } from '@trpc/react-query'
@@ -125,7 +125,7 @@ import type { AppRouter } from '@/server/routers/_app'
 export const trpc = createTRPCReact<AppRouter>()
 ```
 
-**6. Use in Components**
+**6. 在组件中使用 tRPC**
 ```typescript
 'use client'
 
@@ -151,9 +151,9 @@ export default function Home() {
 }
 ```
 
-## Router Definition
+## 路由器定义
 
-### Basic Router
+### 基本路由器
 ```typescript
 import { router, publicProcedure } from './trpc'
 import { z } from 'zod'
@@ -186,7 +186,7 @@ export const userRouter = router({
 })
 ```
 
-### Nested Routers
+### 嵌套路由器
 ```typescript
 import { router } from './trpc'
 import { userRouter } from './routers/user'
@@ -205,7 +205,7 @@ export const appRouter = router({
 // trpc.comment.create.useMutation()
 ```
 
-### Merging Routers
+### 合并路由器
 ```typescript
 import { router, publicProcedure } from './trpc'
 
@@ -226,9 +226,9 @@ export const appRouter = router({
 })
 ```
 
-## Input Validation with Zod
+## 使用 Zod 进行输入验证
 
-### Basic Validation
+### 基本验证
 ```typescript
 import { z } from 'zod'
 
@@ -247,7 +247,7 @@ export const userRouter = router({
 })
 ```
 
-### Complex Validation
+### 复杂验证
 ```typescript
 const createPostInput = z.object({
   title: z.string().min(5).max(100),
@@ -269,7 +269,7 @@ export const postRouter = router({
 })
 ```
 
-### Reusable Schemas
+### 可重用的模式定义
 ```typescript
 // schemas/user.ts
 export const userSchema = z.object({
@@ -296,9 +296,9 @@ export const userRouter = router({
 })
 ```
 
-## Context
+## 上下文管理
 
-### Creating Context
+### 创建上下文
 ```typescript
 // server/context.ts
 import { inferAsyncReturnType } from '@trpc/server'
@@ -317,7 +317,7 @@ export async function createContext(opts: FetchCreateContextFnOptions) {
 export type Context = inferAsyncReturnType<typeof createContext>
 ```
 
-### Using Context in tRPC
+### 在 tRPC 中使用上下文
 ```typescript
 // server/trpc.ts
 import { initTRPC } from '@trpc/server'
@@ -329,7 +329,7 @@ export const router = t.router
 export const publicProcedure = t.procedure
 ```
 
-### Accessing Context in Procedures
+### 在函数中访问上下文
 ```typescript
 export const userRouter = router({
   me: publicProcedure.query(({ ctx }) => {
@@ -345,9 +345,9 @@ export const userRouter = router({
 })
 ```
 
-## Middleware
+## 中间件
 
-### Creating Middleware
+### 创建中间件
 ```typescript
 // server/trpc.ts
 import { initTRPC, TRPCError } from '@trpc/server'
@@ -384,7 +384,7 @@ export const publicProcedure = t.procedure.use(loggerMiddleware)
 export const protectedProcedure = t.procedure.use(loggerMiddleware).use(isAuthed)
 ```
 
-### Using Protected Procedures
+### 使用受保护的函数
 ```typescript
 export const postRouter = router({
   // Public - anyone can access
@@ -407,7 +407,7 @@ export const postRouter = router({
 })
 ```
 
-### Role-Based Middleware
+### 基于角色的中间件
 ```typescript
 const requireRole = (role: string) =>
   t.middleware(({ ctx, next }) => {
@@ -428,9 +428,9 @@ export const userRouter = router({
 })
 ```
 
-## Client Usage
+## 客户端使用
 
-### Queries
+### 查询操作
 ```typescript
 'use client'
 
@@ -468,7 +468,7 @@ export default function UserList() {
 }
 ```
 
-### Mutations
+### 更新操作
 ```typescript
 'use client'
 
@@ -507,7 +507,7 @@ export default function CreateUser() {
 }
 ```
 
-### Optimistic Updates
+### 乐观更新
 ```typescript
 const updatePost = trpc.post.update.useMutation({
   onMutate: async (newPost) => {
@@ -537,7 +537,7 @@ const updatePost = trpc.post.update.useMutation({
 })
 ```
 
-### Infinite Queries
+### 无限循环查询
 ```typescript
 // Server
 export const postRouter = router({
@@ -592,9 +592,9 @@ export default function InfinitePosts() {
 }
 ```
 
-## Error Handling
+## 错误处理
 
-### Server Errors
+### 服务器端错误
 ```typescript
 import { TRPCError } from '@trpc/server'
 
@@ -637,21 +637,21 @@ export const postRouter = router({
 })
 ```
 
-### Error Codes
-- `BAD_REQUEST` - Invalid input
-- `UNAUTHORIZED` - Not authenticated
-- `FORBIDDEN` - Not authorized
-- `NOT_FOUND` - Resource not found
-- `TIMEOUT` - Request timeout
-- `CONFLICT` - Resource conflict
-- `PRECONDITION_FAILED` - Precondition check failed
-- `PAYLOAD_TOO_LARGE` - Request too large
-- `METHOD_NOT_SUPPORTED` - HTTP method not supported
-- `TOO_MANY_REQUESTS` - Rate limited
-- `CLIENT_CLOSED_REQUEST` - Client closed request
-- `INTERNAL_SERVER_ERROR` - Server error
+### 错误代码
+- `BAD_REQUEST` - 输入无效
+- `UNAUTHORIZED` - 未授权
+- `FORBIDDEN` - 禁止访问
+- `NOT_FOUND` - 资源未找到
+- `TIMEOUT` - 请求超时
+- `CONFLICT` - 资源冲突
+- `PRECONDITION_FAILED` - 前提条件检查失败
+- `PAYLOAD_TOO_LARGE` - 请求数据过大
+- `METHOD_NOT_SUPPORTED` - 不支持的 HTTP 方法
+- `TOO_MANY_REQUESTS` - 请求次数过多
+- `CLIENT_CLOSED_REQUEST` - 客户端主动关闭请求
+- `INTERNAL_SERVER_ERROR` - 服务器内部错误
 
-### Client Error Handling
+### 客户端错误处理
 ```typescript
 const createPost = trpc.post.create.useMutation({
   onError: (error) => {
@@ -666,9 +666,9 @@ const createPost = trpc.post.create.useMutation({
 })
 ```
 
-## Server-Side Calls
+## 服务器端调用
 
-### In Server Components
+### 在服务器组件中调用 tRPC 函数
 ```typescript
 // app/users/page.tsx
 import { createCaller } from '@/server/routers/_app'
@@ -690,7 +690,7 @@ export default async function UsersPage() {
 }
 ```
 
-### Create Caller
+### 创建调用者对象
 ```typescript
 // server/routers/_app.ts
 export const createCaller = createCallerFactory(appRouter)
@@ -700,9 +700,9 @@ const caller = createCaller(ctx)
 const user = await caller.user.getById('123')
 ```
 
-## Advanced Patterns
+## 高级用法
 
-### Request Batching
+### 请求批量处理
 ```typescript
 import { httpBatchLink } from '@trpc/client'
 
@@ -716,10 +716,10 @@ const trpcClient = trpc.createClient({
 })
 ```
 
-### Request Deduplication
-Automatic with React Query - multiple components requesting same data will only make one request.
+### 请求去重
+React Query 可自动去重：多个组件请求相同数据时，只会发送一次请求。
 
-### Custom Headers
+### 自定义请求头
 ```typescript
 const trpcClient = trpc.createClient({
   links: [
@@ -735,7 +735,7 @@ const trpcClient = trpc.createClient({
 })
 ```
 
-### Error Formatting
+### 错误格式化
 ```typescript
 // server/trpc.ts
 const t = initTRPC.context<Context>().create({
@@ -754,9 +754,9 @@ const t = initTRPC.context<Context>().create({
 })
 ```
 
-## Testing
+## 测试
 
-### Testing Procedures
+### 测试流程
 ```typescript
 import { appRouter } from '@/server/routers/_app'
 import { createCaller } from '@/server/routers/_app'
@@ -776,21 +776,21 @@ describe('user router', () => {
 })
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use Zod for validation** - Always validate inputs
-2. **Keep procedures small** - Single responsibility
-3. **Use middleware for auth** - Don't repeat auth checks
-4. **Type your context** - Full type safety
-5. **Organize routers** - Split into logical domains
-6. **Handle errors properly** - Use appropriate error codes
-7. **Leverage React Query** - Use its caching and refetching
-8. **Batch requests** - Enable batching for better performance
-9. **Use optimistic updates** - Better UX
-10. **Document procedures** - Add JSDoc comments
+1. **使用 Zod 进行输入验证** - 始终对输入数据进行验证
+2. **保持函数职责单一** - 每个函数只负责一个功能
+3. **使用中间件处理身份验证** - 避免重复进行身份验证操作
+4. **为上下文添加类型注解** - 确保类型安全
+5. **合理组织路由结构** - 按逻辑域划分路由
+6. **妥善处理错误** - 使用明确的错误代码
+7. **充分利用 React Query** - 利用其缓存和重新获取数据的功能
+8. **批量处理请求** - 提高性能
+9. **采用乐观更新机制** - 优化用户体验
+10. **为函数添加文档注释** - 使用 JSDoc 编写详细的文档
 
-## Resources
+## 资源链接
 
-- Docs: https://trpc.io
-- Next.js Guide: https://trpc.io/docs/nextjs
-- Examples: https://github.com/trpc/trpc/tree/main/examples
+- 官方文档：https://trpc.io
+- Next.js 使用指南：https://trpc.io/docs/nextjs
+- 示例代码：https://github.com/trpc/trpc/tree/main/examples

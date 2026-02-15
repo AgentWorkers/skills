@@ -1,96 +1,98 @@
 ---
 name: go4me
-description: Send XCH to Twitter users via Go4Me address lookup. Use when sending Chia (XCH) to someone by their Twitter handle, looking up a Twitter user's XCH address, or tipping someone on Go4Me. Triggers on "send XCH to @user", "tip @user", "lookup @user on go4me", "what's @user's XCH address".
+description: 通过 Go4Me 的地址查询功能，将 XCH（Chia 的货币单位）发送给 Twitter 用户。该功能适用于以下场景：通过用户的 Twitter 账号名称向其发送 XCH、查询用户的 XCH 地址，或在 Go4Me 上给用户打赏。相关指令包括：“send XCH to @user”、“tip @user”、“lookup @user on go4me”以及“what's @user's XCH address”。
 ---
 
-# Go4Me Skill
+# Go4Me 技能
 
-Send XCH to Twitter users by resolving their Go4Me addresses.
+通过解析 Twitter 用户的 Go4Me 地址，向他们发送 XCH（Go4Me 的货币）。
 
-## Dependencies
+## 依赖项
 
-- **sage-wallet** — Required for XCH transactions
+- **sage-wallet** — 用于 XCH 交易
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `/go4me lookup <user>` | Get user's XCH address and profile |
-| `/go4me send <user> <amount>` | Send XCH to user (amount in XCH or mojos) |
-| `/go4me tip <user>` | Send 1 mojo tip |
+| `/go4me lookup <user>` | 获取用户的 XCH 地址和个人信息 |
+| `/go4me send <user> <amount>` | 向用户发送 XCH（金额单位为 XCH 或 mojo） |
+| `/go4me tip <user>` | 向用户发送 1 mojo 的小费 |
 
-## Natural Language
+## 自然语言表达
 
-- "Send 1 XCH to @hoffmang"
-- "Tip @sage_wallet"
-- "What's @bramcohen's XCH address?"
-- "Look up DracattusDev on Go4Me"
+- “向 @hoffmang 发送 1 XCH”
+- “给 @sage_wallet 送点小费”
+- “@bramcohen 的 XCH 地址是什么？”
+- “在 Go4Me 上查找 DracattusDev”
 
-## Lookup Script
+## 查找用户地址的脚本
 
 ```bash
 source scripts/go4me-lookup.sh
 go4me_lookup "DracattusDev"  # Returns JSON or exits 1
 ```
 
-## Workflow
+## 工作流程
 
-### Lookup
+### 查找用户信息
 
-1. Strip `@` from username if present
-2. Run `go4me_lookup "<username>"`
-3. Parse JSON response for `xchAddress`, `fullName`, `username`
-4. If exit code 1: user not found on Go4Me
+1. 如果用户名中包含 `@`，则将其删除。
+2. 运行 `go4me_lookup "<username>"` 命令。
+3. 解析 JSON 响应中的 `xchAddress`、`fullName` 和 `username` 字段。
+4. 如果返回的退出代码为 1，说明该用户不存在于 Go4Me 上。
 
-### Send
+### 发送 XCH
 
-1. Lookup user (as above)
-2. If not found, report error
-3. Display confirmation:
+1. 如上所述，先查找用户信息。
+2. 如果找不到用户，输出错误信息。
+3. 显示确认信息：
    ```
    Send <amount> to @<username> (<fullName>)?
    Address: <xchAddress>
    [Yes] [No]
    ```
-4. On confirm, call sage-wallet `send_xch`:
+4. 确认后，调用 sage-wallet 的 `send_xch` 函数发送 XCH：
    ```bash
    curl -s --cert $CERT --key $KEY -X POST https://127.0.0.1:9257/send_xch \
      -H "Content-Type: application/json" \
      -d '{"address":"<xchAddress>","amount":"<mojos>","fee":"0","memos":[],"auto_submit":true}'
    ```
-5. Report transaction result
+5. 显示交易结果。
 
-### Tip
+### 发送小费
 
-Same as send with amount = 1 mojo.
+与发送 XCH 的命令相同，只是金额设置为 1 mojo。
 
-## Amount Conversion
+## 金额转换
 
-| Input | Mojos |
+| 输入 | Mojos |
 |-------|-------|
-| `1` (no unit) | 1 mojo |
+| `1`（无单位） | 1 mojo |
 | `1 mojo` | 1 |
 | `0.001 XCH` | 1000000000 |
 | `1 XCH` | 1000000000000 |
 
-Parse amount: if contains "XCH", multiply by 10^12. Default unit is mojos for small numbers, XCH for decimals.
+**金额解析规则**：
+- 如果金额中包含 “XCH”，则将其转换为 mojo（`XCH × 10^12`）。
+- 对于较小的金额，默认单位为 mojo；对于较大的金额，默认单位为 XCH。
 
-## Error Handling
+## 错误处理
 
-| Condition | Response |
+| 错误类型 | 显示信息 |
 |-----------|----------|
-| User not on Go4Me | "User @{username} not found on Go4Me" |
-| Invalid address | "Invalid XCH address returned from Go4Me" |
-| Insufficient balance | "Insufficient balance for this transaction" |
-| Network error | "Failed to connect to Go4Me" |
+| 用户不存在于 Go4Me | “用户 @{username} 不存在于 Go4Me 上” |
+| XCH 地址无效 | “从 Go4Me 返回的 XCH 地址无效” |
+| 账户余额不足 | “账户余额不足，无法完成交易” |
+| 网络错误 | “无法连接到 Go4Me” |
 
-## Data Available
+## 可用的数据字段
 
-| Field | Example |
+| 字段 | 示例值 |
 |-------|---------|
 | `username` | DracattusDev |
 | `fullName` | 🌱Drac 🍊 |
 | `xchAddress` | xch1rvgc3naytvzhv4lxhzphrdr2fzj2ka340tdj8fflt4872t2wqveq9lwz7t |
-| `description` | Bio text |
-| `avatarUrl` | Profile image URL |
+| `description` | 用户简介 |
+| `avatarUrl` | 用户头像链接 |
 | `totalBadgeScore` | 220 |

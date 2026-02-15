@@ -1,39 +1,39 @@
 ---
 slug: "5000-projects-analysis"
 display_name: "5000 Projects Analysis"
-description: "Analyze 5000+ IFC and Revit projects at scale for patterns, benchmarks, and insights. Big data analysis for construction."
+description: "大规模分析5000多个IFC（Industry Foundation Classes）和Revit项目，以发现其中的规律、进行性能测试并获取有价值的见解。为建筑行业提供大数据分析服务。"
 ---
 
-# Large-Scale BIM Project Analysis
+# 大规模BIM项目分析
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction companies lack industry benchmarks because:
-- Individual project data is insufficient for statistical analysis
-- Comparable project data is not available
-- Manual analysis doesn't scale to thousands of projects
+### 问题描述
+建筑公司缺乏行业基准数据，原因如下：
+- 单个项目的数据不足以进行统计分析
+- 没有可比较的项目数据
+- 手动分析无法应用于数千个项目
 
-### Solution
-Analyze 5000+ IFC and Revit projects to extract patterns, create benchmarks, and train ML models for prediction.
+### 解决方案
+分析5000多个IFC和Revit项目，提取数据模式，建立基准数据，并训练机器学习模型以进行预测。
 
-### Business Value
-- **Industry benchmarks** - Compare your project to 5000+ others
-- **Pattern detection** - Identify common designs and issues
-- **ML training data** - Build predictive models with real data
-- **Research foundation** - Academic and industry research dataset
+### 商业价值
+- **行业基准**：将您的项目与其他5000多个项目进行比较
+- **模式识别**：识别常见的设计问题和缺陷
+- **机器学习训练数据**：使用真实数据构建预测模型
+- **研究基础**：为学术界和行业研究提供数据集
 
-## Technical Implementation
+## 技术实现
 
-### Dataset Overview
-| Metric | Value |
+### 数据集概览
+| 指标 | 数量 |
 |--------|-------|
-| Total Projects | 5000+ |
-| File Formats | IFC, RVT |
-| Elements | Millions |
-| Categories | 200+ |
+| 总项目数 | 5000+ |
+| 文件格式 | IFC、RVT |
+| 元素数量 | 数百万个 |
+| 类别数量 | 200多个 |
 
-### Analysis Pipeline
+### 分析流程
 
 ```python
 import pandas as pd
@@ -158,7 +158,7 @@ class BIMProjectAnalyzer:
         return output_path
 ```
 
-### Analysis Examples
+### 分析示例
 
 ```python
 # Initialize analyzer
@@ -190,24 +190,24 @@ print(f"  Total volume: {benchmark['percentiles']['TotalVolume']}th percentile")
 report_path = analyzer.generate_report("analysis_report.png")
 ```
 
-## Insights You Can Extract
+## 可以提取的洞察
 
-### Structural Patterns
-- Average wall-to-floor ratio
-- Typical door/window counts per area
-- MEP element density benchmarks
+### 结构模式
+- 平均墙高比
+- 每个区域的典型门窗数量
+- MEP（机电）元素的密度基准
 
-### Quality Indicators
-- Category completeness
-- Parameter fill rates
-- Geometric consistency
+### 质量指标
+- 类别的完整性
+- 参数填写率
+- 几何一致性
 
-### Complexity Metrics
-- Elements per m² of floor area
-- Category diversity index
-- Level count vs building height
+### 复杂性指标
+- 每平方米建筑面积的元素数量
+- 类别多样性指数
+- 建筑高度与楼层数量的关系
 
-## Integration with ML
+## 与机器学习的集成
 
 ```python
 from sklearn.ensemble import RandomForestRegressor
@@ -235,7 +235,6 @@ new_project = [[5000, 50, 15000, 8000]]  # elements, categories, volume, area
 predicted_cost = model.predict(new_project)
 ```
 
-## Resources
-
-- **Kaggle Notebook**: [5000 Projects Analysis](https://www.kaggle.com/code/artemboiko/5000-projects-ifc-rvt-datadrivenconstruction-io)
-- **Dataset**: Available via DataDrivenConstruction.io
+## 资源
+- **Kaggle笔记本**：[5000个项目分析](https://www.kaggle.com/code/artemboiko/5000-projects-ifc-rvt-datadrivenconstruction-io)
+- **数据集**：可通过DataDrivenConstruction.io获取

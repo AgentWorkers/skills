@@ -1,24 +1,24 @@
 ---
 name: codex-cli
-description: "Use OpenAI Codex CLI for coding tasks. Triggers: codex, code review, fix CI, refactor code, implement feature, coding agent, gpt-5-codex. Enables Clawdbot to delegate coding work to Codex CLI as a subagent or direct tool."
+description: "使用 OpenAI Codex CLI 执行编码任务。支持的命令包括：codex、code review、fix CI、refactor code、implement feature、coding agent、gpt-5-codex。该工具允许 Clawdbot 将编码工作委托给 Codex CLI，既可以作为子代理（subagent）使用，也可以直接作为独立工具使用。"
 ---
 
-# OpenAI Codex CLI Skill
+# OpenAI Codex CLI 技能
 
-Use OpenAI Codex CLI (`codex`) for coding tasks including code review, refactoring, bug fixes, CI repairs, and feature implementation. Codex CLI runs locally on your machine with full filesystem access.
+使用 OpenAI Codex CLI（`codex`）执行编码任务，包括代码审查、重构、漏洞修复、持续集成（CI）问题处理以及功能实现。Codex CLI 可在您的本地机器上运行，并具备对整个文件系统的完整访问权限。
 
-## When to Use
+## 使用场景
 
-- User asks for code changes, refactoring, or implementation
-- CI/build failures need fixing
-- Code review before commit/push
-- Large codebase exploration or explanation
-- Tasks requiring file editing + command execution
-- When GPT-5-Codex model strengths are needed (code generation, tool use)
+- 用户请求进行代码修改、重构或功能实现
+- 持续集成/构建（CI）过程中出现故障需要修复
+- 在提交代码之前进行代码审查
+- 需要探索或解释大型代码库
+- 需要执行文件编辑和命令操作的任务
+- 当需要利用 GPT-5-Codex 模型的强大功能（如代码生成、工具使用）时
 
-## Installation & Auth
+## 安装与授权
 
-Codex CLI requires ChatGPT Plus/Pro/Business/Enterprise subscription.
+使用 Codex CLI 需要 ChatGPT Plus/Pro/Business/Enterprise 订阅。
 
 ```bash
 # Install
@@ -34,16 +34,16 @@ printenv OPENAI_API_KEY | codex login --with-api-key
 codex login status
 ```
 
-## Core Commands
+## 核心命令
 
-### Interactive Mode (TUI)
+### 交互式模式（TUI）
 ```bash
 codex                           # Launch interactive terminal UI
 codex "explain this codebase"   # Start with a prompt
 codex --cd ~/projects/myapp     # Set working directory
 ```
 
-### Non-Interactive (Scripting)
+### 非交互式模式（脚本执行）
 ```bash
 codex exec "fix the CI failure"                    # Run and exit
 codex exec --full-auto "add input validation"      # Auto-approve workspace writes
@@ -51,62 +51,62 @@ codex exec --json "list all API endpoints"         # JSON output for parsing
 codex exec -i screenshot.png "match this design"   # With image input
 ```
 
-### Session Management
+### 会话管理
 ```bash
 codex resume               # Pick from recent sessions
 codex resume --last        # Continue most recent
 codex resume <SESSION_ID>  # Resume specific session
 ```
 
-## Slash Commands (In TUI)
+## 斜杠命令（TUI 中使用）
 
-| Command | Purpose |
+| 命令 | 功能 |
 |---------|---------|
-| `/model` | Switch model (gpt-5-codex, gpt-5) |
-| `/approvals` | Set approval mode (Auto, Read Only, Full Access) |
-| `/review` | Code review against branch, uncommitted changes, or specific commit |
-| `/diff` | Show Git diff including untracked files |
-| `/compact` | Summarize conversation to free context |
-| `/init` | Generate AGENTS.md scaffold |
-| `/status` | Show session config and token usage |
-| `/undo` | Revert most recent turn |
-| `/new` | Start fresh conversation |
-| `/mcp` | List configured MCP tools |
-| `/mention <path>` | Attach file to conversation |
+| `/model` | 切换模型（gpt-5-codex, gpt-5） |
+| `/approvals` | 设置审批模式（自动、只读、全权限） |
+| `/review` | 对分支、未提交的更改或特定提交进行代码审查 |
+| `/diff` | 显示 Git 差异（包括未跟踪的文件） |
+| `/compact` | 将对话内容简化以节省上下文空间 |
+| `/init` | 生成 AGENTS.md 模板文件 |
+| `/status` | 显示会话配置和令牌使用情况 |
+| `/undo` | 撤销最近的操作 |
+| `/new` | 启动新的对话 |
+| `/mcp` | 列出已配置的 MCP 工具 |
+| `/mention <路径>` | 将文件附加到对话中 |
 
-## Approval Modes
+## 审批模式
 
-| Mode | Behavior |
+| 模式 | 行为 |
 |------|----------|
-| **Auto** (default) | Read/edit/run commands in workspace; asks for outside access |
-| **Read Only** | Browse files only; requires approval for changes |
-| **Full Access** | Full machine access including network (use sparingly) |
+| **自动**（默认） | 在工作区内读取/编辑/执行命令；需要外部访问权限 |
+| **只读** | 仅允许浏览文件；对更改需要审批 |
+| **全权限** | 具有对整个机器的访问权限（请谨慎使用） |
 
-## Key Flags
+## 关键参数
 
-| Flag | Purpose |
+| 参数 | 功能 |
 |------|---------|
-| `--model, -m <model>` | Override model (gpt-5-codex, gpt-5) |
-| `--cd, -C <path>` | Set working directory |
-| `--add-dir <path>` | Add additional writable roots |
-| `--image, -i <path>` | Attach image(s) to prompt |
-| `--full-auto` | Workspace write + approve on failure |
-| `--sandbox <mode>` | read-only, workspace-write, danger-full-access |
-| `--json` | Output newline-delimited JSON |
-| `--search` | Enable web search tool |
+| `--model, -m <模型>` | 更改使用的模型（gpt-5-codex, gpt-5） |
+| `--cd, -C <路径>` | 设置工作目录 |
+| `--add-dir <路径>` | 添加额外的可写目录 |
+| `--image, -i <路径>` | 将图片附加到提示信息中 |
+| `--full-auto` | 允许在工作区内写入代码并在失败时自动审批 |
+| `--sandbox <模式>` | 只读模式、允许在工作区内写入代码、但权限较高（风险较高） |
+| `--json` | 以换行符分隔的 JSON 格式输出结果 |
+| `--search` | 启用网页搜索功能 |
 
-## Clawdbot Integration Patterns
+## Clawdbot 集成模式
 
-### Pattern 1: Direct exec Tool
-Call Codex from Clawdbot's exec tool for coding tasks:
+### 模式 1：直接执行工具
+通过 Clawdbot 的执行工具调用 Codex 来执行编码任务：
 
 ```bash
 # In Clawdbot session
 exec codex exec --full-auto --cd ~/projects/medreport "fix the TypeScript errors in src/components"
 ```
 
-### Pattern 2: Subagent Delegation
-Spawn a coding subagent that uses Codex:
+### 模式 2：子代理委托
+创建一个使用 Codex 的子代理来执行编码任务：
 
 ```json5
 // In agents.defaults or per-agent config
@@ -126,8 +126,8 @@ Spawn a coding subagent that uses Codex:
 }
 ```
 
-### Pattern 3: CLI Backend Fallback
-Configure Codex as a text-only fallback:
+### 模式 3：CLI 后端备用方案
+将 Codex 配置为仅文本的备用方案：
 
 ```json5
 {
@@ -146,16 +146,16 @@ Configure Codex as a text-only fallback:
 }
 ```
 
-### Pattern 4: MCP Server Mode
-Run Codex as an MCP server for other agents:
+### 模式 4：MCP 服务器模式
+将 Codex 作为 MCP 服务器为其他代理提供服务：
 
 ```bash
 codex mcp-server  # Exposes Codex tools via stdio MCP
 ```
 
-## Clawdbot Config: OpenAI Codex Provider
+## Clawdbot 配置：OpenAI Codex 提供者
 
-Use your ChatGPT Pro subscription via the `openai-codex` provider:
+通过 `openai-codex` 提供者使用您的 ChatGPT Pro 订阅：
 
 ```json5
 {
@@ -171,9 +171,9 @@ Use your ChatGPT Pro subscription via the `openai-codex` provider:
 }
 ```
 
-Auth syncs automatically from `~/.codex/auth.json` to Clawdbot's auth profiles.
+授权信息会自动从 `~/.codex/auth.json` 同步到 Clawdbot 的用户配置文件中。
 
-## Code Review Workflow
+## 代码审查工作流程
 
 ```bash
 # Interactive review
@@ -184,7 +184,7 @@ codex
 codex exec "review the changes in this PR against main branch"
 ```
 
-## Multi-Directory Projects
+## 多目录项目
 
 ```bash
 # Work across monorepo packages
@@ -194,9 +194,9 @@ codex --cd apps/frontend --add-dir ../backend --add-dir ../shared
 codex --cd ~/projects/myapp --add-dir ~/projects/shared-lib
 ```
 
-## Custom Slash Commands
+## 自定义斜杠命令
 
-Create reusable prompts in `~/.codex/prompts/`:
+在 `~/.codex/prompts/` 目录下创建可重用的提示模板：
 
 ```markdown
 <!-- ~/.codex/prompts/pr.md -->
@@ -210,11 +210,11 @@ Stage and commit changes with a clear message.
 Open a draft PR with title $TITLE or auto-generate one.
 ```
 
-Invoke: `/prompts:pr BRANCH=feature-auth TITLE="Add OAuth flow"`
+调用方式：`/prompts:pr BRANCH=feature-auth TITLE="添加 OAuth 流程"`
 
-## MCP Integration
+## MCP 集成
 
-Add MCP servers to extend Codex:
+通过添加 MCP 服务器来扩展 Codex 的功能：
 
 ```bash
 # Add stdio server
@@ -227,9 +227,9 @@ codex mcp add docs --url https://mcp.deepwiki.com/mcp
 codex mcp list
 ```
 
-## Web Search
+## 网页搜索
 
-Enable in `~/.codex/config.toml`:
+在 `~/.codex/config.toml` 中启用网页搜索功能：
 
 ```toml
 [features]
@@ -239,54 +239,54 @@ web_search_request = true
 network_access = true
 ```
 
-Then Codex can search for current docs, APIs, etc.
+这样 Codex 就可以搜索当前的文档、API 等资源。
 
-## Best Practices
+## 最佳实践
 
-1. **Start with `/init`** to create AGENTS.md with repo-specific instructions
-2. **Use `/review` before commits** for AI code review
-3. **Set `/approvals` appropriately** — Auto for trusted repos, Read Only for exploration
-4. **Use `--add-dir`** for monorepos instead of `danger-full-access`
-5. **Resume sessions** to maintain context across coding sessions
-6. **Attach images** for UI work, design specs, error screenshots
+1. **使用 `/init` 命令** 创建包含仓库特定说明的 AGENTS.md 文件。
+2. **在提交代码之前使用 `/review` 命令** 进行 AI 代码审查。
+3. **适当设置 `/approvals` 模式**——对于受信任的仓库使用自动审批，对于探索性用途使用只读模式。
+4. **使用 `--add-dir` 参数** 来处理单仓库项目，而不是使用全权限模式。
+5. **恢复会话** 以保持不同编码会话之间的上下文一致性。
+6. **附加图片**（如用于 UI 设计、错误截图等）。
 
-## Example Workflows
+## 示例工作流程
 
-### Fix CI Failure
+### 修复 CI 故障
 ```bash
 codex exec --full-auto "The CI is failing on the lint step. Fix all ESLint errors."
 ```
 
-### Refactor Component
+### 重构组件
 ```bash
 codex exec --cd src/components "Refactor UserProfile.tsx to use React Query instead of useEffect for data fetching"
 ```
 
-### Implement Feature from Spec
+### 根据规范实现新功能
 ```bash
 codex exec -i spec.png --cd ~/projects/app "Implement this feature based on the design spec"
 ```
 
-### Code Review PR
+### 提交代码审查请求（PR）
 ```bash
 codex exec "Review the diff between main and feature/auth branch. Focus on security issues."
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Auth fails | Run `codex logout` then `codex login` |
-| Commands blocked | Check `/approvals`, may need `--full-auto` |
-| Out of context | Use `/compact` to summarize |
-| Wrong directory | Use `--cd` flag or check `/status` |
-| Model unavailable | Verify subscription tier supports model |
+| 认证失败 | 先运行 `codex logout`，然后重新登录 |
+| 命令被阻止 | 检查 `/approvals` 设置，可能需要使用 `--full-auto` 参数 |
+| 上下文丢失 | 使用 `/compact` 命令简化对话内容 |
+| 路径错误 | 使用 `--cd` 参数或查看 `/status` 信息 |
+| 模型不可用 | 确认订阅等级是否支持所需的模型 |
 
-## References
+## 参考资料
 
-- [Codex CLI Overview](https://developers.openai.com/codex/cli)
-- [Codex CLI Features](https://developers.openai.com/codex/cli/features)
-- [Codex CLI Reference](https://developers.openai.com/codex/cli/reference)
-- [Slash Commands Guide](https://developers.openai.com/codex/cli/slash-commands)
-- [AGENTS.md Spec](https://agents.md)
-- [Codex GitHub](https://github.com/openai/codex)
+- [Codex CLI 概述](https://developers.openai.com/codex/cli)
+- [Codex CLI 功能](https://developers.openai.com/codex/cli/features)
+- [Codex CLI 参考文档](https://developers.openai.com/codex/cli/reference)
+- [斜杠命令指南](https://developers.openai.com/codex/cli/slash-commands)
+- [AGENTS.md 规范](https://agents.md)
+- [Codex GitHub 仓库](https://github.com/openai/codex)

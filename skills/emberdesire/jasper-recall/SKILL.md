@@ -1,435 +1,200 @@
 ---
 name: jasper-recall
 version: 0.3.1
-description: Local RAG system for agent memory using ChromaDB and sentence-transformers. v0.3.0 adds multi-agent mesh (N agents sharing memory), OpenClaw plugin with autoRecall, and agent-specific collections. Commands: recall, index-digests, digest-sessions, privacy-check, sync-shared, serve, recall-mesh.
+description: 本地RAG（Retrieval-Augmentation System）用于代理内存管理，该系统基于ChromaDB和sentence-transformers框架实现。版本v0.3.0新增了多代理协同工作模式（多个代理共享内存功能）、支持OpenClaw插件（具备自动召回功能）以及代理特定的数据集合管理机制。可用命令包括：recall（召回数据）、index-digests（索引摘要生成）、digest-sessions（会话摘要处理）、privacy-check（隐私性检查）、sync-shared（数据同步共享）、serve（数据提供服务）以及recall-mesh（多代理协同召回功能）。
 ---
 
 # Jasper Recall v0.2.3
 
-Local RAG (Retrieval-Augmented Generation) system for AI agent memory. Gives your agent the ability to remember and search past conversations.
+这是一个用于AI代理记忆的本地RAG（Retrieval-Augmented Generation，检索增强生成）系统，它使您的代理能够记住并搜索之前的对话。
 
-**New in v0.2.2:** Shared ChromaDB Collections — separate collections for private, shared, and learnings content. Better isolation for multi-agent setups.
+**v0.2.2的新功能：**  
+- **共享ChromaDB集合**：为私有内容、共享内容和学习内容分别创建不同的集合，从而更好地实现多代理环境下的数据隔离。
 
-**New in v0.2.1:** Recall Server — HTTP API for Docker-isolated agents that can't run CLI directly.
+**v0.2.1的新功能：**  
+- **回忆服务器（Recall Server）**：为无法直接运行CLI命令的Docker隔离代理提供的HTTP API。
 
-**New in v0.2.0:** Shared Agent Memory — bidirectional learning between main and sandboxed agents with privacy controls.
+**v0.2.0的新功能：**  
+- **共享代理记忆（Shared Agent Memory）**：支持主代理与沙箱代理之间的双向数据交换，并提供隐私控制功能。
 
-## When to Use
+## 使用场景  
 
-- **Memory recall**: Search past sessions for context before answering
-- **Continuous learning**: Index daily notes and decisions for future reference
-- **Session continuity**: Remember what happened across restarts
-- **Knowledge base**: Build searchable documentation from your agent's experience
+- **记忆检索**：在回答问题前，从历史会话中查找相关信息。  
+- **持续学习**：索引每日笔记和决策，以便将来参考。  
+- **会话连续性**：在重启后仍能记住发生的事情。  
+- **知识库**：根据代理的经验构建可搜索的文档。  
 
-## Quick Start
+## 快速入门  
 
-### Setup
+### 设置  
 
-One command installs everything:
-
+只需一个命令即可完成所有安装：  
 ```bash
 npx jasper-recall setup
-```
+```  
 
-This creates:
-- Python venv at `~/.openclaw/rag-env`
-- ChromaDB database at `~/.openclaw/chroma-db`
-- CLI scripts in `~/.local/bin/`
-- OpenClaw plugin config in `openclaw.json`
+安装完成后，系统会创建以下内容：  
+- 在`~/.openclaw/rag-env`目录下生成Python虚拟环境（venv）。  
+- 在`~/.openclaw/chroma-db`目录下创建ChromaDB数据库。  
+- 在`~/.local/bin/`目录下生成CLI脚本。  
+- 在`openclaw.json`文件中配置OpenClaw插件。  
 
-### Why Python?
+### 为什么选择Python？  
 
-The core search and embedding functionality uses Python libraries:
+核心的搜索和嵌入功能依赖于Python库：  
+- **ChromaDB**：用于语义搜索的向量数据库。  
+- **sentence-transformers**：用于生成本地嵌入模型的工具（无需API）。  
+这些库是本地RAG系统的行业标准，目前没有合适的Node.js替代品能够完全离线运行。  
 
-- **ChromaDB** — Vector database for semantic search
-- **sentence-transformers** — Local embedding models (no API needed)
+### 为什么需要单独的虚拟环境（venv）？  
 
-These are the gold standard for local RAG. There are no good Node.js equivalents that work fully offline.
+`~/.openclaw/rag-env`虚拟环境具有以下优势：  
+- **隔离性**：不会与其他Python项目冲突。  
+- **无需root权限**：安装到用户主目录，无需管理员权限。  
+- **易于卸载**：删除该虚拟环境即可彻底清除所有相关文件。  
+- **可重复性**：确保所有环境中的依赖版本一致。  
 
-### Why a Separate Venv?
+### 基本用法  
 
-The venv at `~/.openclaw/rag-env` provides:
+- **搜索记忆**：使用相应命令查询历史会话内容。  
+- **索引文件**：对文件进行索引以便快速查找。  
+- **创建会话摘要**：生成会话的摘要文件以供后续使用。  
 
-| Benefit | Why It Matters |
-|---------|----------------|
-| **Isolation** | Won't conflict with your other Python projects |
-| **No sudo** | Installs to your home directory, no root needed |
-| **Clean uninstall** | Delete the folder and it's gone |
-| **Reproducibility** | Same versions everywhere |
+## 工作原理  
 
-The dependencies are heavy (~200MB total with the embedding model), but this is a one-time download that runs entirely locally.
+Jasper Recall由三个主要组件构成：  
+1. **digest-sessions**：从会话日志中提取关键信息（如主题、使用的工具等）。  
+2. **index-digests**：将markdown格式的文件分割并嵌入到ChromaDB数据库中。  
+3. **recall**：在索引后的数据中进行语义搜索。  
 
-### Basic Usage
+### 被索引的文件  
 
-**Search your memory:**
-```bash
-recall "what did we decide about the API design"
-recall "hopeIDS patterns" --limit 10
-recall "meeting notes" --json
-```
+默认情况下，以下文件会被索引：  
+- `~/.openclaw/workspace/memory/`目录下的所有`.md`文件（包括每日笔记、MEMORY.md文件等）。  
+- `session-digests`目录下的`.md`文件（会话摘要）。  
+- `repos`目录下的`.md`文件（项目文档）。  
+- `founder-logs`目录下的`.md`文件（开发日志，如果存在的话）。  
 
-**Index your files:**
-```bash
-index-digests  # Index memory files into ChromaDB
-```
+### 嵌入模型  
 
-**Create session digests:**
-```bash
-digest-sessions          # Process new sessions
-digest-sessions --dry-run  # Preview what would be processed
-```
+Jasper Recall使用`sentence-transformers/all-MiniLM-L6-v2`模型：  
+- 该模型生成384维的嵌入向量。  
+- 首次运行时需要下载约80MB的数据，但后续运行无需重新下载。  
+该模型完全在本地运行，无需外部API支持。  
 
-## How It Works
+### 代理集成  
 
-### Three Components
+Jasper Recall支持基于记忆的智能响应机制。  
 
-1. **digest-sessions** — Extracts key info from session logs (topics, tools used)
-2. **index-digests** — Chunks and embeds markdown files into ChromaDB
-3. **recall** — Semantic search across your indexed memory
+### 自动索引（通过HEARTBEAT脚本实现）  
 
-### What Gets Indexed
+只需在`HEARTBEAT.md`文件中添加相应的配置即可实现自动索引功能。  
 
-By default, indexes files from `~/.openclaw/workspace/memory/`:
+### 定时任务  
 
-- `*.md` — Daily notes, MEMORY.md
-- `session-digests/*.md` — Session summaries
-- `repos/*.md` — Project documentation
-- `founder-logs/*.md` — Development logs (if present)
+可以使用Cron作业来定期执行索引任务。  
 
-### Embedding Model
+## 共享代理记忆（v0.2.0及以上版本）  
 
-Uses `sentence-transformers/all-MiniLM-L6-v2`:
-- 384-dimensional embeddings
-- ~80MB download on first run
-- Runs locally, no API needed
+在多代理环境中，如果沙箱代理需要访问某些记忆数据，可以使用共享代理记忆功能。  
 
-## Agent Integration
+### 记忆文件标记  
 
-### Memory-Augmented Responses
+可以在每日笔记中为文件添加标签，以便区分不同类型的数据。  
 
-```python
-# Before answering questions about past work
-results = exec("recall 'project setup decisions' --json")
-# Include relevant context in your response
-```
+### ChromaDB集合（v0.2.2及以上版本）  
 
-### Automated Indexing (Heartbeat)
+系统支持将记忆数据存储在不同的集合中，以实现数据隔离：  
+| 集合 | 用途 | 访问权限 |  
+|------------|---------|--------------|  
+| `private_memories` | 主代理的私有内容 | 仅主代理可访问 |  
+| `shared_memories` | 公共内容 | 沙箱代理可访问 |  
+| `agent_learnings` | 所有代理的学习成果 | 所有代理可访问 |  
+| `jasper_memory` | 旧版统一存储方式（向后兼容） | 备用选项 |  
 
-Add to HEARTBEAT.md:
-```markdown
-## Memory Maintenance
-- [ ] New session logs? → `digest-sessions`
-- [ ] Memory files updated? → `index-digests`
-```
+**集合选择方式：**  
 
-### Cron Job
+### 沙箱代理的访问权限设置  
 
-Schedule regular indexing:
-```json
-{
-  "schedule": { "kind": "cron", "expr": "0 */6 * * *" },
-  "payload": {
-    "kind": "agentTurn",
-    "message": "Run index-digests to update the memory index"
-  },
-  "sessionTarget": "isolated"
-}
-```
+沙箱代理可以通过特定方式访问共享记忆数据。  
 
-## Shared Agent Memory (v0.2.0+)
+### Moltbook代理的配置（v0.4.0及以上版本）  
 
-For multi-agent setups where sandboxed agents need access to some memories:
+对于Moltbook-scanner或任何沙箱代理，可以使用内置的配置方式。  
 
-### Memory Tagging
+### 隐私保护机制  
 
-Tag entries in daily notes:
+- 主代理可以在日常笔记中为记忆数据添加`[public]`或`[private]`标签。  
+- `sync-shared`脚本会将标记为`[public]`的内容同步到`memory/shared/`目录。  
+- 沙箱代理只能搜索`shared`集合中的内容。  
 
-```markdown
-## 2026-02-05 [public] - Feature shipped
-This is visible to all agents.
+### 隐私工作流程  
 
-## 2026-02-05 [private] - Personal note
-This is main agent only (default if untagged).
+系统通过明确的规则来保护用户隐私。  
 
-## 2026-02-05 [learning] - Pattern discovered
-Learnings shared bidirectionally between agents.
-```
+## CLI命令参考  
 
-### ChromaDB Collections (v0.2.2+)
+- `recall`：用于执行搜索操作。  
+- `serve`（v0.2.1及以上版本）：用于提供API服务。  
 
-Memory is stored in separate collections for isolation:
+**示例（来自Docker容器）：**  
 
-| Collection | Purpose | Who accesses |
-|------------|---------|--------------|
-| `private_memories` | Main agent's private content | Main agent only |
-| `shared_memories` | [public] tagged content | Sandboxed agents |
-| `agent_learnings` | Learnings from any agent | All agents |
-| `jasper_memory` | Legacy unified (backward compat) | Fallback |
+### 隐私检查（v0.2.0及以上版本）  
 
-**Collection selection:**
-```bash
-# Main agent (default) - searches private_memories
-recall "api design"
+### 其他相关命令：**  
+- `sync-shared`：用于同步共享数据。  
+- `index-digests`：用于生成索引文件。  
+- `digest-sessions`：用于处理会话日志数据。  
 
-# Sandboxed agents - searches shared_memories only
-recall "product info" --public-only
+## 配置选项  
 
-# Search learnings only
-recall "patterns" --learnings
+- **自定义路径**：可以通过环境变量来修改系统的行为。  
 
-# Search all collections (merged results)
-recall "everything" --all
+### 索引设置（index-digests）  
 
-# Specific collection
-recall "something" --collection private_memories
+- 默认设置：  
+  - 分块大小：500个字符。  
+  - 分块之间的重叠部分长度：100个字符。  
 
-# Legacy mode (single collection)
-recall "old way" --legacy
-```
+### 安全注意事项  
 
-### Sandboxed Agent Access
+**在生产环境中启用这些设置前，请务必仔细检查！**  
 
-```bash
-# Sandboxed agents use --public-only
-recall "product info" --public-only
+- **服务器绑定**：`serve`命令默认绑定到`127.0.0.1`（本地地址）。除非明确需要公开API并采取了相应的安全措施，否则请勿使用`--host 0.0.0.0`。  
+- **私有记忆访问**：服务器默认禁止私有访问（`public_only=true`）。请勿在公共或共享环境中启用此设置，否则会暴露私有数据。  
+- **autoRecall插件**：当`autoRecall`设置为`true`时，系统会在每条代理消息发送前自动添加记忆数据。请注意配置`publicOnly`参数以控制搜索范围，并使用`minScore`参数过滤低相关性的数据。  
 
-# Main agent can see everything
-recall "product info"
-```
+### 更安全的配置方式（适用于不受信任的环境）：  
 
-### Moltbook Agent Setup (v0.4.0+)
+通过设置环境变量来进一步强化系统安全性。  
 
-For the moltbook-scanner (or any sandboxed agent), use the built-in setup:
+### 环境变量  
 
-```bash
-# Configure sandboxed agent with --public-only restriction
-npx jasper-recall moltbook-setup
+以下环境变量会影响Jasper Recall的行为，请根据实际需求进行配置：  
+- `RECALLWorkspace`：指定记忆文件的存储路径。  
+- `RECALL_CHROMA_DB`：指定ChromaDB数据库的路径。  
+- `RECALL_SESSIONS_DIR`：指定会话日志的存储路径。  
+- `RECALL_ALLOW_PRIVATE`：控制是否允许私有访问。  
+- `RECALL_PORT`：指定服务器端口。  
+- `RECALL_HOST`：指定服务器的绑定地址。  
 
-# Verify the setup is correct
-npx jasper-recall moltbook-verify
-```
+### 预先测试  
 
-This creates:
-- `~/bin/recall` — Wrapper that forces `--public-only` flag
-- `shared/` — Symlink to main workspace's shared memory
+在正式部署之前，请使用测试选项预览系统的运行效果。  
 
-The sandboxed agent can then use:
-```bash
-~/bin/recall "query"  # Automatically restricted to public memories
-```
+### 沙箱环境下的使用建议  
 
-**Privacy model:**
-1. Main agent tags memories as `[public]` or `[private]` in daily notes
-2. `sync-shared` extracts `[public]` content to `memory/shared/`
-3. Sandboxed agents can ONLY search the `shared` collection
+为了最大程度地保护数据安全，建议在容器或专用账户中运行Jasper Recall：  
+- 这可以降低数据泄露的风险。  
+- 将私有记忆数据与公共数据分开存储。  
+- 特别适用于包含不受信任代理的多代理环境。  
 
-### Privacy Workflow
+### 常见问题及解决方法：  
+- “未找到索引”：检查文件是否已被正确添加到索引中。  
+- “集合未找到”：确认相关文件存在于指定的路径中。  
+- 模型下载缓慢：首次运行时需要下载大量数据，后续运行会更快。  
 
-```bash
-# Check for sensitive data before sharing
-privacy-check "text to scan"
-privacy-check --file notes.md
-
-# Extract [public] entries to shared directory
-sync-shared
-sync-shared --dry-run  # Preview first
-```
-
-## CLI Reference
-
-### recall
-
-```
-recall "query" [OPTIONS]
-
-Options:
-  -n, --limit N     Number of results (default: 5)
-  --json            Output as JSON
-  -v, --verbose     Show similarity scores and collection source
-  --public-only     Search shared_memories only (sandboxed agents)
-  --learnings       Search agent_learnings only
-  --all             Search all collections (merged results)
-  --collection X    Search specific collection by name
-  --legacy          Use legacy jasper_memory collection
-```
-
-### serve (v0.2.1+)
-
-```
-npx jasper-recall serve [OPTIONS]
-
-Options:
-  --port, -p N    Port to listen on (default: 3458)
-  --host, -h H    Host to bind (default: 127.0.0.1)
-
-Starts HTTP API server for Docker-isolated agents.
-
-Endpoints:
-  GET /recall?q=query&limit=5    Search memories
-  GET /health                    Health check
-
-Security: public_only=true enforced by default.
-Set RECALL_ALLOW_PRIVATE=true to allow private queries.
-```
-
-**Example (from Docker container):**
-```bash
-curl "http://host.docker.internal:3458/recall?q=product+info"
-```
-
-### privacy-check (v0.2.0+)
-
-```
-privacy-check "text"     # Scan inline text
-privacy-check --file X   # Scan a file
-
-Detects: emails, API keys, internal IPs, home paths, credentials.
-Returns: CLEAN or list of violations.
-```
-
-### sync-shared (v0.2.0+)
-
-```
-sync-shared [OPTIONS]
-
-Options:
-  --dry-run    Preview without writing
-  --all        Process all daily notes
-
-Extracts [public] tagged entries to memory/shared/.
-```
-
-### index-digests
-
-```
-index-digests
-
-Indexes markdown files from:
-  ~/.openclaw/workspace/memory/*.md
-  ~/.openclaw/workspace/memory/session-digests/*.md
-  ~/.openclaw/workspace/memory/repos/*.md
-  ~/.openclaw/workspace/memory/founder-logs/*.md
-
-Skips files that haven't changed (content hash check).
-```
-
-### digest-sessions
-
-```
-digest-sessions [OPTIONS]
-
-Options:
-  --dry-run    Preview without writing
-  --all        Process all sessions (not just new)
-  --recent N   Process only N most recent sessions
-```
-
-## Configuration
-
-### Custom Paths
-
-Set environment variables:
-
-```bash
-export RECALL_WORKSPACE=~/.openclaw/workspace
-export RECALL_CHROMA_DB=~/.openclaw/chroma-db
-export RECALL_SESSIONS_DIR=~/.openclaw/agents/main/sessions
-```
-
-### Chunking
-
-Default settings in index-digests:
-- Chunk size: 500 characters
-- Overlap: 100 characters
-
-## Security Considerations
-
-⚠️ **Review these settings before enabling in production:**
-
-### Server Binding
-
-The `serve` command defaults to `127.0.0.1` (localhost only). **Do not use `--host 0.0.0.0`** unless you explicitly intend to expose the API externally and have secured it appropriately.
-
-### Private Memory Access
-
-The server enforces `public_only=true` by default. The env var `RECALL_ALLOW_PRIVATE=true` bypasses this restriction. **Never set this on public/shared hosts** — it exposes your private memories to any client.
-
-### autoRecall Plugin
-
-When `autoRecall: true` in the OpenClaw plugin config, memories are automatically injected before every agent message. Consider:
-
-- Set `publicOnly: true` in plugin config for sandboxed agents
-- Review which collections will be searched
-- Use `minScore` to filter low-relevance injections
-
-**What's automatically skipped (no recall triggered):**
-- Heartbeat polls (`HEARTBEAT`, `Read HEARTBEAT.md`, `HEARTBEAT_OK`)
-- Messages containing `NO_REPLY`
-- Messages < 10 characters
-- Agent-to-agent messages (cron jobs, workers, spawned agents)
-- Automated reports (`📋 PR Review`, `🤖 Codex Watch`, `ANNOUNCE_*`)
-- Messages from senders starting with `agent:` or `worker-`
-
-**Safer config for untrusted contexts:**
-```json
-"jasper-recall": {
-  "enabled": true,
-  "config": {
-    "autoRecall": true,
-    "publicOnly": true,
-    "minScore": 0.5
-  }
-}
-```
-
-### Environment Variables
-
-The following env vars affect behavior — set them explicitly rather than relying on defaults:
-
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `RECALL_WORKSPACE` | `~/.openclaw/workspace` | Memory files location |
-| `RECALL_CHROMA_DB` | `~/.openclaw/chroma-db` | Vector database path |
-| `RECALL_SESSIONS_DIR` | `~/.openclaw/agents/main/sessions` | Session logs |
-| `RECALL_ALLOW_PRIVATE` | `false` | Server private access |
-| `RECALL_PORT` | `3458` | Server port |
-| `RECALL_HOST` | `127.0.0.1` | Server bind address |
-
-### Dry-Run First
-
-Before sharing or syncing, use dry-run options to preview what will be exposed:
-
-```bash
-privacy-check --file notes.md     # Scan for sensitive data
-sync-shared --dry-run             # Preview public extraction
-digest-sessions --dry-run         # Preview session processing
-```
-
-### Sandboxed Environments
-
-For maximum isolation, run jasper-recall in a container or dedicated account:
-- Limits risk of accidental data exposure
-- Separates private memory from shared contexts
-- Recommended for multi-agent setups with untrusted agents
-
-## Troubleshooting
-
-**"No index found"**
-```bash
-index-digests  # Create the index first
-```
-
-**"Collection not found"**
-```bash
-rm -rf ~/.openclaw/chroma-db  # Clear and rebuild
-index-digests
-```
-
-**Model download slow**
-First run downloads ~80MB model. Subsequent runs are instant.
-
-## Links
-
-- **GitHub**: https://github.com/E-x-O-Entertainment-Studios-Inc/jasper-recall
-- **npm**: https://www.npmjs.com/package/jasper-recall
-- **ClawHub**: https://clawhub.ai/skills/jasper-recall
+## 资源链接：  
+- **GitHub仓库**：https://github.com/E-x-O-Entertainment-Studios-Inc/jasper-recall  
+- **npm包**：https://www.npmjs.com/package/jasper-recall  
+- **ClawHub文档**：https://clawhub.ai/skills/jasper-recall

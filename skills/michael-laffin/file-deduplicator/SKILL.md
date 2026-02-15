@@ -1,6 +1,6 @@
 ---
 name: file-deduplicator
-description: Find and remove duplicate files intelligently. Save storage space, keep your system clean. Perfect for digital hoarders and document management.
+description: 智能地查找并删除重复文件，节省存储空间，保持系统整洁。非常适合那些喜欢囤积文件的人以及需要进行文件管理的人使用。
 metadata:
   {
     "openclaw":
@@ -14,53 +14,53 @@ metadata:
   }
 ---
 
-# File-Deduplicator - Find and Remove Duplicates
+# 文件去重工具 - 查找并删除重复文件
 
-**Vernox Utility Skill - Clean up your digital hoard.**
+**Vernox 工具技能 - 整理您的数字文件库**
 
-## Overview
+## 概述
 
-File-Deduplicator is an intelligent file duplicate finder and remover. Uses content hashing to identify identical files across directories, then provides options to remove duplicates safely.
+File-Deduplicator 是一个智能的文件去重工具，它通过内容哈希来识别不同目录中的重复文件，并提供安全删除重复文件的选项。
 
-## Features
+## 特点
 
-### ✅ Duplicate Detection
-- Content-based hashing (MD5) for fast comparison
-- Size-based detection (exact match, near match)
-- Name-based detection (similar filenames)
-- Directory scanning (recursive)
-- Exclude patterns (.git, node_modules, etc.)
+### ✅ 重复文件检测
+- 基于内容的哈希（MD5）进行快速比较
+- 基于大小的检测（完全匹配、近似匹配）
+- 基于名称的检测（相似文件名）
+- 递归扫描目录
+- 排除特定模式（如 `.git`、`node_modules` 等）
 
-### ✅ Removal Options
-- Auto-delete duplicates (keep newest/oldest)
-- Interactive review before deletion
-- Move to archive instead of delete
-- Preserve permissions and metadata
-- Dry-run mode (preview changes)
+### ✅ 删除选项
+- 自动删除重复文件（保留最新/最旧的文件）
+- 删除前进行交互式确认
+- 将文件移动到归档目录而非直接删除
+- 保留文件权限和元数据
+- 干运行模式（预览删除操作）
 
-### ✅ Analysis Tools
-- Duplicate count summary
-- Space savings estimation
-- Largest duplicate files
-- Most common duplicate patterns
-- Detailed report generation
+### ✅ 分析工具
+- 重复文件数量统计
+- 空间节省估算
+- 最大的重复文件
+- 最常见的重复文件模式
+- 生成详细报告
 
-### ✅ Safety Features
-- Confirmation prompts before deletion
-- Backup to archive folder
-- Size threshold (don't remove huge files by mistake)
-- Whitelist important directories
-- Undo functionality (log for recovery)
+### ✅ 安全特性
+- 删除前会提示确认
+- 将文件备份到归档文件夹
+- 设置文件大小阈值（避免误删大文件）
+- 允许白名单目录
+- 提供撤销功能（可恢复已删除的文件）
 
-## Installation
+## 安装
 
 ```bash
 clawhub install file-deduplicator
 ```
 
-## Quick Start
+## 快速入门
 
-### Find Duplicates in Directory
+### 在目录中查找重复文件
 
 ```javascript
 const result = await findDuplicates({
@@ -75,7 +75,7 @@ console.log(`Found ${result.duplicateCount} duplicate groups`);
 console.log(`Potential space savings: ${result.spaceSaved}`);
 ```
 
-### Remove Duplicates Automatically
+### 自动删除重复文件
 
 ```javascript
 const result = await removeDuplicates({
@@ -92,7 +92,7 @@ console.log(`Removed ${result.filesRemoved} duplicates`);
 console.log(`Space saved: ${result.spaceSaved}`);
 ```
 
-### Dry-Run Preview
+### 干运行预览
 
 ```javascript
 const result = await removeDuplicates({
@@ -111,91 +111,91 @@ result.duplicates.forEach((dup, i) => {
 });
 ```
 
-## Tool Functions
+## 工具功能
 
 ### `findDuplicates`
-Find duplicate files across directories.
+在多个目录中查找重复文件。
 
-**Parameters:**
-- `directories` (array|string, required): Directory paths to scan
-- `options` (object, optional):
-  - `method` (string): 'content' | 'size' | 'name' - comparison method
-  - `includeSubdirs` (boolean): Scan recursively (default: true)
-  - `minSize` (number): Minimum size in bytes (default: 0)
-  - `maxSize` (number): Maximum size in bytes (default: 0)
-  - `excludePatterns` (array): Glob patterns to exclude (default: ['.git', 'node_modules'])
-  - `whitelist` (array): Directories to never scan (default: [])
+**参数：**
+- `directories`（数组/字符串，必填）：要扫描的目录路径
+- `options`（对象，可选）：
+  - `method`（字符串）：'content' | 'size' | 'name' - 比较方式
+  - `includeSubdirs`（布尔值）：是否递归扫描子目录（默认：true）
+  - `minSize`（数字）：最小文件大小（默认：0）
+  - `maxSize`（数字）：最大文件大小（默认：0）
+  - `excludePatterns`（数组）：要排除的文件模式（默认：`.git`, 'node_modules'）
+  - `whitelist`（数组）：禁止扫描的目录（默认：[]）
 
-**Returns:**
-- `duplicates` (array): Array of duplicate groups
-  - `duplicateCount` (number): Number of duplicate groups found
-  - `totalFiles` (number): Total files scanned
-  - `scanDuration` (number): Time taken to scan (ms)
-  - `spaceWasted` (number): Total bytes wasted by duplicates
-  - `spaceSaved` (number): Potential savings if duplicates removed
+**返回值：**
+- `duplicates`（数组）：重复文件组
+  - `duplicateCount`（数字）：找到的重复文件组数量
+  - `totalFiles`（数字）：扫描的文件总数
+  - `scanDuration`（数字）：扫描所用时间（毫秒）
+  - `spaceWasted`（数字）：因重复文件浪费的空间
+  - `spaceSaved`（数字）：删除重复文件后节省的空间
 
 ### `removeDuplicates`
-Remove duplicate files based on findings.
+根据检测结果删除重复文件。
 
-**Parameters:**
-- `directories` (array|string, required): Same as findDuplicates
-- `options` (object, optional):
-  - `keep` (string): 'newest' | 'oldest' | 'smallest' | 'largest' - which to keep
-  - `action` (string): 'delete' | 'move' | 'archive'
-  - `archivePath` (string): Where to move files when action='move'
-  - `dryRun` (boolean): Preview without actual action
-  - `autoConfirm` (boolean): Auto-confirm deletions
-  - `sizeThreshold` (number): Don't remove files larger than this
+**参数：**
+- `directories`（数组/字符串，必填）：与 `findDuplicates` 相同
+- `options`（对象，可选）：
+  - `keep`（字符串）：'newest' | 'oldest' | 'smallest' | 'largest' - 保留哪种文件
+  - `action`（字符串）：'delete' | 'move' | 'archive' - 文件处理方式
+  - `archivePath`（字符串）：文件移动到的归档路径
+  - `dryRun`（布尔值）：仅预览操作而不实际删除
+  - `autoConfirm`（布尔值）：是否自动确认删除
+  - `sizeThreshold`（数字）：不删除大于此大小的文件
 
-**Returns:**
-- `filesRemoved` (number): Number of files removed/moved
-- `spaceSaved` (number): Bytes saved
-- `groupsProcessed` (number): Number of duplicate groups handled
-- `logPath` (string): Path to action log
-- `errors` (array): Any errors encountered
+**返回值：**
+- `filesRemoved`（数字）：删除/移动的文件数量
+- `spaceSaved`（数字）：节省的空间
+- `groupsProcessed`（数字）：处理的重复文件组数量
+- `logPath`（字符串）：操作日志路径
+- `errors`（数组）：遇到的错误
 
 ### `analyzeDirectory`
-Analyze a single directory for duplicates.
+分析单个目录中的重复文件。
 
-**Parameters:**
-- `directory` (string, required): Path to directory
-- `options` (object, optional): Same as findDuplicates options
+**参数：**
+- `directory`（字符串，必填）：目录路径
+- `options`（对象，可选）：与 `findDuplicates` 的参数相同
 
-**Returns:**
-- `fileCount` (number): Total files in directory
-- `totalSize` (number): Total bytes in directory
-- `duplicateSize` (number): Bytes in duplicate files
-- `duplicateRatio` (number): Percentage of files that are duplicates
+**返回值：**
+- `fileCount`（数字）：目录中的文件总数
+- `totalSize`（数字）：目录的总大小
+- `duplicateSize`（数字）：重复文件的总大小
+- `duplicateRatio`（数字）：重复文件的比例
 
-## Use Cases
+## 使用场景
 
-### Digital Hoarder Cleanup
-- Find duplicate photos/videos
-- Identify wasted storage space
-- Remove old duplicates, keep newest
-- Clean up download folders
+### 整理数字文件库
+- 查找重复的照片/视频
+- 识别浪费的存储空间
+- 删除旧重复文件，保留最新文件
+- 清理下载文件夹
 
-### Document Management
-- Find duplicate PDFs, docs, reports
-- Keep latest version, archive old versions
-- Prevent version confusion
-- Reduce backup bloat
+### 文档管理
+- 查找重复的 PDF、文档、报告
+- 保留最新版本，归档旧版本
+- 避免版本混淆
+- 减少备份文件的大小
 
-### Project Cleanup
-- Find duplicate source files
-- Remove duplicate build artifacts
-- Clean up node_modules duplicates
-- Save storage on SSD/HDD
+### 项目清理
+- 查找重复的源代码文件
+- 删除重复的构建产物
+- 清理 `node_modules` 中的重复文件
+- 释放 SSD/HDD 的存储空间
 
-### Backup Optimization
-- Find duplicate backup files
-- Remove redundant backups
-- Identify what's actually duplicated
-- Save space on backup drives
+### 备份优化
+- 查找重复的备份文件
+- 删除多余的备份
+- 确认哪些文件是重复的
+- 释放备份驱动器的空间
 
-## Configuration
+## 配置
 
-### Edit `config.json`:
+### 编辑 `config.json`：
 ```json
 {
   "detection": {
@@ -219,28 +219,28 @@ Analyze a single directory for duplicates.
 }
 ```
 
-## Methods
+## 检测方法
 
-### Content-Based (Recommended)
-- Fast MD5 hashing
-- Detects exact duplicates regardless of filename
-- Works across renamed files
-- Perfect for documents, code, archives
+### 基于内容的检测（推荐）
+- 快速的 MD5 哈希
+- 无论文件名如何都能检测到完全相同的重复文件
+- 适用于文档、代码、归档文件
 
-### Size-Based
-- Compares file sizes
-- Faster than content hashing
-- Good for media files where content hashing is slow
-- Finds near-duplicates (similar but not exact)
+### 基于大小的检测
+- 比较文件大小
+- 比基于内容的检测更快
+- 适用于媒体文件（因为内容哈希可能较慢）
+- 可检测到近似重复文件
 
-### Name-Based
-- Compares filenames
-- Detects similar named files
-- Good for finding version duplicates (file_v1, file_v2)
+### 基于名称的检测
+- 比较文件名
+- 识别名称相似的文件
+- 适用于查找版本重复文件（如 `file_v1`、`file_v2`）
 
-## Examples
+## 示例
 
-### Find Duplicates in Documents
+### 在文档中查找重复文件
+
 ```javascript
 const result = await findDuplicates({
   directories: '~/Documents',
@@ -257,7 +257,8 @@ result.duplicates.slice(0, 5).forEach((set, i) => {
 });
 ```
 
-### Remove Duplicates, Keep Newest
+### 删除重复文件，保留最新文件
+
 ```javascript
 const result = await removeDuplicates({
   directories: '~/Documents',
@@ -271,7 +272,8 @@ console.log(`Removed ${result.filesRemoved} files`);
 console.log(`Saved ${result.spaceSaved} bytes`);
 ```
 
-### Move to Archive Instead of Delete
+### 将文件移动到归档目录而非直接删除
+
 ```javascript
 const result = await removeDuplicates({
   directories: '~/Downloads',
@@ -286,7 +288,8 @@ console.log(`Archived ${result.filesRemoved} files`);
 console.log(`Safe in: ~/Documents/Archive`);
 ```
 
-### Dry-Run Preview Changes
+### 干运行预览删除操作
+
 ```javascript
 const result = await removeDuplicates({
   directories: '~/Documents',
@@ -301,109 +304,106 @@ result.duplicates.forEach((set, i) => {
 });
 ```
 
-## Performance
+## 性能
 
-### Scanning Speed
-- **Small directories** (<1000 files): <1s
-- **Medium directories** (1000-10000 files): 1-5s
-- **Large directories** (10000+ files): 5-20s
+### 扫描速度
+- **小目录**（<1000 个文件）：<1 秒
+- **中等目录**（1000-10000 个文件）：1-5 秒
+- **大目录**（10000+ 个文件）：5-20 秒
 
-### Detection Accuracy
-- **Content-based:** 100% (exact duplicates)
-- **Size-based:** Fast but may miss renamed files
-- **Name-based:** Detects naming patterns only
+### 检测准确性
+- **基于内容的检测**：100%（完全相同的文件）
+- **基于大小的检测**：速度快，但可能忽略重命名的文件
+- **基于名称的检测**：仅能检测名称相似的文件
 
-### Memory Usage
-- **Hash cache:** ~1MB per 100,000 files
-- **Batch processing:** Processes 1000 files at a time
-- **Peak memory:** ~200MB for 1M files
+### 内存使用
+- **哈希缓存**：每 100,000 个文件约占用 1MB 内存
+- **批量处理**：一次处理 1000 个文件
+- **峰值内存**：处理 100 万个文件时约占用 200MB 内存
 
-## Safety Features
+## 安全特性
 
-### Size Thresholding
-Won't remove files larger than configurable threshold (default: 10MB). Prevents accidental deletion of important large files.
+### 文件大小阈值
+不会删除大于配置阈值的文件（默认：10MB），防止误删重要的大文件。
 
-### Archive Mode
-Move files to archive directory instead of deleting. No data loss, full recoverability.
+### 归档模式
+将文件移动到归档目录而非直接删除，确保数据不会丢失，可完全恢复。
 
-### Action Logging
-All deletions/moves are logged to file for recovery and audit.
+### 操作日志记录
+所有删除/移动操作都会被记录在日志文件中，便于恢复和审计。
 
-### Undo Functionality
-Log file can be used to restore accidentally deleted files (limited undo window).
+### 撤销功能
+日志文件可用于恢复误删的文件（有有限的撤销窗口）。
 
-## Error Handling
+## 错误处理
 
-### Permission Errors
-- Clear error message
-- Suggest running with sudo
-- Skip files that can't be accessed
+### 权限错误
+- 显示错误信息
+- 建议以管理员权限运行程序
+- 跳过无法访问的文件
 
-### File Lock Errors
-- Detect locked files
-- Skip and report
-- Suggest closing applications using files
+### 文件锁定错误
+- 检测到文件被锁定时跳过该文件并报告
+- 建议关闭使用这些文件的程序
 
-### Space Errors
-- Check available disk space before deletion
-- Warn if space is critically low
-- Prevent disk-full scenarios
+### 空间错误
+- 删除前检查可用磁盘空间
+- 空间不足时发出警告
+- 防止磁盘满
 
-## Troubleshooting
+## 故障排除
 
-### Not Finding Expected Duplicates
-- Check detection method (content vs size vs name)
-- Verify exclude patterns aren't too broad
-- Check if files are in whitelisted directories
-- Try with includeSubdirs: false
+### 未找到预期的重复文件
+- 检查检测方法（基于内容、大小还是名称）
+- 确保排除模式设置合理
+- 检查文件是否在白名单目录中
+- 尝试将 `includeSubdirs` 设置为 `false`
 
-### Deletion Not Working
-- Check write permissions on directories
-- Verify action isn't 'delete' with autoConfirm: true
-- Check size threshold isn't blocking all deletions
-- Check file locks (is another program using files?)
+### 删除操作失败
+- 检查目录的写入权限
+- 确认 `action` 是否设置为 `delete` 且 `autoConfirm` 是否为 `true`
+- 检查文件大小阈值是否导致删除操作受阻
+- 检查是否有其他程序正在使用这些文件
 
-### Slow Scanning
-- Reduce includeSubdirs scope
-- Use size-based detection (faster)
-- Exclude large directories (node_modules, .git)
-- Process directories individually instead of batch
+### 扫描速度慢
+- 减少 `includeSubdirs` 的范围
+- 使用基于大小的检测方法（更快）
+- 排除大型目录（如 `node_modules`、`.git`）
+- 分别处理目录而非批量处理
 
-## Tips
+## 提示
 
-### Best Results
-- Use content-based detection for documents (100% accurate)
-- Run dry-run first to preview changes
-- Archive instead of delete for important files
-- Check logs if anything unexpected deleted
+### 最佳效果
+- 对于文档使用基于内容的检测方法（100% 准确）
+- 先进行干运行预览删除操作
+- 对重要文件使用归档方式
+- 如有意外删除，请查看日志
 
-### Performance Optimization
-- Process frequently used directories first
-- Use size threshold to skip large media files
-- Exclude hidden directories from scan
-- Process directories in parallel when possible
+### 性能优化
+- 先处理频繁使用的目录
+- 使用文件大小阈值跳过大型媒体文件
+- 从扫描中排除隐藏目录
+- 可能时并行处理目录
 
-### Space Management
-- Regular duplicate cleanup prevents storage bloat
-- Delete temp directories regularly
-- Clear download folders of installers
-- Empty trash before large scans
+### 空间管理
+- 定期清理重复文件，防止存储空间膨胀
+- 定期删除临时目录
+- 在进行大规模扫描前清空下载文件夹
 
-## Roadmap
+## 发展计划
+- [ ] 根据图像相似性检测重复文件
+- [ ] 检测近似重复文件
+- [ ] 在网络驱动器上检测重复文件
+- [ ] 集成云存储（如 S3、Google Drive）
+- [ ] 自动安排扫描任务
+- [ ] 基于机器学习的智能重复文件检测
+- [ ] 从备份中恢复已删除的文件
+- [ ] 根据文件内容相似性检测重复文件（而不仅仅是哈希值）
 
-- [ ] Duplicate detection by image similarity
-- [ ] Near-duplicate detection (similar but not exact)
-- [ ] Duplicate detection across network drives
-- [ ] Cloud storage integration (S3, Google Drive)
-- [ ] Automatic scheduling of scans
-- [ ] Heuristic duplicate detection (ML-based)
-- [ ] Recover deleted files from backup
-- [ ] Duplicate detection by file content similarity (not just hash)
-
-## License
+## 许可证
 
 MIT
 
 ---
 
-**Find duplicates. Save space. Keep your system clean.** 🔮
+**查找重复文件，节省空间，保持系统整洁。** 🔮

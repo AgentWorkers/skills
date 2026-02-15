@@ -1,13 +1,13 @@
 ---
 name: spend-pulse
-description: Proactive spending alerts via Plaid. Track credit card spending against a monthly budget with pace-based alerts.
+description: 通过 Plaid 实现主动式支出提醒功能：根据每月预算监控信用卡支出情况，并在超出预算时发送基于支出速度的提醒通知。
 ---
 
 # Spend Pulse
 
-> Proactive spending alerts via Plaid. Track credit card spending against a monthly budget with pace-based alerts.
+> 通过 Plaid 提供主动的支出提醒功能。您可以跟踪信用卡支出情况，并根据每月预算设置基于支出速度的提醒。
 
-## Installation
+## 安装
 
 ```bash
 # Install globally
@@ -19,40 +19,40 @@ cd spend-pulse
 npm install && npm run build && npm link
 ```
 
-Verify installation:
+验证安装结果：
 ```bash
 spend-pulse --version
 ```
 
-## First-Time Setup
+## 首次设置
 
-Run the interactive setup wizard:
+运行交互式设置向导：
 
 ```bash
 spend-pulse setup
 ```
 
-This will:
-1. Prompt for Plaid API credentials (get them at https://dashboard.plaid.com/developers/keys)
-2. Ask to choose Sandbox (test data) or Development (real bank) mode
-3. Set monthly spending budget
-4. Open browser for Plaid Link bank authentication
-5. Store credentials securely in macOS Keychain
+设置过程包括：
+1. 输入 Plaid API 密钥（请在 https://dashboard.plaid.com/developers/keys 获取）
+2. 选择测试模式（Sandbox）或正式模式（Development）
+3. 设置每月支出预算
+4. 在浏览器中打开 Plaid 提供的链接以完成银行身份验证
+5. 将 API 密钥安全地存储在 macOS 的 Keychain 中
 
-**For Sandbox testing**, use these Plaid test credentials when the bank login appears:
-- Username: `user_good`
-- Password: `pass_good`
+**进行测试模式（Sandbox）设置时**，使用以下测试凭据：
+- 用户名：`user_good`
+- 密码：`pass_good`
 
-After setup, run initial sync:
+设置完成后，运行初始同步操作：
 ```bash
 spend-pulse sync
 ```
 
-## Commands
+## 命令
 
-### `spend-pulse check` — Primary Command
+### `spend-pulse check` — 主要命令
 
-Returns alert decision with full context. **This is the main command to use.**
+返回包含详细信息的提醒判断结果。**这是您需要使用的核心命令。**
 
 ```yaml
 should_alert: true
@@ -82,16 +82,16 @@ new_items:
     category: Shopping
 ```
 
-**Alert triggers** (`should_alert: true` when any apply):
-- New transactions since last check
-- Over pace (spending faster than expected)
-- Remaining budget < $500
-- End of month (last 3 days)
-- First of month (new month started)
+**触发提醒的条件（`should_alert: true`）**：
+- 自上次检查以来有新的交易发生
+- 支出速度超过预期
+- 剩余预算低于 $500
+- 月底（距离月底还有 3 天）
+- 月初（新月份开始）
 
 ### `spend-pulse sync`
 
-Pull latest transactions from Plaid. Run before `check` for fresh data.
+从 Plaid 获取最新交易数据。在运行 `check` 命令前执行此命令以获取最新数据。
 
 ```yaml
 synced: 16
@@ -102,7 +102,7 @@ total_this_month: 6801.29
 
 ### `spend-pulse status [--oneline]`
 
-Full spending summary, or quick one-liner:
+显示完整的支出汇总信息，或以简短的一句话形式输出：
 
 ```bash
 spend-pulse status --oneline
@@ -111,11 +111,12 @@ spend-pulse status --oneline
 
 ### `spend-pulse recent [--days N] [--count N]`
 
-Recent transactions (default: last 5 days).
+显示最近的交易记录（默认显示过去 5 天的交易）。
 
 ### `spend-pulse config [key] [value]`
 
-View or modify settings:
+查看或修改设置：
+
 ```bash
 spend-pulse config                  # show all
 spend-pulse config target 8000      # set monthly budget
@@ -124,7 +125,8 @@ spend-pulse config timezone America/Chicago
 
 ### `spend-pulse link [--status] [--remove <id>]`
 
-Manage linked bank accounts:
+管理已关联的银行账户：
+
 ```bash
 spend-pulse link --status    # show linked accounts
 spend-pulse link             # add another account
@@ -133,21 +135,21 @@ spend-pulse link --remove <item_id>
 
 ### `spend-pulse chart [-o <path>]`
 
-Generate a cumulative spending chart as a PNG image showing:
-- Current month spending (solid blue line with gradient fill, ends with a dot at today)
-- Last month spending (dashed gray line, full month)
-- Budget target (dashed amber horizontal line)
+生成累计支出图表（PNG 格式）：
+- 当前月份的支出情况（实线蓝色，带有渐变填充效果，今日用点标示）
+- 上个月的支出情况（虚线灰色）
+- 预算目标（虚线琥珀色）
 
 ```bash
 spend-pulse chart                    # Writes to ~/.spend-pulse/chart.png
 spend-pulse chart -o /tmp/chart.png  # Custom output path
 ```
 
-Outputs the file path to stdout so you can capture it and attach to messages.
+该命令会将图表文件路径输出到标准输出（stdout），方便您将其附加到消息中。
 
 ### `spend-pulse check --chart`
 
-Generate a chart alongside the alert check. Adds `chart_path` to the YAML output:
+在检查提醒结果的同时生成图表。此命令会在 YAML 输出中添加 `chart_path` 字段：
 
 ```yaml
 should_alert: true
@@ -155,7 +157,7 @@ chart_path: /Users/you/.spend-pulse/chart.png
 # ... rest of check output
 ```
 
-## Recommended Workflow
+## 推荐的工作流程
 
 ```bash
 # 1. Sync latest transactions
@@ -165,67 +167,64 @@ spend-pulse sync
 spend-pulse check --chart
 ```
 
-**If `should_alert: true`**: Compose a brief, friendly spending update using the data. **Attach the chart image** from `chart_path` — it shows current vs. last month spending at a glance.
+**如果 `should_alert: true`**：根据数据撰写简洁明了的支出更新信息，并附上 `chart_path` 中的图表。图表可以直观地显示当前月份与上个月的支出对比情况。
 
-**If `should_alert: false`**: Stay quiet unless the user asks about spending.
+**如果 `should_alert: false`**：除非用户询问支出情况，否则无需发送提醒。
 
-## Composing Messages
+## 撰写消息
 
-Use the `oneline` field as the core message, then add context. Always attach the chart image when available — it communicates pace visually better than any text can.
+使用 `oneline` 字段作为消息的主体内容，然后补充相关细节。如果有图表，请务必附上图表——图表比文字更能直观地展示支出情况。
 
-**Under pace (positive):**
-> "Quick spending pulse: Jan at $6.8k of $8k, $1.2k left with 1 day to go. Under pace by 12% — nice work!"
-> [attach chart.png]
+**支出进度低于预期（正面情况）**：
+> “支出情况良好：1 月份支出为 $6,800，预算为 $8,000，还剩 1 天，进度低于预期 12%——做得不错！”
+> [附上 chart.png]
 
-**On track:**
-> "January update: $5.5k of $8k (69%) with 10 days left. Right on pace. Recent: $125 Amazon, $47 Whole Foods."
-> [attach chart.png]
+**支出进度符合预期**：
+> “1 月份支出情况：$5,500，预算为 $8,000（完成 69%），还剩 10 天。支出进度符合预期。最近的交易包括 $125 在 Amazon 和 $47 在 Whole Foods。”
+> [附上 chart.png]
 
-**Over pace (heads up):**
-> "Heads up — January's at $7.2k of $8k with 5 days to go. About 10% over pace. The travel charges added up."
-> [attach chart.png]
+**支出进度超过预期（提醒）**：
+> “注意：1 月份支出为 $7,200，预算为 $8,000，还剩 5 天，超出预算约 10%。可能是旅行费用导致的。”
+> [附上 chart.png]
 
-**Over budget:**
-> "January budget: $8.5k spent, about $500 over the $8k target. Something to keep in mind for February."
-> [attach chart.png]
+**支出超出预算**：
+> “1 月份预算为 $8,500，实际支出为 $8,000，超出预算约 $500。需要注意这一点，以便在 2 月份进行调整。”
+> [附上 chart.png]
 
-**Guidelines:**
-- Tone: helpful friend, not nagging accountant
-- Keep text under 280 characters when possible
-- Mention 1-2 notable items from `new_items` if interesting
-- Use `reasons` array for context
-- Always include the chart image — it's designed to be readable on a phone screen
+**编写消息的指导原则**：
+- 语气要友好、有帮助，避免显得像是在唠叨
+- 尽量将消息长度控制在 280 个字符以内
+- 如果有值得注意的支出项目，可以提及 1-2 项
+- 使用 `reasons` 数组提供更多背景信息
+- 一定要附上图表——图表在手机屏幕上也能清晰显示
 
-## Pace Explained
+## 支出进度解释
 
-Spend Pulse paces against **last month's actual cumulative spend curve** when available, falling back to a linear budget ramp when no prior month data exists.
+Spend Pulse 会参考**上个月的实际累计支出曲线**来评估支出进度；如果没有上个月的数据，则会使用线性预算增长模型进行判断。
 
-- `expected_spend`: Where you were at this point last month (or linear ramp fallback)
-- `spent`: Actual spending
-- `pace_delta`: Difference (negative = under, positive = over)
-- `pace`: `under` | `on_track` | `over`
-- `pace_source`: `last_month` (curve-based) or `linear` (ramp fallback)
+- `expected_spend`：表示上个月同期的预期支出金额（或使用线性预算增长模型计算的结果）
+- `spent`：实际支出金额
+- `pace_delta`：支出差异（负数表示低于预期，正数表示超出预期）
+- `pace`：`under`（低于预期）、`on_track`（符合预期）、`over`（超出预期）
+- `pace_source`：`last_month`（基于上个月的曲线数据）或 `linear`（使用线性预算增长模型）
 
-This means early-month bills (rent, subscriptions) won't trigger false "over pace" alerts if you had similar bills last month.
+这意味着，如果上个月有类似的固定支出项目（如房租、订阅费用），这些支出不会被错误地标记为“超出预期”。
 
-Example: Day 15, last month you'd spent $4.2k by this point → expected ~$4.2k.
+**示例**：假设上个月第 15 天的支出为 $4,200，那么本次的预期支出也是 $4,200。
 
-## Upgrading to Real Bank Data
+## 升级到正式银行数据
 
-After testing with Sandbox, upgrade to Development mode for real transactions:
+完成测试模式（Sandbox）的设置后，可以切换到正式模式（Development）以使用真实的银行交易数据：
 
 ```bash
 spend-pulse setup --upgrade
 ```
 
-This clears sandbox data and connects your real bank account.
+切换模式后会清除测试模式下的数据，并连接您的正式银行账户。
 
-## Troubleshooting
+## 故障排除
 
-**"Plaid credentials not found"**: Run `spend-pulse setup` to configure.
-
-**"Access token not found"**: Run `spend-pulse setup` to re-authenticate.
-
-**"No accounts found"**: Check `spend-pulse link --status` and add account if needed.
-
-**Stale data**: Run `spend-pulse sync` to refresh from Plaid.
+- **“Plaid 密钥未找到”**：运行 `spend-pulse setup` 命令进行重新配置。
+- **“访问令牌未找到”**：运行 `spend-pulse setup` 命令重新进行身份验证。
+- **“未找到任何账户”**：运行 `spend-pulse link --status` 命令查看账户信息，并根据需要添加新账户。
+- **数据过期**：运行 `spend-pulse sync` 命令从 Plaid 获取最新数据。

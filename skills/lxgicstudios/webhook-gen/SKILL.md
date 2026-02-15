@@ -1,29 +1,29 @@
 ---
 name: webhook-gen
-description: Generate webhook handlers with retry logic using AI. Use when integrating Stripe, GitHub, or any webhook provider.
+description: 使用 AI 生成具有重试逻辑的 Webhook 处理程序。在集成 Stripe、GitHub 或任何 Webhook 提供商时可以使用该功能。
 ---
 
-# Webhook Generator
+# Webhook 生成器
 
-Describe the webhook you're handling. Get a complete handler with signature verification, retry logic, and proper error handling. Stripe, GitHub, Twilio. all the patterns you need.
+本工具用于生成处理 Webhook 请求的函数。生成的函数支持签名验证、重试逻辑以及完善的错误处理机制，适用于 Stripe、GitHub、Twilio 等常见的 Webhook 提供商。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-webhook "stripe payment succeeded"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete webhook handler functions
-- Includes signature verification for popular providers
-- Adds idempotency checks to prevent duplicate processing
-- Implements retry-safe patterns with proper status codes
-- Handles common webhooks from Stripe, GitHub, Shopify, and more
+- 生成完整的 Webhook 处理函数
+- 支持对常见提供商的签名验证
+- 实现幂等性检查，防止重复处理请求
+- 采用安全的重试机制，并返回相应的状态码
+- 支持处理来自 Stripe、GitHub、Shopify 等平台的 Webhook 请求
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Stripe payment webhook
@@ -42,42 +42,42 @@ npx ai-webhook "new subscriber notification" --provider convertkit
 npx ai-webhook "invoice paid" --typescript
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Always verify signatures** - Never trust raw webhook payloads
-- **Return 200 quickly** - Process async. Don't make providers wait
-- **Handle duplicates** - Webhooks retry. Your handler should be idempotent
-- **Log everything** - Debugging webhook issues without logs is painful
+- **始终验证签名**：切勿直接信任原始的 Webhook 数据
+- **快速返回 200 状态码**：异步处理请求，避免让服务提供商等待过久
+- **处理重复请求**：Webhook 通常会重发，因此处理函数应具备幂等性
+- **记录所有操作**：没有日志将难以排查 Webhook 相关问题
 
-## When to Use This
+## 适用场景
 
-- Integrating a payment provider like Stripe or Paddle
-- Setting up GitHub Actions alternatives with webhooks
-- Building notification systems triggered by external services
-- Any third-party integration that sends webhooks
+- 集成 Stripe 或 Paddle 等支付服务
+- 通过 Webhook 实现 GitHub Actions 的自动化流程
+- 构建由外部服务触发的通知系统
+- 任何需要发送 Webhook 的第三方集成场景
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+LXGIC Studios 提供了 110 多款免费开发工具，本工具是其中之一。免费版本无使用限制、无需注册，也不需要 API 密钥，只需使用 `npx` 命令即可运行。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-webhook --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool recognizes common webhook patterns from your description. It generates a handler function with the appropriate verification method, event parsing, and response codes. AI ensures the handler follows best practices for reliability and security.
+该工具会根据用户提供的描述，自动生成相应的 Webhook 处理函数，包括签名验证、事件解析和响应代码。通过人工智能技术，确保处理函数遵循最佳实践，从而保证系统的可靠性和安全性。
 
-## License
+## 许可协议
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费使用，可自由支配。

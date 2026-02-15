@@ -1,6 +1,6 @@
 ---
 name: mia-polymarket-trader
-description: AI agent for automated prediction market trading on Polymarket
+description: 用于 Polymarket 自动化预测市场交易的 AI 代理
 homepage: https://polymarket.com
 metadata:
   clawdbot:
@@ -10,15 +10,15 @@ metadata:
 
 # Mia Polymarket Trader
 
-AI agent that autonomously trades on Polymarket prediction markets.
+这是一个能够在 Polymarket 预测市场中自主进行交易的 AI 代理。
 
-## Features
-- Market analysis using AI
-- Arbitrage opportunity detection
-- Automated trade execution
-- Risk management
+## 主要功能
+- 使用 AI 进行市场分析
+- 检测套利机会
+- 自动执行交易
+- 风险管理
 
-## Setup
+## 设置与配置
 ```bash
 export POLYMARKET_API_KEY="your-key"
 export POLYMARKET_PRIVATE_KEY="your-wallet-key"
@@ -26,10 +26,10 @@ mia-polymarket analyze --market "tech-ai"
 mia-polymarket trade --market-id "xxx" --position "yes" --amount 10
 ```
 
-## Safety
-- Max 5% portfolio per trade
-- Stop-loss at 20%
-- Daily reporting
+## 安全性措施
+- 每次交易的最大投资额为投资组合总额的 5%
+- 设置 20% 的止损机制
+- 提供每日交易报告
 
-## Author
+## 开发者
 MiaBloomx 💎

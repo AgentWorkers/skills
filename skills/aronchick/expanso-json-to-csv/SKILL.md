@@ -1,35 +1,34 @@
 # json-to-csv
 
-"Convert JSON array of objects to CSV format"
+**功能描述：**  
+将 JSON 格式的对象数组转换为 CSV 格式。
 
-## Requirements
+## 系统要求：  
+- 必须安装 Expanso Edge（`expanso-edge` 可执行文件需添加到系统的 PATH 环境变量中）。  
+- 安装方法：`clawhub install expanso-edge`
 
-- Expanso Edge installed (`expanso-edge` binary in PATH)
-- Install via: `clawhub install expanso-edge`
+## 使用方法：  
 
-## Usage
-
-### CLI Pipeline
+### 命令行管道（CLI Pipeline）  
 ```bash
 # Run standalone
 echo '<input>' | expanso-edge run pipeline-cli.yaml
 ```
 
-### MCP Pipeline
+### MCP 管道（MCP Pipeline）  
 ```bash
 # Start as MCP server
 expanso-edge run pipeline-mcp.yaml
 ```
 
-### Deploy to Expanso Cloud
+### 部署到 Expanso Cloud  
 ```bash
 expanso-cli job deploy https://skills.expanso.io/json-to-csv/pipeline-cli.yaml
 ```
 
-## Files
-
-| File | Purpose |
-|------|---------|
-| `skill.yaml` | Skill metadata (inputs, outputs, credentials) |
-| `pipeline-cli.yaml` | Standalone CLI pipeline |
-| `pipeline-mcp.yaml` | MCP server pipeline |
+## 相关文件：  
+| 文件名 | 用途 |  
+|------|---------|  
+| `skill.yaml` | 技能元数据（输入参数、输出结果、认证信息） |  
+| `pipeline-cli.yaml` | 独立的命令行管道脚本 |  
+| `pipeline-mcp.yaml` | MCP 服务器专用管道脚本 |

@@ -1,17 +1,17 @@
 ---
 name: priceforagent
-description: Get real-time prices for crypto, stocks, and commodities. Use when the user asks about asset prices, market data, or needs to check the value of Bitcoin, Ethereum, stocks like NVDA/AAPL, or commodities like gold/silver. Supports natural language queries ("What's the price of Bitcoin?") and direct lookups.
+description: 获取加密货币、股票和商品的实时价格。当用户询问资产价格、市场数据，或需要查看比特币、以太坊、股票（如NVDA/AAPL）或商品（如黄金/白银）的价值时，可以使用该功能。支持自然语言查询（例如：“比特币的价格是多少？”）以及直接查询。
 ---
 
-# Price for Agent
+# 代理服务价格
 
-LLM-friendly price service for crypto, stocks, and commodities.
+我们提供适用于大语言模型（LLM）的加密货币、股票和商品价格查询服务。
 
-**Base URL:** `https://p4ai.bitharga.com`
+**基础URL：** `https://p4ai.bitharga.com`
 
-## Quick Start
+## 快速入门
 
-### 1. Register for API Key
+### 1. 注册API密钥
 
 ```bash
 curl -X POST https://p4ai.bitharga.com/v1/register \
@@ -19,14 +19,14 @@ curl -X POST https://p4ai.bitharga.com/v1/register \
   -d '{"agent_id": "my-agent"}'
 ```
 
-Response:
+**响应：**
 ```json
 {"api_key": "pfa_xxx...", "message": "API key generated successfully"}
 ```
 
-### 2. Query Prices
+### 2. 查询价格
 
-**Natural language:**
+**自然语言查询：**
 ```bash
 curl -X POST https://p4ai.bitharga.com/v1/query \
   -H "X-API-Key: YOUR_KEY" \
@@ -34,12 +34,12 @@ curl -X POST https://p4ai.bitharga.com/v1/query \
   -d '{"query": "What is the price of Bitcoin and Ethereum?"}'
 ```
 
-**Direct lookup:**
+**直接查询：**
 ```bash
 curl -H "X-API-Key: YOUR_KEY" https://p4ai.bitharga.com/v1/price/bitcoin
 ```
 
-**Batch:**
+**批量查询：**
 ```bash
 curl -X POST https://p4ai.bitharga.com/v1/batch \
   -H "X-API-Key: YOUR_KEY" \
@@ -47,33 +47,33 @@ curl -X POST https://p4ai.bitharga.com/v1/batch \
   -d '{"pairs": ["BTC", "ETH", "NVDA"]}'
 ```
 
-## Supported Assets
+## 支持的资产
 
-| Type | Examples |
+| 类型 | 示例 |
 |------|----------|
-| Crypto | BTC, ETH, SOL, DOGE, XRP, BNB |
-| Stocks | NVDA, AAPL, TSLA, GOOGL |
-| Commodities | GOLD, SILVER, OIL |
+| 加密货币 | BTC, ETH, SOL, DOGE, XRP, BNB |
+| 股票 | NVDA, AAPL, TSLA, GOOGL |
+| 商品 | GOLD, SILVER, OIL |
 
-## Rate Limits
+## 速率限制
 
-- 2 requests per second per API key
-- Global limit: 10 million calls
-- Usage tracked via `/v1/usage`
+- 每个API密钥每秒最多2次请求
+- 全局请求限制：1000万次
+- 使用情况可通过 `/v1/usage` 查看
 
-## Function Calling
+## 函数调用
 
 ```bash
 curl https://p4ai.bitharga.com/v1/function-schema
 ```
 
-## OpenAPI Spec
+## OpenAPI规范
 
 ```bash
 curl https://p4ai.bitharga.com/v1/openapi.yaml
 ```
 
-## Response Format
+## 响应格式
 
 ```json
 {

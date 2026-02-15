@@ -8,45 +8,45 @@ description: |
   REQUIRES: gog CLI (brew install steipete/tap/gogcli) + Google Cloud OAuth credentials
 ---
 
-# Email Processor
+# 电子邮件处理器
 
-Automates Gmail inbox triage by categorizing unread emails and marking low-priority items as read.
+该工具通过自动分类未读邮件并将低优先级的邮件标记为已读，来帮助您更高效地管理Gmail收件箱。
 
-## What It Does
+## 功能概述
 
-1. Fetches all unread emails
-2. Identifies marketing, newsletters, promotions, and news
-3. Marks low-priority emails as read
-4. Surfaces important emails (GitHub, security alerts, direct communications)
-5. Generates a summary report
+1. 获取所有未读邮件。
+2. 识别营销邮件、新闻通讯、促销信息以及普通邮件。
+3. 将低优先级的邮件标记为已读。
+4. 突出显示重要邮件（如GitHub通知、安全警报和直接发送的私人邮件）。
+5. 生成汇总报告。
 
-## Prerequisites
+## 先决条件
 
-### 1. Install gog CLI
+### 1. 安装 gog CLI
 
 ```bash
 brew install steipete/tap/gogcli
 ```
 
-Verify installation:
+验证安装是否成功：
 ```bash
 gog --version
 ```
 
-### 2. Google Cloud OAuth Setup
+### 2. 设置 Google Cloud OAuth 访问权限
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project (or use existing)
-3. Enable the Gmail API:
-   - Navigate to "APIs & Services" > "Library"
-   - Search for "Gmail API" and enable it
-4. Create OAuth credentials:
-   - Go to "APIs & Services" > "Credentials"
-   - Click "Create Credentials" > "OAuth client ID"
-   - Select "Desktop app" as application type
-   - Download the JSON file
+1. 访问 [Google Cloud 控制台](https://console.cloud.google.com/)。
+2. 创建一个新的项目（或使用现有项目）。
+3. 启用 Gmail API：
+   - 转到“APIs & Services” > “Library”。
+   - 搜索“Gmail API”并启用它。
+4. 创建 OAuth 凭据：
+   - 转到“APIs & Services” > “Credentials”。
+   - 点击“Create Credentials” > “OAuth client ID”。
+   - 选择“Desktop app”作为应用类型。
+   - 下载 JSON 凭据文件。
 
-### 3. Authenticate gog
+### 3. 对 gog 进行身份验证
 
 ```bash
 # Set credentials
@@ -59,55 +59,54 @@ gog auth add your@gmail.com --services gmail
 gog auth list
 ```
 
-## Usage
+## 使用方法
 
-### Quick Process
+### 快速使用流程
 
 ```bash
 bash ~/.openclaw/workspace/skills/email-processor/scripts/process-emails.sh
 ```
 
-### Manual Processing (via Codex)
+### 手动处理（通过 Codex）
 
-1. **Fetch unread emails:**
+1. **获取未读邮件：**
    ```bash
    gog gmail search 'is:unread' --json --max 100
    ```
 
-2. **Mark specific thread as read:**
+2. **将特定邮件标记为已读：**
    ```bash
    gog gmail thread modify <thread-id> --remove UNREAD --force
    ```
 
-3. **Mark marketing emails (batch):**
+3. **批量标记营销邮件：**
    ```bash
    gog gmail search 'is:unread' --json --max 100 | \
      jq -r '.threads[] | select(.labels | contains(["CATEGORY_PROMOTIONS"])) | .id' | \
      while read id; do gog gmail thread modify "$id" --remove UNREAD --force; done
    ```
 
-## Email Categories
+## 邮件分类
 
-### Auto-Marked as Read
+### 自动标记为已读的邮件类别
 
-- `CATEGORY_PROMOTIONS` - Promotional emails
-- `[Superhuman]/AI/News` - Newsletters
-- `[Superhuman]/AI/Marketing` - Marketing emails
-- `[Superhuman]/AI/Pitch` - Cold outreach/pitches
-- `[Superhuman]/AI/AutoArchived` - Auto-categorized low priority
+- `CATEGORY_PROMOTIONS` - 促销邮件
+- `[Superhuman]/AI/News` - 新闻通讯
+- `[Superhuman]/AI/Marketing` - 营销邮件
+- `[Superhuman]/AI/Pitch` - 冷 Outreach（主动推广）邮件
+- `[Superhuman]/AI/AutoArchived` - 自动分类为低优先级的邮件
 
-### Preserved (Important)
+### 保留的重要邮件类别
 
-- GitHub notifications (PRs, issues, security alerts)
-- Direct personal communications
-- Financial/transaction emails
-- Security alerts
-- Calendar invites
+- GitHub 通知（拉取请求、问题、安全警报）
+- 直接发送的私人邮件
+- 金融/交易相关邮件
+- 安全警报
+- 日历邀请
 
-## Verification
+## 验证功能是否正常
 
-Check setup is working:
-
+检查设置是否正确：
 ```bash
 # Test gog connectivity
 gog gmail search 'is:unread' --max 5
@@ -120,29 +119,31 @@ gog gmail search 'is:unread' --json --max 10 | \
   jq -r '.threads[] | select(.labels | contains(["CATEGORY_PROMOTIONS"])) | {id: .id, subject: .subject}'
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| `gog: command not found` | Run `brew install steipete/tap/gogcli` |
-| `authentication required` | Run `gog auth credentials` and `gog auth add` |
-| `token expired` | Run `gog auth refresh your@gmail.com` |
-| `Gmail API not enabled` | Enable at https://console.cloud.google.com/apis/library/gmail.googleapis.com |
-| Rate limit errors | Add delays between requests or reduce batch size |
+| `gog: 命令未找到` | 运行 `brew install steipete/tap/gogcli` |
+| 需要身份验证 | 运行 `gog auth credentials` 和 `gog auth add` |
+| 令牌过期 | 运行 `gog auth refresh your@gmail.com` |
+| Gmail API 未启用 | 在 [Google Cloud 控制台](https://console.cloud.google.com/apis/library/gmail.googleapis.com) 中启用该 API |
+| 请求速率限制错误 | 增加请求间隔或减少批量处理的数量 |
 
-## Labels Reference
+## 邮件标签说明
 
-Gmail automatically applies these labels:
-- `CATEGORY_PERSONAL` - Personal emails
-- `CATEGORY_SOCIAL` - Social notifications
-- `CATEGORY_PROMOTIONS` - Promotions
-- `CATEGORY_UPDATES` - Updates/notifications
-- `CATEGORY_FORUMS` - Forum messages
-- `IMPORTANT` - Marked important
-- `UNREAD` - Unread status
+Gmail 会自动应用以下标签：
 
-Superhuman AI labels (if using Superhuman):
-- `[Superhuman]/AI/News` - Newsletters
-- `[Superhuman]/AI/Marketing` - Marketing
-- `[Superhuman]/AI/Pitch` - Pitches
-- `[Superhuman]/AI/AutoArchived` - Auto-archived
+- `CATEGORY_PERSONAL` - 个人邮件
+- `CATEGORY_SOCIAL` - 社交媒体通知
+- `CATEGORY_PROMOTIONS` - 促销邮件
+- `CATEGORY_UPDATES` - 更新/通知邮件
+- `CATEGORY_FORUMS` - 论坛消息
+- `IMPORTANT` - 被标记为重要的邮件
+- `UNREAD` - 未读状态
+
+（如果使用 Superhuman AI 服务，还会应用以下标签：）
+
+- `[Superhuman]/AI/News` - 新闻通讯
+- `[Superhuman]/AI/Marketing` - 营销邮件
+- `[Superhuman]/AI/Pitch` - 主动推广邮件
+- `[Superhuman]/AI/AutoArchived` - 自动归档的邮件

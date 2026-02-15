@@ -1,60 +1,60 @@
 ---
 name: nginx-config-creator
-description: "Creates a standard Nginx/OpenResty reverse proxy config file for a service and reloads the web server. Features safety checks and environment awareness. Takes service name, domain, and port as main arguments."
+description: "创建一个标准的 Nginx/OpenResty 反向代理配置文件，并重新加载 Web 服务器。该配置文件包含安全检查功能以及对环境变量的支持。主要参数包括服务名称、域名和端口号。"
 metadata:
   openclaw:
     requires:
       bins: ["bash", "docker"]
 ---
 
-# Nginx Config Creator (Enterprise Grade)
+# Nginx 配置生成器（企业级）
 
-This skill automates the creation of Nginx/OpenResty reverse proxy configurations. It is designed for both ease of use and safety, incorporating environment awareness and a critical safety-check mechanism.
+该技能可自动生成 Nginx/OpenResty 反向代理配置文件，兼具易用性和安全性，支持环境变量配置，并内置了关键的安全检查机制。
 
-## Features
+## 主要功能
 
-- **Environment Awareness**: Simplifies commands by reading configuration from environment variables.
-- **Safety Check**: Includes a '熔断' (fuse) mechanism. It tests the configuration before applying it and automatically rolls back if the test fails, preventing web server downtime.
+- **环境变量支持**：通过读取环境变量来简化配置命令的编写过程。
+- **安全检查**：内置“熔断”（熔断器）机制，在应用配置之前会先对其进行测试；如果测试失败，系统会自动回滚配置，从而避免导致 Web 服务器停机。
 
-## Pre-requisites (Recommended)
+## 建议的先决条件
 
-For maximum convenience, it is recommended to set the following environment variables on the host system:
+为确保最佳使用体验，建议在主机系统上设置以下环境变量：
 
-- `NGINX_CONFIG_PATH`: The absolute path to the Nginx `conf.d` directory.
-- `NGINX_CONTAINER_NAME`: The name of the running Nginx/OpenResty Docker container.
+- `NGINX_CONFIG_PATH`：Nginx 的 `conf.d` 目录的绝对路径。
+- `NGINX_CONTAINER_NAME`：正在运行的 Nginx/OpenResty Docker 容器的名称。
 
-If these are not set, they **must** be provided as command-line arguments.
+如果这些环境变量未设置，则必须通过命令行参数提供。
 
-## Core Action: `scripts/create-and-reload.sh`
+## 核心脚本：`scripts/create-and-reload.sh`
 
-This script performs the entire operation.
+该脚本负责完成整个配置生成过程。
 
-### **Inputs (Command-Line Arguments)**
+### **命令行参数**
 
-- `--service-name`: (Required) The short name for the service (e.g., `grafana`).
-- `--domain`: (Required) The root domain name (e.g., `example.com`).
-- `--port`: (Required) The local port the service is running on (e.g., `3000`).
-- `--config-path`: (Optional) The path to Nginx's `conf.d` directory. **Overrides** the `NGINX_CONFIG_PATH` environment variable.
-- `--container-name`: (Optional) The name of the Nginx Docker container. **Overrides** the `NGINX_CONTAINER_NAME` environment variable.
+- `--service-name`：（必选）服务的简称（例如：`grafana`）。
+- `--domain`：（必选）服务的根域名（例如：`example.com`）。
+- `--port`：（必选）服务运行的本地端口（例如：`3000`）。
+- `--config-path`：（可选）Nginx 的 `conf.d` 目录路径。该参数会覆盖 `NGINX_CONFIG_PATH` 环境变量的设置。
+- `--container-name`：（可选）Nginx Docker 容器的名称。该参数会覆盖 `NGINX_CONTAINER_NAME` 环境变量的设置。
 
-### **Output**
+### **输出结果**
 
-- **On Success**: Prints a step-by-step log of its actions and a final success message.
-- **On Failure**: Prints a descriptive error message to stderr and exits. If the failure occurs during the Nginx configuration test, the full error from `nginx -t` is displayed.
+- **成功时**：会打印详细的操作步骤及成功信息。
+- **失败时**：会向标准错误输出（stderr）显示详细的错误信息并退出。如果在配置测试过程中出现错误，还会显示 `nginx -t` 命令的输出结果。
 
-### **Execution Workflow**
+### **执行流程**
 
-1.  **Parse Arguments & Environment**: The script gathers all necessary paths and names from command-line arguments and environment variables.
-2.  **Generate Config**: It creates the `.conf` file in the target directory.
-3.  **Test Config (Safety Check)**: It executes `nginx -t` inside the specified container.
-4.  **Decide & Act**:
-    - If the test passes, it proceeds to reload Nginx via `nginx -s reload`.
-    - If the test fails, it **automatically deletes the generated file (rolls back)** and reports the error.
-5.  **Report Result**: Informs the user of the final outcome.
+1. **解析参数与环境变量**：脚本从命令行参数和环境变量中获取所有必要的路径和名称。
+2. **生成配置文件**：在目标目录中创建 `.conf` 文件。
+3. **测试配置**：在指定的 Docker 容器内执行 `nginx -t` 命令进行配置验证。
+4. **根据测试结果采取相应操作**：
+    - 如果测试通过，脚本会通过 `nginx -s reload` 命令重新加载 Nginx 服务。
+    - 如果测试失败，脚本会自动删除生成的配置文件并报告错误。
+5. **反馈结果**：向用户显示最终的配置生成结果。
 
-### **Example Usage**
+### **使用示例**
 
-**Scenario 1: Environment variables are pre-set**
+**场景 1：环境变量已预先设置**
 
 ```bash
 # Set for future convenience
@@ -68,7 +68,7 @@ bash skills/nginx-config-creator/scripts/create-and-reload.sh \
   --port "3000"
 ```
 
-**Scenario 2: No environment variables (providing all info via arguments)**
+**场景 2：未使用环境变量（所有信息均通过命令行参数提供）**
 
 ```bash
 bash skills/nginx-config-creator/scripts/create-and-reload.sh \
@@ -79,7 +79,7 @@ bash skills/nginx-config-creator/scripts/create-and-reload.sh \
   --container-name "your_nginx_container"
 ```
 
-### **Failure Strategy**
+### **错误处理策略**
 
-- **Missing Arguments**: The script will exit with an error if required arguments/environment variables are missing.
-- **`nginx -t` Fails**: The skill is designed to be safe. It will **not** attempt to reload a broken configuration. It will clean up after itself and show you the exact error, ensuring the live web server is never affected.
+- **缺少参数**：如果缺少必要的参数或环境变量，脚本会立即退出并显示错误信息。
+- **`nginx -t` 命令失败**：该工具具有安全性设计，不会尝试重新加载有问题的配置文件。它会自动清理错误并显示具体的错误信息，确保在线运行的 Web 服务器不会受到影响。

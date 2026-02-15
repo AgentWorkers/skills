@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Management - Java
+# Telnyx 账户管理 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists accounts managed by the current user.
+## 列出当前用户管理的账户
 
-Lists the accounts managed by the current user.
+列出当前用户管理的账户。
 
 `GET /managed_accounts`
 
@@ -44,11 +44,11 @@ import com.telnyx.sdk.models.managedaccounts.ManagedAccountListParams;
 ManagedAccountListPage page = client.managedAccounts().list();
 ```
 
-## Create a new managed account.
+## 创建一个新的受管理的账户
 
-Create a new managed account owned by the authenticated user.
+创建一个由已认证用户拥有的新受管理账户。
 
-`POST /managed_accounts` — Required: `business_name`
+`POST /managed_accounts` — 必需参数：`business_name`
 
 ```java
 import com.telnyx.sdk.models.managedaccounts.ManagedAccountCreateParams;
@@ -60,9 +60,9 @@ ManagedAccountCreateParams params = ManagedAccountCreateParams.builder()
 ManagedAccountCreateResponse managedAccount = client.managedAccounts().create(params);
 ```
 
-## Retrieve a managed account
+## 获取受管理的账户信息
 
-Retrieves the details of a single managed account.
+获取单个受管理账户的详细信息。
 
 `GET /managed_accounts/{id}`
 
@@ -73,9 +73,9 @@ import com.telnyx.sdk.models.managedaccounts.ManagedAccountRetrieveResponse;
 ManagedAccountRetrieveResponse managedAccount = client.managedAccounts().retrieve("id");
 ```
 
-## Update a managed account
+## 更新受管理的账户
 
-Update a single managed account.
+更新单个受管理的账户。
 
 `PATCH /managed_accounts/{id}`
 
@@ -86,9 +86,9 @@ import com.telnyx.sdk.models.managedaccounts.ManagedAccountUpdateResponse;
 ManagedAccountUpdateResponse managedAccount = client.managedAccounts().update("id");
 ```
 
-## Disables a managed account
+## 禁用受管理的账户
 
-Disables a managed account, forbidding it to use Telnyx services, including sending or receiving phone calls and SMS messages.
+禁用受管理的账户，使其无法使用 Telnyx 服务（包括发送或接收电话通话和短信）。
 
 `POST /managed_accounts/{id}/actions/disable`
 
@@ -99,9 +99,9 @@ import com.telnyx.sdk.models.managedaccounts.actions.ActionDisableResponse;
 ActionDisableResponse response = client.managedAccounts().actions().disable("id");
 ```
 
-## Enables a managed account
+## 恢复受管理的账户
 
-Enables a managed account and its sub-users to use Telnyx services.
+启用受管理的账户及其子用户使用 Telnyx 服务。
 
 `POST /managed_accounts/{id}/actions/enable`
 
@@ -112,7 +112,9 @@ import com.telnyx.sdk.models.managedaccounts.actions.ActionEnableResponse;
 ActionEnableResponse response = client.managedAccounts().actions().enable("id");
 ```
 
-## Update the amount of allocatable global outbound channels allocated to a specific managed account.
+## 更新分配给特定受管理账户的全球出站通道数量
+
+更新分配给特定受管理账户的全球出站通道数量。
 
 `PATCH /managed_accounts/{id}/update_global_channel_limit`
 
@@ -123,9 +125,11 @@ import com.telnyx.sdk.models.managedaccounts.ManagedAccountUpdateGlobalChannelLi
 ManagedAccountUpdateGlobalChannelLimitResponse response = client.managedAccounts().updateGlobalChannelLimit("id");
 ```
 
-## Display information about allocatable global outbound channels for the current user.
+## 显示当前用户可用的全球出站通道信息
 
-`GET /managed_accounts/allocatable_global_outbound_channels`
+显示当前用户可用的全球出站通道信息。
+
+`GET /managed.accounts/allocatable_global_outbound_channels`
 
 ```java
 import com.telnyx.sdk.models.managedaccounts.ManagedAccountGetAllocatableGlobalOutboundChannelsParams;

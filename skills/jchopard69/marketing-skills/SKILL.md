@@ -1,53 +1,53 @@
 ---
 name: marketing-skills
-description: TL;DR: 23 marketing playbooks (CRO, SEO, copy, analytics, experiments, pricing, launches, ads, social). Use to get checklists + copy/paste deliverables fast.
+description: 简而言之：提供了23份市场营销策略手册（包括客户获取（CRO）、搜索引擎优化（SEO）、文案撰写、数据分析、实验设计、定价策略、产品发布以及广告和社交媒体营销等方面的内容）。这些手册可用于快速生成检查清单，并方便地复制和粘贴相关交付物。
 ---
 
-# Marketing Skills
+# 营销技能
 
-## Summary
+## 概述
 
-One installed skill containing 23 marketing modules. Pick the relevant module under `references/` to get practical checklists, frameworks, and copy/paste deliverables.
+这是一个包含23个营销模块的技能包。您可以在`references/`目录下选择所需的模块，以获取实用的检查清单、框架以及可复用的内容。
 
-This skill vendors the full content from `coreyhaines31/marketingskills` under `references/` and provides a simple router to load the right module.
+该技能包提供了`coreyhaines31/marketingskills`目录下的所有内容，并提供了一个简单的路由系统来加载相应的模块。
 
-## How to use
+## 使用方法
 
-1) Identify the module that matches the request.
-2) Read the corresponding `references/<module>/SKILL.md` file.
-3) Apply the framework and deliver practical outputs (drafts + checklists).
+1. 确定符合您需求的模块。
+2. 阅读对应的`references/<module>/SKILL.md`文件。
+3. 应用该模块提供的框架，并生成实际的输出结果（如草稿、检查清单等）。
 
-## Included modules (what each one does)
+## 包含的模块（各模块的功能）
 
-Each module lives at `references/<module>/SKILL.md`.
+所有模块的文件都位于`references/<module>/SKILL.md`目录下：
 
-- `ab-test-setup`: plan and implement A/B tests
-- `analytics-tracking`: set up tracking and measurement (GA4/GTM/events)
-- `competitor-alternatives`: competitor comparison + alternatives / “vs” pages
-- `copy-editing`: edit and polish existing copy
-- `copywriting`: write or improve marketing copy (headlines, CTAs, page copy)
-- `email-sequence`: build email sequences and drip campaigns
-- `form-cro`: optimize lead capture and contact forms
-- `free-tool-strategy`: plan engineering-as-marketing free tools (calculators, generators)
-- `launch-strategy`: product launches and announcements
-- `marketing-ideas`: idea bank for growth + marketing tactics
-- `marketing-psychology`: mental models / cognitive biases for better persuasion
-- `onboarding-cro`: improve activation and onboarding
-- `page-cro`: conversion optimization for any marketing page
-- `paid-ads`: create and optimize paid ad campaigns
-- `paywall-upgrade-cro`: optimize in-app paywalls and upgrade screens
-- `popup-cro`: create/optimize popups and modals
-- `pricing-strategy`: pricing, packaging, and monetization
-- `programmatic-seo`: build SEO pages at scale (templates + data)
-- `referral-program`: design referral and affiliate programs
-- `schema-markup`: add structured data and rich snippets
-- `seo-audit`: audit technical and on-page SEO
-- `signup-flow-cro`: optimize signup and registration flows
-- `social-content`: create and schedule social media content
+- `ab-test-setup`：规划并实施A/B测试
+- `analytics-tracking`：设置跟踪和测量工具（如GA4/GTM）
+- `competitor-alternatives`：竞争对手分析及替代方案页面
+- `copy-editing`：编辑和润色营销文案
+- `copywriting`：撰写或优化营销文案（标题、呼叫行动语句、页面内容）
+- `email-sequence`：构建电子邮件序列和持续投放营销活动
+- `form-cro`：优化潜在客户捕获和联系表单
+- `free-tool-strategy`：规划用于营销的免费工具（计算器、生成器等）
+- `launch-strategy`：产品发布和宣传策略
+- `marketing-ideas`：营销创意库及策略建议
+- `marketing-psychology`：心理学知识，帮助提升说服力
+- `onboarding-cro`：优化用户入职和引导流程
+- `page-cro`：优化任何营销页面的转化率
+- `paid-ads`：创建和优化付费广告活动
+- `paywall-upgrade-cro`：优化应用内的付费墙和升级界面
+- `popup-cro`：创建和优化弹窗和模态窗口
+- `pricing-strategy`：定价策略、产品包装及盈利模式
+- `programmatic-seo`：大规模构建SEO页面（模板+数据）
+- `referral-program`：设计推荐和联盟计划
+- `schema-markup`：添加结构化数据和丰富摘要
+- `seo-audit`：进行SEO技术审核和页面优化
+- `signup-flow-cro`：优化注册流程
+- `social-content`：创建和安排社交媒体内容
 
-## Module router
+## 模块路由系统
 
-Pick one of these modules and read the matching file:
+请选择其中一个模块并阅读相应的文件：
 
 - `references/page-cro/SKILL.md`
 - `references/signup-flow-cro/SKILL.md`
@@ -73,8 +73,8 @@ Pick one of these modules and read the matching file:
 - `references/marketing-ideas/SKILL.md`
 - `references/marketing-psychology/SKILL.md`
 
-## Output rules
+## 输出要求
 
-- Prefer 80/20: biggest levers first.
-- Never invent metrics or keyword volumes. If missing, label assumptions.
-- When possible: include copy/paste drafts and an implementation checklist.
+- 优先使用最关键的80%的营销工具和策略。
+- 不要自行发明新的指标或关键词数量统计方法；如果数据缺失，请注明假设。
+- 如有可能，提供可复用的草稿文件和实施检查清单。

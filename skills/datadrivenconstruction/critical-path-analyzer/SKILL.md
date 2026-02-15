@@ -1,25 +1,24 @@
 ---
 slug: "critical-path-analyzer"
 display_name: "Critical Path Analyzer"
-description: "Analyze project critical path from schedule data. Identify critical activities, calculate float, and assess schedule risk."
+description: "根据项目进度数据分析项目的关键路径（critical path），识别关键活动（critical activities），计算活动的浮动时间（float），并评估项目进度风险（schedule risk）。"
 ---
 
-# Critical Path Analyzer
+# 关键路径分析器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Schedule management requires understanding:
-- Which activities are critical?
-- How much float exists?
-- What delays impact completion?
-- Where to focus resources?
+### 问题陈述
+进度管理需要了解以下信息：
+- 哪些活动是关键活动？
+- 项目中存在多少缓冲时间（即可以延期的时间）？
+- 什么延误会影响项目的完成？
+- 应将资源集中在哪些地方？
 
-### Solution
-Analyze schedule network to identify critical path, calculate float, and provide actionable schedule insights.
+### 解决方案
+通过分析项目进度网络来识别关键路径，计算缓冲时间，并提供可操作的进度管理建议。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -326,8 +325,7 @@ class CriticalPathAnalyzer:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date
 
@@ -350,26 +348,26 @@ print(f"Project Duration: {result.project_duration} days")
 print(f"Critical Path: {result.critical_path}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Analyze Delay Impact
+### 1. 分析延误的影响
 ```python
 impact = analyzer.analyze_delay_impact("C", delay_days=5)
 print(f"Project Delay: {impact['project_delay']} days")
 ```
 
-### 2. Get Schedule Dates
+### 2. 获取项目进度日期
 ```python
 schedule = analyzer.get_schedule_dates()
 print(schedule[['Activity ID', 'Early Start', 'Late Finish', 'Total Float']])
 ```
 
-### 3. Acceleration Suggestions
+### 3. 加速项目进度的建议
 ```python
 suggestions = analyzer.suggest_acceleration(target_reduction=10)
 for s in suggestions:
     print(f"{s['activity']}: can reduce {s['max_reduction']} days")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - Schedule Analysis
+## 参考资料
+- **《DDC手册》**：第4.2章 - 进度分析

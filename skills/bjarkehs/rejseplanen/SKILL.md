@@ -1,22 +1,22 @@
 ---
 name: rejseplanen
-description: Query Danish public transport departures, arrivals, and journey planning via Rejseplanen API
+description: 通过 Rejseplanen API 查询丹麦公共交通的出发时间、到达时间以及行程规划信息
 metadata: {"clawdbot":{"emoji":"🚂","os":["linux","darwin","win32"],"requires":{"bins":["node"]}}}
 ---
 
-# Rejseplanen - Danish Public Transport
+# Rejseplanen - 丹麦公共交通
 
-Query real-time train and bus departures, arrivals, and plan journeys via the Rejseplanen API.
+通过 Rejseplanen API 查询实时火车和公交车的发车、到站信息，并规划行程。
 
-## Commands
+## 命令
 
-### Search for stations
+### 搜索车站
 
 ```bash
 node {baseDir}/dist/rejseplanen.js search "København"
 ```
 
-### Departures
+### 发车信息
 
 ```bash
 node {baseDir}/dist/rejseplanen.js departures Odense
@@ -24,47 +24,47 @@ node {baseDir}/dist/rejseplanen.js departures Odense --trains
 node {baseDir}/dist/rejseplanen.js departures Odense --trains --to Aalborg
 ```
 
-### Arrivals
+### 到站信息
 
 ```bash
 node {baseDir}/dist/rejseplanen.js arrivals Aalborg
 node {baseDir}/dist/rejseplanen.js arrivals Aalborg --trains --from Odense
 ```
 
-### Trip planning
+### 行程规划
 
 ```bash
 node {baseDir}/dist/rejseplanen.js trip Odense Aalborg
 node {baseDir}/dist/rejseplanen.js trip Odense "Aalborg Vestby" --time 07:00
 ```
 
-### Journey details
+### 行程详情
 
-Show all stops for a specific train:
+显示特定火车的所有停靠站：
 
 ```bash
 node {baseDir}/dist/rejseplanen.js journey Odense 75
 ```
 
-## Options
+## 选项
 
-- `--trains` - Show only trains
-- `--buses` - Show only buses
-- `--to <station>` - Filter departures by destination
-- `--from <station>` - Filter arrivals by origin
-- `--time HH:MM` - Departures after specified time
-- `--output json|text` - Output format (default: text)
-- `--json` - Shorthand for `--output json`
+- `--trains` - 仅显示火车信息
+- `--buses` - 仅显示公交车信息
+- `--to <车站>` - 按目的地筛选发车信息
+- `--from <车站>` - 按起点筛选到站信息
+- `--time HH:MM` - 在指定时间之后发车的列车
+- `--output json|text` - 输出格式（默认：文本）
+- `--json` - `--output json` 的简写形式
 
-## JSON output
+## JSON 输出
 
-For programmatic parsing, use `--json`:
+如需用于程序解析，请使用 `--json`：
 
 ```bash
 node {baseDir}/dist/rejseplanen.js departures Odense --json
 ```
 
-## Tips
+## 提示
 
-- Use `search` to find station IDs, then store frequently used ones for faster lookups
-- Station IDs can be used directly instead of names (e.g., `008600512` for Odense)
+- 使用 `search` 命令查找车站 ID，然后保存常用的车站 ID 以加快查询速度
+- 可以直接使用车站 ID 而不是车站名称（例如，Odense 的 ID 为 `008600512`）

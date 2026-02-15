@@ -1,25 +1,24 @@
 ---
 slug: "productivity-analyzer"
 display_name: "Productivity Analyzer"
-description: "Analyze labor productivity from site data. Compare planned vs actual, identify trends, benchmark against industry standards."
+description: "根据站点数据分析劳动生产率。对比计划值与实际值，识别趋势，并与行业标准进行基准测试。"
 ---
 
-# Productivity Analyzer
+# 生产力分析工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Understanding productivity requires:
-- Tracking actual output rates
-- Comparing to planned rates
-- Identifying problem areas
-- Forecasting project completion
+### 问题描述
+要了解生产力，需要：
+- 跟踪实际产出率
+- 与计划产出率进行比较
+- 识别问题所在
+- 预测项目完成时间
 
-### Solution
-Analyze labor productivity data to identify trends, compare to benchmarks, and provide actionable insights.
+### 解决方案
+分析劳动力生产率数据，以发现趋势、与基准进行对比，并提供可操作的洞察。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -326,8 +325,7 @@ class ProductivityAnalyzer:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date, timedelta
 
@@ -354,27 +352,27 @@ print(f"Status: {analysis.status.value}")
 print(f"Trend: {analysis.trend}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Identify Problems
+### 1. 识别问题
 ```python
 problems = analyzer.identify_problem_areas()
 for p in problems:
     print(f"{p['activity']}: {p['efficiency']}% - {p['priority']}")
 ```
 
-### 2. Forecast Completion
+### 2. 预测项目完成时间
 ```python
 forecast = analyzer.forecast_completion("concrete_pour", remaining_quantity=500)
 print(f"Days needed: {forecast['days_needed']}")
 print(f"Completion: {forecast['estimated_completion']}")
 ```
 
-### 3. Compare to Benchmarks
+### 3. 与基准进行比较
 ```python
 comparison = analyzer.compare_to_benchmark("concrete_pour")
 print(f"vs Benchmark: {comparison['vs_benchmark_pct']}%")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Productivity Management
+## 资源参考
+- **DDC手册**：第4.1章 - 生产力管理

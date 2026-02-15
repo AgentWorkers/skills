@@ -1,44 +1,44 @@
 ---
 name: scan-skill
-description: Deep security analysis of an individual skill before installation
+description: 在安装某项技能之前，对其进行深入的安全性分析是非常重要的。
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Bash
 context: fork
 ---
 
-# scan-skill -- Individual Skill Analyzer
+# scan-skill -- 单个技能分析工具
 
-Perform deep security analysis of a single skill directory before installation. Checks for all known injection techniques from AI agent security research.
+在安装某个技能之前，对该技能目录进行深入的安全分析。该工具会检查所有已知的人工智能代理安全研究中的注入技术。
 
-## What to do
+## 使用方法
 
-Run the scanner against the target skill directory:
+将扫描工具应用于目标技能目录：
 
 ```bash
 python3 "$SKILL_DIR/scripts/scan_skill.py" "$ARGUMENTS"
 ```
 
-Where `$ARGUMENTS` is the path to the skill directory to analyze.
+其中，`$ARGUMENTS` 表示要分析的技能目录的路径。
 
-If no argument is provided, prompt the user for the path to the skill they want to scan.
+如果未提供参数，系统会提示用户输入要扫描的技能目录的路径。
 
-## What it checks
+## 检查内容：
 
-- SKILL.md frontmatter analysis (dangerous field combinations, hidden skills, pre-approved tools)
-- Hidden HTML comments with imperative instructions
-- Shell command patterns (remote-code-pipe-to-shell, encoded payloads)
-- Description persistence triggers (forced repeated execution keywords)
-- Supporting files analysis (scripts/ directory contents, executable permissions)
-- Dynamic context injection (preprocessor command execution)
-- Encoding and obfuscation (base64, hex, zero-width characters)
-- Instruction override attempts (context manipulation, role impersonation)
+- SKILL.md 文件的开头部分（危险字段组合、隐藏的技能信息、预先批准的工具）
+- 包含强制执行指令的隐藏 HTML 注释
+- Shell 命令模式（远程代码通过管道传递到 Shell、编码后的有效载荷）
+- 描述内容中的触发机制（用于强制重复执行的关键词）
+- 支持文件的分析（脚本/目录内容、可执行文件的权限设置）
+- 动态上下文注入（预处理器命令的执行）
+- 编码与混淆技术（Base64、十六进制编码、零宽度字符）
+- 试图覆盖原有指令的行为（上下文操控、角色冒充）
 
-## Output
+## 输出结果：
 
-Structured report with severity-ranked findings and specific recommendations per finding. Includes frontmatter analysis summary and supporting file inventory.
+生成结构化的报告，其中包含按严重程度排序的发现结果以及针对每个问题的具体建议。报告还包括 SKILL.md 文件开头部分的分析总结和支持文件的清单。
 
-## When to use
+## 使用场景：
 
-- Before installing a skill from a public repository or marketplace
-- When reviewing a skill contributed by an external party
-- As part of security review before adding skills to your agent configuration
+- 在从公共仓库或市场安装技能之前
+- 在审查外部提供的技能时
+- 在将技能添加到代理配置之前进行安全审查时

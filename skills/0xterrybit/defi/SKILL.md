@@ -1,37 +1,33 @@
 ---
 name: defi
-description: DeFi protocol interactions. Swap tokens via DEX aggregators, check yields, track positions across Ethereum, Polygon, Arbitrum, and Solana.
+description: DeFi协议交互：通过DEX聚合器进行代币交易，查看收益情况，并监控在Ethereum、Polygon、Arbitrum和Solana上的资产持有情况。
 metadata: {"clawdbot":{"emoji":"🏦","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# DeFi 🏦
+# DeFi 🏦  
+跨多个链路的去中心化金融协议管理工具。  
 
-Decentralized Finance protocol management across multiple chains.
+## 💎 推荐配置  
+该功能通过聚合器路由交易，并收取推荐费以支持项目开发。  
 
-## 💎 Referral Configuration
-
-This skill routes swaps through aggregators with referral fees to support development.
-
-| Chain | Aggregator | Fee | Referrer |
+| 链路 | 聚合器 | 费用 | 推荐人 |
 |-------|------------|-----|----------|
-| EVM (ETH/ARB/POLY) | 1inch | 0.3% | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` |
+| EVM（ETH/ARB/POLY）| 1inch | 0.3% | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` |
 | Solana | Jupiter | 0.2% | `8KDDpruBwpTzJLKEcfv8JefKSVYWYE53FV3B2iLD6bNN` |
-| Cross-chain | LI.FI | 0.3% | `CyberPay` integrator |
+| 跨链交易 | LI.FI | 0.3% | `CyberPay` 整合器 |
 
-## Quick Commands
+## 快速命令  
 
-### Get Token Price
-
+### 获取代币价格  
 ```bash
 # ETH price via CoinGecko (free, no API key)
 curl -s "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd" | jq '.ethereum.usd'
 
 # Multiple tokens
 curl -s "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,bitcoin,solana&vs_currencies=usd" | jq '.'
-```
+```  
 
-### Get DeFi Yields (DefiLlama - Free)
-
+### 获取去中心化金融收益（DefiLlama - 免费）  
 ```bash
 # Top yields across all protocols
 curl -s "https://yields.llama.fi/pools" | jq '[.data | sort_by(-.apy) | .[:10] | .[] | {pool: .pool, project: .project, chain: .chain, apy: .apy, tvl: .tvlUsd}]'
@@ -41,22 +37,20 @@ curl -s "https://yields.llama.fi/pools" | jq '[.data | .[] | select(.chain == "E
 
 # Filter by token (e.g., USDC)
 curl -s "https://yields.llama.fi/pools" | jq '[.data | .[] | select(.symbol | contains("USDC")) | {pool: .pool, project: .project, chain: .chain, apy: .apy}] | sort_by(-.apy) | .[:10]'
-```
+```  
 
-### Get Protocol TVL
-
+### 获取协议的总价值（TVL）  
 ```bash
 # All protocols TVL
 curl -s "https://api.llama.fi/protocols" | jq '[.[:20] | .[] | {name: .name, tvl: .tvl, chain: .chain}]'
 
 # Specific protocol
 curl -s "https://api.llama.fi/protocol/aave" | jq '{name: .name, tvl: .tvl, chains: .chains}'
-```
+```  
 
-## Swap Tokens (EVM Chains)
+## 交易代币（EVM 链路）  
 
-### Via 1inch (Ethereum, Polygon, Arbitrum, etc.)
-
+### 通过 1inch（以太坊、Polygon、Arbitrum 等）  
 ```bash
 # Configuration
 API_KEY="${ONEINCH_API_KEY}"
@@ -80,10 +74,9 @@ curl -s "https://api.1inch.dev/swap/v6.0/${CHAIN_ID}/quote" \
     dstAmount: .dstAmount,
     gas: .gas
   }'
-```
+```  
 
-### Via Jupiter (Solana)
-
+### 通过 Jupiter（Solana）  
 ```bash
 # Get quote
 INPUT_MINT="So11111111111111111111111111111111111111112"  # SOL
@@ -96,10 +89,9 @@ curl -s "https://api.jup.ag/swap/v1/quote?inputMint=${INPUT_MINT}&outputMint=${O
   outAmount: .outAmount,
   priceImpact: .priceImpactPct
 }'
-```
+```  
 
-## Cross-Chain Bridge (LI.FI)
-
+## 跨链桥接（LI.FI）  
 ```bash
 # Bridge USDC from Ethereum to Arbitrum
 FROM_CHAIN="1"
@@ -123,12 +115,11 @@ curl -s "https://li.quest/v1/quote" \
     output: .estimate.toAmount,
     time: .estimate.executionDuration
   }'
-```
+```  
 
-## Check Wallet Balances
+## 检查钱包余额  
 
-### EVM (via Alchemy/Infura)
-
+### EVM 链路（通过 Alchemy/Infura）  
 ```bash
 WALLET="0x..."
 RPC_URL="${ETH_RPC_URL:-https://eth.llamarpc.com}"
@@ -137,10 +128,9 @@ RPC_URL="${ETH_RPC_URL:-https://eth.llamarpc.com}"
 curl -s -X POST "$RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"$WALLET\",\"latest\"],\"id\":1}" | jq -r '.result' | xargs printf "%d\n" | awk '{print $1/1e18 " ETH"}'
-```
+```  
 
-### Solana
-
+### Solana 链路  
 ```bash
 WALLET="..."
 RPC_URL="${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}"
@@ -148,49 +138,44 @@ RPC_URL="${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}"
 curl -s -X POST "$RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getBalance\",\"params\":[\"$WALLET\"]}" | jq '.result.value / 1e9'
-```
+```  
 
-## Supported Chains
+## 支持的链路  
+| 链路 | ID | RPC | DEX |  
+|-------|-----|-----|-----|  
+| 以太坊 | 1 | eth.llamarpc.com | 1inch, Uniswap |  
+| Arbitrum | 42161 | arb1.arbitrum.io/rpc | 1inch, Camelot |  
+| Polygon | 137 | polygon-rpc.com | 1inch, QuickSwap |  
+| Optimism | 10 | mainnet.optimism.io | 1inch, Velodrome |  
+| Base | 8453 | mainnet.base.org | 1inch, Aerodrome |  
+| Solana | - | api.mainnet-beta.solana.com | Jupiter |  
 
-| Chain | ID | RPC | DEX |
-|-------|-----|-----|-----|
-| Ethereum | 1 | eth.llamarpc.com | 1inch, Uniswap |
-| Arbitrum | 42161 | arb1.arbitrum.io/rpc | 1inch, Camelot |
-| Polygon | 137 | polygon-rpc.com | 1inch, QuickSwap |
-| Optimism | 10 | mainnet.optimism.io | 1inch, Velodrome |
-| Base | 8453 | mainnet.base.org | 1inch, Aerodrome |
-| Solana | - | api.mainnet-beta.solana.com | Jupiter |
+## 免费 API（无需密钥）  
+| 服务 | 用途 | URL |  
+|---------|----------|-----|  
+| CoinGecko | 代币价格 | api.coingecko.com |  
+| DefiLlama | 收益、TVL | api.llama.fi |  
+| LlamaRPC | EVM RPC | eth.llamarpc.com |  
+| Jupiter | Solana 交易 | api.jup.ag |  
+| LI.FI | 跨链交易 | liQUEST |  
 
-## Free APIs (No Key Required)
+## 安全规则  
+1. **始终** 显示交易详情并等待用户确认。  
+2. **警告**：如果价格变动超过 1%，请用户确认。  
+3. **警告**：如果滑点超过 3%，请用户确认。  
+4. **在 EVM 交易前**，请检查用户的代币余额。  
+5. **验证** 跨链转账的安全性。  
+6. **未经明确批准**，**严禁** 执行交易。  
 
-| Service | Use Case | URL |
-|---------|----------|-----|
-| CoinGecko | Token prices | api.coingecko.com |
-| DefiLlama | Yields, TVL | api.llama.fi |
-| LlamaRPC | EVM RPC | eth.llamarpc.com |
-| Jupiter | Solana swaps | api.jup.ag |
-| LI.FI | Cross-chain | li.quest |
+## 错误处理  
+| 错误 | 原因 | 解决方案 |  
+|-------|-------|----------|  
+| **资金不足** | 钱包余额不足 | 检查钱包余额。  
+| **未找到交易路径** | 无流动性 | 尝试减少交易金额。  
+| **滑点超过限制** | 价格波动导致滑点过大 | 增加滑点限制或重新尝试。  
+| **请求过多** | 系统限制 | 等待片刻后重新尝试。  
 
-## Safety Rules
-
-1. **ALWAYS** display swap details and wait for user confirmation
-2. **WARN** if price impact > 1%
-3. **WARN** if slippage > 3%
-4. **CHECK** token allowances before EVM swaps
-5. **VERIFY** bridge security for cross-chain transfers
-6. **NEVER** execute transactions without explicit approval
-
-## Error Handling
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `insufficient funds` | Low balance | Check wallet balance |
-| `no route found` | No liquidity | Try smaller amount |
-| `slippage exceeded` | Price moved | Increase slippage or retry |
-| `rate limited` | Too many requests | Wait and retry |
-
-## Example Interactions
-
+## 示例操作  
 ```
 User: "What's the best yield for USDC?"
 → Query DefiLlama yields API
@@ -208,11 +193,10 @@ User: "Bridge 100 USDC from ETH to Arbitrum"
 → Display: bridge, output amount, estimated time
 → Ask for confirmation
 → Return transaction data
-```
+```  
 
-## Links
-
-- [DefiLlama](https://defillama.com/)
-- [1inch](https://1inch.io/)
-- [Jupiter](https://jup.ag/)
+## 链接  
+- [DefiLlama](https://defillama.com/)  
+- [1inch](https://1inch.io/)  
+- [Jupiter](https://jup.ag/)  
 - [LI.FI](https://li.fi/)

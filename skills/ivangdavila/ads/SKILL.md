@@ -1,79 +1,79 @@
 ---
 name: Ads
-description: Paid acquisition strategy, budget allocation, and avoiding common advertising mistakes across platforms
+description: 付费获取策略、预算分配以及避免在各个平台上常见的广告错误
 metadata:
   category: marketing
   skills: ["ads", "paid-acquisition", "advertising", "ppc", "media-buying"]
 ---
 
-## Budget Mistakes
+## 预算误区
 
-- Starting with daily budgets too low to exit learning phase — platforms need 50+ conversions/week per ad set to optimize properly
-- Spreading budget across too many campaigns early — concentrate spend to gather statistically significant data faster
-- Killing ads before statistical significance — minimum 100 clicks or 1000 impressions before judging creative performance
-- No contingency for scaling — reserve 20-30% of budget for doubling down on winners mid-month
-- Treating ad spend as expense, not investment — track payback period, not just immediate ROAS
+- 初始设定的每日预算过低，导致无法顺利度过学习阶段——平台通常需要每个广告组每周至少50次转化才能实现最佳优化效果。
+- 过早将预算分散到过多广告活动中——应集中支出，以更快地收集具有统计意义的数据。
+- 在数据尚未达到统计显著性时就停止广告投放——在评估广告创意效果之前，至少需要100次点击或1000次展示量。
+- 未为后续扩展预留预算——应预留20-30%的预算，以便在月中对表现良好的广告组加大投入。
+- 将广告支出视为单纯的成本，而非投资——需要关注投资回报周期（ROI），而不仅仅是短期的转化率（ROAS）。
 
-## Metric Traps
+## 指标陷阱
 
-- Optimizing for CTR instead of conversion — high CTR with low conversion = curiosity clicks that waste budget
-- Trusting platform-reported conversions — attribution windows vary (7-day click, 1-day view), always cross-reference with actual revenue
-- Ignoring frequency — above 3-4 frequency per week, performance degrades and audience burns out
-- CPA tunnel vision — a $50 CPA is better than $30 CPA if LTV is 3x higher for the $50 cohort
-- Vanity reach metrics — 1M impressions mean nothing if 0 target customers saw the ad
+- 仅优化点击率（CTR）而忽略转化率——高CTR但转化率低意味着用户只是出于好奇而点击广告，这会浪费预算。
+- 仅依赖平台报告的转化数据——不同平台的归因窗口不同（例如7天点击或1天浏览），务必与实际收入数据进行交叉验证。
+- 忽视广告的投放频率——如果每周的展示频率超过3-4次，广告效果会下降，目标受众也会产生疲劳。
+- 陷入“CPA（每次点击成本）陷阱”——如果高CPA对应的客户生命周期价值（LTV）更高，那么更高的CPA实际上更划算。
+- 过分关注表面的曝光量指标——如果目标客户中没有一个看到广告，100万的展示量毫无意义。
 
-## Creative Rules
+## 创意策略
 
-- One variable per test — changing image AND copy simultaneously teaches nothing about what works
-- Winning ads fatigue in 2-4 weeks — have next creative batch ready before performance drops
-- Static images often outperform video on cost-per-conversion — test both, don't assume video is better
-- Headlines matter more than body copy — 80% of viewers read only the headline
-- User-generated content style outperforms polished brand creative in most direct response contexts
+- 每次测试只使用一个变量进行优化——同时更改图片和文案无法真正找出有效的因素。
+- 成功的广告创意往往在2-4周内就会失去效果——应在效果下降前准备好下一批创意内容。
+- 在成本效益方面，静态图片通常比视频表现更好——应同时测试两者，不要盲目认为视频一定更优。
+- 标题比正文更重要——80%的观众只会阅读标题。
+- 在大多数直接响应型广告中，用户生成的内容往往比精心制作的品牌创意更有效。
 
-## Audience Strategy
+## 目标受众策略
 
-- Broad targeting often wins at scale — platform algorithms find converters better than manual interest stacking
-- Lookalike audiences need minimum 1000 source users — smaller seeds create unstable lookalikes
-- Retargeting pools need 7-14 day recency caps — beyond that, intent has faded
-- Exclude converters from prospecting campaigns — paying to show ads to existing customers wastes budget
-- Test 1% vs 3% vs 5% lookalikes — tighter isn't always better, depends on market size
+- 广泛的受众定位通常在大规模推广中更有效——平台算法能更准确地找到潜在转化用户，比手动筛选受众更有效。
+- 创建相似受众群体时，至少需要1000个原始用户作为样本——样本量过少会导致相似受众群体不稳定。
+- 再定位广告群组的创建时间应控制在7-14天内——超过这个时间，用户的购买意向会减弱。
+- 不要将已经转化的用户纳入再定位广告中——向现有客户展示广告是浪费预算的行为。
+- 测试1%、3%或5%的相似用户群体——比例过紧并不总是更好的选择，具体取决于市场规模。
 
-## Platform-Specific Patterns
+## 平台特性与优化策略
 
-- **Meta**: Learning phase resets with significant edits — avoid editing during first 50 conversions
-- **Google**: Search intent beats display reach for direct response — display is for awareness, search is for capture
-- **TikTok**: First 3 seconds determine everything — hook must be instant, no slow brand intros
-- **LinkedIn**: CPMs are 5-10x higher — only viable for high-LTV B2B where one customer justifies $200+ CPA
-- **YouTube**: Skippable ads teach you what hooks work — if they don't skip, your hook is strong
+- **Meta平台**：在进行重大修改后，学习阶段会重新开始——在最初的50次转化期间避免修改广告内容。
+- **Google平台**：对于直接响应型广告，搜索意图比展示效果更重要——展示广告主要用于提高品牌知名度，而搜索广告用于转化用户。
+- **TikTok平台**：广告效果完全取决于前3秒的内容——必须迅速吸引用户的注意力，避免冗长的品牌介绍。
+- **LinkedIn平台**：CPM（每千次展示费用）较高——仅适用于LTV较高的B2B广告，因为这类广告的CPA可能高达200美元以上。
+- **YouTube平台**：可跳过广告能帮助你了解哪些元素最有效——如果用户不跳过广告，说明你的广告设计很成功。
 
-## Scaling Pitfalls
+## 扩展策略的陷阱
 
-- Increasing budget more than 20-30% per day destabilizes campaigns — gradual scaling preserves algorithm learning
-- Duplicating winning ad sets fragments the audience and causes self-competition
-- Scaling spend without scaling creative — same ads to larger audience = faster fatigue
-- Ignoring incrementality — some conversions would have happened organically, true ROAS is lower than reported
-- Geographic expansion without localization — same ad in new market often fails
+- 每天预算增长超过20-30%会导致广告活动不稳定——应逐步增加预算，以保持平台的优化效果。
+- 复制表现良好的广告组会导致受众分散，从而产生内部竞争。
+- 在不优化广告创意的情况下盲目增加支出——同样的广告内容在更大受众群体中可能会迅速失去效果。
+- 忽视广告效果的逐步积累——部分转化本来就是自然发生的，因此实际的投资回报率可能低于平台显示的数据。
+- 在没有进行本地化适配的情况下进行市场扩张——在新市场使用相同的广告往往会导致失败。
 
-## Landing Page Impact
+## 着陆页的影响
 
-- Ads are only half the equation — a 2x better landing page beats 2x more ad spend
-- Message match: ad promise must appear above the fold on landing page — disconnect kills conversion
-- Page load time over 3 seconds loses 50%+ of paid clicks — optimize speed before scaling spend
-- One landing page per audience segment — generic pages convert worse than specific ones
-- Track micro-conversions (scroll depth, time on page) when sample size is too small for macro-conversions
+- 广告只是成功的一半——一个质量好两倍的着陆页比增加两倍的广告支出更有价值。
+- 信息一致性：广告中的承诺内容必须在着陆页的可见范围内——信息不匹配会降低转化率。
+- 着陆页加载时间超过3秒会损失超过50%的付费点击量——在增加支出前先优化页面加载速度。
+- 为不同的受众群体创建专门的着陆页——通用化的着陆页的转化效果通常较差。
+- 当样本量不足以分析宏观转化情况时，应跟踪用户的微转化行为（如滚动深度、在页面上的停留时间）。
 
-## Attribution Reality
+## 归因机制的现实
 
-- Last-click attribution undervalues awareness campaigns — multi-touch attribution or holdout tests reveal true impact
-- iOS 14.5+ broke tracking for ~40% of users — model conversions, don't rely on pixel data alone
-- Offline conversions (calls, in-store) need manual import or integration — otherwise CPA looks inflated
-- View-through conversions are real but overvalued by platforms — weight click-through higher
-- 7-day attribution windows miss longer B2B sales cycles — extend windows or use CRM-based attribution
+- 仅基于最后一次点击的归因方法会低估广告的真正效果——多触点归因或延迟归因测试能揭示广告的真实影响。
+- iOS 14.5及更高版本的系统会影响约40%用户的追踪数据——应使用模型来预测转化情况，不要仅依赖像素数据。
+- 离线转化（如电话咨询、线下购买）需要手动导入数据或进行整合——否则CPA数据可能会被高估。
+- 虽然页面浏览转化被平台视为有效转化，但实际价值可能被高估——应给予更高的权重。
+- 7天的归因窗口无法准确反映B2B销售的长期周期——应延长归因时间或使用基于客户关系管理（CRM）的归因方法。
 
-## Testing Framework
+## 测试框架
 
-- Always run one control ad — without baseline, you don't know if new creative is better or platform just performed differently
-- Minimum 2 weeks per test — weekday/weekend patterns affect results
-- Document every test with hypothesis, result, and learning — institutional memory prevents repeat mistakes
-- Test audiences before creatives — wrong audience can't be saved by good creative
-- Negative results are valuable — knowing what doesn't work prevents future waste
+- 必须设置一个对照广告组——没有基准数据，就无法判断新创意是否更有效，还是只是平台表现不同。
+- 每次测试至少持续两周——工作日和周末的用户行为模式会影响测试结果。
+- 详细记录每次测试的假设、结果和收获——建立系统化的记录有助于避免重复错误。
+- 在测试创意内容之前，先测试目标受众群体——错误的受众群体无法通过优秀的创意内容来弥补。
+- 负面测试结果同样有价值——了解哪些方法无效可以避免未来的资源浪费。

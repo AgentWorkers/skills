@@ -1,13 +1,13 @@
 ---
 name: proxmox
-description: Manage Proxmox VE clusters via REST API. Use when user asks to list, start, stop, restart VMs or LXC containers, check node status, create snapshots, view tasks, or manage Proxmox infrastructure. Requires API token or credentials configured.
+description: 通过 REST API 管理 Proxmox VE 集群。当用户需要列出、启动、停止、重启虚拟机（VM）或 LXC 容器、检查节点状态、创建快照、查看任务或管理 Proxmox 基础设施时，可以使用此功能。需要配置 API 令牌或凭据。
 ---
 
-# Proxmox VE Management
+# Proxmox VE 管理
 
-## Configuration
+## 配置
 
-Set environment variables or store in `~/.proxmox-credentials`:
+设置环境变量，或将其存储在 `~/.proxmox-credentials` 文件中：
 
 ```bash
 # Option 1: API Token (recommended)
@@ -24,9 +24,9 @@ EOF
 chmod 600 ~/.proxmox-credentials
 ```
 
-Create API token in Proxmox: Datacenter → Permissions → API Tokens → Add
+在 Proxmox 中创建 API 令牌：点击“Datacenter” → “Permissions” → “API Tokens” → “Add”。
 
-## CLI Usage
+## 命令行接口（CLI）使用
 
 ```bash
 # Load credentials
@@ -36,9 +36,9 @@ source ~/.proxmox-credentials 2>/dev/null
 AUTH="Authorization: PVEAPIToken=$PROXMOX_TOKEN_ID=$PROXMOX_TOKEN_SECRET"
 ```
 
-## Common Operations
+## 常见操作
 
-### Cluster & Nodes
+### 集群与节点
 
 ```bash
 # Cluster status
@@ -51,7 +51,7 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes" | jq '.data[] | {node, statu
 curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/status" | jq
 ```
 
-### List VMs & Containers
+### 列出虚拟机（VMs）和容器（Containers）
 
 ```bash
 # All VMs on a node
@@ -64,7 +64,7 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/lxc" | jq '.data[] | {
 curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/cluster/resources?type=vm" | jq '.data[] | {node, vmid, name, type, status}'
 ```
 
-### VM/Container Control
+### 虚拟机/容器控制
 
 ```bash
 # Start VM
@@ -82,7 +82,7 @@ curl -ks -X POST -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/st
 # Same for LXC: replace /qemu/ with /lxc/
 ```
 
-### Snapshots
+### 快照（Snapshots）
 
 ```bash
 # List snapshots
@@ -99,7 +99,7 @@ curl -ks -X POST -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/sn
 curl -ks -X DELETE -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/snapshot/{snapname}"
 ```
 
-### Tasks & Logs
+### 任务（Tasks）与日志（Logs）
 
 ```bash
 # Recent tasks
@@ -109,7 +109,7 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/tasks" | jq '.data[:10
 curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/tasks/{upid}/log" | jq -r '.data[].t'
 ```
 
-### Storage
+### 存储（Storage）
 
 ```bash
 # List storage
@@ -119,7 +119,7 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/storage" | jq '.data[]
 curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/storage/{storage}/content" | jq
 ```
 
-### Backups
+### 备份（Backups）
 
 ```bash
 # List backups
@@ -130,9 +130,9 @@ curl -ks -X POST -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/vzdump" \
   -d "vmid={vmid}" -d "storage={storage}" -d "mode=snapshot"
 ```
 
-## Helper Script
+## 辅助脚本
 
-Use `scripts/pve.sh` for common operations:
+使用 `scripts/pve.sh` 进行常见操作：
 
 ```bash
 ./scripts/pve.sh status          # Cluster overview
@@ -141,9 +141,9 @@ Use `scripts/pve.sh` for common operations:
 ./scripts/pve.sh stop {vmid}     # Stop VM
 ```
 
-## Notes
+## 注意事项：
 
-- Replace `{node}`, `{vmid}`, `{storage}`, `{snapname}` with actual values
-- API tokens don't need CSRF tokens for POST/PUT/DELETE
-- Use `-k` to skip SSL verification for self-signed certs
-- Task operations return UPID for tracking async jobs
+- 请将 `{node}`、`{vmid}`、`{storage}`、`{snapname}` 替换为实际值。
+- 对于 POST/PUT/DELETE 请求，API 令牌不需要 CSRF 令牌。
+- 使用 `-k` 选项可跳过自签名证书的 SSL 验证。
+- 任务操作会返回一个 UPID，用于跟踪异步任务的状态。

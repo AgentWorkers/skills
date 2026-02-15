@@ -18,9 +18,9 @@ metadata:
 
 # Confluence
 
-Access the Confluence Cloud API with managed OAuth authentication. Manage pages, spaces, blogposts, comments, attachments, and properties.
+您可以使用受管理的OAuth身份验证来访问Confluence Cloud API，从而管理页面、空间、博客文章、评论、附件和属性。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List pages in your Confluence site
@@ -40,51 +40,51 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/confluence/{atlassian-api-path}
 ```
 
-Confluence Cloud uses two URL patterns:
+Confluence Cloud使用两种URL模式：
 
-**V2 API (recommended):**
+**V2 API（推荐使用）：**
 ```
 https://gateway.maton.ai/confluence/ex/confluence/{cloudId}/wiki/api/v2/{resource}
 ```
 
-**V1 REST API (limited):**
+**V1 REST API（功能有限）：**
 ```
 https://gateway.maton.ai/confluence/ex/confluence/{cloudId}/wiki/rest/api/{resource}
 ```
 
-The `{cloudId}` is required for all API calls. Obtain it via the accessible-resources endpoint (see below).
+所有API调用都需要`{cloudId}`。您可以通过`accessible-resources`端点获取它（详见下文）。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)登录或创建账户。
+2. 访问[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Confluence OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`管理您的Confluence OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python3 <<'EOF'
@@ -95,7 +95,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python3 <<'EOF'
@@ -108,7 +108,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python3 <<'EOF'
@@ -119,7 +119,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -134,9 +134,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python3 <<'EOF'
@@ -147,9 +147,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Confluence connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Confluence连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python3 <<'EOF'
@@ -162,11 +162,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## Getting Your Cloud ID
+## 获取您的Cloud ID
 
-Before making API calls, you must obtain your Confluence Cloud ID:
+在调用API之前，您必须获取Confluence Cloud ID：
 
 ```bash
 python3 <<'EOF'
@@ -179,7 +179,7 @@ print(json.dumps(resources, indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -192,16 +192,16 @@ EOF
 ]
 ```
 
-## API Reference
+## API参考
 
-All V2 API endpoints use the base path:
+所有V2 API端点都使用相同的基路径：
 ```
 /confluence/ex/confluence/{cloudId}/wiki/api/v2
 ```
 
-### Pages
+### 页面
 
-#### List Pages
+#### 列出页面
 
 ```bash
 GET /pages
@@ -211,7 +211,7 @@ GET /pages?status=current
 GET /pages?body-format=storage
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "results": [
@@ -240,7 +240,7 @@ GET /pages?body-format=storage
 }
 ```
 
-#### Get Page
+#### 获取页面信息
 
 ```bash
 GET /pages/{pageId}
@@ -249,12 +249,12 @@ GET /pages/{pageId}?body-format=atlas_doc_format
 GET /pages/{pageId}?body-format=view
 ```
 
-**Body formats:**
-- `storage` - Confluence storage format (XML-like)
-- `atlas_doc_format` - Atlassian Document Format (JSON)
-- `view` - Rendered HTML
+**响应体格式：**
+- `storage` - Confluence存储格式（类似XML）
+- `atlas_doc_format` - Atlassian文档格式（JSON）
+- `view` - 渲染后的HTML
 
-#### Create Page
+#### 创建页面
 
 ```bash
 POST /pages
@@ -271,7 +271,7 @@ Content-Type: application/json
 }
 ```
 
-To create a child page, include `parentId`:
+要创建子页面，请包含`parentId`参数：
 
 ```json
 {
@@ -286,7 +286,7 @@ To create a child page, include `parentId`:
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "98642",
@@ -299,7 +299,7 @@ To create a child page, include `parentId`:
 }
 ```
 
-#### Update Page
+#### 更新页面
 
 ```bash
 PUT /pages/{pageId}
@@ -320,54 +320,54 @@ Content-Type: application/json
 }
 ```
 
-**Note:** You must increment the version number with each update.
+**注意：**每次更新时都必须递增版本号。
 
-#### Delete Page
+#### 删除页面
 
 ```bash
 DELETE /pages/{pageId}
 ```
 
-Returns `204 No Content` on success.
+成功时返回`204 No Content`。
 
-#### Get Page Children
+#### 获取页面子内容
 
 ```bash
 GET /pages/{pageId}/children
 ```
 
-#### Get Page Versions
+#### 获取页面版本信息
 
 ```bash
 GET /pages/{pageId}/versions
 ```
 
-#### Get Page Labels
+#### 获取页面标签
 
 ```bash
 GET /pages/{pageId}/labels
 ```
 
-#### Get Page Attachments
+#### 获取页面附件
 
 ```bash
 GET /pages/{pageId}/attachments
 ```
 
-#### Get Page Comments
+#### 获取页面评论
 
 ```bash
 GET /pages/{pageId}/footer-comments
 ```
 
-#### Get Page Properties
+#### 获取页面属性
 
 ```bash
 GET /pages/{pageId}/properties
 GET /pages/{pageId}/properties/{propertyId}
 ```
 
-#### Create Page Property
+#### 创建页面属性
 
 ```bash
 POST /pages/{pageId}/properties
@@ -379,7 +379,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Page Property
+#### 更新页面属性
 
 ```bash
 PUT /pages/{pageId}/properties/{propertyId}
@@ -392,15 +392,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Page Property
+#### 删除页面属性
 
 ```bash
 DELETE /pages/{pageId}/properties/{propertyId}
 ```
 
-### Spaces
+### 空间
 
-#### List Spaces
+#### 列出空间
 
 ```bash
 GET /spaces
@@ -408,7 +408,7 @@ GET /spaces?limit=25
 GET /spaces?type=global
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "results": [
@@ -429,31 +429,31 @@ GET /spaces?type=global
 }
 ```
 
-#### Get Space
+#### 获取空间信息
 
 ```bash
 GET /spaces/{spaceId}
 ```
 
-#### Get Space Pages
+#### 获取空间中的页面
 
 ```bash
 GET /spaces/{spaceId}/pages
 ```
 
-#### Get Space Blogposts
+#### 获取空间中的博客文章
 
 ```bash
 GET /spaces/{spaceId}/blogposts
 ```
 
-#### Get Space Properties
+#### 获取空间属性
 
 ```bash
 GET /spaces/{spaceId}/properties
 ```
 
-#### Create Space Property
+#### 创建空间属性
 
 ```bash
 POST /spaces/{spaceId}/properties
@@ -465,21 +465,21 @@ Content-Type: application/json
 }
 ```
 
-#### Get Space Permissions
+#### 获取空间权限
 
 ```bash
 GET /spaces/{spaceId}/permissions
 ```
 
-#### Get Space Labels
+#### 获取空间标签
 
 ```bash
 GET /spaces/{spaceId}/labels
 ```
 
-### Blogposts
+### 博客文章
 
-#### List Blogposts
+#### 列出博客文章
 
 ```bash
 GET /blogposts
@@ -487,14 +487,14 @@ GET /blogposts?space-id={spaceId}
 GET /blogposts?limit=25
 ```
 
-#### Get Blogpost
+#### 获取博客文章信息
 
 ```bash
 GET /blogposts/{blogpostId}
 GET /blogposts/{blogpostId}?body-format=storage
 ```
 
-#### Create Blogpost
+#### 创建博客文章
 
 ```bash
 POST /blogposts
@@ -510,7 +510,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Blogpost
+#### 更新博客文章
 
 ```bash
 PUT /blogposts/{blogpostId}
@@ -530,46 +530,46 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Blogpost
+#### 删除博客文章
 
 ```bash
 DELETE /blogposts/{blogpostId}
 ```
 
-#### Get Blogpost Labels
+#### 获取博客文章标签
 
 ```bash
 GET /blogposts/{blogpostId}/labels
 ```
 
-#### Get Blogpost Versions
+#### 获取博客文章版本信息
 
 ```bash
 GET /blogposts/{blogpostId}/versions
 ```
 
-#### Get Blogpost Comments
+#### 获取博客文章评论
 
 ```bash
 GET /blogposts/{blogpostId}/footer-comments
 ```
 
-### Comments
+### 评论
 
-#### List Footer Comments
+#### 列出底部评论
 
 ```bash
 GET /footer-comments
 GET /footer-comments?body-format=storage
 ```
 
-#### Get Comment
+#### 获取评论信息
 
 ```bash
 GET /footer-comments/{commentId}
 ```
 
-#### Create Footer Comment
+#### 创建底部评论
 
 ```bash
 POST /footer-comments
@@ -584,7 +584,7 @@ Content-Type: application/json
 }
 ```
 
-For blogpost comments:
+对于博客文章的评论：
 ```json
 {
   "blogpostId": "458753",
@@ -595,7 +595,7 @@ For blogpost comments:
 }
 ```
 
-#### Update Comment
+#### 更新评论
 
 ```bash
 PUT /footer-comments/{commentId}
@@ -610,86 +610,86 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Comment
+#### 删除评论
 
 ```bash
 DELETE /footer-comments/{commentId}
 ```
 
-#### Get Comment Replies
+#### 获取评论回复
 
 ```bash
 GET /footer-comments/{commentId}/children
 ```
 
-#### List Inline Comments
+#### 列出内联评论
 
 ```bash
 GET /inline-comments
 ```
 
-### Attachments
+### 附件
 
-#### List Attachments
+#### 列出附件
 
 ```bash
 GET /attachments
 GET /attachments?limit=25
 ```
 
-#### Get Attachment
+#### 获取附件信息
 
 ```bash
 GET /attachments/{attachmentId}
 ```
 
-#### Get Page Attachments
+#### 获取页面上的附件
 
 ```bash
 GET /pages/{pageId}/attachments
 ```
 
-### Tasks
+### 任务
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /tasks
 ```
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /tasks/{taskId}
 ```
 
-### Labels
+### 标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /labels
 GET /labels?prefix=global
 ```
 
-### Custom Content
+### 自定义内容
 
-#### List Custom Content
+#### 列出自定义内容
 
 ```bash
 GET /custom-content
 GET /custom-content?type={customContentType}
 ```
 
-### User (V1 API)
+### 用户（V1 API）
 
-The current user endpoint uses the V1 REST API:
+当前用户端点使用V1 REST API：
 
 ```bash
 GET /confluence/ex/confluence/{cloudId}/wiki/rest/api/user/current
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "type": "known",
@@ -701,15 +701,15 @@ GET /confluence/ex/confluence/{cloudId}/wiki/rest/api/user/current
 }
 ```
 
-## Pagination
+## 分页
 
-The V2 API uses cursor-based pagination. Responses include a `_links.next` URL when more results are available.
+V2 API使用基于游标的分页方式。当还有更多结果时，响应中会包含 `_links.next` URL。
 
 ```bash
 GET /pages?limit=25
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "results": [...],
@@ -719,13 +719,13 @@ GET /pages?limit=25
 }
 ```
 
-To get the next page, extract the cursor and pass it:
+要获取下一页，请提取游标并传递它：
 
 ```bash
 GET /pages?limit=25&cursor=eyJpZCI6Ijk4MzkyIn0
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -775,38 +775,38 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- **Cloud ID Required**: You must obtain your Cloud ID via `/oauth/token/accessible-resources` before making API calls
-- **V2 API Recommended**: Use the V2 API (`/wiki/api/v2/`) for most operations. The V1 API (`/wiki/rest/api/`) is limited
-- **Body Formats**: Use `storage` format for creating/updating content. Use `view` for rendered HTML
-- **Version Numbers**: When updating pages or blogposts, you must increment the version number
-- **Storage Format**: Content uses Confluence storage format (XML-like). Example: `<p>Paragraph</p>`, `<h1>Heading</h1>`
-- **Delete Returns 204**: DELETE operations return 204 No Content with no response body
-- **IDs are Strings**: Page, space, and other IDs should be passed as strings
-- **IMPORTANT**: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- **必须获取Cloud ID**：在调用API之前，您需要通过`/oauth/token/accessible-resources`获取Cloud ID。
+- **推荐使用V2 API**：对于大多数操作，请使用V2 API（`/wiki/api/v2/`）。V1 API（`/wiki/rest/api/`）的功能有限。
+- **响应体格式**：使用`storage`格式来创建/更新内容；使用`view`格式来获取渲染后的HTML。
+- **版本号**：更新页面或博客文章时，必须递增版本号。
+- **存储格式**：内容采用Confluence存储格式（类似XML）。例如：`<p>段落</p>`、`<h1>标题</h1>`。
+- **删除操作返回204**：DELETE操作返回`204 No Content`，且不返回响应体。
+- **ID为字符串**：页面、空间等ID应以字符串形式传递。
+- **重要提示**：当将curl输出传递给`jq`或其他命令时，在某些Shell环境中，环境变量（如`$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or malformed data |
-| 401 | Invalid API key or insufficient OAuth scopes |
-| 403 | Permission denied |
-| 404 | Resource not found |
-| 409 | Conflict (e.g., duplicate title) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Confluence API |
+| 400 | 请求错误或数据格式错误 |
+| 401 | API密钥无效或OAuth权限不足 |
+| 403 | 没有权限 |
+| 404 | 资源未找到 |
+| 409 | 冲突（例如，标题重复） |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自Confluence API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保`MATON_API_KEY`环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python3 <<'EOF'
@@ -817,16 +817,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-Ensure your URL path starts with `confluence`. For example:
+确保您的URL路径以`confluence`开头。例如：
 
-- Correct: `https://gateway.maton.ai/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages`
-- Incorrect: `https://gateway.maton.ai/ex/confluence/{cloudId}/wiki/api/v2/pages`
+- 正确：`https://gateway.maton.ai/confluence/ex/confluence/{cloudId}/wiki/api/v2/pages`
+- 错误：`https://gateway.maton.ai/ex/confluence/{cloudId}/wiki/api/v2/pages`
 
-### Troubleshooting: Scope Issues
+### 故障排除：权限问题
 
-If you receive a 401 error with "scope does not match", you may need to re-authorize with the required scopes. Delete your connection and create a new one:
+如果收到“scope does not match”的错误，您可能需要使用所需的权限范围重新授权。请删除现有连接并创建一个新的连接：
 
 ```bash
 # Delete existing connection
@@ -848,10 +848,10 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Resources
+## 资源
 
-- [Confluence REST API V2 Documentation](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/)
-- [Confluence REST API V2 Reference](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/)
-- [Confluence Storage Format](https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Confluence REST API V2文档](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/)
+- [Confluence REST API V2参考](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/)
+- [Confluence存储格式](https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

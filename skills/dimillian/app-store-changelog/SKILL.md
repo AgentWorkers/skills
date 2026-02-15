@@ -1,40 +1,40 @@
 ---
 name: app-store-changelog
-description: Create user-facing App Store release notes by collecting and summarizing all user-impacting changes since the last git tag (or a specified ref). Use when asked to generate a comprehensive release changelog, App Store "What's New" text, or release notes based on git history or tags.
+description: 通过收集并汇总自上一个 Git 标签（或指定的引用）以来所有对用户产生影响的变化，生成面向用户的 App Store 发布说明。当需要根据 Git 历史或标签生成全面的发布变更日志、App Store 的“新增功能”文本或发布说明时，可以使用此方法。
 ---
 
-# App Store Changelog
+# App Store 更新日志
 
-## Overview
-Generate a comprehensive, user-facing changelog from git history since the last tag, then translate commits into clear App Store release notes.
+## 概述
+从上次标记（tag）以来的 Git 历史记录中生成一份全面的、面向用户的更新日志，并将每个提交（commit）转化为清晰的 App Store 发布说明。
 
-## Workflow
+## 工作流程
 
-### 1) Collect changes
-- Run `scripts/collect_release_changes.sh` from the repo root to gather commits and touched files.
-- If needed, pass a specific tag or ref: `scripts/collect_release_changes.sh v1.2.3 HEAD`.
-- If no tags exist, the script falls back to full history.
+### 1) 收集变更
+- 从仓库根目录运行 `scripts/collect_release_changes.sh` 命令，以收集所有提交和被修改的文件。
+- 如有需要，可以指定特定的标签或引用（ref）：`scripts/collect_release_changes.sh v1.2.3 HEAD`。
+- 如果没有标签，脚本会自动使用完整的 Git 历史记录。
 
-### 2) Triage for user impact
-- Scan commits and files to identify user-visible changes.
-- Group changes by theme (New, Improved, Fixed) and deduplicate overlaps.
-- Drop internal-only work (build scripts, refactors, dependency bumps, CI).
+### 2) 评估变更对用户的影响
+- 遍历所有提交和文件，识别对用户可见的变更。
+- 按主题（新增功能、改进、修复问题）对变更进行分类，并消除重复项。
+- 忽略仅限内部使用的变更（如构建脚本、代码重构、依赖项更新、持续集成（CI）相关操作）。
 
-### 3) Draft App Store notes
-- Write short, benefit-focused bullets for each user-facing change.
-- Use clear verbs and plain language; avoid internal jargon.
-- Prefer 5 to 10 bullets unless the user requests a different length.
+### 3) 起草 App Store 发布说明
+- 为每个面向用户的变更编写简短的、突出其好处的描述性内容。
+- 使用清晰、通俗的动词和语言；避免使用内部术语。
+- 通常建议每个条目包含 5 到 10 个要点，除非用户有特殊要求。
 
-### 4) Validate
-- Ensure every bullet maps back to a real change in the range.
-- Check for duplicates and overly technical wording.
-- Ask for clarification if any change is ambiguous or possibly internal-only.
+### 4) 验证内容
+- 确保每个要点都对应实际的变更内容。
+- 检查是否存在重复或过于技术性的表述。
+- 如果某个变更含义不明确或仅限内部使用，请请求进一步澄清。
 
-## Output Format
-- Title (optional): "What’s New" or product name + version.
-- Bullet list only; one sentence per bullet.
-- Stick to storefront limits if the user provides one.
+## 输出格式
+- 标题（可选）：例如 “新增功能” 或产品名称 + 版本号。
+- 采用项目符号列表格式；每个条目使用一句话进行描述。
+- 如果用户有特别要求，需遵循 App Store 的格式规范。
 
-## Resources
-- `scripts/collect_release_changes.sh`: Collect commits and touched files since last tag.
-- `references/release-notes-guidelines.md`: Language, filtering, and QA rules for App Store notes.
+## 参考资源
+- `scripts/collect_release_changes.sh`：用于收集自上次标记以来的提交和被修改的文件。
+- `references/release-notes-guidelines.md`：App Store 发布说明的语言规范、筛选规则和质量检查标准。

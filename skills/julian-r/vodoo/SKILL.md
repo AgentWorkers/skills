@@ -1,15 +1,15 @@
 ---
 name: vodoo
-description: Query and manage Odoo ERP data (helpdesk tickets, projects, tasks, CRM leads, knowledge articles) via the vodoo CLI
+description: 通过 vodoo CLI 查询和管理 Odoo ERP 数据（包括帮助台工单、项目、任务、CRM 潜在客户以及知识文章）
 ---
 
-# Vodoo - Odoo CLI Tool
+# Vodoo - Odoo 命令行工具 (Odoo CLI Tool)
 
-Use `uvx vodoo` to interact with Odoo via XML-RPC. No installation required - uvx runs it directly.
+使用 `uvx vodoo` 可通过 XML-RPC 与 Odoo 进行交互。无需安装，`uvx` 会直接执行该命令。
 
-## Important: Always Use --no-color
+## 重要提示：务必使用 `--no-color` 选项
 
-**ALWAYS add `--no-color` to every vodoo command.** This disables ANSI escape codes and significantly reduces token usage.
+**请在每个 `vodoo` 命令后添加 `--no-color` 选项。** 这将禁用 ANSI 转义码，从而显著减少通信过程中使用的令牌（tokens）数量。
 
 ```bash
 # Correct
@@ -19,19 +19,19 @@ uvx vodoo --no-color helpdesk list
 uvx vodoo helpdesk list
 ```
 
-## Commands Overview
+## 命令概览
 
-| Module | Model | Description |
-|--------|-------|-------------|
-| `helpdesk` | helpdesk.ticket | Support tickets |
-| `project-task` | project.task | Project tasks |
-| `project` | project.project | Projects |
-| `crm` | crm.lead | Leads & opportunities |
-| `knowledge` | knowledge.article | Knowledge articles |
-| `model` | any | Generic CRUD for any model |
-| `security` | - | User & group management |
+| 模块        | 模型        | 描述                          |
+|-------------|------------|-------------------------------------------|
+| `helpdesk`     | helpdesk.ticket | 支持工单                          |
+| `project-task`   | project.task   | 项目任务                          |
+| `project`     | project.project | 项目                            |
+| `crm`      | crm.lead     | 客户线索与销售机会                    |
+| `knowledge`    | knowledge.article | 知识库文章                        |
+| `model`      | any        | 适用于任何模型的通用 CRUD 操作                |
+| `security`    | -           | 用户与组管理                        |
 
-## Helpdesk Tickets
+## 支持工单 (Helpdesk Tickets)
 
 ```bash
 # List tickets
@@ -68,7 +68,7 @@ uvx vodoo helpdesk attach 123 report.pdf   # Attach file
 uvx vodoo helpdesk url 123                 # Get web URL
 ```
 
-## Project Tasks
+## 项目任务 (Project Tasks)
 
 ```bash
 # List tasks
@@ -103,7 +103,7 @@ uvx vodoo project-task set 456 priority=1
 uvx vodoo project-task url 456
 ```
 
-## Projects
+## 项目 (Projects)
 
 ```bash
 # List projects
@@ -128,7 +128,7 @@ uvx vodoo project stages              # List task stages
 uvx vodoo project url 789
 ```
 
-## CRM Leads/Opportunities
+## 客户线索/销售机会 (CRM Leads/Opportunities)
 
 ```bash
 # List leads
@@ -157,7 +157,7 @@ uvx vodoo crm set 321 expected_revenue=50000
 uvx vodoo crm url 321
 ```
 
-## Knowledge Articles
+## 知识库文章 (Knowledge Articles)
 
 ```bash
 # List articles
@@ -176,9 +176,9 @@ uvx vodoo knowledge attachments 111
 uvx vodoo knowledge url 111
 ```
 
-## Generic Model Operations
+## 通用模型操作 (Generic Model Operations)
 
-For any Odoo model not covered by specific commands:
+对于没有专门命令支持的 Odoo 模型，可以使用以下通用命令：
 
 ```bash
 # Read records
@@ -198,7 +198,7 @@ uvx vodoo model delete res.partner 123
 uvx vodoo model call res.partner 123 method_name
 ```
 
-## Security / User Management
+## 安全/用户管理 (Security / User Management)
 
 ```bash
 # Create standard Vodoo security groups
@@ -214,25 +214,24 @@ uvx vodoo security assign-bot 456
 uvx vodoo security set-password 456 "new-password"
 ```
 
-## Common Options
+## 常用选项
 
-Most commands support:
-- `--no-color` - **Required for AI usage** (put right after `vodoo`)
-- `--limit N` - Limit results
-- `--help` - Show command help
+大多数命令支持以下选项：
+- `--no-color`  - **必需**（用于 AI 应用场景，需紧跟在 `vodoo` 后使用）
+- `--limit N`   - 限制返回结果的数量
+- `--help`   - 显示命令帮助信息
 
-## Field Updates
+## 字段更新 (Field Updates)
 
-The `set` command supports special operators for numerical fields:
-- `field=value` - Set to value
-- `field+=10` - Add to current value
-- `field-=5` - Subtract from current value
-- `field*=2` - Multiply current value
-- `field/=2` - Divide current value
+`set` 命令支持对数值字段进行以下操作：
+- `field=value`   - 将字段值设置为指定值
+- `field+=10`   - 将字段值增加 10
+- `field-=5`   - 从字段值中减去 5
+- `field*=2`   - 将字段值乘以 2
+- `field/=2`   - 将字段值除以 2
 
-## Tips
-
-1. Always use `--no-color` flag (saves tokens by removing ANSI codes)
-2. Use `fields` command to discover available fields before updating
-3. Stage names are case-sensitive and must match exactly
-4. The `model` command can access any Odoo model if you know its technical name
+## 使用技巧：
+1. 始终使用 `--no-color` 选项（可避免不必要的 ANSI 转义码，从而节省通信资源）
+2. 在更新字段值之前，使用 `fields` 命令查看可用的字段列表
+3. 项目阶段的名称区分大小写，必须完全匹配
+4. 如果知道模型的技术名称，`model` 命令可以访问该模型中的所有数据

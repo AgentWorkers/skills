@@ -1,61 +1,51 @@
 ---
 name: "Decide"
-description: "Auto-learns your decision patterns. Grows autonomy with trust, confirms before assuming."
+description: "它会自动学习你的决策模式；在建立信任的基础上提升自主性，并在做出假设之前先进行确认。"
 ---
 
-## Auto-Adaptive Decision Memory
+## 自适应决策记忆（Auto-Adaptive Decision Memory）
 
-This skill auto-evolves. Observe decisions, detect patterns, confirm before internalizing.
+这项技能会自动进化：观察用户的决策，识别其中的模式，并在将这些模式内化为系统规则之前进行验证。
 
-**Core Loop:**
-1. **Observe** — Notice decisions without prompting
-2. **Pattern** — After 2+ consistent choices, propose confirmation
-3. **Confirm** — Ask: "Should I default to X for Y situations?"
-4. **Store** — Only after explicit yes, add below
-5. **Evaluate** — Before applying, check if context requires re-asking
+**核心流程：**
+1. **观察** — 在没有提示的情况下留意用户的决策。
+2. **识别模式** — 当用户连续做出两次或更多次相同的决策时，提出确认请求。
+3. **确认** — 询问：“在Y种情况下，我是否应该默认选择X？”
+4. **存储** — 仅当用户明确表示同意后，才将决策记录下来。
+5. **评估** — 在应用决策之前，检查当前情境是否需要再次询问用户。
 
-Check `confidence.md` for levels. Check `exceptions.md` for when to ask even with confirmed preferences.
-
----
-
-## Scaling
-
-Preferences grow. Don't load everything—search when relevant.
-
-- **On task start:** Scan section headers, load only matching categories
-- **If unsure:** Search keywords in stored preferences before asking user
-- **Keep entries atomic:** One decision per line, easy to grep
-
-This skill can hold hundreds of preferences without bloating context.
+有关决策的优先级（级别），请参阅 `confidence.md` 文件；有关即使用户已确认偏好仍需再次询问的情况，请参阅 `exceptions.md` 文件。
 
 ---
 
-## Entry Format
+## 规模扩展（Scaling）
 
-One line, max 10 words: `context: preference (level) [notes]`
+用户的偏好会不断变化。不要一次性加载所有信息——仅在需要时才进行搜索：
+- **任务开始时**：扫描页面标题，仅加载与当前任务相关的偏好设置。
+- **如果不确定**：在询问用户之前，先在已存储的偏好设置中搜索相关关键词。
+- **保持条目简洁性**：每个决策记录在单独的一行中，便于后续查询。
 
-Examples:
+这项技能可以存储数百条偏好设置，而不会使系统变得臃肿。
+
+---
+
+## 条目格式
+
+每条记录最多包含10个单词，格式如下：`context: preference (level) [notes]`
+示例：
 - `mobile app: Flutter (confirmed)`
 - `deploy: always preview first (pattern)`
 - `formatting: no prettier (locked) [strong]`
 
 ---
 
-### Stack
-<!-- Tech decisions. Format: "context: choice (level)" -->
-
-### Process
-<!-- Workflow decisions -->
-
-### Style
-<!-- Aesthetic/convention decisions -->
-
-### Comms
-<!-- Communication preferences -->
-
-### Never
-<!-- Explicitly rejected approaches -->
+### 分类
+- **Stack**：与技术相关的决策（格式：`context: choice (level)`）
+- **Process**：与工作流程相关的决策
+- **Style**：与界面/样式相关的决策
+- **Comms**：与沟通方式相关的决策
+- **Never**：明确被拒绝的方案
 
 ---
 
-*Empty sections = nothing learned yet. Observe and propose.*
+*如果某个分类为空，说明该方面的经验尚未积累。继续观察并提出相应的决策建议。*

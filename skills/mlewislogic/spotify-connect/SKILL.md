@@ -1,6 +1,7 @@
 ---
 name: spotify-connect
-description: Control Spotify playback on remote Spotify Connect devices (speakers, TVs, Echo, phone, desktop). Use when user wants to play music, pause, skip, adjust volume, list audio devices, or transfer playback to a specific device. Supports multiple Spotify accounts with named profiles. Requires Spotify Premium.
+description: **远程控制 Spotify Connect 设备（音箱、电视、Echo、手机、桌面设备）的播放功能**  
+当用户需要播放音乐、暂停、跳曲、调节音量、查看可用音频设备，或将播放权限转移到特定设备时，可以使用该功能。该功能支持多个具有命名配置文件的 Spotify 账户，但需订阅 Spotify Premium 版本才能使用全部功能。
 metadata:
   openclaw:
     emoji: "🎵"
@@ -13,31 +14,31 @@ metadata:
 
 # Spotify Connect
 
-Control Spotify playback on any Spotify Connect device. Supports multiple authenticated accounts.
+您可以控制任何支持Spotify Connect功能的设备上的播放操作。该功能支持多个已登录的Spotify账户。
 
-## Setup (one-time)
+## 设置（只需完成一次）
 
-1. Create a Spotify app at https://developer.spotify.com/dashboard
-   - Set redirect URI to `http://127.0.0.1:8888/callback`
-   - Enable "Web API" and "Web Playback SDK"
-   - Note the Client ID and Client Secret
-2. Set environment variables (or add to OpenClaw config under `env.vars`):
+1. 在 [https://developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) 上创建一个Spotify应用程序：
+   - 将重定向URI设置为 `http://127.0.0.1:8888/callback`
+   - 启用“Web API”和“Web Playback SDK”功能
+   - 记下客户端ID（Client ID）和客户端密钥（Client Secret）
+2. 设置环境变量（或将其添加到OpenClaw的 `env_vars` 配置文件中）：
    ```bash
    export SPOTIFY_CLIENT_ID="your-client-id"
    export SPOTIFY_CLIENT_SECRET="your-client-secret"
    ```
-3. Run initial auth (opens browser):
+3. 运行初次身份验证（会打开浏览器）：
    ```bash
    uv run {baseDir}/scripts/spotify.py auth --name "alice"
    ```
-   This creates a named account profile with auto-refreshing token.
+   此操作会创建一个带有自动更新令牌的账户配置文件。
 
-4. (Optional) Add more accounts:
+4. （可选）添加更多账户：
    ```bash
    uv run {baseDir}/scripts/spotify.py auth --name "bob"
    ```
 
-5. (Optional) Configure device aliases in `~/.openclaw/spotify-connect/devices.json`:
+5. （可选）在 `~/.openclaw/spotify-connect/devices.json` 文件中配置设备别名：
    ```json
    {
      "kitchen": "Kitchen Echo",
@@ -46,35 +47,19 @@ Control Spotify playback on any Spotify Connect device. Supports multiple authen
    }
    ```
 
-## Dependencies
+## 依赖项
 
-Python dependencies are managed inline via [PEP 723](https://peps.python.org/pep-0723/) — `uv run` handles installation automatically. No manual `pip install` needed.
+Python依赖项通过 [PEP 723](https://peps.python.org/pep-0723/) 进行管理，`uv run` 会自动处理安装过程，无需手动执行 `pip install`。
 
-## Account Management
+## 账户管理
 
-```bash
-# Authenticate a new account (opens browser)
-uv run {baseDir}/scripts/spotify.py auth --name "alice"
+当前激活的账户将用于所有播放命令。账户信息存储在 `~/.openclaw/spotify-connect/accounts.json` 文件中。
 
-# List all authenticated accounts
-uv run {baseDir}/scripts/spotify.py accounts
+## 命令
 
-# Switch active account (by name or email)
-uv run {baseDir}/scripts/spotify.py switch alice
-uv run {baseDir}/scripts/spotify.py switch bob@example.com
+所有命令的格式为：`uv run {baseDir}/scripts/spotify.py <command> [args]`
 
-# Remove an account
-uv run {baseDir}/scripts/spotify.py logout alice
-```
-
-The active account is used for all playback commands. Account data is stored in `~/.openclaw/spotify-connect/accounts.json`.
-
-## Commands
-
-All commands use: `uv run {baseDir}/scripts/spotify.py <command> [args]`
-
-### List devices
-
+### 列出设备
 ```bash
 # Current account only
 uv run {baseDir}/scripts/spotify.py devices
@@ -83,8 +68,7 @@ uv run {baseDir}/scripts/spotify.py devices
 uv run {baseDir}/scripts/spotify.py devices --all-accounts
 ```
 
-### Play
-
+### 播放音乐
 ```bash
 # Resume playback (current device or specify one)
 uv run {baseDir}/scripts/spotify.py play
@@ -101,8 +85,7 @@ uv run {baseDir}/scripts/spotify.py play --uri "spotify:track:6rqhFgbbKwnb9MLmUQ
 uv run {baseDir}/scripts/spotify.py play --query "Daft Punk" --device "office"
 ```
 
-### Playback control
-
+### 控制播放
 ```bash
 uv run {baseDir}/scripts/spotify.py pause
 uv run {baseDir}/scripts/spotify.py next
@@ -114,27 +97,25 @@ uv run {baseDir}/scripts/spotify.py shuffle off
 uv run {baseDir}/scripts/spotify.py repeat track   # track, context, or off
 ```
 
-### Transfer playback
-
+### 转移播放任务
 ```bash
 uv run {baseDir}/scripts/spotify.py transfer "kitchen"
 ```
 
-### Now playing
-
+### 查看当前正在播放的内容
 ```bash
 uv run {baseDir}/scripts/spotify.py status
 ```
 
-## Device matching
+## 设备匹配
 
-Device names are fuzzy-matched. Use aliases from `devices.json` or partial Spotify device names. If ambiguous, the script lists matches.
+设备名称采用模糊匹配方式。可以使用 `devices.json` 文件中的别名或Spotify设备的部分名称进行匹配。如果存在歧义，脚本会列出所有匹配的设备。
 
-**IMPORTANT — Cross-account device discovery:** When the user requests playback on a specific room or device, run `devices --all-accounts` first to see ALL devices across ALL accounts in one parallel call. Then switch to the account that owns the target device before issuing the play command. Don't assume which account a device belongs to.
+**重要提示：跨账户设备识别**：当用户请求在某个特定设备或房间播放音乐时，首先运行 `devices --all-accounts` 命令，以获取所有账户下的所有设备列表。然后切换到拥有目标设备的账户再执行播放命令。请勿假设设备属于某个特定的账户。
 
-## Common errors
+## 常见错误
 
-- **"No active device"** — Open Spotify on any device first, or specify `--device`
-- **"Premium required"** — Spotify Premium account needed for Connect control
-- **"Device not found"** — Run `devices` to see available devices; sleeping devices may not appear (play something on the device first to wake it)
-- **"No active account"** — Run `auth --name <name>` to authenticate, or `switch <name>` to select one
+- **“没有活动的设备”**：请先在任意设备上打开Spotify应用程序，或使用 `--device` 参数指定目标设备。
+- **“需要Spotify Premium账户”**：使用Spotify Premium账户才能使用Spotify Connect功能。
+- **“设备未找到”**：运行 `devices` 命令查看可用设备；部分处于休眠状态的设备可能不会显示在列表中（请先在该设备上播放音乐以唤醒设备）。
+- **“没有活动的账户”**：运行 `auth --name <name>` 进行身份验证，或使用 `switch <name>` 选择所需的账户。

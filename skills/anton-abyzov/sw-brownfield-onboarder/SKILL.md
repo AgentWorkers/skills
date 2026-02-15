@@ -1,58 +1,58 @@
 ---
 name: brownfield-onboarder
-description: Intelligently onboards brownfield projects by merging existing CLAUDE.md backups into SpecWeave structure. Use when installing SpecWeave into existing projects with CLAUDE.md, merging documentation, or importing project knowledge. Distributes content to appropriate folders without bloating main CLAUDE.md.
+description: 通过将现有的 CLAUDE.md 备份文件合并到 SpecWeave 结构中，智能地整合现有的旧项目（brownfield projects）。适用于在已有 CLAUDE.md 文件的项目中安装 SpecWeave、合并相关文档或导入项目信息的情况。该功能能够将内容分发到适当的文件夹中，而不会导致主 CLAUDE.md 文件变得过于臃肿。
 ---
 
-# Brownfield Onboarder - Intelligent CLAUDE.md Merger
+# Brownfield Onboarder - 智能合并 CLAUDE.md 文档
 
-**Purpose**: Intelligently merge existing CLAUDE.md backups into SpecWeave's structure without bloating the main CLAUDE.md file.
+**目的**：智能地将现有的 CLAUDE.md 备份文件合并到 SpecWeave 的文档结构中，同时避免使主 CLAUDE.md 文件变得过于臃肿。
 
-**When to Use**: After installing SpecWeave into an existing project that had CLAUDE.md
+**使用场景**：在将 SpecWeave 安装到已存在 CLAUDE.md 文件的项目中之后使用。
 
-**Philosophy**: Keep CLAUDE.md as a concise guide, distribute detailed content to appropriate SpecWeave folders.
+**设计理念**：保持 CLAUDE.md 作为简洁的指南，将详细内容分布到相应的 SpecWeave 文件夹中。
 
-**Modes**: Supports both Quick Start (incremental) and Comprehensive (upfront) approaches 🆕
+**支持模式**：支持快速启动（增量式）和全面整合（一次性）两种方式 🆕
 
 ---
 
-## Two-Mode Support 🆕
+## 两种合并模式 🆕
 
-The brownfield-onboarder works differently based on the chosen documentation path:
+Brownfield Onboarder 的工作方式会根据所选择的文档路径而有所不同：
 
-### Quick Start Mode (Incremental)
-**Philosophy**: Merge only essential context, defer detailed docs to per-increment
+### 快速启动模式（增量式）
+**设计理念**：仅合并必要的内容，将详细文档留待后续逐步添加。
 
-**What to merge immediately**:
-- ✅ Core architecture overview (high-level)
-- ✅ Tech stack and infrastructure
-- ✅ Critical patterns (auth, payment, security)
-- ✅ Team conventions and workflows
-- ✅ Project summary and domain context
+**立即合并的内容**：
+- ✅ 核心架构概述（高级别）
+- ✅ 技术栈和基础设施
+- ✅ 关键模式（认证、支付、安全）
+- ✅ 团队规范和工作流程
+- ✅ 项目总结和领域背景
 
-**What to defer** (document per increment):
-- ⏸️ Detailed business rules (extract when modifying that code)
-- ⏸️ Module-specific documentation (extract when working on that module)
-- ⏸️ API-level documentation (extract when touching those APIs)
-- ⏸️ Code examples (extract as needed)
+**推迟合并的内容**（在修改相关代码时再生成）：
+- ⏸️ 详细的业务规则
+- ⏸️ 模块特定的文档
+- ⏸️ API 级别的文档
+- ⏸️ 代码示例
 
-**Result**: Minimal upfront merge (30-60 minutes), detailed docs grow incrementally
+**结果**：初期合并工作量小（30-60分钟），详细文档逐步增加。
 
-### Comprehensive Mode (Upfront)
-**Philosophy**: Merge everything upfront for complete context
+### 全面整合模式（一次性）
+**设计理念**：一次性合并所有内容，确保信息完整。
 
-**What to merge**:
-- ✅ All architecture documentation
-- ✅ All business rules
-- ✅ All module-specific docs
-- ✅ All API documentation
-- ✅ All conventions and patterns
-- ✅ All code examples
+**合并的内容**：
+- ✅ 所有架构文档
+- ✅ 所有业务规则
+- ✅ 所有模块特定的文档
+- ✅ 所有 API 文档
+- ✅ 所有规范和模式
+- ✅ 所有代码示例
 
-**Result**: Complete merge (1-3 hours), full context available immediately
+**结果**：一次性完成合并（1-3小时），所有信息立即可用。
 
-### Mode Selection
+### 模式选择
 
-**Auto-detection**:
+**自动检测**：
 ```typescript
 // Settings auto-detected
 const mode = config.brownfield?.mode || 'auto';
@@ -64,7 +64,7 @@ if (mode === 'auto') {
 }
 ```
 
-**User can override**:
+**用户可手动选择**：
 ```bash
 # Force Quick Start mode
 brownfield-onboarder --mode quick-start
@@ -75,19 +75,19 @@ brownfield-onboarder --mode comprehensive
 
 ---
 
-## The Problem
+## 面临的问题
 
-When installing SpecWeave into an existing project:
-1. Project already has `CLAUDE.md` with valuable project-specific context
-2. SpecWeave installs its own `CLAUDE.md` as the development guide
-3. Old `CLAUDE.md` is backed up to `.claude/backups/CLAUDE-backup-{timestamp}.md`
-4. Need to intelligently merge project-specific content WITHOUT bloating SpecWeave's CLAUDE.md
+在将 SpecWeave 安装到现有项目中时：
+1. 项目中已有包含项目特定信息的 `CLAUDE.md` 文件。
+2. SpecWeave 会安装自己的 `CLAUDE.md` 文件作为开发指南。
+3. 旧的 `CLAUDE.md` 文件会被备份到 `.claude/backups/CLAUDE-backup-{timestamp}.md` 目录中。
+4. 需要智能地合并项目特定内容，同时避免使 SpecWeave 的 `CLAUDE.md` 文件变得臃肿。
 
 ---
 
-## The Solution: Smart Distribution
+## 解决方案：智能内容分发
 
-**Instead of bloating CLAUDE.md**, distribute content to appropriate folders:
+**避免 CLAUDE.md 文件变得臃肿**，而是将内容分发到相应的文件夹中：
 
 ```
 Project-specific content → SpecWeave folders:
@@ -106,26 +106,26 @@ API conventions         → .specweave/docs/public/guides/api-conventions.md
 Code style              → .specweave/docs/public/guides/code-style.md
 ```
 
-**Only add to CLAUDE.md**: High-level project summary (1-2 paragraphs max)
+**仅添加到 CLAUDE.md 中的内容**：简短的项目总结（最多 1-2 段落）
 
 ---
 
-## Activation
+## 激活流程
 
-**Trigger**: User runs `specweave merge-docs` or asks "merge my old CLAUDE.md"
+**触发条件**：用户运行 `specweave merge-docs` 命令或请求“合并我的旧 CLAUDE.md”。
 
-**Auto-detection**:
-1. Check if `.claude/backups/CLAUDE-backup-*.md` exists
-2. If multiple backups, use most recent
-3. If no backups, inform user and exit gracefully
+**自动检测**：
+1. 检查是否存在 `.claude/backups/CLAUDE-backup-*.md` 备份文件。
+2. 如果有多个备份文件，使用最新的一个。
+3. 如果没有备份文件，向用户提示并优雅地退出程序。
 
 ---
 
-## Analysis Process
+## 分析流程
 
-### Step 1: Parse Backup CLAUDE.md
+### 第一步：解析备份文件 CLAUDE.md
 
-**Extract sections**:
+**提取相关内容**：
 ```typescript
 interface ParsedCLAUDEmd {
   projectName: string;
@@ -144,56 +144,49 @@ interface ParsedCLAUDEmd {
 }
 ```
 
-**Section Detection Keywords**:
-- **Tech Stack**: "technology", "framework", "database", "infrastructure", "stack", "tools"
-- **Architecture**: "architecture", "system design", "components", "services", "microservices"
-- **Conventions**: "naming convention", "code style", "pattern", "standard", "guideline"
-- **Workflows**: "workflow", "process", "pipeline", "deployment flow", "release process"
-- **Domain**: Domain-specific terms (e.g., "patient", "booking", "payment", "order")
-- **Business Rules**: "business rule", "validation", "policy", "constraint", "requirement"
-- **API Design**: "API", "endpoint", "REST", "GraphQL", "authentication", "authorization"
-- **Deployment**: "deploy", "CI/CD", "environment", "production", "staging"
+**识别相关章节的关键词**：
+- **技术栈**：`technology`、`framework`、`database`、`infrastructure`、`stack`、`tools`
+- **架构**：`architecture`、`system design`、`components`、`services`、`microservices`
+- **规范**：`naming convention`、`code style`、`pattern`、`standard`、`guideline`
+- **工作流程**：`workflow`、`process`、`pipeline`、`deployment flow`、`release process`
+- **领域**：特定领域的术语（如 `patient`、`booking`、`payment`、`order`
+- **业务规则**：`business rule`、`validation`、`policy`、`constraint`、`requirement`
+- **API 设计**：`API`、`endpoint`、`REST`、`GraphQL`、`authentication`、`authorization`
+- **部署**：`deploy`、`CI/CD`、`environment`、`production`、`staging`
 
-### Step 2: Classify Content (Mode-Aware) 🆕
+### 第二步：根据模式对内容进行分类 🆕
 
-**For each section, determine**:
+**对于每个章节，判断**：
+1. **内容是通用的还是特定于项目的？**
+   - 通用内容：常见的编程建议、通用最佳实践
+   - 项目特定内容：领域知识、团队规范、项目架构
+2. **与 SpecWeave 的 CLAUDE.md 有重复吗？**
+   - 与 SpecWeave 的 CLAUDE.md 对比，如果相似度超过 80%，则跳过；如果相似度低于 80%，则提取独特内容
+3. **内容是必要的还是详细的？** 🆕
+   - 必要内容：核心架构、关键模式、技术栈、团队工作流程
+   - 详细内容：模块特定规则、API 文档、代码示例
+4. **根据模式决定合并方式** 🆕
+   - **快速启动模式**：仅合并必要内容
+   - **全面整合模式**：合并所有内容
+5. **确定目标文件夹**：
+   - 确定这些内容应放置到的 SpecWeave 文件夹
+   - 详见“内容分发规则”
 
-1. **Generic or Project-Specific?**
-   - Generic: Common programming advice, general best practices
-   - Project-specific: Domain knowledge, team conventions, project architecture
+**内容分类表** 🆕：
 
-2. **Overlap with SpecWeave CLAUDE.md?**
-   - Compare section with SpecWeave's CLAUDE.md
-   - If >80% similar, skip (already covered)
-   - If <80% similar, extract unique content
-
-3. **Essential or Detailed?** 🆕
-   - Essential: Core architecture, critical patterns, tech stack, team workflows
-   - Detailed: Module-specific rules, detailed APIs, code examples
-
-4. **Mode-Based Decision** 🆕
-   - **Quick Start Mode**: Merge essential only, defer detailed
-   - **Comprehensive Mode**: Merge everything
-
-5. **Target Destination**
-   - Determine best SpecWeave folder for this content
-   - See "Content Distribution Rules" below
-
-**Classification Matrix** 🆕:
-
-| Content Type | Essential? | Quick Start Action | Comprehensive Action |
+| 内容类型 | 是否必要 | 快速启动模式 | 全面整合模式 |
 |--------------|-----------|-------------------|---------------------|
-| Core Architecture | ✅ Yes | Merge immediately | Merge immediately |
-| Tech Stack | ✅ Yes | Merge immediately | Merge immediately |
-| Critical Patterns (auth, payment) | ✅ Yes | Merge immediately | Merge immediately |
-| Team Conventions | ✅ Yes | Merge immediately | Merge immediately |
-| Project Summary | ✅ Yes | Merge immediately | Merge immediately |
-| Detailed Business Rules | ❌ No | **Defer to increment** | Merge immediately |
-| Module Documentation | ❌ No | **Defer to increment** | Merge immediately |
-| API-Level Docs | ❌ No | **Defer to increment** | Merge immediately |
-| Code Examples | ❌ No | **Defer to increment** | Merge immediately |
+| 核心架构 | ✅ 是 | 立即合并 | 立即合并 |
+| 技术栈 | ✅ 是 | 立即合并 | 立即合并 |
+| 关键模式（认证、支付） | ✅ 是 | 立即合并 | 立即合并 |
+| 团队规范 | ✅ 是 | 立即合并 | 立即合并 |
+| 项目总结 | ✅ 是 | 立即合并 | 立即合并 |
+| 详细业务规则 | ❌ 否 | **推迟到后续合并** | 立即合并 |
+| 模块文档 | ❌ 否 | **推迟到后续合并** | 立即合并 |
+| API 级文档 | ❌ 否 | **推迟到后续合并** | 立即合并 |
+| 代码示例 | ❌ 否 | **推迟到后续合并** | 立即合并 |
 
-**Example (Quick Start)**:
+**示例（快速启动模式）**：
 ```
 Analyzing CLAUDE.md backup (Quick Start mode)...
 
@@ -208,13 +201,13 @@ Found sections:
 Merging 3 sections immediately, deferring 3 for incremental extraction.
 ```
 
-### Step 3: Content Distribution Rules
+### 第三步：内容分发规则
 
-#### Rule 1: Domain Knowledge → Specifications
+#### 规则 1：领域知识 → `specifications` 文件夹
 
-**Indicators**: Business concepts, entities, domain terminology
+**判断依据**：业务概念、实体、领域术语
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## Domain Model
@@ -232,17 +225,17 @@ Business rules:
 - Providers can override cancellation policy
 ```
 
-**Destination**: `specifications/modules/appointments/domain-model.md`
+**目标文件夹**：`specifications/modules/appointments/domain-model.md`
 
-**CLAUDE.md addition**: None (link from CLAUDE.md to specifications)
+**CLAUDE.md 的处理方式**：无需添加内容（在 CLAUDE.md 中添加链接指向 `specifications` 文件夹）
 
 ---
 
-#### Rule 2: Architecture → .specweave/docs/architecture/
+#### 规则 2：架构 → `.specweave/docs/architecture/` 文件夹
 
-**Indicators**: System design, component descriptions, data flow
+**判断依据**：系统设计、组件描述、数据流
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## System Architecture
@@ -255,9 +248,9 @@ We use a microservices architecture:
 - Database (PostgreSQL) - shared across services
 ```
 
-**Destination**: `.specweave/docs/internal/architecture/existing-system.md`
+**目标文件夹**：`.specweave/docs/internal/architecture/existing-system.md`
 
-**CLAUDE.md addition**:
+**CLAUDE.md 的处理方式**：
 ```markdown
 ## Project-Specific Architecture
 
@@ -266,11 +259,11 @@ See [Existing System Architecture](.specweave/docs/internal/architecture/existin
 
 ---
 
-#### Rule 3: Conventions → .specweave/docs/guides/
+#### 规则 3：规范 → `.specweave/docs/guides/` 文件夹
 
-**Indicators**: Naming conventions, code style, patterns
+**判断依据**：命名规范、代码风格、模式
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## Naming Conventions
@@ -281,17 +274,17 @@ See [Existing System Architecture](.specweave/docs/internal/architecture/existin
 - React components: `{Name}Component.tsx` suffix
 ```
 
-**Destination**: `.specweave/docs/public/guides/project-conventions.md`
+**目标文件夹**：`.specweave/docs/public/guides/project-conventions.md`
 
-**CLAUDE.md addition**: None (standard conventions, no need to clutter CLAUDE.md)
+**CLAUDE.md 的处理方式**：无需添加内容（这些是标准规范，无需重复）
 
 ---
 
-#### Rule 4: Workflows → .specweave/docs/guides/
+#### 规则 4：工作流程 → `.specweave/docs/guides/` 文件夹
 
-**Indicators**: Deployment process, CI/CD, release workflow
+**判断依据**：部署流程、CI/CD、发布流程
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## Deployment Process
@@ -304,9 +297,9 @@ See [Existing System Architecture](.specweave/docs/internal/architecture/existin
 6. Rollback via GitHub Actions if needed
 ```
 
-**Destination**: `.specweave/docs/internal/processes/deployment.md`
+**目标文件夹**：`.specweave/docs/internal/processes/deployment.md`
 
-**CLAUDE.md addition**:
+**CLAUDE.md 的处理方式**：
 ```markdown
 ## Deployment
 
@@ -315,11 +308,11 @@ See [Deployment Guide](.specweave/docs/internal/processes/deployment.md).
 
 ---
 
-#### Rule 5: Business Rules → specifications/modules/
+#### 规则 5：业务规则 → `specifications/modules/` 文件夹
 
-**Indicators**: Validation rules, policies, constraints
+**判断依据**：验证规则、政策、约束条件
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## Business Rules
@@ -331,17 +324,17 @@ See [Deployment Guide](.specweave/docs/internal/processes/deployment.md).
 - Insurance verification required before booking
 ```
 
-**Destination**: `.specweave/docs/internal/strategy/appointments/business-rules.md`
+**目标文件夹**：`.specweave/docs/internal/strategy/appointments/business-rules.md`
 
-**CLAUDE.md addition**: None (specifications are source of truth)
+**CLAUDE.md 的处理方式**：无需添加内容（详细规则存储在 `specifications` 文件中）
 
 ---
 
-#### Rule 6: Tech Stack → .specweave/docs/architecture/
+#### 规则 6：技术栈 → `.specweave/docs/architecture/` 文件夹
 
-**Indicators**: Technologies, frameworks, tools
+**判断依据**：技术、框架、工具
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## Tech Stack
@@ -355,9 +348,9 @@ See [Deployment Guide](.specweave/docs/internal/processes/deployment.md).
 - Monitoring: Grafana, Prometheus
 ```
 
-**Destination**: `.specweave/docs/internal/architecture/tech-stack.md`
+**目标文件夹**：`.specweave/docs/internal/architecture/tech-stack.md`
 
-**CLAUDE.md addition**:
+**CLAUDE.md 的处理方式**：
 ```markdown
 ## Tech Stack
 
@@ -368,11 +361,11 @@ See [Tech Stack Details](.specweave/docs/internal/architecture/tech-stack.md).
 
 ---
 
-#### Rule 7: API Design → .specweave/docs/guides/
+#### 规则 7：API 设计 → `.specweave/docs/guides/` 文件夹
 
-**Indicators**: API conventions, authentication, error handling
+**判断依据**：API 规范、认证机制、错误处理
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md
 ## API Design
@@ -385,32 +378,29 @@ All APIs follow REST conventions:
 - Versioning: /api/v1, /api/v2
 ```
 
-**Destination**: `.specweave/docs/public/guides/api-conventions.md`
+**目标文件夹**：`.specweave/docs/public/guides/api-conventions.md`
 
-**CLAUDE.md addition**: None (guide covers it)
+**CLAUDE.md 的处理方式**：无需添加内容（这些内容已在指南中）
 
 ---
 
-#### Rule 8: Code Examples → Discard or Minimal
+#### 规则 8：代码示例 **（是否保留或删除）**
 
-**Indicators**: Code snippets, example implementations
+**判断依据**：代码片段、示例实现
 
-**Decision**:
-- If generic (standard pattern): Discard (SpecWeave CLAUDE.md already has examples)
-- If project-specific (custom pattern): Extract to guide
+**处理方式**：
+- 如果是通用模式（标准代码示例），则删除（SpecWeave 的 CLAUDE.md 中已有相关内容）
+- 如果是项目特定模式，則提取到指南中
 
-**Example**:
+**示例**：
 ```markdown
 # Old CLAUDE.md - Generic React pattern
 function UserList() {
   const [users, setUsers] = useState([]);
   // ... standard React code
 }
-```
-
-**Action**: Discard (generic React, not project-specific)
-
-**Example**:
+```（通用 React 模式，无需保留）
+**示例**：
 ```markdown
 # Old CLAUDE.md - Custom authentication pattern
 // Our custom auth hook (wraps Supabase)
@@ -419,61 +409,37 @@ function useCustomAuth() {
   const { roles } = useRoleProvider();
   return { user: session?.user, hasRole: (role) => roles.includes(role) };
 }
-```
-
-**Action**: Extract to `.specweave/docs/public/guides/authentication.md` (project-specific pattern)
+```（项目特定模式，提取到 `.specweave/docs/public/guides/authentication.md`）
 
 ---
 
-### Step 4: Update CLAUDE.md (Minimal)
+### 第四步：更新 CLAUDE.md 文件
 
-**ONLY add high-level project summary** to SpecWeave's CLAUDE.md:
+**仅在 SpecWeave 的 CLAUDE.md 中添加** 简短的项目总结：
 
-```markdown
----
-
-## Project-Specific Context
-
-**Project**: Healthcare Appointment Booking Platform
-**Domain**: Healthcare, Patient Management, Provider Scheduling
-
-### Quick Links
-- [Domain Model](.specweave/increments/####-name/docs/domain/appointments/domain-model.md)
-- [Existing System Architecture](.specweave/docs/internal/architecture/existing-system.md)
-- [Tech Stack](.specweave/docs/internal/architecture/tech-stack.md)
-- [Business Rules](.specweave/docs/internal/strategy/appointments/business-rules.md)
-- [Deployment Guide](.specweave/docs/internal/processes/deployment.md)
-- [Project Conventions](.specweave/docs/public/guides/project-conventions.md)
-
-**Note**: All project-specific details are in linked documents. This keeps CLAUDE.md concise.
-
----
-```
-
-**Total addition**: ~15 lines max
+**添加的内容**：最多 1-2 段落
 
 ---
 
-## Intelligence Rules
+## 智能合并规则
 
-### Avoid Bloat
+**避免文件臃肿**
 
-**Never add to CLAUDE.md**:
-- Generic programming advice (SpecWeave CLAUDE.md already has it)
-- Detailed code examples (put in guides)
-- Long architecture descriptions (put in architecture docs)
-- Business rule details (put in specifications)
-- API documentation (put in guides)
+**切勿将以下内容添加到 CLAUDE.md 中**：
+- 通用编程建议（SpecWeave 的 CLAUDE.md 中已有）
+- 详细的代码示例（放入指南文件）
+- 长篇的架构描述（放入架构文档中）
+- 业务规则细节（放入规范文件中）
+- API 文档（放入指南文件中）
 
-**Only add to CLAUDE.md**:
-- 1-2 sentence project description
-- Domain/industry context
-- Links to detailed docs
+**仅在 CLAUDE.md 中添加**：
+- 1-2 句的项目描述
+- 领域/行业背景信息
+- 链接到详细文档的链接
 
-### Avoid Duplicates
+**避免重复**
 
-**Before creating files, check if similar content exists**:
-
+**在创建新文件之前，请检查是否存在类似内容**：
 ```typescript
 // Check if domain model already exists
 if (exists("specifications/modules/appointments/domain-model.md")) {
@@ -492,18 +458,17 @@ if (exists("specifications/modules/appointments/domain-model.md")) {
 }
 ```
 
-### Preserve Accuracy
+**确保内容准确性**
 
-**When extracting content**:
-- Don't paraphrase technical details
-- Preserve exact terminology
-- Keep code examples verbatim
-- Maintain formatting (tables, lists, code blocks)
+**在提取内容时**：
+- 不要改写技术细节
+- 保持术语的一致性
+- 保持代码示例的原始格式
+- 保持格式的准确性（表格、列表、代码块等）
 
-### User Confirmation
+**用户确认**
 
-**Before writing files, show user**:
-
+**在生成新文件之前，请向用户展示内容**：
 ```
 I found the following project-specific content in your backup CLAUDE.md:
 
@@ -536,11 +501,11 @@ Proceed with merge? (y/n)
 
 ---
 
-## Output: Merge Report
+## 合并结果
 
-**After merge, generate mode-specific report**:
+**合并完成后，生成特定模式的报告**：
 
-### Quick Start Mode Report 🆕
+### 快速启动模式报告 🆕
 
 ```markdown
 # CLAUDE.md Merge Report - Quick Start Mode
@@ -618,14 +583,14 @@ The following content remains in the backup and will be extracted when you work 
 
 **How to extract later**:
 ```bash
-# When starting increment for appointments
-/inc "Refactor appointment booking"
+# 开始更新 appointments 模块的文档时：
+# 使用命令：
+# `inc "Refactor appointment booking"
+# 在 spec.md 中引用：
+# “查看备份文件：.claude/backups/CLAUDE-backup-*.md (appointments 部分)”
+# 或者请求：
+# “从 CLAUDE.md 备份中提取 appointments 相关文档”
 
-# In spec.md, reference:
-# "See backup: .claude/backups/CLAUDE-backup-*.md (appointments section)"
-
-# Or ask:
-# "Extract appointment documentation from CLAUDE.md backup"
 ```
 
 ---
@@ -651,7 +616,7 @@ The following content remains in the backup and will be extracted when you work 
 ---
 ```
 
-### Comprehensive Mode Report
+### 全面整合模式报告
 
 ```markdown
 # CLAUDE.md Merge Report - Comprehensive Mode
@@ -735,15 +700,15 @@ Your project-specific knowledge is now integrated into SpecWeave's structure.
 
 ---
 
-## Example Usage
+## 使用示例
 
-### User Request
+### 用户请求
 
 ```
 User: "I installed SpecWeave and it backed up my CLAUDE.md. Can you merge the important parts?"
 ```
 
-### Your Response
+### 用户响应
 
 ```
 I'll analyze your backup CLAUDE.md and intelligently merge project-specific content.
@@ -776,7 +741,7 @@ CLAUDE.md additions: 12 lines (99.2% distributed to folders)
 Proceed with merge? (y/n)
 ```
 
-### After User Approval
+### 用户批准后
 
 ```
 ✅ Merge complete!
@@ -801,22 +766,22 @@ Next: Review files and run `npm run docs:dev` to preview.
 
 ---
 
-## Tool Usage
+## 工具使用流程
 
-**Scan for backups**:
+**扫描备份文件**：
 ```typescript
 const backups = glob(".claude/backups/CLAUDE-backup-*.md");
 const latestBackup = backups.sort().reverse()[0];  // Most recent
 ```
 
-**Parse content**:
+**解析文件内容**：
 ```typescript
 const content = read(latestBackup);
 const sections = parseSections(content);  // Split by headers
 const classified = classifyContent(sections);  // Domain, Architecture, etc.
 ```
 
-**Avoid duplicates**:
+**避免重复**：
 ```typescript
 if (exists(targetPath)) {
   const existing = read(targetPath);
@@ -828,9 +793,7 @@ if (exists(targetPath)) {
 
 ---
 
-## Related Documentation
-
-- [BROWNFIELD-INTEGRATION-STRATEGY.md](../../docs/internal/delivery/BROWNFIELD-INTEGRATION-STRATEGY.md)
+**相关文档**：
+- [BROWNFIELD-INTEGRATION-STRATEGERY.md](../../docs/internal/delivery/BROWNFIELD-INTEGRATION-STRATEGERY.md)
 - [brownfield-analyzer skill](../brownfield-analyzer/SKILL.md)
 - [CLAUDE.md](../../CLAUDE.md)
-

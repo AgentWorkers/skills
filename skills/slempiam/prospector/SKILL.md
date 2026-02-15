@@ -9,45 +9,45 @@ version: 1.0.0
 
 # Prospector
 
-Find leads matching your ICP via Exa company search + Apollo contact enrichment.
+通过Exa公司搜索结合Apollo联系人信息 enrichment（数据丰富化）功能，找到符合您ICP（Investment Criteria Profile，投资标准配置）的潜在客户。
 
-## Prerequisites
+## 先决条件
 
-Run `/prospector:setup` first to configure your API keys:
-- **Exa** (required): https://exa.ai - company discovery
-- **Apollo** (required): https://apollo.io - contact enrichment
-- **Attio** (optional): https://attio.com - CRM sync
+首先运行 `/prospector:setup` 命令来配置您的API密钥：
+- **Exa**（必需）：https://exa.ai - 用于公司信息查询
+- **Apollo**（必需）：https://apollo.io - 用于联系人信息丰富化
+- **Attio**（可选）：https://attio.com - 用于CRM系统数据同步
 
-You can also set keys via environment variables:
+您也可以通过环境变量来设置这些密钥：
 - `PROSPECTOR_EXA_API_KEY`
 - `PROSPECTOR_APOLLO_API_KEY`
-- `PROSPECTOR_ATTIO_API_KEY` (optional)
+- `PROSPECTOR_ATTIO_API_KEY`（可选）
 
-## Usage
+## 使用方法
 
-### Setup (one-time)
+### 设置（仅一次）
 
 ```
 /prospector:setup
 ```
 
-Collects and validates API keys, stores securely in `~/.config/prospector/config.json`.
+收集并验证API密钥，将其安全地存储在 `~/.config/prospector/config.json` 文件中。
 
-### Find Leads
+### 寻找潜在客户
 
 ```
 /prospector
 ```
 
-Asks ICP questions, searches Exa, enriches via Apollo, outputs CSV to Desktop.
+根据用户提供的ICP标准提问，通过Exa进行搜索，利用Apollo进行数据丰富化处理，然后将结果以CSV格式输出到桌面。
 
-## Main Command: /prospector
+## 主命令：/prospector
 
-When the user invokes `/prospector`, follow this workflow:
+当用户调用 `/prospector` 时，请按照以下流程操作：
 
-### Step 1: Check Config or Env Vars
+### 第一步：检查配置或环境变量
 
-First, verify env vars or config exist:
+首先验证配置文件或环境变量是否存在：
 
 ```bash
 python3 -c "
@@ -73,13 +73,12 @@ print(f'env_attio: {env_attio}')
 "
 ```
 
-If NOT_FOUND and env vars are not set, tell user to run `/prospector:setup` first.
+如果未找到配置文件或环境变量未设置，提示用户先运行 `/prospector:setup` 命令。
 
-### Step 2: Ask ICP Questions
+### 第二步：收集ICP标准
 
-Use AskUserQuestion to collect ICP criteria in order:
-
-**Question 1: Industry**
+使用 `AskUserQuestion` 功能依次收集用户提供的ICP标准：
+- **问题1：行业**
 ```
 header: "Industry"
 question: "What industry are you targeting?"
@@ -99,7 +98,7 @@ options:
 multiSelect: false
 ```
 
-**Question 2: Company Size**
+- **问题2：公司规模**
 ```
 header: "Size"
 question: "What company size are you targeting?"
@@ -119,7 +118,7 @@ options:
 multiSelect: false
 ```
 
-**Question 3: Funding Stage**
+- **问题3：融资阶段**
 ```
 header: "Funding"
 question: "What funding stage are you targeting?"
@@ -137,7 +136,7 @@ options:
 multiSelect: false
 ```
 
-**Question 4: Geography**
+- **问题4：地理位置**
 ```
 header: "Geography"
 question: "What geography are you targeting?"
@@ -153,7 +152,7 @@ options:
 multiSelect: false
 ```
 
-**Question 5: Keywords (optional)**
+- **问题5：关键词（可选）**
 ```
 header: "Keywords"
 question: "Any specific keywords that should appear in company descriptions? (optional)"
@@ -165,9 +164,9 @@ options:
 multiSelect: false
 ```
 
-If "Enter keywords", ask for the text input.
+如果用户选择了“输入关键词”，则接收用户输入的文本。
 
-**Question 6: Contact Count**
+- **问题6：联系人数量**
 ```
 header: "Count"
 question: "How many contacts do you want to find?"
@@ -181,9 +180,9 @@ options:
 multiSelect: false
 ```
 
-### Step 3: Run Search
+### 第三步：执行搜索
 
-Execute the Python script with the collected ICP:
+使用收集到的ICP标准执行Python脚本进行搜索：
 
 ```bash
 cd [skill_directory]/scripts
@@ -207,11 +206,11 @@ else:
 "
 ```
 
-Replace placeholders with actual values from questions.
+请将脚本中的占位符替换为实际收集到的数据。
 
-### Step 4: Attio Sync (if configured)
+### 第四步：（如果配置了Attio）进行数据同步
 
-If Attio is configured and leads were found, ask:
+如果配置了Attio并且找到了潜在客户，系统会提示用户是否需要同步数据：
 
 ```
 header: "Attio"
@@ -224,7 +223,7 @@ options:
 multiSelect: false
 ```
 
-If yes:
+如果用户同意同步，系统将执行数据同步操作：
 
 ```bash
 cd [skill_directory]/scripts
@@ -241,16 +240,16 @@ print(f'SYNCED: {companies} companies, {people} contacts')
 "
 ```
 
-### Step 5: Report Results
+### 第五步：报告结果
 
-Tell the user:
-- How many leads were found
-- Where the CSV was saved
-- If Attio sync was done, how many records were synced
+向用户展示以下信息：
+- 找到了多少潜在客户
+- CSV文件保存的位置
+- 如果进行了Attio数据同步，同步了多少条记录
 
-## Error Handling
+## 错误处理
 
-- **Config not found**: Tell user to run `/prospector:setup`
-- **Invalid API key**: Tell user which key failed, suggest re-running setup
-- **No results**: Suggest broadening ICP criteria
-- **Partial failures**: Report what succeeded, warn about failures
+- **配置文件未找到**：提示用户运行 `/prospector:setup` 命令
+- **API密钥无效**：告知用户哪个密钥无效，并建议重新运行配置流程
+- **未找到结果**：建议用户放宽ICP标准以扩大搜索范围
+- **部分操作失败**：报告成功执行的操作以及失败的原因

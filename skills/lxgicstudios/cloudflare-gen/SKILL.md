@@ -1,29 +1,29 @@
 ---
 name: cloudflare-gen
-description: Generate Cloudflare Workers configuration and code. Use when building on the edge.
+description: 生成 Cloudflare Workers 的配置文件及相应代码。适用于在边缘计算环境中进行开发时使用。
 ---
 
 # Cloudflare Gen
 
-Cloudflare Workers are powerful but wrangler.toml syntax is its own thing. This tool generates Worker code and configuration from plain English. Edge functions, KV storage, R2 buckets. All set up correctly.
+Cloudflare Workers 是一个功能强大的工具，但其配置文件（`wrangler.toml`）的格式相对独特。这款工具能够根据用户提供的 plain English 说明自动生成 Worker 代码及其配置文件，同时还能配置 Edge Functions、KV 存储以及 R2 数据存储服务。所有设置都会被正确地完成。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何额外的配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-cloudflare "API proxy with rate limiting"
 ```
 
-## What It Does
+## 功能概述
 
-- Generates wrangler.toml configuration
-- Creates Worker TypeScript/JavaScript code
-- Sets up KV namespaces and R2 bindings
-- Includes proper routing and middleware
-- Handles environment variables and secrets
+- 生成 `wrangler.toml` 配置文件
+- 生成 TypeScript/JavaScript 语言的 Worker 代码
+- 设置 KV（Key-Value）存储相关的命名空间和绑定
+- 配置路由规则及中间件
+- 处理环境变量和敏感信息（如密钥）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Simple Worker
@@ -39,43 +39,43 @@ npx ai-cloudflare "cache API responses at the edge for 1 hour"
 npx ai-cloudflare "JWT validation middleware for API routes"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Keep Workers small** - Edge has size limits
-- **Use KV for reads** - KV is fast for reads, slow for writes
-- **Handle errors** - Edge errors are hard to debug, be explicit
-- **Test locally** - wrangler dev before deploying
+- **保持 Worker 代码简洁**：Edge 服务的资源有限，因此代码应尽可能简洁。
+- **优先使用 KV 进行数据读取**：KV 适用于快速读取操作，但写入速度较慢。
+- **妥善处理错误**：Edge 服务中的错误较难调试，因此务必明确地处理错误信息。
+- **在本地进行测试**：在部署之前，先使用 `wrangler` 工具进行开发测试。
 
-## When to Use This
+## 适用场景
 
-- Building serverless functions on Cloudflare
-- Need edge computing for latency-sensitive features
-- Setting up Cloudflare Pages with Workers
-- Learning Workers and want working examples
+- 在 Cloudflare 上构建无服务器（serverless）功能
+- 需要利用 Edge 计算能力来处理对延迟敏感的应用场景
+- 使用 Cloudflare Pages 并配置相关 Worker 功能
+- 希望通过实际示例来学习如何使用 Cloudflare Workers
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。所有工具均免费提供，无需支付费用、注册账号或使用 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Requires OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 export OPENAI_API_KEY=sk-...
 npx ai-cloudflare --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your description and generates both the Worker code and wrangler.toml configuration. Sets up proper bindings for KV, R2, or Durable Objects if needed. The code follows Cloudflare's patterns and handles common edge cases.
+该工具会根据用户提供的描述自动生成 Worker 代码和 `wrangler.toml` 配置文件。如果需要，还会配置 KV、R2 或持久化对象（Durable Objects）的相关绑定。生成的代码遵循 Cloudflare 的设计规范，并能处理常见的边缘计算场景。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具，无需遵守任何额外的限制。

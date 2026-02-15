@@ -1,64 +1,58 @@
 ---
 name: api-credentials-hygiene
-description: Audits and hardens API credential handling (env vars, separation, rotation plan, least privilege, auditability). Use when integrating services or preparing production deployments where secrets must be managed safely.
+description: 审计并加强 API 凭据管理（环境变量、分离存储、定期轮换凭据、最小权限原则、可审计性）。在集成服务或准备生产环境部署时使用这些措施，以确保敏感信息得到安全管理。
 ---
 
-# API credentials hygiene: env vars, rotation, least privilege, auditability
+# API凭证管理：环境变量、凭证轮换、最小权限原则与可审计性
 
-## PURPOSE
-Audits and hardens API credential handling (env vars, separation, rotation plan, least privilege, auditability).
+## 目的
+加强对API凭证管理的审计和安全性（包括使用环境变量、分离凭证、制定轮换计划、遵循最小权限原则以及确保可审计性）。
 
-## WHEN TO USE
-- TRIGGERS:
-  - Harden the credentials setup for this integration and move secrets into env vars.
-  - Design a key rotation plan for these APIs with minimal downtime.
-  - Audit this service for least-privilege access and document what each key can do.
-  - Create an environment variable map and a secure .env template for this project.
-  - Set up credential separation for dev versus prod with clear audit trails.
-- DO NOT USE WHEN…
-  - You want to obtain keys without authorization or bypass security controls.
-  - You need legal/compliance sign-off (this outputs technical documentation, not legal advice).
+## 使用场景
+- 当需要增强该集成系统的凭证安全性，并将敏感信息移至环境变量中时。
+- 需要为这些API设计低停机时间的凭证轮换方案时。
+- 需要对系统的访问权限进行审计，明确每个凭证的用途时。
+- 需要为项目创建环境变量映射文件及安全的`.env`模板时。
+- 需要在开发环境和生产环境中分离凭证，并保留清晰的审计记录时。
 
-## INPUTS
-- REQUIRED:
-  - List of integrations/APIs and where credentials are currently stored/used.
-  - Deployment context (local dev, server, container, n8n, etc.).
-- OPTIONAL:
-  - Current config files/redacted snippets (.env, compose, systemd, n8n creds list).
-  - Org rules (rotation intervals, secret manager preference).
-- EXAMPLES:
-  - “Keys are hard-coded in a Node script and an n8n HTTP Request node.”
-  - “We have dev and prod n8n instances and need separation.”
+## 不适用场景
+- 当您试图未经授权获取凭证或绕过安全控制时。
+- 当您需要法律/合规性审批时（本文档仅提供技术指导，不提供法律建议）。
 
-## OUTPUTS
-- Credential map (service → env vars → scopes/permissions → owner → rotation cadence).
-- Rotation runbook (steps + rollback).
-- Least-privilege checklist and audit log plan.
-- Optional: `.env` template (placeholders only).
-Success = no secrets committed or embedded, permissions minimized, rotation steps documented, and auditability defined.
+## 输入内容
+- 必需信息：
+  - 集成系统/API的列表及其当前存储/使用凭证的位置。
+  - 部署环境（本地开发环境、服务器、容器、n8n等）。
+- 可选信息：
+  - 当前的配置文件或被屏蔽的配置片段（`.env`文件、Compose配置文件、systemd配置文件、n8n凭证列表）。
+  - 组织内部的规则（凭证轮换周期、凭证管理工具的偏好设置）。
 
+## 输出内容
+- 凭证映射表（服务 → 环境变量 → 权限范围 → 所有者 → 轮换周期）。
+- 凭证轮换操作手册（包括具体步骤和回滚方案）。
+- 最小权限检查清单及审计日志计划。
+- 可选：`.env`模板（仅包含占位符）。
 
-## WORKFLOW
-1. Inventory credentials:
-   - where stored, where used, and who owns them.
-2. Define separation:
-   - dev vs prod; human vs service accounts; per-integration boundaries.
-3. Move secrets to env vars / secret manager references:
-   - create an env var map and update config plan (no raw keys in code/workflows).
-4. Least privilege:
-   - for each API, enumerate required actions and reduce scopes/roles accordingly.
-5. Rotation plan:
-   - dual-key overlap if supported; steps to rotate with minimal downtime; rollback.
-6. Auditability:
-   - define what events are logged (auth failures, token refresh, key use where available).
-7. STOP AND ASK THE USER if:
-   - required operations are unknown,
-   - secret injection method is unclear,
-   - rotation cadence/owners are unspecified.
+## 工作流程
+1. 清点所有凭证：
+   - 明确凭证的存储位置、使用场景及所有者。
+2. 制定凭证分离策略：
+   - 区分开发环境和生产环境；区分人工账户和服务账户；明确各集成系统的权限边界。
+3. 将敏感信息移至环境变量或凭证管理工具中：
+   - 创建环境变量映射表并更新配置方案（避免在代码或工作流程中直接使用原始凭证）。
+4. 实施最小权限原则：
+   - 为每个API列出所需操作的权限范围，并相应地限制用户权限。
+5. 制定凭证轮换计划：
+   - 如果支持双密钥机制，需规划密钥的轮换流程；确保轮换过程具有最低的停机时间；同时准备回滚方案。
+6. 确保可审计性：
+   - 明确需要记录的事件类型（如认证失败、令牌更新、凭证使用情况等）。
+7. 在以下情况下请暂停操作并咨询相关人员：
+   - 如果某些操作的具体步骤不明确；
+   - 如果凭证注入方法不清楚；
+   - 如果凭证轮换周期或所有者信息未指定。
 
-
-## OUTPUT FORMAT
-Credential map template:
+## 输出格式
+凭证映射表模板：
 
 ```text
 CREDENTIAL MAP
@@ -72,19 +66,16 @@ CREDENTIAL MAP
   - Audit: <what is logged and where>
 ```
 
-If providing a template, output `assets/dotenv-template.example` with placeholders only.
+如果需要提供模板，请输出`assets/dotenv-template.example`文件（其中仅包含占位符）。
 
+## 安全性与特殊注意事项
+- 绝不要直接输出真实的凭证信息、令牌或私钥，应使用占位符代替。
+- 默认情况下，所有文件仅具有读取权限；除非用户明确要求修改文件，否则请以计划的形式提出修改建议。
+- 除非有明确的需求，否则应避免设置过于宽泛的权限范围。
 
-## SAFETY & EDGE CASES
-- Never output real secrets, tokens, or private keys. Use placeholders.
-- Read-only by default; propose changes as a plan unless explicitly asked to modify files.
-- Avoid over-broad scopes/roles unless justified by a documented requirement.
+## 示例
+- 输入：“n8n HTTP节点中直接硬编码了API凭证。”
+  输出：环境变量映射表 + 将凭证移至n8n系统的计划 + 凭证轮换操作手册。
 
-
-## EXAMPLES
-- Input: “n8n HTTP nodes contain API keys.”  
-  Output: Env var map + plan to move to n8n credentials/env vars + rotation runbook.
-
-- Input: “Need dev vs prod separation.”  
-  Output: Two env maps + naming scheme + access boundary checklist.
-
+- 输入：“需要区分开发环境和生产环境中的凭证管理。”
+  输出：两个环境变量映射表 + 适当的命名规则 + 权限边界检查清单。

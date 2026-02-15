@@ -1,66 +1,66 @@
 ---
 name: JSON
-description: Work with JSON data structures, APIs, and serialization effectively.
+description: 有效地处理 JSON 数据结构、API 以及数据序列化。
 metadata: {"clawdbot":{"emoji":"📦","os":["linux","darwin","win32"]}}
 ---
 
-## Schema & Validation
+## 架构与验证
 
-- Always validate against JSON Schema before processing untrusted input—don't assume structure
-- Define schemas for API responses—catches contract violations early
-- Use `additionalProperties: false` to reject unknown fields in strict contexts
+- 在处理不可信的输入之前，务必使用 JSON 架构进行验证——切勿假设输入数据的结构是固定的。
+- 为 API 响应定义相应的数据结构，以便尽早发现数据格式错误。
+- 在严格的环境中，使用 `additionalProperties: false` 来拒绝未知字段的传输。
 
-## Naming & Consistency
+## 命名规则与一致性
 
-- Pick one convention and stick to it—`camelCase` for JS ecosystems, `snake_case` for Python/Ruby
-- Avoid mixed conventions in same payload—`userId` alongside `user_name` confuses consumers
-- Use plural for collections: `"users": []` not `"user": []`
+- 选择一种命名规范并始终遵循它：JavaScript 生态系统中使用驼峰式命名（camelCase），Python/Ruby 生态系统中使用蛇形命名（snake_case）。
+- 避免在同一数据结构中混合使用不同的命名规范（例如：`userId` 和 `user_name` 同时出现会混淆使用者）。
+- 对于集合类型，使用复数形式表示（例如：`"users": []` 而不是 `“user”: []`）。
 
-## Null Handling
+## 空值处理
 
-- Distinguish "field is null" from "field is absent"—they mean different things
-- Omit optional fields entirely rather than sending `null`—reduces payload, clearer intent
-- Document which fields are nullable in schema—don't surprise consumers
+- 区分“字段为空”和“字段不存在”这两种情况——它们的含义不同。
+- 完全省略可选字段，而不是发送 `null` 值——这样可以减少数据量，并更清晰地表达字段的状态。
+- 在数据结构中明确标注哪些字段可以是空值，避免给使用者带来困惑。
 
-## Dates & Times
+## 日期与时间
 
-- Always use ISO 8601: `"2024-01-15T14:30:00Z"`—no ambiguous formats like `"01/15/24"`
-- Include timezone or use UTC with `Z` suffix—local times without zone are useless
-- Timestamps as strings, not epoch integers—human-readable, no precision loss
+- 始终使用 ISO 8601 格式表示日期和时间（例如：`"2024-01-15T14:30:00Z"`），避免使用像 `“01/15/24` 这样容易引起误解的格式。
+- 必须包含时区信息，或者使用带有 `Z` 后缀的 UTC 格式表示时间（不带时区的本地时间是没有意义的）。
+- 时间戳应作为字符串传递，而不是整数形式（例如：使用字符串 `“2024-01-15T14:30:00Z”` 而不是整数 `1658403600`）——这样更易于人类阅读，也不会丢失精度。
 
-## Numbers & IDs
+## 数字与 ID
 
-- Large IDs as strings: `"id": "9007199254740993"`—JavaScript loses precision above 2^53
-- Money as string or integer cents—never float: `"price": "19.99"` or `"price_cents": 1999`
-- Avoid floats for anything requiring exactness—currency, coordinates with precision
+- 大型 ID 应以字符串形式表示（例如：`"id": "9007199254740993"`），因为 JavaScript 在处理大于 `2^53` 的数字时会丢失精度。
+- 货币金额应使用字符串或整数（例如：`"price": "19.99"` 或 `“price_cents”: 1999`），切勿使用浮点数。
+- 对于需要精确性的数据（如货币金额、坐标等），应避免使用浮点数。
 
-## Structure Best Practices
+## 结构最佳实践
 
-- Keep nesting shallow—3 levels max; flatten or split into related endpoints
-- Consistent envelope for APIs: `{"data": ..., "meta": ..., "errors": ...}`
-- Paginate large arrays—never return unbounded lists; include `next`/`prev` links or cursor
+- 保持数据结构的层次结构尽可能简单（最多不超过 3 层）；如果结构复杂，可以将其展平或拆分为多个相关的 API 端点。
+- API 响应的数据结构应保持一致（例如：`{"data": ..., "meta": ..., "errors": ...}`）。
+- 对于大型数据数组，应进行分页处理——切勿返回无限长的列表；应提供 `next`/`prev` 链接或游标信息。
 
-## API Response Patterns
+## API 响应格式
 
-- Errors as structured objects: `{"code": "INVALID_EMAIL", "message": "...", "field": "email"}`
-- Include request ID in responses for debugging: `"request_id": "abc-123"`
-- Return created/updated resource in response—saves client a follow-up GET
+- 错误信息应以结构化对象的形式返回（例如：`{"code": "INVALID_EMAIL", "message": "...", "field": "email"}`）。
+- 在响应中包含请求 ID 以便于调试（例如：`"request_id": "abc-123"`）。
+- 响应中应包含创建或更新的资源的详细信息，以减少客户端需要再次发起 GET 请求的次数。
 
-## Serialization
+## 序列化
 
-- `toJSON()` method silently overrides output—Date becomes string, custom classes may surprise
-- Map, Set, BigInt don't serialize—need custom replacer function
-- Circular references throw—detect cycles before stringify or use libraries like `flatted`
-- Strip sensitive data before serializing—don't rely on client to ignore extra fields
+- `toJSON()` 方法会自动将对象转换为 JSON 字符串；但需要注意的是，这种方法可能会改变某些对象的表示形式（例如，`Date` 对象会被转换为字符串）。
+- `Map`、`Set` 和 `BigInt` 类型无法直接序列化，需要自定义序列化逻辑。
+- 如果数据结构中存在循环引用，序列化之前应检测并处理这些引用（可以使用 `flatted` 等库来避免问题）。
+- 在序列化之前，应删除敏感数据，以免客户端意外处理到额外的字段。
 
-## Parsing Safety
+## 解析安全性
 
-- `__proto__` key can pollute prototypes—sanitize input or use `Object.create(null)`
-- Parse in try/catch—malformed JSON from external sources is common
-- Reviver function for type reconstruction: dates, BigInt, custom types
+- `__proto__` 键可能会污染对象的原型；因此应对输入数据进行清洗（例如，可以使用 `Object.create(null)` 创建新的对象）。
+- 解析 JSON 数据时应使用 `try/catch` 语句来处理可能的错误（来自外部来源的 JSON 数据可能格式不正确）。
+- 提供专门的解析函数（reviver function）来重建数据结构（例如，处理日期、`BigInt` 类型等特殊数据）。
 
-## Unicode
+## Unicode 编码
 
-- Emoji need surrogate pairs in escapes: 😀 = `\uD83D\uDE00`—single `\u1F600` invalid
-- Control chars U+0000–U+001F must be escaped—pasted text may contain invisible ones
-- BOM at file start breaks parsing—strip `\uFEFF` from file input
+- 表情符号需要使用代理对（surrogate pairs）进行编码（例如：`😀 = `\uD83D\uDE00`），单独使用 `\u1F600` 是无效的。
+- 控制字符（U+0000–U+001F）必须进行编码处理，因为粘贴的文本可能包含这些字符。
+- 文件开头如果有 BOM（Byte Order Mark），会影响解析；因此应从文件输入中删除 `\uFEFF` 字符。

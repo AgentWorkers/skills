@@ -1,59 +1,59 @@
 ---
 name: llm-router
-description: "Unified LLM Gateway - One API for 70+ AI models. Route to GPT, Claude, Gemini, Grok and more with a single API key."
+description: "统一大语言模型（Unified LLM）网关：一个API，支持70多个AI模型。只需使用一个API密钥，即可访问GPT、Claude、Gemini、Grok等众多AI模型。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"🧠","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
 # OpenClaw LLM Router 🧠
 
-**Unified LLM Gateway for autonomous agents. Powered by AIsa.**
+**专为自主代理设计的统一LLM网关，由AIsa提供支持。**
 
-One API key. 70+ models. OpenAI-compatible.
+只需一个API密钥，即可使用70多种模型，且兼容OpenAI。
 
-Replace 100+ API keys with one. Access GPT-4, Claude-3, Gemini, Grok, and more through a unified, OpenAI-compatible API.
+用一个API密钥替代原有的100多个API密钥，通过统一的、兼容OpenAI的接口访问GPT-4、Claude-3、Gemini、Grok等模型。
 
-## 🔥 What Can You Do?
+## 🔥 您能做什么？
 
-### Multi-Model Chat
+### 多模型聊天
 ```
 "Chat with GPT-4 for reasoning, switch to Claude for creative writing"
 ```
 
-### Model Comparison
+### 模型比较
 ```
 "Compare responses from GPT-4, Claude, and Gemini for the same question"
 ```
 
-### Vision Analysis
+### 视觉分析
 ```
 "Analyze this image with GPT-4o - what objects are in it?"
 ```
 
-### Cost Optimization
+### 成本优化
 ```
 "Route simple queries to fast/cheap models, complex queries to GPT-4"
 ```
 
-### Fallback Strategy
+### 回退策略
 ```
 "If GPT-4 fails, automatically try Claude, then Gemini"
 ```
 
-## Why LLM Router?
+## 为什么选择LLM Router？
 
-| Feature | LLM Router | Direct APIs |
+| 特性 | LLM Router | 直接API |
 |---------|------------|-------------|
-| API Keys | 1 | 10+ |
-| SDK Compatibility | OpenAI SDK | Multiple SDKs |
-| Billing | Unified | Per-provider |
-| Model Switching | Change string | Code rewrite |
-| Fallback Routing | Built-in | DIY |
-| Cost Tracking | Unified | Fragmented |
+| API密钥 | 1个 | 10多个 |
+| SDK兼容性 | OpenAI SDK | 多个SDK |
+| 计费方式 | 统一计费 | 按服务提供商计费 |
+| 模型切换 | 通过字符串配置 | 需重新编写代码 |
+| 回退机制 | 内置 | 需自行实现 |
+| 成本追踪 | 统一追踪 | 分散式追踪 |
 
-## Supported Model Families
+## 支持的模型家族
 
-| Family | Developer | Example Models |
+| 模型家族 | 开发者 | 示例模型 |
 |--------|-----------|----------------|
 | GPT | OpenAI | gpt-5.2, gpt-5, gpt-5-mini, gpt-4.1, gpt-4.1-mini, gpt-4o, gpt-4o-mini |
 | Claude | Anthropic | claude-sonnet-4-5, claude-opus-4-1, claude-opus-4, claude-sonnet-4, claude-haiku-4-5 |
@@ -62,24 +62,23 @@ Replace 100+ API keys with one. Access GPT-4, Claude-3, Gemini, Grok, and more t
 | Llama | Meta | llama-3.1-405b, llama-3.1-70b, llama-3.1-8b |
 | Mistral | Mistral AI | mistral-large, mistral-medium, mixtral-8x7b |
 
-> **Note**: Model availability may vary. Check [marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing) for the full list of currently available models and pricing.
+> **注意**：模型可用性可能有所变化。请访问[marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing)查看当前可用模型及价格列表。
 
-## Quick Start
+## 快速入门
 
 ```bash
 export AISA_API_KEY="your-key"
 ```
 
-## API Endpoints
+## API端点
 
-### OpenAI-Compatible Chat Completions
+### 兼容OpenAI的聊天功能
 
 ```
 POST https://api.aisa.one/v1/chat/completions
 ```
 
-#### Request
-
+#### 请求
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -95,22 +94,21 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
   }'
 ```
 
-#### Parameters
+#### 参数
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-----------|------|----------|-------------|
-| `model` | string | Yes | Model identifier (e.g., `gpt-4.1`, `claude-sonnet-4-5`) |
-| `messages` | array | Yes | Conversation messages |
-| `temperature` | number | No | Randomness (0-2, default: 1) |
-| `max_tokens` | integer | No | Maximum response tokens |
-| `stream` | boolean | No | Enable streaming (default: false) |
-| `top_p` | number | No | Nucleus sampling (0-1) |
-| `frequency_penalty` | number | No | Frequency penalty (-2 to 2) |
-| `presence_penalty` | number | No | Presence penalty (-2 to 2) |
-| `stop` | string/array | No | Stop sequences |
+| `model` | 字符串 | 是 | 模型标识符（例如：`gpt-4.1`, `claude-sonnet-4-5`） |
+| `messages` | 数组 | 是 | 对话消息 |
+| `temperature` | 数字 | 否 | 随机性（0-2，默认值：1） |
+| `max_tokens` | 整数 | 否 | 最大响应字符数 |
+| `stream` | 布尔值 | 否 | 是否启用流式响应（默认值：false） |
+| `top_p` | 数字 | 否 | 核心采样率（0-1） |
+| `frequency_penalty` | 数字 | 否 | 频率惩罚（-2至2） |
+| `presence Penalty` | 数字 | 否 | 出现惩罚（-2至2） |
+| `stop` | 字符串/数组 | 否 | 停止序列 |
 
-#### Message Format
-
+#### 消息格式
 ```json
 {
   "role": "user|assistant|system",
@@ -118,8 +116,7 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
 }
 ```
 
-#### Response
-
+#### 响应
 ```json
 {
   "id": "chatcmpl-xxx",
@@ -145,8 +142,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
 }
 ```
 
-### Streaming Response
+### 流式响应
 
+流式响应会返回服务器发送的事件（SSE格式）：
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -158,19 +156,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
   }'
 ```
 
-Streaming returns Server-Sent Events (SSE):
+### 视觉/图像分析
 
-```
-data: {"id":"chatcmpl-xxx","choices":[{"delta":{"content":"In"}}]}
-data: {"id":"chatcmpl-xxx","choices":[{"delta":{"content":" circuits"}}]}
-...
-data: [DONE]
-```
-
-### Vision / Image Analysis
-
-Analyze images by passing image URLs or base64 data:
-
+通过传递图像URL或Base64数据来分析图像：
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -189,10 +177,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
   }'
 ```
 
-### Function Calling
+### 函数调用
 
-Enable tools/functions for structured outputs:
-
+启用工具/函数以获取结构化输出：
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -218,10 +205,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
   }'
 ```
 
-### Google Gemini Format
+### Google Gemini格式
 
-For Gemini models, you can also use the native format:
-
+对于Gemini模型，您也可以使用其原生格式：
 ```
 POST https://api.aisa.one/v1/models/gemini-2.5-flash:generateContent
 ```
@@ -244,14 +230,13 @@ curl -X POST "https://api.aisa.one/v1/models/gemini-2.5-flash:generateContent" \
   }'
 ```
 
-## Python Client
+## Python客户端
 
-### Installation
+### 安装
 
-No installation required - uses standard library only.
+无需安装，仅使用标准库。
 
-### CLI Usage
-
+### 命令行接口（CLI）使用方法
 ```bash
 # Basic completion
 python3 {baseDir}/scripts/llm_router_client.py chat --model gpt-4.1 --message "Hello, world!"
@@ -275,8 +260,7 @@ python3 {baseDir}/scripts/llm_router_client.py models
 python3 {baseDir}/scripts/llm_router_client.py compare --models "gpt-4.1,claude-sonnet-4-5,gemini-2.5-flash" --message "What is 2+2?"
 ```
 
-### Python SDK Usage
-
+### Python SDK使用方法
 ```python
 from llm_router_client import LLMRouterClient
 
@@ -323,12 +307,11 @@ for model, result in results.items():
     print(f"{model}: {result['response'][:100]}...")
 ```
 
-## Use Cases
+## 使用场景
 
-### 1. Cost-Optimized Routing
+### 1. 成本优化路由
 
-Use cheaper models for simple tasks:
-
+对于简单任务，使用成本更低的模型：
 ```python
 def smart_route(message: str) -> str:
     # Simple queries -> fast/cheap model
@@ -341,10 +324,9 @@ def smart_route(message: str) -> str:
     return client.chat(model=model, messages=[{"role": "user", "content": message}])
 ```
 
-### 2. Fallback Strategy
+### 2. 回退策略
 
-Automatic fallback on failure:
-
+在发生故障时自动切换到备用模型：
 ```python
 def chat_with_fallback(message: str) -> str:
     models = ["gpt-4.1", "claude-sonnet-4-5", "gemini-2.5-flash"]
@@ -358,10 +340,9 @@ def chat_with_fallback(message: str) -> str:
     raise Exception("All models failed")
 ```
 
-### 3. Model A/B Testing
+### 3. 模型A/B测试
 
-Compare model outputs:
-
+比较不同模型的输出：
 ```python
 results = client.compare_models(
     models=["gpt-4.1", "claude-opus-4-1"],
@@ -373,10 +354,9 @@ for model, result in results.items():
     log_response(model=model, latency=result["latency"], cost=result["cost"])
 ```
 
-### 4. Specialized Model Selection
+### 4. 选择最适合任务的模型
 
-Choose the best model for each task:
-
+为每个任务选择最佳模型：
 ```python
 MODEL_MAP = {
     "code": "gpt-4.1",
@@ -392,9 +372,9 @@ def route_by_task(task_type: str, message: str) -> str:
     return client.chat(model=model, messages=[{"role": "user", "content": message}])
 ```
 
-## Error Handling
+## 错误处理
 
-Errors return JSON with `error` field:
+错误会以JSON格式返回，其中包含`error`字段：
 
 ```json
 {
@@ -405,26 +385,25 @@ Errors return JSON with `error` field:
 }
 ```
 
-Common error codes:
-- `401` - Invalid or missing API key
-- `402` - Insufficient credits
-- `404` - Model not found
-- `429` - Rate limit exceeded
-- `500` - Server error
+常见错误代码：
+- `401` - API密钥无效或缺失
+- `402` - 信用不足
+- `404` - 模型未找到
+- `429` - 超过使用频率限制
+- `500` - 服务器错误
 
-## Best Practices
+## 最佳实践
 
-1. **Use streaming** for long responses to improve UX
-2. **Set max_tokens** to control costs
-3. **Implement fallback** for production reliability
-4. **Cache responses** for repeated queries
-5. **Monitor usage** via response metadata
-6. **Use appropriate models** - don't use GPT-4 for simple tasks
+1. **使用流式响应**以提升用户体验
+2. **设置`max_tokens`以控制成本
+3. **实现回退机制**以确保系统可靠性
+4. **缓存响应**以减少重复请求
+5. **通过响应元数据监控使用情况**
+6. **根据任务选择合适的模型**——不要对简单任务使用GPT-4
 
-## OpenAI SDK Compatibility
+## OpenAI SDK兼容性
 
-Just change the base URL and key:
-
+只需更改基础URL和API密钥即可：
 ```python
 import os
 from openai import OpenAI
@@ -441,28 +420,28 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-## Pricing
+## 价格
 
-Token-based pricing varies by model. Check [marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing) for current rates.
+费用按模型计费，具体价格请查看[marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing)。
 
-| Model Family | Approximate Cost |
+| 模型家族 | 大约费用 |
 |--------------|------------------|
-| GPT-4.1 / GPT-4o | ~$0.01 / 1K tokens |
-| Claude-3-Sonnet | ~$0.01 / 1K tokens |
-| Gemini-2.5-Flash | ~$0.001 / 1K tokens |
-| Grok-2 | ~$0.01 / 1K tokens |
-| Llama-3.1-70b | ~$0.002 / 1K tokens |
-| Mistral-Large | ~$0.008 / 1K tokens |
+| GPT-4.1 / GPT-4o | 约0.01美元/1000个token |
+| Claude-3-Sonnet | 约0.01美元/1000个token |
+| Gemini-2.5-Flash | 约0.001美元/1000个token |
+| Grok-2 | 约0.01美元/1000个token |
+| Llama-3.1-70b | 约0.002美元/1000个token |
+| Mistral-Large | 约0.008美元/1000个token |
 
-Every response includes `usage.cost` and `usage.credits_remaining`.
+每个响应都会包含`usage.cost`和`usage.credits_remaining`字段。
 
-## Get Started
+## 开始使用
 
-1. Sign up at [aisa.one](https://aisa.one)
-2. Get your API key from the dashboard
-3. Add credits (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
+1. 在[aisa.one](https://aisa.one)注册
+2. 从控制面板获取API密钥
+3. 购买信用（按需付费）
+4. 设置环境变量：`export AISA_API_KEY="your-key"`
 
-## Full API Reference
+## 完整API参考
 
-See [API Reference](https://aisa.mintlify.app/api-reference/introduction) for complete endpoint documentation.
+请参阅[API参考](https://aisa.mintlify.app/api-reference/introduction)以获取完整的端点文档。

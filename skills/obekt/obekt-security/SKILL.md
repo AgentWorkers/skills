@@ -1,212 +1,211 @@
 ---
 name: obekt-security
-description: Basic threat detection and security analysis for code, files, and agent skills. Use when you need to scan for vulnerabilities, validate security patterns, detect malicious patterns, or audit codebases for security issues.
+description: 针对代码、文件以及代理技能的基本威胁检测与安全分析功能。适用于需要扫描漏洞、验证安全模式、检测恶意行为或审计代码库中的安全问题的场景。
 ---
 
 # ObekT Security
 
-Basic threat detection and security analysis toolkit for code, files, and agent skills.
+这是一个用于代码、文件和代理技能的基本威胁检测与安全分析工具包。
 
-**Pro Tier** includes continuous monitoring and professional report generation for advanced security workflows.
+**Pro Tier** 提供持续监控和专业报告生成功能，适用于高级安全工作流程。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Pattern-Based Threat Detection
-- Scan code for common vulnerability patterns (SQL injection, XSS, command injection)
-- Identify hardcoded secrets, API keys, and credentials
-- Detect unsafe file operations and path traversal risks
-- Find insecure cryptographic practices
+### 1. 基于模式的威胁检测
+- 扫描代码中的常见漏洞模式（如 SQL 注入、XSS、命令注入）
+- 识别硬编码的秘密信息、API 密钥和凭证
+- 检测不安全的文件操作和路径遍历风险
+- 发现不安全的加密实践
 
-### 2. Security Audit Workflows
-- Basic code review for skills and applications
-- Check for authentication/authorization weaknesses
-- Validate input handling and sanitization
-- Review API endpoint security
+### 2. 安全审计工作流程
+- 对代码和应用程序进行基本审查
+- 检查身份验证/授权的薄弱环节
+- 验证输入处理和清理机制
+- 审查 API 端点的安全性
 
-### 3. Malicious Pattern Recognition
-- Detect obfuscated code patterns
-- Identify data exfiltration attempts
-- Scan for suspicious network calls
-- Check for unauthorized crypto wallet interactions
+### 3. 恶意模式识别
+- 检测混淆的代码模式
+- 识别数据泄露尝试
+- 扫描可疑的网络请求
+- 检查未经授权的加密钱包操作
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
-**Basic Tier (no dependencies):**
-All core scanning scripts work with Python 3.8+ standard library.
+**Basic Tier（无需依赖）：**
+所有核心扫描脚本均支持 Python 3.8 及更高版本的标准库。
 
-**Pro Tier (additional dependencies):**
+**Pro Tier（需要额外依赖）：**
 ```bash
 pip install watchdog  # For continuous monitoring
 ```
 
-### Scan a Codebase for Common Vulnerabilities
+### 扫描代码库中的常见漏洞
 
 ```bash
 python3 scripts/threat_scan.py --directory /path/to/code --severity medium,high
 ```
 
-### Check for Hardcoded Secrets
+### 检查硬编码的秘密信息
 
 ```bash
 python3 scripts/secret_scan.py --file path/to/source.py
 ```
 
-### Audit an Agent Skill
+### 审计代理技能
 
 ```bash
 python3 scripts/skill_audit.py --skill-path /path/to/skill
 ```
 
-## Threat Detection Patterns
+## 威胁检测模式
 
-### Critical Severity Patterns
-- Direct command execution with user input (exec, eval, os.system)
-- SQL queries with string concatenation
-- Hardcoded private keys or mnemonic phrases
-- External wallet drain patterns
-- Unrestricted file uploads
+### 严重性极高的模式
+- 使用用户输入直接执行命令（如 exec、eval、os.system）
+- 通过字符串连接构建 SQL 查询
+- 硬编码的私钥或助记词
+- 外部钱包资金流失的尝试
+- 无限制的文件上传
 
-### High Severity Patterns
-- Weak random number generation
-- Hardcoded API keys or tokens
-- Missing input validation
-- Insecure cryptographic algorithms (MD5, SHA1)
-- Path traversal vulnerabilities
+### 严重性较高的模式
+- 随机数生成机制较弱
+- 硬编码的 API 密钥或令牌
+- 缺少输入验证
+- 不安全的加密算法（如 MD5、SHA1）
+- 路径遍历漏洞
 
-### Medium Severity Patterns
-- Logging sensitive data
-- Insecure URL redirects
-- Missing rate limiting
-- Weak password policies
+### 严重性中等的模式
+- 记录敏感数据
+- 不安全的 URL 重定向
+- 缺少速率限制机制
+- 密码策略较弱
 
-## Security Audit Checklist
+## 安全审计检查清单
 
-When auditing code or skills, check:
+在审计代码或技能时，请检查以下内容：
+- [ ] 无硬编码的秘密信息（密钥、令牌、密码）
+- [ ] 输入验证和清理机制
+- [ ] 正确的错误处理（无信息泄露）
+- [ ] 安全的加密实现
+- [ ] 在需要的地方进行了身份验证/授权
+- [ ] 最小权限原则得到遵守
+- [ ] 无命令注入漏洞
+- [ ] 安全的文件操作
+- [ ] 安全的网络通信
+- [ ] 正确的会话管理
 
-- [ ] No hardcoded secrets (keys, tokens, passwords)
-- [ ] Input validation and sanitization
-- [ ] Proper error handling (no information leakage)
-- [ ] Secure cryptographic implementations
-- [ ] Authentication/authorization where required
-- [ ] Principle of least privilege
-- [ ] No command injection vulnerabilities
-- [ ] Safe file operations
-- [ ] Secure network communications
-- [ ] Proper session management
-
-## Using the Scripts
+## 使用脚本
 
 ### threat_scan.py
-Scans directories for known vulnerability patterns.
+扫描目录以检测已知的漏洞模式。
 
 ```bash
 python3 scripts/threat_scan.py <path> [--severity LEVEL] [--output FORMAT]
 ```
 
-**Options:**
-- `--severity`: Filter by severity (critical, high, medium, low). Default: all
-- `--output`: Output format (json, text, markdown). Default: text
-- `--recursive`: Scan subdirectories. Default: true
+**选项：**
+- `--severity`：按严重性过滤（严重、高、中、低）。默认：全部
+- `--output`：输出格式（json、text、markdown）。默认：text
+- `--recursive`：递归扫描子目录。默认：true
 
-**Example:**
+**示例：**
 ```bash
 # Find critical and high issues in a project
 python3 scripts/threat_scan.py ~/project --severity critical,high --output markdown
 ```
 
 ### secret_scan.py
-Detects hardcoded credentials and secrets.
+检测硬编码的凭证和秘密信息。
 
 ```bash
 python3 scripts/secret_scan.py <path> [--patterns PATTERN_FILE]
 ```
 
-**Patterns detect:**
-- API keys (AWS, Google, Stripe, etc.)
-- Private keys (PEM, OpenSSH)
-- Database connection strings
-- Crypto wallet seeds/mnemonics
-- OAuth tokens
+**检测的模式包括：**
+- API 密钥（AWS、Google、Stripe 等）
+- 私钥（PEM、OpenSSH 格式）
+- 数据库连接字符串
+- 加密钱包的种子/助记词
+- OAuth 令牌
 
 ### skill_audit.py
-Audits agent skills for security issues.
+审计代理技能的安全性问题。
 
 ```bash
 python3 scripts/skill_audit.py <skill-path> [--quick]
 ```
 
-**Checks:**
-- SKILL.md structure and completeness
-- Required vs. optional file permissions
-- External dependencies and command safety
-- Network calls and data handling
-- Credential handling patterns
+**检查内容：**
+- SKILL.md 文件的结构和完整性
+- 文件权限（必需与可选）
+- 外部依赖项和命令的安全性
+- 网络请求和数据处理方式
+- 凭据处理方式
 
-### monitor.py (Pro Tier)
-Continuous security monitoring - watches directories for changes and auto-scans.
+### monitor.py（Pro Tier）
+持续安全监控——监视目录变化并自动扫描。
 
 ```bash
 python3 scripts/monitor.py --path /path/to/project --interval 60
 python3 scripts/monitor.py --config monitor.json
 ```
 
-**Features:**
-- Real-time monitoring of file changes
-- Automatic threat and secret scans on modifications
-- Configurable severity thresholds and scan intervals
-- Alert notifications when issues found
-- Smart filtering (ignores .git, node_modules, etc.)
+**功能：**
+- 实时监控文件变化
+- 在文件修改时自动进行威胁和秘密信息扫描
+- 可配置的严重性阈值和扫描间隔
+- 发现问题时发送警报通知
+- 智能过滤（忽略 .git、node_modules 等文件）
 
-**Options:**
-- `--path`: Directory to monitor
-- `--interval`: Minimum seconds between scans for same path
-- `--severity`: Severity levels to report
-- `--alert`: Enable alerts when issues found
-- `--config`: JSON configuration file
+**选项：**
+- `--path`：要监控的目录
+- `--interval`：同一路径的扫描间隔（秒）
+- `--severity`：报告的严重性级别
+- `--alert`：发现问题时触发警报
+- `--config`：JSON 配置文件
 
-### generate_report.py (Pro Tier)
-Generate professional security audit reports.
+### generate_report.py（Pro Tier）
+生成专业的安全审计报告。
 
 ```bash
 python3 scripts/generate_report.py --scan-dir /path/to/project --output report.md
 python3 scripts/generate_report.py --input scan_results.json --format html
 ```
 
-**Features:**
-- Multiple output formats: Markdown, HTML, JSON
-- Executive summary with severity assessment
-- Detailed findings with code snippets
-- Prioritized recommendations
-- Client-ready formatting
+**功能：**
+- 多种输出格式：Markdown、HTML、JSON
+- 带有严重性评估的执行摘要
+- 详细的发现结果及代码片段
+- 优先级排序的建议
+- 适合客户使用的格式
 
-**Options:**
-- `--scan-dir`: Directory to scan (fresh scan)
-- `--input`: JSON file with existing scan results
-- `--output`: Output file path
-- `--format`: markdown, html, or json
-- `--severity`: Severity levels to include
+**选项：**
+- `--scan-dir`：要扫描的目录（重新扫描）
+- `--input`：包含现有扫描结果的 JSON 文件
+- `--output`：输出文件路径
+- `--format`：markdown、html 或 json
+- `--severity`：包含的严重性级别
 
-## Pro Tier Features
+## Pro Tier 功能
 
-### 4. Continuous Monitoring
-**NEW** - Real-time security monitoring for development workflows
+### 4. 持续监控
+**新功能** - 为开发工作流程提供实时安全监控
 
-Automatically monitor codebases for security vulnerabilities as you develop.
+在开发过程中自动监控代码库中的安全漏洞。
 
 ```bash
 python3 scripts/monitor.py --path /path/to/project --interval 60
 ```
 
-**Features:**
-- Watch directories for file changes in real-time
-- Auto-trigger security scans on file modifications
-- Configurable scan intervals and severity thresholds
-- Alert notifications when issues found (webhook ready)
-- Skip temporary files and directories intelligently
+**功能：**
+- 实时监控目录中的文件变化
+- 在文件修改时自动触发安全扫描
+- 可配置的扫描间隔和严重性阈值
+- 发现问题时发送警报通知（支持 Webhook）
+- 智能地跳过临时文件和目录
 
-**Configuration:**
+**配置：**
 ```json
 {
   "paths": ["./project"],
@@ -224,10 +223,10 @@ python3 scripts/monitor.py --path /path/to/project --interval 60
 }
 ```
 
-### 5. Professional Report Generation
-**NEW** - Generate client-ready audit reports
+### 5. 专业报告生成
+**新功能** - 生成适合客户使用的审计报告
 
-Create professional security audit reports in multiple formats for delivery to clients or compliance documentation.
+生成多种格式的专业安全审计报告，可用于交付给客户或作为合规性文档。
 
 ```bash
 # Generate report from fresh scan
@@ -240,67 +239,67 @@ python3 scripts/generate_report.py --scan-dir /path/to/project --output report.h
 python3 scripts/generate_report.py --input scan_results.json --output client_report.md
 ```
 
-**Features:**
-- Multiple output formats: Markdown, HTML, JSON
-- Professional formatting with severity color coding
-- Executive summary with overall severity assessment
-- Detailed findings with code snippets
-- Actionable recommendations prioritized by severity
-- Ready for client delivery
+**功能：**
+- 多种输出格式：Markdown、HTML、JSON
+- 专业的格式展示，带有严重性颜色编码
+- 带有整体严重性评估的执行摘要
+- 详细的发现结果及代码片段
+- 按严重性优先排序的建议
+- 适合客户使用的报告格式
 
-**Report Contents:**
-- Executive summary with overall severity
-- Severity breakdown table
-- Detailed threat findings with code snippets
-- Secret/credential exposure report
-- Prioritized recommendations
-- Timestamp and metadata
+**报告内容：**
+- 带有整体严重性的执行摘要
+- 严重性分级表
+- 详细的威胁发现结果及代码片段
+- 秘密/凭证泄露报告
+- 优先级排序的建议
+- 时间戳和元数据
 
-## Reference Documentation
+## 参考文档
 
-For detailed threat patterns and remediation guidance:
-- See [VULNERABILITY_PATTERNS.md](references/VULNERABILITY_PATTERNS.md) for complete pattern catalog
-- See [REMEDIATION_GUIDE.md](references/REMEDIATION_GUIDE.md) for fixing issues
-- See [CHECKLIST.md](references/CHECKLIST.md) for comprehensive audit checklist
-- See [CRYPTO_SECURITY.md](references/CRYPTO_SECURITY.md) for blockchain-specific patterns
+有关详细的威胁模式和修复指南：
+- 请参阅 [VULNERABILITY_PATTERNS.md](references/VULNERABILITY_PATTERNS.md) 以获取完整的模式目录
+- 请参阅 [REMEDIATION_GUIDE.md](references/REMEDIATION_GUIDE.md) 以获取问题修复方法
+- 请参阅 [CHECKLIST.md](references/CHECKLIST.md) 以获取全面的审计检查清单
+- 请参阅 [CRYPTO_SECURITY.md](references/CRYPTO_SECURITY.md) 以获取区块链相关的模式信息
 
-## Pricing Tiers
+## 定价层级
 
 ### Free Tier
-- Pattern-based threat detection
-- Secret scanning
-- Basic skill auditing
-- Manual scan execution
+- 基于模式的威胁检测
+- 秘密信息扫描
+- 基本技能审计
+- 手动扫描执行
 
-### Pro Tier ($5/month)
-- All Free Tier features
-- **Continuous monitoring daemon** with real-time alerts
-- **Professional report generation** (Markdown, HTML, JSON)
-- Client-ready deliverables for audit services
-- Priority support
+### Pro Tier（每月 $5）
+- 全部 Free Tier 功能
+- **持续监控守护进程**，提供实时警报
+- **专业报告生成**（Markdown、HTML、JSON）
+- 适合客户使用的审计报告
+- 优先级支持
 
-### Enterprise Tier ($50/month)
-- All Pro Tier features
-- Private skill audits
-- Custom pattern rules
-- Team collaboration features
-- Webhook integrations
+### Enterprise Tier（每月 $50）
+- 全部 Pro Tier 功能
+- 私有技能审计
+- 自定义模式规则
+- 团队协作功能
+- Webhook 集成
 
-*Note: All tiers are self-contained. No cloud account required.*
+*注：所有层级均为独立运行，无需云账户。*
 
-## Integration with Other Skills
+## 与其他工具的集成
 
-This skill works well with:
-- **skill-creator**: Validate security of skills during development
-- **clawcast**: Audit wallet transaction safety
-- **auth-auditor**: Complement authentication flow security
+此工具可与以下工具良好配合使用：
+- **skill-creator**：在开发过程中验证技能的安全性
+- **clawcast**：审计钱包交易的安全性
+- **auth-auditor**：补充身份验证流程的安全性
 
-## Limitations
+## 限制
 
-This tool provides **basic** threat detection using pattern matching. It cannot replace:
-- Manual security reviews by experts
-- Dynamic application security testing (DAST)
-- Penetration testing
-- Static analysis tools (SAST) like SonarQube, CodeQL
+该工具提供基于模式的**基本**威胁检测功能。它不能替代：
+- 专家的手动安全审查
+- 动态应用程序安全测试（DAST）
+- 渗透测试
+- 静态分析工具（如 SonarQube、CodeQL）
 
-Use as a first line of defense, not a replacement for comprehensive security assessments.
+请将其作为第一道防线使用，而非替代全面的安全部署。

@@ -1,14 +1,14 @@
 ---
 name: pagerduty
-description: Manage incidents, on-call schedules, and alerts via PagerDuty API. Trigger and resolve incidents programmatically.
+description: 通过 PagerDuty API 管理事件、值班排班以及警报。可以编程方式触发和解决事件。
 metadata: {"clawdbot":{"emoji":"🚨","requires":{"env":["PAGERDUTY_API_KEY"]}}}
 ---
 
 # PagerDuty
 
-Incident management.
+事件管理。
 
-## Environment
+## 环境配置
 
 ```bash
 export PAGERDUTY_API_KEY="u+xxxxxxxxxx"
@@ -16,7 +16,7 @@ export PAGERDUTY_SERVICE_ID="PXXXXXX"
 export PAGERDUTY_ROUTING_KEY="xxxxxxxxxx"  # For Events API
 ```
 
-## Trigger Incident (Events API v2)
+## 触发事件（Events API v2）
 
 ```bash
 curl -X POST "https://events.pagerduty.com/v2/enqueue" \
@@ -33,7 +33,7 @@ curl -X POST "https://events.pagerduty.com/v2/enqueue" \
   }'
 ```
 
-## Resolve Incident
+## 解决事件
 
 ```bash
 curl -X POST "https://events.pagerduty.com/v2/enqueue" \
@@ -45,27 +45,27 @@ curl -X POST "https://events.pagerduty.com/v2/enqueue" \
   }'
 ```
 
-## List Incidents
+## 查看事件列表
 
 ```bash
 curl "https://api.pagerduty.com/incidents?statuses[]=triggered&statuses[]=acknowledged" \
   -H "Authorization: Token token=$PAGERDUTY_API_KEY"
 ```
 
-## Get On-Call
+## 查看待命人员信息
 
 ```bash
 curl "https://api.pagerduty.com/oncalls" \
   -H "Authorization: Token token=$PAGERDUTY_API_KEY"
 ```
 
-## List Services
+## 查看服务列表
 
 ```bash
 curl "https://api.pagerduty.com/services" \
   -H "Authorization: Token token=$PAGERDUTY_API_KEY"
 ```
 
-## Links
-- Dashboard: https://app.pagerduty.com
-- Docs: https://developer.pagerduty.com
+## 链接：
+- 仪表盘：https://app.pagerduty.com
+- 文档：https://developer.pagerduty.com

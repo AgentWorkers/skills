@@ -1,55 +1,57 @@
 ---
 name: Docker
-description: Run containers in production avoiding common crashes, security holes, and resource traps.
+description: 在生产环境中运行容器时，需要避免常见的崩溃问题、安全漏洞以及资源消耗过高的情况。
 metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["docker"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Docker Gotchas
+# Docker 使用中的常见陷阱与注意事项
 
-## Image Building
-- `apt-get update` and `apt-get install` in separate RUN layers = stale packages weeks later — always combine them
-- `python:latest` today is different than `python:latest` tomorrow — pin versions like `python:3.11.5-slim`
-- Multi-stage builds: forgotten `--from=builder` copies from wrong stage silently
-- COPY before RUN invalidates cache on every file change — copy requirements first, install, then copy code
+## 镜像构建
+- 在不同的 `RUN` 层中执行 `apt-get update` 和 `apt-get install` 会导致包在几周后仍然过时——请务必将这两个命令合并到一个 `RUN` 层中执行。
+- 当前的 `python:latest` 版本可能与未来的版本不同——建议指定具体的版本，例如 `python:3.11.5-slim`。
+- 在多阶段构建过程中，如果忘记使用 `--from=builder` 参数，可能会导致从错误的阶段复制文件。
+- 在执行 `COPY` 指令之前执行 `RUN` 会清除所有文件的缓存——应先复制依赖项，再安装软件，最后复制代码。
 
-## Runtime Crashes
-- Default log driver has no size limit — one chatty container fills disk and crashes host
-- OOM killer strikes without warning — set memory limits with `-m 512m` on every container
-- Container runs as root by default — add `USER nonroot` or security scans fail and platforms reject
-- `localhost` inside container is container's localhost, not host — bind to `0.0.0.0`
+## 运行时崩溃
+- 默认的日志驱动程序没有大小限制——一个“话多”的容器可能会占用大量磁盘空间并导致主机系统崩溃。
+- 内存不足（OOM）会导致系统自动终止容器——可以通过 `--m 512m` 为每个容器设置内存限制。
+- 容器默认以 root 用户权限运行——如果使用 `USER nonroot`，否则安全扫描可能会失败，某些平台也会拒绝该容器。
+- 容器内的 `localhost` 指的是容器自身的地址，而非主机地址——应将其绑定到 `0.0.0.0`。
 
-## Networking
-- Container DNS only works on custom networks — default bridge can't resolve container names
-- Published ports bind to `0.0.0.0` by default — use `127.0.0.1:5432:5432` for local-only
-- Zombie connections from killed containers — set proper health checks and restart policies
-- Port already in use: previous container still stopping — wait or force remove
+## 网络配置
+- 容器的 DNS 功能仅适用于自定义网络——默认的桥接网络无法解析容器名称。
+- 公开发布的端口默认绑定到 `0.0.0.0`——如果需要仅限本地访问，应使用 `127.0.0.1:5432:5432`。
+- 被终止的容器可能会保持连接——需要设置适当的健康检查机制和重启策略。
+- 如果某个端口已被其他容器占用，之前的容器可能无法正常启动——需要等待该容器释放端口或强制删除它。
 
-## Compose Traps  
-- `depends_on` waits for container start, not service ready — use `condition: service_healthy` with healthcheck
-- `.env` file in wrong directory silently ignored — must be next to docker-compose.yml
-- Volume mounts overwrite container files — empty host dir = empty container dir
-- YAML anchors don't work across files — extends deprecated, use multiple compose files
+## Docker Compose 的使用误区
+- `depends_on` 会等待容器启动完成，而不是服务准备好——建议使用 `condition: service_healthy` 与健康检查结合使用。
+- 如果 `.env` 文件位于错误的目录中，Docker Compose 会默默忽略它——该文件必须位于 `docker-compose.yml` 的同一目录下。
+- 卷挂操作可能会覆盖容器内的文件——如果主机目录为空，容器内的文件也会被清空。
+- YAML 中的锚点（anchors）在不同文件间无法正确传递数据——建议使用多个 `docker-compose.yml` 文件来管理配置。
 
-## Volumes and Data
-- Anonymous volumes from Dockerfile VOLUME instruction accumulate silently — use named volumes
-- Bind mounts have host permission issues — container user must match host user or use `:z` suffix
-- `docker system prune` doesn't remove named volumes — add `-volumes` flag explicitly
-- Stopped container data persists until container removed — `docker rm` deletes data
+## 卷和数据管理
+- 通过 `Dockerfile` 中的 `VOLUME` 指令创建的匿名卷会不断累积数据——建议使用命名卷。
+- 使用绑定挂载（bind mounts）时需要注意权限问题——容器用户必须与主机用户相同，或者使用 `:z` 后缀来指定权限。
+- `docker system prune` 命令无法删除命名卷——需要使用 `--volumes` 标志来明确指定要删除的卷。
+- 已终止的容器中的数据不会被自动清除——需要使用 `docker rm` 命令手动删除数据。
 
-## Resource Leaks
-- Dangling images grow unbounded — `docker image prune` regularly
-- Build cache grows forever — `docker builder prune` reclaims space
-- Stopped containers consume disk — `docker container prune` or `--rm` on run
-- Networks pile up from compose projects — `docker network prune`
+## 资源泄露问题
+- 未使用的镜像会无限占用存储空间——建议定期使用 `docker image prune` 删除不再需要的镜像。
+- 构建缓存可能会无限增长——可以使用 `docker builder prune` 来清理缓存空间。
+- 停止运行的容器会继续占用磁盘空间——可以使用 `docker container prune` 或 `--rm` 命令删除这些容器。
+- 多个 Docker Compose 项目可能会创建大量网络——建议使用 `docker network prune` 来清理网络资源。
 
-## Secrets and Security
-- ENV and COPY bake secrets into layer history permanently — use secrets mount or runtime env
-- `--privileged` disables all security — almost never needed, find specific capability instead
-- Images from unknown registries may be malicious — verify sources
-- Build args visible in image history — don't use for secrets
+## 秘密信息与安全性
+- 使用 `ENV` 或 `COPY` 指令将秘密信息写入镜像历史记录中会导致这些信息永久保存——建议使用专门的秘密管理工具或运行时环境变量来存储敏感数据。
+- 使用 `--privileged` 参数会取消所有安全限制——这种做法几乎是不必要的，应针对具体需求选择合适的权限设置。
+- 来自未知注册表的镜像可能存在安全风险——请务必验证镜像来源。
+- 构建参数会显示在镜像历史记录中——切勿将敏感信息通过这些参数传递。
 
-## Debugging
-- Exit code 137 = OOM killed, 139 = segfault — check `docker inspect --format='{{.State.ExitCode}}'`
-- Container won't start: check logs even for failed containers — `docker logs <container>`
-- No shell in distroless images — `docker cp` files out or use debug sidecar
-- Inspect filesystem of dead container — `docker cp deadcontainer:/path ./local`
+## 调试技巧
+- 系统终止容器的退出代码为 137（OOM）或 139（段错误）——可以使用 `docker inspect --format='{{.State.ExitCode}}` 来查看具体原因。
+- 如果容器无法启动，请检查日志（即使容器已经失败）——可以使用 `docker logs <container>` 命令查看日志。
+- 在无发行版（distroless）的容器中无法使用 shell——可以通过 `docker cp` 将文件复制到主机，或者使用调试工具（如 sidecar）进行调试。
+- 可以使用 `docker cp deadcontainer:/path ./local` 命令来查看已终止容器的文件系统内容。
+
+请注意，以上内容仅供参考，实际使用 Docker 时还需根据具体需求和环境进行调整。

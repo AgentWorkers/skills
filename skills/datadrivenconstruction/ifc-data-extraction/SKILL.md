@@ -1,21 +1,21 @@
 ---
 slug: "ifc-data-extraction"
 display_name: "IFC Data Extraction"
-description: "Extract structured data from IFC (Industry Foundation Classes) files using IfcOpenShell. Parse BIM models, extract quantities, properties, spatial relationships, and export to various formats."
+description: "使用 IfcOpenShell 从 IFC（Industry Foundation Classes）文件中提取结构化数据。解析 BIM 模型，提取数量、属性和空间关系，并将结果导出为多种格式。"
 ---
 
-# IFC Data Extraction
+# IFC数据提取
 
-## Overview
+## 概述
 
-This skill provides comprehensive IFC file parsing and data extraction using IfcOpenShell. Extract element data, quantities, properties, and relationships from BIM models for analysis and reporting.
+本技能提供了使用IfcOpenShell进行IFC文件解析和数据提取的全面方法。可以从BIM模型中提取元素数据、数量信息、属性以及元素之间的关系，以便进一步分析和生成报告。
 
-**Based on Open BIM Standards** - Working with vendor-neutral IFC format for maximum interoperability.
+**基于Open BIM标准**——采用与供应商无关的IFC格式，以实现最大的互操作性。
 
-> "IFC является открытым стандартом для обмена BIM-данными, позволяющим извлекать информацию независимо от программного обеспечения."
+> “IFC是一个开放的BIM数据交换标准，允许用户不受软件限制地提取信息。”  
 > — DDC Methodology
 
-## Quick Start
+## 快速入门
 
 ```python
 import ifcopenshell
@@ -49,9 +49,9 @@ df = pd.DataFrame(wall_data)
 print(df.head())
 ```
 
-## Core Extraction Functions
+## 核心提取功能
 
-### Element Extractor Class
+### 元素提取器类
 
 ```python
 import ifcopenshell
@@ -265,9 +265,9 @@ class IFCExtractor:
         return pd.DataFrame(relationships)
 ```
 
-## Geometry Extraction
+## 几何图形提取
 
-### Extract Geometry Data
+### 提取几何数据
 
 ```python
 import numpy as np
@@ -343,9 +343,9 @@ class IFCGeometryExtractor:
         return pd.DataFrame(volumes)
 ```
 
-## Export Functions
+## 导出功能
 
-### Export to Various Formats
+### 导出到多种格式
 
 ```python
 class IFCExporter:
@@ -445,18 +445,18 @@ class IFCExporter:
         return list(tables.keys())
 ```
 
-## Quick Reference
+## 快速参考
 
-| Element Type | Common Properties | Quantities |
+| 元素类型 | 常见属性 | 数量信息 |
 |-------------|-------------------|------------|
-| IfcWall | IsExternal, FireRating | Length, Height, Area, Volume |
-| IfcSlab | IsExternal, LoadBearing | Area, Volume, Perimeter |
-| IfcColumn | LoadBearing | Height, CrossSectionArea |
-| IfcBeam | LoadBearing | Length, CrossSectionArea |
-| IfcDoor | FireRating, AcousticRating | Width, Height |
-| IfcWindow | ThermalTransmittance | Width, Height, Area |
+| IfcWall | 是否为外部构件（IsExternal）、防火等级（FireRating） | 长度（Length）、高度（Height）、面积（Area）、体积（Volume） |
+| IfcSlab | 是否为承重构件（LoadBearing）、面积（Area）、体积（Volume）、周长（Perimeter） |
+| IfcColumn | 是否为承重构件（LoadBearing）、高度（Height）、截面面积（CrossSectionArea） |
+| IfcBeam | 是否为承重构件（LoadBearing）、长度（Length）、截面面积（CrossSectionArea） |
+| IfcDoor | 防火等级（FireRating）、隔音等级（AcousticRating）、宽度（Width）、高度（Height） |
+| IfcWindow | 传热系数（ThermalTransmittance）、宽度（Width）、高度（Height）、面积（Area） |
 
-## Property Set Lookup
+## 属性集查询
 
 ```python
 # Common IFC Property Sets
@@ -471,14 +471,14 @@ PSETS = {
 }
 ```
 
-## Resources
+## 资源
 
 - **IfcOpenShell**: https://ifcopenshell.org
-- **IFC Standard**: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/
-- **DDC Website**: https://datadrivenconstruction.io
+- **IFC标准**: https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/
+- **DDC网站**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `bim-validation-pipeline` for validating extracted data
-- See `qto-report` for quantity take-off reports
-- See `4d-simulation` for linking to schedules
+- 查看`bim-validation-pipeline`以验证提取的数据
+- 查看`qto-report`以生成数量统计报告
+- 查看`4d-simulation`以将数据链接到相关计划表中

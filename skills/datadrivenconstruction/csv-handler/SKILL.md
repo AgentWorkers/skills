@@ -1,16 +1,15 @@
 ---
 slug: "csv-handler"
 display_name: "CSV Handler"
-description: "Handle CSV files from construction software exports. Auto-detect delimiters, encodings, and clean messy data."
+description: "处理来自建筑软件导出的 CSV 文件。自动检测分隔符、编码，并清理混乱的数据。"
 ---
 
-# CSV Handler for Construction Data
+# 用于建筑数据的 CSV 处理工具
 
-## Overview
-CSV is the universal exchange format in construction - from scheduling exports to cost databases. This skill handles encoding issues, delimiter detection, and data cleaning.
+## 概述
+CSV 是建筑行业中的通用数据交换格式，从施工进度导出文件到成本数据库，都广泛使用这种格式。本工具负责处理编码问题、分隔符检测以及数据清洗等工作。
 
-## Python Implementation
-
+## Python 实现
 ```python
 import pandas as pd
 import csv
@@ -251,8 +250,7 @@ class CostCSVHandler(ConstructionCSVHandler):
         return df
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 handler = ConstructionCSVHandler()
 
@@ -265,24 +263,24 @@ df = handler.read_csv("export.csv")
 print(f"Loaded {len(df)} rows, {len(df.columns)} columns")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Merge Multiple Exports
+### 1. 合并多个导出文件
 ```python
 files = ["jan_export.csv", "feb_export.csv", "mar_export.csv"]
 merged = handler.merge_csvs(files)
 ```
 
-### 2. Split by Category
+### 2. 按类别对数据进行分类
 ```python
 handler.split_csv(df, group_column='category', output_dir='./split_files')
 ```
 
-### 3. Schedule Import
+### 3. 导入施工进度数据
 ```python
 schedule_handler = ScheduleCSVHandler()
 schedule = schedule_handler.parse_schedule("p6_export.csv")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.1 - Structured Data
+## 参考资源
+- **DDC 手册**：第 2.1 章 - 结构化数据

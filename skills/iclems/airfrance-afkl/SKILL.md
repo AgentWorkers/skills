@@ -1,79 +1,79 @@
 ---
 name: airfrance-afkl
-description: Track Air France flights using the Air France–KLM Open Data APIs (Flight Status). Use when the user gives a flight number/date (e.g., AF007 on 2026-01-29) and wants monitoring, alerts (delay/gate/aircraft changes), or analysis (previous-flight chain, aircraft tail number → cabin recency / Wi‑Fi). Also use when setting up or tuning polling schedules within API rate limits.
+description: 使用 Air France–KLM 的开放数据 API（Flight Status）来追踪法国航空的航班信息。当用户提供航班编号或日期（例如：AF007，日期为 2026-01-29）并希望接收航班状态更新、提醒（如延误、登机口变更、飞机型号变更）或进行分析（如前序航班信息、飞机尾号与客舱设施更新等）时，可以使用该服务。此外，在设置或调整 API 的请求频率（以符合使用限制）时，该工具也非常实用。
 ---
 
-# Air France (AFKL Open Data) flight tracker
+# 法国航空（AFKL 开放数据）航班追踪器
 
-## Quick start (one-off status)
+## 快速入门（一次性查询）
 
-1) Create an API key (and optional secret)
-- Register on: https://developer.airfranceklm.com
-- Subscribe to the Open Data product(s) you need (at least **Flight Status API**)
-- Generate credentials (API key; some accounts also provide an API secret)
+1. 创建 API 密钥（可选的 API 秘钥）：
+   - 在以下链接注册：https://developer.airfranceklm.com
+   - 订阅您需要的开放数据产品（至少需要 **Flight Status API**）
+   - 生成认证信息（API 密钥；部分账户还提供 API 秘钥）
 
-2) Provide API credentials (do not print them):
-- Preferred: env vars `AFKL_API_KEY` (and optional `AFKL_API_SECRET`)
-- Or files in your state dir (`CLAWDBOT_STATE_DIR` or `./state`):
-  - `afkl_api_key.txt` (chmod 600)
-  - `afkl_api_secret.txt` (chmod 600, optional)
+2. 提供 API 认证信息（不要打印出来）：
+   - 推荐方式：将密钥设置为环境变量 `AFKL_API_KEY`（API 秘钥可选设置为 `AFKL_API_SECRET`）
+   - 或将其保存在状态目录中（`CLAWDBOT_STATE_DIR` 或 `./state`）：
+     - `afkl_api_key.txt`（权限设置为 600）
+     - `afkl_api_secret.txt`（权限设置为 600，可选）
 
-2) Query flight status:
-- Run: `node skills/airfrance-afkl/scripts/afkl_flightstatus_query.mjs --carrier AF --flight 7 --origin JFK --dep-date 2026-01-29`
+2. 查询航班状态：
+   - 运行命令：`node skills/airfrance-afkl/scripts/afkl_flightstatus_query.mjs --carrier AF --flight 7 --origin JFK --dep-date 2026-01-29`
 
-Notes:
-- Send `Accept: */*` (API returns `application/hal+json`).
-- Keep within limits: **<= 1 request/sec**. When making multiple calls, sleep ~1100ms between them.
+**注意事项**：
+- 在请求头中设置 `Accept: */*`，以便 API 返回 `application/hal+json` 格式的响应。
+- 请遵守请求频率限制：**每秒不超过 1 次请求**。如果进行多次查询，请在每次请求之间等待约 1100 毫秒。
 
-## Start monitoring (watcher)
+## 启动监控（持续更新）
 
-Use when the user wants proactive updates.
+当用户需要实时更新时使用此方式：
+- 运行命令：`node skills/airfrance-afkl/scripts/afkl_watch_flight.mjs --carrier AF --flight 7 --origin JFK --dep-date 2026-01-29`
 
-- Run: `node skills/airfrance-afkl/scripts/afkl_watch_flight.mjs --carrier AF --flight 7 --origin JFK --dep-date 2026-01-29`
+**功能说明**：
+- 获取指定日期范围内的航班信息。
+- 仅当航班状态发生变化时才会发送通知。
+- 该脚本还会跟踪**前序航班的信息**（通过 `flightRelations.previousFlightData.id`），并在前序航班延误或取消时发出警报。
 
-What it does:
-- Fetches the operational flight(s) for the date window.
-- Emits a single message only when something meaningful changes.
-- Also follows the **previous-flight chain** (`flightRelations.previousFlightData.id`) up to a configurable depth and alerts if a previous segment is delayed/cancelled.
+**轮询策略（默认设置）**：
+- 航班起飞前 >36 小时：最多每 60 分钟查询一次
+- 航班起飞前 36 小时至 12 小时：每 30 分钟查询一次
+- 航班起飞前 12 小时至 3 小时：每 15 分钟查询一次
+- 航班起飞前 3 小时至起飞：每 5–10 分钟查询一次（以确保不超过每日请求限制）
+- 航班起飞后：每 30 分钟查询一次，直至航班到达
 
-Polling strategy (default):
-- >36h before departure: at most every **60 min**
-- 36h→12h: every **30 min**
-- 12h→3h: every **15 min**
-- 3h→departure: every **5–10 min** (stay under daily quota)
-- After departure: every **30 min** until arrival
+**实现细节**：
+- 使用 cron 任务每隔 5–15 分钟执行一次脚本，但脚本会通过状态文件自动控制请求频率，避免在非请求时间频繁调用 API。当没有变化时，脚本不会输出任何信息（这样 cron 任务只有在有输出时才会被触发）。
 
-Implementation detail: run cron every 5–15 min, but the script self-throttles using a state file so it won’t hit the API when it’s not time. The watcher prints **no output** when nothing changed (so cron jobs can send only when stdout is non-empty).
+## 输入简化方式
 
-## Input shorthand
+**推荐的用户友好格式**：
+- `AF7 demain` / `AF7 jeudi`（例如：查询明天或周四的航班）
 
-Preferred user-facing format:
-- `AF7 demain` / `AF7 jeudi`
+**解释规则**：
+- “day”始终指的是**航班出发日期**（而非到达日期）。
 
-Interpretation rule:
-- The day always refers to the **departure date** (not arrival).
+**实现说明**：
+- 除非明确知道出发地的时区，否则会将相对时间转换为用户所在时区的出发日期。
+- 在时间判断存在歧义时（如跨午夜的长途航班），优先使用出发地的当地时间。
 
-Implementation notes:
-- Convert relative day words to a departure date in the user’s timezone unless the origin timezone is explicitly known.
-- When ambiguous (long-haul crossing midnight), prefer the departure local date at the origin if origin is known.
+（对于脚本调用，仍需提供 `--origin` 和 `--dep-date YYYY-MM-DD` 参数。）
 
-(For scripts, still pass `--origin` + `--dep-date YYYY-MM-DD`.)
+## 如何解读关键字段
 
-## Interpret “interesting” fields
+有关字段的详细说明，请参阅 `references/fields.md`：
+- `flightRelations`（表示航班的前序/后续航班信息）
+- `places.*`（包含航站楼、登机口和值机区域信息）
+- `times.*`（包含航班的预定时间、预计时间、最新时间和实际时间）
+- `aircraft`（包含飞机型号和注册信息）
+- “parking position”/“stand-type”（指示飞机的停放位置或登机口类型）
+- 关于 Wi-Fi 信息的提示以及如何判断机舱设施的更新情况
 
-See `references/fields.md` for:
-- `flightRelations` (prev/next)
-- `places.*` (terminal/gate/check-in zone)
-- `times.*` (scheduled/estimated/latest/actual)
-- `aircraft` (type, registration)
-- “parking position” / stand-type hints (when present)
-- Wi‑Fi hints and how to reason about cabin recency
+## 机舱设施的更新情况判断
 
-## Cabin recency / upgrade heuristics
+当飞机注册信息可用时：
+- 通过尾号判断飞机所属的机队，并推测机舱的配置情况。
+- 如果数据显示飞机配置较旧或没有 Wi-Fi 设施，那么升级机舱设施可能较为必要。
 
-When aircraft registration is available:
-- Use tail number to infer **sub-fleet** and likely cabin generation.
-- If data suggests older config (or no Wi‑Fi), upgrading can be more/less worth it.
-
-Be conservative:
-- Open Data often doesn’t expose exact seat model; treat this as **best-effort**.
+**注意事项**：
+- 开放数据通常不提供具体的座位型号信息；因此这些判断仅基于现有数据尽力做出最佳推测。

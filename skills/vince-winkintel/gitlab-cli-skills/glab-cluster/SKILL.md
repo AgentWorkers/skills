@@ -1,11 +1,11 @@
 ---
 name: glab-cluster
-description: Manage GitLab Kubernetes clusters and agent integrations. Use when connecting clusters, managing cluster agents, or working with Kubernetes integration. Triggers on cluster, Kubernetes, k8s, cluster agent, connect cluster.
+description: 管理 GitLab Kubernetes 集群及其代理集成。适用于连接集群、管理集群代理或处理与 Kubernetes 集成相关的工作。触发条件包括集群状态变化、Kubernetes 系统事件以及集群代理的相关操作。
 ---
 
-# glab cluster
+# glab 集群
 
-## Overview
+## 概述
 
 ```
 
@@ -26,12 +26,12 @@ description: Manage GitLab Kubernetes clusters and agent integrations. Use when 
     -R --repo                            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab cluster --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

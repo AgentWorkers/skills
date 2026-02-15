@@ -1,51 +1,49 @@
 ---
 name: Sociology
-description: Support sociological thinking from first observations to academic research.
+description: 从最初的观察开始，支持对社会学思维方式的探索与研究，直至形成系统的学术理论。
 metadata: {"clawdbot":{"emoji":"👥","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: terminology, theorists mentioned, methodological awareness
-- When unclear, start with observable patterns and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别层次，灵活调整教学策略  
+- 上下文能够揭示学习者的认知层次：所使用的术语、被引用的理论家以及他们的方法论意识  
+- 当理解不明确时，应从可观察到的现象入手，并根据学生的反应进行调整  
+- 绝不要对专家表现出居高临下的态度，也不要让初学者感到不知所措  
 
-## For Beginners: Make the Familiar Strange
-- Start with THEIR world — friend groups, social media, school dynamics, family expectations
-- "Have you noticed..." questions build curiosity before introducing concepts
-- Translate jargon immediately every time — "social stratification (how society stacks people into layers)"
-- One concept at a time — introduce, give example, check understanding, then move on
-- Frame sociology as subversive noticing — "Why do we do this thing everyone pretends is natural?"
-- Connect to content they consume — TikTok trends, fandoms, gaming communities, influencer culture
-- Never preach — present observations, ask what THEY think
+## 对于初学者：让熟悉的事物变得陌生  
+- 从他们熟悉的环境入手——朋友圈、社交媒体、学校氛围、家庭期望等  
+- 通过提出“你注意到……吗？”这样的问题来激发他们的好奇心，再引入相关概念  
+- 遇到专业术语时立即进行解释——例如“社会分层（社会如何将人们划分为不同的阶层）”  
+- 一次只讲解一个概念：先介绍，再举例，确认理解后再继续下一个  
+- 将社会学视为一种具有颠覆性的观察方式——思考“为什么我们会做那些看似理所当然的事情？”  
+- 将教学内容与学生感兴趣的内容联系起来——比如TikTok的热门趋势、粉丝文化、游戏社区、网红文化等  
+- 切勿直接灌输知识，而是引导学生分享自己的看法  
 
-## For Students: Theory Meets Evidence
-- Connect every theory to concrete phenomena — Bourdieu explains why certain tastes feel "classy"
-- Distinguish epistemological positions — positivist, interpretivist, critical realist shape method choice
-- Maintain sociological imagination — redirect individual explanations toward structural analysis
-- Model scholarly engagement — argue WITH Durkheim, extend Collins, not just quote them
-- Flag essentialist language — "women are naturally..." should prompt social construction reframing
-- Decode statistics substantively — what a regression coefficient MEANS, not just its value
-- Calibrate to assignment constraints — 1500-word essay needs different depth than dissertation chapter
+## 对于学生：理论要与实际案例相结合  
+- 将每个理论都与具体的社会现象联系起来——布尔迪厄（Bourdieu）解释了为什么某些审美趣味会被视为“高雅的”  
+- 区分不同的认识论立场——实证主义、解释主义、批判现实主义会影响研究方法的选择  
+- 培养学生的社会学思维——引导他们将个人的解释转化为结构性的分析  
+- 模仿学术研究的严谨态度——敢于与学者争论，扩展他们的观点，而不仅仅是引用他们的观点  
+- 注意那些本质主义的说法（如“女性天生……”）——这类观点需要被重新审视和重构  
 
-## For Researchers: Rigor and Reflexivity
-- Engage theoretical frameworks explicitly — which lens? Bourdieusian, symbolic interactionist, critical race?
-- Respect methodological pluralism — quantitative and qualitative have different epistemologies, both rigorous
-- Know the publishing ecosystem — ASR/AJS expectations differ from specialty journals
-- Navigate IRB proactively — flag human subjects concerns, anonymization, vulnerable populations
-- Support both statistical and interpretive analysis — regression diagnostics AND theoretical saturation
-- Prompt positionality reflection — researcher's social location relative to subjects matters
-- Never fabricate citations — flag uncertainty about sources, sociologists trace lineages carefully
+## 对于研究人员：严谨性与反思性  
+- 明确地使用理论框架——选择哪种理论视角？布尔迪厄的理论？符号互动论？还是批判种族理论？  
+- 尊重方法论的多样性——定量研究和定性研究有不同的认识论基础，但两者同样严谨  
+- 了解学术出版界的规范——ASR/AJS（美国社会学协会/美国社会学杂志）的发表要求与专业期刊有所不同  
+- 主动遵守伦理规范——关注人类受试者的权益、数据匿名化以及弱势群体的保护  
+- 支持统计分析和解释性分析——既要进行回归分析，也要进行理论上的深入探讨  
+- 引导研究人员反思自己的立场——研究者自身的社会背景会对研究产生影响  
+- 绝不要伪造引用——对资料来源的不确定性要如实说明，社会学家需要仔细追溯资料的来源  
 
-## For Teachers: Classroom Realities
-- Scaffold at multiple levels on demand — intro, intermediate, advanced with critiques for same concept
-- Provide facilitation strategies for sensitive topics — race, class, gender require de-escalation tools
-- Maintain theoretical pluralism — functionalism, conflict theory, feminist theory without default "correct" one
-- Connect classics to current events with discussion questions — students make connections themselves
-- Design assessments testing sociological imagination — application over recall
-- Flag common student misconceptions proactively — confusing correlation with causation, individual-level thinking
-- Multiple methods illuminate different aspects — note how surveys vs ethnography reveal different things
+## 对于教师：课堂实践  
+- 根据学生的需求提供多层次的教学内容——从基础到进阶，对同一概念进行多层次的讲解  
+- 对敏感话题（如种族、阶级、性别等）提供适当的引导策略  
+- 坚持理论多样性——功能主义、冲突理论、女性主义理论都有其价值，没有绝对的“正确”观点  
+- 通过讨论问题将经典理论与当前事件联系起来——让学生自己建立联系  
+- 设计评估方式来检验学生的社会学思维能力——重点在于应用而非机械的记忆  
+- 主动指出学生常见的误解——例如混淆相关性与因果关系，或者将问题归结为个人层面的原因  
+- 多种研究方法能揭示不同的现象——例如调查与民族志研究能提供不同的视角  
 
-## Always
-- Structural explanations alongside individual ones — personal troubles connect to public issues
-- Distinguish description from endorsement — explaining behavior doesn't justify it
-- Evidence over intuition — common sense often wrong sociologically
+## 永远记住：  
+- 提供结构性的解释的同时，也要关注个体的体验——个人的问题往往与公共议题息息相关  
+- 区分描述与评价——解释行为并不意味着对其行为的认可  
+- 以证据为基础，而非凭直觉——在社会科学中，常识往往可能是错误的

@@ -1,34 +1,33 @@
 ---
 name: copywriting
-description: Write persuasive copy for landing pages, emails, ads, sales pages, and marketing materials. Use when you need to write headlines, CTAs, product descriptions, ad copy, email sequences, or any text meant to drive action. Covers copywriting formulas (AIDA, PAS, FAB), headline writing, emotional triggers, objection handling in copy, and A/B testing. Trigger on "write copy", "copywriting", "landing page copy", "headline", "write a sales page", "ad copy", "email copy", "persuasive writing", "how to write [marketing text]".
+description: 撰写具有说服力的文案，适用于登录页面、电子邮件、广告、销售页面以及各种营销材料。这些文案可用于撰写标题、呼叫行动（CTA）内容、产品描述、广告文案、电子邮件序列，或任何旨在促使用户采取行动的文本。内容涵盖以下方面：文案写作技巧（AIDA法则、PAS法则、FAB法则）、标题撰写方法、如何激发用户的情感反应、如何处理用户在阅读文案时可能提出的异议，以及A/B测试（通过对比不同版本的文案来优化效果）。相关关键词包括：“撰写文案”、“文案写作”、“登录页面文案”、“标题设计”、“销售页面文案”、“广告文案”、“电子邮件文案”、“说服性写作”等。
 ---
 
-# Copywriting
+# 撰写文案
 
-## Overview
-Copywriting is not creative writing. It's strategic writing designed to move someone toward a decision. For solopreneurs, good copy can double conversion rates without changing anything else in your product or funnel. This playbook gives you frameworks and techniques to write copy that sells — without sounding sleazy.
-
----
-
-## Step 1: Understand the Core Job of Copy
-
-Copy exists to:
-1. **Grab attention** (get them to stop scrolling)
-2. **Create desire** (make them want what you're offering)
-3. **Remove friction** (address doubts and objections)
-4. **Prompt action** (tell them exactly what to do next)
-
-Every piece of copy — a headline, a landing page, an email — must accomplish all four. If it fails at any one, the copy fails.
+## 概述
+撰写文案并非创造性写作，而是一种策略性写作，旨在促使读者做出决策。对于独立创业者来说，优秀的文案可以在不改变产品或销售流程的情况下，将转化率提高一倍。本手册提供了撰写能吸引读者的文案的框架和技巧——同时避免显得过于低俗或推销性过强。
 
 ---
 
-## Step 2: The Anatomy of Persuasive Copy
+## 第一步：理解文案的核心作用
+文案的作用在于：
+1. **吸引注意力**（让读者停止滚动页面）
+2. **激发兴趣**（让他们渴望你提供的产品或服务）
+3. **消除疑虑**（解答读者的疑问和反对意见）
+4. **引导行动**（明确告诉读者下一步该做什么）
 
-Effective copy follows a structure. The three most battle-tested frameworks:
+每一段文案——无论是标题、着陆页内容还是邮件正文——都必须同时满足这四个要求。如果其中任何一个环节失败，整个文案就失败了。
 
-### Framework 1: AIDA (Attention, Interest, Desire, Action)
-Classic and reliable. Use for landing pages, emails, and sales pages.
+---
 
+## 第二步：有说服力的文案结构
+有效的文案遵循一定的结构。以下是三种经过验证的框架：
+
+### 框架1：AIDA（注意力、兴趣、欲望、行动）
+这是一种经典且可靠的框架，适用于着陆页、邮件和销售页面。
+
+**示例（SaaS着陆页）：**
 ```
 ATTENTION:    Bold headline that stops the scroll (the promise or the pain)
 INTEREST:     Elaborate on the problem or opportunity (make them nod "yes, that's me")
@@ -36,28 +35,10 @@ DESIRE:       Show the transformation or outcome (paint the picture of success)
 ACTION:       Clear CTA (tell them exactly what to do next)
 ```
 
-**Example (SaaS landing page):**
-```
-ATTENTION:    "Spend 10 hours/week on client reporting? Automate it in 10 minutes."
-INTEREST:     "Most agencies waste entire days pulling data from 6 different tools
-               into one report. Your clients don't care about your process — they
-               want insights, fast."
-DESIRE:       "Imagine sending polished, branded reports automatically every Monday.
-               Your clients stay informed. Your team stays focused on the work that
-               actually grows accounts."
-ACTION:       "Start your free 14-day trial — no credit card required."
-```
+### 框架2：PAS（问题、激化矛盾、解决方案）
+这种框架适用于那些用户已经意识到自身问题的产品。
 
-### Framework 2: PAS (Problem, Agitate, Solution)
-Best for pain-driven products or when your audience is already aware of the problem.
-
-```
-PROBLEM:      State the problem clearly
-AGITATE:      Make the pain feel urgent (what happens if they don't solve it?)
-SOLUTION:     Present your product as the fix
-```
-
-**Example (email subject + body):**
+**示例（邮件主题和正文）：**
 ```
 PROBLEM:      "Your outreach emails are getting ignored."
 AGITATE:      "Every unanswered email is a lost opportunity. The longer you wait to
@@ -66,159 +47,134 @@ SOLUTION:     "Our 5-step cold email framework gets 23% reply rates. Grab the
                template free."
 ```
 
-### Framework 3: FAB (Features, Advantages, Benefits)
-Best for explaining product value or differentiating from competitors.
+### 框架3：FAB（功能、优势、好处）
+这种框架适用于解释产品价值或区分竞争对手的产品。
 
+**示例（产品描述）：**
 ```
 FEATURE:      What the thing is or does (the fact)
 ADVANTAGE:    Why that feature matters (the comparison)
 BENEFIT:      What the customer gains from it (the outcome)
 ```
 
-**Example (product description):**
-```
-FEATURE:      "Our tool syncs with 12 data sources in real time."
-ADVANTAGE:    "Unlike competitors that sync once daily, you never work with stale data."
-BENEFIT:      "Make confident decisions faster — no more second-guessing whether
-               your numbers are current."
-```
-
 ---
 
-## Step 3: Write Headlines That Hook
+## 第三步：撰写能吸引读者的标题
+标题至关重要，它决定了文案的成功率。如果标题无法吸引读者的注意力，其他内容都无关紧要。
 
-The headline is 80% of the battle. If it doesn't grab attention, nothing else matters.
-
-**Headline formulas that work:**
-
-| Formula | Example |
+**有效的标题公式：**
+| 公式 | 示例 |
 |---|---|
-| **The Promise** | "Double your email open rates in 30 days" |
-| **The Question** | "Still wasting 10 hours/week on manual invoicing?" |
-| **The How-To** | "How to automate your entire sales pipeline in one afternoon" |
-| **The Number** | "7 mistakes killing your landing page conversions" |
-| **The Negative** | "Stop losing leads to your broken signup flow" |
-| **The Curiosity Gap** | "The one change that tripled our demo bookings" |
-| **The Transformation** | "From 50 leads/month to 500 — here's what changed" |
+| **承诺** | “30天内将你的邮件打开率提高一倍” |
+| **疑问** | “你还在每周花费10小时进行手动开票吗？” |
+| **操作指南** | “如何在一个下午内自动化你的整个销售流程” |
+| **具体数字** | “7个导致着陆页转化率下降的错误” |
+| **负面陈述** | “别再因为糟糕的注册流程而流失潜在客户了” |
+| **好奇心触发** | “这个改变让我们的演示预约量增加了三倍” |
+| **转变** | “从每月50个潜在客户增加到500个——改变是什么？” |
 
-**Rules for headlines:**
-- Be specific. "Grow your business" is vague. "Add $10K MRR in 90 days" is specific.
-- Lead with the outcome, not the method. "Save 10 hours/week" beats "Use our automation tool."
-- Test multiple headlines. A/B test at minimum — even slight wording changes can double conversions.
-
----
-
-## Step 4: Write CTAs That Convert
-
-A weak CTA kills conversions even if everything else is perfect. Your CTA must be clear, specific, and low-friction.
-
-**CTA best practices:**
-
-**Bad CTAs:**
-- "Submit" (generic, no motivation)
-- "Click here" (doesn't say what happens next)
-- "Learn more" (vague, non-committal)
-
-**Good CTAs:**
-- "Start my free trial" (specific, ownership language)
-- "Get the template now" (actionable, clear value)
-- "Book my strategy call" (personal, clear next step)
-
-**CTA formula:** [Action Verb] + [What They Get] + [Urgency or Ease]
-
-Examples:
-- "Download the free checklist" (action + value + ease)
-- "Claim your 14-day trial — no credit card needed" (action + value + friction removal)
-- "Reserve my spot before Friday" (action + urgency)
-
-**CTA placement:**
-- Above the fold (so they don't have to scroll to act)
-- After explaining value (don't ask before you've sold them)
-- Multiple times on long pages (after each value section)
+**标题撰写规则：**
+- 具体明确。“发展业务”这样的表述太模糊。“90天内增加1万美元的月收入”则更具针对性。
+- 以结果开头，而非方法。例如：“每周节省10小时”比“使用我们的自动化工具”更有效。
+- 测试多个标题。至少进行A/B测试——即使是细微的措辞变化也可能显著提高转化率。
 
 ---
 
-## Step 5: Use Emotional Triggers
+## 第四步：撰写能促成转化的呼叫行动（CTA）
+即使其他内容都完美无缺，一个糟糕的呼叫行动也会导致转化率下降。你的呼叫行动必须清晰、具体且易于操作。
 
-Humans make decisions emotionally and justify them rationally. Tap into the emotions that drive buying behavior.
+**呼叫行动的最佳实践：**
+- **糟糕的呼叫行动示例：**
+  - “提交”（过于笼统，缺乏吸引力）
+  - “点击这里”（没有说明下一步该做什么）
+  - “了解更多”（表述模糊，缺乏紧迫感）
+- **优秀的呼叫行动示例：**
+  - “开始我的免费试用”（具体明确）
+  - “立即获取模板”（具有行动导向，明确价值）
+  - “预约我的策略咨询电话”（个性化，明确下一步行动）
 
-**Key emotional triggers in copy:**
+**呼叫行动的构成：**[动作动词] + [用户将获得的内容] + [紧迫感或便利性]
 
-| Trigger | When to Use | Example |
+**示例：**
+- “下载免费检查表”（明确行动 + 明确价值 + 便利性）
+- “立即领取14天试用期——无需信用卡”（明确行动 + 明确价值 + 减少障碍）
+- “在周五之前预订名额”（明确行动 + 催促感）
+
+**呼叫行动的放置位置：**
+- 在页面顶部（这样用户无需滚动就能看到）
+- 在解释产品价值之后（在用户做出决定之前）
+- 在长页面中多次出现（每个价值部分之后）
+
+---
+
+## 第五步：运用情感触发因素
+人类通常基于情感做出决策，然后通过理性来为自己的选择找理由。利用能够激发购买行为的情感因素。
+
+**文案中常用的情绪触发因素：**
+| 触发因素 | 使用时机 | 示例 |
 |---|---|---|
-| **Fear of missing out (FOMO)** | Limited offers, scarcity | "Only 3 spots left this month" |
-| **Fear of loss** | When the cost of inaction is high | "Every day without this, you're losing $X" |
-| **Desire for status** | Aspirational products, B2B | "Join 10,000+ top-performing agencies" |
-| **Desire for ease** | Replacing manual work | "Set it up once. Forget about it forever." |
-| **Anger or frustration** | Replacing a broken solution | "Tired of tools that promise the world and deliver nothing?" |
-| **Hope** | When the outcome feels out of reach | "Yes, you CAN hit $10K MRR as a solo founder" |
+| **错失恐惧（FOMO）** | 限时优惠、稀缺性 | “本月仅剩3个名额” |
+| **损失恐惧** | 不采取行动的代价很高时 | “每天不使用这个工具，你将损失X美元” |
+| **对地位的渴望** | 针对B2B产品时 | “加入10,000家表现最佳的机构” |
+| **对便捷性的渴望** | 替代繁琐的工作流程时 | “设置一次，从此再也不用操心” |
+| **愤怒或沮丧** | 当现有工具无法解决问题时 | “厌倦了那些承诺很多却毫无实际效果的工具吗？” |
+| **希望** | 当目标看起来遥不可及时 | “作为独立创业者，你确实可以实现每月1万美元的月收入” |
 
-**Rule:** Use emotion to hook them, then use logic (features, proof, specifics) to justify the decision.
+**规则：**先用情感吸引用户，再用逻辑（产品功能、实际效果、具体数据）来证明决策的合理性。
 
 ---
 
-## Step 6: Handle Objections in Your Copy
+## 第六步：在文案中处理用户的反对意见
+每个潜在客户都会有疑虑。优秀的文案会在这些疑虑成为障碍之前就加以解决。
 
-Every prospect has doubts. Great copy addresses these doubts before they become blockers.
-
-**Common objections and how to handle them in copy:**
-
-| Objection | Copy Response |
+**常见反对意见及应对方法：**
+| 反对意见 | 对应的文案回应 |
 |---|---|
-| "It's too expensive" | Show ROI: "Pays for itself in 2 weeks based on time saved" |
-| "It won't work for me" | Social proof: "Here's how [similar customer] got results" |
-| "I don't have time to implement" | Ease claim: "Setup takes 10 minutes. We guide you through it." |
-| "What if it doesn't work?" | Risk reversal: "30-day money-back guarantee. Zero risk." |
-| "I need to think about it" | Urgency: "Price increases Friday" or scarcity: "Only 5 licenses left" |
+| “太贵了” | 展示投资回报率：“根据节省的时间计算，两周内就能回本” |
+| “这不适合我” | 用客户案例证明效果：“这位客户就是这样取得成功的” |
+| “我没有时间去实施” | 强调操作的简便性：“设置只需10分钟，我们会全程指导” |
+| “如果不起作用怎么办？” | 提供退款保障：“30天内退款，零风险” |
+| “我需要考虑一下” | 强调紧迫性：“价格将在周五上涨”或利用稀缺性：“仅剩5个许可证” |
 
-**Where to place objection-handling copy:**
-- In an FAQ section (addresses doubts explicitly)
-- In testimonials (real customers answering the objection)
-- Near the CTA (right before they decide)
+**反对意见的处理位置：**
+- 在常见问题解答部分（直接回应疑虑）
+- 在客户评价中（真实客户分享使用体验）
+- 在呼叫行动附近（在用户做出决定之前）
 
----
+## 第七步：用证据建立信任
+没有证据的主张只是空话。证据能让文案更具可信度。
 
-## Step 7: Build Trust with Proof
+**可使用的证据类型：**
+1. **客户评价**：真实客户的真实反馈，包括姓名、职位和公司名称。具体性是提升可信度的关键。
+2. **案例研究**：“客户X遇到了问题Y，我们提供了解决方案Z，结果如下。”
+3. **数据**：具体的数字、百分比、节省的时间、产生的收入。“我们的用户平均每周节省12小时。”
+4. **社交证明**：“获得5,000多家企业的信任”或“被《Forbes》《TechCrunch》等媒体报道”。
+5. **认证或资质**：如果你有相关认证的话。“认证的HubSpot合作伙伴”或“拥有10年自动化系统开发经验”。
 
-Claims without proof are just noise. Proof makes your copy credible.
+**证据的使用方式：**将证据分散在页面各处，不要集中在一个部分，而是与产品价值陈述相结合。
 
-**Types of proof to include:**
+## 第八步：测试与迭代
+初稿永远不是最好的版本。通过测试可以不断优化文案。
 
-1. **Testimonials:** Real quotes from real customers. Include their name, title, and company. Specificity = credibility.
-2. **Case studies:** "Client X had Problem Y. We did Z. Result was [specific outcome]."
-3. **Data:** Numbers, percentages, time saved, revenue generated. "Our users save an average of 12 hours/week."
-4. **Social proof:** "Trusted by 5,000+ businesses" or "Featured in Forbes, TechCrunch."
-5. **Certifications or credentials:** If you have relevant ones. "Certified HubSpot Partner" or "10 years building automation systems."
+**需要A/B测试的内容：**
+- 标题（通常影响最大）
+- 呼叫行动（措辞和位置）
+- 产品价值陈述的顺序（先展示什么）
+- 文章长度（有时简短更有效，有时较长反而能提高转化率）
+- 情感表达方式（紧迫还是冷静、自信还是谦逊）
 
-**Placement:** Sprinkle proof throughout the page. Don't dump it all in one section — intersperse it with your value propositions.
+**测试流程：**
+1. 编写版本A（当前的最佳猜测）
+2. 编写版本B（改变一个变量——标题、呼叫行动或结构）
+3. 为两个版本分配相同的流量，测试7-14天或直到统计结果具有显著性
+4. 保留表现更好的版本，再针对新变量进行测试
 
----
+**规则：**每次只改变一个方面。如果你同时改变标题、呼叫行动和页面布局，就无法确定哪个因素带来了改进。
 
-## Step 8: Test and Iterate
-
-The first draft is never the best version. Copywriting improves through testing.
-
-**What to A/B test:**
-- Headlines (this usually has the biggest impact)
-- CTAs (wording and placement)
-- The order of value propositions (what you lead with)
-- Length (sometimes shorter is better, sometimes longer converts more)
-- Emotional tone (urgent vs calm, confident vs humble)
-
-**Testing workflow:**
-1. Write version A (your current best guess)
-2. Write version B (change ONE variable — headline, CTA, or structure)
-3. Run both versions to equal traffic for 7-14 days or until statistical significance
-4. Keep the winner, test a new variable against it
-
-**Rule:** Change one thing at a time. If you change the headline AND the CTA AND the layout, you won't know what caused the improvement.
-
----
-
-## Copywriting Mistakes to Avoid
-- Writing about features instead of benefits. Customers don't care what your product DOES — they care what it does FOR THEM.
-- Being clever instead of clear. Clever headlines that confuse don't convert. Clarity always wins.
-- Burying the value. Don't make them scroll to understand what you offer. Lead with the outcome.
-- Using jargon or buzzwords. "Leveraging synergies to optimize workflows" means nothing. "Save 5 hours/week" does.
-- Not having a single, clear CTA. If you give people 5 options, they'll pick none. One CTA per page.
-- Writing for yourself, not your audience. Use THEIR language, address THEIR pain, promise THEIR desired outcome.
+## 需避免的文案错误：
+- 只描述产品功能而不强调其带来的好处。客户关心的是产品能为他们带来什么，而不是产品本身能做什么。
+- 过于追求巧妙而忽视清晰性。复杂的标题反而会降低转化率，清晰明了才是关键。
+- 将产品价值隐藏在深处。不要让用户费力去理解产品内容，直接从结果入手。
+- 使用行业术语或流行词汇。像“利用协同效应优化工作流程”这样的表述毫无意义，而“每周节省5小时”则更具吸引力。
+- 没有明确的呼叫行动。如果提供多个选项，用户可能会选择都不选。每页只使用一个明确的呼叫行动。
+- 为作者自己写作，而不是为读者写作。使用他们的语言，解决他们的痛点，承诺他们想要的结果。

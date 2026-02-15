@@ -1,6 +1,6 @@
 ---
 name: deAPI AI Media Suite
-description: The cheapest AI media API on the market. Transcribe YouTube videos, generate images with Flux and Z-Image models, convert text to speech in 54+ voices across 8 languages, extract text with OCR, create videos, remove backgrounds, upscale images, apply style transfer - all through one unified API. Free $5 credit on signup - enough for hundreds of hours of transcription or thousands of generated images. Fraction of the cost of any alternative.
+description: 市场上最便宜的AI媒体API。它支持以下功能：转录YouTube视频、使用Flux和Z-Image模型生成图片、将文本转换为8种语言中的54种语音、通过OCR提取文本、创建视频、去除图片背景、图像放大处理以及应用风格转换——所有这些功能都可通过同一个统一的API实现。注册即可免费获得5美元的信用额度，足以支持数百小时的转录工作或数千张图片的生成。其价格仅为其他同类服务的几分之一。
 homepage: https://deapi.ai
 source: https://github.com/zrewolwerowanykaloryfer/deapi-clawdbot-skill
 author: zrewolwerowanykaloryfer
@@ -19,38 +19,38 @@ tags:
   - embeddings
 ---
 
-# deAPI Media Generation
+# deAPI 媒体生成服务
 
-AI-powered media tools via decentralized GPU network. Get your API key at [deapi.ai](https://deapi.ai) (free $5 credit on signup).
+deAPI 提供了基于人工智能的媒体处理工具，这些工具通过去中心化的 GPU 网络实现。您可以在 [deapi.ai](https://deapi.ai) 获取 API 密钥（注册即可免费获得 5 美元信用额度）。
 
-## Setup
+## 设置
 
 ```bash
 export DEAPI_API_KEY=your_api_key_here
 ```
 
-## Available Functions
+## 可用功能
 
-| Function | Use when user wants to... |
+| 功能 | 适用场景 |
 |----------|---------------------------|
-| Transcribe | Transcribe YouTube, Twitch, Kick, X videos, or audio files |
-| Generate Image | Generate images from text descriptions (Flux models) |
-| Generate Audio | Convert text to speech (TTS, 54+ voices, 8 languages) |
-| Generate Video | Create video from text or animate images |
-| OCR | Extract text from images |
-| Remove Background | Remove background from images |
-| Upscale | Upscale image resolution (2x/4x) |
-| Transform Image | Apply style transfer to images (multi-image support) |
-| Embeddings | Generate text embeddings for semantic search |
-| Check Balance | Check account balance |
+| 转录 | 转录 YouTube、Twitch、Kick、X 的视频或音频文件 |
+| 生成图片 | 根据文本描述生成图片（使用 Flux 模型） |
+| 生成音频 | 将文本转换为语音（TTS，支持 54 种以上语言，8 种语言） |
+| 生成视频 | 根据文本生成视频或对图片进行动画处理 |
+| OCR | 从图片中提取文本 |
+| 去除背景 | 从图片中去除背景 |
+| 图像放大 | 放大图片分辨率（2x/4x） |
+| 图像转换 | 对图片应用风格转换（支持多张图片） |
+| 生成文本嵌入 | 生成用于语义搜索的文本嵌入 |
+| 查看余额 | 查看账户余额 |
 
 ---
 
-## Async Pattern (Important!)
+## 异步操作模式（重要！）
 
-**All deAPI requests are asynchronous.** Follow this pattern for every operation:
+**所有 deAPI 请求都是异步的。** 请按照以下模式进行操作：
 
-### 1. Submit Request
+### 1. 提交请求
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/{endpoint}" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -58,37 +58,37 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/{endpoint}" \
   -d '{...}'
 ```
 
-Response contains `request_id`.
+响应中包含 `request_id`。
 
-### 2. Poll Status (loop every 10 seconds)
+### 2. 每 10 秒轮询一次请求状态
 ```bash
 curl -s "https://api.deapi.ai/api/v1/client/request-status/{request_id}" \
   -H "Authorization: Bearer $DEAPI_API_KEY"
 ```
 
-### 3. Handle Status
-- `processing` → wait 10s, poll again
-- `done` → fetch result from `result_url`
-- `failed` → report error to user
+### 3. 处理状态
+- `processing` → 等待 10 秒后再次轮询
+- `done` → 从 `result_url` 获取结果
+- `failed` → 向用户报告错误
 
-### Common Error Handling
-| Error | Action |
+### 常见错误处理
+| 错误代码 | 处理方式 |
 |-------|--------|
-| 401 Unauthorized | Check DEAPI_API_KEY |
-| 429 Rate Limited | Wait 60s and retry |
-| 500 Server Error | Wait 30s and retry once |
+| 401 Unauthorized | 检查 DEAPI_API_KEY 是否正确 |
+| 429 Rate Limited | 等待 60 秒后重试 |
+| 500 Server Error | 等待 30 秒后重试一次 |
 
 ---
 
-## Transcription (YouTube, Audio, Video)
+## 转录（YouTube、音频、视频）
 
-**Use when:** user wants to transcribe video from YouTube, X, Twitch, Kick or audio files.
+**适用场景：** 用户希望将 YouTube、Twitch、Kick、X 或音频文件的内容转录为文本。
 
-**Endpoints:**
-- Video (YouTube, mp4, webm): `vid2txt`
-- Audio (mp3, wav, m4a, flac, ogg): `aud2txt`
+**端点：**
+- 视频（YouTube 格式，mp4 或 webm）：`vid2txt`
+- 音频（mp3、wav、m4a、flac、ogg）：`aud2txt`
 
-**Request (video):**
+**请求示例（视频）：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/vid2txt" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -96,7 +96,7 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/vid2txt" \
   -d '{"video_url": "{VIDEO_URL}", "include_ts": true, "model": "WhisperLargeV3"}'
 ```
 
-**Request (audio):**
+**请求示例（音频）：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/aud2txt" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -104,24 +104,24 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/aud2txt" \
   -d '{"audio_url": "{AUDIO_URL}", "include_ts": true, "model": "WhisperLargeV3"}'
 ```
 
-**After polling:** Present transcription with timestamps in readable format.
+**处理完成后：** 以可读格式显示带有时间戳的转录结果。
 
 ---
 
-## Image Generation (Flux)
+## 图像生成（Flux 模型）
 
-**Use when:** user wants to generate images from text descriptions.
+**适用场景：** 用户希望根据文本描述生成图片。
 
-**Endpoint:** `txt2img`
+**端点：** `txt2img`
 
-**Models:**
-| Model | API Name | Steps | Max Size | Notes |
+**模型：**
+| 模型 | API 名称 | 需要的步骤 | 最大图片数量 | 备注 |
 |-------|----------|-------|----------|-------|
-| Klein (default) | `Flux_2_Klein_4B_BF16` | 4 (fixed) | 1536px | Fastest, recommended |
-| Flux | `Flux1schnell` | 4-10 | 2048px | Higher resolution |
-| Turbo | `ZImageTurbo_INT8` | 4-10 | 1024px | Fastest inference |
+| Klein（默认） | `Flux_2_Klein_4B_BF16` | 4 张图片 | 最快，推荐使用 |
+| Flux | `Flux1schnell` | 4-10 张图片 | 分辨率更高 |
+| Turbo | `ZImageTurbo_INT8` | 4-10 张图片 | 推理速度最快 |
 
-**Request:**
+**请求示例：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2img" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -136,31 +136,29 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2img" \
   }'
 ```
 
-**Note:** Klein model does NOT support `guidance` parameter - omit it.
+**注意：** Klein 模型不支持 `guidance` 参数，请省略该参数。
 
 ---
 
-## Text-to-Speech (54+ Voices)
+## 文本转语音（54 种以上语言）
 
-**Use when:** user wants to convert text to speech.
+**适用场景：** 用户希望将文本转换为语音。
 
-**Endpoint:** `txt2audio`
+**端点：** `txt2audio`
 
-**Popular Voices:**
-| Voice ID | Language | Description |
+**常用语音：**
+| 语音 ID | 语言 | 特点 |
 |----------|----------|-------------|
-| `af_bella` | American EN | Warm, friendly (best quality) |
-| `af_heart` | American EN | Expressive, emotional |
-| `am_adam` | American EN | Deep, authoritative |
-| `bf_emma` | British EN | Elegant (best British) |
-| `jf_alpha` | Japanese | Natural Japanese female |
-| `zf_xiaobei` | Chinese | Mandarin female |
-| `ef_dora` | Spanish | Spanish female |
-| `ff_siwis` | French | French female (best quality) |
+| `af_bella` | 美式英语 | 温暖、友好（音质最佳） |
+| `af_heart` | 美式英语 | 表情丰富、富有情感 |
+| `am_adam` | 美式英语 | 低沉、权威 |
+| `bf_emma` | 英式英语 | 优雅（最佳英式发音） |
+| `jf_alpha` | 日语 | 自然的女性日语发音 |
+| `zf_xiaobei` | 中文 | 普通中文女性发音 |
+| `ef_dora` | 西班牙语 | 西班牙语女性发音 |
+| `ff_siwis` | 法语 | 法语女性发音（音质最佳） |
 
-Voice format: `{lang}{gender}_{name}` (e.g., `af_bella` = American Female Bella)
-
-**Request:**
+**请求示例：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2audio" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -176,28 +174,28 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2audio" \
   }'
 ```
 
-**Parameters:** 
-- `lang`: `en-us`, `en-gb`, `ja`, `zh`, `es`, `fr`, `hi`, `it`, `pt-br`
-- `speed`: 0.5-2.0
-- `format`: mp3/wav/flac/ogg
-- `sample_rate`: 22050/24000/44100/48000
+**参数：**
+- `lang`：`en-us`、`en-gb`、`ja`、`zh`、`es`、`fr`、`hi`、`it`、`pt-br`
+- `speed`：0.5-2.0
+- `format`：mp3/wav/flac/ogg
+- `sample_rate`：22050/24000/44100/48000
 
 ---
 
-## Video Generation
+## 视频生成
 
-**Use when:** user wants to generate video from text or animate an image.
+**适用场景：** 用户希望根据文本生成视频或对图片进行动画处理。
 
-**Endpoints:**
-- Text-to-Video: `txt2video` (multipart/form-data)
-- Image-to-Video: `img2video` (multipart/form-data)
+**端点：**
+- 根据文本生成视频：`txt2video`（multipart/form-data）
+- 根据图片生成视频：`img2video`（multipart/form-data）
 
-**⚠️ IMPORTANT: Model-specific constraints for `Ltxv_13B_0_9_8_Distilled_FP8`:**
-- `guidance`: MUST be 0 (max value!)
-- `steps`: MUST be 1 (max value!)
-- `fps`: minimum 30
+**⚠️ 重要提示：** 对于 `Ltxv_13B_0_9_8_Distilled_FP8` 模型：**
+- `guidance` 参数必须设置为 0（最大值！
+- `steps` 参数必须设置为 1（最大值！）
+- `fps` 最小值为 30 帧/秒
 
-**Request (text-to-video):**
+**请求示例（根据文本生成视频）：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2video" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -212,20 +210,20 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2video" \
   -F "seed={RANDOM_0_TO_999999}"
 ```
 
-**Parameters:**
-| Parameter | Required | Constraints | Description |
+**参数：**
+| 参数 | 是否必填 | 限制条件 | 说明 |
 |-----------|----------|-------------|-------------|
-| `prompt` | Yes | - | Video description |
-| `model` | Yes | - | `Ltxv_13B_0_9_8_Distilled_FP8` |
-| `width` | Yes | 256-768 | Video width (e.g., 512) |
-| `height` | Yes | 256-768 | Video height (e.g., 512) |
-| `guidance` | Yes | **max 0** | Must be 0 for this model |
-| `steps` | Yes | **max 1** | Must be 1 for this model |
-| `frames` | Yes | 30-300 | Number of frames |
-| `fps` | Yes | **min 30** | Frames per second |
-| `seed` | Yes | 0-999999 | Random seed |
+| `prompt` | 是 | - | 视频描述 |
+| `model` | 是 | - | 使用 `Ltxv_13B_0_9_8_Distilled_FP8` 模型 |
+| `width` | 是 | 256-768 | 视频宽度（例如 512） |
+| `height` | 是 | 256-768 | 视频高度（例如 512） |
+| `guidance` | 是 | 必须设置为 0 |
+| `steps` | 是 | 必须设置为 1 |
+| `frames` | 是 | 30-300 | 帧数 |
+| `fps` | 是 | 最小值为 30 帧/秒 |
+| `seed` | 是 | 0-999999 | 随机种子值 |
 
-**Request (image-to-video):**
+**请求示例（根据图片生成视频）：**
 ```bash
 # Download image first if URL provided
 curl -s -o {LOCAL_IMAGE_PATH} "{IMAGE_URL}"
@@ -244,17 +242,17 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img2video" \
   -F "seed={RANDOM_0_TO_999999}"
 ```
 
-**Note:** Video generation can take 1-3 minutes.
+**注意：** 视频生成可能需要 1-3 分钟。
 
 ---
 
-## OCR (Image to Text)
+## OCR（图片转文本）
 
-**Use when:** user wants to extract text from an image.
+**适用场景：** 用户希望从图片中提取文本。
 
-**Endpoint:** `img2txt` (multipart/form-data)
+**端点：** `img2txt`（multipart/form-data）
 
-**Request:**
+**请求示例：**
 ```bash
 # Download image first if URL provided
 curl -s -o {LOCAL_IMAGE_PATH} "{IMAGE_URL}"
@@ -266,15 +264,13 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img2txt" \
   -F "model=Nanonets_Ocr_S_F16"
 ```
 
----
+## 去除背景**
 
-## Background Removal
+**适用场景：** 用户希望从图片中去除背景。
 
-**Use when:** user wants to remove background from an image.
+**端点：** `img-rmbg`（multipart/form-data）
 
-**Endpoint:** `img-rmbg` (multipart/form-data)
-
-**Request:**
+**请求示例：**
 ```bash
 # Download image first if URL provided
 curl -s -o {LOCAL_IMAGE_PATH} "{IMAGE_URL}"
@@ -286,23 +282,23 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img-rmbg" \
   -F "model=Ben2"
 ```
 
-**Result:** PNG with transparent background.
+**结果：** 生成带有透明背景的 PNG 图片。
 
 ---
 
-## Image Upscale (2x/4x)
+## 图像放大（2x/4x）
 
-**Use when:** user wants to upscale/enhance image resolution.
+**适用场景：** 用户希望放大或优化图片分辨率。
 
-**Endpoint:** `img-upscale` (multipart/form-data)
+**端点：** `img-upscale`（multipart/form-data）
 
-**Models:**
-| Scale | Model |
+**模型：**
+| 放大倍率 | 模型 |
 |-------|-------|
 | 2x | `RealESRGAN_x2` |
 | 4x | `RealESRGAN_x4` |
 
-**Request:**
+**请求示例：**
 ```bash
 # Download image first if URL provided
 curl -s -o {LOCAL_IMAGE_PATH} "{IMAGE_URL}"
@@ -314,21 +310,19 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img-upscale" \
   -F "model=RealESRGAN_x4"
 ```
 
----
+## 图像转换（风格转换）
 
-## Image Transformation (Style Transfer)
+**适用场景：** 用户希望改变图片风格、合并图片或应用 AI 效果。
 
-**Use when:** user wants to transform image style, combine images, or apply AI modifications.
+**端点：** `img2img`（multipart/form-data）
 
-**Endpoint:** `img2img` (multipart/form-data)
-
-**Models:**
-| Model | API Name | Max Images | Guidance | Steps | Notes |
+**模型：**
+| 模型 | API 名称 | 最大支持图片数量 | 是否需要指导信息 | 需要的步骤 | 备注 |
 |-------|----------|------------|----------|-------|-------|
-| Klein (default) | `Flux_2_Klein_4B_BF16` | 3 | N/A (ignore) | 4 (fixed) | Faster, multi-image |
-| Qwen | `QwenImageEdit_Plus_NF4` | 1 | 7.5 | 10-50 (default 20) | More control |
+| Klein（默认） | `Flux_2_Klein_4B_BF16` | 3 张图片 | 不需要指导信息 | 4 张图片（固定步骤） | 速度更快，支持多张图片 |
+| Qwen | `QwenImageEdit_Plus_NF4` | 1 张图片 | 7.5 步骤 | 10-50 步骤（默认 20 步） | 提供更多调整选项 |
 
-**Request (Klein, supports up to 3 images):**
+**请求示例（Klein 模型，支持最多 3 张图片）：**
 ```bash
 # Download images first
 curl -s -o {LOCAL_IMAGE_1} "{IMAGE_URL_1}"
@@ -345,7 +339,7 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img2img" \
   -F "seed={RANDOM_0_TO_999999}"
 ```
 
-**Request (Qwen, higher quality single image):**
+**请求示例（Qwen 模型，生成高质量单张图片）：**
 ```bash
 # Download image first
 curl -s -o {LOCAL_IMAGE_1} "{IMAGE_URL}"
@@ -361,17 +355,17 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/img2img" \
   -F "seed={RANDOM_0_TO_999999}"
 ```
 
-**Example prompts:** "convert to watercolor painting", "anime style", "cyberpunk neon aesthetic"
+**示例指令：** “转换为水彩画风格”、“动漫风格”、“赛博朋克风格”
 
 ---
 
-## Text Embeddings
+## 生成文本嵌入
 
-**Use when:** user needs embeddings for semantic search, clustering, or RAG.
+**适用场景：** 用户需要文本嵌入以用于语义搜索、聚类或 RAG（Retrieval-Agnostic Generation）任务。
 
-**Endpoint:** `txt2embedding`
+**端点：** `txt2embedding`
 
-**Request:**
+**请求示例：**
 ```bash
 curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2embedding" \
   -H "Authorization: Bearer $DEAPI_API_KEY" \
@@ -379,63 +373,62 @@ curl -s -X POST "https://api.deapi.ai/api/v1/client/txt2embedding" \
   -d '{"input": "{TEXT}", "model": "Bge_M3_FP16"}'
 ```
 
-**Result:** 1024-dimensional vector (BGE-M3, multilingual)
+**结果：** 生成一个 1024 维的向量（BGE-M3，支持多语言）
 
 ---
 
-## Check Balance
+## 查看余额
 
-**Use when:** user wants to check remaining credits.
+**适用场景：** 用户希望查看剩余的信用额度。
 
-**Request:**
+**请求示例：**
 ```bash
 curl -s "https://api.deapi.ai/api/v1/client/balance" \
   -H "Authorization: Bearer $DEAPI_API_KEY"
 ```
 
-**Response:** `{ "data": { "balance": 4.25 } }`
+**响应示例：** `{ "data": { "balance": 4.25 } }`
 
 ---
 
-## Pricing (Approximate)
+## 价格（仅供参考）
 
-| Operation | Cost |
+| 功能 | 费用 |
 |-----------|------|
-| Transcription | ~$0.02/hour |
-| Image Generation | ~$0.002/image |
-| TTS | ~$0.001/1000 chars |
-| Video Generation | ~$0.05/video |
-| OCR | ~$0.001/image |
-| Remove BG | ~$0.001/image |
-| Upscale | ~$0.002/image |
-| Embeddings | ~$0.0001/1000 tokens |
+| 转录 | 约 0.02 美元/小时 |
+| 图像生成 | 约 0.002 美元/张图片 |
+| TTS | 约 0.001 美元/1000 个字符 |
+| 视频生成 | 约 0.05 美元/视频 |
+| OCR | 约 0.001 美元/张图片 |
+| 去除背景 | 约 0.001 美元/张图片 |
+| 图像放大 | 约 0.002 美元/张图片 |
+| 生成文本嵌入 | 约 0.0001 美元/1000 个文本嵌入 |
 
-Free $5 credit on signup at [deapi.ai](https://deapi.ai).
-
----
-
-*Converted from [deapi-ai/claude-code-skills](https://github.com/deapi-ai/claude-code-skills) for Clawdbot/OpenClaw.*
+在 [deapi.ai](https://deapi.ai) 注册即可免费获得 5 美元信用额度。
 
 ---
 
-## Security & Privacy Note
+*本文档源自 [deapi-ai/claude-code-skills](https://github.com/deapi-ai/claude-code-skills)，适用于 Clawdbot/OpenClaw。*
 
-This skill provides documentation for the **deAPI.ai** REST API, a legitimate decentralized AI media service. 
+---
 
-**Security:**
-- All `curl` commands are **examples** showing how to call the API
-- Requests go to `api.deapi.ai` (official deAPI endpoint)
-- Local file paths (e.g., `{LOCAL_IMAGE_PATH}`) are placeholders - use any suitable temporary location
-- The skill itself does not execute code or download binaries
-- API key is required and must be set by user via `DEAPI_API_KEY` environment variable
+## 安全与隐私声明
 
-**Privacy considerations:**
-- Media URLs you submit (YouTube links, images) are sent to deapi.ai for processing
-- Generated results are returned via `result_url` which may be temporarily accessible via direct link
-- Results are stored on deAPI's infrastructure - review their privacy policy for retention details
-- Do not process sensitive/confidential media without understanding data handling
+本文档介绍了 **deAPI.ai** 的 REST API，这是一个合法的去中心化 AI 媒体服务。
 
-**Provenance:**
-- Service provider: [deapi.ai](https://deapi.ai)
-- Original skill source: [github.com/deapi-ai/claude-code-skills](https://github.com/deapi-ai/claude-code-skills)
-- API documentation: [docs.deapi.ai](https://docs.deapi.ai)
+**安全说明：**
+- 所有的 `curl` 命令仅用于演示如何调用 API |
+- 请求会被发送到 `api.deapi.ai`（deAPI 的官方端点） |
+- 文档中的本地文件路径（如 `{LOCAL_IMAGE_PATH}` 仅为占位符，请使用实际的临时文件夹路径 |
+- 该技能本身不执行任何代码或下载二进制文件 |
+- 使用 API 时需要提供 API 密钥，该密钥需通过 `DEAPI_API_KEY` 环境变量设置 |
+
+**隐私注意事项：**
+- 用户提交的媒体链接（如 YouTube 视频链接、图片）会被发送到 deapi.ai 进行处理 |
+- 生成的结果会通过 `result_url` 返回，该链接可能暂时可访问 |
+- 结果会存储在 deAPI 的服务器上，请查阅其隐私政策以了解数据保留详情 |
+- 请勿处理敏感或机密的媒体文件 |
+
+**服务来源：** [deapi.ai](https://deapi.ai)  
+**原始文档来源：** [github.com/deapi-ai/claude-code-skills](https://github.com/deapi-ai/claude-code-skills)  
+**API 文档：** [docs.deapi.ai](https://docs.deapi.ai)

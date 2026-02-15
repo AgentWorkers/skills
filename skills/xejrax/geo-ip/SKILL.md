@@ -1,6 +1,6 @@
 ---
 name: geo-ip
-description: "Look up geographic location for any IP address"
+description: "查询任意 IP 地址的地理位置信息"
 metadata:
   {
     "openclaw":
@@ -12,11 +12,11 @@ metadata:
   }
 ---
 
-# Geo IP
+# 地理IP
 
-Look up the geographic location for any IP address using the ipinfo.io API. Returns city, region, country, coordinates, and ISP information.
+可以使用ipinfo.io API查询任意IP地址的地理位置信息。返回内容包括城市、地区、国家、坐标以及ISP（互联网服务提供商）的相关信息。
 
-## Commands
+## 命令
 
 ```bash
 # Look up location for a specific IP address
@@ -26,6 +26,6 @@ geo-ip <ip-address>
 geo-ip me
 ```
 
-## Install
+## 安装
 
-No installation needed. `curl` is always present on the system. Uses the public ipinfo.io API.
+无需安装任何软件。系统上通常已经预装了`curl`工具，该工具会使用ipinfo.io的公共API来获取所需数据。

@@ -1,88 +1,88 @@
 ---
 name: IoT
-description: Assist with IoT device setup, protocols, security hardening, and home automation integration.
+description: 协助进行物联网设备的设置、协议配置、安全加固以及家庭自动化系统的集成。
 metadata: {"clawdbot":{"emoji":"📡","os":["linux","darwin","win32"]}}
 ---
 
-## Protocol Selection
-- MQTT for lightweight messaging — pub/sub, low bandwidth, ideal for sensors
-- CoAP for constrained devices — UDP-based, REST-like, very low power
-- HTTP/REST for capable devices — familiar but heavier, use when bandwidth allows
-- WebSocket for real-time bidirectional — dashboards, live updates
-- Zigbee/Z-Wave for mesh networks — no WiFi needed, battery-friendly
+## 协议选择  
+- **MQTT**：适用于轻量级消息传递，采用发布/订阅（pub/sub）模式，带宽要求低，非常适合传感器设备使用。  
+- **CoAP**：专为资源受限的设备设计，基于UDP协议，具有类似REST的接口，功耗极低。  
+- **HTTP/REST**：适用于功能较为强大的设备，虽然使用较为复杂，但在带宽充足的情况下仍可选用。  
+- **WebSocket**：支持实时双向通信，适用于需要实时数据更新的仪表板和应用程序。  
+- **Zigbee/Z-Wave**：适用于构建网状网络，无需WiFi连接，且对电池消耗较小。  
 
-## MQTT Essentials
-- Broker is the central hub — Mosquitto most common self-hosted
-- Topics are hierarchical — home/livingroom/temperature
-- QoS levels: 0 (fire-forget), 1 (at least once), 2 (exactly once)
-- Retain flag keeps last message — new subscribers get current state
-- Will message announces disconnection — device offline detection
+## MQTT 基础知识  
+- **MQTT代理（Broker）**：作为数据传输的中心枢纽，Mosquitto是最常用的开源代理软件。  
+- **主题（Topics）**：具有层次结构，例如“home/livingroom/temperature”表示“家庭/客厅/温度”。  
+- **服务质量（QoS）**：分为0（立即丢弃）、1（至少发送一次）、2（精确发送一次）。  
+- **保留（Retain）标志**：用于确保新订阅者能够获取设备的最新状态。  
+- **“Will”消息**：用于通知设备断开连接，便于设备管理。  
 
-## Security (Critical)
-- Never expose MQTT broker to internet without auth — bots scan constantly
-- TLS mandatory for any external access — encrypt all traffic
-- Unique credentials per device — revoke one without affecting others
-- Firmware updates must be signed — prevent malicious updates
-- Segment IoT on separate VLAN — isolate from main network
+## 安全性（至关重要）  
+- **切勿将MQTT代理直接暴露在互联网上**，否则容易被恶意软件攻击。  
+- **所有外部访问都必须使用TLS加密**。  
+- **为每个设备配置唯一的登录凭据**，以便在需要时单独撤销权限。  
+- **固件更新必须经过签名验证**，以防止恶意更新。  
+- **将物联网设备部署在独立的VLAN网络中**，以降低安全风险。  
 
-## Common Vulnerabilities
-- Default credentials left unchanged — first thing attackers try
-- Unencrypted protocols on network — credentials sniffable
-- No firmware update mechanism — stuck with known vulnerabilities
-- Cloud dependency without fallback — device useless when server down
-- Debug ports left enabled — UART, JTAG exposed
+## 常见的安全漏洞  
+- **默认凭据未进行更改**：这是攻击者首先尝试攻击的目标。  
+- **网络中使用未加密的通信协议**：可能导致凭据被窃取。  
+- **缺乏固件更新机制**：设备可能长期暴露于已知的安全漏洞中。  
+- **依赖云服务但缺乏备用方案**：服务器故障时设备将无法正常工作。  
+- **调试端口未关闭**：如UART、JTAG端口可能被恶意利用。  
 
-## Home Assistant Integration
-- MQTT discovery auto-configures devices — follow HA format
-- ESPHome for custom ESP devices — YAML config, OTA updates
-- Zigbee2MQTT bridges Zigbee to MQTT — hundreds of devices supported
-- Tasmota for off-the-shelf flashing — many WiFi devices supported
+## 与Home Assistant的集成  
+- **MQTT发现功能**：能够自动配置设备，并遵循Home Assistant的格式。  
+- **ESPHome**：适用于自定义的ESP系列设备，支持YAML配置文件和OTA（Over-The-Air）更新。  
+- **Zigbee2MQTT**：可将Zigbee设备的数据转换为MQTT格式，支持数百种设备。  
+- **Tasmota**：适用于大多数WiFi设备，支持快速固件更新。  
 
-## ESP32/ESP8266 Development
-- Arduino framework most accessible — huge library ecosystem
-- ESP-IDF for production — FreeRTOS, more control, steeper curve
-- PlatformIO over Arduino IDE — better dependency management
-- Deep sleep for battery life — microamps when sleeping
-- OTA updates essential — don't require physical access
+## ESP32/ESP8266开发  
+- **Arduino框架**：最易于入门的开发工具，拥有丰富的库资源。  
+- **ESP-IDF**：专为生产环境设计，提供更强的控制能力，但学习曲线较陡峭。  
+- **PlatformIO**：相较于Arduino IDE，具有更好的依赖管理功能。  
+- **深度睡眠模式**：可显著延长电池寿命。  
+- **OTA更新**：无需物理接触设备即可进行固件升级。  
 
-## Power Management
-- Battery devices need deep sleep — wake on timer or interrupt
-- Calculate power budget — mAh capacity vs average consumption
-- Solar charging viable — small panel can sustain low-power sensors
-- Supercapacitors for burst power — supplement weak batteries
-- Monitor battery voltage — alert before device dies
+## 电源管理  
+- **电池供电设备**：应使用深度睡眠模式，并通过定时器或中断信号唤醒。  
+- **计算功耗预算**：根据电池容量和平均功耗来合理使用电力。  
+- **太阳能充电**：适用于小型传感器设备。  
+- **超级电容器**：可在电池电量低时提供临时电力支持。  
+- **监控电池电压**：在电池电量耗尽前及时发出警报。  
 
-## Connectivity Patterns
-- WiFi: high bandwidth, high power — plugged devices
-- Zigbee/Z-Wave: mesh, low power — battery sensors
-- LoRa: long range, low bandwidth — outdoor, agricultural
-- BLE: short range, low power — wearables, beacons
-- Thread/Matter: new standard — Apple/Google/Amazon unified
+## 连接方式  
+- **WiFi**：带宽高、功耗高，适用于需要稳定连接的设备。  
+- **Zigbee/Z-Wave**：适用于构建网状网络，功耗低，适合电池供电的传感器设备。  
+- **LoRa**：传输距离远、功耗低，适用于户外或农业场景。  
+- **BLE**：传输距离短、功耗低，适用于可穿戴设备和信标设备。  
+- **Thread/Matter**：新兴的标准，由Apple、Google和Amazon共同推动，具有较好的跨平台兼容性。  
 
-## Reliability
-- Watchdog timer prevents freezes — reset if loop stalls
-- Persistent storage for state — survive power cycles
-- Heartbeat/ping monitoring — detect silent failures
-- Graceful degradation — work offline when cloud unavailable
-- Redundant sensors for critical systems — don't trust single point
+## 可靠性  
+- **看门狗定时器**：防止系统死机。  
+- **持久化存储**：确保数据在断电后仍能保留。  
+- **心跳/ping信号**：用于检测设备是否正常工作。  
+- **优雅的故障处理机制**：在云服务不可用时仍能保证设备正常运行。  
+- **关键系统应采用冗余传感器**：避免依赖单一设备。  
 
-## Data Considerations
-- Sample rate vs storage — don't over-collect
-- Local processing when possible — reduce bandwidth, latency
-- Time synchronization critical — NTP for timestamps
-- Aggregate before sending — reduce message count
-- Retain important data locally — survive connectivity loss
+## 数据处理注意事项  
+- **采样频率与存储空间**：合理设置数据采集频率，避免数据冗余。  
+- **尽可能在本地处理数据**：减少网络负载和延迟。  
+- **时间同步**：使用NTP协议确保数据时间的一致性。  
+- **发送前进行数据聚合**：减少数据传输量。  
+- **重要数据应本地存储**：确保数据在连接中断时仍可访问。  
 
-## Debugging
-- Serial output for development — remove in production
-- MQTT debug topics — publish diagnostics
-- LED status indicators — quick visual feedback
-- Remote logging carefully — don't flood network
-- Simulate sensors for testing — don't wait for real conditions
+## 调试技巧  
+- **开发阶段使用串行输出**：生产环境中应关闭该功能。  
+- **使用MQTT调试机制**：方便输出设备状态信息。  
+- **LED状态指示灯**：提供直观的故障提示。  
+- **谨慎使用远程日志记录**：避免网络拥堵。  
+- **模拟传感器数据**：在测试时可以使用模拟数据，无需依赖实际环境。  
 
-## Vendor Lock-in
-- Prefer local API devices — Tuya local, Shelly, Tasmota-compatible
-- Cloud-only devices risky — company shutdowns brick devices
-- Open protocols over proprietary — MQTT, Zigbee over custom
-- Check if flashable — many devices accept custom firmware
-- Matter promises interoperability — but still maturing
+## 避免依赖特定厂商  
+- **优先选择支持本地API的设备**：如Tuya、Shelly、Tasmota等。  
+- **仅依赖云服务的设备**存在风险：厂商倒闭可能导致设备无法使用。  
+- **优先选择开放协议**：如MQTT、Zigbee等，而非专有协议。  
+- **确认设备是否支持固件更新**：许多设备支持自定义固件。  
+- **Matter协议**虽然具有较好的互操作性，但仍在不断完善中。

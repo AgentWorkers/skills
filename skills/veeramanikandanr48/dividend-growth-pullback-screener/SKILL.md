@@ -1,38 +1,37 @@
 ---
 name: dividend-growth-pullback-screener
-description: Use this skill to find high-quality dividend growth stocks (12%+ annual dividend growth, 1.5%+ yield) that are experiencing temporary pullbacks, identified by RSI oversold conditions (RSI ≤40). This skill combines fundamental dividend analysis with technical timing indicators to identify buying opportunities in strong dividend growers during short-term weakness.
+description: 使用此技能来寻找高质量的分红成长股（年股息增长率超过12%，股息收益率超过1.5%），这些股票目前正处于暂时性的回调阶段，其RSI指标（Relative Strength Index）显示为超卖状态（RSI ≤ 40）。该技能结合了基本面的股息分析和技术性的时机选择指标，以便在分红增长强劲但短期内表现疲软的个股中找到买入机会。
 ---
 
-# Dividend Growth Pullback Screener
+# 股息增长回调筛选器
 
-## Overview
+## 概述
 
-This skill screens for dividend growth stocks that exhibit strong fundamental characteristics but are experiencing temporary technical weakness. It targets stocks with exceptional dividend growth rates (12%+ CAGR) that have pulled back to RSI oversold levels (≤40), creating potential entry opportunities for long-term dividend growth investors.
+该筛选工具用于寻找那些具备强劲基本面特征但暂时出现技术性疲软的股息增长股票。它主要关注那些股息增长率（年复合增长率≥12%）优异的股票，这些股票的相对强弱指数（RSI）已回落至超卖水平（≤40），为长期投资股息增长的投资者提供了潜在的入场机会。
 
-**Investment Thesis:** High-quality dividend growth stocks (often yielding 1-2.5%) compound wealth through dividend increases rather than high current yield. Buying these stocks during temporary pullbacks (RSI ≤40) can enhance total returns by combining strong fundamental growth with favorable technical entry timing.
+**投资理念：** 高质量的股息增长股票（通常收益率为1-2.5%）通过股息增长来实现财富的复合增长，而非依赖当前的高收益率。在股票出现暂时回调（RSI≤40）时买入这些股票，可以结合强劲的基本面增长和有利的技术入场时机，从而提高总体投资回报。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Looking for dividend growth stocks with exceptional compounding potential (12%+ dividend CAGR)
-- Seeking entry opportunities in quality stocks during temporary market weakness
-- Willing to accept lower current yields (1.5-3%) for higher dividend growth
-- Focusing on total return over 5-10 years rather than current income
-- Market conditions show sector rotations or broad pullbacks affecting quality names
+- 当您寻找具有优异复合增长潜力的股息增长股票（年复合股息增长率≥12%）时；
+- 当您希望在市场暂时疲软时买入优质股票时；
+- 当您愿意接受较低的当前收益率（1.5-3%）以换取更高的股息增长时；
+- 当您更关注5-10年内的总体回报而非当前收益时；
+- 当市场状况显示行业轮动或广泛回调影响到优质股票时。
 
-**Do NOT use when:**
-- Seeking high current income (use value-dividend-screener instead)
-- Requiring immediate dividend yields >3%
-- Looking for deep value plays with strict P/E or P/B requirements
-- Short-term trading focus (<6 months)
+**不适用场景：**
+- 当您寻求高当前收益时（请使用价值-股息筛选器）；
+- 当您需要立即获得超过3%的股息收益时；
+- 当您寻找具有严格市盈率（P/E）或市净率（P/B）要求的深度价值股票时；
+- 当您进行短期交易（<6个月）时。
 
-## Screening Workflow
+## 筛选流程
 
-### Step 1: Set API Keys
+### 第一步：设置API密钥
 
-#### Two-Stage Approach (RECOMMENDED)
+#### 两阶段方法（推荐）
 
-For optimal performance, use FINVIZ Elite API for pre-screening + FMP API for detailed analysis:
+为了获得最佳效果，请使用FINVIZ Elite API进行预筛选，然后使用FMP API进行详细分析：
 
 ```bash
 # Set both API keys as environment variables
@@ -40,41 +39,41 @@ export FMP_API_KEY=your_fmp_key_here
 export FINVIZ_API_KEY=your_finviz_key_here
 ```
 
-**Why Two-Stage?**
-- **FINVIZ**: Fast pre-screening with RSI filter (1 API call → ~10-50 candidates)
-- **FMP**: Detailed fundamental analysis only on pre-screened candidates
-- **Result**: Analyze more stocks with fewer FMP API calls (stays within free tier limits)
+**为什么采用两阶段方法？**
+- **FINVIZ**：使用RSI过滤器进行快速预筛选（1次API调用 → 约10-50个候选股票）；
+- **FMP**：仅对预筛选后的候选股票进行详细的基本面分析；
+- **结果**：通过减少FMP API调用次数来分析更多股票（保持在免费使用范围内）。
 
-#### FMP-Only Approach (Original Method)
+#### 仅使用FMP的方法（原始方法）
 
-If you don't have FINVIZ Elite access:
+如果您没有FINVIZ Elite的访问权限：
 
 ```bash
 export FMP_API_KEY=your_key_here
 ```
 
-**Limitation**: FMP free tier (250 requests/day) limits analysis to ~40 stocks. Use `--max-candidates 40` to stay within limits.
+**限制**：FMP免费使用权限每天仅允许250次请求，这限制了分析的股票数量（约40只）。可以使用`--max-candidates 40`来控制在免费使用范围内。
 
-### Step 2: Execute Screening
+### 第二步：执行筛选
 
-**Two-Stage Screening (RECOMMENDED):**
+**推荐的两阶段筛选流程：**
 
 ```bash
 cd dividend-growth-pullback-screener/scripts
 python3 screen_dividend_growth_rsi.py --use-finviz
 ```
 
-This executes:
-1. FINVIZ pre-screen: Dividend yield 0.5-3%, Dividend growth 10%+, EPS growth 5%+, Sales growth 5%+, RSI <40
-2. FMP detailed analysis: Verify 12%+ dividend CAGR, calculate exact RSI, analyze fundamentals
+此流程包括：
+1. FINVIZ预筛选：股息收益率0.5-3%，股息增长率10%以上，每股收益增长率5%以上，RSI<40；
+2. FMP详细分析：验证年复合股息增长率是否达到12%以上，计算准确的RSI值，并分析基本面数据。
 
-**FMP-Only Screening:**
+**仅使用FMP的筛选流程：**
 
 ```bash
 python3 screen_dividend_growth_rsi.py --max-candidates 40
 ```
 
-**Customization Options:**
+**自定义选项：**
 
 ```bash
 # Two-stage with custom parameters
@@ -87,198 +86,189 @@ python3 screen_dividend_growth_rsi.py --min-yield 2.0 --min-div-growth 10.0 --ma
 python3 screen_dividend_growth_rsi.py --use-finviz --fmp-api-key YOUR_FMP_KEY --finviz-api-key YOUR_FINVIZ_KEY
 ```
 
-### Step 3: Review Results
+### 第三步：查看结果
 
-The script generates two outputs:
+脚本会生成两个输出文件：
+1. **JSON文件：`dividend_growth_pullback_results_YYYY-MM-DD.json`  
+   - 包含所有用于进一步分析的指标的结构化数据，如股息增长率、RSI值、财务健康状况等；
+2. **Markdown报告：`dividend_growth_pullback_screening_YYYY-MM-DD.md`  
+   - 以人类可读的形式提供股票分析、基于情景的概率评估以及入场时机建议。
 
-1. **JSON file:** `dividend_growth_pullback_results_YYYY-MM-DD.json`
-   - Structured data with all metrics for further analysis
-   - Includes dividend growth rates, RSI values, financial health metrics
+### 第四步：分析符合条件的股票
 
-2. **Markdown report:** `dividend_growth_pullback_screening_YYYY-MM-DD.md`
-   - Human-readable analysis with stock profiles
-   - Scenario-based probability assessments
-   - Entry timing recommendations
+对于每只符合条件的股票，报告会包含以下内容：
 
-### Step 4: Analyze Qualified Stocks
+**股息增长概况：**
+- 当前收益率和年度股息；
+- 3年的股息年复合增长率及其稳定性；
+- 支付比率及其可持续性评估。
 
-For each qualified stock, the report includes:
+**技术入场时机：**
+- 当前的RSI值（≤40表示超卖）；
+- RSI的背景情况（极度超卖<30 vs. 早期回调30-40）；
+- 相对于近期趋势的价格走势。
 
-**Dividend Growth Profile:**
-- Current yield and annual dividend
-- 3-year dividend CAGR and consistency
-- Payout ratio and sustainability assessment
+**质量指标：**
+- 收入和每股收益增长率（确认业务增长势头）；
+- 财务健康状况（债务水平、流动性比率）；
+- 盈利能力（净资产收益率、利润率）。
 
-**Technical Timing:**
-- Current RSI value (≤40 = oversold)
-- RSI context (extreme oversold <30 vs. early pullback 30-40)
-- Price action relative to recent trend
+**投资建议：**
+- 入场时机评估（立即入场 vs. 等待确认）；
+- 该股票特有的风险因素；
+- 基于股息增长复合效应的上行情景分析。
 
-**Quality Metrics:**
-- Revenue and EPS growth (confirms business momentum)
-- Financial health (debt levels, liquidity ratios)
-- Profitability (ROE, profit margins)
+## 筛选标准详情
 
-**Investment Recommendation:**
-- Entry timing assessment (immediate vs. wait for confirmation)
-- Risk factors specific to the stock
-- Upside scenarios based on dividend growth compounding
+### 第一阶段：基本面筛选（使用FMP API）
 
-## Screening Criteria Details
+**初始筛选条件：**
+- 股息收益率 ≥ 1.5%（根据实际股息支付计算）；
+- 市值 ≥ 20亿美元（确保流动性和稳定性）；
+- 交易所：纽约证券交易所（NYSE）或纳斯达克（NASDAQ）（排除场外交易/粉单股票）。
 
-### Phase 1: Fundamental Screening (FMP API)
+**股息增长分析：**
+- 3年股息年复合增长率 ≥ 12%（6年内股息翻倍）；
+- 股息稳定性：过去4年内未削减股息；
+- 支付比率 < 100%（确保可持续性）。
 
-**Initial Filter:**
-- Dividend Yield ≥ 1.5% (calculated from actual dividend payments)
-- Market Cap ≥ $2 billion (liquidity and stability)
-- Exchange: NYSE, NASDAQ (excludes OTC/pink sheets)
+**财务健康状况：**
+- 过去3年收入增长为正；
+- 过去3年每股收益增长为正；
+- 债务与股本比率 < 2.0（杠杆率可控）；
+- 流动比率 > 1.0（流动性良好）。
 
-**Dividend Growth Analysis:**
-- 3-Year Dividend CAGR ≥ 12% (doubles dividend in 6 years)
-- Dividend Consistency: No cuts in past 4 years
-- Payout Ratio < 100% (sustainability check)
+### 第二阶段：技术筛选（RSI计算）
 
-**Financial Health:**
-- Positive revenue growth over 3 years
-- Positive EPS growth over 3 years
-- Debt-to-Equity < 2.0 (manageable leverage)
-- Current Ratio > 1.0 (liquidity)
+**RSI计算：**
+- 使用过去30天的每日收盘价计算14周期RSI；
+- 公式：RSI = 100 - (100 / (1 + RS))  
+  - RS = 14个周期内的平均涨幅 / 平均跌幅；
+- 数据来源：FMP的历史价格数据。
 
-### Phase 2: Technical Screening (RSI Calculation)
+**RSI筛选条件：**
+- RSI ≤ 40（表示超卖/回调状态）；
+- RSI解读：
+  - < 30：极度超卖（可能反转）；
+  - 30-40：早期回调（上升趋势中的调整）；
+  - > 40：未超卖（不符合条件）。
 
-**RSI Calculation:**
-- 14-period RSI using daily closing prices
-- Formula: RSI = 100 - (100 / (1 + RS))
-  - RS = Average Gain / Average Loss over 14 periods
-- Data source: FMP historical prices (past 30 days)
+### 第三阶段：排名和输出
 
-**RSI Filter:**
-- RSI ≤ 40 (oversold/pullback condition)
-- RSI interpretation:
-  - < 30: Extreme oversold (potential reversal)
-  - 30-40: Early pullback (uptrend correction)
-  - > 40: Not oversold (excluded)
+**综合评分（0-100分）：**
+- 股息增长（40%）：高年复合增长率和稳定性给予较高权重；
+- 财务质量（30%）：净资产收益率、利润率、债务水平；
+- 技术形态（20%）：较低的RSI表示更好的入场机会；
+- 估值（10%）：市盈率（P/E）和市净率（P/B）用于参考（非排除性标准）。
 
-### Phase 3: Ranking and Output
+股票根据综合评分进行排名。得分最高的股票结合了优异的股息增长和吸引人的技术入场点。
 
-**Composite Scoring (0-100):**
-- Dividend Growth (40%): Reward higher CAGR and consistency
-- Financial Quality (30%): ROE, profit margins, debt levels
-- Technical Setup (20%): Lower RSI = better entry opportunity
-- Valuation (10%): P/E and P/B for context (not exclusionary)
+## 理解结果
 
-Stocks ranked by composite score. Top scorers combine exceptional dividend growth with attractive technical entry points.
+### 解释RSI水平
 
-## Understanding the Results
+**RSI 25-30（极度超卖）：**
+- 通常表明市场恐慌性抛售或负面消息；
+- 风险较高，但潜在回报也最高；
+- 建议：等待RSI回升（稳定迹象）；
+- 入场策略：分批买入，初始持仓比例为50%，并在RSI超过30时追加买入。
 
-### Interpreting RSI Levels
+**RSI 30-35（强烈超卖）：**
+- 在强劲上升趋势中的正常回调；
+- 风险低于极度超卖情况；
+- 建议：可以立即入场；
+- 入场策略：可全仓买入，并设置止损点在当前价格下方5-8%。
 
-**RSI 25-30 (Extreme Oversold):**
-- Often indicates panic selling or negative news
-- Higher risk but potentially highest reward
-- Recommended: Wait for RSI to turn up (sign of stabilization)
-- Entry: Scale in with 50% position, add on RSI >30
+**RSI 35-40（早期回调）：**
+- 上升趋势中的轻微疲软；
+- 进一步下跌的风险最低；
+- 建议：对于信心较高的股票采取保守的入场策略；
+- 入场策略：全仓买入，并设置止损点在当前价格下方3-5%。
 
-**RSI 30-35 (Strong Oversold):**
-- Normal correction in strong uptrend
-- Lower risk than extreme oversold
-- Recommended: Can initiate position immediately
-- Entry: Full position acceptable, set stop loss 5-8% below
+### 股息增长复合增长的例子
 
-**RSI 35-40 (Early Pullback):**
-- Mild weakness in uptrend
-- Lowest risk of further decline
-- Recommended: Conservative entry for high conviction stocks
-- Entry: Full position, tight stop loss 3-5% below
+**12%的股息年复合增长率（最低门槛）：**
+- 初始收益率：1.5%；
+- 第6年：成本回报率2.96%（翻倍）；
+- 第12年：成本回报率5.85%（4倍）；
+- 例子：Visa（V）、Mastercard（MA）的历史表现。
 
-### Dividend Growth Compounding Examples
+**15%的股息年复合增长率（优秀）：**
+- 初始收益率：1.8%；
+- 第6年：成本回报率4.08%（2.3倍）；
+- 第12年：成本回报率9.22%（5.1倍）；
+- 例子：Microsoft（MSFT）2010-2020年的表现。
 
-**12% Dividend CAGR (Minimum Threshold):**
-- Starting Yield: 1.5%
-- Year 6: 2.96% yield on cost (doubled)
-- Year 12: 5.85% yield on cost (4x)
-- Example: Visa (V), Mastercard (MA) historical profile
+**20%的股息年复合增长率（卓越）：**
+- 初始收益率：2.0%；
+- 第6年：成本回报率6.00%（3倍）；
+- 第12年：成本回报率18.0%（9倍）；
+- 例子：Apple（AAPL）2012-2020年的表现。
 
-**15% Dividend CAGR (Excellent):**
-- Starting Yield: 1.8%
-- Year 6: 4.08% yield on cost (2.3x)
-- Year 12: 9.22% yield on cost (5.1x)
-- Example: Microsoft (MSFT) 2010-2020 period
+**关键洞察：** 较低的初始收益率加上高增长率，长期来看往往比高初始收益率但增长率较低的情况更有优势。
 
-**20% Dividend CAGR (Exceptional):**
-- Starting Yield: 2.0%
-- Year 6: 6.00% yield on cost (3x)
-- Year 12: 18.0% yield on cost (9x)
-- Example: Apple (AAPL) 2012-2020 period
+## 故障排除
 
-**Key Insight:** Lower starting yield + high growth > high starting yield + low growth over 10+ years.
+### 未找到结果
 
-## Troubleshooting
+**可能原因：**
+1. **市场状况**：强劲的牛市导致超卖股票较少；
+2. **筛选标准过于严格**：12%的股息增长率较为罕见（通常只有5-10只股票符合条件）；
+3. **RSI阈值过低**：可以考虑将阈值提高到RSI≤45以获得更多候选股票。
 
-### No Results Found
+**解决方案：**
+- 放宽RSI阈值：`--rsi-max 45`（适用于早期回调阶段）；
+- 降低股息增长率要求：`--min-div-growth 10.0`（仍能筛选出具有良好增长潜力的股票）；
+- 降低最低收益率要求：`--min-yield 1.0`（以筛选出更多股息增长股票）。
 
-**Possible Causes:**
-1. **Market conditions:** Strong bull market with few oversold stocks
-2. **Criteria too strict:** 12% dividend growth is rare (5-10 stocks typically qualify)
-3. **RSI threshold too low:** Consider raising to RSI ≤45 for more candidates
+### API请求次数达到限制
 
-**Solutions:**
-- Relax RSI threshold: `--rsi-max 45` (early pullback phase)
-- Lower dividend growth: `--min-div-growth 10.0` (still excellent growth)
-- Lower minimum yield: `--min-yield 1.0` (capture more growth stocks)
+**FMP免费使用权限限制：**
+- 每天250次请求；
+- 每只股票的分析需要6次API调用（报价、股息、价格、收入、现金流、财务指标等）；
+- 仅使用FMP模式时每天最多分析40只股票。
 
-### API Rate Limit Reached
+**解决方案：**
+- **使用FINVIZ的两阶段方法（推荐）**  
+  - FINVIZ预筛选：1次API调用 → 约10-50个候选股票（已通过RSI筛选）；
+  - FMP分析：6次调用 × 10-50只股票 = 总共60-300次API调用；
+  **优势**：FINVIZ的RSI筛选器大幅减少了候选股票数量，符合FMP的免费使用限制。
 
-**FMP Free Tier Limits:**
-- 250 requests/day
-- Each stock analyzed requires 6 API calls (quote, dividend, prices, income, balance, cashflow, metrics)
-- Maximum ~40 stocks per day in FMP-only mode
-
-**Solutions:**
-
-**1. Use FINVIZ Two-Stage Approach (RECOMMENDED)**
-```bash
-python3 screen_dividend_growth_rsi.py --use-finviz
-```
-- FINVIZ pre-screening: 1 API call → 10-50 candidates (already filtered by RSI)
-- FMP analysis: 6 calls × 10-50 stocks = 60-300 FMP calls
-- **Advantage**: FINVIZ RSI filter dramatically reduces candidates, staying within FMP limits
-
-**2. Limit FMP-Only Candidates**
+**2. 限制仅使用FMP的候选股票数量**  
 ```bash
 python3 screen_dividend_growth_rsi.py --max-candidates 40
 ```
 
-**3. Wait 24 Hours for Rate Limit Reset**
-- FMP resets at UTC midnight
+**3. 等待24小时后API请求次数重置**  
+- FMP的请求次数限制在UTC时间午夜重置。
 
-**4. Upgrade to FMP Paid Plan**
-- Starter ($14/month): 500 requests/day
-- Professional ($29/month): 1,000 requests/day
+**4. 升级至FMP付费计划**  
+  - 入门级（每月14美元）：每天500次请求；
+  - 专业级（每月29美元）：每天1000次请求。
 
-**Note:** FINVIZ Elite subscription ($40/month) + FMP free tier is more cost-effective than FMP paid plans for this use case.
+**注意：** 对于此用途，FINVIZ Elite订阅（每月40美元）结合FMP的免费使用权限比单独使用FMP付费计划更具成本效益。
 
-### RSI Calculation Errors
+### RSI计算错误
 
-**Issue:** "Insufficient price data for RSI calculation"
+**问题：** “数据不足，无法计算RSI”
 
-**Cause:** Stock has less than 30 days of trading history (IPO or inactive)
+**原因：** 股票的交易历史不足30天（可能是新股上市或股票不活跃）。
 
-**Solution:** Script automatically skips stocks with insufficient data. No action needed.
+**解决方案：** 脚本会自动跳过这些数据不足的股票，无需额外操作。
 
-## Combining with Other Skills
+## 与其他工具的结合使用**
 
-**Pre-Screening Context:**
-1. **Market News Analyst** → Identify sector rotations or market pullbacks
-2. **Breadth Chart Analyst** → Confirm broader market oversold conditions
-3. **Economic Calendar Fetcher** → Check for upcoming rate decisions or macro events
+**预筛选阶段：**
+- **市场新闻分析师**：识别行业轮动或市场回调；
+- **广度图表分析师**：确认整体市场的超卖状况；
+- **经济日历获取工具**：检查即将发布的利率决策或宏观经济事件。
 
-**Post-Screening Analysis:**
-1. **Technical Analyst** → Analyze individual stock charts for qualified candidates
-2. **US Stock Analysis** → Deep dive on specific stocks before entry
-3. **Backtest Expert** → Validate RSI + dividend growth strategy historically
+**筛选后的分析：**
+- **技术分析师**：对符合条件的股票进行单独的技术分析；
+- **美国股票分析师**：在入场前深入研究特定股票；
+- **回测专家**：从历史数据验证RSI和股息增长策略的有效性。
 
-**Example Workflow:**
+**示例工作流程：**
 ```
 1. Market News Analyst: "Market pulled back 5% this week on Fed hawkish comments"
 2. Breadth Chart Analyst: Confirms market oversold (S&P breadth weak)
@@ -287,36 +277,34 @@ python3 screen_dividend_growth_rsi.py --max-candidates 40
 5. Execute: Enter scaled positions with 6-12 month time horizon
 ```
 
-## Resources
+## 资源**
 
-### scripts/
+### 脚本：**
+- `screen_dividend_growth_rsi.py` - 主要筛选脚本；
+  - 集成FMP API获取基本面数据；
+  - 根据历史价格计算14周期RSI；
+  - 应用多阶段筛选和排名；
+  - 生成JSON和Markdown报告。
 
-**screen_dividend_growth_rsi.py** - Main screening script
-- Integrates FMP API for fundamental data
-- Calculates 14-period RSI from historical prices
-- Applies multi-phase filtering and ranking
-- Outputs JSON and markdown reports
+### 参考文档：**
+- `rsi_oversold_strategy.md` - RSI指标的解释；
+  - RSI如何识别超卖状态；
+  - 极度超卖（<30）与早期回调（30-40）的区别；
+  - 如何将RSI与基本面分析结合使用；
+  - 如何处理误报和降低风险。
 
-### references/
+- `dividend_growth_compounding.md` - 股息增长的数学原理；
+  - 12%以上年复合增长率的长期效果；
+  - 收益率与增长之间的权衡；
+  - 历史案例（Microsoft（MSFT）、Visa（V）、Mastercard（MA）、Apple（AAPL）；
+  - 股息增长股票的质量特征。
 
-**rsi_oversold_strategy.md** - RSI indicator explanation
-- How RSI identifies oversold conditions
-- Difference between extreme oversold (<30) vs. early pullback (30-40)
-- Combining RSI with fundamental analysis
-- False positive management and risk mitigation
-
-**dividend_growth_compounding.md** - Dividend growth mathematics
-- Power of 12%+ dividend CAGR over time
-- Yield vs. growth trade-offs
-- Historical examples (MSFT, V, MA, AAPL)
-- Quality characteristics of dividend growth stocks
-
-**fmp_api_guide.md** - API usage documentation
-- API key setup and management
-- Endpoint documentation for screening
-- Rate limiting strategies
-- Error handling and troubleshooting
+- `fmp_api_guide.md` - API使用指南；
+  - API密钥的设置和管理；
+  - 筛选功能的端点文档；
+  - 请求次数限制策略；
+  - 错误处理和故障排除方法。
 
 ---
 
-**Disclaimer:** This screening tool is for informational purposes only. Past dividend growth does not guarantee future performance. Conduct thorough due diligence before making investment decisions. RSI oversold conditions do not guarantee price reversals - stocks can remain oversold for extended periods.
+**免责声明：** 本筛选工具仅用于提供信息参考。过去的股息增长情况并不能保证未来的投资回报。在做出投资决策前，请进行充分的尽职调查。RSI超卖状态并不保证价格一定会反转——某些股票可能会持续处于超卖状态。

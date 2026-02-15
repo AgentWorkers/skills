@@ -1,16 +1,37 @@
 ---
 name: genlayer-dev-claw-skill
 version: 1.0.0
-description: Build GenLayer Intelligent Contracts - Python smart contracts with LLM calls and web access. Use for writing/deploying contracts, SDK reference, CLI commands, equivalence principles, storage types. Triggers: write intelligent contract, genlayer contract, genvm, gl.Contract, deploy genlayer, genlayer CLI, genlayer SDK, DynArray, TreeMap, gl.nondet, gl.eq_principle, prompt_comparative, strict_eq, genlayer deploy, genlayer up. (For explaining GenLayer concepts, use genlayer-claw-skill instead.)
+description: **构建 GenLayer 智能合约**  
+这些 Python 智能合约支持与大型语言模型（LLM）的交互以及网络访问功能。内容包括合约的编写与部署方法、SDK 参考文档、命令行工具（CLI）的使用说明、相关原理以及数据存储类型。  
+
+**可使用的命令/工具：**  
+- `write_intelligent_contract`：用于编写智能合约  
+- `genlayer_contract`：生成 GenLayer 合约  
+- `genvm`  
+- `gl.Contract`  
+- `deploy_genlayer`：部署 GenLayer 合约  
+- `genlayerCLI`：GenLayer 的命令行工具  
+- `genlayerSDK`：GenLayer 的 SDK  
+- `DynArray`  
+- `TreeMap`  
+- `gl.nondet`  
+- `gl.eq_principle`  
+- `prompt_comparative`  
+- `strict_eq`  
+- `genlayer_deploy`  
+- `genlayer_up`  
+
+**说明：**  
+若需详细了解 GenLayer 的概念，建议使用 `genlayer-claw-skill` 进行查阅。
 ---
 
-# GenLayer Intelligent Contracts
+# GenLayer 智能合约
 
-GenLayer enables **Intelligent Contracts** - Python smart contracts that can call LLMs, fetch web data, and handle non-deterministic operations while maintaining blockchain consensus.
+GenLayer 支持 **智能合约**——这些基于 Python 的智能合约能够调用大型语言模型（LLMs），获取网络数据，并在保持区块链共识的同时处理非确定性操作。
 
-## Quick Start
+## 快速入门
 
-### Minimal Contract
+### 最小化合约示例
 ```python
 # v0.1.0
 # { "Depends": "py-genlayer:latest" }
@@ -31,7 +52,7 @@ class MyContract(gl.Contract):
         self.value = new_value
 ```
 
-### Contract with LLM
+### 与大型语言模型交互的合约
 ```python
 # v0.1.0
 # { "Depends": "py-genlayer:latest" }
@@ -59,7 +80,7 @@ class AIContract(gl.Contract):
         return self.result
 ```
 
-### Contract with Web Access
+### 具有网络访问功能的合约
 ```python
 # v0.1.0
 # { "Depends": "py-genlayer:latest" }
@@ -85,39 +106,39 @@ class WebContract(gl.Contract):
         return self.content
 ```
 
-## Core Concepts
+## 核心概念
 
-### Contract Structure
-1. **Version header**: `# v0.1.0` (required)
-2. **Dependencies**: `# { "Depends": "py-genlayer:latest" }`
-3. **Import**: `from genlayer import *`
-4. **Class**: Extend `gl.Contract` (only ONE per file)
-5. **State**: Class-level typed attributes
-6. **Constructor**: `__init__` (not public)
-7. **Methods**: Decorated with `@gl.public.view` or `@gl.public.write`
+### 合约结构
+1. **版本头部**: `# v0.1.0`（必需）
+2. **依赖项**: `# { "Depends": "py-genlayer:latest" }`
+3. **导入**: `from genlayer import *`
+4. **类**: 继承自 `gl.Contract`（每个文件中只能有一个此类）
+5. **状态**: 类级别的类型化属性
+6. **构造函数**: `__init__`（非公共方法）
+7. **方法**: 使用 `@gl.public.view` 或 `@gl.public.write` 装饰器进行修饰
 
-### Method Decorators
-| Decorator | Purpose | Can Modify State |
+### 方法装饰器
+| 装饰器 | 用途 | 是否可以修改状态 |
 |-----------|---------|------------------|
-| `@gl.public.view` | Read-only queries | No |
-| `@gl.public.write` | State mutations | Yes |
-| `@gl.public.write.payable` | Receive value + mutate | Yes |
+| `@gl.public.view` | 仅用于读取操作 | 不可以 |
+| `@gl.public.write` | 可以修改状态 | 可以 |
+| `@gl.public.write.payable` | 可以接收输入并修改状态 | 可以 |
 
-### Storage Types
-Replace standard Python types with GenVM storage-compatible types:
+### 存储类型
+将标准 Python 类型替换为 GenVM 兼容的存储类型：
 
-| Python Type | GenVM Type | Usage |
+| Python 类型 | GenVM 类型 | 用途 |
 |-------------|------------|-------|
-| `int` | `u32`, `u64`, `u256`, `i32`, `i64`, etc. | Sized integers |
-| `int` (unbounded) | `bigint` | Arbitrary precision (avoid) |
-| `list[T]` | `DynArray[T]` | Dynamic arrays |
-| `dict[K,V]` | `TreeMap[K,V]` | Ordered maps |
-| `str` | `str` | Strings (unchanged) |
-| `bool` | `bool` | Booleans (unchanged) |
+| `int` | `u32`, `u64`, `u256`, `i32`, `i64` 等 | 带大小的整数 |
+| `int`（无限制） | `bigint` | 避免使用，因为精度可能不准确 |
+| `list[T]` | `DynArray[T]` | 动态数组 |
+| `dict[K,V]` | `TreeMap[K,V]` | 有序映射 |
+| `str` | `str` | 字符串（保持不变） |
+| `bool` | `bool` | 布尔值（保持不变） |
 
-**⚠️ `int` is NOT supported!** Always use sized integers.
+**⚠️ 不支持使用 `int` 类型！** 请始终使用带大小的整数类型。
 
-### Address Type
+### 地址类型
 ```python
 # Creating addresses
 addr = Address("0x03FB09251eC05ee9Ca36c98644070B89111D4b3F")
@@ -130,7 +151,7 @@ hex_str = addr.as_hex      # "0x03FB..."
 bytes_val = addr.as_bytes  # bytes
 ```
 
-### Custom Data Types
+### 自定义数据类型
 ```python
 from dataclasses import dataclass
 
@@ -145,15 +166,15 @@ class MyContract(gl.Contract):
     users: TreeMap[Address, UserData]
 ```
 
-## Non-Deterministic Operations
+## 非确定性操作
 
-### The Problem
-LLMs and web fetches produce different results across validators. GenLayer solves this with the **Equivalence Principle**.
+### 问题
+大型语言模型和网络请求在不同验证节点上可能会产生不同的结果。GenLayer 通过 **等价性原则** 来解决这个问题。
 
-### Equivalence Principles
+### 等价性原则
 
-#### 1. Strict Equality (`strict_eq`)
-All validators must produce **identical** results.
+#### 1. **严格相等 (`strict_eq`)**
+所有验证节点必须产生 **完全相同** 的结果。
 ```python
 def get_data():
     return gl.nondet.web.render(url, mode="text")
@@ -161,10 +182,10 @@ def get_data():
 result = gl.eq_principle.strict_eq(get_data)
 ```
 
-Best for: Factual data, boolean results, exact matches.
+适用于：事实性数据、布尔值结果、精确匹配的情况。
 
-#### 2. Prompt Comparative (`prompt_comparative`)
-LLM compares leader's result against validators' results using criteria.
+#### 2. **提示比较 (`prompt_comparative)`
+大型语言模型会根据特定标准将领导节点的结果与其他验证节点的结果进行比较。
 ```python
 def get_analysis():
     return gl.nondet.exec_prompt(prompt)
@@ -175,10 +196,10 @@ result = gl.eq_principle.prompt_comparative(
 )
 ```
 
-Best for: LLM tasks where semantic equivalence matters.
+适用于：需要语义等价性的大型语言模型任务。
 
-#### 3. Prompt Non-Comparative (`prompt_non_comparative`)
-Validators verify the leader's result meets criteria (don't re-execute).
+#### 3. **提示非比较 (`prompt_non_comparative)`
+验证节点只需验证领导节点的结果是否符合标准，无需重新执行操作。
 ```python
 result = gl.eq_principle.prompt_non_comparative(
     lambda: input_data,  # What to process
@@ -187,9 +208,9 @@ result = gl.eq_principle.prompt_non_comparative(
 )
 ```
 
-Best for: Expensive operations, subjective tasks.
+适用于：计算成本较高的操作或主观性较强的任务。
 
-#### 4. Custom Leader/Validator Pattern
+#### 4. 自定义领导节点/验证节点模式
 ```python
 result = gl.vm.run_nondet(
     leader=lambda: expensive_computation(),
@@ -197,21 +218,21 @@ result = gl.vm.run_nondet(
 )
 ```
 
-### Non-Deterministic Functions
+### 非确定性函数
 
-| Function | Purpose |
+| 函数 | 用途 |
 |----------|---------|
-| `gl.nondet.exec_prompt(prompt)` | Execute LLM prompt |
-| `gl.nondet.web.render(url, mode)` | Fetch web page (`mode="text"` or `"html"`) |
+| `gl.nondet.exec.prompt(prompt)` | 执行大型语言模型的提示 |
+| `gl.nondet.web.render(url, mode)` | 获取网页内容（`mode="text"` 或 `"html"`）
 
-**⚠️ Rules:**
-- Must be called inside equivalence principle functions
-- Cannot access storage directly
-- Copy storage data to memory first with `gl.storage.copy_to_memory()`
+**⚠️ 规则：**
+- 必须在等价性原则相关的函数内部调用这些函数。
+- 不能直接访问存储数据。
+- 需要先使用 `gl.storage.copy_to_memory()` 将存储数据复制到内存中。
 
-## Contract Interactions
+## 合约交互
 
-### Call Other Contracts
+### 调用其他合约
 ```python
 # Dynamic typing
 other = gl.get_contract_at(Address("0x..."))
@@ -229,19 +250,19 @@ token = TokenInterface(Address("0x..."))
 balance = token.view().balance_of(my_address)
 ```
 
-### Emit Messages (Async Calls)
+### 发送消息（异步调用）
 ```python
 other = gl.get_contract_at(addr)
 other.emit(on='accepted').update_status("active")
 other.emit(on='finalized').confirm_transaction()
 ```
 
-### Deploy Contracts
+### 部署合约
 ```python
 child_addr = gl.deploy_contract(code=contract_code, salt=u256(1))
 ```
 
-### EVM Interop
+### 与以太坊虚拟机（EVM）的互操作性
 ```python
 @gl.evm.contract_interface
 class ERC20:
@@ -255,16 +276,16 @@ balance = token.view().balance_of(addr)
 token.emit().transfer(recipient, u256(100))  # Messages only on finality
 ```
 
-## CLI Commands
+## 命令行接口（CLI）命令
 
-### Setup
+### 设置
 ```bash
 npm install -g genlayer
 genlayer init      # Download components
 genlayer up        # Start local network
 ```
 
-### Deployment
+### 合约部署
 ```bash
 # Direct deploy
 genlayer deploy --contract my_contract.py
@@ -277,7 +298,7 @@ genlayer network set testnet-asimov
 genlayer deploy --contract my_contract.py
 ```
 
-### Interaction
+### 合约交互
 ```bash
 # Read (view methods)
 genlayer call --address 0x... --function get_value
@@ -292,7 +313,7 @@ genlayer schema --address 0x...
 genlayer receipt --tx-hash 0x...
 ```
 
-### Networks
+### 网络连接
 ```bash
 genlayer network                    # Show current
 genlayer network list               # Available networks
@@ -301,9 +322,9 @@ genlayer network set studionet      # Hosted dev
 genlayer network set testnet-asimov # Testnet
 ```
 
-## Best Practices
+## 最佳实践
 
-### Prompt Engineering
+### 提示设计
 ```python
 prompt = f"""
 Analyze this text and classify the sentiment.
@@ -317,13 +338,13 @@ Output ONLY valid JSON, no other text.
 """
 ```
 
-### Security: Prompt Injection
-- **Restrict inputs**: Minimize user-controlled text in prompts
-- **Restrict outputs**: Define exact output formats
-- **Validate**: Check parsed results match expected schema
-- **Simplify logic**: Clear contract flow reduces attack surface
+### 安全性：提示注入
+- **限制输入**：减少用户可控文本在提示中的使用量。
+- **限制输出**：明确指定输出格式。
+- **验证**：检查解析后的结果是否符合预期格式。
+- **简化逻辑**：清晰的合约流程可以降低攻击风险。
 
-### Error Handling
+### 错误处理
 ```python
 from genlayer import UserError
 
@@ -334,7 +355,7 @@ def safe_operation(self, value: int) -> None:
     # ... proceed
 ```
 
-### Memory Management
+### 内存管理
 ```python
 # Copy storage to memory for non-det blocks
 data_copy = gl.storage.copy_to_memory(self.some_data)
@@ -345,32 +366,31 @@ def process():
 result = gl.eq_principle.strict_eq(process)
 ```
 
-## Common Patterns
+## 常见模式
 
-### Token with AI Transfer Validation
-See `references/examples.md` → LLM ERC20
+### 与 AI 的令牌传输验证
+请参阅 `references/examples.md` → LLM ERC20 标准
 
-### Prediction Market
-See `references/examples.md` → Football Prediction Market
+### 预测市场
+请参阅 `references/examples.md` → 足球预测市场示例
 
-### Vector Search / Embeddings
-See `references/examples.md` → Log Indexer
+### 向量搜索/嵌入
+请参阅 `references/examples.md` → 日志索引器示例
 
-## Debugging
+## 调试
+1. **GenLayer Studio**: 使用 `genlayer up` 进行本地测试。
+2. **日志**: 可按交易哈希和调试级别筛选日志。
+3. **打印语句**: `print()` 可在合约中使用（仅用于调试）。
 
-1. **GenLayer Studio**: Use `genlayer up` for local testing
-2. **Logs**: Filter by transaction hash, debug level
-3. **Print statements**: `print()` works in contracts (debug only)
+## 参考文件
+- `references/sdk-api.md` - 完整的 SDK API 参考文档
+- `references/equivalence-principles.md` - 深入讲解共识机制的模式
+- `references/examples.md` - 带注释的合约示例（包括生产环境中的预言机使用）
+- `references/deployment.md` - CLI、网络连接和部署流程
+- `references/genvm-internals.md` - 虚拟机架构、存储系统和应用程序接口（ABI）细节
 
-## Reference Files
-- `references/sdk-api.md` - Complete SDK API reference
-- `references/equivalence-principles.md` - Consensus patterns in depth
-- `references/examples.md` - Full annotated contract examples (incl. production oracle)
-- `references/deployment.md` - CLI, networks, deployment workflow
-- `references/genvm-internals.md` - VM architecture, storage, ABI details
-
-## Links
-- Docs: https://docs.genlayer.com
+## 链接
+- 文档: https://docs.genlayer.com
 - SDK: https://sdk.genlayer.com
-- Studio: https://studio.genlayer.com
+- 开发工具: https://studio.genlayer.com
 - GitHub: https://github.com/genlayerlabs

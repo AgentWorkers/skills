@@ -1,6 +1,6 @@
 ---
 name: browserbase-sessions
-description: Create and manage persistent Browserbase cloud browser sessions with authentication persistence. Use when the user needs to automate browsers, maintain logged-in sessions across interactions, scrape authenticated pages, or manage cloud browser instances. Handles session creation, context-based auth persistence, keep-alive reconnection, captcha solving, session recording, screenshots, and session cleanup.
+description: 创建并管理具有身份验证持久性的Browserbase云浏览器会话。适用于用户需要自动化浏览器操作、在多次交互中保持登录状态、抓取已认证的页面或管理云浏览器实例的场景。该功能支持会话创建、基于上下文的身份验证持久化、保持连接状态的重连、验证码处理、会话录制、截图生成以及会话清理等操作。
 license: MIT
 metadata:
   author: custom
@@ -14,94 +14,94 @@ metadata:
     primaryEnv: "BROWSERBASE_API_KEY"
 ---
 
-# Browserbase Sessions Skill
+# Browserbase 会话管理技能
 
-Manage persistent cloud browser sessions via Browserbase. This skill creates browser sessions that preserve authentication (cookies, local storage) across interactions, automatically solve CAPTCHAs, and record sessions for later review.
+通过 Browserbase 管理持久的云浏览器会话。该技能能够创建会话，确保在多次交互过程中保持身份验证信息（如 cookies 和本地存储数据），自动解决 CAPTCHA 验证问题，并记录会话以供后续查看。
 
-## First-Time Setup
+## 首次设置
 
-### Step 1 — Get your Browserbase credentials
+### 第 1 步 — 获取 Browserbase 凭据
 
-1. Sign up at [browserbase.com](https://www.browserbase.com/) if you haven't already.
-2. Go to **Settings → API Keys** and copy your API key (starts with `bb_live_`).
-3. Go to **Settings → Project** and copy your Project ID (a UUID).
+1. 如果您还没有注册，请访问 [browserbase.com](https://www.browserbase.com/) 进行注册。
+2. 转到 **设置 → API 密钥**，复制您的 API 密钥（以 `bb_live_` 开头）。
+3. 转到 **设置 → 项目**，复制您的项目 ID（一个 UUID）。
 
-### Step 2 — Install dependencies
+### 第 2 步 — 安装依赖项
 
 ```bash
 cd {baseDir}/scripts && pip install -r requirements.txt
 playwright install chromium
 ```
 
-Or with uv:
+或者使用 uv：
 
 ```bash
 cd {baseDir}/scripts && uv pip install -r requirements.txt
 uv run playwright install chromium
 ```
 
-### Step 3 — Set environment variables
+### 第 3 步 — 设置环境变量
 
 ```bash
 export BROWSERBASE_API_KEY="bb_live_your_key_here"
 export BROWSERBASE_PROJECT_ID="your-project-uuid-here"
 ```
 
-Or configure via OpenClaw's `skills.entries.browserbase-sessions.env` in `~/.openclaw/openclaw.json`.
+或者通过 OpenClaw 的 `skills.entries.browserbase-sessions.env` 在 `~/.openclaw/openclaw.json` 中进行配置。
 
-### Step 4 — Run the setup test
+### 第 4 步 — 运行设置测试
 
-This validates everything end-to-end (credentials, SDK, Playwright, API connection, and a live smoke test):
+此测试会端到端验证所有配置（包括凭据、SDK、Playwright、API 连接以及实时测试）：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py setup
 ```
 
-You should see `"status": "success"` with all steps passing. If any step fails, the error message tells you exactly what to fix.
+如果所有步骤都通过，您应该会看到 `"status": "success"` 的输出。如果有任何步骤失败，错误信息会明确指出需要修复的问题。
 
-## Defaults
+## 默认设置
 
-Every session is created with these defaults to support research workflows:
+每个会话都使用以下默认设置来支持研究工作流程：
 
-- **Captcha solving: ON** — Browserbase automatically solves CAPTCHAs so login flows and protected pages work without manual intervention. Disable with `--no-solve-captchas`.
-- **Session recording: ON** — Every session is recorded as a video you can download later for review or sharing. Disable with `--no-record`.
-- **Auth persistence** — Use contexts with `--persist` to stay logged in across sessions.
+- **CAPTCHA 解决：开启** — Browserbase 会自动解决 CAPTCHA 验证问题，从而无需手动干预即可完成登录流程和访问受保护页面。使用 `--no-solve-captchas` 可以禁用此功能。
+- **会话记录：开启** — 每个会话都会被录制为视频，您可以稍后下载以供查看或分享。使用 `--no-record` 可以禁用此功能。
+- **身份验证持久化** — 使用 `--persist` 参数可以在会话之间保持登录状态。
 
-## Available Commands
+## 可用命令
 
-All commands are run via the manager script:
+所有命令都通过管理脚本执行：
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py <command> [options]
 ```
 
-### Setup & Validation
+### 设置与验证
 
-Run the full setup test:
+运行完整的设置测试：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py setup
 ```
 
-### Context Management (for authentication persistence)
+### 上下文管理（用于身份验证持久化）
 
-Create a named context to store login state:
+创建一个命名上下文以存储登录状态：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-context --name github
 ```
 
-List all saved contexts:
+列出所有保存的上下文：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py list-contexts
 ```
 
-Delete a context (by name or ID):
+删除一个上下文（按名称或 ID）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py delete-context --context-id github
 ```
 
-### Session Lifecycle
+### 会话生命周期
 
-Create a new session (captcha solving and recording enabled by default):
+创建一个新的会话（默认开启 CAPTCHA 解决和录制功能）：
 ```bash
 # Basic session
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -125,25 +125,25 @@ python3 {baseDir}/scripts/browserbase_manager.py create-session \
   --viewport-height 720
 ```
 
-List all sessions:
+列出所有会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py list-sessions
 python3 {baseDir}/scripts/browserbase_manager.py list-sessions --status RUNNING
 ```
 
-Get session details:
+获取会话详细信息：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-session --session-id <id>
 ```
 
-Terminate a session:
+终止一个会话：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id <id>
 ```
 
-### Browser Automation
+### 浏览器自动化
 
-Navigate to a URL:
+导航到指定 URL：
 ```bash
 # Navigate and get page title
 python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --url "https://example.com"
@@ -158,42 +158,42 @@ python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --ur
 python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --url "https://example.com" --screenshot /tmp/full.png --full-page
 ```
 
-Take a screenshot of the current page (without navigating):
+截取当前页面的截图（不进行页面导航）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --session-id <id> --output /tmp/current.png
 python3 {baseDir}/scripts/browserbase_manager.py screenshot --session-id <id> --output /tmp/full.png --full-page
 ```
 
-Execute JavaScript:
+执行 JavaScript 代码：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py execute-js --session-id <id> --code "document.title"
 ```
 
-Get cookies:
+获取 cookies：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-cookies --session-id <id>
 ```
 
-### Recordings, Logs & Debug
+### 录像、日志与调试
 
-Download a session recording video (session must be terminated first):
+下载会话录像视频（必须先终止会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id> --output /tmp/session.webm
 ```
 
-Get session logs:
+获取会话日志：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py get-logs --session-id <id>
 ```
 
-Get the live debug URL (for visual inspection of a running session):
+获取实时调试 URL（用于查看正在运行的会话）：
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py live-url --session-id <id>
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Workflow 1: Multi-session research with persistent login
+### 工作流程 1：多会话研究并保持登录状态
 
 ```bash
 # 1. One-time: create a named context for the site
@@ -220,7 +220,7 @@ python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id>
 python3 {baseDir}/scripts/browserbase_manager.py create-session --context-id myapp --persist --keep-alive --timeout 3600
 ```
 
-### Workflow 2: Screenshot documentation
+### 工作流程 2：截图记录
 
 ```bash
 python3 {baseDir}/scripts/browserbase_manager.py create-session
@@ -229,7 +229,7 @@ python3 {baseDir}/scripts/browserbase_manager.py navigate --session-id <id> --ur
 python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id <id>
 ```
 
-### Workflow 3: Record and share a walkthrough
+### 工作流程 3：录制并分享操作过程
 
 ```bash
 # Session recording is ON by default
@@ -240,27 +240,27 @@ python3 {baseDir}/scripts/browserbase_manager.py terminate-session --session-id 
 python3 {baseDir}/scripts/browserbase_manager.py get-recording --session-id <id> --output /tmp/walkthrough.webm
 ```
 
-## Important Notes
+## 重要说明
 
-- **Captcha solving is ON by default.** Browserbase handles CAPTCHAs automatically during login flows and page loads. Use `--no-solve-captchas` to disable.
-- **Recording is ON by default.** Every session is recorded. Download with `get-recording` after termination. Use `--no-record` to disable.
-- **Connection timeout**: 5 minutes to connect after creation before auto-termination.
-- **Keep-alive sessions** survive disconnections and must be explicitly terminated.
-- **Context persistence**: Wait a few seconds after `terminate-session --persist` before creating a new session with the same context.
-- **Named contexts**: Use `--name` with `create-context` to save friendly names (e.g. `github`, `slack`). Use the name anywhere a context ID is expected.
-- **One context per site**: Use separate contexts for different authenticated sites.
-- **Avoid concurrent sessions on the same context**.
-- **Regions**: us-west-2 (default), us-east-1, eu-central-1, ap-southeast-1.
-- **Session timeout**: 60–21600 seconds (max 6 hours).
+- **CAPTCHA 解决功能默认开启。** Browserbase 会在登录流程和页面加载时自动处理 CAPTCHA 验证。使用 `--no-solve-captchas` 可以禁用此功能。
+- **录制功能默认开启。** 每个会话都会被录制。使用 `get-recording` 命令在会话结束后下载录像。使用 `--no-record` 可以禁用此功能。
+- **连接超时**：创建会话后有 5 分钟的连接时间，超过时间会自动终止会话。
+- **保持会话连接**：即使断开连接，会话也会保持状态，但需要手动终止。
+- **上下文持久化**：在执行 `terminate-session --persist` 后等待几秒钟，然后再使用相同的上下文创建新会话。
+- **命名上下文**：使用 `--name` 参数为上下文指定名称（例如 `github`、`slack`），并在需要使用上下文 ID 的地方使用该名称。
+- **每个网站使用单独的上下文**：为不同的登录网站使用不同的上下文。
+- **避免在同一上下文中同时运行多个会话**。
+- **可用区域**：us-west-2（默认）、us-east-1、eu-central-1、ap-southeast-1。
+- **会话超时**：60–21600 秒（最长 6 小时）。
 
-## Error Handling
+## 错误处理
 
-All commands return JSON output. On error, the output includes an `"error"` key. Common errors:
-- `APIConnectionError`: Browserbase API unreachable
-- `RateLimitError`: Too many concurrent sessions for your plan
-- `APIStatusError`: Invalid parameters or authentication failure
-- Missing env vars: Set `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID`
+所有命令返回 JSON 格式的输出。出现错误时，输出中会包含一个 `"error"` 键。常见错误包括：
+- `APIConnectionError`：无法访问 Browserbase API
+- `RateLimitError`：您的计划允许的并发会话数量超出限制
+- `APIStatusError`：参数无效或身份验证失败
+- 环境变量缺失：请设置 `BROWSERBASE_API_KEY` 和 `BROWSERBASEPROJECT_ID`
 
-## Reference
+## 参考文档
 
-For full API details, read `{baseDir}/references/api-quick-ref.md`.
+有关完整的 API 详细信息，请参阅 `{baseDir}/references/api-quick-ref.md`。

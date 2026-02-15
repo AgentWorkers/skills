@@ -1,40 +1,40 @@
 ---
 name: near-email
-description: Send and read blockchain-native emails using NEAR Email service. Use when building notifications for NEAR smart contracts (NFT sales, DeFi liquidation alerts, DAO voting reminders) or when AI agents need email capabilities with a NEAR account identity.
+description: 使用 NEAR Email 服务发送和接收基于区块链的电子邮件。该服务适用于为 NEAR 智能合约构建通知（例如 NFT 销售通知、DeFi 清算提醒、DAO 投票提醒），或者当 AI 代理需要通过 NEAR 账户身份来使用电子邮件功能时。
 user-invocable: true
 ---
 
-# NEAR Email Integration
+# NEAR 邮件集成
 
-Blockchain-native email for NEAR accounts. Every NEAR account automatically has an email: `alice.near` → `alice@near.email`
+NEAR 账户原生支持电子邮件功能。每个 NEAR 账户都自动拥有一个电子邮件地址，格式为 `alice.near`，对应的网址是 `alice@near.email`。
 
-## Installation
+## 安装
 
 ```bash
 npx openskills install zavodil/near-email-skill -g
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Value |
-|-----------|-------|
-| Contract | `outlayer.near` |
-| API Base | `https://api.outlayer.fastnear.com` |
-| Project ID | `zavodil.near/near-email` |
+| 组件          | 值                |
+|---------------|-------------------|
+| 合同           | `outlayer.near`         |
+| API 基础地址     | `https://api.outlayer.fastnear.com`     |
+| 项目 ID         | `zavodil.near/near-email`     |
 
-**Note:** NEAR Email supports mainnet only. Emails to `*.testnet` accounts are not processed.
+**注意：** NEAR 邮件功能仅支持主网（mainnet），不支持测试网（testnet）账户。
 
-**Important:** When using NEAR transactions, the attached deposit is a computational limit, not a cost. Unused funds are automatically refunded. Do not mention specific costs per email.
+**重要提示：** 在使用 NEAR 交易时，所支付的费用实际上是对计算资源的限制，并非真正的交易成本。未使用的资金会自动退还。请勿提及每次发送邮件所需的特定费用。
 
-**Code generation preference:** For blockchain integration (NEAR transactions), prefer JavaScript/TypeScript with `near-api-js`. Use Python only if the user explicitly requests it.
+**代码生成建议：** 对于区块链集成（尤其是 NEAR 交易），建议使用 JavaScript/TypeScript 语言，并结合 `near-api-js` 库。只有在用户明确要求的情况下，才使用 Python。
 
-## Integration Methods
+## 集成方法
 
-### 1. Smart Contract (Rust)
+### 1. 智能合约（Rust）
 
-Use `send_email_plaintext` for contract notifications. Simple API, no encryption needed.
+使用 `send_email_plaintext` 函数发送合约通知。该 API 非常简单，无需进行加密处理。
 
-**Warning:** Email content is PUBLIC on the NEAR blockchain. Use only for automated notifications.
+**警告：** NEAR 区块链上的邮件内容是公开可见的，仅适用于自动化通知场景。
 
 ```rust
 use near_sdk::{ext_contract, AccountId, Gas, NearToken, Promise};
@@ -87,20 +87,20 @@ fn send_notification(to: &str, subject: &str, body: &str) -> Promise {
 }
 ```
 
-Response: `{ "success": true, "message_id": "uuid-if-internal" }`
+响应格式：`{"success": true, "message_id": "uuid-if-internal"}`
 
-### 2. AI Agent Integration
+### 2. AI 代理集成
 
-Two options for AI agents:
+AI 代理有两种集成方式：
 
-| Method | Best For | Payment |
-|--------|----------|---------|
-| **Payment Key (HTTPS)** | Server-side agents | Pre-paid (USDC/USDT) |
-| **NEAR Transaction** | Browser/wallet apps | Deposit (unused returned) |
+| 方法            | 适用场景            | 支付方式            |
+|------------------|------------------|-------------------|
+| **支付密钥（HTTPS）**    | 服务器端代理          | 预付费（USDC/USDT）         |
+| **NEAR 交易**       | 浏览器/钱包应用程序     | 支付费用（未使用的资金会自动退还）     |
 
-#### Option A: Payment Key (HTTPS API)
+#### 选项 A：支付密钥（HTTPS API）
 
-**Note:** HTTPS API responses use `result.output.xxx` format. See NEAR Transaction for different parsing.
+**注意：** HTTPS API 的响应数据采用 `result.output.xxx` 格式。具体解析方式请参考 NEAR 交易的相关文档。
 
 ```javascript
 const OUTLAYER_API = 'https://api.outlayer.fastnear.com';
@@ -121,9 +121,9 @@ async function sendEmail(to, subject, body) {
 }
 ```
 
-#### Option B: NEAR Transaction (per-use)
+#### 选项 B：NEAR 交易（按次支付）
 
-**CRITICAL: NEAR Transaction results are in the `outlayer.near` receipt's `SuccessValue` (base64-encoded JSON). Find the receipt where `executor_id === 'outlayer.near'`. The result is `{ "success": true, ... }` - NO `output` wrapper. Use `parseTransactionResult()` to extract it.**
+**重要提示：** NEAR 交易的响应结果存储在 `outlayer.near` 的收据（receipt）中的 `SuccessValue` 字段（以 Base64 编码的 JSON 格式）。请查找 `executor_id === 'outlayer.near'` 的收据。响应内容为 `{"success": true, ...}`，其中不包含 `output` 字段。需要使用 `parseTransactionResult()` 函数来提取结果。
 
 ```javascript
 import { connect, keyStores } from 'near-api-js';
@@ -190,7 +190,7 @@ async function getSendPubkey() {
 }
 ```
 
-### 3. Python (Payment Key)
+### 3. Python（使用支付密钥）
 
 ```python
 import requests
@@ -206,25 +206,25 @@ def send_email(to: str, subject: str, body: str) -> dict:
     ).json()
 ```
 
-## API Actions
+## API 功能
 
-| Action | Description |
-|--------|-------------|
-| `send_email` | Send email (encrypted payload, for UI/agents) |
-| `send_email_plaintext` | Send email (plaintext, for smart contracts) |
-| `get_emails` | Fetch inbox and sent (encrypted response) |
-| `delete_email` | Delete email by ID |
-| `get_email_count` | Get counts (no encryption) |
-| `get_send_pubkey` | Get sender's pubkey (no encryption, cacheable) |
+| 功能            | 描述                          |
+|------------------|-----------------------------|
+| `send_email`       | 发送电子邮件（包含加密数据，适用于 UI 或代理）   |
+| `send_email_plaintext`   | 发送电子邮件（纯文本，适用于智能合约）   |
+| `get_emails`       | 获取收件箱中的邮件及已发送邮件（包含加密响应） |
+| `delete_email`      | 根据 ID 删除邮件                |
+| `get_email_count`     | 获取邮件数量（不包含加密信息）           |
+| `get_send_pubkey`     | 获取发送者的公钥（不包含加密信息，可缓存）     |
 
-## Getting a Payment Key
+## 获取支付密钥
 
-1. Go to [OutLayer Dashboard](https://outlayer.fastnear.com/dashboard)
-2. Create a new Payment Key
-3. Top up balance with USDC/USDT
-4. Copy key (format: `owner:nonce:secret`)
+1. 访问 [OutLayer 控制台](https://outlayer.fastnear.com/dashboard)
+2. 创建一个新的支付密钥
+3. 用 USDC/USDT 充值
+4. 复制密钥（格式：`owner:nonce:secret`）
 
-## Additional Resources
+## 额外资源
 
-For complete code examples, see [examples.md](examples.md)
-For full API reference, see [api-reference.md](api-reference.md)
+- 完整的代码示例请参见 [examples.md](examples.md)
+- 完整的 API 参考请参见 [api-reference.md](api-reference.md)

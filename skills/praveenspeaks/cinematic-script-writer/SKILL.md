@@ -1,7 +1,8 @@
 ---
 name: cinematic-script-writer
 version: 1.4.0
-description: "Create professional cinematic scripts for AI video generation with character consistency and cinematography knowledge. Use when the user wants to write a cinematic script, create story contexts with characters, generate image prompts for AI video tools (Midjourney, Sora, Veo), or needs cinematography guidance (camera angles, lighting, color grading). Also use for character consistency sheets, voice profiles, anachronism detection, and saving scripts to Google Drive."
+description: "**为AI视频生成创建专业的电影剧本**  
+这些剧本具备角色一致性和电影制作知识，适用于用户需要编写电影剧本、构建包含角色的故事背景、为AI视频工具（如Midjourney、Sora、Veo）生成图像提示，或获取电影制作指导（如镜头角度、光线处理、色彩调色）的场景。同时，这些剧本还可用于角色一致性文档的编写、声音档案的创建、时代错误检测，以及将剧本保存到Google Drive中。"
 metadata:
   openclaw:
     emoji: "🎬"
@@ -30,11 +31,11 @@ tags:
   - google-drive
 ---
 
-# Cinematic Script Writer
+# 电影剧本编写工具
 
-Create professional cinematic scripts for AI video generation with character consistency and cinematography knowledge.
+该工具专为人工智能视频生成提供专业的电影剧本编写服务，确保角色表现的一致性和电影摄影技术的运用。
 
-## Installation
+## 安装
 
 ```bash
 # Install via npm
@@ -44,11 +45,11 @@ npm install -g cinematic-script-writer
 openclaw skills install cinematic-script-writer
 ```
 
-## CLI Usage
+## 命令行界面（CLI）使用说明
 
-### Context Management
+### 故事情境管理
 
-Create and manage story contexts with characters, era, and settings:
+创建并管理包含角色、时代背景和场景设置的故事情境：
 
 ```bash
 # Create a new story context
@@ -64,9 +65,9 @@ cinematic-script get-context --id <context-id>
 cinematic-script delete-context --id <context-id>
 ```
 
-### Story Generation
+### 故事构思
 
-Generate story ideas and create cinematic scripts:
+生成故事创意并编写电影剧本：
 
 ```bash
 # Generate story ideas for a context
@@ -79,9 +80,9 @@ cinematic-script create-script --context-id <context-id> --idea-id <idea-id>
 cinematic-script generate-metadata --script-id <script-id>
 ```
 
-### Cinematography Reference
+### 电影摄影参考
 
-Access camera angles, lighting, and shot type databases:
+提供摄像机角度、灯光效果和镜头类型的参考资料：
 
 ```bash
 # List all camera angles
@@ -106,9 +107,9 @@ cinematic-script suggest-grading --genre "action"
 cinematic-script search --query "low angle lighting"
 ```
 
-### Character Consistency
+### 角色一致性
 
-Create character references and validate prompts:
+创建角色资料并验证相关提示内容：
 
 ```bash
 # Create a character reference sheet
@@ -121,9 +122,9 @@ cinematic-script create-voice --character-id "char1" --name "Kutil" --personalit
 cinematic-script validate-prompt --prompt "Your prompt here" --character-ids "char1,char2" --context-id <context-id>
 ```
 
-### Storage
+### 存储
 
-Save projects to Google Drive or local storage:
+将项目保存到 Google Drive 或本地存储：
 
 ```bash
 # Connect to Google Drive
@@ -139,14 +140,14 @@ cinematic-script storage-status
 cinematic-script save --title "My Story" --context-id <context-id> --script-id <script-id>
 ```
 
-Storage implementation details:
-- **Google Drive**: Uses Google OAuth2 for authentication. Credentials are stored securely in memory.
-- **Local Storage**: Saves to the user's downloads folder as fallback.
-- **Library**: Uses `googleapis` for Google Drive integration.
+**存储实现细节：**
+- **Google Drive**：使用 Google OAuth2 进行身份验证。用户凭证安全存储在内存中。
+- **本地存储**：作为备用方案，将文件保存到用户的下载文件夹中。
+- **库**：利用 `googleapis` 库实现与 Google Drive 的集成。
 
-### Export
+### 导出
 
-Export scripts in various formats:
+支持多种格式的剧本导出：
 
 ```bash
 # Export as Markdown (default)
@@ -159,101 +160,101 @@ cinematic-script export --script-id <script-id> --format json
 cinematic-script export --script-id <script-id> --format text
 ```
 
-## Features
+## 主要功能
 
-- **Story Context Management**: Create and manage story settings, characters, and eras
-- **Story Idea Generation**: Generate multiple story concepts with hooks and twists
-- **Cinematic Script Writing**: Full scripts with camera angles, lighting, and shot types
-- **Character Consistency**: Reference sheets and voice profiles for consistent characters
-- **Environment Consistency**: Era-appropriate style guides and anachronism detection
-- **YouTube Metadata**: Generate titles, descriptions, and SEO tags
-- **Storage Integration**: Save to Google Drive or local storage
-- **Export Options**: JSON, Markdown, or plain text formats
+- **故事情境管理**：创建和管理故事背景、角色设定及时代背景。
+- **故事创意生成**：生成包含情节转折点的故事构思。
+- **电影剧本编写**：包含摄像机角度、灯光效果和镜头类型的完整剧本。
+- **角色一致性**：提供角色参考资料和语音配置文件，确保角色表现的一致性。
+- **环境一致性**：提供符合时代背景的风格指南，并检测场景中的时代错误。
+- **YouTube 元数据生成**：自动生成标题、描述和 SEO 标签。
+- **存储集成**：支持将项目保存到 Google Drive 或本地存储。
+- **导出格式**：支持 JSON、Markdown 或纯文本格式。
 
-## When to Use
+## 使用场景
 
-- Writing cinematic scripts or screenplays
-- Creating stories with characters for animation/video
-- Generating image/video prompts for AI tools (Midjourney, Sora, Veo, Runway)
-- Getting cinematography guidance (camera angles, lighting, color grading)
-- Maintaining character consistency across scenes
-- Saving script projects to Google Drive
+- 编写电影剧本或电视剧剧本。
+- 为动画/视频创作包含角色的故事内容。
+- 为人工智能工具（如 Midjourney、Sora、Veo、Runway）生成图像/视频创作素材。
+- 获取电影摄影方面的指导（如摄像机角度、灯光效果、色彩搭配）。
+- 确保不同场景中角色表现的一致性。
+- 将剧本项目保存到 Google Drive。
 
-## Cinematography Reference
+## 电影摄影参考
 
-### Camera Angles
+### 摄像机角度
 
-| Angle | Emotional Impact | Best For |
+| 角度 | 情感效果 | 适用场景 |
 |-------|-----------------|----------|
-| Eye-level | Connection, equality, neutrality | Dialogue, emotional moments |
-| Low-angle | Power, dominance, heroism | Villain reveals, hero moments |
-| High-angle | Vulnerability, weakness, overview | Defeat, establishing scale |
-| Bird-eye | Insignificance, detachment, patterns | Epic scale, isolation |
-| Worm-eye | Awe, grandeur, overwhelming presence | Monuments, giants, deities |
-| Dutch angle | Unease, disorientation, tension | Chaos, dreams, horror |
-| Overhead | Omniscience, surveillance | Table scenes, fight choreography |
-| Shoulder-level | Intimate, casual, documentary feel | Walking conversations |
-| Hip-level | Cowboy feel, casual tension | Westerns, standoffs |
-| Knee-level | Childlike perspective, grounding | Children's stories, humility |
+| 平视角度 | 建立联系、平等感、中立性 | 对话场景、情感紧张时刻 |
+| 低角度 | 体现力量、主导感、英雄气概 | 反派登场、英雄时刻 |
+| 高角度 | 展示脆弱性、弱点、整体视野 | 敌人失败、场景规模感 |
+| 鸟瞰角度 | 体现渺小感、超脱感 | 历史场景、宏大场景 |
+| 蠕虫视角 | 体现震撼感、宏伟感 | 巨型建筑、神明场景 |
+| 荷兰视角 | 产生不安感、迷失感 | 混乱场景、梦境场景 |
+| 俯视角度 | 全知视角、监视感 | 桌面场景、战斗场景 |
+| 肩部视角 | 亲密感、随意感、纪实风格 | 行走中的对话场景 |
+| 腰部视角 | 西部片风格、轻微紧张感 | 西部片、对峙场景 |
+| 膝部视角 | 儿童视角、接地气的感觉 | 儿童故事、谦逊主题 |
 
-### Camera Movements
+### 摄像机移动方式
 
-| Movement | Effect | Use For |
+| 移动方式 | 效果 | 适用场景 |
 |----------|--------|---------|
-| Static | Stability, observation | Contemplation, portraits |
-| Pan | Revealing space | Following action horizontally |
-| Tilt | Revealing height | Following vertical action |
-| Dolly | Immersion, intimacy | Moving toward/away from subject |
-| Truck | Following action | Side-to-side parallel movement |
-| Crane | Epic scale, drama | Sweeping reveals, transitions |
-| Handheld | Urgency, realism | Documentary, action, chaos |
-| Steadicam | Smooth floating | Following through space, dreams |
-| Zoom | Sudden focus, surprise | Dramatic emphasis, comedy |
-| Rack-focus | Revealing connections | Shifting attention between subjects |
+| 静态拍摄 | 保持稳定、便于观察 | 沉思场景、人物肖像 |
+| 横移 | 展示空间范围 | 水平跟随动作 |
+| 仰角/俯角 | 展示高度差异 | 垂直跟随动作 |
+| 云台移动 | 增强沉浸感、亲密感 | 向主体靠近或远离 |
+| 侧移 | 平行跟随动作 | 侧面跟随动作 |
+| 起重机拍摄 | 增强宏大感、戏剧性 | 巨型场景的展示、场景切换 |
+| 手持拍摄 | 体现紧迫感、真实感 | 纪录片、动作场景、混乱场景 |
+| 稳定器拍摄 | 平稳的拍摄效果 | 跟随主体移动 |
+| 缩放 | 突然聚焦、制造惊喜 | 增强戏剧性效果、喜剧场景 |
+| 变焦 | 转移焦点 | 强调重点、制造戏剧性效果 |
 
-### Shot Types
+### 镜头类型
 
-| Shot | Framing | Emotional Impact |
+| 镜头类型 | 构图方式 | 情感效果 |
 |------|---------|-----------------|
-| Establishing | Wide location | Sets scene, geography, time |
-| Wide/Full | Subject + surroundings | Context, environment, scale |
-| Medium | Waist up | Dialogue, body language |
-| Close-up | Head/shoulders | Emotion, reaction, intimacy |
-| Extreme close-up | Detail only (eyes, hands) | Intense emotion, symbolism |
-| Over-shoulder | Past one subject to another | Conversation, perspective |
-| POV | Character's view | Immersion, subjectivity |
-| Insert | Object detail | Plot info, symbolism |
-| Two-shot | Two subjects together | Relationship, tension |
+| 建立场景镜头 | 广角镜头 | 展示场景环境、时间背景 |
+| 宽角/全景镜头 | 主体及周边环境 | 提供整体背景信息 |
+| 中景镜头 | 身体上半部分 | 对话、肢体语言 |
+| 特写镜头 | 头部/肩膀 | 展现情感、反应细节 |
+| 极近特写镜头 | 仅展示细节（眼睛、手部） | 强烈情感、象征意义 |
+| 跨主体镜头 | 从一个主体切换到另一个主体 | 展示人物关系、营造紧张感 |
+**第一人称视角镜头** | 从角色视角拍摄 | 增强沉浸感、主观感受 |
+**插入镜头** | 展示物体细节 | 提供剧情线索、象征意义 |
+**双人镜头** | 两个主体同时出现 | 展示人物关系、营造紧张感 |
 
-### Lighting Techniques
+### 灯光技巧
 
-| Technique | Mood | Best For |
+| 灯光技巧 | 情感氛围 | 适用场景 |
 |-----------|------|----------|
-| Three-point | Professional, balanced | Dialogue, interviews |
-| High-key | Happy, optimistic, bright | Comedy, commercials |
-| Low-key | Dramatic, mysterious | Drama, horror, noir |
-| Golden-hour | Romantic, nostalgic, magical | Romance, emotional moments |
-| Blue-hour | Melancholic, mysterious | Urban, cityscapes |
-| Chiaroscuro | Dramatic contrast | Art films, period pieces |
-| Rim/backlight | Separation, ethereal | Silhouettes, divine presence |
-| Practical | Realistic, natural | Candles, fires, lamps |
-| God-rays | Divine, revelation | Spiritual moments, forests |
-| Neon | Urban, futuristic | Cyberpunk, nightlife |
+**三点照明法** | 专业、平衡的光线效果 | 对话场景、采访场景 |
+**高调照明** | 明亮、乐观的氛围 | 喜剧场景、商业广告 |
+**低调照明** | 戏剧性、神秘感 | 恐怖场景、黑色电影 |
+**黄金时刻照明** | 浪漫、怀旧感 | 浪漫场景、情感紧张时刻 |
+**蓝调照明** | 忧郁、神秘感 | 城市场景 |
+**明暗对比照明** | 强烈的对比效果 | 艺术电影、历史场景 |
+**边缘/背光照明** | 创造分离感、梦幻感 | 轮廓效果、神秘氛围 |
+**自然光照明** | 真实感强的光线效果 | 蜡烛光、火焰、台灯 |
+**上帝之光** | 神圣感、启示感 | 神圣场景、森林场景 |
+**霓虹光照明** | 未来感、都市风格 | 科幻场景、夜生活场景 |
 
-### Color Grading
+### 色彩调色
 
-| Style | Look | Genre |
+| 色彩风格 | 视觉效果 | 适用类型 |
 |-------|------|-------|
-| Teal-orange | Blockbuster cinematic | Action, sci-fi |
-| Noir | High-contrast desaturated | Crime, mystery |
-| Vintage/sepia | Warm, nostalgic | Period pieces, memory |
-| Pastel | Soft, dreamy | Romance, coming-of-age |
-| Bleach bypass | Desaturated, gritty | War, thriller |
-| Cross-process | Surreal colors | Music videos, dreams |
+| 蓝橙色调 | 适合动作片、科幻片 |
+| 黑色电影风格 | 高对比度、低饱和度 | 犯罪片、悬疑片 |
+**复古/棕褐色调** | 温暖、怀旧感 | 历史场景、回忆场景 |
+**淡色调** | 温柔、梦幻感 | 浪漫场景、成长故事 |
+**褪色色调** | 低饱和度、粗糙感 | 战争场景、惊悚片 |
+**混合调色** | 超现实色彩效果 | 音乐视频、梦境场景 |
 
-## Image Prompt Format
+## 图像提示格式
 
-When generating image prompts for AI tools:
+为人工智能工具生成图像提示时，请使用以下格式：
 
 ```
 [Shot type] [camera angle] of [subject doing action], [visual style] style,
@@ -261,7 +262,7 @@ When generating image prompts for AI tools:
 [era-appropriate details], [mood keywords], highly detailed, cinematic
 ```
 
-Example:
+**示例：**
 ```
 Low-angle close-up of Kutil the purple rakshasa with mischievous golden eyes,
 Pixar 3D style, dramatic underlighting with rim light, rule-of-thirds composition,
@@ -269,9 +270,9 @@ warm golden color grading, ancient Lanka palace background with ornate pillars,
 playful yet mysterious mood, highly detailed, cinematic, 8k
 ```
 
-## Output Structure
+## 项目保存结构
 
-When saving a project, the following files are generated:
+保存项目时，会生成以下文件：
 
 ```
 Story Title/
@@ -284,19 +285,19 @@ Story Title/
 └── 99_CONTEXT_INFO.md    # Story context and background
 ```
 
-## Important Rules
+## 重要规则
 
-1. **Always maintain character consistency** - include character's full visual description in every image prompt
-2. **Never include anachronisms** - validate props, clothing, objects against the era
-3. **Match cinematography to emotion** - use low angles for power, high angles for vulnerability
-4. **Include both image and video prompts** - image prompts are static, video prompts describe motion
-5. **Production-ready output** - every script should include enough detail for a team to produce it
-6. **Respect the tone** - comedy needs comedic timing; drama needs longer holds on reactions
+1. **始终保持角色一致性**：在每个图像提示中包含角色的完整视觉描述。
+2. **避免时代错误**：确保道具、服装和物品符合所设定的时代背景。
+3. **灯光效果要与情感相匹配**：使用低角度镜头体现力量感，使用高角度镜头体现脆弱感。
+4. **同时提供图像提示和视频提示**：图像提示为静态图片，视频提示需描述动作细节。
+5. **输出文件需具备制作所需的所有细节**：每个剧本都应包含足够的制作信息。
+6. **尊重作品风格**：喜剧场景需把握恰当的节奏；戏剧场景需延长人物反应的展示时间。
 
-## License
+## 许可证
 
-MIT
+MIT 许可证
 
-## Author
+## 作者
 
 Praveen Kumar

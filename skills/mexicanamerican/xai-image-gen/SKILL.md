@@ -1,21 +1,21 @@
 # xai-image-gen
 
-Generate images using xAI's Grok API (grok-imagine-image model).
+使用 xAI 的 Grok API（grok-imagine-image 模型）生成图片。
 
-## Description
+## 说明
 
-Production-ready CLI tool for generating images via xAI's image generation API. Supports multiple output formats, resolutions, and batch generation. Automatically outputs MEDIA: paths for OpenClaw auto-attachment.
+这是一个可用于生产环境的命令行工具（CLI），通过 xAI 的图像生成 API 生成图片。支持多种输出格式、分辨率以及批量生成功能。会自动生成 `MEDIA:` 路径，以便 OpenClaw 自动将其附加到消息中。
 
-**Features:**
-- 🎨 Simple CLI interface: `xai-gen "<prompt>"`
-- 🖼️ Multiple output formats: URL download, base64 encoding
-- 🔢 Batch generation (multiple images per prompt)
-- ⚡ Fast, pure API implementation (Pi-safe)
-- 🛡️ Robust error handling with user-friendly messages
-- 📎 Auto-attaches generated images in OpenClaw
-- 🎯 Uses xAI's native resolution (no size parameter needed)
+**特点：**
+- 🎨 简单的 CLI 接口：`xai-gen "<prompt>"`
+- 🖼️ 多种输出格式：URL 下载、base64 编码
+- 🔢 批量生成（每个提示可生成多张图片）
+- ⚡ 快速的、基于 API 的实现（兼容 Raspberry Pi）
+- 🛡️ 强大的错误处理机制，提供友好的错误提示
+- 📎 生成的图片会自动附加到 OpenClaw 中
+- 🎯 使用 xAI 的原生分辨率（无需指定图片大小）
 
-## Installation
+## 安装
 
 ```bash
 # Navigate to skills directory
@@ -31,21 +31,21 @@ pip3 install requests
 chmod +x xai-image-gen/xai-gen
 ```
 
-**Set your xAI API key:**
+**设置您的 xAI API 密钥：**
 
 ```bash
 export XAI_API_KEY="your-api-key-here"
 ```
 
-Add to your shell profile (`~/.bashrc`, `~/.zshrc`) to persist:
+将以下命令添加到您的 shell 配置文件（`~/.bashrc` 或 `~/.zshrc`）中，以便永久生效：
 
 ```bash
 echo 'export XAI_API_KEY="your-api-key-here"' >> ~/.bashrc
 ```
 
-## Usage
+## 使用方法
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Generate with simple prompt
@@ -64,7 +64,7 @@ xai-gen "logo design" --format b64
 xai-gen "space station" --verbose
 ```
 
-### Options
+### 参数选项
 
 ```
 positional arguments:
@@ -80,27 +80,27 @@ options:
   --verbose, -v         Show detailed progress
 ```
 
-### Examples
+### 示例
 
-**Generate a meme:**
+**生成一张表情包：**
 ```bash
 xai-gen "dumbest trade meme: YOLO panic fail" --filename trade_meme.png
 ```
 
-**Batch generation:**
+**批量生成：**
 ```bash
 xai-gen "logo variations for tech startup" --n 5
 # Outputs: out_1.png, out_2.png, out_3.png, out_4.png, out_5.png
 ```
 
-**High-quality artwork:**
+**生成高质量的艺术作品：**
 ```bash
 xai-gen "photorealistic portrait of a cat astronaut" --filename cat_astronaut.png
 ```
 
-### Integration with OpenClaw
+### 与 OpenClaw 的集成
 
-The tool outputs `MEDIA: /path/to/image.png` which OpenClaw automatically detects and attaches to messages. Use in agent workflows:
+该工具会输出 `MEDIA: /path/to/image.png`，OpenClaw 会自动检测并将该图片附加到消息中。您可以在代理工作流程中使用该工具：
 
 ```bash
 # In an agent skill or automation
@@ -108,68 +108,68 @@ xai-gen "chart showing Q1 sales data" --filename sales_chart.png
 # → Image auto-attaches to response
 ```
 
-## API Details
+## API 详细信息
 
-- **Endpoint:** `https://api.x.ai/v1/images/generations`
-- **Model:** `grok-imagine-image`
-- **Authentication:** Bearer token via `XAI_API_KEY`
-- **Rate Limits:** Subject to xAI API limits (check xAI docs)
-- **Timeout:** 60s for generation, 30s for download
+- **端点：** `https://api.x.ai/v1/images/generations`
+- **模型：** `grok-imagine-image`
+- **认证方式：** 通过 `XAI_API_KEY` 使用 bearer token 进行认证
+- **速率限制：** 遵循 xAI API 的限制（请参阅 xAI 的官方文档）
+- **超时设置：** 生成时间为 60 秒，下载时间为 30 秒
 
-## Error Handling
+## 错误处理
 
-The tool handles common errors gracefully:
+该工具能够优雅地处理以下常见错误：
 
-- ❌ Missing API key → Clear instructions
-- ❌ Network errors → Descriptive messages
-- ❌ API timeouts → Retry suggestions
-- ❌ Invalid parameters → Usage hints
-- ❌ File write errors → Permission checks
+- ❌ API 密钥缺失 → 提供清晰的提示
+- ❌ 网络错误 → 显示详细的错误信息
+- ❌ API 超时 → 提供重试建议
+- ❌ 参数无效 → 提供使用提示
+- ❌ 文件写入错误 → 检查权限是否足够
 
-## Requirements
+## 系统要求
 
-- **Python:** 3.7+
-- **Dependencies:** `requests`
-- **API Key:** xAI API key (get from https://console.x.ai)
-- **Network:** Internet connection required
+- **Python：** 3.7 及以上版本
+- **依赖库：** `requests`
+- **API 密钥：** xAI 的 API 密钥（从 https://console.x.ai 获取）
+- **网络连接：** 需要互联网连接
 
-## Platform Compatibility
+## 平台兼容性
 
-- ✅ Linux (tested on Raspberry Pi)
+- ✅ Linux（已在 Raspberry Pi 上测试通过）
 - ✅ macOS
-- ✅ Windows (via WSL or native Python)
-- ✅ ARM64 / ARMv7 (Pi-safe, pure API calls)
+- ✅ Windows（通过 WSL 或原生 Python 运行）
+- ✅ ARM64 / ARMv7（兼容 Raspberry Pi，基于纯 API 调用）
 
-## Troubleshooting
+## 故障排除
 
-**"XAI_API_KEY not found"**
+**“XAI_API_KEY 未找到”**
 ```bash
 export XAI_API_KEY="xai-..."
 ```
 
-**"requests library not found"**
+**“requests 库未找到”**
 ```bash
 pip3 install requests
 ```
 
-**Permission denied**
+**权限被拒绝**
 ```bash
 chmod +x xai-gen
 ```
 
-**API errors**
-- Check API key validity
-- Verify account has credits
-- Check xAI status page
+**API 错误**
+- 检查 API 密钥的有效性
+- 确认账户是否有足够的信用额度
+- 查看 xAI 的状态页面
 
-## License
+## 许可证
 
-MIT License - Free to use and modify
+MIT 许可证——免费使用和修改
 
-## Author
+## 开发者
 
-Built for OpenClaw by subagent xAI Image Gen Skill Builder
+由 subagent xAI Image Gen Skill Builder 为 OpenClaw 开发
 
-## Version
+## 版本
 
-1.0.0 - Initial release
+1.0.0 — 初始版本

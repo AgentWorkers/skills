@@ -1,69 +1,69 @@
 ---
 name: ai-notes-ofvideo
-description: Generate AI-powered notes from videos (document, outline, or graphic-text formats)
+description: **从视频中生成由 AI 驱动的笔记（文档、大纲或图文格式）**
 metadata: { "openclaw": { "emoji": "📺", "requires": { "bins": ["python3"], "env":["BAIDU_API_KEY"]},"primaryEnv":"BAIDU_API_KEY" } }
 ---
 
-# AI Video Notes
+# AI 视频笔记
 
-Generate structured notes from video URLs using Baidu AI. Supports three note formats.
+使用百度 AI 从视频 URL 生成结构化的笔记，支持三种笔记格式。
 
-## Workflow
+## 工作流程
 
-1. **Create Task**: Submit video URL → get task ID
-2. **Poll Status**: Query task every 3-5 seconds until completion
-3. **Get Results**: Retrieve generated notes when status = 10002
+1. **创建任务**：提交视频 URL → 获取任务 ID
+2. **查询任务状态**：每 3-5 秒查询一次任务状态，直到任务完成
+3. **获取结果**：当任务状态为 10002 时，获取生成的笔记
 
-## Status Codes
+## 状态码
 
-| Code | Status | Action |
+| 状态码 | 状态 | 操作 |
 |-------|---------|---------|
-| 10000 | In Progress | Continue polling |
-| 10002 | Completed | Return results |
-| Other | Failed | Show error |
+| 10000 | 进行中 | 继续查询 |
+| 10002 | 完成 | 返回结果 |
+| 其他 | 失败 | 显示错误信息 |
 
-## Note Types
+## 笔记类型
 
-| Type | Description |
+| 类型 | 描述 |
 |------|-------------|
-| 1 | Document notes |
-| 2 | Outline notes |
-| 3 | Graphic-text notes |
+| 1 | 文本笔记 |
+| 2 | 大纲笔记 |
+| 3 | 图文结合的笔记 |
 
-## APIs
+## API
 
-### Create Task
+### 创建任务
 
-**Endpoint**: `POST /v2/tools/ai_note/task_create`
+**接口**：`POST /v2/tools/ai_note/task_create`
 
-**Parameters**:
-- `video_url` (required): Public video URL
+**参数**：
+- `video_url`（必填）：公共视频 URL
 
-**Example**:
+**示例**：
 ```bash
 python3 scripts/ai_notes_task_create.py 'https://example.com/video.mp4'
 ```
 
-**Response**:
+**响应**：
 ```json
 {
   "task_id": "uuid-string"
 }
 ```
 
-### Query Task
+### 查询任务
 
-**Endpoint**: `GET /v2/tools/ai_note/query`
+**接口**：`GET /v2/tools/ai_note/query`
 
-**Parameters**:
-- `task_id` (required): Task ID from create endpoint
+**参数**：
+- `task_id`（必填）：通过创建任务接口获得的任务 ID
 
-**Example**:
+**示例**：
 ```bash
 python3 scripts/ai_notes_task_query.py "task-id-here"
 ```
 
-**Response** (Completed):
+**响应（任务完成时）**：
 ```json
 {
   "status": 10002,
@@ -76,27 +76,27 @@ python3 scripts/ai_notes_task_query.py "task-id-here"
 }
 ```
 
-## Polling Strategy
+## 查询策略
 
-### Option 1: Manual Polling
-1. Create task → store `task_id`
-2. Query every 3-5 seconds:
+### 选项 1：手动查询
+1. 创建任务 → 存储任务 ID
+2. 每 3-5 秒查询一次任务状态：
    ```bash
    python3 scripts/ai_notes_task_query.py <task_id>
    ```
-3. Show progress updates:
-   - Status 10000: Processing...
-   - Status 10002: Completed
-4. Stop after 30-60 seconds (video length dependent)
+3. 显示进度更新：
+   - 状态 10000：正在处理中...
+   - 状态 10002：任务完成
+4. 在 30-60 秒后停止查询（具体时间取决于视频长度）
 
-### Option 2: Auto Polling (Recommended)
-Use the polling script for automatic status updates:
+### 选项 2：自动查询（推荐）
+使用自动查询脚本来实时获取任务状态更新：
 
 ```bash
 python3 scripts/ai_notes_poll.py <task_id> [max_attempts] [interval_seconds]
 ```
 
-**Examples**:
+**示例**：
 ```bash
 # Default: 20 attempts, 3-second intervals
 python3 scripts/ai_notes_poll.py "task-id-here"
@@ -105,13 +105,13 @@ python3 scripts/ai_notes_poll.py "task-id-here"
 python3 scripts/ai_notes_poll.py "task-id-here" 30 5
 ```
 
-**Output**:
-- Shows real-time progress: `[1/20] Processing... 25%`
-- Auto-stops when complete
-- Returns formatted notes with type labels
+**输出**：
+- 显示实时进度：`[1/20] 正在处理中... 25%`
+- 任务完成后自动停止
+- 返回带有类型标签的格式化笔记
 
-## Error Handling
+## 错误处理
 
-- Invalid URL: "Video URL not accessible"
-- Processing error: "Failed to parse video"
-- Timeout: "Video too long, try again later"
+- 无效的 URL：`视频 URL 无法访问`
+- 处理错误：`无法解析视频文件`
+- 超时：`视频文件过长，请稍后再试`

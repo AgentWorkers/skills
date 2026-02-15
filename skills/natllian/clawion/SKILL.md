@@ -1,59 +1,58 @@
 ---
 name: clawion
-description: Multi-agent collaboration powered by OpenClaw cron jobs and the clawion CLI (wake-driven workflow).
+description: 多代理协作由 OpenClaw 定时任务（cron jobs）和 clawion CLI（基于唤醒事件的工作流管理系统）驱动。
 ---
 
-# Clawion (runbook)
+# Clawion（运行手册）
 
-Clawion is a **file-based mission coordinator**. Agents interact with state through the **`clawion` CLI**.
+Clawion是一个基于文件的任务协调工具。代理通过`clawion`命令行界面（CLI）与系统状态进行交互。
 
-Repo: https://github.com/natllian/clawion
+仓库地址：https://github.com/natllian/clawion
 
-## Mental model
+## 工作原理
 
-Clawion is **wake-driven** — OpenClaw cron ticks are the engine.
+Clawion采用“唤醒驱动”（wake-driven）机制——OpenClaw的定时任务（cron jobs）是整个系统的核心驱动器。
 
-1. Cron fires a periodic tick.
-2. Agent runs **`clawion agent wake`** → receives the authoritative prompt for this turn.
-3. Agent follows the **Turn Playbook** in that wake output.
-4. Agent writes back via small actions (**message / working**).
-5. Next wake reflects the updated workspace state.
+1. 定时任务会定期触发一次执行。
+2. 代理运行`clawion agent wake`命令，以接收当前轮次的指令。
+3. 代理根据`Turn Playbook`（轮次脚本）执行相应的操作。
+4. 代理通过发送消息或执行具体任务来响应系统。
+5. 下一次定时任务执行时，系统状态会更新。
 
-Key properties:
+**重要特性：**
+- **`clawion`是唯一的读取入口点**。
+- **未读消息会自动标记为“未读”状态，并在用户查看时自动确认**。
 
-- **Wake is the only read entrypoint.**
-- **Unread handling is automatic:** wake shows "Unread Mentions" and auto-acks them.
+## 核心原则
 
-## Core invariants
-
-- **Workers complete tasks; managers maintain the board.**
-  - Worker: reports progress and asks questions via `message add`; logs process via `working add`.
-  - Manager: dispatches and maintains truth via `task create/assign/update`; also logs via `working add`. When the mission is complete, **disables all related cron jobs**.
-- **Identity is explicit:** every action requires global `--agent <agentId>`.
+- **工作者负责完成任务；管理者负责维护任务调度**：
+  - 工作者通过`message add`报告进度或提出问题，通过`working add`记录日志。
+  - 管理者通过`task create/assign/update`来分配和更新任务，并通过`working add`记录日志。任务完成后，系统会自动停止所有相关的定时任务。
+- **每个操作都需要明确指定代理ID（`--agent <agentId>`）**。
 
 ---
 
-## Quickstart (bootstrap a new mission)
+## 快速入门（创建新任务）
 
-### 0. Pre-flight
+### 0. 预备工作
 
-Verify the CLI is available:
+确认`clawion` CLI是否可用：
 
 ```bash
 clawion --help
 ```
 
-If the command is not found, install it by following the setup instructions in the [Clawion README](https://github.com/natllian/clawion#readme).
+如果找不到该命令，请按照[Clawion的README文件](https://github.com/natllian/clawion#readme)中的说明进行安装。
 
-### 1. Create the mission
+### 1. 创建任务
 
 ```bash
 clawion mission create --id <MISSION_ID> --name "..."
 ```
 
-### 2. Register the manager (bootstrap rule)
+### 2. 注册管理者（设置启动规则）
 
-The acting `--agent` must be the manager itself.
+执行`--agent`命令的必须是管理者本人。
 
 ```bash
 clawion agent add \
@@ -65,7 +64,7 @@ clawion agent add \
   --agent <MANAGER_ID>
 ```
 
-### 3. Register worker agents
+### 3. 注册工作者代理
 
 ```bash
 clawion agent add \
@@ -77,9 +76,9 @@ clawion agent add \
   --agent <MANAGER_ID>
 ```
 
-Repeat per worker.
+重复上述步骤，为每个工作者分别注册代理。
 
-### 4. Create and assign tasks (manager-only)
+### 4. 创建并分配任务（仅限管理者）
 
 ```bash
 clawion task create \
@@ -96,43 +95,41 @@ clawion task assign \
   --agent <MANAGER_ID>
 ```
 
-### 5. Write the roadmap (manager-only, one-shot)
+### 5. 编写任务计划（仅限管理者，且只能执行一次）
 
 ```bash
 clawion mission roadmap --id <MISSION_ID> --set "<markdown>" --agent <MANAGER_ID>
 ```
 
-> The roadmap can only be written **once** via the CLI. Any subsequent edits must be made by a human in the Web UI.
+任务计划只能通过CLI编写一次。后续的修改必须通过Web UI由人工完成。
 
-### 6. Create cron jobs (disabled) and get user approval
+### 6. 创建定时任务（默认为禁用状态）并获取用户批准
 
-Create **one isolated cron job per agent** (manager + each worker), all **disabled**. Then ask the user to review in the Clawion Web UI before enabling anything. See [Cron jobs](#cron-jobs-openclaw) for payload rules and naming.
+为每个代理创建一个定时任务（管理者及所有工作者各一个），所有任务默认处于禁用状态。在启用任何定时任务之前，需在Clawion Web UI中获取用户的批准。有关任务配置的详细信息，请参阅[OpenClaw的定时任务设置](#cron-jobs-openclaw)。
 
-**Web UI review checklist:**
+**Web UI审核内容：**
+- 任务计划（可编辑）
+- 每个代理的角色描述（可编辑）
+- 保密信息处理设置（确保保密信息不会泄露到通信中）
 
-- Mission ROADMAP (editable)
-- Each agent's role description (editable)
-- Dark Secret injection settings (ensure secrets don't leak into thread messages)
-
-Only enable cron jobs after **explicit user approval**.
+只有在获得用户明确批准后，才能启用定时任务。
 
 ---
 
-## Cron jobs (OpenClaw)
+## OpenClaw的定时任务规则
 
-### Hard rules
+### 基本规则
 
-| Rule                | Detail                                                                                                                                                    |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Isolation**       | Each tick runs in its **own isolated OpenClaw session** (never `main`). Context bleed makes the loop unreliable.                                          |
-| **Wake interval**   | If the user didn't specify one, **ask and confirm** before creating jobs.                                                                                 |
-| **Minimal payload** | Do **not** embed mission context, task lists, or SOP text. The authoritative prompt is assembled by `clawion agent wake` from workspace state at runtime. |
-| **Disabled first**  | Always create jobs disabled. Enable only after the user reviews in the Web UI (quickstart step 6).                                                        |
+| 规则                          | 详细说明                                                                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **任务隔离**                     | 每个定时任务都在独立的OpenClaw会话中运行（严禁在主会话中执行）。会话间的数据共享可能导致运行不稳定。                                      |
+| **定时间隔**                     | 如果用户未指定间隔，请在创建任务前询问并确认。                                                     |
+| **消息内容限制**                   | 禁止在任务消息中嵌入任务上下文、任务列表或操作指南内容。这些信息由`clawion agent wake`在运行时从系统状态中获取。                         |
+| **任务默认为禁用状态**                 | 所有定时任务创建时都处于禁用状态。只有在用户通过Web UI审核后才能启用。                                         |
 
-### Recommended cron message
+### 推荐的定时任务消息格式
 
-**Worker:**
-
+**工作者发送的消息：**
 ```text
 Fetch your instructions by running:
 
@@ -141,8 +138,7 @@ clawion agent wake --mission <MISSION_ID> --agent <AGENT_ID>
 Then follow the Turn Playbook in that output.
 ```
 
-**Manager:**
-
+**管理者发送的消息：**
 ```text
 Fetch your instructions by running:
 
@@ -152,11 +148,10 @@ Then follow the Turn Playbook in that output.
 If the mission is complete, disable all related cron jobs.
 ```
 
-### Operational tips
+### 运营建议
 
-- **Job naming:**
+- **任务命名格式**：
   - `clawion:<MISSION_ID>:manager:<AGENT_ID>`
   - `clawion:<MISSION_ID>:worker:<AGENT_ID>`
-- **Stagger ticks** when multiple agents share the same interval to avoid bursty runs.
-  - Given interval = `N` minutes and `K` agents, choose offsets: `round(i * N / K)` for `i = 0..K-1`.
-  - Example: `N=10`, `K=3` → offsets `0m`, `3m`, `7m`.
+- **避免多个代理同时执行**：如果多个代理使用相同的定时间隔，应设置不同的执行时间点，例如：`round(i * N / K)`（其中`i = 0..K-1`）。
+  - 例如：`N=10`，`K=3`时，执行时间点为`0分钟`、`3分钟`、`7分钟`。

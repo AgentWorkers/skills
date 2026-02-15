@@ -1,22 +1,21 @@
-# Animated Product Explainer
+# 动态产品介绍视频模板
 
-**Version**: 1.0.0
-**Category**: Sora2 Video
-**Created by**: Momo (manual curation)
-**Created at**: 2026-02-05T16:51:45.971858
+**版本**: 1.0.0  
+**类别**: Sora2 视频生成工具  
+**创建者**: Momo（人工策划）  
+**创建时间**: 2026-02-05T16:51:45.971858  
 
-## Description
+## 说明  
 
-This skill provides a high-quality, manually crafted prompt template for AI sora2 video generation.
+该模板为 AI 生成 Sora2 视频提供了高质量、精心设计的语法结构。  
 
-**Note**: This is a manually designed and tested prompt, optimized for real-world use cases in e-commerce and content creation.
+**注意**: 该模板是经过人工设计和测试的，专为电子商务和内容创作的实际应用场景优化。  
 
-## Usage
+## 使用方法  
 
-### Basic Usage
+### 基本用法  
 
-Use this prompt template with your AI video/image generation tool:
-
+将此模板与您的 AI 视频/图像生成工具结合使用：  
 ```text
 Create a 20-second animated explainer video using Sora2 for {product_name}.
 
@@ -43,24 +42,23 @@ Audio:
 - Sound effects for key transitions
 
 Optimize for: Website homepage, product landing page
-```
+```  
 
-### Variables
+### 变量说明  
 
-Replace the following variables in the prompt with your specific values:
+请将模板中的以下变量替换为实际值：  
+- `{product_name}`：产品名称  
+- `{brand_colors}`：品牌配色方案（例如：“蓝色、白色、灰色”）  
+- `{background_style}`：首选背景风格（极简风格、渐变效果、特定场景）  
+- `{target_audience}`：目标受众（例如：“25-35 岁的年轻人”）  
+- `{cta_text}`：行动号召语（例如：“立即购买 - 享受 20% 折扣”）  
+- `{setting}`：场景设置（家庭、办公室、户外、咖啡馆）  
+- `{feature}`：需要重点宣传的产品特性  
+- `{season}`：季节（春季、夏季、秋季、冬季）  
+- `{holiday_colors}`：节日配色方案  
+- `{competitor_product}`：竞争对手产品名称（用于对比展示）  
 
-- `{product_name}` - Name of your product
-- `{brand_colors}` - Your brand's color palette (e.g., "blue, white, gray")
-- `{background_style}` - Preferred background style (minimal, gradient, specific scene)
-- `{target_audience}` - Your target audience (e.g., "young adults, 25-35")
-- `{cta_text}` - Call-to-action text (e.g., "Shop Now - 20% Off")
-- `{setting}` - Scene setting (home, office, outdoor, café)
-- `{feature}` - Specific product feature to highlight
-- `{season}` - Season (spring, summer, autumn, winter)
-- `{holiday_colors}` - Holiday color palette
-- `{competitor_product}` - Competitor product name (for comparison)
-
-### Example
+### 示例  
 
 ```text
 Create a 20-second animated explainer video using Sora2 for {{Premium Wireless Earbuds}}.
@@ -88,47 +86,39 @@ Audio:
 - Sound effects for key transitions
 
 Optimize for: Website homepage, product landing page
-```
+```  
 
-## Tags
+## 标签  
 
-sora2, video, animation, explainer
+sora2、视频、动画、产品介绍  
 
-## Requirements
+## 使用要求  
 
-Compatible with AI tools that support text-to-video or text-to-image generation:
-- For video: Sora2, Google Veo, Runway, Pika Labs, Kling
-- For image: Midjourney, DALL-E 3, Stable Diffusion, Stable Diffusion XL
+该模板兼容支持文本转视频或文本转图像的 AI 工具：  
+- 视频生成工具：Sora2、Google Veo、Runway、Pika Labs、Kling  
+- 图像生成工具：Midjourney、DALL-E 3、Stable Diffusion、Stable Diffusion XL  
 
-## Tips
+## 使用技巧：  
+1. **自定义变量**：将所有 `{variable}` 占位符替换为实际数据。  
+2. **多次测试与优化**：生成多个版本，选择最佳效果。  
+3. **调整参数**：根据需求调整分辨率、时长或风格。  
+4. **组合使用**：结合多个模板以创建更丰富的内容。  
 
-1. **Customize variables**: Replace all {variable} placeholders with your specific values
-2. **Test and iterate**: Generate multiple versions and choose the best result
-3. **Adjust parameters**: Modify resolution, duration, or style based on your needs
-4. **Combine with other skills**: Use multiple prompts together for comprehensive content
+## 适用场景：  
+- 电子商务产品视频和图片  
+- 营销活动和促销推广  
+- 社交媒体内容（Instagram、TikTok、YouTube Shorts）  
+- 产品发布与公告  
+- 季节性或节日主题内容  
+- 品牌故事讲述与用户评价  
 
-## Use Cases
+## 质量保证：  
+- 该模板已通过人工设计和策划。  
+- 专为电子商务场景优化。  
+- 经过 AI 视频/图像生成工具的测试。  
+- 语言表达清晰、效果显著。  
 
-Perfect for:
-- E-commerce product videos and images
-- Marketing campaigns and promotions
-- Social media content (Instagram, TikTok, YouTube Shorts)
-- Product launches and announcements
-- Seasonal and holiday campaigns
-- Brand storytelling and testimonials
+## 意见反馈：  
+如果您觉得该模板有用，请留下评论或分享您使用后的生成结果！  
 
-## Quality Assurance
-
-This prompt has been:
-- ✅ Manually designed and curated
-- ✅ Optimized for real-world e-commerce scenarios
-- ✅ Tested for AI video/image generation tools
-- ✅ Reviewed for clarity and effectiveness
-
-## Feedback
-
-If you find this prompt helpful, please leave a review or share your generated content!
-
----
-
-*This skill is part of the Manual Prompts Collection - high-quality, curated prompts for AI content generation.*
+*该模板属于“人工策划的提示集”——专为 AI 内容生成提供的高质量提示模板。*

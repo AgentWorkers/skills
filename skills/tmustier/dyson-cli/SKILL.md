@@ -1,29 +1,29 @@
 ---
 name: dyson-cli
-description: Control Dyson air purifiers, fans, and heaters via local MQTT. Use when asked to control Dyson devices, adjust fan speed, set temperature/heat, enable oscillation, or check room temperature/humidity. Requires being on the same WiFi network as the device.
+description: 通过本地 MQTT 协议控制 Dyson 空气净化器、风扇和加热器。当需要控制 Dyson 设备时，可以使用该功能来调节风扇转速、设置温度/加热模式、开启摆动功能，或查看房间内的温度/湿度。请确保您的设备与 Dyson 设备处于同一 WiFi 网络中。
 ---
 
 # Dyson CLI
 
-## Prerequisites
+## 先决条件
 
-1. CLI installed at `~/dyson-cli` with venv
-2. **Must be on same WiFi as the Dyson** - local MQTT only, won't work remotely
+1. CLI 已安装在 `~/dyson-cli` 目录下，并使用了 `venv` 环境。
+2. **必须与 Dyson 在同一个 WiFi 网络中**——仅支持本地 MQTT 操作，远程操作不可行。
 
-**Quick check:**
+**快速检查：**
 ```bash
 cd ~/dyson-cli && source .venv/bin/activate && dyson list --check
 ```
 
-## Commands
+## 命令
 
-### Power
+### 开/关电源
 ```bash
 dyson on                      # Turn on
 dyson off                     # Turn off
 ```
 
-### Fan Control
+### 风扇控制
 ```bash
 dyson fan speed 5             # Speed 1-10
 dyson fan speed auto          # Auto mode
@@ -32,14 +32,14 @@ dyson fan oscillate on -a 90  # 90° sweep (45/90/180/350)
 dyson fan oscillate off       # Disable oscillation
 ```
 
-### Heat Control (Hot+Cool models)
+### 加热/制冷模式控制（适用于 Hot+Cool 型号）
 ```bash
 dyson heat on                 # Enable heating
 dyson heat off                # Disable heating
 dyson heat target 22          # Set target temp (°C)
 ```
 
-### Other
+### 其他功能
 ```bash
 dyson night on                # Night mode on
 dyson night off               # Night mode off
@@ -47,15 +47,15 @@ dyson status                  # Show current state
 dyson status --json           # JSON output
 ```
 
-### Multiple Devices
+### 多个设备
 
-Use `-d <name>` to target a specific device:
+使用 `-d <设备名称>` 来指定特定设备：
 ```bash
 dyson on -d "Bedroom"
 dyson fan speed auto -d "Office"
 ```
 
-## Common Patterns
+## 常用操作模式
 
 ```bash
 # "Turn on the Dyson and set to auto"
@@ -71,11 +71,11 @@ dyson on && dyson fan speed 3 && dyson fan oscillate on -a 45
 dyson status --json | python3 -c "import sys,json; d=json.load(sys.stdin); print(f\"Temp: {d['temperature']-273:.1f}°C, Humidity: {d['humidity']}%\")"
 ```
 
-## Troubleshooting
+## 故障排除
 
-If commands fail:
-1. Check device is online: `dyson list --check`
-2. Ensure on same WiFi network as the Dyson
-3. Re-run setup if credentials expired: `dyson setup`
+如果命令执行失败：
+1. 检查设备是否已连接到网络：`dyson list --check`
+2. 确保设备与 Dyson 在同一个 WiFi 网络中。
+3. 如果认证信息已过期，请重新运行设置命令：`dyson setup`
 
-For installation, device setup, and full documentation, see [README.md](README.md).
+有关安装、设备设置及完整文档，请参阅 [README.md](README.md)。

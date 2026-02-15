@@ -1,6 +1,6 @@
 ---
 name: insta-cog
-description: "Full video production from a single prompt. Script, shoot, stitch, score — automatically. 30s to 4-minute Instagram Reels, TikToks, Stories, and carousels with consistent characters and agentic editing. The most advanced AI video suite for social media content, powered by #1 on DeepResearch Bench (Feb 2026)."
+description: "从单个提示开始，即可完成完整的视频制作流程：脚本编写、拍摄、剪辑、音效添加——全部自动化完成。无论是30秒到4分钟的Instagram视频、TikTok视频、Stories内容，还是轮播视频，都能确保角色表现一致且剪辑风格统一。这是目前最先进的AI视频制作工具，由DeepResearch Bench排名第一的算法驱动（2026年2月数据）。"
 metadata:
   openclaw:
     emoji: "📸"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Insta Cog - Full Video Production From a Single Prompt
+# Insta Cog - 仅需一个提示，即可完成完整的视频制作
 
-**Script, shoot, stitch, score — automatically.** The most advanced AI video suite, powered by #1 on DeepResearch Bench (Feb 2026).
+**脚本编写、拍摄、剪辑、配乐——全部自动化。** 这是当前最先进的AI视频制作工具，其在DeepResearch Bench上的排名（2026年2月）位列第一。
 
-No other AI platform generates multi-scene, production-ready Reels and TikToks from a single prompt. CellCog handles the entire pipeline: coherent script, scene-by-scene generation with consistent characters, background music, and automatic editing — 30 seconds to 4 minutes, ready to post. Plus carousels, Stories, and static posts.
+目前没有其他AI平台能够仅凭一个提示就生成多场景、可直接发布的Reels（短视频）和TikToks（短视频平台）。CellCog能够处理整个制作流程：从编写连贯的脚本、逐场景生成视频（确保角色一致）、添加背景音乐到自动剪辑——整个过程仅需30秒到4分钟，视频即可直接发布。此外，它还支持制作轮播图、Instagram Stories（动态帖子）和静态图片帖子。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备`cellcog`技能，以便进行SDK设置和API调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读`cellcog`技能的相关内容**，以了解如何进行SDK设置。该技能将向您展示该工具的强大功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,167 +40,162 @@ result = client.create_chat(
 
 ---
 
-## What Content You Can Create
+## 可制作的内容类型
 
-### Reels & TikToks
+### Reels（短视频）与TikToks（短视频平台）
 
-Short-form video that stops the scroll:
+这些短视频能够吸引用户的注意力，让观众停止滑动屏幕：
 
-- **Trending Format Videos**: "Create a 15-second Reel using the 'day in my life' format for a coffee shop"
-- **Product Showcases**: "Make a TikTok showing our new sneakers with trending transitions"
-- **Educational Clips**: "Create a 30-second explainer about compound interest for Gen Z"
-- **Behind-the-Scenes**: "Make a BTS Reel of a bakery kitchen with satisfying visuals"
-- **Transformation Videos**: "Create a before/after transformation Reel for a home renovation"
+- **热门格式的视频**：例如“用‘我的一天’为主题，制作一个15秒的Reel，内容可以是关于咖啡店的”。
+- **产品展示**：制作一个TikTok视频，展示我们的新款运动鞋，并使用流行的过渡效果。
+- **教育类视频**：为Z世代制作一个30秒的教育视频，解释复利的概念。
+- **幕后花絮**：制作一个关于面包店厨房的Reel，呈现令人愉悦的视觉效果。
+- **改造前后对比视频**：展示房屋翻新前后的变化。
 
-**Example prompt:**
-> "Create a 20-second Instagram Reel for a matcha cafe:
+**示例提示：**
+> “为一家抹茶咖啡店制作一个20秒的Instagram Reel：
 > 
-> Hook: 'POV: You found the best matcha in the city'
-> Show: Barista making ceremonial matcha, latte art, aesthetic interior shots
-> Vibe: Cozy, ASMR-style sounds, warm lighting
+> 开场：‘视角：你找到了这座城市最好的抹茶店’
+> 正文：咖啡师制作抹茶的过程、拿铁拉花的艺术效果、精美的室内场景
+> 音乐和氛围：轻松的Lo-Fi风格，温暖的灯光
 > 
-> End with: Shop name and 'link in bio'
+> 结尾：展示店铺名称，并在个人简介中附上链接
 > 
-> Trending audio style - chill lo-fi beats."
+> 音乐风格：轻松的Lo-Fi节奏。”
 
-### Instagram Carousels
+### Instagram轮播图
 
-Multi-slide content that educates and engages:
+这些多张图片的轮播图既具有教育性，又能吸引用户的注意力：
 
-- **Educational Carousels**: "Create a 10-slide carousel explaining how to start investing"
-- **Listicles**: "Make a '7 productivity hacks' carousel with bold graphics"
-- **Storytelling**: "Create a carousel telling our brand's origin story"
-- **Tips & Tricks**: "Make a carousel with 5 Photoshop shortcuts every designer needs"
-- **Infographics**: "Create a data visualization carousel about climate change"
+- **教育类轮播图**：制作一个10张图片的轮播图，讲解如何开始投资。
+- **清单类内容**：制作一个包含7个高效工作技巧的轮播图，使用醒目的图形。
+- **故事类内容**：制作一个轮播图，讲述我们品牌的起源故事。
+- **小贴士与技巧**：制作一个包含5个设计师必备的Photoshop快捷方式的轮播图。
+- **信息图**：制作一个关于气候变化的数据可视化轮播图。
 
-**Example prompt:**
-> "Create a 7-slide Instagram carousel: '7 Morning Habits of Successful People'
+**示例提示：**
+> “制作一个7张图片的Instagram轮播图：‘成功人士的7个早晨习惯’”
 > 
-> Slide 1: Hook - 'Steal these morning habits'
-> Slides 2-6: One habit each with icon and brief explanation
-> Slide 7: CTA - 'Save this & follow for more'
+> 第1张图片：开场：‘借鉴这些早晨习惯’
+> 接下来的5张图片：分别介绍一个习惯，并附上图标和简要说明
+> 第7张图片：呼吁行动：‘保存此内容并关注我们以获取更多信息’
 > 
-> Style: Clean, modern, muted earth tones
-> Font: Bold sans-serif for headlines"
+> 风格：简洁、现代，采用柔和的自然色调
+> 标题字体：醒目的无衬线字体**
 
-### Instagram Posts
+### Instagram静态图片帖子
 
-Single-image content that pops:
+这些单张图片的帖子能够迅速吸引用户的注意：
 
-- **Quote Posts**: "Create an inspirational quote graphic with modern design"
-- **Announcement Posts**: "Make a product launch announcement post"
-- **Meme-Style Posts**: "Create a relatable meme for the marketing industry"
-- **Aesthetic Shots**: "Generate a lifestyle image for a wellness brand"
-- **Infographic Posts**: "Create a single-image infographic about sleep statistics"
+- **名言类帖子**：制作一个带有现代设计的励志名言图片。
+- **公告类帖子**：发布产品发布的相关信息。
+- **模因类帖子**：为营销行业制作一个具有共鸣力的模因图片。
+- **美学类图片**：为健康品牌生成一张符合其品牌形象的生活方式图片。
+- **信息图类帖子**：制作一张关于睡眠统计数据的单张图片信息图。
 
-### Stories
+### Instagram Stories（动态帖子）
 
-Ephemeral content that connects:
+这些短暂的动态帖子能够增强用户之间的互动：
 
-- **Poll Stories**: "Create a Story template with engagement polls"
-- **Q&A Stories**: "Design a 'Ask me anything' Story template"
-- **Countdown Stories**: "Make a product launch countdown Story sequence"
-- **Behind-the-Scenes**: "Create BTS Story content for a photoshoot"
+- **投票类Stories**：制作一个包含互动投票的Stories模板。
+- **问答类Stories**：设计一个“问我任何事”的Stories模板。
+- **倒计时类Stories**：制作一个产品发布的倒计时序列。
+- **幕后花絮类Stories**：为摄影活动制作BTS风格的Stories内容。
 
 ---
 
-## Platform-Specific Formats
+## 平台特定格式
 
-### Instagram Specs
+### Instagram的格式要求
 
-| Format | Dimensions | Duration |
+| 格式 | 尺寸 | 时长 |
 |--------|------------|----------|
-| Feed Post | 1080×1080 (square) or 1080×1350 (portrait) | - |
-| Carousel | 1080×1080 or 1080×1350 | Up to 10 slides |
-| Reels | 1080×1920 (9:16) | 15-90 seconds |
-| Stories | 1080×1920 (9:16) | 15 seconds each |
+| 常规帖子 | 1080×1080（方形）或1080×1350（竖屏） | - |
+| 轮播图 | 1080×1080或1080×1350 | 最多10张图片 |
+| Reels | 1080×1920（9:16比例） | 15秒至90秒 |
+| Stories | 1080×1920（9:16比例） | 每条15秒 |
 
-### TikTok Specs
+### TikTok的格式要求
 
-| Format | Dimensions | Duration |
+| 格式 | 尺寸 | 时长 |
 |--------|------------|----------|
-| Video | 1080×1920 (9:16) | 15 sec - 10 min |
-| Photo Mode | 1080×1920 | Up to 35 images |
+| 视频 | 1080×1920（9:16比例） | 15秒至10分钟 |
+| 照片模式 | 1080×1920 | 最多35张图片 |
 
 ---
 
-## Content Styles
+## 内容风格
 
-CellCog can create content in various aesthetics:
+CellCog可以生成多种风格的内容：
 
-| Style | Best For | Characteristics |
+| 风格 | 适合的对象 | 特点 |
 |-------|----------|-----------------|
-| **Clean Minimal** | Professional brands, wellness | White space, muted colors, simple typography |
-| **Bold & Bright** | Youth brands, entertainment | Saturated colors, dynamic layouts, playful |
-| **Dark Aesthetic** | Tech, gaming, luxury | Dark backgrounds, neon accents, edgy |
-| **Organic/Natural** | Food, lifestyle, eco brands | Earth tones, textures, warm lighting |
-| **Y2K/Retro** | Fashion, music, Gen Z | Nostalgic elements, gradients, playful chaos |
-| **Corporate Modern** | B2B, fintech, SaaS | Professional, structured, trustworthy |
+| **简洁简约** | 专业品牌、健康相关内容 | 空白较多、色彩柔和、排版简单 |
+| **鲜明明亮** | 青少年品牌、娱乐类内容 | 颜色饱和度高、布局动态、风格活泼 |
+| **暗黑风格** | 科技、游戏、奢侈品品牌 | 背景较暗、使用霓虹色元素、风格前卫 |
+| **自然有机** | 食品、生活方式、环保品牌 | 采用自然色调、注重质感、灯光温暖 |
+| **Y2K/复古风格** | 时尚、音乐、Z世代相关内容 | 带有怀旧元素、使用渐变效果、风格独特 |
+| **企业现代风格** | B2B企业、金融科技、SaaS服务 | 专业感强、结构清晰、值得信赖 |
 
 ---
 
-## Chat Mode for Social Content
+## 社交媒体内容的创建模式
 
-| Scenario | Recommended Mode |
+| 使用场景 | 推荐的模式 |
 |----------|------------------|
-| Single posts, Stories, standard Reels | `"agent"` |
-| Multi-part campaigns, brand storytelling series, complex video concepts | `"agent team"` |
+| 单个帖子、Stories、常规Reels | 使用“agent”模式 |
+| 多部分系列内容、品牌故事系列、复杂的视频项目 | 使用“agent team”模式 |
 
-**Use `"agent"` for most social content.** Individual posts, Reels, and carousels execute well in agent mode.
+**大多数社交媒体内容适合使用“agent”模式**。单个帖子、Reels和轮播图使用“agent”模式效果最佳。
 
-**Use `"agent team"` for campaign-level thinking** - when you need a cohesive content strategy across multiple pieces or complex creative direction.
-
----
-
-## Example Prompts
-
-**TikTok product video:**
-> "Create a 15-second TikTok for wireless earbuds:
-> 
-> Hook (first 2 sec): 'Wait, these are only $30?!'
-> Demo: Show features - noise cancellation, case, wearing them
-> Social proof: 'Over 10,000 5-star reviews'
-> CTA: 'Link in bio'
-> 
-> Fast cuts, trending transition style, upbeat music vibe."
-
-**Educational carousel:**
-> "Create an Instagram carousel: 'How to negotiate your salary'
-> 
-> Target: Young professionals, first job negotiation
-> 
-> Slides:
-> 1. Hook: 'I got a $15K raise using these 5 steps'
-> 2. Research market rates
-> 3. Document your wins
-> 4. Practice the conversation
-> 5. Ask for more than you want
-> 6. Get it in writing
-> 7. CTA: Save & share
-> 
-> Bold, confident design. Blue and white."
-
-**Aesthetic brand post:**
-> "Create an Instagram post for a luxury candle brand:
-> 
-> Show: A lit candle in a minimalist setting, warm golden hour lighting
-> Vibe: Cozy, aspirational, 'that girl' aesthetic
-> Text overlay: None (let the image speak)
-> 
-> Should feel like it belongs on a curated feed."
+**当需要跨多个内容片段制定统一的内容策略或进行复杂的创意指导时，建议使用“agent team”模式。**
 
 ---
 
-## Tips for Better Social Content
+## 示例提示
 
-1. **Lead with the hook**: First 1-2 seconds determine if people keep watching. Make it count.
+**TikTok产品视频：**
+> “为无线耳机制作一个15秒的TikTok视频：
+> 
+> 开场（前2秒）：‘等等，这些耳机只要30美元？！’
+> 展示功能：降噪效果、耳机外观、佩戴方式
+> 用户评价：‘超过10,000条五星评价’
+> 呼吁行动：‘在个人简介中附上链接’
+> 
+> 使用快速剪辑、流行的过渡效果、欢快的音乐风格。**
 
-2. **Know the platform**: TikTok is raw and trendy. Instagram is polished and aesthetic. Same message, different execution.
+**教育类轮播图：**
+> “制作一个Instagram轮播图：‘如何谈判你的薪资’”
+> 
+> 目标受众：初次求职的年轻人
+> 
+> 图片内容：
+> 1. 开场：‘通过这5个步骤，我获得了1.5万美元的加薪’
+> 2. 研究市场薪资水平
+> 3. 记录自己的谈判过程
+> 4. 练习谈判技巧
+> 5. 要求比你期望的更多
+> 6. 将结果写下来
+> 7. 呼吁行动：‘保存此内容并关注我们’
+> 
+> 设计风格：鲜明、自信，采用蓝白配色。**
 
-3. **Specify the vibe**: "Cozy autumn aesthetic" or "high-energy hype" gives CellCog clear creative direction.
+**美学类品牌帖子：**
+> “为一家高端蜡烛品牌制作一个Instagram帖子：
+> 
+> 展示内容：在极简环境中点燃的蜡烛，温暖的金色光线
+> 氛围：温馨、充满吸引力，符合“理想女孩”的审美风格
+> 文字说明：不添加文字（让图片本身传达信息）
+> 
+> 这张图片应该适合出现在精心策划的Instagram动态中。**
 
-4. **Include CTAs**: "Save this", "Follow for more", "Link in bio" - tell people what to do next.
+---
 
-5. **Reference trends**: Mention specific formats ("Get ready with me", "POV", "storytime") for platform-native content.
+## 制作更好社交媒体内容的建议
 
-6. **Think mobile-first**: All content will be viewed on phones. Bold text, clear visuals, vertical format.
+1. **用吸引人的开头吸引观众**：前1-2秒的内容决定了观众是否会继续观看。这部分内容至关重要。
+2. **了解平台特点**：TikTok注重原始性和时尚感，而Instagram则更注重精致和美学。同样的内容，不同的平台需要不同的呈现方式。
+3. **明确风格**：指定内容的具体氛围（例如“温馨的秋日风格”或“充满活力的氛围”），为CellCog提供清晰的创作方向。
+4. **添加呼吁行动的提示**：如“保存此内容”、“关注我们以获取更多信息”、“在个人简介中附上链接”，告诉用户下一步该做什么。
+5. **参考平台特点**：根据平台的特点使用特定的格式（如“使用这个模板”、“采用第一人称视角”、“故事时间”等）。
+6. **以手机端用户为中心进行设计**：所有内容都会在手机上展示，因此要确保文字醒目、视觉效果清晰、采用竖屏格式。

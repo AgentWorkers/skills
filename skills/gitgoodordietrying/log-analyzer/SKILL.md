@@ -1,26 +1,26 @@
 ---
 name: log-analyzer
-description: Parse, search, and analyze application logs across formats. Use when debugging from log files, setting up structured logging, analyzing error patterns, correlating events across services, parsing stack traces, or monitoring log output in real time.
+description: 解析、搜索并分析各种格式的应用程序日志。适用于从日志文件中进行调试、设置结构化日志记录、分析错误模式、跨服务关联事件、解析堆栈跟踪，或实时监控日志输出等场景。
 metadata: {"clawdbot":{"emoji":"📋","requires":{"anyBins":["grep","awk","jq","python3"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Log Analyzer
+# 日志分析器
 
-Parse, search, and debug from application logs. Covers plain text logs, structured JSON logs, stack traces, multi-service correlation, and real-time monitoring.
+用于解析、搜索和调试应用程序日志。支持处理纯文本日志、结构化JSON日志、堆栈跟踪信息，以及实现多服务间的日志关联和实时监控功能。
 
-## When to Use
+## 使用场景
 
-- Debugging application errors from log files
-- Searching logs for specific patterns, errors, or request IDs
-- Parsing and analyzing stack traces
-- Setting up structured logging (JSON) in applications
-- Correlating events across multiple services or log files
-- Monitoring logs in real time during development
-- Generating error frequency reports or summaries
+- 从日志文件中调试应用程序错误
+- 在日志中搜索特定模式、错误或请求ID
+- 解析和分析堆栈跟踪信息
+- 在应用程序中配置结构化日志记录（JSON格式）
+- 关联多个服务或日志文件中的事件
+- 在开发过程中实时监控日志
+- 生成错误频率报告或摘要
 
-## Quick Search Patterns
+## 快速搜索模式
 
-### Find errors and exceptions
+### 查找错误和异常
 
 ```bash
 # All errors in a log file
@@ -40,7 +40,7 @@ grep -oP '(?:Error|Exception): \K[^\n]+' app.log | sort | uniq -c | sort -rn | h
 awk '$9 >= 500' access.log
 ```
 
-### Search by request or correlation ID
+### 按请求ID或关联ID搜索
 
 ```bash
 # Trace a single request across log entries
@@ -53,7 +53,7 @@ grep -r 'req-abc123' /var/log/myapp/
 grep -rH 'correlation-id-xyz' /var/log/service-a/ /var/log/service-b/ /var/log/service-c/
 ```
 
-### Time-range filtering
+### 时间范围过滤
 
 ```bash
 # Between two timestamps (ISO format)
@@ -66,9 +66,9 @@ tail -1000 app.log | grep -i error
 awk -v start="$(date -d '30 minutes ago' '+%Y-%m-%dT%H:%M')" '$1 >= start' app.log
 ```
 
-## JSON / Structured Logs
+## JSON / 结构化日志
 
-### Parse with jq
+### 使用jq进行解析
 
 ```bash
 # Pretty-print JSON logs
@@ -96,7 +96,7 @@ cat app.log | jq -r 'select(.level == "error") | .message' | sort | uniq -c | so
 cat app.log | jq -r 'select(.duration != null) | .duration' | awk '{sum+=$1; count++; if($1>max)max=$1} END {print "count="count, "avg="sum/count, "max="max}'
 ```
 
-### Parse mixed-format logs (JSON lines mixed with plain text)
+### 解析混合格式的日志（JSON行与纯文本混合）
 
 ```bash
 # Extract only valid JSON lines
@@ -108,9 +108,9 @@ done < app.log
 grep '^\s*{' app.log | jq '.'
 ```
 
-## Stack Trace Analysis
+## 堆栈跟踪分析
 
-### Extract and deduplicate stack traces
+### 提取并去重堆栈跟踪信息
 
 ```bash
 # Extract Java/Kotlin stack traces (starts with Exception/Error, followed by \tat lines)
@@ -126,7 +126,7 @@ awk '/Error:/{trace=$0; while(getline && /^    at /) trace=trace"\n"$0; print tr
 awk '/Exception|Error:/{cause=$0} /^\tat|^    at /{next} cause{print cause; cause=""}' app.log | sort | uniq -c | sort -rn
 ```
 
-### Python traceback parser
+### 使用Python进行堆栈跟踪解析
 
 ```python
 #!/usr/bin/env python3
@@ -170,9 +170,9 @@ if __name__ == '__main__':
         print(f"  {count:4d}x  {cause}")
 ```
 
-## Real-Time Monitoring
+## 实时监控
 
-### Tail and filter
+### 监控日志流并过滤数据
 
 ```bash
 # Follow log file, highlight errors in red
@@ -198,7 +198,7 @@ tail -f app.log | while IFS= read -r line; do
 done
 ```
 
-### Watch for specific patterns and alert
+### 监控特定模式并触发警报
 
 ```bash
 # Beep on error (terminal bell)
@@ -212,9 +212,9 @@ tail -f app.log | grep --line-buffered -i 'error' | while read line; do
 done | uniq -c
 ```
 
-## Log Format Parsing
+## 日志格式解析
 
-### Common access log (Apache/Nginx)
+### 常见访问日志（Apache/Nginx）
 
 ```bash
 # Parse fields: IP, date, method, path, status, size
@@ -239,7 +239,7 @@ awk '{print $9}' access.log | sort | uniq -c | sort -rn
 awk '$9 >= 400 {print $9, $7}' access.log | sort | uniq -c | sort -rn | head -20
 ```
 
-### Custom delimited logs
+### 自定义分隔符的日志文件
 
 ```bash
 # Pipe-delimited: timestamp|level|service|message
@@ -258,9 +258,9 @@ with open(sys.argv[1]) as f:
 " app.csv
 ```
 
-## Setting Up Structured Logging
+## 配置结构化日志记录
 
-### Node.js (pino — fast JSON logger)
+### Node.js（使用pino作为快速JSON日志记录工具）
 
 ```javascript
 // npm install pino
@@ -283,7 +283,7 @@ reqLogger.info('Processing order');
 reqLogger.error({ err }, 'Order failed');
 ```
 
-### Python (structlog)
+### Python（使用structlog）
 
 ```python
 # pip install structlog
@@ -305,7 +305,7 @@ logger.error("request_failed", request_id="req-abc", error=str(e))
 # Output: {"event":"user_login","user_id":"u123","ip":"1.2.3.4","level":"info","timestamp":"2026-02-03T12:00:00Z","service":"my-api"}
 ```
 
-### Go (zerolog)
+### Go（使用zerolog）
 
 ```go
 import (
@@ -327,9 +327,9 @@ log.Info().Str("userId", "u123").Msg("User logged in")
 log.Error().Err(err).Str("requestId", reqID).Msg("Request failed")
 ```
 
-## Error Pattern Reports
+## 错误模式报告
 
-### Generate error frequency report
+### 生成错误频率报告
 
 ```bash
 #!/bin/bash
@@ -369,7 +369,7 @@ grep -i 'error\|exception' "$LOG" | \
   sort -u | head -10
 ```
 
-### JSON log error report with Python
+### 使用Python生成JSON格式的错误报告
 
 ```python
 #!/usr/bin/env python3
@@ -431,9 +431,9 @@ if __name__ == '__main__':
     analyze_logs(sys.argv[1])
 ```
 
-## Multi-Service Log Correlation
+## 多服务日志关联
 
-### Merge and sort logs from multiple services
+### 合并并排序来自多个服务的日志
 
 ```bash
 # Merge multiple log files, sort by timestamp
@@ -449,7 +449,7 @@ for f in service-*.log; do
 done | jq -s 'sort_by(.timestamp)[]'
 ```
 
-### Trace a request across services
+### 跟踪跨服务的请求流程
 
 ```bash
 # Find all log entries for a correlation/request ID across all services
@@ -462,9 +462,9 @@ for f in /var/log/services/*.log; do
 done | jq -s 'sort_by(.timestamp)[]'
 ```
 
-## Log Rotation and Large Files
+## 日志轮换与大文件处理
 
-### Working with rotated/compressed logs
+### 处理已轮换或压缩的日志
 
 ```bash
 # Search across rotated logs (including .gz)
@@ -477,7 +477,7 @@ zgrep -i 'error' /var/log/app.log /var/log/app.log.1
 zcat app.log.3.gz | grep 'ERROR' | gzip > errors-day3.gz
 ```
 
-### Sampling large files
+### 从大文件中采样数据
 
 ```bash
 # Random sample of 1000 lines
@@ -490,12 +490,12 @@ awk 'NR % 100 == 0' huge.log > sample.log
 { head -500 huge.log; echo "--- TRUNCATED ---"; tail -500 huge.log; } > excerpt.log
 ```
 
-## Tips
+## 使用技巧
 
-- Always search for a **request ID or correlation ID** first — it narrows the haystack faster than timestamps or error messages.
-- Use `--line-buffered` with `grep` when piping from `tail -f` so output isn't delayed by buffering.
-- Normalize IDs and numbers before grouping errors (`sed 's/[0-9a-f]\{8,\}/ID/g'`) to collapse duplicates that differ only by ID.
-- For JSON logs, `jq` is indispensable. Install it if it's not available: `apt install jq` / `brew install jq`.
-- Structured logging (JSON) is always worth the setup cost. It makes every analysis task easier: filtering, grouping, correlation, and alerting all become `jq` one-liners.
-- When debugging a production issue: get the **time window** and **affected user/request ID** first, then filter logs to that scope before reading anything.
-- `awk` is faster than `grep | sort | uniq -c` pipelines for large files. Use it for counting and aggregation.
+- 首先始终搜索**请求ID或关联ID**——这比使用时间戳或错误信息能更快地定位问题。
+- 当从`tail -f`命令输出日志时，使用`--line-buffered`选项可以避免输出延迟。
+- 在对错误进行分组之前，先使用`sed 's/[0-9a-f]\{8,\}/ID/g`命令对ID和数字进行规范化处理，以消除仅因ID不同而产生的重复记录。
+- 对于JSON日志，`jq`是必不可少的工具。如果尚未安装，请使用`apt install jq`或`brew install jq`进行安装。
+- 配置结构化日志记录（JSON格式）是非常值得的。它能让所有分析任务变得更加简单：过滤、分组、关联和触发警报都可以通过`jq`的一行命令完成。
+- 在调试生产环境中的问题时，首先确定**时间范围**和**受影响的用户/请求ID**，然后再在该范围内过滤日志。
+- 对于大文件，`awk`比`grep | sort | uniq -c`的组合命令更快，适用于计数和聚合操作。

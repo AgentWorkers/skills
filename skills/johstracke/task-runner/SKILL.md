@@ -1,141 +1,109 @@
 ---
 name: task-runner
-description: Manage tasks and projects across sessions with persistent task tracking. Use when you need to organize work, track progress, and maintain todo lists that persist between conversations. Features: add tasks with projects and priorities, list pending/completed tasks, mark tasks complete, export projects to markdown. Security: file exports are restricted to safe directories only (workspace, home, /tmp). Perfect for multi-session projects, experiment tracking, and maintaining productivity.
+description: **跨会话管理任务和项目**：具备持久化的任务跟踪功能，帮助您更好地组织工作、追踪进度，并在会话之间保持待办事项列表的一致性。**主要功能**：  
+- 可添加带有项目关联和优先级的任务；  
+- 列出待办/已完成的任务；  
+- 标记任务为已完成；  
+- 将项目导出为 Markdown 格式。  
+
+**安全性保障**：文件导出仅限于安全目录（如工作区、个人文件夹或 `/tmp`）。  
+**适用场景**：非常适合处理需要跨多个会话进行的项目、实验记录或提升工作效率的场景。
 ---
 
-# Task Runner
+# 任务运行器（Task Runner）
 
-Manage tasks and projects across sessions with persistent tracking.
+跨会话管理任务和项目，并提供持续的跟踪功能。
 
-## Quick Start
+## 快速入门
 
-### Add a task
+### 添加任务
 ```bash
 task_runner.py add "<description>" [project] [priority]
 ```
 
-### List all tasks
+### 列出所有任务
 ```bash
 task_runner.py list
 ```
 
-### List tasks for a specific project
+### 列出特定项目的任务
 ```bash
 task_runner.py list "<project>"
 ```
 
-### Complete a task
+### 完成任务
 ```bash
 task_runner.py complete <task_id>
 ```
 
-### Change task priority
+### 更改任务优先级
 ```bash
 task_runner.py priority <task_id> <low|medium|high>
 ```
 
-### Export project to markdown
+### 将项目导出为Markdown格式
 ```bash
 task_runner.py export "<project>" "<output_file>"
 ```
 
-## Features
+## 主要功能
 
-- **Persistent storage** - Tasks survive session restarts (stored in `~/.openclaw/workspace/tasks_db.json`)
-- **Project organization** - Group tasks by project for better organization
-- **Priority levels** - low, medium (default), high
-- **Status tracking** - pending vs completed with timestamps
-- **Flexible filtering** - View all tasks or filter by project
-- **Markdown export** - Export projects to clean markdown for sharing
+- **持久化存储**：任务数据在会话重启后仍可保留（存储在 `~/.openclaw/workspace/tasks_db.json` 文件中）
+- **项目组织**：按项目对任务进行分类，便于管理
+- **优先级设置**：低、中（默认）、高
+- **状态跟踪**：显示任务的状态（待办或已完成，并附带时间戳）
+- **灵活的过滤**：可以查看所有任务或按项目筛选任务
+- **Markdown导出**：可将项目内容导出为清晰的Markdown格式以便分享
 
-## Security
+## 安全性
 
-### Path Validation (v1.0.1+)
-The `export` function validates output paths to prevent malicious writes:
-- ✅ Allowed: `~/.openclaw/workspace/`, `/tmp/`, and home directory
-- ❌ Blocked: System paths (`/etc/`, `/usr/`, `/var/`, etc.)
-- ❌ Blocked: Sensitive dotfiles (`~/.bashrc`, `~/.ssh`, etc.)
+### 路径验证（v1.0.1及以上版本）
+`export` 函数会对输出路径进行验证，以防止恶意写入：
+- ✅ 允许的路径：`~/.openclaw/workspace/`、`/tmp/` 和用户主目录
+- ❌ 禁止的路径：系统路径（如 `/etc/`、`/usr/`、`/var/` 等）
+- ❌ 禁止的路径：敏感的配置文件（如 `~/.bashrc`、`~/.ssh` 等）
 
-This prevents prompt injection attacks that could attempt to write to system files for privilege escalation.
+这有助于防止通过提示框注入攻击来尝试修改系统文件，从而提升系统权限。
 
-### Task Storage
-The task storage is JSON-based and only writes to `~/.openclaw/workspace/tasks_db.json`.
+### 任务存储方式
+任务数据以JSON格式存储，仅写入 `~/.openclaw/workspace/tasks_db.json` 文件中。
 
-## Usage Patterns
+## 使用场景
 
-### For multi-session projects
-```bash
-# Add experiment tasks
-task_runner.py add "Setup development environment" "project-x" "high"
-task_runner.py add "Write initial tests" "project-x" "medium"
-task_runner.py add "Document API endpoints" "project-x" "low"
+- **多会话项目**：支持在不同会话中管理项目
+- **自主代理工作流程**：在多个会话中跟踪自己的任务
+- **冲刺计划**：用于规划开发任务
 
-# List project progress
-task_runner.py list "project-x"
+## 任务优先级
 
-# Complete tasks as you go
-task_runner.py complete 1
-task_runner.py complete 2
-```
-
-### For autonomous agent workflows
-Track your own tasks across sessions:
-```bash
-# Plan experiments
-task_runner.py add "Build and publish skill" "income-experiments" "high"
-task_runner.py add "Test content pipeline" "income-experiments" "medium"
-
-# Update priorities based on learning
-task_runner.py priority 2 "high"
-
-# Export progress reports
-task_runner.py export "income-experiments" "./progress-report.md"
-```
-
-### For sprint planning
-```bash
-# Plan week's work
-task_runner.py.py add "Build feature X" "sprint-5" "high"
-task_runner.py.py add "Fix bug Y" "sprint-5" "high"
-task_runner.py.py add "Update documentation" "sprint-5" "medium"
-
-# Review progress
-task_runner.py list "sprint-5"
-
-# Export for standup
-task_runner.py export "sprint-5" "./standup.md"
-```
-
-## Task Priorities
-
-| Priority | Emoji | When to Use |
+| 优先级 | 表情符号 | 使用场景 |
 |----------|-------|-------------|
-| high | 🔴 | Blocking issues, urgent, must do now |
-| medium | 🟡 | Normal work, do soon | 
-| low | 🟢 | Nice to have, backlog items |
+| 高       | 🔴 | 需立即处理的关键问题 |
+| 中       | 🟡 | 常规工作，建议尽快完成 |
+| 低       | 🟢 | 可选任务，属于待办事项 |
 
-## Output Format
+## 输出格式
 
-Task listing shows:
-- Status icon (✅ completed, ⏳ pending)
-- Project name
-- Task ID number
-- Priority emoji
-- Creation date
-- Task description
-- Completion date (if completed)
+任务列表包含以下信息：
+- 状态图标（✅ 已完成，⏳ 待处理）
+- 项目名称
+- 任务ID
+- 优先级表情符号
+- 创建日期
+- 任务描述
+- 完成日期（如果已完成）
 
-## Export Format
+## 导出格式
 
-Markdown export includes:
-- Project title with task counts
-- Pending tasks section
-- Completed tasks section (most recent first)
-- Task IDs, priorities, and timestamps
+Markdown导出内容包括：
+- 项目标题及任务数量
+- 待办任务列表
+- 已完成任务列表（按完成时间排序）
+- 任务ID、优先级及完成时间戳
 
-## Examples
+## 示例
 
-### Managing a coding project
+- **管理编码项目**
 ```bash
 # Setup
 task_runner.py add "Clone repository" "my-project" "high"
@@ -151,7 +119,7 @@ task_runner.py complete 2
 task_runner.py export "my-project" "./my-project-tasks.md"
 ```
 
-### Tracking autonomous agent experiments
+- **跟踪自主代理实验**
 ```bash
 # Plan experiments
 task_runner.py add "Experiment 1: Publish skills" "autonomous-income" "high"
@@ -167,7 +135,7 @@ task_runner.py add "Experiment 2a: Research tools without API keys" "autonomous-
 task_runner.py priority 2 "low"
 ```
 
-### Daily task management
+- **日常任务管理**
 ```bash
 # Plan the day
 task_runner.py add "Review pull requests" "daily" "high"
@@ -181,17 +149,17 @@ task_runner.py list
 task_runner.py export "daily" "./$(date +%Y-%m-%d)-tasks.md"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use meaningful project names** - `income-experiments` not `ideas`
-2. **Set priorities consistently** - helps with focus
-3. **Mark tasks complete promptly** - keeps list clean
-4. **Export before major changes** - backup progress
-5. **Review and clean up** - archive old projects regularly
+1. **使用有意义的项目名称**：例如使用 `income-experiments` 而不是 `ideas`
+2. **统一设置优先级**：有助于保持任务管理的清晰性
+3. **及时标记任务完成状态**：保持任务列表的整洁
+4. **在重大修改前进行导出**：备份项目进度
+5. **定期审查和清理**：定期归档旧项目
 
-## Integration with Other Skills
+## 与其他工具的集成
 
-Combine with **research-assistant** for complete project management:
-- Use `research-assistant` for notes and knowledge
-- Use `task-runner` for actionable tasks
-- Export both to create comprehensive project docs
+**与 `research-assistant` 结合使用**：实现全面的项目管理：
+- 使用 `research-assistant` 记录项目笔记和知识
+- 使用 `task-runner` 管理具体任务
+- 将两者导出后生成完整的项目文档

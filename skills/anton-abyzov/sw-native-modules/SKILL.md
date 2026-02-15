@@ -1,38 +1,38 @@
 ---
 name: native-modules
-description: React Native native modules with New Architecture, Turbo Modules, JSI, and Codegen. Use for bridging JS to Swift/Kotlin native code.
+description: React Native的本地模块采用了新架构（New Architecture）、Turbo Modules、JSI（JavaScript Interpreter）以及Codegen技术。这些技术用于将JavaScript代码与Swift或Kotlin编写的本地代码进行桥接（即实现两者之间的交互）。
 ---
 
-# Native Modules Expert (New Architecture)
+# 本地模块专家（新架构）
 
-Specialized in React Native native module integration with New Architecture. Expert in Turbo Modules, JSI, Fabric, Codegen, and modern native development patterns. Use Context7 to fetch current React Native documentation for version-specific details.
+专注于将第三方本地模块集成到React Native的新架构中。精通Turbo Modules、JSI、Fabric、Codegen以及现代的本地开发模式。可以使用Context7来获取特定版本的React Native官方文档以获取详细信息。
 
-## What I Know
+## 我的专长
 
-### Native Module Fundamentals
+### 本地模块基础
 
-**What Are Native Modules?**
-- Direct interface between JavaScript and native platform code
-- Access platform-specific APIs (Bluetooth, NFC, HealthKit, etc.)
-- Performance-critical operations via JSI
-- Integration with existing native SDKs
+**什么是本地模块？**
+- JavaScript与平台原生代码之间的直接接口
+- 访问平台特定的API（如蓝牙、NFC、HealthKit等）
+- 通过JSI执行对性能要求较高的操作
+- 与现有的原生SDK集成
 
-**New Architecture (Default in RN 0.76+)**
-- **JSI** (JavaScript Interface): Direct JS ↔ Native communication (no JSON serialization)
-- **Turbo Modules**: Lazy-loaded, type-safe native modules with Codegen
-- **Fabric**: New concurrent rendering engine
-- **Codegen**: TypeScript → Native type generation
+**新架构（RN 0.76+ 默认配置）**
+- **JSI**（JavaScript Interface）：实现JavaScript与原生代码之间的直接通信（无需JSON序列化）
+- **Turbo Modules**：使用Codegen技术实现延迟加载、类型安全的本地模块
+- **Fabric**：新的并发渲染引擎
+- **Codegen**：将TypeScript代码转换为原生代码
 
-**Key Benefits of New Architecture**
-- 10-100x faster than old bridge
-- Synchronous method calls possible
-- Type safety across JS/Native boundary
-- Lazy module loading (better startup)
-- Concurrent rendering with Fabric
+**新架构的主要优势**
+- 性能提升10到100倍
+- 支持同步方法调用
+- 在JavaScript与原生代码之间保持类型安全
+- 模块延迟加载（提升应用启动速度）
+- 利用Fabric实现并发渲染
 
-### Using Third-Party Native Modules
+### 使用第三方本地模块
 
-**Installation with Autolinking**
+**通过Autolinking进行安装**
 ```bash
 # Install module
 npm install react-native-camera
@@ -45,13 +45,13 @@ npm run ios
 npm run android
 ```
 
-**Manual Linking (Legacy)**
+**手动链接（旧版本）**
 ```bash
 # React Native < 0.60 (rarely needed now)
 react-native link react-native-camera
 ```
 
-**Expo Integration**
+**与Expo的集成**
 ```bash
 # For Expo managed workflow, use config plugins
 npx expo install react-native-camera
@@ -74,10 +74,9 @@ npx expo install react-native-camera
 eas build --profile development --platform all
 ```
 
-### Creating Custom Native Modules
+### 创建自定义本地模块
 
-**iOS Native Module (Swift)**
-
+**iOS本地模块（Swift）**
 ```swift
 // RCTCalendarModule.swift
 import Foundation
@@ -113,6 +112,7 @@ class CalendarModule: NSObject {
 }
 ```
 
+**Android本地模块（Kotlin）**
 ```objectivec
 // RCTCalendarModule.m (Bridge file)
 #import <React/RCTBridgeModule.h>
@@ -128,71 +128,7 @@ RCT_EXTERN_METHOD(findEvents:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 @end
 ```
 
-**Android Native Module (Kotlin)**
-
-```kotlin
-// CalendarModule.kt
-package com.myapp
-
-import com.facebook.react.bridge.*
-
-class CalendarModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
-
-    override fun getName(): String {
-        return "CalendarModule"
-    }
-
-    @ReactMethod
-    fun createEvent(name: String, location: String, date: Double) {
-        // Native implementation
-        println("Creating event: $name at $location")
-    }
-
-    @ReactMethod
-    fun getEvents(callback: Callback) {
-        val events = WritableNativeArray().apply {
-            pushString("Event 1")
-            pushString("Event 2")
-            pushString("Event 3")
-        }
-        callback.invoke(null, events)
-    }
-
-    @ReactMethod
-    fun findEvents(promise: Promise) {
-        try {
-            val events = fetchEventsFromNativeAPI()
-            promise.resolve(events)
-        } catch (e: Exception) {
-            promise.reject("ERROR", e.message, e)
-        }
-    }
-}
-```
-
-```kotlin
-// CalendarPackage.kt
-package com.myapp
-
-import com.facebook.react.ReactPackage
-import com.facebook.react.bridge.NativeModule
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.uimanager.ViewManager
-
-class CalendarPackage : ReactPackage {
-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-        return listOf(CalendarModule(reactContext))
-    }
-
-    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return emptyList()
-    }
-}
-```
-
-**JavaScript Usage**
-
+**JavaScript使用方法**
 ```javascript
 // CalendarModule.js
 import { NativeModules } from 'react-native';
@@ -247,12 +183,11 @@ function MyComponent() {
 }
 ```
 
-### Turbo Modules (New Architecture - Default in RN 0.76+)
+### Turbo Modules（新架构 - RN 0.76+ 默认配置）
 
-**Creating a Turbo Module with Codegen**
+**使用Codegen创建Turbo模块**
 
-Step 1: Create the TypeScript spec (source of truth for types):
-
+步骤1：创建TypeScript规范文件（类型定义的来源）：
 ```typescript
 // specs/NativeCalendarModule.ts
 import type { TurboModule } from 'react-native';
@@ -276,8 +211,7 @@ export interface Spec extends TurboModule {
 export default TurboModuleRegistry.getEnforcing<Spec>('CalendarModule');
 ```
 
-Step 2: Configure Codegen in package.json:
-
+步骤2：在`package.json`中配置Codegen：
 ```json
 {
   "codegenConfig": {
@@ -291,8 +225,7 @@ Step 2: Configure Codegen in package.json:
 }
 ```
 
-Step 3: Implement the native side (iOS - Swift):
-
+步骤3：实现原生代码（iOS - Swift）：
 ```swift
 // CalendarModule.swift
 import Foundation
@@ -338,8 +271,7 @@ class CalendarModule: NSObject {
 }
 ```
 
-Step 4: Implement the native side (Android - Kotlin):
-
+步骤4：实现原生代码（Android - Kotlin）：
 ```kotlin
 // CalendarModule.kt
 package com.myapp.calendar
@@ -381,17 +313,16 @@ class CalendarModule(reactContext: ReactApplicationContext) :
 }
 ```
 
-**Benefits of Turbo Modules**
-- **Lazy loading**: Only loaded when first accessed
-- **Type safety**: Codegen generates native interfaces from TypeScript
-- **10x faster**: Direct JSI calls, no JSON serialization
-- **Synchronous calls**: getConstants() can be sync
-- **Better DX**: TypeScript errors caught at build time
+**Turbo模块的优势**
+- **延迟加载**：仅在首次使用时加载
+- **类型安全**：Codegen从TypeScript生成原生接口
+- **性能提升**：直接使用JSI调用，无需JSON序列化
+- **同步调用**：`getConstants()`方法可以同步执行
+- **更好的开发体验**：TypeScript错误在编译时就能被捕获
 
-### Native UI Components
+### 原生UI组件
 
-**Custom Native View (iOS - Swift)**
-
+**自定义iOS原生视图（Swift）**
 ```swift
 // RCTCustomViewManager.swift
 import UIKit
@@ -424,8 +355,7 @@ class CustomView: UIView {
 }
 ```
 
-**Custom Native View (Android - Kotlin)**
-
+**自定义Android原生视图（Kotlin）**
 ```kotlin
 // CustomViewManager.kt
 class CustomViewManager : SimpleViewManager<View>() {
@@ -447,8 +377,7 @@ class CustomViewManager : SimpleViewManager<View>() {
 }
 ```
 
-**JavaScript Usage**
-
+**JavaScript使用方法**
 ```javascript
 import { requireNativeComponent } from 'react-native';
 
@@ -464,9 +393,9 @@ function MyComponent() {
 }
 ```
 
-### Common Native Module Issues
+### 常见的本地模块问题
 
-**Module Not Found**
+**模块找不到**
 ```bash
 # iOS: Clear build and reinstall pods
 cd ios && rm -rf build Pods && pod install && cd ..
@@ -480,7 +409,7 @@ npm run android
 npx react-native start --reset-cache
 ```
 
-**Autolinking Not Working**
+**Autolinking无法正常工作**
 ```bash
 # Verify module in package.json
 npm list react-native-camera
@@ -491,7 +420,7 @@ cd ios && pod install && cd ..
 # Check react-native.config.js for custom linking config
 ```
 
-**Native Crashes**
+**原生应用崩溃**
 ```bash
 # iOS: Check Xcode console for crash logs
 # Look for:
@@ -507,29 +436,29 @@ adb logcat *:E
 # - Null pointer exceptions
 ```
 
-## When to Use This Skill
+## 何时需要我的帮助
 
-Ask me when you need help with:
-- Integrating third-party native modules
-- Creating custom native modules
-- Troubleshooting native module installation
-- Writing iOS native code (Swift/Objective-C)
-- Writing Android native code (Kotlin/Java)
-- Debugging native crashes
-- Understanding Turbo Modules and JSI
-- Migrating to New Architecture
-- Creating custom native UI components
-- Handling platform-specific APIs
-- Resolving autolinking issues
-- **Setting up Codegen for type-safe modules**
-- **Creating Fabric components (New Architecture UI)**
-- **JSI bindings for synchronous native calls**
-- **Expo config plugins for native configuration**
-- **Interop layer for legacy Bridge modules**
+当您遇到以下问题时，请联系我：
+- 集成第三方本地模块
+- 创建自定义本地模块
+- 解决本地模块安装问题
+- 编写iOS原生代码（Swift/Objective-C）
+- 编写Android原生代码（Kotlin/Java）
+- 调试原生应用崩溃
+- 理解Turbo Modules和JSI的工作原理
+- 迁移到新架构
+- 创建自定义原生UI组件
+- 处理平台特定的API
+- 解决Autolinking相关问题
+- 配置Codegen以实现类型安全
+- 创建基于新架构的Fabric组件
+- 为同步原生调用编写JSI绑定
+- 为Expo项目配置相关插件
+- 为旧版本的Bridge模块提供互操作层
 
-## Essential Commands
+## 必需掌握的命令
 
-### Module Development
+### 模块开发相关命令**
 ```bash
 # Create module template
 npx create-react-native-module my-module
@@ -545,7 +474,7 @@ npm link
 cd ../MyApp && npm link my-module
 ```
 
-### Debugging Native Code
+### 调试原生代码相关命令**
 ```bash
 # iOS: Run with Xcode debugger
 open ios/MyApp.xcworkspace
@@ -561,12 +490,10 @@ tail -f ~/Library/Logs/DiagnosticReports/*.crash
 adb logcat | grep "CalendarModule"
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与建议
 
-### 1. Type-Safe Native Modules with Codegen
-
-Use Codegen (New Architecture) for type safety:
-
+### 1. 使用Codegen实现类型安全的本地模块
+利用Codegen技术确保代码的类型安全性：
 ```typescript
 // NativeMyModule.ts
 import type { TurboModule } from 'react-native';
@@ -580,8 +507,7 @@ export interface Spec extends TurboModule {
 export default TurboModuleRegistry.getEnforcing<Spec>('MyModule');
 ```
 
-### 2. Event Emitters for Native → JS Communication
-
+### 2. 实现原生代码与JavaScript之间的事件通信
 ```swift
 // iOS - Emit events to JavaScript
 import Foundation
@@ -621,28 +547,7 @@ class DeviceOrientationModule: RCTEventEmitter {
 }
 ```
 
-```javascript
-// JavaScript - Listen to native events
-import { NativeEventEmitter, NativeModules } from 'react-native';
-
-const { DeviceOrientationModule } = NativeModules;
-const eventEmitter = new NativeEventEmitter(DeviceOrientationModule);
-
-function MyComponent() {
-  useEffect(() => {
-    const subscription = eventEmitter.addListener('OrientationChanged', (data) => {
-      console.log('Orientation:', data.orientation);
-    });
-
-    return () => subscription.remove();
-  }, []);
-
-  return <View />;
-}
-```
-
-### 3. Native Module with Callbacks
-
+### 3. 带有回调函数的本地模块
 ```kotlin
 // Android - Pass callbacks
 @ReactMethod
@@ -656,17 +561,7 @@ fun processData(data: String, successCallback: Callback, errorCallback: Callback
 }
 ```
 
-```javascript
-// JavaScript
-CalendarModule.processData(
-  'input data',
-  (result) => console.log('Success:', result),
-  (error) => console.error('Error:', error)
-);
-```
-
-### 4. Synchronous Native Methods (Use Sparingly)
-
+### 4. 尽量避免使用同步原生方法
 ```swift
 // iOS - Synchronous method (blocks JS thread!)
 @objc
@@ -675,18 +570,10 @@ func getDeviceId() -> String {
 }
 ```
 
-```javascript
-// JavaScript - Synchronous call
-const deviceId = CalendarModule.getDeviceId();
-console.log(deviceId);  // Returns immediately
-```
+**注意**：同步方法会阻塞JavaScript线程，仅适用于执行时间极短（<5毫秒）的操作。
 
-**Warning**: Synchronous methods block the JS thread. Use only for very fast operations (<5ms).
-
-### 5. Expo Config Plugins
-
-For Expo projects, use config plugins to modify native code:
-
+### 5. Expo项目中的配置插件
+对于Expo项目，可以使用配置插件来修改原生代码：
 ```typescript
 // plugins/withCalendarPermission.ts
 import { ConfigPlugin, withInfoPlist, withAndroidManifest } from '@expo/config-plugins';
@@ -719,21 +606,8 @@ const withCalendarPermission: ConfigPlugin = (config) => {
 export default withCalendarPermission;
 ```
 
-```json
-// app.json
-{
-  "expo": {
-    "plugins": [
-      "./plugins/withCalendarPermission"
-    ]
-  }
-}
-```
-
-### 6. Interop Layer for Legacy Bridge Modules
-
-RN 0.76+ includes an interop layer for Bridge modules in New Architecture:
-
+### 6. 为旧版本的Bridge模块提供互操作层
+RN 0.76+版本为旧版本的Bridge模块提供了互操作层：
 ```typescript
 // For legacy modules that don't support Turbo Modules yet
 import { NativeModules, TurboModuleRegistry } from 'react-native';
@@ -755,20 +629,20 @@ export function getCalendarModule() {
 }
 ```
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
-**Native Module Planning**
-- Document native dependencies in `spec.md`
-- Include native module setup in `plan.md`
-- Add native code compilation to `tasks.md`
+**本地模块规划**
+- 在`spec.md`文件中记录本地模块的依赖关系
+- 在`plan.md`文件中说明本地模块的配置方式
+- 将本地代码编译步骤添加到`tasks.md`文件中
 
-**Testing Strategy**
-- Unit test native code separately
-- Integration test JS ↔ Native bridge
-- Test on both iOS and Android
-- Document platform-specific behaviors
+**测试策略**
+- 分别对原生代码进行单元测试
+- 测试JavaScript与原生代码之间的交互
+- 在iOS和Android平台上进行联合测试
+- 记录平台特定的行为
 
-**Documentation**
-- Maintain native module API documentation
-- Document platform-specific quirks
-- Keep runbooks for common native issues
+**文档编写**
+- 为本地模块API编写详细的文档
+- 说明平台特定的特性
+- 为常见的本地问题准备解决方案文档

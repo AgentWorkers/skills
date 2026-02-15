@@ -1,6 +1,6 @@
 ---
 name: secretcodex
-description: Generate creative code names and encode/decode secret messages using classic and sophisticated ciphers. Blends nostalgic decoder ring fun with modern cryptographic techniques. Includes Caesar, Vigenère, Polybius, Rail Fence, and hybrid methods. Provides keys for secure message sharing between trusted parties.
+description: 生成富有创意的代码名称，并使用经典及复杂的加密算法对秘密信息进行编码和解码。将复古的解密工具（如解密环）与现代加密技术相结合，支持凯撒密码、维吉尼亚密码、波利比乌斯密码、栅栏密码等多种加密方法。同时提供密钥，以实现可信方之间的安全信息共享。
 metadata:
   openclaw:
     emoji: "🔐"
@@ -15,91 +15,91 @@ metadata:
 
 # SecretCodex
 
-## Description
+## 描述
 
-SecretCodex brings back the magic of decoder rings from your childhood cereal boxes, but with the sophistication of modern cryptography. Generate creative code names for operations and team members, encode secret messages using multiple cipher methods, and decode messages from trusted contacts—all with keys that you control and share manually with intended recipients.
+SecretCodex 将你童年时麦片盒上的解码环带来的神秘感带回了现实，但采用了现代密码学的复杂技术。它可以为操作和团队成员生成富有创意的代号，使用多种加密方法对秘密信息进行编码，并从可信赖的接收者那里解码信息——所有这些操作都由你控制，并手动与目标接收者共享密钥。
 
-Perfect for:
-- 🎯 Creating code names for projects, operations, or team members
-- 🔒 Sending secret messages between friends, family, or team
-- 🎓 Learning cryptography through hands-on practice
-- 🎮 Adding mystery to games, scavenger hunts, or puzzles
-- 🎪 Fun challenges and brain teasers
-- 📝 Private notes that only you (and your key-holders) can read
+**非常适合：**
+- 为项目、操作或团队成员创建代号
+- 在朋友、家人或团队之间发送秘密信息
+- 通过实践学习密码学
+- 为游戏、寻宝活动或谜题增添神秘元素
+- 有趣的挑战和脑筋急转弯
+- 仅你能（以及持有密钥的人）阅读的私人笔记
 
-## Core Philosophy
+## 核心理念
 
-**Security through obscurity is weak. Security through strong ciphers + key management is powerful.**
+**“通过隐蔽性实现安全是脆弱的。通过强大的加密算法加上密钥管理才能实现真正的安全。”**
 
-SecretCodex teaches you both:
-- **Simple ciphers** (fun, educational, quick)
-- **Sophisticated ciphers** (stronger, layered, secure)
-- **Hybrid methods** (combine multiple techniques)
-- **Key management** (the real secret to cryptography)
+SecretCodex 会教你：
+- **简单的加密算法**（有趣、教育性强、快速上手）
+- **复杂的加密算法**（更强大、多层次、更安全）
+- **混合加密方法**（结合多种技术）
+- **密钥管理**（密码学的真正秘诀）
 
-## 1. Code Name Generator
+## 1. 代号生成器
 
-Before you encode messages, you need great code names! SecretCodex generates creative, memorable names for operations, projects, or individuals.
+在编码信息之前，你需要一个好的代号！SecretCodex 会为操作、项目或个人生成富有创意且易于记忆的代号。
 
-### Code Name Styles
+### 代号类型
 
-#### Operation Names (Mission/Project Codenames)
-**Format**: [Adjective] + [Noun]
+#### 操作代号（任务/项目代号）
+**格式**：[形容词] + [名词]
 
-**Examples:**
-- Operation Silent Thunder
-- Operation Crimson Falcon
-- Operation Midnight Protocol
-- Operation Steel Horizon
-- Operation Quantum Shield
+**示例：**
+- 操作“Silent Thunder”（寂静雷霆）
+- 操作“Crimson Falcon”（绯红猎鹰）
+- 操作“Midnight Protocol”（午夜协议）
+- 操作“Steel Horizon”（钢铁地平线）
+- 操作“Quantum Shield”（量子护盾）
 
-**Generation Strategy:**
-- Choose a tone (stealthy, powerful, technical, natural, mythical)
-- Pair evocative adjective with strong noun
-- Avoid obvious connections to actual project
+**生成策略：**
+- 选择一种风格（隐蔽的、强大的、技术性的、自然的、神话的）
+- 将富有表现力的形容词与强有力的名词搭配
+- 避免与实际项目有明显的关联
 
-#### Personal Codenames (Agent/Team Member Names)
-**Format**: Single word or [Title] + [Element]
+#### 个人代号（特工/团队成员代号）
+**格式**：单个单词或[头衔] + [元素]
 
-**Examples:**
-- Phoenix (rebirth, fire)
-- Cipher (encryption, secrecy)
-- Raven (intelligence, mystery)
-- Atlas (strength, reliability)
-- Echo (communication, repetition)
-- Agent Frost (cool, calculated)
-- The Architect (strategic, builder)
+**示例：**
+- Phoenix（凤凰，象征重生）
+- Cipher（密码，象征保密）
+- Raven（乌鸦，象征智慧）
+- Atlas（阿特拉斯，象征力量）
+- Echo（回声，象征沟通）
+- Agent Frost（冰霜特工，象征冷静）
+- The Architect（建筑师，象征策略性）
 
-**Generation Strategy:**
-- Consider person's role or traits
-- Use animals, elements, concepts, or titles
-- Make it memorable and easy to say
+**生成策略：**
+- 考虑个人的角色或特点
+- 使用动物、元素、概念或头衔
+- 使代号易于记忆且发音清晰
 
-#### Location Codenames
-**Format**: Geographic-sounding but fictional
+#### 地点代号
+**格式**：听起来像地理位置但实际上是虚构的
 
-**Examples:**
-- Raven's Point (meeting location)
-- Glacier Station (server location)
-- Meridian Hub (coordination center)
+**示例：**
+- Raven's Point（乌鸦之点，会议地点）
+- Glacier Station（冰川站，服务器位置）
+- Meridian Hub（子午线中心）
 
-### Code Name Generation Process
+### 代号生成过程
 
-**User provides:**
-- Type (operation, person, location)
-- Tone (serious, playful, technical, mysterious)
-- Optional themes (nature, technology, mythology, colors)
+**用户提供：**
+- 选择操作类型（操作、个人或地点）
+- 选择风格（严肃的、幽默的、技术性的、神秘的）
+- 可选的主题（自然、技术、神话、颜色）
 
-**SecretCodex generates:**
-- 5-10 options with meanings
-- Phonetic spellings (for radio clarity)
-- Alternatives if first choice is compromised
+**SecretCodex 生成：**
+- 5-10个有意义的代号选项
+- 保证发音清晰（便于无线电通信）
+- 如果首选代号被泄露，会提供备用选项
 
-**Example:**
+**示例：**
 
-*User: "Generate a code name for our Q1 product launch project. Tone: Exciting but professional."*
+*用户：“为我们的Q1产品发布项目生成一个代号。风格：既刺激又专业。”*
 
-*SecretCodex:*
+*SecretCodex：*
 ```
 CODE NAME OPTIONS:
 
@@ -130,16 +130,16 @@ Recommendation: "Operation Silver Dawn" -
 Professional, aspirational, easy to remember and say.
 ```
 
-## 2. Classic Ciphers (Decoder Ring Era)
+## 2. 经典加密算法（解码环时代）
 
-### Caesar Cipher (Alphabetic Shift)
+### 凯撒密码（字母位移）
 
-**How it works:**
-Shift each letter forward or backward in the alphabet by a fixed number.
+**工作原理：**
+将每个字母在字母表中向前或向后移动固定数量的位置。
 
-**Key:** Shift amount (1-25)
+**密钥：** 移动量（1-25）
 
-**Example:**
+**示例：**
 ```
 Plaintext: MEET ME AT NOON
 Key: Shift 3
@@ -151,22 +151,22 @@ E → H (shift 3)
 T → W (shift 3)
 ```
 
-**Decoding:**
-Shift backward by the same amount.
+**解码：**
+将字母向后移动相同的位置。
 
-**Strength:** ⭐☆☆☆☆ (Very weak - only 25 possible keys)
-**Best for:** Kids, quick messages, nostalgia
+**安全性：** ⭐☆☆☆☆（非常弱——只有25种可能的密钥）
+**最适合：** 儿童、快速消息、怀旧用途
 
 ---
 
-### ROT13 (Caesar Shift by 13)
+### ROT13（凯撒密码的变体，位移13）
 
-**How it works:**
-Special case of Caesar cipher with shift of 13. Encoding = Decoding (symmetric).
+**工作原理：**
+凯撒密码的特例，位移量为13。加密和解码相同。
 
-**Key:** None needed (always shift 13)
+**密钥：** 不需要（始终位移13）
 
-**Example:**
+**示例：**
 ```
 Plaintext: SECRET MESSAGE
 Ciphertext: FRPERG ZRFFNTR
@@ -176,19 +176,20 @@ E → R (shift 13)
 ...
 ```
 
-**Strength:** ⭐☆☆☆☆ (Very weak - single fixed key)
-**Best for:** Quick obfuscation, forum spoilers, simple hiding
+**安全性：** ⭐☆☆☆☆（非常弱——密钥固定）
+
+**最适合：** 快速混淆信息、论坛剧透、简单隐藏
 
 ---
 
-### Atbash Cipher (Reverse Alphabet)
+### Atbash密码（反向字母表）
 
-**How it works:**
-Replace A with Z, B with Y, C with X, etc. (reverse alphabet)
+**工作原理：**
+将A替换为Z，B替换为Y，C替换为X，依此类推（反向字母表）
 
-**Key:** None (fixed pattern)
+**密钥：** 不需要（固定模式）
 
-**Example:**
+**示例：**
 ```
 Plaintext: HIDDEN
 Ciphertext: SRWWVM
@@ -201,19 +202,20 @@ E → V
 N → M
 ```
 
-**Strength:** ⭐☆☆☆☆ (Very weak - no key variation)
-**Best for:** Quick reversal, simple codes
+**安全性：** ⭐☆☆☆☆（非常弱——没有密钥变化）
+
+**最适合：** 快速反转信息、简单编码
 
 ---
 
-### Pigpen Cipher (Symbol Substitution)
+### Pigpen密码（符号替换）
 
-**How it works:**
-Replace letters with geometric symbols based on grids.
+**工作原理：**
+根据网格将字母替换为特定的符号。
 
-**Key:** Grid arrangement (standard or custom)
+**密钥：** 网格布局（标准或自定义）
 
-**Grid Pattern:**
+**网格示例：**
 ```
 # Grid 1:        # Grid 2:
     A|B|C           J|K|L
@@ -228,7 +230,7 @@ Replace letters with geometric symbols based on grids.
    U   V            Y   Z
 ```
 
-**Example:**
+**示例：**
 ```
 Plaintext: HELLO
 Symbols: [H][E][L][L][O]
@@ -240,21 +242,22 @@ L = top-right of second grid
 O = middle of second grid
 ```
 
-**Strength:** ⭐⭐☆☆☆ (Weak - pattern recognition)
-**Best for:** Visual encoding, kids, scavenger hunts
+**安全性：** ⭐⭐☆☆☆（较弱——依赖于模式识别）
+
+**最适合：** 视觉编码、儿童使用、寻宝活动
 
 ---
 
-## 3. Intermediate Ciphers (Getting Stronger)
+## 3. 中级加密算法（增强安全性）
 
-### Polybius Square (Grid Coordinates)
+### Polybius方格（网格坐标）
 
-**How it works:**
-Letters arranged in 5×5 grid (I/J combined). Each letter = row + column.
+**工作原理：**
+字母按照5×5的网格排列（I/J合并使用）。每个字母对应一行和一列。
 
-**Key:** Grid arrangement (can be scrambled)
+**密钥：** 网格布局（可以随机打乱）
 
-**Standard Grid:**
+**标准网格：**
 ```
   1 2 3 4 5
 1 A B C D E
@@ -264,7 +267,7 @@ Letters arranged in 5×5 grid (I/J combined). Each letter = row + column.
 5 V W X Y Z
 ```
 
-**Example:**
+**示例：**
 ```
 Plaintext: ATTACK
 Ciphertext: 11 44 44 11 13 25
@@ -277,19 +280,20 @@ C = row 1, col 3 = 13
 K = row 2, col 5 = 25
 ```
 
-**Strength:** ⭐⭐☆☆☆ (Weak alone, strong when combined)
-**Best for:** Numeric encoding, combining with other methods
+**安全性：** ⭐⭐☆☆☆（单独使用较弱，结合其他方法时更强）
+
+**最适合：** 数字编码、与其他方法结合使用
 
 ---
 
-### Vigenère Cipher (Keyword-Based Shift)
+### Vigenère密码（基于关键词的位移）
 
-**How it works:**
-Like Caesar but the shift changes for each letter based on a keyword.
+**工作原理：**
+类似于凯撒密码，但每个字母的位移量根据关键词而变化。
 
-**Key:** Keyword or phrase (longer = stronger)
+**密钥：** 关键词或短语（关键词越长，安全性越高）
 
-**Example:**
+**示例：**
 ```
 Plaintext: ATTACK AT DAWN
 Key:       SECRETSECRETSE
@@ -304,7 +308,7 @@ K + T = D (10+19 mod 26)
 ...
 ```
 
-**Vigenère Square (for reference):**
+**Vigenère方格示例：**
 ```
     A B C D E F ...
 A | A B C D E F ...
@@ -313,22 +317,23 @@ C | C D E F G H ...
 ... (26×26 grid)
 ```
 
-**Decoding:**
-Use keyword to shift backward.
+**解码：**
+使用关键词进行反向位移。
 
-**Strength:** ⭐⭐⭐☆☆ (Moderate - strong if long keyword)
-**Best for:** Keyword-based secrecy, shared phrase keys
+**安全性：** ⭐⭐⭐☆☆（中等强度——关键词越长，安全性越高）
+
+**最适合：** 基于关键词的保密通信、共享密钥**
 
 ---
 
-### Rail Fence Cipher (Transposition)
+### Rail Fence密码（换位密码）
 
-**How it works:**
-Write message in zigzag pattern across multiple rails, read off by rows.
+**工作原理：**
+将消息以之字形写在多条横线上，然后按行读取。
 
-**Key:** Number of rails (2-10)
+**密钥：** 横线的数量（2-10）
 
-**Example with 3 rails:**
+**3条横线的示例：**
 ```
 Plaintext: THISISASECRET
 
@@ -341,29 +346,28 @@ Ciphertext: TSET HSIASECE ISR (read row by row)
 Compact: TSETHSIASCEEISR
 ```
 
-**Decoding:**
-Know number of rails, reverse the zigzag write.
+**解码：**
+知道横线的数量后，按之字形反向读取。
 
-**Strength:** ⭐⭐☆☆☆ (Weak - pattern-based)
-**Best for:** Visual rearrangement, combining with substitution
+**安全性：** ⭐⭐☆☆☆（较弱——依赖于模式）
 
----
+**最适合：** 视觉重组、与其他加密方法结合使用**
 
-## 4. Advanced Ciphers (Modern Sophistication)
+## 4. 高级加密算法（现代高级技术）
 
-### Playfair Cipher (Digraph Substitution)
+### Playfair密码（双字母替换）
 
-**How it works:**
-Encrypt pairs of letters using a 5×5 keyed grid. Much stronger than single-letter substitution.
+**工作原理：**
+使用5×5的密钥网格对字母对进行加密。比单字母替换更安全。
 
-**Key:** Keyword creates the grid
+**密钥：** 关键词用于创建网格
 
-**Grid Creation:**
-1. Write keyword (remove duplicates)
-2. Fill rest with unused alphabet letters
-3. Combine I/J
+**网格创建步骤：**
+1. 写下关键词（去除重复字符）
+2. 用未使用的字母填充剩余位置
+3. 将I和J合并
 
-**Example with keyword "MONARCHY":**
+**关键词“MONARCHY”的示例：**
 ```
 M O N A R
 C H Y B D
@@ -372,12 +376,12 @@ L P Q S T
 U V W X Z
 ```
 
-**Encryption Rules:**
-- If both letters in same row: shift right
-- If both in same column: shift down
-- If forming rectangle: swap corners
+**加密规则：**
+- 如果两个字母在同一行：向右移动
+- 如果两个字母在同一列：向下移动
+- 如果形成一个矩形：交换两个字母的位置
 
-**Example:**
+**示例：**
 ```
 Plaintext: HE LL OW OR LD (pairs)
 Key: MONARCHY
@@ -391,19 +395,20 @@ LD: L=row4,col1 D=row2,col5 → Rectangle → UD
 Ciphertext: EB LZ OL AZ NA UD
 ```
 
-**Strength:** ⭐⭐⭐⭐☆ (Strong - resists frequency analysis)
-**Best for:** Serious encoding, resisting decryption
+**安全性：** ⭐⭐⭐⭐☆（较强——抗频率分析）
+
+**最适合：** 重要信息的加密、抵抗解密攻击**
 
 ---
 
-### Columnar Transposition (Keyword-Ordered)
+### Columnar Transposition密码（基于关键词的列排序）
 
-**How it works:**
-Write message in rows, read columns in keyword-alphabetical order.
+**工作原理：**
+将消息按行书写，然后按关键词的字母顺序读取列。
 
-**Key:** Keyword determines column order
+**密钥：** 关键词决定了列的顺序
 
-**Example:**
+**示例：**
 ```
 Plaintext: ATTACK AT DAWN
 Key: ZEBRA (alphabetical: ABERZ = 52143)
@@ -426,19 +431,20 @@ Ciphertext: CAXTANTТXADXAKW
 Compact: CAXTANTTXADXAKW
 ```
 
-**Strength:** ⭐⭐⭐☆☆ (Moderate - order is key)
-**Best for:** Scrambling message structure
+**安全性：** ⭐⭐⭐☆☆（中等强度——顺序至关重要）
+
+**最适合：** 混淆消息结构**
 
 ---
 
-### One-Time Pad (Theoretically Unbreakable)
+### 一次性密码本（理论上无法破解）
 
-**How it works:**
-Each message encrypted with truly random key, used only once, same length as message.
+**工作原理：**
+每条消息使用一个真正随机的密钥进行加密，该密钥仅使用一次，长度与消息相同。
 
-**Key:** Random string same length as plaintext (MUST be truly random, MUST be used only once)
+**密钥：** 随机字符串，长度与明文相同（必须真正随机，且只能使用一次）
 
-**Example:**
+**示例：**
 ```
 Plaintext: HELLO
 Key:       XMCKL (truly random, never reused)
@@ -452,24 +458,23 @@ O + L = Z (14+11 mod 26)
 Ciphertext: EQNVZ
 ```
 
-**CRITICAL:** Key must be:
-- Truly random (not pseudo-random)
-- Same length as message
-- Used only ONCE (hence "one-time")
-- Securely shared ahead of time
+**重要提示：** 密钥必须：**
+- 真正随机（不是伪随机）
+- 长度与消息相同
+- 仅使用一次
+- 必须提前安全共享
 
-**Strength:** ⭐⭐⭐⭐⭐ (Perfect if used correctly)
-**Best for:** Maximum security (if you can manage true randomness and single-use keys)
+**安全性：** ⭐⭐⭐⭐⭐（如果正确使用，安全性极高）
 
----
+**最适合：** 最高级别的安全需求（前提是能够确保密钥的随机性和一次性使用）
 
-## 5. Hybrid Ciphers (Layered Security)
+## 5. 混合加密算法（多层次保护）
 
-### Double Encryption (Two-Step Process)
+### 双重加密（两步过程）
 
-**Method:** Apply two different ciphers sequentially
+**方法：** 依次应用两种不同的加密算法
 
-**Example: Vigenère + Rail Fence**
+**示例：Vigenère + Rail Fence**
 ```
 Step 1: Vigenère with keyword "FORTRESS"
 Plaintext: MEET ME AT THE BRIDGE
@@ -483,17 +488,17 @@ Output: RJZGRTVR XGUGUKWT RI (rail-encoded)
 Final Ciphertext: RJZGRTVХGUGUKWTГRI
 ```
 
-**Decoding:** Reverse order (Rail Fence first, then Vigenère)
+**解码：** 先按Rail Fence解码，再按Vigenère解码
 
-**Strength:** ⭐⭐⭐⭐☆ (Much stronger than either alone)
+**安全性：** ⭐⭐⭐⭐☆（比单独使用任何一种算法都强）
 
 ---
 
 ### Polybius + Vigenère
 
-**Method:** Convert to numbers, then shift with keyword
+**方法：** 先将文本转换为数字，再使用关键词进行位移
 
-**Example:**
+**示例：**
 ```
 Step 1: Polybius Square
 Plaintext: HELLO
@@ -507,78 +512,76 @@ Add key to numbers (mod 100):
 Final Ciphertext: 41 29 43 48 48
 ```
 
-**Strength:** ⭐⭐⭐⭐☆ (Numeric + alphabetic layers)
+**安全性：** ⭐⭐⭐⭐☆（数字层和字母层的结合）
 
 ---
 
-## 6. Key Generation & Management
+## 6. 密钥生成与管理
 
-**The most important part of cryptography: KEY MANAGEMENT**
+**密码学中最重要的部分：密钥管理**
 
-### Key Types
+### 密钥类型
 
-**1. Shift/Rotation Keys (Simple)**
-- Number (1-25 for Caesar)
-- Direction (forward/backward)
-- Example: "ROT13", "Shift +7"
+**1. 位移/旋转密钥（简单）**
+- 数字（例如凯撒密码的1-25）
+- 移动方向（向前/向后）
+- 示例：“ROT13”，“Shift +7”
 
-**2. Keyword Keys (Intermediate)**
-- Word or phrase
-- Longer = stronger
-- Memorable but not obvious
-- Example: "FORTRESS", "PURPLE ELEPHANT"
+**2. 关键词密钥（中级）**
+- 单词或短语
+- 越长越安全
+- 易于记忆但不易被猜到
+- 示例：“FORTRESS”，“PURPLE ELEPHANT”
 
-**3. Random Keys (Advanced)**
-- Truly random characters
-- One-time use (OTP)
-- Must be securely shared
-- Example: "XQPVHGKLMNZRT"
+**3. 随机密钥（高级）**
+- 真正随机的字符
+- 一次性使用
+- 必须安全共享
+- 示例：“XQPVHGKLMNZRT”
 
-**4. Grid/Pattern Keys (Visual)**
-- Grid arrangement (Polybius, Playfair)
-- Symbol mapping (Pigpen variants)
-- Example: "Grid arranged by keyword MONARCH"
+**4. 图形密钥（视觉型）**
+- 基于网格的密钥（例如Polybius、Playfair）
+- 符号映射（例如Pigpen密码的变体）
+- 示例：“Grid arranged by keyword MONARCH”
 
-### Key Sharing Methods (Manual)
+### 密钥共享方法（手动）
 
-**How to share your key securely:**
+**如何安全共享密钥：**
 
-1. **In-Person Exchange** (Most secure)
-   - Whisper the key
-   - Write on paper, watch them memorize, destroy paper
-   - Use pre-arranged code phrases
+1. **面对面交换**（最安全）
+   - 低声告诉对方密钥
+   - 写在纸上，观察对方记住后销毁纸张
+   - 使用预先约定的代码短语
 
-2. **Separate Channel** (Good)
-   - Send encrypted message via email
-   - Send key via text message (different platform)
-   - Never both on same channel
+2. **分开的通信渠道**（较好）
+   - 通过电子邮件发送加密消息
+   - 通过短信发送密钥（使用不同的平台）
+   - 绝不要通过同一渠道发送密钥和消息
 
-3. **Pre-Arranged Keys** (Best for ongoing)
-   - Agree on keyword/pattern before separation
-   - Use shared secret (inside joke, date, location)
-   - Change periodically
+3. **预先约定的密钥**（适用于长期使用）
+   - 在分离前商定关键词/模式
+   - 使用共同的秘密（如内部笑话、日期、地点）
+   - 定期更换密钥
 
-4. **Physical Key Exchange** (Creative)
-   - Hide key in letter, send via mail
-   - Encode key using simpler cipher
-   - Use drop location for key card
+4. **物理密钥交换**（创意方法）
+   - 将密钥隐藏在信件中并通过邮件发送
+   - 使用简单的加密算法对密钥进行编码
+   - 使用约定的地点传递密钥卡
 
-**Key Security Rules:**
-- ❌ Never send key with encrypted message on same channel
-- ❌ Never reuse one-time pad keys
-- ✅ Change keys regularly
-- ✅ Destroy old keys after use
-- ✅ Memorize when possible
+**密钥安全规则：**
+- ❌ 绝不要通过同一渠道发送密钥和加密消息
+- ❌ 绝不要重复使用一次性密码本
+- ✅ 定期更换密钥
+- ✅ 使用后销毁旧密钥
+- ✅ 尽可能记住密钥
 
----
+## 7. 实用示例**
 
-## 7. Practical Usage Examples
+### 示例1：秘密会议协调
 
-### Example 1: Secret Meeting Coordination
+**场景：** 需要告诉朋友 meeting 的时间和地点，但你们在公共群聊中交流。
 
-**Scenario:** You need to tell your friend where and when to meet, but you're communicating in a public group chat.
-
-**Solution:**
+**解决方案：**
 ```
 Code Names:
 - You: "Phoenix"
@@ -604,11 +607,11 @@ Friend decodes using FORTRESS key → Meets you at Raven's Point (north library)
 
 ---
 
-### Example 2: Scavenger Hunt Clues
+### 示例2：寻宝活动线索
 
-**Scenario:** Creating secret clues for a treasure hunt.
+**场景：** 为寻宝活动创建秘密线索。
 
-**Solution:**
+**解决方案：**
 ```
 Clue 1 (Simple - Caesar Shift 5):
 Plaintext: LOOK UNDER THE OAK TREE
@@ -626,13 +629,11 @@ Ciphertext: GHPBM QXFBH CHAKMB ENNX VVS
 Each clue progressively harder, keys provided when previous clue found.
 ```
 
----
+### 示例3：私人日记记录
 
-### Example 3: Private Journal Entries
+**场景：** 希望即使有人看到日记内容也能保持私密。
 
-**Scenario:** You want to keep a journal that's private even if someone reads it.
-
-**Solution:**
+**解决方案：**
 ```
 Method: Double Vigenère (two different keywords)
 
@@ -650,13 +651,11 @@ Final encrypted entry goes in journal.
 Only you know both keys to decrypt.
 ```
 
----
+### 示例4：团队沟通
 
-### Example 4: Team Communication
+**场景：** 远程团队需要共享敏感项目信息。
 
-**Scenario:** Remote team needs to share sensitive project info.
-
-**Solution:**
+**解决方案：**
 ```
 Code Name System:
 - Project: "Operation Silver Dawn"
@@ -679,13 +678,11 @@ Sent in Slack:
 Team members decode using shared key.
 ```
 
----
+## 8. 密码学挑战**
 
-## 8. Educational Cipher Challenges
+### 初学者挑战
 
-### Beginner Challenges
-
-**Challenge 1: Caesar Cipher**
+**挑战1：凯撒密码**
 ```
 Encrypted: WKLV LV D VHFUHW PHVVDJH
 Hint: Shift is 3
@@ -694,7 +691,7 @@ Decrypt it!
 Answer: THIS IS A SECRET MESSAGE
 ```
 
-**Challenge 2: Atbash**
+**挑战2：Atbash密码**
 ```
 Encrypted: HXVVGH HLFGS
 What does it say?
@@ -702,9 +699,9 @@ What does it say?
 Answer: SUMMER NIGHT (H→S, X→C, etc.)
 ```
 
-### Intermediate Challenges
+### 中级挑战**
 
-**Challenge 3: Vigenère**
+**挑战3：Vigenère密码**
 ```
 Encrypted: YXPKI HS ASWZE
 Keyword: LOCK
@@ -713,7 +710,7 @@ Decrypt it!
 Answer: OPENS AT SEVEN
 ```
 
-**Challenge 4: Rail Fence (3 rails)**
+**挑战4：Rail Fence密码（3条横线）**
 ```
 Encrypted: TETYESCESGA HEEARMSE
 Decrypt it!
@@ -721,9 +718,9 @@ Decrypt it!
 Answer: THE SECRET MESSAGE (written in zigzag)
 ```
 
-### Advanced Challenges
+### 高级挑战**
 
-**Challenge 5: Playfair**
+**挑战5：Playfair密码**
 ```
 Encrypted: FD EO OA TP ED ND RP
 Keyword: EXAMPLE
@@ -734,96 +731,91 @@ Answer: HIDDEN CHAMBER (requires Playfair decoding)
 
 ---
 
-## 9. Cipher Selection Guide
+## 9. 密码选择指南
 
-### When to Use Which Cipher
+### 何时使用哪种加密算法
 
-**Quick & Fun (Minutes):**
-- Caesar/ROT13: Casual messages, quick hiding
-- Atbash: Simple reversal
-- Pigpen: Visual fun, scavenger hunts
+**快速且有趣（几分钟内完成）：**
+- 凯撒密码/ROT13：用于随意消息、快速隐藏
+- Atbash密码：简单反转
+- Pigpen密码：视觉效果好，适合寻宝活动
 
-**Moderate Security (Hours to crack):**
-- Vigenère: Keyword-based secrecy
-- Polybius: Numeric encoding
-- Rail Fence: Pattern scrambling
+**中等安全性（需要数小时才能破解）：**
+- Vigenère密码：基于关键词的保密
+- Polybius密码：数字编码
+- Rail Fence密码：模式混淆
 
-**Strong Security (Days/weeks to crack):**
-- Playfair: Digraph substitution
-- Columnar Transposition: Keyword ordering
-- Double encryption: Layered methods
+**高安全性（需要数天或数周才能破解）：**
+- Playfair密码：双字母替换
+- Columnar Transposition密码：基于关键词的排序
+- 双重加密：多层次保护
 
-**Maximum Security (Theoretically unbreakable):**
-- One-Time Pad: True randomness + single use
-- **ONLY if you can ensure truly random keys and perfect key management**
+**最高安全性（理论上无法破解）：**
+- 一次性密码本：真正随机的密钥 + 一次性使用**
 
-### Cipher Comparison Matrix
+**密码算法对比表**
 
-| Cipher | Strength | Speed | Key Type | Best For |
+| 密码 | 安全性 | 加密速度 | 密钥类型 | 最适合的用途 |
 |--------|----------|-------|----------|----------|
-| Caesar | ⭐ | Fast | Number | Kids, quick |
-| Atbash | ⭐ | Fast | None | Reversal |
-| Pigpen | ⭐⭐ | Medium | Pattern | Visual |
-| Vigenère | ⭐⭐⭐ | Medium | Keyword | Shared secrets |
-| Polybius | ⭐⭐ | Medium | Grid | Numbers |
-| Rail Fence | ⭐⭐ | Medium | Number | Scrambling |
-| Playfair | ⭐⭐⭐⭐ | Slow | Keyword | Strong encryption |
-| OTP | ⭐⭐⭐⭐⭐ | Medium | Random | Maximum security |
-| Hybrid | ⭐⭐⭐⭐ | Slow | Multiple | Layered protection |
+| 凯撒密码 | ⭐ | 快速 | 数字密钥 | 儿童、快速消息 |
+| Atbash密码 | ⭐ | 快速 | 无密钥 | 简单反转 |
+| Pigpen密码 | ⭐⭐ | 中等 | 基于模式的加密 | 视觉编码 |
+| Vigenère密码 | ⭐⭐⭐ | 中等 | 基于关键词的保密 | 共享信息 |
+| Polybius密码 | ⭐⭐ | 中等 | 基于网格的加密 | 数字编码 |
+| Rail Fence密码 | ⭐⭐ | 中等 | 基于模式的加密 | 混合使用 |
+| Playfair密码 | ⭐⭐⭐⭐ | 较慢 | 基于关键词的加密 | 强大的加密效果 |
+| 一次性密码本 | ⭐⭐⭐⭐⭐ | 中等 | 随机密钥 | 最高级别的安全性 |
+| 混合加密算法 | ⭐⭐⭐⭐ | 较慢 | 多层保护 |
+
+## 10. 重要安全提示
+
+### SecretCodex 的特点：**
+
+✅ 一种教育性的密码学工具
+✅ 一种学习加密技术的有趣方式
+✅ 适用于日常的秘密信息交流
+✅ 非常适合游戏、谜题和寻宝活动
+✅ 是了解密钥管理概念的绝佳工具
+
+### SecretCodex 不适合的情况：**
+
+❌ 不能替代现代加密算法（如AES、RSA等）
+❌ 不适合处理高度敏感的数据（请使用专业的加密软件）
+❌ 不能有效抵御有针对性的攻击
+❌ 不能替代安全的通信平台
+
+### 何时使用适当的加密算法：
+
+- 金融信息
+- 个人身份信息
+- 医疗记录
+- 法律文件
+- 机密商业信息
+- 任何需要高度保密的内容
+
+**对于这些情况，请使用AES-256、RSA或加密消息应用程序（如Signal、WhatsApp等）。**
+
+SecretCodex 适用于：
+- 学习密码学
+- 发送有趣的秘密信息
+- 保护日常隐私
+- 教育用途
+- 带来怀旧感和乐趣
+
+## 何时使用 SecretCodex：
+
+当你需要：
+- 为操作、团队或地点生成创意代号
+- 向朋友或家人发送秘密信息
+- 解码别人发送给你的信息（如果你拥有正确的密钥）
+- 了解不同加密算法的工作原理
+- 创建谜题或寻宝活动
+- 为游戏或角色扮演增添神秘元素
+- 练习密码学思维
+- 以现代技术享受解码的乐趣
 
 ---
 
-## 10. Important Security Notes
+**记住：加密的安全性不仅取决于算法，还取决于密钥。保护好你的密钥，谨慎分享，并定期更换它们！**
 
-### What SecretCodex IS:
-
-✅ Educational cryptography tool
-✅ Fun way to learn cipher techniques
-✅ Practical for casual secret messages
-✅ Great for games, puzzles, scavenger hunts
-✅ Introduction to key management concepts
-
-### What SecretCodex IS NOT:
-
-❌ Not a replacement for modern encryption (AES, RSA, etc.)
-❌ Not suitable for truly sensitive data (use proper encryption software)
-❌ Not protection against determined adversaries
-❌ Not a substitute for secure communication platforms
-
-### When to Use Proper Encryption:
-
-- Financial information
-- Personal identification data
-- Medical records
-- Legal documents
-- Business secrets
-- Anything truly confidential
-
-**For those use cases: Use AES-256, RSA, or encrypted messaging apps (Signal, WhatsApp, etc.)**
-
-SecretCodex is for:
-- Learning cryptography
-- Fun secret messages
-- Casual privacy
-- Educational purposes
-- Nostalgia and enjoyment
-
----
-
-## When to Use This Skill
-
-Use SecretCodex when you want to:
-- Generate creative code names for operations/teams/locations
-- Encode a secret message to a friend or family member
-- Decode a message someone sent you (if you have the key)
-- Learn how different ciphers work
-- Create puzzle challenges or scavenger hunts
-- Add mystery to games or role-playing
-- Practice cryptographic thinking
-- Have nostalgic decoder ring fun with modern sophistication
-
----
-
-**Remember: The strength of encryption isn't just the algorithm—it's the key. Protect your keys, share them wisely, and change them often!**
-
-🔐 *"In cryptography, we trust... but only with good key management!"* 🔐
+🔐 “在密码学中，我们信任……但只有通过良好的密钥管理才能确保安全！” 🔐

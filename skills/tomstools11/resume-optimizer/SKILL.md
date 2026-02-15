@@ -1,62 +1,67 @@
 ---
 name: resume-optimizer
-description: Professional resume builder with PDF export, ATS optimization, and analysis capabilities. Use when users need to (1) Create new resumes from scratch, (2) Customize/tailor existing resumes for specific roles, (3) Analyze resumes and provide improvement recommendations, (4) Convert resumes to ATS-friendly PDF format. Supports chronological, functional, and combination resume formats.
+description: 这款专业简历生成工具支持PDF导出、自动求职系统（ATS）优化以及简历分析功能。适用于用户需要执行以下操作的场景：  
+1. 从零开始创建新的简历；  
+2. 根据特定职位需求定制现有简历；  
+3. 分析简历并提出改进建议；  
+4. 将简历转换为适合自动求职系统（ATS）使用的PDF格式。  
+该工具支持按时间顺序、按职能或结合这两种方式展示简历内容的格式。
 ---
 
-# Resume Optimizer
+# 简历优化器
 
-Build professional, ATS-optimized resumes with PDF export capabilities.
+生成专业的、符合ATS（ Applicant Tracking System）要求的简历，并支持PDF导出功能。
 
-## Capabilities
+## 主要功能
 
-1. **Create Resumes** - Build new resumes from user information with professional formatting
-2. **Customize Resumes** - Tailor existing resumes for specific roles or per user requests
-3. **Analyze Resumes** - Review resumes and provide actionable improvement recommendations
-4. **Export to PDF** - Generate downloadable, ATS-friendly PDF documents
+1. **创建简历** - 根据用户提供的信息，使用专业的格式生成新的简历。
+2. **定制简历** - 根据特定职位或用户需求对现有简历进行个性化修改。
+3. **分析简历** - 审查简历并提供可操作的改进建议。
+4. **导出为PDF** - 生成适合ATS系统的可下载PDF文件。
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-### Creating a New Resume
-1. Gather user information (experience, education, skills, target role)
-2. Select appropriate format (see format selection guide below)
-3. Read `references/templates.md` for the chosen template
-4. Build resume content following `references/best-practices.md`
-5. Generate PDF using `scripts/generate_resume_pdf.py`
+### 创建新简历
+1. 收集用户信息（工作经验、教育背景、技能、目标职位）
+2. 选择合适的格式（详见下方的格式选择指南）
+3. 阅读 `references/templates.md` 以了解所选模板的信息
+4. 按照 `references/best-practices.md` 中的指导内容编写简历内容
+5. 使用 `scripts/generate_resume_pdf.py` 脚本生成PDF文件
 
-### Customizing an Existing Resume
-1. Review the provided resume content
-2. Understand the target role/changes requested
-3. Read `references/ats-optimization.md` for keyword integration
-4. Apply modifications following best practices
-5. Generate updated PDF
+### 定制现有简历
+1. 查看提供的简历内容
+2. 了解目标职位或用户的具体修改要求
+3. 阅读 `references/ats-optimization.md` 以了解关键词整合的方法
+4. 按照最佳实践进行修改
+5. 生成更新后的PDF文件
 
-### Analyzing a Resume
-1. Parse the resume content
-2. Check against criteria in `references/analysis-checklist.md`
-3. Identify strengths and improvement areas
-4. Provide specific, actionable recommendations
-5. Optionally offer to implement changes
+### 分析简历
+1. 解析简历内容
+2. 根据 `references/analysis-checklist.md` 中的标准进行检查
+3. 识别简历的优势和需要改进的地方
+4. 提出具体、可操作的改进建议
+5. （可选）协助用户实施修改
 
-## Format Selection Guide
+## 格式选择指南
 
-**Chronological (Most Common)**
-- Use for: Consistent work history in same field, clear career progression
-- Best for: Most professionals staying in their field
-- Read: `references/templates.md` → Chronological Template section
+**按时间顺序排列**（最常见）
+- 适用场景：在同一领域有连贯的工作经历，职业发展路径清晰
+- 最适合：大多数在同一领域持续工作的专业人士
+- 参考资料：`references/templates.md` → “按时间顺序排列的模板”部分
 
-**Functional**
-- Use for: Career changers, employment gaps, emphasizing transferable skills
-- Best for: Returning to workforce, diverse experience across fields
-- Read: `references/templates.md` → Functional Template section
+**按职能分类**  
+- 适用场景：职业转换者、有就业空档的人，需要突出可转移技能的人
+- 最适合：重返职场的人或具有跨领域工作经验的人
+- 参考资料：`references/templates.md` → “按职能分类的模板”部分
 
-**Combination**
-- Use for: Mid-career professionals balancing skills and progression
-- Best for: Diverse skill sets, career changers with relevant experience
-- Read: `references/templates.md` → Combination Template section
+**组合格式**  
+- 适用场景：需要在技能和职业发展之间取得平衡的职场人士  
+- 最适合：具备多样化技能且有过相关工作经验的职业转换者  
+- 参考资料：`references/templates.md` → “组合格式的模板”部分
 
-## PDF Generation
+## PDF生成
 
-Use the provided script to create professional PDFs:
+使用提供的脚本生成专业的PDF文件：
 
 ```bash
 python3 scripts/generate_resume_pdf.py \
@@ -65,26 +70,26 @@ python3 scripts/generate_resume_pdf.py \
   --format chronological
 ```
 
-The script uses reportlab to create clean, ATS-compatible PDFs with:
-- Professional typography (Helvetica)
-- Proper margins and spacing (0.75" all sides)
-- Clean section headers
-- Bullet point formatting
-- Consistent visual hierarchy
+该脚本使用 `reportlab` 库生成符合ATS系统的PDF文件，具备以下特点：
+- 专业的排版（使用Helvetica字体）
+- 合适的页边距和间距（四周均为0.75英寸）
+- 清晰的章节标题  
+- 项目符号格式  
+- 一致的视觉层次结构
 
-## Essential References
+## 必读参考资料
 
-Before creating any resume, read:
-1. `references/best-practices.md` - Core resume writing principles
-2. `references/ats-optimization.md` - ATS compatibility requirements
-3. `references/templates.md` - Format-specific templates
+在创建任何简历之前，请阅读：
+1. `references/best-practices.md` - 简历撰写的基本原则
+2. `references/ats-optimization.md` - 符合ATS系统的要求
+3. `references/templates.md` - 各格式对应的模板文档
 
-Before analyzing a resume, read:
-1. `references/analysis-checklist.md` - Evaluation criteria and scoring
+在分析简历之前，请阅读：
+1. `references/analysis-checklist.md` - 评估标准和评分方法
 
-## Quick Start Examples
+## 快速入门示例
 
-**Creating a resume:**
+**创建简历：**
 ```
 User: "Help me build a resume. I have 5 years in marketing."
 
@@ -96,7 +101,7 @@ Steps:
 5. Export: Generate PDF to /mnt/user-data/outputs/
 ```
 
-**Tailoring for a role:**
+**针对特定职位进行定制：**
 ```
 User: "Tailor my resume for this job [job description]"
 
@@ -109,7 +114,7 @@ Steps:
 6. Generate updated PDF
 ```
 
-**Analyzing a resume:**
+**分析简历：**
 ```
 User: "Review my resume and tell me how to improve it"
 
@@ -122,18 +127,18 @@ Steps:
 6. Offer to implement changes
 ```
 
-## Output Requirements
+## 输出要求
 
-All generated resumes must:
-- Be saved to `/mnt/user-data/outputs/` for user download
-- Use descriptive filenames: `FirstName_LastName_Resume.pdf`
-- Include a download link using `computer://` protocol
-- Follow ATS-friendly formatting (no tables, text boxes, or graphics)
+所有生成的简历必须满足以下要求：
+- 保存在 `/mnt/user-data/outputs/` 目录中，以便用户下载
+- 文件名格式为 `FirstName_LastName_Resume.pdf`
+- 使用 `computer://` 协议提供下载链接
+- 遵循ATS系统的格式要求（不得使用表格、文本框或图形）
 
-## Code Style
+## 代码风格规范
 
-When generating Python scripts for PDF creation:
-- Use reportlab for PDF generation
-- Keep code concise and functional
-- Handle errors gracefully
-- Test output before delivering to user
+在编写用于生成PDF的Python脚本时，请遵循以下规范：
+- 使用 `reportlab` 库生成PDF文件
+- 保持代码简洁且功能性强
+- 优雅地处理错误
+- 在交付给用户之前先测试输出结果

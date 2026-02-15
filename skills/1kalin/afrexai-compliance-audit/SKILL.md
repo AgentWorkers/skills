@@ -1,72 +1,71 @@
-# Compliance Audit Generator
+# 合规性审计生成器
 
-Run internal compliance audits against major frameworks without hiring a consultant.
+无需聘请顾问，即可对主要框架进行内部合规性审计。
 
-## What It Does
+## 功能概述
 
-Generates a structured compliance audit for your organization against any of these frameworks:
-- **SOC 2** (Type I & II) — Trust Services Criteria
-- **ISO 27001** — Information Security Management
-- **GDPR** — Data Protection (EU/UK)
-- **HIPAA** — Healthcare Data (US)
-- **PCI DSS** — Payment Card Security
-- **SOX** — Financial Controls (US public companies)
-- **CCPA/CPRA** — California Consumer Privacy
+该工具可为您的组织生成针对以下框架的结构化合规性审计报告：
+- **SOC 2**（类型I & II）——信任服务标准
+- **ISO 27001**——信息安全管理体系
+- **GDPR**——数据保护（欧盟/英国）
+- **HIPAA**——医疗健康数据（美国）
+- **PCI DSS**——支付卡安全标准
+- **SOX**——财务控制（美国上市公司）
+- **CCPA/CPRA**——加州消费者隐私法
 
-## How to Use
+## 使用方法
 
-Tell the agent which framework you need audited. Provide context about your organization:
-- Industry and size
-- Current security controls
-- Data types you handle
-- Existing certifications
-- Known gaps or concerns
+告诉工具需要审计的框架，并提供关于您组织的详细信息：
+- 行业及规模
+- 当前的安全控制措施
+- 处理的数据类型
+- 持有的认证
+- 已知的漏洞或问题
 
-### Example Prompts
+### 示例指令：
 
-- "Run a SOC 2 readiness audit for our 40-person SaaS company"
-- "Check our GDPR compliance — we process EU customer data and use AWS"
-- "Generate an ISO 27001 gap analysis for our fintech startup"
-- "Audit our HIPAA controls — we're a healthtech handling PHI"
+- “为我们的40人SaaS公司运行SOC 2合规性审计”
+- “检查我们的GDPR合规性——我们处理欧盟客户的数据，并使用AWS”
+- “为我们的金融科技初创公司生成ISO 27001合规性差距分析报告”
+- “审计我们的HIPAA控制措施——我们是一家处理医疗健康信息的科技公司”
 
-## Output Format
+## 输出格式
 
-The agent produces:
+工具将生成以下内容：
 
-### 1. Executive Summary
-- Overall readiness score (0-100%)
-- Critical gaps count
-- Estimated remediation timeline
+### 1. 执行摘要
+- 总体合规性评分（0-100%）
+- 关键漏洞数量
+- 预计的整改时间表
 
-### 2. Control-by-Control Assessment
-For each control domain:
-- **Status**: Compliant / Partial / Non-Compliant / Not Assessed
-- **Evidence Required**: What auditors will ask for
-- **Current Gap**: What's missing
-- **Remediation Steps**: Specific actions to close the gap
-- **Priority**: Critical / High / Medium / Low
-- **Effort**: Hours/days estimate
+### 2. 单项控制措施评估
+对于每个控制领域：
+- **状态**：合规 / 部分合规 / 不合规 / 未评估
+- **所需证据**：审计人员会要求提供的资料
+- **现有差距**：缺失的内容
+- **整改步骤**：填补差距的具体措施
+- **优先级**：关键 / 高 / 中 / 低
+- **所需时间**：预计所需的工作时长（小时/天）
 
-### 3. Remediation Roadmap
-- Phase 1 (0-30 days): Critical fixes
-- Phase 2 (30-90 days): High priority items
-- Phase 3 (90-180 days): Full compliance
+### 3. 整改路线图
+- 第一阶段（0-30天）：关键问题的修复
+- 第二阶段（30-90天）：高优先级事项
+- 第三阶段（90-180天）：实现全面合规
 
-### 4. Evidence Checklist
-- Document inventory needed for audit
-- Policy templates to create
-- Technical configurations to verify
+### 4. 证据清单
+- 审计所需的文档清单
+- 需要制定的政策模板
+- 需要验证的技术配置
 
-## Agent Instructions
+## 工具使用说明
 
-When the user requests a compliance audit:
+当用户请求合规性审计时，请按照以下步骤操作：
+1. 说明需要评估的框架。
+2. 提供关于组织的详细信息（行业、规模、技术栈、处理的数据类型）。
+3. 根据上述输出格式生成完整的审计报告。
+4. 对于每个控制领域，提供具体建议，不要给出泛泛而谈的答案；请引用具体的控制编号（例如，SOC 2 CC6.1、ISO 27001 A.8.2）。
+5. 按照业务风险对问题进行优先级排序，而非字母顺序。
+6. 在可能的情况下提供费用估算（例如：“渗透测试：5,000美元至15,000美元”）。
+7. 标记出需要第三方工具或服务的控制措施。
 
-1. Ask which framework(s) they need assessed
-2. Gather context about their organization (industry, size, tech stack, data types)
-3. Generate the full audit report following the output format above
-4. For each control area, be specific — don't give generic advice. Reference the actual control numbers (e.g., SOC 2 CC6.1, ISO 27001 A.8.2)
-5. Prioritize findings by business risk, not alphabetical order
-6. Include cost estimates where possible (e.g., "penetration test: $5,000-$15,000")
-7. Flag any controls that require third-party tools or services
-
-Be direct. No filler. Every finding should have a clear "do this" action attached.
+请保持沟通的直接性，避免冗余信息。每个问题都应附带明确的整改建议。

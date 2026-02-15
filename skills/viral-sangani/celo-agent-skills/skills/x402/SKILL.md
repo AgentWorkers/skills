@@ -1,42 +1,43 @@
 ---
 name: x402
-description: x402 HTTP-native payment protocol for AI agents on Celo. Use when implementing pay-per-use APIs, agent micropayments, or HTTP 402 Payment Required flows with stablecoins.
+description: **x402 HTTP原生支付协议：适用于Celo平台上的AI代理**  
+该协议专为Celo平台上的AI代理设计，适用于实现按使用量计费的API、代理微支付功能，以及基于稳定币的HTTP 402“Payment Required”（需要支付）流程。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# x402: HTTP-Native Agent Payments
+# x402：基于HTTP的原生代理支付系统
 
-x402 is an open protocol that activates the HTTP 402 "Payment Required" status code, enabling AI agents and applications to make instant, permissionless micropayments using stablecoins.
+x402是一种开放协议，它利用HTTP 402“需要支付”状态码来实现人工智能代理和应用无需许可即可即时进行微支付的功能，这些支付使用的是稳定币（stablecoins）。
 
-## When to Use
+## 使用场景
 
-- Implementing pay-per-use API endpoints
-- Building AI agents that pay for services autonomously
-- Creating micropayment flows for content or data access
-- Accepting stablecoin payments without traditional payment infrastructure
+- 实现按使用次数计费的API端点
+- 构建能够自主支付服务费用的人工智能代理
+- 为内容或数据访问创建微支付流程
+- 在没有传统支付基础设施的情况下接受稳定币支付
 
-## Key Benefits
+## 主要优势
 
-| Feature | Traditional Payments | x402 |
+| 特点 | 传统支付方式 | x402 |
 |---------|---------------------|------|
-| Setup Time | Days to weeks | Minutes |
-| Settlement | 2-7 days | Sub-second on Celo |
-| Fees | 2-3% + $0.30 | ~$0.001 gas |
-| Minimum Payment | $0.50+ | $0.001 |
-| AI Agent Support | Not possible | Native |
+| 设置时间 | 几天到几周 | 几分钟 |
+| 结算时间 | 2-7天 | 在Celo网络中仅需几毫秒 |
+| 费用 | 2-3% + 0.30美元 | 约0.001美元（gas费用） |
+| 最小支付金额 | 0.50美元以上 | 0.001美元 |
+| 对人工智能代理的支持 | 不支持 | 原生支持 |
 
-## Installation
+## 安装
 
 ```bash
 npm install thirdweb
 ```
 
-## Client Side (React)
+## 客户端（React）
 
-Use the `useFetchWithPayment` hook for automatic payment handling:
+使用`useFetchWithPayment`钩子来实现自动支付处理：
 
 ```typescript
 import { useFetchWithPayment } from "thirdweb/react";
@@ -67,9 +68,9 @@ function PaidAPIComponent() {
 }
 ```
 
-## Client Side (TypeScript)
+## 客户端（TypeScript）
 
-For non-React applications, use `wrapFetchWithPayment`:
+对于非React应用程序，可以使用`wrapFetchWithPayment`：
 
 ```typescript
 import { wrapFetchWithPayment } from "thirdweb/x402";
@@ -92,9 +93,9 @@ const response = await fetchWithPayment("https://api.example.com/premium");
 const data = await response.json();
 ```
 
-## Server Side (Next.js)
+## 服务器端（Next.js）
 
-Accept x402 payments in API endpoints:
+在API端点中接受x402支付：
 
 ```typescript
 // app/api/premium-content/route.ts
@@ -141,7 +142,7 @@ export async function GET(request: Request) {
 }
 ```
 
-## Server Side (Express)
+## 服务器端（Express）
 
 ```typescript
 import express from "express";
@@ -181,24 +182,24 @@ app.get("/api/premium", async (req, res) => {
 });
 ```
 
-## Payment Flow
+## 支付流程
 
-1. **Client requests resource** - AI agent or app sends HTTP request
-2. **Server returns 402** - If no payment, returns `HTTP 402 Payment Required` with payment details
-3. **Client signs payment** - Client signs payment authorization
-4. **Client retries with payment** - Request sent with `X-PAYMENT` header
-5. **Server verifies and settles** - Payment verified and settled on-chain
-6. **Server delivers resource** - Content returned with receipt
+1. **客户端请求资源** - 人工智能代理或应用程序发送HTTP请求
+2. **服务器返回402状态码** - 如果未支付，返回`HTTP 402 Payment Required`状态码并附带支付详情
+3. **客户端签署支付授权** - 客户端完成支付授权
+4. **客户端重新发送请求并添加`X-PAYMENT`头部** - 重新发送请求时包含支付信息
+5. **服务器验证并结算** - 在区块链上验证并完成支付
+6. **服务器提供资源** - 返回资源的同时附上支付收据
 
-## Supported Payment Tokens on Celo
+## Celo网络支持的支付代币
 
-| Token | Address | Decimals |
+| 代币 | 地址 | 小数位数 |
 |-------|---------|----------|
 | USDC | `0xcebA9300f2b948710d2653dD7B07f33A8B32118C` | 6 |
 | USDT | `0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e` | 6 |
 | USDm | `0x765DE816845861e75A25fCA122bb6898B8B1282a` | 18 |
 
-## Celo Configuration
+## Celo网络配置
 
 ```typescript
 import { celo, celoSepolia } from "thirdweb/chains";
@@ -216,9 +217,9 @@ const testnetConfig = {
 };
 ```
 
-## AI Agent Usage
+## 人工智能代理的使用
 
-### Autonomous API Payments
+### 自主API支付
 
 ```typescript
 // AI agent paying for API calls autonomously
@@ -235,7 +236,7 @@ const marketData = await agent.fetchWithPayment("https://api.market.com/prices")
 const analysis = await agent.fetchWithPayment("https://api.ai.com/analyze");
 ```
 
-### Pay-Per-Use AI Inference
+### 按使用次数计费的AI推理服务
 
 ```typescript
 // Server: Charge based on actual token usage with "upto" scheme
@@ -261,7 +262,7 @@ await settlePayment({
 });
 ```
 
-### Micropayments for Content
+### 用于内容的微支付
 
 ```typescript
 // Pay-per-article instead of subscriptions
@@ -282,9 +283,9 @@ app.get("/articles/:id", async (req, res) => {
 });
 ```
 
-## Integration with ERC-8004
+## 与ERC-8004的集成
 
-Combine trust verification with payments:
+将信任验证与支付功能结合使用：
 
 ```typescript
 import { ReputationRegistry } from '@chaoschain/sdk';
@@ -307,7 +308,7 @@ async function payTrustedService(agentId, serviceUrl) {
 }
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # Client-side
@@ -317,30 +318,30 @@ NEXT_PUBLIC_THIRDWEB_CLIENT_ID=your_client_id
 THIRDWEB_SECRET_KEY=your_secret_key
 ```
 
-## Celo Network Reference
+## Celo网络信息
 
-| Network | Chain ID | RPC Endpoint |
+| 网络 | 链路ID | RPC端点 |
 |---------|----------|--------------|
-| Celo Mainnet | 42220 | https://forno.celo.org |
+| Celo主网 | 42220 | https://forno.celo.org |
 | Celo Sepolia | 11142220 | https://forno.celo-sepolia.celo-testnet.org |
 
-## Why Celo for x402?
+## 为什么选择Celo来实现x402？
 
-- **Low fees**: Gas costs under $0.001 per transaction
-- **Fast finality**: ~1 second block times
-- **Stablecoin support**: Native USDC, USDT, USDm
-- **Fee abstraction**: Users can pay gas in stablecoins
+- **低费用**：每次交易的gas费用低于0.001美元
+- **快速结算**：区块确认时间约为1秒
+- **支持稳定币**：原生支持USDC、USDT、USDm等稳定币
+- **费用抽象**：用户可以使用稳定币来支付gas费用
 
-## Additional Resources
+## 额外资源
 
-- [x402 Official Website](https://www.x402.org)
-- [thirdweb x402 Docs](https://portal.thirdweb.com/x402)
-- [thirdweb Playground](https://playground.thirdweb.com/x402)
-- [x402 Whitepaper](https://www.x402.org/x402-whitepaper.pdf)
-- [GitHub Repository](https://github.com/coinbase/x402)
+- [x402官方网站](https://www.x402.org)
+- [thirdweb x402文档](https://portal.thirdweb.com/x402)
+- [thirdweb测试平台](https://playground.thirdweb.com/x402)
+- [x402白皮书](https://www.x402.org/x402-whitepaper.pdf)
+- [GitHub仓库](https://github.com/coinbase/x402)
 
-## Related Skills
+## 相关技能
 
-- [8004](../8004/SKILL.md) - Trust layer for AI agents
-- [thirdweb](../thirdweb/SKILL.md) - Full-stack Web3 development
-- [fee-abstraction](../fee-abstraction/SKILL.md) - Pay gas with stablecoins
+- [8004](../8004/SKILL.md) - 用于人工智能代理的信任层技术
+- [thirdweb](../thirdweb/SKILL.md) - 全栈Web3开发技术
+- [fee-abstraction](../fee-abstraction/SKILL.md) - 使用稳定币支付gas费用的技术

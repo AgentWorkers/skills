@@ -1,96 +1,96 @@
 ---
 name: Documentation
-description: Technical documentation patterns, structure, maintenance, and avoiding common documentation failures.
+description: 技术文档的模式、结构、维护方法以及避免常见的文档编写错误。
 metadata:
   category: writing
   skills: ["documentation", "technical-writing", "readme", "api-docs"]
 ---
 
-## Structure Hierarchy
+## 结构层次
 
-- README: what it is, how to install, quick example — 5 minutes to first success
-- Getting Started: guided tutorial for beginners — one complete workflow
-- Guides: task-oriented ("How to X") — goal-focused, not feature-focused
-- Reference: exhaustive API/CLI docs — complete but not for learning
-- Troubleshooting: common errors with solutions — search-optimized
+- **README**: 产品介绍、安装方法及快速示例——5分钟内即可上手
+- **入门指南**: 为初学者提供的详细教程——涵盖完整的工作流程
+- **操作指南**: 以任务为导向的指南（例如“如何做某事”），注重实际操作而非功能介绍
+- **参考文档**: 包含全面的API/CLI文档——虽然信息丰富，但并非学习用途
+- **故障排除**: 列出常见错误及其解决方法——便于用户快速查找
 
-## README Essentials
+## README的基本要素
 
-1. One-sentence description — what problem it solves
-2. Installation — copy-paste command that works
-3. Quick start — minimal example that actually runs
-4. Link to full docs — don't cram everything in README
+1. **一句话描述**: 产品能解决什么问题
+2. **安装说明**: 提供可复制的安装命令
+3. **快速入门**: 提供可运行的最小示例代码
+4. **完整文档链接**: 避免在README中罗列所有内容
 
-Missing any of these = users bounce before trying.
+缺少上述任何一项都可能导致用户在尝试使用产品前就放弃。
 
-## Code Examples
+## 代码示例
 
-- Every example must be tested — untested examples rot within months
-- Show complete runnable code, not fragments — users copy-paste
-- Include expected output — confirms they did it right
-- Bad: `client.query(...)` / Good: full script with imports, setup, and output
-- Version-pin examples: `npm install package@2.1.0` not `npm install package`
+- **所有示例都必须经过测试**: 未经测试的示例很快就会过时
+- **展示完整的可运行代码**: 用户可以直接复制粘贴使用
+- **包含预期输出**: 确保用户能够验证自己的操作是否正确
+- **正确的示例格式**: 包含导入语句、设置过程及输出结果
+- **版本固定的示例**: 使用`npm install package@2.1.0`而非`npm install package`
 
-## API Documentation
+## API文档
 
-- Every endpoint needs: method, path, parameters, request body, response, error codes
-- Show real request/response bodies — not just schemas
-- Include authentication in every example — most common missing piece
-- Document rate limits and pagination upfront — not buried in footnotes
-- Error responses need as much detail as success responses
+- **每个API端点都应包含**: 方法名称、路径、参数、请求体、响应内容及错误代码
+- **展示真实的请求/响应数据**: 而不仅仅是数据结构
+- **每个示例都应包含认证流程**: 这是用户经常忽略的部分
+- **提前说明速率限制和分页机制**: 避免在注释中提及
+- **错误响应与成功响应应具有同等详细的说明**
 
-## What Gets Outdated
+## 哪些内容容易过时
 
-- Screenshots — UI changes, screenshots don't
-- Version numbers — hardcoded versions become wrong
-- Links — external sites move, break constantly
-- "Current" anything — write timelessly or add review dates
-- Feature flags and experimental warnings — often forgotten after GA
+- **截图**: 用户界面发生变化时，截图会失效
+- **版本号**: 硬编码的版本号可能会不准确
+- **外部链接**: 外部网站可能会失效或更改
+- **标注“当前版本”**: 应使用永恒不变的信息或添加更新日期
+- **功能开关和实验性功能**: 通常在产品正式发布后被忽略
 
-## Maintenance Patterns
+## 维护规范
 
-- Docs live next to code — same repo, same PR. Separate repos drift
-- CI checks for broken links — `markdown-link-check` or equivalent
-- Runnable examples as tests — if example breaks, build fails
-- Review date in docs: "Last verified: 2024-01" — signals freshness
-- Delete aggressively — outdated docs worse than no docs
+- **文档与代码放在同一个仓库中**: 通过Pull Request进行维护
+- **使用自动化工具检查链接有效性**: 如`markdown-link-check`等工具
+- **将可运行的示例作为测试**: 如果示例无法正常运行，构建过程会失败
+- **文档中注明更新日期**: 如“最后审核时间：2024-01”以显示文档的时效性
+- **及时删除过时文档**: 过时的文档比没有文档更糟糕
 
-## Common Failures
+## 常见问题
 
-- Documenting implementation, not usage — users don't care how it works internally
-- Assuming context — define acronyms, link prerequisites
-- Wall of text — use headings, bullets, code blocks liberally
-- "See X for more info" without link — friction kills follow-through
-- Changelog as documentation — changes ≠ how to use current version
+- **过度关注实现细节而非使用方法**: 用户关心的是产品的使用方式，而非内部实现
+- **假设读者了解背景知识**: 应为缩写词和依赖项提供解释
+- **冗长的文本**: 使用标题、列表和代码块来组织内容
+- **缺少链接**: “更多信息请参见X”这样的表述会阻碍用户继续阅读
+- **将更新日志当作文档**: 更新日志仅记录了变更内容，而非当前版本的使用方法
 
-## Writing Style
+## 编写风格
 
-- Imperative mood: "Run the command" not "You can run the command"
-- Second person: "you" not "the user"
-- Present tense: "This returns X" not "This will return X"
-- Short sentences — one idea per sentence
-- Active voice: "The function returns X" not "X is returned by the function"
+- **使用命令式语气**: 如“运行该命令”
+- **使用第二人称**: 例如“你”而非“用户”
+- **使用现在时态**: 如“该函数返回X”
+- **使用简短句子**: 每个句子表达一个清晰的概念
+- **使用主动语态**: 如“该函数返回X”
 
-## Searchability
+## 提高可搜索性
 
-- Use words users search for — not internal jargon
-- Error messages verbatim in troubleshooting — users paste exact errors
-- Multiple ways to describe same thing — alias common variations
-- H2/H3 headings are SEO — match user queries
-- Avoid clever titles — "Getting Started" beats "Your Journey Begins"
+- **使用用户常用的词汇**: 避免使用内部术语
+- **在故障排除部分直接使用错误信息**: 用户会直接输入错误信息进行搜索
+- **提供多种描述方式**: 对常见变体进行说明
+- **使用H2/H3标题**: 有助于提高搜索引擎的排名
+- **避免使用花哨的标题**: 如“入门指南”比“您的使用之旅开始”更易于理解
 
-## Versioned Documentation
+## 文档版本管理
 
-- Major versions need separate docs — v1 users shouldn't see v2 docs
-- Migration guides between versions — step-by-step, not just changelog
-- Default to latest stable, link to older versions
-- Mark deprecated features clearly — don't just remove
-- URL structure: `/docs/v2/` not query params
+- **重要版本需单独编写文档**: 用户使用旧版本时不应看到新版本的文档
+- **提供版本间的迁移指南**: 包含详细的步骤，而不仅仅是更新日志
+- **默认链接到最新稳定版本**: 并提供旧版本的链接
+- **明确标注已弃用的功能**: 而不仅仅是直接删除它们
+- **URL结构**: 采用`/docs/v2/`等格式
 
-## README Anti-patterns
+## README的常见误区
 
-- Badge spam — 15 badges before content
-- Massive feature lists — save for marketing page
-- No installation instructions — assuming everyone knows
-- Screenshots without context — what am I looking at?
-- License-only README — legal compliance ≠ documentation
+- **在文档开头堆砌徽章**: 在内容之前展示大量徽章
+- **列出大量功能**: 这适合营销页面，不适合文档
+- **省略安装说明**: 假设用户都了解如何安装
+- **没有上下文的截图**: 用户无法理解截图的内容
+- **仅包含许可证信息的README**: 这只是法律合规要求，并非真正的文档

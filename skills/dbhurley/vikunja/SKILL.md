@@ -1,24 +1,24 @@
 ---
 name: vikunja
-description: Manage projects and tasks in Vikunja, an open-source project management tool. Create projects, tasks, set due dates, priorities, and track completion.
+description: 在 Vikunja（一个开源的项目管理工具）中管理和安排项目与任务。您可以创建项目、设置任务期限、优先级，并跟踪任务的完成情况。
 homepage: https://vikunja.io
 metadata: {"clawdbot":{"emoji":"📋","requires":{"bins":["uv"],"env":["VIKUNJA_URL","VIKUNJA_USER","VIKUNJA_PASSWORD"]},"primaryEnv":"VIKUNJA_URL"}}
 ---
 
-# Vikunja Project Management
+# Vikunja 项目管理
 
-Manage projects and tasks in [Vikunja](https://vikunja.io), an open-source, self-hosted project management tool.
+在 [Vikunja](https://vikunja.io) 中管理和安排项目及任务。Vikunja 是一个开源的、可自行托管的项目管理工具。
 
-## Setup
+## 设置
 
-Set these environment variables:
-- `VIKUNJA_URL` - Your Vikunja instance URL (e.g., `https://vikunja.example.com`)
-- `VIKUNJA_USER` - Username or email
-- `VIKUNJA_PASSWORD` - Password
+配置以下环境变量：
+- `VIKUNJA_URL`：您的 Vikunja 实例 URL（例如：`https://vikunja.example.com`）
+- `VIKUNJA_USER`：用户名或电子邮件地址
+- `VIKUNJA_PASSWORD`：密码
 
-## Commands
+## 命令
 
-### Projects
+### 项目
 ```bash
 # List all projects
 uv run {baseDir}/scripts/vikunja.py projects
@@ -30,7 +30,7 @@ uv run {baseDir}/scripts/vikunja.py project <ID>
 uv run {baseDir}/scripts/vikunja.py create-project "Project Name" -d "Description"
 ```
 
-### Tasks
+### 任务
 ```bash
 # List all tasks
 uv run {baseDir}/scripts/vikunja.py tasks
@@ -45,19 +45,18 @@ uv run {baseDir}/scripts/vikunja.py create-task "Task title" --project <ID> --du
 uv run {baseDir}/scripts/vikunja.py complete <TASK_ID>
 ```
 
-### Options
-- `--json` - Output results as JSON (for programmatic use)
+### 选项
+- `--json`：以 JSON 格式输出结果（适用于程序化使用）
 
-## Priority Levels
-- 0: None
-- 1: Low
-- 2: Medium  
-- 3: High
-- 4: Urgent
-- 5: Critical
+## 优先级级别
+- 0：无
+- 1：低
+- 2：中等
+- 3：高
+- 4：紧急
+- 5：关键
 
-## Examples
-
+## 示例
 ```bash
 # Create a project for Q1 planning
 uv run {baseDir}/scripts/vikunja.py create-project "Q1 2026 Planning" -d "Quarterly planning tasks"

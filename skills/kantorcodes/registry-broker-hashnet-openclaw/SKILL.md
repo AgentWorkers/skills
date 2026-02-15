@@ -1,6 +1,6 @@
 ---
 name: registry-broker
-description: Search 72,000+ AI agents across 14 registries, chat with any agent, register your own. Powered by Hashgraph Online Registry Broker.
+description: 在14个注册系统中搜索72,000多个AI代理，与任意一个代理进行聊天，或注册自己的代理。该服务由Hashgraph Online Registry Broker提供支持。
 homepage: https://hol.org/registry
 metadata:
   {
@@ -13,43 +13,42 @@ metadata:
   }
 ---
 
-# Registry Broker
+# 注册表代理（Registry Broker）
 
-Universal AI agent discovery and cross-platform messaging powered by **[Hashgraph Online Registry Broker](https://hol.org/registry)**.
+该工具支持通用AI代理的发现以及跨平台的消息传递，这一切都依赖于**[Hashgraph在线注册表代理](https://hol.org/registry)**。
 
-Search 72,000+ agents from AgentVerse, NANDA, OpenRouter, Virtuals Protocol, PulseMCP, Near AI, Coinbase x402, Hedera/HOL, and more — all from a single interface.
+您可以通过一个统一的界面搜索来自AgentVerse、NANDA、OpenRouter、Virtuals Protocol、PulseMCP、Near AI、Coinbase x402、Hedera/HOL等平台的72,000多个代理。
 
-Uses the [`@hashgraphonline/standards-sdk`](https://www.npmjs.com/package/@hashgraphonline/standards-sdk) for all operations.
+所有操作均使用[`@hashgraphonline/standards-sdk`](https://www.npmjs.com/package/@hashgraphonline/standards-sdk)来完成。
 
-| Resource | Link |
+| 资源 | 链接 |
 |----------|------|
-| **Live Registry** | https://hol.org/registry |
-| **API Documentation** | https://hol.org/docs/registry-broker/ |
-| **SDK Reference** | https://hol.org/docs/libraries/standards-sdk/ |
-| **Get API Key** | https://hol.org/registry |
+| **实时注册表** | https://hol.org/registry |
+| **API文档** | https://hol.org/docs/registry-broker/ |
+| **SDK参考** | https://hol.org/docs/libraries/standards-sdk/ |
+| **获取API密钥** | https://hol.org/registry |
 
-## When to use (trigger phrases)
+## 使用场景（触发语句）
 
-Use this skill when the user asks:
+当用户提出以下请求时，请使用此工具：
+- “查找能够执行某项任务的AI代理”
+- “搜索代理”
+- “X平台有哪些代理可用？”
+- “与代理进行对话”
+- “注册我的代理”
+- “列出所有代理的注册信息”
+- “在Hashgraph网络上发现代理”
 
-- "find an AI agent that can..."
-- "search for agents"
-- "what agents exist for X?"
-- "talk to an agent" / "chat with an agent"
-- "register my agent"
-- "list agent registries"
-- "discover agents on hashgraph"
-
-## Setup
+## 设置
 
 ```bash
 cd {baseDir}
 npm install
 ```
 
-Get your API key at **https://hol.org/registry** for authenticated operations (registration, chat, higher rate limits).
+请在**https://hol.org/registry**获取API密钥，以便进行需要身份验证的操作（如注册、聊天等）。
 
-## Quick start
+## 快速入门
 
 ```bash
 # Search agents (semantic)
@@ -65,7 +64,7 @@ npx tsx scripts/index.ts start_conversation "uaid:aid:..." "Hello, what can you 
 npx tsx scripts/index.ts send_message "session-id" "Tell me more"
 ```
 
-## SDK Usage
+## SDK使用方法
 
 ```typescript
 import { RegistryBrokerClient } from "@hashgraphonline/standards-sdk";
@@ -88,37 +87,37 @@ const response = await client.sendChatMessage({
 });
 ```
 
-## Commands
+## 命令列表
 
-All commands output JSON to stdout. Run from `{baseDir}`.
+所有命令的输出格式为JSON，可在`{baseDir}`目录下执行这些命令。
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `search_agents "<query>"` | Keyword search across all registries |
-| `vector_search "<query>" [limit]` | Semantic search with relevance scores |
-| `get_agent "<uaid>"` | Get full agent details by UAID |
-| `list_registries` | Show all 14 connected registries |
-| `list_protocols` | Show 20 supported protocols (A2A, MCP, OpenAI...) |
-| `list_adapters` | Show platform adapters |
-| `get_stats` | Registry statistics (72,000+ agents) |
-| `start_conversation "<uaid>" "<msg>"` | Start chat session with an agent |
-| `send_message "<sessionId>" "<msg>"` | Continue conversation |
-| `get_history "<sessionId>"` | Get conversation history |
-| `end_session "<sessionId>"` | End chat session |
-| `register_agent '<json>' "<url>" "<protocol>" "<registry>"` | Register your agent |
+| `searchAgents "<query>"` | 在所有注册表中搜索关键词 |
+| `vector_search "<query>" [limit]` | 基于语义进行搜索，并显示相关性评分 |
+| `get_agent "<uaid>"` | 通过UAID获取代理的详细信息 |
+| `list_registries` | 显示所有已连接的注册表 |
+| `list_protocols` | 显示支持的20种协议（如A2A、MCP、OpenAI等） |
+| `list_adapters` | 显示平台适配器信息 |
+| `get_stats` | 查看注册表统计信息（包含72,000多个代理） |
+| `start_conversation "<uaid>" "<msg>"` | 与代理开始聊天会话 |
+| `send_message "<sessionId>" "<msg>"` | 继续聊天 |
+| `get_history "<sessionId>"` | 查看聊天记录 |
+| `end_session "<sessionId>"` | 结束聊天会话 |
+| `register_agent '<json>' "<url>" "<protocol>" "<registry>"` | 在注册表中注册您的代理 |
 
-## Flow: Find and chat with an agent
+## 使用流程：查找并与代理聊天
 
-1. **Search**: `npx tsx scripts/index.ts vector_search "help with data analysis" 5`
-2. **Pick agent**: Note the `uaid` from results
-3. **Get details**: `npx tsx scripts/index.ts get_agent "uaid:aid:..."`
-4. **Start chat**: `npx tsx scripts/index.ts start_conversation "uaid:aid:..." "What can you help with?"`
-5. **Continue**: `npx tsx scripts/index.ts send_message "sess_xyz" "Can you analyze this dataset?"`
-6. **End**: `npx tsx scripts/index.ts end_session "sess_xyz"`
+1. **搜索**：`npx tsx scripts/index.ts vector_search "help with data analysis" 5`
+2. **选择代理**：从搜索结果中记录代理的`uaid`。
+3. **获取代理详情**：`npx tsx scripts/index.ts get_agent "uaid:aid:..."`
+4. **开始聊天**：`npx tsx scripts/index.ts start_conversation "uaid:aid:..." "您能帮我什么？”`
+5. **继续对话**：`npx tsx scripts/index.ts send_message "sess_xyz" "您能分析这个数据集吗？」`
+6. **结束对话**：`npx tsx scripts/index.ts end_session "sess_xyz"`
 
-## Flow: Register your agent
+## 注册代理的流程
 
-Register your agent on the universal registry at **https://hol.org/registry**:
+您可以在**https://hol.org/registry**上注册您的代理：
 
 ```bash
 npx tsx scripts/index.ts register_agent \
@@ -128,11 +127,11 @@ npx tsx scripts/index.ts register_agent \
   "custom"
 ```
 
-Or use the SDK directly (see `examples/register-agent.ts`).
+或者直接使用SDK进行注册（参见`examples/register-agent.ts`示例）。
 
-## Examples
+## 示例
 
-Run the SDK examples:
+您可以运行SDK提供的示例代码来体验其功能：
 
 ```bash
 # Explore the ecosystem
@@ -145,37 +144,34 @@ npx tsx examples/search-and-chat.ts
 npx tsx examples/register-agent.ts
 ```
 
-## Connected registries
+## 支持的注册表
 
-The Registry Broker aggregates agents from:
-
+该注册表代理汇集了来自以下平台的代理：
 - **AgentVerse** (Fetch.ai)
-- **NANDA** (Decentralized AI)
-- **OpenRouter** (LLM Gateway)
-- **PulseMCP** (MCP Registry)
-- **Virtuals Protocol** (Base)
+- **NANDA** (去中心化AI平台)
+- **OpenRouter** (大型语言模型网关)
+- **PulseMCP** (MCP注册表)
+- **Virtuals Protocol** (基础服务)
 - **Hedera/HOL** (HCS-10)
 - **Coinbase x402 Bazaar**
 - **Near AI**
 - **ERC-8004** (Ethereum + Solana)
 - **OpenConvAI**
-- **A2A Registry / Protocol**
-- And more...
+- **A2A注册表/协议**
+- 以及更多平台……
 
-Full list: https://hol.org/registry
+完整列表请访问：https://hol.org/registry
 
-## Notes
+## 注意事项：
+- UAID的格式为`uaid:aid:2MVYv2iyB6gvzXJiAsxKHJbfyGAS8...`
+- 会话ID由`start_conversation`命令返回。
+- 向量搜索会返回相关性评分；而关键词搜索则不会提供评分。
+- 如果发生错误，CLI会输出`{"error":"message"}`并退出，退出代码为1。
 
-- UAIDs look like `uaid:aid:2MVYv2iyB6gvzXJiAsxKHJbfyGAS8...`
-- Session IDs are returned from `start_conversation`
-- Vector search returns relevance scores; keyword search does not
-- On error the CLI prints `{"error":"message"}` and exits with code 1
-
-## Links
-
-- **Registry Broker**: https://hol.org/registry
-- **API Documentation**: https://hol.org/docs/registry-broker/
-- **SDK Reference**: https://hol.org/docs/libraries/standards-sdk/
-- **npm Package**: https://npmjs.com/package/@hashgraphonline/standards-sdk
-- **MCP Server**: https://github.com/hashgraph-online/hashnet-mcp-js
-- **Support**: hello@hashgraphonline.com
+## 相关链接：
+- **注册表代理**：https://hol.org/registry
+- **API文档**：https://hol.org/docs/registry-broker/
+- **SDK参考**：https://hol.org/docs/libraries/standards-sdk/
+- **npm包**：https://npmjs.com/package/@hashgraphonline/standards-sdk
+- **MCP服务器**：https://github.com/hashgraph-online/hashnet-mcp-js
+- **支持邮箱**：hello@hashgraphonline.com

@@ -1,16 +1,16 @@
-# Code Search Skill
+# 代码搜索技能
 
-Smart, context-aware repository search tool. Use this instead of complex `grep` or `find` commands.
+这是一个智能的、具备上下文感知能力的仓库搜索工具。使用它来替代复杂的 `grep` 或 `find` 命令。
 
-## Why use this?
-- **Smarter than grep**: Ignores `node_modules`, `.git`, lockfiles automatically.
-- **Context-aware**: Shows lines before/after matches (`--context 2`).
-- **Structured**: Can output JSON for machine parsing.
-- **Safe**: Limits output size to prevent token overflow.
+## 为什么使用它？
+- **比 `grep` 更智能**：会自动忽略 `node_modules`、`.git` 和锁定文件（lockfiles）。
+- **具备上下文感知能力**：可以显示匹配项前后的代码行（使用 `--context 2` 选项）。
+- **结构化输出**：支持以 JSON 格式输出结果，便于机器解析。
+- **安全性**：限制输出结果的大小，以防止数据溢出。
 
-## Usage
+## 使用方法
 
-### CLI
+### 命令行界面 (CLI)
 ```bash
 # Basic search
 node skills/code-search/index.js --query "function main"
@@ -25,17 +25,17 @@ node skills/code-search/index.js --query "error" --context 2
 node skills/code-search/index.js --query "export default" --json
 ```
 
-### From other skills (Node.js)
+### 与其他技能的集成（Node.js）
 ```javascript
 const { execSync } = require('child_process');
 const output = execSync('node skills/code-search/index.js --query "myFunction" --json').toString();
 const results = JSON.parse(output);
 ```
 
-## Configuration
-- Default max matches: 50 (prevents spamming output)
-- Default ignore list: `.git`, `node_modules`, `dist`, `build`, `coverage`, `.npm-global`
+## 配置选项
+- 默认匹配数量：50 条（防止输出信息过多）
+- 默认忽略的文件目录：`.git`、`node_modules`、`dist`、`build`、`coverage`、`.npm-global`
 
-## Troubleshooting
-- If no results found, try broadening search term.
-- If too many results, use `--include` to filter file types.
+## 故障排除
+- 如果没有找到结果，尝试扩大搜索范围。
+- 如果搜索结果太多，可以使用 `--include` 选项来过滤文件类型。

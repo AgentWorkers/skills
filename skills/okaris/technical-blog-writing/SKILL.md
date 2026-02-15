@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Technical Blog Writing
+# 技术博客写作
 
-Write developer-focused technical blog posts via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具撰写以开发者为中心的技术博客文章。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -30,11 +30,11 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Post Types
+## 文章类型
 
-### 1. Tutorial / How-To
+### 1. 教程 / 操作指南
 
-Step-by-step instruction. The reader should be able to follow along and build something.
+提供逐步的指导。读者应该能够按照这些指导来实际操作并完成某个任务。
 
 ```
 Structure:
@@ -47,18 +47,18 @@ Structure:
 7. Next steps / extensions
 ```
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Show the end result first | Reader knows if it's worth continuing |
-| List prerequisites explicitly | Don't waste time of wrong audience |
-| Every code block should be runnable | Copy-paste-run is the test |
-| Explain the "why" not just the "how" | Tutorials that explain reasoning get shared |
-| Include error handling | Real code has errors |
-| Link to complete code repo | Reference after tutorial |
+| 首先展示最终结果 | 让读者知道继续阅读是否值得 |
+| 明确列出先决条件 | 避免浪费不相关读者的时间 |
+| 每个代码块都必须能够运行 | 可以直接复制、粘贴并运行 |
+| 不仅解释“如何做”，还要解释“为什么这样做” | 解释背后原理的教程更容易被分享 |
+| 包含错误处理 | 真实代码中总会遇到错误 |
+| 提供完整的代码仓库链接 | 教程结束后可供参考 |
 
-### 2. Deep Dive / Explainer
+### 2. 深度探讨 / 解释性文章
 
-Explains a concept, technology, or architecture decision in depth.
+深入讲解某个概念、技术或架构决策。
 
 ```
 Structure:
@@ -70,9 +70,9 @@ Structure:
 6. Further reading
 ```
 
-### 3. Postmortem / Incident Report
+### 3. 事后分析 / 事件报告
 
-Describes what went wrong, why, and what was fixed.
+描述问题出在哪里、原因是什么以及如何解决的。
 
 ```
 Structure:
@@ -84,9 +84,9 @@ Structure:
 6. Lessons learned
 ```
 
-### 4. Benchmark / Comparison
+### 4. 基准测试 / 对比分析
 
-Data-driven comparison of tools, approaches, or architectures.
+对工具、方法或架构进行数据驱动的比较。
 
 ```
 Structure:
@@ -98,9 +98,9 @@ Structure:
 6. Raw data / reproducibility instructions
 ```
 
-### 5. Architecture / System Design
+### 5. 架构 / 系统设计
 
-Explains how a system is built and why decisions were made.
+解释系统的构建方式以及做出这些决策的原因。
 
 ```
 Structure:
@@ -112,20 +112,20 @@ Structure:
 6. Results and lessons
 ```
 
-## Writing Rules for Developers
+## 针对开发者的写作规则
 
-### Voice and Tone
+### 语言风格和语气
 
-| Do | Don't |
+| 应该 | 不应该 |
 |----|-------|
-| Be direct: "Use connection pooling" | "You might want to consider using..." |
-| Admit trade-offs: "This adds complexity" | Pretend your solution is perfect |
-| Use "we" for team decisions | "I single-handedly architected..." |
-| Specific numbers: "reduced p99 from 800ms to 90ms" | "significantly improved performance" |
-| Cite sources and benchmarks | Make unsourced claims |
-| Acknowledge alternatives | Pretend yours is the only way |
+| 直截了当：使用“连接池” | 使用“你可以考虑使用...” |
+| 承认存在的权衡 | 假装你的解决方案是完美的 |
+| 使用“我们”来指代团队决策 | 使用“我独自设计了...” |
+| 使用具体的数字：将 p99 响应时间从 800 毫秒缩短到 90 毫秒 | 使用“显著提升了性能” |
+| 引用来源和基准测试数据 | 做出没有依据的声明 |
+| 承认其他替代方案 | 假装你的方法是唯一的解决方案 |
 
-### What Developers Hate
+### 开发者讨厌的内容
 
 ```
 ❌ "In today's fast-paced world of technology..." (filler)
@@ -137,53 +137,53 @@ Structure:
 ❌ Burying the lede under 3 paragraphs of context
 ```
 
-### Code Examples
+### 代码示例
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Every code block must be runnable | Broken examples destroy trust |
-| Show complete, working examples | Snippets without context are useless |
-| Include language identifier in fenced blocks | Syntax highlighting |
-| Show output/result after code | Reader verifies understanding |
-| Use realistic variable names | `calculateTotalRevenue` not `foo` |
-| Include error handling in examples | Real code handles errors |
-| Pin dependency versions | "Works with React 18.2" not "React" |
+| 每个代码块都必须能够运行 | 有错误的示例会破坏读者的信任 |
+| 提供完整的、可运行的示例 | 没有上下文的代码片段毫无用处 |
+| 在代码块中包含语言标识 | 以便语法高亮显示 |
+| 在代码后展示输出/结果 | 让读者验证自己的理解是否正确 |
+| 使用实际的变量名 | 使用 `calculateTotalRevenue` 而不是 `foo` |
+| 在示例中包含错误处理 | 真实代码中会处理错误 |
+| 明确指出依赖的版本 | 例如“兼容 React 18.2”而不是“兼容 React” |
 
 ```
 Good code block format:
 
 ```python
-# What this code does (one line)
+# 这段代码的作用（一行代码）
 def calculate_retry_delay(attempt: int, base_delay: float = 1.0) -> float:
-    """Exponential backoff with jitter."""
+    """采用指数退避算法，并加入随机抖动效果。」
     delay = base_delay * (2 ** attempt)
     jitter = random.uniform(0, delay * 0.1)
     return delay + jitter
 
-# Usage
-delay = calculate_retry_delay(attempt=3)  # ~8.0-8.8 seconds
+# 使用方法
+delay = calculate_retry_delay(attempt=3)  # 大约 8.0-8.8 秒
 ```
 ```
 
-### Explanation Depth
+### 解释的深度
 
-| Audience Signal | Depth |
+| 目标读者群体 | 解释的深度 |
 |----------------|-------|
-| "Getting started with X" | Explain everything, assume no prior knowledge |
-| "Advanced X patterns" | Skip basics, go deep on nuances |
-| "X vs Y" | Assume familiarity with both, focus on differences |
-| "How we built X" | Technical audience, can skip fundamentals |
+| “X 的入门指南” | 从零开始讲解，假设读者没有任何基础知识 |
+| “高级 X 模式” | 跳过基础知识，深入探讨细节 |
+| “X 与 Y 的比较” | 假设读者对两者都熟悉，重点讨论差异 |
+| “我们是如何实现 X 的” | 面向技术读者的内容，可以省略基础部分 |
 
-**State your assumed audience level explicitly** at the start:
+**在文章开头明确说明你假设的目标读者群体水平**：
 
 ```
 "This post assumes familiarity with Docker and basic Kubernetes concepts.
 If you're new to containers, start with [our intro post]."
 ```
 
-## Blog Post Structure
+## 博文结构
 
-### The Ideal Structure
+### 理想的结构
 
 ```markdown
 # Title (contains primary keyword, states outcome)
@@ -217,28 +217,28 @@ If you're new to containers, start with [our intro post]."
 [3-5 relevant links]
 ```
 
-### Word Count by Type
+### 不同类型的文章字数要求
 
-| Type | Word Count | Why |
+| 文章类型 | 字数 | 原因 |
 |------|-----------|-----|
-| Quick tip | 500-800 | One concept, one example |
-| Tutorial | 1,500-3,000 | Step-by-step needs detail |
-| Deep dive | 2,000-4,000 | Thorough exploration |
-| Architecture post | 2,000-3,500 | Diagrams carry some load |
-| Benchmark | 1,500-2,500 | Data and charts do heavy lifting |
+| 快速提示 | 500-800 字 | 一个概念，一个示例 |
+| 教程 | 1,500-3,000 字 | 需要详细的步骤说明 |
+| 深度探讨 | 2,000-4,000 字 | 全面深入的讲解 |
+| 架构文章 | 2,000-3,500 字 | 需要图表来辅助说明 |
+| 基准测试文章 | 1,500-2,500 字 | 需要数据和图表来支持观点 |
 
-## Diagrams and Visuals
+## 图表和可视化元素
 
-### When to Use Diagrams
+### 何时使用图表
 
-| Scenario | Diagram Type |
+| 场景 | 图表类型 |
 |----------|-------------|
-| Request flow | Sequence diagram |
-| System architecture | Box-and-arrow diagram |
-| Decision logic | Flowchart |
-| Data model | ER diagram |
-| Performance comparison | Bar/line chart |
-| Before/after | Side-by-side |
+| 请求流程 | 序列图 |
+| 系统架构 | 方框箭头图 |
+| 决策逻辑 | 流程图 |
+| 数据模型 | 实体关系图 |
+| 性能对比 | 条形图/折线图 |
+| 对比前后变化 | 并排对比图 |
 
 ```bash
 # Generate architecture diagram
@@ -252,43 +252,36 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Distribution
+## 文章的传播方式
 
-### Where Developers Read
+### 开发者阅读文章的渠道
 
-| Platform | Format | How to Post |
+| 平台 | 格式 | 发布方式 |
 |----------|--------|-------------|
-| Your blog | Full article | Primary — own your content |
-| Dev.to | Cross-post (canonical URL back to yours) | Markdown import |
-| Hashnode | Cross-post (canonical URL) | Markdown import |
-| Hacker News | Link submission | Show HN for projects, tell HN for stories |
-| Reddit (r/programming, r/webdev, etc.) | Link or discussion | Follow subreddit rules |
-| Twitter/X | Thread summary + link | See twitter-thread-creation skill |
-| LinkedIn | Adapted version + link | See linkedin-content skill |
+| 你的个人博客 | 完整的文章 | 主要发布渠道 |
+| Dev.to | 跨平台发布（将你的博客链接作为引用） | 使用 Markdown 格式 |
+| Hashnode | 跨平台发布（提供你的博客链接） | 使用 Markdown 格式 |
+| Hacker News | 提供链接 | 对于项目内容可以链接到 Hacker News，对于故事内容需要手动提交 |
+| Reddit（r/programming, r/webdev 等） | 提供链接或参与讨论 | 遵守相关子版块的规则 |
+| Twitter/X | 发布简短总结并附上链接 | 学习如何在 Twitter 上发布文章 |
+| LinkedIn | 适配后的版本并附上链接 | 学习如何在 LinkedIn 上分享内容 |
 
-```bash
-# Cross-post thread to X
-infsh app run x/post-create --input '{
-  "text": "New blog post: How We Reduced API Latency by 90%\n\nThe short version:\n→ Moved computation to edge\n→ Aggressive cache-control headers\n→ Eliminated N+1 queries\n\np99 went from 800ms to 90ms.\n\nFull deep dive with code: [link]"
-}'
-```
+## 常见错误
 
-## Common Mistakes
-
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No TL;DR | Busy devs leave before getting the point | 2-3 sentence summary at the top |
-| Broken code examples | Destroys all credibility | Test every code block before publishing |
-| No version pinning | Code breaks in 6 months | "Works with Node 20, React 18.2" |
-| "Simply do X" | Dismissive, condescending | Remove "simply", "just", "easily" |
-| No diagrams for architecture | Walls of text describing systems | One diagram > 500 words of description |
-| Marketing tone | Developers instantly disengage | Direct, technical, honest |
-| No trade-offs section | Reads as biased marketing | Always discuss downsides |
-| Giant introduction before content | Readers bounce | Get to the point in 2-3 paragraphs |
-| Unpinned dependencies | Tutorial breaks for future readers | Pin versions, note date written |
-| No "Further Reading" | Dead end, no context | 3-5 links to deepen understanding |
+| 没有总结 | 忙碌的开发者可能看不完就离开了 | 在文章开头用 2-3 句话总结核心内容 |
+| 代码示例有错误 | 会破坏可信度 | 发布前测试每个代码块 |
+| 没有明确指出代码版本 | 代码可能在几个月后不再适用 | 明确指出代码兼容的版本 |
+| 用“只需做 X”这样的表述 | 语气居高临下 | 应避免使用这类表述 |
+| 架构部分没有图表 | 仅用文字描述系统结构 | 一张图表比 500 字的文字描述更有用 |
+| 采用营销式的语言 | 开发者会立即失去兴趣 | 保持语言的直接性和技术性 |
+| 没有讨论权衡因素 | 会让文章显得有偏见 | 必须讨论所有的优缺点 |
+| 内容前有冗长的介绍 | 读者会直接跳过 | 用 2-3 段落直接切入主题 |
+| 依赖版本没有固定 | 未来的读者可能无法运行代码 | 明确指出依赖的版本并注明编写日期 |
+| 没有“进一步阅读”部分 | 读者无法深入了解 | 提供 3-5 个链接供读者进一步学习 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@seo-content-brief
@@ -296,4 +289,4 @@ npx skills add inferencesh/skills@content-repurposing
 npx skills add inferencesh/skills@og-image-design
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

@@ -1,19 +1,19 @@
 ---
 name: Notebook
-description: Local-first personal knowledge base for tracking ideas, projects, tasks, habits, and any object type you define. YAML-based with no cloud lock-in.
+description: 这是一个以本地数据为中心的个人知识库，用于跟踪各种想法、项目、任务、习惯以及你自定义的任何对象类型。它基于 YAML 格式设计，且不依赖于任何云服务。
 ---
 
-# Notebook Skill Object Based Personal Knowledge Base
+# 笔记本：基于对象的个人知识库
 
-Purpose: Track any object type you define such as ideas, projects, tasks, habits, books, and people.
+**用途：** 可以跟踪您定义的任何对象类型，例如想法、项目、任务、习惯、书籍和人物等信息。
 
-Location: {WORKSPACE}/skills/notebook/
+**存储位置：** `{WORKSPACE}/skills/notebook/`
 
-## Agent Onboarding Protocol
+## 代理（Agent）入职流程
 
-Guide the user through setup when no object types exist.
+当系统中尚未存在任何对象类型时，指导用户完成设置。
 
-### Step 1 Suggest a First Type
+### 第一步：建议选择第一个对象类型
 
 ```
 It looks like you have not defined any object types yet.
@@ -27,10 +27,10 @@ What would you like to start with?
 4. Something custom tell me what you want to track
 ```
 
-### Step 2 Define the Type Together
+### 第二步：共同定义对象类型
 
-If they choose a preset:
-```
+- 如果用户选择预设的对象类型：
+  ```
 Great. Let us set up [type].
 
 I will create it with useful fields. You can add or remove them later.
@@ -46,8 +46,8 @@ For [type], what fields do you want?
 What fields should [type] have?
 ```
 
-If they want custom:
-```
+- 如果用户希望自定义对象类型：
+  ```
 Tell me what you want to track and what details matter.
 
 Example: I want to track books I read. I need title, author, status, rating, and notes.
@@ -55,7 +55,7 @@ Example: I want to track books I read. I need title, author, status, rating, and
 I will translate that into a type definition.
 ```
 
-### Step 3 Create the First Object
+### 第三步：创建第一个对象
 
 ```
 Now let us add your first [type].
@@ -65,7 +65,7 @@ What do you want to track as your first [type]?
 Example: The Andromeda Strain for books or Home automation for projects
 ```
 
-### Step 4 Show the Workflow
+### 第四步：展示工作流程
 
 ```
 Perfect. You now have:
@@ -80,30 +80,30 @@ What would you like to do next?
 - notebook type-add [typename] to add more fields later
 ```
 
-### Step 5 Offer Expansion
+### 第五步：提供扩展功能
 
 ```
 Would you like to deepen this [typename] with some questions?
 Say expand and I will ask questions to add depth.
 ```
 
-## Quick Reference
+## 快速参考
 
-### Defining Types
+### 定义对象类型
 
 ```
 notebook type-add typename field1:text field2:select(a|b|c) field3:number
 ```
 
-Field types:
-- text for short strings
-- longtext for multi line notes
-- select(a|b|c) for one option from a list
-- number for numeric values
-- date for dates
-- list for an array of strings
+- **字段类型：**
+  - `text`：用于存储简短字符串
+  - `longtext`：用于存储多行文本
+  - `select(a|b|c)`：从列表中选择一个选项
+  - `number`：用于存储数值
+  - `date`：用于存储日期
+  - `list`：用于存储字符串数组
 
-### Working with Objects
+### 操作对象的方法
 
 ```
 notebook add typename "Title" [-t tag1,tag2 -p priority]
@@ -117,7 +117,7 @@ notebook find "query"
 notebook stats
 ```
 
-## Example Workflow
+## 示例工作流程
 
 ```
 # 1. Define a type
@@ -137,7 +137,7 @@ notebook link idea:"voice capture" project:"home automation"
 notebook edit idea "voice capture" status:expanded
 ```
 
-## Data Location
+## 数据存储位置
 
 ```
 /data/notebook/
@@ -146,10 +146,9 @@ notebook edit idea "voice capture" status:expanded
 └── index.json
 ```
 
-## Design Principles
-
-- User defined: You define the types that matter.
-- Local first: Uses YAML files with no cloud or vendor lock in.
-- Linkable: Objects can reference each other.
-- Extensible: Add types and fields as needed.
-- Expandable: Use intelligent questioning to deepen thinking.
+## 设计原则：
+- **用户自定义**：用户可以自行定义所需的数据类型。
+- **本地存储优先**：数据存储在本地YAML文件中，不依赖云服务或第三方软件。
+- **对象间的关联**：对象之间可以相互引用。
+- **可扩展性**：根据需要添加新的对象类型和字段。
+- **深度思考引导**：通过智能问题引导用户更深入地思考和记录信息。

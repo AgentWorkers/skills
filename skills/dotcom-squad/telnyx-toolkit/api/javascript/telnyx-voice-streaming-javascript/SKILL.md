@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Streaming - JavaScript
+# Telnyx 语音流媒体服务 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,11 +32,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## Forking start
+## 启动分叉流媒体传输
 
-Call forking allows you to stream the media from a call to a specific target in realtime.
+分叉流媒体传输功能允许您将通话中的媒体内容实时传输到指定的目标。
 
 `POST /calls/{call_control_id}/actions/fork_start`
 
@@ -45,9 +46,9 @@ const response = await client.calls.actions.startForking('call_control_id');
 console.log(response.data);
 ```
 
-## Forking stop
+## 停止分叉流媒体传输
 
-Stop forking a call.
+停止对通话的分叉流媒体传输。
 
 `POST /calls/{call_control_id}/actions/fork_stop`
 
@@ -57,9 +58,9 @@ const response = await client.calls.actions.stopForking('call_control_id');
 console.log(response.data);
 ```
 
-## Streaming start
+## 启动流媒体传输
 
-Start streaming the media from a call to a specific WebSocket address or Dialogflow connection in near-realtime.
+将通话中的媒体内容以接近实时的方式传输到指定的 WebSocket 地址或 Dialogflow 连接。
 
 `POST /calls/{call_control_id}/actions/streaming_start`
 
@@ -69,9 +70,9 @@ const response = await client.calls.actions.startStreaming('call_control_id');
 console.log(response.data);
 ```
 
-## Streaming stop
+## 停止流媒体传输
 
-Stop streaming a call to a WebSocket.
+停止将通话中的媒体内容传输到 WebSocket。
 
 `POST /calls/{call_control_id}/actions/streaming_stop`
 
@@ -81,9 +82,9 @@ const response = await client.calls.actions.stopStreaming('call_control_id');
 console.log(response.data);
 ```
 
-## Transcription start
+## 启动实时转录
 
-Start real-time transcription.
+开始实时转录通话内容。
 
 `POST /calls/{call_control_id}/actions/transcription_start`
 
@@ -93,9 +94,9 @@ const response = await client.calls.actions.startTranscription('call_control_id'
 console.log(response.data);
 ```
 
-## Transcription stop
+## 停止实时转录
 
-Stop real-time transcription.
+停止实时转录通话内容。
 
 `POST /calls/{call_control_id}/actions/transcription_stop`
 
@@ -107,16 +108,17 @@ console.log(response.data);
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 头部信息以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callForkStarted` | Call Fork Started |
-| `callForkStopped` | Call Fork Stopped |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `transcription` | Transcription |
+| `callForkStarted` | 通话分叉传输开始 |
+| `callForkStopped` | 通话分叉传输停止 |
+| `callStreamingStarted` | 通话流媒体传输开始 |
+| `callStreamingStopped` | 通话流媒体传输停止 |
+| `callStreamingFailed` | 通话流媒体传输失败 |
+| `transcription` | 实时转录开始 |
+```
+```

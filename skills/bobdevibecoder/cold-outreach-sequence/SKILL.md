@@ -1,138 +1,121 @@
 ---
 name: cold-outreach-sequence
-description: Build personalized cold outreach sequences for LinkedIn and email. Use when someone needs to reach prospects, warm up cold leads, or build a systematic outreach engine. Covers research, connection requests, follow-ups, and conversion.
+description: 为 LinkedIn 和电子邮件创建个性化的冷启动外联（cold outreach）流程。适用于需要联系潜在客户、激活冷线索（cold leads），或构建系统化的外联机制的情况。内容包括市场调研、建立联系的请求、后续跟进以及转化策略。
 ---
 
-# Cold Outreach Sequence
+# 冷启动（Cold Outreach）流程
 
-Here's what I've learned about cold outreach: the word "cold" is the problem.
+以下是我总结的关于冷启动策略的经验：“冷”这个词本身就是问题所在。如果你向那些从未听说过你的陌生人发送信息，而且使用的还是从某个专家那里复制来的模板，那么这种做法确实毫无效果。
 
-If you're sending messages to strangers who've never heard of you, with templates you copied from some guru — yeah, that's cold. And it doesn't work.
+但是，如果你至少花10分钟时间去了解对方，找到他们的一些具体信息，并且有真正的理由与他们联系，那就完全不同了。这种做法才真正有效。
 
-But if you've done even 10 minutes of research, found something specific about them, and have a genuine reason to reach out? That's not cold. That's just... reaching out.
-
-This skill helps you do the second thing.
-
----
-
-## Before You Write a Single Message
-
-The research is the work. Skip it and you'll sound like everyone else in their inbox.
-
-**For each prospect, find:**
-
-- **Recent news** — Funding, launches, hires, press
-- **What they're posting about** — Their content tells you what they care about
-- **Their likely pain** — Given their role and stage, what's keeping them up?
-- **Your connection point** — What can you genuinely comment on?
-
-**Where to look:**
-- Their LinkedIn activity (posts, comments, shares)
-- Company news (Crunchbase, TechCrunch, press releases)
-- Their website (about page, blog, careers)
-- Podcasts they've appeared on
-
-**Time investment:** 10-15 minutes per high-value prospect.
-
-This is what separates you from spam.
+这项技能能帮助你实现第二种方式（即有针对性的联系）。
 
 ---
 
-## The Connection Request (LinkedIn)
+## 在发送任何消息之前
 
-You have 300 characters. Don't waste them on a pitch.
+研究是关键。如果你跳过这一步，你的信息就会和其他人的毫无区别，直接被他们的收件箱忽略。
 
-**The formula:**
-> [Specific observation] + [Simple reason to connect]
+**对于每个潜在客户，你需要找到：**
+- **最近的新闻**：公司的融资情况、新产品发布、人员招聘、媒体报道等。
+- **他们发布的内容**：他们的内容能反映出他们的兴趣和关注点。
+- **他们可能遇到的问题**：根据他们的职位和公司发展阶段，他们面临哪些挑战。
+- **你们之间的共同点**：你有什么可以真诚地与他们交流的话题。
 
-**Examples:**
+**查找信息的地方：**
+- 他们的LinkedIn动态（帖子、评论、分享内容）
+- 公司的新闻（Crunchbase、TechCrunch、新闻稿）
+- 他们的官方网站（关于页面、博客、招聘信息）
+- 他们参与的播客
 
-> "Following [Company]'s growth — the [specific thing] is smart positioning. Would love to connect."
+**每位高价值潜在客户所需的研究时间：** 10-15分钟。
 
-> "[Their recent post] resonated. Been thinking about the same thing. Happy to connect."
-
-> "Congrats on [news]. Impressive trajectory."
-
-**The rules:**
-- No pitching. At all.
-- Be specific (prove you looked)
-- Keep it human
-- No "I'd love to pick your brain"
-
----
-
-## First Message (After They Accept)
-
-Wait 24-48 hours. Then:
-
-**The formula:**
-> [Thanks] + [Bridge to relevance] + [Light value] + [Soft question]
-
-**Example:**
-
-> Thanks for connecting. I've been working at the intersection of [relevant area] — [one-line credibility].
->
-> Curious if you have someone owning [relevant function] as you scale, or if that's still founder-led?
->
-> Either way, happy to share what I'm seeing work in the space.
-
-**The rules:**
-- Still not a hard pitch
-- Demonstrate relevance, not desperation
-- Ask a question that invites dialogue
-- Offer value without strings attached
+这正是你与垃圾信息区分开来的关键。
 
 ---
 
-## First Follow-Up (If No Response)
+## 发送联系请求（通过LinkedIn）
 
-Wait 5-7 days. Then:
+你只有300个字符的篇幅，不要把时间浪费在推销上。
 
-**The formula:**
-> [Light nudge] + [New value or angle] + [Easy out]
+**发送消息的公式：**
+> [具体的观察结果] + [与他们建立联系的简单理由]
 
-**Example:**
+**示例：**
+> “随着[公司]的发展，[某个具体举措]显得非常明智。很希望能与您建立联系。”
+> “您最近的帖子引起了我的共鸣，我也一直在思考同样的问题。很高兴能与您交流。”
+> “恭喜您取得[某项成就]，发展势头令人印象深刻。”
 
-> Bumping this up — know you're slammed. Came across [relevant thing] and thought of your situation at [Company]. Worth a look if helpful.
-
-**Or:**
-
-> Following up — been seeing [trend] hit companies at your stage. Happy to share what's working if useful. If not, no worries.
-
-**The rules:**
-- Don't just say "following up"
-- Add something new
-- Give them an easy out (takes the pressure off)
+**注意事项：**
+- 绝不要推销产品或服务。
+- 要具体说明你为什么想与他们联系（证明你确实做了研究）。
+- 保持沟通的亲切感。
+- 避免使用“我很想向您请教”这样的表达。
 
 ---
 
-## The Break-Up (Final Attempt)
+## 第一条消息（收到回复后）
 
-Wait 7-10 days. Then move on gracefully:
+等待24-48小时，然后发送以下内容：
+**发送消息的公式：**
+> [表示感谢] + [提及与对方联系的关联点] + [提供一些有价值的信息] + [提出一个轻松的问题]
 
-**Example:**
+**示例：**
+> 感谢您与我建立联系。我一直在[相关领域]工作，[简要介绍自己的专业背景]。
+> 我很好奇，在公司规模扩大的过程中，是否有人负责[某个具体职能]？或者这个职能仍然由创始人亲自负责？
+> 无论怎样，都很乐意与您分享我在该领域看到的有效方法。
 
-> I'll assume timing isn't right — totally get it. If [relevant pain point] becomes a priority down the road, happy to reconnect. Best of luck with [specific thing they're working on].
-
-**The rules:**
-- No guilt trips
-- No "just checking in one last time"
-- Leave with class
-- They may come back later
+**注意事项：**
+- 仍然不要强行推销。
+- 体现你的专业性，但不要显得急切。
+- 提出一个能引发对话的问题。
+- 提供有价值的信息，但不要附加任何条件。
 
 ---
 
-## Email Version
+## 第一次跟进（如果没有回复）
 
-Same principles, different format.
+等待5-7天后，发送以下内容：
+**发送消息的公式：**
+> [轻微提醒] + [提供新的信息或新的角度] + [为对方提供退出的便利]
 
-**Subject lines that work:**
-- "[Company]'s marketing as you scale"
-- "Saw your [post/news] — quick thought"
-- "[Mutual connection] suggested I reach out"
-- "Question about [specific thing they're doing]"
+**示例：**
+> 再次提醒您——我知道您可能很忙。我看到了[某个相关内容]，觉得可能与您公司的情况有关。如果有帮助的话，不妨看看。
+> 或者：我再次跟进——我发现[某个趋势]正在影响类似规模的公司。如果有用的话，我很乐意分享我的经验。如果没有用，也完全没关系。
 
-**Structure:**
+**注意事项：**
+- 不要只是简单地说“再次跟进”。
+- 提供一些新的内容。
+- 给对方一个轻松的退出方式，避免给他们带来压力。
+
+---
+
+## 最终尝试（如果仍然没有回复）
+
+等待7-10天后，优雅地结束联系：
+**示例：**
+> 我认为现在可能不是合适的时机——完全理解。如果将来[他们遇到的问题]变得重要，我很乐意再次联系您。祝您在[他们正在做的事情]上取得成功。
+
+**注意事项：**
+- 不要让他们感到被指责或压力。
+- 不要使用“最后一次确认”的语气。
+- 以得体的方式结束联系。
+- 他们可能随时会回复你。
+
+---
+
+## 电子邮件版本
+
+原则相同，只是格式不同。
+
+**有效的邮件主题行示例：**
+- “[公司]在扩张过程中的营销策略”
+- “看到了您的[帖子/新闻]，有想法想与您分享”
+- “通过[共同的联系人]得知我应该联系您”
+- “关于[他们正在做的事情]有疑问”
+
+**邮件结构：**
 ```
 [1-line hook tied to them]
 
@@ -143,8 +126,7 @@ Same principles, different format.
 [Simple signature]
 ```
 
-**Example:**
-
+**示例：**
 ```
 Subject: [Company]'s GTM as you scale
 
@@ -161,33 +143,32 @@ Worth a quick chat to see if there's a fit?
 
 ---
 
-## The Full Sequence Calendar
+## 完整的流程时间表
 
-| Day | Action | Platform |
+| 时间 | 行动 | 平台 |
 |-----|--------|----------|
-| 0 | Research + Connection request | LinkedIn |
-| 1-2 | Accept → Wait 24h → First message | LinkedIn |
-| 7 | Follow-up #1 | LinkedIn |
-| 14 | Follow-up #2 or try email | LinkedIn/Email |
-| 21 | Break-up message | Same |
+| 0 | 进行研究 + 发送联系请求 | LinkedIn |
+| 1-2天 | 收到回复 → 等待24小时 → 发送第一条消息 | LinkedIn |
+| 7天 | 第一次跟进 | LinkedIn |
+| 14天 | 第二次跟进或尝试发送电子邮件 | LinkedIn/电子邮件 |
+| 21天 | 最终结束联系 | 同样通过LinkedIn |
 
 ---
 
-## Personalization Tiers
+## 个性化程度
 
-Not everyone deserves 15 minutes of research. Here's how to think about it:
+并不是每个人都值得你花费15分钟去研究。以下是区分不同客户的策略：
+- **第一层级（前10位潜在客户）**：进行全面研究，发送完全个性化的消息。
+- **第二层级（接下来的20位客户）**：使用带有个性化开头的模板。
+- **第三层级（大量客户）**：使用只需稍作调整的模板。
 
-**Tier 1 — Top 10 prospects:** Full research, fully custom messages
-**Tier 2 — Next 20:** Template with personalized opener
-**Tier 3 — Volume:** Template with minimal customization
-
-The math: 10 highly personalized messages often beat 100 spray-and-pray.
+**事实证明：** 10条高度个性化的消息往往比盲目发送100条消息更有效。
 
 ---
 
-## What You Get Back
+## 你可能会收到的回应
 
-A complete outreach doc for each prospect:
+针对每位潜在客户，你会得到一份完整的联系策略文档：
 
 ```
 # Outreach: [Prospect Name]
@@ -213,21 +194,21 @@ A complete outreach doc for each prospect:
 
 ---
 
-## What Kills Outreach
+## 什么会破坏冷启动的效果？
 
-❌ "I'd love to pick your brain"
-❌ "Can I get 15 minutes of your time?"
-❌ Long paragraphs about yourself
-❌ Immediate pitch in connection request
-❌ Same message to everyone
-❌ Following up every 2 days
-❌ "Hope this finds you well"
-
----
-
-**Need help building an outreach system that actually works?**
-→ [Book a strategy call](https://brianrwagner.com)
+❌ “我很想向您请教”
+❌ “能占用您15分钟的时间吗？”
+❌ 长篇大论地介绍自己
+❌ 在联系请求中立即推销产品或服务
+❌ 对所有人发送相同的消息
+❌ 每两天就进行一次跟进
+❌ “希望您一切都好”
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+**需要帮助构建有效的联系策略吗？**
+→ [预约策略咨询](https://brianrwagner.com)
+
+---
+
+*作者：Brian Wagner | 人工智能营销架构师 | brianrwagner.com*

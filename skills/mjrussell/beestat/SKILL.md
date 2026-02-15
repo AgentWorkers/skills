@@ -1,6 +1,6 @@
 ---
 name: beestat
-description: Query ecobee thermostat data via Beestat API including temperature, humidity, air quality (CO2, VOC), sensors, and HVAC runtime. Use when user asks about home temperature, thermostat status, air quality, or heating/cooling usage.
+description: 通过 Beestat API 查询 ecobee 温控器的数据，包括温度、湿度、空气质量（二氧化碳、挥发性有机化合物）、传感器信息以及 HVAC 系统的运行状态。当用户询问家庭温度、温控器状态、空气质量或供暖/制冷系统的使用情况时，可以使用此功能。
 homepage: https://beestat.io
 metadata:
   clawdbot:
@@ -12,37 +12,37 @@ metadata:
 
 # Beestat CLI
 
-CLI for the Beestat API (ecobee thermostat analytics). Query temperature, humidity, air quality, and HVAC runtime.
+Beestat CLI 是用于访问 Beestat API（ecobee 温控器分析服务）的命令行工具，可以查询温度、湿度、空气质量以及 HVAC 系统的运行状态。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g beestat-cli
 ```
 
-## Setup
+## 设置
 
-1. Create account at [beestat.io](https://beestat.io) and link your ecobee
-2. Email contact@beestat.io with your thermostat serial number to get an API key
-3. Set environment variable: `export BEESTAT_API_KEY="your-key"`
+1. 在 [beestat.io](https://beestat.io) 上创建账户，并将您的 ecobee 温控器与之关联。
+2. 发送电子邮件至 contact@beestat.io，附上您的温控器序列号，以获取 API 密钥。
+3. 设置环境变量：`export BEESTAT_API_KEY="your-key"`。
 
-## Commands
+## 命令
 
-### Status
+### 查看系统状态
 
 ```bash
 beestat status             # Current temps, humidity, setpoints, weather
 beestat status --json
 ```
 
-### Sensors
+### 查看传感器数据
 
 ```bash
 beestat sensors            # All sensors with temperature and occupancy
 beestat sensors --json
 ```
 
-### Air Quality
+### 查看空气质量
 
 ```bash
 beestat air-quality        # CO2, VOC, and air quality score
@@ -50,28 +50,28 @@ beestat aq                 # Short alias
 beestat aq --json
 ```
 
-Requires ecobee Smart Thermostat Premium (has built-in air quality sensors).
+**注意：** 该功能需要使用 ecobee Smart Thermostat Premium 版本（该版本内置了空气质量传感器）。
 
-**CO2 Levels:**
-- < 800 ppm: Excellent
-- 800-1000 ppm: Good
-- 1000-1500 ppm: Fair (consider ventilation)
-- > 1500 ppm: High (ventilate!)
+**二氧化碳浓度：**
+- < 800 ppm：优秀
+- 800-1000 ppm：良好
+- 1000-1500 ppm：一般（建议开窗通风）
+- > 1500 ppm：较高（请立即通风！）
 
-**VOC Levels:**
-- < 0.5 ppm: Excellent
-- 0.5-1.0 ppm: Good
-- 1.0-3.0 ppm: Fair
-- > 3.0 ppm: High
+**挥发性有机化合物（VOC）浓度：**
+- < 0.5 ppm：优秀
+- 0.5-1.0 ppm：良好
+- 1.0-3.0 ppm：一般
+- > 3.0 ppm：较高
 
-### Thermostats
+### 查看温控器信息
 
 ```bash
 beestat thermostats        # Model info, HVAC details
 beestat thermostats --json
 ```
 
-### Runtime Summary
+### 查看系统运行统计信息
 
 ```bash
 beestat summary            # Runtime history (default 7 days)
@@ -79,41 +79,41 @@ beestat summary --days 14  # Last 14 days
 beestat summary --json
 ```
 
-### Force Sync
+### 强制同步数据
 
 ```bash
 beestat sync               # Force sync with ecobee
 ```
 
-## Usage Examples
+## 使用示例
 
-**User: "What's the temperature in the house?"**
+**用户：** “家里的温度是多少？”
 ```bash
 beestat status
 ```
 
-**User: "Is the air quality okay?"**
+**用户：** “空气质量怎么样？”
 ```bash
 beestat aq
 ```
 
-**User: "Is anyone in the bedrooms?"**
+**用户：** **卧室里有人吗？**
 ```bash
 beestat sensors
 ```
 
-**User: "How much did we heat the house this week?"**
+**用户：** **这周我们为房子供暖花了多少钱？**
 ```bash
 beestat summary --days 7
 ```
 
-**User: "What thermostats do we have?"**
+**用户：** **我们有哪些类型的温控器？**
 ```bash
 beestat thermostats
 ```
 
-## Notes
+## 注意事项
 
-- Air quality data comes from ecobee runtime, not sensor capabilities
-- All commands support `--json` for scripting/automation
-- Use `beestat sync` if data seems stale
+- 空气质量数据来源于 ecobee 系统的运行数据，而非温控器的传感器数据。
+- 所有命令都支持使用 `--json` 参数进行脚本编写或自动化操作。
+- 如果数据更新不及时，可以使用 `beestat sync` 命令强制同步数据。

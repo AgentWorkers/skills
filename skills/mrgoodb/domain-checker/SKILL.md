@@ -1,14 +1,15 @@
 ---
 name: domain-checker
-description: Check domain name availability across multiple TLDs. Fast bulk checking for domain research and brainstorming.
+description: **检查多个顶级域名（TLD）下的域名可用性**  
+适用于快速批量查询域名信息及进行头脑风暴。
 metadata: {"clawdbot":{"emoji":"🌐"}}
 ---
 
-# Domain Checker
+# 域名检查工具
 
-Check if domains are available for registration.
+用于查询域名是否可以被注册。
 
-## Quick Check (WHOIS)
+## 快速查询（WHOIS）
 
 ```bash
 # Single domain
@@ -25,7 +26,7 @@ for tld in com ai io co net; do
 done
 ```
 
-## Bulk Check Function
+## 批量查询功能
 
 ```bash
 check_domains() {
@@ -52,12 +53,12 @@ check_domains "asklee" com ai io co bot
 check_domains "myproject" com net org io
 ```
 
-## Brainstorm + Check Pattern
+## 域名创意生成与可用性检查流程：
 
-When helping with domain research:
+在帮助客户选择域名时：
 
-1. Generate 10-20 name ideas
-2. Bulk check availability:
+1. 生成10-20个域名创意。
+2. 使用批量查询工具检查这些域名的可用性：
 ```bash
 for name in idea1 idea2 idea3 brandname coolbot; do
   check_domains "$name" com ai io
@@ -65,18 +66,18 @@ for name in idea1 idea2 idea3 brandname coolbot; do
 done
 ```
 
-## TLD-Specific WHOIS Quirks
+## 各顶级域名（TLD）的WHOIS查询特殊规则：
 
-| TLD | Available indicator |
+| TLD | 可用性提示 |
 |-----|---------------------|
-| .com, .net, .org | "No match for" |
-| .io | "is available" or "NOT FOUND" |
-| .ai | "NOT FOUND" or "No Data Found" |
-| .co | "No Data Found" |
-| .bot | "No match for domain" |
-| .app | "Domain not found" |
+| .com, .net, .org | “未找到匹配的记录” |
+| .io | “可用”或“未找到” |
+| .ai | “未找到”或“数据不存在” |
+| .co | “数据不存在” |
+| .bot | “未找到该域名” |
+| .app | “该域名不存在” |
 
-## Fast API Alternative (if WHOIS is slow)
+## 快速API替代方案（当WHOIS查询速度较慢时）
 
 ```bash
 # Using domainr API (no key needed for basic checks)
@@ -87,9 +88,9 @@ curl -s "https://domainr.p.rapidapi.com/v2/status?domain=example.com" \
 dig +short "$domain" | grep -q . && echo "❌ Has DNS" || echo "🤔 No DNS (might be available)"
 ```
 
-## Tips
+## 使用建议：
 
-- Check during off-peak hours for faster WHOIS responses
-- Some premium/reserved domains show as "available" in WHOIS but aren't purchasable
-- Always verify on registrar (GoDaddy, Namecheap, Porkbun) before announcing availability
-- .ai domains require Anguilla presence or use a registrar that handles it
+- 在非高峰时段进行查询，以获得更快的响应速度。
+- 一些高级或预留的域名在WHOIS查询中可能显示为“可用”，但实际上无法购买。
+- 在确认域名可用性之前，务必在注册商（如GoDaddy、Namecheap、Porkbun）处进行最终验证。
+- .ai域名需要使用位于安圭拉的注册商进行注册，或使用专门处理此类域名的注册商。

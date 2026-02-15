@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account - Java
+# Telnyx 账户 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List Audit Logs
+## 列出审计日志
 
-Retrieve a list of audit log entries.
+检索审计日志条目列表。
 
 `GET /audit_events`
 
@@ -44,7 +44,7 @@ import com.telnyx.sdk.models.auditevents.AuditEventListParams;
 AuditEventListPage page = client.auditEvents().list();
 ```
 
-## Get user balance details
+## 获取用户余额详情
 
 `GET /balance`
 
@@ -55,9 +55,9 @@ import com.telnyx.sdk.models.balance.BalanceRetrieveResponse;
 BalanceRetrieveResponse balance = client.balance().retrieve();
 ```
 
-## Search detail records
+## 搜索详细记录
 
-Search for any detail record across the Telnyx Platform
+在 Telnyx 平台上搜索任何详细记录。
 
 `GET /detail_records`
 
@@ -68,9 +68,9 @@ import com.telnyx.sdk.models.detailrecords.DetailRecordListParams;
 DetailRecordListPage page = client.detailRecords().list();
 ```
 
-## List invoices
+## 列出发票
 
-Retrieve a paginated list of invoices.
+检索分页显示的发票列表。
 
 `GET /invoices`
 
@@ -81,9 +81,9 @@ import com.telnyx.sdk.models.invoices.InvoiceListParams;
 InvoiceListPage page = client.invoices().list();
 ```
 
-## Get invoice by ID
+## 根据 ID 获取发票
 
-Retrieve a single invoice by its unique identifier.
+根据唯一标识符检索单张发票。
 
 `GET /invoices/{id}`
 
@@ -94,9 +94,9 @@ import com.telnyx.sdk.models.invoices.InvoiceRetrieveResponse;
 InvoiceRetrieveResponse invoice = client.invoices().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List auto recharge preferences
+## 列出自动充值偏好设置
 
-Returns the payment auto recharge preferences.
+返回支付自动充值偏好设置。
 
 `GET /payments/auto_recharge_prefs`
 
@@ -107,9 +107,9 @@ import com.telnyx.sdk.models.payment.autorechargeprefs.AutoRechargePrefListRespo
 AutoRechargePrefListResponse autoRechargePrefs = client.payment().autoRechargePrefs().list();
 ```
 
-## Update auto recharge preferences
+## 更新自动充值偏好设置
 
-Update payment auto recharge preferences.
+更新支付自动充值偏好设置。
 
 `PATCH /payments/auto_recharge_prefs`
 
@@ -120,9 +120,9 @@ import com.telnyx.sdk.models.payment.autorechargeprefs.AutoRechargePrefUpdateRes
 AutoRechargePrefUpdateResponse autoRechargePref = client.payment().autoRechargePrefs().update();
 ```
 
-## List User Tags
+## 列出用户标签
 
-List all user tags.
+列出所有用户标签。
 
 `GET /user_tags`
 
@@ -133,9 +133,9 @@ import com.telnyx.sdk.models.usertags.UserTagListResponse;
 UserTagListResponse userTags = client.userTags().list();
 ```
 
-## List webhook deliveries
+## 列出 Webhook 交付记录
 
-Lists webhook_deliveries for the authenticated user
+列出已认证用户的 Webhook 交付记录。
 
 `GET /webhook_deliveries`
 
@@ -146,9 +146,9 @@ import com.telnyx.sdk.models.webhookdeliveries.WebhookDeliveryListParams;
 WebhookDeliveryListPage page = client.webhookDeliveries().list();
 ```
 
-## Find webhook_delivery details by ID
+## 根据 ID 查找 Webhook 交付详情
 
-Provides webhook_delivery debug data, such as timestamps, delivery status and attempts.
+提供 Webhook 交付的调试数据，如时间戳、交付状态和尝试次数。
 
 `GET /webhook_deliveries/{id}`
 

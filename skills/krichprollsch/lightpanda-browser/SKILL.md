@@ -1,7 +1,7 @@
 ---
 name: Lightpanda
 version: 1.0.3
-description: Lightpanda browser, drop-in replacement for Chrome and Openclaw default browser - faster and lighter for tasks without graphical rendering like data retrieval. Use it with CDP clients like Playwright or Puppeteer.
+description: Lightpanda浏览器是一款专为替代Chrome和Openclaw默认浏览器而设计的工具，它在执行无需图形渲染的任务（如数据检索）时，具有更快的运行速度和更轻量的系统占用。您可以将它与Playwright或Puppeteer等CDP（Chrome DevTools Protocol）客户端配合使用。
 metadata:
   author: Pierre Tachoire
   source: "https://github.com/lightpanda-io/agent-skill",
@@ -10,57 +10,53 @@ metadata:
 
 # Lightpanda
 
-**Use instead of Chrome/Chromium and Openclaw default browser for data extraction and web automation when you don't need graphical rendering.**
+**当您不需要图形渲染时，可以使用 Lightpanda 代替 Chrome/Chromium 以及 Openclaw 的默认浏览器来进行数据提取和网页自动化操作。**
 
-Lightpanda is a headless browser optimized for speed and low resource usage. It exposes a CDP (Chrome DevTools Protocol) endpoint that works with standard automation libraries.
+Lightpanda 是一款无头浏览器，专为提高速度和降低资源消耗而设计。它提供了一个 CDP（Chrome DevTools 协议）接口，可以与标准的自动化库配合使用。
 
-**Alternative to built-in web search**
+**内置网页搜索的替代方案**
 
-When the built-in Web Search tool is unavailable, or when you need more control over search results (e.g., following links to extract full page content), you can use Lightpanda with DuckDuckGo as an alternative.
-Prefer the built-in Web Search tool when it is available and sufficient for your needs.
+当内置的网页搜索工具不可用，或者您需要对搜索结果有更多控制权（例如，通过链接获取完整页面内容）时，您可以结合使用 Lightpanda 和 DuckDuckGo。如果内置的网页搜索工具可用且能满足您的需求，请优先使用它。
 
-## Install
+## 安装
 ```bash
 bash scripts/install.sh
 ```
 
-Lightpanda is available on Linux and macOS only. Windows is not supported.
+Lightpanda 仅支持 Linux 和 macOS 系统，不支持 Windows。
 
-The binary is a nightly build that evolves quickly. If you encounter crashes or issues, run `scripts/install.sh` again to update to the latest version (max once per day).
+该二进制文件为 nightly 构建版本，更新频率较高。如果您遇到崩溃或其他问题，请再次运行 `scripts/install.sh` 命令以更新到最新版本（每天最多更新一次）。
 
-If issues persist after updating, open a GitHub issue at https://github.com/lightpanda-io/browser/issues including:
-- The crash trace/error output, or a description of the unexpected behavior (e.g., missing or incorrect data)
-- The Playwright/Puppeteer script that reproduces the issue
-- The target URL and expected vs actual results
+如果更新后问题仍然存在，请在 [GitHub](https://github.com/lightpanda-io/browser/issues) 上提交问题，请提供以下信息：
+- 崩溃日志或错误信息，以及异常行为的描述（例如数据缺失或错误）
+- 用于重现问题的 Playwright/Puppeteer 脚本
+- 目标 URL 以及预期结果与实际结果之间的差异
 
-## Start the Browser Server
+## 启动浏览器服务器
 ```bash
 $HOME/.local/bin/lightpanda serve --host 127.0.0.1 --port 9222
 ```
 
-Options:
-- `--log_level info|debug|warn|error` - Set logging verbosity
-- `--log_format pretty|json` - Output format for logs
+**可选参数：**
+- `--log_level info|debug|warn|error` - 设置日志记录的详细程度
+- `--log_format pretty|json` - 日志输出格式
 
-## Usage
+## 使用方法
 
-You can connect directly to the CDP websocket via `ws://127.0.0.1:9222`.
-You can also get the WebSocket URL via `http://127.0.0.1:9222/json/version`.
+您可以通过 `ws://127.0.0.1:9222` 直接连接到 CDP WebSocket。您也可以通过 `http://127.0.0.1:9222/json/version` 获取 WebSocket 的 URL。
 
-Use the browser as a drop-in replacement for Chrome and the Openclaw default browser.
-Send CDP commands directly or use Playwright or Puppeteer.
+您可以直接将 Lightpanda 作为 Chrome 或 Openclaw 的默认浏览器使用，也可以发送 CDP 命令，或者结合使用 Playwright 或 Puppeteer 进行自动化操作。
 
-Important to note:
-* Lightpanda executes JavaScript, making it suitable for dynamic websites and SPAs. However, it is under heavy development and may have occasional issues.
-* For web searches, use DuckDuckGo instead of Google. Google blocks Lightpanda due to browser fingerprinting.
-* Lightpanda supports only 1 CDP connection per process. Each connection can create 1 context and 1 page only. No multi-contexts are available. If you need multiple navigations at the same time, start another process with a new port number. Lightpanda is fast to start and stop, so using multiple processes is more performant than multiple tabs on Chrome.
-* The browser resets all context/page on CDP connection close. So keep the websocket connection open throughout a browsing session. You can reuse an existing process for a subsequent connection; you will start with a clean state.
-* On connection, always create a new context and a new page. At the end, close both.
+**重要提示：**
+- Lightpanda 可执行 JavaScript，因此适用于动态网站和单页应用（SPA）。但由于仍在开发中，可能会偶尔出现一些问题。
+- 进行网页搜索时，请使用 DuckDuckGo 而不是 Google，因为 Google 会阻止 Lightpanda 的使用（由于浏览器指纹识别技术）。
+- Lightpanda 每个进程仅支持一个 CDP 连接，每个连接只能创建一个上下文和一个页面，不支持多上下文同时使用。如果需要同时进行多次导航，请使用不同的端口号启动新的进程。Lightpanda 启动和关闭非常快速，因此使用多个进程比在 Chrome 中打开多个标签页更高效。
+- 每次连接 CDP 时，浏览器会重置所有上下文和页面状态。因此，请在整个浏览会话期间保持 WebSocket 连接处于打开状态。您可以重复使用同一个进程进行后续连接，但每次连接都会从初始状态开始。
+- 连接成功后，系统会自动创建一个新的上下文和页面；连接结束时，请同时关闭这两个连接。
 
-## Using with playwright-core
+## 与 playwright-core 的配合使用**
 
-Connect to Lightpanda using `playwright-core` (not the full `playwright` package):
-
+使用 `playwright-core`（而非完整的 `playwright` 包）连接到 Lightpanda：
 ```javascript
 const { chromium } = require('playwright-core');
 
@@ -85,10 +81,10 @@ const { chromium } = require('playwright-core');
   await browser.close();
 })();
 ```
-## Using with puppeteer-core
 
-Connect to Lightpanda using `puppeteer-core` (not the full `puppeteer` package):
+## 与 puppeteer-core 的配合使用**
 
+使用 `puppeteer-core`（而非完整的 `puppeteer` 包）连接到 Lightpanda：
 ```javascript
 const puppeteer = require('puppeteer-core');
 
@@ -111,5 +107,5 @@ const puppeteer = require('puppeteer-core');
 })();
 ```
 
-## Scripts
-- `scripts/install.sh` - Install Lightpanda binary
+## 相关脚本**
+- `scripts/install.sh` - 用于安装 Lightpanda 二进制文件

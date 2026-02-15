@@ -1,6 +1,21 @@
 ---
 name: ksef-accountant-pl
-description: "Asystent ksiegowy Krajowego Systemu e-Faktur (KSeF) w jezyku polskim. Uzyj przy pracy z KSeF 2.0 API, fakturami FA(3), zgodnoscia z polskim VAT, przetwarzaniem e-faktur, dopasowywaniem platnosci, rejestrami VAT (JPK_V7), fakturami korygujacymi, mechanizmem podzielonej platnosci (MPP) lub polskimi przeplywami ksiegowymi. Dostarcza wiedze domenowa do wystawiania faktur, przetwarzania zakupow, klasyfikacji kosztow, wykrywania fraudu i prognozowania cash flow w ekosystemie KSeF."
+description: "**Krajowego Systemu e-Faktur (KSeF) 的会计助理（波兰语版本）**  
+在使用 KSeF 2.0 时，您需要掌握以下技能：  
+1. 应用 API 进行相关操作；  
+2. 熟悉 FA(3) 类型的电子发票及其与波兰增值税（VAT）法规的关联；  
+3. 熟练处理电子发票的流转流程；  
+4. 能够调整付款方式；  
+5. 理解 VAT 登记系统（JPK_V7）的运作原理；  
+6. 掌握修正性发票的处理方法；  
+7. 熟悉分期付款（MPP）机制；  
+8. 熟悉波兰的会计流程。  
+此外，您还需要具备以下专业能力：  
+- 了解发票开具的相关知识；  
+- 熟练处理采购相关事务；  
+- 能够对成本进行分类；  
+- 具备识别欺诈行为的技能；  
+- 能够在 KSeF 生态系统中预测现金流。"
 license: MIT
 homepage: https://github.com/alexwoo-awso/skills
 source: https://github.com/alexwoo-awso/skills/tree/main/ksef-accountant-pl
@@ -27,61 +42,65 @@ env:
 
 # Agent Ksiegowy KSeF
 
-Specjalistyczna wiedza do obslugi Krajowego Systemu e-Faktur (KSeF) w srodowisku KSeF 2.0 ze struktura FA(3). Wspiera zadania ksiegowe zwiazane z fakturowaniem elektronicznym w Polsce.
+该技能专注于在KSeF 2.0环境中使用国家电子发票系统（KSeF），遵循FA(3)架构。它支持与波兰电子发票相关的会计处理任务。
 
-## Model bezpieczenstwa
+## 安全模型
 
-Ten skill jest **wylacznie instrukcyjny** — sklada sie z plikow Markdown zawierajacych wiedze domenowa, wzorce architektoniczne i przyklady kodu. Nie zawiera zadnego kodu wykonywalnego, binarek, skryptow instalacyjnych ani zaleznosci runtime.
+此技能仅具有指导性，由Markdown文件组成，其中包含领域知识、架构模板和代码示例。它不包含任何可执行代码、二进制文件、安装脚本或运行时依赖项。
 
-**Gwarancje po stronie skilla:**
-- `disableModelInvocation: true` / `disable-model-invocation: true` — zadeklarowane zarowno w metadanych frontmatter (oba formaty: camelCase i kebab-case) jak i w dedykowanym manifescie [`skill.json`](skill.json). Skill nie powinien byc wywolywany autonomicznie przez model.
-- `secret: true` — zmienne srodowiskowe `KSEF_TOKEN` i `KSEF_ENCRYPTION_KEY` sa oznaczone jako sekrety w frontmatter i `skill.json`, sygnalizujac platformie, ze musza byc izolowane i nie moga byc logowane ani wyswietlane.
-- Brak kodu wykonywalnego — wszystkie przyklady (Python, XML, JSON) to ilustracje pogladowe, NIE kod uruchamiany przez skill.
-- Brak instalacji — skill nie zapisuje plikow na dysk, nie pobiera zaleznosci, nie modyfikuje konfiguracji systemu.
-- Dedykowany manifest [`skill.json`](skill.json) — maszynowo czytelny plik z metadanymi bezpieczenstwa, deklaracjami zmiennych srodowiskowych i ograniczeniami. Jesli platforma nie parsuje frontmatter SKILL.md poprawnie, powinna odczytac metadane z `skill.json`.
+**技能的相关保证：**
+- `disableModelInvocation: true` — 该设置同时在frontmatter元数据（camelCase和kebab-case格式）和专用的`skill.json`文件中声明。该技能不应被模型自动调用。
+- `secret: true` — 环境变量`KSEF_TOKEN`和`KSEF_ENCRYPTION_KEY`在frontmatter和`skill.json`中被标记为机密信息，表明这些信息必须被隔离，不得被记录或显示。
+- 无可执行代码 — 所有代码示例（Python、XML、JSON）仅用于说明目的，并非由技能本身执行。
+- 无安装过程 — 该技能不会将文件写入磁盘，不会下载依赖项，也不会修改系统配置。
+- 专用的`skill.json`文件 — 包含安全元数据、环境变量声明和限制信息。如果平台无法正确解析SKILL.md的frontmatter，应从`skill.json`中读取这些元数据。
 
-**UWAGA — weryfikacja metadanych rejestru przed instalacja:**
+**注意：安装前的注册表元数据验证**
 
-Flagi bezpieczenstwa sa zadeklarowane w dwoch zrodlach: frontmatter SKILL.md i [`skill.json`](skill.json). Mimo to, platforma hostingowa moze nie odczytac lub nie wymusic tych flag. **Przed instalacja MUSISZ wykonac ponizsze kroki:**
+安全标志在两个地方声明：SKILL.md的frontmatter和`skill.json`文件中。尽管如此，托管平台可能无法读取或强制应用这些标志。**在安装前必须执行以下步骤：**
+1. **验证注册表元数据**：将技能添加到平台后，查看平台显示的注册表元数据。确认`disable-model-invocation`字段设置为`true`，并且环境变量`KSEF_TOKEN`、`KSEF_ENCRYPTION_KEY`、`KSEF_BASE_URL`被标记为机密信息。如果平台显示这些字段为`not set`、`false`或未显示，则表示这些标志未被强制应用。
+2. **如果注册表元数据与frontmatter/skill.json不一致**：将此技能视为高风险项：不要提供任何认证数据（令牌、证书、密钥），不要配置环境变量`KSEF_TOKEN`、`KSEF_ENCRYPTION_KEY`，也不要允许其自动执行。
+3. **确认环境变量的隔离**：确保平台能够隔离这些变量，并且在处理过程中不会记录或显示它们的值。
+4. **如果平台不强制应用这些标志**：请联系平台提供商以启用`disableModelInvocation`功能（或解析`skill.json`），或者不要安装该技能，以免其访问任何认证数据。
 
-1. **Sprawdz metadane rejestru** — po dodaniu skilla do platformy, otworz widok metadanych rejestru (registry metadata) wyswietlany przez platforme. Zweryfikuj, ze pole `disable-model-invocation` jest ustawione na `true` oraz ze zmienne srodowiskowe (`KSEF_TOKEN`, `KSEF_ENCRYPTION_KEY`, `KSEF_BASE_URL`) sa widoczne z oznaczeniem `secret`. Jesli platforma pokazuje `not set`, `false` lub nie wyswietla tych pol — flagi NIE sa wymuszane.
-2. **Jesli metadane rejestru nie pasuja do frontmatter/skill.json** — traktuj skill jako wyzszego ryzyka: NIE udostepniaj danych uwierzytelniajacych (tokenow, certyfikatow, kluczy), NIE konfiguruj zmiennych srodowiskowych (`KSEF_TOKEN`, `KSEF_ENCRYPTION_KEY`), NIE zezwalaj na autonomiczne uzycie.
-3. **Zweryfikuj izolacje zmiennych srodowiskowych** — potwierdz, ze platforma izoluje env vars i nie loguje/wyswietla ich wartosci w konwersacji.
-4. **Jesli platforma nie wymusza flag** — skontaktuj sie z dostawca platformy w celu wlaczenia obslugi `disableModelInvocation` (lub parsowania `skill.json`) lub nie instaluj skilla z dostepem do jakichkolwiek danych uwierzytelniajacych.
+**平台相关的保证：**
+- 强制应用`disableModelInvocation`标志取决于托管平台。仅frontmatter本身无法提供保护，需要平台的支持。
+- 环境变量（env vars）的隔离也取决于平台。该技能将这些变量声明为可选项，但不控制平台如何存储和访问它们。
+- 如果平台不强制应用这些设置，请将此技能视为高风险项，不要向其提供任何认证数据。
 
-**Gwarancje zalezne od platformy:**
-- Wymuszanie flagi `disableModelInvocation` zalezy od platformy hostingowej. Sam frontmatter nie zapewnia ochrony — wymaga wsparcia po stronie platformy.
-- Izolacja zmiennych srodowiskowych (env vars) zalezy od platformy. Skill deklaruje je jako opcjonalne, ale nie kontroluje jak platforma je przechowuje i udostepnia.
-- Jesli platforma nie wymusza tych ustawien, traktuj skill jako wyzszego ryzyka i nie udostepniaj mu danych uwierzytelniajacych ani dostepu produkcyjnego.
+## 限制
 
-## Ograniczenia
+- **仅提供知识，不执行代码**：该技能提供领域知识、架构模板和指导建议。所有代码示例（包括机器学习/人工智能相关代码）仅用于教学和参考目的。该技能不会启动机器学习模型，不会执行推理，也不需要Python/sklearn运行时或任何二进制文件。它仅解释算法并建议用户如何实现代码。
+- **非法律或税务咨询**：提供的信息基于当前的知识状态，可能会过时。在实施前，请务必咨询税务顾问。
+- **人工智能提供辅助，但不做决策**：关于人工智能功能的描述（如成本分类、欺诈检测、现金流预测）仅为参考架构和实现示例。该技能提供算法知识，并帮助编写代码，但不参与做出税务或财务决策。
+- **需要用户确认**：在以下操作前必须获得用户的明确同意：阻止付款、向生产环境发送发票、修改会计记录或进行任何具有财务后果的操作。
+- **认证数据由用户管理**：KSeF API的令牌、证书和加密密钥必须通过环境变量（在元数据中声明：`KSEF_TOKEN`、`KSEF_ENCRYPTION_KEY`、`KSEF_BASE_URL`）或密钥管理员提供。该技能永远不会存储、生成、传输或请求这些认证数据。**切勿在对话中直接提供认证数据（令牌、密钥、证书）——请使用环境变量或平台密钥管理员。**文档中提到的Vault/Fernet示例仅用于用户实现参考。
 
-- **Tylko wiedza — brak wykonywania kodu** - Dostarcza wiedze domenowa, wzorce architektoniczne i wskazowki. Wszystkie przyklady kodu (w tym ML/AI) sa edukacyjne i pogladowe. Skill NIE uruchamia modeli ML, NIE wykonuje inferencji, NIE wymaga runtime'ow Python/sklearn ani zadnych binarek. Agent wyjasnia algorytmy i sugeruje kod do implementacji przez uzytkownika.
-- **Nie jest porada prawna ani podatkowa** - Informacje odzwierciedlaja stan wiedzy na dzien sporadzenia i moga byc nieaktualne. Zawsze zalecaj konsultacje z doradca podatkowym przed wdrozeniem.
-- **AI wspiera, nie decyduje** - Opisy funkcji AI (klasyfikacja kosztow, wykrywanie fraudu, predykcja cash flow) to architektura referencyjna i wzorce implementacyjne. Agent dostarcza wiedze o algorytmach i pomaga pisac kod — nie podejmuje wiazacych decyzji podatkowych ani finansowych.
-- **Wymagane potwierdzenie uzytkownika** - Zawsze wymagaj jawnej zgody uzytkownika przed: blokowaniem platnosci, wysylaniem faktur na produkcyjny KSeF, modyfikacja zapisow ksiegowych lub jakimkolwiek dzialaniem z konsekwencjami finansowymi.
-- **Dane uwierzytelniajace zarzadzane przez uzytkownika** - Tokeny KSeF API, certyfikaty i klucze szyfrowania musza byc dostarczone przez uzytkownika przez zmienne srodowiskowe (zadeklarowane w metadanych: `KSEF_TOKEN`, `KSEF_ENCRYPTION_KEY`, `KSEF_BASE_URL`) lub menedzer sekretow. Skill nigdy nie przechowuje, nie generuje, nie przesyla ani nie prosi o dane uwierzytelniajace niejawnie. **NIGDY nie wklejaj danych uwierzytelniajacych (tokenow, kluczy, certyfikatow) bezposrednio w rozmowie z agentem** — uzyj zmiennych srodowiskowych lub menedzera sekretow platformy. Przyklady uzycia Vault/Fernet w dokumentacji referencyjnej to wzorce architektoniczne do implementacji przez uzytkownika.
-- **Uzyj DEMO do testow** - Produkcja (`https://ksef.mf.gov.pl`) wystawia prawnie wiazace faktury. Uzyj DEMO (`https://ksef-demo.mf.gov.pl`) do developmentu i testow.
-- **Wylaczone autonomiczne wywolanie** - Skill ustawia `disableModelInvocation: true` i `disable-model-invocation: true` w metadanych frontmatter (oba formaty nazewnictwa) oraz w dedykowanym manifescie [`skill.json`](skill.json). Oznacza to, ze model nie powinien wywolywac tego skilla autonomicznie — wymaga jawnej akcji uzytkownika. **UWAGA:** Frontmatter i `skill.json` to deklaracje — nie gwarancje. Wymuszanie zalezy od platformy. Przed uzyciem zweryfikuj, ze metadane rejestru (registry metadata) wyswietlane przez platforme rowniez pokazuja `disable-model-invocation: true`. Jesli platforma pokazuje `not set` lub `false`, flaga nie jest wymuszana i skill moze byc wywolywany autonomicznie (patrz sekcja "Model bezpieczenstwa" powyzej).
+**测试建议：**
+- 使用`https://ksef-demo.mf.gov.pl`进行测试。
+- 该技能在元数据中设置了`disableModelInvocation: true`，这意味着模型不应自动调用该技能。**注意：**frontmatter和`skill.json`中的声明仅具有提示作用，实际强制应用取决于平台。在使用前，请确认平台显示的注册表元数据中也包含`disable-model-invocation: true`。
 
-## Checklist przed instalacja
+## 安装前的检查清单
 
-Przed instalacja skilla i konfiguracja zmiennych srodowiskowych wykonaj ponizsze kroki:
+在安装技能并配置环境变量之前，请执行以下步骤：
+- [ ] 验证注册表元数据：`disable-model-invocation`字段必须设置为`true`。
+- [ ] 确认平台已读取frontmatter或`skill.json`中的环境变量声明：`KSEF_TOKEN`和`KSEF_ENCRYPTION_KEY`必须被标记为机密信息。
+- [ ] 确认平台能够隔离环境变量（不记录或显示它们的值）。
+- [ ] 在生产环境使用之前，先在`https://ksef-demo.mf.gov.pl`的测试环境中测试该技能。
+- [ ] 请勿在对话中直接提供令牌、密钥或证书——请使用环境变量或密钥管理员。
+- [ ] 如果注册表元数据与frontmatter/skill.json不一致，请不要配置认证数据，并向平台提供商报告问题。
 
-- [ ] Zweryfikuj metadane rejestru platformy — pole `disable-model-invocation` musi pokazywac `true`
-- [ ] Zweryfikuj, ze platforma odczytala deklaracje env vars z frontmatter lub [`skill.json`](skill.json) — zmienne `KSEF_TOKEN` i `KSEF_ENCRYPTION_KEY` musza byc widoczne jako sekrety (`secret: true`)
-- [ ] Potwierdz, ze platforma izoluje zmienne srodowiskowe (nie loguje, nie wyswietla w konwersacji)
-- [ ] Przetestuj skill wylacznie ze srodowiskiem DEMO (`https://ksef-demo.mf.gov.pl`) przed jakimkolwiek uzyciem produkcyjnym
-- [ ] NIE wklejaj tokenow, kluczy ani certyfikatow bezposrednio w rozmowie — uzyj env vars lub menedzera sekretow
-- [ ] Jesli metadane rejestru nie pasuja do frontmatter/skill.json — NIE konfiguruj danych uwierzytelniajacych i zglos problem dostawcy platformy
+## 主要功能
 
-## Glowne kompetencje
+### 1. KSeF 2.0 API支持
 
-### 1. Obsluga KSeF 2.0 API
+- 发送FA(3)格式的发票
+- 获取采购发票
+- 管理会话/令牌
+- 支持Offline24（故障模式）
+- 获取UPO（官方接收证明）
 
-Wystawianie faktur FA(3), pobieranie faktur zakupowych, zarzadzanie sesjami/tokenami, obsluga trybu Offline24 (awaryjny), pobieranie UPO (Urzedowe Poswiadczenie Odbioru).
-
-Kluczowe endpointy:
+**关键API端点：**
 ```http
 POST /api/online/Session/InitToken     # Inicjalizacja sesji
 POST /api/online/Invoice/Send          # Wyslanie faktury
@@ -89,84 +108,77 @@ GET  /api/online/Invoice/Status/{ref}  # Sprawdzenie statusu
 POST /api/online/Query/Invoice/Sync    # Zapytanie o faktury zakupowe
 ```
 
-Zobacz [references/ksef-api-reference.md](references/ksef-api-reference.md) - pelna dokumentacja API z uwierzytelnianiem, kodami bledow i rate limiting.
+请参阅[references/ksef-api-reference.md](references/ksef-api-reference.md)以获取完整的API文档，包括认证信息、错误代码和速率限制。
 
-### 2. Struktura FA(3)
+### 2. FA(3)架构
 
-Roznice FA(3) vs FA(2): zalaczniki do faktur, typ kontrahenta PRACOWNIK, rozszerzone formaty konta bankowego, limit 50 000 pozycji w korekcie, identyfikatory JST i grup VAT.
+- FA(3)与FA(2)的区别：发票附件、合同类型（员工）、扩展的银行账户格式、每笔交易的50,000条记录限制、JST标识符和VAT分组。
+请参阅[references/ksef-fa3-examples.md](references/ksef-fa3-examples.md)以获取XML示例（基础发票、多税率、更正、Offline24、附件）。
 
-Zobacz [references/ksef-fa3-examples.md](references/ksef-fa3-examples.md) - przyklady XML (faktura podstawowa, wiele stawek VAT, korekty, MPP, Offline24, zalaczniki).
+### 3. 会计流程
 
-### 3. Przeplywy ksiegowe
+- **销售流程：** 数据 -> 生成FA(3)发票 -> 发送至KSeF -> 获取KSeF编号 -> 记账
+  `收入300（账单）| 支出700（销售）+ 支出220（增值税）`
+- **采购流程：** 获取KSeF数据 -> 解析XML -> 通过AI分类 -> 记账
+  `收入400-500（成本）+ 支出221（增值税）| 支出201（账单）`
 
-**Sprzedaz:** Dane -> Generuj FA(3) -> Wyslij KSeF -> Pobierz nr KSeF -> Ksieguj
-`Wn 300 (Rozrachunki) | Ma 700 (Sprzedaz) + Ma 220 (VAT nalezny)`
+请参阅[references/ksef-accounting-workflows.md]以了解详细的费用匹配、MPP、更正、VAT登记和月度结算流程。
 
-**Zakupy:** Odpytuj KSeF -> Pobierz XML -> Klasyfikuj AI -> Ksieguj
-`Wn 400-500 (Koszty) + Wn 221 (VAT) | Ma 201 (Rozrachunki)`
+### 4. 人工智能辅助功能（参考架构）
 
-Zobacz [references/ksef-accounting-workflows.md](references/ksef-accounting-workflows.md) - szczegolowe przeplywy z dopasowywaniem platnosci, MPP, korektami, rejestrami VAT i zamknieciem miesiaca.
+以下是实现示例和参考架构：
+- **成本分类**：基于合同历史数据的模型（随机森林算法），如果置信度<0.8则标记为异常。
+- **欺诈检测**：用于检测金额异常的隔离森林模型，用于识别钓鱼发票的评分算法，用于VAT分析的图形分析。
+- **现金流预测**：基于合同历史数据、金额和季节性模式的随机森林回归模型。
 
-### 4. Funkcje wspomagane AI (architektura referencyjna)
+请参阅[references/ksef-ai-features.md]以了解概念性算法和实现示例（需要sklearn和pandas库）。
 
-Ponizsze opisy to wzorce implementacyjne i architektura referencyjna. Skill NIE uruchamia modeli ML — dostarcza wiedze o algorytmach, pomaga projektowac pipeline'y i pisac kod do implementacji w systemie uzytkownika. Przyklady kodu w plikach referencyjnych (Python, sklearn, pandas) to pseudokod pogladowy — skill nie zawiera wytrenowanych modeli, artefaktow ML ani plikow wykonywalnych.
+### 5. 合规性和安全性（实现示例）
 
-- **Klasyfikacja kosztow** - Wzorzec: historia kontrahenta -> dopasowanie slow kluczowych -> model ML (Random Forest). Flaguj do przegladu jesli confidence < 0.8.
-- **Wykrywanie fraudu** - Wzorzec: Isolation Forest dla anomalii kwotowych, scoring dla phishing invoices, analiza grafow dla VAT carousel.
-- **Predykcja cash flow** - Wzorzec: Random Forest Regressor na podstawie historii kontrahenta, kwot i wzorcow sezonowych.
+以下是建议在用户系统中实现的安全性措施：
+- 在付款前验证VAT信息。
+- 使用Fernet/Vault对令牌进行加密存储（由用户实现）。
+- 所有操作的审计跟踪。
+- 3-2-1备份策略。
+- 遵守RODO（数据保留期限后的匿名化）。
+- 基于角色的访问控制（RBAC）。
 
-Zobacz [references/ksef-ai-features.md](references/ksef-ai-features.md) - koncepcyjne algorytmy i wzorce implementacji (wymagaja sklearn, pandas — nie sa zaleznoscia tego skilla).
+请参阅[references/ksef-security-compliance.md]以获取安全实现示例和检查清单。
 
-### 5. Compliance i bezpieczenstwo (wzorce implementacyjne)
+### 6. 更正发票
 
-Ponizsze to rekomendowane wzorce bezpieczenstwa do implementacji w systemie uzytkownika. Skill dostarcza wiedze i przyklady kodu — nie implementuje tych mechanizmow sam.
+- 从KSeF获取原始发票 -> 生成FA(3)更正文件 -> 将更正文件与原始发票的KSeF编号关联 -> 发送至KSeF -> 记录更正或差额。
 
-- Weryfikacja Bialej Listy VAT przed platnosciami
-- Szyfrowane przechowywanie tokenow (wzorce Fernet/Vault — do implementacji przez uzytkownika)
-- Audit trail wszystkich operacji
-- Strategia backup 3-2-1
-- Zgodnosc z RODO (anonimizacja po okresie retencji)
-- RBAC (kontrola dostepu oparta na rolach)
+### 7. VAT和JPK_V7记录
 
-Zobacz [references/ksef-security-compliance.md](references/ksef-security-compliance.md) - wzorce implementacji i checklista bezpieczenstwa.
+- 生成销售/采购记录（Excel/PDF格式）、JPK_V7M（每月）和JPK_V7K（季度）。
 
-### 6. Faktury korygujace
+## 故障排除 - 快速帮助
 
-Pobierz oryginal z KSeF -> Utworz korekte FA(3) -> Powiaz z nr KSeF oryginalu -> Wyslij do KSeF -> Ksieguj storno lub roznicowo.
-
-### 7. Rejestry VAT i JPK_V7
-
-Generowanie rejestrow sprzedazy/zakupow (Excel/PDF), JPK_V7M (miesieczny), JPK_V7K (kwartalny).
-
-## Troubleshooting - szybka pomoc
-
-| Problem | Przyczyna | Rozwiazanie |
+| 问题 | 原因 | 解决方案 |
 |---------|-----------|-------------|
-| Faktura odrzucona (400/422) | Nieprawidlowy XML, NIP, data, brak pol | Sprawdz UTF-8, waliduj schemat FA(3), weryfikuj NIP |
-| Timeout API | Awaria KSeF, siec, godziny szczytu | Sprawdz status KSeF, retry z exponential backoff |
-| Nie mozna dopasowac platnosci | Niezgodna kwota, brak danych, split payment | Rozszerzone wyszukiwanie (+/-2%, +/-14 dni), sprawdz MPP |
+| 发票被拒绝（400/422错误） | XML格式错误、NIP错误、日期错误、字段缺失 | 检查UTF-8格式，验证FA(3)模式，确认NIP有效 |
+| API超时 | KSeF服务器故障、网络问题、高峰时段 | 检查KSeF状态，使用指数退避策略重试 |
+- 无法匹配付款信息 | 金额不符、数据缺失、分次付款 | 扩展搜索范围（±2%、±14天），检查MPP数据 |
 
-Zobacz [references/ksef-troubleshooting.md](references/ksef-troubleshooting.md) - pelny przewodnik troubleshooting.
+请参阅[references/ksef-troubleshooting.md]以获取完整的故障排除指南。
 
-## Pliki referencyjne
+## 参考文件
 
-Laduj w zaleznosci od zadania:
+根据需要加载以下文件：
+- [skill.json]：包含安全标志、环境变量声明和限制的元数据文件。
+- [ksef-api-reference.md]：KSeF API端点、认证信息、发票发送/接收方式。
+- [ksef-legal-status.md]：KSeF的部署日期、法律要求和处罚规定。
+- [ksef-fa3-examples.md]：FA(3)发票结构的创建和验证。
+- [ksef-accounting-workflows.md]：会计记录、费用匹配、MPP、更正、VAT登记。
+- [ksef-ai-features.md]：成本分类、欺诈检测、现金流预测算法。
+- [ksef-security-compliance.md]：VAT白名单、令牌安全、审计跟踪、RODO合规性。
+- [ksef-troubleshooting.md]：API错误、验证问题、性能问题。
 
-| Plik | Kiedy czytac |
-|------|-------------|
-| [skill.json](skill.json) | Manifest metadanych — flagi bezpieczenstwa, deklaracje env vars, ograniczenia. Zrodlo prawdy dla rejestrow i skanerow. |
-| [ksef-api-reference.md](references/ksef-api-reference.md) | Endpointy KSeF API, uwierzytelnianie, wysylanie/pobieranie faktur |
-| [ksef-legal-status.md](references/ksef-legal-status.md) | Daty wdrozenia KSeF, wymagania prawne, kary |
-| [ksef-fa3-examples.md](references/ksef-fa3-examples.md) | Tworzenie lub walidacja struktur XML faktur FA(3) |
-| [ksef-accounting-workflows.md](references/ksef-accounting-workflows.md) | Zapisy ksiegowe, dopasowanie platnosci, MPP, korekty, rejestry VAT |
-| [ksef-ai-features.md](references/ksef-ai-features.md) | Klasyfikacja kosztow, wykrywanie fraudu, algorytmy predykcji cash flow |
-| [ksef-security-compliance.md](references/ksef-security-compliance.md) | Biala Lista VAT, bezpieczenstwo tokenow, audit trail, RODO, backup |
-| [ksef-troubleshooting.md](references/ksef-troubleshooting.md) | Bledy API, problemy walidacji, wydajnosc |
+## 官方资源
 
-## Zasoby oficjalne
-
-- Portal KSeF: https://ksef.podatki.gov.pl
-- KSeF DEMO: https://ksef-demo.mf.gov.pl
-- KSeF Produkcja: https://ksef.mf.gov.pl
-- API Bialej Listy VAT: https://wl-api.mf.gov.pl
-- KSeF Latarnia (status): https://github.com/CIRFMF/ksef-latarnia
+- KSeF门户：https://ksef.podatki.gov.pl
+- KSeF测试环境：https://ksef-demo.mf.gov.pl
+- KSeF生产环境：https://ksef.mf.gov.pl
+- VAT白名单API：https://wl-api.mf.gov.pl
+- KSeF状态信息：https://github.com/CIRFMF/ksef-latarnia

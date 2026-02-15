@@ -1,91 +1,90 @@
 ---
 name: tweet-writer
-description: Write viral, persuasive, engaging tweets and threads. Uses web research to find viral examples in your niche, then models writing based on proven formulas and X algorithm optimization. Use when creating tweets, threads, or X content strategy.
+description: 撰写具有传播力、说服力且引人入胜的推文和帖子。通过网络研究，寻找与你所在领域相关的热门案例（即具有高传播效果的例子），然后根据经过验证的写作公式和X算法进行内容创作优化。在撰写推文、帖子或制定内容策略时，可参考这些方法。
 ---
 
-# Tweet Writer Skill
+# 推文撰写技巧
 
-## Overview
+## 概述
 
-This skill helps you write viral, persuasive tweets and threads optimized for X's algorithm. It combines proven copywriting frameworks, viral hook formulas, and real-time research to model your content after successful examples in your niche.
+本技巧帮助您撰写能够引发广泛关注、具有说服力的推文和话题串，这些内容经过优化，能够更好地适应X平台的算法。它结合了经过验证的文案写作框架、有效的吸引用户注意力的公式以及实时研究方法，让您能够根据自己所在领域的成功案例来创作内容。
 
-**Keywords**: twitter, X, tweets, threads, viral content, social media, engagement, hooks, copywriting
+**关键词**: 推文、X平台、话题串、病毒式内容、社交媒体、互动性、吸引人的开头语、文案写作
 
-## Process Workflow
+## 工作流程
 
-### Phase 1: Niche Research (CRITICAL)
+### 第一阶段：领域研究（至关重要）
 
-Before writing ANY tweet, you MUST research viral examples in the user's specific niche.
+在撰写任何推文之前，您必须研究该用户所在领域内具有病毒式传播效果的推文案例。
 
-**Research Steps:**
+**研究步骤**：
+1. **确定领域/主题** — 用户正在撰写关于什么内容？
+2. **搜索病毒式传播的推文示例** — 使用WebSearch搜索以下内容：
+   - `"[领域] 病毒式推文示例"`
+   - `"[领域] 在X平台上走红的话题串"`
+   - `"[主题] 最具影响力的推文"`
+   - `site:twitter.com OR site:x.com "[领域关键词]" 高互动率`
+3. **分析模式** — 提取以下要素：
+   - 有效的吸引用户注意力的开头语
+   - 内容结构
+   - 语气和风格
+   - 使用的具体数字或结果
+   - 促进互动的呼吁行动（CTA）
+4. **记录分析结果** — 在开始写作前制作一份简要的分析报告
 
-1. **Identify the niche/topic** — What is the user writing about?
-2. **Search for viral examples** — Use WebSearch to find:
-   - `"[niche] viral tweet examples"`
-   - `"[niche] twitter thread went viral"`
-   - `"[topic] best performing tweets"`
-   - `site:twitter.com OR site:x.com "[niche keyword]" high engagement`
-3. **Analyze patterns** — Extract:
-   - Hook styles that worked
-   - Content structure
-   - Tone and voice
-   - Specific numbers/results used
-   - CTAs that drove engagement
-4. **Document insights** — Create a brief analysis before writing
-
-**Example Research Prompt:**
+**示例研究提示**：
 ```
 Searching for: "SaaS founder viral tweets"
               "startup advice twitter thread viral"
               "tech entrepreneur best tweets engagement"
 ```
 
-### Phase 2: Tweet Creation
+### 第二阶段：推文创作
 
-Use the frameworks below to craft content modeled after successful examples.
-
----
-
-## The X Algorithm (2026)
-
-Understanding what the algorithm rewards is critical:
-
-### Engagement Hierarchy (Most to Least Valuable)
-1. **Replies** — Most weighted signal
-2. **Quote tweets** — High value, shows your content sparks conversation
-3. **Bookmarks** — Strong signal of value
-4. **Retweets** — Amplification signal
-5. **Likes** — Baseline engagement
-
-### Time Sensitivity
-- **First hour is critical** — If you don't gain traction in 60 minutes, reach drops significantly
-- **Peak times**: 9-11 AM and 7-9 PM EST weekdays, 9-11 AM weekends
-- Fresh content prioritized — X rewards recency
-
-### Dwell Time
-X tracks how long users spend on your content. Longer = more reach.
-- Threads naturally increase dwell time
-- Visual content keeps eyes on post longer
-- Compelling hooks stop the scroll
-
-### Format Boosts
-- **Native video**: Priority over external links
-- **Images/carousels**: 2x engagement vs text-only
-- **Threads**: 3x engagement vs single tweets
-- **Polls**: High participation signals
-
-### What to AVOID
-- **External links**: Severely penalized (especially for non-Premium accounts)
-- **Generic content**: No differentiation = no reach
-- **Asking for engagement**: "Like and RT" hurts reach
+使用以下框架，根据成功的案例来创作内容。
 
 ---
 
-## Hook Formulas (The Most Critical Element)
+## X平台的算法（2026年）
 
-Your hook determines 80-90% of your tweet's success. You have ~1 second to stop the scroll.
+了解算法的奖励机制至关重要：
 
-### The Bold Statement
+### 互动性层级（从高到低）
+1. **回复** — 最重要的互动信号
+2. **引用推文** — 高价值，表明您的内容引发了讨论
+3. **书签** — 强有力的价值信号
+4. **转发** — 内容传播的放大器
+5. **点赞** — 基础互动指标
+
+### 时间敏感性
+- **第一个小时至关重要** — 如果60分钟内没有获得关注，后续的关注度会显著下降
+- **高峰时段**：工作日的上午9-11点和晚上7-9点，周末的上午9-11点
+- 新内容优先展示 — X平台更青睐最新的内容
+
+### 用户停留时间
+X平台会追踪用户在您的内容上停留的时间。停留时间越长，传播效果越好。
+- 话题串自然会增加用户的停留时间
+- 视觉内容能让用户更长时间地关注帖子
+- 有吸引力的开头语能阻止用户快速滚动页面
+
+### 格式优化
+- **原生视频**：优先于外部链接
+- **图片/轮播图**：比纯文本的互动率高出两倍
+- **话题串**：比单条推文的互动率高出三倍
+- **投票**：能吸引大量参与
+
+### 应避免的内容
+- **外部链接**：会受到严重惩罚（尤其是对于非高级账户）
+- **泛泛而谈的内容**：缺乏特色，难以吸引关注
+- **直接要求互动**：如“点赞和转发”会降低传播效果
+
+---
+
+## 吸引用户注意力的开头语公式（最关键的部分）
+
+您的开头语决定了推文成功与否的80-90%。您只有大约1秒钟的时间来吸引用户的注意力。
+
+### 强有力的陈述
 ```
 "Nobody talks about this, but..."
 "Unpopular opinion: [controversial take]"
@@ -93,55 +92,55 @@ Your hook determines 80-90% of your tweet's success. You have ~1 second to stop 
 "[Common belief] is a myth. Here's the truth:"
 ```
 
-### The Specific Result
+### 具体的结果
 ```
 "I [specific result] in [specific timeframe]. Here's how:"
 "[Number] [achievement] in [timeframe]. The breakdown:"
 "From [bad state] to [good state] in [time]. Thread:"
 ```
-**Example**: "I grew from 0 to 50K followers in 90 days. Here's the exact playbook:"
+**示例**：“我在90天内从0粉丝增长到了5万粉丝。以下是我的具体方法：”
 
-### The Curiosity Gap
+### 好奇心缺口
 ```
 "I found a [adjective] [topic] hack that no one talks about..."
 "The one thing [type of person] gets wrong about [topic]"
 "Why most people fail at [X] (and how to fix it)"
 ```
 
-### The Question Hook
+### 提问式开头语
 ```
 "Want to know the real secret to [X]?"
 "What if everything you knew about [X] was wrong?"
 "Ever wonder why [common frustration]?"
 ```
 
-### The Story Hook
+### 故事式开头语
 ```
 "3 years ago I was [bad state]. Today I [good state]."
 "I almost quit [X]. Then this happened:"
 "The story of how I [achievement] (with $0 budget):"
 ```
 
-### The Pattern Interrupt
+### 打破常规的开头语
 ```
 "Everyone says [X]. They're wrong."
 "Stop doing [common practice]. Do this instead:"
 "Delete [common thing]. Here's why:"
 ```
 
-### The List Promise
+### 列表式开头语
 ```
 "[Number] [things] that will [benefit] (thread):"
 "[Number] lessons from [experience/achievement]:"
 "The [number] [category] I wish I knew earlier:"
 ```
-**Example**: "7 AI tools that saved me 20+ hours last week:"
+**示例**：“这7个AI工具上周为我节省了20多个小时的时间：”
 
 ---
 
-## Tweet Formats That Go Viral
+## 有传播力的推文格式
 
-### Format 1: The Listicle (Highest Engagement)
+### 格式1：列表式文章（互动率最高）
 ```
 Hook: "[Number] [things] that [benefit]:"
 
@@ -151,7 +150,7 @@ Hook: "[Number] [things] that [benefit]:"
 [CTA or summary]
 ```
 
-### Format 2: The Contrarian Take
+### 格式2：对立观点
 ```
 Hook: "[Popular belief] is wrong."
 
@@ -160,7 +159,7 @@ Here's why: [2-3 sentences of reasoning]
 What actually works: [Your alternative]
 ```
 
-### Format 3: The Before/After
+### 格式3：前后对比
 ```
 [Time period] ago: [Bad state]
 Today: [Good state]
@@ -168,7 +167,7 @@ Today: [Good state]
 The difference? [One key insight]
 ```
 
-### Format 4: The Framework
+### 格式4：框架式内容
 ```
 Hook: "The [Name] Framework for [Result]:"
 
@@ -179,14 +178,14 @@ Step 3: [Action]
 [Optional: brief expansion on each]
 ```
 
-### Format 5: The "Fill in the Blank"
+### 格式5：填空式内容
 ```
 "The most underrated skill for _____ is _____."
 "If I could only use one tool for [X], it would be _____."
 ```
-*Generates massive replies*
+*这种格式能引发大量回复*
 
-### Format 6: The Universal Experience
+### 格式6：普遍适用的内容
 ```
 "When you finally [common experience/realization]"
 "Why does nobody talk about [shared frustration]?"
@@ -195,48 +194,48 @@ Step 3: [Action]
 
 ---
 
-## Thread Structure (7-Tweet Sweet Spot)
+## 话题串的结构（7条推文的最佳组合）
 
-### Thread Template
+### 话题串模板
 
-**Tweet 1 (Hook)**:
-- Most compelling insight or result
-- Include specific numbers
-- Signal it's a thread: "🧵" or "(thread)"
+**推文1（开头语）**：
+- 最具吸引力的观点或结果
+- 包含具体的数字
+- 明确表示这是一个话题串：“🧵”或“(thread)”
 
-**Tweet 2 (Context)**:
-- Expand on the hook
-- Set up why this matters
-- Create more curiosity
+**推文2（背景信息）**：
+- 展开开头语的内容
+- 说明为什么这个内容重要
+- 激发更多好奇心
 
-**Tweets 3-6 (Core Value)**:
-- ONE key insight per tweet
-- Use numbered formatting (1/, 2/, etc.)
-- Add visual breaks every 3-4 tweets (images, charts)
-- Each tweet should be valuable standalone
+**推文3-6（核心观点）**：
+- 每条推文包含一个关键观点
+- 使用编号格式（1/, 2/, 等）
+- 每3-4条推文添加视觉元素（图片、图表）
+- 每条推文都应具有独立的价值
 
-**Tweet 7 (Bridge/Summary)**:
-- Summarize key takeaways
-- Connect to broader application
+**推文7（总结/呼吁行动）**：
+- 总结关键要点
+- 指出内容的实际应用
 
-**Tweet 8 (CTA)**:
-- Ask a question (generates replies)
-- Quote your first tweet (drives retweets)
-- Direct to profile/newsletter
+**推文8（呼吁行动）**：
+- 提出一个问题（引发回复）
+- 引用第一条推文（促进转发）
+- 提供个人资料或新闻通讯的链接
 
-### Thread Writing Rules
-1. Each tweet must earn the next click
-2. No filler — every word must carry weight
-3. Short sentences (under 250 characters per tweet)
-4. "Your words should read like a slippery slope"
-5. Number your tweets (2/12, 3/12, etc.)
+### 话题串写作规则
+1. 每条推文都必须吸引用户点击下一条
+2. 不要使用无意义的文字
+3. 每条推文不超过250个字符
+4. 语言要简洁明了
+5. 为推文编号（如2/12, 3/12等）
 
 ---
 
-## Copywriting Frameworks for Tweets
+## 推文的文案写作框架
 
-### PAS (Problem → Agitate → Solution)
-**Most reliable formula for engagement**
+### PAS（问题 → 激发兴趣 → 解决方案）
+**最可靠的互动公式**
 
 ```
 [Problem]: You're [specific situation]
@@ -244,8 +243,8 @@ Step 3: [Action]
 [Solution]: Here's what works: [your answer]
 ```
 
-### AIDA (Attention → Interest → Desire → Action)
-**Best for promotional content**
+### AIDA（注意力 → 兴趣 → 欲望 → 行动）
+**最适合推广性内容**
 
 ```
 [Attention]: Hook that stops scroll
@@ -254,8 +253,8 @@ Step 3: [Action]
 [Action]: "DM me [X] to get started"
 ```
 
-### BAB (Before → After → Bridge)
-**Best for transformation stories**
+### BAB（之前 → 之后 → 连接）
+**最适合讲述转变故事的内容**
 
 ```
 [Before]: I was [bad state]
@@ -265,151 +264,138 @@ Step 3: [Action]
 
 ---
 
-## Persuasion Principles
+## 说服技巧
 
-Apply these to make any tweet more compelling:
+应用以下技巧让您的推文更具说服力：
 
-**Specificity** — "23% increase" beats "big increase"
-- Numbers add credibility
-- Specific timeframes add urgency
-- Details make claims believable
+**具体性** — “增长了23%”比“大幅增长”更有效
+- 具体的数字增加可信度
+- 明确的时间框架增加紧迫感
+- 详细的信息让主张更可信
 
-**Social Proof** — "500+ customers" beats "many customers"
-- Results from real people
-- Numbers of users/followers
-- Recognizable names/brands
+**社会证明** — “500多名客户”比“许多客户”更有说服力
+- 来自真实用户的成果
+- 用户数量/粉丝数量
+- 可识别的名字/品牌
 
-**Curiosity Gap** — Create information asymmetry
-- Hint at valuable info without revealing all
-- Promise specific outcomes
-- Use "Here's what most people miss..."
+**好奇心缺口** — 创造信息不对称性
+- 提供有价值的信息但不要全部透露
+- 承诺具体的结果
+- 使用“大多数人忽略了……”
 
-**Controversy** — Challenge existing beliefs
-- "Popular opinion is wrong"
-- Contrarian takes get engagement
-- Avoid offensive — aim for thought-provoking
+**争议性** — 挑战现有观点
+- “主流观点是错误的”
+- 对立的观点能引发讨论
+- 避免冒犯性语言，力求引发思考
 
-**Relatability** — Shared experiences resonate
-- "When you realize..."
-- Universal frustrations
-- Common journey points
-
----
-
-## Growth Hacks
-
-### The 30-Day Subtopic Strategy
-Pick ONE narrow subtopic in your niche. Post about ONLY that for 30 days straight.
-
-**Example**: If you're in marketing, focus solely on "email subject lines" for a month.
-
-Result: X's algorithm categorizes you as the authority on that subtopic.
-
-### The Reply Strategy
-Focus on generating replies over likes/retweets.
-- Ask questions
-- Create fill-in-the-blank tweets
-- Post "hot takes" that invite discussion
-- Algorithm sees you as a conversation starter
-
-### The Engagement Window
-- Post 3-5 times daily
-- Engage with 20+ accounts daily (meaningful replies)
-- Reply to comments on your posts within first hour
-
-### The 80/20 Rule
-- 80% pure value (no promotion)
-- 20% promotional content
-- Value-first builds trust that converts
+**共鸣性** — 用户能产生共鸣的经历
+- 使用“当你意识到……”这样的表达
+- 共同的困扰
+- 通用的经历
 
 ---
 
-## Tweet Length Guidelines
+## 增长技巧
 
-- **Single tweets**: Under 110 characters perform best
-- **Thread tweets**: Under 250 characters each
-- **Why short works**: Easy to scan, room for quote tweets, mobile-optimized
+### 30天专注子主题策略
+选择您所在领域内的一个具体子主题，连续30天只发布与此相关的内容。
 
----
+**示例**：如果您从事市场营销工作，可以专注讨论“邮件主题行”一个月。
+结果：X平台会认为您是该领域的权威。
 
-## Common Pitfalls to Avoid
+### 回复策略
+注重引发回复，而非点赞或转发。
+- 提出问题
+- 发布填空式推文
+- 发布引发讨论的“热点观点”
+- 算法会认为您是一个积极的讨论发起者
 
-**Too Generic** — "Tips for success" → "3 cold email templates that got me 10 meetings this week"
+### 互动窗口
+- 每天发布3-5条推文
+- 每天与20个以上的账户互动（有意义的回复）
+- 在发布后一小时内回复评论
 
-**No Hook** — Starting with context instead of impact
-
-**Asking for Engagement** — "Like and RT!" hurts reach
-
-**External Links in Main Tweet** — Put links in replies instead
-
-**No Specific Numbers** — "I grew fast" vs "I grew 12,847 followers in 63 days"
-
-**Too Salesy** — Value ratio too low, feels promotional
-
-**No CTA** — Thread ends with no clear next step
-
----
-
-## Execution Checklist
-
-Before posting, verify:
-
-- [ ] Hook stops the scroll (bold/specific/curious)
-- [ ] First 7 words earn the rest of the tweet
-- [ ] Specific numbers included where relevant
-- [ ] Under character limit (110 for single, 250 for thread tweets)
-- [ ] No external links in main tweet
-- [ ] Clear CTA or engagement driver
-- [ ] Posted during peak hours
-- [ ] Ready to engage with replies in first hour
+### 80/20法则
+- 80%的内容应具有实际价值（非推广性质）
+- 20%的内容用于推广
+- 以价值为导向的内容能建立信任，从而促进转化
 
 ---
 
-## How to Use This Skill
+## 推文长度指南
 
-When a user asks for help writing tweets:
-
-1. **Ask for context**:
-   - What niche/topic?
-   - What's the goal? (engagement, followers, conversions)
-   - What's the key message/insight?
-   - Any specific results/numbers to include?
-
-2. **Research phase** (USE WebSearch):
-   - Search for viral examples in their niche
-   - Identify successful patterns
-   - Note specific hooks and structures that worked
-
-3. **Draft options**:
-   - Provide 2-3 hook variations
-   - Use appropriate framework (PAS, AIDA, etc.)
-   - Include specific numbers where possible
-
-4. **Optimize**:
-   - Check character count
-   - Strengthen hook
-   - Add engagement driver/CTA
-
-5. **Provide variations**:
-   - Single tweet version
-   - Thread version (if appropriate)
-   - Alternative hooks to test
+- **单条推文**：长度不超过110个字符效果最佳
+- **话题串**：每条推文不超过250个字符
+- **为什么短文本更有效**：易于阅读，便于引用，适合移动设备
 
 ---
 
-## Integration with Other Skills
+## 常见错误及避免方法
 
-Tweet Writer works with:
-- **Brand Voice** — Ensure tweets match your brand personality
-- **Direct Response Copy** — Apply persuasion principles
-- **Content Atomizer** — Turn one tweet into multiple formats
-- **SEO Content** — Repurpose blog content into threads
+**内容过于泛泛** — 例如“成功技巧”不如“这3个冷门邮件模板让我本周获得了10次会议机会”
+**没有吸引人的开头语** — 从背景信息开始而不是直接陈述观点
+**直接要求互动** — 如“点赞和转发！”会降低传播效果
+**主推文中包含外部链接** — 应将链接放在回复中
+**没有具体数字** — 如“我的粉丝数量快速增长”不如“我在63天内增长了12,847名粉丝”
+**过于推销** — 内容的价值与呈现方式不成比例，显得过于商业化
+**没有明确的呼吁行动** — 话题串结束时没有明确的下一步行动
 
 ---
 
-## Research Sources & Further Reading
+## 执行检查清单
 
-Algorithm insights: [SocialBee](https://socialbee.com/blog/twitter-algorithm/), [Tweet Archivist](https://www.tweetarchivist.com/how-twitter-algorithm-works-2025)
-Hook formulas: [Ship 30 for 30](https://www.ship30for30.com/post/how-to-write-viral-twitter-thread-hooks-with-6-clear-examples)
-Thread templates: [Typefully](https://typefully.com/blog/twitter-post-templates), [Legiit](https://legiit.com/blog/twitter-thread-template)
-Copywriting frameworks: [Buffer](https://buffer.com/resources/copywriting-formulas/), [Metricool](https://metricool.com/social-media-copywriting/)
+在发布前，请确认：
+- [ ] 开头语能吸引用户继续阅读（使用有力的语言、具体内容或引发好奇心）
+- [ ] 前7个词能够吸引用户继续阅读剩余内容
+- [ ] 相关的地方使用了具体的数字
+- [ ] 长度符合要求（单条推文不超过110个字符，话题串不超过250个字符）
+- [ ] 主推文中没有外部链接
+- [ ] 有明确的呼吁行动或互动引导
+- [ ] 在高峰时段发布
+- [ ] 准备在发布后一小时内与用户互动
+
+---
+
+## 如何使用本技巧
+
+当用户请求帮助撰写推文时：
+1. **了解背景**：
+   - 他们所在的领域/主题是什么？
+   - 目标是什么？（互动、粉丝数量、转化率）
+   - 关键信息或观点是什么？
+   - 需要包含哪些具体的结果或数字？
+2. **研究阶段**（使用WebSearch）：
+   - 在他们的领域内搜索具有病毒式传播效果的推文示例
+   - 识别有效的模式
+   - 记录有效的开头语和结构
+3. **提供起草方案**：
+   - 提供2-3种不同的开头语版本
+   - 选择合适的框架（如PAS、AIDA等）
+   - 在可能的情况下使用具体的数字
+4. **优化内容**：
+   - 检查字符数量
+   - 强化开头语
+   添加互动引导或呼吁行动
+5. **提供多种版本**：
+   - 单条推文版本
+   - 适合的话题串版本
+   - 测试不同的开头语
+
+---
+
+## 与其他技能的结合
+
+推文撰写技巧可以与以下技能结合使用：
+- **品牌风格** — 确保推文符合您的品牌形象
+- **直接响应文案** — 应用说服技巧
+- **内容转换工具** — 将一篇推文转换成多种格式
+- **SEO优化内容** — 将博客文章改编成适合平台的话题串
+
+---
+
+## 研究资源与进一步阅读
+
+算法相关见解：[SocialBee](https://socialbee.com/blog/twitter-algorithm/), [Tweet Archivist](https://www.tweetarchivist.com/how-twitter-algorithm-works-2025)
+吸引用户注意力的开头语公式：[Ship 30 for 30](https://www.ship30for30.com/post/how-to-write-viral-twitter-thread-hooks-with-6-clear-examples)
+话题串模板：[Typefully](https://typefully.com/blog/twitter-post-templates), [Legiit](https://legiit.com/blog/twitter-thread-template)
+文案写作框架：[Buffer](https://buffer.com/resources/copywriting-formulas/), [Metricool](https://metricool.com/social-media-copywriting/)

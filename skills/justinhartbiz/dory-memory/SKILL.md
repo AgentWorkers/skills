@@ -1,27 +1,27 @@
 ---
 name: dory-memory
-description: File-based memory system for AI agents that forget between sessions. Implements the "Dory-Proof" pattern for continuity across context resets. Use when setting up agent memory, building workspace structure, implementing task tracking, or preventing context-loss errors. Triggers on "memory system", "remember between sessions", "Dory pattern", "agent continuity", or "workspace setup".
+description: 基于文件的AI代理内存系统，适用于那些在会话之间会丢失记忆的AI代理。该系统采用了“Dory-Proof”模式来确保在上下文重置后数据的连续性。适用于设置代理内存、构建工作区结构、实现任务跟踪以及防止上下文丢失错误等场景。相关功能可通过“内存系统”、“跨会话记忆”、“Dory模式”、“代理连续性”或“工作区设置”等选项进行触发。
 ---
 
-# Dory-Proof Memory System
+# Dory-Proof 记忆系统
 
-AI agents forget everything between sessions. This skill implements a file-based memory system that survives context resets.
+AI 代理在会话之间会忘记所有信息。该技能实现了一个基于文件的记忆系统，能够在上下文重置后仍然保留数据。
 
-## Core Principle
+## 核心原理
 
-**Text > Brain.** Write everything down. Files are memory. The agent only "remembers" what's on disk.
+**文本 > 大脑。** 将所有内容都记录下来。文件就是记忆。代理“记住”的只有磁盘上的内容。
 
-## The Dory-Proof Pattern (Critical)
+## Dory-Proof 模式（关键步骤）
 
-When the user gives a task:
-1. **IMMEDIATELY** write their EXACT WORDS to `state/ACTIVE.md`
-2. Then interpret what it means
-3. Then do the work
-4. Mark complete when done
+当用户给出任务时：
+1. **立即** 将用户的原话写入 `state/ACTIVE.md` 文件中。
+2. 然后解释这些话的含义。
+3. 接着执行任务。
+4. 完成任务后进行标记。
 
-**Why:** Paraphrasing introduces drift. Exact words preserve intent across context flushes.
+**原因：** 改述会导致信息失真。使用原话可以在上下文变化时准确保留用户的意图。
 
-## Workspace Structure
+## 工作区结构
 
 ```
 workspace/
@@ -47,20 +47,20 @@ workspace/
     └── WORKSPACE-INDEX.md
 ```
 
-## Boot Sequence (Every Session)
+## 启动序列（每次会话）
 
-1. Read `state/HOLD.md` — what's BLOCKED
-2. Read `state/ACTIVE.md` — current task
-3. Read `state/DECISIONS.md` — recent choices
-4. Read `memory/recent-work.md` — last 48 hours
-5. Read `MEMORY.md` — long-term (main session only)
+1. 读取 `state/HOLD.md` 文件——被“阻止”（暂时不执行的）任务。
+2. 读取 `state/ACTIVE.md` 文件——当前正在执行的任务。
+3. 读取 `state/DECISIONS.md` 文件——用户最近的选择。
+4. 读取 `memory/recent-work.md` 文件——过去 48 小时的工作记录。
+5. 读取 `MEMORY.md` 文件——长期存储的数据（仅限当前会话）。
 
-Output status line after boot:
+启动后的输出状态行：
 ```
 📋 Boot: ACTIVE=[task] | HOLD=[n] items | STAGING=[n] drafts
 ```
 
-## State File Formats
+## 状态文件格式
 
 ### state/ACTIVE.md
 ```markdown
@@ -76,44 +76,44 @@ Output status line after boot:
 ```markdown
 [YYYY-MM-DD HH:MM | session] Item — reason blocked
 ```
-**ALL agents must check before acting on anything that looks ready.**
+**所有代理在采取任何行动之前都必须先检查这些文件。**
 
 ### state/DECISIONS.md
 ```markdown
 [YYYY-MM-DD HH:MM | session] Decision made
 ```
 
-## Conflict Resolution
+## 冲突解决
 
-When files conflict, priority (highest first):
-1. **state/HOLD.md** — blocks override all
-2. **state/ACTIVE.md** — current instruction
-3. **state/DECISIONS.md** — recent choices
-4. **AGENTS.md** — general rules
+当文件之间存在冲突时，按照优先级处理（从高到低）：
+1. `state/HOLD.md` 文件——被阻止的任务优先级最高。
+2. `state/ACTIVE.md` 文件——当前正在执行的任务。
+3. `state/DECISIONS.md` 文件——用户最近的选择。
+4. `AGENTS.md` 文件——通用规则。
 
-## Memory Scoring (Before Saving to MEMORY.md)
+## 内存评分（在保存到 `MEMORY.md` 之前）
 
-Score on 4 axes (0–3 each):
+根据以下四个维度进行评分（每个维度 0–3 分）：
 
-| Axis | 0 | 1 | 2 | 3 |
+| 维度 | 0 | 1 | 2 | 3 |
 |------|---|---|---|---|
-| Longevity | Gone tomorrow | Weeks | Months | Years+ |
-| Reuse | One-off | Occasional | Frequent | Every session |
-| Impact | Trivial | Nice to know | Changes outputs | Changes decisions |
-| Uniqueness | Obvious | Slightly helpful | Hard to rederive | Impossible without |
+| 持久性 | 明天就会消失 | 几周 | 几个月 | 几年+ |
+| 重用性 | 一次性使用 | 偶尔使用 | 经常使用 | 每次会话都使用 |
+| 影响程度 | 微不足道 | 了解这些信息有帮助 | 会改变输出结果 | 会改变决策 |
+| 独特性 | 明显有用 | 有点帮助 | 难以重新生成 | 没有这个信息就无法完成 |
 
-**Save if:** Total ≥ 8, OR any axis = 3 AND total ≥ 6.
+**满足以下条件时保存到 `MEMORY.md`：** 总分 ≥ 8 分，或者任意一个维度的得分 ≥ 3 分且总分 ≥ 6 分。
 
-## Quick Setup
+## 快速设置
 
-Copy template files from `assets/templates/` to your workspace:
+将模板文件从 `assets/templates/` 复制到你的工作区：
 ```bash
 cp -r skills/dory-memory/assets/templates/* ~/.openclaw/workspace/
 ```
 
-Then customize SOUL.md and USER.md for your agent.
+然后根据你的代理需求自定义 `SOUL.md` 和 `USER.md` 文件。
 
-## References
+## 参考资料
 
-- `references/IMPLEMENTATION-GUIDE.md` — Full setup walkthrough
-- `references/ANTI-PATTERNS.md` — Common mistakes to avoid
+- `references/IMPLEMENTATION-GUIDE.md` — 完整的设置指南
+- `references/ANTI-PATTERNS.md` — 需要避免的常见错误

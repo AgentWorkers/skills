@@ -1,24 +1,24 @@
 ---
 name: clawvault
 version: 1.5.1
-description: Structured memory system for OpenClaw agents. Context death resilience (checkpoint/recover), structured storage, Obsidian-compatible markdown, local semantic search, and session transcript repair.
+description: OpenClaw代理的结构化内存系统：具备上下文恢复能力（通过检查点/恢复机制实现）、结构化存储功能、兼容Obsidian的Markdown格式支持、本地语义搜索功能以及会话记录的修复机制。
 author: Versatly
 repository: https://github.com/Versatly/clawvault
 ---
 
 # ClawVault 🐘
 
-An elephant never forgets. Structured memory for OpenClaw agents.
+大象永远不会忘记。专为 OpenClaw 代理设计的结构化记忆系统。
 
-> **Built for [OpenClaw](https://openclaw.ai)** — install via `clawhub install clawvault`
+> **专为 [OpenClaw](https://openclaw.ai) 开发** — 通过 `clawhub install clawvault` 进行安装
 
-## Install
+## 安装
 
 ```bash
 npm install -g clawvault
 ```
 
-## Setup
+## 设置
 
 ```bash
 # Initialize vault (creates folder structure + templates)
@@ -31,7 +31,7 @@ export CLAWVAULT_PATH=/path/to/memory
 clawvault shell-init >> ~/.bashrc
 ```
 
-## Quick Start for New Agents
+## 新代理的快速入门
 
 ```bash
 # Start your session (recover + recap + summary)
@@ -48,16 +48,16 @@ clawvault sleep "PR review + type guards" --next "respond to CI" --blocked "wait
 clawvault doctor
 ```
 
-## Core Commands
+## 核心命令
 
-### Wake + Sleep (primary)
+### 唤醒（Wake）+ 睡眠（Sleep）（主要功能）
 
 ```bash
 clawvault wake
 clawvault sleep "what I was working on" --next "ship v1" --blocked "waiting for API key"
 ```
 
-### Store memories by type
+### 按类型存储记忆
 
 ```bash
 # Types: fact, feeling, decision, lesson, commitment, preference, relationship, project
@@ -66,13 +66,13 @@ clawvault remember lesson "Context death is survivable" --content "Checkpoint be
 clawvault remember relationship "Justin Dukes" --content "Client contact at Hale Pet Door"
 ```
 
-### Quick capture to inbox
+### 快速将内容捕获到收件箱
 
 ```bash
 clawvault capture "TODO: Review PR tomorrow"
 ```
 
-### Search (requires qmd installed)
+### 搜索（需要安装 qmd）
 
 ```bash
 # Keyword search (fast)
@@ -82,34 +82,34 @@ clawvault search "client contacts"
 clawvault vsearch "what did we decide about the database"
 ```
 
-## Context Death Resilience
+## 上下文恢复能力
 
-### Wake (start of session)
+### 唤醒（会话开始）
 
 ```bash
 clawvault wake
 ```
 
-### Sleep (end of session)
+### 睡眠（会话结束）
 
 ```bash
 clawvault sleep "what I was working on" --next "finish docs" --blocked "waiting for review"
 ```
 
-### Checkpoint (save state frequently)
+### 创建检查点（频繁保存状态）
 
 ```bash
 clawvault checkpoint --working-on "PR review" --focus "type guards" --blocked "waiting for CI"
 ```
 
-### Recover (manual check)
+### 恢复（手动检查）
 
 ```bash
 clawvault recover --clear
 # Shows: death time, last checkpoint, recent handoff
 ```
 
-### Handoff (manual session end)
+### 会话移交（手动结束会话）
 
 ```bash
 clawvault handoff \
@@ -119,16 +119,16 @@ clawvault handoff \
   --feeling "productive"
 ```
 
-### Recap (bootstrap new session)
+### 总结（重新启动新会话）
 
 ```bash
 clawvault recap
 # Shows: recent handoffs, active projects, pending commitments, lessons
 ```
 
-## Auto-linking
+## 自动链接
 
-Wiki-link entity mentions in markdown files:
+在 markdown 文件中，当提到 Wiki 实体时，可以使用以下链接格式：
 
 ```bash
 # Link all files
@@ -138,7 +138,7 @@ clawvault link --all
 clawvault link memory/2024-01-15.md
 ```
 
-## Folder Structure
+## 文件夹结构
 
 ```
 vault/
@@ -154,15 +154,15 @@ vault/
 └── templates/            # Document templates
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Wake at session start** — `clawvault wake` restores context
-2. **Checkpoint every 10-15 min** during heavy work
-3. **Sleep before session end** — `clawvault sleep` captures next steps
-4. **Use types** — knowing WHAT you're storing helps WHERE to put it
-5. **Wiki-link liberally** — `[[person-name]]` builds your knowledge graph
+1. **在会话开始时唤醒代理** — 使用 `clawvault wake` 恢复上下文
+2. **在高强度工作期间每 10-15 分钟创建一个检查点**
+3. **在会话结束前让代理进入睡眠状态** — 使用 `clawvault sleep` 保存后续操作
+4. **明确存储内容的类型** — 了解存储内容有助于决定其存储位置
+5. **广泛使用 Wiki 链接** — 例如 `[[person-name]]` 可以帮助构建你的知识图谱
 
-## Checklist for AGENTS.md
+## AGENTS.md 的检查清单
 
 ```markdown
 ## Memory Checklist
@@ -174,9 +174,9 @@ vault/
 - [ ] Run `clawvault doctor` when something feels off
 ```
 
-## Session Transcript Repair (v1.5.0+)
+## 会话记录修复（v1.5.0+）
 
-When the Anthropic API rejects with "unexpected tool_use_id found in tool_result blocks", use:
+当 Anthropic API 返回 “在 tool_result 块中发现了未预期的 tool_use_id” 错误时，可以使用以下命令进行修复：
 
 ```bash
 # See what's wrong (dry-run)
@@ -192,25 +192,25 @@ clawvault repair-session --session <id> --agent <agent-id>
 clawvault repair-session --list
 ```
 
-**What it fixes:**
-- Orphaned `tool_result` blocks referencing non-existent `tool_use` IDs
-- Aborted tool calls with partial JSON
-- Broken parent chain references
+**修复内容：**
+- 修复那些引用不存在的 `tool_use` ID 的孤立 `tool_result` 块
+- 修复因 JSON 数据不完整而导致的工具调用失败问题
+- 修复损坏的父链引用问题
 
-Backups are created automatically (use `--no-backup` to skip).
+系统会自动创建备份（使用 `--no-backup` 可以跳过备份功能）。
 
-## Troubleshooting
+## 故障排除
 
-- **qmd not installed** — run `bun install -g github:tobi/qmd` or `npm install -g qmd`
-- **No ClawVault found** — run `clawvault init` or set `CLAWVAULT_PATH`
-- **CLAWVAULT_PATH missing** — run `clawvault shell-init` and add to shell rc
-- **Too many orphan links** — run `clawvault link --orphans`
-- **Inbox backlog warning** — process or archive inbox items
-- **"unexpected tool_use_id" error** — run `clawvault repair-session`
+- **未安装 qmd** — 运行 `bun install -g github:tobi/qmd` 或 `npm install -g qmd`
+- **找不到 ClawVault** — 运行 `clawvault init` 或设置 `CLAWVAULT_PATH`
+- **CLAWVAULT_PATH 未配置** — 运行 `clawvault shell-init` 并将其添加到 shell 配置文件中
+- **存在过多的孤立链接** — 运行 `clawvault link --orphans`
+- **收件箱积压警告** — 处理或归档收件箱中的内容
+- **出现 “unexpected tool_use_id” 错误** — 运行 `clawvault repair-session`
 
-## Integration with qmd
+## 与 qmd 的集成
 
-ClawVault uses [qmd](https://github.com/tobi/qmd) for search:
+ClawVault 使用 [qmd](https://github.com/tobi/qmd) 进行搜索功能：
 
 ```bash
 # Install qmd
@@ -223,12 +223,12 @@ qmd collection add /path/to/vault --name my-memory --mask "**/*.md"
 qmd update && qmd embed
 ```
 
-## Environment Variables
+## 环境变量
 
-- `CLAWVAULT_PATH` — Default vault path (skips auto-discovery)
+- `CLAWVAULT_PATH` — 默认的存储路径（跳过自动检测）
 
-## Links
+## 链接信息
 
 - npm: https://www.npmjs.com/package/clawvault
 - GitHub: https://github.com/Versatly/clawvault
-- Issues: https://github.com/Versatly/clawvault/issues
+- 问题报告：https://github.com/Versatly/clawvault/issues

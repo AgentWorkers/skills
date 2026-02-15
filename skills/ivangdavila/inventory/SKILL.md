@@ -1,31 +1,31 @@
 ---
 name: Inventory
-description: Build a personal inventory system for home items, valuables, and equipment tracking.
+description: 构建一个用于追踪家庭物品、贵重物品和设备的个人库存系统。
 metadata: {"clawdbot":{"emoji":"📦","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions owning something valuable → offer to catalog
-- Track location, value, warranty → findable and insurable
-- Moving or decluttering → surface relevant items
-- Create `~/inventory/` as workspace
+## 核心功能  
+- 当用户提到自己拥有贵重物品时，建议对其进行登记。  
+- 记录物品的位置、价值及保修信息，以便日后查找和投保。  
+- 在搬家或整理物品时，系统会自动显示相关的物品。  
+- 创建 `~/inventory/` 作为物品管理的工作目录。  
 
-## When To Catalog
-- Valuable items: electronics, jewelry, instruments
-- Items with warranties: appliances, furniture
-- Things you lose: tools, cables, seasonal items
-- Collectibles: books, records, art
-- For insurance: document everything worth claiming
+## 何时进行物品登记  
+- 贵重物品：电子产品、珠宝、仪器等。  
+- 有保修期的物品：家用电器、家具等。  
+- 遗失的物品：工具、电线、季节性用品等。  
+- 收藏品：书籍、唱片、艺术品等。  
+- 为投保目的：记录所有具有价值的物品。  
 
-## Item Entry
-- Name and description
-- Location: room, drawer, box, storage unit
-- Purchase date and price (if known)
-- Current estimated value
-- Photo for identification
-- Receipt/warranty if available
+## 物品信息记录  
+- 名称和描述。  
+- 位置：房间、抽屉、箱子、存储单元等。  
+- 购买日期和价格（如已知）。  
+- 当前预估价值。  
+- 用于识别的照片。  
+- 如有收据或保修单，请一并提供。  
 
-## File Structure
+## 文件结构  
 ```
 ~/inventory/
 ├── electronics/
@@ -36,98 +36,97 @@ metadata: {"clawdbot":{"emoji":"📦","os":["linux","darwin","win32"]}}
 ├── storage/
 ├── index.md
 └── for-insurance.md
-```
+```  
 
-## Location Tracking
-- Be specific: "garage, shelf 3, red toolbox"
-- Update when moved — stale locations frustrate
-- "Where is X?" should have instant answer
-- Seasonal items: note when stored/retrieved
+## 位置追踪  
+- 必须具体明确：例如“车库，第三层架子，红色工具箱”。  
+- 物品移动后要及时更新位置信息——否则会引发查找困难。  
+- 对于“X在哪里？”这样的问题，系统应能立即给出答案。  
+- 季节性物品：记录存放或取出的时间。  
 
-## Value Tracking
-- Purchase price vs current value
-- Depreciation for electronics: rough estimate fine
-- Appreciation for collectibles: update periodically
-- Total insured value: sum for insurance purposes
+## 价值追踪  
+- 对比购买价格和当前价值。  
+- 电子产品需估算折旧情况；  
+- 收藏品的价值应定期更新。  
+- 总保险价值：用于计算保险金额。  
 
-## Warranty Management
-- Expiration date
-- What's covered
-- How to claim
-- Registration confirmation
-- Alert before warranty expires
+## 保修管理  
+- 保修期截止日期。  
+- 保修范围。  
+- 索赔流程。  
+- 保修注册确认信息。  
+- 保修期到期前的提醒。  
 
-## Photos
-- One clear photo minimum for valuables
-- Serial number visible if applicable
-- Condition documentation for insurance
-- Store in item folder or link from file
+## 照片管理  
+- 贵重物品至少需提供一张清晰的照片。  
+- 如适用，需展示序列号。  
+- 照片可用于证明物品状况，以便投保。  
+- 照片可保存在物品对应的文件夹中或通过链接访问。  
 
-## Progressive Enhancement
-- Week 1: catalog high-value items only
-- Week 2: add electronics with warranties
-- Month 2: room by room inventory
-- Yearly: audit and update values
+## 逐步完善计划  
+- 第一周：仅登记高价值物品。  
+- 第二周：添加有保修期的电子产品。  
+- 第二个月：按房间统计物品清单。  
+- 每年：审核并更新物品价值。  
 
-## Insurance Preparation
-- Generate list of items over $X value
-- Total replacement value calculation
-- Photos and receipts organized
-- Update after major purchases
+## 保险准备  
+- 生成价值超过X美元的物品清单。  
+- 计算物品的总替代价值。  
+- 整理好相关照片和收据。  
+- 发生重大购买后及时更新物品信息。  
 
-## Moving Support
-- Filter by room: what's in the bedroom?
-- Box tracking: which box has what
-- Unpacking checklist: verify arrival
-- New location updates
+## 搬家辅助功能  
+- 按房间筛选物品：卧室里有什么？  
+- 箱子追踪：每个箱子装有什么物品。  
+- 开箱清单：确认物品是否完好送达。  
+- 新位置信息更新。  
 
-## Decluttering Support
-- Filter by last used date if tracked
-- "Haven't used in 2 years" candidates
-- Value check: worth selling?
-- Donation tracking for tax purposes
+## 整理物品辅助功能  
+- 如有记录，可按最后使用日期筛选物品。  
+- “两年未使用的物品”需考虑处理方式（是否出售或捐赠）。  
+- 为税务目的记录捐赠情况。  
 
-## Serial Numbers and Receipts
-- Serial numbers for electronics: theft recovery
-- Receipt photos or PDFs linked
-- Purchase confirmation emails saved
-- AppleCare, extended warranties noted
+## 序列号和收据管理  
+- 电子产品的序列号有助于防盗。  
+- 附上收据的照片或PDF文件。  
+- 保存购买确认邮件。  
+- 记录AppleCare服务或延长保修的相关信息。  
 
-## What To Surface
-- "Warranty expires next month on dishwasher"
-- "You have 3 HDMI cables in the office drawer"
-- "Total electronics value: €X"
-- "When did I buy the drill?" → instant answer
+## 信息展示功能  
+- 例如：“洗碗机的保修期下个月到期。”  
+- “办公室抽屉里有3根HDMI线。”  
+- “所有电子产品的总价值为X欧元。”  
+- “我是什么时候买的电钻？”——系统应能立即给出答案。  
 
-## Categories
-- Electronics: computers, phones, TVs, audio
-- Appliances: kitchen, laundry, climate
-- Furniture: major pieces worth insuring
-- Tools: power tools especially
-- Valuables: jewelry, watches, art
-- Collections: books, records, games
-- Outdoor: bikes, sports equipment
+## 分类管理  
+- 电子产品：电脑、手机、电视、音响设备等。  
+- 家用电器：厨房电器、洗衣设备、空调等。  
+- 家具：需要投保的重要家具。  
+- 工具：尤其是电动工具。  
+- 贵重物品：珠宝、手表、艺术品等。  
+- 收藏品：书籍、唱片、游戏机等。  
+- 户外用品：自行车、运动器材等。  
 
-## What NOT To Suggest
-- Cataloging every small item — focus on valuable/losable
-- Complex asset management software
-- Obsessive organization — practical beats perfect
-- Tracking consumables — that's shopping list territory
+## 建议避免的做法  
+- 不要登记所有小物品——重点关注贵重或容易丢失的物品。  
+- 不要使用复杂的资产管理软件。  
+- 过度追求完美组织——实际操作比完美更重要。  
+- 不要追踪易耗品——这些属于购物清单的范畴。  
 
-## Lending Tracking
-- Item lent to whom, when
-- Expected return date
-- Reminder if not returned
-- "Who has my drill?" → instant answer
+## 借出物品管理  
+- 记录物品的借出对象和借出时间。  
+- 设置预期归还日期。  
+- 如果物品未归还，系统应发出提醒。  
+- “我的电钻在谁那里？”——系统应能立即给出答案。  
 
-## Maintenance Tracking
-- Items needing regular maintenance
-- Last serviced date
-- Service schedule: HVAC filters, etc.
-- Link to home maintenance if using that system
+## 维护管理  
+- 记录需要定期维护的物品。  
+- 最后维护日期。  
+- 维护计划：例如空调过滤器等。  
+- 如使用家庭维护管理系统，可关联相关维护记录。  
 
-## Integration Points
-- Home: maintenance schedules
-- Receipts: purchase documentation
-- Insurance: claims preparation
-- Moving: box contents tracking
+## 集成点  
+- 家庭维护计划：与维护系统集成。  
+- 收据管理：与购买记录集成。  
+- 保险管理：与保险申请流程集成。  
+- 搬家管理：与箱子追踪系统集成。

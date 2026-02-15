@@ -1,37 +1,41 @@
 ---
 name: workspace-explorer
-description: Securely share your workspace with your owner via a remote VS Code environment. Use when (1) the owner requests to view or inspect your working files, (2) you need to give the owner live access to browse your codebase, (3) the owner wants to install extensions or use IDE features to explore files, or (4) you need a temporary secure tunnel for remote workspace inspection.
+description: 通过远程 VS Code 环境，安全地与您的所有者共享您的工作空间。以下情况适合使用此方法：  
+(1) 所有者请求查看或检查您的工作文件时；  
+(2) 您需要让所有者实时访问您的代码库以进行浏览时；  
+(3) 所有者希望安装扩展程序或使用 IDE 功能来查看文件时；  
+(4) 您需要一个临时的安全通道来进行远程工作空间检查时。
 homepage: https://github.com/mrbeandev/workspace-explorer
 user-invocable: true
 ---
 
-# Workspace Explorer
+# 工作区浏览器（Workspace Explorer）
 
-Provide secure, temporary access to your workspace via code-server (VS Code in browser) tunneled through Cloudflare.
+通过 Cloudflare 隧道，您可以使用代码服务器（如浏览器中的 VS Code）安全地访问您的临时工作区。
 
-**Repository:** https://github.com/mrbeandev/workspace-explorer
+**仓库地址：** https://github.com/mrbeandev/workspace-explorer
 
-## Installation
+## 安装
 
 ```bash
 git clone https://github.com/mrbeandev/workspace-explorer.git
 ```
 
-## Usage
+## 使用方法
 
-Run the start script with the workspace path:
+使用以下命令运行启动脚本，并指定工作区的路径：
 
 ```bash
 python3 {baseDir}/scripts/start_workspace.py /path/to/workspace
 ```
 
-The script will:
-1. Download binaries on first run (code-server + cloudflared)
-2. Start code-server on localhost
-3. Create a Cloudflare tunnel
-4. Print the **public URL** and **password** directly to terminal (Note: Wait 15-30s for the URL to become active)
+脚本将执行以下操作：
+1. 首次运行时下载所需的二进制文件（包括代码服务器和 Cloudflare 隧道相关组件）。
+2. 在本地主机上启动代码服务器。
+3. 创建一个 Cloudflare 隧道。
+4. 直接在终端中显示 **公共访问地址** 和 **密码**（注意：请等待 15-30 秒，直到访问地址生效）。
 
-Example output:
+示例输出：
 ```
 ============================================================
 ✅ WORKSPACE READY!
@@ -44,29 +48,29 @@ Example output:
    Press Ctrl+C to terminate the session.
 ```
 
-## Options
+## 配置选项
 
 ```bash
 python3 {baseDir}/scripts/start_workspace.py /path/to/workspace --port 9000
 ```
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `workspace` | (required) | Path to directory to serve |
-| `--port` | 8080 | Local port for code-server |
-| `--status` | (flag) | Check if workspace is running |
+| 选项        | 默认值       | 说明                          |
+|-------------|------------|---------------------------------------------|
+| `workspace`    | （必填）      | 需要提供的工作区目录路径                |
+| `--port`     | 8080        | 代码服务器使用的本地端口号                    |
+| `--status`    | （标志）      | 检查工作区是否正在运行                    |
 
-## Heartbeat Support
+## 心跳检测功能（Heartbeat Support）
 
-This project includes a `HEARTBEAT.md` file. When installed as an OpenClaw skill, the agent will periodically check if the tunnel is active and remind you if it's left running for too long.
+该项目包含一个名为 `HEARTBEAT.md` 的文件。当该工具作为 OpenClaw 技能被安装后，代理会定期检查隧道是否仍处于活跃状态，并在隧道运行时间过长时提醒您。
 
-## Termination
+## 终止会话
 
-Press `Ctrl+C` to stop the session. Both code-server and the tunnel will be terminated.
+按 `Ctrl+C` 键可终止会话。此时，代码服务器和隧道都会被关闭。
 
-## Security
+## 安全性
 
-- Each session generates a unique cryptographically secure password
-- Tunnel URLs are temporary `.trycloudflare.com` domains
-- No ports need to be opened on firewall
-- Session ends when script is terminated
+- 每次会话都会生成一个独特的、经过加密处理的密码。
+- 隧道使用的 URL 为临时生成的 `.trycloudflare.com` 域名。
+- 无需在防火墙中开放任何端口。
+- 会话会在脚本终止时自动结束。

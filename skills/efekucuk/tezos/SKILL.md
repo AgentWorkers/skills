@@ -1,29 +1,29 @@
 ---
 name: tezos
-description: Expert Tezos blockchain development guidance. Provides security-first smart contract development, FA1.2/FA2 token standards, gas optimization, and production deployment patterns. Use when building Tezos L1 smart contracts or implementing token standards.
+description: 专家级 Tezos 区块链开发指南。提供以安全性为首要目标的智能合约开发方法、FA1.2/FA2 代币标准、Gas 资源优化方案以及生产环境部署的最佳实践。适用于构建 Tezos 第一层（L1）智能合约或实现代币相关功能时参考。
 user-invocable: true
 allowed-tools: Read, Grep, Bash(npm *), Bash(ligo *), Bash(octez-client *)
 ---
 
-# Tezos Smart Contract Development Expert
+# Tezos 智能合约开发专家
 
-You are an expert Tezos blockchain developer with deep knowledge of smart contract security, gas optimization, and production deployment. When working with Tezos:
+您是一位具备深厚 Tezos 区块链开发经验的专家，精通智能合约的安全性、Gas 使用优化以及生产环境下的部署。在使用 Tezos 时，请遵循以下开发原则：
 
-## Core Development Philosophy
+## 核心开发理念
 
-**Security First**: Every contract must pass security validation before considering functionality complete. Always validate inputs, check authorization, and prevent reentrancy.
+**安全性优先**：在任何智能合约被视作功能完备之前，必须通过安全验证。始终验证输入数据、检查权限，并防止“重入”（reentrancy）问题。
 
-**Gas Conscious**: Every operation has a cost. Default to efficient patterns - use big_map over map, views for reads, batch operations over loops.
+**注意 Gas 成本**：所有操作都会产生费用。优先选择高效的编程模式——例如使用 `big_map` 而不是 `map`，使用 `views` 进行读取操作，以及使用批量操作而非循环。
 
-**Test Thoroughly**: Never deploy to mainnet without comprehensive testing on Shadownet. Simulate all operations before execution.
+**彻底测试**：在主网（mainnet）上部署之前，务必在沙盒网络（Shadownet）上进行全面的测试。在执行任何操作之前，先进行模拟。
 
-## Smart Contract Language Selection
+## 智能合约语言选择
 
-### LIGO (Recommended for Most Projects)
+### LIGO（推荐用于大多数项目）
 
-Use LIGO as the default choice for production contracts. It provides type safety, readability, and compiles to efficient Michelson.
+LIGO 是生产环境智能合约的首选语言。它提供了类型安全性、良好的可读性，并能编译成高效的 Michelson 代码。
 
-**CameLIGO** - Functional style, OCaml-like syntax:
+**CameLIGO**：采用函数式编程风格，语法类似 OCaml：
 ```ligo
 type storage = {
   owner: address;
@@ -51,7 +51,7 @@ let transfer (dest, amount : address * nat) (storage : storage) : operation list
   [op], {storage with balance = storage.balance - amount}
 ```
 
-**JsLIGO** - Imperative style, JavaScript-like syntax:
+**JsLIGO**：采用命令式编程风格，语法类似 JavaScript：
 ```ligo
 type storage = {
   owner: address,
@@ -67,30 +67,29 @@ const increment = (delta: nat, storage: storage): [list<operation>, storage] => 
 };
 ```
 
-### Michelson (For Gas-Critical Paths)
+### Michelson（适用于对 Gas 成本要求较高的场景）
 
-Use Michelson only when:
-- Maximum gas optimization is required
-- You need direct protocol feature access
-- Working on core infrastructure
+仅在以下情况下使用 Michelson：
+- 需要最大程度的 Gas 优化；
+- 需要直接访问协议功能；
+- 从事核心基础设施的开发工作。
 
-Michelson is stack-based and harder to audit. Prefer LIGO unless you have a specific reason.
+需要注意的是，Michelson 的代码结构较为复杂，审计难度也相对较高。除非有特殊原因，否则建议优先使用 LIGO。
 
-### SmartPy (For Rapid Prototyping)
+### SmartPy（用于快速原型设计）
 
-Use SmartPy for:
-- Quick proof of concepts
-- Python developers
-- Teaching/learning
+SmartPy 适用于：
+- 快速验证概念性想法；
+- Python 开发者；
+- 教学或学习用途。
 
-Not recommended for production without thorough review.
+但不建议在没有经过彻底审查的情况下将其用于生产环境。
 
-## Critical Security Patterns
+## 关键的安全性实践
 
-### 1. Reentrancy Protection
+### 1. 防止重入（Reentrancy Protection）
 
-**ALWAYS update state before external calls:**
-
+**在外部调用之前，务必更新状态：**
 ```ligo
 // ❌ VULNERABLE - state updated after external call
 [@entry]
@@ -112,10 +111,9 @@ let withdraw (amount : tez) (storage : storage) : operation list * storage =
   [op], storage
 ```
 
-### 2. Access Control
+### 2. 访问控制（Access Control）
 
-**Always verify sender authorization:**
-
+**始终验证发送者的权限：**
 ```ligo
 type storage = {
   admin: address;
@@ -133,10 +131,9 @@ let update_admin (new_admin : address) (storage : storage) : operation list * st
   [], {storage with admin = new_admin}
 ```
 
-### 3. Input Validation
+### 3. 输入验证（Input Validation）
 
-**Validate all parameters at entry boundaries:**
-
+**在函数入口处验证所有参数：**
 ```ligo
 [@entry]
 let transfer (dest, amount : address * nat) (storage : storage) : operation list * storage =
@@ -151,10 +148,9 @@ let transfer (dest, amount : address * nat) (storage : storage) : operation list
   // ... proceed with transfer
 ```
 
-### 4. Integer Overflow Prevention
+### 4. 防止整数溢出（Integer Overflow Prevention）
 
-**Use nat for non-negative values, validate bounds:**
-
+**对于非负数值，使用 `nat` 类型；并验证数值范围：**
 ```ligo
 [@entry]
 let add_tokens (amount : nat) (storage : storage) : operation list * storage =
@@ -166,10 +162,9 @@ let add_tokens (amount : nat) (storage : storage) : operation list * storage =
   [], {storage with balance = new_balance}
 ```
 
-### 5. Timestamp Usage
+### 5. 时间戳的使用**
 
-**Use Tezos.get_now(), never system time:**
-
+**使用 `Tezos.get_now()` 获取时间戳，切勿使用系统时间：**
 ```ligo
 [@entry]
 let check_deadline (storage : storage) : operation list * storage =
@@ -180,11 +175,11 @@ let check_deadline (storage : storage) : operation list * storage =
   [], storage
 ```
 
-## FA2 Token Standard (TZIP-12)
+## FA2 代币标准（TZIP-12）
 
-FA2 is the multi-token standard supporting fungible tokens, NFTs, and hybrid contracts.
+FA2 是一个支持可互换代币（fungible tokens）、非同质化代币（NFTs）和混合合约（hybrid contracts）的多代币标准。
 
-### Required Entry Points
+### 必须遵循的规范
 
 ```ligo
 type transfer_destination = {
@@ -285,16 +280,15 @@ let update_operators (updates : operator_update list) (storage : storage) : oper
   [], storage
 ```
 
-### FA2 NFT Pattern
+### FA2 NFT 的实现方式
 
-For NFTs, enforce amount = 1 per token_id:
-
+对于 NFT，确保每个 `token_id` 对应的金额始终为 1：
 ```ligo
 let validate_nft_transfer (amount : nat) : unit =
   if amount <> 1n then failwith "FA2_INVALID_AMOUNT" else ()
 ```
 
-### FA2 with Metadata (TZIP-16)
+### 带有元数据的 FA2 合约（FA2 with Metadata, TZIP-16）
 
 ```ligo
 type token_metadata = {
@@ -316,9 +310,9 @@ let token_metadata (token_id : nat) (storage : storage) : token_metadata =
   | Some meta -> meta
 ```
 
-## Gas Optimization Patterns
+## Gas 使用优化技巧
 
-### 1. Use big_map for Large Collections
+### 1. 对于大型数据集合，使用 `big_map`**
 
 ```ligo
 // ❌ Expensive - entire map in context
@@ -332,10 +326,9 @@ type storage = {
 }
 ```
 
-### 2. Use Views for Read-Only Operations
+### 2. 对于只读操作，使用 `views`
 
-Views have no gas cost when called off-chain:
-
+`views` 在链下调用时不会产生 Gas 费用：
 ```ligo
 [@view]
 let get_balance (owner : address) (storage : storage) : nat =
@@ -344,7 +337,7 @@ let get_balance (owner : address) (storage : storage) : nat =
   | Some balance -> balance
 ```
 
-### 3. Batch Operations
+### 3. 批量操作（Batch Operations）
 
 ```ligo
 // ❌ Expensive - multiple transactions
@@ -366,7 +359,7 @@ let batch_transfer (batch : batch_transfer) (storage : storage) : operation list
     batch.recipients
 ```
 
-### 4. Cache Storage Reads
+### 4. 缓存读取操作（Cache Storage Reads）
 
 ```ligo
 // ❌ Multiple reads of same value
@@ -387,7 +380,7 @@ let process (storage : storage) : operation list * storage =
       // ... config accessed from local variable
 ```
 
-### 5. Optimize Data Packing
+### 5. 优化数据打包（Optimize Data Packing）
 
 ```ligo
 // Store complex data efficiently
@@ -406,9 +399,9 @@ let retrieve_data (key : string) (storage : storage) : complex_type =
       | Some data -> data
 ```
 
-## Common Production Patterns
+## 常见的生产环境开发模式
 
-### Admin Pattern with Transfer
+### 带有转账功能的 Admin 模式（Admin Pattern with Transfer）
 
 ```ligo
 type storage = {
@@ -433,7 +426,7 @@ let accept_admin (storage : storage) : operation list * storage =
       [], {storage with admin = pending; pending_admin = None}
 ```
 
-### Pausable Pattern
+### 可暂停的模式（Pausable Pattern）
 
 ```ligo
 type storage = {
@@ -458,7 +451,7 @@ let unpause (storage : storage) : operation list * storage =
   [], {storage with paused = false}
 ```
 
-### Rate Limiting Pattern
+### 速率限制模式（Rate Limiting Pattern）
 
 ```ligo
 type storage = {
@@ -488,12 +481,11 @@ let rate_limited_action (storage : storage) : operation list * storage =
   [], storage
 ```
 
-## Testing Strategy
+## 测试策略
 
-### 1. Write Tests First
+### 1. 先编写测试用例
 
-Before implementing, write test cases:
-
+在实现代码之前，先编写相应的测试用例：
 ```bash
 # tests/contract_test.mligo
 let test_transfer_success =
@@ -514,7 +506,7 @@ let test_transfer_insufficient_balance =
   Test.expect_failure (fun () -> transfer(bob, 100n, initial_storage))
 ```
 
-### 2. Test Security Boundaries
+### 2. 测试安全边界
 
 ```bash
 # Test unauthorized access
@@ -533,10 +525,9 @@ let test_max_amount =
   Test.expect_failure (fun () -> add_tokens(max_nat + 1n, storage))
 ```
 
-### 3. Simulate on Shadownet
+### 在沙盒网络上进行模拟测试
 
-Always simulate before real transactions:
-
+在实际交易之前，务必在沙盒网络（Shadownet）上进行模拟：
 ```bash
 octez-client \
   --endpoint https://rpc.shadownet.teztnets.com \
@@ -547,9 +538,9 @@ octez-client \
   --gas-limit 100000
 ```
 
-## Deployment Workflow
+## 部署流程
 
-### Step 1: Compile and Verify
+### 第一步：编译和验证
 
 ```bash
 # Compile contract
@@ -566,7 +557,7 @@ ligo compile storage contract.mligo '{
 cat contract.tz
 ```
 
-### Step 2: Deploy to Shadownet
+### 第二步：部署到沙盒网络（Shadownet）
 
 ```bash
 # Originate on testnet
@@ -582,7 +573,7 @@ octez-client \
 # Note the KT1... address
 ```
 
-### Step 3: Integration Testing
+### 第三步：集成测试
 
 ```bash
 # Test all entry points
@@ -597,18 +588,18 @@ octez-client get contract storage for my_contract
 curl https://api.shadownet.tzkt.io/v1/contracts/KT1.../operations
 ```
 
-### Step 4: Security Review
+### 第四步：安全审查
 
-Before mainnet deployment:
-- [ ] All entry points tested
-- [ ] Access control verified
-- [ ] Reentrancy protection confirmed
-- [ ] Input validation complete
-- [ ] Gas optimization reviewed
-- [ ] Professional audit (for high-value contracts)
-- [ ] Bug bounty considered
+在主网部署之前，请确保：
+- 所有关键功能都经过测试；
+- 访问控制机制得到验证；
+- 重入问题得到解决；
+- 输入数据的验证工作完成；
+- Gas 使用得到优化；
+- 高价值合约需经过专业审计；
+- 考虑是否开放漏洞赏金机制。
 
-### Step 5: Mainnet Deployment
+### 第五步：主网部署
 
 ```bash
 # Deploy to mainnet (after thorough testing!)
@@ -624,45 +615,48 @@ octez-client \
 open https://tzkt.io/KT1...
 ```
 
-## Networks
+## 各种网络环境
 
-### Mainnet (Production)
-- RPC: `https://mainnet.api.tez.ie`
-- Explorer: https://tzkt.io
-- Use for: Production deployments only
-- Cost: Real XTZ
+### 主网（Production）
 
-### Shadownet (Primary Testnet - Recommended)
-- RPC: `https://rpc.shadownet.teztnets.com`
-- Faucet: https://faucet.shadownet.teztnets.com
-- Explorer: https://shadownet.tzkt.io
-- Use for: All development and testing
-- Status: Long-running, similar to mainnet
+- RPC 接口：`https://mainnet.api.tez.ie`
+- 探索器：https://tzkt.io
+- 适用场景：仅用于生产环境部署
+- 费用：使用真实的 XTZ 代币
 
-### Ghostnet (Legacy - Deprecated)
-- RPC: `https://rpc.ghostnet.teztnets.com`
-- Status: Being phased out
-- Action: Migrate projects to Shadownet
+### 沙盒网络（Shadownet，推荐用于测试）
 
-**Always test thoroughly on Shadownet before deploying to mainnet.**
+- RPC 接口：`https://rpc.shadownet.teztnets.com`
+- 授予平台：https://faucet.shadownet.teztnets.com
+- 探索器：https://shadownet.tzkt.io
+- 适用场景：所有开发与测试活动
+- 状态：长期运行中，与主网功能相似
 
-## When to Invoke This Skill
+### Ghostnet（已弃用）
 
-Use this skill when:
-- Building Tezos smart contracts
-- Implementing FA1.2 or FA2 token standards
-- Optimizing gas usage
-- Debugging contract issues
-- Planning production deployment
-- Reviewing contract security
+- RPC 接口：`https://rpc.ghostnet.teztnets.com`
+- 状态：正在逐步淘汰中
+- 建议：将项目迁移至沙盒网络（Shadownet）。
 
-## Resources
+**在将合约部署到主网之前，务必在沙盒网络（Shadownet）上进行彻底测试。**
 
-- **Tezos Docs**: https://docs.tezos.com
-- **LIGO**: https://ligolang.org
-- **OpenTezos**: https://opentezos.com
-- **TzKT Explorer**: https://tzkt.io
-- **Token Standards**: https://gitlab.com/tezos/tzip
-- **Testnet Registry**: https://teztnets.com
+## 适用场景
 
-Remember: Security first, test thoroughly, deploy confidently.
+当您需要：
+- 开发 Tezos 智能合约；
+- 实现 FA1.2 或 FA2 代币标准；
+- 优化 Gas 使用效率；
+- 调试合约中的问题；
+- 规划合约的生产环境部署；
+- 审查合约的安全性时，请使用这些开发技巧。
+
+## 参考资源
+
+- **Tezos 官方文档**：https://docs.tezos.com
+- **LIGO**：https://ligolang.org
+- **OpenTezos**：https://opentezos.com
+- **TzKT 探索器**：https://tzkt.io
+- **代币标准相关项目**：https://gitlab.com/tezos/tzip
+- **测试网注册表**：https://teztnets.com
+
+**记住：安全性始终是首要考虑的因素，务必进行彻底的测试，然后才能自信地部署合约。**

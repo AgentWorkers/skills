@@ -1,20 +1,20 @@
 ---
 slug: "email-construction"
 display_name: "Email Construction"
-description: "Email generation for construction workflows: RFI responses, submittal transmittals, meeting notices, change order notifications. Professional templates with context-aware content."
+description: "用于建筑工作流程的电子邮件生成功能：包括请求信息（RFI）的回复、文件提交通知、会议通知以及变更订单提醒等。这些电子邮件使用专业的模板生成，并且能够根据具体情境自动生成相应的内容。"
 ---
 
-# Email Generation for Construction
+# 用于建筑行业的电子邮件生成工具
 
-## Overview
+## 概述
 
-Generate professional construction emails with proper formatting, context, and attachments handling. Templates for common construction communication workflows.
+该工具能够生成格式规范、内容专业的建筑行业电子邮件，并支持附件的处理。提供了适用于常见建筑沟通工作流程的模板。
 
-## Construction Use Cases
+## 建筑行业中的使用场景
 
-### 1. RFI Response Email
+### 1. 信息请求（RFI）回复邮件
 
-Generate professional RFI response emails.
+生成专业的信息请求（RFI）回复邮件。
 
 ```python
 from dataclasses import dataclass
@@ -77,9 +77,9 @@ Best regards,
     }
 ```
 
-### 2. Submittal Transmittal Email
+### 2. 提交文件传输邮件
 
-Generate submittal transmittal emails.
+生成用于提交文件的传输邮件。
 
 ```python
 @dataclass
@@ -135,9 +135,9 @@ Best regards,
     }
 ```
 
-### 3. Meeting Notice Email
+### 3. 会议通知邮件
 
-Generate meeting invitation emails.
+生成会议邀请邮件。
 
 ```python
 @dataclass
@@ -199,9 +199,9 @@ Project Manager
     }
 ```
 
-### 4. Change Order Notification
+### 4. 变更订单通知邮件
 
-Generate change order notification emails.
+生成变更订单通知邮件。
 
 ```python
 @dataclass
@@ -262,9 +262,9 @@ Best regards,
     }
 ```
 
-### 5. Daily Report Email
+### 5. 日报邮件
 
-Generate daily report distribution email.
+生成每日报告分发邮件。
 
 ```python
 @dataclass
@@ -322,9 +322,9 @@ Site Superintendent
     }
 ```
 
-### 6. Delay Notice Email
+### 6. 延期通知邮件
 
-Generate formal delay notification.
+生成正式的延期通知邮件。
 
 ```python
 @dataclass
@@ -395,7 +395,7 @@ Respectfully,
     }
 ```
 
-## Email Sending Integration
+## 邮件发送集成
 
 ```python
 import smtplib
@@ -444,7 +444,7 @@ class ConstructionEmailSender:
             server.sendmail(msg['From'], recipients, msg.as_string())
 ```
 
-## Integration with DDC Pipeline
+## 与DDC流程的集成
 
 ```python
 # Example: Auto-generate RFI response email from RFI log
@@ -473,24 +473,24 @@ print(f"Subject: {email_data['subject']}")
 print(email_data['body'])
 ```
 
-## Email Templates Library
+## 电子邮件模板库
 
-Common email templates for construction:
+以下是建筑行业常用的电子邮件模板：
 
-| Template | Use Case |
-|----------|----------|
-| RFI Response | Responding to Requests for Information |
-| Submittal Transmittal | Sending submittals for review |
-| Meeting Notice | OAC, subcontractor, safety meetings |
-| Change Order | CO notifications and approvals |
-| Daily Report | Daily report distribution |
-| Delay Notice | Formal delay notifications |
-| Payment Application | Pay app submissions |
-| Punch List | Punch list item notifications |
-| Closeout | Warranty and closeout docs |
+| 模板          | 使用场景                |
+|----------------|----------------------|
+| RFI回复邮件       | 回复信息请求              |
+| 提交文件传输邮件     | 发送提交文件以供审核           |
+| 会议通知邮件       | 通知相关方（如业主、分包商、安全会议） |
+| 变更订单邮件       | 发送变更订单通知及审批请求       |
+| 日报邮件         | 分发每日报告             |
+| 延期通知邮件       | 发送正式的延期通知           |
+| 支付申请邮件       | 提交付款申请             |
+| 工作进度通知邮件     | 通知工作进度相关事项           |
+| 项目收尾邮件       | 发送项目收尾相关文件           |
 
-## Resources
+## 资源推荐
 
-- **Professional Email Writing**: Keep emails concise and action-oriented
-- **Construction Email Best Practices**: Always include project name and reference numbers
-- **Legal Considerations**: Delay notices may have contractual requirements
+- **专业电子邮件写作指南**：确保邮件简洁明了、注重行动导向。
+- **建筑行业电子邮件最佳实践**：务必在邮件中包含项目名称和参考编号。
+- **法律注意事项**：延期通知可能需要遵循合同中的相关条款。

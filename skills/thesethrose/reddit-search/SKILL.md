@@ -1,15 +1,15 @@
 ---
 name: reddit-search
-description: Search Reddit for subreddits and get information about them.
+description: 在 Reddit 上搜索子版块（subreddits），并获取关于它们的信息。
 homepage: https://github.com/TheSethRose/clawdbot
 metadata: {"clawdbot":{"emoji":"📮","requires":{"bins":["node","npx"],"env":[]}}}
 ---
 
-# Reddit Search
+# Reddit搜索
 
-Search Reddit for subreddits and get information about them.
+在Reddit上搜索子版块（subreddits），并获取有关它们的信息。
 
-## Quick start
+## 快速入门
 
 ```bash
 {baseDir}/scripts/reddit-search info programming
@@ -18,49 +18,49 @@ Search Reddit for subreddits and get information about them.
 {baseDir}/scripts/reddit-search posts typescript 5
 ```
 
-## Commands
+## 命令
 
-### Get subreddit info
+### 获取子版块信息
 
 ```bash
 {baseDir}/scripts/reddit-search info <subreddit>
 ```
 
-Shows subscriber count, NSFW status, creation date, and description with sidebar links.
+显示子版块的订阅者数量、是否适合工作场所（NSFW）的状态、创建日期以及描述，并提供侧边栏链接。
 
-### Search for subreddits
+### 搜索子版块
 
 ```bash
 {baseDir}/scripts/reddit-search search <query> [limit]
 ```
 
-Search for subreddits matching the query. Default limit is 10.
+根据查询条件搜索子版块。默认搜索结果数量为10个。
 
-### List popular subreddits
+### 列出热门子版块
 
 ```bash
 {baseDir}/scripts/reddit-search popular [limit]
 ```
 
-List the most popular subreddits. Default limit is 10.
+列出最受欢迎的子版块。默认显示数量为10个。
 
-### List new subreddits
+### 列出新创建的子版块
 
 ```bash
 {baseDir}/scripts/reddit-search new [limit]
 ```
 
-List newly created subreddits. Default limit is 10.
+列出最近创建的子版块。默认显示数量为10个。
 
-### Get top posts from a subreddit
+### 获取子版块的热门帖子
 
 ```bash
 {baseDir}/scripts/reddit-search posts <subreddit> [limit]
 ```
 
-Get the top posts from a subreddit sorted by hot. Default limit is 5.
+获取某个子版块的热门帖子（按热度排序）。默认显示数量为5个。
 
-## Examples
+## 示例
 
 ```bash
 # Get info about r/programming

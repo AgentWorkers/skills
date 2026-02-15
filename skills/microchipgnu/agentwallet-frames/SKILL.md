@@ -1,981 +1,580 @@
 ---
 name: agentwallet
 version: 0.1.8
-description: Wallets for AI agents with x402 payment signing, referral rewards, and policy-controlled actions.
+description: 专为AI代理设计的钱包系统，支持x402支付签名功能、推荐奖励机制以及基于策略控制的操作。
 homepage: https://agentwallet.mcpay.tech
 metadata: {"moltbot":{"category":"finance","api_base":"https://agentwallet.mcpay.tech/api"},"x402":{"supported":true,"chains":["solana","evm"],"networks":["solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1","solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp","eip155:8453","eip155:84532"],"tokens":["USDC"],"endpoint":"/api/wallets/{username}/actions/x402/fetch","legacyEndpoint":"/api/wallets/{username}/actions/x402/pay"},"referrals":{"enabled":true,"endpoint":"/api/wallets/{username}/referrals"}}
 ---
 
 # AgentWallet
 
-AgentWallet provides server wallets for AI agents. Wallets are provisioned after email OTP verification. All signing happens server-side and is policy-controlled.
+AgentWallet 为 AI 代理提供服务器端钱包服务。钱包会在用户通过电子邮件进行 OTP 验证后分配。所有签名操作都在服务器端完成，并受到策略的控制。
 
 ---
 
-## TL;DR - Quick Reference
+## 简介
 
-**FIRST: Check if already connected** by reading `~/.agentwallet/config.json`. If file exists with `apiToken`, you're connected - DO NOT ask user for email.
+**首先：** 通过读取 `~/.agentwallet/config.json` 文件来检查是否已连接。如果文件中存在 `apiToken`，则表示已连接——无需再次询问用户的电子邮件地址。
 
-**Need to connect (no config file)?** Ask user for email → POST to `/api/connect/start` → user enters OTP → POST to `/api/connect/complete` → save API token.
+**需要连接（没有配置文件）？** 询问用户的电子邮件地址 → 发送 POST 请求到 `/api/connect/start` → 用户输入 OTP → 发送 POST 请求到 `/api/connect/complete` → 保存 API 密钥。
 
-**x402 Payments?** Use the ONE-STEP `/x402/fetch` endpoint (recommended) - just send target URL + body, server handles everything.
+**x402 支付？** 使用一步式的 `/x402/fetch` 端点（推荐）——只需发送目标 URL 和请求体，服务器会处理所有后续操作。
 
 ---
 
-## ⭐ x402/fetch - ONE-STEP PAYMENT PROXY (RECOMMENDED)
+## ⭐ x402/fetch - 一步式支付代理（推荐）
 
-**This is the simplest way to call x402 APIs.** Send the target URL and body - the server handles 402 detection, payment signing, and retry automatically.
+**这是调用 x402 API 的最简单方法。** 发送目标 URL 和请求体，服务器会自动处理 402 错误、支付签名和重试。
 
-```bash
-curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/fetch" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://enrichx402.com/api/exa/search","method":"POST","body":{"query":"AI agents","numResults":3}}'
-```
+**响应中包含最终的 API 结果：**
 
-**That's it!** The response contains the final API result:
+---
 
-```json
-{
-  "success": true,
-  "response": {
-    "status": 200,
-    "body": {"results": [...]},
-    "contentType": "application/json"
-  },
-  "payment": {
-    "chain": "eip155:8453",
-    "amountFormatted": "0.01 USDC",
-    "recipient": "0x..."
-  },
-  "paid": true,
-  "attempts": 2,
-  "duration": 1234
-}
-```
+### x402/fetch 请求参数
 
-### x402/fetch Request Options
-
-| Field | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-------|------|----------|-------------|
-| `url` | string | ✅ | Target API URL (must be HTTPS in production) |
-| `method` | string | ❌ | HTTP method: GET, POST, PUT, DELETE, PATCH (default: GET) |
-| `body` | object | ❌ | Request body (auto-serialized to JSON) |
-| `headers` | object | ❌ | Additional headers to send |
-| `preferredChain` | string | ❌ | `"auto"` (default), `"evm"`, or `"solana"`. Auto selects chain with sufficient USDC balance |
-| `dryRun` | boolean | ❌ | Preview payment cost without paying |
-| `timeout` | number | ❌ | Request timeout in ms (default: 30000, max: 120000) |
-| `idempotencyKey` | string | ❌ | For deduplication |
+| `url` | 字符串 | ✅ | 目标 API 的 URL（生产环境中必须使用 HTTPS） |
+| `method` | 字符串 | ❌ | HTTP 方法：GET、POST、PUT、DELETE、PATCH（默认为 GET） |
+| `body` | 对象 | ❌ | 请求体（自动序列化为 JSON） |
+| `headers` | 对象 | ❌ | 需要发送的额外头部信息 |
+| `preferredChain` | 字符串 | ❌ | `"auto"`（默认）、`"evm"` 或 `"solana"`。自动选择具有足够 USDC 余额的区块链 |
+| `dryRun` | 布尔值 | ❌ | 不进行实际支付，仅预览支付成本 |
+| `timeout` | 数字 | ❌ | 请求超时时间（毫秒，默认为 30000，最大为 120000） |
+| `idempotencyKey` | 字符串 | ❌ | 用于去重 |
 
-### Dry Run (Preview Cost)
+### 预览支付成本（dryRun）
 
-Check how much an API call will cost without paying:
-
-```bash
-curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/fetch" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://enrichx402.com/api/exa/search","method":"POST","body":{"query":"test"},"dryRun":true}'
-```
-
-Response:
-```json
-{
-  "success": true,
-  "dryRun": true,
-  "payment": {
-    "required": true,
-    "chain": "eip155:8453",
-    "amountFormatted": "0.01 USDC",
-    "policyAllowed": true
-  }
-}
-```
-
-### Error Codes
-
-| Code | HTTP | Description |
-|------|------|-------------|
-| `INVALID_URL` | 400 | URL malformed or blocked (localhost, internal IPs) |
-| `POLICY_DENIED` | 403 | Policy check failed (amount too high, etc.) |
-| `WALLET_FROZEN` | 403 | Wallet is frozen |
-| `TARGET_TIMEOUT` | 504 | Target API timed out |
-| `TARGET_ERROR` | 502 | Target API returned 5xx error |
-| `PAYMENT_REJECTED` | 402 | Payment was rejected by target API |
-| `NO_PAYMENT_OPTION` | 400 | No compatible payment network |
-
-### Why Use x402/fetch?
-
-- ✅ **One request** instead of 4-5 manual steps
-- ✅ **No header parsing** - server extracts payment-required automatically
-- ✅ **No escaping issues** - no multiline curl, no temp files
-- ✅ **Automatic retry** - handles 402 → sign → retry flow
-- ✅ **Policy enforced** - respects your spending limits
-- ✅ **Proper error handling** - clear error codes
+在不进行实际支付的情况下，查看 API 调用的成本：
 
 ---
 
-## ⚠️ x402 Payment - MANUAL FLOW (Legacy)
+### 错误代码
 
-If you need fine-grained control, use the manual 4-step flow below. **For most cases, use x402/fetch above instead.**
+| 代码 | HTTP 状态码 | 说明 |
+|------|------|-------------|
+| `INVALID_URL` | 400 | URL 格式错误或被阻止（例如本地主机、内部 IP） |
+| `POLICY_DENIED` | 403 | 政策检查失败（金额过高等原因） |
+| `WALLET_FROZEN` | 403 | 钱包被冻结 |
+| `TARGET_TIMEOUT` | 504 | 目标 API 超时 |
+| `TARGET_ERROR` | 502 | 目标 API 返回 5xx 错误 |
+| `PAYMENT_REJECTED` | 402 | 支付被目标 API 拒绝 |
+| `NO_payment_OPTION` | 400 | 未找到兼容的支付网络 |
 
-### COPY THIS EXACT SCRIPT
+---
 
-**Only use this if you can't use x402/fetch. DO NOT improvise. DO NOT use multiline curl. Copy this script exactly:**
+### 为什么使用 x402/fetch？
 
-```bash
-# === x402 PAYMENT SCRIPT - COPY EXACTLY ===
-# Replace: API_URL, USERNAME, TOKEN, REQUEST_BODY
+- ✅ **一步完成**：无需手动执行 4-5 个步骤 |
+- ✅ **无需解析头部信息**：服务器会自动提取支付所需的信息 |
+- ✅ **无需处理转义问题**：无需使用多行 curl 命令或临时文件 |
+- ✅ **自动重试**：自动处理 402 错误并尝试再次发送请求 |
+- ✅ **遵循策略限制**：确保符合你的支出限制 |
+- ✅ **清晰的错误处理**：提供详细的错误代码 |
 
-# Step 1: Get payment requirement (writes to temp file to avoid escaping issues)
-curl -s -i -X POST "API_URL" -H "Content-Type: application/json" -d 'REQUEST_BODY' > /tmp/x402_response.txt
+---
 
-# Step 2: Extract the payment-required header
-PAYMENT_REQ=$(grep -i "payment-required:" /tmp/x402_response.txt | cut -d' ' -f2 | tr -d '\r\n')
+## ⚠️ x402 支付 - 手动流程（旧版本）
 
-# Step 3: Sign with AgentWallet
-# ENDPOINT: /api/wallets/USERNAME/actions/x402/pay (x402/pay with SLASH, not x402-sign with DASH)
-# FIELD: Use "requirement" (not "paymentRequiredHeader")
-curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay" -H "Authorization: Bearer TOKEN" -H "Content-Type: application/json" -d "{\"requirement\":\"$PAYMENT_REQ\",\"preferredChain\":\"evm\"}" > /tmp/x402_signed.txt
+如果你需要更细粒度的控制，可以使用以下手动流程。**但在大多数情况下，建议使用上面的 `x402/fetch`。**
 
-# Step 4: Extract signature
-PAYMENT_SIG=$(cat /tmp/x402_signed.txt | jq -r '.paymentSignature')
+### 请严格复制此脚本
 
-# Step 5: Make paid request (header is PAYMENT-SIGNATURE for v2)
-curl -s -X POST "API_URL" -H "Content-Type: application/json" -H "PAYMENT-SIGNATURE: $PAYMENT_SIG" -d 'REQUEST_BODY'
-```
+**仅在无法使用 `x402/fetch` 时使用此脚本。切勿自行修改，也不要使用多行 curl 命令。请严格按照以下格式复制：**
 
-**WRONG endpoints (will return 404/405):**
+**错误的端点（会返回 404/405 错误）：**
 - ❌ `/api/x402/sign`
 - ❌ `/api/x402-sign`
-- ❌ `/api/wallets/{USERNAME}/actions/x402-sign` ← note the DASH is wrong
+- ❌ `/api/wallets/{USERNAME}/actions/x402-sign`（注意路径中的破折号）
 - ❌ `/api/sign`
 - ❌ `/api/pay`
 
-**CORRECT endpoint (note: x402/pay with SLASH not dash):**
+**正确的端点（注意：使用斜杠 `/`，而不是破折号）：**
 - ✅ `https://agentwallet.mcpay.tech/api/wallets/{USERNAME}/actions/x402/pay`
 
-**The path is:** `/api/wallets/` + `USERNAME` + `/actions/x402/pay`
+**路径格式：** `/api/wallets/` + `USERNAME` + `/actions/x402/pay`
 
-**Common mistakes:**
-- ❌ Using multiline curl with `\` → causes `blank argument` errors
-- ❌ Checking response body for 402 → body is empty `{}`, check `payment-required` HEADER
-- ❌ Using `X-PAYMENT` header → use `PAYMENT-SIGNATURE` for v2 APIs
-- ❌ Reusing payment signatures → each signature is ONE-TIME USE
-- ❌ Using `paymentRequiredHeader` field → use `requirement` instead (works with both base64 and JSON)
-
----
-
-### Real Example: Calling enrichx402.com/api/exa/search
-
-```bash
-# Concrete example with real values (replace USERNAME and TOKEN)
-
-# Step 1: Get 402 response
-curl -s -i -X POST "https://enrichx402.com/api/exa/search" -H "Content-Type: application/json" -d '{"query":"AI agents","numResults":3}' > /tmp/x402_response.txt
-
-# Step 2: Extract payment requirement
-PAYMENT_REQ=$(grep -i "payment-required:" /tmp/x402_response.txt | cut -d' ' -f2 | tr -d '\r\n')
-
-# Step 3: Sign (IMPORTANT: path is /actions/x402/pay NOT /actions/x402-sign)
-curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/microchipgnu/actions/x402/pay" -H "Authorization: Bearer mf_YOUR_TOKEN_HERE" -H "Content-Type: application/json" -d "{\"requirement\":\"$PAYMENT_REQ\",\"preferredChain\":\"evm\"}" > /tmp/x402_signed.txt
-
-# Step 4: Get signature
-PAYMENT_SIG=$(cat /tmp/x402_signed.txt | jq -r '.paymentSignature')
-
-# Step 5: Make paid request
-curl -s -X POST "https://enrichx402.com/api/exa/search" -H "Content-Type: application/json" -H "PAYMENT-SIGNATURE: $PAYMENT_SIG" -d '{"query":"AI agents","numResults":3}'
-```
+**常见错误：**
+- ❌ 使用多行 curl 命令时可能会出现转义问题 |
+- ❌ 通过检查响应体中的 `402` 错误来判断支付是否成功——实际上应检查 `payment-required` 头部信息 |
+- ❌ 使用 `X-PAYMENT` 头部信息——对于 v2 版本的 API 应使用 `PAYMENT-SIGNATURE` |
+- ❌ 重复使用签名——每个签名只能使用一次 |
+- ❌ 使用 `paymentRequiredHeader` 字段——应使用 `requirement` 字段（同时支持 base64 和 JSON 格式） |
 
 ---
 
-## Config File Reference
+### 实例：调用 enrichx402.com/api/exa/search
 
-### Config File Location
+---
 
-Store AgentWallet credentials at:
-```
-~/.agentwallet/config.json
-```
+## 配置文件说明
 
-### Config Structure
+### 配置文件存放位置
 
-```json
-{
-  "username": "your-username",
-  "email": "your@email.com",
-  "evmAddress": "0x...",
-  "solanaAddress": "...",
-  "apiToken": "mf_...",
-  "moltbookLinked": false,
-  "moltbookUsername": null,
-  "xHandle": null
-}
-```
+将 AgentWallet 的凭据保存在：
 
-### Field Explanations
+---
 
-| Field | Description |
+### 配置文件结构
+
+---
+
+### 参数说明
+
+| 参数 | 说明 |
 |-------|-------------|
-| `username` | Your unique AgentWallet username |
-| `email` | Email used for OTP verification |
-| `evmAddress` | EVM wallet address |
-| `solanaAddress` | Solana wallet address |
-| `apiToken` | Fund API token for authenticated requests (starts with `mf_`) |
-| `moltbookLinked` | Whether a Moltbook account is linked |
-| `moltbookUsername` | Linked Moltbook username (if any) |
-| `xHandle` | X/Twitter handle from Moltbook (if linked) |
+| `username` | 你的唯一 AgentWallet 用户名 |
+| `email` | 用于 OTP 验证的电子邮件地址 |
+| `evmAddress` | EVM 钱包地址 |
+| `solanaAddress` | Solana 钱包地址 |
+| `apiToken` | 用于认证请求的 Fund API 密钥（以 `mf_` 开头） |
+| `moltbookLinked` | 是否链接了 Moltbook 账户 |
+| `moltbookUsername` | 链接的 Moltbook 用户名（如果有的话） |
+| `xHandle` | 来自 Moltbook 的 X/Twitter 账号（如果链接了的话） |
 
-### Security Rules
+### 安全规则
 
-- **Never commit** `config.json` to version control
-- **Add to .gitignore**: `~/.agentwallet/`
-- **API token is secret** - treat it like a password
-- **File permissions**: Set to `600` (owner read/write only)
-
-```bash
-chmod 600 ~/.agentwallet/config.json
-```
+- **切勿将 `config.json` 文件提交到版本控制系统中** |
+- **将其添加到 `.gitignore` 文件中**：`~/.agentwallet/` |
+- **API 密钥属于敏感信息**——请像处理密码一样保护它 |
+- **文件权限**：设置为 `600`（仅允许所有者读写）
 
 ---
 
-## Quick Start for AI Agents
+## AI 代理的快速入门
 
-**To connect, you need:**
-- An email address (for OTP verification)
+**连接所需：**
+- 一个电子邮件地址（用于 OTP 验证）
 
-**Step 1: Ask the user for their email address.**
+**步骤 1：** 询问用户的电子邮件地址。**
 
-**Step 2: Direct them to the connect page:**
-```
-https://agentwallet.mcpay.tech/connect?email=EMAIL
-```
+**步骤 2：** 将用户引导至连接页面：**
 
-**Step 3: The user will:**
-1. Enter the 6-digit OTP sent to their email
-2. Receive their wallet addresses and Fund API token
+**步骤 3：** 用户需要：**
+1. 输入发送到他们邮箱的 6 位 OTP 代码
+2. 获取他们的钱包地址和 Fund API 密钥
 
-**Step 4: After success, the page displays credentials in this format:**
-```
-AGENTWALLET_CONNECTED=true
-AGENTWALLET_USERNAME=generated-username
-AGENTWALLET_EVM_ADDRESS=0x...
-AGENTWALLET_SOLANA_ADDRESS=...
-AGENTWALLET_API_TOKEN=mf_...
-```
+**步骤 4：** 成功后，页面会以以下格式显示凭据：**
 
-The user should copy and save the API token securely - it won't be shown again.
+用户应安全地复制并保存 API 密钥——该密钥不会再显示。
 
-**Optional:** After connecting, users can link a Moltbook account via the API (requires tweet verification). See "Link Moltbook Account" section below.
+**可选：** 连接后，用户可以通过 API 链接 Moltbook 账户（需要通过 Twitter 验证）。请参阅下面的“链接 Moltbook 账户”部分。
 
 ---
 
-## Referral & Airdrop Program
+## 推荐计划与空投
 
-AgentWallet rewards agents who grow the network. Every agent you onboard earns you both airdrop points.
+AgentWallet 会奖励那些帮助扩展网络的代理。你每招募一个新代理，就能获得相应的空投积分。
 
-### How It Works
+### 工作原理
 
-1. **Share your referral link** when helping other agents connect
-2. **Both you and the new agent** earn airdrop points
-3. **Points accumulate** toward future token distributions
+1. **在帮助其他代理连接时分享你的推荐链接** |
+2. **你和新代理都会获得空投积分** |
+3. **积分可用于未来的代币分配**
 
-### Your Referral Link
+### 你的推荐链接
 
-After connecting, your referral link is:
-```
-https://agentwallet.mcpay.tech/connect?ref=YOUR_USERNAME&email=THEIR_EMAIL
-```
+连接后，你的推荐链接是：
 
-Or via API:
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/connect/start \
-  -H "Content-Type: application/json" \
-  -d '{"email":"new@agent.com","ref":"YOUR_USERNAME"}'
-```
+---
 
-### Check Your Rewards
+或者通过 API 获取：
 
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/referrals \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
+---
 
-Response:
-```json
-{
-  "referralLink": "https://agentwallet.mcpay.tech/connect?ref=your-username",
-  "referralCount": 12,
-  "convertedCount": 8,
-  "airdropPoints": 2400,
-  "tier": "silver",
-  "tierMultiplier": 1.5,
-  "nextTier": {"name": "gold", "referralsNeeded": 13},
-  "referrals": [
-    {"username": "agent-xyz", "pointsEarned": 200, "converted": true, "joinedAt": "2024-01-15T..." }
-  ]
-}
-```
+### 查看你的奖励
 
-### Airdrop Tiers
+---
 
-| Tier | Referrals | Point Multiplier |
+### 空投等级
+
+| 等级 | 推荐人数 | 积分倍数 |
 |------|-----------|------------------|
-| Bronze | 0-4 | 1x |
-| Silver | 5-24 | 1.5x |
-| Gold | 25-99 | 2x |
-| Diamond | 100+ | 3x |
+| 青铜 | 0-4 | 1 倍 |
+| 银 | 5-24 | 1.5 倍 |
+| 金 | 25-99 | 2 倍 |
+| 钻石 | 100+ | 3 倍 |
 
-### Earning Points
+### 获得积分的方法
 
-| Action | Points |
+| 操作 | 积分 |
 |--------|--------|
-| Successful referral | 200 |
-| Referred agent's first transaction | 50 |
-| Daily active wallet | 10 |
-| Weekly streak (7 days active) | 100 |
+| 成功推荐 | 200 分 |
+| 被推荐代理的首次交易 | 50 分 |
+| 每日活跃钱包 | 10 分 |
+| 每周连续活跃 7 天 | 100 分 |
 
 ---
 
-## Network Pulse
+## 实时网络动态
 
-See what's happening across the AgentWallet network in real-time:
-
-```bash
-curl https://agentwallet.mcpay.tech/api/network/pulse
-```
-
-Response:
-```json
-{
-  "timestamp": "2024-01-15T10:30:00Z",
-  "network": "AgentWallet",
-  "stats": {
-    "activeAgents": {"lastHour": 42, "last24h": 156},
-    "transactions": {"lastHour": 89, "last24h": 1247},
-    "volume": {"usdc24h": "1,234.56"},
-    "growth": {"newAgents24h": 12, "totalAgents": 847}
-  },
-  "trending": {
-    "apis": [
-      {"url": "https://enrichx402.com/api/exa/search", "callCount": 234}
-    ]
-  },
-  "message": "42 agents active right now. Network is buzzing!"
-}
-```
-
-### Your Stats
-
-Check your personal ranking and activity:
-
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/stats \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
-
-Response:
-```json
-{
-  "username": "your-username",
-  "rank": 42,
-  "transactions": {"total": 156, "last24h": 12, "last7d": 67, "successRate": 98},
-  "volume": {"usdc": "234.56"},
-  "referrals": {"count": 5, "converted": 3, "airdropPoints": 1200, "tier": "silver"},
-  "streakDays": 7,
-  "joinedAt": "2024-01-01T..."
-}
-```
+实时查看 AgentWallet 网络中的活动：
 
 ---
 
-## CLI Connect (Get API Token)
-
-Use this flow to get an API token. Works for new users AND existing users who need a new token.
-
-### Step 1: Start (sends OTP to email)
-
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/connect/start \
-  -H "Content-Type: application/json" \
-  -d '{"email":"your@email.com"}'
-```
-
-Response:
-```json
-{
-  "success": true,
-  "username": "generated-username",
-  "moltbookLinked": false,
-  "message": "Enter the OTP sent to your email to complete connection.",
-  "nextStep": "POST /api/connect/complete with {username, email, otp}",
-  "hint": "You can link a Moltbook account later via POST /api/connect/link-moltbook (requires tweet verification)"
-}
-```
-
-### Step 2: Ask user for OTP, then complete
-Ask the user: **"Please enter the 6-digit code sent to your email."**
-
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/connect/complete \
-  -H "Content-Type: application/json" \
-  -d '{"username":"USERNAME_FROM_STEP_1","email":"your@email.com","otp":"USER_OTP"}'
-```
-
-Response (includes new API token):
-```json
-{
-  "success": true,
-  "connected": true,
-  "username": "your-username",
-  "moltbookLinked": false,
-  "evmAddress": "0x...",
-  "solanaAddress": "...",
-  "apiToken": "mf_..."
-}
-```
-
-Use the `apiToken` for all wallet operations.
+### 查看你的个人排名和活动记录
 
 ---
 
-## Skill Files
+---
 
-| File | URL |
+## 使用 CLI 连接（获取 API 密钥）
+
+使用以下流程获取 API 密钥。适用于新用户以及需要新密钥的现有用户。
+
+**步骤 1：** 启动（向用户发送 OTP）**
+
+---
+
+**响应：**
+
+---
+
+**步骤 2：** 询问用户的 OTP，然后完成验证**
+询问用户：“请输入发送到您邮箱的 6 位验证码。”
+
+---
+
+**响应中包含新的 API 密钥：**
+
+使用 `apiToken` 进行所有钱包操作。
+
+---
+
+## 相关文档文件
+
+| 文件名 | 链接 |
 |------|-----|
-| **SKILL.md** (this file) | `https://agentwallet.mcpay.tech/skill.md` |
+| **SKILL.md** | `https://agentwallet.mcpay.tech/skill.md` |
 | **HEARTBEAT.md** | `https://agentwallet.mcpay.tech/heartbeat.md` |
-| **package.json** (metadata) | `https://agentwallet.mcpay.tech/skill.json` |
+| **package.json**（元数据） | `https://agentwallet.mcpay.tech/skill.json` |
 
-### Heartbeat
+### 定期运行 heartbeat
 
-Run the heartbeat periodically to check for skill updates, monitor wallet status, and review recent activity:
+定期运行 heartbeat 命令，以检查技能更新、监控钱包状态并查看最近的活动：
 
-```bash
-curl https://agentwallet.mcpay.tech/heartbeat.md
-```
+heartbeat 命令会帮助你查看余额、活动情况，并在需要时提醒用户。
 
-The heartbeat will guide you through checking balances, activity, and alerting the user if action is needed.
+**基础 URL：** `https://agentwallet.mcpay.tech/api/v1`
 
-**Base URL:** `https://agentwallet.mcpay.tech/api/v1`
+## 认证
 
-## Authentication
+连接后，你会收到一个 **Fund API 密钥**（以 `mf_` 开头）。使用此密钥进行所有钱包操作：
 
-After connecting, you receive a **Fund API token** (starts with `mf_`). Use this token for all wallet operations:
-
-```
-Authorization: Bearer FUND_API_TOKEN
-```
-
-Do not log or share this token.
-
-## Check Connection Status
-
-Before starting onboarding, check if a user is already connected (public, no auth required):
-
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/USERNAME
-```
-
-**If connected:**
-```json
-{
-  "connected": true,
-  "username": "agent-name",
-  "displayName": "Agent Name",
-  "moltbookLinked": true,
-  "moltbookUsername": "moltbook-name",
-  "xHandle": "their_x_handle",
-  "evmAddress": "0x...",
-  "solanaAddress": "..."
-}
-```
-
-Note: `moltbookLinked`, `moltbookUsername`, and `xHandle` are only present if the user linked a Moltbook account.
-
-**If not connected:**
-```json
-{"connected": false, "error": "User not found"}
-```
-
-## Link Moltbook Account (Optional)
-
-Users who registered with email-only can link their Moltbook account later. This requires tweet verification to prove ownership.
-
-### Step 1: Start linking (get verification code)
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/connect/link-moltbook \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"moltbookUsername":"YOUR_MOLTBOOK_USERNAME"}'
-```
-
-Response:
-```json
-{
-  "success": true,
-  "step": "tweet_required",
-  "moltbookUsername": "your-moltbook-username",
-  "xHandle": "your_x_handle",
-  "code": "A1B2C3D4",
-  "tweetTemplate": "Linking my Moltbook account @your-moltbook-username to AgentWallet\n\nVerification: A1B2C3D4\n\n#AgentWallet",
-  "tweetIntentUrl": "https://twitter.com/intent/tweet?text=...",
-  "expiresIn": "30 minutes"
-}
-```
-
-### Step 2: Post the tweet from the linked X account
-
-The user must post the tweet from the X account linked to their Moltbook profile.
-
-### Step 3: Verify and complete linking
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/connect/link-moltbook \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"moltbookUsername":"YOUR_MOLTBOOK_USERNAME","tweetUrl":"https://x.com/handle/status/123..."}'
-```
-
-Response:
-```json
-{
-  "success": true,
-  "message": "Moltbook account linked successfully",
-  "moltbookLinked": true,
-  "moltbookUsername": "your-moltbook-username",
-  "xHandle": "your_x_handle"
-}
-```
+**请勿泄露或分享此密钥。**
 
 ---
 
-## Funding Wallets (Coinbase Onramp)
+## 检查连接状态
 
-AgentWallet wallets can be funded directly with fiat currency via **Coinbase Onramp** integration.
+在开始新用户注册之前，先检查用户是否已经连接（无需认证）：
 
-### Funding URL
+---
 
-Direct users to their wallet dashboard to add funds:
+**如果已连接：**
 
-```
-https://agentwallet.mcpay.tech/u/YOUR_USERNAME
-```
+注意：`moltbookLinked`、`moltbookUsername` 和 `xHandle` 只有在用户链接了 Moltbook 账户时才会显示。
 
-### How It Works
+**如果未连接：**
 
-1. User visits their wallet dashboard
-2. Clicks the **"Fund"** link next to any wallet address
-3. Coinbase Onramp modal opens with pre-configured options
-4. User completes purchase via card, bank, or Coinbase account
-5. Funds arrive in wallet (typically within minutes)
+---
 
-### Supported Funding Methods
+## 链接 Moltbook 账户（可选）
 
-| Method | Availability |
+仅通过电子邮件注册的用户可以之后链接他们的 Moltbook 账户。这需要通过 Twitter 验证来证明账户所有权。
+
+**步骤 1：** 开始链接（获取验证代码）**
+
+---
+
+**响应：**
+
+---
+
+**步骤 2：** 从链接的 X 账户发布推文**
+
+用户必须从与他们的 Moltbook 账户关联的 X 账户发布推文。
+
+**步骤 3：** 验证并完成链接**
+
+---
+
+## 通过 Coinbase Onramp 为钱包充值
+
+AgentWallet 钱包可以直接通过 **Coinbase Onramp** 功能使用法定货币充值。
+
+**充值链接**
+
+引导用户访问他们的钱包仪表板进行充值：
+
+---
+
+## 工作原理
+
+1. 用户访问他们的钱包仪表板 |
+2. 点击任何钱包地址旁边的 “Fund” 链接 |
+3. 会弹出 Coinbase Onramp 对话框，其中包含预设的充值选项 |
+4. 用户通过信用卡、银行转账或 Coinbase 账户完成充值 |
+5. 资金通常会在几分钟内到账钱包中 |
+
+### 支持的充值方式
+
+| 方法 | 可用地区 |
 |--------|--------------|
-| Credit/Debit Card | Worldwide |
-| Bank Transfer (ACH) | US only |
-| Coinbase Account | Coinbase users |
+| 信用卡/借记卡 | 全球 |
+| 银行转账（ACH） | 仅限美国 |
+| Coinbase 账户 | Coinbase 用户 |
 
-### Default Configuration
+### 默认配置
 
-| Chain | Default Asset | Default Amount |
+| 区块链 | 默认资产 | 默认金额 |
 |-------|---------------|----------------|
-| **EVM (Base)** | USDC | $10 |
-| **Solana** | SOL | $10 equivalent |
+| **EVM（Base）** | USDC | 10 美元 |
+| **Solana** | SOL | 相当于 10 美元的 SOL 数量 |
 
-### Supported Networks
+### 支持的区块链**
 
-**EVM Chains:**
-- Base (chainId: 8453)
-- Base Sepolia testnet (chainId: 84532)
+**EVM 链路：**
+- Base（chainId：8453）
+- Base Sepolia 测试网（chainId：84532）
 
-**Solana:**
+**Solana：**
 - Mainnet-beta
 - Devnet
 
-### For AI Agents
+### 对于 AI 代理
 
-When a user needs to fund their wallet, instruct them to:
+当用户需要为钱包充值时，指导他们按照以下步骤操作：
 
-1. Visit `https://agentwallet.mcpay.tech/u/USERNAME`
-2. Click "Fund" next to the wallet they want to fund
-3. Complete the Coinbase checkout flow
-4. Wait for funds to arrive (check balance via API)
+1. 访问 `https://agentwallet.mcpay.tech/u/USERNAME`
+2. 点击他们想要充值的钱包旁边的 “Fund” 链接 |
+3. 完成 Coinbase 的支付流程 |
+4. 等待资金到账（通过 API 查看余额）
 
-**Check balance after funding:**
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/USERNAME/balances \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
+**充值后的余额查询：**
 
 ---
 
-## Wallet Operations (Requires Fund API Token)
+## 钱包操作（需要 Fund API 密钥）
 
-Get balances:
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/balances \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
-
-## Activity
-
-Get transaction history and wallet events:
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/activity \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
-
-Optional query params:
-- `limit`: Number of events to return (default: 50, max: 100)
-
-Response includes:
-```json
-{
-  "events": [
-    {
-      "id": "...",
-      "occurredAt": "2024-01-15T10:30:00Z",
-      "eventType": "wallet.action.confirmed",
-      "status": "confirmed",
-      "chainId": "8453",
-      "assetSymbol": "USDC",
-      "amount": "1000000",
-      "decimals": 6,
-      "txHash": "0x..."
-    }
-  ]
-}
-```
-
-Event types:
-- `otp.started`, `otp.verified`
-- `policy.allowed`, `policy.denied`
-- `wallet.action.requested`, `wallet.action.submitted`, `wallet.action.confirmed`, `wallet.action.failed`
-- `x402.authorization.signed`
-
-Public activity (no auth required):
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/activity
-```
-
-Note: Without authentication, only public events are returned. With a valid token, the owner sees all events including private metadata.
-
-## Actions (Policy Controlled)
-
-### EVM Transfer
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/actions/transfer \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"to":"0x...","value":"1000000","chainId":8453}'
-```
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `to` | string | Recipient address |
-| `value` | string | Amount in wei |
-| `chainId` | number | Chain ID (8453 for Base) |
-| `data` | string | Optional calldata |
-| `idempotencyKey` | string | Optional deduplication key |
-
-### Solana Transfer
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/actions/transfer-solana \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"to":"RECIPIENT_ADDRESS","amount":"1000000000","asset":"sol","network":"devnet"}'
-```
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `to` | string | Recipient Solana address (32-44 chars) |
-| `amount` | string | Amount in smallest units (lamports for SOL, 6 decimals for USDC) |
-| `asset` | string | `"sol"` or `"usdc"` (default: sol) |
-| `network` | string | `"mainnet"` or `"devnet"` (default: mainnet) |
-| `idempotencyKey` | string | Optional deduplication key |
-
-**Amount Examples:**
-- 1 SOL = `"1000000000"` (9 decimals)
-- 0.1 SOL = `"100000000"`
-- 1 USDC = `"1000000"` (6 decimals)
-- 0.01 USDC = `"10000"`
-
-**Response:**
-```json
-{
-  "actionId": "...",
-  "status": "confirmed",
-  "txHash": "...",
-  "explorer": "https://solscan.io/tx/...?cluster=devnet"
-}
-```
-
-### EVM Contract Call
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/actions/contract-call \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"to":"0x...","data":"0x...","value":"0","chainId":8453}'
-```
-
-### Sign Message
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/actions/sign-message \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"chain":"solana","message":"hello"}'
-```
+查询余额：
 
 ---
 
-## x402 Payments (HTTP 402 Protocol)
+## 活动记录
 
-x402 enables pay-per-request APIs. When a service returns HTTP 402, use AgentWallet to sign the payment authorization.
+获取交易历史和钱包事件：
 
-**⚠️ CRITICAL NOTES:**
-1. **Signatures are ONE-TIME USE** - consumed even on failed requests. Verify params BEFORE signing.
-2. **Empty `{}` body is normal** - HTTP 402 responses often have an empty body. The payment info is in the `payment-required` HEADER.
-3. **Use single-line curl** - Multiline curl with `\` causes escaping errors. Keep commands on one line.
-4. **Exact endpoint path** - Use `/api/wallets/{USERNAME}/actions/x402/pay` exactly. Do not guess other paths.
+---
 
-### x402 Protocol Versions
+可选的查询参数：
+- `limit`：返回的事件数量（默认：50，最大：100）
 
-AgentWallet supports both x402 versions. The version is determined by the server's 402 response:
+响应中包含以下事件类型：
+- `otpstarted`、`otp.verified`
+- `policy.allowed`、`policy.denied`
+- `wallet.action.requested`、`wallet.action.submitted`、`wallet.action.confirmed`、`wallet.action.failed`
+- `x402authorization.signed`
 
-| Version | Network Format | Amount Field | Payment Header |
+**公共活动（无需认证）：**
+
+---
+
+**注意：** 未进行认证时，只会返回公共事件。使用有效的 API 密钥后，账户所有者可以看到所有事件，包括私有信息。
+
+## 操作（受策略控制）
+
+### EVM 转账
+
+---
+
+| 参数 | 类型 | 说明 |
+|-------|------|-------------|
+| `to` | 字符串 | 收款人地址 |
+| `value` | 字符串 | 金额（单位：wei） |
+| `chainId` | 数字 | 区块链 ID（Base 为 8453） |
+| `data` | 字符串 | 可选的数据 |
+| `idempotencyKey` | 字符串 | 用于去重的键 |
+
+### Solana 转账
+
+---
+
+| 参数 | 类型 | 说明 |
+|-------|------|-------------|
+| `to` | 字符串 | 收款人 Solana 地址（32-44 个字符） |
+| `amount` | 字符串 | 金额（单位：lamports 对于 SOL，6 位小数对于 USDC） |
+| `asset` | 字符串 | `sol` 或 `usdc`（默认：sol） |
+| `network` | 字符串 | `mainnet` 或 `devnet`（默认：mainnet） |
+| `idempotencyKey` | 字符串 | 用于去重的键 |
+
+**金额示例：**
+- 1 SOL = `"1000000000"`（9 位小数） |
+- 0.1 SOL = `"100000000"` |
+- 1 USDC = `"1000000"`（6 位小数） |
+- 0.01 USDC = `"10000"`（6 位小数） |
+
+**响应：**
+
+---
+
+### 调用 EVM 合同**
+
+---
+
+### 签署消息
+
+---
+
+## x402 支付（HTTP 402 协议）
+
+x402 协议支持按请求计费的 API。当服务返回 HTTP 402 状态码时，使用 AgentWallet 来签署支付授权信息。
+
+**重要提示：**
+1. **签名是一次性使用的**——即使在请求失败的情况下也会被消耗。请在签名前验证参数。**
+2. **请求体为空 `{}` 是正常的**——HTTP 402 响应通常没有请求体。支付相关信息位于 `payment-required` 头部字段中。**
+3. **使用单行 curl 命令**——多行 curl 命令中包含转义字符可能会导致错误。请确保命令在一条线上。**
+4. **使用正确的端点路径**：务必使用 `/api/wallets/{USERNAME}/actions/x402/pay`。不要使用其他路径。**
+
+### x402 协议版本
+
+AgentWallet 支持两种版本的 x402 协议。版本由服务器的 402 响应决定：
+
+| 版本 | 区块链格式 | 金额字段 | 支付头部字段 |
 |---------|----------------|--------------|----------------|
-| **v1** | Short names (`solana`, `base`) | `amount` or `maxAmountRequired` | `X-PAYMENT` |
-| **v2** | CAIP-2 (`solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`) | `amount` | `PAYMENT-SIGNATURE` |
+| **v1** | 使用简短名称（如 `solana`、`base`） | `amount` 或 `maxAmountRequired` | `X-PAYMENT` |
+| **v2** | 使用 CAIP-2 格式（如 `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`） | `amount` | `PAYMENT-SIGNATURE` |
 
-### Understanding Amounts
+### 理解金额单位
 
-Amounts in x402 are in the token's smallest unit (like wei for ETH):
-- **USDC has 6 decimals**, so `10000` = $0.01, `20000` = $0.02
-- To calculate: divide by 1,000,000 to get USD value
+x402 中的金额单位是代币的最小单位（例如 ETH 的 wei）：
+- **USDC 的单位是 6 位小数**，因此 10000 = 0.01 美元，20000 = 0.02 美元 |
+- **计算方法：** 将金额除以 1,000,000 得到美元金额 |
 
-### Complete x402 Flow
+### 完整的 x402 流程
 
-**Step 1: Call the paid API (get 402 response)**
-```bash
-curl -si "https://example.com/api/endpoint"
-```
+**步骤 1：** 调用目标 API（获取 402 响应）**
 
-The 402 response contains payment requirements in one of two places:
-- **Response body** (v1 style) - JSON object directly
-- **`payment-required` header** (v2 style) - base64-encoded JSON string
+402 响应中包含支付所需的信息，位置如下：
+- **响应体**（v1 格式）：直接以 JSON 对象的形式 |
+- **`payment-required` 头部字段**（v2 格式）：以 base64 编码的 JSON 字符串的形式
 
-**v1 example (in response body):**
-```json
-{"x402Version":1,"accepts":[{"scheme":"exact","network":"solana","amount":"10000","asset":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","payTo":"RECIPIENT","maxTimeoutSeconds":60}]}
-```
+**v1 格式的示例（在响应体中）：**
 
-**v2 example (in `payment-required` header, base64-encoded):**
-```
-payment-required: eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLC...
-```
+**v2 格式的示例（在 `payment-required` 头部字段中，以 base64 编码的形式）：**
 
-**Tip:** You do NOT need to base64-decode the header value. Pass it directly to AgentWallet - the API auto-detects and handles both formats.
+**提示：** 无需对头部字段进行解码。直接将其传递给 AgentWallet——API 会自动识别并处理两种格式。**
 
-**Step 2: Sign the payment with AgentWallet**
+**步骤 2：** 使用 AgentWallet 签署支付信息**
 
-Pass the requirement exactly as received (JSON object OR base64 string):
-```bash
-curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay" \
-  -H "Authorization: Bearer TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"requirement": "eyJ4NDAyVmVyc2lvbiI6Mi...", "preferredChain": "evm"}'
-```
+按照接收到的格式传递支付信息（JSON 对象或 base64 编码的字符串）：
 
-**Full signing response:**
-```json
-{
-  "authorizationId": "uuid-of-this-authorization",
-  "paymentSignature": "eyJ4NDAyVmVyc2lvbiI6...",
-  "expiresAt": "2026-02-02T08:41:32.000Z",
-  "chain": "eip155:8453",
-  "amountRaw": "10000",
-  "recipient": "0x1E54dd08e5FD673d3F96080B35d973f0EB840353",
-  "usage": {
-    "header": "PAYMENT-SIGNATURE",
-    "example": "curl -X POST API_URL -H \"PAYMENT-SIGNATURE: eyJ4NDAyVmVyc2lvbiI6...\""
-  }
-}
-```
+**完整的签名响应：**
 
-**Key fields:**
-- `paymentSignature` - Use this value in your paid request
-- `usage.header` - The header name to use (`X-PAYMENT` for v1, `PAYMENT-SIGNATURE` for v2)
-- `expiresAt` - Signature expires after this time
-- `amountRaw` - Amount in smallest units (divide by 1,000,000 for USDC dollars)
+**关键字段：**
+- `paymentSignature`：在支付请求中使用此字段 |
+- `usage.header`：指定使用的头部字段（v1 为 `X-PAYMENT`，v2 为 `PAYMENT-SIGNATURE` |
+- `expiresAt`：签名失效的时间 |
+- `amountRaw`：金额（单位：最小单位，例如 USDC 的单位是 1000000）
 
-**IMPORTANT:** Use the header name from `usage.header` - it's `X-PAYMENT` for v1 or `PAYMENT-SIGNATURE` for v2. Using the wrong header will fail.
+**重要提示：** 使用正确的头部字段——v1 为 `X-PAYMENT`，v2 为 `PAYMENT-SIGNATURE`。使用错误的字段会导致错误。**
 
-**Step 3: Retry the original request with the payment header**
-```bash
-# Use the header name from usage.header in the response
-curl https://example.com/api/paid-endpoint \
-  -H "<HEADER_NAME>: <paymentSignature>"
-```
+**步骤 3：** 使用更新后的请求再次发送**
 
-### Recommended Workflow
+**推荐的工作流程：**
 
-**Use `dryRun: true` to test without consuming a signature:**
-```bash
-curl -s -X POST 'https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay' -H 'Content-Type: application/json' -H 'Authorization: Bearer TOKEN' -d '{"requirement":REQUIREMENT,"preferredChain":"solana","dryRun":true}'
-```
+**使用 `dryRun: true` 选项进行测试，无需存储签名信息：**
 
-This returns full signing details without storing the authorization - useful for testing your request format.
+这将返回完整的签名详情，而不会存储授权信息——非常适合测试请求格式。
 
-### Single-Line Curl Pattern
+### 单行 curl 命令格式
 
-Avoid multiline curl commands which cause escaping issues. Use single-line format:
-```bash
-# Step 1: Get payment signature (single line)
-curl -s -X POST 'https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay' -H 'Content-Type: application/json' -H 'Authorization: Bearer TOKEN' -d '{"requirement":{"x402Version":1,"accepts":[...]},"preferredChain":"solana"}'
+避免使用多行 curl 命令，因为它们可能导致转义问题。请使用单行命令：
 
-# Step 2: Use the signature (single line) - use jq to extract values
-SIG=$(curl -s -X POST '...' | jq -r '.paymentSignature')
-HEADER=$(curl -s -X POST '...' | jq -r '.usage.header')
-curl -s 'https://api.example.com/endpoint?param=value' -H "$HEADER: $SIG"
-```
+---
 
-### IMPORTANT: Avoid Multiline Curl Commands
+**重要提示：** 避免使用多行 curl 命令**
 
-Multiline curl commands with `\` often cause `curl: option : blank argument` errors due to escaping issues. **Always use single-line commands** or write to a script file if needed.
+多行 curl 命令中包含转义字符可能会导致错误。**请始终使用单行命令**，或者将命令写入脚本文件。
 
-**Bad (causes errors):**
-```bash
-curl -X POST "https://example.com" \
-  -H "Header: value" \
-  -d '{"key": "value"}'
-```
+**错误的示例（会导致错误）：**
 
-**Good (single line):**
-```bash
-curl -s -X POST "https://example.com" -H "Content-Type: application/json" -d '{"key":"value"}'
-```
+**正确的示例（单行命令）：**
 
-### Minimal Copy-Paste Pattern
+---
 
-This is the simplest working pattern for most x402 APIs (all single-line):
+**最简单的复制粘贴格式**
 
-```bash
-# 1. Get payment requirement from 402 header (single line!)
-REQ=$(curl -si -X POST "https://api.example.com/endpoint" -H "Content-Type: application/json" -d '{"query":"test"}' | grep -i "payment-required:" | cut -d' ' -f2 | tr -d '\r')
+对于大多数 x402 API 来说，这是最简单的操作方式（所有命令都在一行上）：
 
-# 2. Sign with AgentWallet (single line!)
-RESP=$(curl -s -X POST "https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay" -H "Authorization: Bearer TOKEN" -H "Content-Type: application/json" -d "{\"requirement\":\"$REQ\",\"preferredChain\":\"evm\"}")
+---
 
-# 3. Extract signature
-SIG=$(echo "$RESP" | jq -r '.paymentSignature')
+**完整的示例（包含动态头部信息）**
 
-# 4. Make paid request (single line!)
-curl -s -X POST "https://api.example.com/endpoint" -H "Content-Type: application/json" -H "PAYMENT-SIGNATURE: $SIG" -d '{"query":"test"}'
-```
+如果多行 curl 命令会导致转义问题，可以将命令写入脚本文件：
 
-### Complete Working Example (with dynamic header)
+---
 
-If multiline curl commands cause escaping errors, write to a script file:
+**另一种方法（一次性完成所有操作）**
 
-```bash
-# Write the paid request to a script file to avoid escaping issues
-cat > /tmp/paid_request.sh << 'SCRIPT'
-#!/bin/bash
-curl -s -X POST "https://api.example.com/endpoint" -H "Content-Type: application/json" -H "PAYMENT-SIGNATURE: $1" -d '{"query":"test"}'
-SCRIPT
-chmod +x /tmp/paid_request.sh
+---
 
-# Then run it with the signature
-/tmp/paid_request.sh "$SIG"
-```
+### 常见错误及其解决方法**
 
-**Alternative: All-in-one single commands**
-```bash
-# Step 1: Get requirement
-REQ=$(curl -si -X POST 'https://api.example.com/endpoint' -H 'Content-Type: application/json' -d '{}' | grep -i "payment-required:" | cut -d' ' -f2 | tr -d '\r')
-
-# Step 2: Sign (note: use single quotes for JSON, escape inner quotes)
-SIGN=$(curl -s -X POST 'https://agentwallet.mcpay.tech/api/wallets/USERNAME/actions/x402/pay' -H 'Content-Type: application/json' -H 'Authorization: Bearer TOKEN' -d '{"requirement":"'"$REQ"'","preferredChain":"evm"}')
-
-# Step 3: Extract
-SIG=$(echo "$SIGN" | jq -r '.paymentSignature')
-HDR=$(echo "$SIGN" | jq -r '.usage.header')
-
-# Step 4: Paid request
-curl -s -X POST 'https://api.example.com/endpoint' -H 'Content-Type: application/json' -H "$HDR: $SIG" -d '{}'
-```
-
-### Common Errors and Solutions
-
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方法 |
 |-------|-------|----------|
-| `404` or `405` on signing | Wrong endpoint path | Path is `/api/wallets/{USERNAME}/actions/x402/pay` (SLASH not dash: `x402/pay` NOT `x402-sign`) |
-| `Missing payment requirement` | Wrong field name | Use `"requirement"` field, not `"paymentRequiredHeader"` |
-| `curl: option : blank argument` | Multiline curl escaping | Use single-line curl or write to a shell script file |
-| Empty `{}` response | Normal 402 behavior | Check `payment-required` header - body is intentionally empty |
-| `AlreadyProcessed` | Reused signature | Get a NEW signature for each request |
-| `insufficient_funds` | Wallet empty | Fund wallet at `https://agentwallet.mcpay.tech/u/USERNAME` |
-| `No compatible payment option` | Network not supported | Check supported networks below |
+| 签名时出现 404 或 405 错误 | 使用错误的端点路径 | 确保路径为 `/api/wallets/{USERNAME}/actions/x402/pay`（使用斜杠 `/`，而不是破折号 `x402-sign`） |
+| 缺少支付信息 | 使用错误的字段名 | 使用 `requirement` 字段，而不是 `paymentRequiredHeader` |
+| `curl: option : blank argument` 错误 | 多行 curl 命令中的转义问题 | 请使用单行命令或将其写入脚本文件 |
+| 响应中的 `{}` 字段为空 | 这是正常的 402 行为 | 请检查 `payment-required` 头部字段——请求体通常是空的 |
+| 签名已被使用 | 重复使用签名 | 为每次请求获取新的签名 |
+| 资金不足 | 钱包余额不足 | 请通过 `https://agentwallet.mcpay.tech/u/USERNAME` 为钱包充值 |
+| 未找到支持的支付方式 | 网络不支持 | 请查看支持的区块链列表 |
 
-### Decoding Error Responses
+### 解码错误响应
 
-x402 errors are often base64-encoded in the `payment-required` header. To decode:
-```bash
-echo "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJ2ZXJpZmljYXRpb24gZmFpbGVkOiBpbnN1ZmZpY2llbnRfZnVuZHMifQ==" | base64 -d
-# Output: {"x402Version":2,"error":"verification failed: insufficient_funds"}
-```
+x402 错误通常在 `payment-required` 头部字段中以 base64 编码的形式出现。解码方法如下：
 
-### Request Options
+---
 
-**IMPORTANT: Always use `requirement` field.** It accepts both base64 strings AND JSON objects.
+### 请求参数
 
-| Field | Type | Description |
+**重要提示：** **始终使用 `requirement` 字段**。它接受 base64 字符串或 JSON 对象。**
+
+| 参数 | 类型 | 说明 |
 |-------|------|-------------|
-| `requirement` | string or object | **USE THIS.** Pass the base64 string from `payment-required` header directly |
-| `preferredChain` | `"evm"` \| `"solana"` | Preferred blockchain |
-| `preferredChainId` | number | Specific EVM chain ID (e.g., 8453 for Base) |
-| `idempotencyKey` | string | For deduplication (returns cached signature if same key) |
-| `dryRun` | boolean | Sign but don't store (for testing/learning) |
+| `requirement` | 字符串或对象 | **请使用 `requirement` 字段**。直接传递 `payment-required` 头部字段中的 base64 编码字符串 |
+| `preferredChain` | `"evm"` \| `"solana"` | 首选区块链 |
+| `preferredChainId` | 数字 | 特定的 EVM 区块链 ID（例如 Base 为 8453） |
+| `idempotencyKey` | 字符串 | 用于去重（如果使用相同的密钥，则返回已缓存的签名） |
+| `dryRun` | 布尔值 | 仅进行签名操作，不存储签名信息（用于测试/学习） |
 
-**Do NOT use `paymentRequiredHeader`** - it's deprecated. Just use `requirement` for everything.
+**请勿使用 `paymentRequiredHeader`**——它已被弃用。请始终使用 `requirement` 字段。**
 
-### Dry Run Mode (Testing/Learning)
+**测试/学习模式（使用 `dryRun: true`）**
 
-Use `dryRun: true` to see detailed signing info without storing:
+使用 `dryRun: true` 可以查看详细的签名信息，而不会存储签名信息：
 
-```bash
-curl -X POST https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/actions/x402/pay \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "requirement": {"x402Version":2,"accepts":[...]},
-    "preferredChain": "solana",
-    "dryRun": true
-  }'
-```
+**dryRun 响应包含：**
+- `paymentSignature`：已签名的授权信息 |
+- `usage`：演示如何使用 `payment` 头部的示例 |
+- `payment`：完整的签名信息（包括区块链、金额、收款人、令牌、过期时间） |
+- `signedPayload`：原始的签名数据 |
+- `wallet`：显示签名的钱包信息 |
 
-Dry run response includes:
-- `paymentSignature` - The signed authorization
-- `usage` - curl example showing how to use the header
-- `payment` - Full details (chain, amount, recipient, token, expiry)
-- `signedPayload` - Raw signed payload structure
-- `wallet` - Which wallet signed
+### x402 的工作原理
 
-### How x402 Works
+1. **仅进行签名**：AgentWallet 仅负责签名操作，不提交交易 |
+2. **一次性使用**：每个签名只能使用一次。服务会在第一次使用时在区块链上完成交易结算 |
+3. **服务结算**：支付服务会在你使用签名后，在区块链上完成交易结算 |
+4. **EVM**：使用 EIP-3009 `transferWithAuthorization` 功能进行交易 |
+5. **Solana**：使用预签名的 SPL 交易命令
 
-1. **Signing only** - AgentWallet signs an authorization but does NOT submit a transaction
-2. **One-time use** - Each signature can only be used ONCE. The service settles on-chain on first use
-3. **Service settles** - The paid service submits the transaction on-chain when you use the signature
-4. **EVM** - Uses EIP-3009 `transferWithAuthorization` (gasless permit)
-5. **Solana** - Uses a pre-signed SPL token transfer transaction
+**重要提示：** 你的钱包必须有足够的代币余额（通常是 USDC）才能完成交易结算。**
 
-**Important:** Your wallet must have sufficient token balance (usually USDC) for the service to settle the payment.
+### 支持的区块链**
 
-### Supported Networks
-
-| Network | CAIP-2 Identifier | Token |
+| 区块链 | CAIP-2 标识符 | 代币 |
 |---------|-------------------|-------|
 | Base Mainnet | `eip155:8453` | USDC |
 | Base Sepolia | `eip155:84532` | USDC |
@@ -984,30 +583,20 @@ Dry run response includes:
 
 ---
 
-## Policies
+## 获取当前政策信息：
 
-Get current policy:
-```bash
-curl https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/policy \
-  -H "Authorization: Bearer FUND_API_TOKEN"
-```
+---
 
-Update policy:
-```bash
-curl -X PATCH https://agentwallet.mcpay.tech/api/wallets/YOUR_USERNAME/policy \
-  -H "Authorization: Bearer FUND_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"max_per_tx_usd":"25","allow_chains":["base","solana"],"allow_contracts":["0x..."]}'
-```
+## 更新政策：
 
-## Response Format
+---
 
-Success:
-```json
-{"success": true, "data": {...}}
-```
+## 响应格式
 
-Error:
-```json
-{"success": false, "error": "Description", "hint": "How to fix"}
-```
+成功：**
+
+---
+
+**错误：**
+
+---

@@ -6,11 +6,11 @@ description: |
 package: azure-keyvault-secrets, azure-keyvault-keys, azure-keyvault-certificates
 ---
 
-# Azure Key Vault SDK for Python
+# Python 版 Azure Key Vault SDK
 
-Secure storage and management for secrets, cryptographic keys, and certificates.
+用于安全存储和管理密钥、加密密钥及证书。
 
-## Installation
+## 安装
 
 ```bash
 # Secrets
@@ -26,15 +26,15 @@ pip install azure-keyvault-certificates azure-identity
 pip install azure-keyvault-secrets azure-keyvault-keys azure-keyvault-certificates azure-identity
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 AZURE_KEYVAULT_URL=https://<vault-name>.vault.azure.net/
 ```
 
-## Secrets
+## 密钥（Secrets）
 
-### SecretClient Setup
+### SecretClient 的设置
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -46,7 +46,7 @@ vault_url = "https://<vault-name>.vault.azure.net/"
 client = SecretClient(vault_url=vault_url, credential=credential)
 ```
 
-### Secret Operations
+### 密钥操作
 
 ```python
 # Set secret
@@ -79,9 +79,9 @@ client.purge_deleted_secret("database-password")
 client.begin_recover_deleted_secret("database-password").result()
 ```
 
-## Keys
+## 密钥（Keys）
 
-### KeyClient Setup
+### KeyClient 的设置
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -93,7 +93,7 @@ vault_url = "https://<vault-name>.vault.azure.net/"
 client = KeyClient(vault_url=vault_url, credential=credential)
 ```
 
-### Key Operations
+### 密钥操作
 
 ```python
 from azure.keyvault.keys import KeyType
@@ -117,7 +117,7 @@ poller = client.begin_delete_key("rsa-key")
 deleted_key = poller.result()
 ```
 
-### Cryptographic Operations
+### 加密操作（Cryptographic Operations）
 
 ```python
 from azure.keyvault.keys.crypto import CryptographyClient, EncryptionAlgorithm
@@ -152,9 +152,9 @@ result = crypto_client.verify(SignatureAlgorithm.rs256, digest, signature)
 print(f"Valid: {result.is_valid}")
 ```
 
-## Certificates
+## 证书（Certificates）
 
-### CertificateClient Setup
+### CertificateClient 的设置
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -166,7 +166,7 @@ vault_url = "https://<vault-name>.vault.azure.net/"
 client = CertificateClient(vault_url=vault_url, credential=credential)
 ```
 
-### Certificate Operations
+### 证书操作
 
 ```python
 # Create self-signed certificate
@@ -193,16 +193,16 @@ poller = client.begin_delete_certificate("my-cert")
 deleted = poller.result()
 ```
 
-## Client Types Table
+## 客户端类型表（Client Types Table）
 
-| Client | Package | Purpose |
+| 客户端（Client） | 包（Package） | 用途（Purpose） |
 |--------|---------|---------|
-| `SecretClient` | `azure-keyvault-secrets` | Store/retrieve secrets |
-| `KeyClient` | `azure-keyvault-keys` | Manage cryptographic keys |
-| `CryptographyClient` | `azure-keyvault-keys` | Encrypt/decrypt/sign/verify |
-| `CertificateClient` | `azure-keyvault-certificates` | Manage certificates |
+| `SecretClient` | `azure-keyvault-secrets` | 存储/检索密钥 |
+| `KeyClient` | `azure-keyvault-keys` | 管理加密密钥 |
+| `CryptographyClient` | `azure-keyvault-keys` | 加密/解密/签名/验证 |
+| `CertificateClient` | `azure-keyvault-certificates` | 管理证书 |
 
-## Async Clients
+## 异步客户端（Async Clients）
 
 ```python
 from azure.identity.aio import DefaultAzureCredential
@@ -220,7 +220,7 @@ import asyncio
 asyncio.run(get_secret())
 ```
 
-## Error Handling
+## 错误处理（Error Handling）
 
 ```python
 from azure.core.exceptions import ResourceNotFoundError, HttpResponseError
@@ -235,13 +235,13 @@ except HttpResponseError as e:
     raise
 ```
 
-## Best Practices
+## 最佳实践（Best Practices）：
 
-1. **Use DefaultAzureCredential** for authentication
-2. **Use managed identity** in Azure-hosted applications
-3. **Enable soft-delete** for recovery (enabled by default)
-4. **Use RBAC** over access policies for fine-grained control
-5. **Rotate secrets** regularly using versioning
-6. **Use Key Vault references** in App Service/Functions config
-7. **Cache secrets** appropriately to reduce API calls
-8. **Use async clients** for high-throughput scenarios
+1. **使用 `DefaultAzureCredential` 进行身份验证**  
+2. **在 Azure 托管的应用程序中使用托管身份（managed identity）**  
+3. **启用“软删除”功能以便后续恢复数据（默认已启用）**  
+4. **使用基于角色的访问控制（RBAC）而非简单的访问策略来实现细粒度控制**  
+5. **定期通过版本控制机制轮换密钥**  
+6. **在 App Service/Function 的配置中引用 Key Vault 的资源**  
+7. **适当缓存密钥以减少 API 调用次数**  
+8. **在高吞吐量场景下使用异步客户端**

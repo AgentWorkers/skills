@@ -1,66 +1,62 @@
 ---
 name: signl4
-description: Send and close SIGNL4 alerts using the SIGNL4 inbound webhook (team secret in URL).
+description: 使用 SIGNL4 的入站 Webhook（URL 中包含团队密钥）来发送和关闭 SIGNL4 警报。
 metadata: {"openclaw":{"emoji":"🚨","requires":{"bins":["curl"],"env":["SIGNL4_TEAM_SECRET"]},"primaryEnv":"SIGNL4_TEAM_SECRET"}}
 ---
 
-## Overview
-Use this skill to interact with SIGNL4 via its **inbound webhook**:
+## 概述  
+使用此技能可通过 SIGNL4 的 **入站 webhook** 与其进行交互：  
+- **向 SIGNL4 团队发送警报**  
+- **使用外部关联 ID 关闭（解决）警报**  
 
-- **Send alerts** to a SIGNL4 team
-- **Close (resolve) alerts** using an external correlation ID
+身份验证通过 **嵌入在 webhook URL 中的团队密钥** 来完成。  
 
-Authentication is handled via the **team secret embedded in the webhook URL**.
-
-Webhook documentation:
-https://docs.signl4.com/integrations/webhook/webhook.html
-
----
-
-## Required configuration
-The following environment variable must be set:
-
-- `SIGNL4_TEAM_SECRET` – the SIGNL4 team secret used in the webhook URL
-
-Optional (advanced):
-- `SIGNL4_WEBHOOK_BASE` – defaults to `https://connect.signl4.com/webhook`
+Webhook 文档：  
+https://docs.signl4.com/integrations/webhook/webhook.html  
 
 ---
 
-## Inputs to gather from the user
+## 必需配置  
+必须设置以下环境变量：  
+- `SIGNL4_TEAM_SECRET` – 用于 webhook URL 的 SIGNL4 团队密钥  
 
-### When sending an alert
-Required:
-- **Title** – short summary
-- **Message** – detailed description
-- **External ID** – strongly recommended (required to close the alert later)
-
-Optional:
-- **Service** (`X-S4-Service`)
-- **Alerting scenario** (`X-S4-AlertingScenario` – e.g. `single_ack`, `multi_ack`, `emergency`)
-- **Location** (`X-S4-Location`, format: `"lat,long"`)
-
-### When closing an alert
-Required:
-- **External ID** – must match the ID used when the alert was created
+（可选，高级配置）：  
+- `SIGNL4_WEBHOOK_BASE` – 默认值为 `https://connect.signl4.com/webhook`  
 
 ---
 
-## How to send an alert
+## 从用户处收集的输入信息  
 
-### Rules
-- Always include `X-S4-ExternalID` if the alert might need to be closed later.
-- Use `X-S4-Status: "new"` to create an alert.
+### 发送警报时  
+- **必填项**：  
+  - **标题** – 简短摘要  
+  - **消息** – 详细描述  
+  - **外部 ID** – 强烈推荐（后续关闭警报时需要）  
 
-### Command template
-Set the webhook URL:
+- **可选项**：  
+  - **服务** (`X-S4-Service`)  
+  - **警报场景** (`X-S4-AlertingScenario` – 例如 `single_ack`, `multi_ack`, `emergency`)  
+  - **位置** (`X-S4-Location`，格式：`"lat,long"`)  
 
+### 关闭警报时  
+- **必填项**：  
+  - **外部 ID** – 必须与创建警报时使用的 ID 相匹配  
+
+---
+
+## 如何发送警报  
+
+- **规则**：  
+  - 如果警报可能需要后续关闭，请务必包含 `X-S4-ExternalID`。  
+  - 使用 `X-S4-Status: "new"` 来创建警报。  
+
+### 命令模板  
+设置 webhook URL：  
 ```sh
 WEBHOOK_URL="${SIGNL4_WEBHOOK_BASE:-https://connect.signl4.com/webhook}/${SIGNL4_TEAM_SECRET}"
-```
+```  
 
-Send the alert:
-
+发送警报：  
 ```sh
 curl -sS -X POST "$WEBHOOK_URL" \
   -H "Content-Type: application/json" \
@@ -74,29 +70,28 @@ curl -sS -X POST "$WEBHOOK_URL" \
     "X-S4-Location": "<OPTIONAL_LAT_LONG>",
     "X-S4-SourceSystem": "OpenClaw"
   }'
-```
+```  
 
-### What to report back
-- Confirm that the alert was sent
-- Repeat key details:
-  - Title
-  - External ID
-  - Optional service/scenario
+### 需要反馈的信息：  
+- 确认警报已发送  
+- 重复关键信息：  
+  - 标题  
+  - 外部 ID  
+  - 可选的服务/场景  
 
-If the request fails:
-- Check that `SIGNL4_TEAM_SECRET` is set and correct
-- Ensure JSON fields are valid
+如果请求失败：  
+- 检查 `SIGNL4TEAM_SECRET` 是否已设置且正确  
+- 确保 JSON 字段有效  
 
 ---
 
-## How to close (resolve) an alert
+## 如何关闭（解决）警报  
 
-### Rules
-To close an alert, you must:
-- Use the **same External ID** as when the alert was created
-- Set `X-S4-Status` to `resolved`
+- **规则**：  
+  - 要关闭警报，必须使用与创建警报时相同的 **外部 ID**  
+  - 将 `X-S4-Status` 设置为 `resolved`  
 
-### Command template
+### 命令模板：  
 ```sh
 curl -sS -X POST "$WEBHOOK_URL" \
   -H "Content-Type: application/json" \
@@ -104,14 +99,14 @@ curl -sS -X POST "$WEBHOOK_URL" \
     "X-S4-ExternalID": "<EXTERNAL_ID>",
     "X-S4-Status": "resolved"
   }'
-```
+```  
 
-### What to report back
-- Confirm the resolve request was sent for the given External ID
-- If the External ID is missing, ask the user for it
+### 需要反馈的信息：  
+- 确认已为给定的外部 ID 发送了关闭请求  
+- 如果缺少外部 ID，请向用户询问该 ID  
 
 ---
 
-## Security notes
-- Treat `SIGNL4_TEAM_SECRET` as confidential
-- Never print or echo the team secret in responses or logs
+## 安全注意事项  
+- 将 `SIGNL4_TEAM_SECRET` 视为机密信息  
+- 严禁在响应或日志中打印或显示团队密钥

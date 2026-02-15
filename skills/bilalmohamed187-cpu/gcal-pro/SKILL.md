@@ -1,85 +1,87 @@
 ---
 name: gcal-pro
-description: Google Calendar integration for viewing, creating, and managing calendar events. Use when the user asks about their schedule, wants to add/edit/delete events, check availability, or needs a morning brief. Supports natural language like "What's on my calendar tomorrow?" or "Schedule lunch with Alex at noon Friday." Free tier provides read access; Pro tier ($12) adds create/edit/delete and morning briefs.
+description: **Google Calendar集成**  
+用于查看、创建和管理日历事件。当用户询问自己的日程安排、需要添加/编辑/删除事件、查看可用时间，或希望接收每日晨报时，可以使用该功能。支持自然语言指令，例如：“我明天有什么安排？”或“周五中午和Alex安排一次午餐会面”。免费版本仅提供读取日历事件的功能；专业版（12美元）则新增了创建/编辑/删除事件以及每日晨报的功能。
 ---
 
 # gcal-pro
 
-Manage Google Calendar through natural conversation.
+通过自然语言对话来管理 Google 日历。
 
-## Quick Reference
+## 快速参考
 
-| Action | Command | Tier |
+| 功能 | 命令 | 订阅等级 |
 |--------|---------|------|
-| View today | `python scripts/gcal_core.py today` | Free |
-| View tomorrow | `python scripts/gcal_core.py tomorrow` | Free |
-| View week | `python scripts/gcal_core.py week` | Free |
-| Search events | `python scripts/gcal_core.py search -q "meeting"` | Free |
-| List calendars | `python scripts/gcal_core.py calendars` | Free |
-| Find free time | `python scripts/gcal_core.py free` | Free |
-| Quick add | `python scripts/gcal_core.py quick -q "Lunch Friday noon"` | Pro |
-| Delete event | `python scripts/gcal_core.py delete --id EVENT_ID -y` | Pro |
-| Morning brief | `python scripts/gcal_core.py brief` | Pro |
+| 查看今日日程 | `python scripts/gcal_core.py today` | 免费 |
+| 查看明日日程 | `python scripts/gcal_core.py tomorrow` | 免费 |
+| 查看本周日程 | `python scripts/gcal_core.py week` | 免费 |
+| 搜索事件 | `python scripts/gcal_core.py search -q "会议"` | 免费 |
+| 列出日历 | `python scripts/gcal_core.py calendars` | 免费 |
+| 查找空闲时间 | `python scripts/gcal_core.py free` | 免费 |
+| 快速添加事件 | `python scripts/gcal_core.py quick -q "周五中午午餐"` | 专业级 |
+| 删除事件 | `python scripts/gcal_core.py delete --id EVENT_ID -y` | 专业级 |
+| 早晨简报 | `python scripts/gcal_core.py brief` | 专业级 |
 
-## Setup
+## 设置
 
-**First-time setup required:**
+**首次使用需要完成以下步骤：**
 
-1. User must create Google Cloud project and OAuth credentials
-2. Save `client_secret.json` to `~/.config/gcal-pro/`
-3. Run authentication:
+1. 用户必须创建 Google Cloud 项目并获取 OAuth 凭据。
+2. 将 `client_secret.json` 文件保存到 `~/.config/gcal-pro/` 目录下。
+3. 运行身份验证：
    ```bash
    python scripts/gcal_auth.py auth
    ```
-4. Browser opens → user grants calendar access → done
+4. 浏览器打开 → 用户授权日历访问权限 → 设置完成。
 
-**Check auth status:**
+**检查身份验证状态：**
 ```bash
 python scripts/gcal_auth.py status
 ```
 
-## Tiers
+## 订阅等级
 
-### Free Tier
-- View events (today, tomorrow, week, month)
-- Search events
-- List calendars
-- Find free time slots
+### 免费等级
+- 查看事件（今日、明日、本周、本月）
+- 搜索事件
+- 列出日历
+- 查找空闲时间
 
-### Pro Tier ($12 one-time)
-- Everything in Free, plus:
-- Create events
-- Quick add (natural language)
-- Update/reschedule events
-- Delete events
-- Morning brief via cron
+### 专业级（一次性费用 $12）
 
-## Usage Patterns
+- 免费等级的所有功能外，还支持：
+- 创建事件
+- 通过自然语言快速添加事件
+- 更新/重新安排事件
+- 删除事件
+- 通过 cron 服务发送早晨简报
 
-### Viewing Schedule
+## 使用示例
 
-When user asks "What's on my calendar?" or "What do I have today?":
+### 查看日程
+
+当用户询问“我的日历上有什么安排？”或“我今天有什么事情？”时：
 
 ```bash
 cd /path/to/gcal-pro
 python scripts/gcal_core.py today
 ```
 
-For specific ranges:
-- "tomorrow" → `python scripts/gcal_core.py tomorrow`
-- "this week" → `python scripts/gcal_core.py week`
-- "meetings with Alex" → `python scripts/gcal_core.py search -q "Alex"`
+对于特定时间范围：
+- “明天” → `python scripts/gcal_core.py tomorrow`
+- “本周” → `python scripts/gcal_core.py week`
+- “与 Alex 的会议” → `python scripts/gcal_core.py search -q "Alex"`
 
-### Creating Events (Pro)
+### 创建事件（专业级）
 
-When user says "Add X to my calendar" or "Schedule Y":
+当用户说“在我的日历上添加某个事件”或“安排某个活动”时：
 
-**Option 1: Quick add (natural language)**
+**选项 1：通过自然语言快速添加事件**
 ```bash
 python scripts/gcal_core.py quick -q "Lunch with Alex Friday at noon"
 ```
 
-**Option 2: Structured create (via Python)**
+**选项 2：通过 Python 结构化创建事件**
 ```python
 from scripts.gcal_core import create_event, parse_datetime
 
@@ -91,17 +93,16 @@ create_event(
 )
 ```
 
-### Modifying Events (Pro)
+### 修改事件（专业级）
 
-**⚠️ CONFIRMATION REQUIRED for destructive actions!**
+**⚠️ 执行删除或重大修改操作前必须确认！**
 
-Before deleting or significantly modifying an event, ALWAYS confirm with the user:
+在删除或大幅修改事件之前，务必先与用户确认：
+1. 显示事件详情
+2. 询问“我是否要删除/重新安排这个事件？”
+3. 仅在使用用户确认（`confirmed=True` 或 `-y` 参数）后才能继续操作
 
-1. Show event details
-2. Ask "Should I delete/reschedule this?"
-3. Only proceed with `confirmed=True` or `-y` flag after user confirms
-
-**Delete:**
+**删除事件：**
 ```bash
 # First, find the event
 python scripts/gcal_core.py search -q "dentist"
@@ -111,47 +112,46 @@ python scripts/gcal_core.py search -q "dentist"
 python scripts/gcal_core.py delete --id abc123xyz -y
 ```
 
-### Finding Free Time
+### 查找空闲时间
 
-When user asks "When am I free?" or "Find time for a 1-hour meeting":
+当用户询问“我什么时候有空？”或“安排一个小时的会议”时：
 
 ```bash
 python scripts/gcal_core.py free
 ```
 
-### Morning Brief (Pro + Cron)
+### 早晨简报（专业级 + Cron）
 
-Set up via Clawdbot cron to send daily agenda:
+通过 Clawdbot 的 cron 服务每天发送早晨简报：
 
 ```python
 from scripts.gcal_core import generate_morning_brief
 print(generate_morning_brief())
 ```
 
-**Cron setup example:**
-- Schedule: 8:00 AM daily
-- Action: Run `python scripts/gcal_core.py brief`
-- Delivery: Send output to user's messaging channel
+**Cron 设置示例：**
+- 时间：每天上午 8:00
+- 操作：运行 `python scripts/gcal_core.py brief`
+- 通知方式：将结果发送到用户的消息频道
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "client_secret.json not found" | Setup incomplete | Complete Google Cloud setup |
-| "Token refresh failed" | Expired/revoked | Run `python scripts/gcal_auth.py auth --force` |
-| "requires Pro tier" | Free user attempting write | Prompt upgrade or explain limitation |
-| "Event not found" | Invalid event ID | Search for correct event first |
+| “client_secret.json 未找到” | 设置未完成 | 完成 Google Cloud 的设置 |
+| “令牌更新失败” | 令牌过期/被撤销 | 运行 `python scripts/gcal_auth.py auth --force` |
+| “需要专业级权限” | 免费用户尝试执行写入操作 | 提示用户升级或说明权限限制 |
+| “事件未找到” | 事件 ID 无效 | 先搜索正确的事件 |
 
-## Timezone Handling
+## 时区处理
 
-- All times are interpreted in user's local timezone (default: America/New_York)
-- When user specifies timezone (e.g., "2 PM EST"), honor it
-- Display times in user's local timezone
-- Store in ISO 8601 format with timezone
+- 所有时间均按照用户的本地时区显示（默认：America/New_York）
+- 如果用户指定了时区（例如 “下午 2 点 EST”），则按该时区显示
+- 时间以 ISO 8601 格式存储，并包含时区信息
 
-## Response Formatting
+## 响应格式
 
-**For event lists, use this format:**
+**事件列表的显示格式：**
 
 ```
 📅 **Monday, January 27**
@@ -163,7 +163,7 @@ print(generate_morning_brief())
   • 10:00 AM — Dentist appointment 📍 123 Main St
 ```
 
-**For confirmations:**
+**确认信息的格式：**
 
 ```
 ✓ Event created: "Lunch with Alex"
@@ -171,7 +171,7 @@ print(generate_morning_brief())
   📍 Cafe Roma
 ```
 
-**For morning brief:**
+**早晨简报的格式：**
 
 ```
 ☀️ Good morning! Here's your day:
@@ -185,7 +185,7 @@ You have 3 events today:
 👀 Tomorrow: 2 events
 ```
 
-## File Locations
+## 文件位置
 
 ```
 ~/.config/gcal-pro/
@@ -194,21 +194,21 @@ You have 3 events today:
 └── license.json         # Pro license (if purchased)
 ```
 
-## Integration with Clawdbot
+## 与 Clawdbot 的集成
 
-This skill works with:
-- **Cron**: Schedule morning briefs
-- **Memory**: Store calendar preferences
-- **Messaging**: Deliver briefs via Telegram/WhatsApp/etc.
+此功能支持与以下服务集成：
+- **Cron**：用于安排早晨简报
+- **Memory**：存储用户的日历偏好设置
+- **Messaging**：通过 Telegram/WhatsApp 等工具发送简报
 
-## Upgrade Prompt
+## 升级提示
 
-When a Free user attempts a Pro action, respond:
+当免费用户尝试执行专业级操作时，回复：
 
-> ⚠️ Creating events requires **gcal-pro Pro** ($12 one-time).
+> ⚠️ 创建事件需要购买 **gcal-pro Pro**（一次性费用 $12）。
 > 
-> Pro includes: Create, edit, delete events + morning briefs.
+> 专业级功能包括：创建、编辑、删除事件以及发送早晨简报。
 > 
-> 👉 Upgrade: [gumroad-link]
+> 👉 升级链接：[gumroad-link]
 > 
-> For now, I can show you your schedule (free) — want to see today's events?
+> 目前，我可以为您显示今天的日程（免费）——您想查看今天的事件吗？

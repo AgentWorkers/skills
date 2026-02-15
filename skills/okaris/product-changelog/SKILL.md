@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Product Changelog
+# 产品更新日志
 
-Write changelogs and release notes that users read and care about via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，编写用户会阅读并关注的更新日志和发布说明。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,9 +27,9 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Entry Format
+## 更新日志条目的格式
 
-### The Anatomy of a Good Entry
+### 一个优秀更新日志条目的构成
 
 ```markdown
 ### New: Bulk Export for Reports 📊
@@ -42,9 +42,9 @@ Previously limited to 500 rows per export.
 ![Bulk export button in the reports toolbar](screenshot.png)
 ```
 
-**Structure:** Category label -> User-facing title -> What you can do now -> How -> What changed -> Visual
+**结构：** 类别标签 -> 面向用户的标题 -> 用户现在可以做什么 -> 实现方式 -> 发生了哪些变化 -> 可视化内容
 
-### User-Facing Language
+### 面向用户的语言风格
 
 ```
 ❌ Internal language:
@@ -58,55 +58,54 @@ Previously limited to 500 rows per export.
 "Fixed an issue where exported CSV files had missing columns"
 ```
 
-**Rules:**
-- Write what the user can DO, not what you BUILT
-- Start with "You can now..." / "Reports now..." / "Fixed an issue where..."
-- Include the benefit, not just the mechanism
-- Use present tense
+**规则：**
+- 描述用户能够做什么，而不是你开发了什么功能
+- 以 “您现在可以...” 或 “修复了以下问题...” 开头
+- 强调带来的好处，而不仅仅是实现机制
+- 使用现在时态
 
-## Categories
+## 分类
 
-### Standard Categories
+### 标准分类
 
-| Category | Color | Icon | Use For |
+| 分类 | 颜色 | 图标 | 适用场景 |
 |----------|-------|------|---------|
-| **New** | Green | ✨ or 🆕 | Entirely new features or capabilities |
-| **Improved** | Blue | ⚡ or 🔧 | Enhancements to existing features |
-| **Fixed** | Yellow/Orange | 🐛 or 🔨 | Bug fixes |
-| **Removed** | Red | 🗑️ or ⚠️ | Deprecated or removed features |
-| **Security** | Purple | 🔒 | Security patches |
+| **新增功能** | 绿色 | ✨ 或 🆕 | 完全新添加的功能或能力 |
+| **功能优化** | 蓝色 | ⚡ 或 🔧 | 现有功能的改进 |
+| **问题修复** | 黄色/橙色 | 🐛 或 🔨 | 错误修复 |
+| **功能移除** | 红色 | 🗑️ 或 ⚠️ | 已弃用或移除的功能 |
+| **安全修复** | 紫色 | 🔒 | 安全补丁 |
 
-### Categorization Rules
+### 分类规则：
+- **新增功能**：用户之前完全无法使用的功能 |
+- **功能优化**：用户原本可以使用该功能，现在使用起来更高效、更快捷或更简单 |
+- **问题修复**：之前存在问题，现在已修复 |
+- **请避免使用“更新”一词”——这个术语没有实际意义。需要明确是优化了还是修复了问题？ |
 
-- **New** = something users couldn't do before at all
-- **Improved** = something users could do, now it's better/faster/easier
-- **Fixed** = something that was broken, now works correctly
-- Don't use "Updated" — it's meaningless. Was it improved or fixed?
+## 版本编号
 
-## Version Numbering
-
-### Semantic Versioning (SemVer)
+### 语义版本控制（SemVer）
 
 ```
 MAJOR.MINOR.PATCH
   3   .  2  .  1
 ```
 
-| Component | Increment When | Example |
+| 组件 | 版本更新时机 | 例子 |
 |-----------|---------------|---------|
-| MAJOR | Breaking changes, major redesign | 2.0.0 -> 3.0.0 |
-| MINOR | New features, backward-compatible | 3.1.0 -> 3.2.0 |
-| PATCH | Bug fixes, small improvements | 3.2.0 -> 3.2.1 |
+| **重大版本** | 引起重大变化的更新、重大设计变更 | 2.0.0 -> 3.0.0 |
+| **次要版本** | 新功能的添加、向后兼容 | 3.1.0 -> 3.2.0 |
+| **修补版本** | 错误修复、小改进 | 3.2.0 -> 3.2.1 |
 
-### Date-Based Versioning
+### 基于日期的版本控制
 
 ```
 2026-02-08  or  2026.02.08  or  February 8, 2026
 ```
 
-Best for SaaS products with continuous deployment.
+这种版本控制方式适用于持续部署的 SaaS 产品。
 
-## Changelog Page Structure
+## 更新日志页面的结构
 
 ```markdown
 # Changelog
@@ -136,19 +135,19 @@ Best for SaaS products with continuous deployment.
 - Fixed an issue where email notifications were delayed by up to 2 hours.
 ```
 
-## Visual Changelogs
+## 可视化更新日志
 
-### When to Add Visuals
+### 何时添加可视化内容
 
-| Change Type | Visual |
+| 更新类型 | 可视化方式 |
 |-------------|--------|
-| New UI feature | Screenshot of the new feature |
-| UI redesign | Before/after comparison |
-| New workflow | Step-by-step screenshots or short video |
-| Performance improvement | Chart showing improvement |
-| Complex feature | Animated GIF or video demo |
+| 新用户界面功能 | 新功能的截图 |
+| 用户界面重新设计 | 设计前后的对比图 |
+| 新工作流程 | 分步截图或短视频 |
+| 性能提升 | 显示性能提升的图表 |
+| 复杂功能 | 动态 GIF 或视频演示 |
 
-### Generating Visuals
+### 生成可视化内容
 
 ```bash
 # Feature screenshot (if you have the app running, use agent browser)
@@ -177,9 +176,9 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Breaking Changes
+## 重大变更的处理
 
-Breaking changes need special treatment:
+重大变更需要特别处理：
 
 ```markdown
 ### ⚠️ Breaking: API v2 Endpoints Deprecated
@@ -199,18 +198,18 @@ Breaking changes need special treatment:
 If you need help migrating, contact support@company.com.
 ```
 
-## Distribution Channels
+## 分发渠道
 
-| Channel | Format | When |
+| 渠道 | 格式 | 发布时机 |
 |---------|--------|------|
-| **Changelog page** | Full detail, all entries | Every release |
-| **In-app notification** | 1-2 line summary | New features, breaking changes |
-| **Email** | Curated highlights, visuals | Major releases (monthly/quarterly) |
-| **Blog post** | Deep dive with context | Big launches |
-| **Social media** | Single feature highlight | Notable features |
-| **Slack/Discord** | Brief announcement | If you have a community |
+| **更新日志页面** | 所有更新内容的完整详情 | 每次发布时 |
+| **应用内通知** | 1-2 行的简短总结 | 新功能、重大变更 |
+| **电子邮件** | 精选的重点内容、可视化资料 | 重大版本更新（每月/每季度） |
+| **博客文章** | 深入解析 | 重要版本发布 |
+| **社交媒体** | 单个功能的亮点展示 | 显著的功能更新 |
+| **Slack/Discord** | 简短公告 | 如果你有社区的话 |
 
-### Social Media Snippet Format
+### 社交媒体发布格式
 
 ```
 🆕 New in [Product]: [Feature Name]
@@ -222,51 +221,49 @@ If you need help migrating, contact support@company.com.
 Try it now → [link]
 ```
 
-## Writing Tips
+## 编写更新日志的技巧
 
-### Do
+### 应该做的：
+- 将相关的变更归类在一起
+- 首先介绍最重要或用户需求最多的变更
+- 对于复杂功能，提供相应的文档链接
+- 明确指出变更的发起者（例如：“根据用户需求...”）
+- 为重大变更提供迁移指南
+- 为每个更新日志条目标注日期
 
-- Group related changes together
-- Lead with the biggest/most requested change
-- Link to documentation for complex features
-- Include who requested it ("By popular request:")
-- Show migration paths for breaking changes
-- Date every entry
+### 不应该做的：
+- 不要笼统地写“各种错误修复”——应列出具体的修复内容
+- 不要包含内部参考信息（如 PR 编号、工单 ID、分支名称）
+- 不要只写“[功能] 已更新”而不说明具体内容
+- 不要列出用户不关心的变更（如依赖关系的调整、内部重构）
+- 不要将多次提交的代码合并到同一条更新日志中
 
-### Don't
+## 更新日志的发布频率
 
-- Don't say "various bug fixes" — list specific fixes or skip them
-- Don't include internal references (PR numbers, ticket IDs, branch names)
-- Don't use "Updated [feature]" without saying how
-- Don't list changes nobody cares about (dependency bumps, internal refactors)
-- Don't commit-dump — one changelog entry may represent many commits
-
-## Changelog Frequency
-
-| Product Type | Frequency | Notes |
+| 产品类型 | 发布频率 | 备注 |
 |-------------|-----------|-------|
-| SaaS (continuous deploy) | Weekly batch | Group a week of changes |
-| SaaS (major features) | Per feature launch | With blog post |
-| Versioned software | Per version release | Tied to semver |
-| API | Per version + deprecation notices | Include migration guides |
-| Mobile app | Per app store release | Match store listing "What's New" |
+| SaaS（持续部署） | 每周批量发布 | 将一周内的变更合并在一起 |
+| SaaS（新增重要功能） | 每次新增功能时 | 附带博客文章 |
+| 有版本号的软件 | 每次版本发布时 | 与语义版本号对应 |
+| API | 每次版本更新时 | 包括弃用通知 | 提供迁移指南 |
+| 移动应用 | 每次应用商店更新时 | 与应用商店的“新增内容”部分一致 |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Developer language | Users don't understand | Write what users can do |
-| "Bug fixes and improvements" | Zero information | List specific fixes |
-| No dates | Can't tell what's new | Date every entry |
-| No visuals | Users skip text | Screenshot major features |
-| Breaking changes buried | Users discover too late | Prominent warning + timeline |
-| Commit log as changelog | Noisy, unhelpful | Curate and rewrite |
+| 使用开发者术语 | 用户难以理解 | 用用户能理解的语言描述 |
+| 只写“错误修复和功能优化” | 没有实际信息 | 列出具体的修复内容 |
+| 不标注日期 | 无法判断哪些内容是新的 | 为每个更新日志条目标注日期 |
+| 没有可视化内容 | 用户会忽略文本 | 为重要功能添加截图 |
+| 重大变更被隐藏 | 用户发现得太晚 | 用醒目的警告和时间线标注 |
+| 将提交日志直接作为更新日志使用 | 信息混乱、不易理解 | 对更新日志内容进行筛选和重新编写 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有应用：`infsh app list`

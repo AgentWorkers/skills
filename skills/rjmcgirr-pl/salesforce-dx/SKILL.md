@@ -1,13 +1,13 @@
 ---
 name: salesforce-dx
-description: Query Salesforce data and manage sales pipelines using the `sf` CLI. Use for SOQL queries (simple to complex), opportunity pipeline analysis, forecast reporting, data exports, schema exploration, and CRM data operations. Also use for executive workflows like looking up deals by name, finding contact info to email prospects, preparing pipeline reviews, and cross-referencing CRM data with other tools. Triggers on Salesforce, SOQL, pipeline, opportunity, forecast, CRM data, deal lookup, prospect email, account info, or sf CLI questions.
+description: 使用 `sf` CLI 查询 Salesforce 数据并管理销售流程。该工具可用于执行各种操作，包括 SOQL 查询（从简单到复杂）、销售机会流程分析、预测报告生成、数据导出、数据库模式探索以及 CRM 数据操作。此外，它还适用于执行高管级的工作流程，例如按名称查找交易记录、获取联系人的电子邮件信息以联系潜在客户、准备销售流程评估报告，以及将 CRM 数据与其他工具进行交叉引用。`sf` CLI 可触发与 Salesforce、SOQL、销售流程、销售机会、预测数据、CRM 数据、交易查找、潜在客户信息或相关问题相关的操作。
 ---
 
-# Salesforce DX — Data & Pipeline
+# Salesforce DX — 数据与工作流
 
-Query data and manage pipelines with the `sf` CLI.
+使用 `sf` CLI 查询数据并管理工作流。
 
-## Prerequisites
+## 先决条件
 
 ```bash
 # Verify CLI and auth
@@ -15,14 +15,14 @@ sf --version
 sf org list
 ```
 
-If no orgs listed, authenticate:
+如果没有列出任何组织，请进行身份验证：
 ```bash
 sf org login web --alias my-org --set-default
 ```
 
-## Schema Discovery
+## 架构探索
 
-Before querying, explore available objects and fields:
+在查询之前，先了解可用的对象和字段：
 
 ```bash
 # List all objects
@@ -35,9 +35,9 @@ sf sobject describe --sobject Opportunity --target-org my-org
 sf sobject describe --sobject Opportunity --target-org my-org | grep -E "^name:|^type:" 
 ```
 
-## SOQL Queries
+## SOQL 查询
 
-### Basic Patterns
+### 基本模式
 
 ```bash
 # Simple query
@@ -53,7 +53,7 @@ sf data query -q "SELECT Id, Name FROM Opportunity WHERE CloseDate = THIS_QUARTE
 sf data query -q "SELECT Id, Name, Amount FROM Opportunity" --result-format csv > opps.csv
 ```
 
-### Relationships
+### 关系
 
 ```bash
 # Parent lookup (Account from Opportunity)
@@ -63,7 +63,7 @@ sf data query -q "SELECT Id, Name, Account.Name, Account.Industry FROM Opportuni
 sf data query -q "SELECT Id, Name, (SELECT Id, Name, Amount FROM Opportunities) FROM Account LIMIT 5"
 ```
 
-### Aggregations
+### 聚合操作
 
 ```bash
 # COUNT
@@ -76,16 +76,16 @@ sf data query -q "SELECT StageName, SUM(Amount) total FROM Opportunity GROUP BY 
 sf data query -q "SELECT StageName, COUNT(Id) cnt, SUM(Amount) total, AVG(Amount) avg FROM Opportunity GROUP BY StageName"
 ```
 
-### Bulk Queries (Large Datasets)
+### 批量查询（大数据集）
 
 ```bash
 # Use --bulk for >2000 records
 sf data query -q "SELECT Id, Name, Amount FROM Opportunity" --bulk --wait 10
 ```
 
-## Pipeline Management
+## 工作流管理
 
-### Pipeline Snapshot
+### 工作流快照
 
 ```bash
 # Open pipeline by stage
@@ -98,7 +98,7 @@ sf data query -q "SELECT Owner.Name, SUM(Amount) total FROM Opportunity WHERE Is
 sf data query -q "SELECT CALENDAR_MONTH(CloseDate) month, SUM(Amount) total FROM Opportunity WHERE IsClosed = false AND CloseDate = THIS_YEAR GROUP BY CALENDAR_MONTH(CloseDate) ORDER BY CALENDAR_MONTH(CloseDate)"
 ```
 
-### Win/Loss Analysis
+### 成败分析
 
 ```bash
 # Win rate by stage
@@ -111,7 +111,7 @@ sf data query -q "SELECT Id, Name, Amount, CloseDate FROM Opportunity WHERE Stag
 sf data query -q "SELECT Id, Name, Amount, StageName, Loss_Reason__c FROM Opportunity WHERE StageName = 'Closed Lost' AND CloseDate = THIS_QUARTER"
 ```
 
-### Forecast Queries
+### 预测查询
 
 ```bash
 # Weighted pipeline (assumes Probability field)
@@ -124,15 +124,15 @@ sf data query -q "SELECT Id, Name, Amount, StageName, CloseDate FROM Opportunity
 sf data query -q "SELECT Id, Name, Amount, LastActivityDate FROM Opportunity WHERE IsClosed = false AND LastActivityDate < LAST_N_DAYS:30"
 ```
 
-## Data Operations
+## 数据操作
 
-### Create Records
+### 创建记录
 
 ```bash
 sf data create record -s Opportunity -v "Name='New Deal' StageName='Prospecting' CloseDate=2024-12-31 Amount=50000"
 ```
 
-### Update Records
+### 更新记录
 
 ```bash
 # By ID
@@ -142,7 +142,7 @@ sf data update record -s Opportunity -i 006xx000001234 -v "StageName='Negotiatio
 sf data upsert bulk -s Opportunity -f updates.csv -i Id --wait 10
 ```
 
-### Export/Import
+### 导出/导入
 
 ```bash
 # Export with relationships
@@ -152,47 +152,47 @@ sf data export tree -q "SELECT Id, Name, (SELECT Id, Subject FROM Tasks) FROM Ac
 sf data import tree -f ./export/Account.json
 ```
 
-## JSON Output for Scripting
+## 用于脚本编写的 JSON 输出
 
-Add `--json` for structured output:
+添加 `--json` 选项以获得结构化输出：
 
 ```bash
 sf data query -q "SELECT Id, Name, Amount FROM Opportunity WHERE IsClosed = false" --json
 ```
 
-Parse with jq:
+使用 `jq` 进行解析：
 ```bash
 sf data query -q "SELECT Id, Name FROM Opportunity LIMIT 5" --json | jq '.result.records[].Name'
 ```
 
-## Common Date Literals
+## 常见日期字面量
 
-| Literal | Meaning |
+| 字面量 | 含义 |
 |---------|---------|
-| TODAY | Current day |
-| THIS_WEEK | Current week |
-| THIS_MONTH | Current month |
-| THIS_QUARTER | Current quarter |
-| THIS_YEAR | Current year |
-| LAST_N_DAYS:n | Past n days |
-| NEXT_N_DAYS:n | Next n days |
-| LAST_QUARTER | Previous quarter |
+| TODAY   | 当前日期 |
+| THIS_WEEK | 当前周   |
+| THIS_MONTH | 当前月份 |
+| THIS_QUARTER | 当前季度 |
+| THIS_YEAR | 当前年份 |
+| LAST_N_days:n | 过去 n 天 |
+| NEXT_N_days:n | 下 n 天 |
+| LAST_QUARTER | 上一个季度 |
 
-## Troubleshooting
+## 故障排除
 
-**"Malformed query"** — Check field API names (not labels). Use `sf sobject describe` to verify.
+**“查询格式错误”** — 请检查字段的 API 名称（而非标签名）。使用 `sf sobject describe` 进行验证。
 
-**"QUERY_TIMEOUT"** — Add filters, use `--bulk`, or add `LIMIT`.
+**“QUERY_TIMEOUT”** — 添加过滤器，使用 `--bulk` 选项，或设置 `LIMIT`。
 
-**"INVALID_FIELD"** — Field may not exist on that object or your profile lacks access.
+**“无效字段”** — 该字段可能不存在于该对象中，或者您的权限不足。
 
-**Large result sets** — Use `--bulk` flag for queries returning >2000 records.
+**大量结果集** — 对于返回超过 2000 条记录的查询，请使用 `--bulk` 选项。
 
-## Executive Workflows
+## 高管工作流
 
-### Quick Deal Lookup
+### 快速查找交易
 
-Find a deal by name or account:
+通过名称或账户查找交易：
 ```bash
 # By opportunity name (fuzzy)
 sf data query -q "SELECT Id, Name, Amount, StageName, CloseDate, Owner.Name, Account.Name FROM Opportunity WHERE Name LIKE '%Acme%' ORDER BY Amount DESC"
@@ -204,9 +204,9 @@ sf data query -q "SELECT Id, Name, Amount, StageName, CloseDate FROM Opportunity
 sf data query -q "SELECT Id, Name, Amount, StageName, CloseDate, Account.Name FROM Opportunity WHERE OwnerId = '<my-user-id>' AND IsClosed = false ORDER BY CloseDate"
 ```
 
-### Get Contact Info for Outreach
+### 获取联系人信息以进行外联
 
-Find someone to email at a company:
+查找需要发送邮件的联系人：
 ```bash
 # Contacts at an account
 sf data query -q "SELECT Id, Name, Email, Phone, Title FROM Contact WHERE Account.Name LIKE '%Acme%'"
@@ -218,9 +218,9 @@ sf data query -q "SELECT Name, Email, Title, Account.Name FROM Contact WHERE Tit
 sf data query -q "SELECT Contact.Name, Contact.Email, Contact.Title, Role FROM OpportunityContactRole WHERE Opportunity.Name LIKE '%Acme%'"
 ```
 
-### Prep for Pipeline Review
+### 为工作流审查做准备
 
-Get a quick executive summary:
+获取快速的高管总结：
 ```bash
 # Top 10 deals closing this quarter
 sf data query -q "SELECT Name, Account.Name, Amount, StageName, CloseDate, Owner.Name FROM Opportunity WHERE CloseDate = THIS_QUARTER AND IsClosed = false ORDER BY Amount DESC LIMIT 10"
@@ -232,9 +232,9 @@ sf data query -q "SELECT Owner.Name, COUNT(Id) deals, SUM(Amount) total FROM Opp
 sf data query -q "SELECT Name, Amount, StageName, LastActivityDate, Owner.Name FROM Opportunity WHERE IsClosed = false AND LastActivityDate < LAST_N_DAYS:14 ORDER BY Amount DESC LIMIT 10"
 ```
 
-### Account Intelligence
+### 客户信息分析
 
-Before a call or meeting:
+在通话或会议前：
 ```bash
 # Account overview
 sf data query -q "SELECT Id, Name, Industry, BillingCity, Website, OwnerId FROM Account WHERE Name LIKE '%Acme%'"
@@ -246,17 +246,17 @@ sf data query -q "SELECT Name, Amount, StageName, CloseDate FROM Opportunity WHE
 sf data query -q "SELECT Subject, Status, ActivityDate FROM Task WHERE Account.Name LIKE '%Acme%' ORDER BY ActivityDate DESC LIMIT 5"
 ```
 
-### Cross-Tool Workflows
+### 跨工具工作流
 
-**Salesforce + Email (via gog/gmail):**
-1. Find contact email: `sf data query -q "SELECT Email FROM Contact WHERE Account.Name LIKE '%Acme%'"`
-2. Draft email using that address with your email tool
+**Salesforce + 电子邮件（通过 gog/gmail）：**
+1. 查找联系人邮箱：`sf data query -q "SELECT Email FROM Contact WHERE Account.Name LIKE '%Acme%'"`
+2. 使用该邮箱地址通过您的邮件工具发送邮件
 
-**Salesforce + Calendar:**
-1. Find deals closing soon: `sf data query -q "SELECT Name, Account.Name, CloseDate FROM Opportunity WHERE CloseDate = THIS_WEEK"`
-2. Cross-reference with calendar to ensure follow-ups scheduled
+**Salesforce + 日历：**
+1. 查找即将成交的交易：`sf data query -q "SELECT Name, Account.Name, CloseDate FROM Opportunity WHERE CloseDate = THIS_WEEK"`
+2. 与日历进行交叉核对，确保安排了跟进任务
 
-**Quick CRM Update After Call:**
+**通话后的快速 CRM 更新：**
 ```bash
 # Log a task
 sf data create record -s Task -v "Subject='Call with John' WhatId='<opportunity-id>' Status='Completed' ActivityDate=$(date +%Y-%m-%d)"
@@ -265,16 +265,16 @@ sf data create record -s Task -v "Subject='Call with John' WhatId='<opportunity-
 sf data update record -s Opportunity -i <opp-id> -v "StageName='Negotiation' NextStep='Send proposal'"
 ```
 
-### Finding Your User ID
+### 查找用户 ID
 
-Needed for "deals I own" queries:
+用于执行“我负责的交易”相关查询：
 ```bash
 sf data query -q "SELECT Id, Name FROM User WHERE Email = 'your.email@company.com'"
 ```
 
-Store this in your local config for quick reference.
+请将此信息保存在本地配置文件中以供快速参考。
 
-## References
+## 参考资料
 
-- **[soql-patterns.md](references/soql-patterns.md)** — Advanced SOQL patterns (polymorphic, semi-joins, formula fields)
-- **[pipeline-queries.md](references/pipeline-queries.md)** — Ready-to-use pipeline and forecast queries
+- **[soql-patterns.md](references/soql-patterns.md)** — 高级 SOQL 模式（多态性、半连接、公式字段）
+- **[pipeline-queries.md](references/pipeline-queries.md)** — 可直接使用的管道和预测查询模板

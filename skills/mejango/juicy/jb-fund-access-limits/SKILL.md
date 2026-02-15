@@ -12,41 +12,36 @@ description: |
   proper configuration for project deployment.
 ---
 
-# Juicebox V5 Fund Access Limits
+# Juicebox V5 的资金访问限制
 
-## Problem
+## 问题
 
-Two distinct issues with fund access limits:
+资金访问限制存在两个主要问题：
 
-1. **Configuration**: When deploying projects, `fundAccessLimitGroups: []` (empty array) means
-   **ZERO payouts allowed**, NOT unlimited. This is a common mistake - to allow unlimited
-   payouts, you must explicitly set `payoutLimits` with `uint224.max`.
+1. **配置**：在部署项目时，如果 `fundAccessLimitGroups: []`（空数组），则表示**不允许任何资金支出**，而不是“无限支出”。这是一个常见的错误。要允许无限支出，必须明确使用 `uint224.max` 来设置 `payoutLimits`。
 
-2. **Querying**: When querying JBFundAccessLimits for payout limits or surplus allowances,
-   the queries may return empty results even when values are set in the contract. Additionally,
-   detecting "unlimited" values is tricky because the protocol uses various max integers.
+2. **查询**：在查询 JBFundAccessLimits 以获取支出限制或剩余额度时，即使合约中已经设置了相关值，查询结果也可能为空。此外，由于协议使用了多种不同的最大整数值，因此很难判断某个值是否表示“无限”。
 
-## Context / Trigger Conditions
+## 上下文/触发条件
 
-**Configuration (when deploying):**
-- User selects "I'll manage it" or "unlimited payouts" but can't withdraw funds
-- `fundAccessLimitGroups: []` was generated (WRONG - means zero payouts)
-- Project owner needs ability to withdraw funds but config blocks it
+**配置（部署时）**：
+- 用户选择“我将自行管理”或“无限支出”，但实际上无法提取资金。
+- 生成了 `fundAccessLimitGroups: []`（这是错误的配置，会导致无法支出资金）。
+- 项目所有者希望能够提取资金，但配置却限制了这一操作。
 
-**Querying (when reading):**
-- `surplusAllowancesOf` or `payoutLimitsOf` returns empty array
-- Fund access shows "None" when it should show "Unlimited"
-- Project uses USDC instead of ETH as base currency
-- REVDeployer's `stageOf` or `configurationOf` functions revert
-- Large numbers displayed instead of "Unlimited" label
+**查询（读取时）**：
+- `surplusAllowancesOf` 或 `payoutLimitsOf` 返回空数组。
+- 资金访问状态显示为“None”，而实际上应该是“Unlimited”。
+- 项目使用 USDC 作为基础货币，而不是 ETH。
+- `REVDeployer` 的 `stageOf` 或 `configurationOf` 函数可能导致配置回退。
+- 显示的数值为较大的数字，而不是“Unlimited”字样。
 
-## Solution
+## 解决方案
 
-### 0. CRITICAL: Configuring Unlimited Payouts (Deployment)
+### 0. 关键点：配置无限支出（部署时）
 
-**Empty `fundAccessLimitGroups: []` = NO payouts allowed (not unlimited!)**
-
-To allow unlimited payouts, you MUST specify a payout limit with `uint224.max`:
+**空的 `fundAccessLimitGroups: []` 表示不允许任何支出（并非无限支出！**  
+要允许无限支出，必须使用 `uint224.max` 来设置支出限制：
 
 ```typescript
 // uint224.max - the maximum value the JBFundAccessLimits registry accepts
@@ -84,30 +79,29 @@ const correctConfigUSDC = {
 }
 ```
 
-**When to use payout limits:**
-- User wants to withdraw funds that are RESERVED (not available for cash outs)
-- Donation/fundraising projects where owner needs guaranteed access
-- Payout limits reset each ruleset cycle - good for recurring distributions
+**何时使用支出限制**：
+- 用户希望提取已被预留的资金（这些资金不可用于提现）。
+- 捐赠/筹款项目，项目所有者需要确保能够随时提取资金。
+- 支出限制在每个规则集周期结束时重置——适用于定期分配的情况。
 
-**When to use surplus allowance (owner access + cash outs both available):**
-- Funds should be accessible to owner BUT ALSO available for cash outs
-- Surplus allowance taps into the SAME pool supporters can cash out from
-- Until owner actually uses the allowance, supporters can still cash out the full balance
-- One-time per ruleset (doesn't reset each cycle)
+**何时使用剩余额度（所有者可提取资金且支持者也可提现）**：
+- 所有者可以提取资金，同时支持者也可以提现。
+- 剩余额度来自同一个资金池，支持者可以从中提取资金。
+- 在所有者实际使用剩余额度之前，支持者仍然可以提取全部余额。
+- 每个规则集仅适用一次，不会在每个周期内重置。
 
-**Key difference:**
-- Payout limits REDUCE cash out value (reserved funds aren't surplus)
-- Surplus allowance PRESERVES cash out value until owner uses it
-- **Both owner and supporters share access to surplus** - first come, first served
+**关键区别**：
+- 支出限制会减少可提取的资金金额（预留的资金不属于剩余额度）。
+- 剩余额度会保留可提取的资金金额，直到所有者使用为止。
+- **所有者和支持者共享剩余额度的使用权**——按先到先得的原则分配。
 
-**When to use zero payouts + zero allowance:**
-- Revnets (use surplus allowance for loans instead)
-- Projects where funds should be locked for supporter redemption only
+**何时使用零支出和零剩余额度**：
+- 在 Revnets 中，使用剩余额度进行贷款。
+- 项目中的资金仅用于支持者的赎回。
 
-### 1. Query with Multiple Tokens
+### 1. 多种代币的查询
 
-Fund access limits are keyed by (projectId, rulesetId, terminal, token). USDC-based
-projects won't have results when querying with ETH token:
+资金访问限制是根据 `(projectId, rulesetId, terminal, token)` 来确定的。基于 USDC 的项目在使用 ETH 代币进行查询时将不会得到结果：
 
 ```typescript
 const NATIVE_TOKEN = '0x000000000000000000000000000000000000EEEe'
@@ -130,9 +124,9 @@ if (!limits) {
 }
 ```
 
-### 2. Walk Back Ruleset Chain
+### 2. 回溯规则集链
 
-If no limits found for current rulesetId, walk back through `basedOnId`:
+如果当前 `rulesetId` 没有找到相应的限制信息，系统会回溯到 `basedOnId` 进行查找：
 
 ```typescript
 let currentRsId = BigInt(rulesetId)
@@ -154,9 +148,9 @@ while (attempts < maxAttempts) {
 }
 ```
 
-### 3. Detect "Unlimited" with Threshold
+### 3. 使用阈值判断“无限”状态
 
-The protocol uses various max values (uint256, uint224, uint128, etc.). Use threshold:
+协议使用了多种不同的最大整数值（如 `uint256`, `uint224`, `uint128` 等）。可以使用阈值来判断是否为“无限”状态：
 
 ```typescript
 const isUnlimited = (amount: string | undefined): boolean => {
@@ -170,9 +164,9 @@ const isUnlimited = (amount: string | undefined): boolean => {
 }
 ```
 
-### 4. Handle REVDeployer Version Differences
+### 4. 处理不同版本的 REVDeployer
 
-`stageOf` doesn't exist on all REVDeployer versions. Calculate current stage from timestamps:
+并非所有版本的 `REVDeployer` 都支持 `stageOf` 函数。可以通过时间戳来计算当前版本：
 
 ```typescript
 // Instead of calling stageOf (may not exist)
@@ -197,31 +191,30 @@ try {
 }
 ```
 
-## Verification
+## 验证
 
-- Surplus allowance displays "Unlimited" for Revnets instead of raw large number
-- USDC-based projects show correct fund access values
-- No console errors for REVDeployer function calls on older projects
+- 对于 Revnets，剩余额度会显示为“Unlimited”，而不是显示原始的巨大数值。
+- 基于 USDC 的项目会显示正确的资金访问信息。
+- 在较旧的项目上调用 `REVDeployer` 函数时，控制台不会出现错误。
 
-## Example
+## 示例
 
-For Artizen (project 6 on Base chain 8453):
-- Uses USDC, not ETH - must query with USDC token address
-- Surplus allowance returns `26959946667150640000000000000000000000000` which is "unlimited"
-- REVDeployer configurationOf may revert - handle gracefully
+以 Artizen 项目（位于 Base 链 8453 上）为例：
+- 该项目使用 USDC 作为货币，因此必须使用 USDC 代币地址进行查询。
+- 剩余额度返回 `26959946667150640000000000000000000000000`，表示“无限”。
+- `REVDeployer` 的 `configurationOf` 函数可能会导致配置回退，需要优雅地处理这种情况。
 
-## Notes
+## 注意事项
 
-- **CRITICAL**: Empty `fundAccessLimitGroups` = ZERO payouts, not unlimited. This is the
-  most common configuration mistake. Always use `uint224.max` for unlimited payouts.
-- `uint224.max` = `26959946667150639794667015087019630673637144422540572481103610249215`
-- USDC addresses are chain-specific (see table above)
-- JBMultiTerminal5_1 address (`0x52869db3d61dde1e391967f2ce5039ad0ecd371c`) is same on all chains
-- Currency field in results may be non-standard - don't rely on it for display
-- For Revnets: payout limit is always 0, surplus allowance is always unlimited (for loans)
-- The terminal address in `fundAccessLimitGroups` must match the terminal that will receive payments
+- **关键点**：空的 `fundAccessLimitGroups` 表示不允许任何支出，并非无限支出。配置时务必使用 `uint224.max` 来设置无限支出。
+- `uint224.max` 的示例值为 `26959946667150639794667015087019630673637144422540572481103610249215`。
+- USDC 地址因链而异（请参考上述表格）。
+- JBMultiTerminal5_1 的地址（`0x52869db3d61dde1e391967f2ce5039ad0ecd371c`）在所有链上都是相同的。
+- 结果中的货币字段可能不符合标准格式，不要依赖它来显示资金信息。
+- 对于 Revnets，支出限制始终为 0，剩余额度始终是无限的（用于贷款）。
+- `fundAccessLimitGroups` 中的终端地址必须与接收支付的终端地址相匹配。
 
-## Contract Functions
+## 合约函数
 
 ```solidity
 // JBFundAccessLimits
@@ -240,7 +233,7 @@ function surplusAllowancesOf(
 ) external view returns (JBCurrencyAmount[] memory);
 ```
 
-## References
+## 参考资料
 
-- JBFundAccessLimits contract
-- JBMultiTerminal5_1: `0x52869db3d61dde1e391967f2ce5039ad0ecd371c`
+- JBFundAccessLimits 合约
+- JBMultiTerminal5_1：`0x52869db3d61dde1e391967f2ce5039ad0ecd371c`

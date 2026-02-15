@@ -1,7 +1,7 @@
 ---
 name: consortium-ai-create-account
 displayName: Consortium AI Create Account
-description: Create a custodial wallet account on Consortium AI.
+description: 在 Consortium AI 上创建一个托管钱包账户。
 requirements: TRADING_ANALYSIS_API_KEY
 author: Consortium AI
 authorUrl: https://consortiumai.org/
@@ -9,52 +9,51 @@ keywords: ["crypto", "wallet", "create", "account", "custodial", "API"]
 category: trading
 ---
 
-## Instructions
+## 使用说明
 
-This skill provides **account creation** functionality for Consortium AI.
+此技能提供了在 Consortium AI 上创建账户的功能。
 
-It calls an external API that creates a custodial wallet account on Consortium AI.
+它会调用一个外部 API，在 Consortium AI 上创建一个托管钱包账户。
 
-### How to run (implementation)
+### 运行方式（实现方式）
 
-From the skill directory, you can call the API either by making HTTP requests (see API Reference) or by running the bundled script:
+在技能目录中，您可以通过发送 HTTP 请求（请参阅 API 参考）或运行捆绑的脚本来调用该 API：
 
-- **Create Account:**
+- **创建账户：**
   `node scripts/create-account.js <WALLET_ADDRESS>`
-  or `npm run create-account -- <WALLET_ADDRESS>`
-  Example: `node scripts/create-account.js 5h4...3k1`
+  或 `npm run create-account -- <WALLET_ADDRESS>`
+  例如：`node scripts/create-account.js 5h4...3k1`
 
-The script requires `TRADING_ANALYSIS_API_KEY` to be set. It prints the API response as JSON to stdout on success, or error JSON to stderr and exits non-zero on failure.
+该脚本需要设置 `TRADING_ANALYSIS_API_KEY`。如果操作成功，它会将 API 响应以 JSON 格式输出到标准输出（stdout）；如果失败，则会将错误信息以 JSON 格式输出到标准错误输出（stderr），并退出（退出状态码非零）。
 
 ---
 
-## Setup
+## 设置
 
-Set the API key as an environment variable before using this skill:
+在使用此技能之前，请将 API 密钥设置为环境变量：
 
 ```bash
 export TRADING_ANALYSIS_API_KEY=your-secret-api-key
 ```
 
-To get an API key, contact [Consortium AI on X](https://x.com/Consortium_AI).
+如需获取 API 密钥，请联系 [Consortium AI（在 X 平台上）](https://x.com/Consortium.AI)。
 
 ---
 
-## API Reference
+## API 参考
 
-**Backend API base URL:** `https://api.consortiumai.org`
+**后端 API 基本地址：** `https://api.consortiumai.org`
 
-**Endpoint:** `POST https://api.consortiumai.org/api/custodial-wallet/create-with-api-key`
-Creates a new custodial wallet account.
+**端点：** `POST https://api.consortiumai.org/api/custodial-wallet/create-with-api-key`
+用于创建一个新的托管钱包账户。
 
-### Authentication
+### 认证
 
-API key only (no JWT). Send the key in one of:
+仅需要 API 密钥（不支持 JWT）。可以通过以下方式之一发送密钥：
+- **请求头：** `x-api-key: <TRADING_ANALYSIS_API_KEY>`
+- **请求头：** `Authorization: Bearer <TRADING_ANALYSIS_API_KEY>`
 
-- **Header:** `x-api-key: <TRADING_ANALYSIS_API_KEY>`
-- **Header:** `Authorization: Bearer <TRADING_ANALYSIS_API_KEY>`
-
-### Request Body
+### 请求体
 
 ```json
 {
@@ -62,7 +61,7 @@ API key only (no JWT). Send the key in one of:
 }
 ```
 
-### Success response (201 Created)
+### 成功响应（状态码 201）
 
 ```json
 {
@@ -77,36 +76,32 @@ API key only (no JWT). Send the key in one of:
 }
 ```
 
-### Error responses
+### 错误响应
 
-| Status | When | Body (example) |
-|--------|------|----------------|
-| **400** | Missing walletAddress | `{ "error": "Missing walletAddress" }` |
-| **401** | Missing or wrong API key | `{ "success": false, "message": "Invalid or missing API key" }` |
-| **404** | User not found for wallet address | `{ "error": "User not found for the provided wallet address" }` |
+| 状态码 | 错误原因 | 响应内容（示例） |
+|--------|------------|-------------------|
+| **400** | 缺少 walletAddress | `{ "error": "Missing walletAddress" }` |
+| **401** | API 密钥缺失或错误 | `{ "success": false, "message": "Invalid or missing API key" }` |
+| **404** | 未找到对应的钱包地址的用户 | `{ "error": "User not found for the provided wallet address" }` |
 
 ---
 
-## Available Functions
+## 可用的功能
 
 ### createCustodialWallet(walletAddress)
 
-**Purpose**
-Create a new custodial wallet account on Consortium AI.
+**功能：** 在 Consortium AI 上创建一个新的托管钱包账户。
 
-**Parameters**
+**参数：**
+- `walletAddress`（字符串）：用户的钱包地址。
 
-- `walletAddress` (string): The user's wallet address.
+**预期行为：**
+- 向 `https://api.consortiumai.org/api/custodial-wallet/create-with-api-key` 发送 POST 请求。
+- 使用 `TRADING_ANALYSIS_API_KEY` 进行身份验证。
+- 返回创建的钱包详细信息。
 
-**Expected Behavior**
-
-- Sends a POST request to `https://api.consortiumai.org/api/custodial-wallet/create-with-api-key`
-- Authenticates with `x-api-key` using `TRADING_ANALYSIS_API_KEY`
-- Returns the created wallet details.
-
-**Returns**
-
-- Wallet ID
-- Generated Custodial Wallet Address
-- User ID
-- Creation timestamp
+**返回值：**
+- 钱包 ID
+- 生成的托管钱包地址
+- 用户 ID
+- 创建时间戳

@@ -1,78 +1,71 @@
 ---
 name: Galician
-description: Write Galician that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说的加利西亚语。既不是正式的，也不是机械的，更不是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Galician is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with warmth. Match that.
+虽然“AI Galician”在语法上是正确的，但听起来过于正式、过于文学化。当地人说话时更加随意、更富有感情色彩。我们需要让语言表达更贴近他们的日常交流方式。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Casual Galician is warm and melodic. Unless explicitly formal: lean casual. "Ola" not "Bo día". "Si" not "Si, por suposto".
+默认的语言表达方式过于正式。日常使用的加利西亚语更加亲切、富有韵律。除非需要特别正式的表达，否则应选择更随意的形式。例如，应该说“Ola”而不是“Bo día”，“Si”而不是“Si, por supuesto”。
 
-## Ti vs Vostede
+## “Ti”与“Vostede”的用法
 
-Distinction:
-- Vostede: formal, elderly, respect
-- Ti: friends, peers, casual
-- Galician casual uses ti widely
-- Vostede in formal contexts only
+- “Vostede”：用于正式场合或对年长者表示尊重；
+- “Ti”：用于朋友、同龄人或非正式场合；
+- 在加利西亚语的日常对话中，“Ti”被广泛使用；
+- “Vostede”仅用于正式语境。
 
-## Galician vs Spanish vs Portuguese
+## 加利西亚语与西班牙语、葡萄牙语的差异
 
-Galician is distinct:
-- Not Spanish, not Portuguese
-- Own vocabulary and patterns
-- "Grazas" not "Gracias"
-- Don't mix with Spanish
+加利西亚语有其独特的词汇和表达方式：
+- “Grazas”（谢谢）不同于西班牙语或葡萄牙语的“Gracias”；
+- 不要将加利西亚语的词汇和表达方式与西班牙语混用。
 
-## Particles & Softeners
+## 语言中的助词和缓和词
 
-These make Galician natural:
-- Pois: "well", "so"
-- Non si: tag question
-- Home/Muller: casual address
-- Logo: "then"
+这些助词和词语使加利西亚语更加自然：
+- “Pois”：表示“嗯”、“所以”；
+- “Non si”：用于反问句；
+- “Home/Muller”：用于非正式的称呼；
+- “Logo”：表示“然后”。
 
-## Fillers & Flow
+## 语言中的填充词和连词
 
-Real Galician has fillers:
-- Pois, logo, ben
-- Sabes, entendes
-- Ou sexa, vamos
-- Mira, escoita
+加利西亚语中常见一些填充词和连词：
+- “Pois, logo, ben”：表示“嗯，那么”；
+- “Sabes, entendes”：表示“你知道，你明白”；
+- “Ou sexa, vamos”：表示“要么这样，要么我们走吧”；
+- “Mira, escoita”：表示“看，听着”。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Ben → Xenial, Estupendo, Dabuti
-- Mal → Fatal, Moi mal
-- Moito → Abondo, Unha chea
+不要使用过于中立的词汇：
+- “Bien”可以替换为“Xenial”（很好的）、“Estupendo”（棒极了）或“Dabuti”（太好了）；
+- “Mal”可以替换为“Fatal”（糟糕的）或“Moi mal”（我不太舒服）；
+- “Moito”可以替换为“Abondo”（足够了）或“Una chea”（很多）。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Vale, Ben, Dabondo
-- Non pasa nada, Tranquilo
-- De verdade?, En serio?, Que?
-- Xenial!, Estupendo!, Moi ben!
+- “Vale, Bien, Dabondo”：表示“可以，很好，太棒了”；
+- “Non pasa nada, Tranquilo”：表示“没关系，别担心”；
+- “De verdad?, En serio?, Que?”：表示“真的吗？真的吗？”；
+- “Xenial!, Estupendo!, Moi bien!”：表示“太好了！我很好！”
 
-## Reactions
+## 语言反应
 
-React naturally:
-- De verdade?, En serio?, Que dis?
-- Carai!, Carallo!, Miña nai!
-- Xenial!, Dabuti!, Moi ben!
-- Jajaja in text
+在交流时，应保持自然的语气：
+- “De verdad?, En serio?, Que dis?”：表示“真的吗？你说什么？”；
+- “Carai!, Carallo!, Miña nai!”：表示“天啊！我的天！”；
+- “Xenial!, Dabuti!, Moi bien!”：表示“太好了！我很好！”；
+- 在文本中可以使用“Jajaja”来表达笑声。
 
-## Reintegrationism
+## 语言的融合与规范
 
-Some use Portuguese-aligned spelling:
-- Reintegrationist vs normative
-- Most use normative (RAG standard)
-- Stay consistent
+有些人会使用与葡萄牙语相似的拼写方式，但这并不符合加利西亚语的规范。大多数加利西亚语使用者仍然遵循传统的规范（RAG标准）。因此，在翻译时应保持语言的一致性。
 
-## The "Native Test"
+## 最后的检验标准
 
-Before sending: would a Galician speaker screenshot this as "AI-generated"? If yes—too formal, sounds Spanish, too literary. Add Galician warmth.
+在发布之前，可以问问加利西亚语使用者：如果他们看到这段文字是由AI生成的，会怎么想？如果他们认为这段文字太正式、听起来像西班牙语或文学化的语言，那就需要添加更多加利西亚语特有的表达方式，使其更加自然、亲切。

@@ -1,7 +1,7 @@
 ---
 name: command-center
 version: 1.0.4
-description: Mission control dashboard for OpenClaw - real-time session monitoring, LLM usage tracking, cost intelligence, and system vitals. View all your AI agents in one place.
+description: OpenClaw的任务控制面板：提供实时会话监控、大型语言模型（LLM）使用情况跟踪、成本分析以及系统关键指标的展示。您可以在一个地方查看所有的人工智能代理（AI agents）。
 metadata:
   openclaw:
     requires:
@@ -13,11 +13,11 @@ metadata:
         label: "Start Command Center (http://localhost:3333)"
 ---
 
-# OpenClaw Command Center
+# OpenClaw 命令中心
 
-Mission control for your AI workforce.
+您的 AI 工作力的任务控制中心。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install from ClawHub
@@ -28,30 +28,30 @@ cd ~/.openclaw/skills/command-center
 node lib/server.js
 ```
 
-Dashboard runs at **http://localhost:3333**
+仪表板运行地址：**http://localhost:3333**
 
-## Features
+## 功能
 
-- **Session Monitoring** — Real-time view of all AI sessions with live updates
-- **LLM Fuel Gauges** — Track Claude, Codex, and other model usage
-- **System Vitals** — CPU, Memory, Disk, Temperature
-- **Cron Jobs** — View and manage scheduled tasks
-- **Cerebro Topics** — Automatic conversation organization
-- **Cost Tracking** — Per-session costs, projections, savings estimates
-- **Privacy Controls** — Hide sensitive topics for demos
+- **会话监控** — 实时查看所有 AI 会话，并提供实时更新
+- **大型语言模型（LLM）使用情况** — 监控 Claude、Codex 等模型的使用情况
+- **系统状态** — CPU、内存、磁盘、温度等系统指标
+- **定时任务** — 查看和管理已安排的任务
+- **对话内容整理** — 自动整理对话内容
+- **成本跟踪** — 记录每次会话的成本、预测及节省金额
+- **隐私控制** — 可隐藏演示中的敏感内容
 
-## Configuration
+## 配置
 
-The dashboard auto-detects your OpenClaw workspace. Set `OPENCLAW_WORKSPACE` to override.
+仪表板会自动检测您的 OpenClaw 工作空间。如需自定义，请设置 `OPENCLAW_WORKSPACE` 环境变量。
 
-### Authentication
+### 认证方式
 
-| Mode         | Use Case          |
-| ------------ | ----------------- |
-| `none`       | Local development |
-| `token`      | Remote access     |
-| `tailscale`  | Team VPN          |
-| `cloudflare` | Public deployment |
+| 认证模式 | 使用场景                |
+| -------- | ---------------------- |
+| `none`   | 本地开发                |
+| `token`   | 远程访问                |
+| `tailscale` | 团队 VPN                |
+| `cloudflare` | 公开部署                |
 
 ```bash
 DASHBOARD_AUTH_MODE=tailscale node lib/server.js
@@ -59,14 +59,14 @@ DASHBOARD_AUTH_MODE=tailscale node lib/server.js
 
 ## API
 
-| Endpoint          | Description                  |
-| ----------------- | ---------------------------- |
-| `GET /api/state`  | All dashboard data (unified) |
-| `GET /api/events` | SSE stream for live updates  |
-| `GET /api/health` | Health check                 |
+| API 端点        | 描述                          |
+| ------------ | ----------------------------------- |
+| `GET /api/state` | 所有仪表板数据（统一格式）         |
+| `GET /api/events` | 提供实时更新的 SSE 数据流           |
+| `GET /api/health` | 系统健康检查                 |
 
-## Links
+## 链接
 
-- [GitHub](https://github.com/jontsai/openclaw-command-center)
-- [ClawHub](https://www.clawhub.ai/jontsai/command-center)
-- [Documentation](https://github.com/jontsai/openclaw-command-center#readme)
+- [GitHub](https://github.com/jontsai/openclaw-command-center)  
+- [ClawHub](https://www.clawhub.ai/jontsai/command-center)  
+- [文档](https://github.com/jontsai/openclaw-command-center#readme)

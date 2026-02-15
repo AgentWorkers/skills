@@ -1,37 +1,36 @@
 ---
 name: base-8004
-description: Register your AI agent onchain with ERC-8004 on Base. Set up a wallet, fund it, and register on the Identity Registry for permanent, verifiable identity and reputation.
+description: 在 Base 平台上，使用 ERC-8004 标准将您的人工智能代理进行链上注册。创建一个钱包，为其充值资金，然后在身份注册系统中完成注册，以获得永久且可验证的身份信息及声誉记录。
 metadata: { "openclaw": { "homepage": "https://8004.org" } }
 ---
 
-# Base-8004 Registration
+# Base-8004 注册流程
 
-This skill walks you through setting up your own wallet, funding it, and registering onchain with ERC-8004 on Base mainnet. Once registered, your agent has a permanent, verifiable onchain identity and can accumulate reputation.
+本指南将指导您如何设置自己的钱包、为其充值，并在 Base 主网上使用 ERC-8004 协议进行在线注册。完成注册后，您的智能体将拥有一个永久的、可验证的在线身份，并能够积累声誉。
 
-## 1. What ERC-8004 is
+## 1. 什么是 ERC-8004？
 
-ERC-8004 is an onchain identity and reputation protocol for AI agents.
+ERC-8004 是一种用于智能体的在线身份和声誉管理协议：
 
-- **Identity** — each registered agent gets an ERC-721 NFT on Base mainnet. This is your permanent, verifiable onchain identity.
-- **Reputation Registry** — a separate contract tracks reputation scores. Feedback signals (upvotes, downvotes, quality assessments) accumulate into a totalScore and feedbackCount.
-- **Verifiable metadata** — your registration includes a JSON document (agentURI) with your name, description, and capabilities. Anyone can read it onchain.
+- **身份**：每个注册的智能体都会在 Base 主网上获得一个 ERC-721 NFT，这代表了您的永久、可验证的在线身份。
+- **声誉记录**：一个独立的合约用于跟踪智能体的声誉分数。用户的反馈（点赞、点踩、质量评估）会累积到 `totalScore` 和 `feedbackCount` 中。
+- **可验证的元数据**：您的注册信息包含一个 JSON 文档（`agentURI`），其中包含您的名称、描述和能力。任何人都可以在线查看这些信息。
 
-Why it matters:
+**重要性：**
+- **永久的身份**：您的智能体 ID 在不同平台上都是唯一的，不会绑定到任何单一服务上。
+- **公开的声誉**：您的表现记录会在线上公开，并且任何人都可以查看。
 
-- **Permanent identity** — your agent ID persists across platforms, not tied to any single service.
-- **Public reputation** — your track record is onchain and verifiable by anyone.
+## 2. 设置钱包
 
-## 2. Set up your wallet
+您需要在 Base 主网上使用一个兼容以太坊的钱包。**如果您已经在 Base 上拥有 ETH 钱包，请跳转到第 4 节**。以下步骤仅适用于首次设置钱包的情况。
 
-You need an Ethereum-compatible wallet on Base mainnet. **If you already have a wallet with ETH on Base, skip to section 4.** These steps are only needed if you're setting up a fresh wallet.
-
-### Step 1: Install viem
+### 步骤 1：安装 viem
 
 ```bash
 npm install viem
 ```
 
-### Step 2: Generate a private key
+### 步骤 2：生成私钥
 
 ```typescript
 import { generatePrivateKey } from "viem/accounts";
@@ -40,9 +39,9 @@ const privateKey = generatePrivateKey();
 console.log("Private key:", privateKey);
 ```
 
-Save this private key immediately. You will never be able to recover it.
+请立即保存这个私钥，因为您将无法再次恢复它。
 
-### Step 3: Derive your address
+### 步骤 3：生成钱包地址
 
 ```typescript
 import { privateKeyToAccount } from "viem/accounts";
@@ -51,27 +50,26 @@ const account = privateKeyToAccount(privateKey);
 console.log("Address:", account.address);
 ```
 
-### Step 4: Store the private key securely
+### 步骤 4：安全存储私钥
 
-Add it to your `.env` file:
+将私钥添加到您的 `.env` 文件中：
 
 ```
 AGENT_PRIVATE_KEY=0x...your_private_key_here...
 ```
 
-Add `.env` to `.gitignore` if it isn't already:
+如果 `.env` 文件还不存在，请将其添加到 `.gitignore` 文件中：
 
 ```
 echo ".env" >> .gitignore
 ```
 
-### Step 5: Security rules
+### 步骤 5：安全注意事项
+- **切勿在日志、提交或 API 调用中泄露**私钥。
+- **切勿丢失**私钥——一旦丢失，您的钱包和在线身份将永远丢失。
+- **在覆盖旧私钥之前，请务必备份**。
 
-- **Never leak** your private key in logs, commits, or API calls.
-- **Never lose** it — if you lose the key, you lose the wallet and your onchain identity forever.
-- **Never overwrite** it without backing up the old one.
-
-### Step 6: Configure a wallet client for Base mainnet
+### 步骤 6：配置适用于 Base 主网的钱包客户端
 
 ```typescript
 import { createWalletClient, createPublicClient, http } from "viem";
@@ -83,13 +81,13 @@ const publicClient = createPublicClient({ chain: base, transport: http() });
 const walletClient = createWalletClient({ account, chain: base, transport: http() });
 ```
 
-## 3. Fund your wallet
+## 3. 为钱包充值
 
-Your wallet needs ETH on Base to pay for gas.
+您的钱包需要 ETH 来支付网络手续费（gas）。
 
-- **Get ETH on Base** — use Coinbase (withdraw directly to Base), bridge from any chain via [Relay](https://relay.link/bridge), or receive from another Base wallet.
-- **Gas is cheap** — Base L2 gas costs are very low. Registration costs ~$0.02. $1 of ETH is more than enough.
-- **Verify balance before proceeding:**
+- **在 Base 上获取 ETH**：可以使用 Coinbase（直接提取到 Base），或者通过 [Relay](https://relay.link/bridge) 从其他链转移 ETH，或者从其他 Base 钱包接收 ETH。
+- **手续费很低**：Base L2 的手续费非常低，注册费用大约为 0.02 美元。1 美元的 ETH 就足够了。
+- **在继续之前，请先核实钱包余额**：
 
 ```typescript
 const balance = await publicClient.getBalance({ address: account.address });
@@ -101,13 +99,13 @@ if (balance < 500000000000000n) {
 }
 ```
 
-## 4. Register onchain
+## 4. 在线注册
 
-Register your agent on the ERC-8004 Identity Registry. This mints an NFT that represents your permanent onchain identity.
+在 ERC-8004 身份注册表中注册您的智能体。此操作会生成一个代表您永久在线身份的 NFT。
 
-### Step 1: Create your registration JSON
+### 步骤 1：创建注册 JSON 文件
 
-Include the `services` array to declare your agent's capabilities so other agents and services can discover what you do:
+在 JSON 文件中包含 `services` 数组，以声明您的智能体具备的功能，以便其他智能体和服务能够识别您的服务类型：
 
 ```typescript
 const registration = {
@@ -124,17 +122,17 @@ const registration = {
 };
 ```
 
-- **`image`** — URL of your agent's avatar or logo, displayed in explorers and directories. Use a square image (256x256 or larger). If you don't have one yet, set it to `""` and add one later via `setAgentURI`.
-- **`services`** — declares your agent's capabilities onchain. Each entry has a `name` (the service identifier), an `endpoint`, and optionally a `version`. Common service types include `A2A` (Agent-to-Agent protocol) and `MCP` (Model Context Protocol).
+- **`image`**：智能体头像或标志的 URL，会在浏览器和目录中显示。请使用 256x256 或更大尺寸的图片。如果没有，请将其设置为 `""`，之后可以通过 `setAgentURI` 方法添加。
+- **`services`**：声明您的智能体在线上支持的功能。每个条目包含 `name`（服务标识）、`endpoint` 以及可选的 `version`。常见的服务类型包括 `A2A`（智能体之间的通信协议）和 `MCP`（模型上下文协议）。
 
-### Step 2: Encode as a data URI
+### 步骤 2：将 JSON 数据编码为数据 URI
 
 ```typescript
 const uri =
   "data:application/json;base64," + Buffer.from(JSON.stringify(registration)).toString("base64");
 ```
 
-### Step 3: Call register() on the Identity Registry
+### 步骤 3：调用 Identity Registry 的 `register()` 方法
 
 ```typescript
 import { encodeFunctionData } from "viem";
@@ -175,7 +173,7 @@ const hash = await walletClient.writeContract({
 console.log("TX hash:", hash);
 ```
 
-### Step 4: Parse the Transfer event to get your token ID
+### 步骤 4：解析 Transfer 事件以获取您的代币 ID
 
 ```typescript
 const receipt = await publicClient.waitForTransactionReceipt({ hash });
@@ -194,20 +192,20 @@ const erc8004AgentId = transferLog?.topics[3]
 console.log("Your ERC-8004 Agent ID:", erc8004AgentId);
 ```
 
-### Step 5: Save your agent ID
+### 步骤 5：保存您的智能体 ID
 
-Save `erc8004AgentId` — this is your permanent onchain identity. Add it to your `.env`:
+保存 `erc8004AgentId`——这是您的永久在线身份。将其添加到您的 `.env` 文件中：
 
 ```
 ERC8004_AGENT_ID=42
 ```
 
-You can verify your registration on BaseScan:
+您可以在 BaseScan 上验证您的注册信息：
 `https://basescan.org/nft/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432/{your_agent_id}`
 
-## 5. Update your registration
+## 5. 更新注册信息
 
-After your initial registration, you can update your agentURI (name, description, services) by calling `setAgentURI` on the Identity Registry. This lets you add new capabilities or change your metadata without re-registering.
+初次注册后，您可以通过调用 Identity Registry 的 `setAgentURI` 方法来更新您的智能体信息（名称、描述、支持的功能）。这样无需重新注册即可添加新功能或修改元数据。
 
 ```typescript
 const setAgentUriAbi = [
@@ -251,21 +249,20 @@ const hash = await walletClient.writeContract({
 console.log("URI updated, TX:", hash);
 ```
 
-Only the token owner can call `setAgentURI`.
+只有代币的所有者才能调用 `setAgentURI` 方法。
 
-## 6. Contract addresses and verification
+## 6. 合同地址及验证信息
 
-| Contract            | Address                                      | Chain        |
+| 合同            | 地址                                      | 链路        |
 | ------------------- | -------------------------------------------- | ------------ |
-| Identity Registry   | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | Base mainnet |
-| Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | Base mainnet |
+| Identity Registry   | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | Base 主网 |
+| Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | Base 主网 |
 
-**Verify on BaseScan:**
-
+**在 BaseScan 上验证：**
 - Identity Registry: [basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432](https://basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432)
 - Reputation Registry: [basescan.org/address/0x8004BAa17C55a88189AE136b182e5fdA19dE9b63](https://basescan.org/address/0x8004BAa17C55a88189AE136b182e5fdA19dE9b63)
 
-**Onchain query examples (read-only, no gas):**
+**在线查询示例（仅限读取，无需支付手续费）：**
 
 ```typescript
 import { createPublicClient, http } from "viem";
@@ -306,16 +303,16 @@ const uri = await client.readContract({
 });
 ```
 
-## 7. Resources
+## 7. 参考资源
 
-- [8004.org](https://8004.org) — ERC-8004 protocol
-- [Base](https://base.org) — Base L2 chain
-- [BaseScan](https://basescan.org) — Base block explorer
-- [viem](https://viem.sh) — TypeScript Ethereum library
+- [8004.org](https://8004.org) — ERC-8004 协议官方文档
+- [Base](https://base.org) — Base L2 链路
+- [BaseScan](https://basescan.org) — Base 链路浏览器
+- [viem](https://viem.sh) — 用于以太坊的 TypeScript 库
 
-## Summary
+## 总结
 
-1. **Set up wallet** — generate a private key, derive address, store securely.
-2. **Fund wallet** — get ETH on Base (Coinbase, bridge, or transfer). $1 is more than enough.
-3. **Register onchain** — call `register(agentURI)` on the Identity Registry with your services. Parse the Transfer event for your token ID.
-4. **Update registration** — call `setAgentURI` to change your metadata or add new services.
+1. **设置钱包**：生成私钥并安全存储。
+2. **为钱包充值**：在 Base 上获取 ETH（通过 Coinbase、桥接服务或转账）。
+3. **在线注册**：调用 Identity Registry 的 `register(agentURI)` 方法并传入您的服务信息。解析 Transfer 事件以获取您的代币 ID。
+4. **更新注册信息**：调用 `setAgentURI` 方法来修改元数据或添加新服务。

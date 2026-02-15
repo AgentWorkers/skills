@@ -1,71 +1,70 @@
 ---
 name: Irish
-description: Write Irish that sounds human. Not formal, not robotic, not AI-generated.
+description: 编写听起来像真人说的爱尔兰语。既不要过于正式，也不要有机器人般的机械感，更不能是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Irish is technically correct but sounds off. Too formal. Too textbook. Natives write more casually, mixing with English naturally. Match that.
+虽然“AI Irish”在语法上是正确的，但听起来很不自然，过于正式、生硬，缺乏口语化表达。爱尔兰本地人说话时通常会更加随意，会自然地将英语词汇融入到爱尔兰语中。因此，我们需要让翻译结果更贴近爱尔兰人的说话方式。
 
-## Formality Default
+## 正式程度的设定
 
-Default register is too high. Casual Irish is warm. Unless explicitly formal: lean casual. "Haigh" or "Hóigh" not always "Dia dhuit".
+默认的正式程度过高了。在日常交流中，爱尔兰语应该更加亲切、自然。除非需要特别正式的表达，否则应倾向于使用更随意的语气。例如，用“Haigh”或“Hóigh”代替“Dia dhuit”。
 
-## Tú vs Sibh
+## “Tú”与“Sibh”的用法区别
 
-Distinction:
-- Sibh: plural or formal singular
-- Tú: singular casual
-- Modern Irish uses tú for most contexts
-- Sibh for groups or respect
+- “Sibh”用于指代复数或正式的单数形式；
+- “Tú”则用于非正式的单数场合；
+- 在现代爱尔兰语中，“Tú”被广泛用于大多数语境；
+- “Sibh”则用于指代多人或表示尊重。
 
-## English Mixing
+## 英语词汇的混合使用
 
-Irish speakers often mix English:
-- Code-switching is natural
-- "Tá mé so tired"
-- Pure Irish can sound forced in casual contexts
-- Match the natural bilingual flow
+爱尔兰语使用者经常会在对话中混合使用英语词汇：
+- 这种语言切换是非常自然的现象；
+- 比如：“Tá mé so tired”（我非常累）；
+- 纯粹的爱尔兰语在非正式场合可能会显得生硬、不自然；
+- 因此，翻译时需要保持双语交流的流畅性。
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Irish natural:
-- Ar chor ar bith: "at all"
-- Go díreach: "exactly"
-- Mar sin: "so", "like that"
-- Ar aon nós: "anyway"
+这些词汇能让爱尔兰语表达更加自然：
+- “Ar chor ar bith”（一点也不）；
+- “Go díreach”（确切地）；
+- “Mar sin”（就是那样）；
+- “Ar aon nós”（无论如何）。
 
-## Fillers & Flow
+## 填充词与对话的连贯性
 
-Real Irish has fillers:
-- Bhuel, sea, is ea
-- Tá's agam, an dtuigeann tú
-- Mar sin, cibé
-- Abair, éist
+真正的爱尔兰语中会使用一些填充词来增强表达的连贯性：
+- “Bhuel, sea, is ea”（真的吗）；
+- “Tá’s agam, an dtuigeann tú”（好吧，你愿意的话）；
+- “Mar sin, cibé”（不是这样的）；
+- “Abair, éist”（哎呀）。
 
-## Expressiveness
+## 表达的丰富性
 
-Don't pick the safe word:
-- Maith → Iontach, Ar fheabhas, Bríomhar
-- Dona → Uafásach, Gránna
-- An-: intensifier (an-mhaith)
+不要总是选择最“安全”的表达方式：
+- “Maith”可以替换为“Iontach”、“Ar fheabhas”或“Bríomhar”；
+- “Dona”可以替换为“Uafásach”或“Gránna”；
+- “An-”是一个加强语气的前缀（例如“an-mhaith”）。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Ceart go leor, OK, Maith go leor
-- Níl fadhb, Tá sé ceart
-- I ndáiríre?, An bhfuil?, Cad?
-- Ar dóigh!, Iontach!
+自然的表达方式包括：
+- “Ceart go leor”（没关系）；
+- “Níl fadhb”（没有问题）；
+- “I ndáiríre?”（你在说什么？）；
+- “Ar dóigh!”（太棒了！）。
 
-## Reactions
+## 对话中的反应
 
-React naturally:
-- I ndáiríre?, An bhfuil tú ag magadh?
-- A thiarcais!, Mo léir!
-- Iontach!, Ar fheabhas!
-- Haha in text
+回应时要自然：
+- “I ndáiríre?”（你在说什么？）；
+- “A thiarcais!”（别担心！）；
+- “Iontach!”（太好了！）；
+- “Haha”（哈哈）。
 
-## The "Native Test"
+## “本地人的测试”
 
-Before sending: would an Irish speaker screenshot this as "AI-generated"? If yes—too formal, no English mixing, too textbook. Add natural flow.
+在发送翻译结果之前，可以问问爱尔兰语使用者：他们会认为这是“AI生成的”吗？如果是这样，那就说明翻译结果过于正式，没有融入英语词汇，也没有表现出自然的口语化表达。需要进一步调整，使其更符合爱尔兰人的说话习惯。

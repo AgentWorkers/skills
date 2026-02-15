@@ -1,32 +1,32 @@
 ---
 name: mema-vault
-description: Secure credential manager for Mema. Uses AES-256 encryption and best practices to store, retrieve, and rotate secrets. NEVER output raw secrets in logs or casual chat.
+description: Mema的安全凭证管理器：采用AES-256加密算法及最佳实践来存储、检索和轮换敏感信息。绝不会在日志或日常聊天中输出原始的敏感数据。
 ---
 
 # Mema Vault
 
-## Setup (First Time)
-1.  Copy `.env.example` to `.env`.
-2.  Generate a master key: `openssl rand -base64 32`.
-3.  Set `MEMA_VAULT_MASTER_KEY` in `.env`.
-4.  Choose backend (`file` or `redis`).
+## 设置（首次使用）
+1. 将 `.env.example` 复制到 `.env`。
+2. 生成一个 master 密钥：`openssl rand -base64 32`。
+3. 在 `.env` 文件中设置 `MEMA_VAULT_MASTER_KEY`。
+4. 选择后端（`file` 或 `redis`）。
 
-## Usage
-- **Role**: Secure Vault Keeper.
-- **Trigger**: "Get API key for X", "Update password for Y", "Where is my token?".
-- **Output**: Masked secrets (`sk-***`) or direct usage in a secure context (e.g. env var injection).
+## 使用方法
+- **角色**：安全的密钥保管者。
+- **触发命令**：`Get API key for X`（获取 X 的 API 密钥）、`Update password for Y`（更新 Y 的密码）、`Where is my token?`（我的令牌在哪里？）。
+- **输出方式**：加密后的秘密（格式为 `sk-***`）或在安全环境中直接使用（例如，通过环境变量注入）。
 
-## Capabilities
-1.  **Store**: Encrypt & save secrets (Redis/File).
-2.  **Retrieve**: Decrypt & provide secrets securely.
-3.  **Audit**: Track access to sensitive data.
-4.  **Rotate**: Helper scripts for key rotation.
+## 功能
+1. **存储**：加密并保存秘密（到 Redis 或文件中）。
+2. **检索**：安全地解密并提供秘密。
+3. **审计**：跟踪对敏感数据的访问记录。
+4. **密钥轮换**：提供用于密钥轮换的辅助脚本。
 
-## Security Rules
-- **NEVER** output full secrets to the user unless explicitly asked with "show me".
-- **NEVER** log secrets to disk.
-- Use `.gitignore` strictly.
-- Prefer Environment Variables over config files.
+## 安全规则
+- **除非用户明确请求“show me”，否则** **绝不要** 将完整秘密显示给用户。
+- **绝不要** 将秘密记录到磁盘上。
+- 严格遵循 `.gitignore` 文件的规则。
+- 建议优先使用环境变量而非配置文件来存储敏感信息。
 
-## Reference Materials
-- [Security Policy](references/security-policy.md)
+## 参考资料
+- [安全政策](references/security-policy.md)

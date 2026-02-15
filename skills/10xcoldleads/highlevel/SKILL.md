@@ -1,225 +1,227 @@
 ---
 name: highlevel
 version: 1.1.0
-description: "Connect your AI assistant to GoHighLevel CRM via the official API v2. Manage contacts, conversations, calendars, pipelines, invoices, payments, workflows, and 30+ endpoint groups through natural language. Includes interactive setup wizard and 40+ pre-built, safe API commands. Python 3.6+ stdlib only — zero external dependencies."
+description: "将您的 AI 助手通过官方 API v2 连接到 GoHighLevel CRM。通过自然语言界面，您可以管理联系人、对话记录、日历、工作流程、发票、付款信息以及 30 多个端点组。系统提供交互式的设置向导，并内置了 40 多个安全可靠的 API 命令。仅支持 Python 3.6 及更高版本的标准库，无需任何外部依赖。"
 tags: [gohighlevel, crm, api, contacts, conversations, calendars, opportunities, invoices, workflows, automation]
 author: Ty Shane
 homepage: https://launchmyopenclaw.com
 compatibility: "Requires Python 3.6+ (stdlib only, no pip installs). Requires two environment variables: HIGHLEVEL_TOKEN and HIGHLEVEL_LOCATION_ID."
 ---
 
-# GoHighLevel API Skill
+# GoHighLevel API 技能
 
-> **Turn your AI assistant into a GoHighLevel command center.** Search contacts, send messages, book appointments, manage pipelines, create invoices, schedule social posts — across all 39 GHL API v2 endpoint groups, using plain English.
+> **将您的人工智能助手转变为一个 GoHighLevel 命令中心。** 使用简单的英语，您可以搜索联系人、发送消息、预约、管理销售流程、创建发票、安排社交媒体帖子——涵盖所有 39 个 GHL API v2 终端点组。
 
-**Don't have GoHighLevel yet?** Start with the free 5-Day AI Employee Challenge and build a fully automated system:
-👉 [**Start the 5-Day AI Employee Challenge**](https://gohighlevel.com/5-day-challenge?fp_ref=369ai)
+**还没有 GoHighLevel 吗？** 从免费的 5 天 AI 员工挑战开始，构建一个完全自动化的系统：
+👉 [**开始 5 天 AI 员工挑战**](https://gohighlevel.com/5-day-challenge?fp_ref=369ai)
 
-## Requirements
+## 要求
 
-| Requirement | Details |
+| 要求 | 详情 |
 |-------------|---------|
-| **Runtime** | Python 3.6+ (uses only standard library: `urllib`, `json`, `os`, `re`, `sys`, `time`) |
-| **External packages** | **None** — zero `pip install` required |
-| **Environment variables** | `HIGHLEVEL_TOKEN` (Primary — your Private Integration bearer token) |
-| | `HIGHLEVEL_LOCATION_ID` (your sub-account Location ID) |
-| **Network access** | HTTPS to `services.leadconnectorhq.com` only |
+| **运行时** | Python 3.6+（仅使用标准库：`urllib`、`json`、`os`、`re`、`sys`、`time`） |
+| **外部包** | **无** — 无需安装任何包 |
+| **环境变量** | `HIGHLEVEL_TOKEN`（主要环境变量——您的私有集成令牌） |
+| | `HIGHLEVEL_LOCATION_ID`（您的子账户位置 ID） |
+| **网络访问** | 仅限通过 HTTPS 访问 `services.leadconnectorhq.com` |
 
-**Base URL**: `https://services.leadconnectorhq.com`
-**Required Headers**: `Authorization: Bearer $HIGHLEVEL_TOKEN` + `Version: 2021-07-28`
-**Rate Limits**: 100 requests/10 seconds burst, 200K/day per location
+**基础 URL**: `https://services.leadconnectorhq.com`
+**必需的请求头**: `Authorization: Bearer $HIGHLEVEL_TOKEN` + `Version: 2021-07-28`
+**速率限制**: 每 10 秒内允许 100 次请求，每个位置每天最多 200,000 次请求
 
-## Security Design
+## 安全设计
 
-All API functions use pre-defined endpoint paths — there is no arbitrary HTTP request capability. Every user-supplied ID is validated against a strict alphanumeric regex (`^[a-zA-Z0-9_-]{1,128}$`) before being included in any URL path, preventing path traversal and injection. The scripts use only Python's built-in `urllib.request` for all network calls. No shell commands, no external binaries, no file writes outside of stdout.
+所有 API 函数都使用预定义的端点路径——不允许随意发送 HTTP 请求。每个用户提供的 ID 都会经过严格的字母数字正则表达式 (`^[a-zA-Z0-9_-]{1,128}`) 验证，然后再包含在任何 URL 路径中，以防止路径遍历和注入攻击。脚本仅使用 Python 的内置 `urllib.request` 进行所有网络调用。不使用 shell 命令，不执行外部二进制文件操作，也不会将数据写入文件系统之外。
 
-## Setup — `/highlevel-setup`
+## 设置 — `/highlevel-setup`
 
-If the user says "set up highlevel", "connect my GHL", or `/highlevel-setup`, run the setup wizard:
+如果用户输入 “set up highlevel”、“connect my GHL” 或 “/highlevel-setup”，则会运行设置向导：
 
 ```bash
 python3 scripts/setup-wizard.py
 ```
 
-The wizard automatically: checks environment variables → guides Private Integration creation → tests the connection → pulls first 5 contacts as a quick win.
+向导会自动：
+- 检查环境变量
+- 指导创建私有集成
+- 测试连接
+- 获取前 5 个联系人作为快速验证结果。
 
-### Manual Setup (if wizard can't run)
+### 手动设置（如果向导无法运行）
 
-#### Step 1: Create a Private Integration (NOT the old API Keys method)
-1. Log into **app.gohighlevel.com**
-2. Switch to your **Sub-Account** (recommended for single-location use)
-3. Click **Settings** (bottom-left gear icon)
-4. Select **Private Integrations** in the left sidebar
-   - If not visible, enable it first: Settings → Labs → toggle Private Integrations ON
-5. Click **"Create new Integration"**
-6. Enter a name (e.g., "Claude AI Assistant") and description
-7. **Grant only the scopes you need** (least-privilege recommended):
+#### 第 1 步：创建私有集成（不要使用旧的 API 密钥方法）
+1. 登录到 **app.gohighlevel.com**
+2. 切换到您的 **子账户**（建议用于单位置使用）
+3. 点击 **设置**（左下角的齿轮图标）
+4. 在左侧边栏中选择 **私有集成**
+   - 如果没有显示，请先启用它：设置 → 实验室 → 打开私有集成
+5. 点击 **“创建新集成”
+6. 输入名称（例如：“Claude AI Assistant”）和描述
+7. **仅授予所需的权限范围**（建议使用最小权限）：
 
-   | Use case | Recommended scopes |
+   | 使用场景 | 推荐权限范围 |
    |----------|--------------------|
-   | Contact management only | `contacts.readonly`, `contacts.write` |
-   | Contacts + messaging | Above + `conversations.readonly`, `conversations.write`, `conversations/message.write` |
-   | Full CRM (contacts, calendar, pipeline) | Above + `calendars.readonly`, `calendars.write`, `opportunities.readonly`, `opportunities.write` |
-   | Adding workflows & invoices | Above + `workflows.readonly`, `invoices.readonly`, `invoices.write` |
-   | Read-only reporting | `contacts.readonly`, `opportunities.readonly`, `calendars.readonly`, `invoices.readonly`, `locations.readonly` |
+   | 仅限联系人管理 | `contacts.readonly`, `contacts.write` |
+   | 联系人 + 消息传递 | 上述权限 + `conversations.readonly`, `conversations.write`, `conversations/message.write` |
+   | 全面 CRM（联系人、日历、销售流程） | 上述权限 + `calendars.readonly`, `calendars.write`, `opportunities.readonly`, `opportunities.write` |
+   | 添加工作流和发票 | 上述权限 + `workflows.readonly`, `invoices.readonly`, `invoices.write` |
+   | 仅限读取报告 | `contacts.readonly`, `opportunities.readonly`, `calendars.readonly`, `invoices.readonly`, `locations.readonly` |
 
-   You can always add more scopes later in Settings → Private Integrations → Edit without regenerating the token.
+   您可以在之后的设置 → 私有集成 → 编辑中随时添加更多权限范围，而无需重新生成令牌。
 
-8. Click Create → **Copy the token IMMEDIATELY** — it is shown only once and cannot be retrieved later
+8. 点击创建 → **立即复制令牌** — 令牌仅显示一次，之后无法再次获取
 
-#### Agency vs Sub-Account Integrations
+#### 机构集成与子账户集成
 
-| Feature | Agency Integration | Sub-Account Integration |
+| 功能 | 机构集成 | 子账户集成 |
 |---------|-------------------|------------------------|
-| Created at | Agency Settings → Private Integrations | Sub-Account Settings → Private Integrations |
-| Access scope | Agency + all sub-accounts (pass `locationId`) | Single location only |
-| Available scopes | All scopes including `locations.write`, `oauth.*`, `saas.*`, `snapshots.*`, `companies.readonly` | Sub-account scopes only |
-| Best for | Multi-location management, SaaS configurator | Single client integrations (recommended default) |
+| 创建位置 | 机构设置 → 私有集成 | 子账户设置 → 私有集成 |
+| 访问范围 | 机构及所有子账户（通过 `locationId` 参数传递） | 仅限单个位置 |
+| 可用权限范围 | 包括 `locations.write`、`oauth.*`、`saas.*`、`snapshots.*`、`companies.readonly` 的所有权限 | 仅限子账户权限 |
+| 适用场景 | 多位置管理、SaaS 配置器 | 单客户集成（推荐默认设置） |
 
-> **Recommendation:** Start with a Sub-Account integration and the minimum scopes you need. You can upgrade to Agency-level later if you need multi-location access.
+> **建议：** 先从子账户集成开始，并使用最低权限范围。如果需要多位置访问，可以 later 升级到机构级别。
 
-### Step 2: Get Your Location ID
-1. While in the sub-account, go to **Settings** → **Business Info** (or **Business Profile**)
-2. The **Location ID** is displayed in the General Information section
-3. Alternative: check the URL bar — it's the ID after `/location/` in `app.gohighlevel.com/v2/location/{LOCATION_ID}/...`
+### 第 2 步：获取您的位置 ID
+1. 在子账户中，转到 **设置** → **业务信息**（或 **业务资料**）
+2. **位置 ID** 会显示在一般信息部分
+3. 或者：查看地址栏——它是在 `app.gohighlevel.com/v2/location/{LOCATION_ID}/...` 中 `/location/` 之后的 ID
 
-### Step 3: Set Environment Variables
+### 第 3 步：设置环境变量
 ```bash
 export HIGHLEVEL_TOKEN="your-private-integration-token"
 export HIGHLEVEL_LOCATION_ID="your-location-id"
 ```
 
-### Step 4: Test Connection
-Run `python3 scripts/ghl-api.py test_connection` — should return location name and status.
+### 第 4 步：测试连接
+运行 `python3 scripts/ghl-api.py test_connection` — 应该会返回位置名称和状态。
 
-After successful setup, pull 5 contacts as a quick win to confirm everything works.
+设置成功后，获取前 5 个联系人作为快速验证结果，以确保一切正常工作。
 
-## Helper Script
+## 辅助脚本
 
-`scripts/ghl-api.py` — Executable Python script (stdlib only) with built-in retry logic, pagination, input validation, and error handling.
+`scripts/ghl-api.py` — 一个可执行的 Python 脚本（仅使用标准库），具有内置的重试逻辑、分页功能、输入验证和错误处理。
 
-**Core Commands:**
-| Command | Description |
+**核心命令**：
+| 命令 | 描述 |
 |---------|-------------|
-| `test_connection` | Verify token + location ID work |
-| `search_contacts [query]` | Search by name, email, or phone |
-| `get_contact [id]` | Get full contact details |
-| `create_contact [json]` | Create new contact |
-| `update_contact [id] [json]` | Update contact fields |
-| `list_opportunities` | List pipeline opportunities |
-| `list_conversations` | List recent conversations |
-| `send_message [contactId] [message]` | Send SMS/email |
-| `list_calendars` | List all calendars |
-| `get_free_slots [calendarId] [startDate] [endDate]` | Available booking slots |
-| `list_workflows` | List all workflows |
-| `add_to_workflow [contactId] [workflowId]` | Enroll contact in workflow |
-| `list_invoices` | List invoices |
-| `list_products` | List products |
-| `list_forms` | List forms |
-| `list_campaigns` | List campaigns |
-| `get_location_details` | Get location info |
-| `list_location_tags` | List location tags |
-| `list_courses` | List courses/memberships |
+| `test_connection` | 验证令牌和位置 ID 是否有效 |
+| `search_contacts [query]` | 按名称、电子邮件或电话号码搜索联系人 |
+| `get_contact [id]` | 获取联系人的完整信息 |
+| `create_contact [json]` | 创建新联系人 |
+| `update_contact [id] [json]` | 更新联系人信息 |
+| `list_opportunities` | 列出销售流程中的机会 |
+| `list_conversations` | 列出最近的对话记录 |
+| `send_message [contactId] [message] | 发送短信/电子邮件 |
+| `list_calendars` | 列出所有日历 |
+| `get_free_slots [calendarId] [startDate] [endDate]` | 可用的预订时段 |
+| `list_workflows` | 列出所有工作流 |
+| `add_to_workflow [contactId] [workflowId] | 将联系人添加到工作流 |
+| `list_invoices` | 列出发票 |
+| `list_products` | 列出产品 |
+| `list_forms` | 列出表单 |
+| `list_campaigns` | 列出活动 |
+| `get_location_details` | 获取位置信息 |
+| `list_location_tags` | 列出位置标签 |
+| `list_courses` | 列出课程/会员信息 |
 
-All functions are safe, pre-defined endpoints. No arbitrary request capability.
+所有函数都使用安全的、预定义的 API 端点，不允许随意发送请求。
 
-## Complete API v2 Coverage (39 Endpoint Groups)
+## 完整的 API v2 覆盖范围（39 个终端点组）
 
-The skill provides safe, specific functions for all major GHL operations. Each function maps to a specific, allowed API endpoint with validated parameters.
+该技能提供了针对所有主要 GHL 操作的安全、特定的功能。每个功能都映射到一个特定的、允许的 API 端点，并且参数经过验证。
 
-| # | Group | Base Path | Key Operations | Scope Prefix |
+| # | 组 | 基础路径 | 主要操作 | 权限前缀 |
 |---|-------|-----------|----------------|-------------|
-| 1 | **Contacts** | `/contacts/` | CRUD, search, upsert, tags, notes, tasks, bulk ops | `contacts` |
-| 2 | **Conversations** | `/conversations/` | Search, messages (SMS/email/WhatsApp/FB/IG/chat), recordings | `conversations` |
-| 3 | **Calendars** | `/calendars/` | CRUD, free slots, groups, resources, appointments | `calendars` |
-| 4 | **Opportunities** | `/opportunities/` | CRUD, search, pipelines, stages, status, followers | `opportunities` |
-| 5 | **Workflows** | `/workflows/` | List workflows, enroll/remove contacts | `workflows` |
-| 6 | **Campaigns** | `/campaigns/` | List campaigns (read-only) | `campaigns` |
-| 7 | **Invoices** | `/invoices/` | CRUD, send, void, record payment, Text2Pay, schedules, estimates | `invoices` |
-| 8 | **Payments** | `/payments/` | Orders, transactions, subscriptions, coupons, providers | `payments` |
-| 9 | **Products** | `/products/` | CRUD, prices, collections, reviews, store stats | `products` |
-| 10 | **Locations** | `/locations/` | Get/update location, custom fields, custom values, tags, templates | `locations` |
-| 11 | **Users** | `/users/` | CRUD, filter by email/role | `users` |
-| 12 | **Forms** | `/forms/` | List forms, get submissions | `forms` |
-| 13 | **Surveys** | `/surveys/` | List surveys, get submissions | `surveys` |
-| 14 | **Funnels** | `/funnels/` | List funnels, pages, redirects | `funnels` |
-| 15 | **Social Planner** | `/social-media-posting/` | Posts CRUD, accounts, CSV import, categories, stats | `socialplanner` |
-| 16 | **Blogs** | `/blogs/` | Create/update posts, categories, authors | `blogs` |
-| 17 | **Email** | `/emails/` | Templates CRUD, scheduled emails | `emails` |
-| 18 | **Media** | `/medias/` | Upload, list, delete files | `medias` |
-| 19 | **Trigger Links** | `/links/` | CRUD trigger links | `links` |
-| 20 | **Businesses** | `/businesses/` | CRUD businesses | `businesses` |
-| 21 | **Companies** | `/companies/` | Get company details (Agency) | `companies` |
-| 22 | **Custom Objects** | `/objects/` | Schema CRUD, record CRUD | `objects` |
-| 23 | **Associations** | `/associations/` | CRUD associations and relations | `associations` |
-| 24 | **Proposals/Docs** | `/proposals/` | Documents, contracts, templates | `documents_contracts` |
-| 25 | **Snapshots** | `/snapshots/` | List, status, share links (Agency) | `snapshots` |
-| 26 | **SaaS** | `/saas/` | Subscription mgmt, plans, bulk ops (Agency $497) | `saas` |
-| 27 | **Courses** | `/courses/` | Import courses/memberships | `courses` |
-| 28 | **Voice AI** | `/voice-ai/` | Call logs, agent CRUD, actions, goals | `voice-ai` |
-| 29 | **Phone System** | `/phone-system/` | Phone numbers, number pools | `phonenumbers` |
-| 30 | **Custom Menus** | `/custom-menus/` | CRUD custom menu links (Agency) | `custom-menu-link` |
-| 31 | **OAuth** | `/oauth/` | Token exchange, installed locations | `oauth` |
-| 32 | **Marketplace** | `/marketplace/` | Installations, billing, charges | `marketplace` |
-| 33 | **Conversation AI** | `/conversation-ai/` | AI chatbot configuration | — |
-| 34 | **Knowledge Base** | `/knowledge-base/` | Knowledge base for AI features | — |
-| 35 | **AI Agent Studio** | `/agent-studio/` | Custom AI agent CRUD | — |
-| 36 | **Brand Boards** | `/brand-boards/` | Brand board management | — |
-| 37 | **Store** | `/store/` | E-commerce store management | — |
-| 38 | **LC Email** | `/lc-email/` | Email infrastructure (ISV) | — |
-| 39 | **Custom Fields** | `/locations/:id/customFields/` | Custom field CRUD | `locations/customFields` |
+| 1 | **联系人** | `/contacts/` | 创建/读取/更新/删除联系人、搜索、添加标签、备注、任务、批量操作 | `contacts` |
+| 2 | **对话记录** | `/conversations/` | 搜索、发送消息（短信/电子邮件/WhatsApp/FB/IG/聊天）、录音 | `conversations` |
+| 3 | **日历** | `/calendars/` | 创建/读取/更新日历、预订时段、分组、资源 | `calendars` |
+| 4 | **机会** | `/opportunities/` | 创建/读取/更新机会、搜索、管理销售流程、阶段、状态、跟踪者 | `opportunities` |
+| 5 | **工作流** | `/workflows/` | 列出工作流、将联系人添加到工作流/从工作流中移除 | `workflows` |
+| 6 | **活动** | `/campaigns/` | 列出活动（仅限读取） | `campaigns` |
+| 7 | **发票** | `/invoices/` | 创建/读取/更新发票、发送发票、取消订单、记录付款、Text2Pay、安排付款、估算 | `invoices` |
+| 8 | **支付** | `/payments/` | 订单、交易、订阅、优惠券、供应商 | `payments` |
+| 9 | **产品** | `/products/` | 创建/读取产品信息、价格、收藏、评论、商店统计 | `products` |
+| 10 | **位置** | `/locations/` | 获取/更新位置信息、自定义字段、自定义值、标签、模板 | `locations` |
+| 11 | **用户** | `/users/` | 创建/读取用户信息、按电子邮件/角色过滤 | `users` |
+| 12 | **表单** | `/forms/` | 列出表单、获取表单提交 | `forms` |
+| 13 | **调查** | `/surveys/` | 列出调查问卷、获取表单提交 | `surveys` |
+| 14 | **漏斗** | `/funnels/` | 列出漏斗、页面、重定向 | `funnels` |
+| 15 | **社交媒体发布** | `/social-media-posting/` | 发布内容、管理账户、导入 CSV 文件、分类、统计信息 | `socialplanner` |
+| 16 | **博客** | `/blogs/` | 创建/更新博客文章、分类、作者信息 | `blogs` |
+| 17 | **电子邮件** | `/emails/` | 创建/更新电子邮件模板、安排电子邮件发送 | `emails` |
+| 18 | **媒体** | `/medias/` | 上传/列出/删除媒体文件 | `medias` |
+| 19 | **触发链接** | `/links/` | 创建/更新触发链接 | `links` |
+| 20 | **企业** | `/businesses/` | 创建/读取企业信息 | `businesses` |
+| 21 | **公司** | `/companies/` | 获取公司详细信息（机构专用） | `companies` |
+| 22 | **自定义对象** | `/objects/` | 创建/读取自定义对象信息 | `objects` |
+| 23 | **关联** | `/associations/` | 创建/读取关联关系 | `associations` |
+| 24 | **提案/文档** | `/proposals/` | 创建/读取提案/合同 | `documents_contracts` |
+| 25 | **快照** | `/snapshots/` | 列出快照、查看状态、分享链接（机构专用） | `snapshots` |
+| 26 | **SaaS** | `/saas/` | 管理订阅、计划、批量操作（机构版需支付 497 美元） | `saas` |
+| 27 | **课程** | `/courses/` | 导入课程/会员信息 | `courses` |
+| 28 | **语音 AI** | `/voice-ai/` | 查看通话记录、创建/读取代理信息、执行操作、设置目标 | `voice-ai` |
+| 29 | **电话系统** | `/phone-system/` | 创建/读取电话号码 | `phonenumbers` |
+| 30 | **自定义菜单** | `/custom-menus/` | 创建/读取自定义菜单链接（机构专用） | `custom-menu-link` |
+| 31 | **OAuth** | `/oauth/` | 交换令牌、管理已安装的位置 | `oauth` |
+| 32 | **市场** | `/marketplace/` | 安装服务、管理账单 | `marketplace` |
+| 33 | **对话 AI** | `/conversation-ai/` | 配置 AI 聊天机器人 | — |
+| 34 | **知识库** | `/knowledge-base/` | 为 AI 功能提供知识库 | — |
+| 35 | **AI 代理工作室** | `/agent-studio/` | 创建/读取自定义 AI 代理信息 | — |
+| 36 | **品牌看板** | `/brand-boards/` | 管理品牌看板 | — |
+| 37 | **商店** | `/store/` | 管理电子商务商店 | — |
+| 38 | **LC 电子邮件** | `/lc-email/` | 电子邮件基础设施（ISV 专用） | — |
+| 39 | **自定义字段** | `/locations/:id/customFields/` | 创建/读取自定义字段 | `locations/customFields` |
 
-## Reference Docs (load on demand)
+## 参考文档（按需加载）
 
-For detailed endpoint paths, parameters, and examples for each group:
+有关每个组的详细端点路径、参数和示例，请参阅：
+- `references/contacts.md` — 联系人创建/读取/更新、搜索、添加标签、备注、任务、批量操作
+- `references/conversations.md` — 跨所有渠道的消息传递、录音、转录
+- `references/calendars.md` — 日历创建/读取/更新、预订时段、分组、资源
+- `references/opportunities.md` — 销售流程管理、阶段管理、状态更新
+- `references/invoices-payments.md` — 发票、支付、订单、订阅、产品
+- `references/locations-users.md` | 位置设置、自定义字段/值、用户、标签
+- `references/social-media.md` | 社交媒体发布、账户管理、OAuth 连接
+- `references/forms-surveys-funnels.md` | 表单、调查问卷、漏斗、触发链接
+- `references/advanced.md` | 自定义对象、关联关系、快照、SaaS、语音 AI、博客、课程
+- `references/troubleshooting.md` | 常见错误、速率限制、令牌轮换、调试
 
-- `references/contacts.md` — Contact CRUD, search, tags, notes, tasks, bulk operations
-- `references/conversations.md` — Messaging across all channels, recordings, transcriptions
-- `references/calendars.md` — Calendar CRUD, free slots, appointments, groups, resources
-- `references/opportunities.md` — Pipeline management, stages, status updates
-- `references/invoices-payments.md` — Invoices, payments, orders, subscriptions, products
-- `references/locations-users.md` — Location settings, custom fields/values, users, tags
-- `references/social-media.md` — Social planner posts, accounts, OAuth connections
-- `references/forms-surveys-funnels.md` — Forms, surveys, funnels, trigger links
-- `references/advanced.md` — Custom objects, associations, snapshots, SaaS, Voice AI, blogs, courses
-- `references/troubleshooting.md` — Common errors, rate limits, token rotation, debugging
+## 重要说明
 
-## Important Notes
+- **必须使用私有集成** — 旧的设置 → API 密钥方法已过时/不再支持
+- **令牌轮换**：令牌不会自动过期，但 GHL 建议每 90 天轮换一次。未使用的令牌在 90 天未使用后会自动过期
+  - **“稍后轮换并过期”** — 生成新令牌，旧令牌在 7 天宽限期内仍然有效
+  - **“立即轮换并过期”** — 旧令牌立即失效（用于安全原因）
+  - 您可以在不重新生成令牌的情况下修改权限范围
+- **OAuth 令牌**（仅限市场应用）：访问令牌在 24 小时后过期；令牌可以刷新，有效期最长为 1 年
+- 机构令牌可以通过传递 `locationId` 参数访问子账户数据
+- **速率限制是按资源计算的** — 每个子账户每 10 秒内允许 100 次请求，每天最多 200,000 次请求。SaaS 端点：全局每秒 100 次请求
+- 所有列表端点默认显示 20 条记录，可以通过 `limit` 参数设置每页最多显示 100 条记录
+- 对于大型数据集，使用 `startAfter` / `startAfterId` 进行分页
+- 通过响应头监控速率限制：`X-RateLimit-Limit-Daily`、`X-RateLimit-Daily-Remaining`、`X-RateLimit-Max`、`X-RateLimit-Remaining`、`X-RateLimit-Interval-Milliseconds`
+- **需要 **497 美元的机构专业版** 才能使用以下功能：SaaS 配置器、快照、全面的机构管理 API
 
-- **Private Integrations are required** — the old Settings → API Keys method is deprecated/EOL
-- **Token rotation**: Tokens don't auto-expire but GHL recommends 90-day rotation. Unused tokens auto-expire after 90 days inactivity
-  - **"Rotate and expire later"** — new token generated, old token stays active for 7-day grace period
-  - **"Rotate and expire now"** — old token invalidated immediately (use for compromised credentials)
-  - You can edit scopes without regenerating the token
-- **OAuth tokens** (marketplace apps only): Access tokens expire in 24 hours (86,399s); refresh tokens last up to 1 year
-- Agency tokens can access sub-account data by passing `locationId` parameter
-- **Rate limits are per-resource** — each sub-account independently gets 100/10s burst + 200K/day. SaaS endpoints: 10 req/sec global
-- All list endpoints default to 20 records, max 100 per page via `limit` param
-- Use cursor pagination with `startAfter` / `startAfterId` for large datasets
-- Monitor rate limits via response headers: `X-RateLimit-Limit-Daily`, `X-RateLimit-Daily-Remaining`, `X-RateLimit-Max`, `X-RateLimit-Remaining`, `X-RateLimit-Interval-Milliseconds`
-- **$497 Agency Pro plan** required for: SaaS Configurator, Snapshots, full agency management APIs
+## Webhook 事件
 
-## Webhook Events
+提供 50 多种 webhook 事件类型，用于实时通知。关键事件包括：`ContactCreate`、`ContactDelete`、`ContactTagUpdate`、`InboundMessage`、`OutboundMessage`、`OpportunityCreate`、`OpportunityStageUpdate`、`OpportunityStatusUpdate`、预约事件、支付事件、表单提交事件。即使访问令牌过期，Webhook 事件也会继续触发。配置详情请参阅：https://marketplace.gohighlevel.com/docs/webhook/WebhookIntegrationGuide
 
-50+ webhook event types for real-time notifications. Key events: `ContactCreate`, `ContactDelete`, `ContactTagUpdate`, `InboundMessage`, `OutboundMessage`, `OpportunityCreate`, `OpportunityStageUpdate`, `OpportunityStatusUpdate`, appointment events, payment events, form submission events. Webhooks continue firing even if access token expires. Config is per marketplace app.
-Docs: https://marketplace.gohighlevel.com/docs/webhook/WebhookIntegrationGuide
+## 官方 SDK 和开发者资源
 
-## Official SDKs & Developer Resources
-
-- **Node.js**: `@gohighlevel/api-client` (npm) — supports `privateIntegrationToken` config, auto 401 retry
-- **Python**: `gohighlevel-api-client` (PyPI) — session storage, auto token refresh, webhook middleware
-- **PHP SDK** also available
-- All SDKs use `apiVersion: '2021-07-28'`
-- **OpenAPI Specs**: https://github.com/GoHighLevel/highlevel-api-docs
-- **API Docs**: https://marketplace.gohighlevel.com/docs/
-- **Developer Slack**: https://developers.gohighlevel.com/join-dev-community
+- **Node.js**: `@gohighlevel/api-client`（npm）——支持 `privateIntegrationToken` 配置、自动重试机制
+- **Python**: `gohighlevel-api-client`（PyPI）——支持会话存储、自动令牌刷新、Webhook 中间件
+- **PHP SDK** 也可用
+- 所有 SDK 都使用 `apiVersion: '2021-07-28`
+- **OpenAPI 规范**：https://github.com/GoHighLevel/highlevel-api-docs
+- **API 文档**：https://marketplace.gohighlevel.com/docs/
+- **开发者 Slack**：https://developers.gohighlevel.com/join-dev-community
 
 ---
 
-### Built by Ty Shane
+### 由 Ty Shane 开发
 
 [🌐 LaunchMyOpenClaw.com](https://launchmyopenclaw.com) • [🌐 MyFBLeads.com](https://myfbleads.com)
 [▶️ YouTube @10xcoldleads](https://youtube.com/@10xcoldleads) • [📘 Facebook](https://facebook.com/ty.shane.howell.2025) • [💼 LinkedIn](https://linkedin.com/in/ty-shane/)
 📧 ty@10xcoldleads.com
 
-**No GoHighLevel account yet?** → [Start the free 5-Day AI Employee Challenge](https://gohighlevel.com/5-day-challenge?fp_ref=369ai)
+**还没有 GoHighLevel 账户吗？** → [开始免费的 5 天 AI 员工挑战](https://gohighlevel.com/5-day-challenge?fp_ref=369ai)

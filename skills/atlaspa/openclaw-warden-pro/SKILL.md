@@ -1,17 +1,17 @@
 ---
 name: openclaw-warden-pro
-description: "Full workspace security suite: detect unauthorized modifications, scan for prompt injection patterns, and automatically respond with countermeasures — snapshot restore, skill quarantine, git rollback, and automated protection sweeps. The complete post-installation security layer for agent workspaces."
+description: "全套工作区安全解决方案：能够检测未经授权的修改行为，扫描潜在的命令注入攻击模式，并自动采取应对措施（如快照恢复、技能隔离、Git回滚以及自动化防护扫描）。这是为代理工作区提供的完整安装后安全防护层。"
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🛡️","requires":{"bins":["python3"]},"os":["darwin","linux","win32"]}}
 ---
 
 # OpenClaw Warden Pro
 
-Everything in [openclaw-warden](https://github.com/AtlasPA/openclaw-warden) (free) plus automated countermeasures.
+[openclaw-warden](https://github.com/AtlasPA/openclaw-warden) 的所有功能（免费版本）+ 自动化应对措施。
 
-**Free version detects threats. Pro version responds to them.**
+**免费版本仅能检测威胁；Pro 版本能够对这些威胁做出响应。**
 
-## Detection Commands (also in free)
+## 检测命令（免费版本中也包含）
 
 ```bash
 python3 {baseDir}/scripts/integrity.py baseline --workspace /path/to/workspace
@@ -22,51 +22,51 @@ python3 {baseDir}/scripts/integrity.py status --workspace /path/to/workspace
 python3 {baseDir}/scripts/integrity.py accept SOUL.md --workspace /path/to/workspace
 ```
 
-## Pro Countermeasures
+## Pro 版本的应对措施
 
-### Restore from Snapshot
+### 从快照中恢复
 
-Restore a tampered file to its baseline snapshot. Critical, config, and skill files are automatically snapshotted when the baseline is established.
+将被篡改的文件恢复到其基线快照状态。在设置基线时，关键文件、配置文件和技能文件会自动被创建快照。
 
 ```bash
 python3 {baseDir}/scripts/integrity.py restore SOUL.md --workspace /path/to/workspace
 ```
 
-### Git Rollback
+### Git 回滚
 
-Restore a file to its last git-committed state.
+将文件恢复到其最后一次提交的 Git 状态。
 
 ```bash
 python3 {baseDir}/scripts/integrity.py rollback SOUL.md --workspace /path/to/workspace
 ```
 
-### Quarantine a Skill
+### 将技能置于隔离状态
 
-Disable a suspicious skill by renaming its directory. The agent will not load quarantined skills.
+通过重命名相关目录来禁用可疑技能。代理程序将不会加载被隔离的技能。
 
 ```bash
 python3 {baseDir}/scripts/integrity.py quarantine bad-skill --workspace /path/to/workspace
 ```
 
-### Unquarantine a Skill
+### 解除技能的隔离状态
 
-Restore a quarantined skill after investigation.
+在调查后，恢复被隔离的技能。
 
 ```bash
 python3 {baseDir}/scripts/integrity.py unquarantine bad-skill --workspace /path/to/workspace
 ```
 
-### Protect (Automated Response)
+### 保护（自动响应）
 
-Full scan + automatic countermeasures in one pass: restore tampered critical files, quarantine malicious skills, flag remaining issues. This is the recommended command for session startup.
+一次性完成全面扫描和自动应对措施：恢复被篡改的关键文件，隔离恶意技能，并标记剩余的问题。这是启动会话时推荐的命令。
 
 ```bash
 python3 {baseDir}/scripts/integrity.py protect --workspace /path/to/workspace
 ```
 
-## Recommended Integration
+## 推荐的集成方式
 
-### Session Startup Hook (Claude Code)
+### 会话启动钩子（Claude Code）
 
 ```json
 {
@@ -86,40 +86,40 @@ python3 {baseDir}/scripts/integrity.py protect --workspace /path/to/workspace
 }
 ```
 
-### Heartbeat (OpenClaw)
+### Heartbeat（OpenClaw）
 
-Add to HEARTBEAT.md for periodic protection:
+将相关代码添加到 HEARTBEAT.md 文件中，以实现定期保护：
 ```
 - Run workspace integrity protection (python3 {skill:openclaw-warden-pro}/scripts/integrity.py protect)
 ```
 
-### After Installing New Skills
+### 安装新技能后
 
-Run `protect` to auto-quarantine skills that modified workspace files.
+运行 `protect` 命令，自动隔离修改了工作区文件的技能。
 
-## What Gets Monitored
+## 监控内容
 
-| Category | Files | Alert Level |
+| 类别 | 文件 | 警报级别 |
 |----------|-------|-------------|
-| **Critical** | SOUL.md, AGENTS.md, IDENTITY.md, USER.md, TOOLS.md, HEARTBEAT.md | WARNING |
-| **Memory** | memory/*.md, MEMORY.md | INFO |
-| **Config** | *.json in workspace root | WARNING |
-| **Skills** | skills/*/SKILL.md | WARNING |
+| **关键文件** | SOUL.md, AGENTS.md, IDENTITY.md, USER.md, TOOLS.md, HEARTBEAT.md | 警告 |
+| **内存** | memory/*.md, MEMORY.md | 信息提示 |
+| **配置文件** | 工作区根目录下的 *.json 文件 | 警告 |
+| **技能文件** | skills/*/SKILL.md | 警告 |
 
-## Countermeasure Summary
+## 应对措施汇总
 
-| Command | Action |
+| 命令 | 动作 |
 |---------|--------|
-| `protect` | Full scan + auto-restore + auto-quarantine + flag |
-| `restore <file>` | Restore from baseline snapshot |
-| `rollback <file>` | Restore from git history |
-| `quarantine <skill>` | Disable skill by renaming directory |
-| `unquarantine <skill>` | Re-enable a quarantined skill |
+| `protect` | 全面扫描 + 自动恢复 + 自动隔离 + 标记问题 |
+| `restore <file>` | 从基线快照中恢复文件 |
+| `rollback <file>` | 从 Git 提交历史中恢复文件 |
+| `quarantine <skill>` | 通过重命名目录来禁用技能 |
+| `unquarantine <skill>` | 恢复被隔离的技能 |
 
-## No External Dependencies
+## 无外部依赖
 
-Python standard library only. No pip install. No network calls. Everything runs locally.
+仅依赖 Python 标准库，无需安装任何第三方库（如 pip），也不进行网络调用。所有操作都在本地执行。
 
-## Cross-Platform
+## 跨平台兼容性
 
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+支持与 OpenClaw、Claude Code、Cursor 以及任何遵循 Agent Skills 规范的工具配合使用。

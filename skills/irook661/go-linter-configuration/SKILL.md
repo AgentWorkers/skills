@@ -1,6 +1,6 @@
 ---
 name: go-linter-configuration
-description: "Configure and troubleshoot golangci-lint for Go projects. Handle import resolution issues, type-checking problems, and optimize configurations for both local and CI environments."
+description: "配置并排查 Go 项目的 `golangci-lint` 工具。解决导入解析问题、类型检查错误，并针对本地开发和持续集成（CI）环境优化配置。"
 metadata:
   {
     "openclaw":
@@ -28,41 +28,41 @@ metadata:
   }
 ---
 
-# Go Linter Configuration Skill
+# Go 代码检查工具配置技巧
 
-Configure and troubleshoot golangci-lint for Go projects. This skill helps handle import resolution issues, type-checking problems, and optimize configurations for both local and CI environments.
+本技巧介绍如何配置和排查 golangci-lint 在 Go 项目中的使用问题。该工具有助于解决导入解析问题、类型检查错误，并优化本地开发及持续集成（CI）环境下的配置。
 
-## Installation
+## 安装
 
-Install golangci-lint:
+安装 golangci-lint：
 
 ```bash
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 ```
 
-Or use the official installation script:
+或者使用官方的安装脚本：
 
 ```bash
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
 ```
 
-## Basic Usage
+## 基本用法
 
-Run linter on entire project:
+1. 对整个项目运行代码检查工具：
 
 ```bash
 golangci-lint run ./...
 ```
 
-Run with specific configuration:
+2. 使用特定配置运行代码检查工具：
 
 ```bash
 golangci-lint run --config .golangci.yml ./...
 ```
 
-## Configuration File (.golangci.yml)
+## 配置文件（.golangci.yml）
 
-### Minimal Configuration (for CI environments with import issues)
+### 最小配置（适用于存在导入问题的 CI 环境）
 ```yaml
 run:
   timeout: 5m
@@ -87,7 +87,7 @@ output:
   format: tab
 ```
 
-### Standard Configuration (for local development)
+### 标准配置（适用于本地开发）
 ```yaml
 run:
   timeout: 5m
@@ -122,29 +122,29 @@ output:
   format: tab
 ```
 
-## Troubleshooting Common Issues
+## 常见问题的排查与解决
 
-### "undefined: package" Errors
-Problem: Linter reports undefined references to imported packages
-Solution: Use minimal configuration with `disable-all: true` and only enable basic linters like `gofmt`
+### “undefined: package” 错误
+问题：代码检查工具报告对导入包的引用未定义。
+解决方案：使用最小配置（`disable-all: true`），并仅启用基础的代码检查工具（如 `gofmt`）。
 
-### Import Resolution Problems
-Problem: CI environment cannot resolve dependencies properly
-Solution: 
-1. Ensure go.mod and go.sum are up to date
-2. Use `go mod download` before running linter in CI
-3. Consider using simpler linters in CI environment
+### 导入解析问题
+问题：CI 环境无法正确解析依赖项。
+解决方案：
+1. 确保 `go.mod` 和 `go.sum` 文件是最新的。
+2. 在运行代码检查工具之前执行 `go mod download` 命令。
+3. 考虑在 CI 环境中使用更简单的代码检查工具。
 
-### Type-Checking Failures
-Problem: Linter fails during type checking phase
-Solution:
-1. Temporarily disable complex linters that require type checking
-2. Use `--fast` flag for quicker, less intensive checks
-3. Verify all imports are properly declared
+### 类型检查失败
+问题：代码检查工具在类型检查阶段失败。
+解决方案：
+1. 暂时禁用需要类型检查的复杂工具。
+2. 使用 `--fast` 标志以加快检查速度并减少检查强度。
+3. 确认所有导入语句都正确声明。
 
-## CI/CD Optimization
+## 持续集成/持续部署（CI/CD）优化
 
-For GitHub Actions workflow:
+针对 GitHub Actions 工作流程的配置示例：
 
 ```yaml
 name: Code Quality
@@ -178,14 +178,14 @@ jobs:
       run: golangci-lint run --config .golangci.yml ./...
 ```
 
-## Linter Selection Guidelines
+## 代码检查工具选择指南
 
-- **gofmt**: For formatting consistency
-- **govet**: For semantic errors
-- **errcheck**: For unchecked errors
-- **staticcheck**: For static analysis
-- **unused**: For dead code detection
-- **gosimple**: For simplification suggestions
-- **ineffassign**: For ineffective assignments
+- **gofmt**：用于代码格式的一致性检查。
+- **govet**：用于检测语义错误。
+- **errcheck**：用于检测未检查的错误。
+- **staticcheck**：用于静态代码分析。
+- **unused**：用于检测未使用的代码。
+- **gosimple**：用于提供代码简化建议。
+- **ineffassign**：用于检测无效的赋值操作。
 
-Choose linters based on project needs and CI performance requirements.
+根据项目需求和 CI 环境的性能要求来选择合适的代码检查工具。

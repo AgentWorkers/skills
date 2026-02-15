@@ -1,21 +1,21 @@
 ---
 name: readeck
-description: Readeck integration for saving and managing articles. Supports adding URLs, listing entries, and managing bookmarks via Readeck's API. Configure custom URL and API key per request or via environment variables READECK_URL and READECK_API_KEY.
+description: Readeck集成用于保存和管理文章。支持通过Readeck的API添加URL、列出条目以及管理书签。可以根据请求配置自定义URL和API密钥，或者通过环境变量`READECK_URL`和`READECK_API_KEY`来进行设置。
 ---
 
-# Readeck Integration
+# Readeck 集成
 
-## Configuration
+## 配置
 
-Configure Readeck access via:
-- Request parameters: `url` and `apiKey`
-- Environment variables: `READECK_URL` and `READECK_API_KEY`
+通过以下方式配置 Readeck 的访问权限：
+- 请求参数：`url` 和 `apiKey`
+- 环境变量：`READECK_URL` 和 `READECK_API_KEY`
 
-## Core Operations
+## 核心操作
 
-### Add Article
+### 添加文章
 
-Add a URL to Readeck for parsing and saving:
+将一个 URL 添加到 Readeck 进行解析和保存：
 
 ```bash
 curl -X POST "$READECK_URL/api/bookmarks" \
@@ -24,34 +24,34 @@ curl -X POST "$READECK_URL/api/bookmarks" \
   -d '{"url": "https://example.com/article"}'
 ```
 
-Response includes `id`, `url`, and `title`.
+响应中包含 `id`、`url` 和 `title`。
 
-### List Entries
+### 列出文章
 
-Fetch saved articles:
+获取已保存的文章：
 
 ```bash
 curl "$READECK_URL/api/bookmarks?limit=20" \
   -H "Authorization: Bearer $READECK_API_KEY"
 ```
 
-Query parameters: `page`, `limit`, `status`, `search`.
+查询参数：`page`、`limit`、`status`、`search`。
 
-### Get Single Entry
+### 获取单篇文章
 
 ```bash
 curl "$READECK_URL/api/bookmarks/$ID" \
   -H "Authorization: Bearer $READECK_API_KEY"
 ```
 
-### Delete Entry
+### 删除文章
 
 ```bash
 curl -X DELETE "$READECK_URL/api/bookmarks/$ID" \
   -H "Authorization: Bearer $READECK_API_KEY"
 ```
 
-### Mark as Read
+### 标记为已读
 
 ```bash
 curl -X PUT "$READECK_URL/api/bookmarks/$ID/status" \
@@ -60,22 +60,22 @@ curl -X PUT "$READECK_URL/api/bookmarks/$ID/status" \
   -d '{"status": "read"}'
 ```
 
-## Common Patterns
+## 常见操作模式
 
-**Save with tags:**
+**带标签保存：**
 ```json
 {"url": "https://example.com", "tags": ["tech", "readlater"]}
 ```
 
-**Save to specific collection:**
+**保存到特定集合：**
 ```json
 {"url": "https://example.com", "collection": "my-collection"}
 ```
 
-**Filter by status:** `unread`, `read`, `archived`
+**按状态过滤：** `unread`、`read`、`archived`
 
-## Error Handling
+## 错误处理
 
-- `401`: Invalid API key
-- `404`: Entry not found
-- `422`: Invalid URL or request body
+- `401`：API 密钥无效
+- `404`：未找到文章
+- `422`：URL 或请求体无效

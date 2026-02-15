@@ -1,105 +1,105 @@
 ---
 name: openclaw-vault-pro
-description: "Full credential lifecycle security: detect exposed credentials, auto-fix permissions, quarantine exposed files, rotation tracking, git history scanning, and automated protection. Everything in openclaw-vault (free) plus automated countermeasures."
+description: "完整的凭据生命周期安全解决方案：检测泄露的凭据、自动修复权限问题、隔离受感染的文件、跟踪凭据轮换情况、扫描 Git 历史记录，并提供自动化保护功能。这些功能均包含在 openclaw-vault（免费版本）中，同时还提供了自动化的应对措施。"
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🔐","requires":{"bins":["python3"]},"os":["darwin","linux","win32"]}}
 ---
 
 # OpenClaw Vault Pro
 
-Everything in [openclaw-vault](https://github.com/AtlasPA/openclaw-vault) (free) plus automated countermeasures.
+[openclaw-vault](https://github.com/AtlasPA/openclaw-vault) 的所有功能（免费版本）加上自动化防护措施。
 
-**Free version detects threats. Pro version subverts, quarantines, and defends.**
+**免费版本用于检测威胁；Pro 版本则能够采取应对措施、隔离受感染的文件并进行防御。**
 
-## Detection Commands (also in free)
+## 检测命令（免费版本也提供）
 
-### Full Credential Audit
+### 全面凭证审计
 
-Comprehensive credential exposure audit: permission checks, shell history, git config, config file scanning, log file scanning, gitignore coverage, and staleness detection.
+对所有凭证文件进行全面的审计：检查权限设置、shell 历史记录、git 配置文件、配置文件内容、日志文件、gitignore 规则的适用性以及凭证文件的过期情况。
 
 ```bash
 python3 {baseDir}/scripts/vault.py audit --workspace /path/to/workspace
 ```
 
-### Exposure Check
+### 凭证泄露检测
 
-Detect credential exposure vectors: misconfigured permissions, public directory exposure, git history risks, Docker credential embedding, shell alias leaks, and URL query parameter credentials in code.
+识别可能导致凭证泄露的隐患：配置错误的权限设置、公开目录中的凭证文件、git 历史记录中的风险、Docker 配置中的凭证信息泄露、shell 别名中的敏感信息，以及代码中通过 URL 查询参数传递的凭证信息。
 
 ```bash
 python3 {baseDir}/scripts/vault.py exposure --workspace /path/to/workspace
 ```
 
-### Credential Inventory
+### 凭证清单管理
 
-Build a structured inventory of all credential files in the workspace. Categorizes by type (API key, database URI, token, certificate, SSH key, password), tracks age, and flags stale or exposed credentials.
+生成工作区中所有凭证文件的清单，按类型（API 密钥、数据库 URI、令牌、证书、SSH 密钥、密码等）进行分类，并记录凭证的创建时间，标记过时的或已泄露的凭证。
 
 ```bash
 python3 {baseDir}/scripts/vault.py inventory --workspace /path/to/workspace
 ```
 
-### Quick Status
+### 快速状态概览
 
-One-line summary: credential count, exposure count, staleness warnings.
+以一行文字显示凭证总数、泄露凭证的数量以及是否存在过期的凭证。
 
 ```bash
 python3 {baseDir}/scripts/vault.py status --workspace /path/to/workspace
 ```
 
-## Pro Countermeasures
+## Pro 版本的防护措施
 
-### Fix Permissions
+### 自动修复权限
 
-Auto-fix file permissions on all credential files. Sets .env files and other credential files to owner-readable only (chmod 600 on Unix, restricted ACLs via icacls on Windows).
+自动修复所有凭证文件的权限设置，将 `.env` 文件及其他凭证文件设置为仅允许文件所有者读取（在 Unix 系统上使用 `chmod 600`；在 Windows 系统上使用 `icacls` 设置受限的 ACL）。
 
 ```bash
 python3 {baseDir}/scripts/vault.py fix-permissions --workspace /path/to/workspace
 ```
 
-### Quarantine
+### 隔离受感染的文件
 
-Move an exposed credential file to `.quarantine/vault/` with metadata recording the original location and reason. The file is removed from its original location to prevent further exposure.
+将泄露的凭证文件移至 `.quarantine/vault/` 目录，并记录文件的原始位置及隔离原因。从原始位置移除这些文件以防止进一步泄露。
 
 ```bash
 python3 {baseDir}/scripts/vault.py quarantine <file> --workspace /path/to/workspace
 ```
 
-### Unquarantine
+### 恢复被隔离的文件
 
-Restore a previously quarantined credential file to its original location. Matches by original path or quarantine file name.
+将之前被隔离的凭证文件恢复到其原始位置，恢复方式基于文件的原始路径或隔离文件的名称。
 
 ```bash
 python3 {baseDir}/scripts/vault.py unquarantine <file> --workspace /path/to/workspace
 ```
 
-### Rotation Check
+### 凭证轮换检查
 
-Check credential file ages and generate a rotation schedule. Files exceeding the max-age threshold are flagged as overdue. Files approaching the threshold are flagged as approaching. Default threshold is 90 days.
+检查凭证文件的创建时间，并生成轮换计划。超过最长保留期限的文件会被标记为“过期”，接近期限的文件会被标记为“即将过期”。默认的保留期限为 90 天。
 
 ```bash
 python3 {baseDir}/scripts/vault.py rotate-check --workspace /path/to/workspace
 python3 {baseDir}/scripts/vault.py rotate-check --max-age 60 --workspace /path/to/workspace
 ```
 
-### Git Guard
+### Git 监控
 
-Scan git history for accidentally committed credentials. Uses `git log --diff-filter=A` to find credential files that were added (and possibly later removed). Checks whether credentials are still in HEAD or only in history. Provides remediation guidance.
+扫描 git 历史记录，查找意外提交的凭证信息。使用 `git log --diff-filter=A` 命令来查找被添加（可能后来又被删除）的凭证文件，确认这些凭证是否仍然存在于当前工作目录（HEAD）中，或者仅存在于历史记录中，并提供相应的修复建议。
 
 ```bash
 python3 {baseDir}/scripts/vault.py gitguard --workspace /path/to/workspace
 ```
 
-### Protect (Automated Sweep)
+### 自动化保护
 
-Full automated protection sweep in one command: audit all credentials, check exposure vectors, fix permissions, quarantine high-risk exposed files, check rotation schedule, and produce a comprehensive report. Recommended for session startup.
+通过一条命令执行全面的自动化保护操作：审计所有凭证文件、检查泄露风险、修复权限问题、隔离高风险文件、检查轮换计划，并生成详细的报告。建议在会话启动时执行此操作。
 
 ```bash
 python3 {baseDir}/scripts/vault.py protect --workspace /path/to/workspace
 python3 {baseDir}/scripts/vault.py protect --max-age 60 --workspace /path/to/workspace
 ```
 
-## Recommended Integration
+## 推荐的集成方式
 
-### Session Startup Hook (Claude Code)
+### 会话启动时的自动检测（Claude Code）
 
 ```json
 {
@@ -119,47 +119,48 @@ python3 {baseDir}/scripts/vault.py protect --max-age 60 --workspace /path/to/wor
 }
 ```
 
-### Heartbeat (OpenClaw)
+### 定期凭证保护机制（OpenClaw）
 
-Add to HEARTBEAT.md for periodic credential protection:
+将相关配置添加到 `HEARTBEAT.md` 文件中，以实现定期凭证保护功能：
+
 ```
 - Run credential protection sweep (python3 {skill:openclaw-vault-pro}/scripts/vault.py protect)
 ```
 
-## Workspace Auto-Detection
+## 工作区自动检测
 
-If `--workspace` is omitted, the script tries:
-1. `OPENCLAW_WORKSPACE` environment variable
-2. Current directory (if AGENTS.md exists)
-3. `~/.openclaw/workspace` (default)
+如果省略了 `--workspace` 参数，脚本会尝试以下路径来查找工作区配置：
+1. `OPENCLAW_WORKSPACE` 环境变量
+2. 当前目录（如果存在 `AGENTS.md` 文件）
+3. `~/.openclaw/workspace`（默认路径）
 
-## What It Checks
+## 检测范围
 
-| Category | Details |
+| 检测类别 | 具体内容 |
 |----------|---------|
-| **Permissions** | .env files with world-readable or group-readable permissions |
-| **Shell History** | Credentials in .bash_history, .zsh_history, .python_history, etc. |
-| **Git Config** | Credentials embedded in git remote URLs, plaintext credential helpers |
-| **Config Files** | Hardcoded secrets in JSON, YAML, TOML, INI config files |
-| **Log Files** | Credentials accidentally logged in .log files |
-| **Gitignore** | Missing patterns for .env, *.pem, *.key, credentials.json, etc. |
-| **Staleness** | Credential files older than threshold that may need rotation |
-| **Public Dirs** | Credential files in public/, static/, www/, dist/, build/ |
-| **Git History** | Credential files in git repos that may be committed |
-| **Docker** | Secrets hardcoded in Dockerfile and docker-compose configs |
-| **Shell RC** | Credentials in .bashrc, .zshrc, .profile aliases |
-| **URL Params** | API keys/tokens passed in URL query strings in code |
+| **权限设置** | 具有全局可读或组可读权限的 `.env` 文件 |
+| **Shell 历史记录** | `.bash_history`、`.zsh_history`、`.python_history` 等文件中的凭证信息 |
+| **Git 配置** | git 远程 URL 中嵌入的凭证信息，以及明文形式的凭证配置 |
+| **配置文件** | JSON、YAML、TOML、INI 格式的配置文件中的硬编码秘密信息 |
+| **日志文件** | 日志文件中意外记录的凭证信息 |
+| **gitignore 规则** | `.env`、`.pem`、`.key`、`credentials.json` 等文件是否被正确排除在日志记录之外 |
+| **凭证过期情况** | 超过保留期限的凭证文件 |
+| **公开目录** | `public/`、`static/`、`www/`、`build/` 目录中的凭证文件 |
+| **Git 历史记录** | 可能被提交到 git 仓库中的凭证文件 |
+| **Docker** | `Dockerfile` 和 `docker-compose` 配置文件中的硬编码秘密信息 |
+| **Shell 配置文件** | `.bashrc`、`.zshrc`、`.profile` 文件中的凭证别名 |
+| **URL 查询参数** | 代码中通过 URL 查询参数传递的 API 密钥/令牌 |
 
-## Exit Codes
+## 错误代码
 
-- `0` -- Clean, no issues
-- `1` -- Warnings detected (review needed)
-- `2` -- Critical exposure detected (action needed)
+- `0`：检查完成，无问题
+- `1`：检测到警告，需要进一步审查
+- `2`：检测到严重泄露，需要立即采取行动
 
-## No External Dependencies
+## 无需外部依赖
 
-Python standard library only. No pip install. No network calls. Everything runs locally.
+仅依赖 Python 标准库，无需安装任何第三方库（如 pip），也不进行网络请求，所有操作都在本地完成。
 
-## Cross-Platform
+## 跨平台兼容性
 
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+支持与 OpenClaw、Claude Code、Cursor 以及任何遵循 Agent Skills 规范的工具配合使用。

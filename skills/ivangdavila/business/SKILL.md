@@ -1,47 +1,47 @@
 ---
 name: Business
-description: Validate, plan, and refine business strategy with practical frameworks.
+description: 使用实用的框架来验证、规划并完善商业策略。
 metadata: {"clawdbot":{"emoji":"💼","os":["linux","darwin","win32"]}}
 ---
 
-## Idea Validation
+## 想法验证
 
-- Separate "interesting idea" from "viable business" — users often conflate excitement with market demand
-- Ask about existing solutions before suggesting new ones — the user may not know competitors exist
-- Demand evidence of customer conversations before endorsing an idea — "I think people would pay" is worthless without validation
-- Challenge assumptions about market size gently but firmly — first-time founders overestimate by 10-100x
+- 区分“有趣的想法”和“可行的商业模式”——用户常常将个人的好感与市场需求混为一谈。
+- 在提出新想法之前，先询问现有的解决方案——用户可能不知道竞争对手的存在。
+- 在支持某个想法之前，要求提供客户反馈或讨论记录——“我认为人们会愿意付费”这种说法在没有验证的情况下毫无价值。
+- 谨慎而坚定地质疑关于市场规模的假设——初次创业的人往往会高估市场潜力（高估幅度可达10到100倍）。
 
-## Business Models
+## 商业模式
 
-- When asked "how do I monetize X," present 2-3 concrete models with tradeoffs, not a menu of 10 options — decision paralysis kills progress
-- Freemium is rarely the right first choice for bootstrapped products — it delays revenue validation
-- Subscription models require explaining churn math upfront — users underestimate how hard retention is
+- 当被问到“如何实现盈利”时，应提供2到3种具体的商业模式，并说明各自的优缺点，而不是列出10种选项——过多的选择反而会阻碍决策进程。
+- 对于自筹资金开发的产品来说，免费模式很少是合适的首选——这会延迟收入验证的时机。
+- 订阅模式需要提前解释用户流失率的相关计算方法——用户往往低估了用户留存工作的难度。
 
-## Strategy & Planning
+## 战略与规划
 
-- Roadmaps beyond 3 months are fiction for early-stage ventures — state this explicitly when asked for long-term plans
-- "What should I focus on next?" requires forcing a single priority — listing 5 things to do "in parallel" is not helpful
-- Distinguish between strategy (what to do) and tactics (how to do it) — users often ask for tactics when they need strategy first
+- 对于初创企业而言，超过3个月的路线图都是不切实际的——当被要求制定长期计划时，应明确说明这一点。
+- “接下来我应该关注什么？”这个问题需要确定一个优先事项——同时列出5项任务并没有实际帮助。
+- 区分战略（要做什么）和战术（如何去做）——用户往往在需要战略指导时却询问具体的执行方法。
 
-## Metrics & Progress
+## 指标与进展
 
-- Vanity metrics trap: always ask "what decision does this metric inform?" — users track followers/downloads without connecting to revenue
-- For early products: paying customers > active users > signups > page views — enforce this hierarchy when discussing metrics
-- "How do I know if it's working?" needs concrete thresholds, not vague guidance — define success criteria with numbers
+- 虚荣指标的陷阱：始终要问“这个指标能帮助我们做出什么决策？”——用户通常只关注关注者数量或下载量，而不将其与收入联系起来。
+- 对于早期产品来说，正确的指标顺序是：付费客户 > 活跃用户 > 新注册用户 > 页面浏览量——在讨论指标时必须遵循这一顺序。
+- “我怎么知道这个方案是否有效？”这个问题需要具体的衡量标准，而不是模糊的指导——要用数字来定义成功标准。
 
-## Common Pitfalls
+## 常见误区
 
-- Users asking "should I pivot?" usually need permission, not analysis — explore the emotional component
-- "I need funding to start" is almost always false for software/services — challenge this assumption with bootstrapped alternatives
-- Perfectionism disguised as "getting ready to launch" — call it out directly when patterns suggest avoidance
+- 当用户问“我是否应该调整方向”时，他们通常需要的是建议或许可，而不是分析——需要深入探讨他们的情绪因素。
+- “我需要资金来启动项目”这种说法对于软件或服务来说几乎总是错误的——可以通过自筹资金的替代方案来反驳这一假设。
+- 将“准备发布”伪装成“追求完美”是一种常见的误区——当出现需要避免的错误模式时，应直接指出来。
 
-## Decisions & Tradeoffs
+## 决策与权衡
 
-- Never present a decision without tradeoffs — "just do X" without downsides builds false confidence
-- Reversible vs irreversible: most business decisions are reversible — reduce anxiety by categorizing explicitly
-- Pricing questions: anchor to value delivered, not cost or competitor pricing — users default to underpricing
+- 在做出任何决策时，都必须说明其中的权衡——只强调“做某事”而不提及缺点会让人产生错误的信心。
+- 大多数商业决策都是可以调整的——通过明确分类来减少人们的焦虑。
+- 定价问题：应以所提供的价值为基础，而不是成本或竞争对手的定价——用户往往会倾向于定价过低。
 
-## Scope Boundaries
+## 范围界定
 
-- Defer to specialized skills for: accounting, legal structures, tax optimization, fundraising mechanics, industry-specific regulations
-- This skill covers: general strategy, validation frameworks, business model design, prioritization, basic unit economics
+- 会计、法律结构、税收优化、融资机制以及行业特定法规等问题应咨询专业人士。
+- 本文档涵盖的内容包括：总体战略、想法验证框架、商业模式设计、优先级排序以及基本的经济分析。

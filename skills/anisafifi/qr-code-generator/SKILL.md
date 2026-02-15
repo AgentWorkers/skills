@@ -1,16 +1,16 @@
 ---
 name: qr-code-generator
-description: "Use this skill when users need to create QR codes for any purpose. Triggers include: requests to \"generate QR code\", \"create QR\", \"make a QR code for\", or mentions of encoding data into scannable codes. Supports URLs, text, WiFi credentials, vCards (contact information), email addresses, phone numbers, SMS, location coordinates, calendar events, and custom data. Can customize colors, add logos, generate bulk QR codes, and export in multiple formats (PNG, SVG, PDF). Requires OpenClawCLI installation from clawhub.ai."
+description: "当用户需要为任何目的创建二维码时，请使用此功能。触发条件包括：请求“生成二维码”、“创建二维码”、“为……制作二维码”，或提及将数据编码为可扫描的二维码。支持输入的类型包括 URL、文本、WiFi 凭据、vCard（联系信息）、电子邮件地址、电话号码、短信内容、地理位置坐标、日历事件以及自定义数据。用户可以自定义二维码的颜色、添加徽标，并批量生成二维码；生成的二维码支持多种格式（PNG、SVG、PDF）。使用此功能前，需要从 clawhub.ai 安装 OpenClawCLI 工具。"
 license: Proprietary
 ---
 
-# QR Code Generator
+# QR码生成器
 
-Generate customizable QR codes for URLs, text, WiFi credentials, contact cards, and more. Supports batch generation, custom styling, logo embedding, and multiple export formats.
+本工具可生成用于URL、文本、WiFi密码、联系卡等多种用途的可定制QR码。支持批量生成、自定义样式、嵌入Logo以及多种导出格式。
 
-⚠️ **Prerequisite:** Install [OpenClawCLI](https://clawhub.ai/) (Windows, MacOS)
+**重要提示：** 需先安装 [OpenClawCLI](https://clawhub.ai/)（适用于Windows和MacOS）。
 
-**Installation:**
+**安装方法：**
 ```bash
 # Standard installation
 pip install qrcode[pil] segno
@@ -21,75 +21,72 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install qrcode[pil] segno
 ```
 
-**Never use `--break-system-packages`** as it can damage your system's Python installation.
+**请勿使用 `--break-system-packages` 选项**，否则可能会损坏您的Python安装环境。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 功能 | 命令示例 |
 |------|---------|
-| Basic URL QR code | `python scripts/qr.py "https://example.com"` |
-| Text QR code | `python scripts/qr.py --type text "Hello World"` |
-| WiFi QR code | `python scripts/qr.py --type wifi --ssid "MyNetwork" --password "secret"` |
-| vCard contact | `python scripts/qr.py --type vcard --name "John Doe" --phone "+1234567890"` |
-| Custom colors | `python scripts/qr.py "URL" --fg-color blue --bg-color white` |
-| With logo | `python scripts/qr.py "URL" --logo logo.png` |
-| SVG format | `python scripts/qr.py "URL" --format svg` |
-| Batch generation | `python scripts/qr.py --batch urls.txt --output-dir qrcodes/` |
+| 生成基本URL QR码 | `python scripts/qr.py "https://example.com"` |
+| 生成文本QR码 | `python scripts/qr.py --type text "Hello World"` |
+| 生成WiFi QR码 | `python scripts/qr.py --type wifi --ssid "MyNetwork" --password "secret"` |
+| 生成vCard联系卡 | `python scripts/qr.py --type vcard --name "John Doe" --phone "+1234567890"` |
+| 自定义颜色 | `python scripts/qr.py "URL" --fg-color blue --bg-color white` |
+| 嵌入Logo | `python scripts/qr.py "URL" --logo logo.png` |
+| 生成SVG格式QR码 | `python scripts/qr.py "URL" --format svg` |
+| 批量生成 | `python scripts/qr.py --batch urls.txt --output-dir qrcodes/` |
 
 ---
 
-## Core Features
+## 核心特性
 
-### 1. Multiple Data Types
+### 1. 多种数据类型支持
 
-Generate QR codes for various data types with automatic formatting.
+支持生成多种类型的QR码，并自动进行格式化：
+- **URL**：网站链接
+- **文本**：纯文本信息
+- **WiFi**：WiFi网络密码
+- **vCard**：联系信息（VCF格式）
+- **电子邮件**：带可选主题和正文的电子邮件地址
+- **电话号码**：电话号码（tel:格式）
+- **短信**：包含收件人和文本的短信内容
+- **地理位置**：地理坐标
+- **日历事件**：iCal格式的事件信息
+- **自定义数据**：任意自定义数据
 
-**Supported Types:**
-- **URL** - Websites and web links
-- **Text** - Plain text messages
-- **WiFi** - WiFi network credentials
-- **vCard** - Contact information (VCF format)
-- **Email** - Email addresses with optional subject/body
-- **Phone** - Phone numbers (tel: links)
-- **SMS** - SMS messages with recipient and text
-- **Geo** - Geographic coordinates
-- **Event** - Calendar events (iCal format)
-- **Custom** - Any custom data
+### 2. 自定义选项
 
-### 2. Customization Options
+- **外观定制**：
+  - 前景色和背景色
+  - 自定义纠错级别
+  - 边框大小调整
+  - QR码模块大小控制
+  - Logo/图片嵌入
 
-Personalize QR code appearance:
-- Foreground and background colors
-- Custom error correction levels
-- Border size adjustment
-- Module size control
-- Logo/image embedding
+### 3. 多种导出格式
 
-### 3. Multiple Export Formats
+支持多种格式的导出，以满足不同需求：
+- **PNG**：适合数字显示的栅格图像（默认格式）
+- **SVG**：可缩放的矢量图形
+- **PDF**：适合打印的文档格式
+- **EPS**：适用于专业设计工具的矢量格式
+- **终端显示**：以ASCII艺术形式在终端中显示
 
-Export in various formats for different use cases:
-- **PNG** - Raster images (default)
-- **SVG** - Vector graphics (scalable)
-- **PDF** - Print-ready documents
-- **EPS** - Vector format for design tools
-- **Terminal** - ASCII art for terminal display
+### 4. 批量处理
 
-### 4. Batch Processing
-
-Generate multiple QR codes from:
-- Text files (one entry per line)
-- CSV files (with metadata)
-- JSON files (with configuration)
+- 从文本文件（每行一个条目）生成QR码
+- 从CSV文件（包含元数据）生成QR码
+- 从JSON文件（包含配置信息）生成QR码
 
 ---
 
-## Basic Usage
+## 基本用法
 
-### URL QR Codes
+### 生成URL QR码
 
-Generate QR codes for websites and links.
+用于生成网站链接的QR码。
 
 ```bash
 # Simple URL
@@ -102,7 +99,7 @@ python scripts/qr.py "https://github.com" --output github_qr.png
 python scripts/qr.py "https://mysite.com" --error-correction H --output site_qr.png
 ```
 
-**Output:**
+**输出结果：**
 ```
 QR code generated: qrcode.png
 Size: 290x290 pixels
@@ -110,9 +107,9 @@ Error correction: M (Medium)
 Data: https://example.com
 ```
 
-### Text QR Codes
+### 生成文本QR码
 
-Encode plain text messages.
+用于生成纯文本信息的QR码。
 
 ```bash
 # Simple text
@@ -125,9 +122,9 @@ python scripts/qr.py --type text "Line 1\nLine 2\nLine 3" --output message.png
 python scripts/qr.py --type text "$(cat message.txt)" --output text_qr.png
 ```
 
-### WiFi QR Codes
+### 生成WiFi QR码
 
-Create scannable WiFi credentials.
+用于生成可扫描的WiFi网络密码。
 
 ```bash
 # WPA/WPA2 network
@@ -143,16 +140,16 @@ python scripts/qr.py --type wifi --ssid "SecretNet" --password "secret" --hidden
 python scripts/qr.py --type wifi --ssid "GuestNetwork" --security nopass
 ```
 
-**Security types:** `WPA`, `WEP`, `nopass`
+**支持的安全类型：** WPA, WEP, nopass
 
-**Output QR contains:**
+**生成的QR码包含：**
 ```
 WIFI:T:WPA;S:MyNetwork;P:SecurePassword123;H:false;;
 ```
 
-### Contact Cards (vCard)
+### 生成联系卡（vCard）
 
-Generate vCard QR codes for easy contact sharing.
+用于生成便于分享的联系卡QR码。
 
 ```bash
 # Basic contact
@@ -177,7 +174,7 @@ python scripts/qr.py --type vcard \
   --email "bob@email.com"
 ```
 
-**Generated vCard format:**
+**生成的vCard格式：**
 ```
 BEGIN:VCARD
 VERSION:3.0
@@ -186,9 +183,9 @@ TEL:+1234567890
 END:VCARD
 ```
 
-### Email QR Codes
+### 生成电子邮件QR码
 
-Create mailto: links with optional subject and body.
+用于生成带有可选主题和正文的邮件链接。
 
 ```bash
 # Simple email
@@ -204,14 +201,14 @@ python scripts/qr.py --type email \
   --body "I would like more information about..."
 ```
 
-**Output QR contains:**
+**生成的QR码包含：**
 ```
 mailto:contact@example.com?subject=Support%20Request&body=Message%20text
 ```
 
-### Phone Number QR Codes
+### 生成电话号码QR码
 
-Generate clickable phone links.
+用于生成可点击的电话号码链接。
 
 ```bash
 # Simple phone number
@@ -221,14 +218,14 @@ python scripts/qr.py --type phone --phone "+1234567890"
 python scripts/qr.py --type phone --phone "+44 20 7946 0958"
 ```
 
-**Output QR contains:**
+**生成的QR码包含：**
 ```
 tel:+1234567890
 ```
 
-### SMS QR Codes
+### 生成短信QR码
 
-Create pre-filled SMS messages.
+用于生成预填充的短信内容。
 
 ```bash
 # SMS with recipient only
@@ -238,14 +235,14 @@ python scripts/qr.py --type sms --phone "+1234567890"
 python scripts/qr.py --type sms --phone "+1234567890" --message "Hello from QR code!"
 ```
 
-**Output QR contains:**
+**生成的QR码包含：**
 ```
 sms:+1234567890?body=Hello%20from%20QR%20code!
 ```
 
-### Geographic Location QR Codes
+### 生成地理位置QR码
 
-Encode GPS coordinates.
+用于生成地理坐标信息。
 
 ```bash
 # Coordinates only
@@ -258,14 +255,14 @@ python scripts/qr.py --type geo --latitude 40.7128 --longitude -74.0060 --altitu
 python scripts/qr.py --type geo --latitude 51.5074 --longitude -0.1278 --location-name "London"
 ```
 
-**Output QR contains:**
+**生成的QR码包含：**
 ```
 geo:37.7749,-122.4194
 ```
 
-### Calendar Event QR Codes
+### 生成日历事件QR码
 
-Generate iCalendar event QR codes.
+用于生成iCal格式的日历事件链接。
 
 ```bash
 # Basic event
@@ -286,468 +283,123 @@ python scripts/qr.py --type event \
 
 ---
 
-## Customization Options
+## 自定义选项
 
-### Colors
+### 颜色设置
 
-Customize foreground and background colors.
+- 自定义QR码的前景色和背景色（常见颜色：黑色、白色、红色、蓝色、绿色、黄色、橙色、紫色、粉色、棕色、灰色）
 
-```bash
-# Named colors
-python scripts/qr.py "https://example.com" --fg-color blue --bg-color white
+### 纠错设置
 
-# Hex colors
-python scripts/qr.py "https://example.com" --fg-color "#FF0000" --bg-color "#FFFFFF"
+- 设置纠错级别（纠错级别越高，抗损坏能力越强）：
+  - **L**：低（约7%的恢复率） - 适用于数字显示
+  - **M**：中（约15%的恢复率） - 默认值，平衡性较好
+  - **Q**：四分位（约25%的恢复率） - 适合嵌入Logo时使用
+  - **H**：高（约30%的恢复率） - 最适合打印或表面损坏的情况
 
-# RGB colors
-python scripts/qr.py "https://example.com" --fg-color "rgb(0,100,200)" --bg-color "rgb(255,255,255)"
+### QR码大小和边框设置
 
-# Transparent background
-python scripts/qr.py "https://example.com" --bg-color transparent --format png
-```
+- 可控制QR码的大小和边框宽度。
 
-**Common color names:** black, white, red, blue, green, yellow, orange, purple, pink, brown, gray
+**默认设置：**
+- 模块大小：10像素
+- 边框宽度：建议至少为4个模块
 
-### Error Correction
+### Logo嵌入
 
-Set error correction level (higher = more damage resistance).
+- 可在QR码中嵌入Logo或图片。
 
-```bash
---error-correction <L|M|Q|H>
-```
-
-**Levels:**
-- **L** - Low (~7% recovery) - Use for digital display
-- **M** - Medium (~15% recovery) - Default, good balance
-- **Q** - Quartile (~25% recovery) - Use when adding logos
-- **H** - High (~30% recovery) - Best for print, damaged surfaces
-
-```bash
-# Low (smallest QR code)
-python scripts/qr.py "https://example.com" --error-correction L
-
-# High (best for print with logo)
-python scripts/qr.py "https://example.com" --error-correction H --logo company.png
-```
-
-### Size and Border
-
-Control QR code size and border width.
-
-```bash
-# Custom module size (box size in pixels)
-python scripts/qr.py "URL" --box-size 20
-
-# Custom border (modules)
-python scripts/qr.py "URL" --border 2
-
-# Large QR code
-python scripts/qr.py "URL" --box-size 30 --border 4 --output large_qr.png
-
-# Minimal QR code (no border)
-python scripts/qr.py "URL" --border 0 --output minimal_qr.png
-```
-
-**Defaults:**
-- Box size: 10 pixels
-- Border: 4 modules (recommended minimum)
-
-### Logo Embedding
-
-Add logos or images to QR codes.
-
-```bash
-# Add logo (center)
-python scripts/qr.py "https://company.com" --logo company_logo.png
-
-# Custom logo size (percentage of QR code)
-python scripts/qr.py "URL" --logo logo.png --logo-size 20
-
-# High error correction recommended with logos
-python scripts/qr.py "URL" --logo logo.png --error-correction H
-```
-
-**Logo tips:**
-- Use square or circular logos
-- Keep logo size ≤ 30% of QR code
-- Use high error correction (Q or H)
-- Test scanning after adding logo
+**Logo使用提示：**
+- 使用方形或圆形Logo
+- 保持Logo大小不超过QR码的30%
+- 使用高纠错级别（Q或H）
+- 嵌入Logo后请测试扫描效果
 
 ---
 
-## Export Formats
+## 导出格式
 
-### PNG (Default)
-
-Raster image format, good for digital use.
-
-```bash
-python scripts/qr.py "https://example.com" --format png --output qr.png
-```
-
-**Best for:** Web, digital displays, simple sharing
-
-### SVG (Vector)
-
-Scalable vector graphics, perfect for any size.
-
-```bash
-python scripts/qr.py "https://example.com" --format svg --output qr.svg
-```
-
-**Best for:** Print, design work, scaling to any size
-
-### PDF
-
-Print-ready PDF documents.
-
-```bash
-python scripts/qr.py "https://example.com" --format pdf --output qr.pdf
-```
-
-**Best for:** Printing, documents, archival
-
-### EPS
-
-Encapsulated PostScript for professional design tools.
-
-```bash
-python scripts/qr.py "https://example.com" --format eps --output qr.eps
-```
-
-**Best for:** Professional design software (Adobe Illustrator, etc.)
-
-### Terminal
-
-Display QR code as ASCII art in terminal.
-
-```bash
-python scripts/qr.py "https://example.com" --format terminal
-```
-
-**Output:**
-```
-█████████████████████████████
-█████████████████████████████
-████ ▄▄▄▄▄ █▀█ █▄▄▄▄▄ ████
-████ █   █ █▀▀▀█ █   █ ████
-████ █▄▄▄█ █▀ ▀ █▄▄▄█ ████
-...
-```
-
-**Best for:** Quick terminal display, debugging
+- **PNG**：适合数字显示的栅格图像格式（默认格式）
+- **SVG**：可缩放的矢量图形，适用于各种尺寸
+- **PDF**：适合打印的文档格式
+- **EPS**：适用于专业设计工具的矢量格式
+- **终端显示**：以ASCII艺术形式在终端中显示
 
 ---
 
-## Batch Generation
+## 批量生成
 
-### From Text File
-
-Generate QR codes from a list of URLs or text.
-
-```bash
-# Create input file
-cat > urls.txt << EOF
-https://example.com
-https://github.com
-https://google.com
-EOF
-
-# Generate batch
-python scripts/qr.py --batch urls.txt --output-dir qrcodes/
-```
-
-**Output:**
-```
-qrcodes/
-  ├── qr_001.png
-  ├── qr_002.png
-  └── qr_003.png
-```
-
-### From CSV File
-
-Generate with metadata (filenames, options).
-
-```bash
-# Create CSV
-cat > contacts.csv << EOF
-name,phone,email,filename
-John Doe,+1234567890,john@example.com,john_qr.png
-Jane Smith,+0987654321,jane@example.com,jane_qr.png
-EOF
-
-# Generate batch
-python scripts/qr.py --batch contacts.csv --type vcard --output-dir contacts/
-```
-
-### From JSON File
-
-Generate with full customization per QR code.
-
-```bash
-# Create JSON config
-cat > qr_config.json << EOF
-[
-  {
-    "data": "https://example.com",
-    "output": "example_qr.png",
-    "fg_color": "blue",
-    "bg_color": "white"
-  },
-  {
-    "type": "wifi",
-    "ssid": "MyNetwork",
-    "password": "secret",
-    "output": "wifi_qr.png"
-  }
-]
-EOF
-
-# Generate batch
-python scripts/qr.py --batch qr_config.json --output-dir custom/
-```
+- **从文本文件生成**：从文本文件（每行一个URL）生成QR码
+- **从CSV文件生成**：包含文件名和选项的QR码
+- **从JSON文件生成**：每个QR码均可进行个性化设置
 
 ---
 
-## Common Workflows
+## 常见应用场景
 
-### Event Check-In System
-
-Generate QR codes for event tickets.
-
-```bash
-# Create ticket QR codes with unique IDs
-python scripts/qr.py --type text "TICKET-001-VIP" --output tickets/ticket_001.png
-python scripts/qr.py --type text "TICKET-002-GENERAL" --output tickets/ticket_002.png
-
-# Or batch from CSV
-cat > tickets.csv << EOF
-ticket_id,type,name
-TICKET-001,VIP,John Doe
-TICKET-002,GENERAL,Jane Smith
-EOF
-
-python scripts/qr.py --batch tickets.csv --template "TICKET-{ticket_id}-{type}" --output-dir tickets/
-```
-
-### Restaurant Menu
-
-Create QR code for digital menu.
-
-```bash
-# Menu URL
-python scripts/qr.py "https://restaurant.com/menu" \
-  --output menu_qr.png \
-  --box-size 15 \
-  --error-correction H
-
-# Print version (PDF)
-python scripts/qr.py "https://restaurant.com/menu" \
-  --format pdf \
-  --output menu_qr.pdf \
-  --box-size 20
-```
-
-### WiFi Guest Access
-
-Generate WiFi QR code for guests.
-
-```bash
-# Print-friendly version
-python scripts/qr.py --type wifi \
-  --ssid "Guest_Network" \
-  --password "GuestPass123" \
-  --format pdf \
-  --output wifi_guest.pdf \
-  --box-size 15 \
-  --error-correction H
-
-# Poster with logo
-python scripts/qr.py --type wifi \
-  --ssid "Guest_Network" \
-  --password "GuestPass123" \
-  --logo company_logo.png \
-  --output wifi_poster.png \
-  --box-size 20
-```
-
-### Contact Card Distribution
-
-Create scannable business cards.
-
-```bash
-# Generate vCard
-python scripts/qr.py --type vcard \
-  --name "John Doe" \
-  --phone "+1234567890" \
-  --email "john@company.com" \
-  --organization "Tech Corp" \
-  --title "CEO" \
-  --url "https://company.com" \
-  --format svg \
-  --output business_card.svg
-
-# Print version
-python scripts/qr.py --type vcard \
-  --name "John Doe" \
-  --phone "+1234567890" \
-  --email "john@company.com" \
-  --format pdf \
-  --output business_card.pdf \
-  --box-size 12
-```
-
-### Product Packaging
-
-QR codes for product information.
-
-```bash
-# Product info URL
-python scripts/qr.py "https://product.com/info/SKU12345" \
-  --output product_qr.svg \
-  --format svg \
-  --fg-color "#000000" \
-  --bg-color transparent
-
-# With error correction for damaged packaging
-python scripts/qr.py "https://product.com/info/SKU12345" \
-  --error-correction H \
-  --output product_qr_robust.png
-```
-
-### Social Media Links
-
-QR codes for social profiles.
-
-```bash
-# Instagram
-python scripts/qr.py "https://instagram.com/username" --output instagram_qr.png
-
-# LinkedIn
-python scripts/qr.py "https://linkedin.com/in/username" --output linkedin_qr.png
-
-# Multiple platforms (batch)
-cat > social.txt << EOF
-https://twitter.com/username
-https://instagram.com/username
-https://linkedin.com/in/username
-https://github.com/username
-EOF
-
-python scripts/qr.py --batch social.txt --output-dir social_qr/
-```
-
-### Payment Links
-
-QR codes for payment services.
-
-```bash
-# PayPal
-python scripts/qr.py "https://paypal.me/username" --output paypal_qr.png
-
-# Venmo
-python scripts/qr.py "venmo://username" --output venmo_qr.png
-
-# Cash App
-python scripts/qr.py "https://cash.app/$username" --output cashapp_qr.png
-```
+- **活动门票**：生成活动门票的QR码
+- **餐厅菜单**：生成数字菜单的QR码
+- **访客WiFi访问**：为访客生成WiFi访问QR码
+- **联系卡分发**：生成可扫描的联系卡
+- **产品包装**：在产品包装上添加产品信息的QR码
+- **社交媒体链接**：生成社交媒体个人资料的QR码
+- **支付链接**：生成支付服务的QR码
 
 ---
 
-## Best Practices
+## 使用建议
 
-### Size and Scanning
+- **尺寸和扫描**：
+  - 最小尺寸：2厘米×2厘米，以确保可靠扫描
+  - 扫描距离：QR码大小应为扫描距离的10%
+  - 边框宽度：建议至少为4个模块
+  - 打印前务必进行扫描测试
 
-1. **Minimum size:** 2cm × 2cm for reliable scanning
-2. **Viewing distance:** QR size should be 10% of scanning distance
-3. **Border:** Keep at least 4 modules border (quiet zone)
-4. **Testing:** Always test scan before printing
+- **纠错设置**：
+  - 数字显示时使用L或M级别纠错
+  - 无Logo打印时使用M级别纠错
+  - 带Logo打印时使用H级别纠错
+  - 在户外或表面损坏的情况下使用H级别纠错
 
-### Error Correction
+- **颜色设置**：
+  - 使用高对比度（深色背景搭配浅色前景）
+  - 避免使用浅色背景搭配浅色文字
+  - 打印时建议使用纯黑/白色
+  - 在批量生产前测试自定义颜色的显示效果
 
-1. **Digital display:** Use L or M
-2. **Print without logo:** Use M
-3. **Print with logo:** Use H
-4. **Outdoor/damaged:** Use H
+- **Logo集成**：
+  - 保持Logo大小不超过QR码的25%-30%
+  - 使用高纠错级别（Q或H）
+  - Logo应居中放置
+  - 嵌入Logo后请测试扫描效果
 
-### Colors
-
-1. **High contrast:** Dark foreground, light background
-2. **Avoid:** Light colors on light, dark on dark
-3. **Print:** Use pure black/white for best results
-4. **Branding:** Test custom colors before mass production
-
-### Logo Integration
-
-1. **Size:** Keep logo ≤ 25-30% of QR code
-2. **Error correction:** Use Q or H level
-3. **Position:** Center placement works best
-4. **Testing:** Verify scanning with logo
-
-### File Formats
-
-1. **Digital:** PNG for web, screens
-2. **Print:** PDF or SVG for scalability
-3. **Design:** SVG or EPS for editing
-4. **Archive:** Keep source data and SVG version
+- **文件格式**：
+  - 数字显示使用PNG格式
+  - 打印使用PDF或SVG格式
+  - 设计使用SVG或EPS格式
+  - 保留原始数据和SVG格式的备份文件
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Installation Issues
+- **安装问题**：
+  - “缺少所需依赖库”：请确保已安装所有必要的依赖库
+  - “PIL/Pillow未找到”：请检查Python环境是否正确安装
 
-**"Missing required dependency"**
-```bash
-# Install dependencies
-pip install qrcode[pil] segno
+- **生成问题**：
+  - QR码内容过于复杂：尝试减少数据量或使用更高版本的qr.py工具
+  - 扫描失败：尝试降低纠错级别或分割QR码为多个部分
+  - 扫描失败：增加纠错级别、确保足够的对比度、检查QR码尺寸、减小Logo大小或在良好光照条件下扫描
+  - Logo遮挡内容：减小Logo大小或提高纠错级别
 
-# Or use virtual environment
-python -m venv venv
-source venv/bin/activate
-pip install qrcode[pil] segno
-```
-
-**"PIL/Pillow not found"**
-```bash
-pip install Pillow
-```
-
-### Generation Issues
-
-**"QR code too complex"**
-- Reduce data size
-- Use higher version (auto-adjusts)
-- Split into multiple QR codes
-
-**"Cannot scan QR code"**
-- Increase error correction
-- Ensure sufficient contrast
-- Check minimum size
-- Remove or reduce logo size
-- Test in good lighting
-
-**"Logo obscures data"**
-- Reduce logo size (--logo-size)
-- Increase error correction to H
-- Use simpler logo design
-
-### File Issues
-
-**"Cannot save file"**
-- Check output directory exists
-- Verify write permissions
-- Check disk space
-
-**"Invalid color format"**
-- Use named colors: red, blue, green
-- Use hex: #RRGGBB
-- Use rgb: rgb(R,G,B)
+- **文件问题**：
+  - 无法保存文件：检查输出目录是否存在、权限是否正确以及磁盘空间是否充足
+  - 颜色格式错误：使用标准的颜色代码（如#RRGGBB或rgb(R,G,B）
 
 ---
 
-## Command Reference
+## 命令参考
 
 ```bash
 python scripts/qr.py [DATA] [OPTIONS]
@@ -819,78 +471,24 @@ HELP:
 
 ---
 
-## Examples by Use Case
+## 示例用法
 
-### Quick QR Codes
-
-```bash
-# URL
-python scripts/qr.py "https://example.com"
-
-# Text
-python scripts/qr.py --type text "Hello World"
-
-# Phone
-python scripts/qr.py --type phone --phone "+1234567890"
-```
-
-### Professional QR Codes
-
-```bash
-# With logo and custom colors
-python scripts/qr.py "https://company.com" \
-  --logo logo.png \
-  --fg-color "#003366" \
-  --bg-color "#FFFFFF" \
-  --error-correction H \
-  --output company_qr.png
-
-# Print-ready
-python scripts/qr.py "https://company.com" \
-  --format pdf \
-  --box-size 15 \
-  --error-correction H \
-  --output printable_qr.pdf
-```
-
-### Functional QR Codes
-
-```bash
-# WiFi access
-python scripts/qr.py --type wifi --ssid "Network" --password "pass123"
-
-# Contact card
-python scripts/qr.py --type vcard --name "John Doe" --phone "+1234567890" --email "john@example.com"
-
-# Calendar event
-python scripts/qr.py --type event --event-title "Meeting" --event-start "2024-03-15T14:00:00" --event-end "2024-03-15T15:00:00"
-```
-
-### Bulk Generation
-
-```bash
-# From URL list
-python scripts/qr.py --batch urls.txt --output-dir qrcodes/
-
-# From CSV with metadata
-python scripts/qr.py --batch data.csv --output-dir output/
-
-# Custom configuration per code
-python scripts/qr.py --batch config.json --output-dir custom/
-```
+- **快速生成QR码**
+- **专业用途的QR码**
+- **批量生成QR码**
 
 ---
 
-## Support
+## 技术支持
 
-For issues or questions:
-1. Check this documentation
-2. Run `python scripts/qr.py --help`
-3. Verify dependencies are installed
-4. Test with simple QR code first
+如遇到问题或需要帮助，请：
+1. 查阅本文档
+2. 运行 `python scripts/qr.py --help` 获取帮助信息
+3. 确保所有依赖库已安装
+4. 先使用简单的示例进行测试
 
-**Resources:**
-- OpenClawCLI: https://clawhub.ai/
-- qrcode library: https://pypi.org/project/qrcode/
-- segno library: https://pypi.org/project/segno/
-- QR code specification: ISO/IEC 18004
+**相关资源：**
+- OpenClawCLI：https://clawhub.ai/
+- qrcode库：https://pypi.org/project/qrcode/
+- segno库：https://pypi.org/project/segno/
+- QR码标准：ISO/IEC 18004

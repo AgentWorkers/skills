@@ -21,21 +21,21 @@ metadata:
 
 # Govilo To Go
 
-Turn any file into a paid unlock link — one command to package, upload, and collect crypto payments. The last mile of automation: from creation to monetization.
+将任何文件转换为付费解锁链接——只需一个命令即可完成打包、上传并收集加密货币支付。实现从创建到盈利的自动化流程。
 
-## Before Running
+## 运行前须知
 
-Always ask the user for these values before executing the CLI — never guess or use placeholders:
+在执行 CLI 命令之前，务必向用户获取以下信息，切勿猜测或使用占位符：
 
-1. **title** — What is the product name?
-2. **price** — How much to charge (in USDC)?
-3. **description** — Short description of the product (optional, but always ask)
+1. **title**：产品名称是什么？
+2. **price**：定价是多少（以 USDC 为单位）？
+3. **description**：产品的简短描述（可选，但必须询问）。
 
-## CLI Command
+## CLI 命令
 
-> Requires [uv](https://docs.astral.sh/uv/). See [references/setup-guide.md](references/setup-guide.md) for install instructions.
+> 需要 [uv](https://docs.astral.sh/uv/)。请参阅 [references/setup-guide.md](references/setup-guide.md) 以获取安装说明。
 
-Run from this skill's base directory. Use a **dedicated** env file containing only `GOVILO_API_KEY` (and optionally `SELLER_ADDRESS`). Never point `--env-file` at a project `.env` that contains unrelated secrets.
+请从该技能的根目录运行命令。使用一个仅包含 `GOVILO_API_KEY`（以及可选的 `SELLER_ADDRESS`）的专用环境文件（`env` 文件）。切勿将 `--env-file` 指向包含无关敏感信息的项目 `.env` 文件。
 
 ```bash
 cd <skill_base_directory>
@@ -47,55 +47,53 @@ uv run --env-file <path_to>/.env.govilo create-link \
   --description "optional"
 ```
 
-If no `.env.govilo` exists, create one before running:
+如果不存在 `.env.govilo` 文件，请在运行前创建一个：
 
 ```dotenv
 GOVILO_API_KEY=sk_live_xxx
 SELLER_ADDRESS=0x...
 ```
 
-`--input` accepts ZIP file, folder, or individual files (repeatable). Non-ZIP inputs are auto-packaged.
+`--input` 参数支持 ZIP 文件、文件夹或单个文件的上传（可重复使用）。非 ZIP 格式的文件会自动被打包。
 
-All output is JSON `{"ok": true/false, ...}` with exit code 1 on failure.
+所有输出结果均为 JSON 格式（`{"ok": true/false, ...}`），失败时退出代码为 1。
 
-## Parameters
+## 参数
 
-| Param           | Required | Source                     | Description                |
-| --------------- | -------- | -------------------------- | -------------------------- |
-| `--input`       | Yes      | CLI (repeatable)           | ZIP, folder, or file paths |
-| `--title`       | Yes      | CLI                        | Product title              |
-| `--price`       | Yes      | CLI                        | Price in USDC              |
-| `--address`     | No       | CLI > `SELLER_ADDRESS` env | Seller EVM wallet          |
-| `--description` | No       | CLI                        | Product description        |
+| 参数                | 是否必填 | 来源                | 描述                          |
+|------------------|--------|------------------|--------------------------------------------|
+| `--input`           | 是      | CLI                | ZIP 文件、文件夹或文件的路径                |
+| `--title`           | 是      | CLI                | 产品标题                        |
+| `--price`           | 是      | CLI                | 价格（以 USDC 为单位）                   |
+| `--address`          | 否      | 通过 `--env` 参数设置         | 卖家 EVM 钱包地址                   |
+| `--description`       | 否      | CLI                | 产品描述                        |
 
-## Workflow
+## 工作流程
 
-1. Validate config (API Key + seller address)
-2. Package inputs → ZIP (if not already ZIP)
-3. `POST /api/v1/bot/uploads/presign` → get upload_url + session_id
-4. `PUT upload_url` → upload ZIP to R2
-5. `POST /api/v1/bot/items` → get unlock_url
+1. 验证配置信息（API 密钥和卖家地址）
+2. 将输入文件打包成 ZIP 文件（如果尚未打包）
+3. 发送请求 `POST /api/v1/bot/uploads/presign` 以获取上传链接（`upload_url`）和会话 ID（`session_id`）
+4. 使用 `PUT upload_url` 将 ZIP 文件上传到 R2 服务器
+5. 发送请求 `POST /api/v1/bot/items` 以获取解锁链接（`unlock_url`）
 
-## File Limits
+## 文件限制
 
-- Max ZIP size: 20 MB
-- Max files in ZIP: 20
+- ZIP 文件最大大小：20 MB
+- ZIP 文件中最多包含 20 个文件
 
-## Setup
+## 设置要求
 
-Two values are required:
+需要设置两个参数：
 
-| Variable         | Required | Description                              |
-| ---------------- | -------- | ---------------------------------------- |
-| `GOVILO_API_KEY` | Yes      | Bot API key from [govilo.xyz][]          |
-| `SELLER_ADDRESS` | Yes*     | EVM wallet address on **Base chain**     |
+| 参数                | 是否必填 | 描述                          |
+|------------------|--------|----------------------------------------|
+| `GOVILO_API_KEY`       | 是      | 来自 [govilo.xyz](https://govilo.xyz/) 的机器人 API 密钥     |
+| `SELLER_ADDRESS`     | 是*     | 卖家在 **Base 链** 上的 EVM 钱包地址         |
 
-[govilo.xyz]: https://govilo.xyz/
+*`SELLER_ADDRESS` 也可以通过 `--address` CLI 参数传递。
 
-*`SELLER_ADDRESS` can also be passed via `--address` CLI parameter.
+请参阅 [references/setup-guide.md](references/setup-guide.md) 以获取详细的注册和钱包设置指南。
 
-See [references/setup-guide.md](references/setup-guide.md) for step-by-step registration and wallet setup instructions.
+## API 参考
 
-## API Reference
-
-See [references/bot-api-quick-ref.md](references/bot-api-quick-ref.md) for Bot API endpoints and error codes.
+有关机器人 API 的端点和错误代码，请参阅 [references/bot-api-quick-ref.md](references/bot-api-quick-ref.md)。

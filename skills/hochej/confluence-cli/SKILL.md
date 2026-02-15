@@ -8,68 +8,63 @@ description:
 
 # confcli
 
-CLI for Confluence Cloud.
+Confluence Cloud 的命令行工具（CLI）。
 
-## Installation
+## 安装
 
-Check if confcli is installed:
+检查 confcli 是否已安装：
 
 ```bash
 command -v confcli
 ```
 
-If not installed, install via:
+如果未安装，请通过以下命令进行安装：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hochej/confcli/main/install.sh | sh
 ```
 
-To install a specific version or to a custom directory:
+若需要安装特定版本或将其安装到自定义目录，请使用以下命令：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hochej/confcli/main/install.sh | VERSION=0.2.3 sh
 curl -fsSL https://raw.githubusercontent.com/hochej/confcli/main/install.sh | INSTALL_DIR=~/.bin sh
 ```
 
-## Authentication
+## 认证
 
-Check auth status first:
+首先检查认证状态：
 
 ```bash
 confcli auth status
 ```
 
-If not authenticated, ask the user to configure authentication. They can either:
-
-1. Run `confcli auth login` interactively in their own terminal, or
-2. Set environment variables before starting the session:
-   - `CONFLUENCE_DOMAIN` — e.g. `yourcompany.atlassian.net`
+如果未完成认证，请让用户配置认证信息。用户可以选择以下两种方式之一：
+1. 在自己的终端中交互式地运行 `confcli auth login`；
+2. 在开始会话之前设置环境变量：
+   - `CONFLUENCE_DOMAIN` — 例如：`yourcompany.atlassian.net`
    - `CONFLUENCE_EMAIL`
-   - `CONFLUENCE_TOKEN` (or `CONFLUENCE_API_TOKEN`)
+   - `CONFLUENCE_TOKEN`（或 `CONFLUENCE_API_TOKEN`）
 
-API tokens are generated at
+API 令牌可以在以下地址生成：
 https://id.atlassian.com/manage-profile/security/api-tokens
 
-> **Never ask the user to paste a token into the conversation.** Tokens must be
-> set via environment variables or `confcli auth login`.
+> **切勿要求用户将令牌粘贴到对话中。** 令牌必须通过环境变量或 `confcli auth login` 来设置。
 
-## Page References
+## 页面引用
 
-Pages can be referenced by:
+页面可以通过以下方式引用：
+- ID：`12345`
+- URL：`https://company.atlassian.net/wiki/spaces/MFS/pages/12345/Title`
+- Space:Title：`MFS:Overview`
 
-- ID: `12345`
-- URL: `https://company.atlassian.net/wiki/spaces/MFS/pages/12345/Title`
-- Space:Title: `MFS:Overview`
+## 重要提示
 
-## Important
+执行创建、更新、删除、清除、编辑、添加/删除标签、上传/删除附件、添加/删除评论、复制目录等操作时，必须明确用户的操作意图。切勿基于猜测来执行这些操作。
 
-Write operations (create, update, delete, purge, edit, label add/remove,
-attachment upload/delete, comment add/delete, copy-tree) require explicit user
-intent. Never perform these based on assumptions.
+使用 `--dry-run` 选项可以预览这些操作，而不会实际执行它们。
 
-Use `--dry-run` to preview destructive operations without executing them.
-
-## Common Commands
+## 常用命令
 
 ```bash
 # Spaces
@@ -124,18 +119,18 @@ confcli export MFS:Overview --dest ./exports --format md
 confcli copy-tree MFS:Overview MFS:TargetParent
 ```
 
-## Output Formats
+## 输出格式
 
-Use `-o` flag: `json`, `table`, `md`
+使用 `-o` 标志指定输出格式：`json`、`table` 或 `md`：
 
 ```bash
 confcli space list -o json
 confcli page get MFS:Overview -o json
 ```
 
-## Pagination
+## 分页
 
-Add `--all` to fetch all results, `-n` to set limit:
+使用 `--all` 选项获取所有结果，使用 `-n` 选项设置结果数量限制：
 
 ```bash
 confcli space list --all

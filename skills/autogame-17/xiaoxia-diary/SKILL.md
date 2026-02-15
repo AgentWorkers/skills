@@ -1,24 +1,24 @@
 # xiaoxia-diary
 
-Writes a daily diary entry for Xiaoxia (Catgirl Persona) to Feishu Docs and notifies Master. The content is generated based on the day's memory (`memory/YYYY-MM-DD.md`) and mood (`memory/mood.json`).
+该脚本负责为角色“Xiaoxia”（猫娘形象）在 Feishu Docs 平台上撰写每日日记条目，并在完成撰写后通知指定的“Master”。日记内容基于当天的记忆记录（`memory/YYYY-MM-DD.md` 文件）和情绪状态（`memory/mood.json` 文件生成。
 
-## Usage
+## 使用方法
 
-Run manually or via cron:
+可以手动运行，也可以通过 cron 任务自动执行：
 
 ```bash
 node skills/xiaoxia-diary/index.js
 ```
 
-## Configuration
+## 配置
 
-Required environment variables (in `.env`):
+所需的环境变量（位于 `.env` 文件中）：
 
-- `DIARY_DOC_TOKEN`: The Token of the Feishu Doc where the diary is written.
-- `MASTER_ID`: Feishu OpenID of the user to notify upon completion.
-- `GEMINI_API_KEY`: API Key for content generation (if using Gemini directly).
+- `DIARY_DOC_TOKEN`：用于写入日记的 Feishu Doc 的令牌。
+- `MASTER_ID`：需要接收通知的用户的 Feishu OpenID。
+- `GEMINI_API_KEY`：用于内容生成的 Gemini API 密钥（如果直接使用 Gemini 服务的话）。
 
-## Dependencies
+## 依赖项
 
-- `memory/YYYY-MM-DD.md`: Daily memory log.
-- `memory/mood.json`: Current mood state (optional).
+- `memory/YYYY-MM-DD.md`：每日记忆记录文件。
+- `memory/mood.json`：当前的情绪状态文件（可选）。

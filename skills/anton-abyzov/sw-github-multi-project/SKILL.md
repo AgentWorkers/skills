@@ -1,30 +1,30 @@
 ---
 name: github-multi-project
-description: Expert at organizing specs and splitting tasks across multiple GitHub repositories for monorepo, polyrepo, and parent repo architectures. Use when managing specs across multiple repos, coordinating cross-repo work, or allocating tasks to different teams/repositories.
+description: 擅长整理技术规范，并将任务分配到多个 GitHub 仓库中，适用于单仓库（monorepo）、多仓库（polyrepo）以及父仓库（parent repo）架构。适用于需要在多个仓库之间管理技术规范、协调跨仓库的工作，或将任务分配给不同的团队或仓库的情况。
 ---
 
-# GitHub Multi-Project Management Skill
+# GitHub多项目管理技能
 
-Expert skill for managing SpecWeave projects across multiple GitHub repositories.
+这是一种专门用于管理跨多个GitHub仓库的SpecWeave项目的专业技能。
 
-## Core Capabilities
+## 核心能力
 
-### 1. Spec Organization
-- Organizes specs in `.specweave/docs/internal/projects/{project-id}/` structure
-- Maps increments to specific projects/repos
-- Maintains traceability across repositories
-- Handles cross-project dependencies
+### 1. 规范组织
+- 将规范文件组织在`.specweave/docs/internal/projects/{project-id}/`结构中
+- 将规范文件的更新映射到具体的项目/仓库
+- 保持各仓库之间的可追溯性
+- 处理跨项目依赖关系
 
-### 2. Task Splitting
-When a SpecWeave increment spans multiple repositories:
-- Analyzes tasks in `tasks.md`
-- Identifies which tasks belong to which repo
-- Creates repo-specific task lists
-- Maintains cross-repo coordination
+### 2. 任务分解
+当一个SpecWeave更新涉及多个仓库时：
+- 分析`tasks.md`文件中的任务
+- 确定每个任务属于哪个仓库
+- 为每个仓库创建相应的任务列表
+- 保持跨仓库的协调性
 
-### 3. Repository Architectures
+### 3. 仓库架构
 
-#### Single Repository
+#### 单个仓库
 ```
 my-app/
 ├── .specweave/
@@ -32,7 +32,7 @@ my-app/
 └── src/
 ```
 
-#### Multi-Repository (Polyrepo)
+#### 多个仓库（Polyrepo）
 ```
 my-app-frontend/
 ├── .git
@@ -47,7 +47,7 @@ my-app-shared/
 └── src/
 ```
 
-#### Parent Repository Approach (Recommended for Multi-Repo)
+#### 父仓库模式（多仓库项目推荐）
 ```
 my-app-parent/              # Parent repo with .specweave
 ├── .specweave/
@@ -61,7 +61,7 @@ my-app-parent/              # Parent repo with .specweave
     └── shared/
 ```
 
-#### Monorepo
+#### 单一仓库（Monorepo）
 ```
 my-app/
 ├── .specweave/
@@ -75,48 +75,48 @@ my-app/
     └── shared/
 ```
 
-## Task Splitting Examples
+## 任务分解示例
 
-### Example 1: E-commerce Platform
-**Increment**: Add shopping cart functionality
+### 示例1：电子商务平台
+**更新内容**：添加购物车功能
 
-**Tasks split by repository**:
+**按仓库划分的任务**：
 
-**Frontend (my-app-frontend)**:
-- T-001: Create CartItem component
-- T-002: Implement cart state management
-- T-003: Add cart UI with add/remove buttons
+**前端（my-app-frontend）**：
+- T-001：创建CartItem组件
+- T-002：实现购物车状态管理
+- T-003：添加包含添加/删除按钮的购物车用户界面
 
-**Backend (my-app-backend)**:
-- T-004: Create cart database schema
-- T-005: Implement cart API endpoints
-- T-006: Add cart validation logic
+**后端（my-app-backend）**：
+- T-004：创建购物车数据库模式
+- T-005：实现购物车API接口
+- T-006：添加购物车验证逻辑
 
-**Shared (my-app-shared)**:
-- T-007: Define cart TypeScript types
-- T-008: Create cart utility functions
+**共享组件（my-app-shared）**：
+- T-007：定义购物车的TypeScript类型
+- T-008：创建购物车辅助函数
 
-### Example 2: Microservices Architecture
-**Increment**: Implement user notifications
+### 示例2：微服务架构
+**更新内容**：实现用户通知功能
 
-**Tasks split by service**:
+**按服务划分的任务**：
 
-**User Service**:
-- T-001: Add notification preferences to user profile
-- T-002: Create preference API endpoints
+**用户服务**：
+- T-001：在用户资料中添加通知偏好设置
+- T-002：创建偏好设置API接口
 
-**Notification Service**:
-- T-003: Implement notification queue
-- T-004: Create email sender
-- T-005: Create push notification sender
+**通知服务**：
+- T-003：实现通知队列
+- T-004：创建邮件发送器
+- T-005：创建推送通知发送器
 
-**Gateway Service**:
-- T-006: Add notification routes
-- T-007: Implement rate limiting
+**网关服务**：
+- T-006：添加通知路由
+- T-007：实现速率限制
 
-## Commands
+## 命令
 
-### Analyze Task Distribution
+### 分析任务分布
 ```typescript
 // Analyze which tasks belong to which repository
 function analyzeTaskDistribution(tasks: Task[]): Map<string, Task[]> {
@@ -134,7 +134,7 @@ function analyzeTaskDistribution(tasks: Task[]): Map<string, Task[]> {
 }
 ```
 
-### Create Repository-Specific Issues
+### 为每个仓库创建问题（Issues）
 ```typescript
 // Create GitHub issues in each repository
 async function createRepoSpecificIssues(
@@ -154,16 +154,16 @@ async function createRepoSpecificIssues(
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Parent Repository Approach
-**Recommended for multi-repo projects**:
-- Central .specweave/ folder in parent repo
-- Living docs sync to parent (single source of truth)
-- Implementation repos stay clean
-- Better for enterprise/multi-team projects
+### 1. 父仓库模式
+**多仓库项目推荐使用**：
+- 在父仓库中设置一个中央的`.specweave/`文件夹
+- 将所有文档同步到父仓库（确保信息的一致性）
+- 实现仓库保持整洁
+- 更适合企业或多团队项目
 
-### 2. Task Naming Convention
+### 2. 任务命名规范
 ```
 T-{repo}-{number}: {description}
 T-FE-001: Create user profile component
@@ -171,14 +171,14 @@ T-BE-001: Implement user API
 T-SHARED-001: Define user types
 ```
 
-### 3. Cross-Repository Dependencies
-Mark dependencies clearly:
+### 3. 跨仓库依赖关系
+明确标注依赖关系：
 ```
 T-FE-002: Consume user API
   Dependencies: T-BE-001 (must complete first)
 ```
 
-### 4. Spec Organization
+### 4. 规范组织
 ```
 .specweave/docs/internal/projects/
 ├── frontend/
@@ -194,24 +194,23 @@ T-FE-002: Consume user API
         └── spec-001-types.md
 ```
 
-## Integration with GitHub Projects
+## 与GitHub项目的集成
 
-### Multi-Repo GitHub Project
-Create a GitHub Project that spans multiple repositories:
-1. Create project at organization level
-2. Add issues from all repos
-3. Use project boards for cross-repo coordination
-4. Track overall increment progress
+### 多仓库的GitHub项目
+创建一个涵盖多个仓库的GitHub项目：
+1. 在组织级别创建项目
+2. 从所有仓库中添加问题（Issues）
+3. 使用项目看板进行跨仓库协调
+4. 跟踪整个项目的更新进度
 
-### Repository-Specific Projects
-Each repository can have its own project:
-- Frontend Project: UI tasks
-- Backend Project: API tasks
-- Shared Project: Common tasks
+### 仓库级别的项目
+每个仓库都可以有自己的项目：
+- 前端项目：处理与用户界面相关的任务
+- 后端项目：处理API相关的任务
+- 共享项目：处理通用任务
 
-## Automation
-
-### GitHub Actions Integration
+## 自动化
+### 集成GitHub Actions
 ```yaml
 # .github/workflows/specweave-sync.yml
 name: SpecWeave Multi-Repo Sync
@@ -235,15 +234,15 @@ jobs:
           gh issue create --repo myorg/backend ...
 ```
 
-## Error Handling
+## 错误处理
 
-### Common Issues
-1. **Repository not found**: Ensure repos exist and token has access
-2. **Task ambiguity**: Use clear naming to indicate target repo
-3. **Cross-repo conflicts**: Use parent repo as single source of truth
-4. **Permission errors**: Token needs repo scope for all repositories
+### 常见问题
+1. **仓库未找到**：确保仓库存在，并且令牌具有访问权限
+2. **任务不明确**：使用清晰的命名来指定目标仓库
+3. **跨仓库冲突**：以父仓库作为信息来源的统一标准
+4. **权限错误**：令牌需要具有对所有仓库的访问权限
 
-## Related Skills
-- github-sync: Basic GitHub synchronization
-- github-issue-tracker: Task-level tracking
-- specweave:multi-project-spec-mapper: Intelligent spec splitting
+## 相关技能
+- github-sync：基本的GitHub同步工具
+- github-issue-tracker：用于任务级别的问题跟踪工具
+- specweave:multi-project-spec-mapper：智能的规范文件分解工具

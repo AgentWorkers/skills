@@ -17,9 +17,9 @@ metadata:
 
 # Twilio
 
-Access the Twilio API with managed OAuth authentication. Send SMS messages, make voice calls, manage phone numbers, and work with Twilio resources.
+使用托管的OAuth认证来访问Twilio API。您可以发送短信、发起语音通话、管理电话号码以及操作Twilio的各种资源。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all accounts
@@ -31,41 +31,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/twilio/2010-04-01/Accounts/{AccountSid}/{resource}.json
 ```
 
-The gateway proxies requests to `api.twilio.com` and automatically injects your OAuth token.
+网关会将请求代理到`api.twilio.com`，并自动插入您的OAuth令牌。
 
-**Important:** Most Twilio endpoints require your Account SID in the path. You can get your Account SID from the `/Accounts.json` endpoint.
+**重要提示：** 大多数Twilio端点需要在路径中包含您的账户SID。您可以从 `/Accounts.json` 端点获取账户SID。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Twilio OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的Twilio OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Twilio connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Twilio连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,19 +142,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活跃连接。
 
-## API Reference
+## API参考
 
-### Accounts
+### 账户
 
-#### List Accounts
+#### 列出账户
 
 ```bash
 GET /twilio/2010-04-01/Accounts.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "accounts": [
@@ -169,27 +169,27 @@ GET /twilio/2010-04-01/Accounts.json
 }
 ```
 
-#### Get Account
+#### 获取账户信息
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}.json
 ```
 
-### Messages (SMS/MMS)
+### 消息（短信/MMS）
 
-#### List Messages
+#### 列出消息
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json
 ```
 
-**Query Parameters:**
-- `PageSize` - Number of results per page (default: 50)
-- `To` - Filter by recipient phone number
-- `From` - Filter by sender phone number
-- `DateSent` - Filter by date sent
+**查询参数：**
+- `PageSize` - 每页显示的结果数量（默认：50）
+- `To` - 按接收者电话号码过滤
+- `From` - 按发送者电话号码过滤
+- `DateSent` - 按发送日期过滤
 
-**Response:**
+**响应：**
 ```json
 {
   "messages": [
@@ -207,13 +207,13 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json
 }
 ```
 
-#### Get Message
+#### 获取消息详情
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json
 ```
 
-#### Send Message
+#### 发送消息
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json
@@ -222,17 +222,17 @@ Content-Type: application/x-www-form-urlencoded
 To=+15559876543&From=+15551234567&Body=Hello%20from%20Twilio!
 ```
 
-**Required Parameters:**
-- `To` - Recipient phone number (E.164 format)
-- `From` - Twilio phone number or messaging service SID
-- `Body` - Message text (max 1600 characters)
+**必填参数：**
+- `To` - 收件人电话号码（E.164格式）
+- `From` - Twilio电话号码或消息服务SID
+- `Body` - 消息内容（最多1600个字符）
 
-**Optional Parameters:**
-- `MessagingServiceSid` - Use instead of From for message routing
-- `MediaUrl` - URL of media to send (MMS)
-- `StatusCallback` - Webhook URL for status updates
+**可选参数：**
+- `MessagingServiceSid` - 用于替代`From`以进行消息路由
+- `MediaUrl` - 要发送的媒体文件URL（MMS）
+- `StatusCallback` - 状态更新的通知URL
 
-**Response:**
+**响应：**
 ```json
 {
   "sid": "SMxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -244,7 +244,7 @@ To=+15559876543&From=+15551234567&Body=Hello%20from%20Twilio!
 }
 ```
 
-#### Update Message (Redact)
+#### 更新消息内容
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json
@@ -253,31 +253,31 @@ Content-Type: application/x-www-form-urlencoded
 Body=
 ```
 
-Setting Body to empty string redacts the message content.
+将`Body`设置为空字符串即可隐藏消息内容。
 
-#### Delete Message
+#### 删除消息
 
 ```bash
 DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Messages/{MessageSid}.json
 ```
 
-Returns 204 No Content on success.
+成功时返回204（表示“无内容”）。
 
-### Calls (Voice)
+### 通话（语音）
 
-#### List Calls
+#### 列出通话记录
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Calls.json
 ```
 
-**Query Parameters:**
-- `PageSize` - Results per page
-- `Status` - Filter by status (queued, ringing, in-progress, completed, etc.)
-- `To` - Filter by recipient
-- `From` - Filter by caller
+**查询参数：**
+- `PageSize` - 每页显示的结果数量
+- `Status` - 按通话状态过滤（排队中、正在响铃、进行中、已完成等）
+- `To` - 按接收者过滤
+- `From` - 按呼叫者过滤
 
-**Response:**
+**响应：**
 ```json
 {
   "calls": [
@@ -295,13 +295,13 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Calls.json
 }
 ```
 
-#### Get Call
+#### 获取通话详情
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
 ```
 
-#### Make Call
+#### 发起通话
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Calls.json
@@ -310,18 +310,18 @@ Content-Type: application/x-www-form-urlencoded
 To=+15559876543&From=+15551234567&Url=https://example.com/twiml
 ```
 
-**Required Parameters:**
-- `To` - Recipient phone number
-- `From` - Twilio phone number
-- `Url` - TwiML application URL
+**必填参数：**
+- `To` - 接收者电话号码
+- `From` - Twilio电话号码
+- `Url` - TwiML应用程序URL
 
-**Optional Parameters:**
-- `StatusCallback` - Webhook URL for call status updates
-- `StatusCallbackEvent` - Events to receive (initiated, ringing, answered, completed)
-- `Timeout` - Seconds to wait for answer (default: 60)
-- `Record` - Set to true to record the call
+**可选参数：**
+- `StatusCallback` - 通话状态更新的通知URL
+- `StatusCallbackEvent` - 需要接收的事件（开始、响铃、接听、完成）
+- `Timeout` - 等待接听的超时时间（默认：60秒）
+- `Record` - 设置为`true`以录制通话
 
-#### Update Call
+#### 更新通话状态
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
@@ -330,23 +330,23 @@ Content-Type: application/x-www-form-urlencoded
 Status=completed
 ```
 
-Use `Status=completed` to end an in-progress call.
+使用`Status=completed`来结束正在进行的通话。
 
-#### Delete Call
+#### 删除通话记录
 
 ```bash
 DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Calls/{CallSid}.json
 ```
 
-### Phone Numbers
+### 电话号码
 
-#### List Incoming Phone Numbers
+#### 列出来电号码
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "incoming_phone_numbers": [
@@ -364,13 +364,13 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers.json
 }
 ```
 
-#### Get Phone Number
+#### 获取电话号码信息
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json
 ```
 
-#### Update Phone Number
+#### 更新电话号码信息
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json
@@ -379,21 +379,21 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=Updated%20Name&VoiceUrl=https://example.com/voice
 ```
 
-#### Delete Phone Number
+#### 删除电话号码
 
 ```bash
 DELETE /twilio/2010-04-01/Accounts/{AccountSid}/IncomingPhoneNumbers/{PhoneNumberSid}.json
 ```
 
-### Applications
+### 应用程序
 
-#### List Applications
+#### 列出应用程序
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Applications.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "applications": [
@@ -407,13 +407,13 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Applications.json
 }
 ```
 
-#### Get Application
+#### 获取应用程序信息
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Applications/{ApplicationSid}.json
 ```
 
-#### Create Application
+#### 创建应用程序
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Applications.json
@@ -422,7 +422,7 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=My%20App&VoiceUrl=https://example.com/voice
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "sid": "APxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -432,7 +432,7 @@ FriendlyName=My%20App&VoiceUrl=https://example.com/voice
 }
 ```
 
-#### Update Application
+#### 更新应用程序信息
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Applications/{ApplicationSid}.json
@@ -441,23 +441,23 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=Updated%20App%20Name
 ```
 
-#### Delete Application
+#### 删除应用程序
 
 ```bash
 DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Applications/{ApplicationSid}.json
 ```
 
-Returns 204 No Content on success.
+成功时返回204（表示“无内容”）。
 
-### Queues
+### 队列
 
-#### List Queues
+#### 列出队列
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Queues.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "queues": [
@@ -472,7 +472,7 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Queues.json
 }
 ```
 
-#### Create Queue
+#### 创建队列
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Queues.json
@@ -481,7 +481,7 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=Support%20Queue&MaxSize=100
 ```
 
-#### Update Queue
+#### 更新队列
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}.json
@@ -490,21 +490,21 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=Updated%20Queue%20Name
 ```
 
-#### Delete Queue
+#### 删除队列
 
 ```bash
 DELETE /twilio/2010-04-01/Accounts/{AccountSid}/Queues/{QueueSid}.json
 ```
 
-### Addresses
+### 地址
 
-#### List Addresses
+#### 列出地址信息
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Addresses.json
 ```
 
-#### Create Address
+#### 创建地址信息
 
 ```bash
 POST /twilio/2010-04-01/Accounts/{AccountSid}/Addresses.json
@@ -513,20 +513,20 @@ Content-Type: application/x-www-form-urlencoded
 FriendlyName=Office&Street=123%20Main%20St&City=San%20Francisco&Region=CA&PostalCode=94105&IsoCountry=US&CustomerName=Acme%20Inc
 ```
 
-### Usage Records
+### 使用记录
 
-#### List Usage Records
+#### 列出使用记录
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Usage/Records.json
 ```
 
-**Query Parameters:**
-- `Category` - Filter by usage category (calls, sms, etc.)
-- `StartDate` - Start date (YYYY-MM-DD)
-- `EndDate` - End date (YYYY-MM-DD)
+**查询参数：**
+- `Category` - 按使用类别过滤（通话、短信等）
+- `StartDate` - 开始日期（YYYY-MM-DD）
+- `EndDate` - 结束日期（YYYY-MM-DD）
 
-**Response:**
+**响应：**
 ```json
 {
   "usage_records": [
@@ -542,19 +542,19 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Usage/Records.json
 }
 ```
 
-## Pagination
+## 分页
 
-Twilio uses page-based pagination:
+Twilio使用基于页面的分页机制：
 
 ```bash
 GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json?PageSize=50&Page=0
 ```
 
-**Parameters:**
-- `PageSize` - Results per page (default: 50)
-- `Page` - Page number (0-indexed)
+**参数：**
+- `PageSize` - 每页显示的结果数量（默认：50）
+- `Page` - 页码（从0开始计数）
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "messages": [...],
@@ -566,9 +566,9 @@ GET /twilio/2010-04-01/Accounts/{AccountSid}/Messages.json?PageSize=50&Page=0
 }
 ```
 
-Use `next_page_uri` to fetch the next page of results.
+使用`next_page_uri`来获取下一页的结果。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -601,7 +601,7 @@ account_sid = response.json()['accounts'][0]['sid']
 print(f"Account SID: {account_sid}")
 ```
 
-### Python (Send SMS)
+### Python（发送短信）
 
 ```python
 import os
@@ -626,7 +626,7 @@ print(f"Message SID: {message['sid']}")
 print(f"Status: {message['status']}")
 ```
 
-### Python (Make Call)
+### Python（发起通话）
 
 ```python
 import os
@@ -651,34 +651,34 @@ print(f"Call SID: {call['sid']}")
 print(f"Status: {call['status']}")
 ```
 
-## Notes
+## 注意事项
 
-- All endpoints require the `/2010-04-01/` API version prefix
-- Most endpoints require your Account SID in the path
-- Request bodies use `application/x-www-form-urlencoded` format (not JSON)
-- Phone numbers must be in E.164 format (+15551234567)
-- SIDs are unique identifiers:
-  - Account SIDs start with `AC`
-  - Message SIDs start with `SM` (SMS) or `MM` (MMS)
-  - Call SIDs start with `CA`
-  - Phone Number SIDs start with `PN`
-  - Application SIDs start with `AP`
-  - Queue SIDs start with `QU`
-- POST is used for both creating and updating resources
-- DELETE returns 204 No Content on success
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有端点都需要在路径前加上`/2010-04-01/`作为API版本前缀。
+- 大多数端点需要在路径中包含您的账户SID。
+- 请求正文使用`application/x-www-form-urlencoded`格式（而非JSON）。
+- 电话号码必须采用E.164格式（例如：+15551234567）。
+- SID是唯一的标识符：
+  - 账户SID以`AC`开头
+  - 消息SID以`SM`（短信）或`MM`（MMS）开头
+  - 通话SID以`CA`开头
+  - 电话号码SID以`PN`开头
+  - 应用程序SID以`AP`开头
+  - 队列SID以`QU`开头。
+- 使用`POST`方法进行资源的创建和更新。
+- 删除操作成功时返回204（表示“无内容”）。
+- **重要提示：** 当将curl的输出传递给`jq`或其他命令时，在某些shell环境中，环境变量`$MATON_API_KEY`可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Twilio connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Twilio API |
+| 400 | 未建立Twilio连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 超过使用频率限制 |
+| 4xx/5xx | 来自Twilio API的传递错误 |
 
-Twilio error responses include:
+Twilio的错误响应包括：
 ```json
 {
   "code": 20404,
@@ -688,17 +688,17 @@ Twilio error responses include:
 }
 ```
 
-### Troubleshooting: Invalid API Key
+### 故障排除：API密钥无效
 
-**When you receive an "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
+**当收到“API密钥无效”的错误时，请务必按照以下步骤操作，再判断是否存在问题：**
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保`MATON_API_KEY`环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接信息来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -709,11 +709,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Resources
+## 资源链接
 
-- [Twilio API Overview](https://www.twilio.com/docs/usage/api)
-- [Messages API](https://www.twilio.com/docs/messaging/api/message-resource)
-- [Calls API](https://www.twilio.com/docs/voice/api/call-resource)
-- [Phone Numbers API](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource)
-- [Applications API](https://www.twilio.com/docs/usage/api/applications)
-- [Usage Records API](https://www.twilio.com/docs/usage/api/usage-record)
+- [Twilio API概述](https://www.twilio.com/docs/usage/api)
+- [消息API](https://www.twilio.com/docs/messaging/api/message-resource)
+- [通话API](https://www.twilio.com/docs/voice/api/call-resource)
+- [电话号码API](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource)
+- [应用程序API](https://www.twilio.com/docs/usage/api/applications)
+- [使用记录API](https://www.twilio.com/docs/usage/api/usage-record)

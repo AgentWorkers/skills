@@ -1,3 +1,3 @@
-# diary-visualizer
+# 日记可视化工具
 
-Visualize diary entries and timeline data
+用于可视化日记条目和时间线数据

@@ -1,308 +1,184 @@
 ---
 name: api-versioning
 model: standard
-description: API versioning strategies — URL path, header, query param, content negotiation — with breaking change classification, deprecation timelines, migration patterns, and multi-version support. Use when evolving APIs, planning breaking changes, or managing version lifecycles.
+description: API版本管理策略：包括URL路径设计、请求头（header）的设置、查询参数（query param）的利用以及内容协商（content negotiation）的方法。这些策略还涵盖了重大变更（breaking changes）的分类、功能废弃（deprecation）的时间表、迁移方案（migration patterns）以及多版本支持（multi-version support）。这些方法在API的演进过程中非常有用，可用于规划重大变更、管理API的生命周期（version lifecycle）。
 ---
 
-# API Versioning Patterns
+# API版本控制模式
 
-Evolve your API confidently. Version correctly, deprecate gracefully, migrate safely — without breaking existing consumers.
+自信地发展您的API。正确地进行版本更新，优雅地淘汰旧版本，并安全地迁移——同时确保现有客户端不受影响。
 
-## Versioning Strategies
+## 版本控制策略
 
-Pick one strategy and apply it consistently across your entire API surface.
+选择一种策略，并在整个API中一致地应用它。
 
-| Strategy | Format | Visibility | Cacheability | Best For |
+| 策略 | 格式 | 可见性 | 可缓存性 | 适用场景 |
 |----------|--------|------------|--------------|----------|
-| **URL Path** | `/api/v1/users` | High | Excellent | Public APIs, third-party integrations |
-| **Query Param** | `/api/users?v=1` | Medium | Moderate | Simple APIs, prototyping |
-| **Header** | `Accept-Version: v1` | Low | Good | Internal APIs, coordinated consumers |
-| **Content Negotiation** | `Accept: application/vnd.api.v1+json` | Low | Good | Enterprise, strict REST compliance |
+| **URL路径** | `/api/v1/users` | 高 | 非常好 | 公开API、第三方集成 |
+| **查询参数** | `/api/users?v=1` | 中等 | 一般 | 简单API、原型设计 |
+| **请求头** | `Accept-Version: v1` | 低 | 一般 | 内部API、协同使用的客户端 |
+| **内容协商** | `Accept: application/vnd.api.v1+json` | 低 | 一般 | 企业级应用、严格的REST合规性 |
 
 ---
 
-## URL Path Versioning
+## URL路径版本控制
 
-The most common strategy. Version lives in the URL, making it immediately visible.
+最常见的策略。版本信息直接体现在URL中，便于立即识别。
 
-```python
-from fastapi import FastAPI, APIRouter
+**规则：**
+- 必须始终使用前缀 `/api/v1/`，而不是 `/v1/api/`  
+- 只使用主版本号，例如 `/api/v1/`，避免使用 `/api/v1.2/` 或 `/api/v1.2.3/`  
+- 每个API端点都必须有版本标识，不能混合使用有版本标识和没有版本标识的路径  
 
-v1 = APIRouter(prefix="/api/v1")
-v2 = APIRouter(prefix="/api/v2")
+## 请求头版本控制
 
-@v1.get("/users")
-async def list_users_v1():
-    return {"users": [...]}
+通过请求头指定版本信息，保持URL的简洁性。
 
-@v2.get("/users")
-async def list_users_v2():
-    return {"data": {"users": [...]}, "meta": {...}}
+**规则：**
+- 当没有发送版本头时，必须定义回退行为——默认返回最新稳定版本或 `400 Bad Request` 错误。  
 
-app = FastAPI()
-app.include_router(v1)
-app.include_router(v2)
-```
+## API的语义版本控制
 
-**Rules:**
-
-- Always prefix: `/api/v1/...` not `/v1/api/...`
-- Major version only: `/api/v1/`, never `/api/v1.2/` or `/api/v1.2.3/`
-- Every endpoint must be versioned — no mixing versioned and unversioned paths
-
-## Header Versioning
-
-Version specified via request headers, keeping URLs clean.
-
-```javascript
-function versionRouter(req, res, next) {
-  const version = req.headers['accept-version'] || 'v2'; // default to latest
-  req.apiVersion = version;
-  next();
-}
-
-app.get('/api/users', versionRouter, (req, res) => {
-  if (req.apiVersion === 'v1') return res.json({ users: [...] });
-  if (req.apiVersion === 'v2') return res.json({ data: { users: [...] }, meta: {} });
-  return res.status(400).json({ error: `Unsupported version: ${req.apiVersion}` });
-});
-```
-
-Always define fallback behavior when no version header is sent — default to latest stable or return `400 Bad Request`.
-
-## Semantic Versioning for APIs
-
-| SemVer Component | API Meaning | Action Required |
+| 版本变更类型 | API含义 | 客户端需要采取的行动 |
 |------------------|-------------|-----------------|
-| **MAJOR** (v1 → v2) | Breaking changes — remove field, rename endpoint, change auth | Clients must migrate |
-| **MINOR** (v1.1 → v1.2) | Additive, backward-compatible — new optional field, new endpoint | No client changes |
-| **PATCH** (v1.1.0 → v1.1.1) | Bug fixes, no behavior change | No client changes |
+| **重大版本变更** (v1 → v2) | 会导致功能破坏——例如删除字段、重命名端点、更改认证方式 | 客户端必须进行迁移 |
+| **次要版本变更** (v1.1 → v1.2) | 添加新字段或新端点——向后兼容 | 客户端无需更改 |
+| **修补版本变更** (v1.1.0 → v1.1.1) | 修复错误，不改变现有功能 | 客户端无需更改 |
 
-Only MAJOR versions appear in URL paths. Communicate MINOR and PATCH through changelogs.
+只有重大版本号会体现在URL路径中。次要版本和修补版本变更通过变更日志进行沟通。  
 
----
+## 破坏性变更与非破坏性变更
 
-## Breaking vs Non-Breaking Changes
+### 破坏性变更——需要新版本
 
-### Breaking — Require New Version
-
-| Change | Why It Breaks |
+| 变更类型 | 会导致的问题 |
 |--------|---------------|
-| Remove a response field | Clients reading that field get `undefined` |
-| Rename a field | Same as removal from the client's perspective |
-| Change a field's type | `"id": 123` → `"id": "123"` breaks typed clients |
-| Remove an endpoint | Clients calling it get `404` |
-| Make optional param required | Existing requests missing it start failing |
-| Change URL structure | Bookmarked/hardcoded URLs break |
-| Change error response format | Client error-handling logic breaks |
-| Change authentication mechanism | Existing credentials stop working |
+| 删除响应字段 | 客户端读取该字段时会得到 `undefined` |
+| 重命名字段 | 对客户端来说，相当于删除了该字段 |
+| 更改字段类型 | 例如将 `"id": 123` 更改为 `"id": "123"` 会导致类型不匹配的错误 |
+| 删除端点 | 客户端调用该端点时会收到 `404` 错误 |
+| 将可选参数变为必填 | 未提供该参数的现有请求会失败 |
+| 更改URL结构 | 预先标记或硬编码的URL会失效 |
+| 更改错误响应格式 | 客户端的错误处理逻辑会出错 |
+| 更改认证方式 | 现有的认证信息将不再有效 |
 
-### Non-Breaking — Safe Under Same Version
+### 非破坏性变更——在同一版本下安全进行
 
-| Change | Why It's Safe |
+| 变更类型 | 为何安全 |
 |--------|---------------|
-| Add new optional response field | Clients ignore unknown fields |
-| Add new endpoint | Doesn't affect existing endpoints |
-| Add new optional query/body param | Existing requests work without it |
-| Add new enum value | Safe if clients handle unknown values gracefully |
-| Relax a validation constraint | Previously valid requests remain valid |
-| Improve performance | Same interface, faster response |
+| 添加新的可选响应字段 | 客户端可以忽略未知字段 |
+| 添加新的端点 | 不影响现有端点 |
+| 添加新的可选查询参数/请求体参数 | 现有请求仍可正常工作 |
+| 添加新的枚举值 | 如果客户端能够优雅地处理未知值，则安全 |
+| 放松验证规则 | 之前有效的请求仍然有效 |
+| 提高性能 | 接口不变，响应速度更快 |
+
+## 废弃策略
+
+切勿在未发出警告的情况下删除某个版本。遵循以下时间表：
+
+**最低废弃周期：**
+- 公开API：12个月  
+- 合作伙伴API：6个月  
+- 内部API：1–3个月  
+
+### 日落HTTP头（RFC 8594）
+
+在来自废弃版本的每个响应中都必须包含以下头信息：
 
 ---
 
-## Deprecation Strategy
+## 废弃版本的响应处理
 
-Never remove a version without warning. Follow this timeline:
-
-```
-Phase 1: ANNOUNCE
-  • Sunset header on responses  • Changelog entry
-  • Email/webhook to consumers  • Docs marked "deprecated"
-
-Phase 2: SUNSET PERIOD
-  • v1 still works but warns     • Monitor v1 traffic
-  • Contact remaining consumers  • Provide migration support
-
-Phase 3: REMOVAL
-  • v1 returns 410 Gone
-  • Response body includes migration guide URL
-  • Redirect docs to v2
-```
-
-**Minimum deprecation periods:** Public API: 12 months · Partner API: 6 months · Internal API: 1–3 months
-
-### Sunset HTTP Header (RFC 8594)
-
-Include on every response from a deprecated version:
-
-```
-HTTP/1.1 200 OK
-Sunset: Sat, 01 Mar 2025 00:00:00 GMT
-Deprecation: true
-Link: <https://api.example.com/docs/migrate-v1-v2>; rel="sunset"
-X-API-Warn: "v1 is deprecated. Migrate to v2 by 2025-03-01."
-```
-
-### Retired Version Response
-
-When past sunset, return `410 Gone`:
-
-```json
-{
-  "error": "VersionRetired",
-  "message": "API v1 was retired on 2025-03-01.",
-  "migration_guide": "https://api.example.com/docs/migrate-v1-v2",
-  "current_version": "v2"
-}
-```
+当版本达到废弃期限后，返回 `410 Gone` 状态码：
 
 ---
 
-## Migration Patterns
+## 迁移策略
 
-### Adapter Pattern
+### 适配器模式
 
-Shared business logic, version-specific serialization:
-
-```python
-class UserService:
-    async def get_user(self, user_id: str) -> User:
-        return await self.repo.find(user_id)
-
-def to_v1(user: User) -> dict:
-    return {"id": user.id, "name": user.full_name, "email": user.email}
-
-def to_v2(user: User) -> dict:
-    return {
-        "id": user.id,
-        "name": {"first": user.first_name, "last": user.last_name},
-        "emails": [{"address": e, "primary": i == 0} for i, e in enumerate(user.emails)],
-        "created_at": user.created_at.isoformat(),
-    }
-```
-
-### Facade Pattern
-
-Single entry point delegates to the correct versioned handler:
-
-```python
-async def get_user(user_id: str, version: int):
-    user = await user_service.get_user(user_id)
-    serializers = {1: to_v1, 2: to_v2}
-    serialize = serializers.get(version)
-    if not serialize:
-        raise UnsupportedVersionError(version)
-    return serialize(user)
-```
-
-### Versioned Controllers
-
-Separate controller files per version, shared service layer:
-
-```
-api/
-  v1/
-    users.py      # v1 request/response shapes
-    orders.py
-  v2/
-    users.py      # v2 request/response shapes
-    orders.py
-  services/
-    user_service.py   # version-agnostic business logic
-    order_service.py
-```
-
-### API Gateway Routing
-
-Route versions at infrastructure layer:
-
-```yaml
-routes:
-  - match: /api/v1/*
-    upstream: api-v1-service:8080
-  - match: /api/v2/*
-    upstream: api-v2-service:8080
-```
+共享业务逻辑，针对不同版本使用不同的序列化方式：
 
 ---
 
-## Multi-Version Support
+### 外观模式
 
-**Architecture:**
-
-```
-Request → API Gateway → Version Router → v1 Handler → Shared Service Layer → DB
-                                        → v2 Handler ↗
-```
-
-**Principles:**
-
-1. **Business logic is version-agnostic.** Services, repositories, and domain models are shared.
-2. **Serialization is version-specific.** Each version has its own request validators and response serializers.
-3. **Transformations are explicit.** A `v1_to_v2` transformer documents every field mapping.
-4. **Tests cover all active versions.** Every supported version has its own integration test suite.
-
-**Maximum concurrent versions:** 2–3 active (current + 1–2 deprecated). More than 3 creates unsustainable maintenance burden.
+通过单一入口点将请求转发到正确的版本处理程序：
 
 ---
 
-## Client Communication
+### 分版本控制器
 
-### Changelog
-
-Publish a changelog for every release, tagged by version and change type:
-
-```markdown
-## v2.3.0 — 2025-02-01
-### Added
-- `avatar_url` field on User response
-- `GET /api/v2/users/{id}/activity` endpoint
-### Deprecated
-- `name` field on User — use `first_name` and `last_name` (removal in v3)
-```
-
-### Migration Guides
-
-For every major version bump, provide:
-
-- Field-by-field mapping table (v1 → v2)
-- Before/after request and response examples
-- Code snippets for common languages/SDKs
-- Timeline with key dates (announcement, sunset, removal)
-
-### SDK Versioning
-
-Align SDK major versions with API major versions:
-
-```
-api-client@1.x  →  /api/v1
-api-client@2.x  →  /api/v2
-```
-
-Ship the new SDK before announcing API deprecation.
+为每个版本创建独立的控制器文件，并共享服务层：
 
 ---
 
-## Anti-Patterns
+### API网关路由
 
-| Anti-Pattern | Fix |
+在基础设施层对不同版本进行路由处理：
+
+---
+
+## 多版本支持
+
+**架构：**
+
+---
+
+**原则：**
+1. **业务逻辑与版本无关。** 服务、仓库和领域模型都是共享的。
+2. **序列化方式与版本相关。** 每个版本都有自己对应的请求验证器和响应序列化器。
+3. **转换规则明确。** 有一个 `v1_to_v2` 的转换工具，用于记录每个字段的映射关系。
+4. **测试覆盖所有活跃版本。** 每个支持的版本都有对应的集成测试套件。
+
+**最大同时支持的版本数量：** 2–3个活跃版本（当前版本加上1–2个废弃版本）。超过3个版本会导致维护负担过重。
+
+## 客户端沟通
+
+### 变更日志
+
+为每次发布生成变更日志，并按版本和变更类型进行标记：
+
+---
+
+### 迁移指南
+
+对于每次重大版本更新，提供以下内容：
+- 字段之间的映射表（例如 v1 → v2）
+- 请求和响应的示例（更新前/更新后）
+- 常见语言/SDK的代码示例
+- 包含关键日期的时间线（发布日期、废弃日期、移除日期）
+
+### SDK版本控制
+
+确保SDK的版本号与API的版本号保持一致：
+
+---
+
+**注意：** 在宣布API废弃之前，先发布新的SDK版本。
+
+---
+
+## 应避免的错误做法
+
+| 错误做法 | 应该如何改进 |
 |-------------|-----|
-| **Versioning too frequently** | Batch breaking changes into infrequent major releases |
-| **Breaking without notice** | Always follow the deprecation timeline |
-| **Eternal version support** | Set and enforce sunset dates |
-| **Inconsistent versioning** | One version scheme, applied uniformly |
-| **Version per endpoint** | Version the entire API surface together |
-| **Using versions to gate features** | Use feature flags separately; versions are for contracts |
-| **No default version** | Always define a default or return explicit 400 |
+| **频繁进行版本更新** | 将破坏性变更分批放入不频繁的重大版本更新中 |
+| **未经通知就进行破坏性变更** | 始终遵循废弃时间表 |
+| **永久支持所有版本** | 设定并严格执行废弃日期 |
+| **版本控制不一致** | 使用统一的版本控制方案 |
+| **每个端点都使用不同的版本号** | 应为整个API统一设置版本号 |
+| **使用版本号来控制功能启用/禁用** | 应使用功能标志来控制功能的启用/禁用；版本号用于明确功能的使用范围 |
+| **不设置默认版本** | 必须设置默认版本，或明确返回 `400` 错误 |
 
 ---
 
-## NEVER Do
-
-1. **NEVER** remove a field, endpoint, or change a type without bumping the major version
-2. **NEVER** sunset a public API version with less than 6 months notice
-3. **NEVER** mix versioning strategies in the same API (URL path for some, headers for others)
-4. **NEVER** use minor or patch versions in URL paths (`/api/v1.2/` is wrong — use `/api/v1/`)
-5. **NEVER** version individual endpoints independently — version the entire API surface as a unit
-6. **NEVER** deploy a breaking change under an existing version number, even if "nobody uses that field"
-7. **NEVER** skip documenting differences between versions — every breaking change needs a migration guide entry
+**绝对禁止的做法：**
+1. **绝对禁止** 在不升级主版本的情况下删除字段、端点或更改字段类型。
+2. **绝对禁止** 在提前少于6个月的情况下废弃公开API版本。
+3. **绝对禁止** 在同一个API中混合使用不同的版本控制策略（例如某些端点使用URL路径，某些端点使用请求头）。
+4. **绝对禁止** 在URL路径中使用次要或修补版本号（例如 `/api/v1.2/` 是错误的做法，应使用 `/api/v1/`）。
+5. **绝对禁止** 独立地为单个端点设置版本号——应为整个API统一设置版本号。
+6. **绝对禁止** 在现有版本号下部署破坏性变更，即使“没有人使用某个字段”。
+7. **绝对禁止** 不记录版本之间的差异——每个破坏性变更都需要有详细的迁移指南。

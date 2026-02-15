@@ -1,27 +1,26 @@
 ---
 name: hostinger
-description: Manage Hostinger account via API — VPS administration (start/stop/restart, snapshots, backups, firewall, Docker), DNS zone management, domain portfolio, website hosting, and billing. Use when asked to deploy, publish, manage servers, configure DNS, or control any Hostinger service.
+description: 通过 API 管理 Hostinger 账户——包括 VPS 的管理（启动/停止/重启、快照、备份、防火墙、Docker）、DNS 区域管理、域名管理、网站托管以及计费功能。当需要部署服务器、发布内容、管理服务器配置、设置 DNS 或控制任何 Hostinger 服务时，请使用此功能。
 ---
 
-# Hostinger API Skill
+# Hostinger API 技能
 
-Control Hostinger services programmatically: VPS instances, DNS records, domains, websites, hosting.
+**程序化控制 Hostinger 服务：** VPS 实例、DNS 记录、域名、网站及托管服务。
 
-## Authentication
+## 认证
 
-API token required. Get one from: https://hpanel.hostinger.com/profile/api
-
-Store in `~/.config/hostinger/token` (just the token, no newline):
+需要 API 令牌。请从以下链接获取令牌：  
+https://hpanel.hostinger.com/profile/api  
+将令牌保存在 `~/.config/hostinger/token` 文件中（仅保存令牌，不要添加换行符）：  
 ```bash
 mkdir -p ~/.config/hostinger
 echo -n "YOUR_API_TOKEN" > ~/.config/hostinger/token
 chmod 600 ~/.config/hostinger/token
 ```
 
-## Quick Reference
+## 快速参考
 
-### VPS Operations
-
+### VPS 操作  
 ```bash
 # List all VPS instances
 python3 scripts/hostinger.py vps list
@@ -42,8 +41,7 @@ python3 scripts/hostinger.py vps snapshot-restore <vm_id>
 python3 scripts/hostinger.py vps backups <vm_id>
 ```
 
-### DNS Management
-
+### DNS 管理  
 ```bash
 # Get DNS records for domain
 python3 scripts/hostinger.py dns get <domain>
@@ -59,8 +57,7 @@ python3 scripts/hostinger.py dns snapshots <domain>
 python3 scripts/hostinger.py dns snapshot-restore <domain> <snapshot_id>
 ```
 
-### Domain Portfolio
-
+### 域名管理  
 ```bash
 # List all domains
 python3 scripts/hostinger.py domains list
@@ -75,8 +72,7 @@ python3 scripts/hostinger.py domains nameservers <domain> ns1.example.com ns2.ex
 python3 scripts/hostinger.py domains check example.com example.org
 ```
 
-### Hosting/Websites
-
+### 托管服务/网站  
 ```bash
 # List websites
 python3 scripts/hostinger.py hosting websites
@@ -85,8 +81,7 @@ python3 scripts/hostinger.py hosting websites
 python3 scripts/hostinger.py hosting datacenters
 ```
 
-### Billing
-
+### 账单管理  
 ```bash
 # View subscriptions
 python3 scripts/hostinger.py billing subscriptions
@@ -98,9 +93,9 @@ python3 scripts/hostinger.py billing payment-methods
 python3 scripts/hostinger.py billing catalog
 ```
 
-## DNS Record Format
+## DNS 记录格式
 
-When updating DNS records, provide a JSON file:
+在更新 DNS 记录时，需要提供一个 JSON 文件：  
 ```json
 {
   "records": [
@@ -112,9 +107,9 @@ When updating DNS records, provide a JSON file:
 }
 ```
 
-## VPS Docker Management
+## VPS Docker 管理
 
-For VPS with Docker OS templates:
+对于使用 Docker 操作系统的 VPS：  
 ```bash
 # List Docker projects
 python3 scripts/hostinger.py docker list <vm_id>
@@ -137,7 +132,7 @@ python3 scripts/hostinger.py docker logs <vm_id> <project_name>
 python3 scripts/hostinger.py docker down <vm_id> <project_name>
 ```
 
-## VPS Firewall
+## VPS 防火墙  
 
 ```bash
 # List firewalls
@@ -153,9 +148,9 @@ python3 scripts/hostinger.py firewall add-rule <firewall_id> --protocol tcp --po
 python3 scripts/hostinger.py firewall activate <firewall_id> <vm_id>
 ```
 
-## Direct API Access
+## 直接使用 API 进行操作
 
-For operations not covered by the script, use curl:
+对于脚本未涵盖的操作，可以使用 `curl` 命令进行操作：  
 ```bash
 TOKEN=$(cat ~/.config/hostinger/token)
 curl -H "Authorization: Bearer $TOKEN" \
@@ -163,29 +158,29 @@ curl -H "Authorization: Bearer $TOKEN" \
      https://developers.hostinger.com/api/vps/v1/virtual-machines
 ```
 
-## API Documentation
+## API 文档
 
-- Full API reference: https://developers.hostinger.com
-- OpenAPI spec: https://github.com/hostinger/api/blob/main/openapi.json
-- Python SDK: https://github.com/hostinger/api-python-sdk
-- CLI tool: https://github.com/hostinger/api-cli
+- 完整的 API 参考文档：https://developers.hostinger.com  
+- OpenAPI 规范：https://github.com/hostinger/api/blob/main/openapi.json  
+- Python SDK：https://github.com/hostinger/api-python-sdk  
+- CLI 工具：https://github.com/hostinger/api-cli  
 
-## Common Workflows
+## 常见工作流程
 
-### Deploy a Website
+### 部署网站
 
-1. Get VPS ID: `python3 scripts/hostinger.py vps list`
-2. Update DNS to point to VPS: `python3 scripts/hostinger.py dns update domain.com records.json`
-3. SSH to VPS and deploy, OR use Docker: `python3 scripts/hostinger.py docker deploy <vm_id> mysite --file docker-compose.yml`
+1. 获取 VPS ID：`python3 scripts/hostinger.py vps list`  
+2. 更新 DNS 记录以指向 VPS：`python3 scripts/hostinger.py dns update domain.com records.json`  
+3. 通过 SSH 连接到 VPS 进行部署，或使用 Docker：`python3 scripts/hostinger.py docker deploy <vm_id> mysite --file docker-compose.yml`  
 
-### Secure a VPS
+### 保护 VPS 安全
 
-1. Create firewall: `python3 scripts/hostinger.py firewall create "web-server"`
-2. Add rules for SSH, HTTP, HTTPS
-3. Activate: `python3 scripts/hostinger.py firewall activate <fw_id> <vm_id>`
+1. 创建防火墙：`python3 scripts/hostinger.py firewall create "web-server"`  
+2. 添加 SSH、HTTP、HTTPS 的规则  
+3. 激活防火墙：`python3 scripts/hostinger.py firewall activate <fw_id> <vm_id>`  
 
-### Backup Before Changes
+### 更改前的备份
 
-1. Create snapshot: `python3 scripts/hostinger.py vps snapshot-create <vm_id>`
-2. Make changes
-3. If needed, restore: `python3 scripts/hostinger.py vps snapshot-restore <vm_id>`
+1. 创建快照：`python3 scripts/hostinger.py vps snapshot-create <vm_id>`  
+2. 进行更改  
+3. 如有需要，恢复数据：`python3 scripts/hostinger.py vps snapshot-restore <vm_id>`

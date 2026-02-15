@@ -15,11 +15,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Zoho Calendar
+# Zoho 日历
 
-Access the Zoho Calendar API with managed OAuth authentication. Manage calendars and events with full CRUD operations, including recurring events and attendee management.
+通过管理的 OAuth 认证来访问 Zoho 日历 API。您可以执行完整的 CRUD 操作（创建、读取、更新和删除）来管理日历和事件，包括重复事件和参与者管理。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List calendars
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-calendar/api/v1/{endpoint}
 ```
 
-The gateway proxies requests to `calendar.zoho.com/api/v1` and automatically injects your OAuth token.
+该网关会将请求代理到 `calendar.zoho.com/api/v1`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho Calendar OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Zoho 日历 OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho Calendar connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho 日历连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Calendars
+### 日历
 
-#### List Calendars
+#### 列出日历
 
 ```bash
 GET /zoho-calendar/api/v1/calendars
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -163,7 +163,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "calendars": [
@@ -181,13 +181,13 @@ EOF
 }
 ```
 
-#### Get Calendar Details
+#### 获取日历详情
 
 ```bash
 GET /zoho-calendar/api/v1/calendars/{calendar_uid}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -198,24 +198,24 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Calendar
+#### 创建日历
 
 ```bash
 POST /zoho-calendar/api/v1/calendars?calendarData={json}
 ```
 
-**Required Fields:**
-- `name` - Calendar name (max 50 characters)
-- `color` - Hex color code (e.g., `#FF5733`)
+**必填字段：**
+- `name` - 日历名称（最多 50 个字符）
+- `color` - 十六进制颜色代码（例如：`#FF5733`）
 
-**Optional Fields:**
-- `textcolor` - Text color hex code
-- `description` - Calendar description (max 1000 characters)
-- `timezone` - Calendar timezone
-- `include_infreebusy` - Show as Busy/Free (boolean)
-- `public` - Visibility level (`disable`, `freebusy`, or `view`)
+**可选字段：**
+- `textcolor` - 文本颜色十六进制代码
+- `description` - 日历描述（最多 1000 个字符）
+- `timezone` - 日历时区
+- `include_infreebusy` - 是否显示为忙碌/空闲（布尔值）
+- `public` - 可见性级别（`disable`、`freebusy` 或 `view`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -235,7 +235,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "calendars": [
@@ -249,13 +249,13 @@ EOF
 }
 ```
 
-#### Delete Calendar
+#### 删除日历
 
 ```bash
 DELETE /zoho-calendar/api/v1/calendars/{calendar_uid}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -266,7 +266,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "calendars": [
@@ -278,23 +278,23 @@ EOF
 }
 ```
 
-### Events
+### 事件
 
-#### List Events
+#### 列出事件
 
 ```bash
 GET /zoho-calendar/api/v1/calendars/{calendar_uid}/events?range={json}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `range` | JSON object | **Required.** Start and end dates in format `{"start":"yyyyMMdd","end":"yyyyMMdd"}`. Max 31-day span. |
-| `byinstance` | boolean | If true, recurring event instances are returned separately |
-| `timezone` | string | Timezone for datetime values |
+| `range` | JSON 对象 | **必填。** 开始和结束日期，格式为 `{"start":"yyyyMMdd","end":"yyyyMMdd"`。最多支持 31 天的时间范围。 |
+| `byinstance` | 布尔值 | 如果为 `true`，则重复事件会分别返回 |
+| `timezone` | 字符串 | 日期时间的时区 |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -315,7 +315,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "events": [
@@ -335,13 +335,13 @@ EOF
 }
 ```
 
-#### Get Event Details
+#### 获取事件详情
 
 ```bash
 GET /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -352,29 +352,29 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Event
+#### 创建事件
 
 ```bash
 POST /zoho-calendar/api/v1/calendars/{calendar_uid}/events?eventdata={json}
 ```
 
-**Required Fields (in eventdata):**
-- `dateandtime` - Object with `start`, `end`, and optionally `timezone`
-  - Format: `yyyyMMdd'T'HHmmss'Z'` (GMT) for timed events
-  - Format: `yyyyMMdd` for all-day events
+**必填字段（在 eventdata 中）：**
+- `dateandtime` - 包含 `start`、`end` 的对象，可选 `timezone`：
+  - 对于定时事件，格式为 `yyyyMMdd'T'HHmmss'Z'`（GMT）。
+  - 对于全天事件，格式为 `yyyyMMdd`。
 
-**Optional Fields:**
-- `title` - Event name
-- `description` - Event details (max 10,000 characters)
-- `location` - Event location (max 255 characters)
-- `isallday` - Boolean for all-day events
-- `isprivate` - Boolean to hide details from non-delegates
-- `color` - Hex color code
-- `attendees` - Array of attendee objects
-- `reminders` - Array of reminder objects
-- `rrule` - Recurrence rule string (e.g., `FREQ=DAILY;COUNT=5`)
+**可选字段：**
+- `title` - 事件名称
+- `description` - 事件详情（最多 10,000 个字符）
+- `location` - 事件地点（最多 255 个字符）
+- `isallday` - 全天事件的布尔值
+- `isprivate` - 是否向非参与者隐藏详情的布尔值
+- `color` - 十六进制颜色代码
+- `attendees` - 参与者对象数组
+- `reminders` - 提醒对象数组
+- `rrule` - 重复规则字符串（例如：`FREQ=DAILY;COUNT=5`）
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -402,7 +402,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "events": [
@@ -421,19 +421,19 @@ EOF
 }
 ```
 
-#### Update Event
+#### 更新事件
 
 ```bash
 PUT /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}?eventdata={json}
 ```
 
-**Required Fields:**
-- `dateandtime` - Start and end times
-- `etag` - Current etag value (from Get Event Details)
+**必填字段：**
+- `dateandtime` - 开始和结束时间
+- `etag` - 事件的当前 etag 值（来自获取事件详情）
 
-**Optional Fields:** Same as Create Event
+**可选字段：** 与创建事件相同
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -460,16 +460,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete Event
+#### 删除事件
 
 ```bash
 DELETE /zoho-calendar/api/v1/calendars/{calendar_uid}/events/{event_uid}
 ```
 
-**Required Header:**
-- `etag` - Current etag value of the event
+**必填头部：**
+- `etag` - 事件的当前 etag 值
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -482,7 +482,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "events": [
@@ -495,9 +495,9 @@ EOF
 }
 ```
 
-### Attendees
+### 参与者
 
-When creating or updating events, include attendees:
+在创建或更新事件时，需要包含参与者信息：
 
 ```json
 {
@@ -511,10 +511,10 @@ When creating or updating events, include attendees:
 }
 ```
 
-**Permission levels:** 0 (Guest), 1 (View), 2 (Invite), 3 (Edit)
-**Attendance:** 0 (Non-participant), 1 (Required), 2 (Optional)
+**权限级别：** 0（访客）、1（查看）、2（邀请）、3（编辑）
+**出席情况：** 0（非参与者）、1（必填）、2（可选）
 
-### Reminders
+### 提醒
 
 ```json
 {
@@ -531,11 +531,11 @@ When creating or updating events, include attendees:
 }
 ```
 
-**Actions:** `email`, `popup`, `notification`
+**操作：** `email`、`popup`、`notification`
 
-### Recurring Events
+### 重复事件
 
-Use the `rrule` field with iCalendar RRULE format:
+使用 iCalendar 的 RRULE 格式设置 `rrule` 字段：
 
 ```json
 {
@@ -543,12 +543,12 @@ Use the `rrule` field with iCalendar RRULE format:
 }
 ```
 
-**Examples:**
-- Daily for 5 days: `FREQ=DAILY;COUNT=5;INTERVAL=1`
-- Weekly on Mon/Tue: `FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU;UNTIL=20250817T064600Z`
-- Monthly last Tuesday: `FREQ=MONTHLY;INTERVAL=1;BYDAY=TU;BYSETPOS=-1;COUNT=2`
+**示例：**
+- 每天重复 5 次：`FREQ=DAILY;COUNT=5;INTERVAL=1`
+- 每周一/周二重复：`FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU;UNTIL=20250817T064600Z`
+- 每月最后一个周二重复：`FREQ=MONTHLY;INTERVAL=1;BYDAY=TU;BYSETPOS=-1;COUNT=2`
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -577,43 +577,43 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Event and calendar data is passed as JSON in the `eventdata` or `calendarData` query parameter
-- Date/time format for events: `yyyyMMdd'T'HHmmss'Z'` (GMT) or `yyyyMMdd` for all-day events
-- The `range` parameter for listing events cannot exceed 31 days
-- The `etag` is required for update and delete operations - always get the latest etag before modifying
-- For delete operations, the `etag` must be passed as a header, not a query parameter
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 事件和日历数据以 JSON 格式通过 `eventdata` 或 `calendarData` 查询参数传递。
+- 事件的日期/时间格式为 `yyyyMMdd'T'HHmmss'Z'`（GMT）或全天事件的 `yyyyMMdd`。
+- 列出事件的 `range` 参数不能超过 31 天。
+- 更新和删除操作需要 `etag` — 在修改之前务必获取最新的 etag 值。
+- 对于删除操作，`etag` 必须作为头部参数传递，而不是查询参数。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho Calendar connection, missing required parameter, or invalid request |
-| 401 | Invalid or missing Maton API key, or OAuth scope mismatch |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho Calendar API |
+| 400 | 缺少 Zoho 日历连接、缺少必填参数或请求无效 |
+| 401 | Maton API 密钥无效或缺失，或者 OAuth 范围不匹配 |
+| 404 | 资源未找到 |
+| 429 | 请求速率限制 |
+| 4xx/5xx | 来自 Zoho 日历 API 的传递错误 |
 
-### Common Errors
+### 常见错误
 
-| Error | Description |
+| 错误 | 描述 |
 |-------|-------------|
-| `ETAG_MISSING` | etag header required for delete operations |
-| `EXTRA_PARAM_FOUND` | Invalid parameter in request |
-| `INVALID_DATA` | Malformed request data |
+| `ETAG_MISSING` | 删除操作需要 `etag` 头部 |
+| `EXTRA_PARAM_FOUND` | 请求中包含无效参数 |
+| `INVALID_DATA` | 请求数据格式错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -624,19 +624,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `zoho-calendar`. For example:
+1. 确保您的 URL 路径以 `zoho-calendar` 开头。例如：
+- 正确：`https://gateway.maton.ai/zoho-calendar/api/v1/calendars`
+- 错误：`https://gateway.maton.ai/api/v1/calendars`
 
-- Correct: `https://gateway.maton.ai/zoho-calendar/api/v1/calendars`
-- Incorrect: `https://gateway.maton.ai/api/v1/calendars`
+## 资源
 
-## Resources
-
-- [Zoho Calendar API Introduction](https://www.zoho.com/calendar/help/api/introduction.html)
-- [Zoho Calendar Events API](https://www.zoho.com/calendar/help/api/events-api.html)
-- [Zoho Calendar Calendars API](https://www.zoho.com/calendar/help/api/calendars-api.html)
-- [Create Event](https://www.zoho.com/calendar/help/api/post-create-event.html)
-- [Get Events List](https://www.zoho.com/calendar/help/api/get-events-list.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho 日历 API 介绍](https://www.zoho.com/calendar/help/api/introduction.html)
+- [Zoho 日历事件 API](https://www.zoho.com/calendar/help/api/events-api.html)
+- [Zoho 日历日历 API](https://www.zoho.com/calendar/help/api/calendars-api.html)
+- [创建事件](https://www.zoho.com/calendar/help/api/post-create-event.html)
+- [获取事件列表](https://www.zoho.com/calendar/help/api/get-events-list.html)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

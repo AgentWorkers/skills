@@ -1,6 +1,6 @@
 ---
 name: expert-finder
-description: "Find domain experts, thought leaders, and subject-matter authorities on any topic. Searches Twitter and Reddit for people who demonstrate deep knowledge, frequent discussion, and above-average expertise in a specific field. Expert discovery, talent sourcing, researcher identification, and KOL (Key Opinion Leader) mapping."
+description: "寻找任何领域的专家、思想领袖和行业权威人士。在 Twitter 和 Reddit 上搜索那些在特定领域展现出深厚知识、频繁参与讨论以及超出平均水平的专业能力的人。这项工作包括发现专家、寻找人才、识别研究人员以及绘制关键意见领袖（KOL）的分布图。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -36,48 +36,43 @@ tags:
   - xpoz
 ---
 
-# Expert Finder
+# 专家查找器
 
-Find domain experts by analyzing social media activity. Expands topics into search terms, searches Twitter/Reddit, classifies by type, and ranks.
+通过分析社交媒体活动来寻找领域专家。将相关主题转化为搜索词，在 Twitter/Reddit 上进行搜索，并根据专家类型进行分类和排名。
 
-## Setup
+## 设置
 
-Run `xpoz-setup` skill. Verify: `mcporter call xpoz.checkAccessKeyStatus`
+运行 `xpoz-setup` 命令进行初始化。验证功能：`mcporter call xpoz.checkAccessKeyStatus`
 
-## 4-Phase Process
+## 四阶段流程
 
-### Phase 1: Query Expansion
+### 第一阶段：查询扩展
 
-Research domain with `web_search`/`web_fetch`. Generate tiered queries:
+使用 `web_search`/`web_fetch` 功能研究相关领域，生成多层次的搜索查询：
 
-| Tier | Purpose | Example (RLHF) |
+| 层级 | 目的 | 示例（RLHF） |
 |------|---------|----------------|
-| Tier 1: Core | Exact terms | `"RLHF"` |
-| Tier 2: Technical | Deep jargon (strongest signal) | `"reward model overfitting"` |
-| Tier 3: Adjacent | Related | `"preference optimization"` |
-| Tier 4: Discussion | Opinion | `"RLHF vs"` |
+| 第一层：核心术语 | 精确的关键词 | `"RLHF"` |
+| 第二层：专业术语 | 高度专业化的术语（最具参考价值） | `"reward model overfitting"` |
+| 第三层：相关术语 | 相关的词汇 | `"preference optimization"` |
+| 第四层：讨论性词汇 | 意见或观点 | `"RLHF vs"` |
 
-### Phase 2: Search & Aggregate
+### 第二阶段：搜索与数据汇总
 
-```bash
-mcporter call xpoz.getTwitterPostsByKeywords query='"RLHF"' startDate="<6mo>"
-mcporter call xpoz.checkOperationStatus operationId="op_..." # Poll every 5s
-```
+通过 `dataDumpExportOperationId` 下载 CSV 数据（包含 64,000 条记录）。统计作者的发文频率（至少 3 篇帖子，属于至少两个搜索层级），并给予第二层术语最高的权重。
 
-Download CSVs via `dataDumpExportOperationId` (64K rows). Build author frequency: ≥3 posts, ≥2 tiers. Weight Tier 2 highest.
+### 第三阶段：分类与评分
 
-### Phase 3: Classify & Score
-
-Fetch profiles for top 20-30:
+筛选出排名前 20-30 的专家：
 ```bash
 mcporter call xpoz.getTwitterUser identifier="user" identifierType="username"
 ```
 
-**Types:** 🔬 Deep Expert (uses Tier 2 naturally) | 💡 Thought Leader (trends, large audience) | 🛠️ Practitioner ("I built") | 📣 Evangelist (aggregates) | 🎓 Educator (explains)
+**专家类型：** 🔬 深度专家（自然使用第二层专业术语） | 💡 思想领袖（关注行业趋势，拥有大量粉丝） | 🛠️ 实践者（亲自开发相关产品） | 📣 宣传者（传播行业知识） | 🎓 教育者（负责知识普及）
 
-**Score (0-100):** Domain depth 30%, consistency 20%, peer recognition 20%, breadth 15%, credentials 15%.
+**评分（0-100 分）：** 领域专业知识占比 30%，观点一致性占比 20%，同行认可度占比 20%，知识广度占比 15%，资质占比 15%。
 
-### Phase 4: Report
+### 第四阶段：生成报告
 
 ```markdown
 ## Expert Report: [Domain] — X,XXX posts analyzed
@@ -87,6 +82,9 @@ mcporter call xpoz.getTwitterUser identifier="user" identifierType="username"
 **Key:** "[quote]" — ❤️ 342
 ```
 
-## Tips
+## 使用技巧
 
-Narrow > broad | Tier 2 jargon = gold | Reddit comments reveal depth | 6mo window ideal
+- 优先选择具体而非宽泛的搜索词；  
+- 第二层的专业术语具有很高的参考价值；  
+- Reddit 上的评论能反映专家的深度见解；  
+- 使用 6 个月的时间窗口进行数据收集效果最佳。

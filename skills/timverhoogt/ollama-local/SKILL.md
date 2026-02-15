@@ -1,15 +1,15 @@
 ---
 name: ollama-local
-description: Manage and use local Ollama models. Use for model management (list/pull/remove), chat/completions, embeddings, and tool-use with local LLMs. Covers OpenClaw sub-agent integration and model selection guidance.
+description: 管理和使用本地的 Ollama 模型。支持模型管理（列出、下载、删除）、聊天交互、文本生成（补全功能）以及与本地大型语言模型（LLM）的集成使用。内容包括 OpenClaw 子代理的集成方法及模型选择指南。
 ---
 
 # Ollama Local
 
-Work with local Ollama models for inference, embeddings, and tool use.
+您可以使用本地的Ollama模型进行推理、生成嵌入数据以及使用相关工具。
 
-## Configuration
+## 配置
 
-Set your Ollama host (defaults to `http://localhost:11434`):
+设置您的Ollama服务器地址（默认为 `http://localhost:11434`）：
 
 ```bash
 export OLLAMA_HOST="http://localhost:11434"
@@ -17,7 +17,7 @@ export OLLAMA_HOST="http://localhost:11434"
 export OLLAMA_HOST="http://192.168.1.100:11434"
 ```
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # List models
@@ -45,19 +45,19 @@ python3 scripts/ollama.py generate qwen3:4b "Once upon a time"
 python3 scripts/ollama.py embed bge-m3 "Text to embed"
 ```
 
-## Model Selection
+## 模型选择
 
-See [references/models.md](references/models.md) for full model list and selection guide.
+请参阅 [references/models.md](references/models.md) 以获取完整的模型列表和选择指南。
 
-**Quick picks:**
-- Fast answers: `qwen3:4b`
-- Coding: `qwen2.5-coder:7b`
-- General: `llama3.1:8b`
-- Reasoning: `deepseek-r1:8b`
+**推荐模型：**
+- 快速回答：`qwen3:4b`
+- 编程：`qwen2.5-coder:7b`
+- 通用：`llama3.1:8b`
+- 推理：`deepseek-r1:8b`
 
-## Tool Use
+## 工具使用
 
-Some local models support function calling. Use `ollama_tools.py`:
+部分本地模型支持函数调用。请使用 `ollama_tools.py`：
 
 ```bash
 # Single request with tools
@@ -70,11 +70,11 @@ python3 scripts/ollama_tools.py loop qwen3:4b "Search for Python tutorials and s
 python3 scripts/ollama_tools.py tools
 ```
 
-**Tool-capable models:** qwen2.5-coder, qwen3, llama3.1, mistral
+**支持工具的模型：** qwen2.5-coder, qwen3, llama3.1, mistral
 
-## OpenClaw Sub-Agents
+## OpenClaw子代理
 
-Spawn local model sub-agents with `sessions_spawn`:
+使用 `sessions_spawn` 创建本地模型的子代理：
 
 ```python
 # Example: spawn a coding agent
@@ -85,11 +85,11 @@ sessions_spawn(
 )
 ```
 
-Model path format: `ollama/<model-name>`
+模型路径格式：`ollama/<model-name>`
 
-### Parallel Agents (Think Tank Pattern)
+### 并行代理（思维库模式）
 
-Spawn multiple local agents for collaborative tasks:
+为协作任务创建多个本地代理：
 
 ```python
 agents = [
@@ -102,9 +102,9 @@ for a in agents:
     sessions_spawn(task=a["task"], model=a["model"], label=a["label"])
 ```
 
-## Direct API
+## 直接API
 
-For custom integrations, use the Ollama API directly:
+如需进行自定义集成，请直接使用Ollama API：
 
 ```bash
 # Chat
@@ -128,21 +128,21 @@ curl $OLLAMA_HOST/api/tags
 curl $OLLAMA_HOST/api/pull -d '{"name": "phi3:mini"}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-**Connection refused?**
-- Check Ollama is running: `ollama serve`
-- Verify OLLAMA_HOST is correct
-- For remote servers, ensure firewall allows port 11434
+**连接失败？**
+- 检查Ollama是否正在运行：`ollama serve`
+- 确认 `OLLAMA_HOST` 的地址是否正确
+- 对于远程服务器，请确保防火墙允许端口11434的访问
 
-**Model not loading?**
-- Check VRAM: larger models may need CPU offload
-- Try a smaller model first
+**模型无法加载？**
+- 检查显存（VRAM）：大型模型可能需要CPU卸载部分计算任务
+- 先尝试使用较小的模型
 
-**Slow responses?**
-- Model may be running on CPU
-- Use smaller quantization (e.g., `:7b` instead of `:30b`)
+**响应缓慢？**
+- 模型可能正在使用CPU进行计算
+- 尝试使用较低精度的量化格式（例如，使用 `:7b` 而不是 `:30b`）
 
-**OpenClaw sub-agent falls back to default model?**
-- Ensure `ollama:default` auth profile exists in OpenClaw config
-- Check model path format: `ollama/modelname:tag`
+**OpenClaw子代理是否回退到默认模型？**
+- 确保OpenClaw配置中存在 `ollama:default` 的认证配置文件
+- 检查模型路径格式：`ollama/modelname:tag`

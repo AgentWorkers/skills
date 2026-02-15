@@ -1,24 +1,24 @@
 ---
 slug: "change-order-analysis"
 display_name: "Change Order Analysis"
-description: "Analyze and predict construction change orders using ML. Classify change order types, predict costs and schedule impacts, identify patterns, and optimize approval workflows."
+description: "使用机器学习（ML）分析和预测施工变更订单。对变更订单的类型进行分类，预测成本和进度影响，识别其中的规律，并优化审批工作流程。"
 ---
 
-# Change Order Analysis
+# 变更订单分析
 
-## Overview
+## 概述
 
-This skill implements machine learning-based change order analysis for construction projects. Predict change order costs, classify types, identify patterns in historical data, and streamline approval processes.
+该技能实现了基于机器学习的建筑项目变更订单分析功能，能够预测变更订单的成本、分类变更订单的类型、识别历史数据中的模式，并优化审批流程。
 
-**Capabilities:**
-- Change order classification
-- Cost impact prediction
-- Schedule impact analysis
-- Pattern identification
-- Root cause analysis
-- Approval workflow optimization
+**主要功能：**
+- 变更订单分类
+- 成本影响预测
+- 进度影响分析
+- 模式识别
+- 根本原因分析
+- 审批流程优化
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -90,9 +90,9 @@ co = ChangeOrder(
 print(f"CO Type: {co.co_type.value}")
 ```
 
-## Comprehensive Change Order System
+## 全面变更订单管理系统
 
-### Change Order Management
+### 变更订单管理
 
 ```python
 from dataclasses import dataclass, field
@@ -286,7 +286,7 @@ class ChangeOrderManager:
         }
 ```
 
-### ML Classification and Prediction
+### 机器学习分类与预测
 
 ```python
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingRegressor
@@ -412,7 +412,7 @@ class ChangeOrderPredictor:
         self.is_trained = True
 ```
 
-### Pattern Analysis
+### 模式分析
 
 ```python
 from collections import defaultdict
@@ -570,25 +570,25 @@ class ChangeOrderAnalyzer:
         return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| CO Type | Typical Cause | Prevention Strategy |
+| 变更订单类型 | 常见原因 | 预防策略 |
 |---------|--------------|---------------------|
-| Design Change | Incomplete design | BIM coordination, design reviews |
-| Owner Request | Changing requirements | Clear scope definition |
-| Field Condition | Unforeseen site issues | Thorough site investigation |
-| Code Compliance | Regulation changes | Early code review |
-| Value Engineering | Cost savings opportunity | VE workshops |
-| Error/Omission | Design mistakes | QA/QC processes |
+| 设计变更 | 设计不完善 | 通过BIM进行协调、进行设计审查 |
+| 业主要求 | 需求变更 | 明确项目范围 |
+| 现场条件 | 现场出现意外问题 | 仔细进行现场调查 |
+| 规范合规性 | 规范变更 | 提前进行代码审查 |
+| 价值工程 | 成本节约机会 | 举办价值工程研讨会 |
+| 错误/遗漏 | 设计失误 | 实施质量保证/质量控制流程 |
 
-## Resources
+## 参考资源
 
-- **AIA A201**: General Conditions of the Contract
-- **AGC ConsensusDocs**: Change order management
+- **AIA A201**: 合同通用条款
+- **AGC ConsensusDocs**: 变更订单管理指南
 - **DDC Website**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `document-classification-nlp` for CO document processing
-- See `risk-assessment-ml` for project risk analysis
-- See `cost-prediction` for cost estimation
+- 请参考 `document-classification-nlp` 了解变更订单文档处理方法
+- 请参考 `risk-assessment-ml` 了解项目风险分析方法
+- 请参考 `cost-prediction` 了解成本估算方法

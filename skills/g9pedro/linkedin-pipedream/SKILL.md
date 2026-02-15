@@ -1,6 +1,6 @@
 ---
 name: linkedin-pipedream
-description: Post to LinkedIn, comment, like, search organizations, and manage profiles via Pipedream OAuth integration.
+description: 通过 Pipedream 的 OAuth 集成，您可以发布内容到 LinkedIn、发表评论、点赞、搜索组织以及管理个人资料。
 homepage: https://mcp.pipedream.com
 metadata:
   {
@@ -20,16 +20,16 @@ metadata:
   }
 ---
 
-# LinkedIn via Pipedream — Post, Comment & Engage
+# 通过 Pipedream 进行 LinkedIn 操作——发布内容、发表评论及互动
 
-Full LinkedIn automation using Pipedream's OAuth infrastructure. Post as yourself or your organization, comment on posts, search companies, and more.
+利用 Pipedream 的 OAuth 基础设施实现完整的 LinkedIn 自动化功能。可以以个人或组织的身份发布内容、在帖子下发表评论、搜索公司等。
 
-## Prerequisites
+## 先决条件
 
-1. **pdauth CLI installed and configured** — see pdauth skill
-2. **LinkedIn account connected via OAuth**
+1. **已安装并配置 pdauth CLI** — 请参考 pdauth 技能文档。
+2. **通过 OAuth 连接了 LinkedIn 账户**。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Connect LinkedIn (generates OAuth link for user to click)
@@ -44,7 +44,7 @@ pdauth call linkedin.linkedin-create-text-post-user \
   --args '{"instruction": "Create a post: Excited to announce our new product launch! 🚀"}'
 ```
 
-## OAuth Flow
+## OAuth 流程
 
 ```bash
 # Generate OAuth link
@@ -57,39 +57,39 @@ pdauth connect linkedin --user USER_ID
 pdauth status --user USER_ID
 ```
 
-**User ID convention:** Use `telegram:<user_id>` format for Telegram users.
+**用户 ID 规范：** 对于 Telegram 用户，使用 `telegram:<user_id>` 的格式。
 
 ---
 
-## Available Tools (19 total)
+## 可用工具（共 19 个）
 
-### ✅ Working via MCP (pdauth call)
+### ✅ 通过 MCP（pdauth 调用）实现的功能
 
-| Tool | Purpose |
+| 工具 | 功能 |
 |------|---------|
-| `linkedin-create-text-post-user` | Post as personal account |
-| `linkedin-create-image-post-user` | Post with image (personal) |
-| `linkedin-create-comment` | Comment on any post |
-| `linkedin-create-like-on-share` | Like a post |
-| `linkedin-search-organization` | Search for companies |
-| `linkedin-get-current-member-profile` | Get your own profile |
-| `linkedin-get-member-profile` | Get any member's profile |
-| `linkedin-get-org-member-access` | Check org admin status |
-| `linkedin-retrieve-comments-shares` | Get comments on a post |
-| `linkedin-delete-post` | Delete your post |
+| `linkedin-create-text-post-user` | 以个人账户身份发布内容 |
+| `linkedin-create-image-post-user` | 以个人身份发布带图片的内容 |
+| `linkedin-create-comment` | 在任何帖子下发表评论 |
+| `linkedin-create-like-on-share` | 点赞帖子 |
+| `linkedin-search-organization` | 搜索公司 |
+| `linkedin-get-current-member-profile` | 获取个人资料 |
+| `linkedin-get-member-profile` | 获取任何成员的资料 |
+| `linkedin-get-org-member-access` | 检查组织管理员权限 |
+| `linkedin-retrieve-comments-shares` | 获取帖子的评论 |
+| `linkedin-delete-post` | 删除自己的帖子 |
 
-### ⚠️ Broken via MCP (requires workaround)
+### ⚠️ 通过 MCP 无法使用的功能（需要绕过）
 
-| Tool | Issue | Workaround |
+| 工具 | 问题 | 绕过方法 |
 |------|-------|------------|
-| `linkedin-create-text-post-organization` | "tool name too long" bug | Use direct SDK call |
-| `linkedin-create-image-post-organization` | Same bug | Use direct SDK call |
+| `linkedin-create-text-post-organization` | “工具名称过长”的错误 | 使用直接 SDK 调用 |
+| `linkedin-create-image-post-organization` | 同样问题 | 使用直接 SDK 调用 |
 
 ---
 
-## Tool Reference
+## 工具参考
 
-### 1. Create Personal Post
+### 1. 以个人身份发布内容
 
 ```bash
 pdauth call linkedin.linkedin-create-text-post-user \
@@ -97,12 +97,12 @@ pdauth call linkedin.linkedin-create-text-post-user \
   --args '{"instruction": "Create a post: Your post content here. Use emojis 🎉 and hashtags #AI #Tech"}'
 ```
 
-**Tips:**
-- Keep posts under 3000 characters
-- Emojis increase engagement
-- Use line breaks for readability
+**提示：**
+- 发布的内容长度请控制在 3000 字以内。
+- 使用表情符号可以提高互动率。
+- 适当使用换行符以提高可读性。
 
-### 2. Create Image Post (Personal)
+### 2. 以个人身份发布带图片的内容
 
 ```bash
 pdauth call linkedin.linkedin-create-image-post-user \
@@ -110,7 +110,7 @@ pdauth call linkedin.linkedin-create-image-post-user \
   --args '{"instruction": "Create image post with text: Check out our new office! Image URL: https://example.com/image.jpg"}'
 ```
 
-### 3. Comment on a Post
+### 3. 在帖子下发表评论
 
 ```bash
 # Comment using post URN
@@ -119,11 +119,11 @@ pdauth call linkedin.linkedin-create-comment \
   --args '{"instruction": "Comment on urn:li:share:7293123456789012480 with text: Great insights! Thanks for sharing."}'
 ```
 
-**Finding post URNs:**
-- From LinkedIn URL: `linkedin.com/posts/username_activity-7293123456789012480` → URN is `urn:li:share:7293123456789012480`
-- Or use `linkedin-retrieve-comments-shares` on known posts
+**获取帖子 URI 的方法：**
+- 从 LinkedIn URL 中获取：`linkedin.com/posts/username_activity-7293123456789012480` → URI 为 `urn:li:share:7293123456789012480`
+- 或者使用 `linkedin-retrieve-comments-shares` 来获取已知帖子的评论。
 
-### 4. Like a Post
+### 4. 点赞帖子
 
 ```bash
 pdauth call linkedin.linkedin-create-like-on-share \
@@ -131,7 +131,7 @@ pdauth call linkedin.linkedin-create-like-on-share \
   --args '{"instruction": "Like the post urn:li:share:7293123456789012480"}'
 ```
 
-### 5. Search Organizations
+### 5. 搜索公司
 
 ```bash
 pdauth call linkedin.linkedin-search-organization \
@@ -139,7 +139,7 @@ pdauth call linkedin.linkedin-search-organization \
   --args '{"instruction": "Search for companies matching: artificial intelligence startups"}'
 ```
 
-### 6. Get Your Profile
+### 6. 获取个人资料
 
 ```bash
 pdauth call linkedin.linkedin-get-current-member-profile \
@@ -147,9 +147,9 @@ pdauth call linkedin.linkedin-get-current-member-profile \
   --args '{"instruction": "Get my LinkedIn profile"}'
 ```
 
-Returns: name, headline, URN, vanity name, etc.
+返回内容包括：姓名、标题、URI、昵称等。
 
-### 7. Get Member Profile
+### 7. 获取成员资料
 
 ```bash
 pdauth call linkedin.linkedin-get-member-profile \
@@ -157,7 +157,7 @@ pdauth call linkedin.linkedin-get-member-profile \
   --args '{"instruction": "Get profile for member URN urn:li:person:30_5n7bx7f"}'
 ```
 
-### 8. Check Organization Admin Access
+### 8. 检查组织管理员权限
 
 ```bash
 pdauth call linkedin.linkedin-get-org-member-access \
@@ -165,9 +165,9 @@ pdauth call linkedin.linkedin-get-org-member-access \
   --args '{"instruction": "Check my access level for organization 105382747"}'
 ```
 
-Returns: `ADMINISTRATOR`, `MEMBER`, or `NONE`
+返回结果包括：`ADMINISTRATOR`、`MEMBER` 或 `NONE`。
 
-### 9. Get Comments on a Post
+### 9. 获取帖子的评论
 
 ```bash
 pdauth call linkedin.linkedin-retrieve-comments-shares \
@@ -175,7 +175,7 @@ pdauth call linkedin.linkedin-retrieve-comments-shares \
   --args '{"instruction": "Get comments for post urn:li:share:7293123456789012480"}'
 ```
 
-### 10. Delete a Post
+### 10. 删除帖子
 
 ```bash
 pdauth call linkedin.linkedin-delete-post \
@@ -185,20 +185,20 @@ pdauth call linkedin.linkedin-delete-post \
 
 ---
 
-## Organization Posting (Workaround Required)
+## 组织发布内容（需要绕过）
 
-### The Bug
+### 错误原因
 
-`linkedin-create-text-post-organization` fails via MCP with:
+`linkedin-create-text-post-organization` 通过 MCP 无法使用，原因是：
 ```
 Error: tool name too long
 ```
 
-This is a Pipedream MCP bug, not a LinkedIn API issue.
+这是 Pipedream MCP 的问题，而非 LinkedIn API 的问题。
 
-### Workaround: Direct SDK Call
+### 绕过方法：使用直接 SDK 调用
 
-Create a Node.js script to post as organization:
+创建一个 Node.js 脚本来以组织身份发布内容：
 
 ```javascript
 // org-post.mjs
@@ -228,44 +228,44 @@ async function postAsOrg(orgId, text) {
 postAsOrg('105382747', 'Hello from Versatly! 🚀');
 ```
 
-Run with:
+运行方式：
 ```bash
 node org-post.mjs
 ```
 
-### Known Organization IDs
+### 已知的组织 ID
 
-| Organization | ID | URN |
+| 组织 | ID | URI |
 |--------------|-----|-----|
 | Versatly | 105382747 | urn:li:organization:105382747 |
 
 ---
 
-## Key Reference Values
+## 关键参考值
 
-### Pedro's LinkedIn Info
+### Pedro 的 LinkedIn 信息
 
-| Item | Value |
+| 项目 | 值 |
 |------|-------|
-| Member URN | `urn:li:person:30_5n7bx7f` |
-| User ID (Pipedream) | `telegram:5439689035` |
-| Auth Provision ID | `apn_4vhLGx4` |
-| Admin of | Versatly (org 105382747) |
+| 成员 URI | `urn:li:person:30_5n7bx7f` |
+| 用户 ID（Pipedream） | `telegram:5439689035` |
+| 认证提供者 ID | `apn_4vhLGx4` |
+| 组织管理员（Versatly，ID 105382747） |
 
-### URN Formats
+### URI 格式
 
-| Type | Format | Example |
+| 类型 | 格式 | 示例 |
 |------|--------|---------|
-| Person | `urn:li:person:ID` | `urn:li:person:30_5n7bx7f` |
-| Organization | `urn:li:organization:ID` | `urn:li:organization:105382747` |
-| Post/Share | `urn:li:share:ID` | `urn:li:share:7293123456789012480` |
-| Comment | `urn:li:comment:(urn:li:share:ID,ID)` | Complex nested URN |
+| 个人 | `urn:li:person:ID` | `urn:li:person:30_5n7bx7f` |
+| 组织 | `urn:li:organization:ID` | `urn:li:organization:105382747` |
+| 帖子/分享 | `urn:li:share:ID` | `urn:li:share:7293123456789012480` |
+| 评论 | `urn:li:comment:(urn:li:share:ID,ID)` | 复杂的嵌套 URI |
 
 ---
 
-## Common Patterns
+## 常见操作模式
 
-### Pattern 1: Post and Verify
+### 模式 1：发布内容并验证
 
 ```bash
 # Post
@@ -276,7 +276,7 @@ pdauth call linkedin.linkedin-create-text-post-user \
 # The response includes the post URN - save it for later
 ```
 
-### Pattern 2: Engage with Content
+### 模式 2：与内容互动
 
 ```bash
 # Find posts to engage with (manual: get URN from LinkedIn URL)
@@ -291,7 +291,7 @@ pdauth call linkedin.linkedin-create-comment \
   --args '{"instruction": "Comment on urn:li:share:7293123456789012480: Congrats on the launch!"}'
 ```
 
-### Pattern 3: Research a Company
+### 模式 3：搜索公司
 
 ```bash
 # Search for the company
@@ -307,19 +307,19 @@ pdauth call linkedin.linkedin-get-org-member-access \
 
 ---
 
-## Error Handling
+## 错误处理
 
-### Common Errors
+### 常见错误
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `App not connected` | No LinkedIn OAuth | Run `pdauth connect linkedin --user USER_ID` |
-| `tool name too long` | MCP bug for org tools | Use direct SDK workaround |
-| `403 Forbidden` | No permission for action | Check org admin status |
-| `Invalid URN` | Malformed URN format | Use correct format: `urn:li:type:id` |
-| `Rate limited` | Too many API calls | Wait and retry (LinkedIn limits ~100 calls/day) |
+| “应用未连接” | 未连接到 LinkedIn OAuth | 运行 `pdauth connect linkedin --user USER_ID` |
+| “工具名称过长” | 组织相关工具的 MCP 错误 | 使用直接 SDK 绕过方法 |
+| `403 Forbidden` | 没有操作权限 | 检查组织管理员权限 |
+| “无效的 URI” | URI 格式错误 | 使用正确的格式：`urn:li:type:id` |
+| “速率限制” | API 调用次数过多 | 等待片刻后重试（LinkedIn 每天限制约 100 次调用） |
 
-### Checking Connection Status
+### 检查连接状态
 
 ```bash
 # Quick status check
@@ -329,9 +329,9 @@ pdauth status --user telegram:5439689035
 pdauth status --user telegram:5439689035 --json
 ```
 
-### Reconnecting
+### 重新连接
 
-If OAuth expires or breaks:
+如果 OAuth 连接失效或中断：
 ```bash
 pdauth disconnect linkedin --user telegram:5439689035
 pdauth connect linkedin --user telegram:5439689035
@@ -340,17 +340,17 @@ pdauth connect linkedin --user telegram:5439689035
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Rate Limits:** LinkedIn is strict. Space out bulk operations.
-2. **Content Quality:** LinkedIn penalizes spammy content. Write thoughtfully.
-3. **Org Posting:** Always verify admin access before attempting org posts.
-4. **URN Handling:** Always validate URN format before API calls.
-5. **Error Recovery:** If a post fails, check status before retrying (may have succeeded).
+1. **速率限制：** LinkedIn 对批量操作有严格限制，请合理安排操作时间。
+2. **内容质量：** LinkedIn 会惩罚垃圾内容，请撰写有意义的帖子。
+3. **组织发布内容：** 在尝试以组织身份发布内容前，务必确认具有管理员权限。
+4. **URI 处理：** 在调用 API 之前，务必验证 URI 的格式。
+5. **错误恢复：** 如果帖子发布失败，请先检查状态再重试（可能已经成功）。
 
 ---
 
-## Example Workflow: Complete LinkedIn Campaign
+## 示例工作流程：完整的 LinkedIn 营销活动
 
 ```bash
 # 1. Verify connection
@@ -377,18 +377,18 @@ pdauth call linkedin.linkedin-create-comment \
 
 ---
 
-## Files & Configuration
+## 文件与配置
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `~/.config/pdauth/config.json` | Pipedream credentials |
-| `~/.openclaw/workspace/pdauth/` | pdauth CLI source |
-| `~/.openclaw/workspace/skills/pdauth/SKILL.md` | pdauth skill reference |
+| `~/.config/pdauth/config.json` | Pipedream 的认证信息 |
+| `~/.openclaw/workspace/pdauth/` | pdauth CLI 的源代码 |
+| `~/.openclaw/workspace/skills/pdauth/SKILL.md` | pdauth 技能参考文档 |
 
 ---
 
-## See Also
+## 参考资料
 
-- **pdauth skill** — OAuth management for all Pipedream apps
-- [Pipedream MCP](https://mcp.pipedream.com) — Browse all available integrations
-- [LinkedIn API Docs](https://learn.microsoft.com/en-us/linkedin/marketing/) — Official API reference
+- **pdauth 技能文档** — 用于所有 Pipedream 应用的 OAuth 管理
+- [Pipedream MCP](https://mcp.pipedream.com) — 浏览所有可用的集成服务
+- [LinkedIn API 文档](https://learn.microsoft.com/en-us/linkedin/marketing/) — 官方 API 参考文档

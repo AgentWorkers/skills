@@ -1,6 +1,6 @@
 ---
 name: moltflow-leads
-description: "WhatsApp lead detection and CRM pipeline. Auto-detect purchase intent in groups, track lead status, bulk operations, CSV/JSON export. Use when: leads, lead detection, pipeline, qualify, convert, bulk status, export leads."
+description: "WhatsApp潜在客户检测与客户关系管理（CRM）流程：自动检测群组中的购买意向，跟踪潜在客户的状态，支持批量操作，以及CSV/JSON格式的数据导出。适用场景包括：潜在客户管理、潜在客户检测、流程管理、客户资格评估、转化过程、批量状态更新以及潜在客户数据导出。"
 source: "MoltFlow Team"
 version: "2.1.0"
 risk: safe
@@ -10,45 +10,45 @@ primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
 
-> **MoltFlow** -- WhatsApp Business automation for teams. Connect, monitor, and automate WhatsApp at scale.
-> [Save up to 17% with yearly billing](https://molt.waiflow.app/checkout?plan=free) -- Free tier available, no credit card required.
+> **MoltFlow** – 专为团队设计的 WhatsApp Business 自动化工具。支持大规模连接、监控和自动化 WhatsApp 操作。
+> [年费订阅可节省高达 17% 的费用](https://molt.waiflow.app/checkout?plan=free) – 提供免费试用版，无需信用卡。
 
-# MoltFlow Leads -- Detection & CRM Pipeline
+# MoltFlow 商机检测与客户关系管理（CRM）功能
 
-Auto-detect purchase-intent leads from monitored WhatsApp groups, track them through a sales pipeline, perform bulk operations, and export for your CRM.
+自动检测来自被监控 WhatsApp 群组的潜在客户，通过销售流程跟踪这些客户，并将其数据导出到您的 CRM 系统中。
 
-## When to Use
+## 使用场景
 
-- "List leads" or "show detected leads"
-- "Update lead status" or "mark lead as contacted"
-- "Bulk update leads" or "change status for multiple leads"
-- "Add leads to group" or "bulk add to custom group"
-- "Export leads as CSV" or "download leads JSON"
-- "Check lead reciprocity" or "has this lead messaged me?"
-- "Filter leads by status" or "search leads"
+- 查看潜在客户列表
+- 更新潜在客户状态
+- 批量更新潜在客户信息
+- 将潜在客户添加到特定群组
+- 将潜在客户数据导出为 CSV 或 JSON 格式
+- 检查潜在客户是否已与您联系
+- 按状态筛选潜在客户
 
-## Prerequisites
+## 前提条件
 
-1. **MOLTFLOW_API_KEY** -- Generate from the [MoltFlow Dashboard](https://molt.waiflow.app) under Settings > API Keys
-2. At least one monitored WhatsApp group with keyword detection enabled
-3. Base URL: `https://apiv2.waiflow.app/api/v2`
+1. **MOLTFLOW_API_KEY** – 请从 [MoltFlow 仪表板](https://molt.waiflow.app) 的“设置” > “API 密钥”中生成。
+2. 至少有一个启用了关键词检测功能的被监控 WhatsApp 群组。
+3. 基本 API 地址：`https://apiv2.waiflow.app/api/v2`
 
-## Required API Key Scopes
+## 所需 API 密钥权限
 
-| Scope | Access |
-|-------|--------|
-| `leads` | `read/manage` |
-| `groups` | `read` |
+| 权限范围 | 访问权限 |
+|---------|---------|
+| `leads` | `读取/管理` |
+| `groups` | `读取` |
 
-## Authentication
+## 认证
 
-Every request must include one of:
+所有请求都必须包含以下认证信息之一：
 
 ```
 Authorization: Bearer <jwt_token>
 ```
 
-or
+或
 
 ```
 X-API-Key: <your_api_key>
@@ -56,44 +56,44 @@ X-API-Key: <your_api_key>
 
 ---
 
-## How Lead Detection Works
+## 潜在客户检测机制
 
-1. You monitor WhatsApp groups via the Groups API (see `moltflow` skill)
-2. Set `monitor_mode: "keywords"` with keywords like `"looking for"`, `"price"`, `"interested"`
-3. When a group member sends a message matching your keywords, MoltFlow auto-creates a lead
-4. Leads appear in the Leads API with status `new` and the triggering keyword highlighted
-5. You track them through the pipeline: `new` -> `contacted` -> `qualified` -> `converted`
+1. 通过 `Groups API` 监控 WhatsApp 群组（详情请参阅 `moltflow` 技能文档）。
+2. 设置 `monitor_mode: "keywords"`，并指定关键词（例如 `"looking for"`, `"price"`, `"interested"`）。
+3. 当群组成员发送包含这些关键词的消息时，MoltFlow 会自动创建一个潜在客户记录。
+4. 潜在客户记录会以 `new` 状态显示在 `leads` API 中，且触发关键词会被高亮显示。
+5. 您可以跟踪这些潜在客户的状态变化：`new` -> `contacted` -> `qualified` -> `converted`。
 
 ---
 
-## Leads API
+## `leads` API
 
-| Method | Endpoint | Description |
+| 方法 | API 端点 | 功能描述 |
 |--------|----------|-------------|
-| GET | `/leads` | List leads (filter by status, group, search) |
-| GET | `/leads/{id}` | Get lead details |
-| PATCH | `/leads/{id}/status` | Update lead status (state machine validated) |
-| GET | `/leads/{id}/reciprocity` | Check if lead messaged you first (anti-spam) |
-| POST | `/leads/bulk/status` | Bulk update lead status |
-| POST | `/leads/bulk/add-to-group` | Bulk add leads to custom group |
-| GET | `/leads/export/csv` | Export as CSV (Pro+ plan, max 10,000) |
-| GET | `/leads/export/json` | Export as JSON (Pro+ plan, max 10,000) |
+| GET | `/leads` | 查看潜在客户列表（可按状态、群组或关键词筛选） |
+| GET | `/leads/{id}` | 获取潜在客户详情 |
+| PATCH | `/leads/{id}/status` | 更新潜在客户状态 |
+| GET | `/leads/{id}/reciprocity` | 检查潜在客户是否先与您联系（防垃圾信息功能） |
+| POST | `/leads/bulk/status` | 批量更新潜在客户状态 |
+| POST | `/leads/bulk/add-to-group` | 将潜在客户批量添加到指定群组 |
+| GET | `/leads/export/csv` | 以 CSV 格式导出潜在客户数据（Pro+ 计划） |
+| GET | `/leads/export/json` | 以 JSON 格式导出潜在客户数据（Pro+ 计划） |
 
-### List Leads
+### 查看潜在客户列表
 
 **GET** `/leads`
 
-Query parameters:
+查询参数：
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `status` | string | Filter by status (`new`, `contacted`, `qualified`, `converted`, `lost`) |
-| `source_group_id` | UUID | Filter by source monitored group |
-| `search` | string | Search in contact name, phone, or keyword |
-| `limit` | int | Page size (default 50) |
-| `offset` | int | Pagination offset |
+| 参数 | 类型 | 描述 |
+|---------|------|-------------|
+| `status` | 字符串 | 按状态筛选（`new`, `contacted`, `qualified`, `converted`, `lost`） |
+| `source_group_id` | UUID | 按来源群组筛选 |
+| `search` | 字符串 | 按联系人姓名、电话号码或关键词搜索 |
+| `limit` | 整数 | 每页显示数量（默认 50 条） |
+| `offset` | 整数 | 分页偏移量 |
 
-**Response** `200 OK`:
+**响应** `200 OK`:
 
 ```json
 {
@@ -123,13 +123,13 @@ Query parameters:
 }
 ```
 
-### Get Lead Details
+### 获取潜在客户详情
 
 **GET** `/leads/{id}`
 
-Returns full lead info including group context, detection metadata, message count, and status.
+返回潜在客户的完整信息，包括群组背景、检测元数据、消息数量和状态。
 
-### Update Lead Status
+### 更新潜在客户状态
 
 **PATCH** `/leads/{id}/status`
 
@@ -139,21 +139,21 @@ Returns full lead info including group context, detection metadata, message coun
 }
 ```
 
-**State machine validation** -- only valid transitions are allowed:
+**状态转换规则**：
 
 - `new` -> `contacted`, `qualified`, `converted`, `lost`
 - `contacted` -> `qualified`, `converted`, `lost`
 - `qualified` -> `converted`, `lost`
-- `converted` -> (terminal -- no further transitions)
-- `lost` -> `new` (reopen only)
+- `converted` -> （达到最终状态，无法再转换）
+- `lost` -> `new`（仅可重新开启检测）
 
-Invalid transitions return `400 Bad Request`.
+无效的状态转换会导致 `400 Bad Request` 错误。
 
-### Reciprocity Check
+### 检查潜在客户是否已与您联系
 
-**GET** `/leads/{id}/reciprocity?session_id=session-uuid`
+**GET** `/leads/{id}/reciprocity?session_id-session-uuid`
 
-The `session_id` query parameter is **required** -- it specifies which WhatsApp session to check inbound messages from.
+`session_id` 是必填参数，用于指定要检查的 WhatsApp 会话。
 
 ```json
 {
@@ -163,9 +163,10 @@ The `session_id` query parameter is **required** -- it specifies which WhatsApp 
 }
 ```
 
-Use this before reaching out -- if the lead hasn't messaged you directly, sending a cold message may trigger WhatsApp spam detection.
+**注意事项**：
+在主动联系潜在客户之前，请先确认他们是否已与您联系。否则，发送冷邮件可能会触发 WhatsApp 的垃圾信息检测机制。
 
-### Bulk Status Update
+### 批量更新潜在客户状态
 
 **POST** `/leads/bulk/status`
 
@@ -176,7 +177,7 @@ Use this before reaching out -- if the lead hasn't messaged you directly, sendin
 }
 ```
 
-**Response** `200 OK`:
+**响应** `200 OK`:
 
 ```json
 {
@@ -186,9 +187,9 @@ Use this before reaching out -- if the lead hasn't messaged you directly, sendin
 }
 ```
 
-Each lead is individually validated against the state machine. Leads with invalid transitions are reported in `errors` but don't block the rest.
+每个潜在客户的状态转换都会经过验证。状态转换无效的记录会出现在错误信息中，但不会影响其他潜在客户的处理。
 
-### Bulk Add to Custom Group
+### 将潜在客户批量添加到群组
 
 **POST** `/leads/bulk/add-to-group`
 
@@ -199,22 +200,22 @@ Each lead is individually validated against the state machine. Leads with invali
 }
 ```
 
-Adds leads' phone numbers to the specified custom group for use with Bulk Send or Scheduled Messages.
+将潜在客户的电话号码添加到指定群组，以便后续使用批量发送或定时消息功能。
 
-### Export Leads
+### 导出潜在客户数据
 
-**GET** `/leads/export/csv` -- Returns CSV file download
-**GET** `/leads/export/json` -- Returns JSON array
+**GET** `/leads/export/csv` – 以 CSV 格式导出数据
+**GET** `/leads/export/json` – 以 JSON 格式导出数据
 
-Both support optional filters: `status`, `source_group_id`, `search`. Max 10,000 rows per export.
+支持以下筛选条件：`status`, `source_group_id`, `search`。每次导出最多 10,000 条记录。
 
-**Requires Pro plan or above.**
+**仅限 Pro+ 计划使用。**
 
 ---
 
-## Examples
+## 示例流程
 
-### Full workflow: Detect -> Qualify -> Outreach
+### 完整工作流程：检测 -> 评估 -> 主动联系
 
 ```bash
 # 1. List new leads from a specific group
@@ -248,35 +249,35 @@ curl "https://apiv2.waiflow.app/api/v2/leads/export/csv?status=converted" \
 
 ---
 
-## Plan Requirements
+## 计划费用
 
-| Feature | Free | Starter | Pro | Business |
+| 功能 | 免费版 | 起始版 | Pro 计划 | Business 计划 |
 |---------|------|---------|-----|----------|
-| Lead detection | Yes (2 groups) | Yes (5 groups) | Yes (20 groups) | Yes (100 groups) |
-| Lead list & detail | Yes | Yes | Yes | Yes |
-| Status update | Yes | Yes | Yes | Yes |
-| Bulk operations | -- | -- | Yes | Yes |
-| CSV/JSON export | -- | -- | Yes | Yes |
+| 潜在客户检测 | 支持（2 个群组） | 支持（5 个群组） | 支持（20 个群组） | 支持（100 个群组） |
+| 潜在客户列表及详情 | 支持 | 支持 | 支持 | 支持 |
+| 状态更新 | 支持 | 支持 | 支持 | 支持 |
+| 批量操作 | 不支持 | 不支持 | 支持 | 支持 |
+| CSV/JSON 导出 | 不支持 | 不支持 | 支持 | 支持 |
 
 ---
 
-## Error Responses
+## 错误响应
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Invalid status transition or bad request |
-| 401 | Unauthorized (missing or invalid auth) |
-| 403 | Forbidden (plan limit or feature gate) |
-| 404 | Lead not found |
-| 429 | Rate limited |
+| 400 | 状态转换无效或请求错误 |
+| 401 | 未经授权（认证信息缺失或无效） |
+| 403 | 超出计划限制或功能限制 |
+| 404 | 未找到潜在客户 |
+| 429 | 请求频率限制 |
 
 ---
 
-## Related Skills
+## 相关工具
 
-- **moltflow** -- Core API: sessions, messaging, groups, labels, webhooks
-- **moltflow-outreach** -- Bulk Send, Scheduled Messages, Custom Groups
-- **moltflow-ai** -- AI-powered auto-replies, voice transcription, RAG, style profiles
-- **moltflow-a2a** -- Agent-to-Agent protocol, encrypted messaging, content policy
-- **moltflow-reviews** -- Review collection and testimonial management
-- **moltflow-admin** -- Platform administration, user management, plan configuration
+- **moltflow** – 核心 API：会话管理、消息发送、群组管理、标签设置、Webhook 配置
+- **moltflow-outreach** – 批量发送消息、定时消息、自定义群组管理
+- **moltflow-ai** – 基于 AI 的自动回复功能、语音转录、问答系统、风格分析
+- **moltflow-a2a** | 代理间通信协议、加密消息传输、内容策略管理
+- **moltflow-reviews** | 评论收集与评价管理 |
+- **moltflow-admin** | 平台管理、用户管理、计划配置

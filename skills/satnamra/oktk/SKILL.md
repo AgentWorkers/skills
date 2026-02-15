@@ -1,7 +1,7 @@
 ---
 name: oktk
 version: 2.4.0
-description: LLM Token Optimizer - Reduce AI API costs by 60-90%. Compresses CLI outputs (git, docker, kubectl) before sending to GPT-4/Claude. AI auto-learning included. By Buba Draugelis 🇱🇹
+description: **LLM Token Optimizer** – 将AI API的使用成本降低60%至90%。在将命令行输出（git、docker、kubectl等）发送给GPT-4/Claude之前对其进行压缩。该工具支持AI自动学习功能。开发者：Buba Draugelis 🇱🇹
 author: Buba Draugelis
 license: MIT
 homepage: https://github.com/satnamra/openclaw-workspace/tree/main/skills/oktk
@@ -20,55 +20,40 @@ openclaw:
   category: optimization
 ---
 
-# oktk - CLI Output Compressor for LLMs
+# oktk – 为大型语言模型（LLMs）设计的 CLI 输出压缩工具
 
-## The Problem
+## 问题
 
-When you run commands through an AI assistant, the full output goes into the LLM context:
+当你通过 AI 助手运行命令时，所有的输出内容都会被传递给大型语言模型（LLM）：
 
-```bash
-$ git status
-# Returns 60+ lines, ~800 tokens
-# Your AI reads ALL of it, you pay for ALL of it
-```
+**每个输出生成的“令牌”都需要付费。过于详细的输出会浪费你的上下文窗口（即模型可使用的信息量）。**
 
-**Every token costs money. Verbose outputs waste your context window.**
+## 解决方案
 
-## The Solution
+oktk 位于你的命令和大型语言模型之间，能够智能地压缩输出内容：
 
-oktk sits between your commands and the LLM, compressing outputs intelligently:
+## 适用场景
 
-```
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│ Command  │ ──► │   oktk   │ ──► │   LLM    │
-│ (800 tk) │     │ compress │     │ (80 tk)  │
-└──────────┘     └──────────┘     └──────────┘
-                      │
-                 90% SAVED
-```
+当你通过 OpenClaw 运行支持的命令时，oktk 会自动执行压缩操作：
 
-## When Does It Work?
-
-**Automatically** when you run supported commands through OpenClaw:
-
-| Command | What oktk does | Savings |
+| 命令 | oktk 的作用 | 节省的令牌数量 |
 |---------|----------------|:-------:|
-| `git status` | Shows only: branch, ahead/behind, file counts | **90%** |
-| `git log` | One line per commit: hash + message + author | **85%** |
-| `git diff` | Summary: X files, +Y/-Z lines, file list | **80%** |
-| `npm test` | Just: ✅ passed or ❌ failed + count | **98%** |
-| `ls -la` | Groups by type, shows sizes, skips details | **83%** |
-| `curl` | Status code + key headers + truncated body | **97%** |
-| `grep` | Match count + first N matches | **80%** |
-| `docker ps` | Container list: name, image, status | **85%** |
-| `docker logs` | Last N lines + error count | **90%** |
-| `kubectl get pods` | Pod status summary with counts | **85%** |
-| `kubectl logs` | Last N lines + error/warning counts | **90%** |
-| *Any command* | AI learns patterns automatically (optional) | **~70%** |
+| `git status` | 仅显示：分支名、进度（领先/落后）、文件数量 | **90%** |
+| `git log` | 每条提交记录仅显示：哈希值、提交信息、作者 | **85%** |
+| `git diff` | 显示摘要：修改的文件数量（+Y/-Z 行）、文件列表 | **80%** |
+| `npm test` | 仅显示：测试结果（✅ 通过或 ❌ 失败）及通过的数量 | **98%** |
+| `ls -la` | 按文件类型分组、显示文件大小、省略详细信息 | **83%** |
+| `curl` | 显示状态码、关键头部信息以及截断后的响应内容 | **97%** |
+| `grep` | 显示匹配次数及前 N 条匹配结果 | **80%** |
+| `docker ps` | 显示容器列表（名称、镜像、状态） | **85%** |
+| `docker logs` | 显示最后 N 行日志及错误数量 | **90%** |
+| `kubectl get pods` | 显示 Pod 的状态及数量 | **85%** |
+| `kubectl logs` | 显示最后 N 行日志及错误/警告数量 | **90%** |
+| **任何命令** | oktk 会自动学习命令的输出模式（可选） | **约 70%** |
 
-## Concrete Example
+## 具体示例
 
-### Before oktk (800 tokens sent to LLM):
+### 使用 oktk 之前（800 个令牌被发送给大型语言模型）：
 ```
 On branch main
 Your branch is ahead of 'origin/main' by 3 commits.
@@ -93,7 +78,7 @@ Untracked files:
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-### After oktk (80 tokens sent to LLM):
+### 使用 oktk 之后（80 个令牌被发送给大型语言模型）：
 ```
 📍 main
 ↑ Ahead 3 commits
@@ -101,36 +86,28 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ❓ Untracked: 3
 ```
 
-**Same information. 90% fewer tokens. Same cost savings.**
+**相同的信息，但发送的令牌数量减少了 90%。**
 
-## How It Works Technically
+## 技术原理
 
-1. **Intercepts** command output after execution
-2. **Detects** command type (git? npm? ls?)
-3. **Applies** specialized filter for that command
-4. **Extracts** only essential information
-5. **Caches** results (same command = instant, no reprocessing)
+1. 在命令执行完成后拦截其输出。
+2. 识别命令的类型（如 `git`、`npm`、`ls` 等）。
+3. 为该命令应用相应的过滤规则。
+4. 仅提取必要的信息。
+5. 将处理后的结果缓存起来（相同命令会立即得到压缩后的结果，无需重新处理）。
 
-### Safety First
+### 安全性
 
-oktk **never breaks your workflow**:
+oktk **绝不会干扰你的工作流程**：
 
-```
-Try specialized filter
-    ↓ fails?
-Try basic filter  
-    ↓ fails?
-Return raw output (same as without oktk)
-```
+**最坏的情况**：你仍然会收到完整的输出内容。
+**最好的情况**：可以节省 90% 的令牌使用量。
 
-**Worst case:** You get normal output
-**Best case:** 90% token savings
+## 使用方法
 
-## Usage
+### 全局安装（推荐）
 
-### Global Command (Recommended)
-
-After installation, `oktk` is available globally:
+安装完成后，`oktk` 可以在整个系统中全局使用：
 
 ```bash
 # Pipe any command through oktk
@@ -145,16 +122,16 @@ oktk --stats
 oktk --raw git status
 ```
 
-### Shell Aliases (Auto-Filter)
+### 使用 shell 别名（自动过滤）
 
-Source the aliases file for automatic filtering:
+将别名文件添加到 shell 配置中以实现自动过滤：
 
 ```bash
 # Add to ~/.zshrc or ~/.bashrc
 source ~/.openclaw/workspace/skills/oktk/scripts/oktk-aliases.sh
 ```
 
-Then use short aliases:
+然后可以使用简短的别名来执行命令：
 
 ```bash
 gst        # git status (filtered)
@@ -168,28 +145,19 @@ ok docker ps -a
 ok kubectl describe pod my-pod
 ```
 
-### OpenClaw Integration
+### 与 OpenClaw 的集成
 
-When using OpenClaw's exec tool, pipe outputs through oktk:
+在使用 OpenClaw 的 `exec` 工具时，可以将输出结果通过 `oktk` 进行压缩处理：
 
-```bash
-# In your prompts, ask OpenClaw to:
-git status | oktk git status
-docker logs container | oktk docker logs
+**注意**：OpenClaw 目前还没有内置的输出压缩功能。
+推荐的操作步骤是：
+1. 将别名文件添加到 shell 配置中。
+2. 对任何命令使用 `ok <命令>` 的形式进行调用。
+3. 或者手动将命令输出通过管道传递给 `oktk`：`<命令> | oktk <命令>`。
 
-# Or use the 'ok' wrapper (if aliases sourced):
-ok git diff HEAD~5
-```
+## 实际节省效果示例
 
-**Note:** OpenClaw doesn't have a built-in exec output transformer yet. 
-The recommended approach is:
-1. Source the aliases file in your shell
-2. Use `ok <command>` wrapper for any command
-3. Or manually pipe: `<command> | oktk <command>`
-
-## Real Savings Example
-
-After 1 week of normal usage:
+经过一周的正常使用后，可以显著节省令牌使用量：
 
 ```
 📊 Token Savings
@@ -200,9 +168,9 @@ Tokens saved:      456,789 (78%)
 💰 At $0.01/1K tokens = $4.57 saved
 ```
 
-## Installation
+## 安装方式
 
-Already included in OpenClaw workspace, or:
+oktk 已经内置在 OpenClaw 的工作环境中；也可以单独安装：
 
 ```bash
 clawhub install oktk
@@ -210,4 +178,4 @@ clawhub install oktk
 
 ---
 
-**Made with ❤️ in Lithuania 🇱🇹**
+**本工具由我们在立陶宛（🇱🇹）精心开发。**

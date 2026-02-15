@@ -1,33 +1,33 @@
 ---
 name: outlook-delegate
-description: Read, search, and manage Outlook emails and calendar via Microsoft Graph API with delegate support. Your AI assistant authenticates as itself but accesses the owner's mailbox/calendar as a delegate. Modified for delegate access from https://clawhub.ai/jotamed/outlook
+description: 通过 Microsoft Graph API，您可以读取、搜索和管理 Outlook 邮件及日历，并支持代理访问功能。您的 AI 助手会以自身的身份进行身份验证，但实际上是以代理的身份访问邮箱/日历的所有者数据。该功能已针对代理访问进行了修改，详情请参考：https://clawhub.ai/jotamed/outlook
 version: 1.0.0
 author: 87marc
 ---
 
-# Outlook Delegate Skill
+# Outlook 代理功能
 
-Access another user's Outlook/Microsoft 365 email and calendar as a **delegate** via Microsoft Graph API.
+通过 Microsoft Graph API，以代理身份访问其他用户的 Outlook/Microsoft 365 邮箱和日历。
 
-## Delegate Architecture
+## 代理架构
 
-This skill is designed for scenarios where:
-- **Your AI assistant** has its own Microsoft 365 account (e.g., `assistant@domain.com`)
-- **The owner** has granted the assistant delegate access to their mailbox/calendar
-- The assistant authenticates as itself but accesses the owner's resources
+此功能适用于以下场景：
+- **您的 AI 助手** 拥有自己的 Microsoft 365 账户（例如：`assistant@domain.com`）
+- **账户所有者** 已授予助手对其邮箱/日历的代理访问权限
+- 助手以自己的身份进行身份验证，但访问的是所有者的资源
 
-### What Changed from Direct Access
+### 与直接访问的区别
 
-| Feature | Direct Access (`/me`) | Delegate Access (`/users/{id}`) |
+| 功能 | 直接访问（`/me`） | 代理访问（`/users/{id}`） |
 |---------|----------------------|--------------------------------|
-| API Base | `/me/messages` | `/users/{owner}/messages` |
-| Send Email | Appears "From: Owner" | Appears "From: Assistant on behalf of Owner" |
-| Calendar | Full control | Based on permission level granted |
-| Permissions | Mail.ReadWrite, Mail.Send | Mail.ReadWrite.Shared, Mail.Send.Shared, Calendars.ReadWrite.Shared |
+| API 基址 | `/me/messages` | `/users/{owner}/messages` |
+| 发送邮件 | 显示为“发件人：所有者” | 显示为“发件人：助手代表所有者” |
+| 日历 | 全权控制 | 根据授予的权限级别而定 |
+| 权限 | Mail.ReadWrite, Mail.Send | Mail.ReadWrite.Shared, Mail.Send.Shared, Calendars.ReadWrite.Shared |
 
-## Configuration
+## 配置
 
-### Config File: `~/.outlook-mcp/config.json`
+### 配置文件：`~/.outlook-mcp/config.json`
 
 ```json
 {
@@ -38,25 +38,24 @@ This skill is designed for scenarios where:
 }
 ```
 
-The `owner_email` is the mailbox the assistant will access as a delegate.
+`owner_email` 是助手将以代理身份访问的邮箱地址。
 
-## Setup Requirements
+## 设置要求
 
-### 1. Azure AD App Registration
+### 1. Azure AD 应用注册
 
-The app registration needs **delegated permissions** (not application permissions):
+应用注册需要以下代理权限（而非普通应用权限）：
+- `Mail.ReadWrite.Shared` - 读写共享邮箱的权限
+- `Mail.Send.Shared` - 代表他人发送邮件的权限
+- `Calendars.ReadWrite.Shared` - 读写共享日历的权限
+- `User.Read` - 读取助手自己的个人资料
+- `offline_access` - 刷新令牌
 
-- `Mail.ReadWrite.Shared` - Read/write access to shared mailboxes
-- `Mail.Send.Shared` - Send mail on behalf of others
-- `Calendars.ReadWrite.Shared` - Read/write shared calendars
-- `User.Read` - Read assistant's own profile
-- `offline_access` - Refresh tokens
+### 2. Exchange 代理权限（管理员或所有者）
 
-### 2. Exchange Delegate Permissions (Admin or Owner)
+所有者必须通过 Exchange/Outlook 授予助手代理访问权限：
 
-The owner must grant the assistant delegate access via Exchange/Outlook:
-
-**PowerShell (Admin):**
+**PowerShell（管理员）：**
 ```powershell
 # Grant mailbox access
 Add-MailboxPermission -Identity "owner@domain.com" -User "assistant@domain.com" -AccessRights FullAccess
@@ -68,23 +67,23 @@ Set-Mailbox -Identity "owner@domain.com" -GrantSendOnBehalfTo "assistant@domain.
 Add-MailboxFolderPermission -Identity "owner@domain.com:\Calendar" -User "assistant@domain.com" -AccessRights Editor -SharingPermissionFlags Delegate
 ```
 
-**Or via Outlook Settings:**
-The owner can add the assistant as a delegate in Outlook → File → Account Settings → Delegate Access.
+**或通过 Outlook 设置：**
+所有者可以在 Outlook 中将助手添加为代理 → 文件 → 账户设置 → 代理访问。
 
-### 3. Token Flow
+### 3. 令牌流程
 
-The assistant authenticates as itself via OAuth2, then accesses the owner's resources using the `/users/{owner@domain.com}/` endpoint.
+助手通过 OAuth2 以自己的身份进行身份验证，然后使用 `/users/{owner@domain.com}/` 端点访问所有者的资源。
 
-## Usage
+## 使用方法
 
-### Token Management
+### 令牌管理
 ```bash
 ./scripts/outlook-token.sh refresh   # Refresh expired token
 ./scripts/outlook-token.sh test      # Test connection to BOTH accounts
 ./scripts/outlook-token.sh get       # Print access token
 ```
 
-### Reading Owner's Emails
+### 阅读所有者的邮件
 ```bash
 ./scripts/outlook-mail.sh inbox [count]           # Owner's inbox
 ./scripts/outlook-mail.sh unread [count]          # Owner's unread
@@ -93,7 +92,7 @@ The assistant authenticates as itself via OAuth2, then accesses the owner's reso
 ./scripts/outlook-mail.sh read <id>               # Read email content
 ```
 
-### Managing Owner's Emails
+### 管理所有者的邮件
 ```bash
 ./scripts/outlook-mail.sh mark-read <id>          # Mark as read
 ./scripts/outlook-mail.sh mark-unread <id>        # Mark as unread
@@ -103,15 +102,15 @@ The assistant authenticates as itself via OAuth2, then accesses the owner's reso
 ./scripts/outlook-mail.sh move <id> <folder>      # Move to folder
 ```
 
-### Sending Emails (On Behalf Of Owner)
+### 代表所有者发送邮件
 ```bash
 ./scripts/outlook-mail.sh send <to> <subj> <body>  # Send on behalf of owner
 ./scripts/outlook-mail.sh reply <id> "body"        # Reply on behalf of owner
 ```
 
-**Note:** Emails will show "Assistant on behalf of Owner" in the From field.
+**注意：** 邮件中的“发件人”字段会显示为“助手代表所有者”。
 
-### Owner's Calendar
+### 所有者的日历
 ```bash
 ./scripts/outlook-calendar.sh events [count]      # Owner's upcoming events
 ./scripts/outlook-calendar.sh today               # Owner's today
@@ -120,15 +119,15 @@ The assistant authenticates as itself via OAuth2, then accesses the owner's reso
 ./scripts/outlook-calendar.sh free <start> <end>  # Owner's availability
 ```
 
-### Creating Events on Owner's Calendar
+### 在所有者的日历上创建事件
 ```bash
 ./scripts/outlook-calendar.sh create <subj> <start> <end> [location]
 ./scripts/outlook-calendar.sh quick <subject> [time]
 ```
 
-## API Endpoint Changes
+## API 端点变更
 
-The key change is replacing `/me` with `/users/{owner_email}`:
+主要的变更是将 `/me` 替换为 `/users/{owner_email}`：
 
 ```bash
 # Direct access (old)
@@ -139,9 +138,9 @@ OWNER=$(jq -r '.owner_email' "$CONFIG_FILE")
 API="https://graph.microsoft.com/v1.0/users/$OWNER"
 ```
 
-## Send-on-Behalf Implementation
+## 代表所有者发送邮件的实现
 
-When sending mail as a delegate, you must specify the `from` address:
+在代表所有者发送邮件时，必须指定 `from` 地址：
 
 ```json
 {
@@ -158,57 +157,49 @@ When sending mail as a delegate, you must specify the `from` address:
 }
 ```
 
-The recipient sees: **"Assistant on behalf of Owner <owner@domain.com>"**
+收件人会看到：**“发件人：助手代表所有者 <owner@domain.com>”
 
-## Permissions Summary
+## 权限总结
 
-| Action | Required Permission | Exchange Setting |
+| 操作 | 所需权限 | Exchange 设置 |
 |--------|-------------------|-----------------|
-| Read owner's mail | Mail.ReadWrite.Shared | FullAccess or Reviewer |
-| Modify owner's mail | Mail.ReadWrite.Shared | FullAccess or Editor |
-| Send as owner | Mail.Send.Shared | SendOnBehalf |
-| Read owner's calendar | Calendars.ReadWrite.Shared | Reviewer+ |
-| Create events on owner's calendar | Calendars.ReadWrite.Shared | Editor |
+| 阅读所有者的邮件 | Mail.ReadWrite.Shared | FullAccess 或 Reviewer |
+| 修改所有者的邮件 | Mail.ReadWrite.Shared | FullAccess 或 Editor |
+| 以所有者的身份发送邮件 | Mail.Send.Shared | SendOnBehalf |
+| 阅读所有者的日历 | Calendars.ReadWrite.Shared | Reviewer+ |
+| 在所有者的日历上创建事件 | Calendars.ReadWrite.Shared | Editor |
 
-## Troubleshooting
+## 故障排除
 
-**"Access denied" or "403 Forbidden"**
-→ Check that the assistant has MailboxPermission on the owner's mailbox
-
-**"The mailbox is not found"**
-→ Verify `owner_email` in config.json is correct
-
-**"Insufficient privileges"**
-→ App registration missing `.Shared` permissions (check Azure AD)
-
-**Emails send but don't show "on behalf of"**
-→ Missing SendOnBehalf permission. Run:
-```powershell
+- **“访问被拒绝”或“403 禁止访问”**：检查助手是否具有访问所有者邮箱的权限。
+- **“找不到邮箱”**：确认 `config.json` 中的 `owner_email` 是否正确。
+- **权限不足**：检查应用注册是否缺少 `.Shared` 权限（请查看 Azure AD）。
+- **邮件发送后未显示“代表所有者”**：检查是否缺少 `SendOnBehalf` 权限。运行以下命令：
+    ```powershell
 Set-Mailbox -Identity "owner@domain.com" -GrantSendOnBehalfTo "assistant@domain.com"
 ```
 
-**"Token expired"**
-→ Run `outlook-token.sh refresh`
+- **令牌过期**：运行 `outlook-token.sh refresh` 刷新令牌。
 
-## Security Considerations
+## 安全考虑
 
-1. **Audit Trail**: All actions by the assistant are logged in the owner's mailbox audit log
-2. **Token Storage**: Credentials stored in `~/.outlook-mcp/` - protect this directory
-3. **Scope Limitation**: The assistant only has access to what the owner explicitly grants
-4. **Revocation**: The owner can revoke access anytime via Delegate settings
+1. **审计记录**：助手的所有操作都会记录在所有者的邮箱审计日志中。
+2. **令牌存储**：凭证存储在 `~/.outlook-mcp/` 目录中——请保护该目录的安全。
+3. **权限限制**：助手只能访问所有者明确授予的权限范围。
+4. **权限撤销**：所有者可以随时通过代理设置撤销代理权限。
 
-## Files
+## 相关文件
 
-- `~/.outlook-mcp/config.json` - Client ID, secret, and owner/delegate emails
-- `~/.outlook-mcp/credentials.json` - OAuth tokens (access + refresh)
+- `~/.outlook-mcp/config.json`：客户端 ID、密钥以及所有者/代理的邮箱地址。
+- `~/.outlook-mcp/credentials.json`：OAuth 令牌（用于访问和刷新）。
 
-## Changelog
+## 更新日志
 
-### v1.0.0 (Delegate Edition)
-- **Breaking**: API calls now use `/users/{owner}` instead of `/me`
-- Added: `owner_email` and `delegate_email` config fields
-- Added: Send-on-behalf support with proper `from` field
-- Changed: Permissions to `.Shared` variants
-- Added: Delegate setup documentation
-- Added: Token test validates access to owner's mailbox
-- Based on outlook v1.3.0 by jotamed (https://clawhub.ai/jotamed/outlook)
+### v1.0.0（代理版）
+- **变更**：API 调用现在使用 `/users/{owner}` 而不是 `/me`。
+- 新增：`owner_email` 和 `delegate_email` 配置字段。
+- 新增：支持代表所有者发送邮件，并正确设置发件人字段。
+- 权限更新为 `.Shared` 类型。
+- 新增：代理设置文档。
+- 新增：令牌测试以验证对所有者邮箱的访问权限。
+- 基于 jotamed 的 outlook v1.3.0 版本实现（https://clawhub.ai/jotamed/outlook）。

@@ -1,6 +1,6 @@
 ---
 name: supermetrics
-description: "Official Supermetrics skill. Query marketing data from 100+ platforms including Google Analytics, Meta Ads, Google Ads, and LinkedIn. Requires API key."
+description: "官方 Supermetrics 技能：能够从 100 多个平台（包括 Google Analytics、Meta Ads、Google Ads 和 LinkedIn）查询营销数据。需要使用 API 密钥。"
 version: 1.0.1
 triggers:
   - marketing data
@@ -21,13 +21,13 @@ requires:
     - SUPERMETRICS_API_KEY
 ---
 
-# Supermetrics Marketing Data
+# Supermetrics营销数据
 
-Query marketing data from 100+ platforms including Google Analytics, Meta Ads, Google Ads, and LinkedIn.
+从100多个平台（包括Google Analytics、Meta Ads、Google Ads和LinkedIn）查询营销数据。
 
-## Usage
+## 使用方法
 
-Import the helper module:
+导入辅助模块：
 
 ```python
 from supermetrics import (
@@ -42,11 +42,11 @@ from supermetrics import (
 )
 ```
 
-## Functions
+## 函数
 
 ### discover_sources()
 
-List all available marketing platforms.
+列出所有可用的营销平台。
 
 ```python
 result = discover_sources()
@@ -56,17 +56,17 @@ for src in result['data']['sources']:
 
 ### discover_accounts(ds_id)
 
-Get connected accounts for a data source.
+获取数据源的关联账户。
 
-**Common data source IDs:**
-| ID | Platform |
+**常见数据源ID：**
+| ID | 平台 |
 |----|----------|
-| FA | Meta Ads (Facebook) |
+| FA | Meta Ads（Facebook） |
 | AW | Google Ads |
 | GAWA | Google Analytics |
 | GA4 | Google Analytics 4 |
 | LI | LinkedIn Ads |
-| AC | Microsoft Advertising (Bing) |
+| AC | Microsoft Advertising（Bing） |
 
 ```python
 result = discover_accounts("GAWA")
@@ -76,7 +76,7 @@ for acc in result['data']['accounts']:
 
 ### discover_fields(ds_id, field_type=None)
 
-Get available metrics and dimensions.
+获取可用的指标和维度。
 
 ```python
 # Get all fields
@@ -91,36 +91,26 @@ result = discover_fields("GAWA", "dimension")
 
 ### query_data(...)
 
-Execute a marketing data query. Returns schedule_id for async retrieval.
+执行营销数据查询。返回异步查询的`schedule_id`。
 
-```python
-result = query_data(
-    ds_id="GAWA",
-    ds_accounts="123456789",
-    fields=["date", "sessions", "pageviews", "users"],
-    date_range_type="last_7_days"
-)
-schedule_id = result['data']['schedule_id']
-```
+**参数：**
+- `ds_id`（必需）：数据源ID
+- `ds_accounts`（必需）：通过`discover_accounts()`获取的账户ID
+- `fields`（必需）：通过`discover_fields()`获取的字段ID
+- `date_range_type`：`last_7_days`、`last_30_days`、`last_3_months`、`custom`
+- `start_date`、`end_date`：自定义日期范围（格式为YYYY-MM-DD）
+- `filters`：过滤条件（例如，`"country == United States"`）
+- `timezone`：IANA时区（例如，`"America/New_York"`）
 
-**Parameters:**
-- `ds_id` (required): Data source ID
-- `ds_accounts` (required): Account ID(s) from discover_accounts()
-- `fields` (required): Field ID(s) from discover_fields()
-- `date_range_type`: `last_7_days`, `last_30_days`, `last_3_months`, `custom`
-- `start_date`, `end_date`: For custom date range (YYYY-MM-DD)
-- `filters`: Filter expression (e.g., `"country == United States"`)
-- `timezone`: IANA timezone (e.g., `"America/New_York"`)
-
-**Filter operators:**
-- `==`, `!=` - equals, not equals
-- `>`, `>=`, `<`, `<=` - comparisons
-- `=@`, `!@` - contains, does not contain
-- `=~`, `!~` - regex match
+**过滤操作符：**
+- `==`、`!=` - 等于、不等于
+- `>`、`>=`、`<`、`<=` - 比较运算
+- `=`、`!=` - 包含、不包含
+- `=~`、`!=` - 正则表达式匹配
 
 ### get_results(schedule_id)
 
-Retrieve query results.
+检索查询结果。
 
 ```python
 result = get_results(schedule_id)
@@ -130,7 +120,7 @@ for row in result['data']['data']:
 
 ### get_today()
 
-Get current UTC date for date calculations.
+获取当前UTC日期，用于日期计算。
 
 ```python
 result = get_today()
@@ -139,7 +129,7 @@ print(result['data']['date'])  # "2026-02-03"
 
 ### search(query)
 
-Search across Supermetrics resources for guidance and suggestions.
+在Supermetrics资源中搜索相关帮助和建议。
 
 ```python
 result = search("facebook ads metrics")
@@ -148,14 +138,14 @@ print(result['data'])
 
 ### health()
 
-Check Supermetrics server health status.
+检查Supermetrics服务器的健康状态。
 
 ```python
 result = health()
 print(result['data']['status'])  # "healthy"
 ```
 
-## Workflow Example
+## 工作流程示例
 
 ```python
 from supermetrics import (
@@ -187,9 +177,9 @@ for row in data['data']['data']:
     print(row)
 ```
 
-## Response Format
+## 响应格式
 
-All functions return:
+所有函数返回的结果格式如下：
 
 ```python
 {"success": True, "data": {...}}  # Success

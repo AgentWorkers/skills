@@ -1,6 +1,6 @@
 ---
 name: spotify-applescript
-description: Control Spotify desktop app via AppleScript. Play playlists, tracks, albums, episodes, and manage playback. Works reliably with macOS Spotify app without API keys or OAuth.
+description: 通过 AppleScript 控制 Spotify 桌面应用程序：可以播放播放列表、单曲、专辑以及剧集，并管理播放功能。该方法在无需 API 密钥或 OAuth 认证的情况下，能够稳定地与 macOS 上的 Spotify 应用程序配合使用。
 homepage: https://github.com/andrewjiang/HoloClawd-Open-Firmware
 metadata: {"clawdbot":{"emoji":"🎵","os":["darwin"]}}
 triggers:
@@ -13,16 +13,16 @@ triggers:
   - previous track
 ---
 
-# Spotify AppleScript Control
+# 使用 AppleScript 控制 Spotify
 
-Control the Spotify desktop app using AppleScript. Works reliably with the macOS Spotify app without API rate limits or OAuth.
+通过 AppleScript 来控制 Spotify 桌面应用程序。该脚本在 macOS 上的 Spotify 应用中稳定运行，无需担心 API 使用频率限制或 OAuth 认证的问题。
 
-## Requirements
+## 使用要求
 
-- Spotify desktop app installed and running on macOS
-- No setup required - just works
+- 确保已安装并运行 macOS 版本的 Spotify 桌面应用程序。
+- 无需额外设置，即可直接使用。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Play a playlist
@@ -48,41 +48,34 @@ spotify mute           # Mute
 spotify unmute         # Unmute
 ```
 
-## Spotify CLI Wrapper
+## Spotify 命令行接口（CLI）封装
 
-The `spotify` command is a wrapper script at `{baseDir}/spotify.sh`
+`spotify` 命令是一个封装脚本，位于 `{baseDir}/spotify.sh` 文件中。
 
-### Commands
+### 常用命令
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `play <uri>` | Play track/album/playlist/episode | `spotify play spotify:track:xxx` |
-| `pause` | Toggle play/pause | `spotify pause` |
-| `next` | Next track | `spotify next` |
-| `prev` | Previous track | `spotify prev` |
-| `status` | Show current track info | `spotify status` |
-| `volume <0-100>` | Set volume | `spotify volume 75` |
-| `mute` | Mute | `spotify mute` |
-| `unmute` | Unmute | `spotify unmute` |
+| 命令            | 功能                | 示例                |
+|------------------|------------------|-------------------|
+| `play <uri>`       | 播放指定的曲目/专辑/播放列表/剧集 | `spotify play spotify:track:xxx` |
+| `pause`         | 暂停播放              | `spotify pause`           |
+| `next`          | 播放下一首曲目           | `spotify next`          |
+| `prev`          | 播放上一首曲目           | `spotify prev`          |
+| `status`         | 显示当前曲目信息           | `spotify status`         |
+| `volume <0-100>`     | 设置音量（0-100 之间）       | `spotify volume 75`         |
+| `mute`          | 静音                | `spotify mute`           |
+| `unmute`         | 取消静音              | `spotify unmute`           |
 
-### URI Formats
+### URI 格式
 
-Accepts both Spotify URIs and open.spotify.com URLs:
+支持两种格式的 URI：
+- Spotify 自定义 URI（例如：`spotify:track:7hQJA50XrCWABAu5v6QZ4i`
+- open.spotify.com 格式的 URL（例如：`https://open.spotify.com/track/7hQJA50XrCWABAu5v6QZ4i`
 
-- `spotify:track:7hQJA50XrCWABAu5v6QZ4i`
-- `https://open.spotify.com/track/7hQJA50XrCWABAu5v6QZ4i`
-- `spotify:playlist:665eC1myDA8iSepZ0HOZdG`
-- `https://open.spotify.com/playlist/665eC1myDA8iSepZ0HOZdG?si=xxx`
-- `spotify:episode:5yJKH11UlF3sS3gcKKaUYx`
-- `https://open.spotify.com/episode/5yJKH11UlF3sS3gcKKaUYx`
-- `spotify:album:xxx`
-- `spotify:artist:xxx`
+脚本会自动将输入的 URL 转换为正确的 Spotify URI 格式。
 
-The script auto-converts URLs to URIs.
+## 直接使用 AppleScript
 
-## Direct AppleScript Commands
-
-For more control, use AppleScript directly:
+如需更精细的控制，可以直接使用 AppleScript 发送相应命令：
 
 ```bash
 # Play
@@ -115,7 +108,7 @@ osascript -e 'tell application "Spotify" to player position'
 osascript -e 'tell application "Spotify" to set player position to 30'
 ```
 
-## Available Properties
+## 可用的属性
 
 ```applescript
 tell application "Spotify"
@@ -133,23 +126,22 @@ tell application "Spotify"
 end tell
 ```
 
-## Examples
+## 使用示例
 
-### Agent Usage
+### 通过语音命令控制
 
-When the user says:
-- "Play my power hour playlist" → extract playlist URI and run `spotify play <uri>`
-- "Pause the music" → run `spotify pause`
-- "Next track" → run `spotify next`
-- "What's playing?" → run `spotify status`
+- 用户说：“播放我的‘Power Hour’播放列表” → 脚本会提取播放列表的 URI 并执行 `spotify play <uri>` 命令。
+- 用户说：“暂停音乐” → 脚本会执行 `spotify pause` 命令。
+- 用户说：“下一首曲目” → 脚本会执行 `spotify next` 命令。
+- 用户问：“正在播放什么？” → 脚本会显示当前曲目的信息。
 
-### Play a specific episode
+### 播放特定剧集
 
 ```bash
 spotify play https://open.spotify.com/episode/5yJKH11UlF3sS3gcKKaUYx
 ```
 
-### Get full track info
+### 获取曲目的详细信息
 
 ```bash
 osascript -e 'tell application "Spotify"
@@ -157,36 +149,25 @@ osascript -e 'tell application "Spotify"
 end tell'
 ```
 
-## Installation
+## 安装方法
 
-The skill is self-contained. To make the `spotify` command available system-wide:
+该脚本是独立可执行的。若想让 `spotify` 命令在整个系统中可用，可以：
 
-```bash
-chmod +x {baseDir}/spotify.sh
-sudo ln -sf {baseDir}/spotify.sh /usr/local/bin/spotify
-```
+1. 将 `spotify.sh` 文件复制到系统的 `PATH` 环境变量指定的目录中。
+2. 或者将整个脚本目录添加到 `PATH` 中。
 
-Or add the skill directory to PATH.
+## 常见问题及解决方法
 
-## Troubleshooting
+- **“Spotify 出现错误”**：请确认 Spotify 桌面应用程序正在运行，并且至少启动过一次才能接收 AppleScript 命令。
+- **播放命令无效**：检查 URI 格式是否正确；也可以先尝试通过 Spotify 应用本身播放该内容。
+- **没有音频输出**：检查系统音量和 Spotify 应用的音量设置；确保在 Spotify 首选项中选择了正确的输出设备。
+- **其他问题**：根据具体情况排查原因。
 
-**"Spotify got an error"**
-- Make sure Spotify desktop app is running
-- Spotify must be launched at least once to accept AppleScript commands
+## 限制事项
 
-**Play command does nothing**
-- Verify the URI format is correct
-- Try playing from Spotify app first to ensure the content exists
+- 必须运行 Spotify 桌面应用程序。
+- 仅支持 macOS 系统（因依赖 AppleScript）。
+- 无法通过脚本搜索或浏览音乐库（请使用 Spotify 的网页界面或应用程序进行操作）。
+- 无法直接管理播放列表（添加/删除曲目）。
 
-**No audio**
-- Check system volume and Spotify app volume
-- Ensure correct output device is selected in Spotify preferences
-
-## Limitations
-
-- Requires Spotify desktop app to be running
-- macOS only (uses AppleScript)
-- Cannot search or browse library (use web interface or app for discovery)
-- Cannot manage playlists (add/remove tracks)
-
-For playlist management and search, use the web interface or consider the `spotify-player` skill (requires OAuth setup).
+如需管理播放列表或进行搜索，请使用 Spotify 的网页界面，或考虑使用 `spotify-player` 这个技能（该技能需要先完成 OAuth 设置）。

@@ -1,40 +1,40 @@
 ---
 name: find-code-tasks
-description: Lists all code tasks in the repository with their status, dates, and metadata. Useful for getting an overview of pending work or finding specific tasks.
+description: 列出仓库中所有的代码任务，包括它们的状态、日期和元数据。这对于了解待办的工作或查找特定任务非常有用。
 type: anthropic-skill
 version: "1.0"
 ---
 
-# Find Code Tasks
+# 查找代码任务
 
-## Overview
+## 概述
 
-This skill finds and displays all code tasks (`.code-task.md` files) in the repository, showing their frontmatter status and metadata. Use it to get a quick overview of pending work, find tasks by status, or check the state of the task backlog.
+此技能用于查找并显示仓库中的所有代码任务（`.code-task.md` 文件），包括它们的前置内容（frontmatter）状态和元数据。您可以使用它来快速了解待处理的工作、按状态查找任务或检查任务积压情况。
 
-## When to Use
+## 使用场景
 
-- Starting a work session to see what tasks are available
-- Checking status of tasks before/after running code-assist
-- Finding tasks by status (pending, in_progress, completed)
-- Getting a summary of task backlog
-- Exporting task data for reporting
+- 在开始工作会话时，查看可用的任务
+- 在运行代码辅助工具（`code-assist`）之前/之后，检查任务状态
+- 按状态（待处理、进行中、已完成）查找任务
+- 获取任务积压的汇总信息
+- 导出任务数据以用于报告
 
-## Parameters
+## 参数
 
-- **filter** (optional): Filter tasks by status
-  - `pending` - Show only pending tasks
-  - `in_progress` - Show only in-progress tasks
-  - `completed` - Show only completed tasks
-  - (none) - Show all tasks
+- **filter**（可选）：按状态过滤任务
+  - `pending` - 仅显示待处理的任务
+  - `in_progress` - 仅显示进行中的任务
+  - `completed` - 仅显示已完成的任务
+  - （无） - 显示所有任务
 
-- **format** (optional, default: "table"): Output format
-  - `table` - Human-readable table with status symbols
-  - `json` - JSON array for programmatic use
-  - `summary` - Counts by status only
+- **format**（可选，默认值："table"）：输出格式
+  - `table` - 带有状态符号的易读表格
+  - `json` - 用于程序化处理的 JSON 数组
+  - `summary` - 仅按状态统计
 
-- **tasks_dir** (optional, default: ".ralph/tasks/"): Directory to search for tasks
+- **tasks_dir**（可选，默认值：".ralph/tasks/"）：搜索任务的目录
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Show all tasks in table format
@@ -53,13 +53,13 @@ This skill finds and displays all code tasks (`.code-task.md` files) in the repo
 /find-code-tasks tasks_dir:tools/
 ```
 
-## Steps
+## 步骤
 
-### 1. Run Task Status Script
+### 1. 运行任务状态脚本
 
-The script is colocated with this skill at `.claude/skills/find-code-tasks/task-status.sh`.
+该脚本与本技能一起存储在 `.claude/skills/find-code-tasks/task-status.sh` 文件中。
 
-Execute it with appropriate arguments:
+使用适当的参数执行脚本：
 
 ```bash
 # Default: table format, all tasks
@@ -78,28 +78,27 @@ Execute it with appropriate arguments:
 TASKS_DIR=tools/ .claude/skills/find-code-tasks/task-status.sh
 ```
 
-### 2. Present Results
+### 2. 显示结果
 
-Display the output to the user. For table format, the output includes:
+将结果展示给用户。对于表格格式，输出内容如下：
 
-| Symbol | Status |
+| 符号 | 状态 |
 |--------|--------|
-| ○ | pending |
-| ● | in_progress |
-| ✓ | completed |
-| ■ | blocked |
+| ○ | 待处理 |
+| ● | 进行中 |
+| ✓ | 已完成 |
+| ■ | 被阻止 |
 
-### 3. Suggest Next Actions
+### 3. 建议下一步操作
 
-Based on the results, suggest relevant actions:
+根据结果，给出相应的建议：
+- 如果有待处理的任务：`运行 `/code-assist .ralph/tasks/<task-name>.code-task.md` 以启动任务`
+- 如果有进行中的任务：`已有进行中的任务——建议先完成这些任务`
+- 如果所有任务都已完成：`所有任务已完成！使用 `/code-task-generator` 创建新任务`
 
-- If there are pending tasks: "Run `/code-assist .ralph/tasks/<task-name>.code-task.md` to start a task"
-- If there are in_progress tasks: "There are tasks already in progress - consider completing those first"
-- If all tasks are completed: "All tasks are done! Use `/code-task-generator` to create new tasks"
+## 输出示例
 
-## Output Examples
-
-### Table Format (default)
+### 表格格式（默认）
 
 ```
 TASKS STATUS
@@ -114,7 +113,7 @@ TASKS STATUS
 Total: 4 tasks
 ```
 
-### Summary Format
+### 摘要格式
 
 ```
 Task Summary
@@ -126,7 +125,7 @@ Task Summary
   Total:       17
 ```
 
-### JSON Format
+### JSON 格式
 
 ```json
 [
@@ -135,9 +134,9 @@ Task Summary
 ]
 ```
 
-## Frontmatter Schema
+## 前置内容（Frontmatter）结构
 
-Tasks with frontmatter tracking have this structure:
+具有前置内容跟踪的任务具有以下结构：
 
 ```yaml
 ---
@@ -148,33 +147,33 @@ completed: YYYY-MM-DD  # Date work finished (null if not done)
 ---
 ```
 
-Tasks without frontmatter are shown as `pending` with null dates.
+没有前置内容的任务会显示为 `pending`，并且日期字段显示为 `null`。
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-- **code-task-generator**: Creates new tasks with frontmatter
-- **code-assist**: Updates task status when starting/completing work
-- **ralph-code-assist**: Runs tasks through Ralph orchestrator
+- **code-task-generator**：创建带有前置内容的新任务
+- **code-assist**：在开始/完成任务时更新任务状态
+- **ralph-code-assist**：通过 Ralph 调度器运行任务
 
-## Troubleshooting
+## 故障排除
 
-### No Tasks Found
+### 未找到任务
 
-If no tasks are displayed:
-- Verify the tasks directory exists: `ls .ralph/tasks/`
-- Check file extension is `.code-task.md`
-- Try specifying directory: `/find-code-tasks tasks_dir:./`
+如果未显示任何任务：
+- 确认任务目录存在：`ls .ralph/tasks/`
+- 检查文件扩展名是否为 `.code-task.md`
+- 尝试指定目录：`/find-code-tasks tasks_dir:./`
 
-### Script Not Found
+### 脚本未找到
 
-If the task-status.sh script is not found:
-- Ensure you're in the repository root
-- Check the script exists: `ls .claude/skills/find-code-tasks/task-status.sh`
-- Make it executable: `chmod +x .claude/skills/find-code-tasks/task-status.sh`
+如果找不到 `task-status.sh` 脚本：
+- 确保您位于仓库根目录
+- 检查脚本是否存在：`ls .claude/skills/find-code-tasks/task-status.sh`
+- 使脚本可执行：`chmod +x .claude/skills/find-code-tasks/task-status.sh`
 
-### Frontmatter Not Parsed
+### 前置内容未被解析
 
-If dates show as `-` for tasks with frontmatter:
-- Ensure frontmatter starts with `---` on line 1
-- Check YAML syntax is valid
-- Verify field names match: `status`, `created`, `started`, `completed`
+如果具有前置内容的任务的日期字段显示为 `-`：
+- 确保前置内容的第一行以 `---` 开头
+- 检查 YAML 语法是否有效
+- 确认字段名称匹配：`status`、`created`、`started`、`completed`

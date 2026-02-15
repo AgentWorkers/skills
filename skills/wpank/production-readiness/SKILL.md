@@ -1,224 +1,161 @@
 ---
 name: production-readiness
 model: reasoning
-description: Meta-skill that orchestrates logging, monitoring, error handling, performance, security, deployment, and testing skills to ensure a service is fully production-ready before launch. Use before first deploy, major releases, quarterly reviews, or after incidents.
+description: 这是一项元技能（meta-skill），它整合了日志记录（logging）、监控（monitoring）、错误处理（error handling）、性能优化（performance）、安全保障（security）、部署（deployment）以及测试（testing）等方面的能力，以确保服务在正式上线前达到完全的生产就绪状态。建议在首次部署、重大版本更新、季度审查期间，或发生故障后使用该技能。
 ---
 
-# Production Readiness (Meta-Skill)
+# 生产就绪性（元技能）
 
-Coordinates all operational concerns into a single readiness review. Instead of duplicating domain expertise, this skill routes to specialized skills and agents for each area, then synthesizes results into a unified go/no-go assessment.
+该技能将所有运营相关问题整合到一个统一的就绪性评估中。它避免重复各领域的专业知识，而是将问题分配给相应的专业技能团队或人员进行处理，然后将结果综合成一个统一的“可/不可”评估。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
-```bash
-npx clawhub@latest install production-readiness
-```
+---
 
+## 目的
+
+在服务正式上线之前，通过系统性地检查各项运营指标（如日志记录、错误处理、性能、安全性、部署、测试和文档等），确保服务具备生产就绪条件。
+
+一个具备生产就绪性的服务应具备以下特点：
+- **在负载或部分故障情况下能够优雅地处理问题**；
+- **通过结构化的日志、指标和追踪机制自我监控**；
+- **能够自动从临时故障中恢复**；
+- **向运维人员和调度系统报告自身的运行状态**；
+- **详细记录操作过程**，以便值班工程师无需深入了解系统内部细节即可进行故障排查。
 
 ---
 
-## Purpose
+## 适用场景
 
-Ensure a service is production-ready by systematically checking every operational concern — logging, error handling, performance, security, deployment, testing, and documentation — before traffic hits it.
-
-A production-ready service:
-
-- **Fails gracefully** under load and partial outages
-- **Observes itself** with structured logs, metrics, and traces
-- **Recovers automatically** from transient failures
-- **Communicates health** to orchestrators and operators
-- **Documents operations** so on-call engineers can respond without tribal knowledge
-
----
-
-## When to Use
-
-| Trigger | Context |
+| 触发条件 | 使用场景 |
 |---------|---------|
-| **Before first deploy** | New service going to production for the first time |
-| **Before major release** | Significant feature or architectural change shipping |
-| **Quarterly production review** | Scheduled audit of existing services |
-| **After incident** | Post-incident hardening to prevent recurrence |
-| **Dependency upgrade** | Major framework, runtime, or infrastructure change |
-| **Team handoff** | Transferring ownership of a service to another team |
+| **首次部署前** | 新服务首次投入生产环境 |
+| **重大版本更新前** | 发布重大功能或架构变更时 |
+| **季度生产审查** | 定期对现有服务进行审计 |
+| **事故发生后** | 事故发生后进行加固处理，防止类似问题再次发生 |
+| **依赖项升级** | 框架、运行时环境或基础设施发生重大变更时 |
+| **团队交接** | 服务所有权转移给其他团队时 |
 
 ---
 
-## Orchestration Flow
+## 协调流程
 
-Run each area sequentially or in parallel. Each step delegates to a specialized skill or agent — this skill does not re-implement their logic.
+可以依次或并行执行各个检查环节。每个步骤都会分配给相应的专业技能团队或人员处理，该技能本身不会重复实现这些团队的具体逻辑。
 
-```
-┌─────────────────────────────────────────────────┐
-│              Production Readiness Review         │
-├─────────────────────────────────────────────────┤
-│                                                  │
-│  1. Logging & Observability ──► logging-observability skill
-│  2. Error Handling ───────────► error-handling-patterns skill
-│  3. Performance ──────────────► performance-agent
-│  4. Security ─────────────────► security-review meta-skill
-│  5. Deployment ───────────────► deployment-agent + docker-expert skill
-│  6. Testing ──────────────────► testing-workflow meta-skill
-│  7. Documentation ────────────► /generate-docs command
-│                                                  │
-│  ──► Synthesize results into go/no-go report     │
-└─────────────────────────────────────────────────┘
-```
+### 各环节详细说明
 
-### Step Details
-
-1. **Logging & Observability** — Structured logging, log levels, correlation IDs, metrics endpoints, distributed tracing, alerting rules
-2. **Error Handling** — Global error boundaries, retry policies, dead-letter queues, error classification, user-facing error messages
-3. **Performance** — Load testing results, P95/P99 latency baselines, memory/CPU profiling, database query analysis, caching strategy
-4. **Security** — Auth/authz verification, input validation, dependency audit, secrets management, OWASP top-10 review
-5. **Deployment** — Container hardening, rollback strategy, blue-green/canary configuration, infrastructure-as-code review
-6. **Testing** — Unit/integration/e2e coverage, contract tests, chaos/failure injection, smoke tests in staging
-7. **Documentation** — API docs, runbooks, architecture diagrams, on-call playbooks, ADRs for key decisions
+1. **日志记录与可观测性**：结构化日志记录、日志级别设置、关联ID、指标监控端点、分布式追踪系统、警报规则等。
+2. **错误处理**：全局错误处理机制、重试策略、死信队列、错误分类、用户友好的错误提示信息等。
+3. **性能**：负载测试结果、P95/P99延迟基准值、内存/CPU使用情况分析、数据库查询优化、缓存策略等。
+4. **安全性**：身份验证与授权机制、输入数据验证、依赖项安全审计、OWASP常见安全漏洞检查等。
+5. **部署**：容器安全加固、回滚策略、蓝绿部署/金丝雀部署方案、基础设施代码化管理等。
+6. **测试**：单元测试/集成测试/端到端测试覆盖范围、合同测试、混沌工程/故障注入测试、预发布环境的压力测试等。
+7. **文档编写**：API文档、操作手册、架构图、值班工程师处理指南等。
 
 ---
 
-## Skill Routing Table
+## 技能分配表
 
-| Concern | Skill / Agent | Path |
+| 问题类型 | 对应技能/团队 | 处理路径 |
 |---------|--------------|------|
-| Logging & Observability | `logging-observability` | `ai/skills/tools/logging-observability/SKILL.md` |
-| Error Handling | `error-handling-patterns` | `ai/skills/backend/error-handling-patterns/SKILL.md` |
-| Performance | `performance-agent` | `ai/agents/performance/` |
-| Security | `security-review` | `ai/skills/meta/security-review/SKILL.md` |
-| Deployment (containers) | `docker-expert` | `ai/skills/devops/docker/SKILL.md` |
-| Deployment (pipelines) | `deployment-agent` | `ai/agents/deployment/` |
-| Testing | `testing-workflow` | `ai/skills/testing/testing-workflow/SKILL.md` |
-| Rate Limiting | `rate-limiting-patterns` | `ai/skills/backend/rate-limiting-patterns/SKILL.md` |
-| Documentation | `/generate-docs` | `ai/commands/documentation/` |
+| 日志记录与可观测性 | `logging-observability` | `ai/skills/tools/logging-observability/SKILL.md` |
+| 错误处理 | `error-handling-patterns` | `ai/skills/backend/error-handling-patterns/SKILL.md` |
+| 性能优化 | `performance-agent` | `ai/agents/performance/` |
+| 安全性评估 | `security-review` | `ai/skills/meta/security-review/SKILL.md` |
+| 容器部署 | `docker-expert` | `ai/skills/devops/docker/SKILL.md` |
+| 部署流程 | `deployment-agent` | `ai/agents/deployment/` |
+| 测试管理 | `testing-workflow` | `ai/skills/testing/testing-workflow/SKILL.md` |
+| 限流策略 | `rate-limiting-patterns` | `ai/skills/backend/rate-limiting-patterns/SKILL.md` |
+| 文档编写 | `/generate-docs` | `ai/commands/documentation/` |
 
-> **Routing rule:** Read the target skill first, follow its instructions, then return results here for synthesis.
-
----
-
-## Production Readiness Checklist
-
-### Health & Lifecycle
-
-- [ ] Health check endpoint (`/healthz` or `/health`) returns dependency status
-- [ ] Readiness probe distinguishes "starting" from "ready to serve"
-- [ ] Liveness probe detects deadlocks and unrecoverable states
-- [ ] Graceful shutdown drains in-flight requests before exit
-- [ ] Startup probe allows for slow initialization without false restarts
-
-### Resilience
-
-- [ ] Circuit breakers on all external service calls
-- [ ] Retry with exponential backoff and jitter on transient failures
-- [ ] Rate limiting configured per endpoint and per client
-- [ ] Backpressure mechanisms prevent cascade failures under load
-- [ ] Timeouts set on every outbound call (HTTP, DB, queue)
-- [ ] Bulkhead isolation separates critical from non-critical paths
-
-### Configuration & Secrets
-
-- [ ] All configuration externalized (env vars, config service, or feature flags)
-- [ ] No secrets in code, images, or environment variable defaults
-- [ ] Secrets loaded from a vault (e.g., AWS Secrets Manager, HashiCorp Vault)
-- [ ] Configuration changes do not require redeployment
-- [ ] Feature flags in place for high-risk changes
-
-### Data Safety
-
-- [ ] Backup strategy defined and tested (RPO/RTO documented)
-- [ ] Restore procedure verified in a non-production environment
-- [ ] Database migrations are backward-compatible and reversible
-- [ ] Data retention policies implemented and enforced
-
-### Operational Readiness
-
-- [ ] Runbooks exist for top 5 most likely failure scenarios
-- [ ] SLOs defined (availability, latency, error rate) with error budgets
-- [ ] SLAs communicated to dependent teams or customers
-- [ ] On-call rotation staffed and escalation path documented
-- [ ] Dashboards show golden signals (latency, traffic, errors, saturation)
-- [ ] Alerting rules configured with appropriate thresholds and severity
+> **处理规则：** 首先阅读目标技能的相关说明，按照指示操作，然后将结果反馈到这里进行综合评估。
 
 ---
 
-## Maturity Levels
+## 生产就绪性检查清单
 
-| Level | Name | Requirements |
+### 服务健康状况与生命周期管理
+
+- [ ] 健康检查接口（`/healthz` 或 `/health`）能返回依赖项的运行状态。
+- [ ] 就绪性检测机制能区分服务是否“正在启动”或“已准备好提供服务”。
+- [ ] 活动检测机制能识别死锁和无法恢复的状态。
+- [ ] 服务在关闭前会优雅地处理正在进行的请求。
+- [ ] 启动过程允许缓慢初始化，避免不必要的重启。
+
+### 韧性保障
+
+- **所有外部服务调用都配备了断路器**。
+- **对于临时故障，采用指数级退避和抖动机制进行重试**。
+- **为每个接口和客户端配置了限流策略**。
+- **背压机制能在负载情况下防止故障链式扩散**。
+- **所有出站请求都设置了超时机制**（HTTP、数据库、队列等）。
+- **使用隔离机制区分关键路径和非关键路径**。
+
+### 配置管理与 secrets 管理
+
+- **所有配置信息都外部化存储（环境变量、配置服务或配置标志）**。
+- **代码、镜像或环境变量中不应包含敏感信息**。
+- **敏感信息从安全存储库（如 AWS Secrets Manager、HashiCorp Vault）中加载**。
+- **配置变更无需重新部署服务**。
+- **对于高风险变更，使用配置标志进行控制**。
+
+### 数据安全
+
+- **制定了备份策略并进行了测试（恢复点/恢复时间已记录）**。
+- **在非生产环境中验证了数据恢复流程**。
+- **数据库迁移具有向后兼容性和可逆性**。
+- **实施了数据保留策略并严格执行**。
+
+### 运营就绪性
+
+- **针对最常见的5种故障场景准备了操作手册**。
+- **定义了服务级别目标（SLO，包括可用性、延迟、错误率等）并设置了错误预算**。
+- **已将服务级别目标告知相关团队或客户**。
+- **值班人员轮换机制已建立，并记录了故障升级流程**。
+- **仪表盘能显示关键指标（延迟、流量、错误情况等）**。
+- **警报规则设置了适当的阈值和严重性级别**。
+
+---
+
+## 成熟度等级
+
+| 等级 | 名称 | 要求 |
 |-------|------|-------------|
-| **L1** | **MVP** | Health check, basic logging, error handling, manual deploy, unit tests, README |
-| **L2** | **Stable** | Structured logging, metrics, graceful shutdown, CI/CD pipeline, integration tests, runbooks |
-| **L3** | **Resilient** | Distributed tracing, circuit breakers, auto-scaling, chaos testing, SLOs, on-call rotation |
-| **L4** | **Optimized** | Adaptive rate limiting, predictive alerting, canary deploys, full observability, error budgets, postmortem culture |
+| **L1** | **基础级** | 健康检查、基本日志记录、错误处理、手动部署、单元测试、项目说明文档（README） |
+| **L2** | **稳定级** | 结构化日志记录、指标监控、优雅关闭机制、持续集成/持续部署（CI/CD）流程、集成测试、操作手册 |
+| **L3** | **弹性级** | 分布式追踪系统、断路器、自动扩展机制、混沌工程测试、服务级别目标（SLO）、值班人员轮换机制 |
+| **L4** | **优化级** | 自适应限流机制、预测性警报系统、金丝雀部署方案、全面的可观测性机制、错误预算管理、事后分析机制 |
 
-### Progression Guidance
+### 发展指南
 
-- **L1 → L2:** Add structured logging, metrics endpoint, and a CI/CD pipeline. Write runbooks for known failure modes.
-- **L2 → L3:** Instrument distributed tracing. Add circuit breakers to external calls. Define SLOs and set up on-call.
-- **L3 → L4:** Implement canary deployments. Adopt error budgets. Run regular game days. Build predictive alerting.
+- **从 L1 升级到 L2**：添加结构化日志记录、指标监控端点以及持续集成/持续部署（CI/CD）流程。为常见的故障模式编写操作手册。
+- **从 L2 升级到 L3**：引入分布式追踪系统。为外部调用添加断路器。定义服务级别目标（SLO）并建立值班机制。
+- **从 L3 升级到 L4**：实施金丝雀部署方案。采用错误预算管理。定期进行故障模拟测试。建立预测性警报系统。
 
----
+## 事故响应机制
 
-## Incident Response
+### 值班人员轮换
 
-### On-Call Rotation
+- 每个值班小组至少包含两名工程师（主值班员和备用值班员）。
+- 交接内容包括最近的一次部署情况、未解决的问题以及已知的风险。
+- 明确了故障升级路径：主值班员 → 备用值班员 → 技术团队负责人 → 工程总监。
 
-- Minimum two engineers per rotation (primary + secondary)
-- Handoff includes review of recent deploys, open issues, and known risks
-- Escalation targets defined: primary → secondary → engineering lead → VP Eng
+### 故障升级机制
 
-### Escalation Matrix
-
-| Severity | Response Time | Escalation After | Stakeholder Notification |
+| 故障严重程度 | 响应时间 | 升级路径 | 相关方通知方式 |
 |----------|--------------|-------------------|--------------------------|
-| **SEV-1** (outage) | 15 min | 30 min | Immediate — exec + customers |
-| **SEV-2** (degraded) | 30 min | 1 hour | Within 1 hour — eng lead |
-| **SEV-3** (minor) | 4 hours | Next business day | Daily standup |
-| **SEV-4** (cosmetic) | Next sprint | N/A | Backlog |
+| **SEV-1**（严重故障） | 15分钟 | 30分钟 | 立即通知技术团队负责人及客户 |
+| **SEV-2**（性能下降） | 30分钟 | 1小时内 | 技术团队负责人 |
+| **SEV-3**（轻微故障） | 4小时 | 下一个工作日 | 每日例会 |
+| **SEV-4**（外观问题） | 下一个开发周期 | 不需要立即处理 | 记入待办事项列表 |
 
-### Postmortem Template
+## 重要注意事项
 
-```markdown
-## Incident: [Title]
-**Date:** YYYY-MM-DD | **Duration:** X hours | **Severity:** SEV-N
-
-### Summary
-One-paragraph description of what happened and impact.
-
-### Timeline
-- HH:MM — First alert fired
-- HH:MM — Engineer paged, investigation started
-- HH:MM — Root cause identified
-- HH:MM — Mitigation applied
-- HH:MM — Full resolution confirmed
-
-### Root Cause
-What broke and why. Link to code/config change if applicable.
-
-### Impact
-- Users affected: N
-- Revenue impact: $X (if applicable)
-- SLO budget consumed: X%
-
-### Action Items
-| Action | Owner | Due Date | Status |
-|--------|-------|----------|--------|
-| Fix X  | @eng  | YYYY-MM-DD | Open |
-
-### Lessons Learned
-- What went well
-- What went poorly
-- Where we got lucky
-```
-
----
-
-## NEVER Do
-
-1. **NEVER skip health checks** — every service must expose health endpoints; no exceptions for "simple" services
-2. **NEVER store secrets in code or container images** — use a secrets manager; never default env vars with real values
-3. **NEVER deploy without a rollback plan** — if you cannot roll back in under 5 minutes, you are not ready to deploy
-4. **NEVER ignore error budget violations** — when the error budget is exhausted, freeze feature work and fix reliability
-5. **NEVER treat logging as optional** — a service without structured logging is a service you cannot debug at 3 AM
-6. **NEVER go to production without runbooks** — if on-call cannot resolve the top 5 failure modes without the original author, the service is not production-ready
+1. **绝不要跳过健康检查**——所有服务都必须提供健康检查接口；即使是“简单”服务也不例外。
+2. **绝不要将敏感信息存储在代码或容器镜像中**——使用专门的 secrets 管理工具；切勿将真实值设置为环境变量的默认值。
+3. **绝不要在没有回滚计划的情况下进行部署**——如果无法在5分钟内恢复服务，说明服务尚未准备好上线。
+4. **绝不要忽视错误预算的违反情况**——一旦错误预算被耗尽，应立即暂停相关功能的开发并修复系统可靠性问题。
+5. **绝不要将日志记录视为可选功能**——没有结构化日志记录的服务在出现问题时将难以排查故障。
+6. **绝不要在没有操作手册的情况下将服务投入生产**——如果值班人员在没有原始开发人员协助的情况下无法解决最常见的5种故障问题，说明该服务尚未具备生产就绪条件。

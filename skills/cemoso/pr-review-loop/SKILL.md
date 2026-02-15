@@ -1,26 +1,27 @@
 ---
 name: pr-review-loop
-description: Autonomous PR review loop with Greptile. Use when an agent creates a PR and needs to autonomously handle code review feedback — reading Greptile reviews, fixing issues, pushing fixes, re-triggering review, and auto-merging when score is 4/5+. Trigger on commands like "pr review {url}", "review my PR", or when a Greptile review webhook/poll delivers feedback.
+description: **具有 Greptile 功能的自动化 PR 审核流程**  
+当代理创建一个 Pull Request（PR）时，可以使用此流程来自动处理代码审核反馈：读取 Greptile 提供的审核意见、修复问题、推送修复后的代码、重新触发审核流程，并在审核得分达到 4/5 分以上时自动合并代码。该流程可通过以下命令触发：`pr review {url}` 或 `review my PR`；同时，当 Greptile 的审核 Webhook 或轮询机制发送反馈时，流程也会自动启动。
 ---
 
-# PR Review Loop
+# PR 审查循环
 
-Autonomous cycle: Greptile reviews PR → agent fixes feedback → pushes → re-triggers → repeats until score ≥ 4/5 or max rounds.
+**自动流程**：Greptile 审查 PR → 代理根据反馈进行修复 → 推送代码 → 重新触发审查流程 → 重复此过程，直到评分达到 4/5 或达到最大轮次。
 
-## Quick Start
+## 快速入门
 
-When triggered with a PR URL or review payload:
+当通过 PR 的 URL 或审查数据触发该流程时：
 
 ```bash
 # Run the review loop
 bash scripts/pr-review-loop.sh <owner/repo> <pr-number>
 ```
 
-Or invoke steps manually — see below.
+或者也可以手动执行这些步骤——详见下方说明。
 
-## Workflow
+## 工作流程
 
-### 1. Fetch Review
+### 1. 获取审查信息
 
 ```bash
 # Get latest Greptile review
@@ -32,29 +33,28 @@ gh api "/repos/{owner}/{repo}/pulls/{pr}/comments" \
   --jq '[.[] | select(.user.login == "greptile-apps[bot]")]'
 ```
 
-### 2. Parse Score
+### 2. 解析评分
 
-Look for confidence/quality score in review body. Greptile typically includes a score like `Score: X/5` or `Confidence: X/5`. Extract it:
+在审查内容中查找评分信息。Greptile 通常会显示类似 `Score: X/5` 或 `Confidence: X/5` 的评分。提取该评分：
+- **评分 ≥ 4/5** → 自动合并代码
+- **评分 < 4/5** → 修复问题
+- **未找到评分** → 如果有评论，则认为代码需要修复；否则直接合并代码
 
-- **Score ≥ 4/5** → auto-merge
-- **Score < 4/5** → fix issues
-- **No score found** → treat as needing fixes if there are comments, otherwise merge
-
-### 3. Auto-Merge (score ≥ 4)
+### 3. 自动合并（评分 ≥ 4）
 
 ```bash
 gh pr merge <number> --merge --delete-branch --repo <owner/repo>
 ```
 
-### 4. Fix Issues (score < 4)
+### 4. 修复问题（评分 < 4）
 
-For each Greptile comment:
-1. Read the file and line referenced
-2. Understand the feedback
-3. Apply the fix
-4. Stage changes
+对于 Greptile 提出的每一条评论：
+1. 阅读相关文件和行号
+2. 理解反馈内容
+3. 应用相应的修复措施
+4. 将修改内容提交到代码仓库
 
-Commit with a descriptive message listing each fix:
+提交代码时，需要附上详细的说明，列出所有修复的内容：
 ```
 Address Greptile review feedback (round N)
 
@@ -63,15 +63,15 @@ Address Greptile review feedback (round N)
 - Improve Z per reviewer suggestion
 ```
 
-Push and re-trigger:
+**推送代码并重新触发审查流程**：
 ```bash
 git push
 gh pr comment <number> --repo <owner/repo> --body "@greptileai review"
 ```
 
-### 5. Track State
+### 5. 跟踪流程状态
 
-Maintain `review-state.json` in workspace:
+在工作区维护 `review-state.json` 文件：
 ```json
 {
   "owner/repo#123": {
@@ -83,23 +83,23 @@ Maintain `review-state.json` in workspace:
 }
 ```
 
-Update after each round. Check exit conditions:
-- **rounds ≥ 5** → merge anyway, notify Master
-- **sameScoreCount ≥ 2** (same score 2 rounds in a row) → merge anyway, notify Master
+**每轮审查结束后更新状态**：
+- **审查轮次 ≥ 5** → 无论如何都应合并代码，并通知项目负责人（Master）
+- **连续两轮评分相同** → 无论如何都应合并代码，并通知项目负责人
 
-### 6. Escalation
+### 6. 升级处理
 
-- **Architectural decisions** (review mentions architecture, design patterns, breaking changes) → ping Master on Telegram, don't auto-fix
-- **Max rounds reached** → merge + notify Master with summary
-- **Unclear feedback** → ask Master
+- **涉及架构决策**（评论中提到架构、设计模式或可能破坏现有功能的变更） → 通过 Telegram 通知项目负责人，不要自动修复代码
+- **达到最大审查轮次** → 合并代码并向项目负责人提交总结报告
+- **反馈内容不明确** → 询问项目负责人的意见
 
-## Command Interface
+## 命令接口
 
-Agents should respond to:
-- `pr review <url>` — start review loop on a PR
-- `pr review <owner/repo#number>` — same, by reference
-- `pr status` — show active review loops and their state
+代理应响应以下命令：
+- `pr review <url>` — 启动针对指定 PR 的审查流程
+- `pr review <owner/repo#number>` — 根据提交者或仓库编号启动审查流程
+- `pr status` — 显示当前正在进行的审查流程及其状态
 
-## References
+## 参考资料
 
-See `references/greptile-patterns.md` for common Greptile feedback patterns and fix strategies.
+请参阅 `references/greptile-patterns.md`，了解常见的 Greptile 评审反馈模式和修复策略。

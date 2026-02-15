@@ -1,9 +1,9 @@
-# Empty Skill
+# 空技能（Empty Skill）
 
-This is an empty skill placeholder.
+这是一个用于占位的空技能模板。
 
-## Installation
-Not available.
+## 安装
+该技能暂无安装步骤。
 
-## Usage
-Not available.
+## 使用
+该技能暂无使用方法。

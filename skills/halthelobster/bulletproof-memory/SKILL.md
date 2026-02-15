@@ -1,48 +1,39 @@
 ---
 name: bulletproof-memory
 version: 1.0.0
-description: "Never lose context again. The Write-Ahead Log (WAL) protocol with SESSION-STATE.md gives your agent bulletproof memory that survives compaction, restarts, and distractions. Part of the Hal Stack 🦞"
+description: "再也不用担心丢失上下文了。Write-Ahead Log（WAL）协议结合SESSION-STATE.md文件，为你的代理程序提供了极其可靠的内存管理机制——这种机制能够在数据压缩、系统重启或出现其他干扰的情况下依然保持数据完整性。这是Hal Stack技术栈的重要组成部分 🦞"
 author: halthelobster
 ---
 
-# Bulletproof Memory 🦞
+# 防爆记忆 🦞  
+**作者：Hal Labs** — Hal Stack 的一部分  
 
-**By Hal Labs** — Part of the Hal Stack
+你的智能助手经常会忘记事情：在对话进行过程中、数据被压缩后，或者在不同会话之间，上下文信息就会丢失。这项技能能够永久性地解决这个问题。  
 
-Your agent forgets things. Mid-conversation, after compaction, between sessions — context vanishes. This skill fixes that permanently.
+## 问题所在  
+智能助手会以以下三种方式丢失上下文信息：  
+1. **数据压缩**：旧消息被压缩或删除。  
+2. **会话重启**：助手会以“空白状态”重新启动。  
+3. **分心**：在对话过程中，助手会忘记之前的细节。  
 
-## The Problem
+传统的解决方法通常是：“记得保存重要信息。”  
+**但问题在于，助手本身常常忘记去执行这个动作。**  
 
-Agents lose context in three ways:
-1. **Compaction** — old messages get summarized/dropped
-2. **Session restart** — agent wakes up fresh  
-3. **Distraction** — mid-conversation, agent forgets earlier details
+## 解决方案：预写日志（WAL）协议  
+关键在于：**触发写入操作的时机是用户输入信息的时候，而不是依赖助手的内存。**  
+当用户提供具体的信息时，助手会在响应之前将其记录下来。这样就无需助手去“刻意记住”要保存什么内容——规则会根据用户的输入自动触发执行。  
 
-Traditional fix: "Remember to save important things." 
+| 旧方法 | WAL 方法 |  
+|--------------|--------------|  
+| “记得保存重要信息” | “如果用户提供了具体信息，则在响应前将其写入” |  
+| 触发条件依赖助手的内存（不可靠） | 触发条件依赖用户的输入（可靠） |  
+| 助手可能会忘记执行保存操作 | 规则会自动触发执行 |  
+| 事后才进行保存（为时已晚） | 响应前就完成保存（永远不会太晚） |  
 
-**But agents forget to remember.**
-
-## The Solution: Write-Ahead Log (WAL) Protocol
-
-The key insight: **trigger writes on USER INPUT, not agent memory.**
-
-When the user provides a concrete detail, the agent writes it down BEFORE responding. The agent doesn't have to "remember" to save — the rule fires automatically based on what the user says.
-
-| Old Approach | WAL Approach |
-|--------------|--------------|
-| "Remember to save important things" | "If user gives detail → write before responding" |
-| Triggered by agent memory (unreliable) | Triggered by user INPUT (reliable) |
-| Agent forgets to remember | Rule fires automatically |
-| Saves after the fact (too late) | Saves before responding (never too late) |
-
-## Quick Setup
-
-### 1. Create SESSION-STATE.md
-
-This is your agent's "hot RAM" — the active working memory that persists across compactions.
-
-Create `SESSION-STATE.md` in your workspace root:
-
+## 快速设置步骤：  
+### 1. 创建 `SESSION-STATE.md`  
+`SESSION-STATE.md` 是助手的“临时内存”，其内容会在数据压缩后仍然保留。  
+在工作区的根目录下创建 `SESSION-STATE.md` 文件：  
 ```markdown
 # SESSION-STATE.md — Active Working Memory
 
@@ -62,12 +53,10 @@ Chat history is a BUFFER. This file is STORAGE.
 
 ## Last Updated
 [Timestamp]
-```
+```  
 
-### 2. Add WAL Protocol to AGENTS.md
-
-Add this to your agent's instructions:
-
+### 2. 将 WAL 协议添加到 `AGENTS.md` 中  
+将以下内容添加到助手的指令中：  
 ```markdown
 ### WRITE-AHEAD LOG (WAL) PROTOCOL
 
@@ -85,12 +74,10 @@ Add this to your agent's instructions:
 
 **Why this works:** The trigger is the user's INPUT, not your memory. You don't have 
 to remember to check — the rule fires on what the user says.
-```
+```  
 
-### 3. Add Recovery Protocol
-
-When context is lost, don't ask "what were we doing?" — recover it yourself:
-
+### 3. 添加恢复机制  
+当上下文信息丢失时，不要问“我们刚才在做什么？”，而是自己主动恢复它：  
 ```markdown
 ### Compaction Recovery Protocol
 
@@ -107,10 +94,9 @@ When context is lost, don't ask "what were we doing?" — recover it yourself:
 4. Present: "Recovered from SESSION-STATE.md. Last task was X. Continue?"
 
 **Do NOT ask "what were we discussing?" if SESSION-STATE.md has the answer.**
-```
+```  
 
-### 4. Add Session Startup Sequence
-
+### 4. 添加会话启动流程  
 ```markdown
 ## Every Session
 Before doing anything else:
@@ -119,12 +105,10 @@ Before doing anything else:
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 
 Don't ask permission. Just do it.
-```
+```  
 
-### 5. Add Memory Flush Protocol
-
-Monitor context and flush before you lose it:
-
+### 5. 添加内存刷新机制  
+实时监控上下文信息，并在信息丢失前立即进行刷新：  
 ```markdown
 ### Memory Flush Protocol
 
@@ -145,65 +129,47 @@ Monitor your context usage with `session_status`. Flush important context before
 - Action items (who's doing what)
 - Open threads (anything unfinished)
 - Corrections (things the user clarified)
-```
+```  
 
-## Why This Works
+## 为何这种方法有效？  
+**触发机制的关键在于**：大多数记忆管理方法都依赖于助手自己主动去执行某些操作，但问题恰恰在于助手容易忘记这些操作！**  
+WAL 协议之所以有效，是因为：  
+- **触发条件是用户输入**（外部因素，更可靠）；  
+- **不依赖助手的内存**（避免因内存问题导致的错误）。  
+当用户提供具体信息时，协议会自动执行；助手无需任何主动操作。  
 
-### The Trigger Insight
+### `SESSION-STATE.md` 的重要性  
+日常笔记虽然有助于记录发生的事情，但它们并不适合用于记录“我当前正在做什么”。  
+`SESSION-STATE.md` 的特点如下：  
+- **实时性**：记录当前正在进行的任务；  
+- **结构化**：包含当前任务、相关上下文以及关键文件；  
+- **优先级最高**：启动时优先读取。  
+它就像是一份“实时日志”，而不是普通的便签。  
 
-Most memory advice fails because it relies on the agent remembering to do something. But forgetting is the problem we're trying to solve!
+## 数据压缩前的检查清单  
+在长时间会话结束或上下文信息变得关键之前，请检查以下内容：  
+- [ ] 当前任务是否已记录在 `SESSION-STATE.md` 中？  
+- [ ] 关键决策是否已被记录？  
+- [ ] 需要执行的操作是否已记录？  
+- [ ] 用户的修改是否已保存？  
+- [ ] 未来的自己能否仅凭 `SESSION-STATE.md` 继续完成任务？  
 
-The WAL protocol succeeds because:
-- **Trigger = user input** (external, reliable)
-- **Not trigger = agent memory** (internal, unreliable)
+## 自我总结提示  
+当上下文信息丢失率达到 85% 以上时，问问自己：  
+> “如果我的记忆被重置，未来的我需要知道什么才能继续完成这项任务？请为完全不了解情况的人写下这些信息。”  
+这种自我总结的方式比机械性的数据提取方式更有效。  
 
-When the user says something concrete, the protocol fires. The agent doesn't need to remember anything — the rule activates based on what comes in.
+## 完整的记忆管理方案  
+为了实现全面的记忆管理，可以将以下技能结合使用：  
+| 技能          | 目的                |  
+|--------------|------------------|  
+| **防爆记忆**      | 永远不丢失当前的上下文信息       |  
+| **辅助记忆系统**    | 组织长期知识             |  
+| **主动型助手**     | 在无需提示的情况下自动执行操作      |  
+这些技能共同作用，让助手能够记住所有事情、快速找到所需信息，并提前预判需求。  
 
-### The SESSION-STATE.md Insight
-
-Daily notes are great for logging what happened. But they're not structured for "what am I doing RIGHT NOW?"
-
-SESSION-STATE.md is:
-- **Hot** — the current active task, not history
-- **Structured** — current task, context, key files
-- **First priority** — read before anything else on startup
-
-It's the difference between a journal and a sticky note on your monitor.
-
-## Pre-Compaction Checklist
-
-Before a long session ends or context gets critical:
-
-- [ ] Current task documented in SESSION-STATE.md?
-- [ ] Key decisions captured?
-- [ ] Action items noted?
-- [ ] User corrections saved?
-- [ ] Could future-me continue from SESSION-STATE.md alone?
-
-## Self-Summarization Prompt
-
-When context hits 85%+, ask yourself:
-
-> "If my context resets right now, what does future-me absolutely need to know to continue this task? Write it for someone with zero context."
-
-This produces better summaries than mechanical extraction.
-
-## The Complete Memory Stack
-
-For comprehensive agent memory, combine this with:
-
-| Skill | Purpose |
-|-------|---------|
-| **Bulletproof Memory** (this) | Never lose active context |
-| **PARA Second Brain** | Organize long-term knowledge |
-| **Proactive Agent** | Act without being asked |
-
-Together, they create an agent that remembers everything, finds anything, and anticipates needs.
-
-## Example SESSION-STATE.md
-
-Here's a real example of what this looks like in practice:
-
+## `SESSION-STATE.md` 的实际示例  
+以下是一个 `SESSION-STATE.md` 文件的实际使用示例：  
 ```markdown
 # SESSION-STATE.md — Active Working Memory
 
@@ -223,18 +189,16 @@ Building dashboard for Jordan — Life OS view with goal tracking
 
 ## Last Updated
 2026-01-29 11:00 PM PST
-```
+```  
 
-## Principles
-
-1. **Write before responding** — The WAL protocol is non-negotiable
-2. **Trigger on input** — User input fires the rule, not agent memory
-3. **SESSION-STATE.md is first** — Always read it first on startup
-4. **Flush early, flush often** — Don't wait for 85% context
-5. **Structure for retrieval** — Future-you needs to continue, not just read
+## 原则说明：  
+1. **响应前先写入**：WAL 协议是必须遵守的规则。  
+2. **基于用户输入触发**：规则由用户的输入触发，而非助手的内存状态。  
+3. **优先读取 `SESSION-STATE.md`：启动时首先读取该文件。  
+4. **及时刷新**：不要等到上下文信息丢失到 85% 时才进行刷新。  
+5. **结构化存储**：数据需要便于未来使用者快速检索。  
 
 ---
 
-*Part of the Hal Stack 🦞*
-
-*Pairs well with [PARA Second Brain](https://clawdhub.com/halthelobster/para-second-brain) for knowledge organization and [Proactive Agent](https://clawdhub.com/halthelobster/proactive-agent) for behavioral patterns.*
+*属于 Hal Stack 的一部分 🦞*  
+*与 [辅助记忆系统](https://clawdhub.com/halthelobster/para-second-brain) 配合使用，可有效组织知识；与 [主动型助手](https://clawdhub.com/halthelobster/proactive-agent) 配合使用，可提升助手的行为效率。*

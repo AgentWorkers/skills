@@ -1,39 +1,39 @@
 ---
 name: Batch
-description: Process multiple items with progress tracking, checkpointing, and failure recovery.
+description: 处理多个项目时，需要实现进度跟踪、检查点设置以及故障恢复功能。
 ---
 
-## Before Starting
+## 开始之前
 
-1. **Dry run:** Test with 2-3 items first
-2. **Count:** "Processing 47 items, ~2 min estimated"
-3. **Confirm destructive ops:** "This will delete 200 files. Proceed?"
+1. **预测试：** 先使用2-3个项目进行测试。
+2. **进度显示：** “正在处理47个项目，预计耗时约2分钟。”
+3. **确认破坏性操作：** “此操作将删除200个文件。是否继续？”
 
-## During Processing
+## 处理过程中
 
-- **Progress every 10 items:** "23/47 complete (49%)"
-- **Checkpoint every 10-50 items:** Save state to resume if interrupted
-- **On error:** Log it, continue with rest (don't abort entire batch)
+- **每处理10个项目后显示进度：** “已完成23个（49%）”
+- **每处理10-50个项目后创建检查点：** 保存当前状态，以便在操作中断时能够恢复。
+- **出现错误时：** 记录错误信息，并继续处理剩余的项目（不要终止整个批次）。
 
-## After Completion
+## 处理完成后
 
-Always report:
+务必报告处理结果：
 ```
 ✅ 44 succeeded
 ❌ 3 failed (saved to failed.json for retry)
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Action |
-|-------|--------|
-| Timeout, rate limit | Retry 3x with backoff (1s, 2s, 4s) |
-| Bad format, missing data | Skip, log, continue |
-| Auth failed, disk full | Abort entire batch |
+| 错误类型 | 处理措施 |
+|---------|---------|
+| 超时、速率限制 | 重试3次，每次等待时间逐渐增加（1秒、2秒、4秒） |
+| 数据格式错误或缺失 | 跳过该错误项，记录日志并继续处理 |
+| 认证失败、磁盘空间已满 | 终止整个批次 |
 
-Check `strategies.md` for parallel vs sequential decision matrix.
-Check `errors.md` for retry logic and rollback patterns.
+有关并行处理与顺序处理的策略，请参阅 `strategies.md`。
+有关重试逻辑和回滚机制的详细信息，请参阅 `errors.md`。
 
 ---
 
-**Related:** For delegating to sub-agents, see `delegate`.
+**相关内容：** 如需将任务委托给子代理，请参阅 `delegate`。

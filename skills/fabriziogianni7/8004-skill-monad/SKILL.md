@@ -1,54 +1,54 @@
 ---
 name: 8004-skill
-description: Register and manage ERC-8004 Identity NFTs on Monad. Use when the agent needs to mint an on-chain identity for CEO Protocol registration or other ERC-8004–integrated protocols.
+description: 在Monad上注册和管理ERC-8004格式的身份NFT。当代理需要为CEO Protocol或其他集成ERC-8004标准的协议创建链上身份时，请使用该功能。
 ---
 
-# ERC-8004 Identity Skill
+# ERC-8004 身份技能
 
-Use this skill when the agent must register on the ERC-8004 Identity Registry to obtain an on-chain identity NFT. This identity is **required** to register as an agent in The CEO Protocol (CEOVault).
+当代理需要注册到 ERC-8004 身份注册表以获取链上身份 NFT 时，请使用此技能。该身份是注册为 CEO 协议（CEOVault）代理的**必需**条件。
 
-Reference: [EIP-8004 Trustless Agents](https://eips.ethereum.org/EIPS/eip-8004)
+参考：[EIP-8004 无信任代理](https://eips.ethereum.org/EIPS/eip-8004)
 
-## Contract Address (Monad Mainnet)
+## 合约地址（Monad 主网）
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
-| ERC-8004 Identity | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
+| ERC-8004 身份 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
 
-## Interface Summary
+## 接口概述
 
-The Identity Registry is ERC-721 based. Registering mints an NFT to `msg.sender`; the token ID is the agent ID.
+身份注册表基于 ERC-721。注册会生成一个 NFT，其令牌 ID 即为代理 ID。
 
-### Write Functions
+### 写入函数
 
-| Function | Purpose |
+| 函数 | 功能 |
 |----------|---------|
-| `register(string agentURI)` | Register with a URI; mints NFT, returns `agentId` |
-| `register(string agentURI, MetadataEntry[] metadata)` | Register with URI and on-chain metadata |
-| `register()` | Register with no URI (set later via `setAgentURI`) |
-| `setAgentURI(uint256 agentId, string newURI)` | Update the agent's URI |
-| `setMetadata(uint256 agentId, string metadataKey, bytes metadataValue)` | Set on-chain metadata |
+| `register(string agentURI)` | 使用 URI 进行注册；生成 NFT，并返回 `agentId` |
+| `register(string agentURI, MetadataEntry[] metadata)` | 使用 URI 和链上元数据进行注册 |
+| `register()` | 无 URI 注册（之后可通过 `setAgentURI` 设置） |
+| `setAgentURI(uint256 agentId, string newURI)` | 更新代理的 URI |
+| `setMetadata(uint256 agentId, string metadataKey, bytes metadataValue)` | 设置链上元数据 |
 
-### Read Functions (view)
+### 读取函数（查看）
 
-| Function | Returns | Use |
+| 函数 | 返回值 | 用途 |
 |----------|---------|-----|
-| `ownerOf(uint256 tokenId)` | `address` | Check who owns an agent NFT |
-| `tokenURI(uint256 tokenId)` | `string` | Get agent URI (same as agentURI) |
-| `getAgentWallet(uint256 agentId)` | `address` | Get wallet linked to agent |
-| `getMetadata(uint256 agentId, string metadataKey)` | `bytes` | Get on-chain metadata |
+| `ownerOf(uint256 tokenId)` | `address` | 查找拥有代理 NFT 的用户 |
+| `tokenURI(uint256 tokenId)` | `string` | 获取代理的 URI（与 agentURI 相同） |
+| `getAgentWallet(uint256 agentId)` | `address` | 获取与代理关联的钱包 |
+| `getMetadata(uint256 agentId, string metadataKey)` | `bytes` | 获取链上元数据 |
 
-### Events
+### 事件
 
-| Event | Use |
+| 事件 | 用途 |
 |-------|-----|
-| `Registered(uint256 indexed agentId, string agentURI, address indexed owner)` | Emitted on mint |
-| `URIUpdated(uint256 indexed agentId, string newURI, address indexed updatedBy)` | Emitted on URI change |
-| `MetadataSet(uint256 indexed agentId, string indexed metadataKey, string metadataKey, bytes metadataValue)` | Emitted on metadata set |
+| `Registered(uint256 indexed agentId, string agentURI, address indexed owner)` | 注册时触发 |
+| `URIUpdated(uint256 indexed agentId, string newURI, address indexed updatedBy)` | URI 更改时触发 |
+| `MetadataSet(uint256 indexed agentId, string indexed metadataKey, string metadataKey, bytes metadataValue)` | 元数据设置时触发 |
 
-## Registration Data Template
+## 注册数据模板
 
-The `agentURI` must resolve to a JSON document conforming to EIP-8004 registration. Use this template and replace placeholders before hosting (IPFS or data URI):
+`agentURI` 必须指向符合 EIP-8004 注册规范的 JSON 文档。在托管之前，请使用此模板并替换占位符（IPFS 或数据 URI）：
 
 ```json
 {
@@ -77,35 +77,35 @@ The `agentURI` must resolve to a JSON document conforming to EIP-8004 registrati
 }
 ```
 
-| Field | Replace with |
+| 字段 | 替换内容 |
 |-------|--------------|
-| `AGENT_NAME` | Agent display name |
-| `AGENT_DESCRIPTION` | Short description of capabilities |
-| `image` | URL to agent avatar/image |
-| `YOUR_DOMAIN` | Your domain for A2A/MCP endpoints (or omit services if not applicable) |
-| `supportedTrust` | Trust models (e.g. `["reputation"]` for CEO Protocol) |
+| `AGENT_NAME` | 代理显示名称 |
+| `AGENT_DESCRIPTION` | 能力的简要描述 |
+| `image` | 代理头像/图片的 URL |
+| `YOUR_DOMAIN` | 用于 A2A/MCP 端点的域名（如不适用可省略） |
+| `supportedTrust` | 信任模型（例如：`["reputation"]` 适用于 CEO 协议） |
 
-For a minimal CEO Protocol–only registration, you can omit `services` or set them to empty; `supportedTrust: ["reputation"]` is typical.
+对于仅用于 CEO 协议的简单注册，可以省略 `services` 或将其设置为空；`supportedTrust: ["reputation"]` 是常见的配置。
 
-## Automated Scripts (preferred)
+## 自动化脚本（推荐使用）
 
-The Docker image includes production-ready scripts at:
+Docker 镜像中包含可立即使用的脚本，位于：
 
 `/opt/erc8004-scripts`
 
-Source in workspace:
+脚本源代码位于：
 
 `/root/.openclaw/workspace/skills/8004-skill/scripts`
 
-### Required env vars for script flow
+### 脚本运行所需的环境变量
 
 - `MONAD_RPC_URL`
-- `MONAD_CHAIN_ID=143` (or pass `--chainId`)
+- `MONADCHAIN_ID=143`（或通过 `--chainId` 传递）
 - `AGENT_PRIVATE_KEY`
 - `PINATA_JWT`
-- `PINATA_GATEWAY` (recommended for verification fetch)
+- `PINATA_GATEWAY`（建议用于验证）
 
-### Script commands
+### 脚本命令
 
 ```bash
 # 1) Register on-chain with empty URI -> returns agentId
@@ -133,7 +133,7 @@ node /opt/erc8004-scripts/set-agent-uri.mjs \
 node /opt/erc8004-scripts/verify.mjs --network monad-mainnet --agentId 42
 ```
 
-### One-shot command
+### 一次性命令
 
 ```bash
 node /opt/erc8004-scripts/full-register.mjs \
@@ -145,26 +145,26 @@ node /opt/erc8004-scripts/full-register.mjs \
   --identityFile /root/.openclaw/workspace/AGENT_IDENTITY.md
 ```
 
-This executes all 4 registration steps (register -> build card -> upload -> set URI) and writes identity state for later CEO Protocol onboarding.
+此命令会执行所有 4 个注册步骤（注册 -> 生成卡片 -> 上传 -> 设置 URI），并记录身份信息以供后续 CEO 协议使用。
 
-## Registration Flow
+## 注册流程
 
-1. **Prerequisites**
-   - Wallet with MON for gas (use `viem-local-signer address` to confirm signer).
-   - `agentURI`: a URI pointing to your registration JSON (use the template above). Use IPFS (`ipfs://...`) or a data URI (`data:application/json;base64,...`).
+1. **先决条件**
+   - 拥有包含 MON 的钱包（使用 `viem-local-signer address` 确认签名者）。
+   - `agentURI`：指向您的注册 JSON 的 URI（使用上述模板）。可以使用 IPFS（`ipfs://...`）或数据 URI（`data:application/json;base64,...`）。
 
-2. **Call `register(agentURI)`**
-   - Encode calldata with `encodeFunctionData`.
-   - Send via `viem-local-signer send-contract`.
-   - Parse `Registered` event or return value for `agentId`.
+2. **调用 `register(agentURI)`**
+   - 使用 `encodeFunctionData` 对调用数据（calldata）进行编码。
+   - 通过 `viem-local-signer send-contract` 发送请求。
+   - 解析 `Registered` 事件以获取 `agentId`。
 
-3. **Store `agentId`**
-   - The returned `agentId` (token ID) is required for CEO Protocol `registerAgent(metadataURI, ceoAmount, erc8004Id)`.
-   - Persist it in an identity file (see below).
+3. **存储 `agentId`
+   - 返回的 `agentId`（令牌 ID）是调用 CEO 协议 `registerAgentmetadataURI, ceoAmount, erc8004Id)` 所必需的。
+   - 将其保存在身份文件中（见下文）。
 
-## Identity File Template
+## 身份文件模板
 
-After registration, persist the on-chain identity so the agent can reference it for CEO Protocol and other flows. Use this template:
+注册完成后，需将链上身份信息保存下来，以便代理在 CEO 协议及其他流程中使用。使用此模板：
 
 ```markdown
 # Agent Identity
@@ -174,22 +174,22 @@ After registration, persist the on-chain identity so the agent can reference it 
 - **Chain ID**: `<NOT SET>`
 ```
 
-### How to fill it
+### 如何填写
 
-| Field | Source | Example |
+| 字段 | 来源 | 示例 |
 |-------|--------|---------|
-| **Address** | `viem-local-signer address` (signer wallet) | `0xB4AF3708DA37a485E84b4F09c146eD0A8B7Df5c4` |
-| **Agent ID** | Return value from `register(agentURI)` | `42` |
-| **Agent Registry** | ERC-8004 Identity contract (Monad: `eip155:143:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`) | `eip155:143:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| **Chain ID** | Monad mainnet | `143` |
+| **Address** | `viem-local-signer address`（签名者钱包地址） | `0xB4AF3708DA37a485E84b4F09c146eD0A8B7Df5c4` |
+| **Agent ID** | `register(agentURI)` 的返回值 | `42` |
+| **Agent Registry** | ERC-8004 身份合约（Monad：`eip155:143:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`） | `eip155:143:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
+| **Chain ID** | Monad 主网 | `143` |
 
-### How to use it
+### 使用方法
 
-1. **After registration**: Write the identity file to `workspace/IDENTITY.md` or `workspace/AGENT_IDENTITY.md` so it is in the agent's context.
-2. **Before CEO Protocol `registerAgent`**: Read `Agent ID` from the file — that is `erc8004Id`.
-3. **Consistency check**: Ensure `Address` matches `viem-local-signer address` and `ownerOf(agentId)` on the registry.
+1. **注册完成后**：将身份文件写入 `workspace/IDENTITY.md` 或 `workspace/AGENT_IDENTITY.md`，以便代理能够访问。
+2. **在调用 CEO 协议的 `registerAgent` 之前**：从文件中读取 `Agent ID`（即 `erc8004Id`）。
+3. **一致性检查**：确保 `Address` 与 `viem-local-signer address` 以及注册表中的 `ownerOf(agentId)` 一致。
 
-Example filled identity:
+示例填充后的身份文件：
 
 ```markdown
 # Agent Identity
@@ -199,7 +199,7 @@ Example filled identity:
 - **Chain ID**: `143`
 ```
 
-## ABI (minimal)
+## ABI（最小化版本）
 
 ```json
 [
@@ -289,9 +289,9 @@ Example filled identity:
 ]
 ```
 
-## Encoding and Sending
+## 编码与发送
 
-Use `viem` to encode, then `viem-local-signer send-contract` to broadcast. Example (Node/script):
+使用 `viem` 进行编码，然后通过 `viem-local-signer send-contract` 发送请求。示例（Node/脚本）：
 
 ```typescript
 import { encodeFunctionData } from "viem";
@@ -319,30 +319,30 @@ const data = encodeFunctionData({
 // viem-local-signer send-contract --to 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 --data <hex> --value-wei 0 --wait
 ```
 
-## Agent Runbook
+## 代理操作手册
 
-1. Confirm signer: `viem-local-signer address`
-2. Ensure wallet has MON for gas.
-3. Prepare `agentURI` (IPFS or data URI with registration JSON).
-4. Encode `register(agentURI)` with viem.
-5. Present tx summary and ask for user confirmation.
-6. Run `viem-local-signer send-contract --to 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 --data <calldata> --value-wei 0 --wait`
-7. Parse receipt/logs for `agentId` (or read from `Registered` event).
-8. Write identity file (`workspace/AGENT_IDENTITY.md` or `workspace/IDENTITY.md`) using the template above with Address, Agent ID, Agent Registry, Chain ID.
+1. 确认签名者：`viem-local-signer address`
+2. 确保钱包中有足够的 MON 作为交易费用。
+3. 准备 `agentURI`（包含注册 JSON 的 IPFS 或数据 URI）。
+4. 使用 `viem` 对 `register(agentURI)` 进行编码。
+5. 显示交易摘要并请求用户确认。
+6. 运行 `viem-local-signer send-contract --to 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 --data <calldata> --value-wei 0 --wait`
+7. 从交易记录/日志中解析 `agentId`（或从 `Registered` 事件中获取）。
+8. 使用上述模板填写 `workspace/AGENT_IDENTITY.md` 或 `workspace/IDENTITY.md` 文件，其中包含 `Address`、`Agent ID` 和 `Agent Registry`。
 
-## CEO Protocol Integration
+## CEO 协议集成
 
-CEOVault requires an ERC-8004 identity before `registerAgent`:
+在调用 `registerAgent` 之前，CEOVault 要求使用 ERC-8004 身份：
 
 ```
 CEOVault.registerAgent(metadataURI, ceoAmount, erc8004Id)
 ```
 
-- `erc8004Id` = the token ID from `ERC8004Identity.register(...)`.
-- Caller must own that NFT (`ownerOf(erc8004Id) == msg.sender`).
+- `erc8004Id` = 从 `ERC8004Identity.register()` 返回的令牌 ID。
+- 调用者必须拥有该 NFT（`ownerOf(erc8004Id) == msg.sender`）。
 
-## Block Explorer
+## 区块浏览器
 
-- Monad: `https://monadscan.com/`
-- Tx link: `https://monadscan.com/tx/<hash>`
-- Contract: `https://monadscan.com/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+- Monad：`https://monadscan.com/`
+- 交易链接：`https://monadscan.com/tx/<hash>`
+- 合约地址：`https://monadscan.com/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`

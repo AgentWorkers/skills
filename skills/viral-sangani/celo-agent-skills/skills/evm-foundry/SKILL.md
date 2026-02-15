@@ -1,35 +1,35 @@
 ---
 name: evm-foundry
-description: Foundry development for EVM chains including Celo. Use when working with forge, cast, anvil, writing Solidity contracts, testing, deploying, or verifying contracts with Foundry.
+description: Foundry 是用于开发以太坊虚拟机（EVM）链的工具，支持 Celo 等区块链平台。在使用 Foundry 时，可以执行以下操作：使用 forge 和 cast 工具进行代码编译；编写 Solidity 合同；进行合同测试；部署合同；以及验证合同的正确性。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Foundry Development for EVM Chains
+# 用于EVM链的Foundry开发
 
-This skill covers Foundry setup and development for EVM-compatible chains with emphasis on Celo.
+本技能涵盖了如何为兼容EVM的区块链（尤其是Celo）设置和开发Foundry环境。
 
-## When to Use
+## 使用场景
 
-- Setting up a new Foundry project
-- Writing and compiling Solidity smart contracts with forge
-- Testing contracts with forge test
-- Deploying contracts to Celo or other EVM chains
-- Verifying contracts on block explorers
-- Interacting with contracts using cast
+- 设置新的Foundry项目
+- 使用forge工具编写和编译Solidity智能合约
+- 使用forge test工具测试合约
+- 将合约部署到Celo或其他EVM链上
+- 在区块浏览器中验证合约
+- 使用cast工具与合约进行交互
 
-## Foundry Tools
+## Foundry工具
 
-| Tool | Purpose |
+| 工具 | 功能 |
 |------|---------|
-| forge | Build, test, debug, deploy, and verify smart contracts |
-| cast | Interact with contracts and retrieve chain data from CLI |
-| anvil | Run a local Ethereum development node with forking support |
-| chisel | Fast Solidity REPL for interactive development |
+| forge | 构建、测试、调试、部署和验证智能合约 |
+| cast | 通过CLI与合约交互并检索链上数据 |
+| anvil | 运行支持分叉功能的本地Ethereum开发节点 |
+| chisel | 快速的Solidity交互式开发环境（REPL） |
 
-## Installation
+## 安装
 
 ```bash
 # Install Foundryup (the Foundry installer)
@@ -39,18 +39,18 @@ curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-For Windows, use Git BASH or WSL (Foundryup doesn't support PowerShell or Command Prompt).
+在Windows系统上，建议使用Git BASH或WSL（Foundryup不支持PowerShell或Command Prompt）。
 
-## Quick Start
+## 快速入门
 
-### Initialize Project
+### 初始化项目
 
 ```bash
 forge init my-project
 cd my-project
 ```
 
-### Project Structure
+### 项目结构
 
 ```
 my-project/
@@ -64,17 +64,16 @@ my-project/
 └── lib/              # Dependencies
 ```
 
-## Celo Network Information
+## Celo网络信息
 
-| Network | Chain ID | RPC Endpoint |
+| 网络 | 链ID | RPC端点 |
 |---------|----------|--------------|
-| Celo Mainnet | 42220 | https://forno.celo.org |
+| Celo主网 | 42220 | https://forno.celo.org |
 | Celo Sepolia | 11142220 | https://forno.celo-sepolia.celo-testnet.org |
 
+## 配置
 
-## Configuration
-
-### foundry.toml for Celo
+### Celo的foundry.toml配置文件
 
 ```toml
 [profile.default]
@@ -95,22 +94,22 @@ celo = { key = "${CELOSCAN_API_KEY}", chain = 42220, url = "https://api.celoscan
 celo_sepolia = { key = "${CELOSCAN_API_KEY}", chain = 11142220, url = "https://api.etherscan.io/v2/api" }
 ```
 
-### Environment Variables (.env)
+### 环境变量（.env文件）
 
 ```bash
 PRIVATE_KEY=your_private_key_here
 CELOSCAN_API_KEY=your_celoscan_api_key_here
 ```
 
-Load environment variables:
+加载环境变量：
 
 ```bash
 source .env
 ```
 
-## Writing Contracts
+## 编写合约
 
-### Basic Contract
+### 基本合约示例
 
 ```solidity
 // src/MyContract.sol
@@ -141,13 +140,13 @@ contract MyContract {
 }
 ```
 
-### Using OpenZeppelin
+### 使用OpenZeppelin框架
 
 ```bash
 forge install OpenZeppelin/openzeppelin-contracts
 ```
 
-Add to `remappings.txt`:
+将相关配置添加到`remappings.txt`文件中：
 
 ```
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
@@ -172,7 +171,7 @@ contract MyToken is ERC20, Ownable {
 }
 ```
 
-## Compilation
+## 编译合约
 
 ```bash
 # Compile all contracts
@@ -185,9 +184,9 @@ forge clean && forge build
 forge build --sizes
 ```
 
-## Testing
+## 测试
 
-### Test File Structure
+### 测试文件结构
 
 ```solidity
 // test/MyContract.t.sol
@@ -240,7 +239,7 @@ contract MyContractTest is Test {
 }
 ```
 
-### Running Tests
+### 运行测试
 
 ```bash
 # Run all tests
@@ -265,9 +264,9 @@ forge coverage
 forge test --fork-url https://forno.celo.org
 ```
 
-## Deployment
+## 部署
 
-### Deployment Script
+### 部署脚本
 
 ```solidity
 // script/Deploy.s.sol
@@ -293,23 +292,7 @@ contract DeployScript is Script {
 }
 ```
 
-### Deploy Commands
-
-```bash
-# Deploy to local Anvil
-forge script script/Deploy.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
-
-# Deploy to Celo Sepolia
-forge script script/Deploy.s.sol --rpc-url https://forno.celo-sepolia.celo-testnet.org --broadcast --private-key $PRIVATE_KEY
-
-# Deploy to Celo Mainnet
-forge script script/Deploy.s.sol --rpc-url https://forno.celo.org --broadcast --private-key $PRIVATE_KEY
-
-# Deploy with verification
-forge script script/Deploy.s.sol --rpc-url https://forno.celo-sepolia.celo-testnet.org --broadcast --verify --private-key $PRIVATE_KEY
-```
-
-### Quick Deploy with forge create
+### 使用forge create快速部署合约
 
 ```bash
 # Deploy to Celo Sepolia
@@ -327,9 +310,9 @@ forge create src/MyContract.sol:MyContract \
   --etherscan-api-key $CELOSCAN_API_KEY
 ```
 
-## Verification
+## 验证合约
 
-### Verify Existing Contract
+### 验证现有合约
 
 ```bash
 # Verify on Celo Sepolia
@@ -358,9 +341,9 @@ forge verify-contract \
   --watch
 ```
 
-## Cast Commands
+## 使用cast工具
 
-### Reading Data
+### 读取链上数据
 
 ```bash
 # Get balance
@@ -376,7 +359,7 @@ cast storage <CONTRACT_ADDRESS> 0 --rpc-url https://forno.celo.org
 cast block-number --rpc-url https://forno.celo.org
 ```
 
-### Writing Data
+### 写入链上数据
 
 ```bash
 # Send transaction
@@ -390,7 +373,7 @@ cast send <TO_ADDRESS> --value 1ether \
   --private-key $PRIVATE_KEY
 ```
 
-### Utility Commands
+### 其他实用命令
 
 ```bash
 # Encode function call
@@ -407,7 +390,7 @@ cast from-wei 1000000000000000000
 cast abi-encode "constructor(string)" "My Contract Name"
 ```
 
-## Anvil (Local Node)
+## Anvil（本地开发工具）
 
 ```bash
 # Start local node
@@ -420,13 +403,13 @@ anvil --fork-url https://forno.celo.org
 anvil --fork-url https://forno.celo.org --fork-block-number 12345678
 ```
 
-## Block Explorers
+## 块浏览器
 
-- **Celo Mainnet:** https://celoscan.io
-- **Celo Sepolia:** https://sepolia.celoscan.io
+- **Celo主网：** https://celoscan.io
+- **Celo Sepolia：** https://sepolia.celoscan.io
 
-## Additional Resources
+## 额外资源
 
-- [foundry-config.md](references/foundry-config.md) - Detailed configuration options
-- [testing-patterns.md](references/testing-patterns.md) - Advanced testing patterns
-- [security-checklist.md](rules/security-checklist.md) - Security best practices
+- [foundry-config.md](references/foundry-config.md) - 详细配置选项
+- [testing-patterns.md](references/testing-patterns.md) - 高级测试模式
+- [security-checklist.md](rules/security-checklist.md) - 安全最佳实践

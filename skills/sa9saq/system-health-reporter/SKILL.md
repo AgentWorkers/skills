@@ -1,20 +1,20 @@
 ---
-description: Generate system health reports with CPU, memory, disk, network diagnostics and recommendations.
+description: 生成系统健康报告，其中包含CPU、内存、磁盘和网络的相关诊断信息以及相应的建议。
 ---
 
-# System Health Reporter
+# 系统健康报告工具
 
-Comprehensive system health check with severity scoring and actionable recommendations.
+提供全面的系统健康检查，包括严重性评分和可操作的改进建议。
 
-## Requirements
+## 系统要求
 
-- Linux (Ubuntu, Debian, RHEL, Arch)
-- Standard tools: `ps`, `top`, `free`, `df`, `uptime`, `systemctl`
-- No root required for basic checks (some details need sudo)
+- Linux 发行版：Ubuntu、Debian、RHEL、Arch
+- 必需安装的标准工具：`ps`、`top`、`free`、`df`、`uptime`、`systemctl`
+- 基本检查无需 root 权限（部分操作可能需要 sudo）
 
-## Instructions
+## 使用说明
 
-### Step 1: Collect metrics
+### 第一步：收集系统指标数据
 
 ```bash
 uname -a && uptime                                    # System info
@@ -30,17 +30,17 @@ ps aux --sort=-%cpu | head -6                         # Top CPU
 last -5 2>/dev/null && who                            # Login activity
 ```
 
-### Step 2: Score each area
+### 第二步：对各个系统指标进行评分
 
-| Area | 🟢 Healthy | 🟡 Warning | 🔴 Critical |
-|------|-----------|------------|-------------|
-| CPU Load | < 0.8 × cores | 0.8–1.5 × cores | > 1.5 × cores |
-| Memory | < 80% | 80–95% | > 95% |
-| Disk | < 80% | 80–95% | > 95% |
-| Services | 0 failed | 1–3 failed | > 3 failed |
-| Zombies | 0 | 1+ | N/A |
+| 指标 | 健康 | 警告 | 危急 |
+|------|-------|--------|--------|
+| CPU 使用率 | < 0.8 × 核心数 | 0.8–1.5 × 核心数 | > 1.5 × 核心数 |
+| 内存使用率 | < 80% | 80–95% | > 95% |
+| 磁盘空间使用率 | < 80% | 80–95% | > 95% |
+| 服务运行状态 | 失败的服务数量 | 1–3 个失败的服务 | > 3 个失败的服务 |
+| “僵尸进程”（非正常运行的进程） | 0 个 | 1 个及以上 | 无 |
 
-### Step 3: Generate report
+### 第三步：生成报告
 
 ```
 ## 🏥 System Health Report
@@ -65,19 +65,19 @@ last -5 2>/dev/null && who                            # Login activity
 - **CPU**: ffmpeg (45%), node (12%)
 ```
 
-### Step 4: Save (optional)
+### 第四步：保存报告（可选）
 
-Save to `~/system-health-reports/YYYY-MM-DD_HH-MM.md` if requested.
+如需要，可将报告保存到 `~/system-health-reports/YYYY-MM-DD_HH-MM.md` 文件中。
 
-## Edge Cases
+## 特殊情况处理
 
-- **Container/VM**: Some metrics may be limited. `/proc/cpuinfo` may show host CPU count.
-- **No systemctl**: Skip service checks on non-systemd systems. Use `service --status-all` as fallback.
-- **macOS**: Use `vm_stat`, `sysctl`, `diskutil` instead of Linux commands.
-- **Minimal install**: If `ss` missing, use `netstat -tlnp`.
+- **容器/虚拟机环境**：部分系统指标可能无法完整获取。此时 `/proc/cpuinfo` 可能会显示宿主机的 CPU 数量。
+- **非 systemd 系统**：跳过基于 `systemctl` 的服务检查，改用 `service --status-all` 命令。
+- **macOS**：请使用 `vm_stat`、`sysctl`、`diskutil` 替代 Linux 命令。
+- **系统安装简化的情况**：如果缺少 `ss` 命令，可使用 `netstat -tlnp` 代替。
 
-## Security
+## 安全注意事项
 
-- All commands are read-only — no system modifications.
-- Login activity (`last`, `who`) may reveal usernames — consider audience before sharing.
-- Don't include full process arguments in reports (may contain secrets).
+- 所有命令均为只读操作，不会对系统进行任何修改。
+- 登录记录（`last`、`who`）可能包含用户名，请在分享报告前确认目标受众。
+- 报告中不要包含进程的完整参数（这些参数可能包含敏感信息）。

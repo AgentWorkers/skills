@@ -1,56 +1,56 @@
 ---
 name: receipt-subscription-cleaner
-description: Identify recurring charges and subscriptions from receipts or email exports, and produce a clean summary with renewal dates, price changes, and cancellation drafts. Use when a user wants to audit spending without initiating payments or cancellations.
+description: 从收据或电子邮件导出的数据中识别出重复出现的费用和订阅项，并生成一份清晰的汇总报告，其中包含续订日期、价格变动以及取消操作的详细信息。该报告适用于用户需要在不进行支付或取消操作的情况下审核自身支出情况时使用。
 ---
 
-# Receipt and Subscription Cleaner
+# 收据与订阅管理工具
 
-## Goal
-Extract and normalize receipts to detect subscriptions, renewal cycles, and potential savings opportunities.
+## 目标
+提取并整理收据信息，以检测用户的订阅情况、续费周期以及潜在的节省机会。
 
-## Best fit
-- Use when the user provides email exports, receipts, or billing PDFs.
-- Use when the user wants a recurring charge audit and renewal calendar.
-- Use when the user wants draft cancellation emails or scripts.
+## 适用场景
+- 当用户提供电子邮件导出文件、收据或账单PDF时使用。
+- 当用户需要查看重复收费记录或续费日历时使用。
+- 当用户需要生成取消订阅的邮件模板或脚本时使用。
 
-## Not fit
-- Avoid when the user asks to cancel, refund, or dispute charges automatically.
-- Avoid when the user requests access to payment methods or bank logins.
-- Avoid when receipts are not available and the user cannot export data.
+## 不适用场景
+- 当用户要求自动取消订阅、退款或处理费用争议时，请勿使用该工具。
+- 当用户请求访问支付方式或银行账户信息时，请勿使用该工具。
+- 当用户无法提供收据或无法导出数据时，请勿使用该工具。
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速入门指南
+- 请参阅 `references/overview.md` 以了解工作流程和质量标准。
+- 请参阅 `references/auth.md` 以了解访问权限和令牌处理方式。
+- 请参阅 `references/endpoints.md` 以了解可选的集成功能和模板。
+- 请参阅 `references/webhooks.md` 以了解异步事件处理方式。
+- 请参阅 `references/ux.md` 以了解数据输入格式和输出格式。
+- 请参阅 `references/troubleshooting.md` 以了解常见问题及其解决方法。
+- 请参阅 `references/safety.md` 以了解安全性和隐私保护措施。
 
-## Required inputs
-- Receipt sources (email export, PDF folder, or CSV list).
-- Time window and base currency.
-- Known subscriptions or vendors to prioritize.
-- User preferences for reminders (frequency, timezone).
+## 必需输入
+- 收据来源（电子邮件导出文件、PDF文件夹或CSV列表）。
+- 时间范围和基础货币。
+- 需要优先处理的订阅信息或供应商。
+- 用户设置的提醒偏好（频率、时区）。
 
-## Expected output
-- Subscription table with vendor, amount, cycle, and next renewal estimate.
-- Anomaly list (price changes, overlapping subscriptions).
-- Draft cancellation email templates (not sent).
-- Reminder schedule recommendations.
+## 预期输出
+- 包含供应商名称、费用金额、订阅周期以及下次续费预估时间的订阅列表。
+- 异常情况列表（如价格变动、重复订阅等情况）。
+- 可用于生成取消订阅邮件的模板（不会实际发送）。
+- 提供的提醒计划建议。
 
-## Operational notes
-- Normalize vendor names before clustering.
-- Mark confidence levels for each detected subscription.
-- Keep all actions read-only; produce drafts only.
+## 操作说明
+- 在数据聚类之前，先对供应商名称进行标准化处理。
+- 为每个检测到的订阅记录标注信任等级。
+- 所有操作均为只读模式，仅生成提醒模板，不执行实际操作。
 
-## Security notes
-- Do not store raw receipts outside the user workspace.
-- Redact card numbers and addresses in outputs.
+## 安全注意事项
+- 请勿将原始收据存储在用户的工作空间之外。
+- 在输出结果中隐藏卡号和地址等敏感信息。
 
-## Safe mode
-- Analyze and summarize receipts only.
-- Generate draft reminders and cancellation messages without sending.
+## 安全模式
+- 仅负责分析并汇总收据信息。
+- 生成取消订阅的提醒模板或通知，但不会实际发送。
 
-## Sensitive ops
-- Canceling subscriptions, disputing charges, or initiating payments is out of scope.
+## 特殊操作说明
+- 取消订阅、处理费用争议或发起支付操作不在本工具的适用范围内。

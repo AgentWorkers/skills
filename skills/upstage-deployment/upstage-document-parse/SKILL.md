@@ -1,34 +1,34 @@
 ---
 name: upstage-document-parse
-description: Parse documents (PDF, images, DOCX, PPTX, XLSX, HWP) using Upstage Document Parse API. Extracts text, tables, figures, and layout elements with bounding boxes. Use when user asks to parse, extract, or analyze document content, convert documents to markdown/HTML, or extract structured data from PDFs and images.
+description: 使用 Upstage Document Parse API 解析文档（PDF、图片、DOCX、PPTX、XLSX、HWP 格式）。该 API 可提取文本、表格、图表以及带有边界框的布局元素。适用于用户需要解析文档内容、提取数据、分析文档结构、将文档转换为 Markdown/HTML 格式，或从 PDF 和图片中提取结构化数据的情况。
 homepage: https://console.upstage.ai/api/document-digitization/document-parsing
 metadata: {"openclaw":{"emoji":"📑","requires":{"bins":["curl"],"env":["UPSTAGE_API_KEY"]},"primaryEnv":"UPSTAGE_API_KEY"}}
 ---
 
-# Upstage Document Parse
+# Upstage 文档解析
 
-Extract structured content from documents using Upstage's Document Parse API.
+使用 Upstage 的文档解析 API 从文档中提取结构化内容。
 
-## Supported Formats
+## 支持的格式
 
-PDF (up to 1000 pages with async), PNG, JPG, JPEG, TIFF, BMP, GIF, WEBP, DOCX, PPTX, XLSX, HWP
+PDF（最多 1000 页，支持异步处理）、PNG、JPG、JPEG、TIFF、BMP、GIF、WEBP、DOCX、PPTX、XLSX、HWP
 
-## Installation
+## 安装
 
 ```bash
 openclaw install upstage-document-parse
 ```
 
-## API Key Setup
+## API 密钥设置
 
-1. Get your API key from [Upstage Console](https://console.upstage.ai)
-2. Configure the API key:
+1. 从 [Upstage 控制台](https://console.upstage.ai) 获取您的 API 密钥。
+2. 配置 API 密钥：
 
 ```bash
 openclaw config set skills.entries.upstage-document-parse.apiKey "your-api-key"
 ```
 
-Or add to `~/.openclaw/openclaw.json`:
+或者将其添加到 `~/.openclaw/openclaw.json` 文件中：
 
 ```json5
 {
@@ -42,9 +42,9 @@ Or add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-## Usage Examples
+## 使用示例
 
-Just ask the agent to parse your document:
+只需请求代理解析您的文档即可：
 
 ```
 "Parse this PDF: ~/Documents/report.pdf"
@@ -53,25 +53,25 @@ Just ask the agent to parse your document:
 
 ---
 
-## Sync API (Small Documents)
+## 同步 API（适用于小型文档）
 
-For small documents (recommended < 20 pages).
+适用于小型文档（建议页面数少于 20 页）。
 
-### Parameters
+### 参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `model` | string | required | Use `document-parse` (latest) or `document-parse-nightly` |
-| `document` | file | required | Document file to parse |
-| `mode` | string | `standard` | `standard` (text-focused), `enhanced` (complex tables/images), `auto` |
-| `ocr` | string | `auto` | `auto` (images only) or `force` (always OCR) |
-| `output_formats` | string | `['html']` | `text`, `html`, `markdown` (array format) |
-| `coordinates` | boolean | `true` | Include bounding box coordinates |
-| `base64_encoding` | string | `[]` | Elements to base64: `["table"]`, `["figure"]`, etc. |
-| `chart_recognition` | boolean | `true` | Convert charts to tables (Beta) |
-| `merge_multipage_tables` | boolean | `false` | Merge tables across pages (Beta, max 20 pages if true) |
+| `model` | string | 必需 | 使用 `document-parse`（最新版本）或 `document-parse-nightly` |
+| `document` | file | 必需 | 需要解析的文档文件 |
+| `mode` | string | `standard` | 标准模式（以文本为主）；`enhanced`（包含复杂的表格/图片）；`auto` |
+| `ocr` | string | `auto` | 自动执行 OCR（仅针对图片）；`force`（始终执行 OCR） |
+| `output_formats` | string | `['html']` | 输出格式：`text`、`html`、`markdown`（数组格式） |
+| `coordinates` | boolean | `true` | 是否包含元素的边界框坐标 |
+| `base64_encoding` | string | `[]` | 需要转换为 Base64 的元素：`["table"]`、`["figure"]` 等 |
+| `chart_recognition` | boolean | `true` | 将图表转换为表格（测试版） |
+| `merge_multipage_tables` | boolean | `false` | 是否合并跨页的表格（测试版，启用时最多合并 20 页的表格） |
 
-### Basic Parsing
+### 基本解析
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization" \
@@ -80,7 +80,7 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
   -F "model=document-parse"
 ```
 
-### Extract Markdown
+### 提取 Markdown 格式内容
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization" \
@@ -90,7 +90,7 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
   -F "output_formats=['markdown']"
 ```
 
-### Enhanced Mode for Complex Documents
+### 复杂文档的增强模式
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization" \
@@ -101,7 +101,7 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
   -F "output_formats=['html', 'markdown']"
 ```
 
-### Force OCR for Scanned Documents
+### 对扫描文档强制执行 OCR
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization" \
@@ -111,7 +111,7 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
   -F "ocr=force"
 ```
 
-### Extract Table Images as Base64
+### 将表格图像提取为 Base64 格式
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization" \
@@ -123,7 +123,7 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
 
 ---
 
-## Response Structure
+## 响应结构
 
 ```json
 {
@@ -147,17 +147,17 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization" \
 }
 ```
 
-### Element Categories
+### 元素类别
 
-`paragraph`, `heading1`, `heading2`, `heading3`, `list`, `table`, `figure`, `chart`, `equation`, `caption`, `header`, `footer`, `index`, `footnote`
+`paragraph`（段落）、`heading1`（标题 1）、`heading2`（标题 2）、`heading3`（标题 3）、`list`（列表）、`table`（表格）、`figure`（图表）、`chart`（图表）、`equation`（公式）、`caption`（图例）、`header`（页眉）、`footer`（页脚）、`index`（索引）、`footnote`（脚注）
 
 ---
 
-## Async API (Large Documents)
+## 异步 API（适用于大型文档）
 
-For documents up to 1000 pages. Documents are processed in batches of 10 pages.
+适用于超过 1000 页的文档。文档会以每 10 页为一批进行处理。
 
-### Submit Request
+### 提交请求
 
 ```bash
 curl -X POST "https://api.upstage.ai/v1/document-digitization/async" \
@@ -167,43 +167,43 @@ curl -X POST "https://api.upstage.ai/v1/document-digitization/async" \
   -F "output_formats=['markdown']"
 ```
 
-Response:
+响应：
 ```json
 {"request_id": "uuid-here"}
 ```
 
-### Check Status & Get Results
+### 检查状态并获取结果
 
 ```bash
 curl "https://api.upstage.ai/v1/document-digitization/requests/{request_id}" \
   -H "Authorization: Bearer $UPSTAGE_API_KEY"
 ```
 
-Response includes `download_url` for each batch (available for 30 days).
+响应中包含每个批处理的 `download_url`（有效期为 30 天）。
 
-### List All Requests
+### 列出所有请求
 
 ```bash
 curl "https://api.upstage.ai/v1/document-digitization/requests" \
   -H "Authorization: Bearer $UPSTAGE_API_KEY"
 ```
 
-### Status Values
+### 状态值
 
-- `submitted`: Request received
-- `started`: Processing in progress
-- `completed`: Ready for download
-- `failed`: Error occurred (check `failure_message`)
+- `submitted`：请求已接收
+- `started`：处理中
+- `completed`：处理完成，可下载
+- `failed`：发生错误（请查看 `failure_message`）
 
-### Notes
+### 注意事项
 
-- Results stored for 30 days
-- Download URLs expire after 15 minutes (re-fetch status to get new URLs)
-- Documents split into batches of up to 10 pages
+- 结果会保存 30 天
+- 下载链接在 15 分钟后失效（需要重新请求以获取新的链接）
+- 文档会被分割成每 10 页的批次进行处理
 
 ---
 
-## Python Usage
+## Python 使用示例
 
 ```python
 import requests
@@ -242,7 +242,7 @@ while True:
     time.sleep(5)
 ```
 
-## LangChain Integration
+## 与 LangChain 的集成
 
 ```python
 from langchain_upstage import UpstageDocumentParseLoader
@@ -257,9 +257,9 @@ docs = loader.load()
 
 ---
 
-## Environment Variable (Alternative)
+## 环境变量（另一种设置方式）
 
-You can also set the API key as an environment variable:
+您也可以将 API 密钥设置为环境变量：
 
 ```bash
 export UPSTAGE_API_KEY="your-api-key"
@@ -267,13 +267,13 @@ export UPSTAGE_API_KEY="your-api-key"
 
 ---
 
-## Tips
+## 提示
 
-- Use `mode=enhanced` for complex tables, charts, images
-- Use `mode=auto` to let API decide per page
-- Use async API for documents > 20 pages
-- Use `ocr=force` for scanned PDFs or images
-- `merge_multipage_tables=true` combines split tables (max 20 pages with enhanced mode)
-- Results from async API available for 30 days
-- Server-side timeout: 5 minutes per request (sync API)
-- Standard documents process in ~3 seconds
+- 对于包含复杂表格、图表或图片的文档，请使用 `mode=enhanced`。
+- 使用 `mode=auto` 时，API 会根据页面内容自动选择合适的处理方式。
+- 对于超过 20 页的文档，请使用异步 API。
+- 对于扫描的 PDF 或图片文件，请使用 `ocr=force`。
+- 使用 `merge_multipage_tables=true` 可以合并跨页的表格（在增强模式下最多合并 20 页的表格）。
+- 异步 API 的结果会保存 30 天。
+- 同步 API 的服务器端超时时间为每请求 5 分钟。
+- 标准文档的处理时间约为 3 秒。

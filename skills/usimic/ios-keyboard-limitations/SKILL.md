@@ -1,153 +1,141 @@
 ---
 name: ios-keyboard-limitations
-description: iOS keyboard extension technical limitations and workarounds. Use when planning or building iOS custom keyboards with voice/audio features, dictation, or system integration needs. Covers memory limits, sandbox restrictions, microphone access, app launching, and viable alternative architectures.
+description: iOS键盘扩展的技术限制及解决方法。在规划或开发具有语音/音频功能、语音输入功能或系统集成需求的iOS自定义键盘时，请参考本文档。内容涵盖内存限制、沙箱环境限制、麦克风使用权限、应用程序启动方式以及可行的替代架构方案。
 ---
 
-# iOS Keyboard Extension Limitations
+# iOS键盘扩展的局限性
 
-When building iOS custom keyboards with voice/audio features, these are the hard limitations discovered through the PolyVoice project.
+在开发具有语音/音频功能的iOS自定义键盘时，通过PolyVoice项目发现了以下一些重要的局限性。
 
-## 🔴 Hard Limitations (Cannot be worked around)
+## 🔴 无法绕过的硬性限制
 
-### 1. Microphone Access — DISALLOWED
-**Keyboard extensions cannot access the microphone.**
+### 1. **麦克风访问权限** — **被禁止**
+**键盘扩展无法访问麦克风**：
+- 使用`AVAudioRecorder`时会遇到权限错误
+- `SFSpeechRecognizer`无法使用
+- 无法从键盘上下文调用Siri
 
-- `AVAudioRecorder` will fail with permission error
-- `SFSpeechRecognizer` is unavailable
-- No Siri integration from keyboard context
+**原因：**苹果的安全模型规定：键盘运行在沙箱环境中，可能会记录音频。
 
-**Why:** Apple security model — keyboards run in sandbox and could keylog audio.
+### 2. **打开其他应用程序** — **被阻止**
+**键盘无法通过编程方式打开主应用程序或其他任何应用程序**：
+- `UIApplication.shared.open()`会返回`false`
+- URL方案（如`myapp://`）无法使用
+- `ExtensionContext.open()`也不可用
 
-### 2. Open Other Apps — BLOCKED
-**Keyboards cannot programmatically open the main app or any other app.**
+**原因：**这是为了防止恶意键盘在用户未同意的情况下启动应用程序。
 
-- `UIApplication.shared.open()` returns false
-- URL schemes don't work (`myapp://`)
-- ` ExtensionContext.open()` not available
+### 3. **内存限制** — 约50MB
+**键盘扩展的内存使用受到严格限制（通常为30-60MB）**：
+- 如果超出内存限制，应用程序会无声地终止
+- 无法生成崩溃日志，只会直接消失
+- 进行复杂的音频处理会导致应用程序立即崩溃
 
-**Why:** Prevents malicious keyboards from launching apps without user consent.
+**缓解措施：**
+- 以16kHz单声道格式进行录音（而非44.1kHz）
+- 最大使用32kbps的比特率
+- 录音完成后立即清理文件
+- 录音时间最长为60秒
 
-### 3. Memory Limit — ~50MB
-**Keyboard extensions have strict memory limits (~30-60MB).**
+### 4. **没有持久化存储空间**
+**无法使用`UserDefaults`，只能使用App Groups（应用组）**：
+- 标准的`UserDefaults`无法保存数据
+- 必须使用`UserDefaults(suiteName: "group.com.company.app")`
+- 两个目标平台（iOS和macOS）都必须支持App Groups功能
 
-- App terminated silently if exceeded
-- No crash log, just disappears
-- Heavy audio processing = instant death
+### 5. **网络请求需要“完全访问权限”**
+**如果没有用户在设置中启用“允许完全访问”，API调用会失败**：
+- 用户需要明确在设置中启用该权限：设置 → 通用 → 键盘 → [键盘名称] → 允许完全访问
+- 大多数用户不会主动这样做
+- 无法通过键盘用户界面有效地提示或解释这个步骤
 
-**Mitigation:**
-- Record at 16kHz mono (not 44.1kHz)
-- Use 32kbps bitrate max
-- Immediate file cleanup after processing
-- 60-second max recording hard limit
+## 🟡 部分解决方法（但会增加用户操作难度）
 
-### 4. No Persistent Storage
-**UserDefaults unavailable, only App Groups.**
+### **“打开应用程序”的解决方法**
+**目标：**让用户通过点击按钮来打开主应用程序进行录音。
 
-- Standard `UserDefaults` doesn't persist
-- Must use `UserDefaults(suiteName: "group.com.company.app")`
-- Requires App Group capability in both targets
-
-### 5. Network Requires "Full Access"
-**API calls fail without user enabling "Allow Full Access" in Settings.**
-
-- User must explicitly enable: Settings → General → Keyboard → [Keyboard Name] → Allow Full Access
-- Most users won't do this
-- Cannot prompt or explain from keyboard UI effectively
-
-## 🟡 Partial Workarounds (User friction)
-
-### The "Open App" Workaround
-**Goal:** Let user tap a button to open main app for recording.
-
-**Attempt:**
+**尝试：**
 ```swift
 // This does NOT work
 extensionContext?.open(URL(string: "myapp://record")!)
 ```
 
-**Reality:** Must use `UIApplication.shared.open()` outside extension context, but keyboards can't call this.
+**实际问题：**虽然可以在扩展之外调用`UIApplication.shared.open()`，但键盘本身无法直接执行这个操作。
 
-### The Manual Switch Pattern
-**What actually works (with friction):**
+### **手动切换模式**
+**实际可行的方法（但操作较为繁琐）：**
+1. **用户点击键盘上的按钮** → 显示提示：“是否要打开PolyVoice进行录音？”
+2. **用户手动切换到主应用程序**（通过Home键、滑动等方式）
+3. **主应用程序检测到活动会话**（通过App Groups或共享状态）
+4. **主应用程序开始自动录音**
+5. **录音2秒后自动停止**
+6. **录音内容自动复制到剪贴板**
+7. **用户手动切换回目标应用程序**
+8. **目标应用程序重新出现时，录音内容会自动粘贴**
 
-1. **User taps button in keyboard** → Shows alert: "Open PolyVoice to record?"
-2. **User manually switches to main app** (Home button, swipe, etc.)
-3. **Main app detects active session** (via App Groups / shared state)
-4. **Main app auto-records** on appear
-5. **Auto-stops on silence** (2 seconds)
-6. **Auto-copies** to clipboard
-7. **User manually switches back** to target app
-8. **Keyboard auto-pastes** on reappear
-
-**User flow:**
+**用户操作流程：**
 ```
 Keyboard → Tap mic → [Manual: Switch to app] → App auto-records → 
 [Manual: Switch back] → Keyboard auto-pastes
 ```
 
-**Friction points:**
-- Two manual app switches
-- Context switching breaks flow
-- Users forget to return
-- Clipboard may be overwritten
+**操作难点：**
+- 需要用户手动进行两次应用程序切换
+- 切换上下文会打断操作流程
+- 用户可能会忘记返回到原始应用程序
+- 剪贴板的内容可能会被覆盖
 
-## 🟢 Alternative Architectures
+## 🟢 替代架构
 
-### Option 1: Share Extension (Better for Audio)
-**Use Share Sheet instead of keyboard.**
+### **选项1：使用分享扩展**（更适合音频功能）**
+**使用分享面板而不是键盘**：
+- 可以使用应用程序的所有功能
+- 可以录制音频
+- 可以处理并返回文本
 
-- Full app capabilities
-- Can record audio
-- Can process and return text
+**限制：**这不是一个真正的键盘，用户需要针对每个文本字段单独打开分享面板。
 
-**Limitation:** Not a keyboard — user must open share sheet per text field.
+### **选项2：仅使用完整的应用程序**
+**不使用键盘扩展，直接使用主应用程序**：
+- 用户打开应用程序
+- 进行语音输入
+- 复制输入内容
+- 切换回目标应用程序
+- 手动粘贴内容
 
-### Option 2: Full App Mode
-**Don't use keyboard extension — use main app only.**
+**优点：**没有内存限制，可以完全访问麦克风，可靠性较高。
+**缺点：**操作步骤比使用键盘更繁琐。
 
-- User opens app
-- Records dictation
-- Copies result
-- Switches to target app
-- Pastes manually
+### **选项3：集成Siri快捷指令**
+**提供Siri语音转文本的快捷指令**：
+- 例如：“嘿Siri，用PolyVoice进行语音输入”
+- 将转录结果返回到当前应用程序
+- 完全得到苹果官方的支持
 
-**Benefit:** No memory limits, full mic access, reliable.  
-**Cost:** More friction than keyboard.
+**限制：**转换过程不是即时的，需要先设置Siri快捷指令。
 
-### Option 3: Siri Shortcuts Integration
-**Provide Siri Shortcuts for voice-to-text.**
+## 📊 决策矩阵
 
-- "Hey Siri, dictate with PolyVoice"
-- Returns text to current app
-- Fully supported by Apple
-
-**Limitation:** Not instant, requires Siri setup.
-
-## 📊 Decision Matrix
-
-| Approach | Mic Access | Memory | User Friction | Apple Approved |
+| 方法 | 麦克风访问权限 | 内存限制 | 用户操作难度 | 是否获得苹果官方认可 |
 |----------|-----------|---------|---------------|----------------|
-| Keyboard extension | ❌ No | ⚠️ 50MB | Low (if no audio) | ✅ Yes |
-| Keyboard + audio workaround | ❌ No | ⚠️ 50MB | 🔴 High | ✅ Yes |
-| Share extension | ✅ Yes | ✅ Full | 🟡 Medium | ✅ Yes |
-| Full app only | ✅ Yes | ✅ Full | 🟡 Medium | ✅ Yes |
-| Siri Shortcuts | ✅ Yes | ✅ Full | 🟡 Medium | ✅ Yes |
+| 键盘扩展 | ❌ 否 | ⚠️ 50MB | 低（无音频使用时） | ✅ 是 |
+| 键盘 + 音频解决方案 | ❌ 否 | ⚠️ 50MB | 🔴 高 | ✅ 是 |
+| 使用分享扩展 | ✅ 是 | ✅ 全功能 | 🟡 中等 | ✅ 是 |
+| 仅使用完整应用程序 | ✅ 是 | ✅ 全功能 | 🟡 中等 | ✅ 是 |
+| Siri快捷指令 | ✅ 是 | ✅ 全功能 | 🟡 中等 | ✅ 是 |
 
-## 🎯 Recommendation
+## 🎯 建议
 
-**For voice dictation/AI transcription:**
+**对于语音输入/人工智能转录：**
+1. **不建议开发键盘扩展** — 因为存在诸多限制，使用起来非常不便。
+2. **建议使用分享扩展** — 这是苹果官方支持的方法，功能齐全。
+3. **或者直接使用完整的应用程序** — 最简单且最可靠。
+4. **为高级用户提供Siri快捷指令** — 可以提高输入效率。
 
-1. **Don't build a keyboard extension** — the limitations make it frustrating
-2. **Use Share Extension** — Apple-supported, full capabilities
-3. **Or full app** — simplest to build, most reliable
-4. **Add Shortcuts** — for power users who want speed
+**对于非音频功能的键盘（如表情符号、翻译等）：**
+键盘扩展仍然是一个很好的选择。只需避免使用音频相关功能即可。
 
-**For non-audio keyboards (emoji, translation, etc.):**
-
-Keyboard extension works great. Just avoid audio features.
-
-## 📚 References
-
-- Apple's official docs: https://developer.apple.com/documentation/uikit/keyboards_and_input/creating_a_custom_keyboard
-- Custom Keyboard Programming Guide (WWDC sessions)
-- PolyVoice project learnings (~/Projects/polyvoice-keyboard/)
+## 📚 参考资料**
+- 苹果官方文档：https://developer.apple.com/documentation/uikit/keyboards_and_input/creating_a_custom_keyboard
+- 自定义键盘编程指南（WWDC演讲内容）
+- PolyVoice项目的相关资料（~/Projects/polyvoice-keyboard/）

@@ -1,53 +1,53 @@
 ---
 name: Arduino
-description: Develop Arduino projects avoiding common wiring, power, and code pitfalls.
+description: 开发 Arduino 项目时，请避免常见的接线、电源和代码方面的陷阱。
 metadata: {"clawdbot":{"emoji":"🔌","os":["linux","darwin","win32"]}}
 ---
 
-## Voltage and Power Traps
-- 3.3V vs 5V logic mixing damages boards — ESP32 is 3.3V, Uno is 5V, level shifter required
-- USB provides max 500mA — not enough for motors, servos, or many LEDs
-- Never power motors from Arduino 5V pin — use external supply with common ground
-- Brown-out causes random resets — looks like code bugs, actually insufficient power
-- Decoupling capacitors (0.1µF) near sensor power pins — reduces noise-related glitches
+## 电压和功耗问题  
+- 混合使用3.3V和5V逻辑信号会损坏电路板：ESP32使用3.3V电压，Uno使用5V电压，因此需要使用电平转换器。  
+- USB接口的最大输出电流为500mA，不足以驱动电机、伺服电机或大量LED灯。  
+- 绝不要直接从Arduino的5V引脚为电机供电，应使用外部电源，并确保地线连接正确。  
+- 电压不足（“brown-out”现象）会导致设备随机重启，这看似是代码错误，实际上是电源问题。  
+- 在传感器电源引脚附近安装0.1µF的电容可以减少由噪声引起的故障。  
 
-## Wiring Mistakes
-- Floating inputs read random values — always use pullup or pulldown resistor
-- All components must share common ground — separate grounds = nothing works
-- Long wires pick up noise — keep analog sensor wires short
-- LEDs need current limiting resistors — direct connection burns LED and pin
-- Reversed polarity destroys components — double-check before powering on
+## 接线错误  
+- 漂浮状态的输入引脚会输出随机值，必须使用上拉或下拉电阻来稳定其电平。  
+- 所有组件必须共享同一个地线；如果地线不连通，设备将无法正常工作。  
+- 过长的导线容易引入噪声，应尽量缩短模拟传感器的连线长度。  
+- LED灯需要电流限制电阻，否则直接连接会导致LED损坏或引脚烧毁。  
+- 连接极性错误会损坏组件，请在通电前仔细检查。  
 
-## Pin Conflicts
-- RX/TX pins (0, 1) conflict with Serial — avoid for GPIO when using Serial Monitor
-- Some pins have special functions — check board pinout for I2C, SPI, interrupt-capable pins
-- PWM only on pins marked with ~ — `analogWrite()` on wrong pin does nothing
-- Internal pullup available — `INPUT_PULLUP` eliminates external resistor for buttons
+## 引脚冲突  
+- RX/TX引脚（0、1）与串行通信端口冲突，在使用串行监视器时请避免将这些引脚用于GPIO。  
+- 某些引脚具有特殊功能（如I2C、SPI或中断功能），请查阅电路板的引脚配置表。  
+- PWM信号只能在标有“~”符号的引脚上使用；在错误的引脚上使用`analogWrite()`函数将不会产生效果。  
+- 某些引脚内置了上拉电阻，使用`INPUT_PULLUP`宏可以省去外部电阻。  
 
-## Timing Traps
-- `delay()` blocks everything — nothing else runs, no input reading, no interrupts serviced
-- `millis()` for non-blocking timing — compare against last action time
-- `millis()` overflows after ~50 days — use subtraction: `millis() - lastTime >= interval`
-- Interrupts for time-critical events — `attachInterrupt()` responds immediately
+## 定时问题  
+- `delay()`函数会阻塞程序执行，导致其他操作无法进行（如读取输入数据或处理中断）。  
+- 使用`millis()`函数进行非阻塞定时时，应将其结果与上次执行时间进行比较。  
+- `millis()`函数的计数周期约为50天，长时间使用后可能会出现溢出现象，此时应使用`millis() - lastTime >= interval`的方式进行计算。  
+- 对于时间敏感的事件，应使用`attachInterrupt()`函数来处理中断。  
 
-## Memory Constraints
-- Uno has only 2KB RAM — large arrays fail silently with weird behavior
-- `F()` macro keeps strings in flash — `Serial.println(F("text"))` saves RAM
-- `PROGMEM` for constant arrays — keeps data out of RAM
-- String class fragments heap — prefer char arrays for stability
+## 内存限制  
+- Uno的RAM只有2KB，如果使用大型数组，程序可能会因内存不足而出现异常行为。  
+- `F()`宏可以将字符串存储在闪存中，从而节省RAM空间。  
+- 使用`PROGMEM`区域来存储常量数组，避免占用RAM。  
+- 字符串对象会占用堆内存，为保证稳定性建议使用字符数组。  
 
-## Serial Debugging
-- Baud rate must match — mismatch shows garbage, not an obvious error
-- `Serial.begin()` required in setup — output before this goes nowhere
-- Serial printing slows execution — remove or reduce for production code
+## 串行调试  
+- 串行通信的波特率必须匹配，否则输出数据可能无法正确显示（出现乱码）。  
+- 在程序开始前必须调用`Serial.begin()`来初始化串行通信。  
+- 串行打印操作会降低程序执行效率，在生产代码中应尽量减少串行输出。  
 
-## Upload Problems
-- Wrong board selected — uploads but doesn't run correctly
-- Serial Monitor holds port — close before uploading
-- USB cable might be power-only — some cheap cables don't carry data
-- Bootloader corrupted — reflash using another Arduino as ISP
+## 上传问题  
+- 选择错误的开发板可能导致程序无法正常运行。  
+- 使用串行监视器时，请确保端口未被其他程序占用；上传前请关闭串行监视器。  
+- 有些便宜的USB数据线仅支持供电，不支持数据传输。  
+- 如果引导加载程序损坏，可以使用另一台Arduino作为ISP（In-Circuit Programmer）重新刷新程序。  
 
-## Sensor Communication
-- I2C devices share bus — check for address conflicts with scanner sketch
-- 5V sensors on 3.3V boards give wrong readings or damage — check operating voltage
-- SPI needs separate CS per device — can't share chip select lines
+## 传感器通信问题  
+- I2C设备共享同一总线，使用前请检查地址冲突。  
+- 5V电压的传感器连接到3.3V电压的电路板上可能会导致读数错误或设备损坏，请确保使用正确的电压。  
+- SPI接口需要为每个设备单独配置片选引脚，不能共享片选线。

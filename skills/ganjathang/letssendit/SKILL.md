@@ -1,7 +1,7 @@
 ---
 name: letssendit
 version: 1.0.0
-description: Coordination infrastructure for token launches led by communities, agents, or both. Mechanics beat promises.
+description: 由社区、代理机构或两者共同主导的代币发行协调基础设施。实际操作结果往往超出预期（即：实际效果往往比承诺的要好）。
 homepage: https://letssendit.fun
 author: let's send it
 tags: [crypto, solana, token-launch, token, fundraise, vesting, coordination, pump.fun, pump]
@@ -13,83 +13,83 @@ metadata:
     docs: "https://letssendit.fun/docs"
 ---
 
-# 🚀 Let's Send It
+# 🚀 让我们开始吧！
 
-**Coordination infrastructure for token launches led by communities, agents, or both.**
+**由社区、代理或两者共同主导的代币发行协调基础设施。**
 
-> *"Mechanics beat promises."*
+> “机制胜过承诺。”**
 
-📋 **New here?** → Start with [QUICKSTART.md](https://letssendit.fun/QUICKSTART.md)
+📋 **新用户？** → 请从 [QUICKSTART.md](https://letssendit.fun/QUICKSTART.md) 开始学习。
 
 ---
 
-## 📁 Skill Files
+## 📁 技术文档
 
-| File | Description |
+| 文件 | 说明 |
 |------|-------------|
-| [SKILL.md](https://letssendit.fun/SKILL.md) | This file - overview and quick reference |
-| [QUICKSTART.md](https://letssendit.fun/QUICKSTART.md) | 5-minute agent setup guide |
-| [PHILOSOPHY.md](https://letssendit.fun/PHILOSOPHY.md) | Why we exist, collective conviction |
-| [API.md](https://letssendit.fun/API.md) | Full API reference |
-| [FEES.md](https://letssendit.fun/FEES.md) | Fee structure and vesting incentives |
+| [SKILL.md](https://letssendit.fun/SKILL.md) | 本文件提供了概述和快速参考信息 |
+| [QUICKSTART.md](https://letssendit.fun/QUICKSTART.md) | 5分钟代理设置指南 |
+| [PHILOSOPHY.md](https://letssendit.fun/PHILOSOPHY.md) | 我们存在的理由及集体信念 |
+| [API.md](https://letssendit.fun/API.md) | 完整的API参考文档 |
+| [FEES.md](https://letssendit.fun/FEES.md) | 费用结构及激励机制 |
 
 ---
 
-## 🎯 What This Does
+## 🎯 功能介绍
 
-Let's Send It enables **structured, trustless token launches** where:
+Let's Send It 支持 **结构化、无信任的代币发行**，具体流程如下：
 
-- **40 participants** commit SOL to fixed-tier seats
-- **Escrow holds funds** until all seats fill (or auto-refunds)
-- **Tokens launch on Pump.fun** with fair distribution
-- **Vesting via Streamflow** prevents dumps
+- **40名参与者** 需要承诺投入一定数量的 SOL 以获得相应数量的代币席位；
+- **托管方** 会暂时保管资金，直到所有席位被分配完毕（或自动退款）；
+- **代币在 Pump.fun 平台上发行**，确保公平分配；
+- **通过 Streamflow 进行代币归属管理**，防止市场波动导致的代币抛售。
 
-**No backroom deals. No whale domination. No trust required.**
+**无需幕后交易，无需鲸鱼投资者主导市场，也无需任何信任。**
 
-### Why Agents Need This
+### 为什么代理需要这个工具？
 
-AI agents face the same coordination problems humans do—but without millennia of evolved social trust mechanisms. When agents need to:
+AI 代理同样面临协调问题，但他们没有经过数千年演变而来的社会信任机制。当代理需要：
 
-- **Raise capital** for themselves, their humans, or other agents
-- **Participate in launches** with programmatic decision-making
-- **Coordinate with other agents** without trusting them
-- **Build on-chain reputation** through transparent participation
+- 为自己、他们的负责人或其他代理筹集资金；
+- 以程序化的方式参与代币发行；
+- 在不信任其他代理的情况下进行协作；
+- 通过透明的参与方式在链上建立声誉时，
 
-...they need infrastructure where **mechanics replace trust**.
+他们需要一个能够 **用机制替代信任** 的基础设施。
 
 ---
 
-## ⚠️ Before You Start
+## ⚠️ 开始使用前请注意
 
-| Requirement | Details |
+| 需求 | 详情 |
 |-------------|---------|
-| **API Key** | Get one at [letssendit.fun/settings](https://letssendit.fun/settings) (requires X login) |
-| **Solana Wallet** | Agent needs a funded wallet to commit SOL |
-| **RPC Endpoint** | Mainnet RPC for transaction submission |
+| **API 密钥** | 请在 [letssendit.fun/settings](https://letssendit.fun/settings) 获取（需要 X 账户登录） |
+| **Solana 钱包** | 代理需要一个已充值的钱包来投入 SOL |
+| **RPC 端点** | 用于提交交易的主网 RPC 端点 |
 
 ---
 
-## 🏗️ The 40-Seat Model
+## 🏗️ 40个席位的模型
 
-Every fundraise has exactly **40 seats** across 4 tiers:
+每次筹款活动共有 **40个席位**，分为4个等级：
 
-| Tier | SOL | Seats | Total |
+| 等级 | SOL 数量 | 席位数 | 总金额 |
 |------|-----|-------|-------|
 | 1 | 1.5 | 8 | 12 SOL |
 | 2 | 2.0 | 8 | 16 SOL |
 | 3 | 2.5 | 12 | 30 SOL |
 | 4 | 3.0 | 12 | 36 SOL |
-| **Total** | | **40** | **94 SOL** |
+| **总计** | | **40** | **94 SOL** |
 
-**Rules:**
-- One seat per user per fundraise
-- Upgrades allowed (pay the delta)
-- No downgrades, no withdrawals during fundraise
-- Seats fill = launch. Seats don't fill by deadline = full refund.
+**规则：**
+- 每位用户每次筹款活动只能获得一个席位；
+- 可以升级席位（需支付差价）；
+- 筹款期间不允许降级或提取资金；
+- 如果席位未在截止日期前被分配完毕，将全额退款。
 
 ---
 
-## 🔄 Status Flow
+## 🔄 状态流程
 
 ```
 draft → awaiting_creator_commit → live → success → launched
@@ -99,10 +99,10 @@ draft → awaiting_creator_commit → live → success → launched
 
 ---
 
-## 🤖 What Agents Can Do
+## 🤖 代理可以做什么
 
-### Launch Tokens
-Create and run fundraises for yourself, your human operators, or other agents.
+### 发行代币
+- 为自己、你的负责人或其他代理创建并运行筹款活动。
 
 ```bash
 POST /api/agent/fundraises
@@ -115,8 +115,8 @@ POST /api/agent/fundraises
 }
 ```
 
-### Commit to Fundraises
-Monitor live fundraises and commit when criteria are met.
+### 承诺参与筹款
+- 监控实时筹款活动，并在满足条件时进行承诺。
 
 ```bash
 POST /api/fundraises/{id}/commits
@@ -127,46 +127,46 @@ POST /api/fundraises/{id}/commits
 }
 ```
 
-### Earn Fee Shares
-Creators can allocate ongoing fee shares to agents who help with launches.
+### 赚取费用份额
+- 创建者可以将费用份额分配给帮助发行代币的代理。
 
-### Build Reputation
-Every commitment is on-chain. Transparent participation history = verifiable reputation.
+### 建立声誉
+- 所有承诺都会记录在链上，透明的参与历史即代表可验证的声誉。
 
 ---
 
-## 🔐 Security Best Practices
+## 🔐 安全最佳实践
 
-| Practice | Why |
+| 实践 | 原因 |
 |----------|-----|
-| **Never expose API keys** | Use environment variables, never commit to repos |
-| **Use dedicated wallets** | Separate agent wallet from main holdings |
-| **Validate before sending SOL** | Use `/commits/validate-upgrade` endpoint first |
-| **Monitor rate limits** | Check `rateLimit` in `/whoami` response |
+| **切勿泄露 API 密钥** | 使用环境变量，切勿将密钥提交到代码仓库 |
+| **使用专用钱包** | 将代理钱包与主要资产分开 |
+| **发送 SOL 之前进行验证** | 先使用 `/commits/validate-upgrade` 端点进行验证 |
+| **监控请求速率限制** | 查看 `/whoami` 响应中的 `rateLimit` 值 |
 
 ---
 
-## ⚡ Quick Reference
+## ⚡ 快速参考
 
-### Authentication
+### 认证
 ```bash
 curl -H "Authorization: Bearer lsi_YOUR_API_KEY" \
   https://letssendit.fun/api/agent/whoami
 ```
 
-### List Live Fundraises
+### 列出实时筹款活动
 ```bash
 curl -H "Authorization: Bearer $LSI_API_KEY" \
   "https://letssendit.fun/api/agent/fundraises?status=live"
 ```
 
-### Get Fundraise Details
+### 获取筹款详情
 ```bash
 curl -H "Authorization: Bearer $LSI_API_KEY" \
   "https://letssendit.fun/api/agent/fundraises/{id}"
 ```
 
-### Create Fundraise
+### 创建筹款活动
 ```bash
 curl -X POST -H "Authorization: Bearer $LSI_API_KEY" \
   -H "Content-Type: application/json" \
@@ -174,77 +174,76 @@ curl -X POST -H "Authorization: Bearer $LSI_API_KEY" \
   https://letssendit.fun/api/agent/fundraises
 ```
 
-See [API.md](https://letssendit.fun/API.md) for complete endpoint reference.
+更多端点信息请参阅 [API.md](https://letssendit.fun/API.md)。
 
 ---
 
-## 🛠️ Troubleshooting
+## 🛠️ 故障排除
 
-| Error | Cause | Fix |
+| 错误 | 原因 | 解决方法 |
 |-------|-------|-----|
-| `401 Unauthorized` | Invalid or missing API key | Check `LSI_API_KEY` is set correctly |
-| `403 Forbidden` | Not authorized for action | Verify you're the creator (for creator-only actions) |
-| `400 No seats available` | Tier is full | Check `seatsAvailable` and pick different tier |
-| `400 Already committed` | User has existing seat | Use upgrade flow or skip |
-| `429 Too Many Requests` | Rate limited | Wait for `resetAt` timestamp |
-| `Transaction not found` | RPC hasn't confirmed | Retry after confirmation, use reliable RPC |
+| `401 Unauthorized` | API 密钥无效或缺失 | 确保 `LSI_API_KEY` 设置正确 |
+| `403 Forbidden` | 无权限执行操作 | 确认你是该操作的创建者 |
+| `400 No seats available` | 某等级的席位已满 | 查看 `seatsAvailable` 并选择其他等级 |
+| `400 Already committed` | 用户已拥有该等级的席位 | 使用升级流程或跳过该等级 |
+| `429 Too Many Requests` | 请求次数过多 | 等待 `resetAt` 时间戳过后重试 |
+| `Transaction not found` | RPC 请求未确认 | 等待确认后再尝试，或使用可靠的 RPC 服务 |
 
 ---
 
-## 💡 Use Cases
+## 💡 使用场景
 
-### For Agent Operators
-- Launch tokens for your AI agent's community
-- Programmatically participate in promising launches
-- Earn fee shares by helping creators
+### 对于代理运营者：
+- 为你的 AI 代理社区发行代币；
+- 以程序化方式参与有潜力的代币发行；
+- 通过帮助创建者赚取费用份额。
 
-### For Agent Networks
-- Coordinate multi-agent token launches
-- Build collective reputation across agents
-- Create agent-to-agent coordination primitives
+### 对于代理网络：
+- 协调多个代理的代币发行；
+- 在代理之间建立集体声誉；
+- 创建代理之间的协作机制。
 
-### For Developers
-- Build on top of letssendit's coordination infrastructure
-- Integrate structured launches into your agent framework
-- Use our vesting/escrow mechanics for your use cases
+### 对于开发者：
+- 基于 Let's Send It 的协调基础设施进行开发；
+- 将结构化的代币发行流程集成到你的代理系统中；
+- 根据你的需求使用我们的归属管理和托管机制。
 
 ---
 
-## 📊 Feature Status
+## 📊 功能状态
 
-| Feature | Status |
+| 功能 | 状态 |
 |---------|--------|
-| Create Fundraise | ✅ Working |
-| List Fundraises | ✅ Working |
-| Commit to Seat | ✅ Working |
-| Upgrade Seat | ✅ Working |
-| Validate Upgrade | ✅ Working |
-| Fee Share Allocation | ✅ Working |
-| Token Launch (Pump.fun) | ✅ Working |
-| Vesting (Streamflow) | ✅ Working |
-| Refunds on Failure | ✅ Automatic |
+| 创建筹款活动 | 已启用 |
+| 列出筹款活动 | 已启用 |
+| 承诺参与席位 | 已启用 |
+| 升级席位 | 已启用 |
+| 验证升级 | 已启用 |
+| 分配费用份额 | 已启用 |
+| 代币发行（Pump.fun 平台） | 已启用 |
+| 代币归属管理（Streamflow） | 已启用 |
+| 失败时自动退款 | 已启用 |
 
 ---
 
-## 🔗 Links
+## 🛠️ 链接
 
-- **Website:** https://letssendit.fun
-- **Documentation:** https://letssendit.fun/docs
-- **X:** https://x.com/letssenditfun
-- **Contact:** team@letssendit.fun
+- **官方网站：** https://letssendit.fun |
+- **文档：** https://letssendit.fun/docs |
+- **X 社交平台：** https://x.com/letssenditfun |
+- **联系方式：** team@letssendit.fun
 
 ---
 
-## 📜 The Philosophy
+## 📜 我们的理念
 
-We don't ask you to trust us. We build systems where trust isn't required.
+我们不要求你信任我们，我们构建的是无需信任的系统。
 
-Every launch follows predefined, non-negotiable rules:
-- Capped participation prevents whale domination
-- Time-boxed fundraises create clear deadlines
-- Visible on-chain commitments eliminate backroom deals
-- Enforced vesting replaces "we won't dump" promises
+每次代币发行都遵循预先定义的、不可协商的规则：
+- 限制参与人数以防止鲸鱼投资者主导市场；
+- 设定时间限制确保透明性；
+- 在链上记录所有承诺，防止幕后交易；
+- 强制执行的归属管理机制取代了“我们不会抛售代币”的承诺。
 
-**Structure for collective conviction.**
-
-Read more: [PHILOSOPHY.md](https://letssendit.fun/PHILOSOPHY.md)
+**这是我们构建系统的核心理念。**  
+更多内容请阅读：[PHILOSOPHY.md](https://letssendit.fun/PHILOSOPHY.md)

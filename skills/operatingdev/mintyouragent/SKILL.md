@@ -1,25 +1,25 @@
 ---
 name: mintyouragent
-description: AI agent toolkit for Solana — launch tokens, play poker, link your agent identity to mintyouragent.com. Reads agent personality files (SOUL.md) for profile linking. Stores wallet in ~/.mintyouragent/. Pure Python CLI.
+description: Solana AI代理工具包：用于发行代币、进行扑克游戏，以及将代理身份与mintyouragent.com平台关联。该工具包能够读取代理的个性文件（SOUL.md）以完成用户资料信息的绑定。代理的钱包信息存储在用户的~/.mintyouragent/目录下。该工具完全基于Python语言开发，支持命令行界面（CLI）操作。
 version: 3.5.0
 ---
 
 # MintYourAgent
 
-Launch Solana tokens on pump.fun. Free. You keep all creator fees.
+您可以在 pump.fun 上免费启动 Solana 代币。所有创建费用都归您所有。
 
-📚 **Full docs**: https://www.mintyouragent.com/for-agents
+📚 **完整文档**: https://www.mintyouragent.com/for-agents
 🐙 **GitHub**: https://github.com/operatingdev/mintyouragent
 💬 **Discord**: https://discord.gg/mintyouragent
-📜 **License**: MIT
+📜 **许可证**: MIT
 
 ---
 
-> ⚠️ **IMPORTANT:** Your wallet is stored in `~/.mintyouragent/` (your home directory), NOT in the skill folder. This means your wallet is **safe during skill updates**. Never manually put wallet files in the skill folder.
+> ⚠️ **重要提示：** 您的钱包文件存储在 `~/.mintyouragent/`（您的主目录）中，**而非 skill 文件夹中**。这意味着在技能更新过程中，您的钱包是安全的。**切勿手动将钱包文件放入 skill 文件夹**。
 
 ---
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install dependencies
@@ -41,35 +41,35 @@ python mya.py launch \
 
 ---
 
-## All Commands
+## 所有命令
 
-| Command | Alias | Description |
+| 命令 | 别名 | 描述 |
 |---------|-------|-------------|
-| `setup` | `s` | Create a new wallet |
-| `wallet` | `w` | Wallet management |
-| `launch` | `l` | Launch a token |
-| `poker` | `p` | Play poker (see Poker Commands below) |
-| `tokens` | `t` | List tokens in wallet |
-| `history` | `h` | Show command history |
-| `backup` | `b` | Backup/restore wallet |
-| `verify` | - | Verify wallet integrity |
-| `status` | `st` | Check API/RPC status |
-| `trending` | `tr` | Show trending tokens |
-| `leaderboard` | `lb` | Show launch leaderboard |
-| `stats` | - | Show your stats |
-| `soul` | - | Extract agent personality |
-| `link` | - | Link agent to mintyouragent.com |
-| `airdrop` | - | Request devnet airdrop |
-| `transfer` | - | Transfer SOL |
-| `sign` | - | Sign a message |
-| `config` | `c` | Manage configuration |
-| `uninstall` | - | Remove all data |
+| `setup` | `s` | 创建新钱包 |
+| `wallet` | `w` | 管理钱包 |
+| `launch` | `l` | 启动代币 |
+| `poker` | `p` | 玩扑克（详见下面的扑克命令） |
+| `tokens` | `t` | 列出钱包中的代币 |
+| `history` | `h` | 显示命令历史记录 |
+| `backup` | `b` | 备份/恢复钱包 |
+| `verify` | - | 验证钱包完整性 |
+| `status` | `st` | 检查 API/RPC 状态 |
+| `trending` | `tr` | 显示热门代币 |
+| `leaderboard` | `lb` | 显示启动排行榜 |
+| `stats` | - | 显示您的统计数据 |
+| `soul` | - | 提取代理的个性特征 |
+| `link` | - | 将代理链接到 mintyouragent.com |
+| `airdrop` | - | 请求开发网络（devnet）空投 |
+| `transfer` | - | 转移 SOL |
+| `sign` | - | 签署消息 |
+| `config` | `c` | 管理配置 |
+| `uninstall` | - | 删除所有数据 |
 
 ---
 
-## Poker Commands
+## 扑克命令
 
-Play heads-up Texas Hold'em against other agents with real SOL stakes.
+与其他代理进行德州扑克游戏，使用真实的 SOL 作为赌注。
 
 ```bash
 # List open games
@@ -105,11 +105,11 @@ python mya.py poker stats
 python mya.py poker cancel <game_id>
 ```
 
-All poker commands support `--json` for programmatic output.
+所有扑克命令都支持 `--json` 选项，以获取程序化输出。
 
 ---
 
-## Wallet Commands
+## 钱包命令
 
 ```bash
 # Show address
@@ -136,29 +136,29 @@ python mya.py wallet import --key YOUR_BASE58_KEY
 
 ---
 
-## Launch Parameters
+## 启动参数
 
-| Param | Required | Description |
+| 参数 | 必填 | 描述 |
 |-------|----------|-------------|
-| `--name` | ✅ | Token name (max 32 chars) |
-| `--symbol` | ✅ | Ticker (max 10 chars, ASCII only) |
-| `--description` | ✅ | Token description (max 1000 chars) |
-| `--image` | ✅ | Image URL (HTTPS) |
-| `--image-file` | alt | Local image path (max 5MB) |
-| `--banner` | ❌ | Banner image URL (HTTPS) |
-| `--banner-file` | alt | Local banner path (max 5MB) |
-| `--twitter` | ❌ | Twitter/X link (HTTPS) |
-| `--telegram` | ❌ | Telegram link (HTTPS) |
-| `--website` | ❌ | Website link (HTTPS) |
-| `--initial-buy` | ❌ | Initial buy in SOL (default: 0) |
-| `--ai-initial-buy` | ❌ | Let AI decide buy amount |
-| `--slippage` | ❌ | Slippage in bps (default: 100 = 1%) |
-| `--dry-run` | ❌ | Test without launching |
-| `--preview` | ❌ | Preview parameters |
-| `--tips` | ❌ | Show first-launch tips |
-| `-y, --yes` | ❌ | Skip confirmation prompts |
+| `--name` | ✅ | 代币名称（最多 32 个字符） |
+| `--symbol` | ✅ | 代币代码（最多 10 个字符，仅支持 ASCII） |
+| `--description` | ✅ | 代币描述（最多 1000 个字符） |
+| `--image` | ✅ | 图片 URL（HTTPS） |
+| `--image-file` | alt | 本地图片路径（最大 5MB） |
+| `--banner` | ❌ | 横幅图片 URL（HTTPS） |
+| `--banner-file` | alt | 本地横幅路径（最大 5MB） |
+| `--twitter` | ❌ | Twitter/X 链接（HTTPS） |
+| `--telegram` | ❌ | Telegram 链接（HTTPS） |
+| `--website` | ❌ | 网站链接（HTTPS） |
+| `--initial-buy` | ❌ | 初始购买金额（SOL）（默认：0） |
+| `--ai-initial-buy` | ❌ | 由 AI 决定购买金额 |
+| `--slippage` | ❌ | 滑点（以 bps 为单位，默认：100 = 1%） |
+| `--dry-run` | ❌ | 不启动代币的测试模式 |
+| `--preview` | ❌ | 预览参数 |
+| `--tips` | ❌ | 显示首次启动的提示信息 |
+| `-y, --yes` | ❌ | 跳过确认提示 |
 
-### Launch Examples
+### 启动示例
 
 ```bash
 # Basic launch
@@ -205,61 +205,61 @@ python mya.py launch --dry-run \
 
 ---
 
-## Global Flags
+## 全局标志
 
-**Output Control:**
-| Flag | Description |
+**输出控制：**
+| 标志 | 描述 |
 |------|-------------|
-| `--json` | Output as JSON |
-| `--format` | Output format: text/json/csv/table |
-| `-o, --output-file` | Write output to file |
-| `--no-color` | Disable colors |
-| `--no-emoji` | Disable emoji |
-| `--timestamps` | Show timestamps |
-| `-q, --quiet` | Quiet mode (errors only) |
-| `-v, --verbose` | Verbose logging |
-| `--debug` | Debug mode (show stack traces) |
+| `--json` | 以 JSON 格式输出 |
+| `--format` | 输出格式：text/json/csv/table |
+| `-o, --output-file` | 将输出写入文件 |
+| `--no-color` | 禁用颜色 |
+| `--no-emoji` | 禁用表情符号 |
+| `--timestamps` | 显示时间戳 |
+| `-q, --quiet` | 静默模式（仅显示错误信息） |
+| `-v, --verbose` | 详细日志记录 |
+| `--debug` | 调试模式（显示堆栈跟踪） |
 
-**Path Overrides:**
-| Flag | Description |
+**路径覆盖：**
+| 标志 | 描述 |
 |------|-------------|
-| `--config-file` | Custom config file path |
-| `--wallet-file` | Custom wallet file path |
-| `--log-file` | Custom log file path |
+| `--config-file` | 自定义配置文件路径 |
+| `--wallet-file` | 自定义钱包文件路径 |
+| `--log-file` | 自定义日志文件路径 |
 
-**Network Options:**
-| Flag | Description |
+**网络选项：**
+| 标志 | 描述 |
 |------|-------------|
-| `--network` | mainnet/devnet/testnet |
-| `--api-url` | Override API endpoint |
-| `--rpc-url` | Override RPC endpoint |
-| `--proxy` | HTTP proxy URL |
-| `--user-agent` | Custom user agent |
+| `--network` | mainnet/devnet/testnet | 主网/开发网/测试网 |
+| `--api-url` | 替换 API 端点 |
+| `--rpc-url` | 替换 RPC 端点 |
+| `--proxy` | HTTP 代理 URL |
+| `--user-agent` | 自定义用户代理 |
 
-**Behavior:**
-| Flag | Description |
+**行为：**
+| 标志 | 描述 |
 |------|-------------|
-| `--timeout` | Request timeout (seconds) |
-| `--retry-count` | Number of retries |
-| `--priority-fee` | Priority fee (microlamports) |
-| `--skip-balance-check` | Skip balance verification |
-| `-y, --yes` | Skip confirmation prompts |
+| `--timeout` | 请求超时（秒） |
+| `--retry-count` | 重试次数 |
+| `--priority-fee` | 优先级费用（微拉姆波特） |
+| `--skip-balance-check` | 跳过余额验证 |
+| `-y, --yes` | 跳过确认提示 |
 
 ---
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `MYA_API_URL` | Override API endpoint |
-| `MYA_API_KEY` | API key for signed requests |
-| `MYA_SSL_VERIFY` | Set to `false` to disable SSL |
-| `HELIUS_RPC` | Custom Solana RPC endpoint |
-| `SOLANA_RPC_URL` | Alternative RPC env var |
+| `MYA_API_URL` | 替换 API 端点 |
+| `MYA_API_KEY` | 用于签名请求的 API 密钥 |
+| `MYA_SSL_VERIFY` | 设置为 `false` 以禁用 SSL |
+| `HELIUS_RPC` | 自定义 Solana RPC 端点 |
+| `SOLANA_RPC_URL` | 备用 RPC 环境变量 |
 
-### .env File Support
+### .env 文件支持
 
-Create a `.env` file in `~/.mintyouragent/.env`:
+在 `~/.mintyouragent/.env` 文件中创建 `.env` 文件：
 
 ```bash
 # ~/.mintyouragent/.env
@@ -267,11 +267,11 @@ MYA_API_KEY=your_api_key
 HELIUS_RPC=https://your-rpc.helius.xyz
 ```
 
-The CLI loads `.env` from `~/.mintyouragent/.env` only. **Only the 5 variables listed above are read** — all other keys in the file are ignored. This prevents accidental exposure of unrelated secrets.
+CLI 仅从 `~/.mintyouragent/.env` 文件中加载 `.env` 文件。**仅读取上述 5 个变量** — 文件中的其他所有键都会被忽略。这样可以防止无关秘密的意外泄露。
 
 ---
 
-## Backup & Restore
+## 备份与恢复
 
 ```bash
 # Create backup
@@ -287,7 +287,7 @@ python mya.py backup restore --file ~/.mintyouragent/backups/wallet_20240101_120
 
 ---
 
-## Network Selection
+## 网络选择
 
 ```bash
 # Use devnet (for testing)
@@ -302,16 +302,16 @@ python mya.py --rpc-url https://my-rpc.com wallet balance
 
 ---
 
-## Security Best Practices
+## 安全最佳实践
 
-1. **Never share your signing key or RECOVERY_KEY.txt**
-2. **Use a dedicated wallet** - Don't use your main wallet
-3. **Only fund with what you need** - ~0.05 SOL per launch
-4. **Back up regularly** - `python mya.py backup create`
-5. **Import keys via stdin** - Not CLI args (visible in `ps aux`)
-6. **Verify before real launches** - Use `--dry-run` first
+1. **切勿分享您的签名密钥或 RECOVERY_KEY.txt** |
+2. **使用专用钱包** — 不要使用您的主钱包 |
+3. **仅投入您能承受的损失** — 每次启动最多投入 0.05 SOL |
+4. **定期备份** — 使用 `python mya.py backup create` 命令进行备份 |
+5. **通过 stdin 导入密钥** — 不要通过 CLI 参数传递（可在 `ps aux` 中查看） |
+6. **在实际启动前进行验证** — 先使用 `--dry-run` 进行测试 |
 
-### Secure Key Import
+### 安全密钥导入
 
 ```bash
 # GOOD: Read key from file (not visible in process list)
@@ -324,153 +324,151 @@ pass show solana/key | python mya.py wallet import
 python mya.py wallet import --key ABC123...
 ```
 
-### Data Location
+### 数据存储位置
 
-All data stored in `~/.mintyouragent/` (LOCAL only - never transmitted):
-- `wallet.json` - Wallet with checksum verification
-- `config.json` - Configuration
-- `RECOVERY_KEY.txt` - Backup signing key (600 permissions)
-- `audit.log` - Action log
-- `history.json` - Command history
-- `backups/` - Wallet backups
+所有数据都存储在 `~/.mintyouragent/`（仅限本地使用，不会传输）：
+- `wallet.json` | 带有校验和的钱包文件 |
+- `config.json` | 配置文件 |
+- `RECOVERY_KEY.txt` | 备份签名密钥（权限 600） |
+- `audit.log` | 操作日志 |
+- `history.json` | 命令历史记录 |
+- `backups/` | 备份文件
 
 ---
 
-## API Rate Limits
+## API 使用限制
 
-| Tier | Daily Launches |
+| 等级 | 每日启动次数 |
 |------|---------------|
-| Free | 3 |
-| With $SOUL token | More based on holdings |
+| 免费 | 3 次 |
+| 拥有 $SOUL 代币 | 根据持有量而定 |
 
-Check your limit: `python mya.py wallet check`
+查看您的使用限制：`python mya.py wallet check`
 
 ---
 
-## Error Codes
+## 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Missing dependencies |
-| 3 | No wallet found |
-| 4 | Invalid input |
-| 5 | Network error |
-| 6 | API error |
-| 7 | Security error |
-| 8 | User cancelled |
-| 9 | Timeout |
+| 0 | 成功 |
+| 1 | 一般错误 |
+| 2 | 缺少依赖项 |
+| 3 | 未找到钱包 |
+| 4 | 输入无效 |
+| 5 | 网络错误 |
+| 6 | API 错误 |
+| 7 | 安全错误 |
+| 8 | 用户取消 |
+| 9 | 超时 |
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Error | Solution |
+| 错误 | 解决方案 |
 |-------|----------|
-| "Missing dependencies" | `pip install solders requests` |
-| "No wallet found" | `python mya.py setup` |
-| "Insufficient balance" | Send SOL to your wallet |
-| "Symbol must be ASCII" | Use only A-Z, 0-9 |
-| "SSL verification failed" | Set `MYA_SSL_VERIFY=false` (not recommended) |
-| "Wallet integrity failed" | Restore from backup |
-| "Network error" | Check internet connection |
-| "Rate limit exceeded" | Wait or hold $SOUL token |
+| “缺少依赖项” | `pip install solders requests` |
+| “未找到钱包” | `python mya.py setup` |
+| “余额不足” | 向钱包中充值 SOL |
+| “代码必须为 ASCII” | 仅使用 A-Z, 0-9 的字符 |
+| “SSL 验证失败” | 将 `MYA_SSL_VERIFY` 设置为 `false`（不推荐） |
+| “钱包完整性失败” | 从备份中恢复 |
+| “网络错误” | 检查网络连接 |
+| “超出使用限制” | 等待或持有更多 $SOUL 代币 |
 
 ---
 
-## 🤖 AI Agent Guidelines
+## 🤖 AI 代理使用指南
 
-### Before First Launch - Ask the Human:
-1. "Show useful commands?" → `python mya.py launch --tips`
-2. "Check wallet balance?" → `python mya.py wallet balance`
-3. "Do a dry run first?" → `python mya.py launch --dry-run ...`
+### 首次启动前，请询问用户：
+1. “显示有用命令？” → `python mya.py launch --tips`
+2. “查看钱包余额？” → `python mya.py wallet balance`
+3. “先进行测试吗？” → `python mya.py launch --dry-run ...`
 
-### Initial Buy Decision
-When launching, ask:
+### 初始购买决策
+在启动时，请询问用户：
+> “您自己设置初始购买金额，还是让我根据余额来决定？”
+> - **用户设置：`--initial-buy 0.5`
+> - **AI 决定：`--ai-initial-buy`
+> - **不购买：`--no-buy`
 
-> "Set initial buy yourself, or should I decide based on balance?"
-> - **You set:** `--initial-buy 0.5`
-> - **AI decides:** `--ai-initial-buy`
-> - **No buy:** (no flag)
+### AI 决策逻辑（`--ai-initial-buy`）
+- 预留 0.05 SOL 作为费用
+- 使用剩余余额的 15%
+- 最大购买金额为 1 SOL（风险限制）
+- 如果余额低于 0.06 SOL，则不购买
 
-### AI Decision Logic (--ai-initial-buy)
-- Reserve 0.05 SOL for fees
-- Use 15% of remaining balance
-- Maximum 1 SOL (risk limit)
-- Minimum 0.01 SOL if buying
-- If balance < 0.06 SOL, no buy
-
-### Safety Warnings
-- Initial buys are irreversible
-- Token price can drop after launch
-- Only buy what you can lose
-- Use dry run first
+### 安全警告
+- 初始购买是不可撤销的
+- 代币价格可能在启动后下跌
+- 仅购买您能够承受的损失
+- 先进行测试运行
 
 ---
 
-## What is pump.fun?
+## pump.fun 是什么？
 
-pump.fun is a Solana token launchpad that:
-- Creates tokens instantly with no coding
-- Provides automatic liquidity
-- Has a bonding curve price mechanism
-- Migrates to Raydium at $69k market cap
+pump.fun 是一个 Solana 代币发布平台，它：
+- 可以无需编码即可立即创建代币 |
+- 提供自动流动性 |
+- 具有绑定曲线价格机制 |
+- 在达到 69k 市值时将迁移到 Raydium 平台
 
-MintYourAgent uses pump.fun's infrastructure to launch tokens.
+MintYourAgent 使用 pump.fun 的基础设施来发布代币。
 
 ---
 
-## Comparison
+## 对比
 
-| Feature | MintYourAgent | Raw pump.fun | Other CLIs |
+| 功能 | MintYourAgent | 原始的 pump.fun | 其他 CLI 工具 |
 |---------|--------------|--------------|------------|
-| AI Integration | ✅ | ❌ | ❌ |
-| Local Signing | ✅ | ✅ | ❌ |
-| CLI | ✅ | ❌ | ✅ |
-| Free | ✅ | ✅ | ❌ |
-| Open Source | ✅ | ❌ | Varies |
+| AI 集成 | ✅ | ❌ | ❌ |
+| 本地签名 | ✅ | ✅ | ❌ |
+| 命令行界面（CLI） | ✅ | ❌ | ✅ |
+| 免费 | ✅ | ✅ | ❌ |
+| 开源 | ✅ | ❌ | 不同工具情况不同 |
 
 ---
 
-## Changelog
+## 更新日志
 
-See [CHANGELOG.md](./CHANGELOG.md) for full history.
+请查看 [CHANGELOG.md](./CHANGELOG.md) 以获取完整的历史记录。
 
 ### v3.0.0
-- All 200 issues fixed
-- New commands: tokens, history, backup, verify, status, trending, leaderboard, stats, airdrop, transfer, sign
-- Command aliases (l, w, s, etc.)
-- .env file support
-- Network selection (mainnet/devnet/testnet)
-- All output formats (json/csv/table)
-- QR code support
-- Clipboard support
-- Progress bars with ETA
-- "Did you mean?" suggestions
+- 修复了所有 200 个问题 |
+- 新增了以下命令：tokens, history, backup, verify, status, trending, leaderboard, stats, airdrop, transfer, sign |
+- 命令别名（l, w, s 等） |
+- 支持 `.env` 文件 |
+- 支持网络选择（mainnet/devnet/testnet） |
+- 支持多种输出格式（json/csv/table） |
+- 支持二维码 |
+- 支持剪贴板功能 |
+- 显示预计完成时间（进度条） |
+- 提供“您是这个意思吗？”的提示功能
 
 ### v2.3.0
-- All CLI flags
-- Input sanitization
-- Path safety
+- 完善了所有 CLI 标志的功能 |
+- 对输入进行了清理处理 |
+- 加强了安全性 |
 
 ### v2.2.0
-- Security hardening
-- Retry logic
-- Audit logging
+- 提高了安全性 |
+- 增加了重试逻辑 |
+- 引入了审计日志功能
 
 ### v2.1.0
-- Secure local signing
-- AI initial buy
+- 实现了安全的本地签名功能 |
+- 引入了 AI 辅助的初始购买功能
 
 ---
 
-## Contributing
+## 贡献指南
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+请参阅 [CONTRIBUTING.md](./CONTRIBUTING.md) 以获取贡献指南。
 
 ---
 
-## License
+## 许可证
 
-MIT License - see [LICENSE](./LICENSE)
+MIT 许可证 - 详见 [LICENSE](./LICENSE)

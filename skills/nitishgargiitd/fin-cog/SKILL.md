@@ -1,6 +1,6 @@
 ---
 name: fin-cog
-description: "Wall Street-grade analysis, accessible globally. Deep financial reasoning powered by #1 on DeepResearch Bench (Feb 2026) + SOTA financial models — stock analysis, valuation models, portfolio optimization, earnings breakdowns, financial statements, tax planning, and investment research. From raw tickers to boardroom-ready deliverables in one request."
+description: "华尔街级别的分析服务，全球范围内均可使用。这些分析基于DeepResearch Bench排行榜（2026年2月）上排名第一的金融分析工具以及最先进的金融模型，涵盖股票分析、估值模型、投资组合优化、收益分解、财务报表分析、税务规划以及投资研究等功能。用户只需一次请求，即可从原始的股票代码数据获取到适合董事会使用的完整分析报告。"
 metadata:
   openclaw:
     emoji: "💰"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Fin Cog - Wall Street-Grade Analysis, Accessible Globally
+# Fin Cog – 全球可用的华尔街级分析工具
 
-**Wall Street-grade analysis, accessible globally.** Deep financial reasoning powered by #1 on DeepResearch Bench (Feb 2026) + SOTA financial models.
+**全球可用的华尔街级分析工具。** 该工具依托DeepResearch Bench（2026年2月排名第一）的先进金融分析技术和最前沿的金融模型，提供深入的金融分析服务。
 
-The best financial analysis has always lived behind Bloomberg terminals, institutional research desks, and $500/hour consultants. CellCog brings that same depth — stock analysis, valuation models, portfolio optimization, earnings breakdowns — to anyone with a prompt. From raw tickers to boardroom-ready deliverables in one request.
+以往，只有布隆伯格终端、机构研究部门或收费高达每小时500美元的咨询公司才能获得如此专业的金融分析服务。现在，CellCog将同样的深度分析能力——包括股票分析、估值模型、投资组合优化和收益分解——提供给任何需要的人，只需简单发出指令即可。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备`cellcog`技能，以便进行SDK设置和API调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读`cellcog`技能文档**以了解SDK的设置方法。该文档将展示您可以使用CellCog完成哪些操作。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,165 +40,136 @@ result = client.create_chat(
 
 ---
 
-## What Financial Work You Can Do
+## 可使用的金融分析服务
 
-### Stock & Equity Analysis
+### 股票与股权分析
 
-Deep dives into public companies:
+- **公司分析**：深入研究上市公司的情况，例如NVIDIA的收入趋势、利润率、竞争优势以及未来展望。
+- **收益分解**：详细分析苹果公司2025年第四季度的收益情况，包括实际表现与预期目标的对比、各业务部门的业绩以及管理层的评论。
+- **估值模型**：为微软构建DCF（贴现现金流）模型，并考虑悲观、中性及乐观三种情景。
+- **同业比较**：对比半导体行业中的多家公司（如NVDA、AMD、INTC、TSMC），从估值、增长能力和盈利能力等方面进行分析。
+- **技术分析**：分析特斯拉的股票价格走势，包括关键支撑/阻力位、移动平均线及成交量趋势。
 
-- **Company Analysis**: "Analyze NVIDIA — revenue trends, margins, competitive moat, and forward guidance"
-- **Earnings Breakdowns**: "Break down Apple's Q4 2025 earnings — beat/miss, segment performance, management commentary"
-- **Valuation Models**: "Build a DCF model for Microsoft with bear, base, and bull scenarios"
-- **Peer Comparisons**: "Compare semiconductor stocks — NVDA, AMD, INTC, TSM — on valuation, growth, and profitability metrics"
-- **Technical Analysis**: "Analyze Tesla's price action — key support/resistance levels, moving averages, and volume trends"
+**示例指令：**
+> “为Palantir（PLTR）生成一份全面的股票分析报告：”
+  - 公司业务模式及收入构成（政府业务与商业业务的比例）
+  - 过去四个季度的收益表现
+  - 关键财务指标（市盈率、市销率、自由现金流利润率、收入增长率）
+  - 与Snowflake、Databricks、C3.ai等公司的竞争情况
+  - 对公司未来的乐观/悲观预测
+  - 估值评估
+  - 以包含图表的交互式HTML报告形式呈现报告。
 
-**Example prompt:**
-> "Create a comprehensive stock analysis for Palantir (PLTR):
-> 
-> Cover:
-> - Business model and revenue breakdown (government vs commercial)
-> - Last 4 quarters earnings performance
-> - Key financial metrics (P/E, P/S, FCF margin, revenue growth)
-> - Competitive positioning vs Snowflake, Databricks, C3.ai
-> - Bull and bear thesis
-> - Valuation assessment
-> 
-> Deliver as an interactive HTML report with charts."
+### 投资组合分析与优化
 
-### Portfolio Analysis & Optimization
+- **投资组合评估**：分析您的投资组合（例如：40%投资于AAPL，20%投资于MSFT，15%投资于GOOGL，15%投资于AMZN，10%投资于TSLA），并提供优化建议。
+- **资产配置**：为一名35岁、拥有20万美元资产且风险承受能力中等的人设计最优投资组合。
+- **风险评估**：计算该投资组合在过去三年内的夏普比率、贝塔系数及最大回撤幅度。
+- **再平衡建议**：如果投资组合偏离了目标配置，提供再平衡方案以降低税务负担。
 
-Manage and optimize investments:
+### 金融建模
 
-- **Portfolio Review**: "Analyze my portfolio: 40% AAPL, 20% MSFT, 15% GOOGL, 15% AMZN, 10% TSLA — diversification, risk, and recommendations"
-- **Asset Allocation**: "Design an optimal portfolio for a 35-year-old with $200K, moderate risk tolerance"
-- **Risk Assessment**: "Calculate the Sharpe ratio, beta, and maximum drawdown for this portfolio over the last 3 years"
-- **Rebalancing**: "My portfolio drifted from target — recommend rebalancing trades to minimize tax impact"
+- **构建专业金融模型**：
+  - 为Shopify构建DCF模型，并对增长率和折现率进行敏感性分析。
+- **初创企业财务模型**：为一家月收入5万美元、每月增长15%的B2B SaaS公司制定三年财务预测。
+- **杠杆收购模型**：模拟一家年收入1亿美元、EBITDA为8倍的公司的杠杆收购情景。
+- **情景分析**：为零售房地产投资组合制定三种情景下的财务预测（衰退、基准、繁荣期）。
 
-### Financial Modeling
+### 金融文档与报告
 
-Build professional financial models:
+- **投资备忘录**：撰写推荐投资CrowdStrike的投资备忘录。
+- **季度报告**：为小型企业制作季度财务报告。
+- **财务报表**：为初创企业融资需求生成模拟财务报表。
+- **税务规划**：为年收入15万美元、拥有3万美元资本收益的自由职业者提供税务优化建议。
 
-- **DCF Models**: "Build a discounted cash flow model for Shopify with sensitivity analysis on growth and discount rate"
-- **Startup Financial Models**: "Create a 3-year financial projection for a B2B SaaS with $50K MRR growing 15% monthly"
-- **LBO Models**: "Model a leveraged buyout scenario for a $100M revenue company at 8x EBITDA"
-- **Scenario Analysis**: "Create a 3-scenario model (recession, baseline, boom) for a retail REIT portfolio"
+### 个人理财
 
-### Financial Documents & Reports
-
-Professional financial deliverables:
-
-- **Investment Memos**: "Write an investment memo recommending a position in CrowdStrike"
-- **Quarterly Reports**: "Create a quarterly financial report for my small business"
-- **Financial Statements**: "Generate pro forma financial statements for a startup fundraise"
-- **Tax Planning**: "Analyze tax optimization strategies for a freelancer earning $150K with $30K in capital gains"
-
-### Personal Finance
-
-Everyday financial planning:
-
-- **Retirement Planning**: "How much do I need to save monthly to retire at 55 with $2M? I'm 30, saving $2K/month currently"
-- **Mortgage Analysis**: "Compare a 15-year vs 30-year mortgage on a $500K home with 20% down at current rates"
-- **Debt Payoff**: "Create a debt payoff plan: $15K student loans at 5%, $8K credit card at 22%, $25K car loan at 6%"
-- **Budget Optimization**: "Analyze my spending breakdown and recommend where to cut to save $1,000/month more"
+- **退休规划**：计算每月需要存入多少资金才能在55岁时退休（目标为200万美元；目前每月存入2000美元）。
+- **抵押贷款分析**：比较在当前利率下，购买价值50万美元房屋的15年期与30年期抵押贷款的差异。
+- **债务偿还**：制定债务偿还计划（例如：15,000美元的学生贷款（年利率5%）、8,000美元的信用卡贷款（年利率22%）、25,000美元的汽车贷款（年利率6%）。
+- **预算优化**：分析您的支出结构，并提出节省1,000美元/月的建议。
 
 ---
 
-## Output Formats
+## 输出格式
 
-CellCog delivers financial analysis in multiple formats:
+CellCog支持多种金融分析输出格式：
 
-| Format | Best For |
+| 格式 | 适用场景 |
 |--------|----------|
-| **Interactive HTML Dashboard** | Explorable charts, drill-down analysis, live data presentation |
-| **PDF Report** | Shareable, printable investment memos and reports |
-| **XLSX Spreadsheet** | Editable financial models, projections, calculations |
-| **Markdown** | Quick analysis for integration into your docs |
+| **交互式HTML仪表盘** | 适合数据探索、深入分析和实时数据展示 |
+| **PDF报告** | 适合分享和打印的投资备忘录及报告 |
+| **XLSX电子表格** | 适合编辑财务模型、进行预测和计算 |
+| **Markdown** | 适合快速生成分析结果并整合到其他文档中 |
 
-Specify your preferred format in the prompt:
-- "Deliver as an interactive HTML report with charts"
-- "Create a PDF investment memo"
-- "Build this as an editable Excel model"
+请在指令中指定您所需的输出格式：
+- “以包含图表的交互式HTML报告形式呈现结果。”
+- “生成一份PDF格式的投资备忘录。”
+- “以可编辑的Excel电子表格形式提供分析结果。”
 
 ---
 
-## Chat Mode for Finance
+## 金融分析的聊天模式选择
 
-| Scenario | Recommended Mode |
+| 分析需求 | 推荐使用模式 |
 |----------|------------------|
-| Quick lookups, single stock metrics, basic calculations | `"agent"` |
-| Deep analysis, valuation models, multi-company comparisons, investment research | `"agent team"` |
+- **快速查询、单一股票指标、基本计算** | 使用“agent”模式 |
+- **深入分析、估值模型、多公司对比、投资研究** | 使用“agent team”模式 |
 
-**Use `"agent team"` for most financial analysis.** Financial work demands deep reasoning, data cross-referencing, and multi-source synthesis. Agent team mode delivers the depth that serious financial analysis requires.
-
-**Use `"agent"` for quick financial lookups** — current stock price, simple calculations, or basic metric checks.
+**大多数金融分析任务需要“agent team”模式**，因为它能够提供深入的分析、数据交叉验证以及多源信息的综合处理。而“agent”模式则适用于快速查询股票价格、简单计算或基本指标的核对。
 
 ---
 
-## Example Prompts
+## 示例指令
 
-**Comprehensive stock analysis:**
-> "Create a full investment analysis for AMD:
-> 
-> 1. Business Overview — segments, revenue mix, competitive positioning
-> 2. Financial Performance — last 8 quarters revenue, margins, EPS trends
-> 3. Valuation — P/E, P/S, PEG vs peers (NVDA, INTC, QCOM)
-> 4. Growth Catalysts — AI/datacenter, gaming, embedded
-> 5. Risk Factors — competition, cyclicality, customer concentration
-> 6. Bull/Bear/Base price targets
-> 
-> Interactive HTML report with comparison charts."
+**全面股票分析：**
+> “为AMD生成一份全面的投资分析报告：**
+  - 公司概况（业务板块、收入构成、市场竞争地位）
+  - 财务表现（过去八个季度的收入、利润率、每股收益趋势）
+  - 估值（市盈率、市销率、PEG与同业公司的对比）
+  - 增长驱动因素（人工智能/数据中心、游戏业务、嵌入式应用）
+  - 风险因素（市场竞争、周期性、客户集中度）
+  - 对公司未来表现的乐观/悲观预测
+  - 以包含对比图表的交互式HTML报告形式呈现报告。
 
-**Financial model:**
-> "Build a startup financial model:
-> 
-> Business: B2B SaaS, project management tool
-> Current: $30K MRR, 200 customers, $150 ARPU
-> Growth: 12% MoM for 12 months, then 8% for next 12
-> Team: 8 people now, hiring 4 in next year
-> Expenses: $180K/month burn rate
-> 
-> Create a 24-month projection showing:
-> - Revenue forecast with cohort analysis
-> - Expense breakdown and hiring plan
-> - Cash flow and runway
-> - Unit economics (CAC, LTV, payback period)
-> - Break-even analysis
-> 
-> Deliver as Excel spreadsheet with charts."
+**金融模型：**
+> “为一家B2B SaaS初创企业构建财务模型：**
+  - 业务类型：项目管理工具
+  - 当前月收入3万美元，客户200家，平均每用户收入150美元
+  - 预计未来12个月每月增长12%，之后增长速度降至8%
+  - 团队规模：目前8人，明年计划招聘4人
+  - 月运营成本为18万美元
+  - 生成24个月的财务预测，包括：
+    - 收入预测及细分数据
+    - 费用支出及招聘计划
+    - 现金流及资金周转情况
+    - 单位经济指标（客户获取成本、生命周期价值、回收期）
+    - 盈亏平衡分析
+  - 以Excel电子表格形式呈现报告，并附有图表。
 
-**Personal finance:**
-> "I'm 28, earning $120K/year in San Francisco. I want to:
-> 1. Max out 401K contributions
-> 2. Build a 6-month emergency fund ($30K)
-> 3. Save for a house down payment ($100K in 5 years)
-> 4. Start investing in index funds
-> 
-> Create a detailed monthly financial plan that shows how to prioritize these goals with my take-home pay after taxes. Include a timeline and visual roadmap."
+**个人理财：**
+> “我28岁，在旧金山工作，年收入12万美元。我的目标如下：**
+  - 尽量提高401(k)计划的缴费额度
+  - 在6个月内建立3万美元的应急资金
+  - 为购买房屋存够10万美元的首付款
+  - 开始投资指数基金
+  - 制定详细的每月财务计划，说明如何在税后收入中实现这些目标，并提供时间表和可视化路线图。
 
-**Earnings analysis:**
-> "Break down Tesla's most recent quarterly earnings:
-> 
-> - Revenue vs estimates (beat/miss by how much?)
-> - Automotive margins — trend over last 4 quarters
-> - Energy and services segment performance
-> - Key quotes from management on guidance
-> - What analysts are saying post-earnings
-> - Bull and bear reactions
-> 
-> Deliver as a concise PDF report with charts."
+**收益分析：**
+> “详细分析特斯拉最新的季度收益情况：**
+  - 实际收益与预测值的对比（超出/未达到预测值的程度）
+  - 过去四个季度的汽车业务利润率趋势
+  - 能源与服务业务的业绩表现
+  - 管理层对未来发展的看法
+  - 分析师在财报发布后的市场反应
+  - 以简洁的PDF报告形式呈现报告，并附有图表。
 
 ---
 
-## Tips for Better Financial Analysis
+## 提高金融分析效果的建议：
 
-1. **Be specific about metrics**: "Revenue growth" is vague. "YoY revenue growth for the last 8 quarters with segment breakdown" is precise.
-
-2. **Specify time horizons**: "Analyze AAPL" is open-ended. "Analyze AAPL's performance and outlook for the next 12 months" is actionable.
-
-3. **State your purpose**: "For an investment decision", "For a board presentation", "For personal planning" — context shapes the analysis.
-
-4. **Include constraints**: Budget, risk tolerance, time horizon, tax situation — these matter for financial recommendations.
-
-5. **Request scenarios**: "Include bear, base, and bull cases" gives you a range, not just a point estimate.
-
-6. **Ask for the deliverable you need**: "Interactive dashboard", "PDF memo", "Excel model" — specify the format for the best result.
+1. **明确指标要求**：例如，“收入增长”这样的表述较为模糊；而“过去八个季度的年收入同比增长情况（按业务板块细分）”则更为具体。
+2. **指定时间范围**：例如，“分析AAPL”这样的指令较为笼统；而“分析AAPL在未来12个月内的表现及前景”则更具操作性。
+3. **明确分析目的**：说明分析的目的是“用于投资决策”、“用于董事会报告”还是“用于个人规划”，这会直接影响分析的方向和内容。
+4. **说明约束条件**：预算、风险承受能力、时间范围、税务状况等因素对财务建议至关重要。
+5. **指定所需输出格式**：明确要求“交互式仪表盘”、“PDF报告”或“Excel模型”，以便获得最佳的分析结果。

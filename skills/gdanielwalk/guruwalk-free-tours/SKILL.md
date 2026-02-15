@@ -6,84 +6,77 @@ description: >
   tours, guided city tours, plans in a city, or availability of tours on specific dates.
 ---
 
-# GuruWalk Free Tours
+# GuruWalk 免费旅游服务
 
-Use the GuruWalk MCP server to search free tours:
+您可以使用 GuruWalk MCP 服务器来搜索免费旅游活动：
 
 `https://guruwalk-api-44909317956.europe-southwest1.run.app/mcp`
 
-The server currently exposes one tool:
+该服务器目前提供一个工具：`search`。
 
-- `search`
+## 工具接口规范
 
-## Tool Contract
+**`search` 接口参数：**
+- `city`（字符串）：英文形式的城市名称，其中的空格需替换为 `-`。
+- `start_date`（字符串）：日期格式为 `yyyy-mm-dd`。
+- `end_date`（字符串）：日期格式为 `yyyy-mm-dd`。
+- `language`（字符串）：两位字母的语言代码（例如 `es`、`en`、`de`、`it`）。
 
-`search` input:
+**`search` 接口返回值：**
+- 该工具返回 `content[0].text`，其中包含一个 JSON 字符串。
+- 解析该 JSON 字符串可获取旅游活动的列表。
+- 每个旅游活动包含以下信息：
+  - `title`（旅游活动名称）
+  - `url`（预订链接）
+  `meetpoint_address`（集合地点地址）
+  `average_rating`（平均评分）
+  `duration`（活动时长）
+  `guru.name`（导游姓名）
+  `image_url`（活动图片链接）
+  `events`（活动详情数组，包含以下字段）：
+    - `start_time`（活动开始时间，UTC 格式）
+    `available_spots`（可用名额）
+    `language`（活动语言）
 
-- `city` (string): lowercase slug in English with spaces replaced by `-`
-- `start_date` (string): `yyyy-mm-dd`
-- `end_date` (string): `yyyy-mm-dd`
-- `language` (string): two-letter code, usually `es`, `en`, `de`, `it`
+## 执行流程：**
+1. 从用户请求中获取城市名称、日期范围和偏好语言。
+2. 将城市名称转换为标准的 Slug 格式（例如：`new york` → `new-york`）。
+3. 确保日期格式符合 ISO 标准（`yyyy-mm-dd`）。
+4. 调用 `search` 接口。
+5. 解析 `content[0].text` 中的 JSON 数据。
+6. 对搜索结果进行筛选和排序，以便用户查看：
+  - 仅保留 `available_spots` 大于 0 的活动。
+  - 尽量优先显示用户所需语言的活动。
+  - 按评分从高到低排序，同时考虑活动开始时间。
+7. 返回包含预订链接和下一个可用时间的旅游活动信息。
 
-`search` output:
+## 默认设置：**
+- 如果用户未指定语言，系统将使用 `es`（西班牙语）。
+- 如果用户未指定日期，系统会在调用接口前提示用户输入日期。
+- 如果用户提供的日期格式不正确，系统会自动将其转换为 ISO 标准格式。
 
-- Tool returns `content[0].text` containing a JSON string.
-- Parse that string to get an array of tours.
-- Each tour contains:
-  - `title`, `url`, `meetpoint_address`, `average_rating`, `duration`, `guru.name`, `image_url`
-  - `events[]` with `start_time` (UTC), `available_spots`, `language`
+## 向用户展示的结果格式：**
+- 每个推荐的旅游活动应包含以下信息：
+  - 活动名称
+  - 评分
+  - 活动时长
+  - 导游姓名
+  - 集合地点
+  - 下一个可用的活动时间（包含时区信息）
+  - 预订链接
 
-## Execution Workflow
+**如果未找到旅游活动：**
+- 向用户说明在指定城市/日期范围内未找到符合条件的旅游活动。
+- 建议用户调整以下参数之一：城市名称、日期或语言。
 
-1. Determine city, date range, and preferred language from user request.
-2. Normalize `city` to slug format:
-   - `new york` -> `new-york`
-   - `san sebastian` -> `san-sebastian`
-3. Use valid ISO dates for both fields.
-4. Call `search`.
-5. Parse JSON from `content[0].text`.
-6. Filter and rank results for user-facing output:
-   - keep only events with `available_spots > 0`
-   - prioritize events matching requested language when possible
-   - prefer higher `average_rating`, then earlier upcoming time
-7. Return concise options with booking URL and next available slots.
+## 注意事项（基于实际使用情况）：
+- `search` 是唯一的可用工具；MCP 服务器不提供其他资源、提示或模板。
+- 包含空格的城市名称（如 `New York`）可能导致搜索结果为空。
+- 如果 `start_date` 大于 `end_date`，系统可能返回空结果，但不会显示错误提示。
+- 虽然非 ISO 格式的日期也能被后端接受，但建议始终使用 `yyyy-mm-dd` 格式。
+- 某些语言组合可能导致某些旅游活动的 `title` 为空，系统应能优雅地处理这种情况。
 
-## Defaults
-
-- If user does not specify language, use:
-  - `es` for Spanish conversation
-  - `en` otherwise
-- If user does not specify dates, ask for dates before calling the tool.
-- If date intent is relative, convert to explicit dates before calling.
-
-## Response Format to User
-
-For each recommended tour include:
-
-- Tour title
-- Rating
-- Duration
-- Guide name
-- Meeting point
-- 1-3 next available sessions (with timezone label)
-- Booking URL
-
-If no tours are found:
-
-- explain that no availability was returned for the given city/date range
-- propose adjusting one variable at a time: city slug, dates, or language
-
-## Observed Edge Cases (from live MCP inspection)
-
-- `search` is the only available tool; no MCP resources/prompts/templates are exposed.
-- `city` with spaces (e.g. `New York`) can return empty results.
-- `start_date > end_date` can return empty results instead of validation error.
-- Non-ISO dates can still be accepted by backend, but always send ISO `yyyy-mm-dd`.
-- Some locale/language combinations can return tours with `title: null`; handle gracefully.
-
-## Validation Notes
-
-- Keep executable validation commands outside this skill file.
-- Validate behavior by confirming:
-  - the MCP server exposes the `search` tool
-  - search results arrive as a JSON string in `content[0].text`
+## 验证说明：**
+- 验证相关功能的正确性可以通过以下方式完成：
+  - 确认 MCP 服务器确实提供了 `search` 接口。
+  - 检查搜索结果是否以 JSON 字符串的形式存储在 `content[0].text` 中。

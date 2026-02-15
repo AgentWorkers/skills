@@ -1,89 +1,89 @@
 ---
 name: setup-automatik
-description: Facilitate the installation and management of VPS solutions using the Setup Automatik engine (powered by Orion Design). Use when the user wants to install, configure, or manage tools like Traefik, Portainer, Chatwoot, N8N, and other open-source applications on a Linux VPS.
+description: 使用 Setup Automatik 引擎（由 Orion Design 提供支持）来简化 VPS 解决方案的安装和管理流程。当用户需要在 Linux VPS 上安装、配置或管理 Traefik、Portainer、Chatwoot、N8N 等开源应用程序时，可以使用该工具。
 ---
 
-# Setup Automatik
+# 设置 Automatik
 
-## Credits & Acknowledgements
-Special thanks to **Orion Design** for providing the original `SetupOrion.sh` script.
+## 致谢
+特别感谢 **Orion Design** 提供了原始的 `SetupOrion.sh` 脚本。
 
-**Developers:**
+**开发者：**
 - **Alltomatos**
 - **Rafa Martins**
-- **Robot 🤖** (Seu mentor assistente)
+- **Robot 🤖**（您的辅助导师）
 
-This skill is part of the **Mundo Automatik** ecosystem.
+此技能是 **Mundo Automatik** 生态系统的一部分。
 
-- **Website:** [mundoautomatik.com](https://mundoautomatik.com/)
-- **Community (WhatsApp):** [links.mundoautomatik.com/automatik-brasil](https://links.mundoautomatik.com/automatik-brasil)
-- **Telegram:** [t.me/mundoautomatik](https://t.me/mundoautomatik)
-- **YouTube:** [@mundoautomatik](https://www.youtube.com/@mundoautomatik)
+- **官方网站：** [mundoautomatik.com](https://mundoautomatik.com/)
+- **社区（WhatsApp）：** [links.mundoautomatik.com/automatik-brasil](https://links.mundoautomatik.com/automatik-brasil)
+- **Telegram：** [t.me/mundoautomatik](https://t.me/mundoautomatik)
+- **YouTube：** [@mundoautomatik](https://www.youtube.com/@mundoautomatik)
 
-## Overview
-The `setup-automatik` skill is designed to assist in deploying various open-source solutions on a VPS (Virtual Private Server). It leverages the `assets/SetupOrion.sh` script to automate the installation of containers, databases, and application stacks.
+## 概述
+`setup-automatik` 技能旨在帮助在 VPS（虚拟私有服务器）上部署各种开源解决方案。它利用 `assets/SetupOrion.sh` 脚本来自动化安装容器、数据库和应用程序堆栈。
 
-## Available Tools
-A wide range of tools are available for installation, categorized by their purpose:
-- **Infrastructure**: Traefik, Portainer, PostgreSQL, MongoDB, RabbitMQ, etc.
-- **Automation & AI**: N8N, Flowise, Typebot, Dify AI, Ollama, Langflow, etc.
-- **Communication**: Chatwoot, Evolution API, Uno API, Mautic, Mattermost, etc.
-- **Business & Utilities**: Wordpress, Baserow, Metabase, Odoo, NextCloud, etc.
+## 可用工具
+有许多工具可供安装，这些工具按用途进行了分类：
+- **基础设施**：Traefik、Portainer、PostgreSQL、MongoDB、RabbitMQ 等。
+- **自动化与人工智能**：N8N、Flowise、Typebot、Dify AI、Ollama、Langflow 等。
+- **通信**：Chatwoot、Evolution API、Uno API、Mautic、Mattermost 等。
+- **业务与实用工具**：WordPress、Baserow、Metabase、Odoo、NextCloud 等。
 
-For a full list of supported tools, refer to [tools.md](references/tools.md).
+有关支持工具的完整列表，请参阅 [tools.md](references/tools.md)。
 
-## Prerequisites
+## 先决条件
 
-### 🔐 Granting Agent Access
-For the agent to perform installations on your VPS, you must provide access. There are two ways to do this:
+### 🔐 授予代理访问权限
+为了让代理能够在您的 VPS 上执行安装操作，您必须授予其访问权限。有两种方法可以实现这一点：
 
-#### Option 1: OpenClaw Node Pairing (Recommended)
-This is the most secure and native way. It allows the agent to execute commands directly on your VPS terminal.
-1. Run the installer on your VPS: `curl -fsSL https://get.openclaw.ai | sh`
-2. Start the pairing process: `openclaw node pair`
-3. Paste the resulting pairing code or command here in the chat.
+#### 选项 1：OpenClaw 节点配对（推荐）
+这是最安全且原生的方法。它允许代理直接在您的 VPS 终端上执行命令。
+1. 在您的 VPS 上运行安装程序：`curl -fsSL https://get.openclaw.ai | sh`
+2. 启动配对过程：`openclaw node pair`
+3. 将生成的配对代码或命令粘贴到聊天框中。
 
-#### Option 2: SSH Access
-Provide the agent with your VPS connection details:
-- Public IP Address
-- Username (usually `root`)
-- SSH Password OR Private Key
+#### 选项 2：SSH 访问
+向代理提供您的 VPS 连接详细信息：
+- 公共 IP 地址
+- 用户名（通常是 `root`）
+- SSH 密码或私钥
 
-## Workflow
+## 工作流程
 
-### 0. Access Setup
-Before starting, ensure the agent has access using one of the methods in the [Prerequisites](#prerequisites) section.
+### 0. 访问设置
+在开始之前，请确保代理已通过 [先决条件](#prerequisites) 部分中提到的方法获得访问权限。
 
-### 1. Preparation
-Ensure the VPS is running a compatible Linux distribution (preferably Ubuntu/Debian) and has Docker installed.
+### 1. 准备工作
+确保 VPS 运行兼容的 Linux 发行版（最好是 Ubuntu/Debian），并且已安装 Docker。
 
-### 2. Information Gathering
-Before installation, gather necessary information:
-- Domain names (for SSL/Traefik).
-- Database credentials.
-- SMTP details for email notifications.
+### 2. 收集信息
+在安装之前，收集必要的信息：
+- 域名（用于 SSL/Traefik）。
+- 数据库凭据。
+- 用于电子邮件通知的 SMTP 详细信息。
 
-### 3. Installation
-To install a tool, the agent uses the `assets/SetupOrion.sh` script. The skill can extract specific installation blocks or execute the script directly in non-interactive mode when possible.
+### 3. 安装
+代理使用 `assets/SetupOrion.sh` 脚本来安装工具。该技能可以根据需要提取特定的安装步骤，或在非交互模式下直接执行脚本。
 
-### 4. Verification
-After installation, verify that the services are running:
-- Check `docker ps`.
-- Access the web interface of the installed tool.
-- Check logs if any issues arise.
+### 4. 验证
+安装完成后，验证服务是否正在运行：
+- 检查 `docker ps`。
+- 访问已安装工具的 Web 界面。
+- 如果出现任何问题，请查看日志。
 
-## Common Tasks
+## 常见任务
 
-### Install Traefik & Portainer
-This is usually the first step to manage other stacks.
-1. Run the script and select option `01`.
-2. Follow prompts for domain and email.
+### 安装 Traefik 与 Portainer
+这通常是管理其他应用程序堆栈的第一步。
+1. 运行脚本并选择选项 `01`。
+2. 按照提示输入域名和电子邮件地址。
 
-### Deploy a Stack (e.g., N8N)
-1. Ensure Traefik is running.
-2. Select the tool from the menu.
-3. Provide the required subdomains.
+### 部署一个应用程序堆栈（例如 N8N）
+1. 确保 Traefik 正在运行。
+2. 从菜单中选择所需的工具。
+3. 提供所需的子域名。
 
-## References
-- [tools.md](references/tools.md): Comprehensive list of available tools.
-- [SetupOrion.sh](assets/SetupOrion.sh): The main installation script.
+## 参考资料
+- [tools.md](references/tools.md)：可用工具的完整列表。
+- [SetupOrion.sh](assets/SetupOrion.sh)：主要的安装脚本。

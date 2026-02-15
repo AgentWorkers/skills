@@ -1,82 +1,81 @@
 ---
 name: briefing
-description: "Daily briefing: gathers today's calendar, active todos, and local weather from available workspace tools, then composes a concise summary."
+description: "每日简报：从可用的工作区工具中收集当天的日程安排、待办事项以及当地天气信息，然后生成一份简洁的总结。"
 metadata: {"openclaw":{"emoji":"📋"}}
 user-invocable: true
 disable-model-invocation: true
 ---
 
-# Briefing
+# 每日简报
 
-Compose a daily briefing by gathering data from available workspace sources.
+通过从可用的工作区资源中收集数据来生成每日简报。
 
-## Step 1 — Discover sources
+## 第一步 — 查找数据来源
 
-Check **TOOLS.md** and **USER.md** to determine which sources exist:
+查看 **TOOLS.md** 和 **USER.md** 以确定有哪些数据来源：
 
-- **Calendar** -> available if `TOOLS.md` has a Calendar section with a skill/CLI reference.
-- **Todos** -> available if `TOOLS.md` has a Todos section with a skill/CLI reference.
-- **Weather** -> available if `USER.md` has a Location field (city, town, or region).
+- **日历**：如果 `TOOLS.md` 中包含日历相关的内容（以及对应的技能或命令行工具（CLI）的引用），则可以使用该日历。
+- **待办事项**：如果 `TOOLS.md` 中包含待办事项相关的内容（以及对应的技能或命令行工具的引用），则可以使用该待办事项功能。
+- **天气**：如果 `USER.md` 中包含用户的位置信息（城市、城镇或地区），则可以使用天气功能。
 
-If **none** of the three are available — stop. Tell the user you have nothing to build a briefing from: no calendar skill, no todo skill, and no location for weather. Suggest adding a location to `USER.md` or configuring tools in `TOOLS.md`. Do not proceed. Do not fabricate a briefing.
+如果以上三个数据来源均不可用，请停止操作，并告知用户：没有可用于生成简报的信息（没有日历数据、待办事项数据或天气数据）。建议用户在 `USER.md` 中添加位置信息，或在 `TOOLS.md` 中配置相应的工具。切勿伪造数据。
 
-## Step 2 — Determine briefing day
+## 第二步 — 确定简报的日期
 
-Decide whether the user's day is effectively over. Consider current time, the user's typical schedule (from memory, USER.md, or calendar patterns), and remaining events.
+判断用户当天的工作是否已经结束。参考当前时间、用户的日常日程安排（根据记忆、`USER.md` 或日历记录），以及剩余的任务。
 
-- Day still active → briefing covers **today**.
-- Day winding down → briefing covers **tomorrow**.
+- 如果当天仍有工作安排，简报内容将涵盖 **今天** 的情况。
+- 如果当天工作即将结束，简报内容将涵盖 **明天** 的情况。
 
-All date-sensitive sections (calendar, weather) use the briefing day. Todos are not date-bound — always show active items regardless.
+所有与日期相关的部分（日历、天气）应使用简报当天的信息。待办事项不受日期限制，始终会显示所有未完成的任务。
 
-## Step 3 — Gather data
+## 第三步 — 收集数据
 
-For each available source, collect data. Skip sources not detected in Step 1.
+对于每个可用的数据来源，收集相应的数据。如果某个来源在第一步未被检测到，请跳过该来源。
 
-### Calendar
+### 日历
 
-1. **Read the calendar skill's `SKILL.md` first** (path from TOOLS.md). Do not call the CLI without reading it.
-2. Fetch the **briefing day's** agenda using the skill's documented commands.
-3. If no events — note it.
+1. 首先阅读日历相关技能的文档（位于 `TOOLS.md` 中的路径）。在未阅读文档之前，切勿直接使用相应的命令行工具。
+2. 使用日历技能提供的命令，获取简报当天的日程安排。
+3. 如果没有事件记录，请在简报中注明。
 
-### Todos
+### 待办事项
 
-1. **Read the todo skill's `SKILL.md` first** (path from TOOLS.md). Do not call the CLI without reading it.
-2. List **active/pending** items using the skill's documented commands.
-3. If none — note "no active todos."
+1. 首先阅读待办事项相关技能的文档（位于 `TOOLS.md` 中的路径）。在未阅读文档之前，切勿直接使用相应的命令行工具。
+2. 使用待办事项技能提供的命令，列出所有 **未完成/待处理的** 任务。
+3. 如果没有未完成的任务，请在简报中注明“没有未完成的待办事项”。
 
-### Weather
+### 天气
 
-1. Use the **web search tool** to look up weather for the **briefing day**. Query: `weather {today|tomorrow} in {location}` (location from USER.md).
-2. Extract: current temperature, conditions, high/low, notable alerts.
-3. Do NOT use `curl`, `wttr.in`, or other CLI tools for weather.
+1. 使用网络搜索工具查询简报当天的天气情况。查询格式为：`weather {today|tomorrow} in {location}`（其中 `location` 为 `USER.md` 中的用户位置信息）。
+2. 提取天气信息，包括当前温度、天气状况、最高/最低温度以及任何重要的天气预警。
+3. 不要使用 `curl`、`wttr.in` 或其他命令行工具来获取天气数据。
 
-### On errors
+### 错误处理
 
-If a tool command fails, skip that section and mention the failure briefly in the briefing (e.g. "Could not fetch calendar."). Do not retry more than once. Never fabricate data.
+如果某个工具的命令执行失败，请跳过该部分，并在简报中简要说明错误情况（例如：“无法获取日历数据”）。不要尝试多次重试。切勿伪造数据。
 
-## Step 4 — Compose
+## 第四步 — 编写简报
 
-Build a single message. Include only sections whose source was detected in Step 1. If a detected source returned no data (e.g. calendar exists but no events), still include the section with a one-line note.
+整理一份简报内容，仅包含在第一步中被检测到的数据来源的相关信息。即使某个数据来源没有返回任何数据（例如日历存在但没有任何事件），也应在简报中对该部分进行说明。
 
-### Structure
+### 简报结构
 
-1. **Greeting** — one short casual line. Time-aware (morning/afternoon/evening). If the briefing day is tomorrow, mention it naturally (e.g. "Good evening — here's tomorrow").
-2. **Weather** — 1–2 lines: temperature, sky, anything notable. Label as tomorrow's forecast when applicable.
-3. **Calendar** — briefing day's events, chronologically. Format: `HH:MM — Title`. All-day events first. If empty: one line noting no events.
-4. **Todos** — active items, briefly. Higher priority first if supported. If empty: "No active todos."
+1. **问候语**：简短、随意的一句话，同时注明当前时间（上午/下午/晚上）。如果简报是关于明天的，要自然地提及这一点（例如：“晚上好——以下是明天的简报内容”）。
+2. **天气**：1-2行，包括当前温度、天气状况以及任何值得注意的天气信息。如果适用，可标注为“明天的天气预报”。
+3. **日历**：按时间顺序列出简报当天的所有事件。格式为：`HH:MM — 事件标题`。全天性的事件应排在最前面。如果没有事件，则用一行文字说明“没有事件”。
+4. **待办事项**：简要列出所有未完成的任务，优先显示优先级较高的任务。如果没有未完成的任务，则说明“没有未完成的待办事项”。
 
-### Style
+### 文本格式要求
 
-- When briefing day is tomorrow, make sure calendar header and weather header reflect that.
-- Do not shorten the user's city name.
-- Match the language of the user's request.
-- Concise, skimmable, no filler.
-- No preamble ("here is your briefing...") — dive straight in.
-- Friendly but not chatty.
-- Simple formatting — optimize for mobile chat. Bold section headers, short lines.
-- Spacing: one empty line **between** sections, **zero** between a header and its content.
-  - Right: `**Calendar**\n09:00 — Standup`
-  - Wrong: `**Calendar**\n\n09:00 — Standup`
-- Never invent events, todos, or weather data. Only report what tools returned.
-- No call to action in the end - just the briefing.
+- 如果简报是关于明天的，确保日历标题和天气标题中反映出这一点。
+- 不要缩写用户所在城市的名称。
+- 保持与用户请求相同的语言风格。
+- 语言简洁明了，易于阅读，避免冗余内容。
+- 简报开头直接进入主题，无需冗长的开场白。
+- 语气友好但不要过于啰嗦。
+- 使用简洁的格式，适合在移动聊天环境中阅读：使用粗体标题，每段内容之间保持一行空行。
+  - 正确的格式示例：`**日历**\n09:00 — 例会`
+  - 错误的格式示例：`**日历**\n\n09:00 — 例会`
+- 绝不要伪造事件、待办事项或天气数据，只报告工具实际返回的信息。
+- 简报结尾不需要任何行动号召，只需提供简报内容即可。

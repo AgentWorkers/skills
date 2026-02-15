@@ -1,29 +1,29 @@
 ---
 name: fal-ai
-description: Generate images and media using fal.ai API (Flux, Gemini image, etc.). Use when asked to generate images, run AI image models, create visuals, or anything involving fal.ai. Handles queue-based requests with automatic polling.
+description: 使用 fal.ai API（如 Flux、Gemini Image 等）生成图片和媒体文件。适用于需要生成图片、运行 AI 图像模型、创建视觉素材或任何与 fal.ai 相关的任务。该系统支持基于队列的请求处理，并具备自动轮询功能。
 ---
 
-# fal.ai Integration
+# fal.ai 集成
 
-Generate and edit images via fal.ai's queue-based API.
+通过 fal.ai 的基于队列的 API 生成和编辑图片。
 
-## Setup
+## 设置
 
-Add your API key to `TOOLS.md`:
+将您的 API 密钥添加到 `TOOLS.md` 文件中：
 
 ```markdown
 ### fal.ai
 FAL_KEY: your-key-here
 ```
 
-Get a key at: https://fal.ai/dashboard/keys
+您可以在以下链接获取 API 密钥：https://fal.ai/dashboard/keys
 
-The script checks (in order): `FAL_KEY` env var → `TOOLS.md`
+脚本会按顺序检查以下内容：`FAL_KEY` 环境变量 → `TOOLS.md` 文件
 
-## Supported Models
+## 支持的模型
 
-### fal-ai/nano-banana-pro (Text → Image)
-Google's Gemini 3 Pro for text-to-image generation.
+### fal-ai/nano-banana-pro (文本 → 图像)
+使用 Google 的 Gemini 3 Pro 进行文本到图像的转换。
 
 ```python
 input_data = {
@@ -35,8 +35,8 @@ input_data = {
 }
 ```
 
-### fal-ai/nano-banana-pro/edit (Image → Image)
-Gemini 3 Pro for image editing. Slower (~20s) but handles complex edits well.
+### fal-ai/nano-banana-pro/edit (图像 → 图像)
+使用 Gemini 3 Pro 进行图像编辑。处理速度较慢（约 20 秒），但能很好地处理复杂的编辑操作。
 
 ```python
 input_data = {
@@ -48,8 +48,8 @@ input_data = {
 }
 ```
 
-### fal-ai/flux/dev/image-to-image (Image → Image)
-FLUX.1 dev model. Faster (~2-3s) for style transfers.
+### fal-ai/flux/dev/image-to-image (图像 → 图像)
+使用 FLUX.1 开发模型。转换速度较快（约 2-3 秒），适用于风格转换。
 
 ```python
 input_data = {
@@ -62,15 +62,15 @@ input_data = {
 }
 ```
 
-### fal-ai/kling-video/o3/pro/video-to-video/edit (Video → Video)
-Kling O3 Pro for video transformation with AI effects.
+### fal-ai/kling-video/o3/pro/video-to-video/edit (视频 → 视频)
+使用 Kling O3 Pro 进行带有 AI 效果的视频转换。
 
-**Limits:**
-- Formats: **.mp4, .mov only**
-- Duration: **3-10 seconds**
-- Resolution: **720-2160px**
-- Max file size: **200MB**
-- Max elements: **4 total** (elements + reference images combined)
+**限制：**
+- 格式：仅支持 `.mp4` 和 `.mov` 格式
+- 时长：3-10 秒
+- 分辨率：720-2160px
+- 最大文件大小：200MB
+- 最多元素数量：4 个（包括元素和参考图片）
 
 ```python
 input_data = {
@@ -95,14 +95,14 @@ input_data = {
 }
 ```
 
-**Prompt references:**
-- `@Video1` — the input video
-- `@Image1`, `@Image2` — reference images for style/appearance
-- `@Element1`, `@Element2` — elements (characters/objects) to inject
+**提示参考：**
+- `@Video1` — 输入视频
+- `@Image1`, `@Image2` — 用于风格/外观参考的图片
+- `@Element1`, `@Element2` — 需要插入的元素（角色/对象）
 
-## Input Validation
+## 输入验证
 
-The skill validates inputs before submission. For multi-input models, ensure all required fields are provided:
+该技能会在提交前验证输入内容。对于支持多输入的模型，请确保提供了所有必需的字段：
 
 ```bash
 # Check what a model needs
@@ -112,13 +112,13 @@ python3 scripts/fal_client.py model-info "fal-ai/kling-video/o3/standard/video-t
 python3 scripts/fal_client.py models
 ```
 
-**Before submitting, verify:**
-- ✅ All `required` fields are present and non-empty
-- ✅ File fields (`image_url`, `video_url`, etc.) are URLs or base64 data URIs
-- ✅ Arrays (`image_urls`) have at least one item
-- ✅ Video files are within limits (200MB, 720-2160p)
+**提交前请确认：**
+- ✅ 所有必需的字段都已填写且不为空
+- ✅ 文件字段（如 `image_url`, `video_url` 等）是有效的 URL 或 Base64 数据 URI
+- ✅ 数组（如 `image_urls`）至少包含一个元素
+- ✅ 视频文件符合大小（200MB）和分辨率（720-2160px）的限制
 
-**Example validation output:**
+**示例验证输出：**
 ```
 ⚠️  Note: Reference video in prompt as @Video1
 ⚠️  Note: Max 4 total elements (video + images combined)
@@ -126,9 +126,9 @@ python3 scripts/fal_client.py models
    - Missing required field: video_url
 ```
 
-## Usage
+## 使用方法
 
-### CLI Commands
+### 命令行接口（CLI）命令
 
 ```bash
 # Check API key
@@ -156,7 +156,7 @@ python3 scripts/fal_client.py to-data-uri /path/to/image.jpg
 python3 scripts/fal_client.py video-to-uri /path/to/video.mp4
 ```
 
-### Python Usage
+### Python 使用方法
 
 ```python
 import sys
@@ -183,36 +183,37 @@ for req in completed:
         print(req['result']['images'][0]['url'])
 ```
 
-## Queue System
+## 队列系统
 
-fal.ai uses async queues. Requests go through stages:
-- `IN_QUEUE` → waiting
-- `IN_PROGRESS` → generating
-- `COMPLETED` → done, fetch result
-- `FAILED` → error occurred
+fal.ai 使用异步队列。请求会经历以下状态：
+- `IN_QUEUE` — 等待中
+- `IN_PROGRESS` — 生成中
+- `COMPLETED` — 完成，可以获取结果
+- `FAILED` — 发生错误
 
-Pending requests are saved to `~/. openclaw/workspace/fal-pending.json` and survive restarts.
+待处理的请求会被保存在 `~/.openclaw/workspace/fal-pending.json` 文件中，重启后请求会继续处理。
 
-### Polling Strategy
+### 轮询策略
 
-**Manual:** Run `python3 scripts/fal_client.py poll` periodically.
+**手动轮询：** 定期运行 `python3 scripts/fal_client.py poll` 命令。
 
-**Heartbeat:** Add to `HEARTBEAT.md`:
+**心跳检测：** 在 `HEARTBEAT.md` 文件中配置心跳检测机制：
+
 ```markdown
 - Poll fal.ai pending requests if any exist
 ```
 
-**Cron:** Schedule polling every few minutes for background jobs.
+**定时任务：** 使用 Cron 任务每隔几分钟自动执行一次轮询。
 
-## Adding New Models
+## 添加新模型
 
-1. Find the model on fal.ai and check its `/api` page
-2. Add entry to `references/models.json` with input/output schema
-3. Test with a simple request
+1. 在 fal.ai 上找到所需模型，并查看其 `/api` 页面。
+2. 在 `references/models.json` 文件中添加该模型的信息（包括输入/输出格式）。
+3. 用简单的请求测试该模型。
 
-**Note:** Queue URLs use base model path (e.g., `fal-ai/flux` not `fal-ai/flux/dev/image-to-image`). The script handles this automatically.
+**注意：** 队列请求的 URL 应使用模型的基础路径（例如 `fal-ai/flux`，而不是 `fal-ai/flux/dev/image-to-image`）。脚本会自动处理路径匹配问题。
 
-## Files
+## 相关文件
 
 ```
 skills/fal-ai/
@@ -223,10 +224,8 @@ skills/fal-ai/
     └── models.json             ← Model schemas
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"No FAL_KEY found"** → Add key to TOOLS.md or set FAL_KEY env var
-
-**405 Method Not Allowed** → URL routing issue, ensure using base model path for status/result
-
-**Request stuck** → Check `fal-pending.json`, may need manual cleanup
+- **“未找到 FAL_KEY”**：请将 API 密钥添加到 `TOOLS.md` 文件中，或设置 `FAL_KEY` 环境变量。
+- **405 方法不允许**：可能是 URL 路由问题，请确保使用正确的模型路径来获取状态或结果。
+- **请求卡住**：检查 `fal-pending.json` 文件，可能需要手动清理队列中的待处理请求。

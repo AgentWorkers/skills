@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Gather - Java
+# Telnyx 语音采集 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +31,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Add messages to AI Assistant
+## 向 AI 助手添加消息
 
-Add messages to the conversation started by an AI assistant on the call.
+向 AI 助手发起的通话中添加消息。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_add_messages`
 
@@ -45,9 +46,9 @@ import com.telnyx.sdk.models.calls.actions.ActionAddAiAssistantMessagesResponse;
 ActionAddAiAssistantMessagesResponse response = client.calls().actions().addAiAssistantMessages("call_control_id");
 ```
 
-## Start AI Assistant
+## 启动 AI 助手
 
-Start an AI assistant on the call.
+在通话中启动 AI 助手。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_start`
 
@@ -58,9 +59,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStartAiAssistantResponse;
 ActionStartAiAssistantResponse response = client.calls().actions().startAiAssistant("call_control_id");
 ```
 
-## Stop AI Assistant
+## 停止 AI 助手
 
-Stop an AI assistant on the call.
+在通话中停止 AI 助手。
 
 `POST /calls/{call_control_id}/actions/ai_assistant_stop`
 
@@ -71,9 +72,9 @@ import com.telnyx.sdk.models.calls.actions.ActionStopAiAssistantResponse;
 ActionStopAiAssistantResponse response = client.calls().actions().stopAiAssistant("call_control_id");
 ```
 
-## Gather stop
+## 停止数据采集
 
-Stop current gather.
+停止当前的数据采集操作。
 
 `POST /calls/{call_control_id}/actions/gather_stop`
 
@@ -84,11 +85,11 @@ import com.telnyx.sdk.models.calls.actions.ActionStopGatherResponse;
 ActionStopGatherResponse response = client.calls().actions().stopGather("call_control_id");
 ```
 
-## Gather using AI
+## 使用 AI 进行数据采集
 
-Gather parameters defined in the request payload using a voice assistant.
+使用语音助手收集请求负载中定义的参数。
 
-`POST /calls/{call_control_id}/actions/gather_using_ai` — Required: `parameters`
+`POST /calls/{call_control_id}/actions/gather_using_ai` — 必需参数：`parameters`
 
 ```java
 import com.telnyx.sdk.core.JsonValue;
@@ -106,9 +107,9 @@ ActionGatherUsingAiParams params = ActionGatherUsingAiParams.builder()
 ActionGatherUsingAiResponse response = client.calls().actions().gatherUsingAi(params);
 ```
 
-## Gather using audio
+## 使用音频进行数据采集
 
-Play an audio file on the call until the required DTMF signals are gathered to build interactive menus.
+在通话中播放音频文件，直到收集到所需的 DTMF 信号以构建交互式菜单。
 
 `POST /calls/{call_control_id}/actions/gather_using_audio`
 
@@ -119,11 +120,11 @@ import com.telnyx.sdk.models.calls.actions.ActionGatherUsingAudioResponse;
 ActionGatherUsingAudioResponse response = client.calls().actions().gatherUsingAudio("call_control_id");
 ```
 
-## Gather using speak
+## 使用语音转换进行数据采集
 
-Convert text to speech and play it on the call until the required DTMF signals are gathered to build interactive menus.
+将文本转换为语音并在通话中播放，直到收集到所需的 DTMF 信号以构建交互式菜单。
 
-`POST /calls/{call_control_id}/actions/gather_using_speak` — Required: `voice`, `payload`
+`POST /calls/{call_control_id}/actions/gather_using_speak` — 必需参数：`voice`, `payload`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionGatherUsingSpeakParams;
@@ -137,9 +138,9 @@ ActionGatherUsingSpeakParams params = ActionGatherUsingSpeakParams.builder()
 ActionGatherUsingSpeakResponse response = client.calls().actions().gatherUsingSpeak(params);
 ```
 
-## Gather
+## 采集数据
 
-Gather DTMF signals to build interactive menus.
+收集 DTMF 信号以构建交互式菜单。
 
 `POST /calls/{call_control_id}/actions/gather`
 
@@ -152,18 +153,19 @@ ActionGatherResponse response = client.calls().actions().gather("call_control_id
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 webhook 事件会被发送到您配置的 webhook URL：
+所有 webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头用于验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callGatherEnded` | Call Gather Ended |
-| `CallAIGatherEnded` | Call AI Gather Ended |
-| `CallAIGatherMessageHistoryUpdated` | Call AI Gather Message History Updated |
-| `CallAIGatherPartialResults` | Call AI Gather Partial Results |
-| `CallConversationEnded` | Call Conversation Ended |
-| `callPlaybackStarted` | Call Playback Started |
-| `callPlaybackEnded` | Call Playback Ended |
-| `callDtmfReceived` | Call Dtmf Received |
+| `callGatherEnded` | 通话数据采集结束 |
+| `CallAIGatherEnded` | 通话 AI 数据采集结束 |
+| `CallAIGatherMessageHistoryUpdated` | 通话 AI 数据采集消息历史更新 |
+| `CallAIGatherPartialResults` | 通话 AI 数据采集部分结果 |
+| `CallConversationEnded` | 通话结束 |
+| `callPlaybackStarted` | 通话播放开始 |
+| `callPlaybackEnded` | 通话播放结束 |
+| `callDtmfReceived` | 通话中接收到 DTMF 信号 |
+```

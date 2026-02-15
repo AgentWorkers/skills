@@ -1,324 +1,188 @@
 ---
 name: clawdbot-skill-update
-description: Comprehensive backup, update, and restore workflow with dynamic workspace detection
+description: 具备动态工作区检测功能的全面备份、更新和恢复工作流程
 homepage: https://github.com/pasogott/clawdbot-skill-update
 metadata: {"clawdbot":{"emoji":"💾","requires":{"bins":["bash","jq","tar","git"]},"tags":["backup","restore","update","multi-agent"]}}
 ---
 
-# Clawdbot Update Skill
-
-Comprehensive backup, update, and restore workflow for Clawdbot installations.
+# Clawdbot 更新技能
+
+该技能提供了针对 Clawdbot 安装的全面备份、更新和恢复工作流程。
+
+## 仓库信息
+
+- **GitHub**: https://github.com/clawdbot/clawdbot  
+- **上游仓库**: `origin/main`  
+- **本地克隆路径**: `~/code/clawdbot`（默认值）
+
+## 功能描述
+
+该技能为 Clawdbot 提供了一个完整的、模块化的更新流程，并具备 **动态工作区检测** 功能：
+- 配置文件  
+- 代理状态和会话信息  
+- 凭据及认证令牌  
+- 所有代理的工作区（自动从配置文件中检测）  
+- Cron 作业和沙箱环境  
+- Git 仓库状态  
+
+### 主要特性  
+
+✅ **动态工作区检测**：从配置文件中读取工作区路径  
+✅ **多代理支持**：自动处理多个代理  
+✅ **安全回滚**：具备完整的恢复功能  
+✅ **Git 集成**：跟踪版本和远程仓库  
+✅ **验证机制**：包含更新前后的验证步骤  
+✅ **预备份预览**：在备份前提供预览功能  
+
+## 相关文件  
+
+- `config.json`：技能配置文件（包含仓库地址和路径信息）  
+- `backup-clawdbot-dryrun.sh`：预备份预览脚本（不会修改任何文件）  
+- `backup-clawdbot-full.sh`：完整备份脚本  
+- `restore-clawdbot.sh`：恢复脚本  
+- `validate-setup.sh`：更新前后的验证脚本  
+- `check-upstream.sh`：检查是否有可用更新  
+- `UPDATE_CHECKLIST.md`：详细的更新步骤清单  
+- `QUICK_REFERENCE.md`：快速命令参考  
+- `SKILL.md`：当前文档  
+- `README.md`：快速入门指南  
 
-## Repository
-
-- **GitHub**: https://github.com/clawdbot/clawdbot
-- **Upstream**: `origin/main`
-- **Local Clone**: `~/code/clawdbot` (default)
-
-## Description
-
-This skill provides a complete, **modular** update workflow for Clawdbot with **dynamic workspace detection**:
-- Configuration files
-- Agent states and sessions
-- Credentials and auth tokens
-- **All agent workspaces (auto-detected from config)**
-- Cron jobs and sandboxes
-- Git repository state
-
-### Key Features
-
-✅ **Dynamic Workspace Detection** - Reads workspace paths from config  
-✅ **Multi-Agent Support** - Handles multiple agents automatically  
-✅ **Safe Rollback** - Full restore capability  
-✅ **Git Integration** - Tracks versions and remotes  
-✅ **Validation** - Pre/post checks included  
-✅ **Dry Run** - Preview before backup
+### 动态特性  
 
-## Files
-
-- `config.json` - Skill configuration (repo URLs, paths)
-- `backup-clawdbot-dryrun.sh` - **Dry run** preview (no changes)
-- `backup-clawdbot-full.sh` - **Dynamic** full backup script
-- `restore-clawdbot.sh` - **Dynamic** restore script
-- `validate-setup.sh` - Pre/post update validation
-- `check-upstream.sh` - Check for available updates
-- `UPDATE_CHECKLIST.md` - Step-by-step update checklist
-- `QUICK_REFERENCE.md` - Quick command reference
-- `SKILL.md` - This file
-- `README.md` - Quick start guide
-
-### Dynamic Features
+备份和恢复脚本现在具备以下功能：  
+- 从 `~/.clawdbot/clawdbot.json` 文件中读取工作区路径  
+- 支持任意数量的代理  
+- 能够优雅地处理缺失的工作区  
+- 根据代理 ID 生成安全的文件名  
 
-Both backup and restore scripts now:
-- Read workspace paths from `~/.clawdbot/clawdbot.json`
-- Support any number of agents
-- Handle missing workspaces gracefully
-- Generate safe filenames from agent IDs
-
-## When to Use
-
-Trigger this skill when asked to:
-- "update clawdbot"
-- "upgrade to latest version"
-- "backup clawdbot before update"
-- "restore clawdbot from backup"
-- "rollback clawdbot update"
-
-## Usage
-
-### 1. Preview Backup (Dry Run)
-
-```bash
-~/.skills/clawdbot-update/backup-clawdbot-dryrun.sh
-```
-
-**Shows:**
-- What files would be backed up
-- Estimated backup size
-- Workspace detection results
-- Disk space availability
-- Files that would be skipped
-
-**No files are created or modified!**
+## 使用场景  
 
-### 2. Create Full Backup
+在以下情况下触发该技能：  
+- “更新 Clawdbot”  
+- “升级到最新版本”  
+- “在更新前备份 Clawdbot”  
+- “从备份中恢复 Clawdbot”  
+- “回滚 Clawdbot 的更新”  
 
-```bash
-~/.skills/clawdbot-update/backup-clawdbot-full.sh
-```
+## 使用方法  
 
-**Backs up:**
-- `~/.clawdbot/clawdbot.json` (config)
-- `~/.clawdbot/sessions/` (session state)
-- `~/.clawdbot/agents/` (multi-agent state)
-- `~/.clawdbot/credentials/` (auth tokens)
-- `~/.clawdbot/cron/` (scheduled jobs)
-- `~/.clawdbot/sandboxes/` (sandbox state)
-- All agent workspaces (dynamically detected!)
-- Git commit and status
+### 1. 预备份预览（Dry Run）  
 
-**Output:** `~/.clawdbot-backups/pre-update-YYYYMMDD-HHMMSS/`
+执行 `backup-clawdbot-dryrun.sh` 脚本，会显示：  
+- 将要备份的文件列表  
+- 预计的备份大小  
+- 工作区检测结果  
+- 磁盘空间使用情况  
+- 会被跳过的文件  
 
-### 3. Update Clawdbot
+**注意：** 此过程不会创建或修改任何文件！  
 
-Follow the checklist:
+### 2. 创建完整备份  
 
-```bash
-cat ~/.skills/clawdbot-update/UPDATE_CHECKLIST.md
-```
+执行 `backup-clawdbot-full.sh` 脚本，会备份以下内容：  
+- `~/.clawdbot/clawdbot.json`（配置文件）  
+- `~/.clawdbot/sessions/`（会话状态）  
+- `~/.clawdbot/agents/`（代理状态）  
+- `~/.clawdbot/credentials/`（认证令牌）  
+- `~/.clawdbot/cron/`（Cron 作业）  
+- `~/.clawdbot/sandboxes/`（沙箱状态）  
+- 所有代理的工作区（自动检测）  
+- Git 提交记录和状态  
 
-**Key steps:**
-1. Create backup
-2. Stop gateway
-3. Pull latest code
-4. Adjust config for breaking changes
-5. Run doctor
-6. Test functionality
-7. Start gateway as daemon
+**备份结果保存路径**：`~/.clawdbot-backups/pre-update-YYYYMMDD-HHMMSS/`  
 
-### 4. Restore from Backup
+### 3. 更新 Clawdbot  
 
-```bash
-~/.skills/clawdbot-update/restore-clawdbot.sh ~/.clawdbot-backups/pre-update-YYYYMMDD-HHMMSS
-```
+按照以下步骤操作：  
+1. 创建备份  
+2. 停止代理服务  
+3. 下载最新代码  
+4. 根据需要修改配置文件  
+5. 运行检查脚本（`doctor`）  
+6. 测试系统功能  
+7. 以守护进程模式重新启动代理服务  
 
-**Restores:**
-- All configuration
-- All state files
-- All workspaces
-- Optionally: git version
+### 4. 从备份中恢复 Clawdbot  
 
-## Important Notes
+执行 `restore-clawdbot.sh` 脚本，会恢复以下内容：  
+- 所有配置文件  
+- 所有状态数据  
+- 所有工作区数据  
+- 可选：恢复 Git 版本信息  
 
-### Multi-Agent Setup
+## 重要说明  
 
-This skill is designed for multi-agent setups with:
-- Multiple agents with separate workspaces
-- Sandbox configurations
-- Provider routing (WhatsApp/Telegram/Discord/Slack/etc.)
+### 多代理环境设置  
 
-### Breaking Changes in v2026.1.8
-
-**CRITICAL:**
-- **DM Lockdown**: DMs now default to `pairing` policy instead of open
-- **Groups**: `telegram.groups` and `whatsapp.groups` are now allowlists
-- **Sandbox**: Default scope changed to `"agent"` from implicit
-- **Timestamps**: Now UTC format in agent envelopes
+该技能适用于具有以下特点的多代理环境：  
+- 多个代理，每个代理拥有独立的工作区  
+- 沙箱配置  
+- 支持通过 WhatsApp、Telegram、Discord、Slack 等平台进行通信  
 
-### Backup Validation
-
-After backup, always verify:
-```bash
-BACKUP_DIR=~/.clawdbot-backups/pre-update-YYYYMMDD-HHMMSS
-cat "$BACKUP_DIR/BACKUP_INFO.txt"
-ls -lh "$BACKUP_DIR"
-```
+### v2026.1.8 的重要变更  
 
-Should contain:
-- ✅ `clawdbot.json`
-- ✅ `credentials.tar.gz`
-- ✅ `workspace-*.tar.gz` (one per agent)
+**紧急注意事项：**  
+- **私信策略**：私信功能默认设置为“配对”模式（而非开放模式）  
+- **群组设置**：`telegram.groups` 和 `whatsapp.groups` 被添加到允许列表中  
+- **沙箱权限**：默认权限范围从“默认”改为“代理”  
+- **时间戳**：现在使用 UTC 格式记录  
 
-### Config Changes Required
+### 备份验证  
 
-**Example: Switch WhatsApp to pairing:**
-```bash
-jq '.whatsapp.dmPolicy = "pairing"' ~/.clawdbot/clawdbot.json | sponge ~/.clawdbot/clawdbot.json
-```
+备份完成后，请务必验证备份文件是否包含以下内容：  
+- `clawdbot.json`  
+- `credentials.tar.gz`  
+- `workspace-*.tar.gz`（每个代理对应一个备份文件）  
 
-**Example: Set explicit sandbox scope:**
-```bash
-jq '.agent.sandbox.scope = "agent"' ~/.clawdbot/clawdbot.json | sponge ~/.clawdbot/clawdbot.json
-```
-
-## Workflow
+### 配置文件修改示例  
 
-### Standard Update Flow
-
-```bash
-# 1. Check for updates
-~/.skills/clawdbot-update/check-upstream.sh
-
-# 2. Validate current setup
-~/.skills/clawdbot-update/validate-setup.sh
+- **将 WhatsApp 的私信策略改为“配对”模式**：  
+  修改 `config.json` 中的相关配置  
 
-# 3. Dry run
-~/.skills/clawdbot-update/backup-clawdbot-dryrun.sh
+- **设置沙箱的权限范围**：  
+  在 `config.json` 中明确指定沙箱的权限范围  
 
-# 4. Backup
-~/.skills/clawdbot-update/backup-clawdbot-full.sh
+## 工作流程  
 
-# 5. Stop gateway
-cd ~/code/clawdbot
-pnpm clawdbot gateway stop
+### 标准更新流程  
 
-# 6. Update code
-git checkout main
-git pull --rebase origin main
-pnpm install
-pnpm build
+### 回滚流程  
 
-# 7. Run doctor
-pnpm clawdbot doctor --yes
+### 更新后的测试  
 
-# 8. Test
-pnpm clawdbot gateway start  # foreground for testing
+- **功能测试**：  
+  - 确保私信功能正常工作  
+  - 确保群组提及消息能够被正确处理  
+  - 确保输入提示功能正常显示  
+  - 确保代理路由功能正常  
+  - 确保沙箱隔离机制有效  
+  - 确保工具使用限制得到执行  
 
-# 9. Deploy
-pnpm clawdbot gateway stop
-pnpm clawdbot gateway start --daemon
-```
+### 新功能  
 
-### Rollback Flow
+### 监控机制  
 
-```bash
-# Quick rollback
-~/.skills/clawdbot-update/restore-clawdbot.sh <backup-dir>
+### 故障排除  
 
-# Manual rollback
-cd ~/code/clawdbot
-git checkout <old-commit>
-pnpm install && pnpm build
-cp <backup-dir>/clawdbot.json ~/.clawdbot/
-pnpm clawdbot gateway restart
-```
+- **代理服务无法启动**：请检查相关配置和日志  
+- **认证错误**：检查认证相关设置  
+- **沙箱问题**：检查沙箱环境的配置和日志  
 
-## Testing After Update
+### 紧急恢复措施  
 
-### Functionality Tests
+如果遇到问题，可以按照文档中的紧急恢复步骤进行操作。  
 
-- [ ] Provider DMs work (check pairing policy)
-- [ ] Group mentions respond
-- [ ] Typing indicators work
-- [ ] Agent routing works
-- [ ] Sandbox isolation works
-- [ ] Tool restrictions enforced
+## 安装方法  
 
-### New Features
-```bash
-pnpm clawdbot agents list
-pnpm clawdbot logs --tail 50
-pnpm clawdbot providers list --usage
-pnpm clawdbot skills list
-```
+- **通过 ClawdHub 安装**：[详细步骤](...)  
+- **手动安装**：[详细步骤](...)  
 
-### Monitoring
+## 许可证  
 
-```bash
-# Live logs
-pnpm clawdbot logs --follow
+该技能采用 MIT 许可协议，更多信息请参阅 [LICENSE](LICENSE)。  
 
-# Or Web UI
-open http://localhost:3001/logs
+## 开发者  
 
-# Check status
-pnpm clawdbot status
-pnpm clawdbot gateway status
-```
+**Pascal Schott** ([@pasogott](https://github.com/pasogott))  
 
-## Troubleshooting
-
-### Common Issues
-
-**Gateway won't start:**
-```bash
-pnpm clawdbot logs --grep error
-pnpm clawdbot doctor
-```
-
-**Auth errors:**
-```bash
-# OAuth profiles might need re-login
-pnpm clawdbot providers login <provider>
-```
-
-**Sandbox issues:**
-```bash
-# Check sandbox config
-jq '.agent.sandbox' ~/.clawdbot/clawdbot.json
-
-# Check per-agent sandbox
-jq '.routing.agents[] | {name, sandbox}' ~/.clawdbot/clawdbot.json
-```
-
-### Emergency Restore
-
-If something goes wrong:
-
-```bash
-# 1. Stop gateway
-pnpm clawdbot gateway stop
-
-# 2. Full restore
-LATEST_BACKUP=$(ls -t ~/.clawdbot-backups/ | head -1)
-~/.skills/clawdbot-update/restore-clawdbot.sh ~/.clawdbot-backups/$LATEST_BACKUP
-
-# 3. Restart
-pnpm clawdbot gateway start
-```
-
-## Installation
-
-### Via ClawdHub
-
-```bash
-clawdbot skills install clawdbot-update
-```
-
-### Manual
-
-```bash
-git clone <repo-url> ~/.skills/clawdbot-update
-chmod +x ~/.skills/clawdbot-update/*.sh
-```
-
-## License
-
-MIT - see [LICENSE](LICENSE)
-
-## Author
-
-**Pascal Schott** ([@pasogott](https://github.com/pasogott))
-
-Contribution for Clawdbot  
-https://github.com/clawdbot/clawdbot
+如果您对 Clawdbot 有贡献，请访问 [https://github.com/clawdbot/clawdbot](...) 进行提交。

@@ -1,27 +1,27 @@
-# Claw Permission Firewall
+# Claw 权限防火墙
 
-Runtime least-privilege firewall for agent/skill actions. It evaluates a requested action and returns one of:
+这是一个用于代理/技能操作的运行时最小权限防火墙。它会评估请求的操作，并返回以下三种结果之一：
 
-- **ALLOW** (safe to execute)
-- **DENY** (blocked by policy)
-- **NEED_CONFIRMATION** (risky; require explicit confirmation)
+- **ALLOW**（允许执行）
+- **DENY**（被策略禁止）
+- **NEED_CONFIRMATION**（存在风险；需要用户明确确认）
 
-It also returns a **sanitizedAction** with secrets redacted, plus a structured **audit** record.
+此外，它还会返回一个已处理敏感信息的操作结果（`sanitizedAction`），以及一个结构化的审计记录。
 
-> This is not a gateway hardening tool. It complements gateway security scanners by enforcing per-action policy at runtime.
-
----
-
-## What it protects against
-- Exfiltration to unknown domains
-- Prompt-injection “send secrets” attempts (secret detection + redaction)
-- Reading sensitive local files (`~/.ssh`, `~/.aws`, `.env`, etc.)
-- Unsafe execution patterns (`rm -rf`, `curl | sh`, etc.)
+> 这不是一个用于加固网关的工具，而是通过在运行时执行针对每个操作的策略来补充网关安全扫描器的功能。
 
 ---
 
-## Inputs
-Provide an action object to evaluate:
+## 防护内容：
+- 防止数据泄露到未知域名
+- 防止通过提示框进行秘密信息注入的尝试（检测并隐藏敏感信息）
+- 防止读取敏感的本地文件（如 `~/.ssh`、`~/.aws`、`.env` 等）
+- 防止不安全的执行方式（如 `rm -rf`、`curl | sh` 等）
+
+---
+
+## 输入：
+提供一个需要评估的操作对象：
 
 ```json
 {
@@ -46,7 +46,7 @@ Provide an action object to evaluate:
 
 ---
 
-## Outputs
+## 输出：
 ```json
 {
   "decision": "ALLOW | DENY | NEED_CONFIRMATION",
@@ -60,23 +60,23 @@ Provide an action object to evaluate:
 
 ---
 
-## Default policy behavior (v1)
-- **Exec disabled** by default
-- HTTP requires **TLS**
-- Denylist blocks common exfil hosts (pastebins, raw script hosts)
-- File access is jailed to **workspaceRoot**
-- Always redacts `Authorization`, `Cookie`, `X-API-Key`, and common token patterns
+## 默认策略行为（v1）：
+- 默认情况下，执行操作是被禁用的。
+- HTTP 请求必须使用 TLS 协议。
+- 黑名单会阻止常见的数据泄露目标域名（如剪贴板、原始脚本执行服务器）。
+- 文件访问被限制在 `workspaceRoot` 目录内。
+- `Authorization`、`Cookie`、`X-API-Key` 以及常见的令牌信息都会被隐藏。
 
 ---
 
-## Recommended usage pattern
-1) Your skill creates an action object.
-2) Call this skill to evaluate it.
-3) If **ALLOW** → execute sanitizedAction.
-4) If **NEED_CONFIRMATION** → ask user and re-run with `context.confirmed=true`.
-5) If **DENY** → stop and show the reasons.
+## 推荐使用流程：
+1) 你的技能创建一个操作对象。
+2) 调用此技能来评估该操作。
+3) 如果返回 **ALLOW**，则执行处理后的操作结果（`sanitizedAction`）。
+4) 如果返回 **NEED_CONFIRMATION**，则请求用户确认，然后重新运行该操作并设置 `context.confirmed=true`。
+5) 如果返回 **DENY**，则停止操作并显示拒绝原因。
 
 ---
 
-## Files
-- `policy.yaml` contains the policy (edit for your environment).
+## 相关文件：
+- `policy.yaml` 文件中包含策略配置（请根据你的环境进行修改）。

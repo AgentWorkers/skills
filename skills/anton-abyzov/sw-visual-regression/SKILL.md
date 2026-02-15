@@ -1,22 +1,22 @@
 ---
 name: visual-regression
-description: Visual regression testing expert. Use when implementing visual testing, detecting CSS regressions, or managing screenshot baselines.
+description: 视觉回归测试专家。适用于实施视觉测试、检测CSS代码中的回归问题（即代码更改导致的界面显示异常），或管理截图基准数据（用于比较不同版本界面的一致性）。
 ---
 
-# Visual Regression Testing Skill
+# 视觉回归测试技能
 
-Expert in visual regression testing - automated detection of unintended visual changes in web applications using screenshot comparison, pixel diffing, and visual testing frameworks.
+擅长视觉回归测试——利用截图对比、像素差异分析和视觉测试框架，自动化检测Web应用程序中非预期的视觉变化。
 
-## Why Visual Regression Testing?
+## 为什么需要视觉回归测试？
 
-**Problems It Solves**:
-- CSS changes breaking layout unexpectedly
-- Responsive design regressions (mobile/tablet/desktop)
-- Cross-browser rendering differences
-- Component library changes affecting consumers
-- UI regressions that functional tests miss
+**解决的问题**：
+- CSS更改导致布局意外破坏
+- 响应式设计出现回退（移动设备/平板电脑/桌面设备）
+- 不同浏览器之间的渲染差异
+- 组件库的更改影响到用户界面
+- 功能测试未能发现的UI问题
 
-**Example Scenario**:
+**示例场景**：
 ```
 Developer changes global CSS: `.container { padding: 10px }`
   ↓
@@ -27,17 +27,17 @@ Functional E2E tests pass (buttons still clickable)
 Visual regression test catches layout shift
 ```
 
-## Core Tools
+## 核心工具
 
-### 1. Playwright Visual Snapshots (Built-in)
+### 1. Playwright Visual Snapshots（内置）
 
-**Why Playwright?**
-- No third-party service required (free)
-- Fast (parallel execution)
-- Built-in automatic masking (hide dynamic content)
-- Cross-browser support (Chromium, Firefox, WebKit)
+**为什么选择Playwright？**
+- 无需第三方服务（免费）
+- 执行速度快（支持并行执行）
+- 内置自动遮罩功能（隐藏动态内容）
+- 支持多种浏览器（Chromium、Firefox、WebKit）
 
-#### Basic Snapshot Test
+#### 基本截图测试
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -50,20 +50,20 @@ test('homepage should match visual baseline', async ({ page }) => {
 });
 ```
 
-**First Run** (create baseline):
+**首次运行**（创建基准）：
 ```bash
 npx playwright test --update-snapshots
 # Creates: tests/__screenshots__/homepage.spec.ts/homepage-chromium-darwin.png
 ```
 
-**Subsequent Runs** (compare to baseline):
+**后续运行**（与基准对比）：
 ```bash
 npx playwright test
 # Compares current screenshot to baseline
 # Fails if difference exceeds threshold
 ```
 
-#### Element-Level Snapshots
+#### 元素级截图
 
 ```typescript
 test('button should match visual baseline', async ({ page }) => {
@@ -74,7 +74,7 @@ test('button should match visual baseline', async ({ page }) => {
 });
 ```
 
-#### Configurable Thresholds
+#### 可配置的阈值
 
 ```typescript
 // playwright.config.ts
@@ -89,7 +89,7 @@ export default defineConfig({
 });
 ```
 
-#### Masking Dynamic Content
+#### 遮罩动态内容
 
 ```typescript
 test('dashboard with dynamic data', async ({ page }) => {
@@ -106,7 +106,7 @@ test('dashboard with dynamic data', async ({ page }) => {
 });
 ```
 
-#### Responsive Testing (Multiple Viewports)
+#### 响应式测试（多视图窗口）
 
 ```typescript
 const viewports = [
@@ -125,16 +125,16 @@ for (const viewport of viewports) {
 }
 ```
 
-### 2. Percy (Cloud-Based Visual Testing)
+### 2. Percy（基于云的视觉测试工具）
 
-**Why Percy?**
-- Smart diffing (ignores anti-aliasing differences)
-- Review UI (approve/reject changes)
-- Integrates with GitHub PRs
-- Parallel testing across browsers
-- Automatic baseline management
+**为什么选择Percy？**
+- 智能差异分析（忽略抗锯齿效果带来的差异）
+- 提供UI审查功能（批准/拒绝更改）
+- 与GitHub PR集成
+- 支持跨浏览器并行测试
+- 自动管理基准数据
 
-#### Setup
+#### 设置
 
 ```bash
 npm install --save-dev @percy/playwright
@@ -158,7 +158,7 @@ test('homepage visual test', async ({ page }) => {
 PERCY_TOKEN=your_token npx percy exec -- npx playwright test
 ```
 
-#### Percy Configuration
+#### Percy配置
 
 ```yaml
 # .percy.yml
@@ -175,7 +175,7 @@ snapshot:
     .ad-banner { display: none; }
 ```
 
-#### Percy in CI (GitHub Actions)
+#### 在CI流程中使用Percy（GitHub Actions）
 
 ```yaml
 name: Visual Tests
@@ -197,16 +197,16 @@ jobs:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 ```
 
-### 3. Chromatic (Storybook Visual Testing)
+### 3. Chromatic（Storybook视觉测试工具）
 
-**Why Chromatic?**
-- Designed for component libraries (Storybook integration)
-- Captures all component states automatically
-- UI review workflow (approve/reject)
-- Detects accessibility issues
-- Version control for design system
+**为什么选择Chromatic？**
+- 专为组件库设计（与Storybook集成）
+- 自动捕获所有组件状态
+- 提供UI审查流程（批准/拒绝更改）
+- 能检测可访问性问题
+- 支持设计系统的版本控制
 
-#### Setup (Storybook + Chromatic)
+#### 设置（Storybook + Chromatic）
 
 ```bash
 npm install --save-dev chromatic
@@ -240,7 +240,7 @@ export const Loading = () => <Button loading>Loading...</Button>;
 npx chromatic --project-token=your_token
 ```
 
-#### Chromatic in CI
+#### 在CI流程中使用Chromatic
 
 ```yaml
 name: Chromatic
@@ -259,15 +259,15 @@ jobs:
       - run: npx chromatic --project-token=${{ secrets.CHROMATIC_TOKEN }}
 ```
 
-### 4. BackstopJS (Configuration-Based)
+### 4. BackstopJS（基于配置的视觉测试工具）
 
-**Why BackstopJS?**
-- No code required (JSON configuration)
-- Local execution (no cloud service)
-- Interactive reports
-- CSS selector-based scenarios
+**为什么选择BackstopJS？**
+- 无需编写代码（仅通过JSON配置）
+- 本地执行（无需依赖云服务）
+- 提供交互式报告
+- 支持基于CSS选择器的测试场景
 
-#### Configuration
+#### 配置
 
 ```json
 {
@@ -311,11 +311,11 @@ backstop test
 backstop approve
 ```
 
-## Testing Strategies
+## 测试策略
 
-### 1. Component-Level Visual Testing
+### 1. 组件级视觉测试
 
-**Use Case**: Design system components (buttons, inputs, modals)
+**应用场景**：设计系统组件（按钮、输入框、模态框）
 
 ```typescript
 // Component snapshots
@@ -339,9 +339,9 @@ test.describe('Button component', () => {
 });
 ```
 
-### 2. Page-Level Visual Testing
+### 2. 页面级视觉测试
 
-**Use Case**: Full pages (homepage, checkout, profile)
+**应用场景**：整个页面（首页、结账页面、个人资料页面）
 
 ```typescript
 test('checkout page visual baseline', async ({ page }) => {
@@ -358,9 +358,9 @@ test('checkout page visual baseline', async ({ page }) => {
 });
 ```
 
-### 3. Interaction-Based Visual Testing
+### 3. 基于交互的视觉测试
 
-**Use Case**: Modals, dropdowns, tooltips (require interaction)
+**应用场景**：模态框、下拉菜单、工具提示（需要用户交互）
 
 ```typescript
 test('modal visual test', async ({ page }) => {
@@ -380,7 +380,7 @@ test('modal visual test', async ({ page }) => {
 });
 ```
 
-### 4. Cross-Browser Visual Testing
+### 4. 跨浏览器视觉测试
 
 ```typescript
 // playwright.config.ts
@@ -403,11 +403,11 @@ npx playwright test
 # - homepage-webkit-darwin.png
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Stabilize Before Capturing
+### 1. 在捕获测试结果前确保页面稳定
 
-**Problem**: Animations, lazy loading, fonts cause flaky tests.
+**问题**：动画效果、懒加载内容、字体加载等问题可能导致测试结果不稳定。
 
 ```typescript
 // ❌ BAD: Capture immediately
@@ -433,7 +433,7 @@ await page.addStyleTag({
 await expect(page).toHaveScreenshot();
 ```
 
-### 2. Mask Dynamic Content
+### 2. 遮罩动态内容
 
 ```typescript
 await expect(page).toHaveScreenshot({
@@ -446,7 +446,7 @@ await expect(page).toHaveScreenshot({
 });
 ```
 
-### 3. Use Meaningful Names
+### 3. 为测试用例起有意义的名称
 
 ```typescript
 // ❌ BAD: Generic names
@@ -457,9 +457,9 @@ await expect(page).toHaveScreenshot('homepage-logged-in-user.png');
 await expect(page).toHaveScreenshot('checkout-empty-cart-error.png');
 ```
 
-### 4. Test Critical Paths Only
+### 4. 仅测试关键路径
 
-**Visual regression tests are expensive (slow, storage)**. Prioritize:
+**视觉回归测试耗时较长（速度慢，占用存储空间较大）**。因此，应优先测试关键路径：
 
 ```typescript
 // ✅ High Priority (critical user flows)
@@ -479,13 +479,13 @@ await expect(page).toHaveScreenshot('checkout-empty-cart-error.png');
 - Legal pages
 ```
 
-### 5. Baseline Management Strategy
+### 5. 基准数据管理策略
 
-**When to Update Baselines**:
-- ✅ Intentional design changes (approved by design team)
-- ✅ Component library upgrades (reviewed)
-- ✅ Browser updates (expected differences)
-- ❌ Unintentional changes (investigate first!)
+**何时更新基准数据**：
+- ✅ 经设计团队批准的设计更改
+- ✅ 组件库升级（经过审查）
+- ✅ 浏览器更新（已知会有差异）
+- ❌ 非预期的更改（需先进行调查！）
 
 ```bash
 # Review diff report BEFORE approving
@@ -495,11 +495,11 @@ npx playwright test --update-snapshots # Use carefully!
 npx playwright test homepage.spec.ts --update-snapshots
 ```
 
-## Debugging Visual Diffs
+## 调试视觉差异
 
-### 1. Review Diff Report
+### 1. 查看差异报告
 
-Playwright generates HTML report with side-by-side comparison:
+Playwright会生成包含对比结果的HTML报告：
 
 ```bash
 npx playwright test
@@ -507,7 +507,7 @@ npx playwright test
 # Shows: Expected | Actual | Diff (highlighted pixels)
 ```
 
-### 2. Adjust Thresholds
+### 2. 调整阈值
 
 ```typescript
 // Tolerate minor differences (anti-aliasing, font rendering)
@@ -516,7 +516,7 @@ await expect(page).toHaveScreenshot({
 });
 ```
 
-### 3. Ignore Specific Regions
+### 3. 忽略特定区域
 
 ```typescript
 // Ignore regions that legitimately differ
@@ -526,9 +526,9 @@ await expect(page).toHaveScreenshot({
 });
 ```
 
-## CI/CD Integration
+## CI/CD集成
 
-### 1. GitHub Actions (Playwright Snapshots)
+### 1. 使用GitHub Actions进行Playwright截图测试
 
 ```yaml
 name: Visual Regression Tests
@@ -557,12 +557,12 @@ jobs:
           path: playwright-report/
 ```
 
-### 2. Baseline Storage Strategies
+### 2. 基准数据存储策略
 
-**Option 1: Git LFS (Large File Storage)**
-- Store baselines in Git (versioned with code)
-- Use Git LFS to avoid bloating repository
-- Automatic sync across developers
+**选项1：Git LFS（大文件存储）**
+- 将基准数据存储在Git仓库中（与代码一起版本控制）
+- 使用Git LFS避免仓库文件过大
+- 自动在开发人员之间同步基准数据
 
 ```bash
 # .gitattributes
@@ -573,32 +573,32 @@ git add tests/__screenshots__/*.png
 git commit -m "Add visual baselines"
 ```
 
-**Option 2: Cloud Storage (S3, GCS)**
-- Store baselines in cloud bucket
-- Download in CI before test
-- Faster CI (no Git LFS checkout)
+**选项2：云存储（S3、GCS）**
+- 将基准数据存储在云服务器上
+- 在CI过程中下载基准数据
+- 提高CI效率（无需等待Git LFS同步）
 
 ```yaml
 - name: Download baselines
   run: aws s3 sync s3://my-bucket/baselines tests/__screenshots__/
 ```
 
-**Option 3: Percy/Chromatic (Managed)**
-- Baselines stored in service (no Git needed)
-- Automatic baseline management
-- UI for reviewing changes
+**选项3：使用Percy/Chromatic进行管理**
+- 基准数据由服务端管理（无需使用Git）
+- 自动更新基准数据
+- 提供UI界面用于审查更改
 
-### 3. Handling Baseline Drift
+### 3. 处理基准数据漂移问题
 
-**Problem**: Developer A updates baselines, Developer B's tests fail.
+**问题**：开发者A更新了基准数据，导致开发者B的测试失败。
 
-**Solution 1: Require baseline review**
+**解决方案1：要求进行基准数据审查**
 ```yaml
 # PR merge rules
 - Require approval for changes in tests/__screenshots__/
 ```
 
-**Solution 2: Auto-update in CI**
+**解决方案2：在CI过程中自动更新基准数据**
 ```yaml
 - name: Update baselines if approved
   if: contains(github.event.pull_request.labels.*.name, 'update-baselines')
@@ -610,44 +610,44 @@ git commit -m "Add visual baselines"
     git push
 ```
 
-## Common Pitfalls
+## 常见问题及解决方法
 
-### 1. Flaky Tests Due to Animations
+### 1. 由于动画效果导致的测试结果不稳定
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 await page.goto('/'); // Page has CSS animations
 await expect(page).toHaveScreenshot(); // Fails randomly (mid-animation)
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await page.goto('/');
 await page.addStyleTag({ content: '* { animation: none !important; }' });
 await expect(page).toHaveScreenshot();
 ```
 
-### 2. Font Loading Issues
+### 2. 字体加载问题
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 await page.goto('/'); // Fonts loading async
 await expect(page).toHaveScreenshot(); // Sometimes uses fallback font
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await page.goto('/');
 await page.evaluate(() => document.fonts.ready); // Wait for fonts
 await expect(page).toHaveScreenshot();
 ```
 
-### 3. Testing Everything (Slow CI)
+### 3. 测试所有内容（导致CI流程缓慢）
 
-❌ **Bad**: 500 visual tests (30 min CI time)
-✅ **Good**: 50 critical visual tests (5 min CI time)
+❌ **错误做法**：进行大量视觉测试（CI耗时30分钟）
+✅ **正确做法**：仅测试关键视觉元素（CI耗时5分钟）
 
-**Optimize**:
+**优化方法**：
 ```typescript
 // Run visual tests only on visual changes
 if (changedFiles.some(file => file.endsWith('.css'))) {
@@ -655,19 +655,20 @@ if (changedFiles.some(file => file.endsWith('.css'))) {
 }
 ```
 
-### 4. Platform Differences (macOS vs Linux)
+### 4. 不同平台（macOS与Linux）之间的显示差异
 
-**Problem**: Screenshots differ between macOS (local) and Linux (CI).
+**问题**：macOS（本地开发环境）和Linux（CI环境）下的截图可能不一致。
 
-**Solution**: Use Docker for local development
+**解决方案**：使用Docker进行本地开发
+
 ```bash
 # Local development with Docker
 docker run -it --rm -v $(pwd):/work -w /work mcr.microsoft.com/playwright:v1.40.0-focal npx playwright test
 ```
 
-## Advanced Techniques
+## 高级技术
 
-### 1. Visual Regression for Emails
+### 1. 针对电子邮件的视觉回归测试
 
 ```typescript
 test('email template visual test', async ({ page }) => {
@@ -678,7 +679,7 @@ test('email template visual test', async ({ page }) => {
 });
 ```
 
-### 2. PDF Visual Testing
+### 2. PDF格式的视觉测试
 
 ```typescript
 test('invoice PDF visual test', async ({ page }) => {
@@ -691,7 +692,7 @@ test('invoice PDF visual test', async ({ page }) => {
 });
 ```
 
-### 3. A/B Test Visual Variants
+### 3. A/B测试（比较不同版本的UI）
 
 ```typescript
 test('A/B test variant visual comparison', async ({ page }) => {
@@ -707,22 +708,21 @@ test('A/B test variant visual comparison', async ({ page }) => {
 });
 ```
 
-## Resources
+## 参考资源
 
-- [Playwright Visual Comparisons](https://playwright.dev/docs/test-snapshots)
-- [Percy Documentation](https://docs.percy.io/)
-- [Chromatic Documentation](https://www.chromatic.com/docs/)
-- [BackstopJS](https://github.com/garris/BackstopJS)
+- [Playwright视觉对比工具文档](https://playwright.dev/docs/test-snapshots)
+- [Percy文档](https://docs.percy.io/)
+- [Chromatic文档](https://www.chromatic.com/docs/)
+- [BackstopJS文档](https://github.com/garris/BackstopJS)
 
-## Activation Keywords
+## 常见问题解答
 
-Ask me about:
-- "How to set up visual regression testing"
-- "Playwright screenshot testing"
-- "Percy vs Chromatic comparison"
-- "Visual testing for components"
-- "How to fix flaky visual tests"
-- "Managing visual baselines in CI"
-- "Cross-browser visual testing"
-- "Screenshot comparison best practices"
-- "Visual regression CI integration"
+- **如何设置视觉回归测试？**
+- **Playwright如何进行截图测试？**
+- **Percy与Chromatic哪个更好？**
+- **如何针对组件进行视觉测试？**
+- **如何解决测试结果不稳定的问题？**
+- **如何在CI过程中管理视觉测试的基准数据？**
+- **如何进行跨浏览器视觉测试？**
+- **截图对比的最佳实践是什么？**
+- **如何将视觉回归测试集成到CI流程中？**

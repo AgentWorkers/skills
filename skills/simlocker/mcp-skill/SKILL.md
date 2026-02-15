@@ -1,8 +1,8 @@
-# MCP Skill
+# MCP 技能
 
-This skill wraps the MCP at https://mcp.exa.ai/mcp for various tools such as web search, deep research, and more.
+该技能提供了对 MCP（https://mcp.exa.ai/mcp）的访问接口，支持多种工具的使用，包括网络搜索、深度研究等。
 
-## Tools Included
+## 包含的工具
 - web_search_exa
 - web_search_advanced_exa
 - get_code_context_exa

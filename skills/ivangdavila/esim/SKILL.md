@@ -1,42 +1,42 @@
 ---
 name: eSIM
-description: Implement and troubleshoot eSIM across consumer activation, carrier integration, and RSP development.
+description: 实现并解决eSIM在消费者激活、运营商集成以及RSP（Real-Time Server Processing）开发过程中的相关问题。
 metadata: {"clawdbot":{"emoji":"📱","os":["linux","darwin","win32"]}}
 ---
 
-## Critical Distinction
-- Consumer RSP (SGP.22) and M2M RSP (SGP.02) are completely different architectures — not interchangeable, verify which applies before starting
+## 关键区别  
+- 消费者用 RSP（SGP.22）和 M2M 用 RSP（SGP.02）采用完全不同的架构，无法互换；在开始操作前请确认使用哪种架构。  
 
-## Platform API Restrictions
-- Apple eSIM APIs require carrier entitlements — third-party apps cannot access without carrier partnership agreement
-- Android carrier privilege APIs require signing certificate match — must be signed with carrier's certificate
-- No public API exists for arbitrary eSIM provisioning — apps suggesting otherwise will fail App Store/Play Store review
+## 平台 API 限制  
+- Apple eSIM API 需要运营商的授权许可；第三方应用若无运营商合作协议则无法使用这些 API。  
+- Android 的运营商特权 API 要求签名证书与运营商的证书相匹配；应用必须使用运营商提供的证书进行签名。  
+- 目前不存在用于任意 eSIM 配置的公开 API；声称可以使用的应用将无法通过 App Store 或 Play Store 的审核。  
 
-## Activation Code Traps
-- Format is `LPA:1$SMDP+address$MatchingId` — parse carefully, some codes omit optional parts
-- `$1` suffix means confirmation code required — flow differs, timeout is shorter
-- Codes are often one-time use — SM-DP+ rejects reused MatchingId, must generate new code
-- QR code is just encoding — the activation code content is what matters
+## 激活码相关问题  
+- 激活码的格式为 `LPA:1$SMDP+地址$MatchingId`；请仔细解析该格式，部分激活码可能缺少某些可选部分。  
+- 后缀 `$1` 表示需要输入确认码；激活流程有所不同，且超时时间较短。  
+- 激活码通常为一次性使用；如果使用重复的 `MatchingId`，系统会拒绝激活请求，必须重新生成新的激活码。  
+- QR 码仅用于编码激活码内容，实际起作用的还是激活码本身。  
 
-## Certification Requirements
-- GSMA SAS (Security Accreditation Scheme) mandatory for production SM-DP+ — cannot go live without it
-- Use test eUICCs during development — production EIDs must not touch test environments
-- GSMA TS.48 defines RSP test cases — certification testing follows this spec
-- Entitlement server is separate from RSP — iOS carrier features require additional integration beyond profile provisioning
+## 认证要求  
+- 生产环境中的 SM-DP+ 服务必须通过 GSMA SAS（安全认证方案）的认证；未通过认证的服务无法上线。  
+- 开发过程中应使用测试用的 eUICC（电子用户识别卡）；生产环境的 EID（电子身份标识符）严禁用于测试环境。  
+- GSMA TS.48 规定了 RSP 的测试用例；认证测试需遵循该规范进行。  
+- 权限服务器与 RSP 服务是分离的；iOS 的运营商相关功能还需要额外的集成工作（超出简单的配置范围）。  
 
-## Consumer-Facing Pitfalls
-- QR codes expire — typically 24-72 hours, carrier-dependent, users panic when "invalid"
-- Deleting profile is permanent on device — must request new activation code from carrier, no local recovery
-- Device lock status matters — locked devices reject profiles from non-native carriers
-- Regional variants of same phone model may lack eSIM hardware — verify before promising compatibility
-- Profile transfer between devices almost never works — expect new activation per device
+## 消费者使用时可能遇到的问题  
+- QR 码的有效期通常为 24 至 72 小时，具体时长取决于运营商；如果 QR 码失效，用户可能会感到困惑。  
+- 删除设备上的配置文件会导致数据永久丢失，必须向运营商重新申请激活码，无法通过本地操作恢复数据。  
+- 设备的锁定状态会影响激活过程；被锁定的设备会拒绝非原生运营商提供的配置文件。  
+- 同一手机型号的不同地区版本可能不具备支持 eSIM 的硬件；在承诺兼容性之前请先进行验证。  
+- 设备间的配置文件传输几乎无法实现；通常需要为每台设备单独生成新的激活码。  
 
-## Carrier Integration Reality
-- MVNOs rarely operate own SM-DP+ — use MNO's infrastructure or aggregators (G+D, IDEMIA, Thales)
-- Business agreements required before technical integration — ES2+ access isn't self-service
-- Number porting complicates eSIM activation — may require physical SIM first depending on carrier process
+## 运营商方面的实际情况  
+- 移动虚拟网络运营商（MVNO）很少自行运营 SM-DP+ 服务，通常会使用移动网络运营商（MNO）的基础设施或第三方服务提供商（如 G+D、IDEMIA、Thales）的服务。  
+- 在进行技术集成之前，必须先签订相关商业协议；ES2+ 服务的接入并非自助服务。  
+- 号码迁移会增加 eSIM 激活的复杂性；根据运营商的流程，有时可能需要先使用物理 SIM 卡。  
 
-## Troubleshooting Specifics
-- "Profile already exists" error — delete existing profile before retry, or request new MatchingId from SM-DP+
-- Download fails mid-process — ES9+ requires stable HTTPS, retry on better connection, not a code issue
-- Profile installed but no service — verify profile is enabled AND set as active line, restart radio
+## 故障排除方法  
+- 如果出现“配置文件已存在”的错误，请先删除现有配置文件，然后向 SM-DP+ 服务请求新的 `MatchingId`。  
+- 如果下载过程中出现错误，请在网络稳定的情况下重新尝试；这通常不是激活码本身的问题。  
+- 即使配置文件已安装，也可能无法使用相应服务；请确认配置文件已启用并被设置为当前使用的号码，并重启设备的无线通信模块（radio）。

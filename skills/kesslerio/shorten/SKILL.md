@@ -1,30 +1,30 @@
 ---
 name: shorten
-description: Shorten URLs using is.gd (no auth required). Returns a permanent short link.
+description: 使用 is.gd 来缩短 URL（无需身份验证）。该服务会返回一个永久有效的短链接。
 ---
 
-# Shorten
+# 缩短网址
 
-Quickly shorten URLs using the [is.gd](https://is.gd) service. No API key or account required.
+使用 [is.gd](https://is.gd) 服务可以快速缩短网址。无需 API 密钥或账户。
 
-## Usage
+## 使用方法
 
 ```bash
 /home/art/clawd/skills/shorten/shorten.sh "https://example.com/very/long/url"
 ```
 
-## Examples
+## 示例
 
-**Standard usage:**
+**标准用法：**
 ```bash
 shorten "https://google.com"
 # Output: https://is.gd/O5d2Xq
 ```
 
-**With custom alias (if supported by script extension later):**
-Currently basic shortening only.
+**使用自定义别名（如果脚本扩展支持的话）：**
+目前仅支持基本缩短功能。
 
-## Notes
-- Links are permanent.
-- No analytics dashboard (simple redirect).
-- Rate limits apply (be reasonable).
+## 注意事项
+- 短缩后的链接是永久有效的。
+- 该服务不提供分析统计功能（仅进行简单重定向）。
+- 服务有速率限制，请合理使用。

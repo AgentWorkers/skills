@@ -17,9 +17,9 @@ metadata:
 
 # Basecamp
 
-Access the Basecamp 4 API with managed OAuth authentication. Manage projects, to-dos, messages, schedules, documents, and team collaboration.
+您可以使用托管的 OAuth 认证来访问 Basecamp 4 API，从而管理项目、待办事项、消息、日程安排、文档以及团队协作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all projects
@@ -31,41 +31,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/basecamp/{resource}.json
 ```
 
-The gateway proxies requests to `3.basecampapi.com/{account_id}/` and automatically injects your OAuth token and account ID.
+该网关会将请求代理到 `3.basecampapi.com/{account_id}/`，并自动插入您的 OAuth 令牌和账户 ID。
 
-**Important:** All Basecamp API URLs must end with `.json`.
+**重要提示：** 所有 Basecamp API 的 URL 必须以 `.json` 结尾。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Basecamp OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Basecamp OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Basecamp connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Basecamp 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,19 +142,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Info
+### 用户信息
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /basecamp/my/profile.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 51197030,
@@ -167,15 +167,15 @@ GET /basecamp/my/profile.json
 }
 ```
 
-### People Operations
+### 人员管理
 
-#### List People
+#### 列出人员
 
 ```bash
 GET /basecamp/people.json
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -190,27 +190,27 @@ GET /basecamp/people.json
 ]
 ```
 
-#### Get Person
+#### 获取人员信息
 
 ```bash
 GET /basecamp/people/{person_id}.json
 ```
 
-#### List Project Members
+#### 列出项目成员
 
 ```bash
 GET /basecamp/projects/{project_id}/people.json
 ```
 
-### Project Operations
+### 项目管理
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /basecamp/projects.json
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -225,19 +225,19 @@ GET /basecamp/projects.json
 ]
 ```
 
-#### Get Project
+#### 获取项目信息
 
 ```bash
 GET /basecamp/projects/{project_id}.json
 ```
 
-The project response includes a `dock` array with available tools (message_board, todoset, vault, chat, schedule, etc.). Each dock item has:
-- `id`: The tool's ID
-- `name`: Tool type (e.g., "todoset", "message_board")
-- `enabled`: Whether the tool is active
-- `url`: Direct URL to access the tool
+项目响应中包含一个 `dock` 数组，其中列出了可用的工具（如消息板、待办事项管理器、文档库、聊天功能、日程安排等）。每个工具的详细信息包括：
+- `id`：工具的 ID
+- `name`：工具类型（例如 "todoset"、"message_board"）
+- `enabled`：工具是否处于活动状态
+- `url`：访问该工具的直接 URL
 
-#### Create Project
+#### 创建项目
 
 ```bash
 POST /basecamp/projects.json
@@ -249,7 +249,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Project
+#### 更新项目
 
 ```bash
 PUT /basecamp/projects/{project_id}.json
@@ -261,29 +261,29 @@ Content-Type: application/json
 }
 ```
 
-#### Delete (Trash) Project
+#### 删除项目
 
 ```bash
 DELETE /basecamp/projects/{project_id}.json
 ```
 
-### To-Do Operations
+### 待办事项管理
 
-#### Get Todoset
+#### 获取待办事项管理器
 
-First, get the todoset ID from the project's dock:
+首先，从项目的 `dock` 中获取待办事项管理器的 ID：
 
 ```bash
 GET /basecamp/buckets/{project_id}/todosets/{todoset_id}.json
 ```
 
-#### List Todolists
+#### 列出待办事项列表
 
 ```bash
 GET /basecamp/buckets/{project_id}/todosets/{todoset_id}/todolists.json
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -297,7 +297,7 @@ GET /basecamp/buckets/{project_id}/todosets/{todoset_id}/todolists.json
 ]
 ```
 
-#### Create Todolist
+#### 创建待办事项列表
 
 ```bash
 POST /basecamp/buckets/{project_id}/todosets/{todoset_id}/todolists.json
@@ -309,19 +309,19 @@ Content-Type: application/json
 }
 ```
 
-#### Get Todolist
+#### 获取待办事项列表
 
 ```bash
 GET /basecamp/buckets/{project_id}/todolists/{todolist_id}.json
 ```
 
-#### List Todos
+#### 列出待办事项
 
 ```bash
 GET /basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -335,7 +335,7 @@ GET /basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json
 ]
 ```
 
-#### Create Todo
+#### 创建待办事项
 
 ```bash
 POST /basecamp/buckets/{project_id}/todolists/{todolist_id}/todos.json
@@ -349,7 +349,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 9555973289,
@@ -358,7 +358,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Todo
+#### 更新待办事项
 
 ```bash
 PUT /basecamp/buckets/{project_id}/todos/{todo_id}.json
@@ -370,35 +370,35 @@ Content-Type: application/json
 }
 ```
 
-#### Complete Todo
+#### 完成待办事项
 
 ```bash
 POST /basecamp/buckets/{project_id}/todos/{todo_id}/completion.json
 ```
 
-Returns 204 on success.
+成功时返回 204 状态码。
 
-#### Uncomplete Todo
+#### 取消待办事项
 
 ```bash
 DELETE /basecamp/buckets/{project_id}/todos/{todo_id}/completion.json
 ```
 
-### Message Board Operations
+### 消息板管理
 
-#### Get Message Board
+#### 获取消息板
 
 ```bash
 GET /basecamp/buckets/{project_id}/message_boards/{message_board_id}.json
 ```
 
-#### List Messages
+#### 列出消息
 
 ```bash
 GET /basecamp/buckets/{project_id}/message_boards/{message_board_id}/messages.json
 ```
 
-#### Create Message
+#### 创建消息
 
 ```bash
 POST /basecamp/buckets/{project_id}/message_boards/{message_board_id}/messages.json
@@ -411,13 +411,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Message
+#### 获取消息
 
 ```bash
 GET /basecamp/buckets/{project_id}/messages/{message_id}.json
 ```
 
-#### Update Message
+#### 更新消息
 
 ```bash
 PUT /basecamp/buckets/{project_id}/messages/{message_id}.json
@@ -429,21 +429,21 @@ Content-Type: application/json
 }
 ```
 
-### Schedule Operations
+### 日程安排管理
 
-#### Get Schedule
+#### 获取日程安排
 
 ```bash
 GET /basecamp/buckets/{project_id}/schedules/{schedule_id}.json
 ```
 
-#### List Schedule Entries
+#### 列出日程安排条目
 
 ```bash
 GET /basecamp/buckets/{project_id}/schedules/{schedule_id}/entries.json
 ```
 
-#### Create Schedule Entry
+#### 创建日程安排条目
 
 ```bash
 POST /basecamp/buckets/{project_id}/schedules/{schedule_id}/entries.json
@@ -459,7 +459,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Schedule Entry
+#### 更新日程安排条目
 
 ```bash
 PUT /basecamp/buckets/{project_id}/schedule_entries/{entry_id}.json
@@ -472,21 +472,21 @@ Content-Type: application/json
 }
 ```
 
-### Vault (Documents & Files) Operations
+### 文档库（文档和文件）管理
 
-#### Get Vault
+#### 获取文档库
 
 ```bash
 GET /basecamp/buckets/{project_id}/vaults/{vault_id}.json
 ```
 
-#### List Documents in Vault
+#### 列出文档库中的文档
 
 ```bash
 GET /basecamp/buckets/{project_id}/vaults/{vault_id}/documents.json
 ```
 
-#### Create Document
+#### 创建文档
 
 ```bash
 POST /basecamp/buckets/{project_id}/vaults/{vault_id}/documents.json
@@ -498,33 +498,33 @@ Content-Type: application/json
 }
 ```
 
-#### List Uploads in Vault
+#### 列出文档库中的上传文件
 
 ```bash
 GET /basecamp/buckets/{project_id}/vaults/{vault_id}/uploads.json
 ```
 
-### Campfire (Chat) Operations
+### Campfire（聊天）管理
 
-#### List All Campfires
+#### 列出所有聊天记录
 
 ```bash
 GET /basecamp/chats.json
 ```
 
-#### Get Campfire
+#### 获取聊天记录
 
 ```bash
 GET /basecamp/buckets/{project_id}/chats/{chat_id}.json
 ```
 
-#### List Campfire Lines (Messages)
+#### 列出聊天记录中的消息
 
 ```bash
 GET /basecamp/buckets/{project_id}/chats/{chat_id}/lines.json
 ```
 
-#### Create Campfire Line
+#### 创建聊天记录
 
 ```bash
 POST /basecamp/buckets/{project_id}/chats/{chat_id}/lines.json
@@ -535,15 +535,15 @@ Content-Type: application/json
 }
 ```
 
-### Comments Operations
+### 评论管理
 
-#### List Comments on Recording
+#### 列出记录的评论
 
 ```bash
 GET /basecamp/buckets/{project_id}/recordings/{recording_id}/comments.json
 ```
 
-#### Create Comment
+#### 创建评论
 
 ```bash
 POST /basecamp/buckets/{project_id}/recordings/{recording_id}/comments.json
@@ -554,37 +554,37 @@ Content-Type: application/json
 }
 ```
 
-### Recording Status Operations
+### 记录状态管理
 
-All content items (todos, messages, documents, etc.) are "recordings" that can be archived or trashed.
+所有内容项（待办事项、消息、文档等）都被视为“记录”，可以归档或删除。
 
-#### Trash Recording
+#### 删除记录
 
 ```bash
 PUT /basecamp/buckets/{project_id}/recordings/{recording_id}/status/trashed.json
 ```
 
-#### Archive Recording
+#### 归档记录
 
 ```bash
 PUT /basecamp/buckets/{project_id}/recordings/{recording_id}/status/archived.json
 ```
 
-#### Unarchive Recording
+#### 解压记录
 
 ```bash
 PUT /basecamp/buckets/{project_id}/recordings/{recording_id}/status/active.json
 ```
 
-### Templates Operations
+### 模板管理
 
-#### List Templates
+#### 列出模板
 
 ```bash
 GET /basecamp/templates.json
 ```
 
-#### Create Project from Template
+#### 根据模板创建项目
 
 ```bash
 POST /basecamp/templates/{template_id}/project_constructions.json
@@ -596,33 +596,33 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-Basecamp uses Link header pagination with `rel="next"`:
+Basecamp 使用 `Link` 头部进行分页，其中 `rel="next"` 表示下一页：
 
-**Response Headers:**
+**响应头：**
 ```
 Link: <https://3.basecampapi.com/.../page=2>; rel="next"
 X-Total-Count: 150
 ```
 
-Follow the `Link` header URL for the next page. When `next` is absent, you've reached the last page.
+请跟随 `Link` 头部提供的 URL 进入下一页。当 `next` 不存在时，表示已到达最后一页。
 
-**Important:** Do not construct pagination URLs manually. Always use the URL provided in the `Link` header.
+**重要提示：** 不要手动构建分页 URL。始终使用 `Link` 头部提供的 URL。
 
-## Key Concepts
+## 关键概念
 
-### Buckets and Projects
+### “Bucket”和“项目”
 
-A "bucket" is a project's content container. The bucket ID is the same as the project ID in URLs:
+“Bucket”是项目的内容容器。Bucket 的 ID 与 URL 中的项目 ID 相同：
 
 ```
 /buckets/{project_id}/todosets/{todoset_id}.json
 ```
 
-### Dock
+### “Dock”
 
-Each project has a "dock" containing available tools. Always check that a tool is `enabled: true` before using it:
+每个项目都有一个包含可用工具的 “Dock”。在使用工具之前，请确保其状态为 `enabled: true`：
 
 ```json
 {
@@ -633,14 +633,14 @@ Each project has a "dock" containing available tools. Always check that a tool i
 }
 ```
 
-### Recordings
+### 记录
 
-All content items (todos, messages, documents, comments, etc.) are "recordings" with:
-- `status`: "active", "archived", or "trashed"
-- `parent`: navigation to container
-- Unique IDs that can be used across endpoints
+所有内容项（待办事项、消息、文档、评论等）都被视为“记录”，具有以下属性：
+- `status`：活动状态（active、archived 或 trashed）
+- `parent`：指向其所属容器的链接
+- 唯一 ID，可在多个 API 端点之间使用
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -669,36 +669,36 @@ response = requests.get(
 projects = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All API paths must end with `.json`
-- The gateway automatically injects the account ID
-- Uses Basecamp 4 API (bc3-api)
-- Timestamps are in ISO 8601 format
-- HTML content uses `<div>`, `<p>`, `<strong>`, `<em>`, `<a>`, `<ul>`, `<ol>`, `<li>` tags
-- Rate limit: ~50 requests per 10 seconds per IP
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有 API 路径必须以 `.json` 结尾。
+- 网关会自动插入账户 ID。
+- 使用 Basecamp 4 API（bc3-api）。
+- 时间戳采用 ISO 8601 格式。
+- HTML 内容使用 `<div>`, `<p>`, `<strong>`, `<em>`, `<a>`, `<ul>`, `<ol>`, `<li>` 标签。
+- 每个 IP 每 10 秒的请求限制约为 50 次。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Basecamp connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found, deleted, or no access |
-| 429 | Rate limited (check Retry-After header) |
-| 507 | Account limit reached (e.g., project limit) |
-| 5xx | Server error (retry with exponential backoff) |
+| 400 | 未建立 Basecamp 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到、已被删除或无法访问 |
+| 429 | 请求次数达到限制（请查看 `Retry-After` 头部信息） |
+| 507 | 账户使用限制（例如项目数量限制） |
+| 5xx | 服务器错误（请尝试重试）
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -709,17 +709,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `basecamp`. For example:
+1. 确保您的 URL 路径以 `basecamp` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/basecamp/projects.json`
+- 错误的格式：`https://gateway.maton.ai/projects.json`
 
-- Correct: `https://gateway.maton.ai/basecamp/projects.json`
-- Incorrect: `https://gateway.maton.ai/projects.json`
+## 资源
 
-## Resources
-
-- [Basecamp 4 API Documentation](https://github.com/basecamp/bc3-api)
-- [Authentication Guide](https://github.com/basecamp/bc3-api/blob/master/sections/authentication.md)
-- [API Reference](https://github.com/basecamp/bc3-api#endpoints)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Basecamp 4 API 文档](https://github.com/basecamp/bc3-api)
+- [认证指南](https://github.com/basecamp/bc3-api/blob/master/sections/authentication.md)
+- [API 参考](https://github.com/basecamp/bc3-api#endpoints)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

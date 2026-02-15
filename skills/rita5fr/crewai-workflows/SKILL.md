@@ -1,42 +1,48 @@
 ---
 name: crewai-workflows
-description: Execute AI-powered crew workflows for marketing content generation, customer support handling, data analysis, and social media calendar creation. Use when tasks involve (1) creating marketing content, taglines, or campaigns, (2) handling customer support inquiries or responses, (3) analyzing business data for insights, (4) generating comprehensive social media content calendars, or (5) any content generation or analysis task that benefits from specialized AI crew workflows. Workflows are powered by DeepSeek, Perplexity, and Gemini models.
+description: 执行由人工智能驱动的工作流程，用于生成营销内容、处理客户支持、数据分析以及创建社交媒体日历。适用于以下任务：  
+(1) 创建营销内容、标语或营销活动；  
+(2) 处理客户支持查询或回复；  
+(3) 分析业务数据以获取洞察；  
+(4) 生成全面的社交媒体内容日历；  
+(5) 任何可以从专门的人工智能工作流程中受益的内容生成或分析任务。  
+这些工作流程由 DeepSeek、Perplexity 和 Gemini 模型提供支持。
 ---
 
-# CrewAI Workflows Skill
+# CrewAI 工作流技能
 
-Execute specialized AI crew workflows for content generation, analysis, and support tasks. All crews run on a dedicated server with production-grade LLMs.
+CrewAI 提供了多种专门的人工智能工作流，用于内容生成、分析和支持任务。所有工作流都在配备有生产级大型语言模型（LLMs）的专用服务器上运行。
 
-## Prerequisites
+## 先决条件
 
-Set the API key as an environment variable (recommended):
+建议将 API 密钥设置为环境变量：
 
 ```bash
 export CREWAI_API_KEY="5aZyTFQJAAT03VPIII5zsIPcL8KTtdST"
 ```
 
-Or pass it directly when calling the helper script.
+或者在调用辅助脚本时直接传递 API 密钥。
 
-## Available Crews
+## 可用的工作流
 
-### 1. Marketing Crew 📢
+### 1. 营销工作流 📢
 
-Generate marketing content, taglines, and campaign copy.
+生成营销内容、标语和活动文案。
 
-**Use for:**
-- Product/service taglines
-- Marketing copy for ads or landing pages
-- Campaign messaging
-- Value propositions
+**适用场景：**
+- 产品/服务标语
+- 广告或着陆页的营销文案
+- 活动信息
+- 价值主张
 
-**Input:**
-- `topic` (required) - What to create marketing content about
-- `target_audience` (optional) - Who the content is for
+**输入参数：**
+- `topic`（必填）：需要生成营销内容的主题
+- `target_audience`（可选）：目标受众
 
-**LLM:** DeepSeek  
-**Response Time:** 3-10 seconds
+**使用的 LLM：** DeepSeek  
+**响应时间：** 3-10 秒
 
-**Example:**
+**示例：**
 ```bash
 scripts/call_crew.sh marketing \
   '{"topic": "hypnotherapy for better sleep", "target_audience": "working professionals with insomnia"}'
@@ -44,23 +50,23 @@ scripts/call_crew.sh marketing \
 
 ---
 
-### 2. Support Crew 🎧
+### 2. 支持工作流 🎧
 
-Handle customer support inquiries with AI-generated responses.
+利用人工智能生成回复来处理客户咨询。
 
-**Use for:**
-- Responding to customer questions
-- Drafting support emails
-- Handling common inquiries
-- Escalation guidance
+**适用场景：**
+- 回答客户问题
+- 起草支持邮件
+- 处理常见咨询
+- 提供问题升级指导
 
-**Input:**
-- `issue` (required) - The customer issue or question
+**输入参数：**
+- `issue`（必填）：客户的问题或疑问
 
-**LLM:** DeepSeek  
-**Response Time:** 3-10 seconds
+**使用的 LLM：** DeepSeek  
+**响应时间：** 3-10 秒
 
-**Example:**
+**示例：**
 ```bash
 scripts/call_crew.sh support \
   '{"issue": "Client wants to reschedule their hypnotherapy session"}'
@@ -68,23 +74,23 @@ scripts/call_crew.sh support \
 
 ---
 
-### 3. Analysis Crew 📊
+### 3. 分析工作流 📊
 
-Analyze business data and provide actionable insights.
+分析业务数据并提供可操作的洞察。
 
-**Use for:**
-- Data interpretation
-- Trend analysis
-- Performance metrics review
-- Business intelligence
+**适用场景：**
+- 数据解读
+- 趋势分析
+- 绩效指标评估
+- 商业智能分析
 
-**Input:**
-- `data_description` (required) - Description of the data to analyze
+**输入参数：**
+- `data_description`（必填）：需要分析的数据描述
 
-**LLM:** DeepSeek  
-**Response Time:** 3-10 seconds
+**使用的 LLM：** DeepSeek  
+**响应时间：** 3-10 秒
 
-**Example:**
+**示例：**
 ```bash
 scripts/call_crew.sh analysis \
   '{"data_description": "Monthly client retention rates for Q4 2025"}'
@@ -92,44 +98,37 @@ scripts/call_crew.sh analysis \
 
 ---
 
-### 4. Social Media Crew ⭐ 📱
+### 4. 社交媒体工作流 ⭐ 📱
 
-Generate comprehensive 30-day social media content calendars with daily posts, captions, and hashtags.
+生成包含每日帖子、标题和标签的 30 天社交媒体内容日程表。
 
-**Use for:**
-- Social media planning
-- Content calendar creation
-- Multi-platform content strategy
-- Monthly content batches
+**适用场景：**
+- 社交媒体规划
+- 内容日程表制作
+- 多平台内容策略
+- 月度内容发布计划
 
-**Input:**
-- `industry` (required) - The business industry/niche
-- `company_name` (required) - Business or personal brand name
+**输入参数：**
+- `industry`（必填）：业务行业/领域
+- `company_name`（必填）：企业或个人品牌名称
 
-**LLMs:** Perplexity (research) + Gemini (content generation)  
-**Response Time:** 3-5 minutes ⏳
+**使用的 LLM：** Perplexity（数据分析） + Gemini（内容生成）  
+**响应时间：** 3-5 分钟 ⏳
 
-**Example:**
-```bash
-scripts/call_crew.sh social_media \
-  '{"industry": "hypnotherapy", "company_name": "Sidharth Mahto"}'
-```
-
-**Note:** This crew takes significantly longer due to comprehensive research and content generation phases.
+**注意：** 由于需要综合研究和内容生成，此工作流的响应时间较长。
 
 ---
 
-## Usage
+## 使用方法
 
-### Option 1: Using the Helper Script (Recommended)
+### 方法 1：使用辅助脚本（推荐）
 
 ```bash
 cd crewai-workflows
 scripts/call_crew.sh <crew_name> '<json_input>' [api_key]
 ```
 
-**Examples:**
-
+**示例：**
 ```bash
 # Marketing crew
 scripts/call_crew.sh marketing '{"topic": "sleep therapy for entrepreneurs", "target_audience": "startup founders"}'
@@ -147,7 +146,7 @@ scripts/call_crew.sh social_media '{"industry": "wellness coaching", "company_na
 scripts/call_crew.sh marketing '{"topic": "mindfulness apps"}' "YOUR_API_KEY"
 ```
 
-### Option 2: Direct cURL
+### 方法 2：直接使用 cURL
 
 ```bash
 curl -X POST "https://crew.iclautomation.me/crews/<crew_name>/run" \
@@ -158,9 +157,9 @@ curl -X POST "https://crew.iclautomation.me/crews/<crew_name>/run" \
 
 ---
 
-## Response Format
+## 响应格式
 
-All crews return structured JSON:
+所有工作流都会返回结构化的 JSON 数据：
 
 ```json
 {
@@ -176,29 +175,29 @@ All crews return structured JSON:
 }
 ```
 
-**Extract the output:** The actual generated content is in `result.output`.
+**输出内容说明：** 实际生成的内容存储在 `result.output` 中。
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Set timeouts appropriately:**
-   - Marketing/Support/Analysis: 30-60 seconds
-   - Social Media: 5-10 minutes
+1. **设置合适的超时时间：**
+   - 营销/支持/分析：30-60 秒
+   - 社交媒体：5-10 分钟
 
-2. **Check API key:** Ensure `CREWAI_API_KEY` environment variable is set or pass explicitly
+2. **检查 API 密钥：** 确保 `CREWAI_API_KEY` 环境变量已设置或明确传递
 
-3. **Handle errors:** Check the `error` field in responses
+3. **处理错误：** 检查响应中的 `error` 字段
 
-4. **Social Media crew:** Expect 3-5 minutes response time; don't interrupt
+4. **社交媒体工作流：** 预计响应时间为 3-5 分钟，切勿中断请求
 
-5. **Batch requests:** For multiple similar tasks, consider running them sequentially
+5. **批量请求：** 对于多个相似的任务，建议依次执行
 
 ---
 
-## Health Check
+## 健康检查
 
-Verify the CrewAI server is running:
+验证 CrewAI 服务器是否正在运行：
 
 ```bash
 curl https://crew.iclautomation.me/health
@@ -207,15 +206,15 @@ curl https://crew.iclautomation.me/health
 
 ---
 
-## Future Expansion
+## 未来扩展
 
-When new crews are added to the server:
-1. Update the "Available Crews" section
-2. Add example usage to the helper script
-3. Document input parameters and response times
+当服务器新增工作流时：
+1. 更新 “可用工作流” 部分
+2. 在辅助脚本中添加使用示例
+3. 记录输入参数和响应时间
 
 ---
 
-**Server:** https://crew.iclautomation.me  
-**Authentication:** API key via `X-API-Key` header  
-**Last Updated:** 2026-01-17
+**服务器地址：** https://crew.iclautomation.me  
+**认证方式：** 通过 `X-API-Key` 头部字段传递 API 密钥  
+**最后更新时间：** 2026-01-17

@@ -9,11 +9,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Logo Design Guide
+# 标志设计指南
 
-Design effective logos with AI image generation via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用人工智能图像生成技术来设计有效的标志。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,29 +26,29 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## Logo Types
+## 标志类型
 
-| Type | Description | When to Use | Example |
+| 类型 | 描述 | 适用场景 | 示例 |
 |------|-------------|-------------|---------|
-| **Wordmark** | Company name styled as logo | Strong brand name, short (< 10 chars) | Google, Coca-Cola |
-| **Lettermark** | Initials only | Long company name, formal | IBM, HBO, CNN |
-| **Pictorial** | Recognizable icon/symbol | Universal brand, works without text | Apple, Twitter bird |
-| **Abstract** | Geometric/non-literal shape | Tech companies, conceptual brands | Nike swoosh, Pepsi |
-| **Mascot** | Character illustration | Friendly brands, food/sports | KFC Colonel, Pringles |
-| **Combination** | Icon + wordmark together | New brands needing both recognition and name | Burger King, Adidas |
+| **文字标志** | 以标志形式呈现的公司名称 | 品牌名称简洁（少于10个字符） | Google、Coca-Cola |
+| **字母标志** | 仅使用首字母 | 公司名称较长，正式场合使用 | IBM、HBO、CNN |
+| **图形标志** | 易于识别的图标/符号 | 适用于通用品牌，无需文字 | Apple、Twitter的鸟形图标 |
+| **抽象标志** | 几何形状或非具象的图形 | 科技公司或概念性品牌 | Nike的Swoosh标志、Pepsi的标志 |
+| **吉祥物标志** | 以字符或形象为特色的标志 | 适合友好型品牌或食品/体育相关品牌 | KFC的Colonel标志、Pringles的标志 |
+| **组合标志** | 图标与文字标志结合 | 需要同时具备识别度和名称的新品牌 | Burger King、Adidas的标志 |
 
-## Critical AI Limitation
+## 人工智能的局限性
 
-**AI image generators cannot reliably render text.** Letters will be distorted, misspelled, or garbled.
+**人工智能图像生成工具无法可靠地处理文本。** 文字可能会变形、拼写错误或出现乱码。
 
-Strategy:
-1. Generate the **icon/symbol only** with AI
-2. Add text/wordmark in a design tool (Figma, Canva, Illustrator)
-3. Or use a combination approach: AI icon + manually set typography
+**应对策略：**
+1. 仅使用人工智能生成图标/符号。
+2. 在设计工具（如Figma、Canva、Illustrator）中添加文字/文字标志。
+3. 或者采用组合方式：先使用人工智能生成图标，再手动设置文字。
 
-## Prompting for Logos
+## 设计标志时的提示词
 
-### Keywords That Work
+### 有效的提示词
 
 ```
 flat vector logo, simple minimal icon, single color silhouette,
@@ -56,7 +56,7 @@ geometric logo mark, clean lines, negative space design,
 line art logo, flat design icon, minimalist symbol
 ```
 
-### Keywords That Fail
+### 无效的提示词
 
 ```
 ❌ photorealistic logo (contradiction — logos aren't photos)
@@ -65,13 +65,13 @@ line art logo, flat design icon, minimalist symbol
 ❌ logo with text "Company Name" (text rendering fails)
 ```
 
-### Prompt Structure
+### 提示词的结构
 
 ```
 flat vector logo of [subject], [style], [color constraint], [background], [additional detail]
 ```
 
-### Examples by Logo Type
+### 各类型标志的示例
 
 ```bash
 # Abstract geometric
@@ -95,41 +95,41 @@ infsh app run xai/grok-imagine-image-pro --input '{
 }'
 ```
 
-## Scalability Rules
+## 可扩展性要求
 
-A logo must work at every size:
+标志必须适用于各种尺寸：
 
-| Context | Size | What Must Work |
+| 使用场景 | 尺寸 | 必须满足的条件 |
 |---------|------|----------------|
-| Favicon | 16x16 px | Silhouette recognizable |
-| App icon | 1024x1024 px | Full detail visible |
-| Social avatar | 400x400 px | Clear at a glance |
-| Business card | ~1 inch | Clean print reproduction |
-| Billboard | 10+ feet | No pixelation, simple enough |
+| 网站图标（Favicon） | 16x16像素 | 图标轮廓清晰可辨 |
+| 应用程序图标 | 1024x1024像素 | 图标细节完整可见 |
+| 社交媒体头像 | 400x400像素 | 一眼就能看清楚 |
+| 名片 | 约1英寸大小 | 印刷效果清晰 |
+| 广告牌 | 超过10英尺高 | 无像素化，设计简单 |
 
-### Scalability Checklist
+### 可扩展性检查清单
 
-- [ ] Recognizable as a 16px favicon (squint test)
-- [ ] Works in single color (black on white)
-- [ ] Works inverted (white on black)
-- [ ] No tiny details that disappear at small sizes
-- [ ] No thin lines that vanish when shrunk
-- [ ] Clear silhouette without color
+- [ ] 作为16像素的Favicon时仍可识别（眯眼看也能辨认）
+- [ ] 在单色背景下（黑白）仍可识别
+- [ ] 在反色背景下（黑白）仍可识别
+- [ ] 小尺寸下没有细节丢失
+- [ ] 线条细小不会在缩小后消失
+- [ ] 轮廓清晰，无需依赖颜色
 
-## Color Guidelines
+## 颜色指南
 
-- **Maximum 2-3 colors** for the primary logo
-- Must work in **single color** (black, white, or brand primary)
-- Consider **color psychology**:
-  - Blue: trust, professional (finance, tech, healthcare)
-  - Red: energy, urgency (food, entertainment, retail)
-  - Green: growth, nature (health, sustainability, finance)
-  - Orange: friendly, creative (startups, youth brands)
-  - Purple: luxury, wisdom (beauty, education)
-  - Black: premium, elegant (fashion, luxury, tech)
-- Test on both light and dark backgrounds
+- **主要标志的颜色不超过2-3种**
+- 必须能在**单色**背景下显示（黑色、白色或品牌主色调）
+- 考虑**色彩心理学**：
+  - 蓝色：代表信任、专业（金融、科技、医疗）
+  - 红色：代表活力、紧迫感（食品、娱乐、零售）
+  - 绿色：代表成长、自然（健康、可持续性、金融）
+  - 橙色：代表友好、创意（初创企业、年轻品牌）
+  - 紫色：代表奢华、智慧（美容、教育）
+  - 黑色：代表高端、优雅（时尚、奢侈品、科技）
+- 在浅色和深色背景下都进行测试
 
-## Iteration Workflow
+## 设计迭代流程
 
 ```bash
 # Step 1: Generate 5-10 broad concepts
@@ -157,34 +157,34 @@ infsh app run falai/topaz-image-upscaler --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Too much detail | Loses clarity at small sizes | Simplify to essential shapes |
-| Relies on color | Fails in B&W contexts | Design in black first |
-| Text in AI generation | Garbled/misspelled letters | Generate icon only, add text manually |
-| Trendy effects (glows, shadows) | Dates quickly, reproduction issues | Stick to flat, timeless design |
-| Too many colors | Hard to reproduce, expensive printing | Max 2-3 colors |
-| Asymmetric without purpose | Looks unfinished | Use intentional asymmetry or stay balanced |
+| 细节过多 | 小尺寸时轮廓模糊 | 简化为基本形状 |
+| 过度依赖颜色 | 在黑白背景下无法识别 | 先设计纯黑色的版本 |
+| 人工智能生成的文字 | 文字出现乱码或拼写错误 | 先生成图标，再手动添加文字 |
+- 过于追求潮流的效果（如发光、阴影） | 易过时，打印时可能出现问题 | 保持设计简洁、 timeless（永恒的设计风格） |
+- 颜色过多 | 打印时难以呈现，成本较高 | 颜色不超过2-3种 |
+- 无意义的不对称设计 | 看起来不完整 | 有意识地使用不对称设计，或保持对称性 |
 
-## File Format Delivery
+## 文件格式及用途
 
-| Format | Use Case |
+| 格式 | 适用场景 |
 |--------|----------|
-| SVG | Scalable vector, web, editing |
-| PNG (transparent) | Digital use, presentations |
-| PNG (white bg) | Documents, email signatures |
-| ICO / Favicon | Website favicon (16, 32, 48px) |
-| High-res PNG (4096px+) | Print, billboards |
+| SVG | 可缩放的矢量格式，适用于网页和编辑 |
+| PNG（透明背景） | 数字用途，如演示文稿 |
+| PNG（白色背景） | 文档、电子邮件签名 |
+| ICO / Favicon | 网站图标（16x16px、32x16px、48x16px） |
+| 高分辨率PNG（4096px以上） | 打印、广告牌 |
 
-Note: AI generates raster images (PNG). For true vector SVG, use the AI output as a reference and trace in a vector tool, or use AI-to-SVG conversion tools.
+**注意：** 人工智能生成的图像为位图（PNG格式）。如需真正的矢量SVG格式，可将AI生成的图像作为参考，在矢量编辑工具中重新绘制，或使用AI转SVG的工具进行转换。
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用工具：`infsh app list`

@@ -1,14 +1,14 @@
 ---
 name: data-processor
-description: Process and validate data inputs
+description: 处理并验证数据输入
 license: MIT
 allowed-tools: [Python]
 ---
 
-# Data Processor
+# 数据处理器
 
-Processes and validates various data inputs.
+用于处理和验证各种数据输入。
 
-## Usage
+## 使用方法
 
-Provide data to process and receive validated output.
+提供需要处理的数据，然后接收经过验证的输出结果。

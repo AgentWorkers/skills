@@ -1,256 +1,255 @@
 ---
 name: odoo
-description: Full-featured Odoo 19 ERP connector for OpenClaw - Sales, CRM, Purchase, Inventory, Projects, HR, Fleet, Manufacturing (80+ operations, complete Python code included, XML-RPC integration).
+description: 全功能的 Odoo 19 ERP 连接器，适用于 OpenClaw：支持销售、客户关系管理（CRM）、采购、库存、项目管理、人力资源（HR）、车队管理以及制造流程（涵盖 80 多个业务模块），附带完整的 Python 代码以及 XML-RPC 集成功能。
 repository: https://github.com/NullNaveen/openclaw-odoo-skill
 ---
 
-# Odoo ERP Connector
+# Odoo ERP连接器
 
-Full-featured Odoo 19 ERP integration for OpenClaw. Control your entire business via natural language chat commands.
+这是一个功能齐全的Odoo 19 ERP集成插件，专为OpenClaw设计，允许您通过自然语言聊天命令来管理整个业务。
 
-**📦 Full Source Code:** https://github.com/NullNaveen/openclaw-odoo-skill
+**📦 完整源代码：** https://github.com/NullNaveen/openclaw-odoo-skill
 
-## Quick Install
+## 快速安装
 
-\ash
+```bash
 npx clawhub install odoo-erp-connector
-\
+```
 
-## Overview
+## 概述
 
-The Odoo ERP Connector bridges OpenClaw and Odoo 19, enabling autonomous, chat-driven control over 153+ business modules including:
-- Sales & CRM
-- Purchasing & Inventory  
-- Invoicing & Accounting
-- Projects & Task Management
-- Human Resources
-- Fleet Management
-- Manufacturing (MRP)
-- Calendar & Events
-- eCommerce
+Odoo ERP连接器将OpenClaw与Odoo 19连接起来，支持对153个以上的业务模块进行自主的、基于聊天的控制，包括：
+- 销售与客户关系管理（Sales & CRM）
+- 采购与库存（Purchasing & Inventory）
+- 开票与会计（Invoicing & Accounting）
+- 项目与任务管理（Projects & Task Management）
+- 人力资源（Human Resources）
+- 车队管理（Fleet Management）
+- 制造（Manufacturing）
+- 日历与事件（Calendar & Events）
+- 电子商务（E-commerce）
 
-All operations use **smart actions** that handle fuzzy matching and auto-creation workflows.
+所有操作都使用**智能动作（Smart Actions）**，这些动作能够处理模糊匹配和自动创建工作流程。
 
-## Capabilities
+## 功能
 
-### Sales & CRM
-- Create quotations with dynamic line items
-- Manage sales orders (draft → confirmed → done)
-- Search and filter orders by status, customer, date range
-- Create and qualify leads and opportunities
-- Move leads through CRM pipeline stages
-- View full sales pipeline with revenue forecasting
+### 销售与客户关系管理（Sales & CRM）
+- 创建包含动态商品项的报价单
+- 管理销售订单（草稿 → 确认 → 完成）
+- 按状态、客户或日期范围搜索和过滤订单
+- 创建和评估潜在客户（leads）和销售机会（opportunities）
+- 将潜在客户推进CRM流程阶段
+- 查看完整的销售流程并预测收入
 
-### Purchasing
-- Create purchase orders from vendors
-- Manage PO status (draft → purchase → received)
-- Receive and validate goods
-- Search and filter POs by vendor, status, date
-- Track purchase history and vendor performance
+### 采购（Purchasing）
+- 从供应商处创建采购订单
+- 管理采购订单的状态（草稿 → 购买 → 已接收）
+- 接收并验证货物
+- 按供应商、状态或日期搜索和过滤采购订单
+- 跟踪采购历史和供应商表现
 
-### Inventory & Products
-- Create products (consumables, stockable, services)
-- Query stock levels and availability
-- Set reorder points and receive low-stock alerts
-- Search products by name, code, or category
-- Track stock movements and valuations
+### 库存与产品（Inventory & Products）
+- 创建产品（消耗品、可库存产品、服务）
+- 查询库存水平和可用性
+- 设置重新订购点并接收库存不足警报
+- 按名称、代码或类别搜索产品
+- 跟踪库存变动和估值
 
-### Invoicing & Accounting
-- Create and post customer invoices
-- Manage payment terms and schedules
-- Query unpaid and overdue invoices
-- Search by customer, date range, or amount
-- Track invoice status (draft → posted → paid)
+### 开票与会计（Invoicing & Accounting）
+- 创建并向客户开具发票
+- 管理付款条款和计划
+- 查询未支付和逾期的发票
+- 按客户、日期范围或金额搜索
+- 跟踪发票状态（草稿 → 已开具 → 已支付）
 
-### Projects & Tasks
-- Create projects and organize by team/status
-- Create tasks with priority, dates, and assignments
-- Log timesheets and track project hours
-- Search and filter tasks by project, status, assignee
-- Manage project stages and closure
+### 项目与任务（Projects & Tasks）
+- 创建项目并按团队/状态组织
+- 创建带有优先级、日期和分配的任务
+- 记录工时表并跟踪项目工作时间
+- 按项目、状态或分配者搜索和过滤任务
+- 管理项目阶段和项目关闭
 
-### Human Resources
-- Create employees and departments
-- Manage job titles and work schedules
-- Process expense reports and reimbursements
-- Search employees by name, department, job
-- Track leave requests and attendance
+### 人力资源（Human Resources）
+- 创建员工和部门
+- 管理职位和工作时间表
+- 处理费用报告和报销
+- 按名称、部门或职位搜索员工
+- 跟踪休假申请和出勤情况
 
-### Fleet Management
-- Create and track vehicles
-- Log odometer readings and service records
-- Track maintenance schedules and costs
-- Search fleet by license plate, status, brand
-- Generate fleet reports
+### 车队管理（Fleet Management）
+- 创建和跟踪车辆
+- 记录里程表读数和服务记录
+- 跟踪维护计划和成本
+- 按车牌号、状态或品牌搜索车队
+- 生成车队报告
 
-### Manufacturing (MRP)
-- Create Bills of Materials (BOMs)
-- Manage manufacturing orders (MOs)
-- Track component requirements and production status
-- Search MOs by product or status
-- Link BOMs to product variants
+### 制造（Manufacturing）
+- 创建物料清单（Bills of Materials, BOM）
+- 管理制造订单（Manufacturing Orders, MOs）
+- 跟踪组件需求和生产状态
+- 按产品或状态搜索制造订单
+- 将物料清单（BOM）与产品变体关联
 
-### Calendar & Events
-- Create meetings and events with attendees
-- Set reminders and locations
-- Search events by date range or attendee
-- Track calendar availability
+### 日历与事件（Calendar & Events）
+- 创建带有参与者的会议和事件
+- 设置提醒和地点
+- 按日期范围或参与者搜索事件
+- 跟踪日历可用性
 
-### eCommerce
-- Publish products to website
-- View website orders and customer activity
-- Manage product visibility and pricing
+### 电子商务（E-commerce）
+- 将产品发布到网站
+- 查看网站订单和客户活动
+- 管理产品可见性和定价
 
-## Command Examples
+## 命令示例
 
-### Sales
-- "Create a quotation for Acme Corp with 10 Widgets at $50 each"
-- "Confirm sales order SO00042"
-- "Show me all draft quotations from the past week"
-- "What's the total revenue from completed orders this month?"
-- "Create a quote for Rocky with product Rock"
+### 销售（Sales）
+- “为Acme Corp创建一份包含10个单价为50美元的Widget的报价单”
+- “确认销售订单SO00042”
+- “显示过去一周的所有草稿报价单”
+- “本月已完成订单的总收入是多少？”
+- “为Rocky创建一份包含产品Rock的报价单”
 
-### CRM
-- "Create a lead for Rocky, email rocky@example.com, potential $50k deal"
-- "Move lead #47 to Qualified stage"
-- "Show me the sales pipeline with all open opportunities"
-- "What leads are at proposal stage?"
-- "Create an opportunity for Acme with $100k expected value"
+### 客户关系管理（CRM）
+- “为Rocky创建一个潜在客户，电子邮件地址rocky@example.com，潜在价值5万美元”
+- “将潜在客户#47推进到‘已评估’阶段”
+- “显示所有未完成的销售机会”
+- “哪些潜在客户处于提案阶段？”
 
-### Purchasing
-- "Create a PO for 500 widgets from Supplier ABC"
-- "Confirm purchase order PO00123"
-- "Show all pending purchase orders"
-- "Get me the vendor history for ABC Supplies"
-- "What's on order that's overdue?"
+### 采购（Purchasing）
+- “为供应商ABC创建一份包含500个Widget的采购订单”
+- “确认采购订单PO00123”
+- “显示所有待处理的采购订单”
+- “获取供应商ABC的采购历史记录”
+- “哪些订单已经逾期？”
 
-### Inventory & Products
-- "Create a new product: TestWidget, $25 price, min stock 10"
-- "Show products with stock below 20 units"
-- "What's the stock level for Widget X?"
-- "Search for all consumable products"
-- "Set reorder point for Product Y to 50 units"
+### 库存与产品（Inventory & Products）
+- “创建一个新产品：TestWidget，价格25美元，最低库存10个”
+- “显示库存低于20个的单位”
+- “Widget X的库存水平是多少？”
+- “搜索所有消耗品”
+- “将产品Y的重新订购点设置为50个单位”
 
-### Invoicing
-- "Create an invoice for Acme Corp with 5 units at $50 each"
-- "Show me unpaid invoices"
-- "What invoices are overdue?"
-- "Post invoice INV-001"
-- "Send a reminder for invoice INV-002"
+### 开票与会计（Invoicing & Accounting）
+- “为Acme Corp创建一份包含5个单价为50美元的Widget的发票”
+- “显示未支付的发票”
+- “哪些发票已经逾期？”
+- “发布发票INV-001”
+- “为发票INV-002发送提醒”
 
-### Projects & Tasks
-- "Create a project called Website Redesign"
-- "Create a task 'Fix login button' in Website Redesign project"
-- "Show me all tasks assigned to me"
-- "Log 3 hours of work on task #42"
-- "What's the status of the Website Redesign project?"
+### 项目与任务（Projects & Tasks）
+- “创建一个名为‘Website Redesign’的项目”
+- “在‘Website Redesign’项目中创建一个名为‘Fix login button’的任务”
+- “显示分配给我的所有任务”
+- “记录任务#42的3小时工作时间”
+- “‘Website Redesign’项目的状态是什么？”
 
-### HR
-- "Create employee John Smith, job title Developer"
-- "Create department Engineering"
-- "Show me all employees in Engineering"
-- "Submit expense report for $45.99"
-- "What are the pending leave requests?"
+### 人力资源（HR）
+- “创建员工John Smith和部门Engineering”
+- “创建部门Engineering”
+- “显示Engineering部门的所有员工”
+- “提交费用报告，金额为45.99美元”
+- “有哪些待处理的休假申请？”
 
-### Fleet
-- "Create vehicle: Tesla Model 3, license plate TESLA-001"
-- "Log odometer reading: 50,000 miles for vehicle #1"
-- "Show all vehicles with service due"
-- "What's the maintenance cost for this month?"
-- "Search for blue vehicles"
+### 车队管理（Fleet Management）
+- “创建一辆名为Tesla Model 3的车辆，并记录里程表读数：50,000英里”
+- “记录车辆#1的服务记录”
+- “显示所有需要维护的车辆”
+- “这个月的维护成本是多少？”
+- “搜索蓝色车辆”
 
-### Manufacturing
-- "Create BOM: Widget contains 3 Components A and 2 Components B"
-- "Create manufacturing order: produce 50 Widgets"
-- "Confirm production order #1"
-- "What's the status of MO-001?"
-- "Show all in-progress manufacturing orders"
+### 制造（Manufacturing）
+- “创建物料清单（BOM）：Widget包含3个Component A和2个Component B”
+- “创建制造订单（MO）：生产50个Widget”
+- “确认制造订单#1”
+- “制造订单#1的状态是什么？”
+- “显示所有进行中的制造订单”
 
-### Calendar
-- "Create meeting: Team Standup, tomorrow at 10am, 1 hour"
-- "Show me my meetings for next week"
-- "What events do I have on the 15th?"
-- "Schedule a 2-hour planning session with the team"
+### 日历（Calendar）
+- “创建一个名为‘Team Standup’的会议，明天上午10点，持续1小时”
+- “显示我下周的会议”
+- “我在15号有哪些事件？”
+- “安排一个与团队进行的2小时规划会议”
 
-### eCommerce
-- "Publish Widget X to the website"
-- "Show me website orders from this week"
-- "What's my website revenue?"
+### 电子商务（E-commerce）
+- “将产品Widget X发布到网站”
+- “查看本周的网站订单”
+- “我的网站收入是多少？”
 
-## Smart Actions
+## 智能动作（Smart Actions）
 
-The connector handles fuzzy/incomplete requests with intelligent find-or-create logic.
+该连接器使用智能的查找或创建逻辑来处理模糊/不完整的请求。
 
-### How Smart Actions Work
+### 智能动作的工作原理
 
-**Example:** "Create quotation for Rocky with product Rock"
+**示例：“为Rocky创建一份包含产品Rock的报价单”**
 
-The system:
-1. **Searches** for a customer named "Rocky" (case-insensitive, `ilike` matching)
-2. **If not found**: Creates a new customer "Rocky" (auto-company flag)
-3. **Searches** for product "Rock"
-4. **If not found**: Creates a basic product "Rock" (consumable type, default price $0)
-5. **Creates** the quotation, linking both the found/created customer and product
-6. **Reports** what was found vs. created:
-   - "Created quotation QT-001 for new customer Rocky with 1 × Rock at $0.00"
+系统：
+1. **搜索**名为“Rocky”的客户（不区分大小写，使用`ilike`匹配）
+2. **如果未找到**：创建一个新的客户“Rocky”（自动设置为公司）
+3. **搜索**产品“Rock”
+4. **如果未找到**：创建一个基本的产品“Rock”（消耗品类型，默认价格为0美元）
+5. **创建**报价单，并将找到的/创建的客户和产品关联起来
+6. **报告**找到的内容与创建的内容：
+   - “为新客户Rocky创建了报价单QT-001，包含1个单价为0美元的Rock”
 
-This pattern applies across all smart actions:
-- `smart_create_quotation()` — customer + products
-- `smart_create_purchase()` — vendor + products
-- `smart_create_lead()` — partner (optional)
-- `smart_create_task()` — project + task
-- `smart_create_employee()` — department
-- `smart_create_event()` — event only (no dependencies)
+这种模式适用于所有智能动作：
+- `smart_create_quotation()` — 客户 + 产品
+- `smart_create_purchase()` — 供应商 + 产品
+- `smart_create_lead()` — 潜在客户（可选）
+- `smart_create_task()` — 项目 + 任务
+- `smart_create_employee()` — 员工
+- `smart_create_event()` — 事件（无依赖关系）
 
-### Benefits
+### 优势
 
-- **Fuzzy matching**: Searches are case-insensitive and forgiving
-- **Auto-creation**: Missing dependencies are created automatically
-- **Transparency**: Each response explains what was created vs. found
-- **No IDs needed**: Use names instead of Odoo IDs
-- **Batch operations**: Create multiple related records in one call
+- **模糊匹配**：搜索不区分大小写且具有容错性
+- **自动创建**：缺失的依赖关系会自动创建
+- **透明度**：每个响应都会说明创建了什么或找到了什么
+- **无需ID**：使用名称而不是Odoo ID
+- **批量操作**：一次调用可以创建多个相关记录
 
-## Architecture
+## 架构
 
-### Core Components
+### 核心组件
 
-**OdooClient** — Low-level XML-RPC wrapper
-- Connects to Odoo 19 instance
-- Handles authentication via API key
-- Provides `search()`, `read()`, `create()`, `write()`, `unlink()` methods
-- Built-in retry logic and error handling
+**OdooClient** — 低级别的XML-RPC封装层
+- 连接到Odoo 19实例
+- 通过API密钥处理身份验证
+- 提供`search()`, `read()`, `create()`, `write()`, `unlink()`方法
+- 内置重试逻辑和错误处理
 
-**Model Ops Classes** — Business logic for each module
-- `PartnerOps` — Customers/suppliers
-- `SaleOrderOps` — Quotations and sales orders
-- `InvoiceOps` — Customer invoices
-- `InventoryOps` — Products and stock
-- `CRMOps` — Leads and opportunities
-- `PurchaseOrderOps` — POs and vendors
-- `ProjectOps` — Projects and tasks
-- `HROps` — Employees, departments, expenses
-- `ManufacturingOps` — BOMs and MOs
-- `CalendarOps` — Events and meetings
-- `FleetOps` — Vehicles and odometer
-- `EcommerceOps` — Website orders and products
+**模型操作类（Model Ops Classes）** — 每个模块的业务逻辑
+- `PartnerOps` — 客户/供应商
+- `SaleOrderOps` — 报价单和销售订单
+- `InvoiceOps` — 客户发票
+- `InventoryOps` — 产品和库存
+- `CRMOps` — 潜在客户和销售机会
+- `PurchaseOrderOps` — 采购订单和供应商
+- `ProjectOps` — 项目和任务
+- `HROps` — 员工、部门和费用
+- `ManufacturingOps` — 物料清单和制造订单
+- `CalendarOps` — 事件和会议
+- `FleetOps` — 车辆和里程表
+- `EcommerceOps` — 网站订单和产品
 
-**SmartActionHandler** — High-level natural-language interface
-- Wraps all Ops classes
-- Implements find-or-create workflows
-- Fuzzy name matching (case-insensitive)
-- Multi-step transaction orchestration
-- Detailed response summaries
+**SmartActionHandler** — 高级别的自然语言接口
+- 封装所有操作类
+- 实现查找或创建工作流程
+- 模糊名称匹配（不区分大小写）
+- 多步骤事务协调
+- 详细的响应摘要
 
-### Field Handling
+### 字段处理
 
-The connector auto-detects required vs. optional fields in Odoo 19:
-- **Implicit defaults**: Fields with Odoo defaults (e.g., state) are omitted
-- **Smart creation**: Auto-fills reasonable defaults for optional fields
-- **Error reporting**: Missing required fields raise clear `OdooError` with field name
+连接器自动检测Odoo 19中必需和可选的字段：
+- **隐式默认值**：具有Odoo默认值的字段将被省略
+- **智能创建**：为可选字段自动填充合理的默认值
+- **错误报告**：缺失的必需字段会引发明确的`OdooError`，并显示字段名称
 
-## Configuration
+## 配置
 
-### config.json Format
+### config.json格式
 
 ```json
 {
@@ -267,18 +266,18 @@ The connector auto-detects required vs. optional fields in Odoo 19:
 }
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Log in to your Odoo instance
-2. Go to **Settings** → **Users & Companies** → **Users**
-3. Open your user record
-4. Scroll to **Access Tokens**
-5. Click **Generate Token**
-6. Copy the token and paste into `config.json`
+1. 登录到您的Odoo实例
+2. 转到**设置** → **用户与公司** → **用户**
+3. 打开您的用户记录
+4. 滚动到**访问令牌**
+5. 点击**生成令牌**
+6. 复制令牌并粘贴到`config.json`中
 
-### Environment Variables
+### 环境变量
 
-Alternatively, set in `.env`:
+或者，您也可以在`.env`文件中设置：
 
 ```
 ODOO_URL=http://localhost:8069
@@ -287,11 +286,11 @@ ODOO_USERNAME=api_user@yourcompany.com
 ODOO_API_KEY=your_api_key
 ```
 
-The client auto-loads from `.env` if `config.json` is missing.
+如果`config.json`缺失，客户端会自动从`.env`中加载配置。
 
 ## Python API
 
-### Basic Usage
+### 基本用法
 
 ```python
 from odoo_skill import OdooClient, SmartActionHandler
@@ -319,7 +318,7 @@ print(result["summary"])
 # Output: "Created quotation QT-001 for new customer Rocky with 1 × Rock at $19.99"
 ```
 
-### Smart Actions API
+### 智能动作API
 
 ```python
 # Find-or-create a customer
@@ -377,7 +376,7 @@ result = smart.smart_create_employee(
 employee = result["employee"]
 ```
 
-### Low-Level Ops API
+### 低级别操作API
 
 ```python
 from odoo_skill.models.sale_order import SaleOrderOps
@@ -407,11 +406,11 @@ confirmed = sales.confirm_order(order['id'])
 print(f"Order {confirmed['name']} is now {confirmed['state']}")
 ```
 
-## Response Format
+## 响应格式
 
-All API methods return structured dictionaries:
+所有API方法返回结构化的字典：
 
-### Smart Action Response
+### 智能动作响应
 
 ```python
 {
@@ -436,7 +435,7 @@ All API methods return structured dictionaries:
 }
 ```
 
-### Standard Response
+### 标准响应
 
 ```python
 {
@@ -457,9 +456,9 @@ All API methods return structured dictionaries:
 }
 ```
 
-## Error Handling
+## 错误处理
 
-The connector uses custom exceptions:
+连接器使用自定义异常：
 
 ```python
 from odoo_skill.errors import OdooError, OdooAuthError, OdooNotFoundError
@@ -477,88 +476,88 @@ except OdooError as e:
     print(f"Odoo error: {e}")
 ```
 
-## Supported Odoo Modules
+## 支持的Odoo模块
 
-The connector supports 153+ installed modules in Odoo 19:
+该连接器支持Odoo 19中安装的153个以上模块：
 
-**Core**
+**核心模块（Core Modules）**
 - base, web, website
 
-**Sales & CRM**
+**销售与客户关系管理（Sales & CRM）**
 - sale, crm, sale_management, website_sale, event, survey
 
-**Purchasing**
+**采购（Purchasing）**
 - purchase, purchase_stock, purchase_requisition
 
-**Inventory**
+**库存（Inventory）**
 - stock, stock_intrastat, stock_dropshipping
 
-**Accounting**
+**会计（Accounting）**
 - account, account_accountant, account_analytic, account_payment
 
-**HR**
+**人力资源（HR）**
 - hr, hr_attendance, hr_expense, hr_contract, hr_holidays, hr_org_chart
 
-**Projects**
+**项目（Projects）**
 - project, project_enterprise, task_base, project_timesheet_forecast
 
-**Manufacturing**
+**制造（Manufacturing）**
 - mrp, mrp_byproduct, quality, batch, shelf_life
 
-**Fleet**
+**车队（Fleet）**
 - fleet, maintenance
 
-**Marketing**
+**市场营销（Marketing）**
 - marketing_automation, email_marketing, mass_mailing, sms, website_form
 
-**eCommerce**
+**电子商务（E-commerce）**
 - website_sale, website_sale_analytics, website_sale_comparison, website_form_project
 
-**Tools**
+**工具（Tools）**
 - calendar, documents, spreadsheet, discuss, mail, knowledge
 
-**Plus 50+ more specialized modules**
+**还有50多个专业模块（Plus 50+ specialized modules）**
 
-## Limits & Constraints
+## 限制与约束
 
-- **Search limit**: 100 records by default (configurable)
-- **Timeout**: 60 seconds per request (configurable)
-- **Retries**: 3 automatic retries on network failure
-- **Concurrency**: Single-threaded; queue requests if needed
-- **Rate limiting**: Follow your Odoo instance's API limits
+- **搜索限制**：默认为100条记录（可配置）
+- **超时**：每次请求60秒（可配置）
+- **重试**：网络失败时自动重试3次
+- **并发**：单线程；必要时排队请求
+- **速率限制**：遵循您的Odoo实例的API限制
 
-## Troubleshooting
+## 故障排除
 
-### Connection Issues
-- Verify `url`, `db`, `username`, `api_key` in config.json
-- Check Odoo server is running: `http://your-odoo-url/web`
-- Ensure API key is generated in Odoo user settings
-- Check network connectivity and firewall rules
+### 连接问题
+- 验证`config.json`中的`url`, `db`, `username`, `api_key`
+- 检查Odoo服务器是否运行：`http://your-odoo-url/web`
+- 确保在Odoo用户设置中生成了API密钥
+- 检查网络连接和防火墙规则
 
-### Authentication Errors
-- Regenerate API key in Odoo
-- Verify username (email format)
-- Check that the user has API access enabled
-- Ensure database name matches exactly
+### 身份验证错误
+- 在Odoo中重新生成API密钥
+- 验证用户名（电子邮件格式）
+- 确保用户启用了API访问权限
+- 确保数据库名称完全匹配
 
-### Missing Field Errors
-- Field names must match Odoo 19 exactly (e.g., `product_tmpl_id`, not `product_id`)
-- Some fields are read-only in Odoo (state, computed fields)
-- Check Odoo model definition: Settings → Technical → Database Structure → Models
+### 缺少字段错误
+- 字段名称必须与Odoo 19中的完全匹配（例如，`product_tmpl_id`，而不是`product_id`）
+- 一些字段在Odoo中是只读的（状态、计算字段）
+- 检查Odoo模型定义：设置 → 技术 → 数据库结构 → 模型
 
-### Smart Action Issues
-- Fuzzy matching is case-insensitive but searches only the `name` field
-- For exact matching, use the low-level Ops API with `id` directly
-- If a name exists in multiple records, the first match is used
+### 智能动作问题
+- 模糊匹配不区分大小写，但只搜索`name`字段
+- 对于精确匹配，请使用低级别的操作API并直接使用`id`
+- 如果一个名称存在于多个记录中，将使用第一个匹配项
 
-### Performance
-- Large searches (limit > 100) may timeout
-- Use date range filters: `date_from`, `date_to`
-- Consider batch operations for bulk data
+### 性能
+- 大规模搜索（超过100条记录）可能会超时
+- 使用日期范围过滤器：`date_from`, `date_to`
+- 考虑使用批量操作处理大量数据
 
-## Examples in OpenClaw
+## OpenClaw中的示例
 
-### Natural Language Sales Order
+### 自然语言销售订单（Natural Language Sales Order）
 
 ```
 User: "Create a quote for Acme Corp with 10 Widgets at $50 each"
@@ -572,7 +571,7 @@ OpenClaw → OdooClient (smart action):
 Result: "✅ Created quotation QT-001 for Acme Corp with 10 × Widgets at $50"
 ```
 
-### Pipeline Status Check
+### 流程状态检查（Pipeline Status Check）
 
 ```
 User: "Show me the sales pipeline"
@@ -586,7 +585,7 @@ OpenClaw → CRMOps.get_pipeline():
 Result: "Qualified: $50k | Proposal: $100k | Negotiation: $75k | Total: $225k"
 ```
 
-### Inventory Alert
+### 库存警报（Inventory Alert）
 
 ```
 User: "What products are low on stock?"
@@ -599,9 +598,9 @@ OpenClaw → InventoryOps.get_low_stock_products():
 Result: "Widget X: 5 on hand (min 20) | Component Y: 0 on hand (min 10)"
 ```
 
-## Development
+## 开发（Development）
 
-### Project Structure
+### 项目结构（Project Structure）
 
 ```
 OdooConnector/
@@ -639,7 +638,7 @@ OdooConnector/
 └── setup.ps1                  # PowerShell installer
 ```
 
-### Running Tests
+### 运行测试（Running Tests）
 
 ```bash
 # Run full integration test suite
@@ -652,15 +651,15 @@ python -m pytest tests/test_partners.py -v
 python -m pytest --cov=odoo_skill tests/
 ```
 
-### Adding a New Smart Action
+### 添加新的智能动作（Adding a New Smart Action）
 
-1. Implement the method in `SmartActionHandler` class
-2. Use `find_or_create_*` primitives for dependencies
-3. Return a dict with `summary`, the main record, and creation details
-4. Add docstring with example usage
-5. Test with `run_full_test.py`
+1. 在`SmartActionHandler`类中实现该方法
+2. 使用`find_or_create_*`方法处理依赖关系
+3. 返回一个包含`summary`、主要记录和创建详情的字典
+4. 添加带有示例用法的文档字符串
+5. 使用`run_full_test.py`进行测试
 
-Example:
+示例：
 
 ```python
 def smart_create_invoice(self, customer_name: str, product_lines: list[dict], **kwargs) -> dict:
@@ -690,13 +689,13 @@ def smart_create_invoice(self, customer_name: str, product_lines: list[dict], **
     }
 ```
 
-## License & Support
+## 许可证与支持（License & Support）
 
-This connector is part of the OpenClaw project. For issues, questions, or contributions, contact the development team.
+此连接器是OpenClaw项目的一部分。如有问题、疑问或贡献，请联系开发团队。
 
 ---
 
-**Last Updated:** 2026-02-09  
-**Odoo Version:** 19.0  
-**Python:** 3.10+  
-**Status:** Production Ready
+**最后更新时间：** 2026-02-09  
+**Odoo版本：** 19.0  
+**Python版本：** 3.10+  
+**状态：** 已准备好投入生产

@@ -1,15 +1,15 @@
 ---
 name: zellij
-description: Remote-control zellij sessions for interactive CLIs by sending keystrokes and scraping pane output.
+description: 通过发送按键输入并抓取面板输出，实现对 Zellij 会话的远程控制，从而支持交互式命令行界面（CLI）的操作。
 homepage: https://zellij.dev
 metadata: {"moltbot":{"emoji":"🪟","os":["darwin","linux"],"requires":{"bins":["zellij","jq"]},"install":[{"id":"brew","kind":"brew","formula":"zellij","bins":["zellij"],"label":"Install Zellij (brew)"},{"id":"cargo","kind":"cargo","crate":"zellij","bins":["zellij"],"label":"Install Zellij (Cargo)"}]}}
 ---
 
-# zellij Skill (Moltbot)
+# zellij 技能（Moltbot）
 
-Use zellij only when you need an interactive TTY. Prefer exec background mode for long-running, non-interactive tasks.
+仅在需要交互式终端（TTY）时使用 zellij。对于长时间运行的非交互式任务，建议使用后台执行模式（exec）。
 
-## Quickstart (data dir, exec tool)
+## 快速入门（数据目录、执行工具）
 
 ```bash
 DATA_DIR="${CLAWDBOT_ZELLIJ_DATA_DIR:-${TMPDIR:-/tmp}/moltbot-zellij-data}"
@@ -21,7 +21,7 @@ zellij --data-dir "$DATA_DIR" run --session "$SESSION" --name repl -- python3 -q
 zellij --data-dir "$DATA_DIR" pipe --session "$SESSION" --pane-id 0
 ```
 
-After starting a session, always print monitor commands:
+启动会话后，务必打印监控命令：
 
 ```
 To monitor:
@@ -29,46 +29,46 @@ To monitor:
   zellij --data-dir "$DATA_DIR" pipe --session "$SESSION" --pane-id 0
 ```
 
-## Data directory convention
+## 数据目录约定
 
-- Use `CLAWDBOT_ZELLIJ_DATA_DIR` (default `${TMPDIR:-/tmp}/moltbot-zellij-data`).
-- Zellij stores state (sessions, plugins, etc.) in this directory.
+- 使用 `CLAWDBOT_ZELLIJ_DATA_DIR`（默认值为 `${TMPDIR:-/tmp}/moltbot-zellij-data`）。
+- Zellij 将会话状态（包括插件等）存储在该目录中。
 
-## Targeting panes and naming
+## 定位特定窗口和命名
 
-- Zellij uses `pane-id` (numeric) to target specific panes.
-- Find pane IDs: `zellij --data-dir "$DATA_DIR" list-sessions --long` or use `list-panes.sh`.
-- Keep session names short; avoid spaces.
+- Zellij 使用 `pane-id`（数字）来定位特定的窗口。
+- 查找窗口 ID：`zellij --data-dir "$DATA_DIR" list-sessions --long` 或使用 `list-panes.sh`。
+- 保持会话名称简短；避免使用空格。
 
-## Finding sessions
+## 查找会话
 
-- List sessions on your data dir: `zellij --data-dir "$DATA_DIR" list-sessions`.
-- List sessions across all data dirs: `{baseDir}/scripts/find-sessions.sh --all` (uses `CLAWDBOT_ZELLIJ_DATA_DIR`).
+- 在当前数据目录中列出会话：`zellij --data-dir "$DATA_DIR" list-sessions`。
+- 在所有数据目录中列出会话：`{baseDir}/scripts/find-sessions.sh --all`（使用 `CLAWDBOT_ZELLIJ_DATA_DIR`）。
 
-## Sending input safely
+## 安全地发送输入
 
-- Use `zellij action` to send keystrokes: `zellij --data-dir "$DATA_DIR" action --session "$SESSION" write-chars --chars "$cmd"`.
-- Control keys: `zellij --data-dir "$DATA_DIR" action --session "$SESSION" write 2` (Ctrl+C).
+- 使用 `zellij action` 来发送按键：`zellij --data-dir "$DATA_DIR" action --session "$SESSION" write-chars --chars "$cmd"`。
+- 控制键：`zellij --data-dir "$DATA_DIR" action --session "$SESSION" write 2`（相当于按下 Ctrl+C）。
 
-## Watching output
+## 查看输出
 
-- Capture pane output: `zellij --data-dir "$DATA_DIR" pipe --session "$SESSION" --pane-id 0`.
-- Wait for prompts: `{baseDir}/scripts/wait-for-text.sh -s "$SESSION" -p 0 -p 'pattern'`.
-- Attaching is OK; detach with `Ctrl+p d` (zellij default detach).
+- 捕获窗口输出：`zellij --data-dir "$DATA_DIR" pipe --session "$SESSION" --pane-id 0`。
+- 等待提示信息：`{baseDir}/scripts/wait-for-text.sh -s "$SESSION" -p 0 -p 'pattern'`。
+- 可以通过 `Ctrl+p d` 来断开连接（zellij 的默认断开方式）。
 
-## Spawning processes
+## 启动进程
 
-- For python REPLs, zellij works well with standard `python3 -q`.
-- No special flags needed like tmux's `PYTHON_BASIC_REPL=1`.
+- 对于 Python REPL，zellij 可以很好地与标准命令 `python3 -q` 配合使用。
+- 不需要像 tmux 中的 `PYTHON_BASIC_REPL=1` 这样的特殊标志。
 
 ## Windows / WSL
 
-- zellij is supported on macOS/Linux. On Windows, use WSL and install zellij inside WSL.
-- This skill is gated to `darwin`/`linux` and requires `zellij` on PATH.
+- zellij 支持 macOS/Linux。在 Windows 上，可以使用 WSL 并在 WSL 中安装 zellij。
+- 该技能仅适用于 `darwin`/`linux` 环境，并要求 `zellij` 在系统路径（PATH）中。
 
-## Orchestrating Coding Agents (Codex, Claude Code)
+## 编程代理的协调（Codex、Claude Code）
 
-zellij excels at running multiple coding agents in parallel:
+zellij 在并行运行多个编程代理方面表现出色：
 
 ```bash
 DATA_DIR="${TMPDIR:-/tmp}/codex-army-data"
@@ -96,50 +96,50 @@ done
 zellij --data-dir "$DATA_DIR" pipe --session "agent-1" --pane-id 0
 ```
 
-**Tips:**
-- Use separate git worktrees for parallel fixes (no branch conflicts)
-- `pnpm install` first before running codex in fresh clones
-- Check for shell prompt (`❯` or `$`) to detect completion
-- Codex needs `--yolo` or `--full-auto` for non-interactive fixes
+**提示：**
+- 为并行修复任务使用不同的 Git 工作目录（以避免分支冲突）。
+- 在新克隆的代码仓库中运行 Codex 之前，请先执行 `pnpm install`。
+- 通过检查 shell 提示符（`❯` 或 `$`）来判断操作是否完成。
+- 对于非交互式修复任务，Codex 需要使用 `--yolo` 或 `--full-auto` 参数。
 
-## Cleanup
+## 清理
 
-- Kill a session: `zellij --data-dir "$DATA_DIR" delete-session --session "$SESSION"`.
-- Kill all sessions on a data dir: use `{baseDir}/scripts/cleanup-sessions.sh "$DATA_DIR"`.
+- 结束一个会话：`zellij --data-dir "$DATA_DIR" delete-session --session "$SESSION"`。
+- 结束某个数据目录下的所有会话：使用 `{baseDir}/scripts/cleanup-sessions.sh "$DATA_DIR"`。
 
-## Zellij vs Tmux Quick Reference
+## zellij 与 tmux 的快速对比
 
-| Task | tmux | zellij |
+| 任务 | tmux | zellij |
 |------|------|--------|
-| List sessions | `list-sessions` | `list-sessions` |
-| Create session | `new-session -d` | `new-session --detach` |
-| Attach | `attach -t` | `attach --session` |
-| Send keys | `send-keys` | `action write-chars` |
-| Capture pane | `capture-pane` | `pipe` |
-| Kill session | `kill-session` | `delete-session` |
-| Detach | `Ctrl+b d` | `Ctrl+p d` |
+| 列出会话 | `list-sessions` | `list-sessions` |
+| 创建会话 | `new-session -d` | `new-session --detach` |
+| 连接窗口 | `attach -t` | `attach --session` |
+| 发送按键 | `send-keys` | `action write-chars` |
+- 捕获窗口输出 | `capture-pane` | `pipe` |
+- 结束会话 | `kill-session` | `delete-session` |
+- 断开连接 | `Ctrl+b d` | `Ctrl+p d` |
 
-## Helper: wait-for-text.sh
+## 帮助工具：wait-for-text.sh
 
-`{baseDir}/scripts/wait-for-text.sh` polls a pane for a regex (or fixed string) with a timeout.
+`{baseDir}/scripts/wait-for-text.sh` 会定期检查窗口内容，以匹配指定的正则表达式或固定字符串。
 
 ```bash
 {baseDir}/scripts/wait-for-text.sh -s session -p pane-id -r 'pattern' [-F] [-T 20] [-i 0.5]
 ```
 
-- `-s`/`--session` session name (required)
-- `-p`/`--pane-id` pane ID (required)
-- `-r`/`--pattern` regex to match (required); add `-F` for fixed string
-- `-T` timeout seconds (integer, default 15)
-- `-i` poll interval seconds (default 0.5)
+- `-s`/`--session`：会话名称（必填）
+- `-p`/`--pane-id`：窗口 ID（必填）
+- `-r`/`--pattern`：要匹配的正则表达式（必填）；使用 `-F` 表示固定字符串
+- `-T`：超时时间（秒，默认为 15 秒）
+- `-i`：检查间隔时间（秒，默认为 0.5 秒）
 
-## Helper: find-panes.sh
+## 帮助工具：find-panes.sh
 
-`{baseDir}/scripts/find-panes.sh` lists panes for a given session.
+`{baseDir}/scripts/find-panes.sh` 会列出指定会话的所有窗口。
 
 ```bash
 {baseDir}/scripts/find-panes.sh -s session [-d data-dir]
 ```
 
-- `-s`/`--session` session name (required)
-- `-d`/`--data-dir` zellij data dir (uses `CLAWDBOT_ZELLIJ_DATA_DIR` if not specified)
+- `-s`/`--session`：会话名称（必填）
+- `-d`/`--data-dir`：zellij 的数据目录（如果未指定，则使用 `CLAWDBOT_ZELLIJ_DATA_DIR`）

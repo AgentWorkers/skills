@@ -1,25 +1,25 @@
 ---
 name: openclaw-action
-description: "GitHub Action for automated security scanning of agent workspaces. Detects exposed secrets, prompt/shell injection, and data exfiltration patterns in PRs and commits."
+description: "GitHub Action：用于自动化扫描代理工作区的安全问题。能够检测到 Pull Requests（PRs）和代码提交（commits）中存在的敏感信息泄露、命令注入（prompt/shell injection）以及数据窃取（data exfiltration）等安全风险。"
 user-invocable: false
 metadata: {"openclaw":{"emoji":"🛡️","requires":{"bins":["python3"]},"os":["darwin","linux","win32"]}}
 ---
 
-# OpenClaw Security Action
+# OpenClaw 安全检查动作
 
-GitHub Action that scans agent skills for security issues on every PR.
+这是一个 GitHub 动作，用于在每个 Pull Request（PR）中扫描代理技能（agent skills）中的安全问题。
 
-## What It Scans
+## 扫描内容
 
-| Scanner | What It Catches |
+| 扫描工具 | 扫描内容 |
 |---------|-----------------|
-| **sentry** | API keys, tokens, passwords, credentials in code |
-| **bastion** | Prompt injection markers, shell injection patterns |
-| **egress** | Suspicious network calls, data exfiltration patterns |
+| **sentry** | 代码中的 API 密钥、令牌、密码和凭证 |
+| **bastion** | 提示注入（prompt injection）标记、shell 注入（shell injection）模式 |
+| **egress** | 可疑的网络调用、数据泄露（data exfiltration）模式 |
 
-## Quick Start
+## 快速入门
 
-Add to `.github/workflows/security.yml`:
+将以下代码添加到 `.github/workflows/security.yml` 文件中：
 
 ```yaml
 name: Security Scan
@@ -42,38 +42,38 @@ jobs:
           fail-on-findings: 'true'
 ```
 
-## Inputs
+## 输入参数
 
-| Input | Default | Description |
+| 参数 | 默认值 | 说明 |
 |-------|---------|-------------|
-| `workspace` | `.` | Path to scan |
-| `fail-on-findings` | `true` | Fail the check if issues found |
-| `scan-secrets` | `true` | Enable secret scanning |
-| `scan-injection` | `true` | Enable injection scanning |
-| `scan-egress` | `true` | Enable egress scanning |
+| `workspace` | `.` | 需要扫描的目录路径 |
+| `fail-on-findings` | `true` | 如果发现安全问题，则检查失败 |
+| `scan-secrets` | `true` | 启用秘密信息扫描 |
+| `scan-injection` | `true` | 启用注入攻击扫描 |
+| `scan-egress` | `true` | 启用网络流量输出（egress traffic）扫描 |
 
-## Outputs
+## 输出结果
 
-| Output | Description |
+| 输出内容 | 说明 |
 |--------|-------------|
-| `findings-count` | Total number of issues found |
-| `has-critical` | `true` if critical/high severity issues |
+| `findings-count` | 发现的安全问题总数 |
+| `has-critical` | 如果存在严重/高严重级别的问题，则返回 `true` |
 
-## Philosophy
+## 功能说明
 
-This action **detects and alerts only**. It will:
-- Flag security issues in PR checks
-- Annotate specific lines with findings
-- Generate a summary report
+此动作仅用于**检测和报警**。它将：
+- 在 PR 检查过程中标记安全问题 |
+- 在相关代码行上标注问题位置 |
+- 生成汇总报告
 
-It will NOT:
-- Automatically modify your code
-- Quarantine or delete files
-- Make any changes to your repository
+**注意**：此动作不会：
+- 自动修改您的代码 |
+- 将文件隔离或删除 |
+- 对您的仓库进行任何更改
 
-For automated remediation, see [OpenClaw Pro](https://github.com/sponsors/AtlasPA).
+如需自动修复安全问题，请参考 [OpenClaw Pro](https://github.com/sponsors/AtlasPA)。
 
-## Requirements
+## 系统要求
 
-- Python 3.8+ (auto-installed by action)
-- No external dependencies
+- Python 3.8 及以上版本（该动作会自动安装相应版本） |
+- 无需任何外部依赖库

@@ -1,103 +1,111 @@
 ---
 name: wpstime-punchclock
-description: Automate punching time in/out on WPS Time / NetTime (wpstime.com NetTime). Use for phrases like setup punchclock/configure punchclock/set up time clock, clock in/clock out, start break/end break, start lunch/end lunch, check status/status. Runs a Playwright flow, captures a screenshot, and replies with a brief confirmation.
+description: **自动化在 WPS Time/NetTime (wpstime.com) 上记录考勤时间的功能**  
+该功能可用于执行以下操作：  
+- 设置考勤系统（setup punchclock/configure punchclock）  
+- 记录上班/下班时间（clock in/clock out）  
+- 开始/结束休息时间（start break/end break）  
+- 开始/结束午餐时间（start lunch/end lunch）  
+- 查看考勤状态（check status）  
+
+系统会运行一个 Playwright 脚本，自动捕获屏幕截图，并发送简短的确认信息作为回复。
 ---
 
-# WPS Time / NetTime Punchclock
+# WPS Time / NetTime 出勤打卡系统
 
-Run the bundled Playwright script to log into WPS Time NetTime using macOS Keychain credentials, perform the requested punch action (or status check), take a screenshot, and report results.
+运行随附的 Playwright 脚本，使用 macOS Keychain 的凭证登录 WPS Time NetTime 系统，执行所需的打卡操作（或状态检查），截取屏幕截图，并报告结果。
 
-## Inputs → actions
-Map user intent to the script `--action`:
+## 输入 → 操作
+将用户意图映射到脚本的 `--action` 参数：
 
-### Setup / credentials
-- setup punchclock / configure punchclock / set up time clock → run setup flow
+### 设置 / 凭证
+- 设置打卡系统 / 配置打卡流程 → 运行设置流程
 
-### Punch actions
-- clock in → `clock-in`
-- clock out → `clock-out`
-- start break → `start-break`
-- end break → `end-break` (implemented as `Clock In (end break)` in script)
-- start lunch → `start-lunch`
-- end lunch → `end-lunch` (implemented as `Clock In (end lunch)` in script)
-- status / check status → `status`
+### 打卡操作
+- 登录 → `clock-in`
+- 下班 → `clock-out`
+- 开始休息 → `start-break`
+- 结束休息 → `end-break`（在脚本中实现为 `Clock In (end-break)`
+- 开始午餐 → `start-lunch`
+- 结束午餐 → `end-lunch`（在脚本中实现为 `Clock In (end-lunch)`
+- 查看状态 → `status`
 
-## First-time setup (per machine / per user)
+## 首次设置（每台机器 / 每个用户）
 
-### Option A (recommended): local terminal setup (password never enters chat logs)
-Run the interactive setup script to store credentials in **macOS Keychain**:
+### 选项 A（推荐）：本地终端设置（密码不会记录在聊天日志中）
+运行交互式设置脚本，将凭证存储在 **macOS Keychain** 中：
 
 ```bash
 cd {baseDir}/scripts
 node ./setup.mjs
 ```
 
-This stores credentials locally under Keychain services:
-- `wpstime-punchclock.company` (secret = company/common id)
-- `wpstime-punchclock` (account = username, secret = password)
+这些凭证将存储在 Keychain 服务中：
+- `wpstime-punchclock.company`（secret = 公司/通用 ID）
+- `wpstime-punchclock`（account = 用户名, secret = 密码）
 
-### Option B: chat wizard setup (includes password; higher risk)
-Only use if the user explicitly asks for chat-based setup and accepts that the password will appear in chat history/logs.
+### 选项 B：聊天助手设置（包含密码；风险较高）
+仅在用户明确请求通过聊天进行设置，并且同意密码会显示在聊天记录/日志中时使用。
 
-Workflow:
-1) Warn clearly:
-   - the password will be sent via chat and may be stored by the chat platform + gateway logs.
-   - recommend Option A instead.
-2) If they still confirm, collect 3 fields in separate turns:
+**操作流程：**
+1) 明确警告：
+   - 密码将通过聊天发送，可能会被聊天平台和网关日志记录。
+   - 建议选择选项 A。
+2) 如果用户仍确认使用此方式，分三次收集以下信息：
    - companyId
-   - username
-   - password
-3) Store into macOS Keychain on the SAME machine running the gateway using `security add-generic-password -U`:
+   - 用户名
+   - 密码
+3) 使用 `security add-generic-password -U` 命令将凭证存储在运行网关的同一台机器上的 Keychain 中：
 
 ```bash
 security add-generic-password -U -s "wpstime-punchclock.company" -a "company" -w "<companyId>"
 security add-generic-password -U -s "wpstime-punchclock" -a "<username>" -w "<password>"
 ```
 
-4) Never echo the password back. After storing, run `status` to verify login works.
+4) 严禁将密码显示给用户。存储凭证后，运行 `status` 命令验证登录是否成功。
 
-## Workflow
-1) Run the punch script (headless by default):
+## 工作流程
+1) 运行打卡脚本（默认为无界面模式）：
 
 ```bash
 node {baseDir}/scripts/punchclock.mjs --action <action>
 ```
 
-Optional flags:
-- `--headless 0` for debugging
-- `--outDir <path>` to control screenshot output
+**可选参数：**
+- `--headless 0` 用于调试
+- `--outDir <路径>` 用于指定截图输出路径
 
-2) Parse stdout JSON.
-- On success: read `performed`, `screenshotPath`, and (optionally) pull key fields from `snippet`.
-- On failure: report `error` and do not claim the punch succeeded.
+2) 解析脚本的输出 JSON 数据：
+- 成功时：读取 `performed`、`screenshotPath` 以及（可选的）`snippet` 中的关键信息。
+- 失败时：报告错误，并不视为打卡成功。
 
-3) Reply to the requesting channel with:
-- one-line confirmation (what was performed)
-- effective status/time if present (best-effort)
-- attach the screenshot at `screenshotPath`
+3) 向请求通道回复：
+- 一条确认消息（说明执行的操作）
+- 如果有有效状态/时间信息，则一并提供
+- 附加截图文件（路径为 `screenshotPath`）
 
-4) If the user asks to clock in/out but they may already be in that state, prefer running `status` first or immediately after to confirm and avoid double-punch confusion.
+4) 如果用户请求打卡，但系统可能已经处于相应的状态，建议先运行 `status` 命令进行确认，以避免重复打卡的错误。
 
-## Credentials (macOS Keychain)
-Do not store secrets in files or prompts. Use Keychain.
+## 凭证（macOS Keychain）
+不要将凭证存储在文件或提示框中，应使用 Keychain 进行管理。
 
-Preferred services (used by `setup.mjs`):
-- Service `wpstime-punchclock.company` → secret = company/common id
-- Service `wpstime-punchclock` → account = username, secret = password
+**推荐使用的 Keychain 服务：**
+- 服务 `wpstime-punchclock.company` → secret = 公司/通用 ID
+- 服务 `wpstime-punchclock` → account = 用户名, secret = 密码
 
-Backward-compat (older OpenClaw setups):
+**向后兼容（旧版 OpenClaw 设置）：**
 - `openclaw.wpstime.company`
 - `openclaw.wpstime`
 
-If missing, the punch script throws an error. When that happens, guide the user to run:
+如果这些服务不存在，打卡脚本会抛出错误。此时，引导用户重新运行脚本：
 
 ```bash
 cd {baseDir}/scripts
 node ./setup.mjs
 ```
 
-Then retry the requested action.
+然后重新尝试所需的操作。
 
-## Reference
-If you need the longer operational runbook, read:
+## 参考资料
+如需查看更详细的操作手册，请参阅：
 - `references/PUNCHCLOCK_RUNBOOK.md`

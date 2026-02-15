@@ -1,43 +1,43 @@
 ---
 name: entity-optimizer
-description: 'Use when the user asks to "optimize entity presence", "build knowledge graph", "improve knowledge panel", "entity audit", or "establish brand entity". Works standalone with public search and AI query testing; supercharged when you connect ~~knowledge graph + ~~SEO tool + ~~AI monitor for automated entity analysis.'
+description: '当用户请求“优化实体的展示效果”、“构建知识图谱”、“改进知识面板”或“进行实体审计”时，请使用该工具。该工具可独立使用，支持公共搜索和人工智能查询测试；当您将其与“知识图谱”+“SEO工具”+“人工智能监控”相结合时，其功能将得到进一步增强，实现自动化的实体分析。'
 geo-relevance: "high"
 ---
 
-# Entity Optimizer
+# 实体优化器
 
-This skill audits, builds, and maintains entity identity across search engines and AI systems. Entities — the people, organizations, products, and concepts that search engines and AI systems recognize as distinct things — are the foundation of how both Google and LLMs decide *what you are* and *whether to cite you*.
+该技能用于审计、构建和维护搜索引擎及人工智能系统中的实体身份。实体（即搜索引擎和人工智能系统能够识别为独立存在的个人、组织、产品或概念）是谷歌和大型语言模型（LLMs）判断“你是谁”以及“是否应该引用你”的基础。
 
-**Why entities matter for SEO + GEO:**
+**实体对SEO和地理信息（GEO）的重要性：**
 
-- **SEO**: Google's Knowledge Graph powers Knowledge Panels, rich results, and entity-based ranking signals. A well-defined entity earns SERP real estate.
-- **GEO**: AI systems resolve queries to entities before generating answers. If an AI can't identify your entity, it can't cite you — no matter how good your content is.
+- **SEO**：谷歌的知识图谱（Knowledge Graph）为知识面板（Knowledge Panels）、丰富搜索结果以及基于实体的排名信号提供了支持。一个定义明确的实体能够在搜索结果页面（SERP）中获得更好的展示位置。
+- **GEO**：人工智能系统在生成答案之前会将查询结果映射到相应的实体上。如果人工智能无法识别你的实体，无论你的内容多么优秀，也无法被引用。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Establishing a new brand/person/product as a recognized entity
-- Auditing current entity presence across Knowledge Graph, Wikidata, and AI systems
-- Improving or correcting a Knowledge Panel
-- Building entity associations (entity ↔ topic, entity ↔ industry)
-- Resolving entity disambiguation issues (your entity confused with another)
-- Strengthening entity signals for AI citation
-- After launching a new brand, product, or organization
-- Preparing for a site migration (preserving entity identity)
-- Running periodic entity health checks
+- 建立一个新的品牌/个人/产品作为被认可的实体
+- 审计实体在知识图谱、维基数据（Wikidata）和人工智能系统中的存在情况
+- 改进或修正知识面板
+- 建立实体之间的关联（实体与主题、实体与行业之间的关联）
+- 解决实体歧义问题（你的实体与其他实体被混淆）
+- 加强实体被引用的信号
+- 在推出新品牌、产品或组织后
+- 为网站迁移做准备（保持实体身份的一致性）
+- 定期进行实体健康检查
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Entity Audit**: Evaluates current entity presence across search and AI systems
-2. **Knowledge Graph Analysis**: Checks Google Knowledge Graph, Wikidata, and Wikipedia status
-3. **AI Entity Resolution Test**: Queries AI systems to see how they identify and describe the entity
-4. **Entity Signal Mapping**: Identifies all signals that establish entity identity
-5. **Gap Analysis**: Finds missing or weak entity signals
-6. **Entity Building Plan**: Creates actionable plan to establish or strengthen entity presence
-7. **Disambiguation Strategy**: Resolves confusion with similarly-named entities
+1. **实体审计**：评估实体在搜索引擎和人工智能系统中的当前存在情况
+2. **知识图谱分析**：检查谷歌知识图谱、维基数据和维基百科的状态
+3. **人工智能实体识别测试**：查询人工智能系统，了解它们如何识别和描述该实体
+4. **实体信号映射**：识别所有用于确立实体身份的信号
+5. **差距分析**：找出缺失或薄弱的实体信号
+6. **实体构建计划**：制定可行的计划以建立或加强实体的存在感
+7. **歧义解决策略**：解决同名实体之间的混淆问题
 
-## How to Use
+## 使用方法
 
-### Entity Audit
+### 实体审计
 
 ```
 Audit entity presence for [brand/person/organization]
@@ -47,7 +47,7 @@ Audit entity presence for [brand/person/organization]
 How well do search engines and AI systems recognize [entity name]?
 ```
 
-### Build Entity Presence
+### 建立实体存在感
 
 ```
 Build entity presence for [new brand] in the [industry] space
@@ -57,7 +57,7 @@ Build entity presence for [new brand] in the [industry] space
 Establish [person name] as a recognized expert in [topic]
 ```
 
-### Fix Entity Issues
+### 解决实体问题
 
 ```
 My Knowledge Panel shows incorrect information — fix entity signals for [entity]
@@ -67,32 +67,35 @@ My Knowledge Panel shows incorrect information — fix entity signals for [entit
 AI systems confuse [my entity] with [other entity] — help me disambiguate
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的占位符，请参见 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~knowledge graph + ~~SEO tool + ~~AI monitor + ~~brand monitor connected:**
-Query Knowledge Graph API for entity status, pull branded search data from ~~SEO tool, test AI citation with ~~AI monitor, track brand mentions with ~~brand monitor.
+**当连接了知识图谱（knowledge graph）、SEO工具（SEO tool）、AI监控工具（AI monitor）和品牌监控工具（brand monitor）时：**
+- 通过知识图谱API查询实体状态
+- 从SEO工具中提取品牌搜索数据
+- 使用AI监控工具测试实体被引用的情况
+- 通过品牌监控工具跟踪品牌提及次数
 
-**With manual data only:**
-Ask the user to provide:
-1. Entity name, type (Person, Organization, Brand, Product, Creative Work, Event)
-2. Primary website / domain
-3. Known existing profiles (Wikipedia, Wikidata, social media, industry directories)
-4. Top 3-5 topics/industries the entity should be associated with
-5. Any known disambiguation issues (other entities with same/similar name)
+**仅使用手动数据时：**
+- 请用户提供以下信息：
+  - 实体名称、类型（个人、组织、品牌、产品、创意作品、事件）
+  - 主要网站/域名
+  - 已知的现有资料来源（维基百科、维基数据、社交媒体、行业目录）
+  - 实体应关联的前三到五个主题/行业
+  - 任何已知的歧义问题（其他具有相同或相似名称的实体）
 
-Without tools, Claude provides entity optimization strategy and recommendations based on information the user provides. The user must run search queries, check Knowledge Panels, and test AI responses to supply the raw data for analysis.
+在没有工具的情况下，Claude会根据用户提供的信息提供实体优化策略和建议。用户需要自行执行搜索查询、检查知识面板并测试人工智能系统的响应，以提供分析所需的原始数据。
 
-Proceed with the audit using public search results, AI query testing, and SERP analysis. Note which items require tool access for full evaluation.
+请使用公开搜索结果、人工智能查询测试和搜索结果页面（SERP）分析来进行审计。注意哪些项目需要工具支持才能进行完整评估。
 
-## Instructions
+## 指令
 
-When a user requests entity optimization:
+当用户请求实体优化时：
 
-### Step 1: Entity Discovery
+### 第一步：实体发现
 
-Establish the entity's current state across all systems.
+确定实体在所有系统中的当前状态。
 
 ```markdown
 ### Entity Profile
@@ -130,9 +133,9 @@ Test how AI systems identify this entity by querying:
 | Google AI Overview | ✅ / ⚠️ / ❌ | [accuracy notes] | [yes/no/partially] |
 ```
 
-### Step 2: Entity Signal Audit
+### 第二步：实体信号审计
 
-Evaluate entity signals across 6 categories. For the detailed 47-signal checklist with verification methods, see [references/entity-signal-checklist.md](./references/entity-signal-checklist.md).
+评估六个类别中的实体信号。有关详细的47个信号检查清单及验证方法，请参见 [references/entity-signal-checklist.md](./references/entity-signal-checklist.md)。
 
 ```markdown
 ### Entity Signal Audit
@@ -199,7 +202,7 @@ Evaluate entity signals across 6 categories. For the detailed 47-signal checklis
 | Entity's content is crawlable by AI systems | ✅ / ❌ | [action] |
 ```
 
-### Step 3: Report & Action Plan
+### 第三步：报告与行动计划
 
 ```markdown
 ## Entity Optimization Report
@@ -273,29 +276,29 @@ Sorted by: impact on entity recognition × effort required
 - For domain-level audit: [domain-authority-auditor](../domain-authority-auditor/)
 ```
 
-## Validation Checkpoints
+## 验证检查点
 
-### Input Validation
-- [ ] Entity name and type identified
-- [ ] Primary domain/website confirmed
-- [ ] Target topics/industries specified
-- [ ] Disambiguation context provided (if entity name is common)
+### 输入验证
+- [ ] 实体名称和类型已确认
+- [ ] 主要域名/网站已确认
+- [ ] 目标主题/行业已指定
+- [ ] 如果实体名称常见，提供了歧义解决的相关信息
 
-### Output Validation
-- [ ] All 6 signal categories evaluated
-- [ ] AI entity resolution tested with at least 3 queries
-- [ ] Knowledge Panel status checked
-- [ ] Wikidata/Wikipedia status verified
-- [ ] Schema.org markup on primary site audited
-- [ ] Every recommendation is specific and actionable
-- [ ] Roadmap includes concrete steps with timeframes
-- [ ] Cross-reference with CORE-EEAT A07/A08 and CITE I01-I10 noted
+### 输出验证
+- [ ] 所有六个信号类别均已评估
+- [ ] 使用至少三个查询测试了人工智能对实体的识别能力
+- [ ] 检查了知识面板的状态
+- [ ] 验证了维基数据和维基百科的状态
+- [ ] 已审核了主要网站上的Schema.org标记
+- [ ] 每条建议都具体且可操作
+- [ ] 行动计划包含了具体的步骤和时间表
+- [ ] 与CORE-EEAT A07/A08和CITE I01-I10进行了交叉核对
 
-## Example
+## 示例
 
-**User**: "Audit entity presence for CloudMetrics, our B2B SaaS analytics platform at cloudmetrics.io"
+**用户**：“审计我们的B2B SaaS分析平台CloudMetrics在cloudmetrics.io上的实体存在情况”
 
-**Output**:
+**输出**：
 
 ```markdown
 ## Entity Optimization Report
@@ -349,130 +352,130 @@ Queries tested with results reported by user:
 - **CITE**: I-dimension weakest area is I01 (Knowledge Graph Presence) -- completing Wikidata entry and earning Knowledge Panel directly improves domain identity score
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Start with Wikidata** — It's the single most influential editable knowledge base; a complete Wikidata entry with references often triggers Knowledge Panel creation within weeks
-2. **sameAs is your most powerful Schema.org property** — It directly tells search engines "I am this entity in the Knowledge Graph"; always include Wikidata URL first
-3. **Test AI recognition before and after** — Query ChatGPT, Claude, Perplexity, and Google AI Overview before optimizing, then again after; this is the most direct GEO metric
-4. **Entity signals compound** — Unlike content SEO, entity signals from different sources reinforce each other; 5 weak signals together are stronger than 1 strong signal alone
-5. **Consistency beats completeness** — A consistent entity name and description across 10 platforms beats a perfect profile on just 2
-6. **Don't neglect disambiguation** — If your entity name is shared with anything else, disambiguation is the first priority; all other signals are wasted if they're attributed to the wrong entity
-7. **Pair with CITE I-dimension for domain context** — Entity audit tells you how well the entity is recognized; CITE Identity (I01-I10) tells you how well the domain represents that entity; use both together
+1. **从维基数据开始**——它是最具影响力的可编辑知识库；一个完整的维基数据条目通常会在几周内触发知识面板的创建。
+2. `sameAs` 是最强大的Schema.org属性——它直接告诉搜索引擎“我是知识图谱中的这个实体”；务必首先包含维基数据的URL。
+3. **优化前后测试人工智能的识别能力**——在优化前后分别查询ChatGPT、Claude、Perplexity和Google AI Overview；这是最直接的地理信息（GEO）指标。
+4. **实体信号是相互叠加的**——与内容SEO不同，来自不同来源的实体信号会相互增强；5个薄弱的信号加起来比1个强信号更有效。
+5. **一致性比完整性更重要**——在10个平台上保持实体名称和描述的一致性，比仅在2个平台上拥有完美的资料更有效。
+6. **不要忽视歧义问题**——如果你的实体名称与其他实体相同，解决歧义是首要任务；否则所有其他信号都将无效。
+7. **结合CITE I维度来提供领域背景**——实体审计可以告诉你实体被识别的程度；CITE Identity（I01-I10）可以告诉你该领域在多大程度上代表了该实体；两者结合使用效果最佳。
 
-## Entity Type Reference
+## 实体类型参考
 
-### Entity Types and Key Signals
+### 实体类型及关键信号
 
-| Entity Type | Primary Signals | Secondary Signals | Key Schema |
+| 实体类型 | 主要信号 | 辅助信号 | 关键Schema属性 |
 |-------------|----------------|-------------------|------------|
-| **Person** | Author pages, social profiles, publication history | Speaking, awards, media mentions | Person, ProfilePage |
-| **Organization** | Registration records, Wikidata, industry listings | Press coverage, partnerships, awards | Organization, Corporation |
-| **Brand** | Trademark, branded search volume, social presence | Reviews, brand mentions, visual identity | Brand, Organization |
-| **Product** | Product pages, reviews, comparison mentions | Awards, expert endorsements, market share | Product, SoftwareApplication |
-| **Creative Work** | Publication record, citations, reviews | Awards, adaptations, cultural impact | CreativeWork, Book, Movie |
-| **Event** | Event listings, press coverage, social buzz | Sponsorships, speaker profiles, attendance | Event |
+| **个人** | 作者页面、社交媒体资料、出版历史 | 演讲记录、获奖情况、媒体提及 | Person, ProfilePage |
+| **组织** | 注册记录、维基数据、行业列表 | 媒体报道、合作伙伴关系、获奖情况 | Organization, Corporation |
+| **品牌** | 商标、品牌搜索量、社交媒体存在感 | 评论、品牌提及、视觉标识 | Brand, Organization |
+| **产品** | 产品页面、评论、比较提及 | 获奖情况、专家推荐、市场份额 | Product, SoftwareApplication |
+| **创意作品** | 出版记录、引用情况、评论 | 获奖情况、改编情况、文化影响 | CreativeWork, Book, Movie |
+| **事件** | 事件列表、媒体报道、社交媒体讨论 | 赞助情况、演讲者资料、参与情况 | Event |
 
-### Disambiguation Strategy by Situation
+### 根据不同情况制定的歧义解决策略
 
-| Situation | Strategy |
+| 情况 | 解决策略 |
 |-----------|----------|
-| **Common name, unique entity** | Strengthen all signals; let signal volume resolve ambiguity |
-| **Name collision with larger entity** | Add qualifier consistently (e.g., "Acme Software" not just "Acme"); use sameAs extensively; build topic-specific authority that differentiates |
-| **Name collision with similar entity** | Geographic, industry, or product qualifiers; ensure Schema @id is unique and consistent; prioritize Wikidata disambiguation |
-| **Abbreviation/acronym conflict** | Prefer full name in structured data; use abbreviation only in contexts where entity is already established |
-| **Merged or renamed entity** | Redirect old entity signals; update all structured data; create explicit "formerly known as" content; update Wikidata |
+| **名称相同但实体不同** | 加强所有信号；让信号量来消除歧义 |
+| **名称与较大实体冲突** | 一致使用限定词（例如，使用“Acme Software”而不是“Acme”）；建立特定领域的权威性来区分 |
+| **名称与相似实体冲突** | 使用地理、行业或产品限定词；确保Schema @id的唯一性和一致性；优先处理维基数据的歧义解决 |
+| **缩写/首字母缩写冲突** | 在结构化数据中优先使用全名；仅在实体已确立的上下文中使用缩写 |
+| **合并或重命名的实体** | 重定向旧的实体信号；更新所有结构化数据；创建明确的“ formerly known as”内容；更新维基数据 |
 
-## Knowledge Panel Optimization
+## 知识面板优化
 
-### Claiming and Editing
+### 声明和编辑
 
-1. **Google Knowledge Panel**: Claim via Google's verification process (search for entity → click "Claim this knowledge panel")
-2. **Bing Knowledge Panel**: Driven by Wikidata and LinkedIn — update those sources
-3. **AI Knowledge**: Driven by training data — ensure authoritative sources describe entity correctly
+1. **谷歌知识面板**：通过谷歌的验证流程进行声明（搜索实体 → 点击“Claim this knowledge panel”）
+2. **必应知识面板**：由维基数据和LinkedIn驱动——更新这些来源的信息
+3. **AI知识面板**：由训练数据驱动——确保权威来源正确描述实体
 
-### Common Knowledge Panel Issues
+### 常见的知识面板问题
 
-| Issue | Root Cause | Fix |
+| 问题 | 根本原因 | 解决方法 |
 |-------|-----------|-----|
-| No panel appears | Entity not in Knowledge Graph | Build Wikidata entry + structured data + authoritative mentions |
-| Wrong image | Image sourced from incorrect page | Update Wikidata image; ensure preferred image on About page and social profiles |
-| Wrong description | Description pulled from wrong source | Edit Wikidata description; ensure About page has clear entity description in first paragraph |
-| Missing attributes | Incomplete structured data | Add properties to Schema.org markup and Wikidata entry |
-| Wrong entity shown | Disambiguation failure | Strengthen unique signals; add qualifiers; resolve Wikidata disambiguation |
-| Outdated info | Source data not updated | Update Wikidata, About page, and all profile pages |
+| 没有知识面板显示 | 实体不在知识图谱中 | 创建维基数据条目 + 结构化数据 + 权威性提及 |
+| 图片错误 | 图片来自错误的页面 | 更新维基数据中的图片；确保关于页面和社交媒体资料中的图片是正确的 |
+| 描述错误 | 描述来自错误的来源 | 编辑维基数据中的描述；确保关于页面的第一段中有明确的实体描述 |
+| 属性缺失 | 结构化数据不完整 | 向Schema.org标记和维基数据条目中添加属性 |
+| 显示的实体错误 | 歧义解决失败 | 加强独特信号；添加限定词；解决维基数据的歧义 |
+| 信息过时 | 来源数据未更新 | 更新维基数据、关于页面和所有资料页面 |
 
-## Wikidata Best Practices
+## 维基数据最佳实践
 
-### Creating a Wikidata Entry
+### 创建维基数据条目
 
-1. **Check notability**: Entity must have at least one authoritative reference
-2. **Create item**: Add label, description, and aliases in relevant languages
-3. **Add statements**: instance of, official website, social media links, founding date, founders, industry
-4. **Add identifiers**: official website (P856), social media IDs, CrunchBase ID, ISNI, VIAF
-5. **Add references**: Every statement should have a reference to an authoritative source
+1. **检查知名度**：实体必须至少有一个权威性的参考来源
+2. **创建条目**：添加标签、描述和多种语言的别名
+3. **添加信息**：实例、官方网站、社交媒体链接、成立日期、创始人、行业
+4. **添加标识符**：官方网站（P856）、社交媒体ID、CrunchBase ID、ISNI、VIAF
+5. **添加参考来源**：每个信息都应该有权威来源的引用
 
-**Important**: Wikipedia's Conflict of Interest (COI) policy prohibits individuals and organizations from creating or editing articles about themselves. Instead of directly editing Wikipedia: (1) Focus on building notability through independent reliable sources (press coverage, industry publications, academic citations); (2) If you believe a Wikipedia article is warranted, consider engaging an independent Wikipedia editor through the Requested Articles process; (3) Ensure all claims about the entity are verifiable through third-party sources before any Wikipedia involvement.
+**重要提示**：维基百科的冲突利益（Conflict of Interest, COI）政策禁止个人和组织为自己创建或编辑条目。因此，不建议直接编辑维基百科：(1) 通过独立的可靠来源（媒体报道、行业出版物、学术引用）来建立知名度；(2) 如果认为需要编辑维基百科条目，可以通过“请求文章”（Requested Articles）流程联系独立的维基百科编辑；(3) 在任何涉及维基百科之前，确保关于实体的所有声明都可通过第三方来源进行验证。
 
-### Key Wikidata Properties by Entity Type
+### 不同实体类型的维基数据关键属性
 
-| Property | Code | Person | Org | Brand | Product |
+| 属性 | 代码 | 个人 | 组织 | 品牌 | 产品 |
 |----------|------|:------:|:---:|:-----:|:-------:|
-| instance of | P31 | human | organization type | brand | product type |
-| official website | P856 | yes | yes | yes | yes |
-| occupation / industry | P106/P452 | yes | yes | — | — |
-| founded by | P112 | — | yes | yes | — |
-| inception | P571 | — | yes | yes | yes |
-| country | P17 | yes | yes | — | — |
-| social media | various | yes | yes | yes | yes |
-| employer | P108 | yes | — | — | — |
-| developer | P178 | — | — | — | yes |
+| 实例 | P31 | human | organization type | brand | product type |
+| 官方网站 | P856 | yes | yes | yes | yes |
+| 职业/行业 | P106/P452 | yes | yes | — | — |
+| 创立者 | P112 | — | yes | yes | yes |
+| 成立时间 | P571 | — | yes | yes | yes |
+| 国家 | P17 | yes | yes | — | — |
+| 社交媒体 | various | yes | yes | yes | yes |
+| 雇主 | P108 | yes | — | — | — |
+| 开发者 | P178 | — | — | — | yes |
 
-## AI Entity Optimization
+## 人工智能实体优化
 
-### How AI Systems Resolve Entities
+### 人工智能系统如何识别实体
 
 ```
 User query → Entity extraction → Entity resolution → Knowledge retrieval → Answer generation
 ```
 
-AI systems follow this pipeline:
-1. **Extract** entity mentions from the query
-2. **Resolve** each mention to a known entity (or fail → "I'm not sure")
-3. **Retrieve** associated knowledge about the entity
-4. **Generate** response citing sources that confirmed the entity's attributes
+人工智能系统遵循以下流程：
+1. **提取** 查询中的实体提及
+2. **识别** 每个提及对应的实体（或无法识别 → 显示“我不确定”）
+3. **检索** 与该实体相关的信息
+4. **生成** 引用确认实体属性的来源的响应
 
-### Signals AI Systems Use for Entity Resolution
+### 人工智能用于实体识别的信号类型
 
-| Signal Type | What AI Checks | How to Optimize |
+| 信号类型 | 人工智能检查内容 | 优化方法 |
 |-------------|---------------|-----------------|
-| **Training data presence** | Was entity in pre-training corpus? | Get mentioned in high-quality, widely-crawled sources |
-| **Retrieval augmentation** | Does entity appear in live search results? | Strong SEO presence for branded queries |
-| **Structured data** | Can entity be matched to Knowledge Graph? | Complete Wikidata + Schema.org |
-| **Contextual co-occurrence** | What topics/entities appear alongside? | Build consistent topic associations across content |
-| **Source authority** | Are sources about entity trustworthy? | Get mentioned by authoritative, well-known sources |
-| **Recency** | Is information current? | Keep all entity profiles and content updated |
+| **训练数据中的存在** | 该实体是否出现在训练数据集中？ | 是否在高质量、广泛爬取的来源中被提及 |
+| **检索增强** | 该实体是否出现在实时搜索结果中？ | 对于品牌查询，该实体在搜索结果中的显示频率是否高 |
+| **结构化数据** | 该实体是否与知识图谱匹配？ | 维基数据和Schema.org的数据是否完整 |
+| **上下文共现** | 该实体与哪些主题/实体一起出现？ | 在内容中建立一致的主题关联 |
+| **来源权威性** | 来源是否可靠？ | 来源是否来自权威、知名的来源 |
+| **时效性** | 信息是否最新？ | 确保所有实体资料和内容都是最新的 |
 
-### Entity-Specific GEO Tactics
+### 实体特定的地理信息（GEO）策略
 
-1. **Define clearly**: First paragraph of About page and key pages should define the entity in a way AI can quote directly
-2. **Be consistent**: Use identical entity description across all platforms
-3. **Build associations**: Create content that explicitly connects entity to target topics
-4. **Earn mentions**: Third-party authoritative mentions are stronger entity signals than self-description
-5. **Stay current**: Outdated entity information causes AI to lose confidence and stop citing
+1. **明确定义**：关于页面和关键页面的第一段应明确描述实体，以便人工智能可以直接引用
+2. **保持一致性**：在所有平台上使用相同的实体描述
+3. **建立关联**：创建明确将实体与目标主题联系起来的内容
+4. **获得提及**：第三方权威性的提及比自我描述更具说服力
+5. **保持更新**：过时的实体信息会导致人工智能失去信心，从而停止引用
 
-## Reference Materials
+## 参考资料
 
-Detailed guides for entity optimization:
-- [references/entity-signal-checklist.md](./references/entity-signal-checklist.md) — Complete signal checklist with verification methods
-- [references/knowledge-graph-guide.md](./references/knowledge-graph-guide.md) — Wikidata, Wikipedia, and Knowledge Graph optimization playbook
+关于实体优化的详细指南：
+- [references/entity-signal-checklist.md](./references/entity-signal-checklist.md) — 完整的信号检查清单及验证方法
+- [references/knowledge-graph-guide.md](./references/knowledge-graph-guide.md) — 维基数据、维基百科和知识图谱优化指南
 
-## Related Skills
+## 相关技能
 
-- [content-quality-auditor](../content-quality-auditor/) — CORE-EEAT items A07 (Knowledge Graph Presence) and A08 (Entity Consistency) directly relate
-- [domain-authority-auditor](../domain-authority-auditor/) — CITE I01-I10 (Identity dimension) measures entity signals at domain level
-- [schema-markup-generator](../../build/schema-markup-generator/) — Generate Organization, Person, Product, and other entity schema
-- [geo-content-optimizer](../../build/geo-content-optimizer/) — Entity signals feed AI citation probability
-- [competitor-analysis](../../research/competitor-analysis/) — Compare entity presence against competitors
-- [backlink-analyzer](../../monitor/backlink-analyzer/) — Branded backlinks strengthen entity signals
-- [performance-reporter](../../monitor/performance-reporter/) — Track branded search and Knowledge Panel metrics
-- [memory-management](../memory-management/) — Store entity audit results for tracking over time
+- [content-quality-auditor](../content-quality-auditor/) — 直接关联到CORE-EEAT的A07（知识图谱存在性）和A08（实体一致性）项目
+- [domain-authority-auditor](../domain-authority-auditor/) — CITE I01-I10（身份维度）用于衡量领域层面的实体信号
+- [schema-markup-generator](../../build/schema-markup-generator/) — 生成组织、个人、产品等实体的Schema结构
+- [geo-content-optimizer](../../build/geo-content-optimizer/) — 实体信号影响人工智能的引用概率
+- [competitor-analysis](../../research/competitor-analysis/) — 与竞争对手比较实体的存在情况
+- [backlink-analyzer](../../monitor/backlink-analyzer/) — 品牌链接增强实体信号
+- [performance-reporter](../../monitor/performance-reporter/) — 跟踪品牌搜索和知识面板的指标
+- [memory-management](../memory-management/) — 存储实体审计结果以供长期跟踪

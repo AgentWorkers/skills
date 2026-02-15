@@ -16,12 +16,11 @@ metadata:
   }
 ---
 
-# Edge-TTS Skill
+# Edge-TTS 技能
 
-Generate high-quality text-to-speech audio using Microsoft Edge's neural TTS service via the node-edge-tts npm package.
-Supports multiple languages, voices, adjustable speed/pitch, and subtitle generation.
+通过 `node-edge-tts` npm 包，利用 Microsoft Edge 的神经 TTS 服务生成高质量的文本转语音（Text-to-Speech）音频。支持多种语言、多种语音效果，以及可调节的语速/音调，并支持字幕生成功能。
 
-## Usage
+## 使用方法
 ```shell
 uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3
 
@@ -29,18 +28,18 @@ uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3
 uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3 --write-subtitles -
 ```
 
-## Changing rate(speed), volume and pitch
+## 调节语速/音量/音调
 ```shell
 uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3 --rate=+50%
 uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3 --volume=+50% --pitch=-50Hz
 ```
 
-## Changing the voice
+## 更换语音
 ```shell
 uvx edge-tts --text "{msg}" --write-media {tempdir}/{filename}.mp3 --voice=zh-CN-XiaoxiaoNeural
 ```
 
-## Available voices
+## 可用的语音选项
 ```
 Name                               Gender    ContentCategories      VoicePersonalities
 en-GB-LibbyNeural                  Female    General                Friendly, Positive
@@ -78,7 +77,7 @@ zh-TW-HsiaoChenNeural              Female    General                Friendly, Po
 zh-TW-YunJheNeural                 Male      General                Friendly, Positive\
 ```
 
-Retrieve all available voices using shell commands:
+使用 shell 命令查询所有可用的语音：
 ```shell
 uvx edge-tts --list-voices
 ```

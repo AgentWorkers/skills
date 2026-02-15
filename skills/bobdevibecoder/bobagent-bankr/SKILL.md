@@ -1,6 +1,6 @@
 ---
 name: bankr
-description: AI-powered crypto trading agent via natural language. Use when the user wants to trade crypto (buy/sell/swap tokens), check portfolio balances, view token prices, transfer crypto, manage NFTs, use leverage, bet on Polymarket, deploy tokens, set up automated trading strategies, submit raw transactions, execute calldata, or send transaction JSON. Supports Base, Ethereum, Polygon, Solana, and Unichain. Comprehensive capabilities include trading, portfolio management, market research, NFT operations, prediction markets, leverage trading, DeFi operations, automation, and arbitrary transaction submission.
+description: 这款由人工智能驱动的加密交易代理通过自然语言交互方式为用户提供服务。当用户需要买卖/兑换代币、查看投资组合余额、查询代币价格、转移加密货币、管理非同质化代币（NFTs）、使用杠杆交易、在Polymarket上进行投注、部署代币、设置自动化交易策略、提交原始交易请求、执行智能合约（calldata）或发送交易数据（JSON格式）时，均可使用该工具。该代理支持Base、Ethereum、Polygon、Solana和Unichain等区块链平台。其核心功能涵盖交易操作、投资组合管理、市场研究、NFT管理、预测市场分析、杠杆交易、去中心化金融（DeFi）服务、自动化交易流程以及任意类型的交易提交。
 metadata:
   {
     "clawdbot":
@@ -14,38 +14,17 @@ metadata:
 
 # Bankr
 
-Execute crypto trading and DeFi operations using natural language through Bankr's AI agent API.
+通过 Bankr 的 AI 代理 API，使用自然语言执行加密货币交易和去中心化金融（DeFi）操作。
 
-## Quick Start
+## 快速入门
 
-### First-Time Setup
+### 首次设置
 
-There are two ways to get started:
+有两种方式可以开始使用 Bankr：
 
-#### Option A: User provides an existing API key
+#### 选项 A：用户提供现有的 API 密钥
 
-If the user already has a Bankr API key, they can provide it directly:
-
-```bash
-mkdir -p ~/.clawdbot/skills/bankr
-cat > ~/.clawdbot/skills/bankr/config.json << 'EOF'
-{
-  "apiKey": "bk_YOUR_KEY_HERE",
-  "apiUrl": "https://api.bankr.bot"
-}
-EOF
-```
-
-API keys can be created and managed at [bankr.bot/api](https://bankr.bot/api). The key must have **Agent API** access enabled.
-
-#### Option B: Create a new account (guided by Clawd)
-
-Clawd can walk the user through the full signup flow:
-
-1. **Sign up / Sign in** — User provides their email address. Bankr sends a one-time passcode (OTP) to that email. Creating a new account automatically provisions **EVM wallets** (Base, Ethereum, Polygon, Unichain) and a **Solana wallet** — no manual wallet setup needed.
-2. **Enter OTP** — User checks their email and provides the OTP code.
-3. **Generate API key** — Once authenticated, navigate to [bankr.bot/api](https://bankr.bot/api) to create an API key with **Agent API** access enabled.
-4. **Configure** — Save the key (starts with `bk_`) to config:
+如果用户已经拥有 Bankr API 密钥，可以直接提供该密钥：
 
 ```bash
 mkdir -p ~/.clawdbot/skills/bankr
@@ -57,28 +36,49 @@ cat > ~/.clawdbot/skills/bankr/config.json << 'EOF'
 EOF
 ```
 
-#### Verify Setup
+API 密钥可以在 [bankr.bot/api](https://bankr.bot/api) 上创建和管理。该密钥必须启用 **代理 API** 访问权限。
+
+#### 选项 B：创建新账户（由 Clawd 指导）
+
+Clawd 可以引导用户完成整个注册流程：
+
+1. **注册 / 登录** — 用户提供他们的电子邮件地址。Bankr 会向该电子邮件发送一次性密码（OTP）。创建新账户后会自动配置 **EVM 钱包**（Base、Ethereum、Polygon、Unichain）和 **Solana 钱包**——无需手动设置钱包。
+2. **输入 OTP** — 用户检查他们的电子邮件并输入 OTP 代码。
+3. **生成 API 密钥** — 验证成功后，导航至 [bankr.bot/api](https://bankr.bot/api) 生成具有 **代理 API** 访问权限的 API 密钥。
+4. **配置** — 将密钥（以 `bk_` 开头）保存到 config 文件中：
+
+```bash
+mkdir -p ~/.clawdbot/skills/bankr
+cat > ~/.clawdbot/skills/bankr/config.json << 'EOF'
+{
+  "apiKey": "bk_YOUR_KEY_HERE",
+  "apiUrl": "https://api.bankr.bot"
+}
+EOF
+```
+
+#### 验证设置
 
 ```bash
 scripts/bankr.sh "What is my balance?"
 ```
 
-## Core Usage
+## 核心功能使用
 
-### Simple Query
+### 简单查询
 
-For straightforward requests that complete quickly:
+对于快速完成的简单请求：
 
 ```bash
 scripts/bankr.sh "What is my ETH balance?"
 scripts/bankr.sh "What's the price of Bitcoin?"
 ```
 
-The main script handles the full submit-poll-complete workflow automatically.
+主脚本会自动处理完整的提交-轮询-完成工作流程。
 
-### Manual Job Control
+### 手动任务控制
 
-For advanced use or long-running operations:
+对于高级使用或长时间运行的操作：
 
 ```bash
 # Submit and get job ID
@@ -91,124 +91,123 @@ scripts/bankr-status.sh "$JOB_ID"
 scripts/bankr-cancel.sh "$JOB_ID"
 ```
 
-## Capabilities Overview
+## 功能概述
 
-### Trading Operations
+### 交易操作
 
-- **Token Swaps**: Buy/sell/swap tokens across chains
-- **Cross-Chain**: Bridge tokens between chains
-- **Limit Orders**: Execute at target prices
-- **Stop Loss**: Automatic sell protection
-- **DCA**: Dollar-cost averaging strategies
-- **TWAP**: Time-weighted average pricing
+- **代币交易**：在不同链之间买卖/交换代币
+- **跨链交易**：在不同链之间桥接代币
+- **限价单**：按目标价格执行交易
+- **止损**：自动卖出保护
+- **定投**：美元成本平均策略
+- **时间加权平均定价（TWAP）**
 
-**Reference**: [references/token-trading.md](references/token-trading.md)
+**参考文档**：[references/token-trading.md](references/token-trading.md)
 
-### Portfolio Management
+### 投资组合管理
 
-- Check balances across all chains
-- View USD valuations
-- Track holdings by token or chain
-- Real-time price updates
-- Multi-chain aggregation
+- 查看所有链上的余额
+- 查看美元估值
+- 按代币或链跟踪持仓
+- 实时价格更新
+- 多链聚合
 
-**Reference**: [references/portfolio.md](references/portfolio.md)
+**参考文档**：[references/portfolio.md](references/portfolio.md)
 
-### Market Research
+### 市场研究
 
-- Token prices and market data
-- Technical analysis (RSI, MACD, etc.)
-- Social sentiment analysis
-- Price charts
-- Trending tokens
-- Token comparisons
+- 代币价格和市场数据
+- 技术分析（RSI、MACD 等）
+- 社交情绪分析
+- 价格图表
+- 流行代币
+- 代币比较
 
-**Reference**: [references/market-research.md](references/market-research.md)
+**参考文档**：[references/market-research.md](references/market-research.md)
 
-### Transfers
+### 转账
 
-- Send to addresses, ENS, or social handles
-- Multi-chain support
-- Flexible amount formats
-- Social handle resolution (Twitter, Farcaster, Telegram)
+- 转账到地址、ENS 或社交账号
+- 支持多链转账
+- 灵活的金额格式
+- 支持多种社交账号（Twitter、Farcaster、Telegram）
 
-**Reference**: [references/transfers.md](references/transfers.md)
+**参考文档**：[references/transfers.md](references/transfers.md)
 
-### NFT Operations
+### NFT 操作
 
-- Browse and search collections
-- View floor prices and listings
-- Purchase NFTs via OpenSea
-- View your NFT portfolio
-- Transfer NFTs
-- Mint from supported platforms
+- 浏览和搜索 NFT 集合
+- 查看底价和列表
+- 通过 OpenSea 购买 NFT
+- 查看 NFT 投资组合
+- 转移 NFT
+- 从支持的平台上铸造 NFT
 
-**Reference**: [references/nft-operations.md](references/nft-operations.md)
+**参考文档**：[references/nft-operations.md](references/nft-operations.md)
 
-### Polymarket Betting
+### Polymarket 赌博
 
-- Search prediction markets
-- Check odds
-- Place bets on outcomes
-- View positions
-- Redeem winnings
+- 搜索预测市场
+- 查看赔率
+- 对结果下注
+- 查看持仓
+- 提现奖金
 
-**Reference**: [references/polymarket.md](references/polymarket.md)
+**参考文档**：[references/polymarket.md](references/polymarket.md)
 
-### Leverage Trading
+### 杠杆交易
 
-- Long/short positions (up to 50x crypto, 100x forex/commodities)
-- Crypto, forex, and commodities
-- Stop loss and take profit
-- Position management via Avantis on Base
+- 多头/空头头寸（加密货币最高 50 倍杠杆，外汇/商品最高 100 倍杠杆）
+- 支持加密货币、外汇和商品交易
+- 使用 Avantis 进行头寸管理
 
-**Reference**: [references/leverage-trading.md](references/leverage-trading.md)
+**参考文档**：[references/leverage-trading.md](references/leverage-trading.md)
 
-### Token Deployment
+### 代币部署
 
-- **EVM (Base)**: Deploy ERC20 tokens via Clanker with customizable metadata and social links
-- **Solana**: Launch SPL tokens via Raydium LaunchLab with bonding curve and auto-migration to CPMM
-- Creator fee claiming on both chains
-- Fee Key NFTs for Solana (50% LP trading fees post-migration)
-- Optional fee recipient designation with 99.9%/0.1% split (Solana)
-- Both creator AND fee recipient can claim bonding curve fees (gas sponsored)
-- Optional vesting parameters (Solana)
-- Rate limits: 1/day standard, 10/day Bankr Club (gas sponsored within limits)
+- **EVM（Base）**：使用 Clanker 部署 ERC20 代币，并可自定义元数据和社交链接
+- **Solana**：通过 Raydium LaunchLab 部署 SPL 代币，支持绑定曲线和自动迁移到 CPMM
+- 两种链上均可领取创作者费用
+- Solana 的费用 NFT（迁移后交易费用的 50% 归创作者）
+- 可选择费用接收者（99.9%/0.1% 分配）
+- 创作者和费用接收者均可领取绑定曲线费用（费用由 Gas 支付）
+- 可设置归属参数（Solana 版本）
+- 每日交易限额：标准为 1 次，Bankr Club 会员为每天 10 次（费用由 Gas 支付）
 
-**Reference**: [references/token-deployment.md](references/token-deployment.md)
+**参考文档**：[references/token-deployment.md](references/token-deployment.md)
 
-### Automation
+### 自动化
 
-- Limit orders
-- Stop loss orders
-- DCA (dollar-cost averaging)
-- TWAP (time-weighted average price)
-- Scheduled commands
+- 限价单
+- 止损单
+- 定投
+- 时间加权平均定价（TWAP）
+- 定时命令
 
-**Reference**: [references/automation.md](references/automation.md)
+**参考文档**：[references/automation.md](references/automation.md)
 
-### Arbitrary Transactions
+### 任意交易
 
-- Submit raw EVM transactions with explicit calldata
-- Custom contract calls to any address
-- Execute pre-built calldata from other tools
-- Value transfers with data
+- 提交带有明确 calldata 的原始 EVM 交易
+- 向任何地址调用自定义合约
+- 执行来自其他工具的预构建 calldata
+- 带数据的价值转移
 
-**Reference**: [references/arbitrary-transaction.md](references/arbitrary-transaction.md)
+**参考文档**：[references/arbitrary-transaction.md](references/arbitrary-transaction.md)
 
-## Supported Chains
+## 支持的链
 
-| Chain    | Native Token | Best For                      | Gas Cost |
-| -------- | ------------ | ----------------------------- | -------- |
-| Base     | ETH          | Memecoins, general trading    | Very Low |
-| Polygon  | MATIC        | Gaming, NFTs, frequent trades | Very Low |
-| Ethereum | ETH          | Blue chips, high liquidity    | High     |
-| Solana   | SOL          | High-speed trading            | Minimal  |
-| Unichain | ETH          | Newer L2 option               | Very Low |
+| 链      | 原生代币          | 适合的场景            | Gas 成本    |
+| -------- | --------------------------- | ---------------------- | -------- |
+| Base     | ETH            | Memecoins、通用交易        | 非常低     |
+| Polygon  | MATIC          | 游戏、NFT、频繁交易       | 非常低     |
+| Ethereum | ETH            | 主流代币、高流动性       | 较高      |
+| Solana   | SOL            | 高速交易            | 极低      |
+| Unichain | ETH            | 新型二层网络         | 非常低     |
 
-## Common Patterns
+## 常见操作模式
 
-### Check Before Trading
+### 交易前检查
 
 ```bash
 # Check balance
@@ -221,7 +220,7 @@ scripts/bankr.sh "What's the current price of PEPE?"
 scripts/bankr.sh "Buy $20 of PEPE on Base"
 ```
 
-### Portfolio Review
+### 投资组合审查
 
 ```bash
 # Full portfolio
@@ -234,7 +233,7 @@ scripts/bankr.sh "What tokens do I have on Base?"
 scripts/bankr.sh "Show my ETH across all chains"
 ```
 
-### Set Up Automation
+### 设置自动化
 
 ```bash
 # DCA strategy
@@ -247,7 +246,7 @@ scripts/bankr.sh "Set stop loss for my ETH at $2,500"
 scripts/bankr.sh "Buy ETH if price drops to $3,000"
 ```
 
-### Market Research
+### 市场研究
 
 ```bash
 # Price and analysis
@@ -260,164 +259,163 @@ scripts/bankr.sh "What tokens are trending on Base?"
 scripts/bankr.sh "Compare ETH vs SOL"
 ```
 
-## API Workflow
+## API 工作流程
 
-Bankr uses an asynchronous job-based API:
+Bankr 使用异步的基于任务的 API：
 
-1. **Submit** - Send prompt, get job ID
-2. **Poll** - Check status every 2 seconds
-3. **Complete** - Process results when done
+1. **提交** — 发送请求并获取任务 ID
+2. **轮询** — 每 2 秒检查一次任务状态
+3. **完成** — 任务完成后处理结果
 
-The `bankr.sh` wrapper handles this automatically. For details on the API structure, job states, polling strategy, and error handling, see:
+`bankr.sh` 包装器会自动处理这些流程。有关 API 结构、任务状态、轮询策略和错误处理的详细信息，请参阅：
 
-**Reference**: [references/api-workflow.md](references/api-workflow.md)
+**参考文档**：[references/api-workflow.md](references/api-workflow.md)
 
-## Error Handling
+## 错误处理
 
-Common issues and fixes:
+常见问题及解决方法：
 
-- **Authentication errors** → Check API key setup
-- **Insufficient balance** → Add funds or reduce amount
-- **Token not found** → Verify symbol and chain
-- **Transaction reverted** → Check parameters and balances
-- **Rate limiting** → Wait and retry
+- **认证错误** → 检查 API 密钥设置
+- **余额不足** → 添加资金或减少交易金额
+- **代币未找到** → 核实代币和链的名称
+- **交易被撤销** → 检查参数和余额
+- **达到交易限制** → 等待片刻后重试
 
-For comprehensive error troubleshooting, setup instructions, and debugging steps, see:
+有关全面的错误排查、设置说明和调试步骤，请参阅：
 
-**Reference**: [references/error-handling.md](references/error-handling.md)
+**参考文档**：[references/error-handling.md](references/error-handling.md)
 
-## Best Practices
+## 最佳实践
 
-### Security
+### 安全性
 
-1. Never share your API key
-2. Start with small test amounts
-3. Verify addresses before large transfers
-4. Use stop losses for leverage trading
-5. Double-check transaction details
+1. **切勿共享 API 密钥**
+2. **从小额交易开始**
+3. **进行大额转账前核实地址**
+4. **使用止损机制进行杠杆交易**
+5. **仔细核对交易细节**
 
-### Trading
+### 交易技巧
 
-1. Check balance before trades
-2. Specify chain for lesser-known tokens
-3. Consider gas costs (use Base/Polygon for small amounts)
-4. Start small, scale up after testing
-5. Use limit orders for better prices
+1. **交易前检查余额**
+2. **对于不太知名的代币，请指定交易链**
+3. **考虑 Gas 成本（小额交易使用 Base/Polygon）**
+4. **从小额交易开始，测试后再逐步增加**
+5. **使用限价单以获得更优惠的价格**
 
-### Automation
+### 自动化技巧
 
-1. Test automation with small amounts first
-2. Review active orders regularly
-3. Set realistic price targets
-4. Always use stop loss for leverage
-5. Monitor execution and adjust as needed
+1. **先用小额资金测试自动化功能**
+2. **定期检查活跃订单**
+3. **设定合理的价格目标**
+4. **使用止损机制进行杠杆交易**
+5. **监控执行情况并根据需要调整**
 
-## Tips for Success
+## 成功技巧
 
-### For New Users
+### 新用户指南
 
-- Start with balance checks and price queries
-- Test with $5-10 trades first
-- Use Base for lower fees
-- Enable trading confirmations initially
-- Learn one feature at a time
+- **从检查余额和查询价格开始**
+- **先用 5-10 美元的交易进行测试**
+- **使用 Base 链进行交易以降低费用**
+- **最初启用交易确认功能**
+- **一次学习一个功能**
 
-### For Experienced Users
+### 经验丰富的用户指南
 
-- Leverage automation for strategies
-- Use multiple chains for diversification
-- Combine DCA with stop losses
-- Explore advanced features (leverage, Polymarket)
-- Monitor gas costs across chains
+- **利用自动化实现交易策略**
+- **使用多个链进行资产分散**
+- **结合定投和止损机制**
+- **探索高级功能（如杠杆交易、Polymarket）**
+- **监控不同链上的 Gas 成本**
 
-## Prompt Examples by Category
+## 按类别划分的示例命令
 
-### Trading
+### 交易
 
-- "Buy $50 of ETH on Base"
-- "Swap 0.1 ETH for USDC"
-- "Sell 50% of my PEPE"
-- "Bridge 100 USDC from Polygon to Base"
+- “在 Base 链上购买 50 美元的 ETH”
+- “将 0.1 ETH 交换成 USDC”
+- “卖出我持有的 50% 的 PEPE 代币”
+- “将 100 USDC 从 Polygon 链转移到 Base 链”
 
-### Portfolio
+### 投资组合
 
-- "Show my portfolio"
-- "What's my ETH balance?"
-- "Total portfolio value"
-- "Holdings on Base"
+- “显示我的投资组合”
+- “我的 ETH 余额是多少？”
+- “投资组合的总价值”
+- “Base 链上的持仓”
 
-### Market Research
+### 市场研究
 
-- "What's the price of Bitcoin?"
-- "Analyze ETH price"
-- "Trending tokens on Base"
-- "Compare UNI vs SUSHI"
+- “比特币的价格是多少？”
+- “分析 ETH 的价格”
+- “Base 链上流行的代币”
+- “比较 UNI 和 SUSHI”
 
-### Transfers
+### 转账
 
-- "Send 0.1 ETH to vitalik.eth"
-- "Transfer $20 USDC to @friend"
-- "Send 50 USDC to 0x123..."
+- “向 vitalik.eth 转账 0.1 ETH”
+- “向 @friend 转账 20 美元的 USDC”
+- “将 50 美元的 USDC 转移到 0x123...”
 
-### NFTs
+### NFT
 
-- "Show Bored Ape floor price"
-- "Buy cheapest Pudgy Penguin"
-- "Show my NFTs"
+- “显示 Bored Ape 的底价”
+- “购买最便宜的 Pudgy Penguin NFT”
+- “查看我的 NFT 投资组合”
 
 ### Polymarket
 
-- "What are the odds Trump wins?"
-- "Bet $10 on Yes for [market]"
-- "Show my Polymarket positions"
+- “特朗普获胜的概率是多少？”
+- “在 [market] 上下注 10 美元”
+- “查看我的 Polymarket 持仓”
 
-### Leverage
+### 杠杆交易
 
-- "Open 5x long on ETH with $100"
-- "Short BTC 10x with stop loss at $45k"
-- "Show my Avantis positions"
+- “用 100 美元在 Base 链上开多仓 ETH，杠杆 5 倍”
+- “用 100 美元在 BTC 上开空仓，止损设置在 45,000 美元”
+- “查看我的 Avantis 持仓”
 
-### Automation
+### 自动化
 
-- "DCA $100 into ETH weekly"
-- "Set limit order to buy ETH at $3,000"
-- "Stop loss for all holdings at -20%"
+- **每周向 ETH 定投 100 美元**
+- **设置限价单，在 3,000 美元的价格买入 ETH**
+- **为所有持仓设置 -20% 的止损”
 
-### Token Deployment
+### 代币部署
 
-**Solana (LaunchLab):**
+**Solana（LaunchLab）**
 
-- "Launch a token called MOON on Solana"
-- "Launch a token called FROG and give fees to @0xDeployer"
-- "Deploy SpaceRocket with symbol ROCK"
-- "Launch BRAIN and route fees to 7xKXtg..."
-- "How much fees can I claim for MOON?"
-- "Claim my fees for MOON" (works for creator or fee recipient)
-- "Show my Fee Key NFTs"
-- "Claim my fee NFT for ROCKET" (post-migration)
-- "Transfer fees for MOON to 7xKXtg..."
+- “在 Solana 上部署名为 MOON 的代币”
+- “部署名为 FROG 的代币，并将费用支付给 @0xDeployer”
+- “使用 Rocker 部署名为 BRAIN 的代币，并将费用路由到 7xKXtg...”
+- “我可以领取 MOON 代币的费用吗？”
+- “领取 MOON 代币的费用”（适用于创作者或费用接收者）
+- “查看我的费用 NFT”
+- “领取 ROCKET 代币的费用”（迁移后）
+- “将 MOON 代币的费用转移到 7xKXtg...”
 
-**EVM (Clanker):**
+**EVM（Clanker）**
 
-- "Deploy a token called BankrFan with symbol BFAN on Base"
-- "Claim fees for my token MTK"
+- “在 Base 链上部署名为 BankrFan 的代币，代币符号为 BFAN”
+- “领取我的 MTK 代币的费用”
 
-### Arbitrary Transactions
+### 任意交易
 
-- "Submit this transaction: {to: 0x..., data: 0x..., value: 0, chainId: 8453}"
-- "Execute this calldata on Base: {...}"
-- "Send raw transaction with this JSON: {...}"
+- “提交此交易：{to: 0x..., data: 0x..., value: 0, chainId: 8453}”
+- “在 Base 链上执行此 calldata：{...}”
+- “使用以下 JSON 发送原始交易：{...}”
 
-## Resources
+## 资源
 
-- **Agent API Reference**: https://www.notion.so/Agent-API-2e18e0f9661f80cb83ccfc046f8872e3
-- **API Key Management**: https://bankr.bot/api
-- **Terminal**: https://bankr.bot/terminal
-- **Twitter**: @bankr_bot
+- **代理 API 参考**：https://www.notion.so/Agent-API-2e18e0f9661f80cb83ccfc046f8872e3
+- **API 密钥管理**：https://bankr.bot/api
+- **终端**：https://bankr.bot/terminal
+- **Twitter**：@bankr_bot
 
-## Troubleshooting
+## 故障排除
 
-### Scripts Not Working
+### 脚本无法运行
 
 ```bash
 # Ensure scripts are executable
@@ -427,21 +425,21 @@ chmod +x ~/.clawdbot/skills/bankr/scripts/*.sh
 curl -I https://api.bankr.bot
 ```
 
-### API Errors
+### API 错误
 
-See [references/error-handling.md](references/error-handling.md) for comprehensive troubleshooting.
+有关详细的故障排除方法，请参阅 [references/error-handling.md]。
 
-### Getting Help
+### 寻求帮助
 
-1. Check error message in response JSON
-2. Consult relevant reference document
-3. Verify configuration and connectivity
-4. Test with simple queries first
+1. 查看响应 JSON 中的错误信息
+2. 查阅相关参考文档
+3. 核实配置和连接状态
+4. 先用简单的查询进行测试
 
 ---
 
-**💡 Pro Tip**: The most common issue is not specifying the chain for tokens. When in doubt, always include "on Base" or "on Ethereum" in your prompt.
+**💡 专业提示**：最常见的错误是没有指定代币所在的链。如果有疑问，请在命令中始终加上 “on Base” 或 “on Ethereum”。
 
-**⚠️ Security**: Keep your API key private. Never commit config.json to version control. Only trade amounts you can afford to lose.
+**⚠️ 安全提示**：请保密你的 API 密钥。切勿将 config.json 文件提交到版本控制系统中。只进行你能承受损失的交易。
 
-**🚀 Quick Win**: Start by checking your portfolio to see what's possible, then try a small $5-10 trade on Base to get familiar with the flow.
+**🚀 快速入门方法**：首先查看你的投资组合，了解可用的功能，然后在 Base 链上进行一次 5-10 美元的交易，熟悉操作流程。

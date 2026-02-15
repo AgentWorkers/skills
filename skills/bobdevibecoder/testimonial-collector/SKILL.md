@@ -1,38 +1,33 @@
 ---
 name: testimonial-collector
-description: Systematically gather and format client testimonials. Use when someone needs social proof, wants to collect feedback, or needs to turn happy clients into public advocates.
+description: 系统地收集并整理客户的评价和推荐信。这些资料可以在需要社交证明（即客户对产品或服务的认可度）时使用，也可以用于收集客户反馈，或者将满意的客户转化为产品的公开推广者。
 ---
 
-# Testimonial Collector
+# 客户推荐收集技巧
 
-Here's the reality: your happiest clients will vouch for you. They want to help.
+现实情况是：最满意的客户会主动为你作证，他们很愿意提供帮助。但他们很忙，而你又觉得主动开口请求会显得有些奇怪，所以你往往没有这么做。结果，在销售电话中，你只能试图在没有客户推荐的情况下说服别人你很专业。
 
-But they're busy. And you feel weird asking. So you don't.
-
-Meanwhile, you're in sales calls with no social proof, trying to convince people you're good at what you do.
-
-This skill fixes the asking part. I'll give you exactly what to say, when to say it, and how to format what you get back.
+这个技巧会帮你解决如何开口请求的问题。我会告诉你该说什么、何时说，以及如何整理收到的推荐内容。
 
 ---
 
-## When to Ask
+## 何时提出请求
 
-Timing is everything. These are your windows:
+时机至关重要。以下是合适的时机：
+✅ **项目成功后立即**：他们刚刚看到了成果，这时正是提问的好时机。
+✅ **当他们主动感谢你时**：这是个明显的信号。
+✅ **项目完成后**：这是一个自然的节点。
+✅ **当客户续签或扩展服务时**：他们的行为本身就是对你能力的认可。
 
-✅ **Right after a win.** They just saw results? Ask now.
-✅ **When they thank you unprompted.** That's your cue.
-✅ **At project completion.** Natural checkpoint.
-✅ **When they renew or extend.** They're voting with their wallet.
-
-The moment of peak happiness is the moment to ask. Don't wait.
+千万不要等待，要在客户最满意的时刻提出请求。
 
 ---
 
-## How to Ask (Without Being Weird)
+## 如何提出请求（避免显得奇怪）
 
-### The Direct Ask
+### 直接请求方式
 
-Subject: Quick favor (30 seconds)
+主题：**小忙一下（只需30秒）**
 
 ```
 Hey [Name],
@@ -50,13 +45,13 @@ Whatever's easier.
 Thanks either way.
 ```
 
-Short. Gives them options. Doesn't make it a big deal.
+简洁明了，给他们选择的空间，同时不会让他们觉得这是个麻烦事。
 
 ---
 
-### The Question Route
+### 通过问题引导的方式
 
-If they say "sure, what do you need?" — send this:
+如果他们回答“当然，你需要什么？”，你可以发送这样的信息：
 
 ```
 Awesome. Just 3 quick questions:
@@ -68,13 +63,13 @@ Awesome. Just 3 quick questions:
 A few sentences each is perfect. I'll format it.
 ```
 
-That's it. Don't overthink it.
+就这样，别想得太复杂。
 
 ---
 
-### The Draft Route
+### 为不擅长写作的人准备的简化版本
 
-Some people hate writing. Make it easy:
+有些人不喜欢写推荐信，可以简化流程：
 
 ```
 I drafted something based on our work together:
@@ -84,57 +79,56 @@ I drafted something based on our work together:
 Feel free to edit, tweak, or rewrite entirely. Whatever feels right to you.
 ```
 
-Most people will approve with minor edits. You did the hard part.
+大多数人只需稍作修改就会同意。
 
 ---
 
-## The Deep Dive (For Case Studies)
+## 深入挖掘（用于案例研究）
 
-When you need more than a quote:
+当你需要更详细的推荐内容时，可以提出以下问题：
+1. 在我们开始合作之前，情况是怎样的？
+2. 有什么因素差点阻碍了项目的进展？
+3. 与我们合作的过程是怎样的？
+4. 合作后有什么变化？
+5. 你会给考虑与我们合作的人什么建议？
 
-1. What was the situation before we started?
-2. What almost stopped you from moving forward?
-3. What was it like working together?
-4. What changed as a result?
-5. What would you tell someone considering this?
-
-These five questions give you enough for a full case study.
+这五个问题足以构成一个完整的案例研究。
 
 ---
 
-## How to Format What You Get
+## 如何整理收到的推荐内容
 
-### Short Format (Social/Website)
+### 简洁格式（用于社交媒体/网站）
 
 ```
 "[One punchy sentence about the result]"
 — [Name], [Title] at [Company]
 ```
 
-**Example:**
-> "Brian helped us go from zero LinkedIn presence to 3 inbound leads per week in 6 weeks."
-> — Sarah Chen, CEO at TechCo
+**示例：**
+> “Brian帮助我们在6周内从零开始在LinkedIn上建立知名度，每周获得了3个潜在客户。”
+> — TechCo的CEO Sarah Chen
 
-This goes on your homepage, your proposals, your LinkedIn featured section.
+这样的内容可以放在你的网站首页、提案中，或者LinkedIn的推荐区。
 
 ---
 
-### Medium Format (Proposals/About Page)
+### 中等长度的格式（用于提案/关于我们页面）
 
 ```
 "[2-3 sentences: problem, experience, result]"
 — [Name], [Title] at [Company]
 ```
 
-**Example:**
-> "We knew we needed to build our founder brand but had no idea where to start. Brian built us a complete content system in 6 weeks — now we're generating inbound leads for the first time. Can't recommend him enough."
-> — Sarah Chen, CEO at TechCo
+**示例：**
+> “我们知道需要打造公司的品牌，但不知道从哪里入手。Brian在6周内为我们建立了一个完整的内容管理系统，现在我们终于开始获得潜在客户了。强烈推荐他。”
+> — TechCo的CEO Sarah Chen
 
-This goes in proposals, on your services page, in case studies.
+这样的内容适合放在提案中、服务页面或案例研究中。
 
 ---
 
-### Long Format (Case Study Pages)
+### 详细格式（用于案例研究页面）
 
 ```
 **What [Name] at [Company] Said:**
@@ -142,84 +136,80 @@ This goes in proposals, on your services page, in case studies.
 "[Full quote with context — the whole story]"
 ```
 
-This goes on dedicated case study pages or in downloadable PDFs.
+这样的内容可以放在专门的案例研究页面或可下载的PDF文件中。
 
 ---
 
-## Editing Rules (Stay Ethical)
+## 编辑规则（保持诚信）
 
-**You can:**
-- Fix grammar and typos
-- Tighten for clarity
-- Reorder sentences
-- Cut filler
+**你可以：**
+- 修改语法错误和拼写错误
+- 使表达更清晰
+- 重新排列句子
+- 删除冗余内容
 
-**You can't:**
-- Add claims they didn't make
-- Exaggerate results
-- Change the meaning
+**但你不能：**
+- 添加客户没有说过的话
+- 夸大成果
+- 改变原文的意思
 
-**Always send edits back for approval.** Takes 30 seconds and keeps you honest.
-
----
-
-## The Quality Checklist
-
-Strong testimonials have:
-
-- [ ] **Specific result** — Numbers or concrete outcomes
-- [ ] **Before/after** — What changed
-- [ ] **Credibility markers** — Name, title, company
-- [ ] **Relevance** — Similar to your ideal client
-
-**Weak:** "Great to work with!"
-**Strong:** "Went from 0 to 3 inbound leads per week in 6 weeks."
-
-Specificity is what makes people believe it.
+**务必将修改后的内容发送给客户审批**。这只需要30秒，也能让你保持诚信。
 
 ---
 
-## Where to Use Testimonials
+## 评价的质量标准
 
-| Location | Format | Purpose |
+一份有力的推荐信应包含以下要素：
+- [ ] **具体的成果**：数字或可衡量的结果
+- [ ] **合作前后的变化**：合作前后的对比
+- [ ] **可信度信息**：客户的姓名、职位和公司名称
+- [ ] **相关性**：推荐客户与你的目标客户群体是否匹配
+
+**差评示例：”与Brian合作非常愉快！”**
+**优秀评价示例：”在6周内，我们的潜在客户数量从0增加到了3个。”**
+
+具体性是让别人相信推荐内容真实性的关键。
+
+---
+
+## 推荐信的用途
+
+| 使用位置 | 格式 | 目的 |
 |----------|--------|---------|
-| Homepage | Short | Trust at first glance |
-| Sales pages | Medium | Overcome objections |
-| Proposals | Medium | Relevant proof |
-| LinkedIn | Short | Credibility |
-| Case studies | Long | Deep proof |
+| 网站首页 | 简洁格式 | 一目了然地展示客户信任度 |
+| 销售页面 | 中等长度 | 消除客户的疑虑 |
+| 提案文件 | 中等长度 | 作为有力的证明 |
+| LinkedIn | 简洁格式 | 增强可信度 |
+| 案例研究页面 | 详细格式 | 提供深入的案例支持 |
 
 ---
 
-## Following Up (If They Don't Respond)
+## 如果客户没有回复怎么办
 
-Wait 5-7 days. Send one follow-up:
+等待5-7天后，再发送一次跟进邮件：
 
 ```
 Hey [Name], just bumping this — no pressure at all. If timing's bad, totally get it. Let me know either way!
 ```
 
-If they don't respond to that, let it go. Some people just won't, and that's fine.
+如果他们仍然没有回复，那就放弃吧。有些人就是不愿意回复，这也没关系。
 
 ---
 
-## Build a Library
+## 建立推荐信库
 
-Create a simple doc or spreadsheet:
-
-| Client | Date | Quote | Format | Permission | Used Where |
+创建一个简单的文档或电子表格，记录以下信息：
+| 客户 | 日期 | 推荐内容 | 格式 | 使用许可 | 使用位置 |
 |--------|------|-------|--------|------------|------------|
 
-Review it quarterly:
-- Who haven't you asked?
-- Which testimonials are getting stale?
-- Any gaps in industries or use cases?
+每季度检查一次：
+- 还有哪些客户没有收到推荐信？
+- 哪些推荐信已经过时了？
+- 是否有某些行业或使用场景的推荐缺失？
+
+**需要帮助建立推荐信库吗？**
+→ [预约策略咨询](https://brianrwagner.com)
 
 ---
 
-**Need help building your social proof library?**
-→ [Book a strategy call](https://brianrwagner.com)
-
----
-
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+*技能提供者：Brian Wagner | 人工智能营销架构师 | brianrwagner.com*

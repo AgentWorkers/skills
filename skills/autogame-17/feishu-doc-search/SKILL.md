@@ -1,13 +1,13 @@
-# Feishu Doc Search
+# Feishu 文档搜索
 
-Search for documents in Feishu (Lark) Drive.
+在 Feishu（Lark）驱动器中搜索文档。
 
-## Usage
+## 使用方法
 
 ```bash
 node skills/feishu-doc-search/index.js --query "keyword"
 ```
 
-## Output
+## 输出结果
 
-Returns a JSON array of found documents with tokens and URLs.
+返回一个包含找到的文档的 JSON 数组，其中包含文档的标识符（token）和文档的 URL。

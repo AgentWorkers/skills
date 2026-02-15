@@ -1,48 +1,48 @@
-# Cinematic Script Writer
+# 电影剧本编写工具
 
-Create professional cinematic scripts for AI video generation with character consistency, comprehensive cinematography knowledge, and Google Drive storage integration.
+该工具专为 AI 视频生成提供专业的电影剧本编写服务，确保角色表现的一致性，同时具备丰富的电影摄影知识，并支持与 Google Drive 的存储集成。
 
-## Description
+## 说明
 
-This skill helps you create complete cinematic scripts for animated/comic videos. It includes:
+此技能可帮助您为动画/喜剧视频编写完整的电影剧本，包括以下功能：
 
-- **Story Generation**: Create contexts, characters, and generate story ideas
-- **Cinematic Scripts**: Full scripts with camera angles, shots, lighting, and dialogue
-- **Character Consistency**: Ensures characters look the same across all shots
-- **Voice Consistency**: Maintains consistent speech patterns for each character
-- **Environment Consistency**: Era-appropriate architecture, clothing, and props
-- **Anachronism Detection**: Prevents modern items in historical settings
-- **Google Drive Storage**: Auto-saves all content to organized folders
-- **YouTube Metadata**: Generates titles, descriptions, and tags
+- **故事生成**：创建故事背景、角色设定并生成故事创意。
+- **电影剧本编写**：编写包含镜头角度、拍摄方式、灯光效果和对话的完整剧本。
+- **角色一致性**：确保所有镜头中的角色外观一致。
+- **语音一致性**：保持每个角色的说话风格统一。
+- **环境一致性**：确保场景中的建筑、服装和道具符合历史背景。
+- **时代错误检测**：防止在历史场景中出现现代元素。
+- **Google Drive 存储**：自动将所有内容保存到有序的文件夹中。
+- **YouTube 元数据生成**：自动生成视频标题、描述和标签。
 
-## Features
+## 特点
 
-### Cinematography Database (175+ Techniques)
-- 20+ Camera Angles (eye-level, low-angle, dutch-angle, bird-eye, POV)
-- 20+ Camera Movements (dolly, crane, gimbal, rack-focus, snorricam)
-- 25+ Shot Types (extreme-wide, close-up, insert, silhouette)
-- 30+ Lighting Techniques (three-point, chiaroscuro, god-rays, neon)
-- 20+ Composition Rules (rule-of-thirds, golden-ratio, leading-lines)
-- 20+ Color Grading Styles (teal-orange, noir, vintage, dayglow)
-- 25+ Visual Aesthetics (Pixar-3D, anime, film-noir, indian-miniature)
-- 15+ Genre Cinematography Guides
+### 电影摄影数据库（175+ 技巧）
+- **20 多种镜头角度**（平视、低角度、荷兰角、鸟瞰、第一人称视角）
+- **20 多种镜头移动方式**（移动摄影车、云台、摇臂、轨道对焦、蛇形拍摄）
+- **25 多种镜头类型**（超广角、特写、插入镜头、剪影镜头）
+- **30 多种灯光技巧**（三点照明法、明暗对比、霓虹灯光效果）
+- **20 多种构图规则**（三分法则、黄金分割、引导线）
+- **20 多种色彩分级风格**（蓝绿色调、黑色调、复古风格、荧光效果）
+- **15 多种视觉风格**（皮克斯风格、动漫风格、电影黑色风格、印度微型画风格）
+- **15 多种类型电影摄影指南**
 
-### Consistency System
-- Character reference sheets with visual details
-- Voice profiles with pitch, vocabulary, catchphrases
-- Environment style guides for era accuracy
-- Prompt builder with consistency enforcement
-- Anachronism validation
+### 一致性系统
+- **角色参考资料**：包含角色的视觉细节。
+- **语音资料**：包含角色的音高、词汇和常用语。
+- **环境风格指南**：确保场景符合历史时代特征。
+- **提示生成器**：确保提示内容的一致性。
+- **时代错误检测**：检查脚本中是否存在时代错误。
 
-### Storage Integration
-- Google Drive OAuth connection
-- Local storage (downloads)
-- Organized folder structure
-- Complete project export
+### 存储集成
+- **Google Drive OAuth 连接**：支持与 Google Drive 的数据同步。
+- **本地存储**：支持将文件下载到本地。
+- **有序的文件夹结构**：确保文件存储整齐有序。
+- **项目导出**：支持导出整个项目文件。
 
-## Usage Examples
+## 使用示例
 
-### Basic Story Creation
+### 基本故事创作
 
 ```javascript
 // Create a story context
@@ -76,7 +76,7 @@ const script = await skill.createCinematicScript(
 );
 ```
 
-### Using Cinematography
+### 使用电影摄影技巧
 
 ```javascript
 // Get camera techniques
@@ -92,7 +92,7 @@ const setup = skill.getRecommendedCameraSetup(
 );
 ```
 
-### Character Consistency
+### 确保角色一致性
 
 ```javascript
 // Create character reference
@@ -116,7 +116,7 @@ const result = skill.validatePrompt(
 // Returns error: glasses don't belong in Ramayana Era
 ```
 
-### Save to Google Drive
+### 保存到 Google Drive
 
 ```javascript
 // Connect Google Drive
@@ -133,44 +133,44 @@ const result = await skill.saveScriptToStorage(
 console.log(result.shareLink);
 ```
 
-## Tools
+## 工具
 
-### Context Management
-- `createContext()` - Create story world
-- `listContexts()` - List all contexts
-- `getContext()` - Get specific context
-- `deleteContext()` - Delete context
+### 上下文管理
+- `createContext()`：创建故事背景。
+- `listContexts()`：列出所有可用的故事背景。
+- `getContext()`：获取特定故事背景。
+- `deleteContext()`：删除指定的故事背景。
 
-### Story Generation
-- `generateStoryIdeas()` - Generate story ideas
-- `createCinematicScript()` - Create full script
-- `generateYouTubeMetadata()` - Generate YouTube data
+### 故事生成
+- `generateStoryIdeas()`：生成故事创意。
+- `createCinematicScript()`：编写完整的电影剧本。
+- `generateYouTubeMetadata()`：生成适用于 YouTube 的元数据。
 
-### Consistency
-- `createCharacterReference()` - Character visual reference
-- `createVoiceProfile()` - Voice consistency profile
-- `createEnvironmentStyleGuide()` - Era-appropriate guide
-- `buildConsistentPrompts()` - Build consistent prompts
-- `validatePrompt()` - Check for anachronisms
+### 一致性管理
+- `createCharacterReference()`：创建角色视觉参考资料。
+- `createVoiceProfile()`：创建角色的语音资料。
+- `createEnvironmentStyleGuide()`：生成符合时代特征的环境风格指南。
+- `buildConsistentPrompts()`：生成一致性的提示内容。
+- `validatePrompt()`：检查提示内容是否存在时代错误。
 
-### Cinematography
-- `getAllCameraAngles()` - All camera angles
-- `getAllCameraMovements()` - All movements
-- `getAllShotTypes()` - All shot types
-- `getAllLightingTechniques()` - All lighting
-- `suggestCameraTechnique()` - Suggest techniques
-- `suggestLighting()` - Suggest lighting
-- `suggestColorGrading()` - Suggest grading
+### 电影摄影相关功能
+- `getAllCameraAngles()`：获取所有可用的镜头角度。
+- `getAllCameraMovements()`：获取所有可用的镜头移动方式。
+- `getAllShotTypes()`：获取所有可用的镜头类型。
+- `getAllLightingTechniques()`：获取所有可用的灯光技巧。
+- `suggestCameraTechnique()`：推荐合适的镜头拍摄技巧。
+- `suggestLighting()`：推荐合适的灯光效果。
+- `suggestColorGrading()`：推荐合适的色彩分级方案。
 
-### Storage
-- `connectGoogleDrive()` - Connect Google Drive
-- `connectLocalStorage()` - Use local storage
-- `saveScriptToStorage()` - Save to storage
-- `getStorageStatus()` - Check connection
+### 存储管理
+- `connectGoogleDrive()`：连接 Google Drive。
+- `connectLocalStorage()`：使用本地存储空间。
+- `saveScriptToStorage()`：将剧本保存到指定的存储位置。
+- `getStorageStatus()`：检查存储连接状态。
 
-## File Structure
+## 文件结构
 
-When saved to Google Drive, creates:
+当剧本保存到 Google Drive 时，会生成以下文件结构：
 
 ```
 📁 Story Title/
@@ -183,24 +183,24 @@ When saved to Google Drive, creates:
 └── 99_CONTEXT_INFO.md             # Background
 ```
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- OpenClaw Agent with memory permissions
-- Google Drive API (optional, for storage)
+- **Node.js 18.0 或更高版本**。
+- 需要安装并配置 OpenClaw Agent（需具备相应的系统权限）。
+- **Google Drive API**（可选，用于文件存储）。
 
-## Tags
+## 标签
 
-creative, video, script, cinematography, consistency, character-design, voice, storage, google-drive, youtube
+创意、视频、剧本编写、电影摄影、一致性、角色设计、语音处理、文件存储、Google Drive、YouTube
 
-## Version
+## 版本
 
 1.3.0
 
-## Author
+## 作者
 
 Praveen Kumar
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

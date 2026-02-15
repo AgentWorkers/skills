@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Verify - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## Lookup phone number data
+## 查找电话号码信息
 
-Returns information about the provided phone number.
+返回关于提供的电话号码的信息。
 
 `GET /number_lookup/{phone_number}`
 
@@ -45,9 +45,9 @@ import com.telnyx.sdk.models.numberlookup.NumberLookupRetrieveResponse;
 NumberLookupRetrieveResponse numberLookup = client.numberLookup().retrieve("+18665552368");
 ```
 
-## Trigger Call verification
+## 触发电话验证
 
-`POST /verifications/call` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/call` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```java
 import com.telnyx.sdk.models.verifications.CreateVerificationResponse;
@@ -60,9 +60,9 @@ VerificationTriggerCallParams params = VerificationTriggerCallParams.builder()
 CreateVerificationResponse createVerificationResponse = client.verifications().triggerCall(params);
 ```
 
-## Trigger Flash call verification
+## 触发闪现式电话验证
 
-`POST /verifications/flashcall` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/flashcall` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```java
 import com.telnyx.sdk.models.verifications.CreateVerificationResponse;
@@ -75,9 +75,9 @@ VerificationTriggerFlashcallParams params = VerificationTriggerFlashcallParams.b
 CreateVerificationResponse createVerificationResponse = client.verifications().triggerFlashcall(params);
 ```
 
-## Trigger SMS verification
+## 触发短信验证
 
-`POST /verifications/sms` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/sms` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```java
 import com.telnyx.sdk.models.verifications.CreateVerificationResponse;
@@ -90,7 +90,7 @@ VerificationTriggerSmsParams params = VerificationTriggerSmsParams.builder()
 CreateVerificationResponse createVerificationResponse = client.verifications().triggerSms(params);
 ```
 
-## Retrieve verification
+## 获取验证结果
 
 `GET /verifications/{verification_id}`
 
@@ -101,7 +101,7 @@ import com.telnyx.sdk.models.verifications.VerificationRetrieveResponse;
 VerificationRetrieveResponse verification = client.verifications().retrieve("12ade33a-21c0-473b-b055-b3c836e1c292");
 ```
 
-## Verify verification code by ID
+## 根据 ID 验证验证码
 
 `POST /verifications/{verification_id}/actions/verify`
 
@@ -112,7 +112,7 @@ import com.telnyx.sdk.models.verifications.byphonenumber.actions.VerifyVerificat
 VerifyVerificationCodeResponse verifyVerificationCodeResponse = client.verifications().actions().verify("12ade33a-21c0-473b-b055-b3c836e1c292");
 ```
 
-## List verifications by phone number
+## 按电话号码列出验证记录
 
 `GET /verifications/by_phone_number/{phone_number}`
 
@@ -123,9 +123,9 @@ import com.telnyx.sdk.models.verifications.byphonenumber.ByPhoneNumberListRespon
 ByPhoneNumberListResponse byPhoneNumbers = client.verifications().byPhoneNumber().list("+13035551234");
 ```
 
-## Verify verification code by phone number
+## 根据电话号码验证验证码
 
-`POST /verifications/by_phone_number/{phone_number}/actions/verify` — Required: `code`, `verify_profile_id`
+`POST /verifications/by_phone_number/{phone_number}/actions/verify` — 必需参数：`code`, `verify_profile_id`
 
 ```java
 import com.telnyx.sdk.models.verifications.byphonenumber.actions.ActionVerifyParams;
@@ -139,9 +139,9 @@ ActionVerifyParams params = ActionVerifyParams.builder()
 VerifyVerificationCodeResponse verifyVerificationCodeResponse = client.verifications().byPhoneNumber().actions().verify(params);
 ```
 
-## List all Verify profiles
+## 列出所有验证配置文件
 
-Gets a paginated list of Verify profiles.
+获取分页显示的验证配置文件列表。
 
 `GET /verify_profiles`
 
@@ -152,11 +152,11 @@ import com.telnyx.sdk.models.verifyprofiles.VerifyProfileListParams;
 VerifyProfileListPage page = client.verifyProfiles().list();
 ```
 
-## Create a Verify profile
+## 创建验证配置文件
 
-Creates a new Verify profile to associate verifications with.
+创建一个新的验证配置文件，用于关联验证操作。
 
-`POST /verify_profiles` — Required: `name`
+`POST /verify_profiles` — 必需参数：`name`
 
 ```java
 import com.telnyx.sdk.models.verifyprofiles.VerifyProfileCreateParams;
@@ -168,9 +168,9 @@ VerifyProfileCreateParams params = VerifyProfileCreateParams.builder()
 VerifyProfileData verifyProfileData = client.verifyProfiles().create(params);
 ```
 
-## Retrieve Verify profile
+## 获取验证配置文件信息
 
-Gets a single Verify profile.
+获取单个验证配置文件的信息。
 
 `GET /verify_profiles/{verify_profile_id}`
 
@@ -181,7 +181,7 @@ import com.telnyx.sdk.models.verifyprofiles.VerifyProfileRetrieveParams;
 VerifyProfileData verifyProfileData = client.verifyProfiles().retrieve("12ade33a-21c0-473b-b055-b3c836e1c292");
 ```
 
-## Update Verify profile
+## 更新验证配置文件
 
 `PATCH /verify_profiles/{verify_profile_id}`
 
@@ -192,7 +192,7 @@ import com.telnyx.sdk.models.verifyprofiles.VerifyProfileUpdateParams;
 VerifyProfileData verifyProfileData = client.verifyProfiles().update("12ade33a-21c0-473b-b055-b3c836e1c292");
 ```
 
-## Delete Verify profile
+## 删除验证配置文件
 
 `DELETE /verify_profiles/{verify_profile_id}`
 
@@ -203,9 +203,9 @@ import com.telnyx.sdk.models.verifyprofiles.VerifyProfileDeleteParams;
 VerifyProfileData verifyProfileData = client.verifyProfiles().delete("12ade33a-21c0-473b-b055-b3c836e1c292");
 ```
 
-## Retrieve Verify profile message templates
+## 获取验证配置文件消息模板
 
-List all Verify profile message templates.
+列出所有的验证配置文件消息模板。
 
 `GET /verify_profiles/templates`
 
@@ -216,11 +216,11 @@ import com.telnyx.sdk.models.verifyprofiles.VerifyProfileRetrieveTemplatesRespon
 VerifyProfileRetrieveTemplatesResponse response = client.verifyProfiles().retrieveTemplates();
 ```
 
-## Create message template
+## 创建消息模板
 
-Create a new Verify profile message template.
+创建一个新的验证配置文件消息模板。
 
-`POST /verify_profiles/templates` — Required: `text`
+`POST /verify_profiles/templates` — 必需参数：`text`
 
 ```java
 import com.telnyx.sdk.models.verifyprofiles.MessageTemplate;
@@ -232,11 +232,11 @@ VerifyProfileCreateTemplateParams params = VerifyProfileCreateTemplateParams.bui
 MessageTemplate messageTemplate = client.verifyProfiles().createTemplate(params);
 ```
 
-## Update message template
+## 更新消息模板
 
-Update an existing Verify profile message template.
+更新现有的验证配置文件消息模板。
 
-`PATCH /verify_profiles/templates/{template_id}` — Required: `text`
+`PATCH /verify_profiles/templates/{template_id}` — 必需参数：`text`
 
 ```java
 import com.telnyx.sdk.models.verifyprofiles.MessageTemplate;

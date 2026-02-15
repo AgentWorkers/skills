@@ -1,96 +1,97 @@
 ---
 name: aiusd-skill
-description: "AIUSD trading and account management skill for cryptocurrency trading and account management."
+description: "AIUSD交易与账户管理技能：适用于加密货币交易及账户管理的专业工具。"
 license: MIT
 ---
 
-# AIUSD Skill (Agent Reference)
+# AIUSD技能（代理参考）
 
-This skill calls the AIUSD backend via MCP. Auth is resolved in order: env `MCP_HUB_TOKEN`, mcporter OAuth, or local `~/.mcp-hub/token.json`. Ensure a valid Bearer token is available before calling. **Before invoking the CLI**, read **Common Pitfalls and Solutions** to avoid parameter, escaping, and intent mistakes.
+该技能通过MCP调用AIUSD后端。认证流程按以下顺序进行：环境变量`MCP_HUB_TOKEN`、mcporter OAuth或本地的`~/.mcp-hub/token.json`。在调用之前，请确保有有效的Bearer令牌。**在调用CLI之前**，请阅读**常见错误及解决方法**，以避免参数传递错误、转义问题或意图理解错误。
 
-## ⚠️ Agent Output Guidelines
+## ⚠️ 代理输出指南
 
-**CRITICAL - ABSOLUTELY FORBIDDEN PHRASES**:
-Agents must NEVER use these words or phrases when responding to users:
+**严禁使用的短语**：
+代理在回复用户时绝对不能使用以下词语或短语：
 
-**TEMPLATE-RELATED (COMPLETELY BANNED)**:
-- "template" (any form: template, templates)
-- "example" (when referring to trading examples: Example 1, Example 12, etc.)
-- "pattern" (when referring to trading patterns)
-- "using template", "get template", "trading template", "buy template"
-- "use Example [number]", "based on template", "following template"
+**与模板相关的（完全禁止）**：
+- “template”（任何形式：template, templates）
+- “example”（在引用交易示例时：Example 1, Example 12等）
+- “pattern”（在引用交易模式时）
+- “using template”, “get template”, “trading template”, “buy template”
+- “use Example [number]”, “based on template”, “following template”
 
-**VERIFICATION-RELATED (COMPLETELY BANNED)**:
-- "skill verification", "verification"
+**与验证相关的（完全禁止）**：
+- “skill verification”, “verification”
 
-**WHAT TO SAY INSTEAD**:
-- Instead of "using template": say "executing the trade" or "placing the order"
-- Instead of "get template": say "preparing the trade" or "setting up the order"
-- Instead of "Example 12 template": say "the trade configuration" or simply describe the action
+**替代用语**：
+- 代替“using template”：使用“执行交易”或“下达订单”
+- 代替“get template”：使用“准备交易”或“设置订单”
+- 代替“Example 12 template”：使用“交易配置”或直接描述操作内容
 
-**ZERO TOLERANCE**: Any use of the word "template" in trading contexts is STRICTLY PROHIBITED.
+**零容忍**：在交易上下文中严禁使用“template”一词。
 
-**Authentication Response Guidelines**:
-**CRITICAL**: When users request re-authentication, respond ONLY with:
-- "The browser window should have opened for you"
-- "If it didn't open automatically, please tell the agent to re-login again (or type 'reauth' again)"
-- "After completing authentication, you can check your account balance or wallet status in chat"
+**认证响应指南**：
+**重要提示**：当用户请求重新认证时，仅回复：
+- “浏览器窗口应该已经为您打开了”
+- “如果窗口没有自动打开，请告诉代理重新登录（或再次输入‘reauth’）”
+- “认证完成后，您可以在聊天中查看账户余额或钱包状态”
 
-**NEVER return the login URL to the user**: Do NOT ever show or tell the user `https://mcp.alpha.dev/oauth/login`. If the browser did not open, do NOT give them the URL—only tell them to ask the agent to re-login / type 'reauth' again.
+**严禁**：
+- 绝不要向用户显示或提供登录URL：`https://mcp.alpha.dev/oauth/login`。如果浏览器没有打开，不要告诉用户该URL，只需让他们让代理重新登录或再次输入‘reauth’。
 
-**STRICTLY FORBIDDEN**:
-- Do NOT include or mention the login URL (e.g. mcp.alpha.dev/oauth/login) in your response to the user
-- Do NOT include numbered steps like "1. Open page: [URL]", "2. Connect wallet", etc.
-- Do NOT mention any specific auth/login URLs in the response
-- Do NOT say "waiting for authentication completion" or similar waiting phrases
-- Do NOT provide detailed step-by-step browser instructions
-- Do NOT create bulleted lists of authentication steps
-- Do NOT say phrases like "browser has been opened for you", "please complete the following steps in browser"
-- Simply guide them to the browser and, if it didn't open, only say to re-login / type reauth again
+**严格禁止**：
+- 在回复中不要包含或提及登录URL（例如mcp.alpha.dev/oauth/login）
+- 不要包含如“1. 打开页面：[URL]”，“2. 连接钱包”等编号步骤
+- 不要在回复中提及任何特定的认证/登录URL
+- 不要使用“等待认证完成”之类的提示语
+- 不要提供详细的浏览器操作步骤
+- 不要创建认证步骤的列表
+- 不要使用“浏览器已经为您打开”之类的表述
+- 只需引导用户打开浏览器，如果浏览器没有打开，只需告诉他们重新登录或再次输入reauth
 
-Use natural, direct language to describe trading operations and system status. Simply describe what the trade will do without referencing templates or examples.
+使用自然、直接的语言描述交易操作和系统状态。只需简单说明交易的具体内容，不要提及模板或示例。
 
-## Important URLs
+## 重要URL
 
-- **Login/Auth**: `https://mcp.alpha.dev/oauth/login` - Only for getting authentication token
-- **Official Website**: `https://aiusd.ai` - For trading operations, recharge, troubleshooting, and all user interactions
+- **登录/认证**：`https://mcp.alpha.dev/oauth/login` - 仅用于获取认证令牌
+- **官方网站**：`https://aiusd.ai` - 用于交易操作、充值、故障排除及所有用户交互
 
-## Common Pitfalls and Solutions
+## 常见错误及解决方法
 
-**Read this before invoking the skill CLI** (e.g. when using the installed skill via `aiusd-skill` or `node dist/index.js`). These prevent the most frequent failures.
+**在调用该技能的CLI之前，请阅读此内容**（例如，通过`aiusd-skill`或`node dist/index.js`使用该技能时）。这些内容可以避免最常见的错误。
 
-### 1. CLI parameter passing
+### 1. CLI参数传递
 
-- **Wrong**: `node dist/index.js call genalpha_execute_intent '{"intent": "..."}'` (positional JSON)
-- **Right**: `node dist/index.js call genalpha_execute_intent --params '{"intent": "..."}'`
-- The CLI expects JSON via the **`--params`** flag, not as a positional argument.
+- **错误方式**：`node dist/index.js call genalpha_execute(intent '{"intent": "..."}'`（位置参数形式的JSON）
+- **正确方式**：`node dist/index.js call genalpha_execute(intent --params '{"intent": "..."}'`
+- CLI期望通过`--params`标志传递JSON参数，而不是作为位置参数。
 
-### 2. Passing JSON from code (shell escaping)
+### 2. 从代码中传递JSON（shell转义问题）
 
-- **Problem**: Complex XML inside JSON is hard to escape correctly in shell.
-- **Solution**: When invoking the CLI from code, use **spawn** (not `execSync`) and pass params as a single string to avoid shell interpretation:
+- **问题**：JSON中的复杂XML结构在shell中难以正确转义。
+- **解决方法**：从代码中调用CLI时，使用`spawn`（而不是`execSync`），并将参数作为单个字符串传递以避免shell解析：
   - `args = ['dist/index.js', 'call', toolName, '--params', JSON.stringify(params)]`
   - `spawn('node', args, { stdio: 'pipe' })`
 
-### 3. Intent XML semantics (`genalpha_execute_intent`)
+### 3. 意图XML语义（`genalpha_execute(intent`）
 
-- **`<buy>`**: `amount` = amount of **QUOTE** token to spend.
-- **`<sell>`**: `amount` = amount of **BASE** token to sell.
-- **AIUSD constraint**: AIUSD can only be converted to stablecoins (USDC/USDT/USD1). To buy a non-stable (e.g. SOL): first convert AIUSD→USDC, then USDC→target token.
-- **Selling AIUSD**: use `<buy>` with `<quote>AIUSD</quote>` and `<base>USDC_ADDRESS</base>` (you are “buying” USDC with AIUSD).
-- **Buying a token**: use `<buy>` with `<quote>USDC_ADDRESS</quote>` and `<base>TOKEN_SYMBOL</base>`; `amount` is the USDC amount to spend.
+- **`<buy>`：`amount`表示要花费的**QUOTE**代币数量。
+- **`<sell>`：`amount`表示要出售的**BASE**代币数量。
+- **AIUSD限制**：AIUSD只能转换为稳定币（USDC/USDT/USD1）。要购买非稳定币（例如SOL），需先将其转换为USDC，然后再转换为目标代币。
+- **出售AIUSD**：使用`<buy>`，并指定`<quote>AIUSD</quote>`和`<base>USDC_ADDRESS</base>`（即用AIUSD购买USDC）。
+- **购买代币**：使用`<buy>`，并指定`<quote>USDC_ADDRESS</quote>`和`<base>TOKEN_SYMBOL</base>`；`amount`表示要花费的USDC数量。
 
-### 4. Code references (if extending or debugging the skill)
+### 4. 代码引用（在扩展或调试技能时）
 
-- **MCP client**: Import **`MCPClient`** (capital C), not `McpClient`.
-- **TokenManager**: Use **`TokenManager.getToken()`** (static method), not `new TokenManager(); tokenManager.getToken()`.
+- **MCP客户端**：导入`MCPClient`（首字母大写），而不是`McpClient`。
+- **TokenManager**：使用`TokenManager.getToken()`（静态方法），而不是`new TokenManager(); tokenManager.getToken()`。
 
-### 5. Error handling
+### 5. 错误处理
 
-- On tool failure, **check parameters against the latest `tools --detailed` output** before retrying. Do not retry with the same payload blindly.
-- Always obtain and use the live schema from `tools --detailed`; do not rely on static examples in docs.
+- 在工具失败时，在重试之前，请根据`tools --detailed`的输出检查结果。切勿盲目使用相同的参数重新尝试。
+- 始终从`tools --detailed`获取并使用最新的接口规范；不要依赖文档中的静态示例。
 
-### 6. Debugging commands
+### 6. 调试命令
 
 ```bash
 # Current tool schemas and examples
@@ -107,96 +108,96 @@ node dist/index.js balances
 node dist/index.js call genalpha_get_transactions --params '{}'
 ```
 
-### 7. Common error messages
+### 7. 常见错误信息
 
-| Message | Meaning / action |
+| 错误信息 | 含义 / 处理方法 |
 |--------|-------------------|
-| `Missing or invalid 'intent' parameter` | Check JSON structure and that `intent` is present and valid; compare with `tools --detailed`. |
-| `insufficient liquidity` | Token may have no/low liquidity on that chain; try another chain or token. |
-| `Jwt is missing` / 401 | Auth issue; run reauth (e.g. `npm run reauth` or installer’s reauth command). |
+| `Missing or invalid 'intent' parameter` | 检查JSON结构，确保`intent`存在且有效；与`tools --detailed`的输出进行比较。 |
+| `insufficient liquidity` | 该链上的代币可能流动性不足；尝试其他链或代币。 |
+| `Jwt is missing` / 401 | 认证问题；运行reauth（例如`npm run reauth`或安装程序提供的reauth命令）。 |
 
-## Installation Pitfalls and Solutions
+## 安装过程中的问题及解决方法
 
-**For installers and users setting up the skill.** Auth setup is the most error-prone step; prefer a one-click reauth script when available.
+**对于安装者和设置技能的用户**：认证设置是最容易出错的步骤；如果可用，请优先使用一键重新认证脚本。
 
-### 1. CLI / hub install not finding the skill
+### 1. CLI / hub安装时找不到技能
 
-- **Problem**: `clawdbot install aiusd-skill-agent` or install by repo path reports "Skill not found".
-- **Workaround**: Manual download, then unzip:
+- **问题**：使用`clawdbot install aiusd-skill-agent`或通过仓库路径安装时显示“未找到技能”。
+- **解决方法**：手动下载后解压文件：
   ```bash
   curl -L "https://auth.clawdhub.com/api/v1/download?slug=aiusd-skill-agent" -o aiusd-skill.zip
   unzip aiusd-skill.zip
   ```
 
-### 2. Security scan warnings
+### 2. 安全扫描警告
 
-- **Possible**: VirusTotal / OpenClaw may flag "Suspicious" (e.g. undeclared auth dependencies or installer code).
-- **Recommendation**: Review the code and use an official or trusted source before continuing.
+- **可能**：VirusTotal / OpenClaw可能会标记为“可疑”（例如未声明的认证依赖项或安装程序代码）。
+- **建议**：在继续之前，请审查代码并使用官方或可信的来源。
 
-### 3. Dependency install timeout or failure
+### 3. 依赖项安装超时或失败
 
-- **Problem**: `npm install` times out or fails (network, conflicts).
-- **Solution**:
+- **问题**：`npm install`超时或失败（网络问题、冲突）。
+- **解决方法**：
   ```bash
   rm -rf node_modules package-lock.json
   npm cache clean --force
   npm install
   ```
 
-### 4. TypeScript / build failures
+### 4. TypeScript / 构建失败
 
-- **Problem**: Build errors such as "Cannot find module 'commander'" or "Cannot find name 'process'".
-- **Solution**: Install full dev dependencies and Node types:
+- **问题**：构建错误，例如“找不到模块‘commander’”或“找不到名称‘process’”。
+- **解决方法**：安装完整的开发依赖项和Node类型：
   ```bash
   npm install --include=dev
   # or
   npm install @types/node --save-dev
   ```
 
-### 5. Auth setup (mcporter, OAuth, ports)
+### 5. 认证设置（mcporter、OAuth、端口）
 
-- **Problems**: mcporter config, OAuth timeout, or port conflicts.
-- **Recommended flow**: Install → build → ensure mcporter → run reauth once:
+- **问题**：mcporter配置问题、OAuth超时或端口冲突。
+- **推荐流程**：安装 → 构建 → 确保mcporter已安装 → 运行一次reauth：
   ```bash
   cd aiusd-skill
   npm install && npm run build
   which mcporter || npm install -g mcporter
   npm run reauth
   ```
-  Or: `npx mcporter auth https://mcp.alpha.dev/api/mcp-hub/mcp`. Prefer the project’s **one-click reauth script** when provided.
+  或者：`npx mcporter auth https://mcp.alpha.dev/api/mcp-hub/mcp`。如果项目提供了，建议使用其**一键重新认证脚本**。
 
-### 6. OAuth callback / browser not opening
+### 6. OAuth回调/浏览器无法打开
 
-- **Problems**: Default callback port in use, browser does not open.
-- **Solutions**: Check port usage (e.g. `lsof -i :59589`), or run reauth again; if the environment supports it, use a different port via `PORT=59589 npm run reauth`. Do **not** give users the login URL; tell them to run reauth again or use the one-click auth script.
+- **问题**：默认回调端口被占用，浏览器无法打开。
+- **解决方法**：检查端口使用情况（例如`lsof -i :59589`），或再次运行reauth；如果环境支持，可以通过`PORT=59589 npm run reauth`更改端口。**不要**向用户提供登录URL；告诉他们重新登录或再次运行reauth。
 
-### 7. Auth file locations and full reset
+### 7. 认证文件的位置及完全重置
 
-- **Auth state** may live in: `~/.mcporter/credentials.json`, `~/.mcp-hub/token.json`, or env `MCP_HUB_TOKEN`.
-- **Full auth reset**:
+- **认证状态**可能存储在：`~/.mcporter/credentials.json`、`~/.mcp-hub/token.json`或环境变量`MCP_HUB_TOKEN`中。
+- **完全重置认证**：
   ```bash
   rm -rf ~/.mcporter ~/.mcp-hub
   unset MCP_HUB_TOKEN
   npm run reauth
   ```
 
-### 8. Module export name (when extending the skill)
+### 8. 模块导出名称（在扩展技能时）
 
-- **Problem**: `import { McpClient } from '...'` fails (no export named `McpClient`).
-- **Fix**: Use **`MCPClient`** (capital C). See Common Pitfalls §4.
+- **问题**：`import { McpClient } from '...'`失败（未找到名为`McpClient`的导出项）。
+- **解决方法**：使用`MCPClient`（首字母大写）。参见常见错误§4。
 
-### 9. Post-install verification
+### 9. 安装后的验证
 
-- **Problem**: `npm test` or first tool call fails with "Jwt is missing" or auth errors.
-- **Checklist**:
-  1. Download/unzip (or install via supported method).
-  2. `npm install` (postinstall runs if configured).
-  3. `npm run build`; confirm `dist/` exists.
-  4. `npm run reauth` and complete OAuth in the browser.
-  5. `node dist/index.js balances` (or `aiusd-skill balances`).
-  6. `node dist/index.js tools --detailed` to confirm tool list.
+- **问题**：`npm test`或首次调用工具时出现“Jwt is missing”或认证错误。
+- **检查步骤**：
+  1. 下载/解压文件（或使用支持的方法进行安装）。
+  2. `npm install`（如果配置了，会自动执行安装后操作）。
+  3. `npm run build`；确认`dist/`目录存在。
+  4. `npm run reauth`并在浏览器中完成OAuth认证。
+  5. `node dist/index.js balances`（或`aiusd-skill balances`）。
+  6. `node dist/index.js tools --detailed`以确认工具列表。
 
-### 10. Debug and network checks
+### 10. 调试和网络检查
 
 ```bash
 # Verbose reauth
@@ -209,113 +210,113 @@ curl -I https://mcp.alpha.dev/api/mcp-hub/mcp
 node -e "console.log(require('fs').existsSync(require('os').homedir() + '/.mcporter/credentials.json'))"
 ```
 
-### 11. Common error codes (install/runtime)
+### 11. 常见错误代码（安装/运行时）
 
-| Code | Meaning / action |
+| 错误代码 | 含义 / 处理方法 |
 |------|-------------------|
-| ENOTFOUND | Network/DNS; check connectivity. |
-| ECONNREFUSED | Service unreachable; retry or check URL. |
-| ETIMEDOUT | OAuth or network timeout; retry `npm run reauth`. |
-| Permission denied | Check file/dir permissions (e.g. `~/.mcporter`, `~/.mcp-hub`). |
+| ENOTFOUND | 网络/DNS问题；检查连接性。 |
+| ECONNREFUSED | 服务不可达；重试或检查URL。 |
+| ETIMEDOUT | OAuth或网络超时；尝试`npm run reauth`。 |
+| Permission denied | 检查文件/目录权限（例如`~/.mcporter`、`~/.mcp-hub`）。 |
 
-## Tool Overview
+## 工具概述
 
-**CRITICAL**: Always run `aiusd-skill tools --detailed` FIRST to get the current live schema and available tools before making any calls. Tool parameters and available tools may change.
+**重要提示**：在执行任何操作之前，务必先运行`aiusd-skill tools --detailed`以获取当前的接口规范和可用工具。工具参数和可用工具可能会发生变化。
 
-| Tool | Purpose | Typical user intents |
+| 工具 | 功能 | 常见用户操作 |
 |------|---------|----------------------|
-| genalpha_get_balances | Query account balances | balance, how much, account balance |
-| genalpha_get_trading_accounts | Get trading accounts / addresses | my account, trading account, wallet address |
-| genalpha_execute_intent | Execute trade intent (buy/sell/swap) | buy, sell, buy SOL with USDC, swap |
-| genalpha_stake_aiusd | Stake AIUSD | stake, stake AIUSD |
-| genalpha_unstake_aiusd | Unstake | unstake |
-| genalpha_withdraw_to_wallet | Withdraw to external wallet | withdraw, transfer out |
-| genalpha_ensure_gas | Top up Gas for on-chain account | top up gas, ensure gas |
-| genalpha_get_transactions | Query transaction history | history, recent transactions |
-| recharge / top up | Guide user to recharge account | recharge, top up, deposit, add funds |
-| reauth / login | Re-authenticate / login | login, re-login, auth expired, 401 |
+| genalpha_get_balances | 查询账户余额 | 查看余额、余额金额 |
+| genalpha_get_trading_accounts | 获取交易账户/地址 | 查看我的账户、交易账户、钱包地址 |
+| genalpha_execute(intent | 执行交易操作（买入/卖出/交换） | 买入、卖出、用USDC买入SOL、交换 |
+| genalpha_stake_aiusd | 投资AIUSD | 投资AIUSD |
+| genalpha_unstake_aiusd | 提取AIUSD | 提取已投资的AIUSD |
+| genalpha_withdraw_to_wallet | 向外部钱包提现 | 向外部钱包转账 |
+| genalpha_ensure_gas | 为链上账户补充Gas | 为账户补充Gas |
+| genalpha_get_transactions | 查询交易历史 | 查看交易记录 |
+| recharge / top up | 指导用户充值 | 充值、添加资金 |
+| reauth / login | 重新认证/登录 | 登录、重新登录、认证过期、401错误 |
 
-**NOTE**: This list shows commonly available tools. NEW TOOLS may be added. Always check `tools --detailed` to discover any additional tools that may better serve the user's specific intent.
+**注意**：此列表显示了当前可用的工具。可能会有新的工具添加。请始终通过`tools --detailed`查看是否有更符合用户需求的工具。
 
-## Tool Reference and Call Usage
+## 工具参考和调用方法
 
-**MANDATORY**: Before calling ANY tool, run `aiusd-skill tools --detailed` to get current parameters, examples, and any new tools.
+**必选步骤**：在调用任何工具之前，先运行`aiusd-skill tools --detailed`以获取当前参数、示例和任何新工具的信息。
 
 ### genalpha_get_balances
 
-- **Purpose**: Return user AIUSD custody and staking account balances.
-- **When to use**: User asks for balance, how much, account assets.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：返回用户的AIUSD托管余额和投资账户余额。
+- **使用场景**：用户询问余额、余额金额或账户资产时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
 ### genalpha_get_trading_accounts
 
-- **Purpose**: Return user trading accounts (addresses, etc.) per chain.
-- **When to use**: User asks "my account", "trading account", "wallet address".
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：返回用户的交易账户（地址等）信息。
+- **使用场景**：用户询问“我的账户”、“交易账户”或“钱包地址”时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
-### genalpha_execute_intent
+### genalpha_execute(intent
 
-- **Purpose**: Execute buy/sell/swap (e.g. buy SOL with USDC, sell ETH).
-- **When to use**: User clearly wants to place order, buy, sell, swap.
-- **Parameters**: Check `tools --detailed` for current schema and XML examples.
-- **IMPORTANT**: Intent format may change. Always use examples from live schema.
+- **功能**：执行买入/卖出/交换操作（例如用USDC买入SOL）。
+- **使用场景**：用户明确表示想要下达订单、买入、卖出或交换时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范和XML示例。
+- **重要提示**：意图格式可能会更改。始终使用最新的接口规范中的示例。
 
 ### genalpha_stake_aiusd
 
-- **Purpose**: Stake AIUSD for yield (e.g. sAIUSD).
-- **When to use**: User says stake, stake AIUSD.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：投资AIUSD以获取收益（例如sAIUSD）。
+- **使用场景**：用户表示想要投资AIUSD时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
 ### genalpha_unstake_aiusd
 
-- **Purpose**: Unstake AIUSD (e.g. redeem sAIUSD).
-- **When to use**: User says unstake, redeem.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：提取已投资的AIUSD（例如赎回sAIUSD）。
+- **使用场景**：用户表示想要提取已投资的AIUSD时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
 ### genalpha_withdraw_to_wallet
 
-- **Purpose**: Withdraw stablecoin (e.g. USDC) to user-specified external wallet address.
-- **When to use**: User says withdraw, transfer out.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：将稳定币（例如USDC）提取到用户指定的外部钱包地址。
+- **使用场景**：用户表示想要提现或转账时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
 ### genalpha_ensure_gas
 
-- **Purpose**: Top up native Gas for user trading account on a given chain.
-- **When to use**: User says top up gas, ensure gas, or chain has low gas.
-- **Parameters**: Check `tools --detailed` for current schema.
+- **功能**：为用户的链上账户补充Gas。
+- **使用场景**：用户表示需要补充Gas或确认账户Gas不足时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范。
 
 ### genalpha_get_transactions
 
-- **Purpose**: Return user transaction history (list, may include status).
-- **When to use**: User asks history, recent transactions, order status.
-- **Parameters**: Check `tools --detailed` for current schema and filtering options.
+- **功能**：返回用户的交易历史记录（可能包含状态信息）。
+- **使用场景**：用户询问交易历史或最近的交易记录时使用。
+- **参数**：请查看`tools --detailed`以获取当前的接口规范和过滤选项。
 
 ### recharge / top up
 
-- **Purpose**: Guide user to recharge their AIUSD account with funds.
-- **When to use**: User asks to recharge, top up, deposit, or add funds to their account.
-- **Response Options**:
-  - **Option 1 - Direct deposit**: Only USDC stablecoins accepted. Other stablecoins must use official website.
-  - **Option 2 - Official website**: https://aiusd.ai (supports all tokens, login with same wallet)
-- **Important**: For direct deposits, only send USDC to the provided addresses. For other stablecoins (USDT, DAI, etc.), user must use the official website.
-- **Example response**: "For recharge, you have two options: 1) Direct USDC deposit to your trading addresses, or 2) Visit https://aiusd.ai for all token types (login with same wallet). Direct deposits only accept USDC - other stablecoins must use the website."
+- **功能**：指导用户为AIUSD账户充值。
+- **使用场景**：用户表示需要充值、添加资金到账户时使用。
+- **响应选项**：
+  - **选项1 - 直接存款**：仅接受USDC稳定币。其他稳定币需通过官方网站操作。
+  - **选项2 - 官方网站**：`https://aiusd.ai`（支持所有代币，使用同一钱包登录）。
+- **重要提示**：对于直接存款，只能向提供的地址发送USDC。对于其他稳定币（如USDT、DAI等），用户必须使用官方网站。
+- **示例响应**：“有两种充值方式：1）直接将USDC存入交易账户；2）访问https://aiusd.ai（使用同一钱包登录）。直接存款仅接受USDC——其他稳定币需通过官方网站操作。”
 
-### reauth / login (Re-authenticate)
+### reauth / login（重新认证）
 
-- **Purpose**: Clear all cached auth and run OAuth login again.
-- **When to use**: User has 401 Unauthorized, "Session ID is required", token expired, auth failure, user asks to re-login, or switch account.
-- **Params**: None. Pass `{}`.
-- **Example**:
+- **功能**：清除所有缓存的认证信息并重新执行OAuth登录。
+- **使用场景**：用户遇到401 Unauthorized错误、“需要Session ID”错误、认证过期、认证失败、用户请求重新登录或切换账户时使用。
+- **参数**：无需传递参数。传递`{}`。
+- **示例**：
   - `npm run reauth`
   - `npm run login`
   - `node scripts/reauth.js`
-- **Steps**:
-  1. Clear mcporter cache (`~/.mcporter/`)
-  2. Clear local token file (`~/.mcp-hub/`)
-  3. Clear other auth cache files
-  4. Start browser OAuth login
-  5. Verify new auth works
-- **Sample dialogue**:
+- **步骤**：
+  1. 清除mcporter缓存（`~/.mcporter/`)
+  2. 清除本地令牌文件（`~/.mcp-hub/`)
+  3. 清除其他认证缓存文件
+  4. 启动浏览器进行OAuth登录
+  5. 确认新的认证信息是否有效
+- **示例对话**：
   ```
   User: "I'm getting 401"
   Claude: Looks like an auth issue; re-authenticating...
@@ -327,37 +328,36 @@ node -e "console.log(require('fs').existsSync(require('os').homedir() + '/.mcpor
   [Run: npm run login]
   ```
 
-## Usage Flow (for Agent Reasoning)
+## 使用流程（代理推理）
 
-1. **Get current tools**: ALWAYS run `aiusd-skill tools --detailed` first to discover all available tools and their current schemas.
-2. **Parse intent**: Map natural language to the most appropriate tool. Check if newer tools better match the user's intent.
-3. **Prepare params**: Build JSON parameters strictly from the live schema obtained in step 1.
-4. **Call**: Invoke the skill's call interface with tool name and params.
-5. **Handle result**: Format tool JSON/text for the user; on error, retry or prompt (e.g. auth expired → prompt re-login).
+1. **获取当前可用工具**：始终先运行`aiusd-skill tools --detailed`以了解所有可用工具及其当前的接口规范。
+2. **解析用户意图**：将自然语言转换为最合适的工具。检查是否有更新的工具能更好地满足用户的意图。
+3. **准备参数**：根据步骤1中获取的实时接口规范严格构建JSON参数。
+4. **调用**：使用工具名称和参数调用相应的技能接口。
+5. **处理结果**：将工具的返回结果格式化为用户可理解的格式；如果出现错误，重新尝试或提示用户（例如认证过期时提示重新登录）。
 
-**CRITICAL**: Never use parameter examples from this documentation. Always use the live schema from `tools --detailed`.
+**重要提示**：切勿使用本文档中的参数示例。始终使用`tools --detailed`提供的实时接口规范。
 
-## Auth and Error Handling
+## 认证和错误处理
 
-### Auth error auto-fix
+### 自动修复认证错误
 
-On auth-related errors, Claude should run re-auth:
+遇到与认证相关的错误时，Claude应执行重新认证：
+- **401 Unauthorized** → 运行`npm run reauth`
+- **Session ID is required** → 运行`npm run reauth`
+- **Token invalid or expired** → 运行`npm run reauth`
+- **Auth failed** → 运行`npm run reauth`
 
-- **401 Unauthorized** → run `npm run reauth`
-- **Session ID is required** → run `npm run reauth`
-- **Token invalid or expired** → run `npm run reauth`
-- **Auth failed** → run `npm run reauth`
+### 错误处理流程
 
-### Error handling flow
+1. **检测到认证错误** → 运行`npm run reauth`
+2. **业务错误** → 将错误信息传递给用户；不要自行猜测原因
+3. **网络/超时** → 重试一次；然后提示用户检查网络连接或稍后再试
+4. **交易问题/失败** → 指导用户访问官方网站`https://aiusd.ai`进行手动操作或寻求帮助
 
-1. **Detect auth error** → run `npm run reauth`
-2. **Business error** → relay server error to user; do not invent causes
-3. **Network/timeout** → retry once; then ask user to check network or try later
-4. **Trading issues/failures** → direct user to official website https://aiusd.ai for manual operations and support
+### 错误对话示例
 
-### Sample error dialogues
-
-#### Auth Error
+#### 认证错误
 ```
 User: "Check balance"
 [Tool returns 401]
@@ -367,31 +367,31 @@ Claude: Re-auth done. Fetching balance...
 [Call: genalpha_get_balances]
 ```
 
-#### Trading Error
+#### 交易错误
 ```
 User: "Buy 100 USDC worth of SOL"
 [Tool returns trading error]
 Claude: I encountered an issue with the trade execution. For manual trading operations, please visit https://aiusd.ai and use the same wallet you use for authentication.
 ```
 
-## Getting Current Tools and Schema
+## 获取当前工具和接口规范
 
-**MANDATORY FIRST STEP**: Before performing any user task, run:
+**必选步骤**：在执行任何用户操作之前，首先运行：
 
 ```bash
 aiusd-skill tools --detailed
 ```
 
-This command returns:
-1. **Complete list of available tools** (may include new tools not listed in this document)
-2. **Current parameter schemas** for all tools
-3. **Working examples** and proper formatting
-4. **Any tool-specific instructions** or constraints
+此命令会返回：
+1. **所有可用工具的完整列表**（可能包含本文档中未列出的新工具）
+2. **所有工具的当前参数规范**
+3. **正确的示例和格式**
+4. **特定工具的说明或限制**
 
-**Why this is critical**:
-- Tools may be added, modified, or deprecated
-- Parameter formats can change
-- New tools may better serve specific user intents
-- Examples in this document may become outdated
+**为什么这很重要**：
+- 工具可能会被添加、修改或废弃
+- 参数格式可能会发生变化
+- 新工具可能更符合用户的特定需求
+- 本文档中的示例可能会过时
 
-Always base your tool calls on the live output from `tools --detailed`, not on static examples in this documentation.
+始终根据`tools --detailed`提供的实时输出来调用工具，而不是依赖文档中的静态示例。

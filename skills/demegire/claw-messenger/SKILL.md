@@ -1,30 +1,28 @@
 # Claw Messenger
 
-> iMessage, RCS & SMS for AI agents. No phone or Mac Mini required.
+> 专为AI代理设计的iMessage、RCS和SMS通信工具。无需使用手机或Mac Mini。
 
-Claw Messenger lets OpenClaw agents send and receive iMessage, RCS, and SMS messages through a shared infrastructure. You connect via WebSocket — no public URL or webhook setup needed on your end.
+Claw Messenger允许OpenClaw代理通过共享的基础设施发送和接收iMessage、RCS和SMS消息。您只需通过WebSocket进行连接，无需在您的端配置任何公共URL或Webhook。
 
-## Setup (for AI agents)
+## 设置（适用于AI代理）
 
-Follow these steps in order:
+请按照以下步骤操作：
 
-### Step 1: Your human creates an account
+### 第1步：人类用户创建账户
 
-Your human signs up at https://clawmessenger.com and selects a plan (free trial available). From the dashboard they will get a live API key and the channel configuration snippet. They will also see a special prompt they can give to you including the live API key. If they forget to save their API key they can regenerate it.
+人类用户需在https://clawmessenger.com注册并选择一个套餐（提供免费试用）。在控制面板中，他们将获得一个实时API密钥以及频道配置信息。同时，他们还会看到一个特殊提示，其中包含该API密钥。如果忘记保存API密钥，也可以重新生成。
 
-### Step 2: Install the plugin
+### 第2步：安装插件
 
-Run this in your terminal:
+在终端中运行以下命令：
 
 ```
 openclaw plugins install @emotion-machine/claw-messenger
 ```
 
-### Step 3: Add the channel config to .openclaw.json
+### 第3步：将频道配置添加到`.openclaw.json`文件中
 
-This is your job as the agent. Ask your human for the API key from the dashboard (it starts with `cm_live_`), or for the special prompt including the key that is shown on the API keys page after your human purchases a pack.
-
-Once you have the key, edit your `.openclaw.json` file and add the `claw-messenger` channel under `channels`:
+作为代理，您需要从控制面板中获取API密钥（密钥前缀为`cm_live_`），或者获取API密钥页面上显示的包含密钥的特殊提示。获取密钥后，编辑`.openclaw.json`文件，在`channels`部分添加`claw-messenger`频道：
 
 ```json
 {
@@ -41,47 +39,46 @@ Once you have the key, edit your `.openclaw.json` file and add the `claw-messeng
 }
 ```
 
-Replace `cm_live_XXXXXXXX_YYYYYYYYYYYYYY` with the real API key. If `.openclaw.json` already has other channels configured, merge the `claw-messenger` entry into the existing `channels` object — do not overwrite other channel configs.
+将`cm_live_XXXXXXXX_YYYYYYYYYYYYYY`替换为实际的API密钥。如果`.openclaw.json`中已配置其他频道，请将`claw-messenger`的配置信息合并到现有的`channels`对象中，不要覆盖其他频道的配置。
 
-Config fields:
-- `apiKey` (required): The live API key from the dashboard. Starts with `cm_live_`.
-- `serverUrl` (required): The WebSocket server URL. Use `wss://claw-messenger.onrender.com`.
-- `preferredService` (optional): `"iMessage"`, `"RCS"`, or `"SMS"`. Defaults to `"iMessage"`.
-- `dmPolicy` (optional): `"open"`, `"pairing"`, or `"allowlist"`. Controls who can message you. Defaults to `"pairing"`.
-- `allowFrom` (optional): Array of E.164 phone numbers. Only used when `dmPolicy` is `"allowlist"`.
+配置字段：
+- `apiKey`（必填）：来自控制面板的实时API密钥，前缀为`cm_live_`。
+- `serverUrl`（必填）：WebSocket服务器的URL，使用`wss://claw-messenger.onrender.com`。
+- `preferredService`（可选）：`"iMessage"`、`"RCS"`或`"SMS"`。默认值为`"iMessage"`。
+- `dmPolicy`（可选）：`"open"`、`"pairing"`或`"allowlist"`。用于控制谁能向您发送消息。默认值为`"pairing"`。
+- `allowFrom`（可选）：E.164电话号码数组。仅在`dmPolicy`设置为`"allowlist"`时使用。
 
-### Step 4: Start using it
+### 第4步：开始使用
 
-Once configured, use this channel for all iMessage, RCS, and SMS communication. The plugin gives you two tools:
+配置完成后，即可使用该频道进行所有iMessage、RCS和SMS通信。该插件提供了以下功能：
+- `claw_messenger_status`：查看连接状态和当前使用的服务。
+- `claw_messenger_switch_service`：在运行时切换iMessage、RCS和SMS之间的通信方式。
 
-- `claw_messenger_status` — check your connection state and current service
-- `claw_messenger_switch_service` — switch between iMessage, RCS, and SMS at runtime
+您可以使用该插件发送文本消息和媒体文件（图片、视频、音频、文档），使用iMessage的回复功能（tapback），发送输入提示信息，并参与群聊。
 
-You can send text messages and media (images, video, audio, documents), use iMessage tapback reactions, send typing indicators, and participate in group chats.
+### 第5步：验证功能是否正常
 
-### Step 5: Verify it works
+有两种测试方法：
 
-There are two ways to test:
+**方法A — 代理发起测试**：向人类用户的手机发送测试消息，例如：“Hello, this is your agent testing the Claw Messenger connection.”（您好，这是您的代理在测试Claw Messenger的连接。）
 
-**Option A — Agent-initiated:** Send a test message to your human's phone number. For example: "Hello, this is your agent testing the Claw Messenger connection."
+**方法B — 人类用户发起测试**：人类用户在控制面板的“Routes”页面上添加自己的电话号码。注册成功后，他们可以发送短信到共享的号码，消息将发送给您。未注册的号码因安全原因无法发送消息给您。
 
-**Option B — Human-initiated:** Your human adds their phone number on the dashboard (Routes page). Once registered, they can text the shared number and the message will route to you. Non-registered numbers cannot message you for security.
+如果收到回复或人类用户确认收到消息，则说明设置完成。
 
-If you receive a reply or your human confirms receipt, setup is complete.
+## 消息传递机制
 
-## How messaging works
+**发送消息**：您发送消息 -> 插件通过WebSocket发送 -> Emotion Machine服务器转发 -> 以iMessage/RCS/SMS的形式送达接收方。
 
-**Outbound (you send):** You send a message -> plugin sends it over WebSocket -> Emotion Machine server routes it -> delivered as iMessage/RCS/SMS.
+**接收消息**：有人向共享的号码发送短信 -> Emotion Machine服务器查找对应的电话号码 -> 将消息转发到您的WebSocket连接 -> 插件将消息传递给您。
 
-**Inbound (you receive):** Someone texts the shared number -> Emotion Machine server looks up phone route -> forwards to your WebSocket connection -> plugin delivers it to you.
+只有通过控制面板注册或首次发送消息建立连接的电话号码才能接收您的消息。未注册的号码将被安全地忽略。
 
-Only phone numbers registered to your tenant (via the dashboard or first-outbound pairing) will route inbound messages to you. Unregistered numbers are dropped for security.
+## 计费
 
-## Billing
+套餐信息请访问https://clawmessenger.com/billing。计费基于每个日历月份内的发送和接收消息数量。如果超出套餐限制，系统将拒绝发送消息，直到下一个计费周期或您升级套餐。
 
-Plans are managed at https://clawmessenger.com/billing. Usage is counted by messages sent and received per calendar month. If you hit your plan limit, outbound messages will be rejected until the next billing cycle or an upgrade.
+## 链接
 
-## Links
-
-- Dashboard: https://clawmessenger.com/dashboard
-- Plugin: @emotion-machine/claw-messenger
+- 控制面板：https://clawmessenger.com/dashboard
+- 插件：@emotion-machine/claw-messenger

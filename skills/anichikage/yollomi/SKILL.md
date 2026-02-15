@@ -1,48 +1,49 @@
 ---
 name: yollomi-ai-api
-description: AI image generator skill (image, image generation). Multi-model image generator for Yollomi to generate AI images via one unified API endpoint. Requires YOLLOMI_API_KEY.
+description: AI图像生成技能（用于生成图像）。Yollomi提供了多模型图像生成功能，可通过统一的API端点来生成AI图像。使用此功能需要YOLLOMI_API_KEY。
 metadata: {"openclaw":{"requires":{"env":["YOLLOMI_API_KEY"]}}}
 ---
 
-# Yollomi AI API Skill
+# Yollomi AI API 技能
 
-Generates images and videos via the Yollomi API. All models use a **single unified endpoint** with different `modelId` parameters.
+通过 Yollomi API 生成图片和视频。所有模型都使用一个 **统一的接口**，只是通过不同的 `modelId` 参数来区分不同的模型。
 
-## Setup
+## 设置
 
-1. **API Key**: Set `YOLLOMI_API_KEY` (environment variable).
+1. **API 密钥**：设置 `YOLLOMI_API_KEY`（环境变量）。
 
-Notes:
-- Video generation is temporarily disabled in this skill build.
+**注意**：
+- 在当前技能实现中，视频生成功能暂时被禁用。
 
-## Unified Endpoint
+## 统一接口
 
 ```
 POST /api/v1/generate
 ```
 
-**Headers**: `Authorization: Bearer ${YOLLOMI_API_KEY}` or `X-API-Key: ${YOLLOMI_API_KEY}`  
-**Content-Type**: `application/json`
+**请求头**：
+- `Authorization: Bearer ${YOLLOMI_API_KEY}` 或 `X-API-Key: ${YOLLOMI_API_KEY}`
+- `Content-Type`: `application/json`
 
-**Body**:
-- `type` (required): `"image"` or `"video"`
-- `modelId` (required): Model identifier
-- Additional params depend on model (prompt, imageUrl, etc.)
+**请求体**：
+- `type`（必填）：`"image"` 或 `"video"`
+- `modelId`（必填）：模型标识符
+- 其他参数取决于具体模型（如 `prompt`、` imageUrl` 等）
 
-**Response (image)**: `{ images: string[], remainingCredits: number }`  
-**Response (video)**: `{ video: string, remainingCredits: number }`
+**响应（图片）**：`{ images: string[], remainingCredits: number }`
+**响应（视频）**：`{ video: string, remainingCredits: number }`
 
-## List Models
+## 查看所有模型
 
 ```
 GET /api/v1/models
 ```
 
-Returns all available image and video modelIds.
+返回所有可用的图片和视频模型 ID。
 
-## Common Examples
+## 常见示例
 
-**Generate image (Flux)**:
+- **生成图片**：
 ```bash
 curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -H "Authorization: Bearer $YOLLOMI_API_KEY" \
@@ -50,7 +51,7 @@ curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -d '{"type":"image","modelId":"flux","prompt":"A cat in a hat","aspectRatio":"1:1"}'
 ```
 
-**Remove background**:
+- **去除背景**：
 ```bash
 curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -H "Authorization: Bearer $YOLLOMI_API_KEY" \
@@ -58,7 +59,7 @@ curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -d '{"type":"image","modelId":"remove-bg","imageUrl":"https://example.com/photo.jpg"}'
 ```
 
-**Generate video**:
+- **生成视频**：
 ```bash
 curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -H "Authorization: Bearer $YOLLOMI_API_KEY" \
@@ -66,33 +67,33 @@ curl -X POST "${YOLLOMI_BASE_URL:-https://yollomi.com}/api/v1/generate" \
   -d '{"type":"video","modelId":"kling-2-1","prompt":"A cat walking in the rain"}'
 ```
 
-## Aspect Ratio (aspectRatio)
+## 宽高比（aspectRatio）
 
-Supported aspect ratios for text-to-image models:
+文本到图片模型支持的宽高比：
 
-| ratio | description |
+| 宽高比 | 描述 |
 |------|-------------|
-| 1:1 | Square (default) |
-| 16:9 | Landscape |
-| 9:16 | Portrait |
+| 1:1 | 正方形（默认） |
+| 16:9 | 横屏 |
+| 9:16 | 纵屏 |
 
-## Image ModelIds
+## 图片模型 ID
 
-| modelId | Credits | Required | aspectRatio |
+| modelId | 需要的 Credits | 是否必填 | 宽高比 |
 |---------|---------|----------|-------------|
-| flux | 4/img | prompt | 1:1, 16:9, 9:16 |
-| flux-schnell | 2/img | prompt | same as above |
-| flux-2-pro | 15/img | prompt | same as above |
+| flux | 4 | prompt | 1:1, 16:9, 9:16 |
+| flux-schnell | 2 | prompt | 同上 |
+| flux-2-pro | 15 | prompt | 同上 |
 | remove-bg | 0 | imageUrl | - |
 | nano-banana | 4 | prompt | 1:1, 16:9, 9:16 |
-| nano-banana-pro | 15 | prompt | same as above |
-| flux-kontext-pro | 4 | prompt | same as above |
-| z-image-turbo | 1 | prompt | width, height |
-| imagen-4-ultra | 6 | prompt | same as above |
-| image-4-fast | 3 | prompt | same as above |
-| ideogram-v3-turbo | 3 | prompt | same as above |
-| stable-diffusion-3-5-large | 7/img | prompt | same as above |
-| seedream-4-5 | 4 | prompt | same as above |
+| nano-banana-pro | 15 | prompt | 同上 |
+| flux-kontext-pro | 4 | prompt | 同上 |
+| z-image-turbo | 1 | prompt | 宽度, 高度 |
+| imagen-4-ultra | 6 | prompt | 同上 |
+| image-4-fast | 3 | prompt | 同上 |
+| ideogram-v3-turbo | 3 | prompt | 同上 |
+| stable-diffusion-3-5-large | 7 | prompt | 同上 |
+| seedream-4-5 | 4 | prompt | 同上 |
 | object-remover | 3 | image, mask | - |
 | face-swap | 3 | swapImage, inputImage | - |
 | image-upscaler | 1 | imageUrl, scale | - |
@@ -102,9 +103,9 @@ Supported aspect ratios for text-to-image models:
 | virtual-try-on | 3 | clothImage, personImage | - |
 | ai-background-generator | 5 | imageUrl | prompt |
 
-## Video ModelIds
+## 视频模型 ID
 
-| modelId | Credits |
+| modelId | 需要的 Credits |
 |---------|---------|
 | openai-sora-2 | ~50+ |
 | google-veo-3 | 10 |
@@ -117,20 +118,20 @@ Supported aspect ratios for text-to-image models:
 | minimax-hailuo-2-3 | 9 |
 | minimax-hailuo-2-3-fast | 9 |
 | bytedance-seedance-1-pro-fast | 8 |
-| runway-gen4-turbo | varies |
+| runway-gen4-turbo | 变化不定 |
 | pixverse-5 | 9 |
 | wan-2-5-i2v | 9 |
 | wan-2-5-t2v | 9 |
 | wan-2-6-i2v | 29 |
 | wan-2-6-t2v | 29 |
 
-## Workflow
+## 工作流程
 
-1. **Generate image** → POST /api/v1/generate with `type: "image"`, `modelId`, and model params
-2. **Generate video** → POST /api/v1/generate with `type: "video"`, `modelId`, `prompt`, optional `inputs`
-3. **List models** → GET /api/v1/models
-4. **401/402** → Check API key and credits
+1. **生成图片**：发送 POST 请求到 `/api/v1/generate`，参数为 `type: "image"`、`modelId` 和其他模型相关参数。
+2. **生成视频**：发送 POST 请求到 `/api/v1/generate`，参数为 `type: "video"`、`modelId` 和可选的 `prompt` 或 `inputs`。
+3. **查看所有模型**：发送 GET 请求到 `/api/v1/models`。
+4. **401/402**：检查 API 密钥和剩余的 Credits 数量。
 
-## Reference
+## 参考资料
 
-Full model list and params: [models-reference.md](models-reference.md) or GET /api/v1/models
+完整的模型列表和参数说明：[models-reference.md](models-reference.md) 或通过 GET 请求 `/api/v1/models` 获取。

@@ -1,59 +1,54 @@
 ---
 name: linux-service-triage
-description: Diagnoses common Linux service issues using logs, systemd/PM2, file permissions, Nginx reverse proxy checks, and DNS sanity checks. Use when a server app is failing, unreachable, or misconfigured.
+description: 通过日志、systemd/PM2管理工具、文件权限检查、Nginx反向代理配置验证以及DNS解析状态检查来诊断常见的Linux服务问题。当服务器应用程序出现故障、无法访问或配置错误时，可以使用这些方法进行排查。
 ---
 
-# Linux & service basics: logs, systemd/PM2, permissions, Nginx reverse proxy, DNS checks
+# Linux与服务基础：日志、systemd/PM2、权限设置、Nginx反向代理、DNS检查
 
-## PURPOSE
-Diagnoses common Linux service issues using logs, systemd/PM2, file permissions, Nginx reverse proxy checks, and DNS sanity checks.
+## 目的  
+通过分析日志、systemd/PM2的运行状态、文件权限以及Nginx反向代理的配置，诊断常见的Linux服务问题。
 
-## WHEN TO USE
-- TRIGGERS:
-  - Show me why this service is failing using logs, then give the exact fix commands.
-  - Restart this app cleanly and confirm it is listening on the right port.
-  - Fix the permissions on this folder so the service can read and write safely.
-  - Set up Nginx reverse proxy for this port and verify DNS and TLS are sane.
-  - Create a systemd service for this script and make it survive reboots.
-- DO NOT USE WHEN…
-  - You need kernel debugging or deep performance profiling.
-  - You want to exploit systems or bypass access controls.
+## 适用场景  
+- 当需要了解服务失败的原因并获取具体的修复命令时。  
+- 当需要优雅地重启应用程序并确认其是否在正确的端口上运行时。  
+- 当需要修复文件夹的权限设置，以确保服务能够安全地读写数据时。  
+- 当需要为某个服务配置Nginx反向代理，并验证DNS和TLS连接的正确性时。  
+- 当需要为某个脚本创建一个systemd服务，使其在系统重启后仍能持续运行时。  
 
-## INPUTS
-- REQUIRED:
-  - Service type: systemd unit name or PM2 process name.
-  - Observed symptom: error message, status output, or logs (pasted by user).
-- OPTIONAL:
-  - Nginx config snippet, domain name, expected upstream port.
-  - Filesystem paths used by the service.
-- EXAMPLES:
-  - `systemctl status myapp` output + `journalctl` excerpt
-  - Nginx server block + domain + upstream port
+## 不适用场景  
+- 当需要内核调试或进行深度性能分析时。  
+- 当需要利用系统漏洞或绕过访问控制机制时。  
 
-## OUTPUTS
-- Default: triage report (likely cause, evidence from logs, minimal fix plan).
-- If explicitly requested and safe: exact shell commands to apply the fix.
-Success = service runs, listens on expected port, and reverse proxy/DNS path is correct.
+## 输入参数  
+- 必需输入：  
+  - 服务类型：systemd单元名称或PM2进程名称。  
+  - 观察到的问题：错误信息、状态输出或日志内容（由用户提供）。  
+- 可选输入：  
+  - Nginx配置片段、域名、上游服务器的端口地址。  
+  - 服务使用的文件系统路径。  
 
+## 输出结果  
+- 默认输出：问题诊断报告（可能的原因、日志中的证据以及基本的修复方案）。  
+- 如用户明确要求且操作安全的情况下，会提供具体的Shell命令以执行修复操作。  
+- 成功的标准是：服务能够正常运行，在预期的端口上监听，并且反向代理和DNS配置正确。  
 
-## WORKFLOW
-1. Confirm scope and safety:
-   - identify service name and whether changes are permitted.
-2. Gather evidence:
-   - status output + recent logs (see `references/triage-commands.md`).
-3. Classify failure:
-   - config error, dependency missing, permission denied, port conflict, upstream unreachable, DNS mismatch.
-4. Propose minimal fix + verification steps.
-5. Validate network path (if web service):
-   - app listens → Nginx proxies → DNS resolves → (TLS sanity if applicable).
-6. Provide restart/reload plan and confirm health checks.
-7. STOP AND ASK THE USER if:
-   - logs/status output are missing,
-   - actions require privileged access not confirmed,
-   - TLS/cert management is required but setup is unknown.
+## 工作流程  
+1. 确认操作范围及安全性：  
+   - 确定服务名称以及是否允许进行更改。  
+2. 收集相关证据：  
+   - 服务的状态输出及最近的日志记录（参考`references/triage-commands.md`）。  
+3. 分析问题类型：  
+   - 配置错误、依赖项缺失、权限问题、端口冲突、上游服务器无法访问、DNS配置错误等。  
+4. 提出最低限度的修复方案及验证步骤。  
+5. （针对Web服务）验证网络连接：  
+   - 应用程序是否能够正常监听请求 → Nginx代理是否正常工作 → DNS解析是否正确 → （如适用）TLS连接是否正常。  
+6. 提供重启或重新加载服务的方案，并确认服务的运行状态。  
+7. 在以下情况下请停止操作并询问用户：  
+   - 如果缺少日志或状态输出；  
+   - 如果操作需要特权权限但用户尚未确认；  
+   - 如果需要处理TLS证书相关问题但用户不了解具体设置。  
 
-
-## OUTPUT FORMAT
+## 输出格式  
 ```text
 TRIAGE REPORT
 - Symptom:
@@ -63,19 +58,15 @@ TRIAGE REPORT
 - Exact commands (ONLY if user approved changes):
 - Verification:
 - Rollback:
-```
+```  
 
+## 安全性与注意事项  
+- 默认情况下，仅允许查看输出内容，不允许直接执行任何命令。  
+- 避免进行可能破坏系统的数据更改；对于任何高风险操作，必须获得用户的明确确认。  
+- 在重新加载服务之前，建议先使用`nginx -t`命令检查Nginx配置；使用`ss`命令验证端口连接是否正常。  
 
-## SAFETY & EDGE CASES
-- Read-only by default: diagnose from provided outputs; do not assume you can run commands.
-- Avoid destructive changes; require explicit confirmation for anything risky.
-- Prefer `nginx -t` before reload and verify ports with `ss`.
-
-
-## EXAMPLES
-- Input: “journal shows permission denied on /var/app/uploads.”  
-  Output: path permission analysis + safe chown/chmod plan + verification.
-
-- Input: “App works locally but domain returns 502.”  
-  Output: upstream port checks + nginx error log interpretation + proxy_pass fix plan.
-
+## 示例  
+- 输入：`journalctl`显示`/var/app/uploads`目录的权限被拒绝。  
+  输出：分析权限问题，并提供安全的`chown`/`chmod`命令建议及验证方案。  
+- 输入：应用程序在本地可以正常运行，但访问域名时返回502错误。  
+  输出：检查上游服务器的端口地址，分析Nginx的错误日志，并提供相应的代理配置修复方案。

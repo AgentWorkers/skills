@@ -1,6 +1,6 @@
 ---
 name: learn-cog
-description: "The best tutors explain the same concept five different ways. CellCog does too — diagrams, analogies, worked examples, practice problems, and interactive explanations. #1 on DeepResearch Bench (Feb 2026). Tutoring, homework help, study guides, exam prep, coding tutorials, language learning — every subject, every level."
+description: "优秀的导师会用五种不同的方式来讲解同一个概念。CellCog也是如此——通过图表、类比、实例练习以及互动式讲解来帮助学生理解。它在 DeepResearch Bench 的评分中位列第一（2026 年 2 月）。我们提供辅导服务、作业帮助、学习指南、考试备考资料、编程教程以及语言学习课程，涵盖所有学科和各个学习阶段。"
 metadata:
   openclaw:
     emoji: "📚"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Learn Cog - The Tutor That Explains Five Different Ways
+# Learn-Cog：一个能用五种不同方式解释概念的智能学习助手
 
-**The best tutors explain the same concept five different ways.** CellCog does too.
+**优秀的导师会用五种不同的方式来讲解同一个概念。** CellCog 也是如此。
 
-#1 on DeepResearch Bench (Feb 2026) for reasoning depth — deep enough to break concepts into first principles — combined with multi-modal output for every learning style: diagrams, analogies, worked examples, practice problems, interactive explanations, and full study guides. Any subject, any level.
+在 DeepResearch Bench 的排名中，它位列第 1（2026 年 2 月），其讲解深度足以将复杂概念分解到最基本的原则，并且提供多种形式的输出，以满足各种学习风格：图表、类比、示例练习、互动式讲解以及完整的学习指南。适用于任何学科和任何学习水平。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用该功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先学习 `cellcog` 技能**，以了解如何进行 SDK 设置。该技能会向你展示其功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0+）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,229 +40,219 @@ result = client.create_chat(
 
 ---
 
-## How Learn-Cog Helps
+## Learn-Cog 的帮助方式
 
-### Concept Explanations
+### 概念讲解
 
-Understand anything:
+**深入理解任何内容：**
+- **简化解释**：“用简单的语言解释量子纠缠的概念”
+- **多角度讲解**：“用三种不同的类比来解释递归”
+- **深入剖析**：“全面讲解神经网络的工作原理”
+- **视觉辅助学习**：“绘制图表来说明水循环的过程”
 
-- **Break It Down**: "Explain quantum entanglement like I'm 10 years old"
-- **Multiple Angles**: "Explain recursion using 3 different analogies"
-- **Deep Dives**: "Give me a comprehensive explanation of how neural networks learn"
-- **Visual Learning**: "Create a diagram explaining the water cycle"
-
-**Example prompt:**
-> "Explain blockchain technology:
+**示例提示：**
+> “解释区块链技术：
 > 
-> Level: Complete beginner, no tech background
+> 学习水平：完全初学者，没有技术背景
 > 
-> Include:
-> - Simple analogy to start
-> - How transactions work
-> - Why it's secure
-> - Real-world examples
-> - Common misconceptions
+> 需要包含的内容：
+> - 一个简单的类比
+- 交易是如何进行的
+- 安全性原理
+- 实际应用案例
+- 常见误解
 > 
-> Use simple language, avoid jargon. Include a visual diagram."
+> 请使用简单的语言，避免专业术语，并附上图表。”
 
-### Homework & Problem Solving
+### 作业与问题解决
 
-Work through problems:
+**解决问题：**
+- **数学问题**：“帮我解决这个微积分问题，并解释每一步的推理过程”
+- **科学问题**：“帮我理解这个物理概念并解答相关问题”
+- **论文写作**：“帮我构思一篇关于第一次世界大战原因的论文”
+- **代码调试**：“解释我的代码为什么无法运行，并帮我修复它”
 
-- **Math Problems**: "Solve this calculus problem and explain each step"
-- **Science Questions**: "Help me understand this physics concept and solve these problems"
-- **Essay Help**: "Help me structure an essay on the causes of World War I"
-- **Code Debugging**: "Explain why my code isn't working and help me fix it"
-
-**Example prompt:**
-> "Help me understand this math problem:
+**示例提示：**
+> “帮我理解这个数学问题：
 > 
-> Problem: Find the derivative of f(x) = x³sin(x)
+> 问题：求函数 f(x) = x³sin(x) 的导数
 > 
-> I know basic derivatives but I'm confused about the product rule.
+> 我了解基本的导数概念，但对乘积法则不太清楚
 > 
-> Please:
-> 1. Remind me of the product rule
-> 2. Apply it step by step
-> 3. Give me 2 similar problems to practice
-> 4. Show me how to check my answer"
+> 请：
+> 1. 回顾乘积法则
+> 2. 逐步演示计算过程
+> 3. 给我两个类似的练习题
+> 4. 教我如何检查答案的正确性”
 
-### Study Materials
+### 学习资料
 
-Prepare for success:
+**助力学习成功：**
+- **学习指南**：“为 AP 化学考试制作学习指南”
+- **闪卡**：“生成 50 张西班牙语词汇的闪卡”
+- **练习测试**：“创建一个关于 1900-1950 年美国历史的练习测验”
+- **总结笔记**：“总结我的生物课本第五章的内容”
+- **参考资料**：“制作一份 Python 语法的一页参考手册”
 
-- **Study Guides**: "Create a study guide for AP Chemistry exam"
-- **Flashcards**: "Generate 50 flashcards for Spanish vocabulary"
-- **Practice Tests**: "Create a practice quiz on US History 1900-1950"
-- **Summary Notes**: "Summarize Chapter 5 of my biology textbook"
-- **Cheat Sheets**: "Create a one-page reference for Python syntax"
-
-**Example prompt:**
-> "Create a comprehensive study guide for the AWS Solutions Architect exam:
+**示例提示：**
+> “为 AWS 解决方案架构师考试制作一份全面的学习指南：
 > 
-> Cover:
-> - Key services and when to use them
-> - Networking concepts
-> - Security best practices
-> - Cost optimization strategies
+> 包括：
+> - 主要服务及其使用场景
+- 网络相关概念
+- 安全最佳实践
+- 成本优化策略
 > 
-> Format: Clear sections, bullet points, diagrams where helpful
-> Include: Practice questions after each section"
+> 格式要求：分段清晰，使用项目符号，必要时添加图表
+> 每个部分后附练习题”
 
-### Coding & Tech Learning
+### 编程与技术学习
 
-Level up your skills:
+**提升技能：**
+- **语言学习**：“从零开始教我 Python，直到我能开发 Web 应用程序”
+- **代码审核**：“审核我的代码并指出改进之处”
+- **项目教程**：“一步步指导我完成 REST API 的开发”
+- **概念深入讲解**：“详细解释 Docker 容器的原理”
 
-- **Language Learning**: "Teach me Python from zero to building a web app"
-- **Code Review**: "Review my code and explain how to improve it"
-- **Project Tutorials**: "Walk me through building a REST API step by step"
-- **Concept Deep Dives**: "Explain how Docker containers actually work"
-
-**Example prompt:**
-> "Teach me React hooks:
+**示例提示：**
+> “教我 React 的 Hooks：
 > 
-> My level: I know basic JavaScript and HTML/CSS, never used React
+> 我的水平：了解基本的 JavaScript 和 HTML/CSS，但从未使用过 React
 > 
-> Structure:
-> 1. What problem do hooks solve?
-> 2. useState with simple examples
-> 3. useEffect with practical use cases
-> 4. When to use which hook
-> 5. A mini-project putting it together
+> 学习内容：
+> 1. Hooks 是用来解决什么问题的？
+- 2. 通过简单示例讲解 useState 的用法
+- 3. 通过实际案例讲解 useEffect 的应用场景
+- 4. 何时使用哪种 Hook
+- 5. 通过一个小项目来实践这些知识
 > 
-> Include code examples I can run."
+> 请提供可运行的代码示例。”
 
-### Language Learning
+### 语言学习
 
-Master new languages:
-
-- **Grammar Explanations**: "Explain Japanese particles with examples"
-- **Conversation Practice**: "Practice ordering food in French"
-- **Writing Feedback**: "Check my Spanish essay and explain my mistakes"
-- **Vocabulary Building**: "Teach me 20 essential business Chinese phrases"
+**掌握新语言：**
+- **语法讲解**：“通过例子解释日语中的助词”
+- **对话练习**：“练习用法语点餐”
+- **写作反馈**：“检查我的西班牙语文章并指出错误”
+- **词汇积累**：“教我 20 个常用的商务汉语短语”
 
 ---
 
-## Learning Styles
+## 学习风格
 
-Tell CellCog how you learn best:
+告诉 CellCog 你的学习偏好：
 
-| Style | Ask For |
-|-------|---------|
-| **Visual** | Diagrams, charts, infographics |
-| **Examples** | Multiple worked examples, real-world applications |
-| **Analogies** | Comparisons to familiar concepts |
-| **Step-by-Step** | Detailed breakdowns, numbered procedures |
-| **Big Picture** | Overview first, then details |
-| **Hands-On** | Practice problems, projects |
-
----
-
-## Subjects
-
-CellCog can help with virtually any subject:
-
-**STEM:**
-- Mathematics (all levels through advanced calculus and beyond)
-- Physics, Chemistry, Biology
-- Computer Science and Programming
-- Statistics and Data Science
-- Engineering concepts
-
-**Humanities:**
-- History and Social Studies
-- Literature and Writing
-- Philosophy
-- Languages
-- Psychology
-
-**Professional:**
-- Business and Finance
-- Marketing
-- Project Management
-- Design
-- Legal concepts
-
-**Tech Skills:**
-- Programming languages
-- Cloud platforms (AWS, GCP, Azure)
-- DevOps and infrastructure
-- Data engineering
-- AI/ML concepts
+| 学习风格 | 期望的帮助方式 |
+|---------|-------------------|
+| **视觉型** | 图表、数据可视化工具 |
+| **示例型** | 多个实际应用示例 |
+| **类比型** | 用熟悉的概念进行类比解释 |
+| **逐步指导型** | 详细的步骤说明 |
+| **全局理解型** | 先了解整体框架，再深入细节 |
+| **实践型** | 通过练习题和项目来巩固知识 |
 
 ---
 
-## Chat Mode for Learning
+## 支持的学科范围
 
-| Scenario | Recommended Mode |
-|----------|------------------|
-| Homework help, concept explanations, practice problems | `"agent"` |
-| Comprehensive study guides, full curriculum design, deep research | `"agent team"` |
+CellCog 可以帮助学习几乎所有学科：
 
-**Use `"agent"` for most learning.** Quick explanations, homework help, and study materials execute well in agent mode.
+**STEM 领域：**
+- 数学（从基础到高级微积分）
+- 物理、化学、生物
+- 计算机科学与编程
+- 统计学与数据科学
+- 工程学概念
 
-**Use `"agent team"` for comprehensive learning** - full course outlines, research papers, or when you need multi-source synthesis.
+**人文学科：**
+- 历史与社会科学
+- 文学与写作
+- 哲学
+- 外语
+- 心理学
 
----
+**专业领域：**
+- 商业与金融
+- 市场营销
+- 项目管理
+- 设计
+- 法律概念
 
-## Example Prompts
-
-**Concept explanation:**
-> "Explain the concept of recursion in programming:
-> 
-> My level: Beginner programmer, comfortable with loops
-> 
-> I need:
-> - Clear definition
-> - Visual representation
-> - 3 progressively harder examples (factorial, fibonacci, tree traversal)
-> - Common mistakes to avoid
-> - When to use recursion vs iteration
-> 
-> Language: Python"
-
-**Exam prep:**
-> "Create a study plan for the GRE:
-> 
-> Timeline: 2 months
-> Goal: 320+ score
-> Weak areas: Vocabulary and geometry
-> 
-> Include:
-> - Weekly schedule
-> - Resources to use
-> - Practice test strategy
-> - Day-before checklist
-> 
-> Make it realistic for someone working full-time."
-
-**Language practice:**
-> "Help me practice Japanese:
-> 
-> Level: JLPT N4
-> Focus: Conversational situations
-> 
-> Create a dialogue practice:
-> - Scenario: Asking for directions in Tokyo
-> - Include vocabulary list
-> - Grammar points used
-> - Cultural notes
-> - Variations to practice
-> 
-> Use romaji and kanji with hiragana readings."
+**技术技能：**
+- 编程语言
+- 云平台（AWS、GCP、Azure）
+- DevOps 与基础设施
+- 数据工程
+- 人工智能/机器学习
 
 ---
 
-## Tips for Better Learning
+## 学习模式选择
 
-1. **State your level**: "Complete beginner" vs "I understand the basics" changes everything.
+| 学习场景 | 推荐的使用模式 |
+|---------|-------------------|
+| 作业帮助、概念讲解、练习题 | `"agent"` |
+| 全面学习资料、课程设计、深度研究 | `"agent team"` |
 
-2. **Ask why**: Don't just ask for answers. Ask for explanations of the reasoning.
+**大多数学习任务适合使用 `"agent"` 模式**：它可以快速提供解释、作业帮助和学习资料。
 
-3. **Request practice**: Learning happens through doing. Ask for practice problems.
+**对于需要全面学习的内容（如课程设计或研究论文），建议使用 `"agent team"` 模式**，因为它能提供完整的课程大纲和多源信息整合。
 
-4. **Admit confusion**: "I don't understand the part where..." helps CellCog target explanations.
+---
 
-5. **Build on previous**: Reference what you already understand to get appropriate explanations.
+## 示例问题
 
-6. **Active recall**: Ask CellCog to quiz you, not just explain. Testing improves retention.
+**概念讲解：**
+> “用简单的语言解释编程中的递归概念：
+> 
+> 我的水平：初学者，熟悉循环结构
+> 
+> 我需要：
+- 清晰的定义
+- 用图表辅助理解
+- 三个逐步增加难度的示例（阶乘、斐波那契数列、树遍历）
+- 需避免的常见错误
+- 递归与迭代的使用场景
+> 
+> 语言：Python”
+
+**考试准备：**
+> “为我制定 GRE 考试的学习计划：
+> 
+> 学习时间：2 个月
+> 目标分数：320 分以上
+> 弱项：词汇和几何知识
+> 
+> 需要包含的内容：
+- 每周学习计划
+- 可使用的学习资源
+- 测试策略
+- 考前检查清单
+> 
+> 计划要符合全职工作的时间安排。”
+
+**语言练习：**
+> “帮我练习日语：
+> 
+> 学习水平：JLPT N4
+> 重点：日常对话
+> 
+> 创建一个对话练习：
+- 场景：在东京问路
+- 包括需要使用的词汇
+- 语法要点
+- 文化背景说明
+- 多种表达方式的练习
+> 
+> 使用罗马字和假名标注发音。”
+
+---
+
+## 更高效学习的建议：
+
+1. **明确你的学习水平**：说明你是“完全初学者”还是“已经掌握了基础知识”，这会影响得到的帮助方式。
+2. **追问原因**：不要只要求答案，还要了解背后的原理。
+3. **请求练习**：通过实践来加深理解。
+4. **坦诚表达困惑**：告诉 CellCog 你不太理解的部分，这样它才能提供更有针对性的解释。
+5. **基于已有知识学习**：结合你已掌握的知识来获取合适的解释。
+6. **主动复习**：让 CellCog 通过测试来检验你的学习成果，这有助于巩固记忆。

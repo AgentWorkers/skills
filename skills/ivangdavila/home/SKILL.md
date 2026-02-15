@@ -1,65 +1,65 @@
 ---
 name: Home
-description: Home improvement, maintenance, and living space optimization with practical guidance.
+description: 提供关于家居改善、维护以及居住空间优化的实用指导。
 metadata: {"clawdbot":{"emoji":"🏠","os":["linux","darwin","win32"]}}
 ---
 
-# Home Assistance Rules
+# 家居维护与建议规则
 
-## Before Recommendations
-- Ask if renting or owning — renters need reversible solutions, owners can invest in permanent changes
-- Get room dimensions and photos when possible — furniture that fits in theory often fails in practice
-- Understand who lives there — solutions for families differ from singles, pets change everything
+## 建议前的准备
+- 先确定是租房还是买房——租房者需要可逆的解决方案，购房者则可以考虑进行永久性的改造；
+- 尽可能获取房间的尺寸和照片——理论上适合的家具在实际使用中可能并不合适；
+- 了解居住者的情况——家庭的需求与单身人士不同，宠物的存在也会影响居住环境。
 
-## Safety First
-- Gas, main electrical panel, and structural work require licensed professionals — no DIY tutorials for these
-- Never mix bleach with ammonia or acids — common cleaning mistake that creates toxic gas
-- Smoke detectors need testing monthly and battery replacement yearly — most people forget
-- Space heaters need clearance from everything — leading cause of home fires in winter
+## 安全第一
+- 涉及燃气、主电箱或结构改造的工作必须由持证的专业人员来完成，切勿自行尝试；
+- 绝不要将漂白剂与氨水或酸类物质混合使用——这会释放有毒气体；
+- 烟雾探测器每月需要检测一次，电池每年需要更换一次——大多数人会忽略这一点；
+- 电暖器安装时必须确保其与周围物品有足够的间距——这是冬季房屋火灾的主要原因。
 
-## Smart Home Reality
-- Ecosystem lock-in is real — mixing Google, Apple, and Alexa creates friction; pick one primary
-- WiFi smart devices fail when internet is down — critical functions (locks, lights) benefit from local control options like Zigbee/Z-Wave
-- Smart locks need physical key backup — batteries die, apps crash
-- Start with one room before whole-house automation — complexity grows fast
+## 智能家居的实际应用
+- 不同智能家居系统（如Google、Apple、Alexa）之间存在兼容性问题，建议选择一种作为主要系统；
+- 当网络中断时，智能设备可能会失效——对于门锁、照明等关键功能，使用Zigbee/Z-Wave等本地控制技术更为可靠；
+- 智能门锁应配备备用钥匙——电池可能会耗尽，应用程序也可能出现故障；
+- 先从单个房间开始自动化改造，逐步扩展到整个房屋——否则系统会变得过于复杂。
 
-## Maintenance Priorities
-- Water damage spreads fast — any leak is urgent, not "when I have time"
-- HVAC filter replacement every 1-3 months — dirty filters cost more in energy than new filters cost
-- Gutters clogged leads to foundation problems — clean before rainy season
-- Caulk around tubs and windows degrades — inspect yearly, recaulk before mold starts
+## 维护工作的优先级
+- 水渍会迅速扩散，任何漏水情况都应立即处理，不能等到“有时间”再处理；
+- HVAC系统的过滤器每1-3个月需要更换一次——脏的过滤器会增加能源消耗；
+- 防水沟堵塞可能导致地基问题——应在雨季前进行清理；
+- 浴缸和窗户周围的密封胶会随时间老化，每年都需要重新涂抹。
 
-## Furniture and Layout
-- Measure doorways and stairs before buying large furniture — returns are expensive
-- Leave walking paths of at least 90cm — rooms feel cramped when movement is restricted
-- Rugs should be large enough for all furniture legs or just front legs — small rugs floating in space look wrong
-- Lighting layers matter: ambient, task, and accent — single overhead light makes any room feel flat
+## 家具与布局
+- 在购买大型家具前，请先测量门框和楼梯的尺寸——退货成本很高；
+- 保持至少90厘米的行走空间——活动受限会让房间显得拥挤；
+- 地毯的尺寸应足够覆盖所有家具的腿部，或者至少覆盖前腿部分——小地毯在房间中会显得很不协调；
+- 照明设计很重要：需要考虑环境光、功能性照明和装饰性照明——单一的顶灯会让房间显得单调乏味。
 
-## Energy and Climate
-- Curtains and blinds have massive impact — thermal curtains reduce heating/cooling costs significantly
-- Draft stoppers under doors cost almost nothing and save noticeably on heating
-- LED replacement pays for itself in months — no reason to keep incandescent bulbs
-- Ceiling fans run counterclockwise in summer, clockwise in winter — most people never switch
+## 能源与气候
+- 窗帘和百叶窗对室内温度有显著影响——隔热性能好的窗帘能大幅降低供暖/制冷成本；
+- 门下安装挡风条几乎不花钱，但能显著节省能源；
+- 更换LED灯泡的成本很快就能收回——没有理由继续使用白炽灯；
+- 天花扇在夏季应逆时针旋转，在冬季应顺时针旋转——大多数人从未改变这个设置。
 
-## Organization
-- Storage solutions must be easier than the mess — complex systems get abandoned
-- Vertical space is usually underused — shelves up high for rarely-used items
-- One in, one out rule prevents accumulation — suggest it for chronic clutter
-- Labels only work if maintained — recommend simple categories over detailed ones
+## 家居整理
+- 储物方案应比杂乱的环境更实用——复杂的系统往往会被弃用；
+- 垂直空间通常被忽视——可以将不常用的物品放在高处的架子上；
+- 实行“先进先出”的原则，防止物品堆积——对于长期堆积的物品，这个方法非常有效；
+- 标签的作用在于便于识别物品——建议使用简单的分类标签而非过于详细的标签。
 
-## Plants and Nature
-- Ask about actual light conditions — "bright room" often means insufficient for most plants
-- Most houseplants die from overwatering, not underwatering — when in doubt, wait
-- Low-maintenance starter plants: pothos, snake plant, ZZ plant — don't recommend fiddle leaf figs to beginners
+## 植物与自然环境
+- 询问实际的采光条件——“光线充足的房间”对大多数植物来说可能并不合适；
+- 大多数室内植物死亡的原因其实是浇水过多，而非浇水不足——不确定时，最好先观察一段时间；
+- 适合初学者的低维护植物有：绿萝、虎尾兰、ZZ植物——不建议初学者尝试吊兰。
 
-## Budget Prioritization
-- Paint is highest ROI for visual impact — suggest it before furniture replacement
-- Fix problems before aesthetics — no point in nice floors over water-damaged subfloor
-- Quality mattress and comfortable seating affect daily life more than decorative items
-- Seasonal sales timing: appliances in September-October, furniture in January-February
+## 预算分配
+- 油漆对提升房间视觉效果的投资回报率最高——建议在更换家具之前先进行墙面涂漆；
+- 应先解决实际问题，再追求美观——漂亮的地板也无法掩盖受潮的地板；
+- 质量好的床垫和舒适的座椅对日常生活的影响远大于装饰性物品；
+- 购物时注意季节性促销——家电通常在9-10月促销，家具则在1-2月促销。
 
-## Common Mistakes
-- Choosing paint color from small swatches — always test large samples on actual walls
-- Mounting TVs too high — eye level when seated, not standing
-- Ignoring rug pads — rugs slip, floors scratch, pads fix both
-- Buying matching furniture sets — rooms with personality mix eras and sources
+## 常见错误
+- 仅根据小样选择油漆颜色——务必在实际墙面上测试大样；
+- 电视安装位置过高——应确保电视位于坐姿时的视线水平；
+- 忽略地毯垫——地毯容易滑动，地板容易刮伤，地毯垫可以解决这些问题；
+- 选择完全配套的家具套装——具有个性的房间更适合混合不同年代和风格的家具。

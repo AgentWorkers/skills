@@ -1,31 +1,32 @@
 ---
 name: virus-monitor
 version: 0.1.0
-description: Virus-Monitoring für Wien (Abwasser + Sentinel)
+description: 维也纳病毒监测系统（污水处理 + Sentinel）
 author: ClaudeBot
 tags: [health, vienna, monitoring, covid, influenza, rsv]
 ---
 
-# virus-monitor
+# 病毒监测工具
 
-Kombiniert mehrere österreichische Datenquellen für Virus-Monitoring:
+该工具整合了多个奥地利的病毒监测数据源：
 
-## Datenquellen
+## 数据来源
 
-1. **Nationales Abwassermonitoring** (abwassermonitoring.at)
-   - SARS-CoV-2 Genkopien pro Einwohner/Tag
-   - Bundesländer-Daten inkl. Wien
-   
-2. **MedUni Wien Sentinel System** (viro.meduniwien.ac.at)
-   - Positivitätsraten für respiratorische Viren
-   - DINÖ (Diagnostisches Influenza Netzwerk Österreich)
-   - Wöchentliche Berichte
+1. **国家废水监测系统** (abwassermonitoring.at)  
+   - 每人每天的SARS-CoV-2病毒拷贝数  
+   - 包括维也纳在内的各州数据  
 
-3. **AGES Abwasser Dashboard** (abwasser.ages.at)
-   - SARS-CoV-2, Influenza, RSV
-   - Österreichweit
+2. **维也纳医科大学Sentinel系统** (viro.meduniwien.ac.at)  
+   - 呼吸道病毒的阳性检出率  
 
-## Usage
+3. **DINÖ（奥地利流感诊断网络）**  
+   - 每周报告  
+
+4. **AGES废水监测仪表盘** (abwasser.ages.at)  
+   - SARS-CoV-2、流感、RSV病毒数据  
+   - 全奥地利范围  
+
+## 使用方法  
 
 ```bash
 # Alle Daten als JSON
@@ -35,9 +36,9 @@ virus-monitor
 virus-monitor --source abwasser
 virus-monitor --source sentinel
 virus-monitor --source ages
-```
+```  
 
-## Output
+## 输出结果  
 
 ```json
 {
@@ -56,23 +57,23 @@ virus-monitor --source ages
     }
   }
 }
-```
+```  
 
-## Status-Levels
+## 状态级别  
 
-- `niedrig` - Normale saisonale Aktivität
-- `moderat` - Erhöhte Aktivität, Aufmerksamkeit empfohlen  
-- `erhöht` - Deutlich erhöhte Aktivität
-- `hoch` - Starke Virus-Zirkulation
+- `低`：正常的季节性活动  
+- `中等`：活动水平升高，建议提高警惕  
+- `高`：活动水平显著升高  
+- `非常高`：病毒传播非常活跃  
 
-## Dependencies
+## 所需依赖库/工具  
 
-- `curl` - HTTP requests
-- `jq` - JSON processing
-- Standard Unix tools (awk, grep, sed)
+- `curl`：用于发送HTTP请求  
+- `jq`：用于处理JSON数据  
+- 标准的Unix工具（awk、grep、sed）  
 
-## Notes
+## 注意事项  
 
-- Abwasserdaten haben ~1-2 Wochen Verzögerung
-- Sentinel-Daten werden wöchentlich aktualisiert (Freitags)
-- AGES Dashboard ist eine Shiny-App (dynamisch)
+- 废水监测数据存在约1-2周的延迟  
+- Sentinel系统的数据每周更新一次（周五）  
+- AGES仪表盘是一个基于Shiny技术的动态应用程序

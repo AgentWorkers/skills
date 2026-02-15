@@ -1,50 +1,50 @@
 ---
 name: Agents
-description: Design, build, and deploy AI agents with architecture patterns, framework selection, memory systems, and production safety.
+description: 使用架构模式、框架选择、内存系统以及生产环境的安全性要求来设计、构建和部署人工智能代理（AI agents）。
 ---
 
-## When to Use
+## 使用场景
 
-Use when designing agent systems, choosing frameworks, implementing memory/tools, specifying agent behavior for teams, or reviewing agent security.
+适用于设计代理系统、选择开发框架、实现内存管理工具、为团队指定代理行为，或审查代理系统的安全性时。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 文件 |
 |-------|------|
-| Architecture patterns & memory | `architecture.md` |
-| Framework comparison | `frameworks.md` |
-| Use cases by role | `use-cases.md` |
-| Implementation patterns & code | `implementation.md` |
-| Security boundaries & risks | `security.md` |
-| Evaluation & debugging | `evaluation.md` |
+| 架构模式与内存管理 | `architecture.md` |
+| 框架比较 | `frameworks.md` |
+| 按角色划分的使用场景 | `use-cases.md` |
+| 实现模式与代码实现 | `implementation.md` |
+| 安全边界与风险 | `security.md` |
+| 评估与调试 | `evaluation.md` |
 
-## Before Building — Decision Checklist
+## 构建前的决策清单
 
-- [ ] **Single purpose defined?** If you can't say it in one sentence, split into multiple agents
-- [ ] **User identified?** Internal team, end customer, or another system?
-- [ ] **Interaction modality?** Chat, voice, API, scheduled tasks?
-- [ ] **Single vs multi-agent?** Start simple — only add agents when roles genuinely differ
-- [ ] **Memory strategy?** What persists within session vs across sessions vs forever?
-- [ ] **Tool access tiers?** Which actions are read-only vs write vs destructive?
-- [ ] **Escalation rules?** When MUST a human step in?
-- [ ] **Cost ceiling?** Budget per task, per user, per month?
+- [ ] **任务是否具有明确的目的？** 如果无法用一句话概括任务目的，建议将其拆分为多个代理任务来处理。
+- [ ] **目标用户是谁？** 是内部团队、最终用户，还是其他系统？
+- [ ] **交互方式是什么？** 是聊天、语音、API 还是定时任务？
+- **是单代理系统还是多代理系统？** 先从简单的系统开始设计——只有在角色确实存在差异时才添加额外的代理。
+- **内存管理策略是什么？** 数据是仅在会话期间保留、跨会话保留，还是永久保存？
+- **工具的访问权限如何划分？** 哪些操作是只读的，哪些是可写的，哪些是具有破坏性的？
+- **有哪些升级规则？** 在什么情况下必须由人工介入？
+- **成本上限是多少？** 每个任务、每个用户或每月的预算是多少？
 
-## Critical Rules
+## 重要规则
 
-1. **Start with one agent** — Multi-agent adds coordination overhead. Prove single-agent insufficient first.
-2. **Define escalation triggers** — Angry users, legal mentions, confidence drops, repeated failures → human
-3. **Separate read from write tools** — Read tools need less approval than write tools
-4. **Log everything** — Tool calls, decisions, user interactions. You'll need the audit trail.
-5. **Test adversarially** — Assume users will try to break or manipulate the agent
-6. **Budget by task type** — Use cheaper models for simple tasks, expensive for complex
+1. **从单个代理系统开始**——多代理系统会增加协调开销。首先验证单个代理系统是否能够满足需求。
+2. **明确升级触发条件**——用户情绪激动、涉及法律问题、系统信心下降、出现重复故障等情况时，应启动人工干预。
+3. **区分读写工具**——读操作所需的权限通常比写操作低。
+4. **记录所有操作**——记录工具调用、决策过程以及用户交互情况，以便进行审计。
+5. **进行对抗性测试**——假设用户会尝试破坏或操控代理系统。
+6. **根据任务类型分配预算**——简单任务使用成本较低的模型，复杂任务则使用成本较高的模型。
 
-## The Agent Loop (Mental Model)
+## 代理系统的运行循环（思维模型）
 
 ```
 OBSERVE → THINK → ACT → OBSERVE → ...
 ```
 
-Every agent is this loop. The differences are:
-- What it observes (context window, memory, tool results)
-- How it thinks (direct, chain-of-thought, planning)
-- What it can act on (tools, APIs, communication channels)
+每个代理系统都遵循这样的运行循环。不同代理系统之间的差异在于：
+- 它所观察到的信息（上下文窗口、内存数据、工具返回的结果）；
+- 它的思考方式（直接处理数据、通过逻辑链进行分析、进行规划）；
+- 它能够执行的操作（使用的工具、访问的 API、通信渠道）。

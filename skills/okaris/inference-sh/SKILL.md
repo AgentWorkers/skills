@@ -11,16 +11,16 @@ allowed-tools: Bash(infsh *)
 
 # [inference.sh](https://inference.sh)
 
-Run 150+ AI apps in the cloud with a simple CLI. No GPU required.
+通过一个简单的命令行界面（CLI），您可以在云端运行150多种AI应用程序，无需使用GPU。
 
-## Install CLI
+## 安装CLI
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh
 infsh login
 ```
 
-## Quick Examples
+## 快速示例
 
 ```bash
 # Generate an image
@@ -42,32 +42,32 @@ infsh app run x/post-tweet --input '{"text": "Hello from AI!"}'
 infsh app run infsh/rodin-3d-generator --input '{"prompt": "a wooden chair"}'
 ```
 
-## Commands
+## 命令
 
-| Task | Command |
-|------|---------|
-| List all apps | `infsh app list` |
-| Search apps | `infsh app list --search "flux"` |
-| Filter by category | `infsh app list --category image` |
-| Get app details | `infsh app get google/veo-3-1-fast` |
-| Generate sample input | `infsh app sample google/veo-3-1-fast --save input.json` |
-| Run app | `infsh app run google/veo-3-1-fast --input input.json` |
-| Run without waiting | `infsh app run <app> --input input.json --no-wait` |
-| Check task status | `infsh task get <task-id>` |
+| 任务 | 命令                |
+|------|-------------------|
+| 列出所有应用程序 | `infsh app list`       |
+| 搜索应用程序 | `infsh app list --search "flux"`    |
+| 按类别过滤 | `infsh app list --category image`  |
+| 获取应用程序详情 | `infsh app get google/veo-3-1-fast` |
+| 生成示例输入数据 | `infsh app sample google/veo-3-1-fast --save input.json` |
+| 运行应用程序 | `infsh app run google/veo-3-1-fast --input input.json` |
+| 不等待结果立即运行 | `infsh app run <app> --input input.json --no-wait` |
+| 检查任务状态 | `infsh task get <task-id>`    |
 
-## What's Available
+## 可用功能
 
-| Category | Examples |
-|----------|----------|
-| **Image** | FLUX, Gemini 3 Pro, Grok Imagine, Seedream 4.5, Reve, Topaz Upscaler |
-| **Video** | Veo 3.1, Seedance 1.5, Wan 2.5, OmniHuman, Fabric, HunyuanVideo Foley |
-| **LLMs** | Claude Opus/Sonnet/Haiku, Gemini 3 Pro, Kimi K2, GLM-4, any OpenRouter model |
-| **Search** | Tavily Search, Tavily Extract, Exa Search, Exa Answer, Exa Extract |
-| **3D** | Rodin 3D Generator |
-| **Twitter/X** | post-tweet, post-create, dm-send, user-follow, post-like, post-retweet |
-| **Utilities** | Media merger, caption videos, image stitching, audio extraction |
+| 类别 | 示例                |
+|------|-------------------------|
+| **图像处理** | FLUX, Gemini 3 Pro, Grok Imagine, Seedream 4.5, Reve, Topaz Upscaler |
+| **视频处理** | Veo 3.1, Seedance 1.5, Wan 2.5, OmniHuman, Fabric, HunyuanVideo Foley |
+| **大型语言模型（LLMs）** | Claude Opus/Sonnet/Haiku, Gemini 3 Pro, Kimi K2, GLM-4, 任何OpenRouter模型 |
+| **搜索** | Tavily Search, Tavily Extract, Exa Search, Exa Answer, Exa Extract |
+| **3D生成** | Rodin 3D Generator |
+| **Twitter/X平台操作** | 发布推文、创建新推文、发送私信、关注用户、点赞推文、转发推文 |
+| **实用工具** | 媒体合并、添加字幕、图像拼接、音频提取 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Image generation (FLUX, Gemini, Grok, Seedream)
@@ -97,19 +97,19 @@ npx skills add inference-sh/skills@image-upscaling
 npx skills add inference-sh/skills@background-removal
 ```
 
-## Reference Files
+## 参考文件
 
-- [Authentication & Setup](references/authentication.md)
-- [Discovering Apps](references/app-discovery.md)
-- [Running Apps](references/running-apps.md)
-- [CLI Reference](references/cli-reference.md)
+- [认证与设置](references/authentication.md)
+- [应用程序发现](references/app-discovery.md)
+- [应用程序运行](references/running-apps.md)
+- [CLI参考](references/cli-reference.md)
 
-## Documentation
+## 文档资料
 
-- [Agent Skills Overview](https://inference.sh/blog/skills/agent-skills-overview) - The open standard for AI capabilities
-- [Getting Started](https://inference.sh/docs/getting-started/introduction) - Introduction to inference.sh
-- [What is inference.sh?](https://inference.sh/docs/getting-started/what-is-inference) - Platform overview
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-- [CLI Setup](https://inference.sh/docs/extend/cli-setup) - Installing the CLI
-- [Workflows vs Agents](https://inference.sh/blog/concepts/workflows-vs-agents) - When to use each
-- [Why Agent Runtimes Matter](https://inference.sh/blog/agent-runtime/why-runtimes-matter) - Runtime benefits
+- [代理技能概述](https://inference.sh/blog/skills/agent-skills-overview) - 人工智能功能的开放标准
+- [入门指南](https://inference.sh/docs/getting-started/introduction) - inference.sh平台简介
+- [什么是inference.sh？](https://inference.sh/docs/getting-started/what-is-inference) - 平台概述
+- [应用程序概览](https://inference.sh/docs/apps/overview) - 了解应用程序生态系统
+- [CLI安装指南](https://inference.sh/docs/extend/cli-setup) - 安装CLI
+- [工作流程与代理的使用](https://inference.sh/blog/concepts/workflows-vs-agents) - 何时使用每种方式
+- [为什么代理运行时很重要](https://inference.sh/blog/agent-runtime/why-runtimes-matter) - 运行时的优势

@@ -1,27 +1,28 @@
 ---
 slug: "security-review-construction"
 display_name: "Security Review Construction"
-description: "Security review checklist for construction software systems. Use when building integrations, APIs, data pipelines, or dashboards for construction projects."
+description: "**建筑软件系统的安全审查清单**  
+适用于构建集成系统、API、数据管道或建筑项目仪表板时使用。"
 ---
 
-# Security Review Skill for Construction Systems
+# 建筑系统安全审查技能
 
-This skill ensures all construction software systems follow security best practices, protecting sensitive project data, financial information, and business intelligence.
+该技能确保所有建筑软件系统遵循安全最佳实践，保护敏感的项目数据、财务信息和商业机密。
 
-## When to Activate
+## 适用场景
 
-- Building ERP/BIM system integrations
-- Creating construction dashboards
-- Handling cost/financial data
-- Building document management systems
-- Creating APIs for field data collection
-- Integrating with external platforms (Procore, PlanGrid, etc.)
-- Working with subcontractor/vendor data
-- Processing payment applications
+- 构建ERP/BIM系统集成
+- 创建建筑管理仪表板
+- 处理成本/财务数据
+- 建立文档管理系统
+- 创建用于现场数据收集的API
+- 与外部平台（如Procore、PlanGrid等）集成
+- 处理分包商/供应商数据
+- 处理支付申请
 
-## Construction-Specific Security Concerns
+## 建筑行业特有的安全问题
 
-### 1. Financial Data Protection
+### 1. 财务数据保护
 
 ```python
 # CRITICAL: Construction financial data security
@@ -44,14 +45,14 @@ def encrypt_financial_data(data: dict) -> bytes:
     return f.encrypt(json.dumps(data).encode())
 ```
 
-#### Financial Data Checklist
-- [ ] Cost estimates encrypted at rest
-- [ ] Margin/markup data not exposed in logs
-- [ ] Payment information tokenized
-- [ ] Historical pricing protected from competitors
-- [ ] Bid amounts secured until opening
+#### 财务数据检查清单
+- [ ] 静态存储的成本估算数据已加密
+- [ ] 利润/加价数据未在日志中暴露
+- [ ] 支付信息已进行令牌化处理
+- [ ] 历史定价信息受到保护，防止被竞争对手获取
+- [ ] 投标金额在开标前得到安全保护
 
-### 2. BIM/CAD Data Security
+### 2. BIM/CAD数据安全
 
 ```python
 # BIM data often contains proprietary design information
@@ -80,14 +81,14 @@ def upload_bim_secure(file_path: str, project_id: str):
     return presigned_url
 ```
 
-#### BIM/CAD Checklist
-- [ ] IFC/RVT files encrypted at rest
-- [ ] Access logged for audit trail
-- [ ] Time-limited download links
-- [ ] Version control with access tracking
-- [ ] No design data in error messages
+#### BIM/CAD检查清单
+- [ ] IFC/RVT文件在静态存储时已加密
+- [ ] 访问记录用于审计追踪
+- [ ] 下载链接设置时间限制
+- [ ] 实施版本控制并跟踪访问权限
+- [ ] 设计数据不会出现在错误信息中
 
-### 3. Subcontractor/Vendor Data
+### 3. 分包商/供应商数据安全
 
 ```python
 # Subcontractor data includes business-sensitive information
@@ -128,14 +129,14 @@ class SubcontractorDataHandler:
         return self.decrypt_sensitive_fields(self.db.get(sub_id))
 ```
 
-#### Vendor Data Checklist
-- [ ] Insurance/bonding information encrypted
-- [ ] Bank details protected (PCI compliance)
-- [ ] Tax IDs masked in UI (show last 4 digits only)
-- [ ] Pricing history access-controlled
-- [ ] Certificate expiration notifications secure
+#### 供应商数据检查清单
+- [ ] 保险/保证金信息已加密
+- [ ] 银行详细信息受到保护（符合PCI标准）
+- [ ] 税务ID在用户界面中仅显示最后4位数字
+- [ ] 访问定价历史受到控制
+- [ ] 证书到期通知得到安全处理
 
-### 4. Field Data Collection Security
+### 4. 现场数据收集安全
 
 ```python
 # Mobile/field data collection must be secure
@@ -179,14 +180,14 @@ class FieldDataCollector:
         return self.db.insert(report)
 ```
 
-#### Field Data Checklist
-- [ ] GPS data validated for reasonableness
-- [ ] Photo timestamps verified
-- [ ] File integrity checks (hashing)
-- [ ] User authentication for submissions
-- [ ] Offline data sync secured
+#### 现场数据检查清单
+- [ ] GPS数据的合理性得到验证
+- [ ] 照片的时间戳得到确认
+- [ ] 文件完整性通过哈希算法进行检测
+- [ ] 提交数据时需要用户身份验证
+- [ ] 离线数据同步过程得到安全保障
 
-### 5. CWICR Database Security
+### 5. CWICR数据库安全
 
 ```python
 # CWICR contains proprietary cost data
@@ -231,14 +232,14 @@ class CWICRAccessControl:
         return watermarked
 ```
 
-#### CWICR Checklist
-- [ ] Tiered access control implemented
-- [ ] API rate limiting per user/tier
-- [ ] Data exports watermarked
-- [ ] Bulk download restrictions
-- [ ] Competitor access monitoring
+#### CWICR检查清单
+- [ ] 实施分层访问控制
+- [ ] 按用户/层级限制API调用频率
+- [ ] 数据导出时添加水印
+- [ ] 限制批量数据下载
+- [ ] 监控竞争对手的访问尝试
 
-### 6. Integration Security (Procore, PlanGrid, etc.)
+### 6. 集成安全（Procore、PlanGrid等）
 
 ```python
 # Secure OAuth integration with construction platforms
@@ -289,15 +290,15 @@ class ConstructionPlatformIntegration:
             raise
 ```
 
-#### Integration Checklist
-- [ ] OAuth 2.0 with PKCE implemented
-- [ ] Tokens stored in secure vault (not env vars)
-- [ ] Token refresh automated
-- [ ] API rate limiting respected
-- [ ] Webhook signatures verified
-- [ ] Data validation on incoming data
+#### 集成检查清单
+- [ ] 实施基于PKCE的OAuth 2.0认证
+- [ ] 令牌存储在安全保管库中（而非环境变量中）
+- [ ] 令牌自动更新
+- [ ] 遵守API调用频率限制
+- [ ] 验证Webhook签名
+- [ ] 对传入数据进行验证
 
-### 7. Document Management Security
+### 7. 文档管理安全
 
 ```python
 # Construction documents often contain confidential information
@@ -348,58 +349,58 @@ class SecureDocumentManager:
         return self.decrypt(self.storage.get(doc_id))
 ```
 
-#### Document Checklist
-- [ ] Malware scanning on upload
-- [ ] Document classification system
-- [ ] Role-based access control
-- [ ] Download audit logging
-- [ ] Encryption for sensitive documents
-- [ ] Retention policies enforced
+#### 文档检查清单
+- [ ] 上传文件时进行恶意软件扫描
+- [ ] 实施文档分类系统
+- [ ] 基于角色的访问控制
+- [ ] 下载操作记录审计
+- [ ] 敏感文件采用加密措施
+- [ ] 执行数据保留政策
 
-## Pre-Deployment Security Checklist for Construction Systems
+## 建筑系统部署前的安全检查清单
 
-### Data Protection
-- [ ] Financial data encrypted at rest and in transit
-- [ ] BIM/CAD files protected with access control
-- [ ] Subcontractor PII secured (GDPR/CCPA compliant)
-- [ ] CWICR data access tiered appropriately
-- [ ] Backup encryption enabled
+### 数据保护
+- [ ] 财务数据在静态存储和传输过程中均得到加密
+- [ ] BIM/CAD文件受到访问控制保护
+- [ ] 分包商的个人信息得到安全处理（符合GDPR/CCPA标准）
+- [ ] CWICR数据的访问权限得到适当分层
+- [ ] 启用备份数据的加密功能
 
-### Authentication & Authorization
-- [ ] Multi-factor authentication for admin users
-- [ ] Role-based access control implemented
-- [ ] Session management secure (timeout, single device)
-- [ ] API keys rotated regularly
-- [ ] OAuth integrations use PKCE
+### 认证与授权
+- [ ] 管理用户采用多因素认证
+- [ ] 实施基于角色的访问控制
+- [ ] 会话管理安全（设置超时机制，限制使用单一设备）
+- [ ] 定期轮换API密钥
+- [ ] OAuth集成使用PKCE认证机制
 
-### Audit & Compliance
-- [ ] All data access logged
-- [ ] Logs tamper-proof (append-only)
-- [ ] Retention policies documented
-- [ ] Data export capabilities for audits
-- [ ] Compliance reports automated
+### 审计与合规性
+- [ ] 所有数据访问操作均被记录
+- [ ] 日志记录不可篡改（仅允许追加内容）
+- [ ] 制定数据保留政策并予以记录
+- [ ] 提供数据导出功能以供审计使用
+- [ ] 自动生成合规性报告
 
-### Integration Security
-- [ ] All external APIs authenticated
-- [ ] Webhook signatures verified
-- [ ] Data validation on all inputs
-- [ ] Rate limiting implemented
-- [ ] Error messages sanitized
+### 集成安全
+- [ ] 所有外部API均经过认证
+- [ ] 验证Webhook签名
+- [ ] 对所有输入数据进行验证
+- [ ] 实施调用频率限制
+- [ ] 错误信息经过处理（避免泄露敏感信息）
 
-### Field Data Security
-- [ ] Mobile apps use certificate pinning
-- [ ] Offline data encrypted
-- [ ] GPS/timestamp validation
-- [ ] Photo integrity verification
-- [ ] Secure sync protocols
+### 现场数据安全
+- [ ] 移动应用程序使用证书加固机制
+- [ ] 离线数据得到加密
+- [ ] GPS数据和时间戳得到验证
+- [ ] 照片完整性得到验证
+- [ ] 使用安全的同步协议
 
-## Resources
+## 参考资源
 
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
-- [CIS Controls for Construction](https://www.cisecurity.org/controls)
-- [ISO 27001 for Construction](https://www.iso.org/isoiec-27001-information-security.html)
+- [OWASP十大安全漏洞](https://owasp.org/www-project-top-ten/)
+- [NIST网络安全框架](https://www.nist.gov/cyberframework)
+- [建筑行业适用的CIS安全控制措施](https://www.cisecurity.org/controls)
+- [建筑行业的ISO 27001信息安全标准](https://www.iso.org/isoiec-27001-information-security.html)
 
 ---
 
-**Remember**: Construction data includes financial, legal, and competitive information. A breach can result in lost bids, legal liability, and reputational damage. Security is not optional.
+**请注意**：建筑行业的数据包含财务、法律和竞争相关信息。数据泄露可能导致失去投标机会、法律责任以及声誉受损。因此，安全措施是必不可少的。

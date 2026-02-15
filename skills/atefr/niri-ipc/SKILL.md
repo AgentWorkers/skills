@@ -1,19 +1,19 @@
 ---
 name: niri-ipc
-description: Control the Niri Wayland compositor on Linux via its IPC (`niri msg --json` / $NIRI_SOCKET). Use when you need to query Niri state (outputs/workspaces/windows/focused window) or perform actions (focus/move/close windows, switch workspaces, spawn commands, reload config) from an OpenClaw agent running on a Niri session.
+description: 在 Linux 上，可以通过 Niri Wayland 组合器的 IPC（`niri msg --json` / `$NIRI_SOCKET`）来对其进行控制。当需要查询 Niri 的状态（输出、工作区、当前聚焦的窗口）或执行某些操作（聚焦/移动/关闭窗口、切换工作区、运行命令、重新加载配置）时，可以使用该方式。这些操作可以在运行于 Niri 会话中的 OpenClaw 代理上完成。
 ---
 
 # Niri IPC
 
-Use Niri IPC through the `niri msg` CLI (preferred) or by writing JSON requests to `$NIRI_SOCKET`.
+您可以通过 `niri msg` CLI（推荐方式）或向 `$NIRI SOCKET` 发送 JSON 请求来使用 Niri IPC。
 
-This skill assumes:
-- You are on Linux with Niri running.
-- `$NIRI_SOCKET` is set (usually true inside the Niri session).
+本技能的前提条件如下：
+- 您正在运行 Niri 的 Linux 系统上。
+- `$NIRI SOCKET` 已被正确设置（通常在 Niri 会话中已经设置好）。
 
-## Quick start (recommended)
+## 快速入门（推荐）
 
-Use the bundled helper script (wrapper around `niri msg --json`):
+使用随附的帮助脚本（该脚本是对 `niri msg --json` 的封装）：
 
 ```bash
 ./skills/niri-ipc/scripts/niri.py version
@@ -23,11 +23,11 @@ Use the bundled helper script (wrapper around `niri msg --json`):
 ./skills/niri-ipc/scripts/niri.py focused-window
 ```
 
-## Deeper control
+## 更深入的控制
 
-### 1) High-level helpers (window matching)
+### 1) 高级辅助工具（窗口匹配）
 
-Use `scripts/niri_ctl.py` when you want to refer to windows by **title/app_id substring** instead of ids:
+当您需要根据窗口的 **标题** 或 **应用 ID** 来查找窗口时，可以使用 `scripts/niri_ctl.py`：
 
 ```bash
 # List windows (optionally filtered)
@@ -48,9 +48,9 @@ Use `scripts/niri_ctl.py` when you want to refer to windows by **title/app_id su
 ./skills/niri-ipc/scripts/niri_ctl.py focus-workspace web
 ```
 
-### 2) Full IPC access (raw socket)
+### 2) 完整的 IPC 访问（原始套接字）
 
-Use `scripts/niri_socket.py` to talk to `$NIRI_SOCKET` directly (newline-delimited JSON):
+使用 `scripts/niri_socket.py` 直接与 `$NIRI SOCKET` 通信（数据格式为以换行符分隔的 JSON）：
 
 ```bash
 # Send a simple request (JSON string)
@@ -63,9 +63,9 @@ printf '%s\n' '"FocusedWindow"' '"Workspaces"' | ./skills/niri-ipc/scripts/niri_
 ./skills/niri-ipc/scripts/niri_socket.py event-stream
 ```
 
-### Actions
+### 操作
 
-Pass through Niri actions:
+通过 Niri 执行各种操作：
 
 ```bash
 # Focus workspace by index
@@ -90,28 +90,28 @@ Pass through Niri actions:
 ./skills/niri-ipc/scripts/niri.py action spawn-sh -- 'notify-send hello'
 ```
 
-### Output configuration
+### 输出配置
 
-Use `niri msg output ...` via the wrapper:
+使用封装后的 `niri msg output ...` 命令来配置输出格式：
 
 ```bash
 ./skills/niri-ipc/scripts/niri.py output --help
 ```
 
-## Working directly with `niri msg`
+## 直接使用 `niri msg`
 
-If you don’t want the helper script, call Niri directly:
+如果您不需要辅助脚本，可以直接调用 `niri msg`：
 
 ```bash
 niri msg --json windows
 niri msg --json action focus-workspace 2
 ```
 
-Tip: if `niri msg` parsing errors happen after upgrades, restart the compositor (new `niri msg` against old compositor is a common mismatch).
+提示：如果在升级后出现 `niri msg` 解析错误，请重启 compositor（因为新的 `niri msg` 可能与旧的 compositor 不兼容）。
 
-## Event stream
+## 事件流
 
-For status bars/daemons: Niri can stream events.
+Niri 可以提供事件流，适用于状态栏或后台进程：
 
 ```bash
 # Raw JSON event lines (runs until interrupted)
@@ -121,8 +121,8 @@ For status bars/daemons: Niri can stream events.
 ./skills/niri-ipc/scripts/niri.py event-stream --lines 5
 ```
 
-## Troubleshooting
+## 故障排除
 
-- If commands fail with “NIRI_SOCKET is not set”: run inside your Niri session, or export the socket path.
-- If you need the socket protocol details, read: `./skills/niri-ipc/references/ipc.md`.
-- If your goal is complex automation (pick the right window by title/app_id, etc.), first query `windows`, then act by window id.
+- 如果命令执行失败并显示 “NIRI SOCKET 未设置” 的错误，请确保您在 Niri 会话中操作，或者手动输出 `$NIRI SOCKET` 的路径。
+- 如果您需要了解套接字协议的详细信息，请阅读 `./skills/niri-ipc/references/ipc.md`。
+- 如果您的自动化需求较为复杂（例如根据窗口标题或应用 ID 来选择窗口），请先查询所有窗口的信息，然后再根据窗口 ID 执行相应的操作。

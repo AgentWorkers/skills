@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Conferencing - Java
+# Telnyx 语音会议 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,13 +31,13 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Enqueue call
+## 将呼叫放入队列
 
-Put the call in a queue.
+将呼叫放入队列中。
 
-`POST /calls/{call_control_id}/actions/enqueue` — Required: `queue_name`
+`POST /calls/{call_control_id}/actions/enqueue` — 必需参数：`queue_name`
 
 ```java
 import com.telnyx.sdk.models.calls.actions.ActionEnqueueParams;
@@ -49,9 +50,9 @@ ActionEnqueueParams params = ActionEnqueueParams.builder()
 ActionEnqueueResponse response = client.calls().actions().enqueue(params);
 ```
 
-## Remove call from a queue
+## 从队列中移除呼叫
 
-Removes the call from a queue.
+从队列中移除呼叫。
 
 `POST /calls/{call_control_id}/actions/leave_queue`
 
@@ -62,9 +63,9 @@ import com.telnyx.sdk.models.calls.actions.ActionLeaveQueueResponse;
 ActionLeaveQueueResponse response = client.calls().actions().leaveQueue("call_control_id");
 ```
 
-## List conferences
+## 列出会议
 
-Lists conferences.
+列出所有会议。
 
 `GET /conferences`
 
@@ -75,11 +76,11 @@ import com.telnyx.sdk.models.conferences.ConferenceListParams;
 ConferenceListPage page = client.conferences().list();
 ```
 
-## Create conference
+## 创建会议
 
-Create a conference from an existing call leg using a `call_control_id` and a conference name.
+使用 `call_control_id` 和会议名称从现有通话中创建会议。
 
-`POST /conferences` — Required: `call_control_id`, `name`
+`POST /conferences` — 必需参数：`call_control_id`, `name`
 
 ```java
 import com.telnyx.sdk.models.conferences.ConferenceCreateParams;
@@ -92,9 +93,9 @@ ConferenceCreateParams params = ConferenceCreateParams.builder()
 ConferenceCreateResponse conference = client.conferences().create(params);
 ```
 
-## Retrieve a conference
+## 获取会议信息
 
-Retrieve an existing conference
+获取现有会议的信息。
 
 `GET /conferences/{id}`
 
@@ -105,9 +106,9 @@ import com.telnyx.sdk.models.conferences.ConferenceRetrieveResponse;
 ConferenceRetrieveResponse conference = client.conferences().retrieve("id");
 ```
 
-## Hold conference participants
+## 暂停会议参与者的发言
 
-Hold a list of participants in a conference call
+暂停会议中参与者的发言。
 
 `POST /conferences/{id}/actions/hold`
 
@@ -118,11 +119,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionHoldResponse;
 ActionHoldResponse response = client.conferences().actions().hold("id");
 ```
 
-## Join a conference
+## 加入会议
 
-Join an existing call leg to a conference.
+加入现有的通话。
 
-`POST /conferences/{id}/actions/join` — Required: `call_control_id`
+`POST /conferences/{id}/actions/join` — 必需参数：`call_control_id`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionJoinParams;
@@ -135,11 +136,11 @@ ActionJoinParams params = ActionJoinParams.builder()
 ActionJoinResponse response = client.conferences().actions().join(params);
 ```
 
-## Leave a conference
+## 退出会议
 
-Removes a call leg from a conference and moves it back to parked state.
+将通话从会议中移除并恢复到待机状态。
 
-`POST /conferences/{id}/actions/leave` — Required: `call_control_id`
+`POST /conferences/{id}/actions/leave` — 必需参数：`call_control_id`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionLeaveParams;
@@ -152,9 +153,9 @@ ActionLeaveParams params = ActionLeaveParams.builder()
 ActionLeaveResponse response = client.conferences().actions().leave(params);
 ```
 
-## Mute conference participants
+## 静音会议参与者
 
-Mute a list of participants in a conference call
+静音会议中的参与者。
 
 `POST /conferences/{id}/actions/mute`
 
@@ -165,9 +166,9 @@ import com.telnyx.sdk.models.conferences.actions.ActionMuteResponse;
 ActionMuteResponse response = client.conferences().actions().mute("id");
 ```
 
-## Play audio to conference participants
+## 播放音频给会议参与者
 
-Play audio to all or some participants on a conference call.
+向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/play`
 
@@ -178,11 +179,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionPlayResponse;
 ActionPlayResponse response = client.conferences().actions().play("id");
 ```
 
-## Conference recording pause
+## 暂停会议录音
 
-Pause conference recording.
+暂停会议录音。
 
-`POST /conferences/{id}/actions/record_pause`
+`POST /conferences/{id}/actions/record_PAUSE`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionRecordPauseParams;
@@ -191,11 +192,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionRecordPauseResponse;
 ActionRecordPauseResponse response = client.conferences().actions().recordPause("id");
 ```
 
-## Conference recording resume
+## 恢复会议录音
 
-Resume conference recording.
+恢复会议录音。
 
-`POST /conferences/{id}/actions/record_resume`
+`POST /conferences/{id}/actions/record.resume`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionRecordResumeParams;
@@ -204,11 +205,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionRecordResumeResponse;
 ActionRecordResumeResponse response = client.conferences().actions().recordResume("id");
 ```
 
-## Conference recording start
+## 开始会议录音
 
-Start recording the conference.
+开始会议录音。
 
-`POST /conferences/{id}/actions/record_start` — Required: `format`
+`POST /conferences/{id}/actions/record_start` — 必需参数：`format`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionRecordStartParams;
@@ -221,9 +222,9 @@ ActionRecordStartParams params = ActionRecordStartParams.builder()
 ActionRecordStartResponse response = client.conferences().actions().recordStart(params);
 ```
 
-## Conference recording stop
+## 停止会议录音
 
-Stop recording the conference.
+停止会议录音。
 
 `POST /conferences/{id}/actions/record_stop`
 
@@ -234,11 +235,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionRecordStopResponse;
 ActionRecordStopResponse response = client.conferences().actions().recordStop("id");
 ```
 
-## Speak text to conference participants
+## 为会议参与者朗读文本
 
-Convert text to speech and play it to all or some participants.
+将文本转换为语音并播放给所有或部分参与者。
 
-`POST /conferences/{id}/actions/speak` — Required: `payload`, `voice`
+`POST /conferences/{id}/actions/speak` — 必需参数：`payload`, `voice`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionSpeakParams;
@@ -252,9 +253,9 @@ ActionSpeakParams params = ActionSpeakParams.builder()
 ActionSpeakResponse response = client.conferences().actions().speak(params);
 ```
 
-## Stop audio being played on the conference
+## 停止向会议参与者播放音频
 
-Stop audio being played to all or some participants on a conference call.
+停止向会议中的所有或部分参与者播放音频。
 
 `POST /conferences/{id}/actions/stop`
 
@@ -265,11 +266,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionStopResponse;
 ActionStopResponse response = client.conferences().actions().stop("id");
 ```
 
-## Unhold conference participants
+## 恢复会议参与者的发言权限
 
-Unhold a list of participants in a conference call
+恢复会议中参与者的发言权限。
 
-`POST /conferences/{id}/actions/unhold` — Required: `call_control_ids`
+`POST /conferences/{id}/actions/unhold` — 必需参数：`call_control_ids`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionUnholdParams;
@@ -282,9 +283,9 @@ ActionUnholdParams params = ActionUnholdParams.builder()
 ActionUnholdResponse response = client.conferences().actions().unhold(params);
 ```
 
-## Unmute conference participants
+## 解除会议参与者的静音状态
 
-Unmute a list of participants in a conference call
+解除会议中参与者的静音状态。
 
 `POST /conferences/{id}/actions/unmute`
 
@@ -295,11 +296,11 @@ import com.telnyx.sdk.models.conferences.actions.ActionUnmuteResponse;
 ActionUnmuteResponse response = client.conferences().actions().unmute("id");
 ```
 
-## Update conference participant
+## 更新会议参与者信息
 
-Update conference participant supervisor_role
+更新会议参与者的角色。
 
-`POST /conferences/{id}/actions/update` — Required: `call_control_id`, `supervisor_role`
+`POST /conferences/{id}/actions/update` — 必需参数：`call_control_id`, `supervisor_role`
 
 ```java
 import com.telnyx.sdk.models.conferences.actions.ActionUpdateParams;
@@ -316,9 +317,9 @@ ActionUpdateParams params = ActionUpdateParams.builder()
 ActionUpdateResponse action = client.conferences().actions().update(params);
 ```
 
-## List conference participants
+## 列出会议参与者
 
-Lists conference participants
+列出会议中的所有参与者。
 
 `GET /conferences/{conference_id}/participants`
 
@@ -331,26 +332,27 @@ ConferenceListParticipantsPage page = client.conferences().listParticipants("con
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callEnqueued` | Call Enqueued |
-| `callLeftQueue` | Call Left Queue |
-| `conferenceCreated` | Conference Created |
-| `conferenceEnded` | Conference Ended |
-| `conferenceFloorChanged` | Conference Floor Changed |
-| `conferenceParticipantJoined` | Conference Participant Joined |
-| `conferenceParticipantLeft` | Conference Participant Left |
-| `conferenceParticipantPlaybackEnded` | Conference Participant Playback Ended |
-| `conferenceParticipantPlaybackStarted` | Conference Participant Playback Started |
-| `conferenceParticipantSpeakEnded` | Conference Participant Speak Ended |
-| `conferenceParticipantSpeakStarted` | Conference Participant Speak Started |
-| `conferencePlaybackEnded` | Conference Playback Ended |
-| `conferencePlaybackStarted` | Conference Playback Started |
-| `conferenceRecordingSaved` | Conference Recording Saved |
-| `conferenceSpeakEnded` | Conference Speak Ended |
-| `conferenceSpeakStarted` | Conference Speak Started |
+| `callEnqueued` | 呼叫被放入队列 |
+| `callLeftQueue` | 呼叫离开队列 |
+| `conferenceCreated` | 会议创建 |
+| `conferenceEnded` | 会议结束 |
+| `conferenceFloorChanged` | 会议发言权变更 |
+| `conferenceParticipantJoined` | 会议参与者加入 |
+| `conferenceParticipantLeft` | 会议参与者离开 |
+| `conferenceParticipantPlaybackEnded` | 会议参与者的语音播放结束 |
+| `conferenceParticipantPlaybackStarted` | 会议参与者的语音播放开始 |
+| `conferenceParticipantSpeakEnded` | 会议参与者发言结束 |
+| `conferenceParticipantSpeakStarted` | 会议参与者开始发言 |
+| `conferencePlaybackEnded` | 会议语音播放结束 |
+| `conferencePlaybackStarted` | 会议语音播放开始 |
+| `conferenceRecordingSaved` | 会议录音保存 |
+| `conferenceSpeakEnded` | 会议发言结束 |
+| `conferenceSpeakStarted` | 会议发言开始 |
+```
+```

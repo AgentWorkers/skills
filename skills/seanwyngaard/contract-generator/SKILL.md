@@ -1,18 +1,18 @@
 ---
 name: contract-generator
-description: Generate professional freelance contracts, SOWs, and NDAs for client projects. Use when creating contracts, scope of work documents, or legal agreements for freelance engagements.
+description: 为客户项目生成专业的自由职业合同、工作范围说明书（SOW）和保密协议（NDAs）。这些文件可用于创建合同、工作范围文档或自由职业服务的法律协议。
 argument-hint: "[contract-type] [project-description]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 disable-model-invocation: true
 ---
 
-# Freelance Contract Generator
+# 自由职业合同生成器
 
-Generate professional contracts, statements of work (SOW), and NDAs for freelance engagements. Covers scope, payment, IP, revisions, and termination — the essentials for protecting both parties.
+本工具可生成适用于自由职业项目的专业合同、工作说明书（SOW）和保密协议（NDA），涵盖项目范围、付款方式、知识产权保护、修改流程及合同终止等相关条款，旨在保护双方的权益。
 
-**DISCLAIMER**: These contracts are templates for common freelance arrangements. They are NOT legal advice. Users should have contracts reviewed by a qualified attorney for their jurisdiction before use.
+**免责声明**：这些合同模板仅适用于常见的自由职业合作场景，不构成法律建议。用户在使用前应请具有执业资格的律师根据所在地区的法律法规对合同内容进行审核。
 
-## How to Use
+## 使用方法
 
 ```
 /contract-generator service "Website redesign for Acme Corp, $5,000 fixed, 6 weeks, 2 revision rounds"
@@ -21,14 +21,14 @@ Generate professional contracts, statements of work (SOW), and NDAs for freelanc
 /contract-generator retainer "Monthly SEO services for LocalBiz, $1,500/mo, 3 month minimum"
 ```
 
-- `$ARGUMENTS[0]` = Contract type: `service`, `sow`, `nda`, `retainer`, `hourly`
-- `$ARGUMENTS[1]` = Project description with key terms
+- `$ARGUMENTS[0]`：合同类型（`service`、`sow`、`nda`、`retainer`、`hourly`）
+- `$ARGUMENTS[1]`：包含关键条款的项目描述
 
-## Contract Types
+## 合同类型
 
-### `service` — Fixed-Price Service Agreement
+### `service` — 固定价格服务协议
 
-For one-time projects with a defined scope and fixed price.
+适用于项目范围明确、价格固定的短期项目。
 
 ```markdown
 # FREELANCE SERVICE AGREEMENT
@@ -193,50 +193,50 @@ Contractor: _________________________ Date: ____________
 Client:    _________________________ Date: ____________
 ```
 
-### `sow` — Statement of Work
+### `sow` — 工作说明书（Statement of Work）
 
-Similar to service agreement but focused on detailed scope for larger projects. Includes:
-- Detailed requirements broken into phases
-- Acceptance criteria for each deliverable
-- Change request process
-- Communication plan (weekly meetings, tools, contacts)
-- Assumptions and dependencies
+类似于固定价格服务协议，但更侧重于大型项目的详细工作范围，内容包括：
+- 分阶段的详细需求
+- 每个交付成果的验收标准
+- 变更请求流程
+- 沟通计划（每周会议、使用的工具、联系人信息）
+- 项目假设及依赖关系
 
-### `nda` — Non-Disclosure Agreement
+### `nda` — 保密协议（Non-Disclosure Agreement）
 
-Standard mutual or one-way NDA. Includes:
-- Definition of confidential information
-- Obligations of receiving party
-- Exclusions (public info, independently developed, etc.)
-- Term (typically 2 years)
-- Return/destruction of materials
-- Remedies for breach
+标准的保密协议，适用于双方或单方保密需求，内容包括：
+- 保密信息的定义
+- 接收方的保密义务
+- 保密信息的例外情况（公开信息、独立开发的内容等）
+- 保密协议的有效期限（通常为2年）
+- 材料的归还或销毁要求
+- 违反协议的补救措施
 
-### `retainer` — Monthly Retainer Agreement
+### `retainer` — 月度固定费用协议
 
-For ongoing work relationships. Includes:
-- Monthly hours included (e.g., 20 hours/month)
-- Rollover policy (unused hours expire or roll over 1 month)
-- Overage rate (hourly rate for hours beyond retainer)
-- Scope of services (types of work covered)
-- Monthly reporting requirements
-- Minimum commitment period
-- Cancellation notice period (typically 30 days)
-- Monthly invoicing schedule
+适用于长期合作项目，内容包括：
+- 每月固定的工作小时数（例如20小时/月）
+- 未使用工作小时的处理方式（过期或顺延至下个月）
+- 超时费用计算规则（超出固定费用部分的小时按小时费率计费）
+- 服务范围（涵盖的工作类型）
+- 月度报告要求
+- 最低合作期限
+- 解约通知期限（通常为30天）
+- 月度账单生成频率
 
-### `hourly` — Hourly Rate Agreement
+### `hourly` — 按小时计费协议
 
-For time-and-materials engagements. Includes:
-- Hourly rate
-- Minimum billing increment (15 min or 30 min)
-- Estimated hours (non-binding)
-- Weekly/monthly hour caps
-- Time tracking and reporting method
-- Invoice frequency (weekly or bi-weekly)
+适用于按工作时间和材料计费的项目，内容包括：
+- 按小时计费的费率
+- 最小计费单位（15分钟或30分钟）
+- 预计工作小时数（非强制性）
+- 每周/每月的工作小时数上限
+- 时间记录与报告方法
+- 账单生成频率（每周或每两周一次）
 
-## Output
+## 输出结果
 
-Save to `output/contracts/`:
+合同文件将保存在 `output/contracts/` 目录下：
 
 ```
 output/contracts/
@@ -244,18 +244,18 @@ output/contracts/
   [contract-type]-[client-name]-[date].html  # Print-ready HTML
 ```
 
-HTML version includes:
-- Professional formatting suitable for printing
-- Clear section numbering
-- Signature lines
-- Page break hints for clean printing
-- Header with agreement number on each page
+生成的HTML版本具备以下特点：
+- 适合打印的专业格式
+- 清晰的章节编号
+- 用于签署的空白行
+- 便于打印的分页提示
+- 每页均包含协议编号的页眉
 
-## Important Notes
+## 重要提示：
 
-1. These are TEMPLATES — always customize for the specific engagement
-2. Include specific deliverables — vague scope is the #1 source of disputes
-3. Always include an "Out of Scope" section — prevents scope creep
-4. Payment milestones tied to deliverables protect both parties
-5. The IP clause should match the engagement — some clients need work-for-hire language
-6. Recommend both parties sign digitally (DocuSign, HelloSign) for convenience and records
+1. 本工具提供的合同模板需根据具体项目情况进行定制。
+2. 必须明确约定项目的具体交付成果；模糊的项目范围是引发纠纷的主要原因。
+3. 必须包含“超出项目范围”的条款，以防止项目范围扩大。
+4. 付款安排应与项目交付成果挂钩，以保护双方权益。
+5. 知识产权保护条款应符合项目实际情况；部分客户可能需要包含“工作成果归委托方所有”的条款。
+6. 建议双方通过电子签名工具（如DocuSign、HelloSign）进行签署，以便记录保存。

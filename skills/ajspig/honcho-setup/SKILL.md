@@ -54,56 +54,56 @@ metadata:
   source: "https://github.com/plastic-labs/honcho"
 ---
 
-# Honcho Setup
+# Honcho 设置
 
-Install the Honcho plugin and migrate legacy workspace memory files to Honcho.
+请安装 Honcho 插件，并将旧的工作区内存文件迁移到 Honcho。
 
-> ⚠️ **DATA UPLOAD WARNING**: This skill uploads the contents of your workspace memory files (USER.md, MEMORY.md, IDENTITY.md, memory/, canvas/, SOUL.md, AGENTS.md, BOOTSTRAP.md, TOOLS.md, HEARTBEAT.md) to an external API. By default, data is sent to `api.honcho.dev` (managed Honcho cloud service). For self-hosted instances, data is sent to your configured `HONCHO_BASE_URL`. You will be asked for explicit confirmation before any upload occurs, and you will see exactly which files will be uploaded and where they will be sent.
+> ⚠️ **数据上传警告**：此操作会将您的工作区内存文件（USER.md、MEMORY.md、IDENTITY.md、memory/、canvas/、SOUL.md、AGENTS.md、BOOTSTRAP.md、TOOLS.md、HEARTBEAT.md）的内容上传到外部 API。默认情况下，数据会被发送到 `api.honcho.dev`（托管的 Honcho 云服务）。对于自托管实例，数据会被发送到您配置的 `HONCHO_BASE_URL`。在上传之前，系统会请求您的明确确认，并显示将要上传的文件及其目标位置。
 
-> **This skill modifies workspace files.** It will ask for confirmation before archiving or deleting any files. If the Honcho upload fails or is skipped, no files are moved or removed. All files are backed up to `{workspace_root}/archive/` before any deletion.
+> **此操作会修改工作区文件**。在归档或删除任何文件之前，系统会请求您的确认。如果 Honcho 上传失败或被跳过，文件将不会被移动或删除。所有文件在删除前都会备份到 `{workspace_root}/archive/` 目录中。
 
-> **Sensitive file access:** This skill reads `~/.openclaw/.env` to check for `HONCHO_API_KEY` only (required for managed Honcho). No other environment variables are read from this file. It also reads `~/.openclaw/openclaw.json` to determine workspace location.
-## Step 1: Install and Enable the Plugin
+> **敏感文件访问**：此操作仅会读取 `~/.openclaw/.env` 文件以获取 `HONCHO_API_KEY`（托管 Honcho 所需）。不会读取该文件中的其他环境变量。同时，还会读取 `~/.openclaw/openclaw.json` 文件以确定工作区的位置。
+## 第一步：安装并启用插件
 
-Install the Honcho plugin using the OpenClaw plugin system. **Use this exact command — do not install `@honcho-ai/sdk` directly or use `npm install` in the workspace.**
+使用 OpenClaw 插件系统安装 Honcho 插件。**请使用以下命令进行安装——切勿直接安装 `@honcho-ai/sdk`，也勿在工作区内使用 `npm install`。**
 
 ```bash
 openclaw plugins install @honcho-ai/openclaw-honcho
 ```
 
-Then enable it:
+然后启用插件：
 
 ```bash
 openclaw plugins enable openclaw-honcho
 ```
 
-After enabling, verify the plugin loaded without errors. If the gateway logs show `Cannot find module '@honcho-ai/sdk'`, the plugin's dependencies need to be installed manually:
+启用后，验证插件是否成功加载。如果网关日志显示 “Cannot find module ‘@honcho-ai/sdk’”，则需要手动安装插件的依赖项：
 
 ```bash
 cd ~/.openclaw/extensions/openclaw-honcho && npm install
 ```
 
-Then restart the gateway. This is a known issue with the OpenClaw plugin installer not running dependency resolution for plugin packages.
+之后重启网关。这是 OpenClaw 插件安装程序在处理插件包依赖项时可能出现的问题。
 
-If the plugin is already installed and enabled, skip to Step 2.
+如果插件已经安装并启用，可以直接跳到第二步。
 
-## Step 2: Verify Honcho Connection
+## 第二步：验证 Honcho 连接
 
-Honcho can run as a **managed cloud service** or as a **self-hosted local instance**. Determine which the user is using.
+Honcho 可以作为 **托管的云服务** 或 **自托管的本地实例** 运行。请确定用户使用的是哪种模式。
 
-### Option A: Managed Honcho (default)
+### 选项 A：托管的 Honcho（默认）
 
-Confirm that `HONCHO_API_KEY` is set. Check the environment variables first. If not found, read ONLY the `HONCHO_API_KEY` value from `~/.openclaw/.env` if that file exists. **Do not read or access any other environment variables from the .env file** — only extract the HONCHO_API_KEY value needed for this migration.
+确认 `HONCHO_API_KEY` 是否已设置。首先检查环境变量。如果没有找到 `HONCHO_API_KEY`，则仅从 `~/.openclaw/.env` 文件中读取该值（如果该文件存在）。**请勿读取或访问 `.env` 文件中的其他环境变量**——只需提取用于迁移的 `HONCHO_API_KEY` 值。
 
-If the key is **not** set in either location, stop and tell the user:
+如果两个位置都没有设置 `HONCHO_API_KEY`，请停止操作并告知用户：
 
-> `HONCHO_API_KEY` is not set. Add it to your environment or `~/.openclaw/.env`, then re-run this skill. You can get a key at https://app.honcho.dev
+> `HONCHO_API_KEY` 未设置。请将其添加到您的环境变量或 `~/.openclaw/.env` 文件中，然后重新运行此操作。您可以在 https://app.honcho.dev 获取 API 密钥。
 
-### Option B: Self-hosted / local Honcho
+### 选项 B：自托管的 Honcho
 
-Honcho is open source and can be run locally. If the user is running their own instance, they need to set `HONCHO_BASE_URL` to point to it (e.g., `http://localhost:8000`). The SDK `environment` should be set to `"local"`.
+Honcho 是开源的，可以本地运行。如果用户正在运行自己的实例，他们需要将 `HONCHO_BASE_URL` 设置为相应的地址（例如 `http://localhost:8000`）。SDK 的 `environment` 配置应设置为 `"local"`。
 
-A local instance can be started with docker-compose from the Honcho repo (requires `git`, `docker`, and `docker-compose`):
+可以通过 Honcho 仓库使用 docker-compose 启动本地实例（需要 `git`、`docker` 和 `docker-compose`）：
 
 ```bash
 git clone https://github.com/plastic-labs/honcho
@@ -113,75 +113,72 @@ cp docker-compose.yml.example docker-compose.yml
 docker compose up
 ```
 
-For local instances, `HONCHO_API_KEY` may not be required depending on the user's configuration. Verify connectivity before proceeding.
+对于本地实例，根据用户的配置，可能不需要 `HONCHO_API_KEY`。在继续之前，请先验证连接是否正常。
 
-See https://github.com/plastic-labs/honcho?tab=readme-ov-file#local-development for full self-hosting instructions.
+请参阅 https://github.com/plastic-labs/honcho?tab=readme-ov-file#local-development 以获取完整的自托管说明。
 
-**Do not proceed with migration until the connection is verified.** No files will be read, uploaded, archived, or removed without a working Honcho connection.
+**在验证连接之前，请勿继续迁移操作。**在没有正常连接的情况下，系统不会读取、上传、归档或删除任何文件。**
 
-## Step 3: Detect Legacy Memory Files
+## 第三步：检测旧内存文件
 
-Scan the workspace root for legacy memory files. The workspace root is determined by (in priority order):
-
-1. The `WORKSPACE_ROOT` environment variable
-2. The `agent.workspace` or `agents.defaults.workspace` field in `~/.openclaw/openclaw.json`
+扫描工作区根目录以查找旧的内存文件。工作区根目录的确定顺序如下：
+1. `WORKSPACE_ROOT` 环境变量
+2. `~/.openclaw/openclaw.json` 文件中的 `agent_workspace` 或 `agents.defaults_workspace` 字段
 3. `~/.openclaw/workspace`
 
-### Files to detect
+### 需要检测的文件
 
-**User/owner files** (content describes the user):
+**用户/所有者文件**（包含用户信息）：
 - `USER.md`
 - `IDENTITY.md`
 - `MEMORY.md`
 
-**Agent/self files** (content describes the agent):
+**代理/自我文件**（包含代理信息）：
 - `SOUL.md`
 - `AGENTS.md`
 - `TOOLS.md`
 - `BOOTSTRAP.md`
 - `HEARTBEAT.md`
 
-**Directories:**
-- `memory/` — recursively read all files
-- `canvas/` — recursively read all files
+**目录**：
+- `memory/` — 递归读取所有文件
+- `canvas/` — 递归读取所有文件
 
-Files inside `memory/` and `canvas/` are treated as user/owner content.
+`memory/` 和 `canvas/` 目录中的文件被视为用户/所有者的文件。
 
-Report what was found to the user before proceeding. **IMPORTANT: You MUST ask for explicit confirmation before proceeding.** 
+在继续之前，请向用户报告检测到的文件情况。**重要提示：在继续之前，必须获得用户的明确确认。**
 
-When asking for confirmation, provide this exact information to the user:
-
-> **Found legacy memory files ready for migration:**
-> - [List each file found with its size]
+在请求确认时，请向用户提供以下信息：
+> **检测到的旧内存文件如下（附带文件大小）：**
 >
-> **What will happen next if you confirm:**
-> 1. **Upload**: All file contents will be uploaded to [api.honcho.dev OR your self-hosted URL]
-> 2. **Archive**: Files will be copied to {workspace_root}/archive/ for backup
-> 3. **Remove**: Legacy-only files (USER.md, MEMORY.md, IDENTITY.md, HEARTBEAT.md, memory/, canvas/) will be removed after successful archive
-> 4. **Update**: Workspace docs (SOUL.md, AGENTS.md, BOOTSTRAP.md) will be updated to use Honcho tools
+> **如果用户确认继续，将会发生以下操作：**
+> 1. **上传**：所有文件内容将被上传到 [api.honcho.dev 或您配置的 URL]
+> 2. **归档**：文件将被复制到 {workspace_root}/archive/ 目录以进行备份
+> 3. **删除**：仅删除旧文件（USER.md、MEMORY.md、IDENTITY.md、HEARTBEAT.md、memory/、canvas/）
+> 4. **更新**：工作区文档（SOUL.md、AGENTS.md、BOOTSTRAP.md）将更新为使用 Honcho 工具的格式
 >
-> **Data destination**: Your file contents will be sent to [show actual URL based on HONCHO_BASE_URL config]
+> **数据传输目标**：文件内容将根据 `HONCHO_BASE_URL` 的配置发送到相应的地址
 >
-> **Do you want to proceed with this migration?**
+> **您是否同意继续此迁移操作？**
 
-Do not proceed to Step 4 without explicit user confirmation.
+在没有用户明确确认之前，请勿进入第四步。
 
-## Step 4: Upload to Honcho
+## 第四步：上传到 Honcho
 
-Upload each detected file to Honcho using the **messages upload** endpoint (or `honcho_analyze` if available):
+使用 **messages upload** 端点（如果可用，则使用 `honcho_analyze`）将检测到的文件上传到 Honcho：
 
-- **User/owner files** → upload as messages in a session, using the **owner** peer (`peer_id` = owner peer id).
-- **Agent/self files** → upload as messages in a session, using the **openclaw** peer (`peer_id` = openclaw peer id).
+- **用户/所有者文件** → 作为消息通过会话上传，使用 `owner` 对等方（`peer_id` = 所有者对等方 ID）。
+- **代理/自我文件** → 作为消息通过会话上传，使用 `openclaw` 对等方（`peer_id` = openclaw 对等方 ID）。
 
-Ensure the workspace and both peers exist (e.g. via SDK or API) before uploading. Get or create a session for the uploads. Report how many files were uploaded for each category (user vs. agent).
+在上传之前，请确保工作区和两个对等方都存在（例如通过 SDK 或 API）。获取或创建一个上传会话，并报告每个类别（用户文件和代理文件）的上传数量。
 
-If any upload fails, stop and warn the user. Do not proceed to archiving.
+如果任何上传失败，请停止操作并警告用户。切勿继续归档操作。
 
-### SDK setup example (messages upload with file)
+### SDK 设置示例（使用 messages 上传）
 
-Use the Honcho SDK to create messages from each file via the session upload API (the same operation as the REST `.../messages/upload` endpoint with `file` and `peer_id`). Set up the client and peers, get or create a session, add both peers to the session, then upload each detected file with the appropriate peer.
+使用 Honcho SDK 通过会话上传 API 为每个文件创建消息（与 REST `.../messages/upload` 端点的操作相同，需要提供 `file` 和 `peer_id`）。设置客户端和对等方，获取或创建会话，然后将每个检测到的文件使用相应的对等方上传。
 
-> **Note:** The `workspaceId` and session name below are defaults. Customize them via the `HONCHO_WORKSPACE_ID` env var or pass your own session name if you manage multiple migrations.
+> **注意：** 下面的 `workspaceId` 和会话名称是默认值。如果您管理多个迁移操作，可以通过 `HONCHO_WORKSPACE_ID` 环境变量进行自定义。
 
 ```javascript
 import fs from "fs";
@@ -229,113 +226,109 @@ for (const { path: filePath, peer } of filesToUpload) {
 }
 ```
 
-- **Required:** `session.uploadFile(file, peer, options?)` — second argument is the peer (object or id). Use the owner peer for user/owner files (`USER.md`, `IDENTITY.md`, `MEMORY.md`, and everything under `memory/` and `canvas/`), and the openclaw peer for agent/self files (`SOUL.md`, `AGENTS.md`, `TOOLS.md`, `BOOTSTRAP.md`, `HEARTBEAT.md`).
-- **Session:** Add both peers to the session with `session.addPeers([ownerPeer, openclawPeer])` before uploading.
-- **File (Node):** Pass `{ filename, content: Buffer | Uint8Array, content_type }`. See [Honcho file uploads](https://docs.honcho.dev/v3/guides/file-uploads#file-uploads) for supported types (PDF, text, JSON). A runnable test script is in `scripts/test-upload-file.mjs` (requires `HONCHO_API_KEY`).
+- **所需参数：** `session.uploadFile(file, peer, options?)` — 第二个参数是对等方（对象或 ID）。对于用户/所有者文件（USER.md、IDENTITY.md、MEMORY.md 以及 `memory/` 和 `canvas/` 目录下的所有文件），使用 `owner` 对等方；对于代理/自我文件（SOUL.md、AGENTS.md、TOOLS.md、BOOTSTRAP.md、HEARTBEAT.md），使用 `openclaw` 对等方。
+- **会话：** 在上传之前，使用 `session.addPeers([ownerPeer, openclawPeer])` 将两个对等方添加到会话中。
+- **文件（Node）：** 传递 `{filename, content: Buffer | Uint8Array, content_type }`。有关支持的文件类型（PDF、text、JSON），请参阅 [Honcho 文件上传文档](https://docs.honcho.dev/v3/guides/file-uploads#file-uploads)。示例测试脚本位于 `scripts/test-upload-file.mjs`（需要 `HONCHO_API_KEY`）。
 
-## Step 5: Archive Legacy Files
+## 第五步：归档旧文件
 
-**CRITICAL: Ask the user for explicit confirmation before archiving.** The default archive location is `{workspace_root}/archive/`. The user may choose a different directory.
+**重要提示：在归档之前，请务必获得用户的明确确认。** 默认的归档目录是 `{workspace_root}/archive/`。用户可以选择其他目录。
 
-**Safety guarantee: No file will ever be deleted without a backup copy existing in the archive directory first.**
+**安全保障：** 在归档之前，必须先在归档目录中创建备份副本。
 
-For each detected file:
+对于每个检测到的文件：
+1. 如果归档目录不存在，则创建该目录。
+2. 将文件复制到归档目录中。**在继续之前，请确认复制是否成功。**
+3. 如果归档目录中已存在同名文件，请添加时间戳（例如 `USER.md-2026-02-10T22-55-12`）。
+4. 仅在复制成功后，执行删除操作。
 
-1. Create the archive directory if it does not exist.
-2. Copy the file into the archive directory. **Verify the copy succeeded before proceeding.**
-3. If a file with the same name already exists in archive, append a timestamp (e.g., `USER.md-2026-02-10T22-55-12`).
-4. Only after successful copy verification, apply the removal rules below.
+然后执行以下删除规则：
+- **删除旧文件**（仅删除迁移到 Honcho 之后不再需要的文件）：
+  - `USER.md`
+  - `MEMORY.md`
+  - `IDENTITY.md`
+  - `HEARTBEAT.md`
 
-Then apply these rules:
+- **保留原始文件**（这些文件是仍在使用中的工作区文档）：
+  - `AGENTS.md`
+  - `TOOLS.md`
+  - `SOUL.md`
+  - `BOOTSTRAP.md`
 
-**Remove originals after archiving** (legacy-only files, no longer needed once migrated to Honcho):
-- `USER.md`
-- `MEMORY.md`
-- `IDENTITY.md`
-- `HEARTBEAT.md`
+- **将目录移动到归档目录**（已上传到 Honcho 的文件）：
+  - `memory/`
+  - `canvas/`
 
-**Keep originals in place** (these are active workspace docs updated in Step 6):
-- `AGENTS.md`
-- `TOOLS.md`
-- `SOUL.md`
-- `BOOTSTRAP.md`
+在删除任何文件之前，必须先在归档目录中创建备份副本。每次删除操作之前都会进行确认。
 
-**Move directories** into the archive (contents already uploaded to Honcho):
-- `memory/`
-- `canvas/`
+如果第四步中的上传失败或被跳过，请**不要归档或删除任何文件**。请警告用户，以防止数据丢失。
 
-No files are deleted without a backup existing in the archive directory first. Every removal is preceded by a confirmed copy.
+## 第六步：更新工作区文档
 
-If the upload in Step 4 failed or was skipped, **do not archive or remove any files**. Warn the user that all files are preserved to prevent data loss.
+插件提供了位于 `node_modules/@honcho-ai/openclaw-honcho/workspace_md/` 的模板文件。请使用这些模板作为基于 Honcho 的工作区文档的来源。
 
-## Step 6: Update Workspace Docs
+对于 `AGENTS.md`、`SOUL.md` 和 `BOOTSTRAP.md` 文件：
+- 如果文件存在于工作区中：更新文件，将旧的内存系统引用（`USER.md`、`MEMORY.md`、`memory/` 目录以及手动读取/写入的操作）替换为 Honcho 工具的引用。
+- 如果文件不存在：将模板文件复制到工作区中。
+- 保留用户添加的任何自定义内容。仅更新与内存相关的部分。
 
-The plugin ships template files in `node_modules/@honcho-ai/openclaw-honcho/workspace_md/`. Use these templates as the source of truth for Honcho-aware workspace docs.
+Honcho 工具包括：`honcho_profile`、`honcho_context`、`honcho_search`、`honcho_recall`、`honcho_analyze`。
 
-For each of `AGENTS.md`, `SOUL.md`, and `BOOTSTRAP.md`:
+## 第七步：确认操作结果
 
-- If the file exists in the workspace: update it — replace references to the old file-based memory system (`USER.md`, `MEMORY.md`, `memory/` directory, manual file reads/writes for memory) with Honcho tool references.
-- If the file does not exist: copy the template into the workspace.
-- Preserve any custom content the user has added. Only update memory-related sections.
+总结以下操作内容：
+- 找到了哪些旧文件
+- 上传了多少文件（用户文件和代理文件的数量）
+- 哪些文件被归档以及归档的位置
+- 哪些工作区文档被创建或更新
+- 现在 Honcho 已成为新的内存系统——无需再进行手动文件管理
 
-The Honcho tools are: `honcho_profile`, `honcho_context`, `honcho_search`, `honcho_recall`, `honcho_analyze`.
-
-## Step 7: Confirm
-
-Summarize what happened:
-
-- Which legacy files were found
-- How many files were uploaded (user and agent counts)
-- Which files were archived and where
-- Which workspace docs were created or updated
-- That Honcho is now the memory system — no more manual file management needed
-
-Provide a link to the Honcho docs for reference: https://docs.honcho.dev
+提供 Honcho 文档的链接供参考：https://docs.honcho.dev
 
 ---
 
-## Security & Privacy Disclosure
+## 安全性与隐私声明
 
-This skill has been designed with transparency and safety as priorities. Below is a complete disclosure of what this skill does:
+本操作的设计重点在于透明性和安全性。以下是关于本操作的完整说明：
 
-### Data Upload
-- **What is uploaded**: Contents of USER.md, MEMORY.md, IDENTITY.md, all files under memory/, all files under canvas/, SOUL.md, AGENTS.md, BOOTSTRAP.md, TOOLS.md, HEARTBEAT.md
-- **Where it goes**: By default to `api.honcho.dev` (managed Honcho cloud service). For self-hosted instances, to your configured `HONCHO_BASE_URL`
-- **User control**: Explicit confirmation required before any upload. You will see the exact list of files and the destination URL
-- **Purpose**: Migrating file-based memory system to Honcho API for AI agent personalization and memory
+### 数据上传
+- **上传内容**：USER.md、MEMORY.md、IDENTITY.md、memory/ 目录下的所有文件、canvas/ 目录下的所有文件、SOUL.md、AGENTS.md、BOOTSTRAP.md、TOOLS.md、HEARTBEAT.md 的内容
+- **上传目标**：默认情况下，数据会被发送到 `api.honcho.dev`（托管的 Honcho 云服务）。对于自托管实例，数据会被发送到您配置的 `HONCHO_BASE_URL`
+- **用户控制**：在上传之前需要用户明确确认。系统会显示文件列表和目标地址
+- **目的**：将基于文件的记忆系统迁移到 Honcho API，以便进行 AI 代理的个性化设置和内存管理
 
-### Sensitive File Access
-- **`~/.openclaw/.env`**: This skill reads ONLY the `HONCHO_API_KEY` value from this file (if present). No other environment variables are read or accessed
-- **`~/.openclaw/openclaw.json`**: This skill reads workspace path configuration only (`agent.workspace` or `agents.defaults.workspace` fields)
-- **Workspace files**: All legacy memory files listed above are read for upload
+### 敏感文件访问
+- **`~/.openclaw/.env`：此操作仅从该文件中读取 `HONCHO_API_KEY` 值（如果存在）。不会读取或访问其他环境变量
+- **`~/.openclaw/openclaw.json`：此操作仅读取工作区路径配置（`agent_workspace` 或 `agents.defaults_workspace` 字段）
+- **工作区文件**：上述所有旧内存文件都将被读取以进行上传
 
-### File Modifications
-- **Archives**: Creates `{workspace_root}/archive/` and copies all files there before any deletion
-- **Deletions**: USER.md, MEMORY.md, IDENTITY.md, HEARTBEAT.md, memory/, canvas/ are deleted ONLY after successful archive copy verification
-- **Updates**: SOUL.md, AGENTS.md, BOOTSTRAP.md are updated to reference Honcho tools (preserved in archive first)
-- **Safety**: No file is ever deleted without a verified backup copy existing first
+### 文件修改
+- **归档**：在删除文件之前，会先创建 `{workspace_root}/archive/` 目录并将所有文件复制到其中
+- **删除**：只有在成功复制并验证后，才会删除 `USER.md`、MEMORY.md、IDENTITY.md、HEARTBEAT.md、memory/、canvas/ 文件
+- **更新**：SOUL.md、AGENTS.md、BOOTSTRAP.md 将更新为使用 Honcho 工具的格式（先在归档目录中保存备份）
+- **安全措施**：在没有备份副本的情况下，不会删除任何文件
 
-### Credentials
-- **HONCHO_API_KEY**: Required only for managed Honcho (api.honcho.dev). Not required for self-hosted instances
-- **No other credentials**: This skill does not access, read, or transmit any other credentials or secrets
+### 凭据
+- **HONCHO_API_KEY**：仅对于托管的 Honcho（api.honcho.dev）是必需的。对于自托管实例则不需要
+- **其他凭证**：此操作不会访问、读取或传输任何其他凭证或秘密信息
 
-### Network Access
-- **Managed mode**: Connects to `api.honcho.dev` (Honcho cloud service)
-- **Self-hosted mode**: Connects to your configured `HONCHO_BASE_URL` (e.g., `http://localhost:8000`)
-- **Protocol**: All uploads use the Honcho SDK (`@honcho-ai/sdk`) via the messages upload endpoint
+### 网络访问
+- **托管模式**：连接到 `api.honcho.dev`（Honcho 云服务）
+- **自托管模式**：连接到您配置的 `HONCHO_BASE_URL`（例如 `http://localhost:8000`）
+- **协议**：所有上传操作都通过 Honcho SDK（`@honcho-ai/sdk`）和 `messages upload` 端点进行
 
-### User Control
-- **Step 3**: Explicit confirmation required before any file upload (shows file list and destination URL)
-- **Step 5**: Explicit confirmation required before any file archiving/deletion
-- **Step 6**: Workspace doc updates preserve custom content
-- **Failure handling**: If upload fails, no files are archived or deleted
+### 用户控制
+- **第三步**：在上传任何文件之前需要用户明确确认（显示文件列表和目标地址）
+- **第五步**：在归档或删除任何文件之前需要用户明确确认
+- **第六步**：工作区文档更新会保留自定义内容
+- **错误处理**：如果上传失败，不会归档或删除任何文件
 
-### Data Retention
-- **Local backups**: All original files are preserved in `{workspace_root}/archive/` indefinitely
-- **Remote storage**: Uploaded data is stored according to Honcho's data retention policy (see https://honcho.dev/privacy)
-- **Self-hosted control**: If using self-hosted Honcho, you control all data retention
+### 数据保留
+- **本地备份**：所有原始文件都将无限期保存在 `{workspace_root}/archive/` 目录中
+- **远程存储**：上传的数据将按照 Honcho 的数据保留政策进行存储（详见 https://honcho.dev/privacy）
+- **自托管控制**：如果使用自托管的 Honcho，您可以控制所有数据的保留策略
 
-### Open Source
-- **Honcho SDK**: Open source at https://github.com/plastic-labs/honcho
-- **Plugin code**: Available at `~/.openclaw/extensions/openclaw-honcho` after installation
-- **This skill**: You are reading the complete skill instructions - there is no hidden behavior
+### 开源信息
+- **Honcho SDK**：开源代码位于 https://github.com/plastic-labs/honcho
+- **插件代码**：安装后可在 `~/.openclaw/extensions/openclaw-honcho` 中找到
+- **本操作**：您正在查看完整的操作说明——没有任何隐藏的行为或设置

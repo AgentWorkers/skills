@@ -1,77 +1,74 @@
 ---
 name: "Remind"
-description: "Auto-learns when and how to bring things back to your human's attention. Adapts timing and style to their preferences."
+description: "它会自动学习何时以及如何将相关信息呈现在用户面前，并根据用户的偏好调整呈现的时机和方式。"
 ---
 
-## What Remind Is (and Isn't)
+## 什么是提醒（以及什么不是提醒）
 
-**Remind = "Just a reminder that..."**
-- Things the human already knows but might forget
-- Planned events, commitments, deadlines they set
-- Bringing information back to mind at the right moment
+**提醒 = “只是一个提醒……”**
+- 人类已经知道但可能会忘记的事情
+- 人类自己设定的计划事件、承诺或截止日期
+- 在适当的时刻将信息重新呈现在用户面前
 
-**Remind ≠ Alert** (detecting new/urgent events)
-**Remind ≠ Notify** (generic notifications)
+**提醒 ≠ 警报**（用于检测新的或紧急的事件）
+**提醒 ≠ 通知**（用于发送通用的通知）
 
-A reminder is always about something the human was already aware of.
+提醒总是关于人类已经知道的信息。
 
-## Auto-Adaptive System
+## 自适应系统
 
-This skill auto-evolves. Learn what to remind, when, and how—through observation.
+这项技能会随着使用而自动优化。通过观察，系统会逐渐学会该提醒什么、何时提醒以及如何提醒。
 
-**Core Loop:**
-1. **Detect** — Notice remindable commitments (meetings, deadlines, promises)
-2. **Evaluate** — Check stored preferences for timing and style
-3. **Remind** — Bring it back to attention at the right moment
-4. **Observe** — Notice reactions ("too early", "I knew", "thanks, forgot")
-5. **Confirm** — After 2+ signals, propose adjustment
-6. **Store** — Update preferences below
+**核心流程：**
+1. **检测** — 注意需要提醒的事项（会议、截止日期、承诺等）
+2. **评估** — 检查用户存储的偏好设置（关于提醒的时间和方式）
+3. **提醒** — 在适当的时刻将信息再次呈现给用户
+4. **观察** — 注意用户的反应（“太早了”、“我知道了”、“谢谢，我忘了”等）
+5. **确认** — 如果用户有两次或以上的相同反应，建议调整提醒方式
+6. **更新** — 根据用户的反馈更新偏好设置
 
-Check `triggers.md` for what qualifies as remindable. Check `timing.md` for lead times.
-
----
-
-## Reminder Components
-
-- **What** — The commitment/event to recall
-- **When** — Lead time before it matters
-- **How** — Tone and detail level
+有关哪些事项属于需要提醒的范围，请查看 `triggers.md` 文件；有关提醒的提前时间设置，请查看 `timing.md` 文件。
 
 ---
 
-## Entry Format
+## 提醒的组成部分
+- **内容** — 需要提醒的事项或事件
+- **时间** — 提醒前的提前时间
+- **方式** — 提醒的语气和详细程度
 
+---
+
+## 输入格式
 `category: preference (level) [notes]`
 
-Examples:
-- `meetings: 30 min before (confirmed)`
-- `deadlines: 1 day + morning-of (pattern)`
-- `family events: 1 week before (confirmed)`
+示例：
+- `meetings: 30 min before (confirmed)`  
+- `deadlines: 1 day + morning-of (pattern)`  
+- `family events: 1 week before (confirmed)`  
 - `daily standups: skip (confirmed) [muscle memory]`
 
 ---
 
-### Timing
-<!-- Lead times by category -->
+### 提醒的时间设置
+<!-- 不同类别的提前时间设置 -->
 
-### Style  
-<!-- Brief vs detailed, casual vs formal -->
+### 提醒的方式
+<!-- 简洁 vs 详细，随意 vs 正式 -->
 
-### Always
-<!-- Things to remind even if they seem aware -->
+### 必须提醒的事项
+**即使用户似乎已经知道也需要提醒**
 
-### Skip
-<!-- Things they never need reminding about -->
-
----
-
-## When NOT to Remind
-
-- They just mentioned it (obviously aware)
-- It's something new they don't know yet (that's Alert)
-- Generic status update (that's Notify)
-- Low stakes + uncertain → skip, learn from reaction
+### 可以忽略的提醒
+**用户永远不需要被提醒的事项**
 
 ---
 
-*Empty sections = still learning. Observe and fill.*
+## 何时不需要发送提醒
+- 用户刚刚提到了某件事（显然他们已经知道了）
+- 这是用户还不知道的新信息（这种情况应该使用警报功能）
+- 通用的状态更新（这种情况应该使用通知功能）
+- 风险较低且结果不确定的事项 → 可以忽略；根据用户的反应来调整提醒策略
+
+---
+
+*如果某个部分为空，说明你还在学习中。请继续观察并填写相关信息。*

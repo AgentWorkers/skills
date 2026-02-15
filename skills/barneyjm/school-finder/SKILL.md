@@ -1,12 +1,12 @@
 ---
 name: school-finder
-description: "Locate elementary schools, high schools, and universities near any address using Camino AI's location intelligence with AI-powered ranking."
+description: "使用 Camino AI 的位置智能功能，结合基于人工智能的排名系统，可以查找任何地址附近的小学、高中和大学。"
 metadata: {"clawdbot":{"emoji":"🏫","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅行计划、房地产信息、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill school-finder
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install school-finder
 # or: pnpm dlx clawhub@latest install school-finder
 # or: bunx clawhub@latest install school-finder
 ```
 
-# School Finder
+# 学校查找
 
-Locate elementary schools, high schools, and universities near any location. Uses OpenStreetMap data with AI-powered ranking to find educational institutions.
+可以查找任意地点附近的小学、高中和大学。该技能利用 OpenStreetMap 数据，并通过人工智能算法对教育机构进行排名。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回结果：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月 1000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,12 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+然后重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
-
+### 通过 Shell 脚本使用
 ```bash
 # Find schools near coordinates
 ./scripts/school-finder.sh '{"lat": 40.7589, "lon": -73.9851, "radius": 1600}'
@@ -70,24 +69,23 @@ Restart Claude Code.
 ./scripts/school-finder.sh '{"query": "universities in Boston", "limit": 15}'
 ```
 
-### Via curl
-
+### 通过 curl 命令使用
 ```bash
 curl -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/query?query=schools&lat=40.7589&lon=-73.9851&radius=2000&rank=true"
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| query | string | No | "schools" | Search query (override for specific school types) |
-| lat | float | No | - | Latitude for search center. AI generates if omitted for known locations. |
-| lon | float | No | - | Longitude for search center. AI generates if omitted for known locations. |
-| radius | int | No | 2000 | Search radius in meters |
-| limit | int | No | 20 | Maximum results (1-100) |
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
+|---------|------|---------|-----------|-------------|
+| query | string | 否 | "schools" | 搜索查询（可指定具体的学校类型） |
+| lat | float | 否 | - | 搜索中心的纬度。如果已知位置，则由 AI 自动生成。 |
+| lon | float | 否 | - | 搜索中心的经度。如果已知位置，则由 AI 自动生成。 |
+| radius | int | 否 | 2000 | 搜索半径（单位：米） |
+| limit | int | 否 | 20 | 最大返回结果数量（1-100） |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -113,28 +111,28 @@ curl -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Find elementary schools near a home
+### 查找家附近的小学
 ```bash
 ./scripts/school-finder.sh '{"query": "elementary schools", "lat": 40.7128, "lon": -74.0060, "radius": 1600}'
 ```
 
-### Find high schools in a suburb
+### 查找郊区的高中
 ```bash
 ./scripts/school-finder.sh '{"query": "high schools in Naperville Illinois", "limit": 10}'
 ```
 
-### Find universities near downtown
+### 查找市中心附近的大学
 ```bash
 ./scripts/school-finder.sh '{"query": "universities and colleges", "lat": 42.3601, "lon": -71.0589, "radius": 5000}'
 ```
 
-## Best Practices
+## 最佳实践：
 
-- Use 1600m radius (approximately 1 mile) for elementary school searches near a home
-- Use larger radius (3000-5000m) for high school and university searches
-- Specify school type in the query for more targeted results (e.g., "elementary schools", "high schools", "universities")
-- Combine with the `real-estate` skill for a complete neighborhood evaluation
-- Combine with the `route` skill to calculate walking or driving times from home to school
-- Combine with the `relationship` skill to check distances between home and multiple schools
+- 在查找家附近的小学时，建议使用 1600 米（约 1 英里）的搜索半径。
+- 在查找高中和大学时，建议使用较大的搜索半径（3000-5000 米）。
+- 在查询中指定学校类型，以获得更精确的结果（例如：`elementary schools`、`high schools`、`universities`）。
+- 可与 `real-estate` 技能结合使用，对整个社区进行综合评估。
+- 可与 `route` 技能结合使用，计算从家到学校的步行或驾驶时间。
+- 可与 `relationship` 技能结合使用，查看家与多所学校之间的距离。

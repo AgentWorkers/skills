@@ -8,23 +8,23 @@ description: >
   managing the full task lifecycle (kinds 33400, 33401, 3402).
 ---
 
-# Catallax Skill
+# Catallax 技能
 
-Interact with Catallax — a decentralized contract work protocol on Nostr using Lightning/Cashu payments and trusted escrow arbiters.
+Catallax 是一个基于 Nostr 的去中心化合约工作协议，支持 Lightning/Cashu 支付方式，并采用可信的第三方仲裁机构来处理交易。
 
-## Protocol Overview
+## 协议概述
 
-Read `references/NIP-3400.md` for the full spec. Key concepts:
+请参阅 `references/NIP-3400.md` 以获取完整的协议规范。主要概念包括：
 
-- **Patron**: Creates tasks, funds escrow, assigns workers
-- **Arbiter**: Escrow agent who judges work and handles payment
-- **Free Agent**: Applies for tasks, delivers work, gets paid
-- **Kinds**: 33400 (arbiter service), 33401 (task proposal), 3402 (task conclusion)
-- **Status flow**: proposed → funded → in_progress → submitted → concluded
+- **赞助者（Patron）**：创建任务、设立资金托管、分配工作给工作者。
+- **仲裁者（Arbiter）**：负责评估工作质量并处理支付的第三方机构。
+- **自由工作者（Free Agent）**：申请任务、完成任务并获取报酬。
+- **事件类型（Kinds）**：33400（仲裁服务）、33401（任务提案）、3402（任务完成）。
+- **状态流转**：提案（proposed）→ 资金募集（funded）→ 进行中（in_progress）→ 提交（submitted）→ 完成（concluded）。
 
-## Querying Tasks
+## 查询任务
 
-Use `nak` to query kind 33401 events from relays:
+使用 `nak` 命令从相关中继（relays）查询类型为 33401 的事件：
 
 ```bash
 # List all task proposals (limit 50)
@@ -43,40 +43,39 @@ nak req -k 33401 -l 100 wss://relay.damus.io | \
   done
 ```
 
-Parse the content field as JSON to get title, description, requirements. Parse tags for amount, status, categories.
+将 `content` 字段解析为 JSON 格式，以获取任务的标题、描述和需求信息。同时解析 `tags` 标签以获取金额、状态和分类信息。
 
-### Display Format
+### 显示格式
 
-When presenting tasks to the user, show:
-- **Title** (from content.title)
-- **Bounty** (from `amount` tag, in sats — show "?" if missing)
-- **Status** (from `status` tag)
-- **Date** (from created_at)
-- **Categories** (from `t` tags)
-- **Description** (from content.description, truncated)
-- **Funding type** (from `funding_type` tag: "patron" or "crowdfunding")
+向用户展示任务时，应包括以下内容：
+- **标题**（来自 `content.title`）
+- **赏金**（来自 `amount` 标签，单位为 sats；若缺失则显示“?”）
+- **状态**（来自 `status` 标签）
+- **创建时间**（来自 `created_at`）
+- **分类**（来自 `t` 标签）
+- **描述**（来自 `content.description`，部分内容会被截断显示）
+- **资金来源**（来自 `funding_type` 标签：“patron”表示由赞助者资助，“crowdfunding”表示通过众筹获得）
 
-## Querying Arbiters
+## 查询仲裁者
 
 ```bash
 # List arbiter services
 nak req -k 33400 -l 50 wss://relay.damus.io
 ```
 
-Parse content for name, about, policy. Parse tags for fee_type, fee_amount, min/max amounts, categories.
+解析仲裁者的相关信息，包括姓名（name）、简介（about）和收费标准（policy）。同时解析 `tags` 标签以获取费用类型（fee_type）、费用金额（fee_amount）以及费用的下限/上限（min/max_amount）和分类（categories）。
 
-### Display Format
+### 显示格式
 
-When presenting arbiters:
-- **Name** (from content.name)
-- **Fee** (fee_type + fee_amount — e.g. "5%" or "1000 sats flat")
-- **Min/Max** (from min_amount/max_amount tags)
-- **Categories** (from `t` tags)
-- **About** (from content.about)
+展示仲裁者信息时，应包括：
+- **姓名**（来自 `content.name`）
+- **费用**（费用类型 + 费用金额，例如“5%”或“1000 sats”）
+- **费用范围**（来自 `min_amount/max_amount` 标签）
+- **简介**（来自 `content.about`）
 
-## Creating a Task Proposal
+## 创建任务提案
 
-To create a task as a Patron, publish a kind 33401 event:
+作为赞助者，需要发布类型为 33401 的事件来创建新任务：
 
 ```bash
 # Build and publish task proposal
@@ -92,13 +91,13 @@ nak event -k 33401 \
   wss://relay.damus.io wss://nos.lol wss://relay.primal.net
 ```
 
-Generate the d-tag slug from the title (lowercase, hyphenated, with random suffix for uniqueness).
+根据任务标题生成一个唯一的 d-tag（小写、使用连字符连接，并添加随机后缀）。
 
-**Important**: The content field must be valid JSON with title, description, and optionally requirements and deadline.
+**重要提示**：`content` 字段必须包含有效的 JSON 数据，其中必须包含任务标题、描述，以及可选的需求和截止日期。
 
-## Updating Task Status
+## 更新任务状态
 
-Since kind 33401 is addressable replaceable, publish a new event with the same d-tag to update. Include all original tags plus changes:
+由于类型为 33401 的事件可以被替换，因此需要发布一个新的事件来更新任务状态。新事件应包含所有原有的标签以及更改的内容：
 
 ```bash
 # Update to funded (add zap receipt reference)
@@ -111,9 +110,9 @@ nak event -k 33401 \
   wss://relay.damus.io
 ```
 
-## Submitting Work (as Free Agent)
+## 提交工作（作为自由工作者）
 
-Work delivery is coordinated out-of-band per the protocol. However, agents may use kind 951 (work delivery) as a convention:
+工作交付过程由协议另行规定。不过，工作者也可以使用类型为 951 的事件来表示工作已完成：
 
 ```bash
 nak event -k 951 \
@@ -124,7 +123,7 @@ nak event -k 951 \
   wss://relay.damus.io
 ```
 
-## Task Conclusion (Arbiter only)
+## 完成任务（仅限仲裁者操作）
 
 ```bash
 nak event -k 3402 \
@@ -140,33 +139,33 @@ nak event -k 3402 \
   wss://relay.damus.io
 ```
 
-## Common Queries
+## 常见操作
 
-| User says | Action |
+| 用户操作 | 对应动作 |
 |-----------|--------|
-| "find bounties" / "show tasks" | Query kind 33401, filter status=proposed or funded |
-| "create a task" / "post a bounty" | Build and publish kind 33401 |
-| "find arbiters" | Query kind 33400 |
-| "submit work" / "deliver" | Publish kind 951 referencing the task |
-| "check my tasks" | Query kind 33401 filtered by user's pubkey in p-tags |
-| "what's the status" | Fetch specific task by d-tag, report status |
+| “查找赏金” / “显示任务” | 查询类型为 33401 的任务，筛选状态为“proposed”或“funded”的任务 |
+| “创建任务” / “发布赏金” | 创建并发布类型为 33401 的任务提案 |
+| “查找仲裁者” | 查询类型为 33400 的仲裁者信息 |
+| “提交工作” | 发布类型为 951 的事件以表示工作已完成 |
+| “查看我的任务” | 根据用户的公钥（pubkey）筛选类型为 33401 的任务 |
+| “查询任务状态” | 根据 d-tag 查询特定任务的状态 |
 
-## Reference Client
+## 参考客户端
 
-For visual browsing: https://catallax-reference-client.netlify.app/catallax
+用于可视化浏览任务信息的客户端：https://catallax-reference-client.netlify.app/catallax
 
-## Key Relays
+## 主要中继节点
 
-Query multiple relays for best coverage:
+为了获得更全面的查询结果，请同时查询以下中继节点：
 - wss://relay.damus.io
 - wss://nos.lol
 - wss://relay.primal.net
 
-**Note**: Some relays may not return results for `nak req -k 33401` due to kind filtering. If `nak` returns empty results, fall back to a WebSocket script approach — open a WebSocket connection, send a REQ with `{"kinds":[33401],"limit":50}`, and collect EVENT responses until EOSE.
+**注意**：某些中继节点可能因过滤规则而无法返回类型为 33401 的事件。如果 `nak` 命令返回空结果，可以尝试使用 WebSocket 脚本：打开 WebSocket 连接，发送请求 `{“kinds”:[33401],“limit”:50}`，并持续接收响应直到接收完所有事件。
 
-## Edge Cases
+## 特殊情况处理：
 
-- **Missing amount tag**: Some tasks use crowdfunding (funding_type=crowdfunding) with a NIP-75 goal tag instead of a fixed amount. Display bounty as "crowdfunded" in this case.
-- **Content format**: Content should be JSON but some early tasks used plain text. Try JSON.parse first, fall back to treating content as description.
-- **Stale tasks**: Tasks with status=proposed older than 30 days may be abandoned. Note age when displaying.
-- **Multiple relays**: Always publish to 3+ relays for discoverability. Query from multiple relays and deduplicate by event id.
+- **缺少金额信息**：部分任务采用众筹方式（`funding_type=crowdfunding`），此时赏金信息会显示为“crowdfunded”。
+- **内容格式**：任务内容应为 JSON 格式，但早期的一些任务可能使用纯文本格式。首先尝试使用 `JSON.parse` 进行解析，如果解析失败则将其视为普通描述信息处理。
+- **过期的任务**：状态为“proposed”且创建时间超过 30 天的任务可能被视为已放弃。在显示任务信息时需注明其状态。
+- **多中继查询**：为确保任务能被更多用户发现，请将任务信息发布到至少 3 个中继节点，并通过事件 ID 进行去重处理。

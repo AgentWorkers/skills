@@ -1,10 +1,10 @@
 ---
 name: portainer
-description: Control Docker containers and stacks via Portainer API. List containers, start/stop/restart, view logs, and redeploy stacks from git.
+description: 通过 Portainer API 控制 Docker 容器和容器组：可以列出容器、启动/停止/重启容器、查看日志，以及从 Git 仓库重新部署容器组。
 metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["curl","jq"],"env":["PORTAINER_API_KEY"]},"primaryEnv":"PORTAINER_API_KEY"}}
 ---
 
-# 🐳 Portainer Skill
+# 🐳 Portainer 技能
 
 ```
     ╔═══════════════════════════════════════════════════════════╗
@@ -17,73 +17,73 @@ metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["curl","jq"],"env":["P
     ╚═══════════════════════════════════════════════════════════╝
 ```
 
-> *"Docker containers? I'll handle them from my lily pad."* 🐸
+> “Docker 容器？那对我来说小菜一碟。” 🐸
 
 ---
 
-## 📖 What Does This Skill Do?
+## 📖 这个技能的作用是什么？
 
-The **Portainer Skill** gives you control over your Docker infrastructure through Portainer's REST API. Manage containers, stacks, and deployments without touching the web UI.
+**Portainer 技能** 允许你通过 Portainer 的 REST API 来控制你的 Docker 基础设施。无需使用 Web UI，即可管理容器、容器组（Stacks）和部署任务。
 
-**Features:**
-- 📊 **Status** — Check Portainer server status
-- 🖥️ **Endpoints** — List all Docker environments
-- 📦 **Containers** — List, start, stop, restart containers
-- 📚 **Stacks** — List and manage Docker Compose stacks
-- 🔄 **Redeploy** — Pull from git and redeploy stacks
-- 📜 **Logs** — View container logs
+**功能包括：**
+- 📊 **状态** — 检查 Portainer 服务器的状态
+- 🖥️ **端点（Endpoints）** — 列出所有 Docker 环境
+- 📦 **容器（Containers）** — 列出、启动、停止、重启容器
+- 📚 **容器组（Stacks）** — 列出和管理 Docker Compose 容器组
+- 🔄 **重新部署（Redeploy）** — 从 Git 中拉取代码并重新部署容器组
+- 📜 **日志（Logs）** — 查看容器日志
 
 ---
 
-## ⚙️ Requirements
+## ⚙️ 需求
 
-| What | Details |
+| 需求 | 详细信息 |
 |------|---------|
-| **Portainer** | Version 2.x with API access |
-| **Tools** | `curl`, `jq` |
-| **Auth** | API Access Token |
+| **Portainer** | 版本 2.x 及以上，且支持 API 访问 |
+| **工具** | `curl`, `jq` |
+| **认证** | API 访问令牌 |
 
-### Setup
+### 设置
 
-1. **Get API Token from Portainer:**
-   - Log into Portainer web UI
-   - Click username → My Account
-   - Scroll to "Access tokens" → Add access token
-   - Copy the token (you won't see it again!)
+1. **从 Portainer 获取 API 令牌：**
+   - 登录 Portainer Web UI
+   - 点击用户名 → 我的账户（My Account）
+   - 向下滚动至 “访问令牌”（Access Tokens） → 添加访问令牌
+   - 复制令牌（此令牌之后将无法再次查看！）
 
-2. **Configure credentials:**
+2. **配置凭据：**
    ```bash
    # Add to ~/.clawdbot/.env
    PORTAINER_URL=https://your-portainer-server:9443
    PORTAINER_API_KEY=ptr_your_token_here
    ```
 
-3. **Ready!** 🚀
+3. **设置完成！** 🚀
 
 ---
 
-## 🛠️ Commands
+## 🛠️ 命令
 
-### `status` — Check Portainer Server
+### `status` — 检查 Portainer 服务器状态
 
 ```bash
 ./portainer.sh status
 ```
 
-**Output:**
+**输出：**
 ```
 Portainer v2.27.3
 ```
 
 ---
 
-### `endpoints` — List Environments
+### `endpoints` — 列出所有 Docker 环境
 
 ```bash
 ./portainer.sh endpoints
 ```
 
-**Output:**
+**输出：**
 ```
 3: portainer (local) - ✓ online
 4: production (remote) - ✓ online
@@ -91,7 +91,7 @@ Portainer v2.27.3
 
 ---
 
-### `containers` — List Containers
+### `containers` — 列出所有容器
 
 ```bash
 # List containers on default endpoint (4)
@@ -101,7 +101,7 @@ Portainer v2.27.3
 ./portainer.sh containers 3
 ```
 
-**Output:**
+**输出：**
 ```
 steinbergerraum-web-1    running    Up 2 days
 cora-web-1               running    Up 6 weeks
@@ -110,13 +110,13 @@ minecraft                running    Up 6 weeks (healthy)
 
 ---
 
-### `stacks` — List All Stacks
+### `stacks` — 列出所有容器组
 
 ```bash
 ./portainer.sh stacks
 ```
 
-**Output:**
+**输出：**
 ```
 25: steinbergerraum - ✓ active
 33: cora - ✓ active
@@ -126,13 +126,13 @@ minecraft                running    Up 6 weeks (healthy)
 
 ---
 
-### `stack-info` — Stack Details
+### `stack-info` — 查看容器组详情
 
 ```bash
 ./portainer.sh stack-info 25
 ```
 
-**Output:**
+**输出：**
 ```json
 {
   "Id": 25,
@@ -146,25 +146,20 @@ minecraft                running    Up 6 weeks (healthy)
 
 ---
 
-### `redeploy` — Pull & Redeploy Stack 🔄
+### `redeploy` — 从 Git 中拉取代码并重新部署容器组 🔄
 
 ```bash
 ./portainer.sh redeploy 25
 ```
 
-**Output:**
-```
-✓ Stack 'steinbergerraum' redeployed successfully
-```
-
-This will:
-1. Pull latest code from git
-2. Rebuild containers if needed
-3. Restart the stack
+**操作步骤：**
+1. 从 Git 中拉取最新代码
+2. 如有需要，重新构建容器
+3. 重启容器组
 
 ---
 
-### `start` / `stop` / `restart` — Container Control
+### `start` / `stop` / `restart` — 控制容器的运行状态
 
 ```bash
 # Start a container
@@ -180,14 +175,14 @@ This will:
 ./portainer.sh restart steinbergerraum-web-1 4
 ```
 
-**Output:**
+**输出：**
 ```
 ✓ Container 'steinbergerraum-web-1' restarted
 ```
 
 ---
 
-### `logs` — View Container Logs
+### `logs` — 查看容器日志
 
 ```bash
 # Last 100 lines (default)
@@ -199,23 +194,23 @@ This will:
 
 ---
 
-## 🎯 Example Workflows
+## 🎯 示例工作流程
 
-### 🚀 "Deploy Website Update"
+### 🚀 “部署网站更新”
 ```bash
 # After merging PR
 ./portainer.sh redeploy 25
 ./portainer.sh logs steinbergerraum-web-1 4 20
 ```
 
-### 🔧 "Debug Container"
+### 🔧 “调试容器”
 ```bash
 ./portainer.sh containers
 ./portainer.sh logs cora-web-1
 ./portainer.sh restart cora-web-1
 ```
 
-### 📊 "System Overview"
+### 📊 “系统概览”
 ```bash
 ./portainer.sh status
 ./portainer.sh endpoints
@@ -225,31 +220,31 @@ This will:
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-### ❌ "Authentication required / Repository not found"
+### ❌ “需要认证 / 未找到仓库”
 
-**Problem:** Stack redeploy fails with git auth error
+**问题：** 由于认证错误导致容器组重新部署失败
 
-**Solution:** The stack needs `repositoryGitCredentialID` parameter. The script handles this automatically by reading from the existing stack config.
-
----
-
-### ❌ "Container not found"
-
-**Problem:** Container name doesn't match
-
-**Solution:** Use exact name from `./portainer.sh containers`:
-- Include the full name: `steinbergerraum-web-1` not `steinbergerraum`
-- Names are case-sensitive
+**解决方法：** 容器组配置中需要 `repositoryGitCredentialID` 参数。脚本会自动从现有配置中读取该参数。
 
 ---
 
-### ❌ "PORTAINER_URL and PORTAINER_API_KEY must be set"
+### ❌ “找不到容器”
 
-**Problem:** Credentials not configured
+**问题：** 容器名称不匹配
 
-**Solution:**
+**解决方法：** 使用 `./portainer.sh containers` 文件中提供的完整容器名称：
+- 请使用完整名称，例如 `steinbergerraum-web-1` 而不是 `steinbergerraum`
+- 容器名称区分大小写
+
+---
+
+### ❌ “必须设置 PORTAINER_URL 和 PORTAINER_API_KEY”
+
+**问题：** 凭据未配置
+
+**解决方法：**
 ```bash
 # Add to ~/.clawdbot/.env
 echo "PORTAINER_URL=https://your-server:9443" >> ~/.clawdbot/.env
@@ -258,7 +253,7 @@ echo "PORTAINER_API_KEY=ptr_your_token" >> ~/.clawdbot/.env
 
 ---
 
-## 🔗 Integration with Clawd
+## 🔗 与 Clawd 的集成
 
 ```
 "Redeploy the website"
@@ -276,15 +271,15 @@ echo "PORTAINER_API_KEY=ptr_your_token" >> ~/.clawdbot/.env
 
 ---
 
-## 📜 Changelog
+## 📜 更新日志
 
-| Version | Date | Changes |
+| 版本 | 日期 | 更改内容 |
 |---------|------|---------|
-| 1.0.0 | 2026-01-25 | Initial release |
+| 1.0.0 | 2026-01-25 | 初始发布 |
 
 ---
 
-## 🐸 Credits
+## 🐸 致谢
 
 ```
   @..@
@@ -293,15 +288,15 @@ echo "PORTAINER_API_KEY=ptr_your_token" >> ~/.clawdbot/.env
  ^^  ^^     for your code to hop around!"
 ```
 
-**Author:** Andy Steinberger (with help from his Clawdbot Owen the Frog 🐸)  
-**Powered by:** [Portainer](https://portainer.io/) API  
-**Part of:** [Clawdbot](https://clawdhub.com) Skills Collection
+**作者：** Andy Steinberger（在 Clawdbot Owen the Frog 的帮助下完成）  
+**技术支持：** [Portainer](https://portainer.io/) API  
+**所属项目：** [Clawdbot](https://clawdhub.com) 技能库
 
 ---
 
 <div align="center">
 
-**Made with 💚 for the Clawdbot Community**
+**专为 Clawdbot 社区精心制作**
 
 *Ribbit!* 🐸
 

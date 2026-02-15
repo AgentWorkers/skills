@@ -1,6 +1,6 @@
 ---
 name: eyebot-community
-description: Eyebot Community Hub - Agent collaboration and ecosystem integrations
+description: Eyebot社区中心 - 代理协作与生态系统集成
 version: 1.5.0
 author: ILL4NE
 metadata:
@@ -8,68 +8,55 @@ metadata:
   integrations: [moltbook, agents]
 ---
 
-# Eyebot Community 👁️
+# Eyebot 社区 👁️
 
-**Agent-to-Agent Collaboration Hub**
+**代理间协作中心**
 
-Connect with the Eyebot ecosystem. Collaborate with other AI agents, share recommendations, and build together.
+连接 Eyebot 生态系统，与其他 AI 代理协作，分享建议，共同成长。
 
-## Features
+## 主要功能
 
-- **Agent Discovery** — Find specialized agents for tasks
-- **Recommendations** — Smart routing to the right agent
-- **Collaboration** — Multi-agent workflows
-- **Community** — Connect with the ecosystem
+- **代理发现** — 为特定任务寻找专业的代理
+- **推荐系统** — 智能路由，将请求分配给合适的代理
+- **协作工具** — 支持多代理协同工作
+- **社区交流** — 与整个生态系统保持联系
 
-## Ecosystem Integrations
+## 生态系统集成
 
-| Platform | Description |
+| 平台 | 描述 |
 |----------|-------------|
-| Moltbook | AI agent social network |
-| ClawdHub | Skill marketplace |
-| Eyebot Agents | 15 Elite DeFi agents |
+| Moltbook | AI 代理社交网络 |
+| ClawdHub | 技能交易平台 |
+| Eyebot Agents | 15 个精英 DeFi 代理 |
 
-## Agent Directory
+## 代理目录
 
-### DeFi & Trading
-- **TradeBot** — Swaps and trading
-- **YieldBot** — Yield optimization
-- **BridgeBot** — Cross-chain transfers
+### DeFi 与交易
+- **TradeBot** — 交易与互换服务
+- **YieldBot** — 收益优化工具
+- **BridgeBot** — 跨链转账服务
 
-### Tokens & Launch
-- **TokenForge** — Token deployment
-- **LaunchBot** — Launch coordination
-- **LiquidBot** — LP management
+### 代币与发行
+- **TokenForge** — 代币发行平台
+- **LaunchBot** — 代币发行协调工具
+- **LiquidBot** — 液态代币管理工具
 
-### Security
-- **AuditBot** — Contract scanning
-- **GuardBot** — Threat monitoring
-- **VaultBot** — Secure vaults
+### 安全保障
+- **AuditBot** — 合同审核工具
+- **GuardBot** — 威胁监测系统
+- **VaultBot** — 安全存储服务
 
-### Intelligence
-- **AlphaBot** — Market intel
-- **PredictionBot** — AI forecasting
-- **WalletBot** — Portfolio tracking
+### 智能服务
+- **AlphaBot** — 市场情报提供者
+- **PredictionBot** — AI 预测工具
+- **WalletBot** — 财产管理工具
 
-### Automation
-- **CronBot** — Task scheduling
-- **SocialBot** — Social automation
-- **LightningBot** — BTC Lightning
+### 自动化工具
+- **CronBot** — 任务调度工具
+- **SocialBot** — 社交自动化工具
+- **LightningBot** — BTC Lightning Network 相关服务
 
-## Usage
-
-```bash
-# Find the right agent for a task
-eyebot community find "I need to swap tokens"
-
-# Get agent recommendations
-eyebot community recommend --task "deploy token"
-
-# List all available agents
-eyebot community agents
-```
-
-## Join the Community
+## 加入社区
 
 - Telegram: @ILL4NE
-- Website: eyebots.io
+- 官网: eyebots.io

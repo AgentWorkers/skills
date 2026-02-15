@@ -1,6 +1,6 @@
 ---
 name: holocube
-description: Control GeekMagic HelloCubic-Lite holographic cube display with HoloClawd firmware. Supports drawing API, pomodoro timer with lobster mascot, GIF uploads, and procedural animations.
+description: 使用 HoloClawd 固件控制 Control GeekMagic HelloCubic-Lite 全息立方体显示器。该显示器支持绘图 API、带有龙虾吉祥物的番茄工作法计时器、GIF 文件上传以及程序化动画功能。
 homepage: https://github.com/andrewjiang/HoloClawd-Open-Firmware
 metadata: {"clawdbot":{"emoji":"🦞","os":["darwin","linux"]}}
 triggers:
@@ -18,21 +18,21 @@ triggers:
   - drink water
 ---
 
-# HoloCube Controller
+# HoloCube控制器
 
-Control the GeekMagic HelloCubic-Lite with HoloClawd firmware via REST API.
+通过HoloClawd固件和REST API来控制GeekMagic HelloCubic-Lite设备。
 
-**Firmware:** https://github.com/andrewjiang/HoloClawd-Open-Firmware
+**固件链接：** https://github.com/andrewjiang/HoloClawd-Open-Firmware
 
-## Device Info
+## 设备信息
 
-- **Model:** HelloCubic-Lite with HoloClawd Firmware
-- **Display:** 240x240px ST7789 TFT
-- **Default IP:** 192.168.7.80 (configurable)
+- **型号：** 配备HoloClawd固件的HelloCubic-Lite
+- **显示屏：** 240x240px的ST7789 TFT屏幕
+- **默认IP地址：** 192.168.7.80（可配置）
 
-## Quick Start
+## 快速入门
 
-**Pomodoro Timer**:
+**番茄工作法计时器：**
 
 ```bash
 # Run pomodoro timer with lobster mascot (25 min work, 5 min break)
@@ -48,7 +48,7 @@ cd ~/Bao/TimeToLockIn/HoloClawd-Open-Firmware/examples && uv run --script pomodo
 cd ~/Bao/TimeToLockIn/HoloClawd-Open-Firmware/examples && uv run --script pomodoro.py --work 50 --short 10 --long 20
 ```
 
-**Drawing API** (requires holocube_client.py from repo):
+**绘图API**（需要从仓库中下载`holocube_client.py`文件）：
 
 ```bash
 # Draw something on the display
@@ -60,9 +60,9 @@ draw_lobster(cube, 120, 120)  # Draw lobster in center
 "
 ```
 
-## Python Client Library
+## Python客户端库
 
-The `holocube_client.py` module provides full programmatic control:
+`holocube_client.py`模块提供了完整的程序化控制功能：
 
 ```python
 from holocube_client import HoloCube, Color, draw_lobster, draw_confetti
@@ -92,9 +92,9 @@ draw_lobster(cube, 120, 120, happy=True, frame=0)  # Party mode with confetti
 draw_confetti(cube, 120, 120, frame=1)             # Animate confetti
 ```
 
-## Pomodoro Timer
+## 番茄工作法计时器
 
-Full pomodoro timer with cute lobster buddy located in the HoloCube firmware repo:
+完整的番茄工作法计时器功能，其中包含一个可爱的龙虾图案——该功能位于HoloCube固件仓库中：
 
 ```bash
 # Always run from the examples directory
@@ -119,36 +119,35 @@ uv run --script pomodoro.py --work 50 --short 10 --long 20
 uv run --script pomodoro.py --water 2 --exercise 1 --focus 3
 ```
 
-**Location**: `~/Bao/TimeToLockIn/HoloClawd-Open-Firmware/examples/pomodoro.py`
-- Uses `spotify.sh` in the same directory for playback
-- Supports icon-based trackers (water, exercise, focus, pills)
-- Interactive command listener for live controls
+**文件位置：** `~/Bao/TimeToLockIn/HoloClawd-Open-Firmware/examples/pomodoro.py`
+- 使用同一目录下的`spotify.sh`文件进行音乐播放
+- 支持基于图标的任务追踪器（如喝水、锻炼、专注等）
+- 提供交互式命令监听功能，以实现实时控制
 
-Options:
-- `--task`: Task label displayed during work (max 20 chars, auto-uppercased)
-- `--work`: Work duration in minutes (default: 25)
-- `--short`: Short break in minutes (default: 5)
-- `--long`: Long break in minutes (default: 15)
-- `--sessions`: Sessions before long break (default: 4)
-- `--spotify-work`: Spotify URI for work sessions
-- `--spotify-break`: Spotify URI for break sessions
-- `--water`: Water glasses consumed today
-- `--exercise`: Exercise sessions completed
-- `--focus`: Focus sessions completed
-- `--pills-done`: Mark daily pills as taken
+**命令参数：**
+- `--task`：工作期间的任务标签（最多20个字符，自动转换为大写）
+- `--work`：工作时长（默认值：25分钟）
+- `--short`：短暂休息时长（默认值：5分钟）
+- `--long`：长时间休息时长（默认值：15分钟）
+- `--sessions`：连续进行长时间休息的次数（默认值：4次）
+- `--spotify-work`：工作会话对应的Spotify URI
+- `--spotify-break`：休息会话对应的Spotify URI
+- `--water`：当天饮用的水杯数量
+- `--exercise`：完成的锻炼次数
+- `--focus`：完成的专注会话次数
+- `--pills-done`：标记每日服药情况
 
-Features:
-- Lobster mascot watches you work (focused expression)
-- During breaks: happy lobster with twinkling confetti
-- Flashing alerts between sessions
-- Tracks completed sessions
-- Optional Spotify playback via AppleScript (macOS)
-- Icon-based trackers displayed on screen
-- Interactive command listener via keyboard
+**功能特点：**
+- 独特的龙虾图案会陪伴您工作（表情严肃）
+- 休息期间会显示欢快的龙虾图案及闪烁的彩带效果
+- 会话之间会有闪烁的提示信息
+- 支持通过AppleScript在macOS系统上播放Spotify音乐
+- 屏幕上会显示基于图标的任务追踪器
+- 提供键盘交互式命令输入功能
 
-## Trackers
+## 任务追踪器
 
-The pomodoro timer supports visual trackers using the Kyrise icon pack. Pass tracker values as arguments to display them during your session:
+番茄工作法计时器支持使用Kyrise图标包进行视觉追踪。您可以将追踪器的数据作为参数传递给程序，以便在会话期间显示相应的图标：
 
 ```bash
 cd ~/Bao/TimeToLockIn/HoloClawd-Open-Firmware/examples
@@ -169,11 +168,11 @@ uv run --script pomodoro.py --pills-done
 uv run --script pomodoro.py --task "DEEP WORK" --water 3 --exercise 1 --focus 2
 ```
 
-Tracker icons appear on the HoloCube display with their current counts.
+追踪器图标会显示在HoloCube显示屏上，并显示当前的计数情况。
 
-## Stock Firmware Tools
+## 原生固件工具
 
-### holocube.py - GIF Upload (Stock Firmware)
+### `holocube.py` – GIF文件上传功能（原生固件）
 
 ```bash
 uv run --script holocube.py upload animation.gif
@@ -181,7 +180,7 @@ uv run --script holocube.py show animation.gif
 uv run --script holocube.py list
 ```
 
-### gifgen.py - Procedural Animation Generator
+### `gifgen.py` – 动画生成工具
 
 ```bash
 uv run --script gifgen.py fire output.gif
@@ -190,9 +189,9 @@ uv run --script gifgen.py matrix output.gif
 uv run --script gifgen.py sparkle output.gif
 ```
 
-## Drawing API Endpoints
+## 绘图API接口
 
-HoloClawd firmware exposes these REST endpoints:
+HoloClawd固件提供了以下REST接口：
 
 ```bash
 # Clear screen
@@ -210,11 +209,12 @@ curl -X POST http://192.168.7.80/api/v1/draw/text -d '{"x":60,"y":100,"text":"He
 curl -X POST http://192.168.7.80/api/v1/draw/batch -d '{"commands":[...]}'
 ```
 
-## Firmware
+## 固件源代码
 
-**Source:** https://github.com/andrewjiang/HoloClawd-Open-Firmware
+**链接：** https://github.com/andrewjiang/HoloClawd-Open-Firmware
 
-Build and flash:
+**构建与固件刷新步骤：**
+
 ```bash
 git clone https://github.com/andrewjiang/HoloClawd-Open-Firmware.git
 cd HoloClawd-Open-Firmware
@@ -222,7 +222,7 @@ pio run                    # Build
 curl -X POST -F "file=@.pio/build/esp12e/firmware.bin" http://192.168.7.80/api/v1/ota/fw
 ```
 
-## Color Reference
+## 颜色参考
 
 ```python
 Color.BLACK   = "#000000"
@@ -237,8 +237,8 @@ Color.ORANGE  = "#ff6600"
 Color.PURPLE  = "#9900ff"
 ```
 
-## Troubleshooting
+## 故障排除**
 
-- **Can't connect**: Check WiFi, device should be at 192.168.7.80
-- **Drawing slow**: Each HTTP call takes ~50ms, use batch API for complex drawings
-- **Screen flickers**: Only clear screen on first frame, use background colors for text updates
+- **无法连接**：请检查WiFi连接，设备应设置为192.168.7.80地址
+- **绘图速度较慢**：每次HTTP请求耗时约50毫秒，建议使用批量API进行复杂绘图操作
+- **屏幕闪烁**：仅在首帧时清除屏幕内容，文本更新时使用背景颜色

@@ -1,61 +1,67 @@
 ---
 name: cpc-mpqc-competence-tracker-compliance-uk
-description: Plans CPC/MPQC competence tracking with reminders, evidence lists, and compliance reporting. USE WHEN maintaining training/certification readiness.
+description: **CPC/MPQC能力跟踪计划**  
+该计划包括提醒功能、证据列表以及合规性报告机制，旨在帮助用户持续维护其培训及认证状态。  
+**适用场景**：适用于需要监控员工CPC/MPQC能力水平的企业或组织。
 ---
 
-# CPC/MPQC Training & Competence Tracking (UK)
+# CPC/MPQC培训与能力跟踪（英国）
 
-## PURPOSE
-Maintain audit-ready training and competence evidence: a matrix, reminders plan, and a compliance report view.
+## 目的  
+维护可用于审计的培训及能力证明文件：包括培训矩阵、提醒计划以及合规性报告视图。  
 
-## WHEN TO USE
-- “Training and competence tracking: CPC/MPQC planning, reminders, certification evidence, compliance reporting.”
-- “Write a toolbox talk on driver hours and breaks for next week.” (when tied to competence evidence)
-- “Create a compliance training report for this month/quarter.”
+## 使用场景  
+- “CPC/MPQC的培训与能力跟踪：计划制定、提醒通知、认证证明文件的整理、合规性报告的生成。”  
+- “为下周准备关于驾驶员工作时长和休息时间的培训材料。”（当这些内容与能力证明相关时）  
+- “生成本月/本季度的合规性培训报告。”  
 
-DO NOT USE WHEN…
-- Generic learning content not tied to compliance evidence.
-- Requests for PowerPoints/company values decks.
+## 不适用场景  
+- 与合规性证明无关的通用学习内容。  
+- 用于请求PowerPoint演示文稿或公司宣传资料的情况。  
 
-## INPUTS
-- REQUIRED:
-  - Driver list (name/ID), roles, depots
-  - Required training types (CPC modules, MPQC, internal toolbox talks)
-- OPTIONAL:
-  - Expiry dates, certificates, providers, past completion records
-  - Internal policy on frequency/mandatory modules (paste text)
-- EXAMPLES:
-  - “Need a monthly report and reminders for expiring MPQC.”
+## 输入内容  
+- **必填项**：  
+  - 驾驶员名单（姓名/ID）、职责、所属仓库  
+  - 必需参加的培训类型（CPC模块、MPQC培训、内部培训课程）  
+- **可选项**：  
+  - 证书有效期、证书信息、培训提供者、过往完成记录  
+  - 有关培训频率/必修模块的内部政策（可粘贴文本）  
+- **示例**：  
+  “需要一份关于即将到期的MPQC培训的月度报告及提醒通知。”  
 
-## OUTPUTS
-- `training-matrix.md` (Excel-ready)
-- `reminders-plan.md`
-- `compliance-training-report.md`
-- Success criteria:
-  - Evidence-ready fields (who/what/when/proof)
-  - Clear upcoming expiries and owners
+## 输出文件  
+- `training-matrix.md`（格式兼容Excel）  
+- `reminders-plan.md`  
+- `compliance-training-report.md`  
 
-## WORKFLOW
-1. Confirm required training set and the reporting period.
-   - IF missing → **STOP AND ASK THE USER**.
-2. Create/refresh training matrix using `assets/training-matrix-template.md`.
-3. Build reminders schedule using `assets/reminder-plan-template.md`.
-4. Draft compliance report using `assets/compliance-report-template.md`.
-5. Evidence standard:
-   - Reference `references/competence-evidence-standard.md` and map to your internal storage locations.
-6. If asked to update existing trackers → **ASK FIRST**.
+## 成功标准  
+- 所有信息字段均填写完整（包括执行人员、培训内容、时间以及相关证明）  
+- 明确标注所有即将到期的培训项目及其负责人  
 
-## OUTPUT FORMAT
+## 工作流程  
+1. 确认所需的培训内容及报告周期。  
+   - 如有缺失信息，请**立即询问用户**。  
+2. 使用`assets/training-matrix-template.md`模板创建/更新培训矩阵。  
+3. 使用`assets/reminder-plan-template.md`模板制定提醒计划。  
+4. 使用`assets/compliance-report-template.md`模板起草合规性报告。  
+5. 遵循`references/competence-evidence-standard.md`中的证据标准，并将所有证明文件存放在指定位置。  
+6. 如需更新现有跟踪系统，请**先征得用户同意**。  
+
+## 输出格式  
 ```text
 # training-matrix.md
 | Driver | Role | CPC due | CPC last completed | MPQC expiry | Last toolbox talk | Evidence link/location | Status (RAG) | Notes |
 |--------|------|---------|-------------------|-------------|-------------------|------------------------|--------------|------|
-```
+```  
 
-## SAFETY & EDGE CASES
-- Don’t invent certificate numbers or dates; mark unknowns clearly.
-- If training requirements vary by customer/site, create a “customer/site delta” section and ask for specifics.
+## 安全性与特殊注意事项  
+- 不要随意编造证书编号或日期；对未知信息应予以明确标注。  
+- 若不同客户或站点的培训要求存在差异，需创建“客户/站点差异”部分并详细询问具体要求。  
 
-## EXAMPLES
-- Input: “Plan reminders for MPQC expiries”
-  - Output: matrix + reminders plan + monthly report draft
+## 示例  
+- **输入示例**：  
+  “为即将到期的MPQC培训制定提醒计划。”  
+  **输出结果**：  
+  - 培训矩阵  
+  - 提醒计划  
+  - 月度报告草稿

@@ -1,8 +1,8 @@
-# YouTube Transcript Extraction
+# YouTube 视频字幕提取
 
-Extract high-quality transcripts from YouTube videos using multiple methods.
+使用多种方法从 YouTube 视频中提取高质量的字幕。
 
-## Commands
+## 命令
 
 ```bash
 # Extract transcript from YouTube URL or video ID
@@ -10,30 +10,30 @@ Extract high-quality transcripts from YouTube videos using multiple methods.
 /root/clawd/yt-transcript VIDEO_ID
 ```
 
-## Features
+## 特点
 
-- **Dual fallback system**: Tries Supadata API first, falls back to yt-dlp
-- **Auto-generated transcripts**: Works even if no manual captions exist
-- **Clean output**: Returns plain text transcript ready for analysis
-- **Fast**: API method completes in seconds
+- **双重备用系统**：首先尝试使用 Supadata API，如果失败则切换到 yt-dlp
+- **自动生成字幕**：即使没有手动添加的字幕也能正常工作
+- **干净的输出**：返回适合分析的纯文本字幕
+- **快速**：API 方法可在几秒钟内完成提取
 
-## Use Cases
+## 使用场景
 
-- Summarize long videos without watching
-- Extract key quotes and insights
-- Content research and analysis
-- Create written summaries for videos
-- Extract educational content
+- 在不观看视频的情况下总结视频内容
+- 提取关键引文和见解
+- 进行内容研究和分析
+- 为视频创建书面摘要
+- 提取教育类视频的内容
 
-## Technical Details
+## 技术细节
 
-- **Primary**: Supadata API (fast, clean formatting)
-- **Fallback**: yt-dlp CLI tool (comprehensive, handles edge cases)
-- **Output**: Plain text transcript with timestamps removed
-- **API key**: Stored in `.env` as `SUPADATA_API_KEY`
+- **主要工具**：Supadata API（速度快，格式清晰）
+- **备用工具**：yt-dlp CLI（功能齐全，能处理特殊情况）
+- **输出格式**：去除时间戳的纯文本字幕
+- **API 密钥**：存储在 `.env` 文件中（键名为 `SUPADATA_API_KEY`）
 
-## Example Workflow
+## 示例工作流程
 
-Rob sends YouTube link → Alto pulls transcript → summarizes key points → Rob decides if worth watching
+Rob 提供 YouTube 链接 → Alto 提取字幕 → 总结关键内容 → Rob 决定是否值得观看
 
-Saves 10-30 minutes per video!
+每个视频可节省 10-30 分钟的时间！

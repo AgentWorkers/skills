@@ -1,30 +1,30 @@
 ---
 name: sui-decompile
-description: Fetch on-chain Sui Move contract source code and let your agent explain how smart contracts work. Scrape from Suivision/Suiscan explorers, analyze DeFi protocols, and understand any contract on Sui.
+description: 获取 Sui Move 合同的源代码，并让你的代理解释智能合约的工作原理。从 Suivision/Suiscan 探索器中抓取数据，分析 DeFi 协议，以了解 Sui 上的任何合约。
 homepage: https://suivision.xyz
 metadata:
   openclaw:
     emoji: "🔓"
 ---
 
-# Sui Decompile Skill
+# Sui反编译技能
 
-Fetch decompiled source code for on-chain Sui Move packages via block explorers.
+通过区块浏览器获取链上Sui Move合约的反编译源代码。
 
-**GitHub:** <https://github.com/EasonC13-agent/sui-skills/tree/main/sui-decompile>
+**GitHub地址：** <https://github.com/EasonC13-agent/sui-skills/tree/main/sui-decompile>
 
-## Suivision (Preferred)
+## Suivision（推荐使用）
 
-May have official verified source code when available.
+当可用时，可能会提供官方验证过的源代码。
 
 ```
 URL: https://suivision.xyz/package/{package_id}?tab=Code
 ```
 
-**Browser workflow:**
-1. `browser action=open profile=openclaw targetUrl="https://suivision.xyz/package/{package_id}?tab=Code"`
-2. Click module tabs on the left if multiple modules exist
-3. Extract code:
+**浏览器使用流程：**
+1. 在浏览器中执行 `open profile openclaw targetUrl="https://suivision.xyz/package/{package_id}?tab=Code"` 操作。
+2. 如果存在多个模块，请点击左侧的模块标签页。
+3. 提取代码：
 ```javascript
 () => {
   const rows = document.querySelectorAll('table tr');
@@ -37,17 +37,17 @@ URL: https://suivision.xyz/package/{package_id}?tab=Code
 }
 ```
 
-## Suiscan (Alternative)
+## Suiscan（备用方案）
 
 ```
 URL: https://suiscan.xyz/mainnet/object/{package_id}/contracts
 ```
 
-**Browser workflow:**
-1. `browser action=open profile=openclaw targetUrl="https://suiscan.xyz/mainnet/object/{package_id}/contracts"`
-2. Click "Source" tab (default may show Bytecode)
-3. Click module tabs if multiple modules
-4. Extract code:
+**浏览器使用流程：**
+1. 在浏览器中执行 `open profile openclaw targetUrl="https://suiscan.xyz/mainnet/object/{package_id}/contracts"` 操作。
+2. 点击“Source”标签页（默认可能显示字节码）。
+3. 如果存在多个模块，请点击相应的模块标签页。
+4. 提取代码：
 ```javascript
 () => {
   const rows = document.querySelectorAll('table tr');
@@ -60,45 +60,37 @@ URL: https://suiscan.xyz/mainnet/object/{package_id}/contracts
 }
 ```
 
-## Multiple Modules
+## 多个模块的包
 
-Packages like DeepBook (`0xdee9`) have multiple modules:
-1. List module tabs from sidebar
-2. Click each tab, extract code
-3. Save to separate `.move` files
+像DeepBook（`0xdee9`）这样的包包含多个模块：
+1. 从侧边栏中查看所有模块标签页。
+2. 点击每个标签页以提取代码。
+3. 将提取的代码保存为单独的`.move`文件。
 
-## Examples
+## 示例
 
-| Package | Suivision | Suiscan |
+| 包名 | Suivision | Suiscan |
 |---------|-----------|---------|
 | Sui Framework | `suivision.xyz/package/0x2?tab=Code` | `suiscan.xyz/mainnet/object/0x2/contracts` |
 | DeepBook | `suivision.xyz/package/0xdee9?tab=Code` | `suiscan.xyz/mainnet/object/0xdee9/contracts` |
 
-## Use with Other Skills
+## 与其他技能的配合使用
 
-This skill works great with the Sui development skill suite:
+该技能可与Sui开发技能套件完美结合使用：
 
-- **sui-move**: Write and deploy Move smart contracts. Use `sui-decompile` to study existing contracts, then use `sui-move` to write your own.
-- **sui-coverage**: Analyze test coverage. Decompile a contract, write tests for it, then check coverage.
+- **sui-move**：用于编写和部署Move智能合约。使用`sui-decompile`反编译现有合约，再利用`sui-move`创建新的合约。
+- **sui-coverage**：用于分析代码的测试覆盖率。先反编译合约，编写测试用例，然后检查覆盖率。
 
-**Typical workflow:**
-1. `sui-decompile` - Study how a DeFi protocol works
-2. `sui-move` - Write your own contract based on learned patterns
-3. `sui-coverage` - Ensure your code is well-tested
+**典型工作流程：**
+1. 使用`sui-decompile`了解DeFi协议的工作原理。
+2. 使用`sui-move`根据所学知识编写新的合约。
+3. 使用`sui-coverage`确保代码经过充分测试。
 
-## Server/Headless Setup
+## 服务器/无头环境下的使用
 
-For running on servers without display (CI/CD, VPS, etc.), use Puppeteer with a virtual display to avoid headless detection:
+在无显示功能的服务器（如CI/CD服务器、VPS等）上运行时，可以使用Puppeteer配合虚拟显示器来避免被识别为无头浏览器：
 
-```bash
-# Install xvfb (virtual framebuffer)
-sudo apt-get install xvfb
-
-# Run with virtual display (avoids headless detection)
-xvfb-run --auto-servernum node scraper.js
-```
-
-**Puppeteer example:**
+**Puppeteer使用示例：**
 ```javascript
 const puppeteer = require('puppeteer');
 
@@ -127,30 +119,23 @@ async function fetchContractSource(packageId) {
 }
 ```
 
-**Why xvfb?** Some sites detect headless browsers. Running with `xvfb-run` creates a virtual display, making the browser behave like a real desktop browser.
+**为什么使用xvfb？** 有些网站会检测无头浏览器。使用`xvfb-run`可以创建虚拟显示器，使浏览器表现得像传统的桌面浏览器。
 
-## Notes
+## 注意事项：
+- Suivision提供的源代码可能是经过MovebitAudit验证的。
+- Suiscan显示的是Revela工具反编译后的代码。
+- 反编译后的代码可能无法直接编译。
+- 使用完成后请关闭浏览器标签页！
 
-- Suivision may show official verified source (MovebitAudit)
-- Suiscan shows Revela decompiled code
-- Decompiled code may not compile directly
-- **Close browser tabs after use!**
+## 相关技能
 
-## Related Skills
+该技能属于Sui开发技能套件的一部分：
 
-This skill is part of the Sui development skill suite:
-
-| Skill | Description |
+| 技能 | 描述 |
 |-------|-------------|
-| **sui-decompile** | Fetch and read on-chain contract source code |
-| [sui-move](https://clawhub.ai/EasonC13/sui-move) | Write and deploy Move smart contracts |
-| [sui-coverage](https://clawhub.ai/EasonC13/sui-coverage) | Analyze test coverage with security analysis |
-| [sui-agent-wallet](https://clawhub.ai/EasonC13/sui-agent-wallet) | Build and test DApps frontend |
+| **sui-decompile** | 获取并阅读链上合约的源代码 |
+| [sui-move](https://clawhub.ai/EasonC13/sui-move) | 编写和部署Move智能合约 |
+| [sui-coverage](https://clawhub.ai/EasonC13/sui-coverage) | 分析代码的测试覆盖率并进行安全检查 |
+| [sui-agent-wallet](https://clawhub.ai/EasonC13/sui-agent-wallet) | 构建和测试DApp的前端界面 |
 
-**Workflow:**
-```
-sui-decompile → sui-move → sui-coverage → sui-agent-wallet
-    Study        Write      Test & Audit   Build DApps
-```
-
-All skills: <https://github.com/EasonC13-agent/sui-skills>
+**技能套件的完整地址：** <https://github.com/EasonC13-agent/sui-skills>

@@ -1,40 +1,40 @@
 ---
 name: roku-control
-description: "Control Roku devices via local network (ECP protocol). Use when the user wants to control their Roku TV or streaming device, change channels, launch apps (Netflix, YouTube, Hulu, etc.), navigate menus, adjust volume, play/pause content, search for shows, or power off. Works over LAN with no authentication required."
+description: "通过局域网（使用ECP协议）控制Roku设备。当用户需要操作他们的Roku电视或流媒体设备时，可以使用此方法：切换频道、启动应用程序（如Netflix、YouTube、Hulu等）、浏览菜单、调节音量、播放/暂停内容、搜索节目或关闭设备。该功能支持局域网连接，无需任何身份验证。"
 ---
 
-# Roku Control
+# 控制 Roku 设备
 
-Control Roku devices over your local network using the External Control Protocol (ECP). No authentication, cloud services, or complex setup required - just local HTTP commands.
+您可以使用外部控制协议（ECP）通过本地网络来控制 Roku 设备。无需身份验证、云服务或复杂的设置——只需使用本地 HTTP 命令即可。
 
-## Prerequisites
+## 先决条件
 
-- Roku device on the same network as OpenClaw
-- Roku's IP address (can be discovered automatically)
+- Roku 设备与 OpenClaw 在同一网络中。
+- 确保已获取 Roku 的 IP 地址（可以自动检测）。
 
-## Setup (First Time)
+## 设置（首次使用）
 
-**1. Discover your Roku:**
+**1. 检测 Roku 设备：**
 
 ```bash
 python3 scripts/roku_control.py discover
 ```
 
-This will show all Roku devices on your network with their IP addresses.
+这将显示网络中的所有 Roku 设备及其 IP 地址。
 
-**2. Save the IP address:**
+**2. 保存 Roku 的 IP 地址：**
 
-Note your Roku's IP (e.g., `192.168.1.100`) for use in commands.
+记下 Roku 的 IP 地址（例如 `192.168.1.100`），以便在后续命令中使用。
 
-**3. Test connectivity:**
+**3. 测试连接：**
 
 ```bash
 python3 scripts/roku_control.py --ip 192.168.1.100 info
 ```
 
-## Common Operations
+## 常见操作
 
-### Device Information
+### 设备信息
 
 ```bash
 # Get device details
@@ -47,7 +47,7 @@ python3 scripts/roku_control.py --ip 192.168.1.100 apps
 python3 scripts/roku_control.py --ip 192.168.1.100 active
 ```
 
-### Navigation & Control
+### 导航与控制
 
 ```bash
 # Navigate menus
@@ -64,7 +64,7 @@ python3 scripts/roku_control.py --ip 192.168.1.100 key Home
 python3 scripts/roku_control.py --ip 192.168.1.100 key Back
 ```
 
-### Playback
+### 播放
 
 ```bash
 # Play/pause
@@ -79,7 +79,7 @@ python3 scripts/roku_control.py --ip 192.168.1.100 key Fwd
 python3 scripts/roku_control.py --ip 192.168.1.100 key InstantReplay
 ```
 
-### Volume & Power
+### 音量与电源
 
 ```bash
 # Volume control (Roku TV or HDMI-CEC enabled)
@@ -91,7 +91,7 @@ python3 scripts/roku_control.py --ip 192.168.1.100 key VolumeMute
 python3 scripts/roku_control.py --ip 192.168.1.100 key PowerOff
 ```
 
-### Launch Apps
+### 启动应用程序
 
 ```bash
 # Launch by app ID (faster)
@@ -103,7 +103,7 @@ python3 scripts/roku_control.py --ip 192.168.1.100 launch YouTube
 python3 scripts/roku_control.py --ip 192.168.1.100 launch "Disney+"
 ```
 
-### Search & Text Input
+### 搜索与文本输入
 
 ```bash
 # Send search text
@@ -112,45 +112,45 @@ python3 scripts/roku_control.py --ip 192.168.1.100 text "Breaking Bad"
 # This is much faster than individual key presses for searches
 ```
 
-## Natural Language Translation
+## 自然语言转换
 
-Map user requests to commands:
+将用户指令转换为相应的命令：
 
-**Navigation:**
-- "Go to home screen" → `key Home`
-- "Go back" → `key Back`
-- "Scroll down" / "Move down" → `key Down`
-- "Select this" / "Click" → `key Select`
+**导航：**
+- “返回主屏幕” → `按 Home 键`
+- “返回上一级” → `按 Back 键`
+- “向下滚动” → `按 Down 键`
+- “选择此选项” → `按 Select 键`
 
-**Playback:**
-- "Play" / "Resume" → `key Play`
-- "Pause" → `key Pause`
-- "Rewind" → `key Rev`
-- "Fast forward" → `key Fwd`
-- "Go back 10 seconds" / "Replay that" → `key InstantReplay`
+**播放：**
+- “播放” → `按 Play 键`
+- “暂停” → `按 Pause 键`
+- “倒带” → `按 Rev 键`
+- “快进” → `按 Fwd 键`
+- “回放 10 秒” → `按 InstantReplay 键`
 
-**Volume:**
-- "Turn up the volume" → `key VolumeUp`
-- "Turn down the volume" → `key VolumeDown`
-- "Mute" / "Unmute" → `key VolumeMute`
+**音量：**
+- “调高音量” → `按 VolumeUp 键`
+- “调低音量” → `按 VolumeDown 键`
+- “静音” → `按 VolumeMute 键`
 
-**Apps:**
-- "Open Netflix" → `launch Netflix`
-- "Launch YouTube" → `launch YouTube`
-- "Start Hulu" → `launch Hulu`
+**应用程序：**
+- “打开 Netflix” → `launch Netflix`
+- “打开 YouTube” → `launch YouTube`
+- “打开 Hulu” → `launch Hulu`
 
-**Search:**
-- "Search for Breaking Bad" → `text "Breaking Bad"`
-- "Find Stranger Things" → Open search + send text
+**搜索：**
+- “搜索《绝命毒师》” → `输入 “Breaking Bad”`
+- “查找《怪奇物语》” → 打开搜索框并输入相关内容
 
-**Power:**
-- "Turn off the TV" → `key PowerOff`
+**电源：**
+- “关闭电视” → `按 PowerOff 键`
 
-## Common App IDs
+## 常见应用程序 ID
 
-See [references/common-apps.md](references/common-apps.md) for a comprehensive list.
+请参阅 [references/common-apps.md](references/common-apps.md) 以获取完整的应用程序 ID 列表。
 
-Quick reference:
+**快速参考：**
 - Netflix: 12
 - YouTube: 837
 - Hulu: 2285
@@ -159,20 +159,17 @@ Quick reference:
 - HBO Max: 61322
 - The Roku Channel: 151908
 
-To get app IDs for your specific Roku:
-```bash
-python3 scripts/roku_control.py --ip <ip> apps
-```
+要获取您的特定 Roku 设备的应用程序 ID，请参阅 [references/remote-keys.md](references/remote-keys.md)。
 
-## Complete Key Reference
+## 完整的按键参考
 
-See [references/remote-keys.md](references/remote-keys.md) for all supported remote keys.
+请参阅 [references/remote-keys.md](references/remote-keys.md) 以了解所有支持的操作按键。
 
-Common keys: `Home`, `Back`, `Up`, `Down`, `Left`, `Right`, `Select`, `Play`, `Pause`, `Rev`, `Fwd`, `VolumeUp`, `VolumeDown`, `VolumeMute`, `PowerOff`, `Search`, `Info`
+**常用按键：** Home, Back, Up, Down, Left, Right, Select, Play, Pause, Rev, Fwd, VolumeUp, VolumeDown, VolumeMute, PowerOff, Search, Info
 
-## Advanced Workflows
+## 高级用法
 
-### Watch Netflix
+### 观看 Netflix
 
 ```bash
 # Go home, launch Netflix
@@ -181,7 +178,7 @@ sleep 1
 python3 scripts/roku_control.py --ip 192.168.1.100 launch 12
 ```
 
-### Search and Play
+### 搜索与播放
 
 ```bash
 # Open search, send text, select first result
@@ -192,7 +189,7 @@ sleep 1
 python3 scripts/roku_control.py --ip 192.168.1.100 key Select
 ```
 
-### Quick Replay
+### 快速回放
 
 ```bash
 # Go back 10 seconds and resume
@@ -201,7 +198,7 @@ sleep 1
 python3 scripts/roku_control.py --ip 192.168.1.100 key Play
 ```
 
-### Movie Night Setup
+### 电影之夜设置
 
 ```bash
 # Launch streaming app, adjust volume
@@ -211,9 +208,9 @@ python3 scripts/roku_control.py --ip 192.168.1.100 key VolumeDown
 python3 scripts/roku_control.py --ip 192.168.1.100 key VolumeDown
 ```
 
-## Device Mapping
+## 设备映射
 
-Store your Roku IP in `references/roku.json`:
+将 Roku 的 IP 地址保存到 `references/roku.json` 文件中：
 
 ```json
 {
@@ -230,43 +227,43 @@ Store your Roku IP in `references/roku.json`:
 }
 ```
 
-Then reference by friendly name in conversations.
+之后可以在对话中通过友好名称来引用该设备。
 
-## Troubleshooting
+## 故障排除
 
-**"No Roku devices found"**
-- Ensure Roku is powered on and connected to network
-- Check that OpenClaw and Roku are on same network/subnet
-- Some routers block SSDP discovery - try manual IP if known
-- Verify Roku's network settings in Settings → Network
+**“未找到 Roku 设备”**
+- 确保 Roku 已开机并连接到网络。
+- 检查 OpenClaw 和 Roku 是否在同一网络/子网中。
+- 有些路由器会阻止 SSDP 协议的检测——如果知道 Roku 的 IP 地址，可以尝试手动输入 IP 地址。
+- 在 Roku 的设置 → 网络选项中验证网络设置。
 
-**"Connection timeout"**
-- Verify IP address is correct
-- Ping the Roku: `ping <roku-ip>`
-- Check firewall isn't blocking port 8060
-- Roku may have changed IP (use DHCP reservation)
+**“连接超时”**
+- 确认 IP 地址正确。
+- 使用 `ping <roku-ip>` 命令测试连接。
+- 检查防火墙是否阻止了端口 8060 的通信。
+- Roku 的 IP 地址可能发生了变化（请使用 DHCP 预留地址）。
 
-**"Key not working"**
-- Some keys only work on Roku TVs (volume, power, inputs)
-- Volume keys require HDMI-CEC or Roku TV
-- Power commands may not be supported on older devices
-- Check [references/remote-keys.md](references/remote-keys.md) for compatibility
+**“按键无效”**
+- 有些按键仅适用于特定的 Roku 电视（如音量、电源按键）。
+- 音量按键可能需要 HDMI-CEC 功能或支持该功能的 Roku 电视。
+- 旧版本的设备可能不支持某些电源控制命令。
+- 请参阅 [references/remote-keys.md](references/remote-keys.md) 以确认兼容性。
 
-**App won't launch**
-- Verify app is installed: run `apps` command
-- Use correct app ID (case-sensitive for name matching)
-- Some apps require additional authentication in their own UI
+**应用程序无法启动**
+- 确认应用程序已安装：运行 `apps` 命令。
+- 使用正确的应用程序 ID（名称匹配时区分大小写）。
+- 有些应用程序需要在应用程序界面中进行额外的身份验证。
 
-**Discovery not finding device**
-- Try manual IP if you know it: check router DHCP leases
-- Roku's IP is shown in Settings → Network → About
-- Set static IP or DHCP reservation for reliability
+**设备无法被检测到**
+- 如果知道 Roku 的 IP 地址，可以尝试手动输入：检查路由器的 DHCP 配置。
+- Roku 的 IP 地址可以在设置 → 网络 → 关于中查看。
+- 为提高稳定性，可以设置静态 IP 地址或使用 DHCP 预留地址。
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-### Movie Night Routine
+### 电影之夜流程
 
-Combine with Govee lights skill:
+可以将此功能与 Govee 灯光控制技能结合使用：
 
 ```bash
 # Dim lights
@@ -282,20 +279,20 @@ python3 roku-control/scripts/roku_control.py --ip 192.168.1.100 launch Netflix
 python3 roku-control/scripts/roku_control.py --ip 192.168.1.100 key VolumeDown
 ```
 
-## Notes
+## 注意事项
 
-- ECP protocol works entirely over LAN (no internet required)
-- No authentication or API keys needed
-- Commands are instant (local network speed)
-- Multiple Roku devices can be controlled independently
-- Works with Roku TVs, streaming sticks, and boxes
-- Power-on commands not supported (ECP limitation - Roku must be awake)
-- For power-on, use HDMI-CEC or network wake features if available
+- ECP 协议完全通过局域网工作（无需互联网连接）。
+- 无需身份验证或 API 密钥。
+- 命令响应迅速（基于本地网络速度）。
+- 可以独立控制多个 Roku 设备。
+- 支持 Roku 电视、流媒体控制器和播放设备。
+- 无法通过按键直接开机（ECP 协议的限制——Roku 必须处于开机状态）。
+- 如果支持 HDMI-CEC 功能，可以使用该功能来开机。
 
-## Limitations
+## 限制
 
-- Cannot power on a fully-off Roku (ECP only works when device is on)
-- Volume/power commands limited to Roku TVs or HDMI-CEC setups
-- No feedback on success/failure for some commands
-- Text input is character-by-character (slower for long searches)
-- Discovery requires SSDP (some networks block multicast)
+- 无法关闭完全关闭的 Roku 设备（ECP 协议仅在设备开机时有效）。
+- 音量/电源控制命令仅适用于 Roku 电视或支持 HDMI-CEC 功能的设备。
+- 有些命令没有操作成功的反馈。
+- 文本输入是逐个字符输入的（长搜索时速度较慢）。
+- 设备检测需要依赖 SSDP 协议（某些网络可能会阻止多播通信）。

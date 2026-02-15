@@ -1,20 +1,20 @@
 ---
 name: tesla
-description: Control and monitor Tesla vehicles via the Tessie API. Use when you need to check Tesla status (battery, location, charging), control climate (heat/cool), lock/unlock doors, start/stop charging, honk/flash lights, open charge port or trunks, or any other Tesla vehicle command. Requires TESSIE_API_KEY environment variable.
+description: 通过 Tessie API 控制和监控特斯拉车辆。当您需要查看特斯拉车辆的状态（电池电量、位置、充电情况）、调节车内温度（加热/制冷）、锁定/解锁车门、启动/停止充电、按喇叭/闪烁车灯、打开充电接口或后备箱，或执行其他特斯拉车辆相关操作时，可以使用该 API。使用该 API 需要设置 `TESSIE_API_KEY` 环境变量。
 ---
 
-# Tesla Control via Tessie
+# 通过Tessie控制特斯拉车辆
 
-Control Tesla vehicles using the Tessie API through Python scripts.
+使用Tessie API通过Python脚本来控制特斯拉车辆。
 
-## Prerequisites
+## 前提条件
 
-**Python 3 with requests library:**
+**安装Python 3并确保已安装requests库：**
 ```bash
 pip install requests
 ```
 
-**Set the `TESSIE_API_KEY` environment variable** with your Tessie API key from https://my.tessie.com/settings/api
+**设置`TESSIE_API_KEY`环境变量**，该密钥可从https://my.tessie.com/settings/api获取。
 
 ```bash
 # Linux/macOS
@@ -27,52 +27,52 @@ $env:TESSIE_API_KEY = "your-api-key-here"
 set TESSIE_API_KEY=your-api-key-here
 ```
 
-For persistent storage, add to your shell profile (.bashrc, .zshrc, PowerShell profile, etc.).
+为了实现数据的持久存储，可以将相关配置添加到您的shell配置文件（.bashrc、.zshrc、PowerShell配置文件等）中。
 
-## Common Commands
+## 常用命令
 
-All commands use the `scripts/tessie.py` script. Most commands require a VIN (Vehicle Identification Number).
+所有命令都依赖于`scripts/tessie.py`脚本。大多数命令都需要提供车辆的VIN（车辆识别号）。
 
-### Get Vehicle List
+### 获取车辆列表
 
 ```bash
 python scripts/tessie.py vehicles
 ```
 
-Returns all vehicles associated with your Tessie account with their VINs.
+返回与您的Tessie账户关联的所有车辆及其VIN。
 
-### Check Status
+### 检查车辆状态
 
 ```bash
 python scripts/tessie.py status --vin <VIN>
 ```
 
-Returns comprehensive vehicle status including battery, location, climate, charging state, and more.
+返回车辆的详细状态信息，包括电池电量、位置、气候设置、充电状态等。
 
-### Battery Info
+### 电池信息
 
 ```bash
 python scripts/tessie.py battery --vin <VIN>
 ```
 
-Returns battery level, range, and charging information.
+返回电池电量、续航里程和充电相关信息。
 
-### Location
+### 获取车辆位置
 
 ```bash
 python scripts/tessie.py location --vin <VIN>
 ```
 
-Returns current vehicle location (latitude, longitude, heading).
+返回车辆的当前位置（纬度、经度、行驶方向）。
 
-### Lock & Unlock
+### 锁车/解锁车辆
 
 ```bash
 python scripts/tessie.py lock --vin <VIN>
 python scripts/tessie.py unlock --vin <VIN>
 ```
 
-### Climate Control
+### 调节气候设置
 
 ```bash
 # Start climate
@@ -85,7 +85,7 @@ python scripts/tessie.py stop_climate --vin <VIN>
 python scripts/tessie.py set_temperature --vin <VIN> --value 22
 ```
 
-### Charging
+### 充电操作
 
 ```bash
 # Start charging
@@ -102,7 +102,7 @@ python scripts/tessie.py open_charge_port --vin <VIN>
 python scripts/tessie.py close_charge_port --vin <VIN>
 ```
 
-### Honk, Flash & Fart
+### 发出喇叭声、闪烁车灯或模拟“放屁”效果
 
 ```bash
 python scripts/tessie.py honk --vin <VIN>
@@ -110,16 +110,16 @@ python scripts/tessie.py flash --vin <VIN>
 python scripts/tessie.py fart --vin <VIN>
 ```
 
-Note: Fart requires firmware 2022.40.25 or newer.
+注意：模拟“放屁”功能需要车辆运行在固件版本2022.40.25或更高版本上。
 
-### Trunks
+### 打开后备箱
 
 ```bash
 python scripts/tessie.py open_frunk --vin <VIN>
 python scripts/tessie.py open_trunk --vin <VIN>
 ```
 
-### Software Updates
+### 软件更新
 
 ```bash
 # Schedule update immediately
@@ -135,24 +135,20 @@ python scripts/tessie.py cancel_update --vin <VIN>
 python scripts/check-updates.py --vin <VIN>
 ```
 
-The check-updates script returns one of:
-- `UPDATE_AVAILABLE: Software update X.X.X is ready to install!`
-- `UPDATE_DOWNLOADING: Downloading update X.X.X (XX%)`
-- `UPDATE_INSTALLING: Installing update X.X.X (XX%)`
-- `UPDATE_SCHEDULED: Update X.X.X is scheduled`
-- `NO_UPDATE`
+`check-updates`命令会返回以下状态之一：
+- `UPDATE_AVAILABLE：软件更新X.X.X已准备好安装！`
+- `UPDATE_DOWNLOADING：正在下载更新X.X.X（已完成XX%）`
+- `UPDATE_INSTALLING：正在安装更新X.X.X（已完成XX%）`
+- `UPDATE_SCHEDULED：更新X.X.X已安排在将来执行`
+- `NO_UPDATE：没有可用的更新`
 
-### Wake Vehicle
+### 唤醒车辆
 
-If the vehicle is asleep, wake it first:
+如果车辆处于休眠状态，请先使用`wake`命令唤醒车辆，然后再执行其他操作。
 
-```bash
-python scripts/tessie.py wake --vin <VIN>
-```
+## 自动更新通知
 
-## Automatic Update Notifications
-
-To get notified when software updates are available, set up a cron job:
+要接收软件更新通知，请设置一个cron作业：
 
 ```bash
 # Check for updates every 6 hours and notify if available
@@ -162,15 +158,15 @@ cron add \
   --description "Tesla software update check"
 ```
 
-When an update is available, you'll get a notification with the version number.
+当有更新可用时，系统会发送包含版本号的通知。
 
-## Workflow
+## 工作流程
 
-1. First time: Get VIN with `vehicles` action
-2. For most commands: Use the VIN to target specific vehicle
-3. If vehicle is asleep: Use `wake` first, then retry command
-4. Check status with `status`, `battery`, or `location` as needed
+1. 首次使用：使用`vehicles`命令获取车辆的VIN。
+2. 对于大多数命令：使用VIN来指定目标车辆。
+3. 如果车辆处于休眠状态：先使用`wake`命令唤醒车辆，然后再执行相应命令。
+4. 根据需要使用`status`、`battery`或`location`命令检查车辆状态。
 
-## Reference
+## 参考资料
 
-For complete API documentation, see `references/api.md`.
+有关完整的API文档，请参阅`references/api.md`。

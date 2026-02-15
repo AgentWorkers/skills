@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Voice Generation
+# 人工智能语音生成
 
-Generate natural AI voices via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）生成自然的语音效果。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,41 +27,41 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Available Models
+## 可用模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Kokoro TTS | `infsh/kokoro-tts` | Natural, multiple voices |
-| DIA | `infsh/dia-tts` | Conversational, expressive |
-| Chatterbox | `infsh/chatterbox` | Casual, entertainment |
-| Higgs | `infsh/higgs-tts` | Professional narration |
-| VibeVoice | `infsh/vibevoice` | Emotional range |
+| Kokoro TTS | `infsh/kokoro-tts` | 自然的语音效果，支持多种声音 |
+| DIA | `infsh/dia-tts` | 适合对话场景，表达力强 |
+| Chatterbox | `infsh/chatterbox` | 适合休闲娱乐场景 |
+| Higgs | `infsh/higgs-tts` | 适合专业旁白场景 |
+| VibeVoice | `infsh/vibevoice` | 具备丰富的情感表现力 |
 
-## Kokoro Voice Library
+## Kokoro 语音库
 
-### American English
+### 美式英语
 
-| Voice ID | Gender | Style |
+| 语音 ID | 性别 | 语音风格 |
 |----------|--------|-------|
-| `af_sarah` | Female | Warm, friendly |
-| `af_nicole` | Female | Professional |
-| `af_sky` | Female | Youthful |
-| `am_michael` | Male | Authoritative |
-| `am_adam` | Male | Conversational |
-| `am_echo` | Male | Clear, neutral |
+| `af_sarah` | 女性 | 温暖、友好的语气 |
+| `af_nicole` | 女性 | 专业的语气 |
+| `af_sky` | 女性 | 年轻人风格 |
+| `am_michael` | 男性 | 权威性强的语气 |
+| `am_adam` | 男性 | 适合对话的语气 |
+| `am_echo` | 男性 | 清晰、中立的语气 |
 
-### British English
+### 英式英语
 
-| Voice ID | Gender | Style |
+| 语音 ID | 性别 | 语音风格 |
 |----------|--------|-------|
-| `bf_emma` | Female | Refined |
-| `bf_isabella` | Female | Warm |
-| `bm_george` | Male | Classic |
-| `bm_lewis` | Male | Modern |
+| `bf_emma` | 女性 | 优雅的语气 |
+| `bf_isabella` | 女性 | 温暖的语气 |
+| `bm_george` | 男性 | 古典的语气 |
+| `bm_lewis` | 男性 | 现代的语气 |
 
-## Voice Generation Examples
+## 语音生成示例
 
-### Professional Narration
+### 专业旁白
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -71,7 +71,7 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-### Conversational Style
+### 对话风格
 
 ```bash
 infsh app run infsh/dia-tts --input '{
@@ -80,7 +80,7 @@ infsh app run infsh/dia-tts --input '{
 }'
 ```
 
-### Audiobook Narration
+### 有声书旁白
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -90,7 +90,7 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-### Video Voiceover
+### 视频旁白
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -100,7 +100,7 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-### Podcast Host
+### 播客主持人
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -109,7 +109,7 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Multi-Voice Conversation
+## 多语音对话
 
 ```bash
 # Generate dialogue between two speakers
@@ -132,11 +132,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Long-Form Content
+## 长篇内容处理
 
-### Chunked Processing
-
-For content over 5000 characters, split into chunks:
+- 如果内容超过 5000 个字符，建议将其分割成多个部分进行处理：
 
 ```bash
 # Process long text in chunks
@@ -162,9 +160,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Voice + Video Workflow
+## 语音与视频的结合
 
-### Add Voiceover to Video
+### 为视频添加旁白
 
 ```bash
 # 1. Generate voiceover
@@ -180,7 +178,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Create Talking Head
+### 创建动画角色（Talking Head）
 
 ```bash
 # 1. Generate speech
@@ -196,15 +194,15 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Speed and Pacing
+## 语速与节奏控制
 
-| Speed | Effect | Use For |
+| 语速 | 效果 | 适用场景 |
 |-------|--------|---------|
-| 0.8 | Slow, deliberate | Audiobooks, meditation |
-| 0.9 | Slightly slow | Education, tutorials |
-| 1.0 | Normal | General purpose |
-| 1.1 | Slightly fast | Commercials, energy |
-| 1.2 | Fast | Quick announcements |
+| 0.8 | 语速较慢 | 适合有声书、冥想场景 |
+| 0.9 | 语速稍慢 | 适合教育、教程内容 |
+| 1.0 | 正常语速 | 通用场景 |
+| 1.1 | 语速稍快 | 适合广告、需要活力的场景 |
+| 1.2 | 语速很快 | 适合快速公告 |
 
 ```bash
 # Slow narration
@@ -215,18 +213,15 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Punctuation for Pacing
+## 使用标点符号控制语速节奏
 
-Use punctuation to control speech rhythm:
-
-| Punctuation | Effect |
-|-------------|--------|
-| Period `.` | Full pause |
-| Comma `,` | Brief pause |
-| `...` | Extended pause |
-| `!` | Emphasis |
-| `?` | Question intonation |
-| `-` | Quick break |
+- 标点符号可以帮助控制语音的节奏：
+  - 句号（.`）：表示完整的停顿 |
+  - 逗号（`,`）：表示短暂的停顿 |
+  - …（`...`）：表示较长的停顿 |
+  - 句号（`!`）：表示强调 |
+  - 问号（`?`）：表示疑问的语气 |
+  - 破折号（`-`）：表示短暂的停顿 |
 
 ```bash
 infsh app run infsh/kokoro-tts --input '{
@@ -235,26 +230,26 @@ infsh app run infsh/kokoro-tts --input '{
 }'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Match voice to content** - Professional voice for business, casual for social
-2. **Use punctuation** - Control pacing with periods and commas
-3. **Keep sentences short** - Easier to generate and sounds more natural
-4. **Test different voices** - Same text sounds different across voices
-5. **Adjust speed** - Slightly slower often sounds more natural
-6. **Break long content** - Process in chunks for consistency
+1. **根据内容选择合适的语音**：商务场景使用专业语音，社交场景使用自然的语音。
+2. **使用标点符号**：通过句号和逗号来控制语速节奏。
+3. **保持句子简短**：这样更容易生成自然的语音效果。
+4. **测试不同的语音**：同样的文本用不同的语音表达出来会有不同的效果。
+5. **调整语速**：通常语速稍慢会显得更自然。
+6. **分段处理长内容**：将长内容分成小段进行处理，以保持一致性。
 
-## Use Cases
+## 应用场景
 
-- **Voiceovers** - Video narration, commercials
-- **Audiobooks** - Full book narration
-- **Podcasts** - AI hosts and guests
-- **E-learning** - Course narration
-- **Accessibility** - Screen reader content
-- **IVR** - Phone system messages
-- **Content localization** - Translate and voice
+- **旁白**：视频解说、广告
+- **有声书**：整本书的朗读
+- **播客**：AI 播客主持人及嘉宾
+- **电子学习**：课程讲解
+- **无障碍阅读**：为屏幕阅读器生成语音内容
+- **交互式语音应答（IVR）**：电话系统中的语音消息
+- **内容本地化**：将文本翻译并转化为语音
 
-## Related Skills
+## 相关技能
 
 ```bash
 # All TTS models
@@ -273,4 +268,4 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse audio apps: `infsh app list --category audio`
+查看音频应用：`infsh app list --category audio`

@@ -1,7 +1,7 @@
 ---
 name: investing
 version: 1.0.0
-description: Personal investing assistant for Lithuanian investors. Monitors markets, ETFs, crypto, pension funds (III pakopa), and provides monthly investment suggestions based on research and market conditions.
+description: 面向立陶宛投资者的个人投资助手。该助手会监控市场、交易型开放式指数基金（ETFs）、加密货币以及养老基金（第三阶段产品），并根据研究结果和市场状况每月提供投资建议。
 author: Buba Draugelis
 license: MIT
 tags:
@@ -16,21 +16,21 @@ metadata:
     emoji: "💰"
 ---
 
-# Investing Skill
+# 投资技巧
 
-A comprehensive investing assistant tailored for Lithuanian investors, inspired by šešiNuliai.lt philosophy.
+这是一套专为立陶宛投资者量身定制的综合性投资辅助工具，其设计理念源自šešiNuliai.lt的哲学思想。
 
-## Core Philosophy
+## 核心投资理念
 
-Based on evidence-based, passive investing:
-- **VWCE & Chill** - Simple, low-cost global ETF strategy
-- **Long-term focus** - 10+ year investment horizon
-- **Diversification** - Across asset classes and geographies
-- **Low costs** - Minimize fees, maximize returns
+我们遵循基于证据的被动投资策略：
+- **VWCE & Chill**：简单、低成本的全球ETF投资策略
+- **长期投资**：投资期限为10年以上
+- **资产多元化**：涵盖不同的资产类别和地区
+- **低成本**：尽量降低费用，提高投资回报
 
-## Asset Allocation Framework
+## 资产配置框架
 
-### Recommended Portfolio (Moderate Risk)
+### 推荐的投资组合（中等风险）
 
 ```
 📊 Sample Allocation:
@@ -47,33 +47,33 @@ Based on evidence-based, passive investing:
     └── Savings accounts, MMF
 ```
 
-Adjust based on:
-- Age (younger = more stocks)
-- Risk tolerance
-- Time horizon
-- Income stability
+投资组合的调整需考虑以下因素：
+- 年龄（越年轻，股票配置比例越高）
+- 风险承受能力
+- 投资期限
+- 收入稳定性
 
-## Data Sources
+## 数据来源
 
-### Lithuanian Sources
-- **šešiNuliai.lt** - Personal finance blog (LT)
-- **Investuok.eu** - Investment news (LT)
-- **Vz.lt** - Business news (LT)
-- **Delfi Verslas** - Business section
+### 立陶宛本地资源
+- **šešiNuliai.lt**：个人理财博客（立陶宛语）
+- **Investuok.eu**：投资新闻（立陶宛语）
+- **Vz.lt**：商业新闻（立陶宛语）
+- **Delfi Verslas**：商业资讯板块
 
-### International Sources
-- **Bogleheads** - Passive investing community
-- **r/eupersonalfinance** - EU-focused Reddit
-- **JustETF** - ETF comparison tool
-- **Portfolio Visualizer** - Backtesting
+### 国际资源
+- **Bogleheads**：被动投资社区
+- **r/eupersonalfinance**：专注于欧盟的个人理财论坛
+- **JustETF**：ETF比较平台
+- **Portfolio Visualizer**：投资组合可视化工具
 
-### Market Data
-- **Yahoo Finance** - Stock/ETF prices
-- **TradingView** - Charts
-- **CoinGecko** - Crypto prices
-- **ECB** - EUR exchange rates, interest rates
+## 市场数据来源
+- **Yahoo Finance**：股票/ETF价格数据
+- **TradingView**：图表分析工具
+- **CoinGecko**：加密货币价格信息
+- **ECB**：欧洲中央银行（欧元汇率及利率数据）
 
-## Scripts
+## 自动化脚本
 
 ### check-etf-prices.sh
 
@@ -111,16 +111,16 @@ echo "BTC (10%):    €$((BUDGET * 10 / 100))"
 echo "Cash (10%):   €$((BUDGET * 10 / 100))"
 ```
 
-## Monthly Investment Workflow
+## 月度投资流程
 
-### 1. Market Check (5 min)
+### 1. 市场行情检查（5分钟）
 
 ```
 Run: check-etf-prices.sh
 Check: Any significant drops (>10%) = buying opportunity
 ```
 
-### 2. News Scan (10 min)
+### 2. 新闻浏览（10分钟）
 
 ```
 Scan:
@@ -129,7 +129,7 @@ Scan:
 - ECB announcements - rate changes?
 ```
 
-### 3. Execute DCA (5 min)
+### 3. 执行定期定额投资（DCA）（5分钟）
 
 ```
 Run: monthly-dca.sh [budget]
@@ -138,7 +138,7 @@ Execute trades via:
 - Bitstamp/Kraken (Crypto)
 ```
 
-### 4. Record & Reflect (5 min)
+### 4. 记录投资情况并反思（5分钟）
 
 ```
 Update:
@@ -147,55 +147,55 @@ Update:
 - Review annual progress
 ```
 
-## III Pakopa (Pension) Strategy
+## 第三阶段（养老金投资策略）
 
-### When III Pakopa Makes Sense
+### 适用条件
 
-1. **Employer contribution** - Free money, always take it
-2. **High tax bracket** - 32%+ marginal rate
-3. **Long horizon** - 15+ years to retirement
-4. **Old contract** - Pre-2019 rules may be better
+1. **雇主提供的养老金贡献**：务必全额领取
+2. **处于高税率区间**（边际税率超过32%）
+3. **投资期限较长**（距离退休至少15年以上）
+4. **适用2019年之前的法规**（某些条款可能更优惠）
 
-### Recommended Funds
+### 推荐的投资基金
 
-| Fund | TER | Notes |
+| 基金 | 年管理费率（TER） | 说明 |
 |------|-----|-------|
-| Goindex III pakopa | 0.40% | Index-tracking, low cost |
-| Swedbank Index | 0.45% | Also index-based |
-| Luminor Index | 0.50% | Decent alternative |
+| Goindex III pakopa | 0.40% | 跟踪指数，低成本 |
+| Swedbank Index | 0.45% | 也是指数基金 |
+| Luminor Index | 0.50% | 可选的投资方案 |
 
-**Avoid:** High-fee active funds (1%+ TER)
+**避免选择：** 年管理费率超过1%的主动管理型基金
 
-### Yearly Optimization
+### 年度优化策略
 
-1. Max out employer match first
-2. Calculate tax benefit vs fees
-3. Consider personal IBKR account for overflow
-4. Review fund performance annually
+1. 首先充分利用雇主提供的养老金贡献
+2. 计算税收优惠与投资成本之间的差额
+3. 考虑使用IBKR等个人经纪账户来管理超额部分
+4. 每年评估基金表现
 
-## Crypto Strategy
+## 加密货币投资策略
 
-### Core Holdings (90% of crypto allocation)
+### 主要投资品种（占加密货币总投资的90%）
 
-- **Bitcoin (BTC)** - 80% of crypto
-- **Ethereum (ETH)** - 20% of crypto
+- **比特币（BTC）**：占加密货币投资的80%
+- **以太坊（ETH）**：占20%
 
-### Rules
+### 投资规则
 
-1. Never more than 10% of total portfolio
-2. DCA monthly, don't time the market
-3. Self-custody for large amounts (Ledger/Trezor)
-4. Hold through cycles (5+ years)
+1. 单一资产的投资比例不得超过总投资额的10%
+2. 采用定期定额投资（DCA）方式，避免试图预测市场走势
+3. 对大额资金采用自我托管方式（如Ledger或Trezor）
+4. 长期持有（至少5年以上）
 
-### Where to Buy (EU)
+### 在欧盟地区的购买渠道
 
-- **Bitstamp** - Low fees, EU regulated
-- **Kraken** - Good security, SEPA
-- **Coinbase** - Easy, but higher fees
+- **Bitstamp**：费用较低，受欧盟监管
+- **Kraken**：安全性较高，支持SEPA转账
+- **Coinbase**：操作便捷，但费用较高
 
-## Emergency Fund
+## 应急资金准备
 
-Before investing, ensure:
+在开始投资之前，请确保：
 
 ```
 Emergency Fund = 3-6 months expenses
@@ -206,28 +206,28 @@ Current best rates (LT):
 - Revolut Savings: ~3.5%
 ```
 
-## Tax Considerations (Lithuania)
+## 立陶宛的税收政策
 
-### Capital Gains
+### 资本利得税
 
-- **15%** tax on gains
-- **Holding period:** No benefit for long-term (unlike US)
-- **Losses:** Can offset gains in same year
+- **资本利得税率为15%**
+- **持有期限要求**：与美国的政策不同，长期持有无税收优惠
+- **亏损**：可在同一年内用于抵扣收益
 
-### III Pakopa Tax Benefits
+### 第三阶段养老金投资的税收优惠
 
-- **Contribution:** Deduct from taxable income (up to €1,500/year)
-- **Withdrawal:** Taxed at 15% (or 0% if after retirement age)
+- **雇主贡献部分**：可从应税收入中扣除（每年最高1,500欧元）
+- **提取养老金**：需缴纳15%的税款（退休后免税）
 
-### Crypto
+### 加密货币投资的相关税收规定
 
-- **15%** on realized gains
-- Track cost basis carefully
-- Report in annual declaration
+- **实现收益需缴纳15%的税款**
+- **需仔细记录成本基础**
+- **每年进行税务申报**
 
-## Cron Jobs
+## 定时任务
 
-### Daily Price Alert
+### 日价格提醒
 
 ```javascript
 {
@@ -240,7 +240,7 @@ Current best rates (LT):
 }
 ```
 
-### Monthly Investment Reminder
+### 月度投资提醒
 
 ```javascript
 {
@@ -253,7 +253,7 @@ Current best rates (LT):
 }
 ```
 
-### Quarterly Review
+### 季度投资回顾
 
 ```javascript
 {
@@ -266,28 +266,29 @@ Current best rates (LT):
 }
 ```
 
-## Resources
+## 参考资源
 
-### Books
-- "The Simple Path to Wealth" - JL Collins
-- "A Random Walk Down Wall Street" - Burton Malkiel
-- "The Bogleheads' Guide to Investing"
+### 书籍
+- 《简单财富之路》（The Simple Path to Wealth）——JL Collins著
+- 《随机漫步华尔街》（A Random Walk Down Wall Street）——Burton Malkiel著
+- 《Bogleheads的投资指南》（The Bogleheads’ Guide to Investing）
 
-### Websites
-- šešiNuliai.lt (LT)
-- Bogleheads.org
-- JustETF.com
-- r/eupersonalfinance
+### 网站
+- **šešiNuliai.lt**（立陶宛语个人理财网站）
+- **Bogleheads.org**：被动投资社区网站
+- **JustETF.com**：ETF信息平台
+- **r/eupersonalfinance**：欧盟个人理财论坛
 
-### Tools
-- Portfolio Visualizer (backtesting)
-- IBKR (brokerage)
-- Notion/Sheets (tracking)
+### 工具
 
-## Disclaimer
+- **Portfolio Visualizer**：投资组合可视化工具
+- **IBKR**：经纪服务平台
+- **Notion/Sheets**：数据追踪工具
 
-This is not financial advice. Do your own research. Past performance does not guarantee future results. Investing involves risk of loss.
+## 免责声明
+
+本文档仅供参考，并不构成专业金融建议。请自行进行充分研究。过去的投资表现不能保证未来的收益，投资存在亏损风险。
 
 ---
 
-*Skill created based on research from šešiNuliai.lt, Bogleheads, and EU personal finance communities.*
+*本投资策略基于šešiNuliai.lt、Bogleheads社区及欧盟个人理财社区的研究成果制定。*

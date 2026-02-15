@@ -1,77 +1,77 @@
 ---
 name: ralstp-consultant
-description: Analyze problems using RALSTP (Recursive Agents and Landmarks Strategic-Tactical Planning). Based on PhD thesis by Dorian Buksz (RALSTP). Identifies agents, calculates difficulty, and suggests decomposition.
+description: 使用 RALSTP（递归代理与地标战略-战术规划，Recursive Agents and Landmarks Strategic-Tactical Planning）来分析问题。该方法基于 Dorian Buksz 的博士论文 RALSTP 开发。该工具能够识别相关代理、计算问题的难度，并提出问题的分解方案。
 ---
 
-# RALSTP Consultant
+# RALSTP咨询师
 
-Based on **"Recursive Agents and Landmarks Strategic-Tactical Planning (RALSTP)"** by Dorian Buksz, King's College London, 2024.
+本方法基于伦敦国王学院Dorian Buksz于2024年发表的论文《递归代理与战略-战术规划（RALSTP）》（"Recursive Agents and Landmarks Strategic-Tactical Planning (RALSTP)"）。
 
-## Core Concepts (from the thesis)
+## 核心概念（摘自论文）
 
-### 1. Agents Identification
+### 1. 代理识别
 
-**Definition:** Agents are objects with **dynamic types** that are active during goal state search.
+**定义：** 代理是具有**动态类型**的实体，在目标状态搜索过程中处于活跃状态。
 
-**How to identify:**
-- Dynamic type = appears as first argument of a predicate in any action's **effects**
-- Static type = never appears in action effects
-- Example: In Driverlog, `truck` and `driver` are dynamic (they're in `drive` action effects), but `location` is static
+**识别方法：**
+- **动态类型**：作为任何动作**效果**中谓词的首个参数出现。
+- **静态类型**：从未出现在动作效果中。
+- **示例：** 在Driverlog中，`truck`和`driver`是动态类型（它们出现在`drive`动作的效果中），而`location`是静态类型。
 
-### 2. Passive Objects
+### 2. 被动对象
 
-Objects that are NOT agents — things being acted upon but don't act themselves.
-- Packages, cargo, data, files, victims in RTAM
+非代理的实体——它们是动作的接受者，但本身不执行任何动作。
+- 包裹、货物、数据、文件、RTAM（实时任务管理）中的受害者等。
 
-### 3. Agent Dependencies
+### 3. 代理依赖关系
 
-**Definition:** Relationships between agents based on what preconditions they satisfy for other agents.
+**定义：** 代理之间的关系取决于它们为其他代理满足的前提条件。
 
-**Types:**
-- **Independent** — agents that don't depend on each other
-- **Dependent** — agents that need other agents' preconditions satisfied
-- **Conflicting** — agents that interfere with each other
+**类型：**
+- **独立代理**：彼此之间没有依赖关系的代理。
+- **依赖代理**：需要其他代理满足前提条件的代理。
+- **冲突代理**：相互干扰的代理。
 
-### 4. Entanglement
+### 4. 纠缠
 
-**Definition:** When agents fight for shared resources (time, space, locations, etc.)
+**定义：** 当代理为共享资源（如时间、空间、位置等）而发生竞争时。
 
-**Measurement:**
-- Count of shared predicates
-- Conflict frequency in goal states
+**衡量方式：**
+- 共享谓词的数量。
+- 目标状态中的冲突频率。
 
-### 5. Landmarks
+### 5. 地标
 
-**Definition:** Facts that **must be true** in any valid plan (from goals back to initial state).
+**定义：** 在任何有效计划中都必须成立的事实（从目标状态回溯到初始状态）。
 
-**Types:**
-- **Fact landmarks** — propositions that must hold
-- **Action landmarks** — actions that must be executed
-- **Relaxed landmarks** — landmarks considering only positive effects (ignoring deletes)
+**类型：**
+- **事实地标**：必须成立的前提或命题。
+- **动作地标**：必须执行的动作。
+- **放宽地标**：仅考虑正面效果的地标（忽略删除操作）。
 
-### 6. Strategic vs Tactical
+### 6. 战略与战术
 
-- **Strategic:** Abstract planning level. Solve "what needs to happen first" ignoring details.
-- **Tactical:** Detailed execution level. Solve "exactly how to do it".
+- **战略层面：** 抽象的规划层次。解决“首先需要做什么”的问题，忽略具体细节。
+- **战术层面：** 具体的执行层次。解决“如何具体执行”的问题。
 
-### 7. Difficulty Metrics
+### 7. 难度指标
 
-From the thesis, difficulty increases with:
-- More agents in goal state
-- More entangled agents (conflicting dependencies)
-- More inactive dynamic objects not in goal
+根据论文，难度随着以下因素的增加而增加：
+- 目标状态中的代理数量增加。
+- 代理之间的纠缠关系（冲突依赖）增加。
+- 未包含在目标状态中的非动态对象数量增加。
 
-**Buksz Complexity Score ≈ Agent Count × Entanglement Factor**
+**Buksz复杂性得分 ≈ 代理数量 × 纠缠因子**
 
-## Usage
+## 使用方法
 
-For any complex problem, just describe it and I'll apply RALSTP:
+对于任何复杂问题，只需描述问题，我就可以应用RALSTP方法：
 
 ```
 RALSTP analyze: I need to migrate 1000 VMs from datacentre A to B with minimal downtime
 ```
 
-## Output Format
+## 输出格式
 
 ```
 ## RALSTP Analysis
@@ -102,19 +102,18 @@ RALSTP analyze: I need to migrate 1000 VMs from datacentre A to B with minimal d
 - Risks: [potential conflicts/entanglements]
 ```
 
-## When to Use
+## 适用场景
 
-**USE for:**
-- Multi-step workflows with multiple actors
-- Migration/tasks with dependencies
-- Resource contention problems
-- Complex orchestrations
+**适用于：**
+- 包含多个参与者的多步骤工作流程。
+- 具有依赖关系的迁移/任务。
+- 资源争夺问题。
+- 复杂的协调问题。
 
-**SKIP for:**
-- Simple Q&A
-- Single-task problems
+**不适用场景：**
+- 简单的问答场景。
+- 单任务问题。
 
-## Reference
+## 参考文献
 
-PhD Thesis: "Recursive Agents and Landmarks Strategic-Tactical Planning (RALSTP)" — Dorian Buksz, King's College London, 2024.
-
+博士论文：《递归代理与战略-战术规划（RALSTP）》——Dorian Buksz，伦敦国王学院，2024年。

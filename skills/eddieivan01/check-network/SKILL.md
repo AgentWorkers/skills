@@ -1,10 +1,10 @@
 ---
 name: check-network
-description: check network
+description: 检查网络连接
 ---
 
-# Check network
+# 检查网络连接
 
-## Overview
+## 概述
 
-copy the command and execute: curl google.com -vv
+将以下命令复制并执行：`curl google.com -vv`

@@ -1,98 +1,98 @@
 ---
 name: CRM Manager
-description: Manages a local CSV-based CRM with pipeline tracking
+description: 管理一个基于 CSV 的本地 CRM 系统，并实现流程跟踪功能。
 ---
 
-# CRM Manager
+# CRM 管理器
 
-You manage a lightweight CRM stored as a local CSV file. No Salesforce needed — just a clean, organized pipeline you can actually maintain.
+您负责管理一个以本地 CSV 文件形式存储的轻量级 CRM 系统。无需使用 Salesforce——只需一个简洁、易于维护的管道系统即可。
 
-## CRM File Location
+## CRM 文件位置
 
-Default: `crm.csv` in the workspace. Create from `crm-template.csv` if it doesn't exist.
+默认位置：工作区中的 `crm.csv` 文件。如果文件不存在，请使用 `crm-template.csv` 作为模板创建。
 
-## CSV Structure
+## CSV 文件结构
 
 ```csv
 id,name,company,email,phone,stage,deal_value,source,last_contact,next_action,next_action_date,notes,created,updated
 ```
 
-### Fields
+### 字段
 
-| Field | Description | Required |
+| 字段 | 描述 | 是否必填 |
 |-------|-------------|----------|
-| id | Auto-increment integer | Yes |
-| name | Contact's full name | Yes |
-| company | Company name | Yes |
-| email | Email address | No |
-| phone | Phone number | No |
-| stage | Pipeline stage (see below) | Yes |
-| deal_value | Estimated deal value in USD | No |
-| source | How they found you / you found them | No |
-| last_contact | Date of last interaction (YYYY-MM-DD) | Yes |
-| next_action | What to do next | Yes |
-| next_action_date | When to do it (YYYY-MM-DD) | Yes |
-| notes | Freeform notes, pipe-separated for multiple | No |
-| created | Date added (YYYY-MM-DD) | Yes |
-| updated | Date last modified (YYYY-MM-DD) | Yes |
+| id      | 自动递增的整数 | 是       |
+| name     | 联系人的全名    | 是       |
+| company   | 公司名称    | 是       |
+| email    | 电子邮件地址    | 否       |
+| phone     | 电话号码     | 否       |
+| stage     | 管道阶段（见下文） | 是       |
+| deal_value | 预计交易金额（美元） | 否       |
+| source    | 客户来源     | 否       |
+| last_contact | 最后联系日期（YYYY-MM-DD）| 是       |
+| next_action | 下一步行动    | 是       |
+| next_action_date | 执行日期（YYYY-MM-DD）| 是       |
+| notes    | 自由格式的备注（多条内容用竖线分隔）| 否       |
+| created   | 创建日期（YYYY-MM-DD）| 是       |
+| updated   | 最后修改日期（YYYY-MM-DD）| 是       |
 
-### Pipeline Stages
+### 管道阶段
 
-1. **lead** — New contact, not yet qualified
-2. **qualified** — Confirmed they have budget, need, and authority
-3. **meeting** — Meeting scheduled or completed
-4. **proposal** — Proposal/quote sent
-5. **negotiation** — Working out terms
-6. **closed-won** — Deal done
-7. **closed-lost** — Didn't work out
-8. **nurture** — Not ready now, stay in touch
+1. **lead** — 新联系人，尚未经过资格审核  
+2. **qualified** — 确认客户有预算、需求和购买权限  
+3. **meeting** — 预约或已完成会议  
+4. **proposal** — 已发送报价  
+5. **negotiation** — 谈判条款  
+6. **closed-won** — 交易完成  
+7. **closed-lost** — 交易失败  
+8. **nurture** — 当前尚未准备好，保持联系  
 
-## Commands
+## 命令
 
-When the user asks you to manage CRM data, handle these actions:
+当用户要求您管理 CRM 数据时，请执行以下操作：
 
-### Add a Contact
-"Add [name] from [company] to the CRM"
-→ Create a new row, set stage to "lead", set created/updated to today.
+### 添加联系人
+“将 [name]（来自 [company]）添加到 CRM 中”
+→ 创建新记录，将阶段设置为 “lead”，并将创建/修改日期设置为当前日期。
 
-### Update a Contact
-"Update [name] — had a call today, moving to proposal stage"
-→ Update stage, last_contact, next_action, notes, updated date.
+### 更新联系人
+“更新 [name] — 今天有电话联系，将阶段更新为 ‘proposal’”
+→ 更新联系人的阶段、最后联系日期、下一步行动和备注，并更新修改日期。
 
-### Show Pipeline
-"Show me my pipeline" / "What's in my CRM?"
-→ Display contacts grouped by stage with deal values.
+### 查看管道状态
+“显示我的管道状态” / “我的 CRM 中有哪些联系人？”
+→ 按阶段分组显示联系人，并显示对应的交易金额。
 
-### Follow-up Reminders
-"What follow-ups are due?" / "Who should I contact?"
-→ Show contacts where next_action_date ≤ today, sorted by date.
+### 提醒跟进
+“哪些跟进任务到期了？” / “我应该联系谁？”
+→ 显示 `next_action_date` 小于或等于今天的联系人，并按日期排序。
 
-### Pipeline Summary
-"Pipeline summary"
-→ Show: total contacts per stage, total deal value per stage, overdue follow-ups count.
+### 管道汇总
+“管道状态汇总”
+→ 显示每个阶段的联系人总数、每个阶段的交易总额以及逾期跟进任务的数量。
 
-### Search
-"Find [name/company]"
-→ Search across name and company fields.
+### 搜索
+“查找 [name]/[company]”
+→ 在名称和公司字段中进行搜索。
 
-### Move Stage
-"Move [name] to [stage]"
-→ Update stage and updated date.
+### 转换阶段
+“将 [name] 的阶段更新为 [stage]”
+→ 更新联系人的阶段和修改日期。
 
-## Rules
+## 规则
 
-- Always read the CSV before making changes (don't assume state)
-- Always update the `updated` field when modifying a row
-- Never delete rows — move to closed-lost or nurture instead
-- Keep notes append-only (add new notes with pipe separator, don't overwrite)
-- When showing pipeline, format as a clean table
-- Warn if a contact has no next_action_date or it's overdue
-- Back up the CSV before bulk operations (copy to crm-backup-YYYY-MM-DD.csv)
+- 在进行任何更改之前，请务必先阅读 CSV 文件的内容（不要依赖系统默认的状态信息）。  
+- 修改记录时，请务必更新 `updated` 字段。  
+- 绝不要删除记录——请将其状态改为 “closed-lost” 或 “nurture”。  
+- 备注字段仅支持追加新内容（使用竖线分隔），不要覆盖原有内容。  
+- 显示管道状态时，请以清晰的表格形式呈现数据。  
+- 如果联系人没有 `next_action_date` 或跟进任务逾期，请发出警告。  
+- 在执行批量操作前，请备份 CSV 文件（例如：将其复制到 `crm-backup-YYYY-MM-DD.csv`）。  
 
-## Pipeline Health Checks
+## 管道健康检查
 
-Periodically flag:
-- Contacts with no activity in 14+ days
-- Deals stuck in the same stage for 30+ days
-- Missing next actions
-- Leads with no follow-up scheduled
+定期检查以下情况：
+- 14 天以上没有活动的联系人  
+- 长期停留在同一阶段的交易  
+- 未安排跟进任务的联系人  
+- 未安排后续行动的潜在客户

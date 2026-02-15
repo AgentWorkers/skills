@@ -1,6 +1,10 @@
 ---
 name: minimax-mcp
-description: MiniMax MCP server for web search and image understanding. Use when needing: (1) Web search via MiniMax API, (2) Analyze/describe images, (3) Extract content from URLs. Requires MINIMAX_API_KEY (China: api.minimaxi.com, Global: api.minimax.io).
+description: MiniMax MCP服务器用于网络搜索和图像处理。适用于以下场景：  
+(1) 通过MiniMax API进行网络搜索；  
+(2) 分析/描述图像；  
+(3) 从URL中提取内容。  
+使用该服务器需要MINIMAX_API_KEY（中国地区：api.minimaxi.com；全球地区：api.minimax.io）。
 metadata:
   {
     "openclaw":
@@ -37,37 +41,37 @@ metadata:
   }
 ---
 
-# MiniMax MCP Skill
+# MiniMax MCP 技能
 
-## Overview
+## 概述
 
-Official MiniMax Model Context Protocol (MCP) server for coding-plan users, providing AI-powered search and vision analysis capabilities.
+这是一个官方的 MiniMax 模型上下文协议（MCP）服务器，专为编码计划（coding-plan）用户设计，提供基于人工智能的搜索和图像分析功能。
 
-## Features
+## 功能
 
-| Tool | Function | Supported Formats |
+| 工具 | 功能 | 支持的格式 |
 |------|----------|-------------------|
-| **web_search** | Web search with structured results (title, link, snippet) | - |
-| **understand_image** | AI image analysis and content recognition | JPEG, PNG, WebP |
+| **web_search** | 基于结构的网页搜索（包括标题、链接和摘要） | - |
+| **understand_image** | 人工智能图像分析和内容识别 | JPEG、PNG、WebP |
 
-## Trigger Scenarios
+## 触发场景
 
-Use this skill when user says:
-- "Search for xxx" / "Look up xxx"
-- "Look at this image" / "Analyze this picture"
-- "What's in this image" / "Describe this photo"
-- "Extract content from URL" / "Fetch this webpage"
+当用户说出以下指令时，可以使用此技能：
+- “搜索 xxx” / “查找 xxx”
+- “看看这张图片” / “分析这张照片”
+- “这张图片里有什么” / “描述这张照片”
+- “从 URL 中提取内容” / “获取这个网页”
 
-## Quick Start
+## 快速入门
 
-### 1. Get API Key
+### 1. 获取 API 密钥
 
-| Region | API Key URL | API Host |
+| 地区 | API 密钥地址 | API 服务器 |
 |--------|-------------|----------|
-| 🇨🇳 China | platform.minimaxi.com | https://api.minimaxi.com |
-| 🇺🇳 Global | minimax.io | https://api.minimax.io |
+| 🇨🇳 中国 | platform.minimaxi.com | https://api.minimaxi.com |
+| 🇺🇳 全球 | minimax.io | https://api.minimax.io |
 
-### 2. Configure mcporter (Recommended)
+### 2. 配置 mcporter（推荐）
 
 ```bash
 # Add MCP server
@@ -80,7 +84,7 @@ mcporter config add minimax \
 mcporter list
 ```
 
-### 3. Direct Usage
+### 3. 直接使用
 
 ```bash
 # Search
@@ -90,35 +94,35 @@ mcporter call minimax.web_search query="keywords"
 mcporter call minimax.understand_image prompt="Describe this image" image_source="image-url-or-path"
 ```
 
-## Usage Examples
+## 使用示例
 
-See [references/examples.md](references/examples.md)
+请参阅 [references/examples.md](references/examples.md)。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |----------|----------|-------------|
-| `MINIMAX_API_KEY` | ✅ | Your MiniMax API Key |
-| `MINIMAX_API_HOST` | ✅ | API endpoint |
+| `MINIMAX_API_KEY` | ✅ | 你的 MiniMax API 密钥 |
+| `MINIMAX_API_HOST` | ✅ | API 端点 |
 
-## Important Notes
+## 重要提示
 
-⚠️ **API Key must match the host region!**
+⚠️ **API 密钥必须与服务器所在地区匹配！**
 
-| Region | API Key Source | API Host |
+| 地区 | API 密钥来源 | API 服务器 |
 |--------|---------------|----------|
-| Global | minimax.io | https://api.minimax.io |
-| China | minimaxi.com | https://api.minimaxi.com |
+| 全球 | minimax.io | https://api.minimax.io |
+| 中国 | minimaxi.com | https://api.minimaxi.com |
 
-If you get "Invalid API key" error, check if your Key and Host are from the same region.
+如果出现“无效的 API 密钥”错误，请检查你的密钥和服务器是否来自同一地区。
 
-## Troubleshooting
+## 故障排除
 
-- **"uvx not found"**: Install uv - `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- **"Invalid API key"**: Confirm API Key and Host are from the same region
-- **Image download failed**: Ensure image URL is publicly accessible, supports JPEG/PNG/WebP
+- **“uvx 未找到”**：安装 uv：`brew install uv` 或 `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **“无效的 API 密钥”**：确认 API 密钥和服务器是否来自同一地区
+- **图像下载失败**：确保图像 URL 可以公开访问，并且支持 JPEG/PNG/WebP 格式
 
-## Related Resources
+## 相关资源
 
 - GitHub: https://github.com/MiniMax-AI/MiniMax-Coding-Plan-MCP
-- MiniMax Platform: https://platform.minimaxi.com (China) / https://www.minimax.io (Global)
+- MiniMax 平台：https://platform.minimaxi.com（中国）/ https://www.minimax.io（全球）

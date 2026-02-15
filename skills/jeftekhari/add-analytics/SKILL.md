@@ -1,24 +1,24 @@
 ---
 name: add-analytics
-description: Add Google Analytics 4 tracking to any project. Detects framework, adds tracking code, sets up events, and configures privacy settings.
+description: 将 Google Analytics 4 跟踪功能添加到任何项目中。该功能可以检测项目所使用的开发框架，自动插入跟踪代码，设置相关事件，并配置隐私设置。
 argument-hint: "<measurement-id> [--events] [--consent] [--debug]"
 ---
 
-# Google Analytics 4 Setup Skill
+# Google Analytics 4 设置指南
 
-You are setting up Google Analytics 4 (GA4) for a project. Follow this comprehensive guide to add analytics properly.
+您正在为一个项目设置 Google Analytics 4 (GA4)。请按照本指南正确配置 Analytics。
 
-## Arguments
+## 参数
 
-Parse the following from `$ARGUMENTS`:
-- **Measurement ID**: Format `G-XXXXXXXXXX` (required, ask if not provided)
-- **--events**: Include custom event tracking helpers
-- **--consent**: Include cookie consent integration
-- **--debug**: Enable debug mode for development
+从 `$ARGUMENTS` 中解析以下内容：
+- **测量 ID (Measurement ID)**：格式为 `G-XXXXXXXXXX`（必填，若未提供请询问）
+- **--events**：包含自定义事件跟踪功能
+- **--consent**：包含 cookie 同意集成功能
+- **--debug**：启用调试模式以辅助开发
 
-## Step 1: Detect Project Type
+## 第 1 步：确定项目类型
 
-Scan the project to determine the framework/setup:
+扫描项目以确定其使用的框架/设置方式：
 
 ```
 Priority detection order:
@@ -36,27 +36,27 @@ Priority detection order:
 12. _app.tsx/jsx → Next.js (App Router check: app/ directory)
 ```
 
-Also check for:
-- TypeScript usage (tsconfig.json)
-- Existing analytics (search for gtag, GA, analytics)
-- Package manager (pnpm-lock.yaml, yarn.lock, package-lock.json)
+同时检查以下内容：
+- 是否使用了 TypeScript（查看 `tsconfig.json`）
+- 是否已有 Analytics 配置（搜索 `gtag`、`GA`、`analytics`）
+- 项目是否使用了包管理器（查看 `pnpm-lock.yaml`、`yarn.lock`、`package-lock.json`）
 
-## Step 2: Validate Measurement ID
+## 第 2 步：验证测量 ID
 
-The Measurement ID must:
-- Start with `G-` (GA4 format)
-- Be followed by exactly 10 alphanumeric characters
-- Example: `G-ABC1234567`
+测量 ID 必须满足以下要求：
+- 以 `G-` 开头（GA4 格式）
+- 后面紧跟 10 个字母数字字符
+- 例如：`G-ABC1234567`
 
-If the user provides a `UA-` ID, inform them:
-> "You provided a Universal Analytics ID (UA-). GA4 uses Measurement IDs starting with 'G-'.
-> Universal Analytics was sunset in July 2024. You'll need to create a GA4 property at analytics.google.com"
+如果用户提供了 `UA-` ID，请告知他们：
+> “您提供的是一个 Universal Analytics ID（UA-）。GA4 使用以 ‘G-’ 开头的测量 ID。”
+> Universal Analytics 于 2024 年 7 月停止支持。您需要在 analytics.google.com 上创建一个新的 GA4 账户。
 
-## Step 3: Implementation by Framework
+## 第 3 步：根据框架进行配置
 
-### Next.js (App Router - app/ directory)
+### Next.js（App Router - app/ 目录）
 
-Create `app/layout.tsx` modification or create `components/GoogleAnalytics.tsx`:
+在 `app/layout.tsx` 中进行修改，或创建 `components/GoogleAnalytics.tsx` 文件：
 
 ```tsx
 // components/GoogleAnalytics.tsx
@@ -88,7 +88,8 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
 }
 ```
 
-Add to root layout:
+将相关代码添加到页面布局中：
+
 ```tsx
 // app/layout.tsx
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
@@ -97,9 +98,9 @@ import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
 ```
 
-### Next.js (Pages Router - pages/ directory)
+### Next.js（Pages Router - pages/ 目录）
 
-Modify `pages/_app.tsx`:
+修改 `pages/_app.tsx` 文件：
 
 ```tsx
 // pages/_app.tsx
@@ -129,9 +130,9 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
-### React (Vite/CRA)
+### React（Vite/CRA）
 
-Create `src/lib/analytics.ts`:
+创建 `src/lib/analytics.ts` 文件：
 
 ```typescript
 // src/lib/analytics.ts
@@ -171,7 +172,7 @@ export const event = (action: string, params?: Record<string, unknown>) => {
 }
 ```
 
-Initialize in `src/main.tsx`:
+在 `src/main.tsx` 中初始化 Analytics：
 
 ```tsx
 import { initGA } from './lib/analytics'
@@ -182,9 +183,9 @@ if (import.meta.env.PROD) {
 }
 ```
 
-### Vue 3 (Vite)
+### Vue 3（Vite）
 
-Create `src/plugins/analytics.ts`:
+创建 `src/plugins/analytics.ts` 文件：
 
 ```typescript
 // src/plugins/analytics.ts
@@ -230,7 +231,7 @@ export const analyticsPlugin = {
 
 ### Nuxt 3
 
-Create `plugins/analytics.client.ts`:
+创建 `plugins/analytics.client.ts` 文件：
 
 ```typescript
 // plugins/analytics.client.ts
@@ -268,7 +269,7 @@ export default defineNuxtPlugin(() => {
 })
 ```
 
-Add to `nuxt.config.ts`:
+将相关代码添加到 `nuxt.config.ts` 中：
 
 ```typescript
 export default defineNuxtConfig({
@@ -282,7 +283,7 @@ export default defineNuxtConfig({
 
 ### Astro
 
-Create `src/components/Analytics.astro`:
+创建 `src/components/Analytics.astro` 文件：
 
 ```astro
 ---
@@ -310,7 +311,7 @@ const { measurementId } = Astro.props
 </script>
 ```
 
-Add to layout:
+将相关代码添加到页面布局中：
 
 ```astro
 ---
@@ -325,7 +326,7 @@ import Analytics from '../components/Analytics.astro'
 
 ### SvelteKit
 
-Create `src/lib/analytics.ts` and `src/routes/+layout.svelte`:
+创建 `src/lib/analytics.ts` 和 `src/routes/+layout.svelte` 文件：
 
 ```typescript
 // src/lib/analytics.ts
@@ -374,9 +375,9 @@ export function trackPageview(url: string) {
 <slot />
 ```
 
-### Plain HTML
+### 纯 HTML
 
-Add to `<head>`:
+将相关代码添加到 `<head>` 标签中：
 
 ```html
 <!-- Google Analytics -->
@@ -389,9 +390,9 @@ Add to `<head>`:
 </script>
 ```
 
-## Step 4: Environment Variables
+## 第 4 步：设置环境变量
 
-Create or update `.env` / `.env.local`:
+创建或更新 `.env` 或 `.env.local` 文件：
 
 ```bash
 # For Next.js
@@ -404,18 +405,18 @@ VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 NUXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-Add to `.env.example` if it exists (without the actual ID):
+如果已有 `.env.example` 文件，请将其内容添加到 `.env` 文件中（但不要包含实际的测量 ID）：
 
 ```bash
 # Google Analytics 4 Measurement ID
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-**IMPORTANT**: Add `.env.local` to `.gitignore` if not already present.
+**重要提示**：如果 `.env.local` 文件尚不存在，请将其添加到 `.gitignore` 文件中。
 
-## Step 5: Event Tracking Helpers (if --events flag)
+## 第 5 步：事件跟踪功能（如果使用了 `--events` 参数）
 
-Create a comprehensive events utility:
+创建一个用于处理事件跟踪的实用工具函数：
 
 ```typescript
 // lib/analytics-events.ts
@@ -553,9 +554,9 @@ export const createCustomEvent = (eventName: string) => {
 }
 ```
 
-## Step 6: Cookie Consent Integration (if --consent flag)
+## 第 6 步：Cookie 同意集成（如果使用了 `--consent` 参数）
 
-Create a consent-aware wrapper:
+创建一个支持用户同意管理的封装函数：
 
 ```typescript
 // lib/analytics-consent.ts
@@ -662,9 +663,9 @@ function getCookie(name: string): string | null {
 }
 ```
 
-## Step 7: Debug Mode (if --debug flag)
+## 第 7 步：调试模式（如果使用了 `--debug` 参数）
 
-Add debug configuration:
+启用调试模式：
 
 ```typescript
 // For development, enable debug mode
@@ -675,11 +676,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-Also recommend installing the [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijamephohjechhna) Chrome extension.
+建议安装 [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijamephohjechhna) 扩展程序以辅助调试。
 
-## Step 8: TypeScript Declarations
+## 第 8 步：TypeScript 声明（如果使用了 TypeScript）
 
-Create `types/gtag.d.ts` if using TypeScript:
+如果使用 TypeScript，请创建 `types/gtag.d.ts` 文件：
 
 ```typescript
 // types/gtag.d.ts
@@ -729,43 +730,41 @@ declare namespace Gtag {
 export {}
 ```
 
-## Step 9: Verification Checklist
+## 第 9 步：验证步骤
 
-After implementation, verify:
+配置完成后，请进行以下验证：
+1. [ ] 测量 ID 的格式是否正确（以 `G-XXXXXXXXXX` 开头）
+2. [ ] 脚本是否在生产环境中成功加载（检查浏览器的网络标签页）
+3. [ ] GA4 仪表板中是否显示实时数据
+4. [ ] 页面导航时是否能够被正确记录
+5. [ ] 控制台中没有与 `gtag` 相关的错误
+6. [ ] 环境变量是否未被提交到 Git 仓库
+7. [ ] 如果使用了 TypeScript，确保没有类型错误
 
-1. [ ] Measurement ID is correct format (G-XXXXXXXXXX)
-2. [ ] Script loads in production (check Network tab)
-3. [ ] Real-time reports show activity in GA4 dashboard
-4. [ ] Page views are tracked on navigation
-5. [ ] No console errors related to gtag
-6. [ ] Environment variables are not committed to git
-7. [ ] TypeScript has no type errors (if applicable)
+## 第 10 步：总结与输出
 
-## Step 10: Summary Output
+配置完成后，向用户提供以下信息：
+1. **已创建/修改的文件**（列出所有文件）
+2. **所需的环境变量**（附示例值）
+3. **后续步骤**：
+   - 将测量 ID 添加到环境变量中
+   - 部署并在 GA4 仪表板中验证数据
+   - 在 GA4 仪表板中设置转化跟踪
+   - 考虑为关键用户操作添加自定义事件
 
-After completing setup, provide the user with:
+## 常见问题及解决方法
 
-1. **Files created/modified** (list them)
-2. **Environment variables needed** (with example values)
-3. **Next steps**:
-   - Add the Measurement ID to environment variables
-   - Deploy and verify in GA4 Real-time reports
-   - Set up conversions in GA4 dashboard
-   - Consider adding custom events for key user actions
+**“gtag 未定义”**
+- 可能是因为脚本尚未加载；请确保正确处理了异步加载
 
-## Common Issues & Solutions
+**GA4 中没有数据**
+- 检查是否存在广告拦截器阻碍了数据跟踪
+- 确认测量 ID 是否正确
+- 查看浏览器控制台是否有错误信息
 
-**"gtag is not defined"**
-- Script hasn't loaded yet; ensure async loading is handled
+**页面浏览次数重复记录**
+- 单页应用程序（SPA）的路由系统可能会发送重复的事件；请实现事件去重机制
 
-**No data in GA4**
-- Check if ad blockers are preventing tracking
-- Verify Measurement ID is correct
-- Check browser console for errors
-
-**Double page views**
-- SPA router sending duplicate events; implement deduplication
-
-**GDPR Compliance**
-- Always implement consent mode for EU users
-- Use the --consent flag to add consent management
+**GDPR 合规性**
+- 对欧盟用户必须启用同意管理功能
+- 使用 `--consent` 参数来实现用户同意管理

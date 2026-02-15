@@ -1,6 +1,6 @@
 ---
 name: canvas-os
-description: Canvas as an app platform. Build, store, and run rich visual apps on the OpenClaw Canvas.
+description: Canvas 作为一个应用程序平台：您可以在 OpenClaw Canvas 上构建、存储和运行丰富的可视化应用程序。
 homepage: https://www.clawhub.ai/fraction12/canvas-os
 metadata:
   openclaw:
@@ -12,45 +12,45 @@ metadata:
 
 # Canvas OS
 
-Canvas as an app platform. Build, store, and run rich visual apps on the OpenClaw Canvas.
+Canvas 是一个应用程序平台，允许您在 OpenClaw Canvas 上构建、存储和运行丰富的可视化应用程序。
 
-## Philosophy
+## 设计理念
 
-You are an OS. Canvas is the window. Apps are built locally and run on Canvas.
+Canvas 可以被视为一个操作系统，而应用程序则通过 Canvas 进行开发和运行。
 
-**Rich HTML/CSS/JS UIs** — not just text. Full interactivity, animations, live data.
+**丰富的 HTML/CSS/JS 用户界面** —— 不仅仅是文本；支持完整的交互性、动画和实时数据展示。
 
-## Quick Commands
+## 快速命令
 
-| Command | What Jarvis Does |
-|---------|------------------|
-| "Open [app]" | Start server, navigate Canvas, inject data |
-| "Build me a [type]" | Create app from template, open it |
-| "Update [element]" | Inject JS to modify live |
-| "Show [data] on canvas" | Quick A2UI display |
-| "Close canvas" | Stop server, hide Canvas |
+| 命令 | 功能                |
+|---------|-------------------|
+| "Open [app]" | 启动服务器，导航到 Canvas，注入数据 |
+| "Build me a [type]" | 根据模板创建应用程序并打开它 |
+| "Update [element]" | 通过 JavaScript 修改界面元素 |
+| "Show [data] on canvas" | 在 Canvas 上快速显示数据 |
+| "Close canvas" | 停止服务器，隐藏 Canvas 面板 |
 
-## How It Works
+## 工作原理
 
-**Key principle:** Apps run on **Canvas**, not in a browser tab. Canvas is your UI window.
+**核心原则：** 应用程序是在 **Canvas** 上运行的，而不是在浏览器标签页中运行的。Canvas 是您的用户界面窗口。
 
-### Canvas Loading Methods
+### Canvas 的加载方式
 
-Canvas has **security restrictions** that block file path access. Three methods work:
+由于安全限制，Canvas 无法直接访问文件路径。以下是三种可行的加载方式：
 
-| Method | When to Use | Pros | Cons |
-|--------|-------------|------|------|
-| **Localhost Server** | Complex apps, external assets | Full browser features | Requires port management |
-| **Direct HTML Injection** | Quick displays, demos | Instant, no server needed | No external assets, size limit |
-| **Data URLs** | Small content | Self-contained | Unreliable on some systems |
+| 方法 | 适用场景 | 优点 | 缺点 |
+|--------|-----------|------|------|
+| **本地主机服务器** | 复杂的应用程序或需要外部资源的情况 | 可使用完整的浏览器功能 | 需要管理端口号 |
+| **直接 HTML 注入** | 快速展示或演示 | 无需服务器，立即生效 | 不能使用外部资源，且存在大小限制 |
+| **数据 URL** | 适用于小型内容 | 代码独立 | 在某些系统上可能不稳定 |
 
-**❌ Does NOT work:** `file:///path/to/file.html` (blocked by Canvas security)
+**注意：** `file:///path/to/file.html` 这种方式因 Canvas 的安全策略而被禁止使用。
 
-**📖 See:** `CANVAS-LOADING.md` for detailed guide + troubleshooting
+**参考文档：** `CANVAS-LOADING.md` 以获取详细指南和故障排除方法。
 
-**Helper script:** `canvas-inject.py` — Formats HTML for direct injection
+**辅助脚本：** `canvas-inject.py` — 用于将 HTML 格式化为可直接注入的格式。
 
-### 1. Apps are HTML/CSS/JS files
+### 1. 应用程序由 HTML/CSS/JS 文件组成
 ```
 ~/.openclaw/workspace/apps/[app-name]/
 ├── index.html    # The UI (self-contained recommended)
@@ -58,34 +58,34 @@ Canvas has **security restrictions** that block file path access. Three methods 
 └── manifest.json # App metadata
 ```
 
-### 2. Serve via localhost
+### 2. 通过本地主机服务器部署应用程序
 ```bash
 cd ~/.openclaw/workspace/apps/[app-name]
 python3 -m http.server [PORT] > /dev/null 2>&1 &
 ```
 
-### 3. Navigate **Canvas** to localhost
+### 3. 在 Canvas 中导航到本地主机
 ```bash
 NODE="Your Node Name"  # Get from: openclaw nodes status
 openclaw nodes canvas navigate --node "$NODE" "http://localhost:[PORT]/"
 ```
 
-**Important:** This opens the app on **Canvas** (the visual panel), NOT in a browser.
+**重要提示：** 应用程序将在 **Canvas** 面板上显示，而不是在浏览器中。
 
-### 4. Agent injects data via JS eval
+### 4. 通过 JavaScript 注入数据
 ```bash
 openclaw nodes canvas eval --node "$NODE" --js "app.setData({...})"
 ```
 
-**Note:** The `openclaw-canvas://` URL scheme has issues in current OpenClaw versions. Use `http://localhost:` instead.
+**注意：** 在当前的 OpenClaw 版本中，`openclaw-canvas://` 这种 URL 方式存在问题，请使用 `http://localhost:` 代替。
 
-## Opening an App
+## 打开应用程序
 
-**What this does:** Displays the app on **Canvas** (the visual panel), not in a browser tab.
+**功能说明：** 应用程序将在 **Canvas** 面板上显示，而不是在浏览器标签页中。
 
-### Method 1: Localhost Server (Recommended for Complex Apps)
+### 方法 1：使用本地主机服务器（推荐用于复杂应用程序）
 
-Full sequence:
+具体步骤：
 ```bash
 NODE="Your Node Name"
 PORT=9876
@@ -108,44 +108,19 @@ openclaw nodes canvas navigate --node "$NODE" "http://localhost:$PORT/"
 openclaw nodes canvas eval --node "$NODE" --js "app.loadData({...})"
 ```
 
-### Method 2: Direct HTML Injection (For Quick Displays)
+### 方法 2：直接 HTML 注入（适用于快速展示）
 
-**When to use:** File paths don't work in Canvas (security sandboxing). Data URLs can be unreliable. Use this for instant displays without localhost.
+**适用场景：** 当文件路径因安全限制而无法使用时，或者需要立即显示内容时。
 
-```python
-# Example using canvas tool
-canvas.present(url="about:blank", target=node_name)
+**注意：** Canvas 会阻止 `file:///path/to/file.html` 这种文件路径的访问。在这种情况下，请使用直接 HTML 注入方法。
 
-html_content = """<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body { background: #667eea; color: white; padding: 40px; }
-        .card { background: white; color: #333; padding: 30px; border-radius: 16px; }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>Your Content Here</h1>
-    </div>
-</body>
-</html>"""
+**重要限制：** 为确保安全，Canvas 禁止使用 `file:///` 路径。请始终使用本地主机或直接 HTML 注入方式。
 
-# Escape backticks and inject
-js_code = f"""document.open();
-document.write(`{html_content}`);
-document.close();"""
+## 应用程序开发
 
-canvas.eval(javaScript=js_code, target=node_name)
-```
+### 应用程序的 API 规范
 
-**Key limitation:** File paths (`file:///path/to/file.html`) are **blocked** in Canvas for security. Always use localhost or direct injection.
-
-## Building Apps
-
-### App API Convention
-
-Every app should expose a `window.app` or `window.[appname]` object:
+每个应用程序都应该提供一个 `window.app` 或 `window.[appname]` 对象：
 
 ```javascript
 window.app = {
@@ -162,9 +137,9 @@ window.app = {
 };
 ```
 
-### Two-Way Communication
+### 双向通信
 
-Apps send commands back via deep links:
+应用程序可以通过深层链接发送命令：
 
 ```javascript
 function sendToAgent(message) {
@@ -177,22 +152,21 @@ document.getElementById('btn').onclick = () => {
 };
 ```
 
-## Templates
+## 模板
 
-### Dashboard
-Stats cards, progress bars, lists. Self-contained HTML.
-- Default port: 9876
-- API: `dashboard.setRevenue()`, `dashboard.setProgress()`, `dashboard.notify()`
+### 仪表盘
+- 包含统计卡片、进度条和列表等元素；使用独立的 HTML 代码。
+- 默认端口：9876
+- API：`dashboard.setRevenue()`、`dashboard.setProgress()`、`dashboard.notify()`
 
-### Tracker
-Habits/tasks with checkboxes and streaks. Self-contained HTML.
-- Default port: 9877
-- API: `tracker.setItems()`, `tracker.addItem()`, `tracker.toggleItem()`
+### 追踪器
+- 用于记录习惯或任务，支持复选框和进度条；使用独立的 HTML 代码。
+- 默认端口：9877
+- API：`tracker.setItem()`、`tracker.addItem()`、`tracker.toggleItem()`
 
-## Quick Display (A2UI)
+## 快速展示（A2UI）
 
-For temporary displays without a full app:
-
+**适用于不需要完整应用程序的临时展示场景：**
 ```bash
 openclaw nodes canvas a2ui push --node "$NODE" --text "
 📊 QUICK STATUS
@@ -204,70 +178,54 @@ Done!
 "
 ```
 
-## Port Assignments
+## 端口分配
 
-| App Type | Default Port |
+| 应用程序类型 | 默认端口 |
 |----------|--------------|
-| Dashboard | 9876 |
-| Tracker | 9877 |
-| Timer | 9878 |
-| Display | 9879 |
-| Custom | 9880+ |
+| 仪表盘 | 9876 |
+| 追踪器 | 9877 |
+| 计时器 | 9878 |
+| 显示器 | 9879 |
+| 自定义应用程序 | 9880+ |
 
-## Design System
+## 设计规范
 
-```css
-:root {
-  --bg-primary: #0a0a0a;
-  --bg-card: #1a1a2e;
-  --accent-green: #00d4aa;
-  --accent-blue: #4a9eff;
-  --accent-orange: #f59e0b;
-  --text-primary: #fff;
-  --text-muted: #888;
-  --border: #333;
-}
-```
+1. **代码独立性** —— 使用内联的 CSS/JS 以确保应用程序的可移植性。
+2. **采用深色主题** —— 与 OpenClaw 的整体设计风格保持一致。
+3. **公开应用程序的 API** —— 允许通过 `window.app.*` 方法进行更新。
+4. **为需要更新的元素添加 ID**。
+5. **显示实时时钟** —— 以表明应用程序正在运行中。
+6. **使用深层链接** —— 以实现双向通信。
 
-## Best Practices
+## 故障排除
 
-1. **Self-contained HTML** — Inline CSS/JS for portability
-2. **Dark theme** — Match OpenClaw aesthetic
-3. **Expose app API** — Let agent update via `window.app.*`
-4. **Use IDs** — On elements the agent will update
-5. **Live clock** — Shows the app is alive
-6. **Deep links** — For two-way communication
+**应用程序在浏览器中打开而不是在 Canvas 上？**
+- 确保使用了 `openclaw nodes canvas navigate` 而不仅仅是 `open` 命令。
+- `canvas navigate` 命令专门用于导航到 Canvas 面板。
 
-## Troubleshooting
+**在 Canvas 上显示“未找到”错误？**
+- **文件路径问题：** Canvas 会阻止 `file:///` 类型的 URL 访问（出于安全考虑）。
+- **数据 URL 可能失败：** 尝试使用 `canvas eval` 和 `document.write()` 进行直接 HTML 注入。
+- 对于本地主机服务器：检查服务器是否正在运行：`curl http://localhost:[PORT]/`。
+- 确认端口号是否正确。
+- 使用 `http://localhost:` 而不是 `openclaw-canvas://`（该 URL 方式可能存在问题）。
 
-**App opens in browser instead of Canvas?**
-- Make sure you're using `openclaw nodes canvas navigate`, not just `open`
-- Canvas navigate targets the Canvas panel specifically
+**即使使用了正确的 URL，Canvas 仍然显示“未找到”错误？**
+- 这是由于安全限制：Canvas 无法访问本地文件系统。
+- **解决方法：** 使用方法 2（直接 HTML 注入）或方法 1（通过本地主机服务器部署）。
 
-**"Not Found" on Canvas?**
-- **File paths don't work:** Canvas blocks `file:///` URLs for security (sandboxing)
-- **Data URLs may fail:** Use direct HTML injection via `canvas eval` + `document.write()` instead
-- For localhost: Verify server is running: `curl http://localhost:[PORT]/`
-- Check port is correct
-- Use `http://localhost:` not `openclaw-canvas://` (URL scheme has issues)
+**应用程序无法更新？**
+- 检查 `window.app` API 是否已定义：`openclaw nodes canvas eval --js "typeof window.app"`。
+- 确认 JavaScript 代码中的 `eval` 语法是否正确（单引号需要放在双引号内）。
 
-**Canvas shows "Not Found" even with correct URL?**
-- This is a security boundary: Canvas can't access local filesystem
-- **Solution:** Use Method 2 (Direct HTML Injection) from "Opening an App" section
-- Or serve via localhost (Method 1)
+**服务器端口已被占用？**
+- 找到并关闭占用的端口：`lsof -ti:[PORT] | xargs kill -9`
 
-**App not updating?**
-- Check window.app API is defined: `openclaw nodes canvas eval --js "typeof window.app"`
-- Verify JS eval syntax: single quotes inside double quotes
-
-**Server port already in use?**
-- Kill existing: `lsof -ti:[PORT] | xargs kill -9`
-
-## Helper Scripts
+## 辅助脚本
 
 ### canvas-inject.py
 
-Python helper for direct HTML injection (Method 2).
+这是一个 Python 脚本，用于实现直接 HTML 注入（方法 2）。
 
 ```bash
 # Example usage in Python
@@ -281,10 +239,10 @@ canvas.present(**commands["step1_present"])
 canvas.eval(**commands["step2_inject"])
 ```
 
-Or just follow the pattern manually (see Method 2 in "Opening an App").
+**或者，您也可以手动按照方法 2 的步骤进行操作。**
 
-## Requirements
+## 系统要求
 
-- OpenClaw with Canvas support (macOS app)
-- Python 3 (for http.server)
-- A paired node with canvas capability
+- 安装支持 Canvas 功能的 OpenClaw（macOS 应用程序）。
+- 安装 Python 3（用于运行 HTTP 服务器）。
+- 需要一个具备 Canvas 功能的节点。

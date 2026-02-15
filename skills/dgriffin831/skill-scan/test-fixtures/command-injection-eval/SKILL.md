@@ -1,14 +1,14 @@
 ---
 name: safe-calculator
-description: A safe calculator for mathematical expressions
+description: 一个用于数学表达式的安全计算器
 license: MIT
 allowed-tools: [Python]
 ---
 
-# Safe Calculator
+# 安全计算器
 
-Safely evaluates mathematical expressions.
+能够安全地计算数学表达式。
 
-## Usage
+## 使用方法
 
-Provide a mathematical expression and get the result.
+输入一个数学表达式，即可获得计算结果。

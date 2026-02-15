@@ -1,36 +1,36 @@
 ---
 name: "multi-search-engine"
-description: "Multi search engine integration with 17 engines (8 CN + 9 Global). Supports advanced search operators, time filters, site search, privacy engines, and WolframAlpha knowledge queries. No API keys required."
+description: "多搜索引擎集成，支持17个搜索引擎（8个中国境内搜索引擎 + 9个全球搜索引擎）。提供高级搜索操作符、时间过滤功能、站点搜索选项以及WolframAlpha知识查询服务。无需使用API密钥。"
 ---
 
-# Multi Search Engine v2.0.1
+# 多搜索引擎 v2.0.1
 
-Integration of 17 search engines for web crawling without API keys.
+本版本集成了17个搜索引擎，支持无需API密钥即可进行网页爬取的功能。
 
-## Search Engines
+## 支持的搜索引擎
 
-### Domestic (8)
-- **Baidu**: `https://www.baidu.com/s?wd={keyword}`
-- **Bing CN**: `https://cn.bing.com/search?q={keyword}&ensearch=0`
-- **Bing INT**: `https://cn.bing.com/search?q={keyword}&ensearch=1`
+### 国内搜索引擎（8个）
+- **百度**: `https://www.baidu.com/s?wd={keyword}`
+- **必应中文**: `https://cn.bing.com/search?q={keyword}&ensearch=0`
+- **必应国际**: `https://cn.bing.com/search?q={keyword}&ensearch=1`
 - **360**: `https://www.so.com/s?q={keyword}`
-- **Sogou**: `https://sogou.com/web?query={keyword}`
-- **WeChat**: `https://wx.sogou.com/weixin?type=2&query={keyword}`
-- **Toutiao**: `https://so.toutiao.com/search?keyword={keyword}`
-- **Jisilu**: `https://www.jisilu.cn/explore/?keyword={keyword}`
+- **搜狗**: `https://sogou.com/web?query={keyword}`
+- **微信**: `https://wx.sogou.com/weixin?type=2&query={keyword}`
+- **抖音**: `https://so.toutiao.com/search?keyword={keyword}`
+- **知乎**: `https://www.jisilu.cn/explore/?keyword={keyword}`
 
-### International (9)
-- **Google**: `https://www.google.com/search?q={keyword}`
-- **Google HK**: `https://www.google.com.hk/search?q={keyword}`
+### 国际搜索引擎（9个）
+- **谷歌**: `https://www.google.com/search?q={keyword}`
+- **谷歌香港**: `https://www.google.com.hk/search?q={keyword}`
 - **DuckDuckGo**: `https://duckduckgo.com/html/?q={keyword}`
-- **Yahoo**: `https://search.yahoo.com/search?p={keyword}`
+- **雅虎**: `https://search.yahoo.com/search?p={keyword}`
 - **Startpage**: `https://www.startpage.com/sp/search?query={keyword}`
 - **Brave**: `https://search.brave.com/search?q={keyword}`
 - **Ecosia**: `https://www.ecosia.org/search?q={keyword}`
 - **Qwant**: `https://www.qwant.com/?q={keyword}`
 - **WolframAlpha**: `https://www.wolframalpha.com/input?i={keyword}`
 
-## Quick Examples
+## 快速使用示例
 
 ```javascript
 // Basic search
@@ -55,56 +55,56 @@ web_fetch({"url": "https://duckduckgo.com/html/?q=!gh+tensorflow"})
 web_fetch({"url": "https://www.wolframalpha.com/input?i=100+USD+to+CNY"})
 ```
 
-## Advanced Operators
+## 高级搜索操作符
 
-| Operator | Example | Description |
+| 操作符 | 例子 | 说明 |
 |----------|---------|-------------|
-| `site:` | `site:github.com python` | Search within site |
-| `filetype:` | `filetype:pdf report` | Specific file type |
-| `""` | `"machine learning"` | Exact match |
-| `-` | `python -snake` | Exclude term |
-| `OR` | `cat OR dog` | Either term |
+| `site:` | `site:github.com python` | 在指定网站内搜索 |
+| `filetype:` | `filetype:pdf report` | 指定文件类型 |
+| `""` | `"machine learning"` | 精确匹配 |
+| `-` | `python -snake` | 排除指定词汇 |
+| `OR` | `cat OR dog` | 任意一个词汇 |
 
-## Time Filters
+## 时间筛选
 
-| Parameter | Description |
+| 参数 | 说明 |
 |-----------|-------------|
-| `tbs=qdr:h` | Past hour |
-| `tbs=qdr:d` | Past day |
-| `tbs=qdr:w` | Past week |
-| `tbs=qdr:m` | Past month |
-| `tbs=qdr:y` | Past year |
+| `tbs=qdr:h` | 过去1小时 |
+| `tbs=qdr:d` | 过去1天 |
+| `tbs=qdr:w` | 过去1周 |
+| `tbs=qdr:m` | 过去1个月 |
+| `tbs=qdr:y` | 过去1年 |
 
-## Privacy Engines
+## 隐私保护功能
 
-- **DuckDuckGo**: No tracking
-- **Startpage**: Google results + privacy
-- **Brave**: Independent index
-- **Qwant**: EU GDPR compliant
+- **DuckDuckGo**: 不会进行用户数据追踪 |
+- **Startpage**: 结果基于谷歌搜索，同时提供隐私保护 |
+- **Brave**: 使用独立的搜索引擎索引 |
+- **Qwant**: 遵守欧盟GDPR数据保护法规
 
-## Bangs Shortcuts (DuckDuckGo)
+## DuckDuckGo的快捷键
 
-| Bang | Destination |
+| 快捷键 | 目标网站 |
 |------|-------------|
-| `!g` | Google |
+| `!g` | 谷歌 |
 | `!gh` | GitHub |
 | `!so` | Stack Overflow |
-| `!w` | Wikipedia |
+| `!w` | 维基百科 |
 | `!yt` | YouTube |
 
-## WolframAlpha Queries
+## WolframAlpha的查询示例
 
-- Math: `integrate x^2 dx`
-- Conversion: `100 USD to CNY`
-- Stocks: `AAPL stock`
-- Weather: `weather in Beijing`
+- 数学计算: `integrate x^2 dx`
+- 货币转换: `100 USD to CNY`
+- 股票查询: `AAPL stock`
+- 天气查询: `weather in Beijing`
 
-## Documentation
+## 文档资料
 
-- `references/advanced-search.md` - Domestic search guide
-- `references/international-search.md` - International search guide
-- `CHANGELOG.md` - Version history
+- `references/advanced-search.md` - 国内搜索使用指南
+- `references/international-search.md` - 国际搜索使用指南
+- `CHANGELOG.md` - 版本更新记录
 
-## License
+## 许可证
 
-MIT
+MIT许可证

@@ -1,6 +1,6 @@
 ---
 name: merge-pdf
-description: Merge multiple user-provided PDF files by uploading them to Cross-Service-Solutions, polling until completion, then returning a download URL for the merged PDF.
+description: 通过将多个用户提供的 PDF 文件上传到 Cross-Service-Solutions，系统会持续进行合并操作（即逐个处理这些文件），直到合并完成。完成后，系统会返回合并后 PDF 文件的下载链接。
 license: MIT
 compatibility:
   agentskills: ">=0.1.0"
@@ -16,57 +16,57 @@ allowed-tools:
   - files
 ---
 
-# merge-pdf-files
+# 合并PDF文件
 
-## Purpose
-This skill merges multiple PDFs by:
-1) accepting multiple PDF files from the user,
-2) uploading them to the Cross-Service-Solutions merge API,
-3) polling the job status until it is finished,
-4) returning the merged PDF download URL.
+## 功能描述
+该功能用于合并多个PDF文件，具体步骤如下：
+1. 从用户处接收多个PDF文件；
+2. 将这些文件上传到Cross-Service-Solutions的合并API；
+3. 监控合并任务的进度，直到任务完成；
+4. 返回合并后的PDF文件的下载链接。
 
-## Credentials
-The API requires an API key used as a Bearer token:
+## 访问凭证
+该API需要一个API密钥作为身份验证凭据（Bearer令牌）：
 - `Authorization: Bearer <API_KEY>`
 
-How the user gets an API key:
-- https://login.cross-service-solutions.com/register
-- Or the user can provide an API key directly.
+用户获取API密钥的方式：
+- 访问 [https://login.cross-service-solutions.com/register](https://login.cross-service-solutions.com/register) 进行注册；
+- 或者用户可以直接提供API密钥。
 
-**Rule:** never echo or log the API key.
+**注意：** 严禁在任何地方显示或记录API密钥。
 
-## API endpoints
-Base URL:
+## API接口
+基础URL：
 - `https://api.xss-cross-service-solutions.com/solutions/solutions`
 
-Create merge job:
+**创建合并任务：**
 - `POST /api/30`
-- `multipart/form-data` parameters:
-  - `files` (PDF Dokument) — required — multiple PDF files (multiple_files)
+- 请求参数（`multipart/form-data`）：
+  - `files`（PDF文件）—— 必填项 —— 多个PDF文件（以逗号分隔）
 
-Get result by ID:
+**通过ID获取结果：**
 - `GET /api/<ID>`
 
-When done, the response contains:
-- `output.files[]` with `{ name, path }` where `path` is a downloadable URL.
+任务完成后，响应中会包含以下信息：
+- `output.files[]`：一个数组，每个元素包含文件名（`name`）和文件路径（`path`），其中`path`为可下载的PDF文件链接。
 
-## Inputs
-### Required
-- One or more PDF files (binary)
-- An API key (string)
+## 输入参数
+### 必填参数
+- 一个或多个PDF文件（二进制格式）
+- API密钥（字符串）
 
-### Optional
-- None (ordering is determined by the provided file list order)
+### 可选参数
+- 无（文件合并的顺序由提供的文件列表决定）
 
-## Output
-Return a structured result:
-- `job_id` (number)
-- `status` (string)
-- `download_url` (string, when done)
-- `file_name` (string, when available)
-- `input_files` (array of strings)
+## 输出参数
+返回的结构化数据包含以下内容：
+- `job_id`（整数）：任务ID
+- `status`（字符串）：任务状态（如“done”表示任务已完成）
+- `download_url`（字符串）：合并后的PDF文件下载链接
+- `file_name`（字符串）：合并后的PDF文件名
+- `input_files`（字符串数组）：输入的PDF文件列表
 
-Example output:
+**示例输出：**
 ```json
 {
   "job_id": 456,
@@ -75,3 +75,4 @@ Example output:
   "file_name": "merged.pdf",
   "input_files": ["a.pdf", "b.pdf", "c.pdf"]
 }
+```

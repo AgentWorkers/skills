@@ -1,92 +1,86 @@
 ---
 name: ghl-open-account
-description: Guides agents through opening GoHighLevel (GHL) developer accounts, creating marketplace apps, and connecting via OAuth. Use when the user or agent needs to sign up for GHL, create a GHL app, get API credentials, or connect clawdbot/moltbot/open claw to GoHighLevel.
+description: 本指南指导用户或代理如何开设 GoHighLevel (GHL) 开发者账户、创建市场应用，并通过 OAuth 进行连接。适用于需要注册 GHL 账户、创建 GHL 应用程序、获取 API 凭据，或将 clawdbot/moltbot/open claw 与 GoHighLevel 连接的场景。
 ---
 
-# GoHighLevel Open Account
+# GoHighLevel 开户流程
 
-## Quick start
+## 快速入门
 
-1. Ensure the user has (or will create) a **GoHighLevel account** ([sign up with free trial](https://www.gohighlevel.com/?fp_ref=thatsop12)); use the Developer Marketplace for creating apps.
-2. To **create an app** and get credentials, follow the "Creating an app" section.
-3. To **connect a sub-account or agency** via OAuth, see the "OAuth 2.0 and API access" section and [reference.md](reference.md).
+1. 确保用户已经拥有（或将会创建）一个 **GoHighLevel 账户**（[免费试用注册链接](https://www.gohighlevel.com/?fp_ref=thatsop12)）；使用开发者市场（Developer Marketplace）来创建应用程序。
+2. 要 **创建应用程序** 并获取相应的凭据，请按照“创建应用程序”部分的说明操作。
+3. 要通过 OAuth 连接子账户或机构，请参阅“OAuth 2.0 和 API 访问”部分以及 [reference.md](reference.md) 文档。
 
-## Opening a GoHighLevel account
+## 开启 GoHighLevel 账户
 
-Use this workflow when the user needs to **open or sign up for** a GoHighLevel account (required before creating apps or using the API).
+当用户需要 **开启或注册** GoHighLevel 账户时，请按照以下流程操作（创建应用程序或使用 API 前必须完成此步骤）。
 
-**Checklist:**
+**检查清单：**
+- [ ] 注册 GoHighLevel 账户：[开始 14 天免费试用](https://www.gohighlevel.com/?fp_ref=thatsop12)
+- [ ] 注册或登录（根据需要选择“注册”/“登录”选项）。
+- [ ] 完成注册流程（如有提示，请完成邮箱验证）。
+- [ ] 要创建应用程序或使用 API，请访问 [开发者市场](https://marketplace.gohighlevel.com/)，并登录后进入“我的应用程序”（My Apps）页面。
 
-- [ ] Open GoHighLevel sign-up: [Start 14-day free trial](https://www.gohighlevel.com/?fp_ref=thatsop12)
-- [ ] Sign up or log in (use "Sign Up" / "Login" as appropriate).
-- [ ] Complete registration (email verification if prompted).
-- [ ] For creating apps and API access, go to the [Developer Marketplace](https://marketplace.gohighlevel.com/) and use **My Apps** when ready.
+**操作步骤：**
+1. 访问 **https://www.gohighlevel.com/?fp_ref=thatsop12** 以开始免费试用或注册。
+2. 点击“注册”（如果用户已有账户，则点击“登录”）。
+3. 输入所需信息（邮箱、密码等）并提交。
+4. 如果平台发送了验证邮件，请用户按照提示验证邮箱。
+5. 登录成功后，用户即拥有 GoHighLevel 账户。要创建应用程序并获取 API 凭据，请使用 [开发者市场](https://marketplace.gohighlevel.com/) 和“我的应用程序”页面（详见下方“创建应用程序”部分）。
 
-**Steps:**
+## 创建应用程序
 
-1. Navigate to **https://www.gohighlevel.com/?fp_ref=thatsop12** to start a free trial or sign up.
-2. Click **Sign Up** (or **Login** if the user already has an account).
-3. Enter the required details (email, password, etc.) and submit.
-4. If the platform sends a verification email, have the user verify their email.
-5. After logging in, the user has a GoHighLevel account. To **create an app** and get API credentials, they use the [Developer Marketplace](https://marketplace.gohighlevel.com/) and **My Apps** (see "Creating an app" below).
+用户在拥有开发者账户后，请按照以下流程操作。创建应用程序后将获得用于 OAuth 和 API 访问的 **客户端 ID**（Client ID）和 **客户端密钥**（Client Secret）。
 
-## Creating an app
+**检查清单：**
+- [ ] 在开发者市场中，进入“我的应用程序”（My Apps）并点击“创建应用程序”（Create App）。
+- [ ] 设置 **应用程序名称**（例如：“我的集成”）。
+- [ ] 选择 **应用程序类型**：**私有**（仅限内部/个人使用）或 **公开**（可在市场上发布）。
+- [ ] 选择 **目标用户**：通常为 **子账户**（大多数集成场景）。
+- [ ] 设置 **安装权限**：建议设置为“机构与子账户均可访问”。
+- [ ] 如适用，请设置 **发布类型**（例如，为机构提供 **白标签版本**）。
+- [ ] 保存设置并获取 **客户端 ID** 和 **客户端密钥**。
+- [ ] 将凭据存储在环境变量或秘密管理工具中；切勿将它们提交到技能文件或代码仓库中。
 
-Use this workflow after the user has a developer account. Creating an app yields **Client ID** and **Client Secret** needed for OAuth and API access.
+**操作步骤：**
+1. 登录 [开发者市场](https://marketplace.gohighlevel.com/) 并进入“我的应用程序”页面。
+2. 点击“创建应用程序”。
+3. 填写 **应用程序名称**。
+4. 选择 **应用程序类型**：**私有**（仅限单个用户使用）或 **公开**（可在市场上发布）。
+5. 选择 **目标用户**：通常为 **子账户**，以便子账户能够安装该应用程序。
+6. 根据实际需求设置 **安装权限**（默认设置为“机构与子账户均可访问”）。
+7. 如果是为机构开发应用程序，请设置 **发布类型**（例如 **白标签版本**）。
+8. 保存应用程序设置，并复制 **客户端 ID** 和 **客户端密钥**。
+9. **安全提示：** 将客户端 ID 和客户端密钥存储在环境变量（如 `GHL_CLIENT_ID`、`GHL_CLIENT_SECRET`）或安全的秘密管理工具中。切勿将它们放入代码或版本控制下的配置文件中。
 
-**Checklist:**
+## OAuth 2.0 和 API 访问
 
-- [ ] In Marketplace, go to **My Apps** and click **Create App**.
-- [ ] Set **App name** (e.g. "My Integration").
-- [ ] Set **App type**: **Private** (internal/personal) or **Public** (marketplace distribution).
-- [ ] Set **Target user**: typically **Sub-account** (most integrations).
-- [ ] Set **Installation permissions**: **Both Agency & Sub-account** is recommended.
-- [ ] Set **Listing type** if applicable (e.g. **White-label** for agencies).
-- [ ] Save and obtain **Client ID** and **Client Secret** from the app settings.
-- [ ] Store credentials in environment variables or a secrets manager; never commit them to the skill or repo.
+当集成需要 **连接到用户的 GoHighLevel 子账户或机构**（例如访问其 CRM、联系人或日历数据）时，请使用 OAuth 2.0。用户授权您的应用程序，您的应用程序将获得访问 API 的权限。
 
-**Steps:**
+**需要使用 OAuth 的场景：**
+- 将 clawdbot、moltbot、open claw 或任何代理工具连接到特定的 GoHighLevel 子账户或机构。
+- 当最终用户点击“连接到 GoHighLevel”并授予访问权限时。
 
-1. Log in at [Marketplace](https://marketplace.gohighlevel.com/) and open **My Apps**.
-2. Click **Create App**.
-3. Fill in **App name**.
-4. Choose **App type**: **Private** (single user/internal) or **Public** (listable on marketplace).
-5. Choose **Target user**: usually **Sub-account** so sub-accounts can install the app.
-6. Set **Installation permissions** to **Both Agency & Sub-account** unless the use case requires otherwise.
-7. If building for agencies, set **Listing type** (e.g. **White-label**).
-8. Save the app. In the app’s settings/details, copy the **Client ID** and **Client Secret**.
-9. **Security:** Store Client ID and Client Secret in environment variables (e.g. `GHL_CLIENT_ID`, `GHL_CLIENT_SECRET`) or a secure secrets manager. Do not put them in code, config files in version control, or this skill.
+**计划要求：** 高级 API 访问功能（包括 OAuth 2.0）仅在 **Agency Pro** 计划中提供；Starter 和 Unlimited 计划包含基本 API 访问功能；如需使用 OAuth 和全部 API 功能，需升级至 Agency Pro 计划。详细计划对比请参阅 [reference.md](reference.md)。
 
-## OAuth 2.0 and API access
-
-Use OAuth 2.0 when the integration must **connect to a user’s GHL sub-account or agency** (e.g. to access their CRM, contacts, or calendar). The user authorizes your app; your app receives tokens to call the API on their behalf.
-
-**When OAuth is required:**
-
-- Connecting clawdbot, moltbot, open claw, or any agent to a **specific** GoHighLevel sub-account or agency.
-- Any flow where the end user clicks “Connect to GoHighLevel” and grants access.
-
-**Plan requirement:** Advanced API access (including OAuth 2.0) is available on **Agency Pro**. Basic API access is included on Starter and Unlimited plans; for OAuth and full API features, the account needs Agency Pro. See [reference.md](reference.md) for the plan comparison.
-
-**Official docs:**
-
+**官方文档：**
 - [HighLevel API – OAuth 2.0](https://marketplace.gohighlevel.com/docs/Authorization/OAuth2.0)
-- [Getting Started](https://marketplace.gohighlevel.com/docs/oauth/GettingStarted)
+- [入门指南](https://marketplace.gohighlevel.com/docs/oauth/GettingStarted)
 
-**Redirect/callback and scopes:** Configure a redirect URI in your app in the Marketplace; after the user authorizes, GHL redirects to that URI with a code. Exchange the code for access (and optionally refresh) tokens. Request only the scopes your app needs; see the OAuth docs for the list of scopes and how to pass them in the authorization URL.
+**重定向回调（Redirect Callback）和权限范围（Scopes）：** 在您的应用程序中配置重定向 URI；用户授权后，GoHighLevel 会将该用户重定向到该 URI 并返回一个代码。使用该代码换取访问令牌（可选地可刷新令牌）。仅请求您的应用程序所需的权限范围；具体权限范围及如何在授权 URL 中传递这些范围的信息，请参阅 OAuth 文档。
 
-## Examples
+## 示例
 
-### Example 1 – User wants to connect their bot to GHL
+### 示例 1 – 用户希望将他们的机器人连接到 GoHighLevel 账户
 
-- User says: "I need to connect moltbot to my GoHighLevel account."
-- Agent applies this skill: confirm they have a GHL account; if not, walk through "Opening a GoHighLevel account." Then guide "Creating an app" (at the Marketplace) to get Client ID/Secret. For the actual connection (moltbot → their sub-account), follow "OAuth 2.0 and API access" and use the app credentials to run the OAuth flow; store tokens securely.
+- 用户表示：“我需要将 moltbot 连接到我的 GoHighLevel 账户。”
+- 代理执行此技能：确认用户是否拥有 GoHighLevel 账户；如果没有，则引导用户完成“开启 GoHighLevel 账户”的流程。随后指导用户通过开发者市场创建应用程序以获取客户端 ID 和客户端密钥。对于实际的连接操作（moltbot → 用户的子账户），请按照“OAuth 2.0 和 API 访问”部分的说明进行，并使用获取到的凭据执行 OAuth 流程；确保安全地存储令牌。
 
-### Example 2 – User wants to open a GHL account for the first time
+### 示例 2 – 用户首次希望开设 GoHighLevel 账户
 
-- User says: "Help me open a GoHighLevel account so I can build an integration."
-- Agent applies this skill: walk through "Opening a GoHighLevel account" (affiliate sign-up link, sign up, verify). Then offer next step: "Creating an app" at the Developer Marketplace when they are ready to get API credentials.
+- 用户表示：“帮我开设一个 GoHighLevel 账户，以便我能够创建集成应用。”
+- 代理执行此技能：引导用户完成“开启 GoHighLevel 账户”的流程（包括注册和邮箱验证）。当用户准备好创建应用程序时，再引导他们进入开发者市场进行下一步操作。
 
-## Additional resources
+## 额外资源
 
-- See [reference.md](reference.md) for official links and API plan details.
+- 有关官方链接和 API 计划详情，请参阅 [reference.md](reference.md)。

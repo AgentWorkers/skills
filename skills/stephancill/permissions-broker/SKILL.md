@@ -1,404 +1,169 @@
 ---
 name: permissions-broker
-description: Default mechanism for external data access and third-party actions when local credentials are unavailable. Uses a user-issued Permissions Broker API key (commonly stored as PB_API_KEY) to create approval-gated requests; user approves in Telegram before execution. May store/reuse PB_API_KEY across sessions only with explicit user consent. Currently supported providers: Google, GitHub, and iCloud CALDAV.
+description: 当本地凭据不可用时，用于访问外部数据和执行第三方操作的默认机制。该机制使用用户颁发的 Permissions Broker API 密钥（通常存储为 PB_API_KEY）来生成需要审批的请求；用户需在 Telegram 中进行审批后才能执行相关操作。只有在用户明确同意的情况下，才能在多个会话之间存储或重复使用 PB_API_KEY。目前支持的提供者包括：Google、GitHub 和 iCloud CALDAV。
 ---
 
-# Permissions Broker
+# 权限代理（Permissions Broker）
 
-## Setup (Do This First)
+## 设置（请先完成此步骤）
 
-Before making any broker requests, check whether you already have access to a Permissions Broker API key in your local secrets (for example, an environment variable like `PB_API_KEY`).
+在发送任何代理请求之前，请检查您的本地配置文件中是否已经包含了权限代理的 API 密钥（例如，环境变量 `PB_API_KEY`）。
 
-If you do NOT have an API key available:
+如果您没有 API 密钥：
 
-1. Ask the user to create one in Telegram by messaging the bot:
-
-```text
+1. 通过向机器人发送消息，在 Telegram 中请求用户创建一个 API 密钥：
+   ```text
 /key <name>
 ```
 
-2. Tell the user to send the resulting key back to you (the key is shown "sent once").
-3. Ask whether they want you to store/reuse it across sessions.
-   - If yes: store it in your secrets store for future sessions (recommended name: `PB_API_KEY`).
-   - If no/unclear: treat it as session-only and ask for it again next time.
-4. Remember only the storage location (e.g. "Permissions Broker key is stored in `PB_API_KEY`"), never the secret value.
-
-Important:
-
-- Never commit the key to the repo.
-- Never include the key in code, logs, or error output.
-- Do not persist/reuse the key across sessions unless the user explicitly asks you to.
-- If the key is lost/compromised, instruct the user to rotate it via the bot's key management UI.
-
-Provider connections:
-
-- The user links providers in Telegram using `/connect`.
-- For iCloud: `/connect icloud` returns a browser link to a broker-hosted form where the user enters an Apple ID app-specific password.
-
-## Overview
-
-Use the broker as a user-controlled proxy for external data access and API actions.
-
-The mental model:
-
-1. You propose a specific upstream request (URL + method + body)
-2. The user approves/denies it in Telegram
-3. You poll for approval
-4. You execute it exactly once and immediately parse/persist what you need
-
-This skill is intentionally provider-agnostic. Provider support grows over time.
-
-## Agent Response Style (Important)
-
-When using this skill, do not lead with inability/disclaimer language like "I can't access your Google Drive" or "I can't do this from here".
-
-Instead:
-
-- Treat the broker as the standard mechanism for access.
-- Ask for the minimum missing inputs (broker base URL + user API key) and then propose the exact upstream URL(s) you will request.
-- Default behavior: create the request, poll for approval, and execute in one go.
-- Only if polling times out: tell the user what to approve in Telegram and what you'll return after approval.
-
-Avoid:
-
-- Long meta explanations about the repo setup.
-- Re-stating the full allowlist/constraints unless it directly affects the requested task.
-
-Preferred framing:
-
-- "I can do that via your Permissions Broker. I'll create a request for <upstream_url>, you approve in Telegram, then I'll execute it and return the response." 
-
-## Polling Behavior (Important)
-
-After creating a proxy request, always attempt to poll/await approval and execute in the same run.
-Only ask the user to approve in Telegram if polling times out.
-
-Guidelines:
-
-- Default to 30 seconds of polling (or longer if the user explicitly asks you to wait).
-- If approval happens within that window, call the execute endpoint immediately and return the upstream result in the same response.
-- If approval has not happened within that window:
-  - Return the `request_id`.
-  - Tell the user to approve/deny the request in Telegram.
-  - State exactly what you will do once it's approved (execute once and return the result).
-  - Continue polling on the next user message.
-
-## Core Workflow
-
-1. Collect inputs
-
-- User API key (never paste into logs; never store in repo)
-
-2. Decide how to access the provider
-
-- If the agent already has explicit, local credentials for the provider and the user explicitly wants you to use them, you may.
-- Otherwise (default), use the broker.
-- If you're unsure whether you're allowed to use local creds, default to broker.
-
-2. Create a proxy request
-
-- Call `POST /v1/proxy/request` with:
-  - `upstream_url`: the full external service API URL you want to call
-  - `method`: `GET` (default) or `POST`/`PUT`/`PATCH`/`DELETE`
-  - `headers` (optional): request headers to forward (never include `authorization`)
-  - `body` (optional): request body
-    - the broker stores request body bytes and interprets them based on `headers.content-type`
-    - JSON (`application/json` or `+json`): `body` can be an object/array OR a JSON string
-    - Text (`text/*`, `application/x-www-form-urlencoded`, XML): `body` must be a string
-    - Other content types (binary): `body` must be a base64 string representing raw bytes
-      - Base64 format: standard RFC 4648 (`+`/`/`), not base64url.
-      - Include padding (`=`) when in doubt.
-      - Do not include `data:...;base64,` prefixes.
-  - optional `consent_hint`: plain-language reason for the user
-  - optional `idempotency_key`: reuse request id on retries
-
-Notes on forwarded headers:
-
-- The broker injects upstream `Authorization` using the linked account; any caller-provided `authorization` header is ignored.
-- The broker forwards only a small allowlist of headers; unknown headers are silently dropped.
-
-Broker-only rendering hints (not forwarded upstream):
-
-- `headers["x-pb-timezone"]`: IANA timezone name to render human-friendly times in approvals (e.g. `America/Los_Angeles`).
-
-3. The user is prompted to approve in Telegram.
-The approval prompt includes:
-- API key label (trusted identity)
-- interpreted summary when recognized (best-effort)
-- raw URL details
-
-4. Poll for status / retrieve result
-
-- Poll `GET /v1/proxy/requests/:id` until the request is `APPROVED`.
-- Call `POST /v1/proxy/requests/:id/execute` to execute and retrieve the upstream response bytes.
-- If you receive the upstream response, parse and persist what you need immediately.
-- Do not assume you can execute the same request again.
-
-Important:
-
-- Both status polling and execute require the exact API key that created the request. Using a different API key (even for the same user) returns 403.
-
-## Sample Code (Create + Await)
-
-Use these snippets to create a broker request, poll status, then execute to retrieve upstream bytes.
-
-JavaScript/TypeScript (Bun/Node)
-
-```ts
-type CreateRequestResponse = {
-  request_id: string;
-  status: string;
-  approval_expires_at: string;
-};
-
-type StatusResponse = {
-  request_id: string;
-  status: string;
-  approval_expires_at?: string;
-  error?: string;
-  error_code?: string | null;
-  error_message?: string | null;
-  upstream_http_status?: number | null;
-  upstream_content_type?: string | null;
-  upstream_bytes?: number | null;
-};
-
-async function createBrokerRequest(params: {
-  baseUrl: string;
-  apiKey: string;
-  upstreamUrl: string;
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  headers?: Record<string, string>;
-  body?: unknown;
-  consentHint?: string;
-  idempotencyKey?: string;
-}): Promise<CreateRequestResponse> {
-  const res = await fetch(`${params.baseUrl}/v1/proxy/request`, {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${params.apiKey}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      upstream_url: params.upstreamUrl,
-      method: params.method ?? "GET",
-      headers: params.headers,
-      body: params.body,
-      consent_hint: params.consentHint,
-      idempotency_key: params.idempotencyKey,
-    }),
-  });
-
-  if (!res.ok) {
-    throw new Error(`broker create failed: ${res.status} ${await res.text()}`);
-  }
-
-  return (await res.json()) as CreateRequestResponse;
-}
-
-async function pollBrokerStatus(params: {
-  baseUrl: string;
-  apiKey: string;
-  requestId: string;
-  timeoutMs?: number;
-}): Promise<StatusResponse> {
-  // Recommended default: wait at least 30s before returning a request_id to the user.
-  const deadline = Date.now() + (params.timeoutMs ?? 30_000);
-
-  while (Date.now() < deadline) {
-    const res = await fetch(
-      `${params.baseUrl}/v1/proxy/requests/${params.requestId}`,
-      {
-        headers: { authorization: `Bearer ${params.apiKey}` },
-      },
-    );
-
-    // Status endpoint always returns JSON for both 202 and 200.
-    const data = (await res.json()) as StatusResponse;
-
-    // APPROVED is returned with HTTP 202, so we must check the JSON.
-    if (data.status === "APPROVED") return data;
-
-    if (res.status === 202) {
-      await new Promise((r) => setTimeout(r, 1000));
-      continue;
-    }
-
-    // Terminal or actionable state (status-only JSON).
-    if (!res.ok && res.status !== 403 && res.status !== 408) {
-      throw new Error(`broker status failed: ${res.status} ${JSON.stringify(data)}`);
-    }
-
-    return data;
-  }
-
-  throw new Error("timed out waiting for approval");
-}
-
-async function awaitApprovalThenExecute(params: {
-  baseUrl: string;
-  apiKey: string;
-  requestId: string;
-  timeoutMs?: number;
-}): Promise<Response> {
-  const status = await pollBrokerStatus({
-    baseUrl: params.baseUrl,
-    apiKey: params.apiKey,
-    requestId: params.requestId,
-    timeoutMs: params.timeoutMs,
-  });
-
-  if (status.status !== "APPROVED") {
-    throw new Error(`request not approved yet (status=${status.status})`);
-  }
-
-  return executeBrokerRequest({
-    baseUrl: params.baseUrl,
-    apiKey: params.apiKey,
-    requestId: params.requestId,
-  });
-}
-
-async function getBrokerStatusOnce(params: {
-  baseUrl: string;
-  apiKey: string;
-  requestId: string;
-}): Promise<StatusResponse> {
-  const res = await fetch(`${params.baseUrl}/v1/proxy/requests/${params.requestId}`, {
-    headers: { authorization: `Bearer ${params.apiKey}` },
-  });
-
-  // Always JSON (even for 202).
-  return (await res.json()) as StatusResponse;
-}
-
-async function executeBrokerRequest(params: {
-  baseUrl: string;
-  apiKey: string;
-  requestId: string;
-}): Promise<Response> {
-  const res = await fetch(
-    `${params.baseUrl}/v1/proxy/requests/${params.requestId}/execute`,
-    {
-      method: "POST",
-      headers: { authorization: `Bearer ${params.apiKey}` },
-    },
-  );
-
-  // Terminal: upstream bytes (2xx/4xx/5xx) or broker error JSON (403/408/409/410/etc).
-  // IMPORTANT:
-  // - execution is one-time; subsequent calls return 410.
-  // - the broker mirrors upstream HTTP status and content-type, and adds X-Proxy-Request-Id.
-  // - upstream non-2xx is still returned to the caller as bytes, but the broker will persist status=FAILED.
-  return res;
-}
-
-// Suggested control flow:
-// - Start polling for ~30 seconds.
-// - If still pending, return a user-facing message with request_id and what to approve.
-// - On the next user message, poll again (or recreate if expired/consumed).
-
-// Example usage
-// const baseUrl = "https://permissions-broker.steer.fun"
-// const apiKey = process.env.PB_API_KEY!
-// const upstreamUrl = "https://www.googleapis.com/drive/v3/files?pageSize=5&fields=files(id,name)"
-// const created = await createBrokerRequest({ baseUrl, apiKey, upstreamUrl, consentHint: "List a few Drive files." })
-// Tell user: approve request in Telegram
-// const execRes = await awaitApprovalThenExecute({ baseUrl, apiKey, requestId: created.request_id, timeoutMs: 30_000 })
-// const bodyText = await execRes.text()
-
-// GitHub example (create PR)
-// const created = await createBrokerRequest({
-//   baseUrl,
-//   apiKey,
-//   upstreamUrl: "https://api.github.com/repos/OWNER/REPO/pulls",
-//   method: "POST",
-//   headers: { "content-type": "application/json" },
-//   body: {
-//     title: "My PR",
-//     head: "feature-branch",
-//     base: "main",
-//     body: "Opened via Permissions Broker",
-//   },
-//   consentHint: "Open a PR for feature-branch"
-// })
-```
-
-## Supported Providers (Today)
-
-The broker enforces an allowlist and chooses which linked account (OAuth token)
-to use based on the upstream hostname.
-
-Currently supported:
-
-- Google
-  - Hosts: `docs.googleapis.com`, `www.googleapis.com`, `sheets.googleapis.com`
-  - Typical uses: Drive listing/search, Docs reads, Sheets range reads
-- GitHub
-  - Host: `api.github.com`
-  - Typical uses: PRs/issues/comments/labels and other GitHub actions
-- iCloud (CalDAV)
-  - Hosts: discovered on connect (starts at `caldav.icloud.com`)
-  - Typical uses: Calendar events (VEVENT) and Reminders/tasks (VTODO)
-
-If you need a provider that isn't supported yet:
-
-- Still use the broker pattern in your plan (propose the upstream call + consent text).
-- Then tell the user which host(s) need to be enabled/implemented.
-
-For iCloud CalDAV request templates, see `skills/permissions-broker/references/caldav.md`.
-
-## Git Operations (Smart HTTP Proxy)
-
-The broker can also proxy Git operations (clone/fetch/pull/push) via Git Smart HTTP.
-
-This is separate from `/v1/proxy`.
-
-High-level flow:
-
-1. Create a git session (`POST /v1/git/sessions`).
-2. The user approves/denies the session in Telegram.
-3. Poll session status (`GET /v1/git/sessions/:id`) until approved.
-4. Fetch a session-scoped remote URL (`GET /v1/git/sessions/:id/remote`).
-5. Run `git clone` / `git push` against that remote URL.
-
-Important behavior:
-
-- Clone/fetch sessions may require multiple `git-upload-pack` POSTs during a single clone.
-- Push sessions are single-use and may become unusable after the first `git-receive-pack`.
-- Push protections are enforced by the broker:
-  - tag pushes are rejected
-  - ref deletes are rejected
-  - default-branch pushes may be blocked unless explicitly allowed in the approval
-
-### Endpoints
-
-Auth for all git session endpoints:
-
-- `Authorization: Bearer <USER_API_KEY>`
-
-Create session
-
-- `POST /v1/git/sessions`
-- JSON body:
-  - `operation`: `"clone"`, `"fetch"`, `"pull"`, or `"push"`
-  - `repo`: `"owner/repo"` (GitHub)
-  - optional `consent_hint`
-- Response: `{ "session_id": "...", "status": "PENDING_APPROVAL", "approval_expires_at": "..." }`
-
-Poll status
-
-- `GET /v1/git/sessions/:id` (status JSON)
-
-Get remote URL
-
-- `GET /v1/git/sessions/:id/remote`
-- Response: `{ "remote_url": "https://..." }`
-
-### Example: Clone
-
-1. Create session:
-
+2. 让用户将生成的密钥发送给您（密钥通常只会显示一次）。
+3. 询问用户是否希望您将该密钥存储以供后续会话使用：
+   - 如果是：将其存储在您的配置文件中（建议的名称：`PB_API_KEY`）。
+   - 如果用户不同意或回答不明确：则将其视为仅用于当前会话的密钥，并在下一次请求时再次请求。
+4. 请记住密钥的存储位置（例如：“权限代理密钥存储在 `PB_API_KEY` 中”），但不要记住密钥的具体值。
+
+**重要提示：**
+- **切勿将密钥提交到代码仓库中。**
+- **切勿在代码、日志或错误输出中包含密钥。**
+- **除非用户明确要求，否则不要在多个会话之间重复使用该密钥。**
+- **如果密钥丢失或被泄露，请指导用户通过机器人的密钥管理界面重新生成密钥。**
+
+**提供者连接：**
+- 用户可以使用 `/connect` 在 Telegram 中连接相应的提供者。
+- 对于 iCloud，`/connect icloud` 会返回一个浏览器链接，用户可以在该链接中输入 Apple ID 和应用特定的密码。
+
+## 概述
+
+将权限代理作为用户控制的代理，用于访问外部数据和执行 API 操作。
+
+**工作原理：**
+1. 您提出一个具体的上游请求（包括 URL、方法和请求体）。
+2. 用户在 Telegram 中批准或拒绝该请求。
+3. 您会轮询用户的批准结果。
+4. 仅执行一次请求，并立即解析和处理所需的结果。
+
+**注意：**  
+此功能目前不依赖于具体的提供者；未来会逐步支持更多的提供者。
+
+## 代理响应方式（非常重要）
+
+使用此功能时，请避免使用诸如“我无法访问您的 Google Drive”之类的拒绝性语言。相反，应：
+- 将权限代理视为标准的访问机制。
+- 请求用户提供最低限度的必要信息（代理的基本 URL 和用户的 API 密钥），然后提出您将发起的具体上游请求。
+- 默认操作：创建请求、轮询批准结果，并一次性执行请求。
+- 仅在轮询超时时，才在 Telegram 中告知用户需要批准的内容以及批准后的操作。
+
+**避免：**
+- 长篇大论地解释代码仓库的设置。
+- 除非与请求的任务直接相关，否则不要重复说明所有的允许列表或限制条件。
+
+**推荐的表达方式：**
+“我可以通过您的权限代理来执行该操作。我会为您创建一个请求，您在 Telegram 中进行批准，之后我会执行请求并返回结果。”
+
+## 轮询行为（非常重要）
+
+创建代理请求后，务必尝试在同一操作中完成轮询、获取批准并执行请求。
+只有在轮询超时时，才在 Telegram 中请求用户的批准。
+
+**指南：**
+- 默认轮询时间为 30 秒（用户可以延长轮询时间）。
+- 如果在指定时间内收到批准，立即调用执行端点并返回上游请求的结果。
+- 如果未收到批准：
+  - 返回 `request_id`。
+  - 在 Telegram 中告知用户是否批准请求。
+  - 明确说明批准后的操作（仅执行一次请求并返回结果）。
+  - 继续等待用户的下一步指令。
+
+## 核心工作流程：
+1. **收集信息：**
+   - 用户的 API 密钥（切勿将其粘贴到日志中，也切勿存储在代码仓库中）。
+2. **决定如何访问提供者：**
+   - 如果代理已经拥有用户的有效凭据，并且用户明确允许使用这些凭据，可以直接使用。
+   - 否则（默认情况下），使用权限代理。
+   - 如果不确定是否可以使用本地凭据，优先使用权限代理。
+3. **创建代理请求：**
+   - 调用 `POST /v1/proxy/request`，并提供以下参数：
+     - `upstream_url`：要调用的外部服务 API 的完整地址。
+     - `method`：`GET`（默认）或 `POST`/`PUT`/`PATCH`/`DELETE`。
+     - `headers`（可选）：需要转发的请求头信息（请勿包含 `authorization` 头）。
+     - `body`（可选）：请求体：
+       - 如果使用 JSON 格式（`application/json` 或 `+json`），`body` 可以是对象或数组；如果是其他格式（如文本、XML 或二进制数据），则必须将其转换为 Base64 字符串。
+     - `consent_hint`（可选）：向用户说明请求目的的简单说明。
+     - `idempotency_key`（可选）：用于重试时的请求标识符。
+4. **关于转发的请求头：**
+   - 权限代理会使用用户的账户信息来设置 `Authorization` 头；任何用户提供的 `authorization` 头都会被忽略。
+   - 权限代理仅转发预先定义的允许列表中的请求头；未知的请求头会被忽略。
+5. **用户需要在 Telegram 中批准请求：**
+   - 批准提示应包括 API 密钥的标签以及请求的详细信息。
+6. **轮询状态并获取结果：**
+   - 轮询 `GET /v1/proxy/requests/:id`，直到请求获得批准。
+   - 调用 `POST /v1/proxy/requests/:id/execute` 来执行请求并获取上游服务的响应。
+   - 收到响应后，立即解析和处理所需的数据。
+   - 请注意：同一请求不能被重复执行。
+
+**重要提示：**
+- 轮询状态和执行请求都需要使用创建请求时使用的 API 密钥。使用不同的 API 密钥（即使是对同一用户）会导致 403 错误。
+
+## 示例代码（创建请求、等待批准并执行）
+
+以下代码片段展示了如何使用 JavaScript/TypeScript（Bun/Node）来创建代理请求、轮询状态并执行请求。
+
+## 当前支持的提供者
+
+权限代理支持一定的提供者，并会根据上游请求的域名选择使用相应的 OAuth 令牌：
+
+- **Google：**
+  - 可访问的域名：`docs.googleapis.com`、`www.googleapis.com`、`sheets.googleapis.com`
+  - 常见用途：访问 Drive 文件列表/搜索、Docs 文档内容、Sheets 表格数据。
+- **GitHub：**
+  - 可访问的域名：`api.github.com`
+  - 常见用途：创建 Pull Request、查看 Issues/Comments/Labels 等。
+- **iCloud（CalDAV）：**
+  - 可访问的域名：`caldav.icloud.com`
+  - 常见用途：管理日历事件（VEVENT）和提醒/任务（VTODO）。
+
+**如果需要未支持的提供者：**
+- 仍然可以使用权限代理的通用流程（先提出上游请求并获取用户的同意）。
+- 然后告知用户需要启用或实现哪些功能。
+
+有关 iCloud CalDAV 请求的详细信息，请参阅 `skills/permissions-broker/references/caldav.md`。
+
+## Git 操作（智能 HTTP 代理）
+
+权限代理还可以通过 Git 智能 HTTP 协议代理 Git 操作（如克隆、获取、拉取和推送请求）。
+
+**高级流程：**
+1. 创建 Git 会话：`POST /v1/git/sessions`。
+2. 用户在 Telegram 中批准或拒绝该会话。
+3. 轮询会话状态（`GET /v1/git/sessions/:id`），直到获得批准。
+4. 获取会话对应的远程仓库地址：`GET /v1/git/sessions/:id/remote`。
+5. 使用获取到的地址执行 `git clone` 或 `git push` 操作。
+
+**重要注意事项：**
+- 克隆或获取会话可能需要多次发送 `git-upload-pack` 请求。
+- 推送操作是一次性的，首次接收数据后可能会失效。
+- 权限代理会限制某些操作：
+  - 无法推送标签（tag）。
+  - 无法删除分支（ref）。
+  - 默认分支的推送可能被拒绝，除非用户明确允许。
+
+### 相关端点：
+- **所有 Git 会话的授权请求：**
+  - `Authorization: Bearer <USER_API_KEY>`
+
+**创建会话：**
+  - `POST /v1/git/sessions`
+  - 请求体：`{"operation": "clone", "fetch", "pull", "push"}`，`repo`: "owner/repo"`（GitHub 仓库地址）。
+  - 可选参数：`consent_hint`。
+  - 响应：`{"session_id": "...", "status": "PENDING_APPROVAL", "approval_expires_at": "..."}`
+
+**获取会话状态：**
+- `GET /v1/git/sessions/:id`（返回会话状态信息）。
+
+**获取远程仓库地址：**
+- `GET /v1/git/sessions/:id/remote`（返回远程仓库的 URL）。
+
+**示例：克隆仓库：**
 ```json
 {
   "operation": "clone",
@@ -407,72 +172,22 @@ Get remote URL
 }
 ```
 
-### Example: Fetch
+**示例：获取远程仓库信息：**
+当您已经拥有本地仓库副本时，可以使用此方法获取远程仓库的详细信息。
 
-Use fetch when you already have a repo locally and just need to update refs.
+**示例：拉取远程仓库数据：**
+**注意：**`git pull` 实际上是一个包含拉取和合并操作的复合操作。权限代理仅负责处理网络请求部分。
 
-1. Create session:
+**示例：推送新分支：**
+1. 创建会话。
+2. 等待批准。
+3. 获取远程仓库地址，然后执行推送操作。
 
-```json
-{
-  "operation": "fetch",
-  "repo": "OWNER/REPO",
-  "consent_hint": "Fetch latest refs to update local checkout"
-}
-```
+**注意事项：**
+- 建议为推送的分支指定一个新的名称（例如 `pb/<task>/<timestamp>`），而不是直接推送到 `main` 分支。
+- 如果当前会话已被使用，需要创建一个新的推送会话。
 
-2. Poll until approved.
-
-3. Get `remote_url`, then:
-
-```bash
-git fetch "<remote_url>" --prune
-```
-
-### Example: Pull
-
-`git pull` is a `fetch` plus a local merge/rebase. The broker only proxies the network portion.
-
-```bash
-git pull "<remote_url>" main
-```
-
-2. Poll until `status == "APPROVED"`.
-
-3. Get `remote_url`, then:
-
-```bash
-git clone "<remote_url>" ./repo
-```
-
-### Example: Push New Branch (Recommended)
-
-1. Create session:
-
-```json
-{
-  "operation": "push",
-  "repo": "OWNER/REPO",
-  "consent_hint": "Push branch feature-x for a PR"
-}
-```
-
-2. Poll until approved.
-
-3. Get `remote_url`, add as a remote, then push to a non-default branch:
-
-```bash
-git remote add broker "<remote_url>"
-git push broker "HEAD:refs/heads/feature-x"
-```
-
-Notes:
-
-- Prefer creating a new branch name (e.g. `pb/<task>/<timestamp>`) rather than pushing to `main`.
-- If the broker session becomes `USED`, create a new push session.
-
-Python (requests)
-
+**Python（使用 requests 库）：**
 ```py
 import time
 import requests
@@ -528,65 +243,41 @@ def await_approval_then_execute(base_url, api_key, request_id, timeout_s=30):
   return execute_request(base_url, api_key, request_id)
 ```
 
-## Constraints You Must Respect
+## 必须遵守的规则：**
+- 上游请求必须使用 HTTPS 协议。
+- 上游请求的域名必须在提供的允许列表范围内。
+- 允许使用的请求方法为 `GET`/`POST`/`PUT`/`PATCH`/`DELETE`。
+- 上游请求的响应大小不得超过 1 MiB。
+- 上游请求的请求体大小不得超过 256 KiB。
+- 每个请求只能执行一次。
 
-- Upstream scheme: HTTPS only.
-- Upstream host allowlist: provider-defined (the request must target a supported host).
-- Upstream methods: `GET`/`POST`/`PUT`/`PATCH`/`DELETE`.
-- Upstream response size cap: 1 MiB.
-- Upstream request body cap: 256 KiB.
-- One-time execution: after executing a request, you cannot execute it again.
+**关于 Sheets 的特别说明：**
+权限代理支持访问 Google Sheets API（`sheets.googleapis.com`）。
+- 阅读表格数据的推荐方法：
+  - 使用 Drive 的搜索/列表功能找到目标文件。
+  - 使用 Sheets 的数据读取功能来获取所需的数据范围。
+- 如果需要导出表格数据，可以使用 Drive 的导出功能（注意：导出文件的大小可能超过权限代理的 1 MiB 限制）。
 
-## Sheets Note (Without Drama)
+**处理常见的终端状态码：**
+- **202**：请求仍可处理；响应中会包含状态码（如 `PENDING_APPROVAL`、`APPROVED` 或 `EXECUTING`）。
+  - 如果状态码为 `APPROVED`，立即执行请求。
+- **403**：用户拒绝请求。
+- **403`：可能表示 API 密钥错误或请求无法访问；请检查响应中的错误信息。
+- **408**：批准期限已过。
+- **409**：请求正在执行中；请稍后重试。
+- **410**：请求已经执行过；如果仍需要执行，请重新发起请求。
 
-The broker supports the Google Sheets API host (`sheets.googleapis.com`).
+**如何构建上游请求 URL：**
+- 为了便于用户理解和减少响应大小，请使用具体的请求格式：
+  - 查找文件：`https://www.googleapis.com/drive/v3/files?...`（使用 `q`、`pageSize` 和 `fields` 参数来减少数据量）。
+  - 导出文件内容：`https://www.googleapis.com/drive/v3/files/{fileId}/export?mimeType=...`（适用于 Google Docs/Sheets）。
+  - 查读文档内容：`https://docs.googleapis.com/v1/documents/{documentId}?fields=...`。
 
-Preferred approach for reading spreadsheet data:
+**更多详细信息：**请参阅 `references/api_reference.md` 和 Google 的 API 文档。
 
-1. Use Drive search/list to find the spreadsheet file.
-2. Use Sheets values read to fetch only the range you need.
+**如何构建上游请求 URL（GitHub 示例）：**
+- 创建 Pull Request：`POST https://api.github.com/repos/<owner>/<repo>/pulls`（请求格式）。
+- 创建 Issue：`POST https://api.github.com/repos/<owner>/<repo>/issues`（请求格式）。
 
-Fallback:
-
-- Use Drive export to fetch contents as CSV when that is sufficient.
-
-Note: large exports can exceed the broker's 1 MiB upstream response cap.
-If an export fails due to size, narrow the scope (smaller range, fewer tabs, or fewer rows/columns).
-
-## Handling Common Terminal States
-
-- 202: request is still actionable; JSON includes `status` (often `PENDING_APPROVAL`, `APPROVED`, or `EXECUTING`).
-  - If `status == APPROVED`, execute immediately.
-  - Otherwise keep polling.
-- 403: denied by user.
-- 403: forbidden (wrong API key or request not accessible) is also possible; inspect `{error: ...}`.
-- 408: approval expired (user did not decide in time).
-- 409: already executing; retry shortly.
-- 410: already executed; recreate the request if you still need it.
-
-## How To Build Upstream URLs (Google example)
-
-Prefer narrow reads so approvals are understandable and responses are small.
-
-- Drive search/list files: `https://www.googleapis.com/drive/v3/files?...`
-  - Use `q`, `pageSize`, and `fields` to minimize payload.
-- Drive export file contents: `https://www.googleapis.com/drive/v3/files/{fileId}/export?mimeType=...`
-  - Useful for Google Docs/Sheets export to `text/plain` or `text/csv`.
-- Docs structured doc read: `https://docs.googleapis.com/v1/documents/{documentId}?fields=...`
-
-See `references/api_reference.md` for endpoint details and a Google URL cheat sheet.
-
-## How To Build Upstream URLs (GitHub examples)
-
-- Create PR: `POST https://api.github.com/repos/<owner>/<repo>/pulls`
-  - JSON body: `{ "title": "...", "head": "branch", "base": "main", "body": "..." }`
-- Create issue: `POST https://api.github.com/repos/<owner>/<repo>/issues`
-  - JSON body: `{ "title": "...", "body": "..." }`
-
-## Data Handling Rules
-
-- Treat the user's API key as secret.
-
-## Resources
-
-- Reference: `references/api_reference.md`
+**数据安全注意事项：**
+请始终将用户的 API 密钥视为敏感信息，并严格保护其安全。

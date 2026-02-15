@@ -1,26 +1,26 @@
 # LLM Supervisor
 
-Automatically switches OpenClaw between cloud and local Ollama models when rate limits occur.
+当遇到速率限制时，该工具会自动在云端的 Ollama 模型和本地的 Ollama 模型之间切换。
 
-## Features
+## 主要功能
 
-- Detects rate-limit / overload errors from Anthropic/OpenAI
-- Switches to a local Ollama fallback model
-- Requires explicit confirmation before local code generation
-- Supports manual commands:
+- 检测来自 Anthropic/OpenAI 的速率限制/过载错误
+- 自动切换到本地的 Ollama 模型作为备用方案
+- 在生成本地代码之前需要用户明确确认
+- 支持手动执行以下命令：
 
-### Commands
+### 可用命令
 
-- `/llm status`
-- `/llm switch cloud`
-- `/llm switch local`
+- `/llm status`  
+- `/llm switch cloud`  
+- `/llm switch local`  
 
-## Default Local Model
+## 默认的本地模型
 
-- `qwen2.5:7b`
+- `qwen2.5:7b`  
 
-## Safety
+## 安全性注意事项
 
-Local code generation requires the user to type:
+在生成本地代码之前，用户需要输入以下确认指令：
 
 `CONFIRM LOCAL CODE`

@@ -22,31 +22,31 @@ description: |
 version: "1.0"
 ---
 
-# Trade Validation — 10-Dimension Scoring Framework
+# 交易验证 —— 十维评分框架
 
-> **Rule: NO trade executes without 80%+ weighted confidence score.**
-> **Any single dimension below 4/10 = AUTOMATIC VETO.**
+> **规则：** 任何交易的执行都必须满足80%以上的加权置信度得分。
+> **如果任何一维的得分低于4/10，则自动否决该交易。**
 
 ---
 
-## Scoring Dimensions
+## 评分维度
 
-| # | Dimension | Weight | What It Measures |
-|---|-----------|--------|-----------------|
-| 1 | Information Edge | 18% | Do we know something the market doesn't? |
-| 2 | Source Quality | 12% | How reliable are our sources? |
-| 3 | Market Efficiency | 10% | Is this market likely mispriced? |
-| 4 | Time Horizon | 8% | How long is capital locked up? |
-| 5 | Downside Protection | 15% | What's the worst case? |
-| 6 | Cross-Validation | 12% | Do multiple independent signals agree? |
-| 7 | Historical Accuracy | 5% | Track record on similar bets? |
-| 8 | Liquidity/Execution Risk | 7% | Can we get in AND out? |
-| 9 | Consensus Divergence | 8% | How far are we from market consensus? |
-| 10 | Event Catalyst | 5% | Is there a known resolution trigger? |
+| 序号 | 维度        | 权重      | 衡量内容                |
+|------|------------|---------|----------------------|
+| 1    | 信息优势     | 18%      | 我们是否掌握了市场尚未掌握的信息？        |
+| 2    | 来源质量     | 12%      | 我们的信息来源是否可靠？           |
+| 3    | 市场效率     | 10%      | 该市场是否存在价格失真的情况？         |
+| 4    | 时间跨度     | 8%      | 资金被锁定的时间长度是多少？         |
+| 5    | 下跌保护     | 15%      | 最坏情况下可能发生的损失是多少？        |
+| 6    | 交叉验证     | 12%      | 多个独立信号是否一致？           |
+| 7    | 历史准确性   | 5%      | 在类似交易中的表现如何？           |
+| 8    | 流动性/执行风险 | 7%      | 我们能否顺利买入和卖出？           |
+| 9    | 共识分歧     | 8%      | 我们的观点与市场共识相差多远？         |
+| 10   | 事件触发因素   | 5%      | 是否存在已知的事件触发因素？         |
 
-**Total: 100%**
+**总分：100%**
 
-### Calculation
+### 计算方法
 
 ```
 Weighted Score = Σ(dimension_score / 10 × weight) × 100
@@ -54,44 +54,44 @@ Weighted Score = Σ(dimension_score / 10 × weight) × 100
 
 ---
 
-## Threshold Rules
+## 阈值规则
 
-| Weighted Score | Action | Bet Size |
-|---------------|--------|----------|
-| < 80% | ❌ NO TRADE | $0 |
-| 80–84% | ✅ Minimum | $3–5 |
-| 85–89% | ✅ Standard | $5–7 |
-| 90%+ | ✅ Conviction | Up to $7.50 (max 10% bankroll) |
+| 加权得分 | 行动        | 下注金额                |
+|---------|------------------|----------------------|
+| < 80%   | ❌ 禁止交易    | 0美元                |
+| 80–84%   | ✅ 最小金额    | 3–5美元                |
+| 85–89%   | ✅ 标准金额    | 5–7美元                |
+| 90%及以上 | ✅ 确信度较高 | 最高7.50美元（不超过总资金的10%）     |
 
-### Veto Rules
+### 否决规则
 
-- **Any dimension < 4/10 → AUTOMATIC VETO** regardless of total score
-- Rationale: A critical weakness in any area (e.g., Liquidity = 2 means you're trapped)
-
----
-
-## Risk Management
-
-- **Max position:** 10% of portfolio per trade
-- **Min market liquidity:** $25 (below this, don't trade)
-- **Max open exposure:** 30% of bankroll across all positions
-- **Daily loss circuit breaker:** $8 loss in a day → ALL trading stops for 24 hours
-- **Cool-down:** No trade within 1 hour of a loss
-- **No revenge trading:** Last loss must be >24h ago OR new trade is unrelated
-- **No trading 12am–7am** unless time-critical
+- **如果任何一维的得分低于4/10，则无论总分如何，都自动否决该交易**  
+- **理由：** 在任何一方面存在严重缺陷（例如，流动性指标为2意味着交易存在巨大风险）。
 
 ---
 
-## Mandatory Counter-Arguments
+## 风险管理
 
-Every trade MUST document:
-1. **Why could we be WRONG?** (not a strawman — a genuine strong counter-argument)
-2. **What would change our mind?** (specific falsification criteria)
-3. **Exit strategy:** When do we sell early?
+- **单笔交易的最大持仓比例：** 投资组合的10%  
+- **最低市场流动性要求：** 25美元；低于此要求则禁止交易  
+- **最大未平仓头寸风险：** 所有头寸的总风险不得超过总资金的30%  
+- **每日止损机制：** 单日亏损达到8美元时，所有交易暂停24小时  
+- **冷却期：** 在发生亏损后1小时内禁止交易  
+- **禁止报复性交易：** 最后一次亏损必须发生在24小时以上，或者新交易与之前的交易无关  
+- **禁止在凌晨12点至早上7点交易**（除非交易时间非常紧急）  
 
 ---
 
-## Score Card Template
+## 必须记录的反对意见
+
+每笔交易都必须记录以下内容：  
+1. **我们可能犯错的原因是什么？**（不是简单的反驳意见，而是基于事实的、有力的反对理由）  
+2. **什么情况会改变我们的决定？**（具体的反驳依据）  
+3. **退出策略：** 何时应该提前止损？  
+
+---
+
+## 评分卡模板
 
 ```
 TRADE SCORE CARD
@@ -129,7 +129,7 @@ Tier: [ ] Min ($3-5)  [ ] Standard ($5-7)  [ ] Conviction ($7.50)
 
 ---
 
-## Pre-Trade Checklist
+## 交易前检查清单
 
 ```
 RESEARCH
@@ -158,13 +158,13 @@ DISCIPLINE
 
 ---
 
-## Detailed Scoring Rubric
+## 详细评分标准
 
-See `references/scoring-rubric.md` for the full 1–10 rubric for each dimension.
+完整的评分标准（1–10分）请参见 `references/scoring-rubric.md`。
 
-## Trade Journal
+## 交易日志
 
-Log every scored trade (pass or fail) to `projects/polymarket/trade-journal/`:
+将所有经过评分的交易（无论结果如何）记录到 `projects/polymarket/trade-journal/` 目录中：  
 
 ```
 ## [DATE] — [MARKET NAME]

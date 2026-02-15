@@ -9,12 +9,11 @@ description: >
 tags: [planning, context, workflow, manus, memory, complex-tasks]
 ---
 
-# Planning with Files
+# 使用文件进行规划
 
-Use persistent markdown files as your "working memory on disk." Based on context engineering principles from Manus.
+将持久的 Markdown 文件作为你的“磁盘上的工作记忆”。这一方法基于 Manus 中提出的上下文工程（context engineering）原则。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -22,36 +21,35 @@ Use persistent markdown files as your "working memory on disk." Based on context
 npx clawhub@latest install planning-with-files
 ```
 
+## 本技能的作用
 
-## WHAT This Skill Does
+将文件系统视为持久性存储空间，以克服上下文窗口的限制。通过三个文件来记录你的工作状态：
 
-Treats the filesystem as persistent memory to overcome context window limitations. Three files track your state:
-
-| File | Purpose | Update Frequency |
+| 文件名 | 用途 | 更新频率 |
 |------|---------|-----------------|
-| `task_plan.md` | Phases, progress, decisions | After each phase |
-| `findings.md` | Research, discoveries, decisions | After ANY discovery |
-| `progress.md` | Session log, test results, errors | Throughout session |
+| `task_plan.md` | 任务阶段、进度、决策 | 每完成一个阶段后更新 |
+| `findings.md` | 研究成果、发现的内容、决策 | 每有新发现时更新 |
+| `progress.md` | 会话日志、测试结果、错误信息 | 整个会话期间持续更新 |
 
-## WHEN to Use
+## 适用场景
 
-**Use for:**
-- Multi-step tasks (3+ steps)
-- Research tasks requiring web search
-- Building/creating projects from scratch
-- Tasks spanning >5 tool calls
-- Anything requiring organization across multiple files
-- Tasks where losing context would cause rework
+**适用于：**
+- 多步骤任务（3 步以上）
+- 需要网络搜索的研究任务
+- 从零开始构建/创建项目
+- 涉及多个工具调用的任务
+- 需要在多个文件之间进行协作的任务
+- 失去上下文会导致工作重复的任务
 
-**Skip for:**
-- Simple questions
-- Single-file edits
-- Quick lookups
-- Tasks completable in 1-2 actions
+**不适用场景：**
+- 简单的问题
+- 单个文件的编辑
+- 快速查找信息
+- 可以在 1-2 个操作内完成的任务
 
-**Keywords:** complex task, multi-step, research, build project, create application, plan, organize
+**关键词：** 复杂任务、多步骤、研究、项目构建、计划、组织
 
-## The Core Pattern
+## 核心模式
 
 ```
 Context Window = RAM (volatile, limited)
@@ -60,40 +58,38 @@ Filesystem = Disk (persistent, unlimited)
 → Anything important gets written to disk.
 ```
 
-## Workflow
+## 工作流程
 
-### Phase 1: Create Planning Files
+### 第 1 阶段：创建规划文件
 
-Before starting ANY complex task, create all three files in your project root:
+在开始任何复杂任务之前，在项目根目录下创建以下三个文件：
 
-1. **Create `task_plan.md`** — Copy from [templates/task_plan.md](templates/task_plan.md)
-2. **Create `findings.md`** — Copy from [templates/findings.md](templates/findings.md)
-3. **Create `progress.md`** — Copy from [templates/progress.md](templates/progress.md)
+1. **创建 `task_plan.md`** — 从 [templates/task_plan.md](templates/task_plan.md) 复制
+2. **创建 `findings.md`** — 从 [templates/findings.md](templates/findings.md) 复制
+3. **创建 `progress.md`** — 从 [templates/progress.md](templates/progress.md) 复制
 
-### Phase 2: Execute with Discipline
+### 第 2 阶段：有条不紊地执行任务
 
-Follow these rules during execution:
+执行任务时，请遵循以下规则：
 
-**The 2-Action Rule:**
-> After every 2 view/browser/search operations, IMMEDIATELY save findings to text files.
+**“每 2 次操作后保存一次”规则：**
+> 每进行 2 次查看、浏览或搜索操作后，立即将发现的内容保存到文本文件中。视觉或多媒体内容不会被持久保存，因此请在它们丢失之前将其记录下来。
 
-Visual/multimodal content doesn't persist — write it down before it's lost.
+**决策前先阅读计划：**
+在做出重要决策之前，先阅读计划文件。这有助于你在多次使用工具后仍能记住任务目标。
 
-**Read Before Decide:**
-Before major decisions, read your plan file. This keeps goals in your attention window after many tool calls.
+**执行后进行更新：**
+完成某个阶段后：
+- 更新阶段状态：`in_progress` → `complete`
+- 记录遇到的任何错误
+- 记录创建或修改的文件
 
-**Update After Act:**
-After completing any phase:
-- Mark phase status: `in_progress` → `complete`
-- Log any errors encountered
-- Note files created/modified
+**记录所有错误：**
+所有错误都应记录在计划文件中，这样可以避免重复出现相同的问题。
 
-**Log ALL Errors:**
-Every error goes in the plan file. This prevents repetition.
+### 第 3 阶段：系统地处理错误
 
-### Phase 3: Handle Errors Systematically
-
-**The 3-Strike Protocol:**
+**“三次尝试原则”：**
 
 ```
 ATTEMPT 1: Diagnose & Fix
@@ -117,34 +113,33 @@ AFTER 3 FAILURES: Escalate to User
   → Ask for guidance
 ```
 
-**Critical:** `if action_failed: next_action != same_action`
+**重要提示：** 如果某个操作失败，**请不要重复之前的操作**，而是尝试其他方法。
 
-### Phase 4: Verify Completion
+### 第 4 阶段：验证任务是否完成
 
-Use the 5-Question Reboot Test. If you can answer these, your context is solid:
+使用“五问重启测试”（5-Question Reboot Test）来确认任务是否完成。如果你能够回答以下问题，说明你的上下文信息是完整的：
 
-| Question | Answer Source |
+| 问题 | 答案来源 |
 |----------|---------------|
-| Where am I? | Current phase in task_plan.md |
-| Where am I going? | Remaining phases |
-| What's the goal? | Goal statement in plan |
-| What have I learned? | findings.md |
-| What have I done? | progress.md |
+| 我现在处于哪个阶段？ | `task_plan.md` 中的当前阶段 |
+| 我的目标是什么？ | 计划文件中的目标陈述 |
+| 我学到了什么？ | `findings.md` 中的内容 |
+| 我完成了哪些工作？ | `progress.md` 中的记录 |
 
-## Quick Reference: Read vs Write
+## 快速参考：何时阅读，何时写入
 
-| Situation | Action | Reason |
+| 情况 | 应采取的行动 | 原因 |
 |-----------|--------|--------|
-| Just wrote a file | DON'T read | Content still in context |
-| Viewed image/PDF | Write findings NOW | Multimodal → text before lost |
-| Browser returned data | Write to file | Screenshots don't persist |
-| Starting new phase | Read plan/findings | Re-orient if context stale |
-| Error occurred | Read relevant file | Need current state to fix |
-| Resuming after gap | Read all planning files | Recover state |
+| 刚刚写完文件 | **不要立即阅读** | 内容仍在上下文中 |
+| 查看了图片/PDF | **立即将发现的内容写入文件** | 多媒体内容容易丢失 |
+| 浏览器返回了数据 | **将数据写入文件** | 屏幕截图无法持久保存 |
+| 开始新的阶段 | **阅读计划文件和发现的内容** | 如果上下文信息过时，需要重新调整 |
+| 发生错误 | **阅读相关文件** | 需要了解当前的状态以便解决问题 |
+| 中断后重新开始 | **阅读所有规划文件** | 恢复任务状态 |
 
-## Session Recovery
+## 会话恢复
 
-When starting a new session, check for previous work:
+在开始新的会话时，请检查之前的工作：
 
 ```bash
 # Check if planning files exist
@@ -154,49 +149,47 @@ ls task_plan.md findings.md progress.md 2>/dev/null
 cat task_plan.md findings.md progress.md
 ```
 
-If planning files exist from a previous session:
-1. Read all three files to recover context
-2. Run `git diff --stat` to see what changed
-3. Update planning files with any missing context
-4. Continue from where you left off
+如果之前有规划文件：
+1. 阅读所有三个文件以恢复上下文信息
+2. 运行 `git diff --stat` 以查看有哪些内容发生了变化
+3. 根据变化情况更新规划文件
+4. 从上次停下的地方继续执行任务
 
-## Templates
+## 模板
 
-Copy these to start:
+以下是用于初始化的模板文件：
+- [templates/task_plan.md](templates/task_plan.md) — 用于跟踪任务阶段
+- [templates/findings.md](templates/findings.md) — 用于存储研究结果
+- [templates/progress.md](templates/progress.md) — 用于记录会话进度
 
-- [templates/task_plan.md](templates/task_plan.md) — Phase tracking
-- [templates/findings.md](templates/findings.md) — Research storage
-- [templates/progress.md](templates/progress.md) — Session logging
+## 脚本
 
-## Scripts
+以下是一些辅助脚本，用于自动化任务流程：
+- `scripts/init-session.sh` — 初始化所有规划文件
+- `scripts/check-complete.sh` — 检查所有阶段是否已完成
 
-Helper scripts for automation:
+## 参考资料
 
-- `scripts/init-session.sh` — Initialize all planning files
-- `scripts/check-complete.sh` — Verify all phases complete
+- [references/manus-principles.md] — Manus 中提出的上下文工程原则
 
-## References
+## 不推荐的做法
 
-- [references/manus-principles.md](references/manus-principles.md) — Context engineering principles from Manus
-
-## Anti-Patterns
-
-| Don't | Do Instead |
+| 不要这样做 | 应该这样做 |
 |-------|------------|
-| Use TodoWrite for persistence | Create task_plan.md file |
-| State goals once and forget | Re-read plan before decisions |
-| Hide errors and retry silently | Log errors to plan file |
-| Stuff everything in context | Store large content in files |
-| Start executing immediately | Create plan file FIRST |
-| Repeat failed actions | Track attempts, mutate approach |
-| Create files in skill directory | Create files in your project |
+| 使用 TodoWrite 工具来保存数据 | 直接创建 `task_plan.md` 文件 |
+| 一次性设定目标后就不再查看 | 在做出决策前重新阅读计划文件 |
+| 隐藏错误并默默重试 | 将错误记录到计划文件中 |
+| 将所有内容都放在同一个文件中 | 将大量信息存储在单个文件中 |
+| 立即开始执行任务 | 先创建计划文件 |
+| 重复失败的尝试 | 记录每次尝试的过程，并调整方法 |
+| 将文件放在技能目录中 | 将文件放在项目根目录下 |
 
-## NEVER Do
+## 绝对禁止的行为：
 
-1. **NEVER start a complex task without task_plan.md** — this is non-negotiable
-2. **NEVER repeat a failed action exactly** — track what you tried, mutate the approach
-3. **NEVER ignore errors** — log every error with resolution attempts
-4. **NEVER rely on memory after >10 tool calls** — re-read your plan
-5. **NEVER skip the 2-Action Rule for visual content** — multimodal data gets lost
-6. **NEVER proceed past 3 failures without escalating** — ask the user for help
-7. **NEVER create planning files in the skill directory** — they go in your project root
+1. **在没有 `task_plan.md` 的情况下绝不要开始复杂任务** — 这是绝对不可接受的
+2. **绝不要重复失败的尝试** — 要记录尝试的过程并调整方法
+3. **绝不要忽略错误** — 必须记录每个错误以及相应的解决方法
+4. **在多次使用工具后绝不要依赖记忆** — 一定要重新阅读计划文件
+5. **对于视觉内容，绝不要忽略“每 2 次操作后保存一次”的规则** — 多媒体内容容易丢失
+6. **如果连续失败超过 3 次，绝不要继续执行** — 应该寻求帮助
+7. **绝不要将规划文件放在技能目录中** — 应将文件放在项目根目录下

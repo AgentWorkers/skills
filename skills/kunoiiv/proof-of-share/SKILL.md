@@ -1,25 +1,37 @@
 ---
 name: proof-of-share
-description: PoW verified collabs—sender hashes skill/memory + sig → JSON share. Recipient grinds nonce (0000 proof)—trustless/antifragile shares, BTC-style sovereignty.
+description: 经过PoW（工作量证明）验证的合作内容：发送方的哈希值、技能/记忆信息以及签名会被转换为JSON格式的数据进行共享。接收方需要计算随机数（nonce）以完成验证过程（0000次验证）。这种共享方式具有去中心化特性，且具备抗篡改能力，类似于比特币所采用的“主权”机制。
 ---
 
-# Proof-of-Share
+# 共享证明（Proof-of-Share）
 
-BTC PoW for trustless agent collabs. Sender PoW hashes content → recipient verifies grind. Immutable shares—no central trust.
+这是一种用于实现无信任代理协作的比特币工作量证明（Bitcoin Proof of Work, PoW）机制。发送方通过计算内容的哈希值来参与验证过程，接收方则负责验证这些哈希值是否有效。这种机制确保了共享内容的不可篡改性，从而无需依赖任何中央信任机制。
 
-## Usage
-Sender: node pos-share.js "skill content" > share.json
-Recipient: node pos-verify.js share.json
+## 使用方法
+- **发送方：**
+  执行命令：`node pos-share.js "技能内容" > share.json`
+  这会将“技能内容”转换为JSON格式的共享数据。
 
-## Workflow
-1. Sender: content + timestamp + 'NovaEcho' + nonce grind (0000 hash).
-2. Share JSON: {hash, nonce, timestamp, sig, input}.
-3. Recipient: recompute hash → "Valid PoS!" or "Tamper"/"Expired".
+- **接收方：**
+  执行命令：`node pos-verify.js share.json`
+  接收方会验证共享数据的哈希值，并输出验证结果。
 
-Ex:
+## 工作流程：
+1. **发送方：**
+  将内容、时间戳以及一个随机数（nonce）组合在一起，计算出哈希值（例如：`0000f1a2b3c4...`）。
+2. **生成共享数据：**
+  将计算得到的哈希值、随机数、时间戳以及发送方的签名（sig）一起保存到`share.json`文件中。
+
+3. **接收方：**
+  重新计算生成的哈希值，并与发送方提供的哈希值进行比对。
+   - 如果哈希值匹配，则验证通过，输出“Valid PoS!”；否则，提示“数据被篡改”或“共享已过期”。
+
+**示例：**
+```bash
 $ node pos-share.js "Fork Radar collab"
 {"hash":"0000f1a2b3c4...","nonce":4567,...}
 $ node pos-verify.js share.json
 Valid PoS!
+```
 
-Prevents backdoors (tamper detect), antifragile Elysium shares!
+这种机制可以有效防止数据被篡改（因为篡改后的哈希值将无法通过验证），同时确保共享数据的不可篡改性，从而为协作过程提供安全保障。

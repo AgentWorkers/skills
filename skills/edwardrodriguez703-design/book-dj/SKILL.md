@@ -1,23 +1,21 @@
 ---
 name: book-dj
-description: Book dj services through Lokuli MCP. Use when user needs to find and book dj. Triggers on requests like "book a dj", "find dj near me", or any dj service request.
+description: 通过 Lokuli MCP 预订 DJ 服务。当用户需要寻找并预订 DJ 时使用该功能。该功能会在收到如下请求时触发：`book a dj`、`find dj near me` 或任何与 DJ 服务相关的请求。
 ---
 
-# uook dj
+# 使用 Lokuli 的 MCP 服务器预订 dj 服务
 
-Book dj services through Lokuli's MCP server.
-
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### search（搜索）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +30,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### check_availability（检查可用性）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +45,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### create_booking（创建预订）
 ```json
 {
   "method": "tools/call",

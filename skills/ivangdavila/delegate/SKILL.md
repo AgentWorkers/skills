@@ -1,25 +1,25 @@
 ---
 name: Delegate
-description: Route tasks to sub-agents with optimal model selection, error recovery, and result verification.
+description: 将任务分配给子代理，同时实现最优模型选择、错误恢复和结果验证功能。
 ---
 
-## Core Rule
+## 核心规则
 
-Spawn cost < task cost → delegate. Otherwise, do it yourself.
+如果生成任务（spawn）的成本低于任务本身的成本，那么可以将其委托给其他工具或系统来完成；否则，就需要自己手动处理。
 
-## Model Tiers
+## 模型层级
 
-| Tier | Models | Cost | Use for |
-|------|--------|------|---------|
-| Small | Haiku, GPT-4o-mini, Gemini Flash | ~$0.25/1M | Search, summarize, format, classify |
-| Medium | Sonnet, GPT-4o, Gemini Pro | ~$3/1M | Code, analysis, synthesis |
-| Large | Opus, o1, Gemini Ultra | ~$15/1M | Architecture, complex reasoning |
+| 层级 | 模型          | 成本          | 适用场景                |
+|------|--------------|------------------|----------------------|
+| 小型    | Haiku, GPT-4o-mini, Gemini Flash | 约0.25美元/100万词 | 搜索、总结、格式化、分类           |
+| 中型    | Sonnet, GPT-4o, Gemini Pro | 约3美元/100万词 | 代码编写、数据分析、内容合成        |
+| 大型    | Opus, o1, Gemini Ultra   | 约15美元/100万词 | 架构设计、复杂逻辑推理           |
 
-**Rule of thumb:** Start with smallest tier. Escalate only if output quality insufficient.
+**经验法则：** 优先使用最低级别的模型。只有在输出质量不满足需求时，才逐步升级模型层级。
 
-## Spawn Checklist
+## 任务生成检查清单
 
-Every spawn must include:
+每次生成任务时，都必须包含以下内容：
 ```
 1. TASK: Single clear deliverable (not "help with X")
 2. MODEL: Explicit tier choice
@@ -28,29 +28,29 @@ Every spawn must include:
 5. DONE: How to signal completion
 ```
 
-Check `templates.md` for copy-paste spawn templates.
+请参考 `templates.md` 文件中的模板，以便复制和使用。
 
-## Error Recovery
+## 错误处理机制
 
-| Error Type | Action |
-|------------|--------|
-| Sub-agent timeout (>5 min no response) | Kill and retry once |
-| Wrong output format | Retry with stricter instructions |
-| Task too complex for tier | Escalate: Small→Medium→Large |
-| Repeated failures (3x) | Abort, report to user |
+| 错误类型 | 处理措施                |
+|------------|----------------------|
+| 子代理超时（超过5分钟无响应） | 异常终止并重试一次           |
+| 输出格式错误      | 重新发送任务，并提供更详细的指令      |
+| 任务过于复杂，超出当前模型能力范围 | 升级模型层级（从小型→中型→大型）      |
+| 任务失败次数达到3次      | 中止任务并向用户报告错误           |
 
-Check `errors.md` for recovery patterns and escalation logic.
+详细处理逻辑请参见 `errors.md` 文件。
 
-## Verification
+## 验证机制
 
-Never trust "done" without checking:
-- **Code:** Run tests, check syntax
-- **Files:** Verify they exist and have content
-- **Data:** Spot-check 2-3 items
-- **Research:** Confirm sources exist
+切勿仅凭系统提示的“任务完成”就认为工作结束，必须进行以下验证：
+- **代码**：运行测试，检查语法是否正确；
+- **文件**：确认文件是否存在且内容完整；
+- **数据**：随机抽查2-3个数据项进行验证；
+- **来源**：确认相关数据来源的真实性。
 
-## Don't Delegate
+## 不可委托的情况
 
-- Quick tasks (<30 seconds to do yourself)
-- Tasks needing conversation context
-- Anything requiring user clarification mid-task
+- 需要短时间内完成的任务（<30秒）；
+- 需要用户参与对话或提供额外信息的任务；
+- 任务执行过程中需要用户进行澄清或确认的情况。

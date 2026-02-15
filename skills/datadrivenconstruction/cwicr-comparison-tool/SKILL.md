@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-comparison-tool"
 display_name: "CWICR Comparison Tool"
-description: "Compare cost estimates across projects, versions, and scenarios. Identify variances, benchmark against standards, and generate comparison reports."
+description: "比较不同项目、版本和场景下的成本估算。识别成本差异，与标准进行对比，并生成对比报告。"
 ---
 
-# CWICR Comparison Tool
+# CWICR 对比工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project stakeholders need to compare:
-- Alternative design options
-- Estimate versions over time
-- Projects against benchmarks
-- Actual vs estimated costs
+### 问题陈述
+项目相关方需要比较：
+- 不同的设计方案
+- 随时间变化的成本估算
+- 项目与基准值的对比
+- 实际成本与估算成本的差异
 
-### Solution
-Structured comparison of CWICR-based estimates with variance analysis, benchmarking, and visual reporting.
+### 解决方案
+通过结构化的对比分析，结合方差分析、基准测试和可视化报告功能，来处理基于 CWICR 的成本估算数据。
 
-### Business Value
-- **Decision support** - Compare alternatives objectively
-- **Version control** - Track estimate evolution
-- **Benchmarking** - Compare against standards
-- **Audit** - Document estimate changes
+### 商业价值
+- **决策支持**：客观地评估各种设计方案
+- **版本控制**：追踪成本估算的演变过程
+- **基准测试**：与行业标准进行对比
+- **审计**：记录成本估算的变更情况
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -428,8 +427,7 @@ class ComparisonAnalytics:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize comparison tool
 tool = CWICRComparisonTool()
@@ -445,16 +443,16 @@ result = tool.compare_estimates(
 print(f"Total Variance: ${result.total_variance:,.2f} ({result.total_variance_pct}%)")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Significant Variances
+### 1. 显著的成本差异
 ```python
 significant = tool.get_significant_variances(result)
 for item in significant[:5]:
     print(f"{item.work_item_code}: ${item.cost_variance:,.2f} ({item.significance.value})")
 ```
 
-### 2. Version History
+### 2. 版本历史记录
 ```python
 versions = [
     ("v1.0", estimate_v1),
@@ -467,7 +465,7 @@ analytics = ComparisonAnalytics(tool)
 trend = analytics.trend_analysis(version_results)
 ```
 
-### 3. Design Alternatives
+### 3. 设计方案对比
 ```python
 alternatives = [
     ("Option A - Steel", option_a),
@@ -477,11 +475,11 @@ alternatives = [
 comparisons = tool.compare_multiple(alternatives, base_index=0)
 ```
 
-### 4. Export Report
+### 4. 报告导出
 ```python
 tool.export_comparison(result, "estimate_comparison.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Estimate Management
+- **DDC 书籍**：第 3.1 章 - 成本估算管理

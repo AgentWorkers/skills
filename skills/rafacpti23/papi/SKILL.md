@@ -1,57 +1,58 @@
 ---
 name: papi
-description: Complete WhatsApp automation API with microservices architecture. Send messages, interactive buttons, lists, carousels, polls, manage instances, groups, catalogs and webhooks. Features Admin Panel (free), Phone Calls, RCS Messaging, SMS, Virtual Numbers (Pro).
+description: 完整的 WhatsApp 自动化 API，采用微服务架构。支持发送消息、交互式按钮、列表、轮播图、投票功能，以及管理实例、群组、目录和 Webhook 等。提供免费的管理面板（Admin Panel），支持电话呼叫（Phone Calls）、RCS 消息（RCS Messaging）、短信（SMS）和虚拟号码（Virtual Numbers，仅限专业版 Pro）。
 metadata: {"openclaw":{"emoji":"📱","homepage":"https://papi.api.br","tags":["p-api","papi","whatsapp","automation","messaging","api"]}}
 ---
 
-# PAPI - WhatsApp Connections Hub
+# PAPI – WhatsApp 连接中心
 
-![PAPI Logo](https://papi.api.br/logo-official.png)
+![PAPI 徽标](https://papi.api.br/logo-official.png)
 
-**The WhatsApp automation you've been waiting for.**
+**您一直在等待的 WhatsApp 自动化解决方案。**
 
-Complete redesign with microservices architecture — modular, scalable, and independent.
+采用微服务架构进行全面重新设计，具备模块化、可扩展性和独立性。
 
-🌐 **Official Website:** https://papi.api.br  
-🤝 **Partner:** [Mundo Automatik](https://mundoautomatik.com/)
-
----
-
-## 📑 Table of Contents
-
-1. [Features](#-features)
-2. [Configuration](#%EF%B8%8F-configuration)
-3. [Authentication](#-authentication)
-4. [Main Endpoints](#-main-endpoints)
-5. [Detailed References](#-detailed-references)
-6. [Credits](#-credits)
+🌐 **官方网站：** https://papi.api.br  
+🤝 **合作伙伴：** [Mundo Automatik](https://mundoautomatik.com/)
 
 ---
 
-## ✨ Features
+## 目录
 
-### 📊 Admin Panel (Free)
-- Multi-language interface (PT-BR, EN, ES)
-- Instance management
-- Real-time monitoring
-- Behavior configuration
-- Usage statistics
+1. [功能](#-features)
+2. [配置](#%EF%B8%8F-configuration)
+3. [认证](#-authentication)
+4. [主要接口](#-main-endpoints)
+5. [详细参考文档](#-detailed-references)
+6. [致谢](#-credits)
 
-### 🔥 Pro Features
+---
 
-| Feature | Capabilities |
+## ✨ 功能
+
+### 📊 管理面板（免费）
+
+- 多语言界面（葡萄牙语、英语、西班牙语）
+- 实例管理
+- 实时监控
+- 行为配置
+- 使用统计
+
+### 🔥 专业功能
+
+| 功能 | 功能描述 |
 |---------|--------------|
-| 📞 **Phone Calls** | Chip-based calls, WhatsApp calls, Extension system, Call management |
-| 💬 **RCS Messaging** | Rich media sending, Buttons & carousels, Read receipts, Typing indicator |
-| 📱 **Call Center** | Chip rotation (30 ports), Bulk SMS sending, Configurable rate limiting |
-| ✉️ **Professional SMS** | Individual/bulk sending, Smart chip rotation, Port configuration |
-| 🔢 **Virtual Numbers** | Instant purchase, Auto activation, Full management |
+| 📞 **电话通话** | 基于芯片的通话、WhatsApp 通话、分机系统、通话管理 |
+| 💬 **RCS 消息** | 发送富媒体内容、按钮与轮播图、阅读确认、输入指示器 |
+| 📱 **呼叫中心** | 芯片轮换（30 个端口）、批量短信发送、可配置的速率限制 |
+| ✉️ **专业短信** | 单个/批量发送、智能芯片轮换、端口配置 |
+| 🔢 **虚拟号码** | 即时购买、自动激活、全功能管理 |
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-Before using, configure in TOOLS.md:
+在使用前，请根据 TOOLS.md 文件进行配置：
 
 ```markdown
 ### PAPI (WhatsApp)
@@ -60,9 +61,9 @@ Before using, configure in TOOLS.md:
 - Default Instance: instance-name
 ```
 
-## 🔐 Authentication
+## 🔐 认证
 
-All requests require the `x-api-key` header:
+所有请求都需要包含 `x-api-key` 标头：
 
 ```bash
 curl -X GET "https://your-server.com/api/instances" \
@@ -71,49 +72,50 @@ curl -X GET "https://your-server.com/api/instances" \
 
 ---
 
-## 📡 Main Endpoints
+## 📡 主要接口
 
-### Instances
-| Method | Endpoint | Description |
+### 实例
+
+| 方法 | 接口 | 描述 |
 |--------|----------|-------------|
-| GET | `/api/instances` | List all instances |
-| POST | `/api/instances` | Create instance `{"id": "name"}` |
-| GET | `/api/instances/:id/qr` | Get QR code |
-| GET | `/api/instances/:id/status` | Instance status |
-| DELETE | `/api/instances/:id` | Remove instance |
+| GET | `/api/instances` | 列出所有实例 |
+| POST | `/api/instances` | 创建实例（格式：`{"id": "名称"}`） |
+| GET | `/api/instances/:id/qr` | 获取 QR 码 |
+| GET | `/api/instances/:id/status` | 实例状态 |
+| DELETE | `/api/instances/:id` | 删除实例 |
 
-### Send Messages
+### 发送消息
 
-JID format: `5511999999999@s.whatsapp.net`
+JID 格式：`5511999999999@s.whatsapp.net`
 
-| Type | Endpoint | Required Fields |
+| 类型 | 接口 | 必需字段 |
 |------|----------|-----------------|
-| Text | `POST /send-text` | `jid`, `text` |
-| Image | `POST /send-image` | `jid`, `url` or `base64`, `caption` |
-| Video | `POST /send-video` | `jid`, `url` or `base64` |
-| Audio | `POST /send-audio` | `jid`, `url`, `ptt` |
-| Document | `POST /send-document` | `jid`, `url`, `filename` |
-| Location | `POST /send-location` | `jid`, `latitude`, `longitude` |
-| Contact | `POST /send-contact` | `jid`, `name`, `phone` |
-| Sticker | `POST /send-sticker` | `jid`, `url` |
-| Reaction | `POST /send-reaction` | `jid`, `messageId`, `emoji` |
+| 文本 | `POST /send-text` | `jid`, `text` |
+| 图片 | `POST /send-image` | `jid`, `url` 或 `base64`, `caption` |
+| 视频 | `POST /send-video` | `jid`, `url` 或 `base64` |
+| 音频 | `POST /send-audio` | `jid`, `url`, `ptt` |
+| 文档 | `POST /send-document` | `jid`, `url`, `filename` |
+| 位置信息 | `POST /send-location` | `jid`, `latitude`, `longitude` |
+| 联系人信息 | `POST /send-contact` | `jid`, `name`, `phone` |
+| 斑贴图 | `POST /send-sticker` | `jid`, `url` |
+| 表情符号 | `POST /send-reaction` | `jid`, `messageId`, `emoji` |
 
-### Interactive Messages
+### 互动消息
 
-| Type | Endpoint | Description |
+| 类型 | 接口 | 描述 |
 |------|----------|-------------|
-| Buttons | `POST /send-buttons` | quick_reply, cta_url, cta_call, cta_copy |
-| List | `POST /send-list` | Menu with sections |
-| Carousel | `POST /send-carousel` | Sliding cards (mobile only) |
-| Poll | `POST /send-poll` | Voting up to 12 options |
+| 按钮 | `POST /send-buttons` | 快速回复、点击链接、拨打电话、复制链接 |
+| 列表 | `POST /send-list` | 带有多个选项的菜单 |
+| 轮播图 | `POST /send-carousel` | 可滑动的卡片（仅支持移动设备） |
+| 投票 | `POST /send-poll` | 最多支持 12 个选项的投票 |
 
-### Groups
+### 群组
 
-| Method | Endpoint | Description |
+| 方法 | 接口 | 描述 |
 |--------|----------|-------------|
-| POST | `/groups/create` | Create group |
-| GET | `/groups/:groupId/metadata` | Group info |
-| POST | `/groups/:groupId/participants` | Manage members (add/remove/promote/demote) |
+| POST | `/groups/create` | 创建群组 |
+| GET | `/groups/:groupId/metadata` | 群组信息 |
+| POST | `/groups/:groupId/participants` | 管理群组成员（添加/删除/提升/降级） |
 
 ### Webhook
 
@@ -128,20 +130,20 @@ POST /api/instances/:id/webhook
 
 ---
 
-## 📚 Detailed References
+## 📚 详细参考文档
 
-| File | Content |
+| 文件 | 内容 |
 |------|---------|
-| `references/interactive.md` | Buttons, lists, carousel, polls examples |
-| `references/groups.md` | Group management |
-| `references/catalog.md` | Product catalog |
-| `references/integrations.md` | Typebot, Chatwoot integrations |
+| `references/interactive.md` | 按钮、列表、轮播图、投票功能的示例 |
+| `references/groups.md` | 群组管理相关文档 |
+| `references/catalog.md` | 产品目录 |
+| `references/integrations.md` | Typebot、Chatwoot 的集成方式 |
 
 ---
 
-## 👥 Credits
+## 👥 致谢
 
-**Developed by:** Pastorini  
-**Website:** https://papi.api.br  
-**Partner:** [Mundo Automatik](https://mundoautomatik.com/)  
-**Skill maintained by:** @rafacpti23
+**开发人员：** Pastorini  
+**官方网站：** https://papi.api.br  
+**合作伙伴：** [Mundo Automatik](https://mundoautomatik.com/)  
+**技能维护者：** @rafacpti23

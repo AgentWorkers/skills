@@ -1,169 +1,168 @@
 ---
 name: lead-gen-website
-description: Build complete local lead generation websites with SEO optimization, conversion tracking, and RGPD compliance. Use for creating service-based websites targeting local markets (plumbers, electricians, home services, etc.) with 10-20 pages, structured data, analytics, and legal compliance.
+description: 构建功能完备的本地潜在客户生成网站，具备SEO优化、转化跟踪以及RGPD（通用数据保护条例）合规性。这些网站适用于针对本地市场（如水管工、电工、家居服务等）的服务型企业，包含10-20个页面、结构化数据、分析功能以及法律合规性要求。
 ---
 
-# Lead Generation Website Builder
+# 链接生成网站构建工具
 
-Build conversion-optimized local service websites with complete SEO, tracking, and RGPD compliance — **avec garde-fous anti-spam (Google Spam Policies + March 2024)**, local SEO (GBP) et micro-budget ads.
+使用该工具可以构建针对本地服务的网站，这些网站具备完善的SEO优化功能、跟踪机制，并符合RGPD（通用数据保护条例）要求。同时，该工具还配备了防垃圾邮件系统（遵循Google的垃圾邮件政策，更新至2024年3月版本），支持本地SEO优化（针对英镑地区），以及适合小额预算的广告投放。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when the user requests a website for:
-- Local service businesses (home services, repairs, professional services)
-- Lead generation focused on specific geographic areas
-- Sites requiring 10-20+ pages with service pages, blog, and legal pages
-- SEO-optimized content targeting local keywords
-- Conversion tracking (phone, WhatsApp, forms with UTM parameters)
-- RGPD/GDPR compliance (cookie banner, privacy policy, legal pages)
+当用户需要以下类型的网站时，请使用此工具：
+- 本地服务企业（如家居服务、维修服务、专业服务）
+- 针对特定地理区域的潜在客户生成工具
+- 需要10-20多个页面的网站，包括服务页面、博客和法律声明页面
+- 优化过以吸引本地用户的关键词的SEO内容
+- 支持转化跟踪（通过电话、WhatsApp或带有UTM参数的表单）
+- 符合RGPD/GDPR法规要求（包括cookie提示横幅、隐私政策页面等）
 
-## Workflow Overview
+## 工作流程概述
 
-Follow these phases sequentially. Do NOT skip phases or combine them without clear reason.
+请按以下步骤顺序进行操作。除非有明确理由，否则不要跳过任何步骤或合并步骤：
 
-0) **Policy / Risk Check (mandatory)**
-- Read `references/google-spam-guardrails-2024.md`
-- Explicitly verify: no doorway pages, no scaled generic content, no fake address/avis, no misleading claims.
-- If the project is **mise en relation** (leadgen): require clear disclosure on all key pages.
+0) **政策/风险检查（必选）**
+- 阅读 `references/google-spam-guardrails-2024.md`
+- 严格核实：没有引导页、没有重复的通用内容、没有虚假地址或误导性声明。
+- 如果该项目用于潜在客户生成（leadgen），则所有关键页面都必须明确披露相关信息。
 
-Then continue with Phases 1→7.
+然后继续执行步骤1至7。
 
-### Phase 1: Analysis and Planning
+### 第1阶段：分析与规划
 
-Gather project requirements from the user or specifications document.
+从用户或规格文档中收集项目需求。
 
-**Required information:**
-- Business niche and services offered
-- Geographic target area (city + radius)
-- Target keywords for SEO
-- Contact information (phone, WhatsApp, email)
-- Number and types of pages needed
-- Competitor websites (for differentiation)
+**所需信息：**
+- 业务领域及提供的服务
+- 目标地理区域（城市及周边半径）
+- 用于SEO的目标关键词
+- 联系方式（电话、WhatsApp、电子邮件）
+- 所需页面的数量和类型
+- 竞争对手的网站（以便进行差异化设计）
 
-**Output:** Clear understanding of project scope, target audience, and conversion goals.
+**输出：** 明确了解项目范围、目标受众和转化目标。
 
-### Phase 2: Design Brainstorming
+### 第2阶段：设计构思
 
-Create `ideas.md` in the project root with THREE distinct design approaches.
+在项目根目录下创建 `ideas.md` 文件，其中包含三种不同的设计方案。
 
-Use `templates/design-ideas-template.md` as structure. Each approach must define:
-- Design movement and aesthetic philosophy
-- Color palette with hex codes and emotional intent
-- Typography system (headings + body fonts)
-- Layout paradigm (avoid generic centered layouts)
-- Signature visual elements
-- Animation guidelines
-- Interaction philosophy
+使用 `templates/design-ideas-template.md` 作为结构模板。每种设计方案需包括：
+- 设计理念和美学风格
+- 颜色调色板（以十六进制代码表示）及情感诉求
+- 字体系统（标题和正文字体）
+- 布局方案（避免使用通用的居中布局）
+- 独特的视觉元素
+- 动画设计指南
+- 交互设计原则
 
-Consult `references/design-philosophies.md` for inspiration, but create original combinations.
+参考 `references/design-philosophies.md` 以获取灵感，但请创作出独特的组合方案。
 
-**Selection:** Choose ONE approach and document the rationale. This design philosophy will guide ALL subsequent design decisions.
+**选择：** 选择一种设计方案并记录选择理由。这种设计理念将指导后续的所有设计决策。
 
-### Phase 3: Visual Assets Generation
+### 第3阶段：视觉资源制作
 
-Generate 3-5 high-quality images using `generate` tool. These images MUST:
-- Align with the chosen design philosophy (colors, mood, style)
-- Be stored in `/home/ubuntu/webdev-static-assets/`
-- Cover key visual needs: hero background, service illustrations, local landmarks, team/artisan photos
+使用 `generate` 工具生成3-5张高质量图片。这些图片必须：
+- 与选定的设计理念保持一致（颜色、风格、氛围）
+- 存储在 `/home/ubuntu/webdev-static-assets/` 目录下
+- 满足关键视觉需求：首页背景图、服务插图、当地地标图片、团队/工匠照片
 
-Plan strategic usage:
-- Hero section: Most impactful image
-- Service pages: Relevant illustrations
-- About/Trust sections: Team or local landmark photos
+**使用计划：**
+- 主页：最具冲击力的图片
+- 服务页面：相关的服务插图
+- 关于我们/信任页面：团队或当地地标的照片
 
-Do NOT generate images on-the-fly during development. Generate all at once for efficiency.
+**注意：** 开发过程中不要临时生成图片，为了效率，请一次性生成所有图片。
 
-### Phase 4: Content Structure
+### 第4阶段：内容结构设计
 
-Create detailed content structure for all pages.
+为所有页面创建详细的内容结构。
 
-**Option A (Manual):** Write `content-structure.md` directly with sections for each page including title, meta description, H1, and main content outline.
+**选项A（手动）：** 直接编写 `content-structure.md` 文件，为每个页面指定标题、元描述、H1标题和主要内容大纲。
 
-**Option B (Script):** Create `specs.json` with page data, then run:
+**选项B（脚本）：** 创建 `specs.json` 文件，其中包含页面数据，然后运行以下代码：
 ```bash
 python /home/ubuntu/skills/lead-gen-website/scripts/generate_content_structure.py specs.json content-structure.md
 ```
 
-**Content requirements:**
-- Minimum 500 words per main page (homepage, main services)
-- Minimum 1000 words per blog article
-- Include target keywords naturally (no stuffing)
-- Answer user intent (what, why, how, cost, area)
-- Local focus (mention city/region frequently)
+**内容要求：**
+- 每个主页面（首页、主要服务页面）至少500字
+- 每篇博客文章至少1000字
+- 自然融入目标关键词（避免过度填充）
+- 回答用户的需求（产品/服务是什么、为什么需要、如何使用、价格、服务区域）
+- 强调本地特色（频繁提及城市/地区名称）
 
-### Phase 5: Development
+### 第5阶段：开发
 
-Initialize project and build all pages.
+初始化项目并构建所有页面。
 
-#### 5.1 Initialize Project
+#### 5.1 初始化项目
 ```bash
 webdev_init_project <project-name>
 ```
 
-#### 5.2 Configure Design Tokens
+#### 5.2 配置设计样式
 
-Edit `client/src/index.css` with chosen design philosophy:
-- Update CSS variables for colors (primary, secondary, accent, background, foreground)
-- Configure typography (font-family for sans, serif)
-- Adjust shadows, radius, animations
+编辑 `client/src/index.css` 文件，根据选定的设计理念进行配置：
+- 更新CSS变量（主要颜色、次要颜色、强调色、背景色、前景色）
+- 调整字体样式（无衬线字体和衬线字体）
+- 调整阴影效果、圆角半径和动画效果
 
-Add Google Fonts in `client/index.html`:
+在 `client/index.html` 中添加Google字体：
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=YourFont:wght@400;600;700&display=swap" rel="stylesheet" />
 ```
 
-#### 5.3 Create Reusable Components
+#### 5.3 创建可重用组件
 
-Use templates from `templates/` directory. Replace placeholders with project-specific values:
+使用 `templates/` 目录中的模板，并将占位符替换为项目特定的值：
 
-**Header** (`templates/component-Header.tsx`):
-- `{{SITE_NAME}}`, `{{SITE_TAGLINE}}`, `{{SITE_INITIALS}}`
-- `{{PHONE_NUMBER}}`, `{{WHATSAPP_NUMBER}}`
-- `{{NAV_ITEMS}}` (JSON array of `{label, href}`)
+**页眉组件（`templates/component-Header.tsx`）：**
+- `{{SITE_NAME}}`、`{{SITE_TAGLINE}}`、`{{SITE_INITIALS}}`
+- `{{PHONE_NUMBER}}`、`{{WHATSAPP_NUMBER}}`
+- `{{NAV_ITEMS}}`（`label, href` 的JSON数组）
 
-**Footer** (`templates/component-Footer.tsx`):
-- `{{SITE_NAME}}`, `{{SITE_DESCRIPTION}}`
-- `{{SERVICE_LINKS}}`, `{{UTILITY_LINKS}}`
-- `{{PHONE_NUMBER}}`, `{{EMAIL}}`, `{{LOCATION}}`
+**页脚组件（`templates/component-Footer.tsx`）：**
+- `{{SITE_NAME}}`、`{{SITE_DESCRIPTION}}`
+- `{{SERVICE_LINKS}}`、`{{UTILITY LINKS}}`
+- `{{PHONE_NUMBER}}`、`{{EMAIL}}`、`{{LOCATION}}`
 
-**SEOHead** (`templates/component-SEOHead.tsx`):
-- Replace `{{DOMAIN}}` with actual domain
+**SEO页眉组件（`templates/component-SEOHead.tsx`）：**
+- 将 `{{DOMAIN}}` 替换为实际域名
 
-**Other components:** Breadcrumbs, ContactForm, CookieBanner (copy as-is, minimal customization needed)
+**其他组件：** 导航栏、联系表单、Cookie提示横幅（基本保持不变，只需少量定制）
 
-#### 5.4 Build Pages
+#### 5.4 构建页面
 
-**For similar pages (services, blog articles):**
-
-1. Create template file (e.g., `service-template.tsx`) using `templates/page-service-template.tsx`
-2. Create data file (e.g., `services-data.json`) with array of page data
-3. Run batch generation:
+**对于相似页面（服务页面、博客文章）：**
+1. 使用 `templates/page-service-template.tsx` 创建模板文件
+2. 使用 `services-data.json` 创建数据文件
+3. 运行批量生成脚本：
 ```bash
 python /home/ubuntu/skills/lead-gen-website/scripts/generate_pages_batch.py service-template.tsx services-data.json client/src/pages/
 ```
 
-**For unique pages (homepage, tarifs, FAQ, contact):**
-Build manually with rich, custom content. Use components for consistency.
+**对于独特页面（首页、价格表、常见问题解答、联系页面）：**
+- 手动构建内容，确保一致性，并使用相应的组件。
 
-**For legal pages:**
-Use `templates/page-legal-template.tsx` with standard legal content.
+**对于法律声明页面：**
+使用 `templates/page-legal-template.tsx` 和标准法律声明模板。
 
-#### 5.5 Update App.tsx
+#### 5.5 更新 App.tsx**
 
-Add all routes to `client/src/App.tsx`:
+将所有页面路径添加到 `client/src/App.tsx` 中：
 ```tsx
 <Route path="/service-page" component={ServicePage} />
 ```
 
-Integrate Header, Footer, and CookieBanner in App layout.
+将页眉、页脚和Cookie提示横幅集成到应用程序布局中。
 
-### Phase 6: SEO, Tracking, GBP, Ads
+### 第6阶段：SEO优化、跟踪、英镑地区优化、广告投放
 
-#### 6.1 Generate SEO Files
+#### 6.1 生成SEO相关文件
 
-Create `pages.json` with all URLs and priorities:
+创建 `pages.json` 文件，其中包含所有页面的URL和优先级：
 ```json
 [
   {"url": "/", "priority": "1.0"},
@@ -174,18 +173,18 @@ Create `pages.json` with all URLs and priorities:
 ]
 ```
 
-Run script:
+运行脚本：
 ```bash
 python /home/ubuntu/skills/lead-gen-website/scripts/create_seo_files.py yourdomain.com pages.json client/public/
 ```
 
-This creates `robots.txt` and `sitemap.xml` in `client/public/`.
+此脚本会在 `client/public/` 目录下生成 `robots.txt` 和 `sitemap.xml` 文件。
 
-#### 6.2 Add Structured Data
+#### 6.2 添加结构化数据
 
-Add JSON-LD structured data to key pages using SEOHead component's `jsonLd` prop:
+使用 `SEOHead` 组件的 `jsonLd` 属性，在关键页面添加JSON-LD结构化数据：
 
-**Homepage (LocalBusiness):**
+**首页（本地企业）：**
 ```tsx
 const jsonLd = {
   "@context": "https://schema.org",
@@ -203,7 +202,7 @@ const jsonLd = {
 };
 ```
 
-**Service pages (Service):**
+**服务页面：**
 ```tsx
 const jsonLd = {
   "@context": "https://schema.org",
@@ -218,158 +217,156 @@ const jsonLd = {
 };
 ```
 
-Consult `references/seo-checklist.md` for complete SEO requirements.
+参考 `references/seo-checklist.md` 以获取完整的SEO优化要求。
 
-#### 6.3 RGPD Compliance
+#### 6.3 RGPD合规性检查**
 
-Verify:
-- CookieBanner component is integrated in App.tsx
-- Privacy policy page exists with complete RGPD information
-- Cookie policy page exists
-- Legal mentions page exists
-- ContactForm includes link to privacy policy
+验证：
+- `App.tsx` 中是否集成了Cookie提示横幅
+- 是否有包含完整RGPD信息的隐私政策页面
+- 是否有隐私政策页面
+- 是否有法律声明页面
+- 联系表单中是否包含隐私政策链接
 
-Consult `references/rgpd-compliance.md` for detailed requirements.
+参考 `references/rgpd-compliance.md` 以获取详细要求。
 
-#### 6.4 GBP / Local SEO (Prominence)
+#### 6.4 英镑地区SEO优化（提升网站可见性）
 
-Read and apply:
-- `references/gbp-local-seo-playbook.md`
+阅读并执行 `references/gbp-local-seo-playbook.md` 文档：
 
-Deliverables to produce:
-- GBP setup checklist (catégories/services/Q&R)
-- 30-day photo/post/avis plan
-- NAP citations list (quality-first, no spam)
+**交付成果：**
+- 英镑地区SEO设置检查清单（包括服务类别、常见问题解答等）
+- 30天的图片/文章/声明发布计划
+- NAP（本地权威目录）引用列表（注重质量，避免垃圾内容）
 
-#### 6.5 Micro-budget Ads (4€/jour)
+#### 6.5 小额预算广告（每天4欧元）
 
-Read and apply:
-- `references/ads-micro-budget-4eur-playbook.md`
+阅读并执行 `references/ads-micro-budget-4eur-playbook.md` 文档：
 
-Deliverables to produce:
-- 1 campagne ultra-serrée (keywords exact/phrase, zone, horaires, négatifs)
-- 1 landing dédiée + tracking
+**交付成果：**
+- 一个高度精准的广告活动（精确的关键词/短语、投放区域、时间安排）
+- 一个专用的广告页面及相应的跟踪系统
 
-#### 6.6 Conversion Tracking
+#### 6.6 转化跟踪**
 
-ContactForm component automatically captures UTM parameters from URL:
-- `utm_source` (e.g., google, facebook)
-- `utm_campaign` (campaign name)
-- `utm_adset` (ad set name)
-- `utm_ad` (specific ad)
+`ContactForm` 组件会自动从URL中捕获UTM参数：
+- `utm_source`（例如：google、facebook）
+- `utm_campaign`（广告活动名称）
+- `utm_adset`（广告组名称）
+- `utm_ad`（具体广告名称）
 
-These are stored in form state and can be sent to backend/CRM for attribution tracking.
+这些参数会存储在表单状态中，并可发送到后端/CRM系统进行转化跟踪。
 
-### Phase 7: Validation and Delivery
+### 第7阶段：验证与交付
 
-#### 7.1 Test in Browser
+#### 7.1 浏览器测试
 
-Open dev server URL and verify:
-- All pages load without errors
-- Navigation works (header menu, breadcrumbs)
-- Forms submit correctly
-- Mobile responsive (test sticky CTA buttons)
-- Cookie banner appears on first visit
-- Images load correctly
+打开开发服务器的URL，验证以下内容：
+- 所有页面是否无错误加载
+- 导航是否正常（页眉菜单、导航栏）
+- 表单提交是否正常
+- 移动设备上的页面是否响应良好（测试CTA按钮是否固定显示）
+- 首次访问时是否显示Cookie提示横幅
+- 图片是否正确加载
 
-#### 7.2 SEO Validation
+#### 7.2 SEO验证
 
-Verify against `references/seo-checklist.md`:
-- Unique title and description on each page
-- H1 hierarchy correct
-- Images have alt attributes
-- robots.txt and sitemap.xml accessible
-- Structured data present on key pages
+根据 `references/seo-checklist.md` 进行验证：
+- 每个页面是否有唯一的标题和描述
+- H1标题层级是否正确
+- 图片是否有alt属性
+- `robots.txt` 和 `sitemap.xml` 是否可访问
+- 关键页面是否包含结构化数据
 
-#### 7.3 Create Checkpoint
+#### 7.3 创建检查点
 
 ```bash
 webdev_save_checkpoint "Complete lead-gen website - [X] pages, SEO optimized, RGPD compliant"
 ```
 
-#### 7.4 Deliver to User
+#### 7.4 向用户交付成果
 
-Send checkpoint attachment via `message` tool with:
-- Summary of what was built
-- Page count and key features
-- SEO optimizations implemented
-- Next steps (publish, custom domain, Google Search Console)
+通过 `message` 工具发送包含以下内容的检查点附件：
+- 项目构建总结
+- 页面数量和主要功能
+- 实施的SEO优化措施
+- 下一步操作（发布网站、购买自定义域名、配置Google Search Console）
 
-## Bundled Resources
+## 搭配资源
 
-### Scripts
+### 脚本
 
 **`scripts/generate_pages_batch.py`**
-Generate multiple similar pages from template and data file.
-Usage: `python generate_pages_batch.py <template> <data_json> <output_dir>`
+根据模板和数据文件生成多个相似页面。
+使用方法：`python generate_pages_batch.py <template> <data_json> <output_dir>`
 
-**`scripts/create_seo_files.py`**
-Generate robots.txt and sitemap.xml automatically.
-Usage: `python create_seo_files.py <domain> <pages_json> <output_dir>`
+**`scripts/create_seo_files.py`
+自动生成 `robots.txt` 和 `sitemap.xml`。
+使用方法：`python create_seo_files.py <domain> <pages_json> <output_dir>`
 
-**`scripts/generate_content_structure.py`**
-Create content structure markdown from specifications JSON.
-Usage: `python generate_content_structure.py <specs_json> <output_md>`
+**`scripts/generate_content_structure.py`
+根据规格JSON文件生成内容结构Markdown。
+使用方法：`python generate_content_structure.py <specs_json> <output_md>`
 
-### Templates
+### 模板
 
-**Components:**
-- `component-Header.tsx` - Sticky header with logo, nav, CTA
-- `component-Footer.tsx` - Footer with links and contact info
-- `component-SEOHead.tsx` - SEO meta tags and structured data
-- `component-Breadcrumbs.tsx` - Navigation breadcrumbs
-- `component-ContactForm.tsx` - Form with UTM tracking
-- `component-CookieBanner.tsx` - RGPD cookie consent banner
+**组件：**
+- `component-Header.tsx` - 包含Logo、导航栏和CTA的固定页眉
+- `component-Footer.tsx` - 包含链接和联系信息的页脚
+- `component-SEOHead.tsx` - SEO元标签和结构化数据
+- `component-Breadcrumbs.tsx` - 导航栏
+- `component-ContactForm.tsx` - 带有UTM跟踪功能的表单
+- `component-CookieBanner.tsx` - RGPD隐私政策同意提示横幅
 
-**Pages:**
-- `page-service-template.tsx` - Service page template
-- `page-legal-template.tsx` - Legal page template
-- `design-ideas-template.md` - Design brainstorming structure
+**页面模板：**
+- `page-service-template.tsx` - 服务页面模板
+- `page-legal-template.tsx` - 法律声明页面模板
+- `design-ideas-template.md` - 设计构思结构模板
 
-### References
+### 参考资料
 
-**`references/seo-checklist.md`**
-Complete SEO checklist covering meta tags, structured data, technical SEO, on-page SEO, local SEO, and content quality. Read this before Phase 6 to ensure nothing is missed.
+**`references/seo-checklist.md`
+完整的SEO检查清单，涵盖元标签、结构化数据、技术SEO、页面SEO优化、本地SEO和内容质量。在开始第6阶段之前请阅读此文件，确保没有遗漏。
 
-**`references/conversion-best-practices.md`**
-Best practices for maximizing conversions: CTA strategy, contact options, trust signals, form optimization, mobile optimization. Consult during Phase 5 when building pages.
+**`references/conversion-best-practices.md`
+提高转化率的最佳实践：CTA策略、联系方式、信任信号、表单优化、移动设备优化。在构建页面时请参考此文件。
 
-**`references/rgpd-compliance.md`**
-Complete RGPD compliance guide covering cookie banner, privacy policy, cookie policy, legal mentions, forms, consent, data security, and user rights. Essential for Phase 6.
+**`references/rgpd-compliance.md`
+全面的RGPD合规性指南，涵盖Cookie提示横幅、隐私政策、法律声明、表单设计、数据安全和用户权利。第6阶段必须参考此文件。
 
-**`references/design-philosophies.md`**
-Five example design philosophies (Neo-Artisanat Digital, Brutalist Confidence, Soft Modernism, Vibrant Energy, Luxury Minimalism) with selection criteria. Use as inspiration during Phase 2.
+**`references/design-philosophies.md`
+五种设计理念示例（Neo-Artisanat Digital、Brutalist Confidence、Soft Modernism、Vibrant Energy、Luxury Minimalism）及选择标准。在第2阶段设计时可作为灵感来源。
 
-## Tips and Best Practices
+## 提示与最佳实践
 
-**Design consistency:** Document chosen design philosophy at the top of each CSS/component file as a reminder.
+**设计一致性：** 在每个CSS/组件文件的顶部记录所选的设计理念，作为提醒。
 
-**Image optimization:** All images should be stored in `/home/ubuntu/webdev-static-assets/` and referenced via CDN URLs to avoid deployment timeouts.
+**图片优化：** 所有图片应存储在 `/home/ubuntu/webdev-static-assets/` 目录下，并通过CDN链接引用，以避免部署时出现延迟。
 
-**Content quality over quantity:** Better to have 10 excellent pages than 20 mediocre ones. Focus on answering user intent.
+**内容质量优于数量：** 10个高质量页面比20个平庸的页面更有价值。重点关注满足用户需求。
 
-**Mobile-first:** Design and test mobile experience first. Most local service searches happen on mobile.
+**以移动设备优先：** 首先设计和测试移动设备上的用户体验。大多数本地服务搜索都是通过移动设备进行的。
 
-**Conversion priority:** Every page should have clear CTAs. Phone and WhatsApp buttons should be always visible on mobile.
+**转化优先：** 每个页面都应有明确的CTA（呼叫行动）按钮。在移动设备上，电话和WhatsApp按钮必须始终可见。
 
-**Local SEO:** Mention city/region name in titles, H1, and content. Create separate pages for each service area if covering multiple cities.
+**本地SEO优化：** 在标题、H1标题和内容中提及城市/地区名称。如果服务覆盖多个城市，请为每个服务区域创建单独的页面。
 
-**Fast iteration:** Use batch generation scripts for similar pages to save time. Focus manual effort on unique, high-value pages.
+**快速迭代：** 对于相似页面使用批量生成脚本以节省时间。将手动工作重点放在独特且高价值的页面上。
 
-**Testing:** Always test in browser before creating checkpoint. Check mobile responsive, form submission, and navigation.
+**测试：** 在创建检查点之前，务必在浏览器中进行测试。检查页面的移动设备响应性、表单提交功能和导航是否正常。
 
-## Common Pitfalls
+## 常见问题
 
-**Skipping design brainstorming:** Leads to generic, forgettable designs. Always create ideas.md with 3 distinct approaches.
+**忽略设计构思阶段：** 可能导致设计缺乏个性和易被遗忘。务必创建包含三种不同设计方案的 `ideas.md` 文件。
 
-**Generating images during development:** Inefficient. Generate all images upfront in Phase 3.
+**在开发过程中生成图片：** 效率较低。建议在第3阶段一次性生成所有图片。
 
-**Weak content:** Thin content (<300 words) won't rank. Invest time in Phase 4 to create substantial, helpful content.
+**内容质量不足：** 内容太少（少于300字）会导致排名不佳。请在第4阶段投入时间，制作高质量、有用的内容。
 
-**Missing RGPD elements:** Cookie banner, privacy policy, and legal mentions are REQUIRED in EU. Don't skip Phase 6.3.
+**缺少RGPD相关元素：** 在欧盟地区，Cookie提示横幅、隐私政策页面和法律声明是必需的。不要跳过第6.3阶段。
 
-**No UTM tracking:** Without UTM parameters, you can't measure campaign effectiveness. Ensure ContactForm captures them.
+**未设置UTM跟踪：** 没有UTM参数就无法衡量广告活动的效果。请确保`ContactForm`能够捕获这些参数。
 
-**Forgetting mobile CTAs:** Desktop-only CTAs lose mobile conversions. Always add sticky mobile buttons.
+**忽略移动设备的CTA：** 仅针对桌面设备的CTA会导致移动设备的转化率下降。务必添加移动设备的CTA按钮。
 
-**Creating checkpoint during development:** Only create ONE checkpoint at the end (Phase 7). Multiple checkpoints confuse users during initial delivery.
+**在开发过程中创建多个检查点：** 仅在最后阶段（第7阶段）创建一个检查点。在初期交付时，多个检查点可能会让用户感到困惑。

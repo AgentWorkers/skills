@@ -1,34 +1,34 @@
 ---
 name: jo4
-description: URL shortener, QR code generator, and link analytics API. Create short links, generate QR codes, and track click analytics.
+description: URL缩短器、二维码生成器以及链接分析API：用于创建缩短后的链接、生成二维码，并追踪点击情况。
 homepage: https://jo4.io
 user-invocable: true
 metadata: { "openclaw": { "emoji": "🔗", "primaryEnv": "JO4_API_KEY", "requires": { "env": ["JO4_API_KEY"] } } }
 ---
 
-# Jo4 - URL Shortener & Analytics API
+# Jo4 - URL缩短服务及分析API
 
-Jo4 is a modern URL shortening service with QR code generation and detailed link analytics.
+Jo4是一款现代的URL缩短服务，支持生成二维码，并提供详细的链接分析功能。
 
-## Authentication
+## 认证
 
-All protected endpoints require an API key. Set your API key as an environment variable:
+所有受保护的API端点都需要使用API密钥。请将您的API密钥设置为环境变量：
 
 ```bash
 export JO4_API_KEY="your-api-key"
 ```
 
-Get your API key from: https://jo4.io/api-keys
+您可以在以下链接获取API密钥：https://jo4.io/api-keys
 
-## API Base URL
+## API基础URL
 
 ```
 https://jo4-api.jo4.io/api/v1
 ```
 
-## Endpoints
+## API端点
 
-### Create Short URL (Authenticated)
+### 创建缩短后的URL（需要认证）
 
 ```bash
 curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
@@ -40,19 +40,19 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   }'
 ```
 
-**Request Body:**
-- `longUrl` (required) - The destination URL (max 2048 chars)
-- `title` (optional) - Link title (max 200 chars)
-- `description` (optional) - Link description (max 500 chars)
-- `shortUrl` (optional) - Custom alias (max 16 chars, alphanumeric/hyphen/underscore)
-- `expirationTime` (optional) - Unix timestamp for link expiration
-- `passwordProtected` (optional) - Boolean to enable password protection
-- `password` (optional) - Password if protected (4-128 chars)
+**请求体：**
+- `longUrl`（必填）- 目标URL（最长2048个字符）
+- `title`（可选）- 链接标题（最长200个字符）
+- `description`（可选）- 链接描述（最长500个字符）
+- `shortUrl`（可选）- 自定义别名（最多16个字符，支持字母、数字、连字符和下划线）
+- `expirationTime`（可选）- 链接的有效期限（Unix时间戳）
+- `passwordProtected`（可选）- 是否启用密码保护
+- `password`（可选）- 如果启用密码保护，则需要输入密码（4-128个字符）
 
-**UTM Parameters:**
-- `utmSource`, `utmMedium`, `utmCampaign`, `utmTerm`, `utmContent`
+**UTM参数：**
+- `utmSource`、`utmMedium`、`utmCampaign`、`utmTerm`、`utmContent`
 
-**Response:**
+**响应：**
 ```json
 {
   "response": {
@@ -67,7 +67,7 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
 }
 ```
 
-### Create Anonymous Short URL (No Auth Required)
+### 创建匿名缩短后的URL（无需认证）
 
 ```bash
 curl -X POST "https://jo4-api.jo4.io/api/v1/public/url" \
@@ -75,37 +75,37 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/public/url" \
   -d '{"longUrl": "https://example.com"}'
 ```
 
-Limited features, no analytics access.
+该功能仅提供基本的URL缩短服务，不支持链接分析。
 
-### Get URL Details
+### 获取URL详细信息
 
 ```bash
 curl -X GET "https://jo4-api.jo4.io/api/v1/protected/url/{slug}" \
   -H "X-API-Key: $JO4_API_KEY"
 ```
 
-### Get URL Analytics
+### 获取URL分析数据
 
 ```bash
 curl -X GET "https://jo4-api.jo4.io/api/v1/protected/url/{slug}/stats" \
   -H "X-API-Key: $JO4_API_KEY"
 ```
 
-**Response includes:**
-- Total clicks
-- Clicks by date
-- Geographic distribution
-- Device/browser breakdown
-- Referrer sources
+**响应内容包括：**
+- 总点击次数
+- 按日期划分的点击次数
+- 地理分布信息
+- 用户设备/浏览器类型
+- 引用来源
 
-### List My URLs
+### 查看我的URL列表
 
 ```bash
 curl -X GET "https://jo4-api.jo4.io/api/v1/protected/url/myurls?page=0&size=20" \
   -H "X-API-Key: $JO4_API_KEY"
 ```
 
-### Update URL
+### 更新URL
 
 ```bash
 curl -X PUT "https://jo4-api.jo4.io/api/v1/protected/url/{id}" \
@@ -117,34 +117,34 @@ curl -X PUT "https://jo4-api.jo4.io/api/v1/protected/url/{id}" \
   }'
 ```
 
-### Delete URL
+### 删除URL
 
 ```bash
 curl -X DELETE "https://jo4-api.jo4.io/api/v1/protected/url/{id}" \
   -H "X-API-Key: $JO4_API_KEY"
 ```
 
-## QR Codes
+## 二维码
 
-Every short URL automatically gets a QR code at:
+每个缩短后的URL都会自动生成一个二维码，二维码的生成地址为：
 ```
 https://jo4.io/qr/{shortUrl}
 ```
 
-## Rate Limits
+## 速率限制
 
-Rate limits vary by plan:
-- Free: 60 requests/minute
-- Pro: Up to 10,000 requests/minute
-- Anonymous (public endpoints): 10 requests/minute
+不同套餐的速率限制如下：
+- 免费套餐：每分钟60次请求
+- Pro套餐：每分钟最多10,000次请求
+- 匿名用户（公共端点）：每分钟10次请求
 
-## API Documentation
+## API文档
 
-Full OpenAPI/Swagger documentation: https://jo4-api.jo4.io/swagger-ui/index.html
+完整的OpenAPI/Swagger文档请访问：https://jo4-api.jo4.ioswagger-ui/index.html
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Shorten a URL for sharing
+### 1. 缩短URL以便分享
 ```bash
 curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   -H "X-API-Key: $JO4_API_KEY" \
@@ -152,7 +152,7 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   -d '{"longUrl": "https://example.com/article", "title": "Article"}'
 ```
 
-### 2. Create campaign tracking link
+### 2. 创建用于跟踪活动的链接
 ```bash
 curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   -H "X-API-Key: $JO4_API_KEY" \
@@ -166,7 +166,7 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   }'
 ```
 
-### 3. Create expiring link
+### 3. 创建具有过期时间的链接
 ```bash
 curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   -H "X-API-Key: $JO4_API_KEY" \
@@ -178,12 +178,12 @@ curl -X POST "https://jo4-api.jo4.io/api/v1/protected/url" \
   }'
 ```
 
-## Error Codes
+## 错误代码
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| 400 | Bad request - invalid parameters |
-| 401 | Unauthorized - missing or invalid API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Not found - URL doesn't exist |
-| 429 | Rate limit exceeded |
+| 400 | 请求错误 - 参数无效 |
+| 401 | 未经授权 - API密钥缺失或无效 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 未找到 - URL不存在 |
+| 429 | 超过速率限制 |

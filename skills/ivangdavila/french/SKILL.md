@@ -1,97 +1,97 @@
 ---
 name: French
-description: Write French that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像真人说的法语。既不正式，也不像机器人或人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI French is technically correct but sounds off. Too formal. Too complete. Too proper. Natives write messier, more direct, with more personality. Match that.
+虽然AI生成的法语在语法上是正确的，但听起来很生硬、过于正式、过于拘谨。母语者的表达方式通常更随意、更直接、更具个性。我们需要让AI生成的法语更贴近自然语言的表达习惯。
 
-## Formality Default
+## 形式的规范性
 
-Default register is too high. Casual French is the norm. Unless explicitly formal: lean casual. "Ouais" not "Oui". "OK" not "D'accord". "Salut" not "Bonjour" with friends.
+法语中的正式表达方式过于刻板。在日常对话中，人们更倾向于使用非正式的语言。除非有明确的正式场合，否则应保持轻松、自然的表达风格。例如：“Ouais”而不是“Oui”，“OK”而不是“D’accord”，和朋友交流时用“Salut”而不是“Bonjour”。
 
-## Tu vs Vous
+## “Tu”与“Vous”的使用
 
-Get this right—it defines the entire tone:
-- Vous: strangers, professional, older people, formal
-- Tu: friends, family, peers, casual
-- Once tu is established, vous sounds cold/hostile
-- When in doubt for casual context: tu
+正确使用“Tu”和“Vous”对于营造对话氛围至关重要：
+- “Vous”用于陌生人、专业人士或年长者之间，表示正式；
+- “Tu”用于朋友、家人或同龄人之间，表示非正式。
+- 一旦使用了“Tu”，再使用“Vous”会显得冷漠或敌对；
+- 在不确定该使用哪种形式时，选择“Tu”更为合适。
 
-## Contractions & Elisions
+## 缩略词与省略
 
-Spoken French drops sounds. Reflect this in casual writing:
-- "Je suis" → "J'suis" / "Chuis"
-- "Tu es" → "T'es"
-- "Il y a" → "Y'a"
-- "Je ne sais pas" → "J'sais pas" / "Chais pas"
-- Missing these in casual = textbook French
+口语中的法语常常省略某些音节。在非正式书写中也要体现这一点：
+- “Je suis” → “J’suis” / “Chuis”
+- “Tu es” → “T’es”
+- “Il y a” → “Y’a”
+- “Je ne sais pas” → “J’sais pas” / “Chais pas”
+- 在非正式语境中省略这些缩略词会让表达显得过于刻板。
 
-## Ne-Dropping
+## “ne”的省略
 
-In casual French, "ne" disappears:
-- "Je ne sais pas" → "Je sais pas"
-- "C'est pas grave" (not "Ce n'est pas grave")
-- "Y'a pas de problème"
-- Keeping "ne" in casual = overly proper
+在非正式法语中，“ne”通常会被省略：
+- “Je ne sais pas” → “Je sais pas”
+- “C’est pas grave”（而不是“Ce n’est pas grave”）
+- “Y’a pas de problème”
+- 在非正式语境中保留“ne”会显得过于正式。
 
-## Fillers & Flow
+## 语言填充词与连贯性
 
-Real French has fillers. Use them:
-- "Euh", "ben", "bah", "enfin", "bref"
-- "Du coup", "en fait", "genre", "quoi"
-- "Tu vois", "t'sais", "j'veux dire"
-- Missing these = textbook French
+真实的法语对话中会使用一些填充词来保持流畅：
+- “Euh”, “ben”, “bah”, “enfin”, “bref”
+- “Du coup”, “en fait”, “genre”, “quoi”
+- “Tu vois”, “t’sais”, “j’veux dire”
+- 缺少这些词会让表达显得不自然。
 
-## Sentence Fragments
+## 句子结构
 
-Don't always complete sentences:
-- "Tu viens?" "Ouais, deux secondes."
-- "Ça va?" "Tranquille."
-- "C'est bon?" "Nickel."
-- Let context carry weight.
+不必总是把句子写得完整：
+- “Tu viens?” “Ouais, deux secondes.”
+- “Ça va?” “Tranquille.”
+- “C’est bon?” “Nickel.”
+- 应让上下文本身传达信息。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- "Bien" → "Super" / "Génial" / "Trop bien"
-- "Mal" → "Nul" / "Pourri" / "C'est la merde"
-- "Beaucoup" → "Vachement" / "Trop" / "Grave"
-- Amplify when context calls for it
+不要总是使用保守、中立的词汇：
+- “Bien” → “Super” / “Génial” / “Trop bien”
+- “Mal” → “Nul” / “Pourri” / “C’est la merde”
+- “Beaucoup” → “Vachement” / “Trop” / “Grave”
+- 根据语境适当夸张表达。
 
-## Common Expressions
+## 常见表达
 
-Use natural expressions:
-- "C'est pas faux", "ça marche", "ça roule"
-- "N'importe quoi", "c'est n'imp"
-- "Laisse tomber", "t'inquiète"
-- "C'est chaud", "c'est relou", "c'est ouf"
+使用自然的表达方式：
+- “C’est pas faux”, “ça marche”, “ça roule”
+- “N’importe quoi”, “c’est n’imp”
+- “Laisse tomber”, “t’inquiète”
+- “C’est chaud”, “c’est relou”, “c’est ouf”
 
-## Reactions
+## 反应方式
 
-React like a human:
-- "Ah bon?", "Sérieux?", "C'est vrai?"
-- "Putain", "Merde", "Oh là là"
-- "Trop fort", "Dingue", "Hallucinant"
-- "Mdr", "ptdr", "lol" in text
+像人类一样自然地反应：
+- “Ah bon?” “Sérieux?” “C’est vrai?”
+- “Putain”, “Merde”, “Oh là là”
+- “Trop fort”, “Dingue”, “Hallucinant”
+- 在文本中使用“Mdr”, “ptdr”, “lol”
 
-## Punctuation
+## 标点符号
 
-French punctuation has rules:
-- Space before : ; ? ! (in formal/standard)
-- «Guillemets» for quotes in formal
-- Often dropped in casual texting
-- Numbers: 1 000,50 (space for thousands, comma for decimals)
+法语的标点符号有其规则：
+- 在正式或标准文本中，冒号前、分号前、问号前、感叹号前需要加空格；
+- 引号使用“«”和“»”；
+- 在非正式短信中，标点符号常常会被省略；
+- 数字写作格式为：1 000,50（千位用空格分隔，小数点用逗号）。
 
-## Regional Awareness
+## 地区差异
 
-If region known, commit:
-- France: meuf, mec, kiffer, bosser, bagnole
-- Québec: char, blonde (girlfriend), icitte, tabernac, c'est correct
-- Belgium: septante, nonante, une fois
-- Don't mix. Stay consistent.
+如果知道使用地区，要使用当地的表达习惯：
+- 法国：meuf, mec, kiffer, bosser, bagnole
+- 魁北克：char, blonde（女朋友），icitte, tabernac（这些表达都是正确的）
+- 比利时：septante, nonante, une fois
+- 保持一致性，避免混用不同地区的表达。
 
-## The "Native Test"
+## “母语者测试”
 
-Before sending: would a French person screenshot this as "AI-generated"? If yes—too clean, too formal, too proper. Rough it up.
+在发送之前，可以想一想：一个法国人看到这样的内容会认为这是AI生成的吗？如果是的话，那就说明表达过于正式、过于拘谨了。需要让语言表达更自然一些。

@@ -1,11 +1,11 @@
 ---
 name: glab-gpg-key
-description: Manage GPG keys for commit signing including add, list, and delete operations. Use when setting up commit signing, managing GPG keys, or verifying signed commits. Triggers on GPG key, commit signing, signed commits, verify commits.
+description: 管理用于提交签名的 GPG 密钥，包括添加、列出和删除等操作。适用于配置提交签名、管理 GPG 密钥或验证已签名的提交。该功能会在 GPG 密钥更新、提交签名完成或提交被验证时触发。
 ---
 
 # glab gpg-key
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Manage GPG keys for commit signing including add, list, and delete 
     -R --repo        Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab gpg-key --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 输出信息，请参阅 [references/commands.md](references/commands.md)。

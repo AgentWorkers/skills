@@ -1,12 +1,12 @@
 # OpenSea API
 
-Query NFT data, trade on the Seaport marketplace, and swap ERC20 tokens across Ethereum, Base, Arbitrum, Optimism, Polygon, and more.
+您可以使用OpenSea API查询NFT数据，在Seaport市场上进行交易，以及在Ethereum、Base、Arbitrum、Optimism、Polygon等多个链上交换ERC20代币。
 
-## Quick start
+## 快速入门
 
-1. Set `OPENSEA_API_KEY` in your environment
-2. Run helper scripts in `scripts/` for common operations
-3. Use the MCP server for token swaps and advanced queries
+1. 在您的环境中设置`OPENSEA_API_KEY`。
+2. 使用`scripts/`目录中的辅助脚本执行常见操作。
+3. 使用MCP服务器进行代币交换和高级查询。
 
 ```bash
 export OPENSEA_API_KEY="your-api-key"
@@ -27,158 +27,157 @@ export OPENSEA_API_KEY="your-api-key"
 ./scripts/opensea-best-listing.sh boredapeyachtclub 1234
 ```
 
-## Task guide
+## 任务指南
 
-### Token swaps
+### 代币交换
 
-OpenSea's API includes a cross-chain DEX aggregator for swapping ERC20 tokens with optimal routing across all supported chains.
+OpenSea的API提供了一个跨链DEX聚合器，可以支持在所有支持的链上以最优路径交换ERC20代币。
 
-| Task | Tool/Script |
+| 任务 | 工具/脚本 |
 |------|-------------|
-| Get swap quote with calldata | `get_token_swap_quote` (MCP) or `opensea-swap.sh` |
-| Check token balances | `get_token_balances` (MCP) |
-| Search tokens | `search_tokens` (MCP) |
-| Get trending tokens | `get_trending_tokens` (MCP) |
-| Get top tokens by volume | `get_top_tokens` (MCP) |
+| 获取代币交换报价 | `get_token_swap_quote`（MCP）或`opensea-swap.sh` |
+| 查看代币余额 | `get_token_balances`（MCP） |
+| 搜索代币 | `search_tokens`（MCP） |
+| 获取热门代币 | `get_trending_tokens`（MCP） |
+| 获取交易量最高的代币 | `get_top_tokens`（MCP） |
 
-### Reading NFT data
+### 阅读NFT数据
 
-| Task | Script |
+| 任务 | 脚本 |
 |------|--------|
-| Get collection details | `opensea-collection.sh <slug>` |
-| Get collection stats | `opensea-collection-stats.sh <slug>` |
-| List NFTs in collection | `opensea-collection-nfts.sh <slug> [limit] [next]` |
-| Get single NFT | `opensea-nft.sh <chain> <contract> <token_id>` |
-| List NFTs by wallet | `opensea-account-nfts.sh <chain> <address> [limit]` |
+| 获取收藏品详情 | `opensea-collection.sh <slug>` |
+| 获取收藏品统计信息 | `opensea-collection-stats.sh <slug>` |
+| 列出收藏品中的NFT | `opensea-collection-nfts.sh <slug> [limit] [next]` |
+| 获取单个NFT | `opensea-nft.sh <chain> <contract> <token_id>` |
+| 按钱包列出NFT | `opensea-account-nfts.sh <chain> <address> [limit]` |
 
-### Marketplace queries
+### 市场查询
 
-| Task | Script |
+| 任务 | 脚本 |
 |------|--------|
-| Get best listing for NFT | `opensea-best-listing.sh <slug> <token_id>` |
-| Get best offer for NFT | `opensea-best-offer.sh <slug> <token_id>` |
-| List all collection listings | `opensea-listings-collection.sh <slug> [limit]` |
-| List all collection offers | `opensea-offers-collection.sh <slug> [limit]` |
-| Get listings for specific NFT | `opensea-listings-nft.sh <chain> <contract> <token_id>` |
-| Get offers for specific NFT | `opensea-offers-nft.sh <chain> <contract> <token_id>` |
-| Get order by hash | `opensea-order.sh <chain> <order_hash>` |
+| 获取NFT的最佳挂牌信息 | `opensea-best-listing.sh <slug> <token_id>` |
+| 获取NFT的最佳报价 | `opensea-best-offer.sh <slug> <token_id>` |
+| 列出所有收藏品挂牌信息 | `opensea-listings-collection.sh <slug> [limit]` |
+| 列出所有收藏品报价 | `opensea-offers-collection.sh <slug> [limit]` |
+| 获取特定NFT的挂牌信息 | `opensea-listings-nft.sh <chain> <contract> <token_id>` |
+| 获取特定NFT的报价 | `opensea-offers-nft.sh <chain> <contract> <token_id>` |
+| 根据订单哈希获取订单信息 | `opensea-order.sh <chain> <order_hash>` |
 
-### Marketplace actions (POST)
+### 市场操作（POST）
 
-| Task | Script |
+| 任务 | 脚本 |
 |------|--------|
-| Get fulfillment data (buy NFT) | `opensea-fulfill-listing.sh <chain> <order_hash> <buyer>` |
-| Get fulfillment data (accept offer) | `opensea-fulfill-offer.sh <chain> <order_hash> <seller> <contract> <token_id>` |
-| Generic POST request | `opensea-post.sh <path> <json_body>` |
+| 获取交易完成信息（购买NFT） | `opensea-fulfill-listing.sh <chain> <order_hash> <buyer>` |
+| 获取交易完成信息（接受报价） | `opensea-fulfill-offer.sh <chain> <order_hash> <seller> <contract> <token_id>` |
+| 通用POST请求 | `opensea-post.sh <path> <json_body>` |
 
-### Events and monitoring
+### 事件与监控
 
-| Task | Script |
+| 任务 | 脚本 |
 |------|--------|
-| Get collection events | `opensea-events-collection.sh <slug> [event_type] [limit]` |
-| Stream real-time events | `opensea-stream-collection.sh <slug>` (requires websocat) |
+| 获取收藏品事件 | `opensea-events-collection.sh <slug> [event_type] [limit]` |
+| 实时流式事件 | `opensea-stream-collection.sh <slug>`（需要websocat） |
 
-### Generic requests
+### 通用请求
 
-| Task | Script |
+| 任务 | 脚本 |
 |------|--------|
-| Any GET endpoint | `opensea-get.sh <path> [query]` |
-| Any POST endpoint | `opensea-post.sh <path> <json_body>` |
+| 任何GET接口 | `opensea-get.sh <path> [query]` |
+| 任何POST接口 | `opensea-post.sh <path> <json_body>` |
 
-## Buy/Sell workflows
+## 买卖NFT的工作流程
 
-### Buying an NFT
+### 购买NFT
 
-1. Find the NFT and check its listing:
+1. 查找NFT并查看其挂牌信息：
    ```bash
    ./scripts/opensea-best-listing.sh cool-cats-nft 1234
    ```
 
-2. Get the order hash from the response, then get fulfillment data:
+2. 从响应中获取订单哈希，然后获取交易完成信息：
    ```bash
    ./scripts/opensea-fulfill-listing.sh ethereum 0x_order_hash 0x_your_wallet
    ```
 
-3. The response contains transaction data to execute on-chain
+3. 响应中包含可在链上执行的交易数据。
 
-### Selling an NFT (accepting an offer)
+### 卖出NFT（接受报价）
 
-1. Check offers on your NFT:
+1. 查看您的NFT的报价：
    ```bash
    ./scripts/opensea-best-offer.sh cool-cats-nft 1234
    ```
 
-2. Get fulfillment data for the offer:
+2. 获取报价的交易完成信息：
    ```bash
    ./scripts/opensea-fulfill-offer.sh ethereum 0x_offer_hash 0x_your_wallet 0x_nft_contract 1234
    ```
 
-3. Execute the returned transaction data
+3. 执行返回的交易数据。
 
-### Creating listings/offers
+### 创建挂牌信息/报价
 
-Creating new listings and offers requires wallet signatures. Use `opensea-post.sh` with the Seaport order structure - see `references/marketplace-api.md` for full details.
+创建新的挂牌信息和报价需要钱包签名。请使用`opensea-post.sh`并遵循Seaport的订单格式——详情请参见`references/marketplace-api.md`。
 
-## Scripts reference
+## 脚本参考
 
-### NFT & Collection Scripts
-| Script | Purpose |
+### NFT与收藏品相关脚本
+| 脚本 | 用途 |
 |--------|---------|
-| `opensea-get.sh` | Generic GET (path + optional query) |
-| `opensea-post.sh` | Generic POST (path + JSON body) |
-| `opensea-collection.sh` | Fetch collection by slug |
-| `opensea-collection-stats.sh` | Fetch collection statistics |
-| `opensea-collection-nfts.sh` | List NFTs in collection |
-| `opensea-nft.sh` | Fetch single NFT by chain/contract/token |
-| `opensea-account-nfts.sh` | List NFTs owned by wallet |
+| `opensea-get.sh` | 通用GET请求（路径+可选查询） |
+| `opensea-post.sh` | 通用POST请求（路径+JSON数据） |
+| `opensea-collection.sh` | 根据slug获取收藏品信息 |
+| `opensea-collection-stats.sh` | 获取收藏品统计信息 |
+| `opensea-collection-nfts.sh` | 列出收藏品中的NFT |
+| `opensea-nft.sh` | 根据链/合约/代币获取单个NFT信息 |
+| `opensea-account-nfts.sh` | 列出钱包拥有的NFT |
 
-### Marketplace Scripts
-| Script | Purpose |
+### 市场相关脚本
+| 脚本 | 用途 |
 |--------|---------|
-| `opensea-listings-collection.sh` | All listings for collection |
-| `opensea-listings-nft.sh` | Listings for specific NFT |
-| `opensea-offers-collection.sh` | All offers for collection |
-| `opensea-offers-nft.sh` | Offers for specific NFT |
-| `opensea-best-listing.sh` | Lowest listing for NFT |
-| `opensea-best-offer.sh` | Highest offer for NFT |
-| `opensea-order.sh` | Get order by hash |
-| `opensea-fulfill-listing.sh` | Get buy transaction data |
-| `opensea-fulfill-offer.sh` | Get sell transaction data |
+| `opensea-listings-collection.sh` | 获取收藏品的所有挂牌信息 |
+| `opensea-listings-nft.sh` | 获取特定NFT的挂牌信息 |
+| `opensea-offers-collection.sh` | 获取收藏品的所有报价 |
+| `opensea-best-listing.sh` | 获取NFT的最低挂牌价格 |
+| `opensea-best-offer.sh` | 获取NFT的最高报价 |
+| `opensea-order.sh` | 根据订单哈希获取订单信息 |
+| `opensea-fulfill-listing.sh` | 获取购买交易信息 |
+| `opensea-fulfill-offer.sh` | 获取出售交易信息 |
 
-### Token Swap Scripts
-| Script | Purpose |
+### 代币交换脚本
+| 脚本 | 用途 |
 |--------|---------|
-| `opensea-swap.sh` | **Swap tokens via OpenSea MCP** |
+| `opensea-swap.sh` | 通过OpenSea MCP进行代币交换 |
 
-### Monitoring Scripts
-| Script | Purpose |
+### 监控脚本
+| 脚本 | 用途 |
 |--------|---------|
-| `opensea-events-collection.sh` | Collection event history |
-| `opensea-stream-collection.sh` | Real-time WebSocket events |
+| `opensea-events-collection.sh` | 收藏品事件历史记录 |
+| `opensea-stream-collection.sh` | 实时WebSocket事件流 |
 
-## Supported chains
+## 支持的链
 
 `ethereum`, `matic`, `arbitrum`, `optimism`, `base`, `avalanche`, `klaytn`, `zora`, `blast`, `sepolia`
 
-## References
+## 参考资料
 
-- `references/rest-api.md` - REST endpoint families and pagination
-- `references/marketplace-api.md` - Buy/sell workflows and Seaport details
-- `references/stream-api.md` - WebSocket event streaming
-- `references/seaport.md` - Seaport protocol and NFT purchase execution
-- `references/token-swaps.md` - **Token swap workflows via MCP**
+- `references/rest-api.md` - REST接口及其分页机制
+- `references/marketplace-api.md` - 买卖NFT的工作流程及Seaport详细信息
+- `references/stream-api.md` - WebSocket事件流服务
+- `references/seaport.md` - Seaport协议及NFT购买流程
+- `references/token-swaps.md` - 通过MCP进行代币交换的流程
 
-## OpenSea MCP Server
+## OpenSea MCP服务器
 
-An official OpenSea MCP server provides direct LLM integration for token swaps and NFT operations. When enabled, Claude can execute swaps, query token data, and interact with NFT marketplaces directly.
+OpenSea的官方MCP服务器提供了直接的LLM集成，支持代币交换和NFT操作。启用后，Claude可以执行交换、查询代币数据，并直接与NFT市场进行交互。
 
-**Setup:**
+**设置步骤：**
 
-1. Go to the [OpenSea Developer Portal](https://opensea.io/settings/developer) and verify your email
-2. Generate a new API key for REST API access
-3. Generate a separate MCP token for the MCP server
+1. 访问[OpenSea开发者门户](https://opensea.io/settings/developer)并验证您的电子邮件。
+2. 为REST API访问生成一个新的API密钥。
+3. 为MCP服务器生成一个单独的MCP令牌。
 
-Add to your MCP config:
+将令牌添加到您的MCP配置中：
 ```json
 {
   "mcpServers": {
@@ -192,47 +191,47 @@ Add to your MCP config:
 }
 ```
 
-Or use the inline token format: `https://mcp.opensea.io/YOUR_MCP_TOKEN/mcp`
+或者使用内联令牌格式：`https://mcp.opensea.io/YOUR_MCP_TOKEN/mcp`
 
-### Token Swap Tools
-| MCP Tool | Purpose |
+### 代币交换工具
+| MCP工具 | 用途 |
 |----------|---------|
-| `get_token_swap_quote` | **Get swap calldata for token trades** |
-| `get_token_balances` | Check wallet token holdings |
-| `search_tokens` | Find tokens by name/symbol |
-| `get_trending_tokens` | Hot tokens by momentum |
-| `get_top_tokens` | Top tokens by 24h volume |
-| `get_tokens` | Get detailed token info |
+| `get_token_swap_quote` | 获取代币交易的交换报价 |
+| `get_token_balances` | 查看钱包中的代币持有量 |
+| `search_tokens` | 按名称/符号搜索代币 |
+| `get_trending_tokens` | 根据热度搜索热门代币 |
+| `get_top_tokens` | 获取24小时交易量最高的代币 |
+| `get_tokens` | 获取代币的详细信息 |
 
-### NFT Tools
-| MCP Tool | Purpose |
+### NFT工具
+| MCP工具 | 用途 |
 |----------|---------|
-| `search_collections` | Search NFT collections |
-| `search_items` | Search individual NFTs |
-| `get_collections` | Get detailed collection info |
-| `get_items` | Get detailed NFT info |
-| `get_nft_balances` | List NFTs owned by wallet |
-| `get_trending_collections` | Trending NFT collections |
-| `get_top_collections` | Top collections by volume |
-| `get_activity` | Trading activity for collections/items |
-| `get_upcoming_drops` | Upcoming NFT mints |
+| `search_collections` | 搜索NFT收藏品 |
+| `search_items` | 搜索单个NFT |
+| `get_collections` | 获取收藏品的详细信息 |
+| `get_items` | 获取NFT的详细信息 |
+| `get_nft_balances` | 列出钱包拥有的NFT |
+| `get_trending_collections` | 热门NFT收藏品 |
+| `get_top_collections` | 交易量最高的收藏品 |
+| `get_activity` | 收藏品/物品的交易活动 |
+| `get_upcoming_drops` | 即将发布的NFT |
 
-### Profile & Utility Tools
-| MCP Tool | Purpose |
+### 账户与实用工具
+| MCP工具 | 用途 |
 |----------|---------|
-| `get_profile` | Wallet profile with holdings/activity |
-| `account_lookup` | Resolve ENS/address/username |
-| `get_chains` | List supported chains |
-| `search` | AI-powered natural language search |
-| `fetch` | Get full details by entity ID |
+| `get_profile` | 查看钱包信息及持有物品 |
+| `account_lookup` | 解析ENS地址/用户名 |
+| `get_chains` | 列出支持的链 |
+| `search` | 基于AI的自然语言搜索 |
+| `fetch` | 根据实体ID获取完整信息 |
 
 ---
 
-## Token Swaps via MCP
+## 通过MCP进行代币交换
 
-OpenSea MCP supports ERC20 token swaps across supported DEXes - not just NFTs!
+OpenSea MCP支持在所有支持的DEX上交换ERC20代币——不仅仅是NFT！
 
-### Get Swap Quote
+### 获取交换报价
 ```bash
 mcporter call opensea.get_token_swap_quote --args '{
   "fromContractAddress": "0x0000000000000000000000000000000000000000",
@@ -244,18 +243,18 @@ mcporter call opensea.get_token_swap_quote --args '{
 }'
 ```
 
-**Parameters:**
-- `fromContractAddress`: Token to swap from (use `0x0000...0000` for native ETH)
-- `toContractAddress`: Token to swap to
-- `fromChain` / `toChain`: Chain identifiers
-- `fromQuantity`: Amount in human-readable units (e.g., "0.02" for 0.02 ETH)
-- `address`: Your wallet address
+**参数：**
+- `fromContractAddress`: 需要交换的代币的合约地址（使用`0x0000...0000`表示原生ETH）
+- `toContractAddress`: 目标代币的合约地址
+- `fromChain` / `toChain`: 链的标识符
+- `fromQuantity`: 以人类可读单位表示的数量（例如，“0.02”表示0.02 ETH）
+- `address`: 您的钱包地址
 
-**Response includes:**
-- `swapQuote`: Price info, fees, slippage impact
-- `swap.actions[0].transactionSubmissionData`: Ready-to-use calldata
+**响应包含：**
+- `swapQuote`: 价格信息、费用、滑点影响
+- `swap.actions[0].transactionSubmissionData`: 可直接使用的交易数据
 
-### Execute the Swap
+### 执行交换
 ```javascript
 import { createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
@@ -277,7 +276,7 @@ const hash = await wallet.sendTransaction({
 });
 ```
 
-### Check Token Balances
+### 查看代币余额
 ```bash
 mcporter call opensea.get_token_balances --args '{
   "address": "0xYourWallet",
@@ -285,11 +284,11 @@ mcporter call opensea.get_token_balances --args '{
 }'
 ```
 
-## Generating a wallet
+## 创建钱包
 
-To execute swaps or buy NFTs, you need an Ethereum wallet (private key + address).
+执行交换或购买NFT之前，您需要一个Ethereum钱包（私钥+地址）。
 
-### Using Node.js
+### 使用Node.js
 ```javascript
 import crypto from 'crypto';
 import { privateKeyToAccount } from 'viem/accounts';
@@ -301,7 +300,7 @@ console.log('Private Key:', privateKey);
 console.log('Address:', account.address);
 ```
 
-### Using OpenSSL
+### 使用OpenSSL
 ```bash
 # Generate private key
 PRIVATE_KEY="0x$(openssl rand -hex 32)"
@@ -314,19 +313,19 @@ console.log('Address:', privateKeyToAccount('$PRIVATE_KEY').address);
 "
 ```
 
-### Using cast (Foundry)
+### 使用cast（Foundry）
 ```bash
 cast wallet new
 ```
 
-**Important:** Store private keys securely. Never commit them to git or share publicly.
+**重要提示：**请安全存储私钥。切勿将其提交到git或公开共享。
 
-## Requirements
+## 必需条件
 
-- `OPENSEA_API_KEY` environment variable (for REST API scripts)
-- `OPENSEA_MCP_TOKEN` environment variable (for MCP server, separate from API key)
-- `curl` for REST calls
-- `websocat` (optional) for Stream API
-- `jq` (recommended) for parsing JSON responses
+- `OPENSEA_API_KEY`环境变量（用于REST API脚本）
+- `OPENSEA_MCP_TOKEN`环境变量（用于MCP服务器，与API密钥分开）
+- `curl`用于REST请求
+- `websocat`（可选）用于WebSocket事件流
+- `jq`（推荐）用于解析JSON响应
 
-Get both credentials at [opensea.io/settings/developer](https://opensea.io/settings/developer).
+您可以在[opensea.io/settings/developer](https://opensea.io/settings/developer)获取这两个凭据。

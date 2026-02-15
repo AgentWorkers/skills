@@ -17,12 +17,10 @@ metadata:
       bins: ["python3", "codex"]
 ---
 
-# Skill: codex-quota
+# 技能：codex-quota  
+用于检查 OpenAI Codex CLI 的速率限制状态。
 
-Check OpenAI Codex CLI rate limit status.
-
-## Quick Reference
-
+## 快速参考  
 ```bash
 # Run the included Python script
 ./codex-quota.py
@@ -31,8 +29,7 @@ Check OpenAI Codex CLI rate limit status.
 codex-quota
 ```
 
-## Options
-
+## 选项  
 ```bash
 codex-quota              # Show current quota (cached from latest session)
 codex-quota --fresh      # Ping Codex first for live data
@@ -41,19 +38,16 @@ codex-quota --json       # Output as JSON
 codex-quota --help       # Show help
 ```
 
-## Setup
+## 设置  
+有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+## 显示内容  
+- **主窗口**（5 小时）——短期速率限制  
+- **次级窗口**（7 天）——每周速率限制  
+- 显示基于本地时区的重置时间（带有倒计时）  
+- 源会话文件及其使用时长  
 
-## What It Shows
-
-- **Primary Window** (5 hours) — Short-term rate limit
-- **Secondary Window** (7 days) — Weekly rate limit
-- Reset times in local timezone with countdown
-- Source session file and age
-
-## When to Use
-
-- Before starting heavy Codex work (check weekly quota)
-- When Codex seems slow (might be rate-limited)
-- Monitoring quota across multiple accounts
+## 使用场景  
+- 在开始大量使用 Codex 之前（检查每周配额）  
+- 当 Codex 运行缓慢时（可能是由于速率限制）  
+- 监控多个账户的配额使用情况

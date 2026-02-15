@@ -1,65 +1,65 @@
 ---
 name: near-subaccount
-description: Create, list, delete, and manage NEAR subaccounts with bulk distribution operations.
+description: 创建、列出、删除和管理 NEAR 子账户，并支持批量分发操作。
 ---
 
-# NEAR Subaccount Manager Skill
+# NEAR子账户管理技能
 
-Create and manage NEAR subaccounts easily.
+轻松创建和管理NEAR子账户。
 
-## Description
+## 说明
 
-This skill provides tools to create, list, and delete NEAR subaccounts. Also includes bulk operations for distributing NEAR tokens to multiple subaccounts.
+该技能提供了用于创建、列出和删除NEAR子账户的工具，同时支持批量操作，以便将NEAR代币分配给多个子账户。
 
-## Features
+## 功能
 
-- Create subaccounts
-- List all subaccounts under an account
-- Delete subaccounts
-- Bulk distribute NEAR to multiple subaccounts
-- Clean command-line interface
+- 创建子账户
+- 列出某个账户下的所有子账户
+- 删除子账户
+- 批量将NEAR代币分配给多个子账户
+- 支持简洁的命令行界面
 
-## Commands
+## 命令
 
 ### `near-subaccount create <subaccount_name> [master_account]`
-Create a new subaccount.
+创建一个新的子账户。
 
-**Parameters:**
-- `subaccount_name` - Name of the subaccount (without .master.account)
-- `master_account` - Master account (optional, uses default)
+**参数：**
+- `subaccount_name` - 子账户的名称（不含 `.master.account` 后缀）
+- `master_account` - 主账户（可选，使用默认值）
 
-**Example:**
+**示例：**
 ```bash
 near-subaccount create wallet myaccount.near
 # Creates: wallet.myaccount.near
 ```
 
 ### `near-subaccount list [account_id]`
-List all subaccounts under an account.
+列出某个账户下的所有子账户。
 
-**Parameters:**
-- `account_id` - Account to list subaccounts for (optional, uses default)
+**参数：**
+- `account_id` - 需要列出子账户的账户ID（可选，使用默认值）
 
-**Example:**
+**示例：**
 ```bash
 near-subaccount list myaccount.near
 ```
 
 ### `near-subaccount delete <subaccount_id> [master_account]`
-Delete a subaccount.
+删除一个子账户。
 
-**Parameters:**
-- `subaccount_id` - Full subaccount ID to delete
-- `master_account` - Master account (optional, uses default)
+**参数：**
+- `subaccount_id` - 要删除的子账户的完整ID
+- `master_account` - 主账户（可选，使用默认值）
 
 ### `near-subaccount distribute <file.json> [amount]`
-Bulk distribute NEAR from master account to subaccounts listed in a JSON file.
+从主账户批量将NEAR代币分配给JSON文件中列出的子账户。
 
-**Parameters:**
-- `file.json` - JSON file with subaccount list
-- `amount` - NEAR amount to send each (default: 0.1)
+**参数：**
+- `file.json` - 包含子账户列表的JSON文件
+- `amount` - 每个子账户应接收的NEAR代币数量（默认值：0.1）
 
-**JSON format:**
+**JSON格式示例：**
 ```json
 {
   "subaccounts": [
@@ -70,19 +70,19 @@ Bulk distribute NEAR from master account to subaccounts listed in a JSON file.
 }
 ```
 
-## Configuration
+## 配置
 
-Set your default account:
+设置您的默认账户：
 ```bash
 export NEAR_ACCOUNT="myaccount.near"
 ```
 
-## Requirements
+## 前提条件
 
-- NEAR CLI installed and configured
-- Master account with sufficient balance for creating subaccounts (~0.1 NEAR each)
+- 已安装并配置了NEAR CLI
+- 主账户拥有足够的余额用于创建子账户（每个子账户至少需要0.1 NEAR）
 
-## References
+## 参考资料
 
-- NEAR CLI: https://docs.near.org/tools/near-cli
-- Subaccount docs: https://docs.near.org/concepts/account/subaccounts
+- NEAR CLI：https://docs.near.org/tools/near-cli
+- 子账户文档：https://docs.near.org/concepts/account/subaccounts

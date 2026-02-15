@@ -1,50 +1,52 @@
 ---
 name: Question
-description: Ask better questions in any context with Socratic method, follow-up generation, and bias detection.
+description: 在任何情境下，都可以运用苏格拉底式提问法（Socratic Method）、后续追问（follow-up generation）以及偏见检测（bias detection）来提出更高质量的问题。
 ---
 
-## Core Behaviors
+## 核心行为
 
-1. **Detect leading/biased questions** — Flag loaded language, suggest neutral alternatives
-2. **Generate contextual follow-ups** — Based on response, suggest deeper probes
-3. **Surface hidden assumptions** — Identify what's being taken for granted
-4. **Know when to pause** — Sometimes silence extracts more than another question
+1. **识别引导性或带有偏见的问题** — 标记用户使用的语言，并提供中立的替代问题。
+2. **根据用户的回答生成后续问题** — 基于用户的回答，提出更深入的探究性问题。
+3. **揭示隐藏的假设** — 发现哪些观点被用户视为理所当然。
+4. **知道何时该停止提问** — 有时候，保持沉默比再次提问更能获得有价值的信息。
 
 ---
 
-## Context Guides
+## 上下文引导
 
-| Context | Load | Key Techniques |
+| 上下文 | 使用的技巧 | 关键方法 |
 |---------|------|----------------|
-| User research / Interviews | `contexts.md#research` | Open-ended, avoid leading, probe behaviors |
-| Sales discovery | `contexts.md#sales` | SPIN, pain discovery, qualification |
-| Coaching / 1:1s | `contexts.md#coaching` | Socratic, powerful questions, reflection |
-| Journalism / Investigation | `contexts.md#journalism` | Evasion detection, contradiction probing |
-| Learning / Understanding | `contexts.md#learning` | Decomposition, assumption testing |
+| 用户研究/访谈 | `contexts.md#research` | 使用开放式问题，避免引导性提问，观察用户的行为反应。 |
+| 销售咨询 | `contexts.md#sales` | 使用SPIN技巧，发现用户的需求和痛点。 |
+| 辅导/一对一交流 | `contexts.md#coaching` | 采用苏格拉底式提问法，引导用户进行深度反思。 |
+| 新闻报道/调查 | `contexts.md#journalism` | 识别用户的逃避行为，通过矛盾来探究真相。 |
+| 学习/理解 | `contexts.md#learning` | 将复杂问题分解，验证用户的假设。 |
 
 ---
 
-## Question Quality Checklist
+## 问题质量检查清单
 
-Before asking, verify:
-- [ ] **Open vs closed** — Is open-ended appropriate here?
-- [ ] **Neutral framing** — No embedded assumptions or desired answers?
-- [ ] **One thing at a time** — Not a compound question?
-- [ ] **Appropriate depth** — Right level for the relationship/context?
+在提问之前，请确认以下内容：
+- [ ] **问题的类型** — 这里适合使用开放式问题吗？
+- [ ] **问题的表述方式** — 是否没有隐含预设的答案或倾向性？
+- **问题的复杂性** — 问题的难度是否适合当前的关系或情境？
+- **问题的深度** — 问题的深度是否恰当？
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Need | See |
+| 需要了解的内容 | 参考文档 |
 |------|-----|
-| Question patterns and frameworks | `techniques.md` |
-| Common mistakes to avoid | `anti-patterns.md` |
+| 问题模式和框架 | `techniques.md` |
+| 常见错误及避免方法 | `anti-patterns.md` |
 
 ---
 
-## Session State
+## 会话状态
 
-<!-- Active context: research | sales | coaching | journalism | learning -->
-<!-- Current topic: what we're exploring -->
-<!-- Key assumptions to test: list -->
+<!-- 当前会话的上下文：用户研究 | 销售咨询 | 辅导 | 新闻报道 | 学习 |
+| 当前讨论的主题：... |
+| 需要验证的关键假设：... |
+
+（注：会话状态的表格内容根据实际需求可以进一步填充。）

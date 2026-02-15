@@ -1,32 +1,32 @@
 ---
 name: cloudflare
-description: Manage Cloudflare via API — DNS zones and records, page rules, SSL/TLS settings, caching, firewall rules, Workers, and analytics. Free tier includes DNS, CDN, DDoS protection, and SSL.
+description: 通过 API 管理 Cloudflare —— 包括 DNS 区域和记录、页面规则、SSL/TLS 设置、缓存、防火墙规则、Workers 以及分析功能。免费 tier 提供 DNS、CDN、DDoS 防护和 SSL 服务。
 ---
 
-# Cloudflare API Skill
+# Cloudflare API 技能
 
-Control Cloudflare infrastructure: DNS management, CDN, security, Workers, and more.
+用于管理 Cloudflare 的基础设施：DNS、CDN、安全设置、Workers 等。
 
-## Authentication
+## 认证
 
-API token required. Get one from: https://dash.cloudflare.com/profile/api-tokens
+需要 API 令牌。请从以下链接获取：https://dash.cloudflare.com/profile/api-tokens
 
-**Recommended permissions:**
-- Zone:Zone:Read
-- Zone:Zone:Edit  
-- Zone:DNS:Read
-- Zone:DNS:Edit
+**推荐的权限：**
+- Zone:Read（读取区域信息）
+- Zone:Edit（编辑区域信息）
+- Zone:DNS:Read（读取 DNS 记录）
+- Zone:DNS:Edit（编辑 DNS 记录）
 
-Store in `~/.config/cloudflare/token`:
+将令牌保存在 `~/.config/cloudflare/token` 文件中：
 ```bash
 mkdir -p ~/.config/cloudflare
 echo -n "YOUR_API_TOKEN" > ~/.config/cloudflare/token
 chmod 600 ~/.config/cloudflare/token
 ```
 
-## Quick Reference
+## 快速参考
 
-### Zones (Domains)
+### 区域（域名）
 
 ```bash
 # List all zones
@@ -49,7 +49,7 @@ python3 scripts/cloudflare.py zones purge <domain>
 python3 scripts/cloudflare.py zones purge <domain> --urls https://example.com/page
 ```
 
-### DNS Records
+### DNS 记录
 
 ```bash
 # List records for a zone
@@ -85,7 +85,7 @@ python3 scripts/cloudflare.py ssl set <domain> --mode full
 python3 scripts/cloudflare.py ssl https <domain> --on
 ```
 
-### Page Rules
+### 页面规则
 
 ```bash
 # List page rules
@@ -98,7 +98,7 @@ python3 scripts/cloudflare.py rules add <domain> --match "example.com/*" --redir
 python3 scripts/cloudflare.py rules delete <domain> <rule_id>
 ```
 
-### Firewall
+### 防火墙
 
 ```bash
 # List firewall rules
@@ -117,7 +117,7 @@ python3 scripts/cloudflare.py firewall allow <domain> --ip 1.2.3.4
 python3 scripts/cloudflare.py firewall challenge <domain> --ip 1.2.3.0/24
 ```
 
-### Analytics
+### 分析统计
 
 ```bash
 # Get traffic stats (last 24h)
@@ -127,7 +127,7 @@ python3 scripts/cloudflare.py analytics <domain>
 python3 scripts/cloudflare.py analytics <domain> --since 2024-01-01 --until 2024-01-31
 ```
 
-### Workers (Serverless)
+### Workers（无服务器架构）
 
 ```bash
 # List workers
@@ -140,23 +140,23 @@ python3 scripts/cloudflare.py workers deploy <name> --script worker.js
 python3 scripts/cloudflare.py workers delete <name>
 ```
 
-## DNS Record Types
+## DNS 记录类型
 
-| Type | Purpose | Example |
+| 类型 | 用途 | 示例 |
 |------|---------|---------|
-| A | IPv4 address | 192.0.2.1 |
-| AAAA | IPv6 address | 2001:db8::1 |
-| CNAME | Alias | www → example.com |
-| MX | Mail server | mail.example.com (priority 10) |
-| TXT | Text/verification | v=spf1 ... |
-| NS | Nameserver | ns1.example.com |
-| SRV | Service | _sip._tcp.example.com |
-| CAA | Certificate authority | letsencrypt.org |
+| A     | IPv4 地址   | 192.0.2.1   |
+| AAAA   | IPv6 地址   | 2001:db8::1   |
+| CNAME  | 别名     | www → example.com |
+| MX     | 邮件服务器 | mail.example.com（优先级 10） |
+| TXT    | 文本/验证信息 | v=spf1 ... |
+| NS     | 名称服务器 | ns1.example.com |
+| SRV    | 服务类型   | _sip._tcp.example.com |
+| CAA    | 证书颁发机构 | letsencrypt.org |
 
-## Proxy Status (Orange Cloud)
+## 代理状态（Orange Cloud）
 
-- **Proxied (on)**: Traffic goes through Cloudflare CDN — caching, DDoS protection, hides origin IP
-- **DNS only (off)**: Direct connection to origin — use for mail servers, non-HTTP services
+- **Proxied (on)**：流量通过 Cloudflare CDN 处理——实现缓存、DDoS 防护并隐藏源 IP 地址
+- **DNS only (off)**：直接连接到源服务器——适用于邮件服务器或非 HTTP 服务
 
 ```bash
 # Enable proxy
@@ -166,18 +166,18 @@ python3 scripts/cloudflare.py dns add example.com --type A --name @ --content 1.
 python3 scripts/cloudflare.py dns add example.com --type A --name mail --content 1.2.3.4 --no-proxy
 ```
 
-## SSL Modes
+## SSL 模式
 
-| Mode | Description |
+| 模式 | 描述         |
 |------|-------------|
-| off | No SSL (not recommended) |
-| flexible | HTTPS to Cloudflare, HTTP to origin |
-| full | HTTPS end-to-end, any cert on origin |
-| strict | HTTPS end-to-end, valid cert on origin |
+| off    | 不使用 SSL（不推荐）   |
+| flexible | HTTPS 到 Cloudflare，HTTP 到源服务器 |
+| full    | HTTPS 端到端，源服务器需使用有效证书 |
+| strict | HTTPS 端到端，源服务器需使用有效证书 |
 
-## Common Workflows
+## 常见操作流程
 
-### Add a New Domain
+### 添加新域名
 
 ```bash
 # 1. Add zone to Cloudflare
@@ -195,7 +195,7 @@ python3 scripts/cloudflare.py dns add example.com --type CNAME --name www --cont
 python3 scripts/cloudflare.py ssl set example.com --mode strict
 ```
 
-### Migrate DNS from Another Provider
+### 从其他提供商迁移 DNS
 
 ```bash
 # 1. Add zone (Cloudflare will scan existing records)
@@ -213,7 +213,7 @@ python3 scripts/cloudflare.py dns add example.com --type MX --name @ --content m
 python3 scripts/cloudflare.py zones status example.com
 ```
 
-### Set Up Email Records
+### 设置邮件记录
 
 ```bash
 # MX records
@@ -230,7 +230,7 @@ python3 scripts/cloudflare.py dns add example.com --type TXT --name selector._do
 python3 scripts/cloudflare.py dns add example.com --type TXT --name _dmarc --content "v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com"
 ```
 
-## Direct API Access
+## 直接 API 访问
 
 ```bash
 TOKEN=$(cat ~/.config/cloudflare/token)
@@ -239,25 +239,25 @@ curl -H "Authorization: Bearer $TOKEN" \
      https://api.cloudflare.com/client/v4/zones
 ```
 
-## API Documentation
+## API 文档
 
-- Full API reference: https://developers.cloudflare.com/api/
-- API v4 base URL: https://api.cloudflare.com/client/v4/
+- 完整的 API 参考文档：https://developers.cloudflare.com/api/
+- API v4 的基础 URL：https://api.cloudflare.com/client/v4/
 
-## Free Plan Includes
+## 免费计划包含的内容
 
-- DNS hosting (unlimited queries)
-- CDN (caching at 300+ edge locations)
-- DDoS protection (unmetered)
-- SSL/TLS certificates (auto-renewed)
-- 3 page rules
-- Basic firewall rules
-- Analytics
+- DNS 托管（无限查询次数）
+- CDN（在 300 多个边缘节点进行缓存）
+- DDoS 防护（无限量使用）
+- SSL/TLS 证书（自动续订）
+- 3 条页面规则
+- 基本防火墙规则
+- 分析统计功能
 
-## Nameservers
+## 名称服务器
 
-When you add a domain, Cloudflare assigns two nameservers like:
+当您添加一个域名时，Cloudflare 会自动分配两个名称服务器：
 - `adam.ns.cloudflare.com`
 - `bella.ns.cloudflare.com`
 
-Update these at your domain registrar. Zone stays "pending" until nameservers propagate.
+请在您的域名注册商处更新这些名称服务器信息。区域状态会显示为“pending”，直到名称服务器的更改生效。

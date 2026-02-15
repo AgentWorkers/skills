@@ -1,13 +1,14 @@
 ---
 name: jb-bendystraw
-description: Bendystraw GraphQL API reference for querying Juicebox project data across all chains. Get project stats, payments, token holders, loans, NFT tiers, unified activity feeds, historical snapshots, and cross-chain aggregations.
+description: **Bendystraw GraphQL API参考**  
+用于查询所有链上的Juicebox项目数据。可获取项目统计信息、支付记录、代币持有者信息、贷款详情、NFT层级信息、统一的活动日志、历史数据快照以及跨链聚合数据。
 ---
 
-# Bendystraw: Cross-Chain Juicebox Data API
+# Bendystraw：跨链Juicebox数据API
 
-Bendystraw is a GraphQL indexer for Juicebox V5 events across all supported chains. It aggregates data and provides unified cross-chain queries for projects, payments, token holders, and NFTs.
+Bendystraw是一个用于查询所有支持链上Juicebox V5事件的GraphQL索引器。它汇总数据，并为项目、支付、代币持有者和NFT提供统一的跨链查询功能。
 
-## API Base URLs
+## API基础URL
 
 ```
 Production: https://bendystraw.xyz/{API_KEY}/graphql
@@ -15,9 +16,9 @@ Testnet: https://testnet.bendystraw.xyz/{API_KEY}/graphql
 Playground: https://bendystraw.xyz (browser-based GraphQL explorer)
 ```
 
-## Authentication
+## 认证
 
-**API key required.** Contact [@peripheralist](https://x.com/peripheralist) on Twitter/X to get one.
+**需要API密钥。** 请通过Twitter/X联系[@peripheralist](https://x.com/peripheralist)获取API密钥。
 
 ```javascript
 const response = await fetch(`https://bendystraw.xyz/${API_KEY}/graphql`, {
@@ -30,25 +31,25 @@ const response = await fetch(`https://bendystraw.xyz/${API_KEY}/graphql`, {
 });
 ```
 
-**Important:** Never expose API keys in frontend code. Use a server-side proxy.
+**重要提示：** 绝不要在前端代码中暴露API密钥。请使用服务器端代理。
 
 ---
 
-## Supported Chains
+## 支持的链
 
-| Chain | Chain ID | Network |
+| 链 | 链ID | 网络 |
 |-------|----------|---------|
-| Ethereum | 1 | Mainnet |
-| Optimism | 10 | Mainnet |
-| Base | 8453 | Mainnet |
-| Arbitrum | 42161 | Mainnet |
-| Sepolia | 11155111 | Testnet |
+| Ethereum | 1 | 主网 |
+| Optimism | 10 | 主网 |
+| Base | 8453 | 主网 |
+| Arbitrum | 42161 | 主网 |
+| Sepolia | 11155111 | 测试网 |
 
 ---
 
-## GraphQL Schema Reference
+## GraphQL模式参考
 
-### Project Entity
+### 项目实体
 
 ```graphql
 type Project {
@@ -99,7 +100,7 @@ type Project {
 }
 ```
 
-### SuckerGroup Entity (Omnichain Projects)
+### SuckerGroup实体（多链项目）
 
 ```graphql
 type SuckerGroup {
@@ -119,7 +120,7 @@ type SuckerGroup {
 }
 ```
 
-### Participant Entity (Token Holders)
+### 参与者实体（代币持有者）
 
 ```graphql
 type Participant {
@@ -145,7 +146,7 @@ type Participant {
 }
 ```
 
-### PayEvent Entity
+### PayEvent实体
 
 ```graphql
 type PayEvent {
@@ -177,7 +178,7 @@ type PayEvent {
 }
 ```
 
-### CashOutEvent Entity
+### CashOutEvent实体
 
 ```graphql
 type CashOutEvent {
@@ -200,7 +201,7 @@ type CashOutEvent {
 }
 ```
 
-### NFT Entity
+### NFT实体
 
 ```graphql
 type NFT {
@@ -223,9 +224,9 @@ type NFT {
 }
 ```
 
-### ActivityEvent Entity (Unified Activity Feed)
+### ActivityEvent实体（统一活动流）
 
-A polymorphic event type that provides a unified view of all project activity. Query this instead of individual event types when building activity feeds.
+这是一种多态事件类型，可以提供所有项目活动的统一视图。在构建活动流时，建议查询此实体而非单独的事件类型。
 
 ```graphql
 type ActivityEvent {
@@ -291,9 +292,9 @@ enum ActivityEventType {
 }
 ```
 
-### Loan Entity (RevLoans)
+### Loan实体（RevLoans）
 
-Active loan state from the RevLoans protocol.
+来自RevLoans协议的活跃贷款状态。
 
 ```graphql
 type Loan {
@@ -326,9 +327,9 @@ type Loan {
 }
 ```
 
-### Wallet Entity
+### Wallet实体
 
-Wallet-level aggregation across all project participations.
+跨所有项目参与的账户级汇总数据。
 
 ```graphql
 type Wallet {
@@ -345,9 +346,9 @@ type Wallet {
 }
 ```
 
-### NFTTier Entity
+### NFTTier实体
 
-NFT tier configuration with pricing and supply.
+NFT层级配置，包括价格和供应量。
 
 ```graphql
 type NFTTier {
@@ -387,9 +388,9 @@ type NFTTier {
 }
 ```
 
-### NFTHook Entity
+### NFTHook实体
 
-721 hook contract configuration.
+721挂钩合约配置。
 
 ```graphql
 type NFTHook {
@@ -409,9 +410,9 @@ type NFTHook {
 }
 ```
 
-### ProjectMoment Entity (Historical Snapshots)
+### ProjectMoment实体（历史快照）
 
-Point-in-time snapshots of project state. Useful for historical charts and analytics.
+项目状态的历史快照，适用于历史图表和分析。
 
 ```graphql
 type ProjectMoment {
@@ -434,9 +435,9 @@ type ProjectMoment {
 }
 ```
 
-### SuckerGroupMoment Entity
+### SuckerGroupMoment实体
 
-Point-in-time snapshots of cross-chain aggregated state.
+跨链聚合状态的历史快照。
 
 ```graphql
 type SuckerGroupMoment {
@@ -457,9 +458,9 @@ type SuckerGroupMoment {
 }
 ```
 
-### SuckerTransaction Entity (Cross-Chain Bridging)
+### SuckerTransaction实体（跨链桥接）
 
-Token bridging transactions between chains via suckers.
+通过sucker在链之间进行代币桥接的交易。
 
 ```graphql
 type SuckerTransaction {
@@ -496,9 +497,9 @@ enum SuckerTransactionStatus {
 }
 ```
 
-### SendPayoutsEvent Entity
+### SendPayoutsEvent实体
 
-Payout distribution events from the terminal.
+来自终端的支付分配事件。
 
 ```graphql
 type SendPayoutsEvent {
@@ -533,9 +534,9 @@ type SendPayoutsEvent {
 }
 ```
 
-### UseAllowanceEvent Entity
+### UseAllowanceEvent实体
 
-Surplus allowance usage events.
+代币剩余额的使用事件。
 
 ```graphql
 type UseAllowanceEvent {
@@ -565,9 +566,9 @@ type UseAllowanceEvent {
 }
 ```
 
-### PermissionHolder Entity
+### PermissionHolder实体
 
-Operator permissions granted to accounts.
+授予账户的运营商权限。
 
 ```graphql
 type PermissionHolder {
@@ -585,9 +586,9 @@ type PermissionHolder {
 }
 ```
 
-### BorrowLoanEvent Entity
+### BorrowLoanEvent实体
 
-Loan creation events from RevLoans.
+来自RevLoans的贷款创建事件。
 
 ```graphql
 type BorrowLoanEvent {
@@ -619,9 +620,9 @@ type BorrowLoanEvent {
 }
 ```
 
-### RepayLoanEvent Entity
+### RepayLoanEvent实体
 
-Loan repayment events.
+贷款偿还事件。
 
 ```graphql
 type RepayLoanEvent {
@@ -649,9 +650,9 @@ type RepayLoanEvent {
 }
 ```
 
-### LiquidateLoanEvent Entity
+### LiquidateLoanEvent实体
 
-Loan liquidation events.
+贷款清算事件。
 
 ```graphql
 type LiquidateLoanEvent {
@@ -677,9 +678,9 @@ type LiquidateLoanEvent {
 }
 ```
 
-### ReallocateLoanEvent Entity
+### ReallocateLoanEvent实体
 
-Loan reallocation events (moving collateral between loans).
+贷款重新分配事件（在贷款之间转移抵押品）。
 
 ```graphql
 type ReallocateLoanEvent {
@@ -706,9 +707,9 @@ type ReallocateLoanEvent {
 }
 ```
 
-### BurnEvent Entity
+### BurnEvent实体
 
-Token burn events (from cash outs).
+代币销毁事件（来自支付操作）。
 
 ```graphql
 type BurnEvent {
@@ -733,9 +734,9 @@ type BurnEvent {
 }
 ```
 
-### MintTokensEvent Entity
+### MintTokensEvent实体
 
-Token minting events (from payments).
+代币铸造事件（来自支付操作）。
 
 ```graphql
 type MintTokensEvent {
@@ -764,9 +765,9 @@ type MintTokensEvent {
 }
 ```
 
-### ManualMintTokensEvent Entity
+### ManualMintTokensEvent实体
 
-Manual token minting by project owner.
+项目所有者手动铸造代币的事件。
 
 ```graphql
 type ManualMintTokensEvent {
@@ -795,9 +796,9 @@ type ManualMintTokensEvent {
 }
 ```
 
-### ManualBurnEvent Entity
+### ManualBurnEvent实体
 
-Manual token burning.
+手动销毁代币的事件。
 
 ```graphql
 type ManualBurnEvent {
@@ -822,9 +823,9 @@ type ManualBurnEvent {
 }
 ```
 
-### MintNftEvent Entity
+### MintNftEvent实体
 
-NFT minting events.
+NFT铸造事件。
 
 ```graphql
 type MintNftEvent {
@@ -855,9 +856,9 @@ type MintNftEvent {
 }
 ```
 
-### DeployErc20Event Entity
+### DeployErc20Event实体
 
-ERC20 token deployment events.
+ERC20代币部署事件。
 
 ```graphql
 type DeployErc20Event {
@@ -884,9 +885,9 @@ type DeployErc20Event {
 }
 ```
 
-### ProjectCreateEvent Entity
+### ProjectCreateEvent实体
 
-Project creation events.
+项目创建事件。
 
 ```graphql
 type ProjectCreateEvent {
@@ -908,9 +909,9 @@ type ProjectCreateEvent {
 }
 ```
 
-### AddToBalanceEvent Entity
+### AddToBalanceEvent实体
 
-Direct balance addition events.
+直接添加余额的事件。
 
 ```graphql
 type AddToBalanceEvent {
@@ -938,9 +939,9 @@ type AddToBalanceEvent {
 }
 ```
 
-### SendPayoutToSplitEvent Entity
+### SendPayoutToSplitEvent实体
 
-Individual split payout events.
+单独的分发支付事件。
 
 ```graphql
 type SendPayoutToSplitEvent {
@@ -977,9 +978,9 @@ type SendPayoutToSplitEvent {
 }
 ```
 
-### SendReservedTokensToSplitEvent Entity
+### SendReservedTokensToSplitEvent实体
 
-Reserved token distribution to individual split.
+将预留代币分配给特定接收者。
 
 ```graphql
 type SendReservedTokensToSplitEvent {
@@ -1012,9 +1013,9 @@ type SendReservedTokensToSplitEvent {
 }
 ```
 
-### SendReservedTokensToSplitsEvent Entity
+### SendReservedTokensToSplitsEvent实体
 
-Batch reserved token distribution event.
+批量分配预留代币的事件。
 
 ```graphql
 type SendReservedTokensToSplitsEvent {
@@ -1043,9 +1044,9 @@ type SendReservedTokensToSplitsEvent {
 }
 ```
 
-### AutoIssueEvent Entity
+### AutoIssueEvent实体
 
-Auto-issuance events (revnet stage transitions).
+自动发行事件（用于revnet阶段转换）。
 
 ```graphql
 type AutoIssueEvent {
@@ -1071,9 +1072,9 @@ type AutoIssueEvent {
 }
 ```
 
-### StoreAutoIssuanceAmountEvent Entity
+### StoreAutoIssuanceAmountEvent实体
 
-Auto-issuance configuration events.
+自动发行配置事件。
 
 ```graphql
 type StoreAutoIssuanceAmountEvent {
@@ -1099,9 +1100,9 @@ type StoreAutoIssuanceAmountEvent {
 }
 ```
 
-### DecorateBannyEvent Entity
+### DecorateBannyEvent实体
 
-Banny NFT decoration events.
+NFT装饰事件。
 
 ```graphql
 type DecorateBannyEvent {
@@ -1128,9 +1129,9 @@ type DecorateBannyEvent {
 }
 ```
 
-### CashOutTaxSnapshot Entity
+### CashOutTaxSnapshot实体
 
-Historical cash-out tax rate snapshots.
+历史现金支出税率快照。
 
 ```graphql
 type CashOutTaxSnapshot {
@@ -1149,9 +1150,9 @@ type CashOutTaxSnapshot {
 }
 ```
 
-### ParticipantSnapshot Entity (GraphQL)
+### ParticipantSnapshot实体（GraphQL）
 
-Historical participant balance snapshots via GraphQL (alternative to REST endpoint).
+通过GraphQL获取的历史参与者余额快照（REST端点的替代方案）。
 
 ```graphql
 type ParticipantSnapshot {
@@ -1178,16 +1179,16 @@ type ParticipantSnapshot {
 
 ---
 
-## Critical Concepts
+## 关键概念
 
-### Project Identity
+### 项目标识
 
-**A Juicebox project is uniquely identified by three fields: `projectId + chainId + version`.**
+**Juicebox项目通过三个字段唯一标识：`projectId + chainId + version`。**
 
-This is crucial because:
-- **V4 and V5 are completely different protocols.** Project #64 on Ethereum V4 is NOT the same project as Project #64 on Ethereum V5.
-- The same projectId can exist on multiple chains (via suckers/omnichain), but those ARE the same project.
-- Always include `version` when querying or displaying projects.
+这一点非常重要，因为：
+- **V4和V5是完全不同的协议。** 例如，Ethereum V4上的项目#64与Ethereum V5上的项目#64不是同一个项目。
+- 相同的projectId可以存在于多个链上（通过sucker/omnichain），但这些项目是同一个项目。
+- 在查询或显示项目时，务必包含`version`字段。
 
 ```javascript
 // WRONG: Groups V4 and V5 together
@@ -1197,11 +1198,11 @@ const groupKey = `${project.projectId}-${project.chainId}`;
 const groupKey = `${project.projectId}-v${project.version}`;
 ```
 
-### Multi-Chain Grouping
+### 多链分组
 
-When displaying "top projects" or aggregating stats:
-- **Same projectId + version across chains** → Group together (same project via suckers)
-- **Same projectId, different version** → Keep separate (completely different projects)
+在显示“顶级项目”或汇总统计数据时：
+- **相同projectId + version** → 将其分组（通过sucker关联的项目视为同一个项目）
+- **相同projectId，不同version** → 分开显示（属于不同的项目）
 
 ```javascript
 // Group projects by projectId + version (V4 and V5 are different projects!)
@@ -1228,9 +1229,9 @@ for (const project of projects) {
 }
 ```
 
-### USD Value Formatting
+### USD价值格式
 
-The `volumeUsd`, `amountUsd`, and similar fields use **18 decimal format** (like wei). You must convert properly:
+`volumeUsd`、`amountUsd`等字段使用**18位小数格式**（类似于wei）。必须正确转换：
 
 ```javascript
 function formatVolumeUsd(volumeUsd) {
@@ -1252,11 +1253,11 @@ function formatVolumeUsd(volumeUsd) {
 }
 ```
 
-**Warning:** Do NOT use `parseFloat()` directly on volumeUsd for large values—JavaScript loses precision beyond ~15 digits.
+**警告：** 对于较大的数值，切勿直接使用`parseFloat()`进行转换——JavaScript在超过15位小数后会丢失精度。
 
-### Filtering by Version
+### 按版本过滤
 
-When querying projects, filter by version to avoid mixing V4 and V5 data:
+在查询项目时，根据版本进行过滤，以避免混淆V4和V5的数据：
 
 ```graphql
 # Get only V5 projects
@@ -1278,13 +1279,13 @@ query V5Projects($limit: Int!) {
 }
 ```
 
-To display both versions, query them separately and handle grouping in your application.
+要同时显示两个版本的数据，需要分别查询并在应用程序中进行分组处理。
 
 ---
 
-## Query Examples
+## 查询示例
 
-### Get Single Project
+### 获取单个项目
 
 ```graphql
 query GetProject($projectId: Int!, $chainId: Int!) {
@@ -1304,7 +1305,7 @@ query GetProject($projectId: Int!, $chainId: Int!) {
 }
 ```
 
-### Get Participant (Token Holder)
+### 获取参与者（代币持有者）
 
 ```graphql
 query GetParticipant($projectId: Int!, $chainId: Int!, $address: String!) {
@@ -1319,7 +1320,7 @@ query GetParticipant($projectId: Int!, $chainId: Int!, $address: String!) {
 }
 ```
 
-### Get Sucker Group (Omnichain Totals)
+### 获取Sucker Group（多链总计）
 
 ```graphql
 query GetSuckerGroup($id: String!) {
@@ -1342,7 +1343,7 @@ query GetSuckerGroup($id: String!) {
 }
 ```
 
-### List Projects
+### 列出项目
 
 ```graphql
 query ListProjects($chainId: Int, $version: Int, $limit: Int!, $offset: Int!) {
@@ -1368,7 +1369,7 @@ query ListProjects($chainId: Int, $version: Int, $limit: Int!, $offset: Int!) {
 }
 ```
 
-### List Recent Payments
+### 列出最近的交易
 
 ```graphql
 query ListPayments($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1392,7 +1393,7 @@ query ListPayments($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List Top Token Holders
+### 列出顶级代币持有者
 
 ```graphql
 query ListParticipants($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1415,7 +1416,7 @@ query ListParticipants($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Trending Projects
+### 获取热门项目
 
 ```graphql
 query TrendingProjects($limit: Int!) {
@@ -1437,7 +1438,7 @@ query TrendingProjects($limit: Int!) {
 }
 ```
 
-### List Cash Out Events
+### 列出现金支出事件
 
 ```graphql
 query ListCashOuts($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1460,7 +1461,7 @@ query ListCashOuts($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List NFTs for Project
+### 列出项目的NFT
 
 ```graphql
 query ListNFTs($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1482,9 +1483,9 @@ query ListNFTs($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Unified Activity Feed
+### 获取统一活动流
 
-The most powerful query for building activity feeds. Returns all event types in a single query.
+这是构建活动流的最强大查询方式。一次查询即可获取所有类型的活动数据。
 
 ```graphql
 query GetActivityFeed($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1531,9 +1532,9 @@ query GetActivityFeed($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Omnichain Activity Feed
+### 获取多链活动流
 
-Query activity across all chains for a sucker group.
+查询特定sucker组在所有链上的活动数据。
 
 ```graphql
 query GetOmnichainActivity($suckerGroupId: String!, $limit: Int!) {
@@ -1556,7 +1557,7 @@ query GetOmnichainActivity($suckerGroupId: String!, $limit: Int!) {
 }
 ```
 
-### List Active Loans
+### 列出活跃的贷款
 
 ```graphql
 query ListLoans($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1581,7 +1582,7 @@ query ListLoans($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Loan by ID
+### 根据ID获取贷款
 
 ```graphql
 query GetLoan($id: BigInt!) {
@@ -1604,7 +1605,7 @@ query GetLoan($id: BigInt!) {
 }
 ```
 
-### Get Wallet Portfolio
+### 获取钱包投资组合
 
 ```graphql
 query GetWallet($address: String!) {
@@ -1633,7 +1634,7 @@ query GetWallet($address: String!) {
 }
 ```
 
-### List NFT Tiers
+### 列出NFT层级
 
 ```graphql
 query ListNFTTiers($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1658,7 +1659,7 @@ query ListNFTTiers($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get NFT Hook Details
+### 获取NFT挂钩详情
 
 ```graphql
 query GetNFTHook($projectId: Int!, $chainId: Int!) {
@@ -1682,7 +1683,7 @@ query GetNFTHook($projectId: Int!, $chainId: Int!) {
 }
 ```
 
-### Get Historical Project Snapshots
+### 获取项目历史快照
 
 ```graphql
 query GetProjectHistory($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1704,7 +1705,7 @@ query GetProjectHistory($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Cross-Chain Bridge Transactions
+### 获取跨链桥接交易
 
 ```graphql
 query GetSuckerTransactions($suckerGroupId: String!, $limit: Int!) {
@@ -1728,7 +1729,7 @@ query GetSuckerTransactions($suckerGroupId: String!, $limit: Int!) {
 }
 ```
 
-### List Payout Events
+### 列出支付事件
 
 ```graphql
 query ListPayouts($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1752,7 +1753,7 @@ query ListPayouts($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List Allowance Usage
+### 列出代币使用情况
 
 ```graphql
 query ListAllowanceUsage($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1775,7 +1776,7 @@ query ListAllowanceUsage($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List Loan Events (Borrow/Repay/Liquidate)
+### 列出贷款事件（借款/偿还/清算）
 
 ```graphql
 query ListBorrowEvents($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1830,7 +1831,7 @@ query ListLiquidations($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List Token Burns
+### 列出代币销毁事件
 
 ```graphql
 query ListBurns($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1852,7 +1853,7 @@ query ListBurns($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List NFT Mints
+### 列出NFT铸造事件
 
 ```graphql
 query ListNFTMints($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1874,7 +1875,7 @@ query ListNFTMints($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Permission Holders
+### 获取权限持有者
 
 ```graphql
 query ListPermissionHolders($projectId: Int!, $chainId: Int!) {
@@ -1892,7 +1893,7 @@ query ListPermissionHolders($projectId: Int!, $chainId: Int!) {
 }
 ```
 
-### List Project Creations
+### 列出项目创建事件
 
 ```graphql
 query ListProjectCreations($chainId: Int!, $limit: Int!) {
@@ -1917,7 +1918,7 @@ query ListProjectCreations($chainId: Int!, $limit: Int!) {
 }
 ```
 
-### List ERC20 Deployments
+### 列出ERC20部署事件
 
 ```graphql
 query ListERC20Deployments($chainId: Int!, $limit: Int!) {
@@ -1939,7 +1940,7 @@ query ListERC20Deployments($chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Cash Out Tax History
+### 获取现金支出历史记录
 
 ```graphql
 query GetCashOutTaxHistory($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -1959,7 +1960,7 @@ query GetCashOutTaxHistory($projectId: Int!, $chainId: Int!, $limit: Int!) {
 }
 ```
 
-### Get Participant History (GraphQL Snapshots)
+### 获取参与者历史记录（GraphQL快照）
 
 ```graphql
 query GetParticipantHistory(
@@ -1987,7 +1988,7 @@ query GetParticipantHistory(
 }
 ```
 
-### List Reserved Token Distributions
+### 列出预留代币分配
 
 ```graphql
 query ListReservedDistributions($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -2009,7 +2010,7 @@ query ListReservedDistributions($projectId: Int!, $chainId: Int!, $limit: Int!) 
 }
 ```
 
-### List Split Payouts
+### 列出分割支付
 
 ```graphql
 query ListSplitPayouts($projectId: Int!, $chainId: Int!, $limit: Int!) {
@@ -2034,9 +2035,9 @@ query ListSplitPayouts($projectId: Int!, $chainId: Int!, $limit: Int!) {
 
 ---
 
-## Filtering
+## 过滤
 
-The `where` clause supports these operators:
+`where`子句支持以下操作符：
 
 ```graphql
 where: {
@@ -2062,16 +2063,11 @@ where: {
 
 ---
 
-## Sorting
+## 排序
 
-```graphql
-orderBy: "volume"           # Field to sort by
-orderDirection: "desc"      # "asc" or "desc"
-```
+**可排序的字段：**
 
-**Sortable Fields by Entity:**
-
-| Entity | Sortable Fields |
+| 实体 | 可排序字段 |
 |--------|-----------------|
 | Project | `volume`, `balance`, `tokenSupply`, `paymentsCount`, `createdAt`, `trendingScore` |
 | Participant | `balance`, `volume`, `paymentsCount` |
@@ -2100,9 +2096,9 @@ orderDirection: "desc"      # "asc" or "desc"
 
 ---
 
-## Pagination
+## 分页
 
-All list queries support pagination:
+所有列表查询都支持分页：
 
 ```graphql
 query PaginatedPayments(
@@ -2122,23 +2118,23 @@ query PaginatedPayments(
 }
 ```
 
-**Parameters:**
-- `limit`: Max items to return (default: 100, max: 1000)
-- `offset`: Number of items to skip
+**参数：**
+- `limit`：返回的最大项目数量（默认：100，最大：1000）
+- `offset`：跳过的项目数量
 
 ---
 
-## Special Endpoints
+## 特殊端点
 
-### Participant Snapshots
+### 参与者快照
 
-Get historical participant balances at a specific timestamp. Useful for governance snapshots and airdrops.
+获取特定时间点的历史参与者余额。适用于治理快照和空投操作。
 
 ```
 POST https://bendystraw.xyz/{API_KEY}/participants
 ```
 
-**Request:**
+**请求：**
 ```json
 {
   "suckerGroupId": "0x...",
@@ -2146,7 +2142,7 @@ POST https://bendystraw.xyz/{API_KEY}/participants
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "participants": [
@@ -2164,7 +2160,7 @@ POST https://bendystraw.xyz/{API_KEY}/participants
 
 ---
 
-## Complete JavaScript Example
+## 完整的JavaScript示例
 
 ```javascript
 const BENDYSTRAW_URL = 'https://bendystraw.xyz';
@@ -2539,7 +2535,7 @@ main().catch(console.error);
 
 ---
 
-## BendystrawClient Class
+## BendystrawClient类
 
 ```javascript
 class BendystrawClient {
@@ -2580,11 +2576,11 @@ class BendystrawClient {
 
 ---
 
-## Server-Side Proxy
+## 服务器端代理
 
-Since the API key must be kept secret, use a server-side proxy:
+由于API密钥必须保密，请使用服务器端代理：
 
-### Next.js API Route
+### Next.js API路由
 
 ```typescript
 // pages/api/bendystraw.ts
@@ -2607,7 +2603,7 @@ export default async function handler(req, res) {
 }
 ```
 
-### Express Middleware
+### Express中间件
 
 ```javascript
 app.post('/api/bendystraw', async (req, res) => {
@@ -2626,42 +2622,43 @@ app.post('/api/bendystraw', async (req, res) => {
 
 ---
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `Unauthorized` | Invalid API key | Verify API key is correct |
-| `Rate limited` | Too many requests | Add backoff/retry logic |
-| `Invalid query` | GraphQL syntax error | Check query structure |
-| `Not found` | Entity doesn't exist | Verify projectId/chainId |
-| `Timeout` | Query too complex | Reduce limit, add filters |
+| `Unauthorized` | API密钥无效 | 确认API密钥正确 |
+| `Rate limited` | 请求过多 | 添加延迟/重试逻辑 |
+| `Invalid query` | GraphQL语法错误 | 检查查询结构 |
+| `Not found` | 实体不存在 | 确认projectId/chainId |
+| `Timeout` | 查询过于复杂 | 减少请求次数，添加过滤条件 |
 
 ---
 
-## Gotchas & Common Pitfalls
+## 常见问题与注意事项
 
-### V4 vs V5 Protocol Confusion
+### V4与V5协议混淆
 
-**CRITICAL:** V4 and V5 are completely different protocols with different contract addresses.
-Project #1 on V4 is NOT the same as Project #1 on V5. Never mix V4 and V5 addresses.
+**重要提示：** V4和V5是完全不同的协议，具有不同的合约地址。
+- V4上的项目#1与V5上的项目#1不是同一个项目。
+- 相同的projectId可以在多个链上存在（通过sucker/omnichain），但这些项目是同一个项目。
+- 在查询或显示项目时，务必包含`version`字段。
 
-### V5.0 vs V5.1 Contract Confusion
+### V5.0与V5.1合约混淆
 
-**CRITICAL:** Within V5, there are two contract versions: V5.0 and V5.1. Contracts that have
-both versions MUST NOT be mixed. A project using JBController5_1 MUST use JBMultiTerminal5_1.
+**重要提示：** 在V5版本中，存在两个合约版本：V5.0和V5.1。同时使用这两个版本的合约是不允许的。使用JBController5_1的项目必须使用JBMultiTerminal5_1。
 
-**Shared contracts (work with both V5.0 and V5.1):**
+**同时支持V5.0和V5.1的合约：**
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | JBProjects | `0x885f707efa18d2cb12f05a3a8eba6b4b26c8c1d4` |
 | JBTokens | `0x4d0edd347fb1fa21589c1e109b3474924be87636` |
 | JBDirectory | `0x0061e516886a0540f63157f112c0588ee0651dcf` |
 | JBSplits | `0x7160a322fea44945a6ef9adfd65c322258df3c5e` |
 
-**V5.0 contracts (for revnets and older projects):**
+**V5.0合约（用于revnets和旧项目）：**
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | JBController | `0x27da30646502e2f642be5281322ae8c394f7668a` |
 | JBMultiTerminal | `0x2db6d704058e552defe415753465df8df0361846` |
@@ -2669,9 +2666,9 @@ both versions MUST NOT be mixed. A project using JBController5_1 MUST use JBMult
 | REVDeployer | `0x2ca27bde7e7d33e353b44c27acfcf6c78dde251d` |
 | JB721TiersHookDeployer | `0x7e4f7bfeab74bbae3eb12a62f2298bf2be16fc93` |
 
-**V5.1 contracts (for new projects):**
+**V5.1合约（用于新项目）：**
 
-| Contract | Address |
+| 合约 | 地址 |
 |----------|---------|
 | JBController5_1 | `0xf3cc99b11bd73a2e3b8815fb85fe0381b29987e1` |
 | JBMultiTerminal5_1 | `0x52869db3d61dde1e391967f2ce5039ad0ecd371c` |
@@ -2679,17 +2676,16 @@ both versions MUST NOT be mixed. A project using JBController5_1 MUST use JBMult
 | JBOmnichainDeployer5_1 | `0x587bf86677ec0d1b766d9ba0d7ac2a51c6c2fc71` |
 | JB721TiersHookDeployer5_1 | `0x7e6e7db5081c59f2df3c83b54eb0c4d029e9898e` |
 
-**Determining project version:** Query `JBDirectory.controllerOf(projectId)` and compare:
-- `0x27da30646502e2f642be5281322ae8c394f7668a` = V5.0 (use JBMultiTerminal, JBRulesets)
-- `0xf3cc99b11bd73a2e3b8815fb85fe0381b29987e1` = V5.1 (use JBMultiTerminal5_1, JBRulesets5_1)
+**确定项目版本的方法：** 查询`JBDirectory.controllerOf(projectId)`并进行比较：
+- `0x27da30646502e2f642be5281322ae8c394f7668a` = V5.0（使用JBMultiTerminal, JBRulesets）
+- `0xf3cc99b11bd73a2e3b8815fb85fe0381b29987e1` = V5.1（使用JBMultiTerminal5_1, JBRulesets5_1）
 
-See `/jb-v5-v51-contracts` for complete reference and code patterns.
+请参阅 `/jb-v5-v51-contracts` 以获取完整的参考信息和代码示例。
 
-### Token Symbol Confusion
+### 代币符号混淆
 
-**CRITICAL:** The `tokenSymbol` field in Bendystraw returns the **base/accounting token** (e.g., "ETH" or "USDC"), NOT the project's issued ERC20 token symbol (e.g., "NANA" for Bananapus).
-
-To get the project's issued token symbol, you must query the blockchain directly:
+**重要提示：** Bendystraw中的`tokenSymbol`字段返回的是**基础/记账代币**（例如“ETH”或“USDC”），而不是项目发行的ERC20代币符号（例如Bananapus的“NANA”）。
+要获取项目发行的代币符号，需要直接查询区块链。
 
 ```javascript
 import { createPublicClient, http } from 'viem'
@@ -2740,18 +2736,11 @@ async function getProjectTokenSymbol(projectId: number, chainId: number) {
 }
 ```
 
-### GraphQL Type Inconsistencies
+### GraphQL类型不一致
 
-Different queries expect different GraphQL types for the same conceptual values. This causes silent failures if you use the wrong type:
+不同的查询对相同的概念值期望不同的GraphQL类型。如果使用错误的类型，可能会导致查询失败。
 
-| Query | projectId type | chainId type | version type |
-|-------|---------------|--------------|--------------|
-| `project()` | `Float!` | `Float!` | `Float!` |
-| `payEvents()` | `Int!` | `Int!` | `Int!` |
-| `participants()` | `Int!` | `Int` | - |
-| `projects()` | - | - | - |
-
-**Example of the issue:**
+**示例：**
 
 ```graphql
 # This works (project query uses Float)
@@ -2765,11 +2754,11 @@ query GetPayEvents($projectId: Int!, $chainId: Int!, $version: Int!) {
 }
 ```
 
-**Best practice:** Check the schema or use the GraphQL playground to verify expected types for each query.
+**最佳实践：** 查阅模式或使用GraphQL playground来验证每个查询的预期类型。
 
-### SuckerGroup Cross-Chain Aggregation
+### SuckerGroup跨链聚合
 
-For omnichain projects, use `suckerGroupId` to get aggregated data across all chains instead of querying each chain separately:
+对于多链项目，使用`suckerGroupId`来获取所有链上的汇总数据，而不是分别查询每个链：
 
 ```javascript
 // INEFFICIENT: Query each chain separately
@@ -2788,21 +2777,21 @@ if (project.suckerGroupId) {
 }
 ```
 
-The `suckerGroup` query returns:
-- Pre-aggregated totals (`balance`, `volume`, `tokenSupply`, etc.)
-- Per-chain breakdown via `projects_rel`
-- Consistent data without race conditions from parallel queries
+`suckerGroup`查询返回：
+- 预先汇总的总量（`balance`, `volume`, `tokenSupply`等）
+- 通过`projects_rel`获取每个链的详细数据
+- 由于并行查询，数据一致且不会出现竞争条件
 
-### ETH vs USDC Project Currency
+### ETH与USDC项目货币
 
-**CRITICAL:** Projects can use different base currencies (ETH or USDC). The `amount`, `balance`, and `volume` fields use different decimal precision depending on the currency:
+**重要提示：** 项目可以使用不同的基础货币（ETH或USDC）。`amount`, `balance`, `volume`字段根据货币的不同使用不同的小数精度：
 
-| Currency | Decimals | Code |
+| 货币 | 小数位数 | 代码 |
 |----------|----------|------|
 | ETH | 18 | 1 |
 | USDC | 6 | 2 |
 
-The currency info is available from the `suckerGroup` or `participants` query:
+货币信息可以从`suckerGroup`或`participants`查询中获取：
 
 ```graphql
 query GetSuckerGroup($id: String!) {
@@ -2818,7 +2807,7 @@ query GetSuckerGroup($id: String!) {
 }
 ```
 
-**Formatting amounts correctly:**
+**正确格式化金额：**
 
 ```javascript
 import { formatUnits } from 'viem'
@@ -2838,50 +2827,50 @@ formatAmount('1000000', 6, 2)    // "1.00 USDC"
 formatAmount('1000000000000000000', 18, 1)  // "1.0000 ETH"
 ```
 
-**Common mistake:** Using `formatEther()` (assumes 18 decimals) for USDC projects will show wildly incorrect values. Always detect the currency first and use `formatUnits()` with the correct decimals.
+**常见错误：** 对于USDC项目，如果使用`formatEther()`（假设18位小数），将会显示严重错误的数值。务必先检测货币类型，然后使用`formatUnits()`并指定正确的小数位数。
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Use server-side proxy** - Never expose API key in frontend code
-2. **Cache responses** - Data updates every ~1 minute, cache accordingly
-3. **Query only needed fields** - Reduces payload size and latency
-4. **Use pagination** - Don't fetch thousands of records at once
-5. **Handle nulls** - Fields like `volumeUsd`, `handle` may be null
-6. **Consider freshness** - Indexer may lag 1-2 blocks behind chain
-7. **Use filters** - Narrow queries by chainId, projectId when possible
-8. **Always include version** - V4 and V5 projects with the same projectId are completely different
-9. **Use BigInt for USD values** - volumeUsd is 18 decimals; parseFloat loses precision on large values
-10. **Group by projectId + version** - Same project across chains should be grouped, but different versions should not
-11. **Check GraphQL types** - Different queries expect Float vs Int for the same fields
-12. **Use suckerGroup for cross-chain data** - More efficient than querying each chain separately
-13. **Fetch token symbols from chain** - Bendystraw's tokenSymbol is the accounting token, not the project's issued token
-14. **Detect currency before formatting** - Use `formatUnits(wei, decimals)` not `formatEther(wei)` since USDC projects use 6 decimals
-
----
-
-## Use Cases
-
-- **Project dashboards** - Display stats, activity, holders
-- **Unified activity feeds** - Use `activityEvents` for all-in-one activity streams
-- **Governance snapshots** - Get token balances at specific timestamps
-- **Analytics** - Track trends, volumes, contributor growth via `projectMoments`
-- **Portfolio tracking** - Use `wallet` query for user positions across all projects
-- **Omnichain aggregation** - Unified view via `suckerGroup` and `suckerGroupMoments`
-- **Airdrops** - Generate recipient lists from holder data
-- **Loan dashboards** - Track RevLoans borrowing, repayments, liquidations
-- **NFT galleries** - Full tier metadata via `nftTiers` including SVGs and pricing
-- **Cross-chain tracking** - Monitor token bridging via `suckerTransactions`
-- **Treasury management** - Track payouts and allowance usage
+1. **使用服务器端代理** - 绝不要在前端代码中暴露API密钥
+2. **缓存响应** - 数据大约每1分钟更新一次，相应地进行缓存
+3. **仅查询需要的字段** - 减少数据量并降低延迟
+4. **使用分页** - 避免一次性获取大量记录
+5. **处理空值** - 如`volumeUsd`, `handle`等字段可能为空
+6. **考虑数据更新频率** - 索引器的更新可能滞后1-2个区块
+7. **使用过滤条件** - 可能时根据chainId, projectId进行过滤
+8. **始终包含版本信息** - 具有相同projectId的V4和V5项目应被分组
+9. **对USD值使用BigInt类型** - `volumeUsd`使用18位小数；`parseFloat`在处理大数值时会丢失精度
+10. **按projectId + version分组** - 同一项目在不同链上应被分组，但不同版本不应被合并
+11. **检查GraphQL类型** - 不同查询对相同字段的类型要求可能不同（Float或Int）
+12. **使用suckerGroup获取跨链数据** - 比分别查询每个链更高效
+13. **从链上获取代币符号** - Bendystraw的`tokenSymbol`表示记账代币，而非项目发行的代币
+14. **在格式化前检测货币类型** - 使用`formatUnits(wei, decimals)`而不是`formatEther(wei)`，因为USDC项目使用6位小数
 
 ---
 
-## Related Skills
+## 使用场景
 
-- `/jb-relayr` - Execute multi-chain transactions
-- `/jb-omnichain-ui` - Build UIs with Bendystraw data
-- `/jb-query` - Direct on-chain queries via cast/ethers
-- `/jb-revloans` - RevLoans protocol integration
-- `/jb-loan-queries` - Loan-specific query patterns
-- `/jb-nft-gallery-ui` - Build NFT galleries with tier data
+- **项目仪表板** - 显示统计数据、活动情况和持有者信息
+- **统一活动流** - 使用`activityEvents`获取所有项目的全方位活动信息
+- **治理快照** - 获取特定时间点的代币余额
+- **数据分析** - 通过`projectMoments`跟踪趋势、交易量和贡献者增长
+- **投资组合追踪** - 使用`wallet`查询用户在不同项目中的投资情况
+- **多链聚合** - 通过`suckerGroup`和`suckerGroupMoments`获取统一视图
+- **空投** - 根据持有者数据生成接收者列表
+- **贷款仪表板** - 跟踪RevLoans的借款、偿还和清算情况
+- **NFT画廊** - 通过`nftTiers`获取NFT的完整层级信息（包括SVG和价格）
+- **跨链追踪** - 通过`suckerTransactions`监控代币桥接情况
+- **资金管理** - 跟踪支付和代币使用情况
+
+---
+
+## 相关技能
+
+- `/jb-relayr` - 执行多链交易
+- `/jb-omnichain-ui` - 使用Bendystraw数据构建用户界面
+- `/jb-query` - 通过cast/ethers直接进行链上查询
+- `/jb-revloans` - 集成RevLoans协议
+- `/jb-loan-queries` - 专门用于贷款的查询模式
+- `/jb-nft-gallery-ui` - 使用`nftTiers`构建NFT画廊

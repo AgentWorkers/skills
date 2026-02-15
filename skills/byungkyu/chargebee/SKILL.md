@@ -15,9 +15,9 @@ metadata:
 
 # Chargebee
 
-Access the Chargebee API with managed OAuth authentication. Manage subscriptions, customers, invoices, and billing workflows.
+通过管理的OAuth认证访问Chargebee API，以管理订阅、客户、发票和计费流程。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List customers
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/chargebee/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Chargebee API endpoint path. The gateway proxies requests to `{subdomain}.chargebee.com` (automatically replaced with your connection config) and automatically injects authentication.
+请将 `{native-api-path}` 替换为实际的Chargebee API端点路径。该网关会将请求代理到 `{subdomain}.chargebee.com`（会根据您的连接配置自动替换），并自动处理身份验证。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 注册或登录账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Chargebee connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Chargebee 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Chargebee connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Chargebee 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,25 +138,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Customers
+### 客户
 
-#### List Customers
+#### 列出客户
 
 ```bash
 GET /chargebee/api/v2/customers?limit=10
 ```
 
-#### Get Customer
+#### 获取客户信息
 
 ```bash
 GET /chargebee/api/v2/customers/{customerId}
 ```
 
-#### Create Customer
+#### 创建客户
 
 ```bash
 POST /chargebee/api/v2/customers
@@ -165,7 +165,7 @@ Content-Type: application/x-www-form-urlencoded
 first_name=John&last_name=Doe&email=john@example.com
 ```
 
-#### Update Customer
+#### 更新客户信息
 
 ```bash
 POST /chargebee/api/v2/customers/{customerId}
@@ -174,21 +174,21 @@ Content-Type: application/x-www-form-urlencoded
 first_name=Jane
 ```
 
-### Subscriptions
+### 订阅
 
-#### List Subscriptions
+#### 列出订阅信息
 
 ```bash
 GET /chargebee/api/v2/subscriptions?limit=10
 ```
 
-#### Get Subscription
+#### 获取订阅信息
 
 ```bash
 GET /chargebee/api/v2/subscriptions/{subscriptionId}
 ```
 
-#### Create Subscription
+#### 创建订阅
 
 ```bash
 POST /chargebee/api/v2/subscriptions
@@ -197,7 +197,7 @@ Content-Type: application/x-www-form-urlencoded
 plan_id=basic-plan&customer[email]=john@example.com&customer[first_name]=John
 ```
 
-#### Cancel Subscription
+#### 取消订阅
 
 ```bash
 POST /chargebee/api/v2/subscriptions/{subscriptionId}/cancel
@@ -206,39 +206,39 @@ Content-Type: application/x-www-form-urlencoded
 end_of_term=true
 ```
 
-### Item Prices (Product Catalog 2.0)
+### 产品价格（产品目录 2.0）
 
-#### List Item Prices
+#### 列出产品价格
 
 ```bash
 GET /chargebee/api/v2/item_prices?limit=10
 ```
 
-### Items
+### 产品信息
 
-#### List Items
+#### 列出产品
 
 ```bash
 GET /chargebee/api/v2/items?limit=10
 ```
 
-### Invoices
+### 发票
 
-#### List Invoices
+#### 列出发票信息
 
 ```bash
 GET /chargebee/api/v2/invoices?limit=10
 ```
 
-#### Download Invoice PDF
+#### 下载发票 PDF
 
 ```bash
 POST /chargebee/api/v2/invoices/{invoiceId}/pdf
 ```
 
-### Hosted Pages
+### 托管页面
 
-#### Checkout New Subscription
+#### 创建新的订阅页面
 
 ```bash
 POST /chargebee/api/v2/hosted_pages/checkout_new_for_items
@@ -247,9 +247,9 @@ Content-Type: application/x-www-form-urlencoded
 subscription[plan_id]=basic-plan&customer[email]=john@example.com
 ```
 
-### Portal Sessions
+### 门户会话
 
-#### Create Portal Session
+#### 创建门户会话
 
 ```bash
 POST /chargebee/api/v2/portal_sessions
@@ -258,7 +258,7 @@ Content-Type: application/x-www-form-urlencoded
 customer[id]=cust_123
 ```
 
-## Filtering
+## 过滤
 
 ```bash
 GET /chargebee/api/v2/subscriptions?status[is]=active
@@ -266,7 +266,7 @@ GET /chargebee/api/v2/customers?email[is]=john@example.com
 GET /chargebee/api/v2/invoices?date[after]=1704067200
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -294,34 +294,34 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Uses form-urlencoded data for POST requests
-- Nested objects use bracket notation: `customer[email]`
-- Timestamps are Unix timestamps
-- List responses include `next_offset` for pagination
-- Product Catalog 2.0: use `item_prices` and `items`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- POST 请求使用 `form-urlencoded` 格式的数据。
+- 嵌套对象使用方括号表示法：`customer[email]`。
+- 时间戳为 Unix 时间戳。
+- 列表响应包含 `next_offset` 用于分页。
+- 产品目录 2.0：使用 `item_prices` 和 `items`。
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 选项来禁用全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开，这可能导致 “无效的 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Chargebee connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Chargebee API |
+| 400 | 未找到 Chargebee 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 Chargebee API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -332,19 +332,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `chargebee`. For example:
+1. 确保您的 URL 路径以 `chargebee` 开头。例如：
+- 正确：`https://gateway.maton.ai/chargebee/api/v2/customers`
+- 错误：`https://gateway.maton.ai/api/v2/customers`
 
-- Correct: `https://gateway.maton.ai/chargebee/api/v2/customers`
-- Incorrect: `https://gateway.maton.ai/api/v2/customers`
+## 资源
 
-## Resources
-
-- [Chargebee API Overview](https://apidocs.chargebee.com/docs/api)
-- [Customers](https://apidocs.chargebee.com/docs/api/customers)
-- [Subscriptions](https://apidocs.chargebee.com/docs/api/subscriptions)
-- [Invoices](https://apidocs.chargebee.com/docs/api/invoices)
-- [Hosted Pages](https://apidocs.chargebee.com/docs/api/hosted_pages)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Chargebee API 概述](https://apidocs.chargebee.com/docs/api)
+- [客户](https://apidocs.chargebee.com/docs/api/customers)
+- [订阅](https://apidocs.chargebee.com/docs/api/subscriptions)
+- [发票](https://apidocs.chargebee.com/docs/api/invoices)
+- [托管页面](https://apidocs.chargebee.com/docs/api/hosted_pages)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

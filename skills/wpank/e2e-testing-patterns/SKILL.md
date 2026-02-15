@@ -2,17 +2,16 @@
 name: e2e-testing-patterns
 model: standard
 category: testing
-description: Build reliable, fast E2E test suites with Playwright and Cypress. Critical user journey coverage, flaky test elimination, CI/CD integration.
+description: 使用 Playwright 和 Cypress 构建可靠、高效的端到端（E2E）测试套件。这些测试套件能够覆盖用户的关键使用流程，消除那些容易出错的测试（即“不稳定”的测试），并实现与持续集成/持续部署（CI/CD）流程的完美集成。
 version: 1.0
 keywords: [e2e, end-to-end, playwright, cypress, browser testing, integration tests, test automation, flaky tests, visual regression]
 ---
 
-# E2E Testing Patterns
+# 端到端（E2E）测试模式
 
-> Test what users do, not how code works. E2E tests prove the system works as a whole — they're your confidence to ship.
+> 测试用户的行为，而不是代码的运作方式。端到端测试能够验证整个系统的稳定性——它们是你放心发布产品的关键。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,28 +19,27 @@ keywords: [e2e, end-to-end, playwright, cypress, browser testing, integration te
 npx clawhub@latest install e2e-testing-patterns
 ```
 
+---
+
+## 本技能的作用
+
+提供构建端到端测试套件的模式，这些模式可以：
+- 在用户发现问题之前捕获代码回归错误
+- 以足够的速度运行，以适应持续集成（CI）和持续部署（CD）流程
+- 保持稳定性（避免测试结果不稳定）
+- 充分覆盖关键的用户操作流程，同时避免过度测试
+
+## 适用场景
+
+- **为Web应用程序实现端到端测试自动化**
+- **调试那些间歇性失败的测试**
+- **设置包含浏览器测试的CI/CD测试管道**
+- **测试关键的用户工作流程（如登录、结账、注册）**
+- **决定使用端到端测试还是单元测试/集成测试**
 
 ---
 
-## WHAT This Skill Does
-
-Provides patterns for building end-to-end test suites that:
-- Catch regressions before users do
-- Run fast enough for CI/CD
-- Remain stable (no flaky failures)
-- Cover critical user journeys without over-testing
-
-## WHEN To Use
-
-- **Implementing E2E test automation** for a web application
-- **Debugging flaky tests** that fail intermittently
-- **Setting up CI/CD test pipelines** with browser tests
-- **Testing critical user workflows** (auth, checkout, signup)
-- **Choosing what to test with E2E** vs unit/integration tests
-
----
-
-## Test Pyramid — Know Your Layer
+## 测试金字塔——了解各层的用途
 
 ```
         /\
@@ -53,35 +51,34 @@ Provides patterns for building end-to-end test suites that:
   /────────────\
 ```
 
-### What E2E Tests Are For
+### 端到端测试的用途
 
-| E2E Tests ✓ | NOT E2E Tests ✗ |
+| 端到端测试 ✓ | 非端到端测试 ✗ |
 |-------------|-----------------|
-| Critical user journeys (login → dashboard → action → logout) | Unit-level logic (use unit tests) |
-| Multi-step flows (checkout, onboarding wizard) | API contracts (use integration tests) |
-| Cross-browser compatibility | Edge cases (too slow, use unit tests) |
-| Real API integration | Internal implementation details |
-| Authentication flows | Component visual states (use Storybook) |
+| 关键的用户操作流程（登录 → 仪表板 → 执行操作 → 登出） | 单元级逻辑（使用单元测试） |
+| 多步骤流程（如结账、入职向导） | API接口（使用集成测试） |
+| 跨浏览器兼容性 | 边缘情况（如果测试速度过慢，使用单元测试） |
+| 真实的API集成 | 内部实现细节 |
 
-**Rule of thumb:** If it would devastate your business to break, E2E test it. If it's just inconvenient, test it faster with unit/integration tests.
+**经验法则：** 如果某个功能的故障会对业务造成严重影响，就对其进行端到端测试；如果只是带来不便，可以使用单元测试或集成测试更快地解决问题。
 
 ---
 
-## Core Principles
+## 核心原则
 
-| Principle | Why | How |
+| 原则 | 原因 | 实施方法 |
 |-----------|-----|-----|
-| **Test behavior, not implementation** | Survives refactors | Assert on user-visible outcomes, not DOM structure |
-| **Independent tests** | Parallelizable, debuggable | Each test creates its own data, cleans up after |
-| **Deterministic waits** | No flakiness | Wait for conditions, not fixed timeouts |
-| **Stable selectors** | Survives UI changes | Use `data-testid`, roles, labels — never CSS classes |
-| **Fast feedback** | Developers run them | Mock external services, parallelize, shard |
+| **测试行为，而非实现细节** | 可以在重构后仍然有效 | 验证用户可见的结果，而不是DOM结构 |
+| **独立的测试** | 可并行执行、便于调试 | 每个测试都会生成自己的数据，并在完成后清理环境 |
+| **确定性的等待时间** | 避免测试结果不稳定 | 等待特定条件满足，而不是使用固定的超时时间 |
+| **稳定的选择器** | 可以在UI变更后仍然使用 | 使用`dataTestId`、角色名称、标签等选择器，避免依赖CSS类 |
+| **快速反馈** | 开发者可以立即运行测试 | 使用模拟外部服务、并行执行测试 |
 
 ---
 
-## Playwright Patterns
+## Playwright测试模式
 
-### Configuration
+### 配置
 
 ```typescript
 // playwright.config.ts
@@ -111,9 +108,9 @@ export default defineConfig({
 });
 ```
 
-### Pattern: Page Object Model
+### 模式：页面对象模型（Page Object Model）
 
-Encapsulate page logic. Tests read like user stories.
+将页面逻辑封装起来。测试代码应该像用户故事一样易于阅读。
 
 ```typescript
 // pages/LoginPage.ts
@@ -159,9 +156,9 @@ test("successful login redirects to dashboard", async ({ page }) => {
 });
 ```
 
-### Pattern: Fixtures for Test Data
+### 模式：测试数据管理工具（Fixtures）
 
-Create and clean up test data automatically.
+自动创建和清理测试数据。
 
 ```typescript
 // fixtures/test-data.ts
@@ -190,9 +187,9 @@ test("user can update profile", async ({ page, testUser }) => {
 });
 ```
 
-### Pattern: Smart Waiting
+### 模式：智能等待（Smart Waiting）
 
-Never use fixed timeouts. Wait for specific conditions.
+永远不要使用固定的超时时间。等待特定的条件满足。
 
 ```typescript
 // ❌ FLAKY: Fixed timeout
@@ -214,9 +211,9 @@ await page.getByRole("button", { name: "Load" }).click();
 await responsePromise;
 ```
 
-### Pattern: Network Mocking
+### 模式：网络模拟（Network Mocking）
 
-Isolate tests from real external services.
+将测试与真实的外部服务隔离开来。
 
 ```typescript
 test("shows error when API fails", async ({ page }) => {
@@ -245,9 +242,9 @@ test("handles slow network gracefully", async ({ page }) => {
 
 ---
 
-## Cypress Patterns
+## Cypress测试模式
 
-### Custom Commands
+### 自定义命令
 
 ```typescript
 // cypress/support/commands.ts
@@ -277,7 +274,7 @@ cy.login("user@example.com", "password");
 cy.dataCy("submit-button").click();
 ```
 
-### Network Intercepts
+### 网络拦截（Network Interceptions）
 
 ```typescript
 // Mock API
@@ -293,16 +290,16 @@ cy.get('[data-testid="user-list"]').children().should("have.length", 1);
 
 ---
 
-## Selector Strategy
+## 选择器策略
 
-| Priority | Selector Type | Example | Why |
+| 优先级 | 选择器类型 | 例子 | 原因 |
 |----------|--------------|---------|-----|
-| 1 | **Role + name** | `getByRole("button", { name: "Submit" })` | Accessible, user-facing |
-| 2 | **Label** | `getByLabel("Email address")` | Accessible, semantic |
-| 3 | **data-testid** | `getByTestId("checkout-form")` | Stable, explicit for testing |
-| 4 | **Text content** | `getByText("Welcome back")` | User-facing |
-| ❌ | CSS classes | `.btn-primary` | Breaks on styling changes |
-| ❌ | DOM structure | `div > form > input:nth-child(2)` | Breaks on any restructure |
+| 1 | **角色 + 名称** | `getByRole("button", { name: "Submit" })` | 易于使用，用户友好 |
+| 2 | **标签** | `getByLabel("Email address")` | 易于理解，语义明确 |
+| 3 | **dataTestId** | `getByTestId("checkout-form")` | 稳定可靠，专为测试设计 |
+| 4 | **文本内容** | `getByText("Welcome back")` | 用户可感知的内容 |
+| ❌ | CSS类 | `.btn-primary` | 受样式变化影响 |
+| ❌ | DOM结构 | `div > form > input:nth-child(2)` | 受页面结构变化影响 |
 
 ```typescript
 // ❌ BAD: Brittle selectors
@@ -315,52 +312,15 @@ page.getByLabel("Email address").fill("user@example.com");
 page.getByTestId("email-input").fill("user@example.com");
 ```
 
----
-
-## Visual Regression Testing
-
-```typescript
-// Playwright visual comparisons
-test("homepage looks correct", async ({ page }) => {
-  await page.goto("/");
-  await expect(page).toHaveScreenshot("homepage.png", {
-    fullPage: true,
-    maxDiffPixels: 100,
-  });
-});
-
-test("button states", async ({ page }) => {
-  const button = page.getByRole("button", { name: "Submit" });
-
-  await expect(button).toHaveScreenshot("button-default.png");
-
-  await button.hover();
-  await expect(button).toHaveScreenshot("button-hover.png");
-});
-```
+## 可视化回归测试（Visual Regression Testing）
 
 ---
 
-## Accessibility Testing
-
-```typescript
-// npm install @axe-core/playwright
-import AxeBuilder from "@axe-core/playwright";
-
-test("page has no accessibility violations", async ({ page }) => {
-  await page.goto("/");
-
-  const results = await new AxeBuilder({ page })
-    .exclude("#third-party-widget")  // Exclude things you can't control
-    .analyze();
-
-  expect(results.violations).toEqual([]);
-});
-```
+## 可访问性测试（Accessibility Testing）
 
 ---
 
-## Debugging Failed Tests
+## 调试失败的测试
 
 ```bash
 # Run in headed mode (see the browser)
@@ -373,43 +333,25 @@ npx playwright test --debug
 npx playwright show-report
 ```
 
-```typescript
-// Add test steps for better failure reports
-test("checkout flow", async ({ page }) => {
-  await test.step("Add item to cart", async () => {
-    await page.goto("/products");
-    await page.getByRole("button", { name: "Add to Cart" }).click();
-  });
-
-  await test.step("Complete checkout", async () => {
-    await page.goto("/checkout");
-    // ... if this fails, you know which step
-  });
-});
-
-// Pause for manual inspection
-await page.pause();
-```
-
 ---
 
-## Flaky Test Checklist
+## 避免测试结果不稳定的方法
 
-When a test fails intermittently, check:
+当测试结果间歇性地失败时，请检查以下问题：
 
-| Issue | Fix |
+| 问题 | 解决方案 |
 |-------|-----|
-| Fixed `waitForTimeout()` calls | Replace with `waitForSelector()` or expect assertions |
-| Race conditions on page load | Wait for `networkidle` or specific elements |
-| Test data pollution | Ensure tests create/clean their own data |
-| Animation timing | Wait for animations to complete or disable them |
-| Viewport inconsistency | Set explicit viewport in config |
-| Random test order issues | Tests must be independent |
-| Third-party service flakiness | Mock external APIs |
+| 固定的`waitForTimeout()`调用 | 更改为`waitForSelector()`或使用断言 |
+| 页面加载时的竞争条件 | 等待`networkidle`事件或特定元素加载完成 |
+| 测试数据污染 | 确保测试生成并清理自己的数据 |
+| 动画执行时间问题 | 等待动画完成或禁用动画 |
+| 视口设置不一致 | 在配置中指定明确的视口大小 |
+| 测试顺序问题 | 测试应保持独立性 |
+| 第三方服务的问题 | 模拟外部API的行为 |
 
 ---
 
-## CI/CD Integration
+## 持续集成与持续部署（CI/CD）集成
 
 ```yaml
 # GitHub Actions example
@@ -436,22 +378,22 @@ jobs:
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情
 
-1. **NEVER use fixed `waitForTimeout()` or `cy.wait(ms)`** — they cause flaky tests and slow down suites
-2. **NEVER rely on CSS classes or DOM structure for selectors** — use roles, labels, or data-testid
-3. **NEVER share state between tests** — each test must be completely independent
-4. **NEVER test implementation details** — test what users see and do, not internal structure
-5. **NEVER skip cleanup** — always delete test data you created, even on failure
-6. **NEVER test everything with E2E** — reserve for critical paths; use faster tests for edge cases
-7. **NEVER ignore flaky tests** — fix them immediately or delete them; a flaky test is worse than no test
-8. **NEVER hardcode test data in selectors** — use dynamic waits for content that varies
+1. **绝对不要使用固定的`waitForTimeout()`或`cy.wait(ms)`**——这些会导致测试结果不稳定，并降低测试效率 |
+2. **绝对不要依赖CSS类或DOM结构作为选择器**——使用角色名称、标签或`dataTestId` |
+3. **绝对不要在测试之间共享状态**——每个测试都应保持独立 |
+4. **绝对不要测试实现细节**——测试用户看到的内容和操作，而不是内部结构 |
+5. **绝对不要省略测试后的清理步骤**——即使测试失败，也要删除生成的测试数据 |
+6. **不要对所有功能都使用端到端测试**——仅在关键路径上使用端到端测试；对于边缘情况，使用更快速的测试方法 |
+7. **不要忽略不稳定的测试**——立即修复这些问题，或者直接删除这些测试；不稳定的测试比没有测试更糟糕 |
+8. **不要在选择器中硬编码测试数据**——对于可能变化的内容，应使用动态的等待策略 |
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Playwright Commands
+### Playwright命令
 
 ```typescript
 // Navigation
@@ -474,7 +416,7 @@ await expect(locator).toBeEnabled();
 await expect(locator).toHaveCount(3);
 ```
 
-### Cypress Commands
+### Cypress命令
 
 ```typescript
 // Navigation

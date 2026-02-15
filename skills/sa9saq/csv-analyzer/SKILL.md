@@ -1,22 +1,26 @@
 ---
-description: Analyze CSV/TSV files with statistics, data profiling, and ASCII visualizations.
+description: 分析 CSV/TSV 文件，提供统计信息、数据概览以及 ASCII 可视化结果。
 ---
 
-# CSV Analyzer
+# CSV 分析器
 
-Analyze CSV/TSV files: statistics, data profiling, and visualizations.
+用于分析 CSV/TSV 文件：提供统计信息、数据分析和可视化展示功能。
 
-## Instructions
+## 使用说明
 
-1. **Read and detect**: Identify delimiter (comma, tab, pipe), encoding, row count
-2. **Preview**: Show first 5 rows as a formatted table
-3. **Profile each column**:
+1. **读取与检测**：
+   - 确定文件的分隔符（逗号、制表符、竖线）和编码格式；
+   - 计算文件的总行数。
 
-   **Numeric columns**: count, mean, median, min, max, std dev, null count
-   **String columns**: count, unique values, top 5 most frequent, avg length
-   **Date columns**: min date, max date, range
+2. **预览**：
+   - 以格式化表格的形式显示文件的前 5 行。
 
-4. **Summary report**:
+3. **分析每列的数据**：
+   - **数值型列**：统计数量、计算平均值、中位数、最小值、最大值及标准差；统计空值的数量。
+   - **字符串型列**：统计唯一值的数量、出现频率最高的 5 个值以及字符串的平均长度。
+   - **日期型列**：获取最早和最晚的日期以及日期范围。
+
+4. **生成摘要报告**：
    ```
    📊 CSV Analysis — data.csv
    Rows: 10,432 | Columns: 8 | Size: 2.1 MB
@@ -28,7 +32,7 @@ Analyze CSV/TSV files: statistics, data profiling, and visualizations.
    | signup    | date    | 10,432   | 1,203  | 2020-01 to 2025-01 |
    ```
 
-5. **Visualizations** (ASCII):
+5. **数据可视化**（以 ASCII 格式显示）：
    ```bash
    # Histogram
    awk -F',' 'NR>1{print int($3/10)*10}' data.csv | sort -n | uniq -c | awk '{printf "%3d-%3d: %s (%d)\n", $2, $2+9, substr("████████████████████",1,$1/5), $1}'
@@ -37,15 +41,15 @@ Analyze CSV/TSV files: statistics, data profiling, and visualizations.
    awk -F',' 'NR>1{print $2}' data.csv | sort | uniq -c | sort -rn | head -10
    ```
 
-## Edge Cases
+## 特殊情况处理
 
-- **Large files (>100MB)**: Sample first 10,000 rows; report that sampling was used
-- **Quoted fields**: Handle `"field, with comma"` correctly — use proper CSV parsing
-- **Mixed types**: If a column has mixed numeric/string, classify as string
-- **Empty file**: Report immediately; don't error out
-- **Encoding issues**: Try UTF-8 first, fall back to Latin-1; report if issues detected
+- **大文件（>100MB）**：仅读取前 10,000 行，并在报告中说明采用了采样方法。
+- **包含引号的字段**：正确处理格式为 `"field, with comma"` 的数据（使用正确的 CSV 解析方式）。
+- **混合类型数据**：如果某一列同时包含数值和字符串类型的数据，应将其归类为字符串类型。
+- **空文件**：立即报告该文件的存在情况，不要出现错误。
+- **编码问题**：首先尝试使用 UTF-8 编码；如果无法解析，则使用 Latin-1 编码；若遇到编码问题，请在报告中说明。
 
-## Requirements
+## 系统要求
 
-- Standard Unix tools: `awk`, `sort`, `uniq`, `wc`, `head`
-- No API keys or external dependencies
+- 需要标准的 Unix 工具：`awk`、`sort`、`uniq`、`wc`、`head`。
+- 无需使用 API 密钥或依赖外部服务。

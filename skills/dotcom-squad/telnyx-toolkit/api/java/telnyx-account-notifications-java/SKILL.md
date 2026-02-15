@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Notifications - Java
+# Telnyx 账户通知 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List notification channels
+## 列出通知渠道
 
-List notification channels.
+列出所有通知渠道。
 
 `GET /notification_channels`
 
@@ -44,9 +44,9 @@ import com.telnyx.sdk.models.notificationchannels.NotificationChannelListParams;
 NotificationChannelListPage page = client.notificationChannels().list();
 ```
 
-## Create a notification channel
+## 创建通知渠道
 
-Create a notification channel.
+创建一个新的通知渠道。
 
 `POST /notification_channels`
 
@@ -57,9 +57,9 @@ import com.telnyx.sdk.models.notificationchannels.NotificationChannelCreateRespo
 NotificationChannelCreateResponse notificationChannel = client.notificationChannels().create();
 ```
 
-## Get a notification channel
+## 获取通知渠道信息
 
-Get a notification channel.
+获取指定通知渠道的详细信息。
 
 `GET /notification_channels/{id}`
 
@@ -70,9 +70,9 @@ import com.telnyx.sdk.models.notificationchannels.NotificationChannelRetrieveRes
 NotificationChannelRetrieveResponse notificationChannel = client.notificationChannels().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update a notification channel
+## 更新通知渠道
 
-Update a notification channel.
+更新通知渠道的配置。
 
 `PATCH /notification_channels/{id}`
 
@@ -88,9 +88,9 @@ NotificationChannelUpdateParams params = NotificationChannelUpdateParams.builder
 NotificationChannelUpdateResponse notificationChannel = client.notificationChannels().update(params);
 ```
 
-## Delete a notification channel
+## 删除通知渠道
 
-Delete a notification channel.
+删除指定的通知渠道。
 
 `DELETE /notification_channels/{id}`
 
@@ -101,9 +101,9 @@ import com.telnyx.sdk.models.notificationchannels.NotificationChannelDeleteRespo
 NotificationChannelDeleteResponse notificationChannel = client.notificationChannels().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List all Notifications Events Conditions
+## 列出所有通知事件条件
 
-Returns a list of your notifications events conditions.
+返回所有通知事件的条件设置。
 
 `GET /notification_event_conditions`
 
@@ -114,9 +114,9 @@ import com.telnyx.sdk.models.notificationeventconditions.NotificationEventCondit
 NotificationEventConditionListPage page = client.notificationEventConditions().list();
 ```
 
-## List all Notifications Events
+## 列出所有通知事件
 
-Returns a list of your notifications events.
+返回所有已发生的通知事件列表。
 
 `GET /notification_events`
 
@@ -127,9 +127,9 @@ import com.telnyx.sdk.models.notificationevents.NotificationEventListParams;
 NotificationEventListPage page = client.notificationEvents().list();
 ```
 
-## List all Notifications Profiles
+## 列出所有通知配置文件
 
-Returns a list of your notifications profiles.
+返回所有通知配置文件的列表。
 
 `GET /notification_profiles`
 
@@ -140,9 +140,9 @@ import com.telnyx.sdk.models.notificationprofiles.NotificationProfileListParams;
 NotificationProfileListPage page = client.notificationProfiles().list();
 ```
 
-## Create a notification profile
+## 创建通知配置文件
 
-Create a notification profile.
+创建一个新的通知配置文件。
 
 `POST /notification_profiles`
 
@@ -153,9 +153,9 @@ import com.telnyx.sdk.models.notificationprofiles.NotificationProfileCreateRespo
 NotificationProfileCreateResponse notificationProfile = client.notificationProfiles().create();
 ```
 
-## Get a notification profile
+## 获取通知配置文件信息
 
-Get a notification profile.
+获取指定通知配置文件的详细信息。
 
 `GET /notification_profiles/{id}`
 
@@ -166,9 +166,9 @@ import com.telnyx.sdk.models.notificationprofiles.NotificationProfileRetrieveRes
 NotificationProfileRetrieveResponse notificationProfile = client.notificationProfiles().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update a notification profile
+## 更新通知配置文件
 
-Update a notification profile.
+更新通知配置文件的设置。
 
 `PATCH /notification_profiles/{id}`
 
@@ -184,9 +184,9 @@ NotificationProfileUpdateParams params = NotificationProfileUpdateParams.builder
 NotificationProfileUpdateResponse notificationProfile = client.notificationProfiles().update(params);
 ```
 
-## Delete a notification profile
+## 删除通知配置文件
 
-Delete a notification profile.
+删除指定的通知配置文件。
 
 `DELETE /notification_profiles/{id}`
 
@@ -197,9 +197,9 @@ import com.telnyx.sdk.models.notificationprofiles.NotificationProfileDeleteRespo
 NotificationProfileDeleteResponse notificationProfile = client.notificationProfiles().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List notification settings
+## 查看通知设置
 
-List notification settings.
+查看所有通知的设置信息。
 
 `GET /notification_settings`
 
@@ -210,9 +210,9 @@ import com.telnyx.sdk.models.notificationsettings.NotificationSettingListParams;
 NotificationSettingListPage page = client.notificationSettings().list();
 ```
 
-## Add a Notification Setting
+## 添加通知设置
 
-Add a notification setting.
+添加一个新的通知设置。
 
 `POST /notification_settings`
 
@@ -223,9 +223,9 @@ import com.telnyx.sdk.models.notificationsettings.NotificationSettingCreateRespo
 NotificationSettingCreateResponse notificationSetting = client.notificationSettings().create();
 ```
 
-## Get a notification setting
+## 获取通知设置信息
 
-Get a notification setting.
+获取指定通知设置的详细信息。
 
 `GET /notification_settings/{id}`
 
@@ -236,9 +236,9 @@ import com.telnyx.sdk.models.notificationsettings.NotificationSettingRetrieveRes
 NotificationSettingRetrieveResponse notificationSetting = client.notificationSettings().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete a notification setting
+## 删除通知设置
 
-Delete a notification setting.
+删除指定的通知设置。
 
 `DELETE /notification_settings/{id}`
 

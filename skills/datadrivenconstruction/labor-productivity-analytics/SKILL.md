@@ -1,24 +1,24 @@
 ---
 slug: "labor-productivity-analytics"
 display_name: "Labor Productivity Analytics"
-description: "Analyze construction labor productivity using data analytics. Track worker performance, identify inefficiencies, predict resource needs, and optimize crew allocation for maximum efficiency."
+description: "利用数据分析来提升建筑劳动力的生产力。监控工人的工作表现，识别低效环节，预测资源需求，并优化人员分配，以实现最高效率。"
 ---
 
-# Labor Productivity Analytics
+# 劳动生产率分析
 
-## Overview
+## 概述
 
-This skill implements data-driven labor productivity analysis for construction projects. Track, measure, and optimize workforce performance to improve project efficiency and reduce costs.
+本技能实现了基于数据的建筑项目劳动生产率分析功能。通过跟踪、衡量和优化劳动力表现，提升项目效率并降低成本。
 
-**Capabilities:**
-- Productivity metrics calculation
-- Time series analysis
-- Crew optimization
-- Resource forecasting
-- Benchmarking
-- Variance analysis
+**主要功能：**
+- 生产率指标计算
+- 时间序列分析
+- 人员配置优化
+- 资源预测
+- 基准测试
+- 差异分析
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -88,9 +88,9 @@ for m in metrics:
     print(f"{m.activity}: {m.hours_per_unit:.3f} h/unit (variance: {m.variance_pct:+.1f}%)")
 ```
 
-## Comprehensive Productivity System
+## 全面生产率系统
 
-### Data Collection and Management
+### 数据收集与管理
 
 ```python
 from dataclasses import dataclass, field
@@ -222,7 +222,7 @@ class ProductivityDatabase:
         return pd.DataFrame(data)
 ```
 
-### Productivity Analysis Engine
+### 生产率分析引擎
 
 ```python
 from scipy import stats
@@ -400,7 +400,7 @@ class ProductivityAnalyzer:
         return issues
 ```
 
-### Resource Forecasting
+### 资源预测
 
 ```python
 from sklearn.linear_model import LinearRegression
@@ -533,7 +533,7 @@ class ResourceForecaster:
         }
 ```
 
-### Reporting and Visualization
+### 报告与可视化
 
 ```python
 def generate_productivity_report(analyzer: ProductivityAnalyzer,
@@ -565,25 +565,23 @@ def generate_productivity_report(analyzer: ProductivityAnalyzer,
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Trade | Typical Unit Rate | Unit | Notes |
+| 工种 | 典型单位费率 | 单位 | 备注 |
 |-------|-------------------|------|-------|
-| Carpenter | 0.5-1.0 | m²/hr | Formwork |
-| Ironworker | 15-25 | kg/hr | Rebar tying |
-| Mason | 0.3-0.5 | m²/hr | Brickwork |
-| Electrician | 2-4 | points/hr | Rough-in |
-| Plumber | 2-3 | fixtures/hr | Install |
-| Painter | 3-5 | m²/hr | Interior |
+| 木匠 | 0.5-1.0 | 平方米/小时 | 模板安装 |
+| 铁匠 | 15-25 | 千克/小时 | 钢筋绑扎 |
+| 砌砖工 | 0.3-0.5 | 平方米/小时 | 砌砖 |
+| 电工 | 2-4 | 个/小时 | 基础电气安装 |
+| 水管工 | 2-3 | 个/小时 | 安装水管配件 |
+| 油漆工 | 3-5 | 平方米/小时 | 室内墙面涂漆 |
 
-## Resources
+## 参考资源
+- **RS Means 劳动费率**：行业基准数据
+- **AGC 生产率标准**：https://www.agc.org
+- **DDC 网站**：https://datadrivenconstruction.io
 
-- **RS Means Labor Rates**: Industry benchmarks
-- **AGC Productivity Standards**: https://www.agc.org
-- **DDC Website**: https://datadrivenconstruction.io
-
-## Next Steps
-
-- See `cost-prediction` for labor cost forecasting
-- See `4d-simulation` for schedule integration
-- See `risk-assessment-ml` for productivity risk
+## 下一步操作
+- 请参阅 `cost-prediction` 以了解劳动力成本预测方法
+- 请参阅 `4d-simulation` 以了解进度集成功能
+- 请参阅 `risk-assessment-ml` 以了解生产率风险评估方法

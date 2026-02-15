@@ -1,71 +1,70 @@
 ---
 name: hergunmac
-description: Access AI-powered football match predictions from hergunmac.com. Use when the user asks about football/soccer match predictions, betting tips, match analysis, team statistics, head-to-head data, or upcoming match insights. Covers worldwide leagues with confidence scores, AI reasoning, and historical performance tracking.
+description: 您可以从 hergunmac.com 获取由人工智能支持的足球比赛预测服务。当用户询问关于足球比赛预测、投注建议、比赛分析、球队统计数据、球队交锋记录或即将进行的比赛洞察时，可以使用该服务。该服务覆盖全球范围内的联赛，提供信心评分、人工智能分析以及球队历史表现的数据支持。
 ---
 
-# hergunmac - Football Prediction Engine
+# hergunmac - 足球预测引擎
 
-Access AI-powered football match predictions and analysis from [hergunmac.com](https://hergunmac.com).
+您可以通过 [hergunmac.com](https://hergunmac.com) 获取由 AI 提供的足球比赛预测和分析结果。
 
-## What This Skill Provides
+## 该功能提供的内容
 
-- **Match Predictions** with confidence scores (0-100%)
-- **Multiple bet types**: Match result, Over/Under, BTTS, Double Chance, Half results
-- **Team Statistics**: Form, league position, key players, injuries
-- **Head-to-Head Data**: Historical meetings and win/loss breakdown
-- **AI Analysis**: Reasoning and key factors for each prediction
+- **比赛预测**，附带置信度评分（0-100%）
+- **多种投注类型**：比赛结果、总进球数（Under/Over）、两队均进球（BTTS）、双倍投注（Double Chance）、半场结果
+- **球队统计信息**：球队状态、联赛排名、关键球员、伤病情况
+- **历史交锋记录**：两队之间的过往比赛及胜负情况
+- **AI 分析**：每项预测的依据和关键因素
 
-## Quick Start
+## 快速入门
 
-1. Open browser to `https://hergunmac.com`
-2. Use status filters to find matches (Yaklaşan = Upcoming, Canlı = Live, Bitti = Finished)
-3. Click any match card to view detailed analysis
-4. Check the 4 tabs: Öngörüler (Predictions), Genel Bakış (Overview), H2H, Takımlar (Teams)
+1. 打开浏览器，访问 `https://hergunmac.com`
+2. 使用筛选器查找比赛（Yaklaşan = 即将举行的比赛；Canlı = 直播比赛；Bitti = 已结束的比赛）
+3. 点击任意比赛卡片查看详细分析
+4. 查看四个标签页：Öngörüler（预测）、Genel Bakış（概览）、H2H（历史交锋记录）、Takımlar（球队信息）
 
-## Navigation Reference
+## 导航参考
 
-**Live context file:** https://www.hergunmac.com/llm.txt
+**实时导航文件：** https://www.hergunmac.com/llm.txt  
+您可以直接从网站获取最新的导航指南，其中包含 URL 模式、UI 元素和浏览器自动化相关说明。
 
-Fetch the latest navigation guide directly from the site for up-to-date URL patterns, UI elements, and browser automation notes.
+**离线导航指南：** [references/llm-context.md](references/llm-context.md)  
 
-**Bundled reference:** [references/llm-context.md](references/llm-context.md) - Offline copy of the navigation guide
+## 常用土耳其语术语
 
-## Key Turkish Terms
-
-| Turkish | English |
+| 土耳其语 | 英语 |
 |---------|---------|
-| Öngörüler | Predictions |
-| Genel Bakış | Overview |
-| Takımlar | Teams |
-| Yaklaşan | Upcoming |
-| Canlı | Live |
-| Bitti | Finished |
-| Güven | Confidence |
-| Maç Sonucu | Match Result |
-| Alt/Üst | Under/Over |
-| Karşılıklı Gol | Both Teams to Score |
+| Öngörüler | 预测 |
+| Genel Bakış | 概览 |
+| Takımlar | 球队 |
+| Yaklaşan | 即将举行的比赛 |
+| Canlı | 直播比赛 |
+| Bitti | 已结束的比赛 |
+| Güven | 置信度 |
+| Maç Sonucu | 比赛结果 |
+| Alt/Üst | 总进球数（Under/Over） |
+| Karşılıklı Gol | 两队均进球（BTTS） |
 
-## Prediction Types
+## 预测类型
 
-- **Maç Sonucu (1X2)**: Home win, Draw, Away win
-- **Alt/Üst**: Under/Over goal lines (0.5, 1.5, 2.5, 3.5)
-- **Karşılıklı Gol (BTTS)**: Both teams score Yes/No
-- **Çifte Şans**: Double Chance (1X, X2, 12)
-- **İlk/İkinci Yarı**: First/Second half predictions
+- **Maç Sonucu (1X2)**：主队胜、平、客队胜
+- **Alt/Üst**: 总进球数（0.5、1.5、2.5、3.5）
+- **Karşılıklı Gol (BTTS)**：两队是否均进球
+- **Çifte Şans**: 双倍投注（1X、X2、12）
+- **İlk/İkinci Yarı**: 上半场/下半场预测
 
-## Important Disclaimers
+## 重要免责声明
 
-⚠️ **Always communicate these to users:**
+⚠️ **务必向用户明确说明以下内容：**
 
-1. Predictions are for **statistical information only**
-2. Past performance does not guarantee future results
-3. hergunmac.com is an **analysis tool**, not a betting platform
-4. Users are responsible for their own decisions
+1. 预测结果仅用于 **参考**，不构成投资建议。
+2. 过往表现不能保证未来的比赛结果。
+3. hergunmac.com 是一个 **分析工具**，而非投注平台。
+4. 用户需自行承担决策风险。
 
-## Example Queries This Skill Handles
+## 该功能支持的查询示例：
 
-- "What are today's football predictions?"
-- "Show me upcoming matches with high confidence predictions"
-- "What's the analysis for [Team A] vs [Team B]?"
-- "Any good betting tips for tonight's matches?"
-- "Check the head-to-head stats for the Liverpool match"
+- “今天的足球预测结果是什么？”
+- “显示置信度较高的即将举行的比赛”
+- “[球队 A] 对阵 [球队 B] 的比赛分析情况如何？”
+- “今晚比赛的投注建议有哪些？”
+- “查看利物浦队的历史交锋记录”

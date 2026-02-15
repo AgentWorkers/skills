@@ -17,9 +17,9 @@ metadata:
 
 # TickTick
 
-Access the TickTick API with managed OAuth authentication. Manage tasks and projects with full CRUD operations.
+使用托管的 OAuth 认证访问 TickTick API，支持对任务和项目进行完整的 CRUD 操作（创建、读取、更新、删除）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all projects
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/ticktick/{native-api-path}
 ```
 
-The gateway proxies requests to `api.ticktick.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `api.ticktick.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your TickTick OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 TickTick OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple TickTick connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 TickTick 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果未指定，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Project Operations
+### 项目操作
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /ticktick/open/v1/project
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -172,13 +172,13 @@ GET /ticktick/open/v1/project
 ]
 ```
 
-#### Get Project with Tasks
+#### 获取包含任务的项目
 
 ```bash
 GET /ticktick/open/v1/project/{projectId}/data
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "project": {
@@ -211,7 +211,7 @@ GET /ticktick/open/v1/project/{projectId}/data
 }
 ```
 
-#### Create Project
+#### 创建项目
 
 ```bash
 POST /ticktick/open/v1/project
@@ -223,7 +223,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "69870cbe8f08b4a6770a38d3",
@@ -234,28 +234,28 @@ Content-Type: application/json
 }
 ```
 
-**viewMode options:**
-- `list` - List view
-- `kanban` - Kanban board view
-- `timeline` - Timeline view
+**`viewMode` 可选值：**
+- `list` - 列表视图
+- `kanban` - 看板视图
+- `timeline` - 时间轴视图
 
-#### Delete Project
+#### 删除项目
 
 ```bash
 DELETE /ticktick/open/v1/project/{projectId}
 ```
 
-Returns empty response on success (status 200).
+成功时返回空响应（状态码 200）。
 
-### Task Operations
+### 任务操作
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /ticktick/open/v1/project/{projectId}/task/{taskId}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "69847732b8e5e969f70e7464",
@@ -274,7 +274,7 @@ GET /ticktick/open/v1/project/{projectId}/task/{taskId}
 }
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /ticktick/open/v1/task
@@ -290,7 +290,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "69870cb08f08b86b38951175",
@@ -307,13 +307,13 @@ Content-Type: application/json
 }
 ```
 
-**Priority values:**
-- `0` - None
-- `1` - Low
-- `3` - Medium
-- `5` - High
+**优先级值：**
+- `0` - 无
+- `1` - 低
+- `3` - 中等
+- `5` - 高
 
-#### Update Task
+#### 更新任务
 
 ```bash
 POST /ticktick/open/v1/task/{taskId}
@@ -327,7 +327,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "69870cb08f08b86b38951175",
@@ -340,42 +340,42 @@ Content-Type: application/json
 }
 ```
 
-#### Complete Task
+#### 完成任务
 
 ```bash
 POST /ticktick/open/v1/project/{projectId}/task/{taskId}/complete
 ```
 
-Returns empty response on success (status 200).
+成功时返回空响应（状态码 200）。
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /ticktick/open/v1/project/{projectId}/task/{taskId}
 ```
 
-Returns empty response on success (status 200).
+成功时返回空响应（状态码 200）。
 
-## Task Fields
+## 任务字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `id` | string | Task ID |
-| `projectId` | string | Parent project ID |
-| `title` | string | Task title |
-| `content` | string | Task description/notes (Markdown supported) |
-| `priority` | integer | Priority: 0=None, 1=Low, 3=Medium, 5=High |
-| `status` | integer | 0=Active, 2=Completed |
-| `dueDate` | string | Due date in ISO 8601 format |
-| `startDate` | string | Start date in ISO 8601 format |
-| `isAllDay` | boolean | Whether task is all-day |
-| `timeZone` | string | Timezone (e.g., "America/Los_Angeles") |
-| `tags` | array | List of tag names |
-| `columnId` | string | Kanban column ID (if applicable) |
-| `sortOrder` | number | Sort order within project |
-| `kind` | string | Task type: "TEXT", "CHECKLIST" |
+| `id` | 字符串 | 任务 ID |
+| `projectId` | 字符串 | 所属项目 ID |
+| `title` | 字符串 | 任务标题 |
+| `content` | 字符串 | 任务描述/备注（支持 Markdown 格式） |
+| `priority` | 整数 | 优先级：0=无，1=低，3=中等，5=高 |
+| `status` | 整数 | 0=活动状态，2=已完成 |
+| `dueDate` | 字符串 | 截止日期（ISO 8601 格式） |
+| `startDate` | 字符串 | 开始日期（ISO 8601 格式） |
+| `isAllDay` | 布尔值 | 任务是否为全天任务 |
+| `timeZone` | 字符串 | 时区（例如：`America/Los_Angeles`） |
+| `tags` | 数组 | 标签列表 |
+| `columnId` | 字符串 | 看板列 ID（如适用） |
+| `sortOrder` | 数字 | 项目内的排序顺序 |
+| `kind` | 字符串 | 任务类型：`TEXT`、`CHECKLIST` |
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -435,36 +435,35 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- The Open API provides access to tasks and projects only
-- Habits, focus/pomodoro, and tags are not available through the Open API
-- Task `status` values: 0 = Active, 2 = Completed
-- Priority values: 0 = None, 1 = Low, 3 = Medium, 5 = High
-- Dates use ISO 8601 format with timezone offset (e.g., `2026-02-15T10:00:00+0000`)
-- `viewMode` for projects: `list`, `kanban`, or `timeline`
-- The `columns` field in project data is used for Kanban board columns
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- Open API 仅提供对任务和项目的访问权限。
+- 习惯管理、番茄工作法相关功能以及标签无法通过 Open API 调用。
+- 任务状态值：`0` = 活动状态，`2` = 已完成。
+- 优先级值：`0` = 无，`1` = 低，`3` = 中等，`5` = 高。
+- 日期使用带有时区偏移的 ISO 8601 格式（例如：`2026-02-15T10:00:00+0000`）。
+- 项目的 `viewMode` 可设置为 `list`、`kanban` 或 `timeline`。
+- 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing TickTick connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from TickTick API |
+| 400 | 未找到 TickTick 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 TickTick API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -475,16 +474,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称错误
 
-1. Ensure your URL path starts with `ticktick`. For example:
+1. 确保您的 URL 路径以 `ticktick` 开头。例如：
+- 正确：`https://gateway.maton.ai/ticktick/open/v1/project`
+- 错误：`https://gateway.maton.ai/open/v1/project`
 
-- Correct: `https://gateway.maton.ai/ticktick/open/v1/project`
-- Incorrect: `https://gateway.maton.ai/open/v1/project`
+## 资源
 
-## Resources
-
-- [TickTick Developer Portal](https://developer.ticktick.com/)
-- [TickTick Help Center](https://help.ticktick.com/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [TickTick 开发者门户](https://developer.ticktick.com/)
+- [TickTick 帮助中心](https://help.ticktick.com/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

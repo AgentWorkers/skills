@@ -1,28 +1,28 @@
-# Google Docs API Integration
+# Google Docs API 集成
 
-Direct access to the Google Docs API using OAuth 2.0. Create documents, insert and format text, and manage document content.
+通过 OAuth 2.0 直接访问 Google Docs API，可以创建文档、插入和格式化文本以及管理文档内容。
 
-## Prerequisites
+## 先决条件
 
-1. **Google Cloud Project Setup**
-   - Go to [Google Cloud Console](https://console.cloud.google.com)
-   - Create a new project or select existing one
-   - Enable the Google Docs API
-   - Create OAuth 2.0 credentials (Desktop app or Web application)
-   - Download the credentials JSON file
+1. **Google Cloud 项目设置**
+   - 访问 [Google Cloud 控制台](https://console.cloud.google.com)
+   - 创建一个新的项目或选择一个现有项目
+   - 启用 Google Docs API
+   - 生成 OAuth 2.0 凭据（适用于桌面应用程序或 Web 应用程序）
+   - 下载凭证的 JSON 文件
 
-2. **Environment Setup**
+2. **环境设置**
    ```bash
    export GOOGLE_CLIENT_ID="your-client-id"
    export GOOGLE_CLIENT_SECRET="your-client-secret"
    export GOOGLE_REFRESH_TOKEN="your-refresh-token"
    ```
 
-## Authentication
+## 认证
 
-### Getting OAuth Tokens
+### 获取 OAuth 令牌
 
-Use the following Python script to obtain your refresh token (one-time setup):
+使用以下 Python 脚本获取刷新令牌（只需设置一次）：
 
 ```python
 import urllib.request
@@ -89,9 +89,9 @@ if auth_code:
     print(f"export GOOGLE_REFRESH_TOKEN=\"{response['refresh_token']}\"")
 ```
 
-### Getting Access Token
+### 获取访问令牌
 
-Before making API calls, get a fresh access token:
+在调用 API 之前，需要获取一个新的访问令牌：
 
 ```python
 import urllib.request
@@ -117,19 +117,15 @@ access_token = get_access_token()
 print(f"Access Token: {access_token}")
 ```
 
-## Base URL
+## 基本 URL
 
-```
-https://docs.googleapis.com/v1
-```
-
-All requests require the access token in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含访问令牌：
 
 ```
 Authorization: Bearer {access_token}
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import urllib.request
@@ -146,9 +142,9 @@ doc = json.load(urllib.request.urlopen(req))
 print(json.dumps(doc, indent=2))
 ```
 
-## API Reference
+## API 参考
 
-### Create Document
+### 创建文档
 
 ```python
 import urllib.request
@@ -171,7 +167,7 @@ print(f"Created document: {doc_id}")
 print(f"URL: https://docs.google.com/document/d/{doc_id}/edit")
 ```
 
-### Get Document
+### 获取文档
 
 ```python
 req = urllib.request.Request(
@@ -181,7 +177,7 @@ req.add_header('Authorization', f'Bearer {access_token}')
 doc = json.load(urllib.request.urlopen(req))
 ```
 
-### Batch Update Document
+### 批量更新文档
 
 ```python
 # Insert text at beginning
@@ -208,9 +204,9 @@ req.add_header('Content-Type', 'application/json')
 response = json.load(urllib.request.urlopen(req))
 ```
 
-## Common Operations
+## 常见操作
 
-### Insert Text
+### 插入文本
 
 ```python
 {
@@ -225,7 +221,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Format Text (Bold, Italic, Font Size)
+### 格式化文本（加粗、斜体、字体大小）
 
 ```python
 {
@@ -251,7 +247,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Insert Table
+### 插入表格
 
 ```python
 {
@@ -267,7 +263,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Replace Text
+### 替换文本
 
 ```python
 {
@@ -285,7 +281,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Delete Content
+### 删除内容
 
 ```python
 {
@@ -302,7 +298,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Insert Page Break
+### 插入分页符
 
 ```python
 {
@@ -316,7 +312,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-### Update Paragraph Style
+### 更新段落样式
 
 ```python
 {
@@ -338,7 +334,7 @@ response = json.load(urllib.request.urlopen(req))
 }
 ```
 
-## Complete Example: Create and Format Document
+## 完整示例：创建并格式化文档
 
 ```python
 import urllib.request
@@ -431,34 +427,34 @@ batch_update(doc_id, requests, access_token)
 print("Document updated successfully!")
 ```
 
-## Key Concepts
+## 关键概念
 
-### Document Indexing
-- Indices are 1-based (document starts at index 1)
-- Each character (including newlines) occupies one index
-- To append at the end, use `endOfSegmentLocation`
+### 文档索引
+- 索引从 1 开始（文档从索引 1 开始）
+- 每个字符（包括换行符）占用一个索引
+- 要在文档末尾添加内容，请使用 `endOfSegmentLocation`
 
-### Batch Updates
-- Multiple requests are applied atomically
-- Requests are processed in order
-- Get the document first to determine correct indices
+### 批量更新
+- 多个请求会原子性地执行
+- 请求按顺序处理
+- 首先获取文档内容以确定正确的索引位置
 
-### Field Masks
-- When updating styles, specify which fields to update
-- Use comma-separated field names: `'fields': 'bold,fontSize,foregroundColor'`
+### 字段掩码
+- 在更新样式时，指定要更新的字段
+- 使用逗号分隔的字段名：`'fields': 'bold, fontSize,foregroundColor'`
 
-## Error Handling
+## 错误处理
 
-| Status Code | Meaning |
+| 状态码 | 含义 |
 |-------------|---------|
-| 400 | Bad Request - Invalid request format |
-| 401 | Unauthorized - Invalid or expired access token |
-| 403 | Forbidden - Insufficient permissions |
-| 404 | Not Found - Document doesn't exist |
-| 429 | Rate Limited - Too many requests |
+| 400 | 请求无效 - 请求格式错误 |
+| 401 | 未经授权 - 访问令牌无效或已过期 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 未找到 - 文档不存在 |
+| 429 | 请求次数过多 |
 
-### Token Refresh
-Access tokens expire after 1 hour. If you get a 401 error, refresh the token:
+### 令牌刷新
+访问令牌在 1 小时后失效。如果收到 401 错误，请刷新令牌：
 
 ```python
 try:
@@ -475,30 +471,30 @@ except urllib.error.HTTPError as e:
         response = urllib.request.urlopen(req)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Token Management**
-   - Cache access tokens (valid for 1 hour)
-   - Store refresh token securely
-   - Implement automatic token refresh
+1. **令牌管理**
+   - 缓存访问令牌（有效期为 1 小时）
+   - 安全存储刷新令牌
+   - 实现自动令牌刷新机制
 
-2. **Batch Operations**
-   - Combine multiple updates into single batch call
-   - Reduces API calls and improves performance
+2. **批量操作**
+   - 将多个更新合并为一次批量请求
+   - 减少 API 调用次数并提高性能
 
-3. **Index Calculation**
-   - Always get current document state before updates
-   - Account for newline characters (\n)
-   - Use `endOfSegmentLocation` for appending
+3. **索引计算**
+   - 在更新之前始终获取文档的当前状态
+   - 考虑换行符 (\n) 的影响
+   - 使用 `endOfSegmentLocation` 进行内容追加
 
-4. **Rate Limits**
-   - Google Docs API has quotas (check Cloud Console)
-   - Implement exponential backoff for rate limit errors
+4. **速率限制**
+   - Google Docs API 有使用限制（请查看 Cloud 控制台）
+   - 对于速率限制错误，实现指数级退避策略
 
-## Resources
+## 资源
 
-- [Google Docs API Documentation](https://developers.google.com/docs/api)
-- [OAuth 2.0 for Desktop Apps](https://developers.google.com/identity/protocols/oauth2/native-app)
-- [Document Structure](https://developers.google.com/docs/api/concepts/structure)
-- [Request Types Reference](https://developers.google.com/docs/api/reference/rest/v1/documents/request)
-- [Python Quickstart](https://developers.google.com/docs/api/quickstart/python)
+- [Google Docs API 文档](https://developers.google.com/docs/api)
+- [适用于桌面应用程序的 OAuth 2.0](https://developers.google.com/identity/protocols/oauth2/native-app)
+- [文档结构](https://developers.google.com/docs/api/concepts/structure)
+- [请求类型参考](https://developers.google.com/docs/api/reference/rest/v1/documents/request)
+- [Python 快速入门](https://developers.google.com/docs/api/quickstart/python)

@@ -1,17 +1,17 @@
 ---
 name: k8s-autoscaling
-description: Configure Kubernetes autoscaling with HPA, VPA, and KEDA. Use for horizontal/vertical pod autoscaling, event-driven scaling, and capacity management.
+description: 配置 Kubernetes 的自动扩展功能，可以使用 HPA（Horizontal Pod Autoscaling）、VPA（Vertical Pod Autoscaling）和 KEDA（Kubernetes Deployment Auto Scaling）。这些工具可用于实现 Pod 的水平/垂直扩展、基于事件的扩展以及容量管理。
 ---
 
-# Kubernetes Autoscaling
+# Kubernetes 自动扩展
 
-Comprehensive autoscaling using HPA, VPA, and KEDA with kubectl-mcp-server tools.
+使用 HPA（水平 Pod 自动扩展器）、VPA（垂直 Pod 自动扩展器）和 KEDA（事件驱动的自动扩展器），结合 kubectl-mcp-server 工具实现全面的自动扩展功能。
 
-## Quick Reference
+## 快速参考
 
-### HPA (Horizontal Pod Autoscaler)
+### HPA（水平 Pod 自动扩展器）
 
-Basic CPU-based scaling:
+基于 CPU 的基本扩展：
 ```yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -33,15 +33,15 @@ spec:
         averageUtilization: 70
 ```
 
-Apply and verify:
+应用并验证配置：
 ```
 apply_manifest(hpa_yaml, namespace)
 get_hpa(namespace)
 ```
 
-### VPA (Vertical Pod Autoscaler)
+### VPA（垂直 Pod 自动扩展器）
 
-Right-size resource requests:
+根据需求自动调整资源请求：
 ```yaml
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
@@ -56,40 +56,40 @@ spec:
     updateMode: "Auto"
 ```
 
-## KEDA (Event-Driven Autoscaling)
+## KEDA（事件驱动的自动扩展器）
 
-### Detect KEDA Installation
+### 检查 KEDA 是否已安装
 ```
 keda_detect_tool()
 ```
 
-### List ScaledObjects
+### 列出已自动扩展的 Pod 对象
 ```
 keda_scaledobjects_list_tool(namespace)
 keda_scaledobject_get_tool(name, namespace)
 ```
 
-### List ScaledJobs
+### 列出已自动扩展的作业
 ```
 keda_scaledjobs_list_tool(namespace)
 ```
 
-### Trigger Authentication
+### 触发认证过程
 ```
 keda_triggerauths_list_tool(namespace)
 keda_triggerauth_get_tool(name, namespace)
 ```
 
-### KEDA-Managed HPAs
+### 由 KEDA 管理的 HPA
 ```
 keda_hpa_list_tool(namespace)
 ```
 
-See [KEDA-TRIGGERS.md](KEDA-TRIGGERS.md) for trigger configurations.
+有关触发器配置的详细信息，请参阅 [KEDA-TRIGGERS.md](KEDA-TRIGGERS.md)。
 
-## Common KEDA Triggers
+## 常见的 KEDA 触发器类型
 
-### Queue-Based Scaling (AWS SQS)
+### 基于队列的扩展（使用 AWS SQS）
 ```yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
@@ -107,7 +107,7 @@ spec:
       queueLength: "5"
 ```
 
-### Cron-Based Scaling
+### 基于 Cron 的扩展
 ```yaml
 triggers:
 - type: cron
@@ -118,7 +118,7 @@ triggers:
     desiredReplicas: "10"
 ```
 
-### Prometheus Metrics
+### 使用 Prometheus 指标进行扩展
 ```yaml
 triggers:
 - type: prometheus
@@ -129,34 +129,34 @@ triggers:
     threshold: "100"
 ```
 
-## Scaling Strategies
+## 扩展策略
 
-| Strategy | Tool | Use Case |
+| 策略 | 工具 | 使用场景 |
 |----------|------|----------|
-| CPU/Memory | HPA | Steady traffic patterns |
-| Custom metrics | HPA v2 | Business metrics |
-| Event-driven | KEDA | Queue processing, cron |
-| Vertical | VPA | Right-size requests |
-| Scale to zero | KEDA | Cost savings, idle workloads |
+| CPU/内存 | HPA | 流量模式稳定的场景 |
+| 自定义指标 | HPA v2 | 使用业务相关指标进行扩展 |
+| 事件驱动 | KEDA | 适用于队列处理、Cron 任务等场景 |
+| 垂直扩展 | VPA | 根据实际需求调整资源 |
+| 扩展至零 | KEDA | 适用于节省成本的空闲工作负载 |
 
-## Cost-Optimized Autoscaling
+## 优化成本的自动扩展
 
-### Scale to Zero with KEDA
-Reduce costs for idle workloads:
+### 使用 KEDA 将工作负载扩展至零
+如何减少空闲工作负载的成本：
 ```
 keda_scaledobjects_list_tool(namespace)
 # ScaledObjects with minReplicaCount: 0 can scale to zero
 ```
 
-### Right-Size with VPA
-Get recommendations and apply:
+### 使用 VPA 自动调整资源需求
+如何根据需求自动调整资源：
 ```
 get_resource_recommendations(namespace)
 # Apply VPA recommendations
 ```
 
-### Predictive Scaling
-Use cron triggers for known patterns:
+### 预测性扩展
+如何利用 Cron 触发器处理可预测的扩展需求：
 ```yaml
 # Scale up before traffic spike
 triggers:
@@ -167,53 +167,51 @@ triggers:
     desiredReplicas: "20"
 ```
 
-## Multi-Cluster Autoscaling
-
-Configure KEDA across clusters:
+## 多集群自动扩展
+如何在多个集群中配置 KEDA：
 ```
 keda_scaledobjects_list_tool(namespace, context="production")
 keda_scaledobjects_list_tool(namespace, context="staging")
 ```
 
-## Troubleshooting
+## 故障排除
 
-### HPA Not Scaling
+### HPA 无法自动扩展
+如何解决 HPA 无法自动扩展的问题：
 ```
 get_hpa(namespace)
 get_pod_metrics(name, namespace)  # Metrics available?
 describe_pod(name, namespace)     # Resource requests set?
 ```
 
-### KEDA Not Triggering
+### KEDA 无法触发扩展
+如何解决 KEDA 无法触发扩展的问题：
 ```
 keda_scaledobject_get_tool(name, namespace)  # Check status
 get_events(namespace)                        # Check events
 ```
 
-### Common Issues
+### 常见问题及解决方法
 
-| Symptom | Check | Resolution |
+| 问题 | 检查内容 | 解决方法 |
 |---------|-------|------------|
-| HPA unknown | Metrics server | Install metrics-server |
-| KEDA no scale | Trigger auth | Check TriggerAuthentication |
-| VPA not updating | Update mode | Set updateMode: Auto |
-| Scale down slow | Stabilization | Adjust stabilizationWindowSeconds |
+| HPA 无法正常工作 | 确保已安装指标服务器 | 安装并配置指标服务器 |
+| KEDA 无法触发扩展 | 检查认证配置 | 确保 TriggerAuthentication 配置正确 |
+| VPA 无法更新资源配置 | 更改更新模式 | 将 updateMode 设置为 Auto |
+| 扩展速度过慢 | 调整 stabilizationWindowSeconds 参数 | 增加稳定时间 |
 
-## Best Practices
+## 最佳实践
 
-1. **Always Set Resource Requests**
-   - HPA requires requests to calculate utilization
+1. **务必设置资源请求**：
+   HPA 需要明确的资源请求才能计算资源利用率。
+2. **使用多种指标**：
+   结合 CPU 指标和自定义指标以提高扩展的准确性。
+3. **设置稳定时间窗口**：
+   通过 stabilizationWindowSeconds 参数防止扩展频率波动。
+4. **谨慎地将工作负载扩展至零**：
+   考虑冷启动时间，并设置合适的激活阈值。
 
-2. **Use Multiple Metrics**
-   - Combine CPU + custom metrics for accuracy
+## 相关技能
 
-3. **Stabilization Windows**
-   - Prevent flapping with scaleDown stabilization
-
-4. **Scale to Zero Carefully**
-   - Consider cold start time
-   - Use activation threshold
-
-## Related Skills
-- [k8s-cost](../k8s-cost/SKILL.md) - Cost optimization
-- [k8s-troubleshoot](../k8s-troubleshoot/SKILL.md) - Debug scaling issues
+- [k8s-cost](../k8s-cost/SKILL.md) – 成本优化技巧
+- [k8s-troubleshoot](../k8s-troubleshoot/SKILL.md) – 故障排除指南

@@ -1,94 +1,61 @@
 ---
 name: n8n-workflow-automation
-description: Designs and outputs n8n workflow JSON with robust triggers, idempotency, error handling, logging, retries, and human-in-the-loop review queues. Use when you need an auditable automation that won’t silently fail.
+description: 设计并生成 n8n 工作流 JSON 文件，该文件具备强大的触发机制、幂等性（idempotency）、错误处理功能、日志记录能力、重试机制以及人工审核队列（human-in-the-loop review queue）。适用于需要可审计的自动化流程的场景，确保自动化过程不会在无人察觉的情况下出错（即避免自动化过程“默默失败”）。
 ---
 
-# n8n workflow automation with retries, logging, and review queues
+# n8n 工作流自动化：包含重试、日志记录和审核队列功能
 
-## PURPOSE
-Designs and outputs n8n workflow JSON with robust triggers, idempotency, error handling, logging, retries, and human-in-the-loop review queues.
+## 目的  
+设计并生成具备强大触发机制、幂等性、错误处理、日志记录、重试功能以及人工审核队列的 n8n 工作流 JSON 文件。
 
-## WHEN TO USE
-- TRIGGERS:
-  - Build an n8n workflow that runs every Monday and emails the compliance summary.
-  - Add error handling and retries to this workflow, plus a review queue for failures.
-  - Create a webhook workflow that logs every run and writes a status row to a tracker.
-  - Make this n8n flow idempotent so it does not duplicate records when it reruns.
-  - Instrument this workflow with audit logs and a human approval step.
-- DO NOT USE WHEN…
-  - You need code-only automation without n8n (use a scripting/CI skill).
-  - You need to bypass security controls or hide audit trails.
-  - You need to purchase or recommend prohibited items/services.
+## 适用场景  
+- **触发器示例**：  
+  - 每周一运行工作流并发送合规性总结邮件。  
+  - 为工作流添加错误处理和重试机制，并设置失败记录的审核队列。  
+  - 创建一个 Webhook 工作流，记录每次运行情况并将状态信息写入跟踪系统。  
+  - 确保工作流的幂等性，避免重复记录。  
+  - 为工作流添加审计日志和人工审批流程。  
 
-## INPUTS
-- REQUIRED:
-  - Workflow intent: trigger type + schedule/timezone + success criteria.
-  - Targets: where to write results (email/Drive/Sheet/DB) and required fields.
-- OPTIONAL:
-  - Existing n8n workflow JSON to modify.
-  - Sample payloads / example records.
-  - Definition of dedup keys (what makes a record unique).
-- EXAMPLES:
-  - Cron: Monday 08:00 Europe/London; send summary email + Drive upload
-  - Webhook: receive JSON; route to folders
+**不适用场景**：  
+  - 仅需要代码自动化（无需使用 n8n 工具，可使用脚本或持续集成技术）。  
+  - 需要绕过安全控制或隐藏审计痕迹。  
+  - 需要购买或推荐被禁止的产品/服务。  
 
-## OUTPUTS
-- Default (read-only): a workflow design spec (nodes, data contracts, failure modes).
-- If explicitly requested: `workflow.json` (n8n importable JSON) + `runbook.md` (from template).
-Success = workflow is idempotent, logs every run, retries safely, and routes failures to a review queue.
+## 输入参数  
+- **必填项**：  
+  - 工作流意图（触发类型、时间安排/时区、成功标准）。  
+  - 目标输出位置（电子邮件、Google Drive、Excel 表格或数据库）及所需字段。  
+- **可选项**：  
+  - 需要修改的现有 n8n 工作流 JSON 文件。  
+  - 示例数据或记录。  
+  - 用于唯一标识记录的 dedup 键（去重键）。  
 
+**示例**：  
+  - **Cron 触发**：每周一 08:00（欧洲/伦敦时间），发送合规性总结邮件并将结果上传至 Google Drive。  
+  - **Webhook 触发**：接收 JSON 数据，将其路由至指定文件夹。  
 
-## WORKFLOW
-1. Clarify trigger:
-   - Cron/webhook/manual; schedule/timezone; concurrency expectations.
-2. Define data contract:
-   - input schema, required fields, and validation rules.
-3. Design idempotency:
-   - choose dedup key(s) and storage (DB/Sheet) to prevent duplicates on retries.
-4. Add observability:
-   - generate `run_id`, log start/end, store status row and error details.
-5. Implement error handling:
-   - per-node error branches, retry with backoff, and final failure notification.
-6. Add human-in-the-loop (HITL) review queue:
-   - write failed items to a queue (Sheet/DB) and require approval to reprocess.
-7. “No silent failure” gates:
-   - if counts/thresholds fail, stop workflow and alert.
-8. Output:
-   - If asked for JSON: produce importable n8n workflow JSON + runbook.
-9. STOP AND ASK THE USER if:
-   - destination systems are unknown,
-   - no dedup key exists,
-   - credential strategy (env vars) is not specified,
-   - the workflow needs privileged access not yet approved.
+## 输出结果  
+- **默认输出**：工作流设计规范（包含节点结构、数据契约和失败处理方式）。  
+- **额外输出（如需）**：`workflow.json`（可导入的 n8n 工作流 JSON 文件）+ `runbook.md`（基于模板生成的运行手册）。  
 
+**工作流程**：  
+1. **明确触发方式**：选择 Cron、Webhook 或手动触发；设置时间安排和时区；确定并发执行需求。  
+2. **定义数据契约**：指定输入数据结构、必填字段及验证规则。  
+3. **确保幂等性**：选择去重键并确定存储方式（数据库或 Excel 表格），以避免重复记录。  
+4. **添加日志记录**：生成运行 ID，记录运行开始/结束时间以及错误详情。  
+5. **实现错误处理**：为每个节点设置错误处理逻辑，实现带退步机制的重试机制，并在最终失败时发送通知。  
+6. **设置审核队列**：将失败记录放入审核队列（Excel 表格或数据库），需人工审批后方可重新处理。  
+7. **防止错误被忽略**：若达到错误阈值，立即停止工作流并触发警报。  
+8. **输出结果**：根据需求生成可导入的 n8n 工作流 JSON 文件及运行手册。  
 
-## OUTPUT FORMAT
-If outputting **n8n workflow JSON**, conform to:
+**注意事项**：  
+- 仅在工作流被明确请求时才输出 JSON 文件。  
+- JSON 文件中不得包含敏感信息，仅引用环境变量或凭证名称。  
+- 必须记录审计日志并处理失败情况，避免数据丢失。  
+- 优先使用最小权限原则，仅调用必要的 API 并限制操作范围。  
 
-```json
-{
-  "name": "<workflow name>",
-  "nodes": [ { "name": "Trigger", "type": "n8n-nodes-base.cron", "parameters": {}, "position": [0,0] } ],
-  "connections": {},
-  "settings": {},
-  "active": false
-}
-```
-
-Also output `runbook.md` using `assets/runbook-template.md`.
-
-
-## SAFETY & EDGE CASES
-- Read-only by default; only emit workflow JSON when explicitly requested.
-- Do not include secrets in JSON; reference env vars/credential names only.
-- Include audit logging + failure notifications; avoid workflows that can silently drop data.
-- Prefer least privilege: call only required APIs and minimize scopes.
-
-
-## EXAMPLES
-- Input: “Cron every Monday, email compliance summary, retry failures.”  
-  Output: Node map + `workflow.json` with Cron → Fetch → Aggregate → Email, plus error branches to review queue.
-
-- Input: “Webhook that logs runs and writes status row.”  
-  Output: Webhook → Validate → Process → Append status row; on error → log + notify + queue.
-
+**示例**：  
+- **输入**：“每周一通过 Cron 触发，发送合规性总结邮件，并在失败时重试。”  
+  **输出**：包含节点结构、`workflow.json` 文件（包含 Cron 触发、数据获取、数据汇总和邮件发送逻辑），以及失败记录的审核队列信息。  
+- **输入**：“通过 Webhook 记录每次运行情况，并将状态信息写入数据库。”  
+  **输出**：Webhook 触发后，数据会经过验证、处理并写入数据库；遇到错误时，会记录日志、发送通知并将记录放入审核队列。

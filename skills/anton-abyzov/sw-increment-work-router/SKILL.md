@@ -1,115 +1,114 @@
 ---
 name: increment-work-router
-description: Smart work continuation system that detects implementation intent and routes appropriately. Use when saying "implement X", "continue working", "build feature", or "resume increment". Checks active increments, relevance matching, and TDD mode to route to /sw:do or /sw:increment automatically.
+description: 智能工作延续系统：能够识别开发者的实施意图，并进行相应的任务分配。当用户执行“实现X功能”、“继续工作”、“开发新特性”或“恢复当前开发任务”等操作时，该系统会自动检测当前正在进行的开发任务（increment），判断其相关性，并根据测试驱动开发（TDD）模式将用户请求路由到相应的任务页面（/sw:do 或 /sw:increment）。
 ---
 
-# Increment Work Router - Smart Work Continuation
+# 增量工作路由器 - 智能工作延续系统
 
-## Purpose
+## 目的
 
-The increment-work-router skill is an **intelligent work continuation system** that:
-- ✅ Detects implementation/continuation intent (not just new projects)
-- ✅ Checks for active increments automatically
-- ✅ Routes to existing increment OR creates new one
-- ✅ Bridges the gap between planning and execution
+增量工作路由器（Increment Work Router）是一种智能的工作延续系统，它能够：
+- ✅ 检测用户的实施/延续意图（而不仅仅是新项目的启动）
+- ✅ 自动检查是否有正在进行的增量任务
+- ✅ 将用户请求路由到现有的增量任务中，或创建新的增量任务
+- ✅ 搭建计划与执行之间的桥梁
 
-**Key Insight**: When user says "implement X" or "complete Y", they expect the system to handle routing intelligently without manual commands.
+**核心理念**：当用户表示“实施某个功能”或“完成某个任务”时，系统应能够自动进行智能路由，而无需用户手动下达命令。
 
-## When to Activate
+## 何时激活
 
-This skill activates when user expresses **implementation/continuation intent**:
+当用户表现出**实施/延续工作的意图**时，该系统会被激活：
 
-### High-Confidence Triggers (Auto-Route)
+### 高置信度触发条件（自动路由）
 
-**Action Verbs** (with specific target):
-- "Implement [feature]"
-- "Complete [task]"
-- "Build [component]"
-- "Add [functionality]"
-- "Develop [module]"
-- "Create [feature]"
+**具体动作动词**：
+- “实施 [功能]”
+- “完成 [任务]”
+- “构建 [组件]”
+- “添加 [功能]”
+- “开发 [模块]”
+- “创建 [功能]”
 
-**Continuation Phrases**:
-- "Work on [feature]"
-- "Continue [increment]"
-- "Resume [work]"
-- "Finish [task]"
-- "Let's implement [X]"
-- "Let's build [Y]"
-- "Start working on [Z]"
+**表示延续工作的短语**：
+- “继续处理 [功能]”
+- “继续 [当前任务]”
+- “完成 [工作]”
+- “我们来实现 [X] 吧”
+- “我们来构建 [Y] 吧”
+- “开始处理 [Z] 吧”
 
-**Bug/Fix Intent**:
-- "Fix [issue]"
-- "Resolve [bug]"
-- "Address [problem]"
+**表示修复问题的短语**：
+- “修复 [问题]”
+- “解决 [漏洞]”
+- “处理 [故障]”
 
-### Medium-Confidence Triggers (Clarify)
+### 中等置信度触发条件（需要进一步确认）
 
-**Vague Intent** (needs target clarification):
-- "Let's continue"
-- "Keep working"
-- "What's next?"
-- "Continue where we left off"
+**意图不明确**（需要明确具体目标）：
+- “我们继续吧”
+- “继续工作”
+- “接下来该做什么？”
+- “从哪里继续？”
 
-### Don't Activate For
+### 不应激活的情况
 
-**Planning/Discussion** (let other skills handle):
-- "What should we build?" → increment-planner
-- "How does X work?" → Regular conversation
-- "Should we use Y?" → Technical discussion
-- "Plan a new feature" → increment-planner
+- **规划/讨论阶段**：此时应使用其他技能，例如 **增量规划器**（increment-planner）：
+  - “我们应该构建什么？”
+  - “X 是如何工作的？”
+  - “我们应该使用 Y 吗？”
+  - “规划一个新功能”
 
-**Already in Workflow**:
-- User is already executing `/sw:do`
-- Increment planning is in progress
-- Another skill is handling the request
+**系统已处于工作流程中**的情况**：
+  - 用户已经在执行 `/sw:do` 命令
+  - 增量任务的规划正在进行中
+  - 有其他技能正在处理用户的请求
 
-## Core Algorithm
+## 核心算法
 
-### Step 1: Detect Intent
+### 第一步：检测意图
 
-Scan user message for implementation keywords:
+扫描用户消息，寻找与实施相关的关键词：
 ```
 Action verbs: implement, complete, build, add, develop, create
 Continuation: work on, continue, resume, finish, start
 Bug/Fix: fix, resolve, address
 ```
 
-Calculate confidence:
-- **High (>80%)**: Action verb + specific target ("implement user auth")
-- **Medium (50-80%)**: Action verb only ("let's continue")
-- **Low (<50%)**: No clear intent
+**计算置信度**：
+- **高置信度（>80%）**：包含具体的目标动作动词（如“实施用户认证”）
+- **中等置信度（50-80%）**：仅包含动作动词（如“我们继续吧”）
+- **低置信度（<50%）**：意图不明确
 
-### Step 2: Check Active Increments
+### 第二步：检查是否有正在进行的增量任务
 
-**Read increment state:**
+**读取增量任务的状态**：
 ```bash
 # Find all increments with status = "active"
 find .specweave/increments -name "metadata.json" -type f \
   -exec jq -r 'select(.status == "active") | .id' {} \;
 ```
 
-**Three scenarios:**
-1. **One active increment** → Check relevance and route
-2. **Multiple active increments** → Ask user to select
-3. **No active increments** → Suggest creating new one
+**三种情况**：
+1. **只有一个正在进行的增量任务** → 检查请求的相关性并决定路由方式
+2. **有多个正在进行的增量任务** → 请求用户选择继续处理哪个任务
+3. **没有正在进行的增量任务** → 建议创建新的增量任务
 
-### Step 3: Check Relevance (if active increment exists)
+### 第三步：检查相关性（如果存在正在进行的增量任务）
 
-**Relatedness Analysis:**
-Compare user's request against active increment:
-- Check increment title/description
-- Check task list (tasks.md)
-- Check spec.md for related features
+**相关性分析**：
+- 将用户的请求与现有的增量任务进行对比：
+  - 检查增量任务的标题/描述
+  - 查看任务列表（tasks.md）
+  - 查看规范文档（spec.md）中是否存在相关功能
 
-**Scoring:**
-- **High match (>70%)**: Same feature area → Auto-resume
-- **Medium match (40-70%)**: Related area → Ask confirmation
-- **Low match (<40%)**: Unrelated → Suggest new increment
+**评分标准**：
+- **高度匹配（>70%）**：请求与现有增量任务属于同一功能领域 → 自动继续执行
+- **中等匹配（40-70%）**：请求与现有增量任务属于相关领域 → 请求用户确认
+- **低度匹配（<40%）**：请求与现有增量任务无关 → 建议创建新的增量任务
 
-### Step 4: Route Intelligently
+### 第四步：智能路由
 
-**Scenario A: High relevance to active increment**
+**情况一：请求与正在进行的增量任务高度相关**
 ```
 User: "Implement user authentication"
 Active: 0031-user-authentication-system
@@ -122,7 +121,7 @@ Resuming work on that increment now with /sw:do..."
 [Automatically invokes /sw:do]
 ```
 
-**Scenario B: Unrelated to active increment**
+**情况二：请求与正在进行的增量任务无关**
 ```
 User: "Implement payment processing"
 Active: 0031-user-authentication-system
@@ -139,7 +138,7 @@ Your request for payment processing seems unrelated. Would you like to:
 What would you prefer?"
 ```
 
-**Scenario C: No active increment**
+**情况三：没有正在进行的增量任务**
 ```
 User: "Implement user authentication"
 Active: None
@@ -158,7 +157,7 @@ Creating increment now with /sw:increment..."
 [Automatically invokes /sw:increment "user authentication"]
 ```
 
-**Scenario D: Multiple active increments**
+**情况四：存在多个正在进行的增量任务**
 ```
 User: "Continue working"
 Active: 0031-user-auth, 0032-payment-system
@@ -172,7 +171,7 @@ Active: 0031-user-auth, 0032-payment-system
 Which one would you like to work on?"
 ```
 
-**Scenario E: Vague continuation intent**
+**情况五：意图不明确**
 ```
 User: "Let's continue"
 Active: 0031-user-authentication-system
@@ -187,9 +186,9 @@ Next task: T-004 Implement password hashing
 [Automatically invokes /sw:do]"
 ```
 
-## Integration Architecture
+## 集成架构
 
-**Workflow:**
+**工作流程**：
 ```
 User: "Implement [feature]"
         ↓
@@ -207,20 +206,19 @@ increment-work-router (detects intent)
 (auto-resume)        (clarify)        (create new)
 ```
 
-**Calls:**
-- `/sw:do` - Resume active increment
-- `/sw:increment` - Create new increment
-- `/sw:status` - Check increment state (if needed)
-- `/sw:tdd-cycle` - TDD workflow (when TDD mode enabled)
+**调用的接口**：
+- `/sw:do` - 继续执行现有的增量任务
+- `/sw:increment` - 创建新的增量任务
+- `/sw:status` - 检查增量任务的状态（如有需要）
+- `/sw:tdd-cycle` - 在启用 TDD（测试驱动开发）模式时使用
 
-**Called By:**
-- Automatically when implementation intent detected
-- Works alongside `increment-planner` (planning) and `detector` (context checking)
+**被调用的接口**：
+- 在检测到实施意图时自动调用
+- 与 **增量规划器**（increment-planner）和 **检测器**（detector）协同工作
 
-## TDD-Aware Routing (CRITICAL)
+## TDD 意识下的路由规则（至关重要）
 
-**When routing to an active increment, check TDD mode first:**
-
+**在路由到正在进行的增量任务时，首先检查 TDD 模式**：
 ```bash
 # Check if increment uses TDD
 CONFIG_PATH=".specweave/config.json"
@@ -234,17 +232,16 @@ INCREMENT_TDD=$(cat "$METADATA_PATH" | jq -r '.testMode // ""')
 [[ -n "$INCREMENT_TDD" ]] && TDD_MODE="$INCREMENT_TDD"
 ```
 
-**If TDD mode is enabled, modify routing behavior:**
+**如果启用了 TDD 模式，调整路由行为**：
 
-| Scenario | Without TDD | With TDD |
-|----------|-------------|----------|
-| "Implement X" (new feature) | → `/sw:do` | → Suggest `/sw:tdd-cycle` first |
-| "Let's continue" | → `/sw:do` | → Show TDD phase reminder + `/sw:do` |
-| "Add test for X" | → `/sw:do` | → Confirm starting RED phase |
-| "Fix the implementation" | → `/sw:do` | → Check if GREEN phase complete |
+| 情况 | 未启用 TDD | 启用了 TDD |
+|---------|-------------|----------|
+| “实施 X”（新功能） | → 直接执行 `/sw:do` | → 先建议执行 `/sw:tdd-cycle` |
+| “我们继续吧” | → 直接执行 `/sw:do` | → 显示 TDD 阶段提示 |
+| “为 X 添加测试用例” | → 直接执行 `/sw:do` | → 确认是否已进入测试阶段（RED 阶段） |
+| “修复实现代码” | → 直接执行 `/sw:do` | → 检查是否已完成测试阶段（GREEN 阶段） |
 
-**TDD-aware resume output:**
-
+**TDD 意识下的继续执行结果**：
 ```
 ✅ Resuming increment 0031-user-authentication-system...
 
@@ -263,8 +260,7 @@ Current Phase: 🟢 GREEN - Making test pass
 [Proceeding with /sw:do...]
 ```
 
-**TDD workflow suggestion (for new work):**
-
+**针对新工作的 TDD 工作流程建议**：
 ```
 User: "Implement user registration"
 
@@ -284,22 +280,21 @@ Would you like to:
 [1/2]:
 ```
 
-## Decision Matrix
+## 决策矩阵
 
-| User Intent | Active Increments | Relevance | Action |
+| 用户意图 | 正在进行的增量任务数量 | 任务相关性 | 应采取的动作 |
 |-------------|------------------|-----------|--------|
-| "Implement auth" | 1 (auth-related) | High (>70%) | Auto `/sw:do` |
-| "Implement auth" | 1 (unrelated) | Low (<40%) | Ask: New or add to current? |
-| "Implement auth" | 0 | N/A | Auto `/sw:increment` |
-| "Implement auth" | 2+ | N/A | Ask which increment |
-| "Let's continue" | 1 | N/A | Auto `/sw:do` |
-| "Let's continue" | 2+ | N/A | Ask which increment |
-| "Let's continue" | 0 | N/A | "No active increment. What should we build?" |
+| “实施用户认证” | 1（与认证相关） | 高度相关（>70%） | 自动执行 `/sw:do` |
+| “实施用户认证” | 1（无关） | 低度相关（<40%） | 询问用户：是创建新任务还是添加到现有任务中？ |
+| “实施用户认证” | 0 | 无关 | 自动执行 `/sw:increment` |
+| “实施用户认证” | 多于 1 个增量任务 | 无关 | 询问用户希望继续处理哪个增量任务 |
+| “我们继续吧” | 1 | 无关 | 自动执行 `/sw:do` |
+| “我们继续吧” | 多于 1 个增量任务 | 无关 | 询问用户希望继续处理哪个增量任务 |
+| “我们继续吧” | 0 | 无正在进行的增量任务 | 询问用户应该构建什么？ |
 
-## Relevance Matching Logic
+## 相关性判断逻辑
 
-**How to determine if request relates to active increment:**
-
+**如何判断请求与正在进行的增量任务是否相关**：
 ```typescript
 function calculateRelevance(userRequest: string, increment: Increment): number {
   let score = 0;
@@ -332,7 +327,7 @@ function calculateRelevance(userRequest: string, increment: Increment): number {
 }
 ```
 
-**Example:**
+**示例**：
 ```
 User: "Implement JWT token refresh"
 Active: 0031-user-authentication-system
@@ -346,22 +341,22 @@ Checks:
 Total: 100/100 → High relevance → Auto-resume
 ```
 
-## Examples
+## 示例
 
-### Example 1: Auto-Resume (High Relevance)
+### 示例 1：自动继续执行（高度相关）
 
-**Context:**
+**场景**：
 ```
 Active: 0031-user-authentication-system
 Progress: 3/10 tasks complete
 ```
 
-**User:**
+**用户**：
 ```
 Implement JWT token refresh
 ```
 
-**increment-work-router:**
+**增量工作路由器**：
 ```
 ✅ Intent detected: "implement" + specific target
 ✅ Active increment found: 0031-user-authentication-system
@@ -377,19 +372,19 @@ Resuming increment 0031 now with /sw:do...
 [Automatically invokes /sw:do]
 ```
 
-### Example 2: Create New (No Active Increment)
+### 示例 2：创建新任务（没有正在进行的增量任务）
 
-**Context:**
+**场景**：
 ```
 Active: None
 ```
 
-**User:**
+**用户**：
 ```
 Implement payment processing with Stripe
 ```
 
-**increment-work-router:**
+**增量工作路由器**：
 ```
 ✅ Intent detected: "implement" + specific target
 ❌ No active increment found
@@ -408,20 +403,20 @@ Creating increment now with /sw:increment...
 [Automatically invokes /sw:increment "payment processing with Stripe"]
 ```
 
-### Example 3: Unrelated Request (Ask)
+### 示例 3：请求与正在进行的任务无关（需要用户确认）
 
-**Context:**
+**场景**：
 ```
 Active: 0031-user-authentication-system
 Progress: 3/10 tasks complete
 ```
 
-**User:**
+**用户**：
 ```
 Implement email notifications
 ```
 
-**increment-work-router:**
+**增量工作路由器**：
 ```
 ✅ Intent detected: "implement" + specific target
 ✅ Active increment found: 0031-user-authentication-system
@@ -439,20 +434,20 @@ Your request for email notifications seems unrelated. Would you like to:
 SpecWeave works best with focused increments. What would you prefer?"
 ```
 
-### Example 4: Multiple Active (Clarify)
+### 示例 4：存在多个正在进行的任务（需要用户确认）
 
-**Context:**
+**场景**：
 ```
 Active: 0031-user-authentication-system (3/10 tasks)
 Active: 0032-payment-processing (1/8 tasks)
 ```
 
-**User:**
+**用户**：
 ```
 Let's continue working
 ```
 
-**increment-work-router:**
+**增量工作路由器**：
 ```
 ✅ Intent detected: "continue" (vague)
 ✅ Multiple active increments found: 2
@@ -474,19 +469,19 @@ Which one would you like to work on?"
 [Wait for user selection, then invoke /sw:do {selected-id}]
 ```
 
-### Example 5: Vague Intent + Single Active (Auto-Resume)
+### 示例 5：意图不明确（自动继续执行）
 
-**Context:**
+**场景**：
 ```
 Active: 0031-user-authentication-system (3/10 tasks)
 ```
 
-**User:**
+**用户**：
 ```
 What's next?
 ```
 
-**increment-work-router:**
+**增量工作路由器**：
 ```
 ✅ Intent detected: "what's next" (continuation)
 ✅ One active increment: 0031-user-authentication-system
@@ -501,32 +496,31 @@ Next task: **T-004 Implement password hashing**
 [Automatically invokes /sw:do]"
 ```
 
-## Opt-Out Mechanism
+## 用户自定义机制
 
-Users can override auto-routing with explicit instructions:
-- "Don't resume, create new" → Forces new increment
-- "Just discuss first" → Regular conversation
-- "Plan without implementing" → Routes to `/sw:increment` only
-- "Show me the current state" → Uses `/sw:status` instead
+用户可以通过明确指令来覆盖自动路由规则：
+- “不要继续执行，创建新任务” → 强制创建新任务
+- “先讨论一下” → 保持当前讨论状态
+- “先进行规划，不立即执行” → 直接路由到 `/sw:increment` 接口
+- “显示当前任务的状态” → 使用 `/sw:status` 接口
 
-## Success Criteria
+## 成功标准
 
-- ✅ Users can say "implement X" and work starts automatically
-- ✅ Smart routing to active increments (no manual `/sw:do`)
-- ✅ Detects unrelated requests and prevents scope creep
-- ✅ No "which increment?" confusion (auto-handles single active)
-- ✅ Clear choices when ambiguous (multiple active or unrelated)
-- ✅ Seamless integration with existing skills (increment-planner, detector)
+- 用户可以简单地说“实施 X”，系统就能自动开始工作
+- 系统能够智能地将请求路由到相关的增量任务中（无需用户手动执行 `/sw:do`）
+- 系统能够识别无关的请求，防止工作范围扩大
+- 在意图不明确的情况下（如存在多个正在进行的任务或请求与现有任务无关时），系统能提供清晰的选项
+- 该系统能与现有的技能（如 **增量规划器**、**检测器**）无缝集成
 
-## Related Skills
+## 相关技能
 
-- **increment-planner**: For creating increment structure (invoked by this skill for new projects)
-- **detector**: For checking SpecWeave context
+- **增量规划器**（increment-planner）：用于创建增量任务的结构（该技能会为新项目调用该规划器）
+- **检测器**（detector）：用于检查任务的相关性
 
 ---
 
-**Key Distinction:**
-- `increment-planner` = "PLAN this increment" or "I want to BUILD a new product" (planning-level)
-- `increment-work-router` = "IMPLEMENT this feature/task" (execution-level)
+**关键区别**：
+- **增量规划器**（increment-planner）：主要用于规划阶段，例如“计划这个增量任务”或“我想构建一个新产品”
+- **增量工作路由器**（increment-work-router）：主要用于执行阶段，例如“实施这个功能/任务”
 
-This skill bridges planning → execution by auto-detecting implementation intent.
+该系统通过自动检测用户的实施意图，实现了从规划到执行的无缝衔接。

@@ -1,11 +1,12 @@
 ---
 name: glab-iteration
-description: Use when working with glab iteration commands.
+description: **使用说明：**  
+当使用 glab 的迭代命令时，请参考以下说明。
 ---
 
-# glab iteration
+# glab 迭代
 
-## Overview
+## 概述
 
 ```
 
@@ -25,12 +26,12 @@ description: Use when working with glab iteration commands.
     -R --repo       Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab iteration --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

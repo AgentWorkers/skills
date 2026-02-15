@@ -1,91 +1,91 @@
 ---
 name: Webhook
-description: Implement secure webhook receivers and senders with proper verification and reliability.
+description: 实现具有适当验证机制和可靠性的安全 Webhook 接收器和发送器。
 metadata: {"clawdbot":{"emoji":"🪝","os":["linux","darwin","win32"]}}
 ---
 
-## Receiving: Signature Verification
+## 接收：签名验证
 
-- Always verify HMAC signature—payload can be forged; don't trust without signature
-- Common pattern: `HMAC-SHA256(secret, raw_body)` compared to header value
-- Use raw body bytes—parsed JSON may reorder keys, breaking signature
-- Timing-safe comparison—prevent timing attacks on signature check
-- Reject missing or invalid signature with 401—log for investigation
+- 必须验证 HMAC 签名——有效载荷可能被伪造；没有签名就不要相信数据。
+- 常见模式：将 `HMAC-SHA256(secret, raw_body)` 与头部值进行比较。
+- 使用原始数据字节进行签名验证——解析后的 JSON 可能会重新排序键值对，从而破坏签名。
+- 实施时间安全的比较机制——防止针对签名验证的攻击。
+- 如果缺少或签名无效，返回 401 错误码，并记录相关信息以供调查。
 
-## Receiving: Replay Prevention
+## 接收：防止重放
 
-- Check timestamp in payload or header—reject if too old (>5 minutes)
-- Combine with signature—timestamp without signature can be forged
-- Store processed event IDs—reject duplicates even within time window
-- Clock skew tolerance: allow 1-2 minutes past—but not hours
+- 检查数据载荷或头部中的时间戳——如果时间戳过旧（超过 5 分钟），则拒绝请求。
+- 将时间戳与签名一起使用——单独的时间戳容易被伪造。
+- 存储已处理的事件 ID——即使在相同的时间窗口内，也要拒绝重复的事件。
+- 允许时间偏差：最多允许 1-2 分钟的时间差异，但不得超过数小时。
 
-## Receiving: Idempotency (Critical)
+## 接收：幂等性（关键要求）
 
-- Webhooks can arrive multiple times—sender retries on timeout, network issues
-- Use event ID for deduplication—store processed IDs in database/Redis
-- Make handlers idempotent—same event twice should have same effect
-- Idempotency window: keep IDs for 24-72h—balance storage vs protection
+- Webhook 可能会多次发送——可能是由于发送方超时或网络问题导致的。
+- 使用事件 ID 来避免重复处理——将已处理的 ID 存储在数据库或 Redis 中。
+- 确保处理函数具有幂等性——同一个事件被多次发送时，应产生相同的结果。
+- 保持 ID 的有效性时间：通常为 24-72 小时——在存储需求与保护需求之间找到平衡。
 
-## Receiving: Fast Response
+## 接收：快速响应
 
-- Return 200/202 immediately—process asynchronously in queue
-- Senders timeout (5-30s typical)—slow processing = retry = duplicates
-- Minimal validation before 200—signature check, then queue
-- Background job for actual processing—failures don't affect acknowledgment
+- 立即返回 200 或 202 状态码——实际处理过程在后台异步进行。
+- 发送方通常会有 5-30 秒的超时设置——处理速度慢会导致重试或数据重复。
+- 在返回 200 状态码之前进行最基本的验证（如签名检查），然后将其放入队列中处理。
+- 实际处理任务在后台执行——失败不会影响响应的返回。
 
-## Receiving: Error Handling
+## 接收：错误处理
 
-- 2xx = success, sender won't retry
-- 4xx = permanent failure, sender may stop retrying—use for bad signature, unknown event type
-- 5xx = temporary failure, sender will retry—use for downstream issues
-- Log full payload on error—helps debugging; redact sensitive fields
+- 2xx 状态码表示成功，发送方不会再次尝试发送。
+- 4xx 状态码表示永久性失败，发送方可以停止重试——这种情况通常由签名错误或事件类型未知引起。
+- 5xx 状态码表示暂时性失败，发送方会继续尝试——可能是由于下游系统的问题。
+- 在记录错误信息时，应包含完整的数据载荷——但需屏蔽敏感字段。
 
-## Sending: Retry Strategy
+## 发送：重试策略
 
-- Exponential backoff: 1min, 5min, 30min, 2h, 8h—then give up or alert
-- Cap retries (5-10 attempts)—don't retry forever
-- Record delivery attempts—show status to user
-- Different retry for 4xx vs 5xx—4xx often means stop retrying
+- 采用指数级退避算法：1 分钟、5 分钟、30 分钟、2 小时，之后放弃或发出警报。
+- 限制重试次数（通常为 5-10 次），避免无限重试。
+- 记录每次尝试的详细信息，并向发送方显示状态。
+- 对 4xx 和 5xx 状态码采取不同的重试策略——4xx 状态码通常意味着应停止重试。
 
-## Sending: Signature Generation
+## 发送：签名生成
 
-- Include timestamp in signature—prevents replay of captured webhooks
-- Sign raw JSON body—document exact signing algorithm
-- Header format: `t=timestamp,v1=signature`—allows versioned signatures
-- Provide verification code examples—reduce integration friction
+- 在签名中包含时间戳——防止已捕获的 Webhook 被重复发送。
+- 对原始 JSON 数据进行签名处理——明确说明所使用的签名算法。
+- 头部格式：`t=timestamp,v1=signature`——支持版本化的签名。
+- 提供签名验证的示例代码——降低集成难度。
 
-## Sending: Timeouts
+## 发送：超时处理
 
-- 5-10 second timeout—don't wait forever for slow receivers
-- Treat timeout as failure—retry later
-- Don't follow redirects—or limit to 1-2; prevents redirect loops
-- Validate HTTPS certificate—don't skip verification
+- 设置 5-10 秒的超时时间——不要无限期等待响应缓慢的接收方。
+- 将超时视为失败，并稍后重新尝试。
+- 不要跟随重定向链接——或者限制重定向次数（最多 1-2 次），以防止循环重定向。
+- 验证 HTTPS 证书的有效性——不要跳过这一安全步骤。
 
-## Event Design
+## 事件设计
 
-- Include event type: `{"type": "order.created", ...}`—receivers filter by type
-- Include timestamp: ISO 8601 with timezone—for ordering and freshness
-- Include full resource or ID—prefer full data; saves receiver a lookup
-- Version events: `api_version` field—allows breaking changes
+- 包含事件类型：`{"type": "order.created", ...}`——接收方可以根据类型过滤事件。
+- 包含时间戳（ISO 8601 格式，并注明时区）——便于排序和判断数据的新鲜度。
+- 包含完整的资源信息或事件 ID——提供更多数据有助于接收方快速处理。
+- 为事件添加版本号：`api_version` 字段——便于处理版本更新。
 
-## Delivery Tracking
+## 交付跟踪
 
-- Log every attempt: URL, status code, response time, response body
-- Dashboard for retry queue—let users see pending/failed deliveries
-- Manual retry button—for stuck webhooks after receiver fix
-- Webhook logs retention: 7-30 days—balance debugging vs storage
+- 记录每次发送尝试的详细信息：URL、状态码、响应时间和响应内容。
+- 提供重试队列的监控界面——让用户了解待处理或已失败的任务。
+- 提供手动重试功能——用于处理接收方修复后仍无法响应的 Webhook。
+- Webhook 日志保留 7-30 天——在调试和存储需求之间找到平衡。
 
-## Security Checklist
+## 安全检查清单
 
-- HTTPS only—never send webhooks to HTTP endpoints
-- Rotate secrets periodically—support multiple active secrets during rotation
-- IP allowlisting optional—document your IP ranges if offered
-- Don't include secrets in payload—webhook URL should be secret enough
-- Rate limit per endpoint—one slow receiver shouldn't affect others
+- 仅使用 HTTPS 协议——绝不要将 Webhook 发送到 HTTP 端点。
+- 定期轮换密钥——在轮换过程中支持使用多个有效的密钥。
+- 可选地允许特定 IP 地址访问——如果需要，应记录允许访问的 IP 范围。
+- 不要在数据载荷中包含密钥——Webhook 的 URL 应足够安全，避免泄露。
+- 对每个端点设置速率限制——避免单个接收方的性能问题影响整个系统。
 
-## Common Mistakes
+## 常见错误
 
-- No signature verification—anyone can POST fake events to your endpoint
-- Processing before responding—timeout causes retries, duplicate processing
-- No idempotency handling—double charges, duplicate records
-- Trusting event data blindly—always verify by fetching from source API for critical actions
+- 不进行签名验证——任何人都可以向你的端点发送伪造的事件。
+- 在响应之前就处理数据——超时会导致重试或数据重复处理。
+- 未处理幂等性问题——可能导致重复收费或数据重复记录。
+- 盲目信任事件数据——对于关键操作，务必从源 API 获取数据并重新验证。

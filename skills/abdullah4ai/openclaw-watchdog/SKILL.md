@@ -1,53 +1,51 @@
 ---
 name: openclaw-watchdog
-description: Self-healing monitoring system for OpenClaw gateway. Auto-detects failures, fixes crashes, and sends Telegram alerts.
+description: OpenClaw网关的自我修复监控系统：能够自动检测故障、修复崩溃问题，并通过Telegram发送警报。
 homepage: https://github.com/Abdullah4AI/openclaw-watchdog
 metadata: {"openclaw":{"emoji":"🐕","disableModelInvocation":true,"requires":{"bins":["python3","openssl"],"env":["TELEGRAM_TOKEN","TELEGRAM_CHAT_ID"]},"install":[{"id":"setup","kind":"script","script":"scripts/setup.sh","label":"Install watchdog service (LaunchAgent/systemd user)","persistence":"user-level","service":true}]}}
 ---
 
 # openclaw-watchdog
 
-**Description:** Self-healing monitoring system for OpenClaw gateway. Monitors health, auto-restarts on failure, and sends Telegram alerts. Diagnostics and log analysis run locally on-device. Alert notifications are sent to the user's Telegram bot. Use when user wants to set up gateway monitoring, watchdog, or auto-recovery.
+**描述：** 专为 OpenClaw 网关设计的自修复监控系统。该系统能够监控网关的运行状态，在发生故障时自动重启，并通过 Telegram 发送警报。所有诊断信息和日志分析都在设备上本地完成。警报通知会发送到用户的 Telegram 账号。适用于需要设置网关监控、故障检测或自动恢复功能的用户。
 
-## Prerequisites
-- **Telegram Bot Token** — Create via [@BotFather](https://t.me/BotFather)
-- **Telegram Chat ID** — Your personal chat ID for receiving alerts
-- **Python 3** — Required for the watchdog service
-- **OpenClaw** — Installed and running
+## 先决条件
+- **Telegram 账号** — 需要通过 [@BotFather](https://t.me/BotFather) 创建一个 Telegram 账号，并获取相应的 Token（格式为 `123456:ABC-DEF...`）
+- **Telegram 聊天 ID** — 用于接收警报的个人聊天 ID
+- **Python 3** — 监控服务需要 Python 3 环境
+- **OpenClaw** — 确保 OpenClaw 已安装并正在运行
 
-## Trigger Keywords
-- watchdog, monitoring, auto-fix, gateway health, self-healing, auto-recovery, watch dog
+## 关键词
+- 监控（monitoring）、自动修复（auto-repair）、网关健康（gateway health）、自修复（self-healing）、自动恢复（auto-recovery）、故障检测（watchdog）
 
-## Setup
+## 设置流程
 
-Send the user ONE message with everything they need:
-
----
-
-🐕 **Watch Dog — Self-Healing Gateway Monitor**
-
-Watch Dog is a background service that pings your OpenClaw gateway every 15 seconds. If the gateway goes down, it automatically attempts to restart it and sends you Telegram alerts so you're always in the loop. All diagnostics run locally on your device.
-
-To set it up, I need:
-
-1. **Telegram Bot Token** — Create a bot via [@BotFather](https://t.me/BotFather) on Telegram, then send me the token (looks like `123456:ABC-DEF...`)
-
-2. **Your Telegram Chat ID** — Send `/start` to your bot, then visit `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates` to find your chat ID
-
-Send me the token and chat ID and I'll handle the rest (including a test run to make sure everything works)!
+请向用户发送一条包含所有必要信息的消息：
 
 ---
 
-## After Receiving Credentials
+🐕 **Watch Dog — 自修复网关监控工具**
 
-Run these steps in order:
+Watch Dog 是一个后台服务，每 15 秒会向您的 OpenClaw 网关发送一次 Ping 请求。如果网关出现故障，它会自动尝试重启，并通过 Telegram 向您发送警报，确保您随时了解网关的状态。所有诊断信息都在您的设备上本地处理。
 
-### 1. Validate credentials
+要设置该服务，请提供以下信息：
+1. **Telegram 账号 Token** — 通过 [@BotFather](https://t.me/BotFather) 在 Telegram 上创建一个账号，并将 Token 发送给我（格式为 `123456:ABC-DEF...`）
+2. **您的 Telegram 聊天 ID** — 向您的账号发送 `/start` 命令，然后访问 `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates` 以获取您的聊天 ID
+
+请将 Token 和聊天 ID 发送给我，其余步骤我会为您完成（包括进行测试以确保一切正常运行！）
+
+---
+
+## 收到凭据后
+
+请按照以下顺序执行操作：
+
+### 1. 验证凭据
 ```bash
 python3 ~/.openclaw/workspace/openclaw-watchdog/scripts/validate.py "$TELEGRAM_TOKEN"
 ```
 
-### 2. Run setup script
+### 2. 运行设置脚本
 ```bash
 chmod +x ~/.openclaw/workspace/openclaw-watchdog/scripts/setup.sh
 ~/.openclaw/workspace/openclaw-watchdog/scripts/setup.sh \
@@ -55,13 +53,13 @@ chmod +x ~/.openclaw/workspace/openclaw-watchdog/scripts/setup.sh
   --telegram-chat-id "$TELEGRAM_CHAT_ID"
 ```
 
-### 3. Connect via Telegram (Pairing)
+### 3. 通过 Telegram 连接（配对）
 ```bash
 python3 ~/.openclaw/workspace/openclaw-watchdog/scripts/test-message.py "$TELEGRAM_TOKEN" "$TELEGRAM_CHAT_ID"
 ```
-Wait for user to confirm they received the Telegram message before proceeding.
+等待用户确认收到 Telegram 消息后再继续下一步。
 
-### 4. Verify it's running
+### 4. 验证服务是否正在运行
 ```bash
 # Check service status
 if [[ "$(uname)" == "Darwin" ]]; then
@@ -74,21 +72,18 @@ fi
 tail -20 ~/.openclaw/watchdog/watchdog.log
 ```
 
-### 5. Confirm to user
-Tell them Watch Dog is active, what it monitors, and that they'll get Telegram alerts if anything goes wrong.
+### 5. 告知用户服务状态
+向用户确认 Watch Dog 已经启动、监控的内容，以及如果出现故障会发送 Telegram 警报。
 
-## How It Works
+## 工作原理
+- 每 15 秒向 `localhost:3117/health` 发送一次 Ping 请求
+- 如果连续三次检测到网关故障，会尝试重启网关
+- 最多尝试两次重启后，会通过 Telegram 请求用户的重启权限
+- 用户需要运行 `touch ~/.openclaw/watchdog/approve-reinstall` 来批准重启
+- 未经批准时，系统仅发送警报，不会执行任何破坏性操作
+- 采用 AES-256 加密算法对用户凭据进行加密（使用设备特有的密钥）
 
-- Pings `localhost:3117/health` every 15 seconds
-- After 3 consecutive failures, attempts `openclaw gateway restart`
-- Up to 2 restart attempts, then asks user for reinstall permission via Telegram
-- User approves by running: `touch ~/.openclaw/watchdog/approve-reinstall`
-- Without approval, only sends notifications — no destructive actions
-- Local pattern-matching diagnostics (no logs sent externally)
-- Runs as macOS LaunchAgent or Linux systemd user service
-- Credentials encrypted with AES-256 using machine-specific key
-
-## Uninstall
+## 卸载
 ```bash
 if [[ "$(uname)" == "Darwin" ]]; then
   launchctl unload ~/Library/LaunchAgents/com.openclaw.watchdog.plist 2>/dev/null

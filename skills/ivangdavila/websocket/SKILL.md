@@ -1,47 +1,47 @@
 ---
 name: WebSocket
-description: Implement reliable WebSocket connections with proper reconnection, heartbeats, and scaling.
+description: 实现可靠的WebSocket连接，包括适当的重新连接机制、心跳检测功能以及扩展性（即能够处理大量并发连接的能力）。
 metadata: {"clawdbot":{"emoji":"🔌","os":["linux","darwin","win32"]}}
 ---
 
-## Reconnection (Always Forget)
+## 重新连接（始终“忘记”之前的连接状态）
 
-- Connections drop silently—TCP FIN may never arrive; don't assume `onclose` fires
-- Exponential backoff: 1s, 2s, 4s, 8s... cap at 30s—prevents thundering herd on server recovery
-- Add jitter: `delay * (0.5 + Math.random())`—prevents synchronized reconnection storms
-- Track reconnection state—queue messages during reconnect, replay after
-- Max retry limit then surface error to user—don't retry forever silently
+- 连接会悄无声息地断开——TCP 的 FIN 数据包可能永远不会发送；因此不要假设 `onclose` 事件会被触发。
+- 采用指数级重试策略：1 秒、2 秒、4 秒、8 秒……最多重试 30 秒——防止大量连接同时尝试重新连接，从而加重服务器负担。
+- 添加随机延迟：`delay * (0.5 + Math.random())`——避免所有连接同时尝试重新连接，导致服务器压力过大。
+- 记录重新连接的状态：在重新连接期间将消息放入队列中，连接恢复后再重新发送这些消息。
+- 设定最大重试次数后，再向用户显示错误信息——不要无限期地默默重试。
 
-## Heartbeats (Critical)
+## 心跳机制（至关重要）
 
-- Ping/pong frames at protocol level—browser doesn't expose; use application-level ping
-- Send ping every 30s, expect pong within 10s—no pong = connection dead, reconnect
-- Server should ping too—detects dead clients, cleans up resources
-- Idle timeout in proxies (60-120s typical)—heartbeat must be more frequent
-- Don't rely on TCP keepalive—too infrequent, not reliable through proxies
+- 在协议层使用“ping/pong”机制来检测连接状态——浏览器不会暴露这些细节；应用层需要自行实现 ping 操作。
+- 每 30 秒发送一次 ping 请求，期望在 10 秒内收到响应；如果没有收到响应，则认为连接已断开，需要重新连接。
+- 服务器也应发送心跳请求——以便检测到断开的客户端并释放相关资源。
+- 代理服务器通常有 60-120 秒的闲置超时设置——因此心跳频率需要更高。
+- 不要依赖 TCP 的 keepalive 机制——其发送频率过低，且在代理服务器中不可靠。
 
-## Connection State
+## 连接状态
 
-- `readyState`: 0=CONNECTING, 1=OPEN, 2=CLOSING, 3=CLOSED—check before sending
-- Buffer messages while CONNECTING—send after OPEN
-- `bufferedAmount` shows queued bytes—pause sending if backpressure building
-- Multiple tabs = multiple connections—coordinate via BroadcastChannel or SharedWorker
+- `readyState` 的取值如下：0=CONNECTING, 1=OPEN, 2=CLOSING, 3=CLOSED——在发送数据前需要检查连接状态。
+- 在连接建立过程中（CONNECTING 阶段）将消息暂存到缓冲区中；连接建立完成后（OPEN 阶段）再发送这些消息。
+- `bufferedAmount` 表示暂存的消息字节数；如果缓冲区压力过大，暂停数据发送。
+- 如果打开多个标签页，则会建立多个连接——通过 `BroadcastChannel` 或 `SharedWorker` 来协调这些连接。
 
-## Authentication
+## 认证机制
 
-- Token in URL query: `wss://host/ws?token=xxx`—simple but logged in access logs
-- First message auth: connect, send token, wait for ack—cleaner but more round trips
-- Cookie auth: works if same origin—but no custom headers in WebSocket
-- Reauthenticate after reconnect—don't assume previous session valid
+- 使用 URL 查询参数进行认证：`wss://host/ws?token=xxx`——虽然简单，但可以记录用户的登录信息。
+- 首次连接时进行认证：发送请求并等待服务器的响应；这种方式更可靠，但会增加网络延迟。
+- 使用 Cookie 进行认证：如果客户端和服务器来自同一来源，则认证有效；但 WebSocket 协议不允许自定义请求头。
+- 重新连接后需要重新认证——不要假设之前的会话仍然有效。
 
-## Scaling Challenges
+## 扩展性挑战
 
-- WebSocket connections are stateful—can't round-robin between servers
-- Sticky sessions: route by client ID to same server—or use Redis pub/sub for broadcast
-- Each connection holds memory—thousands of connections = significant RAM
-- Graceful shutdown: send close frame, wait for clients to reconnect elsewhere
+- WebSocket 连接具有状态性——不能简单地在多个服务器之间进行负载均衡。
+- 为每个客户端分配固定的连接：可以通过客户端 ID 将请求路由到同一台服务器；或者使用 Redis 的 pub/sub 模式进行广播通信。
+- 每个连接都会占用内存——如果连接数量过多，会消耗大量系统资源。
+- 实现优雅的关闭机制：发送关闭请求（close frame），然后等待客户端在其他地方重新连接。
 
-## Nginx/Proxy Config
+## Nginx/代理服务器配置
 
 ```
 proxy_http_version 1.1;
@@ -49,36 +49,36 @@ proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection "upgrade";
 proxy_read_timeout 3600s;
 ```
-- Without these headers, upgrade fails—connection closes immediately
-- `proxy_read_timeout` must exceed your ping interval—default 60s too short
-- Load balancer health checks: separate HTTP endpoint, not WebSocket
+- 如果缺少这些配置头，升级操作会失败——连接会立即关闭。
+- `proxy_read_timeout` 的值必须大于你的 ping 周期时间；默认值 60 秒太短了。
+- 负载均衡器需要单独检查 WebSocket 连接的健康状况——不能与 HTTP 请求一起检查。
 
-## Close Codes
+## 关闭代码
 
-- 1000: normal closure; 1001: going away (page close)
-- 1006: abnormal (no close frame received)—usually network issue
-- 1008: policy violation; 1011: server error
-- 4000-4999: application-defined—use for auth failure, rate limit, etc.
-- Always send close code and reason—helps debugging
+- 1000：正常关闭；1001：客户端主动关闭页面；
+- 1006：异常关闭（未收到关闭请求）——通常是由于网络问题；
+- 1008：违反规则；1011：服务器错误；
+- 4000-4999：由应用程序自定义的错误代码——用于表示认证失败、速率限制等情况。
+- 必须始终发送关闭代码及关闭原因——这有助于调试问题。
 
-## Message Handling
+## 消息处理
 
-- Text frames for JSON; binary frames for blobs/protobuf—don't mix without framing
-- No guaranteed message boundaries in TCP—but WebSocket handles framing for you
-- Order preserved per connection—messages arrive in send order
-- Large messages may fragment—library handles reassembly; set max message size server-side
+- 文本消息使用 JSON 格式；二进制数据使用二进制帧格式；不同类型的数据应使用不同的帧格式进行传输。
+- TCP 协议不保证消息的边界清晰；WebSocket 协议会自动处理消息的帧格式化。
+- 每条消息的发送顺序会被保留——消息会按照发送顺序到达接收端。
+- 大型消息可能会被分割成多个部分——库会负责重新组装这些数据；服务器端可以设置消息的最大大小。
 
-## Security
+## 安全性
 
-- Validate Origin header on handshake—prevent cross-site WebSocket hijacking
-- Same-origin policy doesn't apply—any page can connect to your WebSocket server
-- Rate limit per connection—one client can flood with messages
-- Validate every message—malicious clients can send anything after connecting
+- 在握手过程中验证 `Origin` 请求头——防止跨站 WebSocket 劫持。
+- 同源策略不适用——任何页面都可以连接到你的 WebSocket 服务器。
+- 对每个连接设置速率限制——防止某个客户端发送大量消息。
+- 验证每条接收到的消息——恶意客户端可能会发送任意类型的数据。
 
-## Common Mistakes
+## 常见错误
 
-- No heartbeat—connection appears alive but is dead; messages go nowhere
-- Reconnect without backoff—hammers server during outage, prolongs recovery
-- Storing state only in connection—lost on reconnect; persist critical state externally
-- Huge messages—blocks event loop; stream large data via chunking
-- Not handling `bufferedAmount`—memory grows unbounded if client slower than server
+- 不使用心跳机制：连接看似正常，但实际上已经断开；发送的消息无法到达目的地。
+- 重新连接时没有采用延迟策略：在网络故障期间会持续向服务器发送请求，延长服务器的恢复时间。
+- 仅将连接状态存储在内存中：连接断开后状态会丢失；需要将关键状态数据持久化到外部存储。
+- 发送过大尺寸的消息：可能会导致事件循环阻塞；应通过分块方式传输大数据。
+- 不处理 `bufferedAmount` 变量：如果客户端处理数据的速度慢于服务器，内存使用量可能会无限增长。

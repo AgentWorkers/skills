@@ -1,28 +1,28 @@
 ---
 name: dnd
-description: D&D 5e toolkit for players and DMs. Roll dice, look up spells and monsters, generate characters, create encounters, and spawn NPCs. Uses the official D&D 5e SRD API.
+description: D&D 5e 工具包，专为玩家和地下城主（DM）设计。支持掷骰子、查询法术和怪物信息、创建角色、设计战斗场景以及生成非玩家角色（NPC）。该工具包使用了官方的 D&D 5e SRD API。
 version: 1.0.0
 author: captmarbles
 ---
 
-# D&D 5e Toolkit
+# D&D 5e 工具包
 
-Your complete Dungeons & Dragons 5th Edition assistant! Look up spells, monsters, roll dice, generate characters, encounters, and NPCs.
+这是您专用的《龙与地下城》第五版辅助工具！它可以帮您查询法术、怪物信息，掷骰子，生成角色、战斗场景以及非玩家角色（NPC）。
 
-## Features
+## 主要功能
 
-🎲 **Dice Roller** - Roll any dice with modifiers  
-✨ **Spell Lookup** - Search the entire SRD spell list  
-👹 **Monster Stats** - Get full stat blocks for any creature  
-⚔️ **Character Generator** - Random characters with stats  
-🗡️ **Encounter Builder** - Generate balanced encounters by CR  
-👤 **NPC Generator** - Create random NPCs with personality  
+🎲 **掷骰子** - 可以掷带有修正值的任意骰子  
+✨ **法术查询** - 在整个系统参考文档（SRD）中搜索法术  
+👹 **怪物资料** - 查看任何怪物的完整属性信息  
+⚔️ **角色生成器** - 生成具有随机属性的角色  
+🗡️ **战斗场景生成器** - 根据难度等级（CR）生成平衡的战斗场景  
+👤 **NPC生成器** - 创建具有独特个性的随机NPC  
 
-## Usage
+## 使用方法
 
-All commands use the `dnd.py` script.
+所有命令都需要通过 `dnd.py` 脚本来执行。  
 
-### Roll Dice
+### 掷骰子
 
 ```bash
 # Roll 2d6 with +3 modifier
@@ -38,14 +38,14 @@ python3 dnd.py roll 1d20-2
 python3 dnd.py roll 8d6
 ```
 
-**Output:**
+**输出：**
 ```
 🎲 Rolling 2d6+3
    Rolls: [4 + 5] +3
    Total: 12
 ```
 
-### Look Up Spells
+### 查询法术
 
 ```bash
 # Search for a spell
@@ -58,7 +58,7 @@ python3 dnd.py spell fire-bolt
 python3 dnd.py spell --list
 ```
 
-**Output:**
+**输出：**
 ```
 ✨ Fireball
    Level: 3 Evocation
@@ -72,7 +72,7 @@ python3 dnd.py spell --list
    an explosion of flame...
 ```
 
-### Look Up Monsters
+### 查询怪物
 
 ```bash
 # Search for a monster
@@ -85,7 +85,7 @@ python3 dnd.py monster ancient-red-dragon
 python3 dnd.py monster --list
 ```
 
-**Output:**
+**输出：**
 ```
 👹 Adult Red Dragon
    Huge Dragon, chaotic evil
@@ -105,14 +105,14 @@ python3 dnd.py monster --list
    • Multiattack: The dragon can use its Frightful Presence...
 ```
 
-### Generate Random Character
+### 生成随机角色
 
 ```bash
 # Generate character with rolled stats
 python3 dnd.py character
 ```
 
-**Output:**
+**输出：**
 ```
 ⚔️  Elara
    Race: Elf
@@ -127,7 +127,7 @@ python3 dnd.py character
    CHA: 8 (-1)
 ```
 
-### Generate Random Encounter
+### 生成随机战斗场景
 
 ```bash
 # Generate encounter with challenge rating
@@ -137,7 +137,7 @@ python3 dnd.py encounter --cr 5
 python3 dnd.py encounter
 ```
 
-**Output:**
+**输出：**
 ```
 🎲 Random Encounter (CR ~5)
 
@@ -147,13 +147,13 @@ python3 dnd.py encounter
       AC 11, HP 59
 ```
 
-### Generate Random NPC
+### 生成随机NPC
 
 ```bash
 python3 dnd.py npc
 ```
 
-**Output:**
+**输出：**
 ```
 👤 Finn Shadowend
    Race: Halfling
@@ -161,18 +161,18 @@ python3 dnd.py npc
    Trait: Curious
 ```
 
-## Example Prompts for Clawdbot
+## 对 Clawdbot 的使用示例：
 
-- *"Roll 2d20 with advantage"* (I'll roll twice!)
-- *"Look up the Fireball spell"*
-- *"Show me stats for a Beholder"*
-- *"Generate a random character"*
-- *"Create an encounter for level 5 party"*
-- *"Give me an NPC for my tavern scene"*
+- *"掷2d20骰子，并且具有优势（即第二次掷骰子的结果比第一次高）"*  
+- *"查询‘火球术’的相关信息"*  
+- *"显示‘魔眼’怪物的全部属性"*  
+- *"生成一个随机角色"*  
+- *"为5级团队生成一个战斗场景"*  
+- *"为我的酒馆场景创建一个随机NPC"*  
 
-## JSON Output
+## 结构化输出（使用 `--json` 参数）
 
-Add `--json` to any command for structured output:
+在命令后添加 `--json` 可以获得结构化的输出格式：  
 
 ```bash
 python3 dnd.py roll 2d6 --json
@@ -180,24 +180,24 @@ python3 dnd.py spell --search fireball --json
 python3 dnd.py character --json
 ```
 
-## API Source
+## API 来源
 
-Uses the official [D&D 5e API](https://www.dnd5eapi.co/) which includes all System Reference Document (SRD) content.
+该工具使用了官方的 [D&D 5e API](https://www.dnd5eapi.co/)，其中包含了所有的系统参考文档（SRD）内容。  
 
-## Tips
+## 使用提示：
 
-- **Spell names** use lowercase with hyphens: `fireball`, `magic-missile`, `cure-wounds`
-- **Monster names** same format: `ancient-red-dragon`, `goblin`, `beholder`
-- **Search** if unsure of exact name: `--search dragon` will show all dragons
-- **Dice format** is flexible: `1d20`, `2d6+5`, `3d8-2`, `100d100`
+- **法术名称** 应使用小写字母并加上连字符：`fireball`、`magic-missile`、`cure-wounds`  
+- **怪物名称** 也采用相同的格式：`ancient-red-dragon`、`goblin`、`beholder`  
+- 如果不确定名称，可以使用 `--search dragon` 来搜索所有与“dragon”相关的怪物  
+- **骰子格式** 非固定：`1d20`、`2d6+5`、`3d8-2`、`100d100`  
 
-## Future Ideas
+## 未来开发计划：
 
-- Initiative tracker
-- Treasure generator
-- Quest/plot hook generator
-- Random dungeon generator
-- Party manager
-- Campaign notes
+- 添加角色行动顺序追踪功能  
+- 开发宝藏生成器  
+- 提供任务/剧情线索生成工具  
+- 实现随机地下城生成功能  
+- 引入团队管理功能  
+- 添加战役记录功能  
 
-Enjoy your adventure! 🐉⚔️✨
+祝您游戏愉快！🐉⚔️✨

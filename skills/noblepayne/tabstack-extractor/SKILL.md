@@ -1,17 +1,17 @@
 ---
 name: tabstack-extractor
-description: Extract structured data from websites using Tabstack API. Use when you need to scrape job listings, news articles, product pages, or any structured web content. Provides JSON schema-based extraction and clean markdown conversion. Requires TABSTACK_API_KEY environment variable.
+description: 使用 Tabstack API 从网站中提取结构化数据。适用于抓取职位列表、新闻文章、产品页面或任何具有结构化格式的网页内容。该工具支持基于 JSON 模式的数据提取，并能将提取到的数据转换为格式规范的 Markdown 文本。使用前需设置 `TABSTACK_API_KEY` 环境变量。
 ---
 
-# Tabstack Extractor
+# Tabstack 提取器
 
-## Overview
+## 概述
 
-This skill enables structured data extraction from websites using the Tabstack API. It's ideal for web scraping tasks where you need consistent, schema-based data extraction from job boards, news sites, product pages, or any structured content.
+该技能允许使用 Tabstack API 从网站中提取结构化数据。它非常适合用于网页抓取任务，特别是在需要从招聘网站、新闻网站、产品页面或任何结构化内容中提取一致且基于模式的数据时。
 
-## Quick Start
+## 快速入门
 
-### 1. Install Babashka (if needed)
+### 1. （如需要）安装 Babashka
 ```bash
 # Option A: From GitHub (recommended for sharing)
 curl -s https://raw.githubusercontent.com/babashka/babashka/master/install | bash
@@ -23,32 +23,32 @@ nix-shell -p babashka
 brew install borkdude/brew/babashka
 ```
 
-### 2. Set up API Key
+### 2. 设置 API 密钥
 
-**Option A: Environment variable (recommended)**
+**选项 A：环境变量（推荐）**
 ```bash
 export TABSTACK_API_KEY="your_api_key_here"
 ```
 
-**Option B: Configuration file**
+**选项 B：配置文件**
 ```bash
 mkdir -p ~/.config/tabstack
 echo '{:api-key "your_api_key_here"}' > ~/.config/tabstack/config.edn
 ```
 
-**Get an API key:** Sign up at [Tabstack Console](https://console.tabstack.ai/signup)
+**获取 API 密钥：** 在 [Tabstack 控制台](https://console.tabstack.ai/signup) 注册
 
-### 3. Test Connection
+### 3. 测试连接
 ```bash
 bb scripts/tabstack.clj test
 ```
 
-### 4. Extract Markdown (Simple)
+### 4. 提取 Markdown（简单示例）
 ```bash
 bb scripts/tabstack.clj markdown "https://example.com"
 ```
 
-### 5. Extract JSON (Start Simple)
+### 5. 提取 JSON（简单示例）
 ```bash
 # Start with simple schema (fast, reliable)
 bb scripts/tabstack.clj json "https://example.com" references/simple_article.json
@@ -57,7 +57,7 @@ bb scripts/tabstack.clj json "https://example.com" references/simple_article.jso
 bb scripts/tabstack.clj json "https://news.site" references/news_schema.json
 ```
 
-### 6. Advanced Features
+### 6. 高级功能
 ```bash
 # Extract with retry logic (3 retries, 1s delay)
 bb scripts/tabstack.clj json-retry "https://example.com" references/simple_article.json
@@ -71,48 +71,48 @@ echo "https://example.org" >> urls.txt
 bb scripts/tabstack.clj batch urls.txt references/simple_article.json
 ```
 
-## Core Capabilities
+## 核心功能
 
-### 1. Markdown Extraction
-Extract clean, readable markdown from any webpage. Useful for content analysis, summarization, or archiving.
+### 1. Markdown 提取
+从任何网页中提取干净、易读的 Markdown 格式的内容。适用于内容分析、摘要生成或归档。
 
-**When to use:** When you need the textual content of a page without the HTML clutter.
+**使用场景：** 当您需要获取网页的文本内容而不需要 HTML 格式时。
 
-**Example use cases:**
-- Extract article content for summarization
-- Archive webpage content
-- Analyze blog post content
+**示例用法：**
+- 提取文章内容以进行摘要生成
+- 归档网页内容
+- 分析博客文章内容
 
-### 2. JSON Schema Extraction
-Extract structured data using JSON schemas. Define exactly what data you want and get it in a consistent format.
+### 2. JSON 模式提取
+使用 JSON 模式提取结构化数据。您可以精确定义所需的数据，并以一致的格式获取。
 
-**When to use:** When scraping job listings, product pages, news articles, or any structured data.
+**使用场景：** 在抓取招聘信息、产品页面或新闻文章等结构化数据时。
 
-**Example use cases:**
-- Scrape job listings from BuiltIn/LinkedIn
-- Extract product details from e-commerce sites
-- Gather news articles with consistent metadata
+**示例用法：**
+- 从 BuiltIn/LinkedIn 网站抓取招聘信息
+- 从电子商务网站提取产品详情
+- 收集带有统一元数据的新文章
 
-### 3. Schema Templates
-Pre-built schemas for common scraping tasks. See `references/` directory for templates.
+### 3. 模式模板
+为常见的抓取任务提供了预先构建的模式模板。请查看 `references/` 目录以获取模板。
 
-**Available schemas:**
-- Job listing schema (see `references/job_schema.json`)
-- News article schema
-- Product page schema
-- Contact information schema
+**可用模板：**
+- 招聘信息模式（参见 `references/job_schema.json`）
+- 新闻文章模式
+- 产品页面模式
+- 联系信息模式
 
-## Workflow: Job Scraping Example
+## 工作流程：抓取招聘信息示例
 
-Follow this workflow to scrape job listings:
+按照以下步骤抓取招聘信息：
 
-1. **Identify target sites** - BuiltIn, LinkedIn, company career pages
-2. **Choose or create schema** - Use `references/job_schema.json` or customize
-3. **Test extraction** - Run a single page to verify schema works
-4. **Scale up** - Process multiple URLs
-5. **Store results** - Save to database or file
+1. **确定目标网站** - BuiltIn、LinkedIn 或公司职业页面
+2. **选择或创建模式** - 使用 `references/job_schema.json` 或自定义模式
+3. **测试提取** - 运行单个页面以验证模式是否正确
+4. **扩展抓取范围** - 处理多个 URL
+5. **存储结果** - 保存到数据库或文件中
 
-**Example job schema:**
+**示例招聘信息模式：**
 ```json
 {
   "type": "object",
@@ -129,82 +129,82 @@ Follow this workflow to scrape job listings:
 }
 ```
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-### Combine with Web Search
-1. Use `web_search` to find relevant URLs
-2. Use Tabstack to extract structured data from those URLs
-3. Store results in Datalevin (future skill)
+### 与 Web 搜索结合使用
+1. 使用 `web_search` 找到相关 URL
+2. 使用 Tabstack 从这些 URL 中提取结构化数据
+3. 将结果存储在 Datalevin 中（后续技能）
 
-### Combine with Browser Automation
-1. Use `browser` tool to navigate complex sites
-2. Extract page URLs
-3. Use Tabstack for structured extraction
+### 与浏览器自动化结合使用
+1. 使用 `browser` 工具导航复杂网站
+2. 提取页面 URL
+3. 使用 Tabstack 进行结构化数据提取
 
-## Error Handling
+## 错误处理
 
-Common issues and solutions:
+常见问题及解决方法：
 
-1. **Authentication failed** - Check `TABSTACK_API_KEY` environment variable
-2. **Invalid URL** - Ensure URL is accessible and correct
-3. **Schema mismatch** - Adjust schema to match page structure
-4. **Rate limiting** - Add delays between requests
+1. **身份验证失败** - 检查 `TABSTACK_API_KEY` 环境变量
+2. **无效 URL** - 确保 URL 可访问且正确
+3. **模式不匹配** - 调整模式以匹配页面结构
+4. **速率限制** - 在请求之间添加延迟
 
-## Resources
+## 资源
 
-### scripts/
-- `tabstack.clj` - **Main API wrapper in Babashka** (recommended, has retry logic, caching, batch processing)
-- `tabstack_curl.sh` - Bash/curl fallback (simple, no dependencies)
-- `tabstack_api.py` - Python API wrapper (requires requests module)
+### 脚本/
+- `tabstack.clj` - Babashka 中的主要 API 包装器（推荐，具有重试逻辑、缓存和批量处理功能）
+- `tabstack_curl.sh` - Bash/curl 替代方案（简单，无依赖项）
+- `tabstack_api.py` - Python API 包装器（需要 `requests` 模块）
 
-### references/
-- `job_schema.json` - Template schema for job listings
-- `api_reference.md` - Tabstack API documentation
+### 参考资料/
+- `job_schema.json` - 招聘信息模式模板
+- `api_reference.md` - Tabstack API 文档
 
-## Best Practices
+## 最佳实践
 
-1. **Start small** - Test with single pages before scaling
-2. **Respect robots.txt** - Check site scraping policies
-3. **Add delays** - Avoid overwhelming target sites
-4. **Validate schemas** - Test schemas on sample pages
-5. **Handle errors gracefully** - Implement retry logic for failed requests
+1. **从小处开始** - 在扩展之前先测试单个页面
+2. **遵守 robots.txt** - 查看网站的抓取政策
+3. **添加延迟** - 避免对目标网站造成负担
+4. **验证模式** - 在示例页面上测试模式
+5. **优雅地处理错误** - 为失败的请求实现重试逻辑
 
-## Teaching Focus: How to Create Schemas
+## 教学重点：如何创建模式
 
-This skill is designed to teach agents how to use Tabstack API effectively. The key is learning to create appropriate JSON schemas for different websites.
+该技能旨在教授代理如何有效使用 Tabstack API。关键在于学习如何为不同网站创建合适的 JSON 模式。
 
-### Learning Path
-1. **Start Simple** - Use `references/simple_article.json` (4 basic fields)
-2. **Test Extensively** - Try schemas on multiple page types
-3. **Iterate** - Add fields based on what the page actually contains
-4. **Optimize** - Remove unnecessary fields for speed
+### 学习路径
+1. **从简单开始** - 使用 `references/simple_article.json`（4 个基本字段）
+2. **广泛测试** - 在多种页面类型上测试模式
+3. **迭代优化** - 根据页面实际内容添加字段
+4. **优化** - 删除不必要的字段以提高速度
 
-See [Schema Creation Guide](references/schema_guide.md) for detailed instructions and examples.
+详细说明和示例请参阅 [模式创建指南](references/schema_guide.md)。
 
-### Common Mistakes to Avoid
-- **Over-complex schemas** - Start with 2-3 fields, not 20
-- **Missing fields** - Don't require fields that don't exist on the page
-- **No testing** - Always test with example.com first, then target sites
-- **Ignoring timeouts** - Complex schemas take longer (45s timeout)
+### 常见错误及避免方法
+- **模式过于复杂** - 从 2-3 个字段开始，而不是 20 个
+- **缺少字段** - 不要要求页面上不存在的字段
+- **不进行测试** - 先在 example.com 上测试，然后再针对目标网站进行测试
+- **忽略超时设置** - 复杂的模式可能需要更长的时间（建议设置 45 秒的超时）
 
-## Babashka Advantages
+## Babashka 的优势
 
-Using Babashka for this skill provides:
+使用 Babashka 进行此技能开发具有以下优势：
 
-1. **Single binary** - Easy to share/install (GitHub releases, brew, nix)
-2. **Fast startup** - No JVM warmup, ~50ms startup time
-3. **Built-in HTTP client** - No external dependencies
-4. **Clojure syntax** - Familiar to you (Wes), expressive
-5. **Retry logic & caching** - Built into the skill
-6. **Batch processing** - Parallel extraction for multiple URLs
+1. **单一二进制文件** - 易于共享和安装（支持 GitHub 发布、Brew 和 Nix）
+2. **快速启动** - 无需 JVM 加热时间，启动时间约 50 毫秒
+3. **内置 HTTP 客户端** - 无需外部依赖项
+4. **Clojure 语法** - 对您来说较为熟悉且表达能力强
+5. **内置重试逻辑和缓存** - 自动实现
+6. **批量处理** - 可同时处理多个 URL
 
-## Example User Requests
+## 用户示例请求
 
-**For this skill to trigger:**
-- "Scrape job listings from Docker careers page"
-- "Extract the main content from this article"
-- "Get structured product data from this e-commerce page"
-- "Pull all the news articles from this site"
-- "Extract contact information from this company page"
-- "Batch extract job listings from these 20 URLs"
-- "Get cached results for this page (avoid API calls)"
+**触发此技能的命令示例：**
+- “从 Docker 职业页面抓取招聘信息”
+- “从这篇文章中提取主要内容”
+- “从这个电子商务页面提取产品数据”
+- “从这个网站获取所有新闻文章”
+- “从这个公司页面提取联系信息”
+- “从这 20 个 URL 批量提取招聘信息”
+- “获取该页面的缓存结果（避免重复调用 API）”

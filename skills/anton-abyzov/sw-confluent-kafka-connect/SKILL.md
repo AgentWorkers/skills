@@ -1,49 +1,49 @@
 ---
 name: confluent-kafka-connect
-description: Kafka Connect integration expert. Covers source and sink connectors, JDBC, Elasticsearch, S3, Debezium CDC, SMT (Single Message Transforms), connector configuration, and data pipeline patterns. Activates for kafka connect, connectors, source connector, sink connector, jdbc connector, debezium, smt, data pipeline, cdc.
+description: Kafka Connect集成专家。精通源连接器（source connectors）和目标连接器（sink connectors）的配置与使用，包括JDBC、Elasticsearch、S3、Debezium CDC等数据源/目标系统的集成方案。负责开发与配置相关连接器，并提供关于数据管道（data pipelines）设计模式的指导。支持Kafka Connect的核心功能，包括源连接器（source connector）、目标连接器（sink connector）、JDBC连接器（JDBC connector）、Debezium、SMT（Single Message Transforms）等组件的部署与优化。
 ---
 
-# Confluent Kafka Connect Skill
+# Confluent Kafka Connect 技能
 
-Expert knowledge of Kafka Connect for building data pipelines with source and sink connectors.
+具备使用 Kafka Connect 构建数据管道的专家级知识，包括源连接器（Source Connectors）和目标连接器（Sink Connectors）。
 
-## What I Know
+## 我所掌握的知识
 
-### Connector Types
+### 连接器类型
 
-**Source Connectors** (External System → Kafka):
-- JDBC Source: Databases → Kafka
-- Debezium: CDC (MySQL, PostgreSQL, MongoDB) → Kafka
-- S3 Source: AWS S3 files → Kafka
-- File Source: Local files → Kafka
+**源连接器**（外部系统 → Kafka）：
+- JDBC Source：数据库 → Kafka
+- Debezium：CDC（MySQL、PostgreSQL、MongoDB）→ Kafka
+- S3 Source：AWS S3 文件 → Kafka
+- File Source：本地文件 → Kafka
 
-**Sink Connectors** (Kafka → External System):
-- JDBC Sink: Kafka → Databases
-- Elasticsearch Sink: Kafka → Elasticsearch
-- S3 Sink: Kafka → AWS S3
-- HDFS Sink: Kafka → Hadoop HDFS
+**目标连接器**（Kafka → 外部系统）：
+- JDBC Sink：Kafka → 数据库
+- Elasticsearch Sink：Kafka → Elasticsearch
+- S3 Sink：Kafka → AWS S3
+- HDFS Sink：Kafka → Hadoop HDFS
 
-**Single Message Transforms (SMTs)**:
-- Field operations: Insert, Mask, Replace, TimestampConverter
-- Routing: RegexRouter, TimestampRouter
-- Filtering: Filter, Predicates
+**单条消息转换（Single Message Transforms, SMTs）**：
+- 字段操作：插入（Insert）、屏蔽（Mask）、替换（Replace）、时间戳转换（TimestampConverter）
+- 路由（Routing）：正则表达式路由器（RegexRouter）、时间戳路由器（TimestampRouter）
+- 过滤（Filtering）：过滤器（Filter）、谓词（Predicates）
 
-## When to Use This Skill
+## 何时使用此技能
 
-Activate me when you need help with:
-- Connector setup ("Configure JDBC connector")
-- CDC patterns ("Debezium MySQL CDC")
-- Data pipelines ("Stream database changes to Kafka")
-- SMT transforms ("Mask sensitive fields")
-- Connector troubleshooting ("Connector task failed")
+在需要以下帮助时请启用我：
+- 连接器配置（“配置 JDBC 连接器”）
+- CDC 模式（“Debezium MySQL CDC”）
+- 数据管道（“将数据库变更流式传输到 Kafka”）
+- 单条消息转换（“屏蔽敏感字段”）
+- 连接器故障排除（“连接器任务失败”）
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: JDBC Source (Database → Kafka)
+### 模式 1：JDBC Source（数据库 → Kafka）
 
-**Use Case**: Stream database table changes to Kafka
+**用例**：将数据库表变更流式传输到 Kafka
 
-**Configuration**:
+**配置**：
 ```json
 {
   "name": "jdbc-source-users",
@@ -62,16 +62,16 @@ Activate me when you need help with:
 }
 ```
 
-**Modes**:
-- `incrementing`: Track by auto-increment ID
-- `timestamp`: Track by timestamp column
-- `timestamp+incrementing`: Both (most reliable)
+**模式选项**：
+- `incrementing`：通过自增 ID 追踪
+- `timestamp`：通过时间戳列追踪
+- `timestamp+incrementing`：两者结合（最可靠）
 
-### Pattern 2: Debezium CDC (MySQL → Kafka)
+### 模式 2：Debezium CDC（MySQL → Kafka）
 
-**Use Case**: Capture all database changes (INSERT/UPDATE/DELETE)
+**用例**：捕获所有数据库变更（INSERT/UPDATE/DELETE）
 
-**Configuration**:
+**配置**：
 ```json
 {
   "name": "debezium-mysql-cdc",
@@ -92,7 +92,7 @@ Activate me when you need help with:
 }
 ```
 
-**Output Format** (Debezium Envelope):
+**输出格式**（Debezium Envelope）：
 ```json
 {
   "before": null,
@@ -122,11 +122,11 @@ Activate me when you need help with:
 }
 ```
 
-### Pattern 3: JDBC Sink (Kafka → Database)
+### 模式 3：JDBC Sink（Kafka → 数据库）
 
-**Use Case**: Write Kafka events to PostgreSQL
+**用例**：将 Kafka 事件写入 PostgreSQL
 
-**Configuration**:
+**配置**：
 ```json
 {
   "name": "jdbc-sink-enriched-orders",
@@ -147,16 +147,16 @@ Activate me when you need help with:
 }
 ```
 
-**Insert Modes**:
-- `insert`: Append only (fails on duplicate)
-- `update`: Update only (requires PK)
-- `upsert`: INSERT or UPDATE (recommended)
+**插入模式**：
+- `insert`：仅追加（重复数据时失败）
+- `update`：仅更新（需要主键）
+- `upsert`：插入或更新（推荐）
 
-### Pattern 4: S3 Sink (Kafka → AWS S3)
+### 模式 4：S3 Sink（Kafka → AWS S3）
 
-**Use Case**: Archive Kafka topics to S3
+**用例**：将 Kafka 主题数据归档到 S3
 
-**Configuration**:
+**配置**：
 ```json
 {
   "name": "s3-sink-events",
@@ -180,7 +180,7 @@ Activate me when you need help with:
 }
 ```
 
-**Partitioning** (S3 folder structure):
+**分区策略**（S3 文件夹结构）：
 ```
 s3://my-kafka-archive/
   topics/user-events/year=2025/month=01/day=15/hour=10/
@@ -190,11 +190,11 @@ s3://my-kafka-archive/
     order-events+0+0000000000.json
 ```
 
-### Pattern 5: Elasticsearch Sink (Kafka → Elasticsearch)
+### 模式 5：Elasticsearch Sink（Kafka → Elasticsearch）
 
-**Use Case**: Index Kafka events for search
+**用例**：为搜索索引 Kafka 事件
 
-**Configuration**:
+**配置**：
 ```json
 {
   "name": "elasticsearch-sink-logs",
@@ -213,13 +213,13 @@ s3://my-kafka-archive/
 }
 ```
 
-## Single Message Transforms (SMTs)
+## 单条消息转换（SMTs）
 
-### Transform 1: Mask Sensitive Fields
+### 转换 1：屏蔽敏感字段
 
-**Use Case**: Hide email/phone in Kafka topics
+**用例**：在 Kafka 主题中隐藏电子邮件/电话号码
 
-**Configuration**:
+**配置**：
 ```json
 {
   "transforms": "maskEmail",
@@ -228,21 +228,21 @@ s3://my-kafka-archive/
 }
 ```
 
-**Before**:
+**转换前**：
 ```json
 {"id": 1, "name": "John", "email": "john@example.com", "phone": "555-1234"}
 ```
 
-**After**:
+**转换后**：
 ```json
 {"id": 1, "name": "John", "email": null, "phone": null}
 ```
 
-### Transform 2: Add Timestamp
+### 转换 2：添加时间戳
 
-**Use Case**: Add processing timestamp to all messages
+**用例**：为所有消息添加处理时间戳
 
-**Configuration**:
+**配置**：
 ```json
 {
   "transforms": "insertTimestamp",
@@ -251,11 +251,11 @@ s3://my-kafka-archive/
 }
 ```
 
-### Transform 3: Route by Field Value
+### 转换 3：根据字段值路由
 
-**Use Case**: Route high-value orders to separate topic
+**用例**：将高价值订单路由到单独的主题
 
-**Configuration**:
+**配置**：
 ```json
 {
   "transforms": "routeByValue",
@@ -269,11 +269,11 @@ s3://my-kafka-archive/
 }
 ```
 
-### Transform 4: Flatten Nested JSON
+### 转换 4：展平嵌套 JSON
 
-**Use Case**: Flatten nested structures for JDBC sink
+**用例**：为 JDBC 目标连接器展平嵌套结构
 
-**Configuration**:
+**配置**：
 ```json
 {
   "transforms": "flatten",
@@ -282,7 +282,7 @@ s3://my-kafka-archive/
 }
 ```
 
-**Before**:
+**转换前**：
 ```json
 {
   "user": {
@@ -295,7 +295,7 @@ s3://my-kafka-archive/
 }
 ```
 
-**After**:
+**转换后**：
 ```json
 {
   "user_id": 1,
@@ -304,11 +304,11 @@ s3://my-kafka-archive/
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Idempotent Connectors
+### 1. 使用幂等连接器（Idempotent Connectors）
 
-✅ **DO**:
+✅ **应该这样做**：
 ```json
 // JDBC Sink with upsert mode
 {
@@ -318,7 +318,7 @@ s3://my-kafka-archive/
 }
 ```
 
-❌ **DON'T**:
+❌ **不应该这样做**：
 ```json
 // WRONG: insert mode (duplicates on restart!)
 {
@@ -326,7 +326,7 @@ s3://my-kafka-archive/
 }
 ```
 
-### 2. Monitor Connector Status
+### 2. 监控连接器状态
 
 ```bash
 # Check connector status
@@ -336,9 +336,9 @@ curl http://localhost:8083/connectors/jdbc-source-users/status
 curl http://localhost:8083/connectors/jdbc-source-users/tasks/0/status
 ```
 
-### 3. Use Schema Registry
+### 3. 使用模式注册表（Schema Registry）
 
-✅ **DO**:
+✅ **应该这样做**：
 ```json
 {
   "value.converter": "io.confluent.connect.avro.AvroConverter",
@@ -346,7 +346,7 @@ curl http://localhost:8083/connectors/jdbc-source-users/tasks/0/status
 }
 ```
 
-### 4. Configure Error Handling
+### 4. 配置错误处理
 
 ```json
 {
@@ -358,9 +358,9 @@ curl http://localhost:8083/connectors/jdbc-source-users/tasks/0/status
 }
 ```
 
-## Connector Management
+## 连接器管理
 
-### Deploy Connector
+### 部署连接器
 
 ```bash
 # Create connector via REST API
@@ -374,7 +374,7 @@ curl -X PUT http://localhost:8083/connectors/jdbc-source-users/config \
   -d @jdbc-source.json
 ```
 
-### Monitor Connectors
+### 监控连接器
 
 ```bash
 # List all connectors
@@ -390,7 +390,7 @@ curl http://localhost:8083/connectors/jdbc-source-users/status
 curl http://localhost:8083/connectors/jdbc-source-users/tasks
 ```
 
-### Pause/Resume Connectors
+### 暂停/恢复连接器
 
 ```bash
 # Pause connector
@@ -406,22 +406,22 @@ curl -X POST http://localhost:8083/connectors/jdbc-source-users/restart
 curl -X POST http://localhost:8083/connectors/jdbc-source-users/tasks/0/restart
 ```
 
-## Common Issues & Solutions
+## 常见问题及解决方案
 
-### Issue 1: Connector Task Failed
+### 问题 1：连接器任务失败
 
-**Symptoms**: Task state = FAILED
+**症状**：任务状态为 FAILED
 
-**Solutions**:
-1. Check connector logs: `docker logs connect-worker`
-2. Validate configuration: `curl http://localhost:8083/connector-plugins/<class>/config/validate`
-3. Restart task: `curl -X POST .../tasks/0/restart`
+**解决方案**：
+1. 查看连接器日志：`docker logs connect-worker`
+2. 验证配置：`curl http://localhost:8083/connector-plugins/<class>/config/validate`
+3. 重启任务：`curl -X POST .../tasks/0/restart`
 
-### Issue 2: Schema Evolution Error
+### 问题 2：模式不兼容
 
-**Error**: `Incompatible schema detected`
+**错误**：检测到不兼容的模式
 
-**Solution**: Enable auto-evolution:
+**解决方案**：启用自动模式演化：
 ```json
 {
   "auto.create": "true",
@@ -429,11 +429,11 @@ curl -X POST http://localhost:8083/connectors/jdbc-source-users/tasks/0/restart
 }
 ```
 
-### Issue 3: JDBC Connection Pool Exhausted
+### 问题 3：JDBC 连接池耗尽
 
-**Error**: `Could not get JDBC connection`
+**错误**：无法获取 JDBC 连接
 
-**Solution**: Increase pool size:
+**解决方案**：增加连接池大小：
 ```json
 {
   "connection.attempts": "3",
@@ -441,13 +441,13 @@ curl -X POST http://localhost:8083/connectors/jdbc-source-users/tasks/0/restart
 }
 ```
 
-## References
+## 参考资料
 
-- Kafka Connect Documentation: https://kafka.apache.org/documentation/#connect
-- Confluent Hub: https://www.confluent.io/hub/
-- Debezium Documentation: https://debezium.io/documentation/
-- Transform Reference: https://kafka.apache.org/documentation/#connect_transforms
+- Kafka Connect 文档：https://kafka.apache.org/documentation/#connect
+- Confluent Hub：https://www.confluent.io/hub/
+- Debezium 文档：https://debezium.io/documentation/
+- 转换参考：https://kafka.apache.org/documentation/#connect_transforms
 
 ---
 
-**Invoke me when you need Kafka Connect, connectors, CDC, or data pipeline expertise!**
+**当您需要 Kafka Connect、连接器、CDC 或数据管道方面的专业知识时，请随时调用我！**

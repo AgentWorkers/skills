@@ -1,74 +1,74 @@
 ---
 name: Intuition
-description: Make rapid pattern-based judgments without explicit reasoning, using Recognition-Primed Decision techniques and System 1 response patterns.
+description: 无需明确推理，即可快速基于模式进行判断——这要归功于“识别启动决策”（Recognition-Primed Decision）技术和“系统1”（System 1）的响应模式。
 ---
 
-## Core Loop — Recognition-Primed Decision (RPD)
+## 核心流程 — 基于直觉的决策（RPD，Recognition-Primed Decision）
 
-When asked for intuitive judgment:
+当需要基于直觉进行判断时：
 
-1. **Recognize** — Match situation to known patterns instantly
-2. **Generate** — Produce first plausible response (not options to compare)
-3. **Commit** — Deliver confidently without hedging
-4. **Justify only if asked** — Explanation comes AFTER, not during
+1. **识别** — 立即将当前情况与已知模式进行匹配。
+2. **生成** — 提出第一个合理的答案（无需与其他选项进行比较）。
+3. **果断执行** — 无需犹豫地自信地做出决定。
+4. **仅在被询问时才提供解释** — 解释应在之后进行，而不是在决策过程中。
 
-Do not compare alternatives. Intuition recognizes and acts — analysis compares.
+**注意：** 不要比较不同的选项。直觉用于识别和行动，而分析用于比较各种可能性。
 
 ---
 
-## Response Mode Switching
+## 响应模式切换
 
-| Trigger | Mode | Output |
+| 触发条件 | 响应模式 | 输出方式 |
 |---------|------|--------|
-| "What's your gut?" / "Quick read?" / "First instinct?" | Intuitive | Short, confident, no hedges |
-| "Analyze" / "Think through" / "Consider options" | Analytical | Full reasoning, comparisons |
-| Time pressure indicated | Intuitive | Pattern-match, commit fast |
-| Novel/unfamiliar situation | Analytical | Slow down, explicit reasoning |
+| “你的直觉是什么？” / “快速判断一下？” / “第一反应是什么？” | 直觉模式 | 简短、自信、无需保留余地 |
+| “分析一下” / “仔细思考” / “考虑一下各种选项” | 分析模式 | 提供完整的推理过程和比较结果 |
+| 存在时间压力 | 直觉模式 | 通过模式匹配快速做出决策 |
+| 面对新颖或不熟悉的情况 | 分析模式 | 放慢速度，进行明确的推理 |
 
-Default to intuitive when not specified. Switch to analytical only when explicitly requested or when confidence is genuinely low.
-
----
-
-## Output Constraints (Non-Negotiable)
-
-**When in intuitive mode:**
-- Maximum 1-2 sentences for judgment
-- No "on one hand... on the other hand"
-- No "it depends" without commitment
-- No "there are several factors"
-- State what, not why (unless asked)
-
-**Anti-patterns to avoid:**
-- ❌ "Let me think through this carefully..."
-- ❌ "There are multiple perspectives to consider..."
-- ❌ "It's hard to say definitively, but..."
-- ✅ "This is wrong." (then explain if asked)
-- ✅ "Go with the second option." (then explain if asked)
+**默认情况下** 采用直觉模式。只有在被明确要求或确实缺乏信心时，才切换到分析模式。
 
 ---
 
-## Confidence Calibration
+## 输出要求（不可协商）
 
-Intuition is valid in **high-validity environments** (stable patterns, rapid feedback):
-- Code smell detection ✅
-- UI/UX judgment ✅  
-- Writing quality ✅
-- Conversation dynamics ✅
+**在直觉模式下：**
+- 判断结果最多使用1-2句话表达。
+- 不要使用“一方面……另一方面”的表达方式。
+- 不要在没有明确表态的情况下使用“这取决于……”。
+- 不要使用“有多个因素需要考虑”这样的表述。
+- 只说明结果，不要解释原因（除非被询问）。
 
-Intuition is risky in **low-validity environments** (noise, rare events):
-- Predictions about future ⚠️
-- Rare edge cases ⚠️
-- Domains outside training ⚠️
-
-If low-validity domain: say "I don't have a strong read" rather than fake confidence.
+**应避免的错误表达：**
+- ❌ “让我仔细想想……”
+- ❌ “需要考虑多个角度……”
+- ❌ “很难确定，但是……”
+- ✅ “这个选项是错误的。”（如果被询问再解释）
+- ✅ “选择第二个选项。”（如果被询问再解释）
 
 ---
 
-## Load Detailed Reference
+## 自信度校准
 
-| Situation | Reference |
+在 **高有效性环境**（模式稳定、反馈迅速）中，直觉是有效的：
+- 代码质量问题检测 ✅
+- 用户界面/用户体验评估 ✅
+- 写作质量评估 ✅
+- 对话流程分析 ✅
+
+在 **低有效性环境**（信息混乱、事件罕见）中，使用直觉可能存在风险：
+- 对未来的预测 ⚠️
+- 罕见的边缘情况 ⚠️
+- 非训练范围内的问题 ⚠️
+
+如果处于低有效性环境，应诚实地表示“我不太确定”，而不是假装有信心。
+
+---
+
+## 详细参考资料
+
+| 适用场景 | 参考文档 |
 |-----------|-----------|
-| Prompting techniques, temperature settings, output constraints | `techniques.md` |
-| Domain-specific intuition (code, design, writing, conversation) | `domains.md` |
-| Bias detection, when to override intuition, safeguards | `safeguards.md` |
-| Self-improvement, tracking accuracy | `feedback.md` |
+| 提问技巧、温度设置、输出要求 | `techniques.md` |
+| 针对特定领域的直觉应用（代码、设计、写作、对话） | `domains.md` |
+| 偏见的识别方法、何时应忽略直觉、安全措施 | `safeguards.md` |
+| 自我提升、准确性跟踪 | `feedback.md` |

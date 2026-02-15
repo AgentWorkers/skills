@@ -1,58 +1,58 @@
 ---
 name: coda-packs
-description: Manage Coda Packs via REST API v1. Supports listing, creating, updating, and deleting private Packs. Requires CODA_API_TOKEN. Delete requires confirmation. Note: Builds, Gallery submission, Analytics, and Collaborators require Coda's Pack SDK CLI, not available via REST API.
+description: 通过 REST API v1 管理 Coda 包：支持列出、创建、更新和删除私有包。需要使用 CODA_API_TOKEN。删除操作需要确认。注意：构建、作品集提交、数据分析以及协作功能需要使用 Coda 的 Pack SDK CLI，这些功能无法通过 REST API 实现。
 ---
 
-# Coda Packs Skill
+# Coda Packs 技能
 
-Manage Coda Packs through the REST API v1. Create, list, update, and delete private Packs.
+通过 REST API v1 管理 Coda Packs。支持创建、列出、更新和删除私有 Pack。
 
-## ⚠️ API Limitations
+## ⚠️ API 限制
 
-The Coda REST API v1 has limited Pack management capabilities:
+Coda REST API v1 的 Pack 管理功能有限：
 
-| Feature | REST API | Pack SDK CLI |
+| 功能 | REST API | Pack SDK CLI |
 |---------|----------|--------------|
-| **List Packs** | ✅ Available | ✅ |
-| **Create Pack** | ✅ Available | ✅ |
-| **Update Pack** | ✅ Available | ✅ |
-| **Delete Pack** | ✅ Available | ✅ |
-| **Build Versions** | ❌ Not available | ✅ Required |
-| **Gallery Submit** | ❌ Not available | ✅ Required |
-| **Analytics** | ❌ Not available | ✅ Required |
-| **Collaborators** | ❌ Not available | ✅ Required |
+| **列出 Pack** | ✅ 可用 | ✅ |
+| **创建 Pack** | ✅ 可用 | ✅ |
+| **更新 Pack** | ✅ 可用 | ✅ |
+| **删除 Pack** | ✅ 可用 | ✅ |
+| **构建 Pack 版本** | ❌ 不可用 | ✅ 必需 |
+| **提交到图库** | ❌ 不可用 | ✅ 必需 |
+| **分析数据** | ❌ 不可用 | ✅ 必需 |
+| **协作者管理** | ❌ 不可用 | ✅ 必需 |
 
-**For builds, gallery submission, and advanced features, use:**
+**如需进行构建、提交到图库或使用高级功能，请使用：**
 ```bash
 npx @codahq/packs-sdk register    # Create account
 npx @codahq/packs-sdk build       # Build Pack
 npx @codahq/packs-sdk release     # Submit to Gallery
 ```
 
-## When to Use
+## 适用场景
 
-Use this skill when the user wants to:
-- List existing Coda Packs
-- Create new private Pack shells
-- Update Pack metadata (name, description)
-- Delete unused Packs
+当用户需要执行以下操作时，请使用此技能：
+- 列出现有的 Coda Packs
+- 创建新的私有 Pack
+- 更新 Pack 的元数据（名称、描述）
+- 删除未使用的 Pack
 
-## When NOT to Use
+## 不适用场景
 
-- **Do NOT use** for Doc management (tables, rows, pages) → use `coda` skill
-- **Do NOT use** for building Pack versions → use Pack SDK CLI
-- **Do NOT use** for Gallery submission → use Pack SDK CLI
-- **Do NOT use** for viewing analytics → use Pack SDK CLI or Coda web UI
+- **请勿** 用于文档管理（如表格、行、页面） → 使用 `coda` 技能
+- **请勿** 用于构建 Pack 版本 → 使用 Pack SDK CLI
+- **请勿** 用于提交到图库 → 使用 Pack SDK CLI
+- **请勿** 用于查看分析数据 → 使用 Pack SDK CLI 或 Coda 网页界面
 
-## Prerequisites
+## 先决条件
 
-1. **API Token**: Set environment variable `CODA_API_TOKEN`
-   - Get token at: https://coda.io/account -> API Settings
-   - Must have Pack management permissions
+1. **API Token**：设置环境变量 `CODA_API_TOKEN`
+   - 在以下链接获取 Token：https://coda.io/account -> API Settings
+   - 必须具有 Pack 管理权限
 
-2. **Python 3.7+** with `requests` library
+2. **Python 3.7+** 及 `requests` 库
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Setup
@@ -74,18 +74,18 @@ python scripts/coda_packs_cli.py packs update my-pack-id \
 python scripts/coda_packs_cli.py packs delete my-pack-id
 ```
 
-## Full Pack Development Workflow
+## 完整的 Pack 开发工作流程
 
-Since the REST API only supports basic Pack management, here's the complete workflow:
+由于 REST API 仅支持基本的 Pack 管理功能，以下是完整的开发流程：
 
-### Step 1: Create Pack Shell (via REST API)
+### 第 1 步：通过 REST API 创建 Pack
 ```bash
 python scripts/coda_packs_cli.py packs create \
   --name "Karakeep Bookmarks" \
   --description "Save and search bookmarks"
 ```
 
-### Step 2-4: Use Pack SDK CLI (Required)
+### 第 2-4 步：使用 Pack SDK CLI（必需）
 ```bash
 # Install Pack SDK
 npm install -g @codahq/packs-sdk
@@ -104,9 +104,9 @@ npx @codahq/packs-sdk upload
 npx @codahq/packs-sdk release
 ```
 
-## CLI Tool Usage
+## CLI 工具使用说明
 
-### Pack Management
+### Pack 管理
 
 ```bash
 # List all your Packs
@@ -132,9 +132,9 @@ python scripts/coda_packs_cli.py packs delete my-pack-id
 # Or skip confirmation: --force
 ```
 
-### Pack ID Resolution
+### Pack ID 的识别方式
 
-The CLI accepts both **numeric Pack IDs** and **Pack Names**:
+CLI 支持使用 **数字 Pack ID** 和 **Pack 名称**：
 
 ```bash
 # These are equivalent:
@@ -142,48 +142,48 @@ python scripts/coda_packs_cli.py packs get 48093
 python scripts/coda_packs_cli.py packs get "Karakeep"
 ```
 
-If the name is ambiguous, the CLI lists matches and exits.
+如果 Pack 名称存在歧义，CLI 会列出所有匹配的 Pack 并退出。
 
-## Safety Guardrails
+## 安全防护措施
 
-### Operations Requiring Confirmation
+### 需要确认的操作
 
-| Operation | Risk | Confirmation |
+| 操作 | 风险 | 确认方式 |
 |-----------|------|--------------|
-| **Delete Pack** | Irreversible | "Delete Pack 'X'? This cannot be undone." |
+| **删除 Pack** | 不可逆 | “确定要删除 Pack ‘X’ 吗？此操作无法撤销。” |
 
-### No Confirmation Required
+### 无需确认的操作
 
-- **Create Pack**: Safe, reversible
-- **List/Get Packs**: Read-only
-- **Update Pack**: Reversible
+- **创建 Pack**：安全且可逆
+- **列出/获取 Pack**：仅读操作
+- **更新 Pack**：可逆操作
 
-## Error Handling
+## 错误处理
 
-Common API errors:
+常见的 API 错误：
 
-| Code | Meaning | Resolution |
+| 错误代码 | 含义 | 解决方案 |
 |------|---------|------------|
-| `401` | Invalid token | Refresh CODA_API_TOKEN |
-| `403` | Insufficient permissions | Ensure token has Pack management rights |
-| `404` | Pack not found | Check Pack ID or name |
-| `429` | Rate limited | Wait and retry (handled automatically) |
+| `401` | 无效的 Token | 重新获取 CODA_API_TOKEN |
+| `403` | 权限不足 | 确保拥有 Pack 管理权限 |
+| `404` | 未找到 Pack | 检查 Pack ID 或名称 |
+| `429` | 请求频率限制 | 等待片刻后重试（系统自动处理）
 
-## References
+## 参考资料
 
-- **Pack SDK Guides**: https://coda.io/packs/build/latest/guides/overview/
-- **Pack SDK Quickstart**: https://coda.io/packs/build/latest/guides/quickstart/
-- **Coda API Docs**: https://coda.io/developers/apis/v1
-- **Pack SDK NPM**: https://www.npmjs.com/package/@codahq/packs-sdk
+- **Pack SDK 使用指南**：https://coda.io/packs/build/latest/guides/overview/
+- **Pack SDK 快速入门**：https://coda.io/packs/build/latest/guides/quickstart/
+- **Coda API 文档**：https://coda.io/developers apis/v1
+- **Pack SDK NPM 包**：https://www.npmjs.com/package/@codahq/packs-sdk
 
-## Example: Karakeep Pack Shell
+## 示例：Karakeep Pack
 
-Created for testing:
-- **Name**: Karakeep
-- **ID**: 48093
-- **Description**: Karakeep bookmark manager - save URLs, search, and organize with tags
+创建示例 Pack：
+- **名称**：Karakeep
+- **ID**：48093
+- **描述**：Karakeep 书签管理工具——用于保存 URL、搜索和按标签组织内容
 
-**Next steps for full Pack development:**
-1. Use Pack SDK CLI: `npx @codahq/packs-sdk init karakeep-pack`
-2. Implement Karakeep API integration (see https://docs.karakeep.app/api/)
-3. Build and upload: `npx @codahq/packs-sdk build && npx @codahq/packs-sdk upload`
+**完成 Pack 开发的下一步操作：**
+1. 使用 Pack SDK CLI：`npx @codahq/packs-sdk init karakeep-pack`
+2. 实现 Karakeep 的 API 集成（参见：https://docs.karakeep.app/api/）
+3. 构建并上传 Pack：`npx @codahq/packs-sdk build && npx @codahq/packs-sdk upload`

@@ -1,67 +1,65 @@
 ---
 name: lore
-description: Search and ingest knowledge from Lore, a research repository with citations
+description: 从 Lore（一个包含引用信息的研究知识库）中搜索并获取知识。
 version: "1.0"
 user-invocable: false
 ---
 
-# Lore Knowledge Base
+# Lore 知识库
 
-Lore is a research knowledge repository you have access to via MCP tools. It stores documents, meeting notes, interviews, and decisions with full citations — not just summaries, but the original content linked back to its source. Use it to ground your answers in evidence and to preserve important context from your conversations.
+Lore 是一个研究知识库，您可以通过 MCP 工具访问它。该库存储了文档、会议记录、访谈内容以及决策记录，并附带完整的引用信息——不仅仅是摘要，还包括指向原始内容的链接。利用 Lore，您可以根据证据来回答问题，并保留对话中的重要背景信息。
 
-## When to Ingest Content into Lore
+## 何时将内容导入 Lore
 
-Push content into Lore using the `ingest` tool whenever you encounter information worth preserving:
+每当遇到值得保存的信息时，使用 `ingest` 工具将内容导入 Lore：
 
-- **After conversations**: When a user shares meeting notes, interview transcripts, or important documents, ingest them so they're searchable later.
-- **External content**: When you fetch content from Slack, Notion, GitHub, email, or other systems, ingest the relevant parts into Lore.
-- **Decisions and context**: When important decisions are made or context is shared that future conversations will need.
+- **会议结束后**：当用户分享会议记录、访谈记录或重要文档时，将它们导入 Lore 以便日后能够进行搜索。
+- **外部内容**：当您从 Slack、Notion、GitHub、电子邮件或其他系统获取内容时，将相关部分导入 Lore。
+- **决策和背景信息**：当做出重要决策或分享对未来对话有用的背景信息时。
 
-Always include:
-- `source_url`: The original URL (Slack permalink, Notion page URL, GitHub issue URL) for citation linking.
-- `source_name`: A human-readable label like "Slack #product-team" or "GitHub issue #42".
-- `project`: The project this content belongs to.
+务必包含以下信息：
+- `source_url`：原始内容的链接（Slack 的永久链接、Notion 页面链接、GitHub 问题链接），用于引用。
+- `source_name`：易于理解的标签，例如 “Slack #product-team” 或 “GitHub issue #42”。
+- `project`：该内容所属的项目。
 
-Ingestion is idempotent — calling `ingest` with the same content twice is safe and cheap (returns immediately with `deduplicated: true`).
+导入操作是幂等的——多次使用 `ingest` 函数处理相同的内容是安全的且不会产生额外开销（系统会立即返回 `deduplicated: true` 的结果）。
 
-## When to Search Lore
+## 何时在 Lore 中搜索
 
-Before answering questions about past decisions, user feedback, project history, or anything that might already be documented:
+在回答关于过去决策、用户反馈、项目历史或任何已有记录的内容的问题之前，请执行以下操作：
 
-1. **Use `search`** for quick lookups. Pick the right mode:
-   - `hybrid` (default): Best for most queries
-   - `keyword`: For exact terms, names, identifiers
-   - `semantic`: For conceptual queries ("user frustrations", "pain points")
+1. **使用 `search`** 进行快速查询。选择合适的搜索模式：
+   - `hybrid`（默认模式）：适用于大多数查询。
+   - `keyword`：用于查找精确的术语、名称或标识符。
+   - `semantic`：用于概念性查询（例如 “用户的不满” 或 “痛点”）。
+2. **仅在需要跨引用多个来源或综合分析结果时使用 `research`**。该功能的成本是 `search` 的 10 倍——请勿将其用于简单的查询。
+3. **当需要获取特定文档的完整原文时，使用 `get_source` 并设置 `include_content=true`。
 
-2. **Use `research`** only when the question requires cross-referencing multiple sources or synthesizing findings. It costs 10x more than `search` — don't use it for simple lookups.
+## 何时保留某些见解
 
-3. **Use `get_source`** with `include_content=true` when you need the full original text of a specific document.
+对于简短、独立的知识点，使用 `retain` 而不是 `ingest`：
+- 关键决策：例如 “我们选择 X 是因为 Y”。
+- 综合分析的见解：例如 “3/5 的用户认为 Z 是他们最关心的问题”。
+- 需求：例如 “必须支持企业级的单点登录（SSO）”。
 
-## When to Retain Insights
+## 引用最佳实践
 
-Use `retain` (not `ingest`) for short, discrete pieces of knowledge:
-- Key decisions: "We chose X because Y"
-- Synthesized insights: "3/5 users mentioned Z as their top issue"
-- Requirements: "Must support SSO for enterprise"
+在引用 Lore 中的信息时，请始终注明来源：
+- 提及来源的标题和日期。
+- 如果可能，请直接引用原文。
+- 如果有 `source_url`，请提供原始链接。
 
-## Citation Best Practices
+## 示例工作流程
 
-When presenting information from Lore, always cite your sources:
-- Reference the source title and date
-- Quote directly when possible
-- If a `source_url` is available, link to the original
-
-## Example Workflows
-
-**User asks about past decisions:**
+**用户询问过去的决策**：
 1. `search("authentication approach decisions", project: "my-app")`
-2. Review results, get full source if needed: `get_source(source_id, include_content: true)`
-3. Present findings with citations
+2. 如有需要，获取完整来源内容：`get_source(source_id, include_content: true)`
+3. 带着引用展示查询结果。
 
-**User shares meeting notes:**
+**用户分享会议记录**：
 1. `ingest(content: "...", title: "Sprint Planning Jan 15", project: "my-app", source_type: "meeting", source_name: "Google Meet", participants: ["Alice", "Bob"])`
-2. Confirm ingestion to user
+2. 向用户确认内容已成功导入 Lore。
 
-**User asks a broad research question:**
-1. `research(task: "What do users think about our onboarding flow?", project: "my-app")`
-2. Present the synthesized findings with citations
+**用户提出广泛的研究问题**：
+1. `research(task: "用户对我们的入职流程有何看法？", project: "my-app")`
+2. 带着引用展示综合分析的结果。

@@ -1,6 +1,6 @@
 ---
 name: deepread
-description: AI-native OCR platform that turns documents into high-accuracy data in minutes. Using multi-model consensus, DeepRead achieves 95%+ accuracy and flags only uncertain fields for review—reducing manual work from 100% to 5-10%. Zero prompt engineering required.
+description: 这是一个原生支持人工智能（AI）的OCR（光学字符识别）平台，能够在几分钟内将文档转换为高精度的数据。通过采用多模型协同处理技术，DeepRead的识别准确率可达到95%以上，并且仅标记出需要人工审核的不确定字段，从而将手动处理的工作量从100%降低到5%-10%。该平台完全不需要任何提示工程（prompt engineering）的设置。
 metadata:
   {
     "openclaw": {
@@ -13,27 +13,27 @@ metadata:
   }
 ---
 
-# DeepRead - Production OCR API
+# DeepRead – 生产级OCR API
 
-DeepRead is an AI-native OCR platform that turns documents into high-accuracy data in minutes. Using multi-model consensus, DeepRead achieves 95%+ accuracy and flags only uncertain fields for review—reducing manual work from 100% to 5-10%. Zero prompt engineering required.
+DeepRead是一个基于人工智能的OCR平台，能够在几分钟内将文档转换成高精度的数据。通过多模型协同处理，DeepRead的准确率可达到95%以上，并仅标记出需要人工审核的不确定字段，从而将手动工作量从100%降低到5-10%。无需进行任何提示工程（prompt engineering）设置。
 
-## What This Skill Does
+## 该技能的功能
 
-DeepRead is a production-grade document processing API that gives you high-accuracy structured data output in minutes with human review flagging so manual review is limited to the flagged exceptions
+DeepRead是一个适用于生产环境的文档处理API，能够在几分钟内提供高精度、结构化的数据输出，并通过人工审核来标记需要处理的异常情况，从而将人工审核的范围限制在标记出的异常字段内。
 
-**Core Features:**
-- **Text Extraction**: Convert PDFs and images to clean markdown
-- **Structured Data**: Extract JSON fields with confidence scores
-- **Quality Flags**: Human Review tagging for uncertain fields (`hil_flag`)
-- **Multi-Pass Processing**: Multiple validation passes for maximum accuracy
-- **Multi-Model Consensus**: Cross-validation between models for reliability
-- **Free Tier**: 2,000 pages/month (no credit card required)
+**核心功能：**
+- **文本提取**：将PDF文件和图片转换为格式清晰的Markdown格式。
+- **结构化数据**：提取带有置信度评分的JSON字段。
+- **质量标记**：对不确定的字段进行人工审核标记（`hil_flag`）。
+- **多轮处理**：通过多次验证来确保最高的准确率。
+- **多模型协同**：通过模型间的交叉验证来提高可靠性。
+- **免费 tier**：每月2000页（无需信用卡）。
 
-## Setup
+## 设置
 
-### 1. Get Your API Key
+### 1. 获取您的API密钥
 
-Sign up and create an API key:
+注册并创建一个API密钥：
 ```bash
 # Visit the dashboard
 https://www.deepread.tech/dashboard
@@ -42,14 +42,14 @@ https://www.deepread.tech/dashboard
 https://www.deepread.tech/dashboard/?utm_source=clawdhub
 ```
 
-Save your API key:
+保存您的API密钥：
 ```bash
 export DEEPREAD_API_KEY="sk_live_your_key_here"
 ```
 
-### 2. Clawdbot Configuration (Optional)
+### 2. Clawdbot配置（可选）
 
-Add to your `clawdbot.config.json5`:
+将以下配置添加到您的`clawdbot.config.json5`文件中：
 ```json5
 {
   skills: {
@@ -63,9 +63,9 @@ Add to your `clawdbot.config.json5`:
 }
 ```
 
-### 3. Process Your First Document
+### 3. 处理您的第一份文档
 
-**Option A: With Webhook (Recommended)**
+**选项A：使用Webhook（推荐）**
 ```bash
 # Upload PDF with webhook notification
 curl -X POST https://api.deepread.tech/v1/process \
@@ -82,7 +82,7 @@ curl -X POST https://api.deepread.tech/v1/process \
 # Your webhook receives results when processing completes (2-5 minutes)
 ```
 
-**Option B: Poll for Results**
+**选项B：轮询结果**
 ```bash
 # Upload PDF without webhook
 curl -X POST https://api.deepread.tech/v1/process \
@@ -100,12 +100,11 @@ curl https://api.deepread.tech/v1/jobs/550e8400-e29b-41d4-a716-446655440000 \
   -H "X-API-Key: $DEEPREAD_API_KEY"
 ```
 
-## Usage Examples
+## 使用示例
 
-### Basic OCR (Text Only)
+### 基本OCR（仅提取文本）
 
-Extract text as clean markdown:
-
+将文本提取为格式清晰的Markdown格式：
 ```bash
 # With webhook (recommended)
 curl -X POST https://api.deepread.tech/v1/process \
@@ -123,7 +122,7 @@ curl https://api.deepread.tech/v1/jobs/JOB_ID \
   -H "X-API-Key: $DEEPREAD_API_KEY"
 ```
 
-**Response when completed:**
+**处理完成后的响应：**
 ```json
 {
   "id": "550e8400-...",
@@ -134,10 +133,9 @@ curl https://api.deepread.tech/v1/jobs/JOB_ID \
 }
 ```
 
-### Structured Data Extraction
+### 结构化数据提取
 
-Extract specific fields with confidence scoring:
-
+提取特定字段并附带置信度评分：
 ```bash
 curl -X POST https://api.deepread.tech/v1/process \
   -H "X-API-Key: $DEEPREAD_API_KEY" \
@@ -161,7 +159,7 @@ curl -X POST https://api.deepread.tech/v1/process \
   }'
 ```
 
-**Response includes confidence flags:**
+**响应中包含置信度标记：**
 ```json
 {
   "status": "completed",
@@ -194,10 +192,9 @@ curl -X POST https://api.deepread.tech/v1/process \
 }
 ```
 
-### Complex Schemas (Nested Data)
+### 复杂数据结构（嵌套数据）
 
-Extract arrays and nested objects:
-
+提取数组和嵌套对象：
 ```bash
 curl -X POST https://api.deepread.tech/v1/process \
   -H "X-API-Key: $DEEPREAD_API_KEY" \
@@ -222,10 +219,9 @@ curl -X POST https://api.deepread.tech/v1/process \
   }'
 ```
 
-### Page-by-Page Breakdown
+### 分页处理
 
-Get per-page OCR results with quality flags:
-
+获取每页的OCR结果及质量标记：
 ```bash
 curl -X POST https://api.deepread.tech/v1/process \
   -H "X-API-Key: $DEEPREAD_API_KEY" \
@@ -233,7 +229,7 @@ curl -X POST https://api.deepread.tech/v1/process \
   -F "include_pages=true"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "result": {
@@ -259,57 +255,49 @@ curl -X POST https://api.deepread.tech/v1/process \
 }
 ```
 
-## When to Use This Skill
+## 适用场景
 
-### ✅ Use DeepRead For:
+### ✅ 适用于以下场景：
+- **发票处理**：提取供应商信息、总金额、明细项目。
+- **收据OCR**：解析商家信息、商品项目、总金额。
+- **合同分析**：提取合同各方信息、日期、条款。
+- **表单数字化**：将纸质表单转换为结构化数据。
+- **任何需要OCR和数据提取的流程**。
+- **对准确性要求较高的应用**：需要了解哪些提取内容存在不确定性时。
 
-- **Invoice Processing**: Extract vendor, totals, line items
-- **Receipt OCR**: Parse merchant, items, totals
-- **Contract Analysis**: Extract parties, dates, terms
-- **Form Digitization**: Convert paper forms to structured data
-- **Document Workflows**: Any process requiring OCR + data extraction
-- **Quality-Critical Apps**: When you need to know which extractions are uncertain
+### ❌ 不适用于以下场景：
+- **实时处理**：处理时间需要2-5分钟（异步工作流程）。
+- **每月处理量超过2000页**：请升级到PRO或SCALE等级。
 
-### ❌ Don't Use For:
+## 工作原理
 
-- **Real-time Processing**: Processing takes 2-5 minutes (async workflow)
-- **Batch >2,000 pages/month**: Upgrade to PRO or SCALE tier
+### 多轮处理流程
 
-## How It Works
+该流程自动完成以下操作：
+- 文档的旋转和方向校正。
+- 多轮验证以确保准确率。
+- 通过模型间的交叉验证来提高可靠性。
+- 对每个字段进行置信度评分。
 
-### Multi-Pass Pipeline
+### 质量审核（`hil_flag`）
 
-```
-PDF → Convert → Rotate Correction → OCR → Multi-Model Validation → Extract → Done
-```
+AI会将提取的文本与原始图片进行比对，并设置`hil_flag`：
+- **`hil_flag: false`**：提取内容清晰、准确 → 自动处理。
+- **`hil_flag: true`**：提取内容不确定 → 需要人工审核。
 
-The pipeline automatically handles:
-- Document rotation and orientation correction
-- Multi-pass validation for accuracy
-- Cross-model consensus for reliability
-- Field-level confidence scoring
+**AI会在以下情况下标记需要审核的内容：**
+- 文本为手写、模糊或质量较低。
+- 存在多种可能的解释。
+- 部分字符不可见或不清楚。
+- 文档中不存在该字段。
 
-### Quality Review (hil_flag)
+**这是基于人工智能的判断，而非基于规则的判断。**
 
-AI compares extracted text to the original image and sets `hil_flag`:
+## 高级功能
 
-- **`hil_flag: false`** = Clear, confident extraction → Auto-process
-- **`hil_flag: true`** = Uncertain extraction → Human review required
+### 1. 设计蓝图（优化后的数据结构）
 
-**AI flags extractions when:**
-- Text is handwritten, blurry, or low quality
-- Multiple possible interpretations exist
-- Characters are partially visible or unclear
-- Field not found in document
-
-**This is multimodal AI determination, not rule-based.**
-
-## Advanced Features
-
-### 1. Blueprints (Optimized Schemas)
-
-Create reusable, optimized schemas for specific document types:
-
+为特定类型的文档创建可重用的、优化后的数据结构：
 ```bash
 # List your blueprints
 curl https://api.deepread.tech/v1/blueprints \
@@ -322,13 +310,12 @@ curl -X POST https://api.deepread.tech/v1/process \
   -F "blueprint_id=660e8400-e29b-41d4-a716-446655440001"
 ```
 
-**Benefits:**
-- 20-30% accuracy improvement over baseline schemas
-- Reusable across similar documents
-- Versioned with rollback support
+**优势：**
+- 与基础数据结构相比，准确率提高20-30%。
+- 可在类似文档中重复使用。
+- 支持版本控制及回滚功能。
 
-**How to create blueprints:**
-
+**如何创建蓝图：**
 ```bash
 # Create a blueprint from training data
 curl -X POST https://api.deepread.tech/v1/optimize \
@@ -367,10 +354,9 @@ curl -X POST https://api.deepread.tech/v1/process \
   -F "blueprint_id=BLUEPRINT_ID"
 ```
 
-### 2. Webhooks (Recommended for Production)
+### 2. Webhook（推荐用于生产环境）
 
-Get notified when processing completes instead of polling:
-
+处理完成后接收通知，无需轮询：
 ```bash
 curl -X POST https://api.deepread.tech/v1/process \
   -H "X-API-Key: $DEEPREAD_API_KEY" \
@@ -378,7 +364,7 @@ curl -X POST https://api.deepread.tech/v1/process \
   -F "webhook_url=https://your-app.com/webhooks/deepread"
 ```
 
-**Your webhook receives this payload when processing completes:**
+**处理完成后，您的Webhook会收到以下数据：**
 ```json
 {
   "job_id": "550e8400-...",
@@ -393,16 +379,15 @@ curl -X POST https://api.deepread.tech/v1/process \
 }
 ```
 
-**Benefits:**
-- No polling required
-- Instant notification when done
-- Lower latency
-- Better for production workflows
+**优势：**
+- 无需轮询。
+- 处理完成后立即收到通知。
+- 延迟更低。
+- 更适合生产环境。
 
-### 3. Public Preview URLs
+### 3. 公开预览URL
 
-Share OCR results without authentication:
-
+无需认证即可共享OCR结果：
 ```bash
 # Request preview URL
 curl -X POST https://api.deepread.tech/v1/process \
@@ -420,28 +405,28 @@ curl -X POST https://api.deepread.tech/v1/process \
 }
 ```
 
-**Public Preview Endpoint:**
+**公开预览端点：**
 ```bash
 # No authentication required
 curl https://api.deepread.tech/v1/preview/Xy9aB12
 ```
 
-## Rate Limits & Pricing
+## 计费限制与价格
 
-### Free Tier (No Credit Card)
-- **2,000 pages/month**
-- **10 requests/minute**
-- Full feature access (OCR + structured extraction + blueprints)
+### 免费 tier
+- 每月2000页。
+- 每分钟10次请求。
+- 全部功能可用（OCR + 结构化数据提取 + 设计蓝图）。
 
-### Paid Plans
-- **PRO**: 50,000 pages/month, 100 requests/minute @ $99/mo
-- **SCALE**: Custom volume pricing (contact sales)
+### 付费计划
+- **PRO**：每月50,000页，每分钟100次请求，费用为99美元/月。
+- **SCALE**：根据使用量定制价格（请联系销售团队）。
 
-**Upgrade:** https://www.deepread.tech/dashboard/billing?utm_source=clawdhub
+**升级方式：** https://www.deepread.tech/dashboard/billing?utm_source=clawdhub
 
-### Rate Limit Headers
+### 计费限制相关头信息
 
-Every response includes quota information:
+每个响应都会包含计费限制信息：
 ```
 X-RateLimit-Limit: 2000
 X-RateLimit-Remaining: 1847
@@ -449,11 +434,11 @@ X-RateLimit-Used: 153
 X-RateLimit-Reset: 1730419200
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Webhooks for Production
+### 1. 生产环境中建议使用Webhook
 
-**✅ Recommended: Webhook notifications**
+**✅ 推荐使用Webhook通知：**
 ```bash
 curl -X POST https://api.deepread.tech/v1/process \
   -H "X-API-Key: $DEEPREAD_API_KEY" \
@@ -461,14 +446,14 @@ curl -X POST https://api.deepread.tech/v1/process \
   -F "webhook_url=https://your-app.com/webhook"
 ```
 
-**Only use polling if:**
-- Testing/development
-- Cannot expose a webhook endpoint
-- Need synchronous response
+**仅在以下情况下使用轮询：**
+- 测试/开发阶段。
+- 无法公开Webhook端点。
+- 需要同步响应。
 
-### 2. Schema Design
+### 2. 数据结构设计
 
-**✅ Good: Descriptive field descriptions**
+**✅ 好的设计：** 为字段提供详细的描述。
 ```json
 {
   "vendor": {
@@ -478,17 +463,16 @@ curl -X POST https://api.deepread.tech/v1/process \
 }
 ```
 
-**❌ Bad: No description**
+**❌ 不好的设计：** 不提供字段描述。
 ```json
 {
   "vendor": {"type": "string"}
 }
 ```
 
-### 3. Polling Strategy (If Needed)
+### 3. 轮询策略（如需使用）
 
-Only if you can't use webhooks, poll every 5-10 seconds:
-
+仅在无法使用Webhook的情况下，每5-10秒轮询一次：
 ```python
 import time
 import requests
@@ -509,10 +493,9 @@ def wait_for_result(job_id, api_key):
         time.sleep(5)
 ```
 
-### 4. Handling Quality Flags
+### 4. 处理质量标记
 
-Separate confident fields from uncertain ones:
-
+将准确提取的字段与不确定的字段区分开来：
 ```python
 def process_extraction(data):
     confident = {}
@@ -536,39 +519,27 @@ def process_extraction(data):
         send_to_review_queue(needs_review)
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Error: `quota_exceeded`
-```json
-{"detail": "Monthly page quota exceeded"}
-```
-**Solution:** Upgrade to PRO or wait until next billing cycle.
+### 错误：`quota_exceeded`
+**解决方法：** 升级到PRO等级或等待下一个计费周期。
 
-### Error: `invalid_schema`
-```json
-{"detail": "Schema must be valid JSON Schema"}
-```
-**Solution:** Ensure schema is valid JSON and includes `type` and `properties`.
+### 错误：`invalid_schema`
+**解决方法：** 确保数据结构是有效的JSON格式，并包含`type`和`properties`字段。
 
-### Error: `file_too_large`
-```json
-{"detail": "File size exceeds 50MB limit"}
-```
-**Solution:** Compress PDF or split into smaller files.
+### 错误：`file_too_large`
+**解决方法：** 压缩PDF文件或将其分割成较小的文件。
 
-### Job Status: `failed`
-```json
-{"status": "failed", "error": "PDF could not be processed"}
-```
-**Common causes:**
-- Corrupted PDF file
-- Password-protected PDF
-- Unsupported PDF version
-- Image quality too low for OCR
+### 任务状态：`failed`
+**常见原因：**
+- PDF文件损坏。
+- PDF文件受密码保护。
+- PDF版本不支持OCR处理。
+- 图像质量过低，无法进行OCR处理。
 
-## Example Schema Templates
+## 示例数据结构模板
 
-### Invoice Schema
+### 发票数据结构
 ```json
 {
   "type": "object",
@@ -604,7 +575,7 @@ def process_extraction(data):
 }
 ```
 
-### Receipt Schema
+### 收据数据结构
 ```json
 {
   "type": "object",
@@ -635,7 +606,7 @@ def process_extraction(data):
 }
 ```
 
-### Contract Schema
+### 合同数据结构
 ```json
 {
   "type": "object",
@@ -661,19 +632,19 @@ def process_extraction(data):
 }
 ```
 
-## Support & Resources
+## 支持与资源
 
-- **GitHub**: https://github.com/deepread-tech
-- **Issues**: https://github.com/deepread-tech/deep-read-service/issues
-- **Email**:  hello@deepread.tech
+- **GitHub**：https://github.com/deepread-tech
+- **问题反馈**：https://github.com/deepread-tech/deep-read-service/issues
+- **邮箱**：hello@deepread.tech
 
-### Important Notes
-- **Processing Time**: 2-5 minutes (async, not real-time)
-- **Async Workflow**: Use webhooks (recommended) or polling
-- **Rate Limits**: 10 req/min on free tier
-- **File Size Limit**: 50MB per file
-- **Supported Formats**: PDF, JPG, JPEG, PNG
+### 重要说明
+- **处理时间**：2-5分钟（异步处理，非实时）。
+- **建议使用Webhook或轮询机制。**
+- **免费 tier的请求限制**：每分钟10次请求。
+- **文件大小限制**：每份文件不超过50MB。
+- **支持的格式**：PDF、JPG、JPEG、PNG。
 
 ---
 
-**Ready to start?** Get your free API key at https://www.deepread.tech/dashboard/?utm_source=clawdhub
+**准备好开始使用了吗？** 请访问 [https://www.deepread.tech/dashboard/?utm_source=clawdhub] 获取您的免费API密钥。

@@ -1,20 +1,20 @@
 ---
 name: cloudflare
-description: Manage Cloudflare Workers, KV, D1, R2, and secrets using the Wrangler CLI. Use when deploying workers, managing databases, storing objects, or configuring Cloudflare resources. Covers worker deployment, KV namespaces, D1 SQL databases, R2 object storage, secrets management, and tailing logs.
+description: 使用 Wrangler CLI 管理 Cloudflare Workers、KV（键值存储）、D1（对象存储）和 R2（对象存储）以及相关秘密信息。该工具适用于部署 Workers、管理数据库、存储对象以及配置 Cloudflare 资源等场景。内容包括 Workers 的部署、KV 命名空间的管理、D1 SQL 数据库的操作、R2 对象存储的利用、秘密信息的处理，以及日志的跟踪与分析。
 ---
 
-# Cloudflare (Wrangler CLI)
+# Cloudflare（Wrangler CLI）
 
-Manage Cloudflare Workers and associated services via the `wrangler` CLI.
+通过 `wrangler` CLI 管理 Cloudflare Workers 及相关服务。
 
-## Prerequisites
+## 前提条件
 
-- Node.js v20+ required
-- Install: `npm install -g wrangler` or use project-local `npx wrangler`
-- Auth: `wrangler login` (opens browser for OAuth)
-- Verify: `wrangler whoami`
+- 需要 Node.js v20 或更高版本
+- 安装方法：`npm install -g wrangler` 或使用项目内的 `npx wrangler`
+- 登录：`wrangler login`（会打开浏览器进行 OAuth 登录）
+- 查看用户信息：`wrangler whoami`
 
-## Quick Reference
+## 快速参考
 
 ### Workers
 
@@ -44,7 +44,7 @@ wrangler delete [name]
 wrangler tail [worker]
 ```
 
-### Secrets
+### Secrets（密钥值对）
 
 ```bash
 # Add/update secret (interactive)
@@ -63,7 +63,7 @@ wrangler secret delete <key>
 wrangler secret bulk secrets.json
 ```
 
-### KV (Key-Value Store)
+### KV（键值存储）
 
 ```bash
 # Create namespace
@@ -92,7 +92,7 @@ wrangler kv bulk put <file> --namespace-id <id>
 wrangler kv bulk delete <file> --namespace-id <id>
 ```
 
-### D1 (SQL Database)
+### D1（SQL 数据库）
 
 ```bash
 # Create database
@@ -125,7 +125,7 @@ wrangler d1 migrations apply <database>
 wrangler d1 migrations list <database>
 ```
 
-### R2 (Object Storage)
+### R2（对象存储）
 
 ```bash
 # Create bucket
@@ -147,7 +147,7 @@ wrangler r2 object get <bucket>/<key> --file <path>
 wrangler r2 object delete <bucket>/<key>
 ```
 
-### Queues
+### Queues（队列）
 
 ```bash
 # Create queue
@@ -160,16 +160,16 @@ wrangler queues list
 wrangler queues delete <name>
 ```
 
-## Configuration Files
+## 配置文件
 
-Wrangler supports both TOML and JSON/JSONC config formats:
+Wrangler 支持 TOML 和 JSON/JSONC 两种配置格式：
 
-- `wrangler.toml` — traditional format
-- `wrangler.json` or `wrangler.jsonc` — newer, with JSON schema support
+- `wrangler.toml` — 传统格式
+- `wrangler.json` 或 `wrangler.jsonc` — 新格式，支持 JSON 模式
 
-**⚠️ Important:** If both exist, JSON takes precedence. Pick one format to avoid confusion where edits to TOML are ignored.
+**⚠️ 重要提示：** 如果两种配置文件都存在，JSON 格式优先。请选择一种格式以避免因修改 TOML 文件而导致配置被忽略的问题。
 
-### JSONC format (with schema autocomplete)
+### JSONC 格式（支持自动补全）
 
 ```jsonc
 {
@@ -180,7 +180,7 @@ Wrangler supports both TOML and JSON/JSONC config formats:
 }
 ```
 
-### TOML format
+### TOML 格式
 
 ```toml
 name = "my-worker"
@@ -188,7 +188,7 @@ main = "src/index.ts"
 compatibility_date = "2024-12-30"
 ```
 
-With bindings:
+### 使用绑定（Bindings）进行配置
 
 ```toml
 name = "my-worker"
@@ -219,7 +219,7 @@ API_URL = "https://api.example.com"
 # Referenced as env.SECRET_NAME in worker code
 ```
 
-Static assets (for frameworks like Next.js):
+### 静态资源（适用于 Next.js 等框架）
 
 ```toml
 name = "my-site"
@@ -232,56 +232,56 @@ directory = ".open-next/assets"
 binding = "ASSETS"
 ```
 
-## Common Patterns
+## 常见操作模式
 
-### Deploy with environment
+### 基于环境变量进行部署
 
 ```bash
 wrangler deploy -e production
 wrangler deploy -e staging
 ```
 
-### Custom domain (via dashboard or API)
+### 自定义域名（通过控制台或 API）
 
-Custom domains must be configured in the Cloudflare dashboard under Worker Settings > Domains & Routes, or via the Cloudflare API. Wrangler doesn't directly manage custom domains.
+自定义域名需要在 Cloudflare 控制台的 Worker Settings > Domains & Routes 中配置，或通过 Cloudflare API 进行配置。Wrangler 不直接管理自定义域名。
 
-### Local development with bindings
+### 使用绑定进行本地开发
 
 ```bash
 # Creates local D1/KV/R2 for dev
 wrangler dev --local
 ```
 
-### Checking deployment status
+### 检查部署状态
 
 ```bash
 wrangler deployments list
 wrangler deployments view
 ```
 
-## What Wrangler Does NOT Do
+## Wrangler 不支持的功能
 
-- **DNS management** — Use the Cloudflare dashboard or API for DNS records
-- **Custom domains** — Configure via dashboard (Worker Settings > Domains & Routes) or API
-- **SSL certificates** — Managed automatically by Cloudflare when custom domains are added
-- **Firewall/WAF rules** — Use dashboard or API
+- **DNS 管理** — 请使用 Cloudflare 控制台或 API 进行 DNS 记录管理
+- **自定义域名** — 请通过控制台（Worker Settings > Domains & Routes）或 API 进行配置
+- **SSL 证书** — 当添加自定义域名时，由 Cloudflare 自动管理
+- **防火墙/WAF 规则** — 请使用控制台或 API 进行配置
 
-For DNS/domain management, see the `cloudflare` skill (uses Cloudflare API directly).
+有关 DNS/域名管理的更多信息，请参阅 `cloudflare` 技能文档（直接使用 Cloudflare API）。
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| "Not authenticated" | Run `wrangler login` |
-| Node version error | Requires Node.js v20+ |
-| "No config found" | Ensure config file exists (`wrangler.toml` or `wrangler.jsonc`) or use `-c path/to/config` |
-| Config changes ignored | Check for `wrangler.json`/`wrangler.jsonc` — JSON takes precedence over TOML |
-| Binding not found | Check `wrangler.toml` bindings match code references |
+| “未授权” | 运行 `wrangler login` 命令登录 |
+| Node 版本错误 | 需要 Node.js v20 或更高版本 |
+| “未找到配置文件” | 确保配置文件（`wrangler.toml` 或 `wrangler.jsonc`）存在，或使用 `-c path/to/config` 参数指定配置文件路径 |
+| 配置更改未被应用 | 检查 `wrangler.json`/`wrangler.jsonc` 文件的内容 — JSON 格式优先于 TOML 格式 |
+| 绑定配置未找到 | 确认 `wrangler.toml` 中的绑定配置与代码中的引用一致 |
 
-## Resources
+## 资源
 
-- [Wrangler Docs](https://developers.cloudflare.com/workers/wrangler/)
-- [Workers Docs](https://developers.cloudflare.com/workers/)
-- [D1 Docs](https://developers.cloudflare.com/d1/)
-- [R2 Docs](https://developers.cloudflare.com/r2/)
-- [KV Docs](https://developers.cloudflare.com/kv/)
+- [Wrangler 文档](https://developers.cloudflare.com/workers/wrangler/)
+- [Workers 文档](https://developers.cloudflare.com/workers/)
+- [D1 文档](https://developers.cloudflare.com/d1/)
+- [R2 文档](https://developers.cloudflare.com/r2/)
+- [KV 文档](https://developers.cloudflare.com/kv/)

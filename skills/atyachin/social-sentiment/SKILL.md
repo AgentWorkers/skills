@@ -1,6 +1,6 @@
 ---
 name: social-sentiment
-description: "Sentiment analysis for brands and products across Twitter, Reddit, and Instagram. Monitor public opinion, track brand reputation, detect PR crises, surface complaints and praise at scale — analyze 70K+ posts with bulk CSV export and Python/pandas. Social listening and brand monitoring powered by 1.5B+ indexed posts."
+description: "针对Twitter、Reddit和Instagram上的品牌及产品进行情感分析。监控公众舆论，追踪品牌声誉，及时发现公关危机，大规模识别用户的投诉与赞扬。支持分析超过7万条帖子，并提供批量CSV导出功能，可使用Python和pandas库进行处理。该服务基于超过15亿条已索引的帖子数据，提供高效的社会舆论监测与品牌监控功能。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -40,37 +40,36 @@ tags:
   - market-research
 ---
 
-# Social Sentiment
+# 社交情感分析
 
-**Analyze brand sentiment from live social conversations at scale.**
+**大规模分析实时社交对话中的品牌情感。**
 
-Surfaces themes, flags viral complaints, compares competitors. Analyzes 1K-70K posts via bulk CSV + Python.
+该工具能够识别热门话题、发现引发广泛关注的负面评论，并对比不同品牌的表现。支持通过批量CSV文件和Python语言对1000到70,000条帖子进行分析。
 
-## Setup
+## 设置
 
-Run `xpoz-setup` skill. Verify: `mcporter call xpoz.checkAccessKeyStatus`
+运行 `xpoz-setup` 命令进行初始化。验证设置是否正确：`mcporter call xpoz.checkAccessKeyStatus`
 
-## 4-Step Process
+## 四步分析流程
 
-### Step 1: Search Platforms
+### 第一步：搜索相关平台
 
-Queries: (1) `"Brand"` (2) `"Brand" AND (slow OR buggy)` (3) `"Brand" AND (love OR amazing)`
+查询条件：(1) `"Brand"` (2) `"Brand" AND (slow OR buggy)" (3) `"Brand" AND (love OR amazing)"  
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords query='"Notion"' startDate="YYYY-MM-DD"
 mcporter call xpoz.checkOperationStatus operationId="op_..." # Poll 5s
 ```
 
-Repeat for Reddit/Instagram. Default: 30 days.
+针对Reddit和Instagram平台重复此步骤。默认搜索范围为30天内的数据。
 
-### Step 2: Download CSVs
+### 第二步：下载CSV文件
 
-Use `dataDumpExportOperationId`, poll with `checkOperationStatus` for download URL (up to 64K rows).
+使用 `dataDumpExportOperationId` 获取下载链接，并通过 `checkOperationStatus` 检查下载是否成功（最多可下载64,000条数据）。
 
-### Step 3: Analyze
+### 第三步：数据分析
 
-Python/pandas:
-
+使用Python和pandas库对数据进行处理：  
 ```python
 import pandas as pd
 df = pd.read_csv('/tmp/twitter-sentiment.csv')
@@ -87,10 +86,11 @@ def classify(text):
 df['sentiment'] = df['text'].apply(classify)
 ```
 
-Extract themes, find viral by engagement. Customize keywords.
+从数据中提取关键主题，并根据用户互动情况识别具有高传播力的负面评论。可根据需求自定义搜索关键词。
 
-### Step 4: Report
+### 第四步：生成报告
 
+生成分析报告：  
 ```
 Sentiment: 72/100 | Posts: 14,832
 😊 58% | 😠 24% | 😐 18%
@@ -99,8 +99,10 @@ Themes: Performance (2K, 81% neg), UX (1.8K, 72% pos)
 Viral: [Top 10]
 ```
 
-Score: Engagement-weighted, 0-100. Include insights.
+报告结果采用互动度加权评分（0-100分），并包含详细的分析洞察。
 
-## Tips
+## 提示：
 
-Download full CSVs | Reddit = honest | Store `data/social-sentiment/` for trends
+- 可下载完整的CSV文件；  
+- Reddit平台的数据较为真实可靠；  
+- 将分析结果保存在 `data/social-sentiment/` 目录中，便于后续趋势分析。

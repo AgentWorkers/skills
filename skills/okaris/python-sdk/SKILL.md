@@ -12,9 +12,9 @@ allowed-tools: Bash(pip install inferencesh), Bash(python *)
 
 # Python SDK
 
-Build AI applications with the [inference.sh](https://inference.sh) Python SDK.
+使用 [inference.sh](https://inference.sh) Python SDK 构建 AI 应用程序。
 
-## Quick Start
+## 快速入门
 
 ```bash
 pip install inferencesh
@@ -33,7 +33,7 @@ result = client.run({
 print(result["output"])
 ```
 
-## Installation
+## 安装
 
 ```bash
 # Standard installation
@@ -43,9 +43,9 @@ pip install inferencesh
 pip install inferencesh[async]
 ```
 
-**Requirements:** Python 3.8+
+**系统要求：** Python 3.8 或更高版本
 
-## Authentication
+## 认证
 
 ```python
 import os
@@ -58,11 +58,11 @@ client = inference(api_key="inf_your_key")
 client = inference(api_key=os.environ["INFERENCE_API_KEY"])
 ```
 
-Get your API key: Settings → API Keys → Create API Key
+获取您的 API 密钥：设置 → API 密钥 → 创建 API 密钥
 
-## Running Apps
+## 运行应用程序
 
-### Basic Execution
+### 基本执行
 
 ```python
 result = client.run({
@@ -74,7 +74,7 @@ print(result["status"])  # "completed"
 print(result["output"])  # Output data
 ```
 
-### Fire and Forget
+### 一次性执行（无需管理会话）
 
 ```python
 task = client.run({
@@ -86,7 +86,7 @@ print(f"Task ID: {task['id']}")
 # Check later with client.get_task(task['id'])
 ```
 
-### Streaming Progress
+### 流式处理（实时进度更新）
 
 ```python
 for update in client.run({
@@ -98,20 +98,20 @@ for update in client.run({
         print(update["logs"][-1])
 ```
 
-### Run Parameters
+### 运行参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 说明 |
 |-----------|------|-------------|
-| `app` | string | App ID (namespace/name@version) |
-| `input` | dict | Input matching app schema |
-| `setup` | dict | Hidden setup configuration |
-| `infra` | string | 'cloud' or 'private' |
-| `session` | string | Session ID for stateful execution |
-| `session_timeout` | int | Idle timeout (1-3600 seconds) |
+| `app` | 字符串 | 应用程序 ID（格式：namespace/name@version） |
+| `input` | 字典 | 符合应用程序结构的输入数据 |
+| `setup` | 字典 | 隐藏的配置信息 |
+| `infra` | 字符串 | 执行环境：`cloud` 或 `private` |
+| `session` | 字符串 | 用于保持会话状态的会话 ID |
+| `session_timeout` | 整数 | 会话空闲超时时间（1-3600 秒） |
 
-## File Handling
+## 文件处理
 
-### Automatic Upload
+### 自动上传
 
 ```python
 result = client.run({
@@ -122,7 +122,7 @@ result = client.run({
 })
 ```
 
-### Manual Upload
+### 手动上传
 
 ```python
 from inferencesh import UploadFileOptions
@@ -146,9 +146,9 @@ result = client.run({
 })
 ```
 
-## Sessions (Stateful Execution)
+## 会话（保持状态）
 
-Keep workers warm across multiple calls:
+在多次调用之间维持应用程序的状态：
 
 ```python
 # Start new session
@@ -168,11 +168,11 @@ result = client.run({
 })
 ```
 
-## Agent SDK
+## 代理 SDK
 
-### Template Agents
+### 模板代理
 
-Use pre-built agents from your workspace:
+使用工作区中预构建的代理：
 
 ```python
 agent = client.agent("my-team/support-agent@latest")
@@ -191,9 +191,9 @@ agent.reset()
 chat = agent.get_chat()
 ```
 
-### Ad-hoc Agents
+### 自定义代理
 
-Create custom agents programmatically:
+通过编程方式创建自定义代理：
 
 ```python
 from inferencesh import tool, string, number, app_tool
@@ -225,18 +225,18 @@ agent = client.agent({
 response = agent.send_message("What is 25 * 4?")
 ```
 
-### Available Core Apps
+### 可用的核心应用程序
 
-| Model | App Reference |
+| 模型 | 应用程序参考 |
 |-------|---------------|
 | Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |
 | Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |
 | GPT-4o | `infsh/gpt-4o@latest` |
 | GPT-4o Mini | `infsh/gpt-4o-mini@latest` |
 
-## Tool Builder API
+## 工具构建器 API
 
-### Parameter Types
+### 参数类型
 
 ```python
 from inferencesh import (
@@ -257,7 +257,7 @@ address = obj({
 }, "Address")
 ```
 
-### Client Tools (Run in Your Code)
+### 客户端工具（在您的代码中运行）
 
 ```python
 greet = (
@@ -270,7 +270,7 @@ greet = (
 )
 ```
 
-### App Tools (Call AI Apps)
+### 应用程序工具（调用 AI 应用程序）
 
 ```python
 generate = (
@@ -284,7 +284,7 @@ generate = (
 )
 ```
 
-### Agent Tools (Delegate to Sub-agents)
+### 代理工具（委托给子代理）
 
 ```python
 from inferencesh import agent_tool
@@ -297,7 +297,7 @@ researcher = (
 )
 ```
 
-### Webhook Tools (Call External APIs)
+### Webhook 工具（调用外部 API）
 
 ```python
 from inferencesh import webhook_tool
@@ -312,7 +312,7 @@ notify = (
 )
 ```
 
-### Internal Tools (Built-in Capabilities)
+### 内部工具（内置功能）
 
 ```python
 from inferencesh import internal_tools
@@ -336,7 +336,7 @@ agent = client.agent({
 })
 ```
 
-## Streaming Agent Responses
+## 代理响应的流式传输
 
 ```python
 def handle_message(msg):
@@ -355,7 +355,7 @@ response = agent.send_message(
 )
 ```
 
-## File Attachments
+## 文件附件
 
 ```python
 # From file path
@@ -372,7 +372,7 @@ response = agent.send_message(
 )
 ```
 
-## Skills (Reusable Context)
+## 技能（可复用的上下文数据）
 
 ```python
 agent = client.agent({
@@ -392,7 +392,7 @@ agent = client.agent({
 })
 ```
 
-## Async Support
+## 异步支持
 
 ```python
 from inferencesh import async_inference
@@ -418,7 +418,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 from inferencesh import RequirementsNotMetException
@@ -433,7 +433,7 @@ except RuntimeError as e:
     print(f"Error: {e}")
 ```
 
-## Human Approval Workflows
+## 人工审批工作流程
 
 ```python
 def handle_tool(call):
@@ -452,16 +452,16 @@ response = agent.send_message(
 )
 ```
 
-## Reference Files
+## 参考文件
 
-- [Agent Patterns](references/agent-patterns.md) - Multi-agent, RAG, human-in-the-loop patterns
-- [Tool Builder](references/tool-builder.md) - Complete tool builder API reference
-- [Streaming](references/streaming.md) - Real-time progress updates and SSE handling
-- [File Handling](references/files.md) - Upload, download, and manage files
-- [Sessions](references/sessions.md) - Stateful execution with warm workers
-- [Async Patterns](references/async-patterns.md) - Parallel processing and async/await
+- [代理模式](references/agent-patterns.md) - 多代理、RAG（问答系统）和人工干预模式
+- [工具构建器](references/tool-builder.md) - 完整的工具构建器 API 参考
+- [流式处理](references/streaming.md) - 实时进度更新和 SSE（Server-Side Eventing）处理
+- [文件处理](references/files.md) - 文件上传、下载和管理
+- [会话管理](references/sessions.md) - 保持会话状态的处理方式
+- [异步处理模式](references/async-patterns.md) - 并行处理和 async/await 的使用
 
-## Related Skills
+## 相关技能
 
 ```bash
 # JavaScript SDK
@@ -477,11 +477,11 @@ npx skills add inference-sh/agent-skills@llm-models
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-## Documentation
+## 文档资料
 
-- [Python SDK Reference](https://inference.sh/docs/api/sdk-python) - Full API documentation
-- [Agent SDK Overview](https://inference.sh/docs/api/agent-sdk) - Building agents
-- [Tool Builder Reference](https://inference.sh/docs/api/agent-tools) - Creating tools
-- [Authentication](https://inference.sh/docs/api/authentication) - API key setup
-- [Streaming](https://inference.sh/docs/api/sdk/streaming) - Real-time updates
-- [File Uploads](https://inference.sh/docs/api/sdk/files) - File handling
+- [Python SDK 参考文档](https://inference.sh/docs/api/sdk-python) - 完整的 API 文档
+- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理程序的构建方法
+- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具的创建方法
+- [认证机制](https://inference.sh/docs/api/authentication) - API 密钥的设置方法
+- [流式处理](https://inference.sh/docs/api/sdk/streaming) - 实时更新功能
+- [文件上传](https://inference.sh/docs/api/sdk/files) - 文件处理相关说明

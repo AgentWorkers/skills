@@ -1,16 +1,16 @@
-# Tech Security Audit Skill
+# 技术安全审计技能
 
-This skill integrates Nmap scanning functionality to perform local network vulnerability assessments.
+该技能集成了 Nmap 扫描功能，用于执行本地网络漏洞评估。
 
-## Features
-- Local network scanning
-- Vulnerability detection
-- Service version detection
-- OS fingerprinting
+## 主要功能
+- 本地网络扫描
+- 漏洞检测
+- 服务版本检测
+- 操作系统识别（OS fingerprinting）
 
-## Requirements
-- Nmap must be installed and accessible in PATH
-- Appropriate permissions for network scanning
+## 使用要求
+- 必须已安装 Nmap，并且 Nmap 可以通过 PATH 变量被访问
+- 具备执行网络扫描所需的相应权限
 
-## Usage
-Call the skill functions to perform scans on specified targets or network ranges.
+## 使用方法
+调用该技能的相关函数，对指定的目标或网络范围进行扫描。

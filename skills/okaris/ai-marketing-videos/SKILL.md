@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Marketing Videos
+# 人工智能营销视频
 
-Create professional marketing videos via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具制作专业的营销视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,19 +26,19 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Video Ad Types
+## 视频广告类型
 
-| Type | Duration | Platform |
+| 类型 | 时长 | 平台 |
 |------|----------|----------|
-| Bumper Ad | 6 seconds | YouTube |
-| Short Ad | 15 seconds | Instagram, Facebook |
-| Standard Ad | 30 seconds | YouTube, TV |
-| Explainer | 60-90 seconds | Website, YouTube |
-| Product Demo | 30-60 seconds | All platforms |
+| 开场广告 | 6秒 | YouTube |
+| 短广告 | 15秒 | Instagram、Facebook |
+| 标准广告 | 30秒 | YouTube、电视 |
+| 说明视频 | 60-90秒 | 网站、YouTube |
+| 产品演示 | 30-60秒 | 所有平台 |
 
-## Marketing Video Templates
+## 营销视频模板
 
-### Product Launch
+### 产品发布
 
 ```bash
 # Dramatic product reveal
@@ -47,7 +47,7 @@ infsh app run google/veo-3 --input '{
 }'
 ```
 
-### Brand Story
+### 品牌故事
 
 ```bash
 # Emotional brand narrative
@@ -56,7 +56,7 @@ infsh app run google/veo-3-1 --input '{
 }'
 ```
 
-### Feature Highlight
+### 功能亮点
 
 ```bash
 # Focus on specific feature
@@ -65,7 +65,7 @@ infsh app run bytedance/seedance-1-5-pro --input '{
 }'
 ```
 
-### Testimonial Style
+### 客户评价风格
 
 ```bash
 # Talking head testimonial
@@ -74,7 +74,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Before/After
+### 使用前/使用后对比
 
 ```bash
 # Transformation reveal
@@ -83,9 +83,9 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Complete Ad Workflows
+## 完整的广告制作流程
 
-### 30-Second Product Ad
+### 30秒产品广告
 
 ```bash
 # 1. Opening hook (0-3s)
@@ -127,7 +127,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Instagram/TikTok Ad (15s)
+### Instagram/TikTok广告（15秒）
 
 ```bash
 # Vertical format, fast-paced
@@ -142,7 +142,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-### Explainer Video
+### 说明视频
 
 ```bash
 # 1. Write script
@@ -173,9 +173,9 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Platform-Specific Formats
+## 平台特定格式
 
-### Facebook/Instagram Feed
+### Facebook/Instagram动态
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -183,7 +183,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### YouTube Pre-Roll
+### YouTube前置广告
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -207,9 +207,9 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Ad Creative Best Practices
+## 广告创意最佳实践
 
-### Hook Formula (First 3 Seconds)
+### 吸引观众的方法（前3秒）
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -222,14 +222,14 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Visual Hierarchy
+### 视觉层次结构
 
-1. **Product hero** - Clear, prominent
-2. **Benefits** - Illustrated, not just stated
-3. **Social proof** - Visible testimonials/numbers
-4. **CTA** - Clear space for text overlay
+1. **产品亮点** - 清晰、醒目
+2. **产品优势** - 通过图像展示，而不仅仅是文字说明
+3. **用户评价** - 可见的用户反馈/数据
+4. **行动号召** - 有足够的空间放置文字提示
 
-### Sound Design
+### 声音设计
 
 ```bash
 # Add appropriate music
@@ -244,7 +244,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## A/B Testing Variants
+## A/B测试方案
 
 ```bash
 # Generate multiple creative variants
@@ -262,18 +262,18 @@ for hook in "${HOOKS[@]}"; do
 done
 ```
 
-## Video Ad Checklist
+## 视频广告检查清单
 
-- [ ] Hook in first 3 seconds
-- [ ] Works without sound (captions/text)
-- [ ] Clear product visibility
-- [ ] Benefit-focused messaging
-- [ ] Single clear CTA
-- [ ] Correct aspect ratio for platform
-- [ ] Brand consistency
-- [ ] Mobile-optimized
+- [ ] 前3秒内能够吸引观众
+- [ ] 无需声音也能正常播放（配有字幕/文字）
+- [ ] 产品清晰可见
+- [ ] 信息以产品优势为核心
+- [ ] 有一个明确的行动号召
+- [ ] 平台所需的正确宽高比
+- [ ] 保持品牌一致性
+- [ ] 适用于移动设备
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Video generation
@@ -292,4 +292,4 @@ npx skills add inference-sh/agent-skills@ai-social-media-content
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

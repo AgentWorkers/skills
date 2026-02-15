@@ -1,6 +1,6 @@
 ---
 name: secret-portal
-description: Spin up a one-time web UI for securely entering secret keys and env vars. Supports guided instructions, single-key mode, and cloudflared tunneling.
+description: **快速搭建一次性Web界面**：用于安全地输入密钥和环境变量。该界面支持引导式操作、单密钥输入模式以及CloudFlared隧道技术。
 metadata:
   {
     "openclaw":
@@ -23,9 +23,9 @@ metadata:
 
 # Secret Portal
 
-Spin up a temporary, one-time-use web UI for securely entering secret keys and environment variables. No secrets ever touch chat history or terminal logs.
+这是一个临时性的、一次性使用的Web界面，用于安全地输入密钥和环境变量。所有密钥信息都不会被记录到聊天历史记录或终端日志中。
 
-## Quick Start
+## 快速开始
 
 ```bash
 # Single key with cloudflared tunnel (recommended)
@@ -49,35 +49,35 @@ uv run --with secret-portal secret-portal \
   --tunnel cloudflared
 ```
 
-## Options
+## 选项
 
-| Flag | Description |
+| 标志 | 描述 |
 |------|-------------|
-| `-k, --key` | Pre-populate a single key name (user only enters the value) |
-| `-f, --env-file` | Path to save secrets to (default: `~/.env`) |
-| `-i, --instructions` | HTML instructions shown above the input field |
-| `-l, --link` | URL button for where to get/create the key |
-| `--link-text` | Label for the link button (default: "Open console →") |
-| `--tunnel` | `cloudflared` (recommended), `ngrok`, or `none` |
-| `-p, --port` | Port to bind to (default: random) |
-| `--timeout` | Seconds before auto-shutdown (default: 300) |
+| `-k, --key` | 预填充一个密钥名称（用户只需输入对应的值） |
+| `-f, --env-file` | 保存密钥的文件路径（默认：`~/.env`） |
+| `-i, --instructions` | 显示在输入框上方的HTML说明文本 |
+| `-l, --link` | 用于获取/创建密钥的链接按钮的URL |
+| `--link-text` | 链接按钮的标签文本（默认：“打开控制台 →”） |
+| `--tunnel` | 可选隧道服务：`cloudflared`、`ngrok` 或 `none`（推荐使用`cloudflared`） |
+| `-p, --port` | 绑定的端口号（默认：随机生成） |
+| `--timeout` | 自动关闭前的等待时间（秒）（默认：300秒） |
 
-## Tunneling
+## 隧道服务
 
-**Use `--tunnel cloudflared`** — it's free, requires no account, has no interstitial pages, provides HTTPS, and auto-downloads the binary if missing.
+**推荐使用 `--tunnel cloudflared`**：该服务免费、无需注册账户、无广告页面，并提供HTTPS加密；如果缺少相关二进制文件，会自动下载。
 
-ngrok free tier shows an interstitial warning page that blocks mobile and automated use.
+`ngrok` 的免费版本会显示广告页面，这可能会影响移动设备或自动化脚本的使用。
 
-Without a tunnel, the port must be open in your firewall/security group. The CLI will warn you if it detects the port is unreachable.
+如果没有使用隧道服务，你需要确保相应的端口在防火墙或安全组中是开放的。如果命令行工具检测到端口无法访问，会给出警告。
 
-## Security
+## 安全性
 
-- One-time use: portal expires after a single submission
-- Token auth: URL contains a random 32-byte token
-- Secret values are **never** printed to stdout/stderr (enforced by tests)
-- Env file is written with `600` permissions (owner-only)
-- Secrets never touch chat history or terminal logs
+- 一次性使用：提交一次后，该门户会立即失效。
+- 使用令牌认证：生成的URL包含一个32字节的随机令牌。
+- 密钥值**绝不会**被输出到标准输出（stdout）或标准错误（stderr）中（通过测试验证）。
+- 环境变量文件仅对文件所有者具有读写权限（权限设置为`600`）。
+- 所有密钥信息都不会被记录到聊天历史记录或终端日志中。
 
-## Source
+## 来源代码
 
 https://github.com/Olafs-World/secret-portal

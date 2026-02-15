@@ -1,63 +1,63 @@
 ---
 name: near-airdrop-hunter
-description: Discover NEAR airdrops, check eligibility, claim rewards, and track claimed airdrops across multiple platforms.
+description: 发现附近的空投活动，查看参与资格，领取奖励，并在多个平台上追踪已领取的空投物品。
 ---
-# NEAR Airdrop Hunter Skill
+# NEAR Airdrop Hunter 技能
 
-Discover, check eligibility, and claim NEAR airdrops automatically.
+该技能可帮助您自动发现、检查资格并领取 NEAR 的空投奖励。
 
-## Description
+## 描述
 
-This skill helps you discover active NEAR airdrops, check eligibility for specific airdrops, claim eligible airdrops, and track claimed airdrops across multiple platforms.
+此技能可帮助您发现正在进行的 NEAR 空投活动，检查特定空投的领取资格，领取符合条件的空投奖励，并在多个平台上跟踪已领取的空投记录。
 
-## Features
+## 功能
 
-- Discover active NEAR airdrops
-- Check eligibility for airdrops
-- Claim eligible airdrops
-- Track claimed airdrops
-- Multiple platform scanning
+- 发现正在进行的 NEAR 空投活动
+- 检查空投的领取资格
+- 领取符合条件的空投奖励
+- 跟踪已领取的空投奖励
+- 支持跨多个平台进行扫描
 
-## Commands
+## 命令
 
 ### `near-airdrop discover [platform]`
-Discover active airdrops.
+发现正在进行的 NEAR 空投活动。
 
-**Parameters:**
-- `platform` - Filter by platform (optional: aurora, ref, all)
+**参数：**
+- `platform` - 按平台筛选（可选：aurora、ref、all）
 
 ### `near-airdrop check <account_id> <airdrop_id>`
-Check eligibility for an airdrop.
+检查特定空投的领取资格。
 
-**Parameters:**
-- `account_id` - NEAR account to check
-- `airdrop_id` - Airdrop to check eligibility for
+**参数：**
+- `account_id` - 需要检查资格的 NEAR 账户
+- `airdrop_id` - 需要检查领取资格的空投 ID
 
 ### `near-airdrop claim <account_id> <airdrop_id>`
-Claim an eligible airdrop.
+领取符合条件的空投奖励。
 
-**Parameters:**
-- `account_id` - NEAR account to claim for
-- `airdrop_id` - Airdrop to claim
+**参数：**
+- `account_id` - 需要领取空投奖励的 NEAR 账户
+- `airdrop_id` - 需要领取的空投 ID
 
 ### `near-airdrop list [account_id]`
-List claimed airdrops for an account.
+列出该账户已领取的所有空投奖励。
 
 ### `near-airdrop track [account_id]`
-Track all airdrops with their status.
+跟踪该账户的所有空投活动及其状态。
 
-## Configuration
+## 配置
 
-Tracking data is stored in `~/.near-airdrop/tracking.json`.
+跟踪数据存储在 `~/.near-airdrop/tracking.json` 文件中。
 
-## Notes
+## 注意事项
 
-- Airdrop availability varies by protocol
-- Some airdrops require holding specific tokens
-- Check eligibility before claiming
-- Always verify airdrop legitimacy
+- 空投的可用性因协议而异
+- 有些空投需要持有特定的代币才能领取
+- 领取前请务必检查资格
+- 请始终验证空投的合法性
 
-## References
+## 参考资料
 
-- NEAR Ecosystem: https://near.org/ecosystem/
-- NEAR Airdrops: https://near.org/airdrops/
+- NEAR 生态系统：https://near.org/ecosystem/
+- NEAR 空投活动：https://near.org/airdrops/

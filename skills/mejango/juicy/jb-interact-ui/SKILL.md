@@ -1,25 +1,26 @@
 ---
 name: jb-interact-ui
-description: Generate minimal frontends for interacting with existing Juicebox V5 projects. Pay, cash out, claim tokens, view project state - all in standalone HTML files.
+description: 为现有的Juicebox V5项目生成最小的前端界面，用于实现以下功能：支付、提现、领取代币以及查看项目状态。所有这些功能都通过独立的HTML文件来实现。
 ---
 
-# Juicebox V5 Interaction UI Generator
+# Juicebox V5交互式用户界面生成器
 
-Generate simple frontends for interacting with existing Juicebox projects using viem and shared styles. Pay into treasuries, cash out tokens, view project state - no build tools required.
+使用viem和共享样式，为现有的Juicebox项目生成简单的用户界面，以实现交互功能。用户可以在此界面中进行以下操作：向项目资金库捐款、提取代币、查看项目状态——无需任何构建工具。
 
-## Philosophy
+## 设计理念
 
-> **Let users interact with Juicebox projects without touching a command line.**
+> **让用户无需接触命令行即可与Juicebox项目进行交互。**
 
-These UIs are for:
-- Paying into a project treasury
-- Cashing out tokens for ETH
-- Viewing project configuration and state
-- Claiming ERC-20 tokens from credits
+这些用户界面主要用于：
+- 向项目资金库捐款
+- 将代币兑换成ETH
+- 查看项目配置和状态
+- 从项目信用中领取ERC-20代币
 
-## Template: Project Payment UI
+## 模板说明：
 
-```html
+- **项目支付界面**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,9 +194,8 @@ These UIs are for:
 </html>
 ```
 
-## Template: Cash Out UI
-
-```html
+- **代币提取界面**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -331,9 +331,8 @@ These UIs are for:
 </html>
 ```
 
-## Template: NFT Mint UI (721 Hook)
-
-```html
+- **NFT铸造界面（721 Hook）**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -476,9 +475,8 @@ These UIs are for:
 </html>
 ```
 
-## Template: Project Admin UI
-
-```html
+- **项目管理员界面**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -734,9 +732,8 @@ These UIs are for:
 </html>
 ```
 
-## Template: Claim Tokens UI
-
-```html
+- **代币领取界面**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -905,9 +902,8 @@ These UIs are for:
 </html>
 ```
 
-## Template: Project Dashboard UI
-
-```html
+- **项目仪表盘界面**  
+  ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1063,18 +1059,18 @@ These UIs are for:
 </html>
 ```
 
-## Generation Guidelines
+## 生成指南：
 
-1. **Project ID as config** - Make it easy to change which project the UI targets
-2. **Network switching** - Detect wrong network and prompt user to switch
-3. **Real-time previews** - Show expected token amounts before transaction
-4. **Error handling** - Catch wallet rejections and contract reverts gracefully
-5. **Loading states** - Disable buttons and show spinners during transactions
-6. **Read-only mode** - Support viewing data without wallet connection
+1. **使用项目ID作为配置参数**：方便用户切换目标项目。
+2. **网络自动切换**：检测错误的网络连接，并提示用户进行切换。
+3. **实时预览**：在交易前显示预期的代币数量。
+4. **错误处理**：优雅地处理钱包拒绝或合约回滚的情况。
+5. **交易状态显示**：在交易过程中禁用相关按钮并显示加载指示器。
+6. **只读模式**：支持在未连接钱包的情况下查看数据。
 
-## Fetching Project Data
+## 获取项目数据
 
-To show real project stats, query the contracts:
+要显示项目的实际状态，请查询相关合约：
 
 ```javascript
 async function getProjectStats(projectId) {
@@ -1096,9 +1092,9 @@ async function getProjectStats(projectId) {
 }
 ```
 
-## Fetching Data with Bendystraw
+## 使用Bendystraw获取数据
 
-Instead of querying contracts directly, use Bendystraw for faster, indexed data:
+为了更快地获取数据，建议使用Bendystraw进行索引查询：
 
 ```javascript
 // Bendystraw client (use server-side proxy to hide API key)
@@ -1127,11 +1123,11 @@ async function getProjectStats(projectId, chainId) {
 }
 ```
 
-Contact [@peripheralist](https://x.com/peripheralist) for an API key.
+如需API密钥，请联系[@peripheralist](https://x.com/peripheralist)。
 
-## Related Skills
+## 相关技能：
 
-- `/jb-deploy-ui` - UIs for deploying new projects
-- `/jb-omnichain-ui` - Multi-chain UIs with Relayr & Bendystraw
-- `/jb-query` - Direct contract queries (when Bendystraw unavailable)
-- `/jb-v5-api` - Contract function signatures
+- `/jb-deploy-ui`：用于部署新项目的用户界面。
+- `/jb-omnichain-ui`：基于Relayr和Bendystraw的多链用户界面。
+- `/jb-query`：在Bendystraw不可用时直接查询合约。
+- `/jb-v5-api`：用于获取合约函数签名。

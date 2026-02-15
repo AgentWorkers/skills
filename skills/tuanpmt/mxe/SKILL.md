@@ -1,28 +1,28 @@
-# MXE Skill - Markdown Export Tool
+# MXE 技能 - Markdown 导出工具
 
-Convert Markdown files to PDF, DOCX, or HTML with advanced features.
+该工具可将 Markdown 文件转换为 PDF、DOCX 或 HTML 格式，并提供多种高级功能。
 
-## When to Use
+## 使用场景
 
-Use MXE when the user wants to:
-- Convert Markdown to PDF with nice formatting
-- Export documents with Mermaid diagrams
-- Generate PDFs with table of contents
-- Create professional documents from Markdown
-- Download web articles as Markdown
+当用户需要执行以下操作时，可以使用 MXE：
+- 将 Markdown 文件转换为格式美观的 PDF 文件；
+- 导出包含 Mermaid 图表的文档；
+- 生成带有目录结构的 PDF 文件；
+- 从 Markdown 文件创建专业文档；
+- 下载网页文章并将其保存为 Markdown 格式。
 
-## Installation Check
+## 安装检查
 
 ```bash
 which mxe || echo "Not installed"
 ```
 
-If not installed:
+如果尚未安装，请执行以下操作：
 ```bash
 cd /Users/tuan/.openclaw/workspace/mxe && npm run build && npm link
 ```
 
-## Basic Usage
+## 基本用法
 
 ```bash
 # Simple PDF conversion
@@ -35,7 +35,7 @@ mxe document.md --toc
 mxe document.md -o ./output
 ```
 
-## Font Options
+## 字体选项
 
 ```bash
 # Custom body font
@@ -48,11 +48,11 @@ mxe document.md --mono-font fira-code
 mxe document.md --font inter --mono-font jetbrains-mono
 ```
 
-**Available body fonts:** `inter` (default), `roboto`, `lato`, `opensans`, `source-sans`, `merriweather`
+**可用的正文字体：** `inter`（默认）、`roboto`、`lato`、`opensans`、`source-sans`、`merriweather`
 
-**Available mono fonts:** `jetbrains-mono` (default), `fira-code`, `source-code`
+**可用的单色字体：** `jetbrains-mono`（默认）、`fira-code`、`source-code`
 
-## Mermaid Diagrams
+## Mermaid 图表
 
 ```bash
 # Default theme
@@ -68,9 +68,9 @@ mxe document.md --hand-draw
 mxe document.md --mermaid-theme dark --mermaid-layout elk
 ```
 
-**Themes:** `default`, `forest`, `dark`, `neutral`, `base`
+**主题选项：** `default`、`forest`、`dark`、`neutral`、`base`
 
-## Full Example
+## 完整示例
 
 ```bash
 # Professional PDF with all features
@@ -82,7 +82,7 @@ mxe report.md \
   -o ./output
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 mxe doc.md -f pdf      # PDF (default)
@@ -91,7 +91,7 @@ mxe doc.md -f html     # HTML file
 mxe doc.md -f clipboard # Copy to clipboard
 ```
 
-## Download Web Articles
+## 下载网页文章
 
 ```bash
 # Download and convert URL to PDF
@@ -101,13 +101,12 @@ mxe https://example.com/article
 mxe https://example.com/article -f clipboard
 ```
 
-## Tips
+## 使用技巧：
+1. **Mermaid 需要 mmdc**：请使用 `npm i -g @mermaid-js/mermaid-cli` 进行安装。
+2. **图片的嵌入方式**：本地图片会以 Base64 编码的形式嵌入到 PDF 文件中。
+3. **自定义样式**：可以使用 `-s style.css` 文件来应用自定义样式。
+4. **书签**：PDF 文件会自动生成书签（可通过 `--no-bookmarks` 选项禁用此功能）。
 
-1. **Mermaid requires mmdc**: Install with `npm i -g @mermaid-js/mermaid-cli`
-2. **Images are embedded**: Local images are base64 encoded into the PDF
-3. **Custom CSS**: Use `-s style.css` for custom styling
-4. **Bookmarks**: PDF bookmarks are auto-generated from headings (disable with `--no-bookmarks`)
+## 工具位置
 
-## Location
-
-Tool source: `/Users/tuan/.openclaw/workspace/mxe`
+工具源代码位于：`/Users/tuan/.openclaw/workspace/mxe`

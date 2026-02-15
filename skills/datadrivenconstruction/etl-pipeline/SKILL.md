@@ -1,21 +1,21 @@
 ---
 slug: "etl-pipeline"
 display_name: "ETL Pipeline"
-description: "Build automated ETL (Extract-Transform-Load) pipelines for construction data. Process PDFs, Excel, BIM exports. Generate reports, dashboards, and integrate with other systems. Orchestrate with Airflow or n8n."
+description: "构建自动化的数据提取（Extract）、转换（Transform）和加载（Load，简称ETL）管道，用于处理建筑相关数据。支持处理PDF文件、Excel表格以及BIM格式的输出文件。能够生成报告和仪表板，并与其他系统进行集成。支持使用Airflow或n8n等工具进行流程编排。"
 ---
 
-# ETL Pipeline for Construction Data
+# 建筑数据ETL管道
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 4.2), this skill enables building automated data pipelines that extract information from various sources, transform it into useful formats, and load it into target systems or generate reports.
+基于DDC方法论（第4.2章），本技能可帮助构建自动化数据管道，从各种来源提取数据，将其转换为可用格式，然后加载到目标系统中或生成报告。
 
-**Book Reference:** "ETL и автоматизация процессов" / "ETL and Process Automation"
+**参考书籍**：《ETL与流程自动化》（"ETL и автоматизация процессов"）
 
-> "ETL: переход от ручного управления к автоматизации позволяет компаниям обрабатывать данные без постоянного человеческого вмешательства."
-> — DDC Book, Chapter 4.2
+> “ETL：从手动管理向自动化的转变使企业能够在无需持续人工干预的情况下处理数据。”
+> — DDC书籍，第4.2章
 
-## ETL Components
+## ETL组件
 
 ```
 ┌─────────┐    ┌───────────┐    ┌────────┐
@@ -31,7 +31,7 @@ Based on DDC methodology (Chapter 4.2), this skill enables building automated da
  - API          - Aggregate     - Dashboard
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -54,9 +54,9 @@ def simple_etl_pipeline(input_file, output_file):
 result = simple_etl_pipeline("raw_data.xlsx", "processed_report.xlsx")
 ```
 
-## Extract: Data Sources
+## 数据提取（Extract）：数据来源
 
-### From Multiple Excel Files
+### 从多个Excel文件中提取数据
 
 ```python
 import pandas as pd
@@ -84,7 +84,7 @@ def extract_excel_files(folder_path, pattern="*.xlsx"):
 df = extract_excel_files("./project_data/")
 ```
 
-### From PDF Documents
+### 从PDF文档中提取数据
 
 ```python
 import pdfplumber
@@ -108,7 +108,7 @@ def extract_from_pdfs(pdf_folder):
     return pd.concat(all_tables, ignore_index=True) if all_tables else pd.DataFrame()
 ```
 
-### From API
+### 从API中提取数据
 
 ```python
 import requests
@@ -128,7 +128,7 @@ def extract_from_api(api_url, headers=None):
 df = extract_from_api("https://api.example.com/projects")
 ```
 
-### From Database
+### 从数据库中提取数据
 
 ```python
 import pandas as pd
@@ -148,9 +148,9 @@ df = extract_from_database(
 )
 ```
 
-## Transform: Data Processing
+## 数据转换（Transform）：数据处理
 
-### Data Cleaning
+### 数据清洗
 
 ```python
 def clean_construction_data(df):
@@ -178,7 +178,7 @@ def clean_construction_data(df):
     return df
 ```
 
-### Data Validation
+### 数据验证
 
 ```python
 def validate_construction_data(df, rules):
@@ -226,7 +226,7 @@ validation_rules = [
 errors = validate_construction_data(df, validation_rules)
 ```
 
-### Data Aggregation
+### 数据聚合
 
 ```python
 def aggregate_by_hierarchy(df, hierarchy=['Project', 'Building', 'Level', 'Category']):
@@ -254,7 +254,7 @@ for name, data in aggregations.items():
     print(data.head())
 ```
 
-### Data Enrichment
+### 数据增强
 
 ```python
 def enrich_with_prices(df, prices_df):
@@ -270,9 +270,9 @@ def enrich_with_prices(df, prices_df):
     return enriched
 ```
 
-## Load: Output Generation
+## 数据加载（Load）：输出生成
 
-### Generate Excel Report
+### 生成Excel报告
 
 ```python
 def generate_excel_report(df, summary, output_path):
@@ -299,7 +299,7 @@ def generate_excel_report(df, summary, output_path):
 generate_excel_report(df, summary, "project_report.xlsx")
 ```
 
-### Generate PDF Report
+### 生成PDF报告
 
 ```python
 from reportlab.lib import colors
@@ -340,7 +340,7 @@ def generate_pdf_report(df, output_path, title="Construction Report"):
 generate_pdf_report(summary, "report.pdf")
 ```
 
-### Load to Database
+### 将数据加载到数据库中
 
 ```python
 import sqlite3
@@ -356,7 +356,7 @@ def load_to_database(df, db_path, table_name, if_exists='replace'):
 load_to_database(df, "construction.db", "elements")
 ```
 
-## Complete ETL Pipeline
+## 完整的ETL管道
 
 ```python
 class ConstructionETLPipeline:
@@ -452,7 +452,7 @@ pipeline = ConstructionETLPipeline(config)
 pipeline.run()
 ```
 
-## Scheduling with Airflow
+## 使用Airflow进行调度
 
 ```python
 # airflow_dag.py
@@ -494,32 +494,32 @@ t3 = PythonOperator(task_id='load', python_callable=load_task, dag=dag)
 t1 >> t2 >> t3
 ```
 
-## Quick Reference
+## 快速参考
 
-| Stage | Task | Tool/Method |
+| 阶段 | 任务 | 工具/方法 |
 |-------|------|-------------|
-| Extract | Read Excel | `pd.read_excel()` |
-| Extract | Read CSV | `pd.read_csv()` |
-| Extract | Read PDF | `pdfplumber` |
-| Extract | Read API | `requests.get()` |
-| Transform | Clean | `df.dropna()`, `df.str.strip()` |
-| Transform | Validate | Custom validation functions |
-| Transform | Calculate | `df['new'] = df['a'] * df['b']` |
-| Transform | Aggregate | `df.groupby().agg()` |
-| Load | Excel | `df.to_excel()` |
-| Load | PDF | `reportlab` |
-| Load | Database | `df.to_sql()` |
-| Load | API | `requests.post()` |
+| 数据提取 | 读取Excel文件 | `pd.read_excel()` |
+| 数据提取 | 读取CSV文件 | `pd.read_csv()` |
+| 数据提取 | 读取PDF文件 | `pdfplumber` |
+| 数据提取 | 从API中获取数据 | `requests.get()` |
+| 数据转换 | 数据清洗 | `df.dropna()`, `df.str.strip()` |
+| 数据转换 | 数据验证 | 自定义验证函数 |
+| 数据转换 | 数据计算 | `df['new'] = df['a'] * df['b']` |
+| 数据转换 | 数据聚合 | `df.groupby().agg()` |
+| 数据加载 | 生成Excel报告 | `df.to_excel()` |
+| 数据加载 | 生成PDF报告 | `reportlab` |
+| 数据加载 | 将数据插入数据库 | `df.to_sql()` |
+| 数据加载 | 将数据发送到API | `requests.post()` |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 4.2
-- **Website**: https://datadrivenconstruction.io
-- **Airflow**: https://airflow.apache.org
-- **n8n**: https://n8n.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第4.2章
+- **网站**：https://datadrivenconstruction.io
+- **Airflow**：https://airflow.apache.org
+- **n8n**：https://n8n.io
 
-## Next Steps
+## 下一步操作
 
-- See `bim-validation-pipeline` for BIM data validation
-- See `pdf-report-generator` for advanced PDF generation
-- See `workflow-automation` for n8n integration
+- 查看`bim-validation-pipeline`以了解BIM数据验证功能
+- 查看`pdf-report-generator`以了解高级PDF生成方法
+- 查看`workflow-automation`以了解n8n集成方案

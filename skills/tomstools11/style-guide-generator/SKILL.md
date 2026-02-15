@@ -1,213 +1,209 @@
 ---
 name: style-guide-generator
-description: Generate comprehensive website style guides and design systems from URLs, screenshots, and existing documentation. Use this skill when users ask to create a style guide, design system documentation, brand guidelines document, or design specification from a website, app, or existing materials. This skill produces professional PDF outputs following industry-standard style guide structure.
+description: 根据提供的URL、截图以及现有文档，可以生成全面的网站样式指南和设计系统。当用户需要基于网站、应用程序或现有素材创建样式指南、设计系统文档、品牌指南或设计规范时，可以利用这一技能。该技能能够生成符合行业标准的PDF格式输出文件，遵循专业的样式指南结构。
 ---
 
-# Style Guide Generator
+# 样式指南生成器
 
-## Overview
+## 概述
 
-Generate professionally formatted website style guides and design systems by analyzing provided URLs, screenshots, uploaded files, and user requirements. Output comprehensive PDF documents that serve as the single source of truth for design and development teams.
+通过分析提供的URL、截图、上传的文件以及用户需求，生成格式专业的网站样式指南和设计系统。输出全面的PDF文档，作为设计和开发团队的唯一信息来源。
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-When a user requests a style guide, follow this decision tree:
+当用户请求样式指南时，请遵循以下决策树：
 
-1. **Gather Information**
-   - If user provides URL → Use web_fetch to analyze the website
-   - If user provides screenshots/images → Analyze visual elements
-   - If user provides existing documentation → Extract and structure information
-   - If user provides minimal information → Ask clarifying questions about brand, goals, and requirements
+1. **收集信息**
+   - 如果用户提供URL → 使用`web_fetch`分析网站
+   - 如果用户提供截图/图片 → 分析视觉元素
+   - 如果用户提供现有文档 → 提取并整理信息
+   - 如果用户提供的信息很少 → 询问关于品牌、目标和需求的具体问题
 
-2. **Extract Design Elements**
-   - Colors (primary, secondary, accent, text, background, success, warning, error)
-   - Typography (fonts, weights, sizes, line heights)
-   - Logo usage guidelines
-   - Iconography style
-   - Imagery preferences
-   - UI component patterns
-   - Layout and spacing systems
-   - Accessibility requirements
+2. **提取设计元素**
+   - 颜色（主要颜色、次要颜色、强调色、文本颜色、背景颜色、成功状态颜色、警告状态颜色、错误状态颜色）
+   - 字体排版（字体、字体粗细、字体大小、行高）
+   - 徽标使用规范
+   - 图标风格
+   - 图像偏好
+   - UI组件样式
+   - 布局和间距规则
+   - 可访问性要求
 
-3. **Structure Content**
-   - Follow the standard template structure (see Template Structure section)
-   - Organize extracted information into appropriate sections
-   - Add mission/vision if provided or inferred
-   - Document design principles
-   - Create component specifications
+3. **组织内容**
+   - 遵循标准模板结构（见“模板结构”部分）
+   - 将提取的信息组织到相应的章节中
+   - 如果提供或可以推断出，添加公司的使命/愿景
+   - 记录设计原则
+   - 创建组件规范
 
-4. **Generate PDF**
-   - Use the PDF skill to create a professional document
-   - Apply consistent formatting and typography
-   - Include tables for color palettes, typography specs, and component states
-   - Ensure accessibility with proper contrast ratios
-   - Add version number and last updated date
+4. **生成PDF**
+   - 使用PDF生成工具创建专业文档
+   - 保持一致的格式和字体排版
+   - 包含颜色调色板、字体排版规范和组件状态的表格
+   - 确保具有适当的对比度以符合可访问性要求
+   - 添加版本号和最后更新日期
 
-## Standard Template Structure
+## 标准模板结构
 
-Every style guide should follow this professional structure (based on industry best practices):
+每个样式指南都应遵循以下专业结构（基于行业最佳实践）：
 
-### 1.0 Introduction
-- Version number and last updated date
-- Purpose and scope statement
-- Target audience (design and development teams)
+### 1.0 引言
+- 版本号和最后更新日期
+- 目的和范围说明
+- 目标受众（设计和开发团队）
 
-### 1.1 Mission & Vision
-- Company mission statement
-- Company vision statement
-- Strategic positioning
+### 1.1 使命与愿景
+- 公司使命声明
+- 公司愿景声明
+- 战略定位
 
-### 1.2 Design Principles
-- 4-6 core principles that guide design decisions
-- Each principle with name and description
-- Examples: "Clarity Above All", "Empowerment Through Simplicity", "Consistency Builds Trust", "Human-Centered"
+### 1.2 设计原则
+- 4-6条指导设计决策的核心原则
+- 每条原则都应包含名称和描述
+- 例如：“清晰优先”、“通过简洁实现赋能”、“一致性建立信任”、“以用户为中心”
 
-### 2.0 Brand Identity
+### 2.0 品牌标识
+#### 2.1 徽标使用
+- 主要徽标规格
+- 明确的间距要求
+- 不正确的使用示例
+- 最小尺寸要求
+- 颜色变体（全彩、黑色、白色）
 
-#### 2.1 Logo Usage
-- Primary logo specifications
-- Clear space requirements
-- Incorrect usage examples
-- Minimum size requirements
-- Color variations (full color, black, white)
+#### 2.2 颜色调色板
+- 组织好的表格，包含颜色名称、十六进制代码（Hex）和RGB值
+- 主要颜色（1-2种）
+- 次要颜色（1-3种）
+- 强调色
+- 文本颜色
+- 背景颜色
+- 系统颜色（成功状态、警告状态、错误状态）
+- 每种颜色组合的可访问性说明
 
-#### 2.2 Color Palette
-- Organized table with Role, Color Name, HEX, and RGB values
-- Primary colors (1-2)
-- Secondary colors (1-3)
-- Accent colors
-- Text colors
-- Background colors
-- System colors (Success, Warning, Error)
-- Accessibility notes for each color combination
+#### 2.3 字体排版
+- 标题字体规格（H1、H2、H3）
+- 正文字体规格
+- 标题/小文本字体规格
+- 以表格形式展示字体系列、字体粗细、字体大小和行高
+- 网页字体加载注意事项
+- 备用字体
 
-#### 2.3 Typography
-- Heading font specifications (H1, H2, H3)
-- Body text specifications
-- Caption/small text specifications
-- Font families, weights, sizes, and line heights in tabular format
-- Web font loading considerations
-- Fallback fonts
+#### 2.4 图标
+- 图标风格规范（轮廓、实心、线条粗细）
+- 网格系统规格
+- 图标大小变体
+- 使用示例
+- 图标库链接
 
-#### 2.4 Iconography
-- Icon style guidelines (outlined, filled, line weight)
-- Grid system specifications
-- Size variants
-- Usage examples
-- Link to icon library
+#### 2.5 图像
+- 照片风格规范
+- 插画风格规范
+- 图像处理规范
+- 应遵循的规则和禁忌
+- 图像质量要求
 
-#### 2.5 Imagery
-- Photography style guidelines
-- Illustration style guidelines
-- Image treatment specifications
-- Do's and don'ts
-- Quality requirements
+### 3.0 内容样式指南
+#### 3.1 语言风格和语气
+- 语言特征（一致的属性）
+- 语气变化（语言如何根据上下文调整）
+- 不同场景下的示例
 
-### 3.0 Content Style Guide
+#### 3.2 语法和机械规则
+- 标点符号规则
+- 大写标准
+- 语态偏好（主动/被动）
+- 数字格式
+- 日期和时间格式
 
-#### 3.1 Voice and Tone
-- Voice characteristics (consistent attributes)
-- Tone variations (how voice adapts to context)
-- Examples for different scenarios
+### 4.0 UI组件
+#### 4.1 按钮
+- 状态变体（主要状态、次要状态、第三状态、禁用状态）
+- 大小变体
+- 使用规范
+- HTML/CSS代码示例
+- 可访问性要求
 
-#### 3.2 Grammar and Mechanics
-- Punctuation rules
-- Capitalization standards
-- Voice preference (active/passive)
-- Number formatting
-- Date and time formatting
+#### 4.2 表单
+- 输入字段规格
+- 标签位置
+- 验证状态
+- 必填字段指示器
+- 错误信息样式
+- 帮助文本格式
 
-### 4.0 UI Components
+#### 4.3 [根据需要添加的其他组件]
+- 卡片
+- 模态框
+- 导航
+- 表格
+- 警告/通知
+- 提示信息
+- 徽章
+- 进度指示器
 
-#### 4.1 Buttons
-- State variants (Primary, Secondary, Tertiary, Disabled)
-- Size variants
-- Usage guidelines
-- Code snippets (HTML/CSS)
-- Accessibility requirements
+### 5.0 布局与网格
+- 网格系统规格（列数、边距）
+- 响应式断点
+- 间距比例（基本单位和倍数）
+- 容器宽度
+- 外边距和内边距规范
 
-#### 4.2 Forms
-- Input field specifications
-- Label positioning
-- Validation states
-- Required field indicators
-- Error message styling
-- Help text formatting
+### 6.0 可访问性（A11y）
+- WCAG合规级别（2.1 AA标准）
+- 颜色对比度要求
+- 替代文本规范
+- 键盘导航标准
+- 屏幕阅读器考虑因素
+- 高亮显示焦点
 
-#### 4.3 [Additional Components as needed]
-- Cards
-- Modals
-- Navigation
-- Tables
-- Alerts/Notifications
-- Tooltips
-- Badges
-- Progress indicators
+### 7.0 资源
+- 设计文件链接（Figma、Sketch、Adobe XD）
+- 图标库位置
+- 插画库位置
+- 字体文件仓库
+- 代码仓库
+- 其他文档
 
-### 5.0 Layout & Grid
-- Grid system specifications (columns, gutters)
-- Responsive breakpoints
-- Spacing scale (base unit and multipliers)
-- Container widths
-- Margin and padding conventions
+### 8.0 变更日志
+- 带有日期的版本历史
+- 每个版本的变更摘要
 
-### 6.0 Accessibility (A11y)
-- WCAG compliance level (2.1 AA standard)
-- Color contrast requirements
-- Alt text guidelines
-- Keyboard navigation standards
-- Screen reader considerations
-- Focus indicators
+## 信息提取过程
 
-### 7.0 Resources
-- Links to design files (Figma, Sketch, Adobe XD)
-- Icon library location
-- Illustration library location
-- Font files repository
-- Code repository
-- Additional documentation
+在分析提供的材料时，系统地提取以下内容：
 
-### 8.0 Changelog
-- Version history with dates
-- Changes summary for each version
+### 从URL/网站中提取：
+1. 使用`web_fetch`获取网站信息
+2. 分析HTML/CSS以获取：
+   - 颜色值（背景颜色、颜色属性）
+   - 字体系列和字体排版（字体系列、字体大小、字体粗细）
+   - 间距模式（外边距、内边距值）
+3. 注意以下内容：
+   - 视觉层次结构
+   - 按钮样式和状态
+   - 表单元素的处理方式
+   - 导航模式
+   - 响应式行为（如果可观察到的话）
 
-## Information Extraction Process
+### 从截图/图片中提取：
+1. 通过视觉分析确定颜色调色板
+2. 确定字体排版层次结构
+3. 注意间距和布局模式
+4. 识别UI组件样式
+5. 观察实际设计中的设计原则
 
-When analyzing provided materials, extract the following systematically:
+### 从现有文档中提取：
+1. 提取使命/愿景声明
+2. 收集现有的品牌规范
+3. 收集颜色规格
+4. 记录当前的字体排版标准
+5. 记录任何现有的组件库
 
-### From URLs/Websites:
-1. Fetch the website using web_fetch
-2. Analyze HTML/CSS for:
-   - Color values (background-color, color properties)
-   - Font families and typography (font-family, font-size, font-weight)
-   - Spacing patterns (margin, padding values)
-   - Component structures
-3. Take note of:
-   - Visual hierarchy
-   - Button styles and states
-   - Form element treatments
-   - Navigation patterns
-   - Responsive behavior (if observable)
+## 创建专业表格
 
-### From Screenshots/Images:
-1. Identify color palette using visual analysis
-2. Determine typography hierarchy
-3. Note spacing and layout patterns
-4. Identify UI component variants
-5. Observe design principles in practice
+使用格式良好的表格来展示规范。示例格式如下：
 
-### From Existing Documentation:
-1. Extract mission/vision statements
-2. Gather existing brand guidelines
-3. Collect color specifications
-4. Document current typography standards
-5. Note any existing component libraries
-
-## Creating Professional Tables
-
-Use well-formatted tables for specifications. Example formats:
-
-**Color Palette Table:**
+**颜色调色板表格：**
 ```
 | Role       | Color       | HEX     | RGB           |
 |------------|-------------|---------|---------------|
@@ -215,7 +211,7 @@ Use well-formatted tables for specifications. Example formats:
 | Secondary  | Light Blue  | #A5CAFF | 165, 202, 255 |
 ```
 
-**Typography Table:**
+**字体排版表格：**
 ```
 | Element | Font Family | Weight  | Size (px) | Line Height |
 |---------|-------------|---------|-----------|-------------|
@@ -224,7 +220,7 @@ Use well-formatted tables for specifications. Example formats:
 | Body    | Inter       | Regular | 16        | 1.5         |
 ```
 
-**Button States Table:**
+**按钮状态表格：**
 ```
 | State     | Appearance              | Usage                          |
 |-----------|-------------------------|--------------------------------|
@@ -233,117 +229,116 @@ Use well-formatted tables for specifications. Example formats:
 | Tertiary  | Text only              | Less important actions         |
 ```
 
-## PDF Generation Best Practices
+## PDF生成最佳实践
 
-1. **Professional Formatting:**
-   - Use consistent heading hierarchy
-   - Apply proper spacing between sections
-   - Utilize tables for structured data
-   - Include visual examples where possible
+1. **专业格式：**
+   - 使用一致的标题层次结构
+   - 在章节之间保持适当的间距
+   - 使用表格来展示结构化数据
+   - 在可能的情况下包含视觉示例
 
-2. **Typography:**
-   - Use professional fonts (Inter, Roboto, or system fonts)
-   - Maintain consistent sizing hierarchy
-   - Ensure sufficient line height for readability
+2. **字体排版：**
+   - 使用专业的字体（Inter、Roboto或系统字体）
+   - 保持一致的字号层次结构
+   - 确保行高足够以便阅读
 
-3. **Color Usage:**
-   - Show color swatches with hex codes
-   - Ensure sufficient contrast for accessibility
-   - Document color roles clearly
+3. **颜色使用：**
+   - 显示带有十六进制代码的颜色样本
+   - 确保足够的对比度以符合可访问性要求
+   - 清晰记录颜色的用途
 
-4. **Organization:**
-   - Number sections clearly (1.0, 1.1, 2.0, etc.)
-   - Include table of contents for longer guides
-   - Use page breaks appropriately
-   - Add page numbers
+4. **组织结构：**
+   - 清晰地编号章节（1.0、1.1、2.0等）
+   - 对于较长的指南，包含目录
+   - 适当使用分页
+   - 添加页码
 
-5. **Accessibility:**
-   - Ensure document is screen-reader friendly
-   - Use proper heading structure
-   - Include alt text for images
-   - Maintain minimum font size of 12pt
+5. **可访问性：**
+   - 确保文档适合屏幕阅读器
+   - 使用正确的标题结构
+   - 为图片添加替代文本
+   - 保持最小字体大小为12pt
 
-## Handling Incomplete Information
+## 处理不完整的信息
 
-When information is missing or unclear:
+当信息缺失或不清晰时：
 
-1. **Make Reasonable Inferences:**
-   - Extract colors from provided screenshots
-   - Infer typography from website analysis
-   - Estimate spacing based on visual patterns
+1. **进行合理的推断：**
+   - 从提供的截图中提取颜色
+   - 从网站分析中推断字体排版
+   - 根据视觉模式估算间距
 
-2. **Use Placeholders:**
-   - "[Insert company mission statement]" for unknown content
-   - "[Link to design files]" for unavailable resources
-   - "Version 1.0" and current date as defaults
+2. **使用占位符：**
+   - 对于未知内容，使用“[插入公司使命声明]”
+   - 对于不可用的资源，使用“[链接到设计文件]”
+   - 默认使用“版本1.0”和当前日期
 
-3. **Ask Clarifying Questions:**
-   - "What is your company's mission statement?"
-   - "Do you have existing brand colors or should I extract them from the website?"
-   - "Are there specific accessibility requirements beyond WCAG 2.1 AA?"
+3. **询问澄清问题：**
+   - “贵公司的使命声明是什么？”
+   “您有现有的品牌颜色吗？还是需要我从网站上提取？”
+   “除了WCAG 2.1 AA之外，还有其他特定的可访问性要求吗？”
 
-4. **Provide Templates:**
-   - Include example text for sections that need user input
-   - Show format for content they should provide
-   - Give guidance on what information would be ideal
+4. **提供模板：**
+   - 为需要用户输入的章节提供示例文本
+   - 显示他们应该提供的内容格式
+   - 提供关于理想信息的指导
 
-## Example User Interactions
+## 用户交互示例
 
-**Example 1: URL-Based Request**
-User: "Create a style guide for my website at example.com"
-Process: 
-1. Fetch website with web_fetch
-2. Analyze HTML/CSS for design system
-3. Extract colors, fonts, spacing
-4. Structure into standard template
-5. Generate professional PDF
-6. Provide download link
+**示例1：基于URL的请求**
+用户：“为我的example.com网站创建一个样式指南”
+流程：
+1. 使用`web_fetch`获取网站信息
+2. 分析HTML/CSS以获取设计系统
+3. 提取颜色、字体、间距
+4. 按标准模板组织内容
+5. 生成专业PDF
+6. 提供下载链接
 
-**Example 2: Screenshot-Based Request**
-User: "Here are screenshots of my app. Create a style guide." [uploads images]
-Process:
-1. Analyze images for visual elements
-2. Extract color palette
-3. Identify typography patterns
-4. Document component styles
-5. Fill in template structure
-6. Generate PDF with findings
-7. Provide download link
+**示例2：基于截图的请求**
+用户：“这是我的应用程序的截图。创建一个样式指南。” [上传图片]
+流程：
+1. 分析图片中的视觉元素
+2. 提取颜色调色板
+3. 识别字体排版模式
+4. 记录组件样式
+5. 填充模板结构
+6. 生成包含结果的PDF
+7. 提供下载链接
 
-**Example 3: Comprehensive Request**
-User: "Create a style guide using my website URL, these brand colors [list], and our mission statement [text]"
-Process:
-1. Combine all provided information
-2. Fetch and analyze website
-3. Integrate provided brand elements
-4. Structure complete style guide
-5. Generate professional PDF
-6. Provide download link
+**示例3：综合请求**
+用户：“使用我的网站URL、这些品牌颜色[列出]以及我们的使命声明[文本]创建一个样式指南”
+流程：
+1. 结合所有提供的信息
+2. 获取并分析网站
+3. 整合提供的品牌元素
+4. 完整组织样式指南
+5. 生成专业PDF
+6. 提供下载链接
 
-## Quality Checklist
+## 质量检查清单
 
-Before delivering the style guide PDF, verify:
+在交付样式指南PDF之前，请验证：
+- [ ] 所有章节是否完整或标记为占位符
+- [ ] 颜色调色板是否包含十六进制代码和RGB值
+- [ ] 字体排版规范是否详细（字体系列、字体粗细、字体大小、行高）
+- [ ] 表格是否格式正确且对齐
+- [ ] 是否记录了可访问性要求
+- [ ] 是否包含版本号和日期
+- [ ] 是否提供了资源链接（即使只是占位符）
+- [ ] 变更日志是否从版本1.0开始
+- [ ] PDF是否格式专业
+- [ ] 文档是否准备好供团队分发
 
-- [ ] All sections are complete or marked as placeholders
-- [ ] Color palette includes HEX and RGB values
-- [ ] Typography specifications are detailed (family, weight, size, line height)
-- [ ] Tables are properly formatted and aligned
-- [ ] Accessibility requirements are documented
-- [ ] Version number and date are included
-- [ ] Resources section links are provided (even if placeholder)
-- [ ] Changelog is started with version 1.0
-- [ ] PDF is professionally formatted
-- [ ] Document is ready for team distribution
+## 资源
 
-## Resources
-
-This skill uses the following bundled resources:
+此技能使用以下捆绑资源：
 
 ### assets/template.pdf
-The base template PDF that demonstrates the professional structure and formatting that all generated style guides should follow. This file serves as a reference for structure, section organization, and formatting standards.
+基础模板PDF，展示了所有生成的样式指南应遵循的专业结构和格式。该文件用于参考结构、章节组织和格式标准。
 
 ### scripts/analyze_website.py
-Python script to extract design system information from websites, including colors, typography, and component patterns. Can be used to automatically gather design specifications from live URLs.
+Python脚本，用于从网站中提取设计系统信息，包括颜色、字体排版和组件样式。可以自动从实时URL收集设计规范。
 
 ### references/design_system_examples.md
-Reference document containing examples of well-structured design systems and style guides from leading companies. Use this for inspiration on content organization and presentation standards.
+参考文档，包含来自领先公司的结构良好的设计系统和样式指南的示例。可用于灵感来源，了解内容组织和展示标准。

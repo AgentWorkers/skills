@@ -15,25 +15,23 @@ description: |
   dynamic labels, cash out return display, and shared chain constants patterns.
 ---
 
-# Juicebox V5 Multi-Currency Support
+# Juicebox V5 多货币支持
 
-## Problem
+## 问题
 
-Juicebox V5 projects can be denominated in either ETH (baseCurrency=1) or USD (baseCurrency=2).
-UI components and transactions must use the correct currency value, token address, and display
-labels. Hardcoding "ETH" or currency=1 causes failures for USDC-based projects.
+Juicebox V5 项目可以使用 ETH（`baseCurrency=1`）或 USD（`baseCurrency=2`）作为货币单位。UI 组件和交易必须使用正确的货币值、代币地址以及显示标签。如果硬编码为 “ETH” 或 `baseCurrency=1`，基于 USDC 的项目将会出现故障。
 
-## Context / Trigger Conditions
+## 背景/触发条件
 
-- UI shows "ETH" when project is USDC-based
-- Payout or allowance transaction fails silently
-- Fund access limits set with wrong currency
-- Currency mismatch between ruleset config and terminal accounting
-- Need to display correct currency symbol in forms
+- 当项目基于 USDC 时，UI 会显示 “ETH”。
+- 支付或津贴交易会无声地失败。
+- 资金访问限制设置使用了错误的货币单位。
+- 规则集配置与终端会计系统中的货币单位不一致。
+- 需要在表单中显示正确的货币符号。
 
-## Solution
+## 解决方案
 
-### 1. Detect Project Currency from Ruleset
+### 1. 从规则集中检测项目货币单位
 
 ```typescript
 // baseCurrency is in ruleset metadata
@@ -42,9 +40,9 @@ const baseCurrency = ruleset?.metadata?.baseCurrency || 1
 const currencyLabel = baseCurrency === 2 ? 'USDC' : 'ETH'
 ```
 
-### 2. Use Dynamic Currency in Transactions
+### 2. 在交易中使用动态货币单位
 
-When calling terminal functions (sendPayoutsOf, useAllowanceOf), use the project's baseCurrency:
+在调用终端函数（`sendPayoutsOf`、`useAllowanceOf`）时，使用项目的 `baseCurrency`：
 
 ```typescript
 // WRONG - hardcoded
@@ -54,10 +52,10 @@ args: [projectId, token, amount, 1n, minTokensPaidOut, beneficiary]
 args: [projectId, token, amount, BigInt(baseCurrency), minTokensPaidOut, beneficiary]
 ```
 
-### 3. Fund Access Limits Currency
+### 3. 资金访问限制的货币单位
 
-When queuing new rulesets or displaying limits, match the existing project currency.
-**Use correct decimals**: Query from `ERC20.decimals()` or use 18 for native tokens.
+在排队新的规则集或显示限制时，确保与项目的实际货币单位一致。
+**使用正确的小数位数**：通过 `ERC20.decimals()` 查询，或者对于原生代币使用 18 位小数。
 
 ```typescript
 import { parseUnits } from 'viem'
@@ -76,17 +74,17 @@ const payoutLimits = [{
 }]
 ```
 
-### 4. Two Different "currency" Concepts (CRITICAL)
+### 4. 两个不同的 “货币” 概念（关键点）
 
-Juicebox V5 has TWO different concepts called "currency" that are often confused:
+Juicebox V5 中存在两个经常被混淆的 “货币” 概念：
 
-| Field | Location | Values | Purpose |
+| 字段 | 位置 | 值 | 用途 |
 |-------|----------|--------|---------|
-| `baseCurrency` | Ruleset metadata | 1 = ETH, 2 = USD | Issuance rate calculation |
-| `JBCurrencyAmount.currency` | Fund access limits | 1 = ETH, 2 = USD | Payout/allowance limits |
-| `JBAccountingContext.currency` | Terminal config | `uint32(uint160(token))` | Terminal accounting |
+| `baseCurrency` | 规则集元数据 | 1 = ETH, 2 = USD | 发行率计算 |
+| `JBCurrencyAmount(currency` | 资金访问限制 | 1 = ETH, 2 = USD | 支付/津贴限制 |
+| `JBAccountingContext(currency` | 终端配置 | `uint32(uint160(token))` | 终端会计系统 |
 
-**The `currency` value in JBAccountingContext is NOT 1 or 2. It's `uint32(uint160(tokenAddress))`.**
+**`JBAccountingContext` 中的 `currency` 值不是 1 或 2，而是 `uint32(uint160(tokenAddress))`。**
 
 ```typescript
 // NATIVE_TOKEN (ETH) - same on all chains - from JBConstants.NATIVE_TOKEN
@@ -114,7 +112,7 @@ const USDC_CONFIG: Record<number, { address: string; currency: number }> = {
 }
 ```
 
-**How to calculate currency from any token address:**
+**如何从任何代币地址计算货币单位：**
 ```typescript
 const calculateCurrency = (tokenAddress: string): number => {
   // Take last 4 bytes of address as uint32
@@ -122,14 +120,14 @@ const calculateCurrency = (tokenAddress: string): number => {
 }
 ```
 
-### 5. Decimal Handling
+### 5. 小数位数处理
 
-**General rule:** Get decimals from `ERC20.decimals()` for any token. Native tokens (ETH, MATIC, etc.) always use 18 decimals.
+**通用规则**：对于任何代币，从小数位数获取值，使用 `ERC20.decimals()`。原生代币（如 ETH、MATIC 等）始终使用 18 位小数。
 
-Common cases:
-- Native token (ETH): 18 decimals
-- USDC: 6 decimals
-- Most ERC-20s: varies - always query `decimals()`
+**常见情况：**
+- 原生代币（ETH）：18 位小数
+- USDC：6 位小数
+- 大多数 ERC-20 代币：根据实际情况查询 `decimals()`**
 
 ```typescript
 import { erc20Abi } from 'viem'
@@ -154,38 +152,15 @@ const KNOWN_DECIMALS: Record<string, number> = {
 }
 ```
 
-### 6. Terminal Accounting Contexts
+### 6. 终端会计系统中的货币单位
 
-When configuring terminals, set accounting context to match. **The currency MUST be derived from the token address.**
+在配置终端时，确保会计系统使用的货币单位与项目的实际货币单位一致。
+**错误做法**：对于 ETH 使用 `currency: 1`，对于 USD 使用 `currency: 2`。
+**正确做法**：使用从代币地址计算出的 `uint32` 值。
 
-```typescript
-// ETH-based project
-{
-  terminal: JB_MULTI_TERMINAL,
-  accountingContextsToAccept: [{
-    token: NATIVE_TOKEN,        // 0x000000000000000000000000000000000000EEEe
-    decimals: 18,
-    currency: 61166,            // uint32(uint160(NATIVE_TOKEN)) = 0x0000EEEe
-  }]
-}
+## 组件模式
 
-// USDC-based project (example: Ethereum)
-{
-  terminal: JB_MULTI_TERMINAL,
-  accountingContextsToAccept: [{
-    token: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    decimals: 6,
-    currency: 909516616,        // uint32(uint160(USDC_ADDRESS))
-  }]
-}
-```
-
-**WRONG:** Using currency: 1 for ETH or currency: 2 for USD
-**RIGHT:** Using the calculated uint32 value from the token address
-
-## Component Pattern
-
-For React components that handle multiple currencies:
+对于处理多种货币的 React 组件：
 
 ```typescript
 interface ChainData {
@@ -208,10 +183,9 @@ function MyComponent({ chainData }: { chainData: ChainData }) {
 }
 ```
 
-### 7. Cash Out Modal Currency Display
+### 7. 现金提取模态框中的货币显示
 
-When cashing out, users burn project tokens and receive funds **in the project's base currency**.
-The modal must show the correct currency for the return amount:
+在提取现金时，用户会燃烧项目代币并收到 **项目的基础货币**。模态框必须显示正确的货币单位：
 
 ```typescript
 interface CashOutModalProps {
@@ -240,12 +214,11 @@ function CashOutModal({
 }
 ```
 
-**Key insight**: The component receiving cash out data must pass `currencySymbol` based on the
-project's `baseCurrency`, not hardcode "ETH". For USDC-based projects, show "~5.00 USDC" not "~0.002 ETH".
+**关键点**：接收提取数据的组件必须根据项目的 `baseCurrency` 传递 `currencySymbol`，而不能硬编码为 “ETH”。对于基于 USDC 的项目，应显示 “~5.00 USDC” 而不是 “~0.002 ETH”。
 
-### 8. Shared Chain Constants Pattern
+### 8. 共享链信息常量模式
 
-Avoid duplicating chain info across modals. Create a shared constants file:
+避免在各个模态框中重复存储链信息。创建一个共享的常量文件：
 
 ```typescript
 // constants/index.ts
@@ -284,7 +257,7 @@ export const CHAINS: Record<number, {
 export const NATIVE_TOKEN = '0x000000000000000000000000000000000000EEEe' as const
 ```
 
-Then import in modals:
+然后在各个模态框中导入这些常量：
 ```typescript
 import { CHAINS, NATIVE_TOKEN } from '../constants'
 
@@ -292,37 +265,37 @@ const chainInfo = CHAINS[chainId] || CHAINS[1]
 const explorerLink = `${chainInfo.explorerTx}${txHash}`
 ```
 
-## Verification
+## 验证
 
-- USDC-based projects display "USDC" labels (not "ETH")
-- Cash out modals show return in correct currency (ETH or USDC)
-- Transactions use correct currency parameter
-- Fund access limits store correct currency
-- Balance queries use correct token address
+- 基于 USDC 的项目会显示 “USDC” 作为货币单位。
+- 现金提取模态框会以正确的货币单位显示返回金额（ETH 或 USDC）。
+- 交易使用正确的货币参数。
+- 资金访问限制存储正确的货币单位。
+- 平衡查询使用正确的代币地址。
 
-## Example
+## 示例
 
-For Artizen (project 6 on Base):
-- baseCurrency = 2 (USD)
-- Display "USDC" in all labels
-- Use USDC token address for balance queries: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
-- Fund access limits use currency: 2
+以 Artizen（Base 上的第 6 个项目）为例：
+- `baseCurrency = 2`（USD）
+- 所有标签中均显示 “USDC”。
+- 平衡查询使用 USDC 代币地址：`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`。
+- 资金访问限制使用货币单位：2。
 
-## Common Mistakes
+## 常见错误
 
-1. **Hardcoded labels**: Using "ETH" string instead of `currencyLabel`
-2. **Hardcoded currency**: Using `1n` instead of `BigInt(baseCurrency)`
-3. **Wrong decimals**: Using 18 decimals for USDC (should be 6)
-4. **Token mismatch**: Querying with NATIVE_TOKEN for USDC project
+1. **硬编码标签**：使用 “ETH” 字符串而不是 `currencyLabel`。
+2. **硬编码货币单位**：使用 `1n` 而不是 `BigInt(baseCurrency)`。
+3. **小数位数错误**：对于 USDC 使用 18 位小数（应为 6）。
+4. **代币不匹配**：在查询 USDC 项目时使用错误的代币类型。
 
-## Notes
+## 注意事项
 
-- Default to ETH (baseCurrency=1) if not specified
-- JBSwapTerminal accepts any token and swaps to project's base currency
-- Cash out returns funds in the project's base currency
-- Price feeds convert between currencies when needed
+- 如果未指定，默认使用 ETH（`baseCurrency=1`）。
+- JBSwapTerminal 可以接受任何代币，并将其兑换为项目的基础货币。
+- 现金提取时返回项目的基础货币。
+- 价格信息会根据需要在不同货币之间进行转换。
 
-## References
+## 参考资料
 
 - JBMultiTerminal5_1: `0x52869db3d61dde1e391967f2ce5039ad0ecd371c`
 - JBSwapTerminal: `0x0c02e48e55f4451a499e48a53595de55c40f3574`

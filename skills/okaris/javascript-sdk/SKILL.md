@@ -12,9 +12,9 @@ allowed-tools: Bash(npm *), Bash(npx *), Bash(node *), Bash(pnpm *), Bash(yarn *
 
 # JavaScript SDK
 
-Build AI applications with the [inference.sh](https://inference.sh) JavaScript/TypeScript SDK.
+使用 [inference.sh](https://inference.sh) JavaScript/TypeScript SDK 构建 AI 应用程序。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npm install @inferencesh/sdk
@@ -33,7 +33,7 @@ const result = await client.run({
 console.log(result.output);
 ```
 
-## Installation
+## 安装
 
 ```bash
 npm install @inferencesh/sdk
@@ -43,9 +43,9 @@ yarn add @inferencesh/sdk
 pnpm add @inferencesh/sdk
 ```
 
-**Requirements:** Node.js 18.0.0+ (or modern browser with fetch)
+**要求：** Node.js 18.0.0+（或支持 fetch 的现代浏览器）
 
-## Authentication
+## 认证
 
 ```typescript
 import { inference } from '@inferencesh/sdk';
@@ -60,11 +60,11 @@ const client = inference({ apiKey: process.env.INFERENCE_API_KEY });
 const client = inference({ proxyUrl: '/api/inference/proxy' });
 ```
 
-Get your API key: Settings → API Keys → Create API Key
+获取您的 API 密钥：设置 → API 密钥 → 创建 API 密钥
 
-## Running Apps
+## 运行应用程序
 
-### Basic Execution
+### 基本执行
 
 ```typescript
 const result = await client.run({
@@ -76,7 +76,7 @@ console.log(result.status);  // "completed"
 console.log(result.output);  // Output data
 ```
 
-### Fire and Forget
+### 一次性执行（无需后续管理）
 
 ```typescript
 const task = await client.run({
@@ -88,7 +88,7 @@ console.log(`Task ID: ${task.id}`);
 // Check later with client.getTask(task.id)
 ```
 
-### Streaming Progress
+### 流式处理进度
 
 ```typescript
 const stream = await client.run({
@@ -104,20 +104,20 @@ for await (const update of stream) {
 }
 ```
 
-### Run Parameters
+### 运行参数
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 说明 |
 |-----------|------|-------------|
-| `app` | string | App ID (namespace/name@version) |
-| `input` | object | Input matching app schema |
-| `setup` | object | Hidden setup configuration |
-| `infra` | string | 'cloud' or 'private' |
-| `session` | string | Session ID for stateful execution |
-| `session_timeout` | number | Idle timeout (1-3600 seconds) |
+| `app` | 字符串 | 应用程序 ID（格式：namespace/name@version） |
+| `input` | 对象 | 符合应用程序模式的输入数据 |
+| `setup` | 对象 | 隐藏的配置信息 |
+| `infra` | 字符串 | 执行环境：`cloud` 或 `private` |
+| `session` | 字符串 | 用于保持会话状态的会话 ID |
+| `session_timeout` | 数字 | 空闲超时时间（1-3600 秒） |
 
-## File Handling
+## 文件处理
 
-### Automatic Upload
+### 自动上传
 
 ```typescript
 const result = await client.run({
@@ -128,7 +128,7 @@ const result = await client.run({
 });
 ```
 
-### Manual Upload
+### 手动上传
 
 ```typescript
 // Basic upload
@@ -147,16 +147,16 @@ const result = await client.run({
 });
 ```
 
-### Browser File Upload
+### 浏览器文件上传
 
 ```typescript
 const input = document.querySelector('input[type="file"]');
 const file = await client.uploadFile(input.files[0]);
 ```
 
-## Sessions (Stateful Execution)
+## 会话（保持会话状态）
 
-Keep workers warm across multiple calls:
+在多次调用中保持工作进程的持续运行：
 
 ```typescript
 // Start new session
@@ -176,11 +176,11 @@ const result2 = await client.run({
 });
 ```
 
-## Agent SDK
+## 代理 SDK
 
-### Template Agents
+### 模板代理
 
-Use pre-built agents from your workspace:
+使用工作区中预构建的代理：
 
 ```typescript
 const agent = client.agent('my-team/support-agent@latest');
@@ -199,9 +199,9 @@ agent.reset();
 const chat = await agent.getChat();
 ```
 
-### Ad-hoc Agents
+### 自定义代理
 
-Create custom agents programmatically:
+通过编程方式创建自定义代理：
 
 ```typescript
 import { tool, string, number, appTool } from '@inferencesh/sdk';
@@ -229,18 +229,18 @@ const agent = client.agent({
 const response = await agent.sendMessage('What is 25 * 4?');
 ```
 
-### Available Core Apps
+### 可用的核心应用程序
 
-| Model | App Reference |
+| 模型 | 应用程序参考 |
 |-------|---------------|
 | Claude Sonnet 4 | `infsh/claude-sonnet-4@latest` |
 | Claude 3.5 Haiku | `infsh/claude-haiku-35@latest` |
 | GPT-4o | `infsh/gpt-4o@latest` |
 | GPT-4o Mini | `infsh/gpt-4o-mini@latest` |
 
-## Tool Builder API
+## 工具构建器 API
 
-### Parameter Types
+### 参数类型
 
 ```typescript
 import {
@@ -261,7 +261,7 @@ const address = obj({
 }, 'Address');
 ```
 
-### Client Tools (Run in Your Code)
+### 客户端工具（在您的代码中运行）
 
 ```typescript
 const greet = tool('greet')
@@ -272,7 +272,7 @@ const greet = tool('greet')
   .build();
 ```
 
-### App Tools (Call AI Apps)
+### 应用程序工具（调用 AI 应用程序）
 
 ```typescript
 const generate = appTool('generate_image', 'infsh/flux-schnell@latest')
@@ -284,7 +284,7 @@ const generate = appTool('generate_image', 'infsh/flux-schnell@latest')
   .build();
 ```
 
-### Agent Tools (Delegate to Sub-agents)
+### 代理工具（委托给子代理）
 
 ```typescript
 import { agentTool } from '@inferencesh/sdk';
@@ -295,7 +295,7 @@ const researcher = agentTool('research', 'my-org/researcher@v1')
   .build();
 ```
 
-### Webhook Tools (Call External APIs)
+### Webhook 工具（调用外部 API）
 
 ```typescript
 import { webhookTool } from '@inferencesh/sdk';
@@ -308,7 +308,7 @@ const notify = webhookTool('slack', 'https://hooks.slack.com/...')
   .build();
 ```
 
-### Internal Tools (Built-in Capabilities)
+### 内部工具（内置功能）
 
 ```typescript
 import { internalTools } from '@inferencesh/sdk';
@@ -330,7 +330,7 @@ const agent = client.agent({
 });
 ```
 
-## Streaming Agent Responses
+## 流式代理响应
 
 ```typescript
 const response = await agent.sendMessage('Explain quantum computing', {
@@ -347,7 +347,7 @@ const response = await agent.sendMessage('Explain quantum computing', {
 });
 ```
 
-## File Attachments
+## 文件附件
 
 ```typescript
 // From file path (Node.js)
@@ -368,7 +368,7 @@ const response = await agent.sendMessage('Describe this', {
 });
 ```
 
-## Skills (Reusable Context)
+## 技能（可复用的上下文数据）
 
 ```typescript
 const agent = client.agent({
@@ -388,11 +388,11 @@ const agent = client.agent({
 });
 ```
 
-## Server Proxy (Frontend Apps)
+## 服务器代理（前端应用程序）
 
-For browser apps, proxy through your backend to keep API keys secure:
+对于浏览器应用程序，通过后端代理来保护 API 密钥的安全：
 
-### Client Setup
+### 客户端设置
 
 ```typescript
 const client = inference({
@@ -401,7 +401,7 @@ const client = inference({
 });
 ```
 
-### Next.js Proxy (App Router)
+### Next.js 代理（应用程序路由）
 
 ```typescript
 // app/api/inference/proxy/route.ts
@@ -414,7 +414,7 @@ const route = createRouteHandler({
 export const POST = route.POST;
 ```
 
-### Express Proxy
+### Express 代理
 
 ```typescript
 import express from 'express';
@@ -426,17 +426,17 @@ app.use('/api/inference/proxy', createProxyMiddleware({
 }));
 ```
 
-### Supported Frameworks
+### 支持的框架
 
-- Next.js (App Router & Pages Router)
+- Next.js（应用程序路由和页面路由）
 - Express
 - Hono
 - Remix
 - SvelteKit
 
-## TypeScript Support
+## TypeScript 支持
 
-Full type definitions included:
+包含完整的类型定义：
 
 ```typescript
 import type {
@@ -455,7 +455,7 @@ if (result.status === TaskStatusCompleted) {
 }
 ```
 
-## Error Handling
+## 错误处理
 
 ```typescript
 import { RequirementsNotMetException, InferenceError } from '@inferencesh/sdk';
@@ -474,7 +474,7 @@ try {
 }
 ```
 
-## Human Approval Workflows
+## 人工审批工作流程
 
 ```typescript
 const response = await agent.sendMessage('Delete all temp files', {
@@ -492,7 +492,7 @@ const response = await agent.sendMessage('Delete all temp files', {
 });
 ```
 
-## CommonJS Support
+## CommonJS 支持
 
 ```javascript
 const { inference, tool, string } = require('@inferencesh/sdk');
@@ -501,18 +501,18 @@ const client = inference({ apiKey: 'inf_...' });
 const result = await client.run({...});
 ```
 
-## Reference Files
+## 参考文件
 
-- [Agent Patterns](references/agent-patterns.md) - Multi-agent, RAG, batch processing patterns
-- [Tool Builder](references/tool-builder.md) - Complete tool builder API reference
-- [Server Proxy](references/server-proxy.md) - Next.js, Express, Hono, Remix, SvelteKit setup
-- [Streaming](references/streaming.md) - Real-time progress updates and SSE handling
-- [File Handling](references/files.md) - Upload, download, and manage files
-- [Sessions](references/sessions.md) - Stateful execution with warm workers
-- [TypeScript](references/typescript.md) - Type definitions and type-safe patterns
-- [React Integration](references/react-integration.md) - Hooks, components, and patterns
+- [代理模式](references/agent-patterns.md) - 多代理、RAG、批量处理模式
+- [工具构建器](references/tool-builder.md) - 完整的工具构建器 API 参考
+- [服务器代理](references/server-proxy.md) - Next.js、Express、Hono、Remix、SvelteKit 的设置指南
+- [流式处理](references/streaming.md) - 实时进度更新和 SSE 处理
+- [文件处理](references/files.md) - 文件上传、下载和管理
+- [会话](references/sessions.md) - 保持会话状态的工作进程
+- [TypeScript](references/typescript.md) - 类型定义和类型安全模式
+- [React 集成](references/react-integration.md) - Hooks、组件和集成方案
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Python SDK
@@ -528,12 +528,12 @@ npx skills add inference-sh/agent-skills@llm-models
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-## Documentation
+## 文档
 
-- [JavaScript SDK Reference](https://inference.sh/docs/api/sdk-javascript) - Full API documentation
-- [Agent SDK Overview](https://inference.sh/docs/api/agent-sdk) - Building agents
-- [Tool Builder Reference](https://inference.sh/docs/api/agent-tools) - Creating tools
-- [Server Proxy Setup](https://inference.sh/docs/api/sdk/server-proxy) - Frontend integration
-- [Authentication](https://inference.sh/docs/api/authentication) - API key setup
-- [Streaming](https://inference.sh/docs/api/sdk/streaming) - Real-time updates
-- [File Uploads](https://inference.sh/docs/api/sdk/files) - File handling
+- [JavaScript SDK 参考](https://inference.sh/docs/api/sdk-javascript) - 完整的 API 文档
+- [代理 SDK 概述](https://inference.sh/docs/api/agent-sdk) - 代理构建指南
+- [工具构建器参考](https://inference.sh/docs/api/agent-tools) - 工具创建指南
+- [服务器代理设置](https://inference.sh/docs/api/sdk/server-proxy) - 前端集成指南
+- [认证](https://inference.sh/docs/api/authentication) - API 密钥设置
+- [流式处理](https://inference.sh/docs/api/sdk/streaming) - 实时更新功能
+- [文件上传](https://inference.sh/docs/api/sdk/files) - 文件处理指南

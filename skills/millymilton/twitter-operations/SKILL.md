@@ -1,41 +1,42 @@
+```json
 {
   "name": "twitter_operations",
-  "description": "Comprehensive Twitter/X platform automation and management",
+  "description": "全面的Twitter/X平台自动化与管理工具",
   "version": "1.0.0",
   "category": "social_media",
   "enabled": true,
-  "triggers": ["twitter", "tweet", "x.com", "social media", "twitter api"],
+  "triggers": ["twitter", "tweet", "x.com", "social media", "twitter_api"],
   "capabilities": [
-    "Post tweets and threads",
-    "Schedule tweets for optimal engagement times",
-    "Reply to mentions and direct messages",
-    "Search tweets by keywords, hashtags, or users",
-    "Monitor trending topics and hashtags",
-    "Analyze tweet performance and engagement metrics",
-    "Follow/unfollow users based on criteria",
-    "Like and retweet content",
-    "Create and manage Twitter lists",
-    "Track follower growth and analytics",
-    "Implement Twitter bot functionality",
-    "Scrape tweets and user profiles",
-    "Generate tweet content with optimal hashtags",
-    "Manage multiple Twitter accounts",
-    "Monitor brand mentions and sentiment",
-    "Auto-reply to specific keywords or patterns",
-    "Archive tweets and user data",
-    "Create Twitter polls",
-    "Upload and manage media (images, videos, GIFs)",
-    "Implement rate limiting and API quota management",
-    "Handle Twitter authentication (OAuth 1.0a/2.0)",
-    "Parse and format tweet metadata",
-    "Export analytics to CSV/JSON",
-    "Real-time streaming of tweets",
-    "Detect and respond to specific user interactions",
-    "Bulk operations (mass follow/unfollow/block)",
-    "Twitter Spaces monitoring and participation",
-    "Community management and moderation",
-    "Hashtag performance tracking",
-    "Competitor account monitoring"
+    "发布推文和话题",
+    "安排推文发布时间以获得最佳互动效果",
+    "回复提及和私信",
+    "根据关键词、标签或用户搜索推文",
+    "监控热门话题和标签",
+    "分析推文的表现和互动数据",
+    "根据条件关注/取消关注用户",
+    "点赞和转发内容",
+    "创建和管理Twitter列表",
+    "跟踪粉丝增长和数据分析",
+    "实现Twitter机器人功能",
+    "抓取推文和用户信息",
+    "生成带有合适标签的推文内容",
+    "管理多个Twitter账户",
+    "监控品牌提及和情感分析",
+    "自动回复特定关键词或模式",
+    "归档推文和用户数据",
+    "创建Twitter投票",
+    "上传和管理媒体（图片、视频、GIF）",
+    "实施速率限制和API配额管理",
+    "处理Twitter认证（OAuth 1.0a/2.0）",
+    "解析和格式化推文元数据",
+    "将分析数据导出为CSV/JSON",
+    "实时推送推文",
+    "检测并响应特定用户互动",
+    "批量操作（批量关注/取消关注/屏蔽）",
+    "监控和参与Twitter Spaces",
+    "社区管理和审核",
+    "跟踪标签的使用情况",
+    "监控竞争对手账户"
   ],
   "parameters": {
     "api_version": "v2",
@@ -86,79 +87,79 @@
   "examples": [
     {
       "action": "post_tweet",
-      "description": "Post a simple tweet",
+      "description": "发布一条简单的推文",
       "command": "openclaw twitter post 'Hello from OpenClaw! #automation'"
     },
     {
       "action": "post_thread",
-      "description": "Post a Twitter thread",
+      "description": "发布一条Twitter话题",
       "command": "openclaw twitter thread 'Thread part 1' 'Thread part 2' 'Thread part 3'"
     },
     {
       "action": "search_tweets",
-      "description": "Search for recent tweets",
+      "description": "搜索最近的推文",
       "command": "openclaw twitter search '#AI OR #MachineLearning' --count 50"
     },
     {
       "action": "get_trends",
-      "description": "Get trending topics",
+      "description": "获取热门话题",
       "command": "openclaw twitter trends --location 'United States'"
     },
     {
       "action": "analyze_account",
-      "description": "Analyze a Twitter account",
+      "description": "分析一个Twitter账户",
       "command": "openclaw twitter analyze @username --metrics engagement,growth"
     },
     {
       "action": "schedule_tweet",
-      "description": "Schedule a tweet for later",
+      "description": "安排推文发布时间",
       "command": "openclaw twitter schedule 'My scheduled tweet' --time '2026-02-03 10:00'"
     },
     {
       "action": "auto_reply",
-      "description": "Set up auto-reply for mentions",
+      "description": "设置自动回复机制",
       "command": "openclaw twitter auto-reply --keywords 'support,help' --message 'Thanks for reaching out!'"
     },
     {
-      "action": "monitor_mentions",
-      "description": "Monitor brand mentions in real-time",
+      "action": "monitormentions",
+      "description": "实时监控品牌提及",
       "command": "openclaw twitter monitor @brandname --alert-webhook https://hooks.example.com"
     },
     {
       "action": "export_analytics",
-      "description": "Export tweet analytics",
+      "description": "导出推文分析数据",
       "command": "openclaw twitter analytics --days 30 --format csv --output ~/twitter_stats.csv"
     },
     {
       "action": "manage_followers",
-      "description": "Follow users based on criteria",
+      "description": "根据条件关注用户",
       "command": "openclaw twitter follow --search '#devops' --min-followers 100 --limit 20"
     }
   ],
   "error_handling": {
-    "rate_limit_exceeded": "Wait and retry with exponential backoff",
-    "authentication_failed": "Check credentials in configuration file",
-    "invalid_tweet": "Validate tweet length and media before posting",
-    "network_error": "Retry with timeout increase",
-    "api_deprecated": "Update to latest API version"
+    "rate_limit_exceeded": "等待并使用指数级退避策略重试",
+    "authentication_failed": "检查配置文件中的凭据",
+    "invalid_tweet": "发布前验证推文内容和媒体",
+    "network_error": "增加延迟后重试",
+    "api_deprecated": "升级到最新API版本"
   },
   "best_practices": [
-    "Always respect Twitter's rate limits and terms of service",
-    "Store API credentials securely in environment variables or encrypted files",
-    "Implement proper error handling and logging",
-    "Use webhook notifications for important events",
-    "Cache frequently accessed data to reduce API calls",
-    "Validate tweet content before posting",
-    "Monitor API usage to avoid hitting quotas",
-    "Implement gradual ramping for automated actions",
-    "Add delays between bulk operations to appear more human-like",
-    "Regularly backup important tweet data and analytics"
+    "始终遵守Twitter的速率限制和服务条款",
+    "将API凭据安全地存储在环境变量或加密文件中",
+    "实施适当的错误处理和日志记录",
+    "使用Webhook通知重要事件",
+    "缓存频繁访问的数据以减少API调用",
+    "发布前验证推文内容",
+    "监控API使用情况以避免超出配额",
+    "逐步增加自动化操作的频率",
+    "定期备份重要的推文数据和分析结果"
   ],
   "security": {
     "credential_encryption": true,
-    "api_key_rotation": "recommended",
-    "oauth_token_refresh": "automatic",
+    "api_key_rotation": "推荐",
+    "oauth_token_refresh": "自动更新",
     "sensitive_data_filtering": true,
     "audit_logging": true
   }
 }
+```

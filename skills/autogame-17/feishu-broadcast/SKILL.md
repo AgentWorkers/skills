@@ -1,14 +1,14 @@
-# Feishu Broadcast Skill
+# Feishu 广播技能
 
-Broadcast messages (Post/Rich Text) and Images/Stickers to ALL users in the Feishu tenant.
+该技能用于向 Feishu 租户内的所有用户发送消息（包括纯文本和富文本）、图片以及贴纸。
 
-## Features
-- **Dynamic User List**: Fetches all users from Feishu API (no hardcoded IDs).
-- **Rich Text**: Supports Markdown via `feishu-post`.
-- **Media**: Supports Stickers/GIFs via `feishu-sticker`.
-- **Safety**: Rate limiting and Dry Run mode.
+## 功能特点
+- **动态用户列表**：通过 Feishu API 获取所有用户信息（不使用硬编码的用户名）。
+- **富文本支持**：支持使用 `feishu-post` 标记语言编写富文本内容。
+- **媒体文件支持**：支持上传图片和 GIF 动画（通过 `feishu-sticker` 功能）。
+- **安全性保障**：具备速率限制机制，并支持“试运行”模式（Dry Run）。
 
-## Usage
+## 使用方法
 
 ```bash
 # Send text
@@ -24,6 +24,6 @@ node skills/feishu-broadcast/index.js --image "media/sticker.webp"
 node skills/feishu-broadcast/index.js --title "Hi" --text "Check this out" --image "media/cool.gif"
 ```
 
-## Dependencies
-- `feishu-post` skill (must be installed)
-- `feishu-sticker` skill (must be installed)
+## 所需依赖的技能
+- `feishu-post` 技能（必须已安装）
+- `feishu-sticker` 技能（必须已安装）

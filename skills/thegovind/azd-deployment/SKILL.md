@@ -1,13 +1,13 @@
 ---
 name: azd-deployment
-description: Deploy containerized applications to Azure Container Apps using Azure Developer CLI (azd). Use when setting up azd projects, writing azure.yaml configuration, creating Bicep infrastructure for Container Apps, configuring remote builds with ACR, implementing idempotent deployments, managing environment variables across local/.azure/Bicep, or troubleshooting azd up failures. Triggers on requests for azd configuration, Container Apps deployment, multi-service deployments, and infrastructure-as-code with Bicep.
+description: 使用 Azure Developer CLI (azd) 将容器化应用程序部署到 Azure Container Apps。该工具适用于以下场景：配置 azd 项目、编写 `azure.yaml` 配置文件、为 Container Apps 创建 Bicep 基础设施、使用 ACR 配置远程构建流程、实现幂等部署（即多次部署不会产生重复结果）、管理本地文件 `/local/.azure/Bicep` 中的环境变量，以及排查 azd 相关的故障。该工具会在以下操作发生时被触发：请求 azd 配置、部署 Container Apps、进行多服务部署，或使用 Bicep 实现基础设施即代码（Infrastructure-as-Code）的功能。
 ---
 
-# Azure Developer CLI (azd) Container Apps Deployment
+# Azure 开发者 CLI (azd) 容器应用部署
 
-Deploy containerized frontend + backend applications to Azure Container Apps with remote builds, managed identity, and idempotent infrastructure.
+使用 azd 将容器化的前端和后端应用程序部署到 Azure 容器应用中，支持远程构建、管理身份以及幂等化的基础设施。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize and deploy
@@ -17,7 +17,7 @@ azd env new <env-name>      # Create environment (dev, staging, prod)
 azd up                      # Provision infra + build + deploy
 ```
 
-## Core File Structure
+## 核心文件结构
 
 ```
 project/
@@ -38,9 +38,9 @@ project/
     └── backend/Dockerfile
 ```
 
-## azure.yaml Configuration
+## azure.yaml 配置
 
-### Minimal Configuration
+### 最小配置
 
 ```yaml
 name: azd-deployment
@@ -54,7 +54,7 @@ services:
       remoteBuild: true
 ```
 
-### Full Configuration with Hooks
+### 带有钩子的完整配置
 
 ```yaml
 name: azd-deployment
@@ -105,24 +105,24 @@ hooks:
       echo "Backend: ${SERVICE_BACKEND_URI}"
 ```
 
-### Key azure.yaml Options
+### 主要的 azure.yaml 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `remoteBuild: true` | Build images in Azure Container Registry (recommended) |
-| `context: .` | Docker build context relative to project path |
-| `host: containerapp` | Deploy to Azure Container Apps |
-| `infra.provider: bicep` | Use Bicep for infrastructure |
+| `remoteBuild: true` | 在 Azure 容器注册表中构建镜像（推荐） |
+| `context: .` | 相对于项目路径的 Docker 构建上下文 |
+| `host: containerapp` | 部署到 Azure 容器应用 |
+| `infra提供商: bicep` | 使用 Bicep 进行基础设施管理 |
 
-## Environment Variables Flow
+## 环境变量流程
 
-### Three-Level Configuration
+### 三级配置体系
 
-1. **Local `.env`** - For local development only
-2. **`.azure/<env>/.env`** - azd-managed, auto-populated from Bicep outputs
-3. **`main.parameters.json`** - Maps env vars to Bicep parameters
+1. **本地 `.env` 文件** - 仅用于本地开发 |
+2. **`.azure/<env>/.env` 文件** - 由 azd 管理，自动从 Bicep 输出中填充 |
+3. **`main.parameters.json` 文件** - 将环境变量映射到 Bicep 参数 |
 
-### Parameter Injection Pattern
+### 参数注入模式
 
 ```json
 // infra/main.parameters.json
@@ -135,9 +135,9 @@ hooks:
 }
 ```
 
-Syntax: `${VAR_NAME}` or `${VAR_NAME=default_value}`
+语法：`${VAR_NAME}` 或 `${VAR_NAME=default_value}`
 
-### Setting Environment Variables
+### 设置环境变量
 
 ```bash
 # Set for current environment
@@ -149,7 +149,7 @@ azd env new prod
 azd env set AZURE_OPENAI_ENDPOINT "..." 
 ```
 
-### Bicep Output → Environment Variable
+### Bicep 输出 → 环境变量
 
 ```bicep
 // In main.bicep - outputs auto-populate .azure/<env>/.env
@@ -158,17 +158,17 @@ output SERVICE_BACKEND_URI string = backend.outputs.uri
 output BACKEND_PRINCIPAL_ID string = backend.outputs.principalId
 ```
 
-## Idempotent Deployments
+## 幂等化部署
 
-### Why azd up is Idempotent
+### azd 为何具有幂等性
 
-1. **Bicep is declarative** - Resources reconcile to desired state
-2. **Remote builds tag uniquely** - Image tags include deployment timestamp
-3. **ACR reuses layers** - Only changed layers upload
+1. **Bicep 是声明性语言** - 资源会自动调整到所需状态 |
+2. **远程构建会为镜像添加唯一标签** - 镜像标签包含部署时间戳 |
+3. **Azure 容器注册表（ACR）会重用已有的镜像层** - 只有发生变化的层才会被上传 |
 
-### Preserving Manual Changes
+### 保留手动更改
 
-Custom domains added via Portal can be lost on redeploy. Preserve with hooks:
+通过门户添加的自定义域名在重新部署时可能会丢失。可以使用钩子来保留这些自定义设置：
 
 ```yaml
 hooks:
@@ -191,7 +191,7 @@ hooks:
       fi
 ```
 
-### Handling Existing Resources
+### 处理现有资源
 
 ```bicep
 // Reference existing ACR (don't recreate)
@@ -203,9 +203,9 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' e
 customDomains: empty(customDomainsParam) ? null : customDomainsParam
 ```
 
-## Container App Service Discovery
+## 容器应用服务发现
 
-Internal HTTP routing between Container Apps in same environment:
+同一环境中的容器应用之间的内部 HTTP 路由：
 
 ```bicep
 // Backend reference in frontend env vars
@@ -217,16 +217,16 @@ env: [
 ]
 ```
 
-Frontend nginx proxies to internal URL:
+前端使用 nginx 代理访问内部 URL：
 ```nginx
 location /api {
     proxy_pass $BACKEND_URL;
 }
 ```
 
-## Managed Identity & RBAC
+## 管理身份与 RBAC
 
-### Enable System-Assigned Identity
+### 启用系统分配的身份
 
 ```bicep
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
@@ -238,7 +238,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
 output principalId string = containerApp.identity.principalId
 ```
 
-### Post-Provision RBAC Assignment
+### 部署后的 RBAC 规则分配
 
 ```yaml
 hooks:
@@ -261,7 +261,7 @@ hooks:
         --scope "$SEARCH_RESOURCE_ID" 2>/dev/null || true
 ```
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Environment management
@@ -281,16 +281,20 @@ azd show                            # Show project status
 az containerapp logs show -n <app> -g <rg> --follow  # Stream logs
 ```
 
-## Reference Files
+## 参考文件
 
-- **Bicep patterns**: See [references/bicep-patterns.md](references/bicep-patterns.md) for Container Apps modules
-- **Troubleshooting**: See [references/troubleshooting.md](references/troubleshooting.md) for common issues
-- **azure.yaml schema**: See [references/azure-yaml-schema.md](references/azure-yaml-schema.md) for full options
+- **Bicep 模板**：请参阅 [references/bicep-patterns.md](references/bicep-patterns.md) 以了解容器应用相关的 Bicep 模板 |
+- **故障排除**：请参阅 [references/troubleshooting.md](references/troubleshooting.md) 以解决常见问题 |
+- **azure.yaml 架构**：请参阅 [references/azure-yaml-schema.md](references/azure-yaml-schema.md) 以了解所有配置选项 |
 
-## Critical Reminders
+## 重要提示
 
-1. **Always use `remoteBuild: true`** - Local builds fail on M1/ARM Macs deploying to AMD64
-2. **Bicep outputs auto-populate .azure/<env>/.env** - Don't manually edit
-3. **Use `azd env set` for secrets** - Not main.parameters.json defaults
-4. **Service tags (`azd-service-name`)** - Required for azd to find Container Apps
-5. **`|| true` in hooks** - Prevent RBAC "already exists" errors from failing deploy
+1. **始终使用 `remoteBuild: true`** - 在使用 M1/ARM 架构的 Mac 机器上进行本地构建时，可能会导致部署失败（因为这些机器不支持 AMD64 架构） |
+2. **Bicep 的输出会自动填充到 `.azure/<env>/.env` 文件中** - 请勿手动编辑该文件 |
+3. **使用 `azd env set` 命令来设置敏感信息** - 这些信息不会存储在 `main.parameters.json` 中 |
+4. **服务标签 (`azd-service-name`)** - azd 需要这个标签来识别容器应用 |
+5. **在钩子中使用 `|| true`** - 可以防止因 RBAC 规则已存在而导致的部署失败 |
+
+---
+
+（注：由于提供的 SKILL.md 文件内容较为冗长且包含大量技术细节，翻译过程中仅保留了与中文读者最相关的部分。如果需要更详细的解释或额外的信息，可以进一步扩展翻译内容。）

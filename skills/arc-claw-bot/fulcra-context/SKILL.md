@@ -1,39 +1,37 @@
 ---
 name: fulcra-context
-description: Access your human's personal context data (biometrics, sleep, activity, calendar, location) via the Fulcra Life API and MCP server. Requires human's Fulcra account + OAuth2 consent.
+description: 您可以通过 Fulcra Life API 和 MCP 服务器访问您所关联的人类的个人上下文数据（生物特征信息、睡眠记录、活动日志、日历记录以及位置信息）。这需要该人类拥有 Fulcra 账户，并且必须获得他们的 OAuth2 授权。
 homepage: https://fulcradynamics.com
 metadata: {"openclaw":{"emoji":"🫀","requires":{"bins":["curl"]},"primaryEnv":"FULCRA_ACCESS_TOKEN"}}
 ---
 
-# Fulcra Context — Personal Data for AI Partners
+# Fulcra Context — 为AI合作伙伴提供的个人数据服务
 
-Give your agent situational awareness. With your human's consent, access their biometrics, sleep, activity, location, and calendar data from the Fulcra Life API.
+通过Fulcra Context，您的代理可以获取用户的生物特征数据、睡眠情况、活动记录、位置信息以及日历数据（需获得用户的明确授权）。
 
-## What This Enables
+## 功能概述
 
-With Fulcra Context, you can:
-- Know how your human slept → adjust morning briefing intensity
-- See heart rate / HRV trends → detect stress, suggest breaks
-- Check location → context-aware suggestions (home vs. office vs. traveling)
-- Read calendar → proactive meeting prep, schedule awareness
-- Track workouts → recovery-aware task scheduling
+利用Fulcra Context，您可以：
+- 了解用户的睡眠质量（快速眼动期、深度睡眠期、浅睡眠期及清醒时间），从而调整晨间简报的内容；
+- 监测心率及心率变异性（HRV）趋势，及时发现压力迹象并建议休息；
+- 根据用户当前位置提供个性化的建议（如在家、办公室或旅行中应采取的行动）；
+- 查看日历，提前准备会议并了解日程安排；
+- 跟踪用户的锻炼情况，合理安排后续任务。
 
-## Privacy Model
+## 隐私政策
 
-- **OAuth2 per-user** — your human controls exactly what data you see
-- **Their data stays theirs** — Fulcra stores it, you get read access only
-- **Consent is revocable** — they can disconnect anytime
-- **NEVER share your human's Fulcra data publicly without explicit permission**
+- **基于OAuth2的个性化授权**：用户可完全控制您能查看的数据范围；
+- **用户数据归用户所有**：Fulcra仅存储数据，您仅拥有读取权限；
+- **授权可随时撤销**：用户可随时停止数据共享；
+- **未经明确许可，绝不会公开用户的任何数据**。
 
-## Setup
+## 设置方法
 
-### Option 1: MCP Server (Recommended)
+### 选项1：使用Fulcra托管的MCP服务器（推荐）
 
-Use Fulcra's hosted MCP server at `https://mcp.fulcradynamics.com/mcp` (Streamable HTTP transport, OAuth2 auth).
+使用Fulcra提供的MCP服务器（地址：`https://mcp.fulcradynamics.com/mcp`），支持Streamable HTTP传输协议和OAuth2认证。用户需要先注册Fulcra账户（可通过[Context iOS应用](https://apps.apple.com/app/id1633037434)或[Portal](https://portal.fulcradynamics.com/)免费注册）。
 
-Your human needs a Fulcra account (free via the [Context iOS app](https://apps.apple.com/app/id1633037434) or [Portal](https://portal.fulcradynamics.com/)).
-
-**Claude Desktop config** (claude_desktop_config.json):
+**Claude桌面端配置文件（claude_desktop_config.json）**：
 ```json
 {
   "mcpServers": {
@@ -45,7 +43,7 @@ Your human needs a Fulcra account (free via the [Context iOS app](https://apps.a
 }
 ```
 
-**Or run locally via uvx:**
+**或通过uvx本地运行**：
 ```json
 {
   "mcpServers": {
@@ -57,177 +55,107 @@ Your human needs a Fulcra account (free via the [Context iOS app](https://apps.a
 }
 ```
 
-Also tested with: Goose, Windsurf, VS Code. Open source: [github.com/fulcradynamics/fulcra-context-mcp](https://github.com/fulcradynamics/fulcra-context-mcp)
+该功能也兼容Goose、Windsurf和VS Code等开发工具。开源代码库：[github.com/fulcradynamics/fulcra-context-mcp](https://github.com/fulcradynamics/fulcra-context-mcp)
 
-### Option 2: Direct API Access
+### 选项2：直接使用API
 
-1. Your human creates a Fulcra account
-2. They generate an access token via the [Python client](https://github.com/fulcradynamics/fulcra-api-python) or Portal
-3. Store the token: `skills.entries.fulcra-context.apiKey` in openclaw.json
+1. 用户创建Fulcra账户；
+2. 通过[Python客户端](https://github.com/fulcradynamics/fulcra-api-python)或Portal生成访问令牌；
+3. 将令牌保存在`skills.entries.fulcra-context.apiKey`文件中。
 
-### Option 3: Python Client (Tested & Proven)
+### 选项3：使用Python客户端（经过测试且效果良好）
 
 ```bash
 pip3 install fulcra-api
 ```
 
-```python
-from fulcra_api.core import FulcraAPI
+**请注意：**令牌的有效期为24小时，建议使用内置的令牌管理工具自动刷新令牌（详见下文）。
 
-api = FulcraAPI()
-api.authorize()  # Opens device flow — human visits URL and logs in
+## 令牌生命周期管理
 
-# Now you have access:
-sleep = api.metric_samples(start, end, "SleepStage")
-hr = api.metric_samples(start, end, "HeartRate")
-events = api.calendar_events(start, end)
-catalog = api.metrics_catalog()
-```
+`scripts/fulcra_auth.py`脚本负责处理整个OAuth2授权流程，包括令牌的自动刷新，确保用户只需授权一次。
 
-Save the token for automation:
-```python
-import json
-token_data = {
-    "access_token": api.fulcra_cached_access_token,
-    "expiration": api.fulcra_cached_access_token_expiration.isoformat(),
-    "user_id": api.get_fulcra_userid()
-}
-with open("~/.config/fulcra/token.json", "w") as f:
-    json.dump(token_data, f)
-```
+### 工作原理：
 
-Token expires in ~24h. Use the built-in token manager for automatic refresh (see below).
+- `authorize`函数执行Auth0认证流程，并同时保存访问令牌和刷新令牌；
+- `refresh`函数使用保存的刷新令牌获取新的访问令牌，无需用户再次操作；
+- `token`函数会输出当前访问令牌（令牌过期时自动刷新），非常适合用于定时任务和脚本执行。
 
-### Token Lifecycle Management
+**如何自动刷新令牌：**
 
-The skill includes `scripts/fulcra_auth.py` which handles the full OAuth2 lifecycle — including **refresh tokens** so your human only authorizes once.
-
-```bash
-# First-time setup (interactive — human approves via browser)
-python3 scripts/fulcra_auth.py authorize
-
-# Refresh token before expiry (automatic, no human needed)
-python3 scripts/fulcra_auth.py refresh
-
-# Check token status
-python3 scripts/fulcra_auth.py status
-
-# Get current access token (auto-refreshes if needed, for piping)
-export FULCRA_ACCESS_TOKEN=$(python3 scripts/fulcra_auth.py token)
-```
-
-**How it works:**
-- `authorize` runs the Auth0 device flow and saves both the access token AND refresh token
-- `refresh` uses the saved refresh token to get a new access token — no human interaction
-- `token` prints the access token (auto-refreshing if expired) — perfect for cron jobs and scripts
-
-**Set up a cron job to keep the token fresh:**
-
-For OpenClaw agents, add a cron job that refreshes the token every 12 hours:
+对于OpenClaw代理，可以设置定时任务（cron job），每12小时自动刷新一次令牌：
 ```
 python3 /path/to/skills/fulcra-context/scripts/fulcra_auth.py refresh
 ```
 
-Token data is stored at `~/.config/fulcra/token.json` (permissions restricted to owner).
+令牌数据存储在`~/.config/fulcra/token.json`文件中（仅限所有者访问）。
 
-## Quick Commands
+## 快捷命令
 
-### Check sleep (last night)
-
-```bash
+- **检查昨晚的睡眠情况**：```bash
 # Get time series for sleep stages (last 24h)
 curl -s "https://api.fulcradynamics.com/data/v0/time_series_grouped?metrics=SleepStage&start=$(date -u -v-24H +%Y-%m-%dT%H:%M:%SZ)&end=$(date -u +%Y-%m-%dT%H:%M:%SZ)&samprate=300" \
   -H "Authorization: Bearer $FULCRA_ACCESS_TOKEN"
 ```
-
-### Check heart rate (recent)
-
-```bash
+- **查看最近的心率数据**：```bash
 curl -s "https://api.fulcradynamics.com/data/v0/time_series_grouped?metrics=HeartRate&start=$(date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)&end=$(date -u +%Y-%m-%dT%H:%M:%SZ)&samprate=60" \
   -H "Authorization: Bearer $FULCRA_ACCESS_TOKEN"
 ```
-
-### Check today's calendar
-
-```bash
+- **查看今日日历**：```bash
 curl -s "https://api.fulcradynamics.com/data/v0/{fulcra_userid}/calendar_events?start=$(date -u +%Y-%m-%dT00:00:00Z)&end=$(date -u +%Y-%m-%dT23:59:59Z)" \
   -H "Authorization: Bearer $FULCRA_ACCESS_TOKEN"
 ```
-
-### Available metrics
-
-```bash
+- **查看所有可用的指标**：```bash
 curl -s "https://api.fulcradynamics.com/data/v0/metrics_catalog" \
   -H "Authorization: Bearer $FULCRA_ACCESS_TOKEN"
 ```
 
-## Key Metrics
+## 关键指标
 
-| Metric | What It Tells You |
-|--------|-------------------|
-| SleepStage | Sleep quality — REM, Deep, Light, Awake |
-| HeartRate | Current stress/activity level |
-| HRV | Recovery and autonomic nervous system state |
-| StepCount | Activity level throughout the day |
-| ActiveCaloriesBurned | Exercise intensity |
-| RespiratoryRate | Baseline health indicator |
-| BloodOxygen | Wellness check |
+| 指标          | 所表示的含义                           |
+|-----------------|--------------------------------------|
+| SleepStage     | 睡眠质量（REM、深度睡眠、浅睡眠、清醒时间）                 |
+| HeartRate     | 当前压力/活动水平                         |
+| HRV          | 心率变异性，反映自主神经系统状态                 |
+| StepCount     | 全天活动量                             |
+| ActiveCaloriesBurned | 消耗的卡路里                         |
+| RespiratoryRate | 呼吸频率，健康指标                         |
+| BloodOxygen    | 血氧饱和度，反映身体健康状况                   |
 
-## Integration Patterns
+## 集成方案
 
-### Morning Briefing
-Check sleep + calendar + weather → compose a briefing calibrated to energy level.
+- **晨间简报**：结合睡眠数据、日历信息和天气情况，制定符合用户能量水平的简报内容；
+- **压力管理**：通过监测HRV和心率，发送简洁、非紧急的消息；
+- **主动恢复**：在剧烈运动或睡眠不足后，建议调整日程安排并提醒补充水分；
+- **旅行提醒**：根据位置变化调整时区设置，提供本地信息和建议。
 
-### Stress-Aware Communication
-Monitor HRV + heart rate → if elevated, keep messages brief and non-urgent.
+## 演示模式
 
-### Proactive Recovery
-After intense workout or poor sleep → suggest lighter schedule, remind about hydration.
+在公开演示（如创业投资会议、直播等）中，可启用演示模式，使用合成日历和位置数据，同时保留真实的生物特征数据。
 
-### Travel Awareness
-Location changes → adjust timezone handling, suggest local info, modify schedule expectations.
+## 模式切换
 
-## Demo Mode
+### 演示模式与正常模式的区别
 
-For public demos (VC pitches, livestreams, conferences), enable demo mode to swap in synthetic calendar and location data while keeping real biometrics.
+| 数据类型        | 演示模式                | 正常模式                |
+|---------------|-------------------|-------------------|
+| 睡眠数据、心率、HRV、步数 | ✅ 真实数据                 | ✅ 真实数据                 |
+| 日历事件        | 🔄 合成数据（循环显示）            | ✅ 真实数据                 |
+| 位置信息        | 🔄 合成数据（精选的纽约地点）           | ✅ 真实数据                 |
+| 天气信息        | ✅ 真实数据                 | ✅ 真实数据                 |
 
-### Activation
+## 数据共享规则
 
-```bash
-# Environment variable (recommended for persistent config)
-export FULCRA_DEMO_MODE=true
+- ✅ 生物特征数据、睡眠质量、步数、心率变异性等数据可公开分享；
+- ✅ 合成的日历和位置数据（演示模式）专为公开展示设计；
+- ❌ 禁止公开用户的真实位置信息、日历事件或身份识别信息。
 
-# Or pass --demo flag to collect_briefing_data.py
-python3 collect_briefing_data.py --demo
-```
+## 相关链接
 
-### What changes in demo mode
-
-| Data Type | Demo Mode | Normal Mode |
-|-----------|-----------|-------------|
-| Sleep, HR, HRV, Steps | ✅ Real data | ✅ Real data |
-| Calendar events | 🔄 Synthetic (rotating schedules) | ✅ Real data |
-| Location | 🔄 Synthetic (curated NYC spots) | ✅ Real data |
-| Weather | ✅ Real data | ✅ Real data |
-
-### Transparency
-
-- Output JSON includes `"demo_mode": true` at the top level
-- Calendar and location objects include `"demo_mode": true`
-- When presenting to humans, include a subtle "📍 Demo mode" indicator
-
-### What's safe to share publicly
-
-- ✅ Biometric trends, sleep quality, step counts, HRV — cleared for public
-- ✅ Synthetic calendar and location (demo mode) — designed for public display
-- ❌ NEVER share real location, real calendar events, or identifying data
-
-## Links
-
-- [Fulcra Platform](https://fulcradynamics.com)
-- [Developer Docs](https://fulcradynamics.github.io/developer-docs/)
-- [Life API Reference](https://fulcradynamics.github.io/developer-docs/api-reference/)
-- [Python Client](https://github.com/fulcradynamics/fulcra-api-python)
-- [MCP Server](https://github.com/fulcradynamics/fulcra-context-mcp)
-- [Demo Notebooks](https://github.com/fulcradynamics/demos)
-- [Discord](https://discord.com/invite/aunahVEnPU)
+- [Fulcra平台官网](https://fulcradynamics.com)  
+- [开发者文档](https://fulcradynamics.github.io/developer-docs/)  
+- [Life API参考文档](https://fulcradynamics.github.io/developer-docs/api-reference/)  
+- [Python客户端](https://github.com/fulcradynamics/fulcra-api-python)  
+- [MCP服务器](https://github.com/fulcradynamics/fulcra-context-mcp)  
+- [演示用例代码库](https://github.com/fulcradynamics/demos)  
+- [Discord交流频道](https://discord.com/invite/aunahVEnPU)

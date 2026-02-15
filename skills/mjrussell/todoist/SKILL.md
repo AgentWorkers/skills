@@ -1,6 +1,6 @@
 ---
 name: todoist
-description: Manage tasks and projects in Todoist. Use when user asks about tasks, to-dos, reminders, or productivity.
+description: 在 Todoist 中管理任务和项目。当用户询问有关任务、待办事项、提醒或生产力方面的问题时，可以使用此内容进行解答。
 homepage: https://todoist.com
 metadata:
   clawdbot:
@@ -12,28 +12,28 @@ metadata:
 
 # Todoist CLI
 
-CLI for Todoist task management, built on the official TypeScript SDK.
+这是一个用于管理Todoist任务的命令行工具（CLI），基于官方的TypeScript SDK开发。
 
-## Installation
+## 安装
 
 ```bash
 # Requires todoist-ts-cli >= 0.2.0 (for --top / --order)
 npm install -g todoist-ts-cli@^0.2.0
 ```
 
-## Setup
+## 设置
 
-1. Get API token from https://todoist.com/app/settings/integrations/developer
-2. Either:
+1. 从 [https://todoist.com/app/settings/integrations/developer](https://todoist.com/app/settings/integrations/developer) 获取API令牌。
+2. 选择以下方法之一进行设置：
    ```bash
    todoist auth <your-token>
    # or
    export TODOIST_API_TOKEN="your-token"
    ```
 
-## Commands
+## 命令
 
-### Tasks
+### 任务操作
 
 ```bash
 todoist                    # Show today's tasks (default)
@@ -45,7 +45,7 @@ todoist tasks -f "p1"      # Filter query (priority 1)
 todoist tasks --json
 ```
 
-### Add Tasks
+### 添加任务
 
 ```bash
 todoist add "Buy groceries"
@@ -56,7 +56,7 @@ todoist add "Triage inbox" --project "Work" --order top  # add to top (alternati
 todoist add "Call mom" -d "sunday" -l "family"  # with label
 ```
 
-### Manage Tasks
+### 管理任务
 
 ```bash
 todoist view <id>          # View task details
@@ -67,13 +67,13 @@ todoist move <id> -p "Personal"
 todoist delete <id>
 ```
 
-### Search
+### 搜索
 
 ```bash
 todoist search "meeting"
 ```
 
-### Projects & Labels
+### 项目与标签
 
 ```bash
 todoist projects           # List projects
@@ -82,58 +82,58 @@ todoist labels             # List labels
 todoist label-add "urgent"
 ```
 
-### Comments
+### 评论
 
 ```bash
 todoist comments <task-id>
 todoist comment <task-id> "Note about this task"
 ```
 
-## Usage Examples
+## 使用示例
 
-**User: "What do I have to do today?"**
+**用户：“我今天需要做什么？”**
 ```bash
 todoist today
 ```
 
-**User: "Add 'buy milk' to my tasks"**
+**用户：“在我的任务列表中添加‘买牛奶’”**
 ```bash
 todoist add "Buy milk" --due "today"
 ```
 
-**User: "Remind me to call the dentist tomorrow"**
+**用户：“提醒我明天去看牙医”**
 ```bash
 todoist add "Call the dentist" --due "tomorrow"
 ```
 
-**User: "Mark the grocery task as done"**
+**用户：“将‘购买杂货’的任务标记为已完成”**
 ```bash
 todoist search "grocery"   # Find task ID
 todoist done <id>
 ```
 
-**User: "What's on my work project?"**
+**用户：“我的工作项目里有哪些任务？”**
 ```bash
 todoist tasks -p "Work"
 ```
 
-**User: "Show my high priority tasks"**
+**用户：“显示我的高优先级任务”**
 ```bash
 todoist tasks -f "p1"
 ```
 
-## Filter Syntax
+## 过滤语法
 
-Todoist supports powerful filter queries:
-- `p1`, `p2`, `p3`, `p4` - Priority levels
-- `today`, `tomorrow`, `overdue`
-- `@label` - Tasks with label
-- `#project` - Tasks in project
-- `search: keyword` - Search
+Todoist支持强大的过滤查询：
+- `p1`, `p2`, `p3`, `p4` - 优先级级别
+- `today`, `tomorrow`, `overdue` - 任务截止日期（支持自然语言表达，如“明天”、“下周一”、“1月15日”）
+- `@label` - 带有特定标签的任务
+- `#project` - 属于某个项目的任务
+- `search: 关键词` - 搜索任务内容
 
-## Notes
+## 注意事项
 
-- Task IDs are shown in task listings
-- Due dates support natural language ("tomorrow", "next monday", "jan 15")
-- Priority 1 is highest, 4 is lowest
-- Use `--order <n>` (1-based) or `--order top` to insert a task at a specific position within a project/section
+- 任务ID会在任务列表中显示。
+- 截止日期支持自然语言表达（如“明天”、“下周一”、“1月15日”）。
+- 优先级1表示最高优先级，4表示最低优先级。
+- 可使用 `--order <n>`（基于1的顺序）或 `--order top` 将任务插入项目/部分的特定位置。

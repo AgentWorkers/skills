@@ -8,545 +8,314 @@ description: >
   Can run the full pipeline or individual steps.
 ---
 
-# YT-to-Blog Content Engine
+# YT-to-Blog 内容生成工具
 
-YouTube URL → blog post + Substack + tweets + vertical video clips. The whole content machine.
+将 YouTube 视频内容转换为博客文章、Substack 发文、Twitter 推文以及竖屏视频片段。这是一个完整的 content 处理流程。
 
-## Pipeline Overview
+## 流程概述
 
-```
-YouTube URL
-  ↓
-① Transcript (summarize CLI)
-  ↓
-② Blog Draft (AI-written in your voice)
-  ↓
-③ Substack Publish (browser automation)
-  ↓
-④ X/Twitter Post (bird CLI)
-  ↓
-④b Facebook Group (optional reminder)
-  ↓
-⑤ Script Splitter (extract hook moments)
-  ↓
-⑥ HeyGen Videos (AI avatar vertical clips)
-  ↓
-⑦ Post-Processing (ffmpeg crop/scale)
-  ↓
-📁 Output Folder (blog.md, videos, tweet.txt, URLs)
-```
-
-**One URL in → Five platforms out.** Run the whole thing or any step individually.
+**一个输入 URL，五个输出平台。** 可以整体运行整个流程，也可以单独运行其中任意步骤。
 
 ---
 
-## First-Time Setup Wizard
+## 首次使用设置向导
 
-Walk the user through this on first use. It takes ~10 minutes once, then never again.
+首次使用时，会引导用户完成设置流程。整个过程大约需要 10 分钟，之后就无需再次操作了。
 
-### Step 1: Check Dependencies
+### 第 1 步：检查依赖项
 
-Run the setup script to check what's installed:
+运行设置脚本以确认已安装的软件：
 
-```bash
-bash skills/yt-content-engine/setup.sh
-```
-
-Required CLIs:
-| Tool | Purpose | Install |
+**所需命令行工具：**
+| 工具 | 用途 | 安装方式 |
 |------|---------|---------|
-| `summarize` | YouTube transcript extraction | `brew install steipete/tap/summarize` |
-| `bird` | X/Twitter posting | `brew install steipete/tap/bird` |
-| `ffmpeg` | Video post-processing | `brew install ffmpeg` |
-| `curl` | API calls to HeyGen | Usually pre-installed on macOS |
-| `python3` | Helper scripts | Usually pre-installed on macOS |
+| `summarize` | 提取 YouTube 视频字幕 | `brew install steipete/tap/summarize` |
+| `bird` | 发布到 X/Twitter | `brew install steipete/tap/bird` |
+| `ffmpeg` | 视频后期处理 | `brew install ffmpeg` |
+| `curl` | 与 HeyGen 进行 API 请求 | 通常已在 macOS 上预装 |
+| `python3` | 辅助脚本 | 通常已在 macOS 上预装 |
 
-If anything is missing, tell the user what to install and wait for confirmation.
+如果缺少任何工具，请告知用户需要安装的内容，并等待用户确认。
 
-### Step 2: HeyGen API Key
+### 第 2 步：获取 HeyGen API 密钥
 
-1. Tell the user: "Go to https://app.heygen.com/settings — grab your API key from the API section."
-2. If they don't have a HeyGen account: "Sign up at https://heygen.com — the free tier gives you a few credits to test with."
-3. Save the key to `config.json` (see config schema below).
-4. Test it:
+1. 告诉用户：“访问 https://app.heygen.com/settings，从 API 部分获取您的 API 密钥。”
+2. 如果用户还没有 HeyGen 账户：“请在 https://heygen.com 注册——免费账户可提供一些信用额度供测试使用。”
+3. 将密钥保存到 `config.json` 文件中（具体配置结构见下方）。
+4. 测试 API 密钥是否有效：
 
-```bash
-curl -s -H "X-Api-Key: API_KEY_HERE" https://api.heygen.com/v2/avatars | python3 -c "import sys,json; d=json.load(sys.stdin); print('✅ API key works!' if 'data' in d else '❌ Invalid key')"
-```
+---
 
-### Step 3: HeyGen Avatar Setup
+### 第 3 步：设置 HeyGen 虚拟形象
 
-Tell the user:
+告知用户：
 
-> "For vertical video clips, you need a HeyGen avatar. Here's what matters:
+> “对于竖屏视频片段，您需要一个 HeyGen 虚拟形象。需要注意以下几点：
 >
-> **Record in PORTRAIT mode** (hold your phone vertically). This is critical — if you record landscape, the avatar will be a small strip in the center of a 9:16 frame and we'll need to crop/scale it (which works but loses quality).
+> **请以 **肖像模式** 录制视频**（将手机竖立放置）。这一点非常重要——如果以横屏模式录制，虚拟形象会显示为 9:16 比例画面中的小条状图像，此时需要对其进行裁剪或缩放（虽然可以处理，但可能会损失画质）。
 >
-> Go to https://app.heygen.com/avatars → Create Instant Avatar → follow their recording guide. Stand in good lighting, look at camera, speak naturally for 2+ minutes.
+> 访问 https://app.heygen.com/avatars → 创建虚拟形象 → 按照提示进行录制。确保录制环境光线良好，直视镜头，自然地讲话 2 分钟以上。
 >
-> Once created, grab your Avatar ID from the avatar details page."
+> 创建完成后，从虚拟形象详情页面获取您的虚拟形象 ID。”
 
-List their existing avatars to help them pick. Note: the avatars endpoint returns both custom and stock avatars — filter for the user's custom ones (they typically appear first and have personal names):
+列出用户现有的虚拟形象供其选择。注意：虚拟形象页面会显示自定义和默认提供的虚拟形象——请筛选出用户自定义的虚拟形象（它们通常会排在最前面，并带有个人名称）：
 
-```bash
-curl -s -H "X-Api-Key: API_KEY" https://api.heygen.com/v2/avatars | python3 -c "
-import sys, json
-data = json.load(sys.stdin)
-for a in data.get('data', {}).get('avatars', []):
-    print(f\"  {a['avatar_id']} — {a.get('avatar_name', 'unnamed')}\")
-"
-```
+---
 
-### Step 4: HeyGen Voice Clone
+### 第 4 步：克隆 HeyGen 语音
 
-Tell the user:
+告知用户：
 
-> "Go to https://app.heygen.com/voice-clone → Clone your voice. Upload a clean audio sample (1-2 min of you speaking naturally). HeyGen will create a voice ID.
+> “访问 https://app.heygen.com/voice-clone → 克隆您的语音。上传一段 1-2 分钟的自然讲话音频样本。HeyGen 会生成一个语音 ID。”
 >
-> Once done, grab your Voice ID from the voice settings."
+> 完成后，从语音设置页面获取您的语音 ID。”
 
-List their voices. User's cloned voices typically appear first; stock voices come after:
-
-```bash
-curl -s -H "X-Api-Key: API_KEY" https://api.heygen.com/v2/voices | python3 -c "
-import sys, json
-data = json.load(sys.stdin)
-for v in data.get('data', {}).get('voices', []):
-    print(f\"  {v['voice_id']} — {v.get('name', 'unnamed')} ({v.get('language', '?')})\")
-"
-```
-
-⚠️ **IMPORTANT:** Use the FULL voice_id (e.g., `69da9c9bca78499b98fdac698d2a20cd`), not a truncated version. The API will return "Voice validation failed" if you use a shortened ID.
-
-### Step 5: Substack Login
-
-Substack has no API — posting requires browser automation.
-
-1. Open the OpenClaw managed browser: use browser tool with `profile="openclaw"`
-2. Navigate to `https://substack.com/sign-in`
-3. Help the user log in with their credentials
-4. Verify access by navigating to their publication dashboard
-5. Save the publication URL to `config.json`
-
-The browser session persists across restarts. One-time setup.
-
-### Step 6: Save Config
-
-Create `skills/yt-content-engine/config.json` (relative to your workspace):
-
-```json
-{
-  "heygen": {
-    "apiKey": "YOUR_API_KEY",
-    "avatarId": "YOUR_AVATAR_ID",
-    "voiceId": "YOUR_VOICE_ID"
-  },
-  "substack": {
-    "publication": "yourblog.substack.com"
-  },
-  "twitter": {
-    "handle": "@yourhandle"
-  },
-  "author": {
-    "voice": "Description of your writing voice and style",
-    "name": "Your Name"
-  },
-  "video": {
-    "clipCount": 5,
-    "maxClipSeconds": 60,
-    "cropMode": "auto"
-  }
-}
-```
-
-**Tip:** If the user already has a voice guide from the `yt-to-blog` skill, read it from `skills/yt-to-blog/references/voice-guide.md` and use it for the `author.voice` field.
-
-### Step 7: Verify Everything
-
-Run the setup script with the config in place:
-
-```bash
-bash skills/yt-content-engine/setup.sh
-```
-
-It will test each component and report status.
+列出用户可用的语音选项。用户克隆的语音通常会显示在列表的最前面；默认提供的语音则排在后面：
 
 ---
 
-## How to Invoke
+**重要提示：** 请使用完整的语音 ID（例如 `69da9c9bca78499b98fdac698d2a20cd`），切勿使用缩略版本。如果使用简短的 ID，API 会返回 “语音验证失败”的错误信息。
 
-### Full Pipeline
-```
-"Turn this into a full content suite: https://youtu.be/XXXXX"
-"Content engine this video: [URL]"
-"Run the full pipeline on [URL]"
-```
+### 第 5 步：登录 Substack
 
-### Individual Steps
-```
-"Just get me the transcript from [URL]"
-"Write a blog post from [URL]" (steps 1-2)
-"Post this to Substack" (step 3, after blog exists)
-"Tweet about this blog post" (step 4)
-"Generate video clips from this blog" (steps 5-7)
-"Just split this into scripts" (step 5 only)
-```
+Substack 没有官方 API — 需要通过浏览器自动化完成发文操作。
+
+1. 打开 OpenClaw 管理的浏览器：使用 `profile="openclaw"` 打开浏览器。
+2. 访问 `https://substack.com/sign-in` 并使用用户凭据登录。
+3. 确认用户已成功登录后，导航到用户的发布页面。
+4. 将发布链接保存到 `config.json` 文件中。
+
+浏览器会话在重启后仍然有效。设置只需完成一次。
+
+### 第 6 步：保存配置
+
+创建 `skills/yt-content-engine/config.json` 文件（位于工作区目录下）：
+
+**提示：** 如果用户之前使用过 `yt-to-blog` 技能并已有语音文件，请从 `skills/yt-to-blog/references/voice-guide.md` 中读取相关内容，并将其用于 `author.voice` 字段。
+
+### 第 7 步：验证所有设置
+
+使用已保存的配置再次运行设置脚本：
+
+脚本会检测每个组件的运行状态，并输出相应的结果。
 
 ---
 
-## Pipeline Steps
+## 使用方法
 
-### Step ①: Transcript
-
-Create the output directory for this run, then fetch the YouTube transcript:
-
-```bash
-mkdir -p /tmp/yt-content-engine/output-$(date +%Y-%m-%d)/scripts
-mkdir -p /tmp/yt-content-engine/output-$(date +%Y-%m-%d)/videos
-```
-
-```bash
-summarize "YOUTUBE_URL" --extract > /tmp/yt-content-engine/transcript.txt
-```
-
-The `--extract` flag prints the raw transcript without LLM summarization. Read the output. If it fails (no captions available), try with `--youtube yt-dlp` for auto-generated captions, or tell the user and suggest they provide a manual transcript.
-
-### Step ②: Blog Draft
-
-Transform the transcript into a polished long-form blog post.
-
-**Load the author voice** from `config.json` → `author.voice`. If a more detailed voice guide exists at `skills/yt-to-blog/references/voice-guide.md`, read and use that too.
-
-**Analysis phase** — before writing, extract from the transcript:
-- Core thesis — the single strongest argument or revelation
-- Key data points — statistics, quotes, dates, names
-- Narrative moments — anecdotes, examples, scenes
-- Source links — URLs, studies, references mentioned
-- Missing context — what does the reader need that the video assumed?
-
-**Writing structure:**
-1. **Cold open (1-3 paragraphs):** Scene-setting. Specific, sensory, emotional hook before data.
-2. **Thesis pivot (1 paragraph):** Connect scene to the bigger story.
-3. **Data body (5-15 paragraphs):** Alternate data and editorial. Each stat gets a punch line. Subheadings for major breaks only.
-4. **Callback (1-2 paragraphs):** Return to opening scene/metaphor.
-5. **Closing (3-6 short paragraphs):** Escalating fragments. Final hammer line.
-
-**Writing rules:**
-- Vary sentence length dramatically — long data sentences, then short punches
-- Em dashes for asides, not parentheses
-- Sentence fragments for emphasis
-- No bullet lists in the body — narrative flow
-- Inline source links, no footnotes
-- No "in conclusion" or "to summarize"
-- Credit video source naturally: "As [Name] put it..." with link
-- Target: 1,500-3,000 words
-
-**Generate 3-5 headline options** with distinct strategies (contrast/irony, revelation, moral framing, callback). Each with a subtitle. Let the user pick.
-
-Save the final draft to the output folder as `blog.md`.
-
-### Step ③: Substack Publish
-
-Post the blog to Substack via browser automation.
-
-1. Read `config.json` → `substack.publication`
-2. Open managed browser (`profile="openclaw"`)
-3. Navigate to `https://PUBLICATION.substack.com/publish/post`
-4. Click the title field, type the title
-5. Click the subtitle area, type the subtitle
-6. Click the body area
-7. Write markdown to a temp file, copy to clipboard (`pbcopy < /tmp/post.md`), paste into editor (Meta+v)
-8. Substack auto-saves as draft
-
-**Known issues:**
-- Em dashes (`—`) may garble as `,Äî` during clipboard paste → find/replace after paste
-- Large posts: pause briefly between paste and verification
-- Verify draft at `https://PUBLICATION.substack.com/publish`
-
-**Default: save as draft.** Only publish if the user explicitly says "publish it" — always confirm first.
-
-Save the Substack URL to `output/substack-url.txt`.
-
-### Step ④: X/Twitter Post
-
-Compose and post using the `bird` CLI.
-
-**Compose the tweet/thread:**
-- If the blog has a single killer hook → single tweet with link
-- If there are multiple strong points → thread (3-5 tweets)
-- Include the Substack URL
-- Match the author's voice but punchier — tweets are hooks, not summaries
-- Use the handle from `config.json` → `twitter.handle`
-
-**Post with bird:**
-```bash
-# Single tweet
-bird tweet "Your tweet text here"
-
-# Thread (post first tweet, then reply to it)
-bird tweet "Tweet 1 text here"
-# Note the returned tweet ID, then:
-bird reply TWEET_ID "Tweet 2 text here"
-# And chain:
-bird reply TWEET_2_ID "Tweet 3 text here"
-```
-
-**Always show the user the tweet text before posting and get confirmation.**
-
-Save tweet text to `output/tweet.txt`.
-
-### Step ④b: Facebook Group (Optional)
-
-If `config.json` includes a `facebook.group` URL, remind the user to post to their Facebook Group.
-
-**Note:** Facebook Group API posting is heavily restricted. Browser automation is unreliable due to Facebook's anti-bot measures. Best approach:
-
-1. Draft a Facebook post version of the content (shorter, more casual than tweet)
-2. Save to `output/facebook-post.txt`
-3. Remind the user: "Don't forget to post to [Group Name] — here's your draft"
-4. User posts manually
-
-This keeps Facebook distribution in the workflow without fighting their API restrictions.
-
-### Step ⑤: Script Splitter
-
-Extract 3-5 "hook moments" from the blog post and rewrite each as a spoken-word script for vertical video.
-
-**What to look for** (scan the blog for these patterns):
-1. **Hook/Controversy** — the most provocative claim, the thing that makes people stop scrolling
-2. **Data Bomb** — a surprising statistic or fact that reframes understanding
-3. **Counterintuitive Take** — something that contradicts conventional wisdom
-4. **Emotional Moment** — a story, anecdote, or human element that creates connection
-5. **Call-to-Action Closer** — a rallying cry, challenge, or "what you should do now"
-
-Not every blog will have all five. Extract what's there. Minimum 3 clips.
-
-**Rewrite rules for spoken delivery:**
-- **Hook first** — open with the most attention-grabbing line. No preamble.
-- **Conversational** — write for speaking, not reading. Contractions, natural rhythm.
-- **30-60 seconds each** — roughly 75-150 words per clip
-- **Self-contained** — each clip must work on its own, no "as I mentioned earlier"
-- **End with punch** — close on the strongest line, not a trailing thought
-- **No stage directions** — just the words to speak, nothing else
-
-**Format each script:**
-```
-CLIP 1: [descriptive title]
----
-[Script text here, 75-150 words]
-```
-
-Use `config.json` → `video.clipCount` for the target number of clips (default: 5).
-Use `config.json` → `video.maxClipSeconds` for max duration (default: 60).
-
-Save scripts to `output/scripts/clip-1.txt`, `clip-2.txt`, etc.
-
-### Step ⑥: HeyGen Video Generation
-
-Submit each script to HeyGen API v2 to generate AI avatar videos.
-
-**Read config:**
-```bash
-# Parse config.json
-API_KEY=$(python3 -c "import json; c=json.load(open('config.json')); print(c['heygen']['apiKey'])")
-AVATAR_ID=$(python3 -c "import json; c=json.load(open('config.json')); print(c['heygen']['avatarId'])")
-VOICE_ID=$(python3 -c "import json; c=json.load(open('config.json')); print(c['heygen']['voiceId'])")
-```
-
-**For each script, submit a video generation request:**
-
-```bash
-curl -s -X POST "https://api.heygen.com/v2/video/generate" \
-  -H "X-Api-Key: $API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "video_inputs": [{
-      "character": {
-        "type": "avatar",
-        "avatar_id": "'"$AVATAR_ID"'",
-        "avatar_style": "normal"
-      },
-      "voice": {
-        "type": "text",
-        "input_text": "'"$(cat output/scripts/clip-1.txt)"'",
-        "voice_id": "'"$VOICE_ID"'"
-      }
-    }],
-    "dimension": {
-      "width": 1080,
-      "height": 1920
-    }
-  }'
-```
-
-**Parse the response** to get `video_id`:
-```python
-import json
-response = json.loads(response_text)
-video_id = response["data"]["video_id"]
-```
-
-**Submit ALL clips before polling.** HeyGen renders in parallel — submit all scripts first, collect all video_ids, then poll them all. This cuts total render time from N×3min to ~3min.
-
-**Poll for completion** (every 15 seconds, timeout after 10 minutes):
-
-```bash
-curl -s -H "X-Api-Key: $API_KEY" \
-  "https://api.heygen.com/v1/video_status.get?video_id=$VIDEO_ID" \
-  | python3 -c "import sys,json; d=json.load(sys.stdin)['data']; print(d['status'], d.get('video_url',''))"
-```
-
-Statuses: `pending` → `processing` → `completed` (with `video_url`) or `failed` (with `error`).
-
-**Download completed videos:**
-```bash
-curl -L -o "output/videos/clip-1-raw.mp4" "$VIDEO_URL"
-```
-
-**Credit note:** ~1 credit per 1 minute of video. A typical 5-clip run uses ~3 credits. Warn the user about credit usage before submitting.
-
-### Step ⑦: Video Post-Processing
-
-If the avatar was recorded in landscape (common), the 9:16 video will show a small avatar strip centered in a large frame with background fill. Fix this with ffmpeg.
-
-**Check `config.json` → `video.cropMode`:**
-- `"auto"` — detect and crop automatically
-- `"portrait"` — skip cropping (avatar was recorded in portrait)
-- `"manual"` — ask user for crop coordinates
-
-**Auto-crop pipeline:**
-
-```bash
-# 1. Detect content bounds by scanning center column for non-background pixels
-# Extract a single frame
-ffmpeg -i input.mp4 -vframes 1 -y /tmp/frame.png
-
-# 2. Use ffmpeg cropdetect to find content bounds
-ffmpeg -i input.mp4 -vf "cropdetect=24:16:0" -frames:v 30 -f null - 2>&1 | grep cropdetect
-
-# Parse the crop values from output: crop=W:H:X:Y
-
-# 3. Crop content strip, scale up, center-crop to 1080x1920
-ffmpeg -i input.mp4 \
-  -vf "crop=DETECTED_W:DETECTED_H:DETECTED_X:DETECTED_Y,scale=1080:-1,crop=1080:1920:0:(ih-1920)/2" \
-  -c:a copy \
-  -y output.mp4
-```
-
-**Alternative manual detection** (preferred — cropdetect often fails when background is white/light):
-
-HeyGen typically renders landscape avatars centered on a white/light background in the 9:16 frame.
-Scan the center column for non-white pixels to find the actual content strip:
-
-```bash
-# Extract a frame, then scan center column for content bounds
-ffmpeg -y -ss 5 -i input.mp4 -frames:v 1 /tmp/frame.png 2>/dev/null
-
-ffmpeg -y -i /tmp/frame.png -vf "crop=1:ih:iw/2:0,format=gray" -f rawvideo -pix_fmt gray - 2>/dev/null | \
-  python3 -c "
-import sys
-data = sys.stdin.buffer.read()
-first = last = None
-for i, b in enumerate(data):
-    if b < 240:  # Non-white pixel = actual content
-        if first is None: first = i
-        last = i
-if first is not None:
-    print(f'CONTENT_Y={first}')
-    print(f'CONTENT_HEIGHT={last - first}')
-    print(f'CENTER={( first + last) // 2}')
-else:
-    print('No content bounds detected — avatar may already fill the frame')
-"
-```
-
-Then crop the content strip, scale proportionally to fill width, and center-crop to 9:16:
-```bash
-ffmpeg -y -i input.mp4 \
-  -vf "crop=iw:CONTENT_HEIGHT:0:CONTENT_Y,scale=-1:1920,crop=1080:1920:(ow-1080)/2:0" \
-  -c:v libx264 -crf 23 -preset fast -c:a aac \
-  output.mp4
-```
-
-**Proven crop values for common HeyGen landscape avatars** (1080x1920 canvas):
-- Content strip typically at y≈656, height≈607px
-- Example: `crop=1080:607:0:656,scale=3413:1920,crop=1080:1920:1166:0`
-- Always detect per-video — avatar placement can shift
-
-**Save processed videos** to `output/videos/clip-1.mp4`, `clip-2.mp4`, etc.
-
-If crop mode is `portrait`, just copy the raw files:
-```bash
-cp output/videos/clip-1-raw.mp4 output/videos/clip-1.mp4
-```
-
-### Step ⑧: Output
-
-Organize everything in a dated output folder:
-
-```
-output-YYYY-MM-DD/
-├── blog.md              # Final blog post
-├── tweet.txt            # Tweet text (posted or ready to post)
-├── substack-url.txt     # URL of Substack draft/post
-├── scripts/
-│   ├── clip-1.txt       # Spoken word scripts
-│   ├── clip-2.txt
-│   └── ...
-├── videos/
-│   ├── clip-1.mp4       # Final processed vertical videos
-│   ├── clip-2.mp4
-│   └── ...
-└── manifest.json        # Run metadata
-```
-
-**manifest.json:**
-```json
-{
-  "source": "https://youtu.be/XXXXX",
-  "date": "2026-02-03",
-  "blog": "blog.md",
-  "substackUrl": "https://...",
-  "tweetUrl": "https://...",
-  "clips": ["clip-1.mp4", "clip-2.mp4", "..."],
-  "heygenCreditsUsed": 3
-}
-```
-
-Report the summary to the user:
-- ✅ Blog post: X words
-- ✅ Substack: [URL] (draft/published)
-- ✅ Tweet: posted / ready to post
-- ✅ X video clips generated and processed
-- 💰 HeyGen credits used: ~X
+### 整体流程
 
 ---
 
-## Config Reference
-
-Config file: `skills/yt-content-engine/config.json` (relative to workspace root)
-
-| Key | Description | Default |
-|-----|-------------|---------|
-| `heygen.apiKey` | HeyGen API key | Required |
-| `heygen.avatarId` | Your HeyGen avatar ID | Required |
-| `heygen.voiceId` | Your cloned voice ID | Required |
-| `substack.publication` | Substack subdomain | Required |
-| `twitter.handle` | X/Twitter handle | Required |
-| `author.voice` | Writing style description | Recommended |
-| `author.name` | Author name for attribution | Recommended |
-| `video.clipCount` | Number of clips to generate | `5` |
-| `video.maxClipSeconds` | Max seconds per clip | `60` |
-| `video.cropMode` | `auto`, `portrait`, or `manual` | `auto` |
+### 单个步骤
 
 ---
 
-## Tips & Troubleshooting
+## 流程步骤
 
-- **HeyGen rendering takes 2-3 min per clip.** Set expectations — a 5-clip run takes 10-15 minutes of render time.
-- **Portrait avatars save time.** No cropping needed. Worth re-recording if you use this regularly.
-- **Substack session expires?** Re-run the browser login step (Step 5 of setup).
-- **bird CLI not posting?** Run `bird auth` to re-authenticate.
-- **Bad crop detection?** Switch `cropMode` to `manual` and eyeball the content bounds from a frame export.
-- **HeyGen quota errors?** Check credits at https://app.heygen.com/settings — upgrade plan or reduce clip count.
-- **Transcript unavailable?** Some videos don't have captions. Try `summarize "URL" --extract --youtube yt-dlp` for auto-generated captions, or ask the user for a manual transcript.
+### 第 ①：提取字幕
+
+为本次操作创建输出目录，然后获取 YouTube 视频的字幕：
+
+**使用 `summarize` 工具提取字幕：**
+
+`--extract` 选项会输出未经 LLM 摘要处理的原始字幕。如果提取失败（字幕不可用），可以尝试使用 `--youtube yt-dlp` 命令自动生成字幕，或者让用户提供手动字幕。
+
+---
+
+### 第 ②：编写博客草稿
+
+将提取的字幕转换为格式规范的博客文章。
+
+**从 `config.json` 中读取作者的语音文件（`authorvoice`）。如果 `skills/yt-to-blog/references/voice-guide.md` 中有更详细的发音指南，请参考该指南。**
+
+**写作步骤：**
+- **开头部分（1-3 段落）**：设置场景，使用具体的描述和情感元素吸引读者注意力。
+- **主题阐述（1 段落）**：将场景与文章主题联系起来。
+- **数据部分（5-15 段落）**：交替呈现数据和评论性内容。每个数据点都要有简洁的总结。
+- **呼应开头（1-2 段落）**：回到开头场景或使用比喻来强化主题。
+- **结尾部分（3-6 段落）**：通过有力的结论收尾。
+
+**写作规则：**
+- 句子长度要有所变化——数据部分使用长句，结尾部分使用短句。
+- 使用破折号（`–`）表示旁白，不要使用括号。
+- 通过短句强调重点内容。
+- 正文中不要使用项目符号列表，保持叙述的连贯性。
+- 直接在文本中插入链接，不要使用脚注。
+- 不要使用 “总结” 或 “最后说明” 等语句。
+- 自然地引用视频来源：“正如 [作者名称] 所说...” 并附上链接。
+- 文章字数建议在 1,500-3,000 字之间。
+
+**生成 3-5 个不同的标题选项**，每个标题都应具有独特的表达方式（如对比、反讽、揭示真相或呼应开头）。让用户自行选择最终标题。
+
+将最终草稿保存到输出文件夹中的 `blog.md` 文件中。
+
+---
+
+### 第 ③：发布到 Substack
+
+通过浏览器自动化将博客文章发布到 Substack：
+
+1. 读取 `config.json` 中的 `substack.publication` 配置。
+2. 使用 `profile="openclaw"` 打开浏览器。
+3. 访问 `https://PUBLICATION.substack.com/publish/post`。
+4. 点击标题字段输入标题。
+5. 点击标题下方的文本框输入副标题。
+6. 在编辑器中编写博客内容（可以使用 `pbcopy < /tmp/post.md` 将内容复制到剪贴板）。
+7. Substack 会自动将文章保存为草稿状态。
+
+**注意事项：**
+- 在复制粘贴过程中，破折号（`–`）可能会被误显示为逗号或特殊字符。粘贴后请检查并修正。
+- 对于较长的文章，粘贴和验证之间可能需要稍作等待。
+- 在发布前请在 `https://PUBLICATION.substack.com/publish` 确认文章是否已保存成功。
+
+将 Substack 的发布链接保存到 `output/substack-url.txt` 文件中。
+
+---
+
+### 第 ④：发布到 X/Twitter
+
+使用 `bird` 命令行工具发布推文：
+
+**推文/帖子内容：**
+- 如果文章有一个引人注目的亮点，可以发布一条包含链接的推文。
+- 如果文章有多个亮点，可以发布多条推文（每条推文包含链接）。
+- 确保推文使用与作者一致的语气。
+- 使用 `config.json` 中的 `twitter.handle` 作为推文账号。
+
+**使用 `bird` 命令发布推文：**
+
+**发布推文前务必先向用户展示推文内容并获取确认。**
+
+将推文内容保存到 `output/tweet.txt` 文件中。
+
+---
+
+### 第 ④b：发布到 Facebook 群组（可选）
+
+如果 `config.json` 中包含 `facebook.group` 配置，提醒用户将文章发布到对应的 Facebook 群组。
+
+**注意：** Facebook 群组的 API 发布功能受到严格限制。由于 Facebook 的反机器人机制，使用浏览器自动化工具可能不可靠。最佳方法是：
+1. 先编写一篇简短、更随意的 Facebook 发文内容。
+2. 将内容保存到 `output/facebook-post.txt` 文件中。
+3. 提醒用户：“别忘了将文章发布到 [群组名称]！”
+4. 用户手动在 Facebook 上发布文章。
+
+这样可以在不违反 Facebook 规定的情况下完成内容分发。
+
+---
+
+### 第 ⑤：将博客内容转换为竖屏视频脚本
+
+从博客文章中提取 3-5 个引人注目的片段，并将其转换为适合竖屏视频的脚本。
+
+**提取要点：**
+- **引人注目的观点或争议性内容**：最能吸引读者注意力的部分。
+- **令人惊讶的数据或事实**：能够改变读者理解的内容。
+- **反常规的观点**：与普遍认知相悖的观点。
+- **情感性内容**：能够引起共鸣的故事、轶事或人物元素。
+- **行动号召**：鼓励读者采取行动的呼吁或建议。
+
+**脚本编写规则：**
+- **以最吸引人的内容开头**：直接进入主题，无需冗长的引言。
+- **口语化表达**：为朗读而写作，避免使用复杂的句子结构。
+- 每个脚本长度控制在 30-60 秒左右。
+- 每个脚本必须独立成篇，不要包含 “如前所述” 等过渡性语句。
+- 以有力的结尾收尾。
+
+**脚本格式：**
+使用 `config.json` 中的 `video.clipCount`（默认值为 5）和 `video.maxClipSeconds`（默认值为 60 秒）来设置脚本数量和每个脚本的最大时长。
+
+将生成的脚本保存到 `output/scripts/clip-1.txt` 等文件中。
+
+---
+
+### 第 ⑥：使用 HeyGen 生成视频
+
+将每个脚本提交给 HeyGen API 生成 AI 制作的虚拟形象视频。
+
+**配置文件说明：**
+---
+
+**为每个脚本提交视频生成请求：**
+
+**解析响应以获取视频 ID：**
+
+**在提交所有脚本后统一等待视频生成结果。** HeyGen 会并行处理所有脚本，因此先提交所有脚本，然后再统一获取所有视频 ID。这样可以将总处理时间从 N×3 分钟缩短到约 3 分钟。
+
+**定期检查生成进度（每 15 秒检查一次，超时后显示 `failed`）。**
+
+**状态显示：** `pending` → `processing` → `completed`（附带视频链接）或 `failed`（附带错误信息）。
+
+**下载生成的视频：**
+
+**注意：** 每分钟视频生成大约需要 1 个信用额度。如果生成 5 个视频，大约需要 3 个信用额度。在提交前请告知用户相关费用。
+
+---
+
+### 第 ⑦：视频后期处理
+
+如果虚拟形象是横屏录制的，生成的 9:16 比例视频中虚拟形象可能会显示为小条状图像。可以使用 `ffmpeg` 对视频进行裁剪和调整：
+
+**检查 `config.json` 中的 `video.cropMode` 配置：**
+- `"auto"`：自动检测并裁剪。
+- `"portrait"`：跳过裁剪（虚拟形象是横屏录制的）。
+- `"manual"`：要求用户提供裁剪坐标。
+
+**自动裁剪流程：**
+
+**如果自动裁剪失败（尤其是背景为白色或浅色时），可以手动调整裁剪方式：**
+
+HeyGen 通常会将横屏录制的虚拟形象显示在 9:16 比例的白色或浅色背景中。可以通过扫描视频中心区域来找到实际的有效内容区域，并进行裁剪。
+
+**裁剪后的视频保存路径：**
+
+将处理后的视频保存到 `output/videos/clip-1.mp4` 等文件中。
+
+---
+
+### 第 ⑧：整理输出文件
+
+将所有处理后的文件整理到一个带有日期标记的输出文件夹中：
+
+**输出文件结构：**
+
+**配置文件：** `manifest.json`
+
+**向用户报告处理结果：**
+- ✅ 博客文章：X 字
+- ✅ Substack 发文：[链接]（草稿/已发布）
+- ✅ Twitter 推文：已发布/待发布
+- ✅ 生成并处理了 X 个视频片段
+- 💰 使用的 HeyGen 信用额度：约 X 个
+
+---
+
+## 配置文件参考
+
+配置文件：`skills/yt-content-engine/config.json`（位于工作区根目录下）
+
+| 配置项 | 说明 | 默认值 |
+|------|-------------|---------|
+| `heygen.apiKey` | HeyGen API 密钥 | 必需 |
+| `heygen.avatarId` | 用户的 HeyGen 虚拟形象 ID | 必需 |
+| `heygen.voiceId` | 用户克隆的语音 ID | 必需 |
+| `substack.publication` | Substack 发文平台域名 | 必需 |
+| `twitter.handle` | X/Twitter 账号 | 必需 |
+| `authorVOICE` | 作者的发音风格描述 | 建议设置 |
+| `author.name` | 作者姓名（用于署名） | 建议设置 |
+| `video.clipCount` | 需要生成的视频片段数量 | 5 |
+| `video.maxClipSeconds` | 每个视频的最大时长 | 60 秒 |
+| `video.cropMode` | `auto`（自动裁剪）、`portrait`（竖屏裁剪）或 `manual`（手动裁剪） | `auto` |
+
+---
+
+## 提示与故障排除
+
+- **HeyGen 生成视频需要 2-3 分钟每个片段。** 请用户做好心理准备，5 个片段的整个处理过程大约需要 10-15 分钟。
+- **使用竖屏虚拟形象可以节省时间**：如果经常使用该功能，建议重新录制视频以避免裁剪步骤。
+- 如果 Substack 登录失效，请重新执行步骤 5（登录操作）。
+- 如果 `bird` 命令行工具无法正常发布推文，请运行 `bird auth` 命令重新认证。
+- 如果裁剪效果不佳，可以将 `cropMode` 更改为 `manual` 并手动调整视频边界。
+- 如果遇到 HeyGen 的使用额度限制，请查看 `https://app.heygen.com/settings` 以获取更多信息或调整片段数量。
+- 如果无法获取字幕，可以尝试使用 `summarize "URL" --extract --youtube yt-dlp` 命令自动生成字幕，或让用户提供手动字幕。

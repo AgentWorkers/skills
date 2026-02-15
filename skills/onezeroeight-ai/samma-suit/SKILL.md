@@ -1,6 +1,6 @@
 ---
 name: samma-suit
-description: Add 8 security governance layers to your OpenClaw agent — budget controls, permissions, audit logging, kill switch, identity signing, skill vetting, process isolation, and gateway protection.
+description: 为你的 OpenClaw 代理添加 8 层安全治理机制：预算控制、权限管理、审计日志记录、紧急停止功能（kill switch）、身份验证与签名、技能审核、进程隔离以及网关保护。
 metadata:
   openclaw:
     emoji: "🛡️"
@@ -12,21 +12,21 @@ user-invocable: true
 command-dispatch: prompt
 ---
 
-# Sammā Suit — Security Governance for OpenClaw
+# Sammā Suit — OpenClaw的安全治理框架
 
-You are helping the user install and configure Sammā Suit, an open-source security framework that adds 8 enforced governance layers to OpenClaw as lifecycle hooks.
+您将帮助用户安装和配置Sammā Suit，这是一个开源的安全框架，它为OpenClaw添加了8层强制性的治理机制，这些机制以生命周期钩子的形式实现。
 
-## What It Does
+## 功能介绍
 
-Sammā Suit intercepts OpenClaw's plugin hooks to enforce:
-- **NIRVANA** — Kill switch. Blocks all activity if agent is terminated.
-- **DHARMA** — Permissions. Checks tools against allowed permission set.
-- **SANGHA** — Skill vetting. Blocks unapproved skills via allowlist + AST scanning.
-- **KARMA** — Budget controls. Per-agent monthly spending caps with hard ceiling.
-- **BODHI** — Isolation. Injects timeout, token, and resource limits per agent.
-- **METTA** — Identity. Ed25519 cryptographic signing on outbound messages.
-- **SILA** — Audit trail. Logs every tool call, message, and session event.
+Sammā Suit通过拦截OpenClaw的插件钩子来执行以下安全控制：
+- **NIRVANA**（涅槃）：当代理程序被终止时，会阻止所有操作。
+- **DHARMA**（佛法）：检查工具的使用权限是否在允许的范围内。
+- **SANGHA**（僧团）：通过允许列表和AST扫描来阻止未经批准的技能的使用。
+- **KARMA**（因果报应）：为每个代理设置每月的支出上限。
+- **BODHI**（菩提）：为每个代理设置超时限制、令牌限制和资源限制。
+- **METTA**（慈悲）：对所有出站消息进行Ed25519加密签名。
+- **SILA**（戒律）：记录所有的工具调用、消息和会话事件。
 
-## Installation
+## 安装方法
 
-Run:
+运行：

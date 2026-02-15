@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Access - Ruby
+# Telnyx 账户访问 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,11 +31,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all addresses
+## 列出所有地址
 
-Returns a list of your addresses.
+返回您的地址列表。
 
 `GET /addresses`
 
@@ -45,11 +45,11 @@ page = client.addresses.list
 puts(page)
 ```
 
-## Creates an address
+## 创建地址
 
-Creates an address.
+创建一个新的地址。
 
-`POST /addresses` — Required: `first_name`, `last_name`, `business_name`, `street_address`, `locality`, `country_code`
+`POST /addresses` — 必需参数：`first_name`（名字）、`last_name`（姓氏）、`business_name`（公司名称）、`street_address`（街道地址）、`locality`（地区）、`country_code`（国家代码）
 
 ```ruby
 address = client.addresses.create(
@@ -64,9 +64,9 @@ address = client.addresses.create(
 puts(address)
 ```
 
-## Retrieve an address
+## 获取地址详情
 
-Retrieves the details of an existing address.
+获取现有地址的详细信息。
 
 `GET /addresses/{id}`
 
@@ -76,9 +76,9 @@ address = client.addresses.retrieve("id")
 puts(address)
 ```
 
-## Deletes an address
+## 删除地址
 
-Deletes an existing address.
+删除现有的地址。
 
 `DELETE /addresses/{id}`
 
@@ -88,7 +88,7 @@ address = client.addresses.delete("id")
 puts(address)
 ```
 
-## Accepts this address suggestion as a new emergency address for Operator Connect and finishes the uploads of the numbers associated with it to Microsoft.
+## 接受此地址建议作为 Operator Connect 的新紧急联系人地址，并完成将其相关号码上传至 Microsoft 的操作。
 
 `POST /addresses/{id}/actions/accept_suggestions`
 
@@ -98,11 +98,11 @@ response = client.addresses.actions.accept_suggestions("182bd5e5-6e1a-4fe4-a799-
 puts(response)
 ```
 
-## Validate an address
+## 验证地址
 
-Validates an address for emergency services.
+验证地址是否适合用于紧急服务。
 
-`POST /addresses/actions/validate` — Required: `country_code`, `street_address`, `postal_code`
+`POST /addresses/actions/validate` — 必需参数：`country_code`（国家代码）、`street_address`（街道地址）、`postal_code`（邮政编码）
 
 ```ruby
 response = client.addresses.actions.validate(
@@ -114,9 +114,9 @@ response = client.addresses.actions.validate(
 puts(response)
 ```
 
-## List all SSO authentication providers
+## 列出所有 SSO（单点登录）认证提供者
 
-Returns a list of your SSO authentication providers.
+返回您的 SSO 认证提供者列表。
 
 `GET /authentication_providers`
 
@@ -126,11 +126,11 @@ page = client.authentication_providers.list
 puts(page)
 ```
 
-## Creates an authentication provider
+## 创建认证提供者
 
-Creates an authentication provider.
+创建一个新的认证提供者。
 
-`POST /authentication_providers` — Required: `name`, `short_name`, `settings`
+`POST /authentication_providers` — 必需参数：`name`（名称）、`short_name`（简称）、`settings`（设置）
 
 ```ruby
 authentication_provider = client.authentication_providers.create(
@@ -146,9 +146,9 @@ authentication_provider = client.authentication_providers.create(
 puts(authentication_provider)
 ```
 
-## Retrieve an authentication provider
+## 获取认证提供者详情
 
-Retrieves the details of an existing authentication provider.
+获取现有认证提供者的详细信息。
 
 `GET /authentication_providers/{id}`
 
@@ -158,9 +158,9 @@ authentication_provider = client.authentication_providers.retrieve("id")
 puts(authentication_provider)
 ```
 
-## Update an authentication provider
+## 更新认证提供者设置
 
-Updates settings of an existing authentication provider.
+更新现有认证提供者的设置。
 
 `PATCH /authentication_providers/{id}`
 
@@ -170,9 +170,9 @@ authentication_provider = client.authentication_providers.update("id")
 puts(authentication_provider)
 ```
 
-## Deletes an authentication provider
+## 删除认证提供者
 
-Deletes an existing authentication provider.
+删除现有的认证提供者。
 
 `DELETE /authentication_providers/{id}`
 
@@ -182,7 +182,9 @@ authentication_provider = client.authentication_providers.delete("id")
 puts(authentication_provider)
 ```
 
-## List all billing groups
+## 列出所有计费组
+
+获取您的计费组列表。
 
 `GET /billing_groups`
 
@@ -192,7 +194,9 @@ page = client.billing_groups.list
 puts(page)
 ```
 
-## Create a billing group
+## 创建计费组
+
+创建一个新的计费组。
 
 `POST /billing_groups`
 
@@ -202,7 +206,9 @@ billing_group = client.billing_groups.create
 puts(billing_group)
 ```
 
-## Get a billing group
+## 获取计费组详情
+
+获取特定计费组的详细信息。
 
 `GET /billing_groups/{id}`
 
@@ -212,7 +218,9 @@ billing_group = client.billing_groups.retrieve("f5586561-8ff0-4291-a0ac-84fe5447
 puts(billing_group)
 ```
 
-## Update a billing group
+## 更新计费组设置
+
+更新现有计费组的设置。
 
 `PATCH /billing_groups/{id}`
 
@@ -222,7 +230,9 @@ billing_group = client.billing_groups.update("f5586561-8ff0-4291-a0ac-84fe544797
 puts(billing_group)
 ```
 
-## Delete a billing group
+## 删除计费组
+
+删除现有的计费组。
 
 `DELETE /billing_groups/{id}`
 
@@ -232,9 +242,9 @@ billing_group = client.billing_groups.delete("f5586561-8ff0-4291-a0ac-84fe544797
 puts(billing_group)
 ```
 
-## List integration secrets
+## 列出所有集成密钥
 
-Retrieve a list of all integration secrets configured by the user.
+获取用户配置的所有集成密钥列表。
 
 `GET /integration_secrets`
 
@@ -244,11 +254,11 @@ page = client.integration_secrets.list
 puts(page)
 ```
 
-## Create a secret
+## 创建集成密钥
 
-Create a new secret with an associated identifier that can be used to securely integrate with other services.
+创建一个新的集成密钥，并为其指定一个标识符，以便与其他服务安全地集成。
 
-`POST /integration_secrets` — Required: `identifier`, `type`
+`POST /integration_secrets` — 必需参数：`identifier`（标识符）、`type`（类型）
 
 ```ruby
 integration_secret = client.integration_secrets.create(identifier: "my_secret", type: :bearer)
@@ -256,9 +266,9 @@ integration_secret = client.integration_secrets.create(identifier: "my_secret", 
 puts(integration_secret)
 ```
 
-## Delete an integration secret
+## 删除集成密钥
 
-Delete an integration secret given its ID.
+根据 ID 删除指定的集成密钥。
 
 `DELETE /integration_secrets/{id}`
 
@@ -268,7 +278,9 @@ result = client.integration_secrets.delete("id")
 puts(result)
 ```
 
-## List all Access IP Addresses
+## 列出所有访问 IP 地址
+
+获取您的访问 IP 地址列表。
 
 `GET /access_ip_address`
 
@@ -278,9 +290,11 @@ page = client.access_ip_address.list
 puts(page)
 ```
 
-## Create new Access IP Address
+## 创建新的访问 IP 地址
 
-`POST /access_ip_address` — Required: `ip_address`
+创建一个新的访问 IP 地址。
+
+`POST /access_ip_address` — 必需参数：`ip_address`（IP 地址）
 
 ```ruby
 access_ip_address_response = client.access_ip_address.create(ip_address: "ip_address")
@@ -288,7 +302,9 @@ access_ip_address_response = client.access_ip_address.create(ip_address: "ip_add
 puts(access_ip_address_response)
 ```
 
-## Retrieve an access IP address
+## 获取访问 IP 地址详情
+
+获取特定访问 IP 地址的详细信息。
 
 `GET /access_ip_address/{access_ip_address_id}`
 
@@ -298,7 +314,9 @@ access_ip_address_response = client.access_ip_address.retrieve("access_ip_addres
 puts(access_ip_address_response)
 ```
 
-## Delete access IP address
+## 删除访问 IP 地址
+
+删除指定的访问 IP 地址。
 
 `DELETE /access_ip_address/{access_ip_address_id}`
 
@@ -308,7 +326,9 @@ access_ip_address_response = client.access_ip_address.delete("access_ip_address_
 puts(access_ip_address_response)
 ```
 
-## List all Access IP Ranges
+## 列出所有访问 IP 范围
+
+获取您的访问 IP 范围列表。
 
 `GET /access_ip_ranges`
 
@@ -318,9 +338,11 @@ page = client.access_ip_ranges.list
 puts(page)
 ```
 
-## Create new Access IP Range
+## 创建新的访问 IP 范围
 
-`POST /access_ip_ranges` — Required: `cidr_block`
+创建一个新的访问 IP 范围。
+
+`POST /access_ip_ranges` — 必需参数：`cidr_block`（IP 范围）
 
 ```ruby
 access_ip_range = client.access_ip_ranges.create(cidr_block: "cidr_block")
@@ -328,7 +350,9 @@ access_ip_range = client.access_ip_ranges.create(cidr_block: "cidr_block")
 puts(access_ip_range)
 ```
 
-## Delete access IP ranges
+## 删除访问 IP 范围
+
+删除指定的访问 IP 范围。
 
 `DELETE /access_ip_ranges/{access_ip_range_id}`
 

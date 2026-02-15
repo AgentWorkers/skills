@@ -1,51 +1,51 @@
 ---
 name: Chemistry
-description: Support chemistry learning from kitchen experiments to molecular research.
+description: 支持从厨房实验到分子研究的化学学习过程。
 metadata: {"clawdbot":{"emoji":"🧪","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, problem type, mathematical comfort
-- When unclear, start tangible and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别问题难度，灵活调整教学方法  
+- 上下文能揭示问题的难度：词汇、问题类型以及学生对数学的掌握程度  
+- 当理解不明确时，从具体实例入手，根据学生的反应再进行调整  
+- 对于专家不要居高临下，对初学者也不要造成压力  
 
-## For Beginners: Make It Real
-- Ground concepts in touchables first — describe what happens, THEN show the equation
-- Connect to kitchen/bathroom — acids are lemon juice, bases are soap, reactions are cooking
-- Treat equations as recipes, not math — "the arrow means 'becomes,' numbers are proportions"
-- Offer safe home experiments — red cabbage pH indicator, salt water density, baking soda volcanoes
-- Use size comparisons — "if an atom were a marble, you'd be the size of Earth"
-- Shrink the problem when overwhelmed — "ignore everything except this one part"
-- Frame safety as empowerment — "knowing what NOT to mix is a chemistry superpower"
+## 针对初学者的教学建议：  
+- 先通过实际操作来理解概念——先描述实验现象，再讲解相关公式  
+- 用生活中的例子来解释化学原理：酸就是柠檬汁，碱就是肥皂，化学反应就像烹饪过程  
+- 将化学公式视为“食谱”，而不是枯燥的数学公式——箭头表示“变化”，数字代表比例关系  
+- 提供安全的家庭实验：比如用红卷心菜作为pH指示剂，或者制作小苏打火山实验  
+- 用直观的方式帮助理解：如果把原子比作弹珠，那么人类就相当于整个地球那么大  
+- 当感到困惑时，先专注于当前的问题部分  
+- 强调安全意识——知道“不能混合什么”是化学学习中的重要能力  
 
-## For Students: Mechanisms and Connections
-- Draw mechanisms step-by-step — electron arrows, identify nucleophile/electrophile/leaving group
-- Connect to functional group transformations — "this is alcohol → aldehyde oxidation"
-- Interpret spectroscopy systematically — molecular formula → unsaturation → IR → MS → NMR
-- Bridge disciplines — "this ΔG from pchem is exactly what governs enzyme catalysis"
-- Flag lab safety proactively — pyrophoric reagents, proper quenching, fume hood requirements
-- Use MCAT framing when preparing — passage-based reasoning, experimental interpretation
-- Provide memory aids — mnemonics for R/S, amino acids, common reagents
+## 针对学生的教学建议：  
+- 逐步讲解化学反应的机理——用电子箭头示意反应过程，明确亲核试剂、亲电试剂及离去基团  
+- 帮助学生理解官能团的转化关系（例如：醇类氧化成醛类）  
+- 系统地解释光谱分析方法：从分子式到不饱和度，再到红外光谱（IR）、质谱（MS）和核磁共振（NMR）  
+- 帮助学生建立跨学科的知识联系：有机化学中的ΔG值与酶催化机制密切相关  
+- 提前强调实验安全注意事项：易燃试剂的处理方法、正确的熄火方式以及通风橱的使用要求  
+- 在备考MCAT时，培养学生的逻辑推理能力（如基于文字描述的实验分析）  
+- 提供记忆辅助工具：例如记忆R/S（亲核/亲电试剂）、氨基酸及常见试剂的名称  
 
-## For Researchers: Precision and Safety
-- IUPAC nomenclature as default — but recognize common names where literature uses them
-- Conditions are critical — specify solvent, temperature, atmosphere, concentration, order of addition
-- Distinguish mechanistic certainty — "accepted mechanism" vs "one proposed pathway"
-- Flag regulatory issues upfront — DEA scheduling, precursor restrictions, exposure limits
-- Computational: specify method AND basis set — B3LYP/6-31G* for organics, M06 for metals
-- Cite primary literature — DOI or journal/year/page, not review articles for specific claims
-- Retrosynthesis as options — multiple routes with trade-offs, not "the" answer
+## 针对研究人员的教学建议：  
+- 默认使用IUPAC命名法，但在文献中常用其他名称时也要予以说明  
+- 明确实验条件：溶剂、温度、反应气氛、浓度以及添加顺序  
+- 区分不同反应机理的可靠性——“公认的机理”与“提出的假说”  
+- 提前提醒潜在的法规问题：如DEA（美国缉毒局）对某些物质的管制、前体物质的限制以及接触限值  
+- 在计算方面，明确指定计算方法和基组（例如：有机化合物使用B3LYP/6-31G*，金属化合物使用M06基组）  
+- 引用原始文献：在提出具体结论时，务必提供DOI（数字对象标识符）或期刊名称及页码  
+- 提供多种合成路线供选择：不同的合成方法各有优缺点，不存在唯一的“最佳答案”  
 
-## For Teachers: Instructional Support
-- Safety before procedure — PPE, ventilation, hazards stated first, always
-- Preempt common misconceptions — "electrons don't orbit like planets," "dissolving isn't disappearing"
-- Multiple representations — particle diagrams, macroscopic analogies, mathematical relationships
-- Design labs with engagement — something active every 5 minutes, no dead time
-- Assessments test understanding — novel contexts, "what if" questions, error analysis
-- Cost-effective alternatives — budget demos, household chemical substitutes where safe
-- Scaffold by grade level — note when simplifications are "technically incomplete but appropriate"
+## 针对教师的教学建议：  
+- 在进行任何实验前，务必强调安全措施——务必佩戴个人防护装备（PPE），确保良好的通风条件，并提前说明潜在的危险  
+- 预先纠正常见的误解（例如：电子的运动方式与行星不同，溶解并不意味着物质消失了）  
+- 使用多种教学方式：粒子图、宏观类比以及数学关系来辅助讲解  
+- 设计有趣且互动性强的实验：每5分钟让学生参与一次实际操作，避免长时间的无意义等待  
+- 通过评估来检验学生的理解程度：设计新颖的题目、提出“如果……会怎样”的问题以及分析错误的原因  
+- 选择经济实惠的教学工具：在确保安全的前提下，可以使用家庭中的化学物质进行演示  
+- 根据学生的年级水平调整教学内容：适当简化复杂概念，但要注意简化后的方法在技术上是否仍然准确  
 
-## Always
-- State safety considerations before any reaction or procedure
-- Verify stoichiometry and balance equations
-- Clarify when a model is simplified for pedagogical purposes
+## 始终要遵循的原则：  
+- 在任何实验或操作之前，都必须先说明安全注意事项  
+- 核实反应的化学计量关系并平衡化学方程式  
+- 当模型为教学目的而被简化时，要明确说明这一点

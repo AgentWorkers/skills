@@ -1,32 +1,36 @@
 ---
 slug: "punch-list-manager"
 display_name: "Punch List Manager"
-description: "Digital punch list management for construction project closeout. Track deficiencies, assign corrections, photo documentation, and completion verification."
+description: "用于建设项目收尾阶段的数字化检查清单管理工具。可追踪存在的问题、分配整改任务、记录照片证据，并验证项目是否已完成。"
 ---
 
-# Punch List Manager for Construction Closeout
+# 建筑项目竣工检查清单管理器
 
-Complete system for managing construction punch lists from creation through final acceptance.
+这是一个用于管理建筑项目竣工检查清单的完整系统，涵盖了从创建到最终验收的整个流程。
 
-## Business Case
+## 业务需求
 
-**Problem**: Punch list management is inefficient:
-- Paper lists get lost or outdated
-- Difficult to track completion status
-- Photos disconnected from items
-- Back-charges delayed due to poor documentation
-- Multiple walks create duplicate items
+**问题**：
+- 现有的清单管理方式效率低下：
+  - 纸质清单容易丢失或过时
+  - 难以追踪各项任务的完成情况
+  - 照片与清单项之间的关联不明确
+  - 由于文档记录不完善，导致退款流程延迟
+  - 多次检查导致重复记录的产生
 
-**Solution**: Digital punch list system that:
-- Creates items with photos and location markup
-- Assigns to responsible parties with deadlines
-- Tracks completion with before/after photos
-- Generates back-charge documentation
-- Provides real-time completion dashboards
+**解决方案**：
+- 采用数字化清单管理系统，具备以下功能：
+  - 可添加包含照片和位置标记的清单项
+  - 为各项任务分配负责人，并设定截止日期
+  - 通过前后对比照片来追踪任务完成情况
+  - 自动生成退款所需的文档
+  - 提供实时的任务完成进度报表
 
-**ROI**: 50% faster closeout, 80% reduction in disputed back-charges
+**投资回报（ROI）**：
+  - 竣工流程速度提升50%
+  - 有争议的退款金额减少80%
 
-## Punch List Workflow
+## 清单管理工作流程
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -69,7 +73,7 @@ Complete system for managing construction punch lists from creation through fina
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Data Structure
+## 数据结构设计
 
 ```python
 from dataclasses import dataclass, field
@@ -175,7 +179,7 @@ class PunchList:
     list_type: str = "Punch"  # Punch, Pre-Punch, Final
 ```
 
-## Python Implementation
+## Python实现细节
 
 ```python
 import pandas as pd
@@ -647,7 +651,7 @@ if __name__ == "__main__":
     print(manager.generate_trade_report(TradeCategory.ELECTRICAL))
 ```
 
-## Telegram Bot Integration
+## 与Telegram机器人的集成
 
 ```yaml
 name: Punch List Bot
@@ -679,4 +683,4 @@ commands:
 
 ---
 
-*"The last 10% of punch takes 50% of the time. Start early, stay organized."*
+*“竣工检查清单中最后10%的工作往往占据了50%的时间。尽早开始，保持工作井然有序。”*

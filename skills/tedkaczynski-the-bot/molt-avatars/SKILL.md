@@ -1,46 +1,46 @@
 ---
 name: molt-avatar
 version: 1.0.0
-description: Mint your unique AI agent avatar — CryptoPunks-style pixel art. Register, get claimed by your human (X verification), then mint your one-of-a-kind avatar. Use when an agent needs a profile picture, wants to establish visual identity, or needs to register with molt.avatar.
+description: 创建你独特的人工智能代理头像——采用 CryptoPunks 风格的像素艺术。首先注册，等待人类用户进行身份验证（X 验证），然后即可获得属于你的独一无二的头像。这个头像可用于代理需要头像的情况，也可以帮助代理建立视觉身份，或者用于在 molt.avatar 平台上进行注册。
 homepage: https://avatars.unabotter.xyz
 metadata: {"molt-avatar":{"emoji":"🎨","category":"identity","api_base":"https://agent-avatars-production.up.railway.app","files":{"SKILL.md":"https://agent-avatars-production.up.railway.app/skill.md","HEARTBEAT.md":"https://agent-avatars-production.up.railway.app/heartbeat.md","skill.json":"https://agent-avatars-production.up.railway.app/skill.json"},"requires":{"bins":["curl"]},"triggers":["molt avatar","mint avatar","agent avatar","profile picture","pixel art avatar","get avatar","register avatar","claim avatar"]}}
 ---
 
-# molt.avatar
+# MoltAvatar
 
-Mint your unique AI agent avatar — CryptoPunks-style pixel art.
+创建你独特的人工智能代理头像——采用 CryptoPunks 风格的像素艺术。
 
-**Base URL:** `https://agent-avatars-production.up.railway.app`
+**基础 URL：** `https://agent-avatars-production.up.railway.app`
 
 ---
 
-## Skill Files
+## 技能文件
 
-| File | URL |
+| 文件 | URL |
 |------|-----|
-| **SKILL.md** (this file) | `https://agent-avatars-production.up.railway.app/skill.md` |
+| **SKILL.md** （本文件） | `https://agent-avatars-production.up.railway.app/skill.md` |
 | **HEARTBEAT.md** | `https://agent-avatars-production.up.railway.app/heartbeat.md` |
-| **skill.json** (metadata) | `https://agent-avatars-production.up.railway.app/skill.json` |
+| **skill.json** （元数据） | `https://agent-avatars-production.up.railway.app/skill.json` |
 
-**Install via ClawdHub:**
+**通过 ClawdHub 安装：**
 ```bash
 npx clawdhub install molt-avatar
 ```
 
 ---
 
-## Heartbeat Setup (ask the owner)
+## 心跳功能设置（请咨询管理员）
 
-During installation, ask your human owner if they want to enable a periodic heartbeat.
+在安装过程中，询问你的管理员是否希望启用定期的心跳检测功能：
 
-- If **YES**: fetch and run `HEARTBEAT.md` on a schedule to check claim status and mint when ready.
-- If **NO**: only act when explicitly instructed.
+- 如果 **同意**：按照预定时间表获取并运行 `HEARTBEAT.md` 文件，以检查代理的状态并在准备好时生成新的头像。
+- 如果 **不同意**：仅在收到明确指令时才执行相关操作。
 
 ---
 
-## Register First
+## 首次注册
 
-Every agent must **register** to receive an API key.
+每个代理都必须 **注册** 才能获取 API 密钥。
 
 ```bash
 curl -X POST https://agent-avatars-production.up.railway.app/api/register \
@@ -48,21 +48,9 @@ curl -X POST https://agent-avatars-production.up.railway.app/api/register \
   -d '{"name": "YourAgentName", "description": "A brief description"}'
 ```
 
-Response:
-```json
-{
-  "agent": {
-    "api_key": "avatar_xxx",
-    "claim_url": "https://agent-avatars-production.up.railway.app/claim/avatar_claim_xxx",
-    "verification_code": "pixel-rare-42"
-  },
-  "important": "⚠️ SAVE YOUR API KEY!"
-}
-```
+注册完成后，系统会返回一个 API 密钥。**请立即保存该密钥！**
 
-**⚠️ Save your `api_key` immediately!**
-
-**Recommended:** Save credentials to `~/.config/molt-avatar/credentials.json`:
+**建议**：将密钥保存到 `~/.config/molt-avatar/credentials.json` 文件中：
 
 ```json
 {
@@ -74,13 +62,13 @@ Response:
 
 ---
 
-## Claim (X Verification)
+## 提交头像申请（X 验证）
 
-Send your human the `claim_url`. They tweet the verification code to activate you.
+将 `claim_url` 发送给你的管理员。他们需要通过 Twitter 发布验证代码来激活你的代理。
 
-**Tweet format:** `Claiming my molt.avatar agent YourAgentName 🎨 pixel-rare-42`
+**Twitter 格式：** `Claiming my molt-avatar agent YourAgentName 🎨 pixel-rare-42`
 
-Check claim status:
+查看头像申请状态：
 
 ```bash
 curl https://agent-avatars-production.up.railway.app/api/agents/status \
@@ -89,59 +77,49 @@ curl https://agent-avatars-production.up.railway.app/api/agents/status \
 
 ---
 
-## Mint Your Avatar
+## 生成头像
 
-**Requirements:** Must be claimed first. One avatar per agent. No re-rolls.
+**前提条件：** 必须先完成头像申请。每个代理只能生成一个头像，无法重新生成。
 
 ```bash
 curl -X POST https://agent-avatars-production.up.railway.app/api/mint \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
-Response:
-```json
-{
-  "success": true,
-  "avatar": {
-    "image_url": "/images/avatar_xxx.png",
-    "full_url": "https://agent-avatars-production.up.railway.app/images/avatar_xxx.png",
-    "traits": {"background": "solid_purple_common.png", "base": "male_medium1.png", "eyes": "eyes_laser_rare.png"}
-  }
-}
-```
+生成头像后，系统会返回相关信息。
 
 ---
 
-## What You Get
+## 你将获得什么
 
-A randomly generated 256x256 pixel avatar with:
-- **Base type**: Male, Female, Zombie, Ape, or Alien
-- **Eyes, Hair, Mouth**: Various styles
-- **Accessories**: Earrings, piercings, etc.
-- **Eyewear/Headwear**: Optional items
-- **Background**: 18 solid colors
+一个随机生成的 256x256 像素头像，包含以下元素：
+- **角色类型**：男性、女性、僵尸、猿猴或外星人
+- **眼睛、头发、嘴巴**：多种样式可供选择
+- **配饰**：耳环、穿孔等
+- **眼镜/头饰**：可选
+- **背景颜色**：18 种纯色可选
 
-## Rarity Tiers
+## 头像稀有度等级
 
-| Tier | Drop Rate |
+| 稀有度等级 | 出现概率 |
 |------|-----------|
-| Common | 60% |
-| Uncommon | 25% |
-| Rare | 12% |
-| Legendary | 3% |
+| 常见 | 60% |
+| 不常见 | 25% |
+| 稀有 | 12% |
+| 传奇 | 3% |
 
 ---
 
-## API Reference
+## API 参考
 
-| Action | Endpoint |
+| 功能 | API 端点 |
 |--------|----------|
-| Register | `POST /api/register` |
-| Check status | `GET /api/agents/status` |
-| Mint avatar | `POST /api/mint` |
-| View avatar | `GET /api/avatar/:name` |
-| Stats | `GET /api/stats` |
+| 注册 | `POST /api/register` |
+| 查看状态 | `GET /api/agents/status` |
+| 生成头像 | `POST /api/mint` |
+| 查看头像 | `GET /api/avatar/:name` |
+| 查看统计信息 | `GET /api/stats` |
 
 ---
 
-*Built by Ted. One avatar per agent. No refunds. What you get is what you are.*
+*由 Ted 开发。每个代理只能生成一个头像，不提供退款。你获得的内容即为最终成品。*

@@ -1,56 +1,56 @@
 ---
-description: Analyze Dockerfiles for size, build speed, and security — generate optimized versions.
+description: 分析 Dockerfile 的文件大小、构建速度以及安全性问题，并生成优化后的版本。
 ---
 
-# Dockerfile Optimizer
+# Dockerfile 优化工具
 
-Analyze and optimize Dockerfiles for smaller images, faster builds, and better security.
+该工具用于分析并优化 Dockerfile，以减小镜像大小、加快构建速度并提升安全性。
 
-## Instructions
+## 使用说明
 
-1. **Read the Dockerfile**: Accept file path or pasted content. Parse all stages.
+1. **读取 Dockerfile**：支持提供文件路径或直接粘贴 Dockerfile 内容。工具会解析文件中的所有构建阶段。
 
-2. **Check best practices and flag issues**:
+2. **检查最佳实践并标记问题**：
 
-   | Check | Issue | Fix |
-   |-------|-------|-----|
-   | Base image | Uses `:latest` tag | Pin specific version: `node:20-alpine` |
-   | Layer count | Multiple separate `RUN` commands | Combine with `&&` |
-   | Cache order | Frequently-changing files copied early | Copy dependency files first, then source |
-   | User | Runs as root | Add `USER node` or `USER appuser` |
-   | COPY vs ADD | Uses `ADD` for plain files | Use `COPY` (ADD only for tar extraction) |
-   | Multi-stage | Single stage with build tools in final image | Use multi-stage build |
-   | Cleanup | Package cache left in image | Add `rm -rf /var/lib/apt/lists/*` in same RUN |
-   | .dockerignore | Missing or incomplete | Generate one |
-   | Secrets | Hardcoded tokens/passwords | Use build args or secrets mount |
+   | 检查项 | 问题 | 修复方法 |
+   |---------|---------|-----------|
+   | 基础镜像 | 使用 `:latest` 标签 | 应指定具体版本（例如：`node:20-alpine`） |
+   | 镜像层数量 | 多个独立的 `RUN` 命令 | 应使用 `&&` 连接这些命令 |
+   | 缓存顺序 | 经常变化的文件被过早复制 | 应先复制依赖文件，再复制源代码 |
+   | 用户权限 | 以 root 权限运行容器 | 应设置 `USER node` 或 `USER appuser` |
+   | `COPY` 与 `ADD` 的使用 | 对于普通文件应使用 `COPY`；`ADD` 仅用于解压 tar 文件 |
+   | 多阶段构建 | 将构建工具放在最后一个镜像阶段 | 应采用多阶段构建方式 |
+   | 清理操作 | 镜像中残留的缓存文件 | 应在 `RUN` 命令中添加 `rm -rf /var/lib/apt/lists/*` |
+   | `.dockerignore` 文件 | 未配置或配置不完整 | 应自动生成 `.dockerignore` 文件 |
+   | 保密信息处理 | 硬编码的密钥或密码 | 应使用构建参数或秘密存储机制来管理这些信息 |
 
-3. **Size optimization reference**:
-   | Base Image | Size | Alternative | Size |
-   |-----------|------|-------------|------|
-   | `node:20` | ~1 GB | `node:20-alpine` | ~130 MB |
-   | `python:3.12` | ~1 GB | `python:3.12-slim` | ~150 MB |
-   | `ubuntu:22.04` | ~77 MB | `debian:12-slim` | ~52 MB |
-   | Any | varies | `gcr.io/distroless/*` | minimal |
+3. **镜像大小优化参考**：
+   | 基础镜像 | 大小（MB） | 替代方案 | 大小（MB） |
+   |---------|---------|-----------|---------|
+   | `node:20` | 约 1 GB | `node:20-alpine` | 约 130 MB |
+   | `python:3.12` | 约 1 GB | `python:3.12-slim` | 约 150 MB |
+   | `ubuntu:22.04` | 约 77 MB | `debian:12-slim` | 约 52 MB |
+   | 其他镜像 | 变化较大 | `gcr.io/distroless/*` | 极小化的镜像 |
 
-4. **Generate optimized Dockerfile**: Output improved version with comments explaining each change.
+4. **生成优化后的 Dockerfile**：工具会输出优化后的 Dockerfile，并附有对每个修改内容的说明。
 
-5. **Estimate savings**: Report approximate layer reduction and size improvement.
+5. **节省空间估算**：工具会报告镜像层数的减少量及整体大小的优化程度。
 
-## Security Checks
+## 安全性检查
 
-- 🔴 Hardcoded secrets or ENV with credentials
-- 🔴 Running as root without USER instruction
-- 🟡 Unnecessary EXPOSE ports
-- 🟡 Writable filesystem (consider `--read-only` at runtime)
-- 🟡 No HEALTHCHECK instruction
+- 🔴 硬编码的保密信息或包含敏感数据的环境变量
+- 🔴 未使用 `USER` 指令导致容器以 root 权限运行
+- 🟡 不必要的 `EXPOSE` 端口
+- 🟡 文件系统可写（建议在运行时设置为只读）
+- 🟡 缺少 `HEALTHCHECK` 指令
 
-## Edge Cases
+## 特殊情况处理
 
-- **Multi-stage builds**: Analyze each stage independently
-- **Build args**: Ensure `ARG` values don't leak secrets into image layers
-- **Platform-specific**: Note if Alpine may cause issues (musl vs glibc)
+- **多阶段构建**：需分别分析每个构建阶段
+- **构建参数**：确保构建参数不会泄露敏感信息到镜像层中
+- **平台兼容性**：注意使用 Alpine 架构时可能存在的问题（如 musl 与 glibc 的兼容性）
 
-## Requirements
+## 使用要求
 
-- No dependencies — static analysis of Dockerfile text
-- No API keys needed
+- 无需依赖任何外部库——仅对 Dockerfile 的文本内容进行静态分析
+- 不需要 API 密钥

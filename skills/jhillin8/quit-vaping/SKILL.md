@@ -1,6 +1,6 @@
 ---
 name: quit-vaping
-description: Quit vaping with nicotine-free streak tracking, craving tools, and health milestones
+description: 通过使用无尼古丁的戒烟追踪工具、戒瘾辅助应用以及设定健康目标，来帮助你彻底戒掉吸电子烟的习惯吧！
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,59 +11,57 @@ triggers:
   - "stop vaping"
 ---
 
-# Quit Vaping
+# 戒除电子烟
 
-Break nicotine addiction with persistent streak tracking, craving management, and science-backed health recovery milestones.
+通过持续记录戒烟进度、管理烟瘾以及基于科学的数据来帮助您摆脱尼古丁依赖，实现健康恢复。
 
-## What it does
+## 功能介绍
 
-- **Sobriety Tracking**: Records your quit date and calculates your nicotine-free streak in real-time
-- **Craving Management**: Provides immediate tools and techniques when cravings hit—breathing exercises, delay tactics, urge logging
-- **Health Timeline**: Shows what's happening in your body at 20 minutes, 24 hours, 48 hours, 1 week, 1 month, and 3 months smoke-free
-- **Progress Dashboard**: Visualizes days quit, money saved, and health wins compared to ongoing vaping costs
+- **戒烟进度追踪**：实时记录您的戒烟日期，并计算您已连续不使用电子烟的天数。
+- **烟瘾管理**：在烟瘾来袭时提供即时帮助，包括呼吸练习、延迟策略以及记录烟瘾触发因素的方法。
+- **健康恢复时间线**：显示戒烟后20分钟、24小时、48小时、1周、1个月和3个月时身体发生的改变。
+- **进度仪表盘**：可视化显示您已戒烟的天数、节省的开支以及与继续使用电子烟所花费的费用相比的健康改善情况。
 
-## Usage
+## 使用方法
 
-**Log Quit Date**
-- Set your official quit date when you're ready to start
-- Skill automatically begins tracking from that moment
-- Recalculate anytime if you need to restart
+**记录戒烟日期**：
+- 当您准备好开始戒烟时，设置正式的戒烟日期。
+- 该工具会从该时刻开始自动追踪您的戒烟进度。
+- 如需重新开始追踪，可随时重新设置日期。
 
-**Handle Cravings**
-- Request an immediate craving response when nicotine hits
-- Get quick breathing techniques, delay tactics (5-10 minute activities), or just-in-time motivation
-- Log the craving moment to track patterns and triggers
+**应对烟瘾**：
+- 当感到烟瘾来袭时，立即寻求帮助或采取应对措施（如呼吸练习、短暂活动等）。
+- 记录烟瘾发生的时刻，以便了解其规律和触发因素。
 
-**Check Progress**
-- View your current streak (days/hours since quit)
-- See how far you've come compared to yesterday, last week, first month
-- Get celebration messages at milestone hits (7 days, 30 days, 100 days)
+**检查进度**：
+- 查看您当前的戒烟天数。
+- 了解自己与昨天、上周及第一个月相比的进步情况。
+- 在达到重要里程碑（7天、30天、100天）时收到庆祝信息。
 
-**Health Recovery**
-- Follow your body's actual recovery timeline
-- See improvements: oxygen levels normalizing, heart rate steadying, taste/smell returning
-- Connect physical wins to motivation for the next phase
+**健康恢复**：
+- 跟踪身体的实际恢复过程，观察各项指标的变化（如血压和心率恢复正常、嗅觉和味觉逐渐恢复等）。
+- 将这些身体上的改善作为继续坚持戒烟的动力。
 
-**Money Saved**
-- Track dollars not spent on vaping based on your typical usage
-- See cumulative savings—visual proof of financial freedom
-- Compare daily/weekly/monthly savings to other goals
+**节省开支**：
+- 根据您的使用习惯，记录因戒烟而节省的开支。
+- 查看累计节省金额，这是迈向财务自由的直观证据。
+- 将每日/每周/每月的节省情况与其他目标进行比较。
 
-## Health Timeline
+## 健康恢复时间线
 
-| Milestone | What's Happening |
+| 里程碑 | 身体变化 |
 |-----------|------------------|
-| **20 minutes** | Blood pressure and heart rate drop back to normal levels |
-| **24 hours** | Carbon monoxide clears from your system; lung function begins to improve |
-| **48 hours** | Nerve endings regrow; taste and smell start returning |
-| **1 week** | Breathing becomes easier; nicotine withdrawal peaks then subsides; sleep normalizes |
-| **1 month** | Lung function improves 30%; circulation strengthens; energy levels rise |
-| **3 months** | Lung capacity increases up to 10%; coughing decreases; skin clarity improves |
+| **20分钟** | 血压和心率恢复到正常水平 |
+| **24小时** | 一氧化碳从体内排出；肺功能开始改善 |
+| **48小时** | 神经末梢开始再生；嗅觉和味觉逐渐恢复 |
+| **1周** | 呼吸变得轻松；尼古丁戒断症状达到高峰后开始缓解；睡眠恢复正常 |
+| **1个月** | 肺功能提高30%；血液循环增强；精力水平上升 |
+| **3个月** | 肺活量增加10%；咳嗽减少；皮肤状况改善 |
 
-## Tips
+## 小贴士
 
-- **Stack small wins**: Celebrate each craving you didn't give in to. Track them. They're proof you're stronger than nicotine.
-- **Know your triggers**: Log where, when, and what you were doing when cravings hit. Patterns emerge. Break them intentionally.
-- **Replace the ritual**: Vaping often fills a slot in your day (breaks, stress, boredom). Find a replacement—gum, walks, cold water, fidget.
-- **Build accountability**: Share your streak with someone who supports your quit. Peer pressure works in reverse—it keeps you going.
-- **All data stays local on your machine**: Your quit journey, streaks, and health milestones are stored only on your device. No tracking, no servers, no surveillance—just you and your freedom.
+- **珍惜每一个小成就**：每当成功抵抗烟瘾时，都要庆祝一下。这些成就证明您比尼古丁更强大。
+- **了解自己的触发因素**：记录烟瘾发生的时间、地点及当时的行为。找出规律并主动避免这些因素。
+- **寻找替代方式**：电子烟可能占据了您日常生活中的某些时间（如休息时间、压力时刻或无聊时）。找到其他替代活动（如嚼口香糖、散步、喝冷水或做手势动作）。
+- **建立监督机制**：与支持您戒烟的人分享您的戒烟进度。同伴的压力会起到激励作用，帮助您坚持下去。
+- **所有数据仅保存在您的设备上**：您的戒烟过程、戒烟天数及健康数据都存储在您的设备上，不会被第三方服务器访问或监控——只有您和您的自由。

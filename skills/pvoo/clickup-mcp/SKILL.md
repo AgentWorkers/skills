@@ -1,20 +1,20 @@
 ---
 name: clickup-mcp
-description: Manage ClickUp tasks, docs, time tracking, comments, chat, and search via official MCP. OAuth authentication required.
+description: 通过官方的MCP工具来管理ClickUp任务、文档、时间跟踪记录、评论、聊天记录以及进行搜索。使用前需要完成OAuth身份验证。
 homepage: https://clickup.com
 metadata: {"clawdbot":{"emoji":"✅","requires":{"bins":["mcporter"],"env":["CLICKUP_TOKEN"]}}}
 ---
 
-# ClickUp MCP (Official)
+# ClickUp MCP（官方）
 
-Access ClickUp via the official MCP server. Full workspace search, task management, time tracking, comments, chat, and docs.
+通过官方的MCP服务器访问ClickUp。支持完整的工作空间搜索、任务管理、时间跟踪、评论、聊天和文档功能。
 
-## Setup
+## 设置
 
-### Option 1: Direct OAuth (Supported Clients Only)
+### 选项1：直接使用OAuth（仅限支持的应用程序）
 
-ClickUp MCP only allows OAuth from **allowlisted clients**:
-- Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, ChatGPT
+ClickUp MCP仅允许来自**允许列表中的应用程序**的OAuth登录：
+- Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、ChatGPT
 
 ```bash
 # Claude Code
@@ -22,11 +22,9 @@ claude mcp add clickup --transport http https://mcp.clickup.com/mcp
 # Then /mcp in session to authorize
 ```
 
-### Option 2: Claude Code → mcporter (Recommended)
+### 选项2：使用Claude Code通过mcporter进行登录（推荐）
 
-Use Claude Code to OAuth, then extract token for mcporter:
-
-**Step 1: Authorize via Claude Code**
+1. **步骤1：通过Claude Code进行授权**
 ```bash
 claude mcp add clickup --transport http https://mcp.clickup.com/mcp
 claude
@@ -34,20 +32,19 @@ claude
 # Complete OAuth in browser
 ```
 
-**Step 2: Extract token**
+2. **步骤2：提取token**
 ```bash
 jq -r '.mcpOAuth | to_entries | .[] | select(.key | startswith("clickup")) | .value.accessToken' ~/.claude/.credentials.json
 ```
 
-**Step 3: Add to environment**
+3. **步骤3：将token添加到环境变量中**
 ```bash
 # Add to ~/.clawdbot/.env
 CLICKUP_TOKEN=eyJhbGciOiJkaXIi...
 ```
 
-**Step 4: Configure mcporter**
-
-Add to `config/mcporter.json`:
+4. **步骤4：配置mcporter**
+   在`config/mcporter.json`文件中进行配置：
 ```json
 {
   "mcpServers": {
@@ -62,96 +59,96 @@ Add to `config/mcporter.json`:
 }
 ```
 
-**Step 5: Test**
+5. **步骤5：测试**
 ```bash
 mcporter list clickup
 mcporter call 'clickup.clickup_search(keywords: "test", count: 3)'
 ```
 
-### Token Refresh
+### Token刷新
 
-Tokens are long-lived (~10 years). If expired:
-1. Re-run `/mcp` in Claude Code
-2. Re-extract token from `~/.claude/.credentials.json`
-3. Update `CLICKUP_TOKEN` in `.env`
+Token的有效期较长（约10年）。如果token过期：
+1. 在Claude Code中重新运行`/mcp`命令。
+2. 从`~/.claude/.credentials.json`文件中重新提取token。
+3. 更新`.env`文件中的`CLICKUP_TOKEN`变量。
 
-## Available Tools (32)
+## 可用的工具（32个）
 
-### Search
+### 搜索
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_search` | Universal search across tasks, docs, dashboards, chat, files |
+| `clickup_search` | 在任务、文档、仪表板、聊天和文件中进行全局搜索 |
 
-### Tasks
+### 任务
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_create_task` | Create task with name, description, status, assignees, due date, priority |
-| `clickup_get_task` | Get task details (with optional subtasks) |
-| `clickup_update_task` | Update any task field |
-| `clickup_attach_task_file` | Attach file to task (URL or base64) |
-| `clickup_add_tag_to_task` | Add tag to task |
-| `clickup_remove_tag_from_task` | Remove tag from task |
+| `clickup_create_task` | 创建任务，设置名称、描述、状态、分配者、截止日期和优先级 |
+| `clickup_get_task` | 获取任务详情（包括子任务） |
+| `clickup_update_task` | 更新任务的任何字段 |
+| `clickup.attach_task_file` | 为任务附加文件（URL或Base64编码的形式） |
+| `clickup_add_tag_to_task` | 为任务添加标签 |
+| `clickup_remove_tag_from_task` | 从任务中删除标签 |
 
-### Comments
+### 评论
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_get_task_comments` | Get all comments on task |
-| `clickup_create_task_comment` | Add comment (supports @mentions) |
+| `clickup_get_task_comments` | 获取任务的所有评论 |
+| `clickup_create_task_comment` | 添加评论（支持@提及功能） |
 
-### Time Tracking
+### 时间跟踪
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_start_time_tracking` | Start timer on task |
-| `clickup_stop_time_tracking` | Stop active timer |
-| `clickup_add_time_entry` | Log time manually |
-| `clickup_get_task_time_entries` | Get time entries for task |
-| `clickup_get_current_time_entry` | Check active timer |
+| `clickup_start_time_tracking` | 为任务启动计时器 |
+| `clickup_stop_time_tracking` | 停止计时器 |
+| `clickup_add_time_entry` | 手动记录时间 |
+| `clickup_get_task_time_entries` | 获取任务的时间记录 |
+| `clickup_get_current_time_entry` | 查看当前任务的计时状态 |
 
-### Workspace & Hierarchy
+### 工作空间与层级结构
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_get_workspace_hierarchy` | Get full structure (Spaces, Folders, Lists) |
-| `clickup_create_list` | Create list in Space |
-| `clickup_create_list_in_folder` | Create list in Folder |
-| `clickup_get_list` | Get list details |
-| `clickup_update_list` | Update list settings |
-| `clickup_create_folder` | Create folder in Space |
-| `clickup_get_folder` | Get folder details |
-| `clickup_update_folder` | Update folder settings |
+| `clickup_get_workspace_hierarchy` | 获取工作空间的完整结构（包括空间、文件夹和列表） |
+| `clickup_create_list` | 在空间中创建列表 |
+| `clickup_create_list_in_folder` | 在文件夹中创建列表 |
+| `clickup_get_list` | 获取列表详情 |
+| `clickup_update_list` | 更新列表设置 |
+| `clickup_create_folder` | 在空间中创建文件夹 |
+| `clickup_get_folder` | 获取文件夹详情 |
+| `clickup_update_folder` | 更新文件夹设置 |
 
-### Members
+### 成员
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_get_workspace_members` | List all workspace members |
-| `clickup_find_member_by_name` | Find member by name/email |
-| `clickup_resolve_assignees` | Get user IDs from names |
+| `clickup_get_workspace_members` | 列出所有工作空间成员 |
+| `clickup_find_member_by_name` | 通过名称或电子邮件查找成员 |
+| `clickup.resolve_assignees` | 根据名称获取用户ID |
 
-### Chat
+### 聊天
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_get_chat_channels` | List all Chat channels |
-| `clickup_send_chat_message` | Send message to channel |
+| `clickup_get_chat_channels` | 列出所有聊天频道 |
+| `clickup_send_chat_message` | 向聊天频道发送消息 |
 
-### Docs
+### 文档
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `clickup_create_document` | Create new Doc |
-| `clickup_list_document_pages` | Get Doc structure |
-| `clickup_get_document_pages` | Get page content |
-| `clickup_create_document_page` | Add page to Doc |
-| `clickup_update_document_page` | Edit page content |
+| `clickup_create_document` | 创建新文档 |
+| `clickup_list_document_pages` | 获取文档的页面结构 |
+| `clickup_get_document_pages` | 获取文档页面的内容 |
+| `clickup_create_document_page` | 为文档添加页面 |
+| `clickup_update_document_page` | 编辑文档页面的内容 |
 
-## Usage Examples
+## 使用示例
 
-### Search Workspace
+### 搜索工作空间
 
 ```bash
 mcporter call 'clickup.clickup_search(
@@ -160,7 +157,7 @@ mcporter call 'clickup.clickup_search(
 )'
 ```
 
-### Create Task
+### 创建任务
 
 ```bash
 mcporter call 'clickup.clickup_create_task(
@@ -171,7 +168,7 @@ mcporter call 'clickup.clickup_create_task(
 )'
 ```
 
-### Update Task
+### 更新任务
 
 ```bash
 mcporter call 'clickup.clickup_update_task(
@@ -180,7 +177,7 @@ mcporter call 'clickup.clickup_update_task(
 )'
 ```
 
-### Add Comment
+### 添加评论
 
 ```bash
 mcporter call 'clickup.clickup_create_task_comment(
@@ -189,7 +186,7 @@ mcporter call 'clickup.clickup_create_task_comment(
 )'
 ```
 
-### Time Tracking
+### 时间跟踪
 
 ```bash
 # Start timer
@@ -210,13 +207,13 @@ mcporter call 'clickup.clickup_add_time_entry(
 )'
 ```
 
-### Get Workspace Structure
+### 获取工作空间结构
 
 ```bash
 mcporter call 'clickup.clickup_get_workspace_hierarchy(limit: 10)'
 ```
 
-### Chat
+### 聊天
 
 ```bash
 # List channels
@@ -229,17 +226,17 @@ mcporter call 'clickup.clickup_send_chat_message(
 )'
 ```
 
-## Limitations
+## 限制
 
-- **No delete operations** — Safety measure; use ClickUp UI
-- **No custom fields** — Not exposed in official MCP
-- **No views management** — Not available
-- **OAuth required** — Must use allowlisted client (Claude Code workaround available)
-- **Rate limits** — Same as ClickUp API (~100 req/min)
+- **无法执行删除操作** — 为安全考虑，建议使用ClickUp的UI界面。
+- **没有自定义字段** — 官方MCP不支持自定义字段。
+- **无法管理文档视图** — 目前不提供相关功能。
+- **需要使用OAuth登录** — 必须使用允许列表中的应用程序（可以使用Claude Code作为替代方案）。
+- **有请求速率限制** — 与ClickUp API的请求速率限制相同（约100次/分钟）。
 
-## Resources
+## 资源
 
-- [ClickUp MCP Documentation](https://developer.clickup.com/docs/connect-an-ai-assistant-to-clickups-mcp-server)
-- [Supported Tools](https://developer.clickup.com/docs/mcp-tools)
-- [ClickUp API Reference](https://clickup.com/api)
-- [Feedback / Allowlist Request](https://feedback.clickup.com)
+- [ClickUp MCP文档](https://developer.clickup.com/docs/connect-an-ai-assistant-to-clickups-mcp-server)
+- [支持的工具](https://developer.clickup.com/docs/mcp-tools)
+- [ClickUp API参考](https://clickup.com/api)
+- [反馈/申请加入允许列表](https://feedback.clickup.com)

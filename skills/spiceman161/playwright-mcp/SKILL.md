@@ -1,14 +1,14 @@
 ---
 name: playwright-mcp
-description: Browser automation via Playwright MCP server. Navigate websites, click elements, fill forms, extract data, take screenshots, and perform full browser automation workflows.
+description: 通过 Playwright MCP 服务器实现浏览器自动化。可以浏览网站、点击页面元素、填写表单、提取数据、截图，以及执行完整的浏览器自动化工作流程。
 metadata: {"openclaw":{"emoji":"🎭","os":["linux","darwin","win32"],"requires":{"bins":["playwright-mcp","npx"]},"install":[{"id":"npm-playwright-mcp","kind":"npm","package":"@playwright/mcp","bins":["playwright-mcp"],"label":"Install Playwright MCP"}]}}
 ---
 
-# Playwright MCP Skill
+# Playwright MCP 技能
 
-Browser automation powered by Playwright MCP server. Control Chrome, Firefox, or WebKit programmatically.
+Playwright MCP 服务器支持浏览器自动化操作，可编程地控制 Chrome、Firefox 或 WebKit 浏览器。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @playwright/mcp
@@ -16,19 +16,19 @@ npm install -g @playwright/mcp
 npx @playwright/mcp
 ```
 
-Install browsers (first time):
+（首次安装浏览器时，请执行以下操作：）
 ```bash
 npx playwright install chromium
 ```
 
-## Quick Start
+## 快速入门
 
-### Start MCP Server (STDIO mode)
+### 启动 MCP 服务器（STDIO 模式）
 ```bash
 npx @playwright/mcp
 ```
 
-### Start with Options
+### 带参数启动 MCP 服务器
 ```bash
 # Headless mode
 npx @playwright/mcp --headless
@@ -43,9 +43,9 @@ npx @playwright/mcp --viewport-size 1280x720
 npx @playwright/mcp --ignore-https-errors
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Navigate and Extract Data
+### 1. 导航和提取数据
 ```python
 # MCP tools available:
 # - browser_navigate: Open URL
@@ -58,7 +58,7 @@ npx @playwright/mcp --ignore-https-errors
 # - browser_close: Close browser
 ```
 
-### 2. Form Interaction
+### 2. 表单交互
 ```
 1. browser_navigate to form URL
 2. browser_type into input fields
@@ -66,29 +66,29 @@ npx @playwright/mcp --ignore-https-errors
 4. browser_get_text to verify result
 ```
 
-### 3. Data Extraction
+### 3. 数据提取
 ```
 1. browser_navigate to page
 2. browser_evaluate to run extraction script
 3. Parse returned JSON data
 ```
 
-## MCP Tools Reference
+## MCP 工具参考
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `browser_navigate` | Navigate to URL |
-| `browser_click` | Click element by selector |
-| `browser_type` | Type text into input |
-| `browser_select_option` | Select dropdown option |
-| `browser_get_text` | Get text content |
-| `browser_evaluate` | Execute JavaScript |
-| `browser_snapshot` | Get accessible page snapshot |
-| `browser_close` | Close browser context |
-| `browser_choose_file` | Upload file |
-| `browser_press` | Press keyboard key |
+| `browser_navigate` | 导航到指定 URL |
+| `browser_click` | 根据选择器点击元素 |
+| `browser_type` | 在输入框中输入文本 |
+| `browser_select_option` | 从下拉菜单中选择选项 |
+| `browser_get_text` | 获取文本内容 |
+| `browser_evaluate` | 执行 JavaScript 代码 |
+| `browser_snapshot` | 获取页面的可访问性快照 |
+| `browser_close` | 关闭当前浏览器会话 |
+| `browser_choose_file` | 上传文件 |
+| `browser_press` | 按下键盘键 |
 
-## Configuration Options
+## 配置选项
 
 ```bash
 # Security
@@ -112,9 +112,9 @@ npx @playwright/mcp --ignore-https-errors
 --save-video 1280x720
 ```
 
-## Examples
+## 示例
 
-### Login to Website
+### 登录网站
 ```
 browser_navigate: { url: "https://example.com/login" }
 browser_type: { selector: "#username", text: "user" }
@@ -123,7 +123,7 @@ browser_click: { selector: "#submit" }
 browser_get_text: { selector: ".welcome-message" }
 ```
 
-### Extract Table Data
+### 提取表格数据
 ```
 browser_navigate: { url: "https://example.com/data" }
 browser_evaluate: { 
@@ -131,21 +131,21 @@ browser_evaluate: {
 }
 ```
 
-### Screenshot
+### 截取屏幕截图
 ```
 browser_navigate: { url: "https://example.com" }
 browser_evaluate: { script: "() => { document.body.style.zoom = 1; return true; }" }
 # Screenshot saved via --output-dir or returned in response
 ```
 
-## Security Notes
+## 安全注意事项
 
-- By default restricts file system access to workspace root
-- Host validation prevents navigation to untrusted domains
-- Sandboxing enabled by default (use `--no-sandbox` with caution)
-- Service workers blocked by default
+- 默认情况下，仅允许访问工作区的根目录。
+- 通过域名验证来阻止访问不受信任的网站。
+- 默认启用沙箱模式（请谨慎使用 `--no-sandbox` 参数）。
+- 默认情况下会阻止 Service Worker 的运行。
 
-## Troubleshooting
+## 故障排除
 
 ```bash
 # Update browsers
@@ -158,8 +158,8 @@ npx @playwright/mcp --headless=false --output-mode=stdout
 playwright-mcp --version
 ```
 
-## Links
+## 链接
 
-- [Playwright Docs](https://playwright.dev)
-- [MCP Protocol](https://modelcontextprotocol.io)
-- [NPM Package](https://www.npmjs.com/package/@playwright/mcp)
+- [Playwright 文档](https://playwright.dev)
+- [MCP 协议](https://modelcontextprotocol.io)
+- [NPM 包](https://www.npmjs.com/package/@playwright/mcp)

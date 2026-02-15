@@ -1,30 +1,34 @@
 ---
 name: flight-tracker
-description: Flight tracking and scheduling. Track live flights in real-time by region, callsign, or airport using OpenSky Network. Search flight schedules between airports. Use for queries like "What flights are over Switzerland?" or "When do flights from Hamburg arrive in Zurich?" or "Track flight SWR123".
+description: **航班追踪与调度**  
+通过 OpenSky Network，您可以按地区、呼号或机场实时追踪航班动态。您还可以查询不同机场之间的航班时刻表，例如：  
+- “有哪些航班正在瑞士上空飞行？”  
+- “从汉堡出发的航班什么时候会到达苏黎世？”  
+- “追踪航班 SWR123 的飞行情况。”
 homepage: https://openskynetwork.github.io/opensky-api/
 ---
 
-# Flight Tracker
+# 航班追踪器
 
-Track flights in real-time and search flight schedules between airports.
+实时追踪航班，并查询机场之间的航班时刻表。
 
-## Quick Commands
+## 快捷命令
 
-### Live Flight Tracking
+### 实时航班追踪
 
-#### Flights over a region (bounding box)
+#### 追踪指定区域内的航班（使用边界框）
 ```bash
 # Switzerland (lat_min, lat_max, lon_min, lon_max)
 curl -s "https://opensky-network.org/api/states/all?lamin=45.8&lomin=5.9&lamax=47.8&lomax=10.5" | \
   jq -r '.states[] | "\(.[1]) - \(.[2]) | Alt: \(.[7])m | Speed: \(.[9])m/s | From: \(.[5])"'
 ```
 
-### Track specific flight by callsign
+### 通过呼号追踪特定航班
 ```bash
 curl -s "https://opensky-network.org/api/states/all?icao24=<aircraft-icao>" | jq .
 ```
 
-#### Get live flight info
+#### 获取航班实时信息
 ```bash
 # Use helper script
 python3 scripts/track.py --region switzerland
@@ -32,9 +36,9 @@ python3 scripts/track.py --callsign SWR123
 python3 scripts/track.py --airport LSZH
 ```
 
-### Flight Schedules
+### 航班时刻表
 
-Search for scheduled flights between airports:
+查询机场之间的预定航班：
 
 ```bash
 # Basic usage (shows search links)
@@ -48,36 +52,36 @@ export AVIATIONSTACK_API_KEY='your_key_here'
 python3 scripts/schedule.py HAM ZRH
 ```
 
-**Without API key:** Shows helpful search links (Google Flights, FlightRadar24, airline websites)
+**无需API密钥：** 显示有用的搜索链接（Google Flights、FlightRadar24、航空公司官网）
 
-**With API key:** Fetches live schedule data with departure/arrival times, terminals, gates, and status
+**使用API密钥：** 获取包含起飞/到达时间、航站楼、登机口和航班状态的实时时刻表数据
 
-Free API key available at [aviationstack.com](https://aviationstack.com) (100 requests/month)
+免费API密钥可在 [aviationstack.com](https://aviationstack.com) 获取（每月100次请求）
 
-## Regions
+## 地区
 
-Pre-defined regions in the script:
+脚本中预定义的地区包括：
 
-- **switzerland**: Swiss airspace
-- **europe**: European airspace (rough bounds)
-- **zurich**: Area around Zurich
-- **geneva**: Area around Geneva
+- **switzerland**：瑞士领空
+- **europe**：欧洲领空（大致范围）
+- **zurich**：苏黎世周边地区
+- **geneva**：日内瓦周边地区
 
-## API Endpoints
+## API接口
 
-### All states
+### 所有地区
 ```bash
 GET https://opensky-network.org/api/states/all
 ```
 
-Optional parameters:
-- `lamin`, `lomin`, `lamax`, `lomax`: Bounding box
-- `icao24`: Specific aircraft (hex code)
-- `time`: Unix timestamp (0 = now)
+可选参数：
+- `lamin`, `lomin`, `lamax`, `lomax`：边界框
+- `icao24`：特定航班的ICAO代码
+- `time`：Unix时间戳（0 = 当前时间）
 
-### Response Format
+### 响应格式
 
-Each flight state contains:
+每个航班的状态信息包含：
 ```
 [0]  icao24      - Aircraft ICAO24 address (hex)
 [1]  callsign    - Flight callsign (e.g., "SWR123")
@@ -89,40 +93,40 @@ Each flight state contains:
 [11] vertical_rate - Climb/descent rate in m/s
 ```
 
-## Airport Codes
+## 机场代码
 
-### ICAO (for live tracking)
-- **LSZH** - Zurich
-- **LSGG** - Geneva
-- **LSZB** - Bern
-- **LSZA** - Lugano
-- **LFSB** - Basel-Mulhouse (EuroAirport)
+### ICAO代码（用于实时追踪）
+- **LSZH** - 苏黎世
+- **LSGG** - 日内瓦
+- **LSZB** - 伯尔尼
+- **LSZA** - 卢加诺
+- **LFSB** - 巴塞尔-米卢斯（EuroAirport）
 
-### IATA (for schedules)
-- **ZRH** - Zurich
-- **GVA** - Geneva
-- **BSL** - Basel
-- **BRN** - Bern
-- **LUG** - Lugano
-- **HAM** - Hamburg
-- **FRA** - Frankfurt
-- **MUC** - Munich
-- **BER** - Berlin
-- **LHR** - London Heathrow
-- **CDG** - Paris CDG
-- **AMS** - Amsterdam
+### IATA代码（用于查询时刻表）
+- **ZRH** - 苏黎世
+- **GVA** - 日内瓦
+- **BSL** - 巴塞尔
+- **BRN** - 伯尔尼
+- **LUG** - 卢加诺
+- **HAM** - 汉堡
+- **FRA** - 法兰克福
+- **MUC** - 慕尼黑
+- **BER** - 柏林
+- **LHR** - 伦敦希思罗机场
+- **CDG** - 巴黎戴高乐机场
+- **AMS** - 阿姆斯特丹
 
-## Notes
+## 注意事项
 
-### Live Tracking (OpenSky Network)
-- Free API with rate limits (anonymous: 400/day)
-- Real-time data from ADS-B receivers worldwide
-- No API key required
-- Data updated every 10 seconds
-- Create account for higher limits and historical data
+### 实时追踪（OpenSky Network）
+- 免费API，但有使用限制（匿名用户：每天400次请求）
+- 数据来自全球的ADS-B接收器，实时更新
+- 无需API密钥
+- 数据每10秒更新一次
+- 如需更高请求次数或历史数据，请创建账户
 
-### Flight Schedules (AviationStack)
-- Optional API key for detailed schedule data
-- Free tier: 100 requests/month
-- Without API: provides search links to Google Flights, FlightRadar24, etc.
-- Supports date-specific queries
+### 航班时刻表（AviationStack）
+- 需要API密钥以获取详细时刻表信息
+- 免费 tier：每月100次请求
+- 无需API时，提供Google Flights、FlightRadar24等网站的搜索链接
+- 支持按日期查询航班信息

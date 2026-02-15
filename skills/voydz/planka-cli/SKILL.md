@@ -1,31 +1,31 @@
 ---
 name: planka
-description: Manage Planka (Kanban) projects, boards, lists, cards, and notifications via a custom Python CLI.
+description: 通过一个自定义的 Python CLI（命令行接口）来管理 Planka（看板）项目、看板、列表、卡片以及通知。
 metadata: {"clawdbot":{"emoji":"📋","requires":{"bins":["planka-cli"]}}}
 ---
 
 # Planka CLI
 
-This skill provides a CLI wrapper around the `plankapy` library to interact with a Planka instance.
+本技能提供了一个基于 `plankapy` 库的命令行界面（CLI）封装，用于与 Planka 实例进行交互。
 
-## Setup
+## 设置
 
-1.  **Install via Homebrew tap:**
+1. **通过 Homebrew tap 安装：**
     ```bash
     brew tap voydz/homebrew-tap
     brew install planka-cli
     ```
 
-2.  **Configuration:**
-    Use the `login` command to store credentials:
+2. **配置：**
+    使用 `login` 命令来存储凭据：
     ```bash
     planka-cli login --url https://planka.example --username alice --password secret
     # or: python3 scripts/planka_cli.py login --url https://planka.example --username alice --password secret
     ```
 
-## Usage
+## 使用方法
 
-Run the CLI with the installed `planka-cli` binary:
+运行已安装的 `planka-cli` 可执行文件来使用该 CLI：
 
 ```bash
 # Show help
@@ -68,34 +68,34 @@ planka-cli notifications all
 planka-cli notifications unread
 ```
 
-## Examples
+## 示例
 
-**List all boards:**
+**列出所有卡片：**
 ```bash
 planka-cli boards list
 ```
 
-**Show cards in list ID 1619901252164912136:**
+**显示列表 ID 1619901252164912136 中的卡片：**
 ```bash
 planka-cli cards list 1619901252164912136
 ```
 
-**Create a card in list ID 1619901252164912136:**
+**在列表 ID 1619901252164912136 中创建一张卡片：**
 ```bash
 planka-cli cards create 1619901252164912136 "Ship CLI"
 ```
 
-**Move a card to another list:**
+**将一张卡片移动到另一个列表：**
 ```bash
 planka-cli cards update 1619901252164912137 --list-id 1619901252164912136
 ```
 
-**Move a card to another list and pin it to the top:**
+**将一张卡片移动到另一个列表并将其置顶：**
 ```bash
 planka-cli cards update 1619901252164912137 --list-id 1619901252164912136 --position top
 ```
 
-**Mark a card done by updating its name:**
+**通过更新卡片名称来标记卡片为已完成：**
 ```bash
 planka-cli cards update 1619901252164912137 --name "Done: Ship CLI"
 ```

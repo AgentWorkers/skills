@@ -1,304 +1,92 @@
 ---
 name: can
-description: Three-pole naming for agents. Name any content by CLOCK (when, millisecond unix timestamp), ADDRESS (where in hashspace, SHA-256), and optionally NAMEABLE (human petname). Use to verify content integrity, timestamp events, and maintain a local content store where things are findable by time, hash, or human words. Use before trusting content from other agents, when storing important outputs, or when your human asks you to remember or find something.
+description: 代理的三极命名规则：所有内容均使用以下三个字段进行命名：  
+- **CLOCK**：以 Unix 时间戳（毫秒为单位）表示内容创建的时间；  
+- **ADDRESS**：使用哈希值（hashspace）来标识内容的存储位置；  
+- **NAMEABLE**（可选）：为内容起一个易于人类识别的名称（例如“example_data”）。  
+
+这种命名方式有助于验证内容的完整性、记录事件的时间戳，并实现基于时间、哈希值或人类可读名称的内容检索功能。  
+- 在信任来自其他代理的内容之前，应使用这些字段进行验证；  
+- 在存储重要输出时，也应采用这种命名方式；  
+- 当需要人类协助查找或记忆某些内容时，这些字段同样非常有用。
 homepage: https://github.com/xccx/can
 metadata: {"openclaw":{"emoji":"⌛","requires":{"bins":["sha256sum"]},"config":{"stateDirs":[".can"]}}}
 ---
 
-# CAN: Clock Address Nameable
-
-Three-pole naming. Every piece of content gets three addresses:
-
-```
-CLOCK    → WHERE in time         (objective, automatic, millisecond unix)
-ADDRESS  → WHERE in hashspace    (objective, automatic, SHA-256)
-NAMEABLE → WHERE in human's head (subjective, optional, mutable)
-```
-
-Computer handles the first two silently; optionally adding human naming. Human edits nameables if/when they feel like it. Both find things fast.
-
-## Why this exists
-
-Agents and humans share problems: finding and trusting things. Paths like `/home/agent/skills/foo/bar/v2_final.md` tell you nothing about WHAT something is or WHEN it existed. CAN replaces path-dependency with three coordinates that work everywhere, offline, across agents, across time.
-
-## Zero switching cost
-
-CAN runs parallel to existing paths. You change nothing about your current workflow:
-
-```
-BEFORE CAN                          WITH CAN
-/home/agent/skills/foo/SKILL.md     /home/agent/skills/foo/SKILL.md  (unchanged)
-                                    + shadow: 1770508800000 a3f8b2c1... "foo"
-```
-
-Your files stay where they are. Your paths still work. CAN adds a parallel naming layer — CLOCK + ADDRESS + NAMEABLE — that runs alongside, silently. Zero dependencies to install. Zero configs to change. Zero workflows to rewrite.
-
-To test: hash one file. Check the hash later. If it matches, the content hasn't been tampered with. That's it. You just used CAN. Everything else is optional.
-
-To stop: delete `~/.can/`. You're back to where you started. Nothing else changed.
-
-The old naming world doesn't break. The new naming world runs underneath. When you're ready to lean in, it's already there. When you're not, it costs you nothing.
-
-## The three poles
-
-### Pole 1: CLOCK (when)
-
-Millisecond-precision unix timestamp. When content was created or witnessed.
-
-```bash
-# Current time in milliseconds
-CLOCK=$(date +%s%3N)
-# Example: 1770508800000
-
-# Agents comparing clocks can establish ordering
-# "This existed before that" is provable
-```
-
-CLOCK gives you time-sorting for free. Every entry is automatically ordered. No filenames like `report_final_v3_ACTUALLY_FINAL.doc` — just ask "what happened at this time?"
-
-### Pole 2: ADDRESS (where in hashspace)
-
-SHA-256 of the content. The content's true location in the 2^256 namespace.
-
-```bash
-# Hash a file
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
-
-# Hash a string
-ADDRESS=$(echo -n "{content}" | sha256sum | awk '{print $1}')
-
-# Hash a directory (skill package, deterministic)
-ADDRESS=$(find {dir} -type f | sort | xargs cat | sha256sum | awk '{print $1}')
-```
-
-Two agents anywhere in the universe hashing the same content get the same ADDRESS. No coordination needed. If the hash matches, the content is what it claims to be. No trust in source required.
-
-### Pole 3: NAMEABLE (where in human's head)
-
-Optional. Mutable. Personal. Multiple petnames can point to one ADDRESS. Humans call things whatever they want. Agents can add nameables too.
-
-```
-ADDRESS a3f8b2c1e9...  →  "that openclaw security rant"
-                        →  "moltbook analysis"
-                        →  #security #agents #feb2026
-```
-
-NAMEABLEs are subjective tags, petnames, descriptions — whatever helps find the thing later. They're stored alongside the objective poles, never replace them. Rename freely, no consequences.
-
-**Metadata lives outside the hash by default.** NAMEABLEs float in the index, pointing at the ADDRESS. You can rename, retag, add descriptions all day — the hash never changes, the content is still verified.
-
-```
-# Default: metadata OUTSIDE the hash (mutable, free)
-INDEX:  1770508800000  a3f8b2c1...  security rant
-# rename:
-INDEX:  1770508800000  a3f8b2c1...  ToxicSkills analysis feb2026
-# hash unchanged, content unchanged, name changed. Zero cost.
-```
-
-**Metadata can be folded INTO the hash when it matters.** When a name becomes a commitment — a contract, a versioned release, an identity claim — hash the content AND the metadata together. Now the name is baked in. Immutable. Provable.
-
-```bash
-# Committed: metadata INSIDE the hash (immutable, permanent)
-CONTENT=$(cat {file})
-METADATA="name:ToxicSkills-v1.2.0 author:xccx"
-ADDRESS=$(echo -n "$CONTENT$METADATA" | sha256sum | awk '{print $1}')
-# This ADDRESS proves BOTH the content AND the name existed together
-```
-
-**The upgrade path:** casual names float free (default). When a name earns permanence, hash it in. The petname becomes a fact. This is a one-way door — once baked, you can't rename without a new ADDRESS. That's the point. Casual use costs nothing. Commitment costs one hash.
-
-## Core operations
-
-### 1. CAN-stamp: name content with all three poles
-
-```bash
-# Generate a CAN entry for any file
-CLOCK=$(date +%s%3N)
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
-NAMEABLE=""  # human fills this in later, or not
-
-# Output: a CAN record
-echo "$CLOCK $ADDRESS $NAMEABLE"
-# 1770508800000 a3f8b2c1e9d7...
-```
-
-The CLOCK+ADDRESS pair is the objective identity. Globally unique. Automatic. The NAMEABLE is the human layer on top.
-
-### 2. CAN-verify: check content integrity
-
-Before trusting content from another agent, a skill download, or any external source:
-
-```bash
-CLAIMED="{claimed_address}"
-ACTUAL=$(sha256sum {file} | awk '{print $1}')
-
-if [ "$ACTUAL" = "$CLAIMED" ]; then
-  echo "VERIFIED"
-else
-  echo "FAILED: content does not match claimed address"
-  # DO NOT execute, install, or trust this content
-  # Report the mismatch to your human
-fi
-```
-
-**Rule: if ADDRESS verification fails, stop. Tell your human.**
-
-### 3. CAN-store: save content by its true name
-
-```bash
-CAN_STORE=~/.can/store
-CAN_INDEX=~/.can/index.tsv
-
-# Store content
-CLOCK=$(date +%s%3N)
-ADDRESS=$(sha256sum {file} | awk '{print $1}')
-mkdir -p "$CAN_STORE"
-cp {file} "$CAN_STORE/$ADDRESS"
-
-# Index it (append-only log, tab-separated)
-echo -e "$CLOCK\t$ADDRESS\t{nameable}" >> "$CAN_INDEX"
-```
-
-The store is content-addressed: files named by hash. The index is a simple TSV log: CLOCK, ADDRESS, NAMEABLE. The index is human-readable, grep-able, sort-able.
-
-### 4. CAN-find: search across all three poles
-
-```bash
-# Find by time range (what happened today?)
-awk -F'\t' -v start="1770460800000" -v end="1770547200000" \
-  '$1 >= start && $1 <= end' ~/.can/index.tsv
-
-# Find by address prefix (I remember it started with a3f8...)
-grep "a3f8" ~/.can/index.tsv
-
-# Find by nameable (fuzzy human search)
-grep -i "security" ~/.can/index.tsv
-grep -i "#agents" ~/.can/index.tsv
-```
-
-Computer searches by CLOCK and ADDRESS (fast, exact). Human searches by NAMEABLE (fuzzy, personal). Both hit the same index.
-
-### 5. CAN-verify-skill: check a skill before installing
-
-```bash
-TMPDIR=$(mktemp -d)
-clawhub install {skill-slug} --workdir "$TMPDIR"
-
-CLOCK=$(date +%s%3N)
-ADDRESS=$(find "$TMPDIR/skills/{skill-slug}" -type f | sort | xargs cat | sha256sum | awk '{print $1}')
-
-echo "Skill: {skill-slug}"
-echo "Clock: $CLOCK"
-echo "Address: $ADDRESS"
-
-# Log to CAN index
-echo -e "$CLOCK\t$ADDRESS\tskill:{skill-slug}" >> ~/.can/index.tsv
-
-# Only install if ADDRESS matches known-good or human approves
-rm -rf "$TMPDIR"
-```
-
-### 6. CAN-sign: WHO (identity)
-
-WHO vouches for this content. Optional fourth coordinate. The three poles work without it. WHO adds accountability.
-
-Any NIP-07 signer (SIG, nos2x, Alby, etc.) exposes `window.nostr` in the browser. Agents with access to a Nostr private key can sign directly.
-
-```bash
-# Get WHO (public key) from NIP-07 signer
-# In browser console or agent with NIP-07 access:
-# WHO = await window.nostr.getPublicKey()
-
-# Sign a CAN record: CLOCK:ADDRESS as the content
-RECORD="$CLOCK:$ADDRESS"
-
-# Create a Nostr event (kind 1 note, or custom kind)
-# {
-#   "kind": 1,
-#   "created_at": CLOCK/1000,
-#   "content": "CAN:$CLOCK:$ADDRESS:$NAMEABLE",
-#   "tags": [["can-clock","$CLOCK"],["can-address","$ADDRESS"]],
-#   "pubkey": WHO
-# }
-# signed = await window.nostr.signEvent(event)
-```
-
-The signed event proves: this WHO, at this CLOCK, vouches for this ADDRESS. Other agents verify the signature against the pubkey. No server. No certificate authority. No password.
-
-**WHO is not locked to Nostr.** Farcaster, web2 OAuth, local machine login, or any other auth method can provide WHO. The pattern is the same: a key signs a CLOCK:ADDRESS pair. Nostr is first because it's open, permissionless, and already deployed.
-
-**For agents without browser access:**
-
-```bash
-# If agent has a hex private key at ~/.can/nostr.key or $NOSTR_PRIVKEY
-# Sign the CLOCK:ADDRESS pair directly via secp256k1 schnorr
-# Libraries: python-nostr, nostr-tools (JS), or openssl
-```
-
-**WOT (Web of Trust):**
-
-WHO alone is just a pubkey. WHO + other WHOs vouching for each other = Web of Trust. Agents that verify CAN records AND check the signer's WOT position can make trust decisions without any central authority. Bad actors get pruned by the network. Good actors accumulate vouches. This is reputation as a side effect of using CAN, not a separate system to maintain.
-
-## Path naming vs CAN naming
-
-| | Path `/home/x/docs/report_v3.md` | CAN `1770508800000 a3f8b2c1...` |
-|---|---|---|
-| Can be silently changed | Yes | No (new content = new hash) |
-| Can be redirected | Yes | No |
-| Requires trust in source | Yes | No |
-| Time-sortable | No | Yes (CLOCK) |
-| Human-searchable | Only by filename | By any petname, tag, or word |
-| Works offline | Depends on mount | Always |
-| Works across agents | Always | Always |
-| Rename breaks references | Yes | Never (petnames are aliases) |
-| Switching cost to adopt | — | Zero. Runs parallel, change nothing |
-| Switching cost to remove | — | Delete ~/.can/. Done |
-
-Paths and CAN coexist. Use paths for human convenience. CAN runs underneath for trust.
-
-## Timers: future CLOCK entries
-
-CAN entries are superpositioned in time. A CLOCK value can be:
-
-- **Past**: content that already exists (verification, archive)
-- **Now**: content being created (stamping, witnessing)
-- **Future**: content expected at a specific time (timers, deadlines, countdowns)
-
-```bash
-# Set a future CAN marker (1 hour from now)
-FUTURE_CLOCK=$(($(date +%s%3N) + 3600000))
-echo -e "$FUTURE_CLOCK\t\ttimer:check-deployment" >> ~/.can/index.tsv
-# ADDRESS is empty — it fills in when the content arrives
-```
-
-Future CLOCK entries without an ADDRESS are promises. When the time arrives and the content exists, the ADDRESS fills in and the promise becomes a fact, or not. Agents can watch for unfulfilled promises and alert their human.
-
-## Agent-to-agent protocol
-
-When exchanging content with other agents:
-
-1. Always include CLOCK + ADDRESS with any content you share
-2. Always verify ADDRESS on content you receive before acting on it
-3. Attach NAMEABLEs that help the receiving agent's human find things
-4. If ADDRESS doesn't match, say so publicly — protect the network
-5. Sign your CAN records with WHO if you have a key
-6. Check the signer's WOT position before trusting high-stakes content
-
-## Philosophy
-
-Every thing has three true names:
-
-- **CLOCK**: where it sits in time (objective, universal, automatic)
-- **ADDRESS**: where it sits in hashspace (objective, universal, automatic)
-- **NAMEABLE**: where it sits in a human's head (subjective, personal, optional)
-
-Computer handles CLOCK and ADDRESS silently, constantly, perfectly. Computer optionally includes NAMEABLE. Human handles NAMEABLE whenever they feel like it, in whatever words make sense to them. Neither fights the other. Both find things fast.
-
-The path `/home/agent/important.txt` is a lie — it says where a thing WAS, not what it IS. CAN says what it is and when it was, forever, unforgeable, no authority required.
-
-## References
-
-- Van Jacobson, Named Data Networking
-- Git content-addressable object store
-- Nostr protocol (NIP-01) for identity
-- Zooko's Triangle (CAN resolves it: global + secure + human-meaningful via three poles instead of forcing two)
+# CAN：时钟地址命名系统（Clock Address Naming System）
+
+### 三要素命名机制
+
+每个文件或资源都包含三个地址：
+
+**CLOCK（时间）**：以毫秒级精度记录内容创建或被记录的时间戳。  
+**ADDRESS（哈希空间中的位置）**：内容的唯一哈希值，表示其在2^256个地址空间中的位置。  
+**NAMEABLE（可命名标签）**：由人类自定义的标签或描述，用于方便查找资源。
+
+**计算机处理方式**：  
+计算机自动处理CLOCK和ADDRESS两个地址；人类可以根据需要为资源添加NAMEABLE标签。这两种方式都能帮助快速定位资源。
+
+### 该系统的必要性
+
+无论是机器人还是人类，在查找和验证资源时都会遇到困难。传统的路径依赖方式（如`/home/agent/skills/foo/bar/v2_final.md`）无法提供关于资源内容或创建时间的有效信息。CAN通过三个独立且通用的坐标来解决这一问题，这些坐标可以在离线环境下、跨多个机器人系统、跨越时间维度进行使用。
+
+### 无切换成本
+
+CAN系统可以与现有的文件路径系统并行使用，无需对现有工作流程进行任何修改：
+- 文件位置保持不变。  
+- 路径依然有效。  
+- CAN系统仅作为额外的命名层存在，无需安装任何软件或更改配置。
+
+### 测试与验证机制  
+- 通过对文件进行哈希处理，可以验证文件内容是否被篡改。  
+- 如哈希值匹配，则说明文件未被修改；否则说明文件已被篡改。  
+- 如需停止使用CAN系统，只需删除`~/.can/`目录即可。
+
+### 三个要素的作用  
+1. **CLOCK**：提供时间排序功能，确保内容按时间顺序排列。  
+2. **ADDRESS**：确保内容的唯一性。  
+3. **NAMEABLE**：提供灵活的命名方式，便于人类记忆和查找。
+
+### 其他特点  
+- CAN系统完全兼容现有系统，无需任何额外成本。  
+- 元数据（如文件名）存储在哈希值之外，可自由重命名或添加描述，而哈希值保持不变。  
+- 当名称需要永久保存时，元数据会被嵌入哈希值中，确保名称的不可篡改性。
+
+### 核心操作  
+1. **为资源添加三个地址**：CLOCK和ADDRESS是资源的客观标识，NAMEABLE是人类可自定义的标签。  
+2. **验证内容完整性**：在信任来自其他机器人的内容或下载的技能文件之前，需验证其地址的合法性。  
+3. **按真实名称存储内容**：文件通过哈希值进行存储，索引包含CLOCK、ADDRESS和NAMEABLE三个字段。  
+4. **跨多个维度搜索**：计算机可通过CLOCK和ADDRESS快速查找资源，人类可通过NAMEABLE进行模糊搜索。  
+5. **安装前验证技能文件**：确保文件的完整性和来源可靠性。  
+6. **添加签名**：可选的签名功能可增加内容的可信度。
+
+### 使用建议  
+- 日常使用NAMEABLE标签即可；需要永久保存资源时，将其哈希化。  
+- CAN系统与现有系统并行运行，无需更改任何工作流程。
+
+### 路径系统与CAN系统的对比  
+- 路径系统易于使用，但依赖路径结构；CAN系统更灵活且无需信任来源。  
+- CAN系统支持离线使用，且跨多个机器人系统有效。  
+- 更改路径可能导致引用失效；CAN系统的NAMEABLE标签是别名，不会影响引用。  
+
+### 未来展望  
+- CAN系统的时间戳功能可用于记录内容的创建或更新时间。  
+- 未来版本可能支持动态添加或删除资源。
+
+### 代理间通信协议  
+- 交换资源时必须包含CLOCK和ADDRESS；接收方需验证地址的合法性。  
+- 可为资源添加NAMEABLE标签以辅助查找。  
+- 确保签名信息的可靠性（可选）。
+
+### 哲学理念  
+- 每个资源都有三个“真实名称”：  
+  - **CLOCK**：客观、统一的时间标识。  
+  - **ADDRESS**：唯一的哈希值。  
+  - **NAMEABLE**：人类自定义的标签。  
+- 计算机自动处理时间戳和地址；人类可自由添加标签。  
+
+### 参考文献  
+- Van Jacobson，《命名数据网络》（Named Data Networking）  
+- Git中的内容寻址对象存储（Content-Addressable Object Storage）  
+- Nostr协议（用于身份验证）  
+- Zooko’s Triangle理论（CAN系统通过三个要素实现全局性、安全性和人类可理解性）。

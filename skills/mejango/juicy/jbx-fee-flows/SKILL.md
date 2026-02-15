@@ -9,27 +9,25 @@ description: |
   JBX ownership stakes across ecosystem tokens.
 ---
 
-# JBX Fee Flows: How Fees Generate Value for JBX Holders
+# JBX费用结构：费用如何为JBX持有者创造价值
 
-## Problem
+## 问题
 
-JBX investors need to understand how fees throughout the Juicebox ecosystem flow back
-to JBX token holders through the layered ownership structure of NANA and REV.
+JBX投资者需要了解Juicebox生态系统中的费用是如何通过NANA和REV的分层所有权结构回流到JBX代币持有者手中的。
 
-## Context / Trigger Conditions
+## 背景/触发条件
 
-- User asks "how does JBX make money?"
-- Explaining JBX as a fund-of-funds
-- Describing ecosystem fee flows
-- Questions about NANA or REV relationship to JBX
-- Investor due diligence on JBX value capture
-- Explaining layered fees on revnet operations
+- 用户询问“JBX是如何盈利的？”
+- 需要解释JBX作为一个“基金中的基金”（fund-of-funds）的运作模式
+- 需要描述生态系统的费用流动机制
+- 用户可能对NANA或REV与JBX之间的关系有疑问
+- 投资者需要了解JBX如何捕获价值
 
-## Solution
+## 解决方案
 
-### The Protocol Stack
+### 协议栈（Protocol Stack）
 
-Understanding the fee structure requires knowing how the layers relate:
+要理解费用结构，首先需要了解各个层次之间的关系：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -62,9 +60,9 @@ KEY INSIGHT: Both NANA and REV are themselves Revnets!
 This creates a powerful compounding feedback loop.
 ```
 
-### Layered Fees on Revnet Operations
+### Revnet操作中的分层费用
 
-When a revnet performs a cash out or loan, **BOTH** fee layers apply:
+当revnet执行取款或贷款操作时，**两个层次的费用都会被收取**：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -122,9 +120,9 @@ When a revnet performs a cash out or loan, **BOTH** fee layers apply:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### The NANA-REV Feedback Loop
+### NANA-REV的反馈循环
 
-Both NANA and REV are themselves Revnets, creating a powerful compounding feedback loop:
+NANA和REV本身都是revnets，这形成了一个强大的复利反馈循环：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -166,7 +164,7 @@ Both NANA and REV are themselves Revnets, creating a powerful compounding feedba
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Complete Fee Flow Diagram
+### 完整的费用流动图
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -220,173 +218,135 @@ Both NANA and REV are themselves Revnets, creating a powerful compounding feedba
     └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Revenue Stream #1: Juicebox V5 Protocol Fees
+### 收入流1：Juicebox V5协议费用
 
-**Source:** All Juicebox V5 projects
-**Fee Rate:** 2.5% on outbound funds
-**Recipient:** NANA revnet (project ID 1)
-**JBX Capture:** 62% of NANA token issuance
+**来源：**所有Juicebox V5项目
+**费用率：**对外部资金收取2.5%
+**收款方：**NANA revnet（项目ID 1）
+**JBX收益：**NANA代币发行量的62%
 
-**When fees apply:**
-- Payouts to non-project addresses
-- Surplus allowance usage
-- Cash outs (when cash out tax rate < 100%)
+**费用适用情况：**
+- 向非项目地址的支付
+- 剩余津贴的使用
+- 取款（当取款税率<100%时）
 
-**Fee-exempt:**
-- Project-to-project payments
-- Feeless terminal addresses
-- Internal transfers
+**免费用情况：**
+- 项目之间的支付
+- 免费的终端地址
+- 内部转账
 
-**Fee calculation:**
+**费用计算方式：**
 ```
 feeAmount = amount × 25 / (1000 + 25)
          ≈ 2.44% of gross amount
 ```
 
-### Revenue Stream #2: Revnet External Protocol Fees
+### 收入流2：Revnet外部协议费用
 
-**Source:** All Revnets (projects using revnet framework)
-**Recipient:** REV revnet
-**JBX Capture:** >30% ownership of all REV
+**来源：**所有使用revnet框架的项目
+**收款方：**REV revnet
+**JBX收益：**持有REV代币总量的30%以上
 
-**Fee breakdown:**
+**费用构成：**
 
-| Action | Internal Fee | REV Fee | NANA Fee (V5) | Total |
+| 操作 | 内部费用 | REV费用 | NANA费用（V5） | 总费用 |
 |--------|-------------|---------|---------------|-------|
-| Cash out | N/A | **2.5%** | **2.5%** | 5% |
-| Loan origination | 2.5% (to treasury) | **1%** | **2.5%** | 6% |
-| Loan repayment | Interest (to treasury) | N/A | N/A | varies |
+| 取款 | 无 | **2.5%** | **2.5%** | 5% |
+| 贷款发放 | 2.5%（归库） | **1%** | **2.5%** | 6% |
+| 贷款偿还 | 利息（归库） | 无 | 无 | 变动 |
 
-**How the layered fees work:**
-- REV fee: 2.5% on cash outs, 1% on loans → goes to REV
-- NANA fee: 2.5% V5 protocol fee on all outbound funds → goes to NANA
-- These fees stack: user pays REV fee + NANA fee
+**分层费用的工作原理：**
+- REV费用：取款时收取2.5%，贷款时收取1% → 收入归REV
+- NANA费用：所有对外部资金的V5协议费用 → 收入归NANA
+- 用户需支付REV费用和NANA费用
 
-**JBX and REV ownership:**
-- JBX **currently** owns **>30% of existing REV supply** (from early participation)
-- New REV issuance (when fees are paid): 32% → team.rev.eth, 68% → fee payer
+**JBX和REV的所有权结构：**
+- JBX目前持有**现有REV总量的30%以上**（由于早期投资）
+- 新发行的REV代币中，32%归team.rev.eth，68%归费用支付方
 
-### Revenue Stream #3: JBX Investment Holdings
+### 收入流3：JBX的投资收益
 
-JBX treasury holds tokens from ecosystem investments:
-- **NANA:** 62% of issuance from V5 protocol fees
-- **REV:** >30% of total supply
-- **Other tokens:** Strategic ecosystem investments
+JBX的储备金持有来自生态系统的投资代币：
+- **NANA：**V5协议费用发行量的62%
+- **REV：**总发行量的30%以上
+- **其他代币：**战略性的生态系统投资
 
-This creates a "fund of funds" structure where JBX captures value from multiple layers.
-
----
-
-## Revnet Fee Details (from Revnet Planner)
-
-### Loan System Fees
-
-1. **2.5% Upfront Internal Fee**
-   - Goes to revnet treasury as revenue
-   - Creates new tokens at current issuance price
-   - Distributed according to stage splits
-
-2. **1% External Protocol Fee on Loan Origination (to REV)**
-   - Goes to REV (external entity)
-   - Does NOT create tokens in the revnet
-   - Leaves the revnet system entirely
-
-3. **2.5% V5 Protocol Fee on Loan Disbursement (to NANA)**
-   - Applied to outbound loan funds
-   - Goes to NANA, 62% of issuance to JBX
-
-4. **5% Annual Compounding Interest**
-   - Begins after 6-month grace period
-   - Applied to repayments
-   - Goes to treasury as revenue (creates tokens)
-
-### Cash Out System Fees
-
-1. **2.5% External Protocol Fee on Cash Outs (to REV)**
-   - Applied to the cash out amount
-   - Goes to REV (external entity)
-   - Does NOT create tokens in the revnet
-
-2. **2.5% V5 Protocol Fee on Cash Out Disbursement (to NANA)**
-   - Applied to outbound cash out funds
-   - Goes to NANA, 62% of issuance to JBX
-
-**Key distinction:**
-- Internal fees = Revenue to revnet treasury = Token creation
-- External protocol fees = Leave the system = No token creation
-
-**Total fees paid by users:**
-- Cash outs: 2.5% REV + 2.5% NANA = **5% total**
-- Loans: 2.5% internal + 1% REV + 2.5% NANA = **6% total** (3.5% external)
+这形成了一个“基金中的基金”结构，使JBX能够从多个层面获取价值。
 
 ---
 
-## Value Flow Summary
+## Revnet费用详情（来自Revnet Planner）
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│                                                                │
-│   ANY V5 PROJECT  ───2.5%──▶  NANA  ───62%──▶  JBX            │
-│         │                       │               ▲              │
-│         │                       │               │              │
-│         ▼                       ▼               │              │
-│   (if Revnet)     ───fees──▶  REV   ──>30%────┘              │
-│                                 │                              │
-│                                 │ 2.5% V5 fee                  │
-│                                 │ (REV is a Revnet!)           │
-│                                 └────────▶ NANA                │
-│                                                                │
-│   The loop: V5 → NANA → REV → NANA → ... → JBX               │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
-```
+### 贷款系统费用
 
-JBX captures ecosystem value through:
-1. Direct ownership of NANA (62% of issuance)
-2. Significant ownership of REV (>30%)
-3. The feedback loop where REV activity pays back to NANA
-4. Additional ecosystem token holdings
+1. **2.5%的预付内部费用**
+   - 收入归revnet储备金
+   - 按照阶段分配新代币
+2. **1%的外部协议费用（支付给REV）**
+   - 收入归REV（外部实体）
+   - 不会在revnet系统中生成新的代币
+3. **2.5%的V5协议费用（支付给NANA）**
+   - 从贷款发放金额中收取
+   - 62%的收入归JBX
+
+### 取款系统费用
+
+1. **2.5%的外部协议费用（支付给REV）**
+   - 从取款金额中收取
+   - 收入归REV（外部实体）
+2. **2.5%的V5协议费用（支付给NANA）**
+   - 从取款金额中收取
+   - 62%的收入归JBX
+
+**关键区别：**
+- 内部费用：归revnet储备金，同时生成新的代币
+- 外部协议费用：不进入revnet系统，因此不会生成新的代币
+
+**用户需支付的总费用：**
+- 取款：2.5%（REV）+ 2.5%（NANA）= **5%**
+- 贷款：2.5%（内部费用）+ 1%（REV）+ 2.5%（NANA）= **6%**
 
 ---
 
-## Verification
+## 价值流动总结
 
-- Check NANA ownership: JBX split allocation in NANA ruleset
-- Check REV ownership: JBX token balance in REV project
-- Fee rates: Defined in protocol contracts (JBFees, REVLoans)
+JBX通过以下方式捕获生态系统价值：
+1. 直接持有NANA（发行量的62%）
+2. 持有大量REV（超过30%）
+3. REV的活动通过反馈循环将价值返还给NANA
+4. 持有其他生态系统代币
 
-## Example
+---
 
-Explaining the layered fees to an investor:
+## 验证方式
 
-> "The Juicebox ecosystem has a layered fee structure that benefits JBX holders.
-> At the base layer, Juicebox V5 charges 2.5% on all outbound funds - this goes
-> to NANA, and JBX receives 62% of all NANA tokens minted from those fees.
->
-> On top of that, the Revnet framework adds its own external protocol fees on
-> cash outs and loans - these go to REV, and JBX owns over 30% of REV.
->
-> Here's the key insight: NANA itself is a Revnet! So when someone cashes out
-> of NANA or takes a loan against NANA tokens, both fee layers apply - REV
-> gets its fee, and that payment also generates NANA issuance. This creates a
-> feedback loop where ecosystem activity compounds value back to JBX at multiple
-> levels."
+- 检查NANA的所有权结构：JBX在NANA规则集中的分配比例
+- 检查REV的所有权结构：JBX代币在REV项目中的持有情况
+- 费用率：在协议合同（JBFees, REVLoans）中明确规定
 
-Explaining revnet cash out fees:
+## 示例
 
-> "When you cash out from any revnet, there are two fees that apply in sequence:
-> first the REV external protocol fee on your cash out amount, then the V5
-> protocol fee (2.5%) on what's being sent out. Both of these ultimately benefit
-> JBX holders through their ownership stakes in NANA and REV."
+向投资者解释分层费用结构：
 
-## Notes
+> “Juicebox生态系统具有分层费用结构，这有利于JBX持有者。在最底层，Juicebox V5对所有对外部资金的支付收取2.5%的费用——这部分费用归NANA，JBX从这些费用中获得62%的NANA代币。
+> 
+> 此外，Revnet框架还会对取款和贷款行为收取额外的外部协议费用——这些费用归REV，而JBX持有REV超过30%的股份。
+> 
+> 关键在于：NANA本身也是一个revnet！因此，当有人使用NANA代币进行取款或贷款时，两个层次的费用都会被收取——REV获得其费用，同时这笔支付也会促进NANA代币的发行。这种机制形成了一个反馈循环，使生态系统的价值在多个层面为JBX创造价值。”
 
-- Fee percentages may be subject to governance changes
-- JBX ownership percentages are based on current split configurations
-- External protocol fees are configurable per revnet deployment
-- The 2.5% V5 protocol fee is a protocol constant (FEE = 25 out of 1000)
-- Both NANA and REV are Revnets - this creates a compounding feedback loop:
-  - NANA pays REV fees when NANA holders cash out or take loans
-  - REV pays NANA fees (V5 protocol fee) when REV holders cash out or take loans
-  - This circular flow compounds value capture for JBX at multiple levels
-- The layered structure means revnet users pay BOTH V5 fees (to NANA) AND revnet fees (to REV)
+**解释revnet取款费用：**
+
+> “当你从任何revnet中取款时，会依次收取两层费用：
+> 首先是REV的外部协议费用，然后是对支付金额的V5协议费用（2.5%）。这两部分费用最终都会通过用户持有的NANA和REV股份惠及JBX持有者。”
+
+## 注意事项
+
+- 费用百分比可能会根据治理结构的变化而调整
+- JBX的所有权比例基于当前的分配配置
+- 外部协议费用可以根据不同的revnet部署进行配置
+- 2.5%的V5协议费用是固定的（FEE = 25/1000）
+- NANA和REV都是revnets，这形成了一个复利反馈循环：
+  - 当NANA持有者取款或贷款时，NANA需要支付REV费用
+  - 当REV持有者取款或贷款时，REV需要支付NANA费用（V5协议费用）
+  - 这种循环机制使JBX在多个层面捕获价值
+- 分层费用结构意味着revnet用户需要同时支付V5费用（给NANA）和revnet费用（给REV）

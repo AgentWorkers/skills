@@ -1,54 +1,54 @@
 ---
 name: reverse-prompt
-description: Based on what I know about the user and their goals, suggest tasks I can do to get us closer to our missions. Use when the user wants proactive suggestions for tasks aligned with their objectives, or when they ask what I can do to help advance their goals.
+description: 根据我对用户及其目标的了解，我建议以下任务，以帮助我们更接近我们的目标。当用户希望获得与其目标相一致的任务建议时，或者当用户询问我可以做些什么来帮助他们实现目标时，可以使用这些建议。
 ---
 
-# Reverse Prompt Skill
+# 反向提示技能（Reverse Prompt Skill）
 
-This skill generates proactive task suggestions based on user context and stated missions.
+该技能根据用户上下文和明确提出的任务目标，主动生成相应的任务建议。
 
-## Process
+## 工作流程
 
-1. **Recall existing knowledge** — Search memory for:
-   - User's stated goals and missions
-   - Current projects
-   - Past preferences and decisions
-   - Recent activities and context
+1. **回顾现有知识** — 从记忆中检索以下信息：
+   - 用户明确表达的目标和任务
+   - 当前正在进行的项目
+   - 过去的偏好和决策
+   - 最近的活动和背景信息
 
-2. **Identify gaps** — What's missing or unclear:
-   - Unknown mission details
-   - Unstated priorities
-   - Missing context
+2. **识别缺失的内容** — 确定哪些信息是未知或不明确的：
+   - 任务的具体细节
+   - 未明确说明的优先级
+   - 缺失的背景信息
 
-3. **Generate suggestions** — Based on knowledge level:
+3. **生成建议** — 根据用户的知识水平，提出以下建议：
 
-### If missions are known:
-Suggest specific, actionable tasks that directly advance those goals:
-- Automation opportunities
-- Research tasks
-- Monitoring setups
-- Content creation
-- Data organization
+### 当任务目标已知时：
+   - 提出能够直接推动这些目标实现的、具体可行的任务：
+     - 自动化相关任务
+     - 研究任务
+     - 监控相关设置
+     - 内容创作
+     - 数据整理
 
-### If missions are unclear:
-Ask clarifying questions:
-- "What are you working on?"
-- "What would 'powerful' look like for your use case?"
-- "What's your domain? (business, coding, research, personal productivity)"
+### 当任务目标不明确时：
+   - 提出澄清问题：
+     - “您目前正在从事什么工作？”
+     - “对于您的使用场景来说，‘强大的功能’应该具备哪些特点？”
+     - “您的领域是什么？（商业、编程、研究、个人生产力管理）”
 
-## Example Output
+## 示例输出
 
-When missions are unknown:
-> "I need context to suggest the right tasks. Quick options:
-> 1. **Business/startup** — market monitoring, competitor tracking
-> 2. **Coding/dev** — codebase management, CI/CD hooks
-> 3. **Research** — web scraping, trend analysis
-> 4. **Personal productivity** — calendar management, reminders
-> What's your domain?"
+当任务目标不明确时：
+> “我需要更多背景信息才能给出合适的任务建议。以下是一些快速选项：
+> 1. **商业/创业** — 市场监测、竞争对手跟踪
+> 2. **编程/开发** — 代码库管理、持续集成/持续部署（CI/CD）设置
+> 3. **研究** — 网页数据抓取、趋势分析
+> 4. **个人生产力** — 日历管理、提醒设置
+> 您的领域是什么？”
 
-When missions are known (e.g., "building a SaaS"):
-> "Based on your SaaS goal, here are tasks I can handle:
-> - Monitor Reddit/HN for micro-SaaS opportunities
-> - Track competitor pricing changes
-> - Automate weekly user feedback reports
-> - Set up cron jobs for usage analytics"
+当任务目标已知时（例如：“开发一款SaaS产品”）：
+> “根据您的SaaS产品目标，我可以协助完成以下任务：
+> - 监控Reddit和Hacker News上的相关机会
+> - 跟踪竞争对手的价格变化
+> - 自动生成每周的用户反馈报告
+> - 设置定时任务（cron jobs）以分析产品使用情况”

@@ -1,73 +1,71 @@
 ---
 name: apple-serial-lookup
-description: Look up Apple device information from a serial number. Supports iPhones, iPads, Macs (MacBook, iMac, Mac mini, Mac Pro, Mac Studio), Apple Watch, Apple TV, and iPods. Use when a user provides an Apple serial number and wants to identify the device, check specs, manufacturing date/location, warranty status, or get detailed model information.
+description: 根据设备序列号查询苹果产品的信息。支持查询iPhone、iPad、Mac（MacBook、iMac、Mac mini、Mac Pro、Mac Studio）、Apple Watch、Apple TV和iPod等产品的详细信息。当用户提供设备序列号时，可以使用该功能来识别设备类型、查看规格参数、制造日期/地点、保修状态或获取详细的型号信息。
 ---
 
-# Apple Serial Lookup
+# 苹果设备序列号查询
 
-Identify any Apple device from its serial number by combining local decoding with web lookups.
+通过结合本地解码和网络查询，可以根据设备序列号识别出对应的苹果设备。
 
-## Workflow
+## 工作流程
 
-### 1. Decode locally (old 11-12 char format)
+### 1. 本地解码（旧格式：11-12位）
 
-Run the bundled decoder script:
+运行随附的解码脚本：
 
 ```bash
 python3 scripts/decode_serial.py <SERIAL>
 ```
 
-This extracts:
-- Manufacturing location and date
-- Model codes and configuration identifiers
-- **Model identifier** (e.g., MacBookPro10,1, iPhone9,1) when known
-- **Basic specs** (RAM, storage options) from built-in database
+该脚本会提取以下信息：
+- 制造地点和日期
+- 型号代码和配置标识符
+- **型号标识符**（例如：MacBookPro10,1、iPhone9,1）
+- **基本规格**（内存、存储选项），这些信息来自内置数据库
 
-The script includes a database of common model codes compiled from repair sources and EveryMac.
+该脚本包含了一个由维修记录和EveryMac网站整理的常见型号代码数据库。
 
-### 2. Web lookup for complete specs and unknown models
+### 2. 通过网络查询获取完整规格和未知型号的信息
 
-For full specifications or unknown model codes, perform web lookup:
+对于需要完整规格或未知型号代码的情况，可以通过以下方式查询：
+- **主要方法：** 使用 `web_search` 搜索 `"Apple 序列号 <SERIAL> 规格"` 或 `"<SERIAL> site:everymac.com"`
+- **备用方法：** 通过 `https://everymac.com/ultimate-mac-lookup/?search_keywords=<SERIAL>` 获取信息`
 
-- **Primary:** `web_search` for `"Apple serial number <SERIAL> specs"` or `"<SERIAL> site:everymac.com"`
-- **Fallback:** `web_fetch` from `https://everymac.com/ultimate-mac-lookup/?search_keywords=<SERIAL>`
+如果EveryMac网站因验证码而无法访问，可以尝试：
+- `https://appleserialnumberinfo.com/Desktop/index.php?sn=<SERIAL>`（可能需要使用特定浏览器）
 
-If EveryMac is blocked by captcha, try:
-- `https://appleserialnumberinfo.com/Desktop/index.php?sn=<SERIAL>` (may need browser)
-- Search for the model code (e.g., "Apple DKQ model identifier") to match to a specific device
+对于 **新格式（2021年以后生成的序列号）**，网络查询无法提供有效信息，用户需要自行访问苹果公司的查询页面：
+- **苹果设备覆盖范围查询：** `https://checkcoverage.apple.com/`（需要输入验证码，但可以查询到设备型号和保修状态）
+- 这是查询随机生成的10位序列号的唯一可靠来源
+- 苹果公司从 **2020年末/2021年初** 开始使用随机序列号，所有产品均采用此格式（从iPhone 12和M1 Mac开始，2021年全面推广）
 
-For **new-format (post-2021) serials**, web search won't help — direct the user to check Apple's coverage page themselves:
-- **Apple Check Coverage:** `https://checkcoverage.apple.com/` (requires captcha, but returns device model + warranty status)
-- This is the only reliable source for randomized 10-character serials
-- Apple switched to randomized serials starting in **late 2020/early 2021** (beginning with iPhone 12 and M1 Macs), fully rolled out across all products by 2021
+### 3. 展示查询结果
 
-### 3. Present results
+将本地解码结果与网络查询结果整合成一份详细的报告：
 
-Combine local decode + web data into a comprehensive summary:
+**本地解码后的输出内容：**
+- **设备信息：** 型号名称和标识符（例如：MacBook Pro 15" Mid-2012、MacBookPro10,1）
+- **序列号：** 完整的序列号
+- **制造信息：** 制造地点、生产周数和年份（例如：2012年9月，第38周，Quanta上海工厂）
+- **规格信息：** 来自内置数据库的内存和存储选项
+- **型号代码：** 解码尝试后得到的最后4位代码
 
-**Enhanced Output (from local decode):**
-- **Device:** Model name and identifier (e.g., MacBook Pro 15" Mid-2012, MacBookPro10,1)
-- **Serial:** Full serial number
-- **Manufactured:** Location, week, year (e.g., ~Week 38, Sep 2012, Quanta Shanghai)
-- **Specs:** RAM and storage options from built-in database
-- **Model Codes:** Last 4 characters with decode attempt
+**通过网络查询补充的信息：**
+- 确切的处理器规格
+- 完整的技术规格
+- 保修状态（通过苹果设备覆盖范围查询获取）
+- 当前的市场价值
 
-**Web Enhancement (when needed):**
-- Exact processor specifications
-- Complete technical specifications
-- Warranty status (Apple Check Coverage)
-- Current market value
+## 参考资料
 
-## Reference
+- **序列号格式与编码：** [references/serial-format.md](references/serial-format.md)
+- **型号代码数据库：** [references/model-codes.md](references/model-codes.md) — 将型号代码与设备规格和型号标识符进行关联的映射表
 
-- **Serial format & encoding:** [references/serial-format.md](references/serial-format.md)
-- **Model code database:** [references/model-codes.md](references/model-codes.md) - mappings from model codes to device specs and model identifiers
+该型号代码数据库会随着新信息的发现而不断更新。
 
-The model code database is continuously expandable as new mappings are discovered.
+## 注意事项
 
-## Notes
-
-- Old format (12 chars): decodable locally for location/date, web needed for exact model
-- New format (10-14 chars, 2021+): fully randomized, web lookup is the only option
-- IMEI numbers (15 digits) are NOT serial numbers — note this if a user provides one
-- The script outputs JSON for easy parsing
+- **旧格式（12位序列号）：** 可以通过本地解码获取制造地点和日期信息，需要通过网络查询来确定具体型号。
+- **新格式（10-14位序列号，2021年以后生成）：** 序列号完全随机化，只能通过网络查询获取相关信息。
+- **IMEI号码（15位）** 并非苹果设备的序列号，请用户注意区分。
+- 脚本以JSON格式输出结果，便于进一步处理。

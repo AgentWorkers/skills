@@ -1,24 +1,24 @@
 ---
 slug: "document-classification-nlp"
 display_name: "Document Classification Nlp"
-description: "Automatically classify and extract information from construction documents using NLP. Categorize RFIs, submittals, change orders, specifications, and contracts."
+description: "使用自然语言处理（NLP）技术自动对施工文件中的信息进行分类和提取。对请求报价（RFIs）、提交文件、变更单、技术规范以及合同等进行分类。"
 ---
 
-# Document Classification with NLP
+# 使用自然语言处理（NLP）进行文档分类
 
-## Overview
+## 概述
 
-This skill implements NLP-based document classification and information extraction for construction projects. Automate document sorting, key term extraction, and content analysis.
+本技能实现了基于自然语言处理的文档分类和信息提取功能，适用于建筑工程领域。它可以自动化文档的分类、关键词提取以及内容分析。
 
-**Document Types:**
-- RFIs (Requests for Information)
-- Submittals and shop drawings
-- Change orders and variations
-- Specifications and standards
-- Contracts and agreements
-- Safety reports and permits
+**支持的文档类型：**
+- 信息请求（RFIs）
+- 提交文件（Submittals）和施工图纸（Shop Drawings）
+- 变更订单（Change Orders）和变更申请（Variations）
+- 规范和标准（Specifications and Standards）
+- 合同和协议（Contracts and Agreements）
+- 安全报告（Safety Reports）和许可文件（Permits）
 
-## Quick Start
+## 快速入门
 
 ```python
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -50,9 +50,9 @@ prediction = classifier.predict([new_doc])[0]
 print(f"Classification: {prediction}")  # Output: Submittal
 ```
 
-## Advanced Classification System
+## 高级分类系统
 
-### Document Classifier Class
+### 文档分类器类（Document Classifier Class）
 
 ```python
 import re
@@ -297,9 +297,9 @@ class ConstructionDocumentClassifier:
         } for r in results])
 ```
 
-## Information Extraction
+## 信息提取
 
-### Key Information Extractor
+### 关键信息提取器（Key Information Extractor）
 
 ```python
 class ConstructionInfoExtractor:
@@ -392,7 +392,7 @@ class ConstructionInfoExtractor:
         return None
 ```
 
-## Processing Pipeline
+## 处理流程（Processing Pipeline）
 
 ```python
 def process_document_batch(documents: List[str], output_path: str):
@@ -428,24 +428,24 @@ def process_document_batch(documents: List[str], output_path: str):
     return df
 ```
 
-## Quick Reference
+## 快速参考
 
-| Document Type | Key Patterns | Extracted Info |
+| 文档类型 | 关键模式 | 提取的信息 |
 |--------------|--------------|----------------|
-| RFI | "request for information", "clarify" | Number, spec section, question |
-| Submittal | "shop drawing", "approval request" | Number, product, spec section |
-| Change Order | "change order", "additional cost" | Number, cost, duration impact |
-| Specification | "Section XX XX XX" | Section number, requirements |
-| Safety Report | "incident", "hazard" | Date, type, severity |
+| 信息请求（RFI） | “request for information”, “clarify” | 编号、规范章节、问题内容 |
+| 提交文件（Submittal） | “shop drawing”, “approval request” | 编号、产品名称、规范章节 |
+| 变更订单（Change Order） | “change order”, “additional cost” | 编号、费用金额、影响时长 |
+| 规范文件（Specification） | “Section XX XX XX” | 规范章节编号、具体要求 |
+| 安全报告（Safety Report） | “incident”, “hazard” | 事件发生日期、危险类型、严重程度 |
 
-## Resources
+## 资源推荐
 
 - **spaCy**: https://spacy.io
 - **Scikit-learn**: https://scikit-learn.org
 - **DDC Website**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `vector-search` for semantic document search
-- See `llm-data-automation` for advanced extraction
-- See `pdf-to-structured` for PDF processing
+- 可以参考 `vector-search` 实现语义文档搜索功能
+- 可以参考 `llm-data-automation` 进行更高级的信息提取
+- 可以参考 `pdf-to-structured` 进行 PDF 文件的处理

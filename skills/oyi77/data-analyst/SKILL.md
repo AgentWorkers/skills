@@ -1,53 +1,53 @@
 ---
 name: data-analyst
 version: 1.0.0
-description: "Data visualization, report generation, SQL queries, and spreadsheet automation. Transform your AI agent into a data-savvy analyst that turns raw data into actionable insights."
+description: "数据可视化、报告生成、SQL查询以及电子表格自动化功能——将您的人工智能代理转变为一个精通数据的分析师，能够将原始数据转化为可操作的洞察。"
 author: openclaw
 ---
 
-# Data Analyst Skill 📊
+# 数据分析师技能 📊
 
-**Turn your AI agent into a data analysis powerhouse.**
+**将您的人工智能助手打造成强大的数据分析工具。**
 
-Query databases, analyze spreadsheets, create visualizations, and generate insights that drive decisions.
-
----
-
-## What This Skill Does
-
-✅ **SQL Queries** — Write and execute queries against databases
-✅ **Spreadsheet Analysis** — Process CSV, Excel, Google Sheets data
-✅ **Data Visualization** — Create charts, graphs, and dashboards
-✅ **Report Generation** — Automated reports with insights
-✅ **Data Cleaning** — Handle missing data, outliers, formatting
-✅ **Statistical Analysis** — Descriptive stats, trends, correlations
+能够查询数据库、分析电子表格、创建可视化图表，并生成有助于决策的洞察。
 
 ---
 
-## Quick Start
+## 该技能的功能
 
-1. Configure your data sources in `TOOLS.md`:
+✅ **SQL查询** — 编写并执行针对数据库的查询  
+✅ **电子表格分析** — 处理CSV、Excel、Google Sheets中的数据  
+✅ **数据可视化** — 创建图表、图形和仪表板  
+✅ **报告生成** — 自动生成包含洞察的报告  
+✅ **数据清洗** — 处理缺失值、异常值和数据格式问题  
+✅ **统计分析** — 进行描述性统计分析、趋势分析及相关性分析  
+
+---
+
+## 快速入门
+
+1. 在 `TOOLS.md` 中配置您的数据源：  
 ```markdown
 ### Data Sources
 - Primary DB: [Connection string or description]
 - Spreadsheets: [Google Sheets URL / local path]
 - Data warehouse: [BigQuery/Snowflake/etc.]
-```
+```  
 
-2. Set up your workspace:
+2. 设置您的工作环境：  
 ```bash
 ./scripts/data-init.sh
-```
+```  
 
-3. Start analyzing!
+3. 开始分析吧！  
 
 ---
 
-## SQL Query Patterns
+## SQL查询模式
 
-### Common Query Templates
+### 常见查询模板
 
-**Basic Data Exploration**
+**基础数据探索**  
 ```sql
 -- Row count
 SELECT COUNT(*) FROM table_name;
@@ -64,9 +64,9 @@ SELECT
     MAX(column_name) as max_val
 FROM table_name
 GROUP BY column_name;
-```
+```  
 
-**Time-Based Analysis**
+**基于时间的数据分析**  
 ```sql
 -- Daily aggregation
 SELECT 
@@ -87,9 +87,9 @@ SELECT
 FROM transactions
 GROUP BY DATE_TRUNC('month', created_at)
 ORDER BY month;
-```
+```  
 
-**Cohort Analysis**
+**群体分析**  
 ```sql
 -- User cohort by signup month
 SELECT 
@@ -100,9 +100,9 @@ FROM users u
 LEFT JOIN orders o ON u.id = o.user_id
 GROUP BY cohort_month, activity_month
 ORDER BY cohort_month, activity_month;
-```
+```  
 
-**Funnel Analysis**
+**漏斗分析**  
 ```sql
 -- Conversion funnel
 WITH funnel AS (
@@ -120,23 +120,23 @@ SELECT
     purchases,
     ROUND(purchases * 100.0 / NULLIF(signups, 0), 2) as purchase_rate
 FROM funnel;
-```
+```  
 
 ---
 
-## Data Cleaning
+## 数据清洗
 
-### Common Data Quality Issues
+### 常见的数据质量问题
 
-| Issue | Detection | Solution |
+| 问题 | 检测方法 | 解决方案 |
 |-------|-----------|----------|
-| **Missing values** | `IS NULL` or empty string | Impute, drop, or flag |
-| **Duplicates** | `GROUP BY` with `HAVING COUNT(*) > 1` | Deduplicate with rules |
-| **Outliers** | Z-score > 3 or IQR method | Investigate, cap, or exclude |
-| **Inconsistent formats** | Sample and pattern match | Standardize with transforms |
-| **Invalid values** | Range checks, referential integrity | Validate and correct |
+| **缺失值** | `IS NULL` 或空字符串 | 用默认值填充、删除或标记为缺失值 |
+| **重复值** | 使用 `GROUP BY` 和 `HAVING COUNT(*) > 1` 进行去重 |
+| **异常值** | Z分数 > 3 或 IQR 方法 | 调查并处理或排除异常值 |
+| **格式不一致** | 通过抽样和模式匹配进行标准化 |
+| **无效值** | 进行范围检查并验证数据的有效性 |
 
-### Data Cleaning SQL Patterns
+### 数据清洗相关的SQL语句  
 
 ```sql
 -- Find duplicates
@@ -165,9 +165,9 @@ WITH stats AS (
 )
 SELECT * FROM data, stats
 WHERE value BETWEEN q1 - 1.5*(q3-q1) AND q3 + 1.5*(q3-q1);
-```
+```  
 
-### Data Cleaning Checklist
+### 数据清洗检查清单  
 
 ```markdown
 # Data Quality Audit: [Dataset]
@@ -190,13 +190,13 @@ WHERE value BETWEEN q1 - 1.5*(q3-q1) AND q3 + 1.5*(q3-q1);
 ## Cleaning Actions Taken
 1. [Action and reason]
 2. [Action and reason]
-```
+```  
 
 ---
 
-## Spreadsheet Analysis
+## 电子表格分析
 
-### CSV/Excel Processing with Python
+### 使用Python处理CSV/Excel文件  
 
 ```python
 import pandas as pd
@@ -222,9 +222,9 @@ summary = df.groupby('category').agg({
 
 # Export
 summary.to_csv('analysis_output.csv')
-```
+```  
 
-### Common Pandas Operations
+### 常用的Pandas操作  
 
 ```python
 # Filtering
@@ -243,25 +243,25 @@ df['rolling_avg'] = df['amount'].rolling(window=7).mean()
 
 # Merging
 merged = pd.merge(df1, df2, on='id', how='left')
-```
+```  
 
 ---
 
-## Data Visualization
+## 数据可视化
 
-### Chart Selection Guide
+### 图表选择指南
 
-| Data Type | Best Chart | Use When |
+| 数据类型 | 最适合的图表 | 适用场景 |
 |-----------|------------|----------|
-| Trend over time | Line chart | Showing patterns/changes over time |
-| Category comparison | Bar chart | Comparing discrete categories |
-| Part of whole | Pie/Donut | Showing proportions (≤5 categories) |
-| Distribution | Histogram | Understanding data spread |
-| Correlation | Scatter plot | Relationship between two variables |
-| Many categories | Horizontal bar | Ranking or comparing many items |
-| Geographic | Map | Location-based data |
+| 随时间变化的趋势 | 折线图 | 显示随时间的变化模式 |
+| 类别比较 | 条形图 | 比较不同类别的数据 |
+| 部分与整体的关系 | 饼图/圆环图 | 显示比例（≤5个类别） |
+| 数据分布 | 直方图 | 了解数据分布情况 |
+| 变量相关性 | 散点图 | 分析两个变量之间的关系 |
+| 多个类别的数据 | 水平条形图 | 对多个项目进行排名或比较 |
+| 地理数据 | 地图 | 显示地理位置相关的数据 |
 
-### Python Visualization with Matplotlib/Seaborn
+### 使用Matplotlib/Seaborn进行Python可视化  
 
 ```python
 import matplotlib.pyplot as plt
@@ -295,12 +295,11 @@ sns.heatmap(df.corr(), annot=True, cmap='coolwarm', center=0)
 plt.title('Correlation Matrix')
 plt.tight_layout()
 plt.savefig('correlation.png', dpi=150)
-```
+```  
 
-### ASCII Charts (Quick Terminal Visualization)
+### ASCII图表（快速终端可视化）
 
-When you can't generate images, use ASCII:
-
+当无法生成图像时，可以使用ASCII图表：  
 ```
 Revenue by Month (in $K)
 ========================
@@ -310,13 +309,13 @@ Mar: ████████████████████████ 24
 Apr: ██████████████████████ 220
 May: ██████████████████████████ 260
 Jun: ████████████████████████████ 280
-```
+```  
 
 ---
 
-## Report Generation
+## 报告生成
 
-### Standard Report Template
+### 标准报告模板  
 
 ```markdown
 # [Report Name]
@@ -360,9 +359,9 @@ Jun: █████████████████████████
 
 ## Appendix
 [Supporting data tables]
-```
+```  
 
-### Automated Report Script
+### 自动化报告脚本  
 
 ```bash
 #!/bin/bash
@@ -378,24 +377,24 @@ python scripts/analyze.py --input data/latest.csv --output reports/
 python scripts/format_report.py --template weekly --output reports/weekly-$(date +%Y-%m-%d).md
 
 echo "Report generated: reports/weekly-$(date +%Y-%m-%d).md"
-```
+```  
 
 ---
 
-## Statistical Analysis
+## 统计分析
 
-### Descriptive Statistics
+### 描述性统计
 
-| Statistic | What It Tells You | Use Case |
+| 统计量 | 含义 | 使用场景 |
 |-----------|-------------------|----------|
-| **Mean** | Average value | Central tendency |
-| **Median** | Middle value | Robust to outliers |
-| **Mode** | Most common | Categorical data |
-| **Std Dev** | Spread around mean | Variability |
-| **Min/Max** | Range | Data boundaries |
-| **Percentiles** | Distribution shape | Benchmarking |
+| **平均值** | 数据的中间值 | 衡量数据的中心趋势 |
+| **中位数** | 数据的中间值 | 对异常值具有较好的鲁棒性 |
+| **众数** | 出现频率最高的值 | 适用于分类数据 |
+| **标准差** | 数据围绕平均值的离散程度 | 衡量数据的波动性 |
+| **最小值/最大值** | 数据的范围 | 表示数据的边界 |
+| **百分位数** | 数据分布的形状 | 用于基准测试 |
 
-### Quick Stats with Python
+### 使用Python进行快速统计分析  
 
 ```python
 # Full descriptive statistics
@@ -411,52 +410,51 @@ print(f"Kurtosis: {df['amount'].kurtosis()}")
 # Correlation
 correlation = df['sales'].corr(df['marketing_spend'])
 print(f"Correlation: {correlation:.3f}")
-```
+```  
 
-### Statistical Tests Quick Reference
+### 常见统计检验
 
-| Test | Use Case | Python |
+| 检验方法 | 使用场景 | Python函数 |
 |------|----------|--------|
-| T-test | Compare two means | `scipy.stats.ttest_ind(a, b)` |
-| Chi-square | Categorical independence | `scipy.stats.chi2_contingency(table)` |
-| ANOVA | Compare 3+ means | `scipy.stats.f_oneway(a, b, c)` |
-| Pearson | Linear correlation | `scipy.stats.pearsonr(x, y)` |
+| T检验 | 比较两个样本的平均值 | `scipy.stats.ttest_ind(a, b)` |
+| 卡方检验 | 检验类别间的独立性 | `scipy.stats.chi2_contingency(table)` |
+| 方差分析（ANOVA） | 比较三个及以上样本的平均值 | `scipy.stats.f_oneway(a, b, c)` |
+| 皮尔逊相关系数 | 测量两个变量之间的线性相关性 | `scipy.stats.pearsonr(x, y)` |
 
 ---
 
-## Analysis Workflow
+## 分析工作流程
 
-### Standard Analysis Process
+### 标准分析流程
 
-1. **Define the Question**
-   - What are we trying to answer?
-   - What decisions will this inform?
+1. **明确问题**  
+   - 我们试图回答什么问题？  
+   - 这些分析结果将用于做出哪些决策？  
 
-2. **Understand the Data**
-   - What data is available?
-   - What's the structure and quality?
+2. **理解数据**  
+   - 有哪些可用数据？  
+   - 数据的结构和质量如何？  
 
-3. **Clean and Prepare**
-   - Handle missing values
-   - Fix data types
-   - Remove duplicates
+3. **数据清洗与准备**  
+   - 处理缺失值  
+   - 调整数据类型  
+   - 删除重复数据  
 
-4. **Explore**
-   - Descriptive statistics
-   - Initial visualizations
-   - Identify patterns
+4. **数据探索**  
+   - 进行描述性统计分析  
+   - 初步生成可视化结果  
+   - 发现数据中的模式  
 
-5. **Analyze**
-   - Deep dive into findings
-   - Statistical tests if needed
-   - Validate hypotheses
+5. **深入分析**  
+   - 对分析结果进行深入研究  
+   - 如有需要，进行统计检验  
+   - 验证假设  
 
-6. **Communicate**
-   - Clear visualizations
-   - Actionable insights
-   - Recommendations
+6. **结果沟通**  
+   - 使用清晰的可视化图表展示结果  
+   - 提供可操作的洞察和建议  
 
-### Analysis Request Template
+### 分析请求模板  
 
 ```markdown
 # Analysis Request
@@ -480,18 +478,17 @@ print(f"Correlation: {correlation:.3f}")
 
 ## Notes
 [Any constraints or considerations]
-```
+```  
 
 ---
 
-## Scripts
+## 脚本
 
-### data-init.sh
-Initialize your data analysis workspace.
+### data-init.sh  
+初始化您的数据分析工作环境。  
 
-### query.sh
-Quick SQL query execution.
-
+### query.sh  
+快速执行SQL查询。  
 ```bash
 # Run query from file
 ./scripts/query.sh --file queries/daily-report.sql
@@ -501,11 +498,10 @@ Quick SQL query execution.
 
 # Save output to file
 ./scripts/query.sh --file queries/export.sql --output data/export.csv
-```
+```  
 
-### analyze.py
-Python analysis toolkit.
-
+### analyze.py  
+Python数据分析工具包。  
 ```bash
 # Basic analysis
 python scripts/analyze.py --input data/sales.csv
@@ -515,58 +511,56 @@ python scripts/analyze.py --input data/sales.csv --type cohort
 
 # Generate report
 python scripts/analyze.py --input data/sales.csv --report weekly
-```
+```  
 
 ---
 
-## Integration Tips
+## 集成建议
 
-### With Other Skills
+### 与其他技能的集成
 
-| Skill | Integration |
+| 技能 | 集成方式 |
 |-------|-------------|
-| **Marketing** | Analyze campaign performance, content metrics |
-| **Sales** | Pipeline analytics, conversion analysis |
-| **Business Dev** | Market research data, competitor analysis |
+| **市场营销** | 分析营销活动的效果和内容指标 |
+| **销售** | 分析销售流程和转化率 |
+| **业务开发** | 进行市场研究和竞争对手分析 |
 
-### Common Data Sources
+### 常见的数据来源
 
-- **Databases:** PostgreSQL, MySQL, SQLite
-- **Warehouses:** BigQuery, Snowflake, Redshift
-- **Spreadsheets:** Google Sheets, Excel, CSV
-- **APIs:** REST endpoints, GraphQL
-- **Files:** JSON, Parquet, XML
-
----
-
-## Best Practices
-
-1. **Start with the question** — Know what you're trying to answer
-2. **Validate your data** — Garbage in = garbage out
-3. **Document everything** — Queries, assumptions, decisions
-4. **Visualize appropriately** — Right chart for right data
-5. **Show your work** — Methodology matters
-6. **Lead with insights** — Not just data dumps
-7. **Make it actionable** — "So what?" → "Now what?"
-8. **Version your queries** — Track changes over time
+- **数据库**：PostgreSQL、MySQL、SQLite  
+- **数据仓库**：BigQuery、Snowflake、Redshift  
+- **电子表格**：Google Sheets、Excel、CSV  
+- **API**：REST接口、GraphQL  
+- **文件格式**：JSON、Parquet、XML  
 
 ---
 
-## Common Mistakes
+## 最佳实践
 
-❌ **Confirmation bias** — Looking for data to support a conclusion
-❌ **Correlation ≠ causation** — Be careful with claims
-❌ **Cherry-picking** — Using only favorable data
-❌ **Ignoring outliers** — Investigate before removing
-❌ **Over-complicating** — Simple analysis often wins
-❌ **No context** — Numbers without comparison are meaningless
-
----
-
-## License
-
-**License:** MIT — use freely, modify, distribute.
+1. **从问题出发** — 明确您想要解决的问题  
+2. **验证数据质量** — 数据质量直接影响分析结果  
+3. **详细记录所有步骤** — 包括查询内容、假设和决策过程  
+4. **选择合适的可视化方式** — 根据数据类型选择合适的图表  
+5. **清晰展示分析过程** — 方法论同样重要  
+6. **以洞察为主** — 不仅仅是提供原始数据  
+7. **确保结果具有实际意义** — 需要明确下一步行动方案  
+8. **对查询进行版本控制** — 跟踪代码的变化  
 
 ---
 
-*"The goal is to turn data into information, and information into insight." — Carly Fiorina*
+## 常见错误
+
+❌ **确认偏误** — 只寻找支持已有结论的数据  
+❌ **相关性≠因果关系** — 在得出结论时要谨慎  
+❌ **选择性使用数据** — 只选择有利的数据  
+❌ **忽视异常值** — 在删除异常值前先进行调查  
+❌ **过度复杂化** — 简单的分析往往更有效  
+❌ **缺乏背景信息** — 未经对比的数字毫无意义  
+
+---
+
+## 许可证
+
+**许可证**：MIT许可证 — 可自由使用、修改和分发。  
+
+——“目标是将数据转化为信息，再将信息转化为有价值的洞察。” — Carly Fiorina

@@ -1,21 +1,22 @@
 ---
 slug: "cost-prediction"
 display_name: "Cost Prediction"
-description: "Predict construction project costs using Machine Learning. Use Linear Regression, K-Nearest Neighbors, and Random Forest models on historical project data. Train, evaluate, and deploy cost prediction models."
+description: "**使用机器学习预测建筑工程成本**  
+基于历史项目数据，分别使用线性回归（Linear Regression）、K-近邻（K-Nearest Neighbors）和随机森林（Random Forest）模型来预测建筑工程的成本。完成模型的训练、评估及部署工作。"
 ---
 
-# Construction Cost Prediction with Machine Learning
+# 使用机器学习进行建筑成本预测
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 4.5), this skill enables predicting construction project costs using historical data and machine learning algorithms. The approach transforms traditional expert-based estimation into data-driven prediction.
+基于DDC方法论（第4.5章），本技能能够利用历史数据和机器学习算法来预测建筑项目的成本。该方法将传统的专家评估方式转变为数据驱动的预测方式。
 
-**Book Reference:** "Будущее: прогнозы и машинное обучение" / "Future: Predictions and Machine Learning"
+**参考书籍**：《未来：预测与机器学习》（"Будущее: Прогнозы и машинное обучение"）
 
-> "Предсказания и прогнозы на основе исторических данных позволяют компаниям принимать более точные решения о стоимости и сроках проектов."
-> — DDC Book, Chapter 4.5
+> “基于历史数据的预测使企业能够更准确地判断项目的成本和工期。”
+— DDC书籍，第4.5章
 
-## Core Concepts
+## 核心概念
 
 ```
 Historical Data → Feature Engineering → ML Model → Cost Prediction
@@ -25,7 +26,7 @@ Past projects      Prepare data      Train model    New project
 with costs         for ML            on history     cost forecast
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -58,9 +59,9 @@ cost = model.predict(new_project)
 print(f"Predicted cost: ${cost[0]:,.0f}")
 ```
 
-## Data Preparation
+## 数据准备
 
-### Prepare Historical Dataset
+### 准备历史数据集
 
 ```python
 import pandas as pd
@@ -106,7 +107,7 @@ df = pd.read_csv("projects_history.csv")
 df_prepared = prepare_cost_dataset(df)
 ```
 
-### Feature Engineering
+### 特征工程
 
 ```python
 def engineer_features(df):
@@ -131,9 +132,9 @@ def engineer_features(df):
     return df
 ```
 
-## Machine Learning Models
+## 机器学习模型
 
-### Linear Regression
+### 线性回归
 
 ```python
 from sklearn.linear_model import LinearRegression
@@ -163,7 +164,7 @@ print("Feature Importance:")
 print(importance)
 ```
 
-### K-Nearest Neighbors (KNN)
+### K近邻（KNN）
 
 ```python
 from sklearn.neighbors import KNeighborsRegressor
@@ -191,7 +192,7 @@ def train_knn_model(X_train, y_train):
 knn_model, scaler = train_knn_model(X_train, y_train)
 ```
 
-### Random Forest
+### 随机森林
 
 ```python
 from sklearn.ensemble import RandomForestRegressor
@@ -221,7 +222,7 @@ print("Feature Importance:")
 print(importance.head(10))
 ```
 
-### Gradient Boosting
+### 梯度提升
 
 ```python
 from sklearn.ensemble import GradientBoostingRegressor
@@ -242,9 +243,9 @@ def train_gradient_boosting(X_train, y_train):
 gb_model = train_gradient_boosting(X_train, y_train)
 ```
 
-## Model Evaluation
+## 模型评估
 
-### Comprehensive Evaluation
+### 综合评估
 
 ```python
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -273,7 +274,7 @@ def evaluate_model(model, X_test, y_test, model_name="Model"):
 metrics, predictions = evaluate_model(model, X_test, y_test, "Linear Regression")
 ```
 
-### Compare Multiple Models
+### 比较多个模型
 
 ```python
 def compare_models(models, X_test, y_test):
@@ -303,7 +304,7 @@ models = {
 comparison = compare_models(models, X_test, y_test)
 ```
 
-### Cross-Validation
+### 交叉验证
 
 ```python
 from sklearn.model_selection import cross_val_score
@@ -320,9 +321,9 @@ def cross_validate_model(model, X, y, cv=5):
 cv_scores = cross_validate_model(rf_model, X, y)
 ```
 
-## Prediction Pipeline
+## 预测流程
 
-### Complete Prediction Function
+### 完整的预测函数
 
 ```python
 import joblib
@@ -387,7 +388,7 @@ print(f"Predicted Cost: ${result['predicted_cost']:,.0f}")
 print(f"Range: ${result['lower_bound']:,.0f} - ${result['upper_bound']:,.0f}")
 ```
 
-### Save and Load Model
+### 保存和加载模型
 
 ```python
 import joblib
@@ -410,7 +411,7 @@ save_model(rf_model, "cost_prediction_model.pkl")
 loaded_model = load_model("cost_prediction_model.pkl")
 ```
 
-## Using with ChatGPT
+## 与ChatGPT结合使用
 
 ```python
 # Prompt for ChatGPT to help with cost prediction
@@ -430,38 +431,38 @@ Write Python code using scikit-learn to:
 """
 ```
 
-## Quick Reference
+## 快速参考
 
-| Task | Code |
+| 任务 | 代码 |
 |------|------|
-| Split data | `train_test_split(X, y, test_size=0.2)` |
-| Linear Regression | `LinearRegression().fit(X, y)` |
+| 分割数据 | `train_test_split(X, y, test_size=0.2)` |
+| 线性回归 | `LinearRegression().fit(X, y)` |
 | KNN | `KNeighborsRegressor(n_neighbors=5)` |
-| Random Forest | `RandomForestRegressor(n_estimators=100)` |
-| Predict | `model.predict(X_new)` |
-| MAE | `mean_absolute_error(y_true, y_pred)` |
-| R² Score | `r2_score(y_true, y_pred)` |
-| Cross-validate | `cross_val_score(model, X, y, cv=5)` |
-| Save model | `joblib.dump(model, 'file.pkl')` |
+| 随机森林 | `RandomForestRegressor(n_estimators=100)` |
+| 预测 | `model.predict(X_new)` |
+| 均方绝对误差（MAE） | `mean_absolute_error(y_true, y_pred)` |
+| R²分数 | `r2_score(y_true, y_pred)` |
+| 交叉验证 | `cross_val_score(model, X, y, cv=5)` |
+| 保存模型 | `joblib.dump(model, 'file.pkl')` |
 
-## Best Practices
+## 最佳实践
 
-1. **Data Quality**: More historical data = better predictions
-2. **Feature Selection**: Include relevant project characteristics
-3. **Inflation Adjustment**: Normalize costs to current prices
-4. **Regular Retraining**: Update model with new completed projects
-5. **Ensemble Methods**: Combine multiple models for robustness
-6. **Confidence Intervals**: Always provide prediction ranges
+1. **数据质量**：历史数据越多，预测越准确。
+2. **特征选择**：包含相关的项目特征。
+3. **通货膨胀调整**：将成本转换为当前价格。
+4. **定期重新训练**：用新的已完成项目更新模型。
+5. **集成方法**：结合多个模型以提高模型的稳健性。
+6. **置信区间**：始终提供预测范围。
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 4.5
-- **Website**: https://datadrivenconstruction.io
-- **scikit-learn**: https://scikit-learn.org
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第4.5章
+- **网站**：https://datadrivenconstruction.io
+- **scikit-learn**：https://scikit-learn.org
 
-## Next Steps
+## 下一步
 
-- See `duration-prediction` for project duration forecasting
-- See `ml-model-builder` for custom ML workflows
-- See `kpi-dashboard` for visualization
-- See `big-data-analysis` for large dataset processing
+- 查看`duration-prediction`以进行项目工期预测。
+- 查看`ml-model-builder`以构建自定义的机器学习工作流程。
+- 查看`kpi-dashboard`以进行数据可视化。
+- 查看`big-data-analysis`以处理大型数据集。

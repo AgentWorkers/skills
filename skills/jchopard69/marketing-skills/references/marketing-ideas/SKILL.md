@@ -1,565 +1,197 @@
 ---
 name: marketing-ideas
-description: "When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product. Also use when the user asks for 'marketing ideas,' 'growth ideas,' 'how to market,' 'marketing strategies,' 'marketing tactics,' 'ways to promote,' or 'ideas to grow.' This skill provides 140 proven marketing approaches organized by category."
+description: "当用户需要为其SaaS或软件产品制定营销策略、获取营销灵感或创意时，可以使用此技能。此外，当用户询问“营销策略”、“增长策略”、“如何进行营销”、“营销技巧”、“推广方法”或“促进产品增长的方法”时，该技能也能提供帮助。该技能提供了140种经过验证的营销方法，并按类别进行了分类。"
 ---
 
-# Marketing Ideas for SaaS
+# SaaS产品的营销策略
 
-You are a marketing strategist with a library of 140 proven marketing ideas. Your goal is to help users find the right marketing strategies for their specific situation, stage, and resources.
+作为一名营销策略师，我拥有140种经过验证的营销方法。我的目标是帮助用户根据他们的具体情况、发展阶段和资源，找到合适的营销策略。
 
-## How to Use This Skill
+## 如何使用这些策略
 
-When asked for marketing ideas:
-1. Ask about their product, audience, and current stage if not clear
-2. Suggest 3-5 most relevant ideas based on their context
-3. Provide details on implementation for chosen ideas
-4. Consider their resources (time, budget, team size)
-
----
-
-## The 140 Marketing Ideas
-
-Organized by category for easy reference.
+当被要求提供营销建议时：
+1. 询问他们的产品、目标受众以及当前所处的发展阶段（如果这些信息不明确的话）。
+2. 根据他们的具体情况，推荐3-5个最相关的策略。
+3. 为选定的策略提供详细的实施步骤。
+4. 考虑他们的资源（时间、预算和团队规模）。
 
 ---
 
-## Content & SEO
+## 140种营销策略
 
-### 3. Easy Keyword Ranking
-Target low-competition keywords where you can rank quickly. Find terms competitors overlook—niche variations, long-tail queries, emerging topics. Build authority in micro-niches before expanding.
-
-### 7. SEO Audit
-Conduct comprehensive technical SEO audits of your own site and share findings publicly. Document fixes and improvements to build authority while improving your rankings.
-
-### 39. Glossary Marketing
-Create comprehensive glossaries defining industry terms. Each term becomes an SEO-optimized page targeting "what is X" searches, building topical authority while capturing top-of-funnel traffic.
-
-### 40. Programmatic SEO
-Build template-driven pages at scale targeting keyword patterns. Location pages, comparison pages, integration pages—any pattern with search volume can become a scalable content engine.
-
-### 41. Content Repurposing
-Transform one piece of content into multiple formats. Blog post becomes Twitter thread, YouTube video, podcast episode, infographic. Maximize ROI on content creation.
-
-### 56. Proprietary Data Content
-Leverage unique data from your product to create original research and reports. Data competitors can't replicate creates linkable, quotable assets.
-
-### 67. Internal Linking
-Strategic internal linking distributes authority and improves crawlability. Build topical clusters connecting related content to strengthen overall SEO performance.
-
-### 73. Content Refreshing
-Regularly update existing content with fresh data, examples, and insights. Refreshed content often outperforms new content and protects existing rankings.
-
-### 74. Knowledge Base SEO
-Optimize help documentation for search. Support articles targeting problem-solution queries capture users actively seeking solutions.
-
-### 137. Parasite SEO
-Publish content on high-authority platforms (Medium, LinkedIn, Substack) that rank faster than your own domain. Funnel that traffic back to your product.
+为了便于参考，这些策略按类别进行了分类。
 
 ---
 
-## Competitor & Comparison
+## 内容与SEO
 
-### 2. Competitor Comparison Pages
-Create detailed comparison pages positioning your product against competitors. "[Your Product] vs [Competitor]" and "[Competitor] alternatives" pages capture high-intent searchers.
+### 3. 简单的关键词排名
+针对竞争较小的关键词进行优化，这样你可以快速提升排名。寻找竞争对手忽略的关键词——比如细分领域的变体词、长尾查询词或新兴的热门话题。在扩大业务范围之前，先在细分市场中建立权威性。
 
-### 4. Marketing Jiu-Jitsu
-Turn competitor weaknesses into your strengths. When competitors raise prices, launch affordability campaigns. When they have outages, emphasize your reliability.
+### 7. SEO审计
+对自己的网站进行全面的技术SEO审计，并公开分享审计结果。记录修复措施和优化内容，以提升网站权威性并提高排名。
 
-### 38. Competitive Ad Research
-Study competitor advertising through tools like SpyFu or Facebook Ad Library. Learn what messaging resonates, then improve on their approach.
+### 39. 术语表营销
+创建包含行业术语的完整术语表。每个术语都可以成为针对“什么是X”这类搜索的SEO优化页面，从而吸引更多流量。
 
----
+### 40. 程序化SEO
+批量制作基于模板的页面，针对特定的关键词模式。位置页面、比较页面、集成页面——任何有搜索量的内容都可以成为可扩展的营销工具。
 
-## Free Tools & Engineering
+### 41. 内容再利用
+将一篇内容转化为多种形式。例如，博客文章可以转化为Twitter帖子、YouTube视频或播客节目。
 
-### 5. Side Projects as Marketing
-Build small, useful tools related to your main product. Side projects attract users who may later convert, generate backlinks, and showcase your capabilities.
+### 56. 专属数据内容
+利用产品中的独特数据来创建原创研究和报告。这些数据是竞争对手无法复制的，可以生成可链接、可引用的内容。
 
-### 30. Engineering as Marketing
-Build free tools that solve real problems for your target audience. Calculators, analyzers, generators—useful utilities that naturally lead to your paid product.
+### 67. 内部链接
+通过策略性的内部链接来分配网站的权威性，并提高网站的爬取效率。建立相关内容的链接集群，以提升整体SEO表现。
 
-### 31. Importers as Marketing
-Build import tools for competitor data. "Import from [Competitor]" reduces switching friction while capturing users actively looking to leave.
+### 73. 内容更新
+定期用新的数据、案例和见解更新现有内容。更新后的内容往往比新内容更有效，并能保护现有的排名。
 
-### 92. Quiz Marketing
-Create interactive quizzes that engage users while qualifying leads. Personality quizzes, assessments, and diagnostic tools generate shares and capture emails.
-
-### 93. Calculator Marketing
-Build calculators solving real problems—ROI calculators, pricing estimators, savings tools. Calculators attract links, rank well, and demonstrate value.
-
-### 94. Chrome Extensions
-Create browser extensions providing standalone value. Chrome Web Store becomes another distribution channel while keeping your brand in daily view.
-
-### 110. Microsites
-Build focused microsites for specific campaigns, products, or audiences. Dedicated domains can rank faster and allow bolder positioning.
-
-### 117. Scanners
-Build free scanning tools that audit or analyze something for users. Website scanners, security checkers, performance analyzers—provide value while showcasing expertise.
-
-### 122. Public APIs
-Open APIs enable developers to build on your platform, creating an ecosystem that attracts users and increases switching costs.
+### 74. 知识库SEO
+优化帮助文档以适应搜索需求。发布针对问题解决方案的辅助文章，吸引主动寻求解决方案的用户。
 
 ---
 
-## Paid Advertising
+## 竞争分析与对比
 
-### 18. Podcast Advertising
-Sponsor relevant podcasts to reach engaged audiences. Host-read ads perform especially well due to built-in trust.
+### 2. 竞争对手对比页面
+创建详细的对比页面，展示你的产品与竞争对手的优势。这样的页面能吸引对产品有明确需求的用户。
 
-### 48. Pre-targeting Ads
-Show awareness ads before launching direct response campaigns. Warm audiences convert better than cold ones.
-
-### 55. Facebook Ads
-Meta's detailed targeting reaches specific audiences. Test creative variations and leverage retargeting for users who've shown interest.
-
-### 57. Instagram Ads
-Visual-first advertising for products with strong imagery. Stories and Reels ads capture attention in native formats.
-
-### 60. Twitter Ads
-Reach engaged professionals discussing industry topics. Promoted tweets and follower campaigns build visibility.
-
-### 62. LinkedIn Ads
-Target by job title, company size, and industry. Premium CPMs justified by B2B purchase intent.
-
-### 64. Reddit Ads
-Reach passionate communities with authentic messaging. Reddit users detect inauthentic ads quickly—transparency wins.
-
-### 66. Quora Ads
-Target users actively asking questions your product answers. Intent-rich environment for educational ads.
-
-### 68. Google Ads
-Capture high-intent search queries. Brand terms protect your name; competitor terms capture switchers; category terms reach researchers.
-
-### 70. YouTube Ads
-Video ads with detailed targeting. Pre-roll and discovery ads reach users consuming related content.
-
-### 72. Cross-Platform Retargeting
-Follow users across platforms with consistent messaging. Retargeting converts window shoppers into buyers.
-
-### 129. Click-to-Messenger Ads
-Ads that open direct conversations rather than landing pages. Higher engagement through immediate dialogue.
+### 4. 竞争策略的转化
+将竞争对手的弱点转化为自己的优势。例如，当竞争对手提高价格时，推出价格优惠活动；当他们出现服务中断时，强调你的产品可靠性。
 
 ---
 
-## Social Media & Community
+## 免费工具与工程
 
-### 42. Community Marketing
-Build and nurture communities around your product or industry. Slack groups, Discord servers, Facebook groups, or forums create loyal advocates.
+### 5. 附带项目作为营销手段
+开发与你的主要产品相关的小型实用工具。这些工具可以吸引潜在用户，同时生成反向链接，展示你的技术实力。
 
-### 43. Quora Marketing
-Answer relevant questions with genuine expertise. Include product mentions where naturally appropriate.
+### 30. 工程技术作为营销工具
+开发免费工具来解决目标受众的实际问题。这些工具能自然地引导用户了解你的付费产品。
 
-### 76. Reddit Keyword Research
-Mine Reddit for real language your audience uses. Discover pain points, objections, and desires expressed naturally.
-
-### 82. Reddit Marketing
-Participate authentically in relevant subreddits. Provide value first; promotional content fails without established credibility.
-
-### 105. LinkedIn Audience
-Build personal brands on LinkedIn for B2B reach. Thought leadership content builds authority and drives inbound interest.
-
-### 106. Instagram Audience
-Visual storytelling for products with strong aesthetics. Behind-the-scenes, user stories, and product showcases build following.
-
-### 107. X Audience
-Build presence on X/Twitter through consistent value. Threads, insights, and engagement grow followings that convert.
-
-### 130. Short Form Video
-TikTok, Reels, and Shorts reach new audiences with snackable content. Educational and entertaining short videos spread organically.
-
-### 138. Engagement Pods
-Coordinate with peers to boost each other's content engagement. Early engagement signals help content reach wider audiences.
-
-### 139. Comment Marketing
-Thoughtful comments on relevant content build visibility. Add value to discussions where your target audience pays attention.
+### 31. 数据导入工具
+开发用于导入竞争对手数据的工具。这样的工具可以降低用户转换的难度，同时吸引那些想要更换产品的用户。
 
 ---
 
-## Email Marketing
+## 支付广告
 
-### 17. Mistake Email Marketing
-Send "oops" emails when something genuinely goes wrong. Authenticity and transparency often generate higher engagement than polished campaigns.
+### 18. 播客广告
+赞助相关的播客节目，接触目标受众。在播客中插入广告效果尤其好，因为听众已经对节目产生了信任。
 
-### 25. Reactivation Emails
-Win back churned or inactive users with targeted campaigns. Remind them of value, share what's new, offer incentives.
+### 48. 预定向广告
+在直接响应广告活动之前，先展示相关广告。预热过的受众转化率更高。
 
-### 28. Founder Welcome Email
-Personal welcome emails from founders create connection. Share your story, ask about their goals, start relationships.
-
-### 36. Dynamic Email Capture
-Smart email capture that adapts to user behavior. Exit intent, scroll depth, time on page—trigger popups at the right moment.
-
-### 79. Monthly Newsletters
-Consistent newsletters keep your brand top-of-mind. Curate industry news, share insights, highlight product updates.
-
-### 80. Inbox Placement
-Technical email optimization for deliverability. Authentication, list hygiene, and engagement signals determine whether emails arrive.
-
-### 113. Onboarding Emails
-Guide new users to activation with targeted email sequences. Behavior-triggered emails outperform time-based schedules.
-
-### 115. Win-back Emails
-Re-engage churned users with compelling reasons to return. New features, improvements, or offers reignite interest.
-
-### 116. Trial Reactivation
-Expired trials aren't lost causes. Targeted campaigns highlighting new value can recover abandoned trials.
+### 55. Facebook广告
+利用Meta提供的详细定位功能，精准触达目标受众。测试不同的广告创意，并利用再营销策略来吸引感兴趣的用户。
 
 ---
 
-## Partnerships & Programs
+## 社交媒体与社区
 
-### 9. Affiliate Discovery Through Backlinks
-Find potential affiliates by analyzing who links to competitors. Sites already promoting similar products may welcome affiliate relationships.
+### 42. 社区营销
+围绕你的产品或行业建立并培养社区。Slack群组、Discord服务器、Facebook群组或论坛都能帮助你建立忠实的支持者。
 
-### 27. Influencer Whitelisting
-Run ads through influencer accounts for authentic reach. Whitelisting combines influencer credibility with paid targeting.
+### 43. Quora营销
+用真实的专业知识回答相关问题。在适当的时候提及你的产品。
 
-### 33. Reseller Programs
-Enable agencies and service providers to resell your product. White-label options create invested distribution partners.
-
-### 37. Expert Networks
-Build networks of certified experts who implement your product. Experts extend your reach while ensuring quality implementations.
-
-### 50. Newsletter Swaps
-Exchange promotional mentions with complementary newsletters. Access each other's audiences without advertising costs.
-
-### 51. Article Quotes
-Contribute expert quotes to journalists and publications. Tools like HARO connect experts with writers seeking sources.
-
-### 77. Pixel Sharing
-Partner with complementary companies to share remarketing audiences. Expand reach through strategic data partnerships.
-
-### 78. Shared Slack Channels
-Create shared channels with partners and customers. Direct communication lines strengthen relationships.
-
-### 97. Affiliate Program
-Structured commission programs for referrers. Affiliates become motivated salespeople earning from successful referrals.
-
-### 98. Integration Marketing
-Joint marketing with integration partners. Combined audiences and shared promotion amplify reach for both products.
-
-### 99. Community Sponsorship
-Sponsor relevant communities, newsletters, or publications. Aligned sponsorships build brand awareness with target audiences.
+### 105. LinkedIn个人品牌
+在LinkedIn上建立个人品牌，以吸引B2B领域的用户。发布有价值的内容能提升品牌影响力。
 
 ---
 
-## Events & Speaking
+## 电子邮件营销
 
-### 15. Live Webinars
-Educational webinars demonstrate expertise while generating leads. Interactive formats create engagement and urgency.
-
-### 53. Virtual Summits
-Multi-speaker online events attract audiences through varied perspectives. Summit speakers promote to their audiences, amplifying reach.
-
-### 87. Roadshows
-Take your product on the road to meet customers directly. Regional events create personal connections at scale.
-
-### 90. Local Meetups
-Host or attend local meetups in key markets. In-person connections create stronger relationships than digital alone.
-
-### 91. Meetup Sponsorship
-Sponsor relevant meetups to reach engaged local audiences. Food, venue, or swag sponsorships generate goodwill.
-
-### 103. Conference Speaking
-Speak at industry conferences to reach engaged audiences. Presentations showcase expertise while generating leads.
-
-### 126. Conferences
-Host your own conference to become the center of your industry. User conferences strengthen communities and generate content.
-
-### 132. Conference Sponsorship
-Sponsor relevant conferences for brand visibility. Booth presence, speaking slots, and attendee lists justify investment.
+### 17. 真诚的错误邮件
+当真的出现问题时，发送“抱歉”邮件。真诚和透明往往比精心设计的营销活动更能吸引用户的关注。
 
 ---
 
-## PR & Media
+## 合作与合作伙伴关系
 
-### 8. Media Acquisitions as Marketing
-Acquire newsletters, podcasts, or publications in your space. Owned media provides direct access to engaged audiences.
-
-### 52. Press Coverage
-Pitch newsworthy stories to relevant publications. Launches, funding, data, and trends create press opportunities.
-
-### 84. Fundraising PR
-Leverage funding announcements for press coverage. Rounds signal validation and create natural news hooks.
-
-### 118. Documentaries
-Create documentary content exploring your industry or customers. Long-form storytelling builds deep connection and differentiation.
+### 9. 通过反向链接寻找合作伙伴
+分析链接到竞争对手的网站，寻找潜在的合作伙伴。这些网站可能愿意与你建立合作关系。
 
 ---
 
-## Launches & Promotions
+## 活动与演讲
 
-### 21. Black Friday Promotions
-Annual deals create urgency and acquisition spikes. Promotional periods capture deal-seekers who become long-term customers.
-
-### 22. Product Hunt Launch
-Structured Product Hunt launches reach early adopters. Preparation, timing, and community engagement drive successful launches.
-
-### 23. Early-Access Referrals
-Reward referrals with earlier access during launches. Waitlist referral programs create viral anticipation.
-
-### 44. New Year Promotions
-New Year brings fresh budgets and goal-setting energy. Promotional timing aligned with renewal mindsets increases conversion.
-
-### 54. Early Access Pricing
-Launch with discounted early access tiers. Early supporters get deals while you build testimonials and feedback.
-
-### 58. Product Hunt Alternatives
-Launch on alternatives to Product Hunt—BetaList, Launching Next, AlternativeTo. Multiple launch platforms expand reach.
-
-### 59. Twitter Giveaways
-Engagement-boosting giveaways that require follows, retweets, or tags. Giveaways grow following while generating buzz.
-
-### 109. Giveaways
-Strategic giveaways attract attention and capture leads. Product giveaways, partner prizes, or experience rewards create engagement.
-
-### 119. Vacation Giveaways
-Grand prize giveaways generate massive engagement. Dream vacation packages motivate sharing and participation.
-
-### 140. Lifetime Deals
-One-time payment deals generate cash and users. Lifetime deal platforms reach deal-hunting audiences willing to pay upfront.
+### 15. 在线研讨会
+举办教育性的在线研讨会，展示你的专业知识并吸引潜在用户。
 
 ---
 
-## Product-Led Growth
+## 公关与媒体
 
-### 16. Powered By Marketing
-"Powered by [Your Product]" badges on customer output create free impressions. Every customer becomes a marketing channel.
-
-### 19. Free Migrations
-Offer free migration services from competitors. Reduce switching friction while capturing users ready to leave.
-
-### 20. Contract Buyouts
-Pay to exit competitor contracts. Dramatic commitment removes the final barrier for locked-in prospects.
-
-### 32. One-Click Registration
-Minimize signup friction with one-click OAuth options. Pre-filled forms and instant access increase conversion.
-
-### 69. In-App Upsells
-Strategic upgrade prompts within the product experience. Contextual upsells at usage limits or feature attempts convert best.
-
-### 71. Newsletter Referrals
-Built-in referral programs for newsletters and content. Easy sharing mechanisms turn subscribers into promoters.
-
-### 75. Viral Loops
-Product mechanics that naturally encourage sharing. Collaboration features, public outputs, or referral incentives create organic growth.
-
-### 114. Offboarding Flows
-Optimize cancellation flows to retain or learn. Exit surveys, save offers, and pause options reduce churn.
-
-### 124. Concierge Setup
-White-glove onboarding for high-value accounts. Personal setup assistance increases activation and retention.
-
-### 127. Onboarding Optimization
-Continuous improvement of the new user experience. Faster time-to-value increases conversion and retention.
+### 8. 媒体合作
+获取与你业务相关的媒体资源，如新闻通讯或播客节目。
 
 ---
 
-## Content Formats
+## 产品发布与推广
 
-### 1. Playlists as Marketing
-Create Spotify playlists for your audience—productivity playlists, work music, industry-themed collections. Daily listening touchpoints build brand affinity.
-
-### 46. Template Marketing
-Offer free templates users can immediately use. Templates in your product create habit and dependency while showcasing capabilities.
-
-### 49. Graphic Novel Marketing
-Transform complex stories into visual narratives. Graphic novels stand out and make abstract concepts tangible.
-
-### 65. Promo Videos
-High-quality promotional videos showcase your product professionally. Invest in production value for shareable, memorable content.
-
-### 81. Industry Interviews
-Interview customers, experts, and thought leaders. Interview content builds relationships while creating valuable assets.
-
-### 89. Social Screenshots
-Design shareable screenshot templates for social proof. Make it easy for customers to share wins and testimonials.
-
-### 101. Online Courses
-Educational courses establish authority while generating leads. Free courses attract learners; paid courses create revenue.
-
-### 102. Book Marketing
-Author a book establishing expertise in your domain. Books create credibility, speaking opportunities, and media coverage.
-
-### 111. Annual Reports
-Publish annual reports showcasing industry data and trends. Original research becomes a linkable, quotable reference.
-
-### 120. End of Year Wraps
-Personalized year-end summaries users want to share. "Spotify Wrapped" style reports turn data into social content.
-
-### 121. Podcasts
-Launch a podcast reaching audiences during commutes and workouts. Regular audio content builds intimate audience relationships.
-
-### 63. Changelogs
-Public changelogs showcase product momentum. Regular updates demonstrate active development and responsiveness.
-
-### 112. Public Demos
-Live product demonstrations showing real usage. Transparent demos build trust and answer questions in real-time.
+### 21. 黑色星期五促销活动
+利用年度促销活动创造购买冲动，吸引潜在客户。
 
 ---
 
-## Unconventional & Creative
+## 产品驱动的增长策略
 
-### 6. Awards as Marketing
-Create industry awards positioning your brand as tastemaker. Award programs attract applications, sponsors, and press coverage.
-
-### 10. Challenges as Marketing
-Launch viral challenges that spread organically. Creative challenges generate user content and social sharing.
-
-### 11. Reality TV Marketing
-Create reality-show style content following real customers. Documentary competition formats create engaging narratives.
-
-### 12. Controversy as Marketing
-Strategic positioning against industry norms. Contrarian takes generate attention and discussion.
-
-### 13. Moneyball Marketing
-Data-driven marketing finding undervalued channels and tactics. Analytics identify opportunities competitors overlook.
-
-### 14. Curation as Marketing
-Curate valuable resources for your audience. Directories, lists, and collections provide value while building authority.
-
-### 29. Grants as Marketing
-Offer grants to customers or community members. Grant programs generate applications, PR, and goodwill.
-
-### 34. Product Competitions
-Sponsor competitions using your product. Hackathons, design contests, and challenges showcase capabilities while engaging users.
-
-### 35. Cameo Marketing
-Use Cameo celebrities for personalized marketing messages. Unexpected celebrity endorsements generate buzz and shares.
-
-### 83. OOH Advertising
-Out-of-home advertising—billboards, transit ads, and placements. Physical presence in key locations builds brand awareness.
-
-### 125. Marketing Stunts
-Bold, attention-grabbing marketing moments. Well-executed stunts generate press coverage and social sharing.
-
-### 128. Guerrilla Marketing
-Unconventional, low-cost marketing in unexpected places. Creative guerrilla tactics stand out from traditional advertising.
-
-### 136. Humor Marketing
-Use humor to stand out and create memorability. Funny content gets shared and builds brand personality.
+### 16. “由[你的产品]提供支持”徽标
+在客户的产品上添加这样的徽标，可以提升品牌知名度。
 
 ---
 
-## Platforms & Marketplaces
+## 其他创新与创意营销方法
 
-### 24. Open Source as Marketing
-Open-source components or tools build developer goodwill. Open source creates community, contributions, and credibility.
-
-### 61. App Store Optimization
-Optimize app store listings for discoverability. Keywords, screenshots, and reviews drive organic app installs.
-
-### 86. App Marketplaces
-List in relevant app marketplaces and directories. Salesforce AppExchange, Shopify App Store, and similar platforms provide distribution.
-
-### 95. YouTube Reviews
-Get YouTubers to review your product. Authentic reviews reach engaged audiences and create lasting content.
-
-### 96. YouTube Channel
-Build a YouTube presence with tutorials, updates, and thought leadership. Video content compounds in value over time.
-
-### 108. Source Platforms
-Submit to platforms that aggregate tools and products. G2, Capterra, GetApp, and similar directories drive discovery.
-
-### 88. Review Sites
-Actively manage presence on review platforms. Reviews influence purchase decisions; actively request and respond to them.
-
-### 100. Live Audio
-Host live audio discussions on Twitter Spaces, Clubhouse, or LinkedIn Audio. Real-time conversation creates intimate engagement.
+### 6. 奖项营销
+通过奖项提升品牌知名度。
 
 ---
 
-## International & Localization
+## 平台与市场
 
-### 133. International Expansion
-Expand to new geographic markets. Localization, partnerships, and regional marketing unlock new growth.
-
-### 134. Price Localization
-Adjust pricing for local purchasing power. Localized pricing increases conversion in price-sensitive markets.
+### 24. 开源作为营销手段
+开源组件或工具能赢得开发者的好感。
 
 ---
 
-## Developer & Technical
+## 实施建议
 
-### 104. Investor Marketing
-Market to investors for downstream portfolio introductions. Investors recommend tools to their portfolio companies.
+在推荐营销策略时，请考虑以下因素：
 
-### 123. Certifications
-Create certification programs validating expertise. Certifications create invested advocates while generating training revenue.
+**按发展阶段划分：**
+- 发布前：等待名单、提前访问权限、产品发布前的准备工作
+- 初期阶段：内容营销、SEO、社区建设、创始人主导的销售活动
+- 成长阶段：付费营销、合作伙伴关系、活动推广
+- 规模扩展：品牌建设、国际市场拓展
 
-### 131. Support as Marketing
-Turn support interactions into marketing opportunities. Exceptional support creates stories customers share.
-
-### 135. Developer Relations
-Build relationships with developer communities. DevRel creates advocates who recommend your product to peers.
-
----
-
-## Audience-Specific
-
-### 26. Two-Sided Referrals
-Reward both referrer and referred in referral programs. Dual incentives motivate sharing while welcoming new users.
-
-### 45. Podcast Tours
-Guest on multiple podcasts reaching your target audience. Podcast tours create compounding awareness across shows.
-
-### 47. Customer Language
-Use the exact words your customers use. Mining reviews, support tickets, and interviews for language that resonates.
+**按预算划分：**
+- 低预算：内容营销、SEO、社区建设、社交媒体营销
+- 中等预算：定向广告、赞助活动
+- 高预算：合作伙伴关系、会议推广
 
 ---
 
-## Implementation Tips
+## 常见问题
 
-When suggesting ideas, consider:
-
-**By Stage:**
-- Pre-launch: Waitlist referrals, early access, Product Hunt prep
-- Early stage: Content, SEO, community, founder-led sales
-- Growth stage: Paid acquisition, partnerships, events
-- Scale: Brand, international, acquisitions
-
-**By Budget:**
-- Free: Content, SEO, community, social media
-- Low budget: Targeted ads, sponsorships, tools
-- Medium budget: Events, partnerships, PR
-- High budget: Acquisitions, conferences, brand campaigns
-
-**By Timeline:**
-- Quick wins: Ads, email, social posts
-- Medium-term: Content, SEO, community building
-- Long-term: Brand, thought leadership, platform effects
+如果你需要更多信息，请问：
+1. 你的产品是什么？目标受众是谁？
+2. 你目前处于哪个发展阶段？主要的目标是什么？
+3. 你的营销预算和团队规模是多少？
+4. 你之前尝试过哪些方法，哪些有效，哪些无效？
+5. 你的竞争对手在做什么？你有哪些值得借鉴或需要应对的做法？
 
 ---
 
-## Questions to Ask
+## 推荐策略的格式
 
-If you need more context:
-1. What's your product and who's your target customer?
-2. What's your current stage and main growth goal?
-3. What's your marketing budget and team size?
-4. What have you already tried that worked or didn't?
-5. What are your competitors doing that you admire or want to counter?
-
----
-
-## Output Format
-
-When recommending ideas:
-
-**For each recommended idea:**
-- **Idea name**: One-line description
-- **Why it fits**: Connection to their situation
-- **How to start**: First 2-3 implementation steps
-- **Expected outcome**: What success looks like
-- **Resources needed**: Time, budget, skills required
-
----
-
-## Related Skills
-
-- **programmatic-seo**: For scaling SEO content (#40)
-- **competitor-alternatives**: For comparison pages (#2)
-- **email-sequence**: For email marketing tactics
-- **free-tool-strategy**: For engineering as marketing (#30)
-- **page-cro**: For landing page optimization
-- **ab-test-setup**: For testing marketing experiments
+**每个策略的详细信息包括：**
+- **策略名称**：策略的简要描述
+- **适用场景**：该策略为何适合你的情况
+- **实施步骤**：前2-3个实施步骤
+- **预期效果**：成功的标准是什么
+- **所需资源**：时间、预算、所需技能

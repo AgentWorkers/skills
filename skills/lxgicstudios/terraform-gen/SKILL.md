@@ -1,28 +1,28 @@
 ---
 name: terraform-gen
-description: Generate Terraform infrastructure configs. Use when provisioning cloud resources.
+description: 生成 Terraform 基础设施配置文件。在配置云资源时使用这些文件。
 ---
 
-# Terraform Generator
+# Terraform 生成器
 
-Terraform syntax is verbose. Describe your infrastructure and get proper .tf files.
+Terraform 的语法较为冗长。通过描述您的基础设施，即可自动生成相应的 `.tf` 文件。
 
-**One command. Zero config. Just works.**
+**仅需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-terraform "3 EC2 instances behind load balancer"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates Terraform configuration
-- Supports AWS, GCP, Azure
-- Includes variables and outputs
-- Proper resource dependencies
+- 生成 Terraform 配置文件
+- 支持 AWS、GCP、Azure 云服务
+- 包含变量和输出结果
+- 确保资源之间的依赖关系正确设置
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # AWS setup
@@ -35,42 +35,42 @@ npx ai-terraform "RDS PostgreSQL with read replica"
 npx ai-terraform "EKS cluster with 3 node groups"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use modules** - reusable infrastructure
-- **State in S3** - not local
-- **Use variables** - no hardcoded values
-- **Plan before apply** - always review changes
+- **使用模块**：实现基础设施的复用
+- **将配置文件存储在 S3 中**：避免使用本地存储
+- **使用变量**：避免使用硬编码的值
+- **在应用更改前先进行规划**：务必仔细审查所有修改内容
 
-## When to Use This
+## 适用场景
 
-- Starting new infrastructure
-- Learning Terraform syntax
-- Quick prototyping
-- Generating baseline configs
+- 新建基础设施时
+- 学习 Terraform 语法时
+- 快速原型设计时
+- 生成基础配置文件时
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。无需付费、无需注册，免费版本也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-terraform --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your infrastructure description and generates Terraform HCL code with proper resources, variables, and outputs. Understands cloud provider APIs.
+该工具会根据您提供的基础设施描述，自动生成包含正确资源、变量和输出结果的 Terraform HCL 代码，并能够理解相应的云服务 API。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

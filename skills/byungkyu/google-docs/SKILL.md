@@ -13,11 +13,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Google Docs
+# Google 文档（Google Docs）
 
-Access the Google Docs API with managed OAuth authentication. Create documents, insert and format text, and manage document content.
+使用托管的 OAuth 认证来访问 Google 文档 API。您可以创建文档、插入和格式化文本以及管理文档内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get document
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-docs/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Docs API endpoint path. The gateway proxies requests to `docs.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google 文档 API 端点路径。该网关会将请求代理到 `docs.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Docs connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google 文档连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,17 +138,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Get Document
+### 获取文档
 
 ```bash
 GET /google-docs/v1/documents/{documentId}
 ```
 
-### Create Document
+### 创建文档
 
 ```bash
 POST /google-docs/v1/documents
@@ -159,7 +159,7 @@ Content-Type: application/json
 }
 ```
 
-### Batch Update Document
+### 批量更新文档
 
 ```bash
 POST /google-docs/v1/documents/{documentId}:batchUpdate
@@ -177,9 +177,9 @@ Content-Type: application/json
 }
 ```
 
-## Common batchUpdate Requests
+## 常见的批量更新请求
 
-### Insert Text
+### 插入文本
 
 ```json
 {
@@ -190,7 +190,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Content
+### 删除内容
 
 ```json
 {
@@ -203,7 +203,7 @@ Content-Type: application/json
 }
 ```
 
-### Replace All Text
+### 替换所有文本
 
 ```json
 {
@@ -217,7 +217,7 @@ Content-Type: application/json
 }
 ```
 
-### Insert Table
+### 插入表格
 
 ```json
 {
@@ -229,7 +229,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Text Style
+### 更新文本样式
 
 ```json
 {
@@ -247,7 +247,7 @@ Content-Type: application/json
 }
 ```
 
-### Insert Page Break
+### 插入分页符
 
 ```json
 {
@@ -257,7 +257,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -305,34 +305,34 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Index positions are 1-based (document starts at index 1)
-- Use `endOfSegmentLocation` to append at end
-- Multiple requests in batchUpdate are applied atomically
-- Get document first to find correct indices for updates
-- The `fields` parameter in style updates uses field mask syntax
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 索引位置从 1 开始（文档从索引 1 开始）。
+- 使用 `endOfSegmentLocation` 在文档末尾添加内容。
+- `batchUpdate` 中的多个请求会原子性地执行。
+- 需要先获取文档才能找到正确的索引位置来进行更新。
+- 在 `styleUpdate` 请求中，`fields` 参数使用字段掩码语法。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以禁用全局解析。
+- **重要提示：** 当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确解析，这可能导致“无效的 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Docs connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Docs API |
+| 400 | 未找到 Google 文档连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Google 文档 API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -343,20 +343,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-docs`. For example:
+1. 确保您的 URL 路径以 `google-docs` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/google-docs/v1/documents/{documentId}`
+- 错误的格式：`https://gateway.maton.ai/docs/v1/documents/{documentId}`
 
-- Correct: `https://gateway.maton.ai/google-docs/v1/documents/{documentId}`
-- Incorrect: `https://gateway.maton.ai/docs/v1/documents/{documentId}`
+## 资源
 
-## Resources
-
-- [Docs API Overview](https://developers.google.com/docs/api/how-tos/overview)
-- [Get Document](https://developers.google.com/docs/api/reference/rest/v1/documents/get)
-- [Create Document](https://developers.google.com/docs/api/reference/rest/v1/documents/create)
-- [Batch Update](https://developers.google.com/docs/api/reference/rest/v1/documents/batchUpdate)
-- [Request Types](https://developers.google.com/docs/api/reference/rest/v1/documents/request)
-- [Document Structure](https://developers.google.com/docs/api/concepts/structure)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [文档 API 概述](https://developers.google.com/docs/api/how-tos/overview)
+- [获取文档](https://developers.google.com/docs/api/reference/rest/v1/documents/get)
+- [创建文档](https://developers.google.com/docs/api/reference/rest/v1/documents/create)
+- [批量更新](https://developers.google.com/docs/api/reference/rest/v1/documents/batchUpdate)
+- [请求类型](https://developers.google.com/docs/api/reference/rest/v1/documents/request)
+- [文档结构](https://developers.google.com/docs/api/concepts/structure)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

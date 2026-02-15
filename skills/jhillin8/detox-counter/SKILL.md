@@ -1,6 +1,6 @@
 ---
 name: detox-counter
-description: Track any detox with customizable counters, symptom logging, and progress milestones
+description: 使用可定制的计数器来跟踪排毒过程，记录症状，并设置进度里程碑。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,43 +11,43 @@ triggers:
   - "detox day"
 ---
 
-# Detox Counter
+# 解毒计数器
 
-**Track any cleanse or detox with symptom logging and milestone celebrations.**
+**通过记录症状和庆祝里程碑来跟踪任何排毒或清洁计划。**
 
-## What it does
+## 功能介绍
 
-Universal detox tracking for any cleanse—whether it's sugar elimination, juice cleanses, Whole30, elimination diets, or custom protocols. Log daily symptoms, track progress against milestones, and celebrate wins as you move through your detox journey. No judgment, just data.
+这是一个通用的排毒跟踪工具，适用于各种排毒或清洁计划——无论是戒糖、果汁排毒、Whole30饮食法、排除性饮食，还是自定义的排毒方案。您可以每天记录自己的症状，跟踪进度，并在完成排毒目标时庆祝自己的成就。这里没有任何评判，只记录客观数据。
 
-## Usage
+## 使用方法
 
-### Start detox
-Begin a new detox or cleanse by naming it, selecting duration (days), and setting optional milestones (e.g., "Day 3: energy dip expected" or "Day 7: cravings subside").
+### 开始排毒
+为新的排毒计划命名，选择持续时间（天数），并设置可选的里程碑（例如：“第3天：预计会出现能量下降”或“第7天：食欲减退”）。
 
-### Log symptoms
-Daily check-in with what you're experiencing—headaches, energy levels, cravings, mood shifts, sleep quality, digestion changes. Build a personal symptom profile that shows patterns over time.
+### 记录症状
+每天记录自己的身体状况：头痛、精力水平、食欲、情绪变化、睡眠质量、消化情况等。通过这些记录来建立个人的症状档案，从而发现长期的趋势。
 
-### Check progress
-View your current day, days remaining, milestone status, and a timeline of logged symptoms. See patterns emerge as your detox progresses.
+### 查看进度
+查看当天的情况、剩余天数、里程碑的完成情况以及症状记录的时间线。随着排毒的进行，您会逐渐发现其中的规律。
 
-### Set duration
-Customize how long your detox runs. Standard durations are 3, 7, 14, 30, or 60 days; create custom durations for your specific protocol.
+### 设置持续时间
+自定义排毒计划的时长。标准时长为3天、7天、14天或60天；您也可以为特定的排毒方案设置自定义的时长。
 
-### Complete detox
-Mark your detox complete when you finish. Review the full symptom log, celebrate milestones hit, and export your data if you want to share with a healthcare provider or nutritionist.
+### 完成排毒
+当排毒计划结束时，标记为“完成”。回顾完整的 symptom log（症状记录），庆祝达成的里程碑，并在需要时导出数据以供医疗保健提供者或营养师参考。
 
-## Detox Types
+## 排毒类型
 
-- **Sugar Detox** - Eliminate refined sugars and sweetened foods
-- **Juice Cleanse** - Liquid-only nutrition, typically 3–7 days
-- **Whole30** - 30-day elimination of grains, legumes, dairy, sugar, and additives
-- **Elimination Diet** - Remove suspected food triggers (dairy, gluten, nightshades, etc.)
-- **Custom** - Define your own protocol and tracked symptom categories
+- **戒糖排毒**：避免摄入精制糖和含糖食品
+- **果汁排毒**：仅摄入液体营养，通常持续3-7天
+- **Whole30饮食法**：连续30天不摄入谷物、豆类、乳制品、糖分和添加剂
+- **排除性饮食**：去除可能引发不适的食物（如乳制品、麸质、茄科植物等）
+- **自定义**：根据个人情况制定排毒方案并设置相应的症状记录类别
 
-## Tips
+## 使用建议
 
-- **Set realistic expectations.** Most detoxes involve an adjustment period (day 2–4) where symptoms spike before improving. This is normal.
-- **Log consistently.** Daily check-ins reveal patterns that sporadic logging misses. Even a 30-second note counts.
-- **Use your milestone calendar.** Knowing what's "normal" for day 5 of Whole30 helps you stay committed when cravings hit.
-- **Connect with a pro.** Share your symptom log with a doctor or nutritionist for personalized insights.
-- **All data stays local on your machine.** Nothing is uploaded to external servers—your detox journey stays private and under your control.
+- **设定现实的期望**：大多数排毒计划都会有一段适应期（第2-4天），期间症状可能会加重，这是正常的。
+- **坚持每日记录**：定期的记录有助于发现那些偶尔记录时可能遗漏的规律。
+- **利用里程碑日历**：了解Whole30饮食法第5天的“正常”状态，有助于在面对食欲波动时保持坚持。
+- **寻求专业建议**：将症状记录分享给医生或营养师，以获得个性化的建议。
+- **所有数据仅保存在您的设备上**：数据不会上传到外部服务器，确保您的排毒过程保持私密且由您自己控制。

@@ -1,6 +1,6 @@
 ---
 name: quit-smoking
-description: Quit cigarettes with smoke-free tracking, craving support, and health recovery timeline
+description: 通过无烟追踪工具、戒烟渴望支持以及健康恢复时间表来帮助你戒烟。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,63 +11,63 @@ triggers:
   - "stop cigarettes"
 ---
 
-# Quit Smoking
+# 戒烟
 
-Become smoke-free with persistent tracking, craving support, and a health recovery roadmap.
+通过持续记录、戒烟欲望的支持以及健康恢复计划，帮助您成功戒烟。
 
-## What it does
+## 功能介绍
 
-- **Quit tracking**: Start a quit date, track consecutive days smoke-free with persistent memory
-- **Craving support**: Get real-time support when cravings hit—substitutions, breathing exercises, motivation
-- **Health benefits timeline**: See the medical benefits of quitting unfold (heart rate drops in 20 min, senses improve in 48 hrs, lung function improves in months)
-- **Progress milestones**: Celebrate 1 day, 1 week, 1 month, 3 months, 6 months, 1 year smoke-free
-- **Money saved tracker**: Watch dollars add up as you quit—based on typical pack cost
+- **开始戒烟记录**：设定戒烟日期，使用持久存储功能记录连续无烟的天数。
+- **戒烟欲望支持**：在感到烟瘾时获得实时帮助——提供替代方案、呼吸练习和激励信息。
+- **健康改善时间线**：查看戒烟带来的身体变化（20分钟后心率下降，48小时后感官功能改善，数月后肺功能提升）。
+- **进度里程碑**：庆祝戒烟1天、1周、1个月、3个月、6个月、1年的成就。
+- **节省费用记录**：根据每包香烟的平均价格，实时查看戒烟后节省的金额。
 
-## Usage
+## 使用方法
 
-**Start your quit**
-- "I'm quitting smoking today"
-- "Set my quit date to [date]"
-- "Help me quit cigarettes"
+**开始戒烟**
+- “我今天决定戒烟。”
+- “将我的戒烟日期设置为[日期]。”
+- “帮助我戒烟。”
 
-**Handle cravings**
-- "I have a craving"
-- "Help me through this craving"
-- "What can I do instead of smoking?"
-- "Give me a breathing exercise"
+**应对烟瘾**
+- “我感到烟瘾发作了。”
+- “帮我克服这个烟瘾。”
+- “除了吸烟，我还能做什么？”
+- “给我一个呼吸练习方法。”
 
-**Track progress**
-- "How many days smoke-free?"
-- "Show my smoking streak"
-- "What's my quit milestone?"
-- "How much money have I saved?"
+**跟踪进度**
+- “我已经连续多少天没有吸烟了？”
+- “显示我的无烟记录。”
+- “我目前的戒烟里程碑是什么？”
+- “我节省了多少钱？”
 
-**Health gains**
-- "What health benefits do I get from quitting?"
-- "When will my lungs heal?"
-- "How long until cravings stop?"
+**健康益处**
+- “戒烟后我能获得哪些健康益处？”
+- “我的肺部什么时候能恢复健康？”
+- “烟瘾什么时候会完全消失？”
 
-**Money saved**
-- "How much have I saved so far?"
-- "What could I buy with my saved money?"
-- "Calculate my quit savings"
+**节省费用**
+- “我目前已经节省了多少钱？”
+- “用这些钱我可以买些什么？”
+- “计算我的戒烟节省金额。”
 
-## Health Timeline
+## 健康时间线
 
-| Milestone | Health Benefit |
+| 进度里程碑 | 健康益处 |
 |-----------|---|
-| **20 minutes** | Heart rate and blood pressure drop |
-| **8 hours** | Oxygen levels normalize, nicotine clears from bloodstream |
-| **24 hours** | Risk of heart attack decreases |
-| **48 hours** | Taste and smell improve, nerve endings repair |
-| **2 weeks** | Circulation and lung function improve |
-| **1 month** | Skin quality improves, coughing subsides |
-| **1 year** | Risk of heart disease cut in half, lung function up 30% |
+| **20分钟** | 心率和血压下降 |
+| **8小时** | 氧气水平恢复正常，血液中的尼古丁被清除 |
+| **24小时** | 心脏病发作风险降低 |
+| **48小时** | 味觉和嗅觉改善，神经末梢开始修复 |
+| **2周** | 循环系统和肺功能得到改善 |
+| **1个月** | 皮肤质量提升，咳嗽症状减轻 |
+| **1年** | 心脏病风险减半，肺功能提高30% |
 
-## Tips
+## 小贴士
 
-- **Track your wins**: Every day smoke-free is a victory. The streak is your motivation.
-- **Replace the ritual**: Smoking is a habit. Substitute gum, water, a walk, or deep breathing when cravings hit.
-- **Tell someone**: Accountability works. Let friends or family know you're quitting—they'll support you.
-- **Ride out cravings**: Most cravings last 3-5 minutes. Use a timer, breathe, wait it out.
-- **All data stays local on your machine**: Your quit journey, cravings, and health milestones are stored only on your device—no cloud sync, no tracking, completely private.
+- **记录自己的进步**：每天不吸烟都是一个胜利，这个记录本身就是你的动力。
+- **替代吸烟习惯**：吸烟是一种习惯。当烟瘾来袭时，可以用口香糖、喝水、散步或深呼吸来替代。
+- **告诉他人**：让朋友或家人知道你正在戒烟——他们会给予你支持。
+- **熬过烟瘾**：大多数烟瘾只会持续3-5分钟。使用计时器，深呼吸，耐心等待。
+- **所有数据仅保存在本地设备上**：你的戒烟过程、烟瘾记录和健康数据都只保存在你的设备上，不会上传到云端，完全保密。

@@ -15,9 +15,9 @@ metadata:
 
 # WooCommerce
 
-Access the WooCommerce REST API with managed OAuth authentication. Manage products, orders, customers, coupons, shipping, taxes, and more for e-commerce operations.
+您可以使用管理的 OAuth 认证来访问 WooCommerce REST API。该 API 可用于管理电子商务操作中的产品、订单、客户、优惠券、运费、税费等。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List products
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/woocommerce/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual WooCommerce API endpoint path. The gateway proxies requests to your WooCommerce store and automatically handles authentication.
+请将 `{native-api-path}` 替换为实际的 WooCommerce API 端点路径。该网关会将请求代理到您的 WooCommerce 商店，并自动处理认证。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your WooCommerce OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 WooCommerce OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple WooCommerce connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 WooCommerce 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,41 +138,41 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Products
+### 产品
 
-#### List All Products
+#### 列出所有产品
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products
 ```
 
-Query parameters:
-- `page` - Current page (default: 1)
-- `per_page` - Items per page (default: 10, max: 100)
-- `search` - Search by product name
-- `status` - Filter by status: `draft`, `pending`, `private`, `publish`
-- `type` - Filter by type: `simple`, `grouped`, `external`, `variable`
-- `sku` - Filter by SKU
-- `category` - Filter by category ID
-- `tag` - Filter by tag ID
-- `featured` - Filter featured products
-- `on_sale` - Filter on-sale products
-- `min_price` / `max_price` - Filter by price range
-- `stock_status` - Filter by stock status: `instock`, `outofstock`, `onbackorder`
-- `orderby` - Sort by: `date`, `id`, `include`, `title`, `slug`, `price`, `popularity`, `rating`
-- `order` - Sort order: `asc`, `desc`
+查询参数：
+- `page` - 当前页码（默认值：1）
+- `per_page` - 每页显示的项数（默认值：10，最大值：100）
+- `search` - 按产品名称搜索
+- `status` - 按状态过滤：`draft`、`pending`、`private`、`publish`
+- `type` - 按类型过滤：`simple`、`grouped`、`external`、`variable`
+- `sku` - 按 SKU 过滤
+- `category` - 按类别 ID 过滤
+- `tag` - 按标签 ID 过滤
+- `featured` - 过滤特色产品
+- `on_sale` - 过滤促销产品
+- `min_price` / `max_price` - 按价格范围过滤
+- `stock_status` - 按库存状态过滤：`instock`、`outofstock`、`onbackorder`
+- `orderby` - 排序方式：`date`、`id`、`include`、`title`、`slug`、`price`、`popularity`、`rating`
+- `order` - 排序顺序：`asc`、`desc`
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products?per_page=20&status=publish" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -193,19 +193,19 @@ curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products?per_
 ]
 ```
 
-#### Get a Product
+#### 获取产品信息
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/{id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products/123" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-#### Create a Product
+#### 创建产品
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products
@@ -225,50 +225,50 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X POST "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"name": "Premium Widget", "type": "simple", "regular_price": "19.99", "sku": "WDG-001"}'
 ```
 
-#### Update a Product
+#### 更新产品信息
 
 ```bash
 PUT /woocommerce/wp-json/wc/v3/products/{id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products/123" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"regular_price": "24.99", "sale_price": "19.99"}'
 ```
 
-#### Delete a Product
+#### 删除产品
 
 ```bash
 DELETE /woocommerce/wp-json/wc/v3/products/{id}
 ```
 
-Query parameters:
-- `force` - Set to `true` to permanently delete (default: `false` moves to trash)
+查询参数：
+- `force` - 设置为 `true` 以永久删除产品（默认值：`false` 表示将产品移至待删除列表）
 
-#### Duplicate a Product
+#### 复制产品
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/{id}/duplicate
 ```
 
-### Product Variations
+### 产品变体
 
-For variable products, manage individual variations:
+对于可变产品，您可以管理其各个变体：
 
-#### List Variations
+#### 列出变体
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/{product_id}/variations
 ```
 
-#### Create Variation
+#### 创建变体
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/{product_id}/variations
@@ -284,33 +284,33 @@ Content-Type: application/json
 }
 ```
 
-#### Update Variation
+#### 更新变体
 
 ```bash
 PUT /woocommerce/wp-json/wc/v3/products/{product_id}/variations/{id}
 ```
 
-#### Delete Variation
+#### 删除变体
 
 ```bash
 DELETE /woocommerce/wp-json/wc/v3/products/{product_id}/variations/{id}
 ```
 
-#### Batch Update Variations
+#### 批量更新变体
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/{product_id}/variations/batch
 ```
 
-### Product Attributes
+### 产品属性
 
-#### List Attributes
+#### 列出属性
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/attributes
 ```
 
-#### Create Attribute
+#### 创建属性
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/attributes
@@ -324,7 +324,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get/Update/Delete Attribute
+#### 获取/更新/删除属性
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/attributes/{id}
@@ -332,7 +332,7 @@ PUT /woocommerce/wp-json/wc/v3/products/attributes/{id}
 DELETE /woocommerce/wp-json/wc/v3/products/attributes/{id}
 ```
 
-### Attribute Terms
+### 属性术语
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/attributes/{attribute_id}/terms
@@ -342,15 +342,15 @@ PUT /woocommerce/wp-json/wc/v3/products/attributes/{attribute_id}/terms/{id}
 DELETE /woocommerce/wp-json/wc/v3/products/attributes/{attribute_id}/terms/{id}
 ```
 
-### Product Categories
+### 产品类别
 
-#### List Categories
+#### 列出类别
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/categories
 ```
 
-#### Create Category
+#### 创建类别
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/categories
@@ -363,7 +363,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get/Update/Delete Category
+#### 获取/更新/删除类别
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/categories/{id}
@@ -371,7 +371,7 @@ PUT /woocommerce/wp-json/wc/v3/products/categories/{id}
 DELETE /woocommerce/wp-json/wc/v3/products/categories/{id}
 ```
 
-### Product Tags
+### 产品标签
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/tags
@@ -381,7 +381,7 @@ PUT /woocommerce/wp-json/wc/v3/products/tags/{id}
 DELETE /woocommerce/wp-json/wc/v3/products/tags/{id}
 ```
 
-### Product Shipping Classes
+### 产品运费类别
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/shipping_classes
@@ -391,19 +391,19 @@ PUT /woocommerce/wp-json/wc/v3/products/shipping_classes/{id}
 DELETE /woocommerce/wp-json/wc/v3/products/shipping_classes/{id}
 ```
 
-### Product Reviews
+### 产品评论
 
-#### List Reviews
+#### 列出评论
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/reviews
 ```
 
-Query parameters:
-- `product` - Filter by product ID
-- `status` - Filter by status: `approved`, `hold`, `spam`, `trash`
+查询参数：
+- `product` - 按产品 ID 过滤
+- `status` - 按状态过滤：`approved`、`hold`、`spam`、`trash`
 
-#### Create Review
+#### 创建评论
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/products/reviews
@@ -418,7 +418,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get/Update/Delete Review
+#### 获取/更新/删除评论
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/products/reviews/{id}
@@ -428,41 +428,41 @@ DELETE /woocommerce/wp-json/wc/v3/products/reviews/{id}
 
 ---
 
-### Orders
+### 订单
 
-#### List All Orders
+#### 列出所有订单
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders
 ```
 
-Query parameters:
-- `page` - Current page (default: 1)
-- `per_page` - Items per page (default: 10)
-- `search` - Search orders
-- `after` / `before` - Filter by date (ISO8601)
-- `status` - Order status (see below)
-- `customer` - Filter by customer ID
-- `product` - Filter by product ID
-- `orderby` - Sort by: `date`, `id`, `include`, `title`, `slug`
-- `order` - Sort order: `asc`, `desc`
+查询参数：
+- `page` - 当前页码（默认值：1）
+- `per_page` - 每页显示的项数（默认值：10）
+- `search` - 搜索订单
+- `after` / `before` - 按日期（ISO8601 格式）过滤
+- `status` - 订单状态（见下文）
+- `customer` - 按客户 ID 过滤
+- `product` - 按产品 ID 过滤
+- `orderby` - 排序方式：`date`、`id`、`include`、`title`、`slug`
+- `order` - 排序顺序：`asc`、`desc`
 
-**Order Statuses:**
-- `pending` - Payment pending
-- `processing` - Payment received, awaiting fulfillment
-- `on-hold` - Awaiting payment confirmation
-- `completed` - Order fulfilled
-- `cancelled` - Cancelled by admin or customer
-- `refunded` - Fully refunded
-- `failed` - Payment failed
+**订单状态：**
+- `pending` - 支付待处理
+- `processing` - 支付已收到，等待发货
+- `on-hold` - 等待支付确认
+- `completed` - 订单已发货
+- `cancelled` - 由管理员或客户取消
+- `refunded` - 已全额退款
+- `failed` - 支付失败
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/orders?status=processing&per_page=50" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -489,13 +489,13 @@ curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/orders?status
 ]
 ```
 
-#### Get an Order
+#### 获取订单信息
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders/{id}
 ```
 
-#### Create an Order
+#### 创建订单
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/orders
@@ -534,33 +534,29 @@ Content-Type: application/json
 }
 ```
 
-#### Update an Order
+#### 更新订单信息
 
-```bash
-PUT /woocommerce/wp-json/wc/v3/orders/{id}
-```
-
-**Example - Update order status:**
+**示例 - 更新订单状态：**
 
 ```bash
 curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/orders/456" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"status": "completed"}'
 ```
 
-#### Delete an Order
+#### 删除订单
 
 ```bash
 DELETE /woocommerce/wp-json/wc/v3/orders/{id}
 ```
 
-### Order Notes
+### 订单备注
 
-#### List Order Notes
+#### 列出订单备注
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders/{order_id}/notes
 ```
 
-#### Create Order Note
+#### 创建订单备注
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/orders/{order_id}/notes
@@ -572,24 +568,24 @@ Content-Type: application/json
 }
 ```
 
-- `customer_note`: Set to `true` to make the note visible to the customer
+- `customer_note`：设置为 `true` 以使备注对客户可见
 
-#### Get/Delete Order Note
+#### 获取/删除订单备注
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders/{order_id}/notes/{id}
 DELETE /woocommerce/wp-json/wc/v3/orders/{order_id}/notes/{id}
 ```
 
-### Order Refunds
+### 订单退款
 
-#### List Refunds
+#### 列出退款记录
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders/{order_id}/refunds
 ```
 
-#### Create Refund
+#### 创建退款
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/orders/{order_id}/refunds
@@ -602,9 +598,9 @@ Content-Type: application/json
 }
 ```
 
-- `api_refund`: Set to `true` to process refund through payment gateway
+- `api_refund`：设置为 `true` 以通过支付网关处理退款
 
-#### Get/Delete Refund
+#### 获取/删除退款记录
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/orders/{order_id}/refunds/{id}
@@ -613,30 +609,30 @@ DELETE /woocommerce/wp-json/wc/v3/orders/{order_id}/refunds/{id}
 
 ---
 
-### Customers
+### 客户
 
-#### List All Customers
+#### 列出所有客户
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/customers
 ```
 
-Query parameters:
-- `page` - Current page (default: 1)
-- `per_page` - Items per page (default: 10)
-- `search` - Search by name or email
-- `email` - Filter by exact email
-- `role` - Filter by role: `all`, `administrator`, `customer`, `shop_manager`
-- `orderby` - Sort by: `id`, `include`, `name`, `registered_date`
-- `order` - Sort order: `asc`, `desc`
+查询参数：
+- `page` - 当前页码（默认值：1）
+- `per_page` - 每页显示的项数（默认值：10）
+- `search` - 按名称或电子邮件搜索
+- `email` - 按电子邮件地址精确过滤
+- `role` - 按角色过滤：`all`、`administrator`、`customer`、`shop_manager`
+- `orderby` - 排序方式：`id`、`include`、`name`、`registered_date`
+- `order` - 排序顺序：`asc`、`desc`
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/customers?per_page=25" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -669,13 +665,13 @@ curl -s -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/customers?per
 ]
 ```
 
-#### Get a Customer
+#### 获取客户信息
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/customers/{id}
 ```
 
-#### Create a Customer
+#### 创建客户
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/customers
@@ -701,49 +697,49 @@ Content-Type: application/json
 }
 ```
 
-#### Update a Customer
+#### 更新客户信息
 
 ```bash
 PUT /woocommerce/wp-json/wc/v3/customers/{id}
 ```
 
-#### Delete a Customer
+#### 删除客户
 
 ```bash
 DELETE /woocommerce/wp-json/wc/v3/customers/{id}
 ```
 
-### Customer Downloads
+### 客户下载内容
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/customers/{customer_id}/downloads
 ```
 
-Returns downloadable products the customer has access to.
+返回客户可以下载的产品信息。
 
 ---
 
-### Coupons
+### 优惠券
 
-#### List All Coupons
+#### 列出所有优惠券
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/coupons
 ```
 
-Query parameters:
-- `page` - Current page (default: 1)
-- `per_page` - Items per page (default: 10)
-- `search` - Search coupons
-- `code` - Filter by coupon code
+查询参数：
+- `page` - 当前页码（默认值：1）
+- `per_page` - 每页显示的项数（默认值：10）
+- `search` - 搜索优惠券
+- `code` - 按优惠券代码过滤
 
-#### Get a Coupon
+#### 获取优惠券信息
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/coupons/{id}
 ```
 
-#### Create a Coupon
+#### 创建优惠券
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/coupons
@@ -765,38 +761,38 @@ Content-Type: application/json
 }
 ```
 
-**Discount Types:**
-- `percent` - Percentage discount
-- `fixed_cart` - Fixed amount off entire cart
-- `fixed_product` - Fixed amount off per product
+**折扣类型：**
+- `percent` - 百分比折扣
+- `fixed_cart` - 全部购物车固定金额折扣
+- `fixed_product` - 每个产品固定金额折扣
 
-**Coupon Properties:**
-- `code` - Coupon code (required)
-- `amount` - Discount amount
-- `discount_type` - Type of discount
-- `description` - Coupon description
-- `date_expires` - Expiration date (ISO8601)
-- `individual_use` - Cannot be combined with other coupons
-- `product_ids` - Array of product IDs the coupon applies to
-- `excluded_product_ids` - Array of product IDs excluded
-- `usage_limit` - Total number of times coupon can be used
-- `usage_limit_per_user` - Usage limit per customer
-- `limit_usage_to_x_items` - Max items the discount applies to
-- `free_shipping` - Enables free shipping
-- `product_categories` - Array of category IDs
-- `excluded_product_categories` - Array of excluded category IDs
-- `exclude_sale_items` - Exclude sale items from discount
-- `minimum_amount` - Minimum cart total required
-- `maximum_amount` - Maximum cart total allowed
-- `email_restrictions` - Array of allowed email addresses
+**优惠券属性：**
+- `code` - 优惠券代码（必填）
+- `amount` - 折扣金额
+- `discount_type` - 折扣类型
+- `description` - 优惠券描述
+- `date_expires` - 有效期（ISO8601 格式）
+- `individual_use` - 不能与其他优惠券合并使用
+- `product_ids` - 优惠券适用的产品 ID 列表
+- `excluded_product_ids` - 被排除的产品 ID 列表
+- `usage_limit` - 优惠券可使用次数
+- `usage_limit_per_user` - 每位用户的使用限制
+- `limit_usage_to_x_items` - 折扣适用的最大商品数量
+- `free_shipping` - 启用免费配送
+- `product_categories` - 适用的商品类别 ID 列表
+- `excluded_product_categories` - 被排除的商品类别 ID 列表
+- `exclude_sale_items` - 排除促销商品
+- `minimum_amount` - 最小购物车总额要求
+- `maximum_amount` - 最大购物车总额限制
+- `emailrestrictions` - 允许的电子邮件地址列表
 
-#### Update a Coupon
+#### 更新优惠券
 
 ```bash
 PUT /woocommerce/wp-json/wc/v3/coupons/{id}
 ```
 
-#### Delete a Coupon
+#### 删除优惠券
 
 ```bash
 DELETE /woocommerce/wp-json/wc/v3/coupons/{id}
@@ -804,9 +800,9 @@ DELETE /woocommerce/wp-json/wc/v3/coupons/{id}
 
 ---
 
-### Taxes
+### 税费
 
-#### Tax Rates
+#### 税率
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/taxes
@@ -817,13 +813,13 @@ DELETE /woocommerce/wp-json/wc/v3/taxes/{id}
 POST /woocommerce/wp-json/wc/v3/taxes/batch
 ```
 
-**Create Tax Rate Example:**
+**创建税率示例：**
 
 ```bash
 curl -s -X POST "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/taxes" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"country": "US", "state": "CA", "rate": "7.25", "name": "CA State Tax", "shipping": true}'
 ```
 
-#### Tax Classes
+#### 税类
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/taxes/classes
@@ -833,9 +829,9 @@ DELETE /woocommerce/wp-json/wc/v3/taxes/classes/{slug}
 
 ---
 
-### Shipping
+### 运费
 
-#### Shipping Zones
+#### 运费区域
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/shipping/zones
@@ -845,26 +841,32 @@ PUT /woocommerce/wp-json/wc/v3/shipping/zones/{id}
 DELETE /woocommerce/wp-json/wc/v3/shipping/zones/{id}
 ```
 
-**Create Shipping Zone Example:**
+**创建运费区域示例：**
 
 ```bash
 curl -s -X POST "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/shipping/zones" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"name": "US West Coast", "order": 1}'
 ```
 
-#### Shipping Zone Locations
+#### 更新运费区域信息
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/locations
 PUT /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/locations
 ```
 
-**Update Zone Locations Example:**
+#### 运费区域位置信息
 
 ```bash
 curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/shipping/zones/1/locations" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '[{"code": "US:CA", "type": "state"}, {"code": "US:OR", "type": "state"}, {"code": "US:WA", "type": "state"}]'
 ```
 
-#### Shipping Zone Methods
+#### 更新运费区域位置信息
+
+```bash
+curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/shipping/zones/1/locations" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '[{"code": "US:CA", "type": "state"}, {"code": "US:OR", "type": "state"}, {"code": "US:WA", "type": "state"}]'
+```
+
+#### 运费方式
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/methods
@@ -874,7 +876,7 @@ PUT /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/methods/{id}
 DELETE /woocommerce/wp-json/wc/v3/shipping/zones/{zone_id}/methods/{id}
 ```
 
-#### Shipping Methods (Global)
+#### 全局运费方式
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/shipping_methods
@@ -883,7 +885,7 @@ GET /woocommerce/wp-json/wc/v3/shipping_methods/{id}
 
 ---
 
-### Payment Gateways
+### 支付网关
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/payment_gateways
@@ -891,7 +893,7 @@ GET /woocommerce/wp-json/wc/v3/payment_gateways/{id}
 PUT /woocommerce/wp-json/wc/v3/payment_gateways/{id}
 ```
 
-**Example - Enable a Payment Gateway:**
+**示例 - 启用支付网关：**
 
 ```bash
 curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/payment_gateways/stripe" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"enabled": true}'
@@ -899,36 +901,36 @@ curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/payment_gatew
 
 ---
 
-### Settings
+### 设置
 
-#### List Settings Groups
+#### 列出设置组
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/settings
 ```
 
-#### List Settings in a Group
+#### 列出组内的设置
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/settings/{group}
 ```
 
-Common groups: `general`, `products`, `tax`, `shipping`, `checkout`, `account`, `email`
+常见组：`general`、`products`、`tax`、`shipping`、`checkout`、`account`、`email`
 
-#### Get/Update a Setting
+#### 获取/更新设置
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/settings/{group}/{id}
 PUT /woocommerce/wp-json/wc/v3/settings/{group}/{id}
 ```
 
-**Example - Update Store Address:**
+**示例 - 更新商店地址：**
 
 ```bash
 curl -s -X PUT "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/settings/general/woocommerce_store_address" -H "Content-Type: application/json" -H "Authorization: Bearer $MATON_API_KEY" -d '{"value": "123 Commerce St"}'
 ```
 
-#### Batch Update Settings
+#### 批量更新设置
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/settings/{group}/batch
@@ -936,15 +938,15 @@ POST /woocommerce/wp-json/wc/v3/settings/{group}/batch
 
 ---
 
-### Webhooks
+### Webhook
 
-#### List All Webhooks
+#### 列出所有 Webhook
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/webhooks
 ```
 
-#### Create a Webhook
+#### 创建 Webhook
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/webhooks
@@ -958,13 +960,13 @@ Content-Type: application/json
 }
 ```
 
-**Webhook Topics:**
-- `order.created`, `order.updated`, `order.deleted`, `order.restored`
-- `product.created`, `product.updated`, `product.deleted`, `product.restored`
-- `customer.created`, `customer.updated`, `customer.deleted`
-- `coupon.created`, `coupon.updated`, `coupon.deleted`, `coupon.restored`
+**Webhook 主题：**
+- `order.created`、`order.updated`、`orderdeleted`、`order.restored`
+- `product.created`、`product.updated`、`productdeleted`、`product.restored`
+- `customer.created`、`customer.updated`、`customerdeleted`
+- `coupon-created`、`coupon.updated`、`coupondeleted`、`coupon.restored`
 
-#### Get/Update/Delete Webhook
+#### 获取/更新/删除 Webhook
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/webhooks/{id}
@@ -974,55 +976,55 @@ DELETE /woocommerce/wp-json/wc/v3/webhooks/{id}
 
 ---
 
-### Reports
+### 报告
 
-#### List Available Reports
+#### 列出可用报告
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports
 ```
 
-#### Sales Report
+#### 销售报告
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/sales
 ```
 
-Query parameters:
-- `period` - Report period: `week`, `month`, `last_month`, `year`
-- `date_min` / `date_max` - Custom date range
+查询参数：
+- `period` - 报告周期：`week`、`month`、`last_month`、`year`
+- `date_min` / `date_max` - 自定义日期范围
 
-#### Top Sellers Report
+#### 热销商品报告
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/top_sellers
 ```
 
-#### Coupons Totals
+#### 优惠券汇总
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/coupons/totals
 ```
 
-#### Customers Totals
+#### 客户汇总
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/customers/totals
 ```
 
-#### Orders Totals
+#### 订单汇总
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/orders/totals
 ```
 
-#### Products Totals
+#### 产品汇总
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/products/totals
 ```
 
-#### Reviews Totals
+#### 评论汇总
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/reports/reviews/totals
@@ -1030,29 +1032,29 @@ GET /woocommerce/wp-json/wc/v3/reports/reviews/totals
 
 ---
 
-### Data
+### 数据
 
-#### List All Data Endpoints
+#### 列出所有数据端点
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/data
 ```
 
-#### Continents
+#### 大陆
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/data/continents
 GET /woocommerce/wp-json/wc/v3/data/continents/{code}
 ```
 
-#### Countries
+#### 国家
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/data/countries
 GET /woocommerce/wp-json/wc/v3/data/countries/{code}
 ```
 
-#### Currencies
+#### 货币
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/data/currencies
@@ -1062,7 +1064,7 @@ GET /woocommerce/wp-json/wc/v3/data/currencies/current
 
 ---
 
-### System Status
+### 系统状态
 
 ```bash
 GET /woocommerce/wp-json/wc/v3/system_status
@@ -1072,9 +1074,9 @@ POST /woocommerce/wp-json/wc/v3/system_status/tools/{id}
 
 ---
 
-## Batch Operations
+## 批量操作
 
-Most resources support batch operations for creating, updating, and deleting multiple items:
+大多数资源支持批量操作，可以创建、更新和删除多个项目：
 
 ```bash
 POST /woocommerce/wp-json/wc/v3/{resource}/batch
@@ -1092,7 +1094,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "create": [...],
@@ -1101,27 +1103,27 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-WooCommerce uses page-based pagination with response headers:
+WooCommerce 使用基于页面的分页机制，并在响应头中提供相关信息：
 
-**Query Parameters:**
-- `page` - Page number (default: 1)
-- `per_page` - Items per page (default: 10, max: 100)
-- `offset` - Offset to start from
+**查询参数：**
+- `page` - 页码（默认值：1）
+- `per_page` - 每页显示的项数（默认值：10，最大值：100）
+- `offset` - 开始的偏移量
 
-**Response Headers:**
-- `X-WP-Total` - Total number of items
-- `X-WP-TotalPages` - Total number of pages
-- `Link` - Contains `next`, `prev`, `first`, `last` pagination links
+**响应头：**
+- `X-WP-Total` - 总项目数
+- `X-WP-TotalPages` - 总页数
+- `Link` - 包含 `next`、`prev`、`first`、`last` 分页链接
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -I -X GET "https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products?page=2&per_page=25" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -1151,7 +1153,7 @@ response = requests.get(
 products = response.json()
 ```
 
-### Creating an Order with Line Items
+### 使用商品明细创建订单
 
 ```python
 import os
@@ -1187,27 +1189,27 @@ response = requests.post(
 order = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- All monetary amounts are returned as strings with two decimal places
-- Dates are in ISO8601 format: `YYYY-MM-DDTHH:MM:SS`
-- Resource IDs are integers
-- The API requires "pretty permalinks" enabled in WordPress
-- Use `context=edit` parameter for additional writable fields
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 所有货币金额均以保留两位小数的字符串形式返回。
+- 日期采用 ISO8601 格式：`YYYY-MM-DDTHH:MM:SS`。
+- 资源 ID 为整数。
+- API 要求在 WordPress 中启用“漂亮永久链接”（pretty permalinks）功能。
+- 使用 `context=edit` 参数可以访问可写入的字段。
+- 重要提示：当使用 curl 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以避免全局解析问题。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析，可能会导致“无效 API 密钥”错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Bad request or invalid data |
-| 401 | Invalid or missing authentication |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 500 | Internal server error |
+| 400 | 请求错误或数据无效 |
+| 401 | 认证无效或缺失 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 500 | 内部服务器错误 |
 
-**Error Response Format:**
+**错误响应格式：**
 ```json
 {
   "code": "woocommerce_rest_invalid_id",
@@ -1218,15 +1220,15 @@ order = response.json()
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -1237,77 +1239,76 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `woocommerce`. For example:
+1. 确保您的 URL 路径以 `woocommerce` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products`
+- 错误格式：`https://gateway.maton.ai/wp-json/wc/v3/products`
 
-- Correct: `https://gateway.maton.ai/woocommerce/wp-json/wc/v3/products`
-- Incorrect: `https://gateway.maton.ai/wp-json/wc/v3/products`
+## 资源
 
-## Resources
+### 通用信息
+- [WooCommerce REST API 文档](https://woocommerce.github.io/woocommerce-rest-api-docs/)
+- [API 认证指南](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication)
+- [WooCommerce 开发者资源](https://developer.woocommerce.com/)
 
-### General
-- [WooCommerce REST API Documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/)
-- [API Authentication Guide](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication)
-- [WooCommerce Developer Resources](https://developer.woocommerce.com/)
+### 产品相关
+- [产品](https://woocommerce.github.io/woocommerce-rest-api-docs/#products)
+- [产品变体](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-variations)
+- [产品属性](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-attributes)
+- [产品属性术语](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-attribute-terms)
+- [产品类别](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-categories)
+- [产品标签](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-tags)
+- [产品运费类别](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-shipping-classes)
+- [产品评论](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-reviews)
 
-### Products
-- [Products](https://woocommerce.github.io/woocommerce-rest-api-docs/#products)
-- [Product Variations](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-variations)
-- [Product Attributes](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-attributes)
-- [Product Attribute Terms](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-attribute-terms)
-- [Product Categories](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-categories)
-- [Product Tags](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-tags)
-- [Product Shipping Classes](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-shipping-classes)
-- [Product Reviews](https://woocommerce.github.io/woocommerce-rest-api-docs/#product-reviews)
+### 订单相关
+- [订单](https://woocommerce.github.io/woocommerce-rest-api-docs/#orders)
+- [订单备注](https://woocommerce.github.io/woocommerce-rest-api-docs/#order-notes)
+- [退款](https://woocommerce.github.io/woocommerce-rest-api-docs/#refunds)
 
-### Orders
-- [Orders](https://woocommerce.github.io/woocommerce-rest-api-docs/#orders)
-- [Order Notes](https://woocommerce.github.io/woocommerce-rest-api-docs/#order-notes)
-- [Refunds](https://woocommerce.github.io/woocommerce-rest-api-docs/#refunds)
+### 客户相关
+- [客户](https://woocommerce.github.io/woocommerce-rest-api-docs/#customers)
 
-### Customers
-- [Customers](https://woocommerce.github.io/woocommerce-rest-api-docs/#customers)
+### 优惠券相关
+- [优惠券](https://woocommerce.github.io/woocommerce-rest-api-docs/#coupons)
 
-### Coupons
-- [Coupons](https://woocommerce.github.io/woocommerce-rest-api-docs/#coupons)
+### 税费相关
+- [税率](https://woocommerce.github.io/woocommerce-rest-api-docs/#tax-rates)
+- [税类](https://woocommerce.github.io/woocommerce-rest-api-docs/#tax-classes)
 
-### Taxes
-- [Tax Rates](https://woocommerce.github.io/woocommerce-rest-api-docs/#tax-rates)
-- [Tax Classes](https://woocommerce.github.io/woocommerce-rest-api-docs/#tax-classes)
+### 运费相关
+- [运费区域](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zones)
+- [运费区域位置](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zone-locations)
+- [运费方式](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zone-methods)
+- [全局运费方式](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-methods)
 
-### Shipping
-- [Shipping Zones](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zones)
-- [Shipping Zone Locations](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zone-locations)
-- [Shipping Zone Methods](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-zone-methods)
-- [Shipping Methods](https://woocommerce.github.io/woocommerce-rest-api-docs/#shipping-methods)
+### 支付与设置相关
+- [支付网关](https://woocommerce.github.io/woocommerce-rest-api-docs/#payment-gateways)
+- [设置](https://woocommerce.github.io/woocommerce-rest-api-docs/#settings)
+- [设置选项](https://woocommerce.github.io/woocommerce-rest-api-docs/#setting-options)
 
-### Payments & Settings
-- [Payment Gateways](https://woocommerce.github.io/woocommerce-rest-api-docs/#payment-gateways)
-- [Settings](https://woocommerce.github.io/woocommerce-rest-api-docs/#settings)
-- [Setting Options](https://woocommerce.github.io/woocommerce-rest-api-docs/#setting-options)
+### Webhook 相关
+- [Webhook](https://woocommerce.github.io/woocommerce-rest-api-docs/#webhooks)
 
-### Webhooks
-- [Webhooks](https://woocommerce.github.io/woocommerce-rest-api-docs/#webhooks)
+### 报告相关
+- [报告](https://woocommerce.github.io/woocommerce-rest-api-docs/#reports)
+- [销售报告](https://woocommerce.github.io/woocommerce-rest-api-docs/#sales-reports)
+- [热销商品报告](https://woocommerce.github.io/woocommerce-rest-api-docs/#top-sellers-report)
+- [优惠券汇总](https://woocommerce.github.io/woocommerce-rest-api-docs/#coupons-totals)
+- [客户汇总](https://woocommerce.github.io/woocommerce-rest-api-docs/#customers-totals)
+- [订单汇总](https://woocommerce.github.io/woocommerce-rest-api-docs/#orders-totals)
+- [产品汇总](https://woocommerce.github.io/woocommerce-rest-api-docs/#products-totals)
+- [评论汇总](https://woocommerce.github.io/woocommerce-rest-api-docs/#reviews-totals)
 
-### Reports
-- [Reports](https://woocommerce.github.io/woocommerce-rest-api-docs/#reports)
-- [Sales Reports](https://woocommerce.github.io/woocommerce-rest-api-docs/#sales-reports)
-- [Top Sellers Report](https://woocommerce.github.io/woocommerce-rest-api-docs/#top-sellers-report)
-- [Coupons Totals](https://woocommerce.github.io/woocommerce-rest-api-docs/#coupons-totals)
-- [Customers Totals](https://woocommerce.github.io/woocommerce-rest-api-docs/#customers-totals)
-- [Orders Totals](https://woocommerce.github.io/woocommerce-rest-api-docs/#orders-totals)
-- [Products Totals](https://woocommerce.github.io/woocommerce-rest-api-docs/#products-totals)
-- [Reviews Totals](https://woocommerce.github.io/woocommerce-rest-api-docs/#reviews-totals)
+### 数据相关
+- [数据](https://woocommerce.github.io/woocommerce-rest-api-docs/#data)
+- [大陆](https://woocommerce.github.io/woocommerce-rest-api-docs/#continents)
+- [国家](https://woocommerce.github.io/woocommerce-rest-api-docs/#countries)
+- [货币](https://woocommerce.github.io/woocommerce-rest-api-docs/#currencies)
 
-### Data
-- [Data](https://woocommerce.github.io/woocommerce-rest-api-docs/#data)
-- [Continents](https://woocommerce.github.io/woocommerce-rest-api-docs/#continents)
-- [Countries](https://woocommerce.github.io/woocommerce-rest-api-docs/#countries)
-- [Currencies](https://woocommerce.github.io/woocommerce-rest-api-docs/#currencies)
-
-### System
-- [System Status](https://woocommerce.github.io/woocommerce-rest-api-docs/#system-status)
-- [System Status Tools](https://woocommerce.github.io/woocommerce-rest-api-docs/#system-status-tools)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+### 系统相关
+- [系统状态](https://woocommerce.github.io/woocommerce-rest-api-docs/#system-status)
+- [系统状态工具](https://woocommerce.github.io/woocommerce-rest-api-docs/#system-status-tools)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

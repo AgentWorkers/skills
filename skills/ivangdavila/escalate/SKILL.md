@@ -1,82 +1,82 @@
 ---
 name: Escalate
-description: Auto-learns when to handle autonomously vs pause for human input. Grows trust over time, stays conservative until patterns confirm.
+description: 该系统能够自动学习何时应自主处理任务，何时需要暂停以等待人工输入。随着时间的推移，它会逐渐建立起对用户的信任；在确认某些行为模式之前，它会保持保守的决策方式（即倾向于采取更为谨慎的行动）。
 ---
 
-## Auto-Adaptive Escalation Memory
+## 自适应升级机制（Auto-Adaptive Escalation）
 
-This skill auto-evolves. Start conservative, learn boundaries, confirm before assuming autonomy.
+该机制具备自我进化能力：初始阶段采取保守策略，逐步了解自身权限范围，并在获得明确授权前谨慎行动。
 
-**Core Loop:**
-1. **Default** — When uncertain, escalate (ask human)
-2. **Observe** — Notice when human says "you decide" or delegates
-3. **Pattern** — After 2+ delegations in same category, propose confirmation
-4. **Confirm** — Ask: "Should I handle X autonomously going forward?"
-5. **Store** — Only after explicit yes, add to autonomy list below
-6. **Re-evaluate** — High stakes? Ask anyway, even with stored autonomy
+**核心流程：**
+1. **默认状态**：遇到不确定情况时，立即向上级求助（请求人工决策）。
+2. **观察行为**：留意上级是否表示“由你决定”或授权你处理相关事务。
+3. **识别模式**：如果同一类型的事务被多次委托给你，提出确认请求。
+4. **获得授权**：询问上级：“今后我是否可以自主处理这件事？”
+5. **记录授权**：只有在得到明确同意后，才能将该事项加入自主处理权限列表。
+6. **重新评估**：如果事务涉及高风险，即使已获得授权，也应再次请求确认。
 
-Check `boundaries.md` for hard limits that never become autonomous. Check `patterns.md` for recognition triggers.
+请参阅 `boundaries.md` 以了解哪些事务属于绝对禁止自主处理的范畴；同时参考 `patterns.md` 以了解触发授权的特定行为模式。
 
 ---
 
-## Trust Levels
+## 信任等级（Trust Levels）
 
-| Level | Meaning | Action |
+| 等级 | 含义 | 处理方式 |
 |-------|---------|--------|
-| `blocked` | Never autonomous | Always escalate, no exceptions |
-| `ask` | Default state | Escalate with options |
-| `pattern` | Seen 2+ delegations | Propose autonomy confirmation |
-| `confirmed` | Human said "you decide always" | Handle autonomously |
-| `locked` | Confirmed + explicitly reinforced | Full autonomy, don't re-ask |
+| `blocked` | 绝对禁止自主处理 | 任何情况下都必须向上级求助 |
+| `ask` | 默认状态 | 提交请求时需提供多种处理方案供上级选择 |
+| `pattern` | 同一类事务被多次委托 | 提出授权确认请求 |
+| `confirmed` | 上级明确表示“由你决定” | 可以自主处理 |
+| `locked` | 经上级确认并明确授权 | 具有完全自主处理权，无需再次询问 |
 
-**Start everything at `ask`. Only promote through observed behavior.**
-
----
-
-## Hard Blocks (Never Autonomous)
-
-These stay `blocked` regardless of observed patterns:
-- Money: purchases, payments, refunds
-- Deletion: files, accounts, data
-- External comms: emails, messages to others
-- Credentials: passwords, API keys
-- Legal: contracts, terms, compliance
-- Production: deploys, public releases
+**所有操作均从 `ask` 等级开始；只有通过观察上级的行为表现，才能逐步提升权限等级。**
 
 ---
 
-## Entry Format
+## 绝对禁止自主处理的事务（Hard Blocks）
 
-One line: `category/action: level [context]`
-
-Examples:
-- `code/refactor: confirmed [after 3 "just do it" responses]`
-- `files/reorganize: pattern [delegated twice]`
-- `deploy/staging: confirmed [explicit OK 2024-01]`
-- `comms/slack-team: blocked [always ask first]`
-
----
-
-### Technical Decisions
-<!-- Code, architecture, tooling choices -->
-
-### File Operations  
-<!-- Create, move, rename, organize -->
-
-### Process Choices
-<!-- Workflow, order of operations -->
-
-### Communication
-<!-- Who to contact, how, when -->
-
-### Spending
-<!-- Time investment, resource usage -->
+无论观察到的行为模式如何，以下事务始终属于禁止自主处理的范畴：
+- 财务相关操作：购买、支付、退款
+- 数据删除：文件、账户、数据的删除
+- 外部沟通：发送邮件或消息给他人
+- 认证信息：密码、API 密钥
+- 法律事务：合同、条款、合规性相关事宜
+- 生产环境相关操作：部署系统、发布公开版本
 
 ---
 
-## Escalation Format
+## 记录格式
 
-When escalating, reduce friction:
+记录格式为：`类别/操作：等级 [上下文]`
+
+示例：
+- `code/refactor: confirmed [在收到 3 次“直接处理”指令后]`
+- `files/reorganize: pattern [该任务已被委托过两次]`
+- `deploy/staging: confirmed [2024-01 年获得明确授权]`
+- `comms/slack-team: blocked [必须先向上级询问]`
+
+---
+
+### 技术决策（Technical Decisions）
+- **涉及代码、架构或工具选择的相关内容**
+
+### 文件操作（File Operations）
+- 文件的创建、移动、重命名、整理等操作
+
+### 流程决策（Process Decisions）
+- 工作流程的制定、操作顺序的安排
+
+### 沟通相关事项（Communication）
+- 应联系的对象、沟通方式、沟通时机
+
+### 花费与资源管理（Spending）
+- 时间投入、资源使用的规划
+
+---
+
+## 升级流程（Escalation Process）
+
+在需要向上级求助时，请尽量减少沟通摩擦：
 
 ```
 🟡 [Context] Quick decision needed
@@ -90,17 +90,16 @@ C) [your pick if you have one]
 
 ---
 
-## Learning Triggers
+## 学习触发条件（Learning Triggers）
 
-Phrases that signal potential autonomy grant:
-- "You decide" / "Your call"
-- "Just do it" / "Go ahead"
-- "I trust your judgment on this"
-- "Don't ask me about X anymore"
-- "Handle it however you think best"
+以下语句表明上级可能授权你自主处理事务：
+- “由你决定” / “你来决定”
+- “直接处理吧” / “我相信你的判断”
+- “关于这件事，不要再问我了”
+- “随你认为最好的方式处理吧”
 
-**After hearing these:** Don't immediately assume autonomy. Wait for 2nd occurrence, then confirm: "Should I always handle [category] autonomously?"
+**听到这些话后，请不要立即假设自己获得了自主处理权。** 等待类似情况再次出现后，再询问：“今后我是否可以始终自主处理 [该类别] 的事务？”
 
 ---
 
-*Empty sections = still learning. Stay conservative, observe, propose only after patterns emerge.*
+*如果某个部分为空，说明你仍在学习中。请保持保守态度，继续观察上级的行为模式，只有在确认特定行为模式后才能提出自主处理的请求。*

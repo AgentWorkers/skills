@@ -1,13 +1,13 @@
 ---
 name: browser-ability
-description: This skill enables an AI Agent to signin and retrieve data from websites via JS script.
+description: 该技能使AI代理能够通过JS脚本登录网站并从中获取数据。
 ---
 
-# Browser Ability Skill
+# 浏览器操作技能
 
-This skill enables an AI Agent to signin and retrieve data from websites via JS script (limited tools, if there's no tools for what user want, just direcly use browser via CDP connection), including sources that require manual user authentication. When authentication is required, the script provides a sign-in URL and a `signin_id`. The agent must hand off the sign-in process to the user, wait for confirmation, and then resume the data request using the provided `signin_id`. The skill enforces secure access through API key authentication and supports human-in-the-loop workflows for sensitive or protected data sources.
+该技能使AI代理能够通过JavaScript脚本登录网站并获取数据（如果用户所需的工具不可用，则只能直接使用浏览器通过CDP连接进行操作）。这包括那些需要用户手动身份验证的数据源。当需要身份验证时，脚本会提供一个登录URL和一个`signin_id`。代理必须将登录过程交给用户，等待用户确认后，再使用提供的`signin_id`继续数据请求。该技能通过API密钥认证来确保访问的安全性，并支持对敏感或受保护数据源进行人工干预的工作流程。
 
-## Setup
+## 设置
 
 ```bash
 # Navigate to skill directory
@@ -23,21 +23,21 @@ export CDP_URL="http://[ipv6]:port"
 
 ---
 
-## Available Method
+## 可用方法
 
-### List Available Tools
+### 列出可用工具
 
 ```
 npm run list
 ```
 
-### Call a Tool
+### 调用工具
 
 ```
 npm run call -- TOOL_NAME --args='{"foo":"bar"}'
 ```
 
-### Call a Tool After Sign-In
+### 登录后调用工具
 
 ```
 npm run call -- TOOL_NAME --args='{"foo":"bar"}' --signinId=YOUR_SIGNIN_ID
@@ -45,21 +45,21 @@ npm run call -- TOOL_NAME --args='{"foo":"bar"}' --signinId=YOUR_SIGNIN_ID
 
 ---
 
-## Manual Sign-In Flow
+## 手动登录流程
 
-Some Tool calls require the user to manually sign in to a website (e.g. e-commerce, banking, or account-based platforms).
+某些工具的调用需要用户手动登录网站（例如电子商务、银行或基于账户的平台）。
 
-The agent **must not** automate browser-based sign-in.
+代理**不得**自动执行基于浏览器的登录操作。
 
 ---
 
-## Step-by-Step Workflow
+## 逐步工作流程
 
-### 1. Initial API Call
+### 1. 初始API调用
 
-The agent calls the target tool normally.
+代理正常调用目标工具。
 
-**Example:**
+**示例：**
 
 ```
 npm run call -- amazon_get_purchase_history
@@ -67,11 +67,11 @@ npm run call -- amazon_get_purchase_history
 
 ---
 
-### 2. Sign-In Required Response
+### 2. 需要登录的响应
 
-If sign-in is required, the script responds with a sign-in URL and a `signin_id`.
+如果需要登录，脚本会返回一个登录URL和一个`signin_id`。
 
-**Example Response:**
+**示例响应：**
 
 ```json
 {
@@ -93,32 +93,32 @@ If sign-in is required, the script responds with a sign-in URL and a `signin_id`
 
 ---
 
-### 3. Agent Action (When Sign-In Is Required)
+### 3. 代理的操作（当需要登录时）
 
-When a response contains `url` and `signin_id`, the agent must:
+当响应中包含`url`和`signin_id`时，代理必须：
 
-1. Inform the user that manual sign-in is required
-2. Provide the sign-in URL to the user
-3. Pause the automated process
-4. Wait for the user to confirm sign-in completion
-
----
-
-### 4. User Action
-
-The user:
-
-- Opens the provided URL in their browser
-- Completes the sign-in process manually
-- Notifies the agent once sign-in is complete
+1. 告知用户需要手动登录
+2. 将登录URL提供给用户
+3. 暂停自动化流程
+4. 等待用户确认登录完成
 
 ---
 
-### 5. Resume Tool Call
+### 4. 用户操作
 
-After user confirmation, the agent re-calls the **same Tool**, passing the `signin_id` as a query parameter.
+用户：
 
-**Example:**
+- 在浏览器中打开提供的URL
+- 完成手动登录过程
+- 登录完成后通知代理
+
+---
+
+### 5. 继续调用工具
+
+用户确认后，代理重新调用**相同的工具**，并将`signin_id`作为查询参数传递。
+
+**示例：**
 
 ```
 npm run call -- amazon_get_purchase_history --signinId=YOUR_SIGNIN_ID
@@ -126,50 +126,50 @@ npm run call -- amazon_get_purchase_history --signinId=YOUR_SIGNIN_ID
 
 ---
 
-### 6. Final Result
+### 6. 最终结果
 
-If authentication is successful, the script returns the requested data (e.g. purchase history).
-
----
-
-## Agent Behavior Constraints
-
-- Do not open sign-in URLs automatically
-- Do not attempt to automate website login
-- Always wait for explicit user confirmation before continuing
-- Reuse the same tool endpoint after sign-in
-- If there's no tool available, just directly open browser and browse yourself via CDP
+如果身份验证成功，脚本会返回请求的数据（例如购买历史记录）。
 
 ---
 
-## Example Use Case
+## 代理行为约束
 
-**Goal:** Retrieve Amazon purchase history
-
-1. Call `amazon_get_purchase_history`
-2. Receive sign-in URL and `signin_id`
-3. Ask the user to open the URL and sign in
-4. Wait for confirmation
-5. Re-call the API with `signinId`
-6. Receive purchase history data
-
-**Goal:** Open Amazon Change Password Page
-
-1. Try open browser via CDP, open amazon change password page
-2. Cannot open that page because require sign in
-3. Call `amazon_signin`
-4. Receive sign-in URL and `signin_id`
-5. Ask the user to open the URL and sign in
-6. Wait for confirmation
-7. Try open browser via CDP again
-8. Success open change password page
+- 不得自动打开登录URL
+- 不得尝试自动化网站登录
+- 在继续之前始终等待用户的明确确认
+- 登录后重复使用相同的工具端点
+- 如果没有可用的工具，则直接打开浏览器并通过CDP进行浏览
 
 ---
 
-## Summary
+## 示例用例
 
-This skill enables secure website signin by:
+**目标：** 获取亚马逊购买历史记录
 
-- Delegating sensitive authentication steps to the user
-- Resuming automated workflows after authentication
-- Enforcing consistent security practices
+1. 调用`amazon_get_purchase_history`
+2. 接收登录URL和`signin_id`
+3. 请求用户打开URL并登录
+4. 等待确认
+5. 用`signin_id`重新调用API
+6. 接收购买历史记录数据
+
+**目标：** 打开亚马逊密码修改页面
+
+1. 尝试通过CDP打开浏览器，进入亚马逊密码修改页面
+2. 由于需要登录而无法打开该页面
+3. 调用`amazon_signin`
+4. 接收登录URL和`signin_id`
+5. 请求用户打开URL并登录
+6. 等待确认
+7. 再次尝试通过CDP打开浏览器
+8. 成功打开密码修改页面
+
+---
+
+## 总结
+
+该技能通过以下方式实现安全的网站登录：
+
+- 将敏感的认证步骤委托给用户
+- 在身份验证后恢复自动化工作流程
+- 确保一致的安全实践得到执行

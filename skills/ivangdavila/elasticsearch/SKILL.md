@@ -1,89 +1,88 @@
 ---
 name: Elasticsearch
-description: Query and index Elasticsearch with proper mappings, analyzers, and search patterns.
+description: 使用正确的映射（mappings）、分析器（analysts）和搜索模式（search patterns）来查询和索引 Elasticsearch 数据。
 metadata: {"clawdbot":{"emoji":"🔍","requires":{"anyBins":["curl"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Mapping Mistakes
+## 映射错误
 
-- Always define explicit mappings—dynamic mapping guesses wrong (first "123" makes field integer, later "abc" fails)
-- `text` for full-text search, `keyword` for exact match/aggregations—using text for IDs breaks filters
-- Can't change field type after indexing—must reindex to new index with correct mapping
-- Set `dynamic: "strict"` to reject unmapped fields—catches typos in field names
+- 必须明确定义字段的映射关系；动态映射可能会导致错误（例如，先定义“123”为整数类型，之后再定义“abc”时会出现问题）。
+- 使用 `text` 类型进行全文搜索，使用 `keyword` 类型进行精确匹配或聚合；如果将 ID 设置为 `text` 类型，将会影响过滤器的正常工作。
+- 索引创建后无法更改字段类型，必须使用正确的映射关系重新创建索引。
+- 设置 `dynamic: "strict"` 可以拒绝未映射的字段，从而避免因字段名拼写错误导致的问题。
 
-## Text vs Keyword
+## `text` 与 `keyword` 的区别
 
-- `text` is analyzed (tokenized, lowercased)—"Quick Brown" matches search for "quick"
-- `keyword` is exact bytes—"Quick Brown" only matches exactly "Quick Brown"
-- Need both? Use multi-field: `"title": { "type": "text", "fields": { "raw": { "type": "keyword" }}}`
-- Sort/aggregate on `title.raw`, search on `title`
+- `text` 类型会进行分词处理（转换为小写）——“Quick Brown”会匹配“quick”这样的搜索词。
+- `keyword` 类型要求字符串完全匹配——“Quick Brown”只能匹配“Quick Brown”这个确切的值。
+- 如果需要同时使用这两种类型，可以使用多字段映射：`{"title": { "type": "text", "fields": { "raw": { "type": "keyword" }}}`。
+- 可以根据 `title.raw` 对数据进行排序或聚合，而搜索操作则基于 `title` 字段进行。
 
-## Query vs Filter Context
+## 查询与过滤的上下文
 
-- Query context calculates relevance score—expensive, use for search ranking
-- Filter context is yes/no—cacheable, use for exact conditions (status, date ranges)
-- Combine: `bool.must` for scoring, `bool.filter` for filtering without scoring
-- Range queries on dates/numbers almost always belong in filter, not query
+- 查询上下文用于计算相关性得分，计算成本较高，适用于搜索排名。
+- 过滤上下文只有“是/否”两种状态，可以缓存，适用于判断特定条件（如状态、日期范围）。
+- 可以结合使用：`bool.must` 用于计算相关性得分，`bool.filter` 用于仅进行过滤而不计算得分。
+- 对日期或数字的区间查询通常应该放在过滤条件中，而不是查询条件中。
 
-## Analyzers
+## 分析器
 
-- `standard` analyzer lowercases and removes punctuation—fine for most text
-- `keyword` analyzer keeps exact string—use for codes, SKUs, emails
-- Language analyzers (`english`) stem words—"running" matches "run"
-- Test analyzer with `_analyze` endpoint before indexing—surprises in production hurt
+- `standard` 分析器会将文本转换为小写并去除标点符号，适用于大多数文本处理场景。
+- `keyword` 分析器会保留原始字符串，适用于代码、SKU、电子邮件等需要精确匹配的场景。
+- 语言分析器（如 `english`）会提取词干——“running”会匹配“run”这样的词。
+- 在索引创建前，可以使用 `_analyze` 端点对数据进行测试，以避免生产环境中的意外问题。
 
-## Nested vs Object
+## 嵌套数据与对象数据
 
-- Object type flattens arrays—`{"tags": [{"key":"a","val":1}, {"key":"b","val":2}]}` becomes `tags.key: [a,b], tags.val: [1,2]`
-- Flattened loses association—query `key=a AND val=2` incorrectly matches above
-- Use `nested` type to preserve object boundaries—requires `nested` query wrapper
-- Nested is expensive—avoid for high-cardinality arrays
+- 对象类型会将数组扁平化——例如 `{"tags": [{"key":"a","val":1}, {"key":"b","val":2}]` 会被处理为 `tags.key: [a,b], tags.val: [1,2]`。
+- 平坦化处理会丢失数据的原始结构——例如，查询 `key=a AND val=2` 时可能会得到错误的结果。
+- 如果需要保留数据的原始结构，应使用 `nested` 类型，并使用相应的查询包装器。
+- 嵌套数据处理成本较高，避免用于数据量较大的数组。
 
-## Pagination Traps
+## 分页问题
 
-- `from` + `size` limited to 10,000 hits—deep pagination fails
-- `search_after` for deep pagination—requires consistent sort, typically `_id`
-- Scroll API for bulk export—keeps point-in-time view, but ties up resources
-- Don't use scroll for user pagination—search_after is correct choice
+- `from` 和 `size` 的组合最多只能处理 10,000 条记录，深度分页会失败。
+- 使用 `search_after` 进行深度分页时，需要确保数据有序（通常使用 `_id` 字段作为排序依据）。
+- 使用 `scroll` API 进行批量导出时，虽然可以保留数据的历史状态，但会占用较多资源；对于用户分页，`search_after` 是更好的选择。
 
-## Bulk Operations
+## 批量操作
 
-- Never index documents one-by-one—use `_bulk` API, 5-15MB batches
-- Bulk format: newline-delimited JSON, action line then document line
-- Check response for partial failures—bulk can succeed overall with individual doc errors
-- Set `refresh=false` during bulk loads—refresh after batch completes
+- 不要逐个索引文档，应使用 `_bulk` API，每次批量处理 5-15MB 的数据。
+- 批量数据的格式为换行符分隔的 JSON，每行包含操作命令和文档内容。
+- 在执行批量操作时，需要检查响应中是否有部分失败的情况；即使整体操作成功，也可能存在单个文档的错误。
+- 在批量加载数据时，应将 `refresh` 参数设置为 `false`，直到批量操作完成后再刷新索引。
 
-## Performance
+## 性能优化
 
-- `_source: false` with `stored_fields` if you don't need full document—reduces I/O
-- Use `filter` for cacheable conditions—Elasticsearch caches filter results
-- Avoid leading wildcards (`*term`)—forces full scan; use `reverse` field for suffix search
-- `profile: true` shows query execution breakdown—find slow clauses
+- 如果不需要完整文档，可以将 `_source` 参数设置为 `false` 并使用 `stored_fields` 选项，以减少 I/O 操作。
+- 对于可以缓存的条件，可以使用 `filter` 进行过滤；Elasticsearch 会缓存过滤结果。
+- 避免使用通配符（如 `*term`），因为它们会导致全量扫描；对于后缀搜索，可以使用 `reverse` 字段。
+- 设置 `profile: true` 可以查看查询执行的详细信息，找出性能瓶颈。
 
-## Sharding
+## 分片管理
 
-- Shard size 10-50GB optimal—too small = overhead, too large = slow recovery
-- Number of shards fixed at creation—can't reshard without reindexing
-- Replicas for read throughput and availability—set based on query load
-- Start with 1 shard for small indices—over-sharding kills performance
+- 分片大小建议设置在 10-50GB 之间，过小会导致额外的开销，过大则会影响恢复速度。
+- 分片数量在创建索引时固定，无法重新分配。
+- 设置副本数量以提升读取吞吐量和可用性；副本数量应根据查询负载来决定。
+- 对于小型索引，初始可以设置 1 个分片；过度分片会降低性能。
 
-## Index Management
+## 索引管理
 
-- Use index templates—new indices get consistent mappings and settings
-- Use aliases for zero-downtime reindexing—point alias to new index after reindex
-- ILM (Index Lifecycle Management) for time-series—auto-rollover, delete old indices
-- Close unused indices to free memory—closed index uses no heap
+- 使用索引模板可以确保新索引具有统一的映射关系和配置。
+- 使用别名可以实现无中断的索引重建；重建完成后，可以将别名指向新的索引。
+- 使用 ILM（Index Lifecycle Management）管理索引的生命周期，自动滚动和删除旧索引。
+- 关闭不使用的索引以释放内存；关闭的索引不会占用堆内存。
 
-## Aggregations
+## 聚合操作
 
-- `terms` agg needs `keyword` field—text fields fail or give garbage
-- Default `size: 10` on terms agg—increase to get all buckets, or use composite
-- Cardinality is approximate (HyperLogLog)—exact count requires scanning all docs
-- Nested aggs require `nested` wrapper—matches nested query pattern
+- 使用 `terms` 类型进行聚合操作时需要 `keyword` 字段；如果使用 `text` 类型，可能会导致错误或得到不准确的结果。
+- `terms` 聚合的默认大小为 10，如果需要获取所有数据桶，可以增加这个值；也可以使用复合聚合方式。
+- 聚合操作的基数是近似的（使用 HyperLogLog 算法）；如果需要精确计数，需要扫描所有文档。
+- 嵌套聚合操作需要使用 `nested` 类型的包装器，以支持嵌套查询模式。
 
-## Common Errors
+## 常见错误
 
-- "cluster_block_exception"—disk > 85%, cluster goes read-only; clear disk, reset with `_cluster/settings`
-- "version conflict"—concurrent update; retry with `retry_on_conflict` or use optimistic locking
-- "circuit_breaker_exception"—query uses too much memory; reduce aggregation scope
-- Mapping explosion from dynamic fields—set `index.mapping.total_fields.limit` and use strict mapping
+- “cluster_block_exception”：磁盘使用率超过 85% 时，集群会进入只读状态；请清理磁盘并使用 `_cluster/settings` 重置集群配置。
+- “version conflict”：同时有多个更新操作；可以尝试使用 `retry_on_conflict` 选项重试，或采用乐观锁机制。
+- “circuit_breaker_exception”：查询使用了过多的内存；请缩小聚合范围。
+- 动态字段可能导致映射问题；请设置 `index.mapping.total_fields.limit` 并使用严格的映射规则。

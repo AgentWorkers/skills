@@ -1,6 +1,6 @@
 ---
 name: eyebot-guardbot
-description: Security monitoring and threat alert system
+description: 安全监控与威胁警报系统
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,37 +10,37 @@ metadata:
 
 # GuardBot 🛡️
 
-**Real-Time Security Monitoring**
+**实时安全监控**
 
-Monitor your wallets, contracts, and positions for threats. Get instant alerts on suspicious activity.
+实时监控您的钱包、合约和持仓，及时发现潜在威胁，并接收关于可疑活动的警报。
 
-## Features
+## 主要功能
 
-- **Wallet Monitoring**: Track all wallet activity
-- **Contract Watching**: Monitor for upgrades/changes
-- **Approval Tracking**: Alert on token approvals
-- **Anomaly Detection**: AI-powered threat identification
-- **Instant Alerts**: Telegram/Discord notifications
+- **钱包监控**：追踪所有钱包交易活动
+- **合约监控**：监控合约的升级或变更情况
+- **批准流程跟踪**：在token被批准时发出警报
+- **异常检测**：利用人工智能识别潜在威胁
+- **即时警报**：通过Telegram/Discord发送通知
 
-## Alert Types
+## 警报类型
 
-| Alert | Trigger |
-|-------|---------|
-| Large Transfer | Unusual outflow detected |
-| New Approval | Token approval granted |
-| Contract Change | Watched contract modified |
-| Suspicious TX | Flagged transaction pattern |
-| Drainer Interaction | Known scam contract |
+| 警报类型 | 触发条件 |
+|---------|-----------|
+| 大额转账 | 检测到异常资金流出 |
+| 新的批准请求 | Token获得批准 |
+| 合约变更 | 被监控的合约被修改 |
+| 可疑交易 | 识别出可疑的交易模式 |
+| 骗局合约 | 发现可能用于诈骗的合约 |
 
-## Protection Features
+## 保护措施
 
-- Approval revocation tools
-- Emergency transfer capability  
-- Blacklist monitoring
-- Phishing detection
-- Drainer database
+- 提供撤销批准的功能
+- 具备紧急转账能力
+- 实施黑名单机制
+- 能够检测网络钓鱼攻击
+- 拥有专门用于识别诈骗行为的数据库
 
-## Usage
+## 使用方法
 
 ```bash
 # Watch a wallet
@@ -53,5 +53,6 @@ eyebot guardbot approvals <wallet>
 eyebot guardbot revoke <token> <spender>
 ```
 
-## Support
+## 帮助支持
+
 Telegram: @ILL4NE

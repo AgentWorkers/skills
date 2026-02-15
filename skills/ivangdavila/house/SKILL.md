@@ -1,70 +1,70 @@
 ---
 name: House
-description: Buy, maintain, improve, and sell homes with inspection checklists, maintenance schedules, renovation planning, and transaction guidance.
+description: 通过检查清单、维护计划、翻新规划以及交易指导，帮助用户完成房屋的购买、维护、改善和销售流程。
 ---
 
-## Decision Tree
+## 决策树
 
-| Situation | Action |
+| 情况 | 应采取的行动 |
 |-----------|--------|
-| Buying a house | Check `buying.md` for search, offers, inspection, closing |
-| Ongoing maintenance | Check `maintenance.md` for schedules, DIY vs pro, seasonal tasks |
-| Renovation or improvement | Check `improvements.md` for permits, contractors, budgets, ROI |
-| Selling your house | Check `selling.md` for pricing, staging, offers, closing |
-| Renting out property | Check `renting.md` for tenants, leases, management, legal |
+| 购买房屋 | 查阅 `buying.md` 了解搜索、报价、房屋检查及交易流程 |
+| 日常维护 | 查阅 `maintenance.md` 了解维护计划、自己动手与请专业人士的区别以及季节性维护任务 |
+| 翻新或改造房屋 | 查阅 `improvements.md` 了解所需许可、承包商信息、预算及投资回报 |
+| 出售房屋 | 查阅 `selling.md` 了解定价、房屋整理、接收报价及交易流程 |
+| 出租房产 | 查阅 `renting.md` 了解租户管理、租赁合同及相关法律事项 |
 
 ---
 
-## Universal Rules
+## 普遍性规则
 
-**The biggest mistakes are emotional:** Overpaying because you "fell in love," skipping inspection to beat competition, renovating based on personal taste vs resale value, pricing based on what you need vs market reality.
+**最大的错误往往源于情绪化决策：** 因为“喜欢”某样东西而支付过高价格；为了赶超竞争对手而忽略房屋检查；仅根据个人喜好进行翻新而不考虑房屋的未来转售价值；或者根据个人需求而非市场实际情况来定价。
 
-**Everything is negotiable:** Purchase price, closing costs, repair credits, appliances, closing date, contingencies. The only non-negotiable is leverage — who wants the deal more.
+**所有事项都是可以协商的：** 购买价格、交易费用、维修费用、家电选择、交易日期以及各种附加条款。唯一不可协商的是谁更渴望完成这笔交易（即谁拥有更大的谈判筹码）。
 
-**Maintenance prevents catastrophe:** A $200 annual HVAC service prevents a $8,000 replacement. A $50 gutter clean prevents $15,000 foundation damage. Deferred maintenance compounds.
+**定期维护可以避免重大问题：** 每年花费 200 美元进行暖通空调系统维护，可以避免后续 8,000 美元的维修费用；定期清理排水沟可以避免 15,000 美元的地基损坏。拖延维护只会让问题变得更加严重。
 
-**Permits exist for safety and resale:** Unpermitted work = liability. Buyers discover it, insurance denies claims, you can't sell. When in doubt, pull the permit.
+**许可手续是出于安全和房屋转售的考虑：** 未经许可的施工可能会带来法律风险。买家一旦发现这些问题，保险公司可能会拒绝赔偿，而你也可能无法顺利出售房屋。如有疑问，务必申请相关许可。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-**Seasonal maintenance cycle:**
+**季节性维护周期：**
 
-| Season | Critical Tasks |
+| 季节 | 关键维护任务 |
 |--------|----------------|
-| Spring | HVAC service, gutter clean, check roof for winter damage, test irrigation |
-| Summer | Exterior painting window, seal driveway, check AC performance |
-| Fall | Furnace service, clean gutters again, winterize irrigation, check weatherstripping |
-| Winter | Check insulation, monitor for ice dams, test smoke/CO detectors |
+| 春季 | 检查暖通空调系统、清理排水沟、检查屋顶是否受损、测试灌溉系统 |
+| 夏季 | 给窗户刷漆、密封车道、检查空调性能 |
+| 秋季 | 维护暖气设备、再次清理排水沟、为冬季做准备、检查密封条是否完好 |
+| 冬季 | 检查房屋保温情况、监控是否有冰坝形成、测试烟雾/一氧化碳检测器 |
 
-**When to DIY vs call a pro:**
+**何时自己动手，何时请专业人士：**
 
-| DIY | Always hire |
-|-----|-------------|
-| Paint, caulk, weatherstripping | Electrical panel work |
-| Basic plumbing (faucets, toilets) | Structural changes |
-| Landscaping, mulch | Gas lines, water heater |
-| Changing filters, basic cleaning | Roof repair, foundation |
-
----
-
-## Cost Sanity Check
-
-Before approving any major expense:
-1. Get 3 quotes minimum (wide variance is normal)
-2. Search "[project] + [your city] + cost 2024" for local rates
-3. Materials are 40-50% of total; rest is labor
-4. "While we're at it" add-ons double budgets — decide scope upfront
+| 适合自己动手的情况 | 适合请专业人士的情况 |
+|----------------|-------------------|
+| 油漆、填缝、更换密封条 | 电气面板维修 |
+| 基本管道维修（水龙头、马桶） | 结构性改动 |
+| 园景维护、铺设覆盖物 | 燃气管道、热水器维修 |
+| 更换过滤器、简单清洁 | 屋顶维修、地基检查 |
 
 ---
 
-## When to Load More
+## 成本合理性检查
 
-| Situation | Reference |
+在批准任何大额支出之前：
+1. 至少获取 3 份报价（报价差异较大是正常现象）；
+2. 在搜索引擎中输入 “[项目名称] + [所在城市] + 2024 年费用” 来了解当地市场价格；
+3. 材料费用占总成本的 40-50%，其余为人工费用；
+4. 如果有机会，可以一并考虑额外的维修或升级项目——务必提前明确维修范围。
+
+---
+
+## 需要进一步查阅的资料
+
+| 情况 | 参考文档 |
 |-----------|-----------|
-| Searching, making offers, closing | `buying.md` |
-| Repairs, preventive maintenance, emergencies | `maintenance.md` |
-| Projects, permits, contractors | `improvements.md` |
-| Pricing, staging, negotiations, closing | `selling.md` |
-| Tenants, leases, rent collection, evictions | `renting.md` |
+| 搜索房源、接收报价、完成交易 | `buying.md` |
+| 维修、预防性维护、紧急情况 | `maintenance.md` |
+| 翻新项目、申请许可、寻找承包商 | `improvements.md` |
+| 定价、房屋整理、谈判、完成交易 | `selling.md` |
+| 租户管理、租赁合同、租金收取、驱逐租户 | `renting.md` |

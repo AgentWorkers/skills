@@ -1,39 +1,39 @@
 ---
 name: clawdbot-workspace-template-review
-description: Compare a Clawdbot workspace against the official templates installed with Clawdbot (npm or source) and list missing sections to pull in, especially after upgrades.
+description: 将 Clawdbot 的工作空间与通过 `npm` 或源代码安装的官方模板进行比较，列出需要添加的缺失部分，尤其是在升级之后。
 ---
 
-# Workspace Template Diff
+# 工作区模板差异对比
 
-Use this skill when the user wants to compare their workspace `.md` files (AGENTS, SOUL, USER, IDENTITY, TOOLS, HEARTBEAT, etc.) against the official Clawdbot templates, then review missing sections and decide what to add.
+当用户希望将自己的工作区 `.md` 文件（包括 AGENTS、SOUL、USER、IDENTITY、TOOLS、HEARTBEAT 等部分）与官方 Clawdbot 模板进行对比时，可以使用此技能，从而查看缺失的部分并决定需要添加哪些内容。
 
-## Locate the official templates
+## 查找官方模板
 
-Find the installed Clawdbot source root:
+找到已安装的 Clawdbot 源代码目录：
 
-- If `clawdbot` is installed via npm/pnpm globally:
-  - `command -v clawdbot`
-  - If it points into `.../node_modules/.bin/`, resolve to the sibling `node_modules/clawdbot`
-  - Or use `npm root -g` / `pnpm root -g` and look for `clawdbot/`
-- If Clawdbot runs from source, use that checkout root (must contain `package.json`).
+- 如果 Clawdbot 是通过 npm/pnpm 全局安装的：
+  - 输入 `command -v clawdbot`，查看安装信息。
+  - 如果安装路径显示为 `.../node_modules/.bin/`，则实际安装路径应为 `node_modules/clawdbot`。
+  - 或者使用 `npm root -g` / `pnpm root -g` 命令，然后在输出目录中查找 `clawdbot` 文件夹。
+- 如果 Clawdbot 是从源代码直接编译运行的，请使用该编译后的目录（该目录必须包含 `package.json` 文件）。
 
-Templates live at:
+官方模板存储的位置如下：
 
 ```
 <clawdbot-root>/docs/reference/templates/
 ```
 
-If you can’t find the source root, ask the user where their Clawdbot is installed.
+如果无法找到源代码目录，请询问用户 Clawdbot 的安装位置。
 
-## Comparison workflow
+## 对比流程
 
-1. Identify the workspace root (the user’s “our version” directory).
-2. For each template file in `docs/reference/templates` (skip `*.dev.md`):
-   - Open the official template and the workspace file with the same name.
-   - Ignore template frontmatter (`---` block) and any “First Run”/“Bootstrap” sections.
-   - Compare the remaining sections and list any missing blocks.
+1. 确定工作区的根目录（即用户的“本地版本”目录）。
+2. 遍历 `docs/reference/templates` 目录中的每个模板文件（排除 `*.dev.md` 文件）：
+   - 打开官方模板和具有相同名称的工作区文件。
+   - 忽略模板文件的开头部分（`---` 标签）以及任何“首次运行”或“引导”相关的内容。
+   - 比较剩余的部分，并列出所有缺失的模块或内容。
 
-Helpful commands (use ad‑hoc CLI tools like `diff`):
+**推荐使用的 CLI 工具（如 `diff`）**：
 
 ```
 ls <clawdbot-root>/docs/reference/templates
@@ -42,14 +42,14 @@ sed -n '1,200p' <workspace>/AGENTS.md
 diff -u <clawdbot-root>/docs/reference/templates/AGENTS.md <workspace>/AGENTS.md
 ```
 
-When reporting diffs:
-- Show the missing sections verbatim from the official template.
-- Explain briefly why they matter, then ask whether to add them.
-- Move file by file; skip files that only differ by frontmatter or bootstrap content.
+在报告差异时，请按照以下步骤操作：
+- 逐条列出官方模板中缺失的内容。
+- 简要说明这些内容的重要性，并询问用户是否需要将这些内容添加到工作区模板中。
+- 逐个文件进行对比；对于仅在前端部分或引导内容上有差异的文件，可以跳过这些文件。
 
-## Output format
+## 输出格式
 
-Use the “missing section” format we used previously:
-- File path
-- Missing block(s)
-- Suggestion + question to proceed
+使用我们之前约定的格式来显示差异结果：
+- 文件路径
+- 缺失的模块或内容
+- 建议及后续操作建议

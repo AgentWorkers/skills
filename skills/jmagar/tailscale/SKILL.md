@@ -1,16 +1,24 @@
 ---
 name: tailscale
 version: 1.0.0
-description: Manage Tailscale tailnet via CLI and API. Use when the user asks to "check tailscale status", "list tailscale devices", "ping a device", "send file via tailscale", "tailscale funnel", "create auth key", "check who's online", or mentions Tailscale network management.
+description: 通过 CLI 和 API 管理 Tailscale 的 tailnet 功能。当用户需要执行以下操作时，请使用这些工具：  
+- 检查 Tailscale 的状态  
+- 列出所有 Tailscale 设备  
+- 对设备发送 Ping 请求  
+- 通过 Tailscale 传输文件  
+- 使用 Tailscale 的 funnel 功能  
+- 创建身份验证密钥  
+- 查看当前在线的用户  
+- 或者进行与 Tailscale 网络管理相关的操作。
 ---
 
 # Tailscale Skill
 
-Hybrid skill using CLI for local operations and API for tailnet-wide management.
+这是一个混合型技能，使用命令行界面（CLI）进行本地操作，同时通过API实现整个Tailnet网络的管理。
 
-## Setup
+## 设置
 
-API config (optional, for tailnet-wide operations): `~/.clawdbot/credentials/tailscale/config.json`
+API配置（可选，用于整个Tailnet网络的操作）：`~/.clawdbot/credentials/tailscale/config.json`
 
 ```json
 {
@@ -19,17 +27,17 @@ API config (optional, for tailnet-wide operations): `~/.clawdbot/credentials/tai
 }
 ```
 
-Get your API key from: Tailscale Admin Console → Settings → Keys → Generate API Key
+您可以从Tailscale管理控制台的“设置”→“密钥”→“生成API密钥”处获取API密钥。
 
-The `tailnet` can be `-` (auto-detect), your org name, or email domain.
+“Tailnet”可以是“-”（自动检测）、您的组织名称或电子邮件域名。
 
 ---
 
-## Local Operations (CLI)
+## 本地操作（CLI）
 
-These work on the current machine only.
+这些操作仅适用于当前机器。
 
-### Status & Diagnostics
+### 状态与诊断
 
 ```bash
 # Current status (peers, connection state)
@@ -47,7 +55,7 @@ tailscale ip -4
 tailscale whois 100.x.x.x
 ```
 
-### Connectivity
+### 连接性
 
 ```bash
 # Ping a peer (shows direct vs relay)
@@ -63,7 +71,7 @@ tailscale exit-node list
 tailscale exit-node suggest
 ```
 
-### File Transfer (Taildrop)
+### 文件传输（Taildrop）
 
 ```bash
 # Send files to a device
@@ -74,7 +82,7 @@ tailscale file get ~/Downloads
 tailscale file get --wait ~/Downloads  # blocks until file arrives
 ```
 
-### Expose Services
+### 暴露服务
 
 ```bash
 # Share locally within tailnet (private)
@@ -101,11 +109,11 @@ tailscale up --ssh
 
 ---
 
-## Tailnet-Wide Operations (API)
+## 整个Tailnet网络的操作（API）
 
-These manage your entire tailnet. Requires API key.
+这些操作用于管理您的整个Tailnet网络。需要API密钥。
 
-### List All Devices
+### 列出所有设备
 
 ```bash
 ./scripts/ts-api.sh devices
@@ -114,34 +122,34 @@ These manage your entire tailnet. Requires API key.
 ./scripts/ts-api.sh devices --verbose
 ```
 
-### Device Details
+### 设备详情
 
 ```bash
 ./scripts/ts-api.sh device <device-id-or-name>
 ```
 
-### Check Online Status
+### 检查在线状态
 
 ```bash
 # Quick online check for all devices
 ./scripts/ts-api.sh online
 ```
 
-### Authorize/Delete Device
+### 授权/删除设备
 
 ```bash
 ./scripts/ts-api.sh authorize <device-id>
 ./scripts/ts-api.sh delete <device-id>
 ```
 
-### Device Tags & Routes
+### 设备标签与路由
 
 ```bash
 ./scripts/ts-api.sh tags <device-id> tag:server,tag:prod
 ./scripts/ts-api.sh routes <device-id>
 ```
 
-### Auth Keys
+### 认证密钥
 
 ```bash
 # Create a reusable auth key
@@ -154,7 +162,7 @@ These manage your entire tailnet. Requires API key.
 ./scripts/ts-api.sh keys
 ```
 
-### DNS Management
+### DNS管理
 
 ```bash
 ./scripts/ts-api.sh dns                 # Show DNS config
@@ -162,7 +170,7 @@ These manage your entire tailnet. Requires API key.
 ./scripts/ts-api.sh magic-dns on|off    # Toggle MagicDNS
 ```
 
-### ACLs
+### 访问控制列表（ACLs）
 
 ```bash
 ./scripts/ts-api.sh acl                 # Get current ACL
@@ -171,29 +179,29 @@ These manage your entire tailnet. Requires API key.
 
 ---
 
-## Common Use Cases
+## 常见用例
 
-**"Who's online right now?"**
+**“现在谁在线？”**
 ```bash
 ./scripts/ts-api.sh online
 ```
 
-**"Send this file to my phone"**
+**“将这个文件发送到我的手机上”**
 ```bash
 tailscale file cp document.pdf my-phone:
 ```
 
-**"Expose my dev server publicly"**
+**“公开我的开发服务器”**
 ```bash
 tailscale funnel 3000
 ```
 
-**"Create a key for a new server"**
+**“为新服务器创建一个密钥”**
 ```bash
 ./scripts/ts-api.sh create-key --reusable --tags tag:server --expiry 7d
 ```
 
-**"Is the connection direct or relayed?"**
+**“连接是直接的还是中继的？”**
 ```bash
 tailscale ping my-server
 ```

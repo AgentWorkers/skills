@@ -1,6 +1,6 @@
 ---
 name: clawdio
-description: Auditory intelligence for AI agents. Transforms human audio into into structured data, semantic reports, and machine-readable markdown. Use when you need market intelligence, crypto alpha, speaker-attributed quotes, or sentiment analysis from voice conversations. Requires x402 payment in USDC on Base Mainnet.
+description: **AI代理的听觉智能功能**：该功能能够将人类语音转换为结构化数据、语义报告以及机器可读的Markdown格式内容。适用于需要市场情报、加密货币相关数据、语音对话中发言者的身份信息或情感分析的场景。使用该服务需在Base Mainnet网络上使用USDC支付，支付金额为x402单位。
 compatibility: Requires x402-compatible wallet (Coinbase AgentKit, CDP SDK, or @x402/fetch) with USDC on Base Mainnet. Requires network access.
 metadata:
   author: vail
@@ -14,54 +14,47 @@ metadata:
   category: intelligence
 ---
 
-# Clawdio — Auditory Intelligence for AI Agents
+# Clawdio — 为AI代理提供听觉智能
 
-Clawdio, powered by VAIL (Voice AI Layer), gives AI agents **auditory perception** by transforming long-form human audio into structured data, semantic reports, and machine-readable markdown.
+Clawdio由VAIL（Voice AI Layer）提供支持，通过将长篇人类音频转换为结构化数据、语义报告以及机器可读的Markdown格式，为AI代理赋予**听觉感知**能力。代理可以通过**x402支付接口**获取语音对话内容，将其作为与文本、价格数据或其他数据源同等重要的输入来源进行使用。
 
-Agents interact with an **x402 payment-gated API** to ingest spoken conversations as first-class inputs — just like text, price feeds, or alternative data sources.
+初次部署主要应用于**AI和加密货币相关的Twitter Spaces**，因为这些场景中的市场情报大多以语音形式存在。
 
-Initial deployment focuses on **AI and Crypto Twitter Spaces**, where high-signal market intelligence exists primarily in voice.
-
-**Base URL:** `https://clawdio.vail.report`
-**Protocol:** x402
-**Network:** Base Mainnet (eip155:8453)
-**Currency:** USDC
-**Price:** $1.49 per report
+**基础URL：** `https://clawdio.vail.report`  
+**协议：** x402  
+**网络：** Base Mainnet（eip155:8453）  
+**货币：** USDC  
+**价格：** 每份报告1.49美元  
 
 ---
 
-## Requirements
+## 使用要求
 
-You need an **x402-compatible wallet** funded with USDC on Base Mainnet. Compatible wallet providers include:
+您需要一个在Base Mainnet上已充值USDC的、兼容x402协议的钱包。支持的钱包包括：  
+- [Coinbase AgentKit](https://docs.cdp.coinbase.com/agentkit)（配备`x402ActionProvider()`）  
+- [Coinbase CDP SDK](https://docs.cdp.coinbase.com/)（配备`CdpEvmWalletProvider`）  
+- 任何支持[x402协议的钱包](https://www.x402.org/)  
 
-- [Coinbase AgentKit](https://docs.cdp.coinbase.com/agentkit) with `x402ActionProvider()`
-- [Coinbase CDP SDK](https://docs.cdp.coinbase.com/) with `CdpEvmWalletProvider`
-- Any wallet that supports the [x402 protocol](https://www.x402.org/)
-
-The x402 payment is handled **automatically** via the `PAYMENT-SIGNATURE` header — your wallet provider manages the signing and settlement. You do not need to construct payment transactions manually.
+x402支付过程**自动完成**，由您的钱包提供商负责签名和结算，您无需手动构建支付交易。  
 
 ---
 
-## Quick Start
+## 快速入门  
 
-### Step 1: Understand the API
+### 第1步：了解API  
 
-Visit the API root to get a self-describing overview:
-
+访问API根路径以获取详细信息：  
 ```bash
 curl https://clawdio.vail.report/
-```
+```  
+该路径会返回API的完整描述、可用端点、价格信息以及购买流程说明。  
 
-This returns the full API description, available endpoints, pricing, and purchase flow instructions.
-
-### Step 2: Browse the Catalog (Free)
+### 第2步：浏览产品目录（免费）  
 
 ```bash
 curl https://clawdio.vail.report/catalog
-```
-
-No payment or authentication required. Returns all available products with metadata:
-
+```  
+无需支付或认证，可查看所有产品的元数据：  
 ```json
 {
   "products": [
@@ -91,136 +84,65 @@ No payment or authentication required. Returns all available products with metad
     "important": "The purchase endpoint uses GET, not POST. Save the artifacts — repurchase is required for repeat access."
   }
 }
-```
+```  
 
-### Step 3: Purchase a Report ($1.49 USDC)
+### 第3步：购买报告（1.49美元）  
 
 ```bash
 curl https://clawdio.vail.report/catalog/purchase?id={uuid}
-```
-
-**Important:** This is a **GET** request, not POST.
-
-On first request without payment, the server returns **HTTP 402 Payment Required** with a `PAYMENT-REQUIRED` header. Your x402 wallet automatically:
-
-1. Reads the payment requirements from the 402 response
-2. Signs a USDC payment on Base Mainnet
-3. Retries the request with the `PAYMENT-SIGNATURE` header
-4. Receives the full content after payment settles
-
-### What You Get
-
-Each purchase returns a JSON object with three artifact layers (metadata + report + transcript):
-
-```json
-{
-  "id": "c6d36398-a0c8-4c21-9aa4-1d1d9084a820",
-  "transaction": "0x1234...abcd",
-  "title": "AI & Crypto Twitter Space",
-  "date": "2025-01-15",
-  "length": "01:23:45",
-  "listeners": 1234,
-  "participants": {
-    "hosts": [
-      {
-        "display_name": "Host Name",
-        "screen_name": "host_handle",
-        "avatar_url": "https://..."
-      }
-    ],
-    "speakers": [
-      {
-        "display_name": "Speaker Name",
-        "screen_name": "speaker_handle",
-        "avatar_url": "https://..."
-      }
-    ]
-  },
-  "content": {
-    "report": {
-      "format": "markdown",
-      "content": "## Abstract\n\nAnalysis of the Twitter Space...\n\n## Key Insights\n\n- ...\n\n## Hot Takes\n\n> \"Quote\" — **Speaker** (timestamp)\n\n## Timeline\n\n- ...\n\n## Potential Alpha\n\n- ...\n\n## Market Sentiment\n\n**Overall:** Bullish\n\n## Project Mentions\n\n- **Project**: Context"
-    },
-    "transcript": {
-      "format": "markdown",
-      "content": "# Transcript\n\n**Speaker 1** [00:01:26 - 00:01:49]\n> Spoken text here...\n\n**Speaker 2** [00:01:50 - 00:02:15]\n> Response text here..."
-    }
-  }
-}
-```
-
-**Artifact 1 — Metadata:** Title, date, duration, listener count, full participant list with Twitter handles and avatars.
-
-**Artifact 2 — Report (Markdown):** Structured analysis including abstract, key insights, hot takes with attribution, timeline of events, potential alpha, market sentiment, and project mentions.
-
-**Artifact 3 — Transcript (Markdown):** Full speaker-attributed transcript with timestamps. Every utterance has speaker name, timestamp range, and verbatim content.
+```  
+**注意：** 这是一个**GET**请求，而非POST请求。  
+首次请求时如果未支付，服务器会返回`HTTP 402 Payment Required`响应，并附带`PAYMENT-REQUIRED`头部信息。您的x402钱包会自动：  
+1. 从响应中读取支付要求；  
+2. 在Base Mainnet上完成USDC支付；  
+3. 重新发送带有`PAYMENT-SIGNATURE`头部的请求；  
+4. 支付完成后接收完整报告内容。  
 
 ---
 
-## Report Schema
+## 报告内容  
 
-The report markdown contains these sections (when available):
-
-| Section | Description |
-|---------|-------------|
-| **Abstract** | Summary paragraphs of the entire Space |
-| **Key Insights** | Bullet list of the most important takeaways |
-| **Hot Takes** | Notable quotes with speaker attribution and timestamps |
-| **Timeline** | Chronological events with significance notes |
-| **Potential Alpha** | Actionable intelligence and forward-looking signals |
-| **Market Sentiment** | Overall sentiment assessment with notes |
-| **Project Mentions** | Named projects/tokens discussed with context |
+每次购买都会返回一个JSON对象，其中包含三个部分：  
+- **元数据**（标题、日期、时长、参与者列表及其Twitter账号和头像）；  
+- **报告（Markdown格式）**：包含摘要、关键洞察、重要观点、事件时间线、市场情绪以及项目提及等内容；  
+- **转录文本（Markdown格式）**：包含发言者的完整发言内容及时间戳。  
 
 ---
 
-## Complete Purchase Flow
+## 报告结构  
 
-```
-Agent                          Clawdio                      Facilitator
-  |                               |                              |
-  |  GET /catalog                 |                              |
-  |------------------------------>|                              |
-  |  200 OK (product list)        |                              |
-  |<------------------------------|                              |
-  |                               |                              |
-  |  GET /catalog/purchase?id=... |                              |
-  |------------------------------>|                              |
-  |  402 Payment Required         |                              |
-  |  (PAYMENT-REQUIRED header)    |                              |
-  |<------------------------------|                              |
-  |                               |                              |
-  |  [wallet signs USDC payment]  |                              |
-  |                               |                              |
-  |  GET /catalog/purchase?id=... |                              |
-  |  (PAYMENT-SIGNATURE header)   |                              |
-  |------------------------------>|                              |
-  |                               |  verify + settle payment     |
-  |                               |----------------------------->|
-  |                               |  settlement confirmation     |
-  |                               |<-----------------------------|
-  |  200 OK                       |                              |
-  |  (full artifacts + tx hash)   |                              |
-  |<------------------------------|                              |
-```
+报告的Markdown格式包含以下部分（如适用）：  
+| 部分 | 描述 |  
+|---------|-------------|  
+| **摘要** | 整个对话的总结段落；  
+| **关键洞察** | 最重要的观点列表；  
+| **重要观点** | 带有发言者信息的精彩言论及其时间戳；  
+| **时间线** | 按时间顺序排列的事件及其重要性说明；  
+| **潜在机会** | 可操作的情报和未来趋势；  
+| **市场情绪** | 整体市场情绪评估；  
+| **项目提及** | 被讨论的项目/代币及其背景信息。  
 
 ---
 
-## Endpoints
+## 完整购买流程  
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/` | GET | None | Self-describing API root with full documentation |
-| `/catalog` | GET | None | Browse all available products with metadata |
-| `/catalog/purchase?id={uuid}` | GET | x402 | Purchase full artifacts ($1.49 USDC) |
-| `/health` | GET | None | Health check |
-| `/.well-known/x402` | GET | None | x402 discovery document |
+---  
+
+## API端点  
+
+| 端点 | 方法 | 认证方式 | 描述 |  
+|----------|--------|------|-------------|  
+| `/` | GET | 无 | 自描述型API根路径，提供完整文档；  
+| `/catalog` | GET | 无 | 浏览所有产品的元数据；  
+| `/catalog/purchase?id={uuid}` | GET | x402 | 购买完整报告（1.49美元）；  
+| `/health` | GET | 无 | 系统健康检查；  
+| `/.well-known/x402` | GET | 无 | x402协议的相关信息。  
 
 ---
 
-## Using with Coinbase AgentKit
+## 与Coinbase AgentKit配合使用  
 
-If you use Coinbase AgentKit, the x402 payment flow is fully automatic:
-
+如果您使用Coinbase AgentKit，x402支付流程将完全自动化：  
 ```javascript
 import { AgentKit, CdpEvmWalletProvider, walletActionProvider, x402ActionProvider } from "@coinbase/agentkit";
 
@@ -239,14 +161,13 @@ const agentKit = await AgentKit.from({
 
 // The agent can now browse and purchase from Clawdio automatically.
 // Point it at https://clawdio.vail.report/ and it will self-discover the API.
-```
+```  
 
 ---
 
-## Using with @x402/fetch
+## 通过@x402/fetch直接编程访问  
 
-For direct programmatic access without AgentKit:
-
+如果您不使用AgentKit，也可以通过`@x402/fetch`直接进行编程访问：  
 ```javascript
 import { wrapFetch } from "@x402/fetch";
 
@@ -258,38 +179,35 @@ const catalog = await fetch("https://clawdio.vail.report/catalog").then(r => r.j
 // Purchase a report (x402 handles payment automatically)
 const report = await x402Fetch("https://clawdio.vail.report/catalog/purchase?id={uuid}")
   .then(r => r.json());
-```
+```  
 
 ---
 
-## Important Notes
-
-- **GET not POST:** The purchase endpoint uses `GET`. Do not send POST requests.
-- **Base Mainnet only:** Payment is in USDC on Base Mainnet (eip155:8453).
-- **Save your purchase:** Artifacts are not stored for you. Repurchase is required for repeat access.
-- **No authentication:** There are no API keys or accounts. Payment is the only gate.
-
----
-
-## Ideas for Agents
-
-- **Market intelligence:** Analyze hot takes and sentiment for trading signals
-- **Research synthesis:** Cross-reference insights across multiple Spaces
-- **Alpha extraction:** Mine potential alpha section for actionable opportunities
-- **Network mapping:** Build social graphs from participant lists across Spaces
-- **Trend detection:** Track project mentions and sentiment over time
-- **Content curation:** Quote and share notable insights on social platforms
+## 重要说明：  
+- **仅使用GET请求**：购买请求必须使用GET方法，禁止使用POST请求。  
+- **仅支持Base Mainnet**：支付必须通过Base Mainnet（eip155:8453）完成。  
+- **报告内容不保存**：系统不会为您保存报告文件，如需重复访问需重新购买。  
+- **无需认证**：无需API密钥或账户信息，支付是唯一的访问方式。  
 
 ---
 
-## Health Check
+## 代理应用建议：  
+- **市场情报**：分析重要观点和市场情绪以获取交易信号；  
+- **研究整合**：跨多个Twitter Spaces对比分析见解；  
+- **挖掘潜在机会**：从报告中提取可操作的信息；  
+- **社交网络构建**：根据参与者列表构建社交图谱；  
+- **趋势监测**：跟踪项目提及和情绪变化；  
+- **内容分享**：在社交平台上引用和分享有价值的见解。  
+
+---
+
+## 系统健康检查  
 
 ```bash
 curl https://clawdio.vail.report/health
-```
-
-Returns: `{"status": "ok"}`
+```  
+返回结果：`{"status": "ok"}`  
 
 ---
 
-**Built by [VAIL](https://vail.report) — Voice AI Layer**
+**由[VAIL](https://vail.report)开发 — Voice AI Layer**

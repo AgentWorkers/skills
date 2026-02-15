@@ -1,6 +1,6 @@
 ---
 name: youtube
-description: YouTube Data API integration for searching videos, listing subscriptions, playlists, and video details. Use when the user wants to search YouTube, check their subscriptions, browse playlists, get video information, or list liked videos.
+description: YouTube 数据 API 集成用于搜索视频、查看订阅信息、播放列表以及获取视频详情。当用户需要搜索 YouTube 内容、查看自己的订阅列表、浏览播放列表、获取视频信息或列出自己喜欢的视频时，可以使用该 API。
 homepage: https://developers.google.com/youtube/v3
 metadata:
   {
@@ -24,90 +24,90 @@ metadata:
 
 # YouTube
 
-Access YouTube Data API using the bundled script. Requires OAuth setup (one-time).
+您可以使用提供的脚本访问 YouTube 数据 API。此操作需要先完成 OAuth 设置（只需完成一次）。
 
-## First-time Setup
+## 首次设置
 
-1. Get OAuth credentials from [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-2. Create OAuth 2.0 Client ID (Desktop app)
-3. Download JSON and save to `~/.config/youtube-skill/credentials.json`
-4. Run auth command (opens browser):
+1. 从 [Google Cloud Console](https://console.cloud.google.com/apis/credentials) 获取 OAuth 凭据。
+2. 创建 OAuth 2.0 客户端 ID（适用于桌面应用程序）。
+3. 下载 JSON 文件并将其保存到 `~/.config/youtube-skill/credentials.json`。
+4. 运行 `auth` 命令（该命令会打开浏览器）：
 
 ```bash
 uv run {baseDir}/scripts/youtube.py auth
 ```
 
-Note: If you already use `gog` (gogcli), credentials are shared automatically.
+注意：如果您已经使用了 `gog`（gogcli），则凭据会自动共享。
 
-## Commands
+## 命令
 
-### Search videos
+### 搜索视频
 
 ```bash
 uv run {baseDir}/scripts/youtube.py search "AI news 2026"
 uv run {baseDir}/scripts/youtube.py search "python tutorial" -l 20
 ```
 
-### Get video details
+### 获取视频详情
 
 ```bash
 uv run {baseDir}/scripts/youtube.py video VIDEO_ID
 uv run {baseDir}/scripts/youtube.py video dQw4w9WgXcQ -v
 ```
 
-### List subscriptions
+### 列出订阅的频道
 
 ```bash
 uv run {baseDir}/scripts/youtube.py subscriptions
 uv run {baseDir}/scripts/youtube.py subs -l 50
 ```
 
-### List playlists
+### 列出播放列表
 
 ```bash
 uv run {baseDir}/scripts/youtube.py playlists
 uv run {baseDir}/scripts/youtube.py pl -l 10
 ```
 
-### List playlist items
+### 列出播放列表中的视频
 
 ```bash
 uv run {baseDir}/scripts/youtube.py playlist-items PLAYLIST_ID
 uv run {baseDir}/scripts/youtube.py pli PLxxxxxx -l 25
 ```
 
-### List available captions
+### 列出可用的字幕
 
 ```bash
 uv run {baseDir}/scripts/youtube.py captions VIDEO_ID
 ```
 
-### List liked videos
+### 列出用户喜欢的视频
 
 ```bash
 uv run {baseDir}/scripts/youtube.py liked
 uv run {baseDir}/scripts/youtube.py liked -l 50
 ```
 
-### Get channel info
+### 获取频道信息
 
 ```bash
 uv run {baseDir}/scripts/youtube.py channel
 uv run {baseDir}/scripts/youtube.py channel CHANNEL_ID -v
 ```
 
-## Multi-account Support
+## 多账户支持
 
-Use `-a` flag for different accounts:
+使用 `-a` 标志来切换不同的账户：
 
 ```bash
 uv run {baseDir}/scripts/youtube.py -a work subscriptions
 uv run {baseDir}/scripts/youtube.py -a personal liked
 ```
 
-## Combining with yt-dlp
+## 与 yt-dlp 结合使用
 
-For downloading videos, use yt-dlp (separate tool):
+若需下载视频，请使用单独的工具 `yt-dlp`：
 
 ```bash
 yt-dlp "https://youtube.com/watch?v=VIDEO_ID"

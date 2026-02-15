@@ -1,7 +1,7 @@
 ---
 name: starwars
 version: 1.0.0
-description: "CLI for AI agents to lookup Star Wars universe info for their humans. Uses SWAPI. No auth required."
+description: "这是一个用于AI代理的命令行工具（CLI），帮助它们为人类用户查询《星球大战》宇宙中的相关信息。该工具基于SWAPI接口进行开发，无需用户进行身份验证（即无需登录或提供任何认证信息）。"
 homepage: https://swapi.dev
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["starwars", "swapi", "entertainment", "movies", "cli"]
 ---
 
-# Star Wars Lookup
+# 星球大战查询工具
 
-CLI for AI agents to lookup Star Wars universe info for their humans. "Who played Darth Vader?" — now your agent can answer.
+这是一个为AI代理设计的命令行工具（CLI），用于帮助用户查询星球大战宇宙中的相关信息。例如：“谁扮演了达斯·维德？”——现在你的AI代理可以回答这个问题了。
 
-Uses [SWAPI](https://swapi.dev) (Star Wars API). No account or API key needed.
+该工具使用了[SWAPI](https://swapi.dev)（星球大战官方API），无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Look up Luke Skywalker"
@@ -27,17 +27,17 @@ Uses [SWAPI](https://swapi.dev) (Star Wars API). No account or API key needed.
 "Tell me about the Millennium Falcon"
 ```
 
-## Commands
+## 命令列表
 
-| Action | Command |
-|--------|---------|
-| Search characters | `starwars people "name"` |
-| Search planets | `starwars planets "name"` |
-| List films | `starwars films` |
-| Search species | `starwars species "name"` |
-| Search starships | `starwars starships "name"` |
+| 功能 | 命令                |
+|------|-------------------|
+| 查找角色 | `starwars people "名称"`     |
+| 查找行星 | `starwars planets "名称"`     |
+| 列出电影 | `starwars films`       |
+| 查找物种 | `starwars species "名称"`     |
+| 查找飞船 | `starwars starships "名称"`     |
 
-### Examples
+### 使用示例
 
 ```bash
 starwars people "luke"          # Find character by name
@@ -47,52 +47,55 @@ starwars species "wookiee"      # Find species by name
 starwars starships "falcon"     # Find starship by name
 ```
 
-## Output
+## 查询结果
 
-**People output:**
+**角色查询结果：**
 ```
 Luke Skywalker — Human, Tatooine, Height: 172cm
 ```
 
-**Planets output:**
+**行星查询结果：**
 ```
 Tatooine — Population: 200000, Climate: arid, Terrain: desert
 ```
 
-**Films output:**
+**电影查询结果：**
 ```
 Episode 4: A New Hope (1977-05-25) — Director: George Lucas
 Episode 5: The Empire Strikes Back (1980-05-17) — Director: Irvin Kershner
 ```
 
-**Species output:**
+**物种查询结果：**
 ```
 Wookiee — Classification: mammal, Language: Shyriiwook, Avg Lifespan: 400 years
 ```
 
-**Starships output:**
+**飞船查询结果：**
 ```
 Millennium Falcon — YT-1300 light freighter, Class: Light freighter, Crew: 4
 ```
 
-## Notes
+## 注意事项
 
-- Uses SWAPI (swapi.dev)
-- No authentication required
-- Covers all 6 original/prequel films
-- Character lookups resolve species and homeworld names automatically
+- 该工具基于SWAPI（swapi.dev）接口开发
+- 无需进行身份验证
+- 支持查询所有6部正传及前传电影的信息
+- 在查询角色时，系统会自动识别其所属物种及母星信息
 
 ---
 
-## Agent Implementation Notes
+## 代理实现说明
 
-**Script location:** `{skill_folder}/starwars` (wrapper to `scripts/starwars`)
+**脚本位置：`{skill_folder}/starwars`（实际脚本位于`scripts/starwars`文件夹）**
 
-**When user asks about Star Wars:**
-1. Run `./starwars people "name"` to find characters
-2. Run `./starwars planets "name"` for planet info
-3. Run `./starwars films` for the film list
-4. Run `./starwars species "name"` for species details
-5. Run `./starwars starships "name"` for ship info
+**当用户询问与星球大战相关的内容时：**
+1. 运行`./starwars people "名称"`以查询角色信息
+2. 运行`./starwars planets "名称"`以获取行星详情
+3. 运行`./starwars films`以获取电影列表
+4. 运行`./starwars species "名称"`以获取物种信息
+5. 运行`./starwars starships "名称"`以获取飞船信息
 
-**Don't use for:** Sequel trilogy data (Episodes 7-9 not in SWAPI), extended universe, TV shows.
+**不适用场景：**
+- 后传三部曲（第7-9部）的数据（这些内容未包含在SWAPI接口中）
+- 扩展宇宙中的角色或物品
+- 电视剧中的相关内容

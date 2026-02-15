@@ -1,7 +1,10 @@
 ---
 name: triple-memory
 version: 1.0.0
-description: Complete memory system combining LanceDB auto-recall, Git-Notes structured memory, and file-based workspace search. Use when setting up comprehensive agent memory, when you need persistent context across sessions, or when managing decisions/preferences/tasks with multiple memory backends working together.
+description: 这是一个完整的内存管理系统，它结合了LanceDB的自动回忆功能、Git-Notes结构化存储机制以及基于文件的工作区搜索功能。该系统适用于以下场景：  
+- 设置全面的代理内存管理方案；  
+- 当需要在不同会话之间保持数据的持久性时；  
+- 在涉及多个内存后端协同工作的情况下，用于管理决策、偏好设置或任务。
 metadata:
   clawdbot:
     emoji: "🧠"
@@ -12,11 +15,11 @@ metadata:
         - git-notes-memory
 ---
 
-# Triple Memory System
+# 三重内存系统
 
-A comprehensive memory architecture combining three complementary systems for maximum context retention across sessions.
+这是一个综合性的内存架构，结合了三个互补的系统，以实现跨会话的最大化信息保留能力。
 
-## Architecture Overview
+## 架构概述
 
 ```
 User Message
@@ -32,27 +35,27 @@ Agent responds (using all 3 systems)
 [File updates] → persistent workspace docs
 ```
 
-## The Three Systems
+## 三个系统
 
-### 1. LanceDB (Conversation Memory)
-- **Auto-recall:** Relevant memories injected before each response
-- **Auto-capture:** Preferences/decisions/facts stored automatically
-- **Tools:** `memory_recall`, `memory_store`, `memory_forget`
-- **Triggers:** "remember", "prefer", "my X is", "I like/hate/want"
+### 1. LanceDB（对话记忆系统）
+- **自动回忆：** 在每次响应之前自动插入相关的记忆内容
+- **自动捕获：** 自动存储用户的偏好、决策和事实
+- **工具：** `memory_recall`、`memory_store`、`memory_forget`
+- **触发命令：** `remember`、`prefer`、`my X is`、`I like/hate/want`
 
-### 2. Git-Notes Memory (Structured, Local)
-- **Branch-aware:** Memories isolated per git branch
-- **Entity extraction:** Auto-extracts topics, names, concepts
-- **Importance levels:** critical, high, normal, low
-- **No external API calls**
+### 2. Git-Notes（结构化、本地存储系统）
+- **支持Git分支：** 按Git分支隔离记忆内容
+- **实体提取：** 自动提取主题、名称和概念
+- **重要性等级：** 关键、高、普通、低
+- **无需外部API调用**
 
-### 3. File Search (Workspace)
-- **Searches:** MEMORY.md, memory/*.md, any workspace file
-- **Script:** `scripts/file-search.sh`
+### 3. 文件搜索系统（工作区文件）
+- **搜索范围：** MEMORY.md文件、所有以`memory/`开头的.md文件以及工作区中的任何文件
+- **脚本：** `scripts/file-search.sh`
 
-## Setup
+## 设置
 
-### Enable LanceDB Plugin
+### 启用LanceDB插件
 ```json
 {
   "plugins": {
@@ -71,8 +74,8 @@ Agent responds (using all 3 systems)
 }
 ```
 
-### Enable Auto Memory Flush (Pre-Compaction)
-Add to your Clawdbot config to automatically preserve context before compaction:
+### 启用自动内存刷新功能（压缩前）
+将以下配置添加到您的Clawdbot配置文件中，以便在压缩前自动保留相关信息：
 ```json
 {
   "agents": {
@@ -91,59 +94,59 @@ Add to your Clawdbot config to automatically preserve context before compaction:
 }
 ```
 
-This triggers automatic memory dump when context reaches ~80%, before any information is lost to compaction.
+当内存使用量达到约80%时，该功能会自动触发内存数据的备份，从而避免数据在压缩过程中丢失。
 
-### Install Git-Notes Memory
+### 安装Git-Notes
 ```bash
 clawdhub install git-notes-memory
 ```
 
-### Create File Search Script
-Copy `scripts/file-search.sh` to your workspace.
+### 创建文件搜索脚本
+将`scripts/file-search.sh`脚本复制到您的工作区中。
 
-## Usage
+## 使用方法
 
-### Session Start (Always)
+### 会话开始时（始终执行）
 ```bash
 python3 skills/git-notes-memory/memory.py -p $WORKSPACE sync --start
 ```
 
-### Store Important Decisions
+### 存储重要决策
 ```bash
 python3 skills/git-notes-memory/memory.py -p $WORKSPACE remember \
   '{"decision": "Use PostgreSQL", "reason": "Team expertise"}' \
   -t architecture,database -i h
 ```
 
-### Search Workspace Files
+### 搜索工作区文件
 ```bash
 ./scripts/file-search.sh "database config" 5
 ```
 
-### Conversation Memory (Automatic)
-LanceDB handles this automatically. Manual tools:
-- `memory_recall "query"` - search conversation memory
-- `memory_store "text"` - manually store something
-- `memory_forget` - delete memories (GDPR)
+### 对话记忆（自动处理）
+LanceDB会自动处理对话记忆的存储和检索。手动操作工具包括：
+- `memory_recall "query"` - 搜索对话记忆中的内容
+- `memory_store "text"` - 手动存储信息
+- `memory_forget` - 删除记忆内容（符合GDPR法规）
 
-## Importance Levels
+## 重要性等级
 
-| Flag | Level | When to Use |
+| 标志 | 等级 | 使用场景 |
 |------|-------|-------------|
-| `-i c` | Critical | "always remember", explicit preferences |
-| `-i h` | High | Decisions, corrections, preferences |
-| `-i n` | Normal | General information |
-| `-i l` | Low | Temporary notes |
+| `-i c` | 关键 | 需要“始终记住”的内容、明确的偏好设置 |
+| `-i h` | 高 | 决策、更正内容、偏好设置 |
+| `-i n` | 普通 | 一般性信息 |
+| `-i l` | 低 | 临时性笔记 |
 
-## When to Use Each System
+## 各系统的使用场景
 
-| System | Use For |
+| 系统 | 适用场景 |
 |--------|---------|
-| **LanceDB** | Conversation context, auto-retrieval |
-| **Git-Notes** | Structured decisions, searchable by entity/tag |
-| **File Search** | Workspace docs, daily logs, MEMORY.md |
+| **LanceDB** | 对话上下文的自动管理和检索 |
+| **Git-Notes** | 结构化决策的存储，可通过实体或标签进行搜索 |
+| **文件搜索** | 工作区文档、日常日志、MEMORY.md文件 |
 
-## File Structure
+## 文件结构
 
 ```
 workspace/
@@ -157,9 +160,9 @@ workspace/
     └── git-notes-memory/  # Structured memory
 ```
 
-## Silent Operation
+## 静默操作
 
-Never announce memory operations to users. Just do it:
-- ❌ "I'll remember this"
-- ❌ "Saving to memory"
-- ✅ (silently store and continue)
+切勿向用户显示任何关于内存操作的信息，只需默默执行即可：
+- ❌ “我会记住这个”
+- ❌ “正在将内容保存到内存中”
+- ✅ （默默完成存储并继续操作）

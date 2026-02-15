@@ -1,24 +1,24 @@
 ---
 name: idea
-description: "Launch background Claude sessions to explore and analyze business ideas. Say 'Idea: [description]' to trigger."
+description: "启动后台的 Claude 会话以探索和分析商业创意。只需说出“创意：[描述]”即可触发该会话。"
 homepage: https://github.com/anthropics/claude-code
 metadata: {"clawdbot":{"emoji":"💡","requires":{"bins":["claude","tmux","telegram"]}}}
 ---
 
-# Idea Exploration Skill
+# 想法探索技能
 
-Launch autonomous Claude Code sessions to explore business ideas in depth. Get market research, technical analysis, GTM strategy, and actionable recommendations.
+启动自主运行的Claude Code会话，深入探索商业创意。获取市场研究、技术分析、市场推广（GTM）策略以及可操作的推荐方案。
 
-## Quick Start
+## 快速入门
 
-**Trigger phrase:** Say `Idea: [description]` and the assistant will:
-1. Spin up a Claude Code session in tmux
-2. Research and analyze the idea comprehensively
-3. Save results to `~/clawd/ideas/<slug>/research.md`
-4. Send file to your Telegram Saved Messages
-5. Notify you via cron when complete
+**触发语句：** 说出“想法：[描述]”，助手将：
+1. 在tmux中启动一个Claude Code会话
+2. 全面研究并分析该想法
+3. 将结果保存到`~/clawd/ideas/<slug>/research.md`文件中
+4. 将文件发送到您的Telegram保存消息中
+5. 完成后通过cron通知您
 
-## How It Works
+## 工作原理
 
 ```
 User: "Idea: AI calendar assistant"
@@ -36,25 +36,25 @@ User: "Idea: AI calendar assistant"
 └─────────────────────────────────┘
 ```
 
-## Setup
+## 设置
 
-### Prerequisites
-- `claude` CLI (Claude Code)
+### 先决条件
+- `claude` CLI（Claude Code）
 - `tmux`
-- `telegram` CLI (supertelegram)
-- Clawdbot with cron enabled
+- `telegram` CLI（supertelegram）
+- 已启用cron的Clawdbot
 
-### 1. Create Scripts
+### 1. 创建脚本
 
-See `~/clawd/scripts/explore-idea.sh` for the full implementation.
+请查看`~/clawd/scripts/explore-idea.sh`以获取完整的实现细节。
 
-Key components:
-- Creates idea directory with prompt and runner script
-- Unsets OAuth env vars to use Claude Max
-- Runs claude with `--dangerously-skip-permissions`
-- Calls notify script on completion
+**关键组件：**
+- 创建包含提示和运行脚本的想法目录
+- 清除OAuth环境变量，以使用Claude Max
+- 以`--dangerously-skip-permissions`选项运行Claude
+- 完成后调用通知脚本
 
-### 2. Set Up Cron Job
+### 2. 设置Cron作业
 
 ```bash
 # Cron job to check notification queue every minute
@@ -73,7 +73,7 @@ Key components:
 }
 ```
 
-### 3. Add AGENTS.md Instructions
+### 3. 添加AGENTS.md说明
 
 ```markdown
 **When user says "Idea: [description]":**
@@ -82,26 +82,26 @@ Key components:
 3. Confirm: "Idea exploration started. You'll be notified when complete."
 ```
 
-## Analysis Framework
+## 分析框架
 
-The exploration covers:
+分析内容包括：
 
-1. **Core Concept Analysis** - Problem, assumptions, uniqueness
-2. **Market Research** - Users, TAM/SAM/SOM, competitors
-3. **Technical Implementation** - Stack, MVP scope, challenges
-4. **Business Model** - Revenue, pricing, unit economics
-5. **Go-to-Market Strategy** - Launch, acquisition, partnerships
-6. **Risks & Challenges** - Technical, competitive, regulatory
-7. **Verdict & Recommendations** - Clear yes/no with action plan
+1. **核心概念分析** - 问题、假设、独特性
+2. **市场研究** - 用户群体、目标市场（TAM/SAM/SOM）、竞争对手
+3. **技术实现** - 技术栈、最小可行产品（MVP）范围、挑战
+4. **商业模式** - 收入来源、定价策略、单位经济模型
+5. **市场推广策略** - 上市方式、收购计划、合作伙伴关系
+6. **风险与挑战** - 技术风险、竞争风险、监管风险
+7. **结论与建议** - 明确的“是/否”判断及行动计划
 
-## Verdict Types
+## 结论类型
 
-- 🟢 **STRONG YES** - Clear opportunity, pursue aggressively
-- 🟡 **CONDITIONAL YES** - Promising but needs validation
-- 🟠 **PIVOT RECOMMENDED** - Core insight good, execution needs work
-- 🔴 **PASS** - Too many red flags
+- 🟢 **强烈推荐** - 明显的机会，应积极追求
+- 🟡 **有条件推荐** - 有潜力但需要验证
+- 🟠 **建议调整方向** - 核心洞察良好，但执行方案需要改进
+- 🔴 **不推荐** - 存在太多问题
 
-## Example Output
+## 示例输出
 
 ```
 ~/clawd/ideas/ai-calendar-assistant/
@@ -111,9 +111,9 @@ The exploration covers:
 └── research.md    # 400-500 line comprehensive analysis
 ```
 
-## Tips
+## 提示
 
-- Ideas typically take 3-5 minutes to analyze
-- Monitor progress: `tmux attach -t idea-<slug>-<timestamp>`
-- File goes to Saved Messages even if notification fails
-- Check `~/.clawdbot/notify-queue/` for stuck notifications
+- 分析一个想法通常需要3-5分钟
+- 监控进度：`tmux attach -t idea-<slug>-<timestamp>`
+- 即使通知失败，文件也会被发送到保存的消息中
+- 检查`~/.clawdbot/notify-queue/`文件夹，查看是否有未发送的通知

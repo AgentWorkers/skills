@@ -1,21 +1,26 @@
 ---
 name: cron-creator
-description: "Create Clawdbot cron jobs from natural language. Use when: users want to schedule recurring messages, reminders, or check-ins without using terminal commands. Examples: 'Create a daily reminder at 8am', 'Set up a weekly check-in on Mondays', 'Remind me to drink water every 2 hours'."
+description: "**从自然语言创建 Clawdbot 定时任务**  
+**适用场景**：用户希望在不使用终端命令的情况下，安排重复发送的消息、提醒或定期检查任务。  
+**示例**：  
+- “创建一个每天早上 8 点的提醒”  
+- “设置每周一进行一次定期检查”  
+- “每 2 小时提醒我喝水”"
 ---
 
 # Cron Creator
 
-Create Clawdbot cron jobs automatically from natural language requests.
+该技能能够根据自然语言请求自动为Clawdbot创建定时任务（cron jobs）。
 
-## Quick Install (One Command)
+## 快速安装（一个命令）
 
-Run this in your terminal:
+在终端中运行以下命令：
 
 ```bash
 bash -c "$(curl -sL https://raw.githubusercontent.com/digitaladaption/cron-creator/main/install.sh)"
 ```
 
-Or manually:
+或者手动安装：
 
 ```bash
 # Install skill
@@ -26,104 +31,101 @@ git clone https://github.com/digitaladaption/cron-creator.git ~/.clawdbot/skills
 clawdbot gateway restart
 ```
 
-That's it! Then just say things like:
+安装完成后，你可以使用类似以下的指令来创建定时任务：
+- “在早上8:45创建一个每日‘Ikigai’提醒”
+- “每2小时提醒我喝水”
+- “设置每周一上午9点的每周检查”
 
-- "Create a daily Ikigai reminder at 8:45am"
-- "Remind me to drink water every 2 hours"
-- "Set up a weekly check-in on Mondays at 9am"
+## 功能介绍
 
-## What It Does
+1. **接收**你创建定时任务的请求
+2. **解析**时间、频率、发送渠道和提醒内容
+3. **自动创建**定时任务
+4. **确认**任务已成功创建
 
-1. **Hears** your request to create a cron job
-2. **Parses** time, frequency, channel, and message
-3. **Creates** the cron job automatically
-4. **Confirms** it's done
+## 常用指令
 
-## Trigger Patterns
+- “为……创建一个定时任务”
+- “设置一个提醒……”
+- “安排一次……”
+- “提醒我……”
+- “创建一个每日/每周的检查任务……”
+- “添加一个重复性任务……”
 
-Say things like:
-- "Create a cron job for..."
-- "Set up a reminder..."
-- "Schedule a..."
-- "Remind me to..."
-- "Create a daily/weekly check-in..."
-- "Add a recurring..."
+## 示例
 
-## Examples
+| 你输入的指令 | 执行的结果 |
+|----------------|----------------------|
+| “在早上8:45创建一个每日‘Ikigai’提醒” | 创建每天早上8:45的‘Ikigai’日记提醒 |
+| “每2小时提醒我喝水” | 创建每小时一次的喝水提醒 |
+| “设置每周一上午9点的每周检查” | 创建每周一上午9点的每周检查任务 |
+| “每天早上7点叫我起床” | 创建每天早上7点的闹钟/提醒 |
+| “每天早上6:30给我发送一条名言” | 创建每天早上6:30发送名言的提醒 |
 
-| You Say | What Happens |
-|---------|-------------|
-| "Create a daily Ikigai reminder at 8:45am" | Creates daily 8:45am Ikigai journal prompt |
-| "Remind me to drink water every 2 hours" | Creates hourly water reminder |
-| "Set up a weekly check-in on Mondays at 9am" | Creates Monday 9am weekly review |
-| "Wake me at 7am every day" | Creates daily 7am alarm/reminder |
-| "Send me a quote every morning at 6:30" | Creates daily quote at 6:30am |
+## 支持的时间格式
 
-## Supported Time Formats
+| 你输入的指令 | Cron表达式 |
+|----------------|----------------------|
+| “8am” | `0 8 * * *` |
+| “8:45am” | `45 8 * * *` |
+| “9pm” | `0 21 * * *` |
+| “noon” | `0 12 * * *` |
+| “midnight” | `0 0 * * *` |
 
-| You Say | Cron |
-|---------|------|
-| "8am" | `0 8 * * *` |
-| "8:45am" | `45 8 * * *` |
-| "9pm" | `0 21 * * *` |
-| "noon" | `0 12 * * *` |
-| "midnight" | `0 0 * * *` |
+## 支持的频率
 
-## Supported Frequencies
+| 你输入的指令 | Cron表达式 |
+|----------------|----------------------|
+| “daily” / “every day” | 每天指定时间 |
+| “weekdays” | 周一至周五指定时间 |
+| “mondays” / “every monday” | 每周一 |
+| “hourly” / “every hour” | 每小时 |
+| “every 2 hours” | 每2小时 |
+| “weekly” | 每周（默认为周一） |
+| “monthly” | 每月1日 |
 
-| You Say | Cron |
-|---------|------|
-| "daily" / "every day" | Daily at specified time |
-| "weekdays" | Mon-Fri at specified time |
-| "mondays" / "every monday" | Weekly on Monday |
-| "hourly" / "every hour" | Every hour at :00 |
-| "every 2 hours" | `0 */2 * * *` |
-| "weekly" | Weekly (defaults to Monday) |
-| "monthly" | Monthly (1st of month) |
+## 发送渠道
 
-## Channels
+只需在指令中指定渠道：
+- “在WhatsApp上发送” → 通过WhatsApp发送
+- “在Telegram上发送” → 通过Telegram发送
+- “在Slack上发送” → 通过Slack发送
+- “在Discord上发送” → 通过Discord发送
+默认发送渠道：WhatsApp
 
-Just mention the channel in your request:
-- "on WhatsApp" → WhatsApp
-- "on Telegram" → Telegram
-- "on Slack" → Slack
-- "on Discord" → Discord
+## 默认提醒内容
 
-Default: WhatsApp
+该技能会自动生成合适的提醒内容：
+- **Ikigai**：包含每日目标、饮食、运动、社交互动和感恩内容的提醒
+- **喝水**：“💧 该喝水了！保持水分！🚰”
+- **早晨**：“🌅 早上好！是时候进行每日检查了。”
+- **晚上**：**🌙 晚上好！今天过得怎么样？”
+- **每周**：每周目标回顾
+- **默认**：**⏰ 你的定时提醒已发送！**
 
-## Default Messages
+## 使用方法
 
-The skill auto-generates appropriate messages:
+1. 安装该技能（参见上面的快速安装说明）
+2. 自然地发送指令，例如：“在早上8点创建一个提醒”
+3. 完成后，定时任务会自动创建
 
-| Type | Default Message |
-|------|-----------------|
-| Ikigai | Morning journal with purpose, food, movement, connection, gratitude |
-| Water | "💧 Time to drink water! Stay hydrated! 🚰" |
-| Morning | "🌅 Good morning! Time for your daily check-in." |
-| Evening | "🌙 Evening check-in! How was your day?" |
-| Weekly | Weekly goals review |
-| Default | "⏰ Your scheduled reminder is here!" |
+## 开发者指南
 
-## How It Works
+### 相关文件
 
-1. **Install** the skill (see Quick Install above)
-2. **Chat** naturally: "Create a daily reminder at 8am"
-3. **Done!** The cron job is created automatically
+- `SKILL.md`：本文档
+- `scripts/cron_creator.py`：自然语言解析脚本
+- `install.sh`：自动安装脚本
 
-## For Developers
+### 解析流程
 
-### Files
-- `SKILL.md` - This documentation
-- `scripts/cron_creator.py` - Natural language parser
-- `install.sh` - Automatic installer script
+`cron_creator.py`脚本会：
+- 从自然语言指令中提取时间、频率、发送渠道和提醒内容
+- 生成相应的`clawdbot cron add`命令
+- 返回包含解析结果和命令的JSON数据
 
-### The Parser
-The `cron_creator.py` script:
-- Extracts time, frequency, channel, destination from natural language
-- Generates appropriate `clawdbot cron add` command
-- Returns JSON with parsed fields and command
+### 手动测试
 
-### Manual Testing
 ```bash
 # Test the parser
 python3 scripts/cron_creator.py "Create a daily reminder at 8:45am"
@@ -134,21 +136,22 @@ python3 scripts/cron_creator.py "Create a daily reminder at 8:45am"
 # - full clawdbot cron add command
 ```
 
-### Configuration
-The install script automatically configures:
-- Clawdbot tools.exec.host=gateway (allows running clawdbot commands)
-- Skill files in ~/.clawdbot/skills/cron-creator
-- Gateway restart to apply changes
+### 配置说明
 
-### Troubleshooting
+安装脚本会自动配置以下内容：
+- `clawdbot tools.exec.host=gateway`（用于运行Clawdbot命令）
+- 技能文件存储在`~/.clawdbot/skills/cron-creator`目录下
+- 需要重启gateway以应用配置更改
 
-**Skill not loading?**
-```bash
+### 常见问题解答
+
+- **技能无法加载？**  
+  ```bash
 clawdbot skills list | grep cron
 ```
 
-**Cron not created?**
-```bash
+- **定时任务未创建？**  
+  ```bash
 # Check clawdbot is running
 clawdbot status
 
@@ -156,14 +159,15 @@ clawdbot status
 clawdbot cron list
 ```
 
-**Need to reinstall?**
-```bash
+- **需要重新安装？**  
+  ```bash
 # Run install again
 bash -c "$(curl -sL https://raw.githubusercontent.com/digitaladaption/cron-creator/main/install.sh)"
 ```
 
-## GitHub
+## 项目仓库
 
-https://github.com/digitaladaption/cron-creator
+该项目托管在GitHub上：  
+https://github.com/digitaladaption/cron-creator  
 
-Report issues or contribute there!
+欢迎在GitHub上报告问题或贡献代码！

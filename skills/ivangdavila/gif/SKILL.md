@@ -1,18 +1,18 @@
 ---
 name: GIF
-description: Find, search, and create GIFs with proper optimization and accessibility.
+description: 查找、搜索并创建经过适当优化和具备良好可访问性的 GIF 图像。
 metadata: {"clawdbot":{"emoji":"🎞️","requires":{},"os":["linux","darwin","win32"]}}
 ---
 
-## Where to Find GIFs
+## 在哪里找到GIF图片
 
-| Site | Best for | API |
+| 网站 | 适用场景 | 是否支持API |
 |------|----------|-----|
-| **Giphy** | General, trending | Yes |
-| **Tenor** | Messaging apps (WhatsApp, Slack, Discord) | Yes |
-| **Imgur** | Viral/community content | Yes |
-| **Reddit r/gifs** | Niche, unique | No |
-| **Reaction GIFs** | Emotions | No |
+| **Giphy** | 通用图片、热门图片 | 支持API |
+| **Tenor** | 消息应用（WhatsApp、Slack、Discord） | 支持API |
+| **Imgur** | 病毒式传播的图片/社区内容 | 支持API |
+| **Reddit r/gifs** | 小众、独特的GIF图片 | 不支持API |
+| **用于表达情绪的GIF** | 不支持API |
 
 ## Giphy API
 
@@ -24,7 +24,7 @@ curl "https://api.giphy.com/v1/gifs/search?api_key=KEY&q=thumbs+up&limit=10"
 curl "https://api.giphy.com/v1/gifs/trending?api_key=KEY&limit=10"
 ```
 
-Response sizes: `original`, `downsized`, `fixed_width`, `preview`—use `downsized` for chat.
+返回的图片格式：`original`（原始尺寸）、`downsized`（缩小尺寸）、`fixed_width`（固定宽度）、`preview`（预览图）——建议在聊天中使用`downsized`格式的图片。
 
 ## Tenor API
 
@@ -32,34 +32,30 @@ Response sizes: `original`, `downsized`, `fixed_width`, `preview`—use `downsiz
 curl "https://tenor.googleapis.com/v2/search?key=KEY&q=thumbs+up&limit=10"
 ```
 
-Returns: `gif`, `mediumgif`, `tinygif`, `mp4`, `webm`—use `tinygif` or `mp4` for performance.
+返回的图片格式：`gif`、`mediumgif`、`tinygif`、`mp4`、`webm`——为了提高性能，建议使用`tinygif`或`mp4`格式。
 
-## Creating GIFs with FFmpeg
+## 使用FFmpeg创建GIF图片
 
-**Always use palettegen (without it, colors look washed out):**
+**务必使用`palettegen`选项（不使用该选项会导致颜色失真）：**
 ```bash
 ffmpeg -ss 0 -t 5 -i input.mp4 \
   -filter_complex "fps=10,scale=480:-1:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse" \
   output.gif
 ```
 
-| Setting | Value | Why |
+| 设置 | 值 | 原因 |
 |---------|-------|-----|
-| fps | 8-12 | Higher = much larger file |
-| scale | 320-480 | 1080p GIFs are massive |
-| lanczos | Always | Best scaling quality |
+| fps | 8-12 | 帧率过高会导致文件体积大幅增加 |
+| scale | 320-480 | 1080p分辨率的GIF文件体积非常大 |
+| lanczos | 必须启用 | 最佳的图像缩放质量 |
 
-## Post-Optimization
+## 优化后的GIF图片
 
-```bash
-gifsicle -O3 --lossy=80 --colors 128 input.gif -o output.gif
-```
+**优化后，图片大小可减少30-50%，同时几乎不影响画质。**
 
-Reduces size 30-50% with minimal quality loss.
+## 使用视频代替GIF图片（适用于网页）
 
-## Video Alternative
-
-For web, use video instead of large GIFs (80-90% smaller):
+对于网页来说，使用视频代替大尺寸的GIF图片可以节省大量空间（通常体积小80-90%）：
 
 ```html
 <video autoplay muted loop playsinline>
@@ -68,16 +64,16 @@ For web, use video instead of large GIFs (80-90% smaller):
 </video>
 ```
 
-## Accessibility
+## 可访问性建议
 
-- **WCAG 2.2.2:** Loops >5s need pause control
-- **prefers-reduced-motion:** Show static image instead
-- **Alt text:** Describe the action ("Cat jumping off table"), not "GIF"
-- **Three flashes:** Nothing >3 flashes/second (seizure risk)
+- **WCAG 2.2.2**：循环播放时间超过5秒的GIF需要提供暂停功能 |
+- **prefers-reduced-motion**：优先显示静态图片 |
+- **alt文本**：描述图片的实际内容（例如“猫从桌子上跳下来”，而不是简单写“GIF”） |
+- **闪烁频率**：每秒闪烁次数不应超过3次（以避免引发视觉不适或癫痫发作风险）
 
-## Common Mistakes
+## 常见错误
 
-- No `palettegen` in FFmpeg—colors look terrible
-- FPS >15—file size explodes for no visual benefit
-- No lazy loading on web—blocks page load
-- Using huge GIF where video would work—10x larger
+- 在使用FFmpeg时未启用`palettegen`选项，导致图片颜色失真 |
+- 设置帧率（FPS）过高，虽然画面更流畅，但文件体积会急剧增加 |
+- 网页上未实现GIF的懒加载功能，导致页面加载缓慢 |
+- 在适合使用视频的场景中使用大尺寸GIF图片，实际上视频的体积会更小得多（通常只有GIF的1/10）

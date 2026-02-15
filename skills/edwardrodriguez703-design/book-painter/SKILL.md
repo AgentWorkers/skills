@@ -1,23 +1,23 @@
 ---
 name: book-painter
-description: Book painter services through Lokuli MCP. Use when user needs to find and book painter. Triggers on requests like "book a painter", "find painter near me", or any painter service request.
+description: 通过 Lokuli MCP 提供画家预约服务。当用户需要寻找或预约画家时，可以使用该服务。该服务会在用户发出“预约画家”、“查找附近的画家”或任何与画家相关的请求时被触发。
 ---
 
-# uook painter
+# 图书装帧服务
 
-Book painter services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供图书装帧服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索功能
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约
 ```json
 {
   "method": "tools/call",

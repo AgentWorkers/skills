@@ -1,70 +1,70 @@
 ---
 name: Roleplay
-description: Create persistent characters, run practice scenarios, and track progress across roleplay sessions with activation control and structured feedback.
+description: 创建持久化的角色，运行练习场景，并通过激活控制和结构化的反馈来跟踪角色扮演会话中的进度。
 ---
 
-## Workspace
+## 工作区
 
-Store all roleplay data in ~/roleplay/:
-- **characters/** — Character profiles (one file per character)
-- **scenarios/** — Saved scenario templates
-- **sessions/** — Session logs and feedback
-- **active** — Currently active character marker (if any)
-
----
-
-## Activation Control
-
-**Activate character:** User says "activate [name]" → load character profile → all responses embody this persona until deactivated.
-
-**Deactivate:** User says "deactivate" or "normal mode" → save session notes → return to default agent behavior.
-
-**Quick check:** Read the active character file at session start to restore any active persona from previous session.
+所有角色扮演数据存储在 `~/roleplay/` 目录下：
+- **characters/** — 角色资料（每个角色一个文件）
+- **scenarios/** — 保存的角色扮演场景模板
+- **sessions/** — 会话记录和反馈
+- **active** — 当前活跃的角色标记（如果有）
 
 ---
 
-## Situation Router
+## 激活/停用控制
 
-| User Intent | Load Reference |
+**激活角色：** 用户输入 “activate [角色名称]” → 加载角色资料 → 在角色被停用之前，所有回应都将体现该角色的特性。
+
+**停用角色：** 用户输入 “deactivate” 或 “normal mode” → 保存会话记录 → 返回默认的代理行为。
+
+**快速检查：** 在会话开始时阅读当前活跃角色的资料文件，以恢复上一次会话中的角色设定。
+
+---
+
+## 情境路由器
+
+| 用户意图 | 参考文件 |
 |-------------|----------------|
-| Create/edit a character | `characters.md` |
-| Practice professional scenarios (medical, business, therapy) | `scenarios.md` |
-| Get mid-session coaching or feedback | `practice.md` |
-| Questions about real people, names, ethics | `safeguards.md` |
-| Review what's working, track improvement | `feedback.md` |
+| 创建/编辑角色 | `characters.md` |
+| 练习专业场景（医疗、商业、治疗等） | `scenarios.md` |
+| 获取会话中的指导或反馈 | `practice.md` |
+| 有关真实人物、姓名、伦理的问题 | `safeguards.md` |
+| 回顾表现、跟踪进步 | `feedback.md` |
 
 ---
 
-## Character Structure
+## 角色结构
 
-Minimum character profile:
+最低要求的角色资料包括：
 
-**Name** — Character name or archetype label
-**Type** — mentor, patient, client, historical, fictional-original, or archetype
-**Core traits** — 3-5 defining characteristics
-**Speech patterns** — vocabulary, phrases, verbal tics
-**Background** — brief context
-**Relationship with user** — how they interact with user specifically
-**Session Memory** — updated after each roleplay session
-
----
-
-## During Active Roleplay
-
-1. **Stay in character** unless user says "pause" or "coach me"
-2. **Track session context** — what happened, emotional beats, user's approach
-3. **Inject curveballs** when appropriate — realistic complications, emotional moments
-4. **On pause:** Step out of character, offer coaching, suggest alternatives
-5. **On end:** Update character's session memory, generate brief feedback
+**名称** — 角色名称或原型标签
+**类型** — 导师、患者、客户、历史人物、虚构角色或原型角色
+**核心特质** — 3-5 个定义角色的特征
+**说话方式** — 词汇、短语、说话习惯
+**背景** — 简要的背景信息
+**与用户的关系** — 角色与用户的具体互动方式
+**会话记录** — 每次角色扮演会话后更新
 
 ---
 
-## Creating New Characters
+## 在进行角色扮演时
 
-Ask for:
-1. Character type (archetype, historical, original, based-on-real)
-2. Core traits and speaking style
-3. Relationship dynamic with user
-4. Context/scenario they exist in
+1. **保持角色设定**，除非用户输入 “pause” 或 “coach me”。
+2. **记录会话内容** — 发生的事情、情感的高潮时刻、用户的行为方式。
+3. **适当设置意外情况** — 如现实的复杂情况或情感冲突。
+4. **暂停时**：退出角色设定，提供指导或建议替代方案。
+5. **会话结束后**：更新角色的会话记录，并提供简短的反馈。
 
-For "based on real person" requests → see `safeguards.md` for name/persona rules.
+---
+
+## 创建新角色
+
+需要提供以下信息：
+1. 角色类型（原型角色、历史人物、虚构角色或基于真实人物的角色）
+2. 核心特质和说话风格
+3. 与用户的关系模式
+4. 角色所处的背景或场景
+
+对于 “基于真实人物”的创建请求，请参考 `safeguards.md` 了解相关规则。

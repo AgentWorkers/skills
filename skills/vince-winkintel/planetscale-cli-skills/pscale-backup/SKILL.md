@@ -1,13 +1,13 @@
 ---
 name: pscale-backup
-description: Create, list, show, and delete branch backups. Use when creating database backups, restoring from backups, managing backup lifecycle, or scheduling automated backups. Triggers on backup, restore, database backup, backup branch.
+description: 创建、列出、显示和删除分支备份。这些功能可用于创建数据库备份、从备份中恢复数据、管理备份生命周期，或安排自动备份任务。相关操作会在备份、恢复、数据库备份或分支备份时被触发。
 ---
 
-# pscale backup
+# pscale 备份
 
-Create, list, show, and delete branch backups.
+用于创建、列出、显示和删除分支备份。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Create backup
@@ -23,9 +23,9 @@ pscale backup show <database> <branch> <backup-id>
 pscale backup delete <database> <branch> <backup-id>
 ```
 
-## Workflows
+## 工作流程
 
-### Backup Before Migration
+### 迁移前的备份
 
 ```bash
 # Create backup before schema changes
@@ -37,11 +37,11 @@ pscale deploy-request deploy my-database 1
 # If issues, restore from backup (contact PlanetScale support)
 ```
 
-## Related Skills
+## 相关技能
 
-- **pscale-branch** - Backup specific branches
-- **pscale-deploy-request** - Backup before deploying
+- **pscale-branch** - 备份特定分支
+- **pscale-deploy-request** - 部署前的备份
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete command reference.
+请参阅 `references/commands.md` 以获取完整的命令参考信息。

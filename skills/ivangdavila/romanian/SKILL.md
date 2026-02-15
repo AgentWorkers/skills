@@ -1,78 +1,64 @@
 ---
 name: Romanian
-description: Write Romanian that sounds human. Not formal, not robotic, not AI-generated.
+description: 用罗马尼亚语写一些听起来像真人说的话。不要太正式，也不要像机器人或人工智能生成的那样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Romanian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with warmth and expressiveness. Match that.
+虽然AI生成的罗马尼亚语在语法上是正确的，但听起来很生硬、过于正式，缺乏自然感。罗马尼亚人的日常交流更加随意、温暖且富有表现力。我们需要让语言更贴近自然表达。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Romanian casual is warm and direct. Unless explicitly formal: lean casual. "Salut" not "Bună ziua". "Ok" not "În regulă".
+罗马尼亚语的默认表达方式过于正式。在非正式场合，应该使用更随意、温暖的语言风格。例如：“Salut”（你好）而不是“Bună ziua”（你好，今天过得怎么样？）；“Ok”（好的）而不是“În regulă”（可以）。
 
-## Tu vs Dumneavoastră
+## “Tu”与“Dumneavostă”的使用
 
-Critical distinction:
-- Dumneavoastră: elderly, very formal, professional
-- Tu: friends, peers, internet, casual
-- Romanian internet is almost entirely tu
-- Dumneavoastră online = very stiff
+在罗马尼亚语中，“Dumneavostă”通常用于对年长者或非常正式的场合，带有尊敬之意；而“Tu”则用于朋友、同龄人或网络交流等非正式场景。在网络语境中，几乎总是使用“Tu”。
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Romanian natural:
-- Hai: "come on", "let's" ("Hai să mergem")
-- Măi: casual address ("Măi, ce faci?")
-- Bre: emphasis, casual
-- Păi: "well" filler
-- Deci: "so", transitional
+以下词语可以使语言更自然：
+- **Hai**：表示“快点”或“我们走吧”。
+- **Măi**：用于非正式的称呼（比如“Măi, ce faci?”（嘿，你在做什么？）。
+- **Bre**：用于强调或表示随意的语气。
+- **Păi**：用于过渡或填充句子。
+- **Deci**：表示“所以”或“那么”。
 
-## Fillers & Flow
+## 语言的填充与流畅性
 
-Real Romanian has fillers:
-- Deci, păi, adică
-- Uite, auzi, stai
-- Știi, gen, parcă
-- Mda, mno
+罗马尼亚语中常用一些填充词来使表达更自然，如“Deci, păi, adică”（所以，也就是说）等。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Bine → Super, Grozav, Tare, Mișto
-- Rău → Nasol, Groaznic, De rahat
-- Mult → Foarte, Mega, Extrem de
+在表达情感时，不要使用过于中性的词汇：
+- **Bine**：可以用“Super”、“Grozav”、“Tare”、“Mișto”等更生动的词来表达积极情感。
+- **Rău**：可以用“Nasol”、“Groznic”、“De rahat”等词来表达负面情感。
+- **Mult**：可以用“Foarte”、“Mega”、“Extrem de”等词来强调数量或程度。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Mișto, Tare, Grozav
-- Nu-i bai, Nicio problemă
-- Serios?, Chiar?, Zici?
-- Gata, Hai, Ok
+以下是一些自然的表达方式：
+- **Mișto**、**Tare**、**Grozav**：表示“很棒”。
+- **Nu-i bai, Nicio problemă**：表示“没关系”。
+- **Serios?, Chiar?, Zici?**：表示惊讶或疑问。
+- **Gata, Hai, Ok**：表示“好了，走吧，可以”。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Serios?, Zici?, Nu mai spune!
-- Vai!, Doamne!, Ce tare!
-- Mișto!, Grozav!, Super!
-- Haha, lol in text
+在交流时，要自然地做出反应：
+- **Serios?, Zici?, Nu mai spune!**：表示惊讶或不满。
+- **Vai!, Doamne!, Ce tare!**：表示惊讶或赞叹。
+- **Mișto!, Grozav!, Super!**：表示赞同或兴奋。
+- **Haha, lol**：在文本中也可以使用这些表达来增加幽默感。
 
-## Diminutives
+## 小称形式
 
-Romanian uses diminutives for warmth:
-- -uț, -uță, -ică endings
-- Puțin → Puținel, Mamă → Mămică
-- Adds affection and casualness
+罗马尼亚语通过添加后缀“-uț”、“-uță”、“-ică”等来形成昵称，从而增加亲切感和随意性（例如：“Mamă”变为“Mămică”）。
 
-## Regional Flavor
+## 地域差异
 
-Moldovan Romanian has some differences:
-- Some vocabulary varies
-- Intonation patterns differ
-- Stay consistent if region known
+摩尔多瓦罗马尼亚语在词汇和语调上有一些细微差异。如果知道使用的是哪种方言，应保持语言的一致性。
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Romanian screenshot this as "AI-generated"? If yes—too formal, no "hai", too stiff. Add warmth.
+在发送内容之前，可以问问罗马尼亚人：如果他们看到这样的截图，会认为这是AI生成的吗？如果是的话，说明语言仍然太正式、太生硬了。需要添加一些更自然、更随意的表达元素来提升语言的亲和力。

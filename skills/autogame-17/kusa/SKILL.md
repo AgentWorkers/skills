@@ -1,21 +1,21 @@
 ---
 name: kusa
-description: Generate images using the Kusa.pics API.
+description: 使用 Kusa.pics API 生成图片。
 ---
-# Kusa.pics Image Generator
+# Kusa.pics 图像生成器
 
-Generate images using the Kusa.pics API.
+使用 Kusa.pics API 生成图片。
 
-## Configuration
-- API Key: Set `KUSA_API_KEY` environment variable.
+## 配置
+- API 密钥：设置 `KUSA_API_KEY` 环境变量。
 
-## Usage
+## 使用方法
 ```bash
 export KUSA_API_KEY="your_api_key_here"
 node skills/kusa-image/index.js "Your prompt here" [--style <id>] [--width <w>] [--height <h>]
 ```
 
-## Options
-- `--style`: Style ID (Default: 6)
-- `--width`: Width (Default: 960)
-- `--height`: Height (Default: 1680)
+## 选项
+- `--style`：样式 ID（默认值：6）
+- `--width`：宽度（默认值：960）
+- `--height`：高度（默认值：1680）

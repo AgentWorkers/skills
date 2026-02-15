@@ -1,40 +1,40 @@
 ---
 name: telnyx-rag
-description: Semantic search and Q&A over workspace files using Telnyx Storage + AI embeddings. Index your memory, knowledge, and skills for natural language retrieval and AI-powered answers.
+description: 使用 Telnyx Storage 和 AI 嵌入技术，对工作区文件进行语义搜索和问答功能。通过这种方式，您可以索引自己的记忆、知识和技能，实现自然语言检索，并获得由 AI 提供的答案。
 metadata: {"openclaw":{"emoji":"🧠","requires":{"bins":["python3"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# Telnyx RAG Memory
+# Telnyx RAG内存管理功能
 
-Semantic search and RAG-powered Q&A over your OpenClaw workspace using Telnyx's native embedding, similarity search, and inference APIs.
+通过Telnix的内置嵌入、相似性搜索和推理API，在您的OpenClaw工作空间中实现基于RAG（Retrieval-Augmented Question Answering）的问答功能。
 
-## Requirements
+## 必备条件
 
-- **Your own Telnyx API Key** — each user/agent uses their own key
-- **Python 3.8+** — stdlib only, no external dependencies
-- Get your API key at [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys)
+- **您自己的Telnix API密钥** — 每个用户/代理都需要使用自己的密钥
+- **Python 3.8及以上版本** — 仅使用标准库，无需外部依赖
+- 请在[portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys)获取您的API密钥
 
-## Bucket Naming Convention
+## 存储桶命名规范
 
-Use a consistent naming scheme so anyone can adopt this:
+请使用统一的命名规则，以便所有人都能轻松使用：
 
 ```
 openclaw-{agent-id}
 ```
 
-| Agent | Bucket |
+| 代理 | 存储桶名称 |
 |-------|--------|
-| Chief (main) | `openclaw-main` |
+| Chief（主代理）| `openclaw-main` |
 | Bob the Builder | `openclaw-builder` |
-| Voice agent | `openclaw-voice` |
-| Your agent | `openclaw-{your-id}` |
+| 语音代理 | `openclaw-voice` |
+| 您的代理 | `openclaw-{your-id}` |
 
-**Why?**
-- **Predictable**: anyone can find any agent's bucket
-- **Collision-free**: scoped to agent, not person or team
-- **Discoverable**: `openclaw-*` prefix groups all agent buckets in Telnyx Storage UI
+**为什么这样命名？**
+- **易于查找**：任何人都可以找到相应代理的存储桶
+- **避免冲突**：存储桶名称与个人或团队名称无关
+- **便于识别**：`openclaw-*`前缀能够将所有代理的存储桶统一显示在Telnix的存储管理界面中
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd ~/skills/telnyx-rag
@@ -53,45 +53,44 @@ echo 'TELNYX_API_KEY=KEY...' > .env
 ./ask.py "What is the porting process?"
 ```
 
-## What It Does
+## 功能介绍
 
-- **Indexes** your workspace files (MEMORY.md, memory/*.md, knowledge/, skills/)
-- **Chunks** large files intelligently (markdown by headers, JSON/Slack by threads)
-- **Embeds** content automatically using Telnyx AI
-- **Searches** using natural language queries with retry logic
-- **Answers questions** using a full RAG pipeline (retrieve → rerank → generate)
-- **Prioritizes** results from memory/ (your primary context)
-- **Incremental sync** — only uploads changed files
-- **Orphan cleanup** — removes deleted files from bucket
+- **索引**：工作空间中的文件（如MEMORY.md、memory/*.md、knowledge/、skills/等）
+- **智能分块**：自动将大文件按类型（Markdown文件按标题分块，JSON/Slack文件按消息线程分块）
+- **自动嵌入**：利用Telnix的AI技术对文件内容进行嵌入处理
+- **自然语言搜索**：支持基于自然语言的查询，并具有重试机制
+- **问答处理**：通过完整的RAG流程（检索 → 重新排序 → 生成答案）
+- **优先显示来自内存中的内容**：优先显示与当前上下文相关的内容
+- **增量同步**：仅上传已更改的文件
+- **清理孤儿文件**：删除存储桶中已删除的文件
 
-## Setup Options
+## 设置选项
 
-### Option 1: Environment Variable
+### 选项1：环境变量
 ```bash
 export TELNYX_API_KEY="KEY..."
 ./setup.sh
 ```
 
-### Option 2: .env File
+### 选项2：.env文件
 ```bash
 echo 'TELNYX_API_KEY=KEY...' > .env
 ./setup.sh
 ```
 
-### Validation Mode
+### 验证模式
 ```bash
 ./setup.sh --check    # Validate requirements without making changes
 ```
 
-### Custom Bucket Name
+### 自定义存储桶名称
 ```bash
 ./setup.sh my-custom-bucket
 ```
 
-## Usage
+## 使用方法
 
-### Ask Questions (RAG Pipeline)
-
+### 提问（RAG流程）
 ```bash
 # Basic question answering
 ./ask.py "What is Telnyx's porting process?"
@@ -112,8 +111,7 @@ echo 'TELNYX_API_KEY=KEY...' > .env
 ./ask.py "project timeline" --bucket work-memory
 ```
 
-### Search Memory
-
+### 搜索内存内容
 ```bash
 # Basic search with improved error handling
 ./search.py "What are David's communication preferences?"
@@ -128,8 +126,7 @@ echo 'TELNYX_API_KEY=KEY...' > .env
 ./search.py "procedures" --json
 ```
 
-### Sync Files (with Chunking)
-
+### 同步文件（分块处理）
 ```bash
 # Incremental sync with auto-chunking
 ./sync.py
@@ -153,14 +150,13 @@ echo 'TELNYX_API_KEY=KEY...' > .env
 ./sync.py --list
 ```
 
-### Watch Mode
+### 监控模式
 ```bash
 # Watch for changes and auto-sync with chunking
 ./sync.py --watch
 ```
 
-### Trigger Embedding
-
+### 触发嵌入功能
 ```bash
 # Trigger embedding for current bucket
 ./embed.sh
@@ -171,11 +167,11 @@ echo 'TELNYX_API_KEY=KEY...' > .env
 ./sync.py --embed-status <task_id>
 ```
 
-**Why is this needed?** Uploading files to Telnyx Storage doesn't automatically generate embeddings. The embedding process converts your files into searchable vectors. Without this step, `search.py` and `ask.py` won't return results.
+**为什么需要这些设置？** 将文件上传到Telnix存储后，系统不会自动生成嵌入数据。只有通过这些设置，`search.py`和`ask.py`才能正常工作并返回搜索结果。
 
-## Configuration
+## 配置文件（config.json）
 
-Edit `config.json` to customize behavior:
+编辑`config.json`以自定义各项配置：
 
 ```json
 {
@@ -197,74 +193,45 @@ Edit `config.json` to customize behavior:
 }
 ```
 
-### Config Fields
+### 配置字段
 
-| Field | Default | Description |
+| 字段 | 默认值 | 说明 |
 |-------|---------|-------------|
-| `bucket` | `openclaw-{agent-id}` | Telnyx Storage bucket name (see naming convention) |
-| `region` | `us-central-1` | Storage region |
-| `workspace` | `.` | Root directory to scan for files |
-| `patterns` | (see above) | Glob patterns for files to index |
-| `priority_prefixes` | `["memory/", "MEMORY.md"]` | Sources to rank higher in results |
-| `exclude` | `["*.tmp", ...]` | Patterns to exclude |
-| `chunk_size` | `800` | Target tokens per chunk (~4 chars/token) |
-| `ask_model` | `Meta-Llama-3.1-70B-Instruct` | LLM model for ask.py |
-| `ask_num_docs` | `8` | Final context chunks for LLM |
-| `retrieve_num_docs` | `20` | Initial retrieval count (before reranking) |
+| `bucket` | `openclaw-{agent-id}` | Telnix存储桶名称（参见命名规范） |
+| `region` | `us-central-1` | 存储区域 |
+| `workspace` | `.` | 文件扫描的根目录 |
+| `patterns` | （参见上文） | 需要索引的文件模式 |
+| `priority_prefixes` | `["memory/", "MEMORY.md"]` | 在搜索结果中优先显示的文件类型 |
+| `exclude` | `["*.tmp", ...]` | 需要排除的文件模式 |
+| `chunk_size` | `800` | 每个分块的最大字符数（约4个字符/标记） |
+| `ask_model` | `Meta-Llama-3.1-70B-Instruct` | 用于问答处理的LLM模型 |
+| `ask_num_docs` | `8` | 用于生成答案的上下文数据量 |
+| `retrieve_num_docs` | `20` | 初始检索的文档数量（重排序前的数量） |
 
-## How It Works
+## 工作原理
 
-```
-┌─────────────────┐     ┌──────────────────────────────────┐
-│  Your Workspace │     │     Telnyx Cloud                 │
-│  ├── memory/    │     │                                  │
-│  ├── knowledge/ │──┐  │  Storage: your-bucket/           │
-│  └── skills/    │  │  │     └── file__chunk-001.md       │
-└─────────────────┘  │  │     └── file__chunk-002.md       │
-                     │  │              │                    │
-   Smart Chunking ◀──┘  │              ▼ embed             │
-   ├── Markdown: split   │     Telnyx AI Embeddings        │
-   │   on ## headers     │              │                  │
-   ├── JSON/Slack: split │              ▼                  │
-   │   by thread/time    │     Similarity Search           │
-   └── Metadata tags     │              │                  │
-                         └──────────────┼──────────────────┘
-                                        │
-   ask.py Pipeline:                     │
-   ┌─────────────────────────────────┐  │
-   │ 1. Retrieve top-20 chunks ◀────┘  │
-   │ 2. Rerank (TF-IDF + priority)     │
-   │ 3. Deduplicate adjacent chunks    │
-   │ 4. Build prompt with top-8        │
-   │ 5. Call Telnyx Inference LLM      │
-   │ 6. Return answer + sources        │
-   └─────────────────────────────────┘
-```
+### 智能分块机制
 
-## Smart Chunking
+在上传文件之前，系统会自动将大文件拆分为语义相关的块：
 
-Large files are automatically split into semantic chunks before upload:
+- **Markdown文件**：首先根据`##`和`###`标题进行分割；
+- 如果某个部分仍然过大，会进一步根据段落边界进行分割；
+- 每个分块都会包含元数据，包括来源文件、分块索引和标题。
 
-### Markdown Files
-- Split on `##` and `###` headers first
-- If a section is still too large, split by paragraph boundaries
-- Each chunk gets a metadata header with source, chunk index, and title
+- **JSON/Slack文件**：按消息中的标记数量进行分组；
+- 元数据中会包含频道名称、时间范围和作者信息；
+- 分块的文件名具有确定性，便于识别。
 
-### JSON / Slack Exports
-- Messages grouped by token budget per chunk
-- Extracts: channel name, date range, authors
-- Metadata includes Slack-specific fields
-
-### Chunk Naming
-Chunks use deterministic filenames:
+### 分块命名规则
 ```
 knowledge/meetings.md  →  knowledge/meetings__chunk-001.md
                           knowledge/meetings__chunk-002.md
                           knowledge/meetings__chunk-003.md
 ```
 
-### Chunk Metadata
-Each chunk includes a YAML-style header:
+### 分块元数据
+
+每个分块都包含一个YAML格式的元数据头：
 ```
 ---
 source: knowledge/meetings.md
@@ -275,7 +242,7 @@ title: Q4 Planning Discussion
 (chunk content here)
 ```
 
-For Slack exports, additional fields:
+### Slack文件导出时的额外信息
 ```
 ---
 source: slack/general.json
@@ -287,62 +254,52 @@ authors: alice, bob, charlie
 ---
 ```
 
-### Chunk Lifecycle
-- When a source file changes, old chunks are deleted and new ones uploaded
-- Chunk mappings tracked in `.sync-state.json`
-- `--prune` cleans up orphaned chunks from deleted files
+### 分块生命周期
 
-## Reranking (ask.py)
+- 当源文件发生变化时，系统会删除旧的分块并上传新的分块；
+- 分块之间的对应关系会记录在`.sync-state.json`文件中；
+- 使用`--prune`参数可以清除因文件删除而产生的“孤儿分块”。
 
-The RAG pipeline uses a multi-signal reranking strategy:
+### 重新排序机制（ask.py）
 
-1. **Semantic similarity** — Telnyx embedding distance (certainty score)
-2. **Keyword overlap** — TF-IDF weighted term matching with the query
-3. **Priority boost** — Chunks from `priority_prefixes` sources ranked higher
-4. **Deduplication** — Adjacent chunks from the same source with >80% token overlap are merged
+RAG流程采用多信号重排序策略：
 
-Initial retrieval fetches `retrieve_num_docs` (default 20), reranking selects the best `ask_num_docs` (default 8) for the LLM prompt.
+1. **语义相似性**：基于Telnix的嵌入距离（表示内容相似度）；
+2. **关键词匹配**：使用TF-IDF算法计算关键词与查询内容的匹配程度；
+3. **优先级调整**：来自指定来源的分块会获得更高的排序权重；
+4. **去重**：如果两个相邻分块的内容高度相似（重叠度超过80%），则合并为一个分块。
 
-## New Features (v2)
+初次检索时会获取`retrieve_num_docs`个分块（默认为20个），之后会重新排序并选择最佳的`ask_num_docs`个分块作为答案的生成依据。
 
-### Smart Chunking
-- **Semantic splitting**: Headers for markdown, threads for Slack JSON
-- **Metadata headers**: Source, chunk index, title in every chunk
-- **Configurable size**: `--chunk-size` flag or `chunk_size` in config
-- **Deterministic names**: Reproducible chunk filenames
+## 新功能（v2）
 
-### RAG Q&A Pipeline (`ask.py`)
-- **End-to-end**: Query → retrieve → rerank → generate → answer
-- **Telnyx Inference**: Uses Telnyx LLM API for generation
-- **Source references**: Every answer includes source file citations
-- **Context mode**: `--context` shows retrieved chunks
-- **JSON output**: `--json` for structured responses
+- **智能分块**：Markdown文件按标题分块，Slack JSON文件按消息线程分块；
+- 元数据头中包含文件来源、分块索引和标题；
+- 分块大小可以通过`--chunk-size`参数或`config.json`文件进行配置；
+- 分块文件名具有确定性，便于重复使用。
 
-### Reranking
-- **Multi-signal scoring**: Combines embedding similarity + keyword overlap + priority
-- **Deduplication**: Removes near-identical adjacent chunks
-- **Configurable**: Retrieve 20, use best 8 (tunable)
+### RAG问答流程（ask.py）
 
-### Incremental Sync (v1)
-- **File hashing**: Tracks SHA-256 hashes in `.sync-state.json`
-- **Skip unchanged**: Only uploads modified files
-- **Progress tracking**: Shows progress bars for large syncs
+- **端到端流程**：用户发起查询 → 系统检索 → 重新排序 → 生成答案；
+- 使用Telnix的LLM API生成最终答案；
+- 每个答案都会包含对应的源文件引用；
+- 提供`--context`参数来查看检索到的分块内容；
+- 支持`--json`参数以结构化格式输出答案。
 
-### Smart Cleanup
-- **`--prune`**: Removes files from bucket that were deleted locally
-- **Chunk-aware**: Cleans up orphaned chunks too
-- **State tracking**: Maintains sync history and chunk mappings
+### 优化点
 
-### Improved Reliability
-- **Retry logic**: 3 attempts with exponential backoff
-- **Better errors**: Parses Telnyx API error responses
-- **Timeout control**: Configurable request timeouts
-- **Quiet mode**: `--quiet` flag for cron jobs
+- **多信号评分机制**：综合考虑嵌入相似度、关键词匹配度和内容优先级；
+- **去重处理**：删除内容高度重复的分块；
+- **增量同步**：仅上传已修改的文件；
+- **进度跟踪**：支持显示大文件同步的进度条；
+- **智能清理**：自动删除本地已删除的文件，并清理不再使用的分块；
+- **状态记录**：维护同步历史和分块映射关系；
+- **错误处理**：改进了错误处理机制，能够更准确地解析Telnix API的错误响应；
+- **配置选项**：支持设置请求超时时间，支持静默运行（`--quiet`参数）。
 
-## OpenClaw Integration
+### 与OpenClaw的集成方法
 
-Add to your `TOOLS.md`:
-
+请将相关配置添加到`TOOLS.md`文件中：
 ```markdown
 ## Semantic Memory & Q&A
 
@@ -357,9 +314,9 @@ cd ~/skills/telnyx-rag && ./search.py "your query"
 \`\`\`
 ```
 
-### Automated Sync
+### 自动同步机制
 
-Add to your heartbeat or cron:
+您可以在系统的心跳脚本或定时任务中调用相关命令进行自动同步：
 ```bash
 # Quiet sync with orphan cleanup
 cd ~/skills/telnyx-rag && ./sync.py --quiet --prune
@@ -368,49 +325,32 @@ cd ~/skills/telnyx-rag && ./sync.py --quiet --prune
 cd ~/skills/telnyx-rag && ./sync.py --quiet --embed
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Setup Issues
+### 设置问题
 
-**"Python version too old"**
-- Requires Python 3.8+
-- Check: `python3 --version`
+- **“Python版本过低”**：需要Python 3.8及以上版本；
+  - 检查版本：`python3 --version`
+- **“API密钥验证失败”**：确认密钥是否有效；
+  - 请在[portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys)获取新的API密钥。
 
-**"API key test failed"**
-- Verify key: `echo $TELNYX_API_KEY`
-- Get new key at [portal.telnyx.com](https://portal.telnyx.com/#/app/api-keys)
+### 同步问题
 
-### Sync Issues
+- **“找不到存储桶”**：请检查存储桶名称是否正确；
+- **“未找到结果”**：同步完成后请等待1-2分钟（嵌入处理需要时间）；
+  - 检查上传的文件是否完整：`./sync.py --list`
+- **触发嵌入功能**：`./sync.py --embed`
 
-**"Bucket not found"**
-```bash
-./sync.py --create-bucket
-```
+### 问答相关问题
 
-**"No results found"**
-- Wait 1-2 minutes after sync (embeddings take time)
-- Check files uploaded: `./sync.py --list`
-- Trigger embedding: `./sync.py --embed`
+- **“LLM生成失败”**：确认API密钥具有足够的权限；
+  - 可以尝试使用其他LLM模型：`./ask.py "query" --model meta-llama/Meta-Llama-3.1-8B-Instruct`
+- **“未找到相关文档”**：确保文件已成功同步并嵌入；
+  - 可以尝试使用更宽泛的查询关键词。
 
-**"Files not syncing"**
-- Check `.sync-state.json` for corruption
-- Force re-sync: `rm .sync-state.json && ./sync.py`
+### API参考
 
-### Ask Issues
-
-**"LLM generation failed"**
-- Check API key has inference permissions
-- Try a different model: `./ask.py "query" --model meta-llama/Meta-Llama-3.1-8B-Instruct`
-
-**"No relevant documents found"**
-- Ensure files are synced and embedded
-- Try broader query terms
-
-## API Reference
-
-### From Python
-
-```python
+- **Python接口**：[详细说明](```python
 from ask import ask
 from search import search_memory
 
@@ -431,11 +371,8 @@ print(answer)
 # Basic search
 results = search_memory("What do I know about X?", num_docs=5)
 print(results)
-```
-
-### From Bash
-
-```bash
+```)
+- **Bash接口**：[详细说明](```bash
 # Ask and capture answer
 answer=$(./ask.py "What are the API limits?" --json)
 
@@ -443,14 +380,14 @@ answer=$(./ask.py "What are the API limits?" --json)
 results=$(./search.py "query" --json)
 ```
 
-## Performance Tips
+## 性能优化建议
 
-1. **Tune chunk_size** — Smaller chunks (400-600) for precise retrieval, larger (800-1200) for more context
-2. **Use `--quiet`** for cron jobs to reduce output
-3. **Enable `--prune`** periodically to clean up deleted files
-4. **Watch mode** is great for development: `./sync.py --watch`
-5. **Batch embedding** by syncing first, then embedding: `./sync.py && ./sync.py --embed`
+- **调整分块大小**：较小的分块（400-600个字符）适用于精确检索，较大的分块（800-1200个字符）适用于获取更多上下文信息；
+- **使用`--quiet`参数**：减少定时任务的输出信息；
+- **定期使用`--prune`参数清理不再使用的文件；
+- **监控模式**：开发时可以使用`./sync.py --watch`进行实时监控；
+- **批量处理**：先同步文件，再执行嵌入操作：`./sync.py && ./sync.py --embed`
 
-## Credits
+## 致谢
 
-Built for [OpenClaw](https://github.com/openclaw/openclaw) using [Telnyx Storage](https://telnyx.com/products/cloud-storage) and AI APIs.
+本功能是基于[OpenClaw](https://github.com/openclaw/openclaw)开发的，使用了[Telnix Storage](https://telnyx.com/products/cloud-storage)和AI相关API来实现。

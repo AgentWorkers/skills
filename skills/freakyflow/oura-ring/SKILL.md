@@ -1,6 +1,6 @@
 ---
 name: oura-ring
-description: Syncs daily health and fitness data from Oura Ring into markdown files. Provides sleep, readiness, activity, heart rate, stress, SpO2, and workout data.
+description: 该工具每天会将 Oura Ring 手环记录的健康与健身数据同步到 markdown 文件中，包括睡眠质量、身体状态、活动量、心率、压力水平、血氧饱和度（SpO2）以及锻炼数据等信息。
 disable-model-invocation: true
 metadata:
   openclaw:
@@ -17,34 +17,34 @@ metadata:
 
 # Oura Ring
 
-This skill syncs your daily health data from Oura Ring into readable markdown files.
+此技能可将您通过 Oura Ring 收集的每日健康数据同步到可读的 Markdown 文件中。
 
-## Syncing Data
+## 数据同步
 
-Sync today's data:
+同步当天的数据：
 
 ```bash
 uv run {baseDir}/scripts/sync_oura.py
 ```
 
-Sync a specific date:
+同步特定日期的数据：
 
 ```bash
 uv run {baseDir}/scripts/sync_oura.py --date 2026-02-07
 ```
 
-Sync the last N days:
+同步过去 N 天的数据：
 
 ```bash
 uv run {baseDir}/scripts/sync_oura.py --days 7
 ```
 
-## Reading Health Data
+## 查看健康数据
 
-Health files are stored at `{baseDir}/health/YYYY-MM-DD.md` — one file per day.
+健康数据文件存储在 `{baseDir}/health/YYYY-MM-DD.md` 目录下——每天对应一个文件。
 
-To answer health or fitness questions, read the relevant date's file from the `{baseDir}/health/` directory. If the file doesn't exist for the requested date, run the sync command for that date first.
+如需了解健康或健身相关情况，请阅读 `{baseDir}/health/` 目录中对应日期的文件。如果请求的日期文件不存在，请先运行该日期的数据同步命令。
 
-## Cron Setup
+## Cron 脚本设置
 
-Schedule the sync script to run every morning using OpenClaw's `cron` tool so your health data stays up to date automatically.
+使用 OpenClaw 的 `cron` 工具，将同步脚本设置为每天早上自动运行，以确保您的健康数据始终保持最新状态。

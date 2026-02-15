@@ -1,35 +1,36 @@
 ---
 name: invoice-generator
-description: Generate professional PDF invoices from JSON data. Use when the user needs to create an invoice, billing document, or payment request with company/client details and line items.
+description: 根据 JSON 数据生成专业的 PDF 发票。适用于用户需要创建包含公司/客户详细信息及商品明细的发票、账单或付款请求的情况。
 metadata: {"clawdbot":{"emoji":"🧾","requires":{"bins":["node","jq","weasyprint"],"env":["INVOICE_DIR"]},"primaryEnv":"INVOICE_DIR"}}
 ---
 
-# Invoice Generator
+# 发票生成器
 
-Generate PDF invoices from structured JSON data.
+该工具能够根据结构化的 JSON 数据生成 PDF 发票。
 
-## Setup
+## 设置
 
-1. Install Node.js dependencies:
+1. 安装 Node.js 所需的依赖项：
 
 ```bash
 cd invoice-generator && npm install
 ```
 
-2. Set `INVOICE_DIR` environment variable (or in `skills.entries.invoice-generator.env`):
+2. 设置 `INVOICE_DIR` 环境变量（或在 `skills.entriesinvoice-generator.env` 文件中配置）：
 
 ```bash
 export INVOICE_DIR="/path/to/your/invoices"
 ```
 
-This creates the directory structure:
+这将创建以下目录结构：
+
 ```
 $INVOICE_DIR/
 ├── configs/    # Optional: saved invoice configs
 └── invoices/   # Generated PDF output
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # From stdin (on-the-fly)
@@ -45,9 +46,9 @@ cat invoice-data.json | {baseDir}/scripts/generate.sh
 # Output goes to: $INVOICE_DIR/invoices/invoice-{number}.pdf (auto-versions if exists)
 ```
 
-## Input Data Format
+## 输入数据格式
 
-The JSON input must contain these fields:
+JSON 输入数据必须包含以下字段：
 
 ```json
 {
@@ -83,11 +84,11 @@ The JSON input must contain these fields:
 }
 ```
 
-See [references/data-schema.md](references/data-schema.md) for complete field documentation.
+有关字段的详细信息，请参阅 [references/data-schema.md](references/data-schema.md)。
 
-## Output
+## 输出结果
 
-The script outputs the path to the generated PDF file on success:
+脚本在成功生成 PDF 文件后，会输出该文件的路径：
 
 ```
 $INVOICE_DIR/invoices/invoice-INV-2025.01.pdf
@@ -95,8 +96,8 @@ $INVOICE_DIR/invoices/invoice-INV-2025.01.pdf
 # $INVOICE_DIR/invoices/invoice-INV-2025.01-2.pdf (then -3, etc.)
 ```
 
-## Error Handling
+## 错误处理
 
-- Exits with code 1 if JSON is invalid or missing required fields
-- Exits with code 2 if weasyprint fails to generate PDF
-- Error messages are written to stderr
+- 如果 JSON 数据无效或缺少必要字段，程序将以代码 1 退出；
+- 如果 weasyprint 无法生成 PDF 文件，程序将以代码 2 退出；
+- 错误信息会被写入标准错误输出（stderr）。

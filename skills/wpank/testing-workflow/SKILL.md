@@ -2,114 +2,114 @@
 name: testing-workflow
 model: standard
 category: testing
-description: Meta-skill that orchestrates comprehensive testing across a project by coordinating testing-patterns, e2e-testing, and testing agents. Use when setting up testing for a new project, improving coverage for an existing project, establishing a testing strategy, or verifying quality before a release.
+description: 这是一种元技能（meta-skill），它通过协调测试模式（testing-patterns）、端到端测试（e2e-testing）以及测试代理（testing-agents）来在整个项目中实施全面的测试管理。适用于为新项目设置测试流程、提升现有项目的测试覆盖率、制定测试策略，或在发布前验证产品质量的场景。
 version: 1.0
 ---
 
-# Testing Workflow
+# 测试工作流程
 
-Orchestrate comprehensive testing across a project by coordinating the **testing-patterns** skill, **e2e-testing** skill, and testing agents. This meta-skill does not define test patterns itself — it routes to the right skill or agent at each stage and ensures nothing is missed.
-
----
-
-## When to Use
-
-- Setting up testing for a new project from scratch
-- Improving coverage for an existing project with gaps
-- Establishing or revising a testing strategy
-- Before a major release to verify quality gates are met
-- After a large refactor to confirm nothing broke
-- During code review when test adequacy is in question
-- Onboarding a team to a testing workflow
+通过协调 **testing-patterns** 技能、**e2e-testing** 技能以及测试代理，来在整个项目中组织全面的测试。这个元技能本身并不定义测试模式——它会在每个阶段将请求路由到正确的技能或代理，确保没有任何测试被遗漏。
 
 ---
 
-## Orchestration Flow
+## 使用场景
 
-Follow these steps in order. Each step routes to a specific skill or agent — read and apply that resource before moving to the next step.
-
-### Phase 1: Discovery and Baseline
-
-Scan the project to understand existing test infrastructure, measure current coverage, and identify gaps before making changes. Without a baseline, you cannot demonstrate improvement.
-
-1. **Identify test infrastructure** — Determine the test runner, assertion library, coverage tool, and CI configuration already in use. If none exist, flag that setup is needed.
-2. **Measure current coverage** — Run the existing test suite and record statement, branch, and function coverage. This is the baseline.
-3. **Map untested code** — Identify modules, functions, and code paths with no test coverage. Prioritize by risk: business-critical logic first, utilities last.
-4. **Catalog existing tests** — Categorize existing tests as unit, integration, or E2E. Check for skipped tests, flaky tests, and tests that don't assert anything meaningful.
-
-### Phase 2: Strategy Selection
-
-Based on the discovery results, select the appropriate testing approach for this project.
-
-1. **Determine project type** — Use the Coverage Targets table below to set appropriate thresholds for the project type.
-2. **Select test patterns** — Read `ai/skills/testing/testing-patterns/SKILL.md` and choose the unit/integration test patterns that match the project's architecture, language, and framework.
-3. **Identify critical user journeys** — List the 3-10 most important user workflows that require E2E coverage. These are flows where a failure would directly impact revenue, user trust, or safety.
-4. **Document the strategy** — Fill in the Testing Strategy Template (below) and commit it to the repository.
-
-### Phase 3: Implementation
-
-Generate tests following the patterns selected in Phase 2.
-
-1. **Unit tests first** — Write unit tests for uncovered business logic, starting with the highest-risk modules. Follow the testing pyramid: ~70% of your tests should be unit tests.
-2. **Integration tests next** — Write integration tests for module boundaries, API endpoints, and database queries. Focus on the seams where components interact.
-3. **E2E tests for critical journeys** — Read `ai/skills/testing/e2e-testing/SKILL.md` and write E2E tests for each critical user journey identified in Phase 2.
-4. **Edge case coverage** — After the happy paths are covered, add tests for error conditions, boundary values, null/empty inputs, and concurrency scenarios.
-
-### Phase 4: Validation
-
-Verify that the new tests meet quality standards and coverage targets.
-
-1. **Run the full test suite** — Every test must pass. Fix failures before proceeding.
-2. **Measure coverage against targets** — Compare new coverage against the thresholds for the project type. If targets are not met, return to Phase 3.
-3. **Check test quality** — Review tests for the anti-patterns listed in testing-patterns (assert-free tests, overmocking, flaky tests, test pollution). Fix any found.
-4. **Verify CI integration** — Confirm that tests run automatically on every push/PR and that coverage thresholds are enforced in CI.
-
-### Phase 5: Maintenance
-
-Establish ongoing practices to keep the test suite healthy.
-
-1. **Set up coverage ratcheting** — Configure CI to fail if coverage drops below the current level. Coverage should only go up.
-2. **Establish flaky test policy** — Any test that fails intermittently must be fixed within one sprint or removed with a justification.
-3. **Define test review standards** — Every PR that adds or changes logic must include corresponding test changes. Reviewers check for this.
-4. **Schedule test health audits** — Quarterly, review test execution time, flaky test rate, skipped test count, and coverage trends.
+- 为全新项目从头开始设置测试环境
+- 改进现有项目中存在测试遗漏的部分
+- 制定或修订测试策略
+- 在重大发布前验证是否满足质量标准
+- 在进行大规模重构后确认没有引入新的问题
+- 在代码审查过程中，当对测试的充分性存疑时
+- 帮助团队熟悉测试工作流程
 
 ---
 
-## Skill Routing Table
+## 测试协调流程
 
-Use this table to route specific needs to the correct resource:
+请按照以下步骤进行。每个步骤都会将请求路由到特定的技能或代理——在进入下一步之前，请先阅读并应用相关资源。
 
-| Need | Route To | Path |
+### 第1阶段：发现与基线评估
+
+扫描项目以了解现有的测试基础设施，测量当前的测试覆盖率，并在做出更改之前识别出测试遗漏的部分。没有基线数据，就无法证明测试效果的改进。
+
+1. **识别测试基础设施** — 确定项目中已使用的测试运行器、断言库、覆盖率工具以及持续集成（CI）配置。如果这些都没有，请标记需要设置这些工具。
+2. **测量当前覆盖率** — 运行现有的测试套件，并记录语句覆盖率、分支覆盖率和函数覆盖率。这将成为后续评估的基线数据。
+3. **找出未覆盖的代码** — 识别出没有测试覆盖的模块、函数和代码路径。根据风险优先级进行排序：首先关注对业务至关重要的逻辑部分，最后处理辅助性代码。
+4. **整理现有测试** — 将现有测试分为单元测试、集成测试和端到端（E2E）测试。检查是否有被跳过的测试、稳定性不佳的测试，或者那些没有进行有效断言的测试。
+
+### 第2阶段：策略选择
+
+根据发现的结果，为该项目选择合适的测试方法。
+
+1. **确定项目类型** — 参考下方的 `Coverage Targets` 表格，为项目类型设定适当的覆盖率阈值。
+2. **选择测试模式** — 阅读 `ai/skills/testing/testing-patterns/SKILL.md`，并选择与项目架构、语言和框架相匹配的单元测试/集成测试模式。
+3. **识别关键用户流程** — 列出3到10个最重要的用户流程，这些流程的端到端测试是必须的。因为这些流程的故障会直接影响收入、用户信任或系统安全性。
+4. **记录测试策略** — 填写 `Testing Strategy Template`（见下方），并将其提交到代码仓库中。
+
+### 第3阶段：实施测试
+
+根据第2阶段选择的模式生成相应的测试用例。
+
+1. **先进行单元测试** — 为未覆盖的业务逻辑编写单元测试，优先处理风险最高的模块。遵循“测试金字塔”原则：大约70%的测试应该为单元测试。
+2. **接着进行集成测试** — 为模块边界、API接口和数据库查询编写集成测试。重点关注组件交互的关键点。
+3. **为关键流程编写端到端测试** — 阅读 `ai/skills/testing/e2e-testing/SKILL.md`，为第2阶段识别出的每个关键用户流程编写端到端测试。
+4. **处理边缘情况** — 在覆盖了正常流程后，添加针对错误条件、边界值、空输入和并发场景的测试。
+
+### 第4阶段：验证测试效果
+
+验证新测试是否满足质量标准和覆盖率目标。
+
+1. **运行完整的测试套件** — 所有测试都必须通过。在继续下一步之前，必须修复所有失败的测试。
+2. **对比覆盖率** — 将新的覆盖率与项目类型的阈值进行比较。如果未达到目标，请返回第3阶段。
+3. **检查测试质量** — 检查测试是否存在 `testing-patterns` 中列出的不良实践（如没有断言的测试、过度使用模拟（overmocking）、稳定性不佳的测试等），并修复这些问题。
+4. **确认持续集成（CI）的集成效果** — 确保每次提交（push/PR）时测试都能自动运行，并且持续集成系统能够强制执行覆盖率要求。
+
+### 第5阶段：维护测试套件
+
+建立持续的维护机制，以确保测试套件的有效性。
+
+1. **设置覆盖率监控机制** — 配置持续集成系统，当覆盖率下降到一定水平时触发警报。覆盖率应该始终保持在较高水平。
+2. **处理稳定性不佳的测试** — 任何间歇性失败的测试都必须在下一个开发周期内修复，或者提供合理的解释后将其移除。
+3. **定义测试审查标准** — 每个添加或修改代码的提交（PR）都必须包含相应的测试更改。审查者需要检查这些更改。
+4. **定期进行测试健康检查** — 每季度检查测试执行时间、稳定性不佳的测试比例、被跳过的测试数量以及覆盖率的变化趋势。
+
+---
+
+## 技能路由表
+
+使用下表将具体需求路由到相应的资源：
+
+| 需求 | 路由到 | 资源路径 |
 |------|----------|------|
-| Unit/integration test patterns | testing-patterns | `ai/skills/testing/testing-patterns/SKILL.md` |
-| E2E test patterns | e2e-testing | `ai/skills/testing/e2e-testing/SKILL.md` |
-| Code quality standards | clean-code | `ai/skills/testing/clean-code/SKILL.md` |
-| Review checklist | code-review | `ai/skills/testing/code-review/SKILL.md` |
-| CI/CD quality gates | quality-gates | `ai/skills/testing/quality-gates/SKILL.md` |
-| Debugging test failures | debugging | `ai/skills/testing/debugging/SKILL.md` |
+| 单元/集成测试模式 | testing-patterns | `ai/skills/testing/testing-patterns/SKILL.md` |
+| 端到端测试模式 | e2e-testing | `ai/skills/testing/e2e-testing/SKILL.md` |
+| 代码质量标准 | clean-code | `ai/skills/testing/clean-code/SKILL.md` |
+| 测试审查流程 | code-review | `ai/skills/testing/code-review/SKILL.md` |
+| 持续集成/持续交付（CI/CD）的质量检查 | quality-gates | `ai/skills/testing/quality-gates/SKILL.md` |
+| 调试测试失败 | debugging | `ai/skills/testing/debugging/SKILL.md` |
 
-When a request falls clearly into one row, go directly to that resource. Use the full orchestration flow only when comprehensive coverage is the goal.
+当需求明确对应某一行时，直接使用相应的资源。只有当目标是实现全面覆盖时，才需要按照整个协调流程进行操作。
 
 ---
 
-## Coverage Targets
+## 覆盖率目标
 
-Targets vary by project type. Use the appropriate row to set expectations:
+不同类型的项目有不同的覆盖率目标。请参考相应的表格来设定预期值：
 
-| Project Type | Statement | Branch | Function | E2E Journeys | Notes |
+| 项目类型 | 语句覆盖率 | 分支覆盖率 | 函数覆盖率 | 端到端测试覆盖率 | 备注 |
 |--------------|-----------|--------|----------|--------------|-------|
-| Startup MVP | 60% | 50% | 60% | Top 3 flows | Focus on critical paths only |
-| Production App | 80% | 70% | 80% | Top 10 flows | Balance speed with confidence |
-| Library / Package | 90% | 85% | 95% | N/A | Public API must be fully covered |
-| Critical Infrastructure | 95% | 90% | 95% | All flows | Zero tolerance for gaps |
+| 初创型MVP项目 | 60% | 50% | 60% | 最重要的3个流程 | 重点关注关键路径 |
+| 生产型应用程序 | 80% | 70% | 80% | 前10个关键流程 | 平衡测试速度和覆盖率 |
+| 库/软件包 | 90% | 85% | 95% | 公共API必须完全覆盖 |
+| 关键基础设施 | 95% | 90% | 95% | 所有流程 | 不能有任何测试遗漏 |
 
-These are minimums. Aim higher when time permits, but do not block releases on vanity metrics — prioritize meaningful coverage over percentage points.
+这些是最低要求。如果有时间，可以争取更高的覆盖率，但不要因为追求百分比而延迟发布——优先确保测试的有效性。
 
 ---
 
-## Testing Strategy Template
+## 测试策略模板
 
-Use this template to document the testing strategy for a project. Fill it in during the orchestration flow and keep it in the repo.
+使用此模板来记录项目的测试策略。在测试协调过程中填写该模板，并将其保存在代码仓库中。
 
 ```markdown
 # Testing Strategy
@@ -160,29 +160,29 @@ Use this template to document the testing strategy for a project. Fill it in dur
 
 ---
 
-## Quality Gates for Testing Completion
+## 测试完成的质量标准
 
-All of the following must be satisfied before marking testing complete:
+在标记测试完成之前，必须满足以下所有条件：
 
-| Gate | Requirement | Why |
+| 标准 | 要求 | 原因 |
 |------|------------|-----|
-| **All tests pass** | Zero failures, zero errors | Flaky tests count as failures |
-| **Coverage targets met** | Statement, branch, and function coverage meet project-type thresholds | Untested code is unverified code |
-| **Critical journeys covered** | Every critical user journey has a passing E2E test | Revenue and trust depend on these flows |
-| **No unjustified skips** | Every `skip`, `xit`, or `xdescribe` has a comment and linked issue | Skipped tests rot into permanent gaps |
-| **Execution time budget** | Unit < 60s, E2E < 10min | Slow suites get skipped by developers |
-| **No test pollution** | Running any test file alone produces same results as full suite | Shared state masks failures |
-| **Mocks are justified** | Every mock has a comment explaining why the real impl cannot be used | Over-mocking hides real bugs |
+| **所有测试通过** | 没有失败，没有错误 | 稳定性不佳的测试也算作失败 |
+| **达到覆盖率目标** | 语句覆盖率、分支覆盖率和函数覆盖率均达到项目类型的要求 | 未覆盖的代码意味着这部分功能未经过验证 |
+| **关键流程得到覆盖** | 每个关键用户流程都有通过的端到端测试 | 这些流程直接影响收入和用户信任 |
+| **没有无理由的测试跳过** | 每个被跳过的测试、`xit` 或 `xdescribe` 都需要有注释和关联的Issue | 被跳过的测试会变成永久性的漏洞 |
+| **测试执行时间在预算范围内** | 单元测试<60秒，端到端测试<10分钟 | 过长的测试执行时间可能导致开发人员忽略测试 |
+| **没有测试污染** | 单独运行任何测试文件的结果应与完整测试套件的结果一致 | 共享的状态可能导致测试结果失真 |
+| **模拟的使用是合理的** | 每个模拟都应有解释，说明为什么不能使用真实的实现代码 | 过度使用模拟会掩盖真正的错误 |
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情
 
-1. **NEVER write tests that test implementation details instead of behavior** — tests must verify what the code does, not how it does it
-2. **NEVER skip the discovery phase** — always measure the baseline before writing new tests, or you cannot demonstrate improvement
-3. **NEVER merge tests that depend on execution order** — each test must be independent and idempotent
-4. **NEVER mock what you do not own** — wrap third-party dependencies in your own adapters and mock the adapters instead
-5. **NEVER treat coverage percentage as the sole quality metric** — 100% coverage with weak assertions is worse than 70% coverage with strong assertions
-6. **NEVER leave the test suite in a failing state** — if a test fails, fix it or remove it with a justification before moving on
-7. **NEVER skip E2E tests for critical user journeys** — unit tests alone cannot catch integration failures in flows that matter most
-8. **NEVER deploy without running the full test suite** — partial test runs create false confidence
+1. **绝不要编写仅测试代码实现细节而非行为的测试** — 测试应该验证代码的功能，而不是其实现方式。
+2. **绝不要跳过发现阶段** — 在编写新测试之前，必须先测量当前的覆盖率，否则无法证明测试效果的改进。
+3. **绝不要合并依赖于执行顺序的测试** — 每个测试都必须是独立且可重复执行的。
+4. **绝不要模拟不属于自己的代码** — 应该用自定义适配器来封装第三方依赖，并对这些适配器进行模拟。
+5. **绝不要将覆盖率百分比作为唯一的评估标准** — 即使覆盖率达到100%，但如果断言不够严谨，也比覆盖率不足70%的情况更糟糕。
+6. **绝不要让测试套件处于失败状态** — 如果测试失败，必须修复它或提供合理的解释后才能继续下一步。
+7. **绝不要跳过关键用户流程的端到端测试** — 单元测试无法捕捉到那些最重要的流程中的集成问题。
+8. **绝不要在未运行完整测试套件的情况下部署代码** — 部分测试可能产生错误的信任感。

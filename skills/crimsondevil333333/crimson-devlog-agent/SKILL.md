@@ -1,55 +1,55 @@
 ---
 name: devlog-skill
-description: A standardized journaling skill for OpenClaw agents to track progress, tasks, and project status using dev-log-cli.
+description: OpenClaw代理使用`dev-log-cli`工具的一种标准化日志记录机制，用于跟踪进度、任务和项目状态。
 ---
 
-# DevLog Skill 🦞
+# DevLog 技能 🦞
 
-A standardized journaling skill for OpenClaw agents to track progress, tasks, and project status using `dev-log-cli`.
+这是一个标准化的日志记录工具，专为 OpenClaw 代理设计，用于使用 `dev-log-cli` 跟踪进度、任务和项目状态。
 
-## Description
-This skill enables agents to maintain a professional developer log. It's designed to capture context, project milestones, and task statuses in a structured SQLite database.
+## 描述
+该技能使代理能够维护专业的开发日志。它旨在将上下文信息、项目里程碑和任务状态存储在一个结构化的 SQLite 数据库中。
 
-## Requirements
-- `dev-log-cli` (installed via `pipx`)
+## 要求
+- 已安装 `dev-log-cli`（通过 `pipx` 安装）
 
-## Links
+## 链接
 - **GitHub**: [https://github.com/CrimsonDevil333333/dev-log-cli](https://github.com/CrimsonDevil333333/dev-log-cli)
 - **PyPI**: [https://pypi.org/project/dev-log-cli/](https://pypi.org/project/dev-log-cli/)
-- **ClawHub**: [https://clawhub.com/skills/devlog-skill](https://clawhub.com/skills/devlog-skill) (Pending Publication)
+- **ClawHub**: [https://clawhub.com/skills/devlog-skill](https://clawhub.com/skills/devlog-skill)（待发布）
 
-## Usage
+## 使用方法
 
-### 📝 Adding Entries
-Agents should use this to log significant progress or blockers.
+### 📝 添加日志条目
+代理应使用此工具记录重要的进展或遇到的问题。
 ```bash
 devlog add "Finished implementing the auth module" --project "Project Alpha" --status "completed" --tags "auth,feature"
 ```
 
-### 📋 Listing Logs
-View recent activity for context.
+### 📋 查看日志
+查看最近的活动以获取上下文信息。
 ```bash
 devlog list --project "Project Alpha" --limit 5
 ```
 
-### 📊 Viewing Stats
-Check project health and activity.
+### 📊 查看统计信息
+检查项目的运行状况和活动情况。
 ```bash
 devlog stats --project "Project Alpha"
 ```
 
-### 🔍 Searching
-Find historical context on specific topics.
+### 🔍 搜索
+根据特定主题查找历史记录。
 ```bash
 devlog search "infinite loop"
 ```
 
-### 🛠️ Editing/Viewing
-Detailed inspection or correction of entries.
+### 🛠️ 编辑/查看
+详细检查或修改日志条目。
 ```bash
 devlog view <id>
 devlog edit <id>
 ```
 
-## Internal Setup
-The skill includes a `setup.sh` to ensure the CLI is available.
+## 内部设置
+该技能包含一个 `setup.sh` 脚本，以确保 CLI 可用。

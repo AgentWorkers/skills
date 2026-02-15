@@ -1,18 +1,18 @@
 ---
 slug: "schedule-compression"
 display_name: "Schedule Compression"
-description: "Compress construction schedules using crashing and fast-tracking techniques. Analyze cost-time tradeoffs and find optimal acceleration strategies."
+description: "使用“快速推进”（crashing）和“快速跟踪”（fast-tracking）技术来压缩施工进度计划。分析成本与时间的权衡关系，并找出最佳的加速策略。"
 ---
 
-# Schedule Compression
+# 计划压缩（Schedule Compression）
 
-## Overview
+## 概述
 
-Compress construction schedules when project deadlines are at risk. Apply crashing (adding resources) and fast-tracking (parallel activities) to accelerate delivery while managing cost and risk.
+当项目截止日期面临风险时，需要对施工计划进行压缩。通过增加资源（crashing）和并行开展活动（fast-tracking）来加速项目交付，同时控制成本和风险。
 
-> "Strategic compression can recover 20% of schedule with 10% cost increase" — DDC Community
+> “通过战略性压缩，可以在成本增加10%的情况下恢复20%的项目进度”——DDC社区
 
-## Compression Techniques
+## 压缩技术（Compression Techniques）
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -32,7 +32,7 @@ Compress construction schedules when project deadlines are at risk. Apply crashi
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现（Technical Implementation）
 
 ```python
 from dataclasses import dataclass, field
@@ -397,7 +397,7 @@ class ScheduleCompressor:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门（Quick Start）
 
 ```python
 # Initialize compressor
@@ -454,7 +454,7 @@ for point in curve:
     print(f"Duration: {point['duration']}d, Cost: ${point['cost']:,.0f}")
 ```
 
-## Requirements
+## 需求（Requirements）
 
 ```bash
 pip install (no external dependencies)

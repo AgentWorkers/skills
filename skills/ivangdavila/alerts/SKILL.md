@@ -1,102 +1,96 @@
 ---
 name: Alerts
-description: Smart alerting patterns for AI agents - deduplication, routing, escalation, and fatigue prevention
+description: AI代理的智能警报模式：去重、路由、升级处理及疲劳预防
 ---
 
-## Alert Fatigue Prevention
+## 预防警报疲劳
 
-**Group alerts by root cause, never by individual symptoms.**
-Use labels: `alertname`, `service`, `cluster` - not instance IDs.
+**按照根本原因对警报进行分类，而非根据个别症状进行分类。**  
+使用标签：`alertname`、`service`、`cluster`（而非实例ID）。  
 ```bash
 # Good: One alert for database down affecting 50 pods
 group_by: ['alertname', 'service']
 # Bad: 50 individual alerts for each failed pod
 ```
 
-**Implement severity hierarchy: P0 (pages immediately) > P1 (within 15min) > P2 (business hours) > P3 (weekly review).**
-P0: Service completely down, data loss, security breach.
-P1: Degraded performance, partial outage, high error rates.
+**实施严重性分级：**  
+P0（立即处理）> P1（15分钟内处理）> P2（工作时间处理）> P3（每周审查）。  
+- P0：服务完全中断、数据丢失、安全漏洞。  
+- P1：性能下降、部分服务中断、错误率较高。  
 
-**Set cooldown periods to prevent alert spam.**
-Minimum 5 minutes between identical alerts, 30 minutes for cost alerts.
+**设置冷却时间以防止警报泛滥。**  
+相同类型的警报之间至少间隔5分钟；成本相关的警报间隔至少30分钟。  
 ```bash
 repeat_interval: 5m  # For critical alerts
 repeat_interval: 30m # For cost/performance alerts
 ```
 
-**Use inhibition rules to suppress symptoms when root cause fires.**
-If "Database Unreachable" fires, silence all "API High Latency" alerts from same cluster.
+**在根本原因被解决后，使用抑制规则来屏蔽相关警报。**  
+例如，当“数据库无法访问”警报触发时，应屏蔽来自同一集群的所有“API延迟过高”警报。  
 
-## AI Agent Monitoring Patterns
+## AI代理监控模式  
 
-**Monitor token/API usage with exponential alerting thresholds.**
-Alert at 2x, 5x, 10x normal usage - costs can spiral quickly.
-Track: tokens per minute, cost per request, API rate limits approached.
+**使用指数级警报阈值来监控令牌/API的使用情况。**  
+当使用量达到正常值的2倍、5倍或10倍时触发警报——成本可能会迅速上升。  
+监控指标包括：每分钟生成的令牌数量、每次请求的成本、API调用频率等。  
 
-**Set behavioral drift alerts on response quality degradation.**
-Compare current outputs to baseline with sample prompts every hour.
-Alert when success rate drops below 85% or response time exceeds 2x baseline.
+**设置响应质量下降的警报机制。**  
+每小时将当前输出与基准数据进行比较；当成功率低于85%或响应时间超过基准值的2倍时触发警报。  
 
-**Monitor for infinite loops in multi-agent workflows.**
-Alert if same prompt sent >3 times in 5 minutes or agent hasn't responded in 10 minutes.
-Include correlation IDs to trace conversation chains.
+**监控多代理工作流程中的无限循环。**  
+如果同一提示在5分钟内被发送超过3次，或者代理在10分钟内未响应，则触发警报。  
+记录相关ID以追踪问题处理的整个流程。  
 
-**Track silent failures through downstream metrics.**
-Monitor: tasks completed vs started, user satisfaction scores, retry attempts.
-These catch errors that don't throw exceptions.
+**通过下游指标监控无声故障。**  
+监控任务完成情况、用户满意度评分以及重试尝试次数；这些指标有助于发现那些不会引发异常的错误。  
 
-## Routing and Escalation Rules
+## 路由与升级规则  
 
-**Route by expertise domain, not arbitrary on-call schedules.**
-Database alerts → DB team, API alerts → backend team, cost alerts → platform team.
-Only escalate to managers for P0 incidents lasting >30 minutes.
+**根据专业领域进行路由，而非按照随机的值班安排。**  
+数据库相关警报发送给数据库团队；API相关警报发送给后端团队；成本相关警报发送给平台团队。  
+只有持续时间超过30分钟的P0级事件才会上报给经理。  
 
-**Use progressive escalation with increasing urgency.**
-P1 alerts: Slack notification → 5min wait → SMS → 10min wait → phone call.
-Include runbook links in every alert for faster resolution.
+**采用逐步升级的机制。**  
+P1级警报：首先通过Slack通知，等待5分钟后发送短信，再等待10分钟后进行电话联系。  
+每个警报中都包含运行手册的链接，以便更快解决问题。  
 
-**Set context-aware routing based on time and impact.**
-Business hours: Route to primary team. Off-hours: Route to on-call only for P0/P1.
-If >100 users affected: Immediately escalate regardless of severity.
+**根据时间和影响程度进行智能路由。**  
+工作时间：将警报发送给主要负责团队；非工作时间：仅对P0/P1级事件进行值班人员处理。  
+如果超过100名用户受到影响，无论严重程度如何，都应立即上报。  
 
-## Webhook Reliability Patterns
+## Webhook可靠性机制  
 
-**Always include correlation IDs for alert lifecycle management.**
-Generate UUID for each incident, use it to create/update/resolve alerts.
-Essential for bi-directional integrations with PagerDuty/Slack.
+**为警报管理提供相关ID。**  
+为每个事件生成唯一的UUID，用于创建、更新和解决警报；这对于与PagerDuty/Slack的双向集成至关重要。  
 
-**Implement exponential backoff for webhook failures.**
-Retry after 1s, 2s, 4s, 8s, 16s, then mark failed and escalate.
-Log webhook response codes/times for debugging delivery issues.
+**实现Webhook失败的指数级重试机制。**  
+首次尝试后等待1秒、2秒、4秒、8秒，如果仍未成功则标记为失败并升级处理。  
+记录Webhook的响应代码和时间，以便排查传输问题。  
 
-**Use webhook verification to prevent spoofing.**
-Validate signatures using HMAC-SHA256 with shared secret.
-Always check timestamp to prevent replay attacks (max 5 min old).
+**使用Webhook验证机制防止欺骗行为。**  
+通过HMAC-SHA256和共享密钥验证签名；同时检查时间戳以防止重放攻击（仅接受最多5分钟之前的请求）。  
 
-**Implement circuit breaker pattern for unreliable endpoints.**
-After 5 consecutive failures, mark endpoint down and use backup channel.
-Re-test every 30 seconds until recovery confirmed.
+**对不可靠的API端点实施保护机制。**  
+如果连续5次请求失败，将该端点标记为不可用，并使用备用通道；每30秒重新测试一次，直到确认恢复正常。  
 
-## Status Page Integration
+## 状态页面集成  
 
-**Update status page automatically when P0/P1 alerts fire.**
-Create incident, post initial assessment within 5 minutes.
-Include ETA and workaround if available.
+**当P0/P1级警报触发时，自动更新状态页面。**  
+在5分钟内创建事件记录，并发布初步评估结果；如果有的话，还需提供预计恢复时间和解决方法。  
 
-**Use component-based status updates matching your alert groups.**
-Map alert labels to status page components (API, Database, Auth, etc.).
-Partial outages should show "Degraded Performance", not "Operational".
+**根据警报类型更新状态页面内容。**  
+将警报标签与状态页面的相应部分（如API、数据库、认证等）关联起来；部分服务中断应显示为“性能下降”，而非“系统故障”。  
 
-## Runbook Automation
+## 运行手册自动化  
 
-**Embed runbook links directly in alert messages.**
-Format: "Alert: High CPU on web-01. Runbook: https://wiki/runbooks/high-cpu-web"
-Links must be accessible from mobile devices for on-call engineers.
+**在警报消息中直接嵌入运行手册链接。**  
+格式示例：  
+“警报：web-01的CPU使用率过高。运行手册链接：https://wiki/runbooks/high-cpu-web”  
+确保值班工程师可以从移动设备访问这些链接。  
 
-**Trigger automated remediation for known issues.**
-Auto-restart stuck services, clear full disks, reset rate limits.
-Always require human approval for destructive actions (scaling down, deleting data).
+**针对已知问题触发自动化修复流程。**  
+自动重启出现问题的服务、清理磁盘空间、重置API调用限制。  
+对于可能造成数据丢失或系统损坏的操作（如缩减资源、删除数据），必须经过人工审批。  
 
-**Log all automated actions taken in response to alerts.**
-Include: timestamp, action, result, approval chain.
-Essential for post-incident reviews and compliance audits.
+**记录所有自动化操作。**  
+详细记录所有针对警报采取的操作，包括时间、操作内容及审批流程；这些记录对事件后的审查和合规性审计至关重要。

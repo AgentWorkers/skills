@@ -1,6 +1,6 @@
 ---
 name: cloudflare-dns-updater
-description: "Creates or updates a proxied Cloudflare DNS A record. Use when you need to programmatically point a subdomain to an IP address. Takes record name, zone name, and IP address as input."
+description: "创建或更新一个代理的 Cloudflare DNS A 记录。当您需要通过编程方式将子域名指向某个 IP 地址时，请使用此功能。输入参数包括记录名称、区域名称和 IP 地址。"
 metadata:
   openclaw:
     requires:
@@ -8,60 +8,60 @@ metadata:
       python: ["requests"]
 ---
 
-# Cloudflare DNS Updater
+# Cloudflare DNS 更新器
 
-This skill creates or updates a Cloudflare DNS 'A' record, pointing it to a specified IP address and ensuring it is proxied. It is a foundational tool for automating service deployment and DNS management.
+此技能用于创建或更新 Cloudflare 的 DNS “A” 记录，将其指向指定的 IP 地址，并确保该记录通过 Cloudflare 代理进行传输。它是自动化服务部署和 DNS 管理的基础工具。
 
-## Pre-requisites
+## 前提条件
 
-This skill requires the `CLOUDFLARE_API_TOKEN` environment variable to be set with a valid Cloudflare API Token that has DNS edit permissions.
+使用此技能之前，需要设置 `CLOUDFLARE_API_TOKEN` 环境变量，该变量应包含具有 DNS 编辑权限的有效 Cloudflare API Token。
 
-The model should verify this prerequisite before attempting to use the skill. If the variable is not set, it should inform the user and stop.
+模型应在尝试使用此技能之前验证这一前提条件。如果该变量未设置，应通知用户并停止操作。
 
-## Core Action: `scripts/update-record.py`
+## 核心操作：`scripts/update-record.py`
 
-The core logic is handled by the `update-record.py` script.
+核心逻辑由 `update-record.py` 脚本处理。
 
-### **Inputs (Command-Line Arguments)**
+### **输入参数（命令行参数）**
 
-- `--zone`: (Required) The root domain name. Example: `example.com`
-- `--record`: (Required) The name of the record (subdomain). Use `@` for the root domain itself. Example: `www`
-- `--ip`: (Required) The IPv4 address to point the record to.
-- `--proxied`: (Optional) Boolean (`true` or `false`) to set the Cloudflare proxy status. Defaults to `true`.
+- `--zone`：（必填）根域名。示例：`example.com`
+- `--record`：（必填）记录的名称（子域名）。使用 `@` 表示根域名本身。示例：`www`
+- `--ip`：（必填）要指向的 IPv4 地址。
+- `--proxyed`：（可选）布尔值（`true` 或 `false`），用于设置 Cloudflare 代理状态。默认值为 `true`。
 
-### **Output**
+### **输出**
 
-The script will print its progress to stdout.
-- On success, it prints a confirmation message and a JSON object of the created/updated record.
-- On failure, it prints a descriptive error message to stderr and exits with a non-zero status code.
+脚本会将执行进度输出到标准输出（stdout）：
+- 成功时，会打印确认消息以及创建/更新后的记录的 JSON 对象。
+- 失败时，会向标准错误输出（stderr）打印详细的错误信息，并以非零的状态码退出。
 
-### **Execution Workflow**
+### **执行流程**
 
-To use this skill, follow these steps:
+使用此技能，请按照以下步骤操作：
 
-1.  **Verify Prerequisites**: Check if the `CLOUDFLARE_API_TOKEN` environment variable is set. If not, notify the user and abort.
-2.  **Gather Inputs**: From the user's request, identify the `zone`, `record` name, and target `ip`.
-3.  **Construct Command**: Build the full shell command to execute the script.
-4.  **Execute Command**: Run the command using the `exec` tool.
-5.  **Report Result**:
-    - If the command succeeds, report the successful creation or update to the user.
-    - If the command fails, analyze the error message from stderr and report the issue to the user in a clear, understandable way.
+1. **验证前提条件**：检查 `CLOUDFLARE_API_TOKEN` 环境变量是否已设置。如果没有设置，通知用户并中止操作。
+2. **收集输入参数**：从用户请求中获取 `zone`（区域名称）、`record`（记录名称）和目标 `ip`（IP 地址）。
+3. **构建命令**：生成用于执行脚本的完整 shell 命令。
+4. **执行命令**：使用 `exec` 工具运行该命令。
+5. **报告结果**：
+    - 如果命令成功，向用户报告记录已成功创建或更新。
+    - 如果命令失败，分析标准错误输出（stderr）中的错误信息，并以清晰易懂的方式向用户报告问题。
 
-### **Example Usage**
+### **示例用法**
 
-**User Request:** "Point www.example.com to the server's public IP."
+**用户请求**：“将 www.example.com 指向服务器的公共 IP。”
 
-**AI's Thought Process:**
-1.  The user wants to update a DNS record on Cloudflare. The `cloudflare-dns-updater` skill is perfect for this.
-2.  I will use the `update-record.py` script.
-3.  I need the zone, record name, and IP.
-    - Zone: `example.com`
-    - Record: `www`
-    - IP: I need to find the server's public IP first. I can use `curl -s https://ipv4.icanhazip.com/`.
-4.  I will first get the IP, then construct the final command.
-5.  I will execute the command and report the outcome.
+**AI 的处理流程**：
+1. 用户希望更新 Cloudflare 上的 DNS 记录。`cloudflare-dns-updater` 技能非常适合完成此操作。
+2. 我将使用 `update-record.py` 脚本。
+3. 我需要获取区域名称、记录名称和目标 IP 地址。
+    - 区域名称：`example.com`
+    - 记录名称：`www`
+    - IP 地址：我需要先获取服务器的公共 IP 地址。可以使用 `curl -s https://ipv4.icanhazip.com/` 来获取。
+4. 我会先获取 IP 地址，然后构建最终的命令。
+5. 我将执行命令并报告执行结果。
 
-**AI's Actions:**
+**AI 的具体操作**：
 ```bash
 # Step 1: Get IP
 PUBLIC_IP=$(curl -s https://ipv4.icanhazip.com/)
@@ -73,7 +73,7 @@ python3 skills/cloudflare-dns-updater/scripts/update-record.py \
   --ip "$PUBLIC_IP"
 ```
 
-### **Failure Strategy**
+### **失败处理策略**
 
-- **If `CLOUDFLARE_API_TOKEN` is not set:** Do not attempt to run the script. Inform the user that the required environment variable is missing and needs to be configured by the administrator.
-- **If the script exits with an error:** Read the error message from stderr. Common errors include invalid API token, incorrect zone name, or insufficient permissions. Report the specific error to the user.
+- **如果 `CLOUDFLARE_API_TOKEN` 未设置**：不要尝试运行脚本。通知用户缺少必要的环境变量，并提示管理员进行配置。
+- **如果脚本执行失败**：读取标准错误输出（stderr）中的错误信息。常见的错误包括无效的 API Token、错误的区域名称或权限不足。向用户报告具体的错误原因。

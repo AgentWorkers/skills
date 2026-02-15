@@ -1,45 +1,45 @@
 ---
 name: strava-skill
-description: Talk to your Strava data — ask questions about your activities, fitness trends, PRs, and training load using AI.
+description: 与您的 Strava 数据进行互动——利用人工智能来询问有关您的活动、健康状况趋势、个人训练计划（PRs）以及训练负荷的问题。
 homepage: https://www.transition.fun
 ---
 
 # Strava Skill
 
-Chat with your Strava data using AI. Ask about your activities, fitness trends, personal records, training load, and more. Powered by [Transition](https://www.transition.fun), which syncs with Strava to give AI agents access to your training data.
+通过人工智能与您的 Strava 数据进行交流。您可以查询自己的活动记录、健康状况、个人最佳成绩、训练负荷等信息。该功能由 [Transition](https://www.transition.fun) 提供支持，该平台会与 Strava 同步数据，从而让 AI 代理能够访问您的训练信息。
 
-## Setup
+## 设置
 
-1. Download [Transition](https://www.transition.fun) and connect your Strava account
-2. Go to **Settings > API Keys** and tap **Generate New Key**
-3. Set the environment variable:
+1. 下载 [Transition](https://www.transition.fun) 并连接您的 Strava 账户。
+2. 进入 **设置 > API 密钥**，然后点击 **生成新密钥**。
+3. 设置环境变量：
 
 ```bash
 export TRANSITION_API_KEY="tr_live_xxxxxxxxxxxxxxxxxxxxx"
 ```
 
-## No Auth Required
+## 无需身份验证
 
-### Workout of the Day
+### 当日训练计划
 
-Generate a random structured workout — no account needed.
+生成一个随机的、结构化的训练计划——无需注册账户即可使用。
 
 ```bash
 curl "https://api.transition.fun/api/v1/wod?sport=run&duration=45"
 ```
 
-**Parameters:**
-- `sport` — `run`, `bike`, `swim`, or `strength` (default: `run`)
-- `duration` — minutes, 10-300 (default: `45`)
+**参数：**
+- `sport` — `run`（跑步）、`bike`（骑行）、`swim`（游泳）或 `strength`（力量训练）（默认值：`run`）
+- `duration` — 时间（分钟），范围为 10–300 分钟（默认值：45 分钟）
 
-## Authenticated Endpoints
+## 需要身份验证的接口
 
-**Base URL:** `https://api.transition.fun`
-**Auth:** Pass `X-API-Key` header on every request.
+**基础 URL：** `https://api.transition.fun`
+**认证方式：** 在每个请求中添加 `X-API-Key` 头部字段。
 
-### AI Coach Chat
+### AI 教练聊天
 
-Ask questions about your Strava data. The AI coach has full context on your activities and performance.
+您可以就自己的 Strava 数据提出问题。AI 教练会全面了解您的活动情况和表现。
 
 ```bash
 curl -X POST -H "X-API-Key: $TRANSITION_API_KEY" \
@@ -48,72 +48,69 @@ curl -X POST -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/coach/chat"
 ```
 
-Example questions:
-- "What's my weekly mileage trend over the last month?"
-- "How is my cycling FTP progressing?"
-- "Am I running more or less than usual this week?"
-- "What was my fastest 5K effort recently?"
-- "Should I rest or train today based on my recent activity?"
+示例问题：
+- “我上个月的周里程趋势如何？”
+- “我的骑行 FTP（Functional Threshold Power）水平有什么变化？”
+- “这周我的跑步量比平时多还是少？”
+- “我最近最快的 5K 成绩是多少？”
+- “根据我最近的活动情况，今天应该休息还是继续训练？”
 
-### Get Workouts
+### 获取训练计划
 
-Retrieve scheduled workouts for a date range.
+您可以查询指定日期范围内的训练计划。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/workouts?start=2026-02-09&end=2026-02-15"
 ```
 
-**Parameters:**
-- `start` — Start date (YYYY-MM-DD, required)
-- `end` — End date (YYYY-MM-DD, required)
-- Maximum range between `start` and `end` is 90 days.
+**参数：**
+- `start` — 开始日期（格式：YYYY-MM-DD，必填）
+- `end` — 结束日期（格式：YYYY-MM-DD，必填）
+- `start` 和 `end` 之间的时间范围最多为 90 天。
 
-### Performance Management Chart (PMC)
+### 表现管理图表（Performance Management Chart, PMC）
 
-Get CTL (fitness), ATL (fatigue), and TSB (form) calculated from your Strava activities.
+根据您的 Strava 活动数据，计算 CTL（健康状况）、ATL（疲劳程度）和 TSB（身体状态）。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/performance/pmc"
 ```
 
-### Performance Stats
+### 表现统计数据
 
-Get FTP, threshold paces, heart rate zones, and other metrics derived from your Strava data.
+您可以获取 FTP（Functional Threshold Power）、阈值配速、心率区间等从 Strava 数据中得出的各项指标。
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/performance/stats"
 ```
 
-### Athlete Profile
+### 运动员个人资料
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/profile"
 ```
 
-### Chat History
+### 聊天记录
 
 ```bash
 curl -H "X-API-Key: $TRANSITION_API_KEY" \
   "https://api.transition.fun/api/v1/coach/history"
 ```
 
-## Rate Limits
+## 访问限制
 
-| Tier | Read Endpoints | AI Endpoints |
-|------|---------------|-------------|
-| Free | 100/day | 3/day |
-| Paid | 10,000/day | 100/day |
+| 订阅等级 | 免费用户可访问的接口 | 需付费用户可访问的接口 |
+|------|------------------|----------------------|
+| 免费 | 每天 100 个接口 | 每天 3 个接口 |
+| 付费 | 每天 10,000 个接口 | 每天 100 个接口 |
 
-## Tips for Agents
+## 代理使用提示
 
-1. **Use coach chat as the primary interface.** It has full context on the user's Strava activities, training load, and performance — just ask natural questions.
-
-2. **Check fatigue before recommending hard workouts.** Call `GET /api/v1/performance/pmc` and look at TSB. If TSB is below -20, the athlete is fatigued.
-
-3. **Use the free WOD endpoint for quick workouts.** No auth needed — great for users who just want a workout suggestion.
-
-4. **Date format is always YYYY-MM-DD** for all date parameters.
+1. **优先使用教练聊天功能。** 该功能能提供用户 Strava 活动、训练负荷和表现的全面信息，只需提出自然的问题即可。
+2. **在推荐高强度训练计划前，请先检查疲劳状况。** 调用 `GET /api/v1/performance/pmc` 并查看 TSB（身体状态）值。如果 TSB 低于 -20，说明运动员处于疲劳状态。
+3. **如需快速获取训练建议，可以使用免费的训练计划接口。** 无需身份验证，非常适合只想获取训练建议的用户。
+4. 所有日期参数的格式均为 YYYY-MM-DD。

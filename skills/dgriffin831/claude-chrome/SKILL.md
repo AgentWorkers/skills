@@ -1,74 +1,74 @@
 ---
 name: claude-chrome
-description: Use Claude Code with Chrome browser extension for web browsing and automation tasks. Alternative to OpenClaw's built-in browser tools.
+description: 您可以使用 Chrome 浏览器的扩展程序“Claude Code”来进行网页浏览和自动化任务。这是 OpenClaw 内置浏览器工具的替代方案。
 metadata: {"clawdbot":{"emoji":"🌐","requires":{"anyBins":["claude"]}}}
 ---
 
-# Claude Chrome — Browser Automation via Claude Code
+# Claude Chrome — 通过 Claude Code 实现浏览器自动化
 
-Use Claude Code's Chrome integration to browse the web, interact with pages, and automate browser tasks. This is an alternative to OpenClaw's built-in browser tools (Chrome Relay, OpenClaw profile).
+利用 Claude Code 的 Chrome 集成功能，您可以浏览网页、与页面交互以及自动化执行浏览器任务。这是 OpenClaw 内置浏览器工具（Chrome Relay、OpenClaw Profile）的替代方案。
 
-## Prerequisites
+## 先决条件
 
-1. **Claude Code** installed on the node (e.g. `/opt/homebrew/bin/claude`)
-2. **Claude Code Chrome extension** installed and enabled in Chrome
-3. **Chrome** running on the node
+1. 在节点上安装了 **Claude Code**（例如：`/opt/homebrew/bin/claude`）。
+2. 在 Chrome 中安装并启用了 **Claude Code Chrome 扩展程序**。
+3. 节点上正在运行 **Chrome** 浏览器。
 
-## How It Works
+## 工作原理
 
-Claude Code can connect to Chrome via its built-in browser extension (MCP server). When enabled, Claude Code gains browser tools — it can navigate pages, click elements, fill forms, read content, and more.
+Claude Code 可以通过其内置的浏览器扩展程序（MCP 服务器）连接到 Chrome。启用该扩展后，Claude Code 将获得浏览器功能，例如：导航页面、点击元素、填写表单、读取内容等。
 
-## Step 1: Check if Chrome Extension is Active
+## 第一步：检查 Chrome 扩展程序是否处于活动状态
 
-Look for the native host process to confirm the Chrome extension is running:
+查看系统中的原生主机进程以确认 Chrome 扩展程序是否正在运行：
 
 ```bash
 nodes.run node=<your-node-id> command='["bash", "-lc", "pgrep -f \"claude --chrome-native-host\""]'
 ```
 
-If this returns a PID, the Chrome extension bridge is active and ready.
+如果返回了进程 ID（PID），则表示 Chrome 扩展程序已激活并可用。
 
-## Step 2: Run Claude Code with Chrome
+## 第二步：使用 Claude Code 与 Chrome 一起运行
 
-Use `nodes.run` with your node to execute browser tasks:
+使用 `nodes.run` 命令在节点上执行浏览器任务：
 
 ```bash
 nodes.run node=<your-node-id> commandTimeoutMs=120000 command='["bash", "-lc", "claude --dangerously-skip-permissions --chrome -p \"Go to example.com and read the headline\""]'
 ```
 
-**Flags:**
-- `--dangerously-skip-permissions` — auto-approve all actions (required for automation)
-- `--chrome` — enable Chrome browser integration
-- `-p` / `--print` — non-interactive print mode (required for automated use)
-- `bash -lc` — login shell to ensure PATH is loaded
+**常用参数：**
+- `--dangerously-skip-permissions` — 自动批准所有操作（自动化任务必需）
+- `--chrome` — 启用 Chrome 浏览器集成
+- `-p` / `--print` — 非交互式输出模式（自动化任务必需）
+- `bash -lc` — 以登录 shell 运行命令，确保环境变量 PATH 被正确加载
 
-**Timeout:** See benchmarks below for guidance. Recommended defaults:
-- Simple tasks (single page read): `commandTimeoutMs=30000` (30 seconds)
-- Medium complexity (multi-step navigation): `commandTimeoutMs=120000` (2 minutes)
-- Complex workflows (multiple pages + summarization): `commandTimeoutMs=180000` (3 minutes)
+**超时设置：** 请参考以下基准测试建议：
+- **简单任务（单页内容读取）**：`commandTimeoutMs=30000`（30 秒）
+- **中等复杂度任务（多步骤导航）**：`commandTimeoutMs=120000`（2 分钟）
+- **复杂任务（多页浏览 + 数据汇总）**：`commandTimeoutMs=180000`（3 分钟）
 
-## Performance Benchmarks
+## 性能基准测试
 
-| Task Type | Example | Duration | Recommended Timeout |
-|-----------|---------|----------|---------------------|
-| **Simple** | Read button text on Google | 13s | 30s (30000ms) |
-| **Medium** | Wikipedia search + navigate + summarize | 76s | 2min (120000ms) |
-| **Complex** | Multi-page navigation + external links | ~90s+ | 3min (180000ms) |
+| 任务类型 | 示例 | 执行时间 | 推荐超时时间 |
+|---------|---------|----------|---------------------|
+| **简单** | 在 Google 上读取按钮文本 | 13 秒 | 30 秒（30000 毫秒） |
+| **中等** | 在 Wikipedia 上搜索、导航并汇总内容 | 76 秒 | 2 分钟（120000 毫秒） |
+| **复杂** | 多页浏览 + 处理外部链接 | 约 90 秒以上 | 3 分钟（180000 毫秒） |
 
-**Gateway timeout note:** OpenClaw's gateway has a hardcoded 10-second connection timeout. Commands will error immediately but continue running in the background. Results arrive via system messages when complete.
+**注意：** OpenClaw 的网关超时设置为 10 秒，如果超时命令会立即失败，但会继续在后台运行。结果会在任务完成后通过系统消息显示。
 
-## Limitations
+## 限制因素
 
-- **Domain permissions:** Claude Code's Chrome extension may require user approval for new domains (cannot be automated)
-- **Gateway timeout:** Initial connection times out at 10s, but commands continue running
-- **Desktop required:** Only works on nodes with a desktop environment, Chrome, and the extension active
+- **域名权限**：Claude Code 的 Chrome 扩展程序可能需要对新域名请求用户授权（此时无法自动化操作）。
+- **网关超时**：初始连接超时为 10 秒，但命令会继续在后台执行。
+- **系统要求**：仅支持配备桌面环境、安装了 Chrome 且扩展程序处于激活状态的节点。
 
-## Tips
+## 使用建议
 
-- Always use `--dangerously-skip-permissions` for automated runs
-- Always use `-p` / `--print` for non-interactive output
-- Always use `bash -lc` for login shell (PATH loading)
-- Be aggressive with timeouts - commands complete in background even after gateway timeout
-- Claude Code can combine coding and browsing in a single session
-- Check the native host process before attempting browser tasks
-- For simple data scraping, consider `web_fetch` instead (faster, no domain permissions needed)
+- 在自动化操作时务必使用 `--dangerously-skip-permissions` 参数。
+- 非交互式输出时请使用 `-p` 或 `--print` 参数。
+- 为确保环境变量 PATH 正确加载，请使用 `bash -lc` 参数以登录 shell。
+- 设置较长的超时时间，因为命令可能在网关超时后仍会在后台继续执行。
+- Claude Code 可在同一会话中同时进行编程和浏览操作。
+- 在执行浏览器任务前，请先检查系统中的原生主机进程是否正常运行。
+- 对于简单的数据抓取任务，建议使用 `web_fetch` 功能（速度更快，无需处理域名权限问题）。

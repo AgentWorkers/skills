@@ -1,50 +1,50 @@
 ---
 name: rba-rate-intelligence
-description: RBA cash rate monitor, meeting schedule, CPI tracker, and mortgage impact calculator for Australia.
+description: 澳大利亚的RBA现金利率监测工具、会议日程安排、CPI追踪器以及抵押贷款影响计算器。
 homepage: https://oneyco.com.au
 metadata: {"clawdbot":{"emoji":"📊","category":"Finance"}}
 ---
 
-# RBA Rate Intelligence
+# 澳大利亚储备银行利率智能
 
-Real-time Reserve Bank of Australia cash rate monitoring, meeting schedules, and mortgage impact analysis.
+实时监控澳大利亚储备银行（RBA）的现金利率、会议日程以及利率对抵押贷款的影响分析。
 
-## Current Rates (February 2026)
+## 当前利率（2026年2月）
 
-| Metric | Value | Last Change |
+| 指标 | 数值 | 最后一次变动 |
 |--------|-------|-------------|
-| **RBA Cash Rate** | 4.10% | Dec 2024 (-25bp) |
-| **CPI (Annual)** | 2.8% | Q4 2024 |
-| **RBA Target** | 2-3% | Inflation target band |
+| **RBA现金利率** | 4.10% | 2024年12月（下调25个基点） |
+| **CPI（年度）** | 2.8% | 2024年第四季度 |
+| **RBA目标利率** | 2-3% | 通货膨胀目标区间 |
 
-> ⚠️ Rates change. Always verify at [rba.gov.au](https://www.rba.gov.au/statistics/cash-rate/)
+> ⚠️ 利率会发生变化，请务必在 [rba.gov.au](https://www.rba.gov.au/statistics/cash-rate/) 上核实最新信息。
 
 ---
 
-## RBA Meeting Schedule 2026
+## 2026年RBA会议日程
 
-The RBA Board meets **8 times per year** to decide the cash rate.
+RBA董事会每年召开 **8次会议** 以决定现金利率。
 
-| # | Date | Day |
+| 序号 | 日期 | 星期 |
 |---|------|-----|
-| 1 | 18 February 2026 | Tuesday |
-| 2 | 1 April 2026 | Wednesday |
-| 3 | 20 May 2026 | Wednesday |
-| 4 | 1 July 2026 | Wednesday |
-| 5 | 12 August 2026 | Wednesday |
-| 6 | 23 September 2026 | Wednesday |
-| 7 | 4 November 2026 | Wednesday |
-| 8 | 9 December 2026 | Wednesday |
+| 1 | 2026年2月18日 | 星期二 |
+| 2 | 2026年4月1日 | 星期三 |
+| 3 | 2026年5月20日 | 星期三 |
+| 4 | 2026年7月1日 | 星期三 |
+| 5 | 2026年8月12日 | 星期三 |
+| 6 | 2026年9月23日 | 星期三 |
+| 7 | 2026年11月4日 | 星期三 |
+| 8 | 2026年12月9日 | 星期三 |
 
-**Decision announcement**: 2:30 PM AEDT/AEST on meeting day
+**决议公布时间**：会议当天下午2:30（AEDT/AEST）
 
-Official calendar: [RBA Monetary Policy Meetings](https://www.rba.gov.au/monetary-policy/rba-board-meetings/)
+官方日程表：[RBA货币政策会议](https://www.rba.gov.au/monetary-policy/rba-board-meetings/)
 
 ---
 
-## Rate Impact Calculator
+## 利率影响计算器
 
-### Monthly Repayment Formula (P&I)
+### 月度还款公式（本金加利息）
 ```
 M = P × [r(1+r)^n] / [(1+r)^n – 1]
 
@@ -54,19 +54,19 @@ Where:
 - n = Total months (years × 12)
 ```
 
-### Quick Impact Table ($500,000 loan, 30 years)
+### 利率变化对月还款额的影响（贷款金额50万澳元，期限30年）
 
-| Rate | Monthly P&I | vs 4.10% |
+| 利率 | 月还款额（本金加利息） | 与4.10%相比 |
 |------|-------------|----------|
-| 3.60% | $2,272 | -$160/mo |
-| 3.85% | $2,343 | -$89/mo |
-| **4.10%** | **$2,416** | — |
-| 4.35% | $2,490 | +$74/mo |
-| 4.60% | $2,565 | +$149/mo |
-| 5.00% | $2,684 | +$268/mo |
-| 6.00% | $2,998 | +$582/mo |
+| 3.60% | $2,272 | 每月节省$160 |
+| 3.85% | $2,343 | 每月节省$89 |
+| **4.10%** | $2,416 | 无变化 |
+| 4.35% | $2,490 | 每月增加$74 |
+| 4.60% | $2,565 | 每月增加$149 |
+| 5.00% | $2,684 | 每月增加$268 |
+| 6.00% | $2,998 | 每月增加$582 |
 
-### Per 0.25% Rate Change
+### 每0.25%利率变化的影响
 ```
 $500,000 loan → ~$75/month difference
 $750,000 loan → ~$112/month difference
@@ -75,91 +75,91 @@ $1,000,000 loan → ~$150/month difference
 
 ---
 
-## CPI & Inflation
+## 消费者价格指数（CPI）与通货膨胀
 
-### What is CPI?
-Consumer Price Index measures the average change in prices paid by households for goods and services.
+### 什么是CPI？
+消费者价格指数（CPI）衡量家庭购买商品和服务时所支付价格的平均变化。
 
-### Latest CPI Data
-| Quarter | Annual % | Trend |
+### 最新CPI数据
+| 季度 | 年度百分比 | 趋势 |
 |---------|----------|-------|
-| Q4 2024 | 2.8% | ↓ |
-| Q3 2024 | 2.9% | ↓ |
-| Q2 2024 | 3.4% | ↓ |
-| Q1 2024 | 3.8% | ↓ |
+| 2024年第四季度 | 2.8% | 下降 |
+| 2024年第三季度 | 2.9% | 下降 |
+| 2024年第二季度 | 3.4% | 下降 |
+| 2024年第一季度 | 3.8% | 下降 |
 
-### RBA's Inflation Target
-- **Target band**: 2-3% annual inflation
-- **Above 3%**: RBA may raise rates to cool economy
-- **Below 2%**: RBA may cut rates to stimulate growth
+### RBA的通货膨胀目标
+- **目标区间**：年通货膨胀率为2-3%
+- **高于3%**：RBA可能会加息以抑制经济增长
+- **低于2%**：RBA可能会降息以刺激经济增长
 
-Data source: [ABS CPI](https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia)
+数据来源：[ABS CPI](https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia)
 
 ---
 
-## Historical Cash Rate
+## 历史现金利率
 
-### Recent Rate Movements
-| Date | Rate | Change |
+### 最近的利率变动
+| 日期 | 利率 | 变动幅度 |
 |------|------|--------|
-| Dec 2024 | 4.10% | -0.25% |
-| Nov 2023 | 4.35% | +0.25% |
-| Jun 2023 | 4.10% | +0.25% |
-| May 2023 | 3.85% | +0.25% |
-| Mar 2023 | 3.60% | +0.25% |
-| Nov 2020 | 0.10% | -0.15% (COVID low) |
+| 2024年12月 | 4.10% | 下调0.25% |
+| 2023年11月 | 4.35% | 上调0.25% |
+| 2023年6月 | 4.10% | 上调0.25% |
+| 2023年5月 | 3.85% | 上调0.25% |
+| 2023年3月 | 3.60% | 上调0.25% |
+| 2020年11月 | 0.10% | 下调0.15%（新冠疫情期间的最低水平） |
 
-### Key Milestones
-- **COVID Low**: 0.10% (Nov 2020 – Apr 2022)
-- **Fastest Hike Cycle**: +4.25% in 18 months (May 2022 – Nov 2023)
-- **Current Easing Cycle**: Started Dec 2024
+### 重要里程碑
+- **新冠疫情期间的最低水平**：0.10%（2020年11月 – 2022年4月）
+- **最快的加息周期**：18个月内加息4.25%（2022年5月 – 2023年11月）
+- **当前的降息周期**：始于2024年12月
 
-Full history: [RBA Cash Rate Target](https://www.rba.gov.au/statistics/cash-rate/)
+完整历史记录：[RBA现金利率目标](https://www.rba.gov.au/statistics/cash-rate/)
 
 ---
 
-## Variable vs Fixed Rates
+## 变动利率贷款与固定利率贷款
 
-| Type | Pros | Cons |
+| 类型 | 优点 | 缺点 |
 |------|------|------|
-| **Variable** | Benefits from rate cuts; Flexible (extra repayments, offset) | Exposed to rate rises |
-| **Fixed** | Certainty; Protection from rises | Misses out on cuts; Break costs; Limited flexibility |
+| **变动利率贷款** | 可享受降息带来的好处；还款方式灵活（可额外还款或抵消部分本金） | 面临利率上升的风险 |
+| **固定利率贷款** | 利率稳定；免受利率上升的影响 | 无法享受降息带来的优惠；还款金额固定；灵活性较低 |
 
-### Current Market Rates (Indicative)
-| Product | Range |
+### 当前市场利率（参考值）
+| 产品类型 | 利率范围 |
 |---------|-------|
-| Variable (owner-occupied, P&I) | 5.80% – 6.50% |
-| 2-year Fixed | 5.50% – 6.20% |
-| 3-year Fixed | 5.40% – 6.00% |
+| 变动利率贷款（自住型，本金加利息） | 5.80% – 6.50% |
+| 2年期固定利率贷款 | 5.50% – 6.20% |
+| 3年期固定利率贷款 | 5.40% – 6.00% |
 
-> Rates vary by lender, LVR, and loan features. Compare at [canstar.com.au](https://www.canstar.com.au/home-loans/)
+> 不同贷款机构的利率可能有所不同，具体取决于贷款比例（LVR）和贷款条款。详情请访问 [canstar.com.au](https://www.canstar.com.au/home-loans/)。
 
 ---
 
-## Proactive Alerts (For Clawdbot Users)
+## 主动提醒（适用于Clawdbot用户）
 
-Set up reminders for RBA meetings:
+设置RBA会议的提醒：
 ```
 "Remind me the day before each RBA meeting"
 "Alert me when RBA changes the cash rate"
 "Notify me when CPI data is released"
 ```
 
-CPI release schedule: Quarterly (late Jan, Apr, Jul, Oct)
+CPI数据发布时间：每季度（1月底、4月、7月、10月）
 
 ---
 
-## Key Resources
+## 关键资源
 
-- **RBA Official**: [rba.gov.au](https://www.rba.gov.au)
-- **ABS Statistics**: [abs.gov.au](https://www.abs.gov.au)
-- **Rate Comparison**: [canstar.com.au](https://www.canstar.com.au)
-- **Economic Calendar**: [tradingeconomics.com/australia/calendar](https://tradingeconomics.com/australia/calendar)
+- **RBA官方网站**：[rba.gov.au](https://www.rba.gov.au)
+- **澳大利亚统计局（ABS）**：[abs.gov.au](https://www.abs.gov.au)
+- **利率比较网站**：[canstar.com.au](https://www.canstar.com.au)
+- **经济日历**：[tradingeconomics.com/australia/calendar](https://tradingeconomics.com/australia/calendar)
 
 ---
 
-## Disclaimer
+## 免责声明
 
-This skill provides general information only. Interest rates, economic data, and policies change frequently. Always verify current rates with official sources (RBA, ABS) and consult a qualified mortgage broker or financial advisor before making financial decisions.
+本文档仅提供一般性信息。利率、经济数据和政策可能会频繁变动。在做出财务决策前，请务必通过官方渠道（RBA、ABS）核实最新数据，并咨询合格的抵押贷款经纪人或财务顾问。
 
-**Built by [Oney & Co](https://oneyco.com.au)** — Australian lending insights, simplified.
+**由 [Oney & Co](https://oneyco.com.au) 制作** — 澳大利亚贷款领域的专业见解与简化信息。

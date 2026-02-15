@@ -1,6 +1,6 @@
 ---
 name: stakeholder-docs
-description: Executive documentation from technical living docs - business summaries, progress dashboards, feature status reports. Use for stakeholder communication.
+description: 来自技术文档的 executive 文档，包括业务概述、进度仪表板以及功能状态报告。用于与利益相关者进行沟通。
 allowed-tools:
   - Read
   - Write
@@ -10,25 +10,23 @@ context: fork
 model: sonnet
 ---
 
-# Stakeholder Documentation Skill
+# 利益相关者文档撰写技能
 
-Expert in translating technical living documentation into business-friendly views for stakeholders, executives, and non-technical team members.
+擅长将技术性文档转化为易于利益相关者、高管和非技术团队成员理解的形式。
 
-## When This Skill Activates
+## 适用场景
 
-- Creating executive summaries or board reports
-- Generating progress dashboards for management
-- Writing business impact statements
-- Creating feature status overviews
-- Preparing quarterly/monthly reports
-- Translating technical docs for sales/customer-facing use
+- 制作高管摘要或董事会报告  
+- 为管理层生成进度仪表盘  
+- 编写业务影响分析报告  
+- 创建功能状态概览  
+- 准备季度/月度报告  
+- 将技术文档翻译为适用于销售或客户端的版本  
 
-## What I Generate
+## 生成内容  
 
-### 1. Executive Summary
-
-One-page overview of project/feature status:
-
+### 1. 高管摘要  
+项目/功能状态的一页概览：  
 ```markdown
 # [Project Name] Executive Summary
 *Generated: [Date] | Period: [Sprint/Quarter]*
@@ -64,12 +62,10 @@ One-page overview of project/feature status:
 
 1. [Priority 1] - Business Value: [description]
 2. [Priority 2] - Business Value: [description]
-```
+```  
 
-### 2. Feature Status Dashboard
-
-Visual progress tracking for all features:
-
+### 2. 功能状态仪表盘  
+所有功能的可视化进度跟踪：  
 ```markdown
 # Feature Status Dashboard
 *Last Updated: [Date]*
@@ -99,12 +95,10 @@ Visual progress tracking for all features:
 | Feature | Blocker | Action Required |
 |---------|---------|-----------------|
 | Mobile App | Vendor delay | Escalate to CTO |
-```
+```  
 
-### 3. Business Impact Statement
-
-For each feature, translate technical details into business value:
-
+### 3. 业务影响分析报告  
+将每个功能的详细技术信息转化为业务价值：  
 ```markdown
 # Business Impact: [Feature Name]
 
@@ -133,12 +127,10 @@ For each feature, translate technical details into business value:
 
 1. [Metric 1]: Target [X], Current [Y]
 2. [Metric 2]: Target [X], Current [Y]
-```
+```  
 
-### 4. Release Summary
-
-Non-technical release notes for stakeholders:
-
+### 4. 发布摘要  
+为利益相关者准备的非技术性发布说明：  
 ```markdown
 # Release [Version] Summary
 *Release Date: [Date]*
@@ -164,23 +156,20 @@ This release delivers [X] improvements that [business benefit].
 ## Next Release Preview
 
 Coming in [timeframe]: [brief preview of upcoming features]
-```
+```  
 
-## How to Use
+## 使用方法  
 
-### From Technical Living Docs
+### 数据来源  
+我从以下路径读取技术文档并进行转换：  
+| 来源          | 输出          |  
+|---------------|---------------|  
+| `specs/`          | 功能状态仪表盘        |  
+| `strategy/`       | 高管摘要        |  
+| 增量元数据        | 进度报告        |  
+| ADRs（变更请求）      | 风险/决策摘要      |  
 
-I read from `.specweave/docs/internal/` and transform:
-
-| Source | Output |
-|--------|--------|
-| `specs/` feature specs | Feature Status Dashboard |
-| `strategy/` docs | Executive Summary |
-| Increment metadata | Progress Reports |
-| ADRs | Risk/Decision summaries |
-
-### Generation Commands
-
+### 生成命令  
 ```bash
 # Generate executive summary
 "Create an executive summary of our current project status"
@@ -193,29 +182,25 @@ I read from `.specweave/docs/internal/` and transform:
 
 # Prepare release summary
 "Create a stakeholder-friendly release summary for v2.0"
-```
+```  
 
-## Best Practices
+## 最佳实践  
 
-### DO
+### 应该做：  
+1. **使用通俗的语言**——避免专业术语，解释缩写词。  
+2. **关注结果**——例如：“等待时间减少了40%”，而非“优化了数据库查询”。  
+3. **包含具体数据**——数字能让影响更直观。  
+4. **尽早突出风险**——利益相关者需要了解潜在障碍。  
+5. **以可视化方式展示进度**——使用表格、百分比和趋势图表。  
 
-1. **Use plain language** - Avoid jargon, explain acronyms
-2. **Focus on outcomes** - "Reduced wait time by 40%" not "Optimized database queries"
-3. **Include metrics** - Numbers make impact tangible
-4. **Highlight risks early** - Stakeholders need to know blockers
-5. **Show progress visually** - Tables, percentages, trends
+### 不应该做：  
+1. **不要包含技术细节**——不要包含代码或架构图。  
+2. **不要使用开发术语**——例如将“API”替换为“接口”，将“deploy”替换为“发布”。  
+3. **不要隐瞒负面信息**——如果存在障碍，应首先说明。  
+4. **不要信息过载**——精选关键内容，避免堆积过多数据。  
 
-### DON'T
-
-1. **Don't include technical details** - No code, no architecture diagrams
-2. **Don't use developer terminology** - "API" → "integration", "deploy" → "release"
-3. **Don't bury bad news** - Lead with blockers if they exist
-4. **Don't overload with data** - Curate, don't dump
-
-## Output Locations
-
-Generated stakeholder docs are saved to:
-
+## 输出保存位置  
+生成的文档会保存在：  
 ```
 .specweave/docs/internal/strategy/
 ├── executive-summary.md      # Overall project summary
@@ -223,22 +208,19 @@ Generated stakeholder docs are saved to:
 ├── quarterly-report-Q1.md    # Quarterly summaries
 └── business-impact/
     └── [feature-name].md     # Per-feature impact statements
-```
+```  
 
-## Integration with Living Docs
+## 与其他工具的集成  
+该技能与以下工具配合使用效果最佳：  
+- **living-docs-navigator**：用于导航技术文档。  
+- **docs-writer**：用于生成详细文档。  
+- **image-generation**：用于通过 `/sw:image-generation` 添加图表和可视化内容。  
 
-This skill works best when combined with:
-
-- **living-docs-navigator**: Navigate source technical docs
-- **docs-writer**: Generate detailed documentation
-- **image-generation**: Add charts and visualizations via `/sw:image-generation`
-
-## Activation Keywords
-
-This skill activates automatically when you mention:
-- "executive summary", "board report", "investor update"
-- "stakeholder", "non-technical", "business view"
-- "progress dashboard", "feature status"
-- "quarterly report", "monthly update"
-- "business impact", "ROI", "business value"
-- "release summary", "customer-facing docs"
+## 激活关键词  
+当您提到以下关键词时，该技能会自动启动：  
+- “高管摘要”、“董事会报告”、“投资者更新”  
+- “利益相关者”、“非技术性内容”、“业务视角”  
+- “进度仪表盘”、“功能状态”  
+- “季度报告”、“月度更新”  
+- “业务影响”、“投资回报率”、“业务价值”  
+- “发布摘要”、“面向客户的文档”

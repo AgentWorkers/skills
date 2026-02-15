@@ -1,39 +1,39 @@
 ---
 name: actual-budget
-description: Query and manage personal finances via the official Actual Budget Node.js API. Use for budget queries, transaction imports/exports, account management, categorization, rules, schedules, and bank sync with self-hosted Actual Budget instances.
+description: 通过官方的 Actual Budget Node.js API 查询和管理个人财务。该 API 可用于预算查询、交易导入/导出、账户管理、分类设置、规则配置、日程安排，以及与自托管的 Actual Budget 实例进行银行数据同步。
 ---
 
 # Actual Budget API
 
-Official Node.js API for [Actual Budget](https://actualbudget.org). Runs headless — works on local budget data synced from your server.
+这是 [Actual Budget](https://actualbudget.org) 的官方 Node.js API。该 API 以无头模式运行，可以处理从服务器同步的本地预算数据。
 
-## Installation
+## 安装
 
 ```bash
 npm install @actual-app/api
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `ACTUAL_SERVER_URL` | Yes | Server URL (e.g., `https://actual.example.com`) |
-| `ACTUAL_PASSWORD` | Yes | Server password |
-| `ACTUAL_SYNC_ID` | Yes | Budget Sync ID (Settings → Advanced → Sync ID) |
-| `ACTUAL_DATA_DIR` | No | Local cache directory for budget data (defaults to cwd) |
-| `ACTUAL_ENCRYPTION_PASSWORD` | No | E2E encryption password, if enabled |
-| `NODE_EXTRA_CA_CERTS` | No | Path to CA certificate file for self-signed certs |
+| 变量        | 是否必填 | 说明                          |
+|------------|---------|-----------------------------------------|
+| `ACTUAL_SERVER_URL` | 是       | 服务器地址（例如：`https://actual.example.com`）         |
+| `ACTUAL_PASSWORD` | 是       | 服务器密码                         |
+| `ACTUALSYNC_ID` | 是       | 预算同步 ID（在“设置” → “高级” → “同步 ID”中设置）     |
+| `ACTUAL_DATA_DIR` | 否       | 本地预算数据缓存目录（默认为当前工作目录）         |
+| `ACTUAL_ENCRYPTION_PASSWORD` | 否       | 如果启用了端到端加密，则需要此密码           |
+| `NODE_EXTRA_CA_CERTS` | 否       | 自签名证书的 CA 证书文件路径                 |
 
-### Self-Signed Certificates
+### 自签名证书
 
-If your Actual Budget server uses a self-signed certificate:
+如果您的 Actual Budget 服务器使用自签名证书：
 
-1. **Recommended:** Add your CA to the system trust store, or
-2. **Alternative:** Set `NODE_EXTRA_CA_CERTS=/path/to/your-ca.pem` to trust your specific CA
+1. **建议做法：** 将该 CA 证书添加到系统的信任存储中；
+2. **替代方案：** 设置 `NODE_EXTRA_CA_CERTS=/path/to/your-ca.pem` 以信任特定的 CA 证书。
 
-Avoid disabling TLS verification entirely — it exposes you to man-in-the-middle attacks.
+**注意：** 避免完全禁用 TLS 验证，否则会面临中间人攻击的风险。
 
-## Quick Start
+## 快速入门
 
 ```javascript
 const api = require('@actual-app/api');
@@ -54,22 +54,22 @@ await api.downloadBudget(
 await api.shutdown();
 ```
 
-## Core Concepts
+## 核心概念
 
-- **Amounts** are integers in cents: `$50.00` = `5000`, `-1200` = expense of $12.00
-- **Dates** use `YYYY-MM-DD`, months use `YYYY-MM`
-- **IDs** are UUIDs — use `getIDByName(type, name)` to look up by name
-- Convert with `api.utils.amountToInteger(123.45)` → `12345`
+- **金额** 以分为单位（整数形式）：`$50.00` 表示 5000 分，`-1200` 表示 12 美元的支出；
+- **日期** 使用 `YYYY-MM-DD` 格式，月份使用 `YYYY-MM` 格式；
+- **ID** 为 UUID；可以使用 `getIDByName(type, name)` 根据名称查找相应的 ID；
+- 可以使用 `api.utils.amountToInteger(123.45)` 将字符串 `123.45` 转换为整数 `12345`。
 
-## Common Operations
+## 常见操作
 
-### Get Budget Overview
+### 获取预算概览
 ```javascript
 const months = await api.getBudgetMonths();        // ['2026-01', '2026-02', ...]
 const jan = await api.getBudgetMonth('2026-01');   // { categoryGroups, incomeAvailable, ... }
 ```
 
-### Accounts
+### 账户
 ```javascript
 const accounts = await api.getAccounts();
 const balance = await api.getAccountBalance(accountId);
@@ -77,7 +77,7 @@ const newId = await api.createAccount({ name: 'Checking', type: 'checking' }, 50
 await api.closeAccount(id, transferToAccountId);  // transfer remaining balance
 ```
 
-### Transactions
+### 交易
 ```javascript
 // Get transactions for date range
 const txns = await api.getTransactions(accountId, '2026-01-01', '2026-01-31');
@@ -92,7 +92,7 @@ const { added, updated } = await api.importTransactions(accountId, [
 await api.updateTransaction(txnId, { category: categoryId, cleared: true });
 ```
 
-### Categories & Payees
+### 类别与收款人
 ```javascript
 const categories = await api.getCategories();
 const groups = await api.getCategoryGroups();
@@ -103,13 +103,13 @@ const catId = await api.createCategory({ name: 'Subscriptions', group_id: groupI
 const payeeId = await api.createPayee({ name: 'Netflix', category: catId });
 ```
 
-### Budget Amounts
+### 预算金额
 ```javascript
 await api.setBudgetAmount('2026-01', categoryId, 30000);  // budget $300
 await api.setBudgetCarryover('2026-01', categoryId, true);
 ```
 
-### Rules
+### 规则
 ```javascript
 const rules = await api.getRules();
 await api.createRule({
@@ -120,7 +120,7 @@ await api.createRule({
 });
 ```
 
-### Schedules
+### 时间表
 ```javascript
 const schedules = await api.getSchedules();
 await api.createSchedule({
@@ -131,20 +131,20 @@ await api.createSchedule({
 });
 ```
 
-### Bank Sync
+### 银行同步
 ```javascript
 await api.runBankSync({ accountId });  // GoCardless/SimpleFIN
 ```
 
-### Sync & Shutdown
+### 同步与关闭
 ```javascript
 await api.sync();      // push/pull changes to server
 await api.shutdown();  // always call when done
 ```
 
-## ActualQL Queries
+## ActualQL 查询
 
-For complex queries, use ActualQL:
+对于复杂的查询，可以使用 ActualQL：
 
 ```javascript
 const { q, runQuery } = require('@actual-app/api');
@@ -170,11 +170,10 @@ const { data } = await runQuery(
 );
 ```
 
-**Operators:** `$eq`, `$lt`, `$lte`, `$gt`, `$gte`, `$ne`, `$oneof`, `$regex`, `$like`, `$notlike`
-**Splits:** `.options({ splits: 'inline' | 'grouped' | 'all' })`
+**运算符：** `$eq`、`$lt`、`$lte`、`$gt`、`$gte`、`$ne`、`$oneof`、`$regex`、`$like`、`$notlike`
+**分组方式：** `.options({ splits: 'inline' | 'grouped' | 'all' })`
 
-## Helpers
-
+## 辅助函数
 ```javascript
 // Look up ID by name
 const acctId = await api.getIDByName('accounts', 'Checking');
@@ -185,9 +184,9 @@ const payeeId = await api.getIDByName('payees', 'Amazon');
 const budgets = await api.getBudgets();  // local + remote files
 ```
 
-## Transfers
+## 转账
 
-Transfers use special payees. Find transfer payee by `transfer_acct` field:
+转账操作会使用特定的收款人信息。可以通过 `transfer_acct` 字段来查找转账的收款人：
 ```javascript
 const payees = await api.getPayees();
 const transferPayee = payees.find(p => p.transfer_acct === targetAccountId);
@@ -196,8 +195,7 @@ await api.importTransactions(fromAccountId, [
 ]);
 ```
 
-## Split Transactions
-
+## 分组交易
 ```javascript
 await api.importTransactions(accountId, [{
   date: '2026-01-15',
@@ -210,9 +208,9 @@ await api.importTransactions(accountId, [{
 }]);
 ```
 
-## Bulk Import (New Budget)
+## 批量导入（新预算数据）
 
-For migrating from another app:
+用于从其他应用程序迁移数据：
 ```javascript
 await api.runImport('My-New-Budget', async () => {
   for (const acct of myData.accounts) {
@@ -222,7 +220,7 @@ await api.runImport('My-New-Budget', async () => {
 });
 ```
 
-## Reference
+## 参考文档
 
-Full API: https://actualbudget.org/docs/api/reference
-ActualQL: https://actualbudget.org/docs/api/actual-ql
+- 官方 API 文档：https://actualbudget.org/docs/api/reference
+- ActualQL 文档：https://actualbudget.org/docs/api/actual-ql

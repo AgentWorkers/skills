@@ -1,33 +1,33 @@
 ---
 name: fireflies
-description: Access Fireflies.ai meeting transcripts, summaries, action items, and analytics via GraphQL API
+description: 通过 GraphQL API 访问 Fireflies.ai 的会议记录、会议摘要、行动项以及分析数据
 metadata: {"clawdbot":{"secrets":["FIREFLIES_API_KEY"]}}
 ---
 
-# Fireflies.ai Skill
+# Fireflies.ai 技能
 
-Query meeting transcripts, summaries, action items, and analytics from Fireflies.ai.
+用于查询 Fireflies.ai 中的会议记录、摘要、待办事项和分析数据。
 
-## Setup
+## 设置
 
-Set your Fireflies API key:
+设置您的 Fireflies API 密钥：
 ```bash
 FIREFLIES_API_KEY=your_api_key_here
 ```
 
-Get your API key from: https://app.fireflies.ai/integrations (scroll to Fireflies API section)
+您可以从以下链接获取 API 密钥：https://app.fireflies.ai/integrations（滚动到 Fireflies API 部分）
 
-## API Base
+## API 基础信息
 
-GraphQL Endpoint: `https://api.fireflies.ai/graphql`
+GraphQL 端点：`https://api.fireflies.aigraphql`
 
-Authorization header: `Bearer $FIREFLIES_API_KEY`
+授权头：`Bearer $FIREFLIES_API_KEY`
 
 ---
 
-## Core Queries
+## 核心查询
 
-### Get Current User
+### 获取当前用户
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -36,7 +36,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"{ user { user_id name email is_admin minutes_consumed num_transcripts recent_meeting } }"}' | jq
 ```
 
-### Get Single Transcript
+### 获取单条会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -45,7 +45,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($id:String!){transcript(id:$id){id title date duration participants fireflies_users summary{keywords action_items overview topics_discussed} speakers{name duration} sentences{speaker_name text start_time}}}","variables":{"id":"TRANSCRIPT_ID"}}' | jq
 ```
 
-### Search Transcripts by Date Range
+### 按日期范围搜索会议记录
 
 ```bash
 # ISO 8601 format: YYYY-MM-DDTHH:mm:ss.sssZ
@@ -55,7 +55,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($from:DateTime,$to:DateTime,$limit:Int){transcripts(fromDate:$from,toDate:$to,limit:$limit){id title date duration organizer_email participants summary{keywords action_items overview}}}","variables":{"from":"2024-01-01T00:00:00.000Z","to":"2024-01-31T23:59:59.999Z","limit":50}}' | jq
 ```
 
-### Search Transcripts by Participant
+### 按参与者搜索会议记录
 
 ```bash
 # Search meetings where specific people participated
@@ -65,7 +65,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($participants:[String],$limit:Int){transcripts(participants:$participants,limit:$limit){id title date participants organizer_email summary{action_items}}}","variables":{"participants":["john@example.com","jane@example.com"],"limit":20}}' | jq
 ```
 
-### Search Transcripts by Organizer
+### 按组织者搜索会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -74,7 +74,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($organizers:[String],$limit:Int){transcripts(organizers:$organizers,limit:$limit){id title date organizer_email participants}}","variables":{"organizers":["sales@example.com"],"limit":25}}' | jq
 ```
 
-### Search by Keyword (Title and/or Transcript)
+### 按关键词（标题和/或会议内容）搜索会议记录
 
 ```bash
 # scope: "TITLE", "SENTENCES", or "ALL"
@@ -84,7 +84,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($keyword:String,$scope:String){transcripts(keyword:$keyword,scope:$scope,limit:10){id title date summary{overview}}}","variables":{"keyword":"pricing","scope":"ALL"}}' | jq
 ```
 
-### Get My Recent Transcripts
+### 获取我的近期会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -95,9 +95,9 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 
 ---
 
-## Advanced Queries
+## 高级查询
 
-### Get Full Transcript with Summary & Action Items
+### 获取包含摘要和待办事项的完整会议记录
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -106,7 +106,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($id:String!){transcript(id:$id){id title date duration organizer_email participants fireflies_users workspace_users meeting_attendees{displayName email} summary{keywords action_items outline overview bullet_gist topics_discussed meeting_type} speakers{name duration word_count} sentences{speaker_name text start_time end_time}}}","variables":{"id":"TRANSCRIPT_ID"}}' | jq
 ```
 
-### Get Transcript with Analytics
+### 获取包含分析数据的会议记录
 
 ```bash
 # Requires Pro plan or higher
@@ -116,7 +116,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"query($id:String!){transcript(id:$id){id title analytics{sentiments{positive_pct neutral_pct negative_pct} speakers{name duration word_count filler_words questions longest_monologue words_per_minute}}}}","variables":{"id":"TRANSCRIPT_ID"}}' | jq
 ```
 
-### Get Contacts
+### 获取联系人信息
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -125,7 +125,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
   -d '{"query":"{ contacts { email name picture last_meeting_date } }"}' | jq
 ```
 
-### Get Active Meetings
+### 获取正在进行的会议
 
 ```bash
 curl -s -X POST https://api.fireflies.ai/graphql \
@@ -136,9 +136,9 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 
 ---
 
-## Pipeline Review Example
+## 示例：管道审查
 
-Get all meetings from last 7 days with specific participants:
+获取过去 7 天内包含特定参与者的所有会议记录：
 
 ```bash
 FROM_DATE=$(date -u -v-7d +"%Y-%m-%dT00:00:00.000Z")  # macOS
@@ -152,53 +152,54 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 
 ---
 
-## Key Schema Fields
+## 关键数据结构字段
 
-### Transcript Fields
-- `id` - Unique identifier
-- `title` - Meeting title
-- `date` - Unix timestamp (milliseconds)
-- `dateString` - ISO 8601 datetime
-- `duration` - Duration in minutes
-- `organizer_email` - Meeting organizer
-- `participants` - All participant emails
-- `fireflies_users` - Fireflies users who participated
-- `workspace_users` - Team members who participated
-- `meeting_attendees` - Detailed attendee info (displayName, email)
-- `transcript_url` - View in dashboard
-- `audio_url` - Download audio (Pro+, expires 24h)
-- `video_url` - Download video (Business+, expires 24h)
+### 会议记录字段
+- `id` - 唯一标识符
+- `title` - 会议标题
+- `date` - Unix 时间戳（毫秒）
+- `dateString` - ISO 8601 格式的日期时间
+- `duration` - 会议时长（分钟）
+- `organizer_email` - 会议组织者邮箱
+- `participants` - 所有参与者的邮箱
+- `fireflies_users` - 参与的 Fireflies 用户
+- `workspace_users` - 参与的团队成员
+- `meeting_attendees` - 详细的参会者信息（显示名称、邮箱）
+- `transcript_url` - 在仪表板上查看会议记录的链接
+- `audio_url` - 下载音频文件（Pro+ 订阅者可用，有效期 24 小时）
+- `video_url` - 下载视频文件（Business+ 订阅者可用，有效期 24 小时）
 
-### Summary Fields
-- `keywords` - Key topics
-- `action_items` - Extracted action items
-- `overview` - Meeting overview
-- `topics_discussed` - Main topics
-- `meeting_type` - Meeting category
-- `outline` - Structured outline
-- `bullet_gist` - Bullet point summary
+### 摘要字段
+- `keywords` - 关键主题
+- `action_items` - 提取的待办事项
+- `overview` - 会议概述
+- `topics_discussed` - 主要讨论的主题
+- `meeting_type` - 会议类型
+- `outline` - 结构化的会议大纲
+- `bullet_gist` - 会议内容的要点总结
 
-### Sentence Fields
-- `text` - Sentence text
-- `speaker_name` - Who said it
-- `start_time` - Timestamp (seconds)
-- `end_time` - End timestamp
-- `ai_filters` - Filters (task, question, pricing, etc.)
+### 句子字段
+- `text` - 句子文本
+- `speaker_name` - 说话者名称
+- `start_time` - 说话开始时间（秒）
+- `end_time` - 说话结束时间
+- `ai_filters` - 过滤条件（任务、问题、价格等）
 
-### Speaker Fields
-- `name` - Speaker name
-- `duration` - Speaking time
-- `word_count` - Words spoken
-- `filler_words` - Filler word count
-- `questions` - Questions asked
-- `longest_monologue` - Longest uninterrupted speech
-- `words_per_minute` - Speaking pace
+### 演讲者字段
+- `name` - 演讲者名称
+- `duration` - 演讲时长
+- `word_count` - 说话所用单词数
+- `filler_words` - 闲聊或重复性话语的数量
+- `questions` - 提出的问题数量
+- `longest_monologue` - 最长的连续讲话时间
+- `words_per_minute` - 每分钟的讲话速度
 
 ---
 
-## Filter Examples
+## 过滤示例
 
-### By Date Range (ISO 8601)
+### 按日期范围（ISO 8601 格式）过滤
+
 ```json
 {
   "fromDate": "2024-01-01T00:00:00.000Z",
@@ -206,21 +207,24 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 }
 ```
 
-### By Multiple Participants
+### 按多个参与者过滤
+
 ```json
 {
   "participants": ["user1@example.com", "user2@example.com"]
 }
 ```
 
-### By Channel
+### 按频道过滤
+
 ```json
 {
   "channel_id": "channel_id_here"
 }
 ```
 
-### Combined Filters
+### 综合过滤
+
 ```json
 {
   "fromDate": "2024-01-01T00:00:00.000Z",
@@ -234,7 +238,7 @@ curl -s -X POST https://api.fireflies.ai/graphql \
 
 ---
 
-## PowerShell Examples
+## PowerShell 示例
 
 ```powershell
 $headers = @{
@@ -252,21 +256,21 @@ Invoke-RestMethod -Uri "https://api.fireflies.ai/graphql" -Method POST -Headers 
 
 ---
 
-## Notes
+## 注意事项
 
-- **Rate Limits**: Check with Fireflies support for current limits
-- **Pagination**: Use `limit` (max 50) and `skip` for large result sets
-- **Date Format**: Always use ISO 8601 format: `YYYY-MM-DDTHH:mm:ss.sssZ`
-- **Audio/Video URLs**: Expire after 24 hours, regenerate as needed
-- **Analytics**: Requires Pro plan or higher
-- **Video Recording**: Must be enabled in dashboard settings
+- **速率限制**：请咨询 Fireflies 客服了解当前的请求限制。
+- **分页**：对于大量数据，使用 `limit`（最多 50 条）和 `skip` 参数进行分页处理。
+- **日期格式**：始终使用 ISO 8601 格式（例如：`YYYY-MM-DDTHH:mm:ss.sssZ`）。
+- **音频/视频链接**：链接有效期为 24 小时，需要时可重新生成。
+- **分析数据**：需要 Pro 订阅才能使用相关功能。
+- **视频录制**：必须在仪表板设置中启用。
 
 ---
 
-## Common Use Cases
+## 常见使用场景
 
-1. **Weekly Pipeline Review**: Search transcripts by date + participants
-2. **Follow-up Tasks**: Extract action items from recent meetings
-3. **Competitor Mentions**: Search keyword in sentences
-4. **Speaking Analytics**: Analyze talk time, questions asked
-5. **Meeting Insights**: Get summaries and key topics
+1. **每周管道审查**：按日期和参与者搜索会议记录。
+2. **后续任务**：从近期会议中提取待办事项。
+3. **竞争对手提及**：在句子中搜索特定关键词。
+4. **演讲分析**：分析演讲者的发言时间和提出的问题。
+5. **会议洞察**：获取会议摘要和关键主题。

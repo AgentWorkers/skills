@@ -15,11 +15,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Kit
+# 套件（Kit）  
 
-Access the Kit (formerly ConvertKit) API with managed OAuth authentication. Manage subscribers, tags, forms, sequences, broadcasts, custom fields, and webhooks.
+通过管理的 OAuth 认证方式访问套件（Kit，前身为 ConvertKit）API。您可以管理订阅者、标签、表单、序列（sequences）、广播（broadcasts）、自定义字段（custom fields）以及 Webhook。  
 
-## Quick Start
+## 快速入门  
 
 ```bash
 # List subscribers
@@ -29,41 +29,41 @@ req = urllib.request.Request('https://gateway.maton.ai/kit/v4/subscribers?per_pa
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-## Base URL
+## 基本 URL  
 
 ```
 https://gateway.maton.ai/kit/{native-api-path}
-```
+```  
 
-Replace `{native-api-path}` with the actual Kit API endpoint path. The gateway proxies requests to `api.kit.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的套件 API 端点路径。该网关会将请求代理到 `api.kit.com` 并自动插入您的 OAuth 令牌。  
 
-## Authentication
+## 认证  
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：  
 
 ```
 Authorization: Bearer $MATON_API_KEY
-```
+```  
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：  
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
-```
+```  
 
-### Getting Your API Key
+### 获取 API 密钥  
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。  
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。  
+3. 复制您的 API 密钥。  
 
-## Connection Management
+## 连接管理  
 
-Manage your Kit OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的套件 OAuth 连接。  
 
-### List Connections
+### 列出连接（List Connections）  
 
 ```bash
 python <<'EOF'
@@ -72,9 +72,9 @@ req = urllib.request.Request('https://ctrl.maton.ai/connections?app=kit&status=A
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-### Create Connection
+### 创建连接（Create Connection）  
 
 ```bash
 python <<'EOF'
@@ -85,9 +85,9 @@ req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 req.add_header('Content-Type', 'application/json')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-### Get Connection
+### 获取连接（Get Connection）  
 
 ```bash
 python <<'EOF'
@@ -96,9 +96,9 @@ req = urllib.request.Request('https://ctrl.maton.ai/connections/{connection_id}'
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-**Response:**
+**响应：**  
 ```json
 {
   "connection": {
@@ -111,11 +111,11 @@ EOF
     "metadata": {}
   }
 }
-```
+```  
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。  
 
-### Delete Connection
+### 删除连接（Delete Connection）  
 
 ```bash
 python <<'EOF'
@@ -124,11 +124,11 @@ req = urllib.request.Request('https://ctrl.maton.ai/connections/{connection_id}'
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-### Specifying Connection
+### 指定连接（Specify Connection）  
 
-If you have multiple Kit connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个套件连接，请使用 `Maton-Connection` 头来指定要使用的连接：  
 
 ```bash
 python <<'EOF'
@@ -138,31 +138,27 @@ req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 req.add_header('Maton-Connection', 'cb2025b3-706f-4b5d-87a5-c6809c0c7ec4')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。  
 
-## API Reference
+## API 参考  
 
-### Subscribers
+### 订阅者（Subscribers）  
 
-#### List Subscribers
+#### 列出订阅者（List Subscribers）  
 
-```bash
-GET /kit/v4/subscribers
-```
+**查询参数：**  
+- `per_page` - 每页显示的结果数量（默认：500，最大：1000）  
+- `after` - 下一页的游标  
+- `before` - 上一页的游标  
+- `status` - 过滤条件：`active`（活动）、`inactive`（非活动）、`bounced`（被拒绝）、`complained`（投诉）、`cancelled`（已取消）或 `all`  
+- `email_address` - 按特定电子邮件地址过滤  
+- `created_after` / `created_before` - 按创建日期过滤（格式：yyyy-mm-dd）  
+- `updated_after` / `updated_before` - 按更新日期过滤（格式：yyyy-mm-dd）  
+- `include_total_count` - 是否包含总数（此操作较慢）  
 
-Query parameters:
-- `per_page` - Results per page (default: 500, max: 1000)
-- `after` - Cursor for next page
-- `before` - Cursor for previous page
-- `status` - Filter by: `active`, `inactive`, `bounced`, `complained`, `cancelled`, or `all`
-- `email_address` - Filter by specific email
-- `created_after` / `created_before` - Filter by creation date (yyyy-mm-dd)
-- `updated_after` / `updated_before` - Filter by update date (yyyy-mm-dd)
-- `include_total_count` - Include total count (slower)
-
-**Response:**
+**响应：**  
 ```json
 {
   "subscribers": [
@@ -183,15 +179,15 @@ Query parameters:
     "per_page": 500
   }
 }
-```
+```  
 
-#### Get Subscriber
+#### 获取订阅者信息（Get Subscriber Information）  
 
 ```bash
 GET /kit/v4/subscribers/{id}
-```
+```  
 
-#### Create Subscriber
+#### 创建订阅者（Create Subscriber）  
 
 ```bash
 POST /kit/v4/subscribers
@@ -201,9 +197,9 @@ Content-Type: application/json
   "email_address": "user@example.com",
   "first_name": "John"
 }
-```
+```  
 
-#### Update Subscriber
+#### 更新订阅者信息（Update Subscriber Information）  
 
 ```bash
 PUT /kit/v4/subscribers/{id}
@@ -212,19 +208,16 @@ Content-Type: application/json
 {
   "first_name": "Updated Name"
 }
-```
+```  
 
-### Tags
+### 标签（Tags）  
 
-#### List Tags
+#### 列出标签（List Tags）  
 
-```bash
-GET /kit/v4/tags
-```
+**查询参数：**  
+- `per_page`、`after`、`before`、`include_total_count`  
 
-Query parameters: `per_page`, `after`, `before`, `include_total_count`
-
-#### Create Tag
+#### 创建标签（Create Tag）  
 
 ```bash
 POST /kit/v4/tags
@@ -233,9 +226,9 @@ Content-Type: application/json
 {
   "name": "new-tag"
 }
-```
+```  
 
-**Response:**
+**响应：**  
 ```json
 {
   "tag": {
@@ -244,9 +237,9 @@ Content-Type: application/json
     "created_at": "2026-02-07T00:42:53Z"
   }
 }
-```
+```  
 
-#### Update Tag
+#### 更新标签信息（Update Tag Information）  
 
 ```bash
 PUT /kit/v4/tags/{id}
@@ -255,17 +248,14 @@ Content-Type: application/json
 {
   "name": "updated-tag-name"
 }
-```
+```  
 
-#### Delete Tag
+#### 删除标签（Delete Tag）  
 
-```bash
-DELETE /kit/v4/tags/{id}
-```
+**响应：**  
+成功时返回 204（No Content）。  
 
-Returns 204 No Content on success.
-
-#### Tag a Subscriber
+#### 为订阅者添加标签（Tag a Subscriber）  
 
 ```bash
 POST /kit/v4/tags/{tag_id}/subscribers
@@ -274,36 +264,29 @@ Content-Type: application/json
 {
   "email_address": "user@example.com"
 }
-```
+```  
 
-#### Remove Tag from Subscriber
+#### 从订阅者中移除标签（Remove Tag from Subscriber）  
 
-```bash
-DELETE /kit/v4/tags/{tag_id}/subscribers/{subscriber_id}
-```
+**响应：**  
+成功时返回 204（No Content）。  
 
-Returns 204 No Content on success.
-
-#### List Subscribers with Tag
+#### 列出带有标签的订阅者（List Subscribers with Tag）  
 
 ```bash
 GET /kit/v4/tags/{tag_id}/subscribers
-```
+```  
 
-### Forms
+### 表单（Forms）  
 
-#### List Forms
+#### 列出表单（List Forms）  
 
-```bash
-GET /kit/v4/forms
-```
+**查询参数：**  
+- `per_page`、`after`、`before`、`include_total_count`  
+- `status` - 过滤条件：`active`（活动）、`archived`（已归档）、`trashed`（已删除）或 `all`  
+- `type` - `embed`（嵌入式表单）或 `hosted`（ landing 页面使用的表单）  
 
-Query parameters:
-- `per_page`, `after`, `before`, `include_total_count`
-- `status` - Filter by: `active`, `archived`, `trashed`, or `all`
-- `type` - `embed` for embedded forms, `hosted` for landing pages
-
-**Response:**
+**响应：**  
 ```json
 {
   "forms": [
@@ -321,9 +304,9 @@ Query parameters:
   ],
   "pagination": {...}
 }
-```
+```  
 
-#### Add Subscriber to Form
+#### 将订阅者添加到表单（Add Subscriber to Form）  
 
 ```bash
 POST /kit/v4/forms/{form_id}/subscribers
@@ -332,39 +315,24 @@ Content-Type: application/json
 {
   "email_address": "user@example.com"
 }
-```
+```  
 
-#### List Form Subscribers
+#### 列出表单的订阅者（List Form Subscribers）  
 
 ```bash
 GET /kit/v4/forms/{form_id}/subscribers
-```
+```  
 
-### Sequences
+### 序列（Sequences）  
 
-#### List Sequences
+#### 列出序列（List Sequences）  
 
+**响应：**  
 ```bash
 GET /kit/v4/sequences
-```
+```  
 
-**Response:**
-```json
-{
-  "sequences": [
-    {
-      "id": 123,
-      "name": "Welcome Sequence",
-      "hold": false,
-      "repeat": false,
-      "created_at": "2026-01-01T00:00:00Z"
-    }
-  ],
-  "pagination": {...}
-}
-```
-
-#### Add Subscriber to Sequence
+#### 将订阅者添加到序列（Add Subscriber to Sequence）  
 
 ```bash
 POST /kit/v4/sequences/{sequence_id}/subscribers
@@ -373,25 +341,22 @@ Content-Type: application/json
 {
   "email_address": "user@example.com"
 }
-```
+```  
 
-#### List Sequence Subscribers
+#### 列出序列的订阅者（List Sequence Subscribers）  
 
 ```bash
 GET /kit/v4/sequences/{sequence_id}/subscribers
-```
+```  
 
-### Broadcasts
+### 广播（Broadcasts）  
 
-#### List Broadcasts
+#### 列出广播（List Broadcasts）  
 
-```bash
-GET /kit/v4/broadcasts
-```
+**查询参数：**  
+- `per_page`、`after`、`before`、`include_total_count`  
 
-Query parameters: `per_page`, `after`, `before`, `include_total_count`
-
-**Response:**
+**响应：**  
 ```json
 {
   "broadcasts": [
@@ -410,42 +375,25 @@ Query parameters: `per_page`, `after`, `before`, `include_total_count`
   ],
   "pagination": {...}
 }
-```
+```  
 
-### Segments
+### 分段（Segments）  
 
-#### List Segments
+#### 列出分段（List Segments）  
 
-```bash
-GET /kit/v4/segments
-```
+**查询参数：**  
+- `per_page`、`after`、`before`、`include_total_count`  
 
-Query parameters: `per_page`, `after`, `before`, `include_total_count`
+### 自定义字段（Custom Fields）  
 
-### Custom Fields
+#### 列出自定义字段（List Custom Fields）  
 
-#### List Custom Fields
-
+**响应：**  
 ```bash
 GET /kit/v4/custom_fields
-```
+```  
 
-**Response:**
-```json
-{
-  "custom_fields": [
-    {
-      "id": 1192946,
-      "name": "ck_field_1192946_company",
-      "key": "company",
-      "label": "Company"
-    }
-  ],
-  "pagination": {...}
-}
-```
-
-#### Create Custom Field
+#### 创建自定义字段（Create Custom Field）  
 
 ```bash
 POST /kit/v4/custom_fields
@@ -454,9 +402,9 @@ Content-Type: application/json
 {
   "label": "Company"
 }
-```
+```  
 
-#### Update Custom Field
+#### 更新自定义字段（Update Custom Field）  
 
 ```bash
 PUT /kit/v4/custom_fields/{id}
@@ -465,35 +413,25 @@ Content-Type: application/json
 {
   "label": "Company Name"
 }
-```
+```  
 
-#### Delete Custom Field
+#### 删除自定义字段（Delete Custom Field）  
 
-```bash
-DELETE /kit/v4/custom_fields/{id}
-```
+**响应：**  
+成功时返回 204（No Content）。  
 
-Returns 204 No Content on success.
+### 购买记录（Purchases）  
 
-### Purchases
+#### 列出购买记录（List Purchases）  
 
-#### List Purchases
+**查询参数：**  
+- `per_page`、`after`、`before`、`include_total_count`  
 
-```bash
-GET /kit/v4/purchases
-```
+### 电子邮件模板（Email Templates）  
 
-Query parameters: `per_page`, `after`, `before`, `include_total_count`
+#### 列出电子邮件模板（List Email Templates）  
 
-### Email Templates
-
-#### List Email Templates
-
-```bash
-GET /kit/v4/email_templates
-```
-
-**Response:**
+**响应：**  
 ```json
 {
   "email_templates": [
@@ -506,29 +444,20 @@ GET /kit/v4/email_templates
   ],
   "pagination": {...}
 }
-```
+```  
 
-### Webhooks
+### Webhook  
 
-#### List Webhooks
+#### 列出 Webhook（List Webhooks）  
 
+**响应：**  
 ```bash
 GET /kit/v4/webhooks
-```
+```  
 
-#### Create Webhook
+#### 创建 Webhook（Create Webhook）  
 
-```bash
-POST /kit/v4/webhooks
-Content-Type: application/json
-
-{
-  "target_url": "https://example.com/webhook",
-  "event": {"name": "subscriber.subscriber_activate"}
-}
-```
-
-**Response:**
+**响应：**  
 ```json
 {
   "webhook": {
@@ -541,26 +470,22 @@ Content-Type: application/json
     "target_url": "https://example.com/webhook"
   }
 }
-```
+```  
 
-#### Delete Webhook
+#### 删除 Webhook（Delete Webhook）  
 
-```bash
-DELETE /kit/v4/webhooks/{id}
-```
+**响应：**  
+成功时返回 204（No Content）。  
 
-Returns 204 No Content on success.
+## 分页（Pagination）  
 
-## Pagination
-
-Kit uses cursor-based pagination. Use `after` and `before` query parameters with cursor values from the response.
+套件使用基于游标的分页机制。请使用 `after` 和 `before` 查询参数，并使用响应中的游标值进行分页。  
 
 ```bash
 GET /kit/v4/subscribers?per_page=100&after=WzE0OV0=
-```
+```  
 
-Response includes pagination info:
-
+**响应中包含分页信息：**  
 ```json
 {
   "subscribers": [...],
@@ -572,11 +497,11 @@ Response includes pagination info:
     "per_page": 100
   }
 }
-```
+```  
 
-## Code Examples
+## 代码示例  
 
-### JavaScript
+### JavaScript  
 
 ```javascript
 const response = await fetch(
@@ -588,9 +513,9 @@ const response = await fetch(
   }
 );
 const data = await response.json();
-```
+```  
 
-### Python
+### Python  
 
 ```python
 import os
@@ -602,38 +527,37 @@ response = requests.get(
     params={'per_page': 10}
 )
 data = response.json()
-```
+```  
 
-## Notes
+## 注意事项：**  
+- 套件 API 使用 V4（V3 已弃用）  
+- 订阅者 ID 为整数  
+- 自定义字段的键是根据标签自动生成的  
+- 大量操作（超过 100 个条目）会异步处理  
+- 删除操作成功时返回 204（No Content）且响应体为空  
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含括号，请使用 `curl -g` 以禁用全局解析  
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析  
 
-- Kit API uses V4 (V3 is deprecated)
-- Subscriber IDs are integers
-- Custom field keys are auto-generated from labels
-- Bulk operations (>100 items) are processed asynchronously
-- Delete operations return 204 No Content with empty body
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+## 错误处理（Error Handling）  
 
-## Error Handling
+| 状态码 | 含义 |  
+|--------|---------|  
+| 400 | 未建立套件连接  
+| 401 | Maton API 密钥无效或缺失  
+| 403 | 权限不足（请检查 OAuth 权限范围）  
+| 404 | 资源未找到  
+| 429 | 请求频率受限  
+| 4xx/5xx | 来自套件 API 的传递错误  
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Missing Kit connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions (check OAuth scopes) |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Kit API |
+### 故障排除：API 密钥问题  
 
-### Troubleshooting: API Key Issues
-
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：  
 
 ```bash
 echo $MATON_API_KEY
-```
+```  
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：  
 
 ```bash
 python <<'EOF'
@@ -642,20 +566,18 @@ req = urllib.request.Request('https://ctrl.maton.ai/connections')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
-```
+```  
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效（Invalid App Name）  
 
-1. Ensure your URL path starts with `kit`. For example:
+1. 确保您的 URL 路径以 `kit` 开头。例如：  
+- 正确：`https://gateway.maton.ai/kit/v4/subscribers`  
+- 错误：`https://gateway.maton.ai/v4/subscribers`  
 
-- Correct: `https://gateway.maton.ai/kit/v4/subscribers`
-- Incorrect: `https://gateway.maton.ai/v4/subscribers`
-
-## Resources
-
-- [Kit API Overview](https://developers.kit.com/api-reference/overview)
-- [Kit API Subscribers](https://developers.kit.com/api-reference/subscribers/list-subscribers)
-- [Kit API Tags](https://developers.kit.com/api-reference/tags/list-tags)
-- [Kit API Forms](https://developers.kit.com/api-reference/forms/list-forms)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+## 资源（Resources）：**  
+- [套件 API 概述](https://developers.kit.com/api-reference/overview)  
+- [套件 API 订阅者](https://developers.kit.com/api-reference/subscribers/list-subscribers)  
+- [套件 API 标签](https://developers.kit.com/api-reference/tags/list-tags)  
+- [套件 API 表单](https://developers.kit.com/api-reference/forms/list-forms)  
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)  
+- [Maton 支持](mailto:support@maton.ai)

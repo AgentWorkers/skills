@@ -1,6 +1,6 @@
 ---
 name: batch-convert
-description: Batch convert documents between multiple formats using a unified pipeline
+description: 使用统一的流程批量将文档转换为多种格式
 author: claude-office-skills
 version: "1.0"
 tags: [conversion, batch, automation, pipeline, formats]
@@ -8,39 +8,39 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, code_execution, file_operations]
 ---
 
-# Batch Convert Skill
+# 批量转换文档功能
 
-## Overview
+## 概述
 
-This skill enables batch conversion of documents between multiple formats using a unified pipeline. Convert hundreds of files at once with consistent settings, automatic format detection, and parallel processing for maximum efficiency.
+该功能支持使用统一的转换流程，批量将文档从一种格式转换为另一种格式。支持同时转换数百个文件，具有设置一致性、自动格式检测和并行处理等功能，从而实现最高效率。
 
-## How to Use
+## 使用方法
 
-1. Specify the source folder or files
-2. Choose target format(s)
-3. Optionally configure conversion options
-4. I'll process all files with progress tracking
+1. 指定源文件夹或文件。
+2. 选择目标格式。
+3. （可选）配置转换选项。
+4. 系统会跟踪所有文件的转换进度并进行处理。
 
-**Example prompts:**
-- "Convert all PDFs in this folder to Word documents"
-- "Batch convert these markdown files to PDF and HTML"
-- "Process all Office files and convert to Markdown"
-- "Convert this folder of images to a single PDF"
+**示例命令**：
+- “将此文件夹中的所有PDF文件转换为Word文档”。
+- “将这些Markdown文件批量转换为PDF和HTML格式”。
+- “处理所有Office格式的文件，并将其转换为Markdown格式”。
+- “将此文件夹中的所有图片文件合并为一个PDF文件”。
 
-## Domain Knowledge
+## 相关领域知识
 
-### Supported Format Matrix
+### 支持的格式转换矩阵
 
-| From | To: DOCX | To: PDF | To: MD | To: HTML | To: PPTX |
+| 源格式 | 目标格式：DOCX | 目标格式：PDF | 目标格式：Markdown | 目标格式：HTML | 目标格式：PPTX |
 |------|----------|---------|--------|----------|----------|
 | DOCX | - | ✅ | ✅ | ✅ | - |
 | PDF | ✅ | - | ✅ | ✅ | - |
-| MD | ✅ | ✅ | - | ✅ | ✅ |
+| Markdown | ✅ | ✅ | - | ✅ | ✅ |
 | HTML | ✅ | ✅ | ✅ | - | - |
 | XLSX | - | ✅ | ✅ | ✅ | - |
 | PPTX | - | ✅ | ✅ | ✅ | - |
 
-### Core Pipeline
+### 核心转换流程
 
 ```python
 from pathlib import Path
@@ -123,7 +123,7 @@ class DocumentConverter:
         return results
 ```
 
-### Converter Implementations
+### 转换器实现细节
 
 ```python
 # Markdown conversions (using Pandoc)
@@ -207,7 +207,7 @@ def _pptx_to_pdf(self, input_path, output_path):
     return output_path
 ```
 
-### Progress Tracking
+### 进度跟踪机制
 
 ```python
 from tqdm import tqdm
@@ -228,221 +228,29 @@ def batch_convert_with_progress(converter, input_dir, output_format, output_dir=
     return results
 ```
 
-## Best Practices
+## 使用建议
 
-1. **Test Sample First**: Convert a few files before batch processing
-2. **Check Disk Space**: Ensure sufficient space for output
-3. **Use Parallel Processing**: Speed up with multiple workers
-4. **Handle Errors Gracefully**: Log failures, continue processing
-5. **Verify Output**: Spot-check converted files
+1. **先测试样本文件**：在批量转换前先转换少量文件以确保转换正确。
+2. **检查磁盘空间**：确保有足够的存储空间用于存放转换后的文件。
+3. **使用并行处理**：通过多线程加速转换速度。
+4. **优雅地处理错误**：记录错误信息并继续执行其他文件的转换。
+5. **验证转换结果**：抽查部分转换后的文件以确保质量。
 
-## Common Patterns
+## 常见应用场景
 
-### Format Detection Pipeline
-```python
-def detect_and_convert(file_path, target_format):
-    """Automatically detect format and convert."""
-    import mimetypes
-    
-    mime_type, _ = mimetypes.guess_type(str(file_path))
-    
-    format_map = {
-        'application/pdf': 'pdf',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
-        'text/markdown': 'md',
-        'text/html': 'html',
-    }
-    
-    source_format = format_map.get(mime_type, Path(file_path).suffix[1:])
-    
-    converter = DocumentConverter()
-    return converter.convert(file_path, target_format)
-```
+- **文档导出**：将多种格式的文档统一转换为标准格式。
+- **旧版文档迁移**：将旧格式的文档转换为现代格式。
+- **报告生成**：自动生成各种格式的报告。
 
-### Multi-Format Output
-```python
-def convert_to_multiple_formats(input_file, output_formats, output_dir):
-    """Convert one file to multiple formats."""
-    converter = DocumentConverter()
-    results = {}
-    
-    for fmt in output_formats:
-        try:
-            output = converter.convert(input_file, fmt, output_dir)
-            results[fmt] = {'status': 'success', 'path': str(output)}
-        except Exception as e:
-            results[fmt] = {'status': 'error', 'error': str(e)}
-    
-    return results
+## 注意事项
 
-# Convert README to multiple formats
-results = convert_to_multiple_formats(
-    'README.md',
-    ['docx', 'pdf', 'html'],
-    './exports'
-)
-```
+- **部分格式组合可能不受支持**。
+- 复杂的格式设置可能在转换过程中丢失。
+- 大文件可能需要更长的转换时间。
+- 某些格式的转换可能需要依赖外部工具（如LibreOffice、Pandoc）。
+- 转换后的文档质量会受到源文档复杂度的影响。
 
-## Examples
-
-### Example 1: Documentation Export
-```python
-from pathlib import Path
-import json
-
-def export_documentation(docs_dir, export_dir):
-    """Export all documentation to multiple formats."""
-    
-    converter = DocumentConverter(max_workers=8)
-    docs_path = Path(docs_dir)
-    export_path = Path(export_dir)
-    
-    # Create format directories
-    for fmt in ['pdf', 'docx', 'html']:
-        (export_path / fmt).mkdir(parents=True, exist_ok=True)
-    
-    all_results = {}
-    
-    # Find all markdown files
-    md_files = list(docs_path.rglob('*.md'))
-    
-    for md_file in md_files:
-        file_results = {}
-        
-        for fmt in ['pdf', 'docx', 'html']:
-            output_dir = export_path / fmt
-            try:
-                output = converter.convert(md_file, fmt, output_dir)
-                file_results[fmt] = 'success'
-            except Exception as e:
-                file_results[fmt] = f'error: {e}'
-        
-        all_results[str(md_file)] = file_results
-        print(f"Processed: {md_file.name}")
-    
-    # Save report
-    with open(export_path / 'export_report.json', 'w') as f:
-        json.dump(all_results, f, indent=2)
-    
-    return all_results
-
-results = export_documentation('./docs', './exports')
-```
-
-### Example 2: Legacy Document Migration
-```python
-def migrate_legacy_docs(source_dir, target_dir):
-    """Migrate legacy documents to modern formats."""
-    
-    converter = DocumentConverter(max_workers=4)
-    
-    # Migration rules
-    migrations = [
-        ('*.doc', 'docx'),   # Old Word to new
-        ('*.xls', 'xlsx'),   # Old Excel to new
-        ('*.ppt', 'pptx'),   # Old PowerPoint to new
-        ('*.rtf', 'docx'),   # RTF to Word
-    ]
-    
-    source_path = Path(source_dir)
-    target_path = Path(target_dir)
-    target_path.mkdir(exist_ok=True)
-    
-    total_migrated = 0
-    errors = []
-    
-    for pattern, target_format in migrations:
-        files = list(source_path.glob(pattern))
-        
-        for file in files:
-            try:
-                # Use LibreOffice for legacy formats
-                subprocess.run([
-                    'soffice', '--headless',
-                    '--convert-to', target_format,
-                    '--outdir', str(target_path),
-                    str(file)
-                ], check=True)
-                
-                total_migrated += 1
-                print(f"Migrated: {file.name}")
-                
-            except Exception as e:
-                errors.append({'file': str(file), 'error': str(e)})
-    
-    print(f"\nMigration complete: {total_migrated} files")
-    print(f"Errors: {len(errors)}")
-    
-    return {'migrated': total_migrated, 'errors': errors}
-```
-
-### Example 3: Report Generation Pipeline
-```python
-def generate_reports_pipeline(data_files, template_dir, output_dir):
-    """Generate reports from data files using templates."""
-    
-    from datetime import datetime
-    
-    converter = DocumentConverter()
-    output_path = Path(output_dir)
-    output_path.mkdir(exist_ok=True)
-    
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
-    reports = []
-    
-    for data_file in data_files:
-        # Load data
-        data_path = Path(data_file)
-        
-        # Generate markdown report
-        md_content = f"""---
-title: Report - {data_path.stem}
-date: {datetime.now().strftime('%Y-%m-%d')}
----
-
-# {data_path.stem} Report
-
-Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-## Data Summary
-
-"""
-        
-        # Add data content (simplified)
-        if data_path.suffix == '.xlsx':
-            from markitdown import MarkItDown
-            md = MarkItDown()
-            result = md.convert(str(data_path))
-            md_content += result.text_content
-        
-        # Save markdown
-        md_file = output_path / f"{data_path.stem}_{timestamp}.md"
-        with open(md_file, 'w') as f:
-            f.write(md_content)
-        
-        # Convert to PDF and DOCX
-        for fmt in ['pdf', 'docx']:
-            try:
-                output = converter.convert(md_file, fmt, output_path)
-                reports.append({'source': str(data_file), 'output': str(output), 'format': fmt})
-            except Exception as e:
-                print(f"Error converting {data_file} to {fmt}: {e}")
-    
-    return reports
-```
-
-## Limitations
-
-- Some format combinations not supported
-- Complex formatting may be lost in conversion
-- Large files may require more time
-- Some conversions need external tools (LibreOffice, Pandoc)
-- Quality varies by source document complexity
-
-## Installation
+## 安装说明
 
 ```bash
 # Core dependencies
@@ -460,9 +268,9 @@ brew install libreoffice  # macOS
 apt install libreoffice   # Ubuntu
 ```
 
-## Resources
+## 参考资源
 
-- [Pandoc Documentation](https://pandoc.org/MANUAL.html)
-- [markitdown GitHub](https://github.com/microsoft/markitdown)
-- [pdf2docx Documentation](https://pdf2docx.readthedocs.io/)
-- [LibreOffice CLI](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html)
+- [Pandoc官方文档](https://pandoc.org/MANUAL.html)
+- [Markitdown项目GitHub页面](https://github.com/microsoft/markitdown)
+- [pdf2docx转换工具文档](https://pdf2docx.readthedocs.io/)
+- [LibreOffice命令行工具指南](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html)

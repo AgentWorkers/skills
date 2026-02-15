@@ -1,191 +1,155 @@
 ---
 name: gmail-inbox-zero
-description: Gmail Inbox Zero Triage - Interactive inbox management using gog CLI with Telegram buttons. Use when the user wants to achieve inbox zero, triage their Gmail inbox interactively, process ALL inbox messages (read and unread) with AI summaries and batch actions (archive, filter, unsubscribe). OAuth-based, no passwords needed.
+description: **Gmail收件箱归零管理工具：**  
+通过使用 `gog CLI` 结合 Telegram 按钮，实现交互式的收件箱管理功能。适用于希望将 Gmail 收件箱清空的用户，可对所有邮件（已读和未读）进行分类处理，并通过人工智能生成摘要，支持批量操作（归档、过滤、取消订阅等）。该工具基于 OAuth 认证，无需输入密码即可使用。
 ---
 
-# Gmail Inbox Zero Triage
+# Gmail收件箱归类管理：实现“零邮件”状态
 
-Achieve inbox zero with AI-powered email triage! Process ALL Gmail inbox messages interactively with summaries and batch actions using OAuth (no passwords needed).
+利用人工智能技术，轻松管理Gmail收件箱！通过OAuth（无需密码）即可交互式地处理所有邮件，并支持批量操作。
 
-## Features
+## 主要功能
 
-✅ **OAuth-based** - No passwords, secure authentication via gog  
-✅ **AI summaries** - Quick 1-line summary of each email  
-✅ **Batch processing** - Queue actions instantly, execute at the end  
-✅ **Telegram buttons** - Archive, Filter, Unsubscribe, View  
-✅ **Inbox zero focus** - Process ALL inbox messages (read + unread)  
-✅ **Fast workflow** - No waiting between actions
+✅ **基于OAuth的认证**：无需密码，通过gog平台进行安全认证  
+✅ **人工智能生成的邮件摘要**：每封邮件都会被生成简短的摘要  
+✅ **批量处理**：可立即将操作加入队列，并在后台统一执行  
+✅ **Telegram集成按钮**：支持归档、过滤、取消订阅和查看邮件  
+✅ **全面处理收件箱邮件（已读/未读）**  
+✅ **高效的工作流程**：操作之间无需等待  
 
-## Workflow
+## 工作流程
 
-1. **User triggers:** "Triage my emails" or "Process my inbox"
-2. **Fetch ALL inbox messages** from Gmail (up to 20 at a time)
-3. **Display all emails at once** with:
-   - Subject and sender
-   - AI-generated summary (1 line)
-   - Telegram inline buttons for actions
-4. **User clicks actions** for each email (queued instantly, no API calls yet)
-5. **User clicks "Done"** button to execute all queued actions in batch
-6. **Repeat until inbox zero!** 🎯
+1. **用户触发**：点击“归类邮件”或“处理收件箱”  
+2. **从Gmail获取所有邮件**（每次最多20封）  
+3. **一次性显示所有邮件信息**，包括：  
+   - 主题和发件人  
+   - 人工智能生成的摘要  
+   - 用于执行操作的Telegram内联按钮  
+4. **用户点击相应按钮**（操作会立即加入队列，无需调用API）  
+5. **用户点击“完成”按钮**，批量执行所有队列中的操作  
+6. **重复此过程，直至收件箱达到“零邮件”状态！** 🎯  
 
-## Prerequisites
+## 先决条件
 
-**Requires:** `gog` CLI with authenticated Gmail account.
-
-Check if already set up:
-```bash
+**需要**：已安装`gog` CLI工具，并使用已认证的Gmail账户。  
+**检查是否已设置**：```bash
 gog auth list
-```
-
-If not set up, user needs to run `gog auth add` (see gog skill for OAuth setup).
-
-Set environment variable for keyring password:
-```bash
+```  
+如果尚未设置，请运行`gog auth add`（详见gog技能文档中的OAuth设置指南）。  
+**设置环境变量**：```bash
 export GOG_KEYRING_PASSWORD="your-password"
-```
+```  
 
-## Telegram Button Layout
+## Telegram按钮布局  
 
-Each email displays with 4 action buttons:
-
+每封邮件都会显示4个操作按钮：  
 ```
 [📥 Archive] [🔍 Filter]
 [🚫 Unsub]   [📧 View]
-```
+```  
+- **📥 归档**：将邮件从收件箱移除并标记为已读  
+- **🔍 过滤**：创建过滤器，自动归档来自该发件人的未来邮件  
+- **🚫 取消订阅**：查找并点击取消订阅链接  
+- **📧 查看**：显示邮件的完整内容  
+- **不点击**：保留邮件在收件箱中  
 
-- **📥 Archive** - Remove from inbox, mark as read
-- **🔍 Filter** - Create filter to auto-archive future emails from sender
-- **🚫 Unsubscribe** - Find and open unsubscribe link
-- **📧 View** - Show full email content
-- **No click** = Skip (leave in inbox)
+## 操作队列系统  
 
-At the end:
-```
-[✅ Done - Execute All Actions]
-```
+为避免Telegram的字符限制（64个字符），操作通过简短的回调代码进行排队：  
+- `q:a:0`：将邮件归档（索引0）  
+- `q:f:0`：创建过滤器（索引0）  
+- `q:u:0`：取消订阅（索引0）  
+- `q:v:0`：查看邮件内容（立即执行）  
+- `q:done`：批量执行所有队列中的操作  
 
-## Action Queue System
+队列由`scripts/queue_manager.py`管理，并存储在`action_queue.json`文件中。  
 
-Actions are queued using short callback codes to avoid Telegram's 64-char limit:
+## 相关脚本  
 
-- `q:a:0` = queue archive, message index 0
-- `q:f:0` = queue filter, message index 0  
-- `q:u:0` = queue unsubscribe, message index 0
-- `q:v:0` = view full email, message index 0 (executes immediately)
-- `q:done` = execute all queued actions
+### `gog_processor.py`  
 
-Queue is managed via `scripts/queue_manager.py` and stored in `action_queue.json`.
-
-## Scripts
-
-### gog_processor.py
-
-Main processor for Gmail operations via gog CLI.
-
-**List inbox messages:**
-```bash
+通过`gog CLI`处理Gmail邮件的主要脚本：  
+- **列出收件箱邮件**：```bash
 python3 scripts/gog_processor.py list <account> [limit]
-```
-
-**Archive a message:**
-```bash
+```  
+- **归档邮件**：```bash
 python3 scripts/gog_processor.py archive <account> <msg_id>
-```
-
-**Find unsubscribe link:**
-```bash
+```  
+- **查找取消订阅链接**：```bash
 python3 scripts/gog_processor.py unsubscribe <account> <msg_id>
-```
-
-**Create filter:**
-```bash
+```  
+- **创建过滤器**：```bash
 python3 scripts/gog_processor.py filter <account> "<from_header>"
-```
-
-**Get message body:**
-```bash
+```  
+- **获取邮件内容**：```bash
 python3 scripts/gog_processor.py body <account> <msg_id>
-```
+```  
 
-### queue_manager.py
+### `queue_manager.py`  
 
-Manages action queue for batch execution.
-
-**Add action to queue:**
-```bash
+负责管理操作队列以进行批量执行：  
+- **将操作加入队列**：```bash
 python3 scripts/queue_manager.py add <action> <msg_id> [from_header]
-```
-
-**Get queue:**
-```bash
+```  
+- **获取队列状态**：```bash
 python3 scripts/queue_manager.py get
-```
-
-**Clear queue:**
-```bash
+```  
+- **清空队列**：```bash
 python3 scripts/queue_manager.py clear
-```
+```  
 
-### execute_queue.py
+### `execute_queue.py**  
 
-Executes all queued actions in batch.
+批量执行所有队列中的操作，并返回执行结果（以JSON格式）。  
 
-```bash
-python3 scripts/execute_queue.py <account>
-```
+## 实现步骤  
 
-Returns JSON with results of all executed actions.
+1. **加载当前批次邮件**：从Gmail获取邮件并保存到`current_batch.json`  
+2. **显示所有邮件**：包括邮件摘要和操作按钮  
+3. **处理用户点击的按钮**：  
+   - 归档/过滤/取消订阅：通过`queue_manager.py`将操作加入队列  
+   - 查看邮件：立即获取并显示邮件内容  
+   - 完成操作：通过`execute_queue.py`执行队列中的操作  
+4. **显示结果**：显示已归档的邮件数量和剩余未读邮件数量  
+5. **根据需要重复上述步骤**：继续获取新邮件或确认收件箱达到“零邮件”状态  
 
-## Implementation Steps
+## 人工智能摘要生成规则  
 
-1. **Load current batch:** Fetch inbox messages and save to `current_batch.json`
-2. **Display all emails:** Show each with summary and buttons
-3. **Handle button callbacks:**
-   - Archive/Filter/Unsub: Add to queue via `queue_manager.py`
-   - View: Fetch and display full email immediately
-   - Done: Execute queue via `execute_queue.py`
-4. **Show results:** Report archived count and remaining inbox count
-5. **Repeat if needed:** Fetch next batch or celebrate inbox zero
+生成简洁的1行摘要：  
+- **收款/发票**：“收到$X的付款通知。”  
+- **安全警报**：“关于[具体操作]的安全提醒。[重要/普通]级别。”  
+- **新闻通讯**：“关于[主题]的新闻通讯。无需采取任何操作。”  
+- **日历事件**：“[日期/时间]的日历事件。”  
+- **法律文件**：“法律[文件类型]。[简要说明]。”  
 
-## AI Summary Guidelines
+摘要应保持简洁、客观且具有指导性。  
 
-Generate concise 1-line summaries:
+## 安全注意事项  
 
-- **Receipts/Invoices:** "Payment receipt for $X. Financial record."
-- **Security alerts:** "Security notification about [action]. [Important/Standard] alert."
-- **Newsletters:** "Newsletter about [topic]. No action required."
-- **Calendar:** "Calendar [event type] for [date/time]."
-- **Legal:** "Legal [document type]. [Brief context]."
+- **基于OAuth的认证**：无需密码，使用gog的OAuth令牌  
+- **令牌安全存储**：由`gog CLI`保存在系统密钥链中  
+- **权限控制**：`gog`仅访问用户允许的权限范围  
+- **队列数据本地存储**：操作队列为临时存储，执行完成后会被清除  
 
-Keep it simple, factual, and action-oriented.
+## 错误处理  
 
-## Security Notes
+- **认证失败**：运行`gog auth add <account>`进行重新认证  
+- **账户未找到**：使用`gog auth list`查看可用账户  
+- **收件箱无邮件**：表示成功，收件箱已达到“零邮件”状态  
+- **权限问题**：用户可能需要重新认证  
+- **密钥链密码**：请设置`GOG_KEYRING_PASSWORD`环境变量  
 
-- **OAuth-based authentication** - No passwords needed, uses gog's OAuth tokens
-- **Tokens stored securely** by gog CLI in system keychain
-- **Read/modify permissions** - gog only gets access to what user grants
-- **Queue stored locally** - Action queue is temporary, cleared after execution
+## 所需依赖库  
 
-## Error Handling
+- **gog CLI**：必须安装并完成认证（详见gog技能文档）  
+- **Python 3**：仅需要标准库（`subprocess`, `json`, `re`, `pathlib`）  
 
-Common issues:
-- **gog not authenticated:** Run `gog auth add <account>`
-- **Account not found:** Check `gog auth list` for available accounts
-- **No inbox messages:** Success state - inbox zero achieved!
-- **Permission denied:** User may need to re-authenticate with gog
-- **Keyring password:** Set `GOG_KEYRING_PASSWORD` environment variable
+无需额外安装其他第三方库。  
 
-## Dependencies
+## 使用建议  
 
-- **gog CLI** - Must be installed and authenticated (see gog skill)
-- **Python 3** - Standard library only (subprocess, json, re, pathlib)
-
-No additional pip packages needed.
-
-## Tips for Best Experience
-
-- **Process regularly:** Triage inbox daily to maintain inbox zero
-- **Use filters liberally:** Auto-archive recurring newsletters and notifications
-- **Archive aggressively:** If you don't need it now, archive it (searchable in All Mail)
-- **Batch mode is fast:** Process 10-20 emails in under a minute
-- **Trust the summaries:** AI summaries are accurate for quick decisions
+- **定期处理邮件**：每天对收件箱进行归类，保持“零邮件”状态  
+- **灵活使用过滤器**：自动归档重复发送的新闻通讯和通知  
+- **及时归档**：不需要的邮件请及时归档（可在“所有邮件”中搜索）  
+- **批量处理效率高**：每分钟可处理10-20封邮件  
+- **信任人工智能摘要**：摘要信息准确，便于快速决策

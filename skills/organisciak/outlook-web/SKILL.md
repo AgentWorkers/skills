@@ -1,53 +1,59 @@
 ---
 name: outlook-web
-description: Access Outlook Web for email and calendar operations - reading, composing (as drafts by default), searching, and managing emails and calendar events. Use when the user needs to check email, draft messages, search inbox, view calendar, or manage their Outlook mailbox.
+description: **访问 Outlook Web 以进行电子邮件和日历操作**  
+- 可以阅读、撰写（默认为草稿状态）电子邮件，  
+- 进行搜索，  
+- 以及管理电子邮件和日历事件。  
+**适用场景**：  
+当用户需要查看电子邮件、起草消息、搜索收件箱、查看日历或管理 Outlook 邮箱时，可以使用此功能。
 allowed-tools: Bash(playwright-cli:*)
 ---
 
-# Outlook Web Access Skill
+# Outlook Web Access 技能
 
-This skill provides access to Outlook Web (outlook.office.com) via playwright-cli with persistent session management.
+该技能允许通过 `playwright-cli` 访问 Outlook Web（outlook.office.com），并支持会话的持久化管理。
 
-## Session Configuration
+## 会话配置
 
-**All commands must use**: `--session=outlook-web`
+**所有命令必须使用**：`--session=outlook-web`
 
-This ensures cookies and authentication persist between commands.
+这确保了 cookie 和认证信息在命令执行之间保持一致。
 
-## First-Time Authentication
+## 首次认证
 
-Microsoft login requires manual intervention. Follow these steps for first-time setup:
+Microsoft 的登录过程需要用户手动操作。请按照以下步骤进行首次设置：
 
-### Step 1: Open Outlook in headed mode to trigger login
+### 第一步：以全屏模式打开 Outlook 以触发登录
 ```bash
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web --headed
 ```
 
-The browser will open visibly and redirect to Microsoft login. **Tell the user to complete login manually** in the opened browser window.
+浏览器将自动打开并跳转到 Microsoft 的登录页面。**请用户在该浏览器窗口中手动完成登录**。
 
-### Step 2: Verify authentication
-After user confirms login is complete:
+### 第二步：验证认证
+
+用户确认登录完成后：
 ```bash
 playwright-cli snapshot --session=outlook-web
 ```
 
-If successful, the snapshot will show inbox content (email subjects, folders). If it shows a login form, authentication is not complete.
+如果登录成功，快照将显示收件箱内容（邮件主题和文件夹）。如果显示登录表单，则表示认证未完成。
 
-**Note**: After initial authentication, subsequent commands can run headless (default) since the session cookies persist.
+**注意**：初次认证后，后续命令可以以无界面的方式（默认模式）运行，因为会话 cookie 会一直保留。
 
-## Detecting Session Expiry
+## 检测会话过期
 
-Microsoft sessions expire after ~7-14 days. Signs of expiry:
-- Snapshot shows login form instead of inbox
-- Navigation redirects to login URL
+Microsoft 会话通常在 7-14 天后过期。过期的迹象包括：
+- 快照显示登录表单而非收件箱内容
+- 导航会重定向到登录页面
 
-**To re-authenticate**: Open Outlook in headed mode again:
+**重新认证的方法**：再次以全屏模式打开 Outlook：
 ```bash
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web --headed
 ```
-Complete the login manually in the browser window.
+然后在浏览器窗口中手动完成登录。
 
-## Key URLs
+## 关键 URL
 
 ```
 Base: https://outlook.office.com
@@ -69,30 +75,30 @@ Calendar:
 - /calendar/view/month  - Month view
 ```
 
-## Email Operations
+## 邮件操作
 
-### View Inbox
+### 查看收件箱
 ```bash
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-### Read an Email
-Navigate to inbox, then click on an email row to select it:
+### 阅读邮件
+导航到收件箱，然后点击邮件行进行选择：
 ```bash
 playwright-cli click "EMAIL_SUBJECT_OR_SELECTOR" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-The reading pane will show the email content.
+阅读窗格将显示邮件内容。
 
-### Compose New Email (Draft by Default)
+### 撰写新邮件（默认为草稿）
 ```bash
 playwright-cli open "https://outlook.office.com/mail/deeplink/compose" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-Fill in fields:
+填写相关信息：
 ```bash
 # Add recipient
 playwright-cli fill "[aria-label='To']" "recipient@example.com" --session=outlook-web
@@ -104,23 +110,23 @@ playwright-cli fill "[aria-label='Add a subject']" "Subject line" --session=outl
 playwright-cli fill "[aria-label='Message body']" "Email content here" --session=outlook-web
 ```
 
-**IMPORTANT**: By default, save as draft instead of sending:
+**重要提示**：默认情况下，邮件会被保存为草稿，而不会立即发送：
 ```bash
 # Save as draft (Ctrl+S or close the compose window)
 playwright-cli keyboard "Control+s" --session=outlook-web
 ```
 
-Only send if user explicitly requests:
+只有当用户明确要求时，才会发送邮件：
 ```bash
 # Send email (only when explicitly requested by user)
 playwright-cli click "[aria-label='Send']" --session=outlook-web
 ```
 
-### Reply to an Email
+### 回复邮件
 
-**Method 1: Via Reading Pane (Simple)**
+**方法 1：通过阅读窗格（简单方式）**
 
-With an email open in the reading pane:
+在阅读窗格中打开邮件后：
 ```bash
 # Click Reply button
 playwright-cli click "[aria-label='Reply']" --session=outlook-web
@@ -132,9 +138,8 @@ playwright-cli fill "[aria-label='Message body']" "Your reply text here" --sessi
 playwright-cli press "Control+s" --session=outlook-web
 ```
 
-**Method 2: Complete Reply Flow**
-
-From inbox to draft reply:
+**方法 2：完成回复流程**
+从收件箱导航到草稿界面进行回复：
 ```bash
 # 1. Navigate to inbox
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web
@@ -154,9 +159,8 @@ playwright-cli fill <message-body-ref> "Your reply message" --session=outlook-we
 playwright-cli press "Control+s" --session=outlook-web
 ```
 
-**Method 3: Fast Batch Reply**
-
-Using run-code for speed:
+**方法 3：快速批量回复**
+使用 `run-code` 来提高效率：
 ```bash
 playwright-cli run-code "
   await page.goto('https://outlook.office.com/mail/inbox');
@@ -167,28 +171,28 @@ playwright-cli run-code "
 " --session=outlook-web
 ```
 
-**Note:** Replies are auto-saved as drafts and have "Re: [Original Subject]" format.
+**注意**：回复内容会自动保存为草稿，并带有 “Re: [原始主题]” 的格式。
 
-### Forward an Email
+### 转发邮件
 ```bash
 playwright-cli click "[aria-label='Forward']" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 # Add recipient and content
 ```
 
-### Delete an Email
-With an email selected:
+### 删除邮件
+选中邮件后：
 ```bash
 playwright-cli click "[aria-label='Delete']" --session=outlook-web
 ```
 
-### Search Emails
+### 搜索邮件
 ```bash
 playwright-cli open "https://outlook.office.com/mail/search?q=YOUR_SEARCH_TERM" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-Or use the search box:
+或者使用搜索框：
 ```bash
 playwright-cli click "[aria-label='Search']" --session=outlook-web
 playwright-cli fill "[aria-label='Search']" "search query" --session=outlook-web
@@ -196,7 +200,7 @@ playwright-cli keyboard "Enter" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-### Navigate Folders
+### 导航文件夹
 ```bash
 # Drafts
 playwright-cli open "https://outlook.office.com/mail/drafts" --session=outlook-web
@@ -208,15 +212,15 @@ playwright-cli open "https://outlook.office.com/mail/sentitems" --session=outloo
 playwright-cli open "https://outlook.office.com/mail/deleteditems" --session=outlook-web
 ```
 
-## Calendar Operations
+## 日历操作
 
-### View Calendar
+### 查看日历
 ```bash
 playwright-cli open "https://outlook.office.com/calendar" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-### View Specific Time Range
+### 查看特定时间范围的事件
 ```bash
 # Day view
 playwright-cli open "https://outlook.office.com/calendar/view/day" --session=outlook-web
@@ -228,31 +232,30 @@ playwright-cli open "https://outlook.office.com/calendar/view/week" --session=ou
 playwright-cli open "https://outlook.office.com/calendar/view/month" --session=outlook-web
 ```
 
-### View Event Details
-Click on an event in the calendar view:
+### 查看事件详情
+在日历视图中点击事件：
 ```bash
 playwright-cli click "EVENT_TITLE_OR_SELECTOR" --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always snapshot after navigation** - Outlook loads asynchronously; snapshot confirms content is ready
-2. **Wait if needed** - If snapshot shows loading state, wait and snapshot again:
+1. **每次导航后都生成快照** - Outlook 的加载是异步的；快照可以确认内容已准备好。
+2. **必要时等待** - 如果快照显示加载中，请等待后再生成快照：
    ```bash
    playwright-cli wait 2000 --session=outlook-web
    playwright-cli snapshot --session=outlook-web
    ```
-3. **Use ARIA labels** - Outlook has good ARIA labeling; prefer `[aria-label='...']` selectors
-4. **Check for errors** - If an operation fails, snapshot to see current state
-5. **Default to drafts** - Never send emails without explicit user confirmation
+3. **使用 ARIA 标签** - Outlook 具有良好的 ARIA 标签；建议使用 `[aria-label='...']` 选择器。
+4. **检查错误** - 如果操作失败，生成快照以查看当前状态。
+5. **默认保存为草稿** - 未经用户确认切勿发送邮件。
 
-## Advanced Usage & Optimizations
+## 高级用法与优化
 
-### Batch Operations with run-code
+### 使用 `run-code` 进行批量操作
 
-For faster programmatic operations, batch multiple commands using `run-code`:
-
+为了提高编程操作的效率，可以使用 `run-code` 批量执行多个命令：
 ```bash
 playwright-cli run-code "
   // Open inbox and reply to first email
@@ -264,23 +267,21 @@ playwright-cli run-code "
 " --session=outlook-web
 ```
 
-**Benefits:** 60-70% faster than individual commands, single process invocation.
+**优势**：比单独执行命令快 60-70%，且只占用一个进程。
 
-### Direct Email Navigation
+### 直接导航到邮件
 
-If you have an email ID (from URL or previous snapshot), navigate directly:
-
+如果你有邮件 ID（来自 URL 或之前的快照），可以直接导航到该邮件：
 ```bash
 # Instead of: inbox → find → click
 playwright-cli open "https://outlook.office.com/mail/inbox/id/AAQkAGMxODI1MWVlLTgy..." --session=outlook-web
 ```
 
-Email IDs are found in URLs when emails are open: `/mail/inbox/id/<EMAIL_ID>`
+邮件 ID 通常位于 URL 中，例如：`/mail/inbox/id/<EMAIL_ID>`
 
-### Skip Unnecessary Snapshots
+### 避免不必要的快照生成
 
-For programmatic use, only snapshot when you need to extract data:
-
+在编程使用时，仅在需要提取数据时才生成快照：
 ```bash
 # Fast: No intermediate snapshots
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web
@@ -290,10 +291,9 @@ playwright-cli fill "Message body" "Text" --session=outlook-web
 # Only snapshot if you need to verify or extract data
 ```
 
-### Resource Blocking for Speed (Advanced)
+### 优化资源加载速度（高级技巧）
 
-Block images, fonts, and analytics to speed up page loads by 30-50%:
-
+通过屏蔽图片、字体和分析数据，可以加快页面加载速度 30-50%：
 ```bash
 playwright-cli run-code "
   // Block non-essential resources
@@ -313,21 +313,20 @@ playwright-cli run-code "
 " --session=outlook-web
 ```
 
-**Note:** Test thoroughly as blocking resources may affect functionality.
+**注意**：请彻底测试，因为屏蔽某些资源可能会影响功能。
 
-### Trust Auto-Save
+### 信任自动保存功能
 
-Outlook Web auto-saves drafts every few seconds. For programmatic workflows:
-- Skip navigating to drafts folder for verification
-- Trust that draft saved if no error occurred
-- Only verify when explicitly needed
+Outlook Web 会每隔几秒自动保存草稿。对于编程流程：
+- 可以跳过前往草稿文件夹的步骤。
+- 如果没有错误发生，就信任系统自动保存的草稿。
+- 仅在需要时才进行验证。
 
-### Efficient Content Extraction for LLMs
+### 为大型语言模型（LLM）高效提取内容
 
-**Problem:** Full page snapshots include 60-95% UI chrome (toolbars, navigation, wrappers) and only 5-40% actual content.
+**问题**：完整的页面快照包含 60-95% 的用户界面元素（工具栏、导航栏等），而只有 5-40% 是实际内容。
 
-**Solution:** Use `run-code` to extract just the text you need:
-
+**解决方案**：使用 `run-code` 仅提取所需的文本：
 ```bash
 # Extract email list as text (no YAML overhead)
 playwright-cli run-code "
@@ -356,39 +355,39 @@ playwright-cli run-code "
 " --session=outlook-web
 ```
 
-**Benefits:**
-- 70-90% reduction in tokens
-- Faster LLM processing
-- Cleaner output (text or JSON vs YAML)
+**优势**：
+- 减少数据量 70-90%
+- 提高大型语言模型的处理速度
+- 输出更简洁（文本或 JSON 格式）
 
-**When to use:**
-- Full snapshots: Interactive exploration, getting element refs
-- Text extraction: Reading email content, processing messages
-- JSON extraction: Bulk operations, data analysis
+**使用场景**：
+- 完整快照：用于交互式探索或获取元素引用
+- 文本提取：用于阅读邮件内容或处理邮件
+- JSON 提取：用于批量操作或数据分析
 
-## Troubleshooting
+## 故障排除
 
-### "Browser is already in use" error
-Close the existing playwright session:
+### “浏览器已在使用中” 错误
+关闭现有的 `playwright` 会话：
 ```bash
 playwright-cli close --session=outlook-web
 ```
-Then retry the command.
+然后重新尝试命令。
 
-### Login page appears unexpectedly
-Session has expired. Re-authenticate:
+### 登录页面意外出现
+可能是会话已过期，请重新认证：
 ```bash
 playwright-cli open "https://outlook.office.com/mail/inbox" --session=outlook-web --headed
 # User completes login in the opened browser window
 ```
 
-### Content not loading
-Wait and retry:
+### 内容无法加载
+等待片刻后再尝试：
 ```bash
 playwright-cli wait 3000 --session=outlook-web
 playwright-cli snapshot --session=outlook-web
 ```
 
-## UI Pattern Reference
+## 用户界面模式参考
 
-See `references/ui-patterns.md` for discovered element selectors and patterns specific to Outlook Web.
+请参阅 `references/ui-patterns.md`，以获取 Outlook Web 特有的元素选择器和模式。

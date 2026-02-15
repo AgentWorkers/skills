@@ -1,11 +1,12 @@
 ---
 name: glab-changelog
-description: Use when working with glab changelog commands.
+description: **使用说明：**  
+在处理 glab 的变更日志（changelog）命令时，请参考以下说明。
 ---
 
-# glab changelog
+# glab 更新日志
 
-## Overview
+## 概述
 
 ```
 
@@ -24,12 +25,12 @@ description: Use when working with glab changelog commands.
     -h --help           Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab changelog --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

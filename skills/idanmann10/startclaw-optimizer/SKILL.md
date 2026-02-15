@@ -1,50 +1,50 @@
-# OpenClaw Optimizer Skill
+# OpenClaw 优化器技能
 
-## Overview
+## 概述
 
-The OpenClaw Optimizer is a comprehensive performance and cost optimization skill designed to enhance the efficiency of Clawdbot's subagent workflows.
+OpenClaw 优化器是一项全面的性能和成本优化工具，旨在提升 Clawdbot 子代理工作流程的效率。
 
-## Core Components
+## 核心组件
 
-### 1. Task Router
-- Intelligent model selection based on task complexity
-- Automatic routing between Haiku, Sonnet, and Opus models
-- Cost prediction and optimization
+### 1. 任务路由器（Task Router）
+- 根据任务复杂性智能选择模型
+- 在 Haiku、Sonnet 和 Opus 模型之间自动进行任务路由
+- 实现成本预测和优化
 
-### 2. Scheduler
-- Robust task execution with retry mechanism
-- Configurable preflight and postflight hooks
-- Timeout and exponential backoff handling
+### 2. 调度器（Scheduler）
+- 具有重试机制的稳健任务执行
+- 可配置的预执行和后执行钩子
+- 处理超时和指数级退避策略
 
-### 3. Browser Governor
-- Browser tab serialization
-- Concurrent tab management
-- Circuit breaker for preventing runaway processes
+### 3. 浏览器管理器（Browser Governor）
+- 浏览器标签页序列化
+- 并发标签页管理
+- 防止进程失控的断路器机制
 
-### 4. Context Compaction
-- Automatic token tracking
-- Summarization at 50,000 token threshold
-- Preserves critical context
+### 4. 上下文压缩（Context Compaction）
+- 自动跟踪令牌（tokens）
+- 在令牌数量达到 50,000 时进行摘要生成
+- 保留关键上下文信息
 
-### 5. Real-time Dashboard
-- Monitor daily budget
-- Track task execution
-- Visualize model distribution
-- Circuit breaker status
+### 5. 实时仪表盘（Real-time Dashboard）
+- 监控每日预算
+- 跟踪任务执行情况
+- 可视化模型分布
+- 显示断路器状态
 
-## Expected Savings
+## 预期节省成本
 
-**Before Optimization:** $90/day
-**After Optimization:** $3-5/day
-**Savings:** 95%
+**优化前：** 每天 90 美元
+**优化后：** 每天 3-5 美元
+**节省比例：** 95%
 
-## Installation
+## 安装
 
 ```bash
 npm install @startclaw/openclaw-optimizer
 ```
 
-## Usage
+## 使用方法
 
 ```javascript
 const { TaskRouter, OptimizerScheduler, BrowserGovernor } = require('@startclaw/openclaw-optimizer');
@@ -58,13 +58,13 @@ const modelSelection = router.selectModel(taskDescription);
 await scheduler.execute(task, modelSelection);
 ```
 
-## Monitoring
+## 监控
 
 ```bash
 # Real-time dashboard
 python3 scripts/dashboard.py watch
 ```
 
-## License
+## 许可证
 
-StartClaw Internal Use License
+StartClaw 内部使用许可证

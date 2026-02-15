@@ -1,79 +1,73 @@
 # Prompt Performance Tester
 
-**Test prompts across Claude, GPT, and Gemini with detailed performance metrics.**
-
-Compare 10 AI models with latency, cost, quality, and consistency measurements.
-
----
-
-## 🚀 Why This Skill?
-
-### Problem Statement
-Comparing LLM models across providers requires manual testing:
-- No systematic way to measure performance across models
-- Cost differences are significant but not easily comparable
-- Quality varies by use case and provider
-- Manual API testing is time-consuming
-
-### The Solution
-Test prompts across Claude, GPT, and Gemini simultaneously. Get performance metrics and recommendations based on latency, cost, and quality.
-
-### Example Cost Comparison
-For 10,000 requests/day with average 28 input + 115 output tokens:
-- Claude Opus 4.5: ~$30.15/day ($903/month)
-- Gemini 2.5 Flash-Lite: ~$0.05/day ($1.50/month)
-- Monthly cost difference: $901.50
+**这是一个用于测试Claude、GPT和Gemini模型响应速度和质量的工具，提供详细的性能指标。**  
+它可以比较10种AI模型的延迟、成本、质量和一致性。
 
 ---
 
-## ✨ What You Get
+## 🚀 为什么需要这个工具？  
+### 问题背景  
+跨不同提供商比较大型语言模型（LLM）需要手动测试：  
+- 没有系统化的方法来衡量模型的性能  
+- 成本差异显著，但难以直接比较  
+- 质量因使用场景和提供商而异  
+- 手动API测试耗时较长  
 
-### Multi-Provider Testing
-Test prompts across **3 major AI providers** simultaneously:
-- **Anthropic Claude** - Industry-leading reasoning and safety
-- **OpenAI GPT** - Most popular, widely-deployed models
-- **Google Gemini** - Best cost/performance ratio
+### 解决方案  
+同时测试Claude、GPT和Gemini模型的响应速度，并根据延迟、成本和质量提供评估和建议。  
 
-### 10 Models Supported (Latest 2026)
-
-**🔵 Claude 4.5 Series (Anthropic)**
-- `claude-haiku-4-5-20251001` - Lightning-fast, near-frontier performance ($1.00/$5.00 per 1M tokens)
-- `claude-sonnet-4-5-20250929` - Best for complex agents & coding ($3.00/$15.00 per 1M tokens)
-- `claude-opus-4-5-20251101` - Most intelligent, state-of-the-art ($5.00/$25.00 per 1M tokens)
-
-**🟢 GPT-5.2 Series (OpenAI)**
-- `gpt-5.2-instant` - Low latency for daily tasks ($1.75/$14.00 per 1M tokens)
-- `gpt-5.2-thinking` - Deep reasoning for complex problems ($1.75/$14.00 per 1M tokens)
-- `gpt-5.2-pro` - Maximum intelligence for research ($1.75/$14.00 per 1M tokens)
-
-**🔴 Gemini Latest (Google)**
-- `gemini-3-pro` - Newest flagship model ($2.00/$12.00 per 1M tokens)
-- `gemini-2.5-pro` - Exceptional value for quality ($1.25/$10.00 per 1M tokens)
-- `gemini-2.5-flash` - Fast & efficient ($0.30/$2.50 per 1M tokens)
-- `gemini-2.5-flash-lite` - Most affordable ($0.10/$0.40 per 1M tokens)
-
-### Performance Metrics
-
-Every test measures:
-- ⚡ **Latency** - Response time in milliseconds
-- 💰 **Cost** - Exact API cost per request (input + output tokens)
-- 🎯 **Quality** - AI-evaluated response quality score (0-100)
-- 📊 **Token Usage** - Input and output token counts
-- 🔄 **Consistency** - Variance across multiple test runs
-- ❌ **Error Tracking** - API failures, timeouts, rate limits
-
-### Smart Recommendations
-
-Get instant answers to:
-- Which model is **fastest** for your prompt?
-- Which is most **cost-effective**?
-- Which produces **best quality** responses?
-- How much can you **save** by switching providers?
+### 成本对比示例  
+以每天10,000次请求、平均28个输入令牌和115个输出令牌为例：  
+- Claude Opus 4.5：约30.15美元/天（903美元/月）  
+- Gemini 2.5 Flash-Lite：约0.05美元/天（1.50美元/月）  
+- 每月成本差异：901.50美元  
 
 ---
 
-## 📊 Real-World Example
+## ✨ 你将获得什么？  
+### 多提供商测试  
+**同时测试3大AI提供商的模型：**  
+- **Anthropic Claude**：业界领先的推理能力和安全性  
+- **OpenAI GPT**：最受欢迎、应用最广泛的模型  
+- **Google Gemini**：最佳的成本/性能比  
 
+### 支持的10种模型（2026年最新版本）  
+
+**🔵 Claude 4.5系列（Anthropic）**  
+- `claude-haiku-4-5-20251001`：超快响应速度（100万令牌1.00/5.00美元）  
+- `claude-sonnet-4-5-20250929`：适合复杂任务和编程（100万令牌3.00/15.00美元）  
+- `claude-opus-4-5-20251101`：最智能的模型（100万令牌5.00/25.00美元）  
+
+**🟢 GPT-5.2系列（OpenAI）**  
+- `gpt-5.2-instant`：适合日常任务的低延迟模型（100万令牌1.75/14.00美元）  
+- `gpt-5.2-thinking`：适合复杂问题的深度推理模型（100万令牌1.75/14.00美元）  
+- `gpt-5.2-pro`：最高智能的模型（100万令牌1.75/14.00美元）  
+
+**🔴 Gemini最新版本（Google）**  
+- `gemini-3-pro`：最新的旗舰模型（100万令牌2.00/12.00美元）  
+- `gemini-2.5-pro`：性价比最高的模型（100万令牌1.25/10.00美元）  
+- `gemini-2.5-flash`：快速高效的模型（100万令牌0.30/2.50美元）  
+- `gemini-2.5-flash-lite`：最经济的模型（100万令牌0.10/0.40美元）  
+
+### 性能指标  
+每次测试都会记录：  
+- ⚡ **延迟**：响应时间（毫秒）  
+- 💰 **成本**：每次请求的API费用（输入+输出令牌）  
+- 🎯 **质量**：AI评估的响应质量分数（0-100分）  
+- 📊 **令牌使用量**：输入和输出令牌的数量  
+- 🔄 **一致性**：多次测试结果的一致性  
+- ❌ **错误跟踪**：API故障、超时、速率限制  
+
+### 智能建议  
+立即获取以下问题的答案：  
+- 哪个模型对你的需求响应最快？  
+- 哪个模型最具成本效益？  
+- 哪个模型生成的响应质量最高？  
+- 更换提供商能节省多少费用？  
+
+---
+
+## 📊 实际应用示例  
 ```
 PROMPT: "Write a professional customer service response about a delayed shipment"
 
@@ -133,42 +127,39 @@ PROMPT: "Write a professional customer service response about a delayed shipment
    - Using Gemini 2.5 Flash-Lite vs Opus: $903/month saved ($1.44 vs $904.50)
    - Using Claude Haiku vs Opus: $731/month saved ($173.40 vs $904.50)
    - Using Gemini 2.5 Flash vs Opus: $818/month saved ($86.52 vs $904.50)
-```
+```  
 
 ---
 
-## Use Cases
+## 使用场景  
+### 生产环境部署  
+- 在选择模型前进行评估  
+- 比较不同提供商的成本和质量  
+- 对比不同提供商的API延迟  
 
-### Production Deployment
-- Evaluate models before production selection
-- Compare cost vs quality tradeoffs
-- Benchmark API latency across providers
+### 提示开发  
+- 在不同模型上测试提示变体  
+- 持续测量质量分数  
+- 比较性能指标  
 
-### Prompt Development
-- Test prompt variations across models
-- Measure quality scores consistently
-- Compare performance metrics
+### 成本分析  
+- 分析每种模型的API使用成本  
+- 比较不同提供商的定价结构  
+- 寻找更经济的替代方案  
 
-### Cost Analysis
-- Analyze LLM API spending by model
-- Compare provider pricing structures
-- Identify cost-efficient alternatives
-
-### Performance Testing
-- Measure latency and response times
-- Test consistency across multiple runs
-- Evaluate quality scores
+### 性能测试  
+- 测量延迟和响应时间  
+- 测试多次运行的结果一致性  
+- 评估质量分数  
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速入门  
+### 1. 订阅该工具  
+在ClawhHub上点击“订阅”以获取访问权限。  
 
-### 1. Subscribe to Skill
-Click "Subscribe" on ClawhHub to get access
-
-### 2. Set API Keys
-Add your provider API keys as environment variables:
-
+### 2. 设置API密钥  
+将你的提供商API密钥添加为环境变量：  
 ```bash
 # Required for Claude models
 export ANTHROPIC_API_KEY="sk-ant-..."
@@ -178,16 +169,14 @@ export OPENAI_API_KEY="sk-..."
 
 # Optional for Gemini models
 export GOOGLE_API_KEY="AI..."
-```
+```  
+从以下链接获取API密钥：  
+- Anthropic：https://console.anthropic.com  
+- OpenAI：https://platform.openai.com/api-keys  
+- Google：https://makersuite.google.com/app/apikey  
 
-Get API keys from:
-- Anthropic: https://console.anthropic.com
-- OpenAI: https://platform.openai.com/api-keys
-- Google: https://makersuite.google.com/app/apikey
-
-### 3. Run Your First Test
-
-**Option A: Python Code**
+### 3. 运行首次测试  
+**选项A：Python代码**  
 ```python
 from prompt_performance_tester import PromptPerformanceTester
 
@@ -218,9 +207,8 @@ print(f"💡 Recommended: {results.recommended_model}")
 
 # Export detailed report
 results.export_csv("prompt_test_results.csv")
-```
-
-**Option B: CLI**
+```  
+**选项B：CLI**  
 ```bash
 # Test single prompt across all providers
 prompt-tester test "Your prompt here" --models all
@@ -232,270 +220,250 @@ prompt-tester test "Your prompt here" \
 
 # Export results
 prompt-tester test "Your prompt here" --export results.json
-```
+```  
 
 ---
 
-## 🔒 Security & Privacy
+## 🔒 安全与隐私  
+### API密钥安全  
+- ✅ 密钥安全存储在环境变量中  
+- ✅ 从未被记录、存储或传输到我们的服务器  
+- ✅ 所有API通信均采用HTTPS加密  
+- ✅ 零知识架构  
 
-### API Key Safety
-- ✅ Keys stored securely in environment variables
-- ✅ Never logged, stored, or transmitted to our servers
-- ✅ HTTPS encryption for all API communication
-- ✅ Zero-knowledge architecture
+### 数据隐私  
+- ✅ 你的提示永远不会被用于训练  
+- ✅ 结果仅对你（或企业团队）可见  
+- ✅ 遵守GDPR数据保护法规  
+- ✅ 符合SOC 2 Type II企业级标准  
+- ✅ 可随时删除你的数据  
 
-### Data Privacy
-- ✅ Your prompts are NEVER used for training
-- ✅ Results only visible to you (or your team on Enterprise)
-- ✅ GDPR compliant data handling
-- ✅ SOC 2 Type II certified (Enterprise tier)
-- ✅ Delete your data anytime
+### IP保护  
+- ✅ 专有的质量评分算法  
+- ✅ 每次执行时验证许可证  
+- ✅ 监控使用情况以防止滥用  
+- ✅ 提供商业许可证，并有法律保障  
 
-### IP Protection
-- ✅ Proprietary quality scoring algorithm
-- ✅ License validation on each execution
-- ✅ Usage monitoring to prevent abuse
-- ✅ Commercial license with legal enforcement
+## 📚 技术细节  
+### 系统要求  
+- **Python**：3.8及以上版本  
+- **依赖库**：`anthropic`、`openai`、`google-generativeai`（自动安装）  
+- **平台**：macOS、Linux、Windows  
+- **内存**：至少512MB  
 
----
+### 性能  
+- **平均测试时间**：15-45秒（取决于所选模型）  
+- **成功率**：98.2%  
+- **正常运行时间**：99.9%  
+- **API速率限制**：每小时1,000次请求  
 
-## 📚 Technical Details
+### 数据保留  
+- **入门级**：30天  
+- **专业级**：90天  
+- **企业级**：无限期（或按协议）  
+- 所有级别均可随时导出和删除数据  
 
-### System Requirements
-- **Python**: 3.8+
-- **Dependencies**: `anthropic`, `openai`, `google-generativeai` (auto-installed)
-- **Platform**: macOS, Linux, Windows
-- **RAM**: 512MB minimum
-
-### Performance
-- **Average test time**: 15-45 seconds (depending on models selected)
-- **Success rate**: 98.2%
-- **Uptime**: 99.9%
-- **API rate limit**: 1,000 requests/hour
-
-### Data Retention
-- **Starter tier**: 30 days
-- **Professional**: 90 days
-- **Enterprise**: Unlimited (or per agreement)
-- All tiers: Export and delete data anytime
-
-### Metrics Collected
-Every test captures:
-- **Latency**: Time to first token + total response time (ms)
-- **Cost**: Input cost + output cost based on real-time pricing (USD)
-- **Quality**: AI-evaluated coherence, accuracy, relevance (0-100)
-- **Tokens**: Exact input/output token counts per provider
-- **Consistency**: Standard deviation across multiple runs
-- **Errors**: Timeouts, rate limits, API failures
+### 收集的指标  
+每次测试都会记录：  
+- **延迟**：从第一个令牌到响应完成的时间（毫秒）  
+- **成本**：基于实时价格的每次请求费用（输入+输出令牌）  
+- **质量**：AI评估的响应质量分数（0-100分）  
+- **令牌使用量**：输入和输出令牌的数量  
+- **一致性**：多次测试结果的一致性  
+- **错误**：超时、速率限制、API故障  
 
 ---
 
-## ❓ Frequently Asked Questions
+## ❓ 常见问题  
+**Q：我需要所有3个提供商的API密钥吗？**  
+A：不需要。只需为你想要测试的提供商获取密钥。例如，如果你只测试Claude模型，只需Anthropic的API密钥。  
 
-**Q: Do I need API keys for all 3 providers?**
-A: No. You only need keys for the providers you want to test. For example, if you only want to test Claude models, you only need an Anthropic API key.
+**Q：API费用由谁支付？**  
+A：由你支付。你需要提供自己的API密钥，并直接向提供商（Anthropic、OpenAI、Google）支付API使用费用。该工具的订阅费用（29-99美元/月）仅用于访问我们的测试平台。  
 
-**Q: Who pays for the API costs?**
-A: You do. You provide your own API keys and pay providers directly (Anthropic, OpenAI, Google) for API usage. The skill subscription ($29-$99/mo) is just for access to our testing platform.
+**Q：成本计算准确吗？**  
+A：我们使用每个提供商官方的实时定价信息。费用根据实际令牌使用量精确到分。  
 
-**Q: How accurate are the cost calculations?**
-A: We use real-time pricing from each provider's official rate cards. Costs are accurate to the cent based on actual token usage.
+**Q：我可以测试非英语语言的提示吗？**  
+A：可以！所有10个模型都支持多种语言。  
 
-**Q: Can I test prompts in non-English languages?**
-A: Yes! All 10 models support multiple languages. The skill works with any language.
+**Q：如果我的提示很长（超过10,000个令牌）怎么办？**  
+A：没问题。该工具可以处理最多100,000个令牌的提示。只需适当设置`max_tokens`参数即可。  
 
-**Q: What if my prompt is very long (10K+ tokens)?**
-A: No problem. The skill handles prompts up to 100K tokens. Just set the `max_tokens` parameter appropriately.
+**Q：我可以测试自定义或微调的模型吗？**  
+A：可以在企业级版本中进行。请联系我们以添加对自定义模型的支持。  
 
-**Q: Can I test custom or fine-tuned models?**
-A: Yes, on the Enterprise tier. Contact us to add support for your custom models.
+**Q：质量评分是如何进行的？**  
+A：我们使用专有的AI评估算法，从连贯性、准确性和相关性等方面对响应进行评分（0-100分）。  
 
-**Q: How does the quality scoring work?**
-A: We use a proprietary AI evaluation algorithm that scores responses on coherence, accuracy, relevance, and instruction-following (0-100 scale).
+**Q：我可以在生产环境/持续集成/持续部署（CI/CD）中使用这个工具吗？**  
+A：可以！专业级和企业级版本包含API访问权限。你可以将测试集成到部署流程中。  
 
-**Q: Can I use this in production/CI/CD?**
-A: Yes! Professional and Enterprise tiers include API access. Integrate testing into your deployment pipeline.
+**Q：有免费试用吗？**  
+A：有。入门级版本永久免费（每月5次测试，2个模型），无需信用卡。  
 
-**Q: Is there a free trial?**
-A: Yes. The Starter tier is free forever (5 tests/month, 2 models). No credit card required.
+**Q：如果我超出计划限制怎么办？**  
+A：在入门级版本中，你需要升级。在付费版本中，你可以购买额外的使用量或升级到企业级以获得无限使用权限。  
 
-**Q: What if I exceed my plan limits?**
-A: On Starter tier, you'll need to upgrade. On paid tiers, you can purchase additional usage or upgrade to Enterprise for unlimited.
-
-**Q: Do you store my proprietary prompts?**
-A: No. Prompts are processed in-memory and immediately discarded unless you explicitly export results.
-
----
-
-## 🗺️ Roadmap
-
-### ✅ Current Release (v1.2.0)
-- Multi-provider support (Claude 4.5, GPT-5.2, Gemini 2.5/3.0)
-- 10 models across 3 providers
-- Cross-provider cost comparison
-- Quality scoring algorithm
-- Consistency testing
-- Latest pricing data
-- GPT-5.2 models support
-- Gemini 3 Pro support
-
-### 🚧 Coming Soon (v1.3)
-- **More models**: Llama 3.2, Mistral Large, Claude 5 (when available)
-- **Advanced analytics**: Prompt optimization suggestions powered by Claude
-- **Batch testing**: Test 100+ prompts simultaneously
-- **Team dashboards**: Shared workspace with permissions
-- **Webhook integrations**: Slack, Discord, email notifications
-- **Historical tracking**: Track model performance over time
-
-### 🔮 Future (v1.3+)
-- **A/B testing framework**: Scientific prompt experimentation
-- **Fine-tuning insights**: Which models to fine-tune for your use case
-- **Custom benchmarks**: Create your own evaluation criteria
-- **Auto-optimization**: AI-powered prompt improvement suggestions
-- **Deployment integrations**: Vercel, AWS Lambda, CloudFlare Workers
+**Q：你们会存储我的提示吗？**  
+A：不会。提示在内存中处理，并在完成后立即删除，除非你明确要求导出结果。  
 
 ---
 
-## 📞 Support
+## 🗺️ 路线图  
+### ✅ 当前版本（v1.2.0）  
+- 支持多个提供商（Claude 4.5、GPT-5.2、Gemini 2.5/3.0）  
+- 3个提供商的10种模型  
+- 跨提供商的成本比较  
+- 质量评分算法  
+- 一致性测试  
+- 最新的定价数据  
+- 支持GPT-5.2模型  
+- 支持Gemini 3 Pro  
 
-### Documentation
-- 📚 **Full Documentation**: https://docs.unisai.vercel.app/tester
-- 🔧 **API Reference**: https://docs.unisai.vercel.app/tester/api
-- 💡 **Tutorials**: https://docs.unisai.vercel.app/tester/tutorials
+### 即将推出的功能（v1.3）  
+- **更多模型**：Llama 3.2、Mistral Large、Claude 5（待发布）  
+- **高级分析**：基于Claude的提示优化建议  
+- **批量测试**：同时测试100多个提示  
+- **团队仪表板**：具有权限共享的工作空间  
+- **Webhook集成**：Slack、Discord、电子邮件通知  
+- **历史记录**：跟踪模型性能变化  
 
-### Community
-- 💬 **Slack Community**: https://slack.unisai.vercel.app
-- 📧 **Email Support**: support@unisai.vercel.app
-- 🐛 **Bug Reports**: support@unisai.vercel.app
-- ⭐ **Feature Requests**: https://slack.unisai.vercel.app
-
-### Contact
-- Email: support@unisai.vercel.app
-- Slack: https://slack.unisai.vercel.app
-
----
-
-## 📄 License & Terms
-
-This skill is **proprietary software** licensed under a commercial agreement.
-
-### ✅ You CAN:
-- Use for your own business and projects
-- Test prompts for internal applications
-- Share results with your team (Professional+ tiers)
-- Use in production applications
-- Export and analyze test data
-
-### ❌ You CANNOT:
-- Share license keys with others
-- Reverse engineer the skill
-- Redistribute or resell the skill
-- Modify the source code without permission
-- Use Starter tier for commercial purposes
-
-**Full Terms**: See [LICENSE.md](LICENSE.md)
+### 🔮 未来版本（v1.3+）  
+- **A/B测试框架**：科学化的提示实验  
+- **微调建议**：针对你的需求选择合适的模型进行微调  
+- **自定义基准测试**：创建自己的评估标准  
+- **自动优化**：AI驱动的提示改进建议  
+- **部署集成**：Vercel、AWS Lambda、CloudFlare Workers  
 
 ---
 
-## 🚀 Get Started
+## 📞 支持  
+### 文档  
+- 📚 **完整文档**：https://docs.unisai.vercel.app/tester  
+- 🔧 **API参考**：https://docs.unisai.vercel.app/tester/api  
+- 💡 **教程**：https://docs.unisai.vercel.app/tester/tutorials  
 
-1. Subscribe to this skill on ClawhHub
-2. Set your API keys (Anthropic, OpenAI, Google)
-3. Run tests with your prompts
-4. Review performance metrics and recommendations
+### 社区  
+- 💬 **Slack社区**：https://slack.unisai.vercel.app  
+- 📧 **电子邮件支持**：support@unisai.vercel.app  
+- 🐛 **问题报告**：support@unisai.vercel.app  
+- ⭐ **功能请求**：https://slack.unisai.vercel.app  
 
----
-
-## 🏷️ Tags
-
-**Primary**: ai-testing, multi-provider, prompt-optimization, cost-analysis, llm-benchmarking
-
-**Providers**: claude, gpt, gemini, anthropic, openai, google
-
-**Features**: api-comparison, performance-testing, multi-model, prompt-engineering, quality-assurance
-
----
-
-## 📝 Changelog
-
-### [1.2.0] - 2026-02-01
-
-#### 🚀 Latest Models Update
-- **GPT-5.2 Series** - Added Instant, Thinking, and Pro variants
-- **Gemini 3.0 Pro** - Newest flagship model from Google
-- **Gemini 2.5 Series** - Updated to 2.5 Pro, Flash, and Flash-Lite
-- **Claude 4.5 Pricing** - Updated Haiku to $1/$5 per 1M tokens
-- **10 Total Models** - Expanded from 9 to 10 models across 3 providers
-
-#### 📊 Pricing Updates
-- All model pricing updated to 2026 rates
-- GPT-5.2: $1.75/$14.00 per 1M tokens
-- Gemini 3 Pro: $2.00/$12.00 per 1M tokens
-- Gemini 2.5 Flash-Lite: $0.10/$0.40 per 1M tokens (most affordable)
-
-#### 🔧 Technical Improvements
-- Support for latest API versions
-- Improved cost calculations with 2026 pricing
-- Enhanced model routing for new GPT-5.2 and Gemini 3.0
+### 联系方式  
+- 电子邮件：support@unisai.vercel.app  
+- Slack：https://slack.unisai.vercel.app  
 
 ---
 
-### [1.1.0] - 2026-01-15
+## 📄 许可与条款  
+该工具为**专有软件**，根据商业协议授权。  
 
-#### ✨ Major Features
-- **Multi-Provider Support** - Test prompts across Anthropic, OpenAI, and Google
-- **10 Models Supported** - Claude 4.5 (3), GPT-5.2 (3), Gemini 2.5/3.0 (4)
-- **Cross-Provider Comparison** - Direct cost and performance analysis across providers
-- **Provider-Specific Optimizations** - Tailored API calls for each service
-- **Enhanced Recommendations** - Multi-provider insights and cost savings analysis
+### ✅ 你可以：  
+- 用于自己的业务和项目  
+- 为内部应用程序测试提示  
+- 与团队分享结果（专业级及以上版本）  
+- 在生产环境中使用  
+- 导出并分析测试数据  
 
-#### 🎨 Branding Updates
-- Rebranded from Prompt Migrator to UniAI
-- Updated all URLs to unisai.vercel.app
-- Updated company name and contact information
-- Maintained full IP protection and licensing
+### ❌ 你不能：  
+- 与他人共享许可证密钥  
+- 对该工具进行逆向工程  
+- 重新分发或转售该工具  
+- 未经许可修改源代码  
+- 将入门级版本用于商业用途  
 
-#### 🏷️ Expanded Tag Coverage
-- Added multi-provider, claude, gpt, gemini, api-comparison tags
-- Comprehensive tag set for platform indexing
-
-#### 🔧 Technical Improvements
-- OpenAI SDK integration for GPT models
-- Google Generative AI integration for Gemini models
-- Provider detection and routing logic
-- Improved token counting per provider
-- Better error handling across providers
-- Enhanced quality scoring algorithm
-
-#### 📊 Cost Analysis Enhancements
-- Real-time pricing for all 10 models
-- Provider-specific cost calculations
-- Comparison metrics across providers
-- ROI calculations showing potential savings
-- Cross-provider cost optimization recommendations
-
-#### 🔒 Security & IP Protection
-- IP watermark: `PROPRIETARY_SKILL_VEDANT_2024_MULTI_PROVIDER`
-- Zero API key exposure (environment variables only)
-- Maintained proprietary code protection
-- Full license enforcement across all providers
+**完整条款**：请参阅[LICENSE.md]  
 
 ---
 
-### [1.0.0] - 2024-02-02
-
-#### Initial Release
-- Claude-only prompt testing (Haiku, Sonnet, Opus)
-- Performance metrics collection (latency, cost, quality)
-- Consistency testing across multiple runs
-- Basic recommendations engine
-- API access for automation
-- Proprietary IP protection framework
+## 🚀 开始使用  
+1. 在ClawhHub上订阅该工具  
+2. 设置API密钥（Anthropic、OpenAI、Google）  
+3. 使用你的提示运行测试  
+4. 查看性能指标和建议  
 
 ---
 
-**Last Updated**: February 2026
-**Current Version**: 1.2.0
-**Status**: Active & Maintained
+## 🏷️ 标签  
+**主要标签**：ai-testing、multi-provider、prompt-optimization、cost-analysis、llm-benchmarking  
+**支持的提供商**：claude、gpt、gemini、anthropic、openai、google  
+**功能**：api-comparison、performance-testing、multi-model、prompt-engineering、quality-assurance  
 
-© 2026 UniAI. All rights reserved.
+---
+
+## 📝 更新日志  
+### [1.2.0] - 2026-02-01  
+#### 最新模型更新  
+- **GPT-5.2系列**：新增Instant、Thinking和Pro版本  
+- **Gemini 3.0 Pro**：Google的最新旗舰模型  
+- **Gemini 2.5系列**：更新为2.5 Pro、Flash和Flash-Lite  
+- **Claude 4.5定价**：Haiku版本调整为100万令牌1.00/5.00美元  
+- **总模型数量**：从9个增加到10个  
+
+#### 📊 价格更新  
+- 所有模型价格更新至2026年的标准  
+- GPT-5.2：100万令牌1.75/14.00美元  
+- Gemini 3 Pro：100万令牌2.00/12.00美元  
+- Gemini 2.5 Flash-Lite：100万令牌0.10/0.40美元（最经济）  
+
+#### 🔧 技术改进  
+- 支持最新的API版本  
+- 根据2026年的价格更新成本计算  
+- 优化了对新GPT-5.2和Gemini 3.0模型的路由  
+
+### [1.1.0] - 2026-01-15  
+#### 主要功能  
+- **多提供商支持**：同时测试Anthropic、OpenAI和Google的模型  
+- **支持的模型数量**：Claude 4.5（3个）、GPT-5.2（3个）、Gemini 2.5/3.0（4个）  
+- **跨提供商比较**：直接比较不同提供商的成本和性能  
+- **针对提供商的优化**：为每个服务定制API调用  
+- **增强建议**：提供多提供商的洞察和成本节省分析  
+
+#### 🎨 品牌更新  
+- 从Prompt Migrator更名为UniAI  
+- 更新所有URL至unisai.vercel.app  
+- 更新公司名称和联系信息  
+- 维护全面的IP保护和许可  
+
+#### 🏷️ 扩展标签  
+- 添加了多提供商、claude、gpt、gemini、api-comparison标签  
+- 为平台索引提供了全面的标签集  
+
+#### 🔧 技术改进  
+- 支持GPT模型的OpenAI SDK  
+- 支持Gemini模型的Google Generative AI  
+- 优化了提供商检测和路由逻辑  
+- 改进了每个提供商的令牌计数  
+- 改进了错误处理  
+- 提高了质量评分算法  
+
+#### 📊 成本分析改进  
+- 所有10个模型的实时价格  
+- 针对每个提供商的定制成本计算  
+- 比较不同提供商的成本  
+- 显示潜在节省成本的ROI分析  
+- 提供跨提供商的成本优化建议  
+
+#### 🔒 安全与IP保护  
+- IP水印：`PROPRIETARY_SKILL_VEDANT_2024_MULTI_PROVIDER`  
+- 防止API密钥泄露（仅通过环境变量传输）  
+- 维护专有的代码保护  
+- 所有提供商均遵守完整的许可协议  
+
+---
+
+### [1.0.0] - 2024-02-02  
+#### 初始版本  
+- 仅支持Claude模型的测试  
+- 收集性能指标（延迟、成本、质量）  
+- 多次测试的一致性测试  
+- 基本的推荐系统  
+- 提供API访问权限以实现自动化  
+- 专有的IP保护机制  
+
+**最后更新时间**：2026年2月  
+**当前版本**：1.2.0  
+**状态**：活跃且持续维护  
+
+© 2026 UniAI. 保留所有权利。

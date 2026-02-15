@@ -1,87 +1,83 @@
 ---
 name: find-people
-description: Open Source Intelligence (OSINT) tool for researching individuals - professional backgrounds, career timelines, due diligence, competitive intelligence, and investor research. Use when users need to research people, verify credentials, or gather professional information. Costs $0.15 USDC per request via x402 protocol on Base network.
+description: 这是一个开源情报（OSINT）工具，用于研究个人的相关信息，包括其专业背景、职业经历、背景调查结果、竞争情报以及投资者信息。用户可以在Base网络中使用x402协议发起请求，每次请求的费用为0.15美元（USDC）。该工具非常适合用于需要调查个人资料、验证身份信息或收集专业信息的场景。
 ---
 
-# Find People (OSINT)
+# 人物信息查询（OSINT）
 
-Research individuals using Open Source Intelligence gathering and AI-powered analysis.
+使用开源情报（OSINT）技术和人工智能分析来研究个人。
 
-## Configuration
+## 配置
 
-The private key must be available via one of these methods:
+私钥必须通过以下方式之一获取：
 
-**Option 1: Environment variable**
+**选项 1：环境变量**  
 ```bash
 export X402_PRIVATE_KEY="0x..."
 ```
 
-**Option 2: Config file (Recommended)**
+**选项 2：配置文件（推荐）**  
+脚本会依次在以下位置查找 `x402-config.json` 文件：  
+1. 当前目录：`./x402-config.json`  
+2. 主目录：`~/.x402-config.json` ← **推荐**  
+3. 工作目录：`$PWD/x402-config.json`  
 
-The script checks for `x402-config.json` in these locations (in order):
-1. Current directory: `./x402-config.json`
-2. Home directory: `~/.x402-config.json` ← **Recommended**
-3. Working directory: `$PWD/x402-config.json`
-
-Create the config file:
+请创建配置文件：  
 ```json
 {
   "private_key": "0x1234567890abcdef..."
 }
 ```
 
-**Example (home directory - works for any user):**
+**示例（适用于任何用户的主目录）：**  
 ```bash
 echo '{"private_key": "0x..."}' > ~/.x402-config.json
 ```
 
-## Usage
+## 使用方法
 
-Run the research script with a person's name or description:
-
+使用某人的姓名或描述来运行查询脚本：  
 ```bash
 scripts/research.sh "<person query>"
 ```
 
-The script:
-- Executes OSINT research with payment handling
-- Costs $0.15 USDC per request (Base network)
-- Returns comprehensive AI-processed intelligence report
+该脚本会执行 OSINT 查询，并处理相关费用：  
+- 每次请求的费用为 0.15 美元（基础网络费用）  
+- 返回一份由人工智能处理的详细情报报告  
 
-## Examples
-
-**User:** "Find information about the founder of Ethereum"
+## 示例：  
+**用户请求：** “查找以太坊创始人的相关信息”  
 ```bash
 scripts/research.sh "Vitalik Buterin Ethereum founder"
 ```
 
-**User:** "Research the CEO of OpenAI"
+**用户请求：** “研究 OpenAI 的首席执行官”  
 ```bash
 scripts/research.sh "Sam Altman OpenAI CEO"
 ```
 
-**User:** "Tell me about Elon Musk's career timeline"
+**用户请求：** “提供关于埃隆·马斯克的职业历程的信息”  
 ```bash
 scripts/research.sh "Elon Musk career history"
 ```
 
-## Capabilities
-- Professional background research
-- Career timeline verification
-- Due diligence on potential hires/partners
-- Competitive intelligence on industry leaders
-- Investor research on startup founders
-- Educational background verification
-- Public accomplishments and publications
+## 功能包括：  
+- 专业背景调查  
+- 职业历程验证  
+- 对潜在雇员/合作伙伴的尽职调查  
+- 对行业领导者的竞争情报分析  
+- 对初创公司创始人的投资背景调查  
+- 教育背景验证  
+- 公开成就和出版物的查询  
 
-## Error Handling
-- **"Payment failed: Not enough USDC"** → Inform user to top up Base wallet with USDC
-- **"X402 private key missing"** → Guide user to configure private key (see Configuration above)
-- **Timeout errors** → The API has a 5-minute timeout; comprehensive research may take time
+## 错误处理：  
+- **“支付失败：USDC 账户余额不足”** → 通知用户向钱包充值 USDC  
+- **“X402 私钥缺失”** → 指导用户配置私钥（请参阅上述配置信息）  
+- **超时错误** → API 有 5 分钟的超时限制；复杂查询可能需要更多时间  
 
-## Use Cases
-- **Hiring:** Verify candidate backgrounds and experience
-- **Partnerships:** Due diligence on potential business partners
-- **Investment:** Research startup founders and leadership teams
-- **Competitive Analysis:** Track industry leaders and their moves
-- **Journalism:** Background research for interviews or articles
+## 使用场景：  
+- **招聘**：验证候选人的背景和经验  
+- **合作**：对潜在商业合作伙伴进行尽职调查  
+- **投资**：研究初创公司的创始人和领导团队  
+- **竞争分析**：跟踪行业领导者的动向  
+- **新闻报道**：为采访或文章进行背景调查

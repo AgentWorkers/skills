@@ -1,40 +1,40 @@
 ---
 name: teltel-send-sms-text-message
-description: Send SMS text messages via TelTel (teltel.io) using the REST API (api.teltel.io). Includes bulk send, delivery report, and bulk sms.
+description: 通过 TelTel (teltel.io) 的 REST API (api.teltel.io) 发送 SMS 文本消息。支持批量发送、发送结果查询以及批量短信管理功能。
 metadata: {"openclaw":{"emoji":"💬","homepage":"https://www.teltel.io/","primaryEnv":"TELTEL_API_KEY"}}
 ---
 
-Use the bundled Node scripts to send SMS via the TelTel API.
+使用随附的 Node.js 脚本，通过 TelTel API 发送 SMS 消息。
 
-## Before you use the skill (TelTel prerequisites)
+## 在使用该功能之前（TelTel 的前置要求）
 
-1) Register at **https://www.teltel.io/**
-2) Add funds / credit to your TelTel account
-3) From the TelTel **SMS** section, send a **test SMS** first to confirm your sender name/phone is accepted/verified
-4) In TelTel **Settings**, find your **API key**
-5) Enjoy
+1) 在 **https://www.teltel.io/** 注册账号。
+2) 为你的 TelTel 账户充值。
+3) 在 TelTel 的 **SMS** 部分，先发送一条 **测试短信** 以确认你的发件人名称/电话号码已被接受/验证。
+4) 在 TelTel 的 **设置** 中找到你的 **API 密钥**。
+5) 现在你可以使用该功能了！
 
-## Configure from the OpenClaw Skills panel
+## 通过 OpenClaw Skills 面板进行配置
 
-### API key field (shown in the Skills UI)
+### API 密钥字段（在 Skills UI 中显示）
 
-This skill declares `TELTEL_API_KEY` as its **primary env var**, so the OpenClaw Skills UI can show an **API key** input for it.
+该功能将 `TELTEL_API_KEY` 定义为 **主要环境变量**，因此 OpenClaw Skills UI 会提供一个用于输入 API 密钥的字段。
 
-Under the hood it maps to:
+在内部，这个环境变量对应于：
 - `skills.entries.teltel-send-sms-text-message.apiKey` → `TELTEL_API_KEY`
 
-### Default sender
+### 默认发件人
 
-Set a default sender name/number (used when you do **not** pass `--from`):
+设置一个默认的发件人名称/电话号码（当未传递 `--from` 参数时使用）：
 - `skills.entries.teltel-send-sms-text-message.env.TELTEL_SMS_FROM`
 
-## Configure via environment variables (alternative)
+## 通过环境变量进行配置（另一种方式）
 
-- `TELTEL_API_KEY` (required)
-- `TELTEL_SMS_FROM` (optional) — default sender name/number
-- `TELTEL_BASE_URL` (optional) — defaults to `https://api.teltel.io/v2`
+- `TELTEL_API_KEY`（必需）
+- `TELTEL_SMS_FROM`（可选）—— 默认发件人名称/电话号码
+- `TELTEL_BASE_URL`（可选）—— 默认值为 `https://api.teltel.io/v2`
 
-## Send a single SMS
+## 发送单条 SMS 消息
 
 ```bash
 node {baseDir}/scripts/send_sms.js \
@@ -43,9 +43,9 @@ node {baseDir}/scripts/send_sms.js \
   --from "37167881855"
 ```
 
-If you omit `--from`, the script uses `TELTEL_SMS_FROM`.
+如果你省略 `--from` 参数，脚本将使用 `TELTEL_SMS_FROM` 中设置的发件人信息。
 
-Dry-run (prints URL + payload, does not send):
+**干运行示例**（仅打印 URL 和消息内容，不实际发送短信）：
 
 ```bash
 node {baseDir}/scripts/send_sms.js \
@@ -55,7 +55,7 @@ node {baseDir}/scripts/send_sms.js \
   --from "37167881855"
 ```
 
-## Send bulk SMS
+## 发送批量 SMS 消息
 
 ```bash
 node {baseDir}/scripts/send_sms_bulk.js \
@@ -64,15 +64,15 @@ node {baseDir}/scripts/send_sms_bulk.js \
   --message "Hello everyone"
 ```
 
-The `--to` list can be comma/newline/semicolon separated.
+`--to` 参数可以使用逗号、换行符或分号进行分隔。
 
-## API details (for reference)
+## API 详细信息（供参考）
 
-- Base URL: `https://api.teltel.io/v2`
-- Single SMS: `POST /sms/text`
-  - JSON body: `{ "data": { "from": "...", "to": "+...", "message": "...", "callback": "https://..."? } }`
-- Bulk SMS: `POST /sms/bulk/text`
-  - JSON body: `{ "data": { "from": "...", "to": ["+...", "+..."], "message": "...", "callback": "https://..."? } }`
+- 基础 URL：`https://api.teltel.io/v2`
+- 单条 SMS 消息：`POST /sms/text`
+  - JSON 格式：`{"data": {"from": "...", "to": "+...", "message": "...", "callback": "https://..."? }`
+- 批量 SMS 消息：`POST /sms/bulk/text`
+  - JSON 格式：`{"data": {"from": "...", "to": ["+...", "+..."], "message": "...", "callback": "https://..."? }`
 
-Notes:
-- `to` must be in international format.
+**注意**：
+- `to` 参数必须使用国际格式的电话号码。

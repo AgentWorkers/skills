@@ -1,46 +1,44 @@
-# Malayalam WhatsApp Skill (മലയാളം വാട്സ്അപ്പ് കഴിവ്)
+# 马拉雅拉姆语 WhatsApp 技能（മലയാളം വാട്സ്അപ്പ் കഴിವ்）
 
-WhatsApp വഴി വരുന്ന മലയാളം / Manglish സന്ദേശങ്ങൾ
-ശരിയായി മനസ്സിലാക്കി, സാംസ്കാരികമായി വിനയത്തോടെ മറുപടി നൽകാനുള്ള skill.
-
----
-
-## When to Use
-- User sends Malayalam script (Unicode U+0D00–U+0D7F)
-- User writes Manglish: "namaskaram", "sughamano", "nanni"
-- User asks for Malayalam translations
+**通过 WhatsApp 收到的马拉雅拉姆语/曼格利什语消息**  
+这是一个用于正确处理这些消息，并以符合文化习惯的方式礼貌地回复用户的技能。
 
 ---
 
-## Common Phrases
-
-| Malayalam | Manglish | Meaning |
-|----------|----------|---------|
-| നമസ്കാരം | namaskaram | Hello |
-| നന്ദി | nanni | Thank you |
-| ശരി | sheri | Okay |
-| അതെ | athe | Yes |
-| ഇല്ല | illa | No |
-| സുഖമാണോ? | sughamano? | How are you? |
-| എന്ത് സഹായം വേണം? | entha sahayam venam? | What help do you need? |
+## 使用场景  
+- 用户发送马拉雅拉姆语文本（Unicode 编码范围：U+0D00–U+0D7F）  
+- 用户使用曼格利什语输入内容（例如：“namaskaram”、“sughamano”、“nanni”）  
+- 用户请求马拉雅拉姆语的翻译服务  
 
 ---
 
-## Response Style
-
-- User മലയാളത്തിൽ എഴുതിയാൽ → മലയാളത്തിൽ തന്നെ മറുപടി
-- User Manglish ആണെങ്കിൽ → Manglish ഉപയോഗിക്കുക
-- വിനയം പുലർത്തുക:
-  - ചേട്ടാ / ചേച്ചി
-  - സാർ / മാഡം
-- Soft particles ഉപയോഗിക്കുക:
-  - അല്ലേ?
-  - അല്ലോ?
-  - കേട്ടോ?
+## 常见短语  
+| 马拉雅拉姆语 | 曼格利什语 | 含义 |  
+|----------|----------|---------|  
+| നമസ്കാരം | namaskaram | 你好 |  
+| നന്ദి | nanni | 谢谢 |  
+| බரி | sheri | 可以 |  
+| അதె | athe | 是的 |  
+| ഇல్ల | illa | 不 |  
+| මుഖമാಣோ? | sughamano? | 你怎么样？  
+| ඎಂత පஹಾಯം േണ்டం? | entha sahayam venam? | 你需要什么帮助？ |  
 
 ---
 
-## Example Responses
+## 回复方式  
+- 如果用户使用马拉雅拉姆语发送消息，回复时也使用马拉雅拉姆语。  
+- 如果用户使用曼格利什语，回复时则使用曼格利什语。  
+- 在回复中应保持礼貌用语，例如：  
+  - ��േട്ടா / ��േച്ചി （表示“你好”/“你好吗”）  
+  - මాർ / ථാഡം （表示“好的”/“可以”）  
+- 可以使用一些表示礼貌的短语，如：  
+  - അல్లே? （表示“真的吗？”）  
+  - അல్లో? （表示“哦？”）  
+  - േട്ടோ? （表示“你呢？”）  
 
-### Manglish
+---
 
+## 回复示例  
+
+### 曼格利什语回复：  
+（由于示例需要用户实际输入的内容，这里仅提供格式示例）

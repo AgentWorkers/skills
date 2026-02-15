@@ -1,35 +1,35 @@
 ---
 name: x-mastery
-description: Complete X (Twitter) algorithm mastery - engagement weights, viral formulas, shadow ban avoidance, thread optimization, and growth strategies. Based on X's open-source code analysis and real creator data.
+description: 全面掌握X（Twitter）的算法：包括互动权重计算、病毒式传播模型的应用、避免被临时封禁（shadow ban）的策略、帖子优化方法以及用户增长策略。这些内容均基于对X开源代码的分析以及真实创作者的数据得出的。
 version: 1.0.0
 author: lxgicstudios
 keywords: x, twitter, algorithm, viral, engagement, growth, shadowban, threads, articles, social-media, content-strategy
 ---
 
-# X Algorithm Mastery
+# X算法精通指南
 
-The definitive guide to X (Twitter). Based on X's open-source recommendation algorithm, engagement data from 10M+ tweets, and strategies from accounts that grew 0 to 100K+ followers.
-
----
-
-## TL;DR - The 10 Commandments
-
-1. **First 30 minutes are everything** - engagement velocity in this window determines 90% of reach
-2. **Replies > Retweets > Likes** - reply weight is 27x higher than likes in ranking
-3. **No links in main post** - X actively suppresses posts with external URLs
-4. **Video = 10x, Images = 2x** - media multipliers are real and significant
-5. **Reply to every comment** - especially in first 2 hours
-6. **Post 3-5x daily minimum** - consistency compounds
-7. **Premium = algorithmic boost** - verified accounts get priority in For You
-8. **Low following ratio** - keep followers > following or get penalized
-9. **Niche down hard** - algorithm rewards topical authority
-10. **Never delete flopped tweets** - deletion rate is tracked negatively
+这是一份关于X（Twitter）的权威指南。本指南基于X的开源推荐算法、超过1000万条推文的互动数据，以及那些粉丝数从0增长到10万以上的账户的策略。
 
 ---
 
-## How The Algorithm Actually Works
+## 简而言之 - 十大准则
 
-### The 4-Stage Pipeline (from source code)
+1. **前30分钟至关重要**：这一时间段内的互动速度决定了90%的传播效果。
+2. **回复 > 转发 > 点赞**：在排名中，回复的权重是点赞的27倍。
+3. **主帖中不要包含链接**：X会主动屏蔽包含外部链接的帖子。
+4. **视频 = 10倍效果，图片 = 2倍效果**：媒体内容的影响力是实实在在的。
+5. **回复每一条评论**：尤其是在最初的2小时内。
+6. **每天至少发布3-5条帖子**：持续发布会带来累积效应。
+7. **认证账户**：会获得算法上的优先展示。
+8. **关注者与被关注者的比例要低**：否则可能会受到惩罚。
+9. **专注细分领域**：算法更倾向于展示在该领域的权威内容。
+10. **永远不要删除失败的推文**：删除推文的行为会对账户产生负面影响。
+
+---
+
+## 算法的工作原理
+
+### 四阶段处理流程（源自源代码）
 
 ```
 ┌─────────────────┐
@@ -62,303 +62,258 @@ The definitive guide to X (Twitter). Based on X's open-source recommendation alg
 └─────────────────┘
 ```
 
-### Engagement Weight Multipliers (from source code analysis)
+### 互动权重倍数（源自源代码分析）
 
-| Action | Weight Multiplier | Notes |
+| 动作 | 权重倍数 | 备注 |
 |--------|-------------------|-------|
-| Reply | 27x | Highest signal - indicates real engagement |
-| Retweet | 20x | Strong distribution signal |
-| Quote Tweet | 24x | Higher than RT (adds context) |
-| Like | 1x | Baseline |
-| Bookmark | 4x | Private save = high intent |
-| Profile click | 12x | Shows deep interest |
-| Dwell time (2min+) | 11x | Longer read = quality content |
-| Video watch (50%+) | 16x | Completion matters |
-| Report | -738x | DEATH SENTENCE |
-| Block | -74x | Very negative |
-| Mute | -369x | Worse than block |
-| "Show less often" | -73x | Soft negative |
+| 回复 | 27倍 | 表示真正的互动 |
+| 转发 | 20倍 | 强大的传播信号 |
+| 引用推文 | 24倍 | 比转发更有传播力 |
+| 点赞 | 1倍 | 基础权重 |
+| 收藏 | 4倍 | 表示用户有阅读的意愿 |
+| 个人资料页面点击 | 12倍 | 显示出用户对内容的兴趣 |
+| 阅读时间（2分钟以上） | 11倍 | 长时间阅读说明内容质量高 |
+| 观看视频（超过50%） | 16倍 | 观看完视频很重要 |
+| 举报 | -738倍 | 会导致账户被严重惩罚 |
+| 封禁 | -74倍 | 比被封禁更严重 |
+| “减少显示频率” | -73倍 | 也是负面行为 |
 
-### The RealGraph Score
+### RealGraph评分
 
-Every account pair has a "RealGraph" score measuring relationship strength:
+每个账户都有一个“RealGraph”评分，用于衡量两者之间的关系强度：
 
-**In-Network Signals:**
-- How often you interact with them
-- Whether you've liked their recent content
-- Whether you've RT'd them before
-- Whether you've replied to them
-- Profile visits to their page
-- Dwell time on their tweets
-- Video watch completion rate
+**网络内部信号**：
+- 你与他们互动的频率
+- 你是否点赞过他们的最新内容
+- 你是否转发过他们的内容
+- 你是否回复过他们
+- 你是否访问过他们的个人资料页面
+- 你在他们的推文上停留的时间
+- 观看视频的完成率
 
-**Out-Network Signals:**
-- People with similar interests engaged
-- People you follow engaged
-- Topic cluster matches your interests
-- Trending in your geographic area
+**网络外部信号**：
+- 与你兴趣相似的人的互动情况
+- 你的关注者们的互动情况
+- 内容是否符合你的兴趣领域
+- 你所在地区的热门话题
 
 ---
 
-## Content Type Rankings
+## 内容类型排名
 
-### Format Performance (relative to text-only baseline)
+### 各内容类型的互动效果（相对于纯文本）
 
-| Content Type | Engagement Multiplier | Algorithm Boost |
+| 内容类型 | 互动倍数 | 算法优先级 |
 |--------------|----------------------|-----------------|
-| Native Video | 10x | High priority |
-| Video (GIF) | 6x | Medium-high |
-| Images (1-4) | 2-3x | Medium |
-| Polls | 4x | Drives replies |
-| Threads (3+) | 3x total | Cumulative engagement |
-| Text only | 1x | Baseline |
-| Text + Link | 0.3x | SUPPRESSED |
+| 原生视频 | 10倍 | 高优先级 |
+| 动画视频（GIF） | 6倍 | 中等优先级 |
+| 图片（1-4张） | 2-3倍 | 中等优先级 |
+| 投票 | 4倍 | 促进用户回复 |
+| 多条推文（3条以上） | 3倍 | 累积互动效果 |
+| 纯文本 | 1倍 | 基础优先级 |
+| 文本+链接 | 0.3倍 | 被算法抑制 |
 
-### Video Specifics
-- **Optimal length**: 30-90 seconds
-- **Completion rate** matters more than views
-- **Captions** boost watch time 40%+
-- **First 3 seconds** must hook (80% drop-off point)
-- **Square/vertical** outperforms landscape on mobile
+### 视频的具体要求
+- **最佳时长**：30-90秒
+- **观看完成率**比观看次数更重要
+- **字幕**能提高观看时间40%以上
+- **开头3秒**必须吸引人（否则观看率会下降80%）
+- **在手机上，方形/垂直视频比横向视频表现更好**
 
-### Image Specifics
-- **4 images** > 1 image (more real estate)
-- **Alt text** improves accessibility ranking
-- **Original images** preferred over stock
-- **Faces** in images get 38% more engagement
+### 图片的具体要求
+- **使用4张图片**比使用1张图片效果更好
+- **alt文本**能提高图片的排名
+- **原创图片**比使用库存图片更受欢迎
+- **图片中包含人物**能提高互动率38%
 
 ---
 
-## Posting Strategy
+## 发布策略
 
-### Frequency Guidelines
+### 发布频率指南
 
-| Goal | Posts/Day | Replies/Day |
+| 目标 | 每天发布数量 | 每天回复数量 |
 |------|-----------|-------------|
-| Maintenance | 1-2 | 5-10 |
-| Growth | 3-5 | 20-50 |
-| Aggressive Growth | 5-10 | 50-100 |
-| Maximum | 15-20 | 100+ |
+| 维护现有粉丝 | 1-2条 | 5-10条 |
+| 增加粉丝 | 3-5条 | 20-50条 |
+| 快速增长 | 5-10条 | 50-100条 |
+| 最大限度 | 15-20条 | 100条以上 |
 
-**Warning**: More than 20 posts/day triggers spam detection.
+**注意**：每天发布超过20条推文可能会触发垃圾信息检测。
 
-### Optimal Timing (US timezone reference)
+### 最佳发布时间（以美国时间为准）
 
-| Time Slot | Quality | Why |
+| 时间段 | 适合发布的内容 | 原因 |
 |-----------|---------|-----|
-| 8-10 AM ET | BEST | Morning scroll, commutes |
-| 12-1 PM ET | Good | Lunch break |
-| 4-6 PM ET | Good | End of workday |
-| 8-10 PM ET | Decent | Evening leisure |
-| 11 PM - 7 AM ET | Worst | Low activity |
+| 上午8-10点 | 适合早上浏览或通勤时 |
+| 中午12-1点 | 午餐时间 |
+| 下午4-6点 | 下班后 |
+| 下午8-10点 | 晚间休闲时间 |
+| 晚上11点-早上7点 | 活动较少 |
 
-**Pro tip**: Post 5-10 minutes BEFORE peak times - algorithm needs time to surface.
-
-### The Velocity Window
-
-```
-Minutes 0-30:   CRITICAL - determines 90% of reach
-Minutes 30-60:  Still matters - can push to "trending"
-Hours 1-2:      Important - extended reach window
-Hours 2-6:      Diminishing returns
-Hours 6+:       Dead unless viral
-```
+**专业提示**：在高峰时间前5-10分钟发布内容——算法需要时间来处理这些新内容。
 
 ---
 
-## What KILLS Your Reach
+## 会降低传播效果的行为
 
-### Instant Death Triggers
-- ❌ External links in main post (use replies)
-- ❌ Getting reported by multiple users
-- ❌ Posting identical content repeatedly
-- ❌ Using banned words/phrases
-- ❌ Aggressive follow/unfollow patterns
-- ❌ Automated behavior patterns
+### 会立即导致传播失败的行为
+- 主帖中包含外部链接（使用回复来分享内容）
+- 被多个用户举报
+- 重复发布相同的内容
+- 使用被禁止的词汇/短语
+- 过度的关注/取消关注行为
+- 自动化的发布行为
 
-### Slow Death Triggers
-- ❌ Inconsistent posting schedule
-- ❌ Not replying to comments
-- ❌ Too many hashtags (>2)
-- ❌ Off-topic from your niche
-- ❌ High tweet deletion rate
-- ❌ Low follower-to-following ratio (<1.0)
-- ❌ No profile picture or bio
+### 会逐渐降低传播效果的行为
+- 发布时间不规律
+- 不回复评论
+- 使用过多的标签（超过2个）
+- 内容与你的领域不符
+- 高频率删除推文
+- 关注者与被关注者的比例过低（<1.0）
+- 个人资料图片或简介缺失
 
-### Shadowban Indicators
-1. Your tweets don't appear in hashtag searches
-2. Replies don't show under other people's posts
-3. Sudden engagement cliff (90%+ drop)
-4. "This tweet is unavailable" for others
+### 被隐藏的迹象
+- 你的推文在标签搜索中无法显示
+- 你的回复不会出现在他人的帖子下方
+- 互动率突然下降（超过90%）
+- 对他人来说，你的推文显示为“不可用”
 
-**Recovery**: Stop posting 24-48h, then post only high-quality content for 2 weeks.
-
----
-
-## Thread Optimization
-
-### Thread Structure That Works
-
-```
-Tweet 1: HOOK - Must stand alone, no "thread" or "🧵" in hook
-Tweet 2-3: The PROBLEM - Why this matters
-Tweet 4-7: The SOLUTION - Step by step value
-Tweet 8: SUMMARY - Key takeaways
-Tweet 9: CTA - Follow for more / link in reply
-```
-
-### Thread Rules
-- First tweet MUST work standalone
-- Each tweet should make sense alone (people quote-tweet mid-thread)
-- Number your tweets (1/, 2/, etc.) for scannability
-- Add images/videos throughout - not just first tweet
-- Put links in LAST tweet or reply to thread
-
-### Thread Length Sweet Spots
-- **5-7 tweets**: Best engagement per tweet
-- **10-15 tweets**: Maximum total engagement
-- **20+ tweets**: Diminishing returns, looks spammy
+**恢复方法**：停止发布24-48小时，然后连续两周只发布高质量的内容。
 
 ---
 
-## X Articles (Long-form)
+## 主题帖的优化
 
-### Hook Patterns (Proven 10K+ engagement)
+### 有效的主题帖结构
 
-**The Insecurity Hook**
-> "Everyone's talking about [X] and you're still wondering if you missed the window..."
+### 主题帖规则
+- 第一条推文必须能够独立成篇
+- 每条推文都应该有意义（用户会在主题帖中引用这条推文）
+- 为推文编号（如1/、2/等）以便于阅读
+- 在整个主题帖中添加图片/视频
+- 将链接放在最后一条推文或回复中
 
-**The RIP Hook**
-> "RIP [profession]. This AI tool will [action] in [time]."
-
-**The Secret Hook**
-> "I spent [time] studying [X]. Here's what nobody tells you..."
-
-**The Opportunity Hook**
-> "This is the biggest opportunity since [comparison]."
-
-**The Mistake Hook**
-> "I wasted [time/money] making these [N] mistakes. Don't repeat them."
-
-### Article Structure (Optimized)
-
-```
-1. HOOK (insecurity, curiosity, or opportunity gap)
-2. SOCIAL PROOF (why you're credible to write this)
-3. THE PROBLEM (what's at stake)
-4. THE SOLUTION (your framework/method)
-5. STEP-BY-STEP (numbered, actionable)
-6. OBJECTION HANDLING (why most won't do it)
-7. RESULTS (what they'll get)
-8. URGENCY (why now)
-9. CTA (specific next action)
-```
-
-### Article Formatting
-- **H2 headers** for each major section
-- **Bold** key phrases (but not entire sentences)
-- **Bullet lists** for scanability
-- **Time estimates** for each step
-- **Copy-paste templates** when applicable
-- **No em dashes** - use commas or periods
-- **Short paragraphs** - 2-3 sentences max
+### 主题帖的最佳长度
+- **5-7条推文**：每条推文的互动效果最佳
+- **10-15条推文**：总互动效果最高
+- **20条以上推文**：互动效果会下降
 
 ---
 
-## Account Health Factors
+## X文章（长篇内容）
 
-### TrustScore Components
-- Account age (older = more trust)
-- Verification status (Premium boost)
-- Follower-to-following ratio
-- Historical engagement rate
-- Report/block rate received
-- Content policy violations
-- Authentic follower percentage
+### 有效的吸引读者的方法（经验证可提高1万+互动）
 
-### The Follower Ratio Rule
-```
-Ratio > 10:1   = Authority signal (boost)
-Ratio 2:1-10:1 = Healthy (neutral)
-Ratio 1:1-2:1  = Warning zone
-Ratio < 1:1    = Follow-farming penalty
-```
+**“大家都在讨论[X]，而你还在犹豫是否错过了机会...”**  
+**“[行业/产品]已消亡。这个AI工具将在[时间]发挥作用...”**  
+**“我花了[时间]研究[X]。以下是没人告诉你的内容...”**  
+**“这是自[对比对象]以来最大的机会...”**  
+**“我浪费了[时间/金钱]在[错误的事情]上。别重蹈覆辙...”**
 
-### Premium/Verification Benefits
-- Higher ranking in For You tab
-- Posts shown to non-followers more
-- Priority in replies
-- Longer tweet limit (4,000 chars)
-- Edit tweets ability
-- Bookmark folders
-- Blue checkmark social proof
+### 文章的结构（优化版）
+
+### 文章格式
+- 每个主要部分使用H2标题
+- 关键短语使用粗体（但不要整句话都加粗）
+- 使用项目符号列表以便于阅读
+- 为每个步骤提供时间估计
+- 可以使用复制粘贴的模板
+- 不要使用破折号——使用逗号或句号
+- 每段文字不超过2-3句
 
 ---
 
-## Growth Tactics
+## 账户健康因素
 
-### 1. Reply Guy Strategy (0-1K followers)
-1. Turn on notifications for 10-20 large accounts in your niche
-2. Be FIRST with a thoughtful reply (within 5 minutes)
-3. Add genuine value - insight, question, or experience
-4. Don't shill - just be helpful
-5. Their audience discovers you through great replies
+### 信任评分的组成部分
+- 账户年龄（越久越值得信任）
+- 认证状态（认证账户会获得算法优先权）
+- 关注者与被关注者的比例
+- 历史互动率
+- 被举报/封禁的频率
+- 内容违规情况
+- 真实粉丝的比例
 
-### 2. Quote Tweet Takeover (1K-10K)
-1. Find viral posts in your niche
-2. Quote tweet with "Let me explain why this matters..."
-3. Add 3-5 points of genuine value
-4. Credit the original author
-5. Builds authority + captures their audience
+### 关注者比例规则
 
-### 3. Thread Dominance (10K-100K)
-1. Post 2-3 educational threads per week
-2. Repurpose into video/carousel
-3. Cross-promote on other platforms
-4. Build email list from thread CTAs
-5. Threads compound - old threads still get discovered
-
-### 4. Controversy Calibration
-- Mild hot takes: 2-3x engagement
-- Spicy opinions: 5-10x engagement but risky
-- Inflammatory: viral but attracts reports
-
-**Rule**: Only be controversial about things you genuinely believe.
+### 认证账户的优势
+- 在“For You”板块获得更高的排名
+- 更多非关注者也能看到你的帖子
+- 回复时获得优先展示
+- 推文长度限制增加（4000个字符）
+- 可以编辑推文
+- 支持收藏功能
+- 账户会有蓝色勾选标记，证明其真实性
 
 ---
 
-## Engagement Farming Techniques
+## 增粉策略
 
-### Question Formulas
-- "What's the most [adjective] [thing] you've ever [done]?"
-- "Unpopular opinion: [statement]. Agree or disagree?"
-- "If you could only [do X] for the rest of your life, what would it be?"
-- "Name a [thing] that's overrated. I'll start: [example]"
-- "Wrong answers only: What is [X]?"
+### 1. 回复策略（粉丝数0-1000）
+1. 开启你所在领域内10-20个大型账户的通知
+2. 在5分钟内第一个回复他们，并给出有意义的回复
+3. 提供真实的价值——见解、问题或经验
+4. 不要推销产品，而是提供帮助
+5. 通过高质量的回复，让你的受众发现你
 
-### Reply Bait Patterns
-- Leave something incomplete for people to correct
-- Make a slightly wrong statement (people LOVE correcting)
-- Ask for recommendations
-- Start a debate between two options
-- "Fill in the blank: ____"
+### 2. 引用推文策略（粉丝数1000-10000）
+1. 找到你所在领域的热门推文
+2. 引用这条推文并解释其原因
+3. 添加3-5点有价值的内容
+4. 致谢原作者
+5. 建立你的权威并吸引他们的受众
 
-### Engagement Pods (Use Carefully)
-- Small group (5-10 people) in your niche
-- Engage with each other's content in first 30 min
-- Genuine comments only (algorithm detects fake)
-- Don't overdo - 1-2 posts per person per day
+### 3. 主题帖主导策略（粉丝数10000-100000）
+1. 每周发布2-3篇教育性主题帖
+2. 将这些主题帖转化为视频或轮播图
+3. 在其他平台上推广
+4. 从主题帖中的CTA（Call to Action）中收集邮箱地址
+5. 主题帖的内容会持续产生影响——旧的主题帖也会被人们发现
+
+### 4. 争议性内容的处理
+- 温和的观点：互动率提高2-3倍
+- 辛辣的观点：互动率提高5-10倍，但风险也更高
+- 火辣的观点：虽然能引起关注，但容易引发举报
+
+**规则**：只讨论你真正相信的事情。
 
 ---
 
-## The No-Link Strategy
+## 互动提升技巧
 
-### Why Links Kill Reach
-- X wants users to stay on platform
-- Link posts get 0.3x normal reach
-- Affiliate links are especially suppressed
+### 提问技巧
+- “你做过最[形容词]的[事情]是什么？”
+- “ unpopular opinion: [观点]。你同意还是不同意？”
+- “如果你只能[做X]一辈子，你会选择什么？”
+- “说一个被高估的东西。我举个例子：[例子]”
+- “错误的答案：[X]是什么？”
 
-### Link Placement Strategy
+### 回复引导技巧
+- 留下一些未完成的内容让别人来补充
+- 说一些稍微错误的观点（人们喜欢纠正错误）
+- 提出建议
+- 在两个选项之间引发讨论
+- “填空：____”
+
+### 互动小组的运用
+- 选择你所在领域内的5-10个人的小团体
+- 在最初的30分钟内互相互动
+- 只允许真实的评论（算法能识别虚假评论）
+- 不要过度使用——每人每天最多1-2条评论
+
+---
+
+## 不使用链接的策略
+
+### 为什么链接会降低传播效果
+- X希望用户留在平台上
+- 包含链接的帖子传播效果只有正常情况的0.3倍
+- 联盟链接尤其会被抑制
+
+### 链接的放置策略
+
 ```
 ❌ Bad:  "Check out my course [link]"
 ✅ Good: "I made a free guide on [topic]. Drop a 🔥 and I'll DM it to you."
@@ -369,76 +324,75 @@ Ratio < 1:1    = Follow-farming penalty
 
 ---
 
-## Analytics That Matter
+## 需要关注的关键分析指标
 
-### Key Metrics to Track
-1. **Impressions/Follower**: How far your content spreads
-2. **Engagement Rate**: (Likes + RTs + Replies) / Impressions
-3. **Reply Rate**: Replies / Impressions (most important)
-4. **Follower Growth Rate**: Weekly net new followers
-5. **Profile Click Rate**: Profile clicks / Impressions
+### 需要跟踪的关键指标
+1. **曝光量/粉丝数**：你的内容传播的范围
+2. **互动率**：（点赞 + 转发 + 回复）/ 暴露量
+3. **回复率**：回复数 / 暴露量（最重要的指标）
+4. **粉丝增长率**：每周新增粉丝数
+5. **个人资料页面点击率**：个人资料页面的点击次数 / 暴露量
 
-### Healthy Benchmarks
-| Metric | Poor | Average | Good | Great |
+### 健康的指标参考值
+| 指标 | 较差 | 平均 | 良好 | 优秀 |
 |--------|------|---------|------|-------|
-| Engagement Rate | <1% | 1-3% | 3-6% | >6% |
-| Reply Rate | <0.1% | 0.1-0.5% | 0.5-1% | >1% |
-| Profile Click Rate | <0.5% | 0.5-1% | 1-2% | >2% |
+| 互动率 | <1% | 1-3% | 3-6% | >6% |
+| 回复率 | <0.1% | 0.1-0.5% | 0.5-1% | >1% |
+| 个人资料页面点击率 | <0.5% | 0.5-1% | 1-2% | >2% |
 
 ---
 
-## Quick Checklist
+## 发布前的快速检查清单
 
-### Before Posting
-- [ ] Hook in first line?
-- [ ] Reason to reply/engage?
-- [ ] No external links? (move to reply)
-- [ ] Under 280 chars? (or thread it properly)
-- [ ] Media attached? (image/video)
-- [ ] Posting at good time?
-- [ ] Available to engage for 30 min after?
+### 发布前
+- 第一行是否吸引人？
+- 有回复/互动的理由吗？
+- 帖子内容少于280个字符吗？（如果是，可以分成多条主题帖）
+- 附上了媒体内容吗？（图片/视频）
+- 发布时间合适吗？
+- 发布后30分钟内还能互动吗？
 
-### After Posting
-- [ ] Reply to every comment in first 2 hours
-- [ ] Like comments (shows appreciation)
-- [ ] Retweet best replies (rewards engagement)
-- [ ] Quote tweet your own post with added context (after 4+ hours)
-
----
-
-## Platform-Specific Notes
-
-### For You vs Following
-- **For You**: Algorithmic, includes non-followers, aim here for growth
-- **Following**: Chronological, only followers, for community maintenance
-
-### X Premium Tiers
-- **Basic** ($3/mo): Half the algorithmic boost
-- **Premium** ($8/mo): Full boost, edit tweets
-- **Premium+** ($16/mo): No ads, highest boost
-
-### API Changes (2024+)
-- Free API heavily restricted
-- Automated posting requires paid tier
-- Rate limits tightened
-- Third-party apps limited
+### 发布后的操作
+- 在最初的2小时内回复每一条评论
+- 点赞评论（表示感谢）
+- 转发最好的评论（鼓励互动）
+- 在4小时后引用自己的推文并添加解释
 
 ---
 
-## Sources
+## 平台特定说明
 
-- X Algorithm GitHub (open source): github.com/twitter/the-algorithm
-- X Engineering Blog
-- Hootsuite, Sprout Social, SocialBee research
-- Analysis of 10M+ tweets across engagement levels
-- Growth data from 500+ accounts (0→100K journey)
+### “For You”与“Following”的区别
+- “For You”：基于算法推荐，包括非关注者，适合用于增长
+- “Following”：按时间顺序显示，仅显示关注者，适合维护社区关系
+
+### X的付费账户等级
+- **基础级**（每月3美元）：算法优先权减半
+- **高级**（每月8美元）：获得完整的算法优先权，可以编辑推文
+- **高级+**（每月16美元）：无广告，获得最高的算法优先权
+
+### API变更（2024年以后）
+- 免费API的使用受到严格限制
+- 自动化发布需要付费账户
+- 发布频率的限制更加严格
+- 第三方应用的使用权受到限制
 
 ---
 
-## Installation
+## 参考资料
+
+- X算法的GitHub代码（开源）：github.com/twitter/the-algorithm
+- X的工程博客
+- Hootsuite、Sprout Social、SocialBee的研究结果
+- 对超过1000万条推文的互动数据分析
+- 500多个账户的增长数据（粉丝数从0增长到10万）
+
+---
+
+## 文档制作工具
 
 ```bash
 clawdhub install lxgicstudios/x-mastery
 ```
 
-**Built by LXGIC Studios** - [@lxgicstudios](https://x.com/lxgicstudios)
+**由LXGIC Studios制作** - [@lxgicstudios](https://x.com/lxgicstudios)

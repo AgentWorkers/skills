@@ -1,26 +1,26 @@
 ---
 name: mantis-manager
-description: Manage Mantis Bug Tracker (issues, projects, users, filters, configs) via the official Mantis REST API. Supports full CRUD operations on issues, projects, users, attachments, notes, tags, relationships, and configuration management. Features dynamic instance switching with context-aware base URL and token resolution.
+description: 通过官方的 Mantis REST API 管理 Mantis 错误跟踪器（包括问题、项目、用户、过滤器以及配置）。支持对问题、项目、用户、附件、备注、标签、关系以及配置进行完整的 CRUD 操作（创建、读取、更新、删除）。具备动态实例切换功能，并支持基于上下文的基 URL 和令牌解析机制。
 homepage: https://www.mantisbt.org/
 metadata: {"openclaw":{"emoji":"🐞","requires":{"env":["MANTIS_BASE_URL","MANTIS_API_TOKEN"]},"primaryEnv":"MANTIS_API_TOKEN"}}
 ---
 
-# Mantis Manager Skill (Enhanced)
+# Mantis Manager 技能（增强版）
 
-## 🔐 Base URL & Token Resolution
+## 🔐 基础 URL 与令牌解析
 
-### Base URL Resolution
-Base URL precedence (highest to lowest):
-1. `temporary_base_url` — one-time use URL for specific operations
-2. `user_base_url` — user-defined URL for the current session
-3. `MANTIS_BASE_URL` — environment default URL
+### 基础 URL 解析
+基础 URL 的优先级（从高到低）：
+1. `temporary_base_url` — 用于特定操作的一次性使用 URL
+2. `user_base_url` — 当前会话的用户自定义 URL
+3. `MANTIS_BASE_URL` — 环境默认 URL
 
-This allows you to:
-- Switch between multiple Mantis instances dynamically
-- Test against staging/production environments
-- Work with different client instances without changing config
+这允许您：
+- 动态地在多个 Mantis 实例之间切换
+- 在测试/生产环境中进行测试
+- 在不更改配置的情况下使用不同的客户端实例
 
-**Example:**
+**示例：**
 ```
 // Default: uses MANTIS_BASE_URL from environment
 GET {{resolved_base_url}}/issues
@@ -34,49 +34,49 @@ user_base_url = "https://client-mantis.example.com/api/rest"
 GET {{resolved_base_url}}/issues
 ```
 
-### Token Resolution
-Token precedence (highest to lowest):
-1. `temporary_token` — one-time use token for specific operations
-2. `user_token` — user-defined token for the current session
-3. `MANTIS_API_TOKEN` — environment default token
+### 令牌解析
+令牌的优先级（从高到低）：
+1. `temporary_token` — 用于特定操作的一次性使用令牌
+2. `user_token` — 当前会话的用户自定义令牌
+3. `MANTIS_API_TOKEN` — 环境默认令牌
 
-Environment variables are handled via standard OpenClaw metadata: `requires.env` declares **required** variables (`MANTIS_BASE_URL`, `MANTIS_API_TOKEN`). Any other environment variables you use for Mantis should be treated as normal process env vars and are not modeled as special OpenClaw metadata fields.
+环境变量通过标准的 OpenClaw 元数据进行处理：`requires.env` 声明 **必需** 的变量（`MANTIS_BASE_URL`、`MANTIS_API_TOKEN`）。您为 Mantis 使用的任何其他环境变量应被视为普通的进程环境变量，而不是特殊的 OpenClaw 元数据字段。
 
-### Authentication Headers
-**All API requests must include:**
+### 认证头
+**所有 API 请求必须包含：**
 
 ```
 Authorization: Bearer {{resolved_token}}
 Content-Type: application/json
 ```
 
-**Note:** The `{{resolved_base_url}}` and `{{resolved_token}}` are determined at runtime based on the precedence rules above.
+**注意：** `{{resolved_base_url}}` 和 `{{resolved_token}}` 是根据上述优先级规则在运行时确定的。
 
 ---
 
-## 📌 Notation Used in Examples
+## 📌 示例中使用的符号
 
-Throughout this documentation:
-- `{{MANTIS_BASE_URL}}` refers to the **resolved base URL** (could be temporary_base_url, user_base_url, or env MANTIS_BASE_URL)
-- `{{resolved_token}}` refers to the **resolved token** (could be temporary_token, user_token, or env MANTIS_API_TOKEN)
-- All endpoints use the pattern: `{{MANTIS_BASE_URL}}/resource/path`
+在本文档中：
+- `{{MANTIS_BASE_URL}}` 表示 **解析后的基础 URL**（可能是 `temporary_base_url`、`user_base_url` 或环境变量 `MANTIS_BASE_URL`）
+- `{{resolved_token}}` 表示 **解析后的令牌**（可能是 `temporary_token`、`user_token` 或环境变量 `MANTIS_API_TOKEN`）
+- 所有端点的格式为：`{{MANTIS_BASE_URL}}/resource/path`
 
-**Important:** Always use the resolution logic to determine the actual URL and token at runtime.
+**重要提示：** 始终使用解析逻辑在运行时确定实际的 URL 和令牌。
 
 ---
 
-## 🔄 Context Management
+## 🔄 上下文管理
 
-> The `temporary_*` and `user_*` names here are **runtime context variables used by the skill logic**, not OpenClaw metadata fields. OpenClaw does **not** define an `optional.context` metadata key; context is resolved dynamically at runtime as described below.
+> 这里的 `temporary_*` 和 `user_*` 名称是 **由技能逻辑使用的运行时上下文变量**，而不是 OpenClaw 元数据字段。OpenClaw 并没有定义 `optional.context` 元数据键；上下文是在运行时根据以下描述动态解析的。
 
-### Setting Temporary Values (One-Time Use)
+### 设置临时值（一次性使用）
 
-**User queries:**
-- "Use https://staging.mantis.com/api/rest for this request"
-- "Connect to production instance for this operation"
-- "Use token ABC123 just this once"
+**用户查询：**
+- “使用 https://staging.mantis.com/api/rest 进行此请求”
+- “连接到生产实例以执行此操作”
+- “仅此一次使用令牌 ABC123”
 
-**Action:**
+**操作：**
 ```
 Set temporary_base_url = "https://staging.mantis.com/api/rest"
 Set temporary_token = "ABC123"
@@ -85,16 +85,16 @@ Clear temporary_base_url
 Clear temporary_token
 ```
 
-**Behavior:** Temporary values are automatically cleared after one use.
+**行为：** 临时值在首次使用后会被自动清除。
 
-### Setting Session Values (Current Session)
+### 设置会话值（当前会话）
 
-**User queries:**
-- "Switch to client XYZ's Mantis instance"
-- "Use my personal API token for all requests"
-- "Connect to staging environment"
+**用户查询：**
+- “切换到客户端 XYZ 的 Mantis 实例”
+- “对所有请求使用我的个人 API 令牌”
+- “连接到测试环境”
 
-**Action:**
+**操作：**
 ```
 Set user_base_url = "https://client-xyz.mantis.com/api/rest"
 Set user_token = "personal_token_123"
@@ -102,30 +102,30 @@ Set user_token = "personal_token_123"
 // Values persist for the entire session
 ```
 
-**Behavior:** Session values persist until explicitly cleared or session ends.
+**行为：** 会话值会一直保留，直到明确清除或会话结束。
 
-### Clearing Context Values
+### 清除上下文值
 
-**User queries:**
-- "Reset to default Mantis instance"
-- "Clear my custom token"
-- "Go back to environment defaults"
+**用户查询：**
+- “重置为默认的 Mantis 实例”
+- “清除我的自定义令牌”
+- “返回到环境默认设置”
 
-**Action:**
+**操作：**
 ```
 Clear user_base_url
 Clear user_token
 // Now uses MANTIS_BASE_URL and MANTIS_API_TOKEN from environment
 ```
 
-### Viewing Current Context
+### 查看当前上下文
 
-**User queries:**
-- "What Mantis instance am I connected to?"
-- "Show current API configuration"
-- "Which token am I using?"
+**用户查询：**
+- “我连接到哪个 Mantis 实例？”
+- “显示当前的 API 配置”
+- “我正在使用哪个令牌？”
 
-**Response should show:**
+**响应应显示：**
 ```
 Current Context:
 - Base URL: https://client-xyz.mantis.com/api/rest (user_base_url)
@@ -134,9 +134,9 @@ Current Context:
 - Fallback Token: env_t***789 (MANTIS_API_TOKEN)
 ```
 
-### Use Cases
+### 使用案例
 
-#### Multi-Instance Management
+#### 多实例管理
 ```
 // Check production issue
 Set temporary_base_url = "https://prod.mantis.com/api/rest"
@@ -149,7 +149,7 @@ Get issue 123
 // Compare results
 ```
 
-#### Client Switching
+#### 客户端切换
 ```
 // Switch to Client A
 Set user_base_url = "https://clienta.mantis.com/api/rest"
@@ -164,7 +164,7 @@ List all projects
 Get issues for project 3
 ```
 
-#### Admin Operations with Impersonation
+#### 以代理身份执行管理员操作
 ```
 // Connect to main instance as admin
 Set user_token = "admin_token"
@@ -179,56 +179,56 @@ Clear temporary header
 
 ---
 
-## 🐞 ISSUES Operations
+## 🐞 问题操作
 
-### List Issues
-**User queries:**
-- "List all issues"
-- "Get issues for project 5"
-- "Get issues matching filter 10"
-- "Show issues assigned to me"
-- "Get unassigned issues"
+### 列出问题
+**用户查询：**
+- “列出所有问题”
+- “获取项目 5 的问题”
+- “获取符合过滤器 10 的问题”
+- “显示分配给我的问题”
+- “获取未分配的问题”
 
-**Actions:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/issues
 ```
 
-**Query Parameters:**
-- `page_size` — number of issues per page (default: 50)
-- `page` — page number (1-indexed)
-- `filter_id` — ID of saved filter to apply
-- `project_id` — filter by specific project
-- `select` — comma-separated fields to return (e.g., "id,summary,status")
+**查询参数：**
+- `page_size` — 每页的问题数量（默认：50）
+- `page` — 页码（从 1 开始计数）
+- `filter_id` — 要应用的保存过滤器的 ID
+- `project_id` — 按特定项目过滤
+- `select` — 要返回的字段（例如，“id,summary,status”）
 
-**Special endpoints:**
+**特殊端点：**
 ```
 GET {{MANTIS_BASE_URL}}/issues?filter_id={{filter_id}}
 GET {{MANTIS_BASE_URL}}/projects/{{project_id}}/issues
 ```
 
-### Get Single Issue
-**User queries:**
-- "Show issue 123"
-- "Get details for bug 456"
+### 获取单个问题
+**用户查询：**
+- “显示问题 123”
+- “获取错误 456 的详细信息”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/issues/{{id}}
 ```
 
-### Create Issue
-**User queries:**
-- "Create issue with summary 'Login bug' and description 'Cannot login'"
-- "Create bug in project 5 with priority high"
-- "Create issue with attachments"
+### 创建问题
+**用户查询：**
+- “创建一个摘要为‘登录错误’、描述为‘无法登录’的问题”
+- “在项目 5 中创建一个优先级为高的错误”
+- “创建一个带有附件的问题”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/issues
 ```
 
-**Minimal body:**
+**最小内容：**
 ```json
 {
   "summary": "Issue summary",
@@ -238,7 +238,7 @@ POST {{MANTIS_BASE_URL}}/issues
 }
 ```
 
-**Full body (optional fields):**
+**完整内容（可选字段）：**
 ```json
 {
   "summary": "Issue summary",
@@ -260,24 +260,24 @@ POST {{MANTIS_BASE_URL}}/issues
 }
 ```
 
-**Create with attachments:**
+**创建带有附件的问题：**
 ```
 POST {{MANTIS_BASE_URL}}/issues
 ```
-Include `files` array in body with base64-encoded content.
+在内容中包含 `files` 数组，并对其进行 base64 编码。
 
-### Update Issue
-**User queries:**
-- "Update issue 123 status to resolved"
-- "Change priority of bug 456 to high"
-- "Assign issue 789 to user 10"
+### 更新问题
+**用户查询：**
+- “将问题 123 的状态更新为已解决”
+- “将错误 456 的优先级更改为高”
+- “将问题 789 分配给用户 10”
 
-**Action:**
+**操作：**
 ```
 PATCH {{MANTIS_BASE_URL}}/issues/{{id}}
 ```
 
-**Example body:**
+**示例内容：**
 ```json
 {
   "status": {"name": "resolved"},
@@ -287,48 +287,48 @@ PATCH {{MANTIS_BASE_URL}}/issues/{{id}}
 }
 ```
 
-### Delete Issue
-**User queries:**
-- "Delete issue 123"
-- "Remove bug 456"
+### 删除问题
+**用户查询：**
+- “删除问题 123”
+- “删除错误 456”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/issues/{{id}}
 ```
 
-### Monitor/Unmonitor Issue
-**User queries:**
-- "Monitor issue 123"
-- "Stop monitoring bug 456"
-- "Add user 10 as monitor on issue 789"
+### 监控/取消监控问题
+**用户查询：**
+- “监控问题 123”
+- “停止监控错误 456”
+- “将用户 10 添加为问题 789 的监控者”
 
-**Actions:**
+**操作：**
 ```
 POST   {{MANTIS_BASE_URL}}/issues/{{id}}/monitors
 DELETE {{MANTIS_BASE_URL}}/issues/{{id}}/monitors
 ```
 
-**Body (for specific user):**
+**内容（针对特定用户）：**
 ```json
 {
   "user": {"id": 10}
 }
 ```
 
-### Attach/Detach Tags
-**User queries:**
-- "Add tag 'critical' to issue 123"
-- "Remove tag 'bug' from issue 456"
+### 添加/删除标签
+**用户查询：**
+- “向问题 123 添加标签‘critical’”
+- “从问题 456 中删除标签‘bug’”
 
-**Actions:**
+**操作：**
 ```
 POST   {{MANTIS_BASE_URL}}/issues/{{id}}/tags
 PATCH  {{MANTIS_BASE_URL}}/issues/{{id}}/tags
 DELETE {{MANTIS_BASE_URL}}/issues/{{id}}/tags
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "tags": [
@@ -338,42 +338,34 @@ DELETE {{MANTIS_BASE_URL}}/issues/{{id}}/tags
 }
 ```
 
-### Add Issue Relationship
-**User queries:**
-- "Link issue 123 to issue 456 as duplicate"
-- "Add parent relationship from 789 to 101"
+### 添加问题关联
+**用户查询：**
+- “将问题 123 关联为问题 456 的重复问题”
+- “从 789 添加到 101 的父关联”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/issues/{{id}}/relationships
 ```
 
-**Body:**
-```json
-{
-  "type": {"name": "duplicate-of"},
-  "target_issue": {"id": 456}
-}
-```
-
-**Relationship types:**
+**关联类型：**
 - `duplicate-of`
 - `related-to`
 - `parent-of`
 - `child-of`
 - `has-duplicate`
 
-### Attach Files
-**User queries:**
-- "Attach file to issue 123"
-- "Add screenshot to bug 456"
+### 添加附件
+**用户查询：**
+- “向问题 123 添加附件”
+- “向错误 456 添加截图”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/issues/{{id}}/files
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "files": [
@@ -385,30 +377,30 @@ POST {{MANTIS_BASE_URL}}/issues/{{id}}/files
 }
 ```
 
-### Delete Attachment
-**User queries:**
-- "Delete attachment 789 from issue 123"
-- "Remove file 101 from bug 456"
+### 删除附件
+**用户查询：**
+- “从问题 123 中删除附件 789”
+- “从错误 456 中删除文件 101”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/issues/{{issue_id}}/files/{{file_id}}
 ```
 
-### Issue Notes
+### 问题备注
 
-#### Add Note
-**User queries:**
-- "Add note to issue 123: 'This is fixed now'"
-- "Add note with time tracking 2 hours"
-- "Add private note to bug 456"
+#### 添加备注
+**用户查询：**
+- “向问题 123 添加备注：‘问题现已修复’”
+- “添加带有 2 小时时间跟踪的备注”
+- “向错误 456 添加私有备注”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/issues/{{id}}/notes
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "text": "Note content here",
@@ -417,7 +409,7 @@ POST {{MANTIS_BASE_URL}}/issues/{{id}}/notes
 }
 ```
 
-**With attachment:**
+**带有附件：**
 ```json
 {
   "text": "Note with file",
@@ -430,52 +422,52 @@ POST {{MANTIS_BASE_URL}}/issues/{{id}}/notes
 }
 ```
 
-#### Delete Note
-**User queries:**
-- "Delete note 55 from issue 123"
-- "Remove comment 99 from bug 456"
+#### 删除备注
+**用户查询：**
+- “从问题 123 中删除备注 55”
+- “从错误 456 中删除评论 99”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/issues/{{issue_id}}/notes/{{note_id}}
 ```
 
 ---
 
-## 📁 PROJECTS Operations
+## 📁 项目操作
 
-### List All Projects
-**User queries:**
-- "List all projects"
-- "Show all projects"
-- "Get projects"
+### 列出所有项目
+**用户查询：**
+- “列出所有项目”
+- “显示所有项目”
+- “获取项目”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/projects
 ```
 
-### Get Project by ID
-**User queries:**
-- "Show project 5"
-- "Get details for project 10"
+### 按 ID 获取项目
+**用户查询：**
+- “显示项目 5”
+- “获取项目 10 的详细信息”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/projects/{{id}}
 ```
 
-### Create Project
-**User queries:**
-- "Create project named 'New Product'"
-- "Add project with description 'Internal tools'"
+### 创建项目
+**用户查询：**
+- “创建名为‘New Product’的项目”
+- “添加描述为‘内部工具’的项目”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/projects
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "name": "Project Name",
@@ -487,125 +479,117 @@ POST {{MANTIS_BASE_URL}}/projects
 }
 ```
 
-### Update Project
-**User queries:**
-- "Update project 5 description"
-- "Change project 10 status to stable"
+### 更新项目
+**用户查询：**
+- “更新项目 5 的描述”
+- “将项目 10 的状态更改为稳定”
 
-**Action:**
+**操作：**
 ```
 PATCH {{MANTIS_BASE_URL}}/projects/{{id}}
 ```
 
-### Delete Project
-**User queries:**
-- "Delete project 5"
-- "Remove project 10"
+### 删除项目
+**用户查询：**
+- “删除项目 5”
+- “删除项目 10”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/projects/{{id}}
 ```
 
-### Sub-Projects
+### 子项目
 
-#### Get Sub-Projects
-**User queries:**
-- "Show sub-projects of project 5"
+#### 获取子项目
+**用户查询：**
+- “显示项目 5 的子项目”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/projects/{{id}}/subprojects
 ```
 
-#### Create Sub-Project
-**User queries:**
-- "Create sub-project under project 5"
+#### 创建子项目
+**用户查询：**
+- “在项目 5 下创建子项目”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/projects/{{id}}/subprojects
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "subproject": {"id": 10}
 }
 ```
 
-#### Delete Sub-Project
-**Action:**
+### 删除子项目
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/projects/{{id}}/subprojects/{{subproject_id}}
 ```
 
-### Project Users
+### 项目用户
 
-#### Get Project Users
-**User queries:**
-- "Show users in project 5"
-- "List members of project 10"
+#### 获取项目用户
+**用户查询：**
+- “显示项目 5 中的用户”
+- “列出项目 10 的成员”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/projects/{{id}}/users
 ```
 
-#### Add User to Project
-**User queries:**
-- "Add user 20 to project 5 as developer"
+#### 将用户添加到项目
+**用户查询：**
+- “将用户 20 添加为项目 5 的开发者”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/projects/{{id}}/users
 ```
 
-**Body:**
-```json
-{
-  "user": {"id": 20},
-  "access_level": {"name": "developer"}
-}
-```
+**权限级别：**
+- `viewer`（10）
+- `reporter`（25）
+- `updater`（40）
+- `developer`（55）
+- `manager`（70）
+- `administrator`（90）
 
-**Access levels:**
-- `viewer` (10)
-- `reporter` (25)
-- `updater` (40)
-- `developer` (55)
-- `manager` (70)
-- `administrator` (90)
-
-#### Delete User from Project
-**Action:**
+#### 从项目中删除用户
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/projects/{{project_id}}/users/{{user_id}}
 ```
 
-### Project Versions
+### 项目版本
 
-#### Get Versions
-**User queries:**
-- "Show versions of project 5"
-- "List releases for project 10"
+#### 获取版本
+**用户查询：**
+- “显示项目 5 的版本”
+- “列出项目 10 的发布版本”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/projects/{{id}}/versions
 ```
 
-#### Create Version
-**User queries:**
-- "Create version 2.0 for project 5"
-- "Add release 1.5 to project 10"
+### 创建版本
+**用户查询：**
+- “为项目 5 创建版本 2.0”
+- “为项目 10 添加版本 1.5”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/projects/{{id}}/versions
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "name": "2.0",
@@ -616,64 +600,64 @@ POST {{MANTIS_BASE_URL}}/projects/{{id}}/versions
 }
 ```
 
-#### Update Version
-**Action:**
+### 更新版本
+**操作：**
 ```
 PATCH {{MANTIS_BASE_URL}}/projects/{{project_id}}/versions/{{version_id}}
 ```
 
-#### Delete Version
-**Action:**
+### 删除版本
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/projects/{{project_id}}/versions/{{version_id}}
 ```
 
 ---
 
-## 👥 USERS Operations
+## 👥 用户操作
 
-### Get My User Info
-**User queries:**
-- "Show my user info"
-- "Get my profile"
-- "Who am I?"
+### 获取我的用户信息
+**用户查询：**
+- “显示我的用户信息”
+- “获取我的个人资料”
+- “我是谁？”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/users/me
 ```
 
-### Get User by ID
-**User queries:**
-- "Show user 10"
-- "Get info for user 25"
+### 按 ID 获取用户
+**用户查询：**
+- “显示用户 10”
+- “获取用户 25 的信息”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/users/{{id}}
 ```
 
-### Get User by Username
-**User queries:**
-- "Find user 'john.doe'"
-- "Get user with username 'admin'"
+### 按用户名获取用户
+**用户查询：**
+- “查找用户 ‘john.doe’”
+- “获取用户名为 ‘admin’ 的用户”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/users?name={{username}}
 ```
 
-### Create User
-**User queries:**
-- "Create user 'jane.smith' with email 'jane@example.com'"
-- "Add new user"
+### 创建用户
+**用户查询：**
+- “创建用户 ‘jane.smith’，邮箱为 ‘jane@example.com’”
+- “添加新用户”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/users
 ```
 
-**Minimal body:**
+**最小内容：**
 ```json
 {
   "username": "jane.smith",
@@ -682,7 +666,7 @@ POST {{MANTIS_BASE_URL}}/users
 }
 ```
 
-**Full body:**
+**完整内容：**
 ```json
 {
   "username": "jane.smith",
@@ -695,17 +679,17 @@ POST {{MANTIS_BASE_URL}}/users
 }
 ```
 
-### Update User
-**User queries:**
-- "Update user 10 email to 'new@example.com'"
-- "Change user 25 access level to developer"
+**更新用户**
+**用户查询：**
+- “将用户 10 的邮箱更新为 ‘new@example.com’”
+- “将用户 25 的权限级别更改为开发者”
 
-**Action:**
+**操作：**
 ```
 PATCH {{MANTIS_BASE_URL}}/users/{{id}}
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "real_name": "Updated Name",
@@ -715,82 +699,82 @@ PATCH {{MANTIS_BASE_URL}}/users/{{id}}
 }
 ```
 
-### Reset User Password
-**User queries:**
-- "Reset password for user 10"
+### 重置用户密码
+**用户查询：**
+- “重置用户 10 的密码”
 
-**Action:**
+**操作：**
 ```
 PUT {{MANTIS_BASE_URL}}/users/{{id}}/reset-password
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "password": "NewSecurePassword123!"
 }
 ```
 
-### Delete User
-**User queries:**
-- "Delete user 10"
-- "Remove user 'john.doe'"
+### 删除用户
+**用户查询：**
+- “删除用户 10”
+- “删除用户 ‘john.doe’”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/users/{{id}}
 ```
 
 ---
 
-## 🔍 FILTERS Operations
+## 🔍 过滤器操作
 
-### Get All Filters
-**User queries:**
-- "List all filters"
-- "Show my saved filters"
+### 获取所有过滤器
+**用户查询：**
+- “列出所有过滤器”
+- “显示我保存的过滤器”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/filters
 ```
 
-### Get Filter by ID
-**User queries:**
-- "Show filter 5"
-- "Get details for filter 10"
+### 按 ID 获取过滤器
+**用户查询：**
+- “显示过滤器 5”
+- “获取过滤器 10 的详细信息”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/filters/{{id}}
 ```
 
-### Delete Filter
-**User queries:**
-- "Delete filter 5"
-- "Remove saved filter 10"
+### 删除过滤器
+**用户查询：**
+- “删除过滤器 5”
+- “删除保存的过滤器 10”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/filters/{{id}}
 ```
 
 ---
 
-## 🔐 TOKEN MANAGEMENT
+## 🔐 令牌管理
 
-### Create Token for Self
-**User queries:**
-- "Create my API token"
-- "Generate token for me"
-- "Create new token named 'automation'"
+### 为自己创建令牌
+**用户查询：**
+- “为我创建 API 令牌”
+- “生成我的令牌”
+- “创建名为 ‘automation’ 的新令牌”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/user_tokens
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "name": "automation_token",
@@ -798,27 +782,27 @@ POST {{MANTIS_BASE_URL}}/user_tokens
 }
 ```
 
-### Delete Token for Self
-**User queries:**
-- "Delete my token"
-- "Revoke my API token"
+### 为自己删除令牌
+**用户查询：**
+- “删除我的令牌”
+- “撤销我的 API 令牌”
 
-**Action:**
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/user_tokens/{{token_id}}
 ```
 
-### Create Token for Another User
-**User queries:**
-- "Create token for user 10"
-- "Generate API token for user 'john.doe'"
+### 为其他用户创建令牌
+**用户查询：**
+- “为用户 10 创建令牌”
+- “为用户 ‘john.doe’ 生成 API 令牌”
 
-**Action:**
+**操作：**
 ```
 POST {{MANTIS_BASE_URL}}/users/{{user_id}}/tokens
 ```
 
-**Body:**
+**内容：**
 ```json
 {
   "name": "user_token",
@@ -826,140 +810,123 @@ POST {{MANTIS_BASE_URL}}/users/{{user_id}}/tokens
 }
 ```
 
-### Delete Token for Another User
-**Action:**
+### 为其他用户删除令牌
+**操作：**
 ```
 DELETE {{MANTIS_BASE_URL}}/users/{{user_id}}/tokens/{{token_id}}
 ```
 
 ---
 
-## ⚙️ CONFIG Operations
+## ⚙️ 配置操作
 
-### Get Single Configuration Option
-**User queries:**
-- "Get config option 'bug_report_page_fields'"
-- "Show configuration for 'default_category_for_moves'"
+### 获取单个配置选项
+**用户查询：**
+- “获取配置选项 ‘bug_report_page_fields’”
+- “显示 ‘default_category_for_moves’ 的配置”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/config/{{option}}
 ```
 
-### Get Multiple Configuration Options
-**User queries:**
-- "Get configs for project 5"
-- "Show all config options"
+### 获取多个配置选项
+**用户查询：**
+- “获取项目 5 的配置”
+- “显示所有配置选项”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/config
 ```
 
-**Query parameters:**
-- `option` — specific option name
-- `project_id` — filter by project
-- `user_id` — filter by user
+**查询参数：**
+- `option` — 特定选项名称
+- `project_id` — 按项目过滤
+- `user_id` — 按用户过滤
 
-### Set Configuration Option
-**User queries:**
-- "Set config 'allow_signup' to true"
-- "Update config option"
+### 设置配置选项
+**用户查询：**
+- “将配置 ‘allow_signup’ 设置为 true”
+- “更新配置选项”
 
-**Action:**
+**操作：**
 ```
 PATCH {{MANTIS_BASE_URL}}/config
 ```
 
-**Body:**
-```json
-{
-  "configs": [
-    {
-      "option": "allow_signup",
-      "value": "1"
-    }
-  ]
-}
-```
-
 ---
 
-## 🌍 LOCALIZATION Operations
+## 🌍 本地化操作
 
-### Get Localized String
-**User queries:**
-- "Get localized string 'status_new'"
-- "Translate 'priority_high' to French"
+### 获取本地化字符串
+**用户查询：**
+- “获取本地化字符串 ‘status_new’”
+- “将 ‘priority_high’ 翻译成法语”
 
-**Action:**
-```
-GET {{MANTIS_BASE_URL}}/lang/{{string}}
-```
+**查询参数：**
+- `language` — 语言代码（例如，'fr', 'en', 'de'）
 
-**Query parameter:**
-- `language` — language code (e.g., 'fr', 'en', 'de')
+### 获取多个本地化字符串
+**用户查询：**
+- “获取所有状态翻译”
+- “获取优先级的本地化字符串”
 
-### Get Multiple Localized Strings
-**User queries:**
-- "Get all status translations"
-- "Get localized strings for priorities"
-
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/lang
 ```
 
-**Query parameters:**
-- `strings` — comma-separated list of string keys
-- `language` — language code
+**查询参数：**
+- `strings` — 以逗号分隔的字符串键列表
+- `language` — 语言代码
 
 ---
 
-## 🔒 IMPERSONATION
+## 🔒 代理操作
 
-### Get User Info with Impersonation
-**User queries:**
-- "Impersonate user 10 and get their info"
-- "Get info as user 'john.doe'"
+### 以代理身份获取用户信息
+**用户查询：**
+- “以用户 10 的身份获取他们的信息”
+- “以用户 ‘john.doe’ 的身份获取信息”
 
-**Action:**
+**操作：**
 ```
 GET {{MANTIS_BASE_URL}}/users/me
 ```
 
-**Header:**
+**头部：**
 ```
 X-Impersonate-User: {{username_or_id}}
 ```
 
 ---
 
-## ⚠️ Error Handling
+## ⚠️ 错误处理
 
-Handle HTTP errors gracefully:
+优雅地处理 HTTP 错误：
 
-**401 Unauthorized:**
-- Token is invalid or expired
-- Action: Inform user to check `MANTIS_API_TOKEN` or provide valid `temporary_token`
+**401 未经授权：**
+- 令牌无效或已过期
+- 操作：通知用户检查 `MANTIS_API_TOKEN` 或提供有效的 `temporary_token`
 
-**403 Forbidden:**
-- User doesn't have permission for this operation
-- Action: Inform user about insufficient permissions
+**403 禁止：**
+- 用户没有执行此操作的权限
+- 操作：通知用户权限不足
 
-**404 Not Found:**
-- Resource (issue, project, user, etc.) doesn't exist
-- Action: Inform user that the requested resource was not found
+**404 未找到：**
+- 资源（问题、项目、用户等）不存在
+- 操作：通知用户请求的资源未找到
 
-**422 Unprocessable Entity:**
-- Validation error in request body
-- Action: Show validation errors from response and guide user
+**422 无法处理的实体：**
+- 请求体中的验证错误
+- 操作：在响应中显示验证错误并指导用户
 
-**500 Internal Server Error:**
-- Server-side error
-- Action: Inform user of server error and suggest retrying later
+**500 内部服务器错误：**
+- 服务器端错误
+- 操作：通知用户服务器错误并建议稍后重试
 
-**General error response format:**
+**通用错误响应格式：**
 ```json
 {
   "message": "Error description",
@@ -970,67 +937,67 @@ Handle HTTP errors gracefully:
 
 ---
 
-## 📋 Best Practices
+## 📋 最佳实践
 
-### Pagination
-- Always support `page_size` and `page` parameters for list operations
-- Default page size: 50
-- Inform user when results are paginated
+### 分页
+- 对于列表操作，始终支持 `page_size` 和 `page` 参数
+- 默认页大小：50
+- 在结果分页时通知用户
 
-### Field Selection
-- Use `select` parameter to return only needed fields
-- Example: `select=id,summary,status,priority`
-- Reduces bandwidth and improves performance
+### 字段选择
+- 使用 `select` 参数仅返回所需的字段
+- 例如：`select=id,summary,status,priority`
+- 减少带宽并提高性能
 
-### Filtering
-- Use `filter_id` to apply saved filters
-- Combine with pagination for large datasets
-- Consider project-specific filtering with `project_id`
+### 过滤
+- 使用 `filter_id` 应用保存的过滤器
+- 结合分页处理大型数据集
+- 考虑使用 `project_id` 进行项目特定过滤
 
-### Attachments
-- Files must be base64-encoded
-- Include filename and content in request
-- Verify file size limits (check Mantis config)
+### 附件
+- 文件必须进行 base64 编码
+- 在请求中包含文件名和内容
+- 验证文件大小限制（检查 Mantis 配置）
 
-### Time Tracking
-- Use ISO 8601 duration format: `PT2H30M` (2 hours 30 minutes)
-- Can be added to notes for time tracking
+### 时间跟踪
+- 使用 ISO 8601 时间格式：`PT2H30M`（2 小时 30 分钟）
+- 可以添加到备注中进行时间跟踪
 
-### Date Formats
-- Use ISO 8601: `2026-12-31T23:59:59+00:00`
-- Include timezone for accuracy
+### 日期格式
+- 使用 ISO 8601 格式：`2026-12-31T23:59:59+00:00`
+- 包含时区以确保准确性
 
-### Custom Fields
-- Check project configuration for available custom fields
-- Reference by field ID in requests
+### 自定义字段
+- 检查项目配置中是否支持自定义字段
+- 在请求中引用字段 ID
 
-### Relationships
-- Verify relationship types supported by your Mantis version
-- Some relationships auto-create reciprocal links
+### 关联
+- 验证您的 Mantis 版本支持的关联类型
+- 一些关联会自动创建互惠链接
 
 ---
 
-## 🚀 Quick Examples
+## 🚀 快速示例
 
-### Create and Monitor Issue
+### 创建并监控问题
 ```
 1. POST /issues with summary and description
 2. POST /issues/{{new_id}}/monitors to monitor
 ```
 
-### Assign Issue and Add Note
+### 分配问题并添加备注
 ```
 1. PATCH /issues/{{id}} with handler
 2. POST /issues/{{id}}/notes with assignment comment
 ```
 
-### Create Project with Version
+### 创建项目并设置版本
 ```
 1. POST /projects with project details
 2. POST /projects/{{id}}/versions with version info
 ```
 
-### User Management Flow
+### 用户管理流程
 ```
 1. POST /users to create user
 2. POST /projects/{{id}}/users to add to project
@@ -1039,24 +1006,24 @@ Handle HTTP errors gracefully:
 
 ---
 
-## 🎯 Advanced Use Cases
+## 🎯 高级用法
 
-### Bulk Issue Updates
-When updating multiple issues:
-- Loop through issue IDs
-- Use PATCH for each issue
-- Collect results and report summary
+### 批量问题更新
+在更新多个问题时：
+- 遍历问题 ID
+- 对每个问题使用 PATCH 请求
+- 收集结果并生成摘要
 
-### Filter-Based Operations
-Get all high-priority bugs:
+### 基于过滤器的操作
+获取所有高优先级错误：
 ```
 1. GET /filters to find priority filter ID
 2. GET /issues?filter_id={{filter_id}}&page_size=100
 3. Process paginated results
 ```
 
-### Project Migration
-Copy project structure:
+### 项目迁移
+复制项目结构：
 ```
 1. GET /projects/{{source_id}} to get project details
 2. GET /projects/{{source_id}}/versions for versions
@@ -1064,8 +1031,8 @@ Copy project structure:
 4. POST /projects/{{new_id}}/versions for each version
 ```
 
-### User Audit
-Track user activity:
+### 用户审计
+跟踪用户活动：
 ```
 1. GET /issues?reporter_id={{user_id}}
 2. GET /issues?handler_id={{user_id}}
@@ -1073,8 +1040,8 @@ Track user activity:
 4. Compile activity report
 ```
 
-### Multi-Instance Management
-Work with multiple Mantis instances:
+### 多实例管理
+同时操作多个 Mantis 实例：
 ```
 // Scenario: Compare issue status across environments
 
@@ -1093,8 +1060,8 @@ Work with multiple Mantis instances:
 3. Compare and report differences
 ```
 
-### Cross-Instance Synchronization
-Sync data between instances:
+### 实例间同步
+在实例间同步数据：
 ```
 // Scenario: Clone project from one instance to another
 
@@ -1115,8 +1082,8 @@ Sync data between instances:
 3. Report sync results
 ```
 
-### Client-Specific Operations
-Manage multiple client instances:
+### 客户端特定操作
+管理多个客户端实例：
 ```
 // Scenario: Daily status report for all clients
 
@@ -1132,39 +1099,39 @@ Generate consolidated report
 
 ---
 
-## 📚 Resources
+## 📚 资源
 
-- **Mantis API Documentation**: Check your Mantis instance at `{{MANTIS_BASE_URL}}/api/rest/swagger.yaml`
-- **Issue Statuses**: new, feedback, acknowledged, confirmed, assigned, resolved, closed
-- **Priorities**: none, low, normal, high, urgent, immediate
-- **Severities**: feature, trivial, text, tweak, minor, major, crash, block
-- **Access Levels**: 10=viewer, 25=reporter, 40=updater, 55=developer, 70=manager, 90=administrator
+- **Mantis API 文档**：请在 `{{MANTIS_BASE_URL}}/api/restswagger.yaml` 中查看您的 Mantis 实例文档
+- **问题状态**：新问题、反馈、已确认、已分配、已解决、已关闭
+- **优先级**：无、低、正常、高、紧急、立即
+- **严重性**：特性、琐碎、文本、微小、重大、崩溃、阻塞
+- **访问权限级别**：10=查看者、25=报告者、40=更新者、55=开发者、70=管理员、90=管理员
 
 ---
 
-## ✅ Skill Capabilities Summary
+## ✅ 技能能力概述
 
-This skill enables you to:
+此技能使您能够：
 
-### Core Operations
-- ✅ Full CRUD operations on issues
-- ✅ Manage issue relationships, tags, monitors
-- ✅ Add notes with time tracking and attachments
-- ✅ Full project management (create, update, delete)
-- ✅ Manage sub-projects, versions, and project users
-- ✅ User management (CRUD, password reset)
-- ✅ API token management (create, delete for self and others)
-- ✅ Filter management and filtered queries
-- ✅ Configuration management
-- ✅ Localization support
-- ✅ Impersonation capabilities
+### 核心操作
+- ✅ 对问题进行完整的 CRUD 操作
+- ✅ 管理问题关联、标签和监控者
+- ✅ 添加带有时间跟踪和附件的备注
+- ✅ 完整的项目管理（创建、更新、删除）
+- ✅ 管理子项目、版本和项目用户
+- ✅ 用户管理（CRUD、密码重置）
+- ✅ API 令牌管理（为自己和他人创建/删除）
+- ✅ 过滤器管理和过滤查询
+- ✅ 配置管理
+- ✅ 本地化支持
+- ✅ 代理功能
 
-### Advanced Features
-- ✅ **Dynamic instance switching** — Switch between multiple Mantis instances on-the-fly
-- ✅ **Context-aware URL resolution** — temporary_base_url → user_base_url → MANTIS_BASE_URL
-- ✅ **Context-aware token resolution** — temporary_token → user_token → MANTIS_API_TOKEN
-- ✅ **Multi-instance management** — Manage multiple clients/environments simultaneously
-- ✅ **Cross-instance operations** — Compare, sync, and migrate data between instances
-- ✅ Comprehensive error handling
-- ✅ Pagination and field selection
-- ✅ Advanced workflows and bulk operations
+### 高级功能
+- ✅ **动态实例切换** — 实时在多个 Mantis 实例之间切换
+- ✅ **上下文感知的 URL 解析** — `temporary_base_url` → `user_base_url` → `MANTIS_BASE_URL`
+- ✅ **上下文感知的令牌解析** — `temporary_token` → `user_token` → `MANTIS_API_TOKEN`
+- ✅ **多实例管理** — 同时管理多个客户端/环境
+- ✅ 实例间操作** — 在实例间比较、同步和迁移数据
+- ✅ 全面的错误处理
+- ✅ 分页和字段选择
+- ✅ 高级工作流程和批量操作

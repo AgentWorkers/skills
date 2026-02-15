@@ -1,30 +1,30 @@
 ---
 name: dreaming
-description: Creative exploration during quiet hours. Turns idle heartbeat time into freeform thinking — hypotheticals, future scenarios, reflections, unexpected connections. Use when you want your agent to do something meaningful during low-activity periods instead of just returning HEARTBEAT_OK. Outputs written to files for human review later (like remembering dreams in the morning).
+description: 在安静的时段进行创造性探索。将代理的空闲时间转化为自由形式的思考——包括假设、未来场景的设想、个人反思以及意想不到的思维联系。当你希望代理在活动较少的时候做一些有意义的事情（而不仅仅是简单地返回“HEARTBEAT_OK”状态）时，可以使用此功能。思考的结果会被写入文件，供后续人工查阅（就像早晨回忆梦境一样）。
 ---
 
-# Dreaming
+# 梦想时光
 
-Creative, exploratory thinking during quiet hours. Not task-oriented work — freeform associative exploration that gets captured for later review.
+在安静的时光里，进行富有创造性的、探索性的思考。这不是以任务为导向的工作，而是自由形式的联想与探索，这些思考会被记录下来以供日后回顾。
 
-## Setup
+## 设置
 
-### 1. Configure quiet hours and topics
+### 1. 配置安静时间与探索主题
 
-Edit `scripts/should-dream.sh` to customize:
+编辑 `scripts/should-dream.sh` 文件以自定义以下内容：
 
-- **QUIET_START / QUIET_END** — when dreaming can happen (default: 11 PM - 7 AM)
-- **TOPICS array** — categories of exploration (see defaults for examples)
+- **QUIET_START / QUIET_END** — 梦想时间的开始和结束（默认：晚上 11 点至早上 7 点）
+- **TOPICS 数组** — 探索的主题类别（查看默认值以获取示例）
 
-### 2. Create state and output directories
+### 2. 创建状态记录和输出目录
 
 ```bash
 mkdir -p data memory/dreams
 ```
 
-### 3. Add to HEARTBEAT.md
+### 3. 添加到 HEARTBEAT.md 中
 
-Add this section to your heartbeat routine (during quiet hours):
+将以下内容添加到你的心跳（heartbeat）任务中（在安静时间执行）：
 
 ```markdown
 ## Dream Mode (Quiet Hours Only)
@@ -43,17 +43,17 @@ DREAM_TOPIC=$(./scripts/should-dream.sh 2>/dev/null) && echo "DREAM:$DREAM_TOPIC
 4. Append to the file if multiple dreams that night
 ```
 
-## How It Works
+## 工作原理
 
-The `should-dream.sh` script acts as a gate:
+`should-dream.sh` 脚本起到以下作用：
 
-1. Checks if current time is within quiet hours
-2. Checks if we've already hit the nightly dream limit
-3. Rolls dice based on configured probability
-4. If all pass: returns a random topic and updates state
-5. If any fail: exits non-zero (no dream this heartbeat)
+1. 检查当前时间是否在安静时间内
+2. 检查当天的梦想次数是否已达到上限
+3. 根据配置的概率随机选择一个主题
+4. 如果所有条件都满足，返回一个随机主题并更新状态
+5. 如果有任何条件不满足，脚本将以非零状态退出（表示当天的梦想任务未完成）
 
-State tracked in `data/dream-state.json`:
+状态信息记录在 `data/dream-state.json` 文件中：
 
 ```json
 {
@@ -64,9 +64,9 @@ State tracked in `data/dream-state.json`:
 }
 ```
 
-## Writing Dreams
+## 记录梦想
 
-When the script returns a topic, write to `memory/dreams/YYYY-MM-DD.md`:
+当脚本返回一个主题后，将该主题写入 `memory/dreams/YYYY-MM-DD.md` 文件中：
 
 ```markdown
 # Dreams — 2026-02-04
@@ -77,17 +77,17 @@ When the script returns a topic, write to `memory/dreams/YYYY-MM-DD.md`:
 This isn't a report — it's thinking out loud, captured.]
 ```
 
-**Guidelines:**
+**编写梦想记录的指南**：
 
-- One dream = one topic, explored thoughtfully
-- Timestamp each entry
-- Append if multiple dreams in one night
-- Skip if you have nothing worth saying — forced dreams are worthless
-- This is for your human to review later, like reading a journal
+- 每个梦想对应一个主题，进行深入的思考
+- 为每条记录添加时间戳
+- 如果同一晚有多个想法，可以追加记录
+- 如果没有值得记录的内容，可以跳过本次记录——强制进行的“梦想”是没有意义的
+- 这些记录供你日后像阅读日记一样回顾
 
-## Customizing Topics
+## 自定义探索主题
 
-**Option A: Config file (recommended)** — Create `data/dream-config.json`:
+**选项 A：使用配置文件（推荐）** — 创建 `data/dream-config.json` 文件：
 ```json
 {
   "topics": [
@@ -97,33 +97,27 @@ This isn't a report — it's thinking out loud, captured.]
   ]
 }
 ```
-This keeps your customizations outside the skill directory (safe for skill updates).
+这样可以将你的自定义设置放在技能目录之外，避免在技能更新时被覆盖。
 
-**Option B: Edit script directly** — Modify the `DEFAULT_TOPICS` array in `should-dream.sh`. Format: `category:prompt`
+**选项 B：直接修改脚本** — 修改 `should-dream.sh` 文件中的 `DEFAULT Tops` 数组。格式为：`类别: 提示语`
 
-Default categories:
+默认主题类别：
 
-- `future` — What could [thing] become?
-- `tangent` — Interesting technology or concepts worth exploring
-- `strategy` — Long-term thinking
-- `creative` — Wild ideas that might be crazy or brilliant
-- `reflection` — Looking back at recent work
-- `hypothetical` — What-if scenarios
-- `connection` — Unexpected links between domains
+- `future` — [某事物] 未来可能发展成什么？
+- `tangent` — 值得探索的有趣技术或概念
+- `strategy` — 长期规划与思考
+- `creative` — 可能疯狂或出色的创意想法
+- `reflection` — 回顾近期工作
+- `hypothetical` — 假设性场景
+- `connection` — 不同领域之间的意外联系
 
-Add domain-specific topics relevant to your work. The prompt should spark genuine exploration, not busywork.
+根据你的工作添加相关主题。提示语应能激发真正的探索欲望，而不仅仅是机械性的写作。
 
-## Tuning
+## 调优
 
-In `data/dream-state.json`:
+在 `data/dream-state.json` 文件中，可以添加与你的工作相关的主题。提示语应能激发真正的探索欲望，而不仅仅是机械性的写作。
 
-Add domain-specific topics relevant to your work. The prompt should spark genuine exploration, not busywork.
+- **maxDreamsPerNight** — 每晚的梦想记录上限（默认：1）
+- **dreamChance** — 每次检查时选择主题的概率（默认：1.0 = 保证会选择一个主题）
 
-## Tuning
-
-In `data/dream-state.json`:
-
-- **maxDreamsPerNight** — cap on dreams per night (default: 1)
-- **dreamChance** — probability per check (default: 1.0 = guaranteed if under limit)
-
-Lower `dreamChance` for more sporadic dreaming. Raise `maxDreamsPerNight` for more prolific nights.
+降低 `dreamChance` 可以减少每晚的梦想记录次数；提高 `maxDreamsPerNight` 可以增加每晚的记录数量。

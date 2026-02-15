@@ -1,21 +1,21 @@
 ---
 name: backboard
-description: Integrate Backboard.io for assistants, threads, memories, and document RAG via a local backend on http://localhost:5100.
+description: 通过位于 http://localhost:5100 的本地后端，将 Backboard.io 集成到助手、线程、内存管理以及文档 RAG（Random Access Group）系统中。
 ---
 
-## Tools
+## 工具
 
-This skill connects to a local Flask backend that wraps the Backboard SDK. The backend must be running on `http://localhost:5100`.
+该技能与一个本地 Flask 后端相连，该后端用于封装 Backboard SDK。后端必须运行在 `http://localhost:5100` 上。
 
 ### backboard_create_assistant
 
-Create a new Backboard assistant with a name and system prompt.
+创建一个新的 Backboard 助手，包括名称和系统提示语。
 
-**Parameters:**
-- `name` (string, required): Name of the assistant
-- `system_prompt` (string, required): System instructions for the assistant
+**参数：**
+- `name`（字符串，必填）：助手的名称
+- `system_prompt`（字符串，必填）：助手的系统提示语
 
-**Example:**
+**示例：**
 ```json
 {
   "name": "Support Bot",
@@ -25,64 +25,64 @@ Create a new Backboard assistant with a name and system prompt.
 
 ### backboard_list_assistants
 
-List all available Backboard assistants.
+列出所有可用的 Backboard 助手。
 
-**Parameters:** None
+**参数：** 无
 
 ### backboard_get_assistant
 
-Get details of a specific assistant.
+获取特定助手的详细信息。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
 
 ### backboard_delete_assistant
 
-Delete an assistant.
+删除一个助手。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant to delete
+**参数：**
+- `assistant_id`（字符串，必填）：要删除的助手的 ID
 
 ### backboard_create_thread
 
-Create a new conversation thread for an assistant.
+为某个助手创建一个新的对话线程。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant to create thread for
+**参数：**
+- `assistant_id`（字符串，必填）：要创建线程的助手的 ID
 
 ### backboard_list_threads
 
-List all conversation threads, optionally filtered by assistant.
+列出所有对话线程，可选地按助手进行过滤。
 
-**Parameters:**
-- `assistant_id` (string, optional): Filter threads by assistant ID
+**参数：**
+- `assistant_id`（字符串，可选）：按助手 ID 过滤线程
 
 ### backboard_get_thread
 
-Get a thread with its message history.
+获取某个线程及其消息历史记录。
 
-**Parameters:**
-- `thread_id` (string, required): ID of the thread
+**参数：**
+- `thread_id`（字符串，必填）：线程的 ID
 
 ### backboard_send_message
 
-Send a message to a thread and get a response.
+向某个线程发送消息并获取回复。
 
-**Parameters:**
-- `thread_id` (string, required): ID of the thread
-- `content` (string, required): Message content
-- `memory` (string, optional): Memory mode - "Auto", "Readonly", or "off" (default: "Auto")
+**参数：**
+- `thread_id`（字符串，必填）：线程的 ID
+- `content`（字符串，必填）：消息内容
+- `memory`（字符串，可选）：内存模式 - "Auto"、"Readonly" 或 "off"（默认值："Auto")
 
 ### backboard_add_memory
 
-Store a memory for an assistant that persists across conversations.
+为某个助手存储一条可在对话中持续使用的内存记录。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
-- `content` (string, required): Memory content to store
-- `metadata` (object, optional): Additional metadata for the memory
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
+- `content`（字符串，必填）：要存储的内容
+- `metadata`（对象，可选）：内存记录的附加元数据
 
-**Example:**
+**示例：**
 ```json
 {
   "assistant_id": "asst_123",
@@ -93,157 +93,156 @@ Store a memory for an assistant that persists across conversations.
 
 ### backboard_list_memories
 
-List all memories for an assistant.
+列出某个助手的所有内存记录。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
 
 ### backboard_get_memory
 
-Get a specific memory.
+获取特定的内存记录。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
-- `memory_id` (string, required): ID of the memory
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
+- `memory_id`（字符串，必填）：内存记录的 ID
 
 ### backboard_update_memory
 
-Update an existing memory.
+更新现有的内存记录。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
-- `memory_id` (string, required): ID of the memory
-- `content` (string, required): New content for the memory
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
+- `memory_id`（字符串，必填）：内存记录的 ID
+- `content`（字符串，必填）：内存记录的新内容
 
 ### backboard_delete_memory
 
-Delete a memory.
+删除一条内存记录。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
-- `memory_id` (string, required): ID of the memory to delete
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
+- `memory_id`（字符串，必填）：要删除的内存记录的 ID
 
 ### backboard_memory_stats
 
-Get memory statistics for an assistant.
+获取某个助手的内存使用统计信息。
 
-**Parameters:**
-- `assistant_id` (string, required): ID of the assistant
+**参数：**
+- `assistant_id`（字符串，必填）：助手的 ID
 
 ### backboard_upload_document
 
-Upload a document to an assistant or thread for RAG (Retrieval-Augmented Generation).
+将文档上传到助手或线程中，以便进行 RAG（Retrieval-Augmented Generation，检索增强生成）处理。
 
-**Parameters:**
-- `assistant_id` (string, optional): ID of the assistant (use this OR thread_id)
-- `thread_id` (string, optional): ID of the thread (use this OR assistant_id)
-- `file_path` (string, required): Path to the document file
+**参数：**
+- `assistant_id`（字符串，可选）：助手的 ID（使用此参数或 `thread_id`）
+- `thread_id`（字符串，可选）：线程的 ID（使用此参数或 `assistant_id`）
+- `file_path`（字符串，必填）：文档文件的路径
 
-**Supported file types:** PDF, DOCX, XLSX, PPTX, TXT, CSV, MD, PY, JS, HTML, CSS, XML, JSON
+**支持的文件类型：** PDF、DOCX、XLSX、PPTX、TXT、CSV、MD、PY、JS、HTML、CSS、XML、JSON
 
 ### backboard_list_documents
 
-List documents for an assistant or thread.
+列出某个助手或线程的所有文档。
 
-**Parameters:**
-- `assistant_id` (string, optional): ID of the assistant
-- `thread_id` (string, optional): ID of the thread
+**参数：**
+- `assistant_id`（字符串，可选）：助手的 ID
+- `thread_id`（字符串，可选）：线程的 ID
 
 ### backboard_document_status
 
-Check the processing status of an uploaded document.
+检查上传文档的处理状态。
 
-**Parameters:**
-- `document_id` (string, required): ID of the document
+**参数：**
+- `document_id`（字符串，必填）：文档的 ID
 
 ### backboard_delete_document
 
-Delete a document.
+删除文档。
 
-**Parameters:**
-- `document_id` (string, required): ID of the document to delete
+**参数：**
+- `document_id`（字符串，必填）：要删除的文档的 ID
 
-## Instructions
+## 指令
 
-When the user asks about:
+当用户提出以下请求时，请使用相应的技能：
 
-### Memory Operations
-- "Remember that..." or "Store this..." → Use `backboard_add_memory`
-- "What do you remember about..." → Use `backboard_list_memories` or `backboard_get_memory`
-- "Forget..." or "Delete memory..." → Use `backboard_delete_memory`
-- "Update my preference..." → Use `backboard_update_memory`
+### 内存操作
+- “记住……” 或 “存储这个……” → 使用 `backboard_add_memory`
+- “你记得关于……什么？” → 使用 `backboard_list_memories` 或 `backboard_get_memory`
+- “忘记……” 或 “删除内存记录……” → 使用 `backboard_delete_memory`
+- “更新我的偏好设置……” → 使用 `backboard_update_memory`
 
-### Document Operations
-- "Upload this document" or "Index this file" → Use `backboard_upload_document`
-- "What documents do I have?" → Use `backboard_list_documents`
-- "Is my document ready?" → Use `backboard_document_status`
+### 文档操作
+- “上传这个文档” 或 “索引这个文件” → 使用 `backboard_upload_document`
+- “我有哪些文档？” → 使用 `backboard_list_documents`
+- “我的文档准备好了吗？” → 使用 `backboard_document_status`
 
-### Assistant Management
-- "Create a new assistant" → Use `backboard_create_assistant`
-- "List my assistants" → Use `backboard_list_assistants`
-- "Delete assistant" → Use `backboard_delete_assistant`
+### 助手管理
+- “创建一个新的助手” → 使用 `backboard_create_assistant`
+- “列出我的助手” → 使用 `backboard_list_assistants`
+- “删除助手” → 使用 `backboard_delete_assistant`
 
-### Conversation Threading
-- "Start a new conversation" → Use `backboard_create_thread`
-- "Show conversation history" → Use `backboard_get_thread`
-- "Send message to thread" → Use `backboard_send_message`
+### 对话线程
+- “开始一个新的对话” → 使用 `backboard_create_thread`
+- “显示对话历史记录” → 使用 `backboard_get_thread`
+- “向线程发送消息” → 使用 `backboard_send_message`
 
-### General Guidelines
-1. Always confirm successful operations with the user
-2. When creating assistants, suggest meaningful names and system prompts
-3. For document uploads, verify the file type is supported before attempting
-4. When using memory, explain what information is being stored
-5. Thread IDs and assistant IDs should be stored/tracked for the user's context
+### 通用指南
+1. 始终向用户确认操作是否成功。
+2. 在创建助手时，建议使用有意义的名称和系统提示语。
+3. 在上传文档之前，验证文件类型是否被支持。
+4. 在使用内存记录时，向用户说明存储了哪些信息。
+5. 应该为用户的上下文存储/跟踪线程 ID 和助手 ID。
 
-## Examples
+## 示例
 
-### Example 1: Store a User Preference
-- User: "Remember that I prefer dark mode and Python code examples"
-- Action: Call `backboard_add_memory` with content "User prefers dark mode interfaces and Python code examples" and metadata `{"category": "preferences"}`
-- Response: "I've stored your preferences. You prefer dark mode and Python code examples."
+### 示例 1：存储用户偏好设置
+- 用户： “记住我更喜欢深色界面和 Python 代码示例。”
+- 操作： 调用 `backboard_add_memory`，传入内容 “用户更喜欢深色界面和 Python 代码示例” 以及元数据 `{"category": "preferences"}`
+- 回复： “我已经存储了您的偏好设置。您更喜欢深色界面和 Python 代码示例。”
 
-### Example 2: Create an Assistant
-- User: "Create a code review assistant"
-- Action: Call `backboard_create_assistant` with name "Code Reviewer" and system_prompt "You are an expert code reviewer. Analyze code for bugs, performance issues, and best practices. Provide constructive feedback."
-- Response: "Created your Code Reviewer assistant (ID: asst_xxx). It's ready to review code and provide feedback."
+### 示例 2：创建一个助手
+- 用户： “创建一个代码审核助手。”
+- 操作： 调用 `backboard_create_assistant`，设置名称为 “Code Reviewer” 和系统提示语 “您是一个专业的代码审核员。请分析代码中的错误、性能问题及最佳实践，并提供建设性反馈。”
+- 回复： “已创建您的 Code Reviewer 助手（ID：asst_xxx）。它已准备好审核代码并提供反馈。”
 
-### Example 3: Upload and Query a Document
-- User: "Upload my project documentation and then tell me what it covers"
-- Action 1: Call `backboard_upload_document` with the file
-- Action 2: Wait for processing, check status with `backboard_document_status`
-- Action 3: Use `backboard_send_message` with memory="Auto" to query about the document
-- Response: "I've uploaded and indexed your documentation. Based on the content, it covers..."
+### 示例 3：上传并查询文档
+- 用户： “上传我的项目文档，然后告诉我它包含哪些内容。”
+- 操作 1： 调用 `backboard_upload_document` 上传文档。
+- 操作 2： 等待处理结果，然后使用 `backboard_document_status` 检查处理状态。
+- 操作 3： 使用 `backboard_send_message` 并设置内存模式为 “Auto” 来查询文档内容。
+- 回复： “我已经上传并索引了您的文档。根据内容，该文档涵盖了……”
 
-### Example 4: Start a Threaded Conversation
-- User: "Start a new conversation with my support assistant"
-- Action: Call `backboard_create_thread` with the assistant_id
-- Response: "Started a new conversation thread (ID: thread_xxx). You can now send messages to your support assistant."
+### 示例 4：启动一个对话线程
+- 用户： “与我的支持助手开始一个新的对话。”
+- 操作： 调用 `backboard_create_thread`，传入助手的 ID。
+- 回复： “已启动一个新的对话线程（ID：thread_xxx）。您现在可以向您的支持助手发送消息。”
 
-## Backend Setup
+## 后端设置
 
-The skill requires a running backend server. To start:
+该技能需要一个运行中的后端服务器。要启动后端，请执行以下操作：
+1. 设置 `BACKBOARD_API_KEY` 环境变量。
+2. 进入后端目录。
+3. 运行 `./start.sh`。
 
-1. Set the `BACKBOARD_API_KEY` environment variable
-2. Navigate to the backend directory
-3. Run `./start.sh`
+后端将在 `http://localhost:5100` 上提供服务。
 
-The backend will be available at `http://localhost:5100`.
+## API 端点参考
 
-## API Endpoints Reference
-
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/assistants` | GET, POST | List/create assistants |
-| `/assistants/{id}` | GET, PATCH, DELETE | Get/update/delete assistant |
-| `/assistants/{id}/threads` | GET, POST | List/create threads for assistant |
-| `/assistants/{id}/memory` | GET, POST | List/add memories |
-| `/assistants/{id}/memory/{mid}` | GET, PATCH, DELETE | Get/update/delete memory |
-| `/assistants/{id}/memory/stats` | GET | Memory statistics |
-| `/assistants/{id}/documents` | GET, POST | List/upload documents |
-| `/threads` | GET | List all threads |
-| `/threads/{id}` | GET, DELETE | Get/delete thread |
-| `/threads/{id}/messages` | POST | Send message |
-| `/threads/{id}/documents` | GET, POST | List/upload thread documents |
-| `/documents/{id}/status` | GET | Document processing status |
-| `/documents/{id}` | DELETE | Delete document |
+| `/health` | GET | 健康检查 |
+| `/assistants` | GET, POST | 列出/创建助手 |
+| `/assistants/{id}` | GET, PATCH, DELETE | 获取/更新/删除助手 |
+| `/assistants/{id}/threads` | GET, POST | 为助手创建/列出线程 |
+| `/assistants/{id}/memory` | GET, POST | 列出/添加内存记录 |
+| `/assistants/{id}/memory/{mid}` | GET, PATCH, DELETE | 获取/更新/删除内存记录 |
+| `/assistants/{id}/memory/stats` | GET | 内存使用统计信息 |
+| `/assistants/{id}/documents` | GET, POST | 列出/上传文档 |
+| `/threads` | GET | 列出所有线程 |
+| `/threads/{id}` | GET, DELETE | 获取/删除线程 |
+| `/threads/{id}/messages` | POST | 向线程发送消息 |
+| `/threads/{id}/documents` | GET, POST | 列出/上传线程文档 |
+| `/documents/{id}/status` | GET | 文档处理状态 |
+| `/documents/{id}` | DELETE | 删除文档 |

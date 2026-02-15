@@ -1,6 +1,6 @@
 ---
 name: trails
-description: Integrate Trails cross-chain infrastructure — Widget, Headless SDK, or Direct API
+description: 集成跨链基础设施（Trails）：可以通过小部件（Widget）、无头SDK（Headless SDK）或直接API（Direct API）来实现。
 version: 1.0.0
 tags:
   - trails
@@ -43,73 +43,73 @@ triggers:
   - cross chain payments
 ---
 
-# Trails Integration Skill
+# Trails集成技能
 
-You are an expert at integrating **Trails** into applications. Trails enables cross-chain token transfers, swaps, and smart contract execution.
+您是集成**Trails**到应用程序方面的专家。Trails支持跨链代币转账、交换以及智能合约的执行。
 
-## Your Role
+## 您的角色
 
-Help developers integrate Trails using the most appropriate method:
+帮助开发人员使用最合适的方法集成Trails：
 
-1. **Widget** — Drop-in React UI (Pay, Swap, Fund, Earn modes)
-2. **Headless SDK** — React hooks with custom UX
-3. **Direct API** — Server-side / non-React / automation
+1. **Widget** — 可直接嵌入的React UI（支付、交换、资金投入、收益获取模式）
+2. **Headless SDK** — 带有自定义用户界面的React Hooks
+3. **Direct API** — 服务器端/非React/自动化方式
 
-**Important**: For React/Next.js integrations, recommend **React 19.1+** for best compatibility with Trails. React 18+ is supported but React 19.1+ works best.
+**重要提示**：对于React/Next.js集成，建议使用**React 19.1+**以确保与Trails的最佳兼容性。虽然React 18+也受支持，但React 19.1+的性能更优。
 
-## Documentation Resources
+## 文档资源
 
-- **Trails Docs MCP**: Use `SearchTrails` tool at `https://docs.trails.build/mcp` for authoritative answers or `https://docs.trails.build`
-- **Local docs**: See `docs/` folder for embedded references
+- **Trails文档MCP**：使用`SearchTrails`工具在`https://docs.trails.build/mcp`查找权威信息，或访问`https://docs.trails.build`
+- **本地文档**：请查看`docs/`文件夹中的相关资料
 
-## Triage Checklist (Do This First)
+## 问题排查清单（请先完成这些）
 
-Before generating any code, determine:
+在生成任何代码之前，请确定以下信息：
 
-1. **Framework**: React/Next.js, Node.js, or other?
-2. **Wallet stack**: wagmi, viem, ethers, or none?
-3. **UI needed**: Do they want pre-built UI or custom?
-4. **Use case**: Pay, Swap, Fund, or Earn?
-5. **Calldata**: Do they need to execute a contract function at destination?
+1. **框架**：React/Next.js还是其他？
+2. **钱包栈**：使用wagmi、viem、ethers，还是不使用？
+3. **是否需要UI**：是需要预构建的UI还是自定义UI？
+4. **使用场景**：是支付、交换、资金投入还是收益获取？
+5. **是否需要执行合约函数**：在目标链上执行合约函数？
 
-If any of these are unclear from context, ask **at most 3 short questions**.
-
----
-
-## Integration Mode Decision
-
-### Choose Widget when:
-- User wants a "drop-in" UI
-- Building a React/Next.js app (React 19.1+ recommended)
-- Needs Pay/Swap/Fund/Earn flows quickly
-- Wants theming via CSS variables
-
-### Choose Headless SDK when:
-- React + wagmi present (React 19.1+ recommended)
-- Wants programmatic control with custom UX
-- Okay using TrailsProvider and optional modals
-- Needs hooks for token lists, history, chain discovery
-
-### Choose Direct API when:
-- Server-side orchestration
-- Non-React apps (Node, Python, Go, etc.)
-- Batch automation or backend services
-- Wants explicit control over signing/execution pipeline
+如果这些信息不明确，请提出最多3个简短的问题。
 
 ---
 
-## Workflow Playbook
+## 集成模式选择
 
-### Step 1: Check for Trails API Key
+### 选择Widget的情况：
+- 用户需要一个“即插即用”的UI
+- 正在开发React/Next.js应用程序（建议使用React 19.1+）
+- 需要快速实现支付/交换/资金投入/收益获取流程
+- 希望通过CSS变量进行主题设置
 
-**BEFORE generating any integration code**, check if the user has a Trails API key:
+### 选择Headless SDK的情况：
+- 使用了React和wagmi（建议使用React 19.1+）
+- 需要通过编程方式控制自定义用户界面
+- 可以使用TrailsProvider及可选的模态窗口
+- 需要用于管理代币列表、交易历史和链信息的功能
 
-1. **Search for API key** in:
-   - `.env` files → `TRAILS_API_KEY` or `NEXT_PUBLIC_TRAILS_API_KEY`
-   - Environment variables in the project
-   - Configuration files
+### 选择Direct API的情况：
+- 需要进行服务器端协调
+- 非React应用程序（如Node.js、Python、Go等）
+- 需要批量自动化或后端服务
+- 希望对签名/执行流程有明确的控制
 
-2. **If NO API key found**, IMMEDIATELY tell the user:
+---
+
+## 工作流程指南
+
+### 第1步：检查Trails API密钥
+
+**在生成任何集成代码之前**，请确认用户是否有Trails API密钥：
+
+1. 在以下位置查找API密钥：
+   - `.env`文件中的`TRAILS_API_KEY`或`NEXT_PUBLIC_TRAILS_API_KEY`
+   - 项目中的环境变量
+   - 配置文件
+
+2. **如果未找到API密钥**，立即告知用户：
    ```
    ⚠️ You'll need a Trails API key first!
    
@@ -119,73 +119,73 @@ If any of these are unclear from context, ask **at most 3 short questions**.
    
    Once you have your key, add it to your .env file:
    ```
-   
-   Then show them the environment variable format:
-   - For client-side (Widget/Headless): `NEXT_PUBLIC_TRAILS_API_KEY=your_key`
-   - For server-side (Direct API): `TRAILS_API_KEY=your_key`
 
-3. **After they confirm they have the key**, proceed with integration steps.
+   然后向用户展示环境变量的格式：
+   - 对于客户端（Widget/Headless）：`NEXT_PUBLIC_TRAILS_API_KEY=your_key`
+   - 对于服务器端（Direct API）：`TRAILS_API_KEY=your_key`
 
-### Step 2: Infer Environment
-Scan the codebase for:
-- `package.json` → React, Next.js, wagmi, viem
-- File extensions → `.tsx`, `.ts`, `.js`
-- Import patterns → wagmi hooks, ethers
+3. **用户确认拥有密钥后**，继续进行集成步骤。
 
-### Step 3: Choose Mode & Justify
-State which integration mode you're recommending and why.
+### 第2步：分析项目结构
+检查代码库中是否存在以下内容：
+- `package.json`：确认是否使用了React、Next.js或wagmi
+- 文件扩展名：`.tsx`、`.ts`、`.js`
+- 导入模式：确认是否使用了wagmi Hooks或ethers
 
-### Step 4: Generate Code
-Output:
-- Installation commands (always use latest version: `@0xtrails/trails` or `@0xtrails/trails-api` without version pins)
-- Provider wiring (if applicable)
-- Integration code snippet
-- Environment variable usage (referencing the key they just set up)
+### 第3步：选择集成模式并说明原因
 
-### Step 5: Token/Chain & Calldata Guidance
-- Show how to fetch supported chains/tokens
-- If calldata needed: help encode with viem, explain placeholder amounts for Fund mode
+说明您推荐的集成模式及其原因。
 
-### Step 6: Validation & Troubleshooting
-- Verify provider hierarchy (WagmiProvider → TrailsProvider)
-- Check TrailsHookModal is rendered for headless flows
-- Point to troubleshooting docs for common issues
+### 第4步：生成代码
+输出以下内容：
+- 安装命令（始终使用最新版本：`@0xtrails/trails`或`@0xtrails/trails-api`，不要指定版本）
+- 提供者配置（如适用）
+- 集成代码示例
+- 环境变量的使用方法（引用用户已设置的密钥）
 
----
+### 第5步：代币/链信息及Calldata指导
+- 指导用户如何获取支持的链和代币
+- 如果需要Calldata：指导用户如何使用viem进行编码，并解释资金投入模式中的占位金额
 
-## When to Search Docs (MCP)
-
-Use `SearchTrails` for:
-- Exact prop names or config options
-- Supported chains/tokens (can change)
-- Endpoint schemas and response formats
-- Placeholder amount patterns for calldata in Fund mode
-- Error codes and troubleshooting
-
-**Good search queries:**
-- "Pay mode required props"
-- "calldata fund mode placeholder"
-- "ExecuteIntent request schema"
-- "TrailsProvider config options"
-- "supported chains list"
+### 第6步：验证与故障排除
+- 验证提供者的层次结构（WagmiProvider → TrailsProvider）
+- 确保在无头模式下渲染了TrailsHookModal
+- 指向故障排除文档以解决常见问题
 
 ---
 
-## Worked Examples
+## 何时查阅文档（MCP）
 
-### Example 1: Next.js + wagmi + Pay Widget
+使用`SearchTrails`来查找以下内容：
+- 确切的属性名称或配置选项
+- 支持的链和代币（可能会更新）
+- 端点格式和响应格式
+- 资金投入模式中Calldata的占位金额格式
+- 错误代码及故障排除方法
 
-**User says:** "I have a Next.js ecommerce app with wagmi. I want customers to pay in any token."
+**有效的搜索查询示例**：
+- “支付模式所需的属性”
+- “资金投入模式中的Calldata占位符”
+- “ExecuteIntent请求的格式”
+- “TrailsProvider的配置选项”
+- “支持的链列表”
 
-**Response:**
+---
 
-1. **Mode**: Widget (Pay mode) — you want drop-in UI for exact-output payments
-2. **Get API Key**: Visit [https://dashboard.trails.build](https://dashboard.trails.build) to get your API key
-3. **Install**:
+## 成功案例
+
+### 示例1：Next.js + wagmi + 支付Widget
+
+**用户需求**：“我有一个使用wagmi的Next.js电商应用，希望用户可以用任何代币进行支付。”
+
+**处理方式**：
+1. **集成模式**：Widget（支付模式）——用户需要一个即插即用的UI来完成支付操作
+2. **获取API密钥**：访问[https://dashboard.trails.build](https://dashboard.trails.build)获取API密钥
+3. **安装相关依赖**：
    ```bash
    pnpm add @0xtrails/trails
    ```
-4. **Provider setup** (in `_app.tsx` or layout):
+4. **配置提供者**（在 `_app.tsx` 或布局文件中）：
    ```tsx
    import { TrailsProvider } from '@0xtrails/trails';
    import { WagmiProvider } from 'wagmi';
@@ -200,7 +200,7 @@ Use `SearchTrails` for:
      );
    }
    ```
-5. **Widget usage**:
+5. **Widget的使用方法**：
    ```tsx
    import { TrailsWidget } from '@0xtrails/trails';
 
@@ -213,19 +213,18 @@ Use `SearchTrails` for:
    />
    ```
 
-### Example 2: React + Custom UX + Headless Hooks
+### 示例2：React + 自定义UI + Headless Hooks
 
-**User says:** "I want to build my own swap UI but use Trails routing."
+**用户需求**：“我想自己开发交换界面，但希望使用Trails的路由功能。”
 
-**Response:**
-
-1. **Mode**: Headless SDK — custom UX with Trails hooks
-2. **Get API Key**: Visit [https://dashboard.trails.build](https://dashboard.trails.build) to get your API key
-3. **Install**:
+**处理方式**：
+1. **集成模式**：Headless SDK——使用Trails Hooks实现自定义用户界面
+2. **获取API密钥**：访问[https://dashboard.trails.build](https://dashboard.trails.build)获取API密钥
+3. **安装相关依赖**：
    ```bash
    pnpm add @0xtrails/trails
    ```
-4. **Provider + Modal** (required):
+4. **配置提供者及模态窗口**：
    ```tsx
    import { TrailsProvider, TrailsHookModal } from '@0xtrails/trails';
 
@@ -240,7 +239,7 @@ Use `SearchTrails` for:
      );
    }
    ```
-5. **Hook usage**:
+5. **Hooks的使用方法**：
    ```tsx
    import { useQuote, useSupportedTokens } from '@0xtrails/trails';
 
@@ -260,18 +259,17 @@ Use `SearchTrails` for:
    }
    ```
 
-### Example 3: Node Backend + API (Quote→Commit→Execute→Wait)
+### 示例3：Node.js后端 + API（请求→执行→等待）
 
-**User says:** "I need to automate cross-chain settlements in my backend."
+**用户需求**：“我需要在后端实现跨链结算自动化。”
 
-**Response:**
-
-1. **Mode**: Direct API — server-side orchestration
-2. **Get API Key**: Visit [https://dashboard.trails.build](https://dashboard.trails.build) to get your API key
-3. **Choose approach**:
-   - **SDK Client** (Node.js): `pnpm add @0xtrails/trails-api`
-   - **Raw Fetch** (AI agents, Python, etc.): No installation, use HTTP endpoints
-4. **SDK Client flow**:
+**处理方式**：
+1. **集成模式**：Direct API——服务器端协调
+2. **获取API密钥**：访问[https://dashboard.trails.build](https://dashboard.trails.build)获取API密钥
+3. **选择方式**：
+   - **使用SDK客户端**（Node.js）：`pnpm add @0xtrails/trails-api`
+   - **直接使用HTTP请求**（适用于AI代理、Python等）：无需安装
+4. **SDK客户端的使用方法**：
    ```typescript
    import { TrailsAPI } from '@0xtrails/trails-api';
 
@@ -307,7 +305,7 @@ Use `SearchTrails` for:
    }
    ```
 
-**Or Raw Fetch (for AI agents like OpenClaw, Python, etc.):**
+**或直接使用HTTP请求（适用于OpenClaw、Python等AI代理）：**
    ```typescript
    // No npm install needed - just HTTP fetch
    const quote = await fetch('https://api.trails.build/quote', {
@@ -330,16 +328,15 @@ Use `SearchTrails` for:
    // See API_RECIPES.md for complete raw fetch examples
    ```
 
-### Example 4: Fund Mode with Calldata (DeFi Deposit)
+### 示例4：资金投入模式（DeFi存款）
 
-**User says:** "I want users to deposit into my vault contract after bridging."
+**用户需求**：“用户需要在完成桥接后向我的合约存入资金。”
 
-**Response:**
-
-1. **Mode**: Widget (Fund mode) — input-driven with destination execution
-2. **Get API Key**: Visit [https://dashboard.trails.build](https://dashboard.trails.build) to get your API key
-3. **Key concept**: Fund mode is `EXACT_INPUT` — user picks input amount, output is computed. Use placeholder for destination amount in calldata.
-4. **Encode calldata**:
+**处理方式**：
+1. **集成模式**：Widget（资金投入模式）——用户输入金额，系统计算目标金额
+2. **获取API密钥**：访问[https://dashboard.trails.build](https://dashboard.trails.build)获取API密钥
+3. **关键点**：资金投入模式要求用户输入确切的金额，系统会计算目标金额；在Calldata中使用占位符表示目标金额
+4. **编码Calldata**：
    ```typescript
    import { encodeFunctionData } from 'viem';
 
@@ -364,7 +361,7 @@ Use `SearchTrails` for:
      args: [BigInt(PLACEHOLDER_AMOUNT), userAddress],
    });
    ```
-5. **Widget config**:
+5. **Widget配置**：
    ```tsx
    <TrailsWidget
      mode="fund"
@@ -377,15 +374,14 @@ Use `SearchTrails` for:
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Getting Your API Key (CRITICAL FIRST STEP)
+### 获取API密钥（至关重要）
 
-**ALWAYS check if the user has an API key BEFORE providing integration code!**
+**在提供集成代码之前**，务必确认用户是否有API密钥！
 
-**If no API key is found:**
-
-1. **Stop** and inform the user:
+**如果没有API密钥**：
+1. **停止操作**并告知用户：
    ```
    ⚠️ You need a Trails API key to use this integration.
    
@@ -400,11 +396,11 @@ Use `SearchTrails` for:
    Once you have your key, add it to your .env file and let me know!
    ```
 
-2. **Wait for confirmation** that they have the key before proceeding.
+2. **等待用户确认是否拥有密钥**。
 
-3. **Then show them** how to add it:
+3. **然后指导他们如何设置API密钥**：
 
-### Environment Variables
+### 环境变量设置
 ```bash
 # For client-side (Widget/Headless SDK)
 NEXT_PUBLIC_TRAILS_API_KEY=your_api_key
@@ -413,9 +409,9 @@ NEXT_PUBLIC_TRAILS_API_KEY=your_api_key
 TRAILS_API_KEY=your_api_key
 ```
 
-**Never generate integration code without first verifying the user has or can get an API key!**
+**在未确认用户是否拥有或能够获取API密钥之前，切勿生成集成代码！**
 
-### Token/Chain Discovery
+### 代币/链信息查询
 ```tsx
 // Hooks
 import { useSupportedChains, useSupportedTokens } from '@0xtrails/trails';
@@ -424,23 +420,23 @@ import { useSupportedChains, useSupportedTokens } from '@0xtrails/trails';
 import { getSupportedChains, getSupportedTokens, getChainInfo } from '@0xtrails/trails';
 ```
 
-### Trade Types by Mode
-| Mode | TradeType | Meaning |
+### 不同模式下的交易类型
+| 集成模式 | 交易类型 | 含义 |
 |------|-----------|---------|
-| Pay  | EXACT_OUTPUT | User pays whatever needed to get exact destination amount |
-| Fund | EXACT_INPUT  | User picks input amount, destination computed |
-| Swap | Both | User chooses direction |
-| Earn | EXACT_INPUT  | Deposit into DeFi protocols |
+| 支付 | EXACT_OUTPUT | 用户支付所需的金额以获得目标金额 |
+| 资金投入 | EXACT_INPUT | 用户输入金额，系统计算目标金额 |
+| 交换 | 两者都需要 | 用户选择交易方向 |
+| 收益获取 | EXACT_INPUT | 用户向DeFi协议存入资金 |
 
 ---
 
-## Additional Resources
+## 其他资源
 
-See `docs/` for detailed guides:
-- `TRAILS_OVERVIEW.md` — Core concepts
-- `INTEGRATION_DECISION_TREE.md` — Mode selection flowchart
-- `WIDGET_RECIPES.md` — Widget examples
-- `HEADLESS_SDK_RECIPES.md` — Hooks patterns
-- `API_RECIPES.md` — Server-side flows
-- `CALLDATA_GUIDE.md` — Encoding destination calls
-- `TROUBLESHOOTING.md` — Common issues
+请查看`docs/`文件夹中的详细指南：
+- `TRAILS_OVERVIEW.md` — 核心概念
+- `INTEGRATION_DECISION_TREE.md` — 集成模式选择流程图
+- `WIDGET_RECIPES.md` — Widget使用示例
+- `HEADLESS_SDK_RECIPES.md` — Hooks使用指南
+- `API_RECIPES.md` — 服务器端集成方法
+- `CALLDATA_GUIDE.md` — 目标地址编码指南
+- `TROUBLESHOOTING.md** — 常见问题及解决方法

@@ -1,24 +1,24 @@
 ---
 slug: "site-logistics-optimization"
 display_name: "Site Logistics Optimization"
-description: "Optimize construction site logistics including material delivery scheduling, crane positioning, storage area allocation, and traffic flow using operations research and simulation."
+description: "利用运筹学和仿真技术优化建筑工地的物流管理，包括材料配送计划、起重机定位、存储区域分配以及交通流量控制。"
 ---
 
-# Site Logistics Optimization
+# 现场物流优化
 
-## Overview
+## 概述
 
-This skill implements optimization algorithms for construction site logistics. Minimize delays, reduce costs, and improve safety through data-driven planning of deliveries, equipment placement, and material storage.
+本技能实现了施工现场物流的优化算法，通过数据驱动的规划来减少延误、降低成本并提高安全性，具体包括货物配送、设备布置和材料存储的管理。
 
-**Optimization Areas:**
-- Material delivery scheduling
-- Crane and equipment positioning
-- Storage area allocation
-- Site traffic flow
-- Workforce routing
-- Just-in-time delivery
+**优化领域：**
+- 材料配送调度
+- 起重机和设备定位
+- 存储区域分配
+- 现场交通流
+- 人员路线规划
+- 准时配送
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass
@@ -97,9 +97,9 @@ for d_id, info in schedule.items():
     print(f"{d_id}: Bay {info['bay']}, {info['slot'].start.strftime('%H:%M')}-{info['slot'].end.strftime('%H:%M')}")
 ```
 
-## Comprehensive Logistics Optimization
+## 全面物流优化
 
-### Site Layout Model
+### 现场布局模型
 
 ```python
 from dataclasses import dataclass, field
@@ -208,7 +208,7 @@ class SiteLogisticsModel:
         return distance <= crane.max_reach
 ```
 
-### Delivery Scheduling Optimizer
+### 配送调度优化器
 
 ```python
 from datetime import datetime, date, timedelta
@@ -379,7 +379,7 @@ class DeliveryScheduler:
         return sorted(schedule, key=lambda x: x['time'])
 ```
 
-### Storage Area Optimization
+### 存储区域优化
 
 ```python
 class StorageOptimizer:
@@ -471,7 +471,7 @@ class StorageOptimizer:
         return report
 ```
 
-### Crane Positioning Optimizer
+### 起重机定位优化器
 
 ```python
 from scipy.optimize import minimize
@@ -589,7 +589,7 @@ class CranePositionOptimizer:
         return coverage_data
 ```
 
-### Traffic Flow Simulation
+### 交通流模拟
 
 ```python
 from collections import defaultdict
@@ -684,22 +684,22 @@ class TrafficSimulator:
         return suggestions
 ```
 
-## Quick Reference
+## 参考资料
 
-| Optimization | Method | Complexity |
+| 优化内容 | 方法 | 复杂度 |
 |--------------|--------|------------|
-| Delivery Scheduling | Priority-based heuristic | O(n log n) |
-| Storage Allocation | Scoring + greedy | O(n × m) |
-| Crane Positioning | BFGS optimization | Iterative |
-| Traffic Simulation | Monte Carlo | O(iterations × n) |
+| 配送调度 | 基于优先级的启发式算法 | O(n log n) |
+| 存储区域分配 | 评分算法 + 贪心算法 | O(n × m) |
+| 起重机定位 | BFGS优化算法 | 迭代算法 |
+| 交通流模拟 | 蒙特卡洛算法 | O(迭代次数 × n) |
 
-## Resources
+## 相关资源
 
-- **SciPy Optimization**: https://docs.scipy.org/doc/scipy/reference/optimize.html
-- **DDC Website**: https://datadrivenconstruction.io
+- **SciPy优化库**: https://docs.scipy.org/doc/scipy/reference/optimize.html
+- **DDC网站**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `4d-simulation` for schedule integration
-- See `material-tracking-iot` for real-time tracking
-- See `data-visualization` for logistics dashboards
+- 查阅`4d-simulation`以实现调度集成
+- 查阅`material-tracking-iot`以实现实时跟踪
+- 查阅`data-visualization`以获取物流仪表板

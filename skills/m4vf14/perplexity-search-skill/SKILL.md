@@ -1,6 +1,6 @@
 ---
 name: perplexity-search
-description: Search the web using Perplexity's Search API for ranked, real-time web results with advanced filtering. Use when you need to search for current information, market research, trending topics, or when Brave Search is unavailable. Supports recency filtering (day/week/month/year) and returns structured results with titles, URLs, and snippets.
+description: 使用 Perplexity 的 Search API 在网络上进行搜索，可获取排名靠前的实时网页结果，并支持高级过滤功能。当您需要查找最新信息、进行市场研究或关注热门话题时，或者当 Brave Search 无法使用时，这个 API 非常实用。该 API 支持按时间范围（天/周/月/年）进行过滤，并返回包含标题、网址和内容摘要的结构化搜索结果。
 metadata:
   openclaw:
     emoji: 🔍
@@ -10,20 +10,18 @@ metadata:
     primaryEnv: PERPLEXITY_API_KEY
 ---
 
-# Perplexity Search
+# Perplexity 搜索
 
-Search the web using Perplexity's Search API for ranked, real-time results.
+使用 Perplexity 的搜索 API 在网络上进行搜索，可获取排名靠前的实时搜索结果。
 
-## Quick Start
+## 快速入门
 
-Basic search:
-
+**基本搜索：**
 ```bash
 python3 {baseDir}/scripts/search.py "your search query"
 ```
 
-With options:
-
+**带选项的搜索：**
 ```bash
 # Get 10 results
 python3 {baseDir}/scripts/search.py "AI trends 2024" --count 10
@@ -35,14 +33,13 @@ python3 {baseDir}/scripts/search.py "recent AI news" --recency week
 python3 {baseDir}/scripts/search.py "market research" --json
 ```
 
-## API Key Setup
+## API 密钥设置
 
-The script requires a `PERPLEXITY_API_KEY` environment variable.
+该脚本需要一个名为 `PERPLEXITY_API_KEY` 的环境变量。
 
-**Option 1: Set in OpenClaw config** (recommended)
+**选项 1：在 OpenClaw 配置文件中设置**（推荐）
 
-Add to `~/.openclaw/openclaw.json`:
-
+将以下内容添加到 `~/.openclaw/openclaw.json` 文件中：
 ```json
 {
   "skills": {
@@ -55,25 +52,24 @@ Add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-**Option 2: Environment variable**
+**选项 2：通过环境变量设置**
 
 ```bash
 export PERPLEXITY_API_KEY="your-api-key-here"
 ```
 
-Get your API key from: https://perplexity.ai/account/api
+请从以下链接获取您的 API 密钥：https://perplexity.ai/account/api
 
-## Parameters
+## 参数
 
-- `query` - Search query string (required)
-- `--count N` - Number of results (1-10, default: 5)
-- `--recency FILTER` - Recency filter: `day`, `week`, `month`, or `year`
-- `--json` - Output raw JSON instead of formatted results
+- `query` - 搜索查询字符串（必填）
+- `--count N` - 结果数量（1-10，默认值：5）
+- `--recency FILTER` - 新近度筛选：`day`（天）、`week`（周）、`month`（月）或 `year`（年）
+- `--json` - 以原始 JSON 格式输出结果，而不是格式化后的结果
 
-## Response Format
+## 响应格式
 
-The API returns:
-
+API 返回的结果格式如下：
 ```json
 {
   "results": [
@@ -89,41 +85,41 @@ The API returns:
 }
 ```
 
-## Use Cases
+## 使用场景
 
-**Market Research:**
+**市场研究：**
 ```bash
 python3 {baseDir}/scripts/search.py "golf coaching Instagram trends" --count 10
 ```
 
-**Recent News:**
+**最新新闻：**
 ```bash
 python3 {baseDir}/scripts/search.py "AI regulation updates" --recency week
 ```
 
-**Competitive Analysis:**
+**竞争分析：**
 ```bash
 python3 {baseDir}/scripts/search.py "AI golf training apps" --count 10
 ```
 
-## Pricing
+## 价格
 
-Perplexity Search API: **$5 per 1,000 requests**
+Perplexity 搜索 API 的费用为：**每 1,000 次请求 5 美元**
 
-Track your usage at: https://perplexity.ai/account/api
+您可以在以下链接查看自己的使用情况：https://perplexity.ai/account/api
 
-## Security
+## 安全性
 
-- API key loaded from environment only - never hardcoded
-- Output sanitization prevents terminal injection
-- Error messages don't expose sensitive information
-- 30-second timeout prevents hanging requests
-- Input validation on all parameters
+- API 密钥仅从环境变量中加载，从不硬编码
+- 输出内容经过安全处理，可防止终端注入攻击
+- 错误信息不会暴露敏感信息
+- 设有 30 秒的超时机制，可防止请求挂起
+- 所有参数都经过输入验证
 
-## Notes
+## 注意事项
 
-- Results are ranked by relevance
-- Includes real-time web data
-- Supports filtering by recency
-- Returns structured JSON or formatted text
-- Rate limits apply based on your Perplexity plan
+- 结果按相关性排序
+- 包含实时网络数据
+- 支持按时间顺序筛选结果
+- 可以返回结构化的 JSON 数据或格式化的文本
+- 使用量会受到您所选 Perplexity 计划的限制

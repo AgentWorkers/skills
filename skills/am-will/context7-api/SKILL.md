@@ -10,52 +10,52 @@ description: |
   Always prefer this over guessing library APIs or using outdated knowledge.
 ---
 
-# Context7 Documentation Fetcher
+# Context7 文档获取器
 
-Retrieve current library documentation via Context7 API.
+通过 Context7 API 获取当前库的文档信息。
 
-## Workflow
+## 工作流程
 
-### 1. Search for the library
+### 1. 搜索库
 
 ```bash
 python3 ~/.claude/skills/context7/scripts/context7.py search "<library-name>"
 ```
 
-Example:
+示例：
 ```bash
 python3 ~/.claude/skills/context7/scripts/context7.py search "next.js"
 ```
 
-Returns library metadata including the `id` field needed for step 2.
+返回库的元数据，其中包含步骤 2 所需的 `id` 字段。
 
-### 2. Fetch documentation context
+### 2. 获取文档内容
 
 ```bash
 python3 ~/.claude/skills/context7/scripts/context7.py context "<library-id>" "<query>"
 ```
 
-Example:
+示例：
 ```bash
 python3 ~/.claude/skills/context7/scripts/context7.py context "/vercel/next.js" "app router middleware"
 ```
 
-Options:
-- `--type txt|md` - Output format (default: txt)
-- `--tokens N` - Limit response tokens
+选项：
+- `--type txt|md` - 输出格式（默认：txt）
+- `--tokens N` - 限制响应中的令牌数量
 
-## Quick Reference
+## 快速参考
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| Find React docs | `search "react"` |
-| Get React hooks info | `context "/facebook/react" "useEffect cleanup"` |
-| Find Supabase | `search "supabase"` |
-| Get Supabase auth | `context "/supabase/supabase" "authentication row level security"` |
+| 查找 React 文档 | `search "react"` |
+| 获取 React 钩子信息 | `context "/facebook/react" "useEffect cleanup"` |
+| 查找 Supabase | `search "supabase"` |
+| 获取 Supabase 认证信息 | `context "/supabase/supabase" "authentication row level security"` |
 
-## When to Use
+## 使用场景
 
-- Before implementing any library-dependent feature
-- When unsure about current API signatures
-- For library version-specific behavior
-- To verify best practices and patterns
+- 在实现任何依赖库的功能之前
+- 当不确定当前 API 的签名时
+- 了解特定库版本的行为
+- 验证最佳实践和模式

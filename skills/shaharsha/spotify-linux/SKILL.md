@@ -1,28 +1,28 @@
 ---
 name: spogo-linux
-description: Spotify CLI for headless Linux servers. Control Spotify playback via terminal using cookie auth (no OAuth callback needed). Perfect for remote servers without localhost access.
+description: 适用于无头 Linux 服务器的 Spotify CLI（命令行工具）。通过终端使用 cookie 认证来控制 Spotify 播放（无需 OAuth 回调），非常适合无法访问本地主机的远程服务器。
 homepage: https://github.com/steipete/spogo
 metadata: {"openclaw":{"emoji":"🎵","requires":{"anyBins":["spogo"]},"install":[{"id":"go","kind":"shell","command":"go install github.com/steipete/spogo/cmd/spogo@latest","bins":["spogo"],"label":"Install spogo (go)"}]}}
 ---
 
-# Spogo - Spotify CLI for Linux Servers
+# Spogo – 适用于 Linux 服务器的 Spotify 命令行工具
 
-Control Spotify from headless Linux servers using cookie-based auth. No OAuth callback needed - perfect for remote servers.
+通过基于 Cookie 的身份验证机制，您可以在无界面的 Linux 服务器上控制 Spotify。无需 OAuth 回调，非常适合远程服务器使用。
 
-## Why This Skill?
+## 为什么需要这个工具？
 
-The original `spotify-player` skill by `steipete` on ClawHub assumes local browser access for cookie import (`spogo auth import --browser chrome`). On headless Linux servers without a local browser, this doesn't work.
+ClawHub 上的 `steipete` 开发的原始 `spotify-player` 工具依赖于本地浏览器来导入 Cookie（使用命令 `spogo auth import --browser chrome`）。在没有本地浏览器的无界面 Linux 服务器上，这个方法无法使用。
 
-This skill documents the cookie-based workaround - copy 2 browser cookies and you're done. No OAuth, no localhost needed.
+本工具提供了基于 Cookie 的解决方案：只需复制两个浏览器 Cookie 即可。无需 OAuth，也无需访问本地主机。
 
-## Requirements
-- Spotify Premium account
-- Go 1.21+ installed
-- User's Spotify browser cookies
+## 使用要求
+- 拥有 Spotify Premium 账户
+- 安装了 Go 1.21 或更高版本
+- 用户的 Spotify 浏览器 Cookie
 
-## Installation (Linux)
+## 安装（Linux）
 
-### 1. Install Go (if not installed)
+### 1. 安装 Go（如果尚未安装）
 
 ```bash
 # Ubuntu/Debian
@@ -35,37 +35,37 @@ echo 'export PATH=$PATH:/usr/local/go/bin:~/go/bin' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 2. Install spogo
+### 2. 安装 spogo
 
 ```bash
 go install github.com/steipete/spogo/cmd/spogo@latest
 ```
 
-This installs to `~/go/bin/spogo`. Add to PATH if needed:
+安装完成后，程序会保存在 `~/go/bin/spogo` 目录下。如有需要，请将其添加到系统的 PATH 环境变量中：
 ```bash
 sudo ln -s ~/go/bin/spogo /usr/local/bin/spogo
 ```
 
-### 3. Verify
+### 3. 验证安装是否成功
 
 ```bash
 spogo --version
 # spogo v0.2.0
 ```
 
-## Setup (Cookie Auth)
+## 设置（基于 Cookie 的身份验证）
 
-Since OAuth requires localhost callback (impossible on remote servers), we use cookie auth instead.
+由于 OAuth 需要访问本地主机（在远程服务器上无法实现），因此我们改用基于 Cookie 的身份验证方式。
 
-### 1. Get cookies from browser
+### 1. 从浏览器中获取 Cookie
 
-Have the user open DevTools → Application → Cookies → `open.spotify.com` and copy:
-- `sp_dc` - Main auth token (long string, required)
-- `sp_t` - Device ID (UUID format, required for playback)
+让用户打开浏览器的开发者工具（DevTools），选择“应用程序”（Application）→“Cookies”，然后找到 `open.spotify.com` 的 Cookie：
+- `sp_dc`：主要认证令牌（长字符串，必需）
+- `sp_t`：设备 ID（UUID 格式，用于播放）
 
-### 2. Create config
+### 2. 创建配置文件
 
-Create `~/.config/spogo/config.toml`:
+创建 `~/.config/spogo/config.toml` 文件：
 ```toml
 default_profile = "default"
 
@@ -75,9 +75,9 @@ market = "IL"
 language = "en"
 ```
 
-### 3. Create cookies file
+### 3. 创建 Cookie 文件
 
-Create `~/.config/spogo/cookies/default.json`:
+创建 `~/.config/spogo/cookies/default.json` 文件：
 ```json
 [
   {
@@ -101,14 +101,14 @@ Create `~/.config/spogo/cookies/default.json`:
 ]
 ```
 
-### 4. Verify
+### 4. 验证配置是否正确
 
 ```bash
 spogo auth status
 # → "Cookies: 2 (file)"
 ```
 
-## Commands
+## 可用的命令
 
 ```bash
 # Search
@@ -130,43 +130,33 @@ spogo status
 spogo status --json
 ```
 
-## "missing device id" Error - Browser Fallback
+## 错误提示：“缺少设备 ID”
 
-spogo needs an active Spotify session. If no device played recently:
-
-1. **Open track in browser**:
+- 如果出现“缺少设备 ID”的错误，可能是由于没有活跃的 Spotify 会话导致的。请尝试以下方法：
+1. **在浏览器中打开目标歌曲**：
 ```
 browser open https://open.spotify.com/track/TRACK_ID profile=openclaw
 ```
 
-2. **Click Play** via browser automation
-
-3. **Transfer to target device**:
+2. 通过浏览器自动化功能点击“播放”按钮。
+3. 将歌曲传输到目标设备上：
 ```bash
 spogo device set "DEVICE_ID"
 ```
 
-The browser profile stays logged in (cookies persist). Session stays active for hours after playback.
+此时，浏览器会保持登录状态（Cookie 会持续有效），并且会话会在播放后数小时内保持活跃。
 
-## Rate Limits
+## 速率限制
+- 使用 Connect API 时：没有速率限制（✓）
+- 使用 Web API 时（`--engine web`）：存在速率限制（可能会收到 429 错误）
+- 如果遇到速率限制，建议使用浏览器自动化功能来访问相关资源。
 
-- Connect API (default): No rate limits ✓
-- Web API (`--engine web`): Rate limited (429 errors)
-- For library access when rate limited → use browser automation
+## 故障排除
+- **“缺少设备 ID”**：可能是由于没有活跃的 Spotify 会话。请先通过浏览器启动播放。
+- **“401 Unauthorized”**：可能是 Cookie 已过期。请从浏览器中获取新的 Cookie 并更新 `cookies/default.json` 文件。
+- **命令可以执行但无法播放声音**：检查 `spogo device list` 命令的输出，确认歌曲是否正在正确的设备上播放。如果需要切换设备，可以使用 `spogo device set "DEVICE_ID"` 命令。
 
-## Troubleshooting
-
-### "missing device id"
-No active Spotify session. Use browser fallback (see above) to start playback first.
-
-### "401 Unauthorized"
-Cookies expired. Get fresh cookies from browser and update the JSON file.
-
-### Commands work but no sound
-Check `spogo device list` - playback might be on wrong device. Use `spogo device set "DEVICE_ID"` to switch.
-
-## Notes
-
-- **Cookie expiry**: ~1 year, but may invalidate if user logs out or changes password
-- **Premium required**: Free accounts can't use Connect API
-- **Market setting**: Change `market` in config for correct regional availability (IL, US, etc.)
+## 注意事项
+- **Cookie 的有效期**：大约为 1 年，但如果用户登出或更改密码，Cookie 可能会失效。
+- **需要 Premium 账户**：免费账户无法使用 Connect API。
+- **地区设置**：请在 `config.toml` 文件中设置 `market` 参数，以选择正确的地区（如 Italy、US 等）。

@@ -1,16 +1,17 @@
 ---
 slug: "lien-waiver-tracker"
 display_name: "Lien Waiver Tracker"
-description: "Track and manage construction lien waivers. Monitor conditional and unconditional waivers, ensure compliance before payments, and prevent lien exposure."
+description: "**跟踪和管理施工留置权豁免情况**  
+监控有条件和无条件的豁免申请，确保在付款前符合相关要求，从而避免留置权的产生。"
 ---
 
-# Lien Waiver Tracker
+# 保留权放弃跟踪器（Lien Waiver Tracker）
 
-## Overview
+## 概述
 
-Track and manage lien waivers throughout the construction payment process. Ensure proper waivers are received before releasing payments, monitor waiver status by subcontractor, and minimize lien exposure.
+在整个建筑付款过程中，用于跟踪和管理保留权放弃事宜。确保在付款前收到相应的放弃声明，监控分包商的放弃状态，并最大限度地降低保留权风险。
 
-## Lien Waiver Types
+## 保留权放弃类型（Lien Waiver Types）
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -30,7 +31,7 @@ Track and manage lien waivers throughout the construction payment process. Ensur
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现（Technical Implementation）
 
 ```python
 from dataclasses import dataclass, field
@@ -414,7 +415,7 @@ class LienWaiverTracker:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门（Quick Start）
 
 ```python
 # Initialize tracker
@@ -459,7 +460,7 @@ print(f"Lien exposure: ${exposure.exposure:,.2f}")
 print(tracker.generate_report())
 ```
 
-## Requirements
+## 需求（Requirements）
 
 ```bash
 pip install (no external dependencies)

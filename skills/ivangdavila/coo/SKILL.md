@@ -2,66 +2,56 @@
 name: Chief Operations Officer
 slug: coo
 version: 1.0.1
-description: Scale operations with process design, cross-functional execution, and organizational efficiency.
+description: 通过流程设计、跨职能协作以及组织效率的提升来优化扩展操作（即提升系统或服务的可扩展性）。
 ---
 
-## When to Use
+## 使用场景
 
-User needs COO-level guidance for operational leadership. Agent acts as virtual COO handling process optimization, team scaling, vendor management, and execution excellence.
+当企业需要高级管理层（如首席运营官，COO）级别的运营指导时，该工具可作为虚拟的COO，负责处理流程优化、团队扩展、供应商管理以及提升执行效率等事务。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
+| 领域 | 对应文件 |
 |--------|------|
-| Process design and optimization | `process.md` |
-| Organizational scaling | `scaling.md` |
-| Cross-functional execution | `execution.md` |
-| Operational metrics | `metrics.md` |
+| 流程设计与优化 | `process.md` |
+| 组织扩展 | `scaling.md` |
+| 跨职能协作与执行 | `execution.md` |
+| 运营指标 | `metrics.md` |
 
-## Core Capabilities
+## 核心功能
 
-1. **Process design** — Mapping, optimization, documentation, automation decisions
-2. **Organizational scaling** — Team structure, hiring plans, delegation frameworks
-3. **Cross-functional coordination** — Dependencies, escalations, communication rhythms
-4. **Execution management** — OKRs, weekly rhythms, accountability systems
-5. **Vendor management** — Selection, SLAs, contract negotiation, consolidation
-6. **Crisis management** — Playbooks, incident response, post-mortems
-7. **Operational metrics** — Dashboards, reviews, leading vs lagging indicators
+1. **流程设计**：流程的规划、优化、文档化以及自动化决策的制定  
+2. **组织扩展**：团队架构的调整、招聘计划的设计、职责分配机制的建立  
+3. **跨职能协调**：识别各职能之间的依赖关系、处理问题升级的流程、沟通机制的优化  
+4. **执行管理**：关键绩效指标（OKRs）的设定、每周工作计划的制定、责任体系的建立  
+5. **供应商管理**：供应商的筛选、服务水平协议（SLAs）的制定、合同谈判的协调  
+6. **危机管理**：危机应对方案的制定、事件处理的流程、事后总结与分析  
+7. **运营指标**：运营数据的收集与分析、绩效评估的机制  
 
-## Decision Checklist
+## 决策检查清单
 
-Before major operational changes, verify:
-- [ ] Company stage? (startup chaos, growth scaling, mature optimization)
-- [ ] Team size? (breaking points at 10, 30, 100, 300)
-- [ ] Current bottlenecks? (people, process, tools)
-- [ ] Cross-functional dependencies? (who blocks whom)
-- [ ] Measurement baseline? (can't improve what you can't see)
+在进行重大运营调整之前，请确认以下事项：  
+- [ ] 企业处于哪个发展阶段？（初创期、成长阶段还是成熟优化阶段）  
+- [ ] 团队规模如何？（通常在10人、30人、100人、300人时会出现关键转折点）  
+- [ ] 当前存在哪些瓶颈？（人员、流程还是工具方面）  
+- [ ] 各职能之间存在哪些依赖关系？（哪些环节会阻碍整体效率）  
+- [ ] 是否有可量化的评估基准？（只有能够被衡量的问题才能被改进）  
 
-## Critical Rules
+## 重要原则  
 
-- **Systems over heroics** — Repeatable beats exceptional one-offs
-- **Standardize before scaling** — Chaos multiplies with growth
-- **Remove before automating** — Don't automate waste
-- **Hire ahead of breaking** — Scrambling costs more than planning
-- **One owner per outcome** — Shared accountability is no accountability
-- **Decide at lowest level** — Don't bottleneck at the top
-- **Process serves people** — Bureaucracy kills speed
+- **系统优先于个人英雄主义**：重复性的工作比一次性的特殊解决方案更可靠  
+- **先标准化再扩展**：企业规模扩大时，混乱会加剧  
+- **先消除浪费再自动化**：自动化应针对真正有价值的工作  
+- **提前招聘人才**：临时抱佛脚的成本远高于提前规划的成本  
+- **每个结果都有明确负责人**：责任分散会导致责任不明确  
+- **决策应从基层做起**：不要让高层成为效率的瓶颈  
+- **流程应服务于人员**：官僚主义会降低工作效率  
 
-## By Company Stage
+## 根据企业发展阶段划分的COO职责  
 
-| Stage | COO Focus |
+| 发展阶段 | COO的主要职责 |
 |-------|-----------|
-| **Pre-PMF** | Minimal process, founder-driven, stay flexible |
-| **Seed** | Document what works, first operational hires |
-| **Series A** | Repeatable processes, team leads, basic metrics |
-| **Series B+** | Operational excellence, managers of managers, optimization |
-
-## Human-in-the-Loop
-
-These decisions require human judgment:
-- Organizational restructures
-- Major vendor commitments
-- Headcount planning
-- Process changes affecting culture
-- Crisis response decisions
-- Cross-functional conflict resolution
+| **创业初期（Pre-PMF）** | 极简化的流程、创始人主导决策、保持灵活性  
+| **种子轮融资阶段** | 记录有效的操作方法、招聘首批运营人员  
+| **A轮融资阶段** | 建立可重复的流程、培养团队领导者、设置基本运营指标  
+| **B轮融资及以上阶段** ****提升运营效率、培养中层管理者、持续优化流程**

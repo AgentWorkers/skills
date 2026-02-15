@@ -1,6 +1,6 @@
 ---
 name: sudoku
-description: Fetch Sudoku puzzles and store them as JSON in the workspace; render images on demand; reveal solutions later.
+description: 从在线资源获取数独谜题，并将它们以 JSON 格式存储在工作区中；根据需要渲染谜题图像；之后再显示谜题的解答。
 version: 2.1.0
 homepage: https://github.com/odrobnik/sudoku-skill
 metadata:
@@ -11,113 +11,108 @@ metadata:
       python: ["requests", "Pillow", "lzstring"]
 ---
 
-# Sudoku
+# 数独
 
-## Overview
+## 概述
 
-Fetch, render, and reveal Sudoku puzzles. Use `sudoku.py` to get new puzzles from `sudokuonline.io`, generate printable PDFs or images, and reveal solutions.
+本工具用于获取、渲染和显示数独谜题。可以使用 `sudoku.py` 从 `sudokuonline.io` 获取新的数独谜题，生成可打印的 PDF 文件或图片，并显示谜题的答案。
 
-For details on the saved JSON format, see [DATA_FORMAT.md](references/DATA_FORMAT.md).
+有关保存的 JSON 格式的详细信息，请参阅 [DATA_FORMAT.md](references/DATA_FORMAT.md)。
 
-## Available Puzzle Types
+## 可用的谜题类型
 
-*   `kids4n`: Kids 4x4
-*   `kids4l`: Kids 4x4 with Letters
-*   `kids6`: Kids 6x6
-*   `kids6l`: Kids 6x6 with Letters
-*   `easy9`: Classic 9x9 (Easy)
-*   `medium9`: Classic 9x9 (Medium)
-*   `hard9`: Classic 9x9 (Hard)
-*   `evil9`: Classic 9x9 (Evil)
+*   `kids4n`：4x4 的儿童数独
+*   `kids4l`：带字母的 4x4 儿童数独
+*   `kids6`：6x6 的儿童数独
+*   `kids6l`：带字母的 6x6 儿童数独
+*   `easy9`：经典的 9x9 数独（简单难度）
+*   `medium9`：经典的 9x9 数独（中等难度）
+*   `hard9`：经典的 9x9 数独（高难度）
+*   `evil9`：经典的 9x9 数独（极高难度）
 
-## Setup / Requirements
+## 安装/要求
 
-- Binaries: `python3`
-- Python libs:
+- 程序运行环境：`python3`
+- 所需的 Python 库：
   ```bash
   python3 -m pip install requests Pillow lzstring
   ```
 
-## Get a Puzzle
+## 获取谜题
 
-Fetches a new puzzle and stores it as JSON. Output is JSON by default (use `--text` for human-readable output).
+该命令用于获取一个新的数独谜题，并将其保存为 JSON 格式。默认输出为 JSON 格式（如需人类可读的格式，请使用 `--text` 选项）。
 
-**Get a Classic Easy puzzle:**
+**获取一个经典的简单难度数独谜题：**
 ```bash
 ./scripts/sudoku.py get easy9
 ```
 
-**Get a Kids 6x6 puzzle:**
+**获取一个 6x6 的儿童数独谜题：**
 ```bash
 ./scripts/sudoku.py get kids6
 ```
 
-## Render Puzzle
+## 渲染谜题
 
-Render a puzzle as an image or PDF.
+该命令用于将数独谜题渲染为图片或 PDF 文件。
 
-**Render latest puzzle as A4 PDF (for printing):**
+**将最新的谜题渲染为 A4 格式的 PDF 文件（用于打印）：**
 ```bash
 ./scripts/sudoku.py render --pdf
 ```
 
-**Render latest puzzle as clean PNG (for viewing):**
+**将最新的谜题渲染为清晰的 PNG 图片（用于查看）：**
 ```bash
 ./scripts/sudoku.py render
 ```
 
-**Render a specific previous puzzle by short ID:**
+**通过短 ID 获取特定的谜题：**
 ```bash
 ./scripts/sudoku.py render --id a09f3680
 ```
 
-## Reveal Solution
+## 显示谜题答案
 
-Reveal the solution for the latest or specific puzzle. Use `--id <short_id>` (e.g., `a09f3680`) to target a specific puzzle.
+该命令用于显示最新谜题或特定谜题的答案。可以使用 `--id <short_id>`（例如 `a09f3680`）来指定目标谜题。
 
-**Reveal full solution as printable PDF:**
+**以可打印的 PDF 文件形式显示完整答案：**
 ```bash
 ./scripts/sudoku.py reveal --pdf
 ```
 
-**Reveal full solution for a specific ID:**
+**以 PNG 图片形式显示特定谜题的完整答案：**
 ```bash
 ./scripts/sudoku.py reveal --id a09f3680 --image
 ```
 
-**Reveal full solution as PNG image:**
-```bash
-./scripts/sudoku.py reveal
-```
-
-**Reveal a single cell (row 3, column 7):**
+**显示单个单元格的答案（第 3 行，第 7 列）：**
 ```bash
 ./scripts/sudoku.py reveal --cell 3 7
 ```
 
-**Reveal a specific 3x3 box (index 5):**
+**显示特定的 3x3 区域的答案（索引为 5）：**
 ```bash
 ./scripts/sudoku.py reveal --box 5
 ```
 
-## Share Link
+## 共享链接**
 
-Generate a share link for a stored puzzle. Targets the latest puzzle by default; use `--id <short_id>` for a specific one.
+该命令用于生成存储的数独谜题的共享链接。默认情况下，链接指向最新的谜题；可以使用 `--id <short_id>` 来指定特定的谜题。
 
-**Generate a SudokuPad share link (default):**
+**生成一个 SudokuPad 共享链接（默认格式）：**
 ```bash
 ./scripts/sudoku.py share
 ```
 
-**Generate link for specific ID:**
+**生成特定谜题的共享链接：**
 ```bash
 ./scripts/sudoku.py share --id a09f3680
 ```
 
-**Generate an SCL share link:**
+**生成 SCL 共享链接：**
 ```bash
 ./scripts/sudoku.py share --type scl
 ```
 
-**Telegram Formatting Tip:**
-Format links as a short button-style link and hide the full URL: `[Easy Classic \[<id>\]](<url>)`.
+**Telegram 格式提示：**
+建议将链接格式化为简洁的按钮样式，并隐藏完整的 URL：`[Easy Classic \[<id>\]](<url>)`。

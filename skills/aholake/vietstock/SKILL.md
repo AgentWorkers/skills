@@ -1,61 +1,59 @@
 ---
 name: fireant-stock
-description: Automated Vietnamese stock price checking on FireAnt.vn. Use when checking current stock prices, market data, trading volumes, or financial information for Vietnamese stocks (HOSE, HNX, UPCOM). Accepts stock symbols like DPM, VCB, FPT, etc. and returns formatted price data, market statistics, and key financial metrics.
+description: 在 FireAnt.vn 上实现越南股票的自动价格查询功能。该功能可用于查询越南股票（HOSE、HNX、UPCOM）的当前价格、市场数据、交易量及财务信息。支持输入股票代码（如 DPM、VCB、FPT 等），并返回格式化后的价格数据、市场统计信息以及关键财务指标。
 ---
 
-# FireAnt Stock Price Checker
+# FireAnt 股票价格查询工具
 
-## Overview
+## 概述
 
-Automatically retrieves real-time stock information from FireAnt.vn for Vietnamese equities. Handles the full workflow from searching to data extraction and formatting.
+该工具可自动从 FireAnt.vn 网站获取越南股票的实时信息，涵盖从搜索到数据提取及格式化的全过程。
 
-## Quick Start
+## 快速入门
 
-Check a single stock:
+查询单只股票：
 ```bash
 scripts/check_stock.py DPM
 ```
 
-Check multiple stocks:
+查询多只股票：
 ```bash
 scripts/check_stock.py VCB FPT BID
 ```
 
-## Core Workflow
+## 核心工作流程
 
-1. **Search** - Uses Google search to find the FireAnt stock page for the symbol
-2. **Navigate** - Opens the FireAnt stock page via browser automation  
-3. **Extract** - Parses current price, volume, market cap, and key statistics
-4. **Format** - Returns structured data in readable format
+1. **搜索** - 使用 Google 搜索功能找到目标股票的 FireAnt 页面。
+2. **导航** - 通过浏览器自动化技术打开目标股票的 FireAnt 页面。
+3. **提取数据** - 解析当前价格、成交量、市值等关键财务指标。
+4. **格式化数据** - 将提取到的数据以易于阅读的格式返回。
 
-## Supported Data
+## 支持的数据类型
 
-- **Current Price** - Real-time price with change percentage
-- **Trading Data** - Volume, value, opening/high/low prices  
-- **Market Metrics** - Market cap, beta, P/E ratio, reference price
-- **Technical Analysis** - Moving averages (MA10, MA50)
-- **Company Info** - Full company name, stock exchange listing
+- **当前价格** - 实时价格及价格变动百分比。
+- **交易数据** - 成交量、交易额、开盘价/最高价/最低价。
+- **市场指标** - 市值、贝塔系数、市盈率、参考价格。
+- **技术分析** - 移动平均线（MA10、MA50）。
+- **公司信息** - 公司全称、股票上市交易所。
 
-## Usage Patterns
+## 使用场景
 
-**Single stock inquiry:**
-"Check giá cổ phiếu DPM"
-"What's the current price of VCB?"
+- **单只股票查询**：
+  "查询 DPM 股票的价格。"
+  "VCB 的当前价格是多少？"
+- **多只股票比较**：
+  "比较 VCB、BID 和 CTG 的价格。"
+  "显示银行股的信息：VCB、BID、CTG。"
+- **市场研究**：
+  "在 FireAnt 上查找关于 DPM 股票的信息。"
+  "获取 FPT 的最新交易数据。"
 
-**Multiple stocks:**
-"Compare VCB, BID, and CTG prices"
-"Show me bank stocks: VCB BID CTG"
-
-**Market research:**
-"Find information about DPM stock on FireAnt"
-"Get latest trading data for FPT"
-
-## Scripts
+## 脚本
 
 ### scripts/check_stock.py
 
-Main script that automates the full stock checking workflow for one or more symbols.
+主要脚本，用于自动化查询一个或多个股票的信息。
 
-**Usage:** `python3 scripts/check_stock.py <SYMBOL1> [SYMBOL2] ...`
+**使用方法：** `python3 scripts/check_stock.py <股票代码1> <股票代码2> ...`
 
-**Returns:** Formatted stock data including price, volume, market cap, and key metrics.
+**返回结果：** 格式化后的股票数据，包括价格、成交量、市值等关键指标。

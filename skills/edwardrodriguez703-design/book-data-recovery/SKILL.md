@@ -1,23 +1,23 @@
 ---
 name: book-data-recovery
-description: Book data-recovery services through Lokuli MCP. Use when user needs to find and book data-recovery. Triggers on requests like "book a data-recovery", "find data-recovery near me", or any data-recovery service request.
+description: 通过 Lokuli MCP 预订数据恢复服务。当用户需要查找或预订数据恢复服务时，可以使用此功能。该功能会在收到诸如“预订数据恢复服务”、“查找附近的数据恢复服务”等请求时被触发。
 ---
 
-# uook data recovery
+# 书籍数据恢复服务
 
-Book data-recovery services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来申请书籍数据恢复服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

@@ -1,24 +1,24 @@
 ---
 slug: "kpi-dashboard"
 display_name: "KPI Dashboard"
-description: "Build KPI dashboards for construction projects. Track CPI, SPI, quality, safety metrics in real-time."
+description: "为建筑项目构建关键绩效指标（KPI）仪表板，实时监控成本绩效指数（CPI）、进度绩效指数（SPI）、质量指标以及安全指标。"
 ---
 
-# KPI Dashboard Builder
+# KPI 仪表盘构建器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project monitoring challenges:
-- Multiple metrics to track
-- Data from various sources
-- Real-time visibility needed
-- Executive reporting
+### 问题描述
+项目监控面临的挑战：
+- 需要跟踪多个指标
+- 数据来源多样
+- 需要实时查看数据
+- 需要为管理层提供报告
 
-### Solution
-Unified KPI dashboard system for construction projects with automated data collection, visualization, and alerting.
+### 解决方案
+为建筑项目提供一个统一的 KPI 仪表盘系统，该系统具备自动化的数据收集、数据可视化以及警报功能。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -345,7 +345,7 @@ class KPIDashboard:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create dashboard
@@ -364,22 +364,22 @@ print(f"On Target: {summary['by_status']['on_target']}")
 print(f"Critical: {summary['by_status']['critical']}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. HTML Dashboard
+### 1. HTML 仪表盘
 ```python
 html = dashboard.generate_html_dashboard()
 with open("dashboard.html", "w") as f:
     f.write(html)
 ```
 
-### 2. KPI Details
+### 2. KPI 详情
 ```python
 details = dashboard.get_kpi_details("CPI")
 print(f"Current CPI: {details['current']['value']}")
 ```
 
-### 3. Custom KPI
+### 3. 自定义 KPI
 ```python
 dashboard.add_custom_kpi(KPIDefinition(
     "WASTE_DIVERSION", "Waste Diversion Rate",
@@ -387,6 +387,6 @@ dashboard.add_custom_kpi(KPIDefinition(
 ))
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Data Analytics and Decision Making
-- **Website**: https://datadrivenconstruction.io
+## 资源
+- **DDC 手册**：第 4.1 章 - 数据分析与决策制定
+- **官方网站**：https://datadrivenconstruction.io

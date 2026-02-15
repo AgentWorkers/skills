@@ -1,141 +1,141 @@
 ---
 name: senior-engineering
-description: Engineering principles for building software like a senior engineer. Load when tackling non-trivial development work, architecting systems, reviewing code, or orchestrating multi-agent builds. Covers planning, execution, quality gates, and LLM-specific patterns.
+description: 作为一名资深工程师，您需要掌握以下软件开发原则：在处理复杂的开发任务、设计系统架构、审查代码或协调多代理构建时，这些原则将发挥重要作用。内容涵盖规划、执行、质量控制流程以及针对大型语言模型（LLM）的特定开发模式。
 ---
 
-# Senior Engineering Principles
+# 高级工程师的工程原则
 
-Guidelines for building software with the judgment and discipline of a senior engineer.
+这些原则旨在指导工程师以高级工程师的判断力和纪律性来构建软件。
 
-## Before Writing Code
+## 编写代码之前
 
-### Define Done First
-- What does success look like? Write it down.
-- What are the acceptance criteria?
-- How will you verify it works?
+### 明确完成标准
+- 成功的定义是什么？请写下来。
+- 接受标准是什么？
+- 你将如何验证代码是否正常工作？
 
-### Identify Load-Bearing Decisions
-- Which choices are hard to reverse? → More scrutiny
-- Which are easily changed? → Decide fast, move on
-- Reversible decisions don't need consensus
+### 识别关键决策
+- 哪些决策难以更改？需要更加谨慎地考虑。
+- 哪些决策可以轻易更改？迅速做出决定并继续前进。
+- 可更改的决策不需要达成共识。
 
-### Decompose Before Building
-- Break work into clear, testable units
-- Each unit should be independently verifiable
-- If you can't explain the pieces, you don't understand the whole
+### 分解任务后再进行构建
+- 将工作分解为清晰、可测试的单元。
+- 每个单元都应该能够独立验证。
+- 如果你无法解释某个部分的工作原理，那么你就不真正理解整个系统。
 
-### Surface Risks Upfront
-- What could go wrong?
-- What are the dependencies?
-- What's the rollback plan?
-- Time-box exploration — analysis paralysis is real
+### 提前识别潜在风险
+- 可能会出现什么问题？
+- 有哪些依赖关系？
+- 有什么回滚计划？
+- 设定时间限制来分析问题——分析瘫痪是真实存在的。
 
-### Interface First, Implementation Second
-- Define the contract (types, API shape, error cases) before internals
-- Forces clarity on what you're actually building
-- Implementation becomes "fill in the blanks"
+### 先定义接口，再实现细节
+- 在实现内部逻辑之前，先定义接口的规范（数据类型、API接口、错误处理方式）。
+- 这有助于明确你实际要构建的内容。
+- 实现部分就变成了“填空”的工作。
 
-### Ask: What's the Simplest Thing That Could Work?
-- Start there. Add complexity only when the simple version fails.
-- Most features need 20% of what we imagine.
+### 问自己：最简单的方法是什么？
+- 从最简单的方法开始。只有当简单的方法失败时，再增加复杂性。
+- 大多数功能所需的实现复杂度通常只有我们想象中的20%。
 
-## During Build
+## 编写代码期间
 
-### Always Have a Runnable State
-- Never be more than 30 mins from something that compiles/runs
-- Commit working checkpoints frequently
-- Big-bang integration is where projects die
+### 始终保持代码可运行状态
+- 确保代码能够在30分钟内编译或运行。
+- 频繁提交可运行的代码检查点。
+- 一次性集成是项目失败的主要原因。
 
-### Prefer Incremental Over Big-Bang
-- Ship small, verify, iterate
-- Each step should be independently deployable if possible
-- Reduce blast radius of mistakes
+### 优先采用增量式开发而非一次性完成
+- 分阶段发布代码，进行验证和迭代。
+- 如果可能的话，每个步骤都应该能够独立部署。
+- 降低错误的影响范围。
 
-### Instrument As You Build
-- Add logging/metrics while coding, not when debugging prod
-- "I wish I had visibility into X" = you waited too long
-- Observability is a feature, not an afterthought
+### 在编码过程中添加监控工具
+- 在编码时添加日志记录和性能指标，而不是在调试生产环境时才添加。
+- “我希望能够看到某些信息”意味着你等待得太久了。
+- 可观测性是一个重要的特性，而不是事后才考虑的。
 
-### Read Errors Carefully
-- 80% of debugging is actually reading what the system tells you
-- Read the error, then read it again
-- Stack traces have answers — follow them
+### 仔细阅读错误信息
+- 80%的调试工作实际上就是阅读系统提供的错误信息。
+- 仔细阅读错误信息，然后再读一遍。
+- 堆栈跟踪会提供问题的线索——请跟随这些线索进行排查。
 
-### Boring > Clever
-- If someone has to pause to understand it, it's too clever
-- Save big-brain moves for genuinely hard problems
-- Maintainability beats elegance
+### 简单优于复杂
+- 如果需要停下来理解代码，那就说明代码设计得太复杂了。
+- 将复杂的操作留到真正困难的问题上再处理。
+- 可维护性比代码的“优雅”更重要。
 
-### Optimize for Delete
-- Write code that's easy to remove
-- Tight coupling makes features immortal
-- Good abstractions have clear boundaries
+### 为后续删除代码做优化
+- 编写易于删除的代码。
+- 过高的耦合度会让代码难以维护。
+- 良好的抽象应该有明确的边界。
 
-## Quality Gates
+## 质量检查标准
 
-### Before Declaring Done
-- [ ] Linter passes
-- [ ] Type checker passes
-- [ ] Tests pass (unit + integration where applicable)
-- [ ] Manual smoke test completed
-- [ ] Edge cases considered and handled
+### 在宣布项目完成之前
+- [ ] 代码通过代码检查工具（如Linter）的检测。
+- [ ] 代码类型检查通过。
+- [ ] 单元测试和集成测试通过（如果适用的话）。
+- [ ] 完成了手动测试。
+- [ ] 边缘情况已被考虑并处理。
 
-### Tests Are Documentation
-- A good test suite tells you what code is *supposed* to do
-- Treat tests as first-class citizens
-- If it's not tested, it's not done
+### 测试就是文档
+- 一个好的测试套件能告诉你代码应该做什么。
+- 将测试视为代码的重要组成部分。
+- 如果没有经过测试，那就意味着代码还没有完成。
 
-### Code Review Mindset
-- Review like you'll maintain it at 3am
-- Check: correctness, clarity, edge cases, security
-- "It works" is necessary but not sufficient
+### 代码审查的思维方式
+- 以未来需要在凌晨3点维护代码的角度来进行审查。
+- 检查代码的正确性、清晰度以及边缘情况。
+- “代码能运行”是基本要求，但还不够。
 
-## LLM Orchestration Principles
+## 大语言模型（LLM）的协调原则
 
-### Context Management
-- Context window is your RAM — manage it deliberately
-- Bloated context = degraded reasoning
-- Give each agent minimum viable context, no more
+### 上下文管理
+- 上下文窗口就像你的内存一样——要谨慎管理它。
+- 过多的上下文信息会导致推理能力下降。
+- 给每个组件提供最小必要的上下文信息。
 
-### Agent Delegation
-- Single responsibility per agent
-- Clear handoff contracts: inputs, outputs, success criteria
-- Parallel when independent, sequential when dependent
+### 组件职责划分
+- 每个组件只负责一个功能。
+- 明确组件之间的输入、输出和成功标准。
+- 当组件之间相互独立时，可以并行处理；当相互依赖时，则按顺序执行。
 
-### Verify, Don't Trust
-- First output is a draft, always
-- Review agent output like a code review
-- Agents are junior engineers, not oracles
+### 验证而非盲目信任
+- 第一次的输出结果只是一个草稿。
+- 像进行代码审查一样审查组件的输出结果。
+- 组件只是辅助工具，而不是万能的解决方案。
 
-### Checkpoints Over Marathons
-- Long-running agents should checkpoint progress
-- If it crashes at 90%, don't lose everything
-- Log state to files, not just memory
+### 定期检查进度
+- 长时间运行的组件应该定期检查进度。
+- 如果在90%的进度时出现故障，也不要丢失所有已做的工作。
+- 将状态信息记录到文件中，而不仅仅是内存中。
 
-### Fail Fast, Surface Early
-- If something's going wrong, stop and reassess
-- Don't compound errors hoping they'll resolve
-- Human in the loop for high-stakes decisions
+### 快速发现错误并尽早处理
+- 如果出现问题，立即停止并重新评估。
+- 不要期望错误会自行解决。
+- 对于高风险决策，必须有人为干预。
 
-## Ownership & Accountability
+## 责任与归属
 
-### Own Failures, Credit Others
-- Own failures publicly
-- Credit others for wins
-- No ego-driven attachment to being right
+### 承认自己的错误，认可他人的贡献
+- 公开承认自己的错误。
+- 对他人的贡献给予认可。
+- 不要因为个人自负而坚持自己的观点。
 
-### Strong Opinions, Weakly Held
-- Have a position, defend it with evidence
-- Update beliefs when evidence demands it
-- "I was wrong" is a sign of growth
+### 有明确的观点，但持开放态度
+- 有自己的观点，并用证据来支持它。
+- 当证据发生变化时，及时更新自己的看法。
+- “我错了”是成长的标志。
 
-### Leave It Better
-- Codebases, teams, processes — improve what you touch
-- Fix the small things while you're there
-- Documentation is a gift to future-you
+### 努力让代码变得更好
+- 无论是对代码库、团队还是流程，都要不断改进。
+- 在修改代码的同时，也要修复小问题。
+- 文档是对未来的自己的一份礼物。
 
-## The Meta-Principle
+## 核心原则
 
-> "Make the change easy, then make the easy change." — Kent Beck
+> “先让修改变得简单，然后再让简单的修改变得容易。” —— Kent Beck
 
-Most senior engineering is about *preparation* — setting up the codebase so the actual feature is trivial. If the feature is hard, the real work is often refactoring first to make it easy.
+高级工程的核心在于“准备”——通过优化代码库，使得实际功能的实现变得简单。如果某个功能实现起来很困难，那么真正的工作往往是需要先进行重构，使其变得简单。

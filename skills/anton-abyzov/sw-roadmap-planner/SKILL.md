@@ -1,34 +1,34 @@
 ---
 name: roadmap-planner
-description: Product roadmap and feature prioritization expert with RICE, MoSCoW, and Kano frameworks. Use when planning product roadmaps, prioritizing features across increments, or defining success metrics and KPIs. Covers ROI analysis, stakeholder communication, and quarterly planning.
+description: 产品路线图与功能优先级制定专家，熟练运用 RICE、MoSCoW 和 Kano 策略框架。在制定产品路线图、确定各开发阶段的优先功能、定义成功指标（KPIs）时具备丰富的经验。擅长进行投资回报率（ROI）分析、与利益相关者沟通以及制定季度工作计划。
 ---
 
-# Roadmap Planner - Strategic Product Planning
+# 路线图规划器 - 战略产品规划
 
-**Purpose**: Provide expert guidance on product roadmaps, feature prioritization frameworks, success metrics definition, and stakeholder communication.
+**目的**：为产品路线图、功能优先级框架、成功指标的定义以及与利益相关者的沟通提供专业指导。
 
-**When to Use**:
-- Planning product roadmaps (quarterly, annual)
-- Prioritizing features across multiple increments
-- Defining success metrics and KPIs
-- Communicating technical decisions to stakeholders
-- Analyzing ROI and business impact
+**使用场景**：
+- 规划产品路线图（季度、年度）
+- 在多个开发阶段中优先处理功能
+- 定义成功指标和关键绩效指标（KPI）
+- 向利益相关者传达技术决策
+- 分析投资回报率（ROI）和业务影响
 
 ---
 
-## Feature Prioritization Frameworks
+## 功能优先级框架
 
-### RICE Score
+### RICE评分法
 
-**Formula**: `RICE = (Reach × Impact × Confidence) / Effort`
+**计算公式**：`RICE = (影响范围 × 影响程度 × 确信度) / 所需工作量`
 
-**Components**:
-- **Reach**: How many users/customers will this impact per quarter?
-- **Impact**: How much will this impact each user? (0.25 = minimal, 0.5 = low, 1 = medium, 2 = high, 3 = massive)
-- **Confidence**: How confident are you in your estimates? (50% = low, 80% = medium, 100% = high)
-- **Effort**: How many person-weeks/months will this take?
+**评分要素**：
+- **影响范围**：该功能每个季度将影响多少用户/客户？
+- **影响程度**：该功能对每个用户的影响有多大？（0.25 = 极小影响，0.5 = 低影响，1 = 中等影响，2 = 高影响，3 = 非常大影响）
+- **确信度**：你对这些估计的信心有多高？（50% = 低信心，80% = 中等信心，100% = 高信心）
+- **所需工作量**：实现该功能需要多少人周/月？
 
-**Example**:
+**示例**：
 ```
 Feature: Real-time Collaboration
 - Reach: 8000 users/quarter (80% of user base)
@@ -41,13 +41,13 @@ RICE = (8000 × 3 × 0.7) / 8 = 2100
 Higher RICE = Higher Priority
 ```
 
-**When to Use RICE**:
-- ✅ Large feature backlogs (50+ features)
-- ✅ Data-driven product teams
-- ✅ B2C products with large user bases
-- ✅ Need to compare features objectively
+**适用场景**：
+- 功能积压较多（50个以上功能）的情况
+- 依赖数据驱动的产品团队
+- 拥有大量用户群的B2C产品
+- 需要客观比较不同功能的情况
 
-**RICE Scoring Table Example**:
+**RICE评分表示例**：
 ```markdown
 | Feature | Reach | Impact | Confidence | Effort | RICE Score | Priority |
 |---------|-------|--------|------------|--------|------------|----------|
@@ -60,30 +60,30 @@ Higher RICE = Higher Priority
 
 ---
 
-### MoSCoW Prioritization
+### MoSCoW优先级排序法
 
-**Categories**:
-- **Must Have**: Critical for MVP, without these product fails
-  - Non-negotiable requirements
-  - Legal/compliance requirements
-  - Core value proposition
+**分类**：
+- **必备功能**：对最小可行产品（MVP）至关重要，缺少这些功能会导致产品失败
+  - 无法协商的要求
+  - 法律/合规性要求
+  - 核心价值主张
 
-- **Should Have**: Important but not critical, workarounds exist
-  - Adds significant value
-  - Can be deferred if necessary
-  - User experience improvements
+- **应具备功能**：虽然重要但非必需，有替代方案
+  - 能显著提升产品价值
+  - 必要时可以推迟实现
+  - 用于提升用户体验
 
-- **Could Have**: Nice-to-have, adds value but not essential
-  - Desirable features
-  - Low implementation effort
-  - "Polish" items
+- **可选功能**：虽然有价值但非必需
+  - 可选的功能
+  - 实现难度较低
+  - 用于优化产品细节
 
-- **Won't Have**: Out of scope for this release
-  - Future roadmap items
-  - Technical debt cleanup
-  - Edge case features
+- **不会包含的功能**：超出当前版本范围的功能
+  - 未来版本才会实现的功能
+  - 用于解决技术遗留问题
+  - 边缘性功能
 
-**Example**:
+**示例**：
 ```markdown
 ## Feature Prioritization (Q1 2026 MVP)
 
@@ -113,35 +113,35 @@ Higher RICE = Higher Priority
 - Offline mode (technical complexity too high for MVP)
 ```
 
-**When to Use MoSCoW**:
-- ✅ MVP planning (focus on "Must Have")
-- ✅ Agile sprints (prioritize within time-box)
-- ✅ Stakeholder alignment (clear categories)
-- ✅ Resource-constrained teams
+**适用场景**：
+- MVP规划（重点关注“必备功能”）
+- 敏捷开发冲刺（在时间范围内优先处理功能）
+- 需要明确功能优先级的场景
+- 资源有限的团队
 
 ---
 
-### Kano Model
+### Kano模型
 
-**Categories**:
-- **Basic Needs** (Threshold Attributes):
-  - Users expect these by default
-  - Absence causes dissatisfaction
-  - Presence doesn't increase satisfaction
-  - Examples: Authentication, data persistence, security
+**分类**：
+- **基本需求**（门槛属性）：
+  - 用户默认期望具备的功能
+  - 缺少这些功能会导致用户不满
+  - 具备这些功能也不会显著提升用户满意度
+  - 例如：身份验证、数据持久化、安全性
 
-- **Performance Needs** (Linear Attributes):
-  - More is better
-  - Satisfaction increases linearly with quality
-  - Examples: Speed, reliability, uptime, accuracy
+- **性能需求**（线性属性）：
+  - 功能越多越好
+  - 用户满意度随功能质量的提升而线性增加
+  - 例如：速度、可靠性、系统稳定性、准确性
 
-- **Excitement Needs** (Delighters):
-  - Unexpected features that delight users
-  - Absence doesn't cause dissatisfaction
-  - Presence creates competitive advantage
-  - Examples: AI suggestions, beautiful UI, thoughtful details
+- **惊喜需求**（提升用户体验的功能）：
+  - 超出用户预期的功能，能带来惊喜
+  - 缺少这些功能不会导致用户不满
+  - 具备这些功能能带来竞争优势
+  - 例如：人工智能建议、美观的用户界面、贴心的设计细节
 
-**Example Analysis**:
+**示例分析**：
 ```markdown
 ## Kano Model Analysis: Task Management App
 
@@ -167,21 +167,21 @@ Higher RICE = Higher Priority
 - **Voice input**: "Add task: Buy milk"
 ```
 
-**When to Use Kano**:
-- ✅ Understanding user expectations
-- ✅ Differentiating from competitors
-- ✅ Balancing "table stakes" vs innovation
-- ✅ UX/product design decisions
+**适用场景**：
+- 理解用户需求
+- 与竞争对手区分产品差异
+- 在“基本需求”和“惊喜需求”之间取得平衡
+- 进行用户体验/产品设计决策
 
 ---
 
-## Product Roadmap Creation
+## 产品路线图制作
 
-### Quarterly Roadmap Template
+### 季度路线图模板
 
-**Structure**: Themes → Features → Success Metrics
+**结构**：主题 → 功能 → 成功指标
 
-**Example**:
+**示例**：
 ```markdown
 # Product Roadmap 2026
 
@@ -289,11 +289,11 @@ Higher RICE = Higher Priority
 
 ---
 
-## Success Metrics & KPIs
+## 成功指标与关键绩效指标（KPIs）
 
-### Framework: OKRs (Objectives & Key Results)
+### OKRs（目标与关键结果）框架
 
-**Example**:
+**示例**：
 ```yaml
 objective: "Become the #1 task management tool for remote teams"
 
@@ -327,32 +327,32 @@ key_results:
     target_date: "2026-Q3"
 ```
 
-### Metric Categories
+### 指标分类
 
-**Engagement Metrics**:
-- Daily Active Users (DAU)
-- Weekly Active Users (WAU)
-- Monthly Active Users (MAU)
-- DAU/MAU ratio (stickiness)
-- Session duration
-- Feature adoption rate
+**用户参与度指标**：
+- 日活跃用户（DAU）
+- 周活跃用户（WAU）
+- 月活跃用户（MAU）
+- DAU/MAU比率（用户粘性）
+- 会话时长
+- 功能采用率
 
-**Performance Metrics**:
-- API response time (p50, p95, p99)
-- Page load time (< 2 seconds)
-- Sync latency (< 100ms)
-- Error rate (< 0.1%)
-- Uptime SLA (99.9% → 99.99%)
+**性能指标**：
+- API响应时间（50%分位数、95%分位数、99%分位数）
+- 页面加载时间（< 2秒）
+- 数据同步延迟（< 100毫秒）
+- 错误率（< 0.1%）
+- 系统可用性SLA（99.9% → 99.99%）
 
-**Business Metrics**:
-- Monthly Recurring Revenue (MRR)
-- Customer Acquisition Cost (CAC)
-- Lifetime Value (LTV)
-- LTV:CAC ratio (should be > 3:1)
-- Churn rate (< 2% monthly)
-- Net Promoter Score (NPS)
+**业务指标**：
+- 月度经常性收入（MRR）
+- 客户获取成本（CAC）
+- 客户生命周期价值（LTV）
+- LTV与CAC比率（应大于3:1）
+- 客户流失率（每月< 2%）
+- 客户推荐评分（NPS）
 
-**Example Measurement Plan**:
+**示例测量计划**：
 ```markdown
 ## Measurement Plan: Real-time Collaboration Feature
 
@@ -386,14 +386,14 @@ key_results:
 
 ---
 
-## Stakeholder Communication
+## 与利益相关者的沟通
 
-### Translating Technical to Business Impact
+### 将技术细节转化为业务影响
 
-**Input**: Technical architecture decision
-**Output**: Business-friendly explanation with ROI
+**输入**：技术架构决策
+**输出**：易于理解的业务解释及投资回报率（ROI）
 
-**Example**:
+**示例**：
 ```markdown
 ## Stakeholder Update: Microservices Architecture Migration
 
@@ -442,32 +442,29 @@ We're proposing a shift from our current monolithic architecture to microservice
 
 ---
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
-### When PM Agent Should Use Roadmap Planner
+**产品经理（PM）应何时使用路线图规划器**：
+- 当用户询问“我们应该优先处理哪些功能？”时
+- 当用户提到“路线图”、“RICE评分法”、“MoSCoW优先级排序法”或“Kano模型”时
+- 当用户需要制定季度规划或功能排名时
 
-**Automatic Activation**:
-- User asks: "What should we prioritize?"
-- User mentions: "roadmap", "RICE", "MoSCoW", "Kano"
-- User wants: Quarterly planning, feature ranking
-
-**PM Agent Workflow**:
-1. Gather feature ideas (from user, backlog, stakeholders)
-2. **Delegate to Roadmap Planner skill** for prioritization
-3. Present prioritized roadmap with rationale
-4. Create increments for P1 (Must Have) features
-5. Defer P2/P3 to backlog
+**产品经理的工作流程**：
+1. 收集功能需求（来自用户、功能积压列表或利益相关者）
+2. 将需求委托给路线图规划器进行优先级排序
+3. 呈现排序后的路线图及理由
+4. 为“必备功能”制定优先级最高的开发计划（P1阶段）
+5. 将“次要功能”推迟到后续开发阶段（P2/P3阶段）
 
 ---
 
-## Related Skills
-
-- **PM Agent**: Uses roadmap-planner for strategic planning
-- **increment-planner**: Executes individual increments from roadmap
-- **spec-generator**: Creates detailed specs for prioritized features
+## 相关技能**：
+- **产品经理（PM）**：使用路线图规划器进行战略规划
+- **开发计划员**：根据路线图执行具体功能开发
+- **需求文档生成器**：为优先级高的功能生成详细的技术规范
 
 ---
 
-## Version History
+## 版本历史记录
 
-- **v1.0.0** (2025-11-21): Initial release, extracted from PM agent for better modularity
+- **v1.0.0**（2025-11-21）：初始版本，为提高模块化程度而从产品经理工具中分离出来

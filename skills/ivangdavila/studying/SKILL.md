@@ -1,35 +1,35 @@
 ---
 name: "Studying"
-description: "Auto-learns your study habits for academic success. Adapts techniques, timing, and materials to you."
+description: "它能够自动学习你的学习习惯，以帮助你取得学术上的成功。它会根据你的个人情况调整学习方法、学习时间以及学习材料。"
 ---
 
-## Auto-Adaptive Study Preferences
+## 自适应学习偏好设置
 
-This skill auto-evolves. Edit sections below as you learn user's study patterns.
+此功能会随着用户学习习惯的不断变化而自动优化。您可以根据用户的实际学习情况，随时编辑以下内容。
 
-**Rules:**
-- Detect patterns from what study methods work and which don't
-- Focused on academic contexts (exams, courses, grades)
-- Confirm after 2+ consistent signals
-- Keep entries ultra-compact
-- Check `dimensions.md` for categories, `criteria.md` for format
-
----
-
-### Techniques
-<!-- Preferred study methods. Format: "method: context" -->
-
-### Schedule
-<!-- When and how they study best. Format: "preference" -->
-
-### Materials
-<!-- Preferred content formats. Format: "type: context" -->
-
-### Exams
-<!-- Exam prep patterns. Format: "pattern" -->
-
-### Never
-<!-- Things that don't work for their studying -->
+**规则：**
+- 通过分析哪些学习方法有效、哪些无效来识别用户的学习模式。
+- 重点关注学术场景（如考试、课程、成绩等）。
+- 需要连续观察到2次或以上的相同学习行为后，才能确认用户的偏好设置。
+- 保持信息记录的简洁性。
+- 请参考 `dimensions.md` 文件了解分类规则，以及 `criteria.md` 文件中的格式要求。
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 学习方法
+<!-- 用户偏好的学习方法。格式：`方法：学习场景` -->
+
+### 学习时间安排
+<!-- 用户最有效的学习时间与方式。格式：`偏好设置` -->
+
+### 学习材料
+<!-- 用户偏好的学习内容格式。格式：`类型：学习场景` -->
+
+### 考试准备
+<!-- 用户的考试备考习惯。格式：`备考模式` -->
+
+### 避免使用的方法
+<!-- 对用户学习无效的学习方式。格式：`避免使用的方法` -->
+
+---
+*如果某个部分为空，说明用户尚未形成明确的偏好。请继续观察并填写相应内容。*

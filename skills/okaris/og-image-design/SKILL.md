@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# OG Image Design
+# 原生图片设计（OG Image Design）
 
-Create social sharing images (Open Graph) via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具来生成用于社交分享的图片（Open Graph 图片）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,9 +25,9 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Platform Specifications
+## 平台规格
 
-| Platform | Dimensions | Aspect Ratio | File Size | Format |
+| 平台 | 尺寸 | 长宽比 | 文件大小 | 格式 |
 |----------|-----------|--------------|-----------|--------|
 | **Facebook** | 1200 x 630 px | 1.91:1 | < 8 MB | JPG, PNG |
 | **Twitter/X (summary_large_image)** | 1200 x 628 px | 1.91:1 | < 5 MB | JPG, PNG, WEBP, GIF |
@@ -37,9 +37,9 @@ infsh app run infsh/html-to-image --input '{
 | **Slack** | 1200 x 630 px | 1.91:1 | — | JPG, PNG |
 | **iMessage** | 1200 x 630 px | 1.91:1 | — | JPG, PNG |
 
-**Universal safe bet: 1200 x 630 px, PNG or JPG, under 5 MB.**
+**通用标准：1200 x 630 px 的图片，格式为 PNG 或 JPG，文件大小不超过 5 MB。**
 
-## The Golden Layout
+## 优质图片布局
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -57,21 +57,21 @@ infsh app run infsh/html-to-image --input '{
   1200 x 630 px
 ```
 
-## Design Rules
+## 设计规则
 
-### Text
+### 文本
 
-| Rule | Value |
+| 规则 | 值 |
 |------|-------|
-| Title font size | 48-64px |
-| Subtitle font size | 20-28px |
-| Max title length | 60 characters (gets truncated on some platforms) |
-| Max subtitle length | 100 characters |
-| Line height | 1.2-1.3 for titles |
-| Font weight | Bold/Black for title, Regular for subtitle |
-| Text contrast | WCAG AA minimum (4.5:1 ratio) |
+| 标题字体大小 | 48-64px |
+| 副标题字体大小 | 20-28px |
+| 标题最大长度 | 60 个字符（部分平台会自动截断） |
+| 副标题最大长度 | 100 个字符 |
+| 行高 | 标题：1.2-1.3 像素 | 副标题：1.2-1.3 像素 |
+| 字体粗细 | 标题：加粗/黑色 | 副标题：常规字体 |
+| 文本对比度 | 符合 WCAG AA 标准（至少 4.5:1 的对比度） |
 
-### Safe Zones
+### 安全区域（Safe Zones）
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -85,24 +85,24 @@ infsh app run infsh/html-to-image --input '{
 └──────────────────────────────────────────────────┘
 ```
 
-- 40px minimum padding from all edges
-- Some platforms crop edges or add rounded corners
-- Never put critical text in the outer 5%
+- 所有边缘至少保留 40px 的内边距
+- 部分平台会裁剪图片边缘或添加圆角
+- 绝不要将重要文本放置在图片的外侧 5% 区域内
 
-### Colors
+### 颜色
 
-| Background Type | When to Use |
+| 背景类型 | 使用场景 |
 |----------------|-------------|
-| Solid brand color | Consistent series, corporate |
-| Gradient | Modern, eye-catching |
-| Photo with overlay | Blog posts, editorial |
-| Dark background | Better contrast, stands out in feeds |
+| 固定品牌颜色 | 保持一致性，适合企业形象 |
+| 渐变背景 | 现代感强，吸引眼球 |
+| 带图层的照片 | 适用于博客文章或新闻报道 |
+| 深色背景 | 对比度更高，在信息流中更显眼 |
 
-**Dark backgrounds outperform light** in social feeds — most feeds have white/light backgrounds, so dark OG images pop.
+**在社交信息流中，深色背景通常比浅色背景更受欢迎**——因为大多数信息流的背景都是白色或浅色的，所以深色图片更显眼。
 
-## Templates by Content Type
+## 根据内容类型生成的模板
 
-### Blog Post
+### 博客文章
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -110,7 +110,7 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### Product/Launch Announcement
+### 产品/发布公告
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -118,7 +118,7 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### Tutorial/How-To
+### 教程/操作指南
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -126,7 +126,7 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### AI-Generated Visual OG
+### 由 AI 生成的图片
 
 ```bash
 # When you want a striking visual instead of text-based
@@ -137,7 +137,7 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## OG Meta Tags Reference
+## 原生图片元标签参考
 
 ```html
 <!-- Essential (Facebook, LinkedIn, Discord, Slack) -->
@@ -158,35 +158,35 @@ infsh app run falai/flux-dev-lora --input '{
 <meta property="og:image:height" content="630" />
 ```
 
-### Twitter Card Types
+### Twitter 卡片类型
 
-| Card Type | Image Size | Use When |
+| 卡片类型 | 图片尺寸 | 使用场景 |
 |-----------|-----------|----------|
-| `summary` | 800 x 418 (small thumbnail) | Short updates, links |
-| `summary_large_image` | 1200 x 628 (full width) | Blog posts, articles, announcements |
+| `summary` | 800 x 418 px（小缩略图） | 简短更新、链接 |
+| `summary_large_image` | 1200 x 628 px（全宽图片） | 博客文章、新闻报道 |
 
-**Always use `summary_large_image`** unless you have a specific reason not to — the large image gets significantly more clicks.
+**除非有特殊原因，否则始终使用 `summary_large_image`——大尺寸图片的点击率更高。**
 
-## Consistency System
+## 一致性系统
 
-For a blog or site with many pages, create a template system:
+对于拥有大量页面的博客或网站，建议建立模板系统：
 
-| Element | Keep Consistent | Vary |
+| 元素 | 保持一致 | 可变部分 |
 |---------|----------------|------|
-| Background style | Same gradient or brand colors | — |
-| Font family | Same font | — |
-| Layout | Same positioning | — |
-| Logo/branding | Same placement (corner) | — |
-| Category badge | Same style | Color per category |
-| Title text | Same size/weight | Content changes |
+| 背景样式 | 使用相同的渐变效果或品牌颜色 | — |
+| 字体系列 | 使用相同的字体 | — |
+| 布局 | 保持相同的元素位置 | — |
+| 标志/品牌标识 | 保持相同的放置位置（角落） | — |
+| 类别标签 | 保持相同的样式 | 每个类别使用不同的颜色 |
+| 标题文字 | 保持相同的大小和粗细 | 标题和内容可以调整 |
 
-## Testing OG Images
+## 测试原生图片
 
-| Tool | URL |
+| 工具 | URL |
 |------|-----|
-| Facebook Debugger | developers.facebook.com/tools/debug/ |
-| Twitter Card Validator | cards-dev.twitter.com/validator |
-| LinkedIn Post Inspector | linkedin.com/post-inspector/ |
+| Facebook 调试工具 | developers.facebook.com/tools/debug/ |
+| Twitter 卡片验证工具 | cards-dev.twitter.com/validator |
+| LinkedIn 帖子检查工具 | linkedin.com/post-inspector/ |
 | OpenGraph.xyz | opengraph.xyz |
 
 ```bash
@@ -196,21 +196,21 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No OG image at all | Platform shows random page element or nothing | Always set og:image |
-| Text too small | Unreadable on mobile previews | Title minimum 48px at 1200px width |
-| Light background | Gets lost in white/light feeds | Use dark or saturated backgrounds |
-| Too much text | Cluttered, overwhelming | Max: title + subtitle + brand |
-| Image too large (>5MB) | Some platforms won't load it | Optimize to under 1MB ideally |
-| No safe zone padding | Text cropped on some platforms | 40px padding from all edges |
-| Different image per platform | Inconsistent sharing experience | Use 1200x630 for everything |
-| HTTP image URL | Many platforms require HTTPS | Always serve OG images over HTTPS |
-| Relative image path | Won't resolve when shared | Use full absolute URL |
+| 未设置原生图片 | 平台会显示随机页面元素或无图片显示 | 必须设置 `og:image` 标签 |
+| 文本太小 | 在移动设备上难以阅读 | 标题字体大小至少为 48px，图片宽度至少为 1200px |
+| 背景颜色太浅 | 在白色或浅色背景下难以看清 | 使用深色或饱和度较高的背景 |
+| 文字太多 | 信息过于杂乱 | 最多显示标题、副标题和品牌标识 |
+| 图片过大（>5MB） | 部分平台无法加载 | 将图片大小优化到 1MB 以下 |
+| 未设置安全区域 | 图片在某些平台上会被裁剪 | 所有边缘至少保留 40px 的内边距 |
+| 不同平台使用不同的图片 | 共享体验不一致 | 所有平台都使用 1200x630 的图片 |
+| 图片链接使用 HTTP 协议 | 许多平台要求使用 HTTPS | 必须通过 HTTPS 提供原生图片 |
+| 使用相对路径 | 共享时图片无法正确显示 | 使用绝对路径 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -218,4 +218,4 @@ npx skills add inferencesh/skills@landing-page-design
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用应用：`infsh app list`

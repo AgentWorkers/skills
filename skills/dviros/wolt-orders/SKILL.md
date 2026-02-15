@@ -2,134 +2,119 @@
 name: wolt-orders
 slug: wolt-orders
 display_name: Wolt Orders 🍔
-description: Discover restaurants with advanced filters (cuisine, price, distance, rating, promotions), place single or group orders on Wolt.com, reorder past favorites, track status in real-time, automatically detect delays and contact support, and push rich updates to Slack or other channels.
+description: 使用高级筛选条件（菜系、价格、距离、评分、促销活动）来查找餐厅；在 Wolt.com 上下单，支持单人或团体用餐；重新排序收藏的餐厅；实时追踪订单状态；自动检测订单延误情况并联系客服；并将订单更新信息推送到 Slack 或其他通讯渠道。
 metadata: {"clawdbot":{"emoji":"🍔","requires":{"config":["browser.enabled"]}}}
 user-invocable: true
 ---
 
 
-# Wolt Orders 🍔
+# Wolt 订餐服务 🍔
 
-**Display Name:** Wolt Orders 🍔  
-**Slug:** wolt-orders  
+**显示名称：** Wolt 订餐服务 🍔  
+**slug：** wolt-orders  
 
-This skill provides a full-featured assistant for Wolt.com: smart restaurant discovery with rich filtering, menu browsing, single and group ordering, reordering past orders, real-time tracking, automatic delay detection + support contact, and proactive notifications to Slack or other connected channels.
+该技能为 Wolt.com 提供了全方位的辅助功能：智能餐厅搜索（支持丰富筛选条件）、菜单浏览、单次/批量点餐、过去订单的重新排序、实时订单追踪、自动延迟检测及支持联系功能，同时支持将通知发送至 Slack 或其他连接渠道。  
 
-## Prerequisites
-- Browser tool must be enabled (with persistent session support recommended for login).
-- User must provide Wolt credentials on first use (email/phone + password or OTP flow). Store session securely via browser cookies/profile.
-- Delivery address must be set or provided per order.
-- For group orders and notifications, Slack or other channels should be connected via channel_send.
-- Always require explicit user confirmation before adding expensive items, finalizing checkout, or placing any order.
+## 先决条件  
+- 必须启用浏览器插件（建议使用支持持久会话的插件以便登录）。  
+- 用户首次使用时需提供 Wolt 的登录凭证（电子邮件/电话号码 + 密码或 OTP 验证）。会话信息应通过浏览器 cookie 或个人资料安全存储。  
+- 每次下单时必须设置或提供配送地址。  
+- 对于批量订单和通知功能，需要通过 `channel_send` 将信息发送至 Slack 或其他指定渠道。  
+- 在添加高价商品、完成结账或下单前，系统会要求用户明确确认。  
 
-## Supported Filters for Restaurant Discovery
+## 餐厅搜索支持的筛选条件  
+| 筛选条件 | 说明 | 用户输入示例 | 在浏览器中的操作方式 |  
+|--------|-------------|--------------------|-------------------------|  
+| **菜系/类型** | 特定食物类型或类别 | “意大利菜”、“寿司”、“汉堡”、“素食”、“中东菜” | 在 Wolt 主页或搜索页面选择菜系筛选项 |  
+| **价格范围** | 价格区间（欧元） | “便宜”、“中等价格”、“低于 100 以色列谢克尔” | 使用价格筛选按钮 |  
+| **最大距离/配送时间** | 以公里或分钟为限 | “3 公里内”、“30 分钟内送达” | 按配送时间排序或使用距离筛选选项 |  
+| **最低评分** | 星级评分要求 | “4.5 星及以上”、“仅显示评分最高的餐厅” | 按评分筛选或按评分降序排序 |  
+| **优惠/折扣** | 特价活动、免费配送等 | “享受优惠”、“免费配送” | 启用“优惠”筛选选项 |  
+| **饮食要求** | 素食、无麸质、清真等 | “提供素食选项”、“符合犹太饮食规定” | 使用搜索关键词或餐厅标签 |  
+| **排序方式** | 最匹配结果、评分、距离、配送时间、人气 | “按距离最近排序”、“最快配送” | 使用排序下拉菜单 |  
 
-| Filter | Description | Example User Input | How to Apply in Browser |
-|--------|-------------|--------------------|-------------------------|
-| Cuisine/Genre | Specific food types or categories | "Italian", "Sushi", "Burger", "Vegan", "Middle Eastern" | Select cuisine filters on Wolt homepage or search page |
-| Price Range | € (cheap) to €€€€ (expensive) | "cheap", "€€", "under 100 ILS" | Use price level filter buttons |
-| Max Distance/Delivery Time | Limit by km or minutes | "within 3km", "under 30 min delivery" | Sort by delivery time or use distance filters if available |
-| Minimum Rating | Star rating threshold | "4.5 or higher", "only top-rated" | Filter by rating or sort by highest rated |
-| Promotions/Discounts | Special offers, free delivery, etc. | "with promo", "free delivery" | Enable "Offers" or "Promotions" filter |
-| Dietary/Other | Vegan, gluten-free, halal, etc. | "vegan options", "kosher" | Search keywords or use venue tags |
-| Sorting | Best match, rating, distance, delivery time, popularity | "closest first", "fastest delivery" | Use sort dropdown |
+## 餐厅搜索与推荐  
+1. 收集用户偏好（菜系、价格、距离、评分、优惠信息、饮食需求等）。  
+2. 使用浏览器插件：  
+   - 访问 https://wolt.com （系统会自动检测用户所在地区，例如：https://wolt.com/il）  
+   - 设置或确认配送地址  
+   - 应用所有相关筛选条件和排序规则  
+   - 如果提供了关键词，执行搜索  
+3. 显示排名前 8–12 家符合条件的餐厅信息（包括名称、菜系、评分、价格、配送时间、当前优惠等）。  
+4. 以表格或列表形式呈现搜索结果，包含关键信息。  
+5. 提供选项：查看更多结果、进一步筛选、查看餐厅完整菜单或查看餐厅图片/描述。  
+6. 如果用户需要推荐，系统会优先显示评分高、配送速度快且符合用户筛选条件的餐厅。  
 
-## Restaurant Discovery & Recommendation
-1. Collect user preferences (cuisine, price, distance, rating, promotions, dietary needs, keywords).
-2. Use browser tool to:
-   - Navigate to https://wolt.com (auto-detect region, e.g., https://wolt.com/il for Israel).
-   - Set or confirm delivery address.
-   - Apply all relevant filters and sorting.
-   - Perform search if keyword provided.
-3. Scrape top 8–12 matching restaurants with: name, cuisines, rating (stars + count), price level, delivery time/fee, distance, current promotions, short description.
-4. Present results in a formatted table/list with key details.
-5. Offer options: view more results, refine filters, view full menu of a restaurant, or see images/descriptions.
-6. If user wants recommendations, prioritize high-rated + fast + matching filters.
+## 菜单浏览与购物车构建  
+1. 进入选定的餐厅页面。  
+2. 按类别浏览菜单（开胃菜、主菜、饮品等）。  
+3. 以结构化的方式展示菜品信息（包括名称、描述、价格、热门标签等）。  
+4. 征求用户选择菜品数量及特殊要求（例如：“不加洋葱”、“加额外奶酪”）。  
+5. 在对话过程中保持购物车状态的实时更新。  
+6. 定期更新购物车总金额、费用及预计配送时间。  
+7. 每次添加菜品后，都会显示更新后的购物车信息。  
 
-## Menu Browsing & Cart Building
-1. Navigate to selected restaurant page.
-2. Scrape menu by categories (appetizers, mains, drinks, etc.).
-3. Present structured menu with item name, description, price, popular tags.
-4. Ask user for selections, quantities, customizations (e.g., "no onions", extra cheese).
-5. Maintain cart state in conversation.
-6. Periodically scrape cart summary for current total, fees, minimum order, estimated delivery.
-7. Show updated cart summary after each addition.
+## 单次点餐  
+1. 确认配送地址和支付方式（优先使用已保存的信息）。  
+2. 通过浏览器插件将菜品添加到购物车。  
+3. 进行结账操作，填写所有必填字段。  
+4. 显示最终订单详情（包含菜品、总金额、费用及预计送达时间）。  
+5. 系统会要求用户明确确认（“是/确认/下单”）。  
+6. 完成订单。  
+7. 记录订单 ID 和订单追踪链接，并将其发送给用户。  
 
-## Placing a Single Order
-1. Confirm delivery address, payment method (use saved if available).
-2. Use browser to add items to cart with exact options.
-3. Proceed to checkout, fill any required fields.
-4. Show final order summary (items, total, fees, ETA).
-5. Require explicit user confirmation ("yes/confirm/place it").
-6. Place order.
-7. Capture order ID, tracking link, estimated delivery time.
-8. Send confirmation + tracking link to user and push to specified channel.
+## 批量点餐  
+1. 确认餐厅、配送地址及团队成员信息（包括截止时间、预计参与人数）。  
+2. 使用浏览器插件在 Wolt 网站上发起批量订单。  
+3. 通过 `channel_send` 将批量订单链接分享给团队成员（例如通过 Slack）。  
+4. 命令团队成员通过链接加入订单并选择他们的菜品。  
+5. 定期查看购物车总金额及每位成员的贡献金额。  
+6. 当主持人确认“可以下单”后，完成结账操作。  
+7. 将最终订单确认信息、追踪链接及订单详情分享给团队成员。  
 
-## Placing a Group Order
-1. Confirm restaurant, delivery address, and group details (deadline, expected participants).
-2. Use browser to start a **Group Order** on Wolt (native feature).
-3. Retrieve and share the group order link via channel_send (e.g., Slack thread).
-4. Instruct participants to join via link and add their items.
-5. Monitor cart periodically (scrape total, participant contributions if visible).
-6. When host says "ready to place", finalize checkout and place order (requires host payment).
-7. Share final order confirmation, tracking link, and breakdown (if available) with the group.
+## 重新排序过去订单  
+1. 进入 Wolt 账户 → “订单/历史记录”页面。  
+2. 查看最近的订单信息（包括日期、餐厅名称、总金额、菜品明细）。  
+3. 显示最近 5–10 笔订单列表。  
+4. 用户可选择重新排序订单；如系统支持，可使用 Wolt 的“重新排序”功能；否则需手动重新构建购物车。  
+5. 按单次订单流程完成重新排序操作。  
 
-## Reordering Past Orders
-1. Navigate to Wolt account → Orders/History.
-2. Scrape recent orders (date, restaurant, total, items summary).
-3. Present list of last 5–10 orders.
-4. On user selection, use Wolt's "Reorder" button if available, or rebuild cart manually.
-5. Proceed as single order with confirmation.
+## 订单追踪  
+1. 输入订单 ID 或使用系统自动生成的订单 ID。  
+2. 进入订单追踪页面。  
+3. 查看订单当前状态、预计送达时间及配送员信息（如订单正在途中）。  
+4. 提供详细的订单更新信息（包括状态、剩余时间、备注等）。  
+5. 支持在对话过程中实时查看订单状态。  
 
-## Tracking an Order
-1. Accept order ID or use most recent.
-2. Navigate to order tracking page.
-3. Scrape current status, ETA, driver info (if en route), map description.
-4. Provide rich update (status, time remaining, any notes).
-5. Support live polling ("watch mode") in ongoing conversation.
+## 处理订单延迟及联系客服  
+1. 在追踪订单过程中，比较实际送达时间与原定送达时间。  
+2. 如果延迟超过 15–30 分钟（可配置），提醒用户并建议联系客服。  
+3. 用户确认后，进入订单页面的“帮助/客服/聊天”功能。  
+4. 发送模板化消息：**“订单 #[ID] 发生延迟，预计送达时间为 [TIME]，当前状态为 [STATUS]。请协助处理。”**  
+5. 实时转发客服的回复信息。  
+6. 将延迟通知和客服回复内容发送至指定渠道。  
 
-## Handling Delays & Contacting Support
-1. During tracking, compare current time to original ETA.
-2. If delayed >15–30 min (configurable), alert user and offer to contact support.
-3. On approval, navigate to order → Help/Support/Chat.
-4. Initiate chat with templated message: "Order #[ID] is delayed. Estimated delivery was [TIME], current status is [STATUS]. Please assist."
-5. Relay support responses in real-time.
-6. Push delay alerts and support updates to channel.
+## 通知发送  
+使用 `channel_send` 功能发送以下重要通知：  
+- 餐厅推荐信息  
+- 购物车更新信息（用户请求时）  
+- 订单确认及追踪链接  
+- 订单状态变更  
+- 延迟通知  
+- 客服交互记录  
 
-## Sending Notifications
-Use channel_send for all major events:
-- Restaurant recommendations
-- Cart updates (on request)
-- Order confirmation + tracking link
-- Status changes
-- Delay alerts
-- Support interaction summaries
+## 安全性与错误处理  
+- 未经用户明确确认（“是/确认/下单”），切勿执行任何订单操作。  
+- 如浏览器出现错误，最多重试 3 次，否则转为手动操作。  
+- 保护用户隐私：不会记录完整的支付信息。  
+- 如果登录信息过期，提示用户重新登录。  
 
-Format messages richly (emojis, bold, links, order ID).
-
-## Safety & Error Handling
-- Never place order without explicit "yes/confirm/place" confirmation.
-- On browser errors, retry up to 3 times or fall back to manual instructions.
-- Respect privacy: do not log full payment details.
-- If login expires, prompt for re-authentication.
-
-```
-
-**wolt-orders/thumbnail.png**  
-*(Recommended additional file: a 512×512 PNG thumbnail. Suggested image: a stylized Wolt blue bag with food items and a notification bell. You can generate or source one separately.)*
-
-**wolt-orders/examples.md**  
-*(Additional file to satisfy "at least one file" requirement beyond SKILL.md)*
-
-```markdown
-# Example Invocations
-
-| User Query | Skill Behavior |
-|------------|---------------|
-| "I'm hungry, find good sushi under €€ within 20 min delivery" | Start discovery with sushi cuisine, €€ price, fast delivery filter |
-| "Order pizza from Domino's for me" | Go directly to restaurant, build cart, place single order |
-| "Let's do a group order for burgers tonight" | Ask for restaurant/preferences, start group order, share link |
-| "Track my last Wolt order" | Fetch most recent order and show live status |
-| "My order is late, contact support" | Detect delay, open chat, send message |
-| "Reorder my usual shawarma" | List history, identify likely item, reorder with confirmation |
-```
+### 示例使用场景  
+| 用户查询 | 技能响应 |  
+|------------|---------------|  
+| “我想吃便宜的寿司，配送时间在 20 分钟以内。” | 启动搜索，筛选“寿司”菜系、价格范围在 €€ 以内、配送时间在 20 分钟以内的餐厅。 |  
+| “帮我从 Domino’s 点一份披萨。” | 直接进入餐厅页面，构建购物车并下单。 |  
+| “今晚我们点批量的汉堡吧。” | 询问团队成员的用餐偏好，发起批量订单并分享订单链接。 |  
+| “帮我查看我之前的 Wolt 订单。” | 获取最新订单信息并显示实时状态。 |  
+| “我的订单延迟了，请联系客服。” | 检测到延迟，发起聊天并发送通知。 |  
+| “重新点我常点的沙瓦玛。” | 显示订单历史记录，选择菜品并重新下单。 |

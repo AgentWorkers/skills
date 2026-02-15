@@ -1,79 +1,79 @@
 ---
 name: SEM
-description: Search engine marketing strategy, keyword bidding, quality score optimization, and paid search campaign management
+description: 搜索引擎营销策略、关键词出价、质量得分优化以及付费搜索广告活动管理
 metadata:
   category: marketing
   skills: ["sem", "ppc", "google-ads", "paid-search", "adwords"]
 ---
 
-## Keyword Strategy
+## 关键词策略
 
-- Exact match isn't exact anymore — Google includes "close variants" (plurals, misspellings, implied intent). Review search terms report weekly
-- Broad match needs smart bidding — without automated bidding, broad match burns budget on irrelevant queries
-- Long-tail keywords have lower CPC but need volume — 100 low-volume keywords won't spend, consolidate into phrase/broad with negatives
-- Competitor brand bidding is legal but expensive — CPCs are 2-5x higher and Quality Scores stay low. Budget accordingly
-- Single Keyword Ad Groups (SKAGs) are outdated — Google's algorithm works better with theme-based ad groups of 5-15 related keywords
+- 完全匹配已不再那么精确——谷歌会考虑“近似变体”（复数形式、拼写错误、隐含意图）。每周查看搜索词报告。
+- 广泛匹配需要智能出价策略——如果没有自动出价，广泛匹配会导致预算浪费在无关查询上。
+- 长尾关键词的点击成本（CPC）较低，但需要较高的点击量——100个低点击量的关键词可能不会带来收益，应将其整合为短语匹配或广泛匹配，并设置否定关键词。
+- 竞争对手的品牌相关关键词出价是可行的，但成本较高——这些关键词的CPC通常高出2-5倍，且质量得分（Quality Score）较低。请相应调整预算。
+- 单个关键词广告组（SKAGs）已经过时——谷歌的算法更适用于包含5-15个相关关键词的主题型广告组。
 
-## Quality Score Impact
+## 质量得分（Quality Score）的影响
 
-- Quality Score affects CPC exponentially — QS 10 pays ~50% less than QS 5 for same position
-- Three components: expected CTR, ad relevance, landing page experience. Check diagnostics to know which to fix
-- Historical CTR matters most — new keywords inherit account-level history. Poor performers drag down new campaigns
-- Landing page speed is a ranking factor — compress images, remove unnecessary scripts before scaling spend
-- Ad relevance requires keyword in headline — dynamic keyword insertion ({KeyWord:Default}) is cheap but effective
+- 质量得分对点击成本（CPC）有显著影响——相同排名位置下，质量得分为10的关键词的CPC大约只有质量得分为5的关键词的一半。
+- 质量得分由三个因素决定：预期点击率（CTR）、广告相关性、着陆页体验。通过诊断工具找出需要优化的方面。
+- 历史点击率最为重要——新添加的关键词会继承账户的历史数据。表现不佳的关键词会影响新广告活动的效果。
+- 着陆页速度也是排名因素之一——在增加支出前，请压缩图片并移除不必要的脚本。
+- 广告相关性要求关键词必须出现在标题中——动态插入关键词（如 `{KeyWord:Default}`）虽然成本较低，但效果显著。
 
-## Bidding Mistakes
+## 出价错误
 
-- Manual CPC leaves money on table at scale — switch to automated bidding after 30+ conversions/month
-- Target CPA too aggressive kills volume — start 20% above actual CPA, tighten gradually
-- Maximize Conversions without cap spends entire budget regardless of efficiency — always set a target CPA or ROAS
-- Enhanced CPC (ECPC) is neither manual nor smart — commit to one strategy, ECPC is the worst of both
-- Bid adjustments stack multiplicatively — +50% device × +30% location = +95%, not +80%
+- 手动设置CPC会导致大规模的预算浪费——当每月转化量超过30次后，应切换到自动出价。
+- 目标成本转化率（Target CPA）设定得过于激进会限制广告投放量——初始出价可以设定为实际CPA的120%，然后逐步调整。
+- 为了追求最高转化率而忽略预算限制会浪费全部预算——务必设定目标CPA或投资回报率（ROAS）。
+- “增强型CPC”（Enhanced CPC）既不灵活也不智能——应选择一种出价策略，因为它结合了手动和自动出价的缺点。
+- 出价调整的效果是累积的——例如，设备类型增加50%、地理位置增加30%，总效果可能是95%，而不是80%。
 
-## Campaign Structure
+## 广告活动结构
 
-- Search and Display in same campaign is always wrong — different intents, different metrics, split them
-- Brand campaigns should be separate — protect branded terms, track true branded vs non-branded performance
-- Geographic targeting at campaign level, not ad group — easier budget control by region
-- Audience layering (observation mode) first — collect data before switching to targeting mode that restricts reach
-- Shared budgets hide which campaigns would spend more — use individual budgets to understand true demand
+- 将搜索广告和展示广告放在同一个广告活动中是错误的——两者目的不同，应分开管理。
+- 品牌相关广告活动应单独设置——保护品牌关键词，分别追踪品牌关键词和非品牌关键词的表现。
+- 地理定位应在广告活动层面进行，而不是在广告组层面——这样可以更方便地按地区控制预算。
+- 先使用“观察模式”进行受众分层——在启用限制受众范围的定位模式之前，先收集数据。
+- 共享预算会掩盖哪些广告活动实际消耗更多预算——使用单独的预算来了解真实需求。
 
-## Ad Copy Rules
+## 广告文案规则
 
-- Include primary keyword in Headline 1 — ad relevance and CTR both improve
-- Responsive Search Ads need 8-10 headline variations — algorithm can't optimize with only 3-4 options
-- Pin critical messaging to position 1 — brand name, key offer, or compliance text that must always show
-- Call extensions increase CTR 5-10% — add phone number even if calls aren't primary goal
-- Test exactly one element at a time — headline vs headline, not headline + description + CTA simultaneously
+- 在标题1中包含主要关键词——这可以提高广告相关性和点击率。
+- 自适应搜索广告需要8-10个不同的标题版本——只有3-4个选项时，算法无法进行有效优化。
+- 将关键信息固定在首位——品牌名称、核心优惠信息或合规性文本必须始终显示。
+- 电话扩展功能可以提高点击率5-10%——即使电话呼叫不是主要目标，也应添加电话号码。
+- 每次只测试一个元素进行优化——例如只测试标题，而不是同时测试标题、描述和呼叫动作（CTA）。
 
-## Search Terms Hygiene
+## 搜索词管理
 
-- Review search terms weekly, not monthly — irrelevant spend compounds fast
-- Add negatives at campaign level for broad exclusions, ad group level for specific refinement
-- Negative keyword match types matter — "free" as phrase negative blocks "free trial" but not "trial free download"
-- Create a shared negative keyword list — apply learnings across campaigns automatically
-- Search term "other" category is hidden queries — if it's significant %, request detailed report from rep or use scripts
+- 每周检查搜索词，而不是每月一次——无关搜索词会迅速消耗预算。
+- 在广告活动层面设置否定关键词，以排除无关内容；在广告组层面进行更精细的排除。
+- 否定关键词的匹配类型很重要——“free”作为短语否定词可以排除“free trial”，但无法排除“trial free download”。
+- 创建一个共享的否定关键词列表——以便在所有广告活动中自动应用优化结果。
+- “other”这类搜索词属于隐藏查询——如果这类查询占比较高，请向客服请求详细报告或使用专门的脚本进行分析。
 
-## Conversion Tracking Errors
+## 转化跟踪错误
 
-- Last-click attribution hides assist value — at minimum, compare with data-driven attribution
-- Counting "All conversions" inflates ROAS — filter to primary conversion action for true performance
-- Phone call conversions need duration minimums — 60 seconds minimum filters spam and misdials
-- Micro-conversions (email signups) have different values than purchases — set values proportionally
-- Cross-device conversions are modeled, not tracked — factor uncertainty into ROAS calculations
+- 仅基于最后一次点击的转化归因会低估辅助转化的价值——至少应结合数据驱动的归因方法进行评估。
+- 计算“所有转化”会高估投资回报率（ROAS）——应仅统计主要转化行为。
+- 电话转化需要一定的通话时长——至少60秒的通话时长可以过滤掉垃圾电话和误拨。
+- 微转化（如电子邮件注册）与实际购买行为的价值不同——应分别计算它们的价值。
+- 跨设备转化需要特殊处理——在计算投资回报率时需考虑这种不确定性。
 
-## Scaling Paid Search
+## 扩展付费搜索（Scaling Paid Search）
 
-- Search volume has a ceiling — unlike social, you can't pay to reach more people than are searching
-- Impression Share shows headroom — if IS is 90%+, growth requires new keywords, not more budget
-- Diminishing returns are real — CPAs increase 20-40% when scaling past optimal volume. Know your efficiency/volume tradeoff
-- Bing Ads imports Google campaigns directly — 10-15% extra volume at lower CPCs, minimal extra work
-- International expansion multiplies complexity — separate accounts per market, don't just add countries to existing campaigns
+- 搜索量存在上限——与社交媒体不同，你无法通过增加预算来覆盖更多的搜索用户。
+- 广告展示量（Impression Share）反映了广告的潜力——如果展示量超过90%，则需要新增关键词，而不是增加预算。
+- 随着搜索量的增加，回报会逐渐减少——当搜索量超过最佳范围时，CPA可能只增加20-40%。要了解效率与搜索量的平衡关系。
+- Bing Ads可以直接导入谷歌的广告活动——这样可以以较低的CPC获得10-15%的额外曝光量，且工作量很少。
+- 国际市场扩展会增加复杂性——每个市场应设置单独的广告账户，不能简单地在现有广告活动中添加新国家。
 
-## Platform Automation
+## 平台自动化
 
-- Auto-applied recommendations are opt-out, not opt-in — disable recommendations that conflict with strategy
-- Smart campaigns hide too much data — use regular campaigns for control and learning
-- Performance Max cannibalizes branded search — exclude brand terms or track incrementality carefully
-- Scripts automate repetitive tasks — bid adjustments, budget pacing, negative keyword mining run automatically
-- Rules-based automation is fragile — "if CTR < 2%, pause" kills potentially good ads too early. Use with caution
+- 自动推荐的设置通常是“关闭”而非“开启”——对于与策略冲突的推荐，应选择关闭。
+- 智能广告活动可能会隐藏过多数据——使用常规广告活动来进行控制和学习。
+- “Performance Max”广告模式可能会影响品牌关键词的表现——应排除品牌关键词或仔细追踪其效果。
+- 脚本可以自动化重复性任务——如出价调整、预算分配、否定关键词的筛选等。
+- 基于规则的自动化机制可能存在问题——“如果CTR低于2%，暂停广告”这样的规则可能会过早地停止一些效果良好的广告。使用此类规则时要谨慎。

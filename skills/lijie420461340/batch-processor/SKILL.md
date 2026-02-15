@@ -1,6 +1,6 @@
 ---
 name: batch-processor
-description: Process multiple documents in bulk with parallel execution
+description: **批量处理多个文档，并支持并行执行**
 author: claude-office-skills
 version: "1.0"
 tags: ['batch', 'bulk', 'parallel', 'automation']
@@ -12,28 +12,29 @@ library:
   stars: N/A
 ---
 
-# Batch Processor Skill
+# 批量处理技能
 
-## Overview
+## 概述
 
-This skill enables efficient bulk processing of documents - convert, transform, extract, or analyze hundreds of files with parallel execution and progress tracking.
+该技能支持高效地批量处理文档——通过并行执行和进度跟踪，实现对数百个文件进行转换、转换、提取或分析等操作。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 描述您想要完成的任务。
+2. 提供所需的输入数据或文件。
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "Convert 100 PDFs to Word documents"
-- "Extract text from all images in a folder"
-- "Batch rename and organize files"
-- "Mass update document headers/footers"
+**示例提示：**
+- “将100个PDF文件转换为Word文档”
+- “从文件夹中的所有图片中提取文本”
+- “批量重命名和组织文件”
+- “批量更新文档的页眉/页脚”
 
-## Domain Knowledge
+## 领域知识
 
 
-### Batch Processing Patterns
+### 批量处理模式
+
 
 ```
 Input: [file1, file2, ..., fileN]
@@ -48,7 +49,8 @@ Input: [file1, file2, ..., fileN]
 Output: [result1, result2, ..., resultN]
 ```
 
-### Python Implementation
+### Python实现
+
 
 ```python
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -84,7 +86,8 @@ results = batch_process("/documents/invoices", "*.pdf", max_workers=8)
 print(f"Processed {len(results)} files")
 ```
 
-### Error Handling & Resume
+### 错误处理与恢复
+
 
 ```python
 import json
@@ -118,21 +121,22 @@ class BatchProcessor:
 ```
 
 
-## Best Practices
+## 最佳实践
 
-1. **Use progress bars (tqdm) for user feedback**
-2. **Implement checkpointing for long jobs**
-3. **Set reasonable worker counts (CPU cores)**
-4. **Log failures for later review**
+1. **使用进度条（tqdm）向用户提供反馈**
+2. **为耗时较长的任务设置检查点**
+3. **设置合理的工作者数量（CPU核心）**
+4. **记录失败情况以供后续查看**
 
-## Installation
+## 安装
+
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源
 
-- [Custom Repository](https://github.com/claude-office-skills/skills)
+- [自定义仓库](https://github.com/claude-office-skills/skills)
 - [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)

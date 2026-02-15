@@ -17,9 +17,9 @@ metadata:
 
 # beehiiv
 
-Access the beehiiv API with managed OAuth authentication. Manage newsletter publications, subscriptions, posts, custom fields, segments, tiers, and automations.
+通过管理的OAuth认证来访问beehiiv API。您可以管理新闻通讯的发布、订阅、帖子、自定义字段、用户群体（segments）、订阅层级（tiers）以及自动化流程（automations）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List publications
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/beehiiv/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual beehiiv API endpoint path. The gateway proxies requests to `api.beehiiv.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 beehiiv API 端点路径。该网关会将请求代理到 `api.beehiiv.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your beehiiv OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 beehiiv OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple beehiiv connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 beehiiv 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,11 +140,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-All beehiiv API endpoints follow this pattern:
+所有 beehiiv API 端点都遵循以下格式：
 
 ```
 /beehiiv/v2/{resource}
@@ -152,25 +152,25 @@ All beehiiv API endpoints follow this pattern:
 
 ---
 
-## Publications
+## 新闻通讯（Publications）
 
-### List Publications
+### 列出新闻通讯
 
 ```bash
 GET /beehiiv/v2/publications
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `limit` | Results per page (1-100, default: 10) |
-| `page` | Page number (default: 1) |
-| `expand[]` | Expand with: `stats`, `stat_active_subscriptions`, `stat_average_open_rate`, etc. |
-| `order_by` | Sort by: `created` or `name` |
-| `direction` | Sort direction: `asc` or `desc` |
+| `limit` | 每页显示的结果数量（1-100，默认：10） |
+| `page` | 页码（默认：1） |
+| `expand[]` | 可扩展字段：`stats`, `stat_active_subscriptions`, `stat_average_open_rate` 等 |
+| `order_by` | 排序方式：`created` 或 `name` |
+| `direction` | 排序方向：`asc` 或 `desc` |
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -189,7 +189,7 @@ GET /beehiiv/v2/publications
 }
 ```
 
-### Get Publication
+### 获取新闻通讯详情
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}
@@ -197,29 +197,29 @@ GET /beehiiv/v2/publications/{publication_id}
 
 ---
 
-## Subscriptions
+## 订阅（Subscriptions）
 
-### List Subscriptions
+### 列出订阅信息
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/subscriptions
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `limit` | Results per page (1-100, default: 10) |
-| `cursor` | Cursor for pagination (recommended) |
-| `page` | Page number (deprecated, max 100 pages) |
-| `email` | Filter by exact email (case-insensitive) |
-| `status` | Filter: `validating`, `invalid`, `pending`, `active`, `inactive`, `all` |
-| `tier` | Filter: `free`, `premium`, `all` |
-| `expand[]` | Expand with: `stats`, `custom_fields`, `referrals` |
-| `order_by` | Sort field (default: `created`) |
-| `direction` | Sort direction: `asc` or `desc` |
+| `limit` | 每页显示的结果数量（1-100，默认：10） |
+| `cursor` | 分页游标（推荐使用） |
+| `page` | 页码（已弃用，最多支持 100 页） |
+| `email` | 按电子邮件过滤（不区分大小写） |
+| `status` | 过滤状态：`validating`, `invalid`, `pending`, `active`, `inactive`, `all` |
+| `tier` | 过滤层级：`free`, `premium`, `all` |
+| `expand[]` | 可扩展字段：`stats`, `custom_fields`, `referrals` |
+| `order_by` | 排序字段（默认：`created`） |
+| `direction` | 排序方向：`asc` 或 `desc` |
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -245,25 +245,25 @@ GET /beehiiv/v2/publications/{publication_id}/subscriptions
 }
 ```
 
-### Get Subscription by ID
+### 根据 ID 获取订阅信息
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/subscriptions/{subscription_id}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `expand[]` | Expand with: `stats`, `custom_fields`, `referrals`, `tags` |
+| `expand[]` | 可扩展字段：`stats`, `custom_fields`, `referrals`, `tags` |
 
-### Get Subscription by Email
+### 根据电子邮件获取订阅信息
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/subscriptions/by_email/{email}
 ```
 
-### Create Subscription
+### 创建订阅
 
 ```bash
 POST /beehiiv/v2/publications/{publication_id}/subscriptions
@@ -277,22 +277,22 @@ Content-Type: application/json
 }
 ```
 
-**Request Body:**
+**请求体：**
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `email` | string | Yes | Subscriber email address |
-| `reactivate_existing` | boolean | No | Reactivate if previously unsubscribed |
-| `send_welcome_email` | boolean | No | Send welcome email |
-| `utm_source` | string | No | UTM source for tracking |
-| `utm_medium` | string | No | UTM medium |
-| `referring_site` | string | No | Referral code of referring subscriber |
-| `custom_fields` | object | No | Custom field values (fields must exist) |
-| `double_opt_override` | string | No | `on` or `off` to override double opt-in |
-| `tier` | string | No | Subscription tier |
-| `premium_tier_names` | array | No | Premium tier names to assign |
+| `email` | string | 是 | 订阅者的电子邮件地址 |
+| `reactivate_existing` | boolean | 否 | 是否重新激活已取消的订阅 |
+| `send_welcome_email` | boolean | 否 | 是否发送欢迎邮件 |
+| `utm_source` | string | 否 | UTM 来源（用于跟踪） |
+| `utm_medium` | string | 否 | UTM 渠道 |
+| `referring_site` | string | 否 | 推荐者的引用代码 |
+| `custom_fields` | object | 否 | 自定义字段值（这些字段必须存在） |
+| `double_opt_override` | string | 否 | 是否覆盖双重确认设置（`on` 或 `off`） |
+| `tier` | string | 否 | 订阅层级 |
+| `premium_tier_names` | array | 否 | 要分配的高级订阅层级名称 |
 
-### Update Subscription
+### 更新订阅信息
 
 ```bash
 PATCH /beehiiv/v2/publications/{publication_id}/subscriptions/{subscription_id}
@@ -306,7 +306,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Subscription
+### 删除订阅
 
 ```bash
 DELETE /beehiiv/v2/publications/{publication_id}/subscriptions/{subscription_id}
@@ -314,24 +314,24 @@ DELETE /beehiiv/v2/publications/{publication_id}/subscriptions/{subscription_id}
 
 ---
 
-## Posts
+## 帖子（Posts）
 
-### List Posts
+### 列出帖子
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/posts
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `limit` | Results per page (1-100, default: 10) |
-| `page` | Page number |
-| `status` | Filter by status |
-| `expand[]` | Expand with additional data |
+| `limit` | 每页显示的结果数量（1-100，默认：10） |
+| `page` | 页码 |
+| `status` | 按状态过滤 |
+| `expand[]` | 可扩展字段 |
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [],
@@ -342,13 +342,13 @@ GET /beehiiv/v2/publications/{publication_id}/posts
 }
 ```
 
-### Get Post
+### 获取帖子详情
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/posts/{post_id}
 ```
 
-### Delete Post
+### 删除帖子
 
 ```bash
 DELETE /beehiiv/v2/publications/{publication_id}/posts/{post_id}
@@ -356,15 +356,15 @@ DELETE /beehiiv/v2/publications/{publication_id}/posts/{post_id}
 
 ---
 
-## Custom Fields
+## 自定义字段（Custom Fields）
 
-### List Custom Fields
+### 列出自定义字段
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/custom_fields
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -388,9 +388,9 @@ GET /beehiiv/v2/publications/{publication_id}/custom_fields
 }
 ```
 
-**Field Kinds:** `string`, `integer`, `boolean`, `date`, `datetime`, `list`, `double`
+**字段类型：** `string`, `integer`, `boolean`, `date`, `datetime`, `list`, `double`
 
-### Create Custom Field
+### 创建自定义字段
 
 ```bash
 POST /beehiiv/v2/publications/{publication_id}/custom_fields
@@ -402,7 +402,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Custom Field
+### 更新自定义字段
 
 ```bash
 PATCH /beehiiv/v2/publications/{publication_id}/custom_fields/{custom_field_id}
@@ -413,7 +413,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Custom Field
+### 删除自定义字段
 
 ```bash
 DELETE /beehiiv/v2/publications/{publication_id}/custom_fields/{custom_field_id}
@@ -421,15 +421,15 @@ DELETE /beehiiv/v2/publications/{publication_id}/custom_fields/{custom_field_id}
 
 ---
 
-## Segments
+## 用户群体（Segments）
 
-### List Segments
+### 列出用户群体
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/segments
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [],
@@ -440,13 +440,13 @@ GET /beehiiv/v2/publications/{publication_id}/segments
 }
 ```
 
-### Get Segment
+### 获取用户群体详情
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/segments/{segment_id}
 ```
 
-### Delete Segment
+### 删除用户群体
 
 ```bash
 DELETE /beehiiv/v2/publications/{publication_id}/segments/{segment_id}
@@ -454,21 +454,21 @@ DELETE /beehiiv/v2/publications/{publication_id}/segments/{segment_id}
 
 ---
 
-## Tiers
+## 订阅层级（Tiers）
 
-### List Tiers
+### 列出订阅层级
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/tiers
 ```
 
-### Get Tier
+### 获取订阅层级详情
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/tiers/{tier_id}
 ```
 
-### Create Tier
+### 创建订阅层级
 
 ```bash
 POST /beehiiv/v2/publications/{publication_id}/tiers
@@ -480,7 +480,7 @@ Content-Type: application/json
 }
 ```
 
-### Update Tier
+### 更新订阅层级
 
 ```bash
 PATCH /beehiiv/v2/publications/{publication_id}/tiers/{tier_id}
@@ -493,15 +493,15 @@ Content-Type: application/json
 
 ---
 
-## Automations
+## 自动化流程（Automations）
 
-### List Automations
+### 列出自动化流程
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/automations
 ```
 
-### Get Automation
+### 获取自动化流程详情
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/automations/{automation_id}
@@ -509,9 +509,9 @@ GET /beehiiv/v2/publications/{publication_id}/automations/{automation_id}
 
 ---
 
-## Referral Program
+## 推荐计划（Referral Program）
 
-### Get Referral Program
+### 获取推荐计划信息
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/referral_program
@@ -519,17 +519,17 @@ GET /beehiiv/v2/publications/{publication_id}/referral_program
 
 ---
 
-## Pagination
+## 分页
 
-beehiiv supports two pagination methods:
+beehiiv 支持两种分页方式：
 
-### Cursor-Based (Recommended)
+### 基于游标的分页（推荐使用）
 
 ```bash
 GET /beehiiv/v2/publications/{publication_id}/subscriptions?limit=10&cursor={next_cursor}
 ```
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "data": [...],
@@ -539,15 +539,15 @@ GET /beehiiv/v2/publications/{publication_id}/subscriptions?limit=10&cursor={nex
 }
 ```
 
-Use the `next_cursor` value for subsequent requests.
+使用 `next_cursor` 值进行后续请求。
 
-### Page-Based (Deprecated)
+### 基于页码的分页（已弃用）
 
 ```bash
 GET /beehiiv/v2/publications?page=2&limit=10
 ```
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "data": [...],
@@ -558,9 +558,9 @@ GET /beehiiv/v2/publications?page=2&limit=10
 }
 ```
 
-**Note:** Page-based pagination is limited to 100 pages maximum.
+**注意：** 基于页码的分页最多支持 100 页。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -592,37 +592,37 @@ for pub in data['data']:
     print(f"{pub['id']}: {pub['name']}")
 ```
 
-## Notes
+## 注意事项
 
-- Publication IDs start with `pub_`
-- Subscription IDs start with `sub_`
-- Timestamps are Unix timestamps (seconds since epoch)
-- Custom fields must be created before use in subscriptions
-- Cursor-based pagination is recommended for better performance
-- Page-based pagination is deprecated and limited to 100 pages
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 新闻通讯的 ID 以 `pub_` 开头。
+- 订阅的 ID 以 `sub_` 开头。
+- 时间戳为 Unix 时间戳（自纪元以来的秒数）。
+- 在使用自定义字段之前，必须先创建它们。
+- 建议使用基于游标的分页方式以获得更好的性能。
+- 基于页码的分页已弃用，且最多支持 100 页。
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 命令可以禁用全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or invalid parameters |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions or plan limitation |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 500 | Internal server error |
+| 400 | 请求错误或参数无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 禁止访问 - 权限不足或计划限制 |
+| 404 | 资源未找到 |
+| 429 | 请求次数限制 |
+| 500 | 服务器内部错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -633,17 +633,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `beehiiv`. For example:
+1. 确保您的 URL 路径以 `beehiiv` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/beehiiv/v2/publications`
+- 错误格式：`https://gateway.maton.ai/v2/publications`
 
-- Correct: `https://gateway.maton.ai/beehiiv/v2/publications`
-- Incorrect: `https://gateway.maton.ai/v2/publications`
+## 资源
 
-## Resources
-
-- [beehiiv Developer Documentation](https://developers.beehiiv.com/)
-- [beehiiv API Reference](https://developers.beehiiv.com/api-reference)
-- [beehiiv Help Center](https://beehiivhelp.zendesk.com/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [beehiiv 开发者文档](https://developers.beehiiv.com/)
+- [beehiiv API 参考](https://developers.beehiiv.com/api-reference)
+- [beehiiv 帮助中心](https://beehiivhelp.zendesk.com/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持团队](mailto:support@maton.ai)

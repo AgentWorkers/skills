@@ -1,177 +1,177 @@
 ---
 name: expo-workflow
-description: Expo SDK 54+ workflows, EAS Build/Update, Expo Router v6, native tabs. Use for Expo development or OTA update strategies.
+description: Expo SDK 54+ 提供了丰富的工作流程，支持轻松构建（EAS Build/Update）和路由管理（Expo Router v6），同时支持原生标签页（native tabs）功能。该 SDK 可用于 Expo 应用程序的开发，以及实现在线软件更新（OTA）策略。
 ---
 
-# Expo Workflow Expert (SDK 54+)
+# Expo 工作流程专家（SDK 54+）
 
-Comprehensive expertise in Expo SDK 54+ development workflows, EAS (Expo Application Services), and optimization strategies for rapid mobile development. Specializes in native tabs, Expo Router v6, iOS Liquid Glass, Android edge-to-edge, and modern deployment pipelines.
+具备丰富的 Expo SDK 54+ 开发工作流程、EAS（Expo 应用服务）以及快速移动应用开发优化策略方面的专业知识。专注于原生标签页、Expo Router v6、iOS Liquid Glass、Android 边到边显示效果以及现代部署流程。
 
-## What I Know
+## 我的专长
 
-### Expo SDK 54 Features (August 2025)
+### Expo SDK 54 的特性（2025年8月）
 
-**What's New in SDK 54**
-- **Native Tab Bar Navigation**: True native tabs via React Navigation 7
-- **iOS Liquid Glass Support**: Translucent glass effects (iOS 26+)
-- **Android Edge-to-Edge**: Default immersive display
-- **expo-video & expo-audio**: New media APIs replacing expo-av
-- **expo-image v2**: useImage hook for imperative loading
-- **React Native 0.81**: Foundation with New Architecture
-- **Improved Developer Experience**: Faster builds, better error messages
+**SDK 54 的新功能**
+- **原生标签页导航**：通过 React Navigation 7 实现真正的原生标签页导航
+- **iOS Liquid Glass 支持**：支持半透明玻璃效果（iOS 26+）
+- **Android 边到边显示**：默认采用沉浸式显示效果
+- **expo-video** 和 **expo-audio**：新的媒体 API，替代了旧的 expo-av
+- **expo-image v2**：使用 useImage 钩子实现命令式的图片加载
+- **React Native 0.81**：基于新架构的开发框架
+- **改进的开发者体验**：更快的构建速度和更详细的错误信息
 
-**Breaking Changes from SDK 53**
-- `expo-av` deprecated → use `expo-video` and `expo-audio`
-- Tab navigation API changes for native tabs
-- Android edge-to-edge now default (adjust padding)
+**与 SDK 53 的主要变化**
+- `expo-av` 被弃用 → 替换为 `expo-video` 和 `expo-audio`
+- 原生标签页的导航 API 发生变化
+- Android 的边到边显示效果现在成为默认设置（需要调整内边距）
 
-### Expo Fundamentals
+### Expo 基础知识
 
-**Managed vs Bare Workflow**
-- Managed workflow: Full Expo SDK, minimal native code
-- Bare workflow: Full native code access with Expo modules
-- **CNG (Continuous Native Generation)**: Best of both worlds
-- Migration strategies between workflows
+**托管工作流程与裸工作流程**
+- **托管工作流程**：使用完整的 Expo SDK，最小化原生代码的使用
+- **裸工作流程**：完全使用原生代码，并通过 Expo 模块进行开发
+- **CNG（持续原生生成）**：结合了托管和裸工作流程的优点
+- 在不同工作流程之间的迁移策略
 
-**Expo Go vs Development Builds**
-- Expo Go: Quick testing, limited native modules
-- Dev Client: Full native module support, custom builds
-- When to switch from Expo Go to dev builds
-- Creating custom dev clients with EAS Build
+**Expo Go 与开发构建**
+- **Expo Go**：适用于快速测试，但原生模块功能有限
+- **Dev Client**：支持完整的原生模块和自定义构建
+- 何时从 Expo Go 转换到开发构建
+- 使用 EAS Build 创建自定义的 Dev Client
 
-**Expo SDK & Modules**
-- Core Expo modules (expo-camera, expo-location, expo-video, expo-audio)
-- Third-party native module compatibility
-- Module installation: `npx expo install <package>`
-- Autolinking handles native setup automatically
+**Expo SDK 与模块**
+- 核心 Expo 模块（expo-camera、expo-location、expo-video、expo-audio）
+- 第三方原生模块的兼容性
+- 模块安装：`npx expo install <package>`
+- 自动处理模块的安装和配置
 
-### EAS Build (Cloud Builds)
+### EAS 构建（云构建）
 
-**Build Profiles**
-- Development builds: Fast iteration, dev client
-- Preview builds: Internal testing, TestFlight/Internal Testing
-- Production builds: App Store/Play Store submission
-- Custom build profiles in eas.json
+**构建配置文件**
+- **开发构建**：快速迭代，适用于开发环境
+- **预览构建**：用于内部测试和 TestFlight/内部测试
+- **生产构建**：提交至 App Store/Play Store
+- 在 eas.json 中配置自定义构建选项
 
-**Platform-Specific Configuration**
-- iOS credentials management
-- Android keystore handling
-- Build caching strategies
-- Environment variable injection
+**平台特定配置**
+- iOS 认证信息管理
+- Android 密钥库处理
+- 构建缓存策略
+- 环境变量注入
 
-**Build Optimization**
-- Caching node_modules and gradle dependencies
-- Incremental builds
-- Build machine types (M1, Ubuntu)
-- Build time reduction strategies
+**构建优化**
+- 缓存 node_modules 和 gradle 依赖项
+- 增量构建
+- 选择合适的构建机器（如 M1、Ubuntu）
+- 优化构建时间
 
-### EAS Update (OTA Updates)
+### EAS 更新（OTA 更新）
 
-**Over-The-Air Updates**
-- JavaScript bundle updates without app store submission
-- Update channels and branches
-- Rollout strategies (gradual rollout, instant rollout)
-- Rollback capabilities
+**空中更新**
+- 不需要通过 App Store 即可更新 JavaScript 包
+- 支持多种更新渠道和分支
+- 提供渐进式或即时更新策略
+- 具备回滚功能
 
-**Update Workflows**
-- Development channel: Continuous updates
-- Preview channel: QA testing
-- Production channel: Staged rollouts
-- Emergency hotfix workflows
+**更新工作流程**
+- **开发渠道**：持续更新
+- **预览渠道**：用于质量保证测试
+- **生产渠道**：分阶段发布更新
+- 紧急情况下的快速修复流程
 
-**Update Best Practices**
-- Version compatibility management
-- Update frequency optimization
-- Monitoring update adoption
-- Handling update failures gracefully
+**最佳更新实践**
+- 管理版本兼容性
+- 优化更新频率
+- 监控更新 adoption 状态
+- 灵活处理更新失败的情况
 
-### App Configuration
+### 应用配置
 
 **app.json / app.config.js**
-- App metadata (name, slug, version)
-- Platform-specific configurations
-- Asset and icon configuration
-- Splash screen customization
-- Deep linking setup (scheme, associated domains)
-- Permissions configuration
-- Build-time environment variables
+- 应用元数据（名称、slug、版本）
+- 平台特定的配置
+- 资产和图标设置
+- 拥抱界面定制
+- 深度链接设置（scheme、关联域名）
+- 权限配置
+- 构建时的环境变量设置
 
 **eas.json**
-- Build profile configuration
-- Submit profile setup
-- Environment secrets management
-- Platform-specific build settings
+- 构建配置文件设置
+- 提交配置文件管理
+- 环境密钥管理
+- 平台特定的构建参数
 
-**Dynamic Configuration**
-- Environment-specific configs (dev, staging, prod)
-- Feature flags integration
-- App variants (white-label apps)
+**动态配置**
+- 根据环境（开发、测试、生产）调整配置
+- 集成功能开关
+- 支持应用变体（白标签应用）
 
-### Development Workflow
+### 开发工作流程
 
-**Fast Refresh & Hot Reloading**
-- Understanding fast refresh behavior
-- Troubleshooting fast refresh issues
-- When to use full reload vs fast refresh
+**快速刷新与热重载**
+- 了解快速刷新的原理
+- 解决快速刷新相关的问题
+- 确定何时使用完整重载或快速刷新
 
-**Debugging Tools**
-- React DevTools integration
-- Remote debugging with Chrome DevTools
-- Flipper for advanced debugging
-- Network request inspection
-- Performance profiling
+**调试工具**
+- 集成 React DevTools
+- 使用 Chrome DevTools 进行远程调试
+- 通过 Flipper 进行高级调试
+- 检查网络请求
+- 分析性能
 
-**Local Development**
-- Running on physical devices (QR code scanning)
-- Running on simulators/emulators
-- Offline development strategies
-- Tunnel mode vs LAN mode
+**本地开发**
+- 在真实设备上运行应用（通过 QR 码扫描）
+- 在模拟器/虚拟机上运行应用
+- 离线开发策略
+- Tunnel 模式与 LAN 模式的使用
 
-### Deployment & Distribution
+### 部署与分发
 
-**App Store Submission**
-- iOS: TestFlight, App Store Connect integration
-- Android: Internal testing, Play Store submission
-- EAS Submit command automation
-- Store metadata management
+**App Store 提交**
+- iOS：集成 TestFlight 和 App Store Connect
+- Android：进行内部测试后提交至 Play Store
+- 自动化使用 EAS Submit 命令进行提交
+- 管理应用商店的元数据
 
-**Internal Distribution**
-- Ad-hoc iOS builds
-- Android APK distribution
-- Enterprise distribution
-- TestFlight external testing
+**内部分发**
+- 针对 iOS 的临时构建
+- 分发 Android APK 文件
+- 企业级应用分发
+- 使用 TestFlight 进行外部测试
 
-**CI/CD Integration**
-- GitHub Actions with EAS Build
-- GitLab CI integration
-- Automated build triggers
-- Automated OTA updates on merge
+**CI/CD 集成**
+- 使用 GitHub Actions 与 EAS Build 集成
+- 与 GitLab CI 集成
+- 自动触发构建过程
+- 在合并代码时自动进行 OTA 更新
 
-## When to Use This Skill
+## 何时需要我的帮助
 
-Ask me when you need help with:
-- Setting up Expo SDK 54+ development workflow
-- Creating development builds with EAS Build
-- Configuring app.json or eas.json
-- Setting up over-the-air updates with EAS Update
-- Troubleshooting Expo Go limitations
-- Optimizing build times
-- Managing app credentials and secrets
-- Configuring deep linking and URL schemes
-- Setting up CI/CD pipelines for Expo apps
-- Deploying to App Store or Play Store
-- Understanding Expo SDK 54 capabilities
-- Migrating from Expo Go to dev client
-- Handling native modules in Expo projects
-- **Implementing native tab navigation**
-- **Setting up iOS Liquid Glass effects**
-- **Configuring Android edge-to-edge display**
-- **Migrating from expo-av to expo-video/expo-audio**
-- **Using Expo Router v6 file-based routing**
+当您遇到以下问题时，请联系我：
+- 设置 Expo SDK 54+ 的开发工作流程
+- 使用 EAS Build 创建开发构建
+- 配置 app.json 或 eas.json
+- 设置 OTA 更新
+- 解决 Expo Go 的限制
+- 优化构建时间
+- 管理应用认证信息和密钥
+- 配置深度链接和 URL 方式
+- 设置 Expo 应用的 CI/CD 流程
+- 将应用部署到 App Store 或 Play Store
+- 了解 Expo SDK 54 的功能
+- 从 Expo Go 迁移到 Dev Client
+- 管理 Expo 项目中的原生模块
+- **实现原生标签页导航**
+- **设置 iOS Liquid Glass 效果**
+- **配置 Android 边到边显示**
+- **从 expo-av 迁移到 expo-video/expo-audio**
+- **使用 Expo Router v6 的基于文件的路由**
 
-## Essential Expo Commands
+## 必备的 Expo 命令
 
-### Project Setup
+### 项目设置
 ```bash
 # Create new Expo project
 npx create-expo-app@latest MyApp
@@ -189,7 +189,7 @@ npx expo install expo-camera
 npx expo-doctor
 ```
 
-### Development
+### 开发
 ```bash
 # Start with cache cleared
 npx expo start -c
@@ -206,7 +206,7 @@ npx expo run:android
 npx expo prebuild
 ```
 
-### EAS Build
+### EAS 构建
 ```bash
 # Login to EAS
 eas login
@@ -227,7 +227,7 @@ eas build --profile production --platform all
 eas build:list
 ```
 
-### EAS Update
+### EAS 更新
 ```bash
 # Configure EAS Update
 eas update:configure
@@ -245,7 +245,7 @@ eas update:list
 eas update:rollback
 ```
 
-### EAS Submit
+### EAS 提交
 ```bash
 # Submit to App Store
 eas submit --platform ios
@@ -257,12 +257,11 @@ eas submit --platform android
 eas submit --platform ios --id <build-id>
 ```
 
-## Pro Tips & Tricks
+## 专业技巧与窍门
 
-### 1. Development Build Optimization
+### 1. 开发构建优化
 
-Create a reusable development build once, then use EAS Update for daily changes:
-
+创建一次可重用的开发构建，然后使用 EAS Update 进行日常更新：
 ```json
 // eas.json
 {
@@ -278,20 +277,19 @@ Create a reusable development build once, then use EAS Update for daily changes:
 }
 ```
 
-Build once:
+**一次性构建**：
 ```bash
 eas build --profile development --platform all
 ```
 
-Update JavaScript daily:
+**每日更新 JavaScript**：
 ```bash
 eas update --branch development --message "Daily changes"
 ```
 
-### 2. Environment-Based Configuration
+### 2. 基于环境的配置**
 
-Use app.config.js for dynamic configuration:
-
+使用 app.config.js 进行动态配置：
 ```javascript
 // app.config.js
 export default ({ config }) => {
@@ -314,10 +312,9 @@ export default ({ config }) => {
 };
 ```
 
-### 3. Fast Credential Setup
+### 3. 自动管理认证信息
 
-Let EAS manage credentials automatically:
-
+让 EAS 自动处理认证信息的配置：
 ```json
 // eas.json
 {
@@ -334,10 +331,9 @@ Let EAS manage credentials automatically:
 }
 ```
 
-### 4. Efficient Build Caching
+### 4. 高效构建缓存
 
-Speed up builds by caching dependencies:
-
+通过缓存依赖项来加速构建过程：
 ```json
 // eas.json
 {
@@ -352,10 +348,9 @@ Speed up builds by caching dependencies:
 }
 ```
 
-### 5. Gradual OTA Rollout
+### 5. 渐进式 OTA 更新
 
-Safely deploy updates to production:
-
+安全地将更新部署到生产环境：
 ```bash
 # Start with 10% rollout
 eas update --branch production --message "New feature" --rollout-percentage 10
@@ -367,9 +362,9 @@ eas update:configure-rollout --branch production --percentage 50
 eas update:configure-rollout --branch production --percentage 100
 ```
 
-### 6. Quick Testing on Physical Devices
+### 6. 在真实设备上进行快速测试
 
-For Expo Go (quick testing):
+**对于 Expo Go**：适合快速测试：
 ```bash
 # Start dev server
 npx expo start
@@ -379,7 +374,7 @@ npx expo start
 # - Android: Expo Go app
 ```
 
-For dev client (full features):
+**对于 Dev Client**：支持所有功能：
 ```bash
 # Install dev client once
 eas build --profile development --platform ios
@@ -388,9 +383,9 @@ eas build --profile development --platform ios
 eas update --branch development
 ```
 
-### 7. Troubleshooting Common Issues
+### 7. 常见问题排查**
 
-**"Unable to resolve module"**
+- **“无法解析模块”**
 ```bash
 # Clear Metro cache
 npx expo start -c
@@ -399,7 +394,7 @@ npx expo start -c
 rm -rf node_modules && npm install
 ```
 
-**"Build failed on EAS"**
+- **在 EAS 中构建失败**
 ```bash
 # Check build logs
 eas build:list
@@ -409,7 +404,7 @@ eas build:view <build-id>
 npx expo prebuild
 ```
 
-**"Update not appearing in app"**
+- **更新未显示在应用中**
 ```bash
 # Check update channel matches app's channel
 eas channel:list
@@ -420,10 +415,9 @@ eas update:list --branch production
 # Force reload in app (shake device → reload)
 ```
 
-### 8. Native Module Integration
+### 8. 第三方原生模块集成**
 
-When you need a native module not in Expo SDK:
-
+当需要使用 Expo SDK 未提供的原生模块时：
 ```bash
 # Install the module
 npm install react-native-awesome-module
@@ -438,10 +432,9 @@ eas build --profile development --platform all
 eas update --branch development
 ```
 
-### 9. Native Tab Navigation (SDK 54+)
+### 9. 原生标签页导航（SDK 54+）
 
-Enable true native tab bars with Expo Router v6:
-
+使用 Expo Router v6 实现真正的原生标签页导航：
 ```typescript
 // app/(tabs)/_layout.tsx
 import { Tabs } from 'expo-router';
@@ -471,10 +464,9 @@ export default function TabLayout() {
 }
 ```
 
-### 10. iOS Liquid Glass (SDK 54+ / iOS 26+)
+### 10. iOS Liquid Glass（SDK 54+ / iOS 26+）
 
-Create beautiful translucent effects:
-
+创建美观的半透明效果：
 ```typescript
 // components/GlassCard.tsx
 import { View, StyleSheet, Platform } from 'react-native';
@@ -507,10 +499,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-### 11. Android Edge-to-Edge (SDK 54+)
+### 11. Android 边到边显示（SDK 54+）
 
-Handle immersive display properly:
-
+正确处理沉浸式显示效果：
 ```typescript
 // app/_layout.tsx
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -536,21 +527,9 @@ export default function RootLayout() {
 }
 ```
 
-```javascript
-// app.json - enable edge-to-edge
-{
-  "expo": {
-    "android": {
-      "edgeToEdge": true  // SDK 54 default
-    }
-  }
-}
-```
+### 12. expo-video（替代 expo-av）
 
-### 12. expo-video (Replacing expo-av)
-
-Modern video playback:
-
+实现现代的视频播放功能：
 ```typescript
 // components/VideoPlayer.tsx
 import { useVideoPlayer, VideoView } from 'expo-video';
@@ -585,10 +564,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-### 13. expo-audio (Replacing expo-av)
+### 13. expo-audio（替代 expo-av）
 
-Modern audio handling:
-
+实现现代的音频处理功能：
 ```typescript
 // hooks/useAudio.ts
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -608,10 +586,9 @@ export function useAudio(source: string) {
 }
 ```
 
-### 14. expo-image v2 with useImage
+### 14. expo-image v2 与 useImage**
 
-Imperative image loading:
-
+使用 useImage 实现命令式的图片加载：
 ```typescript
 import { useImage, Image } from 'expo-image';
 
@@ -634,24 +611,24 @@ export function PreloadedImage({ uri }: { uri: string }) {
 }
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-**Increment Planning**
-- Document Expo setup steps in `spec.md`
-- Include EAS Build/Update configuration in `plan.md`
-- Track build and deployment tasks in `tasks.md`
+**增量规划**
+- 在 `spec.md` 中记录 Expo 的设置步骤
+- 在 `plan.md` 中包含 EAS 构建/更新的配置信息
+- 在 `tasks.md` 中跟踪构建和部署任务
 
-**Testing Strategy**
-- Use dev builds for feature development
-- Preview builds for QA testing
-- Production builds for stakeholder demos
+**测试策略**
+- 使用开发构建进行功能开发
+- 使用预览构建进行质量保证测试
+- 使用生产构建进行利益相关者演示
 
-**Living Documentation**
-- Document build profiles in `.specweave/docs/internal/operations/`
-- Track deployment procedures in runbooks
-- Maintain credential management procedures
+**动态文档管理**
+- 在 `.specweave/docs/internal/operations/` 中记录构建配置文件
+- 在运行手册中记录部署流程
+- 管理认证信息的相关流程
 
-**Cost Optimization**
-- Use EAS Update instead of rebuilding for JS-only changes
-- Cache dependencies to reduce build times
-- Monitor EAS usage in increment reports
+**成本优化**
+- 对于仅涉及 JavaScript 的更改，使用 EAS Update 而不是重新构建
+- 缓存依赖项以减少构建时间
+- 在增量报告中监控 EAS 的使用情况

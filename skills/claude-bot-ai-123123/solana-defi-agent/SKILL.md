@@ -1,23 +1,23 @@
 ---
 name: solana-defi-agent
-description: DeFi toolkit for AI agents on Solana — swaps, lending, staking via Solana Actions/Blinks
+description: 适用于 Solana 上的 AI 代理的 DeFi 工具包：通过 Solana Actions/Blinks 实现交易、借贷和质押功能
 ---
 
 # Solana DeFi Agent Skill
 
-> DeFi toolkit for AI agents on Solana — swaps, lending, staking, and more
+> 专为Solana上的AI代理设计的DeFi工具包——支持交易、借贷、质押等多种DeFi操作
 
-**New here?** → Start with [QUICKSTART.md](./QUICKSTART.md) for a 10-minute setup guide.
+**是新用户吗？** → 请从[QUICKSTART.md](./QUICKSTART.md)开始学习，10分钟内即可完成设置。
 
 ---
 
-## What This Does
+## 功能介绍
 
-Solana Blinks (Blockchain Links) let you execute DeFi operations—swaps, deposits, staking—through simple URLs. This skill gives you:
+Solana Blinks（区块链链接）允许您通过简单的URL执行DeFi操作（如交易、存款、质押等）。该工具包为您提供以下功能：
 
-- **CLI** for quick operations: `blinks execute <url> --amount=100`
-- **SDK** for building automations
-- **Registry access** to 900+ trusted protocol endpoints
+- **命令行界面（CLI）**：用于快速执行操作，例如：`blinks execute <url> --amount=100`
+- **软件开发工具包（SDK）**：用于构建自动化脚本
+- **协议端点访问**：可访问900多个受信任的DeFi协议端点
 
 ```bash
 # Example: Deposit USDC to Kamino yield vault
@@ -26,74 +26,69 @@ blinks execute "https://kamino.dial.to/api/v0/lend/usdc-prime/deposit" --amount=
 
 ---
 
-## ⚠️ Before You Start
+## ⚠️ 开始使用前请注意
 
-### Required
-- [ ] Solana wallet keypair file (see [QUICKSTART.md](./QUICKSTART.md#step-1-create-a-solana-wallet))
-- [ ] SOL for transaction fees (~0.01 SOL / $2 minimum)
-- [ ] Node.js 18+
+### 必备条件
+- [ ] Solana钱包的密钥对文件（详见[QUICKSTART.md](./QUICKSTART.md#step-1-create-a-solana-wallet)）
+- [ ] 至少0.01 SOL的交易费用（约2美元）
+- [ ] Node.js 18及以上版本
 
-### Environment Variables
+### 环境变量
 ```bash
 # .env file
 SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
 SOLANA_WALLET_PATH=~/.config/solana/my-wallet.json
 ```
 
-### 🔒 Security
-- **Never commit keypairs to git** - use `.env` and `.gitignore`
-- **Test with small amounts first** - mistakes happen
-- **Verify hosts are trusted** - CLI warns about untrusted hosts
-- **Use a dedicated wallet** - not your main holdings
+### 🔒 安全提示
+- **切勿将密钥对上传到Git**：请使用`.env`文件和`.gitignore`文件进行管理
+- **先使用小额资金进行测试**：避免错误发生
+- **确认访问的服务器是否受信任**：CLI会提示您不信任的服务器
+- **请使用专用钱包**：切勿使用您的主钱包进行测试
 
 ---
 
-## Protocol Status (Updated 2026-02-02)
+## 协议状态（更新于2026-02-02）
 
-### ✅ Working
+### ✅ 可正常使用的协议
 
-| Protocol | Actions | Endpoint |
+| 协议 | 功能 | 对应端点 |
 |----------|---------|----------|
-| **Jupiter** | Swap any tokens | `worker.jup.ag` |
-| **Raydium** | Swap, LP | `share.raydium.io` |
-| **Kamino** | Deposit, withdraw, borrow, repay | `kamino.dial.to` |
-| **Jito** | Stake SOL | `jito.network`, `jito.dial.to` |
-| **Tensor** | Buy floor, bid on NFTs | `tensor.dial.to` |
-| **Drift** | Vault deposit/withdraw | `app.drift.trade` |
+| **Jupiter** | 任意代币交易 | `worker.jup.ag` |
+| **Raydium** | 交易、流动性池（LP） | `share.raydium.io` |
+| **Kamino** | 存款、取款、借款、还款 | `kamino.dial.to` |
+| **Jito** | 质押SOL | `jito.network`, `jito.dial.to` |
+| **Tensor** | 购买NFT、竞拍NFT | `tensor.dial.to` |
+| **Drift** | 保险库存款/取款 | `app.drift.trade` |
 
-### 🔑 Needs API Key
+### 🔑 需要API密钥的协议
 
-| Protocol | Get Key | Notes |
+| 协议 | 获取密钥方式 | 备注 |
 |----------|---------|-------|
-| **Lulo** | [dev.lulo.fi](https://dev.lulo.fi) | 24hr withdrawal cooldown |
+| **Lulo** | [dev.lulo.fi](https://dev.lulo.fi) | 提取资金需等待24小时 |
 
-### ❌ Currently Broken
+### ❌ 目前无法使用的协议
 
-| Protocol | Issue | Workaround |
+| 协议 | 问题 | 解决方案 |
 |----------|-------|------------|
-| **Orca** | No public blink API | Use Jupiter or Raydium |
-| **Sanctum** | Cloudflare blocks server IPs | Use their web UI |
-| **Some dial.to** | Rate limiting | Try self-hosted endpoints |
+| **Orca** | 无公开的API接口 | 可使用Jupiter或Raydium替代 |
+| **Sanctum** | Cloudflare限制了服务器IP访问 | 请使用其Web界面 |
+| **部分dial.to协议** | 遇到速率限制 | 可尝试使用自托管的端点 |
 
-### ❓ Untested
+### ❓ 未经过测试的协议
 
-MarginFi, Meteora, Helius, Magic Eden - endpoints exist but need verification.
+MarginFi、Meteora、Helius、Magic Eden：端点存在，但需要进一步验证。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Inspect Before Executing
+### 执行前请检查
 
-Always preview what a blink does:
+在执行操作前，请务必预览该操作的详细信息：
+- 显示元数据、可执行的操作以及服务器的信任状态。
 
-```bash
-blinks inspect <url>
-```
-
-Shows metadata, available actions, and trust status.
-
-### Execute Transactions
+### 执行交易
 
 ```bash
 # Dry run first (simulates without sending)
@@ -103,7 +98,7 @@ blinks execute <url> --amount=100 --dry-run
 blinks execute <url> --amount=100
 ```
 
-### Protocol-Specific Commands
+### 协议特定的命令
 
 ```bash
 # Kamino
@@ -119,7 +114,7 @@ blinks execute "https://..." --amount=X
 
 ---
 
-## SDK Usage
+## SDK使用方法
 
 ```typescript
 import {
@@ -165,11 +160,11 @@ console.log('Success:', `https://solscan.io/tx/${signature}`);
 
 ---
 
-## How Blinks Work
+## Blinks的工作原理
 
-1. **GET** request to action URL → Returns metadata + available actions
-2. **POST** request with wallet address → Returns transaction to sign
-3. Sign transaction locally and submit to Solana
+1. 向目标协议发送`GET`请求，获取元数据和可执行的操作列表。
+2. 发送包含钱包地址的`POST`请求，系统会返回待签署的交易信息。
+3. 在本地签署交易并提交到Solana区块链。
 
 ```
 User → GET blink URL → Protocol returns actions
@@ -177,25 +172,25 @@ User → POST with wallet → Protocol returns transaction
 User → Sign & submit → Transaction confirmed
 ```
 
-The skill handles all of this. You just provide the URL and amount.
+该工具包会自动处理整个流程，您只需提供目标协议的URL和交易金额即可。
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Error | Cause | Fix |
+| 错误代码 | 原因 | 解决方法 |
 |-------|-------|-----|
-| `422 Unprocessable Entity` | Missing required tokens | Check token balance before deposit |
-| `403 Forbidden` | Cloudflare blocking | Try protocol's self-hosted endpoint |
-| `Transaction simulation failed` | Insufficient SOL or stale tx | Check balance, retry quickly |
-| `Rate limit exceeded` | Public RPC overloaded | Use Helius/QuickNode free tier |
-| `Untrusted host warning` | Host not in Dialect registry | Verify URL is correct |
+| `422 Unprocessable Entity` | 缺少所需代币 | 存款前请检查代币余额 |
+| `403 Forbidden` | Cloudflare限制访问 | 尝试使用该协议的自托管端点 |
+| `Transaction simulation failed` | SOL余额不足或交易信息无效 | 请检查余额并尽快重试 |
+| `Rate limit exceeded` | 公共API请求量超出限制 | 可使用Helius/QuickNode的免费 tier |
+| `Untrusted host warning` | 访问的服务器不在受信任列表中 | 请确认URL地址正确 |
 
 ---
 
-## Blink URL Formats
+## Blink URL的格式
 
-The CLI accepts multiple formats:
+命令行界面支持多种URL格式：
 
 ```bash
 # Direct URL (recommended)
@@ -210,20 +205,20 @@ blinks inspect "https://dial.to/?action=solana-action:https://..."
 
 ---
 
-## RPC Recommendations
+## RPC服务提供商及费用信息
 
-| Provider | Free Tier | Link |
+| 提供商 | 免费使用量 | 访问链接 |
 |----------|-----------|------|
-| **Helius** | 100k req/day | [helius.dev](https://helius.dev) |
-| **QuickNode** | 10M credits | [quicknode.com](https://quicknode.com) |
-| **Alchemy** | 300M CU | [alchemy.com](https://alchemy.com) |
-| **Public** | Rate limited | `api.mainnet-beta.solana.com` |
+| **Helius** | 每天10万次请求 | [helius.dev](https://helius.dev) |
+| **QuickNode** | 每天1000万次请求 | [quicknode.com](https://quicknode.com) |
+| **Alchemy** | 每天3亿次请求 | [alchemy.com](https://alchemy.com) |
+| **Public** | 有速率限制 | `api.mainnet-beta.solana.com` |
 
-Public works for testing but will hit rate limits in production.
+公共API适用于测试环境，但在生产环境中可能会遇到速率限制。
 
 ---
 
-## Files
+## 相关文件
 
 ```
 solana-defi-agent-skill/
@@ -239,9 +234,9 @@ solana-defi-agent-skill/
 
 ---
 
-## Links
+## 链接资源
 
-- [QUICKSTART.md](./QUICKSTART.md) - Get started in 10 minutes
-- [Solana Actions Spec](https://solana.com/developers/guides/advanced/actions)
-- [Dialect Registry](https://actions-registry.dial.to/all) - 900+ trusted hosts
-- [Blinks Inspector](https://www.blinks.xyz/inspector) - Visual blink tester
+- [QUICKSTART.md](./QUICKSTART.md)：10分钟内快速入门
+- [Solana高级操作指南](https://solana.com/developers/guides/advanced/actions)
+- [DeFi协议端点注册表](https://actions-registry.dial.to/all)：包含900多个受信任的协议服务
+- [Blinks Inspector](https://www.blinks.xyz/inspector)：可视化的DeFi操作测试工具

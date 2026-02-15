@@ -1,45 +1,44 @@
 ---
 name: youtube-summarize
-description: Summarize YouTube videos by extracting transcripts and captions. Use when you need to get a quick summary of a video, extract key points, or analyze video content without watching it.
+description: 通过提取视频的文字记录（字幕）来总结 YouTube 视频内容。当您需要快速了解视频的概要、提取关键信息，或在不观看视频的情况下分析其内容时，可以使用这种方法。
 metadata: {"openclaw":{"requires":{"bins":["yt-dlp"]},"install":[{"id":"python","kind":"pip","package":"yt-dlp","bins":["yt-dlp"],"label":"Install yt-dlp (pip)"}]}}
 ---
 
-# YouTube Video Summarizer
+# YouTube 视频摘要工具
 
-## Setup
+## 设置
 
-Install yt-dlp:
+安装 yt-dlp：
 ```bash
 pip install yt-dlp
 ```
 
-## Extract Transcript
+## 提取字幕
 
-Get auto-generated subtitles:
+- 获取自动生成的字幕：
 ```bash
 yt-dlp --write-auto-sub --sub-lang en --skip-download --sub-format vtt -o "%(title)s" "VIDEO_URL"
 ```
 
-Get manual subtitles (if available):
+- 获取手动添加的字幕（如果有的话）：
 ```bash
 yt-dlp --write-sub --sub-lang en --skip-download --sub-format vtt -o "%(title)s" "VIDEO_URL"
 ```
 
-List available subtitles:
+- 列出可用的字幕：
 ```bash
 yt-dlp --list-subs "VIDEO_URL"
 ```
 
-## Extract as Plain Text
+## 提取纯文本
 
-Download and convert to text:
+- 下载视频并转换为纯文本：
 ```bash
 yt-dlp --write-auto-sub --sub-lang en --skip-download --sub-format vtt -o "transcript" "VIDEO_URL" && \
 sed -e '/^$/d' -e '/^[0-9]/d' -e '/-->/d' -e 's/<[^>]*>//g' transcript.en.vtt | sort -u > transcript.txt
 ```
 
-## Quick Transcript to Stdout
-
+## 将字幕快速输出到标准输出（stdout）：
 ```bash
 yt-dlp --write-auto-sub --sub-lang en --skip-download --sub-format json3 -o - "VIDEO_URL" 2>/dev/null | \
 python3 -c "
@@ -51,7 +50,7 @@ for event in data.get('events', []):
             print(text, end=' ')"
 ```
 
-## Get Video Metadata
+## 获取视频元数据
 
 ```bash
 yt-dlp --dump-json "VIDEO_URL" | python3 -c "
@@ -65,14 +64,14 @@ print(f\"Upload: {d.get('upload_date', 'N/A')}\")
 print(f\"Description:\n{d.get('description', '')[:500]}...\")"
 ```
 
-## Summarization Workflow
+## 摘要生成流程
 
-1. Extract transcript:
+1. 提取字幕：
 ```bash
 yt-dlp --write-auto-sub --sub-lang en --skip-download -o "video" "VIDEO_URL"
 ```
 
-2. Clean VTT to plain text:
+2. 将 VTT 格式的字幕转换为纯文本：
 ```bash
 python3 -c "
 import re
@@ -90,11 +89,11 @@ for l in lines:
 print(' '.join(unique))" > transcript.txt
 ```
 
-3. Send to LLM for summarization (the transcript is now ready for Claude to analyze)
+3. 将处理后的字幕发送给大型语言模型（LLM）进行摘要生成（此时字幕已准备好供 Claude 分析）
 
-## Multi-language Support
+## 多语言支持
 
-Extract subtitles in other languages:
+- 提取其他语言的字幕：
 ```bash
 # Russian
 yt-dlp --write-auto-sub --sub-lang ru --skip-download "VIDEO_URL"
@@ -106,9 +105,9 @@ yt-dlp --write-auto-sub --sub-lang es --skip-download "VIDEO_URL"
 yt-dlp --write-auto-sub --sub-lang "en,ru,es" --skip-download "VIDEO_URL"
 ```
 
-## Chapter Extraction
+## 提取视频章节
 
-Get video chapters (if available):
+- 获取视频的章节信息（如果有的话）：
 ```bash
 yt-dlp --dump-json "VIDEO_URL" | python3 -c "
 import sys, json
@@ -118,20 +117,20 @@ for ch in d.get('chapters', []):
     print(f\"{start//60}:{start%60:02d} - {ch['title']}\")"
 ```
 
-## Common Options
+## 常见选项
 
-| Option | Description |
-|--------|-------------|
-| `--sub-lang en` | Subtitle language (en, ru, es, de, fr, etc.) |
-| `--write-auto-sub` | Get auto-generated captions |
-| `--write-sub` | Get manual subtitles |
-| `--sub-format vtt` | Output format (vtt, srt, json3) |
-| `--skip-download` | Don't download video |
+| 选项          | 描述                                      |
+|----------------|-----------------------------------------|
+| `--sub-lang en`    | 字幕语言（en, ru, es, de, fr 等）                         |
+| `--write-auto-sub`   | 获取自动生成的字幕                         |
+| `--write-sub`    | 获取手动添加的字幕                         |
+| `--sub-format vtt`   | 输出字幕格式（vtt, srt, json3）                     |
+| `--skip-download` | 不下载视频                             |
 
-## Notes
+## 注意事项
 
-- Auto-generated subtitles may have errors
-- Not all videos have subtitles available
-- Some videos have subtitles disabled by uploader
-- Use `--sub-lang` with appropriate language code
-- Transcripts work best for spoken content (lectures, podcasts, tutorials)
+- 自动生成的字幕可能存在错误；
+- 并非所有视频都配有字幕；
+- 有些视频的字幕可能被上传者禁用了；
+- 使用 `--sub-lang` 时请指定正确的语言代码；
+- 该工具更适合处理口语内容（如讲座、播客、教程等）。

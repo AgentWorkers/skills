@@ -1,57 +1,57 @@
 ---
 name: auto-shorts-repurposer
-description: Repurpose long-form video or audio into short-form clip plans with timestamps, hooks, captions, and packaging notes. Use when a user asks to turn a long video, podcast, or stream into Shorts, Reels, TikTok-style outputs, or highlight clips without publishing.
+description: 将长格式的视频或音频重新制作成短格式的片段，并添加时间戳、关键点、字幕以及包装说明。当用户希望将长视频、播客或直播内容转化为 Shorts、Reels、TikTok 风格的内容，或者制作无需发布的精彩片段时，可以使用此方法。
 ---
 
-# Auto Shorts Repurposer
+# 自动短视频剪辑工具
 
-## Goal
-Turn long-form media into a short-form clip plan with clear timestamps, captions, and platform-ready packaging notes.
+## 目标  
+将长格式媒体内容转换为短格式视频片段，包括明确的时间戳、字幕以及适用于各种平台的包装说明。
 
-## Best fit
-- Use when the user provides a long video, livestream, or podcast and wants 3 to 20 short clips.
-- Use when the user wants hooks, captions, titles, and thumbnail direction drafted for short platforms.
-- Use when the user can provide brand tone, audience, and target platforms.
+## 适用场景  
+- 当用户提供长视频、直播或播客内容，并希望将其剪辑成3到20个短视频片段时。  
+- 当用户需要为短视频平台准备吸引人的开头语、字幕、标题和缩略图设计时。  
+- 当用户能够提供品牌风格、目标受众及目标平台信息时。  
 
-## Not fit
-- Avoid when the user requests auto publishing or account access to post content.
-- Avoid when the user lacks rights or consent to repurpose the source media.
-- Avoid when the source has no usable audio or transcript and the user cannot provide one.
+## 不适用场景  
+- 当用户要求自动发布内容或访问账户以发布内容时。  
+- 当用户没有权限或未获得重新使用原始媒体的许可时。  
+- 当原始媒体没有可用音频或文字记录，且用户无法提供这些内容时。  
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速了解  
+- 请参考 `references/overview.md` 以了解工作流程和质量标准。  
+- 请参考 `references/auth.md` 以了解访问权限和令牌处理方式。  
+- 请参考 `references/endpoints.md` 以了解可选的集成方案和模板。  
+- 请参考 `references/webhooks.md` 以了解异步事件处理方式。  
+- 请参考 `references/ux.md` 以了解输入格式和输出格式的相关信息。  
+- 请参考 `references/troubleshooting.md` 以了解常见问题及其解决方法。  
+- 请参考 `references/safety.md` 以了解安全性和隐私保护措施。  
 
-## Required inputs
-- Source media file path or URL, plus any existing transcript.
-- Target platforms and constraints (length range, aspect ratio, language).
-- Desired clip count and focus topics.
-- Brand tone, keywords, and banned topics.
+## 必需输入  
+- 原始媒体文件的路径或URL，以及任何现有的文字记录（如字幕）。  
+- 目标平台及其相关要求（如长度范围、宽高比、语言）。  
+- 需要剪辑的片段数量及重点主题。  
+- 品牌风格、关键词以及禁止使用的主题。  
 
-## Expected output
-- Clip shortlist with timestamps, hook lines, and rationale.
-- Caption drafts and on-screen text per clip.
-- Hashtag and title suggestions.
-- Thumbnail brief or cover-frame suggestions.
-- Optional cut list instructions for an editor.
+## 预期输出  
+- 包含时间戳、吸引人的开头语的片段列表。  
+- 每个片段的字幕草稿和屏幕显示文本。  
+- 建议使用的标签和标题。  
+- 缩略图的简要设计或封面图片建议。  
+- （可选）为编辑人员提供的剪辑顺序说明。  
 
-## Operational notes
-- Work from transcripts when possible and verify timestamps against the source.
-- Prefer short, self-contained moments with a clear hook in the first 1 to 2 seconds.
-- Deliver outputs as drafts only; do not publish or upload.
+## 操作说明  
+- 尽可能使用现有的文字记录进行剪辑，并核对时间戳的准确性。  
+- 优先选择开头1到2秒内具有吸引力的短视频片段。  
+- 输出结果仅为草稿形式，不得直接发布或上传。  
 
-## Security notes
-- Do not request account credentials or access tokens for posting.
-- Avoid sharing source media beyond the user-provided context.
+## 安全注意事项  
+- 请勿要求用户提供账户凭证或发布权限。  
+- 请勿在用户提供的使用范围内之外分享原始媒体内容。  
 
-## Safe mode
-- Analyze media and produce draft clip plans, captions, and metadata only.
-- Use read-only tooling and keep outputs in local files when requested.
+## 安全模式  
+- 仅分析媒体内容并生成片段计划、字幕及元数据。  
+- 根据用户要求，使用只读工具进行处理，并将输出结果保存在本地文件中。  
 
-## Sensitive ops
-- Publishing or uploading content is out of scope and must not be attempted.
+## 特别注意事项  
+- 发布或上传内容超出了本工具的职责范围，严禁尝试。

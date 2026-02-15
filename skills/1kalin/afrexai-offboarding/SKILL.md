@@ -1,38 +1,38 @@
-# Employee Offboarding Manager
+# 员工离职管理工具
 
-Generate complete offboarding checklists and transition plans when an employee leaves.
+当员工离职时，该工具会生成完整的离职检查清单和过渡计划。
 
-## Usage
+## 使用方法
 
-Tell the agent who's leaving, their role, department, and last day. It produces:
+只需提供离职员工的姓名、职位、所属部门以及最后工作日信息，系统便会生成以下内容：
 
-1. **IT & Access Revocation Checklist** — accounts, devices, badges, VPN, cloud services
-2. **Knowledge Transfer Plan** — critical docs, ongoing projects, key contacts, handover meetings
-3. **HR & Compliance Checklist** — final paycheck, benefits termination, NDA reminders, exit interview
-4. **Manager Transition Plan** — interim coverage, hiring timeline, team communication
-5. **Timeline** — day-by-day schedule from notice to last day
+1. **IT与权限撤销清单**：包括账户、设备、门禁卡、VPN权限以及云服务的相关信息。
+2. **知识转移计划**：列出关键文档、正在进行的项目、重要联系人以及交接会议安排。
+3. **人力资源与合规性检查清单**：包含最终薪资发放、福利终止、保密协议（NDA）提醒以及离职面谈的相关事项。
+4. **经理过渡计划**：包括临时负责人安排、招聘时间表以及团队沟通方案。
+5. **时间线**：从收到离职通知到员工离职当天的每日详细安排。
 
-## Example
+## 示例
 
 ```
 Offboard: Sarah Chen, Senior Product Manager, Product team. Last day: March 15.
 She owns the Q2 roadmap, runs weekly stakeholder syncs, and has admin access to Jira, Figma, and Amplitude.
 ```
 
-The agent returns a full offboarding package with nothing missed.
+系统会返回一份内容齐全的离职资料包，确保没有任何遗漏。
 
-## Why This Matters
+## 重要性
 
-Botched offboarding costs companies $50K+ per incident — lost knowledge, dangling access (security risk), compliance gaps, and team disruption. Most companies use a spreadsheet someone made in 2019.
+处理不当的离职流程可能给公司带来超过5万美元的损失：包括知识流失、权限未及时撤销（带来安全风险）、合规性问题以及团队工作受到干扰。大多数公司仍在使用2019年制作的电子表格来处理离职流程。
 
-## Works With
+## 兼容性
 
-Any AI agent platform. No API keys needed — pure context skill.
+适用于任何AI代理平台，无需API密钥——完全依赖系统的上下文理解能力。
 
 ---
 
-Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI context packs for business teams.
+该工具由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发，专为商业团队提供AI相关解决方案。
 
-Get the full **Professional Services Context Pack** ($47) for HR, operations, and compliance automation: https://afrexai-cto.github.io/context-packs/
+如需获取用于人力资源、运营和合规性自动化的**专业服务上下文包**（价格：47美元），请访问：https://afrexai-cto.github.io/context-packs/
 
-Calculate what bad processes cost your company: https://afrexai-cto.github.io/ai-revenue-calculator/
+您还可以通过以下链接计算不良流程给公司带来的损失：https://afrexai-cto.github.io/ai-revenue-calculator/

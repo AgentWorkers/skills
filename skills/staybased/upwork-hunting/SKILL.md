@@ -1,112 +1,109 @@
-# Upwork Hunting — Find, Bid, Win Automation Jobs
+# 在Upwork上寻找、投标并赢得自动化项目
 
-Systematically find and win Upwork jobs using our n8n workflow library (2,061 templates) as a speed advantage.
-All outputs go to `workspace/artifacts/`.
+利用我们的n8n工作流库（包含2,061个模板），系统地寻找并赢得Upwork上的项目，从而获得速度优势。所有输出结果都会保存在`workspace/artifacts/`目录下。
 
-## Use when
-- Scanning Upwork for jobs to bid on
-- Writing proposals for n8n/automation/AI agent jobs
-- Evaluating whether a job is worth a connect spend
-- Estimating delivery time using our template library
-- Positioning ourselves against other freelancers
+## 适用场景：
+- 在Upwork上扫描可供投标的项目
+- 为n8n/自动化/AI相关的项目撰写提案
+- 评估某个项目是否值得投入时间和资源
+- 使用我们的模板库估算项目完成时间
+- 在与其他自由职业者竞争中脱颖而出
 
-## Don't use when
-- Writing the actual proposal copy (use proposal-writing skill)
-- Handling client objections after bidding (use objection-handling skill)
-- Doing discovery after winning (use client-discovery skill)
-- Jobs outside our domain (graphic design, copywriting, mobile dev)
+## 不适用场景：
+- 撰写实际的提案内容（请使用专门的提案撰写技巧）
+- 投标后处理客户的异议（请使用异议处理技巧）
+- 获胜后进行进一步的客户沟通（请使用客户关系管理技巧）
+- 非我们专业领域的项目（如平面设计、文案写作、移动应用开发）
 
-## Negative examples
-- "Help me build an n8n workflow" → No. This is for FINDING jobs, not doing them.
-- "Write me a portfolio piece" → No. Different task.
-- "Should I raise my rate?" → No. Use pricing-psychology skill.
+## 错误示例：
+- “帮我开发一个n8n工作流” → 不适用。此技能用于寻找项目，而非实际开发项目。
+- “帮我写一个作品集” → 不适用。这是不同的任务。
+- “我应该提高报价吗？” → 请使用定价策略相关的技巧来决定。
 
-## Edge cases
-- Fixed-price vs hourly evaluation → YES. This skill covers both.
-- "Is this job a scam?" → YES. Red flag detection included.
-- Jobs that need n8n + custom code → YES. Evaluate if template + light code is feasible.
-
----
-
-## Our Competitive Edge
-
-We have what most Upwork freelancers don't:
-
-1. **2,061 n8n workflow templates** (~/projects/n8n-workflows/) — we customize, not build from scratch
-2. **Live n8n instance** at localhost:5678 — can demo instantly
-3. **Twilio already configured** — SMS/voice jobs are plug-and-play
-4. **AI/LLM expertise** — OpenAI, Ollama, agent orchestration
-5. **Full sales pipeline skills** — discovery, proposals, objections, retention
-
-**Speed advantage:** A job that takes most freelancers 8-10 hours, we deliver in 2-4 hours using templates.
+## 特殊情况：
+- 固定价格项目与按小时计费项目的评估 → 可以使用此技能。
+- “这个项目是骗局吗？” → 可以使用此技能进行风险识别。
+- 需要结合n8n模板和自定义代码的项目 → 可以评估是否可行。
 
 ---
 
-## Job Targeting Criteria
+## 我们的竞争优势：
+我们拥有大多数Upwork自由职业者所没有的优势：
+1. **2,061个n8n工作流模板**（位于`~/projects/n8n-workflows/`）——我们可以直接使用这些模板，无需从头开始开发。
+2. 在本地主机（localhost:5678）上运行实时的n8n实例，可以立即进行演示。
+3. 已经配置好了Twilio，支持短信/语音功能的集成。
+4. 拥有AI/大语言模型（LLM）方面的专业知识，能够编排AI聊天机器人。
+5. 具备完整的销售流程管理能力，包括项目发现、提案撰写、异议处理和客户关系维护。
 
-### Ideal Job Profile (Bid Aggressively)
-- **Category:** n8n automation, workflow automation, API integration, AI chatbot
-- **Budget:** $200-2,000 fixed price OR $30-75/hr hourly
-- **Posted:** <48 hours ago
-- **Proposals:** <15 submitted
-- **Client:** Verified payment, $1K+ spent, 4.5+ rating
-- **Scope:** Clearly defined deliverable
-- **Template match:** We have 70%+ of the workflow in our library
-
-### Good Job Profile (Bid Selectively)
-- **Budget:** $100-200 (small but fast win for reviews)
-- **Posted:** 2-5 days ago with <20 proposals
-- **Scope:** Slightly vague but in our domain
-- **Client:** New to Upwork but verified payment
-
-### Avoid (Don't Waste Connects)
-- Budget under $50 (not worth the time)
-- 50+ proposals already (too competitive)
-- "Build me an app" with $100 budget (unrealistic expectations)
-- No payment verification
-- Vague scope with no budget range
-- "Looking for long-term, pay is low but will increase" (it won't)
+**速度优势**：大多数自由职业者需要8-10小时才能完成的项目，我们使用模板可以在2-4小时内完成。
 
 ---
 
-## Job Categories We Can Dominate
+## 项目筛选标准
 
-### Tier 1: Template-Ready (1-3 hours delivery)
-These map directly to our n8n library. Bid aggressively.
+### 理想项目（积极投标）：
+- **项目类型**：n8n自动化、工作流自动化、API集成、AI聊天机器人
+- **预算**：固定价格200-2,000美元或按小时计费30-75美元
+- **发布时间**：不超过48小时
+- **收到的提案数量**：少于15份
+- **客户**：已验证支付记录，消费金额超过1,000美元，评分在4.5分以上
+- **项目范围**：项目交付物明确
+- **模板匹配度**：我们的模板库中至少有70%的内容能与该项目匹配
 
-| Job Type | Our Template Source | Connects to Spend |
+### 较佳项目（选择性投标）：
+- **预算**：100-200美元（适合快速完成评审类项目）
+- **发布时间**：2-5天前，收到的提案少于20份
+- **项目范围**：项目范围稍显模糊，但仍在我们的专业范围内
+- **客户**：新注册Upwork的用户，但已验证支付记录
+
+### 应避免的项目（不要浪费资源）：
+- 预算低于50美元的项目（不值得投入时间）
+- 已收到50份以上提案的项目（竞争过于激烈）
+- 预算仅为100美元却要求开发应用程序的项目（期望不切实际）
+- 未验证客户支付记录的项目
+- 项目范围模糊且没有预算范围的项目
+- 承诺长期合作但报酬较低的项目（这类项目成功几率较低）
+
+---
+
+## 我们能够主导的项目类别
+
+### 第一级：可直接使用模板的项目（交付时间1-3小时）
+这些项目可以直接使用我们的模板库完成。
+
+| 项目类型 | 模板来源 | 需要额外投入的资源 |
 |----------|-------------------|-------------------|
-| Slack/Discord → CRM sync | workflows/Slack + workflows/Hubspot | 4-6 |
-| Form → email + sheet logging | workflows/Webhook + workflows/Googlesheets | 2-4 |
-| Calendly → SMS confirmation | workflows/Calendly + workflows/Twilio | 4-6 |
-| Shopify order notifications | workflows/Shopify + workflows/Slack | 4-6 |
-| Google Sheets → scheduled reports | workflows/Googlesheets + workflows/Emailsend | 2-4 |
-| RSS → Slack/email digest | workflows/Rssfeedread + workflows/Slack | 2-4 |
+| Slack/Discord与CRM同步 | workflows/Slack + workflows/Hubspot | 4-6小时 |
+| 表单提交后发送邮件及记录数据 | workflows/Webhook + workflows/Googlesheets | 2-4小时 |
+| 使用Calendly发送短信确认 | workflows/Calendly + workflows/Twilio | 4-6小时 |
+| Shopify订单通知 | workflows/Shopify + workflows/Slack | 4-6小时 |
+| 将Google Sheets数据生成报告 | workflows/Googlesheets + workflows/Emailsend | 2-4小时 |
+| 从RSS源同步数据到Slack或邮件 | workflows/Rssfeedread + workflows/Slack | 2-4小时 |
 
-### Tier 2: Template + Customization (3-6 hours)
-Need moderate customization but templates provide 50-70% of the work.
+### 第二级：需要少量定制的项目（3-6小时）
+这些项目需要一定的定制工作，但模板能覆盖50-70%的工作内容。
 
-| Job Type | Our Template Source | Connects to Spend |
+| 项目类型 | 模板来源 | 需要额外投入的资源 |
 |----------|-------------------|-------------------|
-| WhatsApp/Telegram chatbot | workflows/Whatsapp + workflows/Openai | 6-8 |
-| Lead capture → CRM → email sequence | workflows/Webhook + workflows/Hubspot + workflows/Gmail | 6-8 |
-| AI content pipeline | workflows/Openai + workflows/Wordpress | 6-8 |
-| Invoice/payment automation | workflows/Paypal + workflows/Googlesheets | 4-6 |
-| Social media auto-posting | workflows/Twitter + workflows/Linkedin | 6-8 |
+| WhatsApp/Telegram聊天机器人 | workflows/Whatsapp + workflows/OpenAI | 6-8小时 |
+| 招揽潜在客户并发送邮件序列 | workflows/Webhook + workflows/Hubspot + workflows/Gmail | 6-8小时 |
+| AI内容生成与发布 | workflows/OpenAI + workflows/Wordpress | 6-8小时 |
+| 发票/支付自动化 | workflows/Paypal + workflows/Googlesheets | 4-6小时 |
+| 社交媒体自动发布内容 | workflows/Twitter + workflows/Linkedin | 6-8小时 |
 
-### Tier 3: Custom Build (6-12 hours)
-Significant custom work but high-value jobs ($500-2,000+).
+### 第三级：需要深度定制的项目（6-12小时）
+这些项目需要大量的定制工作，但价值较高（预算500-2,000美元以上）。
 
-| Job Type | Approach | Connects to Spend |
+| 项目类型 | 完整解决方案 | 需要额外投入的资源 |
 |----------|----------|-------------------|
-| Full CRM + automation setup | Multiple templates + custom logic | 8-12 |
-| AI agent / chatbot with memory | OpenAI + database + custom code | 8-12 |
-| Multi-step approval workflows | Custom but n8n's UI makes it fast | 8-12 |
-| Data migration + transformation | Template ETL patterns + custom mapping | 8-12 |
+| 全面的CRM系统及自动化设置 | 多个模板 + 自定义逻辑 | 8-12小时 |
+| 配备记忆功能的AI聊天机器人 | OpenAI + 数据库 + 自定义代码 | 8-12小时 |
+| 多步骤审批流程 | 需要定制，但n8n的界面可提高工作效率 | 8-12小时 |
+| 数据迁移与转换 | 使用模板进行ETL处理 + 自定义映射 | 8-12小时 |
 
 ---
 
-## Search Queries to Run Daily
+## 每日应执行的搜索查询
 
 ```
 n8n automation
@@ -127,9 +124,8 @@ shopify automation
 booking automation calendly
 ```
 
-## Proposal Formula (Compressed)
-
-Use proposal-writing skill for full version. Quick Upwork format:
+## 提案撰写指南（简化版）
+详细提案撰写技巧请参考相关文档。以下是适用于Upwork的快速提案格式：
 
 ```
 Line 1: Reference THEIR specific need (proves you read it)
@@ -139,53 +135,45 @@ Line 4: "Happy to do [small first milestone] so you can evaluate"
 Line 5: Question about their requirements (invites response)
 ```
 
-**Key differentiators to mention:**
-- "I have a live n8n instance and can demo your workflow within 24 hours"
-- "I maintain a library of 2,000+ tested workflow templates"
-- "Your automation runs on YOUR infrastructure — no monthly SaaS fees"
-- "Includes documentation so your team can maintain it"
+**需要强调的关键优势**：
+- “我拥有实时的n8n实例，可以在24小时内为您演示工作流程。”
+- “我们拥有2,000多个经过测试的工作流模板。”
+- “我们的自动化解决方案运行在您的基础设施上，无需支付每月的SaaS费用。”
+- “我们会提供完整的文档，以便您的团队后续维护。”
 
 ---
 
-## Connect Spend Strategy
+## 资源投入策略
+初始预算：100个Upwork连接机会（每次连接费用15美元）
 
-Starting budget: 100 connects ($15 investment)
+**分配方式**：
+- 60%用于第一级项目（胜算高，交付速度快，适合快速获得项目）
+- 30%用于第二级项目（收入较高，工作量适中）
+- 10%用于第三级项目（风险较高，但一旦中标收益可观）
 
-**Allocation:**
-- 60% on Tier 1 jobs (high win probability, quick delivery, build reviews)
-- 30% on Tier 2 jobs (higher revenue, moderate effort)
-- 10% on Tier 3 jobs (moonshots, big payoff if won)
+**目标**：在前两周内赢得2-3个项目。初期重点关注获得五星评价。
 
-**Target:** Win 2-3 jobs in first 2 weeks. Focus on 5-star reviews over revenue initially.
+**何时补充资源**：
+- 胜率超过15%时：继续投入资源
+- 胜率低于10%时：暂停投入，先改进提案质量
 
-**Refill connects when:** 
-- Win rate >15% (good — keep spending)
-- Win rate <10% (pause — improve proposals first)
+## 项目评估评分标准
+在投入资源之前，请对项目进行评估：
 
----
-
-## Job Evaluation Scorecard
-
-Before spending connects, score the job:
-
-| Factor | Score 1-5 | Weight |
+| 评估因素 | 评分（1-5分） | 权重 |
 |--------|-----------|--------|
-| Budget realistic for scope | | 25% |
-| Template coverage (how much is pre-built) | | 25% |
-| Client quality (rating, history, verification) | | 20% |
-| Competition (<15 proposals) | | 15% |
-| Follow-on potential (recurring/upsell) | | 15% |
+| 预算是否与项目范围匹配 | | 25% |
+| 模板匹配度（已有多少模板可用） | | 25% |
+| 客户质量（评分、历史记录、支付验证） | | 20% |
+| 竞争情况（收到的提案数量） | | 15% |
+| 项目的可持续性（是否适合长期合作或追加销售） | | 15% |
 
-**Bid threshold:** 3.5+ weighted score
-**Auto-skip:** Any factor scores 1
+**投标门槛**：综合评分达到3.5分以上
 
----
+## 前30天的行动方案
+**第1周**：投标8-10个第一级项目，目标：赢得2个项目，快速交付，并获得五星评价。
+**第2周**：投标5-8个第一级和第二级项目，目标：再赢得2个项目，提升个人信誉。
+**第3周**：将报价从每小时49美元提高到59美元，开始专注于第二级项目。
+**第4周**：瞄准1-2个第三级项目（预算500美元以上），此时个人资料应已获得4条以上评价。
 
-## First 30 Days Playbook
-
-**Week 1:** Bid on 8-10 Tier 1 jobs. Goal: win 2, deliver fast, get 5-star reviews.
-**Week 2:** Bid on 5-8 mixed Tier 1+2. Goal: win 2 more, start building profile credibility.
-**Week 3:** Raise rate from $49 to $59/hr. Start bidding Tier 2 exclusively.
-**Week 4:** Target 1-2 Tier 3 jobs ($500+). Profile now has 4+ reviews.
-
-**Revenue target:** $800-1,200 in first 30 days. Combined with Alfred ($149/mo), that's $950-1,350/mo — closing in on $2K goal.
+**收入目标**：前30天的收入目标为800-1,200美元。结合Alfred工具（每月费用149美元），每月总收入可达950-1,350美元，接近2,000美元的目标。

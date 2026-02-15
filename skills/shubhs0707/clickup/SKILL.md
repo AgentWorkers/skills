@@ -1,26 +1,26 @@
 ---
 name: clickup
-description: Interact with ClickUp project management platform via REST API. Use when working with tasks, spaces, lists, assignees, or any ClickUp workflow automation. Handles pagination, subtasks, and common query patterns. Use for task management, reporting, automation, or any ClickUp-related queries.
+description: 通过 REST API 与 ClickUp 项目管理平台进行交互。适用于处理任务、项目空间、列表、分配者以及任何 ClickUp 工作流程自动化相关操作。该 API 支持分页功能、子任务处理以及常见的查询模式，可用于任务管理、报告生成、自动化操作或任何与 ClickUp 相关的查询需求。
 ---
 
-# ClickUp Skill
+# ClickUp 技能
 
-Interact with ClickUp's REST API for task management, reporting, and workflow automation.
+该技能用于与 ClickUp 的 REST API 进行交互，以实现任务管理、报告生成和工作流程自动化。
 
-## Configuration
+## 配置
 
-Before using this skill, ensure the following are configured in `TOOLS.md`:
+在使用此技能之前，请确保在 `TOOLS.md` 中配置了以下内容：
 
-- **API Token:** `CLICKUP_API_KEY`
-- **Team/Workspace ID:** `CLICKUP_TEAM_ID`
-- **Space IDs** (optional, for filtering)
-- **List IDs** (optional, for creating tasks)
+- **API 密钥：** `CLICKUP_API_KEY`
+- **团队/工作区 ID：** `CLICKUP_TEAM_ID`
+- **空间 ID**（可选，用于过滤）
+- **列表 ID**（可选，用于创建任务）
 
-## Quick Start
+## 快速入门
 
-### Using the Helper Script
+### 使用辅助脚本
 
-The fastest way to query ClickUp:
+查询 ClickUp 数据的最快方法是使用辅助脚本：
 
 ```bash
 # Set environment variables
@@ -40,9 +40,9 @@ export CLICKUP_TEAM_ID="90161392624"
 ./scripts/clickup-query.sh task <task-id>
 ```
 
-### Direct API Calls
+### 直接调用 API
 
-For custom queries or operations not covered by the helper script:
+对于辅助脚本未覆盖的自定义查询或操作，可以直接调用 API：
 
 ```bash
 # Get all open tasks (with subtasks and pagination)
@@ -50,11 +50,11 @@ curl "https://api.clickup.com/api/v2/team/{team_id}/task?include_closed=false&su
   -H "Authorization: {api_key}"
 ```
 
-## Critical Rules
+## 重要规则
 
-### 1. ALWAYS Include Subtasks
+### 1. **务必包含子任务**
 
-**Never** query tasks without `subtasks=true`:
+**绝对不要** 在不设置 `subtasks=true` 的情况下查询任务：
 
 ```bash
 # ✅ CORRECT
@@ -64,11 +64,11 @@ curl "https://api.clickup.com/api/v2/team/{team_id}/task?include_closed=false&su
 (no subtasks parameter)
 ```
 
-**Why:** Without this parameter, you miss potentially 70%+ of actual tasks. Parent tasks are just containers; real work happens in subtasks.
+**原因：** 如果不设置此参数，你可能会遗漏 70% 以上的实际任务。父任务只是任务的容器，真正的工作内容都在子任务中完成。
 
-### 2. Handle Pagination
+### 2. 处理分页
 
-ClickUp API returns max 100 tasks per page. **Always** loop until `last_page: true`:
+ClickUp API 每页最多返回 100 个任务。**必须** 一直循环查询，直到 `last_page: true` 为 true：
 
 ```bash
 page=0
@@ -86,9 +86,9 @@ while true; do
 done
 ```
 
-**Why:** Workspaces with 300+ tasks need 3-4 pages. Missing pages = incomplete data.
+**原因：** 如果工作区中有 300 个以上的任务，可能需要查询 3-4 页才能获取所有数据。遗漏页面会导致数据不完整。
 
-### 3. Distinguish Parent Tasks vs Subtasks
+### 3. 区分父任务和子任务
 
 ```bash
 # Parent tasks have parent=null
@@ -98,9 +98,9 @@ jq '.tasks[] | select(.parent == null)'
 jq '.tasks[] | select(.parent != null)'
 ```
 
-## Common Operations
+## 常见操作
 
-### Get Task Counts
+### 获取任务数量
 
 ```bash
 # Using helper script (recommended)
@@ -116,7 +116,7 @@ jq '{
 }'
 ```
 
-### Get Assignee Breakdown
+### 获取任务分配者信息
 
 ```bash
 # Using helper script (recommended)
@@ -132,7 +132,7 @@ jq -r '.tasks[] |
     end' | sort | uniq -c | sort -rn
 ```
 
-### Create a Task
+### 创建任务
 
 ```bash
 curl "https://api.clickup.com/api/v2/list/{list_id}/task" \
@@ -148,7 +148,7 @@ curl "https://api.clickup.com/api/v2/list/{list_id}/task" \
   }'
 ```
 
-### Update a Task
+### 更新任务
 
 ```bash
 curl "https://api.clickup.com/api/v2/task/{task_id}" \
@@ -162,7 +162,7 @@ curl "https://api.clickup.com/api/v2/task/{task_id}" \
   }'
 ```
 
-### Get Specific Task
+### 获取特定任务
 
 ```bash
 # Using helper script
@@ -173,45 +173,45 @@ curl "https://api.clickup.com/api/v2/task/{task_id}" \
   -H "Authorization: {api_key}"
 ```
 
-## Advanced Queries
+## 高级查询
 
-### Filter by Space
+### 按空间过滤
 
 ```bash
 curl "https://api.clickup.com/api/v2/team/{team_id}/task?space_ids[]={space_id}&subtasks=true" \
   -H "Authorization: {api_key}"
 ```
 
-### Filter by List
+### 按列表过滤
 
 ```bash
 curl "https://api.clickup.com/api/v2/list/{list_id}/task?subtasks=true" \
   -H "Authorization: {api_key}"
 ```
 
-### Include Closed Tasks
+### 包含已关闭的任务
 
 ```bash
 curl "https://api.clickup.com/api/v2/team/{team_id}/task?include_closed=true&subtasks=true" \
   -H "Authorization: {api_key}"
 ```
 
-## Reference Documentation
+## 参考文档
 
-For detailed API documentation, query patterns, and troubleshooting:
+有关详细的 API 文档、查询模式和故障排除方法，请参阅：
 
-**Read:** `references/api-guide.md`
+**阅读：** `references/api-guide.md`
 
-Covers:
-- Full API endpoint reference
-- Response structure details
-- Common gotchas and solutions
-- Rate limits and best practices
-- Task object schema
+文档内容包括：
+- 完整的 API 端点参考
+- 响应结构详情
+- 常见问题及解决方法
+- 速率限制和最佳实践
+- 任务对象结构
 
-## Workflow Patterns
+## 工作流程示例
 
-### Daily Standup Report
+### 日常站会报告
 
 ```bash
 # Get all open tasks grouped by assignee
@@ -222,7 +222,7 @@ curl "https://api.clickup.com/api/v2/team/{team_id}/task?subtasks=true&assignees
   -H "Authorization: {api_key}"
 ```
 
-### Task Audit
+### 任务审核
 
 ```bash
 # Count tasks by status
@@ -234,7 +234,7 @@ curl "https://api.clickup.com/api/v2/team/{team_id}/task?subtasks=true&assignees
   jq '.tasks[] | select(.assignees | length == 0)'
 ```
 
-### Priority Analysis
+### 任务优先级分析
 
 ```bash
 # Count by priority
@@ -242,20 +242,20 @@ curl "https://api.clickup.com/api/v2/team/{team_id}/task?subtasks=true&assignees
   jq -r '.tasks[] | .priority.priority // "none"' | sort | uniq -c | sort -rn
 ```
 
-## Tips
+## 提示
 
-- **Helper script first:** Use `scripts/clickup-query.sh` for common operations
-- **Direct API for custom:** Use curl when you need specific filters or updates
-- **Always read api-guide.md:** Contains full endpoint reference and troubleshooting
-- **Check TOOLS.md:** For workspace-specific IDs and configuration
-- **Test with small queries:** When unsure, test with `| head -n 5` first
-- **Filter by user ID:** Use `assignees[]={user_id}` parameter, not jq username matching
+- **优先使用辅助脚本：** 对于常见操作，使用 `scripts/clickup-query.sh` 脚本。
+- **需要自定义查询或更新时使用直接 API：** 当需要特定过滤条件或更新时，可以使用 `curl`。
+- **务必阅读 api-guide.md：** 包含完整的 API 端点参考和故障排除方法。
+- **查看 TOOLS.md：** 了解与工作区相关的 ID 和配置信息。
+- **使用小规模查询进行测试：** 在不确定如何操作时，可以先使用 `| head -n 5` 进行测试。
+- **按用户 ID 过滤任务：** 使用 `assignees[]={user_id}` 参数进行过滤，而不是使用 `jq` 进行文本匹配。
 
-## Troubleshooting
+## 故障排除
 
-- **Missing tasks?** → Add `subtasks=true`
-- **Only 100 tasks returned?** → Implement pagination loop
-- **401 Unauthorized?** → Check `CLICKUP_API_KEY` is set correctly
-- **Rate limit error?** → Wait 1 minute (100 requests/min limit)
-- **Empty assignees array?** → Task is unassigned (not an error)
-- **Assignee filter returns fewer tasks than expected?** → Use user ID in `assignees[]` param, not jq text matching
+- **任务缺失？** → 确保设置了 `subtasks=true`。
+- **只返回了 100 个任务？** → 实现分页查询。
+- **收到 401 Unauthorized 错误？** → 检查 `CLICKUP_API_KEY` 是否设置正确。
+- **遇到速率限制错误？** → 等待 1 分钟（每分钟最多 100 次请求）。
+- **分配者数组为空？** → 可能是因为任务尚未分配给任何用户（这不是错误）。
+- **按分配者过滤后返回的任务数量少于预期？** → 使用 `assignees[]` 参数中的用户 ID 进行过滤，而不是使用 `jq` 进行文本匹配。

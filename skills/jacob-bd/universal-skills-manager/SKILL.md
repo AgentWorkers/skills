@@ -1,6 +1,6 @@
 ---
 name: universal-skills-manager
-description: The master coordinator for AI skills. Discovers skills from multiple sources (SkillsMP.com, SkillHub, and ClawHub), manages installation, and synchronization across Claude Code, Gemini CLI, Google Anti-Gravity, OpenCode, and other AI tools. Handles User-level (Global) and Project-level (Local) scopes.
+description: AI技能的主协调者。负责从多个来源（SkillsMP.com、SkillHub 和 ClawHub）获取技能信息，管理这些技能的安装过程，并确保它们在 Claude Code、Gemini CLI、Google Anti-Gravity、OpenCode 等 AI 工具中的同步。该协调者同时支持用户级（全局）和项目级（本地）的技能管理需求。
 homepage: https://github.com/jbendavi/universal-skills_mp-manager
 disable-model-invocation: true
 metadata:
@@ -10,737 +10,413 @@ metadata:
     primaryEnv: SKILLSMP_API_KEY
 ---
 
-<!-- Version: 1.5.1 -->
-
-# Universal Skills Manager
-
-This skill empowers the agent to act as a centralized package manager for AI capabilities. It discovers skills from multiple sources — SkillsMP.com (curated, AI semantic search), SkillHub (173k+ community skills, no API key required), and ClawHub (5,700+ versioned skills, semantic search, no API key required) — and unifies skill management across multiple AI tools (Claude Code, Gemini, Anti-Gravity, OpenCode, Cursor, etc.), ensuring consistency and synchronization.
-
-## When to Use This Skill
-
-Activate this skill when the user:
-- Wants to **find or search** for new skills.
-- Wants to **install** a skill (from a search result or local file).
-- Wants to **sync** skills between different AI tools (e.g., "Copy this Gemini skill to OpenCode").
-- Asks to **move or copy** skills between scopes (User vs. Project).
-- Mentions "Google Anti-Gravity", "OpenCode", or "Gemini" in the context of skills/extensions.
-- Wants to **package this skill for claude.ai or Claude Desktop** (ZIP upload).
-
-## Supported Ecosystem
-
-This skill manages the following tools and scopes. Always verify these paths exist before acting.
-
-| Tool | User Scope (Global) | Project Scope (Local) |
-| :--- | :--- | :--- |
-| **Gemini CLI** | `~/.gemini/skills/` | `./.gemini/skills/` |
-| **Google Anti-Gravity** | `~/.gemini/antigravity/skills/` | `./.antigravity/extensions/` |
-| **OpenCode** | `~/.config/opencode/skills/` | `./.opencode/skills/` |
-| **OpenClaw** | `~/.openclaw/workspace/skills/` | `./.openclaw/skills/` |
-| **Claude Code** | `~/.claude/skills/` | `./.claude/skills/` |
-| **OpenAI Codex** | `~/.codex/skills/` | `./.codex/skills/` |
-| **block/goose** | `~/.config/goose/skills/` | `./.goose/agents/` |
-| **Roo Code** | `~/.roo/skills/` | `./.roo/skills/` |
-| **Cursor** | `~/.cursor/extensions/` | `./.cursor/extensions/` |
-
-**claude.ai / Claude Desktop (ZIP Upload Required):**
-
-| Platform | Installation Method |
-| :--- | :--- |
-| **claude.ai** | Upload ZIP via Settings → Capabilities → Upload Skill |
-| **Claude Desktop** | Upload ZIP via Settings → Capabilities → Upload Skill |
-
-*Note: claude.ai and Claude Desktop don't have access to local environment variables. Use the "Package for claude.ai/Desktop" capability (Section 5) to embed your API key in the ZIP.*
-
-**IMPORTANT - Universal Skills Manager Platform Limitations:**
-
-This skill (Universal Skills Manager) requires network access to call the SkillsMP API, SkillHub API, ClawHub API, and GitHub. Handle these scenarios:
-
-- **If user asks to package/ZIP the Universal Skills Manager itself for claude.ai:**
-  Tell the user: "The Universal Skills Manager won't work on claude.ai because it requires network access to call the SkillsMP API, SkillHub API, ClawHub API, and GitHub APIs. claude.ai's code execution environment doesn't allow outbound network requests. However, I can package OTHER skills for claude.ai upload - those will work as long as they don't require network access."
-
-- **If user wants to try the Universal Skills Manager on Claude Desktop with Coworker:**
-  Tell the user: "Claude Desktop with Coworker has network access capabilities. To use the Universal Skills Manager there, you may need to extend network access to these domains in your Cowork settings:
-  - `skillsmp.com` (for SkillsMP skill searches)
-  - `skills.palebluedot.live` (for SkillHub skill searches)
-  - `clawhub.ai` (for ClawHub skill searches and direct file downloads)
-  - `api.github.com` and `raw.githubusercontent.com` (for skill downloads from GitHub)
-  
-  This is experimental - Cowork's default network access is restricted. Check your Cowork network egress settings."
-
-*(Note: If a tool uses a different directory structure, ask the user to confirm the path, then note it for future reference.)*
-
-## Core Capabilities
-
-### 1. Smart Installation & Synchronization
-**Trigger:** User asks to install a skill (e.g., "Install the debugging skill" or "Install skill ID xyz").
-
-**Procedure:**
-1.  **Identify Source:**
-    *   If from SkillsMP search result: Use the `githubUrl` from the API response
-    *   If from SkillHub search result: Fetch skill details via `/api/skills/{id}` to get `skillPath` and `branch`, then construct GitHub tree URL
-    *   If from ClawHub search result: Use the `slug` to fetch content via ClawHub's `/file` endpoint (see Section C below)
-    *   If from skill name/ID: Search available sources (SkillsMP, SkillHub, and/or ClawHub) to find the skill
-    *   If local: Identify the source path
-2.  **Verify Repository Structure (CRITICAL):**
-    *   Before downloading, browse the GitHub repo to confirm the skill folder location
-    *   Use GitHub API to list directory contents: `GET /repos/{owner}/{repo}/contents?ref={branch}`
-    *   Look for folders containing `SKILL.md` - this is the actual skill directory
-    *   Common patterns: `skill/`, `skills/{name}/`, root level, or custom folder names
-    *   Confirm the correct path before generating the download URL
-3.  **Download Using Helper Script:**
-    *   Use `install_skill.py` (located in this skill's `scripts/` folder):
-    ```bash
-    python3 ~/.claude/skills/universal-skills-manager/scripts/install_skill.py \
-      --url "https://github.com/{owner}/{repo}/tree/{branch}/{skill-folder}" \
-      --dest "{target-path}" \
-      --dry-run  # Preview first, then remove flag to install
-    ```
-    *   The script handles: atomic install, validation, subdirectories, safety checks
-    *   **Safety feature**: Script will abort (exit code 4) if destination is a root skills directory
-    *   **Update detection**: If skill exists, shows diff and prompts for confirmation
-    *   **Security scan**: The install script automatically scans downloaded skills for security threats (invisible characters, data exfiltration, prompt injection). Review any findings before proceeding.
-4.  **Determine Primary Target:**
-    *   Ask: "Should this be installed Globally (User) or Locally (Project)?"
-    *   Determine the primary tool (e.g., if user is in Claude Code, Claude is primary)
-5.  **The "Sync Check" (CRITICAL):**
-    *   **Scan:** Check if other supported tools are installed on the system (look for their config folders)
-    *   **Propose:** "I see you also have OpenCode and Cursor installed. Do you want to sync this skill to them as well?"
-6.  **Execute:**
-    *   Run the install script for each target location
-    *   Ensure the standard structure is maintained
-7.  **Report Success:**
-    *   Show installed skill name, author, and location(s)
-    *   Display GitHub URL and stars count for reference
-
-### 2. The "Updates & Consistency" Check
-**Trigger:** User modifies a skill or asks to "sync" skills.
-
-**Procedure:**
-1.  **Compare:** Check the modification times or content of the skill across all installed locations.
-2.  **Report:** "The 'code-review' skill in Gemini is newer than the one in OpenCode."
-3.  **Action:** Offer to overwrite older versions with the newer version to ensure consistency.
-
-### 3. Skill Discovery (Multi-Source)
-**Trigger:** User searches for skills (e.g., "Find a debugging skill" or "Search for React skills").
-
-**Procedure:**
-1.  **Discover API Key and Select Source:**
-    *   **Step 1 - Environment Variable:** Check `$SKILLSMP_API_KEY`
-        ```bash
-        printenv SKILLSMP_API_KEY
-        ```
-        If set and non-empty, use SkillsMP as the primary search source.
-        **Note:** Use `printenv` (not `echo $VAR`) — it queries the process environment directly and is more reliable across shell contexts.
-
-    *   **Step 2 - Config File:** Check for `config.json` in this skill's directory
-        ```bash
-        # Look for config.json in skill directory (path varies by tool)
-        cat ~/.claude/skills/universal-skills-manager/config.json 2>/dev/null
-        ```
-        If `skillsmp_api_key` field has a non-empty value, use SkillsMP as primary source.
-
-    *   **Step 3 - Source Selection:** If no API key found, present the user with a choice:
-        > "I don't see a SkillsMP API key configured. You have three options:
-        >
-        > A) Provide your SkillsMP API key (get one at skillsmp.com) — curated skills with AI semantic search
-        >
-        > B) Search SkillHub's open catalog — 173k+ community skills, no API key needed
-        >
-        > C) Search ClawHub — 5,700+ versioned skills with semantic search, no API key needed
-        >
-        > Which would you prefer?"
-
-        -   If user chooses **A**: Collect key, store in memory for this session, proceed with SkillsMP
-        -   If user chooses **B**: Proceed with SkillHub search (no key needed)
-        -   If user chooses **C**: Proceed with ClawHub search (no key needed)
-
-    *   **Security:** Never log, display, or echo the full API key value.
-
-    **Note for claude.ai/Desktop users:** Environment variables are not available. Use the "Package for claude.ai/Desktop" capability (Section 5) to create a ZIP with your API key embedded, or provide your key when prompted.
-
-2.  **Execute Search Based on Selected Source:**
-
-    **If using SkillsMP (primary, curated):**
-    -   **Choose method:**
-        -   **Keyword Search** (`/api/v1/skills/search`): For specific terms, exact matches
-        -   **AI Semantic Search** (`/api/v1/skills/ai-search`): For natural language queries (e.g., "help me debug code")
-    -   **IMPORTANT:** Always capture the API key into a local variable first, then use it. Direct `$SKILLSMP_API_KEY` expansion in curl can fail in some shell contexts:
-        ```bash
-        # Step 1: Capture key (do this once per session)
-        API_KEY=$(printenv SKILLSMP_API_KEY)
-
-        # Step 2: Use ${API_KEY} in curl commands
-        # Keyword Search
-        curl -X GET "https://skillsmp.com/api/v1/skills/search?q={query}&limit=20&sortBy=recent" \
-          -H "Authorization: Bearer ${API_KEY}"
-
-        # AI Semantic Search (for natural language queries)
-        curl -X GET "https://skillsmp.com/api/v1/skills/ai-search?q={query}" \
-          -H "Authorization: Bearer ${API_KEY}"
-        ```
-    -   **Parse:** Extract from `data.skills[]` (keyword) or `data.data[]` (AI search)
-    -   Available fields: `id`, `name`, `author`, `description`, `githubUrl`, `skillUrl`, `stars`, `updatedAt`
-    -   **Note:** SkillsMP requires a `q` parameter — there is no browse/list endpoint. For "top skills" or browsing without a specific query, use SkillHub or ClawHub instead (both support browsing by stars/downloads).
-
-    **If using SkillHub (open catalog, no auth):**
-    -   **Execute:**
-        ```bash
-        # SkillHub Search (no authentication required)
-        curl -X GET "https://skills.palebluedot.live/api/skills?q={query}&limit=20"
-        ```
-    -   **Parse:** Extract from `skills[]` array
-    -   Available fields: `id`, `name`, `description`, `githubOwner`, `githubRepo`, `githubStars`, `downloadCount`, `securityScore`
-    -   **Note:** SkillHub does not have an AI semantic search — keyword search only
-
-    **If using ClawHub (versioned skills, semantic search, no auth):**
-    -   **Choose method:**
-        -   **Semantic Search** (`/api/v1/search`): For natural language queries — returns results ranked by vector similarity `score`
-        -   **Browse/List** (`/api/v1/skills`): For browsing by popularity, stars, or recency
-    -   **Execute:**
-        ```bash
-        # Semantic Search (vector/similarity search)
-        curl -X GET "https://clawhub.ai/api/v1/search?q={query}&limit=20"
-
-        # Browse by stars or downloads
-        curl -X GET "https://clawhub.ai/api/v1/skills?limit=20&sort=stars"
-        ```
-    -   **Parse:**
-        -   Semantic search: Extract from `results[]` array — each has `score`, `slug`, `displayName`, `summary`, `version`, `updatedAt`
-        -   Browse: Extract from `items[]` array — each has `slug`, `displayName`, `summary`, `version`, `stats.stars`, `stats.downloads`
-    -   **Note:** ClawHub hosts skill files directly (not on GitHub). Use the `slug` field when installing — see Section C.
-
-3.  **Display Results (Unified Format):**
-    Display results in a consistent table format regardless of source. Include the **Source** column to indicate origin:
-
-    ```
-    | # | Skill | Author | Stars | Source | Description |
-    |---|-------|--------|-------|--------|-------------|
-    | 1 | debugging-strategies | wshobson | 27,021 | SkillHub | Master systematic debugging... |
-    | 2 | code-debugging | AuthorX | 15 | SkillsMP | Systematic debugging methodology... |
-    | 3 | self-improving-agent | clawhub-user | 42 | ClawHub | Agent that improves itself... |
-    ```
-
-    -   For SkillsMP AI search: Also show relevance score
-    -   For SkillHub: Show `securityScore` if available
-    -   For ClawHub semantic search: Show similarity `score` if available
-    -   Limit to top 10-15 results for readability
-
-4.  **Search More Sources:**
-    After displaying results from any source, offer to search the remaining unsearched sources:
-
-    -   **If 2 sources remain:** "Want to also search {source1} or {source2}? Or both?"
-    -   **If 1 source remains:** "Want to also search {source}?"
-
-    Available sources: SkillsMP (requires API key), SkillHub (no key), ClawHub (no key)
-
-    If yes:
-    -   Query the selected source(s) with the same search terms
-    -   **Deduplicate:** Compare results across sources:
-        -   SkillsMP ↔ SkillHub: By full skill ID (`{owner}/{repo}/{path}`)
-        -   ClawHub ↔ others: By skill name (ClawHub uses slugs, not GitHub paths)
-    -   Append unique results to the display, labeled with their source tag
-
-5.  **Offer Installation:**
-    -   After displaying results, ask: "Which skill would you like to install?"
-    -   For SkillsMP results: Note the skill's `githubUrl` for content fetching
-    -   For SkillHub results: Note the skill's `id` for detail fetching (needed to get `skillPath` and `branch`)
-    -   For ClawHub results: Note the skill's `slug` for direct file fetching via ClawHub's `/file` endpoint
-
-### 4. Skill Matrix Report
-**Trigger:** User asks for skill report/overview (e.g., "Show my skills", "What skills do I have?", "Skill report", "Compare my tools").
-
-**Procedure:**
-1.  **Detect Installed Tools:**
-    Check which AI tools are installed by verifying their user-level skills directories exist:
-    ```bash
-    # Check each tool's skills directory
-    ls -d ~/.claude/skills 2>/dev/null && echo "Claude: ✓"
-    ls -d ~/.codex/skills 2>/dev/null && echo "Codex: ✓"
-    ls -d ~/.gemini/skills 2>/dev/null && echo "Gemini: ✓"
-    ls -d ~/.gemini/antigravity/skills 2>/dev/null && echo "Antigravity: ✓"
-    ls -d ~/.openclaw/workspace/skills 2>/dev/null && echo "OpenClaw: ✓"
-    ls -d ~/.cursor/extensions 2>/dev/null && echo "Cursor: ✓"
-    ls -d ~/.config/opencode/skills 2>/dev/null && echo "OpenCode: ✓"
-    ls -d ~/.roo/skills 2>/dev/null && echo "Roo: ✓"
-    ls -d ~/.config/goose/skills 2>/dev/null && echo "Goose: ✓"
-    ```
-
-2.  **Collect All Skills:**
-    For each detected tool, list skill folders:
-    ```bash
-    find ~/.{claude,codex,gemini,gemini/antigravity,openclaw/workspace,config/opencode,config/goose,roo}/skills -maxdepth 1 -type d 2>/dev/null | \
-      xargs -I{} basename {} | sort -u
-    ```
-
-3.  **Generate Matrix Table:**
-    Create a markdown table where:
-    - **Rows** = skill names (deduplicated across all tools)
-    - **Columns** = only tools that are installed on the system
-    - **Cells** = ✅ (installed) or ❌ (not installed)
-
-    Example output:
-    ```
-    | Skill | Claude | Codex | Gemini |
-    |-------|--------|-------|--------|
-    | humanizer | ✅ | ❌ | ✅ |
-    | skill-creator | ❌ | ✅ | ❌ |
-    | using-superpowers | ✅ | ✅ | ✅ |
-    ```
-
-4.  **Show Summary:**
-    - Total skills across all tools
-    - Skills unique to one tool
-    - Skills installed everywhere
-
-### 5. Package for claude.ai / Claude Desktop
-
-**Trigger:** User wants to use this skill in claude.ai or Claude Desktop (e.g., "Package this for claude.ai", "Create a ZIP for Claude Desktop", "I want to upload this skill to claude.ai", "Prepare skill for web upload").
-
-**Procedure:**
-1.  **Explain the Process:**
-    "I'll create a ZIP file with this skill ready for upload to claude.ai or Claude Desktop. Since cloud environments don't have access to your local environment variables, I'll embed your API key in the package."
-
-2.  **Collect API Key:**
-    *   Ask: "Please provide your SkillsMP API key. You can get one at https://skillsmp.com"
-    *   Wait for user to provide the key
-    *   **Security:** Do not echo or display the key back to the user
-    *   **Note:** The API key is stored locally in `config.json` inside the ZIP package. It is never transmitted to any third-party server by this skill. The key is only used at runtime to authenticate with the SkillsMP API when searching for skills.
-
-3.  **Create Package Contents:**
-    *   Create a temporary directory structure:
-        ```
-        universal-skills-manager/
-        ├── SKILL.md          # Copy from current skill
-        ├── config.json       # Create with embedded API key
-        └── scripts/
-            └── install_skill.py  # Copy from current skill
-        ```
-    *   Generate `config.json` with the user's API key:
-        ```json
-        {
-          "skillsmp_api_key": "USER_PROVIDED_KEY_HERE"
-        }
-        ```
-
-4.  **Create ZIP File:**
-    *   Use Python to create the ZIP:
-        ```python
-        import zipfile
-        import json
-        import tempfile
-        from pathlib import Path
-        
-        # Create ZIP in user's Downloads or current directory
-        zip_path = Path.home() / "Downloads" / "universal-skills-manager.zip"
-        skill_dir = Path("~/.claude/skills/universal-skills-manager").expanduser()
-        
-        with tempfile.TemporaryDirectory() as temp_dir:
-            temp_path = Path(temp_dir)
-            
-            # Copy skill files
-            for file_path in skill_dir.rglob('*'):
-                if file_path.is_file() and file_path.name != 'config.json':
-                    rel_path = file_path.relative_to(skill_dir)
-                    dest = temp_path / rel_path
-                    dest.parent.mkdir(parents=True, exist_ok=True)
-                    dest.write_bytes(file_path.read_bytes())
-            
-            # Create config.json with API key
-            config = {"skillsmp_api_key": "USER_API_KEY"}
-            (temp_path / "config.json").write_text(json.dumps(config, indent=2))
-            
-            # Create ZIP
-            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-                for file_path in temp_path.rglob('*'):
-                    if file_path.is_file():
-                        arcname = f"universal-skills-manager/{file_path.relative_to(temp_path)}"
-                        zf.write(file_path, arcname)
-        ```
-    *   Alternatively, provide the ZIP as a downloadable artifact
-
-5.  **Provide Upload Instructions:**
-    *   "Your skill package is ready! To use it:"
-    *   "1. Download the ZIP file: `universal-skills-manager.zip`"
-    *   "2. Go to claude.ai → Settings → Capabilities"
-    *   "3. Scroll to Skills section and click 'Upload skill'"
-    *   "4. Select the ZIP file and upload"
-    *   "5. Enable the skill and start using it!"
-
-6.  **Security Reminder:**
-    *   "Note: This ZIP contains your API key. Do not share it publicly or commit it to version control."
-
-## Operational Rules
-
-1.  **Structure Integrity:** When installing, always ensure the skill has its own folder (e.g., `.../skills/my-skill/`). Do not dump loose files into the root skills directory.
-2.  **Conflict Safety:** If a skill already exists at a target location, **always** ask before overwriting, unless the user explicitly requested a "Force Sync."
-3.  **OpenClaw Note:** OpenClaw may require a restart to pick up new skills if `skills.load.watch` is not enabled in `openclaw.json`. Warn the user of this after installation.
-4.  **Cross-Platform Adaptation:**
-    *   Gemini uses `SKILL.md`.
-    *   If OpenCode or Anti-Gravity require a specific manifest (e.g., `manifest.json`), generate a basic one based on the `SKILL.md` frontmatter during installation.
-
-## Available Tools
-- `bash` (curl): Make API calls to SkillsMP.com, SkillHub (skills.palebluedot.live), and ClawHub (clawhub.ai); fetch skill content from GitHub or ClawHub directly.
-- `web_fetch`: Fetch skill content from GitHub raw URLs, SkillHub API, or ClawHub API (alternative to curl).
-- `read_file` / `write_file`: Manage local skill files.
-- `glob`: Find existing skills in local directories.
-
-## Implementation Details
-
-### Skill Structure
-Skills typically contain:
-- **SKILL.md** (required): Main instructions with frontmatter.
-- **Reference docs**: Additional documentation files.
-- **Scripts**: Helper scripts (Python, shell, etc.).
-- **Config files**: JSON, YAML configurations.
-
-### Installation Logic
-
-#### A. Installing from SkillsMP API
-1.  **Fetch Skill Content:**
-    -   Convert `githubUrl` to raw content URL:
-        ```
-        Input:  https://github.com/{user}/{repo}/tree/{branch}/{path}
-        Output: https://raw.githubusercontent.com/{user}/{repo}/{branch}/{path}/SKILL.md
-        ```
-    -   Fetch the SKILL.md content using curl or web_fetch
-
-2.  **Create Directory:**
-    -   Use skill `name` from API response for directory: `.../skills/{skill-name}/`
-    -   Example: `.../skills/code-debugging/`
-
-3.  **Save SKILL.md:**
-    -   Write the fetched content to `SKILL.md` in the new directory
-    -   Preserve the original YAML frontmatter and content
-
-4.  **Handle Additional Files (Optional):**
-    -   Check if GitHub repo has additional files (reference docs, scripts)
-    -   Optionally fetch and save them to maintain complete skill package
-
-5.  **Confirm:**
-    -   Report: "Installed '{name}' by {author} to {path}"
-    -   Show GitHub URL and stars count
-    -   Offer sync to other AI tools
-
-#### B. Installing from SkillHub
-1.  **Fetch Skill Details:**
-    -   Use the skill's `id` from the search result to get full details:
-        ```bash
-        curl -X GET "https://skills.palebluedot.live/api/skills/{id}"
-        ```
-    -   **IMPORTANT:** The `id` field (e.g., `wshobson/agents/debugging-strategies`) does NOT map to the file path within the repo. You MUST use the detail endpoint to get the actual `skillPath` and `branch`.
-    -   Extract from response: `githubOwner`, `githubRepo`, `branch`, `skillPath`
-
-2.  **Construct GitHub URL:**
-    -   Build the GitHub tree URL from the detail response:
-        ```
-        https://github.com/{githubOwner}/{githubRepo}/tree/{branch}/{skillPath}
-        ```
-    -   Example: `https://github.com/wshobson/agents/tree/main/plugins/developer-essentials/skills/debugging-strategies`
-
-3.  **Download Using Helper Script:**
-    -   From this point, the flow is identical to SkillsMP installation:
-        ```bash
-        python3 ~/.claude/skills/universal-skills-manager/scripts/install_skill.py \
-          --url "https://github.com/{githubOwner}/{githubRepo}/tree/{branch}/{skillPath}" \
-          --dest "{target-path}"
-        ```
-
-4.  **Confirm:**
-    -   Report: "Installed '{name}' from SkillHub to {path}"
-    -   Show GitHub URL and stars count
-    -   Offer sync to other AI tools
-
-#### C. Installing from ClawHub
-ClawHub hosts skill files directly (not on GitHub), so the install flow bypasses `install_skill.py` and fetches content via ClawHub's API.
-
-1.  **Fetch SKILL.md Content:**
-    -   Use ClawHub's file endpoint to get the raw SKILL.md:
-        ```bash
-        curl -s "https://clawhub.ai/api/v1/skills/{slug}/file?path=SKILL.md" \
-          -o /tmp/clawhub-{slug}/SKILL.md
-        ```
-    -   **IMPORTANT:** This endpoint returns raw `text/plain` content, NOT JSON. Save the response body directly as the file.
-    -   The `x-content-sha256` response header can be used to verify file integrity.
-
-2.  **Handle Multi-File Skills (if applicable):**
-    -   If the skill has additional files (scripts, configs), use ClawHub's download endpoint:
-        ```bash
-        curl -s "https://clawhub.ai/api/v1/download?slug={slug}" \
-          -o /tmp/clawhub-{slug}.zip
-        unzip -o /tmp/clawhub-{slug}.zip -d /tmp/clawhub-{slug}/
-        ```
-    -   To check if a skill has multiple files, inspect the detail response from `GET /api/v1/skills/{slug}` — the `latestVersion` object may indicate file count.
-
-3.  **Run Security Scan:**
-    -   Since `install_skill.py` is bypassed, run the security scanner manually:
-        ```bash
-        python3 ~/.claude/skills/universal-skills-manager/scripts/scan_skill.py /tmp/clawhub-{slug}/
-        ```
-    -   Review any findings before proceeding. ClawHub has VirusTotal integration but our scan provides an additional layer.
-
-4.  **Validate YAML Frontmatter:**
-    -   Verify the SKILL.md has valid YAML frontmatter (name, description fields).
-    -   If invalid, warn the user and ask whether to proceed.
-
-5.  **Create Directory and Install:**
-    -   Create the target directory: `.../skills/{slug}/`
-    -   Copy all files from the temp directory to the destination:
-        ```bash
-        mkdir -p {target-path}/{slug}
-        cp -r /tmp/clawhub-{slug}/* {target-path}/{slug}/
-        ```
-
-6.  **Confirm:**
-    -   Report: "Installed '{displayName}' (v{version}) from ClawHub to {path}"
-    -   Show version info and stars count
-    -   Offer sync to other AI tools
-
-7.  **Cleanup:**
-    -   Remove the temporary directory:
-        ```bash
-        rm -rf /tmp/clawhub-{slug}/ /tmp/clawhub-{slug}.zip
-        ```
-
-#### D. Installing from Local Source (Sync/Copy)
-1.  **Retrieve:** Read all files from the source directory.
-2.  **Create Directory:** Create the target directory `.../skills/{slug}/`.
-3.  **Save Files:** Copy all files to the new location, preserving filenames.
-
-### SkillsMP API Configuration
-
-**Base URL:** `https://skillsmp.com/api/v1`
-
-**Authentication:**
-```bash
-Authorization: Bearer $SKILLSMP_API_KEY
-```
-
-**Available Endpoints:**
-- `GET /api/v1/skills/search?q={query}&page={1}&limit={20}&sortBy={recent|stars}`
-- `GET /api/v1/skills/ai-search?q={query}`
-
-**Response Format (Keyword Search):**
-```json
-{
-  "success": true,
-  "data": {
-    "skills": [
-      {
-        "id": "...",
-        "name": "skill-name",
-        "author": "AuthorName",
-        "description": "...",
-        "githubUrl": "https://github.com/user/repo/tree/main/path",
-        "skillUrl": "https://skillsmp.com/skills/...",
-        "stars": 10,
-        "updatedAt": 1768838561
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 3601,
-      "totalPages": 1801,
-      "hasNext": true
-    }
-  }
-}
-```
-
-**Response Format (AI Search):**
-```json
-{
-  "success": true,
-  "data": {
-    "search_query": "...",
-    "data": [
-      {
-        "file_id": "...",
-        "filename": "...",
-        "score": 0.656,
-        "skill": {
-          "id": "...",
-          "name": "...",
-          "author": "...",
-          "description": "...",
-          "githubUrl": "...",
-          "skillUrl": "...",
-          "stars": 0,
-          "updatedAt": 1769542668
-        }
-      }
-    ]
-  }
-}
-```
-
-**Error Handling:**
-- `401`: Invalid or missing API key
-- `400`: Missing required query parameter
-- `500`: Internal server error
-
-### SkillHub API Configuration
-
-**Base URL:** `https://skills.palebluedot.live/api`
-
-**Authentication:** None required (open API)
-
-**Available Endpoints:**
-- `GET /api/skills?q={query}&limit={20}` — Search skills by keyword
-- `GET /api/skills/{id}` — Get full skill details (includes `skillPath`, `branch`, `rawContent`)
-- `GET /api/categories` — List skill categories
-- `GET /api/health` — Health check
-
-**Search Response Format:**
-```json
-{
-  "skills": [
-    {
-      "id": "wshobson/agents/debugging-strategies",
-      "name": "debugging-strategies",
-      "description": "Master systematic debugging...",
-      "githubOwner": "wshobson",
-      "githubRepo": "agents",
-      "githubStars": 27021,
-      "downloadCount": 0,
-      "securityScore": 100,
-      "securityStatus": null,
-      "rating": 0,
-      "isVerified": false,
-      "compatibility": { "platforms": [] }
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 1000,
-    "totalPages": 50
-  },
-  "searchEngine": "meilisearch",
-  "processingTimeMs": 10
-}
-```
-
-**Detail Response Format (GET /api/skills/{id}):**
-```json
-{
-  "id": "wshobson/agents/debugging-strategies",
-  "name": "debugging-strategies",
-  "description": "...",
-  "githubOwner": "wshobson",
-  "githubRepo": "agents",
-  "skillPath": "plugins/developer-essentials/skills/debugging-strategies",
-  "branch": "main",
-  "githubStars": 27021,
-  "rawContent": "---\nname: debugging-strategies\n..."
-}
-```
-
-**Key Fields for Installation:**
-- `skillPath`: The actual directory path within the GitHub repo (CRITICAL — the `id` does NOT match the file path)
-- `branch`: The branch name (e.g., `main`)
-- `githubOwner` + `githubRepo`: Used to construct the GitHub URL
-- `rawContent`: Full SKILL.md content (can be used as fallback if GitHub is unreachable)
-
-**Error Handling:**
-- `404`: Skill not found
-- `500`: Internal server error
-
-### ClawHub API Configuration
-
-**Base URL:** `https://clawhub.ai/api/v1`
-
-**Authentication:** None required (open API)
-
-**Rate Limits:** 120 reads/min per IP (shown in `x-ratelimit-remaining` and `x-ratelimit-reset` response headers)
-
-**Available Endpoints:**
-- `GET /api/v1/search?q={query}&limit={20}` — Semantic/vector search (ranked by similarity score)
-- `GET /api/v1/skills?limit={20}&sort={stars|downloads|updated|trending}&cursor={cursor}` — Browse/list with cursor pagination
-- `GET /api/v1/skills/{slug}` — Get full skill details (owner, version, moderation status)
-- `GET /api/v1/skills/{slug}/file?path={filepath}&version={ver}` — Get raw file content (text/plain, NOT JSON)
-- `GET /api/v1/download?slug={slug}&version={ver}` — Download full skill as ZIP
-
-**Search Response Format (GET /api/v1/search):**
-```json
-{
-  "results": [
-    {
-      "score": 0.82,
-      "slug": "self-improving-agent",
-      "displayName": "Self-Improving Agent",
-      "summary": "An agent that iteratively improves itself...",
-      "version": "1.0.0",
-      "updatedAt": "2026-01-15T10:30:00Z"
-    }
-  ]
-}
-```
-
-**Browse Response Format (GET /api/v1/skills):**
-```json
-{
-  "items": [
-    {
-      "slug": "self-improving-agent",
-      "displayName": "Self-Improving Agent",
-      "summary": "...",
-      "version": "1.0.0",
-      "stats": {
-        "stars": 42,
-        "downloads": 150
-      }
-    }
-  ],
-  "nextCursor": "eyJ..."
-}
-```
-
-**Detail Response Format (GET /api/v1/skills/{slug}):**
-```json
-{
-  "skill": {
-    "slug": "self-improving-agent",
-    "displayName": "Self-Improving Agent",
-    "summary": "...",
-    "version": "1.0.0"
-  },
-  "owner": {
-    "handle": "username",
-    "displayName": "User Name"
-  },
-  "latestVersion": "1.0.0",
-  "moderation": "approved"
-}
-```
-
-**File Endpoint (GET /api/v1/skills/{slug}/file?path=SKILL.md):**
-- Returns raw `text/plain` content (NOT JSON)
-- Response headers include `x-content-sha256` (integrity hash) and `x-content-size` (byte count)
-- Use `version` query param to fetch a specific version (defaults to latest)
-
-**Key Differences from SkillsMP/SkillHub:**
-- **Direct hosting:** ClawHub hosts skill files directly — no GitHub URL construction needed
-- **Versioned skills:** Each skill has explicit version numbers; use `version` param to pin
-- **Slug-based IDs:** Skills are identified by `slug` (e.g., `self-improving-agent`), not GitHub paths
-- **Semantic search built-in:** The `/search` endpoint uses vector similarity, not keyword matching
-- **VirusTotal integration:** ClawHub scans skills via VirusTotal partnership; `moderation` field indicates status
-
-**Error Handling:**
-- `404`: Skill or file not found
-- `429`: Rate limit exceeded (120 reads/min)
-- `500`: Internal server error
-
-### Guidelines
--   **Multi-Source Search:** Use SkillsMP as the primary source when an API key is available. Offer SkillHub and ClawHub as alternative or additional sources.
--   **Prefer AI/Semantic Search:** For natural language queries, use SkillsMP `/ai-search` or ClawHub `/search` (both support semantic matching). SkillHub only supports keyword search.
--   **Source Labeling:** Always label results with their source (`[SkillsMP]`, `[SkillHub]`, or `[ClawHub]`) so users can distinguish between sources.
--   **SkillHub Detail Lookup:** When installing from SkillHub, always fetch the detail endpoint first to get the correct `skillPath` and `branch`. Never try to parse the `id` field as a file path.
--   **ClawHub Direct Hosting:** ClawHub hosts skill files directly — use the `/file` endpoint to fetch content. No GitHub URL construction is needed. Use the `slug` field as the skill identifier.
--   **ClawHub Versioning:** ClawHub skills have explicit version numbers. Show the version in install confirmations. Use the `version` query param to pin a specific version if needed.
--   **Deduplication:** When showing results from multiple sources, deduplicate: SkillsMP ↔ SkillHub by full skill ID (`{owner}/{repo}/{path}`); ClawHub ↔ others by skill name (since ClawHub uses slugs, not GitHub paths).
--   **Verify Content:** After fetching from any source, verify the SKILL.md has valid YAML frontmatter.
--   **Structure Integrity:** Maintain the `.../skills/{skill-name}/SKILL.md` structure.
--   **Syncing:** After installing a skill, offer to sync (copy) it to other detected AI tools.
--   **GitHub URLs:** For SkillsMP/SkillHub installs, always convert tree URLs to raw.githubusercontent.com URLs for content fetching.
--   **Security:** Security scanning runs on all installs regardless of source (SkillsMP, SkillHub, or ClawHub). SkillHub's `securityScore` and ClawHub's VirusTotal `moderation` status are informational only — our own `scan_skill.py` at install time is authoritative.
+## 版本：1.5.1  
+
+### 通用技能管理器  
+
+该技能使代理能够充当AI功能的集中式包管理器。它可以从多个来源发现技能——SkillsMP.com（精选的技能，支持AI语义搜索）、SkillHub（17.3万多个社区技能，无需API密钥）和ClawHub（5,700多个版本化的技能，支持语义搜索，无需API密钥）——并统一管理多个AI工具（Claude Code、Gemini、Anti-Gravity、OpenCode、Cursor等）中的技能，确保一致性和同步性。  
+
+### 何时使用此技能  
+
+在以下情况下激活此技能：  
+- 用户希望**查找或搜索**新技能。  
+- 用户希望**安装**技能（从搜索结果或本地文件）。  
+- 用户希望**在不同AI工具之间同步**技能（例如：“将此Gemini技能复制到OpenCode中”）。  
+- 用户请求在**用户范围与项目范围之间移动或复制**技能。  
+- 用户在讨论技能/扩展时提到“Google Anti-Gravity”、“OpenCode”或“Gemini”。  
+- 用户希望**将此技能打包用于claude.ai或Claude Desktop”（通过ZIP上传）。  
+
+### 支持的生态系统  
+
+该技能管理以下工具和范围。在操作前请务必确认这些路径存在：  
+
+| 工具 | 用户范围（全局） | 项目范围（本地） |  
+| :--- | :--- | :--- |  
+| **Gemini CLI** | `~/.gemini/skills/` | `./.gemini/skills/` |  
+| **Google Anti-Gravity** | `~/.gemini/antigravity/skills/` | `./.antigravity/extensions/` |  
+| **OpenCode** | `~/.config/opencode/skills/` | `./.opencode/skills/` |  
+| **OpenClaw** | `~/.openclaw/workspace/skills/` | `./.openclaw/skills/` |  
+| **Claude Code** | `~/.claude/skills/` | `./.claude/skills/` |  
+| **OpenAI Codex** | `~/.codex/skills/` | `./.codex/skills/` |  
+| **block/goose** | `~/.config/goose/skills/` | `./.goose/agents/` |  
+| **Roo Code** | `~/.roo/skills/` | `./.roo/skills/` |  
+| **Cursor** | `~/.cursor/extensions/` | `./.cursor/extensions/` |  
+
+**claude.ai / Claude Desktop（需要ZIP上传）：**  
+| 平台 | 安装方法 |  
+| :--- | :--- |  
+| **claude.ai** | 通过设置 → 功能 → 上传技能 |  
+| **Claude Desktop** | 通过设置 → 功能 → 上传技能 |  
+
+*注意：claude.ai和Claude Desktop无法访问本地环境变量。请使用“打包用于claude.ai/Desktop”功能（第5节）将API密钥嵌入ZIP文件中。*  
+
+### 通用技能管理器的平台限制  
+
+该技能需要网络访问权限来调用SkillsMP API、SkillHub API、ClawHub API和GitHub。请处理以下情况：  
+- **如果用户请求将通用技能管理器本身打包/上传到claude.ai：**  
+  告诉用户：“通用技能管理器无法在claude.ai上使用，因为它需要网络访问权限来调用SkillsMP API、SkillHub API和ClawHub API。claude.ai的代码执行环境不允许外部网络请求。但是，我可以为您打包其他技能以上传到claude.ai——只要这些技能不需要网络访问权限即可。”  
+- **如果用户希望在Claude Desktop上使用通用技能管理器：**  
+  告诉用户：“Claude Desktop具有网络访问权限。要在Claude Desktop上使用通用技能管理器，您可能需要在Cowork设置中扩展对这些域的访问权限：  
+  - `skillsmp.com`（用于SkillsMP技能搜索）  
+  - `skills.palebluedot.live`（用于SkillHub技能搜索）  
+  - `clawhub.ai`（用于ClawHub技能搜索和直接文件下载）  
+  - `api.github.com`和`raw.githubusercontent.com`（用于从GitHub下载技能）  
+  这是一个实验性功能——Cowork的默认网络访问权限是受限的。请检查您的Cowork网络出站设置。”  
+
+### 核心功能  
+
+#### 1. 智能安装与同步  
+**触发条件：**用户请求安装技能（例如：“安装调试技能”或“安装技能ID xyz”）。  
+**流程：**  
+1. **确定来源：**  
+    - 如果来自SkillsMP搜索结果：使用API响应中的`githubUrl`。  
+    - 如果来自SkillHub搜索结果：通过`/api/skills/{id}`获取`skillPath`和`branch`，然后构建GitHub树URL。  
+    - 如果来自ClawHub搜索结果：使用`slug`通过ClawHub的 `/file`端点获取内容（见下文C节）。  
+    - 如果通过技能名称/ID查找：搜索可用的来源（SkillsMP、SkillHub和/或ClawHub）。  
+    - 如果是本地技能：确定来源路径。  
+2. **验证仓库结构（关键步骤）：**  
+    - 下载前，浏览GitHub仓库以确认技能文件夹的位置。  
+    - 使用GitHub API列出目录内容：`GET /repos/{owner}/{repo}/contents?ref={branch}`。  
+    - 查找包含`SKILL.md`的文件夹——这是实际的技能目录。  
+    - 常见路径模式：`skill/`、`skills/{name}/`、根目录或自定义文件夹名称。  
+    - 在生成下载URL之前确认正确的路径。  
+3. **使用辅助脚本下载：**  
+    - 使用位于该技能`scripts/`文件夹中的`install_skill.py`脚本：  
+    （此处为代码块）  
+    *脚本处理：原子安装、验证、子目录、安全检查。  
+    ***安全特性：**如果目标目录是根技能目录，脚本将中止（退出代码4）。  
+    ***更新检测：**如果技能存在，显示差异并提示用户确认。  
+    ***安全扫描：**安装脚本会自动扫描下载的技能是否存在安全威胁（不可见字符、数据泄露、命令注入等）。在继续之前请查看任何发现的结果。  
+4. **确定主要目标：**  
+    - 询问：“这是要全局安装（用户范围）还是本地安装（项目范围）？”  
+    * 确定主要使用的工具（例如，如果用户使用的是Claude Code，则Claude是主要工具）。  
+5. **“同步检查”（关键步骤）：**  
+    * **扫描：**检查系统中是否已安装其他支持的工具（查找它们的配置文件夹）。  
+    * **建议：**“我看到您还安装了OpenCode和Cursor。是否也想将这些技能同步到它们？”  
+6. **执行：**  
+    * 为每个目标位置运行安装脚本。  
+    * 确保保持标准结构。  
+7. **报告成功：**  
+    * 显示已安装的技能名称、作者和位置。  
+    * 显示GitHub URL和星星数量以供参考。  
+
+#### 2. “更新与一致性”检查  
+**触发条件：**用户修改了技能或请求“同步”技能。  
+**流程：**  
+1. **比较：**检查所有已安装位置上的技能的修改时间或内容。  
+2. **报告：**“Gemini中的‘code-review’技能比OpenCode中的版本更新。”  
+3. **操作：**建议用新版本覆盖旧版本以确保一致性。  
+
+#### 3. 多源技能发现  
+**触发条件：**用户搜索技能（例如：“查找调试技能”或“搜索React技能”）。  
+**流程：**  
+1. **获取API密钥并选择来源：**  
+    - **步骤1 - 环境变量：**检查 `$SKILLSMP_API_KEY`  
+        （此处为代码块）  
+        如果设置且不为空，使用SkillsMP作为主要搜索来源。  
+        **注意：**使用`printenv`（而不是`echo $VAR`）——它直接查询进程环境，在不同shell环境中更可靠。  
+    - **步骤2 - 配置文件：**检查该技能目录中的`config.json`文件：  
+        （此处为代码块）  
+        如果`skillsmp_api_key`字段有非空值，使用SkillsMP作为主要来源。  
+    - **步骤3 - 选择来源：**如果没有找到API密钥，向用户提供选择：  
+        > “我没有看到配置的SkillsMP API密钥。您有三个选项：  
+        > A）提供您的SkillsMP API密钥（在skillsmp.com获取）——提供带有AI语义搜索的精选技能  
+        > B）搜索SkillHub的开放目录——17.3万多个社区技能，无需API密钥  
+        > C）搜索ClawHub——5,700多个版本化的技能，支持语义搜索，无需API密钥  
+        > 您选择哪个？”  
+        - 如果用户选择**A**：收集密钥，将其存储在会话内存中，然后继续使用SkillsMP。  
+        - 如果用户选择**B**：继续使用SkillHub搜索（无需密钥）。  
+        - 如果用户选择**C**：继续使用ClawHub搜索（无需密钥）。  
+    * **安全注意事项：**切勿记录、显示或回显完整的API密钥值。  
+    **对于claude.ai/Desktop用户：**环境变量不可用。请使用“打包用于claude.ai/Desktop”功能（第5节）创建包含API密钥的ZIP文件，或在提示时提供密钥。**  
+2. **根据所选来源执行搜索：**  
+    - **如果使用SkillsMP（主要来源，精选技能）：**  
+        - **选择方法：**  
+            - **关键词搜索**（`/api/v1/skills/search`）：用于特定术语的精确匹配。  
+            - **AI语义搜索**（`/api/v1/skills/ai-search`）：用于自然语言查询（例如：“帮我调试代码”）。  
+        - **重要提示：**始终先将API密钥捕获到本地变量中，然后使用它。在某些shell环境中直接使用 `$SKILLSMP_API_KEY` 可能会失败：  
+        （此处为代码块）  
+    - **解析：**从`data.skills[]`（关键词搜索）或`data.data[]`（AI搜索）中提取信息。  
+    - 可用字段：`id`、`name`、`author`、`description`、`githubUrl`、`skillUrl`、`stars`、`updatedAt`。  
+    - **注意：**SkillsMP需要`q`参数——没有浏览/列表端点。对于“顶级技能”或无特定查询的浏览，请使用SkillHub或ClawHub。**  
+    - **如果使用SkillHub（开放目录，无需认证）：**  
+        - **执行：**  
+        （此处为代码块）  
+    - **解析：**从`skills[]`数组中提取信息。  
+    - 可用字段：`id`、`name`、`description`、`githubOwner`、`githubRepo`、`githubStars`、`downloadCount`、`securityScore`。  
+    - **注意：**SkillHub不支持AI语义搜索——仅支持关键词搜索。**  
+    - **如果使用ClawHub（版本化技能，支持语义搜索，无需认证）：**  
+        - **选择方法：**  
+            - **语义搜索**（`/api/v1/search`）：用于自然语言查询——按相似度`score`排序结果。  
+            - **浏览/列表**（`/api/v1/skills`）：按人气、星星数量或最新更新时间浏览。  
+        - **执行：**  
+        （此处为代码块）  
+    - **解析：**  
+        - 语义搜索：从`results[]`数组中提取信息——每个结果包含`score`、`slug`、`displayName`、`summary`、`version`。  
+        - **浏览：**从`items[]`数组中提取信息——每个结果包含`slug`、`displayName`、`summary`、`version`、`stats.stars`、`stats.downloads`。  
+    - **显示结果（统一格式）：**  
+        无论来源如何，都以一致的表格格式显示结果。包括**来源**列以指示来源：  
+        （此处为代码块）  
+        - 对于SkillsMP的AI搜索：同时显示相关性分数。  
+        - 对于SkillHub：显示`securityScore`（如果可用）。  
+        - 对于ClawHub的语义搜索：显示相似度`score`（如果可用）。  
+        - 限制显示结果数量为10-15个以便于阅读。  
+3. **搜索更多来源：**  
+    在显示任何来源的结果后，提供搜索剩余未搜索来源的选项：  
+        - **如果还有2个来源：**“还想搜索{source1}或{source2}吗？或者两个都搜索？”  
+        - **如果只剩下1个来源：**“还想搜索{source}吗？”  
+        可用的来源：SkillsMP（需要API密钥）、SkillHub（无需密钥）、ClawHub（无需密钥）。  
+        如果用户同意：  
+        - 使用相同的搜索词查询选定的来源。  
+        - **去重：**比较不同来源的结果：  
+            - SkillsMP ↔ SkillHub：通过完整的技能ID（`{owner}/{repo}/{path}`）。  
+            - ClawHub ↔ 其他来源：通过技能名称（ClawHub使用slug，而不是GitHub路径）。  
+        - 将唯一的结果添加到显示结果中，并标注来源标签。  
+4. **提供安装选项：**  
+    - 显示结果后，询问：“您想安装哪个技能？”  
+    - 对于SkillsMP的结果：注意技能的`githubUrl`以获取内容。  
+    - 对于SkillHub的结果：注意技能的`id`以获取详细信息（需要`skillPath`和`branch`）。  
+    - 对于ClawHub的结果：注意技能的`slug`以通过ClawHub的 `/file`端点直接获取文件。  
+
+#### 4. 技能矩阵报告  
+**触发条件：**用户请求技能报告/概览（例如：“显示我的技能”、“我有哪些技能？”、“技能报告”、“比较我的工具”）。  
+**流程：**  
+1. **检测已安装的工具：**通过检查用户级别的技能目录是否存在来检测已安装的AI工具：  
+    （此处为代码块）  
+2. **收集所有技能：**  
+    为每个检测到的工具列出技能文件夹：  
+    （此处为代码块）  
+3. **生成矩阵表格：**  
+    创建一个markdown表格，其中：  
+        - **行** = 技能名称（在所有工具中去除重复）。  
+        - **列** = 仅显示系统中已安装的工具。  
+        - **单元格** = ✅（已安装）或❌（未安装）。  
+    示例输出：  
+    （此处为代码块）  
+4. **显示摘要：**  
+    - 所有工具中的总技能数量。  
+    - 仅在一个工具中独有的技能。  
+    - 在所有工具中都安装的技能。  
+
+#### 5. 为claude.ai / Claude Desktop打包技能  
+
+**触发条件：**用户希望在该技能在claude.ai或Claude Desktop中使用（例如：“将此技能打包用于claude.ai”、“为Claude Desktop创建ZIP文件”、“我想将此技能上传到claude.ai”、“准备技能以供网络上传”）。  
+**流程：**  
+1. **解释流程：**  
+    “我将创建一个ZIP文件，以便将其上传到claude.ai或Claude Desktop。由于云环境无法访问您的本地环境变量，我将在包中嵌入您的API密钥。”  
+2. **收集API密钥：**  
+    - **询问：**“请提供您的SkillsMP API密钥。您可以在https://skillsmp.com获取。”  
+    - 等待用户提供密钥。  
+    * **安全注意事项：**不要将密钥显示或返回给用户。**  
+    * **注意：**API密钥会存储在ZIP包内的`config.json`文件中。此技能在搜索技能时仅在运行时使用API密钥与SkillsMP进行身份验证。**  
+3. **创建包内容：**  
+    - **创建临时目录结构：**  
+    （此处为代码块）  
+    - 生成包含用户API密钥的`config.json`文件：  
+    （此处为代码块）  
+4. **创建ZIP文件：**  
+    - 使用Python创建ZIP文件：  
+    （此处为代码块）  
+    - 或者，提供可下载的ZIP文件。  
+5. **提供上传说明：**  
+    - “您的技能包已准备好！使用方法如下：”  
+    - “1. 下载ZIP文件：`universal-skills-manager.zip`。”  
+    - “2. 转到claude.ai → 设置 → 功能。”  
+    - “3. 滚动到技能部分并点击‘上传技能’。”  
+    - “4. 选择ZIP文件并上传。”  
+    - “5. 启用技能并开始使用！”  
+6. **安全提醒：**  
+    - **注意：**此ZIP文件包含您的API密钥。请不要公开分享或将其提交到版本控制系统中。”  
+
+### 操作规则  
+1. **结构完整性：**安装时，确保技能有自己的文件夹（例如：`.../skills/my-skill/`）。不要将文件直接放入根技能目录。  
+2. **冲突处理：**如果目标位置已经存在技能，请**始终**询问用户是否要覆盖它，除非用户明确请求“强制同步”。  
+3. **关于OpenClaw的注意事项：**如果`openclaw.json`中未启用`skills.load.watch`，OpenClaw可能需要重启才能加载新技能。安装后请提醒用户这一点。  
+4. **跨平台适配：**  
+    - Gemini使用`SKILL.md`文件格式。  
+    - 如果OpenCode或Anti-Gravity需要特定的清单文件（例如`manifest.json`），则在安装期间根据`SKILL.md`的前言文件生成一个基本的清单文件。  
+
+### 可用的工具  
+- `bash`（curl）：用于调用SkillsMP.com、SkillHub（skills.palebluedot.live）和ClawHub（clawhub.ai）的API；从GitHub或ClawHub直接获取技能内容。  
+- `web_fetch`：从GitHub raw URLs、SkillHub API或ClawHub API获取技能内容（作为curl的替代方案）。  
+- `read_file` / `write_file`：管理本地技能文件。  
+- `glob`：在本地目录中查找现有技能。  
+
+### 实现细节  
+
+### 技能结构  
+技能通常包含：  
+- **SKILL.md**（必需）：包含前言的主要说明文件。  
+- **参考文档**：额外的文档文件。  
+- **脚本**：辅助脚本（Python、shell等）。  
+- **配置文件**：JSON、YAML配置文件。  
+
+### 安装逻辑  
+
+#### A. 从SkillsMP API安装  
+1. **获取技能内容：**  
+    - 将`githubUrl`转换为原始内容URL：  
+        （此处为代码块）  
+    - 使用curl或`web_fetch`获取SKILL.md内容。  
+2. **创建目录：**  
+    - 使用API响应中的技能`name`创建目录：`.../skills/{skill-name}/`  
+    - 例如：`.../skills/code-debugging/`  
+3. **保存SKILL.md：**  
+    - 将获取的内容写入新目录中的`SKILL.md`文件。  
+    - 保留原始的YAML前言和内容。  
+4. **处理其他文件（可选）：**  
+    - 检查GitHub仓库是否有其他文件（参考文档、脚本等）。  
+    - （可选）获取并保存它们以维护完整的技能包。  
+5. **确认：**  
+    - 报告：“已安装‘{name}’，作者为{author}，路径为{path}。”  
+    - 显示GitHub URL和星星数量。  
+    - 提供与其他AI工具同步的选项。  
+
+#### B. 从SkillHub安装  
+1. **获取技能详细信息：**  
+    - 使用搜索结果中的技能`id`获取完整详细信息：  
+        （此处为代码块）  
+    - **重要提示：**`id`字段（例如`wshobson/agents/debugging-strategies`）并不对应仓库中的文件路径。必须使用详细信息端点来获取实际的`skillPath`和`branch`。  
+    - 从响应中提取`githubOwner`、`githubRepo`、`branch`、`skillPath`。  
+2. **构建GitHub URL：**  
+    - 根据详细信息响应构建GitHub树URL：  
+        （此处为代码块）  
+    - 例如：`https://github.com/wshobson/agents/tree/main/plugins/developer-essentials/skills/debugging-strategies`  
+3. **使用辅助脚本下载：**  
+    - 从这一步开始，安装流程与SkillsMP相同：  
+        （此处为代码块）  
+4. **确认：**  
+    - 报告：“已从SkillHub安装‘{name}’，路径为{path}。”  
+    - 显示GitHub URL和星星数量。  
+    - 提供与其他AI工具同步的选项。  
+
+#### C. 从ClawHub安装  
+ClawHub直接托管技能文件（不在GitHub上），因此安装流程会绕过`install_skill.py`，并通过ClawHub的API获取内容：  
+1. **获取SKILL.md内容：**  
+    - 使用ClawHub的文件端点获取原始SKILL.md内容：  
+        （此处为代码块）  
+    - **重要提示：**此端点返回的是原始`text/plain`内容，而不是JSON。将响应体直接保存为文件。  
+    - 可以使用`x-content-sha256`响应头来验证文件完整性。  
+2. **处理多文件技能（如果适用）：**  
+    - 如果技能有额外的文件（脚本、配置文件），使用ClawHub的下载端点：  
+        （此处为代码块）  
+    - 要检查技能是否有多个文件，请检查`GET /api/v1/skills/{slug}`的详细响应——`latestVersion`字段可能指示文件数量。  
+3. **运行安全扫描：**  
+    - 由于绕过了`install_skill.py`，因此需要手动运行安全扫描：  
+        （此处为代码块）  
+    - 在继续之前请查看任何发现的结果。ClawHub集成了VirusTotal扫描工具；我们的扫描提供了额外的安全保障。  
+4. **验证YAML前言：**  
+    - 验证SKILL.md是否具有有效的YAML前言（名称、描述字段）。  
+    - 如果无效，警告用户并询问是否继续。  
+5. **创建目录并安装：**  
+    - 创建目标目录：`.../skills/{slug}/`  
+    - 将所有文件从临时目录复制到目标位置：  
+        （此处为代码块）  
+6. **确认：**  
+    - 报告：“已从ClawHub安装‘{displayName}’（版本{version}），路径为{path}。”  
+    - 显示版本信息和星星数量。  
+    - 提供与其他AI工具同步的选项。  
+
+#### D. 从本地来源安装（同步/复制）  
+1. **检索：**从源目录读取所有文件。  
+2. **创建目录：**创建目标目录`.../skills/{slug}/`。  
+3. **保存文件：**将所有文件复制到新位置。  
+
+### SkillsMP API配置  
+**基础URL：**`https://skillsmp.com/api/v1`  
+
+**认证：**  
+（此处为代码块）  
+
+**可用端点：**  
+- `GET /api/v1/skills/search?q={query}&page={1}&limit={20}&sortBy={recent|stars}`  
+- `GET /api/v1/skills/ai-search?q={query}`  
+
+**响应格式（关键词搜索）：**  
+（此处为代码块）  
+
+**响应格式（AI搜索）：**  
+（此处为代码块）  
+
+**错误处理：**  
+- `401`：API密钥无效或缺失。  
+- `400`：缺少必需的查询参数。  
+- `500`：内部服务器错误。  
+
+### SkillHub API配置  
+**基础URL：**`https://skills.palebluedot.live/api`  
+
+**认证：**无需认证（开放API）  
+
+**可用端点：**  
+- `GET /api/skills?q={query}&limit={20}` — 按关键词搜索技能。  
+- `GET /api/skills/{id}` — 获取技能的完整详细信息（包括`skillPath`、`branch`、`rawContent`）。  
+- `GET /api/categories` — 列出技能类别。  
+- `GET /api/health` — 健康检查。  
+
+**搜索响应格式：**  
+（此处为代码块）  
+
+**详细响应格式（GET /api/skills/{id}）：**  
+（此处为代码块）  
+
+**安装所需的字段：**  
+- `skillPath`：GitHub仓库中的实际目录路径（关键字段——`id`与文件路径不匹配）。  
+- `branch`：分支名称（例如`main`）。  
+- `githubOwner` + `githubRepo`：用于构建GitHub URL。  
+- `rawContent`：SKILL.md的完整内容（如果GitHub无法访问时可用）。  
+
+**错误处理：**  
+- `404`：技能未找到。  
+- `500`：内部服务器错误。  
+
+### ClawHub API配置  
+**基础URL：**`https://clawhub.ai/api/v1`  
+
+**认证：**无需认证（开放API）  
+
+**速率限制：**每IP每分钟120次读取（在`x-ratelimit-remaining`和`x-ratelimit-reset`响应头中显示）。  
+
+**可用端点：**  
+- `GET /api/v1/search?q={query}&limit={20}` — 按相似度排名进行语义搜索。  
+- `GET /api/v1/skills?limit={20}&sort={stars|downloads|updated|trending}&cursor={cursor}` — 带有分页功能的浏览/列表。  
+- `GET /api/v1/skills/{slug}` — 获取技能的完整详细信息（所有者、版本）。  
+- `GET /api/v1/skills/{slug}/file?path={filepath}&version={ver}` — 下载技能的原始文件（文本格式，不是JSON）。  
+- `GET /api/v1/download?slug={slug}&version={ver}` — 下载技能的ZIP文件。  
+
+**浏览响应格式（GET /api/v1/skills）：**  
+（此处为代码块）  
+
+**详细响应格式（GET /api/v1/skills）：**  
+（此处为代码块）  
+
+**文件端点（GET /api/v1/skills/{slug}/file?path=SKILL.md）：**  
+- 返回原始`text/plain`内容（不是JSON）。  
+- 响应头包含`x-content-sha256`（完整性哈希）和`x-content-size`（文件大小）。  
+- 使用`version`查询参数获取特定版本（默认为最新版本）。  
+
+**与SkillsMP/SkillHub的关键区别：**  
+- **直接托管：**ClawHub直接托管技能文件——无需构建GitHub URL。  
+- **版本化技能：**每个技能都有明确的版本号；使用`version`参数来指定版本。  
+- **基于slug的ID：**技能通过`slug`标识（例如`self-improving-agent`），而不是GitHub路径。  
+- **内置语义搜索：**`/search`端点使用向量相似度进行搜索。  
+- **VirusTotal集成：**ClawHub通过VirusTotal进行扫描；`moderation`字段表示状态。  
+
+**错误处理：**  
+- `404`：技能或文件未找到。  
+- `429`：超出速率限制（每分钟120次读取）。  
+- `500`：内部服务器错误。  
+
+### 指南：**  
+- **多源搜索：**当有API密钥时，优先使用SkillsMP作为主要来源。提供SkillHub和ClawHub作为备用或额外来源。  
+- **优先使用AI/语义搜索：**对于自然语言查询，使用SkillsMP的 `/ai-search`或ClawHub的 `/search`（两者都支持语义匹配）。  
+- **来源标记：**始终在结果中标明来源（`[SkillsMP]`、`[SkillHub]`或`[ClawHub]`），以便用户区分来源。  
+- **从SkillHub安装技能时：**始终先获取详细信息端点以获取正确的`skillPath`和`branch`。切勿尝试将`id`字段解析为文件路径。  
+- **ClawHub直接托管：**ClawHub直接托管技能文件——使用`/file`端点获取内容。无需构建GitHub URL。使用`slug`字段作为技能标识符。  
+- **ClawHub版本控制：**ClawHub技能有明确的版本号。在安装时显示版本号。如果需要，使用`version`参数指定特定版本。  
+- **去重：**在显示来自多个来源的结果时，通过完整的技能ID（`{owner}/{repo}/{path}`）去重；ClawHub与其他来源通过技能名称去重（因为ClawHub使用slug）。  
+- **验证内容：**从任何来源获取内容后，验证SKILL.md是否具有有效的YAML前言。  
+- **结构完整性：**保持`.../skills/{skill-name}/SKILL.md`的结构。  
+- **同步：**安装技能后，提供将其同步（复制）到其他检测到的AI工具的选项。  
+- **GitHub URL：**对于SkillsMP/SkillHub的安装，始终将树URL转换为raw.githubusercontent.com URL以获取内容。  
+- **安全性：**无论来源如何，都对所有安装进行安全扫描（SkillsMP、SkillHub或ClawHub）。SkillHub的`securityScore`和ClawHub的`moderation`状态仅用于提供信息。我们在安装时使用`scan_skill.py`进行额外扫描。

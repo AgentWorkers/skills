@@ -1,6 +1,6 @@
 ---
 name: swarm-janitor
-description: Enterprise-grade OpenClaw skill for cleaning up orphaned subagent processes, archiving transcripts to SuperMemory, and freeing disk space without losing work. Features dry-run mode, configurable retention policies, and comprehensive safety checks.
+description: 企业级 OpenClaw 工具：用于清理无主（即被遗忘或不再使用的）子代理进程、将转录文件归档到 SuperMemory 存储系统中，并在不会丢失任何数据的情况下释放磁盘空间。该工具具备试运行模式、可配置的保留策略以及全面的安全检查功能。
 homepage: https://github.com/openclawdad/swarm-janitor
 author: OpenClawdad (Redclay)
 tags: [maintenance, cleanup, subagents, memory-management, enterprise]
@@ -14,30 +14,30 @@ metadata:
 
 # Swarm Janitor
 
-Enterprise-grade cleanup tool for OpenClaw subagent management.
+这是一个企业级工具，用于管理 OpenClaw 的子代理（subagents）。
 
-## What It Does
+## 功能概述
 
-Automatically identifies and cleans up orphaned subagent sessions while preserving important work through SuperMemory archival.
+该工具能够自动识别并清理那些被遗弃的子代理会话，同时通过 SuperMemory 系统将重要数据存档起来。
 
-### Core Functions
+### 核心功能
 
-- **Scan**: Analyze session directory for orphaned/abandoned subagents
-- **Archive**: Save transcripts to SuperMemory before deletion
-- **Clean**: Safely remove orphaned sessions freeing disk space
-- **Report**: Generate detailed cleanup reports
+- **扫描（Scan）**：分析会话目录，找出被遗弃或被放弃的子代理。
+- **存档（Archive）**：在删除前将相关数据保存到 SuperMemory。
+- **清理（Clean）**：安全地移除这些被遗弃的会话文件，释放磁盘空间。
+- **报告（Report）**：生成详细的清理报告。
 
-## Safety First
+## 安全性
 
-This skill implements multiple safety layers:
+该工具采用了多重安全机制：
 
-- ✅ **Never deletes active sessions** — checks process status
-- ✅ **Dry-run mode** — preview changes before executing
-- ✅ **SuperMemory backup** — transcripts archived before deletion
-- ✅ **Configurable retention** — customize age thresholds
-- ✅ **Detailed logging** — full audit trail of all actions
+- ✅ **绝不删除正在运行的会话**：会检查相关进程的状态。
+- ✅ **试运行模式（Dry-run mode）**：执行前会预览更改内容。
+- ✅ **SuperMemory 备份**：删除前会先将数据存档到 SuperMemory。
+- ✅ **可配置的保留策略**：允许用户自定义数据保留的时长。
+- ✅ **详细日志记录**：所有操作都有完整的审计记录。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Preview what would be cleaned (dry-run)
@@ -50,34 +50,34 @@ python3 scripts/swarm_janitor.py --archive --clean
 python3 scripts/swarm_janitor.py --retention-days 7 --clean
 ```
 
-## Installation
+## 安装步骤
 
-1. Copy this skill to your OpenClaw workspace:
+1. 将该工具复制到您的 OpenClaw 工作目录中：
    ```bash
    cp -r skills/swarm-janitor ~/.openclaw/workspace/skills/
    ```
 
-2. Configure retention policy (optional):
+2. 配置数据保留策略（可选）：
    ```bash
    # Edit config to customize
    nano references/config.yaml
    ```
 
-3. Run first scan:
+3. 运行首次扫描：
    ```bash
    python3 ~/.openclaw/workspace/skills/swarm-janitor/scripts/swarm_janitor.py --dry-run
    ```
 
-## Usage Patterns
+## 使用方式
 
-### Daily Maintenance (Cron)
+### 日常维护（通过 Cron 任务）
 
 ```cron
 # Run daily at 3 AM, archive sessions older than 3 days
 0 3 * * * python3 ~/.openclaw/workspace/skills/swarm-janitor/scripts/swarm_janitor.py --archive --clean --retention-days 3 >> /var/log/swarm-janitor.log 2>&1
 ```
 
-### Manual Cleanup
+### 手动清理
 
 ```bash
 # See what would be deleted
@@ -93,60 +93,55 @@ python3 scripts/swarm_janitor.py --clean --no-archive
 python3 scripts/swarm_janitor.py --report --output json
 ```
 
-### Emergency Cleanup
+### 紧急清理
 
 ```bash
 # Aggressive cleanup with 1-day retention
 python3 scripts/swarm_janitor.py --clean --retention-days 1 --force
 ```
 
-## Configuration
+## 配置设置
 
-See [references/config.yaml](references/config.yaml) for:
+请参阅 [references/config.yaml] 文件，以配置以下内容：
 
-- Retention policies
-- Archive destinations
-- Safety thresholds
-- Logging options
+- 数据保留策略
+- 存档目的地
+- 安全阈值
+- 日志记录选项
 
-## How It Works
+## 工作原理
 
-1. **Discovery**: Scans `~/.openclaw/agents/main/sessions/`
-2. **Analysis**: Determines session age, activity status, size
-3. **Classification**: Identifies orphaned vs active sessions
-4. **Archival**: Saves transcripts to SuperMemory (if enabled)
-5. **Cleanup**: Safely removes orphaned session files
-6. **Reporting**: Generates summary of actions taken
+1. **发现（Discovery）**：扫描 `~/.openclaw/agents/main/sessions/` 目录。
+2. **分析（Analysis）**：判断会话的创建时间、活动状态及文件大小。
+3. **分类（Classification）**：区分被遗弃的会话和仍在运行的会话。
+4. **存档（Archival）**：如果启用了 SuperMemory，会将相关数据保存到其中。
+5. **清理（Clean）**：安全地移除被遗弃的会话文件。
+6. **报告（Report）**：生成操作摘要。
 
-## Safety Mechanisms
+## 安全机制
 
-| Check | Description |
+| 检查项 | 描述 |
 |-------|-------------|
-| Process Check | Verifies no active process owns the session |
-| Age Verification | Only processes sessions older than threshold |
-| Size Limits | Warns on unusually large deletions |
-| Dry-Run Default | Preview mode is default — explicit action required |
-| Backup First | Archives to SuperMemory before any deletion |
+| 进程检查（Process Check） | 确认没有正在运行的进程占用这些会话。 |
+| 年龄验证（Age Verification） | 仅删除超过设定时间的会话。 |
+| 文件大小限制（Size Limits） | 对异常大的文件大小进行警告。 |
+| 默认为试运行模式（Dry-Run by Default） | 执行前会显示预览结果。 |
+| 先进行备份（Backup First） | 删除前会先将数据存档到 SuperMemory。 |
 
-## Troubleshooting
+## 常见问题解答
 
-**Q: It says "permission denied"**
-A: Ensure you have write access to the sessions directory
+**Q：出现 “权限被拒绝” 的错误**：请确保您具有对会话目录的写入权限。  
+**Q：某些会话未被检测到**：请检查 `config.yaml` 文件中的路径是否与您的 OpenClaw 安装路径匹配。  
+**Q：SuperMemory 存档失败**：请确认 SuperMemory 工具已配置有效的 API 密钥。  
 
-**Q: Sessions not being detected**
-A: Check the path in config.yaml matches your OpenClaw installation
+## 企业级特性
 
-**Q: SuperMemory archive failing**
-A: Verify SuperMemory skill is configured with valid API key
+- **审计日志（Audit Logging）**：所有操作都会附带时间戳记录。
+- **可配置的策略（Configurable Policies）**：支持基于 YAML 的配置。
+- **指标导出（Metrics Export）**：支持 JSON/CSV 格式的数据导出，便于监控。
+- **试运行模式（Dry-Run Mode）**：允许在正式应用更改前进行测试。
+- **保留策略（Retention Policies）**：支持基于时间或数量的删除规则。
 
-## Enterprise Features
+## 许可证
 
-- **Audit Logging**: All actions logged with timestamps
-- **Configurable Policies**: YAML-based configuration
-- **Metrics Export**: JSON/CSV output for monitoring
-- **Dry-Run Mode**: Test changes before applying
-- **Retention Policies**: Age-based and count-based rules
-
-## License
-
-MIT - Created by OpenClawdad (Redclay) for the OpenClaw community.
+MIT 许可证。该工具由 OpenClawdad（Redclay）为 OpenClaw 社区开发。

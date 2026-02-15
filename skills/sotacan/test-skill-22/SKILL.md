@@ -1,1 +1,1 @@
-this is a test skill
+这是一个测试技能（test skill）。

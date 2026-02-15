@@ -1,14 +1,14 @@
 ---
 name: context-manager
-description: AI-powered context management for OpenClaw sessions
+description: 基于人工智能的 OpenClaw 会话上下文管理
 user-invocable: true
 ---
 
-# Context Manager Skill
+# 上下文管理技能
 
-AI-powered context management for OpenClaw sessions. Uses the agent itself to generate intelligent summaries, then resets the session with compressed context.
+这是一个基于AI的上下文管理工具，专为OpenClaw会话设计。它利用代理本身生成智能摘要，然后使用压缩后的上下文来重置会话。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all sessions with usage stats
@@ -24,49 +24,49 @@ AI-powered context management for OpenClaw sessions. Uses the agent itself to ge
 ~/openclaw/skills/context-manager/compress.sh summarize agent:main:main --replace
 ```
 
-## When to Use
+## 使用场景
 
-- Context usage approaching 70-80%+
-- Long sessions with extensive conversation history  
-- Before the session becomes slow or loses coherence
-- Proactively to maintain fast, focused sessions
+- 上下文使用量达到70-80%以上时  
+- 会话时间较长且对话记录较多时  
+- 在会话变得缓慢或失去连贯性之前  
+- 为保持会话的快速性和专注性而主动使用  
 
-## How It Works
+## 工作原理
 
-1. **AI Summarization**: Sends a prompt to the agent asking it to summarize its own context
-2. **Backup**: Saves the original JSONL session file to `memory/compressed/`
-3. **Reset**: Deletes the JSONL file (official reset method)
-4. **Inject**: Sends the AI-generated summary as the first message in the fresh session
-5. **Result**: Same session key, new session ID, compressed context
+1. **AI摘要生成**：向代理发送请求，让其自行总结当前的上下文。  
+2. **备份**：将原始的JSONL会话文件保存到`memory/compressed/`目录中。  
+3. **重置**：删除原始的JSONL文件（官方推荐的重置方法）。  
+4. **注入新内容**：将AI生成的摘要作为新会话的第一条消息发送。  
+5. **结果**：会话键保持不变，但会话ID会更新，同时上下文会被压缩。  
 
-**Key insight**: The agent has full visibility into its own context, so it generates the best possible summary.
+**关键点**：代理能够完全了解自身的上下文，因此生成的摘要最为准确。  
 
-## Commands
+## 命令  
 
-### Session Commands
+### 会话相关命令  
 
-| Command | Description |
-|---------|-------------|
-| `list` | List all sessions with token usage |
-| `status [KEY]` | Show detailed status for a session |
-| `summarize [KEY]` | Generate AI summary (read-only) |
-| `summarize [KEY] --replace` | Summarize AND reset session with compressed context |
-| `compress [KEY]` | Legacy grep-based extraction (not recommended) |
-| `check [KEY]` | Check if session exceeds threshold |
-| `check-all` | Check all sessions at once |
+| 命令 | 描述 |  
+|---------|-------------|  
+| `list` | 列出所有会话及其对应的令牌使用情况。 |  
+| `status [KEY]` | 显示指定会话的详细状态。 |  
+| `summarize [KEY]` | 生成AI摘要（仅限查看）。 |  
+| `summarize [KEY] --replace` | 生成摘要并同时重置会话（压缩上下文）。 |  
+| `compress [KEY]` | 使用传统的grep方法提取会话内容（不推荐）。 |  
+| `check [KEY]` | 检查会话是否超过预设的压缩阈值。 |  
+| `check-all` | 同时检查所有会话的状态。 |  
 
-### Configuration Commands
+### 配置相关命令  
 
-| Command | Description |
-|---------|-------------|
-| `set-threshold N` | Set compression threshold (50-99%, default: 80) |
-| `set-depth LEVEL` | Set depth: brief/balanced/comprehensive |
-| `set-quiet-hours HH` | Set quiet hours (e.g., "23:00-07:00") |
-| `help` | Show help and usage examples |
+| 命令 | 描述 |  
+|---------|-------------|  
+| `set-threshold N` | 设置压缩阈值（50-99%，默认值为80%）。 |  
+| `set-depth LEVEL` | 设置摘要的详细程度：简略/平衡/全面。 |  
+| `set-quiet-hours HH` | 设置安静使用时间（例如：“23:00-07:00”）。 |  
+| `help` | 显示帮助信息和使用示例。 |  
 
-## Examples
+## 示例  
 
-### List All Sessions
+### 列出所有会话  
 
 ```bash
 $ ~/openclaw/skills/context-manager/compress.sh list
@@ -76,9 +76,9 @@ $ ~/openclaw/skills/context-manager/compress.sh list
 1    agent:main:main                          direct      70188      70%
 2    agent:main:slack:channel:c0aaruq2en9     group       20854      20%
 3    agent:main:cron:0d02af4b-...             direct      18718      18%
-```
+```  
 
-### Check Session Status
+### 检查会话状态  
 
 ```bash
 $ ~/openclaw/skills/context-manager/compress.sh status agent:main:main
@@ -92,9 +92,9 @@ $ ~/openclaw/skills/context-manager/compress.sh status agent:main:main
   Threshold:   80%
   Tokens:      70188 / 100000
   Usage:       70%
-```
+```  
 
-### Generate AI Summary (Safe, Read-Only)
+### 生成AI摘要（仅限查看）  
 
 ```bash
 $ ~/openclaw/skills/context-manager/compress.sh summarize agent:main:main
@@ -111,9 +111,9 @@ $ ~/openclaw/skills/context-manager/compress.sh summarize agent:main:main
 - System audit completed
 - Essay generation with sub-agents
 ...
-```
+```  
 
-### Full Compression (Summarize + Reset + Inject)
+### 完整压缩（生成摘要 + 重置 + 注入新内容）  
 
 ```bash
 $ ~/openclaw/skills/context-manager/compress.sh summarize agent:main:main --replace
@@ -135,91 +135,89 @@ $ ~/openclaw/skills/context-manager/compress.sh summarize agent:main:main --repl
   Old session ID: fc192a2d-091c-48c7-9fad-12bf34687454
   New session ID: a1b2c3d4-...
   Session is ready to continue with compressed context
-```
+```  
 
-**Result**: 70k tokens → 16k tokens (77% reduction)
+**压缩效果**：70,000个令牌 → 16,000个令牌（减少了77%）  
 
-## Output Files
+## 输出文件  
 
-When compression occurs, these files are created in `memory/compressed/`:
+压缩完成后，相关文件会被保存在`memory/compressed/`目录中：  
 
-| File | Description |
-|------|-------------|
-| `{timestamp}.ai-summary.md` | AI-generated session summary |
-| `{timestamp}.session-backup.jsonl` | Full backup of original session (can restore if needed) |
-| `{timestamp}.transcript.md` | Raw transcript extraction (legacy) |
-| `{timestamp}.summary.md` | Grep-based summary (legacy) |
+| 文件名 | 描述 |  
+|------|-------------|  
+| `{timestamp}.ai-summary.md` | AI生成的会话摘要。 |  
+| `{timestamp}.session-backup.jsonl` | 原始会话的完整备份（需要时可恢复）。 |  
+| `{timestamp}.transcript.md` | 原始的聊天记录（传统格式）。 |  
+| `{timestamp}.summary.md` | 基于grep的摘要（传统方法）。 |  
 
-## Requirements
+## 系统要求  
 
-- **openclaw** - Gateway must be running
-- **jq** - JSON parsing (`brew install jq`)
-- **Gateway access** - Script uses `openclaw agent` and `openclaw sessions`
+- **openclaw**：必须运行中。  
+- **jq**：用于解析JSON数据（可通过`brew install jq`安装）。  
+- **访问权限**：脚本需要`openclaw agent`和`openclaw sessions`的权限。  
 
-## Technical Details
+## 技术细节  
 
-### Session Reset Method
+### 会话重置方式  
 
-The script uses JSONL deletion to reset sessions (official method):
+脚本通过删除JSONL文件来实现会话重置（官方推荐的方法）：  
+1. 将原始JSONL文件备份到`memory/compressed/`。  
+2. 删除`~/.openclaw/agents/{agent}/sessions/{sessionId}.jsonl`文件。  
+3. 通过`openclaw agent --to main`命令发送压缩后的上下文。  
+4. 系统会自动创建新会话，并将AI生成的摘要作为第一条消息发送。  
 
-1. Backup JSONL to `memory/compressed/`
-2. Delete `~/.openclaw/agents/{agent}/sessions/{sessionId}.jsonl`
-3. Send compressed context via `openclaw agent --to main`
-4. New session is created automatically with summary as first message
+### 为什么不用`/reset`命令？  
 
-### Why Not /reset?
+`/reset`命令仅在聊天界面有效。如果通过`openclaw agent --session-id`发送该命令，系统会将其视为普通消息并尝试执行相应的操作。  
 
-The `/reset` slash command only works in the chat interface. When sent via `openclaw agent --session-id`, it's treated as a regular message and the agent tries to interpret it as a task.
+### AI摘要生成提示  
 
-### AI Summarization Prompt
+脚本要求代理提供以下信息：  
+1. 完成的主要任务。  
+2. 做出的关键决策及其理由。  
+3. 当前的会话状态。  
+4. 未完成的任务。  
+5. 需要记住的重要信息。  
 
-The script asks the agent to provide:
-1. What was accomplished (key tasks)
-2. Key decisions made (with rationale)
-3. Current state (where we left off)
-4. Pending tasks (what still needs doing)
-5. Important context (critical info to remember)
+## 故障排除  
 
-## Troubleshooting
+### AI摘要为空  
 
-### Summary Text Empty
-
-If the AI summary extraction fails, check stderr redirect:
+如果AI摘要生成失败，请检查`stderr`的输出。  
 ```bash
 # The script uses 2>/dev/null to avoid Node deprecation warnings breaking JSON
 openclaw agent --session-id $ID -m "..." --json 2>/dev/null
-```
+```  
 
-### Session Not Resetting
+### 会话未成功重置  
 
-Verify the JSONL file path:
+请确认JSONL文件的路径是否正确。  
 ```bash
 ls ~/.openclaw/agents/main/sessions/
-```
+```  
 
-### Restore From Backup
+### 从备份中恢复会话  
 
-If something goes wrong:
+如果出现故障，可以使用备份文件恢复会话。  
 ```bash
 cp memory/compressed/{timestamp}.session-backup.jsonl \
    ~/.openclaw/agents/main/sessions/{sessionId}.jsonl
-```
+```  
 
-### Check Logs
+### 查看日志  
 
-Use `openclaw logs` to troubleshoot:
+使用`openclaw logs`进行故障排查。  
 ```bash
 openclaw logs --limit 50 --json | grep -i "error\|fail"
-```
+```  
 
-## Best Practices
+## 最佳实践：  
 
-1. **Backup first**: The script auto-backs up, but you can also manually backup before testing
-2. **Test on non-critical sessions first**: Try on a Slack channel or cron session before main
-3. **Check the summary**: Run `summarize` without `--replace` first to verify the summary quality
-4. **Monitor token count**: Use `status` to verify compression worked
+1. **先备份**：脚本会自动备份会话数据，但你也可以在测试前手动备份。  
+2. **先在非关键会话上测试**：先在Slack频道或定时任务中测试该功能。  
+3. **验证摘要质量**：先运行`summarize`命令（不使用`--replace`选项）来检查摘要的准确性。  
+4. **监控令牌数量**：使用`status`命令确认压缩是否成功。  
 
-## See Also
-
-- `openclaw sessions --help`
+## 相关文档：  
+- `openclaw sessions --help`  
 - `openclaw agent --help`

@@ -1,35 +1,34 @@
 ---
 slug: parcel
 display_name: Parcel
-description: Track and add deliveries via Parcel API.
+description: 通过 Parcel API 追踪并添加配送记录。
 ---
 
 # Parcel
 
-Interact with the Parcel app API to track packages and add new deliveries.
+通过 Parcel 应用程序的 API 来追踪包裹信息并添加新的配送记录。
 
-## Configuration
+## 配置
 
-This skill requires the `PARCEL_API_KEY` environment variable.
-Get your key from [web.parcelapp.net](https://web.parcelapp.net).
+使用此功能需要 `PARCEL_API_KEY` 环境变量。您可以从 [web.parcelapp.net](https://web.parcelapp.net) 获取该密钥。
 
-## Tool: `parcel`
+## 工具：`parcel`
 
-Control the Parcel API CLI.
+用于控制 Parcel API 的命令行工具（CLI）。
 
-### Parameters
+### 参数
 
-- `action` (required): One of `list`, `add`, `carriers`.
-- `mode`: For `list`, filter mode (`active` or `recent`). Default `recent`.
-- `tracking`: For `add`, the tracking number.
-- `carrier`: For `add`, the carrier code (e.g., `ups`, `usps`, `fedex`).
-- `description`: For `add`, a description of the package.
-- `notify`: For `add`, boolean to send push confirmation.
-- `search`: For `carriers`, search string.
+- `action`（必填）：`list`、`add` 或 `carriers` 中的一个。
+- `mode`：对于 `list`，指定过滤模式（`active` 或 `recent`）。默认值为 `recent`。
+- `tracking`：对于 `add`，输入包裹的追踪号码。
+- `carrier`：对于 `add`，输入运输公司的代码（例如 `ups`、`usps`、`fedex`）。
+- `description`：对于 `add`，输入包裹的描述。
+- `notify`：对于 `add`，指定是否发送推送通知（布尔值）。
+- `search`：对于 `carriers`，输入搜索字符串。
 
-### Usage
+### 使用方法
 
-**List Deliveries:**
+**列出配送记录：**
 ```bash
 # List recent deliveries
 node ~/.clawdbot/skills/parcel/parcel-api.js list
@@ -38,7 +37,7 @@ node ~/.clawdbot/skills/parcel/parcel-api.js list
 node ~/.clawdbot/skills/parcel/parcel-api.js list --mode=active
 ```
 
-**Add Delivery:**
+**添加配送记录：**
 ```bash
 node ~/.clawdbot/skills/parcel/parcel-api.js add \
   --tracking "1Z1234567890" \
@@ -47,7 +46,7 @@ node ~/.clawdbot/skills/parcel/parcel-api.js add \
   --notify
 ```
 
-**List Carriers:**
+**列出运输公司：**
 ```bash
 node ~/.clawdbot/skills/parcel/parcel-api.js carriers "ups"
 ```

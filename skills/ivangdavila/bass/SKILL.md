@@ -1,80 +1,78 @@
 ---
 name: Bass
-description: Bass guitar practice strategies, groove development, technique correction, and progress tracking.
+description: 贝斯吉他练习策略、节奏感培养、技巧改进以及进度跟踪。
 metadata:
   category: music
   skills: ["bass", "guitar", "practice", "music", "instrument"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/bass/` as workspace on first interaction
-- After practice, offer to log progress; see `progress.md`
+- 在首次互动时，会在用户的主目录下创建名为 `~/bass/` 的工作文件夹。
+- 练习结束后，会提供记录进度的选项；详情请参阅 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask style — rock vs funk vs jazz vs metal differ hugely
-- Ask technique — fingers vs pick vs slap
-- Ask gear — active vs passive, 4 vs 5 string
+- 需要了解用户的演奏风格：摇滚、放克、爵士或金属风格之间存在很大差异。
+- 需要了解用户的演奏技巧：是用手指弹奏、拨弦还是使用拍击技巧。
+- 需要了解用户使用的乐器：主动式或被动式琴弦系统，以及四弦还是五弦贝斯。
 
-## Practice Errors
+## 练习中的常见错误
 
-- Ignoring click — bass IS the time, always metronome
-- All notes, no space — rests are groove
-- Neglecting muting — string noise ruins recordings
-- Playing too loud — bass felt more than heard
+- 忽视拍击的节奏感——贝斯演奏时必须严格遵循节拍器。
+- 所有音符都连在一起，没有休止符——休止符是营造律动感的关键。
+- 忽视使用消音器——琴弦的噪音会破坏录音效果。
+- 演奏音量过大——贝斯的音量应该适中，以免盖过其他声音。
 
-## Technique Traps
+## 技巧上的陷阱
 
-- Plucking too hard — let amp work, lighter = cleaner
-- Fretting hand tension — minimum pressure to sound
-- Thumb anchored wrong — floating for 5+, muting duty
-- Same dynamics throughout — boring
+- 拨弦用力过猛——让放大器发挥作用，轻柔的拨弦效果更清晰。
+- 指法时手部紧张——只需施加最小的压力即可发出声音。
+- 拇指的固定位置不正确——拇指应保持浮动状态（至少5秒以上），并负责控制消音功能。
+- 演奏时力度始终不变——这样会让演奏显得单调乏味。
 
-## Mistakes by Level
+## 不同水平的常见错误
 
-**Beginners:** Racing drummer, not locking kick, no muting
+**初学者：** 像鼓手一样快速演奏，无法准确掌握节奏，且不使用消音器。
+**中级者：** 演奏过度，忽视了贝斯的低音部分，拍击技巧缺乏律动感。
+**高级者：** 过于专注于复杂的演奏技巧，而忽略了简单的乐句。
 
-**Intermediate:** Overplaying, ignoring roots, slap without groove
+## 节奏感的基础知识
 
-**Advanced:** Too busy for song, neglecting simple lines
-
-## Groove Fundamentals
-
-| Concept | Why |
+| 概念 | 原因 |
 |---------|-----|
-| Lock with kick | Pocket foundation |
-| Ghost notes | Feel without busy |
-| Note length | Staccato vs legato |
-| Dynamics | pp to ff range |
+| 与鼓的节奏同步 | 这是演奏的基础 |
+| “幽灵音符”（即短暂、微弱的音符） | 通过这些音符来营造丰富的音乐层次 |
+| 音符的时长 | 断奏（staccato）与连奏（legato）的区别 |
+| 力度控制 | 从极弱（pp）到极强（ff）的动态变化 |
 
-## Fretboard Knowledge
+## 指板相关知识
 
-- Learn notes, not patterns — say names while playing
-- Arpeggios over scales — chord tones are your job
-- Same line, multiple positions — know alternatives
+- 重点学习单个音符的名称，而不仅仅是演奏模式。
+- 在音阶基础上练习琶音——和弦音是演奏的重点。
+- 同一条弦上有不同的演奏位置——需要掌握多种演奏方法。
 
-## Troubleshooting
+## 故障排除
 
-- "Don't sit in mix" → EQ, cut mids or boost low-mids
-- "Lines boring" → ghost notes, vary note length
-- "Can't lock with drums" → practice to kick only
-- "Slap weak" → thumb through string, not bounce
+- 如果声音在混音中不够突出：调整均衡器（EQ），削减中频或增强低频部分。
+- 如果乐句听起来单调：尝试使用“幽灵音符”，并变化音符的时长。
+- 如果无法与鼓的节奏同步：专门练习与鼓的配合。
+- 如果拍击效果不够强烈：确保拇指在拨弦时能够充分接触琴弦，而不是只是轻轻触碰。
 
-## Slap Basics
+## 拍击技巧的基础
 
-- Thumb through, not bouncing off
-- Muting is 50% of slap tone
-- Groove first, speed later
+- 拇指应直接拨动琴弦，而不是弹跳。
+- 使用消音器对拍击音色的效果至关重要。
+- 先培养良好的节奏感，再考虑演奏速度。
 
-## Gear
+## 乐器选择
 
-Tone in hands first — setup matters more than brand
+- 首先要调整乐器的音色——设备的设置比品牌本身更重要。
 
-## Progress Tracking
+## 进度跟踪
 
-Log to `~/bass/`: songs, techniques, groove exercises
+将练习内容记录到 `~/bass/` 文件夹中，包括演奏的曲目、使用的技巧以及节奏练习。
 
-## What to Surface
+## 可以提供的建议
 
-- "Slap logged — want ghost note drills?" / "5 rock songs — try funk?"
+- “已经记录了拍击技巧，想练习‘幽灵音符’吗？” / “想尝试五首摇滚风格的曲目吗？可以试试放克风格。”

@@ -1,185 +1,211 @@
-﻿# 🧠 Skill Router (Skill Orchestrator)
-**An explainable, deterministic meta-skill that decides _which_ skill to use, _how_ to use it, and _whether_ it is safe — before anything runs.**
-Skill Router operates as a **decision and governance layer above all other skills**.
-It inventories available skills, scores them transparently, applies safety gates, and orchestrates the optimal execution strategy — always with user visibility and control.
-> **No black boxes. No silent execution. No hallucinated APIs.**
+# 🧠 技能路由器（Skill Orchestrator）
+**一个可解释的、确定性的元技能，它在任何操作开始之前决定使用哪种技能、如何使用该技能以及该技能是否安全。**  
+技能路由器作为所有其他技能之上的**决策和治理层**运行。  
+它负责统计可用的技能，透明地对这些技能进行评分，应用安全检查，并协调最优的执行策略——始终让用户能够看到并控制整个过程。  
+> **没有黑箱操作。没有隐秘的执行过程。也没有虚假的API。**  
+
 ---
-## 🚀 How to Run (Trigger Phrases)
-Invoke the Skill Router using natural language:
-- decide which skill to use
-- use the best skill for this
-- route this task automatically
-- orchestrate my skills
-- figure out the optimal approach
-- handle this in the most efficient way
-- skill router: <task>
-- orchestrator: <task>
+
+## 🚀 如何使用（触发语句）  
+使用自然语言调用技能路由器：  
+- 决定使用哪种技能  
+- 选择最适合当前任务的技能  
+- 自动分配任务  
+- 协调各项技能的使用  
+- 确定最佳执行方案  
+- 以最高效的方式完成任务  
+- skill-router: <任务>  
+- orchestrator: <任务>  
+
 ---
-## ✅ Checklist — Step by Step
-### Step 0 — Task Intake & Normalization
-- Capture the raw user request verbatim.
-- Normalize into:
-  - **Goal** — what success looks like
-  - **Constraints** — hard requirements and prohibitions
-  - **Urgency** — LOW / MEDIUM / HIGH
-  - **Environment** — OS, local vs remote, runtime limits
-  - **Risk profile** — LOW / MEDIUM / HIGH / CRITICAL
-- Identify required actions:
-  - read, write, execute, network, credentials
-- Detect missing information and mark explicitly.
-- Never guess missing data.
+
+## ✅ 逐步检查清单  
+
+### 第0步 — 任务接收与标准化  
+- 照原样记录用户的原始请求。  
+- 将请求标准化为以下内容：  
+  - **目标**：成功的标准  
+  - **约束条件**：硬性要求和禁止事项  
+  - **紧急程度**：低 / 中等 / 高  
+  - **环境**：操作系统、本地环境或远程环境、运行时限制  
+  - **风险等级**：低 / 中等 / 高 / 危险  
+- 确定所需的操作：读取、写入、执行、网络操作、身份验证  
+- 发现缺失的信息并明确标注出来。  
+- 绝不要猜测缺失的数据。  
+
 ---
-### Step 1 — Skill Inventory
-- Attempt to list installed skills using official platform APIs.
-- If unavailable, fall back to:
-  - Directory scanning
-  - Skill manifests (skill.json, manifest.json)
-- Normalize each skill into:
-```json
-{
-  "id": "string",
-  "name": "string",
-  "description": "string",
-  "supported_actions": [],
-  "required_permissions": [],
-  "risk_level": "LOW | MEDIUM | HIGH | CRITICAL",
-  "cost_latency": {
-    "estimated_ms": 0,
-    "cost_hint": "FREE | LOW | MED | HIGH"
-  },
-  "failure_modes": []
-}
-If inventory is partial or empty, continue in best-effort / plan-only mode.
-Step 2 — Task Classification
-Classify into one or more:
-Planning / Writing
-Coding / DevOps
-Filesystem Operations
-Security / Auditing
-Data / Analysis
-Web / Research
-Automation
-Ideation / Brainstorming
-Identify disallowed actions (e.g. “no internet”, “read-only”).
-Step 3 — Skill Scoring Model (0–100)
-Component Weight
-Task Relevance 0–40
-Environment Compatibility 0–15
-Permission Fit 0–10
-Latency & Cost Efficiency 0–10
-Risk Alignment 0–15
-Historical Success (local) 0–10
-Formula
-Score = R + E + P + C + A + H
-Hard Gates
-Disallowed actions → score = 0
-CRITICAL risk mismatch → score capped at 25 unless overridden
-Step 4 — Strategy Selection
-Choose exactly one:
-Single-skill execution
-Multi-skill pipeline
-Clarifying question (max 1–2)
-All decisions are justified.
-Step 5 — Safety Gates
-Risk ≥ HIGH → confirmation required
-Filesystem / Network / Credentials → preview required
-External APIs → data disclosure + consent
-Missing permissions → degrade or abort safely
-Step 6 — Execution & Fallback
-Execute selected skill(s).
-On failure:
-Analyze error
-Retry with next-best candidate (max 2 attempts)
-Never escalate risk without new confirmation.
-Step 7 — Reporting & Learning
-Generate a structured report.
-Optionally store a local-only history record.
-Secrets are always redacted.
-📊 Output Format (STRICT)
-🧠 Skill Router Report
-1. Task Analysis <ICON> <STATUS> — <summary>
-2. Skill Candidates <ICON> <STATUS> — <top skills + scores>
-3. Selection Strategy <ICON> <STATUS> — <chosen approach>
-4. Safety Check <ICON> <STATUS> — <confirmation required?>
-5. Execution Result <ICON> <STATUS> — <outcome>
-6. Fallback Handling <ICON> <STATUS> — <none / attempted>
-7. Learning Log <ICON> <STATUS> — <stored / skipped>
-Scoreboard:
-Primary: XX/100
-Alternative: YY/100
-Icons:
-✅ PASS
-⚠️ WARN
-❌ FAIL
-🛑 CONFIRM
-⏭️ SKIP
-🔁 Auto-Action Flow
-Always display the report first.
-If confirmation is required, ask:
-Proceed? (yes / no / pick)
-yes → execute
-no → abort
-pick → user selects skills or steps
-🧩 Action Recipes
-Listing Skills (No API)
-Scan directories
-Parse manifests
-Never infer capabilities
-Force a Specific Skill
-override router: <skill-id>
-Full safety gates still apply
-Disable a Skill
-Add to local denylist
-Excluded from scoring
-Dry-Run Mode
-Perform Steps 0–5 only
-No execution
-Verbose Diagnostics
-Full scoring breakdown
-Inventory source
-Redaction log
-Reset History
-Clears local history only
-🧠 Extension Module — Brainstorming Mode (Optional)
-Multi-Agent Brainstorming Orchestrator:
-Business / Strategy Agent
-Market / Execution Agent
-Rounds:
-Idea generation
-Critique & risk
-Synthesis
-Requires explicit consent before external API usage.
-🔒 Safety & Guarantees
-No destructive actions without confirmation
-No silent data exfiltration
-No automatic skill installation
-No permission bypass
-No hallucinated APIs
-🚫 What This Skill Does NOT Do
-Does not replace human judgment
-Does not train ML models
-Does not auto-install dependencies
-Does not bypass permissions
-📚 Reference & Rationale
-Skill Router introduces a deterministic, auditable decision layer for agent skills.
-It improves:
-Safety
-Reliability
-User trust
-Execution success rates
-This is governance for agent skills — done right.
+
+### 第1步 — 技能清单  
+- 尝试使用官方平台API列出已安装的技能。  
+- 如果无法获取信息，可采取以下方法：  
+  - 扫描目录  
+  - 查看技能清单文件（如skill.json、manifest.json）  
+- 将每个技能的信息标准化为以下格式：  
+```json  
+{  
+  "id": "字符串",  
+  "name": "字符串",  
+  "description": "字符串",  
+  "supported_actions": [],  
+  "required_permissions": [],  
+  "risk_level": "低 | 中等 | 高 | 危险",  
+  "cost_latency": {  
+    "estimated_ms": 0,  
+    "cost_hint": "免费 | 低 | 中等 | 高"  
+  },  
+  "failuremodes": []  
+}  
+**如果技能清单不完整或为空，则以最佳努力模式或仅进行计划处理。**  
+
+### 第2步 — 任务分类  
+将任务分类为以下类型之一或多个：  
+- 规划/编写  
+- 编码/DevOps  
+- 文件系统操作  
+- 安全/审计  
+- 数据/分析  
+- Web/研究  
+- 自动化  
+- 构思/头脑风暴  
+
+**识别不允许的操作（例如：“无网络连接”、“只读”）。**  
+
+### 第3步 — 技能评分模型（0–100分）  
+- **评分因素**：  
+  - 组件权重（0–40分）  
+  - 任务相关性（0–10分）  
+  - 环境兼容性（0–10分）  
+  - 权限匹配度（0–10分）  
+  - 延迟与成本效率（0–10分）  
+  - 风险匹配度（0–10分）  
+  - 历史成功率（0–10分）  
+
+**评分公式：**  
+**Score = R + E + P + C + A + H**  
+
+**安全限制：**  
+- 不允许的操作 → 评分为0  
+- 风险等级过高 → 评分上限为25分（除非另有规定）  
+
+### 第4步 — 策略选择  
+**仅选择一个方案：**  
+  - 单个技能执行  
+  - 多技能组合  
+  - 进一步澄清问题（最多1–2个问题）  
+**所有决策都有明确的依据。**  
+
+### 第5步 — 安全检查  
+- 如果风险等级高于“高”，则需要用户确认。  
+  - 文件系统/网络操作/身份验证 → 需要预览  
+  - 使用外部API → 需要用户同意并披露数据  
+  - 如果缺少权限 → 安全地降级或中止任务  
+
+### 第6步 — 执行与回退  
+- 执行选定的技能。  
+- 如果失败：  
+  - 分析错误原因  
+  - 重试下一个最佳选项（最多尝试2次）  
+- 未经新确认，切勿增加风险。  
+
+### 第7步 — 报告与学习  
+- 生成结构化的报告。  
+- 可选择性地仅保存本地历史记录。  
+- 所有敏感信息都会被加密处理。  
+
+**输出格式（严格规范）：**  
+🧠 技能路由器报告  
+1. 任务分析 <ICON> <状态> — <摘要>  
+2. 可用技能 <ICON> <状态> — <评分最高的技能>  
+3. 选择策略 <ICON> <状态> — <最终采用的方案>  
+4. 安全检查 <ICON> <状态> — **是否需要确认？**  
+5. 执行结果 <ICON> <状态> — <执行结果>  
+6. 回退处理 <ICON> <状态> — **是否尝试了回退措施？**  
+7. 学习日志 <ICON> <状态> — **是否已保存日志？**  
+
+**评分结果：**  
+- 主要方案：XX/100  
+- 备选方案：YY/100  
+
+**图标说明：**  
+✅ 通过  
+⚠️ 警告  
+❌ 失败  
+🛑 确认  
+⏭️ 跳过  
+
+**报告显示顺序：**  
+始终先显示报告。  
+如果需要确认，请询问用户：  
+**继续吗？**（是 / 否 / 选择其他选项）  
+- **是** → 执行任务  
+- **否** → 中止任务  
+- **选择其他选项** → 用户可重新选择技能或步骤  
+
 ---
-# ✅ 2️⃣ RESULTADO
-✔️ Cria o arquivo **SKILL.md**
-✔️ Encoding **UTF-8**
-✔️ 100% compatível com **ClawHub / GitHub / GitLab**
-✔️ Visual premium (headings, tabelas, blocos, ícones)
+
+**额外功能：**  
+- **技能列表**（无需API）  
+- **目录扫描**  
+- **解析技能清单文件**  
+- **禁止推断技能的功能**  
+- **强制使用特定技能**  
+- **覆盖技能路由器的决策**（通过指定技能ID）  
+- **完全保留安全检查机制**  
+- **将技能添加到本地禁止列表**  
+- **启用/禁用评分功能**  
+- **仅执行步骤0–5**（不执行实际操作）  
+- **提供详细诊断信息**  
+- **完整的评分明细**  
+- **记录来源**  
+- **清除本地历史记录**  
+
 ---
-## 🔥 Próximo passo (se quiser)
-Posso:
-- Ajustar para **rating máximo no review ClawHub**
-- Gerar `README.md` (marketing)
-- Criar `CONTRIBUTING.md`
-- Criar checklist de aprovação
-- Revisar linguagem para **nível enterprise**
-Só mandar 🚀
+
+**扩展模块：头脑风暴模式（可选）**  
+- **多代理头脑风暴协调器**：  
+  - 商业策略代理  
+  - 市场执行代理  
+- **功能包括：**  
+  - 构思生成  
+  - 评估与风险分析  
+  - 综合建议  
+- **使用外部API前需用户明确同意。**  
+
+**安全与保障：**  
+- 未经确认，禁止执行任何破坏性操作  
+- 禁止隐秘数据泄露  
+- 禁止自动安装技能  
+- 禁止绕过权限限制  
+- 禁止使用虚假的API  
+
+**技能路由器的功能限制：**  
+- **不替代人类判断**  
+- **不训练机器学习模型**  
+- **不自动安装依赖项**  
+- **不绕过权限检查**  
+
+**参考与说明：**  
+技能路由器为代理技能提供了确定性的、可审计的决策机制，从而提升：  
+- 安全性  
+- 可靠性  
+- 用户信任度  
+- 执行成功率  
+
+---
+
+# ✅ 2️⃣ 完成结果  
+✔️ 生成了**SKILL.md**文件  
+✔️ 文件编码格式为**UTF-8**  
+✔️ 与**ClawHub / GitHub / GitLab**完全兼容  
+✔️ 采用高级可视化格式（标题、表格、区块、图标）  
+
+---
+
+## 🔥 下一步（如需）  
+- 可以调整评分机制，以在ClawHub上获得最高评分  
+- 生成`README.md`文件（用于营销）  
+- 创建`CONTRIBUTING.md`文件  
+- 制定审批流程  
+- 校验语言是否符合企业级标准  
+
+**只需点击“🚀”即可开始使用。**

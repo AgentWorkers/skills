@@ -1,6 +1,6 @@
 ---
 name: openocr-skills
-description: Extract text from images, documents and scanned PDFs using OpenOCR 
+description: 使用 OpenOCR 从图片、文档和扫描的 PDF 文件中提取文本。
   - a lightweight and efficient OCR system with document parsing model requiring
   only 0.1B parameters, capable of running recognition on personal PCs. Supports
   text detection, recognition, universal VLM recognition, and document parsing 
@@ -16,30 +16,28 @@ library:
   stars: 1k+
 ---
 
-# OpenOCR Skill
+# OpenOCR 技能
 
-## Overview
+## 概述
 
-This skill enables intelligent text extraction, document parsing, and universal recognition using **OpenOCR** - an accurate and efficient general OCR system. It provides a unified interface for text detection, text recognition, end-to-end OCR, VLM-based universal recognition (text/formulas/tables), and document parsing with layout analysis. Supports Chinese, English, and more.
+该技能利用 **OpenOCR**（一个精确且高效的通用 OCR 系统）实现智能文本提取、文档解析和通用识别功能。它提供了一个统一的接口，支持文本检测、文本识别、端到端 OCR 处理、基于 VLM 的通用识别（包括文本、公式和表格）以及带有布局分析的文档解析。支持中文、英文等多种语言。
 
-## How to Use
+## 使用方法
 
-1. Provide the image, scanned document, or PDF
-2. Optionally specify the task type (det/rec/ocr/unirec/doc)
-3. I'll extract text, formulas, tables, or full document structure
+1. 提供图像、扫描的文档或 PDF 文件。
+2. （可选）指定任务类型（如检测、识别、OCR 或综合识别、文档解析）。
+3. 该技能将提取文本中的文字、公式、表格或整个文档的结构。
 
-**Example prompts:**
+**示例提示：**
+- “从这张图片中提取所有文本。”
+- “检测这张照片中的文本区域。”
+- “识别截图中的公式。”
+- “解析这份带有布局分析的 PDF 文档。”
+- “将这张扫描的页面转换为 Markdown 格式。”
 
-- "Extract all text from this image"
-- "Detect text regions in this photo"
-- "Recognize the formula in this screenshot"
-- "Parse this PDF document with layout analysis"
-- "Convert this scanned page to Markdown"
+## 相关领域知识
 
-## Domain Knowledge
-
-### OpenOCR Fundamentals
-
+### OpenOCR 基础知识
 ```python
 from openocr import OpenOCR
 
@@ -58,8 +56,7 @@ for result in results:
         print(f"{text} ({conf:.2f})")
 ```
 
-### Supported Tasks
-
+### 支持的任务类型
 ```python
 # Available task types
 tasks = {
@@ -78,8 +75,7 @@ unirec_engine = OpenOCR(task='unirec')
 doc_engine = OpenOCR(task='doc')
 ```
 
-### Configuration Options
-
+### 配置选项
 ```python
 from openocr import OpenOCR
 
@@ -138,10 +134,9 @@ doc = OpenOCR(
 )
 ```
 
-### Task-Specific Usage
+### 任务特定用法
 
-#### Text Detection
-
+#### 文本检测
 ```python
 from openocr import OpenOCR
 
@@ -158,8 +153,7 @@ for box in boxes:
     print(f"  Box: {box.tolist()}")
 ```
 
-#### Text Recognition
-
+#### 文本识别
 ```python
 from openocr import OpenOCR
 
@@ -178,8 +172,7 @@ elapse = results[0]['elapse']    # Processing time
 print(f"Text: {text}, Score: {score:.3f}, Time: {elapse:.3f}s")
 ```
 
-#### End-to-End OCR
-
+#### 端到端 OCR 处理
 ```python
 from openocr import OpenOCR
 
@@ -200,8 +193,7 @@ for result in results:
         print(f"{text} ({confidence:.2f})")
 ```
 
-#### Universal Recognition (UniRec)
-
+#### 通用识别（UniRec）
 ```python
 from openocr import OpenOCR
 
@@ -217,8 +209,7 @@ for page_text, page_ids in results:
     print(f"Page: {page_text[:100]}...")
 ```
 
-#### Document Parsing (OpenDoc)
-
+#### 文档解析（OpenDoc）
 ```python
 from openocr import OpenOCR
 
@@ -238,8 +229,7 @@ for page_result in results:
     doc.save_to_markdown(page_result, './output')
 ```
 
-### Command-Line Interface
-
+### 命令行接口
 ```bash
 # Text Detection
 openocr --task det --input_path image.jpg --is_vis
@@ -263,10 +253,9 @@ openocr --task launch_unirec_demo --share --server_port 7861
 openocr --task launch_opendoc_demo --share --server_port 7862
 ```
 
-### Processing Different Sources
+### 处理不同类型的输入数据
 
-#### Image Files
-
+#### 图像文件
 ```python
 from openocr import OpenOCR
 
@@ -279,8 +268,7 @@ results, _ = ocr(image_path='image.jpg')
 results, _ = ocr(image_path='./images/', save_dir='./output', is_visualize=True)
 ```
 
-#### PDF Files
-
+#### PDF 文件
 ```python
 from openocr import OpenOCR
 
@@ -298,8 +286,7 @@ for page_result in results:
     doc.save_to_json(page_result, './output')
 ```
 
-#### Numpy Array Input
-
+#### Numpy 数组输入
 ```python
 import cv2
 from openocr import OpenOCR
@@ -313,8 +300,7 @@ img = cv2.imread('image.jpg')
 results, _ = ocr(img_numpy=img)
 ```
 
-### Result Formats
-
+### 结果格式
 ```python
 # Detection result format
 det_result = [{'boxes': np.ndarray, 'elapse': float}]
@@ -335,20 +321,19 @@ ocr_result = (results_list, time_dicts)
 # PDF:   [dict, ...]  # one per page
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Choose the Right Task**: Use `ocr` for general text, `unirec` for formulas/tables, `doc` for full documents
-2. **Use Mobile Mode for Speed**: `mode='mobile'` is much faster; use `mode='server'` only when accuracy is critical
-3. **Use ONNX Backend**: Default ONNX backend works on CPU without extra dependencies
-4. **Set Appropriate Thresholds**: Adjust `drop_score` (OCR) and `layout_threshold` (Doc) for your use case
-5. **Enable Layout Detection**: For documents with mixed content (text + formulas + tables), always enable `use_layout_detection`
-6. **Batch Processing**: Use `rec_batch_num` to control recognition batch size for throughput optimization
-7. **GPU Acceleration**: Install `onnxruntime-gpu` or PyTorch with CUDA for significant speedup
+1. **选择合适的任务类型**：使用 `ocr` 处理普通文本，`unirec` 处理公式和表格，`doc` 处理完整文档。
+2. **使用移动模式以提高速度**：`mode='mobile'` 速度更快；仅在需要高精度时使用 `mode='server'`。
+3. **使用 ONNX 后端**：默认的 ONNX 后端可在 CPU 上运行，无需额外依赖。
+4. **设置合适的阈值**：根据实际需求调整 `drop_score`（OCR）和 `layout_threshold`（文档解析）。
+5. **启用布局检测**：对于包含文本、公式和表格的混合文档，务必启用 `use_layout_detection`。
+6. **批量处理**：使用 `rec_batch_num` 控制批处理数量以优化处理效率。
+7. **利用 GPU 加速**：安装 `onnxruntime-gpu` 或带有 CUDA 的 PyTorch 可显著提升性能。
 
-## Common Patterns
+## 常见应用场景
 
-### Full Document Processing Pipeline
-
+### 完整文档处理流程
 ```python
 from openocr import OpenOCR
 import os
@@ -380,8 +365,7 @@ def process_documents(input_dir, output_dir):
 process_documents('./docs', './output')
 ```
 
-### OCR with Custom Post-Processing
-
+### 带有自定义后处理的 OCR 处理
 ```python
 from openocr import OpenOCR
 import re
@@ -418,8 +402,7 @@ for line in result:
     print(f"{line['text']} ({line['confidence']:.2f})")
 ```
 
-### Formula Recognition
-
+### 公式识别
 ```python
 from openocr import OpenOCR
 
@@ -436,8 +419,7 @@ latex = recognize_formula('formula.png')
 # Output: \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 ```
 
-### Table Extraction
-
+### 表格提取
 ```python
 from openocr import OpenOCR
 
@@ -453,10 +435,9 @@ def extract_table(image_path):
 table_latex = extract_table('table.png')
 ```
 
-## Examples
+## 示例
 
-### Example 1: Batch OCR with Progress
-
+### 示例 1：批量 OCR 处理并显示进度
 ```python
 from openocr import OpenOCR
 import os
@@ -503,8 +484,7 @@ def batch_ocr(image_dir, output_dir='./ocr_results'):
 results = batch_ocr('./images')
 ```
 
-### Example 2: Document to Markdown Converter
-
+### 示例 2：将文档转换为 Markdown 格式
 ```python
 from openocr import OpenOCR
 import os
@@ -540,8 +520,7 @@ doc_to_markdown('paper.pdf')
 doc_to_markdown('page.jpg')
 ```
 
-### Example 3: Multi-Task Comparison
-
+### 示例 3：多任务处理对比
 ```python
 from openocr import OpenOCR
 
@@ -576,8 +555,7 @@ def compare_tasks(image_path):
 compare_tasks('document.jpg')
 ```
 
-### Example 4: Gradio Demo Launch
-
+### 示例 4：使用 Gradio 进行演示
 ```python
 from openocr import launch_openocr_demo, launch_unirec_demo, launch_opendoc_demo
 
@@ -591,18 +569,17 @@ launch_unirec_demo(share=True, server_port=7861)
 launch_opendoc_demo(share=True, server_port=7862)
 ```
 
-## Limitations
+## 限制因素
 
-- Text recognition accuracy depends on image quality
-- Very small or heavily rotated text may reduce accuracy
-- `server` mode requires PyTorch and is slower than `mobile` mode
-- UniRec and Doc tasks use 0.1B parameter VLM, larger models may yield better results
-- PDF processing converts pages to images internally, very large PDFs may use significant memory
-- Complex handwritten text accuracy varies
-- GPU recommended for best performance, especially for Doc and UniRec tasks
+- 文本识别精度受图像质量影响。
+- 非常小或严重旋转的文本可能导致识别精度下降。
+- `server` 模式需要 PyTorch，且速度较 `mobile` 模式慢。
+- UniRec 和 Doc 任务使用 0.1B 大小的 VLM 模型，更大模型可能获得更好的识别效果。
+- PDF 处理过程会将页面转换为图像格式，大型 PDF 文件可能会占用大量内存。
+- 复杂的手写文本识别效果可能不稳定。
+- 建议使用 GPU 以获得最佳性能，尤其是对于 Doc 和 UniRec 任务。
 
-## Installation
-
+## 安装方法
 ```bash
 # Basic installation (CPU, ONNX backend)
 pip install openocr-python
@@ -626,10 +603,10 @@ python build_package.py
 pip install ./build/dist/openocr_python-*.whl
 ```
 
-## Resources
+## 参考资源
 
-- [OpenOCR GitHub](https://github.com/Topdu/OpenOCR)
-- [PyPI Package](https://pypi.org/project/openocr-python/)
-- [UniRec Paper](https://github.com/Topdu/OpenOCR#unirec)
-- [OpenDoc Documentation](https://github.com/Topdu/OpenOCR#opendoc)
-- [Model Zoo & Configs](https://github.com/Topdu/OpenOCR/tree/main/configs)
+- [OpenOCR GitHub 仓库](https://github.com/Topdu/OpenOCR)
+- [PyPI 包](https://pypi.org/project/openocr-python/)
+- [UniRec 项目文档](https://github.com/Topdu/OpenOCR#unirec)
+- [OpenDoc 文档](https://github.com/Topdu/OpenOCR#opendoc)
+- [模型库及配置文件](https://github.com/Topdu/OpenOCR/tree/main/configs)

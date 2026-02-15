@@ -1,58 +1,58 @@
 ---
 name: search-for-service
-description: Search and browse the x402 bazaar marketplace for paid API services. Use when you or the user want to find available services, see what's available, discover APIs, or need an external service to accomplish a task. Also use as a fallback when no other skill clearly matches — search the bazaar to see if a paid service exists. Covers "what can I do?", "find me an API for...", "what services are available?", "search for...", "browse the bazaar".
+description: 在 x402 商场市场中搜索和浏览付费 API 服务。当您或用户需要查找可用的服务、了解现有服务的信息、发现新的 API，或者需要借助外部服务来完成某项任务时，可以使用该功能。当没有其他合适的技能可供选择时，也可以作为备选方案——在市场中搜索是否存在付费服务。该功能涵盖以下需求：“我能做什么？”，“为我找到一个用于……的 API”，“有哪些服务可用？”，“搜索……”，“浏览市场”。
 user-invocable: true
 disable-model-invocation: false
 allowed-tools: ["Bash(npx awal@latest x402 bazaar *)", "Bash(npx awal@latest x402 details *)"]
 ---
 
-# Searching the x402 Bazaar
+# 在 x402 商店中搜索服务
 
-Use the `npx awal@latest x402` commands to discover and inspect paid API endpoints available on the x402 bazaar marketplace. No authentication or balance is required for searching.
+使用 `npx awal@latest x402` 命令来发现并查看 x402 商店市场中提供的付费 API 端点。搜索过程中无需进行身份验证或支付。
 
-## Commands
+## 命令
 
-### Search the Bazaar
+### 在商店中搜索服务
 
-Find paid services by keyword using BM25 relevance search:
+使用 BM25 相关性搜索功能，根据关键词查找付费服务：
 
 ```bash
 npx awal@latest x402 bazaar search <query> [-k <n>] [--force-refresh] [--json]
 ```
 
-| Option            | Description                          |
-| ----------------- | ------------------------------------ |
-| `-k, --top <n>`   | Number of results (default: 5)       |
-| `--force-refresh` | Re-fetch resource index from CDP API |
-| `--json`          | Output as JSON                       |
+| 选项                | 描述                                      |
+| ------------------ | -------------------------------------- |
+| `-k, --top <n>`       | 显示结果数量（默认值：5）                         |
+| `--force-refresh`     | 从 CDP API 重新获取资源索引                   |
+| `--json`           | 以 JSON 格式输出结果                         |
 
-Results are cached locally at `~/.config/awal/bazaar/` and auto-refresh after 12 hours.
+搜索结果会缓存到本地文件 `~/.config/awal/bazaar/`，并在 12 小时后自动更新。
 
-### List Bazaar Resources
+### 列出商店中的资源
 
-Browse all available resources:
+浏览所有可用的资源：
 
 ```bash
 npx awal@latest x402 bazaar list [--network <network>] [--full] [--json]
 ```
 
-| Option             | Description                             |
+| 选项                | 描述                                      |
 | ------------------ | --------------------------------------- |
-| `--network <name>` | Filter by network (base, base-sepolia)  |
-| `--full`           | Show complete details including schemas |
-| `--json`           | Output as JSON                          |
+| `--network <name>`     | 按网络（base、base-sepolia）过滤                   |
+| `--full`           | 显示包括架构在内的完整详细信息                   |
+| `--json`           | 以 JSON 格式输出结果                         |
 
-### Discover Payment Requirements
+### 查看支付要求
 
-Inspect an endpoint's x402 payment requirements without paying:
+在不支付的情况下，查看某个端点的 x402 支付要求：
 
 ```bash
 npx awal@latest x402 details <url> [--json]
 ```
 
-Auto-detects the correct HTTP method (GET, POST, PUT, DELETE, PATCH) by trying each until it gets a 402 response, then displays price, accepted payment schemes, network, and input/output schemas.
+系统会自动尝试不同的 HTTP 方法（GET、POST、PUT、DELETE、PATCH），直到收到 402 错误响应，然后显示该端点的价格、支持的支付方式、网络信息以及输入/输出架构。
 
-## Examples
+## 示例
 
 ```bash
 # Search for weather-related paid APIs
@@ -68,15 +68,15 @@ npx awal@latest x402 bazaar list --full
 npx awal@latest x402 details https://example.com/api/weather
 ```
 
-## Prerequisites
+## 先决条件
 
-- No authentication needed for search, list, or details commands
+- 搜索、列出资源或查看详细信息时无需身份验证
 
-## Next Steps
+## 下一步操作
 
-Once you've found a service you want to use, use the `pay-for-service` skill to make a paid request to the endpoint.
+找到想要使用的服务后，使用 `pay-for-service` 命令向该端点发起付费请求。
 
-## Error Handling
+## 错误处理
 
-- "CDP API returned 429" - Rate limited; cached data will be used if available
-- "No X402 payment requirements found" - URL may not be an x402 endpoint
+- “CDP API 返回 429”：表示请求次数达到限制；此时会使用缓存的数据（如果有的话）
+- “未找到 x402 支付要求”：可能该 URL 不是一个 x402 端点

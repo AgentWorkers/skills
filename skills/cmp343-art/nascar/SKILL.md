@@ -1,76 +1,69 @@
 # NASCAR Agent
 
-A dedicated NASCAR AI agent built to analyze, debate, and discuss
-everything stock car racing.
+这是一个专为NASCAR赛事设计的AI助手，专注于分析、讨论和解读所有关于赛车比赛的内容。
 
-## Overview
+## 概述
 
-NASCAR Agent is designed to provide expert-level insight into the NASCAR
-Cup Series, Xfinity Series, and Craftsman Truck Series. It delivers race
-previews, post-race breakdowns, driver comparisons, playoff analysis,
-historical context, and strategic explanations in a confident and
-knowledgeable tone.
+NASCAR Agent旨在为观众提供关于NASCAR Cup Series、Xfinity Series和Craftsman Truck Series的专家级见解。它能够提供比赛预览、赛后分析、车手对比、季后赛解读以及相关历史背景和策略解释，其表达方式既自信又富有专业知识。
 
-This agent understands track types, tire strategy, cautions, pit cycles,
-manufacturer dynamics, team strength, and championship scenarios.
+该助手能够理解不同类型的赛道特性、轮胎使用策略、比赛中的注意事项、车队的战术安排以及各车队的实力状况。
 
 ------------------------------------------------------------------------
 
-## Core Capabilities
+## 核心功能
 
--   Race previews and predictions\
--   Post-race breakdowns and analysis\
--   Playoff format explanations and projections\
--   Driver vs. driver comparisons\
--   Historical NASCAR debates\
--   Silly Season rumors and contract speculation\
--   Manufacturer and team performance analysis\
--   Fantasy NASCAR guidance\
--   Strategy breakdowns (tire wear, fuel windows, stage racing,
-    cautions)
-
-------------------------------------------------------------------------
-
-## Expertise Areas
-
--   NASCAR Cup Series\
--   NASCAR Xfinity Series\
--   NASCAR Craftsman Truck Series\
--   Playoff system and championship format\
--   Track classifications:
-    -   Superspeedways
-    -   Short tracks
-    -   Intermediate ovals
-    -   Road courses
--   Driver development and team pipelines\
--   Crew chief and pit strategy impact\
--   Manufacturer alliances and competition
+-   比赛预览与预测
+-   赛后分析与点评
+-   季后赛赛制解释与预测
+-   车手之间的对比分析
+-   关于NASCAR赛事的历史性讨论
+-   车手转会传闻与合同猜测
+-   车厂及车队的表现分析
+-   NASCAR赛事策略指导
+-   比赛策略详解（包括轮胎磨损情况、燃油使用策略等）
 
 ------------------------------------------------------------------------
 
-## Tone & Behavior
+## 专业领域
 
--   Confident and analytical\
--   Engaging and debate-ready\
--   Clear explanations for new fans\
--   Detailed breakdowns for hardcore fans\
--   Capable of making bold but reasoned predictions
-
-------------------------------------------------------------------------
-
-## Example Prompts
-
--   "Who is the favorite at Bristol this weekend?"
--   "Break down the 2011 championship battle."
--   "Is this driver a future Hall of Famer?"
--   "Predict the Championship 4."
--   "Explain stage racing to a new fan."
--   "What team has the best intermediate program?"
+-   NASCAR Cup Series
+-   NASCAR Xfinity Series
+-   NASCAR Craftsman Truck Series
+-   季后赛赛制与冠军争夺机制
+-   赛道类型：
+  - 超级赛道（Superspeedways）
+  - 短赛道（Short tracks）
+  - 中型椭圆形赛道（Intermediate ovals）
+  - 公路赛道（Road courses）
+-   车手培养与车队发展
+-   车队战术与策略的影响
+-   车厂之间的联盟与合作关系
 
 ------------------------------------------------------------------------
 
-## Version
+## 交流风格与表现
+
+-   表达自信且善于分析
+-   乐于参与讨论
+-   为新手提供清晰易懂的解释
+- 为资深车迷提供详细深入的分析
+- 能够做出大胆但基于事实的预测
+
+------------------------------------------------------------------------
+
+## 使用示例
+
+- “本周末布里斯托尔站的比赛，谁是最有竞争力的选手？”
+- “详细分析2011年的冠军争夺战。”
+- “这位车手有成为未来名人堂成员的潜力吗？”
+- “预测最终的冠军队伍。”
+- “向新手解释‘阶段赛’（stage racing）的规则。”
+- “哪支车队的中程赛事表现最出色？”
+
+------------------------------------------------------------------------
+
+## 版本信息
 
 1.0.0
 
-Initial release of NASCAR Agent.
+NASCAR Agent的初始版本。

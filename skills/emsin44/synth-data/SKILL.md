@@ -1,20 +1,20 @@
 ---
 name: synth-data
-description: Query volatility forecasts from Synthdata.co for crypto, commodities, and stocks. Compare assets, run Monte Carlo simulations, and generate charts.
+description: 从 Synthdata.co 查询加密货币、商品和股票的波动性预测数据。可以对这些资产进行比较，运行蒙特卡洛模拟，并生成图表。
 ---
 
-# Synthdata Volatility Skill
+# Synthdata波动性分析技能
 
-Query and analyze volatility forecasts from Synthdata.co for crypto, commodities, and stock indices.
+查询并分析来自Synthdata.co的加密货币、商品和股票指数的波动性预测。
 
-## Setup
+## 设置
 
-Set your API key:
+设置您的API密钥：
 ```bash
 export SYNTHDATA_API_KEY=your_key_here
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Single asset
@@ -33,21 +33,21 @@ python3 scripts/synth.py BTC --simulate --hours 12
 python3 scripts/synth.py --all --chart
 ```
 
-## Available Assets
+## 可用资产
 
-| Ticker | Name | Category |
-|--------|------|----------|
-| BTC | Bitcoin | Crypto |
-| ETH | Ethereum | Crypto |
-| SOL | Solana | Crypto |
-| XAU | Gold | Commodity |
-| SPYX | S&P 500 | Index |
-| NVDAX | NVIDIA | Stock |
-| GOOGLX | Google | Stock |
-| TSLAX | Tesla | Stock |
-| AAPLX | Apple | Stock |
+| 代码 | 名称 | 类别 |
+|------|------|---------|
+| BTC | 比特币 | 加密货币 |
+| ETH | 以太坊 | 加密货币 |
+| SOL | Solana | 加密货币 |
+| XAU | 黄金 | 商品 |
+| SPYX | 标普500指数 | 指数 |
+| NVDAX | NVIDIA股票 | 股票 |
+| GOOGLX | 谷歌股票 | 股票 |
+| TSLAX | 特斯拉股票 | 股票 |
+| AAPLX | 苹果股票 | 股票 |
 
-## Output Example
+## 输出示例
 
 ```
 ==================================================
@@ -60,46 +60,46 @@ python3 scripts/synth.py --all --chart
   Forecast Vol:    52.2%
 ```
 
-## Volatility Levels
+## 波动性等级
 
-| Level | Range | Emoji |
-|-------|-------|-------|
-| Low | < 20% | 🟢 |
-| Moderate | 20-40% | 🟡 |
-| Elevated | 40-60% | 🟠 |
-| High | 60-80% | 🔴 |
-| Extreme | > 80% | 🔴 |
+| 等级 | 范围 | 表情符号 |
+|------|------|---------|
+| 低 | < 20% | 🟢 |
+| 中等 | 20-40% | 🟡 |
+| 高 | 40-60% | 🟠 |
+| 非常高 | 60-80% | 🔴 |
+| 极高 | > 80% | 🔴 |
 
-## Use Cases
+## 使用场景
 
-### 1. Market Overview
+### 1. 市场概览
 ```bash
 python3 scripts/synth.py --all
 ```
-Get a ranked table of all assets by volatility.
+获取按波动性排名的所有资产列表。
 
-### 2. Trading Signals
-- **High forecast → Current low**: Expect volatility spike
-- **Low forecast → Current high**: Volatility may decrease
-- Use for position sizing and options trading
+### 2. 交易信号
+- **预测波动性高 → 当前波动性低**：预期波动性将上升
+- **预测波动性低 → 当前波动性高**：波动性可能下降
+- 用于调整持仓规模和期权交易
 
-### 3. Monte Carlo Projections
+### 3. 蒙特卡洛预测
 ```bash
 python3 scripts/synth.py BTC --simulate --hours 24 --paths 1000 --chart
 ```
-Generate probabilistic price ranges using forecast volatility (24h max - Synthdata forecast window).
+使用预测的波动性生成价格区间（最大24小时范围，基于Synthdata的预测数据）。
 
-### 4. Scheduled Reports
-Create a cron job for daily Slack/Telegram forecasts (see examples/use-cases.md).
+### 4. 定时报告
+创建定时任务，每日通过Slack/Telegram发送预测结果（详见examples/use-cases.md）。
 
-### 5. Risk Alerts
-Monitor for assets crossing volatility thresholds and trigger notifications.
+### 5. 风险警报
+监控资产波动性是否超过阈值，并触发通知。
 
-## API Reference
+## API参考
 
-See `references/api.md` for full API documentation.
+请参阅`references/api.md`以获取完整的API文档。
 
-## Direct API Usage
+## 直接使用API
 
 ```python
 import requests
@@ -117,9 +117,9 @@ realized_vol = data["realized"]["average_volatility"]
 forecast_vol = data["forecast_future"]["average_volatility"]
 ```
 
-## Integration Ideas
+## 集成建议
 
-- **Polymarket**: Use volatility forecasts to inform up/down market bets
-- **Options**: High forecast vol = consider buying options
-- **Portfolio**: Rebalance when aggregate volatility spikes
-- **Alerts**: Notify when forecast differs significantly from realized
+- **Polymarket**：利用波动性预测来指导市场方向的投注
+- **期权交易**：预测波动性高时考虑买入期权
+- **投资组合管理**：当整体波动性突然上升时重新平衡投资组合
+- **警报系统**：当预测结果与实际波动性差异较大时发送通知

@@ -1,11 +1,11 @@
 ---
 name: glab-help
-description: Display help information for glab commands and subcommands. Use when learning glab commands, viewing command syntax, or getting usage examples. Triggers on help, command help, usage, glab help.
+description: 显示 glab 命令及其子命令的帮助信息。适用于学习 glab 命令、查看命令语法或获取使用示例的场景。该功能会在用户输入 “help”、“command help”、“usage” 或 “glab help” 时被触发。
 ---
 
-# glab help
+# glab 帮助文档
 
-## Overview
+## 概述
 
 ```
 
@@ -21,12 +21,12 @@ description: Display help information for glab commands and subcommands. Use whe
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab help --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

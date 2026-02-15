@@ -1,23 +1,19 @@
 ---
 name: book-plumber
-description: Book plumber services through Lokuli MCP. Use when user needs to find and book plumber. Triggers on requests like "book a plumber", "find plumber near me", or any plumber service request.
+description: 通过 Lokuli MCP 预订水管工服务。当用户需要寻找或预约水管工时，可以使用该功能。该功能会在用户发出“预订水管工”、“查找附近的水管工”或任何与水管工服务相关的请求时被触发。
 ---
 
-# uook plumuer
+# 使用 Lokuli 的 MCP 服务器预订水管工服务
 
-Book plumber services through Lokuli's MCP server.
-
-## MCP Endpoint
-
+## MCP 端点
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
-
-### search
+## 工具
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +28,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +43,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 预订服务（Create Booking）
 ```json
 {
   "method": "tools/call",

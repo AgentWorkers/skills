@@ -1,35 +1,35 @@
 ---
 name: privacy-cards
-description: "Create and manage Privacy.com virtual cards. Use for generating single-use cards, merchant-locked cards, listing cards, setting spending limits, pausing/closing cards, and viewing transactions via the Privacy.com API."
+description: "创建和管理 Privacy.com 虚拟卡片。这些卡片可用于生成一次性使用的卡片、由商家管理的卡片、用于商品展示的卡片、设置消费限额、暂停或关闭卡片，以及通过 Privacy.com API 查看交易记录。"
 ---
 
-# Privacy Cards
+# 隐私卡管理
 
-Manage virtual cards via the Privacy.com API.
+通过 Privacy.com 的 API 来管理虚拟卡。
 
-## Setup
+## 设置
 
-### Getting API Access
+### 获取 API 访问权限
 
-1. Sign up for a [Privacy.com](https://privacy.com) account
-2. Email **support@privacy.com** to request API access
-3. Once approved, you'll receive your API key
+1. 在 [Privacy.com](https://privacy.com) 注册一个账户。
+2. 发送电子邮件至 **support@privacy.com** 以申请 API 访问权限。
+3. 一旦获得批准，您将收到 API 密钥。
 
-### Configuration
+### 配置
 
 ```bash
 export PRIVACY_API_KEY="your-api-key"
 ```
 
-**Environments:**
-- Production: `https://api.privacy.com/v1`
-- Sandbox: `https://sandbox.privacy.com/v1`
+**环境：**
+- 生产环境：`https://api.privacy.com/v1`
+- 沙盒环境：`https://sandbox.privacy.com/v1`
 
-All requests: `Authorization: api-key $PRIVACY_API_KEY`
+所有请求均需包含以下授权头：`Authorization: api-key $PRIVACY_API_KEY`
 
 ---
 
-## Create a Card
+## 创建卡片
 
 ```bash
 curl -s -X POST "https://api.privacy.com/v1/cards" \
@@ -43,24 +43,24 @@ curl -s -X POST "https://api.privacy.com/v1/cards" \
   }' | jq
 ```
 
-### Card Types
-| Type | Behavior |
+### 卡片类型
+| 类型 | 行为 |
 |------|----------|
-| `SINGLE_USE` | Closes after first transaction |
-| `MERCHANT_LOCKED` | Locks to first merchant, reusable there |
-| `UNLOCKED` | Works anywhere (requires issuing access) |
+| `SINGLE_USE` | 在首次交易后关闭 |
+| `MERCHANT_LOCKED` | 锁定到指定的商家，仅可在该商家处使用 |
+| `UNLOCKED` | 可在任何商家处使用（需要重新授权） |
 
-### Create Parameters
-| Parameter | Required | Description |
+### 创建参数
+| 参数 | 是否必填 | 说明 |
 |-----------|----------|-------------|
-| `type` | Yes | SINGLE_USE, MERCHANT_LOCKED, UNLOCKED |
-| `memo` | No | Label/description |
-| `spend_limit` | No | Limit in cents |
-| `spend_limit_duration` | No | TRANSACTION, MONTHLY, ANNUALLY, FOREVER |
-| `state` | No | OPEN (default) or PAUSED |
-| `funding_token` | No | Specific funding source UUID |
+| `type` | 是 | `SINGLE_USE`, `MERCHANT_LOCKED`, `UNLOCKED` |
+| `memo` | 否 | 卡片标签/描述 |
+| `spend_limit` | 否 | 消费限额（单位：分） |
+| `spend_limit_duration` | 否 | 消费限额的有效期限：一次性、每月、每年或永久 |
+| `state` | 否 | 状态：`OPEN`（默认）或 `PAUSED` |
+| `funding_token` | 否 | 特定资金来源的 UUID |
 
-### Response
+### 响应数据
 ```json
 {
   "token": "card-uuid",
@@ -78,25 +78,25 @@ curl -s -X POST "https://api.privacy.com/v1/cards" \
 }
 ```
 
-> **Note:** `pan`, `cvv`, `exp_month`, `exp_year` require enterprise access in production. Always available in sandbox.
+> **注意：** 在生产环境中，`pan`, `cvv`, `exp_month`, `exp_year` 等字段需要企业级访问权限。这些字段在沙盒环境中始终可用。
 
 ---
 
-## Lookup Transactions
+## 查看交易记录
 
-### All transactions for a card
+### 查看卡片的全部交易记录
 ```bash
 curl -s "https://api.privacy.com/v1/transactions?card_token={card_token}" \
   -H "Authorization: api-key $PRIVACY_API_KEY" | jq
 ```
 
-### Filter by date range
+### 按日期范围过滤交易记录
 ```bash
 curl -s "https://api.privacy.com/v1/transactions?card_token={card_token}&begin=2024-01-01&end=2024-01-31" \
   -H "Authorization: api-key $PRIVACY_API_KEY" | jq
 ```
 
-### Filter by result
+### 按交易结果过滤交易记录
 ```bash
 # Only approved
 curl -s "https://api.privacy.com/v1/transactions?result=APPROVED" \
@@ -107,17 +107,17 @@ curl -s "https://api.privacy.com/v1/transactions?result=DECLINED" \
   -H "Authorization: api-key $PRIVACY_API_KEY" | jq
 ```
 
-### Query Parameters
-| Parameter | Description |
+### 查询参数
+| 参数 | 说明 |
 |-----------|-------------|
-| `card_token` | Filter by card UUID |
-| `result` | APPROVED or DECLINED |
-| `begin` | On or after date (YYYY-MM-DD) |
-| `end` | Before date (YYYY-MM-DD) |
-| `page` | Page number (default: 1) |
-| `page_size` | Results per page (1-1000, default: 50) |
+| `card_token` | 通过卡片 UUID 过滤交易记录 |
+| `result` | 交易状态：`APPROVED` 或 `DECLINED` |
+| `begin` | 交易开始的日期（格式：YYYY-MM-DD） |
+| `end` | 交易结束的日期（格式：YYYY-MM-DD） |
+| `page` | 页码（默认值：1） |
+| `page_size` | 每页显示的交易记录数量（1-1000，默认值：50） |
 
-### Transaction Response
+### 交易响应数据
 ```json
 {
   "token": "txn-uuid",
@@ -136,28 +136,28 @@ curl -s "https://api.privacy.com/v1/transactions?result=DECLINED" \
 }
 ```
 
-### Transaction Statuses
+### 交易状态
 `PENDING` → `SETTLING` → `SETTLED`
 
-Also: `VOIDED`, `BOUNCED`, `DECLINED`
+其他状态：`VOIDED`, `BOUNCED`, `DECLINED`
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### List all cards
+### 列出所有卡片
 ```bash
 curl -s "https://api.privacy.com/v1/cards" \
   -H "Authorization: api-key $PRIVACY_API_KEY" | jq
 ```
 
-### Get single card
+### 获取单张卡片的详细信息
 ```bash
 curl -s "https://api.privacy.com/v1/cards/{card_token}" \
   -H "Authorization: api-key $PRIVACY_API_KEY" | jq
 ```
 
-### Pause a card
+### 暂停卡片的使用
 ```bash
 curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
   -H "Authorization: api-key $PRIVACY_API_KEY" \
@@ -165,7 +165,7 @@ curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
   -d '{"state": "PAUSED"}' | jq
 ```
 
-### Close a card (permanent)
+### 永久关闭卡片
 ```bash
 curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
   -H "Authorization: api-key $PRIVACY_API_KEY" \
@@ -173,7 +173,7 @@ curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
   -d '{"state": "CLOSED"}' | jq
 ```
 
-### Update spend limit
+### 更新消费限额
 ```bash
 curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
   -H "Authorization: api-key $PRIVACY_API_KEY" \
@@ -183,15 +183,15 @@ curl -s -X PATCH "https://api.privacy.com/v1/cards/{card_token}" \
 
 ---
 
-## Common Decline Reasons
+## 常见交易拒绝原因
 
-| Code | Meaning |
+| 代码 | 含义 |
 |------|---------|
-| `CARD_PAUSED` | Card is paused |
-| `CARD_CLOSED` | Card is closed |
-| `SINGLE_USE_RECHARGED` | Single-use already used |
-| `UNAUTHORIZED_MERCHANT` | Wrong merchant for locked card |
-| `USER_TRANSACTION_LIMIT` | Spend limit exceeded |
-| `INSUFFICIENT_FUNDS` | Funding source issue |
+| `CARD_PAUSED` | 卡片被暂停使用 |
+| `CARD_CLOSED` | 卡片已被关闭 |
+| `SINGLE_USE_RECHARGED` | 单次使用的卡片已被再次使用 |
+| `UNAUTHORIZED_MERCHANT` | 该卡片无法用于指定的商家 |
+| `USER_TRANSACTION_LIMIT` | 消费限额已超出 |
+| `INSUFFICIENT_FUNDS` | 资金来源出现问题 |
 
-See [references/api.md](references/api.md) for complete field documentation.
+有关所有字段的详细信息，请参阅 [references/api.md](references/api.md)。

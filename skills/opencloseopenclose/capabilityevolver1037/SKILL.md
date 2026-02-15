@@ -1,58 +1,58 @@
 ---
 name: capability-evolver
-description: A self-evolution engine for AI agents. Analyzes runtime history to identify improvements and introduces randomized "mutations" to break local optima.
+description: 一种用于AI代理的自进化引擎。该引擎通过分析运行时历史数据来识别改进点，并引入随机“变异”以打破局部最优解。
 tags: [meta, ai, self-improvement, core]
 ---
 
-# 🧬 Capability Evolver
+# 🧬 能力进化器（Capability Evolver）
 
-**"I don't just run code. I write it."**
+**“我不仅仅运行代码，我还会编写代码。”**
 
-The **Capability Evolver** is a meta-skill that allows OpenClaw agents to inspect their own runtime history, identify failures or inefficiencies, and autonomously write new code or update their own memory to improve performance.
+**能力进化器**是一种元技能（meta-skill），它允许 OpenClaw 代理（agents）检查自身的运行时历史记录，识别故障或低效之处，并自主编写新代码或更新自身内存以提高性能。
 
-Now featuring **Ascension Protocol (v2.0)**: A structured knowledge accumulation system.
+现在新增了 **Ascension 协议（v2.0）**：一个结构化的知识积累系统。
 
-## ✨ Features
+## ✨ 主要功能
 
-- **🔍 Auto-Log Analysis**: Automatically scans memory and history files for errors and patterns.
-- **🛠️ Self-Repair**: Detects crashes and suggests patches.
-- **💎 Knowledge Crystallization**: Extracts lessons into `memory/KNOWLEDGE_BASE/LESSONS_LEARNED.md`.
-- **🥚 Skill Incubation**: Can spontaneously generate new skills in `skills/`.
-- **🐕 Mad Dog Mode**: Continuous self-healing loop (`--loop`).
+- **🔍 自动日志分析**：自动扫描内存和历史文件中的错误及异常模式。
+- **🛠️ 自我修复**：检测程序崩溃并建议修复方案。
+- **💎 知识沉淀**：将学习到的经验提取到 `memory/KNOWLEDGE_BASE/LESSONS_LEARNED.md` 文件中。
+- **🥚 技能生成**：能够自发地在 `skills/` 目录下生成新的技能。
+- **🐕 疯狗模式**：持续自我修复循环（通过 `--loop` 参数启用）。
 
-## 📦 Usage
+## 📦 使用方法
 
-### Manual Trigger
+### 手动触发
 ```bash
 node skills/capability-evolver/index.js
 ```
 
-### 🐕 Mad Dog Mode (Continuous)
-Runs the evolver in an infinite loop (Agent-Driven).
+### 疯狗模式（持续运行）
+以无限循环的方式运行能力进化器（由代理自动控制）。
 ```bash
 node skills/capability-evolver/index.js --loop
 ```
-*Stop with `kill -9 <pid>`.*
+*使用 `kill -9 <pid>` 命令终止该循环。*
 
-## 🧠 Internal Logic (Ascension Protocol)
+## 🧠 内部逻辑（Ascension 协议）
 
-1.  **Introspect**: Scan recent logs for errors or user corrections.
-2.  **Evolve**: 
-    - **Fix**: Repair broken code.
-    - **Crystallize**: Write new rules to `KNOWLEDGE_BASE`.
-    - **Promote**: Update core docs (`AGENTS.md`) if critical.
-3.  **Persist**: Commit to Git and safe-publish if needed.
+1. **自我检查**：扫描最近的日志以查找错误或用户所做的修改。
+2. **进化**：
+    - **修复错误**：修复有问题的代码。
+    - **知识沉淀**：将新规则写入 `KNOWLEDGE_BASE`。
+    - **更新文档**：如果发现关键问题，会更新核心文档 `AGENTS.md`。
+3. **持久化**：必要时将更改提交到 Git 并进行安全发布。
 
-## 🛡️ Safety & Risk Protocol (MANDATORY)
+## 🛡️ 安全性与风险控制（强制要求）
 
-### Risk Assessment & Mitigation
+### 风险评估与应对策略
 
-| Risk | Level | Mitigation Strategy |
+| 风险 | 等级 | 应对策略 |
 | :--- | :--- | :--- |
-| **Infinite Recursion** | High | **Strict Single Process**: `evolve.js` MUST NOT spawn child evolution processes. The loop is handled safely in `index.js`. |
-| **Runaway Process** | High | **Kill Switch**: Use `kill -9 <pid>` to terminate the Mad Dog loop if it becomes unresponsive. |
-| **Hallucinated Fixes** | Medium | **Human Review (Optional)**: "Fixing non-broken code" is a risk. Mitigation: Periodic human audit of changes. |
-| **File Corruption** | High | **Git Sync**: Always keep `workspace_daily_sync` (or `git-sync`) active to backup the workspace before/after evolution. |
+| **无限递归** | 高风险 | **严格限制单进程运行**：`evolve.js` 禁止生成子进程；循环逻辑在 `index.js` 中得到安全处理。 |
+| **程序失控** | 高风险 | **终止机制**：如果系统变得无响应，使用 `kill -9 <pid>` 命令终止循环。 |
+| **错误的修复操作** | 中等风险 | **人工审核**：修复未损坏的代码可能存在风险；定期进行人工审核。 |
+| **文件损坏** | 高风险 | **版本控制**：始终运行 `workspace_daily_sync`（或 `git-sync`）命令，在进化前后备份工作区数据。 |
 
-## 📜 License
+## 📜 许可证
 MIT

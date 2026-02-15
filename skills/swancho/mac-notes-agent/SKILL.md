@@ -15,25 +15,23 @@ metadata:
 
 # Mac Notes Agent
 
-## Overview
+## 概述
 
-This skill lets the agent talk to **Apple Notes** on macOS using AppleScript
-(via `osascript`). It is implemented as a small Node.js CLI:
+该工具允许代理程序通过 AppleScript（`osascript`）与 macOS 上的 **Apple Notes** 应用程序进行交互。它被实现为一个简单的 Node.js 命令行工具（CLI）：
 
 ```bash
 node skills/mac-notes-agent/cli.js <command> [options]
 ```
 
-> Requires macOS with the built-in **Notes** app and `osascript` available.
+> 该工具要求使用内置了 **Notes** 应用程序且支持 `osascript` 的 macOS 系统。
 
-All operations target the **default Notes account**. Optionally you can specify
-which folder to use.
+所有操作都针对 **默认的 Notes 账户** 进行。您也可以选择指定要使用的文件夹。
 
 ---
 
-## Commands
+## 命令
 
-### 1) Add a new note
+### 1) 添加新笔记
 
 ```bash
 node skills/mac-notes-agent/cli.js add \
@@ -42,13 +40,13 @@ node skills/mac-notes-agent/cli.js add \
   [--folder "Jarvis"]
 ```
 
-- `--title` (required): Note title
-- `--body` (required): Note body text. Use `\n` for line breaks.
-- `--folder` (optional): Folder name. If omitted, uses system default folder. If folder doesn't exist, it will be created.
+- `--title`（必填）：笔记标题
+- `--body`（必填）：笔记正文。使用 `\n` 表示换行。
+- `--folder`（可选）：文件夹名称。如果省略，则使用系统默认文件夹。如果文件夹不存在，系统会创建该文件夹。
 
-> Line breaks (`\n`) are converted to `<br>` tags internally for proper rendering in Notes.
+> 换行符（`\n`）会在内部被转换为 `<br>` 标签，以便在 Notes 中正确显示。
 
-**Result (JSON):**
+**返回结果（JSON 格式）：**
 
 ```json
 {
@@ -61,18 +59,18 @@ node skills/mac-notes-agent/cli.js add \
 
 ---
 
-### 2) List notes
+### 2) 列出笔记
 
 ```bash
 node skills/mac-notes-agent/cli.js list [--folder "Jarvis"] [--limit 50]
 ```
 
-- Lists notes in the given folder (or all folders if omitted).
-- Output is JSON array with `title`, `folder`, `creationDate`, and synthetic `id`.
+- 列出指定文件夹中的所有笔记（如果省略，则列出所有文件夹中的笔记）。
+- 返回一个 JSON 数组，其中包含笔记的 `title`、`folder`、`creationDate` 和一个生成的 `id`。
 
 ---
 
-### 3) Read a note (get)
+### 3) 读取笔记内容
 
 ```bash
 # By folder + title
@@ -86,7 +84,7 @@ node skills/mac-notes-agent/cli.js get --id "Jarvis::2026-02-09T08:40:00::Meetin
 
 ---
 
-### 4) Update a note (replace body)
+### 4) 更新笔记内容（替换正文）
 
 ```bash
 node skills/mac-notes-agent/cli.js update \
@@ -95,12 +93,12 @@ node skills/mac-notes-agent/cli.js update \
   --body "New content\nReplaces everything"
 ```
 
-- Replaces the entire body of the matching note.
-- Can also use `--id` for identification.
+- 替换匹配笔记的正文内容。
+- 可以使用 `--id` 来指定要更新的笔记。
 
 ---
 
-### 5) Append to a note
+### 5) 向笔记中添加内容
 
 ```bash
 node skills/mac-notes-agent/cli.js append \
@@ -109,11 +107,11 @@ node skills/mac-notes-agent/cli.js append \
   --body "\n---\nAdditional notes here"
 ```
 
-- Appends new content to the end of the existing note.
+- 在现有笔记的末尾添加新内容。
 
 ---
 
-### 6) Delete a note
+### 6) 删除笔记
 
 ```bash
 node skills/mac-notes-agent/cli.js delete \
@@ -123,7 +121,7 @@ node skills/mac-notes-agent/cli.js delete \
 
 ---
 
-### 7) Search notes
+### 7) 搜索笔记
 
 ```bash
 node skills/mac-notes-agent/cli.js search \
@@ -132,22 +130,22 @@ node skills/mac-notes-agent/cli.js search \
   [--limit 20]
 ```
 
-- Searches note titles and bodies for the keyword.
+- 根据关键词搜索笔记的标题和正文。
 
 ---
 
-## Identification Model
+## 识别模型
 
-Apple Notes doesn't expose stable IDs. This CLI uses:
+Apple Notes 并不提供稳定的笔记 ID。该 CLI 使用以下方式来识别笔记：
 
-- Primary key: `(folderName, title)`
-- Synthetic ID: `folderName::creationDate::title`
+- 主键：`(folderName, title)`
+- 生成 ID：`folderName::creationDate::title`
 
-When multiple notes share the same title, the CLI operates on the most recently created one.
+如果有多个笔记具有相同的标题，该 CLI 会操作最新创建的笔记。
 
 ---
 
-## Environment
+## 环境要求
 
-- **macOS only**: Uses AppleScript via `osascript`
-- **No npm dependencies**: Uses only Node.js built-ins (`child_process`)
+- **仅支持 macOS**：通过 `osascript` 使用 AppleScript。
+- **无需 npm 依赖**：仅使用 Node.js 的内置模块（如 `child_process`）。

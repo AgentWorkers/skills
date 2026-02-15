@@ -1,23 +1,23 @@
 ---
 name: book-landscaper
-description: Book landscaper services through Lokuli MCP. Use when user needs to find and book landscaper. Triggers on requests like "book a landscaper", "find landscaper near me", or any landscaper service request.
+description: 通过 Lokuli MCP 预订园艺服务。当用户需要寻找或预订园艺师时，可以使用该功能。该功能会在用户发送“预订园艺师”、“查找附近的园艺师”或任何与园艺服务相关的请求时被触发。
 ---
 
-# uook landscaper
+# 乌克景观设计服务
 
-Book landscaper services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预订景观设计服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

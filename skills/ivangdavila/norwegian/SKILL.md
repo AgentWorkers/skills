@@ -1,86 +1,77 @@
 ---
 name: Norwegian
-description: Write Norwegian that sounds human. Not formal, not robotic, not AI-generated.
+description: **编写听起来像人类说话的挪威语。**  
+既不是正式的、机械的，也不是由人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Norwegian is technically correct but sounds off. Too formal. Too bokmål-perfect. Natives write more casually, with particles and dialect influence. Match that.
+虽然“AI Norwegian”在语法上是正确的，但听起来很不自然，过于正式，缺乏口语化表达。挪威本地人的表达方式更加随意，会使用一些语粒和方言特征。因此，我们需要调整语言风格以更贴近自然口语。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Norwegian is notably informal. Unless explicitly formal: lean casual. "Hei" not "God dag". "Ok" not "Greit".
+挪威语的正式程度通常较高，但在非正式场合中应适当降低正式性。例如，应该用“Hei”而不是“God dag”，用“Ok”而不是“Greit”。
 
-## Du Is Universal
+## “Du”的使用
 
-Like Swedish, Norwegian uses du universally:
-- Du: everyone, always
-- De (formal you): essentially extinct
-- Just use du
+与瑞典语类似，挪威语中“Du”是普遍使用的称呼方式，适用于所有人和所有场合；而“De”（正式的“you”）在现代挪威语中几乎已经不再使用。所以，直接使用“Du”即可。
 
-## Bokmål vs Nynorsk
+## Bokmål 与 Nynorsk
 
-Two written standards:
-- Bokmål: majority, urban, default
-- Nynorsk: ~15%, western Norway
-- Don't mix. Ask if unclear.
-- Most online content is bokmål
+挪威语有两种书面标准：
+- **Bokmål**：是主流书写方式，主要在城市地区使用；
+- **Nynorsk**：仅占约15%，主要在挪威西部使用。如果不确定应该使用哪种标准，可以询问当地人。大多数在线内容都是用Bokmål写的。
 
-## Particles & Softeners
+## 语粒和缓和词
 
-These make Norwegian natural:
-- Jo: shared knowledge ("Det vet du jo")
-- Vel: uncertainty ("Du kommer vel?")
-- Da: emphasis ("Kom da!")
-- Nok: "probably" ("Det går nok bra")
-- Visst: "apparently"
+这些词使挪威语表达更加自然：
+- **Jo**：表示“你知道的”；
+- **Vel**：表示不确定或犹豫；
+- **Da**：用于强调；
+- **Nok**：表示“可能”；
+- **Visst**：表示“显然”。
 
-## Fillers & Flow
+## 语言的填充词和连贯性
 
-Real Norwegian has fillers:
-- Altså, liksom, sånn
-- Eh, øh, hm
-- Ja nei (yes-no, means "well...")
-- Egentlig, forresten
+挪威语中有很多填充词，用于使表达更流畅：
+- **Altså**、**liksom**、**sånn**等；
+- **Eh, øh, hm**等用于停顿或思考；
+- **Ja nei**：表示犹豫或含糊的回答；
+- **Egentlig, forresten**：用于引入补充信息。
 
-## Casual Patterns
+## 口语表达模式
 
-Spoken patterns:
-- Ikke → Ikkje (dialectal)
-- Hva → Ka (some dialects)
-- "Æ" instead of "Jeg" in north
-- Dialect influence is natural
+- **Ikkje**（非正式）：对应“不”；
+- **Hva**：在某些方言中可以代替“什么”；
+- 在北部地区，“Æ”常用来代替“Jeg”；
+- 方言的影响是语言自然的一部分。
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- Bra → Kjempebra, Sykt bra, Digg
-- Dårlig → Dust, Dritt, Kjipt
-- Veldig → Skikkelig, Sykt, Jævlig
+在表达时不要过于保守或使用过于正式的词汇：
+- **Bra**：可以译为“很棒”、“非常棒”或“不错”；
+- **Dårlig**：可以译为“糟糕的”、“差劲的”或“讨厌的”；
+- **Veldig**：可以译为“非常”、“很棒”或“极好的”。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Greit, Går bra, Null stress
-- Kult!, Fett!, Digg!
-- Skjønner, Skjønna
-- Orker ikke (can't be bothered)
+- **Greit, Går bra**：表示“不错，进展顺利”；
+- **Kult!, Fett!, Digg!**：表示“太棒了！”；
+- **Skjønner, Skjønna**：表示“理解”或“漂亮”；
+- **Orker ikke**：表示“懒得做”。
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Seriøst?, Virkelig?, Hæ?
-- Oi!, Herregud!, Faen!
-- Fett!, Sykt!, Kult!
-- Haha, lol in text
+在交流时，反应要自然：
+- **Seriøst?, Virkelig?, Hæ?**：表示“认真吗？真的吗？嗨？”；
+- **Oi!, Herregud!, Faen!**：表示惊讶或感叹；
+- **Fett!, Sykt!, Kult!**：表示兴奋或赞美；
+- **Haha, lol**：在文本中也可以使用这些表达。
 
-## Dialect Pride
+## 对方言的尊重
 
-Norwegians value dialect:
-- Some write in dialect intentionally
-- Mixing standard with dialect is natural
-- Don't over-correct to perfect bokmål
+挪威人非常重视方言，有些人会故意使用方言进行写作。将标准语和方言混合使用也是自然的现象。不要过度纠正语言，使其变得过于完美。
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Norwegian screenshot this as "AI-generated"? If yes—too formal, missing particles, too perfect. Loosen up.
+在发送内容之前，可以想象一下：如果一个挪威人看到这段文字的截图，他会认为这是“AI生成的”吗？如果是这样，那就说明语言还不够自然，过于正式，缺少口语化的表达。需要让语言更加贴近自然口语。

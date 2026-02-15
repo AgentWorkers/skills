@@ -1,78 +1,78 @@
 ---
 name: kakiyo
-description: Official Kakiyo skill from Kakiyo.com for managing LinkedIn automation campaigns, prospects, and AI agents via Kakiyo MCP server. Use when users want to create outreach campaigns, add prospects, monitor performance, manage AI agents, or automate LinkedIn messaging. Includes 42 tools for campaigns, prospects, agents, analytics, workspaces, webhooks, and DNC management.
+description: Kakiyo.com提供的官方Kakiyo技能，用于通过Kakiyo MCP服务器管理LinkedIn自动化营销活动、潜在客户以及AI代理。适用于用户需要创建外联营销活动、添加潜在客户、监控运营效果、管理AI代理或自动化LinkedIn消息传递的场景。该技能包含42个工具，涵盖营销活动、潜在客户管理、代理管理、数据分析、工作空间、Webhook集成以及DNC（Direct Mail Campaign）管理等功能。
 ---
 
 # Kakiyo LinkedIn Automation
 
-Official skill from Kakiyo.com to control LinkedIn outreach campaigns and AI agents through the Kakiyo MCP server.
+这是 Kakiyo.com 提供的一项官方技能，用于通过 Kakiyo MCP 服务器控制 LinkedIn 外展活动及 AI 代理。
 
-## Quick Setup (Agent-Assisted)
+## 快速设置（代理辅助）
 
-**Check if configured:**
+**检查是否已配置：**
 ```bash
 mcporter config get kakiyo
 ```
 
-If not configured, prompt user: "I need your Kakiyo API key to set this up. Get it from https://app.kakiyo.com → Settings → API Keys → Create API Key (40 characters)."
+如果未配置，提示用户：“我需要您的 Kakiyo API 密钥来完成设置。请从 https://app.kakiyo.com → 设置 → API 密钥 → 创建 API 密钥（40 个字符）获取。”
 
-**Once user provides their API key, run:**
+**用户提供 API 密钥后，运行以下命令：**
 ```bash
 mcporter config add kakiyo https://api.kakiyo.com/mcp \
   --header "Authorization:Bearer USER_API_KEY"
 ```
 
-Replace `USER_API_KEY` with the key they provide.
+请将 `USER_API_KEY` 替换为用户提供的密钥。
 
-**Verify setup:**
+**验证设置：**
 ```bash
 mcporter call kakiyo.verify_api_key --output json
 ```
 
-## Available Tools (42 total)
+## 可用工具（共 42 个）
 
-### Agents (5 tools)
-Manage LinkedIn automation agents.
+### 代理（5 个工具）
+用于管理 LinkedIn 自动化代理。
 
-**list_agents** - List all agents with status and config
+**listAgents** - 列出所有代理及其状态和配置
 ```bash
 mcporter call kakiyo.list_agents --output json
 ```
 
-**get_agent** - Get detailed agent info
+**get_agent** - 获取代理的详细信息
 ```bash
 mcporter call kakiyo.get_agent agentId:"agent_123" --output json
 ```
 
-**update_agent** - Modify agent settings (working hours, limits)
+**update_agent** - 修改代理设置（工作时间、限制等）
 ```bash
 mcporter call kakiyo.update_agent agentId:"agent_123" workingHours:'{"start":"09:00","end":"17:00"}' --output json
 ```
 
-**pause_agent** - Stop an agent temporarily
+**pause_agent** - 暂停代理的运行
 ```bash
 mcporter call kakiyo.pause_agent agentId:"agent_123" --output json
 ```
 
-**resume_agent** - Restart a paused agent
+**resume_agent** - 重新启动暂停的代理
 ```bash
 mcporter call kakiyo.resume_agent agentId:"agent_123" --output json
 ```
 
-### Campaigns (6 tools)
-Create and manage outreach campaigns.
+### 活动（6 个工具）
+用于创建和管理外展活动。
 
-**list_campaigns** - List all campaigns with status
+**list_campaigns** - 列出所有活动的状态
 ```bash
 mcporter call kakiyo.list_campaigns --output json
 ```
 
-**get_campaign_stats** - Get performance metrics
+**get_campaign_stats** - 获取活动绩效指标
 ```bash
 mcporter call kakiyo.get_campaign_stats campaignId:"camp_123" --output json
 ```
 
-**create_campaign** - Create new campaign
+**create_campaign** - 创建新的活动
 ```bash
 mcporter call kakiyo.create_campaign \
   name:"Tech Founders Outreach" \
@@ -82,35 +82,35 @@ mcporter call kakiyo.create_campaign \
   --output json
 ```
 
-**update_campaign** - Modify campaign settings
+**update_campaign** - 修改活动设置
 ```bash
 mcporter call kakiyo.update_campaign campaignId:"camp_123" name:"New Name" --output json
 ```
 
-**pause_campaign** - Stop campaign
+**pause_campaign** - 停止活动
 ```bash
 mcporter call kakiyo.pause_campaign campaignId:"camp_123" --output json
 ```
 
-**resume_campaign** - Restart campaign
+**resume_campaign** - 重新启动活动
 ```bash
 mcporter call kakiyo.resume_campaign campaignId:"camp_123" --output json
 ```
 
-### Prospects (9 tools)
-Manage leads and conversations.
+### 潜在客户（9 个工具）
+用于管理潜在客户和对话记录。
 
-**list_prospects** - List prospects with basic filtering
+**list_prospects** - 列出带有基本过滤条件的潜在客户
 ```bash
 mcporter call kakiyo.list_prospects limit:50 --output json
 ```
 
-**get_prospect** - Get full prospect details and conversation
+**get_prospect** - 获取潜在客户的详细信息及对话记录
 ```bash
 mcporter call kakiyo.get_prospect prospectId:"pros_123" --output json
 ```
 
-**add_prospect** - Add single LinkedIn profile to campaign
+**add_prospect** - 将单个 LinkedIn 账户添加到活动中
 ```bash
 mcporter call kakiyo.add_prospect \
   campaignId:"camp_123" \
@@ -119,7 +119,7 @@ mcporter call kakiyo.add_prospect \
   --output json
 ```
 
-**add_prospects_batch** - Add multiple prospects at once
+**add_prospects_batch** - 一次性添加多个潜在客户
 ```bash
 mcporter call kakiyo.add_prospects_batch \
   campaignId:"camp_123" \
@@ -127,77 +127,77 @@ mcporter call kakiyo.add_prospects_batch \
   --output json
 ```
 
-**search_prospects** - Advanced search with filters
+**search_prospects** - 使用过滤器进行高级搜索
 ```bash
 mcporter call kakiyo.search_prospects status:replied limit:20 --output json
 ```
 
-**list_campaign_prospects** - Get all prospects in a campaign
+**list_campaign_prospects** - 获取活动中的所有潜在客户
 ```bash
 mcporter call kakiyo.list_campaign_prospects campaignId:"camp_123" --output json
 ```
 
-**pause_prospect** - Pause outreach to specific person
+**pause_prospect** - 暂停对特定客户的联系
 ```bash
 mcporter call kakiyo.pause_prospect prospectId:"pros_123" --output json
 ```
 
-**resume_prospect** - Resume conversation
+**resume_prospect** - 恢复与潜在客户的对话
 ```bash
 mcporter call kakiyo.resume_prospect prospectId:"pros_123" --output json
 ```
 
-**qualify_prospect** - Mark prospect as qualified lead
+**qualify_prospect** - 将潜在客户标记为合格客户
 ```bash
 mcporter call kakiyo.qualify_prospect prospectId:"pros_123" --output json
 ```
 
-### Analytics (2 tools)
-Monitor performance and metrics.
+### 分析（2 个工具）
+用于监控绩效和指标。
 
-**get_analytics_overview** - Team-wide metrics across all campaigns
+**get_analytics_overview** - 查看所有活动的团队级指标
 ```bash
 mcporter call kakiyo.get_analytics_overview --output json
 ```
 
-**get_campaign_analytics** - Detailed metrics for specific campaign
+**get_campaign_analytics** - 查看特定活动的详细指标
 ```bash
 mcporter call kakiyo.get_campaign_analytics campaignId:"camp_123" --output json
 ```
 
-### Products (1 tool)
-View products/services for campaigns.
+### 产品（1 个工具）
+用于查看活动相关的产品/服务信息。
 
-**list_products** - List all products
+**list_products** - 列出所有产品
 ```bash
 mcporter call kakiyo.list_products --output json
 ```
 
-### Prompts (1 tool)
-View AI message templates.
+### 提示模板（1 个工具）
+用于查看 AI 消息模板。
 
-**list_prompts** - List all prompt templates
+**list_prompts** - 列出所有提示模板
 ```bash
 mcporter call kakiyo.list_prompts --output json
 ```
 
-### Models (1 tool)
-View available AI models.
+### 模型（1 个工具）
+用于查看可用的 AI 模型。
 
-**list_models** - List AI models for message generation
+**list_models** - 查看用于生成消息的 AI 模型
 ```bash
 mcporter call kakiyo.list_models --output json
 ```
 
-### Webhooks (5 tools)
-Configure event notifications.
+### Webhook（5 个工具）
+用于配置事件通知。
 
-**list_webhooks** - List configured webhooks
+**list_webhooks** - 列出已配置的 Webhook
 ```bash
 mcporter call kakiyo.list_webhooks --output json
 ```
 
-**create_webhook** - Set up new webhook
+**create_webhook** - 设置新的 Webhook
 ```bash
 mcporter call kakiyo.create_webhook \
   url:"https://example.com/webhook" \
@@ -205,155 +205,155 @@ mcporter call kakiyo.create_webhook \
   --output json
 ```
 
-**update_webhook** - Modify webhook settings
+**update_webhook** - 修改 Webhook 设置
 ```bash
 mcporter call kakiyo.update_webhook webhookId:"wh_123" url:"https://new-url.com" --output json
 ```
 
-**delete_webhook** - Remove webhook
+**delete_webhook** - 删除 Webhook
 ```bash
 mcporter call kakiyo.delete_webhook webhookId:"wh_123" --output json
 ```
 
-**list_webhook_events** - List available event types
+**list_webhook_events** - 查看可用的事件类型
 ```bash
 mcporter call kakiyo.list_webhook_events --output json
 ```
 
-### Do Not Contact (4 tools)
-Manage blocklist.
+### 禁止联系（4 个工具）
+用于管理黑名单。
 
-**list_dnc** - List all blocked LinkedIn URLs
+**list_dnc** - 列出所有被阻止的 LinkedIn URL
 ```bash
 mcporter call kakiyo.list_dnc --output json
 ```
 
-**add_dnc** - Block a profile from all campaigns
+**add_dnc** - 将账户添加到黑名单
 ```bash
 mcporter call kakiyo.add_dnc url:"https://linkedin.com/in/blocked" --output json
 ```
 
-**remove_dnc** - Unblock a profile
+**remove_dnc** - 从黑名单中移除账户
 ```bash
 mcporter call kakiyo.remove_dnc url:"https://linkedin.com/in/unblock" --output json
 ```
 
-**check_dnc** - Check if URL is blocked
+**check_dnc** - 检查 URL 是否被阻止
 ```bash
 mcporter call kakiyo.check_dnc url:"https://linkedin.com/in/check" --output json
 ```
 
-### Workspaces (7 tools)
-Manage client workspaces (for agencies).
+### 工作空间（7 个工具）
+用于管理客户的工作空间（适用于代理）。
 
-**list_workspaces** - List all client workspaces
+**list_workspaces** - 列出所有客户的工作空间
 ```bash
 mcporter call kakiyo.list_workspaces --output json
 ```
 
-**create_workspace** - Create new client workspace
+**create_workspace** - 创建新的客户工作空间
 ```bash
 mcporter call kakiyo.create_workspace name:"Acme Corp" --output json
 ```
 
-**delete_workspace** - Delete workspace
+**delete_workspace** - 删除工作空间
 ```bash
 mcporter call kakiyo.delete_workspace workspaceId:"ws_123" --output json
 ```
 
-**invite_client** - Invite client user via email
+**invite_client** - 通过电子邮件邀请客户
 ```bash
 mcporter call kakiyo.invite_client workspaceId:"ws_123" email:"client@example.com" --output json
 ```
 
-**remove_client** - Remove client from workspace
+**remove_client** - 从工作空间中移除客户
 ```bash
 mcporter call kakiyo.remove_client workspaceId:"ws_123" userId:"user_123" --output json
 ```
 
-**assign_agent_to_workspace** - Assign agent to client
+**assign_agent_to_workspace** - 将代理分配给客户
 ```bash
 mcporter call kakiyo.assign_agent_to_workspace workspaceId:"ws_123" agentId:"agent_123" --output json
 ```
 
-**unassign_agent_from_workspace** - Remove agent from workspace
+**unassign_agent_from_workspace** - 从工作空间中移除代理
 ```bash
 mcporter call kakiyo.unassign_agent_from_workspace workspaceId:"ws_123" agentId:"agent_123" --output json
 ```
 
-### Authentication (1 tool)
-Verify connection.
+### 认证（1 个工具）
+用于验证连接是否正常。
 
-**verify_api_key** - Check if API key is valid
+**verify_api_key** - 检查 API 密钥是否有效
 ```bash
 mcporter call kakiyo.verify_api_key --output json
 ```
 
-## Common Usage Patterns
+## 常见使用场景
 
-### Check Campaign Performance
-"How are my LinkedIn campaigns doing?"
+### 检查活动绩效
+“我的 LinkedIn 活动表现如何？”
 ```bash
 mcporter call kakiyo.get_analytics_overview --output json
 ```
 
-### Find Replied Prospects
-"Show me everyone who replied this week"
+### 查找已回复的潜在客户
+“显示本周所有回复我的人”
 ```bash
 mcporter call kakiyo.search_prospects status:replied --output json
 ```
 
-### Add Prospects to Campaign
-"Add these LinkedIn profiles to my Tech Founders campaign"
-1. Get campaign ID: `mcporter call kakiyo.list_campaigns`
-2. Add prospects: `mcporter call kakiyo.add_prospects_batch campaignId:"..." prospects:'[...]'`
+### 将潜在客户添加到活动中
+“将这些 LinkedIn 账户添加到我的 Tech Founders 活动中”
+1. 获取活动 ID：`mcporter call kakiyo.list_campaigns`
+2. 添加潜在客户：`mcporter call kakiyo.add_prospects_batch campaignId:"..." prospects:'[...']`
 
-### Pause Agent for Weekend
-"Stop my agent for the weekend"
+### 停止代理的运行（周末）
+“在周末停止代理的运行”
 ```bash
 mcporter call kakiyo.pause_agent agentId:"agent_123" --output json
 ```
 
-### Agency: Setup New Client
-"Create workspace for new client Acme Corp and assign Agent-1"
+### 代理：为新客户创建工作空间
+“为新客户 Acme Corp 创建工作空间，并分配代理-1”
 ```bash
 mcporter call kakiyo.create_workspace name:"Acme Corp" --output json
 mcporter call kakiyo.assign_agent_to_workspace workspaceId:"ws_xxx" agentId:"agent_123" --output json
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Server not found" error:**
-Run setup again with correct API key from https://app.kakiyo.com
+**出现“服务器未找到”错误：**
+使用正确的 API 密钥重新运行设置（请从 https://app.kakiyo.com 获取密钥）。
 
-**Check configuration:**
+**检查配置：**
 ```bash
 mcporter config get kakiyo
 ```
 
-**Test connection:**
+**测试连接：**
 ```bash
 mcporter call kakiyo.verify_api_key --output json
 ```
 
-**Re-configure:**
+**重新配置：**
 ```bash
 mcporter config remove kakiyo
 mcporter config add kakiyo https://api.kakiyo.com/mcp \
   --header "Authorization:Bearer YOUR_API_KEY"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Check analytics regularly** - Monitor response rates and adjust messaging
-2. **Use DNC list** - Respect people who opt out
-3. **Pause agents during holidays** - Avoid sending during off-hours
-4. **Qualify leads promptly** - Mark prospects as qualified for tracking
-5. **Set up webhooks** - Get real-time notifications for important events
+1. **定期检查分析结果** - 监控回复率并调整消息内容
+2. **使用黑名单** - 尊重用户的选择（避免向已选择退出联系的人发送消息）
+3. **在假期期间暂停代理的运行** - 避免在非工作时间发送消息
+4. **及时标记潜在客户为合格客户** - 将符合条件的潜在客户纳入跟踪范围
+5. **设置 Webhook** - 为重要事件接收实时通知
 
-## Additional Resources
+## 额外资源
 
-- Documentation: https://docs.kakiyo.com
-- Dashboard: https://app.kakiyo.com
-- MCP Server Details: https://docs.kakiyo.com/mcp-server
-- API Reference: https://docs.kakiyo.com/api-reference
+- 文档：https://docs.kakiyo.com
+- 仪表板：https://app.kakiyo.com
+- MCP 服务器详情：https://docs.kakiyo.com/mcp-server
+- API 参考：https://docs.kakiyo.com/api-reference

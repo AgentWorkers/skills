@@ -1,67 +1,67 @@
 ---
 name: Firewall
-description: Configure firewalls on servers and cloud providers with security best practices.
+description: 根据安全最佳实践，配置服务器和云服务提供商的防火墙。
 metadata: {"clawdbot":{"emoji":"🛡️","os":["linux","darwin","win32"]}}
 ---
 
-# Firewall Rules
+# 防火墙规则
 
-## Critical First Steps
-- Allow SSH/remote access before enabling any firewall — enabling first locks you out
-- Test access in a second session before closing the first — verify the rule actually works
-- Know how to access provider console — it's the only way back if locked out
+## 关键的初始步骤
+- 在启用任何防火墙之前，先允许 SSH/远程访问——否则会直接导致无法访问服务器
+- 在关闭第一个会话之前，先通过另一个会话测试访问是否正常——确认规则确实有效
+- 熟悉如何访问服务提供商的控制台——如果被锁在外面，这是唯一的恢复途径
 
-## Default Stance
-- Default deny all incoming traffic — only open what you explicitly need
-- Default allow outgoing traffic — most apps need to reach the internet
-- Every open port is attack surface — question each one before adding
+## 默认设置
+- 默认情况下，拒绝所有传入流量——只开放真正需要的端口
+- 默认允许所有传出流量——大多数应用程序都需要能够访问互联网
+- 每个开放的端口都是潜在的攻击面——在开放任何端口之前都要仔细考虑其必要性
 
-## Essential Ports
-- SSH (22 or custom): Always needed for remote access — consider limiting to your IP only
-- HTTP (80): Only if serving web traffic — also needed for Let's Encrypt HTTP challenge
-- HTTPS (443): For production web services
-- Don't open database ports (3306, 5432, 27017) to the internet — access via SSH tunnel or private network
+## 必需开放的端口
+- SSH（22 或自定义端口）：远程访问必须开放——建议仅允许来自特定 IP 的连接
+- HTTP（80）：仅在提供 Web 服务时开放——同时还需要用于 Let’s Encrypt 的身份验证请求
+- HTTPS（443）：用于生产环境的 Web 服务
+- 不要将数据库端口（如 3306、5432、27017）直接暴露给互联网——应通过 SSH 隧道或私有网络进行访问
 
-## Provider Firewalls (Hetzner, DigitalOcean, AWS, etc.)
-- Provider firewall applies before traffic reaches your server — faster, less server load
-- Changes usually apply immediately — no reload command needed
-- Stateful by default — allow inbound, responses automatically allowed outbound
-- Apply to server groups for consistency — easier than per-server rules
-- Provider firewall + OS firewall = defense in depth — use both when possible
+## 服务提供商的防火墙（如 Hetzner、DigitalOcean、AWS 等）
+- 服务提供商的防火墙会在流量到达服务器之前进行过滤——这样处理速度更快，且不会增加服务器负担
+- 规则更改通常会立即生效——无需重新加载服务器
+- 默认情况下，服务提供商的防火墙是“有状态的”（stateful）——允许传入请求，同时自动允许相应的传出请求
+- 为提高管理效率，可以将规则应用于多个服务器组——比针对单个服务器设置规则更简单
+- 结合使用服务提供商的防火墙和操作系统的防火墙——实现多层次的安全防护
 
-## IP Restrictions
-- Limit SSH to known IPs when possible — dramatically reduces attack surface
-- Your home IP may change — use a VPN with static IP or update rules when it changes
-- Allow IP ranges with CIDR notation — /32 is single IP, /24 is 256 IPs
-- Some providers support dynamic DNS in rules — check before building complex solutions
+## IP 地址限制
+- 尽可能将 SSH 访问限制在已知的 IP 地址范围内——这样可以大大减少攻击面
+- 请注意，家庭网络的 IP 地址可能会发生变化——使用具有静态 IP 的 VPN 或在 IP 地址更改时更新防火墙规则
+- 可以使用 CIDR 表示法来指定允许的 IP 范围——/32 表示单个 IP，/24 表示 256 个 IP
+- 一些服务提供商支持在规则中设置动态 DNS——在制定复杂的安全策略前请先确认这一点
 
-## Common Services to Consider
-- VPN (WireGuard: 51820/UDP, OpenVPN: 1194) — allows secure access without exposing other ports
-- Mail (25, 465, 587) — only if running mail server
-- DNS (53 TCP/UDP) — only if running DNS server
-- Monitoring agents may need outbound access to specific IPs
+## 需要考虑的常见服务
+- VPN（例如 WireGuard：51820/UDP，OpenVPN：1194）：允许安全访问，同时不会暴露其他端口
+- 邮件服务（25、465、587）：仅在运行邮件服务器时开放
+- DNS 服务（53 TCP/UDP）：仅在运行 DNS 服务器时开放
+- 监控工具可能需要能够向特定 IP 地址发送数据包
 
-## Docker Warning
-- Docker bypasses most OS firewalls by default — containers expose ports regardless of UFW/iptables
-- Solution: bind containers to localhost only and use reverse proxy for public access
-- Or configure Docker to respect firewall rules — requires additional setup
-- Provider-level firewalls still work — they block before traffic reaches Docker
+## 关于 Docker 的注意事项
+- Docker 默认会绕过操作系统的防火墙——容器会自动暴露其端口（无论 UFW 或 iptables 的设置如何）
+- 解决方案：将容器绑定到本地主机（localhost），并使用反向代理来处理外部访问
+- 或者配置 Docker 以遵守防火墙规则——但这需要额外的设置
+- 即使使用了 Docker 的防火墙，服务提供商的防火墙仍然有效——它们会在流量到达 Docker 之前进行过滤
 
 ## IPv6
-- Firewalls often have separate IPv4 and IPv6 rules — configure both
-- Provider firewalls may handle both together — check their documentation
-- Attackers probe IPv6 when IPv4 is locked down — don't neglect it
+- 防火墙通常针对 IPv4 和 IPv6 分别设置规则——请确保两者都得到正确配置
+- 有些服务提供商的防火墙可以同时处理 IPv4 和 IPv6 的流量——请查阅相关文档
+- 当 IPv4 端口被限制时，攻击者可能会尝试通过 IPv6 进行攻击——切勿忽视这一点
 
-## Debugging
-- Test from outside your network — rules may look correct but not work
-- Provider dashboards often show blocked traffic logs
-- "Connection refused" = port closed properly; "Connection timeout" = firewall dropping silently
-- Online port scanners verify what's actually open from the internet
+## 调试方法
+- 从外部网络测试防火墙规则的效果——规则看起来可能正确，但实际上可能无法正常工作
+- 服务提供商的监控面板会显示被阻止的流量日志
+- “连接被拒绝”通常表示端口设置正确；“连接超时”可能表示防火墙在默默地阻止了请求
+- 可以使用在线端口扫描工具来验证哪些端口真正可以从互联网访问
 
-## Common Mistakes
-- Opening ports "temporarily" and forgetting to close them
-- Opening 80/443 when no web server runs — unnecessary exposure
-- Forgetting UDP for services that need it — DNS, VPN, game servers
-- Assuming firewall is active — verify it's actually running/applied
-- Only configuring IPv4 — leaving IPv6 wide open
-- Trusting "security through obscurity" — non-standard ports slow attackers, don't stop them
+## 常见的错误
+- “临时”开放端口后忘记关闭它们
+- 在没有运行 Web 服务器的情况下仍然开放 80/443 端口——这是不必要的风险
+- 忘记为需要使用 UDP 协议的服务配置相应的端口（如 DNS、VPN、游戏服务器）
+- 误以为防火墙始终处于激活状态——请确认防火墙确实正在运行并正确执行了规则
+- 仅配置 IPv4 的规则，而忽略 IPv6 的安全设置——这会导致安全隐患
+- 依赖“隐蔽性”来保证安全——虽然非标准端口可能减缓攻击者的攻击速度，但并不能完全阻止攻击

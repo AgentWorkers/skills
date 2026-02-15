@@ -9,65 +9,65 @@ description: >
 tags: [ui, design, frontend, accessibility, typography, color, layout, motion]
 ---
 
-# UI Design Fundamentals
+# UI设计基础
 
-The definitive guide for building production-grade web interfaces. Covers the full stack of design decisions from layout to motion.
+这本指南是构建生产级Web界面的必备手册，涵盖了从布局到动画设计的全方位内容。
 
-## WHEN To Use
+## 使用场景
 
-- Designing new UI components or pages
-- Building landing pages, dashboards, or applications
-- Reviewing code for design quality
-- Creating distinctive interfaces that avoid generic aesthetics
-- Implementing accessibility requirements
+- 设计新的UI组件或页面
+- 构建登录页、仪表板或应用程序
+- 评审代码的设计质量
+- 创建具有独特风格的界面，避免千篇一律的设计
+- 实现无障碍设计要求
 
-## KEYWORDS
+## 关键词
 
-ui design, web design, layout, typography, color palette, spacing, visual hierarchy, responsive design, accessibility, motion design, component design, design tokens, frontend, css, tailwind
+UI设计、Web设计、布局、排版、色彩搭配、间距、视觉层次结构、响应式设计、无障碍设计、动画设计、组件设计、设计元素、前端技术、CSS、Tailwind CSS
 
 ---
 
-## Design Philosophy
+## 设计哲学
 
-### The 80/20 of Design Quality
+### 设计质量的80/20法则
 
-| Factor | Impact | Time Investment |
+| 因素 | 影响程度 | 需要投入的时间 |
 |--------|--------|-----------------|
-| **Typography** | 40% | Choose 1-2 fonts well |
-| **Spacing** | 25% | Use consistent scale |
-| **Color** | 20% | Limit palette, ensure contrast |
-| **Everything else** | 15% | Shadows, borders, motion |
+| **排版** | 40% | 选择1-2种合适的字体 |
+| **间距** | 25% | 保持一致的间距比例 |
+| **色彩** | 20% | 限制色彩数量，确保对比度 |
+| **其他因素** | 15% | 如阴影、边框、动画效果 |
 
-Focus on typography and spacing first. They're 65% of perceived quality.
+首先关注排版和间距，它们决定了用户对设计质量的感知（占65%）。
 
-### Commit to a Direction
+### 坚定设计方向
 
-Mediocrity is forgettable. Pick an extreme:
+平庸的设计很容易被遗忘。选择一种极端风格：
 
-| Direction | Characteristics | Use When |
+| 风格 | 特点 | 适用场景 |
 |-----------|-----------------|----------|
-| **Brutally Minimal** | Stark, essential, nothing extra | Developer tools, productivity |
-| **Luxury/Refined** | Premium, subtle elegance | High-end products, fashion |
-| **Playful** | Fun, bright, approachable | Consumer apps, games |
-| **Editorial** | Type-forward, grid-based | Content sites, magazines |
-| **Industrial** | Function-forward, robust | B2B, enterprise |
+| **极简主义** | 极简风格，去除多余元素 | 开发工具相关场景，注重效率 |
+| **豪华/精致** | 高端风格，优雅细腻 | 高端产品、时尚应用 |
+| **趣味性** | 色彩鲜艳，易于使用 | 消费者应用、游戏 |
+| **编辑风格** | 以文字为中心的布局 | 内容网站、杂志 |
+| **工业风格** | 功能导向，简洁实用 | B2B企业应用 |
 
 ---
 
-## Layout
+## 布局
 
-### Grid vs Flexbox Decision
+### Grid与Flexbox的选择
 
-| Layout Need | Tool | Why |
+| 布局需求 | 工具 | 选择理由 |
 |-------------|------|-----|
-| Page-level structure | CSS Grid (`grid-template-areas`) | Named regions, explicit control |
-| Navigation bars | Flexbox | Single-axis, `gap` spacing |
-| Card grids | Grid (`auto-fill`/`auto-fit`) | Responsive without media queries |
-| Centering | Grid (`place-items: center`) | Shortest, most reliable |
-| Sidebar + content | Grid (`250px 1fr`) | Fixed + fluid |
-| Stacking/overlaps | Grid + `grid-area: 1/1` | No `position: absolute` needed |
+| 页面结构 | CSS Grid (`grid-template-areas`) | 提供命名区域，便于精确控制 |
+| 导航栏 | Flexbox | 单轴布局，使用`gap`调整间距 |
+| 卡片布局 | Grid (`auto-fill`/`auto-fit`) | 不需要媒体查询即可实现响应式布局 |
+| 居中元素 | Grid (`place-items: center`) | 最简单且可靠的居中方法 |
+| 侧边栏与内容 | Grid (`250px 1fr`) | 固定宽度与流动布局的结合 |
+| 元素堆叠/重叠 | Grid + `grid-area: 1/1` | 无需使用`position: absolute` |
 
-### Container Strategy
+### 容器设计策略
 
 ```css
 /* Standard content width */
@@ -85,32 +85,32 @@ Mediocrity is forgettable. Pick an extreme:
 }
 ```
 
-### Common Layout Mistakes
+### 常见布局错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Mixing container widths | Inconsistent alignment | Use single `max-w-*` value |
-| Content behind fixed navbar | Hidden content | Add `pt-[navbar-height]` |
-| No mobile padding | Edge-to-edge text | Add `px-4` minimum |
-| Centered everything | Weak hierarchy | Left-align body text |
+| 混合使用不同宽度的容器 | 导致对齐不一致 | 使用统一的`max-w-*`值 |
+| 内容被固定在导航栏后面 | 导致内容隐藏 | 添加`pt-[navbar-height]`样式 |
+| 没有设置移动设备的padding | 文本显示在边缘 | 添加`px-4`的最小padding |
+| 所有元素都居中 | 视觉层次结构混乱 | 将正文文本左对齐 |
 
 ---
 
-## Typography
+## 排版
 
-Typography carries 90% of a design's personality.
+排版决定了设计的整体风格（占90%）。
 
-### Font Pairing by Context
+### 根据场景搭配字体
 
-| Context | Display Font | Body Font | Example |
+| 场景 | 显示字体 | 正文字体 | 示例 |
 |---------|--------------|-----------|---------|
-| Editorial | High-contrast serif | Neutral humanist | Playfair + Source Sans |
-| SaaS | Geometric sans | Matching sans | DM Sans + DM Mono |
-| Luxury | Thin modern serif | Elegant sans | Cormorant + Jost |
-| Developer | Monospace display | Monospace body | JetBrains Mono + IBM Plex |
-| Playful | Rounded/quirky | Clean readable | Nunito + Outfit |
+| 编辑类网站 | 对比度高的衬线字体 | 中性的人体字体 | Playfair + Source Sans |
+| SaaS应用 | 几何形状的无衬线字体 | 相匹配的无衬线字体 | DM Sans + DM Mono |
+| 高端设计 | 细线现代衬线字体 | 优雅的无衬线字体 | Cormorant + Jost |
+| 开发者工具 | 等宽字体 | 等宽的正文字体 | JetBrains Mono + IBM Plex |
+| 轻松有趣的界面 | 圆角或独特的字体 | 易读的字体 | Nunito + Outfit |
 
-### Type Scale (1.25 ratio)
+### 字体大小比例（1.25）
 
 ```css
 --text-xs: 0.64rem;   /* 10px - captions */
@@ -123,44 +123,44 @@ Typography carries 90% of a design's personality.
 --text-4xl: 3.052rem; /* 49px - h1 */
 ```
 
-### Typography Rules
+### 排版规则
 
-| Rule | Value | Why |
+| 规则 | 值 | 原因 |
 |------|-------|-----|
-| Minimum body size | 16px | Below is hard to read |
-| Body line-height | 1.5-1.75 | Improves readability |
-| Heading line-height | 1.1-1.2 | Tighter for large text |
-| Line length | 60-75 characters | Optimal reading |
-| Paragraph spacing | 1.5em | Clear separation |
+| 最小正文字体大小 | 16px | 小于16px的字体难以阅读 |
+| 正文行高 | 1.5-1.75 | 提高可读性 |
+| 标题行高 | 1.1-1.2 | 适合大字体 |
+| 行长度 | 60-75个字符 | 适合阅读 |
+| 段落间距 | 1.5em | 便于阅读 |
 
-### Typography Mistakes
+### 排版错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| System fonts only | Generic look | Use Google Fonts or variable fonts |
-| Too many fonts | Visual chaos | Max 2 families |
-| Weak weight contrast | Poor hierarchy | Bold headings (600+), regular body |
-| Long lines | Hard to read | Add `max-w-prose` (65ch) |
+| 仅使用系统字体 | 设计看起来很普通 | 使用Google Fonts或可变字体 |
+| 使用过多字体 | 造成视觉混乱 | 最多使用2种字体系列 |
+| 字体粗细对比度低 | 视觉层次结构不明显 | 使用加粗的标题（粗细至少600）和常规字体 |
+| 行过长 | 难以阅读 | 设置`max-w-prose`（每行最多65个字符）
 
 ---
 
-## Color
+## 色彩
 
-### Building a Palette
+### 色彩搭配
 
-Every palette needs five functional roles:
+每个色彩搭配都需要承担五种功能：
 
-| Role | Purpose | Usage |
+| 功能 | 用途 | 使用场景 |
 |------|---------|-------|
-| **Primary** | Brand identity | Buttons, links, active states |
-| **Neutral** | Text, backgrounds | Body text, cards, dividers |
-| **Accent** | Secondary actions | Tags, badges, highlights |
-| **Semantic** | Feedback | Success/warning/error states |
-| **Surface** | Layered backgrounds | Cards, modals, overlays |
+| **主色调** | 代表品牌特色 | 按钮、链接、激活状态 |
+| **中性色** | 用于文本和背景 | 正文、卡片、分隔符 |
+| **强调色** | 用于次要操作 | 标签、徽标、高亮显示 |
+| **提示色** | 表示反馈信息 | 成功/警告/错误状态 |
+| **背景色** | 用于分层背景 | 卡片、模态框、覆盖层 |
 
-### Surface Layering (Dark Mode)
+### 深度效果（暗模式）
 
-Create depth through lightness, not shadows:
+通过明暗对比来创造层次感，而不是使用阴影效果：
 
 ```css
 :root {
@@ -171,29 +171,29 @@ Create depth through lightness, not shadows:
 }
 ```
 
-### Contrast Requirements (WCAG)
+### 对比度要求（WCAG）
 
-| Text Size | Minimum Ratio | Enhanced (AAA) |
+| 文本大小 | 最小对比度 | 更高级别的对比度（AAA级） |
 |-----------|---------------|----------------|
-| Normal text (<18px) | 4.5:1 | 7:1 |
-| Large text (≥18px bold, ≥24px) | 3:1 | 4.5:1 |
-| UI components | 3:1 | — |
+| 普通文本（<18px） | 4.5:1 | 7:1 |
+| 大字体（≥18px，加粗，≥24px） | 3:1 | 4.5:1 |
+| UI组件 | 3:1 | — |
 
-### Color Mistakes
+### 色彩错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Purple gradient on white | "AI aesthetic" cliché | Use intentional brand colors |
-| Low contrast text | Accessibility fail | Test with contrast checker |
-| Color-only indicators | Colorblind users excluded | Add icons/text |
-| Too many colors | Visual noise | 3-5 colors maximum |
-| Light gray text on white | Unreadable | `slate-600` minimum |
+| 在白色背景上使用紫色渐变 | 常见的“AI风格”设计 | 使用品牌指定的颜色 |
+| 对比度低的文本 | 影响无障碍访问 | 使用对比度检查工具进行测试 |
+| 仅使用颜色提示 | 避免色盲用户无法识别 | 添加图标或文字提示 |
+| 颜色过多 | 造成视觉干扰 | 最多使用3-5种颜色 |
+| 浅灰色文本在白色背景上 | 难以阅读 | 最小对比度应为`slate-600` |
 
 ---
 
-## Spacing
+## 间距
 
-### 8px Base Unit Scale
+### 8px作为基本间距单位
 
 ```css
 --space-1: 0.25rem;  /* 4px - tight gaps */
@@ -206,41 +206,39 @@ Create depth through lightness, not shadows:
 --space-16: 4rem;    /* 64px - page rhythm */
 ```
 
-### Spacing Rules
+### 间距规则
 
-| Rule | Implementation |
+| 规则 | 实现方法 |
 |------|----------------|
-| Use `gap` not margins | `display: flex; gap: var(--space-4)` |
-| Consistent padding | Same values on all cards/sections |
-| More space between groups | Less space within groups (Gestalt) |
-| No arbitrary values | Only use scale tokens |
+| 使用`gap`而不是`margin` | `display: flex; gap: var(--space-4)` |
+| 所有卡片/部分保持一致的padding | 使用统一的间距值 |
+| 组间留出更多空间 | 组内减少间距（符合视觉感知规律） |
+| 避免使用任意数值 | 严格遵循间距比例 |
 
-### Spacing Mistakes
+### 间距错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Arbitrary pixel values | Inconsistent rhythm | Use spacing scale only |
-| Margin on children | Margin collapse bugs | Use `gap` on parent |
-| Equal spacing everywhere | No visual grouping | More between, less within |
-| Tight mobile padding | Cramped feeling | Minimum `p-4` on mobile |
+| 使用随意的像素值 | 造成视觉不协调 | 严格使用固定的间距比例 |
+| 子元素上设置margin | 会导致margin重叠 | 在父元素上使用`gap` |
+| 所有元素都等距排列 | 无法区分不同层次 | 组间留出更多空间，组内减少间距 |
+| 移动设备上的padding过小 | 造成视觉拥挤 | 移动设备上至少使用`p-4`的padding |
 
----
+## 视觉层次结构
 
-## Visual Hierarchy
+通过对比来引导用户的视线。
 
-Guide the eye through deliberate contrast.
+### 布局技巧
 
-### Hierarchy Techniques
-
-| Technique | How | Impact |
+| 技巧 | 方法 | 效果 |
 |-----------|-----|--------|
-| **Size** | Hero 3-4x body | Immediate focal point |
-| **Weight** | Bold headings, regular body | Scannability |
-| **Color** | Primary vs muted | Information layers |
-| **Space** | Isolation creates emphasis | Draws attention |
-| **Position** | Top-left anchors reading | Natural flow |
+| **字体大小** | 主要元素的大小通常是正文大小的3-4倍 | 使主要元素成为焦点 |
+| **字体粗细** | 加粗的标题和常规文本 | 便于阅读 |
+| **色彩** | 主色调与背景色形成对比 | 区分不同信息层次 |
+| **间距** | 通过间距突出重要元素 | 引导用户的视线 |
+| **位置** | 将重要元素放在左上角 | 保持阅读的流畅性 |
 
-### Card Hierarchy Pattern
+### 卡片布局模式
 
 ```
 Eyebrow  ← xs, uppercase, muted color
@@ -251,18 +249,18 @@ Action   ← spaced apart, mt-4 minimum
 
 ---
 
-## Responsive Design
+## 响应式设计
 
-### Breakpoint Strategy
+### 分界点策略
 
-| Breakpoint | Target | Key Changes |
+| 分界点 | 目标设备 | 关键调整 |
 |------------|--------|-------------|
-| < 640px | Mobile | Single column, stacked nav, 44px touch targets |
-| 640-1024px | Tablet | Two columns, collapsible sidebars |
-| 1024-1440px | Desktop | Full layout, hover enabled |
-| > 1440px | Wide | Max-width container, prevent ultra-wide lines |
+| < 640px | 移动设备 | 单列布局，导航栏堆叠，触摸目标大小44px |
+| 640-1024px | 平板设备 | 双列布局，侧边栏可折叠 |
+| 1024-1440px | 桌面设备 | 全屏布局，启用悬停效果 |
+| > 1440px | 宽屏设备 | 使用最大宽度容器，防止文本超出屏幕 |
 
-### Fluid Techniques
+### 流动布局技巧
 
 ```css
 /* Fluid typography */
@@ -279,76 +277,47 @@ section { padding-block: clamp(2rem, 1rem + 4vw, 6rem); }
 }
 ```
 
-### Responsive Mistakes
+### 响应式设计错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No viewport meta | Broken mobile | Add `width=device-width` |
-| Fixed widths | Overflow on mobile | Use `max-w-*` and `%` |
-| Tiny touch targets | Frustrating taps | Minimum 44x44px |
-| Hidden horizontal scroll | Broken layout | Test at 375px width |
+| 未设置viewport meta标签 | 移动设备上的布局失效 | 添加`width=device-width` |
+| 固定宽度元素 | 在移动设备上导致内容溢出 | 使用`max-w-*`和`%` |
+| 触摸目标太小 | 操作不便 | 触摸目标大小至少为44×44px |
+| 模态框没有水平滚动条 | 导致布局混乱 | 在375px宽度下进行测试 |
 
----
+## 无障碍设计
 
-## Accessibility
+无障碍设计是必不可少的。
 
-Accessibility is not optional.
+### 关键要求
 
-### Critical Requirements
-
-| Requirement | Implementation | Standard |
+| 要求 | 实现方式 | 相关标准 |
 |-------------|----------------|----------|
-| Color contrast | 4.5:1 normal, 3:1 large | WCAG 2.1 AA |
-| Keyboard navigation | Tab order matches visual | WCAG 2.1.1 |
-| Focus indicators | Visible `:focus-visible` ring | WCAG 2.4.7 |
-| Semantic HTML | `<button>`, `<nav>`, `<main>` | WCAG 1.3.1 |
-| Alt text | Descriptive for images | WCAG 1.1.1 |
-| Motion safety | `prefers-reduced-motion` | WCAG 2.3.3 |
-| Touch targets | 44×44px minimum | WCAG 2.5.8 |
+| 色彩对比度 | 正常文本对比度4.5:1，大字体对比度3:1 | WCAG 2.1 AA |
+| 键盘导航 | 键盘导航顺序与视觉元素一致 | WCAG 2.1.1 |
+| 聚焦提示 | 可见的聚焦提示 | WCAG 2.4.7 |
+| 语义化标签 | 使用`<button>`、`<nav>`、`<main>`等标签 | WCAG 1.3.1 |
+| 图片的替代文本 | 图片应有描述性文本 | WCAG 1.1.1 |
+| 动画效果的安全性 | 使用`prefers-reduced-motion`属性 | WCAG 2.3.3 |
+| 触摸目标的大小 | 触摸目标至少为44×44px | WCAG 2.5.8 |
 
-### Focus Styles
+### 动画效果
 
-```css
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
+使用动画来传达信息，而不仅仅是装饰。
 
-/* Remove default only if custom exists */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-```
+### 动画效果的时间控制
 
-### Motion Safety
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
----
-
-## Motion & Animation
-
-Use motion to communicate, not decorate.
-
-### Timing Guidelines
-
-| Interaction | Duration | Easing |
+| 动作 | 持续时间 | 动画效果 |
 |-------------|----------|--------|
-| Button hover | 150ms | ease-out |
-| Modal open | 250ms | ease-out |
-| Modal close | 200ms | ease-in |
-| Page transition | 300ms | ease-in-out |
-| Stagger delay | 50-80ms per item | — |
-| Micro-feedback | 100ms | ease-out |
+| 按钮悬停 | 150毫秒 | 使用缓动效果 |
+| 模态框打开 | 250毫秒 | 使用缓动效果 |
+| 模态框关闭 | 200毫秒 | 使用缓动效果 |
+| 页面切换 | 300毫秒 | 使用缓动效果 |
+| 动画之间的延迟 | 每个元素之间50-80毫秒 | 适当延迟 |
+| 微小反馈 | 100毫秒 | 使用缓动效果 |
 
-### Staggered Entrance
+### 动画的顺序
 
 ```css
 .item {
@@ -365,31 +334,29 @@ Use motion to communicate, not decorate.
 }
 ```
 
-### Motion Mistakes
+### 动画错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Animating width/height | Performance hit | Use `transform` only |
-| > 500ms duration | Feels sluggish | 150-300ms for most |
-| Motion everywhere | Overwhelming | Focus on entrances/exits |
-| No reduced-motion | Accessibility fail | Always check preference |
+| 动画影响页面性能 | 避免过度使用动画 | 仅对关键元素使用动画 |
+| 动画持续时间过长 | 造成卡顿 | 大多数情况下动画持续时间控制在150-300毫秒 |
+| 所有元素都使用动画 | 造成视觉负担 | 重点关注关键元素的动画效果 |
+| 未设置动画效果 | 影响无障碍访问 | 必须检查用户的偏好设置 |
 
----
+## 组件状态
 
-## Component States
+每个交互元素都需要有明确的视觉状态。
 
-Every interactive element needs clear states.
-
-| State | Visual Treatment |
+| 状态 | 视觉表现 |
 |-------|------------------|
-| **Default** | Base styling |
-| **Hover** | Subtle background/shadow shift |
-| **Active/Pressed** | Slight inset, reduced shadow |
-| **Focus** | High-visibility ring |
-| **Disabled** | 50% opacity, `not-allowed` cursor |
-| **Loading** | Spinner or skeleton |
+| **默认状态** | 基本样式 |
+| **悬停状态** | 背景或阴影略有变化 |
+| **激活/按下状态** | 背景或阴影有明显变化 |
+| **聚焦状态** | 显示高可见度的提示 |
+| **禁用状态** | 颜色透明度降低50%，光标变为不可点击状态 |
+| **加载状态** | 显示加载指示器 |
 
-### Button Example
+### 按钮设计示例
 
 ```css
 .btn {
@@ -411,11 +378,9 @@ Every interactive element needs clear states.
 }
 ```
 
----
+## 设计元素架构
 
-## Design Tokens Architecture
-
-Structure tokens in three layers:
+将设计元素分为三层结构：
 
 ```css
 /* Layer 1: Primitives */
@@ -434,76 +399,76 @@ Structure tokens in three layers:
 --btn-padding: var(--space-2) var(--space-4);
 ```
 
-This allows theme switching by remapping Layer 2 only.
+这样可以通过重新映射第二层来切换不同的主题样式。
 
 ---
 
-## Pre-Delivery Checklist
+## 发布前的检查清单
 
-### Typography
-- [ ] Intentional font pairing (not system defaults)
-- [ ] Consistent type scale
-- [ ] Line length ≤ 75 characters
-- [ ] 16px minimum body text
+### 排版
+- [ ] 有意图的字体搭配（非系统默认字体）
+- [ ] 一致的字体大小比例
+- [ ] 每行文本长度不超过75个字符
+- [ ] 正文字体大小至少为16px
 
-### Color
-- [ ] Cohesive palette (3-5 colors)
-- [ ] WCAG contrast met (4.5:1 normal, 3:1 large)
-- [ ] Semantic colors defined
-- [ ] Dark mode tested (if applicable)
+### 色彩
+- [ ] 色彩搭配协调一致（3-5种颜色）
+- [ ] 符合WCAG对比度要求（正常文本对比度4.5:1，大字体对比度3:1）
+- [ ] 定义了具有语义意义的颜色
+- [ ] 测试了暗模式下的显示效果
 
-### Spacing
-- [ ] Consistent rhythm using scale
-- [ ] No arbitrary pixel values
-- [ ] Proper mobile padding
+### 间距
+- [ ] 保持一致的间距比例
+- [ ] 避免使用随意的像素值
+- [ ] 为移动设备设置了适当的padding
 
-### Hierarchy
-- [ ] Clear visual flow
-- [ ] Primary action obvious
-- [ ] Information layered by importance
+### 视觉层次结构
+- [ ] 视觉层次清晰明了
+- [ ] 主要操作元素易于识别
+- [ ] 信息按照重要性分层显示
 
-### Responsive
-- [ ] Mobile tested (375px)
-- [ ] No horizontal overflow
-- [ ] Touch targets ≥ 44px
+### 响应式设计
+- [ ] 在移动设备（375px分辨率下）进行了测试
+- [ ] 避免内容溢出
+- [ ] 触摸目标的大小至少为44px
 
-### Accessibility
-- [ ] Keyboard navigable
-- [ ] Focus visible
-- [ ] Screen reader tested
-- [ ] Motion-safe
+### 无障碍设计
+- [ ] 支持键盘导航
+- [ ] 聚焦元素有明显的提示
+- [ ] 测试了屏幕阅读器的兼容性
+- [ ] 动画效果安全可靠
 
-### States
-- [ ] Hover on all interactive elements
-- [ ] Focus-visible on all focusable
-- [ ] Loading states for async
-- [ ] Error states for forms
+### 其他方面
+- [ ] 所有交互元素都有明显的悬停效果
+- [ ] 可聚焦元素都有明显的聚焦提示
+- [ ] 异步加载时有加载状态显示
+- [ ] 表单有错误提示
 
-### Performance
-- [ ] Images optimized (WebP, srcset)
-- [ ] Fonts subset
-- [ ] Animations use `transform`/`opacity`
-
----
-
-## NEVER Do
-
-1. **NEVER skip contrast checking** — Test every text/background combination
-2. **NEVER use color alone** — Always pair with icons/text for meaning
-3. **NEVER remove focus outlines** — Unless replacing with visible alternative
-4. **NEVER use arbitrary spacing** — Stick to the scale
-5. **NEVER animate layout properties** — Only `transform` and `opacity`
-6. **NEVER ignore reduced-motion** — Always check the preference
-7. **NEVER center everything** — Left-align body text
-8. **NEVER use tiny touch targets** — 44px minimum
-9. **NEVER use low-contrast text** — `slate-600` minimum on white
-10. **NEVER use generic system fonts** — Choose intentional typography
+### 性能优化
+- [ ] 图片进行了优化（使用WebP格式，提供多种分辨率版本）
+- [ ] 选择了合适的字体
+- [ ] 动画效果使用了`transform`和`opacity`属性
 
 ---
 
-## Related Skills
+## 绝对不要做的事情
 
-- `ui-ux-pro-max` — Searchable design databases with CLI
-- `frontend-design` — Creative aesthetics, avoiding "AI slop"
-- `theme-factory` — Applying themes to artifacts
-- `design-system-patterns` — Token architecture and theming
+1. **绝不省略对比度检查** —— 必须测试每种文本和背景颜色的组合
+2. **绝不单独使用颜色** —— 总是要结合图标或文字来表达意义
+3. **绝不删除聚焦提示** —— 除非有更明显的替代方式
+4. **绝不使用随意的间距** —— 严格遵循设定的间距比例
+5. **绝不直接修改布局属性** —— 仅使用`transform`和`opacity`来调整布局
+6. **绝不忽略无障碍设置** —— 必须检查用户的偏好设置
+7. **绝不将所有元素都居中** —— 正文文本应左对齐
+8. **绝不使用过小的触摸目标** —— 触摸目标大小至少为44px
+9. **绝不使用对比度低的颜色** —— 文本在白色背景上的对比度至少为`slate-600`
+10. **绝不使用系统提供的默认字体** —— 应选择有意义的自定义字体
+
+---
+
+## 相关技能
+
+- `ui-ux-pro-max` —— 提供可搜索的设计资源库，可通过CLI访问
+- `frontend-design` —— 提供创意设计指导，避免使用过于复杂的视觉效果
+- `theme-factory` —— 用于将设计主题应用到实际项目中
+- `design-system-patterns` —— 提供设计元素和主题的标准化架构

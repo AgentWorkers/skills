@@ -1,33 +1,31 @@
 ---
 name: carddav-contacts
-description: Sync and manage CardDAV contacts (Google, iCloud, Nextcloud, etc.) using vdirsyncer + khard.
+description: 使用 vdirsyncer 和 khard 同步和管理 CardDAV 联系人（来自 Google、iCloud、Nextcloud 等服务）。
 metadata: {"clawdbot":{"emoji":"📇","os":["linux"],"requires":{"bins":["vdirsyncer","khard"]},"install":[{"id":"apt","kind":"apt","packages":["vdirsyncer","khard"],"bins":["vdirsyncer","khard"],"label":"Install vdirsyncer + khard via apt"}]}}
 ---
 
-# CardDAV Contacts (vdirsyncer + khard)
+# CardDAV联系人管理（vdirsyncer + khard）
 
-**vdirsyncer** syncs CardDAV contacts to local `.vcf` files. **khard** reads and manages them via CLI.
+**vdirsyncer** 将 CardDAV 中的联系人信息同步到本地的 `.vcf` 文件中，**khard** 则通过命令行（CLI）读取并管理这些联系人信息。
 
-## Sync First
+## 先进行同步
 
-Always sync before querying to ensure you have the latest contacts:
+在查询之前，请务必先完成同步操作，以确保获取到最新的联系人信息：
 ```bash
 vdirsyncer sync
 ```
 
-## Quick Search (Smart)
+## 快速搜索（智能搜索）
 
-If configured with `default_action = list` (standard), you can search directly without subcommands:
-
+如果配置了 `default_action = list`（默认设置），您可以无需使用任何子命令直接进行搜索：
 ```bash
 khard "john"                     # Search for "john" in all fields
 khard "pilar"                    # Search for "pilar"
 ```
 
-## List & Search (Explicit)
+## 列出联系人信息并搜索（显式搜索）
 
-Use `list` if you need specific flags or if the implicit search doesn't match your config.
-
+当需要使用特定的搜索选项，或者默认的搜索方式不符合您的需求时，可以使用 `list` 命令：
 ```bash
 khard list                       # List all contacts
 khard list "john"                # Search explicitly
@@ -35,24 +33,23 @@ khard list -a work               # List only from 'work' address book
 khard list -p                    # Parsable output (tab-separated)
 ```
 
-## View Contact Details
+## 查看联系人详情
 
 ```bash
 khard show "john doe"            # Show details (pretty print)
 khard show --format yaml "john"  # Show as YAML (good for editing)
 ```
 
-## Quick Field Lookup
+## 快速查找字段信息
 
-Extract specific info (great for piping):
-
+可以提取特定的联系人信息（非常适合用于数据传输或处理）：
 ```bash
 khard email "john"               # List emails only
 khard phone "john"               # List phone numbers only
 khard postaddress "john"         # List postal addresses
 ```
 
-## Management
+## 管理联系人信息
 
 ```bash
 khard new                        # Create new contact (interactive editor)
@@ -61,9 +58,9 @@ khard remove "john"              # Delete contact
 khard move "john" -a work        # Move to another address book
 ```
 
-## Configuration Setup
+## 配置设置
 
-### 1. Configure vdirsyncer (`~/.config/vdirsyncer/config`)
+### 1. 配置 vdirsyncer（位于 `~/.config/vdirsyncer/config` 文件中）
 
 ```ini
 [pair google_contacts]
@@ -84,10 +81,9 @@ path = "~/.local/share/vdirsyncer/contacts/"
 fileext = ".vcf"
 ```
 
-### 2. Configure khard (`~/.config/khard/khard.conf`)
+### 2. 配置 khard（位于 `~/.config/khard/khard.conf` 文件中）
 
-Critically, set `default_action = list` to enable quick search.
-
+请务必将 `default_action` 设置为 `list`，以启用快速搜索功能：
 ```ini
 [addressbooks]
 [[google]]
@@ -103,7 +99,7 @@ display = formatted_name
 sort = last_name
 ```
 
-### 3. Initialize
+### 3. 初始化程序
 
 ```bash
 mkdir -p ~/.local/share/vdirsyncer/contacts

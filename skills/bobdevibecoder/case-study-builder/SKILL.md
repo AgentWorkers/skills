@@ -1,77 +1,54 @@
 ---
 name: case-study-builder
-description: Turn client wins into formatted case studies for proposals, social proof, and sales conversations. Use when someone needs to document results, build credibility, or create reusable proof assets.
+description: 将客户的成功案例转化为格式化的案例研究，用于提案、展示客户信任度以及销售谈判。当需要记录成果、建立信誉或创建可重复使用的证明资料时，可以使用这些案例研究。
 ---
 
-# Case Study Builder
+# 案例研究生成工具
 
-Here's what I've learned about social proof: everyone wants it, nobody makes time to create it.
-
-You finish a project, the client's happy, you move on. Six months later you're in a sales call wishing you had that case study written up. Sound familiar?
-
-This skill fixes that. Give me the raw details of a win, I'll turn it into three formats you can actually use.
-
----
-
-## What I Need From You
-
-Tell me about a client win:
-
-1. **Who was the client?** (Can we name them, or do we anonymize?)
-2. **What was broken before you showed up?**
-3. **What did you actually do?** (Scope, timeline, your role)
-4. **What changed?** (Results, outcomes, transformations)
-5. **Any memorable moments?** (Breakthroughs, pivots, "aha" moments)
-
-Don't worry about making it sound good. Just give me the facts. I'll handle the storytelling.
+关于“社会认同”（social proof）这一点，我有了这样的认识：每个人都渴望获得它，但没人愿意花时间去创造它。  
+项目完成后，客户满意了，你也就继续下一个项目。然而六个月后，在一次销售电话中，你可能会后悔没有把这次成功的案例整理成书面材料。这种情况听起来熟悉吗？  
+这个工具可以解决这个问题：只要提供项目成功的原始细节，我就能将其转化为三种实际可用的格式。  
 
 ---
 
-## The Three Formats
-
-Every case study needs three versions. Here's why:
-
-### 1. The Two-Liner (For Proposals & Bios)
-
-When someone's scanning your proposal, they don't want a story. They want proof you've done this before.
-
-**The formula:**
-> [What you did] + [scale/scope] + [for who] + [result or timeframe].
-
-**Example:**
-> Led the rebrand of a $4B healthcare organization with 150+ locations. 18-month engagement covering brand strategy, messaging, and market positioning.
-
-That's it. Two sentences. Paste it into proposals, email signatures, your LinkedIn About section.
+## 我需要你提供的信息  
+请告诉我一个成功的项目案例：  
+1. **客户是谁？**（我们可以透露他们的名字，还是选择匿名处理？）  
+2. 在你介入之前，他们遇到了什么问题？  
+3. 你具体做了什么？（项目范围、时间线、你的职责）  
+4. 项目带来了哪些变化？（结果、成效）  
+5. 有哪些值得纪念的瞬间？（突破性成果、决策转折点）  
+别担心内容要写得多精彩，只需提供事实即可，剩下的我来负责讲述故事。  
 
 ---
 
-### 2. The Story Version (For Conversations & LinkedIn)
+## 三种输出格式  
+每个案例研究都需要三种版本，原因如下：  
 
-This is for when you need to sound human. Sales calls. LinkedIn posts. Podcast intros.
+### 1. 简洁版（用于提案和个人简介）  
+当别人浏览你的提案时，他们并不需要冗长的故事，他们需要的是证据——证明你之前确实有过类似的成功经验。  
+**格式：**  
+> [你的工作内容] + [项目规模/范围] + [目标受众] + [最终结果或时间框架]  
+**示例：**  
+> “我主导了一家年收入40亿美元的医疗机构的品牌重塑项目，涉及150多家分支机构。整个项目历时18个月，涵盖品牌策略、信息传递和市场定位。”  
+只需两句话，即可用于提案、邮件签名或LinkedIn的个人简介中。  
 
-**The structure:**
+### 2. 详细故事版（用于销售沟通和LinkedIn分享）  
+这种格式适合在销售电话或LinkedIn帖子中使用，让你的内容更具亲和力。  
+**结构：**  
+- **背景介绍：** 当时情况如何？面临什么挑战？  
+> “他们是中西部最大的医疗集团之一，年收入40亿美元，拥有150多家分支机构，但他们的品牌未能跟上公司发展的步伐。”  
+- **难点分析：** 项目为何困难重重？  
+> “医疗行业的品牌建设并不简单——你需要同时与医生、保险公司、雇主和社区利益相关者打交道。”  
+- **具体行动：** 你采取了哪些措施？  
+> “我在18个月内主导了整个品牌重塑工作，包括定位、信息传递策略和视觉形象的设计。”  
+- **成果展示：** 最终取得了什么变化？  
+> “项目结束时，他们拥有了一套适用于所有业务线和利益相关者的统一品牌。”  
+这样的描述能讲述一个完整的故事，让你在对方心中留下深刻印象。  
 
-**Set the scene:** What was happening? What was at stake?
-> "They were one of the largest medical groups in the Midwest — $4B in revenue, 150+ locations. But their brand hadn't kept pace with their growth."
-
-**Show the complexity:** What made this hard?
-> "Healthcare branding isn't simple. You're not just talking to patients — you're navigating physicians, insurers, employers, and community stakeholders."
-
-**What you did:** Actions, not features.
-> "I led the rebrand over 18 months: positioning, messaging architecture, visual identity guidance."
-
-**What changed:** The outcome.
-> "By the end, they had a unified brand that worked across all their service lines and stakeholder groups."
-
-Four paragraphs. Tells a story. Makes you memorable.
-
----
-
-### 3. The Full Case Study (For Your Website)
-
-This is the deep version. For your portfolio page, downloadable PDFs, or when a prospect wants to dig in.
-
-**Structure:**
+### 3. 完整版案例研究（用于网站展示）  
+这是最详细的版本，适合放在个人作品集页面或提供给潜在客户下载。  
+**结构：**  
 ```
 # Case Study: [Client]
 
@@ -96,66 +73,56 @@ This is the deep version. For your portfolio page, downloadable PDFs, or when a 
 ## Client Quote (if you have one)
 > "[Testimonial]"
 > — Name, Title
-```
+```  
 
 ---
 
-## The Results Hierarchy
+## 结果的呈现方式  
+并非每个项目都能提供具体的数据指标。以下是不同类型结果的呈现方法：  
 
-Not every win has hard numbers. Here's how to frame different types of results:
+**一级指标（最佳结果）：**  
+- 收入增长40%  
+- 成本节省20万美元  
+- 合格潜在客户数量从10个增加到50个  
 
-**Tier 1: Hard Metrics** (Best)
-- Revenue increased 40%
-- Reduced costs by $200K
-- Grew pipeline from 10 to 50 qualified leads
+**二级指标（同样有价值）：**  
+- “整个团队首次在信息传递上达成一致”  
+- “五年来的首次明确共识”  
+- “流程现在可以独立运行，无需我的参与”  
 
-**Tier 2: Soft Metrics** (Still Valuable)
-- "First time the entire team was aligned on messaging"
-- "Clarity that hadn't existed in 5 years"
-- "Process now runs without me"
+**三级指标（缺乏直接数据时使用）：**  
+- “这一方法后来被全公司采纳”  
+- “帮助公司完成了A轮融资”  
+- “团队从迷茫变得自信”  
 
-**Tier 3: Proxy Metrics** (When Direct Data Missing)
-- "This approach was later adopted company-wide"
-- "Enabled them to close their Series A"
-- "Team went from confused to confident"
-
-**Tier 4: Directional** (Minimum)
-- "Significant improvement in..."
-- "Noticeable lift in..."
-- "Positive feedback from..."
-
-Something is always better than "we did good work."
+**四级指标（最低要求）：**  
+- “在某方面有显著改善”  
+- “有明显的提升”  
+- “获得了客户的积极反馈”  
+总比简单地说“我们做得很好”更有说服力。  
 
 ---
 
-## When You Can't Name the Client
+## 如何处理客户名称保密的情况  
+如果无法透露客户名称，可以通过以下方式保持信息的可信度：  
+- “一家年收入40亿美元的医疗机构”  
+- “一家处于B轮融资阶段的金融科技公司”  
+- “一家财富500强的消费品品牌”  
+即使不提供具体名称，这些描述也能传达足够的信息。  
 
-Anonymize with enough detail for credibility:
-- "A $4B healthcare organization"
-- "A Series B fintech startup"
-- "A Fortune 500 CPG brand"
-
-The specifics (revenue, industry, company stage) do the work even without the name.
-
----
-
-## Questions to Jog Your Memory
-
-If you're struggling to remember the details:
-
-1. What was the situation when you first showed up?
-2. What were they most frustrated about?
-3. What was the hardest part of the project?
-4. What surprised you?
-5. What would have happened if you hadn't done this work?
-6. Did they ever say anything quotable?
+## 帮助你回忆细节的问题  
+如果你记不清细节，可以尝试回答以下问题：  
+1. 你最初接手项目时，情况是什么样的？  
+2. 客户最困扰的是什么？  
+3. 项目中最困难的部分是什么？  
+4. 有什么让你感到意外的事情吗？  
+5. 如果没有这项工作，情况会怎样？  
+6. 客户有没有说过什么值得引用的话？  
 
 ---
 
-## What You Get Back
-
-All three versions, ready to use:
-
+## 你将获得的内容  
+三种格式的案例研究文件，随时可供使用：  
 ```
 # Case Study: [Client]
 
@@ -172,25 +139,19 @@ All three versions, ready to use:
 - Where to use each version
 - Talking points if asked follow-up questions
 - Any restrictions (NDA, anonymization)
-```
+```  
 
 ---
 
-## Common Mistakes I'll Help You Avoid
+## 常见错误及避免方法  
+❌ **过分突出自己的作用**：真正的英雄是客户，你只是他们的引导者。  
+❌ **结果描述模糊不清**：“提升了他们的营销效果”这样的表述毫无意义，需要具体说明。  
+❌ **忽略项目过程中的困难**：正是这些困难让成果显得更加令人印象深刻。  
+❌ **只列举功能而不讲述故事**：仅仅列出“我们完成了X、Y、Z”并不能打动他人，而“项目带来了哪些变化”才能真正传达价值。  
 
-❌ **Making yourself the hero.** The client is the hero. You're the guide.
-
-❌ **Vague outcomes.** "Improved their marketing" means nothing. Get specific.
-
-❌ **Skipping the struggle.** The challenge is what makes the outcome impressive.
-
-❌ **Feature lists instead of story.** "We did X, Y, Z" doesn't land. "Here's what changed" does.
-
----
-
-**Need help turning your wins into case studies?**
-→ [Book a strategy call](https://brianrwagner.com)
+**需要帮助将你的成功案例转化为可用的文档吗？**  
+→ [预约策略咨询](https://brianrwagner.com)  
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+*作者：Brian Wagner | 人工智能营销专家 | brianrwagner.com*

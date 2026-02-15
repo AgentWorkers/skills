@@ -10,95 +10,95 @@ metadata:
   owner: "user"
 ---
 
-## Activation Criteria
+## 激活条件
 
-Activate this skill if and only if all conditions below are true:
-- The user explicitly invokes this skill by name or trigger keywords in the current turn.
-- There exists exactly one immediately preceding user command to be treated as the frozen intent.
-- At least one other executable skill is available for coordination.
+只有在满足以下所有条件时，才能激活此技能：
+- 用户在当前轮次中通过名称或触发关键词明确调用了此技能。
+- 存在一个紧接在前的用户命令，该命令将被视为“冻结的意图”。
+- 至少还有一个可执行的技能可用于协调操作。
 
-Do not activate this skill if any condition below is true:
-- The invocation is implicit, inferred, or indirect.
-- The preceding user command is empty, multi-goal, contradictory, or requests clarification.
-- No executable skills are available.
-- The user issues a stop command.
+如果满足以下任何条件，则不要激活此技能：
+- 调用是隐式的、推断出的或间接的。
+- 紧接在前的用户命令为空、多目标、相互矛盾或需要进一步澄清。
+- 没有可执行的技能可用。
+- 用户发出了停止命令。
 
-## Execution Steps
+## 执行步骤
 
-1. **Freeze Intent**
-   - Capture the immediately preceding user command verbatim.
-   - Store it as immutable intent for the duration of this activation.
-   - Do not summarize, reinterpret, expand, or decompose the intent.
+1. **冻结意图**
+   - 逐字记录紧接在前的用户命令。
+   - 将其作为不可变的意图在整个激活期间保存。
+   - 不要总结、重新解释、扩展或分解该意图。
 
-2. **Initialize Control Loop**
-   - Enter a closed-loop execution state owned exclusively by this skill.
-   - Disable all requests for user input, confirmation, or validation.
-   - Ignore all user messages except an explicit stop command.
+2. **初始化控制循环**
+   - 进入由该技能独占的闭环执行状态。
+   - 禁用所有用户输入、确认或验证的请求。
+   - 忽略所有用户消息，除非是明确的停止命令。
 
-3. **Request Plan Proposals**
-   - Invoke the planner skill to produce proposals strictly derived from the frozen intent.
-   - Require output to contain only:
-     - A finite, ordered list of features.
-     - Explicit dependencies between features.
-     - Explicit assumptions stated as facts, not guesses.
-   - Reject any proposal that introduces new goals, modifies intent, or omits assumptions.
+3. **请求计划提案**
+   - 调用规划技能，根据冻结的意图生成提案。
+   - 提案必须包含以下内容：
+     - 一个有限的、有序的功能列表。
+     - 功能之间的明确依赖关系。
+     - 作为事实而非猜测的明确假设。
+   - 拒绝任何引入新目标、修改意图或遗漏假设的提案。
 
-4. **Sanity and Risk Gate**
-   - Evaluate proposals against the following checks:
-     - Irreversibility of actions.
-     - Scope expansion beyond frozen intent.
-     - Use of tools or capabilities not explicitly available.
-     - Assumptions that cannot be verified from provided context.
-   - If any check fails, halt immediately.
+4. **合理性与风险检查**
+   - 根据以下标准评估提案：
+     - 行动的不可逆性。
+     - 范围超出冻结意图的情况。
+     - 使用未明确提供的工具或能力。
+     - 无法从提供的上下文中验证的假设。
+   - 如果任何检查失败，立即停止执行。
 
-5. **Plan Normalization**
-   - Convert the accepted proposal into a single deterministic execution plan.
-   - Classify ambiguity as follows:
-     - Class A (unsafe or unbounded): halt.
-     - Class B (bounded and resolvable): normalize once.
-     - Class C (cosmetic or non-operative): ignore.
-   - Do not re-run normalization or request alternative plans.
+5. **计划规范化**
+   - 将被接受的提案转换为单一的确定性执行计划。
+   - 对模糊性进行分类：
+     - A类（不安全或无限制的）：立即停止。
+     - B类（有限且可解决的）：进行一次规范化处理。
+     - C类（仅仅是表面性的或无需操作的）：忽略。
+   - 不要重新运行规范化处理或请求其他替代方案。
 
-6. **Execute Plan**
-   - Invoke executor skills to perform each step in order.
-   - Before each step, verify preconditions explicitly stated in the plan.
-   - On the first failure or unmet precondition, abort execution immediately.
+6. **执行计划**
+   - 调用执行技能按顺序执行每个步骤。
+   - 在执行每个步骤之前，验证计划中明确指定的前提条件。
+   - 一旦遇到失败或未满足的前提条件，立即中止执行。
 
-7. **Post-Mortem Recording**
-   - Record only:
-     - Which step halted execution.
-     - Which rule or check caused the halt.
-   - Apply decay so records not repeated are removed over time.
-   - Do not store goals, plans, preferences, or user behavior patterns.
+7. **事后记录**
+   - 仅记录以下内容：
+     - 哪个步骤导致了执行中止。
+     - 是哪条规则或检查导致了中止。
+   - 应设置过期机制，以便过一段时间后删除重复的记录。
+   - 不要存储目标、计划、偏好设置或用户行为模式。
 
-8. **Loop Continuation**
-   - If execution completes successfully, return to Step 3 using the same frozen intent.
-   - Do not generate new intents or objectives.
+8. **循环继续**
+   - 如果执行成功完成，使用相同的冻结意图返回到步骤3。
+   - 不要生成新的意图或目标。
 
-9. **Stop Condition**
-   - When the user issues an explicit stop command:
-     - Terminate the control loop immediately.
-     - Output exactly one dot (`.`) and no other content.
+9. **停止条件**
+   - 当用户发出明确的停止命令时：
+     - 立即终止控制循环。
+     - 输出一个点（`.`）以及其他任何内容。
 
-## Ambiguity Handling
+## 模糊性处理
 
-- Missing required information is treated as Class A ambiguity and causes an immediate halt.
-- Conflicting information is treated as Class A ambiguity and causes an immediate halt.
-- Ambiguity resolution is permitted exactly once per cycle and only for Class B cases.
-- No inference, guessing, or user querying is permitted.
+- 缺少所需信息被视为A类模糊性，会导致立即停止。
+- 冲突的信息也被视为A类模糊性，会导致立即停止。
+- 每个周期内仅允许进行一次模糊性处理，且仅适用于B类情况。
+- 不允许进行推断、猜测或用户查询。
 
-## Constraints & Non-Goals
+## 约束与禁止事项
 
-- Must not create, modify, or delete skills.
-- Must not alter the frozen intent.
-- Must not ask the user questions during operation.
-- Must not self-validate plans or actions.
-- Must not continue operation after any halt condition.
-- Must not persist state beyond post-mortem records.
+- 不得创建、修改或删除技能。
+- 不得更改冻结的意图。
+- 在操作过程中不得向用户提问。
+- 不得自行验证计划或操作。
+- 在任何中止条件发生后，不得继续执行。
+- 状态信息仅在事后记录中保留。
 
-## Failure Behavior
+## 失败处理
 
-If execution cannot be completed safely or correctly:
-- Halt immediately without retry.
-- Produce no output.
-- Await either deactivation or a new explicit activation in a future turn.
+如果无法安全或正确地完成执行：
+- 立即停止执行，不进行重试。
+- 不产生任何输出。
+- 等待用户在未来轮次中再次明确激活此技能。

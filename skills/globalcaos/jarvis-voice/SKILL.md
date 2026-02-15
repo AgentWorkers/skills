@@ -1,7 +1,7 @@
 ---
 name: jarvis-voice
 version: 1.0.0
-description: Metallic AI voice persona with TTS and visual transcript styling. Speak responses aloud with a JARVIS-like robotic voice and display transcripts in purple italics.
+description: 具有文本转语音（TTS）功能的金属质感AI语音角色，以及视觉文本转录样式。该角色会以类似JARVIS的机器人语音朗读回答内容，并将文本转录结果以紫色斜体字体显示出来。
 homepage: https://github.com/openclaw/openclaw
 repository: https://github.com/openclaw/openclaw
 metadata:
@@ -15,26 +15,26 @@ metadata:
         label: "Install sherpa-onnx TTS (see docs)"
 ---
 
-# Jarvis Voice Persona
+# Jarvis 语音角色
 
-A metallic AI voice with visual transcript styling for OpenClaw assistants.
+这是一个专为 OpenClaw 辅助工具设计的金属质感 AI 语音，配有视觉化的文字转录功能。
 
-## Features
+## 功能特点
 
-- **TTS Output:** Local speech synthesis via sherpa-onnx (no cloud API)
-- **Metallic Voice:** ffmpeg audio processing for robotic resonance
-- **Purple Transcripts:** Visual distinction between spoken and written content
-- **Fast Playback:** 2x speed for efficient communication
+- **TTS 输出：** 通过 `sherpa-onnx` 实现本地语音合成（无需使用云 API）
+- **金属质感声音：** 使用 `ffmpeg` 对音频进行处理，以模拟机器人的发音效果
+- **紫色文字转录：** 用于区分语音内容和文字内容
+- **快速播放：** 播放速度提升 2 倍，提升沟通效率
 
-## Requirements
+## 系统要求
 
-- `sherpa-onnx` with VITS piper model (en_GB-alan-medium recommended)
-- `ffmpeg` for audio processing
-- `aplay` (ALSA) for audio playback
+- 需要安装 `sherpa-onnx`，并使用 VITS piper 模型（推荐使用 `en_GB-alan-medium` 配置）
+- 需要 `ffmpeg` 用于音频处理
+- 需要 `aplay`（基于 ALSA）软件用于音频播放
 
-## Installation
+## 安装步骤
 
-### 1. Install sherpa-onnx TTS
+### 1. 安装 `sherpa-onnx` TTS 工具
 
 ```bash
 # Download and extract sherpa-onnx
@@ -43,28 +43,28 @@ cd ~/.openclaw/tools/sherpa-onnx-tts
 # Follow sherpa-onnx installation guide
 ```
 
-### 2. Install the jarvis script
+### 2. 安装 `jarvis` 脚本
 
 ```bash
 cp {baseDir}/scripts/jarvis ~/.local/bin/jarvis
 chmod +x ~/.local/bin/jarvis
 ```
 
-### 3. Configure audio device
+### 3. 配置音频设备
 
-Edit `~/.local/bin/jarvis` and set your audio output device in the `aplay -D` line.
+编辑 `~/.local/bin/jarvis` 文件，在 `aplay -D` 参数中设置您的音频输出设备。
 
-## Usage
+## 使用方法
 
-### Speak text
+### 语音输入
 
 ```bash
 jarvis "Hello, I am your AI assistant."
 ```
 
-### In agent responses
+### 在辅助工具的响应中使用
 
-Add to your SOUL.md:
+将相关代码添加到您的 `SOUL.md` 文件中：
 
 ```markdown
 ## Communication Protocol
@@ -74,9 +74,9 @@ Add to your SOUL.md:
 - **No gibberish:** Never spell out IDs or hashes when speaking
 ```
 
-### Transcript styling (requires UI support)
+### 文本转录样式（需要前端界面支持）
 
-Add to your webchat CSS:
+将相关 CSS 代码添加到您的网页聊天界面中：
 
 ```css
 .jarvis-voice {
@@ -85,54 +85,54 @@ Add to your webchat CSS:
 }
 ```
 
-And allow `span` in markdown sanitization.
+同时，请确保 Markdown 格式中允许使用 `span` 标签。
 
-## Voice Customization
+## 语音自定义
 
-Edit `~/.local/bin/jarvis` to adjust:
+编辑 `~/.local/bin/jarvis` 文件以调整语音效果：
 
-| Parameter | Effect |
+| 参数 | 效果 |
 |-----------|--------|
-| `--vits-length-scale=0.5` | Speed (lower = faster) |
-| `aecho` delays | Metallic resonance |
-| `chorus` | Thickness/detuning |
-| `highpass/lowpass` | Frequency range |
-| `treble=g=3` | Metallic sheen |
+| `--vits-length-scale=0.5` | 改变语音播放速度（数值越小，速度越快） |
+| `aecho` | 调整回声效果，增强金属质感 |
+| `chorus` | 调整声音的厚度或失真程度 |
+| `highpass/lowpass` | 设置音频的频率范围 |
+| `treble=g=3` | 增强声音的金属光泽感 |
 
-### Presets
+### 预设设置
 
-**More robotic:**
+- **更机械的语音风格：**
 ```
 aecho=0.7:0.7:5|10|15:0.4|0.35|0.3
 ```
 
-**More human:**
+- **更接近人类的语音风格：**
 ```
 aecho=0.4:0.4:20:0.2
 ```
 
-**Deeper:**
+- **更低沉的语音风格：**
 ```
 highpass=f=200,lowpass=f=3000
 ```
 
-## Troubleshooting
+## 常见问题解决方法
 
-### No audio output
-- Check `aplay -l` for available devices
-- Update the `-D plughw:X,Y` parameter
+### 无音频输出
+- 使用 `aplay -l` 命令检查可用的音频设备
+- 更新 `-D plughw:X,Y` 参数以指定正确的音频设备
 
-### Voice too fast/slow
-- Adjust `--vits-length-scale` (0.3=very fast, 1.0=normal)
+### 语音速度过快/过慢
+- 调整 `--vits-length-scale` 参数（0.3 表示非常快，1.0 表示正常速度）
 
-### Metallic effect too strong
-- Reduce echo delays and chorus depth
+### 金属质感效果过强
+- 减少回声延迟和声音的失真程度
 
-## Files
+## 相关文件
 
-- `scripts/jarvis` — TTS script with metallic processing
-- `SKILL.md` — This documentation
+- `scripts/jarvis`：包含金属质感处理功能的 TTS 脚本
+- `SKILL.md`：本文档文件
 
 ---
 
-*A voice persona for assistants who prefer to be heard as well as read.*
+*这是一个专为那些既希望被听到声音又希望看到文字内容的辅助工具设计的语音角色。*

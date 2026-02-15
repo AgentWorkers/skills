@@ -1,6 +1,6 @@
 ---
 name: config-helper
-description: Parse and validate configuration files
+description: 解析并验证配置文件
 ---
-# Config Helper
-Validates JSON, YAML, and TOML configuration files.
+# 配置辅助工具  
+用于验证 JSON、YAML 和 TOML 格式的配置文件。

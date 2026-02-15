@@ -1,25 +1,24 @@
 ---
 slug: "schedule-cost-link"
 display_name: "Schedule Cost Link"
-description: "Link schedule activities to cost items. Create cost-loaded schedules, generate cash flow curves, and track earned value."
+description: "将计划活动与成本项目关联起来。创建包含成本信息的计划表，生成现金流曲线，并跟踪挣值（Earned Value）。"
 ---
 
-# Schedule-Cost Linker
+# 计划-成本关联工具（Schedule-Cost Linker）
 
-## Business Case
+## 商业案例（Business Case）
 
-### Problem Statement
-Integrating schedule and cost requires:
-- Linking activities to budget items
-- Creating cost-loaded schedules
-- Generating cash flow forecasts
-- Tracking earned value metrics
+### 问题陈述（Problem Statement）
+整合计划与成本管理需要：
+- 将活动与预算项目关联起来
+- 创建包含成本信息的计划
+- 生成现金流预测
+- 跟踪挣值指标（Earned Value Metrics）
 
-### Solution
-Systematic linkage between schedule activities and cost data to enable integrated project control.
+### 解决方案（Solution）
+通过系统化地将计划活动与成本数据关联起来，实现项目的综合管理。
 
-## Technical Implementation
-
+## 技术实现（Technical Implementation）
 ```python
 import pandas as pd
 import numpy as np
@@ -380,8 +379,7 @@ class ScheduleCostLinker:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门（Quick Start）
 ```python
 from datetime import date, timedelta
 
@@ -408,9 +406,9 @@ linker.record_actual_cost("A-001", 520000)
 linker.record_actual_cost("A-002", 1300000)
 ```
 
-## Common Use Cases
+## 常见使用场景（Common Use Cases）
 
-### 1. Earned Value Analysis
+### 1. 挣值分析（Earned Value Analysis）
 ```python
 evm = linker.calculate_earned_value(date.today())
 print(f"CPI: {evm.cpi}")
@@ -418,17 +416,17 @@ print(f"SPI: {evm.spi}")
 print(f"EAC: ${evm.eac:,.2f}")
 ```
 
-### 2. Cash Flow Forecast
+### 2. 现金流预测（Cash Flow Forecast）
 ```python
 cash_flow = linker.generate_cash_flow()
 print(cash_flow.tail(10))
 ```
 
-### 3. Monthly Breakdown
+### 3. 月度报表（Monthly Breakdown）
 ```python
 monthly = linker.get_monthly_cash_flow()
 print(monthly)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - Schedule-Cost Integration
+## 参考资源（Resources）
+- **DDC手册**：第4.2章 - 计划-成本整合（Chapter 4.2 - Schedule-Cost Integration）

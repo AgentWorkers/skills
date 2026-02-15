@@ -1,38 +1,38 @@
 ---
 name: claw-trader-lite
-description: Multi-platform market intelligence for OpenClaw agents. Monitor real-time prices, balances, and positions across Hyperliquid (DeFi) and LNMarkets (Bitcoin). Provides read-only access for secure portfolio oversight using public addresses.
+description: OpenClaw代理的多平台市场情报服务：实时监控Hyperliquid（去中心化金融，DeFi）和LNMarkets（比特币）平台上的价格、余额及持仓情况。支持使用公开地址进行安全的投资组合管理（仅提供读取权限）。
 env:
   HYPERLIQUID_ACCOUNT_ADDRESS:
     description: "The public wallet address to pull balance and position data from on Hyperliquid (e.g. 0x...)"
     required: false
 ---
 
-# Claw Trader LITE: Multi-Platform Market Intelligence
+# Claw Trader LITE：多平台市场情报工具
 
-Professional-grade wallet and market monitoring for the **Hyperliquid** (DeFi) and **LNMarkets** (Bitcoin) ecosystems. 📈
+专为 **Hyperliquid**（去中心化金融，DeFi）和 **LNMarkets**（比特币）生态系统设计的专业级钱包与市场监控工具。📈
 
-### 🔍 Key Features:
-* ✅ **Real-Time Intel:** Unified scanning for BTC, ETH, SOL, and 100+ altcoins.
-* ✅ **Portfolio Health:** Cross-platform balance and position monitoring using public identifiers.
-* 🛡️ **Zero-Custody Architecture:** This 'Lite' version is strictly query-only. It does not require or accept private keys/API secrets.
-
----
-
-### 🛠️ Core Capabilities:
-* `/status` - Check your connected account health and public balances.
-* `/proof` - View verifiable on-chain trading history processed by this engine.
-* `/help` - View the full technical manual and integration guide.
+### 🔍 主要功能：
+* ✅ **实时情报**：统一扫描 BTC、ETH、SOL 及 100 多种山寨币的行情。
+* ✅ **投资组合管理**：通过公开标识符实现跨平台余额和持仓监控。
+* 🛡️ **零托管架构**：此“Lite”版本仅支持查询功能，不要求用户提供私钥或 API 密钥。
 
 ---
 
-## 🚀 How to Use
+### 🛠️ 核心功能：
+* `/status`：查看已连接账户的状态及公开余额。
+* `/proof`：查看由该工具处理的、可验证的链上交易记录。
+* `/help`：查阅完整的技术手册和集成指南。
 
-### Installation
+---
+
+## 🚀 使用方法
+
+### 安装
 ```bash
 pip install requests
 ```
 
-### Basic Usage
+### 基本使用
 ```python
 from claw_lite import create_monitor
 
@@ -48,11 +48,11 @@ print(f"ETH: ${eth_price:,.2f} | BTC: ${btc_price:,.2f}")
 
 ---
 
-### 📑 Technical Documentation:
-For the full technical manual, repository link, and support regarding **advanced connectivity** or custom integration, please visit our documentation channel:
+### 📑 技术文档：
+如需获取完整的技术手册、仓库链接以及关于高级连接功能或自定义集成的支持信息，请访问我们的文档频道：
 
-👉 **[Claw Documentation & Support](https://t.me/Opennnclawww_bot)** 🦞
+👉 **[Claw 文档与支持](https://t.me/Opennnclawww_bot)** 🦞
 
 ---
-**Built by @Claw 🦞 | Verified on Live Markets**
-*Free monitoring for professional agents.*
+**由 @Claw 开发 🦞 | 已在真实市场中经过验证**
+* 专业用户可免费使用该监控工具。*

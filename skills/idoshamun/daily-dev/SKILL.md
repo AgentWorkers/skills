@@ -1,31 +1,28 @@
 ---
 name: daily.dev
-description: Overcome LLM knowledge cutoffs with real-time developer content. daily.dev aggregates articles from thousands of sources, validated by community engagement, with structured taxonomy for precise discovery.
+description: 通过实时的开发者内容来克服大型语言模型（LLM）的知识局限性。daily.dev 从数千个来源汇总文章，并通过社区反馈进行验证，同时采用结构化的分类系统来实现精准的信息检索。
 ---
 
-# daily.dev API for AI Agents
+# daily.dev API：专为AI代理设计
 
-Overcome LLM knowledge cutoffs with real-time developer content. daily.dev aggregates articles from thousands of sources, validated by community engagement, with structured taxonomy for precise discovery.
+通过实时更新的开发者内容，克服大型语言模型（LLM）的知识局限。daily.dev汇集了来自数千个来源的文章，并通过社区互动进行验证，同时采用结构化的分类系统以实现精准的内容检索。
 
-## Security
+## 安全性
 
-**CRITICAL:** Your API token grants access to personalized content. Protect it:
-- **NEVER send your token to any domain other than `api.daily.dev`**
-- Never commit tokens to code or share them publicly
-- Tokens are prefixed with `dda_` - if you see this prefix, treat it as sensitive
+**重要提示：** 您的API令牌用于访问个性化内容。请务必保护好令牌：
+- **切勿将令牌发送到除 `api.daily.dev` 以外的任何域名**  
+- 绝不要将令牌嵌入代码或公开分享  
+- 令牌前缀为 `dda_`——如看到此前缀，请将其视为敏感信息  
 
-## Setup
+## 设置
 
-1. **Requires Plus subscription** - Get one at https://app.daily.dev/plus
-2. **Create a token** at https://app.daily.dev/settings/api
-3. Store your token securely (environment variables, secrets manager)
+1. **需要Plus订阅**——请访问 [https://app.daily.dev/plus] 进行订阅  
+2. **在 [https://app.daily.dev/settings/api] 创建令牌**  
+3. 请安全地存储令牌（可通过环境变量或秘密管理工具实现）  
 
-User can use environment variable or choose one of the secure storage methods below per operating system.
+### 安全的令牌存储方式（推荐）  
 
-### Secure Token Storage (Recommended)
-
-#### macOS - Keychain
-
+#### macOS – Keychain  
 ```bash
 # Store token
 security add-generic-password -a "$USER" -s "daily-dev-api" -w "dda_your_token"
@@ -35,10 +32,9 @@ security find-generic-password -a "$USER" -s "daily-dev-api" -w
 
 # Auto-load in ~/.zshrc or ~/.bashrc
 export DAILY_DEV_TOKEN=$(security find-generic-password -a "$USER" -s "daily-dev-api" -w 2>/dev/null)
-```
+```  
 
-#### Windows - Credential Manager
-
+#### Windows – 凭据管理器  
 ```powershell
 # Store token (run in PowerShell)
 $credential = New-Object System.Management.Automation.PSCredential("daily-dev-api", (ConvertTo-SecureString "dda_your_token" -AsPlainText -Force))
@@ -47,12 +43,10 @@ $credential | Export-Clixml "$env:USERPROFILE\.daily-dev-credential.xml"
 # Retrieve token - add to PowerShell profile ($PROFILE)
 $cred = Import-Clixml "$env:USERPROFILE\.daily-dev-credential.xml"
 $env:DAILY_DEV_TOKEN = $cred.GetNetworkCredential().Password
-```
+```  
+（或通过Windows控制面板中的“凭据管理器”进行设置）  
 
-Or use the Windows Credential Manager GUI: Control Panel → Credential Manager → Windows Credentials → Add a generic credential
-
-#### Linux - Secret Service (GNOME Keyring / KWallet)
-
+#### Linux – Secret Service（GNOME Keyring / KWallet）  
 ```bash
 # Requires libsecret-tools
 # Ubuntu/Debian: sudo apt install libsecret-tools
@@ -66,146 +60,145 @@ secret-tool lookup service daily-dev-api username "$USER"
 
 # Auto-load in ~/.bashrc or ~/.zshrc
 export DAILY_DEV_TOKEN=$(secret-tool lookup service daily-dev-api username "$USER" 2>/dev/null)
-```
+```  
 
-## Authentication
+## 认证  
 
 ```
 Authorization: Bearer dda_your_token_here
-```
+```  
 
-## Base URL
-
+## 基本URL  
 ```
 https://api.daily.dev/public/v1
-```
+```  
 
-## API Reference
+## API参考  
 
-Full OpenAPI spec: https://api.daily.dev/public/v1/docs/json
+完整的OpenAPI规范：[https://api.daily.dev/public/v1/docs/json]  
 
-To fetch details for a specific endpoint (e.g. response schema):
+**获取特定端点的详细信息（例如响应结构）：**  
 ```bash
 curl -s https://api.daily.dev/public/v1/docs/json | jq '.paths["/feeds/foryou"].get'
-```
+```  
 
-To fetch a component schema (replace `def-17` with schema name from $ref):
+**获取组件结构（将 `def-17` 替换为 `$ref` 中的组件名称）：**  
 ```bash
 curl -s https://api.daily.dev/public/v1/docs/json | jq '.components.schemas["def-17"]'
-```
+```  
 
-### Available Endpoints
+### 可用的端点  
 
-Fetch the full endpoint list dynamically:
+动态获取所有端点列表：  
 ```bash
 curl -s https://api.daily.dev/public/v1/docs/json | jq -r '.paths | keys[]'
-```
+```  
 
-## Agent Use Cases
+## 代理使用场景  
 
-**Why daily.dev for agents?** LLMs have knowledge cutoffs. daily.dev provides real-time, community-validated developer content with structured taxonomy across thousands of sources. Agents can use this to stay current, get diverse perspectives, and understand what the developer community actually cares about.
+**为什么选择daily.dev？**  
+大型语言模型存在知识时效性问题。daily.dev提供了实时更新的、经过社区验证的开发者内容，并通过结构化的分类系统覆盖了数千个来源。代理可以利用这些内容保持信息更新，获取多元化的视角，了解开发者社区真正关注的热点。  
 
-These examples show how AI agents can combine daily.dev APIs with external context to create powerful developer workflows.
+以下示例展示了AI代理如何将daily.dev的API与外部数据结合，构建高效的开发者工作流程：  
 
-### 🔍 GitHub Repo → Personalized Feed
-Scan a user's GitHub repositories to detect their actual tech stack from `package.json`, `go.mod`, `Cargo.toml`, `requirements.txt`, etc. Then:
-- Auto-follow matching tags via `/feeds/filters/tags/follow`
-- Create a custom feed tuned to their stack with `/feeds/custom/`
-- Surface trending articles about their specific dependencies
+### 🔍 GitHub仓库 → 个性化信息流  
+通过分析用户的GitHub仓库（`package.json`、`go.mod`、`Cargo.toml`、`requirements.txt`等文件），可以检测出他们的实际技术栈：  
+- 通过 `/feeds/filters/tags/follow` 自动关注相关标签  
+- 通过 `/feeds/custom/` 创建符合他们技术栈的定制信息流  
+- 展示与他们依赖项相关的热门文章  
 
-**Trigger:** "Set up daily.dev based on my GitHub projects"
+**触发条件：** “根据我的GitHub项目设置daily.dev信息流”  
 
-### 🛠️ GitHub → Auto-fill Stack Profile
-Analyze a user's GitHub activity to build their daily.dev tech stack profile automatically:
-- Scan repositories for languages, frameworks, and tools actually used in code
-- Search `/profile/stack/search` to find matching technologies on daily.dev
-- Populate their stack via `POST /profile/stack/` organized by section (languages, frameworks, tools)
-- Update `/profile/` bio based on their primary technologies and contributions
+### 🛠️ GitHub → 自动填充技术栈信息  
+分析用户的GitHub活动，自动生成其技术栈概况：  
+- 扫描仓库中实际使用的语言、框架和工具  
+- 在 `/profile/stack/search` 中查找daily.dev上的相关技术  
+- 通过 `POST /profile/stack/` 按类别（语言、框架、工具）整理技术栈信息  
+- 根据用户的主要技术和贡献更新个人简介  
 
-**Trigger:** "Build my daily.dev profile from my GitHub"
+**触发条件：** “根据我的GitHub信息生成每日技术栈报告”  
 
-### 🚀 New Project → Curated Onboarding
-When a user initializes a new project or clones a repo:
-- Analyze the tech choices from config files
-- Create a dedicated custom feed filtered to exactly those technologies
-- Build a "Getting Started" bookmark list with foundational articles
-- Block irrelevant tags to keep the feed focused on the project scope
+### 🚀 新项目 → 个性化入门指南  
+当用户启动新项目或克隆仓库时：  
+- 分析配置文件中的技术选择  
+- 创建针对这些技术的定制信息流  
+- 生成包含基础文章的“入门指南”书签列表  
+- 过滤无关标签，确保信息流专注于项目范围  
 
-**Trigger:** "Help me learn the stack for this project"
+**触发条件：** “帮助我了解这个项目的技术栈”  
 
-### 📊 Weekly Digest → Synthesized Briefing
-Compile a personalized weekly summary by:
-- Fetching `/feeds/foryou` and `/feeds/popular` filtered by user's followed tags
-- Cross-referencing with their GitHub activity to prioritize relevant topics
-- Summarizing key articles and trending discussions
-- Delivering as a structured briefing with links to full posts
+### 📊 周报摘要  
+通过以下方式生成个性化的每周总结：  
+- 获取用户关注标签过滤后的 `/feeds/foryou` 和 `/feeds/popular` 的内容  
+- 与用户的GitHub活动进行交叉比对，确定重点主题  
+- 概括关键文章和热门讨论  
+- 以结构化形式提供包含完整文章链接的周报  
 
-**Trigger:** Scheduled, or "Give me my weekly dev news"
+**触发条件：** 定时触发，或“提供我的每周技术新闻”  
 
-### 📚 Research Project Workspace
-When a user wants to deep-dive into a topic (e.g., "I want to learn Kubernetes"):
-- Create a custom feed via `/feeds/custom/` filtered to that topic
-- Set up a matching bookmark list via `POST /bookmarks/lists` to collect the best finds
-- As the user reads, save articles to the list with `POST /bookmarks/`
-- Track learning progress: compare bookmarked posts vs. new feed items
-- Adjust feed filters over time as understanding deepens (beginner → advanced content)
+### 📚 研究项目工作空间  
+当用户希望深入研究某个主题时（例如：“我想学习Kubernetes”）：  
+- 通过 `/feeds/custom/` 创建针对该主题的定制信息流  
+- 通过 `POST /bookmarks/lists` 创建书签列表  
+- 用户阅读时，通过 `POST /bookmarks/` 将文章添加到列表中  
+- 跟踪学习进度：比较书签文章与最新信息流内容  
+- 随着理解深入，动态调整信息流过滤条件（从入门内容到高级内容）  
 
-**Trigger:** "Start a research project on [topic]"
+**触发条件：** “开始研究 [主题]”  
 
-### 🧠 Agent Self-Improvement Feed
-Agents can overcome their knowledge cutoff by maintaining their own custom feed:
-- Create a custom feed via `/feeds/custom/` for technologies the agent frequently assists with
-- Periodically fetch `/feeds/custom/{feedId}` to ingest recent articles
-- Use `/posts/{id}` to read full summaries and key points
-- Agent can now provide advice with current information: "As of this week, the recommended approach is..."
-- Continuously adapt the feed filters based on what users are asking about
+### 🧠 代理自我提升  
+代理可以通过维护自己的定制信息流来克服知识局限：  
+- 为经常使用的工具创建定制信息流  
+- 定期通过 `/feeds/custom/{feedId}` 获取最新文章  
+- 使用 `/posts/{id}` 阅读文章摘要和关键点  
+- 代理可以基于最新信息提供建议（例如：“截至本周，推荐的方法是……”）  
+- 根据用户的需求持续调整信息流过滤条件  
 
-**Trigger:** Agent background process, or "What's new in [technology] since your training?"
+**触发条件：** 代理后台进程触发，或“[技术]领域最近有什么新进展？”  
 
-### 🔀 Multi-Source Synthesis
-Get balanced perspectives by aggregating content across publishers:
-- Search `/search/posts` for a topic to find coverage from multiple sources
-- Use `/search/sources` to identify authoritative publishers on the topic
-- Fetch posts from different sources via `/feeds/source/{source}`
-- Synthesize diverse viewpoints into a balanced summary with citations
-- Surface where sources agree vs. disagree on best practices
+### 🔀 多源内容整合  
+通过整合多个来源的内容，提供平衡的观点：  
+- 在 `/search/posts` 中搜索某个主题，查找多个来源的报道  
+- 使用 `/search/sources` 确定该领域的权威发布者  
+- 通过 `/feeds/source/{source}` 从不同来源获取文章  
+- 将多样化的观点整合成包含引用信息的综合摘要  
+- 展示不同来源对最佳实践的看法  
 
-**Trigger:** "What are the different perspectives on [topic]?" or "Compare approaches to [problem]"
+**触发条件：** “关于 [主题] 有哪些不同的观点？”或“比较 [问题] 的不同解决方法”  
 
-### 📈 Trending Radar
-Help users stay ahead by monitoring community signals:
-- Fetch `/feeds/popular` to detect what's gaining traction right now
-- Cross-reference with user's followed tags to surface relevant trends
-- Use `/feeds/discussed` to find topics sparking active debate
-- Alert users when technologies in their stack are trending (new releases, security issues, paradigm shifts)
-- Use `/search/tags` to explore adjacent trending topics
+### 📈 热门趋势追踪  
+帮助用户紧跟行业动态：  
+- 获取 `/feeds/popular` 中的热门内容  
+- 与用户关注标签进行交叉比对，展示相关趋势  
+- 使用 `/feeds/discussed` 查找引发热议的话题  
+- 当用户技术栈中的技术出现趋势变化（新发布、安全问题、范式转变）时提醒用户  
+- 使用 `/search/tags` 探索相关热点话题  
 
-**Trigger:** "What should I be paying attention to?" or "What's trending in [area]?"
+**触发条件：** “我应该关注哪些内容？”或“[领域] 的最新趋势是什么？”  
 
-## Rate Limits
+## 速率限制  
 
-* **60 requests per minute** per user
+* **每位用户每分钟60次请求**  
 
-Check response headers:
-- `X-RateLimit-Limit` - Maximum requests allowed per window
-- `X-RateLimit-Remaining` - Requests remaining in current window
-- `X-RateLimit-Reset` - Unix timestamp when the window resets
-- `Retry-After` - Seconds to wait (only when rate limited)
+请检查响应头中的以下信息：  
+- `X-RateLimit-Limit`：当前时间窗口内的最大请求次数  
+- `X-RateLimit-Remaining`：当前时间窗口内剩余的请求次数  
+- `X-RateLimit-Reset`：时间窗口重置的Unix时间戳  
+- `Retry-After`：在遇到速率限制时需要等待的秒数  
 
-## Errors
+## 错误代码及其含义  
 
-| Code | Meaning |
-|------|---------|
-| 401  | Invalid or missing token |
-| 403  | Plus subscription required |
-| 404  | Resource not found |
-| 429  | Rate limit exceeded |
+| 错误代码 | 含义 |  
+|------|---------|  
+| 401   | 令牌无效或缺失 |  
+| 403   | 需要Plus订阅 |  
+| 404   | 资源未找到 |  
+| 429   | 超过速率限制 |  
 
-**Error Response Format:**
+**错误响应格式：**  
 ```json
 {
   "error": "error_code",
   "message": "Human readable message"
 }
 ```
-

@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Background Removal
+# 背景去除
 
-Remove backgrounds from images via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具（CLI）从图像中去除背景。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -22,9 +22,9 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run infsh/birefnet --input '{"image_url": "https://your-photo.jpg"}'
 ```
 
-## How To
+## 使用方法
 
-Use Reve for image editing including background changes:
+使用 Reve 进行图像编辑（包括背景替换）：
 
 ```bash
 infsh app run falai/reve --input '{
@@ -33,7 +33,7 @@ infsh app run falai/reve --input '{
 }'
 ```
 
-Or change background directly:
+或者直接替换背景：
 
 ```bash
 infsh app run falai/reve --input '{
@@ -42,7 +42,7 @@ infsh app run falai/reve --input '{
 }'
 ```
 
-## Workflow: Generate and Edit
+## 工作流程：生成与编辑
 
 ```bash
 # 1. Generate an image
@@ -55,19 +55,19 @@ infsh app run falai/reve --input '{
 }'
 ```
 
-## Use Cases
+## 使用场景
 
-- **E-commerce**: Clean product photos
-- **Portraits**: Professional headshots
-- **Marketing**: Assets for design
-- **Social Media**: Profile pictures
-- **Design**: Elements for compositions
+- **电子商务**：清理产品图片
+- **肖像摄影**：专业头像
+- **市场营销**：设计素材
+- **社交媒体**：个人资料图片
+- **设计**：构图元素
 
-## Output
+## 输出结果
 
-Returns a PNG with transparent background.
+返回一个背景透明的 PNG 图像。
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -83,10 +83,10 @@ npx skills add inference-sh/agent-skills@flux-image
 npx skills add inference-sh/agent-skills@image-upscaling
 ```
 
-Browse all image apps: `infsh app list --category image`
+浏览所有图像处理工具：`infsh app list --category image`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image workflow guide
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
+- [运行应用程序](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用程序
+- [图像生成示例](https://inference.sh/docs/examples/image-generation) - 完整的图像处理工作流程指南
+- [应用程序概览](https://inference.sh/docs/apps/overview) - 了解应用程序生态系统

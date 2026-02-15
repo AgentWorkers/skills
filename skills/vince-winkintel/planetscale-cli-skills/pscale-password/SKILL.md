@@ -1,13 +1,13 @@
 ---
 name: pscale-password
-description: Create, list, and delete branch connection passwords. Use when creating connection strings for applications, managing database credentials, generating passwords for local development, or rotating credentials. Triggers on password, connection string, database credentials, create password.
+description: 创建、列出和删除分支连接密码。这些功能可用于为应用程序生成连接字符串、管理数据库凭据、为本地开发生成密码或定期更新凭据。相关操作会在密码、连接字符串或数据库凭据发生变化时被触发。
 ---
 
-# pscale password
+# pscale 密码管理
 
-Create, list, and delete branch passwords for database connections.
+用于创建、列出和删除数据库连接的分支密码。
 
-## Common Commands
+## 常用命令
 
 ```bash
 # Create password
@@ -20,9 +20,9 @@ pscale password list <database> <branch>
 pscale password delete <database> <branch> <password-id>
 ```
 
-## Workflows
+## 工作流程
 
-### Application Connection
+### 应用程序连接
 
 ```bash
 # Create password for production app
@@ -35,7 +35,7 @@ pscale password create my-database main production-app
 export DATABASE_URL="mysql://..."
 ```
 
-### Local Development
+### 本地开发
 
 ```bash
 # Create temporary password for local dev
@@ -45,11 +45,11 @@ pscale password create my-db main local-dev
 pscale password delete my-db main <password-id>
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Password not working
+### 密码无法使用
 
-**Solution:** Delete and recreate password (may have expired)
+**解决方案：** 删除并重新创建密码（密码可能已过期）
 
 ```bash
 pscale password list <database> <branch>
@@ -57,11 +57,11 @@ pscale password delete <database> <branch> <old-id>
 pscale password create <database> <branch> new-name
 ```
 
-## Related Skills
+## 相关技能
 
-- **pscale-service-token** - For CI/CD authentication (preferred over passwords)
-- **pscale-database** - Database management
+- **pscale-service-token** - 用于 CI/CD 认证（优于使用密码）
+- **pscale-database** - 数据库管理
 
-## References
+## 参考资料
 
-See `references/commands.md` for complete command reference.
+请参阅 `references/commands.md` 以获取完整的命令参考信息。

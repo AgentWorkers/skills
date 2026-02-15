@@ -1,44 +1,52 @@
 ---
 name: task-tracker
-description: "Personal task management with daily standups and weekly reviews. Use when: (1) User says 'daily standup' or asks what's on their plate, (2) User says 'weekly review' or asks about last week's progress, (3) User wants to add/update/complete tasks, (4) User asks about blockers or deadlines, (5) User shares meeting notes and wants tasks extracted, (6) User asks 'what's due this week' or similar."
+description: "个人任务管理，包括每日站会和每周回顾。适用场景如下：  
+(1) 用户提到“每日站会”或询问自己当前的任务安排；  
+(2) 用户提到“每周回顾”或询问上周的工作进展；  
+(3) 用户希望添加、更新或完成任务；  
+(4) 用户询问任务执行中遇到的障碍或截止日期；  
+(5) 用户分享会议记录并希望从中提取相关任务信息；  
+(6) 用户询问“本周需要完成的任务”或其他类似问题。"
 homepage: https://github.com/kesslerio/task-tracker-clawdbot-skill
 metadata: {"clawdbot":{"emoji":"📋","requires":{"files":["~/clawd/memory/work/TASKS.md"]},"install":[{"id":"init","kind":"script","script":"python3 scripts/init.py","label":"Initialize TASKS.md from template"}]}}
 ---
 
+```html
 <div align="center">
 
-![Task Tracker](https://img.shields.io/badge/Task_Tracker-Clawdbot_skill-blue?style=for-the-badge&logo=checklist)
+![任务跟踪器](https://img.shields.io/badge/Task_Tracker-ClawdbotSkill-blue?style=for-the-badge&logo=checklist)
 ![Python](https://img.shields.io/badge/Python-3.10+-yellow?style=flat-square&logo=python)
-![Status](https://img.shields.io/badge/Status-Production-green?style=flat-square)
-![Issues](https://img.shields.io/badge/Issues-0-black?style=flat-square)
-![Last Updated](https://img.shields.io/badge/Last_Updated-Jan_2026-orange?style=flat-square)
+![状态](https://img.shields.io/badge/Status-Production-green?style=flat-square)
+![问题](https://img.shields.io/badge/Issues-0-black?style=flat-square)
+![最后更新时间](https://img.shields.io/badge/Last_Updated-Jan_2026-orange?style=flat-square)
 
-**Personal task management with daily standups and weekly reviews**
+**个人任务管理工具，支持每日站会和每周回顾**
 
-[Homepage](https://github.com/kesslerio/task-tracker-clawdbot-skill) • [Trigger Patterns](#what-this-skill-does) • [Commands](#commands-reference)
+[主页](https://github.com/kesslerio/task-tracker-clawdbot-skill) • [功能介绍](#what-this-skill-does) • [命令参考](#commands-reference)
 
 </div>
+```
 
 ---
 
-# Task Tracker
+# 任务跟踪器
 
-A personal task management skill for daily standups and weekly reviews. Tracks work tasks, surfaces priorities, and manages blockers.
-
----
-
-## What This Skill Does
-
-1. **Lists tasks** - Shows what's on your plate, filtered by priority, status, or deadline
-2. **Daily standup** - Shows today's #1 priority, blockers, and what was completed
-3. **Weekly review** - Summarizes last week, archives done items, plans this week
-4. **Add tasks** - Create new tasks with priority and due date
-5. **Complete tasks** - Mark tasks as done
-6. **Extract from notes** - Pull action items from meeting notes
+这是一个用于个人任务管理的工具，支持每日站会和每周回顾。它可以跟踪工作任务、显示优先级以及管理任务中的阻碍因素。
 
 ---
 
-## File Structure
+## 功能介绍
+
+1. **列出任务**：按优先级、状态或截止日期筛选任务列表。
+2. **每日站会**：显示当天的首要任务、阻碍因素以及已完成的任务。
+3. **每周回顾**：总结上周的工作，归档已完成的任务，并规划本周的任务。
+4. **添加任务**：创建新的任务，设置优先级和截止日期。
+5. **完成任务**：将任务标记为已完成。
+6. **从会议记录中提取任务**：从会议笔记中提取需要处理的任务。
+
+---
+
+## 文件结构
 
 ```
 ~/clawd/memory/work/
@@ -47,7 +55,7 @@ A personal task management skill for daily standups and weekly reviews. Tracks w
 └── WORKFLOW.md           # Workflow documentation
 ```
 
-**TASKS.md format:**
+**TASKS.md 文件格式：**
 ```markdown
 # Work Tasks
 
@@ -66,28 +74,28 @@ A personal task management skill for daily standups and weekly reviews. Tracks w
 
 ---
 
-## Quick Start
+## 快速入门
 
-### View Your Tasks
+### 查看任务
 ```bash
 python3 ~/clawd/skills/task-tracker/scripts/tasks.py list
 ```
 
-### Daily Standup
+### 每日站会
 ```bash
 python3 ~/clawd/skills/task-tracker/scripts/standup.py
 ```
 
-### Weekly Review
+### 每周回顾
 ```bash
 python3 ~/clawd/skills/task-tracker/scripts/weekly_review.py
 ```
 
 ---
 
-## Commands Reference
+## 命令参考
 
-### List Tasks
+### 列出任务
 ```bash
 # All tasks
 tasks.py list
@@ -103,7 +111,7 @@ tasks.py list --due today
 tasks.py list --due this-week
 ```
 
-### Add Task
+### 添加任务
 ```bash
 # Simple
 tasks.py add "Draft project proposal"
@@ -115,18 +123,18 @@ tasks.py add "Draft project proposal" \
   --blocks "Sarah (client review)"
 ```
 
-### Complete Task
+### 完成任务
 ```bash
 tasks.py done "proposal"  # Fuzzy match - finds "Draft project proposal"
 ```
 
-### Show Blockers
+### 显示阻碍因素
 ```bash
 tasks.py blockers              # All blocking tasks
 tasks.py blockers --person sarah  # Only blocking Sarah
 ```
 
-### Extract from Meeting Notes
+### 从会议记录中提取任务
 ```bash
 extract_tasks.py --from-text "Meeting: discuss Q1 planning, Sarah to own budget review"
 # Outputs: tasks.py add "Discuss Q1 planning" --priority medium
@@ -135,17 +143,17 @@ extract_tasks.py --from-text "Meeting: discuss Q1 planning, Sarah to own budget 
 
 ---
 
-## Priority Levels
+## 优先级等级
 
-| Icon | Meaning | When to Use |
+| 图标 | 含义 | 使用场景 |
 |------|---------|-------------|
-| 🔴 **High** | Critical, blocking, deadline-driven | Revenue impact, blocking others |
-| 🟡 **Medium** | Important but not urgent | Reviews, feedback, planning |
-| 🟢 **Low** | Monitoring, delegated | Waiting on others, backlog |
+| 🔴 **高** | 关键任务，具有截止日期，会阻碍其他任务的进展 | 影响收入，可能阻碍团队进度 |
+| 🟡 **中** | 重要但不紧急 | 需要审核、提供反馈或进行规划 |
+| 🟢 **低** | 需要监控或委托他人处理 | 等待他人回复或属于待办事项 |
 
 ---
 
-## Status Workflow
+## 状态管理流程
 
 ```
 Todo → In Progress → Done
@@ -155,33 +163,33 @@ Todo → In Progress → Done
 
 ---
 
-## Automation (Cron)
+## 自动化设置（Cron 任务）
 
-| Job | When | What |
+| 任务 | 执行时间 | 执行内容 |
 |-----|------|------|
-| Daily Standup | Weekdays 8:30 AM | Posts to Telegram Journaling group |
-| Weekly Review | Mondays 9:00 AM | Posts summary, archives done items |
+| 每日站会 | 工作日 8:30 AM | 将站会内容发布到 Telegram 日志群组 |
+| 每周回顾 | 星期一 9:00 AM | 发布每周回顾总结，并归档已完成的任务 |
 
 ---
 
-## Natural Language Triggers
+## 自然语言指令
 
-| You Say | Skill Does |
+| 指令 | 功能 |
 |---------|-----------|
-| "daily standup" | Runs standup.py, posts to Journaling |
-| "weekly review" | Runs weekly_review.py, posts summary |
-| "what's on my plate?" | Lists all tasks |
-| "what's blocking Lilla?" | Shows tasks blocking Lilla |
-| "mark IMCAS done" | Completes matching task |
-| "what's due this week?" | Lists tasks due this week |
-| "add task: X" | Adds task X to TASKS.md |
-| "extract tasks from: [notes]" | Parses notes, outputs add commands |
+| "daily standup" | 运行 standup.py，将站会内容发布到日志群组 |
+| "weekly review" | 运行 weekly_review.py，发布每周回顾总结 |
+| "what's on my plate?" | 列出所有任务 |
+| "what's blocking Lilla?" | 显示阻碍 Lilla 的任务 |
+| "mark IMCAS done" | 将指定的任务标记为已完成 |
+| "what's due this week?" | 列出本周到期的任务 |
+| "add task: X" | 向 TASKS.md 文件中添加任务 X |
+| "extract tasks from: [notes]" | 从会议笔记中提取任务信息 |
 
 ---
 
-## Examples
+## 使用示例
 
-**Morning check-in:**
+**晨间检查：**
 ```
 $ python3 scripts/standup.py
 
@@ -203,14 +211,14 @@ $ python3 scripts/standup.py
   • Update team documentation
 ```
 
-**Adding a task:**
+**添加任务：**
 ```
 $ python3 scripts/tasks.py add "Draft blog post" --priority high --due ASAP
 
 ✅ Added task: Draft blog post
 ```
 
-**Extracting from meeting notes:**
+**从会议记录中提取任务：**
 ```
 $ python3 scripts/extract_tasks.py --from-text "Meeting: Sarah needs budget review, create project timeline"
 
@@ -223,43 +231,38 @@ tasks.py add "Create project timeline" --priority medium
 
 ---
 
-## Integration Points
+## 集成方式
 
-- **Telegram Journaling group:** Standup/review summaries posted automatically
-- **Obsidian:** Daily standups logged to `01-Daily/YYYY-MM-DD.md`
-- **MEMORY.md:** Patterns and recurring blockers promoted during weekly reviews
-- **Cron:** Automated standups and reviews
-
----
-
-## Troubleshooting
-
-**"Tasks file not found"**
-```bash
-# Create from template
-python3 scripts/init.py
-```
-
-**Tasks not showing up**
-- Check TASKS.md exists at `~/clawd/memory/work/TASKS.md`
-- Verify task format (checkboxes `- [ ]`, headers `## 🔴`)
-- Run `tasks.py list` to debug
-
-**Date parsing issues**
-- Due dates support: `ASAP`, `YYYY-MM-DD`, `Before Mar 15`, `Before product launch`
-- `check_due_date()` handles common formats
+- **Telegram 日志群组**：自动发布站会和回顾总结。
+- **Obsidian**：将每日站会内容记录到 `01-Daily/YYYY-MM-DD.md` 文件中。
+- **MEMORY.md**：在每周回顾中展示常见的阻碍因素和重复出现的任务。
+- **Cron 任务**：自动执行每日站会和每周回顾。
 
 ---
 
-## Files
+## 常见问题及解决方法
 
-| File | Purpose |
+**“任务文件未找到”**
+- 确保 `TASKS.md` 文件存在于 `~/clawd/memory/work/TASKS.md` 路径下。
+- 检查文件格式是否正确（使用 `- [ ]` 标记复选框，文件开头是否有 `## 🔴` 标签）。
+- 运行 `tasks.py list` 命令进行调试。
+
+**日期解析问题**
+- 支持的日期格式包括：`ASAP`、`YYYY-MM-DD`、`Before Mar 15`、`Before product launch`。
+- `check_due_date()` 函数可以处理这些日期格式。
+
+---
+
+## 相关文件
+
+| 文件 | 用途 |
 |------|---------|
-| `scripts/tasks.py` | Main CLI - list, add, done, blockers, archive |
-| `scripts/standup.py` | Daily standup generator |
-| `scripts/weekly_review.py` | Weekly review generator |
-| `scripts/extract_tasks.py` | Extract tasks from meeting notes |
-| `scripts/utils.py` | Shared utilities (DRY) |
-| `scripts/init.py` | Initialize new TASKS.md from template |
-| `references/task-format.md` | Task format specification |
-| `assets/templates/TASKS.md` | Template for new task files |
+| `scripts/tasks.py` | 主要命令行工具：用于列出任务、添加任务、标记任务完成状态或归档任务 |
+| `scripts/standup.py` | 生成每日站会内容的脚本 |
+| `scripts/weekly_review.py` | 生成每周回顾内容的脚本 |
+| `scripts/extract_tasks.py` | 从会议记录中提取任务信息的脚本 |
+| `scripts/utils.py` | 公共辅助工具 |
+| `scripts/init.py` | 从模板创建新的 TASKS.md 文件 |
+| `references/task-format.md` | 任务格式规范文档 |
+| `assets/templates/TASKS.md` | 新任务文件的模板格式 |
+```

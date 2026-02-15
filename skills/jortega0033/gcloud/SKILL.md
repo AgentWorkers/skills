@@ -1,15 +1,15 @@
 ---
 name: gcloud
-description: Manage Google Cloud Platform resources via gcloud CLI. Use for Compute Engine VMs, Cloud Run services, Firebase Hosting, Cloud Storage, and project management. Covers deployment, monitoring, logs, and SSH access.
+description: 通过 `gcloud` CLI 管理 Google Cloud Platform 资源。适用于 Compute Engine 虚拟机、Cloud Run 服务、Firebase Hosting、Cloud Storage 以及项目管理。涵盖部署、监控、日志记录和 SSH 访问等功能。
 ---
 
-# Google Cloud Platform Skill
+# Google Cloud Platform 技能
 
-Manage GCP resources using `gcloud`, `gsutil`, and `firebase` CLIs.
+使用 `gcloud`、`gsutil` 和 `firebase` 命令行工具（CLI）来管理 GCP 资源。
 
-## Installation
+## 安装
 
-### gcloud CLI (one-time setup)
+### gcloud CLI（一次性设置）
 
 ```bash
 # Download and extract
@@ -33,9 +33,9 @@ npm install -g firebase-tools
 firebase login
 ```
 
-## Quick Reference
+## 快速参考
 
-### Authentication & Config
+### 认证与配置
 
 ```bash
 # List authenticated accounts
@@ -56,9 +56,9 @@ gcloud config list
 
 ---
 
-## Compute Engine (VMs)
+## 计算引擎（VMs）
 
-### List Instances
+### 列出实例
 
 ```bash
 # All instances across projects
@@ -69,7 +69,7 @@ gcloud compute instances list --project PROJECT_ID \
   --format="table(name,zone,status,networkInterfaces[0].accessConfigs[0].natIP)"
 ```
 
-### Start/Stop/Restart
+### 启动/停止/重启
 
 ```bash
 gcloud compute instances start INSTANCE_NAME --zone ZONE --project PROJECT_ID
@@ -77,7 +77,7 @@ gcloud compute instances stop INSTANCE_NAME --zone ZONE --project PROJECT_ID
 gcloud compute instances reset INSTANCE_NAME --zone ZONE --project PROJECT_ID
 ```
 
-### SSH Access
+### SSH 访问
 
 ```bash
 # Interactive SSH
@@ -90,7 +90,7 @@ gcloud compute ssh INSTANCE_NAME --zone ZONE --project PROJECT_ID --command "upt
 gcloud compute ssh INSTANCE_NAME --zone ZONE --project PROJECT_ID -- -L 8080:localhost:8080
 ```
 
-### View Logs
+### 查看日志
 
 ```bash
 # Serial port output (boot logs)
@@ -104,7 +104,7 @@ gcloud compute ssh INSTANCE_NAME --zone ZONE --project PROJECT_ID --command "jou
 
 ## Cloud Run
 
-### List Services
+### 列出服务
 
 ```bash
 # List all services in a region
@@ -114,7 +114,7 @@ gcloud run services list --region REGION --project PROJECT_ID
 gcloud run services list --project PROJECT_ID
 ```
 
-### Deploy
+### 部署
 
 ```bash
 # Deploy from source (builds container automatically)
@@ -131,13 +131,13 @@ gcloud run deploy SERVICE_NAME \
   --project PROJECT_ID
 ```
 
-### View Service Details
+### 查看服务详情
 
 ```bash
 gcloud run services describe SERVICE_NAME --region REGION --project PROJECT_ID
 ```
 
-### View Logs
+### 查看日志
 
 ```bash
 # Stream logs
@@ -148,7 +148,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
   --project PROJECT_ID --limit 20 --format="table(timestamp,textPayload)"
 ```
 
-### Update Environment Variables
+### 更新环境变量
 
 ```bash
 gcloud run services update SERVICE_NAME \
@@ -157,7 +157,7 @@ gcloud run services update SERVICE_NAME \
   --set-env-vars "KEY1=value1,KEY2=value2"
 ```
 
-### Traffic Management
+### 流量管理
 
 ```bash
 # Route 100% traffic to latest
@@ -171,15 +171,15 @@ gcloud run services update-traffic SERVICE_NAME \
 
 ---
 
-## Firebase Hosting
+## Firebase 托管
 
-### List Projects
+### 列出项目
 
 ```bash
 firebase projects:list
 ```
 
-### Deploy
+### 部署
 
 ```bash
 # Deploy everything (hosting + functions + rules)
@@ -192,7 +192,7 @@ firebase deploy --only hosting --project PROJECT_ID
 firebase deploy --only hosting:SITE_NAME --project PROJECT_ID
 ```
 
-### Preview Channels
+### 预览频道
 
 ```bash
 # Create preview channel
@@ -205,7 +205,7 @@ firebase hosting:channel:list --project PROJECT_ID
 firebase hosting:channel:delete CHANNEL_NAME --project PROJECT_ID
 ```
 
-### Rollback
+### 回滚
 
 ```bash
 # List recent deploys
@@ -239,9 +239,9 @@ gsutil iam ch allUsers:objectViewer gs://BUCKET_NAME
 
 ---
 
-## Logs & Monitoring
+## 日志与监控
 
-### Cloud Logging
+### Cloud 日志记录
 
 ```bash
 # Read recent logs
@@ -255,7 +255,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
   --project PROJECT_ID --limit 20
 ```
 
-### Monitoring Metrics
+### 监控指标
 
 ```bash
 # List available metrics
@@ -267,9 +267,9 @@ gcloud monitoring metrics-scopes describe projects/PROJECT_ID
 
 ---
 
-## Billing & Cost Monitoring
+## 计费与成本监控
 
-### View Current Costs
+### 查看当前费用
 
 ```bash
 # List billing accounts
@@ -283,7 +283,7 @@ gcloud billing projects describe PROJECT_ID
 gcloud services list --enabled --project PROJECT_ID
 ```
 
-### Set Budget Alerts
+### 设置预算警报
 
 ```bash
 # Create budget (via gcloud beta)
@@ -302,7 +302,7 @@ gcloud billing budgets list --billing-account=BILLING_ACCOUNT_ID
 gcloud billing budgets describe BUDGET_ID --billing-account=BILLING_ACCOUNT_ID
 ```
 
-### Cost-Saving Tips
+### 节省成本的技巧
 
 ```bash
 # Stop unused VMs (saves $$$)
@@ -321,7 +321,7 @@ gcloud recommender recommendations list \
 
 ## Secret Manager
 
-### Create & Manage Secrets
+### 创建与管理密钥
 
 ```bash
 # Enable API
@@ -336,7 +336,7 @@ echo -n "my-secret-value" | gcloud secrets create SECRET_NAME \
 gcloud secrets create SECRET_NAME --data-file=./secret.txt --project PROJECT_ID
 ```
 
-### Access Secrets
+### 访问密钥
 
 ```bash
 # Get latest version
@@ -352,7 +352,7 @@ gcloud secrets list --project PROJECT_ID
 gcloud secrets versions list SECRET_NAME --project PROJECT_ID
 ```
 
-### Update Secrets
+### 更新密钥
 
 ```bash
 # Add new version
@@ -365,7 +365,7 @@ gcloud secrets versions disable VERSION_ID --secret=SECRET_NAME --project PROJEC
 gcloud secrets versions destroy VERSION_ID --secret=SECRET_NAME --project PROJECT_ID
 ```
 
-### Use in Cloud Run
+### 在 Cloud Run 中使用密钥
 
 ```bash
 # Deploy with secret as env var
@@ -385,9 +385,9 @@ gcloud run deploy SERVICE_NAME \
 
 ---
 
-## Artifact Registry (Container Images)
+##Artifact Registry（容器镜像）
 
-### Setup
+### 设置
 
 ```bash
 # Enable API
@@ -401,14 +401,14 @@ gcloud artifacts repositories create REPO_NAME \
   --description="Docker images"
 ```
 
-### Configure Docker Auth
+### 配置 Docker 认证
 
 ```bash
 # Configure Docker to use gcloud credentials
 gcloud auth configure-docker REGION-docker.pkg.dev
 ```
 
-### Build & Push Images
+### 构建并推送镜像
 
 ```bash
 # Build with Cloud Build (no local Docker needed)
@@ -419,7 +419,7 @@ docker build -t REGION-docker.pkg.dev/PROJECT_ID/REPO_NAME/IMAGE:TAG .
 docker push REGION-docker.pkg.dev/PROJECT_ID/REPO_NAME/IMAGE:TAG
 ```
 
-### List & Manage Images
+### 列出和管理镜像
 
 ```bash
 # List images
@@ -434,9 +434,9 @@ gcloud artifacts docker images delete REGION-docker.pkg.dev/PROJECT_ID/REPO_NAME
 
 ---
 
-## Cloud SQL (Databases)
+## Cloud SQL（数据库）
 
-### Create Instance
+### 创建实例
 
 ```bash
 # Enable API
@@ -457,7 +457,7 @@ gcloud sql instances create INSTANCE_NAME \
   --project PROJECT_ID
 ```
 
-### Manage Databases & Users
+### 管理数据库和用户
 
 ```bash
 # Create database
@@ -476,7 +476,7 @@ gcloud sql users create USERNAME \
 gcloud sql users list --instance=INSTANCE_NAME --project PROJECT_ID
 ```
 
-### Connect
+### 连接
 
 ```bash
 # Connect via Cloud SQL Proxy (recommended)
@@ -490,7 +490,7 @@ gcloud sql instances describe INSTANCE_NAME --project PROJECT_ID \
   --format="value(connectionName)"
 ```
 
-### Backups
+### 备份
 
 ```bash
 # Create on-demand backup
@@ -503,7 +503,7 @@ gcloud sql backups list --instance=INSTANCE_NAME --project PROJECT_ID
 gcloud sql backups restore BACKUP_ID --restore-instance=INSTANCE_NAME --project PROJECT_ID
 ```
 
-### Connect from Cloud Run
+### 从 Cloud Run 连接
 
 ```bash
 # Deploy with Cloud SQL connection
@@ -517,29 +517,29 @@ gcloud run deploy SERVICE_NAME \
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "API not enabled"
+### “API 未启用”
 ```bash
 # Enable an API
 gcloud services enable run.googleapis.com --project PROJECT_ID
 gcloud services enable compute.googleapis.com --project PROJECT_ID
 ```
 
-### "Permission denied"
+### “权限被拒绝”
 ```bash
 # Check IAM roles
 gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members" \
   --format="table(bindings.role)" --filter="bindings.members:EMAIL"
 ```
 
-### "Not authenticated"
+### “未认证”
 ```bash
 gcloud auth login
 gcloud auth application-default login  # For ADC (used by libraries)
 ```
 
-### Refresh credentials
+### 刷新凭据
 ```bash
 gcloud auth login --force
 ```

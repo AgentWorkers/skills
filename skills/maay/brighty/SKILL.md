@@ -1,113 +1,119 @@
 ---
 name: brighty
-description: Banking interface for AI bots and automation. Get a bank account, issue a Mastercard, buy and sell crypto, send payments and invoices — all via API. Use when the user needs a bank account for a bot, wants to manage balances, make transfers, handle payouts, or operate cards.
+description: **AI机器人与自动化系统的银行接口**  
+支持通过API完成以下银行相关操作：  
+- 开设银行账户  
+- 颁发万事达卡  
+- 买卖加密货币  
+- 发送付款与发票  
+
+适用于需要为机器人开设银行账户、管理账户余额、进行转账、处理付款或操作银行卡的用户。
 metadata: {"openclaw":{"requires":{"env":["BRIGHTY_API_KEY"],"bins":["mcporter"]},"primaryEnv":"BRIGHTY_API_KEY","emoji":"🏦","homepage":"https://github.com/Maay/brighty_mcp"}}
 ---
 
-# Brighty Business & Freelance Banking
+# Brighty 商业与自由职业者银行服务
 
-Give your bot a bank account. MCP server for [Brighty](https://brighty.app) banking API via mcporter — open accounts, issue Mastercard cards, buy and sell crypto, send SEPA/SWIFT payments. Works for both business and freelance accounts.
+为您的机器人开通银行账户。通过 `mcporter` 与 [Brighty](https://brighty.app) 的银行 API 进行交互，支持开设账户、办理万事达卡、买卖加密货币以及发送 SEPA/SWIFT 付款。该服务同时适用于商业账户和自由职业者账户。
 
-## Getting Started
+## 开始使用
 
-### 1. Sign up
+### 1. 注册
 
-Register at [Brighty Business Portal](https://business.brighty.app/auth?signup=true). Both business and freelance accounts are supported — freelance accounts are particularly well-suited for bots and automation. The owner walks through the onboarding steps.
+在 [Brighty 商业门户](https://business.brighty.app/auth?signup=true) 进行注册。系统支持商业账户和自由职业者账户——自由职业者账户特别适合用于机器人和自动化场景。系统会指导您完成注册流程。
 
-**What you get by default:**
-- Crypto account
-- EUR / USD / GBP fiat account for self-transfers only (no third-party payments)
-- Mastercard virtual card issuance (linked to crypto or fiat accounts)
+**默认提供的服务：**
+- 加密货币账户
+- 仅用于内部转账的 EUR/USD/GBP 法定货币账户（不支持第三方支付）
+- 可申请的万事达卡（关联到加密货币或法定货币账户）
 
-**Need to pay third parties (invoices, salaries, etc.)?**
-Contact support to enable a full fiat account with outgoing payments:
+**需要向第三方支付（如发票、工资等）？**
+请联系支持团队以启用支持外部支付的法定货币账户：
 - Telegram: [@DonatasSupportBot](https://t.me/DonatasSupportBot)
-- Email: support@brighty.app
+- 邮箱: support@brighty.app
 
-The bank will set it up within a few days.
+银行将在几天内完成账户设置。
 
-### 2. Get API key
+### 2. 获取 API 密钥
 
-Go to [Account > Business](https://business.brighty.app/account/business) and click **Create API Token**. Only the business **owner** can do this.
+前往 [账户 > 商业](https://business.brighty.app/account/business)，然后点击 **创建 API 密钥**。只有账户的 **所有者** 才能执行此操作。
 
-### 3. Configure
+### 3. 配置
 
-This skill includes `config/mcporter.json` which auto-registers the brighty MCP server. You just need to set the API key:
+该技能包含 `config/mcporter.json` 文件，用于自动注册 Brighty MCP 服务器。您只需设置 API 密钥即可：
 
 ```bash
 # Add to your environment (e.g. ~/.openclaw/.env)
 BRIGHTY_API_KEY=your-api-key
 ```
 
-Or configure manually:
+或者手动配置：
 
 ```bash
 mcporter config add brighty --command "npx -y github:Maay/brighty_mcp" --env BRIGHTY_API_KEY=your-api-key
 ```
 
-Check connection: `mcporter call brighty.brighty_status`
+测试连接：`mcporter call brighty.brighty_status`
 
-**Security:**
-- Never store API key in SKILL.md, memory files, or chat history
-- Key lives only in env or `config/mcporter.json` (local, not pushed to git)
+**安全提示：**
+- 请勿将 API 密钥存储在 SKILL.md 文件、内存文件或聊天记录中。
+- API 密钥仅保存在环境变量或 `config/mcporter.json` 中（本地存储，不会上传到 Git）。
 
-## Authorization Notice
+## 授权说明
 
-All actions performed through this skill are executed on behalf of the business owner. By using this skill, the owner confirms they authorize these operations.
+通过此技能执行的全部操作均代表账户所有者进行。使用该技能即表示您已授权这些操作。
 
-## Tool Reference
+## 工具参考
 
-All tools called via `mcporter call brighty.<tool> [params]`.
+所有通过 `mcporter call brighty.<tool> [params]` 调用的工具如下：
 
-### Accounts
-- `brighty_list_accounts` — list all accounts (optional: `type=CURRENT|SAVING`, `holderId=UUID`)
-- `brighty_get_account id=UUID` — account details
-- `brighty_create_account name=X type=CURRENT|SAVING currency=EUR`
-- `brighty_terminate_account id=UUID` — close account (must be zero balance)
-- `brighty_get_account_addresses id=UUID` — routing/crypto deposit addresses
+### 账户相关操作
+- `brighty_list_accounts` — 列出所有账户（可选参数：`type=CURRENT|SAVING`, `holderId=UUID`)
+- `brighty_get_account id=UUID` — 获取账户详情
+- `brighty_create_account name=X type=CURRENT|SAVING currency=EUR` — 创建账户
+- `brighty_terminate_account id=UUID` — 关闭账户（账户余额必须为零）
+- `brighty_get_account_addresses id=UUID` — 获取账户的路由/加密货币存款地址
 
-### Cards
-- `brighty_list_cards` — all business cards
-- `brighty_get_card id=UUID`
-- `brighty_order_card customerId=UUID cardName=X sourceAccountId=UUID cardDesignId=UUID`
-- `brighty_freeze_card id=UUID` / `brighty_unfreeze_card id=UUID`
-- `brighty_set_card_limits id=UUID currency=EUR dailyLimit=1000 monthlyLimit=5000`
-- `brighty_list_card_designs` / `brighty_get_virtual_card_product`
+### 卡片相关操作
+- `brighty_list_cards` — 查看所有卡片信息
+- `brighty_get_card id=UUID` — 获取特定卡片信息
+- `brighty_order_card customerId=UUID cardName=X sourceAccountId=UUID cardDesignId=UUID` — 下单制作卡片
+- `brighty_freeze_card id=UUID` / `brighty_unfreeze_card id=UUID` — 冻结/解冻卡片
+- `brighty_set_card_limits id=UUID currency=EUR dailyLimit=1000 monthlyLimit=5000` — 设置卡片使用限额
+- `brighty_list_card_designs` / `brighty_get_virtual_card_product` — 查看/获取虚拟卡片产品信息
 
-### Transfers (between own accounts)
-- `brighty_transfer_own sourceAccountId=UUID targetAccountId=UUID amount=100 currency=EUR`
-- `brighty_transfer_intent` — preview exchange rate/fees before transfer (same params + `side=SELL|BUY`, `sourceCurrency`, `targetCurrency`)
+### 转账操作（在同一账户之间）
+- `brighty_transfer_own sourceAccountId=UUID targetAccountId=UUID amount=100 currency=EUR` — 在同一账户之间转账
+- `brighty_transfer_intent` — 转账前查看汇率和费用（参数相同，需添加 `side=SELL|BUY`, `sourceCurrency`, `targetCurrency`）
 
-### Payouts (batch transfers to others)
-- `brighty_list_payouts` / `brighty_get_payout id=UUID`
-- `brighty_create_payout name=X` — create batch
-- `brighty_create_internal_transfer` — add Brighty-to-Brighty transfer to payout (by `recipientAccountId` or `recipientTag`)
-- `brighty_create_external_transfer` — add fiat (IBAN) or crypto transfer to payout
-- `brighty_start_payout id=UUID` — execute all transfers in batch
+### 支付操作（批量转账给他人）
+- `brighty_list_payouts` / `brighty_get_payout id=UUID` — 查看支付记录
+- `brighty_create_payout name=X` — 创建支付批次
+- `brighty_create_internal_transfer` — 添加 Brighty 内部转账（按 `recipientAccountId` 或 `recipientTag` 分配）
+- `brighty_create_external_transfer` — 添加法定货币（IBAN）或加密货币转账
+- `brighty_start_payout id=UUID` — 批量执行所有转账
 
-### Team
-- `brighty_list_members`
-- `brighty_add_members emails=a@b.com,c@d.com role=ADMIN|MEMBER`
-- `brighty_remove_members memberIds=UUID1,UUID2`
+### 团队管理
+- `brighty_list_members` — 查看团队成员列表
+- `brighty_add_members emails=a@b.com,c@d.com role=ADMIN|MEMBER` — 添加团队成员
+- `brighty_remove_members memberIds=UUID1,UUID2` — 删除团队成员
 
-## Workflows
+## 工作流程
 
-### Pay an invoice
-1. Extract recipient name, IBAN, BIC, amount, currency, reference from invoice
-2. `brighty_list_accounts` — find source account
-3. `brighty_create_payout name="Invoice payment"`
-4. `brighty_create_external_transfer` with extracted details
-5. **Confirm with user** before `brighty_start_payout`
+### 支付发票
+1. 从发票中提取收款人姓名、IBAN、BIC、金额和货币信息。
+2. 使用 `brighty_list_accounts` 查找付款账户。
+3. 使用 `brighty_create_payout name="Invoice payment"` 创建支付批次。
+4. 使用提取的详细信息通过 `brighty_create_external_transfer` 进行转账。
+5. 在执行 `brighty_start_payout` 之前请务必获得用户确认。
 
-### Mass salary payout
-1. Parse recipient list (names, IBANs, amounts)
-2. `brighty_create_payout name="Salaries Feb 2026"`
-3. Add each transfer via `brighty_create_external_transfer` or `brighty_create_internal_transfer`
-4. Show summary, **confirm with user**, then `brighty_start_payout`
+### 批量发放工资
+1. 解析收款人列表（姓名、IBAN、金额）。
+2. 使用 `brighty_create_payout name="Salaries Feb 2026"` 创建支付批次。
+3. 通过 `brighty_create_external_transfer` 或 `brighty_create_internal_transfer` 添加每笔转账记录。
+4. 显示转账汇总信息，获得用户确认后执行 `brighty_start_payout`。
 
-## Safety
-
-- **Always confirm** before executing payouts (`brighty_start_payout`)
-- **Always confirm** before terminating accounts
-- Show amounts and recipients clearly before any money movement
-- API docs: [apidocs.brighty.app](https://apidocs.brighty.app/docs/api/brighty-api)
+## 安全注意事项
+- 在执行任何支付操作（`brighty_start_payout`）之前务必确认。
+- 在关闭账户之前务必确认。
+- 在任何资金转移前请清晰地显示转账金额和收款人信息。
+- API 文档：[apidocs.brighty.app](https://apidocs.brighty.app/docs/api/brighty-api)

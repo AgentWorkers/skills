@@ -20,13 +20,13 @@ metadata:
   }
 ---
 
-# Zhipu Search
+# Zhipu 搜索
 
-Web search via Zhipu AI API, supporting multiple search engines and flexible parameter configuration.
+通过 Zhipu AI API 进行网页搜索，支持多种搜索引擎和灵活的参数配置。
 
-## Quick Start
+## 快速入门
 
-### Basic Search
+### 基本搜索
 
 ```python
 # Use default parameters
@@ -34,7 +34,7 @@ search_query = "OpenClaw latest version"
 search_engine = "search_std"
 ```
 
-### Advanced Search (Full Parameters)
+### 高级搜索（完整参数）
 
 ```python
 search_query = "AI development trends"      # Required, max 70 chars
@@ -48,9 +48,9 @@ request_id = "unique-request-id"            # Optional, unique request identifie
 user_id = "user-123456"                     # Optional, end user ID (6-128 chars)
 ```
 
-## Usage Methods
+## 使用方法
 
-### Method 1: Direct Script Call (Recommended)
+### 方法 1：直接调用脚本（推荐）
 
 ```bash
 python scripts/zhipu_search.py \
@@ -59,34 +59,34 @@ python scripts/zhipu_search.py \
   --count 10
 ```
 
-### Method 2: Use OpenClaw Tool
+### 方法 2：使用 OpenClaw 工具
 
-System will automatically select appropriate parameters based on needs.
+系统会根据需求自动选择合适的参数。
 
-## API Parameter Reference
+## API 参数参考
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| search_query | string | ✅ | - | Search content, recommended ≤70 chars |
-| search_engine | enum | ✅ | - | search_std/search_pro/search_pro_sogou/search_pro_quark |
-| search_intent | boolean | - | false | Enable search intent recognition |
-| count | integer | - | 10 | Result count, 1-50 |
-| search_domain_filter | string | - | - | Whitelist domain filter |
-| search_recency_filter | enum | - | noLimit | oneDay/oneWeek/oneMonth/oneYear/noLimit |
-| content_size | enum | - | - | medium/high, control content length |
-| request_id | string | - | - | Unique request identifier |
-| user_id | string | - | - | End user ID (6-128 chars) |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+|---------|--------|---------|--------------|-------------------------|
+| search_query | string | ✅ | - | 搜索内容，建议长度不超过 70 个字符 |
+| search_engine | enum | ✅ | - | 可选值：search_std、search_pro、search_pro_sogou、search_pro_quark |
+| search(intent | boolean | - | false | 是否启用搜索意图识别 |
+| count | integer | - | 10 | 结果数量（1-50 条） |
+| search_domain_filter | string | - | - | 白名单域名过滤 |
+| search_recency_filter | enum | - | 可选值：oneDay/oneWeek/oneMonth/oneYear/noLimit | 结果更新频率 |
+| content_size | enum | - | - | 可选值：medium/high | 控制内容长度 |
+| request_id | string | - | - | 唯一请求标识符 |
+| user_id | string | - | - | 用户 ID（6-128 个字符） |
 
-## Search Engine Selection Guide
+## 搜索引擎选择指南
 
-| Engine | Use Case |
-|--------|----------|
-| search_std | Basic search, regular Q&A |
-| search_pro | Advanced search, need more accurate results |
-| search_pro_sogou | Sogou search, China domestic content |
-| search_pro_quark | Quark search, specific scenarios |
+| 工具 | 适用场景 |
+|--------|-------------------|
+| search_std | 基本搜索，常规问答 |
+| search_pro | 高级搜索，需要更精确的结果 |
+| search_pro_sogou | 搜狗搜索，适用于中国国内内容 |
+| search_pro_quark | Quark 搜索，适用于特定场景 |
 
-## Response Structure
+## 响应结构
 
 ```json
 {
@@ -114,15 +114,15 @@ System will automatically select appropriate parameters based on needs.
 }
 ```
 
-## Environment Requirements
+## 环境要求
 
-- Environment variable `ZHIPU_API_KEY` must be configured
-- Python 3.7+
-- requests library
+- 必须配置环境变量 `ZHIPU_API_KEY` |
+- 需要 Python 3.7 或更高版本 |
+- 需要 `requests` 库
 
-## Notes
+## 注意事项
 
-1. search_query should be kept within 70 characters
-2. search_pro_sogou count must be 10/20/30/40/50
-3. user_id length must be between 6-128 characters if provided
-4. Search intent recognition increases response time but improves result relevance
+1. `search_query` 的长度应控制在 70 个字符以内 |
+2. `search_pro_sogou` 的结果数量默认为 10 条；可选值：20、30、40、50 条 |
+3. 如果提供了 `user_id`，其长度必须在 6-128 个字符之间 |
+4. 启用搜索意图识别会增加响应时间，但能提高结果的相关性

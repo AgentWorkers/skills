@@ -1,62 +1,78 @@
 ---
-description: Advanced desktop automation with mouse, keyboard, and screen control
+description: **使用鼠标、键盘和屏幕控制实现的高级桌面自动化**
+
+本文档介绍了如何利用鼠标、键盘和屏幕控制功能来实现更高级的桌面自动化任务。通过这些工具，您可以自动化执行一系列重复性操作，提高工作效率。以下是一些常见的自动化应用场景：
+
+1. **文件管理**：自动复制、移动、删除文件；批量重命名文件；整理文件夹结构等。
+2. **网页浏览**：自动打开网页；自动填写表单；自动下载网页内容等。
+3. **应用程序操作**：自动启动或关闭应用程序；自动执行应用程序中的特定命令等。
+4. **系统监控**：自动检查系统资源使用情况；自动更新软件等。
+5. **游戏辅助**：自动控制游戏角色；自动执行游戏中的特定操作等。
+
+要实现这些自动化功能，您需要掌握以下技术：
+
+1. **脚本编写**：使用Python、JavaScript等编程语言编写自动化脚本。这些脚本可以模拟用户的操作行为，从而实现自动化任务。
+2. **自动化工具**：使用现有的自动化工具，如AutoHotKey、PowerShell等。这些工具提供了丰富的功能，可以简化脚本编写过程。
+3. **图形用户界面（GUI）编程**：如果您需要与特定的GUI应用程序进行交互，您可能需要学习Python的PyGUI、PyQt等库进行GUI编程。
+
+通过学习这些技术和工具，您可以开发出更加高效、便捷的自动化脚本，从而提高您的工作效率。
 ---
 
-# Desktop Control Skill
+# 桌面控制技能
 
-**The most advanced desktop automation skill for OpenClaw.** Provides pixel-perfect mouse control, lightning-fast keyboard input, screen capture, window management, and clipboard operations.
+**这是 OpenClaw 最先进的桌面自动化技能。** 提供精确到像素的鼠标控制、极快的键盘输入、屏幕截图、窗口管理和剪贴板操作功能。
 
-## 🎯 Features
+## 🎯 主要功能
 
-### Mouse Control
-- ✅ **Absolute positioning** - Move to exact coordinates
-- ✅ **Relative movement** - Move from current position
-- ✅ **Smooth movement** - Natural, human-like mouse paths
-- ✅ **Click types** - Left, right, middle, double, triple clicks
-- ✅ **Drag & drop** - Drag from point A to point B
-- ✅ **Scroll** - Vertical and horizontal scrolling
-- ✅ **Position tracking** - Get current mouse coordinates
+### 鼠标控制
+- ✅ **绝对定位** - 移动到指定坐标
+- ✅ **相对移动** - 从当前位置开始移动
+- ✅ **平滑移动** - 自然、类似人类的鼠标轨迹
+- ✅ **点击类型** - 左键、右键、中键、双击、三击
+- ✅ **拖放** - 从点 A 拖到点 B
+- ✅ **滚动** - 垂直和水平滚动
+- ✅ **位置追踪** - 获取当前鼠标坐标
 
-### Keyboard Control
-- ✅ **Text typing** - Fast, accurate text input
-- ✅ **Hotkeys** - Execute keyboard shortcuts (Ctrl+C, Win+R, etc.)
-- ✅ **Special keys** - Enter, Tab, Escape, Arrow keys, F-keys
-- ✅ **Key combinations** - Multi-key press combinations
-- ✅ **Hold & release** - Manual key state control
-- ✅ **Typing speed** - Configurable WPM (instant to human-like)
+### 键盘控制
+- ✅ **文本输入** - 快速、准确的文本输入
+- ✅ **热键** - 执行键盘快捷键（如 Ctrl+C、Win+R 等）
+- ✅ **特殊键** - Enter、Tab、Escape、方向键、F 键
+- ✅ **按键组合** - 多键组合
+- ✅ **按住并释放** - 手动控制键的状态
+- ✅ **输入速度** - 可配置的每分钟单词数（从即时到类似人类的速度）
 
-### Screen Operations
-- ✅ **Screenshot** - Capture entire screen or regions
-- ✅ **Image recognition** - Find elements on screen (via OpenCV)
-- ✅ **Color detection** - Get pixel colors at coordinates
-- ✅ **Multi-monitor** - Support for multiple displays
+### 屏幕操作
+- ✅ **截图** - 截取整个屏幕或指定区域
+- ✅ **图像识别** - 通过 OpenCV 在屏幕上查找元素
+- ✅ **颜色检测** - 获取指定坐标的像素颜色
+- ✅ **多显示器** - 支持多个显示器
 
-### Window Management
-- ✅ **Window list** - Get all open windows
-- ✅ **Activate window** - Bring window to front
-- ✅ **Window info** - Get position, size, title
-- ✅ **Minimize/Maximize** - Control window states
+### 窗口管理
+- ✅ **窗口列表** - 显示所有打开的窗口
+- ✅ **激活窗口** - 将窗口置于前台
+- ✅ **窗口信息** - 获取窗口的位置、大小和标题
+- ✅ **最小化/最大化** - 控制窗口状态
 
-### Safety Features
-- ✅ **Failsafe** - Move mouse to corner to abort
-- ✅ **Pause control** - Emergency stop mechanism
-- ✅ **Approval mode** - Require confirmation for actions
-- ✅ **Bounds checking** - Prevent out-of-screen operations
-- ✅ **Logging** - Track all automation actions
+### 安全功能
+- ✅ **安全机制** - 将鼠标移动到屏幕角落以中止自动化操作
+- ✅ **暂停控制** - 紧急停止机制
+- ✅ **确认模式** - 执行操作前需要用户确认
+- ✅ **边界检查** - 防止超出屏幕范围的操作
+- ✅ **日志记录** - 记录所有自动化操作
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Installation
+### 安装
 
-First, install required dependencies:
+首先，安装所需的依赖库：
 
 ```bash
 pip install pyautogui pillow opencv-python pygetwindow
 ```
 
-### Basic Usage
+### 基本使用
 
 ```python
 from skills.desktop_control import DesktopController
@@ -81,20 +97,20 @@ position = dc.get_mouse_position()
 
 ---
 
-## 📋 Complete API Reference
+## 📋 完整 API 参考
 
-### Mouse Functions
+### 鼠标函数
 
 #### `move_mouse(x, y, duration=0, smooth=True)`
-Move mouse to absolute screen coordinates.
+将鼠标移动到指定的屏幕坐标。
 
-**Parameters:**
-- `x` (int): X coordinate (pixels from left)
-- `y` (int): Y coordinate (pixels from top)
-- `duration` (float): Movement time in seconds (0 = instant, 0.5 = smooth)
-- `smooth` (bool): Use bezier curve for natural movement
+**参数：**
+- `x` (int): X 坐标（从左边的像素数）
+- `y` (int): Y 坐标（从顶部的像素数）
+- `duration` (float): 移动时间（秒，0 = 立即，0.5 = 平滑）
+- `smooth` (bool): 是否使用贝塞尔曲线进行平滑移动
 
-**Example:**
+**示例：**
 ```python
 # Instant movement
 dc.move_mouse(1000, 500)
@@ -104,29 +120,29 @@ dc.move_mouse(1000, 500, duration=1.0)
 ```
 
 #### `move_relative(x_offset, y_offset, duration=0)`
-Move mouse relative to current position.
+相对于当前位置移动鼠标。
 
-**Parameters:**
-- `x_offset` (int): Pixels to move horizontally (positive = right)
-- `y_offset` (int): Pixels to move vertically (positive = down)
-- `duration` (float): Movement time in seconds
+**参数：**
+- `x_offset` (int): 水平移动的像素数（正数表示向右）
+- `y_offset` (int): 垂直移动的像素数（正数表示向下）
+- `duration` (float): 移动时间（秒）
 
-**Example:**
+**示例：**
 ```python
 # Move 100px right, 50px down
 dc.move_relative(100, 50, duration=0.3)
 ```
 
 #### `click(x=None, y=None, button='left', clicks=1, interval=0.1)`
-Perform mouse click.
+执行鼠标点击。
 
-**Parameters:**
-- `x, y` (int, optional): Coordinates to click (None = current position)
-- `button` (str): 'left', 'right', 'middle'
-- `clicks` (int): Number of clicks (1 = single, 2 = double)
-- `interval` (float): Delay between multiple clicks
+**参数：**
+- `x, y` (int, 可选): 点击的坐标（None 表示当前位置）
+- `button` (str): 'left', 'right', 'middle'（点击类型）
+- `clicks` (int): 点击次数（1 = 单击，2 = 双击）
+- `interval` (float): 多次点击之间的延迟
 
-**Example:**
+**示例：**
 ```python
 # Simple left click
 dc.click()
@@ -139,29 +155,29 @@ dc.click(button='right')
 ```
 
 #### `drag(start_x, start_y, end_x, end_y, duration=0.5, button='left')`
-Drag and drop operation.
+执行拖放操作。
 
-**Parameters:**
-- `start_x, start_y` (int): Starting coordinates
-- `end_x, end_y` (int): Ending coordinates
-- `duration` (float): Drag duration
-- `button` (str): Mouse button to use
+**参数：**
+- `start_x, start_y` (int): 开始坐标
+- `end_x, end_y` (int): 结束坐标
+- `duration` (float): 拖动持续时间
+- `button` (str): 使用的鼠标按钮
 
-**Example:**
+**示例：**
 ```python
 # Drag file from desktop to folder
 dc.drag(100, 100, 500, 500, duration=1.0)
 ```
 
 #### `scroll(clicks, direction='vertical', x=None, y=None)`
-Scroll mouse wheel.
+滚动鼠标滚轮。
 
-**Parameters:**
-- `clicks` (int): Scroll amount (positive = up/left, negative = down/right)
-- `direction` (str): 'vertical' or 'horizontal'
-- `x, y` (int, optional): Position to scroll at
+**参数：**
+- `clicks` (int): 滚动量（正数表示向上/向左，负数表示向下/向右）
+- `direction` (str): 'vertical' 或 'horizontal'（滚动方向）
+- `x, y` (int, 可选): 滚动的起始位置
 
-**Example:**
+**示例：**
 ```python
 # Scroll down 5 clicks
 dc.scroll(-5)
@@ -174,11 +190,11 @@ dc.scroll(5, direction='horizontal')
 ```
 
 #### `get_mouse_position()`
-Get current mouse coordinates.
+获取当前鼠标坐标。
 
-**Returns:** `(x, y)` tuple
+**返回值：** `(x, y)` 元组
 
-**Example:**
+**示例：**
 ```python
 x, y = dc.get_mouse_position()
 print(f"Mouse is at: {x}, {y}")
@@ -186,17 +202,17 @@ print(f"Mouse is at: {x}, {y}")
 
 ---
 
-### Keyboard Functions
+### 键盘函数
 
 #### `type_text(text, interval=0, wpm=None)`
-Type text with configurable speed.
+以可配置的速度输入文本。
 
-**Parameters:**
-- `text` (str): Text to type
-- `interval` (float): Delay between keystrokes (0 = instant)
-- `wpm` (int, optional): Words per minute (overrides interval)
+**参数：**
+- `text` (str): 要输入的文本
+- `interval` (float): 每次按键之间的延迟（0 = 立即）
+- `wpm` (int, 可选): 每分钟输入的单词数（覆盖 interval）
 
-**Example:**
+**示例：**
 ```python
 # Instant typing
 dc.type_text("Hello World")
@@ -209,14 +225,14 @@ dc.type_text("Hello World", interval=0.1)
 ```
 
 #### `press(key, presses=1, interval=0.1)`
-Press and release a key.
+按下并释放按键。
 
-**Parameters:**
-- `key` (str): Key name (see Key Names section)
-- `presses` (int): Number of times to press
-- `interval` (float): Delay between presses
+**参数：**
+- `key` (str): 键名（参见键名部分）
+- `presses` (int): 按键次数
+- `interval` (float): 每次按键之间的延迟
 
-**Example:**
+**示例：**
 ```python
 # Press Enter
 dc.press('enter')
@@ -229,13 +245,13 @@ dc.press('down')
 ```
 
 #### `hotkey(*keys, interval=0.05)`
-Execute keyboard shortcut.
+执行键盘快捷键。
 
-**Parameters:**
-- `*keys` (str): Keys to press together
-- `interval` (float): Delay between key presses
+**参数：**
+- `*keys` (str): 同时按下的键
+- `interval` (float): 按键之间的延迟
 
-**Example:**
+**示例：**
 ```python
 # Copy (Ctrl+C)
 dc.hotkey('ctrl', 'c')
@@ -254,9 +270,9 @@ dc.hotkey('ctrl', 'a')
 ```
 
 #### `key_down(key)` / `key_up(key)`
-Manually control key state.
+手动控制键的状态。
 
-**Example:**
+**示例：**
 ```python
 # Hold Shift
 dc.key_down('shift')
@@ -272,18 +288,18 @@ dc.key_up('ctrl')
 
 ---
 
-### Screen Functions
+### 屏幕函数
 
 #### `screenshot(region=None, filename=None)`
-Capture screen or region.
+捕获整个屏幕或指定区域。
 
-**Parameters:**
-- `region` (tuple, optional): (left, top, width, height) for partial capture
-- `filename` (str, optional): Path to save image
+**参数：**
+- `region` (tuple, 可选): 要捕获的区域（左上角、宽度、高度）
+- `filename` (str, 可选): 保存图像的路径
 
-**Returns:** PIL Image object
+**返回值：** PIL 图像对象
 
-**Example:**
+**示例：**
 ```python
 # Full screen
 img = dc.screenshot()
@@ -296,26 +312,26 @@ img = dc.screenshot(region=(100, 100, 500, 300))
 ```
 
 #### `get_pixel_color(x, y)`
-Get color of pixel at coordinates.
+获取指定坐标的像素颜色。
 
-**Returns:** RGB tuple `(r, g, b)`
+**返回值：** RGB 元组 `(r, g, b)`
 
-**Example:**
+**示例：**
 ```python
 r, g, b = dc.get_pixel_color(500, 300)
 print(f"Color at (500, 300): RGB({r}, {g}, {b})")
 ```
 
 #### `find_on_screen(image_path, confidence=0.8)`
-Find image on screen (requires OpenCV).
+在屏幕上查找图像（需要 OpenCV）。
 
-**Parameters:**
-- `image_path` (str): Path to template image
-- `confidence` (float): Match threshold (0-1)
+**参数：**
+- `image_path` (str): 模板图像的路径
+- `confidence` (float): 匹配阈值（0-1）
 
-**Returns:** `(x, y, width, height)` or None
+**返回值：** `(x, y, width, height)` 或 None
 
-**Example:**
+**示例：**
 ```python
 # Find button on screen
 location = dc.find_on_screen("button.png")
@@ -326,11 +342,11 @@ if location:
 ```
 
 #### `get_screen_size()`
-Get screen resolution.
+获取屏幕分辨率。
 
-**Returns:** `(width, height)` tuple
+**返回值：** `(width, height)` 元组
 
-**Example:**
+**示例：**
 ```python
 width, height = dc.get_screen_size()
 print(f"Screen: {width}x{height}")
@@ -338,14 +354,14 @@ print(f"Screen: {width}x{height}")
 
 ---
 
-### Window Functions
+### 窗口函数
 
 #### `get_all_windows()`
-List all open windows.
+列出所有打开的窗口。
 
-**Returns:** List of window titles
+**返回值：** 窗口标题列表
 
-**Example:**
+**示例：**
 ```python
 windows = dc.get_all_windows()
 for title in windows:
@@ -353,12 +369,12 @@ for title in windows:
 ```
 
 #### `activate_window(title_substring)`
-Bring window to front by title.
+根据窗口标题将窗口置于前台。
 
-**Parameters:**
-- `title_substring` (str): Part of window title to match
+**参数：**
+- `title_substring` (str): 要匹配的窗口标题的一部分
 
-**Example:**
+**示例：**
 ```python
 # Activate Chrome
 dc.activate_window("Chrome")
@@ -368,11 +384,11 @@ dc.activate_window("Visual Studio Code")
 ```
 
 #### `get_active_window()`
-Get currently focused window.
+获取当前聚焦的窗口。
 
-**Returns:** Window title (str)
+**返回值：** 窗口标题（字符串）
 
-**Example:**
+**示例：**
 ```python
 active = dc.get_active_window()
 print(f"Active window: {active}")
@@ -380,22 +396,22 @@ print(f"Active window: {active}")
 
 ---
 
-### Clipboard Functions
+### 剪贴板函数
 
 #### `copy_to_clipboard(text)`
-Copy text to clipboard.
+将文本复制到剪贴板。
 
-**Example:**
+**示例：**
 ```python
 dc.copy_to_clipboard("Hello from OpenClaw!")
 ```
 
 #### `get_from_clipboard()`
-Get text from clipboard.
+从剪贴板获取文本。
 
-**Returns:** str
+**返回值：** 字符串
 
-**Example:**
+**示例：**
 ```python
 text = dc.get_from_clipboard()
 print(f"Clipboard: {text}")
@@ -403,18 +419,18 @@ print(f"Clipboard: {text}")
 
 ---
 
-## ⌨️ Key Names Reference
+## ⌨️ 键名参考
 
-### Alphabet Keys
-`'a'` through `'z'`
+### 英文字母键
+`'a'` 到 `'z'`
 
-### Number Keys
-`'0'` through `'9'`
+### 数字键
+`'0'` 到 `'9'`
 
-### Function Keys
-`'f1'` through `'f24'`
+### 功能键
+`'f1'` 到 `'f24'`
 
-### Special Keys
+### 特殊键
 - `'enter'` / `'return'`
 - `'esc'` / `'escape'`
 - `'space'` / `'spacebar'`
@@ -427,41 +443,41 @@ print(f"Clipboard: {text}")
 - `'pageup'` / `'pgup'`
 - `'pagedown'` / `'pgdn'`
 
-### Arrow Keys
+### 方向键
 - `'up'` / `'down'` / `'left'` / `'right'`
 
-### Modifier Keys
+### 修改键
 - `'ctrl'` / `'control'`
 - `'shift'`
 - `'alt'`
 - `'win'` / `'winleft'` / `'winright'`
-- `'cmd'` / `'command'` (Mac)
+- `'cmd'` / `'command'`（Mac）
 
-### Lock Keys
+### 锁定键
 - `'capslock'`
 - `'numlock'`
 - `'scrolllock'`
 
-### Punctuation
-- `'.'` / `','` / `'?'` / `'!'` / `';'` / `':'`
+### 标点符号
+- `'.'` / `','` / `'?'` / `'!'` / `';'` / `:'`
 - `'['` / `']'` / `'{'` / `'}'`
 - `'('` / `')'`
 - `'+'` / `'-'` / `'*'` / `'/'` / `'='`
 
 ---
 
-## 🛡️ Safety Features
+## 🛡️ 安全功能
 
-### Failsafe Mode
+### 安全机制
 
-Move mouse to **any corner** of the screen to abort all automation.
+将鼠标移动到屏幕的 **任意角落** 以中止所有自动化操作。
 
 ```python
 # Enable failsafe (enabled by default)
 dc = DesktopController(failsafe=True)
 ```
 
-### Pause Control
+### 暂停控制
 
 ```python
 # Pause all automation for 2 seconds
@@ -472,9 +488,9 @@ if dc.is_safe():
     dc.click(500, 500)
 ```
 
-### Approval Mode
+### 确认模式
 
-Require user confirmation before actions:
+执行操作前需要用户确认：
 
 ```python
 dc = DesktopController(require_approval=True)
@@ -485,9 +501,9 @@ dc.click(500, 500)  # Prompt: "Allow click at (500, 500)? [y/n]"
 
 ---
 
-## 🎨 Advanced Examples
+## 🎨 高级示例
 
-### Example 1: Automated Form Filling
+### 示例 1：自动填写表单
 
 ```python
 dc = DesktopController()
@@ -508,7 +524,7 @@ dc.type_text("SecurePassword123", wpm=60)
 dc.press('enter')
 ```
 
-### Example 2: Screenshot Region and Save
+### 示例 2：截图并保存指定区域
 
 ```python
 # Capture specific area
@@ -521,7 +537,7 @@ timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 img.save(f"capture_{timestamp}.png")
 ```
 
-### Example 3: Multi-File Selection
+### 示例 3：多文件选择
 
 ```python
 # Hold Ctrl and click multiple files
@@ -535,7 +551,7 @@ dc.key_up('ctrl')
 dc.hotkey('ctrl', 'c')
 ```
 
-### Example 4: Window Automation
+### 示例 4：窗口自动化
 
 ```python
 # Activate Calculator
@@ -550,7 +566,7 @@ time.sleep(0.5)
 dc.screenshot(filename="calculation_result.png")
 ```
 
-### Example 5: Drag & Drop File
+### 示例 5：拖放文件
 
 ```python
 # Drag file from source to destination
@@ -563,61 +579,61 @@ dc.drag(
 
 ---
 
-## ⚡ Performance Tips
+## ⚡ 性能提示
 
-1. **Use instant movements** for speed: `duration=0`
-2. **Batch operations** instead of individual calls
-3. **Cache screen positions** instead of recalculating
-4. **Disable failsafe** for maximum performance (use with caution)
-5. **Use hotkeys** instead of menu navigation
-
----
-
-## ⚠️ Important Notes
-
-- **Screen coordinates** start at (0, 0) in top-left corner
-- **Multi-monitor setups** may have negative coordinates for secondary displays
-- **Windows DPI scaling** may affect coordinate accuracy
-- **Failsafe corners** are: (0,0), (width-1, 0), (0, height-1), (width-1, height-1)
-- **Some applications** may block simulated input (games, secure apps)
+1. **使用即时移动** 以提高速度：`duration=0`
+2. **批量操作** 而不是单独调用
+3. **缓存屏幕位置** 以避免重新计算
+4. **禁用安全机制** 以获得最佳性能（请谨慎使用）
+5. **使用热键** 而不是菜单导航
 
 ---
 
-## 🔧 Troubleshooting
+## ⚠️ 重要说明
 
-### Mouse not moving to correct position
-- Check DPI scaling settings
-- Verify screen resolution matches expectations
-- Use `get_screen_size()` to confirm dimensions
-
-### Keyboard input not working
-- Ensure target application has focus
-- Some apps require admin privileges
-- Try increasing `interval` for reliability
-
-### Failsafe triggering accidentally
-- Increase screen border tolerance
-- Move mouse away from corners during normal use
-- Disable if needed: `DesktopController(failsafe=False)`
-
-### Permission errors
-- Run Python with administrator privileges for some operations
-- Some secure applications block automation
+- **屏幕坐标** 从左上角的 (0, 0) 开始
+- **多显示器设置** 中，次要显示器的坐标可能是负数
+- **Windows 的 DPI 缩放** 可能会影响坐标精度
+- **安全机制的角落** 为：(0,0), (width-1, 0), (0, height-1), (width-1, height-1)
+- **某些应用程序** 可能会阻止模拟输入（如游戏、安全应用程序）
 
 ---
 
-## 📦 Dependencies
+## 🔧 故障排除
 
-- **PyAutoGUI** - Core automation engine
-- **Pillow** - Image processing
-- **OpenCV** (optional) - Image recognition
-- **PyGetWindow** - Window management
+### 鼠标没有移动到正确位置
+- 检查 DPI 缩放设置
+- 确认屏幕分辨率是否符合预期
+- 使用 `get_screen_size()` 确认屏幕尺寸
 
-Install all:
+### 键盘输入无效
+- 确保目标应用程序具有焦点
+- 有些应用程序需要管理员权限
+- 尝试增加 `interval` 以提高可靠性
+
+### 安全机制意外触发
+- 增加屏幕边缘的容忍度
+- 在正常使用中将鼠标移出角落
+- 如有需要，可以禁用安全机制：`DesktopController(failsafe=False)`
+
+### 权限问题
+- 对于某些操作，需要以管理员权限运行 Python
+- 一些安全应用程序会阻止自动化操作
+
+---
+
+## 📦 依赖库
+
+- **PyAutoGUI** - 核心自动化引擎
+- **Pillow** - 图像处理库
+- **OpenCV**（可选） - 用于图像识别
+- **PyGetWindow** - 窗口管理库
+
+安装所有依赖库：
 ```bash
 pip install pyautogui pillow opencv-python pygetwindow
 ```
 
 ---
 
-**Built for OpenClaw** - The ultimate desktop automation companion 🦞
+**专为 OpenClaw 设计** - 终极的桌面自动化工具 🦞

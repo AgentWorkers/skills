@@ -1,89 +1,87 @@
 ---
 name: Thai
-description: Write Thai that sounds human. Not formal, not robotic, not AI-generated.
+description: 用泰语表达时，要尽量让语言听起来自然、像真人说话一样，既不要过于正式，也不要有机器人的感觉，更不能是人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Thai is technically correct but sounds off. Too formal. Too ภาษาเขียน (written style). Natives write more casually, with particles and playfulness. Match that.
+虽然AI生成的泰语在语法上是正确的，但听起来很生硬、正式，缺乏自然感。泰语的口语表达更加随意，会使用各种语气词和表达方式来增加语言的亲切感。我们需要让AI生成的泰语更符合泰语的口语习惯。
 
-## Formality Default
+## 正式与随意的表达方式
 
-Default register is too high. Casual Thai is warm and playful. Unless explicitly formal: lean casual. Use ครับ/ค่ะ appropriately but not excessively.
+默认的表达方式过于正式，而泰语的日常对话更加亲切、轻松。除非需要特别正式的表达，否则应尽量使用随意的语气。适当使用“ครับ”或“ค่ะ”作为礼貌用语，但不要过度使用。
 
-## ครับ/ค่ะ Particles
+## “ครับ”/“ค่ะ”等礼貌用语
 
-Politeness particles:
-- ครับ (khrap): male speaker, polite
-- ค่ะ/คะ (kha): female speaker, polite
-- Can be shortened: คับ, ค้า, คร้าบ
-- Casual among friends: often dropped
-- Overusing = stiff, robotic
+- “ครับ”：男性用语，表示礼貌
+- “ค่ะ”：女性用语，表示礼貌
+- 可以缩写为“คับ”、“ค้า”、“คร้าบ”
+- 在朋友之间交流时，这些礼貌用语常常会被省略
+- 过度使用会让人感觉生硬、像机器人一样。
 
-## Pronouns
+## 代词
 
-Thai has many pronouns by relationship:
-- ผม/ดิฉัน: formal I (male/female)
-- ฉัน/เรา: casual I
-- กู-มึง: very informal (crude with strangers)
-- ชั้น: feminine casual
-- Match to relationship level
+泰语中有许多根据关系使用的代词：
+- “ผม/ดิฉัน”：正式的“我”（男性/女性）
+- “ฉัน/เรา”：非正式的“我”
+- “กู-มึง”：非常随意的用语（对陌生人使用，显得粗鲁）
+- “ชั้น”：女性用语，非正式场合使用
+- 选择代词时需要根据说话者与对方的亲密程度来决定。
 
-## Particles & Softeners
+## 使语言更自然的语气词和软化词
 
-These make Thai natural:
-- นะ: softening, seeking agreement
-- สิ: emphasis, urging
-- ล่ะ: mild question
-- เหรอ/หรอ: question particle
-- อ่ะ: casual acknowledgment
+以下词语可以使泰语表达更自然：
+- “นะ”：用于缓和语气，寻求对方的同意
+- “สิ”：用于强调或催促
+- “ล่ะ”：用于提出轻微的疑问
+- “เหรอ/หรอ”：用于提问
+- “อ่ะ”：用于随意的回应
 
-## Fillers & Flow
+## 语言中的填充词和过渡词
 
-Real Thai has fillers:
-- ก็: filler, "well"
-- แบบ, ประมาณ: "like"
-- อืม, เอ่อ
-- คือ, งี้
+泰语口语中经常使用一些填充词来调节语速和节奏：
+- “ก็”：填充词，表示“嗯”
+- “แบบ, ประมาณ”：表示“大约”
+- “อืม, เอ่อ”：表示犹豫或思考
+- “คือ, งี้”：用于解释或过渡
 
-## Playful Language
+## 语言的趣味性
 
-Thai casual is playful:
-- ๆ for repetition (เร็วๆ = quickly)
-- 555 = hahaha (5 = ห้า = ha)
-- Drawn out vowels: มากกกก
-- Cute spellings: น่ารักอ่ะ
+泰语口语中有很多有趣的表达方式：
+- 重复时使用“ๆ”来表示“快速”
+- “555”表示“哈哈哈哈”（“5”在泰语中发音为“ห้า”）
+- 长元音的发音会拉长音节，例如“มากกกก”
+- 有些拼写很可爱，例如“น่ารักอ่ะ”
 
-## Expressiveness
+## 表达方式的选择
 
-Don't pick the safe word:
-- ดี → เยี่ยม, สุดยอด, โคตรดี
-- แย่ → ห่วย, แย่มาก, โคตรห่วย
-- มาก → โคตร, สุดๆ, มากมาย
+不要总是使用过于中立的词汇：
+- “ดี”可以表达为“เยี่ยม”、“สุดยอด”、“โคตรดี”
+- “แย่”可以表达为“ห่วย”、“แย่มาก”、“โครตห่วย”
+- “มาก”可以表达为“โคตร”、“สุดๆ”、“มากมาย”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- โอเค, ได้เลย, ตกลง
-- ไม่เป็นไร, ช่างเถอะ
-- จริงเหรอ, เหรอ, ใช่ป่ะ
-- 555, ฮ่าๆ
+- “โอเค, ได้เลย, ตกลง”：表示同意或接受
+- “ไม่เป็นไร, ช่างเถอะ”：表示没关系
+- “จริงเหรอ, เหรอ, ใช่ป่ะ”：表示疑问或确认
+- “555, ฮ่าๆ”：表示笑声
 
-## Reactions
+## 反应方式
 
-React naturally:
-- อ้าว!, โอ้โห!, ว้าว!
-- จริงเหรอ!, ไม่จริง!
-- เจ๋ง!, เท่!, สุดยอด!
-- 555, ฮาๆ
+在交流时，要做出自然的反应：
+- “อ้าว!”, “โอ้โห!”, “ว้าว!”：表示惊讶或兴奋
+- “จริงเหรอ!”, “ไม่จริง!”：表示怀疑或否定
+- “เจ๋ง!, เท่!, สุดยอด!”：表示赞赏
+- “555, ฮาๆ”：表示笑声
 
-## Karaoke (Romanized)
+## 卡拉OK（罗马音）
 
-Sometimes Thai uses romanized:
-- sawatdee, mai pen rai
-- More common in international contexts
-- Stay consistent
+在某些情况下，泰语会使用罗马音来书写：
+- “sawatdee, mai pen rai”（你好，我不难过）
+- 这种写法在国际交流中更为常见
+- 保持一致性很重要
 
-## The "Native Test"
+## “母语者的测试”
 
-Before sending: would a Thai screenshot this as "AI-generated"? If yes—too formal, missing 555, no particles. Add playfulness.
+在发送内容之前，可以想象一下：如果一个泰国人看到这样的内容，会认为这是AI生成的吗？如果是的话，那么语言就太正式了，缺少了幽默感，也没有使用常见的语气词。因此，需要添加更多的趣味性和自然感。

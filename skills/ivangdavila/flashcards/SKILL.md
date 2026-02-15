@@ -1,77 +1,54 @@
 ---
 name: Flashcards
-description: Create effective flashcards with optimal formatting, spaced repetition integration, and memory science principles.
+description: 创建具有最佳格式、间隔重复功能以及符合记忆科学原理的有效闪卡。
 ---
 
-## Card Formulation Rules
+## 卡片制作规则
 
-**One fact per card**: Never combine multiple concepts. "What is X?" not "What are X, Y, and Z?"
+**每张卡片只包含一个知识点**：切勿将多个概念合并在一起。例如，问题应设计为“X是什么？”，而不是“X、Y和Z分别是什么？”
 
-**Atomic questions**: Break complex topics into smallest testable units. Each card tests exactly one thing.
+**问题应尽可能具体**：将复杂主题分解为最基本、可测试的单元。每张卡片只测试一个知识点。
 
-**Bidirectional cards for definitions**: Create both term→definition AND definition→term to prevent recognition-only learning.
+**为术语和定义创建双向卡片**：同时创建“术语→定义”和“定义→术语”的卡片，以避免学生仅通过记忆术语来学习其含义。
 
-**Use cloze deletions for facts**: "The mitochondria is the {{c1::powerhouse}} of the cell" forces active recall.
+**使用填空题来巩固知识点**：例如，“线粒体是细胞的___c1::能量工厂___”这种问题能促进学生的主动回忆。
 
-## Question Types by Effectiveness
+## 根据记忆效果划分问题类型
 
-**Best retention**: Why/How questions that require understanding, not just recall.
+- **最佳记忆效果**：需要理解而非单纯记忆的问题（如“为什么/如何”类型的问题）。
+- **较好的记忆效果**：填空题、定义回忆题、流程步骤题。
+- **较差的记忆效果**：是非题、选择题（应谨慎使用）。
+- **需要避免的问题**：那些可以通过模式匹配或排除法轻易回答的问题。
 
-**Good retention**: Fill-in-the-blank, definition recall, process steps.
+## Anki 的特定格式要求
 
-**Weak retention**: Yes/No questions, multiple choice (use sparingly).
+- **TSV 导入格式**：`front\tback\ttag1 tag2`——字段之间用制表符分隔，标签之间用空格分隔。
+- **填空题语法**：`{{c1::answer}}` 用于单处填空，`{{c1::first}} and {{c2::second}}` 用于多处填空。
+- **图片遮挡功能**：适用于图表、地图或解剖结构图等内容的卡片。可以隐藏图片中的文字，翻转卡片后显示文字内容。
+- **使用分层标签进行分类**：使用 `subject::topic::subtopic` 的格式来方便筛选和复习。
 
-**Avoid**: Questions answerable by pattern matching or elimination.
+## 结合记忆科学原理进行卡片制作
 
-## Anki-Specific Formatting
+- **最小信息原则**：卡片越简单，记忆效果越好。如果卡片内容过于复杂，应将其拆分成多个卡片。
+- **建立个人联系**：添加与自己经验相关的背景信息，例如“X让我想起了Y”，这有助于加强记忆。
+- **具体化而非抽象化**：使用具体的描述，例如“巴黎是法国的首都”，比“首都都是重要的城市”更容易记忆。
+- **尽可能使用图像**：视觉辅助有助于记忆。例如，可以将线粒体描述为“豆粒状的能量工厂”。
 
-**TSV import format**: `front\tback\ttag1 tag2` — tabs separate fields, spaces separate tags.
+## 常见错误
 
-**Cloze syntax**: `{{c1::answer}}` for single deletion, `{{c1::first}} and {{c2::second}}` for multiple.
+- **卡片背面信息过多**：答案应控制在20个词以内。过长的答案会降低记忆效果。
+- **没有上下文的卡片**：缺少背景信息的卡片难以记忆。请在卡片标签中注明信息来源或所属章节。
+- **直接复制教科书内容**：请用自己的话重新表述内容。在记忆之前先理解其含义。
+- **跳过难点卡片**：实际上，这些卡片正是你需要重点复习的内容。不要跳过它们，而是要找到合适的替代学习方法。
 
-**Image occlusion**: Use for diagrams, maps, anatomical images. Hide labels, reveal on flip.
+## 输出格式
 
-**Tags for organization**: Use hierarchical tags `subject::topic::subtopic` for filtered study.
+- **Anki TSV 格式**：`question\tanswer\ttag1 tag2`
+- **Quizlet 格式**：问题和答案用制表符分隔，卡片之间用换行符分隔。
+- **Markdown 表格格式**：适用于导入前的预复习。
 
-## Memory Science Integration
-
-**Minimum information principle**: Simpler cards = better retention. If card feels complex, split it.
-
-**Personal connection**: Add context from your experience. "X reminds me of Y" strengthens encoding.
-
-**Concrete over abstract**: "Paris is capital of France" beats "Capitals are important cities."
-
-**Imagery when possible**: Visual descriptions enhance memory. "Mitochondria = bean-shaped power plant."
-
-## Common Mistakes
-
-**Too much text on back**: Keep answers under 20 words. Long answers = weak recall signal.
-
-**Orphan cards**: Cards without context fail. Include source/chapter in tags.
-
-**Copy-paste from textbook**: Rephrase in your own words. Understanding before memorization.
-
-**Skipping hard cards**: Difficulty means you need it most. Never suspend without replacement.
-
-## Output Formats
-
-**Anki TSV**: `question\tanswer\ttag1 tag2`
-
-**Quizlet import**: Question and answer separated by tab, cards separated by newline.
-
-**Markdown table**: For review before import.
 ```
 | Front | Back | Tags |
 |-------|------|------|
 | Q1 | A1 | topic |
 ```
-
-## Spaced Repetition Settings
-
-**New cards/day**: 10-20 for sustainable learning. More causes review pile-up.
-
-**Review intervals**: Trust the algorithm. Don't manually reschedule.
-
-**Again vs Hard**: "Again" = complete failure (resets interval). "Hard" = struggle but recalled.
-
-**Leeches**: Cards failed 8+ times need rewriting, not more repetition.

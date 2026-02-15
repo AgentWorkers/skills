@@ -1,24 +1,24 @@
 ---
 slug: "resource-leveler"
 display_name: "Resource Leveler"
-description: "Level and optimize construction resource allocation across project schedule. Balance labor, equipment usage, and avoid overallocation while maintaining critical path."
+description: "在项目进度中，合理分配和优化建设资源。平衡劳动力与设备的使用，避免资源过度分配，同时确保关键路径的顺利推进。"
 ---
 
-# Resource Leveler for Construction
+# 施工资源平衡器（Resource Leveler for Construction）
 
-## Overview
+## 概述
 
-Optimize resource allocation across construction schedules. Level labor and equipment to avoid peaks, balance workload, and maintain project deadlines while reducing costs.
+该工具用于优化施工计划中的资源分配，平衡劳动力和设备使用，避免资源使用高峰，确保工作量均衡，并在降低成本的同时保障项目按时完成。
 
-## Business Case
+## 商业价值
 
-Resource leveling provides:
-- **Cost Reduction**: Avoid overtime and idle time
-- **Workforce Stability**: Consistent crew sizes
-- **Equipment Optimization**: Reduce rental costs
-- **Realistic Schedules**: Achievable resource plans
+资源平衡器能够带来以下好处：
+- **降低成本**：减少加班和设备闲置时间
+- **保持劳动力稳定**：确保施工团队规模的一致性
+- **优化设备使用**：降低设备租赁费用
+- **制定可行的施工计划**：帮助制定实际可行的资源分配方案
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -404,7 +404,7 @@ class ConstructionResourceLeveler:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 from datetime import date
@@ -457,7 +457,7 @@ print(f"End date change: {result.original_end_date} -> {result.leveled_end_date}
 print(leveler.generate_report())
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pandas numpy

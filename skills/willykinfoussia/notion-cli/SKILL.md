@@ -1,48 +1,43 @@
 ---
 name: notion-cli
-description: Notion CLI for creating and managing pages, databases, and blocks.
+description: Notion CLI（命令行工具）用于创建和管理页面、数据库以及各种内容块（blocks）。
 homepage: https://github.com/litencatt/notion-cli
 metadata: {"openclaw":{"emoji":"📓","requires":{"env":["NOTION_TOKEN"]},"primaryEnv":"NOTION_TOKEN"}}
 ---
 
 # notion
 
-Use *notion-cli* to create/read/update pages, data sources (databases), and blocks.
+使用 *notion-cli* 可以创建/读取/更新页面、数据源（数据库）以及页面中的各个区块。
 
-## Setup
+## 设置
 
-- Install notion-cli: `npm install -g @iansinnott/notion-cli`
-- Create an integration at https://notion.so/my-integrations
-- Copy the API key (starts with *ntn_* or *secret_*)
-- Store it:
-  - `mkdir -p ~/.config/notion`
-  - `echo "ntn_your_key_here" > ~/.config/notion/api_key`
-- Share target pages/databases with your integration (click "..." → "Connect to" → your integration name)
+- 安装 notion-cli：`npm install -g @iansinnott/notion-cli`
+- 在 https://notion.so/my-integrations 创建一个集成
+- 复制 API 密钥（密钥以 *ntn_* 或 *secret_* 开头）
+- 将密钥保存到以下路径：
+  ```
+  mkdir -p ~/.config/notion
+  echo "ntn_your_key_here" > ~/.config/notion/api_key
+  ```
+- 将目标页面/数据库共享给你的集成（点击 “...” → “连接到” → 你的集成名称）
 
-## Usage
+## 使用方法
 
-All commands require the *NOTION_TOKEN* environment variable to be set:
+所有命令都需要设置 *NOTION_TOKEN* 环境变量：
 
 ```bash
 export NOTION_TOKEN=$(cat ~/.config/notion/api_key)
 ```
 
-## Common Operations
+## 常用操作
 
-- **Search for pages and data sources:**
-
-  `notion-cli search --query "page title"`
-
-- **Get page:**
-
-  `notion-cli page retrieve <PAGE_ID>`
-
-- **Get page content (blocks):**
-
-  `notion-cli page retrieve <PAGE_ID> -r`
-
-- **Create page in a database:**
-
+- **搜索页面和数据源：**
+  `notion-cli search --query "页面标题"`
+- **获取页面：**
+  `notion-cli page retrieve <页面 ID>`
+- **获取页面内容（区块）：**
+  `notion-cli page retrieve <页面 ID> -r`
+- **在数据库中创建页面：**
   ```bash
   curl -X POST https://api.notion.com/v1/pages \
     -H "Authorization: Bearer $NOTION_TOKEN" \
@@ -64,12 +59,9 @@ export NOTION_TOKEN=$(cat ~/.config/notion/api_key)
     }'
   ```
 
-- **Query a database:**
-
-  `notion-cli db query <DB_ID> -a '{"property":"Status","status":{"equals":"Active"}}'`
-
-- **Update page properties:**
-
+- **查询数据库：**
+  `notion-cli db query <数据库 ID> -a '{"property":"状态","status":{"equals":"活动"}}'`
+- **更新页面属性：**
   ```bash
   curl -X PATCH https://api.notion.com/v1/pages/PAGE_ID \
     -H "Authorization: Bearer $NOTION_TOKEN" \
@@ -114,33 +106,29 @@ export NOTION_TOKEN=$(cat ~/.config/notion/api_key)
     }'
   ```
 
-- **Get database info:**
+- **获取数据库信息：**
+  `notion-cli db retrieve <数据库 ID>`
 
-  `notion-cli db retrieve <DB_ID>`
+## 属性类型
 
-## Property Types
+数据库项的常见属性格式：
 
-Common property formats for database items:
+- **标题：** `{"title": [{"text": {"content": "..."}}]}`
+- **富文本：** `{"rich_text": [{"text": {"content": "..."}}]}`
+- **状态：** `{"status": {"name": "选项"}}`
+- **单选：** `{"select": {"name": "选项"}}`
+- **多选：** `{"multi_select": [{"name": "A"}, {"name": "B"}]}`
+- **日期：** `{"date": {"start": "2024-01-15", "end": "2024-01-16"}}`
+- **复选框：** `{"checkbox": true}`
+- **数字：** `{"number": 42}`
+- **URL：** `{"url": "https://..."}`
+- **电子邮件：** `{"email": "a@b.com"}`
 
-- **Title:** `{"title": [{"text": {"content": "..."}}]}`
-- **Rich text:** `{"rich_text": [{"text": {"content": "..."}}]}`
-- **Status:** `{"status": {"name": "Option"}}`
-- **Select:** `{"select": {"name": "Option"}}`
-- **Multi-select:** `{"multi_select": [{"name": "A"}, {"name": "B"}]}`
-- **Date:** `{"date": {"start": "2024-01-15", "end": "2024-01-16"}}`
-- **Checkbox:** `{"checkbox": true}`
-- **Number:** `{"number": 42}`
-- **URL:** `{"url": "https://..."}`
-- **Email:** `{"email": "a@b.com"}`
+## 示例
 
-## Examples
-
-- **Search for pages:**
-
+- **搜索页面：**
   `notion-cli search --query "AIStories"`
-
-- **Query database with filter:**
-
+- **使用过滤器查询数据库：**
   ```bash
   notion-cli db query 2faf172c094981d3bbcbe0f115457cda \
     -a '{
@@ -149,12 +137,9 @@ Common property formats for database items:
     }'
   ```
 
-- **Retrieve page content:**
-
+- **获取页面内容：**
   `notion-cli page retrieve 2fdf172c-0949-80dd-b83b-c1df0410d91b -r`
-
-- **Update page status:**
-
+- **更新页面状态：**
   ```bash
   curl -X PATCH https://api.notion.com/v1/pages/2fdf172c-0949-80dd-b83b-c1df0410d91b \
     -H "Authorization: Bearer $NOTION_TOKEN" \
@@ -171,21 +156,21 @@ Common property formats for database items:
     }'
   ```
 
-## Key Features
+## 主要特性
 
-- *Interactive mode:* For complex queries, run `notion-cli db query <DB_ID>` without arguments to enter interactive mode
-- *Multiple output formats:* table (default), csv, json, yaml
-- *Raw JSON:* Use `--raw` flag for complete API responses
-- *Filter syntax:* Use `-a` flag for complex filters with AND/OR conditions
+- **交互模式：** 对于复杂的查询，运行 `notion-cli db query <数据库 ID>` 无需参数即可进入交互模式
+- **多种输出格式：** 表格（默认）、csv、json、yaml
+- **原始 JSON：** 使用 `--raw` 标志可获取完整的 API 响应
+- **过滤语法：** 使用 `-a` 标志进行包含 AND/OR 条件的复杂过滤
 
-## Notes
+## 注意事项
 
-- Page/database IDs are UUIDs (with or without dashes)
-- The CLI handles authentication automatically via *NOTION_TOKEN*
-- Rate limits are managed by the CLI
-- Use `notion-cli help` for complete command reference
+- 页面/数据库 ID 是 UUID（可能包含或不包含破折号）
+- 该命令行工具通过 *NOTION_TOKEN* 自动处理身份验证
+- 命令行工具会管理请求速率限制
+- 使用 `notion-cli help` 可查看完整的命令参考
 
-## References
+## 参考资料
 
-- GitHub Notion-CLI: https://github.com/litencatt/notion-cli
-- Notion API Documentation: https://developers.notion.com
+- GitHub Notion-CLI：https://github.com/litencatt/notion-cli
+- Notion API 文档：https://developers.notion.com

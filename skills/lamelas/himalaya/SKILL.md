@@ -1,33 +1,33 @@
 ---
 name: himalaya
-description: "CLI to manage emails via IMAP/SMTP. Use `himalaya` to list, read, write, reply, forward, search, and organize emails from the terminal. Supports multiple accounts and message composition with MML (MIME Meta Language)."
+description: "这是一个用于通过 IMAP/SMTP 管理电子邮件的命令行工具（CLI）。你可以使用 `himalaya` 从终端列表、阅读、撰写、回复、转发、搜索以及整理电子邮件。该工具支持多个账户，并支持使用 MML（MIME 元语言）来编写邮件内容。"
 homepage: https://github.com/pimalaya/himalaya
 metadata: {"clawdbot":{"emoji":"📧","requires":{"bins":["himalaya"]},"install":[{"id":"brew","kind":"brew","formula":"himalaya","bins":["himalaya"],"label":"Install Himalaya (brew)"}]}}
 ---
 
-# Himalaya Email CLI
+# Himalaya 邮件命令行工具（Himalaya Email CLI）
 
-Himalaya is a CLI email client that lets you manage emails from the terminal using IMAP, SMTP, Notmuch, or Sendmail backends.
+Himalaya 是一个命令行（CLI）邮件客户端，允许您通过终端使用 IMAP、SMTP、Notmuch 或 Sendmail 后端来管理邮件。
 
-## References
+## 参考资料
 
-- `references/configuration.md` (config file setup + IMAP/SMTP authentication)
-- `references/message-composition.md` (MML syntax for composing emails)
+- `references/configuration.md`（配置文件设置及 IMAP/SMTP 认证）
+- `references/message-composition.md`（用于编写邮件的 MML 语法）
 
-## Prerequisites
+## 先决条件
 
-1. Himalaya CLI installed (`himalaya --version` to verify)
-2. A configuration file at `~/.config/himalaya/config.toml`
-3. IMAP/SMTP credentials configured (password stored securely)
+1. 已安装 Himalaya CLI（运行 `himalaya --version` 可以验证安装情况）
+2. 在 `~/.config/himalaya/config.toml` 文件中配置好相关设置
+3. 已配置好 IMAP/SMTP 的凭据（密码需妥善保管）
 
-## Configuration Setup
+## 配置设置
 
-Run the interactive wizard to set up an account:
+运行交互式向导来设置账户：
 ```bash
 himalaya account configure
 ```
 
-Or create `~/.config/himalaya/config.toml` manually:
+或者手动创建 `~/.config/himalaya/config.toml` 文件：
 ```toml
 [accounts.personal]
 email = "you@example.com"
@@ -51,75 +51,72 @@ message.send.backend.auth.type = "password"
 message.send.backend.auth.cmd = "pass show email/smtp"
 ```
 
-## Common Operations
+## 常用操作
 
-### List Folders
-
+### 列出文件夹
 ```bash
 himalaya folder list
 ```
 
-### List Emails
+### 列出邮件
 
-List emails in INBOX (default):
+- 列出收件箱中的邮件（默认行为）：
 ```bash
 himalaya envelope list
 ```
 
-List emails in a specific folder:
+- 列出特定文件夹中的邮件：
 ```bash
 himalaya envelope list --folder "Sent"
 ```
 
-List with pagination:
+- 分页列出邮件：
 ```bash
 himalaya envelope list --page 1 --page-size 20
 ```
 
-### Search Emails
-
+### 搜索邮件
 ```bash
 himalaya envelope list from john@example.com subject meeting
 ```
 
-### Read an Email
+### 阅读邮件
 
-Read email by ID (shows plain text):
+- 按邮件 ID 阅读邮件（显示纯文本）：
 ```bash
 himalaya message read 42
 ```
 
-Export raw MIME:
+- 导出原始 MIME 格式的邮件：
 ```bash
 himalaya message export 42 --full
 ```
 
-### Reply to an Email
+### 回复邮件
 
-Interactive reply (opens $EDITOR):
+- 交互式回复（会打开指定的文本编辑器）：
 ```bash
 himalaya message reply 42
 ```
 
-Reply-all:
+- 回复所有收件人：
 ```bash
 himalaya message reply 42 --all
 ```
 
-### Forward an Email
-
+### 转发邮件
 ```bash
 himalaya message forward 42
 ```
 
-### Write a New Email
+### 新建邮件
 
-Interactive compose (opens $EDITOR):
+- 交互式编写邮件（会打开指定的文本编辑器）：
 ```bash
 himalaya message write
 ```
 
-Send directly using template:
+- 使用模板发送邮件：
 ```bash
 cat << 'EOF' | himalaya template send
 From: you@example.com
@@ -130,88 +127,87 @@ Hello from Himalaya!
 EOF
 ```
 
-Or with headers flag:
+- 或者通过指定邮件头信息发送邮件：
 ```bash
 himalaya message write -H "To:recipient@example.com" -H "Subject:Test" "Message body here"
 ```
 
-### Move/Copy Emails
+### 移动/复制邮件
 
-Move to folder:
+- 将邮件移动到其他文件夹：
 ```bash
 himalaya message move 42 "Archive"
 ```
 
-Copy to folder:
+- 将邮件复制到其他文件夹：
 ```bash
 himalaya message copy 42 "Important"
 ```
 
-### Delete an Email
-
+### 删除邮件
 ```bash
 himalaya message delete 42
 ```
 
-### Manage Flags
+### 管理邮件标记
 
-Add flag:
+- 为邮件添加标记：
 ```bash
 himalaya flag add 42 --flag seen
 ```
 
-Remove flag:
+- 删除邮件标记：
 ```bash
 himalaya flag remove 42 --flag seen
 ```
 
-## Multiple Accounts
+## 多个账户
 
-List accounts:
+- 列出所有账户：
 ```bash
 himalaya account list
 ```
 
-Use a specific account:
+- 使用特定账户：
 ```bash
 himalaya --account work envelope list
 ```
 
-## Attachments
+## 附件
 
-Save attachments from a message:
+- 保存邮件中的附件：
 ```bash
 himalaya attachment download 42
 ```
 
-Save to specific directory:
+- 将附件保存到指定目录：
 ```bash
 himalaya attachment download 42 --dir ~/Downloads
 ```
 
-## Output Formats
+## 输出格式
 
-Most commands support `--output` for structured output:
+大多数命令支持使用 `--output` 选项来生成结构化的输出：
 ```bash
 himalaya envelope list --output json
 himalaya envelope list --output plain
 ```
 
-## Debugging
+## 调试
 
-Enable debug logging:
+- 启用调试日志记录：
 ```bash
 RUST_LOG=debug himalaya envelope list
 ```
 
-Full trace with backtrace:
+- 查看详细的错误追踪信息（包含堆栈跟踪）：
 ```bash
 RUST_LOG=trace RUST_BACKTRACE=1 himalaya envelope list
 ```
 
-## Tips
+## 提示
 
-- Use `himalaya --help` or `himalaya <command> --help` for detailed usage.
-- Message IDs are relative to the current folder; re-list after folder changes.
-- For composing rich emails with attachments, use MML syntax (see `references/message-composition.md`).
-- Store passwords securely using `pass`, system keyring, or a command that outputs the password.
+- 使用 `himalaya --help` 或 `himalaya <command> --help` 查看详细的使用说明。
+- 邮件 ID 是相对于当前文件夹而言的；更改文件夹后需要重新列出邮件。
+- 要编写包含附件的复杂邮件，请使用 MML 语法（参见 `references/message-composition.md`）。
+- 请使用 `pass` 命令、系统密钥环或能够安全存储密码的工具来保管密码。

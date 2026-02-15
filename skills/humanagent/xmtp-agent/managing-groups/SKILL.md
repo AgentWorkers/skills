@@ -1,54 +1,54 @@
 ---
 name: managing-groups
-description: Group conversation management for XMTP agents. Use when creating groups, managing members, setting permissions, or sending welcome messages. Triggers on group creation, member management, or permissions.
+description: 用于 XMTP 代理的群组对话管理功能。适用于创建群组、管理成员、设置权限或发送欢迎消息等场景。该功能会在群组创建、成员信息更新或权限调整时被触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP groups
+# XMTP 组
 
-Manage group conversations, permissions, and members.
+用于管理组内对话、权限和成员。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Creating new group conversations
-- Managing group members (add/remove)
-- Setting group permissions
-- Sending welcome messages
-- Gating group access
+在以下情况下请参考这些指南：
+- 创建新的组内对话
+- 管理组成员（添加/删除）
+- 设置组权限
+- 发送欢迎消息
+- 控制组访问权限
 
-## Rule categories by priority
+## 规则分类（按优先级）
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Create | CRITICAL | `create-` |
-| 2 | Members | HIGH | `members-` |
-| 3 | Permissions | HIGH | `permissions-` |
-| 4 | Welcome | MEDIUM | `welcome-` |
+| 优先级 | 分类 | 影响程度 | 前缀 |
+|---------|---------|-----------|---------|
+| 1      | 创建     | 关键        | `create-`     |
+| 2      | 成员     | 高        | `members-`    |
+| 3      | 权限     | 高        | `permissions-`   |
+| 4      | 欢迎     | 中        | `welcome-`    |
 
-## Quick reference
+## 快速参考
 
-### Create (CRITICAL)
-- `create-group` - Create new group conversations
-- `create-dm` - Create direct messages
+### 创建（关键）
+- `create-group`  - 创建新的组内对话
+- `create-dm`  - 创建私信
 
-### Members (HIGH)
-- `members-add` - Add members to groups
-- `members-remove` - Remove members from groups
-- `members-get-address` - Get member Ethereum addresses
+### 成员（高优先级）
+- `members-add`  - 将成员添加到组中
+- `members-remove` - 从组中删除成员
+- `members-get-address` - 获取成员的以太坊地址
 
-### Permissions (HIGH)
-- `permissions-roles` - Understand member, admin, super admin roles
-- `permissions-custom` - Set custom permission policies
+### 权限（高优先级）
+- `permissions-roles` - 了解成员、管理员和超级管理员的角色
+- `permissions-custom` - 设置自定义权限策略
 
-### Welcome (MEDIUM)
-- `welcome-on-install` - Send welcome on agent installation
-- `welcome-new-members` - Welcome new group members
+### 欢迎（中等优先级）
+- `welcome-on-install` - 在代理安装时发送欢迎消息
+- `welcome-new-members` - 欢迎新加入组的成员
 
-## Quick start
+## 快速入门
 
 ```typescript
 // Create a group
@@ -67,9 +67,9 @@ agent.on("dm", async (ctx) => {
 });
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+有关详细说明，请阅读各个规则文件：
 
 ```
 rules/create-group.md
@@ -77,4 +77,3 @@ rules/members-add.md
 rules/permissions-roles.md
 rules/welcome-on-install.md
 ```
-

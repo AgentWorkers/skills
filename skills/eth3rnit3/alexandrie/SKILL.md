@@ -1,32 +1,32 @@
 # Alexandrie Skill
 
-Interact with Alexandrie note-taking app at https://notes.eth3rnit3.org
+用于与 Alexandrie 笔记应用程序进行交互（地址：https://notes.eth3rnit3.org）
 
-## Configuration
+## 配置信息
 
-- **API URL**: `https://api-notes.eth3rnit3.org/api`
-- **Frontend**: `https://notes.eth3rnit3.org`
-- **Username**: `eth3rnit3`
-- **User ID**: `671423603690045441`
-- **Password**: Stored in `/home/eth3rnit3/clawd/.env` as `ALEXANDRIE_PASSWORD`
+- **API 地址**：`https://api-notes.eth3rnit3.org/api`
+- **前端页面**：`https://notes.eth3rnit3.org`
+- **用户名**：`eth3rnit3`
+- **用户 ID**：`671423603690045441`
+- **密码**：存储在 `/home/eth3rnit3/clawd/.env` 文件中，键名为 `ALEXANDRIE_PASSWORD`
 
-## Usage
+## 使用方法
 
-Use the `alexandrie.sh` script for all operations:
+所有操作均通过 `alexandrie.sh` 脚本完成：
 
 ```bash
 /home/eth3rnit3/clawd/skills/alexandrie/alexandrie.sh <command> [args]
 ```
 
-## Commands
+## 命令说明
 
-### Authentication
+### 认证
 ```bash
 ./alexandrie.sh login                    # Login and get token
 ./alexandrie.sh logout                   # Logout
 ```
 
-### Notes (Nodes)
+### 笔记（节点）
 ```bash
 ./alexandrie.sh list                     # List all notes/categories
 ./alexandrie.sh get <nodeId>             # Get a specific note with content
@@ -36,51 +36,52 @@ Use the `alexandrie.sh` script for all operations:
 ./alexandrie.sh delete <nodeId>          # Delete a note
 ```
 
-## Node Roles
-- **role: 1** = Category/Workspace (container)
-- **role: 3** = Document (note with content)
+## 节点角色
+- **角色：1**：表示分类/工作区（容器）
+- **角色：3**：表示包含内容的笔记
 
-## Current Structure
-- `671425872858841091` - **Perso** (category)
-- `671426069886271492` - **Test** (document)
+## 当前结构
+- `671425872858841091` - **Perso**（分类）
+- `671426069886271492` - **Test**（笔记）
 
-## Examples
+## 示例操作
 
-### List all notes
+### 列出所有笔记
 ```bash
 ./alexandrie.sh login
 ./alexandrie.sh list
 ```
 
-### Read a note
+### 阅读笔记
 ```bash
 ./alexandrie.sh get 671426069886271492
 # Returns: "Salut, ceci est un **test**"
 ```
 
-### Create a note
+### 创建笔记
 ```bash
 ./alexandrie.sh create "My Note" "# Title\n\nContent here" 671425872858841091
 ```
 
-### Search
+### 搜索笔记
 ```bash
 ./alexandrie.sh search "test"
 ```
 
-## API Reference
+## API 参考
 
-Base URL: `https://api-notes.eth3rnit3.org/api`
+基础 URL：`https://api-notes.eth3rnit3.org/api`
 
-### Endpoints
-- `POST /auth` - Login (body: `{"username": "...", "password": "..."}`)
-- `POST /auth/logout` - Logout
-- `GET /nodes/user/:userId` - List user's nodes
-- `GET /nodes/:nodeId` - Get node by ID (includes content)
-- `GET /nodes/search?q=query` - Search nodes
-- `POST /nodes` - Create node
-- `PUT /nodes/:nodeId` - Update node
-- `DELETE /nodes/:nodeId` - Delete node
+### API 端点
+- `POST /auth` - 登录（请求体：`{"username": "...", "password": "..."}`）
+- `POST /auth/logout` - 注销
+- `GET /nodes/user/:userId` - 列出用户的笔记
+- `GET /nodes/:nodeId` - 根据 ID 获取笔记（包含内容）
+- `GET /nodes/search?q=query` - 搜索笔记
+- `POST /nodes` - 创建笔记
+- `PUT /nodes/:nodeId` - 更新笔记
+- `DELETE /nodes/:nodeId` - 删除笔记
 
-### Authentication
-JWT token stored in cookies after login (`/tmp/alexandrie_cookies.txt`).
+### 认证机制
+
+登录后，JWT 令牌会存储在 cookie 中（文件路径：`/tmp/alexandrie_cookies.txt`）。

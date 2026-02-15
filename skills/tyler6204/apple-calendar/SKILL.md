@@ -1,45 +1,45 @@
 ---
 name: apple-calendar
-description: Apple Calendar.app integration for macOS. CRUD operations for events, search, and multi-calendar support.
+description: macOS上的Apple Calendar.app集成：支持事件的CRUD（创建、读取、更新、删除）操作、搜索功能以及多日历管理。
 metadata: {"clawdbot":{"emoji":"📅","os":["darwin"]}}
 ---
 
-# Apple Calendar
+# Apple 日历
 
-Interact with Calendar.app via AppleScript. Run scripts from: `cd {baseDir}`
+通过 AppleScript 与 Calendar.app 进行交互。脚本的运行路径为：`cd {baseDir}`
 
-## Commands
+## 命令
 
-| Command | Usage |
+| 命令 | 用法 |
 |---------|-------|
-| List calendars | `scripts/cal-list.sh` |
-| List events | `scripts/cal-events.sh [days_ahead] [calendar_name]` |
-| Read event | `scripts/cal-read.sh <event-uid> [calendar_name]` |
-| Create event | `scripts/cal-create.sh <calendar> <summary> <start> <end> [location] [description] [allday] [recurrence]` |
-| Update event | `scripts/cal-update.sh <event-uid> [--summary X] [--start X] [--end X] [--location X] [--description X]` |
-| Delete event | `scripts/cal-delete.sh <event-uid> [calendar_name]` |
-| Search events | `scripts/cal-search.sh <query> [days_ahead] [calendar_name]` |
+| 列出日历 | `scripts/cal-list.sh` |
+| 列出事件 | `scripts/cal-events.sh [天数] [日历名称]` |
+| 读取事件信息 | `scripts/cal-read.sh <事件 UID> [日历名称]` |
+| 创建事件 | `scripts/cal-create.sh <日历> <事件摘要> <开始时间> <结束时间> [地点] [描述] [全天] [重复频率]` |
+| 更新事件 | `scripts/cal-update.sh <事件 UID> [--摘要 X] [--开始时间 X] [--结束时间 X] [--地点 X] [--描述 X]` |
+| 删除事件 | `scripts/cal-delete.sh <事件 UID> [日历名称]` |
+| 搜索事件 | `scripts/cal-search.sh <搜索条件> [天数] [日历名称]` |
 
-## Date Format
+## 日期格式
 
-- Timed: `YYYY-MM-DD HH:MM`
-- All-day: `YYYY-MM-DD`
+- 时间格式：`YYYY-MM-DD HH:MM`
+- 全天事件：`YYYY-MM-DD`
 
-## Recurrence
+## 重复频率
 
-| Pattern | RRULE |
+| 模式 | 描述 |
 |---------|-------|
-| Daily 10x | `FREQ=DAILY;COUNT=10` |
-| Weekly M/W/F | `FREQ=WEEKLY;BYDAY=MO,WE,FR` |
-| Monthly 15th | `FREQ=MONTHLY;BYMONTHDAY=15` |
+| 每日 10 次 | `FREQ=DAILY;COUNT=10` |
+| 每周一/三/五 | `FREQ=WEEKLY;BYDAY=MO,WE,FR` |
+| 每月 15 日 | `FREQ=MONTHLY;BYMONTHDAY=15` |
 
-## Output
+## 输出格式
 
-- Events/search: `UID | Summary | Start | End | AllDay | Location | Calendar`
-- Read: Full details with description, URL, recurrence
+- 搜索结果：`UID | 摘要 | 开始时间 | 结束时间 | 是否全天 | 地点 | 日历名称`
+- 读取事件信息：包含事件的详细信息（摘要、URL、重复频率等）
 
-## Notes
+## 注意事项：
 
-- Read-only calendars (Birthdays, Holidays) can't be modified
-- Calendar names are case-sensitive
-- Deleting recurring events removes entire series
+- 只读日历（如生日、节假日日历）无法被修改。
+- 日历名称区分大小写。
+- 删除重复事件会删除该事件的所有重复记录。

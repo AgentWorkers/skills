@@ -1,58 +1,58 @@
 ---
 name: prose
-description: OpenProse VM skill pack. Activate on any `prose` command, .prose files, or OpenProse mentions; orchestrates multi-agent workflows.
+description: OpenProse 虚拟机技能包：可以通过任何 `prose` 命令、`.prose` 文件或 OpenProse 相关的引用进行激活；该技能包能够协调和管理多代理（multi-agent）的工作流程。
 metadata: {"moltbot":{"emoji":"🪶","homepage":"https://www.prose.md"}}
 ---
 
-# OpenProse Skill
+# OpenProse 技能
 
-OpenProse is a programming language for AI sessions. LLMs are simulators—when given a detailed system description, they don't just describe it, they _simulate_ it. The `prose.md` specification describes a virtual machine with enough fidelity that a Prose Complete system reading it _becomes_ that VM. Simulation with sufficient fidelity is implementation. **You are the Prose Complete system.**
+OpenProse 是一种用于 AI 会话的编程语言。大型语言模型（LLMs）本质上是模拟器——当给定详细的系统描述时，它们不仅仅是描述系统，而是真正地模拟系统。`prose.md` 规范描述了一台虚拟机，其细节足够真实，以至于读取该规范的 Prose Complete 系统会“变成”这台虚拟机。具有足够真实性的模拟就等同于实现了该系统。**你本身就是 Prose Complete 系统。**
 
-## Moltbot Runtime Mapping
+## Moltbot 运行时映射
 
-- **Task tool** in the upstream spec == Moltbot `sessions_spawn`
-- **File I/O** == Moltbot `read`/`write`
-- **Remote fetch** == Moltbot `web_fetch` (or `exec` with curl when POST is required)
+- **上游规范中的任务工具** 对应 Moltbot 的 `sessions_spawn` 功能
+- **文件 I/O** 对应 Moltbot 的 `read`/`write` 操作
+- **远程获取数据** 对应 Moltbot 的 `web_fetch` 方法（或在需要 POST 请求时使用 `exec` 和 curl）
 
-## When to Activate
+## 何时激活此技能
 
-Activate this skill when the user:
+在以下情况下激活此技能：
 
-- **Uses ANY `prose` command** (e.g., `prose boot`, `prose run`, `prose compile`, `prose update`, `prose help`, etc.)
-- Asks to run a `.prose` file
-- Mentions "OpenProse" or "prose program"
-- Wants to orchestrate multiple AI agents from a script
-- Has a file with `session "..."` or `agent name:` syntax
-- Wants to create a reusable workflow
+- 用户使用任何 `prose` 命令（例如：`prose boot`、`prose run`、`prose compile`、`prose update`、`prose help` 等）
+- 用户请求运行一个 `.prose` 文件
+- 用户提到“OpenProse”或“prose program”
+- 用户希望从脚本中协调多个 AI 代理
+- 用户拥有格式为 `session "..."` 或 `agent name:` 的文件
+- 用户希望创建可重用的工作流程
 
-## Command Routing
+## 命令路由
 
-When a user invokes `prose <command>`, intelligently route based on intent:
+当用户调用 `prose <command>` 时，系统会根据用户的意图智能地路由命令：
 
-| Command | Action |
+| 命令 | 操作 |
 |---------|--------|
-| `prose help` | Load `help.md`, guide user to what they need |
-| `prose run <file>` | Load VM (`prose.md` + state backend), execute the program |
-| `prose run handle/slug` | Fetch from registry, then execute (see Remote Programs below) |
-| `prose compile <file>` | Load `compiler.md`, validate the program |
-| `prose update` | Run migration (see Migration section below) |
-| `prose examples` | Show or run example programs from `examples/` |
-| Other | Intelligently interpret based on context |
+| `prose help` | 加载 `help.md`，指导用户所需操作 |
+| `prose run <file>` | 加载虚拟机配置（`prose.md` 和状态后端数据），然后执行程序 |
+| `prose run handle/slug` | 从注册表中获取相关信息，然后执行（详见“远程程序”部分） |
+| `prose compile <file>` | 加载 `compiler.md`，验证程序代码 |
+| `prose update` | 运行迁移操作（详见“迁移”部分） |
+| `prose examples` | 显示或运行 `examples/` 目录中的示例程序 |
+| 其他命令 | 根据上下文智能解析命令 |
 
-### Important: Single Skill
+### 重要提示：**只有一个技能**
 
-There is only ONE skill: `open-prose`. There are NO separate skills like `prose-run`, `prose-compile`, or `prose-boot`. All `prose` commands route through this single skill.
+系统中只有一个技能，即 `open-prose`。不存在 `prose-run`、`prose-compile` 或 `prose-boot` 等独立技能。所有 `prose` 命令都通过这个单一技能来处理。
 
-### Resolving Example References
+### 解析示例引用
 
-**Examples are bundled in `examples/` (same directory as this file).** When users reference examples by name (e.g., "run the gastown example"):
+示例程序存储在 `examples/` 目录中（与当前文件位于同一目录）。当用户通过名称引用示例程序时（例如：“运行 gastown 示例”）：
 
-1. Read `examples/` to list available files
-2. Match by partial name, keyword, or number
-3. Run with: `prose run examples/28-gas-town.prose`
+1. 读取 `examples/` 目录以列出可用文件
+2. 根据文件名的一部分、关键词或编号来匹配文件
+3. 使用命令 `prose run examples/28-gas-town.prose` 来运行相应的程序
 
-**Common examples by keyword:**
-| Keyword | File |
+**常见示例关键词：**
+| 关键词 | 对应文件 |
 |---------|------|
 | hello, hello world | `examples/01-hello-world.prose` |
 | gas town, gastown | `examples/28-gas-town.prose` |
@@ -62,9 +62,9 @@ There is only ONE skill: `open-prose`. There are NO separate skills like `prose-
 | pipeline | `examples/21-pipeline-operations.prose` |
 | error, retry | `examples/22-error-handling.prose` |
 
-### Remote Programs
+### 远程程序
 
-You can run any `.prose` program from a URL or registry reference:
+你可以通过 URL 或注册表引用来运行任何 `.prose` 程序：
 
 ```bash
 # Direct URL — any fetchable URL works
@@ -75,21 +75,21 @@ prose run irl-danb/habit-miner
 prose run alice/code-review
 ```
 
-**Resolution rules:**
+**解析规则：**
 
-| Input | Resolution |
-|-------|------------|
-| Starts with `http://` or `https://` | Fetch directly from URL |
-| Contains `/` but no protocol | Resolve to `https://p.prose.md/{path}` |
-| Otherwise | Treat as local file path |
+| 输入        | 解析方式                |
+|-------------|----------------------|
+| 以 `http://` 或 `https://` 开头 | 直接从 URL 获取文件内容 |
+| 包含 `/` 但没有协议 | 解析为 `https://p.prose.md/{path}` |
+| 其他情况     | 视为本地文件路径           |
 
-**Steps for remote programs:**
+**远程程序的执行步骤：**
 
-1. Apply resolution rules above
-2. Fetch the `.prose` content
-3. Load the VM and execute as normal
+1. 应用上述解析规则
+2. 获取 `.prose` 文件的内容
+3. 加载虚拟机配置并正常执行程序
 
-This same resolution applies to `use` statements inside `.prose` files:
+这些规则同样适用于 `.prose` 文件中的 `use` 语句：
 
 ```prose
 use "https://example.com/my-program.prose"  # Direct URL
@@ -98,85 +98,84 @@ use "alice/research" as research             # Registry shorthand
 
 ---
 
-## File Locations
+## 文件位置
 
-**Do NOT search for OpenProse documentation files.** All skill files are co-located with this SKILL.md file:
+**请勿在用户的工作空间中搜索 OpenProse 的文档文件。** 所有技能相关的文件都与此 `SKILL.md` 文件位于同一目录下：
 
-| File                      | Location                    | Purpose                                   |
+| 文件名                | 所在位置                    | 用途                                   |
 | ------------------------- | --------------------------- | ----------------------------------------- |
-| `prose.md`                | Same directory as this file | VM semantics (load to run programs)       |
-| `help.md`                 | Same directory as this file | Help, FAQs, onboarding (load for `prose help`) |
-| `state/filesystem.md`     | Same directory as this file | File-based state (default, load with VM)  |
-| `state/in-context.md`     | Same directory as this file | In-context state (on request)             |
-| `state/sqlite.md`         | Same directory as this file | SQLite state (experimental, on request)   |
-| `state/postgres.md`       | Same directory as this file | PostgreSQL state (experimental, on request) |
-| `compiler.md`             | Same directory as this file | Compiler/validator (load only on request) |
-| `guidance/patterns.md`    | Same directory as this file | Best practices (load when writing .prose) |
-| `guidance/antipatterns.md`| Same directory as this file | What to avoid (load when writing .prose)  |
-| `examples/`               | Same directory as this file | 37 example programs                       |
+| `prose.md`                | 与当前文件位于同一目录          | 虚拟机配置文件（用于加载和执行程序）       |
+| `help.md`                 | 与当前文件位于同一目录          | 帮助文档、常见问题解答、入门指南（用于 `prose help` 命令） |
+| `state/filesystem.md`     | 与当前文件位于同一目录          | 基于文件的状态管理（默认配置）         |
+| `state/in-context.md`     | 与当前文件位于同一目录          | 基于上下文的状态管理（按需加载）             |
+| `state/sqlite.md`         | 与当前文件位于同一目录          | SQLite 数据库状态（实验性，按需加载）         |
+| `state/postgres.md`       | 与当前文件位于同一目录          | PostgreSQL 数据库状态（实验性，按需加载）         |
+| `compiler.md`             | 与当前文件位于同一目录          | 编译器/验证工具（仅按需加载）         |
+| `guidance/patterns.md`    | 与当前文件位于同一目录          | 编写 `.prose` 文件时的最佳实践         |
+| `guidance/antipatterns.md` | 与当前文件位于同一目录          | 编写 `.prose` 文件时应避免的错误         |
+| `examples/`               | 与当前文件位于同一目录          | 包含 37 个示例程序                         |
 
-**User workspace files** (these ARE in the user's project):
+**用户的工作空间文件**（这些文件位于用户的项目目录中）：
 
-| File/Directory   | Location                 | Purpose                             |
+| 文件/目录           | 所在位置                 | 用途                             |
 | ---------------- | ------------------------ | ----------------------------------- |
-| `.prose/.env`    | User's working directory | Config (key=value format) |
-| `.prose/runs/`   | User's working directory | Runtime state for file-based mode   |
-| `.prose/agents/` | User's working directory | Project-scoped persistent agents    |
-| `*.prose` files  | User's project           | User-created programs to execute    |
+| `.prose/.env`    | 用户的工作目录             | 配置文件（键值对格式）                   |
+| `.prose/runs/`   | 用户的工作目录             | 基于文件的运行时状态管理文件             |
+| `.prose/agents/` | 用户的工作目录             | 项目级别的持久化代理程序                   |
+| `*.prose` 文件          | 用户的项目目录             | 用户创建的程序文件                         |
 
-**User-level files** (in user's home directory, shared across all projects):
+**用户级别的文件**（位于用户的主目录中，可在所有项目中共享）：
 
-| File/Directory    | Location         | Purpose                                  |
-| ----------------- | ---------------- | ---------------------------------------- |
-| `~/.prose/agents/`| User's home dir  | User-scoped persistent agents (cross-project) |
+| 文件/目录           | 所在位置                 | 用途                             |
+| ~/.prose/agents/          | 用户的主目录             | 用户级别的持久化代理程序（跨项目使用）           |
 
-When you need to read `prose.md` or `compiler.md`, read them from the same directory where you found this SKILL.md file. Never search the user's workspace for these files.
+当你需要读取 `prose.md` 或 `compiler.md` 时，请从与 `SKILL.md` 文件相同的目录中查找这些文件。切勿在用户的工作空间中搜索这些文件。
 
 ---
 
-## Core Documentation
+## 核心文档
 
-| File                  | Purpose              | When to Load                                   |
-| --------------------- | -------------------- | ---------------------------------------------- |
-| `prose.md`            | VM / Interpreter     | Always load to run programs                    |
-| `state/filesystem.md` | File-based state     | Load with VM (default)                         |
-| `state/in-context.md` | In-context state     | Only if user requests `--in-context` or says "use in-context state" |
-| `state/sqlite.md`     | SQLite state (experimental) | Only if user requests `--state=sqlite` (requires sqlite3 CLI) |
-| `state/postgres.md`   | PostgreSQL state (experimental) | Only if user requests `--state=postgres` (requires psql + PostgreSQL) |
-| `compiler.md`         | Compiler / Validator | **Only** when user asks to compile or validate |
-| `guidance/patterns.md` | Best practices      | Load when **writing** new .prose files         |
-| `guidance/antipatterns.md` | What to avoid  | Load when **writing** new .prose files         |
+| 文件名                | 用途                          | 何时加载                          |
+| --------------------- | ------------------------------ | ---------------------------------------------- |
+| `prose.md`            | 虚拟机配置文件            | 始终加载以执行程序                     |
+| `state/filesystem.md`     | 基于文件的状态管理文件         | 默认情况下与虚拟机一起加载                   |
+| `state/in-context.md`     | 基于上下文的状态管理文件         | 仅当用户请求 `--in-context` 时加载                 |
+| `state/sqlite.md`         | SQLite 数据库状态文件         | 仅当用户请求 `--state=sqlite` 时加载（需要 sqlite3 CLI）     |
+| `state/postgres.md`       | PostgreSQL 数据库状态文件         | 仅当用户请求 `--state=postgres` 时加载（需要 psql 和 PostgreSQL）     |
+| `compiler.md`         | 编译器/验证工具文件         | 仅当用户请求编译或验证时加载                   |
+| `guidance/patterns.md`    | 编写 `.prose` 文件时的最佳实践         | 编写新文件时加载                         |
+| `guidance/antipatterns.md` | 编写 `.prose` 文件时应避免的错误         | 编写新文件时加载                         |
 
-### Authoring Guidance
+### 编写指南
 
-When the user asks you to **write or create** a new `.prose` file, load the guidance files:
-- `guidance/patterns.md` — Proven patterns for robust, efficient programs
-- `guidance/antipatterns.md` — Common mistakes to avoid
+当用户要求你**编写或创建**新的 `.prose` 文件时，请参考以下指导文件：
+- `guidance/patterns.md` — 提供编写健壮、高效程序的实用模式
+- `guidance/antipatterns.md` — 列出常见的错误和避免方式
 
-Do **not** load these when running or compiling—they're for authoring only.
+**注意：** 在运行或编译程序时** **不要** 加载这些指导文件，因为它们仅用于编写过程。
 
-### State Modes
+### 状态管理方式
 
-OpenProse supports three state management approaches:
+OpenProse 支持三种状态管理方式：
 
-| Mode | When to Use | State Location |
-|------|-------------|----------------|
-| **filesystem** (default) | Complex programs, resumption needed, debugging | `.prose/runs/{id}/` files |
-| **in-context** | Simple programs (<30 statements), no persistence needed | Conversation history |
-| **sqlite** (experimental) | Queryable state, atomic transactions, flexible schema | `.prose/runs/{id}/state.db` |
-| **postgres** (experimental) | True concurrent writes, external integrations, team collaboration | PostgreSQL database |
+| 状态管理方式 | 使用场景                | 状态存储位置                         |
+|------------|------------------|--------------------------------------|
+| **filesystem**（默认） | 复杂程序、需要恢复状态、调试时使用       | `.prose/runs/{id}/` 文件           |
+| **in-context** | 简单程序（少于 30 条指令）、无需持久化状态时使用 | 对话历史记录                         |
+| **sqlite**（实验性） | 支持查询、原子事务和灵活的数据库结构       | `.prose/runs/{id}/state.db`                 |
+| **postgres**（实验性） | 支持并发写入、外部集成和团队协作       | PostgreSQL 数据库                         |
 
-**Default behavior:** When loading `prose.md`, also load `state/filesystem.md`. This is the recommended mode for most programs.
+**默认行为：** 在加载 `prose.md` 时，同时加载 `state/filesystem.md`。这对大多数程序来说是推荐的方式。
 
-**Switching modes:** If the user says "use in-context state" or passes `--in-context`, load `state/in-context.md` instead.
+**切换状态管理方式：** 如果用户请求使用基于上下文的状态管理（`--in-context`），则加载 `state/in-context.md`。
 
-**Experimental SQLite mode:** If the user passes `--state=sqlite` or says "use sqlite state", load `state/sqlite.md`. This mode requires `sqlite3` CLI to be installed (pre-installed on macOS, available via package managers on Linux/Windows). If `sqlite3` is unavailable, warn the user and fall back to filesystem state.
+**实验性的 SQLite 模式：** 如果用户指定 `--state=sqlite` 或请求使用 SQLite 状态管理方式，则加载 `state/sqlite.md`。此模式需要安装 `sqlite3` CLI（macOS 上已预装，Linux/Windows 上可通过包管理器安装）。如果 `sqlite3` 无法使用，需警告用户并切换回基于文件系统的状态管理方式。
 
-**Experimental PostgreSQL mode:** If the user passes `--state=postgres` or says "use postgres state":
+**实验性的 PostgreSQL 模式：** 如果用户指定 `--state=postgres` 或请求使用 PostgreSQL 状态管理方式：
 
-**⚠️ Security Note:** Database credentials in `OPENPROSE_POSTGRES_URL` are passed to subagent sessions and visible in logs. Advise users to use a dedicated database with limited-privilege credentials. See `state/postgres.md` for secure setup guidance.
+**⚠️ 安全提示：** `OPENPROSE_POSTGRES_URL` 中的数据库凭据会传递给子代理会话，并会显示在日志中。建议用户使用权限受限的专用数据库。请参阅 `state/postgres.md` 以获取安全配置指南。**
 
-1. **Check for connection configuration first:**
+1. **首先检查连接配置：**
    ```bash
    # Check .prose/.env for OPENPROSE_POSTGRES_URL
    cat .prose/.env 2>/dev/null | grep OPENPROSE_POSTGRES_URL
@@ -184,12 +183,12 @@ OpenProse supports three state management approaches:
    echo $OPENPROSE_POSTGRES_URL
    ```
 
-2. **If connection string exists, verify connectivity:**
+2. **如果连接字符串存在，验证连接是否成功：**
    ```bash
    psql "$OPENPROSE_POSTGRES_URL" -c "SELECT 1" 2>&1
    ```
 
-3. **If not configured or connection fails, advise the user:**
+3. **如果配置缺失或连接失败，提醒用户：**
    ```
    ⚠️  PostgreSQL state requires a connection URL.
 
@@ -206,33 +205,33 @@ OpenProse supports three state management approaches:
    See state/postgres.md for detailed setup options.
    ```
 
-4. **Only after successful connection check, load `state/postgres.md`**
+4. **只有在连接成功后，才加载 `state/postgres.md`**
 
-This mode requires both `psql` CLI and a running PostgreSQL server. If either is unavailable, warn and offer fallback to filesystem state.
+此模式需要 `psql` CLI 和运行中的 PostgreSQL 服务器。如果其中任何一个不可用，需警告用户并建议切换回基于文件系统的状态管理方式。
 
-**Context warning:** `compiler.md` is large. Only load it when the user explicitly requests compilation or validation. After compiling, recommend `/compact` or a new session before running—don't keep both docs in context.
+**注意事项：** `compiler.md` 文件体积较大。仅在用户明确请求编译或验证时才加载它。编译完成后，建议用户使用 `/compact` 命令或创建新会话后再执行程序——避免同时加载这两个文档。
 
-## Examples
+## 示例程序
 
-The `examples/` directory contains 37 example programs:
+`examples/` 目录包含 37 个示例程序：
 
-- **01-08**: Basics (hello world, research, code review, debugging)
-- **09-12**: Agents and skills
-- **13-15**: Variables and composition
-- **16-19**: Parallel execution
-- **20-21**: Loops and pipelines
-- **22-23**: Error handling
-- **24-27**: Advanced (choice, conditionals, blocks, interpolation)
-- **28**: Gas Town (multi-agent orchestration)
-- **29-31**: Captain's chair pattern (persistent orchestrator)
-- **33-36**: Production workflows (PR auto-fix, content pipeline, feature factory, bug hunter)
-- **37**: The Forge (build a browser from scratch)
+- **01-08**：基础示例（hello world、研究、代码审查、调试）
+- **09-12**：代理和技能相关示例
+- **13-15**：变量和组合逻辑示例
+- **16-19**：并行执行示例
+- **20-21**：循环和管道处理示例
+- **22-23**：错误处理示例
+- **24-27**：高级功能示例（条件判断、代码块、插值操作）
+- **28**：Gas Town（多代理协调示例）
+- **29-31**：Captain’s Chair 模式（持久化代理协调器）
+- **33-36**：生产流程示例（自动修复代码、内容推送、特性生成、错误排查）
+- **37**：The Forge（从零开始构建浏览器）
 
-Start with `01-hello-world.prose` or try `37-the-forge.prose` to watch AI build a web browser.
+可以从 `01-hello-world.prose` 开始学习，或尝试 `37-the-forge.prose` 来观看 AI 如何构建一个网页浏览器。
 
-## Execution
+## 执行流程
 
-When first invoking the OpenProse VM in a session, display this banner:
+首次在会话中调用 OpenProse 虚拟机时，会显示以下提示信息：
 
 ```
 ┌─────────────────────────────────────┐
@@ -241,56 +240,46 @@ When first invoking the OpenProse VM in a session, display this banner:
 └─────────────────────────────────────┘
 ```
 
-To execute a `.prose` file, you become the OpenProse VM:
+要执行一个 `.prose` 文件，你需要成为 OpenProse 虚拟机：
 
-1. **Read `prose.md`** — this document defines how you embody the VM
-2. **You ARE the VM** — your conversation is its memory, your tools are its instructions
-3. **Spawn sessions** — each `session` statement triggers a Task tool call
-4. **Narrate state** — use the narration protocol to track execution ([Position], [Binding], [Success], etc.)
-5. **Evaluate intelligently** — `**...**` markers require your judgment
+1. **读取 `prose.md` 文件** — 该文件定义了虚拟机的运行规则
+2. **你本身就是虚拟机** — 你的对话内容构成了虚拟机的内存，你的操作指令决定了虚拟机的行为
+3. **创建会话** — 每条 `session` 语句都会触发相应的任务执行
+4. **记录执行过程** — 使用特定的协议来跟踪程序的执行状态（如 [Position]、[Binding]、[Success] 等）
+5. **智能判断执行结果** — 文件中的 `**...** 标记需要你根据实际情况进行判断
 
-## Help & FAQs
+## 帮助与常见问题解答
 
-For syntax reference, FAQs, and getting started guidance, load `help.md`.
+有关语法参考、常见问题解答以及使用指南，请加载 `help.md` 文件。
 
 ---
 
-## Migration (`prose update`)
+## 迁移（`prose update`）
 
-When a user invokes `prose update`, check for legacy file structures and migrate them to the current format.
+当用户执行 `prose update` 命令时，系统会检查旧版本的文件结构，并将其迁移到当前格式：
 
-### Legacy Paths to Check
+### 需要检查的旧文件路径
 
-| Legacy Path | Current Path | Notes |
-|-------------|--------------|-------|
-| `.prose/state.json` | `.prose/.env` | Convert JSON to key=value format |
-| `.prose/execution/` | `.prose/runs/` | Rename directory |
+| 旧文件路径         | 新文件路径                | 备注                                      |
+|-----------------|------------------|-----------------------------------------|
+| `.prose/state.json`    | `.prose/.env`            | 将 JSON 格式转换为键值对格式                   |
+| `.prose/execution/`    | `.prose/runs/`            | 重命名目录                              |
 
-### Migration Steps
+### 迁移步骤
 
-1. **Check for `.prose/state.json`**
-   - If exists, read the JSON content
-   - Convert to `.env` format:
-     ```json
-     {"OPENPROSE_TELEMETRY": "enabled", "USER_ID": "user-xxx", "SESSION_ID": "sess-xxx"}
-     ```
-     becomes:
-     ```env
-     OPENPROSE_TELEMETRY=enabled
-     USER_ID=user-xxx
-     SESSION_ID=sess-xxx
-     ```
-   - Write to `.prose/.env`
-   - Delete `.prose/state.json`
+1. **检查 `.prose/state.json` 文件**：
+   - 如果存在，读取其内容并将其转换为 `.env` 格式
+   - 将转换后的内容写入 `.prose/.env` 文件
+   - 删除 `.prose/state.json` 文件
 
-2. **Check for `.prose/execution/`**
-   - If exists, rename to `.prose/runs/`
-   - The internal structure of run directories may also have changed; migration of individual run state is best-effort
+2. **检查 `.prose/execution/` 目录**：
+   - 如果存在，将其重命名为 `.prose/runs/`
+   - 注意：运行目录的内部结构可能已发生变化，因此需要手动迁移每个运行时的状态数据
 
-3. **Create `.prose/agents/` if missing**
-   - This is a new directory for project-scoped persistent agents
+3. **如果缺少 `.prose/agents/` 目录**，则创建该目录
+   - 该目录用于存储项目级别的持久化代理程序
 
-### Migration Output
+### 迁移结果
 
 ```
 🔄 Migrating OpenProse workspace...
@@ -300,19 +289,19 @@ When a user invokes `prose update`, check for legacy file structures and migrate
 ✅ Migration complete. Your workspace is up to date.
 ```
 
-If no legacy files are found:
+如果未找到旧版本文件：
 ```
 ✅ Workspace already up to date. No migration needed.
 ```
 
-### Skill File References (for maintainers)
+### 技能文件名称的变更（供维护人员参考）
 
-These documentation files were renamed in the skill itself (not user workspace):
+这些文档文件的名称在技能文件本身中已更新（用户的工作空间中无需更改）：
 
-| Legacy Name | Current Name |
-|-------------|--------------|
-| `docs.md` | `compiler.md` |
-| `patterns.md` | `guidance/patterns.md` |
-| `antipatterns.md` | `guidance/antipatterns.md` |
+| 旧文件名       | 新文件名                   |
+|--------------|------------------|-----------------------------------------|
+| `docs.md`      | `compiler.md`                |                          |
+| `patterns.md`      | `guidance/patterns.md`                |                          |
+| `antipatterns.md`      | `guidance/antipatterns.md`                |                          |
 
-If you encounter references to the old names in user prompts or external docs, map them to the current paths.
+如果在用户提示或外部文档中遇到旧文件名，请将其映射到新的文件路径。

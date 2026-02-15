@@ -1,35 +1,35 @@
 # json-validate
 
-"Validate JSON syntax and structure"
+“验证 JSON 语法和结构”
 
-## Requirements
+## 前提条件
 
-- Expanso Edge installed (`expanso-edge` binary in PATH)
-- Install via: `clawhub install expanso-edge`
+- 已安装 Expanso Edge（`expanso-edge` 可执行文件需添加到系统的 PATH 环境变量中）  
+- 安装方法：`clawhub install expanso-edge`
 
-## Usage
+## 使用方法
 
-### CLI Pipeline
+### 命令行界面（CLI）流程  
 ```bash
 # Run standalone
 echo '<input>' | expanso-edge run pipeline-cli.yaml
 ```
 
-### MCP Pipeline
+### MCP（Management Console）流程  
 ```bash
 # Start as MCP server
 expanso-edge run pipeline-mcp.yaml
 ```
 
-### Deploy to Expanso Cloud
+### 部署到 Expanso Cloud  
 ```bash
 expanso-cli job deploy https://skills.expanso.io/json-validate/pipeline-cli.yaml
 ```
 
-## Files
+## 相关文件
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `skill.yaml` | Skill metadata (inputs, outputs, credentials) |
-| `pipeline-cli.yaml` | Standalone CLI pipeline |
-| `pipeline-mcp.yaml` | MCP server pipeline |
+| `skill.yaml` | 技能元数据（输入参数、输出结果、认证信息） |
+| `pipeline-cli.yaml` | 独立的 CLI 流程配置文件 |
+| `pipeline-mcp.yaml` | MCP 服务器上的流程配置文件 |

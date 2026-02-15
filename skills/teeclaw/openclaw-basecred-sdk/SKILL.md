@@ -3,7 +3,7 @@ name: openclaw-basecred-sdk
 version: 1.0.2
 author: teeclaw
 license: MIT
-description: Check human reputation via Ethos Network, Talent Protocol, and Farcaster using the neutral basecred-sdk. Fetches composable reputation data without judgment - raw scores, levels, and signals for identity verification and trust assessment. Use when you need to check someone's onchain credibility, builder/creator scores, or Farcaster quality metrics.
+description: 通过 Ethos Network、Talent Protocol 和 Farcaster，使用 neutral basecred-sdk 来检查个人的声誉。该工具可以获取可组合的声誉数据（包括原始分数、等级及相关信号），用于身份验证和信任评估。当您需要验证某人在链上的可信度、创作者/构建者的评分，或 Farcaster 的质量指标时，可以使用该工具。
 tags: [reputation, identity, ethos, talent, farcaster, basecred, onchain, verification]
 metadata:
   openclaw:
@@ -13,38 +13,38 @@ metadata:
 
 # basecred-sdk-skill
 
-**OpenClaw skill for checking human reputation via Ethos Network, Talent Protocol, and Farcaster using the neutral basecred-sdk.**
+**OpenClaw技能：通过Ethos Network、Talent Protocol和Farcaster使用中立的basecred-sdk来检查用户的声誉。**
 
-## Overview
+## 概述
 
-This skill provides a CLI interface to the [@basecred/sdk](https://www.npmjs.com/package/@basecred/sdk) for fetching neutral, composable reputation data from multiple web3 identity providers:
+该技能提供了一个命令行界面（CLI），用于调用[@basecred/sdk](https://www.npmjs.com/package/@basecred/sdk)，以从多个Web3身份提供者获取中立的、可组合的声誉数据：
 
-- **Ethos Network** - Social credibility (vouches, reviews, score)
-- **Talent Protocol** - Builder and creator scores
-- **Farcaster (Neynar)** - Account quality metrics
+- **Ethos Network**：社交信誉（推荐、评价、分数）
+- **Talent Protocol**：构建者和创作者的评分
+- **Farcaster (Neynar)**：账户质量指标
 
-The SDK is designed to make reputation data **observable without turning it into judgment**. It returns raw scores, levels, and signals—no rankings, no percentiles, no trust verdicts.
+该SDK的设计目的是让声誉数据可以被观察，但不会对其进行评判。它返回原始分数、等级和信号——没有排名、百分位数或信任判断。
 
-## Security
+## 安全性
 
-**This skill uses secure, hardcoded credential loading** — see [SECURITY.md](./SECURITY.md) for full audit details.
+**该技能使用安全的、硬编码的凭证加载方式**——详细审计信息请参见[SECURITY.md](./SECURITY.md)。
 
-**TL;DR:**
-- ✅ Credentials loaded from `~/.openclaw/.env` (hardcoded path, no directory traversal)
-- ✅ Upstream package `@basecred/sdk@0.6.2` audited and clean (MIT licensed, minimal deps)
-- ✅ No secrets logged or written to disk
-- ✅ Read-only API access (public reputation data)
+**简而言之：**
+- ✅ 凭证从`~/.openclaw/.env`文件中加载（硬编码路径，无目录遍历风险）
+- ✅ 上游包[@basecred/sdk@0.6.2]已经过审计且无安全问题（MIT许可证，依赖项极少）
+- ✅ 无敏感信息被记录或写入磁盘
+- ✅ 只提供只读的API访问权限（公开声誉数据）
 
-## Prerequisites
+## 先决条件
 
-### Required
+### 必需条件
 
-- Node.js 18+
-- OpenClaw runtime
+- Node.js 18及以上版本
+- OpenClaw运行时环境
 
-### Optional API Keys
+### 可选的API密钥
 
-**Environment variables** (in `~/.openclaw/.env`):
+**环境变量**（位于`~/.openclaw/.env`文件中）：
 
 ```bash
 # Optional: Enables Talent Protocol builder/creator scores
@@ -54,32 +54,32 @@ TALENT_API_KEY=your_talent_api_key
 NEYNAR_API_KEY=your_neynar_api_key
 ```
 
-**Notes:**
-- Ethos Network requires **no API key**
-- Without `TALENT_API_KEY`, builder/creator scores will be unavailable
-- Without `NEYNAR_API_KEY`, Farcaster scores will be unavailable
-- The skill works with partial data (graceful degradation)
+**注意：**
+- Ethos Network不需要API密钥
+- 如果没有`TALENT_API_KEY`，则无法获取构建者/创作者的评分
+- 如果没有`NEYNAR_API_KEY`，则无法获取Farcaster的评分
+- 即使部分数据缺失，该技能仍能正常工作（具有容错机制）
 
-**Get API keys:**
-- Talent Protocol: https://talentprotocol.com
-- Neynar: https://neynar.com
+**获取API密钥：**
+- Talent Protocol：https://talentprotocol.com
+- Neynar：https://neynar.com
 
-## Installation
+## 安装
 
 ```bash
 cd ~/.openclaw/workspace/skills/openclaw-basecred-sdk
 npm install
 ```
 
-## Usage
+## 使用方法
 
-### Basic Check
+### 基本检查
 
 ```bash
 ./scripts/check-reputation.mjs 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 ```
 
-**Output (JSON summary):**
+**输出（JSON格式）：**
 ```json
 {
   "address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
@@ -107,7 +107,7 @@ npm install
 }
 ```
 
-### Command Options
+### 命令选项
 
 ```bash
 # Summary format (default)
@@ -126,47 +126,26 @@ npm install
 ./scripts/check-reputation.mjs --help
 ```
 
-### Examples
+### 示例
 
-**Check vitalik.eth:**
+**检查vitalik.eth的声誉：**
 ```bash
 ./scripts/check-reputation.mjs 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 ```
 
-**Human-readable format:**
+**人类可读的格式：**
 ```bash
 ./scripts/check-reputation.mjs 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 --human
 ```
 
-Output:
-```
-📊 Reputation Summary for 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
-⏰ 2026-02-10T07:00:00.000Z
-
-📡 Data Sources:
-   🔍 ethos: not_found
-   ✅ talent: available
-   ✅ farcaster: available
-
-🛠️  Talent Protocol:
-   Builder: 86 (Practitioner) - Rank #8648
-   Creator: 103 (Established)
-
-🎭 Farcaster:
-   Quality Score: 1
-   Passes Threshold: ✅
-
-📅 Recency: recent
-```
-
-**Full profile with all data:**
+**包含所有数据的完整个人资料：**
 ```bash
 ./scripts/check-reputation.mjs 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 --full
 ```
 
-## Output Format
+## 输出格式
 
-### Summary Format (default)
+### 概要格式（默认）
 
 ```json
 {
@@ -202,109 +181,109 @@ Output:
 }
 ```
 
-### Full Profile Format
+### 完整个人资料格式
 
-See [@basecred/sdk documentation](https://github.com/Callmedas69/basecred/tree/main/packages/sdk#output-schema) for complete schema.
+有关完整的输出格式，请参阅[@basecred/sdk文档](https://github.com/Callmedas69/basecred/tree/main/packages/sdk#output-schema)。
 
-## Data Sources
+## 数据来源
 
 ### Ethos Network
 
-**What it provides:**
-- Social credibility score (0-2800)
-- Vouches received (trust endorsements)
-- Reviews (positive/neutral/negative)
-- Semantic credibility level (Untrusted → Renowned)
+**提供的数据：**
+- 社交信誉分数（0-2800）
+- 收到的推荐（信任背书）
+- 评价（正面/中性/负面）
+- 语义信誉等级（不可信 → 著名）
 
-**No API key required.**
+**无需API密钥。**
 
 ### Talent Protocol
 
-**What it provides:**
-- **Builder Score** - Technical/development credibility (0-250+)
-- **Creator Score** - Content/creative credibility (0-250+)
-- Rank positions (when available)
-- Semantic levels (Novice → Master / Emerging → Elite)
+**提供的数据：**
+- **构建者评分**：技术/开发信誉（0-250+）
+- **创作者评分**：内容/创意信誉（0-250+）
+- 排名（如有提供）
+- 语义等级（新手 → 大师 / 新兴 → 精英）
 
-**Requires:** `TALENT_API_KEY`
+**需要**：`TALENT_API_KEY`
 
 ### Farcaster (Neynar)
 
-**What it provides:**
-- Account quality score (0-1)
-- Quality threshold pass/fail (default: 0.5)
+**提供的数据：**
+- 账户质量分数（0-1）
+- 质量达标/未达标（默认值：0.5）
 
-**Requires:** `NEYNAR_API_KEY`
+**需要**：`NEYNAR_API_KEY`
 
-## Availability States
+## 数据可用性状态
 
-Each data source returns exactly one state:
+每个数据源都会返回以下状态之一：
 
-| State | Meaning |
+| 状态 | 含义 |
 |-------|---------|
-| `available` | Profile exists, data fetched successfully |
-| `not_found` | No profile exists for this address |
-| `error` | API error or failure |
+| `available` | 个人资料存在，数据获取成功 |
+| `not_found` | 该地址没有个人资料 |
+| `error` | API错误或失败 |
 
-The skill **never crashes** on missing data. Partial responses are valid and useful.
+即使数据缺失，该技能也不会崩溃。部分响应也是有效且有用的。
 
-## Semantic Levels
+## 语义等级
 
-The SDK derives human-readable levels from raw scores:
+SDK会根据原始分数生成人类可读的等级：
 
-**Ethos Credibility Levels:**
-- 0-799: Untrusted
-- 800-1199: Questionable
-- 1200-1399: Neutral
-- 1400-1599: Known
-- 1600-1799: Established
-- 1800-1999: Reputable
-- 2000-2199: Exemplary
-- 2200-2399: Distinguished
-- 2400-2599: Revered
-- 2600-2800: Renowned
+**Ethos信誉等级：**
+- 0-799：不可信
+- 800-1199：存疑
+- 1200-1399：中立
+- 1400-1599：知名
+- 1600-1799：声誉良好
+- 1800-1999：值得信赖
+- 2000-2199：典范
+- 2200-2399：杰出
+- 2400-2599：备受尊敬
+- 2600-2800：著名
 
-**Talent Builder Levels:**
-- 0-39: Novice
-- 40-79: Apprentice
-- 80-119: Practitioner
-- 120-169: Advanced
-- 170-249: Expert
-- 250+: Master
+**Talent构建者等级：**
+- 0-39：新手
+- 40-79：学徒
+- 80-119：从业者
+- 120-169：高级
+- 170-249：专家
+- 250+：大师
 
-**Talent Creator Levels:**
-- 0-39: Emerging
-- 40-79: Growing
-- 80-119: Established
-- 120-169: Accomplished
-- 170-249: Prominent
-- 250+: Elite
+**Talent创作者等级：**
+- 0-39：新兴
+- 40-79：成长中
+- 80-119：成熟
+- 120-169：成就显著
+- 170-249：杰出
+- 250+：精英
 
-## Recency Buckets
+## 数据更新频率
 
-Data freshness indicator:
+数据更新频率的指示：
 
-| Bucket | Condition |
+| 分类 | 条件 |
 |--------|-----------|
-| `recent` | Updated within 30 days |
-| `stale` | Updated 31-90 days ago |
-| `dormant` | Updated more than 90 days ago |
+| `recent` | 在30天内更新 |
+| `stale` | 31-90天前更新 |
+| `dormant` | 超过90天前更新 |
 
-## Testing
+## 测试
 
-Run the test suite with known addresses:
+使用已知地址运行测试套件：
 
 ```bash
 npm test
 ```
 
-This tests:
-- Vitalik Buterin (vitalik.eth)
-- Mr. Tee (main wallet)
+测试对象包括：
+- Vitalik Buterin（vitalik.eth）
+- Mr. Tee（主要钱包）
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-Import the library in your own scripts:
+可以在自己的脚本中导入该库：
 
 ```javascript
 import { checkReputation, getSummary, formatHuman } from './lib/basecred.mjs';
@@ -314,79 +293,76 @@ const summary = getSummary(result);
 console.log(summary);
 ```
 
-## Error Handling
+## 错误处理
 
-The skill uses graceful error handling:
+该技能采用优雅的错误处理方式：
+- 无效地址 → 返回包含错误信息的对象
+- 缺少API密钥 → 发出警告但继续使用可用的数据源
+- API失败 → 通过`availability`字段显示错误信息
+- 网络错误 → 返回包含详细信息的错误对象
 
-- Invalid address → returns error object with message
-- Missing API keys → warns but continues with available sources
-- API failures → surfaced via `availability` field
-- Network errors → returns error object with details
+**永远不会抛出异常**——始终返回结构化的数据。
 
-**Never throws exceptions** - always returns structured data.
+## 设计原则
 
-## Design Principles
+该技能遵循basecred-sdk的设计理念：
+- **缺失的数据会明确显示**——绝不会隐藏
+- **时间比分数更重要**——时间字段有助于进行连续性分析
+- **数据来源是并行的**——没有哪个数据来源比另一个更“优越”
+- **数据仅被报告，不进行评判**——由用户自行解读其含义
 
-This skill follows the basecred-sdk philosophy:
+## 非目标功能
 
-- **Absence is explicit** - Missing data is declared, never hidden
-- **Time matters more than score** - Temporal fields enable continuity analysis
-- **Sources are parallel** - No source is "better" than another
-- **Data is reported, not judged** - Consumers interpret meaning
+该技能**不**执行以下操作：
+- 判断用户的可信度
+- 对用户进行排名
+- 比较用户
+- 计算综合评分
+- 替代人类的判断
 
-## Non-Goals
+## 性能
 
-This skill intentionally does **NOT**:
+- **平均查询时间：**1-3秒（取决于网络和API的响应时间）
+- **API调用：**每个启用的数据源最多同时发送1个请求
+- **无速率限制**——但会遵守上游API的限制
 
-- Decide trustworthiness
-- Rank users against each other
-- Compare users
-- Produce composite scores
-- Replace human judgment
+## 故障排除
 
-## Performance
+**“TALENT_API_KEY未找到”警告：**
+- 在`~/.openclaw/.env`文件中添加`TALENT_API_KEY=xxx`
+- 或者接受无法获取Talent评分的情况
 
-- **Average query time:** 1-3 seconds (depends on network + API response times)
-- **API calls:** 1-3 concurrent requests (one per enabled source)
-- **No rate limiting** - but respect upstream API limits
+**“NEYNAR_API_KEY未找到”警告：**
+- 在`~/.openclaw/.env`文件中添加`NEYNAR_API_KEY=xxx`
+- 或者接受无法获取Farcaster评分的情况
 
-## Troubleshooting
+**所有数据源都返回`not_found`：**
+- 可能该地址在任何平台上都没有个人资料
+- 这是正常情况——缺失的数据也是一种信息
 
-**"TALENT_API_KEY not found" warning:**
-- Add `TALENT_API_KEY=xxx` to `~/.openclaw/.env`
-- Or accept that Talent scores will be unavailable
+**意外错误：**
+- 检查网络连接
+- 验证API密钥的有效性
+- 检查上游API的状态
 
-**"NEYNAR_API_KEY not found" warning:**
-- Add `NEYNAR_API_KEY=xxx` to `~/.openclaw/.env`
-- Or accept that Farcaster scores will be unavailable
+## 相关链接
 
-**All sources return `not_found`:**
-- Address may not have profiles on any platform
-- This is valid - absence is data
+- **源SDK：**https://github.com/Callmedas69/basecred/tree/main/packages/sdk
+- **npm包：**https://www.npmjs.com/package/@basecred/sdk
+- **Ethos Network：**https://ethos.network
+- **Talent Protocol：**https://talentprotocol.com
+- **Neynar (Farcaster)：**https://neynar.com
 
-**Unexpected errors:**
-- Check network connectivity
-- Verify API keys are valid
-- Check upstream API status
+## 许可证
 
-## Related Links
+MIT许可证
 
-- **Source SDK:** https://github.com/Callmedas69/basecred/tree/main/packages/sdk
-- **npm package:** https://www.npmjs.com/package/@basecred/sdk
-- **Ethos Network:** https://ethos.network
-- **Talent Protocol:** https://talentprotocol.com
-- **Neynar (Farcaster):** https://neynar.com
+## 作者
 
-## License
-
-MIT
-
-## Author
-
-Built by **teeclaw** for OpenClaw.
+由**teeclaw**为OpenClaw开发。
 
 ---
 
-**Version:** 1.0.1  
-**Last Updated:** 2026-02-10  
-**SDK Version:** @basecred/sdk@0.6.2
+**版本：** 1.0.1  
+**最后更新时间：** 2026-02-10  
+**SDK版本：** @basecred/sdk@0.6.2

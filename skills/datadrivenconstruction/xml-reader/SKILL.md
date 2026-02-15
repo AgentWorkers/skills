@@ -1,15 +1,15 @@
 ---
 slug: "xml-reader"
 display_name: "Xml Reader"
-description: "Read and parse XML from construction systems - P6 schedules, BSDD exports, IFC-XML, COBie-XML. Convert to pandas DataFrames."
+description: "从建筑系统中读取并解析 XML 数据（包括 P6 计划、BSDD 导出文件、IFC-XML 和 COBie-XML 格式），并将其转换为 pandas 数据框（DataFrame）。"
 ---
 
-# XML Reader for Construction Data
+# 用于建筑数据的XML读取器
 
-## Overview
-XML is used in construction for P6 schedules (XER), IFC-XML, COBie-XML, and buildingSMART Data Dictionary exports. This skill parses XML and converts to structured DataFrames.
+## 概述
+在建筑领域，XML被用于P6进度计划（XER）、IFC-XML、COBie-XML以及buildingSMART数据字典的导出。该工具能够解析XML文件，并将其转换为结构化的数据框（DataFrames）。
 
-## Python Implementation
+## Python实现
 
 ```python
 import xml.etree.ElementTree as ET
@@ -209,7 +209,7 @@ class BSDDXMLReader(ConstructionXMLReader):
         return self.elements_to_dataframe(props)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 reader = ConstructionXMLReader()
@@ -225,9 +225,9 @@ print(f"Found {len(activities)} activities")
 df = reader.elements_to_dataframe(activities)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. P6 Schedule Import
+### 1. P6进度计划的导入
 ```python
 p6_reader = P6XMLReader()
 schedule = p6_reader.parse_full_schedule("p6_export.xml")
@@ -236,7 +236,7 @@ activities = schedule['activities']
 print(f"Activities: {len(activities)}")
 ```
 
-### 2. COBie Data
+### 2. COBie数据的处理
 ```python
 cobie_reader = COBieXMLReader()
 cobie_data = cobie_reader.parse_cobie("facility_cobie.xml")
@@ -244,7 +244,7 @@ cobie_data = cobie_reader.parse_cobie("facility_cobie.xml")
 components = cobie_data.get('Component', pd.DataFrame())
 ```
 
-### 3. IFC-XML Analysis
+### 3. IFC-XML的分析
 ```python
 ifc_reader = IFCXMLReader()
 root = ifc_reader.parse_file("model.ifcxml")
@@ -255,6 +255,6 @@ for entity_type, count in sorted(types.items(), key=lambda x: -x[1])[:10]:
     print(f"{entity_type}: {count}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.1 - Semi-structured Data
-- **IFC-XML**: buildingSMART specification
+## 参考资源
+- **DDC手册**：第2.1章 - 半结构化数据
+- **IFC-XML**：buildingSMART规范

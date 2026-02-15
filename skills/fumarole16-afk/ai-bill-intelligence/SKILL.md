@@ -1,30 +1,30 @@
 ---
 name: ai-bill-intelligence
-description: Real-time AI API usage tracking and cost monitoring for OpenClaw. Track spending across OpenAI, Claude, Gemini, Kimi, DeepSeek, and Grok with live dashboard. Use when users need to monitor AI API costs, track token usage, or manage budgets for multiple AI providers.
+description: OpenClaw 提供实时 AI API 使用情况跟踪和成本监控功能。通过实时仪表板，您可以监控在 OpenAI、Claude、Geminii、Kimi、DeepSeek 和 Grok 等平台上的使用情况与费用支出。该功能适用于需要监控 AI API 成本、追踪令牌使用情况或管理多个 AI 服务提供商预算的用户。
 ---
 
 # AI Bill Intelligence v2.1.1
 
-Real-time AI API usage tracking and cost monitoring dashboard for OpenClaw.
+这是一个用于 OpenClaw 的实时 AI API 使用情况跟踪和成本监控的仪表板。
 
-## ⚠️ Important: Installation Method
+## ⚠️ 重要提示：安装方法
 
-**Do NOT use the downloaded .zip file directly.** The zip file may be misidentified by your system.
+**请勿直接使用下载的 .zip 文件**。您的系统可能会误识别该文件。
 
-### ✅ Correct Installation (CLI)
+### ✅ 正确的安装方法（使用 CLI）
 
-**Step 1: Install via OpenClaw CLI**
+**步骤 1：通过 OpenClaw CLI 安装**
 ```bash
 openclaw skill add ai-bill-intelligence
 ```
 
-Or install directly from ClawHub URL:
+或直接从 ClawHub URL 安装：
 ```bash
 openclaw skill add https://clawhub.ai/fumarole16-afk/ai-bill-intelligence
 ```
 
-**Step 2: Configure API Balances**
-Edit `vault.json` to set your initial balances:
+**步骤 2：配置 API 帐户余额**
+编辑 `vault.json` 文件以设置初始余额：
 ```json
 {
   "openai": 10.0,
@@ -36,19 +36,19 @@ Edit `vault.json` to set your initial balances:
 }
 ```
 
-**Step 3: Start Services**
+**步骤 3：启动服务**
 ```bash
 sudo systemctl start ai-bill ai-bill-collector
 ```
 
-**Step 4: View Dashboard**
-Open http://localhost:8003 in your browser.
+**步骤 4：查看仪表板**
+在浏览器中访问 http://localhost:8003。
 
 ---
 
-## Manual Installation (Alternative)
+## 手动安装（备用方案）
 
-If CLI installation doesn't work:
+如果使用 CLI 安装失败，可以尝试手动安装：
 
 ```bash
 # 1. Extract the skill
@@ -66,16 +66,16 @@ sudo systemctl enable --now ai-bill ai-bill-collector
 
 ---
 
-## Configuration
+## 配置
 
-### Initial Setup
+### 初始设置
 
-1. **Set your API balances** in `vault.json`:
+1. 在 `vault.json` 文件中设置 API 帐户余额：
 ```bash
 vim ~/.openclaw/skills/ai-bill-intelligence/vault.json
 ```
 
-Example:
+示例：
 ```json
 {
   "openai": 9.01,
@@ -87,65 +87,65 @@ Example:
 }
 ```
 
-2. **Verify services are running**:
+2. 验证服务是否正在运行：
 ```bash
 systemctl status ai-bill ai-bill-collector
 ```
 
-3. **Access dashboard**:
-- Local: http://localhost:8003
-- With Nginx: Configure reverse proxy to port 8003
+3. 访问仪表板：
+- 本地访问：http://localhost:8003
+- 如果使用 Nginx，请配置反向代理到端口 8003
 
 ---
 
-## Services
+## 服务
 
-| Service | Description | Port |
+| 服务 | 描述 | 端口 |
 |---------|-------------|------|
-| `ai-bill.service` | Web dashboard UI | 8003 |
-| `ai-bill-collector.service` | Usage data collector | - |
+| `ai-bill.service` | Web 仪表板界面 | 8003 |
+| `ai-bill-collector.service` | 使用数据收集器 | - |
 
-The collector runs every 30 seconds to calculate usage from OpenClaw sessions.
-
----
-
-## Features
-
-- **Real-time tracking**: Live cost calculation from OpenClaw sessions
-- **Multi-provider support**: OpenAI, Claude, Gemini, Kimi, DeepSeek, Grok
-- **Persistent usage**: Cumulative tracking survives session compaction
-- **Balance monitoring**: Real-time remaining balance calculation
-- **Web dashboard**: Visual interface at http://localhost:8003
+`ai-bill-collector.service` 每 30 秒运行一次，从 OpenClaw 会话中收集使用数据。
 
 ---
 
-## Troubleshooting
+## 主要功能
 
-### Check service status:
+- **实时跟踪**：实时计算来自 OpenClaw 会话的使用成本
+- **支持多种服务提供商**：OpenAI、Claude、Gemi、Kimi、DeepSeek、Grok
+- **数据持久化**：即使会话被压缩，数据也会被保留
+- **余额监控**：实时显示剩余余额
+- **Web 仪表板**：通过 http://localhost:8003 访问可视化界面
+
+---
+
+## 故障排除
+
+### 检查服务状态：
 ```bash
 systemctl status ai-bill ai-bill-collector
 ```
 
-### View collector logs:
+### 查看收集器日志：
 ```bash
 journalctl -u ai-bill-collector -f
 ```
 
-### Restart services:
+### 重启服务：
 ```bash
 sudo systemctl restart ai-bill ai-bill-collector
 ```
 
-### Balance not updating?
-1. Check `vault.json` has correct initial balance
-2. Verify collector is running: `systemctl status ai-bill-collector`
-3. Check `cumulative_usage.json` for stored usage data
+### 余额未更新？
+1. 确认 `vault.json` 文件中的初始余额设置正确
+2. 验证收集器是否正在运行：`systemctl status ai-bill-collector`
+3. 查看 `cumulative_usage.json` 文件中的使用数据
 
 ---
 
-## Pricing
+## 定价
 
-Default pricing is configured in `prices.json`. Update this file to match current API rates:
+默认定价信息存储在 `prices.json` 文件中。请根据当前的 API 费率更新该文件：
 
 ```json
 {
@@ -155,4 +155,4 @@ Default pricing is configured in `prices.json`. Update this file to match curren
 }
 ```
 
-Prices are per 1 million tokens.
+价格按每百万令牌计算。

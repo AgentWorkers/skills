@@ -1,23 +1,23 @@
 ---
 name: openrouter-transcribe
-description: Transcribe audio files via OpenRouter using audio-capable models (Gemini, GPT-4o-audio, etc).
+description: 通过 OpenRouter 使用具备音频处理能力的模型（如 Gemini、GPT-4o-audio 等）来转录音频文件。
 homepage: https://openrouter.ai/docs
 metadata: {"clawdbot":{"emoji":"🎙️","requires":{"bins":["curl","ffmpeg","base64","jq"],"env":["OPENROUTER_API_KEY"]},"primaryEnv":"OPENROUTER_API_KEY"}}
 ---
 
-# OpenRouter Audio Transcription
+# OpenRouter 音频转录功能
 
-Transcribe audio files using OpenRouter's chat completions API with `input_audio` content type. Works with any audio-capable model.
+使用 OpenRouter 的聊天补全 API（`input_audio` 内容类型）来转录音频文件。该功能适用于任何支持音频处理的模型。
 
-## Quick start
+## 快速入门
 
 ```bash
 {baseDir}/scripts/transcribe.sh /path/to/audio.m4a
 ```
 
-Output goes to stdout.
+转录结果会输出到标准输出（stdout）。
 
-## Useful flags
+## 有用的参数/标志
 
 ```bash
 # Custom model (default: google/gemini-2.5-flash)
@@ -33,16 +33,16 @@ Output goes to stdout.
 {baseDir}/scripts/transcribe.sh audio.m4a --title "MyApp"
 ```
 
-## How it works
+## 工作原理
 
-1. Converts audio to WAV (mono, 16kHz) using ffmpeg
-2. Base64 encodes the audio
-3. Sends to OpenRouter chat completions with `input_audio` content
-4. Extracts transcript from response
+1. 使用 ffmpeg 将音频文件转换为 WAV 格式（单声道，16kHz）。
+2. 对音频文件进行 Base64 编码。
+3. 使用 `input_audio` 参数将编码后的音频数据发送到 OpenRouter 的聊天补全服务。
+4. 从响应中提取转录结果。
 
-## API key
+## API 密钥
 
-Set `OPENROUTER_API_KEY` env var, or configure in `~/.clawdbot/clawdbot.json`:
+请设置环境变量 `OPENROUTER_API_KEY`，或在 `~/.clawdbot/clawdbot.json` 文件中进行配置：
 
 ```json5
 {
@@ -54,21 +54,19 @@ Set `OPENROUTER_API_KEY` env var, or configure in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-## Headers
+## 请求头
 
-The script sends identification headers to OpenRouter:
-- `X-Title`: Caller name (default: "Peanut/Clawdbot")
-- `HTTP-Referer`: Reference URL (default: "https://clawdbot.com")
+脚本会向 OpenRouter 发送以下识别信息：
+- `X-Title`：调用者名称（默认值：“Peanut/Clawdbot”）
+- `HTTP-Referer`：引用 URL（默认值：“https://clawdbot.com”）
 
-These show up in your OpenRouter dashboard for tracking.
+这些信息会显示在 OpenRouter 的控制面板中，便于追踪请求来源。
 
-## Troubleshooting
+## 常见问题及解决方法
 
-**ffmpeg format errors**: The script uses a temp directory (not `mktemp -t file.wav`) because macOS's mktemp adds random suffixes after the extension, breaking format detection.
-
-**Argument list too long**: Large audio files produce huge base64 strings that exceed shell argument limits. The script writes to temp files (`--rawfile` for jq, `@file` for curl) instead of passing data as arguments.
-
-**Empty response**: If you get "Empty response from API", the script will dump the raw response for debugging. Common causes:
-- Invalid API key
-- Model doesn't support audio input
-- Audio file too large or corrupted
+- **ffmpeg 格式错误**：脚本会使用临时文件夹来保存音频文件（而非使用 `mktemp -t file.wav` 命令），因为 macOS 的 `mktemp` 命令会在文件扩展名后添加随机后缀，导致格式识别失败。
+- **参数列表过长**：较大的音频文件会产生过长的 Base64 编码字符串，超出 shell 的参数长度限制。此时脚本会将音频数据写入临时文件（使用 `--rawfile` 参数给 jq 命令，或使用 `@file` 参数给 curl 命令），而不是直接作为参数传递。
+- **API 返回空响应**：如果收到 “Empty response from API”的错误信息，脚本会输出原始的 API 响应内容以帮助调试。常见原因包括：
+  - API 密钥无效
+  - 所选模型不支持音频输入
+  - 音频文件过大或损坏

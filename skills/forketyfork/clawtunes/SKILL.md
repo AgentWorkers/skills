@@ -1,82 +1,185 @@
 ---
 name: managing-apple-music
-description: Control Apple Music on macOS via the `clawtunes` CLI (play songs/albums/playlists, control playback, volume, shuffle, repeat, search, catalog lookup, AirPlay, and playlist management). Use when a user asks to play music, search for songs, control audio playback, or manage Apple Music settings.
+description: 在 macOS 上，可以通过 `clawtunes` CLI 来控制 Apple Music：播放歌曲/专辑/播放列表、控制播放功能、调节音量、随机播放、重复播放、搜索歌曲、查询音乐目录、使用 AirPlay，以及管理播放列表。当用户需要播放音乐、搜索歌曲、控制音频播放或管理 Apple Music 设置时，可以使用该工具。
 homepage: https://github.com/forketyfork/clawtunes
 metadata: {"clawdbot":{"emoji":"🎵","os":["darwin"],"requires":{"bins":["clawtunes"]},"install":[{"id":"brew","kind":"brew","tap":"forketyfork/tap","formula":"clawtunes","bins":["clawtunes"],"label":"Install clawtunes via Homebrew"}]}}
 ---
 
-# Apple Music CLI
+# Apple Music 命令行工具（CLI）
 
-Use `clawtunes` to control Apple Music from the terminal. Search and play music, control playback, adjust volume, manage playlists, manage shuffle/repeat, browse the Apple Music catalog, and connect to AirPlay devices.
+您可以使用 `clawtunes` 从终端控制 Apple Music。该工具支持搜索和播放音乐、调整音量、管理播放列表、设置随机播放/重复模式、浏览 Apple Music 目录以及连接 AirPlay 设备。
 
-Setup
+## 设置
 
-- Install (Homebrew): `brew tap forketyfork/tap && brew install clawtunes`
-- Install (pip): `pip install clawtunes`
-- macOS-only; requires Apple Music app.
+- **通过 Homebrew 安装：**  
+  ```
+  brew tap forketyfork/tap && brew install clawtunes
+  ```
+- **通过 pip 安装：**  
+  ```
+  pip install clawtunes
+  ```
+- **仅适用于 macOS；需要安装 Apple Music 应用程序。**
 
-Play Music
+## 播放音乐
 
-- Play a song: `clawtunes play song "Song Name"`
-- Play an album: `clawtunes play album "Album Name"`
-- Play a playlist: `clawtunes play playlist "Playlist Name"`
-- Always use the `--non-interactive` (`-N`) flag to prevent interactive prompts: `clawtunes -N play song "Song Name"`
-- If the command exits with code 1 and lists multiple matches, retry with a more specific song/album/playlist name.
-- If a more specific name still returns multiple matches, use the `--first` (`-1`) flag to auto-select the first result: `clawtunes -1 play song "Song Name"`
+- **播放单首歌曲：**  
+  ```
+  clawtunes play song "歌曲名称"
+  ```
+- **播放整张专辑：**  
+  ```
+  clawtunes play album "专辑名称"
+  ```
+- **播放播放列表：**  
+  ```
+  clawtunes play playlist "播放列表名称"
+  ```
+- **使用 `--non-interactive`（`-N`）标志以避免交互式提示：**  
+  ```
+  clawtunes -N play song "歌曲名称"
+  ```
+- **如果命令以代码 1 结束且返回多个匹配结果，请使用更具体的歌曲/专辑/播放列表名称重新尝试。**  
+- **如果仍然有多个匹配结果，可以使用 `--first`（`-1`）标志自动选择第一个结果：**  
+  ```
+  clawtunes -1 play song "歌曲名称"
+  ```
 
-Playback Control
+## 播放控制
 
-- Pause: `clawtunes pause`
-- Resume: `clawtunes resume`
-- Next track: `clawtunes next`
-- Previous track: `clawtunes prev`
-- Show now playing: `clawtunes status`
+- **暂停：**  
+  ```
+  clawtunes pause
+  ```
+- **继续播放：**  
+  ```
+  clawtunes resume
+  ```
+- **下一首曲目：**  
+  ```
+  clawtunes next
+  ```
+- **上一首曲目：**  
+  ```
+  clawtunes prev
+  ```
+- **显示当前正在播放的歌曲：**  
+  ```
+  clawtunes status
+  ```
 
-Volume
+## 调整音量
 
-- Show volume: `clawtunes volume`
-- Set volume: `clawtunes volume 50`
-- Adjust volume: `clawtunes volume +10` or `clawtunes volume -10`
-- Mute: `clawtunes mute`
-- Unmute: `clawtunes unmute`
+- **显示当前音量：**  
+  ```
+  clawtunes volume
+  ```
+- **设置音量：**  
+  ```
+  clawtunes volume 50
+  ```
+- **增加/减少音量：**  
+  ```
+  clawtunes volume +10
+  clawtunes volume -10
+  ```
+- **静音/取消静音：**  
+  ```
+  clawtunes mute
+  clawtunes unmute
+  ```
 
-Shuffle and Repeat
+## 随机播放和重复模式
 
-- Enable/disable shuffle: `clawtunes shuffle on` or `clawtunes shuffle off`
-- Set repeat mode: `clawtunes repeat off`, `clawtunes repeat all`, or `clawtunes repeat one`
+- **启用/禁用随机播放：**  
+  ```
+  clawtunes shuffle on
+  clawtunes shuffle off
+  ```
+- **设置重复模式：**  
+  ```
+  clawtunes repeat off
+  clawtunes repeat all
+  clawtunes repeat one
+  ```
 
-Search
+## 搜索
 
-- Search songs and albums: `clawtunes search "query"`
-- Include playlists: `clawtunes search "query" -p`
-- Songs only: `clawtunes search "query" --no-albums`
-- Limit results: `clawtunes search "query" -n 20`
+- **搜索歌曲和专辑：**  
+  ```
+  clawtunes search "查询"
+  ```
+- **包含播放列表：**  
+  ```
+  clawtunes search "查询" -p
+  ```
+- **仅搜索歌曲：**  
+  ```
+  clawtunes search "查询" --no-albums
+  ```
+- **限制搜索结果数量：**  
+  ```
+  clawtunes search "查询" -n 20
+  ```
 
-Love/Dislike
+## 喜欢/不喜欢
 
-- Love current track: `clawtunes love`
-- Dislike current track: `clawtunes dislike`
+- **标记当前歌曲为“喜欢”：**  
+  ```
+  clawtunes love
+  ```
+- **标记当前歌曲为“不喜欢”：**  
+  ```
+  clawtunes dislike
+  ```
 
-Playlists
+## 播放列表
 
-- List all playlists: `clawtunes playlists`
-- Create a playlist: `clawtunes playlist create "Road Trip"`
-- Add a song to a playlist: `clawtunes playlist add "Road Trip" "Kickstart My Heart"`
-- Remove a song from a playlist: `clawtunes playlist remove "Road Trip" "Kickstart My Heart"`
+- **列出所有播放列表：**  
+  ```
+  clawtunes playlists
+  ```
+- **创建播放列表：**  
+  ```
+  clawtunes playlist create "旅行路线"
+  ```
+- **将歌曲添加到播放列表：**  
+  ```
+  clawtunes playlist add "旅行路线" "Kickstart My Heart"
+  ```
+- **从播放列表中删除歌曲：**  
+  ```
+  clawtunes playlist remove "旅行路线" "Kickstart My Heart"
+  ```
 
-AirPlay
+## AirPlay
 
-- List devices: `clawtunes airplay`
-- Select device: `clawtunes airplay "Device Name"`
-- Deselect device: `clawtunes airplay "Device Name" --off`
+- **列出可用设备：**  
+  ```
+  clawtunes airplay
+  ```
+- **选择设备：**  
+  ```
+  clawtunes airplay "设备名称"
+  ```
+- **取消选择设备：**  
+  ```
+  clawtunes airplay "设备名称" --off
+  ```
 
-Apple Music Catalog
+## Apple Music 目录
 
-- Search the streaming catalog: `clawtunes catalog search "Bowie Heroes"`
-- Limit catalog results: `clawtunes catalog search "Bowie Heroes" -n 5`
-- Note: Catalog search is browse-only. To add songs to playlists, they must first be in your library. Use Apple Music app to add catalog items to your library before managing them with clawtunes.
+- **搜索流媒体目录：**  
+  ```
+  clawtunes catalog search "Bowie Heroes"
+  ```
+- **限制搜索结果数量：**  
+  ```
+  clawtunes catalog search "Bowie Heroes" -n 5
+  ```
+- **注意：** 目录搜索仅用于浏览。若要将歌曲添加到播放列表中，这些歌曲必须先存在于您的 Apple Music 库中。请使用 Apple Music 应用程序将目录中的歌曲添加到您的库中，然后再使用 `clawtunes` 进行管理。
 
-Notes
+## 注意事项
 
-- macOS-only (uses AppleScript to communicate with Apple Music).
-- If automation permissions are requested, grant access in System Settings > Privacy & Security > Automation.
+- **仅适用于 macOS（通过 AppleScript 与 Apple Music 交互）。**  
+- **如果系统请求自动化权限，请在“系统设置 > 隐私与安全 > 自动化”中授予相应权限。**

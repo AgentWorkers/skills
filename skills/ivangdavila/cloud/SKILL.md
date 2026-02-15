@@ -1,67 +1,74 @@
 ---
 name: Cloud
-description: "Choose, organize, sync, share, and back up personal files across iCloud, Google Drive, Dropbox, and OneDrive."
+description: "您可以在 iCloud、Google Drive、Dropbox 和 OneDrive 之间选择、整理、同步、共享以及备份个人文件。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: iCloud full, cloud storage, backup photos, sync between devices, share folder, Google Drive help, Dropbox issues, "where are my files", storage plan comparison.
+- 当 iCloud 存储空间满时；
+- 在进行云存储同步时；
+- 备份照片时；
+- 在设备之间同步数据时；
+- 在使用 Google Drive 功能时；
+- 遇到 Dropbox 相关问题时；
+- 当用户询问“我的文件在哪里”时；
+- 在比较不同的存储计划时。
 
-## Scope
+## 范围
 
-This skill covers **consumer cloud storage** — the services regular people use for photos, documents, and backups.
+本技能涵盖的是**消费者级云存储服务**——即普通人用于存储照片、文档和备份数据的云服务。
 
-**Not this skill:** AWS, Azure, S3 buckets, VPS, Docker, APIs → use `infrastructure`, `s3`, or `server`.
+**本技能不涵盖的内容：** AWS、Azure、S3 存储桶、VPS、Docker 以及相关 API。这些内容应归类为“基础设施”或“服务器”相关技能。
 
-## Quick Service Picker
+## 快速服务选择指南
 
-| Your devices | Best fit | Why |
+| 使用的设备 | 最适合的服务 | 原因 |
 |--------------|----------|-----|
-| iPhone + Mac | iCloud | Native integration, seamless |
-| Android + Chrome | Google Drive | Included with Gmail, auto photo backup |
-| Windows PC | OneDrive | Built into Windows, Office integration |
-| Mixed devices | Dropbox | Works equally well everywhere |
+| iPhone + Mac | iCloud | 内置集成，使用体验流畅 |
+| Android + Chrome | Google Drive | 随 Gmail 提供，支持自动照片备份 |
+| Windows 电脑 | OneDrive | 内置在 Windows 系统中，与 Office 功能集成 |
+| 混合设备 | Dropbox | 在所有设备上都能同样稳定地使用 |
 
-For detailed pricing and features, see `services.md`.
+有关详细的价格和功能信息，请参阅 `services.md`。
 
-## Common Confusions
+## 常见误解
 
-| What you think | What's actually happening |
+| 你的想法 | 实际情况 |
 |----------------|---------------------------|
-| "I deleted it from my phone and now it's gone from my laptop" | Sync works as designed — one file, everywhere |
-| "iCloud storage full but my phone has space" | Phone storage ≠ iCloud storage |
-| "My photos are duplicated everywhere" | Multiple services backing up the same camera roll |
-| "I pay for 3 cloud services" | Pick one primary, cancel the rest |
+| “我从手机上删除了文件，手机和笔记本电脑上的文件也都消失了” | 同步功能按设计正常工作——文件会在所有设备上被删除 |
+| “iCloud 存储空间满了，但手机上还有空间” | 手机存储空间与 iCloud 存储空间是分开的 |
+| “我的照片在所有设备上都重复了” | 这是因为多个服务同时备份了相同的照片 |
+| “我同时使用了三个云服务” | 应选择其中一个作为主要备份服务，然后取消其他服务的订阅 |
 
-## Storage Full — What to Do
+## 存储空间满时该怎么做
 
-1. **Check what's using space** — Photos usually dominate
-2. **Empty trash** — Deleted files count until trash is emptied
-3. **Disable duplicate backups** — Pick one photo backup service
-4. **Offload old files** — Move archives to external drive
+1. **检查占用空间的文件**：通常情况下，照片占用的空间最大；
+2. **清空回收站**：被删除的文件会一直保留在回收站中，直到回收站被清空；
+3. **禁用重复备份**：选择其中一个照片备份服务；
+4. **转移旧文件**：将不再需要的文件转移到外部存储设备上。
 
-For service-specific cleanup steps, see `cleanup.md`.
+有关针对具体服务的清理步骤，请参阅 `cleanup.md`。
 
-## Backup Strategy
+## 备份策略
 
-- **3-2-1 rule:** 3 copies, 2 different media, 1 offsite
-- **Cloud counts as offsite** — but also keep a local backup
-- **Check backup status monthly** — don't assume it's working
+- **3-2-1 规则**：创建 3 份备份，分别存储在不同的存储介质上，并其中一份存储在异地；
+- **云存储也可视为异地备份**，但仍需保留本地备份；
+- **每月检查备份状态**：不要想当然地认为备份功能始终正常工作。
 
-What to back up and what NOT to store in cloud: see `backup.md`.
+有关应该备份哪些文件以及哪些文件不适合存储在云端的信息，请参阅 `backup.md`。
 
-## Sharing Files
+## 文件共享方法
 
-| Need | Method |
+| 需求 | 共享方式 |
 |------|--------|
-| Quick share with anyone | Link (set expiration) |
-| Ongoing family access | Shared folder |
-| Sensitive documents | Don't use cloud, or encrypt first |
+| 快速与任何人共享文件 | 提供文件链接（并设置过期时间） |
+| 家庭成员长期访问文件 | 使用共享文件夹 |
+| 共享敏感文件 | 不要使用云存储，或者先对文件进行加密 |
 
-Step-by-step per service: see `sharing.md`.
+有关每种服务的详细操作步骤，请参阅 `sharing.md`。
 
-## Security Basics
+## 安全基础
 
-- **Enable 2FA** on all cloud accounts
-- **Review shared links** quarterly — revoke old ones
-- **Don't store unencrypted:** passwords, IDs, financial documents
+- 在所有云账户上启用双重身份验证（2FA）；
+- 每季度检查共享链接的有效性，并及时撤销过期的链接；
+- **不要存储未加密的敏感信息**：如密码、身份证号、财务文件等。

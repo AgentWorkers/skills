@@ -1,6 +1,6 @@
 ---
 name: moltflow-reviews
-description: "Collect and analyze customer reviews from WhatsApp conversations. Sentiment scoring, testimonial extraction, and review management via MoltFlow API."
+description: "从 WhatsApp 对话中收集并分析客户评价。通过 MoltFlow API 进行情感分析、评价内容提取以及评价管理。"
 source: "MoltFlow Team"
 version: "2.1.0"
 risk: safe
@@ -10,85 +10,76 @@ primaryEnv: MOLTFLOW_API_KEY
 disable-model-invocation: true
 ---
 
-> **MoltFlow** — WhatsApp Business automation for teams. Connect, monitor, and automate WhatsApp at scale.
-> [Save up to 17% with yearly billing](https://molt.waiflow.app/checkout?plan=free) -- Free tier available, no credit card required.
+> **MoltFlow** — 专为团队设计的 WhatsApp Business 自动化工具。支持大规模连接、监控和自动化 WhatsApp 操作。  
+> [年费订阅可节省高达 17% 的费用](https://molt.waiflow.app/checkout?plan=free) — 提供免费试用计划，无需信用卡。  
 
-# MoltFlow Reviews Skill
+# MoltFlow 评论管理功能  
 
-Collect, analyze, and manage customer reviews from WhatsApp conversations. Automate sentiment scoring, extract testimonials, and export social proof for your business.
+该功能用于收集、分析和管理来自 WhatsApp 对话的顾客评论，自动进行情感分析，提取用户评价，并导出可用于营销的社交证明数据。  
 
-## When to Use
+## 使用场景  
 
-Use this skill when you need to:
-- Set up automated review collection from WhatsApp conversations
-- Create or configure a review collector with sentiment thresholds
-- List, approve, hide, or delete collected reviews
-- Export testimonials as JSON or HTML for external use
-- Trigger a manual scan of conversations for reviews
-- Check review statistics and sentiment breakdowns
+适用于以下场景：  
+- 设置自动评论收集机制  
+- 创建或配置评论收集器（可设置情感评分阈值）  
+- 列出、审核、隐藏或删除收集到的评论  
+- 将用户评价以 JSON 或 HTML 格式导出  
+- 触发手动扫描以收集评论  
+- 查看评论统计数据和情感分析结果  
 
-Trigger phrases: "collect reviews", "set up review collector", "export testimonials", "approve reviews", "sentiment analysis", "customer feedback WhatsApp"
+**常用指令**：  
+- `collect reviews`（收集评论）  
+- `set up review collector`（创建评论收集器）  
+- `export testimonials`（导出用户评价）  
+- `approve reviews`（审核评论）  
+- `sentiment analysis`（情感分析）  
+- `customer feedback WhatsApp`（处理 WhatsApp 上的客户反馈）  
 
-## Prerequisites
+## 前提条件  
 
-- **MOLTFLOW_API_KEY** — required. Generate from [MoltFlow Dashboard > API Keys](https://molt.waiflow.app/api-keys)
-- At least one connected WhatsApp session (status: `working`)
-- MoltFlow Pro plan or higher (review collection is a paid feature)
+- **MOLTFLOW_API_KEY**：必需。可在 [MoltFlow 仪表板 > API 密钥](https://molt.waiflow.app/api-keys) 生成。  
+- 至少已连接一个处于“工作”状态的 WhatsApp 会话。  
+- 需使用 MoltFlow Pro 或更高版本的订阅计划（评论收集为付费功能）。  
 
-## Base URL
+## 基础 URL  
 
 ```
 https://apiv2.waiflow.app/api/v2
-```
+```  
 
-## Required API Key Scopes
+## 所需 API 密钥权限  
 
-| Scope | Access |
-|-------|--------|
-| `reviews` | `read/manage` |
+| 权限范围 | 访问权限 |
+|---------|-----------|  
+| `reviews` | `read/manage` | （读取/管理评论数据） |
 
-## Authentication
+## 认证方式  
 
-All requests require one of:
-- `Authorization: Bearer <access_token>` (JWT from login)
-- `X-API-Key: <api_key>` (API key from dashboard)
+所有请求必须包含以下认证信息之一：  
+- `Authorization: Bearer <access_token>`（登录后生成的 JWT 令牌）  
+- `X-API-Key: <api_key>`（来自仪表板的 API 密钥）  
 
 ---
 
-## Review Collectors
+## 评论收集器  
 
-Collectors monitor WhatsApp conversations and automatically extract reviews based on sentiment scoring, keyword matching, and language filters.
+评论收集器会监控 WhatsApp 对话内容，并根据情感评分、关键词匹配和语言筛选条件自动提取评论。  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/reviews/collectors` | List all collectors |
-| POST | `/reviews/collectors` | Create a new collector |
-| GET | `/reviews/collectors/{id}` | Get collector details |
-| PATCH | `/reviews/collectors/{id}` | Update collector config |
-| DELETE | `/reviews/collectors/{id}` | Delete a collector |
-| POST | `/reviews/collectors/{id}/run` | Trigger manual scan |
+| 方法 | 端点 | 说明 |  
+|--------|---------|-------------|  
+| GET | `/reviews/collectors` | 列出所有评论收集器 |  
+| POST | `/reviews/collectors` | 创建新的评论收集器 |  
+| GET | `/reviews/collectors/{id}` | 获取评论收集器详情 |  
+| PATCH | `/reviews/collectors/{id}` | 更新评论收集器配置 |  
+| DELETE | `/reviews/collectors/{id}` | 删除评论收集器 |  
+| POST | `/reviews/collectors/{id}/run` | 触发手动评论收集操作 |  
 
-### Create Collector — Request Body
+### 创建评论收集器（请求体）  
 
-```json
-{
-  "name": "Main Store Reviews",
-  "description": "Collect reviews from customer support chats",
-  "session_id": "uuid-of-connected-session",
-  "source_type": "all",
-  "min_positive_words": 3,
-  "min_sentiment_score": 0.6,
-  "include_keywords": ["great", "recommend", "excellent"],
-  "exclude_keywords": ["spam", "wrong number"],
-  "languages": ["en", "es"]
-}
-```
+**`source_type` 可选值：** `all` | `groups` | `chats` | `selected`  
+当 `source_type` 为 `selected` 时，需提供具体的 WhatsApp 聊天 ID（`selected_chat_ids`）。  
 
-**source_type options:** `all` | `groups` | `chats` | `selected`
-
-When `source_type` is `selected`, provide `selected_chat_ids` with specific WhatsApp chat IDs.
-
-### Create Collector — Response
+### 创建评论收集器（响应内容）  
 
 ```json
 {
@@ -102,11 +93,11 @@ When `source_type` is `selected`, provide `selected_chat_ids` with specific What
   "created_at": "2026-01-15T10:30:00Z",
   "review_count": 0
 }
-```
+```  
 
-### Update Collector — Request Body
+### 更新评论收集器（请求体）  
 
-All fields are optional. Only provided fields are updated.
+所有字段均为可选。仅更新提供的字段。  
 
 ```json
 {
@@ -114,35 +105,33 @@ All fields are optional. Only provided fields are updated.
   "min_sentiment_score": 0.7,
   "is_active": false
 }
-```
+```  
 
----
+## 评论数据  
 
-## Reviews
+收集到的评论包含原始消息、情感评分、联系信息以及审核状态。  
 
-Collected reviews contain the original message, sentiment score, contact info, and approval status.
+| 方法 | 端点 | 说明 |  
+|--------|---------|-------------|  
+| GET | `/reviews` | 查看评论列表（可设置筛选条件） |  
+| GET | `/reviews/stats` | 查看评论统计信息 |  
+| GET | `/reviews/{id}` | 获取单条评论详情 |  
+| PATCH | `/reviews/{id}` | 审核、隐藏或添加注释 |  
+| DELETE | `/reviews/{id}` | 删除评论 |  
+| GET | `/reviews/testimonials/export` | 导出用户评价内容 |  
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/reviews` | List reviews (with filters) |
-| GET | `/reviews/stats` | Review statistics |
-| GET | `/reviews/{id}` | Get single review |
-| PATCH | `/reviews/{id}` | Approve, hide, or annotate |
-| DELETE | `/reviews/{id}` | Delete a review |
-| GET | `/reviews/testimonials/export` | Export testimonials |
+### 查看评论（查询参数）  
 
-### List Reviews — Query Parameters
+| 参数 | 类型 | 默认值 | 说明 |  
+|--------|---------|-------------|  
+| `collector_id` | UUID | — | 按收集器筛选评论 |  
+| `is_approved` | bool | — | 仅显示已审核的评论 |  
+| `is_hidden` | bool | — | 显示隐藏的评论 |  
+| `min_score` | float | — | 最低情感评分阈值 |  
+| `limit` | int | 50 | 每页显示数量 |  
+| `offset` | int | 0 | 分页偏移量 |  
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `collector_id` | UUID | — | Filter by collector |
-| `is_approved` | bool | — | Filter approved only |
-| `is_hidden` | bool | — | Filter hidden |
-| `min_score` | float | — | Minimum sentiment score |
-| `limit` | int | 50 | Page size |
-| `offset` | int | 0 | Pagination offset |
-
-### Review Object
+### 评论对象结构（示例）  
 
 ```json
 {
@@ -159,9 +148,9 @@ Collected reviews contain the original message, sentiment score, contact info, a
   "notes": null,
   "collected_at": "2026-01-16T14:22:00Z"
 }
-```
+```  
 
-### Approve/Hide Review — Request Body
+### 审核/隐藏评论（请求体）  
 
 ```json
 {
@@ -169,21 +158,21 @@ Collected reviews contain the original message, sentiment score, contact info, a
   "is_hidden": false,
   "notes": "Great testimonial — use on website"
 }
-```
+```  
 
-### Export Testimonials — Query Parameters
+### 导出用户评价（查询参数）  
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `format` | string | `json` | `json` or `html` |
-| `collector_id` | UUID | — | Filter by collector |
-| `approved_only` | bool | `true` | Only export approved reviews |
+| 参数 | 类型 | 默认值 | 说明 |  
+|--------|---------|-------------|  
+| `format` | string | `json` | 导出格式（json 或 html） |  
+| `collector_id` | UUID | — | 按收集器筛选评论 |  
+| `approved_only` | bool | `true` | 仅导出已审核的评论 |  
 
 ---
 
-## curl Examples
+## 使用 curl 的示例代码  
 
-### 1. Create a Review Collector
+### 1. 创建评论收集器  
 
 ```bash
 curl -X POST https://apiv2.waiflow.app/api/v2/reviews/collectors \
@@ -197,52 +186,48 @@ curl -X POST https://apiv2.waiflow.app/api/v2/reviews/collectors \
     "include_keywords": ["thank", "recommend", "love"],
     "languages": ["en"]
   }'
-```
+```  
 
-### 2. List Approved Reviews
+### 2. 查看已审核的评论  
 
 ```bash
 curl "https://apiv2.waiflow.app/api/v2/reviews?is_approved=true&limit=20" \
   -H "X-API-Key: mf_your_api_key_here"
-```
+```  
 
-### 3. Export Testimonials as HTML
+### 3. 将用户评价导出为 HTML 格式  
 
 ```bash
 curl "https://apiv2.waiflow.app/api/v2/reviews/testimonials/export?format=html&approved_only=true" \
   -H "X-API-Key: mf_your_api_key_here" \
   -o testimonials.html
-```
+```  
 
 ---
 
-## Error Responses
+## 错误代码及含义  
 
-| Status | Meaning |
-|--------|---------|
-| 400 | Invalid request body or parameters |
-| 401 | Missing or invalid authentication |
-| 403 | Feature not available on current plan |
-| 404 | Collector or review not found |
-| 422 | Validation error (check field constraints) |
-| 429 | Rate limit exceeded |
+| 状态码 | 错误原因 |  
+|--------|---------|  
+| 400 | 请求体或参数无效 |  
+| 401 | 认证信息缺失或无效 |  
+| 403 | 当前订阅计划不支持该功能 |  
+| 404 | 未找到评论收集器或评论 |  
+| 422 | 验证错误（检查字段格式） |  
+| 429 | 超过请求频率限制 |  
 
----
-
-## Tips
-
-- **Sentiment threshold**: Start with `0.6` and adjust up if you get too many false positives.
-- **Keyword filters**: Use `include_keywords` to match industry-specific praise terms.
-- **Manual scan**: Use `POST /reviews/collectors/{id}/run` after connecting a new session to backfill reviews.
-- **Export regularly**: Export approved testimonials for website widgets, social media, or marketing materials.
+## 使用建议：  
+- **情感评分阈值**：建议从 `0.6` 开始，根据实际情况调整。  
+- **关键词筛选**：使用 `include_keywords` 参数筛选特定行业的正面评价内容。  
+- **手动扫描**：在新会话连接后，使用 `POST /reviews/collectors/{id}/run` 命令手动收集评论。  
+- **定期导出**：将已审核的用户评价导出，用于网站插件、社交媒体或营销材料。  
 
 ---
 
-## Related Skills
-
-- **moltflow** -- Core API: sessions, messaging, groups, labels, webhooks
-- **moltflow-outreach** -- Bulk Send, Scheduled Messages, Custom Groups
-- **moltflow-leads** -- Lead detection, pipeline tracking, bulk operations, CSV/JSON export
-- **moltflow-ai** -- AI-powered auto-replies, voice transcription, RAG knowledge base, style profiles
-- **moltflow-a2a** -- Agent-to-Agent protocol, encrypted messaging, content policy
-- **moltflow-admin** -- Platform administration, user management, plan configuration
+## 相关功能：  
+- **moltflow**：核心 API（用于管理会话、消息发送、群组管理、标签设置等）  
+- **moltflow-outreach**：批量发送消息、定时发送消息、自定义群组管理  
+- **moltflow-leads**：潜在客户检测、流程跟踪、批量操作、CSV/JSON 数据导出  
+- **moltflow-ai**：基于 AI 的自动回复功能、语音转录、知识库管理  
+- **moltflow-a2a**：代理间通信协议、加密消息传输、内容策略管理  
+- **moltflow-admin**：平台管理、用户管理、订阅计划配置

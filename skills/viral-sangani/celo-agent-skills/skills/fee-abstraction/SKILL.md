@@ -1,74 +1,74 @@
 ---
 name: fee-abstraction
-description: Pay gas fees with ERC-20 tokens on Celo. Covers supported tokens, implementation, and wallet compatibility.
+description: 在 Celo 平台上，可以使用 ERC-20 标准的代币来支付网络手续费（即“gas fees”）。本文将介绍支持使用的代币种类、相关实现方式以及与哪些钱包的兼容性。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# Fee Abstraction on Celo
+# Celo平台上的费用抽象功能
 
-This skill covers Celo's native fee abstraction feature that allows gas fees to be paid in ERC-20 tokens.
+本文档介绍了Celo平台自带的费用抽象功能，该功能允许用户使用ERC-20代币来支付交易手续费。
 
-## When to Use
+## 使用场景
 
-- Paying gas fees with stablecoins (USDC, USDT, cUSD)
-- Building user-friendly dApps where users don't need CELO
-- MiniPay integrations
-- Any Celo transaction where users prefer stablecoin gas
+- 使用稳定币（如USDC、USDT、cUSD）支付交易手续费；
+- 开发无需使用CELO代币的用户友好型去中心化应用（dApps）；
+- 集成MiniPay支付系统；
+- 在任何需要使用稳定币作为交易手续费的Celo交易场景中。
 
-## Overview
+## 概述
 
-Celo's native fee abstraction allows gas fees to be paid in ERC-20 tokens without Account Abstraction, Paymasters, or Relay Services. Wallets simply add a `feeCurrency` field to transaction objects.
+Celo的费用抽象功能允许用户直接使用ERC-20代币来支付交易手续费，无需借助额外的中间服务（如Account Abstraction、Paymasters或Relay Services）。用户只需在交易对象中添加`feeCurrency`字段即可完成支付。
 
-Source: https://docs.celo.org/developer/fee-currency
+**来源：** https://docs.celo.org/developer/fee-currency
 
-## Supported Fee Currencies
+## 支持的费用货币类型
 
-### Mainnet (Chain ID: 42220)
+### 主网（Chain ID：42220）
 
-| Token | Token Address | Adapter Address | Use in feeCurrency |
-|-------|---------------|-----------------|-------------------|
-| USDC | 0xcebA9300f2b948710d2653dD7B07f33A8B32118C | 0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B | Adapter |
-| USDT | 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e | 0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72 | Adapter |
-| cUSD | 0x765DE816845861e75A25fCA122bb6898B8B1282a | - | Token |
-| cEUR | 0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73 | - | Token |
-| cREAL | 0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787 | - | Token |
+| 代币          | 代币地址            | 适配器地址            | 作为`feeCurrency`的用途       |
+|----------------|------------------|------------------|-------------------------|
+| USDC           | 0xcebA9300f2b948710d2653dD7B07f33A8B32118C | 0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B | 作为适配器使用             |
+| USDT           | 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e | 0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72 | 作为适配器使用             |
+| cUSD           | 0x765DE816845861e75A25fCA122bb6898B8B1282a |                   | 作为代币直接使用             |
+| cEUR           | 0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73 |                   | 作为代币直接使用             |
+| cREAL           | 0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787 |                   | 作为代币直接使用             |
 
-### Celo Sepolia Testnet (Chain ID: 11142220)
+### Celo Sepolia测试网（Chain ID：11142220）
 
-| Token | Token Address | Adapter Address | Use in feeCurrency |
-|-------|---------------|-----------------|-------------------|
-| USDC | 0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B | 0x4822e58de6f5e485eF90df51C41CE01721331dC0 | Adapter |
+| 代币          | 代币地址            | 适配器地址            | 作为`feeCurrency`的用途       |
+|----------------|------------------|------------------|-------------------------|
+| USDC           | 0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B | 0x4822e58de6f5e485eF90df51C41CE01721331dC0 | 作为适配器使用             |
 
-> **Important**: Use adapter addresses for 6-decimal tokens (USDC, USDT). Use token addresses directly for 18-decimal tokens (cUSD, cEUR, cREAL).
+> **注意**：对于具有6位小数的代币（如USDC、USDT），请使用适配器地址；对于具有18位小数的代币（如cUSD、cEUR、cREAL），请直接使用代币地址。
 
-## Wallet Support
+## 钱包支持情况
 
-| Wallet | Fee Abstraction Support | Notes |
-|--------|------------------------|-------|
-| MiniPay | Full | Native support, recommended for mobile |
-| Valora | Full | Native Celo wallet |
-| MetaMask | No | Uses Ethereum tx format without feeCurrency field |
-| Coinbase Wallet | No | Standard EVM format |
-| Other EVM Wallets | No | Require custom dApp implementation |
+| 钱包            | 是否支持费用抽象功能          | 备注                |
+|----------------|------------------|----------------------|
+| MiniPay         | 完全支持             | Celo原生钱包，推荐用于移动设备       |
+| Valora          | 完全支持             | Celo官方钱包             |
+| MetaMask         | 不支持             | 使用Ethereum的交易格式，不包含`feeCurrency`字段 |
+| Coinbase Wallet    | 不支持             | 使用标准EVM交易格式           |
+| 其他EVM钱包       | 不支持             | 需要自定义去中心化应用实现       |
 
-> MetaMask and standard EVM wallets don't support fee abstraction because they use Ethereum-compatible transaction formats that don't include the `feeCurrency` field.
+> MetaMask和标准EVM钱包不支持费用抽象功能，因为它们使用的是与Ethereum兼容的交易格式，不包含`feeCurrency`字段。
 
-## Library Support
+## 库支持情况
 
-| Library | feeCurrency Support |
-|---------|---------------------|
-| viem | Supported |
-| ethers.js | Not supported |
-| web3.js | Not supported |
+| 库名            | 是否支持费用抽象功能         |                  |
+|----------------|------------------|-------------------------|
+| viem            | 支持                 | 必须使用viem库才能实现费用抽象       |
+| ethers.js         | 不支持                 |
+| web3.js         | 不支持                 |
 
-**viem is required for fee abstraction in dApps.**
+**注意：** 在去中心化应用中实现费用抽象功能时，必须使用`viem`库。
 
-## Basic Implementation
+## 基本实现
 
-### Send Transaction with Fee Currency
+### 使用`feeCurrency`发送交易
 
 ```typescript
 import { createWalletClient, custom, parseEther } from "viem";
@@ -94,7 +94,7 @@ const hash = await walletClient.sendTransaction({
 console.log("Transaction hash:", hash);
 ```
 
-### Estimate Gas Price in Fee Currency
+### 以`feeCurrency`为单位估算交易手续费
 
 ```typescript
 import { createPublicClient, http } from "viem";
@@ -117,7 +117,7 @@ const gasPrice = BigInt(priceHex);
 console.log("Gas price in USDC:", gasPrice);
 ```
 
-### Serialize Transaction (CIP-64)
+### 序列化交易数据（CIP-64格式）
 
 ```typescript
 import { serializeTransaction } from "viem/celo";
@@ -137,31 +137,31 @@ const serialized = serializeTransaction({
 });
 ```
 
-## Key Concepts
+## 关键概念
 
-### Transaction Type
+### 交易类型
 
-Fee currency transactions use CIP-64 type `0x7b` (123 decimal). This is a Celo-specific transaction type.
+使用`feeCurrency`的交易类型对应的CIP-64代码为`0x7b`（12位小数）。这是Celo特有的交易类型。
 
-### Gas Overhead
+### 手续费开销
 
-Non-CELO fee currencies add approximately 50,000 gas overhead for the currency conversion.
+非CELO代币在转换过程中会产生约50,000单位的额外手续费。
 
-### Adapters vs Token Addresses
+### 适配器与代币地址的区别
 
-- **6-decimal tokens** (USDC, USDT): Must use adapter address
-- **18-decimal tokens** (cUSD, cEUR, cREAL): Use token address directly
+- **6位小数的代币（如USDC、USDT）**：必须使用适配器地址；
+- **18位小数的代币（如cUSD、cEUR、cREAL）**：可以直接使用代币地址。
 
-Adapters normalize decimals since Celo's gas calculations use 18 decimals internally.
+Celo内部使用18位小数进行手续费计算，因此适配器会自动处理小数位的转换。
 
-### Querying Available Currencies
+### 查询可用货币
 
-**Using celocli:**
+**使用`celocli`命令：**
 ```bash
 celocli network:whitelist --node https://forno.celo.org
 ```
 
-**Using FeeCurrencyDirectory contract:**
+**使用`FeeCurrencyDirectory`合约：**
 ```typescript
 import { createPublicClient, http } from "viem";
 import { celo } from "viem/chains";
@@ -188,16 +188,16 @@ const currencies = await publicClient.readContract({
 console.log("Allowed fee currencies:", currencies);
 ```
 
-## Limitations
+## 限制
 
-1. **Wallet Dependency**: Only works with Celo-native wallets (MiniPay, Valora) or custom dApp implementations
-2. **Library Dependency**: Requires viem (ethers.js/web3.js don't support feeCurrency)
-3. **Gas Overhead**: ~50k additional gas for non-CELO currencies
-4. **Balance Requirements**: User must have sufficient balance in the chosen fee currency
+1. **钱包依赖性**：仅支持Celo原生钱包（如MiniPay、Valora）或自定义去中心化应用；
+2. **库依赖性**：需要`viem`库的支持（`ethers.js`和`web3.js`不支持费用抽象功能）；
+3. **手续费开销**：非CELO代币的交易会产生约50,000单位的额外手续费；
+4. **余额要求**：用户需要确保拥有足够的`feeCurrency`余额。
 
-## Advanced: Custom Fee Currency Selector UI
+## 高级功能：自定义费用货币选择界面
 
-Build a UI that lets users choose their gas payment token:
+可以开发用户界面，让用户自行选择用于支付手续费的代币：
 
 ```tsx
 import { useState } from "react";
@@ -272,9 +272,9 @@ function useFeeCurrencyTransaction() {
 }
 ```
 
-## Advanced: Server-Side Transaction Building
+## 高级功能：服务器端交易处理
 
-Build fee currency transactions server-side for gasless or sponsored transactions:
+可以在服务器端生成使用指定货币的交易，适用于无需支付手续费或由第三方赞助的交易场景：
 
 ```typescript
 import { createWalletClient, http, parseEther } from "viem";
@@ -317,7 +317,7 @@ async function sponsorUserTransfer() {
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [fee-currencies.md](references/fee-currencies.md) - Complete token addresses and adapters
-- [wallet-support.md](references/wallet-support.md) - Detailed wallet compatibility guide
+- [fee-currencies.md](references/fee-currencies.md)：完整的代币地址和适配器信息；
+- [wallet-support.md](references/wallet-support.md)：详细的钱包兼容性指南。

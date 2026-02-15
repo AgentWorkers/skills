@@ -1,57 +1,57 @@
 ---
 name: nad-wallet
-description: "🔐 Nad Wallet - Monad Chain Identity for AI Agents. Create wallets, sign messages (SIWE), manage MON tokens programmatically. Built for the Nad ecosystem (nad.fun, NadMail, NadName)."
+description: "🔐 Nad Wallet：专为AI代理设计的Monad Chain身份验证工具。支持创建钱包、签署消息（SIWE），以及程序化地管理MON代币。该钱包专为Nad生态系统（nad.fun、NadMail、NadName）量身打造。"
 ---
 
-# 🔐 Nad Wallet - Monad Chain Identity for AI Agents
+# 🔐 Nad Wallet - 专为AI代理设计的Monad区块链钱包
 
-> Every autonomous agent needs a wallet on Monad. Create one without human help.
+> 每个自主代理都需要在Monad区块链上拥有一个钱包。无需人工协助即可创建一个钱包。
 
-**TL;DR:** Programmatic wallet creation on Monad blockchain. SIWE auth for NadMail, MON balance checks, ecosystem integration.
+**简而言之：** 在Monad区块链上通过编程方式创建钱包。支持SIWE身份验证（用于NadMail），可查看MON代币余额，并集成到Nad生态系统中。
 
-## Why Nad Wallet?
+## 为什么选择Nad Wallet？
 
-- **Monad Native** — Built specifically for Monad blockchain (Chain ID 143)
-- **True Autonomy** — Your agent creates and controls its own wallet
-- **No Browser Needed** — Pure CLI, no extensions or popups
-- **Nad Ecosystem Ready** — NadMail, NadName, nad.fun integration
-- **SIWE Ready** — Sign-In with Ethereum for Web3 services
-- **Secure by Default** — Environment variables, no plaintext keys
+- **专为Monad区块链设计** — 专为Monad区块链（链ID 143）量身定制
+- **真正的自主性** — 你的代理可以自行创建和控制自己的钱包
+- **无需浏览器** — 仅使用命令行界面（CLI），无需扩展程序或弹窗
+- **兼容Nad生态系统** — 支持NadMail、NadName、nad.fun等服务
+- **支持SIWE** — 可使用以太坊的SIWE进行Web3服务登录
+- **默认安全** — 使用环境变量存储密钥，避免明文存储
 
-Create and manage Monad chain wallets programmatically for the Nad ecosystem.
-
----
-
-## ⚠️ Security First
-
-| ✅ DO | ❌ DON'T |
-|-------|----------|
-| Use **NAD_PRIVATE_KEY** environment variable | Store private keys in plain text files |
-| Set wallet files to **chmod 600** | Commit wallet files to git |
-| Use `--env` mode (recommended) | Use `console.log(privateKey)` |
-| Back up mnemonics **offline** | Share private keys or mnemonics |
-| Store files in `~/.nad-wallet/` only | Auto-detect wallets outside ~/.nad-wallet/ |
-
-**🔒 Security Standards:** Identical to Base Wallet security practices but adapted for Monad/Nad ecosystem.
+通过编程方式创建和管理Monad区块链钱包，以充分利用Nad生态系统。
 
 ---
 
-## Network Information
+## ⚠️ 安全第一
 
-| Property | Value |
-|----------|-------|
-| **Blockchain** | Monad |
-| **Chain ID** | 143 |
-| **RPC URL** | https://rpc.monad.xyz |
-| **Explorer** | https://explorer.monad.xyz |
-| **Native Token** | MON |
-| **Ecosystem** | nad.fun, NadMail, NadName |
+| 推荐操作 | 禁止操作 |
+|---------|---------|
+| 使用 **NAD_PRIVATE_KEY** 环境变量 | 将私钥存储在明文文件中 |
+| 将钱包文件设置为 **chmod 600** | 将钱包文件提交到git仓库 |
+| 使用 `--env` 模式（推荐） | 直接在控制台中输出私钥（`console.log(privateKey)`） |
+| **离线** 备份助记词 | 共享私钥或助记词 |
+| 仅将文件存储在 `~/.nad-wallet/` 目录下 | 系统会自动识别其他位置的钱包 |
+
+**🔒 安全标准：** 采用与Base Wallet相同的安全策略，但针对Monad/Nad生态系统进行了调整。
 
 ---
 
-## Quick Start
+## 网络信息
 
-### Create a New Wallet (Recommended)
+| 属性 | 值 |
+|---------|---------|
+| **区块链** | Monad |
+| **链ID** | 143 |
+| **RPC地址** | https://rpc.monad.xyz |
+| **浏览器工具** | https://explorer.monad.xyz |
+| **原生代币** | MON |
+| **生态系统** | nad.fun, NadMail, NadName |
+
+---
+
+## 快速入门
+
+### 创建新钱包（推荐）
 
 ```bash
 # Output as environment variable format (safest)
@@ -62,22 +62,22 @@ node scripts/create-wallet.js --env
 # export NAD_PRIVATE_KEY="0x..."
 ```
 
-Then copy to your shell or `.env` file.
+然后将代码复制到你的shell或`.env`文件中。
 
-### Create with File Storage (Opt-in)
+### 使用文件存储创建钱包（可选）
 
 ```bash
 # Only if you need file-based storage
 node scripts/create-wallet.js --managed my-agent
 ```
 
-⚠️ This stores private key in `~/.nad-wallet/wallets/my-agent.json`
+⚠️ 这种方法会将私钥存储在 `~/.nad-wallet/wallets/my-agent.json` 文件中。
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Load Wallet from Environment
+### 从环境变量中加载钱包
 
 ```javascript
 const { ethers } = require('ethers');
@@ -88,7 +88,7 @@ console.log('Address:', wallet.address);
 // ❌ NEVER: console.log('Private Key:', wallet.privateKey);
 ```
 
-### Connect to Monad
+### 连接到Monad区块链
 
 ```javascript
 const provider = new ethers.JsonRpcProvider('https://rpc.monad.xyz');
@@ -99,7 +99,7 @@ const balance = await provider.getBalance(wallet.address);
 console.log('Balance:', ethers.formatEther(balance), 'MON');
 ```
 
-### Sign Message (SIWE for NadMail)
+### 用SIWE签署消息（用于NadMail）
 
 ```javascript
 const message = `nadmail.ai wants you to sign in with your Ethereum account:
@@ -116,7 +116,7 @@ Issued At: ${new Date().toISOString()}`;
 const signature = await wallet.signMessage(message);
 ```
 
-### Send Transaction
+### 发送交易
 
 ```javascript
 const provider = new ethers.JsonRpcProvider('https://rpc.monad.xyz');
@@ -134,23 +134,23 @@ console.log('Explorer:', `https://explorer.monad.xyz/tx/${tx.hash}`);
 
 ---
 
-## Scripts
+## 脚本
 
-| Script | Description |
+| 脚本 | 说明 |
 |--------|-------------|
-| `create-wallet.js --env` | Create wallet, output as env vars (recommended) |
-| `create-wallet.js --managed [name]` | Create wallet, save to file (opt-in) |
-| `create-wallet.js --json` | Create wallet, output as JSON |
-| `nadmail-register.js --handle [name]` | Register for NadMail with SIWE |
-| `check-balance.js [address]` | Check MON wallet balance |
+| `create-wallet.js --env` | 创建钱包，并将信息输出为环境变量（推荐） |
+| `create-wallet.js --managed [name]` | 创建钱包并保存到文件（可选） |
+| `create-wallet.js --json` | 创建钱包，并将信息输出为JSON格式 |
+| `nadmail-register.js --handle [name]` | 使用SIWE在NadMail中注册 |
+| `check-balance.js [address]` | 查看MON代币余额 |
 
 ---
 
-## NadMail Integration
+## NadMail集成
 
-Register for NadMail (Web3 email for Nad ecosystem) using your wallet signature.
+使用你的钱包签名在NadMail（Nad生态系统的Web3电子邮件服务）中注册。
 
-### Environment Variable Method (Recommended)
+### 使用环境变量的方法（推荐）
 
 ```bash
 # Set your private key
@@ -160,7 +160,7 @@ export NAD_PRIVATE_KEY="0x..."
 node scripts/nadmail-register.js --handle littlelobster
 ```
 
-### Managed Wallet Method
+### 使用文件存储的方法
 
 ```bash
 # First create a managed wallet
@@ -170,16 +170,16 @@ node scripts/create-wallet.js --managed my-agent
 node scripts/nadmail-register.js --wallet my-agent --handle littlelobster
 ```
 
-### What Happens During Registration
+### 注册流程
 
-1. **Start Auth** - Request authentication message from NadMail API
-2. **Sign Message** - Use your private key to sign the SIWE message
-3. **Agent Register** - Submit signature and handle to complete registration
-4. **Save Token** - Store access token in `~/.nad-wallet/nadmail-token.json`
+1. **开始认证** — 向NadMail API请求认证信息
+2. **签署消息** — 使用私钥签署SIWE消息
+3. **完成注册** — 提交签名以完成注册流程
+4. **保存访问令牌** — 将访问令牌存储在 `~/.nad-wallet/nadmail-token.json` 文件中
 
 ---
 
-## Check Balance
+## 查看余额
 
 ```bash
 # Using environment variable
@@ -192,7 +192,7 @@ node scripts/check-balance.js my-wallet
 node scripts/check-balance.js 0x1234...5678
 ```
 
-Example output:
+示例输出：
 ```
 💰 Nad Wallet Balance Check
 ==================================================
@@ -213,7 +213,7 @@ Wei: 42500000000000000000
 
 ---
 
-## File Structure
+## 文件结构
 
 ```
 ~/.nad-wallet/
@@ -226,39 +226,39 @@ Wei: 42500000000000000000
 
 ---
 
-## Nad Ecosystem Services
+## Nad生态系统服务
 
 ### 🎭 nad.fun
-- Meme token creation platform
-- Community-driven token launches
-- Built on Monad for fast transactions
+- 模因代币创建平台
+- 社区驱动的代币发行
+- 基于Monad区块链，支持快速交易
 
 ### 📧 NadMail (nadmail.ai)
-- Web3 email service for Nad ecosystem
-- SIWE authentication with your wallet
-- Integrated with this skill via `nadmail-register.js`
+- Nad生态系统的Web3电子邮件服务
+- 支持使用钱包进行SIWE身份验证
+- 通过 `nadmail-register.js` 脚本集成
 
 ### 🌐 NadName (app.nad.domains)
-- Domain name service for Nad ecosystem
-- Link human-readable names to wallet addresses
-- Built on Monad infrastructure
+- Nad生态系统的域名服务
+- 将人类可读的名称与钱包地址关联
+- 基于Monad区块链基础设施构建
 
 ---
 
-## 📝 Audit Logging
+## 📝 审计日志
 
-All operations are logged to `~/.nad-wallet/audit.log` with:
-- Timestamp
-- Action type (wallet_created, nadmail_registered, etc.)
-- Masked address (first 6 + last 4 chars)
-- Success/failure status
-- **No sensitive data** (private keys never logged)
+所有操作都会被记录到 `~/.nad-wallet/audit.log` 文件中，记录内容包括：
+- 时间戳
+- 操作类型（如：wallet_created, nadmail_registered等）
+- 隐藏地址信息（仅显示前6位和最后4位）
+- 操作结果（成功/失败）
+- **不记录敏感数据**（私钥不会被记录）
 
 ---
 
-## Security Best Practices
+## 安全最佳实践
 
-### Environment Variables
+### 环境变量设置
 
 ```bash
 # ✅ Recommended approach
@@ -270,7 +270,7 @@ node scripts/check-balance.js
 node scripts/nadmail-register.js --handle myname
 ```
 
-### File Storage (Use with caution)
+### 文件存储注意事项
 
 ```javascript
 const fs = require('fs');
@@ -284,9 +284,9 @@ fs.writeFileSync(filepath, JSON.stringify({
 }), { mode: 0o600 }); // Owner read/write only
 ```
 
-### .gitignore
+### `.gitignore` 文件配置
 
-Add to your project's `.gitignore`:
+将以下内容添加到项目的`.gitignore`文件中：
 
 ```gitignore
 # Nad Wallet files - NEVER commit!
@@ -303,33 +303,32 @@ nad-private-key*
 
 ---
 
-## Differences from Base Wallet
+## 与Base Wallet的差异
 
-| Aspect | Base Wallet | Nad Wallet |
-|--------|-------------|------------|
-| **Blockchain** | Base (8453) | Monad (143) |
-| **RPC** | https://mainnet.base.org | https://rpc.monad.xyz |
-| **Explorer** | basescan.org | explorer.monad.xyz |
-| **Native Token** | ETH | MON |
-| **Email Service** | BaseMail | NadMail |
-| **Config Directory** | ~/.base-wallet/ | ~/.nad-wallet/ |
-| **Wallet Directory** | ~/.openclaw/wallets/ | ~/.nad-wallet/wallets/ |
-| **Environment Variable** | PRIVATE_KEY | NAD_PRIVATE_KEY |
-| **Ecosystem** | Base ecosystem | nad.fun, NadMail, NadName |
+| 对比项 | Base Wallet | Nad Wallet |
+|---------|---------|------------|
+| **区块链** | Base（链ID 8453） | Monad（链ID 143） |
+| **RPC地址** | https://mainnet.base.org | https://rpc.monad.xyz |
+| **浏览器工具** | basescan.org | explorer.monad.xyz |
+| **原生代币** | ETH | MON |
+| **电子邮件服务** | BaseMail | NadMail |
+| **配置文件目录** | ~/.base-wallet/ | ~/.nad-wallet/ |
+| **钱包文件目录** | ~/.openclaw/wallets/ | ~/.nad-wallet/wallets/ |
+| **环境变量** | PRIVATE_KEY | NAD_PRIVATE_KEY |
+| **生态系统** | Base生态系统 | nad.fun, NadMail, NadName |
 
-### Migration from Base Wallet
+### 从Base Wallet迁移
 
-If you have Base Wallet experience:
-
-1. **Same security model** - All security practices are identical
-2. **Different network** - Chain ID 143 instead of 8453
-3. **Different token** - MON instead of ETH
-4. **Different services** - NadMail instead of BaseMail
-5. **Different directories** - ~/.nad-wallet/ instead of ~/.base-wallet/
+如果你有使用Base Wallet的经验：
+1. **安全机制相同** — 所有安全措施均保持一致
+2. **使用不同的区块链** — 使用Monad区块链（链ID 143）
+3. **代币不同** — 使用MON代币而非ETH
+4. **服务不同** | 使用NadMail而非BaseMail
+5. **文件目录不同** | 钱包文件位于 `~/.nad-wallet/` 目录下
 
 ---
 
-## Installation & Setup
+## 安装与设置
 
 ```bash
 # Navigate to skill directory
@@ -350,7 +349,7 @@ NAD_PRIVATE_KEY="0x..." node scripts/nadmail-register.js --handle myname
 
 ---
 
-## Dependencies
+## 所需依赖库
 
 ```json
 {
@@ -358,27 +357,25 @@ NAD_PRIVATE_KEY="0x..." node scripts/nadmail-register.js --handle myname
 }
 ```
 
-No additional dependencies required. Pure Node.js + ethers.js.
+无需额外依赖库。仅需要Node.js和ethers.js。
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Common Issues
+### 常见问题
 
-1. **"Wallet not found"**
-   - Solution: Set NAD_PRIVATE_KEY environment variable or create managed wallet
+1. **“钱包未找到”**
+   - 解决方案：设置 `NAD_PRIVATE_KEY` 环境变量或使用管理型钱包
+2. **“注册失败”**
+   - 检查网络连接
+   - 确保可用账户信息正确
+   - 确保钱包中有足够的MON代币用于支付交易费用
+3. **“权限不足”**
+   - 检查文件权限：`chmod 600 ~/.nad-wallet/wallets/*.json`
+   - 检查目录权限：`chmod 700 ~/.nad-wallet/`
 
-2. **"Registration failed"**
-   - Check internet connection
-   - Verify handle is available
-   - Ensure wallet has MON for gas fees
-
-3. **"Permission denied"**
-   - Check file permissions: `chmod 600 ~/.nad-wallet/wallets/*.json`
-   - Verify directory permissions: `chmod 700 ~/.nad-wallet/`
-
-### Environment Variable Not Set
+### 环境变量未设置
 
 ```bash
 # Check if set
@@ -393,20 +390,20 @@ echo 'export NAD_PRIVATE_KEY="0x..."' >> ~/.bashrc
 
 ---
 
-## Changelog
+## 更新日志
 
 ### v1.0.0 (2026-02-09)
-- 🎉 Initial release for Monad blockchain
-- 🔐 Security: Environment variable approach (--env mode default)
-- 📧 NadMail SIWE integration
-- 💰 MON balance checking
-- 📝 Comprehensive audit logging
-- 🌐 Nad ecosystem integration (nad.fun, NadMail, NadName)
-- 📚 Complete documentation with security best practices
-- 🔒 File permissions enforcement (600/700)
+- 🎉 首次发布，适用于Monad区块链
+- 🔐 新增环境变量安全机制（默认使用`--env`模式）
+- 📧 支持NadMail的SIWE身份验证
+- 💰 支持查看MON代币余额
+- 📝 全面审计日志记录
+- 🌐 完整集成Nad生态系统（nad.fun, NadMail, NadName）
+- 📚 提供包含安全最佳实践的完整文档
+- 🔒 强制执行文件权限设置（600/700）
 
 ---
 
-## License
+## 许可证
 
-MIT License - Build awesome things with Nad Wallet! 🚀
+MIT许可证 — 使用Nad Wallet构建出色的应用程序吧！🚀

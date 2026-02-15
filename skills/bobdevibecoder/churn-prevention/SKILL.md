@@ -1,84 +1,91 @@
-# churn-prevention
+# 防止客户流失（Churn Prevention）
 
-Detects at-risk subscribers and triggers win-back flows to reduce churn.
+该功能用于检测有流失风险的订阅者，并触发相应的挽留流程，以降低客户流失率。
 
-## Overview
+## 概述
 
-Monitors subscription events for cancellation signals, identifies at-risk customers, and generates retention emails and offers. Goal: reduce monthly churn rate below 5%.
+系统会监控订阅事件中的取消信号，识别出有流失风险的客户，并生成相应的挽留邮件和优惠信息。目标是将每月的客户流失率降至5%以下。
 
-## Usage
+## 使用方法
 
-- "churn check" - Analyze all subscribers for churn risk
-- "churn at-risk" - List customers flagged as at-risk
-- "churn winback PRODUCT-SLUG" - Generate win-back email sequence
-- "churn report" - Monthly churn analysis report
+- `churn check`：分析所有订阅者的流失风险
+- `churn at-risk`：列出被标记为有流失风险的客户
+- `churn winback PRODUCT-SLUG`：生成挽留邮件序列
+- `churn report`：生成每月的客户流失分析报告
 
-## Churn Risk Signals
+## 流失风险信号
 
-| Signal | Risk Level | Source |
+| 信号 | 风险等级 | 来源 |
 |--------|-----------|--------|
-| Payment failed 2+ times | HIGH | Stripe events |
-| Subscription downgraded | MEDIUM | Stripe events |
-| No logins in 14+ days | MEDIUM | Analytics (if tracked) |
-| Support complaint filed | MEDIUM | Feedback collector |
-| Cancellation initiated | HIGH | Stripe events |
-| Trial ending, no upgrade | MEDIUM | Stripe events |
+| 支付失败2次以上 | 高 | Stripe事件 |
+| 订阅降级 | 中等 | Stripe事件 |
+| 14天以上未登录 | 中等 | 分析系统（如果已记录） |
+| 提交支持投诉 | 中等 | 反馈收集系统 |
+| 提交取消申请 | 高 | Stripe事件 |
+| 试用期结束且未升级 | 中等 | Stripe事件 |
 
-## Detection
+## 检测机制
 
-Check Stripe for churn signals:
+通过POST请求检查Stripe平台上的流失风险信号：
+```
 POST http://host.docker.internal:18790/stripe-query
 Headers: Content-Type: application/json, X-Bridge-Secret: DEPLOY_BRIDGE_SECRET
 Body: { "type": "at-risk", "daysInactive": 14 }
+```
 
-Also check:
-- Subscriptions with past_due status
-- Customers with failed charges in last 30 days
-- Subscriptions set to cancel at period end
+同时还需要检查以下情况：
+- 订阅状态为“过期未支付”的订阅者
+- 过去30天内支付失败的订阅者
+- 被设置为在周期结束时自动取消的订阅者
 
-## Win-Back Flows
+## 挽留流程
 
-### For Payment Failures (involuntary churn)
-1. Day 0: "Your payment failed" - link to update card
-2. Day 3: "Still having trouble?" - alternative payment methods
-3. Day 7: "We miss you" - extend access for 7 more days free
-4. Day 14: Account paused, offer 50% off for 3 months to return
+### 对于支付失败（非自愿流失的情况）
 
-### For Cancellations (voluntary churn)
-1. Immediate: Exit survey - "Why are you leaving?"
-2. Day 1: "Before you go" - offer 30% off for 3 months
-3. Day 7: "New feature just launched" - highlight recent improvements
-4. Day 30: "We've improved" - summary of changes since they left
+1. 第0天：发送“您的支付失败了”邮件，附上更新银行卡的链接
+2. 第3天：发送“还有问题吗？”邮件，提供其他支付方式
+3. 第7天：发送“想念您”邮件，提供额外7天的免费使用期限
+4. 第14天：暂停账户，并提供3个月内的50%折扣优惠，鼓励用户升级
 
-### For Trial Expiring
-1. Day -3: "Your trial ends in 3 days" - highlight value received
-2. Day -1: "Last day of trial" - special launch price offer
-3. Day 0: "Trial ended" - extend 7 more days if they start upgrade
-4. Day +3: "Still thinking?" - comparison with alternatives (we win)
+### 对于取消订阅（自愿流失的情况）
 
-## Output
+1. 立即发送调查问卷，询问用户离开的原因
+2. 第1天：发送“在您离开之前”邮件，提供3个月内的30%折扣优惠
+3. 第7天：发送“新功能上线”邮件，介绍最近的改进
+4. 第30天：发送“我们已做出改进”邮件，总结用户离开后的变化
 
-Generate win-back email drafts in:
+### 对于试用期结束的情况
+
+1. 提前3天发送“您的试用期将在3天后结束”邮件，强调试用期的价值
+2. 提前1天发送“试用期的最后一天”邮件，提供特别优惠价格
+3. 第0天：发送“试用期结束”邮件，如果用户决定升级，则提供额外7天的试用期
+4. 第3天后发送“还在犹豫吗？”邮件，比较当前服务与其他替代方案的优势
+
+## 输出结果
+
+挽留邮件草稿将保存在以下路径：
+```
 /home/milad/.openclaw/workspace/skills/churn-prevention/winback/PRODUCT-SLUG/
+```
 
-## Metrics to Track
+## 需要跟踪的指标
 
-- Monthly churn rate (target: under 5%)
-- Win-back success rate
-- Revenue recovered from win-back flows
-- Average customer lifetime (target: 6+ months)
+- 每月客户流失率（目标：低于5%）
+- 挽留成功率
+- 通过挽留流程恢复的收入
+- 平均客户生命周期（目标：超过6个月）
 
-## Rules
+## 规则
 
-- NEVER send win-back emails automatically - generate drafts for human review
-- Maximum 4 emails per win-back sequence
-- Respect unsubscribes immediately
-- Log all churn events for trend analysis
-- Report monthly churn metrics in the weekly revenue report
+- 绝不要自动发送挽留邮件，需先生成草稿供人工审核
+- 每次挽留流程最多发送4封邮件
+- 立即处理用户的退订请求
+- 记录所有流失事件以进行趋势分析
+- 在每周收入报告中报告每月的客户流失数据
 
-## Integration
+## 集成方式
 
-- Uses stripe-webhook-monitor for real-time cancellation events
-- Uses user-feedback-collector for complaint signals
-- Feeds into revenue-tracker for churn rate calculations
-- Generates emails via email-outreach format standards
+- 使用`stripe-webhook-monitor`实时监控取消订阅事件
+- 使用`user-feedback-collector`收集用户反馈
+- 将数据传输到`revenue-tracker`系统以计算流失率
+- 严格按照`email-outreach`格式标准生成邮件

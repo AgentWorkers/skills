@@ -1,6 +1,21 @@
 ---
 name: tesla-fleet-api
-description: Use when integrating with Tesla's official Fleet API to read vehicle/energy device data or issue remote commands (e.g. start HVAC preconditioning, wake vehicle, charge controls). Covers onboarding (developer app registration, regions/base URLs), OAuth token flows (third-party + partner tokens, refresh rotation), required domain/public-key hosting, and using Tesla's official vehicle-command/tesla-http-proxy for signed vehicle commands.
+description: **使用说明：**  
+当与特斯拉官方的Fleet API集成时，本文档提供了如何读取车辆/能源设备数据或发送远程指令（如启动暖通空调系统、唤醒车辆、控制充电功能）的详细指导。内容包括：开发者应用程序的注册流程、不同地区的API基础URL、OAuth令牌的管理机制（包括第三方和合作伙伴使用的令牌以及令牌的更新策略）、所需域名的配置及公钥的托管方式，以及如何利用特斯拉官方的车辆控制接口和Tesla HTTP代理来发送经过签名的车辆指令。
+
+**关键要点：**  
+1. **集成流程：** 了解如何将您的应用程序与特斯拉的Fleet API进行安全、可靠的集成。  
+2. **OAuth令牌：** 学习如何获取和更新OAuth令牌，确保应用程序具有访问车辆数据的权限。  
+3. **域名与公钥：** 配置正确的域名和公钥，以验证来自您应用程序的请求的合法性。  
+4. **车辆控制指令：** 掌握如何通过Tesla HTTP代理发送有效的车辆控制命令。  
+
+**适用场景：**  
+- 需要读取车辆状态或执行远程操作的汽车管理系统或应用程序。  
+- 需要与特斯拉的车辆管理系统进行数据交互的第三方服务提供商。  
+
+**注意事项：**  
+- 请确保遵循特斯拉的官方文档和API规范，以确保系统的稳定性和安全性。  
+- 定期更新您的应用程序以适应特斯拉可能发布的任何更新或更改。
 version: 1.5.0
 homepage: https://github.com/odrobnik/tesla-fleet-api-skill
 metadata:
@@ -15,108 +30,109 @@ metadata:
 
 # Tesla Fleet API
 
-Control Tesla vehicles via the official Fleet API.
+通过官方的Fleet API来控制Tesla车辆。
 
-## Scripts Overview
+## 脚本概述
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `command.py` | Vehicle commands (climate, charging, locks, etc.) |
-| `vehicle_data.py` | Read vehicle data (battery, climate, location, etc.) |
-| `vehicles.py` | List vehicles + refresh cache |
-| `auth.py` | Authentication and configuration |
-| `tesla_oauth_local.py` | OAuth helper with local callback server |
-| `start_proxy.sh` | Start the signing proxy (for vehicle commands) |
-| `stop_proxy.sh` | Stop the signing proxy |
+| `command.py` | 执行车辆指令（如调节温度、充电、锁车等） |
+| `vehicle_data.py` | 读取车辆数据（如电池电量、车内温度、位置等） |
+| `vehicles.py` | 列出车辆信息并刷新缓存 |
+| `auth.py` | 管理认证和配置 |
+| `tesla.oauth_local.py` | 带有本地回调服务器的OAuth辅助工具 |
+| `start_proxy.sh` | 启动签名代理（用于执行车辆指令） |
+| `stop_proxy.sh` | 停止签名代理 |
 
 ---
 
-## Setup / Configuration
+## 设置/配置
 
-Setup is documented in **`SETUP.md`**:
+设置相关说明请参考 **`SETUP.md`**：
 
 - [SETUP.md](SETUP.md)
 
-State directory: `{workspace}/tesla-fleet-api/`
-- `config.json` (provider creds + non-token config)
-- `auth.json` (tokens)
-- `vehicles.json` (cached vehicle list)
-- `places.json` (named locations)
-- `proxy/` (TLS material for signing proxy)
+项目目录结构：`{workspace}/tesla-fleet-api/`
+- `config.json`：提供者凭证和非令牌配置信息 |
+- `auth.json`：OAuth令牌信息 |
+- `vehicles.json`：缓存的车辆列表 |
+- `places.json`：预设的位置信息 |
+- `proxy/`：签名代理所需的TLS相关文件 |
 
-No `.env` file loading — credentials in `config.json` or environment variables.
+该项目不使用`.env`文件来存储配置信息——所有配置都存储在`config.json`或环境变量中。
 
 ---
 
-## command.py - Vehicle Commands
+## `command.py` - 执行车辆指令
 
-Execute commands on your Tesla. Vehicle is auto-selected if you only have one.
+用于对Tesla车辆发送指令。如果只有一辆车，系统会自动选择该车辆。
 
-### Usage
+### 使用方法
 
 ```bash
 command.py [VEHICLE] <command> [options]
 ```
 
-- `VEHICLE` - Vehicle name or VIN (optional if single vehicle)
-- Commands can be run without specifying vehicle: `command.py honk`
-- Or with vehicle name: `command.py flash honk` (vehicle "flash", command "honk")
+- `VEHICLE`：车辆名称或VIN（如果只有一辆车，则可选）
+- 可以不指定车辆名称直接执行指令：`command.py honk`  
+- 或者指定车辆名称后执行指令：`command.py flash honk`（例如：`command.py flash` 或 `command.py honk`）
 
 ---
 
-### Climate Control
+### 调节温度
 
-#### Start/Stop Climate
+#### 启动/关闭空调
 ```bash
 command.py climate start
 command.py climate stop
 command.py flash climate start          # specific vehicle
 ```
 
-#### Set Temperature
+#### 设置温度
 ```bash
 command.py climate temps <driver_temp> [passenger_temp]
 command.py climate temps 21             # both seats 21°C
 command.py climate temps 22 20          # driver 22°C, passenger 20°C
 ```
 
-#### Climate Keeper Mode
+#### 自动调节温度模式
 ```bash
 command.py climate keeper <mode>
 ```
-Modes: `off`, `keep`, `dog`, `camp`
+可选模式：`off`（关闭），`keep`（保持当前温度），`dog`（自动调节），`camp`（适合露营的环境）
 
 ---
 
-### Seat Heater
+### 座椅加热
 
 ```bash
 command.py seat-heater --level <level> [--position <position>]
 command.py seat-heater -l <level> [-p <position>]
 ```
 
-**Levels:**
-| Value | Name |
+**温度等级**：
+| 值 | 名称 |
 |-------|------|
-| 0 | off |
-| 1 | low |
-| 2 | medium |
-| 3 | high |
+| 0 | 关闭 |
+| 1 | 低 |
+| 2 | 中 |
+| 3 | 高 |
 
-**Positions:**
-| Value | Names |
+**加热位置**：
+| 值 | 名称 |
 |-------|-------|
-| 0 | `driver`, `front_left`, `fl` |
-| 1 | `passenger`, `front_right`, `fr` |
-| 2 | `rear_left`, `rl` |
-| 3 | `rear_left_back` |
-| 4 | `rear_center`, `rc` |
-| 5 | `rear_right`, `rr` |
-| 6 | `rear_right_back` |
-| 7 | `third_left` |
-| 8 | `third_right` |
+| 0 | 驾驶员座椅 |
+| 1 | 前排左侧 |
+| 2 | 前排右侧 |
+| 3 | 后排左侧 |
+| 4 | 后排左侧后方 |
+| 5 | 后排中央 |
+| 6 | 后排右侧 |
+| 7 | 后排右侧后方 |
+| 8 | 第三排左侧 |
+| 9 | 第三排右侧 |
 
-**Examples:**
+**示例**：
 ```bash
 command.py seat-heater -l high                    # driver (default)
 command.py seat-heater -l medium -p passenger
@@ -127,16 +143,11 @@ command.py seat-heater -l off -p driver           # turn off
 
 ---
 
-### Seat Cooler (Ventilation)
+### 座椅制冷（通风）
 
-```bash
-command.py seat-cooler --level <level> [--position <position>]
-command.py seat-cooler -l <level> [-p <position>]
-```
+**温度等级和位置与座椅加热相同**
 
-Same levels and positions as seat heater.
-
-**Examples:**
+**示例**：
 ```bash
 command.py seat-cooler -l medium -p driver
 command.py seat-cooler -l high -p passenger
@@ -144,16 +155,16 @@ command.py seat-cooler -l high -p passenger
 
 ---
 
-### Seat Auto Climate
+### 自动调节座椅温度
 
 ```bash
 command.py seat-climate [--position <position>] <mode>
 command.py seat-climate [-p <position>] <mode>
 ```
 
-Modes: `auto`, `on`, `off`
+可选模式：`auto`（自动调节），`on`（开启），`off`（关闭）
 
-**Examples:**
+**示例**：
 ```bash
 command.py seat-climate auto                      # driver auto
 command.py seat-climate -p passenger auto
@@ -162,13 +173,13 @@ command.py seat-climate -p driver off             # disable auto
 
 ---
 
-### Steering Wheel Heater
+### 方向盘加热
 
 ```bash
 command.py steering-heater <on|off>
 ```
 
-**Examples:**
+**示例**：
 ```bash
 command.py steering-heater on
 command.py steering-heater off
@@ -176,27 +187,25 @@ command.py steering-heater off
 
 ---
 
-### Precondition Schedules
+### 预定出发前准备（替代了已弃用的`set_scheduled_departure`功能）
 
-Modern API for scheduling departure preconditioning (replaces deprecated `set_scheduled_departure`).
-
-#### Add Schedule
+#### 添加预定
 ```bash
 command.py precondition add --time <HH:MM> [--days <days>] [--id <id>] [--one-time] [--disabled]
 command.py precondition add -t <HH:MM> [-d <days>] [--id <id>]
 ```
 
-**Days options:**
-| Value | Description |
+**日期选项**：
+| 值 | 描述 |
 |-------|-------------|
-| `all` | Every day (default) |
-| `weekdays` | Monday through Friday |
-| `weekends` | Saturday and Sunday |
-| `mon,tue,wed,...` | Specific days (comma-separated) |
+| `all` | 每天（默认） |
+| `weekdays` | 星期一至周五 |
+| `weekends` | 星期六和周日 |
+| `mon,tue,wed,...` | 指定日期（用逗号分隔） |
 
-Day names: `sun`, `mon`, `tue`, `wed`, `thu`, `fri`, `sat` (or full names)
+日期示例：`sun`, `mon`, `tue`, `wed`, `thu`, `fri`, `sat`
 
-**Examples:**
+**示例**：
 ```bash
 command.py precondition add -t 08:00              # every day at 8am
 command.py precondition add -t 08:00 -d weekdays  # Mon-Fri
@@ -206,12 +215,12 @@ command.py precondition add -t 08:30 --id 123     # modify existing schedule
 command.py precondition add -t 08:00 --disabled   # create but disabled
 ```
 
-#### Remove Schedule
+#### 删除预定
 ```bash
 command.py precondition remove --id <id>
 ```
 
-**Examples:**
+**示例**：
 ```bash
 command.py precondition remove --id 123
 command.py precondition remove --id 1
@@ -219,22 +228,22 @@ command.py precondition remove --id 1
 
 ---
 
-### Charging Control
+### 充电控制
 
-#### Start/Stop Charging
+#### 启动/停止充电
 ```bash
 command.py charge start
 command.py charge stop
 ```
 
-#### Set Charge Limit
+#### 设置充电限制
 ```bash
 command.py charge limit <percent>
 ```
 
-Percent must be 50-100.
+充电限制百分比必须在50%到100%之间。
 
-**Examples:**
+**示例**：
 ```bash
 command.py charge limit 80
 command.py charge limit 90
@@ -243,7 +252,7 @@ command.py flash charge limit 70                  # specific vehicle
 
 ---
 
-### Doors & Security
+### 车门与安全
 
 ```bash
 command.py lock                   # lock all doors
@@ -253,7 +262,7 @@ command.py flash                  # flash the lights
 command.py wake                   # wake vehicle from sleep
 ```
 
-**With vehicle name:**
+**如果指定了车辆名称，则使用该车辆的名称执行操作：**
 ```bash
 command.py flash wake             # wake vehicle named "flash"
 command.py flash flash            # flash lights on vehicle "flash"
@@ -261,34 +270,33 @@ command.py flash flash            # flash lights on vehicle "flash"
 
 ---
 
-## vehicle_data.py - Read Vehicle Data
+## `vehicle_data.py` - 读取车辆数据
 
-Fetch vehicle data with human-readable output by default.
+默认情况下，以人类可读的格式输出车辆数据。
 
-### Usage
+### 使用方法
 
 ```bash
 vehicle_data.py [VEHICLE] [flags] [--json]
 ```
 
-- `VEHICLE` - Vehicle name or VIN (optional if single vehicle)
-- No flags = all data
-- `--json` = raw JSON output
+- `VEHICLE`：车辆名称或VIN（如果只有一辆车，则可选）
+- 如果不使用`--json`参数，将输出所有数据 |
+- 使用`--json`参数时，输出原始JSON格式的数据
 
-### Flags
+### 可选参数
 
-| Flag | Long | Data |
-|------|------|------|
-| `-c` | `--charge` | Battery level, charge limit, charging status |
-| `-t` | `--climate` | Interior/exterior temp, HVAC status |
-| `-d` | `--drive` | Gear, speed, power, heading |
-| `-l` | `--location` | GPS coordinates |
-| `-s` | `--state` | Locks, doors, windows, odometer, software |
-| `-g` | `--gui` | GUI settings (units, 24h time) |
-| | `--config-data` | Vehicle config (model, color, wheels) |
+| 参数 | 含义 |
+|------|------|
+| `-c` | `--charge` | 电池电量、充电限制、充电状态 |
+| `-t` | `--climate` | 内外温度、空调状态 |
+| `-d` | `--drive` | 挡位、车速、功率、行驶方向 |
+| `-l` | `--location` | GPS坐标 |
+| `-s` | `--state` | 车门锁状态、车窗状态、里程表读数、软件版本 |
+| `-g` | `--gui` | 用户界面设置（单位、24小时时间显示） |
+| `-g` | `--config-data` | 车辆配置信息（型号、颜色、轮毂类型） |
 
-### Examples
-
+**示例**：
 ```bash
 # All data
 vehicle_data.py
@@ -304,8 +312,7 @@ vehicle_data.py --json
 vehicle_data.py -c --json
 ```
 
-### Sample Output
-
+### 示例输出**
 ```
 🚗 My Tesla (online)
    VIN: 5YJ... (redacted)
@@ -331,68 +338,68 @@ vehicle_data.py -c --json
 
 ---
 
-## auth.py - Authentication
+## `auth.py` - 管理OAuth令牌和配置
 
-Manage OAuth tokens and configuration.
+用于管理OAuth令牌及相关配置。
 
-### Usage
+### 使用方法
 
 ```bash
 auth.py <command> [options]
 ```
 
-### Commands
+### 命令
 
-#### Login (OAuth Flow)
+#### 登录（OAuth流程）
 ```bash
 auth.py login
 ```
-Interactive: generates auth URL, prompts for code, exchanges for tokens.
+- 交互式：生成认证URL，提示用户输入验证码，然后交换获取令牌。
+- 非交互式：直接交换获取令牌。
 
-#### Exchange Code
+#### 交换验证码
 ```bash
 auth.py exchange <code>
 ```
-Exchange authorization code for tokens (non-interactive).
+- 非交互式方式：交换授权码以获取新的OAuth令牌。
 
-#### Refresh Tokens
+#### 刷新令牌
 ```bash
 auth.py refresh
 ```
-Refresh access token. Note: refresh tokens rotate - the new one is saved automatically.
+- 刷新访问令牌。注意：新令牌会自动保存。
 
-#### Register Domain
+#### 注册应用域名
 ```bash
 auth.py register --domain <domain>
 ```
-Register your app domain with Tesla (required for signed commands).
-
-After registration, enroll your virtual key:
+- 将你的应用域名注册到Tesla系统中（执行命令时需要此步骤）。
+- 注册完成后，还需要注册你的虚拟钥匙（virtual key）：
 ```
 https://tesla.com/_ak/<domain>
 ```
 
-#### Show Config
+#### 显示配置信息
 ```bash
 auth.py config
 ```
-Display current configuration (secrets redacted).
+- 显示当前配置信息（敏感信息会被隐藏）。
 
-#### Set Config
+#### 设置配置
 ```bash
 auth.py config set [options]
 ```
 
-Options:
-- `--client-id <id>`
-- `--client-secret <secret>`
-- `--redirect-uri <uri>`
-- `--audience <url>`
-- `--base-url <url>`
-- `--ca-cert <path>`
-- `--domain <domain>`
+**可选参数**：
+- `--client-id <id>` | 客户端ID |
+- `--client-secret <secret>` | 客户端密钥 |
+- `--redirect-uri <uri>` | 重定向URL |
+- `--audience <url>` | 访问权限范围 |
+- `--base-url <url>` | 基础URL |
+- `--ca-cert <path>` | 证书文件路径 |
+- `--domain <domain>` | 应用域名 |
 
-**Examples:**
+**示例**：
 ```bash
 # Initial setup
 auth.py config set \
@@ -408,65 +415,57 @@ auth.py config set \
 
 ---
 
-## tesla_fleet.py - List Vehicles
+## `tesla_fleet.py` - 列出车辆信息
 
-List vehicles with human-readable output.
+以人类可读的格式列出所有车辆信息。
 
+**示例输出**：
 ```bash
 python3 scripts/tesla_fleet.py vehicles
 python3 scripts/tesla_fleet.py vehicles --json
 ```
 
-### Sample Output
+---
 
-```
-🚗 Name:   My Tesla
-🔖 VIN:    5YJ... (redacted)
-🟢 Status: Online
-👤 Access: Owner
-```
+## 配置/代理/文件结构
+
+所有设置和配置的详细信息请参考 **[SETUP.md](SETUP.md)**。
 
 ---
 
-## Configuration / Proxy / File layout
+## 地区对应的API地址
 
-All setup + configuration is documented in **[SETUP.md](SETUP.md)**.
-
----
-
-## Regional Base URLs
-
-| Region | Audience URL |
+| 地区 | API地址 |
 |--------|--------------|
-| Europe | `https://fleet-api.prd.eu.vn.cloud.tesla.com` |
-| North America | `https://fleet-api.prd.na.vn.cloud.tesla.com` |
-| China | `https://fleet-api.prd.cn.vn.cloud.tesla.cn` |
+| 欧洲 | `https://fleet-api.prd.eu.vn.cloud.tesla.com` |
+| 北美 | `https://fleet-api.prd.na.vn.cloud.tesla.com` |
+| 中国 | `https://fleet-api.prd.cn.vn.cloud.tesla.cn` |
 
-OAuth token endpoint (all regions):
+所有地区的OAuth令牌请求端点相同：
 ```
 https://fleet-auth.prd.vn.cloud.tesla.com/oauth2/v3/token
 ```
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "vehicle unavailable: vehicle is offline or asleep"
-Wake the vehicle first:
+### “车辆不可用：车辆处于离线状态或休眠模式”
+- 先唤醒车辆：
 ```bash
 command.py wake
 ```
 
-### "command not signed" / "vehicle rejected"
-Ensure the signing proxy is running and configured. See [SETUP.md](SETUP.md) § Proxy Setup.
+### “命令未签名” / “车辆拒绝执行”
+- 确保签名代理正在运行且配置正确。请参考 [SETUP.md](SETUP.md) 中的代理设置部分。
 
-### Token expired
+### 令牌过期
 ```bash
 auth.py refresh
 ```
 
-### Multiple vehicles
-Specify vehicle by name or VIN:
+### 多辆车时
+- 可以通过车辆名称或VIN来指定目标车辆：
 ```bash
 command.py flash climate start
 command.py 5YJ... honk
@@ -474,9 +473,9 @@ command.py 5YJ... honk
 
 ---
 
-## Complete Command Reference
+## 完整命令参考
 
-### command.py
+### `command.py`
 
 ```
 climate start|stop
@@ -502,13 +501,13 @@ flash
 wake
 ```
 
-### vehicle_data.py
+### `vehicle_data.py`
 
 ```
 [VEHICLE] [-c] [-t] [-d] [-l] [-s] [-g] [--config-data] [--json]
 ```
 
-### auth.py
+### `auth.py`
 
 ```
 login

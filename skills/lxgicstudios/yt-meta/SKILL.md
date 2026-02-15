@@ -1,21 +1,21 @@
 ---
 name: YT Meta - YouTube Metadata Extractor
-description: Extract YouTube video info, channel stats, playlists, comments. No API key required. Free CLI tool for content research and analysis.
+description: 提取YouTube视频信息、频道统计数据、播放列表以及评论。无需API密钥。这是一个免费的命令行工具（CLI），适用于内容研究和分析。
 ---
 
 # YT Meta
 
-Extract YouTube metadata without API keys. Videos, channels, playlists, comments.
+无需API密钥即可提取YouTube元数据，包括视频、频道、播放列表和评论信息。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g yt-meta-cli
 ```
 
-## Commands
+## 命令
 
-### Video Metadata
+### 视频元数据
 
 ```bash
 yt-meta video dQw4w9WgXcQ
@@ -23,9 +23,9 @@ yt-meta video https://youtu.be/dQw4w9WgXcQ
 yt-meta video "https://youtube.com/watch?v=VIDEO_ID"
 ```
 
-Returns: title, description, views, likes, duration, upload date, tags, thumbnails.
+返回内容：标题、描述、观看次数、点赞数、时长、上传日期、标签和缩略图。
 
-### Channel Info
+### 频道信息
 
 ```bash
 yt-meta channel @mkbhd
@@ -33,14 +33,14 @@ yt-meta channel @channel --videos           # Include recent videos
 yt-meta channel @channel --videos --limit 100
 ```
 
-### Playlist
+### 播放列表
 
 ```bash
 yt-meta playlist PLrAXtmErZgOei...
 yt-meta playlist PLxxx --all               # Entire playlist
 ```
 
-### Search
+### 搜索
 
 ```bash
 yt-meta search "react hooks tutorial"
@@ -48,7 +48,7 @@ yt-meta search "javascript" --limit 50
 yt-meta search "gaming" --sort views
 ```
 
-### Comments
+### 评论
 
 ```bash
 yt-meta comments dQw4w9WgXcQ
@@ -56,7 +56,7 @@ yt-meta comments VIDEO_ID --limit 500
 yt-meta comments VIDEO_ID --sort top
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 yt-meta video ID                 # JSON (default)
@@ -66,7 +66,7 @@ yt-meta video ID -o table        # Terminal
 yt-meta channel @x --save out.json
 ```
 
-## Example Output
+## 示例输出
 
 ```json
 {
@@ -81,25 +81,25 @@ yt-meta channel @x --save out.json
 }
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-**Analyze video performance:**
+- **分析视频表现**：
 ```bash
 yt-meta video VIDEO_ID -o json
 ```
 
-**Export channel's videos:**
+- **导出频道的视频**：
 ```bash
 yt-meta channel @mkbhd --videos --limit 500 > videos.json
 ```
 
-**Research trending topics:**
+- **研究热门话题**：
 ```bash
 yt-meta search "ai tools 2024" --sort views -o csv
 ```
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**由 [LXGIC Studios](https://lxgicstudios.com) 开发**
 
 🔗 [GitHub](https://github.com/lxgicstudios/yt-meta) · [Twitter](https://x.com/lxgicstudios)

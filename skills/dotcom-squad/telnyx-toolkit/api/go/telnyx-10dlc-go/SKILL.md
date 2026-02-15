@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
 # Telnyx 10Dlc - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,11 +39,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List Brands
+## 列出品牌
 
-This endpoint is used to list all brands associated with your organization.
+此端点用于列出与您的组织关联的所有品牌。
 
 `GET /10dlc/brand`
 
@@ -54,11 +55,11 @@ This endpoint is used to list all brands associated with your organization.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create Brand
+## 创建品牌
 
-This endpoint is used to create a new brand.
+此端点用于创建新品牌。
 
-`POST /10dlc/brand` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`POST /10dlc/brand` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```go
 	telnyxBrand, err := client.Messaging10dlc.Brand.New(context.TODO(), telnyx.Messaging10dlcBrandNewParams{
@@ -74,9 +75,9 @@ This endpoint is used to create a new brand.
 	fmt.Printf("%+v\n", telnyxBrand.IdentityStatus)
 ```
 
-## Get Brand
+## 获取品牌信息
 
-Retrieve a brand by `brandId`.
+通过 `brandId` 获取品牌信息。
 
 `GET /10dlc/brand/{brandId}`
 
@@ -88,11 +89,11 @@ Retrieve a brand by `brandId`.
 	fmt.Printf("%+v\n", brand)
 ```
 
-## Update Brand
+## 更新品牌信息
 
-Update a brand's attributes by `brandId`.
+通过 `brandId` 更新品牌属性。
 
-`PUT /10dlc/brand/{brandId}` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`PUT /10dlc/brand/{brandId}` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```go
 	telnyxBrand, err := client.Messaging10dlc.Brand.Update(
@@ -112,9 +113,9 @@ Update a brand's attributes by `brandId`.
 	fmt.Printf("%+v\n", telnyxBrand.IdentityStatus)
 ```
 
-## Delete Brand
+## 删除品牌
 
-Delete Brand.
+删除品牌。
 
 `DELETE /10dlc/brand/{brandId}`
 
@@ -125,7 +126,7 @@ Delete Brand.
 	}
 ```
 
-## Resend brand 2FA email
+## 重新发送品牌 2FA 邮件
 
 `POST /10dlc/brand/{brandId}/2faEmail`
 
@@ -136,9 +137,9 @@ Delete Brand.
 	}
 ```
 
-## List External Vettings
+## 获取品牌的外部审核记录
 
-Get list of valid external vetting record for a given brand
+获取指定品牌的有效外部审核记录列表。
 
 `GET /10dlc/brand/{brandId}/externalVetting`
 
@@ -150,11 +151,11 @@ Get list of valid external vetting record for a given brand
 	fmt.Printf("%+v\n", externalVettings)
 ```
 
-## Order Brand External Vetting
+## 请求品牌的外部审核
 
-Order new external vetting for a brand
+为品牌请求新的外部审核。
 
-`POST /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingClass`
+`POST /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingClass`
 
 ```go
 	response, err := client.Messaging10dlc.Brand.ExternalVetting.Order(
@@ -171,12 +172,11 @@ Order new external vetting for a brand
 	fmt.Printf("%+v\n", response.CreateDate)
 ```
 
-## Import External Vetting Record
+## 导入外部审核记录
 
-This operation can be used to import an external vetting record from a TCR-approved
-vetting provider.
+此操作可用于从 TCR 批准的审核提供商导入外部审核记录。
 
-`PUT /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingId`
+`PUT /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingId`
 
 ```go
 	response, err := client.Messaging10dlc.Brand.ExternalVetting.Imports(
@@ -193,9 +193,9 @@ vetting provider.
 	fmt.Printf("%+v\n", response.CreateDate)
 ```
 
-## Revet Brand
+## 取消品牌审核
 
-This operation allows you to revet the brand.
+此操作允许您取消品牌审核。
 
 `PUT /10dlc/brand/{brandId}/revet`
 
@@ -207,9 +207,9 @@ This operation allows you to revet the brand.
 	fmt.Printf("%+v\n", telnyxBrand.IdentityStatus)
 ```
 
-## Get Brand SMS OTP Status by Brand ID
+## 通过品牌 ID 获取品牌 SMS OTP 状态
 
-Query the status of an SMS OTP (One-Time Password) for Sole Proprietor brand verification using the Brand ID.
+使用品牌 ID 查询 SMS OTP（一次性密码）的状态（用于个体经营者品牌验证）。
 
 `GET /10dlc/brand/{brandId}/smsOtp`
 
@@ -221,11 +221,11 @@ Query the status of an SMS OTP (One-Time Password) for Sole Proprietor brand ver
 	fmt.Printf("%+v\n", response.BrandID)
 ```
 
-## Trigger Brand SMS OTP
+## 触发品牌 SMS OTP
 
-Trigger or re-trigger an SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+触发或重新触发品牌验证的 SMS OTP（一次性密码）。
 
-`POST /10dlc/brand/{brandId}/smsOtp` — Required: `pinSms`, `successSms`
+`POST /10dlc/brand/{brandId}/smsOtp` — 必需参数：`pinSms`, `successSms`
 
 ```go
 	response, err := client.Messaging10dlc.Brand.TriggerSMSOtp(
@@ -242,11 +242,11 @@ Trigger or re-trigger an SMS OTP (One-Time Password) for Sole Proprietor brand v
 	fmt.Printf("%+v\n", response.BrandID)
 ```
 
-## Verify Brand SMS OTP
+## 验证品牌 SMS OTP
 
-Verify the SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+验证用于个体经营者品牌验证的 SMS OTP（一次性密码）。
 
-`PUT /10dlc/brand/{brandId}/smsOtp` — Required: `otpPin`
+`PUT /10dlc/brand/{brandId}/smsOtp` — 必需参数：`otpPin`
 
 ```go
 	err := client.Messaging10dlc.Brand.VerifySMSOtp(
@@ -261,9 +261,9 @@ Verify the SMS OTP (One-Time Password) for Sole Proprietor brand verification.
 	}
 ```
 
-## Get Brand Feedback By Id
+## 通过 ID 获取品牌反馈
 
-Get feedback about a brand by ID.
+通过 ID 获取关于品牌的反馈信息。
 
 `GET /10dlc/brand_feedback/{brandId}`
 
@@ -275,11 +275,11 @@ Get feedback about a brand by ID.
 	fmt.Printf("%+v\n", response.BrandID)
 ```
 
-## Submit Campaign
+## 提交活动计划
 
-Before creating a campaign, use the [Qualify By Usecase endpoint](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) to ensure that the brand you want to assign a new campaign...
+在创建活动计划之前，请使用 [按用例筛选端点](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) 确保您想要分配新活动计划的品牌符合要求...
 
-`POST /10dlc/campaignBuilder` — Required: `brandId`, `description`, `usecase`
+`POST /10dlc/campaignBuilder` — 必需参数：`brandId`, `description`, `usecase`
 
 ```go
 	telnyxCampaignCsp, err := client.Messaging10dlc.CampaignBuilder.Submit(context.TODO(), telnyx.Messaging10dlcCampaignBuilderSubmitParams{
@@ -293,9 +293,9 @@ Before creating a campaign, use the [Qualify By Usecase endpoint](https://develo
 	fmt.Printf("%+v\n", telnyxCampaignCsp.BrandID)
 ```
 
-## Qualify By Usecase
+## 按用例筛选
 
-This endpoint allows you to see whether or not the supplied brand is suitable for your desired campaign use case.
+此端点用于判断提供的品牌是否适合您的活动计划用例。
 
 `GET /10dlc/campaignBuilder/brand/{brandId}/usecase/{usecase}`
 
@@ -313,9 +313,9 @@ This endpoint allows you to see whether or not the supplied brand is suitable fo
 	fmt.Printf("%+v\n", response.AnnualFee)
 ```
 
-## List Campaigns
+## 列出活动计划
 
-Retrieve a list of campaigns associated with a supplied `brandId`.
+检索与指定 `brandId` 关联的所有活动计划。
 
 `GET /10dlc/campaign`
 
@@ -329,9 +329,9 @@ Retrieve a list of campaigns associated with a supplied `brandId`.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get campaign
+## 获取活动计划详情
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详情。
 
 `GET /10dlc/campaign/{campaignId}`
 
@@ -343,9 +343,9 @@ Retrieve campaign details by `campaignId`.
 	fmt.Printf("%+v\n", telnyxCampaignCsp.BrandID)
 ```
 
-## Update campaign
+## 更新活动计划
 
-Update a campaign's properties by `campaignId`.
+通过 `campaignId` 更新活动计划的属性。
 
 `PUT /10dlc/campaign/{campaignId}`
 
@@ -361,9 +361,9 @@ Update a campaign's properties by `campaignId`.
 	fmt.Printf("%+v\n", telnyxCampaignCsp.BrandID)
 ```
 
-## Deactivate campaign
+## 关闭活动计划
 
-Terminate a campaign.
+终止活动计划。
 
 `DELETE /10dlc/campaign/{campaignId}`
 
@@ -375,11 +375,11 @@ Terminate a campaign.
 	fmt.Printf("%+v\n", response.Time)
 ```
 
-## Submit campaign appeal for manual review
+## 为被拒绝的活动计划提交申诉
 
-Submits an appeal for rejected native campaigns in TELNYX_FAILED or MNO_REJECTED status.
+为状态为 TELNYX_FAILED 或 MNO_REJECTED 的活动计划提交申诉。
 
-`POST /10dlc/campaign/{campaignId}/appeal` — Required: `appeal_reason`
+`POST /10dlc/campaign/{campaignId}/appeal` — 必需参数：`appeal_reason`
 
 ```go
 	response, err := client.Messaging10dlc.Campaign.SubmitAppeal(
@@ -395,9 +395,9 @@ Submits an appeal for rejected native campaigns in TELNYX_FAILED or MNO_REJECTED
 	fmt.Printf("%+v\n", response.AppealedAt)
 ```
 
-## Get Campaign Mno Metadata
+## 获取活动计划的 MNO 元数据
 
-Get the campaign metadata for each MNO it was submitted to.
+获取每个活动计划对应的 MNO（移动网络运营商）元数据。
 
 `GET /10dlc/campaign/{campaignId}/mnoMetadata`
 
@@ -409,9 +409,9 @@ Get the campaign metadata for each MNO it was submitted to.
 	fmt.Printf("%+v\n", response.Number10999)
 ```
 
-## Get campaign operation status
+## 获取活动计划的操作状态
 
-Retrieve campaign's operation status at MNO level.
+检索活动计划在 MNO 级别的操作状态。
 
 `GET /10dlc/campaign/{campaignId}/operationStatus`
 
@@ -423,7 +423,7 @@ Retrieve campaign's operation status at MNO level.
 	fmt.Printf("%+v\n", response)
 ```
 
-## Get OSR campaign attributes
+## 获取 OSR 活动计划属性
 
 `GET /10dlc/campaign/{campaignId}/osr_attributes`
 
@@ -435,7 +435,7 @@ Retrieve campaign's operation status at MNO level.
 	fmt.Printf("%+v\n", response)
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/campaign/{campaignId}/sharing`
 
@@ -447,9 +447,9 @@ Retrieve campaign's operation status at MNO level.
 	fmt.Printf("%+v\n", response.SharedByMe)
 ```
 
-## Accept Shared Campaign
+## 接受共享的活动计划
 
-Manually accept a campaign shared with Telnyx
+手动接受与 Telnyx 共享的活动计划。
 
 `POST /10dlc/campaign/acceptSharing/{campaignId}`
 
@@ -461,7 +461,7 @@ Manually accept a campaign shared with Telnyx
 	fmt.Printf("%+v\n", response)
 ```
 
-## Get Campaign Cost
+## 获取活动计划成本
 
 `GET /10dlc/campaign/usecase_cost`
 
@@ -475,9 +475,9 @@ Manually accept a campaign shared with Telnyx
 	fmt.Printf("%+v\n", response.CampaignUsecase)
 ```
 
-## List Shared Campaigns
+## 列出共享的活动计划
 
-Retrieve all partner campaigns you have shared to Telnyx in a paginated fashion.
+分页方式获取您与 Telnyx 共享的所有活动计划。
 
 `GET /10dlc/partner_campaigns`
 
@@ -489,9 +489,9 @@ Retrieve all partner campaigns you have shared to Telnyx in a paginated fashion.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get Single Shared Campaign
+## 获取单个共享活动计划
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详情。
 
 `GET /10dlc/partner_campaigns/{campaignId}`
 
@@ -503,9 +503,9 @@ Retrieve campaign details by `campaignId`.
 	fmt.Printf("%+v\n", telnyxDownstreamCampaign.TcrBrandID)
 ```
 
-## Update Single Shared Campaign
+## 更新单个共享活动计划
 
-Update campaign details by `campaignId`.
+通过 `campaignId` 更新活动计划详情。
 
 `PATCH /10dlc/partner_campaigns/{campaignId}`
 
@@ -521,7 +521,7 @@ Update campaign details by `campaignId`.
 	fmt.Printf("%+v\n", telnyxDownstreamCampaign.TcrBrandID)
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/partnerCampaign/{campaignId}/sharing`
 
@@ -533,12 +533,11 @@ Update campaign details by `campaignId`.
 	fmt.Printf("%+v\n", response)
 ```
 
-## List shared partner campaigns
+## 列出共享的活动计划
 
-Get all partner campaigns you have shared to Telnyx in a paginated fashion
+分页方式获取您与 Telnyx 共享的所有活动计划
 
-This endpoint is currently limited to only returning shared campaigns that Telnyx
-has accepted.
+此端点目前仅返回 Telnyx 已接受的活动计划。
 
 `GET /10dlc/partnerCampaign/sharedByMe`
 
@@ -550,7 +549,7 @@ has accepted.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List phone number campaigns
+## 列出电话号码活动计划
 
 `GET /10dlc/phone_number_campaigns`
 
@@ -562,9 +561,9 @@ has accepted.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`POST /10dlc/phone_number_campaigns` — Required: `phoneNumber`, `campaignId`
+`POST /10dlc/phone_number_campaigns` — 必需参数：`phoneNumber`, `campaignId`
 
 ```go
 	phoneNumberCampaign, err := client.Messaging10dlc.PhoneNumberCampaigns.New(context.TODO(), telnyx.Messaging10dlcPhoneNumberCampaignNewParams{
@@ -579,9 +578,9 @@ has accepted.
 	fmt.Printf("%+v\n", phoneNumberCampaign.CampaignID)
 ```
 
-## Get Single Phone Number Campaign
+## 获取单个电话号码活动计划详情
 
-Retrieve an individual phone number/campaign assignment by `phoneNumber`.
+通过 `phoneNumber` 获取特定的电话号码/活动计划关联信息。
 
 `GET /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -593,9 +592,9 @@ Retrieve an individual phone number/campaign assignment by `phoneNumber`.
 	fmt.Printf("%+v\n", phoneNumberCampaign.CampaignID)
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — Required: `phoneNumber`, `campaignId`
+`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — 必需参数：`phoneNumber`, `campaignId`
 
 ```go
 	phoneNumberCampaign, err := client.Messaging10dlc.PhoneNumberCampaigns.Update(
@@ -614,9 +613,9 @@ Retrieve an individual phone number/campaign assignment by `phoneNumber`.
 	fmt.Printf("%+v\n", phoneNumberCampaign.CampaignID)
 ```
 
-## Delete Phone Number Campaign
+## 删除电话号码活动计划
 
-This endpoint allows you to remove a campaign assignment from the supplied `phoneNumber`.
+此端点用于删除与指定 `phoneNumber` 关联的活动计划。
 
 `DELETE /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -628,11 +627,11 @@ This endpoint allows you to remove a campaign assignment from the supplied `phon
 	fmt.Printf("%+v\n", phoneNumberCampaign.CampaignID)
 ```
 
-## Assign Messaging Profile To Campaign
+## 将消息配置文件分配给活动计划
 
-This endpoint allows you to link all phone numbers associated with a Messaging Profile to a campaign.
+此端点允许您将所有与消息配置文件关联的电话号码链接到活动计划。
 
-`POST /10dlc/phoneNumberAssignmentByProfile` — Required: `messagingProfileId`
+`POST /10dlc/phoneNumberAssignmentByProfile` — 必需参数：`messagingProfileId`
 
 ```go
 	response, err := client.Messaging10dlc.PhoneNumberAssignmentByProfile.Assign(context.TODO(), telnyx.Messaging10dlcPhoneNumberAssignmentByProfileAssignParams{
@@ -644,9 +643,9 @@ This endpoint allows you to link all phone numbers associated with a Messaging P
 	fmt.Printf("%+v\n", response.MessagingProfileID)
 ```
 
-## Get Assignment Task Status
+## 获取任务状态
 
-Check the status of the task associated with assigning all phone numbers on a messaging profile to a campaign by `taskId`.
+检查将所有电话号码分配给活动计划的任务状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}`
 
@@ -658,9 +657,9 @@ Check the status of the task associated with assigning all phone numbers on a me
 	fmt.Printf("%+v\n", response.Status)
 ```
 
-## Get Phone Number Status
+## 获取电话号码状态
 
-Check the status of the individual phone number/campaign assignments associated with the supplied `taskId`.
+检查与指定 `taskId` 关联的个别电话号码/活动计划分配的状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}/phoneNumbers`
 
@@ -678,11 +677,12 @@ Check the status of the individual phone number/campaign assignments associated 
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件将发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `campaignStatusUpdate` | Campaign Status Update |
+| `campaignStatusUpdate` | 活动计划状态更新 |
+```
+```

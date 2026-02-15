@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Verify - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,11 +31,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lookup phone number data
+## 查找电话号码信息
 
-Returns information about the provided phone number.
+返回有关提供的电话号码的信息。
 
 `GET /number_lookup/{phone_number}`
 
@@ -45,9 +45,9 @@ number_lookup = client.number_lookup.retrieve("+18665552368")
 puts(number_lookup)
 ```
 
-## Trigger Call verification
+## 触发电话验证
 
-`POST /verifications/call` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/call` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```ruby
 create_verification_response = client.verifications.trigger_call(
@@ -58,9 +58,9 @@ create_verification_response = client.verifications.trigger_call(
 puts(create_verification_response)
 ```
 
-## Trigger Flash call verification
+## 触发闪现式电话验证
 
-`POST /verifications/flashcall` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/flashcall` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```ruby
 create_verification_response = client.verifications.trigger_flashcall(
@@ -71,9 +71,9 @@ create_verification_response = client.verifications.trigger_flashcall(
 puts(create_verification_response)
 ```
 
-## Trigger SMS verification
+## 触发短信验证
 
-`POST /verifications/sms` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/sms` — 必需参数：`phone_number`, `verify_profile_id`
 
 ```ruby
 create_verification_response = client.verifications.trigger_sms(
@@ -84,7 +84,7 @@ create_verification_response = client.verifications.trigger_sms(
 puts(create_verification_response)
 ```
 
-## Retrieve verification
+## 获取验证结果
 
 `GET /verifications/{verification_id}`
 
@@ -94,7 +94,7 @@ verification = client.verifications.retrieve("12ade33a-21c0-473b-b055-b3c836e1c2
 puts(verification)
 ```
 
-## Verify verification code by ID
+## 根据 ID 验证验证码
 
 `POST /verifications/{verification_id}/actions/verify`
 
@@ -104,7 +104,7 @@ verify_verification_code_response = client.verifications.actions.verify("12ade33
 puts(verify_verification_code_response)
 ```
 
-## List verifications by phone number
+## 按电话号码列出验证记录
 
 `GET /verifications/by_phone_number/{phone_number}`
 
@@ -114,9 +114,9 @@ by_phone_numbers = client.verifications.by_phone_number.list("+13035551234")
 puts(by_phone_numbers)
 ```
 
-## Verify verification code by phone number
+## 根据电话号码验证验证码
 
-`POST /verifications/by_phone_number/{phone_number}/actions/verify` — Required: `code`, `verify_profile_id`
+`POST /verifications/by_phone_number/{phone_number}/actions/verify` — 必需参数：`code`, `verify_profile_id`
 
 ```ruby
 verify_verification_code_response = client.verifications.by_phone_number.actions.verify(
@@ -128,9 +128,9 @@ verify_verification_code_response = client.verifications.by_phone_number.actions
 puts(verify_verification_code_response)
 ```
 
-## List all Verify profiles
+## 列出所有验证配置文件
 
-Gets a paginated list of Verify profiles.
+获取分页显示的验证配置文件列表。
 
 `GET /verify_profiles`
 
@@ -140,11 +140,11 @@ page = client.verify_profiles.list
 puts(page)
 ```
 
-## Create a Verify profile
+## 创建验证配置文件
 
-Creates a new Verify profile to associate verifications with.
+创建一个新的验证配置文件，用于关联验证操作。
 
-`POST /verify_profiles` — Required: `name`
+`POST /verify_profiles` — 必需参数：`name`
 
 ```ruby
 verify_profile_data = client.verify_profiles.create(name: "Test Profile")
@@ -152,9 +152,9 @@ verify_profile_data = client.verify_profiles.create(name: "Test Profile")
 puts(verify_profile_data)
 ```
 
-## Retrieve Verify profile
+## 获取验证配置文件信息
 
-Gets a single Verify profile.
+获取单个验证配置文件的信息。
 
 `GET /verify_profiles/{verify_profile_id}`
 
@@ -164,7 +164,7 @@ verify_profile_data = client.verify_profiles.retrieve("12ade33a-21c0-473b-b055-b
 puts(verify_profile_data)
 ```
 
-## Update Verify profile
+## 更新验证配置文件
 
 `PATCH /verify_profiles/{verify_profile_id}`
 
@@ -174,7 +174,7 @@ verify_profile_data = client.verify_profiles.update("12ade33a-21c0-473b-b055-b3c
 puts(verify_profile_data)
 ```
 
-## Delete Verify profile
+## 删除验证配置文件
 
 `DELETE /verify_profiles/{verify_profile_id}`
 
@@ -184,9 +184,9 @@ verify_profile_data = client.verify_profiles.delete("12ade33a-21c0-473b-b055-b3c
 puts(verify_profile_data)
 ```
 
-## Retrieve Verify profile message templates
+## 获取验证配置文件的消息模板
 
-List all Verify profile message templates.
+列出所有验证配置文件的消息模板。
 
 `GET /verify_profiles/templates`
 
@@ -196,11 +196,11 @@ response = client.verify_profiles.retrieve_templates
 puts(response)
 ```
 
-## Create message template
+## 创建消息模板
 
-Create a new Verify profile message template.
+创建一个新的验证配置文件消息模板。
 
-`POST /verify_profiles/templates` — Required: `text`
+`POST /verify_profiles/templates` — 必需参数：`text`
 
 ```ruby
 message_template = client.verify_profiles.create_template(text: "Your {{app_name}} verification code is: {{code}}.")
@@ -208,11 +208,11 @@ message_template = client.verify_profiles.create_template(text: "Your {{app_name
 puts(message_template)
 ```
 
-## Update message template
+## 更新消息模板
 
-Update an existing Verify profile message template.
+更新现有的验证配置文件消息模板。
 
-`PATCH /verify_profiles/templates/{template_id}` — Required: `text`
+`PATCH /verify_profiles/templates/{template_id}` — 必需参数：`text`
 
 ```ruby
 message_template = client.verify_profiles.update_template(

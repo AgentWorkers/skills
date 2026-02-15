@@ -1,20 +1,49 @@
 ---
 name: spec-driven-brainstorming
-description: Spec-driven brainstorming and product discovery expert. Helps teams ideate features, break down epics, conduct story mapping sessions, prioritize using MoSCoW/RICE/Kano, and validate ideas with lean startup methods. Activates for brainstorming, product discovery, story mapping, feature ideation, prioritization, MoSCoW, RICE, Kano model, lean startup, MVP definition, product backlog, feature breakdown.
+description: **专家级技能：以规范为导向的头脑风暴与产品发现**  
+擅长协助团队构思产品功能、分解大型项目任务、开展故事地图绘制会议（story mapping），并运用MoSCoW/RICE/Kano等方法进行任务优先级排序。同时，通过精益创业（lean startup）的思维方式验证各种创意的可行性。具备丰富的经验，能够有效推动头脑风暴、产品探索、功能规划、优先级确定等流程的顺利进行。  
+
+**核心能力涵盖：**  
+- **头脑风暴与创意生成**：引导团队高效产生新想法  
+- **产品需求分析**：深入理解用户需求，明确产品功能  
+- **任务分解与规划**：将复杂项目拆解为可管理的任务  
+- **优先级评估**：运用科学方法（如MoSCoW/RICE/Kano）确定任务的优先级  
+- **精益创业方法**：应用精益创业理念优化项目流程  
+- **产品 backlog 管理**：有效管理产品待办事项列表  
+- **MVP（最小可行产品）设计**：快速构建可测试的初步产品版本  
+
+**适用场景：**  
+- 产品开发团队  
+- 创新项目团队  
+- 软件设计团队  
+
+**专业工具与方法：**  
+- MoSCoW/RICE/Kano 等优先级评估工具  
+- Lean Startup 方法论  
+- Story Mapping 技术  
+- Agile 开发框架  
+
+**服务目标：**  
+- 提升团队创新效率  
+- 帮助团队明确产品方向  
+- 优化项目执行流程  
+
+**经验总结：**  
+- 在多家科技公司担任产品经理和敏捷开发团队负责人，负责多个软件产品的规划与实施  
+- 深谙产品开发中的关键流程与工具  
+- 擅长通过技术手段解决实际问题，推动团队达成项目目标
 ---
 
-# Spec-Driven Brainstorming Skill
+# 规范驱动的头脑风暴技巧  
+（Spec-Driven Brainstorming Skills）  
 
-Expert in product discovery, feature ideation, and spec-driven brainstorming techniques. Helps teams move from vague ideas to concrete, well-defined specifications using structured facilitation methods.
+作为产品发现、功能构思及规范驱动的头脑风暴技术的专家，我擅长帮助团队通过结构化的引导方法，将模糊的想法转化为具体、明确的规范。  
 
-## Core Facilitation Techniques
+## 核心引导技巧（Core Facilitation Techniques）  
 
-### 1. Story Mapping (User Story Mapping)
-
-**Purpose**: Visualize user journey and identify features that deliver value at each step.
-
-**Process**:
-
+### 1. 用户故事映射（User Story Mapping）  
+**目的**：可视化用户旅程，并识别每个环节中能带来价值的特性。  
+**流程**：  
 ```
 Step 1: Define User Activities (horizontal backbone)
 ┌──────────────┬──────────────┬──────────────┬──────────────┐
@@ -59,16 +88,12 @@ Step 3: Prioritize by Walking Skeleton (MVP = top row)
 ├────────────────────────────────────────────────────────┤
 │ Wishlist, Compare, Discount Codes, Saved Payments     │
 └────────────────────────────────────────────────────────┘
-```
+```  
+**输出**：根据用户旅程优先排序的特性列表。  
 
-**Output**: Prioritized backlog aligned with user journey.
-
-### 2. Event Storming
-
-**Purpose**: Discover domain events and business processes through collaborative modeling.
-
-**Process**:
-
+### 2. 事件风暴（Event Storming）  
+**目的**：通过协作建模来发现业务事件和业务流程。  
+**流程**：  
 ```markdown
 ## Event Storming Workflow
 
@@ -100,14 +125,12 @@ Step 3: Prioritize by Walking Skeleton (MVP = top row)
 - WHEN PaymentProcessed THEN ReserveInventory
 - WHEN InventoryReserved THEN ShipOrder
 - WHEN OrderCancelled AND PaymentProcessed THEN RefundPayment
-```
+```  
+**输出**：业务流程的可视化图表及相关边界。  
 
-**Output**: Visual map of business processes and bounded contexts.
-
-### 3. Impact Mapping
-
-**Purpose**: Connect business goals to features through user impact.
-
+### 3. 影响映射（Impact Mapping）  
+**目的**：通过用户影响将业务目标与具体特性联系起来。  
+**流程**：  
 ```
 GOAL: Increase revenue by 20% in Q2
 
@@ -148,145 +171,29 @@ WHY? (Impact)
       ├─ US-007: Automated cart recovery emails
       ├─ US-008: Persistent cart sync
       └─ US-009: Trust badge UI components
-```
+```  
+**输出**：与业务成果直接相关的特性列表。  
 
-**Output**: Features directly linked to business outcomes.
+## 优先级框架（Priority Frameworks）  
 
-## Prioritization Frameworks
+### 1. MoSCoW 方法  
+**定义**：将特性分为“必须实现（Must）”、“应该实现（Should）”、“可以尝试（Could）”和“不会实现（Won’t）”三类。  
+**适用场景**：MVP（最小可行产品）范围定义、时间限制的发布计划。  
 
-### 1. MoSCoW Method
+### 2. RICE 评分（Reach, Impact, Confidence, Effort）  
+**公式**：`RICE 评分 = (达成度 × 影响力 × 信心) / 工作量`  
+**适用场景**：基于数据的优先级排序、路线图规划。  
 
-**Definition**: Categorize features into Must, Should, Could, Won't.
+### 3. Kano 模型  
+**分类**：  
+- **基本需求（Must-be）**：缺失会导致不满，存在也不会带来额外惊喜；  
+- **性能需求（One-dimensional）**：数量越多越好（线性满意度）；  
+- **兴奋需求（Delighters）**：缺失不会造成负面影响，存在会带来愉悦感。  
+**适用场景**：理解客户满意度驱动因素、制定差异化策略。  
 
-```markdown
-## Feature Prioritization: E-commerce Platform MVP
+## 精益创业验证（Lean Startup Validation）  
 
-### MUST Have (Critical for Launch)
-- [ ] User registration & login
-- [ ] Product catalog with search
-- [ ] Shopping cart
-- [ ] Checkout with payment processing
-- [ ] Order confirmation email
-
-**Rationale**: Core transactional flow, no sales without these.
-
-### SHOULD Have (Important but not critical)
-- [ ] Product reviews and ratings
-- [ ] Wishlist/Save for Later
-- [ ] Order history
-- [ ] Basic analytics dashboard (admin)
-
-**Rationale**: Enhance UX and trust, but MVP can ship without.
-
-### COULD Have (Nice to have if time allows)
-- [ ] Product recommendations
-- [ ] Social login (Google, Facebook)
-- [ ] Advanced filtering (price range, brand)
-- [ ] Guest checkout
-
-**Rationale**: Competitive features, but not required for MVP.
-
-### WON'T Have (Explicitly deferred)
-- [ ] Mobile app (web-first)
-- [ ] Multi-currency support
-- [ ] Subscription billing
-- [ ] Loyalty program
-
-**Rationale**: Future roadmap items, not needed for initial market validation.
-```
-
-**Best For**: MVP scope definition, time-boxed releases.
-
-### 2. RICE Score (Reach, Impact, Confidence, Effort)
-
-**Formula**: `RICE Score = (Reach × Impact × Confidence) / Effort`
-
-```markdown
-## RICE Scoring Example
-
-### Feature A: 1-Click Checkout
-- **Reach**: 5000 users/month will use this
-- **Impact**: High (3/3) - significantly reduces friction
-- **Confidence**: 80% (have data from competitor analysis)
-- **Effort**: 4 person-weeks
-
-**RICE Score** = (5000 × 3 × 0.8) / 4 = **3000**
-
-### Feature B: Product Recommendations
-- **Reach**: 8000 users/month will see recommendations
-- **Impact**: Medium (2/3) - incremental revenue lift
-- **Confidence**: 50% (no A/B test data yet)
-- **Effort**: 8 person-weeks
-
-**RICE Score** = (8000 × 2 × 0.5) / 8 = **1000**
-
-### Feature C: Guest Checkout
-- **Reach**: 2000 users/month (30% of visitors)
-- **Impact**: High (3/3) - reduces abandonment significantly
-- **Confidence**: 90% (industry benchmarks strong)
-- **Effort**: 2 person-weeks
-
-**RICE Score** = (2000 × 3 × 0.9) / 2 = **2700**
-
-### Priority Order
-1. **1-Click Checkout** (RICE: 3000)
-2. **Guest Checkout** (RICE: 2700)
-3. **Product Recommendations** (RICE: 1000)
-```
-
-**Best For**: Data-driven prioritization, roadmap planning.
-
-### 3. Kano Model
-
-**Categories**:
-- **Basic Needs (Must-be)**: Absence causes dissatisfaction, presence doesn't delight
-- **Performance Needs (One-dimensional)**: More is better (linear satisfaction)
-- **Excitement Needs (Delighters)**: Absence doesn't hurt, presence delights
-
-```markdown
-## Kano Analysis: Email Client
-
-### Basic Needs (Hygiene Factors)
-- Send and receive email (expected, must work flawlessly)
-- Attachment support (expected)
-- Spam filtering (expected)
-
-**Action**: Must implement, but won't differentiate product.
-
-### Performance Needs (Satisfiers)
-- Search speed (faster = better satisfaction)
-- Storage quota (more = better satisfaction)
-- Mobile app performance
-
-**Action**: Invest proportionally based on competitive benchmarks.
-
-### Excitement Needs (Delighters)
-- AI-powered email summarization (unexpected, delights users)
-- Smart reply suggestions
-- Scheduled send with timezone awareness
-- Undo send (5-second window)
-
-**Action**: Focus on 1-2 delighters for differentiation.
-
-### Indifferent Features (Low Priority)
-- Custom email signatures (users don't care much)
-- Theme customization (low impact)
-
-**Action**: Deprioritize or skip.
-
-### Reverse Features (Causes Dissatisfaction)
-- Intrusive ads in inbox (annoys users)
-- Forced social features (users resist)
-
-**Action**: Avoid completely.
-```
-
-**Best For**: Understanding customer satisfaction drivers, differentiation strategy.
-
-## Lean Startup Validation
-
-### 1. Build-Measure-Learn Loop
-
+### 1. 构建-测量-学习循环（Build-Measure-Learn Loop）  
 ```markdown
 ## Hypothesis Testing: Feature X
 
@@ -329,10 +236,8 @@ WHY? (Impact)
 - AOV increased 12% (close to target)
 - High CTR but low conversion
 - **Action**: Iterate - improve recommendation quality (ML model)
-```
-
-### 2. MVP Definition Canvas
-
+```  
+### 2. MVP 定义框架（MVP Definition Canvas）  
 ```markdown
 ## MVP Canvas: Task Management SaaS
 
@@ -378,111 +283,25 @@ Auto-prioritized task list using AI + team workload balancing.
   - **Mitigation**: Manual override, feedback loop to improve model
 - **Assumption**: Teams of 2-5 are willing to pay $10/user/month
   - **Test**: Offer paid tier after 2-week trial, track conversion rate
-```
+```  
 
-## Brainstorming Techniques
+## 头脑风暴技巧（Brainstorming Techniques）  
 
-### 1. Crazy 8s (Rapid Ideation)
+### 1. 疯狂8秒（Crazy 8s）  
+**流程**：8分钟内完成8个草图（每个想法1分钟）。  
+**适用场景**：快速生成大量创意。  
 
-**Process**: 8 sketches in 8 minutes (1 minute per idea).
+### 2. 六顶思考帽（Six Thinking Hats）  
+**目的**：从不同角度探索问题。  
+**适用场景**：激发创新思维。  
 
-```markdown
-## Crazy 8s Session: Improve Checkout Flow
+### 3. “我们如何实现……”（How Might We, HMW）问题  
+**目的**：将问题重新定义为机会。  
+**适用场景**：促进问题解决的创新思路。  
 
-### Ideas Generated (8 minutes)
-1. **1-Click Purchase** - Saved payment + address, single button
-2. **Progressive Disclosure** - Multi-step wizard (cart → shipping → payment)
-3. **Guest Checkout** - No account required, email-only
-4. **Cart Abandonment Recovery** - Email + discount code
-5. **Payment Link Sharing** - Send checkout link to someone else (gift)
-6. **Buy Now Pay Later** - Installment payments (Klarna integration)
-7. **Voice Checkout** - "Alexa, complete my order"
-8. **AR Try-On** - Virtual fitting room before checkout
-
-### Voting (Dot Voting)
-- 1-Click Purchase: ●●●●● (5 votes)
-- Guest Checkout: ●●●● (4 votes)
-- BNPL Integration: ●●● (3 votes)
-- Progressive Disclosure: ●● (2 votes)
-
-### Top 3 for Deeper Exploration
-1. 1-Click Purchase (quick win, high impact)
-2. Guest Checkout (reduce friction)
-3. BNPL Integration (competitive parity)
-```
-
-### 2. Six Thinking Hats (De Bono)
-
-**Purpose**: Explore ideas from different perspectives.
-
-```markdown
-## Six Hats Analysis: Feature X (AI-Powered Email Summarization)
-
-### White Hat (Facts & Data)
-- Average email length: 200 words
-- Users spend 3 minutes reading complex emails
-- 40% of emails are > 500 words
-- Competitor Y launched similar feature (20% adoption)
-
-### Red Hat (Emotions & Intuition)
-- "This feels like a gimmick, I don't trust AI to summarize important emails"
-- "Love this! Saves time on long threads"
-- "Worried about missing critical details in summary"
-
-### Yellow Hat (Optimism & Benefits)
-- Saves 2 minutes per long email → 20 min/day for heavy users
-- Reduces cognitive load, improves focus
-- Differentiator from competitors (if done well)
-- Could upsell as premium feature
-
-### Black Hat (Risks & Caution)
-- AI hallucination risk (incorrect summaries)
-- Privacy concerns (email content processed by AI)
-- High development cost (NLP model training)
-- May annoy users who prefer full context
-
-### Green Hat (Creativity & Alternatives)
-- Alternative 1: Highlight key sentences (instead of summary)
-- Alternative 2: TL;DR generated by sender (not AI)
-- Alternative 3: Voice-to-summary (read email aloud, generate summary)
-
-### Blue Hat (Process & Conclusion)
-**Decision**: Proceed with MVP (limited rollout)
-- Build: Highlight key sentences (lower risk than full summary)
-- Test: 10% of users, measure engagement + feedback
-- Iterate: If successful, invest in full AI summarization
-```
-
-### 3. How Might We (HMW) Questions
-
-**Purpose**: Reframe problems as opportunities.
-
-```markdown
-## Problem Statement
-Users abandon checkout because the form is too long (12 fields).
-
-### HMW Questions
-- **HMW reduce the number of required fields?**
-  - Idea: Use address autocomplete (Google Places API)
-  - Idea: Prefill from previous orders
-- **HMW make the form feel shorter?**
-  - Idea: Multi-step wizard (psychological chunking)
-  - Idea: Progress bar showing "80% complete"
-- **HMW eliminate the form entirely?**
-  - Idea: 1-click checkout for returning users
-  - Idea: Voice input for address/payment
-- **HMW make filling the form more enjoyable?**
-  - Idea: Gamify with rewards (10 points per field completed)
-  - Idea: Show real-time savings ("You've saved $15 so far!")
-- **HMW help users trust the checkout process?**
-  - Idea: Show trust badges (SSL, money-back guarantee)
-  - Idea: Live chat support during checkout
-```
-
-## Feature Breakdown Templates
-
-### Epic → Features → User Stories
-
+## 特性分解模板（Feature Breakdown Templates）  
+**流程**：从“史诗级任务（Epic）”分解为“特性（Features）”，再细化为“用户故事（User Stories）”。  
+**模板示例**：  
 ```markdown
 ## Epic: User Onboarding Experience
 
@@ -529,13 +348,12 @@ Users abandon checkout because the form is too long (12 fields).
 - **As a** new user
 - **I want** sample data to explore
 - **So that** I can try features without manual setup
-```
+```  
 
-## Collaborative Workshop Formats
+## 协作工作坊形式（Collaborative Workshop Formats）  
 
-### 1. Remote Brainstorming (Miro/FigJam)
-
-**Agenda** (90 minutes):
+### 1. 远程头脑风暴（Miro/FigJam）  
+**议程**（90分钟）：  
 ```
 00:00 - 00:10  Introduction & Problem Statement
 00:10 - 00:25  Individual Ideation (silent brainstorming)
@@ -543,15 +361,14 @@ Users abandon checkout because the form is too long (12 fields).
 00:45 - 01:00  Affinity Grouping (cluster similar ideas)
 01:00 - 01:15  Dot Voting (3 votes per person)
 01:15 - 01:30  Discussion & Action Items
-```
+```  
+**工具**：  
+- Miro 画布及相关模板  
+- 用于时间控制的计时器  
+- 匿名投票工具  
 
-**Tools**:
-- Miro Board with templates
-- Timer for timeboxing
-- Anonymous voting
-
-### 2. Design Sprint (5-Day Format)
-
+### 2. 设计冲刺（Design Sprint，5天流程）  
+**流程**：  
 ```
 Day 1: Map (Understand the problem)
 - User journey mapping
@@ -577,12 +394,10 @@ Day 5: Test (Validate with users)
 - 5 user interviews
 - Record findings
 - Decide: build, iterate, or pivot
-```
+```  
 
-## Output Templates
-
-### Brainstorming Session Summary
-
+## 输出模板（Output Templates）  
+### 头脑风暴会议总结（Brainstorming Session Summary）  
 ```markdown
 # Brainstorming Session: [Topic]
 
@@ -639,51 +454,48 @@ Users are abandoning checkout at 40% rate (industry avg: 25%).
 ## Next Session
 - Date: 2024-01-22
 - Topic: Refine top 3 ideas into user stories
-```
+```  
 
-## Best Practices
+## 最佳实践（Best Practices）  
 
-### 1. Timebox Everything
-- Ideation: 10-15 minutes max
-- Discussion: 5 minutes per idea
-- Voting: 2 minutes
+### 1. 为所有环节设定时间限制：  
+- 构思环节：最多10-15分钟  
+- 讨论环节：每个想法5分钟  
+- 投票环节：2分钟  
 
-### 2. Diverge Before Converging
-- Generate quantity first (no criticism)
-- Evaluate quality later (structured voting)
+### 2. 先发散再收敛：  
+- 先产生大量想法（禁止批评）  
+- 后再评估质量（通过结构化投票）  
 
-### 3. Make It Visual
-- Sketches > Text
-- Whiteboards > Documents
-- Prototypes > Specs
+### 3. 采用可视化方式：  
+- 草图优于文字  
+- 白板优于文档  
+- 原型优于详细规范  
 
-### 4. Include Diverse Perspectives
-- Engineering (feasibility)
-- Design (usability)
-- Product (business value)
-- Support (user pain points)
+### 4. 包括多元视角：  
+- 工程可行性  
+- 设计可用性  
+- 产品业务价值  
+- 客户支持（用户痛点）  
 
-### 5. Document Decisions
-- Why did we choose X over Y?
-- What assumptions are we making?
-- What will we measure?
+### 5. 记录决策过程：  
+- 为什么选择A而非B？  
+- 我们做了哪些假设？  
+- 我们将如何衡量结果？  
 
-## Resources
+## 参考资源（Resources）  
+- [用户故事映射 - Jeff Patton](https://www.jpattonassociates.com/user-story-mapping/)  
+- [影响映射 - Gojko Adzic](https://www.impactmapping.org/)  
+- [设计冲刺 - Google Ventures](https://www.gv.com/sprint/)  
+- [Kano 模型分析](https://en.wikipedia.org/wiki/Kano_model)  
 
-- [User Story Mapping - Jeff Patton](https://www.jpattonassociates.com/user-story-mapping/)
-- [Impact Mapping - Gojko Adzic](https://www.impactmapping.org/)
-- [Design Sprint - Google Ventures](https://www.gv.com/sprint/)
-- [Kano Model Analysis](https://en.wikipedia.org/wiki/Kano_model)
-
-## Activation Keywords
-
-Ask me about:
-- "How to run a brainstorming session"
-- "Story mapping for product discovery"
-- "Prioritization frameworks (MoSCoW, RICE, Kano)"
-- "How to break down epics into user stories"
-- "Lean startup validation techniques"
-- "MVP definition and scoping"
-- "Feature prioritization methods"
-- "Design sprint facilitation"
-- "Impact mapping for product roadmaps"
+## 常见咨询问题（Activation Questions）：  
+- “如何组织一场头脑风暴会议？”  
+- “如何使用用户故事映射进行产品发现？”  
+- “优先级框架有哪些（MoSCoW、RICE、Kano）？”  
+- “如何将大型项目分解为具体特性？”  
+- “精益创业的验证方法有哪些？”  
+- “MVP的定义和范围界定？”  
+- “如何进行特性优先级排序？”  
+- “设计冲刺的引导技巧有哪些？”  
+- “如何为产品路线图制定影响映射？”

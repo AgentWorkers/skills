@@ -1,46 +1,46 @@
 ---
 name: deepwiki
-description: Query the DeepWiki MCP server for GitHub repository documentation, wiki structure, and AI-powered questions.
+description: 查询 DeepWiki MCP 服务器上的 GitHub 仓库文档、wiki 结构以及由 AI 支持的问题。
 homepage: https://docs.devin.ai/work-with-devin/deepwiki-mcp
 ---
 
 # DeepWiki
 
-Use this skill to access documentation for public GitHub repositories via the DeepWiki MCP server. You can search repository wikis, get structure, and ask complex questions grounded in the repository's documentation.
+使用此技能，您可以通过 DeepWiki MCP 服务器访问公共 GitHub 仓库的文档。您可以搜索仓库的 wiki，获取其文档结构，并根据仓库的文档提出复杂的问题。
 
-## Commands
+## 命令
 
-### Ask Question
-Ask any question about a GitHub repository and get an AI-powered, context-grounded response.
+### 提问
+关于任何 GitHub 仓库的问题，都可以通过此命令获得基于人工智能的、与上下文相关的回答。
 ```bash
 node ./scripts/deepwiki.js ask <owner/repo> "your question"
 ```
 
-### Read Wiki Structure
-Get a list of documentation topics for a GitHub repository.
+### 查看 Wiki 结构
+获取 GitHub 仓库的文档主题列表。
 ```bash
 node ./scripts/deepwiki.js structure <owner/repo>
 ```
 
-### Read Wiki Contents
-View documentation about a specific path in a GitHub repository's wiki.
+### 查看 Wiki 内容
+查看 GitHub 仓库 wiki 中特定路径的文档内容。
 ```bash
 node ./scripts/deepwiki.js contents <owner/repo> <path>
 ```
 
-## Examples
+## 示例
 
-**Ask about Devin's MCP usage:**
+**询问关于 Devin 的 MCP 使用方法：**
 ```bash
 node ./scripts/deepwiki.js ask cognitionlabs/devin "How do I use MCP?"
 ```
 
-**Get the structure for the React docs:**
+**获取 React 文档的结构：**
 ```bash
 node ./scripts/deepwiki.js structure facebook/react
 ```
 
-## Notes
-- Base Server: `https://mcp.deepwiki.com/mcp`
-- Works for public repositories only.
-- No authentication required.
+## 注意事项
+- 基础服务器：`https://mcp.deepwiki.com/mcp`
+- 仅适用于公共仓库。
+- 无需身份验证。

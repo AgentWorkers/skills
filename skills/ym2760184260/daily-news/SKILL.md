@@ -1,6 +1,6 @@
 ---
 name: daily-news
-description: Fetch top news from Baidu, Google, and other sources daily.
+description: 每天从百度、谷歌等来源获取热门新闻。
 metadata:
   openclaw:
     requires:
@@ -11,24 +11,22 @@ metadata:
     command-arg-mode: raw
 ---
 
-# Daily News Skill
+# 每日新闻技能
 
-This skill allows the agent to fetch the daily top news headlines from multiple sources (Baidu, Google Trends, etc.) by running a Python script.
+该技能允许代理通过运行Python脚本来从多个来源（如百度、谷歌趋势等）获取每日头条新闻。
 
-## Instructions
+## 使用说明
 
-To get the daily news summary:
-1. Execute the Python script located at `{baseDir}/daily_news.py`.
-   Use the following command:
-   ```bash
+要获取每日新闻摘要，请执行位于 `{baseDir}/daily_news.py` 的Python脚本。使用以下命令：
+```bash
    python "{baseDir}/daily_news.py"
    ```
-2. The script will output the news in the format requested by the user.
-3. Return the script's output directly as the final answer.
+脚本将按照用户要求的格式输出新闻内容。
+请将脚本的输出直接作为最终答案返回。
 
-## Setup
+## 设置要求
 
-Ensure you have the required Python packages installed:
+请确保已安装所需的Python包：
 ```bash
 pip install -r "{baseDir}/requirements.txt"
 ```

@@ -1,49 +1,51 @@
 ---
 name: CV
-description: Create ATS-optimized resumes and CVs with proper structure, metrics, and industry targeting.
+description: 创建经过ATS（自动求职系统）优化的简历和求职信，确保其结构合理、包含关键指标，并针对特定行业进行定制。
 metadata: {"clawdbot":{"emoji":"📄","requires":{},"os":["linux","darwin","win32"]}}
 ---
 
-## Resume vs CV
+## 简历（Resume）与简历（CV）的区别
 
-| Aspect | Resume | CV |
+| 对比项 | 简历（Resume） | 简历（CV） |
 |--------|--------|-----|
-| Length | 1-2 pages max | No limit (can be 10+ pages) |
-| Purpose | Snapshot tailored to job | Complete academic/professional history |
-| Use | Industry jobs (US, Canada) | Academia, research, medicine, EU jobs |
-| Update | Customize per application | Add new achievements continuously |
+| 长度 | 最多1-2页 | 无限制（可能超过10页） |
+| 用途 | 为特定职位定制的简短介绍 | 完整的学术/职业经历记录 |
+| 适用场景 | 适用于美国、加拿大的职场职位 | 适用于学术界、研究机构、医疗行业及欧盟地区的职位 |
+| 更新频率 | 根据每份申请进行个性化调整 | 持续添加新的成就 |
 
-Use **resume** for: tech companies, startups, corporate jobs, when posting says "resume"
-Use **CV** for: academic positions, research roles, EU/UK applications, grants and fellowships
+**使用场景：**
+- 技术公司、初创企业、企业职位（当职位要求提交“简历”时）
+- 学术职位、研究岗位、欧盟/英国地区的申请、奖学金申请 |
 
-## Structure
+## 结构
 
-**Order for experienced professionals:**
-1. Contact Info
-2. Professional Summary
-3. Work Experience
-4. Skills
-5. Education
+**有工作经验的专业人士的简历结构：**
+1. 联系信息
+2. 职业概述
+3. 工作经历
+4. 技能
+5. 教育背景
 
-**Order for recent graduates:**
-1. Contact Info
-2. Professional Summary
-3. Education
-4. Skills
-5. Projects/Internships
+**应届毕业生的简历结构：**
+1. 联系信息
+2. 职业概述
+3. 教育背景
+4. 技能
+5. 项目/实习经历
 
-**Never include:** Photo (US jobs), birth date, marital status, religion, full address (city + state only), "References available upon request"
+**注意事项：**
+- **简历**：切勿包含照片（美国职位要求除外）、出生日期、婚姻状况、宗教信仰、完整地址（仅填写城市和州）；“推荐信可应要求提供”。
 
-## Professional Summary
+## 职业概述
 
-Formula:
+**撰写建议：**
 ```
 [Title] with [X years] of [domain] experience. 
 [Key achievement with metrics]. 
 Skilled in [top 3 relevant skills]. Seeking to [goal] at [company type].
 ```
 
-Example:
+**示例：**
 ```
 Senior Software Engineer with 7 years of backend experience. 
 Reduced API latency by 40% serving 2M daily users at scale. 
@@ -51,11 +53,12 @@ Expert in Python, AWS, and distributed systems.
 Seeking to lead platform engineering at a growth-stage fintech.
 ```
 
-Avoid objective statements ("Seeking a position where I can grow...")—they're outdated and self-focused.
+**避免使用以下表述：**“寻求一个能让我成长的职位……”**——这类表述过于笼统且以自我为中心。
 
-## Experience Bullets
+## 工作经历（使用项目式列表）
 
-**CAR Formula:** Action Verb + Task + Result with Metrics
+**项目描述格式：**  
+**行动动词 + 任务内容 + 结果及具体数据**
 
 ```
 ❌ Responsible for managing the engineering team
@@ -68,101 +71,74 @@ Avoid objective statements ("Seeking a position where I can grow...")—they're 
 ✅ Reduced checkout abandonment from 68% to 41% by redesigning 3-step flow
 ```
 
-**Action verbs by category:**
-| Leadership | Technical | Growth | Efficiency |
+**行动动词分类：**  
+| 领导力 | 技术能力 | 成长发展 | 效率提升 |
 |------------|-----------|--------|------------|
-| Led, Directed | Developed, Architected | Increased, Grew | Reduced, Streamlined |
-| Managed, Mentored | Engineered, Built | Expanded, Generated | Automated, Optimized |
+| 领导/指导团队 | 开发/设计系统 | 提高效率 | 降低成本/优化流程 |
+| 管理/指导他人 | 编程实现 | 拓展业务 | 自动化流程 |
 
-Limit 3-5 bullets per role. Start with strongest achievement.
+**每个职位的描述项建议不超过3-5条，并以最突出的成就开头。**
 
-## Quantification
+## 数据量化**
 
-Every bullet should have numbers when possible:
+**尽量使用具体数据：**  
+- **量化指标示例：**  
+  - **管理团队规模**：“管理过一个跨3个时区的12人团队”  
+  - **性能提升**：**将加载时间从4秒缩短至800毫秒**  
+  - **收入增长**：**新产品线为公司带来120万美元的收入**  
+  - **服务质量**：**每周处理50多条客户咨询，满意度达到98%**  
 
-| Vague | Quantified |
-|-------|------------|
-| Managed a team | Managed team of 12 across 3 time zones |
-| Improved performance | Reduced load time from 4s to 800ms |
-| Increased revenue | Generated $1.2M ARR from new product line |
-| Handled support | Resolved 50+ tickets/week with 98% satisfaction |
+**ATS优化技巧：**  
+由于自动招聘系统（ATS）的筛选机制，75%的简历根本无法被人工阅读。  
+- **遵循以下格式：**  
+  - 使用标准标题（如“工作经历”、“教育背景”、“技能”）  
+  - 同时使用缩写和全称（例如：“AWS（Amazon Web Services）”）  
+  - 自然融入职位描述中的关键词  
+  - 选择标准字体（Arial、Calibri、Times New Roman，字号至少10号）  
+  - 以PDF格式提交，确保文本可选择性显示（避免扫描图片）  
 
-Types of metrics: revenue ($), percentage (%), time saved, team size, users/customers, scale (requests/sec), satisfaction scores
+**避免以下内容：**  
+- 表格、列或文本框（ATS无法解析这些格式）  
+- 包含重要信息的页眉/页脚（可能被忽略）  
+- 图片、徽标或图形  
+- 创意性的标题（如“我的职业历程”）  
+- 特殊符号（✓、➤）——使用标准的项目符号（•、-）  
+- 过度使用关键词（可能触发垃圾邮件过滤）
 
-## ATS Optimization
+**技术行业简历要点：**  
+- 必须包含：  
+  - GitHub个人主页链接  
+  - 分类列出的技术技能（编程语言、开发框架、云服务、工具）  
+  - 带有实际链接的项目成果  
+  - 量化指标（用户数量、请求处理量、数据量）  
 
-75% of resumes never reach human eyes due to ATS filtering.
+**设计行业简历要点：**  
+- 必须包含：  
+  - 作品集链接（放在姓名下方显眼位置）  
+  - 使用的工具（Figma、Sketch、Adobe CC）  
+  - 设计流程（用户研究、线框图设计、原型制作、可用性测试）  
+  - 量化成果（转化率、用户满意度）  
 
-**Do:**
-- Standard section headers: "Work Experience", "Education", "Skills"
-- Both acronym AND full version: "AWS (Amazon Web Services)"
-- Keywords from job description, naturally integrated
-- Standard fonts: Arial, Calibri, Times New Roman (10pt minimum)
-- PDF with selectable text (not scanned image)
+**长度建议：**  
+- **学生/初级职位**：1页  
+- **1-5年工作经验**：1页  
+- **5-10年工作经验**：1-2页  
+- **10年以上工作经验/高管职位**：最多2页  
+- **学术简历**：长度无限制  
 
-**Don't:**
-- Tables, columns, or text boxes—ATS can't parse them
-- Headers/footers with important info—ATS may skip them
-- Images, logos, or graphics
-- Creative headers: "My Journey" → "Experience"
-- Special symbols (✓, ➤)—use standard bullets (•, -)
-- Keyword stuffing—triggers spam filters
+**常见错误：**  
+- 只列出职责而非实际成果（只说明做了什么，而非成果如何）  
+- 以被动语态开头（如“负责……”）  
+- 缺乏数据支持（无法评估工作价值）  
+- 所有简历内容重复使用（ATS仅根据关键词匹配职位）  
+- 拼写错误和语法错误（可能导致立即被拒绝）  
+- 使用非专业的电子邮件地址（如cooldude99@...）  
+- 在美国职位申请中附上照片（可能引发偏见，导致自动拒绝）  
+- 使用扫描或图片格式的PDF文件（ATS无法提取信息）  
+- 简历超过2页（招聘人员通常只会快速浏览前几页）  
+- 使用第一人称代词（如“我负责……”）——改用动词开头  
 
-## Tech Industry
-
-**Must include:**
-- GitHub profile URL
-- Technical skills categorized (Languages, Frameworks, Cloud, Tools)
-- Projects with live links
-- Scale metrics (users, requests/sec, data volume)
-
-**Skills format:**
-```
-Languages: Python, TypeScript, Go
-Frameworks: React, FastAPI, Django
-Cloud: AWS (EC2, Lambda, S3), GCP
-Tools: Docker, Kubernetes, Terraform, GitHub Actions
-```
-
-**Avoid:** Obsolete tech (jQuery, Flash), "Proficient in Microsoft Office", vague titles ("Code Ninja")
-
-## Design Industry
-
-**Must include:**
-- Portfolio link (prominent, first line after name)
-- Tools: Figma, Sketch, Adobe CC
-- Process: user research, wireframing, prototyping, usability testing
-- Impact metrics: conversion rates, user satisfaction scores
-
-**Avoid:** Resume without portfolio link (instant rejection), listing only tools without methodology
-
-## Length Guidelines
-
-| Experience | Length |
-|------------|--------|
-| Student / Entry-level | 1 page |
-| 1-5 years | 1 page |
-| 5-10 years | 1-2 pages |
-| 10+ years / Executive | 2 pages max |
-| Academic CV | No limit |
-
-For senior roles, condense early-career positions to 1-2 lines.
-
-## Common Mistakes
-
-- Listing responsibilities instead of achievements—shows what you did, not impact
-- Starting bullets with "Responsible for..."—passive voice, no impact
-- No metrics—impossible to gauge value delivered
-- Same resume for every job—ATS matches keywords to job description
-- Typos and grammar errors—instant rejection at many companies
-- Unprofessional email (cooldude99@...)—use firstname.lastname@
-- Including photo in US applications—bias concerns, often auto-rejected
-- PDF from image/scan—ATS can't extract text
-- More than 2 pages—recruiters spend 6-7 seconds on first scan
-- First-person pronouns ("I managed...")—remove, start with verbs
-
-## Pre-Submit Checklist
-
+## 提交前检查清单：**  
 ```
 □ Professional email address
 □ Summary tailored to target role

@@ -1,52 +1,52 @@
 ---
 name: Meilisearch
-description: Deploy and tune Meilisearch with indexing, filtering, and production configuration.
+description: 部署并配置 Meilisearch，包括索引、过滤以及生产环境所需的各项设置。
 metadata: {"clawdbot":{"emoji":"🔎","os":["linux","darwin","win32"]}}
 ---
 
-## Index Configuration Traps
-- filterableAttributes and sortableAttributes must be declared BEFORE adding documents — adding later triggers full reindex
-- Changing any index setting triggers reindex — batch all setting changes together
-- Order of searchableAttributes affects ranking — put most important fields first, not alphabetical
-- displayedAttributes defaults to all — explicitly limit to reduce response size
+## 索引配置的常见陷阱  
+- `filterableAttributes` 和 `sortableAttributes` 必须在添加文档之前声明；如果之后再添加，将会触发整个索引的重新生成。  
+- 更改任何索引设置都会触发索引重建；建议将所有设置更改合并成一次批量操作。  
+- 可搜索字段的顺序会影响搜索结果排名；应优先考虑最重要的字段，而非按照字母顺序排列。  
+- `displayedAttributes` 默认为所有字段；若需限制显示的字段，请明确指定。  
 
-## Indexing Pitfalls
-- Document updates are async — the API returns taskUid, must poll /tasks/{uid} for actual completion
-- Primary key inference fails on nested or array fields — always set primaryKey explicitly
-- Batch size affects indexing speed — 10-50MB batches optimal, not one document at a time
-- Updating one field requires sending the whole document — no true partial updates
+## 索引相关的误区  
+- 文档更新是异步的；API 仅返回 `taskId`，需通过 `/tasks/{uid}` 来获取实际更新状态。  
+- 对于嵌套字段或数组字段，系统无法自动推断主键；必须手动设置 `primaryKey`。  
+- 批量处理的大小会影响索引生成速度；建议每次处理 10–50MB 的数据量，而非单个文档。  
+- 更新单个字段时需要发送整个文档；系统不支持部分更新。  
 
-## Typo Tolerance Issues
-- First character is never typo-tolerant — "tset" won't match "test", by design
-- Typo tolerance on IDs/codes causes false matches — disable per attribute with typoTolerance.disableOnAttributes
-- Min word length defaults: 1 typo at 5 chars, 2 typos at 9 chars — adjust if matching too aggressively
+## 对拼写错误的容忍度  
+- 系统对文档名称的首个字符没有拼写容错机制；例如，“tset” 和 “test” 无法被正确匹配。  
+- 如果对 ID 或代码字段启用拼写容错功能（`typoTolerance.disableOnAttributes`），可能会导致错误的匹配结果。  
+- 默认的最低单词长度要求：5 个字符时允许 1 个拼写错误，9 个字符时允许 2 个拼写错误；可根据实际需求进行调整。  
 
-## Filtering Mistakes
-- Filters on undeclared filterableAttributes silently return empty — no error, just no results
-- Geo filtering requires _geo field with lat/lng — field name is hardcoded, can't customize
-- Filter syntax is NOT SQL — use `TO` for ranges (`year 2020 TO 2024`), not `BETWEEN`
-- Empty array in IN clause causes error — check array length before building filter
+## 过滤操作中的错误  
+- 对未声明的 `filterableAttributes` 进行过滤时，系统会默默地返回空结果集（无错误提示，但无搜索结果）。  
+- 地理位置过滤需要使用 `_geo` 字段（包含经纬度信息）；该字段名称是硬编码的，无法自定义。  
+- 过滤语法不同于 SQL；范围查询应使用 `TO`（例如 `year 2020 TO 2024`），而非 `BETWEEN`。  
+- 在 `IN` 子句中使用空数组会导致错误；在构建过滤条件前请检查数组的长度。  
 
-## Search Behavior
-- Default limit is 20, max is 1000 per request — no deep pagination, use filters to narrow
-- Multi-word queries match ANY word by default — use quotes for phrase matching
-- Highlighting only works on searchableAttributes — not on stored-only fields
-- Facets distribution counts include all matching docs — not affected by limit parameter
+## 搜索行为  
+- 每次请求的默认搜索结果数量限制为 20 条；最多可查询 1000 条；不支持深度分页，需使用过滤条件来缩小搜索范围。  
+- 多词查询默认会匹配任意一个单词；若需精确匹配短语，请使用引号。  
+- 只有可搜索字段才能被高亮显示；存储在数据库中的字段无法被高亮显示。  
+- 分面搜索的结果统计会包含所有匹配的文档；搜索结果数量不受限制参数的影响。  
 
-## Production Configuration
-- Master key MUST be set in production — without it, all endpoints are public
-- Create search-only API keys for frontend — never expose master key
-- Snapshots are the only backup method — schedule them, no continuous replication
-- No clustering — single node only, scale vertically with RAM
+## 生产环境配置  
+- 在生产环境中必须设置 `masterKey`；否则所有 API 端点都会对公众开放。  
+- 为前端创建仅用于搜索的 API 密钥；切勿公开 `masterKey`。  
+- 备份方式仅限于生成快照；建议定期自动执行快照备份，而非持续复制数据。  
+- 系统不支持集群部署；仅支持单节点运行，通过增加内存来提升扩展性。  
 
-## Performance Realities
-- Index lives in memory-mapped files — RAM determines max index size
-- Payload limit is 100MB per request — split large imports into batches
-- Indexing blocks during settings update — queries still work but new docs queue
-- Task queue has no priority — large reindex blocks small document adds
+## 性能方面的注意事项  
+- 索引数据存储在内存映射文件中；内存容量决定了索引的最大大小。  
+- 每次请求的传输数据量限制为 100MB；建议将大量数据分批导入。  
+- 在更新配置时系统会暂停索引生成；此时仍可执行查询，但新添加的文档会进入待处理队列。  
+- 任务队列没有优先级机制；处理大量数据时，新文档的添加可能会延迟较小文档的索引生成。  
 
-## API Key Restrictions
-- Keys can restrict to specific indexes — use for multi-tenant isolation
-- Keys can have expiresAt — but no auto-rotation, must manage manually
-- Actions are granular — search, documents.add, indexes.create, settings.update, etc.
-- Invalid key returns 401, missing key on protected instance returns 401 — same error, check both
+## API 密钥的使用限制  
+- 可以为特定索引设置访问权限；这有助于实现多租户之间的隔离。  
+- API 密钥可以设置过期时间（`expiresAt`），但系统不自动更新密钥；需手动管理密钥的有效期。  
+- 可用的操作包括搜索（`search`）、添加文档（`documents.add`）、创建索引（`indexes.create`）、更新配置（`settings.update`）等。  
+- 使用无效的 API 密钥会返回 401 错误；如果缺少密钥也会返回 401 错误；请检查密钥是否存在。

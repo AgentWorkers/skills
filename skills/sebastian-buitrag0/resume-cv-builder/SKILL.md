@@ -1,25 +1,25 @@
 ---
 name: resume-cv-builder
-description: Create professional resumes and CVs. Generate ATS-friendly formats, optimize bullet points, tailor for specific jobs, and export to multiple formats (Markdown, HTML, LaTeX, PDF).
+description: 创建专业的简历（Resume）和求职信（CV）。支持生成适用于自动招聘系统（ATS）的格式，优化列表项（bullets），根据具体职位进行定制，并能导出为多种格式（Markdown、HTML、LaTeX、PDF）。
 homepage: https://github.com/your-username/resume-builder-skill
 metadata: {"clawdbot":{"emoji":"📄","requires":{"bins":["pandoc"],"env":[]}}}
 ---
 
-# Resume/CV Builder Skill
+# 简历/简历生成工具技能
 
-Create professional, ATS-optimized resumes and CVs directly from Clawdbot.
+可以直接使用Clawdbot创建专业的、符合ATS（自动招聘系统）要求的简历和求职信。
 
-## Quick Start
+## 快速入门
 
-Ask me to:
-- "Create a resume for a software engineer position"
-- "Optimize my resume for ATS"
-- "Convert my resume to PDF"
-- "Tailor my resume for this job description: [paste JD]"
+请告诉我：
+- “为软件工程师职位创建一份简历”
+- “优化我的简历以适应ATS系统”
+- “将我的简历转换为PDF格式”
+- “根据这份职位描述（[粘贴职位描述]）定制我的简历”
 
-## Resume Structure
+## 简历结构
 
-### Standard Sections (Recommended Order)
+### 推荐的标准部分顺序
 
 ```markdown
 # FULL NAME
@@ -43,9 +43,9 @@ Degree, Major — University (Year)
 ## PUBLICATIONS (Optional)
 ```
 
-## Writing Guidelines
+## 编写指南
 
-### Professional Summary Formula
+### 专业总结的编写格式
 
 ```
 [Title] with [X years] of experience in [domain]. 
@@ -53,30 +53,29 @@ Proven track record of [key achievement].
 Skilled in [top 3 skills]. Seeking to [goal] at [company type].
 ```
 
-**Example:**
+**示例：**
 ```
 Senior Software Engineer with 7 years of experience in full-stack development. 
 Proven track record of reducing system latency by 40% and leading teams of 5+ developers. 
 Skilled in Python, React, and AWS. Seeking to drive technical innovation at a growth-stage startup.
 ```
 
-### Bullet Point Formula (CAR Method)
+### 使用项目符号的格式（CAR方法）
 
 ```
 [Action Verb] + [Task/Project] + [Result with Metrics]
 ```
 
-**Strong Action Verbs by Category:**
+**按类别划分的强行动动词：**
 
-| Leadership | Technical | Growth | Efficiency |
+| 领导力 | 技术能力 | 成长能力 | 效率 |
 |------------|-----------|--------|------------|
-| Led | Developed | Increased | Reduced |
-| Directed | Engineered | Grew | Streamlined |
-| Managed | Architected | Expanded | Automated |
-| Mentored | Implemented | Generated | Optimized |
-| Coordinated | Designed | Boosted | Consolidated |
+| 领导 | 开发 | 提高 | 降低 |
+| 指导 | 设计 | 扩展 | 自动化 |
+| 管理 | 架构 | 协调 | 整合 |
+| 指导 | 实施 | 生成 | 优化 |
 
-**Examples:**
+**示例：**
 ```
 ❌ Weak: "Responsible for managing a team"
 ✅ Strong: "Led cross-functional team of 8 engineers, delivering 3 major features ahead of schedule"
@@ -88,35 +87,36 @@ Skilled in Python, React, and AWS. Seeking to drive technical innovation at a gr
 ✅ Strong: "Resolved 500+ customer tickets monthly with 98% satisfaction rate, reducing escalations by 40%"
 ```
 
-### Quantify Everything
+### 所有内容都要量化
 
-| Instead of... | Write... |
-|---------------|----------|
-| Managed a team | Managed team of 12 engineers across 3 time zones |
-| Increased sales | Increased sales by $2.3M (34% YoY growth) |
-| Improved efficiency | Reduced processing time from 4 hours to 15 minutes |
-| Handled budget | Managed $500K annual budget with 100% compliance |
-| Many users | Platform serving 50K+ daily active users |
+| 例如：**  
+| 不要写……** | 要写……** |
+|---------------|----------|  
+| 管理一个团队 | 管理一个跨3个时区的12名工程师的团队 |
+| 提高销售额 | 销售额增加了230万美元（同比增长34%） |
+| 提高效率 | 处理时间从4小时缩短到15分钟 |
+| 负责预算 | 管理每年50万美元的预算，合规率达到100% |
+| 大量用户 | 该平台每天有超过5万名活跃用户 |
 
-## ATS Optimization
+## ATS优化
 
-### Do's ✅
-- Use standard section headings (Experience, Education, Skills)
-- Include keywords from job description
-- Use common job titles
-- Spell out acronyms first: "Search Engine Optimization (SEO)"
-- Use standard fonts (Arial, Calibri, Times New Roman)
-- Save as .docx or .pdf (text-based, not image)
+### 应该做的✅
+- 使用标准的部分标题（经验、教育背景、技能）
+- 包含职位描述中的关键词
+- 使用常见的职位名称
+- 先写出缩写词的全称：例如“Search Engine Optimization (SEO)”
+- 使用标准字体（Arial、Calibri、Times New Roman）
+- 保存为.docx或.pdf格式（基于文本的格式，而非图片）
 
-### Don'ts ❌
-- No tables, columns, or text boxes
-- No headers/footers (ATS may not read them)
-- No images, logos, or graphics
-- No creative section names ("My Journey" → "Experience")
-- No special characters or icons
-- Avoid PDF if created from image/scan
+### 不应该做的❌
+- 不要使用表格、列或文本框
+- 不要添加页眉/页脚（ATS系统可能无法识别这些内容）
+- 不要使用图片、标志或图形
+- 不要使用创意性的部分名称（例如将“我的经历”改为“经验”）
+- 避免使用特殊字符或图标
+- 如果简历是从图片或扫描件生成的，不要使用PDF格式
 
-### Keyword Optimization
+### 关键词优化
 
 ```bash
 # Extract keywords from job description
@@ -124,9 +124,9 @@ echo "JOB_DESCRIPTION" | tr '[:upper:]' '[:lower:]' | \
   grep -oE '\b[a-z]{3,}\b' | sort | uniq -c | sort -rn | head -20
 ```
 
-## Templates
+## 模板
 
-### Software Engineer
+### 软件工程师模板
 
 ```markdown
 # JANE DOE
@@ -166,7 +166,7 @@ GPA: 3.7 | Relevant Coursework: Distributed Systems, Machine Learning, Algorithm
 • Contributed authentication module to popular framework (500+ GitHub stars)
 ```
 
-### Product Manager
+### 产品经理模板
 
 ```markdown
 # ALEX SMITH
@@ -201,7 +201,7 @@ MBA from Wharton.
 **B.A. Economics** | NYU | 2014
 ```
 
-### Marketing Manager
+### 市场经理模板
 
 ```markdown
 # SARAH JOHNSON
@@ -237,24 +237,25 @@ Managed $2M+ annual ad spend with 4x ROAS. Expert in paid acquisition, SEO, and 
 Google Ads Certified | HubSpot Inbound Marketing | Meta Blueprint
 ```
 
-## Export Commands
+## 导出命令
 
-### Markdown to HTML
+### 将Markdown转换为HTML
 ```bash
 pandoc resume.md -o resume.html --standalone --css=style.css
 ```
 
-### Markdown to PDF
+### 将Markdown转换为PDF
 ```bash
 pandoc resume.md -o resume.pdf --pdf-engine=xelatex
 ```
 
-### Markdown to DOCX
+### 将Markdown转换为DOCX
 ```bash
 pandoc resume.md -o resume.docx
 ```
 
-### With Custom Styling
+### 自定义样式
+
 ```bash
 # Create styled HTML
 pandoc resume.md -o resume.html --standalone \
@@ -262,45 +263,45 @@ pandoc resume.md -o resume.html --standalone \
   --css="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
 ```
 
-## Tailoring for Specific Jobs
+## 根据具体职位进行定制
 
-### Step-by-Step Process
+### 分步流程
 
-1. **Extract Keywords** from job description
-2. **Match Skills** — ensure your skills section mirrors JD requirements
-3. **Reorder Bullets** — most relevant experience first
-4. **Mirror Language** — use same terminology as JD
-5. **Customize Summary** — mention company name and specific role
+1. **从职位描述中提取关键词**
+2. **匹配技能**——确保你的技能部分符合职位要求
+3. **重新排序项目符号**——将最相关的经验放在前面
+4. **使用与职位描述相同的语言**  
+5. **自定义总结**——提及公司名称和具体职位
 
-### Example Tailoring
+### 定制示例
 
-**Job Description says:**
-> "Looking for experience with React, TypeScript, and AWS. Must have led teams."
+**职位描述示例：**
+> “寻找具有React、TypeScript和AWS经验的候选人。需要具备团队领导经验。”
 
-**Your bullet BEFORE:**
+**修改前的项目符号内容：**
 ```
 • Developed web applications using various technologies
 ```
 
-**Your bullet AFTER:**
+**修改后的项目符号内容：**
 ```
 • Led team of 4 engineers building React/TypeScript applications deployed on AWS, serving 50K users
 ```
 
-## Common Mistakes to Avoid
+## 需避免的常见错误
 
-| Mistake | Fix |
+| 错误 | 修正方法 |
 |---------|-----|
-| Including "References available upon request" | Remove — it's assumed |
-| Using personal pronouns (I, me, my) | Start bullets with action verbs |
-| Listing job duties instead of achievements | Focus on results and impact |
-| Including outdated skills (jQuery, Flash) | Keep skills current and relevant |
-| Making it longer than 2 pages | 1 page for <10 years exp, 2 max |
-| Using generic objective statement | Replace with targeted summary |
-| Inconsistent formatting | Use same date format, bullet style |
-| Typos and grammar errors | Proofread multiple times |
+| 包含“如需可提供推荐信” | 删除该内容——招聘方通常会默认提供 |
+| 使用个人代词（我、我的） | 用行动动词开头 |
+| 列出工作职责而非成果 | 重点介绍成果和影响 |
+| 使用过时的技能（jQuery、Flash） | 保持技能的时效性和相关性 |
+| 简历超过2页 | 经验不足10年的简历不超过1页，超过10年的简历最多2页 |
+| 使用泛泛的求职目标 | 用具体的目标来替代 |
+| 格式不一致 | 使用统一的日期格式和项目符号样式 |
+| 拼写和语法错误 | 多次校对
 
-## Quick Checklist
+## 快速检查清单
 
 ```
 □ Contact info is current and professional
@@ -316,8 +317,8 @@ pandoc resume.md -o resume.html --standalone \
 □ File named professionally (FirstName_LastName_Resume.pdf)
 ```
 
-## Resources
+## 资源
 
-- [Harvard Resume Guide](https://careerservices.fas.harvard.edu/resources/resume-guide/)
-- [Google XYZ Formula](https://www.inc.com/bill-murphy-jr/google-recruiters-say-these-5-resume-tips-including-x-y-z-formula-will-improve-your-odds-of-getting-hired-at-google.html)
-- [ATS Resume Test](https://www.jobscan.co/)
+- [哈佛大学简历指南](https://careerservices.fas.harvard.edu/resources/resume-guide/)
+- [Google XYZ公式](https://www.inc.com/bill-murphy-jr/google-recruiters-say-these-5-resume-tips-including-x-y-z-formula-will-improve-your-odds-of-getting-hired-at-google.html)
+- [ATS简历测试工具](https://www.jobscan.co/)

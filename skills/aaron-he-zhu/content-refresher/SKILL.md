@@ -1,36 +1,36 @@
 ---
 name: content-refresher
-description: Identifies and updates outdated content to restore and improve search rankings. Analyzes content freshness, adds new information, updates statistics, and optimizes for current SEO and GEO best practices.
+description: 识别并更新过时的内容，以恢复和提升搜索排名。分析内容的新鲜度，添加新信息，更新统计数据，并根据当前的SEO和GEO最佳实践进行优化。
 geo-relevance: "medium"
 ---
 
-# Content Refresher
+# 内容更新指南
 
-This skill helps identify and revitalize outdated content to reclaim lost rankings and traffic. It analyzes content freshness, identifies update opportunities, and guides the refresh process for maximum SEO and GEO impact.
+本技能旨在帮助识别并更新过时的内容，以恢复失去的排名和流量。它能够分析内容的新鲜度，找出需要更新的地方，并指导更新流程，从而最大化SEO和地理定位（GEO）的效果。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Content has lost rankings or traffic over time
-- Statistics and information are outdated
-- Competitors have published better content
-- Content needs updating for a new year
-- Industry changes require content updates
-- Adding new sections to existing content
-- Converting old content for GEO optimization
+- 内容随着时间推移失去了排名或流量
+- 统计数据和信息已经过时
+- 竞争对手发布了更好的内容
+- 内容需要为新年进行更新
+- 行业变化要求对内容进行更新
+- 需要在现有内容中添加新章节
+- 需要对旧内容进行地理定位优化
 
-## What This Skill Does
+## 该技能的功能
 
-1. **Freshness Analysis**: Identifies outdated content needing updates
-2. **Performance Tracking**: Finds content with declining traffic
-3. **Gap Identification**: Spots missing information competitors have
-4. **Update Prioritization**: Ranks content by refresh potential
-5. **Refresh Recommendations**: Provides specific update guidance
-6. **GEO Enhancement**: Updates content for AI citation potential
-7. **Republishing Strategy**: Advises on date and promotion tactics
+1. **新鲜度分析**：识别需要更新的陈旧内容
+2. **性能监控**：找出流量下降的内容
+3. **信息缺失识别**：发现竞争对手拥有的但我们的内容缺失的信息
+4. **更新优先级排序**：根据更新潜力对内容进行排序
+5. **更新建议**：提供具体的更新指导
+6. **地理定位优化**：更新内容以提高被AI引用的可能性
+7. **重新发布策略**：提供关于发布时间和推广策略的建议
 
-## How to Use
+## 使用方法
 
-### Identify Content to Refresh
+### 识别需要更新的内容
 
 ```
 Find content on [domain] that needs refreshing
@@ -40,7 +40,7 @@ Find content on [domain] that needs refreshing
 Which of my blog posts have lost the most traffic?
 ```
 
-### Refresh Specific Content
+### 更新特定内容
 
 ```
 Refresh this article for [current year]: [URL/content]
@@ -50,35 +50,34 @@ Refresh this article for [current year]: [URL/content]
 Update this content to outrank [competitor URL]: [your URL]
 ```
 
-### Content Refresh Strategy
+### 内容更新策略
 
 ```
 Create a content refresh strategy for [domain/topic]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的占位符，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~analytics + ~~search console + ~~SEO tool connected:**
-Claude can automatically pull historical traffic trends from ~~analytics, fetch impression and ranking data from ~~search console, retrieve keyword position history from ~~SEO tool, and identify content with declining performance. This enables data-driven refresh prioritization.
+**当连接到 ~~分析工具 + ~~搜索控制台 + ~~SEO工具** 时：**
+Claude可以自动从 ~~分析工具** 中获取历史流量趋势，从 ~~搜索控制台** 中获取点击量和排名数据，从 ~~SEO工具** 中获取关键词排名历史，并识别出表现不佳的内容。这使得更新优先级能够基于数据来制定。
 
-**With manual data only:**
-Ask the user to provide:
-1. Traffic data or screenshots showing performance trends
-2. Ranking screenshots or history for key pages
-3. Content publish dates and last update dates
-4. List of pages the user suspects need refreshing
+**仅使用手动数据时：**
+请用户提供以下信息：
+1. 流量数据或显示性能趋势的截图
+2. 关键页面的排名截图或历史记录
+3. 内容的发布日期和最后一次更新日期
+4. 用户认为需要更新的页面列表
 
-Proceed with the analysis using provided data. Note in the output which findings are from automated data vs. manual review.
+使用提供的数据进行分析。在输出中注明哪些发现是基于自动化数据得出的，哪些是基于人工审核得出的。
 
-## Instructions
+## 指令
 
-When a user requests content refresh help:
+当用户请求内容更新帮助时：
 
-1. **CORE-EEAT Quick Score — Identify Weak Dimensions**
-
-   Before refreshing, run a quick CORE-EEAT assessment to focus effort on the weakest areas. Reference: [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md)
+1. **CORE-EEAT 快速评估 — 确定薄弱环节**
+   在更新之前，先进行一次快速的CORE-EEAT评估，以便将精力集中在最薄弱的环节上。参考：[CORE-EEAT基准](../../references/core-eeat-benchmark.md)
 
    ```markdown
    ### CORE-EEAT Quick Assessment
@@ -108,8 +107,7 @@ When a user requests content refresh help:
    _For full 80-item audit, use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
    ```
 
-2. **Identify Content Refresh Candidates**
-
+2. **确定需要更新的内容**
    ```markdown
    ## Content Refresh Analysis
    
@@ -136,14 +134,14 @@ When a user requests content refresh help:
    ### Refresh Prioritization Matrix
    
    ```
-   High Traffic + High Decline = 🔴 Refresh Immediately
-   High Traffic + Low Decline = 🟡 Schedule Refresh
-   Low Traffic + High Decline = 🟡 Evaluate & Decide
-   Low Traffic + Low Decline = 🟢 Low Priority
+   流量高且下降幅度大 = 🔴 立即更新
+   流量高且下降幅度小 = 🟡 安排更新
+   流量低且下降幅度大 = 🟡 评估后再决定
+   流量低且下降幅度小 = 🟢 优先级较低
    ```
    ```
 
-3. **Analyze Individual Content for Refresh**
+3. **分析单个内容以确定是否需要更新**
 
    ```markdown
    ## Content Refresh Analysis: [Title]
@@ -179,7 +177,7 @@ When a user requests content refresh help:
    5. **GEO potential**: [AI citation opportunities]
    ```
 
-4. **Identify Specific Updates Needed**
+4. **确定具体的更新内容**
 
    ```markdown
    ## Refresh Requirements
@@ -222,7 +220,7 @@ When a user requests content refresh help:
    - [ ] Create standalone factual statements
    ```
 
-5. **Create Refresh Plan**
+5. **制定更新计划**
 
    ```markdown
    ## Content Refresh Plan
@@ -286,7 +284,7 @@ When a user requests content refresh help:
    | [img 2] | Keep | Update alt text |
    ```
 
-6. **Write Refresh Content**
+6. **编写更新后的内容**
 
    ```markdown
    ## Refreshed Content Sections
@@ -331,7 +329,7 @@ When a user requests content refresh help:
    [Direct answer]
    ```
 
-7. **Optimize for GEO During Refresh**
+7. **在更新过程中进行地理定位优化**
 
    ```markdown
    ## GEO Enhancement Opportunities
@@ -368,7 +366,7 @@ When a user requests content refresh help:
    - Use recent sources (last 2 years)
    ```
 
-8. **Generate Republishing Strategy**
+8. **生成重新发布策略**
 
    ```markdown
    ## Republishing Strategy
@@ -416,7 +414,7 @@ When a user requests content refresh help:
    - [ ] Check AI citation improvements
    ```
 
-9. **Create Refresh Report**
+9. **创建更新报告**
 
    ```markdown
    # Content Refresh Report
@@ -462,25 +460,25 @@ When a user requests content refresh help:
    Schedule next refresh review: [Date - 6 months from now]
    ```
 
-## Validation Checkpoints
+## 验证检查点
 
-### Input Validation
-- [ ] Target content URL or title clearly identified
-- [ ] Historical performance data available (traffic trends, rankings)
-- [ ] Content publish/update dates known
-- [ ] If comparing to competitors, competitor URLs provided
+### 输入验证
+- [ ] 已明确指定目标内容的URL或标题
+- [ ] 有可用的历史性能数据（流量趋势、排名）
+- [ ] 知道内容的发布/更新日期
+- [ ] 如果与竞争对手进行比较，请提供竞争对手的URL
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] Outdated elements identified with specific examples and replacement data
-- [ ] All suggested additions include word counts and section locations
-- [ ] Source of each data point clearly stated (~~analytics data, ~~search console, ~~SEO tool, user-provided, or estimated)
+### 输出验证
+- [ ] 每条建议都引用了具体的数据点（而非泛泛而谈）
+- [ ] 过时的内容部分都标明了具体的例子和替换数据
+- [ ] 所有建议的新增内容都包含了字数和位置信息
+- [ ] 每个数据点的来源都明确标注（来自 ~~分析工具、~~搜索控制台、~~SEO工具、用户提供或估算）
 
-## Example
+## 示例
 
-**User**: "Refresh my blog post about 'best cloud hosting providers'"
+**用户**：“更新我关于‘最佳云托管提供商’的博客文章”
 
-**Output**:
+**输出**：
 
 ```markdown
 ### CORE-EEAT Quick Assessment
@@ -575,7 +573,7 @@ When a user requests content refresh help:
 | Featured Snippets | 0 | 1 (FAQ) | 2+ |
 ```
 
-## Content Refresh Checklist
+## 内容更新检查清单
 
 ```markdown
 ### Pre-Refresh
@@ -612,53 +610,53 @@ When a user requests content refresh help:
 - [ ] Test page speed
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Prioritize by ROI** - Refresh high-potential content first
-2. **Don't just add dates** - Make substantial improvements
-3. **Beat competitors** - Add what they have and more
-4. **Track results** - Monitor ranking changes post-refresh
-5. **Schedule regular audits** - Check content health quarterly
-6. **Optimize for GEO** - Every refresh is a GEO opportunity
+1. **按投资回报率（ROI）优先排序** — 先更新潜力较高的内容
+2. **不要只是添加日期** — 要做出实质性的改进
+3. **超越竞争对手** — 不仅添加他们有的内容，还要添加更多有价值的内容
+4. **跟踪结果** — 更新后监控排名变化
+5. **定期进行审计** — 每季度检查内容的状态
+6. **进行地理定位优化** — 每次更新都是一个优化地理定位的机会
 
-## Content Decay Signal Taxonomy
+## 内容衰退信号分类
 
-### Decay Indicators
+### 衰退指标
 
-| Signal | Source | Severity | Detection Method |
+| 信号 | 来源 | 严重程度 | 检测方法 |
 |--------|--------|----------|-----------------|
-| Traffic decline >20% MoM | Analytics | High | Monthly traffic comparison |
-| Position drop >5 positions | Rank tracker | High | Weekly rank monitoring |
-| Outdated statistics/dates | Manual review | Medium | Annual content audit |
-| Broken external links | Crawler | Medium | Monthly crawl reports |
-| Decreased CTR | Search Console | Medium | Quarterly CTR analysis |
-| Competitor new content | SERP monitoring | Medium | Monthly SERP checks |
-| User engagement drop | Analytics | Low | Quarterly engagement review |
-| Index coverage issues | Search Console | High | Weekly coverage monitoring |
+| 每月流量下降超过20% | 分析工具 | 高 | 每月流量对比 |
+| 排名下降超过5位 | 排名跟踪工具 | 高 | 每周排名监控 |
+| 统计数据/日期过时 | 人工审核 | 中等 | 年度内容审核 |
+| 外部链接失效 | 爬虫工具 | 中等 | 每月爬虫报告 |
+| 点击率（CTR）下降 | 搜索控制台 | 中等 | 每季度CTR分析 |
+| 竞争对手发布了新内容 | 搜索引擎结果页面（SERP）监控 | 中等 | 每月SERP检查 |
+| 用户参与度下降 | 分析工具 | 低 | 每季度参与度审核 |
+| 索引覆盖问题 | 搜索控制台 | 高 | 每周索引覆盖监控 |
 
-### Content Decay Stages
+### 内容衰退阶段
 
-| Stage | Symptoms | Urgency | Recommended Action |
+| 阶段 | 症状 | 紧急程度 | 建议措施 |
 |-------|---------|---------|-------------------|
-| **Early decay** | Slight traffic/position dip | Low | Monitor for 2-4 weeks |
-| **Active decay** | Consistent decline across 2+ months | Medium | Schedule refresh within 2 weeks |
-| **Significant decay** | 50%+ traffic loss, page 2+ | High | Immediate refresh or rewrite |
-| **Terminal decay** | No organic traffic, deindexed | Critical | Rewrite, redirect, or retire |
+| **早期衰退** | 流量/排名略有下降 | 低 | 监控2-4周 |
+| **活跃衰退** | 连续两个月以上持续下降 | 中等 | 在2周内安排更新 |
+| **严重衰退** | 流量下降超过50%，页面排名下降超过2位 | 高 | 立即更新或重写 |
+| **最终衰退** | 完全没有自然流量，被搜索引擎移除索引 | 关键 | 重写、重定向或停止更新 |
 
-## Refresh vs. Rewrite Decision Framework
+## 更新与重写决策框架
 
-| Factor | Refresh (Update) | Rewrite (New version) |
+| 因素 | 更新 | 重写（新版本） |
 |--------|-----------------|---------------------|
-| Content quality | Good foundation, needs updating | Fundamentally flawed or outdated approach |
-| Position | Was ranking well, now dropping | Never ranked well despite optimization |
-| URL age | 1+ years, has earned backlinks | Young URL with no backlink equity |
-| Backlinks | Has external links pointing to it | No backlinks worth preserving |
-| Scope of changes needed | <50% of content changing | >50% needs rewriting |
-| Search intent | Intent hasn't changed | Search intent has evolved |
+| 内容质量 | 基础良好，需要更新 | 基本存在缺陷或方法过时 |
+| 排名 | 曾经排名较好，但现在下降 | 尽管进行了优化但仍排名不佳 |
+| URL年龄 | 超过1年，且有外部链接 | 新URL没有外部链接 |
+| 外部链接数量 | 有外部链接指向该URL | 没有值得保留的外部链接 |
+| 需要修改的内容比例 | 小于50% | 超过50%需要重写 |
+| 搜索意图 | 搜索意图没有变化 | 搜索意图已经发生变化 |
 
-**Decision rule:** If the URL has backlinks and was ranking, REFRESH. If not, consider REWRITE at a new URL (with 301 redirect if old URL has any equity).
+**决策规则：** 如果URL有外部链接并且曾经排名良好，则选择**更新**。如果没有外部链接，则考虑**在新URL上重写**（如果旧URL还有任何价值，可以使用301重定向）。
 
-## Content Lifecycle Model
+## 内容生命周期模型
 
 ```
 CREATE → PROMOTE → MAINTAIN → REFRESH → [REFRESH again] or RETIRE
@@ -669,37 +667,36 @@ CREATE → PROMOTE → MAINTAIN → REFRESH → [REFRESH again] or RETIRE
   │    email        fix issues  improve depth              content
 ```
 
-### Lifecycle Actions by Phase
+### 各阶段的生命周期操作
 
-| Phase | Duration | Key Actions | Metrics to Track |
+| 阶段 | 持续时间 | 关键操作 | 需要监控的指标 |
 |-------|----------|------------|-----------------|
-| Create | Week 1 | Publish, submit to Search Console | Indexation |
-| Promote | Month 1 | Social shares, email, outreach | Referral traffic, backlinks |
-| Maintain | Months 2-6 | Monitor, fix broken links, respond to comments | Rankings, traffic trend |
-| Refresh | Months 6-12+ | Update data, add sections, improve structure | Traffic recovery, new keywords |
-| Retire | When terminal | 301 redirect to best alternative | Redirect traffic recovery |
+| 创建 | 第1周 | 发布内容，提交给搜索控制台 | 索引编制 |
+| 推广 | 第1个月 | 在社交媒体上分享、发送邮件、进行外联 | 引荐流量、获取外部链接 |
+| 维护 | 第2-6个月 | 监控、修复失效链接、回复评论 | 排名、流量趋势 |
+| 更新 | 第6-12个月以上 | 更新数据、添加新章节、优化结构 | 流量恢复、新增关键词 |
+| 停止更新 | 当内容进入最终衰退阶段 | 使用301重定向到最佳替代页面 | 重定向以恢复流量 |
 
-## Update Strategy by Content Type
+## 根据内容类型制定更新策略
 
-| Content Type | Refresh Frequency | Key Updates | Shelf Life |
+| 内容类型 | 更新频率 | 关键更新内容 | 生命周期 |
 |-------------|-------------------|------------|-----------|
-| Statistics roundups | Every 6 months | Replace old stats, add new sources | 6-12 months |
-| Tool comparisons | Every 3-6 months | Update pricing, features, screenshots | 3-6 months |
-| How-to guides | Annually | Update steps, screenshots, links | 12-18 months |
-| Evergreen guides | Every 12-18 months | Add new sections, update examples | 18-24 months |
-| News/trend content | Don't refresh | Archive or redirect | 1-3 months |
-| Case studies | Rarely | Update results if available | 2-3 years |
-| Glossary/definitions | As needed | Update when definitions evolve | 2-5 years |
+| 统计数据汇总 | 每6个月 | 替换旧数据、添加新来源 | 6-12个月 |
+| 工具对比 | 每3-6个月 | 更新价格、功能、截图 | 3-6个月 |
+| 操作指南 | 每年 | 更新步骤、添加截图、链接 | 12-18个月 |
+| 永恒指南 | 每12-18个月 | 添加新章节、更新示例 | 18-24个月 |
+| 新闻/趋势内容 | 不需要更新 | 存档或重定向 | 1-3个月 |
+| 案例研究 | 很少更新 | 如果有新数据则更新 | 2-3年 |
+| 术语表/定义 | 根据需要 | 定义发生变化时更新 | 2-5年 |
 
-## Reference Materials
+## 参考资料
 
-- [Content Decay Signals](./references/content-decay-signals.md) — Decay indicators, lifecycle stages, and refresh triggers by content type
+- [内容衰退信号](./references/content-decay-signals.md) — 根据内容类型划分的衰退指标、生命周期阶段和更新触发条件
 
-## Related Skills
+## 相关技能
 
-- [content-gap-analysis](../../research/content-gap-analysis/) — Find what to add
-- [seo-content-writer](../../build/seo-content-writer/) — Write new sections
-- [geo-content-optimizer](../../build/geo-content-optimizer/) — Enhance for AI
-- [on-page-seo-auditor](../on-page-seo-auditor/) — Audit refreshed content
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-
+- [内容差距分析](../../research/content-gap-analysis/) — 确定需要添加的内容
+- [SEO内容编写器](../../build/seo-content-writer/) — 编写新章节
+- [地理定位内容优化器](../../build/geo-content-optimizer/) — 优化内容以适应AI需求 |
+- [页面SEO审核器](../on-page-seo-auditor/) — 审核更新后的内容 |
+- [内容质量审核器](../../cross-cutting/content-quality-auditor/) — 进行全面的80项CORE-EEAT审核

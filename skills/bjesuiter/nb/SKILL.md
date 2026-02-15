@@ -1,6 +1,6 @@
 ---
 name: nb
-description: Manage notes, bookmarks, and notebooks using the nb CLI. Create, list, search, and organize notes across multiple notebooks with Git-backed versioning.
+description: 使用 `nb CLI` 管理笔记、书签和笔记本。支持在多个笔记本中创建、列出、搜索和整理笔记，并具备基于 Git 的版本控制功能。
 author: Benjamin Jesuiter <bjesuiter@gmail.com>
 homepage: https://github.com/xwmx/nb
 metadata:
@@ -11,17 +11,15 @@ metadata:
       bins: ["nb"]
 ---
 
-# nb - Command Line Note-Taking
+# nb – 命令行笔记工具
 
-> ⚠️ **IMPORTANT:** Never edit files in nb git repos (`~/.nb/*`) by hand! Always use the `nb` CLI to ensure proper indexing and Git commits.
+> ⚠️ **重要提示：** **切勿** 手动编辑 `nb` Git 仓库中的文件（`~/.nb/*`）！请始终使用 `nb` 命令行工具（CLI），以确保文件索引正确且能够通过 Git 进行版本控制。
 
+nb 是一个命令行工具，支持本地笔记的创建、编辑、搜索、归档等功能。它使用纯文本格式存储数据，并通过 Git 进行版本控制，同时提供类似维基的链接功能。
 
+## 快速参考
 
-A command line and local web note-taking, bookmarking, and archiving tool with plain text data storage, Git-backed versioning, and wiki-style linking.
-
-## Quick Reference
-
-### Notebooks
+### 笔记本（Notebooks）
 
 ```bash
 # List all notebooks
@@ -37,7 +35,7 @@ nb notebooks add <name>
 nb notebooks current
 ```
 
-### Adding Notes
+### 添加笔记（Adding Notes）
 
 ```bash
 # Add a note with title
@@ -53,7 +51,7 @@ nb add -t "Title" --tags tag1,tag2
 nb add <notebook>:filename.md
 ```
 
-### Listing Notes
+### 列出笔记（Listing Notes）
 
 ```bash
 # List notes in current notebook
@@ -72,7 +70,7 @@ nb list -e
 nb list --tags
 ```
 
-### Showing Notes
+### 查看笔记（Showing Notes）
 
 ```bash
 # Show note by ID or title
@@ -86,7 +84,7 @@ nb show <notebook>:<id>
 nb show <id> --print
 ```
 
-### Searching Notes
+### 搜索笔记（Searching Notes）
 
 ```bash
 # Search across all notebooks
@@ -104,7 +102,7 @@ nb search "term1" --not "exclude"
 nb search --tag "tagname"
 ```
 
-### Editing Notes
+### 编辑笔记（Editing Notes）
 
 ```bash
 # Edit by ID
@@ -123,7 +121,7 @@ nb edit <id> -c "Content at top" --prepend
 nb edit <id> -c "Replace all" --overwrite
 ```
 
-### Deleting Notes
+### 删除笔记（Deleting Notes）
 
 ```bash
 # Delete by ID (will prompt)
@@ -133,7 +131,7 @@ nb delete <id>
 nb delete <id> -f
 ```
 
-### Moving/Renaming
+### 移动/重命名笔记（Moving/Renaming Notes）
 
 ```bash
 # Move note to another notebook
@@ -143,7 +141,7 @@ nb move <id> <notebook>:
 nb move <id> new-filename.md
 ```
 
-### Todos
+### 待办事项（Todos）
 
 ```bash
 # Add a todo
@@ -165,7 +163,7 @@ nb todo do <id>
 nb todo undo <id>
 ```
 
-### Bookmarks
+### 书签（Bookmarks）
 
 ```bash
 # Add a bookmark
@@ -184,7 +182,7 @@ nb bookmark list
 nb bookmark search "query"
 ```
 
-### Git Operations
+### Git 操作（Git Operations）
 
 ```bash
 # Sync with remote
@@ -201,7 +199,7 @@ nb git status
 nb git log --oneline -5
 ```
 
-### Folders
+### 文件夹（Folders）
 
 ```bash
 # Add folder to notebook
@@ -214,11 +212,11 @@ nb folders
 nb add <folder>/<filename>.md
 ```
 
-## Common Patterns
+## 常见用法
 
-### Adding Note with Full Content
+### 添加包含完整内容的笔记
 
-For longer notes, create a temp file and import:
+对于较长的笔记，可以先创建一个临时文件，然后再导入到笔记本中：
 
 ```bash
 # Write content to temp file first, then copy to nb
@@ -227,7 +225,7 @@ cd ~/.nb/<notebook> && git add . && git commit -m "Add note"
 nb <notebook>: index rebuild
 ```
 
-### Searching Across All
+### 在所有笔记中搜索
 
 ```bash
 # Search everything
@@ -238,9 +236,9 @@ nb search "term" --type bookmark
 nb search "term" --type todo
 ```
 
-## Data Location
+## 数据存储位置
 
-Notes are stored in `~/.nb/<notebook>/` as markdown files with Git versioning.
+笔记以 markdown 格式存储在 `~/.nb/<notebook>/` 目录下，并通过 Git 进行版本控制。
 
 ```
 ~/.nb/
@@ -249,10 +247,10 @@ Notes are stored in `~/.nb/<notebook>/` as markdown files with Git versioning.
 └── ...
 ```
 
-## Tips
+## 使用技巧
 
-1. Use `nb <notebook>:` prefix to work with specific notebooks
-2. IDs are numbers shown in `nb list`
-3. Titles can be used instead of IDs (quoted if spaces)
-4. All changes are automatically Git-committed
-5. Use `nb sync` to push/pull from remote repos
+1. 使用前缀 `nb <notebook>` 来操作特定的笔记本。
+2. 笔记的 ID 是数字形式，可以在 `nb list` 命令中查看。
+3. 也可以使用笔记的标题作为 ID（如果标题中包含空格，请使用引号）。
+4. 所有更改都会自动被提交到 Git 仓库。
+5. 使用 `nb sync` 命令从远程仓库同步数据。

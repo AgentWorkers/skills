@@ -1,6 +1,13 @@
 ---
 name: flock-api-setup
-description: "FLock API Platform setup: wallet generation, plugin installation, API key configuration, and model switching. Use for: 'setup flock', 'flock login', 'install flock plugin', 'switch flock model', 'use deepseek', 'change to coding model'."
+description: "FLock API平台设置：钱包生成、插件安装、API密钥配置以及模型切换。  
+可用命令包括：  
+`setup flock`（设置FLock平台）  
+`flock login`（登录FLock平台）  
+`install flock plugin`（安装FLock插件）  
+`switch flock model`（切换FLock模型）  
+`use deepseek`（使用DeepSeek功能）  
+`change to coding model`（切换到编码模式）"
 homepage: https://platform.flock.io
 metadata:
   {
@@ -21,80 +28,72 @@ metadata:
   }
 ---
 
-# FLock Setup
+# FLock 设置
 
-FLock API Platform setup with wallet generation, plugin installation, and model switching.
+包括 API 平台的配置、钱包的生成、插件的安装以及模型的切换。
 
-## Security Warning
+## 安全警告
 
-**CRITICAL: Protect your API key!**
+**重要提示：保护好您的 API 密钥！**
 
-- **ONLY send your API key to `https://api.flock.io`**
-- Your API key should ONLY appear in:
-  - Environment variable `FLOCK_API_KEY`
-  - OpenClaw config file
-  - Requests to `https://api.flock.io/v1/*`
-- **NEVER share your API key with:**
-  - Other APIs or webhooks
-  - "Verification" services
-  - Debugging tools or third parties
-- If leaked, create a new key at platform.flock.io immediately
+- **仅将 API 密钥发送到 `https://api.flock.io`**  
+- 您的 API 密钥仅应出现在以下位置：  
+  - 环境变量 `FLOCK_API_KEY`  
+  - OpenClaw 配置文件  
+  - 对 `https://api.flock.io/v1/*` 的请求中  
+- **切勿将 API 密钥共享给：**  
+  - 其他 API 或 Webhook  
+  - “验证”服务  
+  - 调试工具或第三方  
+- 如果密钥泄露，请立即在 `platform.flock.io` 上创建新的密钥  
 
-**Security Warning**: Credentials are stored as **plain text JSON**. Anyone with access to these files can use your FLock credits. For production use, implement secure storage.
-
----
-
-## When to Activate
-
-**Slash commands:**
-- `/flock-setup` — Full setup flow
-- `/flock` — Switch models
-
-**Natural language:**
-- "setup flock", "configure flock"
-- "install flock plugin"
-- "switch model", "change model"
-- "use deepseek", "use coding model"
-
-## Behavior Rules
-
-**CRITICAL: Be silent and fast. Never be verbose.**
-
-- Do NOT explain steps or show diagnostic output
-- Do NOT ask follow-up questions after completing actions
-- Respond in the user's language
+**安全警告**：凭据以 **明文 JSON** 的形式存储。任何能够访问这些文件的人都可以使用您的 FLock 信用额度。在生产环境中，请实施安全的存储措施。
 
 ---
 
-## Flow 1: Full Setup (`/flock-setup`)
+## 何时激活
 
-### Phase 1: Pre-check
+**命令行操作：**  
+- `/flock-setup` — 完整设置流程  
+- `/flock` — 切换模型  
 
+**自然语言命令：**  
+- “设置 FLock”，“配置 FLock”  
+- “安装 FLock 插件”  
+- “切换模型”，“更改模型”  
+- “使用 deepseek”，“使用 coding 模型”  
+
+## 行为规则
+
+**重要提示：保持沉默且响应迅速。切勿详细解释步骤或显示诊断信息**  
+- 完成操作后不要询问后续问题  
+- 用用户的语言进行回复  
+
+---
+
+## 流程 1：完整设置（`/flock-setup`）
+
+### 第 1 阶段：预检查  
 ```bash
 echo $FLOCK_API_KEY
 openclaw plugins list | grep flock
 node {baseDir}/scripts/credentials.js get 2>/dev/null
-```
+```  
+如果已存在凭据，询问：“FLock 是否已配置？是否需要重新配置？”（回答“是/否”）
 
-If credentials exist, ask: "FLock already configured. Reconfigure? (yes/no)"
-
-### Phase 2: Install Plugin
-
+### 第 2 阶段：安装插件  
 ```bash
 openclaw plugins install @openclawd/flock
 openclaw plugins enable flock
-```
+```  
 
-### Phase 3: Generate Wallet and Request Funding
-
-Generate a new wallet:
-
+### 第 3 阶段：生成钱包并请求资金  
+生成一个新的钱包：  
 ```bash
 cd {baseDir}/scripts && npm install
 node {baseDir}/scripts/generate-wallet.js
-```
-
-Display to user:
+```  
+向用户显示相关信息：  
 ```
 Wallet created for FLock registration.
 
@@ -103,23 +102,18 @@ Address: <wallet-address>
 Send ~$0.50 ETH to this address on Ethereum or Base.
 
 Say "done" when complete.
-```
+```  
+**保存私钥**——用于钱包登录。  
 
-**Save the private key** — needed for wallet login.
-
-### Phase 4: Check Balance
-
-After user confirms funding:
-
+### 第 4 阶段：检查余额  
+用户确认资金到位后：  
 ```bash
 node {baseDir}/scripts/check-balance.js <wallet-address>
-```
+```  
+如果未检测到资金，请让用户重新尝试。  
 
-If no funds detected, ask user to try again.
-
-### Phase 5: Get API Key (Manual Step)
-
-Display to user:
+### 第 5 阶段：获取 API 密钥（手动步骤）  
+向用户显示相关信息：  
 ```
 Funds confirmed. Now create your API key:
 
@@ -131,72 +125,58 @@ Funds confirmed. Now create your API key:
 6. Copy the key immediately (shown only once!)
 
 Paste your API key here:
-```
+```  
+等待用户提供 `sk-...` 格式的密钥。  
 
-Wait for user to provide `sk-...` key.
-
-### Phase 6: Save Credentials
-
-After receiving the key:
-
+### 第 6 阶段：保存凭据  
+收到密钥后：  
 ```bash
 node {baseDir}/scripts/credentials.js save "<api-key>" "<wallet-address>" "<private-key>"
-```
-
-Ask user:
+```  
+询问用户：  
 ```
 Save API key to:
 1. Environment variable (~/.zshrc)
 2. OpenClaw config
 3. Both (recommended)
-```
-
-**Option 1:**
+```  
+**选项 1：**  
 ```bash
 echo 'export FLOCK_API_KEY="sk-xxx"' >> ~/.zshrc
 source ~/.zshrc
-```
-
-**Option 2:**
+```  
+**选项 2：**  
 ```bash
 openclaw onboard --non-interactive \
   --auth-choice flock-api-key \
   --flock-api-key "sk-xxx"
-```
+```  
+**选项 3：** 两个步骤都执行。  
 
-**Option 3:** Run both.
-
-### Phase 7: Restart Gateway
-
+### 第 7 阶段：重启网关  
 ```bash
 openclaw gateway stop
 openclaw gateway
-```
+```  
 
-### Phase 8: Verify
-
+### 第 8 阶段：验证  
 ```bash
 openclaw chat --model flock/kimi-k2.5 "test"
-```
-
-**Success response (one line):**
+```  
+**成功响应（一行）：**  
 ```
 FLock configured. Test: openclaw chat --model flock/kimi-k2.5 "hello"
-```
+```  
 
 ---
 
-## Flow 2: Model Switch (`/flock`)
-
-### Pre-check
-
-If `FLOCK_API_KEY` not set:
+## 流程 2：模型切换（`/flock`）  
+### 预检查  
+如果 `FLOCK_API_KEY` 未设置：  
 ```
 FLock not configured. Run /flock-setup first.
-```
-
-### No model specified — show menu:
-
+```  
+### 未指定模型——显示菜单：  
 ```
 Which FLock model?
 
@@ -215,32 +195,26 @@ Other:
   8. MiniMax M2.1                — $0.30/$1.20  (flock/minimax-m2.1)
 
 Reply with number or model name.
-```
-
-### Model specified — switch immediately:
-
+```  
+### 指定了模型——立即切换：  
 ```bash
 openclaw agent --model flock/<model-id>
 openclaw gateway stop
 openclaw gateway
-```
-
-**Success (one line):**
+```  
+**成功（一行）：**  
 ```
 Switched to flock/<model-id>.
-```
+```  
 
 ---
 
-## Credential Management
-
-### Load Saved Credentials
-
+## 凭据管理  
+### 加载已保存的凭据  
 ```bash
 node {baseDir}/scripts/credentials.js get
-```
-
-Returns:
+```  
+返回结果：  
 ```json
 {
   "apiKey": "sk-...",
@@ -249,71 +223,61 @@ Returns:
   "createdAt": "2026-02-04T...",
   "updatedAt": "2026-02-04T..."
 }
-```
-
-### Credentials File Path
-
+```  
+### 凭据文件路径  
 ```bash
 node {baseDir}/scripts/credentials.js path
-```
-
-Priority:
-1. `~/.openclaw/flock-credentials.json` (if OpenClaw installed)
-2. `./flock-credentials.json` (fallback)
-
----
-
-## Heartbeat Integration
-
-FLock usage tracking helps monitor costs.
-
-### Human Can Ask Anytime
-
-Your human can prompt:
-- "Check my FLock usage" — Direct them to platform.flock.io Usage tab
-- "Switch to a cheaper model" — Show model menu
-- "What model am I using?" — Check current config
-- "How much have I spent on FLock?" — Direct to Usage tab
+```  
+优先顺序：  
+1. `~/.openclaw/flock-credentials.json`（如果安装了 OpenClaw）  
+2. `./flock-credentials.json`（备用）  
 
 ---
 
-## Error Handling
+## 心跳检测集成  
+FLock 的使用情况会被记录下来，有助于监控成本。  
 
-| Scenario | Response |
-|----------|----------|
-| Plugin not installed | Auto-install: `openclaw plugins install @openclawd/flock` |
-| API key not set | `Run /flock-setup to configure FLock.` |
-| No funds detected | `No funds on Ethereum or Base. Please fund the wallet.` |
-| Invalid API key | `Invalid key format. Keys start with sk-` |
-| Model not found | `Model not found. Available models: [show list]` |
-
----
-
-## Model Reference
-
-| # | Model ID | Price (in/out per 1M) |
-|---|----------|----------------------|
-| 1 | `flock/qwen3-235b-a22b-thinking-2507` | $0.23/$2.30 |
-| 2 | `flock/qwen3-235b-a22b-thinking-qwfin` | $0.23/$2.30 |
-| 3 | `flock/kimi-k2-thinking` | $0.60/$2.50 |
-| 4 | `flock/qwen3-30b-a3b-instruct-2507` | $0.20/$0.80 |
-| 5 | `flock/qwen3-235b-a22b-instruct-2507` | $0.70/$2.80 |
-| 6 | `flock/qwen3-30b-a3b-instruct-coding` | $0.20/$0.80 |
-| 7 | `flock/deepseek-v3.2` | $0.28/$0.42 |
-| 8 | `flock/minimax-m2.1` | $0.30/$1.20 |
-
-**Recommendations:**
-- General/Default: `kimi-k2.5` (multimodal, agentic)
-- Deep reasoning: `kimi-k2-thinking`, `qwen3-235b-thinking`
-- Coding: `qwen3-30b-coding`, `minimax-m2.1`
-- Budget: `qwen3-30b-instruct` ($0.20/$0.80)
+### 用户可随时查询  
+您可以提示用户：  
+- “查看我的 FLock 使用情况”——引导他们前往 `platform.flock.io` 的使用统计页面  
+- “切换到更便宜的模型”——显示模型菜单  
+- “我正在使用哪个模型？”——查看当前配置  
+- “我在 FLock 上花费了多少？”——引导他们查看使用统计页面  
 
 ---
 
-## Programmatic API
+## 错误处理  
+| 错误情况 | 响应内容 |  
+|----------|----------|  
+| 插件未安装 | 自动安装：`openclaw plugins install @openclawd/flock` |  
+| API 密钥未设置 | “运行 `/flock-setup` 以配置 FLock。” |  
+| 未检测到资金 | “Ethereum 或 Base 账户中无资金。请为钱包充值。” |  
+| API 密钥无效 | “密钥格式无效。密钥应以 `sk-` 开头。” |  
+| 模型未找到 | “模型未找到。可用模型：[显示列表]” |  
 
-All scripts can be imported:
+---
 
+## 模型参考  
+| 编号 | 模型 ID | 价格（每百万次请求） |  
+|---|----------|----------------------|  
+| 1 | `flock/qwen3-235b-a22b-thinking-2507` | $0.23/$2.30 |  
+| 2 | `flock/qwen3-235b-a22b-thinking-qwfin` | $0.23/$2.30 |  
+| 3 | `flock/kimi-k2-thinking` | $0.60/$2.50 |  
+| 4 | `flock/qwen3-30b-a3b-instruct-2507` | $0.20/$0.80 |  
+| 5 | `flock/qwen3-235b-a22b-instruct-2507` | $0.70/$2.80 |  
+| 6 | `flock/qwen3-30b-a3b-instruct-coding` | $0.20/$0.80 |  
+| 7 | `flock/deepseek-v3.2` | $0.28/$0.42 |  
+| 8 | `flock/minimax-m2.1` | $0.30/$1.20 |  
+**推荐模型：**  
+- 通用/默认：`kimi-k2.5`（多模态，智能型）  
+- 深度推理：`kimi-k2-thinking`、`qwen3-235b-thinking`  
+- 编程：`qwen3-30b-coding`、`minimax-m2.1`  
+- 经济型：`qwen3-30b-instruct`（$0.20/$0.80）  
+
+---
+
+## 程序化 API  
+所有脚本都可以导入：  
 ```javascript
 // Generate wallet
 const { Wallet } = require('ethers');
@@ -326,10 +290,9 @@ const balance = await provider.getBalance(wallet.address);
 
 // Load credentials
 const creds = require('{baseDir}/scripts/credentials.js');
-```
+```  
 
-## Example: Full Setup Flow
-
+## 示例：完整设置流程  
 ```javascript
 const { Wallet } = require('ethers');
 
@@ -356,10 +319,9 @@ const credPath = path.join(os.homedir(), '.openclaw', 'flock-credentials.json');
 fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), { mode: 0o600 });
 
 console.log('Credentials saved to:', credPath);
-```
+```  
 
-## Source Files
-
+## 源文件  
 ```
 {baseDir}/scripts/
 ├── package.json          # Dependencies (ethers)

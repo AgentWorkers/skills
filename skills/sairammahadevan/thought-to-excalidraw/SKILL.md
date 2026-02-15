@@ -1,27 +1,27 @@
 ---
 name: pm-visualizer
-description: Visualizes Product Manager thoughts (Why, What, How, User Journey) into an editable Excalidraw diagram. Use when the user asks to "visualize specs", "create a PM diagram", or "map out product thoughts".
+description: 将产品经理的想法（包括“为什么这样做”、“具体做什么”、“如何实现”以及“用户使用流程”）可视化，并生成一个可编辑的 Excalidraw 图表。当用户要求“将产品规格可视化”、“创建产品经理用图”或“梳理产品开发思路”时，可以使用此功能。
 ---
 
-# PM Visualizer Skill
+# PM Visualizer 技能
 
-This skill converts unstructured Product Manager thoughts into a structured Excalidraw visualization.
+该技能可以将产品经理的非结构化思维转化为结构化的 Excalidraw 可视化图表。
 
-## Features
-- **Smart Layout**: Automatically columns "Why, What, How" and creates a horizontal flow for "User Journey".
-- **Color Coding**: Visual distinction between problem (Why - Yellow), solution (What - Green), implementation (How - Blue), and flow (Journey - Red/Pink).
-- **Grouped Elements**: Text is properly bound to containers so they move together.
+## 特点
+- **智能布局**：自动划分“为什么（Why）”、“是什么（What）”和“如何实现（How）”三个部分，并为“用户流程（User Journey）”创建横向布局。
+- **颜色编码**：通过颜色区分问题（黄色）、解决方案（绿色）、实现方式（蓝色）以及流程（红色/粉色）。
+- **元素分组**：文本会正确地绑定到相应的容器中，确保它们在图表中保持一致的位置。
 
-## Workflow
+## 工作流程
 
-1.  **Analyze Request**: Extract the following sections from the user's prompt or context:
-    *   **Title**: The feature or product name.
-    *   **Why**: The problem statement, business goals, or "Why are we building this?".
-    *   **What**: The solution requirements, features, or "What is it?".
-    *   **How**: Technical implementation details, API strategy, or "How will we build it?".
-    *   **Journey**: A sequential list of steps for the user journey or process flow.
+1. **分析需求**：从用户的请求或背景信息中提取以下内容：
+    *   **标题**：功能或产品的名称。
+    *   **问题**：问题描述、业务目标，或“我们为什么要开发这个功能？”。
+    *   **解决方案**：功能需求或具体实现细节。
+    *   **实现方式**：技术实现细节、API 策略，或“我们将如何实现它？”。
+    *   **用户流程**：用户操作步骤的顺序列表。
 
-2.  **Prepare Data**: Create a JSON file (e.g., `temp_visual_data.json`) with this structure:
+2. **准备数据**：创建一个 JSON 文件（例如 `temp_visual_data.json`），其结构如下：
     ```json
     {
       "title": "Feature Name",
@@ -32,22 +32,22 @@ This skill converts unstructured Product Manager thoughts into a structured Exca
     }
     ```
 
-3.  **Generate Diagram**: Run the python script to generate the `.excalidraw` file.
+3. **生成图表**：运行 Python 脚本以生成 `.excalidraw` 文件。
     ```bash
     python3 skills/pm-visualizer/scripts/layout_diagram.py temp_visual_data.json ~/Downloads/Documents/PM_Visuals/Output_Name.excalidraw
     ```
-    *Ensure the output directory exists first.*
+    * 确保输出目录已经存在。*
 
-4.  **Cleanup**: Delete the temporary JSON input file.
+4. **清理临时文件**：删除临时生成的 JSON 输入文件。
 
-5.  **Report**: Inform the user the file is ready at the output path.
+5. **通知用户**：告知用户图表已生成，并提供输出路径。
 
-## Example
+## 示例
 
-**User:** "Visualize a new 'Login with Google' feature. Why? Reduce friction. What? Google button on login page. How? OAuth2. Journey: User clicks button -> Google Popup -> Redirect to Dashboard."
+**用户请求：**“将新的‘使用 Google 登录’功能可视化。**原因：**减少登录流程的复杂性。**具体实现：**在登录页面上添加 Google 登录按钮。**实现方式：**使用 OAuth2 协议。**用户流程：**用户点击按钮 → 显示 Google 登录弹窗 → 重定向到仪表板。**
 
-**Codex Action:**
-1.  Create `login_spec.json`:
+**操作步骤：**
+1. 创建 `login_spec.json` 文件：
     ```json
     {
       "title": "Login with Google",
@@ -57,5 +57,6 @@ This skill converts unstructured Product Manager thoughts into a structured Exca
       "journey": ["User clicks 'Sign in with Google'", "Google permissions popup appears", "User approves access", "System verifies token", "User redirected to Dashboard"]
     }
     ```
-2.  `mkdir -p ~/Downloads/Documents/PM_Visuals`
-3.  `python3 skills/pm-visualizer/scripts/layout_diagram.py login_spec.json ~/Downloads/Documents/PM_Visuals/Login_Spec.excalidraw`
+2. 在 `~/Downloads/Documents/PM_Visuals` 目录下创建一个新的文件夹。
+3. 运行以下命令生成图表：
+    `python3 skills/pm-visualizer/scripts/layout_diagram.py login_spec.json ~/Downloads/Documents/PM_Visuals/Login_Spec.excalidraw`

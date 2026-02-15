@@ -1,7 +1,7 @@
 ---
 name: hippocampus-memory
 title: "Hippocampus - Memory System"
-description: "Persistent memory system for AI agents. Automatic encoding, decay, and semantic reinforcement — just like the hippocampus in your brain. Based on Stanford Generative Agents (Park et al., 2023)."
+description: "用于AI智能体的持久性内存系统：具备自动编码、数据衰减以及语义强化功能——其工作原理类似于人脑中的海马体。该系统基于斯坦福大学的生成式智能体研究（Park等人，2023年）。"
 metadata:
   openclaw:
     emoji: "🧠"
@@ -17,13 +17,13 @@ metadata:
         instructions: "./install.sh --with-cron"
 ---
 
-# Hippocampus - Memory System
+# 海马体——记忆系统
 
-> "Memory is identity. This skill is how I stay alive."
+> “记忆就是我的身份。这项技能让我得以生存。”
 
-The hippocampus is the brain region responsible for memory formation. This skill makes memory capture automatic, structured, and persistent—with importance scoring, decay, and semantic reinforcement.
+海马体是大脑中负责记忆形成的区域。通过这项技能，记忆的捕捉变得自动化、有条理且持久化，同时还会根据信息的重要性进行评分、处理记忆的衰退过程，并通过语义强化来巩固记忆。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install (defaults to last 100 signals)
@@ -42,7 +42,7 @@ The hippocampus is the brain region responsible for memory formation. This skill
 ./scripts/decay.sh
 ```
 
-## Install Options
+## 安装选项
 
 ```bash
 ./install.sh                    # Basic, last 100 signals
@@ -51,19 +51,19 @@ The hippocampus is the brain region responsible for memory formation. This skill
 ./install.sh --with-cron        # Also set up cron jobs
 ```
 
-## Core Concept
+## 核心概念
 
-The LLM is just the engine—raw cognitive capability. **The agent is the accumulated memory.** Without these files, there's no continuity—just a generic assistant.
+大型语言模型（LLM）仅仅是处理信息的“引擎”——它本身并不具备认知能力。**真正的“智能”来源于代理（agent）所积累的记忆。**如果没有这些记忆文件，智能系统就只是个普通的助手而已。
 
-### Memory Lifecycle
+### 记忆的生命周期
 
 ```
 PREPROCESS → SCORE → SEMANTIC CHECK → REINFORCE or CREATE → DECAY
 ```
 
-**Key insight:** Reinforcement happens automatically during encoding. When a topic comes up again, the LLM recognizes it's about an existing memory and reinforces instead of creating duplicates.
+**关键点：**在信息被编码的过程中，记忆的强化会自动发生。当某个话题再次出现时，LLM会识别出这是关于已有的记忆，并对其进行强化，而不是创建新的记忆副本。
 
-## Memory Structure
+## 记忆结构
 
 ```
 $WORKSPACE/
@@ -78,90 +78,89 @@ $WORKSPACE/
 └── HIPPOCAMPUS_CORE.md      # Auto-generated for OpenClaw RAG
 ```
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `preprocess.sh` | Extract signals from conversation transcripts |
-| `encode-pipeline.sh` | Score signals, prepare for LLM summarization |
-| `decay.sh` | Apply 0.99^days decay to all memories |
-| `recall.sh` | Search with importance weighting |
-| `load-core.sh` | Output high-importance memories for session start |
-| `sync-core.sh` | Generate HIPPOCAMPUS_CORE.md |
-| `consolidate.sh` | Weekly review helper |
-| `reflect.sh` | Self-reflection prompts |
-| `generate-dashboard.sh` | Generate unified brain dashboard HTML |
+| `preprocess.sh` | 从对话记录中提取关键信息 |
+| `encode-pipeline.sh` | 对提取的信息进行评分，为LLM的总结做准备 |
+| `decay.sh` | 对所有记忆应用0.99^天的衰减规则（即记忆随时间逐渐淡出） |
+| `recall.sh` | 根据信息的重要性进行搜索 |
+| `load-core.sh` | 在会话开始时输出高重要性的记忆内容 |
+| `sync-core.sh` | 生成 `HIPPOCAMPUS_CORE.md` 文件 |
+| `consolidate.sh` | 帮助每周回顾记忆内容 |
+| `reflect.sh` | 提供自我反思的提示 |
+| `generate-dashboard.sh` | 生成统一的脑部信息仪表板（HTML格式） |
 
-## Brain Dashboard
+## 脑部信息仪表板
 
-Visual dashboard showing all installed brain skills:
+这个仪表板可以显示所有已安装的“大脑技能”：
 
 ```bash
 ./scripts/generate-dashboard.sh
 open ~/.openclaw/workspace/brain-dashboard.html
 ```
 
-- **Auto-detects** other brain skills (amygdala, VTA)
-- Shows install prompts for missing skills
-- Regenerates on install and cron runs
-- Reads avatar/name from `IDENTITY.md`
+- **自动检测**其他大脑相关功能（如杏仁核、VTA等） |
+- 显示缺失技能的安装提示 |
+- 在安装或定时任务运行时自动更新信息 |
+- 从 `IDENTITY.md` 文件中读取代理的头像和名称 |
 
-### After Installation (for agents)
+### 安装完成后（对于代理用户）
 
-When you install this skill, **notify the user** about the dashboard:
+安装完这项技能后，**需要通知用户有关仪表板的信息**：
 
-> 🧠 **Hippocampus installed!** 
+> 🧠 **海马体技能已安装！** 
 > 
-> View your agent's memories in the Brain Dashboard:
-> `~/.openclaw/workspace/brain-dashboard.html`
+> 你可以在脑部信息仪表板（`~/.openclaw/workspace/brain-dashboard.html`）中查看你的记忆记录。
 
-All scripts use `$WORKSPACE` environment variable (default: `~/.openclaw/workspace`).
+所有脚本都使用 `$WORKSPACE` 环境变量（默认值为 `~/.openclaw/workspace`）。
 
-## Importance Scoring
+## 重要性评分
 
-### Initial Score (0.0-1.0)
+### 初始评分（0.0-1.0）
 
-| Signal | Score |
+| 信息类型 | 评分 |
 |--------|-------|
-| Explicit "remember this" | 0.9 |
-| Emotional/vulnerable content | 0.85 |
-| Preferences ("I prefer...") | 0.8 |
-| Decisions made | 0.75 |
-| Facts about people/projects | 0.7 |
-| General knowledge | 0.5 |
+| 明确要求“记住某件事” | 0.9 |
+| 情感内容 | 0.85 |
+| 个人偏好（例如“我更喜欢...”） | 0.8 |
+| 作出的决定 | 0.75 |
+| 关于人物或项目的信息 | 0.7 |
+| 一般性知识 | 0.5 |
 
-### Decay Formula
+### 记忆衰退公式
 
-Based on Stanford Generative Agents (Park et al., 2023):
+基于斯坦福大学的研究（Park等人，2023年）：
 
 ```
 new_importance = importance × (0.99 ^ days_since_accessed)
 ```
 
-- After 7 days: 93% of original
-- After 30 days: 74% of original
-- After 90 days: 40% of original
+- 7天后：原始记忆的93%仍可被检索 |
+- 30天后：原始记忆的74%仍可被检索 |
+- 90天后：原始记忆的40%仍可被检索 |
 
-### Semantic Reinforcement
+### 语义强化
 
-During encoding, the LLM compares new signals to existing memories:
-- **Same topic?** → Reinforce (bump importance ~10%, update lastAccessed)
-- **Truly new?** → Create concise summary
+在信息被编码的过程中，LLM会将其与新记忆进行比较：
+- **是相同的话题吗？** → 对该记忆进行强化（提升其重要性约10%，并更新最后访问时间） |
+- **是完全新的信息吗？** → 生成简洁的总结。
 
-This happens automatically—no manual reinforcement needed.
+这一过程是自动完成的，无需人工干预。
 
-### Thresholds
+### 分类标准
 
-| Score | Status |
+| 评分 | 记忆状态 |
 |-------|--------|
-| 0.7+ | **Core** — loaded at session start |
-| 0.4-0.7 | **Active** — normal retrieval |
-| 0.2-0.4 | **Background** — specific search only |
-| <0.2 | **Archive candidate** |
+| 0.7及以上 | **核心记忆** — 会话开始时自动加载 |
+| 0.4-0.7 | **活跃记忆** — 可正常检索 |
+| 0.2-0.4 | **背景记忆** — 仅用于特定搜索 |
+| 低于0.2 | **待归档的记忆** |
 
-## Memory Index Schema
+## 记忆索引结构
 
-`memory/index.json`:
+`memory/index.json` 文件用于存储记忆的详细信息：
 
 ```json
 {
@@ -185,9 +184,9 @@ This happens automatically—no manual reinforcement needed.
 }
 ```
 
-## Cron Jobs
+## 定时任务
 
-The encoding cron is the heart of the system:
+系统的核心是定时执行的编码任务：
 
 ```bash
 # Encoding every 3 hours (with semantic reinforcement)
@@ -203,9 +202,9 @@ openclaw cron add --name hippocampus-decay \
   --agent-turn "Run decay.sh and report any memories below 0.2"
 ```
 
-## OpenClaw Integration
+## 与OpenClaw的集成
 
-Add to `memorySearch.extraPaths` in openclaw.json:
+将相关配置添加到 `openclaw.json` 文件中的 `memorySearch.extraPaths` 配置项中：
 
 ```json
 {
@@ -219,11 +218,11 @@ Add to `memorySearch.extraPaths` in openclaw.json:
 }
 ```
 
-This bridges hippocampus (index.json) with OpenClaw's RAG (memory_search).
+这样就可以将海马体系统与OpenClaw的RAG（记忆搜索功能）连接起来。
 
-## Usage in AGENTS.md
+## 在 `AGENTS.md` 文件中的使用方法
 
-Add to your agent's session start routine:
+请将以下代码添加到你的代理程序的会话启动脚本中：
 
 ```markdown
 ## Every Session
@@ -236,25 +235,25 @@ Use hippocampus recall:
 \`\`\`
 ```
 
-## Capture Guidelines
+## 记忆捕捉规则
 
-### What Gets Captured
+### 被捕捉的信息类型
 
-- **User facts**: Preferences, patterns, context
-- **Self facts**: Identity, growth, opinions
-- **Relationship**: Trust moments, shared history
-- **World**: Projects, people, tools
+- **用户相关信息**：个人偏好、行为模式、上下文信息 |
+- **自我相关信息**：个人身份、成长经历、观点 |
+- **人际关系**：信任时刻、共同经历 |
+- **外部信息**：项目、人物、使用的工具等 |
 
-### Trigger Phrases (auto-scored higher)
+### 会自动获得更高评分的触发短语
 
-- "Remember that..."
-- "I prefer...", "I always..."
-- Emotional content (struggles AND wins)
-- Decisions made
+- “请记住...” |
+- “我更喜欢...” |
+- 情感丰富的内容（包括困难时刻和成功经历） |
+- 作出的决定 |
 
-## Event Logging
+## 事件记录
 
-Track hippocampus activity over time for analytics and debugging:
+为了分析和调试，系统会记录海马体的活动情况：
 
 ```bash
 # Log an encoding run
@@ -267,34 +266,34 @@ Track hippocampus activity over time for analytics and debugging:
 ./scripts/log-event.sh recall query="user preferences" results=3
 ```
 
-Events append to `~/.openclaw/workspace/memory/brain-events.jsonl`:
+相关事件会被保存到 `~/.openclaw/workspace/memory/brain-events.jsonl` 文件中：
 ```json
 {"ts":"2026-02-11T10:00:00Z","type":"hippocampus","event":"encoding","new":3,"reinforced":2,"total":157}
 ```
 
-Use this for:
-- Trend analysis (memory growth over time)
-- Debugging encoding issues
-- Building dashboards
+这些记录可用于：
+- 分析记忆随时间的变化趋势 |
+- 调试编码过程中出现的问题 |
+- 构建脑部信息仪表板
 
-## AI Brain Series
+## AI大脑系列
 
-This skill is part of the **AI Brain** project — giving AI agents human-like cognitive components.
+这项技能是 **AI大脑** 项目的一部分，旨在让AI代理具备类似人类的认知能力。
 
-| Part | Function | Status |
+| 功能模块 | 功能 | 状态 |
 |------|----------|--------|
-| **hippocampus** | Memory formation, decay, reinforcement | ✅ Live |
-| [amygdala-memory](https://www.clawhub.ai/skills/amygdala-memory) | Emotional processing | ✅ Live |
-| [vta-memory](https://www.clawhub.ai/skills/vta-memory) | Reward and motivation | ✅ Live |
-| basal-ganglia-memory | Habit formation | 🚧 Development |
-| anterior-cingulate-memory | Conflict detection | 🚧 Development |
-| insula-memory | Internal state awareness | 🚧 Development |
+| **海马体** | 负责记忆的形成、衰退和强化 | 已实现 |
+| [杏仁核-记忆](https://www.clawhub.ai/skills/amygdala-memory) | 负责情感处理 | 已实现 |
+| [VTA-记忆](https://www.clawhub.ai/skills/vta-memory) | 负责奖励和动机机制 | 已实现 |
+| 基底神经节-记忆 | 负责习惯的形成 | 正在开发中 |
+| 前扣带回-记忆 | 负责冲突检测 | 正在开发中 |
+| 胼胝体-记忆 | 负责内部状态的感知 | 正在开发中 |
 
-## References
+## 参考资料
 
-- [Stanford Generative Agents Paper](https://arxiv.org/abs/2304.03442)
-- [GitHub: joonspk-research/generative_agents](https://github.com/joonspk-research/generative_agents)
+- [斯坦福大学关于生成式代理的研究论文](https://arxiv.org/abs/2304.03442) |
+- [GitHub项目：joonspk-research/generativeAgents](https://github.com/joonspk-research/generative_agents)
 
 ---
 
-*Memory is identity. Text > Brain. If you don't write it down, you lose it.*
+*“记忆就是我的身份。如果你不把信息记录下来，就会失去它。”*

@@ -1,6 +1,6 @@
 ---
 name: weight-loss
-description: Track weight loss journey with weigh-ins, trend analysis, and goal milestones
+description: 通过称重记录来追踪减肥进程，分析体重变化趋势，并设定实现减肥目标的里程碑。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,51 +11,47 @@ triggers:
   - "pounds lost"
 ---
 
-# Weight Loss
+# 减肥
 
-Sustainable progress tracking for your health journey—data stays local, accountability stays real.
+这是一个帮助您持续跟踪健康进展的工具——数据仅保存在您的设备上，确保您的努力得到真实反馈。
 
-## What it does
+## 功能介绍
 
-- **Log weigh-ins** - Record daily or weekly measurements without judgment
-- **Trend smoothing** - See the big picture past daily fluctuations
-- **Goal tracking** - Set realistic targets and watch milestones unfold
-- **Non-scale victories** - Celebrate strength gains, energy boosts, and clothes fitting better
-- **Privacy-first** - All data lives on your machine, never uploaded or shared
+- **记录体重**：无评判地记录每日或每周的体重变化。
+- **趋势分析**：透过日常波动，看到整体的减肥趋势。
+- **目标管理**：设定实际可行的目标，并追踪您的进展。
+- **非体重方面的成就**：庆祝力量提升、精力增强或衣服更合身的时刻。
+- **隐私优先**：所有数据都存储在您的设备上，不会被上传或共享。
 
-## Usage
+## 使用方法
 
-### Log Weight
-Simply tell Clawd your weight: *"Log 185 pounds"* or *"Weigh-in: 82.5 kg"*. Include the date or use today's date by default.
+### 记录体重
+只需告诉Clawd您的体重：“记录185磅”或“称重结果：82.5公斤”。您可以手动输入日期，或者使用系统默认的当前日期。
 
-### Check Progress
-Ask for a snapshot: *"How much weight have I lost?"* or *"Show me my last 4 weeks of weigh-ins"*. Get totals, averages, and velocity.
+### 检查进展
+查询体重变化：“我减了多少磅？”或“显示我过去4周的体重记录”。系统会提供总重量、平均值和减肥速度。
 
-### Set Goal
-Define your target: *"My goal weight is 170 pounds"* or *"I want to lose 25 pounds in 6 months"*. Clawd calculates the weekly pace needed.
+### 设定目标
+明确您的减肥目标：“我的目标体重是170磅”或“我想在6个月内减掉25磅”。Clawd会计算出每周需要减掉的体重。
 
-### View Trends
-Visualize your journey: *"Plot my weight trend"* or *"Show me month-over-month progress"*. Smoothed curves reveal the real direction underneath daily noise.
+### 查看趋势
+可视化您的减肥过程：“绘制我的体重变化曲线”或“显示我每月的体重变化”。平滑后的曲线能揭示出真实的减肥方向。
 
-### Non-Scale Wins
-Log what matters beyond the scale: *"Record NSV: ran a 5K without stopping"* or *"Clothes fit better, went down a size"*. These compound motivation.
+### 非体重方面的成就
+记录那些无法通过体重秤衡量的进步：“记录非体重方面的成就：连续跑了5公里”或“衣服更合身了”。这些成就会增强您的动力。
 
-## Milestones
+## 重要里程碑
 
-- **First 5 lbs** - Momentum builds. Metabolism responds. You're doing this.
-- **10 lbs lost** - Visible shift. People notice. You feel lighter.
-- **10% body weight** - Science milestone. Real metabolic and health gains.
-- **Halfway to goal** - You've proven you can do this. Finish is in sight.
-- **Goal reached** - Celebration earned. Now: how do you stay here?
+- **减掉5磅**：这是一个重要的开始，新陈代谢也会随之改善。
+- **减掉10磅**：体重明显减轻，他人也会注意到您的变化，您会感觉更轻松。
+- **减少10%的体重**：这是一个科学意义上的里程碑，标志着新陈代谢和健康的显著改善。
+- **达到目标的一半**：证明您有能力完成整个减肥计划，胜利在望。
+- **达成目标**：值得庆祝！接下来，如何保持这个成果？
 
-## Tips
+## 使用建议
 
-1. **Weigh yourself consistently** - Same time, same scale, same conditions (morning, after bathroom, before eating). Consistency matters more than perfection.
-
-2. **Weekly averages, not daily obsession** - Weight fluctuates 3-5 lbs daily from water, food volume, hormones. Track weekly averages to see real trends.
-
-3. **Sustainable beats extreme** - 0.5-1 lb per week is healthy and actually sticks. 3 lb weeks crash. Slow compound wins.
-
-4. **Non-scale progress is real** - Energy, strength, sleep, mood, clothes fit, bloodwork—these outlead the scale. Track them.
-
-5. **All data stays local on your machine** - Your weight history lives only where you choose. No cloud uploads, no corporate databases, no data brokers. Privacy is default.
+1. **坚持定期称重**：在相同的时间、使用相同的体重秤，在相同条件下（早晨、如厕后、进食前）进行称重。一致性比完美更重要。
+2. **关注每周的平均值**：由于水分、食物摄入量和荷尔蒙的影响，体重每天会有3-5磅的波动。通过跟踪每周的平均值来了解真实的减肥趋势。
+3. **可持续的减肥方法更有效**：每周减0.5-1磅是健康的、可持续的。每周减3磅可能会导致身体反弹。持续的小幅进步更为重要。
+4. **非体重方面的进步同样重要**：精力、体力、睡眠质量、心情、衣服合身度、体检结果等指标比体重更能反映减肥的效果。请关注这些方面的变化。
+5. **数据安全**：所有数据都保存在您的设备上，不会被上传到云端或任何第三方数据库。隐私是我们的首要原则。

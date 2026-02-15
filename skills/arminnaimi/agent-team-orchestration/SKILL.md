@@ -1,24 +1,30 @@
 ---
 name: agent-team-orchestration
-description: "Orchestrate multi-agent teams with defined roles, task lifecycles, handoff protocols, and review workflows. Use when: (1) Setting up a team of 2+ agents with different specializations, (2) Defining task routing and lifecycle (inbox → spec → build → review → done), (3) Creating handoff protocols between agents, (4) Establishing review and quality gates, (5) Managing async communication and artifact sharing between agents."
+description: "**协调具有明确角色、任务生命周期、交接协议和审查工作流程的多代理团队。**  
+适用场景：  
+(1) 组建由多个具有不同专业技能的代理组成的团队；  
+(2) 定义任务的处理流程（从收件箱 → 任务规范 → 编译 → 审查 → 完成）；  
+(3) 制定代理之间的交接协议；  
+(4) 建立审查和质量控制机制；  
+(5) 管理代理之间的异步通信和工件共享。"
 ---
 
-# Agent Team Orchestration
+# 代理团队协调
 
-Production playbook for running multi-agent teams with clear roles, structured task flow, and quality gates.
+这是一个用于管理多代理团队的生产脚本，该团队具有明确的角色划分、结构化的任务流程和质量控制机制。
 
-## Quick Start: Minimal 2-Agent Team
+## 快速入门：最小化团队配置（2个代理）
 
-A builder and a reviewer. The simplest useful team.
+团队由构建者和审核者组成，这是最基本的团队配置。
 
-### 1. Define Roles
+### 1. 定义角色
 
 ```
 Orchestrator (you) — Route tasks, track state, report results
 Builder agent     — Execute work, produce artifacts
 ```
 
-### 2. Spawn a Task
+### 2. 创建任务
 
 ```
 1. Create task record (file, DB, or task board)
@@ -29,100 +35,98 @@ Builder agent     — Execute work, produce artifacts
 3. On completion: review artifacts, mark done, report
 ```
 
-### 3. Add a Reviewer
+### 3. 添加审核者
 
 ```
 Builder produces artifact → Reviewer checks it → Orchestrator ships or returns
 ```
 
-That's the core loop. Everything below scales this pattern.
+这就是核心的工作流程。所有后续的操作都是基于这个模式的扩展。
 
-## Core Concepts
+## 核心概念
 
-### Roles
+### 角色
 
-Every agent has one primary role. Overlap causes confusion.
+每个代理都有一个主要角色。如果多个角色职责重叠，会导致混乱。
 
-| Role | Purpose | Model guidance |
+| 角色 | 目的 | 模型指导 |
 |------|---------|---------------|
-| **Orchestrator** | Route work, track state, make priority calls | High-reasoning model (handles judgment) |
-| **Builder** | Produce artifacts — code, docs, configs | Can use cost-effective models for mechanical work |
-| **Reviewer** | Verify quality, push back on gaps | High-reasoning model (catches what builders miss) |
-| **Ops** | Cron jobs, standups, health checks, dispatching | Cheapest model that's reliable |
+| **协调者** | 路由工作、跟踪状态、确定优先级 | 需要高度逻辑判断的角色 |
+| **构建者** | 生成代码、文档、配置文件 | 可以使用高效模型来完成机械性工作 |
+| **审核者** | 验证质量、指出问题 | 需要高度逻辑判断的角色 |
+| **运维人员** | 定时任务管理、团队会议、系统健康检查、任务调度 | 成本最低但可靠的角色 |
 
-→ *Read [references/team-setup.md](references/team-setup.md) when defining a new team or adding agents.*
+→ *在定义新团队或添加代理时，请阅读 [references/team-setup.md](references/team-setup.md)。*
 
-### Task States
+### 任务状态
 
-Every task moves through a defined lifecycle:
+每个任务都会经历一个预定义的生命周期：
 
 ```
 Inbox → Assigned → In Progress → Review → Done | Failed
 ```
 
-**Rules:**
-- Orchestrator owns state transitions — don't rely on agents to update their own status
-- Every transition gets a comment (who, what, why)
-- Failed is a valid end state — capture why and move on
+**规则：**
+- 协调者负责控制任务的状态转换——不要依赖代理自行更新状态
+- 每个状态转换都需要记录注释（谁做了什么、为什么）
+- 失败也是一个有效的状态——记录失败原因并继续下一步
 
-→ *Read [references/task-lifecycle.md](references/task-lifecycle.md) when designing task flows or debugging stuck tasks.*
+→ *在设计任务流程或调试卡住的任务时，请阅读 [references/task-lifecycle.md](references/task-lifecycle.md)。*
 
-### Handoffs
+### 任务交接
 
-When work passes between agents, the handoff message includes:
+当任务在代理之间传递时，交接信息应包括：
+1. **完成了什么**——变更或输出的总结
+2. **文件的存放位置**——文件的精确路径
+3. **如何验证**——测试命令或验收标准
+4. **已知问题**——任何未完成或存在风险的部分
+5. **下一步行动**——接收任务的代理应执行的明确操作
 
-1. **What was done** — summary of changes/output
-2. **Where artifacts are** — exact file paths
-3. **How to verify** — test commands or acceptance criteria
-4. **Known issues** — anything incomplete or risky
-5. **What's next** — clear next action for the receiving agent
+**错误的交接方式：**“任务已完成，请检查文件。”
+**正确的交接方式：**“在 `/shared/artifacts/auth/` 目录下生成了认证模块。运行 `npm test auth` 进行验证。已知问题：尚未实现速率限制功能。下一步：审核者检查错误处理边界情况。”
 
-Bad handoff: *"Done, check the files."*
-Good handoff: *"Built auth module at `/shared/artifacts/auth/`. Run `npm test auth` to verify. Known issue: rate limiting not implemented yet. Next: reviewer checks error handling edge cases."*
+### 审核流程
 
-### Reviews
+跨角色的审核可以防止质量下降：
+- **构建者审核规格**——“这是否可行？还缺少什么？”
+- **审核者检查构建结果**——“这与规格是否一致？是否存在边界情况？”
+- **协调者审核优先级**——“这是当前最需要处理的任务吗？”
 
-Cross-role reviews prevent quality drift:
+如果跳过审核步骤，质量会在3到5个任务内开始下降。每次都会如此。
 
-- **Builders review specs** — "Is this feasible? What's missing?"
-- **Reviewers check builds** — "Does this match the spec? Edge cases?"
-- **Orchestrator reviews priorities** — "Is this the right work right now?"
+→ *在设置代理之间的沟通渠道时，请阅读 [references/communication.md](references/communication.md)。*
+→ *有关经过验证的多步骤工作流程，请参考 [references/patterns.md](references/patterns.md)。*
 
-Skip the review step and quality degrades within 3-5 tasks. Every time.
+## 参考文件
 
-→ *Read [references/communication.md](references/communication.md) when setting up agent communication channels.*
-→ *Read [references/patterns.md](references/patterns.md) for proven multi-step workflows.*
-
-## Reference Files
-
-| File | Read when... |
+| 文件 | 阅读说明 |
 |------|-------------|
-| [team-setup.md](references/team-setup.md) | Defining agents, roles, models, workspaces |
-| [task-lifecycle.md](references/task-lifecycle.md) | Designing task states, transitions, comments |
-| [communication.md](references/communication.md) | Setting up async/sync communication, artifact paths |
-| [patterns.md](references/patterns.md) | Implementing specific workflows (spec→build→test, parallel research, escalation) |
+| [team-setup.md](references/team-setup.md) | 定义代理、角色、模型和工作空间 |
+| [task-lifecycle.md](references/task-lifecycle.md) | 设计任务状态、转换过程和注释 |
+| [communication.md](references/communication.md) | 设置异步/同步沟通机制和文件路径 |
+| [patterns.md](references/patterns.md) | 实现具体的工作流程（从规格制定到构建、测试，再到问题升级） |
 
-## Common Pitfalls
+## 常见问题
 
-### Spawning without clear artifact output paths
-Agent produces great work, but you can't find it. Always specify the exact output path in the spawn prompt. Use a shared artifacts directory with predictable structure.
+### 创建任务时未指定输出路径
+代理可能完成了高质量的工作，但无法找到相关结果。请在创建任务时指定明确的输出路径。使用结构清晰的共享文件目录。
 
-### No review step = quality drift
-"It's a small change, skip review." Do this three times and you have compounding errors. Every artifact gets at least one set of eyes that didn't produce it.
+### 忽略审核步骤 → 质量下降
+“这只是个小改动，可以跳过审核。” 如果这样做三次，错误会逐渐累积。
 
-### Agents not commenting on task progress
-Silent agents create coordination blind spots. Require comments at: start, blocker, handoff, completion. If an agent goes silent, assume it's stuck.
+### 代理不记录任务进度
+沉默的代理会导致沟通障碍。要求代理在任务开始、遇到障碍、任务交接以及任务完成时都进行记录。如果代理长时间没有反馈，可以认为它遇到了问题。
 
-### Not verifying agent capabilities before assigning
-Assigning browser-based testing to an agent without browser access. Assigning image work to a text-only model. Check capabilities before routing.
+### 在分配任务前未检查代理的能力
+将需要浏览器功能的任务分配给没有浏览器访问权限的代理；或将需要图像处理的任务分配给只能处理文本的代理。在分配任务前请先检查代理的能力。
 
-### Orchestrator doing execution work
-The orchestrator routes and tracks — it doesn't build. The moment you start "just quickly doing this one thing," you've lost oversight of the rest of the team.
+### 协调者执行具体任务
+协调者的职责是路由和跟踪任务——而不是执行任务本身。一旦开始“快速完成某项任务”，就失去了对整个团队的监督。
 
-## When NOT to Use This Skill
+## 何时不适用此技能
 
-- **Single-agent setups** — Just follow standard AGENTS.md conventions. Team orchestration adds overhead that solo agents don't need.
-- **One-off task delegation** — Use `sessions_spawn` directly. This skill is for sustained workflows with multiple handoffs.
-- **Simple question routing** — If you're just forwarding a question to a specialist, that's a message, not a workflow.
+- **单代理环境**——只需遵循标准的 AGENTS.md 规范即可。
+- **一次性任务委托**——直接使用 `sessions_spawn` 功能。此技能适用于需要多次交接的持续性工作流程。
+- **简单的问题转发**——如果只是将问题转发给专家，那只是简单的信息传递，而非完整的工作流程。
 
-This skill is for **sustained team workflows** — recurring collaboration patterns where agents depend on each other's output over multiple tasks.
+此技能适用于**持续性的团队协作**——即代理在多个任务中相互依赖、需要协同工作的场景。

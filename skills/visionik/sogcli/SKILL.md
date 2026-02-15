@@ -1,16 +1,15 @@
 ---
 name: sog
-description: Standards Ops Gadget — CLI for IMAP/SMTP/CalDAV/CardDAV/WebDAV. Open-standards alternative to gog (Google) and mog (Microsoft).
+description: Standards Ops Gadget — 这是一款用于 IMAP/SMTP/CalDAV/CardDAV/WebDAV 的命令行工具（CLI）。它是 Google 的 gog 和 Microsoft 的 mog 的开源替代品，遵循开放标准（Open Standards）。
 homepage: https://github.com/visionik/sogcli
 metadata: {"clawdbot":{"emoji":"📬","requires":{"bins":["sog"]},"install":[{"id":"go","kind":"go","package":"github.com/visionik/sogcli/cmd/sog@latest","bins":["sog"],"label":"Install sog (go install)"}]}}
 ---
 
-# sog — Standards Ops Gadget
+# sog — 标准操作工具（Standards Operations Gadget）
 
-CLI for IMAP/SMTP/CalDAV/CardDAV/WebDAV.
-Open-standards alternative to gog (Google) and mog (Microsoft).
+这是一个用于处理 IMAP/SMTP/CalDAV/CardDAV/WebDAV 协议的命令行工具（CLI），是 Google 的 gog 和 Microsoft 的 mog 的开源替代品。
 
-## Quick Start
+## 快速入门
 
 ```bash
 sog auth add you@fastmail.com --discover
@@ -18,7 +17,7 @@ sog auth test
 sog mail list
 ```
 
-## Global Flags
+## 全局参数
 
 ```
 --account, -a    Account email to use ($SOG_ACCOUNT)
@@ -30,7 +29,7 @@ sog mail list
 --ai-help        Detailed help text
 ```
 
-## Authentication
+## 认证
 
 ```bash
 sog auth add <email> [flags]
@@ -51,7 +50,7 @@ sog auth password <email>        # Set protocol-specific passwords
   --imap, --smtp, --caldav, --carddav, --webdav
 ```
 
-## Mail (IMAP/SMTP)
+## 邮件（IMAP/SMTP）
 
 ```bash
 sog mail list [folder]
@@ -84,7 +83,7 @@ sog mail unflag <uid> <flag>
 sog mail delete <uid>
 ```
 
-## Folders
+## 文件夹
 
 ```bash
 sog folders list
@@ -93,7 +92,7 @@ sog folders delete <name>
 sog folders rename <old> <new>
 ```
 
-## Drafts
+## 草稿
 
 ```bash
 sog drafts list
@@ -102,7 +101,7 @@ sog drafts send <uid>
 sog drafts delete <uid>
 ```
 
-## Calendar (CalDAV)
+## 日历（CalDAV）
 
 ```bash
 sog cal list [calendar]
@@ -127,7 +126,7 @@ sog cal delete <uid>
 sog cal calendars                # List calendars
 ```
 
-## Contacts (CardDAV)
+## 联系人（CardDAV）
 
 ```bash
 sog contacts list [address-book]
@@ -148,7 +147,7 @@ sog contacts delete <uid>
 sog contacts books               # List address books
 ```
 
-## Tasks (CalDAV VTODO)
+## 任务（CalDAV VTODO）
 
 ```bash
 sog tasks list [list]
@@ -170,7 +169,7 @@ sog tasks overdue                # Overdue tasks
 sog tasks lists                  # List task lists
 ```
 
-## Files (WebDAV)
+## 文件（WebDAV）
 
 ```bash
 sog drive ls [path]
@@ -187,7 +186,7 @@ sog drive copy <src> <dst>
 sog drive cat <path>             # Output file to stdout
 ```
 
-## Meeting Invites (iTIP/iMIP)
+## 会议邀请（iTIP/iMIP）
 
 ```bash
 sog invite send <summary> <attendees>... --start <datetime> [flags]
@@ -204,20 +203,20 @@ sog invite parse <file>          # Parse .ics file
 sog invite preview <summary> <attendees>... --start <datetime>
 ```
 
-## IMAP IDLE
+## IMAP IDLE 模式
 
 ```bash
 sog idle [folder]                # Watch for new mail (push notifications)
   --timeout        Timeout in seconds
 ```
 
-## Output Formats
+## 输出格式
 
-- Default: Human-readable colored output
-- `--json`: One JSON object per line (JSONL)
-- `--plain`: Tab-separated values (TSV)
+- **默认格式**：易于阅读的彩色输出
+- `--json`：每行一个 JSON 对象（JSONL 格式）
+- `--plain`：以制表符分隔的值（TSV 格式）
 
-## Examples
+## 使用示例
 
 ```bash
 # List recent emails
@@ -245,25 +244,25 @@ sog drive upload report.pdf /documents/
 sog contacts search "John"
 ```
 
-## Tested Providers
+## 已测试的提供者
 
-- **Fastmail** ✅ (full support)
+- **Fastmail** ✅（完全支持）
 
-Other standards-compliant providers should work but have not been tested yet.
+其他符合标准的提供者也应该可以正常使用，但尚未经过测试。
 
-## Credential Storage
+## 凭据存储
 
-Passwords are stored securely in the native system credential store:
+密码会安全地存储在系统的原生凭据存储库中：
 
-| Platform | Backend |
+| 平台 | 后端存储机制 |
 |----------|---------|
-| **macOS** | Keychain |
-| **Windows** | Windows Credential Manager |
-| **Linux/BSD** | D-Bus Secret Service (GNOME Keyring, KWallet) |
+| **macOS** | Keychain（钥匙链） |
+| **Windows** | Windows 凭据管理器 |
+| **Linux/BSD** | D-Bus Secret Service（GNOME Keyring、KWallet） |
 
-Supports separate passwords per protocol (IMAP, SMTP, CalDAV, CardDAV, WebDAV).
+该工具支持为每种协议（IMAP、SMTP、CalDAV、CardDAV、WebDAV）设置不同的密码。
 
-## Notes
+## 注意事项
 
-- Set `SOG_ACCOUNT=you@example.com` to avoid repeating `--account`
-- Part of the Ops Gadget family: gog (Google), mog (Microsoft), sog (Standards)
+- 请设置 `SOG_ACCOUNT=you@example.com` 以避免重复输入 `--account` 参数
+- 该工具属于 Ops Gadget 系列，包括 gog（Google）、mog（Microsoft）等工具。

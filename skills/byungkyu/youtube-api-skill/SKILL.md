@@ -15,9 +15,9 @@ metadata:
 
 # YouTube
 
-Access the YouTube Data API v3 with managed OAuth authentication. Search videos, manage playlists, access channel information, and interact with comments and subscriptions.
+您可以使用托管的 OAuth 认证来访问 YouTube Data API v3。该 API 允许您搜索视频、管理播放列表、获取频道信息，以及与视频评论和订阅功能进行交互。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Search for videos
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/youtube/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual YouTube Data API endpoint path. The gateway proxies requests to `www.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 YouTube Data API 端点路径。该代理会将请求转发到 `www.googleapis.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple YouTube connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 YouTube 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,37 +138,37 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，代理将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Search
+### 搜索
 
-#### Search Videos, Channels, or Playlists
+#### 搜索视频、频道或播放列表
 
 ```bash
 GET /youtube/youtube/v3/search
 ```
 
-Query parameters:
-- `part` - Required: `snippet`
-- `q` - Search query
-- `type` - Filter by type: `video`, `channel`, `playlist`
-- `maxResults` - Results per page (1-50, default 5)
-- `order` - Sort order: `date`, `rating`, `relevance`, `title`, `viewCount`
-- `publishedAfter` - Filter by publish date (RFC 3339)
-- `publishedBefore` - Filter by publish date (RFC 3339)
-- `channelId` - Filter by channel
-- `videoDuration` - `short` (<4min), `medium` (4-20min), `long` (>20min)
-- `pageToken` - Pagination token
+查询参数：
+- `part` - 必需参数：`snippet`（返回视频详细信息）
+- `q` - 搜索查询
+- `type` - 过滤类型：`video`（视频）、`channel`（频道）、`playlist`（播放列表）
+- `maxResults` - 每页显示的结果数量（1-50，默认为 5）
+- `order` - 排序方式：`date`（日期）、`rating`（评分）、`relevance`（相关性）、`title`（标题）、`viewCount`（观看次数）
+- `publishedAfter` - 按发布日期过滤（RFC 3339 格式）
+- `publishedBefore` - 按发布日期过滤（RFC 3339 格式）
+- `channelId` - 按频道过滤
+- `videoDuration` - `short`（<4分钟）、`medium`（4-20分钟）、`long`（>20分钟）
+- `pageToken` - 分页令牌
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/youtube/youtube/v3/search?part=snippet&q=machine+learning&type=video&maxResults=10&order=viewCount" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "kind": "youtube#searchListResponse",
@@ -199,68 +199,68 @@ curl -s -X GET "https://gateway.maton.ai/youtube/youtube/v3/search?part=snippet&
 }
 ```
 
-### Videos
+### 视频
 
-#### Get Video Details
+#### 获取视频详细信息
 
 ```bash
 GET /youtube/youtube/v3/videos?part=snippet,statistics,contentDetails&id={videoId}
 ```
 
-Parts available:
-- `snippet` - Title, description, thumbnails, channel info
-- `statistics` - View count, likes, comments
-- `contentDetails` - Duration, dimension, definition
-- `status` - Upload status, privacy status
-- `player` - Embedded player HTML
+可用的字段：
+- `snippet` - 标题、描述、缩略图、频道信息
+- `statistics` - 观看次数、点赞数、评论数
+- `contentDetails` - 时长、分辨率、视频格式
+- `status` - 上传状态、隐私设置
+- `player` - 嵌入式播放器 HTML 代码
 
-**Example:**
+**示例：**
 
 ```bash
 curl -s -X GET "https://gateway.maton.ai/youtube/youtube/v3/videos?part=snippet,statistics&id=dQw4w9WgXcQ" -H "Authorization: Bearer $MATON_API_KEY"
 ```
 
-#### Get My Videos (Uploaded)
+#### 获取我上传的视频
 
 ```bash
 GET /youtube/youtube/v3/search?part=snippet&forMine=true&type=video&maxResults=25
 ```
 
-#### Rate Video (Like/Dislike)
+#### 给视频评分（点赞/点踩）
 
 ```bash
 POST /youtube/youtube/v3/videos/rate?id={videoId}&rating=like
 ```
 
-Rating values: `like`, `dislike`, `none`
+评分值：`like`（点赞）、`dislike`（点踩）、`none`（无评分）
 
-#### Get Trending Videos
+#### 获取热门视频
 
 ```bash
 GET /youtube/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&maxResults=10
 ```
 
-#### Get Video Categories
+#### 获取视频分类
 
 ```bash
 GET /youtube/youtube/v3/videoCategories?part=snippet&regionCode=US
 ```
 
-### Channels
+### 频道
 
-#### Get Channel Details
+#### 获取频道详细信息
 
 ```bash
 GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&id={channelId}
 ```
 
-#### Get My Channel
+#### 获取我的频道
 
 ```bash
 GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=true
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "items": [
@@ -288,27 +288,27 @@ GET /youtube/youtube/v3/channels?part=snippet,statistics,contentDetails&mine=tru
 }
 ```
 
-#### Get Channel by Username
+#### 通过用户名获取频道
 
 ```bash
 GET /youtube/youtube/v3/channels?part=snippet,statistics&forUsername={username}
 ```
 
-### Playlists
+### 播放列表
 
-#### List My Playlists
+#### 列出我的播放列表
 
 ```bash
 GET /youtube/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=25
 ```
 
-#### Get Playlist
+#### 获取播放列表
 
 ```bash
 GET /youtube/youtube/v3/playlists?part=snippet,contentDetails&id={playlistId}
 ```
 
-#### Create Playlist
+#### 创建播放列表
 
 ```bash
 POST /youtube/youtube/v3/playlists?part=snippet,status
@@ -326,9 +326,9 @@ Content-Type: application/json
 }
 ```
 
-Privacy values: `public`, `private`, `unlisted`
+隐私设置：`public`（公开）、`private`（私有）、`unlisted`（未公开）
 
-#### Update Playlist
+#### 更新播放列表
 
 ```bash
 PUT /youtube/youtube/v3/playlists?part=snippet,status
@@ -346,21 +346,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Playlist
+#### 删除播放列表
 
 ```bash
 DELETE /youtube/youtube/v3/playlists?id={playlistId}
 ```
 
-### Playlist Items
+### 播放列表项
 
-#### List Playlist Items
+#### 列出播放列表项
 
 ```bash
 GET /youtube/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId={playlistId}&maxResults=50
 ```
 
-#### Add Video to Playlist
+#### 将视频添加到播放列表
 
 ```bash
 POST /youtube/youtube/v3/playlistItems?part=snippet
@@ -378,27 +378,27 @@ Content-Type: application/json
 }
 ```
 
-#### Remove from Playlist
+#### 从播放列表中删除视频
 
 ```bash
 DELETE /youtube/youtube/v3/playlistItems?id={playlistItemId}
 ```
 
-### Subscriptions
+### 订阅
 
-#### List My Subscriptions
+#### 列出我的订阅
 
 ```bash
 GET /youtube/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50
 ```
 
-#### Check Subscription to Channel
+#### 检查对频道的订阅状态
 
 ```bash
 GET /youtube/youtube/v3/subscriptions?part=snippet&mine=true&forChannelId={channelId}
 ```
 
-#### Subscribe to Channel
+#### 订阅频道
 
 ```bash
 POST /youtube/youtube/v3/subscriptions?part=snippet
@@ -414,21 +414,21 @@ Content-Type: application/json
 }
 ```
 
-#### Unsubscribe
+#### 取消订阅
 
 ```bash
 DELETE /youtube/youtube/v3/subscriptions?id={subscriptionId}
 ```
 
-### Comments
+### 评论
 
-#### List Video Comments
+#### 列出视频评论
 
 ```bash
 GET /youtube/youtube/v3/commentThreads?part=snippet,replies&videoId={videoId}&maxResults=100
 ```
 
-#### Add Comment to Video
+#### 向视频添加评论
 
 ```bash
 POST /youtube/youtube/v3/commentThreads?part=snippet
@@ -446,7 +446,7 @@ Content-Type: application/json
 }
 ```
 
-#### Reply to Comment
+#### 回复评论
 
 ```bash
 POST /youtube/youtube/v3/comments?part=snippet
@@ -460,13 +460,13 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Comment
+#### 删除评论
 
 ```bash
 DELETE /youtube/youtube/v3/comments?id={commentId}
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -534,38 +534,38 @@ response = requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Video IDs are 11 characters (e.g., `dQw4w9WgXcQ`)
-- Channel IDs start with `UC` (e.g., `UCxyz123`)
-- Playlist IDs start with `PL` (user) or `UU` (uploads)
-- Use `pageToken` for pagination through large result sets
-- The `part` parameter is required and determines what data is returned
-- Quota costs vary by endpoint - search is expensive (100 units), reads are cheap (1 unit)
-- Some write operations require channel verification
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 视频 ID 由 11 个字符组成（例如：`dQw4w9WgXcQ`）
+- 频道 ID 以 `UC` 开头（例如：`UCxyz123`）
+- 播放列表 ID 以 `PL`（用户创建）或 `UU`（用户上传）开头
+- 使用 `pageToken` 进行分页查询
+- `part` 参数是必需的，它决定了返回的数据类型
+- 不同端点的配额费用不同：搜索操作费用较高（100 单位），读取操作费用较低（1 单位）
+- 某些写入操作需要频道验证
+- 重要提示：当 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免错误解析
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “Invalid API key” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing YouTube connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - quota exceeded or insufficient permissions |
-| 404 | Video, channel, or playlist not found |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from YouTube API |
+| 400 | 未建立 YouTube 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 禁止操作——配额已用完或权限不足 |
+| 404 | 视频、频道或播放列表未找到 |
+| 429 | 每个账户的请求速率限制（10 次/秒） |
+| 4xx/5xx | 来自 YouTube API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥的有效性：
 
 ```bash
 python <<'EOF'
@@ -576,23 +576,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `youtube`. For example:
+1. 确保您的 URL 路径以 `youtube` 开头。例如：
+  - 正确的格式：`https://gateway.maton.ai/youtube/youtube/v3/search`
+  - 错误的格式：`https://gateway.maton.ai/v3/search`
 
-- Correct: `https://gateway.maton.ai/youtube/youtube/v3/search`
-- Incorrect: `https://gateway.maton.ai/v3/search`
+## 资源
 
-## Resources
-
-- [YouTube Data API Overview](https://developers.google.com/youtube/v3)
-- [Search](https://developers.google.com/youtube/v3/docs/search/list)
-- [Videos](https://developers.google.com/youtube/v3/docs/videos)
-- [Channels](https://developers.google.com/youtube/v3/docs/channels)
-- [Playlists](https://developers.google.com/youtube/v3/docs/playlists)
-- [PlaylistItems](https://developers.google.com/youtube/v3/docs/playlistItems)
-- [Subscriptions](https://developers.google.com/youtube/v3/docs/subscriptions)
-- [Comments](https://developers.google.com/youtube/v3/docs/comments)
-- [Quota Calculator](https://developers.google.com/youtube/v3/determine_quota_cost)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [YouTube Data API 概述](https://developers.google.com/youtube/v3)
+- [搜索](https://developers.google.com/youtube/v3/docs/search/list)
+- [视频](https://developers.google.com/youtube/v3/docs/videos)
+- [频道](https://developers.google.com/youtube/v3/docs/channels)
+- [播放列表](https://developers.google.com/youtube/v3/docs/playlists)
+- [播放列表项](https://developers.google.com/youtube/v3/docs/playlistItems)
+- [订阅](https://developers.google.com/youtube/v3/docs/subscriptions)
+- [评论](https://developers.google.com/youtube/v3/docs/comments)
+- [配额计算器](https://developers.google.com/youtube/v3/determine_quota_cost)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

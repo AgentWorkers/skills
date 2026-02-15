@@ -1,19 +1,19 @@
 ---
 name: proxy-balance
-description: Check Proxy account balance and available spending power. Shows pending intents and suggests funding if low.
+description: 检查代理账户余额及可用支出额度。会显示待处理的交易请求（pending intents），若余额不足则建议补充资金。
 disable-model-invocation: true
 ---
 
-# Check Balance
+# 检查余额
 
-Get current balance and spending power.
+获取当前余额和消费能力。
 
-## Instructions
+## 指令
 
-1. Call `proxy.balance.get`
-2. Call `proxy.intents.list` to get pending intents
+1. 调用 `proxy.balance.get`
+2. 调用 `proxy.intents.list` 以获取待处理的操作意图（pending intents）
 
-## Output Format
+## 输出格式
 
 ```
 💰 Proxy Balance
@@ -24,12 +24,12 @@ Pending:    X intents ($XXX.XX reserved)
 Net Available: $X,XXX.XX
 ```
 
-If balance is low (< $100), add:
+如果余额过低（< $100），请执行以下操作：
 ```
 💡 Low balance. Use /proxy-fund for deposit instructions.
 ```
 
-If there are pending approval intents, list them:
+如果有待审批的操作意图，请列出这些意图：
 ```
 ⏳ Pending Approval:
   • $XXX.XX - Merchant Name (intent_id)

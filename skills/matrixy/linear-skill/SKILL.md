@@ -1,118 +1,118 @@
 ---
 name: linear
-description: Manage Linear projects, issues, and tasks via the Linear API. Use when you need to create, update, search, or manage Linear issues, projects, teams, milestones, comments, or labels. Supports all Linear operations including project management, issue tracking, task assignment, state transitions, and collaboration workflows.
+description: 通过 Linear API 管理 Linear 项目、问题（issues）和任务（tasks）。当您需要创建、更新、搜索或管理 Linear 项目、问题、团队（teams）、里程碑（milestones）、评论（comments）或标签（labels）时，请使用该 API。它支持所有的 Linear 操作，包括项目管理、问题跟踪、任务分配、状态转换以及协作工作流程。
 ---
 
-# Linear Project Management
+# 线性项目管理
 
-Manage Linear projects, issues, and workflows using the official Linear SDK.
+使用官方的 Linear SDK 来管理线性项目、问题和工作流程。
 
-## Quick Start
+## 快速入门
 
-All commands use `skills/linear/scripts/linear-cli.js`:
+所有命令都依赖于 `skills/linear/scripts/linear-cli.js` 文件：
 
 ```bash
 node skills/linear/scripts/linear-cli.js <command> [args]
 ```
 
-## Core Commands
+## 核心命令
 
-### Teams & Projects
+### 团队与项目
 
-**List teams:**
+**列出团队：**
 ```bash
 node skills/linear/scripts/linear-cli.js teams
 ```
 
-**List projects:**
+**列出项目：**
 ```bash
 node skills/linear/scripts/linear-cli.js projects
 ```
 
-**Create project:**
+**创建项目：**
 ```bash
 node skills/linear/scripts/linear-cli.js createProject "Project Name" "Description" "teamId1,teamId2"
 ```
 
-### Issues
+### 问题
 
-**List issues:**
+**列出问题：**
 ```bash
 node skills/linear/scripts/linear-cli.js issues
 # With filter:
 node skills/linear/scripts/linear-cli.js issues '{"state":{"name":{"eq":"In Progress"}}}'
 ```
 
-**Get issue details:**
+**获取问题详情：**
 ```bash
 node skills/linear/scripts/linear-cli.js issue ENG-123
 ```
 
-**Create issue:**
+**创建问题：**
 ```bash
 node skills/linear/scripts/linear-cli.js createIssue "Title" "Description" "teamId"
 # With options (priority, projectId, assigneeId, etc.):
 node skills/linear/scripts/linear-cli.js createIssue "Title" "Description" "teamId" '{"priority":2,"projectId":"project-id"}'
 ```
 
-**Update issue:**
+**更新问题：**
 ```bash
 node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"stateId":"state-id","priority":1}'
 ```
 
-### Comments
+### 评论
 
-**Add comment:**
+**添加评论：**
 ```bash
 node skills/linear/scripts/linear-cli.js createComment "issueId" "Comment text"
 ```
 
-### States & Labels
+### 状态与标签
 
-**Get team states:**
+**获取团队状态：**
 ```bash
 node skills/linear/scripts/linear-cli.js states "teamId"
 ```
 
-**Get team labels:**
+**获取团队标签：**
 ```bash
 node skills/linear/scripts/linear-cli.js labels "teamId"
 ```
 
-### User Info
+### 用户信息
 
-**Get current user:**
+**获取当前用户：**
 ```bash
 node skills/linear/scripts/linear-cli.js user
 ```
 
-## References
+## 参考资料
 
-- **API.md**: Priority levels, filter examples, and common workflows
-- Read when you need examples of complex filters or workflow patterns
+- **API.md**：优先级级别、过滤示例以及常见的工作流程
+- 当需要复杂过滤或工作流程模式的示例时，请参考此文档
 
-## Common Workflows
+## 常见工作流程
 
-### Create task for a specific project
+### 为特定项目创建任务
 
-1. Get your team ID: `node skills/linear/scripts/linear-cli.js teams`
-2. Get your project ID: `node skills/linear/scripts/linear-cli.js projects`
-3. Create issue with the IDs:
+1. 获取你的团队 ID：`node skills/linear/scripts/linear-cli.js teams`
+2. 获取你的项目 ID：`node skills/linear/scripts/linear-cli.js projects`
+3. 使用这些 ID 创建问题：
 
 ```bash
 node skills/linear/scripts/linear-cli.js createIssue "Implement login" "Add OAuth login flow" "your-team-id" '{"projectId":"your-project-id","priority":2}'
 ```
 
-### Move issue to different state
+### 将问题状态更改
 
-1. Get states: `node skills/linear/scripts/linear-cli.js states "teamId"`
-2. Update issue: `node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"stateId":"state-uuid"}'`
+1. 获取所有可用的状态：`node skills/linear/scripts/linear-cli.js states "teamId"`
+2. 更新问题状态：`node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"stateId":"state-uuid"}'`
 
-### Assign issue to yourself
+### 将问题分配给自己
 
-1. Get your user ID: `node skills/linear/scripts/linear-cli.js user`
-2. Update issue: `node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"assigneeId":"your-user-id"}'`
+1. 获取你的用户 ID：`node skills/linear/scripts/linear-cli.js user`
+2. 将问题分配给自己：`node skills/linear/scripts/linear-cli.js updateIssue "issueId" '{"assigneeId":"your-user-id"}'`
 
-## Output Format
+## 输出格式
 
-All commands return JSON. Parse output for programmatic use or display to user as needed.
+所有命令返回 JSON 格式的数据。你可以根据需要解析这些数据以供程序使用或直接显示给用户。

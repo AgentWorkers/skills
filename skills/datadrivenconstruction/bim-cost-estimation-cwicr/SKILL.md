@@ -1,30 +1,34 @@
 ---
 slug: "bim-cost-estimation-cwicr"
 display_name: "BIM Cost Estimation CWICR"
-description: "Automated cost estimation from BIM models using DDC CWICR database with 55,719 work items. AI classification + vector search for accurate pricing."
+description: "**使用 DDC CWICR 数据库从 BIM 模型中自动进行成本估算**  
+该系统包含 55,719 个工作项，通过人工智能（AI）进行分类，并结合向量搜索技术来实现精确的定价。"
 ---
 
-# BIM Cost Estimation with DDC CWICR
+# 使用 DDC CWICR 进行 BIM 成本估算
 
-Generate accurate cost estimates from BIM models using AI classification and the DDC CWICR construction cost database.
+通过 AI 分类和 DDC CWICR 建设成本数据库，从 BIM 模型中生成准确的成本估算。
 
-## Business Case
+## 商业案例
 
-**Problem**: Traditional cost estimation:
-- Manual and time-consuming (weeks for detailed estimate)
-- Subjective and inconsistent between estimators
-- Requires specialized knowledge
-- Difficult to update with design changes
+**问题**：
+- 传统的成本估算方法：
+  - 手动操作，耗时较长（详细估算需要数周时间）
+  - 主观性强，不同估算人员之间的结果存在差异
+  - 需要专业知识
+  - 难以根据设计变更进行更新
 
-**Solution**: Automated BIM-to-cost pipeline:
-- Extract quantities directly from model
-- AI classifies elements to work items
-- Vector search finds matching prices in CWICR
-- Complete estimate in hours, not weeks
+**解决方案**：
+- 自动化的 BIM 到成本转换流程：
+  - 直接从模型中提取工程量数据
+  - 使用 AI 将元素分类为具体的工作项
+  - 通过向量搜索在 DDC CWICR 中查找匹配的价格
+  - 几小时内即可完成成本估算，而非数周时间
 
-**ROI**: 80% reduction in estimation time, consistent methodology
+**投资回报率 (ROI)**：
+- 估算时间缩短 80%，方法更加统一
 
-## System Architecture
+## 系统架构
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -57,7 +61,7 @@ Generate accurate cost estimates from BIM models using AI classification and the
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-## DDC CWICR Database
+## DDC CWICR 数据库
 
 ```yaml
 Database Overview:
@@ -80,23 +84,23 @@ Collections:
   - ddc_cwicr_zh  # Chinese (Shanghai prices)
 ```
 
-## Pipeline Stages
+## 流程阶段
 
-| Stage | Name | Description |
+| 阶段 | 名称 | 描述 |
 |-------|------|-------------|
-| 0 | Collect BIM Data | Extract elements from Revit/IFC |
-| 1 | Project Detection | AI identifies project type |
-| 2 | Phase Generation | AI creates construction phases |
-| 3 | Element Assignment | AI maps types to phases |
-| 4 | Work Decomposition | AI breaks types into work items |
-| 5 | Vector Search | Find matching rates in CWICR |
-| 6 | Unit Mapping | Convert BIM units to rate units |
-| 7 | Cost Calculation | Qty × Unit Price |
-| 7.5 | Validation | CTO review for completeness |
-| 8 | Aggregation | Sum by phases and categories |
-| 9 | Report Generation | HTML and Excel outputs |
+| 0 | 收集 BIM 数据 | 从 Revit/IFC 文件中提取元素信息 |
+| 1 | 项目识别 | AI 确定项目类型 |
+| 2 | 阶段划分 | AI 创建施工阶段 |
+| 3 | 元素分配 | AI 将元素类型映射到相应的施工阶段 |
+| 4 | 工作项分解 | AI 将元素类型细分为具体的工作项 |
+| 5 | 向量搜索 | 在 DDC CWICR 中查找匹配的价格 |
+| 6 | 单位转换 | 将 BIM 单位转换为成本计算所需的单位 |
+| 7 | 成本计算 | 工程量 × 单价 = 成本 |
+| 7.5 | 验证 | 由技术总监 (CTO) 审查估算的完整性 |
+| 8 | 数据汇总 | 按阶段和类别汇总成本 |
+| 9 | 报告生成 | 生成 HTML 和 Excel 格式的报告 |
 
-## Python Implementation
+## Python 实现
 
 ```python
 import pandas as pd
@@ -489,9 +493,9 @@ if __name__ == "__main__":
     )
 ```
 
-## n8n Workflow
+## n8n 工作流程
 
-See: `n8n_4_CAD_(BIM)_Cost_Estimation_Pipeline_4D_5D_with_DDC_CWICR.json`
+详见：`n8n_4_CAD_(BIM)_Cost_Estimation_Pipeline_4D_5D_with_DDC_CWICR.json`
 
 ```yaml
 stages:
@@ -505,7 +509,7 @@ stages:
   - report: HTML + Excel output
 ```
 
-## Output Example
+## 输出示例
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
@@ -538,12 +542,12 @@ CONFIDENCE ANALYSIS
 ╚══════════════════════════════════════════════════════════════╝
 ```
 
-## Resources
+## 资源
 
-- **CWICR Repository**: https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR
-- **Live Demo**: https://openconstructionestimate.com
-- **Qdrant**: https://qdrant.tech
+- **DDC CWICR 仓库**：https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR
+- **在线演示**：https://openconstructionestimate.com
+- **Qdrant**：https://qdrant.tech
 
 ---
 
-*"Resource-based costing separates physical quantities from volatile prices, enabling transparent and auditable estimates."*
+*“基于资源的成本核算方法将实际工程量与波动较大的价格分开，从而实现透明且可审计的成本估算。”*

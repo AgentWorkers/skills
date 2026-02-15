@@ -1,16 +1,16 @@
 ---
 name: Clients
-description: Build a personal client system for tracking relationships, projects, documents, and history.
+description: 构建一个个人客户端系统，用于跟踪人际关系、项目、文档以及相关历史记录。
 metadata: {"clawdbot":{"emoji":"💼","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions client → offer to create/update profile
-- User needs context → surface relevant history
-- User shares document → help associate to client
-- Create `~/clients/` as workspace
+## 核心行为
+- 当用户提到某个客户时，主动提供创建或更新客户档案的服务。
+- 当用户需要相关背景信息时，展示与该客户相关的历史记录。
+- 当用户分享文档时，协助将其与相应的客户关联起来。
+- 创建 `~/clients/` 作为工作文件夹。
 
-## File Structure
+## 文件结构
 ```
 ~/clients/
 ├── active/
@@ -25,7 +25,7 @@ metadata: {"clawdbot":{"emoji":"💼","os":["linux","darwin","win32"]}}
 └── templates/
 ```
 
-## Client Folder Structure
+## 客户文件夹结构
 ```
 acme-corp/
 ├── profile.md          # Main info, contacts
@@ -42,7 +42,7 @@ acme-corp/
 └── notes.md            # Quick notes, observations
 ```
 
-## Client Profile
+## 客户档案
 ```markdown
 # profile.md
 ## Company
@@ -72,7 +72,7 @@ Best channel: Slack
 - Fiscal year ends: December
 ```
 
-## Projects
+## 项目
 ```markdown
 # projects/2024-rebrand/project.md
 ## Overview
@@ -98,7 +98,7 @@ Status: In progress
 Scope expanded to include motion graphics (+$5k approved)
 ```
 
-## Documents Organization
+## 文档管理
 ```
 documents/
 ├── contracts/
@@ -114,7 +114,7 @@ documents/
     └── their-materials/
 ```
 
-## Communications Log
+## 沟通记录
 ```markdown
 # communications/log.md
 ## 2024-02-10 — Call with Sarah
@@ -127,7 +127,7 @@ documents/
 - Questions about timeline, addressed
 ```
 
-## Quick Notes
+## 快速笔记
 ```markdown
 # notes.md
 ## Observations
@@ -142,7 +142,7 @@ documents/
 - They close office last week of December
 ```
 
-## Leads
+## 客户跟进事项
 ```markdown
 # leads/pipeline.md
 ## Hot
@@ -155,34 +155,34 @@ documents/
 - BigCorp — revisit Q3
 ```
 
-## What To Surface
-- "Last contact with Acme was 2 weeks ago"
-- "Sarah prefers Slack"
-- "Contract renewal due next month"
-- "Open invoice: $5,000, sent 15 days ago"
+## 需要展示的信息：
+- “与 Acme 的最后一次联系是在两周前。”
+- “Sarah 更喜欢使用 Slack 进行沟通。”
+- “合同将于下个月到期，需要续签。”
+- “未结发票金额为 $5,000，已于 15 天前发送。”
 
-## Before Meetings
-Pull context:
-- Current project status
-- Last communication
-- Open items
-- Their preferences
+## 会议前的准备工作：
+- 获取客户的相关背景信息：
+  - 当前项目进度
+  - 最后一次沟通内容
+  - 未完成的事项
+  - 客户的沟通偏好
 
-## What To Track
-- All contacts with roles
-- Communication preferences
-- Project history with outcomes
-- Payment patterns
-- Important dates (renewals, reviews)
+## 需要跟踪的信息：
+- 与客户的所有联系记录
+- 客户的沟通偏好
+- 项目历史记录及结果
+- 支付方式
+- 重要日期（如合同续签日期、审核日期）
 
-## Progressive Enhancement
-- Start: create folder for active clients
-- Add key contacts and preferences
-- Move documents into structure
-- Log communications after meetings
+## 逐步改进的步骤：
+- 首先：为活跃的客户创建文件夹。
+- 添加关键联系人和他们的沟通偏好信息。
+- 将相关文档整理到相应的文件夹中。
+- 会议结束后记录所有的沟通内容。
 
-## What NOT To Do
-- Keep documents scattered outside client folder
-- Forget to log important calls
-- Lose track of open invoices
-- Miss contract renewal dates
+## 不应该做的事情：
+- 不要将文档随意放置在客户文件夹之外。
+- 忘记记录重要的电话沟通。
+- 丢失未结发票的信息。
+- 错过合同续签的日期。

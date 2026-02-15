@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Twitter/X Automation
+# Twitter/X 自动化
 
-Automate Twitter/X via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具（CLI）实现 Twitter/X 的自动化操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install CLI
@@ -25,29 +25,29 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run x/post-tweet --input '{"text": "Hello from inference.sh!"}'
 ```
 
-## Available Apps
+## 可用的应用程序
 
-| App | App ID | Description |
+| 应用程序 | 应用程序 ID | 功能描述 |
 |-----|--------|-------------|
-| Post Tweet | `x/post-tweet` | Post text tweets |
-| Create Post | `x/post-create` | Post with media |
-| Like Post | `x/post-like` | Like a tweet |
-| Retweet | `x/post-retweet` | Retweet a post |
-| Delete Post | `x/post-delete` | Delete a tweet |
-| Get Post | `x/post-get` | Get tweet by ID |
-| Send DM | `x/dm-send` | Send direct message |
-| Follow User | `x/user-follow` | Follow a user |
-| Get User | `x/user-get` | Get user profile |
+| 发布推文 | `x/post-tweet` | 发布纯文本推文 |
+| 创建帖子 | `x/post-create` | 发布带有图片/视频的帖子 |
+| 点赞推文 | `x/post-like` | 给推文点赞 |
+| 转发推文 | `x/post-retweet` | 转发推文 |
+| 删除推文 | `x/post-delete` | 删除推文 |
+| 获取推文信息 | `x/post-get` | 通过 ID 获取推文详情 |
+| 发送私信 | `x/dm-send` | 发送私信 |
+| 关注用户 | `x/user-follow` | 关注用户 |
+| 获取用户信息 | `x/user-get` | 获取用户资料 |
 
-## Examples
+## 示例
 
-### Post a Tweet
+### 发布推文
 
 ```bash
 infsh app run x/post-tweet --input '{"text": "Just shipped a new feature! 🚀"}'
 ```
 
-### Post with Media
+### 发布带有图片/视频的推文
 
 ```bash
 infsh app sample x/post-create --save input.json
@@ -61,19 +61,19 @@ infsh app sample x/post-create --save input.json
 infsh app run x/post-create --input input.json
 ```
 
-### Like a Tweet
+### 给推文点赞
 
 ```bash
 infsh app run x/post-like --input '{"tweet_id": "1234567890"}'
 ```
 
-### Retweet
+### 转发推文
 
 ```bash
 infsh app run x/post-retweet --input '{"tweet_id": "1234567890"}'
 ```
 
-### Send a DM
+### 发送私信
 
 ```bash
 infsh app run x/dm-send --input '{
@@ -82,31 +82,31 @@ infsh app run x/dm-send --input '{
 }'
 ```
 
-### Follow a User
+### 关注用户
 
 ```bash
 infsh app run x/user-follow --input '{"username": "elonmusk"}'
 ```
 
-### Get User Profile
+### 获取用户资料
 
 ```bash
 infsh app run x/user-get --input '{"username": "OpenAI"}'
 ```
 
-### Get Tweet Details
+### 获取推文详情
 
 ```bash
 infsh app run x/post-get --input '{"tweet_id": "1234567890"}'
 ```
 
-### Delete a Tweet
+### 删除推文
 
 ```bash
 infsh app run x/post-delete --input '{"tweet_id": "1234567890"}'
 ```
 
-## Workflow: Generate AI Image and Post
+## 工作流程：生成 AI 图像并发布
 
 ```bash
 # 1. Generate image
@@ -119,7 +119,7 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Workflow: Generate and Post Video
+## 工作流程：生成并发布视频
 
 ```bash
 # 1. Generate video
@@ -132,7 +132,7 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -148,10 +148,10 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@ai-avatar-video
 ```
 
-Browse all apps: `infsh app list`
+查看所有应用程序：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [X.com Integration](https://inference.sh/docs/integrations/x) - Setting up Twitter/X integration
-- [X.com Integration Example](https://inference.sh/docs/examples/x-integration) - Complete Twitter workflow
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
+- [X.com 集成](https://inference.sh/docs/integrations/x) - 设置 Twitter/X 集成
+- [X.com 集成示例](https://inference.sh/docs/examples/x-integration) - 完整的 Twitter 自动化工作流程
+- [应用程序概述](https://inference.sh/docs/apps/overview) - 了解应用程序生态系统

@@ -1,40 +1,40 @@
 ---
 name: youtube-apify-transcript
 version: 1.1.2
-description: Fetch YouTube transcripts via APIFY API. Works from cloud IPs (Hetzner, AWS, etc.) by bypassing YouTube's bot detection. Free tier includes $5/month credits (~714 videos). No credit card required.
+description: 通过 APIFY API 获取 YouTube 视频的字幕。该服务支持来自云服务器（如 Hetzner、AWS 等）的请求，并能绕过 YouTube 的机器人检测机制。免费 tier 每月提供 5 美元的信用额度（可转录约 714 个视频），无需使用信用卡支付。
 tags: [youtube, transcript, apify, video, subtitles, captions, cloud-ip, free-tier, web-scraping]
 ---
 
 # youtube-apify-transcript
 
-Fetch YouTube transcripts via APIFY API (works from cloud IPs, bypasses YouTube bot detection).
+通过 APIFY API 获取 YouTube 视频的字幕（支持来自云服务器的请求，可绕过 YouTube 的机器人检测机制）。
 
-## Why APIFY?
+## 为什么选择 APIFY？
 
-YouTube blocks transcript requests from cloud IPs (AWS, GCP, etc.). APIFY runs the request through residential proxies, bypassing bot detection reliably.
+YouTube 会阻止来自云服务器（如 AWS、GCP 等）的字幕请求。APIFY 通过使用居民代理来发起请求，从而可靠地规避了机器人检测机制。
 
-## Free Tier
+## 免费 tier
 
-- **$5/month free credits** (~714 videos)
-- No credit card required
-- Perfect for personal use
+- **每月 5 美元的免费额度**（约可获取 714 个视频的字幕）
+- 无需使用信用卡
+- 非常适合个人使用
 
-## Cost
+## 费用
 
-- **$0.007 per video** (less than 1 cent!)
-- Track usage at: https://console.apify.com/billing
+- **每个视频 0.007 美元**（不到 1 分钱！）
+- 可在以下链接查看使用情况：https://console.apify.com/billing
 
-## Links
+## 链接
 
-- 🔗 [APIFY Pricing](https://apify.com/pricing)
-- 🔑 [Get API Key](https://console.apify.com/account/integrations)
-- 🎬 [YouTube Transcripts Actor](https://apify.com/karamelo/youtube-transcripts)
+- 🔗 [APIFY 定价](https://apify.com/pricing)
+- 🔑 [获取 API 密钥](https://console.apify.com/account/integrations)
+- 🎬 [YouTube 字幕插件](https://apify.com/karamelo/youtube-transcripts)
 
-## Setup
+## 设置
 
-1. Create free APIFY account: https://apify.com/
-2. Get your API token: https://console.apify.com/account/integrations
-3. Set environment variable:
+1. 创建免费的 APIFY 账户：https://apify.com/
+2. 获取 API 令牌：https://console.apify.com/account/integrations
+3. 设置环境变量：
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
@@ -44,9 +44,9 @@ export APIFY_API_TOKEN="apify_api_YOUR_TOKEN_HERE"
 echo 'APIFY_API_TOKEN=apify_api_YOUR_TOKEN_HERE' >> .env
 ```
 
-## Usage
+## 使用方法
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Get transcript as text (uses cache by default)
@@ -56,7 +56,7 @@ python3 scripts/fetch_transcript.py "https://www.youtube.com/watch?v=VIDEO_ID"
 python3 scripts/fetch_transcript.py "https://youtu.be/VIDEO_ID"
 ```
 
-### Options
+### 配置选项
 
 ```bash
 # Output to file
@@ -72,9 +72,9 @@ python3 scripts/fetch_transcript.py "URL" --json --output transcript.json
 python3 scripts/fetch_transcript.py "URL" --lang de
 ```
 
-### Caching (saves money!)
+### 缓存（节省费用！）
 
-Transcripts are cached locally by default. Repeat requests for the same video cost $0.
+系统会默认将字幕缓存到本地。对同一视频重复请求时，费用为 0 美元。
 
 ```bash
 # First request: fetches from APIFY ($0.007)
@@ -94,11 +94,11 @@ python3 scripts/fetch_transcript.py --cache-stats
 python3 scripts/fetch_transcript.py --clear-cache
 ```
 
-Cache location: `.cache/` in skill directory (override with `YT_TRANSCRIPT_CACHE_DIR` env var)
+缓存位置：`skill` 目录下的 `.cache/` 文件夹（可通过 `YT_TRANSCRIPT_CACHE_DIR` 环境变量进行自定义）
 
-### Batch Mode
+### 批量处理
 
-Process multiple videos at once:
+可以同时处理多个视频：
 
 ```bash
 # Create a file with URLs (one per line)
@@ -122,15 +122,15 @@ python3 scripts/fetch_transcript.py --batch urls.txt
 python3 scripts/fetch_transcript.py --batch urls.txt --json --output all_transcripts.json
 ```
 
-### Output Formats
+### 输出格式
 
-**Text (default):**
+- **文本格式（默认）：**
 ```
 Hello and welcome to this video.
 Today we're going to talk about...
 ```
 
-**JSON (--json):**
+- **JSON 格式（使用 `--json` 参数）：**
 ```json
 {
   "video_id": "dQw4w9WgXcQ",
@@ -143,15 +143,15 @@ Today we're going to talk about...
 }
 ```
 
-## Error Handling
+## 错误处理
 
-The script handles common errors:
-- Invalid YouTube URL
-- Video has no transcript
-- API quota exceeded
-- Network errors
+该脚本能够处理以下常见错误：
+- YouTube URL 无效
+- 视频没有字幕
+- API 配额已用完
+- 网络错误
 
-## Metadata
+## 元数据
 
 ```yaml
 metadata:

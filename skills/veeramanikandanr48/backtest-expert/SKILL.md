@@ -1,206 +1,204 @@
 ---
 name: backtest-expert
-description: Expert guidance for systematic backtesting of trading strategies. Use when developing, testing, stress-testing, or validating quantitative trading strategies. Covers "beating ideas to death" methodology, parameter robustness testing, slippage modeling, bias prevention, and interpreting backtest results. Applicable when user asks about backtesting, strategy validation, robustness testing, avoiding overfitting, or systematic trading development.
+description: 专家指导：系统化回测交易策略的方法  
+适用于交易策略的开发、测试、压力测试及验证过程。内容涵盖“反复优化策略”的方法论、参数稳健性测试、滑点建模、偏差预防以及回测结果的分析与解读。当用户需要了解回测方法、策略验证、测试策略的稳健性、避免过拟合或系统化交易策略的开发时，本指南将提供实用的帮助。
 ---
 
-# Backtest Expert
+# 回测专家
 
-Systematic approach to backtesting trading strategies based on professional methodology that prioritizes robustness over optimistic results.
+我们采用系统化的方法来回测交易策略，这种方法基于专业的测试方法论，更注重策略的稳健性而非仅仅追求理想化的结果。
 
-## Core Philosophy
+## 核心理念
 
-**Goal**: Find strategies that "break the least", not strategies that "profit the most" on paper.
+**目标**：寻找那些在实际交易中“出错最少”的策略，而非那些在纸面上“盈利最多”的策略。
 
-**Principle**: Add friction, stress test assumptions, and see what survives. If a strategy holds up under pessimistic conditions, it's more likely to work in live trading.
+**原则**：增加交易中的摩擦因素（如佣金、滑点等），对策略假设进行压力测试，以检验其可靠性。如果一个策略能在恶劣的市场环境下依然表现良好，那么它在实际交易中更有可能取得成功。
 
-## When to Use This Skill
+## 何时使用这项技能
 
-Use this skill when:
-- Developing or validating systematic trading strategies
-- Evaluating whether a trading idea is robust enough for live implementation  
-- Troubleshooting why a backtest might be misleading
-- Learning proper backtesting methodology
-- Avoiding common pitfalls (curve-fitting, look-ahead bias, survivorship bias)
-- Assessing parameter sensitivity and regime dependence
-- Setting realistic expectations for slippage and execution costs
+- 在开发或验证系统化交易策略时
+- 评估某个交易想法是否足够稳健，可以用于实际交易
+- 解决回测结果可能存在的误导性问题
+- 学习正确的回测方法
+- 避免常见的错误（如曲线拟合、过度优化、幸存者偏差等）
+- 评估策略参数的敏感性和市场环境的变化性
+- 设定合理的滑点和执行成本预期
 
-## Backtesting Workflow
+## 回测工作流程
 
-### 1. State the Hypothesis
+### 1. 明确假设
 
-Define the edge in one sentence.
+用一句话描述你的策略优势。
 
-**Example**: "Stocks that gap up >3% on earnings and pull back to previous day's close within first hour provide mean-reversion opportunity."
+**示例**：“在财报公布后股价上涨超过3%，并在第一个小时内回落到前一交易日收盘价的股票，提供了均值回归的机会。”
 
-If you can't articulate the edge clearly, don't proceed to testing.
+如果无法清晰地描述策略的优势，就不要继续进行测试。
 
-### 2. Codify Rules with Zero Discretion
+### 2. 以零自由裁量权的方式编写规则
 
-Define with complete specificity:
-- **Entry**: Exact conditions, timing, price type
-- **Exit**: Stop loss, profit target, time-based exit
-- **Position sizing**: Fixed $$, % of portfolio, volatility-adjusted
-- **Filters**: Market cap, volume, sector, volatility conditions
-- **Universe**: What instruments are eligible
+详细规定所有规则：
+- **入场条件**：具体的价格、时间、交易类型
+- **出场条件**：止损点、盈利目标、基于时间的出场时机
+- **头寸大小**：固定的金额、投资组合的百分比、根据波动性调整的金额
+- **筛选条件**：市值、成交量、行业、波动性等
+- **适用范围**：哪些股票符合条件
 
-**Critical**: No subjective judgment allowed. Every decision must be rule-based and unambiguous.
+**关键点**：不允许有任何主观判断，所有决策都必须基于明确的规则。
 
-### 3. Run Initial Backtest
+### 3. 进行初步回测
 
-Test over:
-- **Minimum 5 years** (preferably 10+)
-- **Multiple market regimes** (bull, bear, high/low volatility)
-- **Realistic costs**: Commissions + conservative slippage
+- 测试时间应至少为5年（理想情况下为10年以上）
+- 覆盖多种市场环境（牛市、熊市、高波动性/低波动性）
+- 使用实际的成本数据（包括佣金和合理的滑点）
 
-Examine initial results for basic viability. If fundamentally broken, iterate on hypothesis.
+检查初步结果，判断策略的基本可行性。如果存在根本性问题，需要重新调整假设。
 
-### 4. Stress Test the Strategy
+### 4. 对策略进行压力测试
 
-This is where 80% of testing time should be spent.
+这部分测试应占整个回测时间的80%。
 
-**Parameter sensitivity**:
-- Test stop loss at 50%, 75%, 100%, 125%, 150% of baseline
-- Test profit target at 80%, 90%, 100%, 110%, 120% of baseline  
-- Vary entry/exit timing by ±15-30 minutes
-- Look for "plateaus" of stable performance, not narrow spikes
+- **参数敏感性测试**：
+  - 测试止损点设置在基线的50%、75%、100%、125%、150%
+  - 测试盈利目标设置在基线的80%、90%、100%、110%、120%
+  - 将入场/出场时间调整±15-30分钟
+  - 寻找表现稳定的区间，而非短暂的峰值
 
-**Execution friction**:
-- Increase slippage to 1.5-2x typical estimates
-- Model worst-case fills (buy at ask+1 tick, sell at bid-1 tick)
-- Add realistic order rejection scenarios
-- Test with pessimistic commission structures
+- **执行摩擦测试**：
+  - 将滑点增加到实际水平的1.5-2倍
+  - 模拟最糟糕的交易执行情况（买入价格高于卖出价格1个跳动点，卖出价格低于买入价格1个跳动点）
+  - 添加真实的订单拒绝情况
+  - 使用较高的佣金结构进行测试
 
-**Time robustness**:
-- Analyze year-by-year performance
-- Require positive expectancy in majority of years
-- Ensure strategy doesn't rely on 1-2 exceptional periods
-- Test in different market regimes separately
+- **时间稳健性测试**：
+  - 分析每年的表现
+  - 确保策略在大多数年份都能获得正收益
+  - 避免策略依赖于少数几个特殊时期
+  - 分别在不同市场环境下进行测试
 
-**Sample size**:
-- Absolute minimum: 30 trades
-- Preferred: 100+ trades
-- High confidence: 200+ trades
+- **样本量要求**：
+  - 最低要求：30笔交易
+  - 建议：100笔以上交易
+  - 高置信度：200笔以上交易
 
-### 5. Out-of-Sample Validation
+### 5. 样本外验证
 
-**Walk-forward analysis**:
-1. Optimize on training period (e.g., Year 1-3)
-2. Test on validation period (Year 4)
-3. Roll forward and repeat
-4. Compare in-sample vs out-of-sample performance
+- **向前预测分析**：
+  - 在训练期间（如前3年）优化策略
+  - 在验证期间（第4年）进行测试
+  - 重复上述过程
+  - 比较样本内和样本外的表现
 
-**Warning signs**:
-- Out-of-sample <50% of in-sample performance
-- Need frequent parameter re-optimization
-- Parameters change dramatically between periods
+**警告信号**：
+- 样本外表现低于样本内表现的50%
+- 需要频繁调整参数
+- 不同时间段内参数变化巨大
 
-### 6. Evaluate Results
+### 6. 评估结果
 
-**Questions to answer**:
-- Does edge survive pessimistic assumptions?
-- Is performance stable across parameter variations?
-- Does strategy work in multiple market regimes?
-- Is sample size sufficient for statistical confidence?
-- Are results realistic, not "too good to be true"?
+需要回答的问题：
+- 策略的优势在恶劣假设下是否依然存在？
+- 策略的表现是否在不同参数设置下保持稳定？
+- 策略是否适用于多种市场环境？
+- 样本量是否足够支持统计分析的可靠性？
+- 结果是否现实，而不是“好得令人难以置信”？
 
-**Decision criteria**:
-- ✅ **Deploy**: Survives all stress tests with acceptable performance
-- 🔄 **Refine**: Core logic sound but needs parameter adjustment
-- ❌ **Abandon**: Fails stress tests or relies on fragile assumptions
+**决策标准**：
+- ✅ **部署**：策略通过了所有压力测试，并且表现良好
+- 🔄 **优化**：核心逻辑正确，但需要调整参数
+- ❌ **放弃**：策略在压力测试中失败，或者依赖于不稳固的假设
 
-## Key Testing Principles
+## 关键的测试原则
 
-### Punish the Strategy
+### 增加策略的挑战性
 
-Add friction everywhere:
-- Commissions higher than reality
-- Slippage 1.5-2x typical
-- Worst-case fills
-- Order rejections
-- Partial fills
+在测试中加入各种不利因素：
+- 佣金高于实际情况
+- 滑点增加到实际水平的1.5-2倍
+- 模拟最糟糕的交易执行情况
+- 订单被拒绝
+- 部分订单无法成交
 
-**Rationale**: Strategies that survive pessimistic assumptions often outperform in live trading.
+**理由**：能够在恶劣假设下存活下来的策略，在实际交易中往往表现更好。
 
-### Seek Plateaus, Not Peaks
+### 寻找表现稳定的区间，而非最优值
 
-Look for parameter ranges where performance is stable, not optimal values that create performance spikes.
+关注的是策略表现稳定的参数范围，而不是那些导致短暂峰值的最优参数。
 
-**Good**: Strategy profitable with stop loss anywhere from 1.5% to 3.0%
-**Bad**: Strategy only works with stop loss at exactly 2.13%
+**好的策略**：即使止损设置在1.5%到3.0%之间，也能盈利
+**差的策略**：只有在止损设置为2.13%时才能盈利
 
-Stable performance indicates genuine edge; narrow optima suggest curve-fitting.
+稳定的表现表明策略具有真正的优势；而过于理想化的参数设置可能只是曲线拟合的结果。
 
-### Test All Cases, Not Cherry-Picked Examples
+### 测试所有情况，而非仅选择个别案例
 
-**Wrong approach**: Study hand-picked "market leaders" that worked
-**Right approach**: Test every stock that met criteria, including those that failed
+**错误的方法**：只研究那些被选中的“表现优异”的股票
+**正确的方法**：测试所有符合条件的股票，包括那些失败的案例
 
-Selective examples create survivorship bias and overestimate strategy quality.
+选择性测试会导致幸存者偏差，从而高估策略的质量。
 
-### Separate Idea Generation from Validation
+### 将策略生成与验证分开
 
-**Intuition**: Useful for generating hypotheses
-**Validation**: Must be purely data-driven
+- **直觉**：有助于生成假设
+- **验证**：必须完全基于数据
 
-Never let attachment to an idea influence interpretation of test results.
+永远不要让对某个想法的偏好影响对测试结果的解读。
 
-## Common Failure Patterns
+## 常见的失败模式
 
-Recognize these patterns early to save time:
+及早识别这些失败模式，可以节省时间：
 
-1. **Parameter sensitivity**: Only works with exact parameter values
-2. **Regime-specific**: Great in some years, terrible in others  
-3. **Slippage sensitivity**: Unprofitable when realistic costs added
-4. **Small sample**: Too few trades for statistical confidence
-5. **Look-ahead bias**: "Too good to be true" results
-6. **Over-optimization**: Many parameters, poor out-of-sample results
+1. **参数敏感性**：策略仅在特定的参数值下有效
+2. **市场环境依赖性**：在某些年份表现良好，但在其他年份表现糟糕
+3. **滑点敏感性**：在实际成本影响下策略无法盈利
+4. **样本量不足**：交易数量太少，无法获得可靠的统计结果
+5. **过度优化**：参数过多，导致样本外表现不佳
 
-See `references/failed_tests.md` for detailed examples and diagnostic framework.
+详细示例和诊断框架请参见`references/failed_tests.md`。
 
-## Available Reference Documentation
+## 可用的参考文档
 
-### Methodology Reference
-**File**: `references/methodology.md`
+### 方法论参考
+**文件**：`references/methodology.md`
 
-**When to read**: For detailed guidance on specific testing techniques.
+**阅读时机**：需要了解具体的测试技术时
 
-**Contents**:
-- Stress testing methods
-- Parameter sensitivity analysis  
-- Slippage and friction modeling
-- Sample size requirements
-- Market regime classification
-- Common biases and pitfalls (survivorship, look-ahead, curve-fitting, etc.)
+**内容**：
+- 压力测试方法
+- 参数敏感性分析
+- 滑点和摩擦因素的建模
+- 样本量要求
+- 市场环境分类
+- 常见的错误和陷阱（如幸存者偏差、过度优化等）
 
-### Failed Tests Reference
-**File**: `references/failed_tests.md`
+### 失败的测试案例参考
+**文件**：`references/failed_tests.md`
 
-**When to read**: When strategy fails tests, or learning from past mistakes.
+**阅读时机**：当策略测试失败时，或需要从过去的错误中学习时
 
-**Contents**:
-- Why failures are valuable
-- Common failure patterns with examples
-- Case study documentation framework
-- Red flags checklist for evaluating backtests
+**内容**：
+- 失败案例的价值
+- 常见的失败模式及示例
+- 失败案例的文档框架
+- 评估回测结果的警示标志
 
-## Critical Reminders
+## 重要提醒
 
-**Time allocation**: Spend 20% generating ideas, 80% trying to break them.
+**时间分配**：20%的时间用于生成策略，80%的时间用于验证策略的稳健性。
 
-**Context-free requirement**: If strategy requires "perfect context" to work, it's not robust enough for systematic trading.
+**注意事项**：如果一个策略需要“完美的环境”才能运作，那么它不够稳健，不适合用于系统化交易。
 
-**Red flag**: If backtest results look too good (>90% win rate, minimal drawdowns, perfect timing), audit carefully for look-ahead bias or data issues.
+**警示信号**：如果回测结果过于理想（胜率超过90%、回撤极小、时机选择完美），应仔细检查是否存在过度优化或数据问题。
 
-**Tool limitations**: Understand your backtesting platform's quirks (interpolation methods, handling of low liquidity, data alignment issues).
+**工具限制**：了解你的回测平台的特性（插值方法、处理低流动性数据的能力、数据对齐问题等）。
 
-**Statistical significance**: Small edges require large sample sizes to prove. 5% edge per trade needs 100+ trades to distinguish from luck.
+**统计显著性**：微小的优势需要大量的样本才能证明。例如，每笔交易只有5%的优势，需要100笔以上的交易才能排除偶然性。
 
-## Discretionary vs Systematic Differences
+## 自由裁量交易与系统化交易的区别
 
-This skill focuses on **systematic/quantitative** backtesting where:
-- All rules are codified in advance
-- No discretion or "feel" in execution  
-- Testing happens on all historical examples, not cherry-picked cases
-- Context (news, macro) is deliberately stripped out
+这项技能专注于**系统化/量化**回测，其特点包括：
+- 所有规则都事先明确编写
+- 执行过程中没有自由裁量权
+- 测试涵盖所有历史数据，而非仅选择特定的案例
+- 会刻意排除市场环境（如新闻、宏观经济因素）的影响
 
-Discretionary traders study differently—this skill may not apply to setups requiring subjective judgment.
+自由裁量交易的策略制定方式与此不同，因此这项技能可能不适用于需要主观判断的情境。

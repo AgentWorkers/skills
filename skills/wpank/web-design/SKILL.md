@@ -1,19 +1,18 @@
 ---
 name: web-design
 model: standard
-description: CSS implementation patterns for layout, typography, color, spacing, and responsive design. Complements ui-design (fundamentals) with code-focused examples.
+description: CSS 实现模式，涵盖布局、排版、颜色、间距以及响应式设计。通过以代码为中心的示例，对 `ui-design`（基础部分）的内容进行补充。
 version: "1.1.0"
 related: [ui-design, frontend-design, design-system-patterns]
 ---
 
-# Web Design Patterns
+# 网页设计模式
 
-CSS implementation patterns for production-grade interfaces. For design fundamentals and decision-making, see `ui-design`. This skill focuses on code.
+这些模式涵盖了适用于生产级界面的CSS实现技巧。有关设计基础和决策流程，请参考`ui-design`文档。本文档重点介绍代码实现细节。
 
-> **See also:** `ui-design` for typography/color/spacing theory, `frontend-design` for creative aesthetics.
+> **另请参阅：**`ui-design`（了解排版/颜色/间距理论），`frontend-design`（了解创意美学设计）。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -21,57 +20,64 @@ CSS implementation patterns for production-grade interfaces. For design fundamen
 npx clawhub@latest install web-design
 ```
 
+## 布局原则
 
-## Layout Principles
-
-Use CSS Grid for two-dimensional layouts and Flexbox for one-dimensional flow. Choose the right tool for each context.
-
-| Layout Need | Tool | Why |
+- 使用CSS Grid处理二维布局，使用Flexbox处理一维布局。根据具体需求选择合适的工具。
+| 布局需求 | 工具 | 选择理由 |
 |---|---|---|
-| Page-level structure | CSS Grid (`grid-template-areas`) | Named regions, explicit row/column control |
-| Navigation bars | Flexbox | Single-axis alignment, spacing with `gap` |
-| Card grids | Grid (`auto-fill` / `auto-fit`) | Responsive without media queries |
-| Centering | Grid (`place-items: center`) | Shortest, most reliable centering |
-| Sidebar + content | Grid (`grid-template-columns: 250px 1fr`) | Proportional sizing with fixed sidebar |
-| Stacking overlaps | Grid + `grid-area: 1/1` | Layer elements without `position: absolute` |
+| 页面级结构 | CSS Grid (`grid-template-areas`) | 提供命名区域，支持精确的行/列控制 |
+| 导航栏 | Flexbox | 支持单轴对齐，并可通过`gap`设置间距 |
+| 卡片布局 | Grid (`auto-fill` / `auto-fit`) | 无需媒体查询即可实现响应式布局 |
+| 居中显示 | Grid (`place-items: center`) | 最简洁、最可靠的居中方法 |
+| 侧边栏 + 内容 | Grid (`grid-template-columns: 250px 1fr`) | 侧边栏固定宽度，内容自适应 |
+| 元素堆叠 | Grid + `grid-area: 1/1` | 可让元素堆叠而无需使用`position: absolute` |
 
-### Spatial Composition
+## 空间组合
 
-Go beyond predictable layouts. Intentional asymmetry, overlapping elements, and grid-breaking accents create visual interest. Use grid stacking (`grid-area: 1/1`) instead of `position: absolute` for overlapping elements. Choose generous negative space for luxury/editorial aesthetics, or controlled density for data-rich interfaces — the choice must be intentional.
+- 超出传统的布局规则，利用不对称设计、元素重叠和打破常规的布局方式来创造视觉趣味。对于需要堆叠的元素，优先使用`grid-area: 1/1`而非`position: absolute`。
+- 根据设计需求选择合适的负空间（空白区域）：优雅的设计风格需要较多的负空间，而数据密集型界面则需要控制元素密度。
 
-## Typography
+## 排版
 
-Typography carries 90% of a design's personality. Choose fonts that match the interface's purpose.
+排版决定了设计的整体风格。选择与界面功能相匹配的字体。
 
-| Context | Display Font Direction | Body Font Direction | Example Pairing |
+| 使用场景 | 字体显示方向 | 正文字体方向 | 示例组合 |
 |---|---|---|---|
-| Editorial / magazine | High-contrast serif | Neutral humanist sans | Playfair Display + Source Sans 3 |
-| SaaS dashboard | Geometric sans | Matching weight sans | DM Sans + DM Mono (data) |
-| Creative portfolio | Expressive display | Clean readable sans | Syne + Outfit |
-| E-commerce luxury | Thin modern serif | Elegant sans | Cormorant Garamond + Jost |
-| Developer tooling | Monospace display | Monospace body | JetBrains Mono + IBM Plex Mono |
+| 编辑类/杂志类界面 | 对比强烈的衬线字体 | 中性的人体主义无衬线字体 | Playfair Display + Source Sans 3 |
+| SaaS仪表盘 | 几何形状的无衬线字体 | 重量相近的无衬线字体 | DM Sans + DM Mono (数据显示) |
+| 创意作品集 | 表现力强的字体 | 清晰易读的无衬线字体 | Syne + Outfit |
+| 高端电商界面 | 纤细的现代衬线字体 | 优雅的无衬线字体 | Cormorant Garamond + Jost |
+| 开发工具界面 | 等宽字体 | 等宽正文字体 | JetBrains Mono + IBM Plex Mono |
 
-### Type Scale
+## 字体比例
 
-Use a consistent ratio. A 1.25 (major third) scale works for most interfaces: `text-xs` 0.64rem, `text-sm` 0.8rem, `text-base` 1rem, `text-lg` 1.25rem, `text-xl` 1.563rem, `text-2xl` 1.953rem, `text-3xl` 2.441rem, `text-4xl` 3.052rem. Set body text to `1rem` (16px minimum), line-height `1.5` for body, `1.1–1.2` for headings. Limit line length to `60–75ch`.
+使用统一的字体比例。1.25（大三度）的比例适用于大多数界面：
+- `text-xs`：0.64rem  
+- `text-sm`：0.8rem  
+- `text-base`：1rem  
+- `text-lg`：1.25rem  
+- `text-xl`：1.563rem  
+- `text-2xl`：1.953rem  
+- `text-3xl`：2.441rem  
+- `text-4xl`：3.052rem  
+- 将正文字体设置为`1rem`（最小值为16px），行高设为`1.5`，标题行高设为`1.1–1.2`。每行的长度应控制在60–75个字符以内。
 
-## Color
+## 颜色
 
-### Building a Palette
+### 颜色调色板构建
 
-Every palette needs five functional roles:
-
-| Role | Purpose | Example Usage |
+每个颜色调色板都应具备五种功能性的颜色：
+| 颜色类型 | 用途 | 例用场景 |
 |---|---|---|
-| **Primary** | Brand identity, primary actions | Buttons, links, active states |
-| **Neutral** | Text, borders, backgrounds | Body text, cards, dividers |
-| **Accent** | Secondary actions, highlights | Tags, badges, secondary buttons |
-| **Success / Warning / Error** | Semantic feedback | Toasts, form validation, status |
-| **Surface** | Layered backgrounds | Cards on page, modals on overlay |
+| **主要颜色** | 代表品牌特征和主要交互动作 | 按钮、链接、激活状态 |
+| **中性颜色** | 用于正文、边框和背景 | 正文文本、卡片、分隔符 |
+| **强调色** | 用于次要交互元素和高亮显示 | 标签、徽章、次要按钮 |
+| **成功/警告/错误提示** | 提供语义性的反馈信息 | 消息提示、表单验证结果、状态提示 |
+| **背景色** | 用于分层背景 | 页面上的卡片、弹出窗口 |
 
-### Contrast and Depth
+### 对比度和层次感
 
-Create depth through surface layering, not just shadows:
+通过颜色层次感来营造深度，而不仅仅是使用阴影效果：
 
 ```css
 :root {
@@ -82,58 +88,57 @@ Create depth through surface layering, not just shadows:
 }
 ```
 
-Use HSL or OKLCH for perceptually uniform color manipulation. Dominant color with sharp accents outperforms evenly-distributed palettes. Always verify WCAG contrast: 4.5:1 for normal text, 3:1 for large text.
+建议使用HSL或OKLCH模型来统一颜色调整。使用对比鲜明的主色调和辅助色调效果比均匀分布的颜色更佳。务必验证颜色对比度是否符合WCAG标准：普通文本至少达到4.5:1，大字体至少达到3:1。
 
-## Spacing
+## 间距
 
-Consistent spacing creates rhythm. Use an 8px base unit (or 4px for dense UIs):
-
-| Token | Value | Use |
+一致的间距有助于营造视觉节奏。建议使用8px作为基本间距单位（密集型界面可使用4px）：
+| 间距单位 | 值 | 用途 |
 |---|---|---|
-| `--space-1` | 0.25rem (4px) | Inline icon gaps, tight padding |
-| `--space-2` | 0.5rem (8px) | Input padding, compact lists |
-| `--space-3` | 0.75rem (12px) | Button padding, card inner spacing |
-| `--space-4` | 1rem (16px) | Default element spacing |
-| `--space-6` | 1.5rem (24px) | Section padding, card gaps |
-| `--space-8` | 2rem (32px) | Section separation |
-| `--space-12` | 3rem (48px) | Major section breaks |
-| `--space-16` | 4rem (64px) | Page-level vertical rhythm |
+| `--space-1` | 0.25rem (4px) | 内联图标之间的间距、紧密的填充 |
+| `--space-2` | 0.5rem (8px) | 输入框的填充、紧凑的列表 |
+| `--space-3` | 0.75rem (12px) | 按钮的填充、卡片内部的间距 |
+| `--space-4` | 1rem (16px) | 元素的默认间距 |
+| `--space-6` | 1.5rem (24px) | 区块之间的间距 |
+| `--space-8` | 2rem (32px) | 区块之间的分隔 |
+| `--space-12` | 3rem (48px) | 主要内容块之间的分隔 |
+| `--space-16` | 4rem (64px) | 页面整体的垂直间距 |
 
-Apply spacing consistently: use `gap` on Grid/Flexbox containers instead of margins on children. This eliminates margin-collapse bugs and simplifies responsive adjustments.
+在Grid或Flexbox容器中使用`gap`来设置间距，这样可以避免margin折叠问题，并简化响应式调整。
 
-## Visual Hierarchy
+## 视觉层次结构
 
-Guide the eye through deliberate contrast in size, weight, color, and space.
+通过大小、粗细、颜色和间距的对比来引导用户的视线。
 
-### Hierarchy Techniques
+### 层次结构技巧
 
-| Technique | How | Impact |
+| 技巧 | 实现方式 | 效果 |
 |---|---|---|
-| **Size contrast** | Hero heading 3–4x body size | Immediate focal point |
-| **Weight contrast** | Bold headings + regular body | Scannability |
-| **Color contrast** | Primary text vs muted secondary | Information layering |
-| **Spatial grouping** | Tight spacing within groups, wide between | Gestalt proximity |
-| **Elevation** | Shadows / surface layers | Interactive affordance |
-| **Whitespace isolation** | Empty space around key element | Emphasis through absence |
+| **大小对比** | 标题的字体大小是正文的3–4倍 | 立即吸引用户的注意力 |
+| **粗细对比** | 加粗的标题与普通的正文文字 | 便于阅读 |
+| **颜色对比** | 主要文本与次要文本的对比 | 明确信息层次 |
+| **空间分组** | 同一组内的元素间距紧密，不同组之间的间距较大 | 利用视觉聚类原理 |
+| **层次感** | 使用阴影或不同的背景层 | 增强交互体验 |
+| **空白空间** | 关键元素周围的空白区域 | 通过空白突出重点 |
 
-### Practical Pattern — Card Hierarchy
+### 实用设计模式——卡片层次结构
 
-Layer hierarchy within cards: eyebrow (xs, uppercase, muted) → title (xl, semibold) → body (base, secondary color, 1.6 line-height) → action (spaced apart with `margin-top`). Use surface color for separation and consistent padding from spacing tokens.
+卡片内部的层次结构如下：眉标题（小号字体，大写，颜色较淡）→ 标题（大号字体，加粗）→ 正文（常规字体，次要颜色，行高为1.6倍）→ 动作按钮（带有间距）。使用背景颜色进行区分，并保持与间距规则一致。
 
-## Responsive Design
+## 响应式设计
 
-### Breakpoint Strategy
+### 分界点策略
 
-| Breakpoint | Target | Approach |
+| 分界点 | 目标设备 | 实现方式 |
 |---|---|---|
-| `< 640px` | Mobile | Single column, stacked navigation, touch targets ≥ 44px |
-| `640–1024px` | Tablet | Two-column options, collapsible sidebars |
-| `1024–1440px` | Desktop | Full layout, hover interactions enabled |
-| `> 1440px` | Wide | Max-width container (1280px), prevent ultra-wide line lengths |
+| `< 640px` | 移动设备 | 单列布局，导航栏堆叠显示，触摸目标元素至少44px |
+| `640–1024px` | 平板设备 | 双列布局，侧边栏可折叠 |
+| `1024–1440px` | 桌面设备 | 全屏布局，启用悬停交互 |
+| `> 1440px | 宽屏设备 | 容器宽度固定为1280px，避免过长的文本行 |
 
-### Fluid Techniques
+### 流动布局技术
 
-Prefer fluid sizing over rigid breakpoints where possible:
+在可能的情况下，优先使用流动布局而非固定的分界点：
 
 ```css
 /* Fluid typography — scales between 640px and 1440px viewport */
@@ -146,22 +151,22 @@ section { padding-block: clamp(2rem, 1rem + 4vw, 6rem); }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--space-6); }
 ```
 
-Use container queries (`@container`) for component-level responsiveness when a component's layout should respond to its container, not the viewport.
+当组件的布局需要根据容器大小变化时，可以使用容器查询（`@container`）来实现组件的响应式布局。
 
-## Accessibility
+## 可访问性
 
-Accessibility is not optional. Build it in from the start.
+可访问性是不可或缺的，应从项目开始就进行设计。
 
-| Requirement | Implementation | Standard |
+| 需求 | 实现方式 | 相关标准 |
 |---|---|---|
-| **Color contrast** | 4.5:1 normal text, 3:1 large text / UI | WCAG 2.1 AA |
-| **Keyboard navigation** | All interactive elements focusable and operable | WCAG 2.1.1 |
-| **Focus indicators** | Visible `:focus-visible` ring, 2px+ offset | WCAG 2.4.7 |
-| **Semantic HTML** | Use `<button>`, `<nav>`, `<main>`, `<article>` etc. | WCAG 1.3.1 |
-| **Alt text** | Descriptive for informational images, `alt=""` for decorative | WCAG 1.1.1 |
-| **Motion safety** | Respect `prefers-reduced-motion` | WCAG 2.3.3 |
-| **Touch targets** | Minimum 44×44px interactive areas | WCAG 2.5.8 |
-| **ARIA when needed** | `aria-label`, `aria-live`, `role` only when native semantics insufficient | WCAG 4.1.2 |
+| **颜色对比度** | 普通文本的对比度至少为4.5:1，大文本的对比度至少为3:1 | WCAG 2.1 AA |
+| **键盘导航** | 所有交互元素均可聚焦和操作 | WCAG 2.1.1 |
+| **焦点指示** | 可见的`:focus-visible`效果，偏移量至少2px | WCAG 2.4.7 |
+| **语义化标签** | 使用`<button>`、`<nav>`、`<main>`等标签 | WCAG 1.3.1 |
+| **替代文本** | 信息性图片需添加描述性文字，装饰性图片使用`alt=""` | WCAG 1.1.1 |
+| **动画安全性** | 遵循`prefers-reduced-motion`规范 | WCAG 2.3.3 |
+| **触摸交互** | 交互区域的最小尺寸为44×44px | WCAG 2.5.8 |
+| **ARIA属性** | 在原生语义不足时使用`aria-label`、`aria-live`、`role`属性 | WCAG 4.1.2 |
 
 ```css
 /* Robust focus indicator */
@@ -179,24 +184,23 @@ Accessibility is not optional. Build it in from the start.
 }
 ```
 
-## Component Design
+## 组件设计
 
-### Anatomy of a Well-Designed Component
+### 设计良好的组件的构成要素
 
-Every UI component should have clear states, consistent spacing, and predictable behavior:
-
-| State | Visual Treatment | Example |
+每个UI组件都应具有明确的状态、一致的间距和可预测的行为：
+| 状态 | 视觉表现 | 例用 |
 |---|---|---|
-| **Default** | Base styling | Button at rest |
-| **Hover** | Subtle shift — background, shadow, or scale | `background` lightens 5-10% |
-| **Active / Pressed** | Compressed feel — reduced shadow, slight inset | `transform: scale(0.98)` |
-| **Focus** | High-visibility ring, no outline removal | `:focus-visible` ring |
-| **Disabled** | Reduced opacity, `cursor: not-allowed` | `opacity: 0.5` |
-| **Loading** | Spinner or skeleton, disabled interaction | Inline spinner replacing label |
+| **默认状态** | 基本样式 | 静态状态下的按钮 |
+| **悬停状态** | 背景、阴影或字体大小的微妙变化 | `background`颜色变淡5–10% |
+| **激活状态** | 阴影变淡、字体略微内缩 | `transform: scale(0.98)` |
+| **聚焦状态** | 显示高可见度的焦点指示 | `:focus-visible`效果 |
+| **禁用状态** | 透明度降低，禁止鼠标操作 | `opacity: 0.5` |
+| **加载状态** | 显示加载指示器 | 用加载动画替代文字提示 |
 
-### Design Token Architecture
+### 设计元素结构
 
-Structure tokens in three layers for maintainability:
+将设计元素分为三层结构，以便于维护和主题切换：
 
 ```css
 /* Layer 1: Primitive values */
@@ -215,54 +219,37 @@ Structure tokens in three layers for maintainability:
 --btn-padding: var(--space-2) var(--space-4);
 ```
 
-This three-layer approach allows theme switching by remapping Layer 2 without touching components.
+这种三层结构允许在不修改组件的情况下切换主题样式。
 
-## Interaction Patterns
+## 交互设计
 
-### Motion and Animation
+### 动画效果
 
-Use motion to communicate state changes, not to decorate. Focus on high-impact moments:
+使用动画来传达状态变化，而非仅仅为了装饰。重点关注那些对用户有重要影响的交互时刻：
 
-| Interaction | Duration | Easing | Purpose |
+| 交互类型 | 动画持续时间 | 动画效果 | 目的 |
 |---|---|---|---|
-| Button hover | 150ms | `ease-out` | Acknowledge interaction |
-| Modal open | 250ms | `ease-out` | Draw attention |
-| Modal close | 200ms | `ease-in` | Quick dismissal |
-| Page transition | 300ms | `ease-in-out` | Maintain spatial context |
-| Stagger reveal | 50–80ms delay per item | `ease-out` | Sequential content loading |
-| Micro-feedback | 100ms | `ease-out` | Toggle, checkbox, switch |
+| 按钮悬停 | 150ms | `ease-out` | 表示交互发生 |
+| 弹出窗口打开 | 250ms | `ease-out` | 引导用户注意力 |
+| 弹出窗口关闭 | 200ms | `ease-in` | 快速关闭窗口 |
+| 页面切换 | 300ms | `ease-in-out` | 保持页面布局 |
+| 逐个元素加载 | 每个元素延迟50–80ms | `ease-out` | 顺序加载内容 |
+| 微反馈 | 100ms | `ease-out` | 切换按钮、复选框等操作 |
 
-```css
-/* Staggered entrance animation */
-.stagger-item {
-  opacity: 0;
-  translate: 0 1rem;
-  animation: reveal 0.5s ease-out forwards;
-}
-.stagger-item:nth-child(1) { animation-delay: 0ms; }
-.stagger-item:nth-child(2) { animation-delay: 60ms; }
-.stagger-item:nth-child(3) { animation-delay: 120ms; }
+### 滚动效果
 
-@keyframes reveal {
-  to { opacity: 1; translate: 0 0; }
-}
-```
+使用`animation-timeline: scroll()`（仅在支持该功能的浏览器中生效）来实现视差效果和内容渐显效果，无需依赖JavaScript。同时通过特性检测来优雅地处理兼容性问题。
 
-### Scroll-Driven Effects
+## 设计质量检查清单
 
-Use native `animation-timeline: scroll()` (behind `@supports`) for parallax and reveal effects without JavaScript. Wrap in feature detection to gracefully degrade.
-
-## Design Quality Checklist
-
-Before shipping, verify against these criteria:
-
-- [ ] **Typography**: Intentional font pairing, consistent scale, readable line lengths
-- [ ] **Color**: Cohesive palette, WCAG contrast met, semantic feedback colors defined
-- [ ] **Spacing**: Consistent rhythm using spacing tokens, no ad-hoc pixel values
-- [ ] **Hierarchy**: Clear visual flow — eye path follows intended reading order
-- [ ] **Responsiveness**: Tested at mobile, tablet, desktop; no horizontal overflow
-- [ ] **Accessibility**: Keyboard navigable, focus visible, screen-reader tested, motion-safe
-- [ ] **States**: All interactive elements have hover, active, focus, disabled, and loading states
-- [ ] **Personality**: Design has a clear point-of-view — not generic template aesthetic
-- [ ] **Performance**: Images optimized, fonts subset, animations GPU-accelerated (`transform`, `opacity`)
-- [ ] **Dark mode**: If supported, surfaces use layered lightness, not inverted colors
+在发布前，请确保满足以下标准：
+- **排版**：字体搭配合理，比例一致，行高适中，易于阅读 |
+- **颜色**：颜色搭配协调，符合WCAG对比度标准，有明确的语义性提示颜色 |
+- **间距**：使用统一的间距规则，避免使用随意设定的像素值 |
+- **层次结构**：视觉流程清晰，符合预期的阅读顺序 |
+- **响应式**：在移动设备、平板设备和桌面设备上均能正常显示，无水平滚动溢出 |
+- **可访问性**：支持键盘导航，焦点元素可见，经过屏幕阅读器测试，动画安全 |
+- **交互状态**：所有交互元素都具备悬停、激活、聚焦、禁用和加载状态 |
+- **设计风格**：设计具有独特性，不是简单的模板化设计 |
+- **性能**：图片优化，使用适合GPU加速的字体和动画效果 |
+- **暗模式**：如果支持暗模式，使用分层背景效果，避免使用反色显示

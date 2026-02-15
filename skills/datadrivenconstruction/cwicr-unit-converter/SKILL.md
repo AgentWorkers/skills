@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-unit-converter"
 display_name: "CWICR Unit Converter"
-description: "Convert between construction measurement units. Handle metric/imperial conversion, area/volume calculations, and unit normalization for CWICR data."
+description: "在CWICR数据中，需要实现建筑测量单位之间的转换，包括公制单位与英制单位之间的转换；同时处理面积和体积的计算，并对单位进行标准化处理。"
 ---
 
-# CWICR Unit Converter
+# CWICR 单位转换器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction data comes in various unit systems:
-- Metric vs Imperial measurements
-- Different unit conventions by trade
-- BIM quantities need normalization
-- Regional standards differ
+### 问题描述
+建筑数据通常使用多种单位系统进行表示：
+- 公制与英制单位之间的转换
+- 不同行业采用不同的单位约定
+- BIM 数据需要进行标准化处理
+- 各地区的标准也存在差异
 
-### Solution
-Comprehensive unit conversion for construction quantities, normalizing data for CWICR integration and analysis.
+### 解决方案
+提供全面的单位转换功能，将建筑数据标准化，以便于 CWICR 的集成与分析。
 
-### Business Value
-- **Accuracy** - Eliminate unit conversion errors
-- **Consistency** - Standardize across projects
-- **Integration** - BIM to cost data alignment
-- **Global** - Support international projects
+### 商业价值
+- **准确性**：消除单位转换错误
+- **一致性**：确保项目间的数据一致性
+- **集成性**：实现 BIM 数据与成本数据的对接
+- **国际化**：支持国际项目
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -377,7 +377,7 @@ class ConstructionUnitHelper:
         }
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize converter
@@ -399,9 +399,9 @@ df = pd.DataFrame({
 normalized = converter.normalize_units(df, 'quantity', 'unit')
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Area Calculation
+### 1. 面积计算
 ```python
 helper = ConstructionUnitHelper()
 area = helper.calculate_area(
@@ -412,7 +412,7 @@ area = helper.calculate_area(
 print(f"Area: {area} m²")
 ```
 
-### 2. Concrete Volume
+### 2. 混凝土体积计算
 ```python
 volume = helper.concrete_volume(
     length_ft=20,
@@ -422,18 +422,18 @@ volume = helper.concrete_volume(
 print(f"Concrete: {volume['cy']} CY = {volume['m3']} m³")
 ```
 
-### 3. Rebar Weight
+### 3. 钢筋重量计算
 ```python
 weight = helper.rebar_weight(length=100, length_unit='m', bar_size='#5')
 print(f"Rebar weight: {weight['kg']} kg")
 ```
 
-### 4. Normalize BIM Quantities
+### 4. BIM 数据的标准化处理
 ```python
 bim_data = pd.read_excel("bim_quantities.xlsx")
 normalized = converter.normalize_units(bim_data, 'Quantity', 'Unit')
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 2.3 - Data Standardization
+- **DDC 手册**: 第 2.3 章 - 数据标准化

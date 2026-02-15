@@ -1,90 +1,89 @@
 ---
 name: Aave
-description: Assist with Aave lending, borrowing, liquidations, and risk management across chains.
+description: 协助Aave平台在多个区块链网络上实现借贷、清算以及风险管理功能。
 metadata: {"clawdbot":{"emoji":"👻","os":["linux","darwin","win32"]}}
 ---
 
-## Core Concepts
-- Supply assets to earn interest — deposit, receive aTokens representing position
-- Borrow against collateral — must supply first, then borrow up to limit
-- aTokens accrue interest — balance grows over time automatically
-- Health Factor determines liquidation risk — below 1.0 = liquidation
-- Variable and stable rates available — stable costs more but predictable
+## 核心概念  
+- **提供资产以赚取利息**：用户需存入资产，从而获得代表其持有头寸的代币（Tokens）。  
+- **以抵押品借款**：用户必须先提供抵押品，然后才能借款，借款额度上限取决于抵押品的价值。  
+- **代币会累积利息**：随着时间的推移，用户的代币余额会自动增加。  
+- **健康因子（Health Factor）决定清算风险**：当健康因子低于1.0时，系统将启动清算流程。  
+- **提供可变利率和固定利率选项**：固定利率成本较高，但更易于预测。  
 
-## Health Factor (Critical)
-- Health Factor = (Collateral × Liquidation Threshold) / Borrowed
-- Above 1.0 is safe — higher is safer
-- At 1.0, liquidation begins — partial position closed
-- Monitor actively during volatility — prices move, health factor changes
-- Add collateral or repay debt to improve — before liquidation happens
+## 健康因子（关键概念）  
+- **健康因子 = （抵押品价值 × 清算阈值）/ 借款金额**  
+- **健康因子高于1.0表示安全**：数值越高，安全性越高。  
+- **当健康因子等于1.0时，系统开始清算**：系统会部分关闭用户的头寸。  
+- **在价格波动期间需密切监控健康因子**：价格变动会导致健康因子快速变化。  
+- **通过增加抵押品或偿还债务来提高健康因子**：以避免被清算。  
 
-## Supplying (Lending)
-- Deposit supported assets — ETH, stablecoins, various tokens
-- Receive aTokens 1:1 — aETH, aUSDC, etc.
-- Interest accrues in real-time — aToken balance grows
-- Can withdraw anytime if liquidity available — high utilization may block withdrawals
-- Enable as collateral to borrow against — optional per asset
+## 提供资产（借贷流程）  
+- **可支持的抵押品**：ETH、稳定币（stablecoins）等多种代币。  
+- **按1:1的比例获得代币**：例如，存入1 ETH可获得1 aToken。  
+- **利息实时累积**：用户的代币余额会持续增长。  
+- **可随时提取资金**：前提是平台有足够的流动性；高利用率可能导致提取受限。  
+- **某些资产支持将代币作为抵押品使用**：用户可根据资产类型选择是否启用此功能。  
 
-## Borrowing
-- Must have collateral supplied first — can't borrow without
-- Borrow up to LTV (Loan-to-Value) ratio — varies by asset, usually 70-85%
-- Interest accrues on borrowed amount — must repay more than borrowed
-- Variable rate changes with market — stable rate fixed but higher
-- Debt tokens represent borrowing — not transferable
+## 借款流程  
+- **必须先提供抵押品**：没有抵押品无法借款。  
+- **借款额度上限为LTV（贷款与资产价值比率）**：不同资产的LTV比例不同，通常在70%至85%之间。  
+- **借款金额需支付利息**：用户需偿还的金额包括本金和利息。  
+- **利率随市场波动**：可变利率会随市场变化而调整；固定利率虽然稳定，但成本较高。  
+- **债务代币不可转让**：用户只能使用这些代币来表示其借款金额。  
 
-## Liquidations
-- Triggered when Health Factor < 1 — automated, permissionless
-- Liquidators repay portion of debt — receive collateral + bonus
-- Liquidation penalty 5-10% — you lose this bonus amount
-- Up to 50% of debt liquidated at once — may need multiple liquidations
-- Prevention: monitor and manage HF actively
+## 清算流程  
+- **当健康因子低于1.0时，系统会自动启动清算**：无需用户许可。  
+- **清算方会收回部分债务并获取抵押品及额外奖励**。  
+- **清算罚款为5%至10%**：用户将损失这部分奖励金额。  
+- **最多可一次性清算50%的债务**：可能需要多次清算才能还清全部债务。  
+- **预防措施**：用户需密切监控并管理健康因子。  
 
-## Multi-Chain Deployment
-- Aave V3 on Ethereum, Polygon, Arbitrum, Optimism, Avalanche, more
-- Same interface, different markets — assets and rates differ
-- Bridged assets may differ — USDC vs USDC.e
-- Portals enable cross-chain — supply on one chain, borrow on another
+## 多链部署  
+- Aave V3支持在Ethereum、Polygon、Arbitrum、Optimism、Avalanche等多个链上运行。  
+- **界面相同，但市场与利率各异**：不同链上的资产和利率可能有所不同。  
+- **某些资产可能存在差异**：例如，USDC.e可能与标准USDC不同。  
+- **跨链功能**：用户可在一个链上存入资产，在另一个链上借款。  
 
-## E-Mode (Efficiency Mode)
-- Higher LTV for correlated assets — stablecoins to stablecoins, ETH to stETH
-- Up to 97% LTV in E-Mode — vs ~80% normally
-- Only borrow assets in same E-Mode category — restricted but efficient
-- Higher liquidation risk — narrow margin, monitor closely
+## **高效模式（E-Mode）**  
+- **相关资产可享受更高的LTV**：例如，稳定币之间的借款LTV可高达97%，而普通模式下约为80%。  
+- **仅允许在同一高效模式下的资产之间进行借款**：虽然限制较多，但效率更高。  
+- **清算风险增加**：由于杠杆率较高，用户需密切监控市场波动。  
 
-## GHO Stablecoin
-- Aave's native stablecoin — minted by borrowing
-- Backed by Aave collateral — overcollateralized
-- Interest paid to Aave DAO — different from regular borrowing
-- stkAAVE holders get discount — reduced borrow rate
+## **GHO稳定币**  
+- **Aave的原生稳定币**：通过借款机制生成。  
+- **由Aave的抵押品支持**：用户需提供超额抵押品。  
+- **利息支付给Aave DAO**：与普通借款方式不同。  
+- **stkAAVE持有者可享受折扣**：他们的借款利率更低。  
 
-## AAVE Token
-- Governance token — vote on proposals
-- Staking in Safety Module — earn rewards, risk of slashing in shortfall
-- stkAAVE for staking — represents staked position
-- 10-day cooldown to unstake — plus 2-day unstake window
+## **AAVE代币**  
+- **治理代币**：用户可使用AAVE代币对平台提案进行投票。  
+- **参与安全模块的质押**：用户可获得奖励，但若平台亏损，代币价值可能减少。  
+- **stkAAVE用于质押**：代表用户的质押头寸。  
+- **解质押需等待10天**：之后还有2天的解质押窗口期。  
 
-## Risk Management
-- Don't max out borrowing — leave buffer for price movements
-- Diversify collateral — single asset concentration increases risk
-- Use stablecoins for lower volatility — stable collateral = stable HF
-- Set alerts for Health Factor — services like DefiSaver
-- Consider automation — automatic deleveraging tools
+## **风险管理**  
+- **避免全额借款**：为价格波动留出缓冲空间。  
+- **分散抵押品**：集中使用单一资产会增加风险。  
+- **选择波动性较低的稳定币作为抵押品**：稳定的抵押品有助于维持健康的健康因子。  
+- **设置健康因子警报**：可使用DefiSaver等工具进行监控。  
+- **考虑使用自动化工具**：例如自动去杠杆化功能。  
 
-## Common Mistakes
-- Borrowing at max LTV — immediate liquidation risk
-- Ignoring variable rate changes — rates can spike quickly
-- Not monitoring during volatility — HF changes fast with price
-- Supplying without enabling collateral — can't borrow if not enabled
-- Forgetting about interest — debt grows over time
+## 常见错误  
+- **以最高LTV借款**：存在立即被清算的风险。  
+- **忽视利率变化**：利率可能迅速波动。  
+- **在价格波动期间不进行监控**：健康因子会随价格快速变化。  
+- **未启用抵押品就进行借款**：若未提供抵押品，将无法借款。  
+- **忽略利息累积**：借款金额会随时间不断增加。  
 
-## Gas Considerations
-- Approvals needed for each new asset — first-time gas cost
-- Supply and borrow are separate transactions — plan gas for both
-- L2 deployments much cheaper — Arbitrum, Optimism save significantly
-- Batch operations where possible — some aggregators help
+## **Gas费用相关注意事项**  
+- **每种新资产都需要单独的Gas费用**：首次交易时需支付费用。  
+- **存入和借款是独立交易**：需分别为两者规划Gas费用。  
+- **L2（Layer 2）平台更经济**：Arbitrum和Optimism等平台可大幅节省Gas费用。  
+- **尽可能批量操作**：某些聚合器可帮助用户优化Gas使用。  
 
-## Integrations
-- DefiSaver for automation — auto-repay, auto-leverage
-- Instadapp for advanced management — DeFi dashboard
-- 1inch, Paraswap for swaps — swap and supply in one transaction
-- Flash loans for advanced users — borrow without collateral, repay in same tx
+## **集成服务**  
+- **DefiSaver**：提供自动化还款和杠杆管理功能。  
+- **Instadapp**：提供高级的DeFi管理工具和仪表盘。  
+- **1inch、Paraswap**：支持跨链交易和资产供应。  
+- **Flash Loans**：为高级用户提供无需抵押品的借款服务，还款也在同一笔交易中完成。

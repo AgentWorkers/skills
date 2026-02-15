@@ -1,30 +1,30 @@
 ---
 name: raycast-extensions
-description: Build and maintain Raycast extensions using the Raycast API. Triggers on @raycast/api, List, Grid, Detail, Form, AI.ask, LocalStorage, Cache, showToast, and BrowserExtension. Use this repo's references/api/*.md files as the primary source of truth for component specs and API usage.
+description: 使用 Raycast API 构建和维护 Raycast 扩展程序。这些扩展程序可以响应 @raycast/api、List、Grid、Detail、Form、AI.ask、LocalStorage、Cache、.showToast 和 BrowserExtension 等事件。请以该仓库中的 references/api/*.md 文件作为组件规格和 API 使用方式的主要参考资料。
 ---
 
-# Raycast Extensions Skill
+# Raycast扩展技能
 
-Build powerful extensions with React, TypeScript, and the Raycast API.
+使用React、TypeScript和Raycast API构建强大的扩展功能。
 
-## Quick Start (Agent Workflow)
+## 快速入门（代理工作流程）
 
-Follow these steps when tasked with implementing or fixing Raycast features:
+在实现或修复Raycast功能时，请按照以下步骤操作：
 
-1. **Identify the core component**: Determine if the UI needs a `List`, `Grid`, `Detail`, or `Form`.
-2. **Consult Reference**: Open and read the corresponding file in `references/api/` (e.g., `references/api/list.md`).
-3. **Use Defaults**:
-    - **Feedback**: Use `showToast` for Loading/Success/Failure. Use `showHUD` only for quick background completions.
-    - **Data**: Use `Cache` for frequent/transient data, `LocalStorage` for persistent user data.
-    - **Access**: Always check `environment.canAccess(AI)` or `environment.canAccess(BrowserExtension)` before use.
-4. **Implementation**: Provide a concise implementation using `@raycast/api` components.
-5. **Citing**: Link back to the specific `references/api/*.md` file you used.
+1. **确定核心组件**：判断用户界面需要使用`List`、`Grid`、`Detail`还是`Form`组件。
+2. **查阅参考文档**：打开并阅读`references/api/`目录下的相应文件（例如`references/api/list.md`）。
+3. **使用默认设置**：
+    - **反馈提示**：使用`showToast`来显示加载中、成功或失败的信息；仅在需要快速显示背景状态时使用`showHUD`。
+    - **数据存储**：使用`Cache`来存储频繁访问或临时性的数据，使用`LocalStorage`来存储持久化的用户数据。
+    - **权限检查**：在使用任何功能之前，务必检查`environment.canAccess(AI)`或`environment.canAccess(BrowserExtension)`。
+4. **实现逻辑**：使用`@raycast/api`组件来编写简洁的实现代码。
+5. **引用来源**：在代码中明确引用所使用的具体`references/api/*.md`文件。
 
-## Cookbook Patterns
+## 常用模板模式
 
-### 1. List & Grid (Searchable UI)
-Use `List` for text-heavy data and `Grid` for image-heavy data.
-- [List Reference](references/api/list.md) | [Grid Reference](references/api/grid.md)
+### 1. 列表与网格（可搜索的用户界面）
+- 使用`List`显示文本较多的数据，使用`Grid`显示图片较多的数据。
+  - [List参考文档](references/api/list.md) | [Grid参考文档](references/api/grid.md)
 
 ```tsx
 <List isLoading={isLoading} searchBarPlaceholder="Search items..." throttle>
@@ -42,9 +42,9 @@ Use `List` for text-heavy data and `Grid` for image-heavy data.
 </List>
 ```
 
-### 2. Detail (Rich Markdown)
-Use for displaying long-form content or item details.
-- [Detail Reference](references/api/detail.md)
+### 2. 详情页面（富格式Markdown）
+- 用于显示长篇内容或项目详情。
+  - [详情页面参考文档](references/api/detail.md)
 
 ```tsx
 <Detail
@@ -58,9 +58,9 @@ Use for displaying long-form content or item details.
 />
 ```
 
-### 3. Form (User Input)
-Always include a `SubmitForm` action.
-- [Form Reference](references/api/form.md)
+### 3. 表单（用户输入）
+- 必须包含`SubmitForm`操作按钮。
+  - [表单参考文档](references/api/form.md)
 
 ```tsx
 <Form
@@ -75,9 +75,9 @@ Always include a `SubmitForm` action.
 </Form>
 ```
 
-### 4. Feedback & Interactivity
-Prefer `showToast` for most feedback.
-- [Toast Reference](references/api/toast.md) | [HUD Reference](references/api/hud.md)
+### 4. 反馈与交互
+- 对于大多数反馈提示，建议使用`showToast`。
+  - [Toast参考文档](references/api/toast.md) | [HUD参考文档](references/api/hud.md)
 
 ```typescript
 // Success/Failure
@@ -87,9 +87,9 @@ await showToast({ style: Toast.Style.Success, title: "Success!" });
 await showHUD("Done!");
 ```
 
-### 5. Data Persistence
-Use `Cache` for performance, `LocalStorage` for persistence.
-- [Cache Reference](references/api/caching.md) | [Storage Reference](references/api/storage.md)
+### 5. 数据持久化
+- 使用`Cache`提升性能，使用`LocalStorage`实现数据持久化。
+  - [缓存参考文档](references/api/caching.md) | [存储参考文档](references/api/storage.md)
 
 ```typescript
 // Cache (Sync/Transient)
@@ -100,59 +100,49 @@ cache.set("key", "value");
 await LocalStorage.setItem("key", "value");
 ```
 
-### 6. AI & Browser Extension (Restricted APIs)
-Always wrap in `environment.canAccess` checks.
-- [AI Reference](references/api/ai.md) | [Browser Reference](references/api/browser-extension.md)
+### 6. 人工智能与浏览器扩展（受限API）
+- 在使用相关API之前，务必进行`environment.canAccess`权限检查。
+  - [人工智能相关API](references/api/ai.md) | [浏览器扩展相关API](references/api/browser-extension.md)
 
-```typescript
-if (environment.canAccess(AI)) {
-  const result = await AI.ask("Prompt");
-}
+## 额外资源
 
-if (environment.canAccess(BrowserExtension)) {
-  const tabs = await BrowserExtension.getTabs();
-}
-```
+### API参考目录
 
-## Additional Resources
-
-### API Reference Tree
-
-- **UI Components**
-  - [Action Panel](references/api/action-panel.md)
-  - [Detail](references/api/detail.md)
-  - [Form](references/api/form.md)
-  - [Grid](references/api/grid.md)
-  - [List](references/api/list.md)
-  - [User Interface](references/api/user-interface.md)
-- **Interactivity**
-  - [Actions](references/api/actions.md)
-  - [Alert](references/api/alert.md)
-  - [Keyboard](references/api/keyboard.md)
-  - [Navigation](references/api/navigation.md)
-  - [Raycast Window Search Bar](references/api/raycast-window-search-bar.md)
-- **Utilities & Services**
-  - [AI](references/api/ai.md)
-  - [Browser Extension](references/api/browser-extension.md)
-  - [Clipboard](references/api/clipboard.md)
-  - [Environment](references/api/environment.md)
-  - [Feedback & HUD](references/api/feedback.md)
+- **用户界面组件**
+  - [操作面板](references/api/action-panel.md)
+  - [详情页面](references/api/detail.md)
+  - [表单](references/api/form.md)
+  - [网格](references/api/grid.md)
+  - [列表](references/api/list.md)
+  - [用户界面](references/api/user-interface.md)
+- **交互功能**
+  - [操作](references/api/actions.md)
+  - [警告提示](references/api/alert.md)
+  - [键盘操作](references/api/keyboard.md)
+  - [导航](references/api/navigation.md)
+  - [Raycast窗口搜索栏](references/api/raycast-window-search-bar.md)
+- **实用工具与服务**
+  - [人工智能](references/api/ai.md)
+  - [浏览器扩展](references/api/browser-extension.md)
+  - [剪贴板](references/api/clipboard.md)
+  - [环境管理](references/api/environment.md)
+  - **反馈与HUD**：
     - [HUD](references/api/hud.md)
     - [Toast](references/api/toast.md)
   - [OAuth](references/api/oauth.md)
-  - [System Utilities](references/api/system-utilities.md)
-- **Data & Configuration**
-  - [Caching](references/api/caching.md)
-  - [Colors](references/api/colors.md)
-  - [Icons & Images](references/api/icons-images.md)
-  - [Preferences](references/api/preferences.md)
-  - [Storage](references/api/storage.md)
-- **Advanced**
-  - [Command Related Utilities](references/api/command-related-utilities.md)
-  - [Menu Bar Commands](references/api/menu-bar-commands.md)
-  - [Tool](references/api/tool.md)
-  - [Window Management](references/api/window-management.md)
+  - [系统工具](references/api/system-utilities.md)
+- **数据与配置**
+  - [缓存](references/api/caching.md)
+  - [颜色设置](references/api/colors.md)
+  - [图标与图片](references/api/icons-images.md)
+  - [偏好设置](references/apipreferences.md)
+  - [存储](references/api/storage.md)
+- **高级功能**
+  - [命令相关工具](references/api/command-related-utilities.md)
+  - [菜单栏命令](references/api/menu-bar-commands.md)
+  - [工具](references/api/tool.md)
+  - [窗口管理](references/api/window-management.md)
 
-## Examples
+## 示例
 
-For end-to-end examples combining multiple components and APIs, see [examples.md](examples.md).
+有关结合多个组件和API的端到端示例，请参阅[examples.md](examples.md)。

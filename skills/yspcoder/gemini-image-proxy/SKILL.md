@@ -1,7 +1,7 @@
 ---
 name: gemini-image-proxy
 version: 1.0.0
-description: Generate and edit images with Gemini API using the OpenAI Python SDK.
+description: 使用 OpenAI Python SDK 和 Gemini API 生成和编辑图像。
 metadata:
   openclaw:
     emoji: "🎨"
@@ -11,29 +11,29 @@ metadata:
 
 # Gemini Image Simple
 
-Generate and edit images using **Gemini 3 Pro Image** via the OpenAI Python SDK and an OpenAI-compatible API endpoint.
+通过 OpenAI Python SDK 和兼容 OpenAI 的 API 端点，使用 **Gemini 3 Pro Image** 生成和编辑图像。
 
-## Why This Skill
+## 为什么选择这个技能
 
-| Feature                  | This Skill                | Others (nano-banana-pro, etc.) |
-| ------------------------ | ------------------------- | ------------------------------ |
-| **Dependencies**         | openai (SDK)              | google-genai, pillow, etc.     |
-| **Requires pip/uv**      | ✅ Yes                    | ✅ Yes                         |
-| **Works on Fly.io free** | ✅ Yes (with pip)         | ❌ Fails                       |
-| **Works in containers**  | ✅ Yes (with pip)         | ❌ Often fails                 |
-| **Image generation**     | ✅ Full                   | ✅ Full                        |
-| **Image editing**        | ✅ Yes                    | ✅ Yes                         |
-| **Setup complexity**     | Install SDK + set API key | Install packages first         |
+| 功能                        | 这个技能                | 其他技能（如 nano-banana-pro 等）       |
+| ---------------------------- | ------------------------- | ----------------------------- |
+| **依赖库**                     | openai (SDK)              | google-genai, pillow 等           |
+| **是否需要 pip/uv**                | ✅ 是                    | ✅ 是                         |
+| **是否支持 Fly.io 免费使用**           | ✅ 是（需要安装 pip）          | ❌ 不支持                     |
+| **是否支持在容器中运行**           | ✅ 是（需要安装 pip）          | ❌ 经常无法运行                   |
+| **是否支持图像生成**                 | ✅ 完整支持               | ✅ 完整支持                     |
+| **是否支持图像编辑**                 | ✅ 支持                   | ✅ 支持                         |
+| **设置难度**                     | 安装 SDK 并设置 API 密钥       | 首先需要安装相关包                   |
 
-**Bottom line:** This skill uses the OpenAI SDK, so you must install `openai` once with pip.
+**总结：** 该技能使用 OpenAI SDK，因此您需要使用 pip 安装 `openai`。
 
-## Install
+## 安装
 
 ```bash
 python3 -m pip install openai
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Set env
@@ -47,51 +47,51 @@ python3 /data/clawd/skills/gemini-image-simple/scripts/generate.py "A cat wearin
 python3 /data/clawd/skills/gemini-image-simple/scripts/generate.py "Make it sunset lighting" edited.png --input original.png
 ```
 
-## Usage
+## 使用方法
 
-### Generate new image
+### 生成新图像
 
 ```bash
 python3 {baseDir}/scripts/generate.py "your prompt" output.png
 ```
 
-### Edit existing image
+### 编辑现有图像
 
 ```bash
 python3 {baseDir}/scripts/generate.py "edit instructions" output.png --input source.png
 ```
 
-Supported input formats: PNG, JPG, JPEG, GIF, WEBP
+支持的输入格式：PNG、JPG、JPEG、GIF、WEBP
 
-## Environment
+## 环境配置
 
-Set these environment variables:
+设置以下环境变量：
 
-- `GOOGLE_PROXY_API_KEY` (your API key)
-- `GOOGLE_PROXY_BASE_URL` (OpenAI-compatible base URL, e.g. https://example.com/v1)
+- `GOOGLE_PROXY_API_KEY`（您的 API 密钥）
+- `GOOGLE_PROXY_BASE_URL`（兼容 OpenAI 的基础 URL，例如：https://example.com/v1）
 
-## How It Works
+## 工作原理
 
-Uses **Gemini 3 Pro Image** (`gemini-3-pro-image`) via the OpenAI Python SDK:
+通过 OpenAI Python SDK 使用 **Gemini 3 Pro Image**（`gemini-3-pro-image`）：
 
-- `client.images.generate(...)` for new images
-- `client.images.edits(...)` for edits
-- Requires the `openai` package
+- `client.images.generate(...)` 用于生成新图像
+- `client.images.edits(...)` 用于编辑图像
+- 需要 `openai` 包的支持
 
-That's it. Works on any Python 3.10+ installation with `openai` installed.
+只需按照上述步骤操作，即可在任何安装了 Python 3.10 及以上版本并安装了 `openai` 的环境中使用该技能。
 
-## Model
+## 模型
 
-Currently using: `gemini-3-pro-image`
+当前使用的模型：`gemini-3-pro-image`
 
-Other available models (can be changed in generate.py if needed):
+其他可用模型（可根据需要在 generate.py 文件中更改）：
 
-- `gemini-3-pro-image-preview` - Preview variant
-- `imagen-4.0-ultra-generate-001` - Imagen 4.0 Ultra
-- `imagen-4.0-generate-001` - Imagen 4.0
-- `gemini-2.5-flash-image` - Gemini 2.5 Flash with image gen
+- `gemini-3-pro-image-preview` - 预览版本
+- `imagen-4.0-ultra-generate-001` - Imagen 4.0 Ultra 模型
+- `imagen-4.0-generate-001` - Imagen 4.0 模型
+- `gemini-2.5-flash-image` - Gemini 2.5 Flash 模型（包含图像生成功能）
 
-## Examples
+## 示例
 
 ```bash
 # Landscape

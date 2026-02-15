@@ -1,6 +1,6 @@
 ---
 name: bird-dm
-description: An add-on to the Bird skill that lets your agent check its X/Twitter DM inbox. Use when the user asks to check DMs, read Twitter direct messages, list DM conversations, or monitor their X inbox.
+description: 这是一个用于“Bird”技能的插件，它允许您的智能助手检查用户的X（Twitter）或Twitter的私信收件箱。当用户请求查看私信、阅读Twitter的直接消息、列出私信对话内容或监控其X账号的收件箱时，可以使用该插件。
 metadata:
   openclaw:
     emoji: "💬"
@@ -16,15 +16,15 @@ metadata:
 
 # Bird DM
 
-DM add-on for [bird](https://github.com/steipete/bird) - read your X/Twitter direct messages.
+这是一个为 [bird](https://github.com/steipete/bird) 开发的 DM（Direct Message）插件，用于查看您在 X 或 Twitter 上收到的私信。
 
-## Install
+## 安装
 
 ```bash
 npm install -g bird-dm
 ```
 
-## Commands
+## 命令
 
 ```bash
 bird-dm inbox              # List DM conversations
@@ -36,9 +36,9 @@ bird-dm read <id> -n 100   # More messages
 bird-dm read <id> --json   # JSON output
 ```
 
-## Example
+## 示例
 
-**List conversations:**
+**列出所有对话记录：**
 ```
 💬 @alice, @bob
    ID: 352135192-2015310805076430848
@@ -51,7 +51,7 @@ bird-dm read <id> --json   # JSON output
    1/30/2026, 8:42 AM
 ```
 
-**Read messages:**
+**阅读私信内容：**
 ```
 Conversation: 352135192-2015310805076430848
 
@@ -64,6 +64,6 @@ thanks! checking it out now
 Showing 2 of 2 messages
 ```
 
-## Auth
+## 认证
 
-Uses same browser cookies as bird. Run `bird check` to verify your session.
+该插件使用与 [bird](https://github.com/steipete/bird) 相同的浏览器 cookie 进行身份验证。请运行 `bird check` 命令来验证您的会话状态。

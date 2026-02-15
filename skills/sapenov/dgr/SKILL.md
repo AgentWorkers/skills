@@ -1,6 +1,6 @@
 ---
 name: dgr
-description: Audit-ready decision artifacts for LLM outputs — assumptions, risks, recommendation, and review gating (schema-valid JSON).
+description: 适用于大语言模型（LLM）输出的审计准备就绪的决策文档——包括假设、风险分析、建议以及审核流程控制（采用JSON格式进行数据验证）。
 homepage: https://www.clawhub.ai/sapenov/dgr
 metadata:
   clawdbot:
@@ -8,87 +8,81 @@ metadata:
   category: "reasoning"
 ---
 
-# DGR — Decision‑Grade Reasoning (Governance Protocol)
+# DGR — 决策级推理（治理协议）
 
-**Purpose:** produce an auditable, machine‑validated decision record for review and storage.
+**用途：** 生成可审计、经机器验证的决策记录，以便审查和存储。
 
-**Slug:** dgr · **Version:** 1.0.4 · **Modes:** dgr_min / dgr_full / dgr_strict · **Output:** schema-valid JSON
+**别名：** dgr · **版本：** 1.0.4 · **模式：** dgr_min / dgr_full / dgr_strict · **输出格式：** 符合 schema.json 规范的 JSON 数据
 
-## What this skill does
-DGR is a **reasoning governance protocol** that produces a **machine‑validated, auditable artifact** describing:
-- the decision context,
-- explicit assumptions and risks,
-- a recommendation with rationale,
-- and a consistency check.
+## DGR 的功能  
+DGR 是一种 **推理治理协议**，它生成一份 **经机器验证、可审计的文档**，其中包含以下内容：  
+- 决策的背景信息；  
+- 明确的假设和风险；  
+- 带有理由的决策建议；  
+- 以及一致性检查的结果。  
 
-This skill is designed for **high‑stakes** or **review‑required** decisions where you want traceability and structured review.
+该工具专为 **高风险** 或 **需要审查** 的决策场景设计，适用于那些需要可追溯性和结构化审查的场景。  
 
-## How to use
-1. **Ask your question** — Provide a decision request or problem context
-2. **Pick mode:** `dgr_min` | `dgr_full` | `dgr_strict`
-3. **Store JSON artifact** in ticket / incident / audit log
+## 使用方法  
+1. **提出问题**： 提供决策请求或问题背景信息。  
+2. **选择模式**： `dgr_min` | `dgr_full` | `dgr_strict`  
+3. **将生成的 JSON 文档存储在工单、事件记录或审计日志中。  
 
-## What this skill is NOT (non‑claims)
-This skill does **NOT** guarantee:
-- correctness, optimality, or truth,
-- elimination of hallucinations,
-- legal/medical/financial advice suitability,
-- or regulatory compliance by itself.
+## DGR 的局限性  
+DGR **不** 保证：  
+- 决策的正确性、最优性或真实性；  
+- 能够完全消除误解或错误；  
+- 提供法律/医疗/财务方面的专业建议；  
+- 或确保符合所有监管要求。  
 
-DGR improves **process quality** (clarity, traceability, reviewability) — not outcome certainty.
+DGR 主要提升的是 **决策流程的质量**（如清晰度、可追溯性和可审查性），而非决策结果的确定性。  
 
-## When to use
-Use when you need:
-- an auditable record of reasoning,
-- explicit assumptions/risks surfaced,
-- reviewer‑friendly structure,
-- a consistent output format across tasks and models.
+## 适用场景  
+在以下情况下使用 DGR：  
+- 需要生成可审计的决策记录；  
+- 需要明确识别假设和风险；  
+- 需要易于审查的结构化输出；  
+- 需要在不同任务和模型之间保持输出格式的一致性。  
 
-## Inputs
-- A user request/question (free text).
-- Optional: context identifiers (ticket ID, policy name), and desired **mode**: `dgr_min`, `dgr_full`, or `dgr_strict`.
+## 输入内容  
+- 用户的决策请求或问题（以自由文本形式提供）。  
+**可选输入：** 工单 ID、政策名称，以及所需的 **模式**（`dgr_min`、`dgr_full` 或 `dgr_strict`）。  
 
-## Mode Behavior
+## 各模式的具体行为  
+| 模式 | 处理速度 | 详细程度 | 需要的澄清信息 | 是否需要审查 | 适用场景 |  
+|------|-------|--------------|---------------|----------------|----------|  
+| `dgr_min` | 最快 | 最基本的合规输出 | 仅显示关键信息 | 低风险、快速决策 |  
+| `dgr_full` | 中等速度 | 更详细的分析及多种方案 | 更注重主动审查 | 标准决策支持 |  
+| `dgr_strict` | 较慢 | 保守的分析过程 | 更多质疑和验证 | 高风险、不确定性较高的场景 |  
 
-| Mode | Speed | Detail Level | Clarifications | Review Required | Use Case |
-|------|-------|--------------|---------------|----------------|----------|
-| `dgr_min` | Fastest | Minimal compliant output | Only critical gaps | Risk-based | Quick decisions, low stakes |
-| `dgr_full` | Moderate | Fuller decomposition + alternatives | More proactive | Balanced | Standard decision support |
-| `dgr_strict` | Slower | Conservative analysis | More questioning | Default on ambiguity | High-stakes, uncertain contexts |
+## 输出格式  
+生成的 JSON 文档需符合 `schema.json` 规范，包含以下内容：  
+- 至少一个假设；  
+- 至少一个风险；  
+- 明确的决策建议；  
+- 一致性检查的结果。  
 
-## Outputs
-A single JSON artifact matching `schema.json`.
+## 安全与治理注意事项  
+- 如果关键决策信息缺失，请务必要求补充说明。  
+- 对于高风险决策，应通过设置 `recommendation.review_required = true` 来触发进一步审查。  
+- 在存在不确定性的情况下，需明确说明不确定性并限制分析范围。  
+- 不得伪造信息或引用未查看过的文档。  
 
-Minimum acceptance criteria (see `schema.json`):
-- at least **1 assumption**
-- at least **1 risk**
-- `recommendation` present
-- `consistency_check` present
+## 相关文件  
+- `prompt.md`： 使用说明。  
+- `schema.json`： 输出数据的格式规范。  
+- `examples/*.md`： 示例输入和输出文件。  
+- `field_guide.md`： 如何解读 DGR 文档中的各个字段。  
 
-## Safety / governance boundaries
-- Always **ask for clarification** if key decision inputs are missing.
-- If the decision is high‑risk, escalate via `recommendation.review_required = true`.
-- If uncertainty is high, explicitly state uncertainty and limit scope.
-- Do not fabricate sources or cite documents you did not see.
+## 快速上手步骤：  
+1. 提出决策请求。  
+2. 选择合适的模式（默认为 `dgr_min`）。  
+3. 工具会返回一份适合审查和存储的 JSON 文档。  
 
-## Files in this skill
-- `prompt.md` — operational instructions
-- `schema.json` — output schema (stub aligned to DGR spec)
-- `examples/*.md` — example inputs and outputs
-- `field_guide.md` — how to interpret DGR artifact fields
+## 更新记录：  
+- **1.0.4**： 删除了多余的 `CLAWHUB_SUMMARY.md` 文件；现在摘要信息直接从 `SKILL.md` 的开头部分获取。  
+- **1.0.3**： 优化了开头部分的描述，提高了转换效率，并添加了推理类别；压缩了身份信息块以加快扫描速度。  
+- **1.0.2**： 添加了 ClawHub 相关的元数据（包括表情符号和首页链接），便于查找和使用。  
+- **1.0.0**： DGR 工具包的首次公开发布，包含可审计的决策推理框架、治理协议以及结构化的输出格式。  
 
-## Quick start
-1) Provide a decision request.
-2) Choose a mode (`dgr_min` default).
-3) The skill returns a JSON artifact suitable for review and storage.
-
-## Changelog
-**1.0.4** — Remove redundant CLAWHUB_SUMMARY.md; summary now sourced from SKILL.md front-matter.
-
-**1.0.3** — Tighten front-matter description for better conversion, add reasoning category, compress identity block for faster scanning.
-
-**1.0.2** — Add ClawHub front-matter metadata with emoji and homepage for improved discovery and presentation.
-
-**1.0.0** — Initial public release of DGR skill bundle with auditable decision reasoning framework, governance protocols, and structured output format.
-
-> Note: This is an **opt‑in** reasoning mode. It is meant to be used alongside human decision‑making, not as a replacement.
+> **注意：** DGR 是一种 **可选的** 辅助工具，旨在辅助人类决策过程，而非替代人类决策。

@@ -1,16 +1,16 @@
 ---
 slug: "enterprise-risk-aggregator"
 display_name: "Enterprise Risk Aggregator"
-description: "Aggregate and analyze risks across construction project portfolio. Identify correlated risks, systemic exposures, and portfolio-level risk mitigation strategies."
+description: "汇总并分析整个建设项目组合中的风险。识别相关风险、系统性风险以及组合层面的风险缓解策略。"
 ---
 
-# Enterprise Risk Aggregator
+# 企业风险聚合器
 
-## Overview
+## 概述
 
-Aggregate individual project risks into a portfolio-level view. Identify correlated risks across projects, calculate enterprise risk exposure, and develop portfolio-wide mitigation strategies.
+将各个项目中的风险汇总到投资组合层面进行展示，识别项目间的关联风险，计算企业整体的风险敞口，并制定适用于整个投资组合的缓解策略。
 
-## Risk Aggregation Framework
+## 风险聚合框架
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -38,7 +38,7 @@ Aggregate individual project risks into a portfolio-level view. Identify correla
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -471,7 +471,7 @@ class EnterpriseRiskAggregator:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize aggregator
@@ -528,7 +528,7 @@ for p in priorities[:5]:
 print(aggregator.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

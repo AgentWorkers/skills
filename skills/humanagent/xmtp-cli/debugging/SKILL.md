@@ -1,32 +1,32 @@
 ---
 name: xmtp-cli-debugging
-description: Enable CLI debug logging with environment variables. Use when troubleshooting or inspecting CLI behavior.
+description: 通过环境变量启用 CLI 调试日志记录功能。在排查问题或检查 CLI 行为时使用该功能。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI debugging
+# CLI调试
 
-Enable debug logging for the XMTP CLI via environment variables.
+通过环境变量启用XMTP CLI的调试日志功能。
 
-## When to apply
+## 适用场景
 
-- Troubleshooting CLI behavior or connection issues
-- Inspecting verbose logs (debug level)
+- 故障排除：用于诊断CLI的行为或连接问题
+- 查看详细的日志（调试级别）
 
-## Rules
+## 规则
 
-- `force-debug-env` – `XMTP_FORCE_DEBUG` and `XMTP_FORCE_DEBUG_LEVEL`
+- `force-debug-env`：对应环境变量 `XMTP_FORCE_DEBUG` 和 `XMTP_FORCE_DEBUG_LEVEL`
 
-## Quick start
+## 快速入门
 
-Set in `.env` or export:
+在 `.env` 文件中设置相关环境变量，或使用 `export` 命令进行配置：
 
 ```bash
 XMTP_FORCE_DEBUG=true
 XMTP_FORCE_DEBUG_LEVEL=debug
 ```
 
-Read `rules/force-debug-env.md` for details.
+详情请参阅 `rules/force-debug-env.md` 文件。

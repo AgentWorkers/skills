@@ -1,39 +1,39 @@
 ---
 name: post-queue
-description: Queue posts for rate-limited platforms. Add posts to queue, process when cooldowns clear. Supports Moltbook and extensible to others.
+description: 为那些具有速率限制功能的平台排队处理帖子：将帖子添加到队列中，待冷却时间结束后再进行处理。该系统支持 Moltbook 平台，并且可以扩展到其他平台。
 version: 1.0.0
 author: luluf0x
 ---
 
-# Post Queue
+# 发布队列（Post Queue）
 
-Rate limits suck. This queues posts and processes them when cooldowns clear.
+速率限制实在很烦人——它会导致帖子被暂存，直到冷却时间结束后才被处理。
 
-## Usage
+## 使用方法
 
-### Add to queue
+### 将帖子加入队列
 ```bash
 ./queue.sh add moltbook "post title" "post content" "submolt"
 ```
 
-### Check queue
+### 检查队列状态
 ```bash
 ./queue.sh list
 ```
 
-### Process next (if cooldown cleared)
+### 处理下一个帖子（当冷却时间结束）
 ```bash
 ./queue.sh process
 ```
 
-### Clear queue
+### 清空队列
 ```bash
 ./queue.sh clear
 ```
 
-## Queue File
+## 队列文件
 
-Posts stored in `~/.local/share/post-queue/queue.json`:
+帖子存储在 `~/.local/share/post-queue/queue.json` 文件中：
 ```json
 {
   "posts": [
@@ -53,13 +53,13 @@ Posts stored in `~/.local/share/post-queue/queue.json`:
 }
 ```
 
-## Platform Support
+## 平台支持
 
-- **moltbook**: 30 min cooldown, posts to submolts
-- Add more by extending `platforms.sh`
+- **moltbook**：冷却时间为 30 分钟，帖子会被发送到子论坛（submolts）。
+- 你可以通过扩展 `platforms.sh` 文件来支持更多平台。
 
-## Why This Exists
+## 为什么需要这个功能？
 
-Hit rate limit mid-thought? Queue it. Walk away. Come back. Posts go out when they can.
+在发布过程中遇到速率限制？将帖子加入队列，然后离开。待冷却时间结束后再回来处理。帖子会在合适的时候被发布。
 
-No more "wait 27 minutes" interrupting your flow.
+再也不用因为“需要等待 27 分钟”而打断你的工作流程了。

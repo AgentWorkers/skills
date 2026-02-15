@@ -1,49 +1,49 @@
 ---
 name: x-platform-agent-teneo
-description: Professional X (formerly Twitter) monitoring agent with real-time data access, timeline retrieval, user monitoring, and analytics capabilities powered by Teneo Agent SDK v2.0 tech stack.
+description: Professional X（前身为Twitter）是一款专业的监控工具，具备实时数据访问、时间线检索、用户监控以及数据分析等功能。该工具基于Teneo Agent SDK v2.0技术栈进行开发。
 ---
 
-# X Platform Agent - powered by Teneo Protocol
+# X平台代理 - 由Teneo协议提供支持
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由[Teneo协议](https://teneo-protocol.ai)提供支持**：这是一个基于去中心化技术的AI代理网络，可用于网络爬虫、加密货币数据分析等多种用途。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即试用：**您可以在[agent-console.ai](https://agent-console.ai)以人类用户的身份测试该代理。
 
-> **Security:** Wallet authentication is required to sign USDC transactions on-chain. This is standard for Web3 applications. The [SDK is open source](https://github.com/TeneoProtocolAI/teneo-agent-sdk) and credentials are never transmitted or stored.
+> **安全性：**在链上签署USDC交易需要钱包身份验证。这是Web3应用程序的标配。[SDK是开源的](https://github.com/TeneoProtocolAI/teneo-agent-sdk)，并且用户凭证永远不会被传输或存储。
 
-## For AI Agents
+## 对于AI代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments.
+**您可以直接实现盈利**——无需中间商，无需分享收益。加入Teneo协议网络，通过加密货币支付来收取服务费用。
 
-**Supported Networks:** Base, Peaq, Avalanche
+**支持的网络：**Base、Peaq、Avalanche
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo代理SDK在ClawHub上](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-Professional X (formerly Twitter) monitoring agent with real-time data access, timeline retrieval, user monitoring, and analytics capabilities powered by Teneo Agent SDK v2.0 tech stack.
+这款专业的X平台（前身为Twitter）监控代理，具备实时数据访问、时间线检索、用户监控和分析功能，基于Teneo Agent SDK v2.0技术栈开发。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@x-agent-enterprise-v2` via the Teneo SDK.
+通过Teneo SDK向`@x-agent-enterprise-v2`发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 描述 |
 |---------|-----------|-------|-------------|
-| `post_content` | <ID_or_URL> | $0.001/per-query | Get the text content and basic information for any post. Shows author name and handle, post creation time and age, full text content with clean formatting, media information if present, and direct link to tweet. Does not include engagement metrics - use post_stats for detailed analytics. Accepts post IDs or Twitter/X URLs. |
-| `post_stats` | <ID_or_URL> | $0.1/per-query | Show engagement numbers for one specific tracked post. Get detailed statistics including views, likes, retweets, replies, quotes, bookmarks, author info, content, and last update time. Accepts post IDs or Twitter/X URLs. Only works for posts you're currently monitoring. |
-| `help` | - | Free | Shows comprehensive command reference with examples and usage instructions for all available features. |
-| `deep_post_analysis` | - | $1.5/per-query | deep_post_analysis |
-| `deep_search` | - | $2.5/per-query | deep_search |
-| `user` | <username> | $0.001/per-query | Fetches comprehensive user profile including display name, bio, verification status (Twitter Blue, legacy verified), follower/following counts, tweet count, account creation date, location, and website URL with formatted statistics. |
-| `timeline` | <username> <count> | $0.001/per-item | Retrieves user's recent tweets/posts with optional count parameter (default: 10, max: 100). Returns formatted timeline with engagement metrics, statistics, and individual tweet details including views, likes, retweets, replies, and media information. |
-| `search` | <query> <count> | $0.0005/per-item | Searches tweets/posts by keywords, hashtags, or phrases (default: 10, max: 25). Returns structured results with engagement metrics. |
-| `mention` | <username> <count> | $0.0005/per-item | Get posts where user was mentioned by others (default: 10). Shows historical mentions - tweets from other users that mention the target username, including engagement metrics, timestamps, and direct links. |
-| `followers` | <username> <count> | $0.0005/per-item | Retrieves user's followers list with optional count parameter (default: 20). Returns structured JSON with detailed follower information and metadata. |
-| `followings` | <username> <count> | $0.0005/per-item | Retrieves user's following list with optional count parameter (default: 20). Returns structured JSON with detailed following information and metadata. |
+| `post_content` | <ID或URL> | 每次查询0.001美元 | 获取任何帖子的文本内容和基本信息，包括作者名称和用户名、帖子创建时间和时长、格式化的完整文本内容（如有媒体内容也会显示）、以及帖子的直接链接。不包含互动数据——详情分析请使用`post_stats`命令。支持帖子ID或Twitter/X URL。 |
+| `post_stats` | <ID或URL> | 每次查询0.1美元 | 显示特定帖子的互动数据（浏览量、点赞数、转发数、回复数、引用数、书签数、作者信息、内容及最后更新时间）。仅适用于您当前正在监控的帖子。 |
+| `help` | - | 免费 | 提供所有可用功能的完整命令参考，附带示例和使用说明。 |
+| `deep_post_analysis` | - | 每次查询1.5美元 | 深度分析帖子内容。 |
+| `deep_search` | - | 每次查询2.5美元 | 深度搜索帖子或用户。 |
+| `user` | <用户名> | 每次查询0.001美元 | 获取用户的完整个人资料，包括显示名称、个人简介、验证状态（Twitter Blue、传统验证方式）、关注者/被关注者数量、推文数量、账户创建日期、位置以及网站URL（附带格式化统计数据）。 |
+| `timeline` | <用户名> <数量> | 每条记录0.001美元 | 获取用户的最新推文/帖子，数量可自定义（默认10条，最多100条）。返回包含互动数据的时间线，以及每条推文的详细信息（浏览量、点赞数、转发数、回复数和媒体信息）。 |
+| `search` | <查询词> <数量> | 每条记录0.0005美元 | 根据关键词、标签或短语搜索推文/帖子（默认10条，最多25条）。返回结构化结果，包含互动数据。 |
+| `mention` | <用户名> <数量> | 每条记录0.0005美元 | 获取被其他用户提及的帖子（默认10条）。显示历史提及记录——包括其他用户提及目标用户名的推文、互动数据、时间戳和直接链接。 |
+| `followers` | <用户名> <数量> | 每条记录0.0005美元 | 获取用户的关注者列表，数量可自定义（默认20条）。返回包含详细关注者信息的结构化JSON数据。 |
+| `followings` | <用户名> <数量> | 每条记录0.0005美元 | 获取用户的关注列表，数量可自定义（默认20条）。返回包含详细关注者信息的结构化JSON数据。 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: x-agent-enterprise-v2
@@ -61,33 +61,33 @@ Commands:
   @x-agent-enterprise-v2 followings <<username> <count>>
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC.
+Teneo协议通过WebSocket将您连接到专门的AI代理。支付以USDC自动完成。
 
-### Supported Networks
+### 支持的网络
 
-| Network | Chain ID | USDC Contract |
+| 网络 | 链路ID | USDC合约地址 |
 |---------|----------|---------------|
 | Base | `eip155:8453` | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet for signing transactions
-- USDC on Base, Peaq, or Avalanche for payments
+- Node.js 18及以上版本 |
+- 用于签署交易的以太坊钱包 |
+- 在Base、Peaq或Avalanche网络上拥有USDC余额以完成支付 |
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Quick Start
+### 快速入门
 
-See the [Teneo Agent SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) for full setup instructions including wallet configuration.
+请参阅[Teneo代理SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)以获取完整的设置说明，包括钱包配置方法。
 
 ```typescript
 import { TeneoSDK } from "@teneo-protocol/sdk";
@@ -103,11 +103,11 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
 ### `post_content`
 
-Get the text content and basic information for any post. Shows author name and handle, post creation time and age, full text content with clean formatting, media information if present, and direct link to tweet. Does not include engagement metrics - use post_stats for detailed analytics. Accepts post IDs or Twitter/X URLs.
+获取任何帖子的文本内容和基本信息，包括作者名称和用户名、帖子创建时间和时长、格式化的完整文本内容（如有媒体内容也会显示）、以及帖子的直接链接。不包含互动数据——详情分析请使用`post_stats`命令。支持帖子ID或Twitter/X URL。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 post_content <<ID_or_URL>>", {
@@ -123,7 +123,7 @@ console.log(response.humanized || response.content);
 
 ### `post_stats`
 
-Show engagement numbers for one specific tracked post. Get detailed statistics including views, likes, retweets, replies, quotes, bookmarks, author info, content, and last update time. Accepts post IDs or Twitter/X URLs. Only works for posts you're currently monitoring.
+显示特定帖子的互动数据（浏览量、点赞数、转发数、回复数、引用数、书签数、作者信息、内容及最后更新时间）。仅适用于您当前正在监控的帖子。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 post_stats <<ID_or_URL>>", {
@@ -139,7 +139,7 @@ console.log(response.humanized || response.content);
 
 ### `help`
 
-Shows comprehensive command reference with examples and usage instructions for all available features.
+提供所有可用功能的完整命令参考，附带示例和使用说明。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 help", {
@@ -155,7 +155,7 @@ console.log(response.humanized || response.content);
 
 ### `deep_post_analysis`
 
-deep_post_analysis
+深入分析帖子内容。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 deep_post_analysis", {
@@ -171,7 +171,7 @@ console.log(response.humanized || response.content);
 
 ### `deep_search`
 
-deep_search
+深度搜索帖子或用户。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 deep_search", {
@@ -187,7 +187,7 @@ console.log(response.humanized || response.content);
 
 ### `user`
 
-Fetches comprehensive user profile including display name, bio, verification status (Twitter Blue, legacy verified), follower/following counts, tweet count, account creation date, location, and website URL with formatted statistics.
+获取用户的完整个人资料，包括显示名称、个人简介、验证状态（Twitter Blue、传统验证方式）、关注者/被关注者数量、推文数量、账户创建日期、位置以及网站URL（附带格式化统计数据）。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 user <<username>>", {
@@ -203,7 +203,7 @@ console.log(response.humanized || response.content);
 
 ### `timeline`
 
-Retrieves user's recent tweets/posts with optional count parameter (default: 10, max: 100). Returns formatted timeline with engagement metrics, statistics, and individual tweet details including views, likes, retweets, replies, and media information.
+获取用户的最新推文/帖子，数量可自定义（默认10条，最多100条）。返回包含互动数据的时间线，以及每条推文的详细信息（浏览量、点赞数、转发数、回复数和媒体信息）。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 timeline <<username> <count>>", {
@@ -219,7 +219,7 @@ console.log(response.humanized || response.content);
 
 ### `search`
 
-Searches tweets/posts by keywords, hashtags, or phrases (default: 10, max: 25). Returns structured results with engagement metrics.
+根据关键词、标签或短语搜索推文/帖子（默认10条，最多25条）。返回包含互动数据的结构化结果。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 search <<query> <count>>", {
@@ -235,7 +235,7 @@ console.log(response.humanized || response.content);
 
 ### `mention`
 
-Get posts where user was mentioned by others (default: 10). Shows historical mentions - tweets from other users that mention the target username, including engagement metrics, timestamps, and direct links.
+获取被其他用户提及的帖子（默认10条）。显示历史提及记录——包括其他用户提及目标用户名的推文、互动数据、时间戳和直接链接。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 mention <<username> <count>>", {
@@ -251,7 +251,7 @@ console.log(response.humanized || response.content);
 
 ### `followers`
 
-Retrieves user's followers list with optional count parameter (default: 20). Returns structured JSON with detailed follower information and metadata.
+获取用户的关注者列表，数量可自定义（默认20条）。返回包含详细关注者信息的结构化JSON数据。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 followers <<username> <count>>", {
@@ -267,7 +267,7 @@ console.log(response.humanized || response.content);
 
 ### `followings`
 
-Retrieves user's following list with optional count parameter (default: 20). Returns structured JSON with detailed following information and metadata.
+获取用户的关注列表，数量可自定义（默认20条）。返回包含详细关注者信息的结构化JSON数据。
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 followings <<username> <count>>", {
@@ -281,15 +281,14 @@ const response = await sdk.sendMessage("@x-agent-enterprise-v2 followings <<user
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理操作
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `x-agent-enterprise-v2`
-- **Name:** X Platform Agent
-- **Verified:** Yes
-
+- **ID：** `x-agent-enterprise-v2`
+- **名称：** X平台代理
+- **验证状态：** 已验证

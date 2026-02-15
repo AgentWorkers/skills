@@ -1,54 +1,54 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "在进行任何创造性工作之前，你必须先使用这个工具或方法：无论是开发新功能、构建组件、添加新功能，还是修改现有程序的行为。它可以帮助你了解用户的意图、需求以及设计方向，从而为后续的实施工作做好准备。"
 ---
 
-# Brainstorming Ideas Into Designs
+# 将头脑风暴中的想法转化为设计
 
-## Overview
+## 概述
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+通过自然的协作对话，帮助将想法转化为完整的设计和规格说明。
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
+首先了解当前项目的背景，然后逐一提出问题以完善想法。一旦明确了要构建的内容，就以200-300字为一个段落来展示设计，并在每个段落完成后检查其是否合理。
 
-## The Process
+## 过程
 
-**Understanding the idea:**
-- Check out the current project state first (files, docs, recent commits)
-- Ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+**理解想法：**
+- 首先查看项目的当前状态（文件、文档、最近的提交记录）
+- 逐一提出问题以完善想法
+- 尽量使用选择题，但开放式问题也可以
+- 每条消息只提一个问题；如果某个主题需要进一步探讨，可以将其拆分成多个问题
+- 重点关注以下方面：目的、约束条件、成功标准
 
-**Exploring approaches:**
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+**探索方案：**
+- 提出2-3种不同的方案，并说明各自的优缺点
+- 通过对话的方式展示这些方案，并说明你的推荐理由
+- 首先推荐你认为最好的方案，并解释原因
 
-**Presenting the design:**
-- Once you believe you understand what you're building, present the design
-- Break it into sections of 200-300 words
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+**展示设计：**
+- 当你认为已经理解了设计内容后，就开始展示设计
+- 将设计分为200-300字为一个段落的部分进行展示
+- 在每个部分完成后询问他人意见，看是否合理
+- 覆盖的内容包括：架构、组件、数据流、错误处理、测试等
+- 如果有不清楚的地方，随时准备返回并进一步说明
 
-## After the Design
+## 设计完成后
 
-**Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+**文档编写：**
+- 将经过验证的设计内容写入`docs/plans/YYYY-MM-DD-<topic>-design.md`文件中
+- 如果可用，请使用`elements-of-style:writing-clearly-and-concisely`这一写作规范
+- 将设计文档提交到Git仓库中
 
-**Implementation (if continuing):**
-- Ask: "Ready to set up for implementation?"
-- Use superpowers:using-git-worktrees to create isolated workspace
-- Use superpowers:writing-plans to create detailed implementation plan
+**实施（如果继续进行的话）：**
+- 询问：“准备好开始实施了么？”
+- 使用Git的工作树功能创建隔离的工作空间
+- 使用`writing-plans`工具制定详细的实施计划
 
-## Key Principles
+## 关键原则
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design in sections, validate each
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **一次只提一个问题**：避免同时提出多个问题，以免让人感到困惑
+- **优先选择选择题**：在可能的情况下，选择题比开放式问题更容易回答
+- **严格遵循YAGNI原则**：从所有设计中移除不必要的功能
+- **探索多种方案**：在确定最终方案之前，始终提出2-3种替代方案
+- **逐步验证**：分部分展示设计，并对每个部分进行验证
+- **保持灵活性**：如果有不清楚的地方，随时返回并进一步澄清

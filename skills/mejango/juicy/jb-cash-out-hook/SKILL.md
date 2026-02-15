@@ -1,40 +1,40 @@
 ---
 name: jb-cash-out-hook
-description: Generate custom Juicebox V5 cash out hooks from natural language specifications. Creates Solidity contracts implementing IJBCashOutHook and/or IJBRulesetDataHook with Foundry tests. First evaluates if off-the-shelf solutions (721 hook, Revnet) fit the use case.
+description: 根据自然语言规范生成自定义的 Juicebox V5 现金提取（cash out）功能。这些自定义功能会通过 Solidity 合同实现 `IJBCashOutHook` 和/或 `IJBRulesetDataHook` 接口，并配合 Foundry 测试工具进行验证。在生成自定义解决方案之前，系统会先评估现有的现成解决方案（如 721 Hook、Revnet）是否适用于当前的业务场景。
 ---
 
-# Juicebox V5 Cash Out Hook Generator
+# Juicebox V5 提现钩子生成器
 
-Generate custom cash out hooks for Juicebox V5 projects based on natural language specifications.
+根据自然语言规范，为 Juicebox V5 项目生成自定义的提现钩子。
 
-## Before Writing Custom Code
+## 在编写自定义代码之前
 
-**Always evaluate if an off-the-shelf solution fits the user's needs:**
+**始终评估是否有现成的解决方案能满足用户需求：**
 
-| User Need | Recommended Solution |
+| 用户需求 | 推荐解决方案 |
 |-----------|---------------------|
-| Burn NFTs to reclaim funds | Deploy **nana-721-hook-v5** directly |
-| Fee extraction on cash outs | Deploy a **Revnet** (extracts 2.5% fees) |
-| Autonomous treasury with cash out rules | Use **revnet-core-v5** |
+| 烧毁 NFT 以回收资金 | 直接部署 **nana-721-hook-v5** |
+| 提现时提取费用 | 部署 **revnet**（提取 2.5% 的费用） |
+| 具有提现规则的自主财库 | 使用 **revnet-core-v5** |
 
-If off-the-shelf solutions fit, guide the user to deploy them instead of generating custom code.
+如果现有解决方案能够满足需求，请指导用户直接使用这些解决方案，而不是编写自定义代码。
 
-## V5 Cash Out Hook Architecture
+## Juicebox V5 提现钩子的架构
 
-Cash out hooks in V5 follow a two-stage pattern:
+V5 的提现钩子遵循两阶段模式：
 
-### Stage 1: Data Hook (beforeCashOutRecordedWith)
-- Receives cash out info before recording
-- Returns tax rate, count, supply, and hook specifications
-- Can modify the effective cash out calculation
-- Implements `IJBRulesetDataHook`
+### 第一阶段：数据钩子（beforeCashOutRecordedWith）
+- 在记录提现信息之前接收相关数据
+- 返回税率、数量、供应量以及钩子的相关配置
+- 可以修改实际的提现计算方式
+- 实现 `IJBRulesetDataHook` 接口
 
-### Stage 2: Cash Out Hook (afterCashOutRecordedWith)
-- Executes after cash out is recorded
-- Receives forwarded funds and context
-- Implements `IJBCashOutHook`
+### 第二阶段：提现钩子（afterCashOutRecordedWith）
+- 在提现记录完成后执行
+- 接收转发的资金和相关上下文信息
+- 实现 `IJBCashOutHook` 接口
 
-## JBAfterCashOutRecordedContext Fields
+## JBAfterCashOutRecordedContext 字段
 
 ```solidity
 struct JBAfterCashOutRecordedContext {
@@ -51,10 +51,10 @@ struct JBAfterCashOutRecordedContext {
 }
 ```
 
-## Design Patterns
+## 设计模式
 
-### Simple Cash Out Hook (afterCashOutRecordedWith only)
-Use when you only need to execute logic after cash out without modifying calculations.
+### 简单的提现钩子（仅使用 afterCashOutRecordedWith）
+当您只需要在提现后执行逻辑而不需要修改计算结果时使用此模式。
 
 ```solidity
 contract SimpleCashOutHook is IJBCashOutHook, ERC165 {
@@ -69,8 +69,8 @@ contract SimpleCashOutHook is IJBCashOutHook, ERC165 {
 }
 ```
 
-### Data Hook + Cash Out Hook (full control)
-Use when you need to modify tax rate, supply calculations, or intercept funds.
+### 数据钩子 + 提现钩子（完全控制）
+当您需要修改税率、供应量计算或拦截资金时使用此模式。
 
 ```solidity
 contract FullCashOutHook is IJBRulesetDataHook, IJBCashOutHook, ERC165 {
@@ -104,8 +104,8 @@ contract FullCashOutHook is IJBRulesetDataHook, IJBCashOutHook, ERC165 {
 }
 ```
 
-### Fee Extraction Pattern (from revnet-core-v5)
-Route a percentage of cash outs to a fee beneficiary.
+### 费用提取模式（来自 revnet-core-v5）
+将部分提现金额路由到费用受益者。
 
 ```solidity
 function afterCashOutRecordedWith(JBAfterCashOutRecordedContext calldata context) external payable {
@@ -117,8 +117,8 @@ function afterCashOutRecordedWith(JBAfterCashOutRecordedContext calldata context
 }
 ```
 
-### NFT Burning Pattern (from nana-721-hook-v5)
-Burn NFTs when cashing out to reclaim proportional funds.
+### NFT 烧毁模式（来自 nana-721-hook-v5）
+在提现时销毁 NFT 以回收相应的资金。
 
 ```solidity
 function afterCashOutRecordedWith(JBAfterCashOutRecordedContext calldata context) external payable {
@@ -132,33 +132,33 @@ function afterCashOutRecordedWith(JBAfterCashOutRecordedContext calldata context
 }
 ```
 
-## Generation Guidelines
+## 生成指南
 
-1. **Ask clarifying questions** about the desired cash out behavior
-2. **Evaluate off-the-shelf options** first
-3. **Choose the simplest pattern** that meets requirements
-4. **Include terminal validation** in afterCashOutRecordedWith
-5. **Generate Foundry tests** with fork testing
-6. **Use correct V5 terminology** (cash out, not redemption)
+1. **就所需的提现行为提出明确的问题**
+2. **首先评估现有的解决方案**
+3. **选择最简单且符合需求的模式**
+4. **在 afterCashOutRecordedWith 阶段加入终端验证**
+5. **使用 Foundry 进行测试**
+6. **使用正确的 V5 术语（如“提现”，而非“赎回”）**
 
-## Example Prompts
+## 示例提示
 
-- "Create a cash out hook that burns an NFT to unlock full reclaim value"
-- "I want to extract a 5% fee on all cash outs to a treasury address"
-- "Build a hook that only allows cash outs after a vesting period"
-- "Create a hook that requires holding a specific NFT to cash out"
+- “创建一个在提现时销毁 NFT 以释放全部回收价值的钩子”
+- “我希望从所有提现中提取 5% 的费用并放入财库地址”
+- “构建一个仅在满足持有期限后允许提现的钩子”
+- “创建一个需要持有特定 NFT 才能提现的钩子”
 
-## Reference Implementations
+## 参考实现
 
-- **nana-721-hook-v5**: https://github.com/Bananapus/nana-721-hook-v5 (burns NFTs on cash out)
-- **revnet-core-v5**: https://github.com/rev-net/revnet-core-v5 (fee extraction)
+- **nana-721-hook-v5**: https://github.com/Bananapus/nana-721-hook-v5 （在提现时销毁 NFT）
+- **revnet-core-v5**: https://github.com/rev-net/revnet-core-v5 （提取费用）
 
-## Output Format
+## 输出格式
 
-Generate:
-1. Main contract in `src/`
-2. Interface in `src/interfaces/` if needed
-3. Test file in `test/`
-4. Deployment script in `script/` if requested
+生成以下文件：
+1. 主合约（位于 `src/` 目录）
+2. 如有需要，生成接口文件（位于 `src/interfaces/` 目录）
+3. 测试文件（位于 `test/` 目录）
+4. 如有请求，生成部署脚本（位于 `script/` 目录）
 
-Use Foundry project structure with forge-std.
+请使用基于 forge-std 的 Foundry 项目结构进行开发。

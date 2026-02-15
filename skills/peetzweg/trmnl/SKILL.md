@@ -1,20 +1,20 @@
 ---
 name: trmnl
-description: Generate content for TRMNL e-ink display devices using the TRMNL CSS framework and send via the trmnl CLI. Use when the user wants to display information on their TRMNL device, send messages to an e-ink display, create dashboard content, show notifications, or update their terminal display. Supports rich layouts with the TRMNL framework (flexbox, grid, tables, progress bars, typography utilities).
+description: 使用 TRMNL CSS 框架为 TRMNL 电子墨水显示设备生成内容，并通过 trmnl CLI 进行发送。当用户希望在他们的 TRMNL 设备上显示信息、向电子墨水显示屏发送消息、创建仪表板内容、显示通知或更新终端显示时，可以使用此功能。该框架支持丰富的布局方式（如 flexbox、grid、表格、进度条以及排版工具）。
 ---
 
-# TRMNL Content Generator
+# TRMNL内容生成器
 
-Generate HTML content for TRMNL e-ink display devices.
+用于为TRMNL电子墨水显示设备生成HTML内容。
 
-## Prerequisites
+## 先决条件
 
-**Install the `trmnl` CLI to the latest version:**
+**将`trmnl` CLI安装到最新版本：**
 ```bash
 npm install -g trmnl-cli@latest
 ```
 
-**Configure a webhook plugin (one-time setup):**
+**配置Webhook插件（一次性设置）：**
 ```bash
 # Add a plugin
 trmnl plugin add home "https://trmnl.com/api/custom_plugins/{uuid}"
@@ -23,24 +23,24 @@ trmnl plugin add home "https://trmnl.com/api/custom_plugins/{uuid}"
 trmnl plugin
 ```
 
-## Quick Start Workflow
+## 快速启动工作流程
 
-1. **Install/update CLI:** Run `npm install -g trmnl-cli@latest`
-2. **Check plugins:** Run `trmnl plugin` - if none, prompt user to add one
-3. Confirm device type (default: TRMNL OG, 2-bit, 800x480)
-4. Read relevant reference docs based on content needs
-5. Generate HTML using TRMNL framework classes
-6. Write HTML to a temp file and send:
+1. **安装/更新CLI：** 运行 `npm install -g trmnl-cli@latest`
+2. **检查插件：** 运行 `trmnl plugin` — 如果没有插件，提示用户添加一个
+3. 确认设备类型（默认：TRMNL OG，2位屏幕，800x480像素）
+4. 根据内容需求阅读相关参考文档
+5. 使用TRMNL框架类生成HTML
+6. 将生成的HTML写入临时文件并发送：
    ```bash
    trmnl send --file /tmp/trmnl-content.html
    # Or to a specific plugin:
    trmnl send --file /tmp/trmnl-content.html --plugin office
    ```
-7. **Minimal confirmation only** - Do NOT echo content back to chat
+7. **仅进行最基本的确认** — 不要将内容回显到聊天界面
 
-## Sending Content
+## 发送内容
 
-**From file (recommended):**
+**建议从文件发送：**
 ```bash
 # Write HTML content to file first
 cat > /tmp/trmnl-content.html << 'EOF'
@@ -58,47 +58,47 @@ EOF
 trmnl send --file /tmp/trmnl-content.html
 ```
 
-**Validate before sending:**
+**发送前进行验证：**
 ```bash
 trmnl validate --file /tmp/trmnl-content.html
 ```
 
-**View send history:**
+**查看发送历史记录：**
 ```bash
 trmnl history
 trmnl history --today
 trmnl history --failed
 ```
 
-## Webhook Limits
+## Webhook限制
 
-| Tier | Payload Size | Rate Limit |
+| 等级 | 承载量大小 | 调用限制 |
 |------|--------------|------------|
-| Free | **2 KB** (2,048 bytes) | 12 requests/hour |
-| TRMNL+ | **5 KB** (5,120 bytes) | 30 requests/hour |
+| 免费 | **2 KB**（2,048字节） | 每小时12次请求 |
+| TRMNL+ | **5 KB**（5,120字节） | 每小时30次请求 |
 
-Set tier globally for accurate validation:
+全局设置等级以进行准确验证：
 ```bash
 trmnl tier plus  # or "free"
 ```
 
-## Reference Documentation
+## 参考文档
 
-Read these files as needed:
+根据需要阅读以下文件：
 
-| File | When to Read |
+| 文件 | 阅读时机 |
 |------|--------------|
-| `references/patterns.md` | **Start here** - Common plugin patterns |
-| `references/framework-overview.md` | Device specs, e-ink constraints |
-| `references/css-utilities.md` | Colors, typography, sizing, spacing |
-| `references/layout-systems.md` | Flexbox, grid, overflow engines |
-| `references/components.md` | Title bar, dividers, items, tables |
-| `references/webhook-api.md` | Payload format, troubleshooting |
-| `assets/anti-patterns.md` | Common mistakes to avoid |
+| `references/patterns.md` | **从这里开始** — 常见插件模式 |
+| `references/framework-overview.md` | 设备规格、电子墨水显示器的限制 |
+| `references/css-utilities.md` | 颜色、排版、尺寸、间距设置 |
+| `references/layout-systems.md` | Flexbox布局、网格系统、溢出处理机制 |
+| `references/components.md` | 标题栏、分隔符、列表项、表格 |
+| `references/webhook-api.md` | 承载格式、故障排除 |
+| `assets/anti-patterns.md` | 需避免的常见错误 |
 
-## Standard Plugin Structure
+## 标准插件结构
 
-**Every plugin follows this pattern:**
+**所有插件都遵循以下结构：**
 
 ```html
 <div class="layout layout--col gap--space-between">
@@ -111,15 +111,15 @@ Read these files as needed:
 </div>
 ```
 
-- `layout` + `layout--col` = vertical flex container
-- `gap--space-between` = push sections to edges
-- `title_bar` = always at bottom, outside layout
-- `divider` = separate major sections
-- **CRITICAL:** Only ONE `.layout` element per view
+- `layout` + `layout--col` = 垂直Flex容器
+- `gap--space-between` = 将各个部分均匀分布到页面边缘
+- `title_bar` = 始终位于页面底部，位于`layout`之外
+- `divider` = 用于分隔主要部分
+- **重要提示：** 每个页面只能使用一个`.layout`元素
 
-## Quick Reference
+## 快速参考
 
-### Grid System (10-Column)
+### 网格系统（10列）
 
 ```html
 <div class="grid">
@@ -128,7 +128,7 @@ Read these files as needed:
 </div>
 ```
 
-### Item Component
+### 列表项组件
 
 ```html
 <div class="item">
@@ -139,47 +139,47 @@ Read these files as needed:
 </div>
 ```
 
-### Value Typography
+### 数字显示格式
 
-**Always use `value--tnums` for numbers.**
+**数字显示时必须使用`value--tnums`类：**
 
-| Class | Usage |
+| 类别 | 用途 |
 |-------|-------|
-| `value--xxxlarge` | Hero KPIs |
-| `value--xxlarge` | Large prices |
-| `value--xlarge` | Secondary metrics |
-| `value--tnums` | **Required for numbers** |
+| `value--xxxlarge` | 重要KPI指标 |
+| `value--xxlarge` | 较大的价格数值 |
+| `value--xlarge` | 较小的数值 |
+| `value--tnums` | **数字显示时必须使用** |
 
-### Grayscale Classes
+### 灰度类
 
-Use dithered classes, not inline colors:
+建议使用渐变类而非内联颜色：
 - `bg--black`, `bg--gray-60`, `bg--gray-30`, `bg--gray-10`, `bg--white`
 - `text--black`, `text--gray-50`
 
-### Data Attributes
+### 数据属性
 
-| Attribute | Purpose |
+| 属性 | 用途 |
 |-----------|---------|
-| `data-fit-value="true"` | Auto-resize text to fit |
-| `data-clamp="N"` | Limit to N lines |
-| `data-overflow="true"` | Enable overflow management |
+| `data-fit-value="true"` | 自动调整文本大小以适应显示区域 |
+| `data-clamp="N"` | 限制文本显示为最多N行 |
+| `data-overflow="true"` | 启用文本溢出处理功能 |
 
-## Best Practices
+## 最佳实践
 
-1. Use `layout` + `title_bar` structure
-2. Always `value--tnums` for numbers
-3. Use `data-fit-value` on primary metrics
-4. Use `bg--gray-*` dithered classes
-5. Keep payload under tier limit
-6. **Minimal confirmations** - just "Sent to TRMNL"
+1. 使用`layout` + `title_bar`结构
+2. 数字显示时始终使用`value--tnums`类
+3. 对于关键指标，使用`data-fit-value`属性
+4. 使用`bg--gray-*`类来实现渐变背景效果
+5. 确保发送的负载量不超过等级限制
+6. **仅进行最基本的确认** — 仅显示“内容已发送至TRMNL”
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| `trmnl: command not found` | Run `npm install -g trmnl-cli@latest` |
-| No plugins configured | Run `trmnl plugin add <name> <url>` |
-| Webhook fails | `trmnl config` - verify plugin URL |
-| Payload too large | `trmnl validate --file` - check size |
-| Numbers misaligned | Add `value--tnums` class |
-| Send history | `trmnl history --failed` |
+| `trmnl: command not found` | 运行 `npm install -g trmnl-cli@latest` |
+| 未配置插件 | 运行 `trmnl plugin add <插件名称> <插件URL>` |
+| Webhook调用失败 | 使用 `trmnl config` 命令验证插件URL |
+| 承载量过大 | 使用 `trmnl validate --file` 检查文件大小 |
+| 数字显示错位 | 为数字添加`value--tnums`类 |
+| 查看发送历史记录 | 使用 `trmnl history --failed` 命令查看失败日志 |

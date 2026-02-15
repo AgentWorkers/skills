@@ -1,26 +1,26 @@
 ---
 name: schema-gen
-description: Generate database schemas from descriptions
+description: 根据描述生成数据库模式
 ---
 
-# Schema Generator
+# 数据模式生成器
 
-Describe your data, get a proper database schema. Supports SQL, Prisma, and Drizzle.
+通过描述您的数据，可以自动生成合适的数据库模式。支持 SQL、Prisma 和 Drizzle 数据库。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-schema "e-commerce with users, products, orders, reviews"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete database schema
-- Adds proper relationships
-- Includes indexes for common queries
-- Handles timestamps and soft deletes
+- 生成完整的数据库模式
+- 自动建立字段之间的关系
+- 为常用查询创建索引
+- 支持时间戳和软删除（即数据的逻辑删除）
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate SQL schema
@@ -33,34 +33,35 @@ npx ai-schema "saas with teams and members" --format prisma
 npx ai-schema "inventory system" --format drizzle
 ```
 
-## Output Formats
+## 输出格式
 
-- Raw SQL (PostgreSQL, MySQL)
-- Prisma schema
-- Drizzle schema
-- TypeORM entities
-- Mongoose models
+- 原始 SQL 语句（适用于 PostgreSQL、MySQL）
+- Prisma 模式文件
+- Drizzle 模式文件
+- TypeORM 实体类文件
+- Mongoose 模型文件
 
-## Includes
+## 包含的内容
 
-- Primary keys
-- Foreign key relationships
-- Indexes on common fields
-- Timestamps (created/updated)
-- Soft delete support
-- Enum types where appropriate
+- 主键
+- 外键关系
+- 常用字段的索引
+- 时间戳（创建时间/更新时间）
+- 软删除功能
+- 在适用的情况下支持枚举类型
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- Node.js 18.0 及以上版本
+- 需要 OPENAI_API_KEY
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-schema](https://github.com/lxgicstudios/ai-schema)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-schema](https://github.com/lxgicstudios/ai-schema)
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

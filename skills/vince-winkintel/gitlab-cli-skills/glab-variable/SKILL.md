@@ -1,11 +1,11 @@
 ---
 name: glab-variable
-description: Manage CI/CD variables at project and group level including create, update, list, and delete operations. Use when setting environment variables for pipelines, managing secrets, or configuring CI/CD variables. Triggers on variable, CI variable, environment variable, secrets, CI/CD config.
+description: 在项目和组级别管理 CI/CD 变量，包括创建、更新、列出和删除操作。适用于为管道设置环境变量、管理密钥或配置 CI/CD 变量。该功能会在变量、CI 变量、环境变量或密钥发生更改时触发。
 ---
 
-# glab variable
+# glab 变量
 
-## Overview
+## 概述
 
 ```
 
@@ -30,12 +30,12 @@ description: Manage CI/CD variables at project and group level including create,
     -R --repo                       Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab variable --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

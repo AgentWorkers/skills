@@ -1,6 +1,6 @@
 ---
 name: eleutherios
-description: Epistemic analysis infrastructure - query knowledge graphs with suppression detection, coordination signatures, and multi-perspective clustering. Local-first, no cloud dependencies.
+description: 认知分析基础设施——用于查询知识图谱的工具，具备抑制检测（suppression detection）功能、协调签名（coordination signatures）以及多视角聚类（multi-perspective clustering）能力。该系统采用本地优先（local-first）的架构，完全不依赖云服务。
 version: 1.1.0
 author: Cedrus Strategic LLC
 repository: https://github.com/Eleutherios-project/Eleutherios-docker
@@ -27,40 +27,39 @@ metadata:
       stateDirs: []
 ---
 
-# Eleutherios - Epistemic Analysis Infrastructure
+# Eleutherios – 认知分析基础设施
 
-Query knowledge graphs built from your document collections. Detect suppression patterns, coordination signatures, and get multi-perspective analysis on contested topics.
+查询由您的文档集合构建的知识图谱。检测压制行为、协调模式，并对有争议的话题进行多视角分析。
 
-## What This Skill Does
+## 该功能的用途
 
-Eleutherios transforms document collections into knowledge graphs with claim-level extraction, then runs detection algorithms to surface patterns that traditional search misses:
+Eleutherios 将文档集合转换为包含声明级信息的知识图谱，然后运行检测算法以揭示传统搜索方法无法发现的模式：
 
-- **Suppression Detection**: Identifies funding cuts, career impacts, publication obstacles, and institutional marginalization patterns documented within sources
-- **Coordination Signatures**: Detects timing patterns, shared language, and citation network anomalies suggesting coordinated messaging
-- **Multi-Perspective Clustering**: Groups claims by viewpoint so you can see all sides of contested topics
-- **Source Topology Analysis**: Maps citation networks and trust relationships between sources
+- **压制行为检测**：识别资金削减、职业影响、出版障碍以及来源中的机构边缘化模式。
+- **协调模式检测**：检测时间模式、共同语言和引用网络异常，这些异常表明存在协调一致的言论。
+- **多视角聚类**：根据观点对声明进行分组，以便您可以全面了解有争议话题的各个方面。
+- **来源拓扑分析**：绘制引用网络和来源之间的信任关系图。
 
-## When to Use This Skill
+## 何时使用该功能
 
-Use Eleutherios when you need to:
+当您需要以下情况时，请使用 Eleutherios：
+- 研究可能存在机构操控共识的话题。
+- 分析历史文献中的压制行为（例如，解密材料、国会证词）。
+- 比较不同来源对同一话题的报道方式。
+- 了解有争议的科学或历史辩论的来龙去脉。
+- 调查引用空白和研究线索的突然中断。
 
-- Research topics where institutional consensus may be manufactured
-- Analyze historical documents for suppression patterns (e.g., declassified materials, congressional testimony)
-- Compare how different sources treat the same topic
-- Build understanding of contested scientific or historical debates
-- Investigate citation voids and research threads that mysteriously dead-end
+**示例提示**：
+- “Eleutherios 对托马斯·潘恩的压制行为有何发现？”
+- “从我的知识图谱中获取关于等离子推进研究的观点。”
+- “分析电引力学这一话题——有哪些相关来源？出现了哪些模式？”
+- “评估斯梅德利·巴特勒 FBI 文件的来源拓扑结构。”
 
-Example prompts:
-- "What does Eleutherios show about suppression patterns for Thomas Paine?"
-- "Get perspectives on plasma propulsion research from my knowledge graph"
-- "Analyze the topic of electrogravitics - what sources exist and what patterns emerge?"
-- "Assess the source topology for the Smedley Butler FBI files"
+## 先决条件
 
-## Prerequisites
+**在使用此功能之前，必须先在本地运行 Eleutherios。**
 
-**Eleutherios must be running locally before using this skill.**
-
-### Quick Start (Docker)
+### 快速入门（Docker）
 
 ```bash
 # Clone the repository
@@ -74,11 +73,11 @@ docker-compose up -d
 curl http://localhost:8100/health
 ```
 
-The MCP server runs on port 8100 by default. The web UI is available at http://localhost:8080.
+MCP 服务器默认运行在端口 8100 上。Web 界面可通过 http://localhost:8080 访问。
 
-### Importing Documents
+### 导入文档
 
-Use the web UI or CLI to import your document collection:
+使用 Web 界面或 CLI 导入您的文档集合：
 
 ```bash
 # Via CLI
@@ -87,11 +86,11 @@ docker exec -it eleutherios-api python aegis_import_wizard.py /path/to/documents
 # Or use the web UI at http://localhost:8080
 ```
 
-Supported formats: PDF, DOCX, TXT, MD, HTML
+支持的格式：PDF、DOCX、TXT、MD、HTML
 
-### Verify Connection
+### 验证连接
 
-Once Eleutherios is running, test the MCP connection:
+运行 Eleutherios 后，测试 MCP 连接：
 
 ```bash
 curl -X POST http://localhost:8100/mcp/list_domains \
@@ -99,12 +98,12 @@ curl -X POST http://localhost:8100/mcp/list_domains \
   -d '{}'
 ```
 
-You should see a JSON response with your corpus statistics.
+您应该会收到包含语料库统计信息的 JSON 响应。
 
-## Available Tools
+## 可用工具
 
 ### analyze_topic
-Run suppression and coordination detection on a topic.
+对某个主题执行压制行为和协调模式检测。
 
 ```
 Parameters:
@@ -120,7 +119,7 @@ Returns:
 ```
 
 ### get_perspectives
-Cluster claims by viewpoint using semantic analysis.
+使用语义分析按观点对声明进行聚类。
 
 ```
 Parameters:
@@ -135,7 +134,7 @@ Returns:
 ```
 
 ### assess_source
-Analyze a specific source's position in the knowledge topology.
+分析特定来源在知识拓扑结构中的位置。
 
 ```
 Parameters:
@@ -150,7 +149,7 @@ Returns:
 ```
 
 ### get_claim_context
-Deep dive on a specific claim with full context.
+深入研究某个特定声明的完整背景信息。
 
 ```
 Parameters:
@@ -165,7 +164,7 @@ Returns:
 ```
 
 ### list_domains
-Get corpus statistics and available domains.
+获取语料库统计信息和可用领域。
 
 ```
 Parameters: none
@@ -176,7 +175,7 @@ Returns:
   - Corpus health metrics
 ```
 
-## Example Workflow
+## 示例工作流程
 
 ```
 You: "What suppression patterns exist for Thomas Paine in my knowledge graph?"
@@ -207,11 +206,11 @@ Cluster 3 shows classic suppression rhetoric: ad hominem attacks
 without substantive engagement with Cluster 2's actual arguments."
 ```
 
-## Configuration
+## 配置
 
-### Custom MCP Port
+### 自定义 MCP 端口
 
-If running Eleutherios on a different port, update your OpenClaw config:
+如果 Eleutherios 运行在其他端口上，请更新您的 OpenClaw 配置文件：
 
 ```yaml
 # In your OpenClaw workspace skills config
@@ -220,9 +219,9 @@ eleutherios:
     server: "http://localhost:YOUR_PORT/mcp"
 ```
 
-### Remote Server
+### 远程服务器
 
-For remote Eleutherios instances (e.g., on a homelab server):
+对于远程运行的 Eleutherios 实例（例如，在家庭实验室服务器上）：
 
 ```yaml
 eleutherios:
@@ -230,39 +229,39 @@ eleutherios:
     server: "http://192.168.1.100:8100/mcp"
 ```
 
-**Security Note**: Only expose Eleutherios on trusted networks. The MCP server has no authentication by default.
+**安全提示**：仅将 Eleutherios 部署在可信任的网络环境中。MCP 服务器默认没有身份验证机制。
 
-## Troubleshooting
+## 故障排除
 
-### "Connection refused" errors
-- Verify Eleutherios is running: `docker ps | grep eleutherios`
-- Check the MCP port: `curl http://localhost:8100/health`
-- Ensure no firewall blocking port 8100
+### “连接被拒绝”错误
+- 确认 Eleutherios 是否正在运行：`docker ps | grep eleutherios`
+- 检查 MCP 端口：`curl http://localhost:8100/health`
+- 确保防火墙没有阻止端口 8100 的访问。
 
-### Empty results
-- Verify documents have been imported: check web UI at localhost:8080
-- Run extraction if needed: documents must be processed before querying
+### 结果为空
+- 确认文档已成功导入：访问 localhost:8080 的 Web 界面。
+- 如有需要，请运行提取操作：在查询之前必须先处理文档。
 
-### Slow responses
-- Large corpus queries may take 10-30 seconds
-- Use `max_claims` parameter to limit scope
-- Consider running on hardware with GPU for faster embedding generation
+### 响应缓慢
+- 大型语料库的查询可能需要 10-30 秒。
+- 使用 `max_claims` 参数来限制查询范围。
+- 考虑在配备 GPU 的硬件上运行以加快嵌入生成速度。
 
-## Privacy & Security
+## 隐私与安全
 
-- **Local-first**: All data stays on your machine. No cloud dependencies.
-- **No telemetry**: Eleutherios sends no data externally.
-- **Your documents, your analysis**: Build knowledge graphs from your own curated collections.
+- **数据本地化**：所有数据都存储在您的机器上，不依赖云服务。
+- **无数据传输**：Eleutherios 不会向外部发送任何数据。
+- **数据所有权**：您可以使用自己的文档构建知识图谱。
 
-## Links
+## 链接
 
-- **Website**: https://eleutherios.io
-- **GitHub**: https://github.com/Eleutherios-project/
-- **Documentation**: https://github.com/Eleutherios-project/Eleutherios-docker/blob/main/README.md
-- **Issues**: https://github.com/Eleutherios-project/Eleutherios-docker/issues
+- **官方网站**：https://eleutherios.io
+- **GitHub**：https://github.com/Eleutherios-project/
+- **文档**：https://github.com/Eleutherios-project/Eleutherios-docker/blob/main/README.md
+- **问题反馈**：https://github.com/Eleutherios-project/Eleutherios-docker/issues
 
-## About
+## 关于 Eleutherios
 
-Eleutherios (from Zeus Eleutherios, god of freedom) is open-source epistemic defense infrastructure. Built for researchers investigating topics where institutional gatekeepers cannot be trusted.
+Eleutherios（源自希腊神话中的自由之神 Zeus Eleutherios）是一个开源的认知防御基础设施，专为研究那些无法信任机构把关人的话题的研究人员设计。
 
-Created by Cedrus Strategic LLC. MIT Licensed.
+由 Cedrus Strategic LLC 开发，并获得 MIT 许可。

@@ -1,93 +1,99 @@
 ---
 name: "Trading"
-description: "Active trading education covering technical analysis, risk management concepts, and platform evaluation for stocks, forex, and crypto."
+description: "提供活跃的交易教育内容，涵盖技术分析、风险管理理念，以及针对股票、外汇和加密货币的交易平台评估。"
 ---
 
-## Guardrails
+## 安全防护措施（Guardrails）
 
-**On first use:** Show user `legal.md` disclaimers and ask them to acknowledge before continuing.
+**首次使用时：**向用户展示 `legal.md` 文件中的免责声明，并要求用户在继续使用前确认同意这些条款。
 
-**Never do:**
-- Recommend specific securities, cryptos, or trades ("buy X", "sell Y")
-- Predict price movements ("X will go up")
-- Provide personalized advice based on user's situation
-- Suggest leverage amounts or specific position sizes for their account
+**绝对禁止的行为：**
+- 推荐特定的证券、加密货币或交易策略（如“买入X”、“卖出Y”）
+- 预测价格走势（如“X价格会上涨”）
+- 根据用户的情况提供个性化建议
+- 为用户的账户建议使用特定的杠杆比例或持仓规模
 
-**Always do:**
-- Use educational language ("some traders use...", "a common approach is...")
-- Remind users this is education, not advice
-- Recommend consulting licensed professionals for personal decisions
-- Include risk warnings when discussing leveraged products
+**必须遵守的行为：**
+- 使用教育性的语言进行讲解（例如“一些交易者采用……方法”）
+- 提醒用户这仅是教育内容，而非投资建议
+- 建议用户在做出个人投资决策时咨询持证专业人士
+- 在讨论杠杆产品时务必包含风险警告
 
-**Escalate to professional:** User mentions life savings, retirement funds, borrowed money, or gambling behavior ("need to win back").
+**需要专业协助的情况：**当用户提到涉及毕生积蓄、退休资金、借款资金或赌博行为时（例如“必须赢回损失”）。
 
-## Triggers
+## 触发条件（Triggers）
 
-Activate on: day trading education, swing trading concepts, technical analysis basics, forex/crypto fundamentals, position sizing concepts, stop loss methodologies.
+在以下内容被讲解时激活相关安全防护措施：
+- 日内交易教育
+- 波段交易概念
+- 技术分析基础
+- 外汇/加密货币基础知识
+- 持仓规模计算方法
+- 止损策略
 
-## Trading vs Investing
+## 交易与投资（Trading vs Investing）
 
-| Trading | Investing |
+| 交易 | 投资 |
 |---------|-----------|
-| Short-term (minutes to weeks) | Long-term (years) |
-| Active monitoring | Mostly passive |
-| Higher costs | Lower costs |
-| Short-term tax rates | May qualify for lower rates |
+| 短期（几分钟到几周） | 长期（几年） |
+| 需要持续监控 | 主要为被动操作 |
+| 成本较高 | 成本较低 |
+| 短期税率 | 可能享受较低的税率 |
 
-## Trading Styles
+## 交易风格（Trading Styles）
 
-| Style | Timeframe | Characteristics |
+| 交易风格 | 时间框架 | 特点 |
 |-------|-----------|-----------------|
-| Scalping | Seconds-minutes | Full attention required |
-| Day trading | Intraday | Close positions by EOD |
-| Swing trading | Days-weeks | Overnight exposure |
-| Position trading | Weeks-months | Fundamental + technical |
+| 抽盘交易（Scalping） | 几秒到几分钟 | 需要全神贯注 |
+| 日内交易（Day Trading） | 当天交易 | 在交易日结束前平仓 |
+| 波段交易（Swing Trading） | 几天到几周 | 持仓过夜 |
+| 位置交易（Position Trading） | 几周到几个月 | 结合基本面和技术分析 |
 
-## Getting Started Path
+## 入门路径（Getting Started Path）
 
-Common educational progression:
-1. Demo/paper trading (1-3 months simulated)
-2. Focus on one market first
-3. Start small when going live
-4. Keep a trading journal
+常见的学习流程：
+1. 进行模拟交易（使用模拟账户或纸面交易，持续1-3个月）
+2. 先专注于一个市场
+3. 实际交易时从小额资金开始
+4. 保持交易日志
 
-For detailed framework, see `getting-started.md`.
+详细的学习框架，请参阅 `getting-started.md`。
 
-## Risk Concepts
+## 风险概念（Risk Concepts）
 
-Common principles in trading education:
-- **Position sizing** — Some traders limit to 1-2% risk per trade
-- **Stop losses** — Predetermined exit points
-- **Risk/reward** — Evaluate potential gain vs loss before entry
+交易教育中的常见原则：
+- **持仓规模控制**：部分交易者将每次交易的风险限制在1-2%
+- **止损**：预先设定退出点
+- **风险与收益**：在交易前评估潜在的收益与损失
 
-For calculations and details, see `risk.md`.
+相关计算方法和详细信息，请参阅 `risk.md`。
 
-## Technical Analysis Basics
+## 技术分析基础（Technical Analysis Basics）
 
-Studies price/volume patterns. Probabilistic, not predictive.
-- Chart patterns (head & shoulders, flags, triangles)
-- Indicators (RSI, MACD, moving averages)
-- Support/resistance levels
+技术分析通过研究价格和成交量模式来预测市场走势。这种分析方法基于概率，而非绝对的预测。
+- 图表形态（如头肩顶/底、旗形、三角形）
+- 技术指标（如RSI、MACD、移动平均线）
+- 支撑/阻力水平
 
-For patterns and indicators, see `technical.md`.
+有关图表形态和技术指标的详细信息，请参阅 `technical.md`。
 
-## Platform Evaluation
+## 平台评估（Platform Evaluation）
 
-Factors traders often consider:
-- Regulatory status (SEC/FINRA, FCA, etc.)
-- Fee transparency
-- Execution quality
-- Available markets
+交易者通常会考虑以下因素：
+- 平台的监管资质（SEC/FINRA、FCA等）
+- 费用透明度
+- 执行质量
+- 可交易的市场范围
 
-**US note:** Pattern Day Trader rule requires $25k minimum for 4+ day trades per 5 days (FINRA).
+**美国特别提示：**根据 FINRA 的规定，如果用户进行4天以上的交易，每5天内累计交易金额需达到25,000美元以上。
 
-For broker factors, see `platforms.md`.
+关于经纪人的详细要求，请参阅 `platforms.md`。
 
-## Common Pitfalls
+## 常见陷阱（Common Pitfalls）
 
-| Pattern | Why it's discussed |
+| 常见陷阱 | 原因 |
 |---------|-------------------|
-| No predetermined exit | Single trades can wipe gains |
-| Excessive leverage | Amplifies losses |
-| Overtrading | Costs + emotions compound |
-| No written plan | Random entries, poor results |
+| 未设定明确的退出策略 | 单次交易可能导致全部收益损失 |
+| 过度使用杠杆 | 会放大亏损 |
+| 过度交易 | 高额交易成本加上情绪化决策会加剧损失 |
+| 没有书面交易计划 | 随机交易导致糟糕的结果 |

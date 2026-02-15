@@ -1,6 +1,6 @@
 ---
 name: pregnancy-tracker
-description: Track pregnancy journey with weekly updates, symptom logging, and milestone countdowns
+description: 通过每周更新、症状记录以及重要节点的倒计时来追踪您的孕期历程。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,56 +11,56 @@ triggers:
   - "pregnancy symptoms"
 ---
 
-# Pregnancy Tracker
+# 怀孕追踪器
 
-Your personal companion for navigating pregnancy—from that first positive test to meeting baby.
+这是您在怀孕期间的个人助手，从第一次检测出怀孕阳性结果，一直到迎接宝宝的那一刻。
 
-## What it does
+## 功能介绍
 
-Pregnancy Tracker turns your [[clawd.bot]] into a supportive pregnancy journal. Track weekly development milestones, log how you're feeling, monitor appointments, and count down to your due date. Everything syncs across devices and stays organized in one place.
+怀孕追踪器可将您的[[clawd.bot]]转变为一个实用的怀孕日记工具。您可以记录每周的胎儿发育情况、记录自己的感受、管理孕期预约，并倒计时预产期。所有信息会在不同设备间同步，并集中保存在一个地方。
 
-- **Week-by-week updates** - Current development stage, fetal size comparisons, what to expect
-- **Symptom logging** - Record how you're feeling, energy levels, physical changes
-- **Development milestones** - Track baby's growth and key developmental moments
-- **Due date countdown** - Always know how many weeks, days until delivery
-- **Appointment reminders** - Log OB appointments and get gentle nudges
+- **每周更新**：显示当前的胎儿发育阶段、胎儿的大小变化以及您可能遇到的情况。
+- **症状记录**：记录您的身体感觉、精力水平以及任何不适症状。
+- **发育里程碑**：追踪胎儿的成长过程及重要的发育时刻。
+- **预产期倒计时**：随时了解距离分娩还有多少周和天数。
+- **预约提醒**：自动记录您的产科预约，并在预约前发送提醒。
 
-## Usage
+## 使用方法
 
-### Set due date
-Tell Clawd your expected due date to personalize all tracking. Updates will shift to match your pregnancy timeline.
+### 设置预产期
+告诉Clawd您的预计预产期，以便所有追踪内容都能根据您的实际孕期进行调整。
 
-### Weekly update
-Ask for this week's development info. Clawd pulls your current week and shares what's happening with baby, size comparisons, and what you might be experiencing.
+### 每周更新
+请求获取本周的胎儿发育信息。Clawd会为您提供胎儿的发育情况、大小对比以及您可能遇到的身体变化。
 
-### Log symptoms
-Record physical sensations, mood, energy, cravings, or concerns. Build a personal health diary that helps you notice patterns and share with your healthcare provider.
+### 记录症状
+记录您的身体感受、情绪、精力状况、饮食偏好或任何担忧。这有助于您发现身体变化的规律，并与医疗保健提供者分享这些信息。
 
-### Manage appointments
-Add OB appointments, ultrasounds, and lab visits. Clawd reminds you when they're coming up and helps you track results and next steps.
+### 管理预约
+添加产科预约、超声波检查以及实验室检查等安排。Clawd会提醒您预约时间，并帮助您跟踪检查结果和后续步骤。
 
-### Countdown to due date
-Get a quick status check: how many weeks remain, what trimester you're in, and approximate development stage.
+### 倒计时预产期
+快速查看剩余的孕期周数、您目前所处的孕期阶段以及胎儿的大致发育情况。
 
-## Trimester Overview
+## 孕期三个阶段概述
 
-### First Trimester (Weeks 1–12)
-Your body undergoes major changes as pregnancy hormones rise. You may feel tired, experience nausea, and notice breast tenderness. Baby develops major organs and the heart starts beating. Many choose to keep pregnancy private during this period.
+### 第一孕期（第1-12周）
+随着怀孕激素水平的升高，您的身体会经历许多变化。您可能会感到疲劳、恶心或乳房胀痛。胎儿的器官开始发育，心脏也开始跳动。许多孕妇选择在这个阶段保密怀孕的消息。
 
-### Second Trimester (Weeks 13–27)
-Often called the "golden trimester." Energy returns, morning sickness typically eases, and you may feel baby's first movements (quickening). Baby's features become more defined and hearing develops. This is a common time for anatomy scans and gender reveals if you choose.
+### 第二孕期（第13-27周）
+这一阶段通常被称为“黄金孕期”。您的精力逐渐恢复，晨吐症状通常会减轻，您可能会感受到胎儿的第一次胎动。胎儿的五官逐渐清晰可见，听力也开始发育。这是进行产检和确定胎儿性别的常见时期。
 
-### Third Trimester (Weeks 28–40)
-Baby grows rapidly and drops lower in the pelvis preparing for birth. You may experience back pain, frequent bathroom trips, and difficulty sleeping. Practice breathing techniques and prepare your birth plan. Baby's brain and lungs mature in final weeks.
+### 第三孕期（第28-40周）
+胎儿发育迅速，位置下降至骨盆内，为分娩做准备。您可能会经历背痛、频繁上厕所以及睡眠困难。此时可以练习呼吸技巧，并制定分娩计划。胎儿的大脑和肺部在最后几周内继续成熟。
 
-## Tips
+## 使用建议
 
-- **Sync across devices** - Ask Clawd pregnancy questions from your phone, tablet, or computer. Your data follows you everywhere.
-- **Share with your partner** - Send weekly summaries to your partner so they stay connected to your journey and baby's development.
-- **Capture the details** - Log symptoms, cravings, and emotions in the moment. These become precious memories and help your healthcare provider.
-- **Prepare for appointments** - Write down questions and observations between visits. Clawd helps you organize them so nothing gets missed.
-- **All data stays local on your machine** - Your pregnancy journey is private and never leaves your device. Clawd respects your privacy by default.
+- **跨设备同步**：无论您使用手机、平板电脑还是电脑，都可以向Clawd询问怀孕相关问题。您的数据会始终与您同步。
+- **与伴侣分享**：每周向伴侣发送孕期总结，让他们了解您的孕期进展和胎儿的发育情况。
+- **详细记录**：及时记录症状、饮食偏好和情绪变化。这些记录将成为珍贵的回忆，也有助于医疗保健提供者的诊断。
+- **准备预约**：在每次就诊前写下您想咨询的问题和观察结果。Clawd会帮助您整理这些信息，确保不会遗漏任何重要事项。
+- **数据安全存储**：所有孕期数据都存储在您的设备上，确保您的隐私得到保护（Clawd默认遵循隐私保护政策）。
 
 ---
 
-*This skill is informational and supportive—not medical advice. Always consult your healthcare provider for medical concerns, medication questions, or anything outside normal pregnancy experience.*
+*本工具仅提供信息支持，并非医疗建议。如有任何健康问题或用药需求，请务必咨询您的医疗保健提供者。*

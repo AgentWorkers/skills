@@ -1,85 +1,85 @@
 ---
 name: my-new-skill
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: [待办事项：详细说明该技能的功能及其使用场景。需要明确说明在什么情况下应使用该技能——具体包括适用的场景、文件类型或触发该技能的任务。]
 ---
 
-# My New Skill
+# 我的新技能
 
-## Overview
+## 概述
 
-[TODO: 1-2 sentences explaining what this skill enables]
+[TODO: 添加1-2句话，解释该技能的功能或用途]
 
-## Structuring This Skill
+## 技能结构
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+[TODO: 根据技能的实际用途选择合适的结构。常见的结构模式包括：]
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
-- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
+**1. 基于工作流程的**（适用于顺序性操作）
+- 适用于有明确步骤的流程
+- 例如：DOCX处理技能的结构可能包括“工作流程决策树” -> “读取” -> “创建” -> “编辑”
+- 结构示例：## 概述 -> ## 工作流程决策树 -> ## 第一步 -> ## 第二步...
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
-- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
+**2. 基于任务的**（适用于包含多种操作的技能）
+- 适用于提供多种功能的技能
+- 例如：PDF处理技能的结构可能包括“快速入门” -> “合并PDF文件” -> “分割PDF文件” -> “提取文本”
+- 结构示例：## 概述 -> ## 快速入门 -> ## 任务类别1 -> ## 任务类别2...
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
-- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
+**3. 参考/指南**（适用于标准或规范）
+- 适用于品牌指南、编码规范或技术要求
+- 例如：品牌设计技能的结构可能包括“品牌指南” -> “颜色” -> “排版” -> “特性”
+- 结构示例：## 概述 -> ## 规范 -> ## 使用说明...
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" -> numbered capability list
-- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
+**4. 基于功能的**（适用于集成系统）
+- 适用于提供多个相关功能的技能
+- 例如：产品管理技能的结构可能包括“核心功能”列表
+- 结构示例：## 概述 -> ## 核心功能 -> ### 功能1 -> ### 功能2...
 
-Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
+可以根据需要混合使用这些结构模式。大多数技能会结合多种模式（例如，以任务为基础的结构开始，对于复杂的操作再添加工作流程说明）。
 
-Delete this entire "Structuring This Skill" section when done - it's just guidance.]
+完成结构设计后，请删除此部分——它仅作为参考。
 
-## [TODO: Replace with the first main section based on chosen structure]
+## [TODO: 根据选定的结构替换为第一个主要部分]
 
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
+[TODO: 在此处添加具体内容。参考现有技能的示例：]
+- 技术技能的代码示例
+- 复杂工作流程的决策树
+- 基于真实用户需求的实际示例
+- 如有需要，添加脚本/模板/参考资料的链接
 
-## Resources (optional)
+## 资源（可选）
 
-Create only the resource directories this skill actually needs. Delete this section if no resources are required.
+仅创建该技能实际需要的资源目录。如果不需要资源，可以删除此部分。
 
 ### scripts/
-Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
+可执行程序（Python/Bash等），用于执行特定操作。
 
-**Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
+**其他技能的示例：**
+- PDF处理技能：`fill_fillable_fields.py`, `extract_form_field_info.py` – 用于PDF操作的实用工具
+- DOCX处理技能：`document.py`, `utilities.py` – 用于文档处理的Python模块
 
-**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
+**适用类型：** Python脚本、Shell脚本或任何可执行代码，用于自动化操作、数据处理或特定功能。
 
-**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
+**注意：** 脚本可以在不加载到上下文中的情况下执行，但Codex仍可以读取它们以进行修补或环境配置调整。
 
 ### references/
-Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
+用于提供上下文信息的文档和参考资料。
 
-**Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
-- BigQuery: API reference documentation and query examples
-- Finance: Schema documentation, company policies
+**其他技能的示例：**
+- 产品管理技能：`communication.md`, `context_building.md` – 详细的工作流程指南
+- BigQuery技能：API参考文档和查询示例
+- 财务技能：数据库模式文档、公司政策
 
-**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
+**适用类型：** 详细文档、API参考、数据库模式、综合指南或Codex在工作时需要参考的任何信息。
 
 ### assets/
-Files not intended to be loaded into context, but rather used within the output Codex produces.
+这些文件不会被加载到上下文中，而是直接用于生成最终输出。
 
-**Examples from other skills:**
-- Brand styling: PowerPoint template files (.pptx), logo files
-- Frontend builder: HTML/React boilerplate project directories
-- Typography: Font files (.ttf, .woff2)
+**其他技能的示例：**
+- 品牌设计技能：PowerPoint模板文件（.pptx）、Logo文件
+- 前端开发技能：HTML/React模板项目目录
+- 排版技能：字体文件（.ttf, .woff2）
 
-**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
+**适用类型：** 模板、代码模板、文档模板、图片、图标、字体或任何需要在最终输出中使用的文件。
 
 ---
 
-**Not every skill requires all three types of resources.**
+**并非所有技能都需要这三种类型的资源。**

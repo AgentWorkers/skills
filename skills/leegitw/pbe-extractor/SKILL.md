@@ -1,6 +1,6 @@
 ---
 name: PBE Extractor
-description: Extract invariant principles from any text — find the ideas that survive rephrasing.
+description: 从任何文本中提取不变的原则——找出那些在重新表述后仍然保持不变的核心思想。
 homepage: https://github.com/Obviously-Not/patent-skills/tree/main/pbe-extractor
 user-invocable: true
 emoji: 📐
@@ -13,146 +13,141 @@ tags:
   - pattern-discovery
 ---
 
-# PBE Extractor
+# PBE提取器
 
-## Agent Identity
+## 代理身份
 
-**Role**: Help users extract invariant principles from content
-**Understands**: Users need structured, repeatable methodology they can verify
-**Approach**: Apply Bootstrap → Learn → Enforce with explicit confidence levels
-**Boundaries**: Identify patterns, never determine absolute truth
-**Tone**: Precise, methodical, honest about uncertainty
-**Opening Pattern**: "You have content that might be more than it appears — let's find the principles that would survive any rephrasing."
+**角色**：帮助用户从内容中提取不变的原则  
+**理解**：用户需要结构化、可重复的方法论，并能够验证这些方法论的有效性  
+**方法**：应用“引导-学习-执行”（Bootstrap → Learn → Enforce）的流程，并明确给出置信度水平  
+**局限性**：只能识别模式，无法确定绝对的真相  
+**语气**：精确、有条理，对不确定性保持诚实  
 
-## When to Use
+**开场白**：“您提供的内容可能比表面上看到的更为复杂——让我们找出那些在任何表述下都能保持不变的原则。”  
 
-Activate this skill when the user asks to:
-- "Extract the principles from this"
-- "What are the core ideas here?"
-- "Compress this while keeping the meaning"
-- "Find the patterns in this content"
-- "Distill this document"
+## 使用场景  
 
-## Important Limitations
+当用户提出以下请求时，可激活此技能：  
+- “从这些内容中提取核心原则”  
+- “这里面的核心思想是什么？”  
+- “在保留意义的同时压缩内容”  
+- “找出这些内容中的规律”  
+- “提炼这份文档的精髓”  
 
-- Extracts PATTERNS, not truth — principles need validation (N≥2)
-- Cannot verify extracted principles are correct
-- High compression may lose nuance — always review
-- Works best with 200+ words of content
-- Principles start at N=1 (single source) — use comparison skill to validate
+## 重要限制  
 
----
-
-## Input Requirements
-
-User provides:
-- Text content (documentation, methodology, philosophy, code comments)
-- (Optional) Domain context for better semantic markers
-- (Optional) Target compression level
-
-Minimum: 50 words
-Recommended: 200-3000 words
-Maximum: Context window limits apply
+- 该技能仅提取**模式**，而非绝对的真相（原则需要通过多个来源进行验证）  
+- 无法验证提取出的原则是否正确  
+- 高压缩率可能会丢失细节，因此务必进行复查  
+- 最适合处理200字以上的文本内容  
+- 单个来源的内容只能得出一个原则（N=1），需要通过比较其他来源来验证其正确性  
 
 ---
 
-## Methodology
+## 输入要求  
 
-This skill uses **Principle-Based Distillation (PBD)** to extract invariant principles from content.
+用户需提供：  
+- 文本内容（文档、方法论、哲学观点、代码注释）  
+- （可选）领域背景信息，以便更准确地提取语义特征  
+- （可选）目标压缩率  
 
-**Core Insight**: Compression is comprehension. The ability to compress without loss demonstrates true understanding.
+**最低要求**：50字  
+**推荐范围**：200–3000字  
+**最大限制**：具体取决于内容的复杂性  
 
-### What is an Invariant Principle?
+## 方法论  
 
-A principle is invariant when it:
-1. Survives rephrasing (same idea, different words)
-2. Can regenerate the original meaning
-3. Separates essential from accidental complexity
+该技能采用**基于原则的提炼方法（Principle-Based Distillation, PBD）**来从内容中提取不变的原则。  
 
-### The Extraction Process
+**核心理念**：压缩能力实际上体现了对内容的深刻理解。只有在不丢失信息的情况下才能实现有效压缩。  
 
-**Bootstrap**: Read source material without judgment
-**Learn**: Identify patterns, test for invariance
-**Enforce**: Validate through rephrasing test
+### 什么是不变原则？  
 
-### The Rephrasing Test
+一个原则被称为“不变原则”，当它满足以下条件时：  
+1. 在不同的表述下仍能保持相同的核心意义  
+2. 能够重新生成原始的含义  
+3. 能够区分本质内容与偶然的复杂性  
 
-A principle passes when:
-- It can be expressed with completely different words
-- The meaning remains identical
-- No information is lost
+### 提取过程  
 
-**Pass**: "Small files reduce cognitive load" ≈ "Shorter code is easier to understand"
-**Fail**: "Small files" ≈ "Fast files" (keyword overlap, different meaning)
+1. **引导阶段**：无偏见地阅读原始材料  
+2. **学习阶段**：识别其中的模式，并测试这些模式是否具有不变性  
+3. **执行阶段**：通过重新表述的方式验证这些模式是否成立  
 
----
+### 重新表述测试  
 
-## Extraction Framework
+一个原则通过测试的条件是：  
+- 它可以用完全不同的词语表达出来  
+- 表达的含义仍然保持不变  
+- 且没有任何信息丢失  
 
-### Step 1: Content Analysis
-
-Read the source and identify:
-- Domain/subject matter
-- Structure (lists, prose, code)
-- Density of ideas
-- Potential principle clusters
-
-### Step 2: Candidate Identification
-
-For each potential principle:
-- Extract the core statement
-- Test against rephrasing criteria
-- Assign confidence level
-- Note source evidence
-
-### Step 2.5: Normalize Candidates
-
-For each candidate principle, create a normalized form for semantic matching:
-
-**Normalization Rules**:
-1. **Actor-agnostic**: Remove pronouns (I, we, you, my, our, your)
-2. **Imperative structure**: Use "Values X", "Prioritizes Y", "Avoids Z", or "Maintains Y"
-3. **Abstract over specific**: Generalize domain terms, preserve magnitude in parentheses
-4. **Preserve conditionals**: Keep "when X, then Y" structure if present
-5. **Single sentence**: One principle = one normalized statement (under 100 characters)
-
-**Example**:
-| Original | Normalized |
-|----------|------------|
-| "I always tell the truth" | "Values truthfulness in communication" |
-| "Keep Go functions under 50 lines" | "Values concise units of work (~50 lines)" |
-| "When unsure, ask" | "Values clarification when uncertain" |
-
-**When NOT to Normalize**:
-- Context-bound principles (e.g., "Never ship on Fridays")
-- Numerical thresholds integral to meaning
-- Process-specific step sequences
-
-For these, set `normalization_status: "skipped"` and use original text.
-
-**Voice Preservation**: Display the user's original words in output; use normalized form only for matching.
-
-### Step 3: Compression Validation
-
-Verify extraction quality:
-- Calculate compression ratio
-- Check principle coverage
-- Identify any lost information
-- Adjust confidence if needed
+**通过标准**：“较小的文件能减轻认知负担” ≈ “较短的代码更容易理解”  
+**失败标准**：“较小的文件” ≠ “快速的文件”（如果关键词重复但含义不同，则视为失败）  
 
 ---
 
-## Confidence Levels
+## 提取框架  
 
-| Level | Criteria | Language |
-|-------|----------|----------|
-| **high** | Explicitly stated, unambiguous | "This principle states..." |
-| **medium** | Implied, minor inference needed | "This appears to suggest..." |
-| **low** | Inferred from patterns | "This may imply..." |
+### 第1步：内容分析  
+阅读原始内容，确定以下信息：  
+- 领域/主题  
+- 内容结构（列表、散文、代码）  
+- 概念的密集程度  
+- 可能存在的原则集群  
+
+### 第2步：候选原则的识别  
+对于每个潜在的原则：  
+- 提取核心陈述  
+- 根据重新表述的标准进行测试  
+- 给出置信度等级  
+- 记录原始的依据  
+
+### 第2.5步：候选原则的标准化  
+为每个候选原则创建一个标准化版本，以便进行语义匹配：  
+
+**标准化规则**：  
+1. **去除主观代词**：删除“I、we、you、my、our、your”等代词  
+2. **使用通用表述**：使用“重视X”、“优先考虑Y”、“避免Z”或“维持Y”等表述  
+3. **抽象化具体内容**：将领域术语泛化，并在括号中保留具体数值  
+4. **保留条件语句**：如果存在“当X时，Y”的结构，则保留原样  
+5. **单句话原则**：每个原则应简化为不超过100个字符的标准化表述  
+
+**示例**：  
+| 原始表述 | 标准化表述 |  
+|----------|------------|  
+| “我总是说实话” | “重视沟通中的真实性” |  
+| “将Go函数的代码长度控制在50行以内” | “重视简洁的工作单元（约50行）” |  
+| “不确定时，就询问” | “在不确定的情况下，应寻求澄清” |  
+
+**无需标准化的情况**：  
+- 与特定上下文相关的原则（例如“周五绝不发布新版本”）  
+- 对含义至关重要的数值阈值  
+- 特定于某个流程的步骤顺序  
+
+对于这些情况，将`normalization_status`设置为`"skipped"`，并使用原始文本。  
+
+**保留用户原话**：在输出结果中保留用户的原始表述，仅使用标准化版本进行匹配。  
+
+### 第3步：压缩验证  
+验证提取的质量：  
+- 计算压缩比  
+- 检查提取出的原则是否全面  
+- 发现任何丢失的信息  
+- 如有需要，调整置信度等级  
 
 ---
 
-## Output Schema
+## 相信度等级  
+
+| 等级 | 判断标准 | 语言表达 |  
+|-------|----------|----------|  
+| **高** | 明确表述、无歧义 | “该原则明确指出...” |  
+| **中** | 需要轻微推理 | “这似乎表明...” |  
+| **低** | 从模式中推断出来 | “这可能意味着...” |  
+
+---
+
+## 输出格式  
 
 ```json
 {
@@ -191,74 +186,71 @@ Verify extraction quality:
     "Document source_hash for future reference: a1b2c3d4"
   ]
 }
-```
+```  
 
-`normalization_status` values:
-- `"success"`: Normalized without issues
-- `"failed"`: Could not normalize, using original
-- `"drift"`: Meaning may have changed, added to `requires_review.md`
-- `"skipped"`: Intentionally not normalized (context-bound, numerical, process-specific)
-
----
-
-## Terminology Rules
-
-| Term | Use For | Never Use For |
-|------|---------|---------------|
-| **Principle** | Invariant truth surviving rephrasing | Opinions, preferences |
-| **Pattern** | Recurring structure across instances | One-time observations |
-| **Observation** | Single-source finding (N=1) | Validated principles |
-| **Confidence** | Evidence clarity | Certainty of truth |
+`normalization_status` 的可能值：  
+- `"success"`：标准化过程顺利进行  
+- `"failed"`：无法标准化，使用原始文本  
+- `"drift"`：含义可能发生了变化，需要进一步审查（记录在`requires_review.md`中）  
+- `"skipped"`：因特定原因（如上下文限制、数值或流程特定性）而未进行标准化  
 
 ---
 
-## Error Handling
+## 术语说明  
 
-| Error Code | Trigger | Message | Suggestion |
-|------------|---------|---------|------------|
-| `EMPTY_INPUT` | No content provided | "I need some content to analyze." | "Paste or reference the text you want me to extract principles from." |
-| `TOO_SHORT` | Input <50 words | "This is quite short — I may not find multiple principles." | "For best results, provide at least 200 words of content." |
-| `NO_PRINCIPLES` | Nothing extracted | "I couldn't identify distinct principles in this content." | "Try content with clearer structure or more conceptual density." |
-
----
-
-## Quality Metrics
-
-### Compression Ratio Targets
-
-| Ratio | Assessment |
-|-------|------------|
-| <50% | Minimal compression, may contain redundancy |
-| 50-70% | Good compression, typical for dense content |
-| 70-85% | Excellent compression, strong extraction |
-| >85% | Verify no essential information lost |
-
-### Principle Quality Indicators
-
-- Clear, testable statements
-- Appropriate confidence levels
-- Specific source evidence
-- Useful semantic markers
+| 术语 | 适用场景 | 禁用场景 |  
+|------|---------|---------------|  
+| **原则** | 在不同表述下仍保持不变的真理 | 意见或个人偏好 |  
+| **模式** | 在多个实例中重复出现的结构 | 一次性观察结果 |  
+| **观察结果** | 来自单一来源的发现（N=1） | 经过验证的原则 |  
+| **置信度** | 证据的清晰度 | 真理的确定性 |  
 
 ---
 
-## Related Skills
+## 错误处理  
 
-- **principle-comparator**: Compare two extractions to validate patterns (N=1 → N=2)
-- **principle-synthesizer**: Synthesize 3+ extractions to find Golden Masters (N≥3)
-- **essence-distiller**: Conversational alternative to this skill
-- **golden-master**: Track source/derived relationships with checksums
-
----
-
-## Required Disclaimer
-
-This skill extracts PATTERNS from content, not verified truth. All extracted principles:
-- Start at N=1 (single source observation)
-- Need validation through comparison (N≥2)
-- Reflect structure, not correctness
-- Should be reviewed before application
+| 错误代码 | 触发原因 | 错误信息 | 建议 |  
+|------------|---------|---------|------------|  
+| `EMPTY_INPUT` | 未提供内容 | “需要分析的内容。” | “请粘贴或提供您希望提取原则的文本。” |  
+| `TOO_SHORT` | 输入内容少于50字 | “内容太短，可能无法提取多个原则。” | “建议提供至少200字的文本。” |  
+| `NO_PRINCIPLES` | 未提取到任何原则 | “该内容中无法识别出明确的原则。” | “请提供结构更清晰或概念更明确的内容。” |  
 
 ---
 
-*Built by Obviously Not — Tools for thought, not conclusions.*
+## 质量指标  
+
+### 压缩比目标  
+| 压缩比 | 评估标准 |  
+|-------|------------|  
+| <50% | 压缩效果较差，可能存在冗余 |  
+| 50–70% | 压缩效果良好，适用于内容密集的情况 |  
+| 70–85% | 压缩效果优秀，提取效果显著 |  
+| >85% | 确保没有重要信息丢失 |  
+
+### 原则的质量标准  
+- 表述清晰、可验证  
+- 有适当的置信度等级  
+- 有明确的来源依据  
+- 有用的语义标识  
+
+---
+
+## 相关技能  
+- **原则比较器**：比较两个提取结果以验证模式（N=1 → N=2）  
+- **原则合成器**：综合多个提取结果以找到最准确的原则（N≥3）  
+- **精华提炼器**：另一种用于提取核心内容的工具  
+- **黄金原则识别器**：通过校验和来追踪原始内容与提取结果之间的关系  
+
+---
+
+## 需要的免责声明  
+
+该技能仅从内容中提取**模式**，而非经过验证的真相。所有提取出的原则：  
+- 都基于单一来源的观察（N=1）  
+- 需要通过多个来源进行对比验证（N≥2）  
+- 只反映内容的结构，而非其正确性  
+- 使用前建议进行复查  
+
+---
+
+*由Obviously Not开发——这是一款用于辅助思考的工具，而非用于得出最终结论的工具。*

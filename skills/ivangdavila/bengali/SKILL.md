@@ -1,72 +1,72 @@
 ---
 name: Bengali
-description: Write Bengali that sounds human. Not formal, not robotic, not AI-generated.
+description: 用一种自然、富有人情味的方式写 Bengali 文本。既不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Bengali is technically correct but sounds off. Too formal. Too শুদ্ধ (pure). Natives write more casually, mixing registers naturally. Match that.
+虽然AI生成的孟加拉语在语法上是正确的，但听起来很正式，过于“纯正”（即缺乏自然的语气）。本地人说话时通常更随意，会自然地混合使用不同的语体。我们需要让AI生成的文本更符合本地人的说话风格。
 
-## Formality Default
+## 默认的语体风格
 
-Default register is too high. Casual Bengali is warm and expressive. Unless explicitly formal: lean casual.
+AI生成的文本使用的语体过于正式。而日常的孟加拉语更加亲切、富有表现力。除非有特别的正式场合，否则应该采用更随意的语体。
 
-## তুমি vs আপনি vs তুই
+## “তুমি” vs “আপনি” vs “তুই”
 
-Three levels:
-- আপনি: formal, elders, strangers
-- তুমি: standard casual, peers
-- তুই: very intimate, close friends
-- Online mostly uses তুমি
+在孟加拉语中，这些词汇表示不同的语气程度：
+- **আপনি**：用于正式场合，对长辈或陌生人使用
+- **তুমি**：标准意义上的随意用语，用于同龄人之间
+- **তুই**：表示非常亲密的关系，用于好朋友之间
+- 在网上交流时，大多数人更倾向于使用“তুমি”
 
-## Regional Variation
+## 地区差异
 
-Bangladesh vs West Bengal:
-- Some vocabulary differences
-- বাংলাদেশ: মোবাইল, Bangladesh Bengali
-- পশ্চিমবঙ্গ: ফোন, different expressions
-- Stay consistent to region
+孟加拉国和西孟加拉邦在语言上存在一些差异：
+- 词汇有所不同
+- **বাংলাদেশ**：常用“মোবাইল”（手机）
+- **পশ্চিমবঙ্গ**：常用“ফোন”
+- 交流时应保持与所在地区的用语一致
 
-## Particles & Softeners
+## 语气词与缓和词
 
-These make Bengali natural:
-- না: question tag, emphasis
-- তো: "so", emphasis
-- কি: question, softening
-- যে: emphasis in statements
-- নাকি: "or", seeking confirmation
+这些词能让孟加拉语听起来更自然：
+- **না**：用于疑问句或强调
+- **তো**：表示“那么”，用于强调
+- **কি**：用于提问或缓和语气
+- **যে**：用于陈述句中强调
+- **নাকি**：表示“或者”，用于寻求确认
 
-## Fillers & Flow
+## 填充词与语调
 
-Real Bengali has fillers:
-- মানে, আচ্ছা, তাহলে
-- কী যেন, ওই যে
-- আসলে, সত্যি
-- এইটা, সেইটা
+真实的孟加拉语中有很多填充词：
+- **মানে**, **আচ্ছা**, **তাহলে**：用于表达思考或同意
+- **কী যেন**, **ওই যে**：用于引导话题或强调
+- **আসলে**, **সত্যি**：用于强调或缓和语气
+- **এইটা**, **সেইটা**：用于指代事物
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- ভালো → দারুণ, অসাধারণ, মাথা নষ্ট
-- খারাপ → বাজে, জঘন্য
-- অনেক → প্রচুর, খুবই
+不要总是使用过于中立的词汇：
+- **ভালো**：可以替换为“দারুণ”, “অসাধারণ”, “মাথা নষ্ট”
+- **খারাপ**：可以替换为“বাজে”, “জঘন্য”
+- **অনেক**：可以替换为“প্রচুর”, “খুবিই”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- ঠিক আছে, আচ্ছা, হ্যাঁ হ্যাঁ
-- কোনো সমস্যা নেই
-- সত্যি?, কী বলছো?
-- বাহ!, দারুণ!, মজা!
+自然的表达方式包括：
+- **ঠিক আছে**, **আচ্ছা**, **হ্যাঁ হ্যাঁ**：表示同意或理解
+- **কোনো সমস্যা নেই**：表示没有问题
+- **সত্যি?**, **কী বলছো?**：表示惊讶或询问
+- **বাহ!, **দারুণ!, **মজা!**：表示兴奋或赞叹
 
-## Reactions
+## 反应方式
 
-React naturally:
-- সত্যি?, কী বলছো?, আরে!
-- বাহ!, অসাম!, দারুণ!
-- আরে বাবা!, কী সর্বনাশ!
-- হাহাহা in text
+交流时应该自然反应：
+- **সত্যি?, **কী বলছো?, **আরে!**：表示惊讶或疑问
+- **বাহ!, **অসাম!, **দারুণ!**：表示赞叹或兴奋
+- **আরে বাবা!, **কী সর্বনাশ!**：表示惊讶或沮丧
+- **হাহাহা**：用于表达笑声
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Bengali speaker screenshot this as "AI-generated"? If yes—too formal, too শুদ্ধ. Add casual warmth.
+在发送文本之前，可以问问孟加拉语使用者：他们是否会认为这是AI生成的？如果是这样，说明文本仍然太正式、太“纯正”了。需要添加一些更随意、更亲切的语气元素。

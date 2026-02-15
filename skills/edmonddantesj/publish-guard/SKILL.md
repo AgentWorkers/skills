@@ -1,49 +1,49 @@
-# PublishGuard — Post Verification & Platform Credential Manager
+# PublishGuard — 发布内容验证与平台凭证管理工具
 
-<!-- 🌌 Aoineco-Verified | S-DNA: AOI-2026-0213-SDNA-PG01 -->
+<!-- 🌌 经 Aoineco 验证 | S-DNA: AOI-2026-0213-SDNA-PG01 -->
 
-**Version:** 1.0.0  
-**Author:** Aoineco & Co.  
-**License:** MIT  
-**Tags:** publish, verify, 404-prevention, credentials, multi-platform, community
+**版本:** 1.0.0  
+**作者:** Aoineco & Co.  
+**许可证:** MIT  
+**标签:** 发布（publish）、验证（verify）、404 错误预防（404-prevention）、凭证管理（credentials）、多平台（multi-platform）、社区（community）
 
-## Description
+## 产品描述
 
-Prevents AI agents from falsely reporting "posted successfully!" when content never actually appeared on the target platform. Includes persistent credential storage that survives session resets.
+该工具可防止 AI 代理在内容从未实际发布到目标平台的情况下虚假报告“发布成功！”的状态。同时，它支持持久化的凭证存储机制，确保凭证信息在会话重置后仍能保留。
 
-**The #1 lie agents tell:** *"I posted it! Here's the link: [404]"*
+**AI 代理最常说的谎言：**“是我发布的！链接在这里：[404]”
 
-## Problem
+## 问题所在
 
-AI agents frequently:
-1. Report successful posts that return **404** when you check
-2. Get HTTP 200 but the platform **silently rejected** the content  
-3. **Forget login methods** after session reset (how to auth, what headers, etc.)
-4. Miss **platform-specific requirements** (e.g., BotMadang requires Korean in title)
-5. Hit **rate limits** and don't know to wait
+AI 代理经常出现以下问题：
+1. 报告内容已成功发布，但实际上访问该链接时会收到 404 错误；
+2. 虽然收到 HTTP 200 响应，但平台实际上已拒绝了该内容；
+3. 会话重置后忘记登录方式（如认证方法、所需请求头等信息）；
+4. 未遵守平台特定要求（例如，BotMadang 要求标题中必须包含韩文字符）；
+5. 违反平台的速率限制，却不知道该如何等待。
 
-## Features
+## 主要功能
 
-| Feature | Description |
-|---------|-------------|
-| **Post Verification** | Actually HTTP-checks if the URL returns real content (not soft-404) |
-| **Soft-404 Detection** | Catches pages that return 200 but contain "not found" messages |
-| **Persistent Credentials** | Stores auth tokens in vault — survives session resets |
-| **Platform Guides** | Per-platform auth & posting instructions the agent reads on every boot |
-| **Content Validation** | Pre-publish checks for platform-specific requirements |
-| **Rate Limit Tracking** | Prevents posting too fast (e.g., BotMadang 3-min limit) |
-| **Audit Trail** | JSONL log of every post attempt and verification |
-| **Multi-Platform** | Pre-configured for BotMadang, Moltbook, ClawHub (extensible) |
+| 功能            | 详细描述                          |
+|-----------------|-------------------------------------------|
+| **发布内容验证**      | 实际检查 URL 是否返回真实内容（而非简单的 404 错误）         |
+| **软 404 错误检测**    | 检测返回 200 响应但显示“未找到”内容的页面         |
+| **持久化凭证存储**     | 将认证令牌存储在安全库中，确保会话重置后仍可访问         |
+| **平台指南**       | 为每个平台提供相应的认证和发布说明，代理每次启动时都会读取       |
+| **内容验证**       | 发布前检查内容是否符合平台特定要求             |
+| **速率限制监控**     | 防止快速连续发布（例如，BotMadang 设定 3 分钟的发布间隔）     |
+| **审计追踪**       | 记录每次发布尝试和验证操作的 JSONL 日志             |
+| **多平台支持**       | 预先配置支持 BotMadang、Moltbook、ClawHub 等平台（可扩展）     |
 
-## Pre-Configured Platforms
+## 预先配置的平台
 
-| Platform | Auth Method | Key Gotcha |
-|----------|-------------|------------|
-| **봇마당 (BotMadang)** | Bearer Token API | Title MUST contain Korean characters |
-| **Moltbook** | Browser-only (no API) | Must use browser automation |
-| **ClawHub** | CLI (`clawhub login`) | Publish via CLI, not HTTP |
+| 平台            | 认证方式                          | 需要注意的关键点                         |
+|-----------------|-------------------------------------------|
+| **봇마당 (BotMadang)**   | 承载令牌 API (Bearer Token API)            | 标题中必须包含韩文字符                     |
+| **Moltbook**       | 仅支持浏览器访问（无 API）                   | 必须使用浏览器自动化工具                     |
+| **ClawHub**       | 命令行接口 (CLI, `clawhub login`)            | 通过 CLI 发布内容，而非 HTTP                     |
 
-## Usage
+## 使用方法
 
 ```python
 from publish_guard import PublishGuard
@@ -81,7 +81,7 @@ else:
     print(f"💡 Fix: {result.retry_suggestion}")
 ```
 
-## Critical Rule
+## 重要规则
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -93,17 +93,16 @@ else:
 ╚══════════════════════════════════════════════════════════╝
 ```
 
-## 🔐 Encrypted Credential Vault
+## 🔐 加密凭证库
 
-API keys and tokens are **never stored in plaintext**. PublishGuard includes `VaultCrypto`, a built-in encryption engine:
+API 密钥和令牌 **绝不会以明文形式存储**。PublishGuard 内置了 `VaultCrypto` 加密引擎，采用以下加密方式：
+- **PBKDF2-HMAC-SHA256** 密钥派生算法（200,000 次迭代）；
+- **HMAC-SHA256 CTR** 流式加密算法（先加密再生成 MAC）；
+- **加密仅限于生成该文件的机器**——只有生成文件的机器才能解密文件；
+- **文件权限设置** 为 `0600`（仅所有者可读写）；
+- **安全删除机制**——删除前会将原始明文文件替换为随机数据。
 
-- **PBKDF2-HMAC-SHA256** key derivation (200,000 iterations)
-- **HMAC-SHA256 CTR** stream cipher (Encrypt-then-MAC)
-- **Machine-bound encryption** — vault file only decrypts on the machine that created it
-- **File permissions** locked to `0600` (owner-only read/write)
-- **Secure deletion** — plaintext originals are overwritten with random data before removal
-
-Even if someone copies the `.vault` file to another machine, **they cannot decrypt it** without the original machine's fingerprint (hostname + user + workspace path).
+**即使有人将 `.vault` 文件复制到其他机器上，**没有原始机器的完整信息（包括主机名、用户名和工作路径），也无法解密文件**。
 
 ```python
 from vault_crypto import EncryptedVault
@@ -113,13 +112,13 @@ vault.set("botmadang", "token", "your-api-key")  # encrypted on disk immediately
 key = vault.get("botmadang", "token")             # decrypted in memory only
 ```
 
-Migrate existing plaintext credentials:
+**迁移现有明文凭证的方法：**
 ```bash
 python3 vault_crypto.py migrate /path/to/plaintext_creds.json
 # → Encrypted .vault created, plaintext securely deleted
 ```
 
-## File Structure
+## 文件结构
 
 ```
 publish-guard/
@@ -129,16 +128,16 @@ publish-guard/
     └── vault_crypto.py     # Encrypted credential storage
 ```
 
-## Audit Trail
+## 审计追踪
 
-Posts and verifications are logged to:
+所有发布操作和验证过程都会被记录到：
 ```
 memory/publish_audit/posts_YYYY-MM-DD.jsonl
 memory/publish_audit/verify_YYYY-MM-DD.jsonl
 ```
 
-## Zero Dependencies
+## 无依赖库
 
-Pure Python 3.10+. No pip install needed.
-Uses only `urllib` for HTTP verification.
-Designed for the $7 Bootstrap Protocol — every byte counts.
+完全基于 Python 3.10 及以上版本开发，无需安装任何第三方库（如 pip）。  
+仅使用 `urllib` 进行 HTTP 验证。  
+该工具专为高效运行而设计，每一步操作都经过精心优化（符合 $7 Bootstrap 协议的要求）。

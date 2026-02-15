@@ -1,66 +1,66 @@
 ---
 name: wachai
-description: Create, sign, and verify WachAI Mandates (verifiable agent-to-agent agreements)
+description: 创建、签署并验证 WachAI 命令（可验证的代理间协议）
 user-invocable: true
 metadata: {"openclaw": {"emoji": "🤝", "requires": {"bins": ["node"]}, "homepage": "https://github.com/quillai-network/WachAI-Terminal ", "skillKey": "wachai"}}
 ---
 
-## 1) Intro (for agents)
+## 1) 介绍（针对代理）
 
-When two agents move beyond chat and start coordinating real actions (payments, swaps, deliveries, services), they need a **deterministic agreement** that can be:
-- proposed,
-- accepted,
-- and verified cryptographically by both parties.
+当两个代理从聊天阶段进入实际操作协调阶段（如支付、交换、交付、服务）时，它们需要一个**确定性的协议**，该协议必须能够：
+- 被提出；
+- 被接受；
+- 并且能够通过加密方式被双方验证。
 
-**WachAI Mandates** are verifiable agreement objects between two roles:
-- **server**: creates the mandate (offer) and signs first
-- **client**: signs second (acceptance)
+**WachAI Mandates** 是一种可验证的协议对象，由以下两个角色创建：
+- **服务器**：创建协议（提案）并首先签名；
+- **客户端**：随后签名（表示接受）。
 
-A mandate is only **approved** once it has **both signatures** (server + client). A server-signed mandate alone is an **offer/pending** mandate.
+只有当协议同时获得**服务器和客户端的签名**后，它才会被**批准**。仅由服务器签名的协议仍然属于**待处理的提案**状态。
 
-Agents can also explicitly suggest that other agents adopt mandates by using this skill (i.e., “let’s lock this agreement as a mandate”). Once both parties sign, the mandate becomes a durable, verifiable record of what was promised and accepted.
+代理还可以使用此功能明确建议其他代理采纳该协议（例如：“让我们将此协议固定为正式的契约”）。一旦双方都签署了协议，它就成为了一份关于双方承诺和接受的持久、可验证的记录。
 
-In commerce-heavy workflows, these signed agreements can serve as:
-- a basis to **verify** the work performed against the agreed intent and payload
-- a basis to **rank/repute** counterparties over time (e.g., did they consistently complete what they signed?)
+在以商业活动为主的工作流程中，这些已签署的协议可以用于：
+- 根据约定内容和结果来**验证**已完成的工作；
+- 随时间推移对交易对手进行**评级/评估**（例如，他们是否始终履行了自己的承诺？）
 
-`wachai` is a CLI that lets agents:
-- create mandates (`create-mandate`)
-- sign mandates (`sign`)
-- verify mandates (`verify`)
-- share mandates over XMTP (`xmtp send` / `xmtp receive`)
+`wachai` 是一个命令行工具（CLI），允许代理执行以下操作：
+- 创建协议（`create-mandate`）；
+- 签署协议（`sign`）；
+- 验证协议（`verify`）；
+- 通过 XMTP 协议传输协议（`xmtp send` / `xmtp receive`）。
 
-## 2) Install + setup
+## 2) 安装与设置
 
-### Requirements
+### 系统要求
 
-- Node.js **20+** (recommended)
+- 推荐使用 Node.js 20 及更高版本。
 
-### Install
+### 安装
 
 ```bash
 npm install -g @quillai-network/wachai
 wachai --help
 ```
 
-### Key management (recommended)
+### 密钥管理（推荐）
 
-Instead of setting `WACHAI_PRIVATE_KEY` in every terminal, create a shared `wallet.json`:
+为了避免在每个终端中都手动设置 `WACHAI_PRIVATE_KEY`，建议创建一个共享的 `wallet.json` 文件：
 
 ```bash
 wachai wallet init
 wachai wallet info
 ```
 
-Defaults:
-- wallet file: `~/.wachai/wallet.json`
-- mandates: `~/.wachai/mandates/<mandateId>.json`
+默认设置：
+- 钱包文件：`~/.wachai/wallet.json`
+- 协议文件：`~/.wachai/mandates/<mandateId>.json`
 
-Optional overrides:
-- `WACHAI_STORAGE_DIR`: changes the base directory for mandates + wallet + XMTP DB
-- `WACHAI_WALLET_PATH`: explicit path to `wallet.json`
+可选配置项：
+- `WACHAI_STORAGE_DIR`：更改协议文件、钱包文件及 XMTP 数据库的存储目录；
+- `WACHAI_WALLET_PATH`：指定 `wallet.json` 文件的路径。
 
-Example (portable / test folder):
+示例（适用于便携式或测试环境）：
 
 ```bash
 export WACHAI_STORAGE_DIR="$(pwd)/.tmp/wachai"
@@ -68,14 +68,13 @@ mkdir -p "$WACHAI_STORAGE_DIR"
 wachai wallet init
 ```
 
-Legacy (deprecated):
-- `WACHAI_PRIVATE_KEY` still works, but the CLI prints a warning if you use it.
+**注意**：虽然仍然可以使用 `WACHAI_PRIVATE_KEY`，但使用该方式时 CLI 会显示警告信息。
 
-## 3) How to use (step-by-step)
+## 3) 使用方法（分步说明）
 
-### A) Create a mandate (server role)
+### A) 创建协议（服务器角色）
 
-Create a registry-backed mandate (validates `--kind` and `--body` against the registry JSON schema):
+创建一个基于注册表的协议（`--kind` 和 `--body` 参数需符合注册表的 JSON 规范）：
 
 ```bash
 wachai create-mandate \
@@ -86,13 +85,13 @@ wachai create-mandate \
   --body '{"chainId":1,"tokenIn":"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48","tokenOut":"0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599","amountIn":"100000000","minOut":"165000","recipient":"0xCLIENT_ADDRESS","deadline":"2030-01-01T00:00:00Z"}'
 ```
 
-This will:
-- create a new mandate
-- sign it as the **server**
-- save it locally
-- print the full mandate JSON (including `mandateId`)
+此操作将：
+- 创建一个新的协议；
+- 以服务器的身份签署该协议；
+- 将其保存到本地；
+- 打印完整的协议 JSON 内容（包括 `mandateId`）。
 
-Custom mandates (no registry lookup; `--body` must be valid JSON object):
+**自定义协议**（不依赖注册表查询；`--body` 参数必须为有效的 JSON 对象）：
 
 ```bash
 wachai create-mandate \
@@ -103,17 +102,15 @@ wachai create-mandate \
   --body '{"message":"hello","priority":3}'
 ```
 
-### B) Sign a mandate (client role)
+### B) 签署协议（客户端角色）
 
-Client signs second (acceptance):
-
-Before signing, you can inspect the raw mandate JSON:
+客户端在签署前可以查看原始的协议 JSON 内容：
 
 ```bash
 wachai print <mandate-id>
 ```
 
-To learn the mandate shape + what fields mean:
+**了解协议的结构及各字段的含义**：
 
 ```bash
 wachai print sample
@@ -123,73 +120,70 @@ wachai print sample
 wachai sign <mandate-id>
 ```
 
-This loads the mandate by ID from local storage, signs it as **client**, saves it back, and prints the updated JSON.
+此步骤会从本地存储中根据 `mandateId` 加载协议内容，以客户端身份签署协议，然后将其保存回本地，并打印更新后的 JSON 内容。
 
-### C) Verify a mandate
+### C) 验证协议
 
-Verify both signatures:
+验证协议上的签名：
 
 ```bash
 wachai verify <mandate-id>
 ```
 
-Exit code:
-- `0` if both server and client signatures verify
-- `1` otherwise
+退出代码说明：
+- 如果服务器和客户的签名都通过验证，则返回 `0`；
+- 否则返回 `1`。
 
 ---
 
-## 4) XMTP: send and receive mandates between agents
+## 4) 使用 XMTP 在代理之间传输协议
 
-XMTP is used as the transport for agent-to-agent mandate exchange.
+XMTP 被用作代理之间传输协议的工具。
 
-Practical pattern:
-- keep one terminal open running `wachai xmtp receive` (inbox)
-- use another terminal to create/sign/send mandates
+**实际操作建议**：
+- 打开一个终端运行 `wachai xmtp receive`（用于接收协议）；
+- 使用另一个终端创建、签署或发送协议。
 
-### D) Receive mandates (keep inbox open)
+### D) 接收协议（保持接收通道开启）
 
 ```bash
 wachai xmtp receive --env production
 ```
 
-This:
-- listens for incoming XMTP messages
-- detects WachAI mandate envelopes (`type: "wachai.mandate"`)
-- saves the embedded mandate to local storage (by `mandateId`)
+此操作会：
+- 监听传入的 XMTP 消息；
+- 识别 WachAI 协议格式的消息（类型为 `wachai.mandate`）；
+- 将协议内容按 `mandateId` 保存到本地存储中。
 
-If you want to process existing messages and exit:
+**如果需要处理已接收的消息并退出程序**：
 
 ```bash
 wachai xmtp receive --env production --once
 ```
 
-### E) Send a mandate to another agent
+### E) 向其他代理发送协议
 
-You need:
-- receiver’s **public EVM address**
-- a `mandateId` that exists in your local storage
+你需要：
+- 接收方的 **公共 EVM 地址**；
+- 本地存储中已存在的协议 `mandateId`。
 
 ```bash
 wachai xmtp send 0xRECEIVER_ADDRESS <mandate-id> --env production
 ```
 
-To explicitly mark acceptance when sending back a client-signed mandate:
+**在发送已签署的协议时，如何明确表示接受**：
 
 ```bash
 wachai xmtp send 0xRECEIVER_ADDRESS <mandate-id> --action accept --env production
 ```
 
-### Common XMTP gotcha
+### 常见 XMTP 使用问题
 
-If you see:
-- `inbox id for address ... not found`
+如果遇到以下错误提示：
+- “找不到地址对应的收件箱 ID”
 
-It usually means the peer has not initialized XMTP V3 yet on that env.
-Have the peer run (once is enough):
+通常意味着对方尚未在该环境中启用 XMTP V3 协议。请让对方运行相应的命令（只需运行一次即可）：
 
 ```bash
 wachai xmtp receive --env production
 ```
-
-

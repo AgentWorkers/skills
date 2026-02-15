@@ -1,34 +1,34 @@
 ---
 name: instantdb
-description: Real-time database integration with InstantDB. Use this skill when working with InstantDB apps to perform admin operations (create/update/delete entities, link/unlink relationships, query data) and subscribe to real-time data changes. Triggers include mentions of InstantDB, real-time updates, database sync, entity operations, or when OpenClaw needs to send action updates visible to humans in real-time.
+description: 实时数据库集成与InstantDB：在使用InstantDB应用程序进行管理操作（创建/更新/删除实体、关联/解除关联关系、查询数据）以及订阅实时数据变更时，可运用此技能。触发条件包括涉及InstantDB的指令、实时更新、数据库同步、实体操作，或者当OpenClaw需要向用户实时发送操作更新信息时。
 ---
 
-# InstantDB Integration
+# InstantDB集成
 
-## Overview
+## 概述
 
-Node.js integration for InstantDB enabling OpenClaw to perform admin operations and monitor real-time data changes via WebSocket subscriptions.
+InstantDB的Node.js集成使得OpenClaw能够执行管理操作，并通过WebSocket订阅实时监控数据变化。
 
-## Setup
+## 设置
 
-Install dependencies:
+安装依赖项：
 
 ```bash
 npm install
 ```
 
-Set environment variables:
+设置环境变量：
 
 ```bash
 export INSTANTDB_APP_ID="your-app-id"
 export INSTANTDB_ADMIN_TOKEN="your-admin-token"
 ```
 
-## Core Capabilities
+## 核心功能
 
-### 1. Query Data
+### 1. 查询数据
 
-Fetch data using InstantDB's query syntax:
+使用InstantDB的查询语法获取数据：
 
 ```javascript
 const { InstantDBClient } = require('./scripts/instantdb.js');
@@ -43,14 +43,15 @@ const result = await client.query({
 });
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js query '{"tasks": {}}'
 ```
 
-### 2. Create Entities
+### 2. 创建实体
 
-Add new entities to a namespace:
+向命名空间中添加新实体：
 
 ```javascript
 const { entityId, result } = await client.createEntity('tasks', {
@@ -60,19 +61,21 @@ const { entityId, result } = await client.createEntity('tasks', {
 });
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js create tasks '{"title": "Process data", "status": "pending"}'
 ```
 
-Optional entity ID:
+（可选）实体ID：
+
 ```bash
 ./scripts/instantdb.js create tasks '{"title": "Task"}' custom-entity-id
 ```
 
-### 3. Update Entities
+### 3. 更新实体
 
-Modify existing entity attributes:
+修改现有实体的属性：
 
 ```javascript
 await client.updateEntity(entityId, 'tasks', {
@@ -80,53 +83,57 @@ await client.updateEntity(entityId, 'tasks', {
 });
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js update <entity-id> tasks '{"status": "completed"}'
 ```
 
-### 4. Delete Entities
+### 4. 删除实体
 
-Remove entities:
+删除实体：
 
 ```javascript
 await client.deleteEntity(entityId, 'tasks');
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js delete <entity-id> tasks
 ```
 
-### 5. Link Entities
+### 5. 关联实体
 
-Create relationships between entities:
+在实体之间创建关系：
 
 ```javascript
 await client.linkEntities(taskId, assigneeId, 'assignees');
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js link <parent-id> <child-id> assignees
 ```
 
-### 6. Unlink Entities
+### 6. 取消关联实体
 
-Remove relationships:
+删除实体之间的关系：
 
 ```javascript
 await client.unlinkEntities(taskId, assigneeId, 'assignees');
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js unlink <parent-id> <child-id> assignees
 ```
 
-### 7. Real-time Subscriptions
+### 7. 实时订阅
 
-Monitor data changes via WebSocket:
+通过WebSocket监控数据变化：
 
 ```javascript
 const subscriptionId = client.subscribe(
@@ -142,14 +149,15 @@ const subscriptionId = client.subscribe(
 // Later: client.unsubscribe(subscriptionId);
 ```
 
-CLI (listens for specified duration):
+命令行界面（监听指定时长）：
+
 ```bash
 ./scripts/instantdb.js subscribe '{"tasks": {}}' 60  # Listen for 60 seconds
 ```
 
-### 8. Transactions
+### 8. 事务
 
-Execute multiple operations atomically using the tx builder:
+使用事务构建器原子地执行多个操作：
 
 ```javascript
 const { tx, id } = require('@instantdb/admin');
@@ -160,16 +168,17 @@ await client.transact([
 ]);
 ```
 
-CLI:
+命令行界面（CLI）：
+
 ```bash
 ./scripts/instantdb.js transact '[{"op": "update", "id": "...", "data": {...}}]'
 ```
 
-## OpenClaw Usage Patterns
+## OpenClaw使用模式
 
-### Action Status Updates
+### 操作状态更新
 
-Send real-time progress to human observers:
+向人类观察者发送实时进度更新：
 
 ```javascript
 const { id } = require('@instantdb/admin');
@@ -196,9 +205,9 @@ await client.updateEntity(actionId, 'actions', {
 });
 ```
 
-### Multi-step Workflow Tracking
+### 多步骤工作流跟踪
 
-Track complex operations:
+跟踪复杂操作：
 
 ```javascript
 const { tx, id } = require('@instantdb/admin');
@@ -242,9 +251,9 @@ for (let i = 0; i < stepIds.length; i++) {
 }
 ```
 
-### Human Monitoring Pattern
+### 人类监控模式
 
-Humans subscribe to watch OpenClaw's actions:
+人类订阅以观察OpenClaw的操作：
 
 ```javascript
 // Human's frontend code
@@ -269,9 +278,9 @@ function ActionMonitor() {
 }
 ```
 
-### Streaming Progress Updates
+### 流式进度更新
 
-For long-running operations, stream updates:
+对于长时间运行的操作，提供流式更新：
 
 ```javascript
 const { id } = require('@instantdb/admin');
@@ -306,18 +315,18 @@ async function processLargeDataset(items) {
 }
 ```
 
-## Transaction Patterns
+## 事务模式
 
-See `references/transactions.md` for detailed transaction patterns including:
-- Batch operations
-- Relationship management
-- Conditional updates
-- State machines
-- Cascade operations
+详细的事务模式请参阅`references/transactions.md`，包括：
+- 批量操作
+- 关系管理
+- 条件更新
+- 状态机
+- 级联操作
 
-## Error Handling
+## 错误处理
 
-All operations return promises that reject on failure:
+所有操作返回Promise对象，失败时会拒绝（reject）：
 
 ```javascript
 try {
@@ -327,18 +336,17 @@ try {
 }
 ```
 
-## Query Syntax
+## 查询语法
 
-See `references/query_syntax.md` for comprehensive query examples including:
-- Where clauses and operators
-- Relationship traversal
-- Sorting and pagination
-- Multi-level nesting
+详细的查询示例请参阅`references/query_syntax.md`，包括：
+- Where子句和运算符
+- 关系遍历
+- 排序和分页
+- 多层嵌套
 
-## References
+## 参考资料
 
-- InstantDB documentation: https://www.instantdb.com/docs
-- Admin SDK: https://www.instantdb.com/docs/admin
-- Query reference: See `references/query_syntax.md`
-- Transaction patterns: See `references/transactions.md`
-
+- InstantDB文档：https://www.instantdb.com/docs
+- 管理SDK：https://www.instantdb.com/docs/admin
+- 查询参考：请参阅`references/query_syntax.md`
+- 事务模式：请参阅`references/transactions.md`

@@ -1,6 +1,6 @@
 ---
 name: self-love-confidence
-description: Build self-love and confidence with affirmations, wins logging, and inner critic management
+description: 通过积极的自我肯定、记录自己的成就以及有效管理内心的“批评者”（即那些自我否定的声音），来培养自我爱与自信。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,64 +11,60 @@ triggers:
   - "self worth"
 ---
 
-# Self-Love & Confidence
+# 自爱与自信
 
-Build unshakeable self-worth through daily practices, wins logging, and inner critic reframing.
+通过日常练习、记录自己的成就以及重新审视内心的负面评价，培养坚定不移的自我价值感。
 
-## What it does
+## 功能介绍
 
-This skill transforms self-doubt into self-trust through four core practices:
+这项技能通过以下四种核心方法将自我怀疑转化为自信：
 
-- **Affirmations**: Personalized affirmations across five dimensions of worth (self-worth, capability, body, relationships, growth)
-- **Wins Logging**: Capture daily wins—big and small—to counteract the brain's negativity bias
-- **Inner Critic Reframing**: Convert harsh self-talk into compassionate, realistic self-dialogue
-- **Confidence Tracking**: Monitor confidence levels over time to spot patterns and celebrate progress
+- **积极肯定**：针对自我价值（自我价值、能力、身体、人际关系、成长）五个维度，提供个性化的积极肯定语句。
+- **记录成就**：记录每日取得的任何小成就，以对抗大脑的消极偏见。
+- **重新审视负面想法**：将严厉的自我批评转化为充满同情心和现实性的自我对话。
+- **自信监测**：持续跟踪自信水平，发现其中的规律并庆祝自己的进步。
 
-## Usage
+## 使用方法
 
-### Daily Affirmation
-Start your morning with a personalized affirmation from your chosen category. The skill adapts affirmations based on your recent logs and patterns.
+### 每日积极肯定
+每天早晨，从你选择的类别中选取一条积极的肯定语句来开始新的一天。该技能会根据你最近的记录和行为模式自动调整肯定内容。
 
-**Trigger:** "Give me an affirmation" or "self love practice"
+**触发方式**：输入“给我一条积极肯定”或“进行自我爱练习”。
 
-### Log a Win
-Record a win—any accomplishment, no matter size. Won a small argument with your inner critic? Shipped a feature? Drank enough water? Log it. The wins compound into visible proof of your capability.
+### 记录成就
+无论成就大小，都要记录下来。是与内心的负面声音成功抗争了一次吗？完成了某个任务？喝了足够的水？统统记录下来。这些小小的成就会累积成证明你能力的证据。
 
-**Trigger:** "Log a win" or "I accomplished..."
+**触发方式**：输入“记录一项成就”或“我完成了……”。
 
-### Reframe Thought
-Caught yourself in harsh self-talk? Feed it to the skill. It will help you see the thought as data, not truth, and reframe it into something grounded and compassionate.
+### 重新审视负面想法
+当你发现自己有负面的自我评价时，将其输入到该技能中。它会帮助你将这些想法视为数据，而非绝对事实，并将其转化为更积极、更现实的表述。
 
-**Trigger:** "Reframe this thought" or "I'm feeling insecure about..."
+**触发方式**：输入“重新审视这个想法”或“我对……感到不安”。
 
-### Confidence Check
-Quick pulse on your current confidence level (1-10) across dimensions. Track shifts and what caused them.
+### 自信评估
+快速评估当前的自信水平（1-10分），并记录变化的原因。
 
-**Trigger:** "Confidence check" or "How confident am I today?"
+**触发方式**：输入“进行自信评估”或“我今天的自信程度是多少？”
 
-### Review Progress
-See your wins, affirmation history, and confidence trend over the past week, month, or custom range. Spot patterns. Celebrate growth.
+### 回顾进步
+查看过去一周、一个月或自定义时间范围内的成就记录、积极肯定语句以及自信变化情况，发现其中的规律并庆祝自己的成长。
 
-**Trigger:** "Show my progress" or "Review my wins"
+**触发方式**：输入“查看我的进步”或“回顾我的成就”。
 
-## Affirmation Categories
+## 肯定语句类别
 
-The skill offers affirmations across five dimensions:
+该技能提供了涵盖五个维度的积极肯定语句：
 
-- **Self-Worth**: Core belief in your inherent value, independent of achievement
-- **Capability**: Trust in your ability to learn, solve, and grow
-- **Body**: Gratitude and respect for your physical self
-- **Relationships**: Healthy boundaries and deserving of good connection
-- **Growth**: Embracing challenge and seeing failure as feedback
+- **自我价值**：相信自己与生俱来的价值，这种价值与外在成就无关。
+- **能力**：相信自己具备学习、解决问题和不断成长的能力。
+- **身体**：对自己的身体心存感激和尊重。
+- **人际关系**：建立健康的界限，并相信自己值得拥有良好的关系。
+- **成长**：勇于接受挑战，并将失败视为成长的机会。
 
-## Tips
+## 使用技巧
 
-1. **Consistency beats intensity.** One affirmation daily is more powerful than ten sporadic ones. The brain needs repetition to rewire.
-
-2. **Logs are proof.** When doubt creeps in, scroll your wins. Your brain forgot what you accomplished—remind it.
-
-3. **Reframe regularly.** The inner critic is a reflex. Catching and reframing each thought weakens its grip over time.
-
-4. **Small wins count.** Logging "I drank water" is not trivial. It's evidence that you follow through on commitments to yourself.
-
-5. **All data stays local on your machine.** Your affirmations, wins, and inner critic conversations never leave your device. Privacy by design.
+1. **持之以恒比偶尔尝试更重要**：每天坚持一条积极肯定语句，比偶尔尝试十次更有效。大脑需要重复的输入才能形成新的思维模式。
+2. **记录是最好的证据**：当怀疑出现时，回顾自己取得的成就。大脑可能会忘记你曾经做过的事情，记录可以帮助你提醒自己。
+3. **定期重新审视负面想法**：内心的负面评价是一种习惯性反应。通过不断捕捉并重新审视这些想法，可以逐渐削弱它们的影响力。
+4. **小成就也很重要**：记录“我喝了水”这样的小事也很重要。这证明了你能够履行对自己的承诺。
+5. **所有数据都存储在本地设备上**：你的积极肯定语句、成就记录以及与内心的对话都不会被传输到外部。设计上充分考虑了隐私保护。

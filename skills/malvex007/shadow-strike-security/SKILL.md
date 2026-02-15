@@ -1,6 +1,6 @@
 ---
 name: shadowstrike-security
-description: Elite penetration testing platform with 600+ security tools
+description: 这是一个精英级的渗透测试平台，配备了600多种安全工具。
 metadata:
   {
     "openclaw":
@@ -11,72 +11,72 @@ metadata:
   }
 ---
 
-# ShadowStrike Security
+# ShadowStrike 安全平台
 
-**Elite Penetration Testing & Security Assessment Platform**
+**精英渗透测试与安全评估平台**
 
-Transform OpenClaw into a professional security operations center with 600+ Kali Linux tools, intelligent orchestration, and automated reporting.
+将 OpenClaw 转变为一个专业的安全运营中心，配备 600 多种 Kali Linux 工具、智能化的工具编排机制以及自动化报告功能。
 
-## What is ShadowStrike?
+## 什么是 ShadowStrike？
 
-ShadowStrike is a comprehensive security testing platform that provides:
-- **Intelligent Tool Orchestration** - Auto-selects best tools for each task
-- **Complete PT Lifecycle** - From reconnaissance to professional reporting
-- **600+ Security Tools** - Full Kali Linux arsenal at your fingertips
-- **Automated Workflows** - One command executes entire assessments
+ShadowStrike 是一个全面的安全测试平台，提供以下功能：
+- **智能工具编排**：为每个任务自动选择最合适的工具
+- **完整的渗透测试生命周期**：从侦察到专业报告
+- **600 多种安全工具**：丰富的 Kali Linux 工具库
+- **自动化工作流程**：一个命令即可完成整个评估过程
 
-## Key Features
+## 主要特性
 
-### 🎯 Intelligent Reconnaissance
-- **Network Discovery:** nmap, masscan, unicornscan
-- **Web Enumeration:** dirb, gobuster, ffuf, wfuzz
-- **Subdomain Hunting:** amass, sublist3r, assetfinder
-- **OSINT Gathering:** theHarvester, recon-ng, maltego
+### 🎯 智能侦察
+- **网络发现**：nmap、masscan、unicornscan
+- **Web 应用程序枚举**：dirb、gobuster、ffuf、wfuzz
+- **子域名扫描**：amass、 sublist3r、assetfinder
+- **开源信息收集**：theHarvester、recon-ng、maltego
 
-### 🔍 Vulnerability Assessment
-- **Web Testing:** sqlmap, nikto, dalfox, nuclei
-- **Network Scanning:** 610+ NSE scripts
-- **SSL/TLS Analysis:** testssl.sh, sslscan, sslyze
-- **Configuration Review:** Automated misconfiguration detection
+### 🔍 漏洞评估
+- **Web 应用程序测试**：sqlmap、nikto、dalfox、nuclei
+- **网络扫描**：610 多种 NSE 脚本
+- **SSL/TLS 分析**：testssl.sh、sslscan、sslyze
+- **配置审查**：自动检测配置错误
 
-### ⚔️ Professional Exploitation
-- **Web Exploits:** SQL injection, XSS, LFI, RCE testing
-- **Password Attacks:** hashcat, john, hydra (GPU-accelerated)
-- **Wireless Auditing:** aircrack-ng, wifite, reaver
-- **Frameworks:** Metasploit, searchsploit, BeEF
+### ⚔️ 专业攻击与利用
+- **Web 应用程序攻击**：SQL 注入、XSS、LFI、RCE 测试
+- **密码攻击**：hashcat、john（支持 GPU 加速）
+- **无线网络审计**：airecrack-ng、wifite、reaver
+- **漏洞利用框架**：Metasploit、searchsploit、BeEF
 
-### 🛡️ Post-Exploitation
-- **Privilege Escalation:** linpeas, winpeas
-- **Lateral Movement:** Pivoting and tunneling
-- **Persistence Testing:** Backdoor detection
-- **Data Exfiltration:** Secure transfer methods
+### 🛡️ 利用后操作
+- **权限提升**：linpeas、winpeas
+- **横向移动**：渗透与隧道建立
+- **持久性测试**：后门检测
+- **数据窃取**：安全的数据传输方式
 
-### 📊 Professional Reporting
-- **Executive Summaries:** High-level risk overview
-- **Technical Reports:** CVE correlation, PoC details
-- **Remediation Guides:** Step-by-step fixes
-- **Evidence Collection:** Screenshots and logs
+### 📊 专业报告
+- **高层风险概览**：全面的风险分析
+- **技术报告**：漏洞详情与攻击路径
+- **修复指南**：详细的修复步骤
+- **证据收集**：截图与日志记录
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 ```bash
 cp -r shadowstrike-security ~/.openclaw/skills/
 ```
 
-Add to agent config:
+**配置代理服务器：**
 ```json
 {
   "skills": ["shadowstrike-security"]
 }
 ```
 
-Restart:
+**重启系统：**
 ```bash
 pkill -f "openclaw gateway" && openclaw gateway &
 ```
 
-### First Commands
+### 基本命令
 ```
 "scan target.com"          → Quick port scan
 "web target.com"           → Web application test
@@ -85,52 +85,52 @@ pkill -f "openclaw gateway" && openclaw gateway &
 "hashes crack hash.txt"    → Password cracking
 ```
 
-## Command Reference
+## 命令参考
 
-### Network Assessment
+### 网络评估
 
-| Command | Description | Example Output |
+| 命令 | 描述 | 示例输出 |
 |---------|-------------|----------------|
-| `scan [target]` | Quick port scan | `Ports: 22,80,443` |
-| `deep [target]` | Full port scan (all 65,535) | `[Complete scan]` |
-| `services [target]` | Service detection | `80:nginx, 3306:mysql` |
-| `os [target]` | OS fingerprinting | `Linux 5.4` |
+| `scan [目标]` | 快速端口扫描 | `端口：22,80,443` |
+| `deep [目标]` | 全部端口扫描（65,535 个端口） | `[扫描完成]` |
+| `services [目标]` | 服务检测 | `80:nginx, 3306:mysql` |
+| `os [目标]` | 操作系统识别 | `Linux 5.4` |
 
-### Web Application Testing
+### Web 应用程序测试
 
-| Command | Description | Example Output |
+| 命令 | 描述 | 示例输出 |
 |---------|-------------|----------------|
-| `web [target]` | Full web app test | `SQLi found, XSS medium` |
-| `dirb [target]` | Directory discovery | `/admin, /api, /config` |
-| `sql [target]` | SQL injection test | `Vulnerable: id parameter` |
-| `xss [target]` | XSS testing | `Reflected XSS confirmed` |
-| `vuln [target]` | Vulnerability scan | `Critical: 2, High: 5` |
+| `web [目标]` | 全面 Web 应用程序测试 | `发现 SQL 注入漏洞（XSS 中等风险）` |
+| `dirb [目标]` | 目录结构扫描 | `/admin, /api, /config` |
+| `sql [目标]` | SQL 注入测试 | `检测到漏洞（id 参数）` |
+| `xss [目标]` | XSS 测试 | `确认存在反射型 XSS 漏洞` |
+| `vuln [目标]` | 漏洞扫描 | `严重等级：2；高风险等级：5` |
 
-### Complete Workflows
+### 完整工作流程
 
-| Command | Description | Duration |
+| 命令 | 描述 | 所需时间 |
 |---------|-------------|----------|
-| `pentest [target]` | Full PT lifecycle | 10-30 min |
-| `bugbounty [target]` | Bug bounty hunting | 15-45 min |
-| `audit [network]` | Network security audit | 20-60 min |
-| `compliance [target]` | Compliance check | 30-90 min |
+| `pentest [目标]` | 完整的渗透测试生命周期 | 10-30 分钟 |
+| `bugbounty [目标] | 漏洞赏金计划 | 15-45 分钟 |
+| `audit [network] | 网络安全审计 | 20-60 分钟 |
+| `compliance [目标] | 合规性检查 | 30-90 分钟 |
 
-### Specialized Tools
+### 专用工具
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `wifi` | WiFi security audit |
-| `hashes [file]` | Crack password hashes |
-| `exploit [cve]` | Search and run exploits |
-| `report` | Generate security report |
+| `wifi` | 无线网络安全审计 |
+| `hashes [文件] | 解密密码哈希值 |
+| `exploit [cve] | 搜索并执行漏洞利用工具 |
+| `report` | 生成安全报告 |
 
-## How It Works
+## 工作原理
 
-### Intelligent Tool Selection
+### 智能工具选择
 
-ShadowStrike automatically chooses the best tools:
+ShadowStrike 会自动为不同类型的攻击目标选择最合适的工具：
 
-**For Web Targets:**
+**针对 Web 目标：**
 ```
 Input: "test web target.com"
 ShadowStrike:
@@ -143,7 +143,7 @@ ShadowStrike:
 Output: "Critical: 2, High: 5, Report: ./target-security.md"
 ```
 
-**For Network Targets:**
+**针对网络目标：**
 ```
 Input: "scan 192.168.1.0/24"
 ShadowStrike:
@@ -154,55 +154,43 @@ ShadowStrike:
 Output: "Hosts: 15, Open ports: 47, Vulnerabilities: 12"
 ```
 
-## Tool Arsenal
+## 工具库
 
-### Information Gathering (50+ tools)
-```
+- **信息收集工具（50 多种）**：```
 nmap, masscan, unicornscan, zmap
 theHarvester, recon-ng, maltego
 amass, sublist3r, assetfinder, findomain
 ```
-
-### Web Testing (60+ tools)
-```
+- **Web 应用程序测试工具（60 多种）**：```
 nikto, sqlmap, burpsuite, zap
 dirb, gobuster, wfuzz, ffuf
 dalfox, xsser, nuclei, arachni
 wpscan, joomscan, droopescan
 ```
-
-### Password Attacks (30+ tools)
-```
+- **密码攻击工具（30 多种）**：```
 hashcat (GPU-accelerated), john, hydra
 medusa, ncrack, patator, crowbar
 crunch, cewl, cupp (wordlist generators)
 ```
-
-### Wireless (25+ tools)
-```
+- **无线网络工具（25 多种）**：```
 aircrack-ng, wifite, reaver, bully
 kismet, wireshark, airmon-ng
 hostapd-wpe, freeradius-wpe
 ```
-
-### Exploitation (35+ tools)
-```
+- **漏洞利用工具（35 多种）**：```
 metasploit, searchsploit, beef
 setoolkit, sqlmap, commix
 routersploit, exploitdb
 ```
-
-### Forensics (40+ tools)
-```
+- **取证工具（40 多种）**：```
 autopsy, sleuthkit, volatility
 foremost, scalpel, binwalk
 yara, cuckoo, remnux, ghidra
 ```
 
-## Workflow Examples
+## 工作流程示例
 
-### Example 1: Bug Bounty Hunting
-
+### 示例 1：漏洞赏金计划
 ```
 You: "bugbounty target.com"
 
@@ -228,8 +216,7 @@ Reports:
 Potential Bounty: $2,000 - $5,000
 ```
 
-### Example 2: Network Security Audit
-
+### 示例 2：网络安全审计
 ```
 You: "audit 192.168.1.0/24"
 
@@ -251,8 +238,7 @@ Vulnerabilities: 34 (Critical: 3, High: 8, Medium: 23)
 Report: ./network-audit-report.md
 ```
 
-### Example 3: Full Penetration Test
-
+### 示例 3：全面渗透测试
 ```
 You: "pentest target.com"
 
@@ -302,44 +288,44 @@ Remediation: ./pentest-target-remediation.md
 Evidence: ./pentest-target-evidence/
 ```
 
-## Legal & Ethics
+## 法律与道德规范
 
-**⚠️ IMPORTANT: Use Responsibly**
+**⚠️ 重要提示：请负责任地使用本工具**
 
-**You CAN:**
-- ✅ Test systems you own
-- ✅ Test systems with written authorization
-- ✅ Conduct authorized penetration tests
-- ✅ Perform security audits on your infrastructure
-- ✅ Participate in bug bounty programs (within scope)
+**允许的行为：**
+- ✅ 测试您自己拥有的系统
+- ✅ 在获得授权的情况下测试系统
+- ✅ 进行合法的渗透测试
+- ✅ 对您的基础设施进行安全审计
+- ✅ 参与漏洞赏金计划（在授权范围内）
 
-**You CANNOT:**
-- ❌ Test systems without permission
-- ❌ Attack systems illegally
-- ❌ Violate privacy laws
-- ❌ Cause damage to systems
-- ❌ Steal data
+**禁止的行为：**
+- ❌ 未经许可测试系统
+- ❌ 非法攻击系统
+- ❌ 违反隐私法规
+- ❌ 对系统造成损害
+- ❌ 窃取数据
 
-**Legal Notice:**
-Unauthorized access is illegal under:
-- Computer Fraud and Abuse Act (CFAA)
-- Computer Misuse Act (UK)
-- Similar laws worldwide
+**法律声明：**
+未经授权的访问行为属于违法行为：
+- 《计算机欺诈与滥用法案》（CFAA）
+- 《计算机滥用法案》（英国）
+- 全球各地类似的法律
 
-Always obtain proper authorization before testing.
+请在测试前务必获得适当的授权。
 
-## Requirements
+## 系统要求
 
-- OpenClaw >= 2026.2.3
-- Kali Linux 2024.x (recommended)
-- Sudo access for privileged operations
-- 4GB RAM minimum (8GB recommended)
-- 20GB free disk space
+- OpenClaw 版本 >= 2026.2.3
+- 推荐使用 Kali Linux 2024.x
+- 需要具备 sudo 权限以执行高级操作
+- 最小内存要求：4GB（建议 8GB）
+- 空闲磁盘空间：20GB
 
-## License
+## 许可证
 
-MIT License - Free for educational and authorized security testing
+MIT 许可证——适用于教育和授权的安全测试用途
 
 ---
 
-**ShadowStrike Security: Professional Tools for Professional Testing** ⚔️🛡️
+**ShadowStrike 安全平台：专为专业测试设计的强大工具** ⚔️🛡️

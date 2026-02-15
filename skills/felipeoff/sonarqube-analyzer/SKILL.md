@@ -1,20 +1,20 @@
-# SonarQube Analyzer Skill
+# SonarQube 分析器技能
 
-Analisa projetos no SonarQube self-hosted, obtém issues e sugere soluções automatizadas.
+该技能用于分析自托管的 SonarQube 项目，自动检测问题并提供建议的解决方案。
 
-## Ferramentas Registradas
+## 注册的工具
 
 ### `sonar_get_issues`
-Obtém lista de issues de um projeto/PR no SonarQube.
+用于获取 SonarQube 项目中所有问题或合并请求（Pull Requests, PRs）的列表。
 
-**Parâmetros:**
-- `projectKey` (string, obrigatório): Chave do projeto
-- `pullRequest` (string, opcional): Número da PR para análise específica
-- `severities` (string[], opcional): Severidades a filtrar (BLOCKER, CRITICAL, MAJOR, MINOR, INFO)
-- `status` (string, opcional): Status das issues (OPEN, CONFIRMED, FALSE_POSITIVE, etc.)
-- `limit` (number, opcional): Limite de issues (padrão: 100)
+**参数：**
+- `projectKey` (string, 必填): 项目键
+- `pullRequest` (string, 可选): 需要分析的合并请求编号
+- `severities` (string[], 可选): 需要过滤的严重性级别（BLOCKER, CRITICAL, MAJOR, MINOR, INFO）
+- `status` (string, 可选): 问题的状态（OPEN, CONFIRMED, FALSE_POSITIVE 等）
+- `limit` (number, 可选): 问题数量限制（默认值：100）
 
-**Exemplo:**
+**示例：**
 ```json
 {
   "projectKey": "openclaw-panel",
@@ -25,14 +25,14 @@ Obtém lista de issues de um projeto/PR no SonarQube.
 ```
 
 ### `sonar_analyze_and_suggest`
-Analisa issues e sugere soluções com base nas regras do SonarQube.
+根据 SonarQube 的规则分析问题并提供建议的解决方案。
 
-**Parâmetros:**
-- `projectKey` (string, obrigatório): Chave do projeto
-- `pullRequest` (string, opcional): Número da PR
-- `autoFix` (boolean, opcional): Tentar aplicar correções automáticas (padrão: false)
+**参数：**
+- `projectKey` (string, 必填): 项目键
+- `pullRequest` (string, 可选): 合并请求编号
+- `autoFix` (boolean, 可选): 是否尝试自动应用修复（默认值：false）
 
-**Exemplo:**
+**示例：**
 ```json
 {
   "projectKey": "openclaw-panel",
@@ -42,13 +42,13 @@ Analisa issues e sugere soluções com base nas regras do SonarQube.
 ```
 
 ### `sonar_quality_gate`
-Verifica o status do Quality Gate de um projeto.
+用于检查项目的质量检查（Quality Gate）状态。
 
-**Parâmetros:**
-- `projectKey` (string, obrigatório): Chave do projeto
-- `pullRequest` (string, opcional): Número da PR
+**参数：**
+- `projectKey` (string, 必填): 项目键
+- `pullRequest` (string, 可选): 合并请求编号
 
-**Exemplo:**
+**示例：**
 ```json
 {
   "projectKey": "openclaw-panel",
@@ -56,35 +56,35 @@ Verifica o status do Quality Gate de um projeto.
 }
 ```
 
-## Configuração
+## 配置
 
-O skill usa as seguintes configurações do ambiente:
+该技能使用以下环境配置：
 
 ```bash
 SONAR_HOST_URL=http://127.0.0.1:9000  # URL do SonarQube
 SONAR_TOKEN=admin                      # Token de autenticação
 ```
 
-## Uso
+## 使用方法
 
-### Analisar uma PR específica:
+### 分析特定的合并请求：
 ```bash
 node scripts/analyze.js --project=my-project --pr=5
 ```
 
-### Gerar relatório de issues:
+### 生成问题报告：
 ```bash
 node scripts/report.js --project=my-project --format=markdown
 ```
 
-### Verificar Quality Gate:
+### 检查质量检查状态：
 ```bash
 node scripts/quality-gate.js --project=my-project --pr=5
 ```
 
-## Estrutura de Resposta
+## 响应结构
 
-### sonar_get_issues
+### `sonar_get_issues`
 ```json
 {
   "total": 12,
@@ -110,7 +110,7 @@ node scripts/quality-gate.js --project=my-project --pr=5
 }
 ```
 
-### sonar_analyze_and_suggest
+### `sonar_analyze_and_suggest`
 ```json
 {
   "projectKey": "openclaw-panel",
@@ -137,27 +137,26 @@ node scripts/quality-gate.js --project=my-project --pr=5
 }
 ```
 
-## Soluções Automáticas Disponíveis
+## 可用的自动修复方案
 
-| Regra | Problema | Solução Automática |
+| 规则 | 问题 | 自动修复方案 |
 |-------|----------|-------------------|
-| S6606 | Use `\|\|` instead of `??` | ✅ Substituir por `??` |
-| S3358 | Nested ternary | ❌ Requer refatoração manual |
-| S6749 | Redundant fragment | ✅ Remover fragment |
-| S6759 | Non-readonly props | ✅ Adicionar `readonly` |
-| S3776 | Cognitive complexity | ❌ Requer extração de componentes |
-| S6571 | `any` in union type | ✅ Remover redundância |
+| S6606 | 使用 `|\|\|` 替代 `??` | ✅ 将 `??` 替换为 `|\|\|` |
+| S3358 | 嵌套的三元表达式 | ❌ 需要手动重构 |
+| S6749 | 代码片段冗余 | ✅ 删除冗余代码片段 |
+| S6759 | 属性未设置为只读 | ✅ 为属性添加 `readonly` 属性 |
+| S3776 | 认知复杂性过高 | ❌ 需要提取相关组件 |
+| S6571 | 联合类型中的 `any` 关键字 | ✅ 删除冗余部分 |
 
-## Requisitos
+## 系统要求
 
-- Node.js 18+
-- Acesso ao SonarQube (localhost:9000)
-- Token de autenticação configurado
+- Node.js 18 及以上版本
+- 具备访问 SonarQube 的权限（默认地址：localhost:9000）
+- 已配置认证令牌
 
-## Integração com Workflows
+## 与工作流集成
 
-Exemplo de uso em GitHub Actions:
-
+示例：在 GitHub Actions 中的使用方法：
 ```yaml
 - name: Analyze with SonarQube Skill
   run: |

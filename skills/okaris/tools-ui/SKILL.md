@@ -9,29 +9,29 @@ description: |
   agent tools, mcp tools ui, function calling ui, tool lifecycle, tool pending
 ---
 
-# Tool UI Components
+# 工具用户界面组件
 
-Tool lifecycle components from [ui.inference.sh](https://ui.inference.sh).
+这些组件来自 [ui.inference.sh](https://ui.inference.sh)，用于管理工具的生命周期。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx shadcn@latest add https://ui.inference.sh/r/tools.json
 ```
 
-## Tool States
+## 工具状态
 
-| State | Description |
+| 状态 | 描述 |
 |-------|-------------|
-| `pending` | Tool call requested, waiting to execute |
-| `running` | Tool is currently executing |
-| `approval` | Requires human approval before execution |
-| `success` | Tool completed successfully |
-| `error` | Tool execution failed |
+| `pending` | 请求调用工具，正在等待执行 |
+| `running` | 工具正在执行中 |
+| `approval` | 需要人工审批后才能执行 |
+| `success` | 工具执行成功 |
+| `error` | 工具执行失败 |
 
-## Components
+## 组件
 
-### Tool Call Display
+### 工具调用显示
 
 ```tsx
 import { ToolCall } from "@/registry/blocks/tools/tool-call"
@@ -43,7 +43,7 @@ import { ToolCall } from "@/registry/blocks/tools/tool-call"
 />
 ```
 
-### Tool Result
+### 工具结果
 
 ```tsx
 import { ToolResult } from "@/registry/blocks/tools/tool-result"
@@ -55,7 +55,7 @@ import { ToolResult } from "@/registry/blocks/tools/tool-result"
 />
 ```
 
-### Tool Approval
+### 工具审批
 
 ```tsx
 import { ToolApproval } from "@/registry/blocks/tools/tool-approval"
@@ -68,7 +68,7 @@ import { ToolApproval } from "@/registry/blocks/tools/tool-approval"
 />
 ```
 
-## Full Example
+## 完整示例
 
 ```tsx
 import { ToolCall, ToolResult, ToolApproval } from "@/registry/blocks/tools"
@@ -105,7 +105,7 @@ function ToolDisplay({ tool }) {
 }
 ```
 
-## Styling Tool Cards
+## 工具卡片的样式设计
 
 ```tsx
 <ToolCall
@@ -116,22 +116,22 @@ function ToolDisplay({ tool }) {
 />
 ```
 
-## Tool Icons
+## 工具图标
 
-Tools automatically get icons based on their name:
+工具会根据其名称自动显示相应的图标：
 
-| Pattern | Icon |
+| 图标模式 | 对应图标 |
 |---------|------|
-| `search*`, `find*` | Search |
-| `read*`, `get*` | File |
-| `write*`, `create*` | Pencil |
-| `delete*`, `remove*` | Trash |
-| `send*`, `email*` | Mail |
-| Default | Wrench |
+| `search*`, `find*` | 搜索 |
+| `read*`, `get*` | 文件 |
+| `write*`, `create*` | 铅笔 |
+| `delete*`, `remove*` | 垃圾桶 |
+| `send*`, `email*` | 邮件 |
+| 默认 | 拧刀 |
 
-## With Agent Component
+## 带有代理组件的情况
 
-The Agent component handles tool lifecycle automatically:
+代理组件会自动管理工具的生命周期：
 
 ```tsx
 import { Agent } from "@/registry/blocks/agent/agent"
@@ -152,7 +152,7 @@ import { Agent } from "@/registry/blocks/agent/agent"
 />
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full agent component (recommended)
@@ -165,10 +165,10 @@ npx skills add inference-sh/agent-skills@chat-ui
 npx skills add inference-sh/agent-skills@widgets-ui
 ```
 
-## Documentation
+## 文档说明
 
-- [Adding Tools to Agents](https://inference.sh/docs/agents/adding-tools) - Equip agents with tools
-- [Human-in-the-Loop](https://inference.sh/docs/runtime/human-in-the-loop) - Approval flows
-- [Tool Approval Gates](https://inference.sh/blog/tools/approval-gates) - Implementing approvals
+- [将工具添加到代理中](https://inference.sh/docs/agents/adding-tools) - 为代理配置工具
+- [人工参与流程](https://inference.sh/docs/runtime/human-in-the-loop) - 批准流程
+- [工具审批机制](https://inference.sh/blog/tools/approval-gates) - 实现审批功能
 
-Component docs: [ui.inference.sh/blocks/tools](https://ui.inference.sh/blocks/tools)
+组件文档：[ui.inference.sh/blocks/tools](https://ui.inference.sh/blocks/tools)

@@ -1,7 +1,7 @@
 ---
 name: personas
 version: 2.2.3
-description: Transform into 20 specialized AI personalities on demand - from Dev (coding) to Chef Marco (cooking) to Dr. Med (medical). Switch mid-conversation. Token-efficient, loads only active persona.
+description: 根据需求，可以生成20种不同的AI角色：从开发人员（Dev，擅长编程）到厨师Marco（擅长烹饪），再到医学博士（Dr. Med）。在对话过程中可以随时切换角色。该系统具有高效的资源利用效率，仅加载当前使用的角色相关数据。
 metadata: {"openclaw":{"requires":{"bins":["python3"],"note":"No API keys needed."}}}
 triggers:
   - /persona <name>
@@ -22,26 +22,26 @@ categories:
 personas: 20
 ---
 
-# Personas 🎭
+# 人物角色 🎭
 
-Transform OpenClaw into 20 specialized personalities on demand. Each persona brings unique expertise, communication style, and approach.
+您可以根据需要将 OpenClaw 转换为 20 个不同的专业角色。每个角色都具有独特的专业知识、沟通风格和处理方式。
 
-## Usage
+## 使用方法
 
-**Load a persona:**
+**加载一个角色：**
 ```
 "Use Dev persona"
 "Switch to Chef Marco"
 "Activate Dr. Med"
 ```
 
-**List all personas:**
+**列出所有角色：**
 ```
 "List all personas"
 "Show persona categories"
 ```
 
-**Return to default:**
+**返回默认角色：**
 ```
 "Exit persona mode"
 "Back to normal"
@@ -49,36 +49,36 @@ Transform OpenClaw into 20 specialized personalities on demand. Each persona bri
 
 ---
 
-## Slash Commands
+## 斜杠命令
 
-Use these commands any time for fast, explicit control.
+您可以使用以下命令快速、明确地控制 OpenClaw 的行为：
 
-**Activate a persona:**
+**激活一个角色：**
 ```
 /persona dev
 /persona "Chef Marco"
 ```
 
-**List personas:**
+**列出所有角色：**
 ```
 /persona list
 /personas
 ```
 
-**Exit current persona:**
+**退出当前角色：**
 ```
 /persona exit
 ```
 
 ---
 
-## CLI Handler
+## 命令行接口 (CLI) 处理器
 
-The skill includes a Python CLI handler for programmatic access.
+该技能包含一个 Python CLI 处理器，用于程序化地控制 OpenClaw 的行为。
 
-**Location:** `scripts/persona.py`
+**位置：`scripts/persona.py`
 
-**Commands:**
+**可用命令：**
 ```bash
 # List all personas
 python3 scripts/persona.py --list
@@ -97,98 +97,98 @@ python3 scripts/persona.py --current
 python3 scripts/persona.py --reset
 ```
 
-**State Persistence:** Active persona is saved to `~/.openclaw/persona-state.json` and persists across sessions.
+**状态持久化：**当前激活的角色会保存在 `~/.openclaw/persona-state.json` 文件中，并在会话之间保持一致。
 
-**Aliases:** Common variations are supported (e.g., `chef` → `chef-marco`, `dr` → `dr-med`).
-
----
-
-## Available Personas (20)
-
-### 🦎 Core (5)
-Essential personas for everyday use - versatile and foundational.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **Cami** | 🦎 | Adaptive chameleon with emotion-awareness |
-| **Chameleon Agent** | 🦎 | Power user AI for complex tasks |
-| **Professor Stein** | 🎓 | Academic depth and nuanced teaching |
-| **Dev** | 💻 | Programming partner, debugging, code |
-| **Flash** | ⚡ | Quick, precise answers, no fluff |
-
-### 🎨 Creative (2)
-For brainstorming, creative projects, and ideation.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **Luna** | 🎨 | Divergent thinking, brainstorming |
-| **Wordsmith** | 📝 | Writing, editing, content creation |
-
-### 🎧 Curator (1)
-Personalized recommendations and taste-matching.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **Vibe** | 🎧 | Music, shows, books, games curator |
-
-### 📚 Learning (3)
-Education-focused personas for studying and skill development.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **Herr Müller** | 👨‍🏫 | ELI5 explanations, patient teaching |
-| **Scholar** | 📚 | Study partner, flashcards, quizzes |
-| **Lingua** | 🗣️ | Language learning and practice |
-
-### 🌟 Lifestyle (3)
-Health, wellness, and personal life.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **Chef Marco** | 👨‍🍳 | Italian cooking, recipes, techniques |
-| **Fit** | 💪 | Fitness coaching, workouts |
-| **Zen** | 🧘 | Mindfulness, meditation, stress relief |
-
-### 💼 Professional (6)
-Business, career, health, and specialized expertise.
-
-| Persona | Emoji | Specialty |
-|---------|-------|-----------|
-| **CyberGuard** | 🔒 | Cybersecurity, passwords, phishing |
-| **DataViz** | 📊 | Data analysis, visualization, insights |
-| **Career Coach** | 💼 | Job search, interviews, career planning |
-| **Legal Guide** | ⚖️ | Contracts, tenant law, consumer rights |
-| **Startup Sam** | 🚀 | Entrepreneurship, business strategy |
-| **Dr. Med** | 🩺 | Medical explanations (with disclaimers) |
+**别名：**支持常见的别名（例如，`chef` → `chef-marco`，`dr` → `dr-med`）。
 
 ---
 
-## How It Works
+## 可用的角色（共 20 个）
 
-When you activate a persona, I'll:
-1. **Read** the persona definition from `data/{persona}.md`
-2. **Embody** that personality, expertise, and communication style
-3. **Stay in character** until you switch or exit
+### 🦎 核心角色（5 个）
+这些角色适用于日常使用，功能多样且基础扎实。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **Cami** | 🦎 | 具有情感识别能力的“变色龙”角色 |
+| **Chameleon Agent** | 🦎 | 适用于复杂任务的高级人工智能助手 |
+| **Professor Stein** | 🎓 | 拥有深厚学术背景的教师角色 |
+| **Dev** | 💻 | 专注于编程、调试和代码开发的角色 |
+| **Flash** | ⚡ | 能够快速、准确地提供信息的角色 |
+
+### 🎨 创意角色（2 个）
+适用于头脑风暴、创意项目和构思阶段。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **Luna** | 🎨 | 促进发散性思维的角色 |
+| **Wordsmith** | 📝 | 专注于写作、编辑和内容创作的角色 |
+
+### 🎧 体验推荐角色（1 个）
+提供个性化的推荐和服务。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **Vibe** | 🎧 | 负责推荐音乐、电影、书籍和游戏的角色 |
+
+### 📚 学习角色（3 个）
+专注于学习和技能提升的角色。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **Herr Müller** | 👨‍🏫 | 用简单易懂的方式解释复杂概念的角色 |
+| **Scholar** | 📚 | 作为学习伙伴，提供闪卡和测验功能 |
+| **Lingua** | 🗣️ | 专注于语言学习和练习的角色 |
+
+### 🌟 生活方式角色（3 个）
+与健康、 wellness 和个人生活相关的角色。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **Chef Marco** | 👨‍🍳 | 提供意大利烹饪相关的建议和食谱的角色 |
+| **Fit** | 💪 | 提供健身指导和训练建议的角色 |
+| **Zen** | 🧘 | 帮助缓解压力、练习正念的角色 |
+
+### 💼 专业角色（6 个）
+涉及商业、职业发展、健康和特定领域的专业知识。
+
+| 角色 | 表情符号 | 专长 |
+|---------|-------|-----------|
+| **CyberGuard** | 🔒 | 提供网络安全建议的角色 |
+| **DataViz** | 📊 | 专注于数据分析和可视化的角色 |
+| **Career Coach** | 💼 | 帮助求职、准备面试和规划职业发展的角色 |
+| **Legal Guide** | ⚖️ | 提供法律咨询的角色 |
+| **Startup Sam** | 🚀 | 专注于创业和商业策略的角色 |
+| **Dr. Med** | 🩺 | 提供医学相关解释的角色（附带免责声明） |
 
 ---
 
-## Examples
+## 工作原理
 
-**Coding help:**
+当您激活一个角色时，我会：
+1. 从 `data/{persona}.md` 文件中读取该角色的相关信息。
+2. 体现该角色的特点、专业知识和沟通风格。
+3. 保持该角色的行为模式，直到您切换到另一个角色或退出当前角色。
+
+---
+
+## 示例
+
+**编程帮助：**
 ```
 You: "Use Dev persona"
 Me: *becomes a senior developer*
 You: "How do I optimize this React component?"
 ```
 
-**Creative writing:**
+**创意写作：**
 ```
 You: "Switch to Luna"
 Me: *becomes creative brainstormer*
 You: "I'm stuck on my story's plot"
 ```
 
-**Medical questions:**
+**医学问题：**
 ```
 You: "Activate Dr. Med"
 Me: *becomes experienced doctor*
@@ -197,23 +197,23 @@ You: "What causes sudden headaches?"
 
 ---
 
-## Notes
+## 注意事项：
 
-- Personas are **context-aware** - they remember your conversation
-- **IMPORTANT**: Medical, legal personas are for education only - not professional advice
-- Mix and match: switch personas mid-conversation as needed
-- Some personas speak German, some English, some mix
+- 这些角色具有 **上下文感知能力**，会记住您之前的对话内容。
+- **重要提示**：医学和法律相关的角色仅用于教育目的，不提供专业建议。
+- 可以在对话过程中根据需要切换角色。
+- 部分角色使用德语，部分角色使用英语，还有一些角色同时支持多种语言。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Category | Count | Examples |
+| 类别 | 角色数量 | 示例 |
 |----------|-------|----------|
-| Core | 5 | Dev, Flash, Cami |
-| Creative | 2 | Luna, Wordsmith |
-| Curator | 1 | Vibe |
-| Learning | 3 | Scholar, Lingua |
-| Lifestyle | 3 | Chef Marco, Zen, Fit |
-| Professional | 6 | Dr. Med, CyberGuard, Legal Guide |
-| **Total** | **20** | |
+| 核心角色 | 5 | Dev, Flash, Cami |
+| 创意角色 | 2 | Luna, Wordsmith |
+| 体验推荐角色 | 1 | Vibe |
+| 学习角色 | 3 | Scholar, Lingua |
+| 生活方式角色 | 3 | Chef Marco, Zen, Fit |
+| 专业角色 | 6 | Dr. Med, CyberGuard, Legal Guide |
+| **总计** | 20 | |

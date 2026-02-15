@@ -1,18 +1,18 @@
 ---
 name: mac-cleanup
-description: Cleans up system caches, trash, and old downloads on macOS.
+description: 在 macOS 上清理系统缓存、垃圾文件以及旧的下载内容。
 author: tempguest
 version: 0.1.0
 license: MIT
 ---
 
-# Mac Cleanup Skill
+# Mac 清理技巧
 
-This skill helps you reclaim disk space on your MacBook Pro by cleaning up:
-- **System Caches**: Clears the user cache directory (`~/Library/Caches`).
-- **Trash**: Empties the Trash (`~/.Trash`).
-- **Old Downloads**: Deletes files in `~/Downloads` that are older than 30 days.
+此技巧可帮助您清理 MacBook Pro 上的磁盘空间，具体包括以下操作：
+- **系统缓存**：清除用户缓存目录（`~/Library/Caches`）。
+- **回收站**：清空回收站（`~/.Trash`）。
+- **旧下载文件**：删除 `~/Downloads` 目录中超过 30 天的文件。
 
-## Commands
+## 命令
 
-- `cleanup`: standardized command to run the cleanup script.
+- `cleanup`：用于运行清理脚本的标准命令。

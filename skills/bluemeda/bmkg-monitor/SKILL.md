@@ -1,15 +1,15 @@
 ---
 name: bmkg-monitor
-description: Monitoring earthquake data in Indonesia using BMKG official data. Use when the user asks for the latest earthquake, felt earthquakes, or information about a specific seismic event in Indonesia.
+description: 使用印度尼西亚气象、气候和地球物理局（BMKG）的官方数据来监测地震情况。当用户查询最新的地震信息、有震感的地震记录，或关于印度尼西亚特定地震事件的相关资料时，可参考此功能。
 ---
 
-# BMKG Monitor
+# BMKG 监控器
 
-Monitor and analyze seismic activity in Indonesia using real-time data from the Badan Meteorologi, Klimatologi, dan Geofisika (BMKG).
+使用印度尼西亚气象、气候与地球物理局（Badan Meteorologi, Klimatologi, dan Geofisika, BMKG）提供的实时数据，监控并分析该地区的地震活动。
 
-## Quick Start
+## 快速入门
 
-Run the monitor script to fetch the latest data:
+运行监控脚本以获取最新数据：
 
 ```bash
 # Get the latest significant earthquake (M5.0+)
@@ -25,19 +25,19 @@ python3 scripts/get_gempa.py recent
 python3 scripts/get_gempa.py detail <EVENT_ID>
 ```
 
-## Workflows
+## 工作流程
 
-### 1. Checking for Recent Shaking
-If a user reports feeling a tremor or asks "Was there a quake?", run `get_gempa.py felt` first. This list includes smaller, shallow quakes that people actually feel.
+### 1. 检查近期地震活动
+如果用户报告感觉到震动或询问“是否发生了地震？”，请首先运行 `get_gempa.py felt` 命令。该命令会列出那些人们实际能够感觉到的小型、浅层地震。
 
-### 2. Deep Analysis
-When a significant quake occurs, use [references/seismology.md](references/seismology.md) to explain:
-- The meaning of the Magnitude.
-- The intensity levels (MMI scale) reported.
-- Potential impact based on depth and location.
+### 2. 深度分析
+当发生重大地震时，请参考 [references/seismology.md](references/seismology.md) 来了解以下内容：
+- 地震的震级（Magnitude）含义。
+- 报告的震度等级（MMI 级别）。
+- 根据地震深度和位置判断可能的影响范围。
 
-### 3. Coordinating with News
-If the user provides a "Moment Tensor" or "Beach Ball" diagram (usually from a detailed BMKG report), refer to the "Moment Tensor" section in `references/seismology.md` to identify if the quake was Strike-Slip, Normal, or Thrust.
+### 3. 与新闻媒体协调
+如果用户提供了“矩张量”（Moment Tensor）或“海滩球”（Beach Ball）图（通常来自 BMKG 的详细报告），请查阅 [references/seismology.md] 中的“矩张量”部分，以确定地震的类型（走滑型、正断层型或逆断层型）。
 
-## References
-- [seismology.md](references/seismology.md) - Magnitude, MMI scale, and fault types.
+## 参考资料
+- [seismology.md](references/seismology.md) - 地震震级、MMI 级别以及地震断层类型的相关信息。

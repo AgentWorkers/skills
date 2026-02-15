@@ -1,40 +1,40 @@
 ---
 name: AWS
-description: Deploy, monitor, and manage AWS services with battle-tested patterns.
+description: 使用经过实战验证的方法来部署、监控和管理 AWS 服务。
 metadata: {"clawdbot":{"emoji":"☁️","requires":{"anyBins":["aws"]},"os":["linux","darwin","win32"]}}
 ---
 
-# AWS Production Rules
+# AWS 生产环境规则
 
-## Cost Traps
-- NAT Gateway charges per GB processed — use VPC endpoints for S3/DynamoDB traffic instead of routing through NAT
-- EBS snapshots accumulate silently from automated backups — audit and delete snapshots older than retention policy regularly
-- CloudWatch Logs retention defaults to forever — set `put-retention-policy` on every log group or face surprise bills
-- Data transfer between regions is charged both ways — keep resources in same region unless you have a specific reason not to
-- Stopped EC2 instances still pay for attached EBS volumes and Elastic IPs — release what you're not using
+## 成本陷阱
+- **NAT Gateway 费用**：按处理的 GB 数量计费——建议使用 VPC 端点处理 S3/DynamoDB 流量，避免通过 NAT 路由。
+- **EBS 快照**：自动备份会不断累积快照——定期审核并删除超过保留策略期限的快照。
+- **CloudWatch 日志**：默认保留设置为永久——请为每个日志组设置 `put-retention-policy`，否则可能会收到意外账单。
+- **跨区域数据传输**：数据传输会双向计费——除非有特殊原因，否则应将资源部署在同一区域内。
+- **已停止的 EC2 实例**：即使实例已停止，仍会继续支付附加的 EBS 卷和 Elastic IP 的费用——请释放未使用的资源。
 
-## Security Rules
-- S3 bucket policies override ACLs but don't show in the ACL console tab — always check both `get-bucket-policy` and `get-bucket-acl`
-- IAM policy evaluation: explicit Deny always wins, resource-based and identity-based policies combine — use `simulate-principal-policy` to test before deploying
-- Security Groups are stateful (return traffic auto-allowed), NACLs are stateless — outbound NACL rules must explicitly allow ephemeral ports 1024-65535 for responses
-- Default VPC security group allows all outbound traffic — create custom security groups with least-privilege outbound rules
-- S3 presigned URLs inherit the permissions of the IAM user who created them — if the user's permissions change, existing URLs break
+## 安全规则
+- **S3 存储桶策略**：会覆盖 ACL（访问控制列表），但不会显示在 ACL 控制台界面中——务必同时查看 `get-bucket-policy` 和 `get-bucket-acl` 命令。
+- **IAM（身份与访问管理）策略**：明确的拒绝规则始终有效；资源-based 和 identity-based 策略会同时生效——在部署前使用 `simulate-principal-policy` 进行测试。
+- **安全组**：具有状态性（会自动允许返回流量）；NACL（网络访问控制列表）是无状态的——出站 NACL 规则必须明确允许 1024-65535 端口的流量。
+- **默认 VPC 安全组**：允许所有出站流量——请创建具有最小权限设置的自定义安全组。
+- **S3 预签名 URL**：会继承创建它们的 IAM 用户的权限——如果用户权限发生变化，现有 URL 的权限也会随之改变。
 
-## Performance
-- gp2 EBS volumes have limited burst credits that deplete under sustained load — use gp3 for consistent baseline IOPS without burst dependency
-- Lambda reuses containers but each invocation may open new DB connections — use RDS Proxy to pool connections and prevent "too many connections" errors
-- ALB health checks are per-target per-AZ — with 3 AZs and 5 targets, each target gets 3 health check streams. Account for this in health check intervals
-- DynamoDB auto-scaling reacts to consumed capacity, not throttled requests — pre-warm capacity before expected traffic spikes
-- CloudFront TTL of 0 still caches if origin sends Cache-Control headers — explicitly set `no-store` if you truly want no caching
+## 性能优化
+- **EBS 卷**：gp2 类型的 EBS 卷具有有限的突发流量处理能力，在持续高负载下可能会耗尽突发流量额度——建议使用 gp3 类型的卷以确保稳定的 IOPS（每秒操作次数）。
+- **Lambda 函数**：虽然会重用容器，但每次调用都可能新建数据库连接——使用 RDS Proxy 来池化连接，防止“连接过多”的错误。
+- **ALB（应用负载均衡器）**：健康检查针对每个目标区域和每个目标进行——如果有 3 个区域和 5 个目标，则每个目标会收到 3 条健康检查请求。请在设置健康检查间隔时考虑这一点。
+- **DynamoDB**：自动扩展会根据实际使用的容量进行扩展，而非基于请求的速率限制——在预期流量激增前预先分配足够的资源。
+- **CloudFront**：即使设置了 `TTL` 为 0，如果源服务器发送了 `Cache-Control` 头，缓存仍会生效——如果确实需要禁止缓存，请明确设置 `no-store`。
 
-## Monitoring
-- CloudWatch metric retention: 1-minute data kept 15 days, 5-minute for 63 days, 1-hour for 455 days — critical alerts on high-resolution metrics disappear after 2 weeks
-- Lambda "Duration" includes cold start initialization — monitor `InitDuration` separately to distinguish cold starts from actual execution time
-- CloudTrail logs API calls but not data events (S3 object access, Lambda invocations) by default — enable data events explicitly for security auditing
-- ALB 5xx errors can be ALB-generated (502/503/504) or target-generated — check `HTTPCode_ELB_5XX_Count` vs `HTTPCode_Target_5XX_Count` separately
+## 监控与日志
+- **CloudWatch**：1 分钟的数据保留 15 天，5 分钟的数据保留 63 天，1 小时的数据保留 455 天——高分辨率指标的紧急警报会在 2 周后消失。
+- **Lambda 函数执行时间**：执行时间包括冷启动初始化时间——请单独监控 `InitDuration` 以区分冷启动时间和实际执行时间。
+- **CloudTrail**：默认情况下只会记录 API 调用日志，不记录数据事件（如 S3 对象访问或 Lambda 函数调用）——如需进行安全审计，请显式启用数据事件记录。
+- **ALB 错误代码**：5xx 错误可能是由 ALB 或目标服务器生成的（如 502/503/504）——请分别查看 `HTTPCode_ELB_5XX_Count` 和 `HTTPCode_Target_5XX_Count`。
 
-## Infrastructure as Code
-- CloudFormation update policies are ignored during resource replacement — deletion protection only works for in-place updates, not replace operations
-- Terraform state lock table (DynamoDB) needs point-in-time recovery enabled — losing state lock = potential concurrent modifications
-- Auto Scaling cool-down periods stack with target tracking policies — default 300s scale-in delay causes slow response to load drops. Tune per workload
-- Never hardcode AMI IDs — use SSM parameter store paths (`/aws/service/ami-amazon-linux-latest/...`) that always resolve to current images
+## 基础设施即代码（Infrastructure as Code）
+- **CloudFormation**：在替换资源时，更新策略会被忽略——删除保护仅适用于原地更新操作，不适用于替换操作。
+- **Terraform**：需要启用 DynamoDB 的状态锁定功能（状态锁表）——如果状态锁定功能失效，可能会导致并发修改。
+- **自动扩展**：冷却期会与目标跟踪策略叠加——默认的 300 秒扩展延迟可能会导致负载下降时响应缓慢——请根据实际工作负载进行调整。
+- **AMI（亚马逊机器镜像）ID**：切勿硬编码 AMI ID——请使用 SSM（系统管理工具）参数存储路径（如 `/aws/service/ami-amazon-linux-latest/...`），这些路径会自动指向最新的镜像版本。

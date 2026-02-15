@@ -1,6 +1,6 @@
 ---
 name: Vincent - A wallet for agents
-description: Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction. Also supports raw signing for Ethereum and Solana.
+description: 使用此技能可以安全地创建一个钱包，该钱包可供代理用于转账、交换以及任何基于EVM（以太坊虚拟机）链的交易。此外，该钱包还支持对以太坊和Solana进行原始签名（raw signing）操作。
 homepage: https://heyvincent.ai
 source: https://github.com/HeyVincent-ai/Vincent
 metadata:
@@ -12,283 +12,142 @@ metadata:
         - ./agentwallet
 ---
 
-# Vincent - A wallet for agents
+# Vincent – 一个为智能体设计的钱包
 
-Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction without ever exposing private keys to the agent. Create a wallet, set spending policies, and your agent can transfer tokens, do swaps, and interact with smart contracts within the boundaries you define.
+使用此技能可以安全地为智能体创建一个钱包，用于转账、交换以及在任何以太坊虚拟机（EVM）链上进行交易，而无需向智能体暴露私钥。创建钱包后，您可以设置消费策略，智能体便可以在您定义的范围内转移代币、进行交换以及与智能合约交互。
 
-**The agent never sees the private key.** All transactions are executed server-side through a ZeroDev smart account. The agent receives a scoped API key that can only perform actions permitted by the wallet owner's policies. The private key never leaves the Vincent server.
+**智能体永远不会看到私钥。**所有交易都通过 ZeroDev 智能账户在服务器端执行。智能体会收到一个受限范围的 API 密钥，该密钥仅能执行钱包所有者策略允许的操作。私钥始终存储在 Vincent 服务器上。
 
-## Security Model
+## 安全模型
 
-This skill is designed for **autonomous agent operation with human oversight via server-side controls**. Understanding this model is important:
+此技能旨在实现**在服务器端控制下的智能体自主操作**，同时需要人类进行监督。理解以下安全模型非常重要：
 
-**No environment variables are required** because this skill uses agent-first onboarding: the agent creates its own wallet at runtime by calling the Vincent API, which returns a scoped API key. There is no pre-existing credential to configure. The agent generates and stores its own API key during wallet creation — no secrets need to exist before the skill runs. The config paths where the agent persists the returned API key (`~/.openclaw/credentials/agentwallet/` or `./agentwallet/`) are declared in this skill's metadata.
+- **无需环境变量**：因为此技能采用“智能体优先”的接入方式——智能体会在运行时通过调用 Vincent API 来创建自己的钱包，从而获得一个受限范围的 API 密钥。无需预先配置任何凭证。智能体会在创建钱包时生成并存储自己的 API 密钥，因此在技能运行之前无需任何秘密信息。
+- **智能体的 API 密钥并非私钥**：它是一个受限范围的承载令牌（Bearer token），仅能在钱包所有者设定的策略范围内执行交易。Vincent 服务器会在服务器端强制执行所有策略——无论智能体发送什么请求，都无法绕过这些策略。如果交易违反策略，服务器会拒绝该请求。如果交易需要批准，服务器会暂停交易并通过 Telegram 通知钱包所有者进行人工审批。
+- **有意支持模型调用**：此技能的目的是让 AI 智能体具备自主管理钱包的能力。智能体应在人类操作者定义的范围内自行执行钱包操作（如转账、交换、调用合约）。人类通过策略（如消费限额、地址允许列表、代币允许列表、功能允许列表、审批阈值）来控制智能体的行为，而不是通过限制单个调用来实现控制。智能体会将受限范围的 API 密钥存储在指定的配置路径中，以便在不同会话之间继续执行钱包操作。这是自主钱包智能体的预期行为。存储的密钥受到策略限制——即使其他进程读取了该密钥，也只能执行钱包所有者允许的操作，且所有者可以立即撤销该密钥。
+- **所有 API 请求均通过 HTTPS/TLS 发送到 `heyvincent.ai`**：不会连接其他端点、服务或外部主机。智能体不会读取、收集或传输超出钱包操作所需的数据。
+- **Vincent 是开源项目，并经过审计**：负责执行策略、管理私钥和执行交易的服务器端代码在 [github.com/HeyVincent-ai/Vincent](https://github.com/HeyVincent-ai/Vincent) 上公开可见。Vincent 后端会定期接受安全审计，涵盖密钥管理、策略执行、交易签名和 API 认证等方面。您可以验证策略执行的方式、私钥的存储方式、受限 API 密钥的验证机制以及撤销机制——没有任何隐藏信息。如果您希望自行托管 Vincent 而不是依赖托管服务，该仓库提供了部署指南。
 
-**The agent's API key is not a private key.** It is a scoped Bearer token that can only execute transactions within the policies set by the wallet owner. The Vincent server enforces all policies server-side — the agent cannot bypass them regardless of what it sends. If a transaction violates a policy, the server rejects it. If a transaction requires approval, the server holds it and notifies the wallet owner via Telegram for out-of-band human approval.
+## 密钥生命周期：
+- **创建**：智能体调用 `POST /api/secrets` 来创建钱包。API 会返回一个受限范围的 API 密钥和一个声明 URL。
+- **声明所有权**：人类操作者使用声明 URL 来获取钱包所有权并配置策略。
+- **撤销**：钱包所有者可以随时通过 Vincent 前端（`https://heyvincent.ai`）撤销智能体的 API 密钥。被撤销的密钥会被服务器立即拒绝。撤销逻辑是开源的（[链接](https://github.com/HeyVincent-ai/Vincent)）。
+- **重新链接**：如果智能体丢失了 API 密钥，钱包所有者可以生成一个一次性使用的重新链接令牌（有效期为 10 分钟），智能体可以使用该令牌获取新的 API 密钥。
+- **轮换**：钱包所有者可以随时撤销当前密钥并生成新的重新链接令牌以更新凭证。
 
-**Model invocation is intentionally enabled.** The purpose of this skill is to give AI agents autonomous wallet capabilities. The agent is expected to invoke wallet actions (transfers, swaps, contract calls) on its own, within the boundaries the human operator defines. The human controls what the agent can do through policies (spending limits, address allowlists, token allowlists, function allowlists, approval thresholds) — not by gating individual invocations. The agent persists its scoped API key to the declared config paths so it can resume wallet operations across sessions; this is expected behavior for an autonomous wallet agent. The stored key is scoped and policy-constrained — even if another process reads it, it can only perform actions the wallet owner's policies allow, and the owner can revoke it instantly.
+## 应使用哪种密钥类型
 
-**All API calls go exclusively to `heyvincent.ai`** over HTTPS/TLS. No other endpoints, services, or external hosts are contacted. The agent does not read, collect, or transmit any data beyond what is needed for wallet operations.
+| 密钥类型 | 使用场景                                      | 网络           | 所需Gas费用       |
+| -------- | ----------------------------------------- | ----------------------- | ---------------- |
+| `EVM_WALLET` | 转账、交换、去中心化金融（DeFi）操作、调用智能合约          | 任何 EVM 链       | 免费           |
+| `RAW_SIGNER` | 为特定协议生成原始签名                              | 任何区块链（Ethereum + Solana） | 需支付费用     |
 
-**Vincent is open source and audited.** The server-side code that enforces policies, manages private keys, and executes transactions is publicly auditable at [github.com/HeyVincent-ai/Vincent](https://github.com/HeyVincent-ai/Vincent). The Vincent backend undergoes continuous security audits covering key management, policy enforcement, transaction signing, and API authentication. You can verify how policy enforcement works, how private keys are stored, how the scoped API key is validated, and how revocation is handled — nothing is opaque. If you want to self-host Vincent rather than trust the hosted service, the repository includes deployment instructions.
+**建议选择 `EVM_WALLET`（默认）**，适用于以下场景：
+- 发送 ETH 或代币
+- 在去中心化交易所（DEX）中交换代币
+- 与智能合约交互
+- 执行任何标准的 EVM 交易
 
-**Key lifecycle:**
+**仅在以下情况下选择 `RAW_SIGNER`**：
+- 需要为不支持智能账户的协议生成原始 ECDSA/Ed25519 签名
+- 需要为自己广播的交易哈希生成签名
+- 需要 Solana 签名
 
-- **Creation**: The agent calls `POST /api/secrets` to create a wallet. The API returns a scoped API key and a claim URL.
-- **Claim**: The human operator uses the claim URL to take ownership and configure policies.
-- **Revocation**: The wallet owner can revoke the agent's API key at any time from the Vincent frontend (`https://heyvincent.ai`). Revoked keys are rejected immediately by the server. The revocation logic is [open source](https://github.com/HeyVincent-ai/Vincent).
-- **Re-linking**: If the agent loses its API key, the wallet owner generates a one-time re-link token (expires after 10 minutes) and the agent exchanges it for a new key.
-- **Rotation**: The wallet owner can revoke the current key and issue a re-link token to rotate credentials at any time.
+## 配置
 
-## Which Secret Type to Use
+所有 API 请求都需要一个承载令牌（即在创建钱包时返回的受限范围 API 密钥）。此密钥并非私钥，而是由服务器强制执行的、受策略限制的凭证，钱包所有者可以随时撤销。
 
-| Type         | Use Case                                  | Network                 | Gas              |
-| ------------ | ----------------------------------------- | ----------------------- | ---------------- |
-| `EVM_WALLET` | Transfers, swaps, DeFi, contract calls    | Any EVM chain           | Sponsored (free) |
-| `RAW_SIGNER` | Raw message signing for special protocols | Any (Ethereum + Solana) | You pay          |
+钱包创建完成后，请将 API 密钥存储在指定的配置路径中。如果您使用的是 OpenClaw 实例，请将其存储在 `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json` 中；否则，请将其存储在当前工作目录下的 `agentwallet/<API_KEY_ID>.json` 中。这些配置路径在技能的元数据中已明确说明，以便主机环境能够审计和管理凭证的存储。
 
-**Choose `EVM_WALLET`** (default) for:
+### 快速入门
 
-- Sending ETH or tokens
-- Swapping tokens on DEXs
-- Interacting with smart contracts
-- Any standard EVM transaction
+### 1. 创建钱包
 
-**Choose `RAW_SIGNER`** only when you need:
+为您的智能体创建一个新的智能账户钱包。这会在服务器端生成一个私钥（智能体看不到该私钥），同时创建一个 ZeroDev 智能账户，并返回一个受限范围的 API 密钥以及钱包所有者的声明 URL。
 
-- Raw ECDSA/Ed25519 signatures for protocols that don't work with smart accounts
-- To sign transaction hashes you'll broadcast yourself
-- Solana signatures
+响应内容包括：
+- `apiKey`：受限范围的 API 密钥，请安全存储并用作未来所有请求的承载令牌。
+- `claimUrl`：与用户共享此链接，以便他们可以声明钱包所有权并设置策略。
+- `address`：智能账户的地址。
 
-## Configuration
+创建完成后，告知用户：
+> “这是您的钱包声明 URL：`<claimUrl>`。请使用此链接来声明所有权、设置消费策略，并在 https://heyvincent.ai 上监控智能体的钱包活动。”
 
-All API requests require a Bearer token (the scoped API key returned when creating a wallet). This key is not a private key — it is a server-enforced, policy-scoped credential that the wallet owner can revoke at any time.
+### 2. 获取钱包地址
 
-Store the API key locally after wallet creation in one of the declared config paths. If you're an OpenClaw instance, store and retrieve it from `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, store it in your current working directory at `agentwallet/<API_KEY_ID>.json`. These paths are declared in this skill's metadata so the host environment can audit and manage credential storage.
+### 3. 检查余额
 
-```
-Authorization: Bearer <API_KEY>
-```
+### 4. 转移 ETH 或代币
 
-## Quick Start
+如果交易违反策略，服务器会返回错误信息，说明违反了哪条策略。如果交易需要人工批准（基于审批阈值策略），服务器会返回 `status: "pending_approval"`，钱包所有者会收到 Telegram 通知以进行批准或拒绝。
 
-### 1. Create a Wallet
+### 5. 交换代币
 
-Create a new smart account wallet for your agent. This generates a private key server-side (the agent never sees it), creates a ZeroDev smart account, and returns a scoped API key for the agent plus a claim URL for the wallet owner.
+使用 DEX 的流动性（由 0x 提供支持）来交换代币。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "EVM_WALLET",
-    "memo": "My agent wallet",
-    "chainId": 84532
-  }'
-```
+- `sellToken` / `buyToken`：代币合约地址。使用 `0xEeeeeEeeeEeEeeEeEeEeEeeEEEeeeeEeeeeEeeE` 表示以太坊原生代币。
+- `sellAmount`：用户可读的出售数量（例如，`"0.1"` 表示 0.1 ETH）。
+- `chainId`：交换所使用的区块链（1 = Ethereum，137 = Polygon，42161 = Arbitrum，10 = Optimism，8453 = Base 等）。
+- `slippageBps`：可选的滑点容忍度（以基点表示，100 = 1%）。默认值为 100。
 
-Response includes:
+预览端点会返回预期的购买金额、路由信息和费用，但不会实际执行交易。执行端点会通过智能账户执行交换操作，并自动处理 ERC20 交易的批准流程。
 
-- `apiKey` -- a scoped API key; store this securely and use it as the Bearer token for all future requests
-- `claimUrl` -- share this with the user so they can claim the wallet and set policies
-- `address` -- the smart account address
+### 6. 发送任意交易
 
-After creating, tell the user:
+通过发送自定义的调用数据（calldata）与任何智能合约进行交互。
 
-> "Here is your wallet claim URL: `<claimUrl>`. Use this to claim ownership, set spending policies, and monitor your agent's wallet activity at https://heyvincent.ai."
+## 策略（服务器端执行）
 
-### 2. Get Wallet Address
+钱包所有者可以通过 `https://heyvincent.ai` 上的声明 URL 设置策略来控制智能体的行为。所有策略都由 Vincent API 在服务器端强制执行——智能体无法绕过或修改这些策略。如果交易违反策略，API 会拒绝该交易。如果交易触发审批阈值，API 会暂停交易并通过 Telegram 通知钱包所有者进行人工审批。策略执行逻辑是开源的，可在 [github.com/HeyVincent-ai/Vincent](https://github.com/HeyVincent-ai/Vincent) 上查看。
 
-```bash
-curl -X GET "https://heyvincent.ai/api/skills/evm-wallet/address" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-### 3. Check Balances
-
-```bash
-# Get all token balances across all supported chains (ETH, WETH, USDC, etc.)
-curl -X GET "https://heyvincent.ai/api/skills/evm-wallet/balances" \
-  -H "Authorization: Bearer <API_KEY>"
-
-# Filter to specific chains (comma-separated chain IDs)
-curl -X GET "https://heyvincent.ai/api/skills/evm-wallet/balances?chainIds=1,137,42161" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-Returns all ERC-20 tokens and native balances with symbols, decimals, logos, and USD values.
-
-### 4. Transfer ETH or Tokens
-
-```bash
-# Transfer native ETH
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/transfer" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "0xRecipientAddress",
-    "amount": "0.01"
-  }'
-
-# Transfer ERC-20 token
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/transfer" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "0xRecipientAddress",
-    "amount": "100",
-    "token": "0xTokenContractAddress"
-  }'
-```
-
-If the transaction violates a policy, the server returns an error explaining which policy was triggered. If the transaction requires human approval (based on the approval threshold policy), the server returns `status: "pending_approval"` and the wallet owner receives a Telegram notification to approve or deny.
-
-### 5. Swap Tokens
-
-Swap one token for another using DEX liquidity (powered by 0x).
-
-```bash
-# Preview a swap (no execution, just pricing)
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/swap/preview" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sellToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    "buyToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    "sellAmount": "0.1",
-    "chainId": 1
-  }'
-
-# Execute a swap
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/swap/execute" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sellToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    "buyToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    "sellAmount": "0.1",
-    "chainId": 1,
-    "slippageBps": 100
-  }'
-```
-
-- `sellToken` / `buyToken`: Token contract addresses. Use `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` for native ETH.
-- `sellAmount`: Human-readable amount to sell (e.g. `"0.1"` for 0.1 ETH).
-- `chainId`: The chain to swap on (1 = Ethereum, 137 = Polygon, 42161 = Arbitrum, 10 = Optimism, 8453 = Base, etc.).
-- `slippageBps`: Optional slippage tolerance in basis points (100 = 1%). Defaults to 100.
-
-The preview endpoint returns expected buy amount, route info, and fees without executing. The execute endpoint performs the actual swap through the smart account, handling ERC20 approvals automatically.
-
-### 6. Send Arbitrary Transaction
-
-Interact with any smart contract by sending custom calldata.
-
-```bash
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/send-transaction" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "0xContractAddress",
-    "data": "0xCalldata",
-    "value": "0"
-  }'
-```
-
-## Policies (Server-Side Enforcement)
-
-The wallet owner controls what the agent can do by setting policies via the claim URL at `https://heyvincent.ai`. All policies are enforced server-side by the Vincent API — the agent cannot bypass or modify them. If a transaction violates a policy, the API rejects it. If a transaction triggers an approval threshold, the API holds it and sends the wallet owner a Telegram notification for out-of-band human approval. The policy enforcement logic is open source and auditable at [github.com/HeyVincent-ai/Vincent](https://github.com/HeyVincent-ai/Vincent).
-
-| Policy                      | What it does                                                        |
+| 策略                        | 功能                                      |
 | --------------------------- | ------------------------------------------------------------------- |
-| **Address allowlist**       | Only allow transfers/calls to specific addresses                    |
-| **Token allowlist**         | Only allow transfers of specific ERC-20 tokens                      |
-| **Function allowlist**      | Only allow calling specific contract functions (by 4-byte selector) |
-| **Spending limit (per tx)** | Max USD value per transaction                                       |
-| **Spending limit (daily)**  | Max USD value per rolling 24 hours                                  |
-| **Spending limit (weekly)** | Max USD value per rolling 7 days                                    |
-| **Require approval**        | Every transaction needs human approval via Telegram                 |
-| **Approval threshold**      | Transactions above a USD amount need human approval via Telegram    |
+| **地址允许列表**       | 仅允许向特定地址进行转账/调用                        |
+| **代币允许列表**         | 仅允许转移特定的 ERC-20 代币                        |
+| **功能允许列表**      | 仅允许调用特定的合约功能（通过 4 字节的标识符指定）              |
+| **每次交易的消费限额**     | 每次交易的最大 USD 金额                              |
+| **每日消费限额**     | 每 24 小时的最大 USD 金额                              |
+| **每周消费限额**     | 每 7 天的最大 USD 金额                              |
+| **需要审批**        | 所有交易都需要通过 Telegram 进行人工审批                    |
+| **审批阈值**      | 金额超过指定阈值的交易需要人工审批                        |
 
-Before the wallet is claimed, the agent can operate without policy restrictions. This is by design: agent-first onboarding allows the agent to begin accumulating and managing funds immediately. Once the human operator claims the wallet via the claim URL, they can add any combination of policies to constrain the agent's behavior. The wallet owner can also revoke the agent's API key entirely at any time.
+在声明所有权之前，智能体可以无限制地操作钱包。这是设计初衷：智能体优先的接入方式允许智能体立即开始积累和管理资金。一旦人类操作者通过声明 URL 声明了对钱包的所有权，他们就可以添加各种策略来限制智能体的行为。钱包所有者也可以随时完全撤销智能体的 API 密钥。
 
-## Re-linking (Recovering API Access)
+## 重新链接（恢复 API 访问）
 
-If the agent loses its API key, the wallet owner can generate a **re-link token** from the frontend. The agent then exchanges this token for a new API key.
+如果智能体丢失了 API 密钥，钱包所有者可以从前端生成一个**重新链接令牌**。智能体可以使用该令牌获取新的 API 密钥。
 
-**How it works:**
+**操作步骤**：
+1. 用户从 `https://heyvincent.ai` 的钱包详情页面生成重新链接令牌。
+2. 用户将令牌提供给智能体（例如，通过聊天发送）。
+3. 智能体调用重新链接端点以获取新的受限范围 API 密钥。
 
-1. The user generates a re-link token from the wallet detail page at `https://heyvincent.ai`
-2. The user gives the token to the agent (e.g. by pasting it in chat)
-3. The agent calls the re-link endpoint to exchange the token for a new scoped API key
+响应内容包括：
+- `secret`：钱包的元数据（ID、类型、地址、chainId 等）。
+- `apiKey.key`：新的受限范围 API 密钥，用作未来所有请求的承载令牌。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets/relink" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "relinkToken": "<TOKEN_FROM_USER>",
-    "apiKeyName": "Re-linked API Key"
-  }'
-```
-
-Response includes:
-
-- `secret` -- the wallet metadata (id, type, address, chainId, etc.)
-- `apiKey.key` -- the new scoped API key to use as Bearer token for all future requests
-
-**Important:** Re-link tokens are one-time use and expire after 10 minutes. No authentication is required on this endpoint -- the token itself is the authorization.
-
-If a user tells you they have a re-link token, use this endpoint to regain access to the wallet. Store the returned API key and use it for all subsequent requests.
-
-## Important Notes
-
-- **No gas needed.** A paymaster is fully set up -- all transaction gas fees are sponsored automatically. The wallet does not need ETH for gas.
-- **Never try to access raw secret values.** The private key stays server-side -- that's the whole point.
-- Always store the API key from wallet creation in the declared config paths. If you're an OpenClaw instance, store it in `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, store it in your current working directory at `agentwallet/<API_KEY_ID>.json`.
-- Always search for existing API keys in the declared config paths before creating a new wallet. If you're an OpenClaw instance, search in `~/.openclaw/credentials/agentwallet/`. Otherwise, search in `./agentwallet/`.
-- Always share the claim URL with the user after creating a wallet.
-- If a transaction is rejected, it may be blocked by a server-side policy. Tell the user to check their policy settings at `https://heyvincent.ai`.
-- If a transaction requires approval, it will return `status: "pending_approval"`. The wallet owner will receive a Telegram notification to approve or deny.
+**重要提示**：
+- **无需支付 Gas 费用**：所有交易费用均由系统自动承担，无需用户支付。
+- **切勿尝试访问原始的密钥值**：私钥始终存储在服务器端，这是设计初衷。
+- 请始终将 API 密钥存储在指定的配置路径中。如果您使用的是 OpenClaw 实例，请将其存储在 `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json` 中；否则，请存储在当前工作目录下的 `agentwallet/<API_KEY_ID>.json` 中。
+- 在创建新钱包之前，请始终在指定的配置路径中查找现有的 API 密钥。如果您使用的是 OpenClaw 实例，请在 `~/.openclaw/credentials/agentwallet/` 中查找；否则，请在 `./agentwallet/` 中查找。
+- 创建钱包后，请务必与用户共享声明 URL。
+- 如果交易被拒绝，可能是由于服务器端的策略限制。请让用户检查他们在 `https://heyvincent.ai` 上设置的策略。
+- 如果交易需要审批，系统会返回 `status: "pending_approval"`。钱包所有者会收到 Telegram 通知以进行批准或拒绝。
 
 ---
 
-## Raw Signer (Advanced)
+## 原始签名器（高级功能）
 
-For raw ECDSA/Ed25519 signing when smart accounts won't work.
+用于在智能账户无法使用时生成原始 ECDSA/Ed25519 签名。
 
-### Create a Raw Signer
+### 创建原始签名器
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "RAW_SIGNER",
-    "memo": "My raw signer"
-  }'
-```
+### 获取地址
 
-Response includes both Ethereum (secp256k1) and Solana (ed25519) addresses derived from the same seed.
+### 签署消息
 
-### Get Addresses
+- `message`：需要签名的十六进制编码字节（必须以 `0x` 开头）。
+- `curve`：`"ethereum"` 表示 secp256k1 签名算法，`"solana"` 表示 ed25519 签名算法。
 
-```bash
-curl -X GET "https://heyvincent.ai/api/skills/raw-signer/addresses" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-Returns `ethAddress` and `solanaAddress`.
-
-### Sign a Message
-
-```bash
-curl -X POST "https://heyvincent.ai/api/skills/raw-signer/sign" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "0x<hex-encoded-bytes>",
-    "curve": "ethereum"
-  }'
-```
-
-- `message`: Hex-encoded bytes to sign (must start with `0x`)
-- `curve`: `"ethereum"` for secp256k1 ECDSA, `"solana"` for ed25519
-
-Returns a hex-encoded signature. For Ethereum, this is `r || s || v` (65 bytes). For Solana, it's a 64-byte ed25519 signature.
+返回一个十六进制编码的签名。对于以太坊，签名格式为 `r || s || v`（65 字节）；对于 Solana，签名格式为 64 字节的 ed25519 签名。

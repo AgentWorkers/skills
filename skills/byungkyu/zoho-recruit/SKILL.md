@@ -17,9 +17,9 @@ metadata:
 
 # Zoho Recruit
 
-Access the Zoho Recruit API with managed OAuth authentication. Manage candidates, job openings, interviews, applications, and recruitment workflows with full CRUD operations.
+您可以使用管理型OAuth认证来访问Zoho Recruit API。该API支持对候选人、职位空缺、面试、申请以及招聘工作流程进行完整的CRUD（创建、读取、更新、删除）操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all candidates
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/zoho-recruit/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Zoho Recruit API endpoint path. The gateway proxies requests to `recruit.zoho.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Zoho Recruit API端点路径。该代理服务会将请求转发到 `recruit.zoho.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho Recruit OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的Zoho Recruit OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho Recruit connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Zoho Recruit连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,21 +140,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，代理服务将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Modules
+### 模块
 
-#### List All Modules
+#### 列出所有模块
 
-Get a list of all available modules in your Zoho Recruit account.
+获取您Zoho Recruit账户中所有可用模块的列表。
 
 ```bash
 GET /zoho-recruit/recruit/v2/settings/modules
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -165,27 +165,27 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Candidates
+### 候选人
 
-#### List Candidates
+#### 列出候选人
 
 ```bash
 GET /zoho-recruit/recruit/v2/Candidates
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `fields` | string | - | Comma-separated field API names |
-| `sort_order` | string | - | `asc` or `desc` |
-| `sort_by` | string | - | Field API name to sort by |
-| `converted` | string | - | `true`, `false`, or `both` |
-| `approved` | string | - | `true`, `false`, or `both` |
-| `page` | integer | 1 | Page number |
-| `per_page` | integer | 200 | Records per page (max 200) |
+| `fields` | 字符串 | - | 用逗号分隔的字段名称 |
+| `sort_order` | 字符串 | - | `asc` 或 `desc` |
+| `sort_by` | 字符串 | - | 按字段名称排序 |
+| `converted` | 字符串 | - | `true`、`false` 或 `both` |
+| `approved` | 字符串 | - | `true`、`false` 或 `both` |
+| `page` | 整数 | 1 | 页码 |
+| `per_page` | 整数 | 200 | 每页记录数（最多200条） |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -196,7 +196,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -225,13 +225,13 @@ EOF
 }
 ```
 
-#### Get Candidate by ID
+#### 根据ID获取候选人信息
 
 ```bash
 GET /zoho-recruit/recruit/v2/Candidates/{record_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -242,28 +242,28 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Search Candidates
+#### 搜索候选人
 
 ```bash
 GET /zoho-recruit/recruit/v2/Candidates/search?criteria={criteria}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `criteria` | string | Search criteria (e.g., `(Last_Name:contains:Smith)`) |
-| `email` | string | Search by email |
-| `phone` | string | Search by phone |
-| `word` | string | Global word search |
-| `page` | integer | Page number |
-| `per_page` | integer | Records per page |
+| `criteria` | 字符串 | 搜索条件（例如：`(Last_Name:contains:Smith)` |
+| `email` | 字符串 | 按电子邮件搜索 |
+| `phone` | 字符串 | 按电话号码搜索 |
+| `word` | 字符串 | 全文搜索 |
+| `page` | 整数 | 页码 |
+| `per_page` | 整数 | 每页记录数 |
 
-**Search Operators:**
-- Text: `equals`, `not_equal`, `starts_with`, `ends_with`, `contains`, `not_contains`, `in`
-- Date/Number: `equals`, `not_equal`, `greater_than`, `less_than`, `greater_equal`, `less_equal`, `between`
+**搜索操作符：**
+- 文本：`equals`、`not_equal`、`starts_with`、`ends_with`、`contains`、`not_contains`、`in`
+- 日期/数字：`equals`、`not_equal`、`greater_than`、`less_than`、`greater_equal`、`less_equal`、`between`
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -276,7 +276,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Create Candidate
+#### 创建候选人信息
 
 ```bash
 POST /zoho-recruit/recruit/v2/Candidates
@@ -295,7 +295,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -315,7 +315,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -336,7 +336,7 @@ EOF
 }
 ```
 
-#### Update Candidate
+#### 更新候选人信息
 
 ```bash
 PUT /zoho-recruit/recruit/v2/Candidates/{record_id}
@@ -351,7 +351,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -368,21 +368,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Delete Candidates
+#### 删除候选人信息
 
 ```bash
 DELETE /zoho-recruit/recruit/v2/Candidates?ids={record_id1},{record_id2}
 ```
 
-### Job Openings
+### 职位空缺
 
-#### List Job Openings
+#### 列出职位空缺
 
 ```bash
 GET /zoho-recruit/recruit/v2/Job_Openings
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -393,7 +393,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -418,13 +418,13 @@ EOF
 }
 ```
 
-#### Get Job Opening by ID
+#### 根据ID获取职位空缺信息
 
 ```bash
 GET /zoho-recruit/recruit/v2/Job_Openings/{record_id}
 ```
 
-#### Create Job Opening
+#### 创建职位空缺
 
 ```bash
 POST /zoho-recruit/recruit/v2/Job_Openings
@@ -442,28 +442,28 @@ Content-Type: application/json
 }
 ```
 
-#### Update Job Opening
+#### 更新职位空缺信息
 
 ```bash
 PUT /zoho-recruit/recruit/v2/Job_Openings/{record_id}
 Content-Type: application/json
 ```
 
-#### Delete Job Openings
+#### 删除职位空缺
 
 ```bash
 DELETE /zoho-recruit/recruit/v2/Job_Openings?ids={record_id1},{record_id2}
 ```
 
-### Interviews
+### 面试
 
-#### List Interviews
+#### 列出面试记录
 
 ```bash
 GET /zoho-recruit/recruit/v2/Interviews
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -474,13 +474,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Interview by ID
+#### 根据ID获取面试记录
 
 ```bash
 GET /zoho-recruit/recruit/v2/Interviews/{record_id}
 ```
 
-#### Create Interview
+#### 创建面试记录
 
 ```bash
 POST /zoho-recruit/recruit/v2/Interviews
@@ -499,15 +499,15 @@ Content-Type: application/json
 }
 ```
 
-### Departments
+### 部门
 
-#### List Departments
+#### 列出部门信息
 
 ```bash
 GET /zoho-recruit/recruit/v2/Departments
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -518,17 +518,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Applications
+### 申请信息
 
-#### List Applications
+#### 列出申请记录
 
 ```bash
 GET /zoho-recruit/recruit/v2/Applications
 ```
 
-### Generic Record Operations
+### 通用记录操作
 
-All modules support the same CRUD operations:
+所有模块都支持相同的CRUD操作：
 
 ```bash
 # List records
@@ -550,35 +550,35 @@ DELETE /zoho-recruit/recruit/v2/{module_api_name}?ids={id1},{id2}
 GET /zoho-recruit/recruit/v2/{module_api_name}/search?criteria={criteria}
 ```
 
-## Available Modules
+## 可用模块
 
-| Module | API Name | Description |
+| 模块 | API名称 | 描述 |
 |--------|----------|-------------|
-| Candidates | `Candidates` | Job candidates |
-| Job Openings | `Job_Openings` | Open positions |
-| Applications | `Applications` | Job applications |
-| Interviews | `Interviews` | Scheduled interviews |
-| Departments | `Departments` | Company departments |
-| Clients | `Clients` | Client companies |
-| Contacts | `Contacts` | Contact persons |
-| Campaigns | `Campaigns` | Recruitment campaigns |
-| Referrals | `Referrals` | Employee referrals |
-| Tasks | `Tasks` | To-do items |
-| Events | `Events` | Calendar events |
-| Vendors | `Vendors` | External vendors |
+| Candidates | `Candidates` | 候选人信息 |
+| Job_Openings | `Job_Openings` | 职位空缺信息 |
+| Applications | `Applications` | 申请信息 |
+| Interviews | `Interviews` | 面试记录 |
+| Departments | `Departments` | 部门信息 |
+| Clients | `Clients` | 客户信息 |
+| Contacts | `Contacts` | 联系人信息 |
+| Campaigns | `Campaigns` | 招聘活动 |
+| Referrals | `Referrals` | 员工推荐信息 |
+| Tasks | `Tasks` | 待办事项 |
+| Events | `Events` | 日历事件 |
+| Vendors | `Vendors` | 外部供应商信息 |
 
-## Pagination
+## 分页
 
-Zoho Recruit uses page-based pagination:
+Zoho Recruit使用基于页码的分页机制：
 
 ```bash
 GET /zoho-recruit/recruit/v2/{module_api_name}?page=1&per_page=200
 ```
 
-- `page`: Page number (default: 1)
-- `per_page`: Records per page (default: 200, max: 200)
+- `page`：页码（默认值：1）
+- `per_page`：每页记录数（默认值：200，最大值：200）
 
-Response includes pagination info:
+响应中包含分页信息：
 ```json
 {
   "data": [...],
@@ -591,7 +591,7 @@ Response includes pagination info:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -621,48 +621,48 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Record IDs are numeric strings (e.g., `846336000000552208`)
-- Maximum 200 records per GET request
-- Maximum 100 records per POST/PUT request
-- Maximum 100 records per DELETE request
-- Module API names are case-sensitive (e.g., `Job_Openings`, not `job_openings`)
-- `Last_Name` is mandatory for Candidates
-- Date format: `yyyy-MM-dd`
-- DateTime format: `yyyy-MM-ddTHH:mm:ss±HH:mm` (ISO 8601)
-- Lookup fields use JSON objects with `id` and optionally `name`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain special characters
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 记录ID是数字字符串（例如：`846336000000552208`）
+- 每次GET请求最多返回200条记录。
+- 每次POST/PUT请求最多返回100条记录。
+- 每次DELETE请求最多返回100条记录。
+- 模块API名称区分大小写（例如：`Job_Openings`，而不是 `job_openings`）。
+- 对于候选人信息，`Last_Name` 是必填字段。
+- 日期格式：`yyyy-MM-dd`。
+- 时间格式：`yyyy-MM-ddTHH:mm:ss±HH:mm`（ISO 8601）。
+- 查找字段使用包含 `id` 和可选的 `name` 的JSON对象。
+- 重要提示：当URL包含特殊字符时，使用 `curl -g` 命令。
+- 重要提示：在将curl输出传递给 `jq` 或其他命令时，某些shell环境中环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho Recruit connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho Recruit API |
+| 400 | 未找到Zoho Recruit连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自Zoho Recruit API的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| INVALID_DATA | Invalid field value |
-| MANDATORY_NOT_FOUND | Required field missing |
-| DUPLICATE_DATA | Duplicate record detected |
-| INVALID_MODULE | Invalid module API name |
-| NO_PERMISSION | Insufficient permissions |
+| INVALID_DATA | 字段值无效 |
+| MANDATORY_NOT_FOUND | 必填字段缺失 |
+| DUPLICATE_DATA | 检测到重复记录 |
+| INVALID_MODULE | 模块API名称无效 |
+| NO_PERMISSION | 权限不足 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -673,21 +673,20 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `zoho-recruit`. For example:
+1. 确保您的URL路径以 `zoho-recruit` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/zoho-recruit/recruit/v2/Candidates`
+- 错误格式：`https://gateway.maton.ai/recruit/v2/Candidates`
 
-- Correct: `https://gateway.maton.ai/zoho-recruit/recruit/v2/Candidates`
-- Incorrect: `https://gateway.maton.ai/recruit/v2/Candidates`
+## 资源
 
-## Resources
-
-- [Zoho Recruit API v2 Overview](https://www.zoho.com/recruit/developer-guide/apiv2/)
-- [Get Records API](https://www.zoho.com/recruit/developer-guide/apiv2/get-records.html)
-- [Insert Records API](https://www.zoho.com/recruit/developer-guide/apiv2/insert-records.html)
-- [Update Records API](https://www.zoho.com/recruit/developer-guide/apiv2/update-records.html)
-- [Delete Records API](https://www.zoho.com/recruit/developer-guide/apiv2/delete-records.html)
-- [Search Records API](https://www.zoho.com/recruit/developer-guide/apiv2/search-records.html)
-- [Modules API](https://www.zoho.com/recruit/developer-guide/apiv2/modules-api.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho Recruit API v2概述](https://www.zoho.com/recruit/developer-guide/apiv2/)
+- [获取记录API](https://www.zoho.com/recruit/developer-guide/apiv2/get-records.html)
+- [插入记录API](https://www.zoho.com/recruit/developer-guide/apiv2/insert-records.html)
+- [更新记录API](https://www.zoho.com/recruit/developer-guide/apiv2/update-records.html)
+- [删除记录API](https://www.zoho.com/recruit/developer-guide/apiv2/delete-records.html)
+- [搜索记录API](https://www.zoho.com/recruit/developer-guide/apiv2/search-records.html)
+- [模块API](https://www.zoho.com/recruit/developer-guide/apiv2/modules-api.html)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

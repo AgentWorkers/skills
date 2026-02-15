@@ -12,47 +12,45 @@ metadata:
 allowed-tools: Bash(curl:*) Bash(jq:*) Read
 ---
 
-# OnlyFans API Skill
+# OnlyFans API 技能
 
-This skill queries the OnlyFansAPI.com platform to answer questions about OnlyFans agency analytics — revenue, model performance, and link conversion metrics.
+该技能用于查询 OnlyFansAPI.com 平台，以获取关于 OnlyFans 代理机构分析的数据，包括收入、模型表现以及链接转化指标等信息。
 
-## Prerequisites
+## 前提条件
 
-The user must set the environment variable `ONLYFANSAPI_API_KEY` with their API key from <https://app.onlyfansapi.com/api-keys>.
-
-If the key is not set, remind the user:
+用户必须设置环境变量 `ONLYFANSAPI_API_KEY`，并使用从 <https://app.onlyfansapi.com/api-keys> 获取的 API 密钥。如果未设置该密钥，请提醒用户：
 
 ```
 Export your OnlyFansAPI key:
   export ONLYFANSAPI_API_KEY="your_api_key_here"
 ```
 
-## API Basics
+## API 基础信息
 
-- **Base URL:** `https://app.onlyfansapi.com`
-- **Auth header:** `Authorization: Bearer $ONLYFANSAPI_API_KEY`
-- All dates use URL-encoded format: `YYYY-MM-DD HH:MM:SS`
-- If not specific time is specified use start of day or end of day (for date range ending date)
-- Pagination: use `limit` and `offset` query params. Check `hasMore` or `_pagination.next_page` in responses.
-- Whenever possible use User-Agent with value: OnlyFansAPI-Skill
-- Try your best to infer schema from the example response of the endpoint. Eg "data.total.total" for earnings scalar value from endpoint.
+- **基础 URL：** `https://app.onlyfansapi.com`
+- **认证头：** `Authorization: Bearer $ONLYFANSAPI_API_KEY`
+- 所有日期均使用 URL 编码格式：`YYYY-MM-DD HH:MM:SS`
+- 如果未指定具体时间，使用当天开始或结束的时间（对于日期范围）
+- 分页：使用 `limit` 和 `offset` 查询参数。可以通过响应中的 `hasMore` 或 `_pagination.next_page` 来判断是否还有更多数据。
+- 尽可能使用 `User-Agent`，其值为 `OnlyFansAPI-Skill`
+- 尽量从端点的示例响应中推断数据结构。例如，`data.total.total` 表示收入的总金额。
 
-## Workflows
+## 工作流程
 
-### 1. Get revenue of all models for the past N days
+### 1. 获取过去 N 天内所有模型的收入
 
-**Steps:**
+**步骤：**
 
-1. **List all connected accounts:**
+1. **列出所有关联的账户：**
 
    ```bash
    curl -s -H "Authorization: Bearer $ONLYFANSAPI_API_KEY" \
      "https://app.onlyfansapi.com/api/accounts" | jq .
    ```
 
-   Each account object has `"id"` (e.g. `"acct_xxx"`), `"onlyfans_username"`, and `"display_name"`.
+   每个账户对象包含 `"id"`（例如 `"acct_xxx"`）、`onlyfans_username` 和 `"display_name"`。
 
-2. **For each account, get earnings:**
+2. **获取每个账户的收入：**
 
    ```bash
    START=$(date -u -v-7d '+%Y-%m-%d+00%%3A00%%3A00')  # macOS
@@ -63,117 +61,109 @@ Export your OnlyFansAPI key:
      "https://app.onlyfansapi.com/api/{account_id}/statistics/statements/earnings?start_date=$START&end_date=$END&type=total" | jq .
    ```
 
-   Response fields:
-   - `data.total` — net earnings
-   - `data.gross` — gross earnings
-   - `data.chartAmount` — daily earnings breakdown array
-   - `data.delta` — percentage change vs. prior period
+   响应字段：
+   - `data.total` — 净收入
+   - `data.gross` — 总收入
+   - `data.chartAmount` — 每日收入明细数组
+   - `data.delta` — 与上一期的收入变化百分比
 
-3. **Summarize:** Present a table of each model's display name, username, net revenue, and gross revenue. Sum the totals.
+3. **汇总数据：** 显示每个模型的显示名称、用户名、净收入和总收入，并计算总和。
 
-### 2. Which model is performing the best
+### 2. 哪个模型的表现最好
 
-Use the same workflow as above. Rank models by `data.total` (net earnings) descending. The model with the highest value is the best performer.
+使用上述流程，按照 `data.total`（净收入）降序排列模型。收入最高的模型表现最佳。
 
-Optionally also pull the statistics overview for richer context:
+（可选）还可以获取更详细的统计信息，例如订阅者数量、访问者统计以及帖子/消息的收入明细。
 
-```bash
-curl -s -H "Authorization: Bearer $ONLYFANSAPI_API_KEY" \
-  "https://app.onlyfansapi.com/api/{account_id}/statistics/overview?start_date=$START&end_date=$END" | jq .
-```
+### 3. 哪个免费试用链接的转化率最高（订阅者 → 消费者）
 
-This adds subscriber counts, visitor stats, post/message earnings breakdown.
-
-### 3. Which Free Trial Link has the highest conversion rate (subscribers → spenders)
-
-1. **List free trial links:**
+1. **列出所有免费试用链接：**
 
    ```bash
    curl -s -H "Authorization: Bearer $ONLYFANSAPI_API_KEY" \
      "https://app.onlyfansapi.com/api/{account_id}/trial-links?limit=100&offset=0&sort=desc&field=subscribe_counts&synchronous=true" | jq .
    ```
 
-   Key response fields per link:
-   - `id`, `trialLinkName`, `url`
-   - `claimCounts` — total subscribers who claimed the trial
-   - `clicksCounts` — total clicks
-   - `revenue.total` — total revenue from this link
-   - `revenue.spendersCount` — number of subscribers who spent money
-   - `revenue.revenuePerSubscriber` — average revenue per subscriber
+   每个链接的关键响应字段：
+   - `id`、`trialLinkName`、`url`
+   - `claimCounts` — 提取试用权限的订阅者总数
+   - `clicksCounts` — 点击次数
+   - `revenue.total` — 该链接带来的总收入
+   - `revenue.spendersCount` — 支付费用的订阅者数量
+   - `revenue.revenuePerSubscriber` — 每位订阅者的平均收入
 
-2. **Calculate conversion rate:**
+2. **计算转化率：**
 
    ```
    conversion_rate = spendersCount / claimCounts
    ```
 
-   Rank links by conversion rate descending.
+   按转化率降序排列链接。
 
-3. **Present results** as a table: link name, claims, spenders, conversion rate, total revenue.
+3. **以表格形式展示结果：** 包括链接名称、领取试用权限的订阅者数量、实际付费的订阅者数量、转化率以及总收入。
 
-### 4. Which Tracking Link has the highest conversion rate
+### 4. 哪个跟踪链接的转化率最高
 
-1. **List tracking links:**
+1. **列出所有跟踪链接：**
 
    ```bash
    curl -s -H "Authorization: Bearer $ONLYFANSAPI_API_KEY" \
      "https://app.onlyfansapi.com/api/{account_id}/tracking-links?limit=100&offset=0&sort=desc&sortby=claims&synchronous=true" | jq .
    ```
 
-   Key response fields per link:
-   - `id`, `campaignName`, `campaignUrl`
-   - `subscribersCount` — total subscribers from this link
-   - `clicksCount` — total clicks
-   - `revenue.total` — total revenue
-   - `revenue.spendersCount` — subscribers who spent
-   - `revenue.revenuePerSubscriber` — avg revenue per subscriber
-   - `revenue.revenuePerClick` — avg revenue per click
+   每个链接的关键响应字段：
+   - `id`、`campaignName`、`campaignUrl`
+   - `subscribersCount` — 通过该链接获得的订阅者总数
+   - `clicksCount` — 点击次数
+   - `revenue.total` — 总收入
+   - `revenue.spendersCount` — 支付费用的订阅者数量
+   - `revenue.revenuePerSubscriber` — 每位订阅者的平均收入
+   - `revenue.revenuePerClick` — 每次点击的平均收入
 
-2. **Calculate conversion rate:**
+2. **计算转化率：**
 
    ```
    conversion_rate = revenue.spendersCount / subscribersCount
    ```
 
-3. **Present results** as a table: campaign name, subscribers, spenders, conversion rate, total revenue, revenue per subscriber.
+3. **以表格形式展示结果：** 包括活动名称、订阅者数量、实际付费的订阅者数量、转化率以及总收入。
 
-### 5. Which Free Trial / Tracking Link made the most money
+### 5. 哪个免费试用链接/跟踪链接带来的收入最高
 
-Use the same listing endpoints above. Sort by `revenue.total` descending. Present the top links with their name, type (trial vs. tracking), total revenue, and subscriber/spender counts.
+使用上述相同的接口获取数据，按照 `revenue.total` 降序排列，展示收入最高的链接及其类型（免费试用/跟踪链接）、总收入以及订阅者/付费订阅者数量。
 
-## Multi-Account (Agency) Queries
+## 多账户（代理机构）查询
 
-For agency-level queries that span all models, always:
+对于涉及所有模型的代理机构级查询，请始终执行以下步骤：
 
-1. First fetch all accounts via `GET /api/accounts`
-2. Loop through each account and gather the relevant data
-3. Aggregate and present combined results with per-model breakdowns
+1. 首先通过 `GET /api/accounts` 获取所有账户信息。
+2. 遍历每个账户并收集相关数据。
+3. 对数据进行汇总，并以每个模型的明细形式展示结果。
 
-## Earnings Type Filters
+## 收入类型过滤
 
-When querying `GET /api/{account}/statistics/statements/earnings`, the `type` parameter filters by category:
+在查询 `GET /api/{account}/statistics/statements/earnings` 时，`type` 参数可用于过滤收入类型：
+- `total` — 所有收入总和
+- `subscribes` — 订阅收入
+- `tips` — 收到的小费
+- `post` — 付费帖子收入
+- `messages` — 付费消息收入
+- `stream` — 流媒体收入
 
-- `total` — all earnings combined
-- `subscribes` — subscription revenue
-- `tips` — tips received
-- `post` — paid post revenue
-- `messages` — paid message revenue
-- `stream` — stream revenue
+## 如有疑问
 
-## When In Doubt
+如果您不确定某个端点、参数、响应格式或如何使用 OnlyFans API 完成特定任务，请查阅官方文档 <https://docs.onlyfansapi.com>。该网站提供了所有可用端点的完整参考信息、指南和示例。在尝试之前，请务必先查看文档。
 
-If you are unsure about an endpoint, parameter, response format, or how to accomplish a specific task with the OnlyFans API, consult the official documentation at <https://docs.onlyfansapi.com>. The site contains full API reference details, guides, and examples for all available endpoints. Always check the docs before guessing.
+## 错误处理
 
-## Error Handling
+- 如果未设置 `ONLYFANSAPI_API_KEY`，请停止操作并提示用户进行配置。
+- 如果 API 调用返回非 200 状态码的响应，请显示错误信息和 HTTP 状态码。
+- 如果 `_meta._rate_limits_remaining_minute` 或 `remaining_day` 为 0，请提醒用户注意使用率限制。
+- 如果账户的 `"isAuthenticated"` 为 `false`，则表示需要重新认证。
 
-- If `ONLYFANSAPI_API_KEY` is not set, stop and ask the user to configure it.
-- If an API call returns a non-200 status, show the error message and HTTP status code.
-- If `_meta._rate_limits.remaining_minute` or `remaining_day` is 0, warn the user about rate limits.
-- If an account has `"is_authenticated": false`, note that the account needs re-authentication.
+## 输出格式
 
-## Output Formatting
-
-- Always present data in markdown tables for readability.
-- Include currency values formatted to 2 decimal places.
-- When showing percentages (conversion rates, deltas), format as `XX.X%`.
-- For multi-model summaries, include a **Total** row at the bottom.
+- 始终使用 markdown 表格格式展示数据，以便于阅读。
+- 货币值保留两位小数。
+- 在显示百分比（转化率、变化百分比）时，格式化为 `XX.X%`。
+- 对于多模型汇总数据，应在表格底部添加一个 **总计** 行。

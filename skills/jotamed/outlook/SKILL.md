@@ -1,42 +1,42 @@
 ---
 name: outlook
-description: Read, search, and manage Outlook emails and calendar via Microsoft Graph API. Use when the user asks about emails, inbox, Outlook, Microsoft mail, calendar events, or scheduling.
+description: 通过 Microsoft Graph API 读取、搜索和管理 Outlook 邮件及日历。当用户询问有关邮件、收件箱、Outlook、Microsoft 邮件、日历事件或日程安排的信息时，可以使用此功能。
 version: 1.3.0
 author: jotamed
 ---
 
 # Outlook Skill
 
-Access Outlook/Hotmail email and calendar via Microsoft Graph API using OAuth2.
+通过使用 OAuth2 和 Microsoft Graph API，您可以访问 Outlook/Hotmail 的电子邮件和日历功能。
 
-## Quick Setup (Automated)
+## 快速设置（自动化）
 
 ```bash
 # Requires: Azure CLI, jq
 ./scripts/outlook-setup.sh
 ```
 
-The setup script will:
-1. Log you into Azure (device code flow)
-2. Create an App Registration automatically
-3. Configure API permissions (Mail.ReadWrite, Mail.Send, Calendars.ReadWrite)
-4. Guide you through authorization
-5. Save credentials to `~/.outlook-mcp/`
+设置脚本将完成以下操作：
+1. 使用设备代码流登录 Azure
+2. 自动创建应用程序注册
+3. 配置 API 权限（Mail.ReadWrite、Mail.Send、Calendars.ReadWrite）
+4. 指导您完成授权过程
+5. 将凭据保存到 `~/.outlook-mcp/` 文件夹中
 
-## Manual Setup
+## 手动设置
 
-See `references/setup.md` for step-by-step manual configuration via Azure Portal.
+请参阅 `references/setup.md`，了解如何通过 Azure 门户进行手动配置的详细步骤。
 
-## Usage
+## 使用方法
 
-### Token Management
+### 令牌管理
 ```bash
 ./scripts/outlook-token.sh refresh  # Refresh expired token
 ./scripts/outlook-token.sh test     # Test connection
 ./scripts/outlook-token.sh get      # Print access token
 ```
 
-### Reading Emails
+### 阅读电子邮件
 ```bash
 ./scripts/outlook-mail.sh inbox [count]           # List latest emails (default: 10)
 ./scripts/outlook-mail.sh unread [count]          # List unread emails
@@ -46,7 +46,7 @@ See `references/setup.md` for step-by-step manual configuration via Azure Portal
 ./scripts/outlook-mail.sh attachments <id>        # List email attachments
 ```
 
-### Managing Emails
+### 管理电子邮件
 ```bash
 ./scripts/outlook-mail.sh mark-read <id>          # Mark as read
 ./scripts/outlook-mail.sh mark-unread <id>        # Mark as unread
@@ -57,21 +57,21 @@ See `references/setup.md` for step-by-step manual configuration via Azure Portal
 ./scripts/outlook-mail.sh move <id> <folder>      # Move to folder
 ```
 
-### Sending Emails
+### 发送电子邮件
 ```bash
 ./scripts/outlook-mail.sh send <to> <subj> <body> # Send new email
 ./scripts/outlook-mail.sh reply <id> "body"       # Reply to email
 ```
 
-### Folders & Stats
+### 文件夹与统计信息
 ```bash
 ./scripts/outlook-mail.sh folders                 # List mail folders
 ./scripts/outlook-mail.sh stats                   # Inbox statistics
 ```
 
-## Calendar
+## 日历
 
-### Viewing Events
+### 查看事件
 ```bash
 ./scripts/outlook-calendar.sh events [count]      # List upcoming events
 ./scripts/outlook-calendar.sh today               # Today's events
@@ -81,21 +81,21 @@ See `references/setup.md` for step-by-step manual configuration via Azure Portal
 ./scripts/outlook-calendar.sh free <start> <end>  # Check availability
 ```
 
-### Creating Events
+### 创建事件
 ```bash
 ./scripts/outlook-calendar.sh create <subj> <start> <end> [location]  # Create event
 ./scripts/outlook-calendar.sh quick <subject> [time]                  # Quick 1-hour event
 ```
 
-### Managing Events
+### 管理事件
 ```bash
 ./scripts/outlook-calendar.sh update <id> <field> <value>  # Update (subject/location/start/end)
 ./scripts/outlook-calendar.sh delete <id>                  # Delete event
 ```
 
-Date format: `YYYY-MM-DDTHH:MM` (e.g., `2026-01-26T10:00`)
+日期格式：`YYYY-MM-DDTHH:MM`（例如：`2026-01-26T10:00`
 
-### Example Output
+### 示例输出
 
 ```bash
 $ ./scripts/outlook-mail.sh inbox 3
@@ -157,81 +157,77 @@ $ ./scripts/outlook-calendar.sh create "Lunch with client" "2026-01-26T13:00" "2
 }
 ```
 
-## Token Refresh
+## 令牌刷新
 
-Access tokens expire after ~1 hour. Refresh with:
+访问令牌大约 1 后会过期。请使用以下命令刷新令牌：
 
 ```bash
 ./scripts/outlook-token.sh refresh
 ```
 
-## Files
+## 文件夹与配置文件
 
-- `~/.outlook-mcp/config.json` - Client ID and secret
-- `~/.outlook-mcp/credentials.json` - OAuth tokens (access + refresh)
+- `~/.outlook-mcp/config.json` – 客户端 ID 和密钥
+- `~/.outlook-mcp/credentials.json` – OAuth 令牌（包括访问令牌和刷新令牌）
 
-## Permissions
+## 权限说明
 
-- `Mail.ReadWrite` - Read and modify emails
-- `Mail.Send` - Send emails
-- `Calendars.ReadWrite` - Read and modify calendar events
-- `offline_access` - Refresh tokens (stay logged in)
-- `User.Read` - Basic profile info
+- `Mail.ReadWrite`：读取和修改电子邮件
+- `Mail.Send`：发送电子邮件
+- `Calendars.ReadWrite`：读取和修改日历事件
+- `offline_access`：允许在离线状态下保持登录状态
+- `User.Read`：读取基本用户信息
 
-## Notes
+## 注意事项
 
-- **Email IDs**: The `id` field shows the last 20 characters of the full message ID. Use this ID with commands like `read`, `mark-read`, `delete`, etc.
-- **Numbered results**: Emails are numbered (n: 1, 2, 3...) for easy reference in conversation.
-- **Text extraction**: HTML email bodies are automatically converted to plain text.
-- **Token expiry**: Access tokens expire after ~1 hour. Run `outlook-token.sh refresh` when you see auth errors.
-- **Recent emails**: Commands like `read`, `mark-read`, etc. search the 100 most recent emails for the ID.
+- **电子邮件 ID**：`id` 字段显示了完整邮件 ID 的最后 20 个字符。请使用此 ID 来执行 `read`、`mark-read`、`delete` 等操作。
+- **结果编号**：电子邮件会按顺序编号（例如：1、2、3……），以便于查找。
+- **文本提取**：HTML 格式的邮件正文会自动转换为纯文本。
+- **令牌过期**：访问令牌大约 1 后会过期。如果出现授权错误，请运行 `outlook-token.sh refresh` 命令刷新令牌。
+- **最近收到的邮件**：`read`、`mark-read` 等命令会从最近收到的 100 封邮件中查找目标邮件。
 
-## Troubleshooting
+## 故障排除
 
-**"Token expired"** → Run `outlook-token.sh refresh`
+- **“令牌过期”**：运行 `outlook-token.sh refresh` 命令刷新令牌。
+- **“授权失败”**：令牌无效，请重新运行 `outlook-setup.sh` 进行设置。
+- **“权限不足”**：请在 Azure 门户中检查应用程序权限（API 权限设置）。
+- **“邮件未找到”**：该邮件可能不在最近收到的 100 封邮件范围内，请使用搜索功能查找。
+- **“文件夹未找到”**：请使用准确的文件夹名称。运行 `folders` 命令查看可用的文件夹。
 
-**"Invalid grant"** → Token invalid, re-run setup: `outlook-setup.sh`
+## 支持的账户类型
 
-**"Insufficient privileges"** → Check app permissions in Azure Portal → API Permissions
+- 个人 Microsoft 账户（outlook.com、hotmail.com、live.com）
+- 工作/学校账户（Microsoft 365）：可能需要管理员授权
 
-**"Message not found"** → The email may be older than 100 messages. Use search to find it first.
-
-**"Folder not found"** → Use exact folder name. Run `folders` to see available folders.
-
-## Supported Accounts
-
-- Personal Microsoft accounts (outlook.com, hotmail.com, live.com)
-- Work/School accounts (Microsoft 365) - may require admin consent
-
-## Changelog
+## 更新日志
 
 ### v1.3.0
-- Added: **Calendar support** (`outlook-calendar.sh`)
-  - View events (today, week, upcoming)
-  - Create/quick-create events
-  - Update event details (subject, location, time)
-  - Delete events
-  - Check availability (free/busy)
-  - List calendars
-- Added: `Calendars.ReadWrite` permission
+- 新增：日历功能（`outlook-calendar.sh`）
+  - 查看事件（今日、本周、即将发生的事件）
+  - 创建/快速创建事件
+  - 更新事件详情（主题、地点、时间）
+  - 删除事件
+  - 查看事件可用性（空闲/忙碌）
+  - 列出日历
+- 新增：`Calendars.ReadWrite` 权限
 
 ### v1.2.0
-- Added: `mark-unread` - Mark emails as unread
-- Added: `flag/unflag` - Flag/unflag emails as important
-- Added: `delete` - Move emails to trash
-- Added: `archive` - Archive emails
-- Added: `move` - Move emails to any folder
-- Added: `from` - Filter emails by sender
-- Added: `attachments` - List email attachments
-- Added: `reply` - Reply to emails
-- Improved: `send` - Better error handling and status output
-- Improved: `move` - Case-insensitive folder names, shows available folders on error
+- 新增：`mark-unread`：将邮件标记为未读
+- 新增：`flag/unflag`：将邮件标记为重要或取消标记
+- 新增：`delete`：将邮件移至垃圾箱
+- 新增：`archive`：将邮件归档
+- 新增：`move`：将邮件移动到任意文件夹
+- 新增：`from`：按发件人过滤邮件
+- 新增：`attachments`：列出邮件附件
+- 新增：`reply`：回复邮件
+- 优化：`send` 命令的错误处理和状态输出
+- 优化：`move` 命令：支持不区分大小写的文件夹名称，并在出错时显示可用文件夹
 
 ### v1.1.0
-- Fixed: Email IDs now use unique suffixes (last 20 chars)
-- Added: Numbered results (n: 1, 2, 3...)
-- Improved: HTML bodies converted to plain text
-- Added: `to` field in read output
+- 修复：电子邮件 ID 现在会使用唯一的后缀（最后 20 个字符）
+- 新增：结果按顺序编号（例如：1、2、3……）
+- 优化：HTML 格式的邮件正文会自动转换为纯文本
+- 新增：在阅读结果中显示 `to` 字段
 
 ### v1.0.0
-- Initial release
+- 首次发布

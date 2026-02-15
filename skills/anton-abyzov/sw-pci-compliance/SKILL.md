@@ -1,56 +1,56 @@
 ---
 name: pci-compliance
-description: PCI DSS compliance expert for secure payment card handling and audit preparation. Use when implementing card tokenization, encrypting payment data, or preparing for PCI compliance audits. Covers SAQ levels, data minimization, access control, and audit logging requirements.
+description: PCI DSS合规性专家，专注于安全处理支付卡及相关审计准备工作。适用于实施卡片令牌化、加密支付数据或准备PCI合规性审计的场景。涵盖SAQ（Security Assessment Questionnaire）相关要求、数据最小化原则、访问控制机制以及审计日志记录规范。
 ---
 
-# PCI Compliance
+# PCI合规性
 
-Master PCI DSS (Payment Card Industry Data Security Standard) compliance for secure payment processing and handling of cardholder data.
+确保符合PCI DSS（支付卡行业数据安全标准），以实现安全的支付处理和持卡人数据管理。
 
-## When to Use This Skill
+## 适用场景
 
-- Building payment processing systems
-- Handling credit card information
-- Implementing secure payment flows
-- Conducting PCI compliance audits
-- Reducing PCI compliance scope
-- Implementing tokenization and encryption
-- Preparing for PCI DSS assessments
+- 构建支付处理系统
+- 处理信用卡信息
+- 实施安全的支付流程
+- 进行PCI合规性审计
+- 减少PCI合规性范围
+- 实施令牌化和加密技术
+- 为PCI DSS评估做准备
 
-## PCI DSS Requirements (12 Core Requirements)
+## PCI DSS要求（12项核心要求）
 
-### Build and Maintain Secure Network
-1. Install and maintain firewall configuration
-2. Don't use vendor-supplied defaults for passwords
+### 构建和维护安全的网络环境
+1. 安装并维护防火墙配置
+2. 不要使用供应商提供的默认密码设置
 
-### Protect Cardholder Data
-3. Protect stored cardholder data
-4. Encrypt transmission of cardholder data across public networks
+### 保护持卡人数据
+3. 保护存储的持卡人数据
+4. 对在公共网络上传输的持卡人数据进行加密
 
-### Maintain Vulnerability Management
-5. Protect systems against malware
-6. Develop and maintain secure systems and applications
+### 管理安全漏洞
+5. 保护系统免受恶意软件的攻击
+6. 开发和维护安全的系统及应用程序
 
-### Implement Strong Access Control
-7. Restrict access to cardholder data by business need-to-know
-8. Identify and authenticate access to system components
-9. Restrict physical access to cardholder data
+### 实施强化的访问控制
+7. 根据业务需求限制对持卡人数据的访问
+8. 识别并验证对系统组件的访问权限
+9. 限制对持卡人数据的物理访问
 
-### Monitor and Test Networks
-10. Track and monitor all access to network resources and cardholder data
-11. Regularly test security systems and processes
+### 监控和测试网络
+10. 跟踪和监控所有对网络资源和持卡人数据的访问
+11. 定期测试安全系统和流程
 
-### Maintain Information Security Policy
-12. Maintain a policy that addresses information security
+### 维护信息安全政策
+12. 制定并执行信息安全政策
 
-## Compliance Levels
+## 合规性等级
 
-**Level 1**: > 6 million transactions/year (annual ROC required)
-**Level 2**: 1-6 million transactions/year (annual SAQ)
-**Level 3**: 20,000-1 million e-commerce transactions/year
-**Level 4**: < 20,000 e-commerce or < 1 million total transactions
+- **一级**：年交易量超过600万笔（需每年提交自我评估问卷）
+- **二级**：年交易量在100万至600万笔之间（需每年提交自我评估问卷）
+- **三级**：年电子商务交易量在2万至100万笔之间
+- **四级**：年电子商务交易量少于2万笔，或总交易量少于100万笔
 
-## Data Minimization (Never Store)
+## 数据最小化（切勿存储）
 
 ```python
 # NEVER STORE THESE
@@ -96,9 +96,9 @@ class PaymentData:
                 raise SecurityError(f"Attempting to store prohibited field: {field}")
 ```
 
-## Tokenization
+## 令牌化
 
-### Using Payment Processor Tokens
+### 使用支付处理商提供的令牌
 ```python
 import stripe
 
@@ -160,7 +160,7 @@ class TokenizedPayment:
         }
 ```
 
-### Custom Tokenization (Advanced)
+### 自定义令牌化（高级技术）
 ```python
 import secrets
 from cryptography.fernet import Fernet
@@ -200,9 +200,9 @@ class TokenVault:
         self.vault.pop(token, None)
 ```
 
-## Encryption
+## 加密
 
-### Data at Rest
+### 静态数据加密
 ```python
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import os
@@ -244,7 +244,7 @@ encrypted_pan = storage.encrypt("4242424242424242")
 # Store encrypted_pan in database
 ```
 
-### Data in Transit
+### 动态数据加密
 ```python
 # Always use TLS 1.2 or higher
 # Flask/Django example
@@ -257,8 +257,7 @@ from flask_talisman import Talisman
 Talisman(app, force_https=True)
 ```
 
-## Access Control
-
+## 访问控制
 ```python
 from functools import wraps
 from flask import session
@@ -292,8 +291,7 @@ def get_payment_methods():
     pass
 ```
 
-## Audit Logging
-
+## 审计日志记录
 ```python
 import logging
 from datetime import datetime
@@ -336,9 +334,9 @@ audit = PCIAuditLogger()
 audit.log_access(user_id=123, resource='payment_methods', action='read', result='success')
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-### Input Validation
+### 输入验证
 ```python
 import re
 
@@ -374,25 +372,24 @@ def sanitize_input(user_input):
     pass
 ```
 
-## PCI DSS SAQ (Self-Assessment Questionnaire)
+## PCI DSS自我评估问卷（SAQ）
 
-### SAQ A (Least Requirements)
-- E-commerce using hosted payment page
-- No card data on your systems
-- ~20 questions
+### SAQ A（最低要求）
+- 使用托管支付页面的电子商务服务
+- 系统中不存储任何卡片信息
+- 大约20个问题
 
 ### SAQ A-EP
-- E-commerce with embedded payment form
-- Uses JavaScript to handle card data
-- ~180 questions
+- 使用嵌入式支付表的电子商务服务
+- 通过JavaScript处理卡片数据
+- 大约180个问题
 
-### SAQ D (Most Requirements)
-- Store, process, or transmit card data
-- Full PCI DSS requirements
-- ~300 questions
+### SAQ D（最高要求）
+- 存储、处理或传输卡片数据
+- 需满足所有PCI DSS要求
+- 大约300个问题
 
-## Compliance Checklist
-
+## 合规性检查清单
 ```python
 PCI_COMPLIANCE_CHECKLIST = {
     'network_security': [
@@ -433,23 +430,23 @@ PCI_COMPLIANCE_CHECKLIST = {
 }
 ```
 
-## Common Violations
+## 常见违规行为
 
-1. **Storing CVV**: Never store card verification codes
-2. **Unencrypted PAN**: Card numbers must be encrypted at rest
-3. **Weak Encryption**: Use AES-256 or equivalent
-4. **No Access Controls**: Restrict who can access cardholder data
-5. **Missing Audit Logs**: Must log all access to payment data
-6. **Insecure Transmission**: Always use TLS 1.2+
-7. **Default Passwords**: Change all default credentials
-8. **No Security Testing**: Regular penetration testing required
+1. **存储CVV码**：严禁存储卡片验证码
+2. **未加密的PAN码**：卡片号码必须进行加密处理
+3. **加密强度不足**：必须使用AES-256或更高级别的加密算法
+4. **缺乏访问控制**：必须限制对持卡人数据的访问权限
+5. **缺少审计日志**：必须记录所有对支付数据的访问操作
+6. **传输不安全**：必须使用TLS 1.2及以上版本
+7. **使用默认密码**：必须更改所有默认凭据
+8. **缺乏安全测试**：必须定期进行渗透测试
 
-## Reducing PCI Scope
+## 减少PCI合规性范围的方法
 
-1. **Use Hosted Payments**: Stripe Checkout, PayPal, etc.
-2. **Tokenization**: Replace card data with tokens
-3. **Network Segmentation**: Isolate cardholder data environment
-4. **Outsource**: Use PCI-compliant payment processors
-5. **No Storage**: Never store full card details
+1. **使用托管支付服务**：如Stripe Checkout、PayPal等
+2. **令牌化**：用令牌替换卡片数据
+3. **网络隔离**：将持卡人数据环境与其他系统隔离
+4. **外包服务**：使用符合PCI标准的支付处理商
+5. **禁止存储完整卡片信息**：严禁存储完整的卡片详细信息
 
-By minimizing systems that touch card data, you reduce compliance burden significantly.
+通过减少涉及卡片数据的系统数量，可以显著降低合规性负担。

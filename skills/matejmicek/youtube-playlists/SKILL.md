@@ -1,14 +1,14 @@
 ---
 name: youtube-playlists
-description: Create and manage YouTube playlists. Use when user wants to create a playlist, add videos to playlists, or manage their YouTube playlists.
+description: 创建和管理 YouTube 播放列表。适用于用户需要创建播放列表、向播放列表中添加视频或管理现有 YouTube 播放列表的场景。
 metadata: {"openclaw":{"emoji":"📋","requires":{"bins":["python3"]}}}
 ---
 
-# YouTube Playlists
+# YouTube 播放列表
 
-Create and manage YouTube playlists via OAuth.
+通过 OAuth 功能创建和管理 YouTube 播放列表。
 
-## Commands
+## 命令
 
 ```bash
 # Authenticate (first time only)
@@ -27,9 +27,9 @@ python3 {baseDir}/scripts/yt_playlist.py bulk-create "Playlist Name" <video1> <v
 python3 {baseDir}/scripts/yt_playlist.py list
 ```
 
-## Examples
+## 示例
 
-Create a Zwift watchlist:
+创建一个 Zwift 观看列表：
 ```bash
 python3 {baseDir}/scripts/yt_playlist.py bulk-create "Zwift Feb 3" \
   l3u_FAv33G0 \
@@ -39,8 +39,8 @@ python3 {baseDir}/scripts/yt_playlist.py bulk-create "Zwift Feb 3" \
   SE7d4eaOJv4
 ```
 
-## Notes
-- First run requires browser auth (opens automatically)
-- Token is cached in `token.pickle` 
-- Accepts video IDs or full YouTube URLs
-- Default privacy is "unlisted" for bulk-create, "private" for single create
+## 注意事项：
+- 首次运行时需要浏览器身份验证（会自动弹出认证窗口）
+- 生成的访问令牌会保存在 `token.pickle` 文件中
+- 可以使用视频 ID 或完整的 YouTube URL 来创建播放列表
+- 批量创建播放列表时，默认隐私设置为“未公开”；单次创建时，默认隐私设置为“私密”。

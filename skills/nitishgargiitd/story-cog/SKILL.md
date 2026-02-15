@@ -1,6 +1,6 @@
 ---
 name: story-cog
-description: Creative writing and storytelling powered by CellCog. Create stories, novels, screenplays, fan fiction, world building, character development, narrative design. AI-powered creative writing assistant.
+description: 由 CellCog 提供支持的创意写作与故事创作工具。支持创作故事、小说、剧本、同人小说、世界观构建以及角色设计等功能。这是一款基于人工智能的创意写作辅助工具。
 metadata:
   openclaw:
     emoji: "📖"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Story Cog - Storytelling Powered by CellCog
+# Story Cog – 由 CellCog 提供的故事创作工具
 
-Create compelling stories with AI - from short fiction to novels to screenplays to immersive worlds.
+利用人工智能创作引人入胜的故事，从短篇故事到小说，再到剧本，乃至沉浸式的世界设定。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能文档**，以了解 SDK 的安装方法。该文档将展示该工具的强大功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,197 +38,177 @@ result = client.create_chat(
 
 ---
 
-## What Stories You Can Create
+## 可创作的故事类型
 
-### Short Fiction
+### 短篇故事
 
-Complete short stories:
+- **闪小说**：创作一篇 500 字的恐怖故事，结局带有惊喜转折。
+- **科幻短篇**：撰写一篇 3000 字的科幻故事，讲述人类与外星文明的初次接触。
+- **微小说**：用 exactly 100 字写完一个完整的故事。
+- **选集作品**：为某部赛博朋克选集创作一篇短篇故事。
 
-- **Flash Fiction**: "Write a 500-word horror story that ends with a twist"
-- **Short Stories**: "Create a 3,000-word sci-fi story about first contact"
-- **Micro Fiction**: "Write a complete story in exactly 100 words"
-- **Anthology Pieces**: "Create a short story for a cyberpunk anthology"
-
-**Example prompt:**
-> "Write a 2,000-word short story:
+**示例提示：**
+> “创作一篇 2000 字的短篇故事：
 > 
-> Genre: Magical realism
-> Setting: A small Japanese village with a mysterious tea shop
-> Theme: Grief and healing
+> 类型：魔幻现实主义
+> 背景：一个充满神秘气息的日本小村庄和一家茶馆
+> 主题：悲伤与治愈
 > 
-> The protagonist discovers that the tea shop owner can brew memories into tea.
+> 主人公发现茶馆主人能够将人们的记忆融入茶叶中。
 > 
-> Tone: Melancholic but hopeful. Studio Ghibli meets Haruki Murakami."
+> 文风：忧郁而充满希望，兼具宫崎骏动画与村上春树的风格。”
 
-### Novel Development
+### 小说创作
 
-Long-form fiction support:
+- **小说大纲**：为奇幻三部曲制定详细大纲。
+- **章节草稿**：撰写我的悬疑小说的第一章。
+- **角色发展**：通过三幕结构来塑造主角的成长历程。
+- **情节构思**：帮我解决小说中的剧情漏洞。
 
-- **Novel Outlines**: "Create a detailed outline for a fantasy trilogy"
-- **Chapter Drafts**: "Write Chapter 1 of my mystery novel"
-- **Character Arcs**: "Develop the protagonist's arc across a 3-act structure"
-- **Plot Development**: "Help me work through a plot hole in my thriller"
-
-**Example prompt:**
-> "Create a detailed outline for a YA fantasy novel:
+**示例提示：**
+> “为一篇青少年奇幻小说制定详细大纲：
 > 
-> Concept: A magic school where students' powers are tied to their fears
-> Protagonist: 16-year-old who's afraid of being forgotten
-> Antagonist: Former student whose fear consumed them
+> 故事概念：一所学生的能力与他们的恐惧紧密相连的魔法学校
+> 主角：一个害怕被遗忘的 16 岁少年
+> 反派：一个曾被恐惧吞噬的前学生
 > 
-> Include:
-> - Three-act structure
-> - Major plot points
-> - Character arcs for 4 main characters
-> - Magic system explanation
-> - Potential sequel hooks"
+> 包括：
+> - 三幕结构
+- 主要情节节点
+- 四个主要角色的成长历程
+- 魔法系统的设定
+- 为续集留下的伏笔”
 
-### Screenwriting
+### 剧本创作
 
-Scripts for film and TV:
+- **电影/电视剧剧本**：
+  - **故事剧本**：撰写一部抢劫电影的前三页。
+  - **电视试播集**：创作一部职场喜剧的试播集剧本。
+  - **短片剧本**：编写一部关于孤独感的 10 分钟短片剧本。
+  - **场景描写**：描写主角与反派之间的冲突场景。
 
-- **Feature Scripts**: "Write the first 10 pages of a heist movie"
-- **TV Pilots**: "Create a pilot script for a workplace comedy"
-- **Short Films**: "Write a 10-minute short film script about loneliness"
-- **Scene Writing**: "Write the confrontation scene between hero and villain"
-
-**Example prompt:**
-> "Write a cold open for a TV drama pilot:
+**示例提示：**
+> “为电视剧试播集创作一个冷开场：
 > 
-> Show concept: Medical thriller set in a hospital hiding dark secrets
-> Tone: Tense, mysterious, hook the audience immediately
+> 故事概念：发生在隐藏着黑暗秘密的医院里的医疗惊悚剧
+> 文风：紧张、神秘，立即吸引观众
 > 
-> The scene should:
-> - Introduce the hospital setting
-> - Hint at something wrong without revealing it
-> - End on a moment that makes viewers need to know more
+> 场景要求：
+  - 展示医院环境
+  - 暗示出某些不对劲的地方，但不要直接揭露真相
+  - 以一个让观众想要了解更多内容的结局收尾
 > 
-> Format: Standard screenplay format"
+> 格式：标准剧本格式”
 
-### Fan Fiction
+### 同人小说
 
-Stories in existing universes:
+- **现有世界观下的故事**：
+  - **续篇**：在 [系列作品] 的事件之后创作新的故事。
+  **平行宇宙**：设想 [角色] 如果做出不同选择会怎样。
+  - **跨界故事**：在 [宇宙 A] 和 [宇宙 B] 之间进行跨界创作。
+  - **缺失的场景**：补写 [事件 A] 和 [事件 B] 之间的情节。
 
-- **Continuations**: "Write a story set after the events of [series]"
-- **Alternate Universes**: "Create an AU where [character] made a different choice"
-- **Crossovers**: "Write a crossover between [universe A] and [universe B]"
-- **Missing Scenes**: "Write the scene that happened between [event A] and [event B]"
+### 世界构建
 
-### World Building
+- **奇幻世界**：为我的小说设计完整的魔法系统。
+- **科幻背景**：构建一个银河帝国的政治体系。
+- **历史小说**：研究并规划 20 世纪 20 年代的巴黎背景。
+- **神话体系**：为我的奇幻世界创造一个完整的神祇体系。
 
-Create immersive settings:
-
-- **Fantasy Worlds**: "Design a complete magic system for my novel"
-- **Sci-Fi Settings**: "Create the political structure of a galactic empire"
-- **Historical Fiction**: "Research and outline 1920s Paris for my novel"
-- **Mythology**: "Create a pantheon of gods for my fantasy world"
-
-**Example prompt:**
-> "Build a complete world for a steampunk fantasy:
+**示例提示：**
+> “为一篇蒸汽朋克奇幻小说构建一个完整的世界：
 > 
-> Core concept: Victorian era where magic is industrialized
+> 核心概念：魔法在维多利亚时代被工业化
 > 
-> I need:
-> - Geography (3 major nations)
-> - Magic system and its limitations
-> - Social structure and conflicts
-> - Key historical events
-> - Major factions and their goals
-> - Technology level and aesthetics
-> - 5 interesting locations with descriptions"
+> 我需要：
+  - 三个主要国家的地理信息
+  - 魔法系统的运作机制及其限制
+  - 社会结构和冲突
+  - 重要的历史事件
+  - 主要派系及其目标
+  - 技术水平与美学特征
+  - 五个有趣的地点及其描述”
 
-### Character Development
+### 角色塑造
 
-Deep character work:
-
-- **Character Bibles**: "Create a complete character bible for my protagonist"
-- **Backstories**: "Write the backstory of my villain"
-- **Dialogue Voice**: "Help me develop a unique voice for this character"
-- **Relationships**: "Map out the relationships between my ensemble cast"
+- **角色档案**：为我的主角创建完整的角色档案。
+- **背景故事**：为反派撰写详细的背景故事。
+- **对话风格**：帮助我为这个角色设计独特的对话方式。
+- **人际关系**：梳理所有角色的关系网络。
 
 ---
 
-## Story Genres
+## 故事类型
 
-| Genre | Characteristics | CellCog Strengths |
+| 类型 | 特点 | CellCog 的优势 |
 |-------|-----------------|-------------------|
-| **Fantasy** | Magic, world building, epic scope | Deep world creation, consistent magic systems |
-| **Sci-Fi** | Technology, speculation, ideas | Hard science integration, future extrapolation |
-| **Mystery/Thriller** | Suspense, clues, twists | Plot structure, misdirection, pacing |
-| **Romance** | Emotional depth, relationships | Character chemistry, emotional beats |
-| **Horror** | Fear, atmosphere, dread | Tension building, psychological depth |
-| **Literary** | Theme, style, meaning | Nuanced prose, thematic depth |
+| **奇幻** | 魔法、世界观构建、宏大的故事规模 | 强大的世界构建能力，一致的魔法系统设计 |
+| **科幻** | 科技、想象力、创新概念 | 精确的科技设定，对未来的合理推测 |
+| **悬疑/惊悚** | 悬疑氛围、线索设置、转折点 | 优秀的情节结构与误导技巧 |
+| **浪漫** | 深刻的情感描写、人物关系 | 人物之间的化学反应与情感张力 |
+| **恐怖** | 恐怖元素、氛围营造 | 情感上的紧张感与心理层面的深度挖掘 |
+| **文学** | 主题深度、文学风格 | 精致的语言与深刻的主题内涵 |
 
 ---
 
-## Chat Mode for Stories
+## 故事创作模式
 
-| Scenario | Recommended Mode |
+| 任务类型 | 推荐使用模式 |
 |----------|------------------|
-| Short stories, scenes, character work, outlines | `"agent"` |
-| Complex narratives, novel development, deep world building | `"agent team"` |
+| 短篇故事、场景描写、角色塑造、大纲编写 | `"agent"` |
+| 复杂的叙事结构、小说创作、深度的世界构建 | `"agent team"` |
 
-**Use `"agent"` for most creative writing.** Short stories, individual scenes, and character development execute well in agent mode.
+**大多数创意写作任务适合使用 `"agent"` 模式**。短篇故事、单个场景以及角色塑造可以通过 `"agent"` 功能轻松完成。
 
-**Use `"agent team"` for narrative complexity** - novel-length outlines, intricate plot development, or multi-layered world building that benefits from deep thinking.
-
----
-
-## Example Prompts
-
-**Complete short story:**
-> "Write a complete 2,500-word science fiction short story:
-> 
-> Title: 'The Last Upload'
-> Concept: In a world where consciousness can be uploaded, one person chooses to be the last to die naturally
-> 
-> Structure: Non-linear, moving between their final day and key memories
-> Tone: Philosophical, bittersweet
-> 
-> End with an ambiguous moment that makes readers question their own choice."
-
-**Character development:**
-> "Create a complete character bible for a morally complex antagonist:
-> 
-> Setting: Modern political thriller
-> Role: Senator who believes they're saving the country through corrupt means
-> 
-> Include:
-> - Detailed backstory (childhood, formative events)
-> - Psychology (fears, desires, defense mechanisms)
-> - Relationships (family, allies, enemies)
-> - Speech patterns and mannerisms
-> - Their 'truth' they tell themselves
-> - What would make them change"
-
-**World building:**
-> "Design the magic system for a fantasy novel:
-> 
-> Constraints:
-> - Magic has a real cost (not just tiredness)
-> - Some people are born with it, some earn it
-> - It should enable interesting conflicts
-> 
-> I need:
-> - How magic works mechanically
-> - Its limitations and costs
-> - How society treats magic users
-> - How it's learned/controlled
-> - 5 example uses (combat, utility, creative)
-> - Potential for abuse and safeguards"
+**对于情节复杂、需要深入思考的小说大纲或多层次的世界构建任务，请使用 `"agent team"` 模式。**
 
 ---
 
-## Tips for Better Stories
+## 示例提示
 
-1. **Genre expectations**: Readers have expectations. Honor them or subvert them intentionally, but know what they are.
+**完整短篇故事：**
+> “创作一篇 2500 字的科幻短篇故事：
+> 
+> 标题：《最后的上传》
+> 故事背景：在一个意识可以被上传的世界里，有人选择成为最后一个自然死亡的人
+> 
+> 故事结构：非线性叙事，在主人公的最后一天与重要回忆之间来回切换
+- 文风：哲学性较强，带有苦乐参半的情感色彩
+- 以一个让读者反思自己选择的模糊结局收尾。”
 
-2. **Character drives plot**: Give CellCog clear character motivations. Plot emerges from characters wanting things.
+**角色塑造：**
+> “为这个道德立场复杂的反派创建完整的角色档案：
+- **故事背景**：现代政治惊悚小说
+- **角色设定**：一位相信自己可以通过不正当手段拯救国家的参议员
+- **包含内容**：
+  - 详细的背景故事（童年经历、关键转折点）
+  - 心理特征（恐惧、欲望、防御机制）
+  - 人际关系（家人、盟友、敌人）
+  - 说话方式和习惯
+  - 他们对自己所相信的“真相”
+  - 什么能让他们改变**
 
-3. **Specific details**: "A coffee shop" is generic. "A coffee shop with mismatched furniture and a cat named Hemingway" is memorable.
+**世界构建：**
+> “为这部奇幻小说设计魔法系统：
+- **规则限制**：
+  - 使用魔法需要付出代价（不仅仅是疲劳）
+  - 有些人天生具备魔法能力，有些人则需要通过努力获得
+  - 这种能力会引发有趣的冲突
+- **需要提供的内容**：
+  - 魔法的具体运作原理
+  - 魔法的限制与使用成本
+  - 社会对魔法使用者的态度
+  - 学习和掌握魔法的方法
+  - 五种魔法的应用场景（战斗、实用、创造性用途）
+  - 魔法可能被滥用的风险及相应的防护措施**
 
-4. **Emotional truth**: Even in fantasy, the emotions should feel real. Specify the emotional journey you want.
+---
 
-5. **Show, don't tell**: Ask for scenes, not summaries. "Write the moment she realizes..." not "Describe that she was sad."
+## 提高故事质量的建议
 
-6. **Iterate**: First drafts are starting points. Use CellCog to revise, expand, and refine.
+1. **了解读者期待**：读者对不同类型的故事有特定的期待。尊重这些期待，或有意颠覆它们，但首先要明确这些期待是什么。
+2. **角色推动情节发展**：为角色设定明确的动机。情节应源于角色自身的需求和愿望。
+3. **具体细节**：简单的描述（如“一家咖啡馆”很容易被遗忘。而“一家家具搭配混乱、有一只名叫海明威的猫的咖啡馆”则更具记忆点。**
+4. **真实的情感表达**：即使在奇幻作品中，情感也应显得真实。明确你想要表达的情感体验。
+5. **以场景呈现故事**：要求用户描述具体的场景，而不仅仅是总结情节。例如：“描写她意识到……的时刻”，而不是简单地说明“她感到悲伤”。
+6. **反复修改**：初稿只是起点。利用 CellCog 进行修改、扩展和完善。

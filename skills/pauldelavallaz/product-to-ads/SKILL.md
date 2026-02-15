@@ -1,443 +1,298 @@
 ---
 name: ad-ready
-description: Generate professional advertising images from product URLs using the Ad-Ready pipeline on ComfyDeploy. Use when the user wants to create ads for any product by providing a URL, optionally with a brand profile (70+ brands) and funnel stage targeting. Supports model/talent integration, brand-aware creative direction, and multi-format output. Differs from Morpheus (manual fashion photography) — Ad-Ready is URL-driven, brand-intelligent, and funnel-stage aware.
+description: 使用 ComfyDeploy 中的 Ad-Ready 工具，可以根据产品 URL 生成专业的广告图片。当用户需要为任何产品创建广告时，只需提供产品 URL 即可（可选地提供品牌信息，支持 70 多个品牌），同时还可以设置目标销售阶段（funnel stage）。该工具支持模型/人才的整合，能够根据品牌特性定制创意方向，并支持多种格式的输出。与 Morpheus（手动时尚摄影服务）相比，Ad-Ready 是基于 URL 运作的，具备品牌识别能力，并能根据销售阶段的需求自动生成广告内容。
 ---
 
-# Ad-Ready: AI Advertising Image Generator
+# Ad-Ready: 人工智能广告图片生成工具
 
-Generate professional advertising images from product URLs using a 4-phase AI pipeline on ComfyDeploy.
+该工具利用ComfyDeploy平台上的四阶段人工智能流程，根据产品URL生成专业的广告图片。
 
-**Source:** [github.com/PauldeLavallaz/ads_SV](https://github.com/PauldeLavallaz/ads_SV)
-
----
-
-## Pipeline Architecture
-
-The pipeline runs as a ComfyUI custom node deployed on ComfyDeploy. A single `ProductToAds_Manual` node executes 4 phases internally:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  ProductToAds_Manual Node                     │
-│                                                             │
-│  PHASE 1: Product Scraping (Gemini Flash)                   │
-│  ─────────────────────────────────────────                   │
-│  Scrapes product URL → extracts title, description,         │
-│  features, price, materials, image URLs                      │
-│  Also scrapes HTML for high-res product images (≥1000px)    │
-│                                                             │
-│  PHASE 2: Campaign Brief Generation (Gemini Flash)          │
-│  ────────────────────────────────────────────────            │
-│  Brand Identity + Product Data + References →                │
-│  10-point Campaign Brief (creative direction)                │
-│                                                             │
-│  PHASE 3: Blueprint Generation (Gemini Flash)               │
-│  ──────────────────────────────────────────────              │
-│  Master Prompt (funnel stage) + Brief + Keywords →           │
-│  Production-Ready JSON Blueprint                             │
-│                                                             │
-│  PHASE 4: Image Generation (Nano Banana Pro / Imagen 3)     │
-│  ──────────────────────────────────────────────────          │
-│  Blueprint + all reference images → final ad image           │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Phase 2: Campaign Brief (The Creative Brain)
-
-The Brief Generator is the most critical intermediate step. It acts as a "Senior Art Director" that translates raw data into actionable creative direction using a 10-point framework:
-
-1. **Strategic Objective** — Why this campaign exists (awareness/positioning/launch)
-2. **Central Message** — One idea perceivable without text
-3. **Visual Tone of Voice** — Register: calm/energetic/intimate/monumental
-4. **Product Role** — Hero vs co-protagonist vs implicit presence
-5. **Visual Language & Brand Coherence** — Non-negotiable brand codes
-6. **Photographer & Equipment** — Photography as concept, not execution
-7. **Extended Art Direction** — Styling, casting, poses, hair/makeup, layout
-8. **Environment & Context** — Where and why (conceptual, never decorative)
-9. **Texture, Material & Product Render** — How surfaces are perceived
-10. **Final Image Signature** — Finish, grain, temporal positioning
-
-Without the brief, the Master Prompt must guess creative strategy. With it, the Master Prompt only executes.
-
-The brief prompt template is included at `{baseDir}/configs/Brief_Generator/brief_prompt.json`.
-
-### Phase 3: Master Prompts (8 Funnel Stages)
-
-Each funnel stage has a specialized Master Prompt that generates a production-ready JSON Blueprint. All share the same internal simulation:
-
-- **ROUND -1: Brand Identity Forensics** (stages 03+) — Unified Brand Style Manifest
-- **ROUND 0: Fidelity Lock** — Product geometry & talent identity are IMMUTABLE
-- **ROUND 1: Stage Strategy** — Strategic approach specific to funnel position
-- **ROUND 2: Graphic Design** — UI, typography, CTA engineering
-
-The Blueprint JSON covers: scene production, talent lock, camera perspective, subject action/pose/wardrobe, lighting, product constraints, layout architecture, typography, CTA engineering, and brand asset placement.
-
-Master prompt files are included at `{baseDir}/configs/Product_to_Ads/`.
-
-### Reference Analyzer
-
-Reference images (`referencia`) are **optional** and **off by default**. The pipeline generates creative direction internally from Brand Identity + Campaign Brief. Only use a reference when the user explicitly asks to clone a specific ad's style.
-
-When used, the reference is analyzed for pose, photographic style, and location cues.
+**来源:** [github.com/PauldeLavallaz/ads_SV](https://github.com/PauldeLavallaz/ads_SV)
 
 ---
 
-## ⚠️ CRITICAL: Required Inputs Checklist
+## 流程架构
 
-Before running ANY ad generation, ensure these are provided:
+该流程作为ComfyUI的一个自定义节点在ComfyDeploy上运行。一个`ProductToAds_Manual`节点内部执行四个阶段：
 
-| Input | Required? | How to Get It |
+### 第二阶段：活动简报（创意核心）
+
+简报生成器是整个流程中最关键的中间步骤。它像一位“高级艺术总监”一样，通过一个包含10个要点的框架，将原始数据转化为可操作的创意方向：
+
+1. **战略目标** — 本次活动的目的（提升知名度/定位/产品发布）
+2. **核心信息** — 无需文字即可理解的核心理念
+3. **视觉风格** — 平静/活力四射/亲密/宏伟
+4. **产品角色** — 产品是主角还是配角，或是画面中的隐含元素
+5. **视觉语言与品牌一致性** — 不可更改的品牌元素
+6. **摄影师与设备** — 摄影风格而非具体拍摄手法
+7. **扩展艺术指导** — 造型、选角、姿势、发型/妆容、布局
+8. **环境与背景** — 拍摄场景及原因（概念性要求，非装饰性）
+9. **纹理、材质与产品呈现** — 产品表面的视觉效果
+10. **最终图片风格** — 整体效果、颗粒感、时间感
+
+如果没有简报，系统将无法生成创意方向；有了简报后，系统才能开始执行后续步骤。
+
+简报模板位于`{baseDir}/configs/Brief_Generator/brief_prompt.json`文件中。
+
+### 第三阶段：大师提示（8个阶段）
+
+每个阶段都有专门的大师提示，用于生成可用于制作的JSON蓝图。所有阶段都遵循相同的内部模拟流程：
+
+- **第一轮：品牌身份分析** — 统一的品牌风格
+- **第二轮：细节锁定** — 产品的几何形状和模特身份不可更改
+- **第三轮：阶段策略** — 针对具体阶段的策略
+- **第四轮：平面设计** — 用户界面、排版、呼叫行动（CTA）设计
+
+蓝图JSON文件包含以下内容：场景制作、模特选定、拍摄角度、主体动作/姿势/服装、灯光、产品限制、布局结构、排版、呼叫行动设计以及品牌元素的位置。
+
+大师提示文件位于`{baseDir}/configs/Product_to_Ads/`目录下。
+
+### 参考图片分析
+
+参考图片（`referencia`）是**可选的**，默认情况下不使用。流程会基于品牌身份和活动简报自动生成创意方向。只有在用户明确要求复制特定广告的风格时，才会使用参考图片。
+
+使用参考图片时，系统会分析其中的姿势、摄影风格和场景元素。
+
+---
+
+## ⚠️ 重要提示：必填输入项
+
+在运行任何广告生成任务之前，请确保提供以下所有输入项：
+
+| 输入项 | 是否必填 | 获取方式 |
 |-------|-----------|---------------|
-| `--product-url` | ✅ ALWAYS | User provides the product page URL |
-| `--product-image` | ✅ ALWAYS | Download from the product page, or user provides |
-| `--brand-profile` | ✅ NEVER EMPTY | Pick from catalog or run brand-analyzer first. NEVER leave as "No Brand" if a brand is known |
-| `--prompt-profile` | ✅ ALWAYS | Choose based on campaign objective |
-| `--aspect-ratio` | Default: 4:5 | Change if needed for platform |
-| `--model` | 🔶 OPTIONAL | Model/talent face. Ads with talent perform much better. Empty = product-only ad (no person). When used, pick from `~/clawd/models-catalog/catalog/images/` (114 models available) |
-| `--logo` | 🔶 OPTIONAL | Try to find it. Use if good quality & easy to get. Skip if low-res or hard to find. Empty = bypassed |
-| `--reference` | 🔶 OPTIONAL (off) | Only when user explicitly asks to clone a reference ad. Empty = bypassed |
-| `--creative-brief` | 🔶 ON-DEMAND | Only when user gives explicit creative direction. Omit to let pipeline auto-generate from brand profile |
-| `--language` | 🔶 ON-DEMAND | Only when user requests a specific language. Omit to use default (es) |
+| `--product-url` | ✅ 必填 | 用户提供产品页面URL |
+| `--product-image` | ✅ 必填 | 从产品页面下载图片，或由用户提供 |
+| `--brand-profile` | ✅ 必填 | 从目录中选择品牌信息；如果已知品牌，请勿填写“无品牌” |
+| `--prompt-profile` | ✅ 必填 | 根据活动目标选择相应的提示模板 |
+| `--aspect-ratio` | 默认值：4:5 | 如需根据平台调整 |
+| `--model` | 🔶 可选 | 模特/演员的脸部图片。使用模特的照片效果更佳。若未指定，则生成仅包含产品的广告。可从`~/clawd/models-catalog/catalog/images/`目录中选择（共114种模特） |
+| `--logo` | 🔶 可选 | 尽量找到高质量的Logo；如果质量不佳或难以获取则可省略 |
+| `--reference` | 🔶 可选（默认关闭） | 仅在用户明确要求复制参考广告时使用。若未填写，则跳过 |
+| `--creative-brief` | 🔶 根据需要提供 | 仅在用户提供具体创意方向时使用。省略该参数可让系统根据品牌信息自动生成创意方向 |
+| `--language` | 🔶 根据需要提供 | 仅在用户请求特定语言时使用。默认使用西班牙语（es） |
 
-### 🚨 NEVER Skip These Steps:
+### 🚨 严禁跳过以下步骤：
 
-1. **Product image** — Download the main product photo from the product URL. The scraper is fragile; always provide a product image explicitly.
-2. **Brand profile** — If the brand doesn't exist in the catalog, run `brand-analyzer` skill FIRST to generate one. Never submit with "No Brand" when a brand is known.
-3. **Brand logo** — TRY to find it (Clearbit, logo.dev, brand website). Use if good quality. If not found or low-res, skip it — the variable accepts empty string (bypassed server-side).
-4. **Reference** — Do NOT search for references by default. Only provide when the user explicitly asks to clone a specific ad or says "find a good ad to clone".
-
----
-
-## Auto-Preparation Workflow
-
-When the user asks to generate an ad:
-
-```
-1. User provides: product URL + brand name + objective
-
-2. CHECK brand profile exists:
-   → ls ~/clawd/ad-ready/configs/Brands/ | grep -i "{brand}"
-   → If not found: run brand-analyzer skill first
-
-3. DOWNLOAD product image:
-   → Visit the product URL or fetch the page
-   → Find and download the main product image
-   → Save to /tmp/ad-ready-product.jpg
-
-4. DOWNLOAD brand logo:
-   → Search "{brand name} logo PNG" or fetch from brand website
-   → Download clean logo image
-   → Save to /tmp/ad-ready-logo.png
-
-5. SELECT prompt profile based on objective:
-   → 🎨 Morfeo_Creative: DEFAULT — cinematic, narrative-rich, slightly surreal. Best visuals.
-   → Awareness: brand discovery, dynamic scenes, world-building, scroll-stoppers
-   → Interest: sustained attention, micro-world hinting at use-case
-   → Consideration: feature communication, proof cues, informative
-   → Evaluation: trust, authority, reviews, certifications
-   → Conversion: ⚠️ MINIMAL by design — clean, CTA-dominant, white backgrounds
-   → Retention: post-purchase confidence, onboarding
-   → Loyalty: editorial, lifestyle, emotional bond
-   → Advocacy: share-worthy, community, belonging
-
-   DEFAULT SELECTION LOGIC:
-   - Generic "generate an ad" → Morfeo_Creative (09)
-   - "awareness" / "brand discovery" → Awareness (01)
-   - "conversion" / "buy now" / CTA-focused → Conversion (05)
-   - "creative" / "original" / "surreal" → Morfeo_Creative (09)
-   - "lifestyle" / "editorial" → Loyalty (07)
-   - When in doubt → Morfeo_Creative (09), NOT Conversion
-
-5b. SELECT MODEL (optional):
-   → If user wants a person in the ad: pick from ~/clawd/models-catalog/catalog/images/model_XX.jpg (114 available)
-   → If user wants product-only ad (no person): leave --model empty
-   → If user doesn't specify: ASK if they want a model or product-only
-   → Catalog preview: catalog.json at ~/clawd/models-catalog/catalog/catalog.json
-
-6. RUN the generation with ALL inputs filled
-```
+1. **产品图片** — 请从产品URL下载产品主图。请务必提供产品图片。
+2. **品牌信息** — 如果品牌不存在于目录中，请先使用`brand-analyzer`工具生成品牌资料。已知品牌时切勿填写“无品牌”。
+3. **品牌Logo** — 尽量找到高质量的Logo；如果找不到或质量低，则可省略（服务器端会忽略该参数）。
+4. **参考图片** — 除非用户明确要求复制参考广告，否则默认不进行搜索。若未填写，则跳过。
 
 ---
 
-## Usage
+## 自动准备工作流程
 
-### Full command (recommended):
-```bash
-COMFY_DEPLOY_API_KEY="$KEY" uv run {baseDir}/scripts/generate.py \
-  --product-url "https://shop.example.com/product" \
-  --product-image "/tmp/product-photo.jpg" \
-  --logo "/tmp/brand-logo.png" \
-  --model "models-catalog/catalog/images/model_15.jpg" \
-  --brand-profile "Nike" \
-  --prompt-profile "Master_prompt_05_Conversion" \
-  --aspect-ratio "4:5" \
-  --output "ad-output.png"
-```
-
-### With reference (only when explicitly requested):
-```bash
-COMFY_DEPLOY_API_KEY="$KEY" uv run {baseDir}/scripts/generate.py \
-  --product-url "https://shop.example.com/product" \
-  --product-image "/tmp/product-photo.jpg" \
-  --reference "/tmp/reference-ad.jpg" \
-  --brand-profile "Nike" \
-  --prompt-profile "Master_prompt_01_Awareness" \
-  --output "ad-output.png"
-```
-
-### Auto-fetch mode (downloads product image and logo automatically):
-```bash
-COMFY_DEPLOY_API_KEY="$KEY" uv run {baseDir}/scripts/generate.py \
-  --product-url "https://shop.example.com/product" \
-  --brand-profile "Nike" \
-  --prompt-profile "Master_prompt_05_Conversion" \
-  --auto-fetch \
-  --output "ad-output.png"
-```
-
-### List available brands:
-```bash
-uv run {baseDir}/scripts/generate.py --list-brands
-```
+当用户请求生成广告时：
 
 ---
 
-## API Details
+## 使用方法
 
-**Endpoint:** `https://api.comfydeploy.com/api/run/deployment/queue`
-**Deployment ID:** `e37318e6-ef21-4aab-bc90-8fb29624cd15`
+### 完整命令（推荐使用）：
+---
 
-### ComfyDeploy Input Variables
+### 在提供参考图片的情况下（仅限用户明确要求时）：
+---
 
-| Variable | Type | Description |
+### 自动获取模式（自动下载产品图片和Logo）：
+---
+
+### 可用品牌列表：
+---
+
+## API详细信息
+
+**API端点：** `https://api.comfydeploy.com/api/run/deployment/queue`
+**部署ID：** `e37318e6-ef21-4aab-bc90-8fb29624cd15`
+
+### ComfyDeploy输入参数
+
+| 参数 | 类型 | 说明 |
 |----------|------|-------------|
-| `product_url` | string | Product page URL to scrape |
-| `producto` | image URL | Product image (uploaded to ComfyDeploy) |
-| `model` | image URL | Model/talent face reference. **OPTIONAL** — empty = product-only ad without a person. When used, select from models catalog (`~/clawd/models-catalog/catalog/images/model_XX.jpg`, 114 available) |
-| `referencia` | image URL | Style reference ad — OPTIONAL, empty = bypassed. Only when user asks to clone a reference |
-| `marca` | image URL | Brand logo — OPTIONAL, empty = bypassed. Use if found easily in good quality |
-| `brand_profile` | enum | Brand name from catalog (70+ brands) |
-| `prompt_profile` | enum | Funnel stage master prompt |
-| `aspect_ratio` | enum | Output format (1:1, 4:5, 5:4, 9:16, etc.) |
-| `language` | string | **ON-DEMAND ONLY.** Output language for ad copy/CTA. Default: `es`. Only send when the user explicitly requests a different language. Otherwise, DO NOT include this parameter — let the pipeline use its default. |
-| `creative_brief` | string | **ON-DEMAND ONLY.** Free-text creative direction override. Only use when the user explicitly asks for a specific creative direction, scene, mood, or concept. Otherwise, DO NOT include this parameter — let the pipeline generate its own brief from the Brand Identity profile automatically. |
+| `product_url` | 字符串 | 需要抓取的产品页面URL |
+| `producto` | 图片URL | 上传到ComfyDeploy的产品图片 |
+| `model` | 图片URL | 模特/演员的面部图片（可选） |
+| `referencia` | 图片URL | 参考广告图片（可选，若未提供则跳过） |
+| `marca` | 图片URL | 品牌Logo（可选，若能找到高质量图片则使用） |
+| `brand_profile` | 枚举值 | 目录中的品牌名称 |
+| `prompt_profile` | 枚举值 | 对应阶段的提示模板 |
+| `aspect-ratio` | 枚举值 | 输出图片的宽高比（1:1, 4:5, 5:4, 9:16等） |
+| `language` | 字符串 | 仅在用户请求特定语言时使用。默认使用西班牙语（es）。否则省略该参数。 |
+| `creative_brief` | 字符串 | 仅在用户提供具体创意方向时使用。省略该参数可让系统根据品牌信息自动生成创意方向。 |
 
 ---
 
-## Funnel Stages — Strategic Detail
+## 各阶段的策略细节
 
-### 01 — Awareness
-**Goal:** Scroll-stop, curiosity, brand introduction
-**Reject:** Generic "product on table" concepts
-**Strategy:** Dynamic camera angles, world-building environments, high-concept creativity
-**CTA:** Soft or optional
-**Visual Hierarchy:** Talent → Product → Optional CTA
+### 第01阶段：提升知名度
+**目标：** 引起用户注意，介绍品牌**
+**拒绝的方案：** 浅显的“产品展示”风格
+**策略：** 动态的拍摄角度、富有创意的场景设计**
+**呼叫行动（CTA）：** 温和或可选 |
 
-### 02 — Interest
-**Goal:** Sustained attention, introduce value proposition
-**Reject:** Abstract visuals that hide the product
-**Strategy:** One clear visual idea, believable micro-world hinting at use-case
-**CTA:** Learn More, Discover, See Details
-**Visual Hierarchy:** Talent → Product → Headline → CTA
+### 第02阶段：激发兴趣
+**目标：** 维持用户注意力，展示产品价值**
+**拒绝的方案：** 隐藏产品的抽象视觉元素**
+**策略：** 一个清晰的主题概念，暗示产品的使用场景**
+**呼叫行动（CTA）：** 了解更多 → 发现详情 → 查看详细信息 |
 
-### 03 — Consideration
-**Goal:** Informed evaluation, reduce uncertainty
-**Reject:** Pure mood storytelling, vague emotional content
-**Strategy:** Communicate WHAT product does, ONE primary differentiator, ONE proof cue
-**CTA:** Compare, See Details, Explore
-**Visual Hierarchy:** Talent → Product → Key Benefit → Proof Cue → CTA
-**New:** Adds Brand Identity Manifest to Blueprint JSON
+### 第03阶段：促进考虑
+**目标：** 帮助用户做出决策，减少不确定性**
+**拒绝的方案：** 仅侧重情感表达的视觉内容**
+**策略：** 明确说明产品的功能、一个主要区别点以及一个证明其价值的元素**
+**呼叫行动（CTA）：** 对比产品 → 查看详情 → 探索更多 |
 
-### 04 — Evaluation
-**Goal:** Validate purchase decision, proof & trust
-**Reject:** Pure mood, unsupportable claims, visual clutter
-**Strategy:** One trust anchor (quality/legitimacy/authority), one proof cue (reviews/certification)
-**CTA:** See Reviews, Verified Quality, Learn More
-**Visual Hierarchy:** Trust Anchor → Proof Cue → Product → Talent → CTA
+### 第04阶段：评估产品
+**目标：** 验证购买决策，增强用户信任**
+**拒绝的方案：** 仅依赖情感表达的内容或不可靠的信息**
+**策略：** 提供一个信任的依据（产品品质/权威性）以及一个证明其价值的元素**
+**呼叫行动（CTA）：** 查看评论 → 验证产品品质 → 了解更多 |
 
-### 05 — Conversion
-**Goal:** Trigger decisive action, remove friction
-**Reject:** New hesitation-inducing info, complex compositions
-**Strategy:** One hero (product), one action, optional micro-reassurance
-**CTA:** Buy Now, Get Yours, Complete Order (PRIMARY visual element)
-**Visual Hierarchy:** Product → CTA → Optional Reassurance → Brand → Talent
+### 第05阶段：促成购买
+**目标：** 引导用户采取行动，减少购买障碍**
+**拒绝的方案：** 引起犹豫的新信息或复杂的构图**
+**策略：** 以产品为核心，提供明确的购买提示**
+**呼叫行动（CTA）：** 立即购买 → 完成订单 |
 
-### 06 — Retention
-**Goal:** Post-purchase confidence, reduce churn
-**Reject:** Hard-sell, urgency, price talk
-**Strategy:** "You made the right choice" + "Here is the next step"
-**CTA:** Start, Set Up, Learn, Track (guidance, not purchase)
-**Visual Hierarchy:** Confirmation → Next Step → Product → Talent
+### 第06阶段：提升用户留存率
+**目标：** 增强用户购买后的满意度，减少流失**
+**拒绝的方案：** 强制性的销售语言或紧迫感**
+**策略：** 强调“您做出了正确的选择”并提示下一步行动**
+**呼叫行动（CTA）：** 开始使用 → 设置账户 → 学习更多 |
 
-### 07 — Loyalty
-**Goal:** Strengthen emotional bond over time
-**Reject:** Sales layouts, instructional tone, aggressive CTAs
-**Strategy:** "This brand is part of who you are" — habitual engagement
-**CTA:** Optional: Explore, Be Part Of, Continue
-**Visual Hierarchy:** Brand World/Mood → Talent (identity mirror) → Product → Brand
+### 第07阶段：培养用户忠诚度
+**目标：** 长期建立用户与品牌的情感联系**
+**拒绝的方案：** 过度销售或指令性的语言**
+**策略：** 强调品牌与用户身份的关联**
+**呼叫行动（CTA）：** 探索更多 → 成为品牌的一员 |
 
-### 08 — Advocacy
-**Goal:** Turn customers into voluntary brand ambassadors
-**Reject:** Sales language, instructional tone, forced testimonials
-**Strategy:** Signal belonging, create share-worthy imagery, enable organic sharing
-**CTA:** Optional or absent: Join the Movement, Part of Us
-**Visual Hierarchy:** Mood → Talent (identity proxy) → Product (symbol) → Brand
+### 第08阶段：鼓励用户传播品牌
+**目标：** 将用户转化为品牌的自愿传播者**
+**拒绝的方案：** 过度的销售语言或强制性的推荐语**
+**策略：** 创造值得分享的视觉内容，鼓励用户分享**
+**呼叫行动（CTA）：** 加入我们的行列 |
 
-### 09 — Morfeo Creative 🎨 (DEFAULT)
-**Goal:** Maximum visual impact, narrative-rich, cinematic quality
-**Reject:** White backgrounds, studio shots, "product on table", generic poses, sterile compositions
-**Strategy:** Build immersive WORLDS, not backgrounds. Talent is a CHARACTER with emotion and action. Subtle surreal/magical elements elevate the mundane. Think movie stills + magical realism + high fashion.
-**CTA:** Present but integrated into scene aesthetics
-**Visual Hierarchy:** Scene → Talent (as character) → Product (organic in scene) → CTA
-**Creative Philosophy:**
-- NEVER a white background or studio
-- Every image has depth (foreground/midground/background layers)
-- Lighting is narrative (golden hour, practicals, colored atmosphere)
-- One subtle surreal element per scene (impossible beauty, dream-logic detail)
-- Wardrobe is costume design, not "simple clothes"
-- Camera has personality (specific film stocks, intentional imperfections)
+### 第09阶段：Morpheus创意风格（默认）
+**目标：** 实现最大的视觉冲击力，注重叙事性和电影质感**
+**拒绝的方案：** 白色背景、工作室拍摄、千篇一律的构图**
+**策略：** 构建沉浸式的场景，让模特成为具有情感和行为的“角色”。使用微妙的超现实元素提升画面质感**
+**呼叫行动（CTA）：** 将广告元素自然融入场景中**
 
----
+### 创建新的广告类型
 
-## Creating New Ad Types
+要创建新的阶段或特殊类型的广告，请按照以下步骤操作：
 
-To create a new funnel stage or specialized ad type:
+1. 从`{baseDir}/configs/Product_to_Ads/`目录复制最接近的现有大师提示文件。
+2. 根据新的战略目标重新定义第一轮流程。
+3. 相应调整第二阶段的视觉元素。
+4. 调整模特/产品的角色定位。
+5. 修改呼叫行动的表述和整体风格。
+6. 保持JSON输出结构的一致性，以确保流程的兼容性。
+7. 确保细节锁定（第二轮流程）——产品和模特的信息始终不可更改。
+8. 将修改后的文件保存为`Master_prompt_XX_NewStage.json`，系统会自动识别新的配置文件。
 
-1. **Copy** the closest existing Master Prompt from `{baseDir}/configs/Product_to_Ads/`
-2. **Redefine ROUND 1** with the new strategic objective
-3. **Adjust ROUND 2** UI hierarchy accordingly
-4. **Shift** talent/product narrative roles
-5. **Modify** CTA philosophy and copy voice
-6. **Keep** the JSON output structure identical for pipeline compatibility
-7. **Maintain** the Fidelity Lock (ROUND 0) — product and talent are always immutable
-8. **Save** as `Master_prompt_XX_NewStage.json` — the node auto-discovers new profiles
+### 各阶段的关键演变特点：
 
-### Key Evolution Pattern Across Stages:
-
-| Aspect | Early (01-02) | Mid (03-05) | Late (06-08) | Morfeo (09) |
+| 特点 | 初期（第01-02阶段） | 中期（第03-05阶段） | 后期（第06-08阶段） | Morpheus风格（第09阶段） |
 |--------|--------------|-------------|--------------|-------------|
-| Talent role | Attention anchor | Credibility anchor | Identity mirror | Character in story |
-| Product role | Secondary hero | Evaluation hero | Familiar symbol | Organic in world |
-| CTA | Soft/exploratory | Proof-led → Decisive | Guidance → Optional | Integrated/aesthetic |
-| Copy voice | Intriguing | Clarity, proof, action | Supportive → Proud | Evocative/poetic |
-| Visual density | High-concept | Structured, scannable | Editorial, spacious | Cinematic/layered |
-| Environment | World-building | Context-rich | Lifestyle | Immersive + surreal |
-| Environment | World-building | Context-rich | Lifestyle, intimate |
+| 模特的角色 | 吸引用户注意力的元素 | 增强信任感的元素 | 反映品牌身份的元素 | 作为故事中的角色 |
+| 产品的角色 | 辅助角色 | 核心展示产品价值的元素 | 与场景自然融合的元素 |
+| 呼叫行动（CTA） | 引导用户探索的元素 | 基于证据的决策性提示 | 提供指导的元素 | 与整体风格融合的元素 |
+| 文本风格 | 有趣的文案 | 清晰、有证据支持的文案 | 强调行动的文案 | 充满情感的文案 |
+| 视觉元素密度 | 高概念性的设计 | 结构清晰、易于阅读的布局 | 有层次感的编辑风格 | 电影般的视觉效果 |
+| 环境设计 | 构建丰富的场景 | 色彩丰富的背景 | 与生活方式相关的场景 | 具有沉浸感的超现实场景 |
+
+## 图片输入要求
+
+### 图片要求（严格遵循，不可更改）
+
+- **模特图片**：模特的面部和身体姿态固定，面部结构、种族特征、比例均需保持不变。
+- **产品图片**：产品的形状、标签文字、材质、比例需保持原样。
+- **品牌Logo**：Logo的样式需与实际Logo的几何形状一致。
+
+### 参考图片（可选，默认关闭）
+
+参考图片（`referencia`）是可选的。如果提供，系统会分析其中的以下元素：
+- **姿势参考**：模特的身体姿势、肢体动作、体重、眼神、微小动作。
+- **摄影风格参考**：拍摄角度、镜头选择、灯光效果、图像质量。
+- **场景参考**：拍摄环境、使用的材料、色彩、整体氛围。
+
+如果未提供参考图片（默认情况），系统将仅根据品牌身份和活动简报自动生成创意方向。
 
 ---
 
-## Image Input Types
+## 品牌资料
 
-### Binding Images (strict fidelity — immutable)
-- **talent**: Face/body locked, no deviation in facial structure, ethnicity, proportions
-- **product_1-4**: Shape, label text, material, proportions preserved 1:1
-- **brand_logo**: UI/button style derived from logo geometry
+### 品牌资料目录（包含70多个品牌）：
+---
 
-### Soft References (optional, off by default)
-Reference image input (`referencia`) is optional. When provided, it's analyzed for:
-- **POSE_REF** → Body position, limbs, weight, gaze, micro-gestures
-- **PHOTO_STYLE_REF** → Camera, lens, lighting, grading, grain
-- **LOCATION_REF** → Setting, materials, colors, mood
+### 创建新的品牌资料
 
-When empty (default), creative direction comes from Brand Identity + Campaign Brief alone.
+可以使用`brand-analyzer`工具：
+---
+
+该工具采用三阶段分析方法：
+1. **第一阶段：** 通过Google搜索进行官方信息收集（包括品牌名称、成立时间、定位、愿景、使命宣言等基本信息）。
+2. **第二阶段：** 通过Google Images/Pinterest独立分析该品牌的10多个广告案例。
+3. **第三阶段：** 对收集到的信息进行视觉分析，并生成符合标准格式的JSON文件。
+
+输出文件包含以下内容：品牌信息、品牌价值观、目标受众、视觉风格、摄影风格、广告指导原则、品牌行为特征等。
 
 ---
 
-## Brand Profiles
+## 图片宽高比选项
 
-### Catalog (70+ brands):
-```bash
-ls ~/clawd/ad-ready/configs/Brands/*.json | sed 's/.*\///' | sed 's/\.json//'
-```
-
-### Creating new brand profiles:
-Use the `brand-analyzer` skill:
-```bash
-GEMINI_API_KEY="$KEY" uv run ~/.clawdbot/skills/brand-analyzer/scripts/analyze.py \
-  --brand "Brand Name" --auto-save
-```
-
-The Brand Analyzer uses a 3-phase methodology:
-1. **Phase 1:** Official research via Google Search (canonical data: name, founding, positioning, vision, mission, tagline)
-2. **Phase 1.1:** Independent campaign research (10+ distinct campaigns via Google Images/Pinterest)
-3. **Phase 2-3:** Visual analysis → JSON profile following the standard template
-
-Output covers: brand_info, brand_values, target_audience, tone_of_voice, visual_identity, photography, campaign_guidelines, brand_behavior, channel_expression, compliance.
-
----
-
-## Aspect Ratios
-
-| Ratio | Use Case |
+| 宽高比 | 适用场景 |
 |-------|----------|
-| `4:5` | **Default.** Instagram feed, Facebook |
-| `9:16` | Stories, Reels, TikTok |
-| `1:1` | Square posts |
-| `16:9` | YouTube, landscape banners |
-| `5:4` | Alternative landscape |
+| `4:5` | Instagram动态、Facebook |
+| `9:16` | TikTok视频、Reels |
+| `1:1` | YouTube方形帖子 |
+| `16:9` | YouTube横屏广告 |
+| `5:4` | 其他横屏格式 |
 | `2:3` | Pinterest |
-| `3:4` | Portrait |
+| `3:4` | 肖像画风格 |
+
+## 配置文件参考
+
+该工具包含所有配置文件的参考版本：
 
 ---
 
-## Config Files Reference
-
-The skill includes reference copies of all pipeline configuration files:
-
-```
-{baseDir}/configs/
-├── Brief_Generator/
-│   └── brief_prompt.json              # 10-point campaign brief framework
-├── Product_to_Ads/
-│   ├── Master_prompt_01_Awareness.json
-│   ├── Master_prompt_02_Interest.json
-│   ├── Master_prompt_03_Consideration.json
-│   ├── Master_prompt_04_Evaluation.json
-│   ├── Master_prompt_05_Conversion.json
-│   ├── Master_prompt_06_Retention.json
-│   ├── Master_prompt_07_Loyalty.json
-│   ├── Master_prompt_08_Advocacy.json
-│   └── Master_prompt_09_Morfeo_Creative.json  # 🎨 DEFAULT — cinematic, surreal, narrative
-└── Reference_Analyzer/
-    └── reference_analysis_prompt.txt   # Pose/style/location analysis prompt
-```
-
-These configs are the canonical reference for the pipeline's behavior. The actual live configs are stored in the ComfyUI deployment at `ads_SV/configs/`.
+这些配置文件是流程行为的官方标准。实际使用的配置文件存储在ComfyUI的`ads_SV/configs/`目录中。
 
 ---
 
-## Known Limitations
+## 注意事项
 
-1. **Product image scraping is fragile** — always provide product images manually
-2. **Some websites block scraping** — provide product data manually when scraping fails
-3. **Gemini hallucinations** — occasional issues in complex reasoning steps
-4. **No brief editing** — brief is generated automatically; manual override not yet supported
-5. **Logo & reference are optional** — both use server-side bypass; empty string = not used. Logo: use if good quality. Reference: only on explicit request
+1. **产品图片的抓取过程可能不稳定** — 请务必手动提供产品图片。
+2. 有些网站会阻止图片抓取，请在抓取失败时手动提供产品数据。
+3. 在复杂处理过程中偶尔会出现错误。
+4. 简报内容无法手动编辑。
+5. Logo和参考图片是可选的；如果未提供，系统会自动忽略这些参数。
 
 ---
 
-## Ad-Ready vs Morpheus
+## Ad-Ready与Morpheus的对比
 
-| Feature | Ad-Ready | Morpheus |
+| 功能 | Ad-Ready | Morpheus |
 |---------|----------|----------|
-| Input | Product URL (auto-scrapes) | Manual product image |
-| Brand intelligence | 70+ brand profiles | None |
-| Funnel targeting | 8 funnel stages | None |
-| Brief generation | Auto (10-point creative direction) | None |
-| Creative direction | Objective-driven (brief → blueprint) | Pack-based (camera, lens, lighting) |
-| Best for | Product advertising campaigns | Fashion/lifestyle editorial photography |
-| Control level | High-level (strategy-first) | Granular (every visual parameter) |
+| 输入要求 | 产品URL（自动抓取） | 手动提供产品图片 |
+| 品牌信息支持 | 支持70多个品牌的资料 | 不支持 |
+| 广告流程阶段 | 包含8个创作阶段 | 不支持 |
+| 简报生成 | 自动生成创意方向（基于10个要点） | 不支持 |
+| 创意指导 | 基于活动目标自动生成创意方向 | 基于预设的拍摄参数（如镜头、光线等） |
+| 适用场景 | 适用于产品广告 | 适用于时尚/生活方式相关的图片编辑 |
+| 控制程度 | 高度自动化（以策略为导向） | 详细控制每个视觉元素 |
 
----
+## API密钥
 
-## API Key
+使用ComfyDeploy的API密钥。可通过`COMFY_DEPLOY_API_KEY`环境变量进行设置。
 
-Uses ComfyDeploy API key. Set via `COMFY_DEPLOY_API_KEY` environment variable.
+## 项目来源
 
-## Source Repository
-
-- GitHub: [PauldeLavallaz/ads_SV](https://github.com/PauldeLavallaz/ads_SV)
-- Architecture: ComfyUI custom node package with 3 nodes:
-  - `ProductToAds_Manual` — Full manual control, single format
-  - `ProductToAds_Auto` — Auto-downloads images, generates 4 formats
-  - `BrandIdentityAnalyzer` — Analyzes brands via Gemini + Google Search
+- GitHub仓库：[PauldeLavallaz/ads_SV](https://github.com/PauldeLavallaz/ads_SV)
+- 架构：包含三个自定义节点的ComfyUI插件：
+  - `ProductToAds_Manual`：提供完全的手动控制，支持单一格式。
+  - `ProductToAds_Auto`：自动下载图片并生成多种格式的图片。
+  - `BrandIdentityAnalyzer`：通过Gemini和Google搜索分析品牌信息。

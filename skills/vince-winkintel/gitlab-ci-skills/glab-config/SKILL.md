@@ -1,11 +1,12 @@
 ---
 name: glab-config
-description: Use when working with glab config commands.
+description: **使用说明：**  
+在处理 glab 的配置命令时，请参考以下说明。
 ---
 
-# glab config
+# glab 配置
 
-## Overview
+## 概述
 
 ```
 
@@ -44,12 +45,12 @@ description: Use when working with glab config commands.
     -h --help                    Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab config --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

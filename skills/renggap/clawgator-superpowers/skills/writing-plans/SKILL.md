@@ -1,34 +1,34 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: 当您有一个多步骤任务的规范或需求时，在开始编写代码之前，请先使用此方法。
 ---
 
-# Writing Plans
+# 编写实施计划
 
-## Overview
+## 概述
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+假设工程师对我们的代码库一无所知，且对代码质量的判断标准也不明确，为他们制定详细的实施计划。需要记录他们需要了解的所有信息：每项任务涉及的文件、代码、需要查阅的文档以及测试方法。将整个计划分解为易于执行的子任务。遵循“DRY”（Don’t Repeat Yourself）、“YAGNI”（Don’t Add What Isn’t Necessary）、“TDD”（Test-Driven Development，测试驱动开发）的原则，并鼓励频繁提交代码。
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+假设工程师具备一定的开发能力，但对我们使用的工具集或问题领域知之甚少，同时他们对良好的测试设计方法也了解不多。
 
-**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+**在开始时告知他们：**“我将使用‘编写实施计划’这项技能来创建实施计划。”
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+**执行环境：**该计划应在专门的工作目录中执行（该工作目录需通过“头脑风暴”技能创建）。
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**计划保存路径：**`docs/plans/YYYY-MM-DD-<feature-name>.md`
 
-## Bite-Sized Task Granularity
+## 任务分解的粒度
 
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+**每个步骤应包含一个具体的操作（耗时2-5分钟）：**
+- “编写失败的测试用例”  
+- “运行测试用例以确保其确实失败”  
+- “编写最基本的代码以使测试通过”  
+- “重新运行测试并确认所有测试都通过”  
+- “提交代码”  
 
-## Plan Document Header
+## 计划文档头部
 
-**Every plan MUST start with this header:**
+**每个计划都必须以以下格式开头：**
 
 ```markdown
 # [Feature Name] Implementation Plan
@@ -44,73 +44,42 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 ---
 ```
 
-## Task Structure
-
-```markdown
-### Task N: [Component Name]
-
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
-
-**Step 1: Write the failing test**
+## 任务结构
 
 ```python
 def test_specific_behavior():
     result = function(input)
     assert result == expected
-```
 
-**Step 2: Run test to verify it fails**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
-
-**Step 3: Write minimal implementation**
-
-```python
 def function(input):
     return expected
 ```
-
-**Step 4: Run test to verify it passes**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-**Step 5: Commit**
 
 ```bash
 git add tests/path/test.py src/path/file.py
 git commit -m "feat: add specific feature"
 ```
-```
 
-## Remember
-- Exact file paths always
-- Complete code in plan (not "add validation")
-- Exact commands with expected output
-- Reference relevant skills with @ syntax
-- DRY, YAGNI, TDD, frequent commits
+## 注意事项：
+- 必须提供完整的文件路径。
+- 计划中应包含完整的代码示例，而不仅仅是代码片段。
+- 使用`@`语法标注相关的技能或工具。
+- 遵循“DRY”、“YAGNI”、“TDD”原则，并鼓励频繁提交代码。
 
-## Execution Handoff
+## 执行流程
 
-After saving the plan, offer execution choice:
+保存计划后，提供两种执行方式供选择：
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**“计划已保存在`docs/plans/<filename>.md`文件中。有两种执行方式：**  
+**1. **子代理驱动执行（当前会话）**：为每项任务分配一个新的子代理，任务之间进行代码审查，实现快速迭代。  
+**2. **并行执行（单独会话）**：打开一个新的会话来执行计划，采用分批执行的方式，并设置检查点。**
 
-**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
+**选择哪种执行方式？**
 
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
+**如果选择“子代理驱动执行”：**  
+- **必备辅助技能：** 使用`superpowers:subagent-driven-development`。  
+- 请保持在该会话中继续执行任务，并在每项任务完成后进行代码审查。  
 
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Stay in this session
-- Fresh subagent per task + code review
-
-**If Parallel Session chosen:**
-- Guide them to open new session in worktree
-- **REQUIRED SUB-SKILL:** New session uses superpowers:executing-plans
+**如果选择“并行执行”：**  
+- 指导他们在专门的工作目录中打开一个新的会话。  
+- **必备辅助技能：** 使用`superpowers:executing-plans`。

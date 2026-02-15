@@ -1,16 +1,18 @@
 ---
-description: Scan npm and pip projects for outdated dependencies, security vulnerabilities, and updates.
+description: 扫描 npm 和 pip 项目中的过时依赖项、安全漏洞以及可用的更新。
 ---
 
-# Dependency Checker
+# 依赖项检查器
 
-Check for outdated dependencies and security issues in npm and pip projects.
+用于检测 npm 和 pip 项目中过时的依赖项及安全问题。
 
-## Instructions
+## 使用说明
 
-1. **Detect project type**: `package.json` → npm, `requirements.txt`/`pyproject.toml` → pip
+1. **识别项目类型**：
+   - 如果存在 `package.json`，则使用 npm；
+   - 如果存在 `requirements.txt` 或 `pyproject.toml`，则使用 pip。
 
-2. **Run checks**:
+2. **运行检查**：
    ```bash
    # npm
    cd /path/to/project
@@ -22,7 +24,7 @@ Check for outdated dependencies and security issues in npm and pip projects.
    pip-audit 2>/dev/null  # if installed
    ```
 
-3. **Output format**:
+3. **输出格式**：
    ```
    📦 Dependency Check — my-project
 
@@ -43,24 +45,24 @@ Check for outdated dependencies and security issues in npm and pip projects.
    pip install --upgrade flask requests
    ```
 
-4. **Version classification**:
-   - 🟢 Patch (x.y.3→x.y.4): Safe to update
-   - 🔵 Minor (x.2.z→x.3.0): Usually safe, check changelog
-   - ⚠️ Major (1.x→2.0): Breaking changes likely
+4. **版本分类**：
+   - 🟢 修补版本（x.y.3 → x.y.4）：可以安全地更新；
+   - 🔵 小版本更新（x.2.z → x.3.0）：通常可以安全更新，但建议查看变更日志；
+   - ⚠️ 主版本更新（1.x → 2.0）：可能会引入破坏性变更。
 
-## Edge Cases
+## 特殊情况
 
-- **Monorepos**: Check each package directory separately
-- **Lock file only**: If no `package.json` in current dir, look for `package-lock.json`
-- **Private registries**: May need `.npmrc` configuration
-- **Pinned versions**: Flag `==` pins in requirements.txt that prevent updates
+- **单仓库项目**：需要分别检查每个包目录；
+- **仅使用锁定文件**：如果当前目录中没有 `package.json`，请查找 `package-lock.json`；
+- **私有仓库**：可能需要配置 `.npmrc` 文件；
+- **固定版本**：`requirements.txt` 中的 `==` 标识符用于锁定版本，防止自动更新。
 
-## Security
+## 安全注意事项
 
-- Never run `npm audit fix --force` without user approval (may introduce breaking changes)
-- Review major updates' changelogs before recommending
+- 未经用户批准，切勿运行 `npm audit fix --force`（该命令可能会引入破坏性变更）；
+- 在推荐任何重大版本更新之前，请务必查看其变更日志。
 
-## Requirements
+## 所需工具
 
-- `npm` and/or `pip` CLI tools
-- No API keys needed
+- `npm` 和/或 `pip` 命令行工具；
+- 不需要 API 密钥。

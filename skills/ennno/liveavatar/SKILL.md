@@ -1,31 +1,31 @@
 ---
 name: liveavatar
-description: Talk face-to-face with your OpenClaw agent using a real-time video avatar powered by LiveAvatar
+description: 您可以使用由 LiveAvatar 提供支持的实时视频头像，与您的 OpenClaw 代理进行面对面交流。
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🎭","requires":{"env":["LIVEAVATAR_API_KEY"],"bins":["node","npm"]},"install":[{"id":"node","kind":"node","package":"openclaw-liveavatar","bins":["openclaw-liveavatar"],"label":"Install LiveAvatar (npm)"}]}}
 ---
 
 # OpenClaw LiveAvatar
 
-Give your OpenClaw agent a face and voice! This skill launches a real-time AI avatar that you can talk to naturally using your microphone. The avatar listens to you, sends your speech to your OpenClaw agent, and speaks the response back with lip-synced video.
+为您的 OpenClaw 代理添加一个“面孔”和“声音”吧！该功能可以启动一个实时的 AI 阿凡达，您可以通过麦克风与之自然地对话。该阿凡达会聆听您的讲话，将语音发送到您的 OpenClaw 代理，并通过同步嘴唇的动作播放代理的回答。
 
-Powered by [LiveAvatar](https://liveavatar.com) - real-time AI avatar technology.
+技术支持：[LiveAvatar](https://liveavatar.com)——实时 AI 阿凡达技术。
 
-## Setup
+## 设置
 
-### 1. Get Your API Key (Free)
+### 1. 获取您的 API 密钥（免费）
 
-1. Go to [app.liveavatar.com](https://app.liveavatar.com)
-2. Create a free account
-3. Copy your API key from the dashboard
+1. 访问 [app.liveavatar.com](https://app.liveavatar.com)
+2. 创建一个免费账户
+3. 从仪表板中复制您的 API 密钥
 
-### 2. Set Your API Key
+### 2. 设置您的 API 密钥
 
 ```bash
 export LIVEAVATAR_API_KEY=your_api_key_here
 ```
 
-Or add to `~/.openclaw/openclaw.json`:
+或者将其添加到 `~/.openclaw/openclaw.json` 文件中：
 
 ```json
 {
@@ -41,75 +41,71 @@ Or add to `~/.openclaw/openclaw.json`:
 }
 ```
 
-## Usage
+## 使用方法
 
-Run `/liveavatar` to start the video avatar interface.
+运行 `/liveavatar` 命令以启动视频阿凡达界面。
 
-When the user runs this command:
+当用户运行此命令时：
 
-1. **Check if LIVEAVATAR_API_KEY is set**. If not, tell them:
-   > You need a LiveAvatar API key. Get one free at https://app.liveavatar.com
-   > Then set it: `export LIVEAVATAR_API_KEY=your_key`
+1. **检查是否已设置 LIVEAVATAR_API_KEY**。如果没有，请告知他们：
+   > 您需要一个 LiveAvatar API 密钥。可以在 https://app.liveavatar.com 免费获取。
+   > 然后设置它：`export LIVEAVATAR_API_KEY=your_key`
 
-2. **Launch the interface**:
+2. **启动界面**：
    ```bash
    npx openclaw-liveavatar
    ```
 
-3. **Tell the user**:
-   > Your LiveAvatar interface is starting at http://localhost:3001
-   > It will connect automatically to your OpenClaw Gateway.
+3. **告知用户**：
+   > 您的 LiveAvatar 界面正在 http://localhost:3001 上启动
+   > 它会自动连接到您的 OpenClaw Gateway。
    >
-   > Tips:
-   > - Allow microphone access when prompted
-   > - Click the green mic button to speak
-   > - The avatar will respond with your agent's answers
-   > - Click the X button to end the session
+   > 提示：
+   > - 根据提示允许麦克风访问
+   > - 单击绿色的麦克风按钮进行讲话
+   > - 阿凡达会用代理的回答进行回应
+   > - 单击 X 按钮结束会话
 
-## How It Works
+## 工作原理
 
-```
-You speak → Avatar transcribes → OpenClaw processes → Avatar speaks response
-```
+1. **语音输入**：对着麦克风讲话
+2. **语音转文本**：LiveAvatar 将语音转换为文本
+3. **代理处理**：将文本发送到 OpenClaw Gateway（端口 18789）
+4. **返回响应**：代理返回回答
+5. **阿凡达语音**：阿凡达以自然的方式播放语音
 
-1. **Voice Input**: Speak into your microphone
-2. **Transcription**: LiveAvatar converts speech to text
-3. **Agent Processing**: Text sent to OpenClaw Gateway (port 18789)
-4. **Response**: Agent response returned
-5. **Avatar Speech**: Avatar speaks with natural lip-sync
+## 特点
 
-## Features
+- 具有表情的实时视频阿凡达
+- 语音对语音的对话功能
+- 提供文本聊天作为备用选项
+- 对于较长的回答，使用智能 TTS 技术进行总结
+- 防止自言自语（不会重复自己的话）
+- 提供多种阿凡达选择
 
-- Real-time video avatar with expressions
-- Voice-to-voice conversations
-- Text chat fallback option
-- Smart TTS summarization for long responses
-- Echo cancellation (won't respond to itself)
-- Multiple avatar choices
+## 必备条件
 
-## Requirements
+- OpenClaw Gateway 正在运行（`openclaw gateway`）
+- 拥有 LiveAvatar API 密钥
+- 安装了支持麦克风的现代浏览器
+- 使用 Node.js 18 或更高版本
 
-- OpenClaw Gateway running (`openclaw gateway`)
-- LiveAvatar API key
-- Modern browser with microphone
-- Node.js 18+
+## 故障排除
 
-## Troubleshooting
-
-**"OpenClaw Disconnected"**
+**“OpenClaw 断开连接”**
 ```bash
 openclaw gateway
 ```
 
-**"No avatars available"**
-- Check LIVEAVATAR_API_KEY is set correctly
+**“没有可用的阿凡达”**
+- 确保 LIVEAVATAR_API_KEY 设置正确
 
-**Voice not working**
-- Allow microphone access in browser
-- Check system audio settings
+**语音无法使用**
+- 在浏览器中允许麦克风访问
+- 检查系统的音频设置
 
-## Links
+## 链接
 
-- [LiveAvatar](https://liveavatar.com) - Real-time avatar platform
-- [OpenClaw](https://openclaw.ai) - Your personal AI assistant
-- [GitHub](https://github.com/eNNNo/openclaw-liveavatar) - Source code
+- [LiveAvatar](https://liveavatar.com)——实时阿凡达平台
+- [OpenClaw](https://openclaw.ai)——您的个人 AI 助手
+- [GitHub](https://github.com/eNNNo/openclaw-liveavatar)——源代码

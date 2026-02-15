@@ -1,16 +1,16 @@
 ---
 name: withings-family
-description: Fetches health data from the Withings API for multiple family members including weight, body composition (fat, muscle, bone, water), activity, and sleep. Use this skill when the user asks about their or their family's Withings data, weight history, body metrics, daily steps, sleep quality, or any health measurement from Withings devices.
+description: 从 Withings API 中获取多名家庭成员的健康数据，包括体重、身体成分（脂肪、肌肉、骨骼、水分）、活动量以及睡眠状况。当用户询问自己或家人的 Withings 设备数据（如体重变化、身体指标、每日步数、睡眠质量或任何健康测量结果）时，可以使用此功能。
 version: 1.1.1
 homepage: https://github.com/odrobnik/withings-family-skill
 metadata: {"openclaw": {"emoji": "⚖️", "requires": {"bins": ["python3"], "env": ["WITHINGS_CLIENT_ID", "WITHINGS_CLIENT_SECRET"]}}}
 ---
 
-This skill allows you to interact with Withings accounts for **multiple family members** to retrieve comprehensive health metrics from Withings devices (smart scales, sleep analyzers, activity trackers, etc.).
+此技能允许您与多位家庭成员的 Withings 账户进行交互，从而从 Withings 设备（智能体重秤、睡眠分析仪、活动追踪器等）中获取全面的健康数据。
 
-## Multi-User Support
+## 多用户支持
 
-This skill natively supports multiple users with per-user token files:
+该技能原生支持多用户，并为每位用户提供单独的令牌文件：
 
 ```
 tokens-alice.json
@@ -18,7 +18,7 @@ tokens-bob.json
 tokens-charlie.json
 ```
 
-Each family member authenticates once via OAuth. Their tokens are stored separately and refreshed automatically. No token copying or switching required — just pass the user ID as the first argument.
+每位家庭成员只需通过 OAuth 进行一次身份验证。他们的令牌会单独存储并自动更新。无需复制或切换令牌——只需将用户 ID 作为第一个参数传递即可。
 
 ```bash
 python3 scripts/withings.py alice weight
@@ -26,128 +26,128 @@ python3 scripts/withings.py bob sleep
 python3 scripts/withings.py charlie activity
 ```
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user:
-- Asks about their **weight** or weight history
-- Wants to see their **body composition** (fat %, muscle mass, bone mass, hydration)
-- Requests their **daily activity** (steps, distance, calories burned)
-- Asks about their **sleep data** (duration, quality, deep sleep, REM)
-- Mentions "Withings" or any Withings device (Body+, Sleep Analyzer, ScanWatch, etc.)
-- Wants to track their or their **family's** health progress over time
+当用户需要执行以下操作时，请使用此技能：
+- 询问自己的体重或体重历史记录
+- 查看自己的身体成分（脂肪百分比、肌肉质量、骨骼质量、水分含量）
+- 获取每日活动数据（步数、行走距离、消耗的卡路里）
+- 了解自己的睡眠数据（睡眠时长、睡眠质量、深度睡眠时间、快速眼动睡眠阶段）
+- 提到 “Withings” 或任何 Withings 设备（如 Body+、Sleep Analyzer、ScanWatch 等）
+- 希望跟踪自己或家人的健康状况变化
 
-## Setup: Creating a Withings Developer App
+## 设置：创建 Withings 开发者应用程序
 
-Before using this skill, you need to create a free Withings developer application to get your API credentials.
+在使用此技能之前，您需要创建一个免费的 Withings 开发者应用程序以获取 API 凭据。
 
-### Step 1: Create a Withings Developer Account
+### 第 1 步：创建 Withings 开发者账户
 
-1. Go to [Withings Developer Portal](https://developer.withings.com/)
-2. Click **Sign Up** or **Log In** if you already have a Withings account
-3. Accept the Developer Terms of Service
+1. 访问 [Withings 开发者门户](https://developer.withings.com/)
+2. 如果您已有 Withings 账户，请点击 **注册** 或 **登录**
+3. 同意开发者服务条款
 
-### Step 2: Create Your Application
+### 第 2 步：创建您的应用程序
 
-1. Navigate to **My Apps** → **Create an Application**
-2. Fill in the application details:
-   - **Application Name**: Choose a name (e.g., "My Moltbot Health")
-   - **Description**: Brief description of your use case
-   - **Contact Email**: Your email address
-   - **Callback URL**: `http://localhost:18081` (required for OAuth)
-   - **Application Type**: Select "Personal Use" or appropriate type
-3. Submit the application
+1. 转到 **我的应用程序** → **创建应用程序**
+2. 填写应用程序详细信息：
+   - **应用程序名称**：选择一个名称（例如：“My Moltbot Health”）
+   - **描述**：简要说明您的使用场景
+   - **联系邮箱**：您的电子邮件地址
+   - **回调 URL**：`http://localhost:18081`（OAuth 所需）
+   - **应用程序类型**：选择 “个人使用” 或相应的类型
+3. 提交应用程序
 
-### Step 3: Get Your Credentials
+### 第 3 步：获取您的凭据
 
-Once your application is created:
-1. Go to **My Apps** and select your application
-2. You'll find:
-   - **Client ID** → Set as `WITHINGS_CLIENT_ID` environment variable
-   - **Client Secret** → Set as `WITHINGS_CLIENT_SECRET` environment variable
+应用程序创建完成后：
+1. 转到 **我的应用程序** 并选择您的应用程序
+2. 您将看到：
+   - **客户端 ID** → 设置为 `WITHINGS_CLIENT_ID` 环境变量
+   - **客户端密钥** → 设置为 `WITHINGS_CLIENT_SECRET` 环境变量
 
-### Step 4: Configure Environment Variables
+### 第 4 步：配置环境变量
 
-Add these to your Moltbot environment:
+将这些变量添加到您的 Moltbot 环境中：
 ```bash
 export WITHINGS_CLIENT_ID="your_client_id_here"
 export WITHINGS_CLIENT_SECRET="your_client_secret_here"
 ```
 
-Or create a `.env` file in `~/.openclaw/withings-family/.env` (legacy: `~/.moltbot/withings-family/.env`):
+或者，在 `~/.openclaw/withings-family/.env` 文件中创建一个 `.env` 文件（旧版本：`~/.moltbot/withings-family/.env`）：
 ```
 WITHINGS_CLIENT_ID=your_client_id_here
 WITHINGS_CLIENT_SECRET=your_client_secret_here
 ```
 
-## Configuration
+## 配置
 
-The skill provides two scripts (in `scripts/`):
-- **`scripts/withings_oauth_local.py`** — Automatic OAuth with local callback server (recommended)
-- **`scripts/withings.py`** — Main CLI + manual OAuth
+该技能提供了两个脚本（位于 `scripts/` 目录下）：
+- **`scripts/withings.oauth_local.py`** — 使用本地回调服务器进行自动 OAuth（推荐）
+- **`scripts/withings.py`** — 主 CLI 代码 + 手动 OAuth
 
-**Credentials location:** `~/.openclaw/withings-family/` (legacy: `~/.moltbot/withings-family/`)
-- `.env` — Client ID/Secret (optional, can use ENV vars instead)
-- `tokens-<userId>.json` — OAuth tokens per user (mode 600)
+**凭据存放位置：** `~/.openclaw/withings-family/`（旧版本：`~/.moltbot/withings-family/`）
+- `.env` 文件：客户端 ID/密钥（可选，也可以使用环境变量）
+- `tokens-<userId>.json`：每位用户的 OAuth 令牌（有效期 600 小时）
 
-Before any data retrieval, check if the user is authenticated. If an error mentions "No token found", guide the user through the initial authentication process for that specific user.
+在获取任何数据之前，请检查用户是否已通过身份验证。如果出现 “未找到令牌” 的错误，请引导用户完成该用户的初始身份验证流程。
 
-## Authentication Methods
+## 身份验证方法
 
-### Method A: Automatic OAuth (Recommended)
+### 方法 A：自动 OAuth（推荐）
 
-Uses a local callback server to capture the code automatically:
+使用本地回调服务器自动捕获授权码：
 
 ```bash
 python3 {baseDir}/scripts/withings_oauth_local.py <userId>
 ```
 
-Example:
+示例：
 ```bash
 python3 {baseDir}/scripts/withings_oauth_local.py alice
 ```
 
-The script will:
-1. Print the authorization URL
-2. Start a local server on localhost:18081
-3. Wait for the redirect
-4. Automatically capture the code and exchange for tokens
-5. Save tokens to `tokens-<userId>.json`
+脚本将：
+1. 显示授权 URL
+2. 在本地主机（localhost:18081）上启动一个服务器
+3. 等待重定向
+4. 自动捕获授权码并将其转换为令牌
+5. 将令牌保存到 `tokens-<userId>.json` 文件中
 
-### Method B: Manual OAuth
+### 方法 B：手动 OAuth
 
-Traditional two-step flow (see "Authentication" command below).
+传统的两步验证流程（详见下面的 “Authentication” 命令）
 
-## Available Commands
+## 可用命令
 
-All commands follow the format:
+所有命令均遵循以下格式：
 ```bash
 python3 {baseDir}/scripts/withings.py <userId> <command> [options]
 ```
 
-### 1. Authentication
+### 1. 身份验证
 
-First-time setup for a user — generates the OAuth URL:
+首次使用时，生成 OAuth URL：
 ```bash
 python3 {baseDir}/scripts/withings.py alice auth
 ```
 
-After the user visits the URL and gets the authorization code:
+用户访问该 URL 并获取授权码后：
 ```bash
 python3 {baseDir}/scripts/withings.py alice auth YOUR_CODE_HERE
 ```
 
-Repeat for each family member who needs access.
+对于需要访问权限的每位家庭成员，重复此步骤。
 
-### 2. Get Weight
+### 2. 获取体重
 
-Retrieve the latest weight measurements:
+检索最新的体重测量数据：
 ```bash
 python3 {baseDir}/scripts/withings.py alice weight
 ```
 
-Returns the 5 most recent weight entries in JSON format.
+以 JSON 格式返回最近的 5 条体重记录。
 
-**Example output:**
+**示例输出：**
 ```json
 [
   { "date": "2026-01-17T08:30:00.000Z", "weight": "75.40 kg" },
@@ -155,16 +155,16 @@ Returns the 5 most recent weight entries in JSON format.
 ]
 ```
 
-### 3. Get Body Composition
+### 3. 获取身体成分
 
-Retrieve comprehensive body metrics (fat, muscle, bone, water, BMI):
+检索全面的身体指标（脂肪、肌肉、骨骼、水分含量）：
 ```bash
 python3 {baseDir}/scripts/withings.py alice body
 ```
 
-Returns the 5 most recent body composition measurements.
+返回最近的 5 次身体成分测量数据。
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -179,19 +179,19 @@ Returns the 5 most recent body composition measurements.
 ]
 ```
 
-### 4. Get Activity
+### 4. 获取活动数据
 
-Retrieve daily activity data (steps, distance, calories):
+检索每日活动数据（步数、行走距离、消耗的卡路里）：
 ```bash
 python3 {baseDir}/scripts/withings.py alice activity
 ```
 
-Optionally specify the number of days (default: 7):
+可选地指定天数（默认值：7 天）：
 ```bash
 python3 {baseDir}/scripts/withings.py alice activity 30
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -207,19 +207,19 @@ python3 {baseDir}/scripts/withings.py alice activity 30
 ]
 ```
 
-### 5. Get Sleep
+### 5. 获取睡眠数据
 
-Retrieve sleep data and quality:
+检索睡眠数据及睡眠质量：
 ```bash
 python3 {baseDir}/scripts/withings.py alice sleep
 ```
 
-Optionally specify the number of days (default: 7):
+可选地指定天数（默认值：7 天）：
 ```bash
 python3 {baseDir}/scripts/withings.py alice sleep 14
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -236,22 +236,22 @@ python3 {baseDir}/scripts/withings.py alice sleep 14
 ]
 ```
 
-## Error Handling
+## 错误处理
 
-Common errors and how to resolve them:
+常见错误及其解决方法：
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "No token found" | User not authenticated | Run `python3 scripts/withings.py <userId> auth` and follow the OAuth flow |
-| "Failed to refresh token" | Token expired and refresh failed | Re-authenticate with `python3 scripts/withings.py <userId> auth` |
-| "API Error Status: 401" | Invalid or expired credentials | Check your CLIENT_ID and CLIENT_SECRET, re-authenticate |
-| "API Error Status: 503" | Withings API temporarily unavailable | Wait and retry later |
-| Empty data | No measurements in the requested period | User needs to sync their Withings device |
+| “未找到令牌” | 用户未通过身份验证 | 运行 `python3 scripts/withings.py <userId> auth` 并按照 OAuth 流程进行身份验证 |
+| “令牌刷新失败” | 令牌过期且刷新失败 | 重新使用 `python3 scripts/withings.py <userId> auth` 进行身份验证 |
+| “API 错误状态：401” | 凭据无效或过期 | 检查您的客户端 ID 和客户端密钥，然后重新进行身份验证 |
+| “API 错误状态：503” | Withings API 暂时不可用 | 稍后等待并重试 |
+| 数据为空 | 请求的时间段内没有测量数据 | 用户需要同步他们的 Withings 设备 |
 
-## Notes
+## 注意事项
 
-- **Multi-user:** Each family member has their own token file (`tokens-{userId}.json`)
-- **Token refresh:** Tokens are automatically refreshed when they expire
-- **Scopes:** Withings API scopes used: `user.metrics`, `user.activity`
-- **Device support:** Data availability depends on which Withings devices the user owns
-- **Body composition:** Requires a compatible smart scale (e.g., Body+, Body Comp)
+- **多用户**：每位家庭成员都有自己的令牌文件（`tokens-{userId}.json`）
+- **令牌刷新**：令牌在过期后会自动更新
+- **权限范围**：使用的 Withings API 权限范围为 `user.metrics` 和 `user.activity`
+- **设备支持**：可获取的数据取决于用户拥有的 Withings 设备类型
+- **身体成分**：需要使用兼容的智能体重秤（例如 Body+、Body Comp）

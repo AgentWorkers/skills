@@ -1,179 +1,145 @@
-# Negotiation — Close Deals and Protect Your Value
+# 谈判——促成交易并保护你的价值
 
-Negotiate rates, scope, and terms using Chris Voss's FBI-proven frameworks adapted for freelance and consulting deals.
-Sources: Chris Voss (Never Split the Difference), Gong.io, NAHC, Klenty, Aviso.
-All outputs go to `workspace/artifacts/`.
+使用克里斯·沃斯（Chris Voss）提出的、经FBI验证的谈判框架来协商价格、项目范围和合同条款，这些框架特别适用于自由职业者和咨询服务。  
+资料来源：克里斯·沃斯（《Never Split the Difference》）、Gong.io、NAHC、Klenty、Aviso。  
+所有谈判结果都会保存在 `workspace/artifacts/` 目录下。
 
-## Use when
-- Negotiating rates with a client (Upwork, direct, retainer)
-- Client pushes back on pricing after proposal
-- Scope creep discussion — client wants more without paying more
-- Contract terms negotiation (payment schedules, milestones, IP)
-- Equity/revenue share deals (like Alfred)
-- Any conversation where money or terms are on the table
+## 适用场景：  
+- 与客户协商价格（无论是通过Upwork平台、直接合作还是签订长期服务合同）  
+- 客户在收到报价后对价格提出异议  
+- 讨论项目范围扩大问题（客户希望增加工作内容但不想增加费用）  
+- 协商合同条款（付款计划、项目里程碑、知识产权归属）  
+- 股权或收入分成协议（如Alfred模式）  
+- 任何涉及金钱或合同条款的谈判  
 
-## Don't use when
-- Initial discovery (use client-discovery skill — negotiate AFTER you understand their needs)
-- Writing the proposal itself (use proposal-writing skill)
-- Handling generic objections before the money talk (use objection-handling skill)
-- Internal team disagreements (different dynamic entirely)
+## 不适用场景：  
+- 初期了解客户需求阶段（此时应使用“客户需求探索”技巧）  
+- 撰写报价书本身  
+- 在讨论价格之前处理客户的常规异议  
+- 内部团队内部的分歧（这种情况下的谈判方式完全不同）  
 
-## Negative examples
-- "Help me find clients" → No. This is for deal-closing, not lead gen.
-- "Write my Upwork proposal" → No. Use proposal-writing skill.
-- "A client is unhappy with the work" → No. That's service recovery, not negotiation.
+## 错误示例：  
+- “帮我找客户。” → 不适用。这属于客户开发阶段，而非谈判阶段。  
+- “帮我写一份Upwork报价书。” → 不适用。应使用专门的报价撰写技巧。  
+- “客户对工作不满意。” → 不适用。这属于售后服务问题，而非谈判范畴。  
 
-## Edge cases
-- Upwork client asks for lower rate → YES. Price defense framework applies.
-- Client wants to add scope without budget increase → YES. Scope protection.
-- Revenue share structure (Alfred) → YES. Partnership term negotiation.
-- Negotiating with yourself (pricing confidence) → Borderline but useful — the inner game section helps.
-
----
-
-## Chris Voss's Core Principles
-
-### 1. Tactical Empathy
-Understand their perspective BEFORE pushing yours. Not fake empathy — genuine curiosity about their constraints.
-
-**In practice:**
-- "It sounds like budget is tight this quarter." (labeling)
-- "How can we structure this so it works for both of us?" (calibrated question)
-- "What would make you feel confident moving forward?" (their terms, not yours)
-
-### 2. Go for "No"
-Stop chasing "yes." People feel trapped by yes. When they say "no," they feel safe and in control — then they'll actually listen.
-
-**In practice:**
-- Instead of "Would you like to move forward?" → "Would it be a terrible idea to start with a pilot?"
-- Instead of "Can we agree on $500?" → "Is $500 unreasonable for this scope?"
-- After their "no": "What would you need to change to make this work?"
-
-### 3. Get to "That's Right"
-"That's right" = genuine alignment. "You're right" = they're dismissing you. Know the difference.
-
-**How to trigger it:** Summarize their situation so accurately they say "that's right":
-"So if I understand correctly — you need this done by March, your budget is around $300, and your main concern is that the last developer left the project half-done. That's a lot of risk to take on again."
-
-When they say "that's right," you own the conversation.
-
-### 4. Mirroring
-Repeat the last 1-3 words they said. It feels like magic — they'll elaborate, reveal more information, and feel heard.
-
-**Example:**
-- Client: "We've been burned before by freelancers who disappear."
-- You: "...who disappear?"
-- Client: "Yeah, our last developer took the deposit and stopped responding after week 2."
-- Now you know the REAL objection and can address it directly.
-
-### 5. Labeling
-Name their emotion or concern out loud. "It seems like..." / "It sounds like..." / "It feels like..."
-
-**Example:**
-- "It seems like you're worried about committing to a monthly retainer."
-- "It sounds like the previous experience made you cautious about paying upfront."
-
-Labeling defuses negative emotions and amplifies positive ones.
+## 特殊情况：  
+- Upwork平台上的客户要求降低价格 → 可以使用价格谈判框架。  
+- 客户希望增加项目范围但预算不变 → 需要保护项目范围。  
+- 收入分成协议（如Alfred模式） → 需要协商合作条款。  
+- 与自己协商价格（此时需要对自己有信心）——虽然有点边缘化，但相关技巧仍然有用。  
 
 ---
 
-## The Ackerman Model (Price Negotiation)
+## 克里斯·沃斯的核心谈判原则：  
 
-When you MUST negotiate on price (not ideal — hold value first):
+### 1. 战术性同理心  
+在表达自己的观点之前，先理解对方的立场。这不是虚假的同情，而是真正关心对方的限制和困境。  
+**实际应用：**  
+- “听起来他们这个季度的预算很紧张。”  
+- “我们该如何安排才能让双方都满意呢？”  
+- “什么能让你们对后续合作更有信心？”（关注对方的诉求，而非你的要求）  
 
-1. Set your target price
-2. First offer: 65% of your target (if they're offering first, let them anchor)
-3. Second offer: 85% of target
-4. Third offer: 95% of target
-5. Final offer: 100% of target + throw in a non-monetary perk
+### 2. 坚持说“不”  
+不要一味追求对方的同意。当对方说“不”时，他们会感到安心并愿意认真倾听。  
+**实际应用：**  
+- 例如：“您想继续合作吗？” → 可以问：“先尝试一个小项目怎么样？”  
+- 例如：“我们能同意500美元的价格吗？” → 可以问：“对于这个项目范围来说，500美元合理吗？”  
+- 当对方拒绝后，可以问：“需要做哪些调整才能让合作顺利进行？”  
 
-**Example (your target: $500):**
-- They say: "Can you do it for $300?"
-- You: "Based on the scope, I'd normally be at $700 for this. (anchor high) I could do $425 if we trim [specific thing]."
-- They push back: "Still high."
-- You: "$475, and I'll include documentation + 1 week of support."
-- Final: "$500 flat, includes everything, and I'll start today."
+### 3. 引导对方认同你的观点  
+当对方说“你说得对”时，说明你已经成功引起了他们的共鸣。  
+**如何引导：** 准确地总结对方的观点，让他们认同你的看法：  
+- “如果我理解正确的话，你们需要在3个月内完成项目，预算约为300美元，主要担心的是之前的开发者把项目做了一半就放弃了。这确实风险很大。”  
+当他们说“你说得对”时，你就掌握了谈判的主动权。  
 
-**The non-round number trick:** $487 feels more calculated and credible than $500. Use precise numbers in final offers.
+### 4. 重复对方的话  
+重复对方最后说的1-3个词。这会让他们感到被尊重，从而更愿意详细说明情况。  
+**示例：**  
+- 客户：“我们之前被一些突然消失的自由职业者坑过。”  
+- 你：“……哪些自由职业者突然消失了？”  
+- 客户：“是的，之前的开发者收了定金后第二周就不再回应了。”  
+这样你就直接了解了对方的真实顾虑。  
 
----
-
-## Rate Defense Framework
-
-When a client says "your rate is too high":
-
-### Step 1: Don't React
-Silence is power. Pause for 3 seconds. Let the discomfort sit. Most people fill silence with concessions — don't be that person.
-
-### Step 2: Acknowledge
-"I appreciate you being upfront about that." (builds trust)
-
-### Step 3: Reframe Value
-"Let me walk you through what this investment delivers: [specific outcomes from discovery]. For context, agencies charge $150-200/hr for this. My rate reflects [your specific edge]."
-
-### Step 4: Offer Structure, Not Discount
-- "Would it help to split into milestones? Pay $250 now, $250 on completion."
-- "We could reduce scope to fit $X — I'd remove [specific item]. Which matters most to you?"
-- "I can offer a 10% discount on a 3-month retainer." (trades discount for commitment)
-
-### Step 5: Walk Away (If Needed)
-"I want to make sure you get the right fit. If $X doesn't work for your budget, I totally understand. Would you like me to recommend someone in a different price range?"
-
-Walking away with grace often brings them back at your price.
+### 5. 表达情感  
+大声说出对方的情绪或担忧。  
+**示例：**  
+- “看起来你们对签订长期服务合同有所顾虑。”  
+- “听起来之前的经历让你们对预付款感到谨慎。”  
+通过表达对方的情绪，可以缓解负面情绪，同时增强对方的信任感。  
 
 ---
 
-## Scope Creep Defense
+## 阿克曼价格谈判模型（Ackerman Model）  
+当必须协商价格时（虽然这不是最佳方式，但有时不得不这样做）：  
+1. 确定你的目标价格。  
+2. 第一次报价：目标价格的65%（如果对方先出价，让他们先定下一个基准）。  
+3. 第二次报价：目标价格的85%。  
+4. 第三次报价：目标价格的95%。  
+5. 最终报价：目标价格的100%，并额外提供一项非金钱形式的优惠。  
 
-When "just one more thing" keeps happening:
+**示例（目标价格：500美元）：**  
+- 客户：“你能以300美元的价格完成吗？”  
+- 你：“根据项目范围，我通常会收费700美元。（先设定一个较高的基准）但如果我们去掉某些内容，可以降到425美元。”  
+- 客户：“还是太高。”  
+- 你：“475美元，而且我会提供文档和一周的售后服务。”  
+- 最终报价：“500美元，包含所有服务，今天就可以开始。”  
+**注意：** 使用非整数价格（如487美元）会让报价显得更合理和可信。  
 
-**Prevention (in proposal):**
-- Explicit "What's NOT included" section
-- "Additional requests billed at $X/hr or scoped separately"
-- Milestone-based payments tied to specific deliverables
+## 价格谈判策略  
+当客户说“你的价格太高”时：  
+### 第一步：保持沉默  
+沉默是一种力量。暂停3秒钟，让对方先思考。大多数人会在沉默中让步，不要急于回应。  
 
-**In the moment:**
-1. Acknowledge: "Great idea — I can see why that'd be valuable."
-2. Scope it: "That would take approximately X hours to add."
-3. Option: "Want me to include it in a Phase 2 scope, or add it to this project at $Y?"
-4. Never: Just absorb it silently. Every "free" addition trains them to expect more.
+### 第二步：表示理解  
+“感谢你坦诚地提出这个问题。”（建立信任）  
 
----
+### 第三步：重新阐述价值  
+“让我向您解释这项服务的价值：[具体成果]。作为参考，其他机构每小时收费150-200美元。我的价格反映了我们的优势。”  
 
-## Revenue Share / Equity Negotiation
+### 第四步：提供付款方案  
+- “分成几个阶段付款怎么样？现在支付250美元，项目完成后再支付250美元。”  
+- “我们可以缩小项目范围以降低成本——我可以去掉某些内容。哪个选项对您更重要？”  
+- “如果签订为期3个月的长期服务合同，我可以提供10%的折扣。”  
 
-For deals like Alfred (equity/rev share):
+### 第五步：必要时退出谈判  
+“我希望确保找到最适合双方的合作方案。如果这个价格不符合您的预算，我完全理解。您希望我推荐其他价格范围内的服务提供商吗？”  
+优雅地退出谈判往往能让他们重新考虑你的报价。  
 
-**Protect yourself:**
-- Define exactly what "revenue" means (gross? net? after expenses?)
-- Set a minimum monthly guarantee if possible
-- Time-box the agreement (12 months, then renegotiate)
-- Define what happens if the client stops using the service
-- Get it in writing — even a simple email agreement
+## 防止项目范围扩大  
+当客户不断要求增加工作内容时：  
+**预防措施（在报价书中明确说明）：**  
+- 明确列出“不包括的内容”  
+- 表示额外工作按每小时X美元收费或单独计费  
+- 根据项目里程碑来安排付款  
 
-**Fair structures:**
-- 10-20% of revenue generated by your automation (directly attributable)
-- $0 upfront + rev share (higher risk for you = higher % justified)
-- Monthly retainer + smaller rev share (balanced risk)
+**应对策略：**  
+- 表示理解他们的需求：“这个请求很有价值，但需要额外时间。”  
+- 列出完成这些工作大约需要多少时间。  
+- 提供选择：“您希望将其纳入第二阶段的工作内容，还是单独收费？”  
+**切勿：** 一味接受客户的额外要求，否则他们会习惯以后一直要求更多。  
 
----
+## 收入分成/股权谈判  
+对于涉及收入分成的协议（如Alfred模式）：  
+**保护自己的利益：**  
+- 明确“收入”的定义（是毛收入还是净收入？扣除费用后的收入？）  
+- 如果可能的话，设定最低月收入保障  
+- 设定协议的有效期限（例如12个月，之后再重新协商）  
+- 明确客户停止使用服务时的处理方式  
+- 将协议内容以书面形式确认下来（哪怕只是一封简单的邮件）  
 
-## The Inner Game
+## 谈判中的内在技巧  
+最重要的谈判其实是与自己的对话：  
+- **不要为价格道歉。** 直接说“我的价格是49美元/小时”，而不是“如果可以的话……”  
+- **沉默是你的武器。** 说出你的价格后不要再说话。先开口的人通常会处于被动地位。  
+- **要像平等的伙伴一样交流，而不是卑躬屈膝地请求合作机会。** 先了解客户需求，再展示自己的专业能力。  
+- **有退出的勇气。** 如果你愿意放弃这笔交易，你就更有谈判优势；如果你太急切，对方会察觉到你的软弱。  
+- **适当提高价格。** 如果你每次都能赢得谈判，说明你的价格可能太低了。目标应该是30-50%的胜率——这样你的价格才更合理。  
 
-The biggest negotiation is with yourself:
-
-- **Don't apologize for your price.** "My rate is $49/hr" not "My rate is, um, $49... if that works?"
-- **Silence is your weapon.** State your price and stop talking. The first person to speak after the number loses.
-- **You're a peer, not a supplicant.** Discovery-first selling positions you as an expert diagnosing their problem, not an applicant hoping for work.
-- **Walk-away power is real.** If you're willing to lose the deal, you negotiate from strength. If you're desperate, they smell it.
-- **Raise your rate.** If you're winning 100% of proposals, you're too cheap. Aim for 30-50% win rate — that means your price is in the right zone.
-
----
-
-## Key Principles
-- Negotiation is not combat — it's collaborative problem-solving
-- Tactical empathy > aggressive tactics (every time)
-- "No" is the start of negotiation, not the end
-- Never split the difference — find creative solutions instead of meeting in the middle
-- Non-round numbers ($487 vs $500) signal precision and credibility
-- If you win 100% of negotiations, you're leaving money on the table
+## 关键原则：  
+- 谈判不是对抗，而是共同解决问题。  
+- 战术性同理心比强硬的策略更重要。  
+- “拒绝”是谈判的开始，而不是结束。  
+- 不要试图平分差距——要寻找创造性的解决方案。  
+- 使用非整数价格（如487美元而非500美元）能体现你的专业性和可信度。  
+- 如果你在每次谈判中都能赢得所有机会，那说明你的价格可能还不够有竞争力。

@@ -1,13 +1,13 @@
 ---
 name: recgov-availability
-description: Check campsite availability on recreation.gov for federal campgrounds (National Parks, USFS, BLM). Requires campground ID(s) — get from ridb-search or recreation.gov URLs.
+description: 请访问recreation.gov网站，查询联邦露营地（包括国家公园、美国林业局管理的露营地以及土地管理局管理的露营地）的可用性。查询时需要提供露营地的ID，这些ID可以从ridb-search或recreation.gov网站获取。
 ---
 
-# Recreation.gov Availability Checker
+# recreation.gov 可用性检查工具
 
-Check campsite availability for federal campgrounds on recreation.gov.
+通过 recreation.gov 查询联邦营地的空位情况。
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd /Users/doop/moltbot/skills/recgov-availability
@@ -22,56 +22,56 @@ python3 scripts/check.py -c 233965 233900 --start 2026-07-10 --nights 2
 python3 scripts/check.py -c 233965 --start 2026-07-10 --nights 2 --type tent --json
 ```
 
-## Finding Campground IDs
+## 查找营地ID
 
-From URL: `recreation.gov/camping/campgrounds/233965` → ID is `233965`
+从网址 `recreation.gov/camping/campgrounds/233965` 可以获取营地ID `233965`。
 
-Or use ridb-search:
+或者使用 ridb-search 工具：
 ```bash
 python3 ../ridb-search/scripts/search.py -l "Newport, OR" --camping-only
 ```
 
-## Options
+## 命令选项
 
-| Option | Description |
-|--------|-------------|
-| `-c, --campground` | Campground ID(s) to check (required) |
-| `-s, --start` | Start date YYYY-MM-DD (required) |
-| `-n, --nights` | Consecutive nights needed (default: 1) |
-| `-t, --type` | Site type: tent, rv, standard, cabin, group |
-| `--electric` | Electric sites only |
-| `--nonelectric` | Non-electric sites only |
-| `--include-group` | Include group sites |
-| `--pets` | Pet-friendly only (slower) |
-| `--shade` | Shaded sites only (slower) |
-| `--fire-pit` | Sites with fire pits (slower) |
-| `--vehicle-length N` | Min vehicle length in feet (slower) |
-| `--show-sites` | Show individual sites |
-| `--json` | JSON output |
+| 选项          | 描述                                      |
+|----------------|-------------------------------------------|
+| `-c, --campground`    | 要检查的营地ID（必需）                          |
+| `-s, --start`     | 开始日期（格式：YYYY-MM-DD）                        |
+| `-n, --nights`     | 所需连续住宿天数（默认：1天）                      |
+| `-t, --type`     | 营地类型：帐篷、房车、标准型、小屋、团体型                |
+| `--electric`    | 仅限有电设施的营地                      |
+| `--nonelectric` | 仅限无电设施的营地                      |
+| `--include-group`   | 包括团体型营地                          |
+| `--pets`       | 仅限允许携带宠物的营地                      |
+| `--shade`       | 仅限有遮阳设施的营地                      |
+| `--fire-pit`     | 有火坑的营地                          |
+| `--vehicle-length N` | 车辆最小长度（单位：英尺）                      |
+| `--show-sites`    | 显示各个营地的详细信息                        |
+| `--json`       | 输出结果为JSON格式                         |
 
-## Status Meanings
+## 状态说明
 
-| Status | Meaning |
-|--------|---------|
-| ✅ Available | Book now |
-| ❌ Reserved | Already booked |
-| ⏳ NYR | Not Yet Released — reservations not open |
-| 🚗 FCFS | First-come-first-served (no reservations) |
+| 状态            | 含义                                      |
+|----------------|-------------------------------------------|
+| ✅ 可预订        | 可立即预订                              |
+| ❌ 已预订        | 营位已被他人预订                          |
+| ⏳ 尚未开放      | 预订服务尚未启动                          |
+| 🚗 先到先得      | 按先到先得原则分配（不支持预订）                    |
 
-## Coverage
+## 覆盖范围
 
-- National Park Service campgrounds
-- USDA Forest Service campgrounds
-- BLM recreation sites
-- Army Corps of Engineers areas
+- 国家公园管理局（National Park Service）的营地 |
+- 美国农业部森林服务局（USDA Forest Service）的营地 |
+- 美国土地管理局（BLM）管理的休闲设施 |
+- 美国陆军工程兵团（Army Corps of Engineers）管理的区域 |
 
-For state parks, use `reserveamerica`.
+如需查询州立公园的营地信息，请使用 `reserveamerica` 工具。
 
-## Notes
+## 注意事项
 
-- No API key needed
-- Python 3.8+ (stdlib only)
-- Amenity filters (--pets, --shade) require extra API calls
-- Booking window is typically 6 months ahead
+- 无需API密钥 |
+- 需要Python 3.8及以上版本（仅使用标准库） |
+- 使用某些选项（如 `--pets`, `--shade`）时可能需要额外的API请求 |
+- 预订窗口通常为6个月前开始
 
-See README.md for full documentation.
+更多详细信息请参阅 README.md 文件。

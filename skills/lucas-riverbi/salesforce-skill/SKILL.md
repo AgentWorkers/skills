@@ -1,4 +1,4 @@
-Main skill definition with frontmatter, CLI reference, SOQL patterns
+**主要技能说明（含前置内容、命令行界面（CLI）参考及SOQL模式）**
 
 ---
 
@@ -11,21 +11,21 @@ homepage: https://developer.salesforce.com/tools/salesforcecli
 ---
 ```
 
-# Salesforce CRM Skill
+# Salesforce CRM 技能
 
-Interact with Salesforce CRM using the official Salesforce CLI (`sf`) and REST API.
+使用官方的 Salesforce CLI (`sf`) 和 REST API 与 Salesforce CRM 进行交互。
 
-## Prerequisites
+## 先决条件
 
-1. **Salesforce CLI** (`sf`) installed via npm or Homebrew
-2. **Authentication** configured via one of:
-    - `sf org login web` (OAuth browser flow - recommended for interactive)
-    - `sf org login jwt` (JWT for headless/automated)
-    - `SALESFORCE_ACCESS_TOKEN` environment variable (direct token)
+1. 通过 npm 或 Homebrew 安装了 Salesforce CLI (`sf`)。
+2. 配置了身份验证方式：
+    - `sf org login web`（OAuth 浏览器登录方式 - 推荐用于交互式操作）
+    - `sf org login jwt`（JWT 登录方式 - 适用于无界面/自动化操作）
+    - 设置 `SALESFORCE_ACCESS_TOKEN` 环境变量（直接使用访问令牌）
 
-## Quick Reference
+## 快速参考
 
-### Authentication & Org Management
+### 身份验证与组织管理
 
 ```bash
 # Login to org (opens browser)
@@ -44,7 +44,7 @@ sf config set target-org myorg
 sf org display --target-org myorg
 ```
 
-### Query Records (SOQL)
+### 查询记录（SOQL）
 
 ```bash
 # Query contacts
@@ -63,7 +63,7 @@ sf data query --query "SELECT Id, Name, Email FROM Contact" --result-format csv 
 sf data query --query "SELECT Id, Name FROM Account" --result-format json
 ```
 
-### Create Records
+### 创建记录
 
 ```bash
 # Create a Contact
@@ -82,7 +82,7 @@ sf data create record --sobject Lead --values "FirstName='Jane' LastName='Smith'
 sf data create record --sobject Case --values "Subject='Support Request' Description='Customer needs help' Status='New' Priority='Medium'" --target-org myorg
 ```
 
-### Update Records
+### 更新记录
 
 ```bash
 # Update a Contact
@@ -95,7 +95,7 @@ sf data update record --sobject Opportunity --record-id 006XXXXXXXXXXXXXXX --val
 sf data update record --sobject Account --record-id 001XXXXXXXXXXXXXXX --values "Description='Key strategic account'" --target-org myorg
 ```
 
-### Delete Records
+### 删除记录
 
 ```bash
 # Delete a record
@@ -105,7 +105,7 @@ sf data delete record --sobject Contact --record-id 003XXXXXXXXXXXXXXX --target-
 sf data delete bulk --sobject Lead --file leads-to-delete.csv --target-org myorg
 ```
 
-### Bulk Operations
+### 批量操作
 
 ```bash
 # Bulk insert from CSV
@@ -118,7 +118,7 @@ sf data upsert bulk --sobject Account --file accounts.csv --external-id Id --tar
 sf data bulk status --job-id <job-id> --target-org myorg
 ```
 
-### Schema & Metadata
+### 数据库模式与元数据
 
 ```bash
 # Describe an object (get fields)
@@ -131,9 +131,9 @@ sf sobject list --target-org myorg
 sf sobject describe --sobject Opportunity --target-org myorg | jq '.fields[] | {name, type, label}'
 ```
 
-## Common SOQL Patterns
+## 常用 SOQL 模式
 
-### Pipeline Report
+### 管道报告（Pipeline Report）
 
 ```sql
 SELECT StageName, COUNT(Id) NumDeals, SUM(Amount) TotalValue
@@ -142,7 +142,7 @@ WHERE IsClosed = false
 GROUP BY StageName
 ```
 
-### Recent Activities
+### 最近活动（Recent Activities）
 
 ```sql
 SELECT Id, Subject, WhoId, WhatId, ActivityDate
@@ -152,7 +152,7 @@ AND ActivityDate >= LAST_N_DAYS:7
 ORDER BY ActivityDate DESC
 ```
 
-### Contacts by Account
+### 按账户划分的联系人（Contacts by Account）
 
 ```sql
 SELECT Account.Name, Id, Name, Email, Title
@@ -160,7 +160,7 @@ FROM Contact
 WHERE Account.Name = 'Acme Corp'
 ```
 
-### Open Cases
+### 开启的案例（Open Cases）
 
 ```sql
 SELECT Id, CaseNumber, Subject, Status, Priority, CreatedDate
@@ -169,7 +169,7 @@ WHERE IsClosed = false
 ORDER BY Priority, CreatedDate
 ```
 
-### Leads by Status
+### 按状态划分的潜在客户（Leads by Status）
 
 ```sql
 SELECT Status, COUNT(Id) Total
@@ -178,9 +178,9 @@ WHERE IsConverted = false
 GROUP BY Status
 ```
 
-## REST API (Alternative)
+## REST API（备用方案）
 
-For operations not covered by CLI, use curl with the REST API:
+对于 CLI 未支持的操作，可以使用 curl 和 REST API 来执行：
 
 ```bash
 # Set variables
@@ -199,23 +199,23 @@ curl -s "$INSTANCE_URL/services/data/v59.0/sobjects/Contact" \
   -d '{"FirstName":"Test","LastName":"User","Email":"test@example.com"}'
 ```
 
-## Error Handling
+## 错误处理
 
-- **INVALID_SESSION_ID**: Token expired. Re-authenticate with `sf org login web`
-- **MALFORMED_QUERY**: Check SOQL syntax. Use single quotes for strings.
-- **ENTITY_IS_DELETED**: Record was deleted. Query to verify before updating.
-- **REQUIRED_FIELD_MISSING**: Check object schema for required fields.
+- **INVALID_SESSION_ID**：令牌已过期。请使用 `sf org login web` 重新登录。
+- **MALFORMED_QUERY**：SOQL 语法错误。字符串需要使用单引号括起来。
+- **ENTITY_IS_DELETED**：记录已被删除。在更新前请先进行查询确认。
+- **REQUIRED_FIELD MISSING**：检查对象模式中是否缺少必填字段。
 
-## Tips
+## 提示
 
-1. **Use aliases**: Set `--alias` when logging in, then use `--target-org alias`
-2. **JSON output**: Add `--json` flag for programmatic parsing
-3. **Dry run**: Use `--dry-run` flag on bulk operations to preview
-4. **Field names**: Use API names (e.g., `FirstName`), not labels (e.g., "First Name")
-5. **Date format**: Use `YYYY-MM-DD` for dates, `YYYY-MM-DDThh:mm:ssZ` for datetimes
+1. **使用别名**：登录时设置 `--alias` 参数，之后使用 `--target-org alias` 来指定目标组织。
+2. **JSON 输出**：使用 `--json` 参数以获取 JSON 格式的输出结果，便于程序解析。
+3. **模拟执行**：对批量操作使用 `--dry-run` 参数进行预览。
+4. **字段名称**：使用 API 定义的字段名称（例如 `FirstName`），而非显示名称（例如 “First Name”）。
+5. **日期格式**：日期使用 `YYYY-MM-DD`，日期时间使用 `YYYY-MM-DDThh:mm:ssZ`。
 
-## Limitations
+## 限制
 
-- Bulk operations have daily API limits (varies by Salesforce edition)
-- Some objects (e.g., ContentDocument) have special handling requirements
-- Complex queries may hit governor limits
+- 批量操作有每日 API 使用量限制（具体限制因 Salesforce 版本而异）。
+- 某些对象（如 ContentDocument）有特殊的处理要求。
+- 复杂查询可能会超出 API 的性能限制。

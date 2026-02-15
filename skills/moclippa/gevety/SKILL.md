@@ -1,7 +1,7 @@
 ---
 name: gevety
 version: 1.5.0
-description: Access your Gevety health data - biomarkers, healthspan scores, biological age, supplements, activities, daily actions, 90-day health protocol, and upcoming tests
+description: 访问您的 Gevety 健康数据：生物标志物、健康寿命评分、生物年龄、补充剂使用情况、日常活动记录、90 天健康计划以及即将进行的检查。
 homepage: https://gevety.com
 user-invocable: true
 command: gevety
@@ -13,22 +13,22 @@ metadata:
         - GEVETY_API_TOKEN
 ---
 
-# Gevety Health Assistant
+# Gevety健康助手
 
-You have access to the user's health data from Gevety via the REST API. Use `web_fetch` to retrieve their biomarkers, healthspan scores, and wearable statistics.
+您可以通过REST API访问用户的Gevety健康数据。使用`web_fetch`来检索他们的生物标志物、健康寿命评分和可穿戴设备统计信息。
 
-## First-Time Setup
+## 首次设置
 
-If this is the user's first time using Gevety, guide them through setup:
+如果这是用户第一次使用Gevety，请指导他们完成以下设置：
 
-1. **Get a Gevety account**: Sign up at https://gevety.com if they don't have one
-2. **Upload blood tests**: They need to upload lab reports to have biomarker data
-3. **Generate an API token**:
-   - Go to https://gevety.com/settings
-   - Click "Developer API" tab
-   - Click "Generate Token"
-   - Copy the token (starts with `gvt_`)
-4. **Configure Clawdbot**: Add the token to `~/.clawdbot/clawdbot.json`:
+1. **创建Gevety账户**：如果他们还没有账户，请访问https://gevety.com进行注册。
+2. **上传血液检测报告**：他们需要上传实验室报告以获取生物标志物数据。
+3. **生成API令牌**：
+   - 访问https://gevety.com/settings
+   - 点击“开发者API”选项卡
+   - 点击“生成令牌”
+   - 复制令牌（以`gvt_`开头）。
+4. **配置Clawdbot**：将令牌添加到`~/.clawdbot/clawdbot.json`文件中：
 
 ```json
 {
@@ -42,383 +42,382 @@ If this is the user's first time using Gevety, guide them through setup:
 }
 ```
 
-After adding the token, they'll need to restart Clawdbot for changes to take effect.
+添加令牌后，用户需要重启Clawdbot以使更改生效。
 
-## Authentication
+## 认证
 
-All requests require Bearer authentication. Use the `GEVETY_API_TOKEN` environment variable:
+所有请求都需要使用Bearer认证。请使用`GEVETY_API_TOKEN`环境变量：
 
 ```
 Authorization: Bearer $GEVETY_API_TOKEN
 ```
 
-Base URL: `https://api.gevety.com`
+基础URL：`https://api.gevety.com`
 
-## Biomarker Name Handling
+## 生物标志物名称处理
 
-The API preserves biomarker specificity. Fasting and non-fasting variants are distinct:
+API会保留生物标志物的具体名称。空腹和非空腹的指标是不同的：
 
-| Input Name | API Returns | Notes |
+| 输入名称 | API返回值 | 备注 |
 |------------|-------------|-------|
-| CRP, C-Reactive Protein | **CRP** or **C-Reactive Protein** | Standard CRP (LOINC 1988-5) |
-| hsCRP, hscrp, Cardio CRP | **hs-CRP** | High-sensitivity CRP (LOINC 30522-7) |
-| Glucose, Blood Glucose | **Glucose** | Generic/unspecified glucose |
-| Fasting Glucose, FBS, FBG | **Glucose Fasting** | Fasting-specific glucose |
-| Insulin, Serum Insulin | **Insulin** | Generic/unspecified insulin |
-| Fasting Insulin | **Insulin Fasting** | Fasting-specific insulin |
-| IG | **Immature Granulocytes** | Expanded for clarity |
-| Vitamin D, 25-OH Vitamin D | **Vitamin D** | |
-| LDL, LDL Cholesterol | **LDL Cholesterol** | |
+| CRP（C-反应蛋白） | **CRP** 或 **C-Reactive Protein** | 标准CRP（LOINC 1988-5） |
+| hsCRP（高灵敏度CRP） | **hs-CRP** | 高灵敏度CRP（LOINC 30522-7） |
+| 葡萄糖 | **Glucose** | 通用/未指定的葡萄糖 |
+| 空腹葡萄糖 | **Glucose Fasting** | 空腹特定的葡萄糖 |
+| 胰岛素 | **Insulin** | 通用/未指定的胰岛素 |
+| 空腹胰岛素 | **Insulin Fasting** | 空腹特定的胰岛素 |
+| IG（未成熟粒细胞） | **Immature Granulocytes** | 为清晰起见而扩展的名称 |
+| 维生素D（25-OH） | **Vitamin D** | |
+| LDL（低密度脂蛋白） | **LDL Cholesterol** | |
 
-**Important**: The API no longer forces fasting assumptions. If a lab report says "Glucose" without specifying fasting, it returns as "Glucose" (not "Fasting Glucose"). This preserves the original context from your lab results.
+**重要提示**：API不再强制要求空腹状态。如果实验室报告只写了“Glucose”而没有说明是否空腹，它将返回“Glucose”（而不是“Fasting Glucose”），以保留实验室结果的原始信息。
 
-## Available Endpoints
+## 可用的端点
 
-### 1. List Available Data (Start Here)
+### 1. 列出可用数据（从这里开始）
 
-**Always call this first** to discover what health data exists.
+**始终首先调用此端点**，以了解存在哪些健康数据。
 
 ```
 GET /api/v1/mcp/tools/list_available_data
 ```
 
-Returns:
-- `biomarkers`: List of tracked biomarkers with test counts and latest dates
-- `wearables`: Connected devices and available metrics
-- `insights`: Whether healthspan score is calculated, axis scores available
-- `data_coverage`: Percentage of recommended biomarkers tracked (0-100)
+返回值：
+- `biomarkers`：跟踪的生物标志物列表，包括检测次数和最新日期
+- `wearables`：连接的设备及其可用的指标
+- `insights`：是否计算了健康寿命评分，以及是否可获取各维度评分
+- `data_coverage`：跟踪的推荐生物标志物的百分比（0-100）
 
-### 2. Get Health Summary
+### 2. 获取健康概要
 
-Overview of the user's health status.
+用户健康状况的概述。
 
 ```
 GET /api/v1/mcp/tools/get_health_summary
 ```
 
-Returns:
-- `overall_score`: Healthspan score (0-100)
-- `overall_status`: OPTIMAL, GOOD, SUBOPTIMAL, or NEEDS_ATTENTION
-- `trend`: IMPROVING, STABLE, or DECLINING
-- `axis_scores`: Scores for each health dimension (metabolic, cardiovascular, etc.)
-- `top_concerns`: Biomarkers needing attention
-- `scoring_note`: Explanation when overall score differs from axis scores (e.g., "Overall healthspan is high, but Inflammation axis needs attention")
+返回值：
+- `overall_score`：健康寿命评分（0-100）
+- `overall_status`：OPTIMAL（最佳）、GOOD（良好）、SUBOPTIMAL（次优）或NEEDS_ATTENTION（需要关注）
+- `trend`：IMPROVING（改善中）、STABLE（稳定）或DECLINING（下降中）
+- `axis_scores`：每个健康维度的评分（代谢、心血管等）
+- `top_concerns`：需要关注的生物标志物
+- `scoring_note`：当整体评分与各维度评分不同时的解释（例如：“整体健康寿命较高，但炎症维度需要关注”）
 
-**Note on scores**: The overall healthspan score is a weighted composite. It's possible to have a high overall score while one axis is low (or vice versa). The `scoring_note` field explains these situations.
+**关于评分的说明**：整体健康寿命评分是一个加权综合评分。即使某个维度的评分较低，整体评分也可能很高（反之亦然）。`scoring_note`字段会解释这些情况。
 
-### 3. Query Biomarker
+### 3. 查询生物标志物
 
-Get detailed history for a specific biomarker.
+获取特定生物标志物的详细历史数据。
 
 ```
 GET /api/v1/mcp/tools/query_biomarker?biomarker={name}&days={days}
 ```
 
-Parameters:
-- `biomarker` (required): Name or alias (e.g., "vitamin d", "ldl", "hba1c", "crp")
-- `days` (optional): History period, 1-730, default 365
+参数：
+- `biomarker`（必需）：名称或别名（例如，“vitamin d”、“ldl”、“hba1c”、“crp”）
+- `days`（可选）：历史时间段，1-730天，默认为365天
 
-Returns:
-- `canonical_name`: Standardized biomarker name (see table above)
-- `history`: Array of test results with dates, values, units, flags
-- `latest`: Most recent result
-- `trend`: Direction (IMPROVING, STABLE, DECLINING) and percent change
-- `optimal_range`: Evidence-based optimal values
+返回值：
+- `canonical_name`：标准化的生物标志物名称（见上表）
+- `history`：包含日期、数值和单位的检测结果数组
+- `latest`：最新的检测结果
+- `trend`：变化趋势（改善中、稳定或下降）
+- `optimal_range`：基于证据的理想值
 
-**Tip**: If biomarker not found, the response includes `did_you_mean` suggestions.
+**提示**：如果找不到生物标志物，响应中会包含`did_you_mean`的建议。
 
-### 4. Get Wearable Stats
+### 4. 获取可穿戴设备统计信息
 
-Daily metrics from connected wearables (Garmin, Oura, Whoop, etc.).
+来自连接的可穿戴设备（如Garmin、Oura、Whoop等）的每日指标。
 
 ```
 GET /api/v1/mcp/tools/get_wearable_stats?days={days}&metric={metric}
 ```
 
-Parameters:
-- `days` (optional): History period, 1-90, default 30
-- `metric` (optional): Focus on specific metric (steps, hrv, sleep, etc.)
+参数：
+- `days`（可选）：历史时间段，1-90天，默认为30天
+- `metric`（可选）：关注的特定指标（步数、心率变异性等）
 
-Returns:
-- `connected_sources`: List of connected wearable platforms
-- `daily_metrics`: Per-day data (steps, resting HR, HRV, sleep, recovery)
-- `summaries`: Aggregated stats with averages, min, max, trends
+返回值：
+- `connected_sources`：连接的可穿戴设备列表
+- `daily_metrics`：每日数据（步数、静息心率、心率变异性、睡眠等）
+- `summaries`：包含平均值、最小值、最大值和趋势的汇总统计
 
-### 5. Get Opportunities
+### 5. 获取健康改善机会
 
-Get ranked health improvement opportunities with estimated healthspan impact.
+获取按健康影响排名的健康改善机会。
 
 ```
 GET /api/v1/mcp/tools/get_opportunities?limit={limit}&axis={axis}
 ```
 
-Parameters:
-- `limit` (optional): Max opportunities to return, 1-50, default 10
-- `axis` (optional): Filter by health axis (metabolic, cardiovascular, etc.)
+参数：
+- `limit`（可选）：返回的最大机会数量，1-50个，默认为10个
+- `axis`（可选）：按健康维度过滤（代谢、心血管等）
 
-Returns:
-- `opportunities`: Ranked list of improvement opportunities
-- `total_opportunity_score`: Total healthspan points available
-- `total_years_estimate`: Estimated years of healthy life if all optimized
-- `healthspan_score`: Current healthspan score
+返回值：
+- `opportunities`：按健康影响排名的改善机会列表
+- `total_opportunity_score`：可获得的健康寿命分数
+- `total_years_estimate`：如果所有指标都得到优化，预计可以增加的健康寿命年数
+- `healthspan_score`：当前的健康寿命评分
 
-Each opportunity includes:
-- `biomarker`: Standardized biomarker name
-- `current_value` / `optimal_value`: Where you are vs target
-- `opportunity_score`: Healthspan points gained if optimized
-- `years_estimate`: Estimated healthy years gained
-- `priority`: Rank (1 = highest impact)
+每个机会包括：
+- `biomarker`：标准化的生物标志物名称
+- `current_value` / `optimal_value`：当前值与目标值的对比
+- `opportunity_score`：优化后可以获得的健康寿命分数
+- `years_estimate`：预计可以增加的健康年数
+- `priority`：优先级（1 = 影响最大）
 
-### 6. Get Biological Age
+### 6. 获取生物年龄
 
-Calculate biological age using validated algorithms (PhenoAge, Light BioAge).
+使用经过验证的算法（PhenoAge、Light BioAge）计算生物年龄。
 
 ```
 GET /api/v1/mcp/tools/get_biological_age
 ```
 
-Returns:
-- `result`: Biological age calculation (if available)
-  - `biological_age`: Calculated biological age
-  - `chronological_age`: Calendar age
-  - `age_acceleration`: Difference (positive = aging faster)
-  - `algorithm`: Which algorithm was used
-  - `biomarkers_used`: Biomarkers that contributed
-  - `interpretation`: What the result means
-- `available`: Whether calculation was possible
-- `reason`: Why not available (if applicable)
-- `upgrade_available`: Can unlock better algorithm with more data
-- `upgrade_message`: What additional tests would help
+返回值：
+- `result`：生物年龄计算结果
+  - `biological_age`：计算出的生物年龄
+  - `chronological_age`：实际年龄
+  - `age_acceleration`：年龄加速情况（正数表示衰老更快）
+  - `algorithm`：使用的算法
+  - `biomarkers_used`：贡献的生物标志物
+  - `interpretation`：结果的意义
+- `available`：是否可以计算生物年龄
+- `reason`：如果无法计算的原因
+- `upgrade_available`：是否可以通过更多数据解锁更准确的算法
+- `upgrade_message`：需要哪些额外的检测来提高准确性
 
-### 7. List Supplements
+### 7. 列出补充剂
 
-Get the user's supplement stack.
+获取用户的补充剂使用情况。
 
 ```
 GET /api/v1/mcp/tools/list_supplements?active_only={true|false}
 ```
 
-Parameters:
-- `active_only` (optional): Only show currently active supplements, default false
+参数：
+- `active_only`（可选）：仅显示当前正在使用的补充剂，默认为false
 
-Returns:
-- `supplements`: List of supplements with dosage, frequency, duration
-- `active_count`: Number of currently active supplements
-- `total_count`: Total supplements tracked
+返回值：
+- `supplements`：补充剂列表，包括剂量、服用频率和持续时间
+- `active_count`：当前正在使用的补充剂数量
+- `total_count`：跟踪的总补充剂数量
 
-Each supplement includes:
-- `name`: Supplement name
-- `dose_text`: Formatted dosage (e.g., "1000 mg daily", "200mg EPA + 100mg DHA daily")
-- `is_active`: Currently taking
-- `duration_days`: How long on this supplement
+每个补充剂包括：
+- `name`：补充剂名称
+- `dose_text`：格式化的剂量信息（例如，“1000毫克/天”，“200毫克EPA + 100毫克DHA/天”）
+- `is_active`：是否正在服用
+- `duration_days`：服用该补充剂的时长
 
-**Note**: For multi-component supplements (like fish oil), `dose_text` shows all components (e.g., "200mg EPA + 100mg DHA daily").
+**注意**：对于多成分补充剂（如鱼油），`dose_text`会显示所有成分（例如，“200毫克EPA + 100毫克DHA/天”）。
 
-### 8. Get Activities
+### 8. 获取运动/活动记录
 
-Get workout/activity history from connected wearables.
+从连接的可穿戴设备获取运动/活动记录。
 
 ```
 GET /api/v1/mcp/tools/get_activities?days={days}&activity_type={type}
 ```
 
-Parameters:
-- `days` (optional): History period, 1-90, default 30
-- `activity_type` (optional): Filter by type (running, cycling, strength, etc.)
+参数：
+- `days`（可选）：历史时间段，1-90天，默认为30天
+- `activity_type`（可选）：按类型过滤（跑步、骑行、力量训练等）
 
-Returns:
-- `activities`: List of workouts with metrics
-- `total_count`: Number of activities
-- `total_duration_minutes`: Total workout time
-- `total_distance_km`: Total distance covered
-- `total_calories`: Total calories burned
+返回值：
+- `activities`：运动记录列表
+- `total_count`：运动次数
+- `total_duration_minutes`：总运动时间
+- `total_distance_km`：总运动距离
+- `total_calories`：消耗的总卡路里
 
-Each activity includes:
-- `activity_type`: Type (running, cycling, swimming, etc.)
-- `name`: Activity name
-- `start_time`: When it started
-- `duration_minutes`: How long
-- `distance_km`: Distance (if applicable)
-- `calories`: Calories burned
-- `avg_hr` / `max_hr`: Heart rate data
-- `source`: Where the data came from (garmin, strava, etc.)
+每个运动包括：
+- `activity_type`：运动类型（跑步、骑行、游泳等）
+- `name`：运动名称
+- `start_time`：开始时间
+- `duration_minutes`：运动时长
+- `distance_km`：运动距离
+- `calories`：消耗的卡路里
+- `avg_hr` / `max_hr`：平均心率
+- `source`：数据来源（Garmin、Strava等）
 
-### 9. Get Today's Actions
+### 9. 获取今天的行动清单
 
-Get the user's action checklist for today.
+获取用户今天的行动清单。
 
 ```
 GET /api/v1/mcp/tools/get_today_actions?timezone={timezone}
 ```
 
-Parameters:
-- `timezone` (optional): IANA timezone (e.g., "America/New_York"), default UTC
+参数：
+- `timezone`（可选）：IANA时区（例如，“America/New_York”），默认为UTC
 
-Returns:
-- `effective_date`: The date being queried in user's timezone
-- `timezone`: Timezone used for calculation
-- `window_start` / `window_end`: Day boundaries (ISO datetime)
-- `actions`: List of today's actions
-- `completed_count` / `total_count`: Completion stats
-- `completion_pct`: Numeric completion percentage (0-100)
-- `last_updated_at`: Cache staleness indicator
+返回值：
+- `effective_date`：查询日期，以用户的时区显示
+- `timezone`：用于计算的时区
+- `window_start` / `window_end`：时间范围（ISO日期格式）
+- `actions`：今天的行动列表
+- `completed_count` / `total_count`：完成情况
+- `completion_pct`：完成百分比（0-100）
+- `last_updated_at`：缓存更新时间
 
-Each action includes:
-- `action_id`: Stable ID for deep-linking
-- `title`: Action title
-- `action_type`: Type (supplement, habit, diet, medication, test, procedure)
-- `completed`: Whether completed today
-- `scheduled_window`: Time window (morning, afternoon, evening, any)
-- `dose_text`: Dosage info if applicable (e.g., "1000 mg daily")
+每个行动包括：
+- `action_id`：用于深度链接的稳定ID
+- `title`：行动名称
+- `action_type`：行动类型（补充剂、习惯、饮食、药物、检测、程序）
+- `completed`：今天是否完成
+- `scheduled_window`：时间窗口（上午、下午、晚上等）
+- `dose_text`：如果适用，显示剂量信息（例如，“1000毫克/天”）
 
-### 10. Get Protocol
+### 10. 获取健康计划
 
-Get the user's 90-day health protocol with top priorities.
+获取用户90天的健康计划及优先事项。
 
 ```
 GET /api/v1/mcp/tools/get_protocol
 ```
 
-Returns:
-- `protocol_id`: Stable protocol ID
-- `phase`: Current phase (week1, month1, month3)
-- `days_remaining`: Days until protocol expires
-- `generated_at` / `last_updated_at`: Timestamps
-- `top_priorities`: Top 5 health priorities with reasoning
-- `key_recommendations`: Diet and lifestyle action items
-- `total_actions`: Total actions in protocol
+返回值：
+- `protocol_id`：健康的稳定计划ID
+- `phase`：当前阶段（week1、month1、month3）
+- `days_remaining`：计划剩余天数
+- `generated_at` / `last_updated_at`：时间戳
+- `top_priorities`：前5个健康优先事项及其原因
+- `key_recommendations`：饮食和生活方式建议
+- `total_actions`：计划中的总行动数量
 
-Each priority includes:
-- `priority_id`: Stable ID (same as rank)
-- `rank`: Priority rank (1 = highest)
-- `biomarker`: Standardized biomarker name
-- `status`: Current status (critical, concerning, suboptimal, optimal)
-- `target`: Target value with unit
-- `current_value` / `unit`: Current measured value
-- `measured_at`: When this biomarker was last measured
-- `why_prioritized`: Explanation for why this is prioritized
+每个优先事项包括：
+- `priority_id`：稳定的ID（与排名相同）
+- `rank`：优先级（1 = 最高）
+- `biomarker`：标准化的生物标志物名称
+- `status`：当前状态（关键、需要关注、次优、最佳）
+- `target`：目标值及单位
+- `current_value` / `unit`：当前测量值
+- `measured_at`：最后一次测量该生物标志物的时间
+- `why_prioritized`：优先考虑该指标的原因
 
-**Note**: If no protocol exists, returns a helpful error with suggestion to generate one at gevety.com/protocol.
+**注意**：如果不存在健康计划，会返回一条提示信息，建议用户在gevety.com/protocol生成计划。
 
-### 11. Get Upcoming Tests
+### 11. 获取即将进行的检测
 
-Get tests that are due or recommended based on biomarker history and AI recommendations.
+根据生物标志物历史数据和AI建议，获取即将进行的检测。
 
 ```
 GET /api/v1/mcp/tools/get_upcoming_tests
 ```
 
-Returns:
-- `tests`: List of upcoming tests sorted by urgency
-- `overdue_count`: Number of overdue tests
-- `due_soon_count`: Tests due within 30 days
-- `recommended_count`: AI-recommended tests
-- `total_count`: Total number of upcoming tests
+返回值：
+- `tests`：按紧急程度排序的即将进行的检测列表
+- `overdue_count`：逾期的检测数量
+- `due_soon_count`：30天内到期的检测数量
+- `recommended_count`：AI推荐的检测数量
+- `total_count`：所有即将进行的检测总数
 
-Each test includes:
-- `test_id`: Stable ID for deep-linking (format: `panel_{id}` or `recommended_{id}`)
-- `name`: Test or panel name
-- `test_type`: Type (panel, biomarker, recommended)
-- `urgency`: Priority level (overdue, due_soon, recommended)
-- `due_reason`: Why this test is needed (e.g., "Due 2 weeks ago", "AI recommendation")
-- `last_tested_at`: When this was last tested (if applicable)
-- `biomarkers`: List of biomarkers included (for panels)
+每个检测包括：
+- `test_id`：用于深度链接的稳定ID（格式：`panel_{id}`或`recommended_{id}`）
+- `name`：检测或检查名称
+- `test_type`：检测类型（面板、生物标志物、推荐类型）
+- `urgency`：优先级（逾期、即将到期、推荐）
+- `due_reason`：需要该检测的原因（例如，“2周前到期”）
+- `last_tested_at`：上次检测的时间（如果适用）
 
-## Interpreting Scores
+## 解释评分
 
-### Healthspan Score (0-100)
-| Range | Status | Meaning |
+### 健康寿命评分（0-100）
+| 范围 | 状态 | 含义 |
 |-------|--------|---------|
-| 80-100 | OPTIMAL | Excellent health optimization |
-| 65-79 | GOOD | Above average, minor improvements possible |
-| 50-64 | SUBOPTIMAL | Room for improvement |
-| <50 | NEEDS_ATTENTION | Several areas need focus |
+| 80-100 | OPTIMAL | 健康状况极佳 |
+| 65-79 | GOOD | 处于平均水平，有轻微改善空间 |
+| 50-64 | SUBOPTIMAL | 需要改善 |
+| <50 | NEEDS_ATTENTION | 多个方面需要关注 |
 
-### Axis Scores
-Each health dimension is scored independently:
-- **Metabolic**: Blood sugar, insulin, lipids
-- **Cardiovascular**: Heart health markers
-- **Inflammatory**: hs-CRP, homocysteine
-- **Hormonal**: Thyroid, testosterone, cortisol
-- **Nutritional**: Vitamins, minerals
-- **Liver/Kidney**: Organ function markers
+### 各维度评分
+每个健康维度都会单独评分：
+- **代谢**：血糖、胰岛素、脂质
+- **心血管**：心脏健康指标
+- **炎症**：hs-CRP、同型半胱氨酸
+- **激素**：甲状腺、睾酮、皮质醇
+- **营养**：维生素、矿物质
+- **肝脏/肾脏**：器官功能指标
 
-**Important**: It's possible to have a high overall score with one low axis score (or vice versa). The `scoring_note` field in `get_health_summary` explains these situations.
+**重要提示**：即使某个维度的评分较低，整体健康寿命评分也可能很高（反之亦然）。`get_health_summary`中的`scoring_note`字段会解释这些情况。
 
-### Biomarker Status Labels
-| Label | Meaning |
+### 生物标志物状态标签
+| 标签 | 含义 |
 |-------|---------|
-| OPTIMAL | Within evidence-based ideal range |
-| NORMAL | Within lab reference range |
-| SUBOPTIMAL | Room for improvement |
-| HIGH/LOW | Outside lab reference range |
-| CRITICAL | Needs immediate medical attention |
+| OPTIMAL | 在基于证据的理想范围内 |
+| NORMAL | 在实验室参考范围内 |
+| SUBOPTIMAL | 需要改善 |
+| HIGH/LOW | 超出实验室参考范围 |
+| CRITICAL | 需要立即就医 |
 
-## Common Workflows
+## 常见工作流程
 
-### "How am I doing?"
-1. Call `list_available_data` to see what's tracked
-2. Call `get_health_summary` for the overall picture
-3. Highlight top concerns and recent trends
-4. If `scoring_note` is present, explain the score discordance
+### “我的健康状况如何？”
+1. 调用`list_available_data`查看跟踪的数据
+2. 调用`get_health_summary`获取整体健康状况
+3. 强调主要问题和近期趋势
+4. 如果有`scoring_note`，解释评分差异的原因
 
-### "Tell me about my vitamin D"
-1. Call `query_biomarker?biomarker=vitamin d`
-2. Present history, current status, and trend
-3. Note optimal range vs current value
+### “我的维生素D情况如何？”
+1. 调用`query_biomarker?biomarker=vitamin d`
+2. 显示历史数据、当前状态和趋势
+3. 说明理想范围和当前值
 
-### "What's my CRP?" / "How's my inflammation?"
-1. Call `query_biomarker?biomarker=crp` (returns as "CRP" or "hs-CRP" depending on lab)
-2. Present the value and trend
-3. Explain what CRP measures (inflammation marker) - note if it's high-sensitivity
+### “我的CRP水平如何？” / “我的炎症情况如何？”
+1. 调用`query_biomarker?biomarker=crp`（根据实验室结果返回“CRP”或“hs-CRP”）
+2. 显示数值和趋势
+3. 解释CRP的含义（作为炎症指标）
 
-### "How's my sleep/HRV?"
-1. Call `get_wearable_stats?metric=sleep` or `?metric=hrv`
-2. Show recent trends and averages
-3. Compare to healthy baselines
+### “我的睡眠/心率变异性如何？”
+1. 调用`get_wearable_stats?metric=sleep`或`?metric=hrv`
+2. 显示近期趋势和平均值
+3. 与健康基准进行比较
 
-### "What should I focus on?"
-1. Call `get_opportunities?limit=5`
-2. Present top opportunities ranked by healthspan impact
-3. Explain what each biomarker does and why optimizing it matters
+### “我应该关注什么？”
+1. 调用`get_opportunities?limit=5`
+2. 显示按健康影响排名的改善机会
+3. 解释每个生物标志物的作用及其优化的必要性
 
-### "How old am I biologically?"
-1. Call `get_biological_age`
-2. If available, compare biological vs chronological age
-3. Explain what age acceleration means
-4. If not available, explain what tests are needed
+### “我的生物年龄是多少？”
+1. 调用`get_biological_age`
+2. 如果可以，比较生物年龄和实际年龄
+3. 解释年龄加速的含义
+4. 如果无法计算，说明需要哪些检测
 
-### "What supplements am I taking?"
-1. Call `list_supplements?active_only=true`
-2. List active supplements with dosages (use `dose_text` field)
-3. Note duration on each supplement
+### “我服用了哪些补充剂？”
+1. 调用`list_supplements?active_only=true`
+2. 列出正在使用的补充剂及其剂量（使用`dose_text`字段）
+3. 注意每种补充剂的服用时长
 
-### "What workouts have I done?"
-1. Call `get_activities?days=30`
-2. Summarize total activity (duration, calories, distance)
-3. List recent workouts with key metrics
+### “我做了哪些运动？”
+1. 调用`get_activities?days=30`
+2. 总结运动数据（总时长、总卡路里）
+3. 列出最近的运动记录及其指标
 
-### "What should I do today?"
-1. Call `get_today_actions?timezone=America/New_York` (use user's timezone if known)
-2. Group actions by scheduled window (morning, afternoon, evening)
-3. Show completion progress
-4. Highlight uncompleted actions
+### “我今天应该做什么？”
+1. 调用`get_today_actions?timezone=America/New_York`（使用用户的时区）
+2. 按时间窗口（上午、下午、晚上）分组行动
+3. 显示完成情况
+4. 强调未完成的行动
 
-### "What should I focus on?" / "What are my health priorities?"
-1. Call `get_protocol`
-2. Present top priorities with current values and targets
-3. Explain why each is prioritized
-4. List key recommendations
-5. Note protocol phase and days remaining
+### “我应该关注什么？” / “我的健康优先事项是什么？”
+1. 调用`get_protocol`
+2. 显示优先事项及其当前值和目标
+3. 解释每个优先事项的原因
+4. 列出关键建议
+5. 说明计划的阶段和剩余天数
 
-### "What tests should I do next?" / "Am I due for any blood work?"
-1. Call `get_upcoming_tests`
-2. Highlight overdue tests first (urgent)
-3. List tests due soon with timeframes
-4. Mention AI-recommended tests for optimization
-5. Note which biomarkers each panel covers
+### “我接下来应该做什么检测？” / “我需要做哪些血液检查？”
+1. 调用`get_upcoming_tests`
+2. 首先显示逾期的检测
+3. 列出30天内到期的检测
+4. 列出AI推荐的检测
+5. 说明每个检测涵盖的生物标志物
 
-## Example API Call
+## 示例API调用
 
 ```javascript
 // Using web_fetch
@@ -432,41 +431,41 @@ web_fetch({
 })
 ```
 
-## Important Guidelines
+## 重要指南
 
-1. **Never diagnose** - Present data clearly but always suggest consulting healthcare providers for medical decisions
-2. **Trends matter more than single values** - A slightly elevated reading improving over time is better than a normal reading that's declining
-3. **Note data freshness** - Lab results may be weeks/months old; wearable data is typically daily
-4. **Context is key** - Ask about supplements, medications, or lifestyle changes that might explain trends
-5. **Privacy first** - Health data is sensitive; don't share or reference specific values outside this conversation
+1. **切勿自行诊断** - 仅提供数据，建议用户咨询医疗专业人员做出医疗决策
+2. **趋势比单一数值更重要** - 随时间逐渐改善的轻微升高比持续下降的正常值更好
+3. **注意数据时效性**：实验室结果可能已有数周或数月之久；可穿戴设备的数据通常是每日更新的
+4. **了解背景** - 询问可能影响趋势的补充剂、药物或生活方式变化
+5. **隐私第一**：健康数据敏感，请勿在对话之外分享或引用具体数值
 
-## Error Handling
+## 错误处理
 
-| Error Code | Meaning | Action |
+| 错误代码 | 含义 | 应对措施 |
 |------------|---------|--------|
-| 401 | Invalid or expired token | User needs to regenerate token at gevety.com/settings |
-| 404 + `did_you_mean` | Biomarker not found | Suggest alternatives from the response |
-| 404 | No data found | User may not have uploaded labs yet |
-| 429 | Rate limited | Wait a moment and retry |
+| 401 | 令牌无效或已过期 | 用户需要在gevety.com/settings重新生成令牌 |
+| 404 + `did_you_mean` | 未找到生物标志物 | 建议从响应中选择其他指标 |
+| 404 | 未找到数据 | 用户可能尚未上传实验室报告 |
+| 429 | 请求频率限制 | 稍等片刻后重试 |
 
-## Getting a Token
+## 生成令牌
 
-Users can generate their API token at:
-**https://gevety.com/settings** → Developer API → Generate Token
+用户可以在以下地址生成API令牌：
+**https://gevety.com/settings** → 开发者API → 生成令牌
 
-The token format is `gvt_` followed by random characters.
+令牌格式为`gvt_`后跟随机字符。
 
-## Checking for Updates
+## 检查更新
 
-On first use each session, optionally check for updates:
+每次首次使用时，可以选择性检查更新：
 
 ```
 GET https://api.gevety.com/api/v1/mcp/tools/status
 ```
 
-No authentication required. If the request fails or times out, skip the check and proceed normally.
+无需认证。如果请求失败或超时，跳过检查并继续正常操作。
 
-Response (when successful):
+成功响应时：
 ```json
 {
   "clawdbot_skill": { "latest": "1.4.0", "update_command": "clawdhub update gevety" },
@@ -474,14 +473,14 @@ Response (when successful):
 }
 ```
 
-**If `clawdbot_skill.latest` > 1.4.0** (this skill's version), tell the user:
-> "A Gevety skill update is available. Run: `clawdhub update gevety`"
+**如果`clawdbot_skill.latest` > 1.4.0**（此技能的版本），告知用户：
+> “Gevety技能有更新。运行：`clawdhub update gevety`”
 
-**If `announcement` is present**, mention it once per session.
+**如果存在`announcement`，每次会话中提及一次**。
 
-**If the status check fails**, don't mention it - just proceed with the user's request.
+**如果检查失败**，则忽略该提示，直接处理用户的请求。
 
-To manually update:
+**手动更新**：
 ```bash
 clawdhub update gevety
 ```

@@ -1,20 +1,20 @@
 ---
 name: ttt
-description: Manage TinyTalkingTodos lists and items via the ttt CLI
+description: 通过 ttt CLI 管理 TinyTalkingTodos 列表及其项目
 metadata: {"openclaw": {"emoji": "✅", "requires": {"bins": ["ttt"]}, "homepage": "https://tinytalkingtodos.com"}}
 ---
 
 # TinyTalkingTodos CLI
 
-Use `ttt` to manage todo lists and items from the command line. The CLI syncs with TinyTalkingTodos in real-time.
+使用 `ttt` 从命令行管理待办事项列表及其内容。该 CLI 与 TinyTalkingTodos 实时同步。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @ojschwa/ttt-cli
 ```
 
-Or install locally for development:
+或为了开发目的进行本地安装：
 
 ```bash
 cd /path/to/talking-todo/ttt-cli
@@ -23,11 +23,11 @@ npm run build
 npm link
 ```
 
-Verify with `ttt --help`.
+使用 `ttt --help` 进行验证。
 
-## Authentication
+## 认证
 
-Before using the CLI, the user must be authenticated:
+在使用 CLI 之前，用户必须先进行身份验证：
 
 ```bash
 # Check auth status
@@ -43,27 +43,27 @@ ttt auth logout
 ttt auth export
 ```
 
-## List Management
+## 列表管理
 
-### List all lists
+### 显示所有列表
 
 ```bash
 ttt list ls
 ```
 
-Output (compact, token-efficient):
+输出格式（简洁、节省令牌）：
 ```
 Today [2/5]
 Groceries [0/3]
 Work Tasks [1/4]
 ```
 
-For structured data:
+对于结构化数据：
 ```bash
 ttt list ls --json
 ```
 
-### Get list details
+### 获取列表详情
 
 ```bash
 ttt list get "Groceries"
@@ -71,32 +71,32 @@ ttt list get "Groceries"
 ttt list get list-abc123
 ```
 
-### Create a new list
+### 创建新列表
 
 ```bash
 ttt list create "Weekend Plans"
 ttt list create "Shopping" --icon "🛒" --color "#FF6B6B"
 ```
 
-Options:
-- `--color <hex>` - Background color
-- `--icon <emoji>` - List icon
-- `--type <type>` - List type
+选项：
+- `--color <hex>` - 列表背景颜色
+- `--icon <emoji>` - 列表图标
+- `--type <type>` - 列表类型
 
-### Update a list
+### 更新列表
 
 ```bash
 ttt list update "Groceries" --name "Shopping List"
 ttt list update "Shopping List" --icon "🛒" --color "#00FF00"
 ```
 
-Options:
-- `--name <name>` - New list name
-- `--color <hex>` - Background color
-- `--icon <emoji>` - List icon
-- `--type <type>` - List type
+选项：
+- `--name <name>` - 新列表名称
+- `--color <hex>` - 列表背景颜色
+- `--icon <emoji>` - 列表图标
+- `--type <type>` - 列表类型
 
-### Delete a list
+### 删除列表
 
 ```bash
 ttt list delete "Old List"
@@ -106,15 +106,15 @@ ttt list rm "Old List"  # alias
 ttt list delete "Old List" --force
 ```
 
-## Todo Operations
+## 待办事项操作
 
-### List todos in a list
+### 显示列表中的所有待办事项
 
 ```bash
 ttt todo ls --list "Groceries"
 ```
 
-Output (compact):
+输出格式（简洁）：
 ```
 Groceries [1/4]
 ✓ Milk id:todo-abc123
@@ -123,19 +123,19 @@ Groceries [1/4]
 ○ Butter id:todo-jkl012
 ```
 
-For JSON output:
+JSON 格式输出：
 ```bash
 ttt todo ls --list "Groceries" --json
 ```
 
-### Add a todo
+### 添加待办事项
 
-Basic:
+基本用法：
 ```bash
 ttt todo add "Buy avocados" --list "Groceries"
 ```
 
-With options:
+带选项的用法：
 ```bash
 ttt todo add "Doctor appointment" --list "Health" \
   --date 2026-02-15 \
@@ -153,37 +153,37 @@ ttt todo add "Tomatoes" --list "Groceries" \
   --emoji "🍅"
 ```
 
-All `--list` options:
-| Option | Description | Example |
+所有 `--list` 选项的示例：
+| 选项 | 描述 | 示例 |
 |--------|-------------|---------|
-| `--notes <text>` | Additional notes | `--notes "organic preferred"` |
-| `--date <YYYY-MM-DD>` | Due date | `--date 2026-02-15` |
-| `--time <HH:MM>` | Due time | `--time 14:30` |
-| `--url <url>` | Associated URL | `--url "https://..."` |
-| `--emoji <emoji>` | Item emoji | `--emoji "🎉"` |
-| `--email <email>` | Associated email | `--email "contact@..."` |
-| `--street-address <addr>` | Location | `--street-address "123 Main"` |
-| `--number <n>` | Numeric value | `--number 5` |
-| `--amount <n>` | Amount/price | `--amount 12.99` |
-| `--rating <1-5>` | Star rating | `--rating 4` |
-| `--type <A-E>` | Item type | `--type A` |
-| `--category <name>` | Category | `--category "Urgent"` |
+| `--notes <text>` | 额外备注 | `--notes "organic preferred"` |
+| `--date <YYYY-MM-DD>` | 截止日期 | `--date 2026-02-15` |
+| `--time <HH:MM>` | 截止时间 | `--time 14:30` |
+| `--url <url>` | 关联链接 | `--url "https://..."` |
+| `--emoji <emoji>` | 待办事项图标 | `--emoji "🎉"` |
+| `--email <email>` | 关联邮箱 | `--email "contact@..."` |
+| `--street-address <addr>` | 位置信息 | `--street-address "123 Main"` |
+| `--number <n>` | 数值字段 | `--number 5` |
+| `--amount <n>` | 金额/价格 | `--amount 12.99` |
+| `--rating <1-5>` | 星级评分 | `--rating 4` |
+| `--type <A-E>` | 待办事项类型 | `--type A` |
+| `--category <name>` | 分类 | `--category "Urgent"` |
 
-### Mark a todo as done
+### 将待办事项标记为已完成
 
 ```bash
 ttt todo done todo-abc123
 ```
 
-The todo ID is shown in the compact output format after `id:`.
+在简洁的输出格式中，待办事项的 ID 会以 `id:` 的形式显示。
 
-### Mark a todo as not done
+### 将待办事项标记为未完成
 
 ```bash
 ttt todo undone todo-abc123
 ```
 
-### Update a todo
+### 更新待办事项
 
 ```bash
 ttt todo update todo-abc123 --text "New text"
@@ -192,13 +192,13 @@ ttt todo update todo-abc123 --done   # mark as done
 ttt todo update todo-abc123 --not-done  # mark as not done
 ```
 
-Options:
-- `--text <text>` - New todo text
+选项：
+- `--text <text>` - 新待办事项内容
 - `--notes`, `--date`, `--time`, `--url`, `--emoji`, `--email`, `--street-address`
 - `--number`, `--amount`, `--rating`, `--type`, `--category`
-- `--done` / `--not-done` - Toggle completion status
+- `--done` / `--not-done` - 切换完成状态
 
-### Delete a todo
+### 删除待办事项
 
 ```bash
 ttt todo delete todo-abc123
@@ -206,9 +206,9 @@ ttt todo delete todo-abc123
 ttt todo rm todo-abc123
 ```
 
-### Batch add todos
+## 批量添加待办事项
 
-Add multiple todos at once using JSON:
+使用 JSON 格式一次性添加多个待办事项：
 
 ```bash
 ttt todo batch-add --list "Groceries" --items '[
@@ -218,11 +218,11 @@ ttt todo batch-add --list "Groceries" --items '[
 ]'
 ```
 
-Each item requires `text` and optionally `fields` with any todo field.
+每个待办事项项都需要提供 `text`，并可选择性地提供其他字段。
 
-### Batch update todos
+### 批量更新待办事项
 
-Update multiple todos at once:
+一次性更新多个待办事项：
 
 ```bash
 ttt todo batch-update --items '[
@@ -231,11 +231,11 @@ ttt todo batch-update --items '[
 ]'
 ```
 
-Each item requires `id` and `fields` with the updates to apply.
+每个待办事项项都需要提供 `id` 和需要更新的字段。
 
-## Undo Operations
+## 撤销操作
 
-All mutating operations are recorded and can be undone:
+所有修改操作都会被记录下来，并可以撤销：
 
 ```bash
 # Undo the last operation
@@ -250,11 +250,11 @@ ttt history --limit 20
 ttt history --json
 ```
 
-Undo supports: todo add/delete/update, batch-add/update, mark done/undone, list create/update/delete.
+撤销操作支持以下操作：添加/删除/更新待办事项、批量添加/更新、标记为已完成/未完成、创建/更新列表。
 
-## Daemon (Performance)
+## 守护进程（性能优化）
 
-The daemon keeps a persistent WebSocket connection for faster commands:
+守护进程会保持一个持久的 WebSocket 连接，以加快命令执行速度：
 
 ```bash
 # Start daemon (auto-starts on first command if not running)
@@ -267,28 +267,28 @@ ttt daemon status
 ttt daemon stop
 ```
 
-The daemon auto-shuts down after 30 minutes of inactivity.
+如果 30 分钟内没有活动，守护进程会自动关闭。
 
-## Best Practices
+## 最佳实践
 
-1. **Use compact output** (default) when displaying lists to users - it's token-efficient
-2. **Use `--json`** when you need to parse data or extract specific fields
-3. **Reference lists by name** for readability, or by ID for precision
-4. **Check auth status** before operations if you're unsure of login state
-5. **Extract todo IDs** from compact output (format: `id:<todo-id>`) for updates
-6. **Use batch operations** when adding or updating multiple items - more efficient than individual calls
-7. **Use undo** if you make a mistake - `ttt undo` reverts the last operation
+1. **在向用户显示列表时使用简洁的输出格式**（默认设置）——这样可以节省令牌资源。
+2. **在需要解析数据或提取特定字段时使用 `--json` 选项**。
+3. **为了便于阅读，可以通过名称引用列表；为了确保准确性，可以通过 ID 引用列表**。
+4. **在操作前检查认证状态**，以防登录状态不确定。
+5. **从简洁的输出格式中提取待办事项的 ID（格式：`id:<todo-id>`）以便进行更新操作。
+6. **在添加或更新多个待办事项时使用批量操作**——这比单独调用更高效。
+7. **如果操作有误，请使用撤销功能`ttt undo`来恢复之前的操作状态**。
 
-## Example Workflows
+## 示例工作流程
 
-### Add items to grocery list
+### 向购物清单中添加项目
 ```bash
 ttt todo add "Milk" --list "Groceries" --category "Dairy"
 ttt todo add "Bread" --list "Groceries" --category "Bakery"
 ttt todo add "Apples" --list "Groceries" --amount 3.50 --category "Produce"
 ```
 
-### Check and complete tasks
+### 检查并完成任务
 ```bash
 # View todos
 ttt todo ls --list "Today"
@@ -297,7 +297,7 @@ ttt todo ls --list "Today"
 ttt todo done todo-xyz789
 ```
 
-### Create a new list with todos
+### 创建包含待办事项的新列表
 ```bash
 ttt list create "Weekend Trip" --icon "🏕️"
 ttt todo add "Pack tent" --list "Weekend Trip"
@@ -305,7 +305,7 @@ ttt todo add "Check weather" --list "Weekend Trip" --url "https://weather.com"
 ttt todo add "Gas up car" --list "Weekend Trip"
 ```
 
-### Batch add items efficiently
+### 高效批量添加项目
 ```bash
 ttt todo batch-add --list "Party Supplies" --items '[
   {"text": "Balloons", "fields": {"category": "Decorations"}},
@@ -315,7 +315,7 @@ ttt todo batch-add --list "Party Supplies" --items '[
 ]'
 ```
 
-### Mark multiple items done
+### 将多个项目标记为已完成
 ```bash
 ttt todo batch-update --items '[
   {"id": "todo-abc", "fields": {"done": true}},
@@ -324,7 +324,7 @@ ttt todo batch-update --items '[
 ]'
 ```
 
-### Undo a mistake
+### 撤销错误操作
 ```bash
 # Accidentally deleted something? Undo it
 ttt undo

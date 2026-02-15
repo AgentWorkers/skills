@@ -1,40 +1,40 @@
 ---
 name: zoho
-description: Interact with Zoho CRM, Projects, and Meeting APIs. Use when managing deals, contacts, leads, tasks, projects, milestones, meeting recordings, or any Zoho workspace data. Triggers on mentions of Zoho, CRM, deals, pipeline, projects, tasks, milestones, meetings, recordings, standups.
+description: 与 Zoho CRM、Projects 和 Meeting 的 API 进行交互。适用于管理交易、联系人、潜在客户、任务、项目、里程碑、会议记录或任何 Zoho 工作区数据。当提到 Zoho、CRM、交易、项目、任务、里程碑、会议或会议记录时，该功能会触发相应的操作。
 author: Zone 99 team
 homepage: https://99.zone
 repository: https://github.com/shreefentsar/clawdbot-zoho
 ---
 
-# Zoho Integration (CRM + Projects + Meeting)
+# Zoho集成（CRM + 项目 + 会议）
 
-Made by [Zone 99](https://99.zone) · [GitHub](https://github.com/shreefentsar/clawdbot-zoho) · [Contribute](https://github.com/shreefentsar/clawdbot-zoho/issues)
+由 [Zone 99](https://99.zone) 开发 · [GitHub](https://github.com/shreefentsar/clawdbot-zoho) 提供 · [欢迎贡献](https://github.com/shreefentsar/clawdbot-zoho/issues)
 
-## Quick Start
+## 快速入门
 
-Use the `zoho` CLI wrapper — it handles OAuth token refresh and caching automatically.
+使用 `zoho` CLI 工具包——它可自动处理 OAuth 令牌的刷新和缓存。
 
 ```bash
 zoho help          # Show all commands
 zoho token         # Print current access token (auto-refreshes)
 ```
 
-## Authentication Setup
+## 认证设置
 
-### Step 1: Register Your Application
+### 第1步：注册您的应用程序
 
-1. Go to [Zoho API Console](https://api-console.zoho.com/)
-2. Click **Add Client** → choose **Server-based Applications**
-3. Fill in:
-   - **Client Name**: your app name (e.g. "Clawdbot Zoho Integration")
-   - **Homepage URL**: your domain or `https://localhost`
-   - **Redirect URI**: `https://localhost/callback` (or any URL you control — you only need it once to grab the code)
-4. Click **Create**
-5. Note down the **Client ID** and **Client Secret**
+1. 访问 [Zoho API 控制台](https://api-console.zoho.com/)
+2. 点击 **添加客户端** → 选择 **基于服务器的应用程序**
+3. 填写以下信息：
+   - **客户端名称**：您的应用程序名称（例如：“Clawdbot Zoho Integration”）
+   - **首页 URL**：您的域名或 `https://localhost`
+   - **重定向 URI**：`https://localhost/callback`（或您控制的任何 URL——您只需获取一次该 URL 即可）
+4. 点击 **创建**
+5. 记下 **客户端 ID** 和 **客户端密钥**
 
-### Step 2: Generate Authorization Code (Grant Token)
+### 第2步：生成授权码（获取令牌）
 
-Build this URL and open it in your browser (replace the placeholders):
+构建以下 URL 并在浏览器中打开它（请替换占位符）：
 
 ```
 https://accounts.zoho.com/oauth/v2/auth
@@ -46,28 +46,28 @@ https://accounts.zoho.com/oauth/v2/auth
   &prompt=consent
 ```
 
-> **Important:** Use the accounts URL matching your datacenter:
-> | Region | Accounts URL |
+> **注意：** 请使用与您的数据中心匹配的账户 URL：
+> | 地区 | 账户 URL |
 > |--------|-------------|
-> | US | `https://accounts.zoho.com` |
-> | EU | `https://accounts.zoho.eu` |
-> | IN | `https://accounts.zoho.in` |
-> | AU | `https://accounts.zoho.com.au` |
-> | JP | `https://accounts.zoho.jp` |
-> | UK | `https://accounts.zoho.uk` |
-> | CA | `https://accounts.zohocloud.ca` |
-> | SA | `https://accounts.zoho.sa` |
+> | 美国 | `https://accounts.zoho.com` |
+> | 欧盟 | `https://accounts.zoho.eu` |
+> | 印度 | `https://accounts.zoho.in` |
+> | 澳大利亚 | `https://accounts.zoho.com.au` |
+> | 日本 | `https://accounts.zoho.jp` |
+> | 英国 | `https://accounts.zoho.uk` |
+> | 加拿大 | `https://accounts.zohocloud.ca` |
+> | 南非 | `https://accounts.zoho.sa` |
 
-After granting access, you'll be redirected to something like:
+授权成功后，系统会重定向到如下页面：
 ```
 https://localhost/callback?code=1000.abc123...&location=us&accounts-server=https://accounts.zoho.com
 ```
 
-Copy the `code` parameter value. **This code expires in 2 minutes** — move to Step 3 immediately.
+复制 `code` 参数的值。**此代码的有效期为2分钟**——请立即进入第3步。
 
-### Step 3: Exchange Code for Refresh Token
+### 第3步：将授权码兑换为刷新令牌
 
-Run this curl command (replace placeholders):
+运行以下 curl 命令（请替换占位符）：
 
 ```bash
 curl -X POST "https://accounts.zoho.com/oauth/v2/token" \
@@ -78,7 +78,7 @@ curl -X POST "https://accounts.zoho.com/oauth/v2/token" \
   -d "code=PASTE_CODE_FROM_STEP_2"
 ```
 
-Response:
+响应结果：
 ```json
 {
   "access_token": "1000.xxxx.yyyy",
@@ -89,22 +89,22 @@ Response:
 }
 ```
 
-Save the **refresh_token** — this is your long-lived credential. The access token expires in 1 hour, but the CLI auto-refreshes it using the refresh token.
+保存 **refresh_token**——这是您的长期有效凭证。访问令牌的有效期为1小时，但 CLI 会使用刷新令牌自动更新它。
 
-### Step 4: Find Your Org IDs
+### 第4步：获取您的组织 ID
 
-**CRM/Projects Org ID:**
+**CRM/项目组织 ID：**
 ```bash
 # After setting up .env with client_id, client_secret, refresh_token:
 zoho raw GET /crm/v7/org | jq '.org[0].id'
 ```
 
-**Meeting Org ID:**
-Log into [Zoho Meeting](https://meeting.zoho.com) → Admin Settings → look for the Organization ID in the URL or settings page. It's different from the CRM org ID.
+**会议组织 ID：**
+登录 [Zoho Meeting](https://meeting.zoho.com) → 进入管理设置 → 在 URL 或设置页面中查找组织 ID。该 ID 与 CRM 组织 ID 不同。
 
-### Step 5: Configure .env
+### 第5步：配置 `.env` 文件
 
-Create `.env` in the skill directory:
+在技能目录下创建一个 `.env` 文件：
 
 ```bash
 ZOHO_CLIENT_ID=1000.XXXXXXXXXXXXXXXXXXXXXXXXX
@@ -118,32 +118,32 @@ ZOHO_MEETING_DOMAIN=https://meeting.zoho.com
 ZOHO_ACCOUNTS_URL=https://accounts.zoho.com
 ```
 
-> Adjust the domain URLs if you're on a non-US datacenter (e.g. `.eu`, `.in`, `.com.au`).
+> 如果您使用的是非美国数据中心的服务器，请调整域名 URL（例如：`.eu`、`.in`、`.com.au`）。
 
-### OAuth Scopes Reference
+### OAuth 权限范围参考
 
-| Scope | Used For |
+| 权限范围 | 用途 |
 |-------|----------|
-| `ZohoCRM.modules.ALL` | Read/write CRM records (Deals, Contacts, Leads, etc.) |
-| `ZohoCRM.settings.ALL` | Read CRM field definitions and org settings |
-| `ZohoProjects.projects.ALL` | Read/write projects |
-| `ZohoProjects.tasks.ALL` | Read/write tasks, milestones, bugs, timelogs |
-| `ZohoMeeting.recording.READ` | List and access meeting recordings |
-| `ZohoMeeting.meeting.READ` | List meetings and session details |
-| `ZohoMeeting.meetinguds.READ` | Download recording files |
-| `ZohoFiles.files.READ` | Download files (recordings, transcripts) |
+| `ZohoCRM.modules.ALL` | 读写 CRM 记录（交易、联系人、潜在客户等） |
+| `ZohoCRM.settings.ALL` | 读取 CRM 字段定义和组织设置 |
+| `ZohoProjects.projects.ALL` | 读写项目信息 |
+| `ZohoProjects.tasks.ALL` | 读写任务、里程碑、错误和时间日志 |
+| `ZohoMeeting.recording.READ` | 列出并访问会议记录 |
+| `ZohoMeeting.meeting.READ` | 列出会议和会议详情 |
+| `ZohoMeeting.meetinguds.READ` | 下载录制文件 |
+| `ZohoFiles.files.READ` | 下载文件（录制文件、文字记录） |
 
-You can request fewer scopes if you only need CRM or only need Meeting. The authorization URL scope parameter is comma-separated.
+如果您只需要使用 CRM 或会议功能，可以请求更少的权限范围。权限范围的参数之间用逗号分隔。
 
-### Troubleshooting Auth
+### 错误排查
 
-- **"invalid_code"** → The authorization code expired (2 min lifetime). Redo Step 2.
-- **"invalid_client"** → Wrong Client ID, or wrong accounts-server URL for your datacenter.
-- **"invalid_redirect_uri"** → The redirect_uri in the curl must exactly match what you registered in API Console.
-- **Token refresh fails** → Refresh tokens can be revoked. Redo Steps 2–3 to get a new one.
-- **"Given URL is wrong"** → You're hitting the wrong API domain for your datacenter.
+- **"invalid_code"**：授权码已过期（有效期为2分钟）。请重新执行第2步。
+- **"invalid_client"**：客户端 ID 错误，或使用的账户-服务器 URL 与数据中心不符。
+- **"invalid_redirect_uri"**：curl 命令中的重定向 URI 必须与在 API 控制台中注册的完全一致。
+- **令牌刷新失败**：刷新令牌可能会被撤销。请重新执行第2-3步以获取新的令牌。
+- **"Given URL is wrong"**：您访问的 API 域名与数据中心不符。
 
-## CRM Commands
+## CRM 命令
 
 ```bash
 # List records from any module
@@ -171,13 +171,13 @@ zoho crm update Deals 1234567890 '{"data":[{"Stage":"Closed Won"}]}'
 zoho crm delete Deals 1234567890
 ```
 
-### CRM Modules
-Leads, Contacts, Accounts, Deals, Tasks, Events, Calls, Notes, Products, Quotes, Sales_Orders, Purchase_Orders, Invoices
+### CRM 模块
+潜在客户、联系人、账户、交易、任务、事件、电话记录、备注、产品、报价单、销售订单、采购订单、发票
 
-### Search Operators
-equals, not_equal, starts_with, contains, not_contains, in, not_in, between, greater_than, less_than
+### 搜索操作符
+等于（equals）、不等于（not_equal）、以……开头（starts_with）、包含（contains）、不包含（not_contains）、在……范围内（in）、不在……范围内（not_in）、介于……之间（between）、大于（greater_than）、小于（less_than）
 
-## Projects Commands
+## 项目命令
 
 ```bash
 # List all projects
@@ -198,10 +198,10 @@ zoho proj bugs 12345678
 zoho proj timelogs 12345678
 ```
 
-### Task Fields
-name, start_date (MM-DD-YYYY), end_date, priority (None/Low/Medium/High), owner, description, tasklist_id, percent_complete
+### 任务字段
+名称（name）、开始日期（start_date，格式为 MM-DD-YYYY）、结束日期（end_date）、优先级（priority，可选值：None/Low/Medium/High）、负责人（owner）、描述（description）、任务列表 ID（tasklist_id）、完成百分比（percent_complete）
 
-## Meeting Commands
+## 会议命令
 
 ```bash
 # List all recordings
@@ -219,78 +219,47 @@ zoho meeting list "fromDate=2026-01-01T00:00:00Z&toDate=2026-01-31T23:59:59Z"
 zoho meeting get 1066944216
 ```
 
-### Recording Response Fields
-Key fields from `zoho meeting recordings`:
-- `erecordingId` — encrypted recording ID (use for dedup/tracking)
-- `topic` — meeting title
-- `sDate`, `sTime` — start date/time (human-readable)
-- `startTimeinMs` — start time as epoch ms (use for date filtering)
-- `durationInMins` — recording duration
-- `downloadUrl` / `publicDownloadUrl` — MP4 download URL
-- `transcriptionDownloadUrl` — Zoho-generated transcript (if available)
-- `summaryDownloadUrl` — Zoho-generated summary (if available)
-- `fileSize` / `fileSizeInMB` — recording file size
-- `status` — e.g. `UPLOADED`
-- `meetingKey` — meeting identifier
-- `creatorName` — who started the recording
+### 会议记录字段
+来自 `zoho meeting recordings` 的关键字段：
+- `erecordingId` — 加密后的会议记录 ID（用于去重/追踪）
+- `topic` — 会议主题
+- `sDate`, `sTime` — 会议开始日期和时间（人类可读格式）
+- `startTimeinMs` — 会议开始时间（以毫秒为单位）
+- `durationInMins` — 会议时长
+- `downloadUrl` / `publicDownloadUrl` — MP4 录制文件下载链接
+- `transcriptionDownloadUrl` — Zoho 生成的文字记录链接（如有）
+- `summaryDownloadUrl` — Zoho 生成的会议摘要链接（如有）
+- `fileSize` / `fileSizeInMB` — 录制文件大小
+- `status` — 例如：`UPLOADED`（表示文件已上传）
+- `meetingKey` — 会议标识符
+- `creatorName` — 录制会议的发起者
 
-### Meeting Recording Pipeline
-For automated standup/meeting summarization:
+### 会议记录处理流程
+用于自动化会议总结的脚本位于 `scripts/standup-summarizer.sh` 中。
 
-```bash
-# 1. List recordings, filter by today's date (epoch ms)
-zoho meeting recordings | jq --argjson start "$START_MS" --argjson end "$END_MS" \
-  '[.recordings[] | select(.startTimeinMs >= $start and .startTimeinMs <= $end)]'
+## 原始 API 调用
 
-# 2. Download recording
-zoho meeting download "$DOWNLOAD_URL" /tmp/recording.mp4
+对于未包含在子命令中的功能，请使用原始 API 调用。
 
-# 3. Extract audio
-ffmpeg -i /tmp/recording.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 /tmp/audio.wav -y
+## 使用示例
 
-# 4. Transcribe via Gemini Flash API (great for Arabic + English mix)
-# See scripts/standup-summarizer.sh for full implementation
-
-# 5. Summarize transcript with Claude/GPT
-# 6. Clean up temp files
-```
-
-A complete standup summarizer script is included at `scripts/standup-summarizer.sh`.
-
-## Raw API Calls
-
-For anything not covered by subcommands:
-```bash
-# CRM endpoints
-zoho raw GET /crm/v7/settings/fields?module=Deals
-zoho raw GET /crm/v7/org
-
-# Meeting endpoints
-zoho raw GET "https://meeting.zoho.com/meeting/api/v2/{zsoid}/recordings.json"
-
-# Custom modules
-zoho raw GET /crm/v7/Custom_Module
-```
-
-## Usage Patterns
-
-### When checking deals/pipeline
+### 检查交易/项目进度
 ```bash
 zoho crm list Deals "sort_by=Created_Time&sort_order=desc&per_page=10" | jq '.data[] | {Deal_Name, Stage, Amount, Closing_Date}'
 ```
 
-### When checking project progress
+### 检查项目进度
 ```bash
 zoho proj list | jq '.projects[] | {name, status, id: .id_string}'
 zoho proj tasks <project_id> | jq '.tasks[] | {name, status: .status.name, percent_complete, priority}'
 ```
 
-### When creating tasks from conversation
+### 从对话中创建任务
 ```bash
 zoho proj create-task <project_id> "name=Task+description&priority=High&start_date=MM-DD-YYYY&end_date=MM-DD-YYYY"
 ```
 
-### When summarizing meeting recordings
+### 总结会议记录
 ```bash
 # Quick list of recent recordings
 zoho meeting recordings | jq '[.recordings[:5] | .[] | {topic, sDate, sTime, durationInMins, fileSize}]'
@@ -300,13 +269,13 @@ URL=$(zoho meeting recordings | jq -r '.recordings[0].downloadUrl')
 zoho meeting download "$URL" /tmp/latest.mp4
 ```
 
-## Rate Limits
-- CRM: 100 requests/min
-- Projects: varies by plan
-- Meeting: standard API limits
-- Token refresh: don't call more than needed (cached automatically)
+## 速率限制
+- CRM：每分钟 100 次请求
+- 项目：根据套餐不同而有所差异
+- 会议：遵循标准 API 限制
+- 令牌刷新：请按需调用（系统会自动缓存）
 
-## References
-- [CRM API Fields](references/crm-api.md)
-- [Projects API Endpoints](references/projects-api.md)
-- [Meeting API Reference](references/meeting-api.md)
+## 参考资料
+- [CRM API 字段](references/crm-api.md)
+- [项目 API 端点](references/projects-api.md)
+- [会议 API 参考](references/meeting-api.md)

@@ -1,43 +1,41 @@
 ---
 name: openclaw-mem
 version: 2.1.0
-description: "Session-first memory curator for OpenClaw. Keeps RAM clean, recall precise, and durable knowledge safe."
+description: "OpenClaw中的“会话优先”内存管理工具：有效保持内存的整洁，确保关键知识的准确性和持久性。"
 ---
 
-# OpenClaw Memory Curator
+# OpenClaw 内存管理工具
 
-A **session-first memory system** for OpenClaw.
+这是一个专为 OpenClaw 设计的、以会话为中心的内存管理系统。
 
-It exists for one reason:
-**important knowledge must survive session compaction without bloating the context window.**
-
----
-
-## TL;DR (for humans)
-
-- Session memory = temporary (RAM)
-- Disk = source of truth
-- **Decisions & preferences → `MEMORY.md`**
-- **Daily work → `memory/YYYY-MM-DD.md`**
-- This skill saves durable knowledge **before compaction**
-- Retrieval always happens via `memory_search` → `memory_get`
-
-If something matters later, **write it to disk**.
+它的存在只有一个目的：**确保重要信息在会话压缩过程中不会丢失，同时也不会导致上下文窗口变得过于庞大**。
 
 ---
 
-> ⚠️ **CRITICAL REQUIREMENT**
->
-> Session memory indexing must be enabled.
+## 简而言之（便于理解）
 
-## Enable Session Memory
+- **会话内存**：用于存储临时数据（存储在 RAM 中）。
+- **磁盘**：是所有数据的最终存储来源。
+- **重要决策和偏好设置**：保存在 `MEMORY.md` 文件中。
+- **日常操作记录**：保存在 `memory/YYYY-MM-DD.md` 文件中。
+- 该工具会在数据压缩前将重要信息保存下来。
+- 数据的检索始终通过 `memory_search` 和 `memory_get` 功能完成。
 
-**CLI**
+如果某些信息在未来仍然有用，请**将其写入磁盘**。
+
+---
+
+> ⚠️ **关键要求**  
+> 必须启用会话内存的索引功能。
+
+## 启用会话内存
+
+**命令行接口（CLI）**：  
 ```bash
 clawdbot config set agents.defaults.memorySearch.experimental.sessionMemory true
 ```
 
-**JSON**
+**JSON 格式配置**：  
 ```json
 {
   "agents": {
@@ -53,163 +51,128 @@ clawdbot config set agents.defaults.memorySearch.experimental.sessionMemory true
 
 ---
 
-## Mental Model (read this once)
+## 内存结构（请阅读一次）
 
-OpenClaw memory has **three layers**. Confusion usually comes from mixing them up.
+OpenClaw 的内存系统分为**三层**。混淆这些层次可能会导致使用上的错误。
 
-### 1. Session Memory (RAM)
-- Lives in the current conversation
-- Automatically compacted
-- Indexed for retrieval
-- **Never reliable long-term**
+### 1. 会话内存（RAM）
+- 仅用于当前会话中的数据。
+- 会自动进行压缩。
+- 已建立索引以便快速检索。
+- **不适合长期存储重要信息**。
 
-👉 Treat as short-term thinking space.
-
----
-
-### 2. Daily Logs (`memory/YYYY-MM-DD.md`)
-- Append-only
-- What happened today
-- Commands, edits, short-lived issues
-
-👉 Treat as a work log, not a knowledge base.
+👉 将其视为用于临时存储的临时空间。
 
 ---
 
-### 3. Long-Term Memory (`MEMORY.md`)
-- Curated
-- Small
-- High-signal only
-- Indexed and retrievable
-
-👉 Treat as facts the agent must not forget.
+### 2. 日志文件（`memory/YYYY-MM-DD.md`）
+- 仅支持追加写入。
+- 用于记录当天发生的事件、执行的命令以及一些短暂存在的问题。
+- **请将其视为工作日志，而非知识库**。
 
 ---
 
-## When to Write Memory (simple rules)
+### 3. 长期存储空间（`MEMORY.md`）
+- 经过精心整理的、可靠的数据存储区域。
+- 仅保存关键、重要的信息。
+- 已建立索引，便于检索。
 
-### Write to `MEMORY.md` if it would still be true next week.
-Examples:
-- Decisions
-- Preferences
-- Invariants
-- Policies
-
-### Write to daily logs if it helps understand today.
-Examples:
-- Refactors
-- Experiments
-- Temporary blockers
-
-If unsure: **write to daily log first**, promote later.
+👉 将其中的信息视为代理必须记住的事实。
 
 ---
 
-## Pre-Compaction Flush (why this exists)
+## 何时应该保存数据（简单规则）
 
-Before OpenClaw compacts the session, it triggers a **silent reminder**.
+- 如果某条信息在下周仍然适用，请将其保存到 `MEMORY.md` 文件中。  
+  **示例**：决策、偏好设置、不变量、规则等。
 
-This skill uses that moment as a **Save Game checkpoint**.
+- 如果某条信息有助于理解当天的操作，请将其记录在日志文件中。  
+  **示例**：代码重构、实验结果、临时遇到的问题等。
 
-### What happens:
-1. Durable knowledge is extracted
-2. Daily notes are written to today’s log
-3. Durable items are promoted to `MEMORY.md`
-4. Agent replies `NO_REPLY` (user never sees this)
-
-This prevents knowledge loss without interrupting you.
+**如果不确定是否需要保存数据，请先将其记录在日志文件中，之后再决定是否需要将其移动到长期存储空间。**
 
 ---
 
-## Durable Memory Format (`MEMORY.md`)
+## 数据压缩前的提示机制
 
-Use IDs and tags so search works reliably.
+在 OpenClaw 压缩会话数据之前，系统会发出一个**无声的提示**。  
+该工具会利用这个时机将重要信息保存下来。
 
-```markdown
-## DEC-2026-02-04-01
-type: decision
-area: memory
+### 具体操作流程：
+1. 提取需要长期保存的数据。
+2. 将当天的日志内容写入日志文件。
+3. 将重要数据升级到 `MEMORY.md` 文件中。
+4. 代理会回复 “NO_REPLY”（用户不会看到这个提示信息）。
 
-Decision:
-Session memory is retrieval-only. Disk is the source of truth.
-
-Reason:
-Session compaction is lossy. Disk memory is stable.
-```
-
-### ID prefixes
-- `DEC` – Decisions
-- `PREF` – Preferences
-- `FACT` – Durable facts
-- `POLICY` – Rules / invariants
+这样可以在不影响用户使用体验的情况下防止数据丢失。
 
 ---
 
-## Retrieval Strategy (how agents should recall)
+## 长期存储数据的格式（`MEMORY.md`）
 
-1. Use `memory_search` (max ~6 results)
-2. Pick the best 1–2 hits
-3. Use `memory_get` with line ranges
-4. Inject the minimum text required
-
-This keeps context small and precise.
-
----
-
-## Agent Playbook (rules for agents)
-
-- Prefer disk over RAM
-- Prefer `MEMORY.md` over daily logs for facts
-- Use search before asking the user again
-- Never copy raw chat into memory
-- Write memory explicitly, do not assume it sticks
+使用唯一的 ID 和标签来确保检索的准确性。  
+**ID 前缀说明**：  
+- `DEC`：决策  
+- `PREF`：偏好设置  
+- `FACT`：重要事实  
+- `POLICY`：规则/不变量  
 
 ---
 
-## Anti-Patterns (do not do these)
+## 数据检索策略（代理应如何使用）
 
-- ❌ Copy chat transcripts into memory
-- ❌ Store secrets or credentials
-- ❌ Treat daily logs as long-term memory
-- ❌ Overwrite memory files instead of appending
-- ❌ Store speculation as fact
+1. 使用 `memory_search` 功能进行检索（最多返回 6 条结果）。
+2. 选择最相关的 1–2 条结果。
+3. 使用 `memory_get` 功能按指定范围获取数据。
+4. 仅获取所需的最少信息。
 
----
-
-## Privacy Rules
-
-- Never store secrets (API keys, tokens, passwords)
-- Ignore anything inside `<private>...</private>`
-- If sensitive info exists: store only **that it exists**, not the value
+这样可以保持检索结果的简洁性和准确性。
 
 ---
 
-## Retention & Cleanup
-
-Default: **no deletion**
-
-- Disk is cheap
-- Recall quality is expensive
-
-Optional:
-- Move old daily logs to `memory/archive/YYYY-MM/`
-- Only prune after durable knowledge is verified
+## 代理使用指南（操作规则）：
+- 在需要存储数据时，优先选择磁盘而非 RAM。
+- 对于重要信息，优先使用 `MEMORY.md` 而不是日志文件。
+- 在再次询问用户之前，先尝试使用搜索功能。
+- **切勿将原始聊天记录直接复制到内存中**。
+- 明确地保存数据，不要假设数据会被自动保留。
 
 ---
 
-## Usage (human-friendly)
-
-Examples that work well:
-- “Store this as a durable decision.”
-- “This is a preference, remember it.”
-- “Write this to today’s log.”
+## 应避免的做法：
+- ❌ **切勿将聊天记录复制到内存中**。
+- ❌ **切勿存储敏感信息或凭证**。
+- ❌ **切勿将日志文件视为长期存储空间**。
+- ❌ **切勿覆盖现有数据文件，而应追加新内容**。
+- ❌ **切勿将推测性内容当作事实保存**。
 
 ---
 
-## Design Philosophy
+## 隐私保护规则：
+- **切勿存储任何敏感信息（如 API 密钥、令牌、密码）**。
+- **忽略 `<private>...</private>` 标签内的内容**。
+- 如果包含敏感信息，只需记录其存在，而非具体内容。
 
-- Disk is truth
-- RAM is convenience
-- Retrieval beats retention
-- Fewer tokens > more tokens
-- Memory should earn its place
+---
+
+## 数据保留与清理策略：
+- **默认设置：不删除任何数据**。
+- **磁盘存储成本较低，而数据检索的成本较高**。
+- **可选操作**：将旧的日志文件移动到 `memory/archive/YYYY-MM/` 目录中。
+- **只有在确认数据确实需要长期保存时，才进行清理**。
+
+---
+
+## 使用示例（便于用户操作）：
+- “将这条信息保存为长期有效的决策。”
+- “这是一个需要记住的偏好设置。”
+- “将这条信息记录在今天的日志中。”
+
+---
+
+## 设计理念：
+- **磁盘是数据的最终存储来源**。
+- **RAM 只是提供便捷性**。
+- **检索数据的效率高于数据保留**。
+- **尽量减少不必要的数据存储**。
+- **数据必须经过验证才能被保存到内存中**。

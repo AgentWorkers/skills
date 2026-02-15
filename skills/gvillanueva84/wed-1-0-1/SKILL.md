@@ -1,40 +1,40 @@
 ---
 name: wed
-description: "What Would Elon Do? - Transform any idea into a ruthless execution plan. One command to generate a full business strategy, MVP spec, go-to-market plan, and first-week action items. Think bigger. Move faster. /wed 'your idea'"
+description: "“埃隆会怎么做？”——将任何想法转化为一个周密的执行计划。只需一个命令，就能生成完整的商业策略、最小可行产品（MVP）规格、市场推广计划以及第一周需要完成的任务。思维要更开阔，行动要更快。/wed '你的想法'"
 ---
 
-# What Would Elon Do? (WED)
+# 埃隆会怎么做？（WED）
 
-> "When something is important enough, you do it even if the odds are not in your favor." - Elon Musk
+> “当某件事足够重要时，即使胜算不大，你也应该去做。”——埃隆·马斯克
 
-Transform any idea into an actionable empire-building plan. This skill channels Elon's first-principles thinking, 100-hour work week energy, and "fuck it, ship it" mentality.
+将任何想法转化为一个可执行的、用于构建事业的计划。这项技能融合了埃隆·马斯克的核心原则思维方式、他每周工作100小时的工作热情，以及“管它呢，直接去做”的态度。
 
-Stop overthinking. Start executing.
+别再过度思考了，立即开始行动吧。
 
-## Usage
+## 使用方法
 
 ```
 /wed "your startup idea or problem"
 ```
 
-## What You Get
+## 你将获得什么
 
-### 1. First Principles Breakdown
-Strip away every assumption. Find the atomic truth of your problem. What would physics say? What's actually impossible vs just hard?
+### 1. 核心原则分析
+摒弃所有假设，找到问题的本质真相。从物理学的角度出发，什么才是真正不可能实现的，什么只是难度较大而已？
 
-### 2. 10x Moonshot Reframe
-Why are you thinking so small? If this were a SpaceX mission, what would you be building? Think 10x, not 10%.
+### 2. 10倍目标设定
+为什么你的目标如此渺小？如果这是SpaceX的任务，你会建造什么？思考的是10倍的效果，而不是10%的改进。
 
-### 3. MVP in a Weekend
-Brutally scoped. No feature creep. What's the absolute minimum you can ship in 48 hours that proves the concept? Tech stack, features, done.
+### 3. 周末内完成的最小可行产品（MVP）
+严格限定项目范围，避免功能蔓延。在48小时内，你能完成什么来验证这个概念？确定技术栈和所需功能。
 
-### 4. The Musk Memo
-An internal announcement written exactly like Elon would write it. Direct. Aggressive. No bullshit. Ends with a forcing function deadline.
+### 4. 马斯克式的内部备忘录
+这份备忘录的写作风格完全模仿埃隆·马斯克：直接、果断，不废话连篇，并设定一个强制性的截止日期。
 
-### 5. Week 1 War Plan
-Day-by-day breakdown. Hour counts. Specific deliverables. No fluff, just execution.
+### 5. 第一周的工作计划
+详细列出每天的任务安排，计算每小时的进度，明确具体的交付成果。只关注执行。
 
-## Examples
+## 示例
 
 ```
 /wed "I want to build a better calendar app"
@@ -44,45 +44,45 @@ Day-by-day breakdown. Hour counts. Specific deliverables. No fluff, just executi
 /wed "Build me a $10k/month business"
 ```
 
-## Why This Works
+## 这项技能为何有效
 
-Most people fail because they:
-- Overthink instead of ship
-- Build features nobody wants
-- Take 6 months for what should take 6 days
-- Listen to people who've never built anything
+大多数人失败的原因在于：
+- 过度思考而迟迟不行动
+- 建造别人不需要的功能
+- 本该用6天完成的事情却耗时6个月
+- 听从那些从未真正做过任何事情的人的建议
 
-This skill forces you into Elon mode:
-- Compress timelines ruthlessly
-- Cut scope to the bone
-- Ship ugly, iterate fast
-- Ignore the haters, trust the process
+这项技能会让你进入“埃隆模式”：
+- 无情地压缩时间线
+- 将项目范围缩减到最核心的部分
+- 先快速发布粗糙的产品，然后快速迭代
+- 忽视批评者，相信自己的过程。
 
-## The Philosophy
+## 哲学理念
 
-**"If you need inspiring words, don't do it."** - Elon Musk
+**“如果你需要激励性的话语，那就别去做这件事。”**——埃隆·马斯克
 
-This isn't about motivation. It's about execution. You give WED an idea, it gives you a war plan. What you do with it is up to you.
+这并不是关于激励，而是关于行动。你给WED提供一个想法，它会为你制定一个行动计划。如何利用这个计划，取决于你自己。
 
-The best founders ship fast and fix later. They don't wait for permission. They don't need a perfect plan. They need a good-enough plan and the balls to execute.
+最优秀的创业者会迅速行动，然后再进行改进。他们不会等待别人的许可，也不需要完美的计划。他们只需要一个足够好的计划，以及执行计划的勇气。
 
-That's what this skill gives you.
-
----
-
-## Technical Details
-
-For the full execution workflow and advanced configuration, see `rules/logic.md`.
+这就是这项技能能为你带来的。
 
 ---
 
-**Created by:** [@theonejvo](https://x.com/theonejvo)
+## 技术细节
 
-### Changelog
+有关完整的执行流程和高级配置，请参阅 `rules/logic.md`。
 
-**v1.0.0** - Initial release
-- First-principles analysis engine
-- Moonshot reframing
-- Weekend MVP generator
-- Musk memo writer
-- Week 1 war planning
+---
+
+**创建者：** [@theonejvo](https://x.com/theonejvo)
+
+### 更新日志
+
+**v1.0.0** - 初始版本
+- 核心原则分析工具
+- 10倍目标设定功能
+- 周末内完成最小可行产品的生成器
+- 马斯克式内部备忘录编写工具
+- 第一周工作计划的制定工具

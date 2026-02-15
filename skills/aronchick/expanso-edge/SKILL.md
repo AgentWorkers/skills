@@ -1,6 +1,6 @@
 ---
 name: expanso
-description: Data processing pipelines for OpenClaw. Deploy skills from the Expanso marketplace to transform, analyze, and process data locally.
+description: OpenClaw的数据处理管道：通过Expanso市场部署相关技能，实现数据的本地转换、分析和处理。
 homepage: https://skills.expanso.io
 emoji: "⚡"
 metadata:
@@ -24,25 +24,25 @@ metadata:
           description: Bootstrap token from Expanso Cloud Settings → Edge Nodes
 ---
 
-# Expanso Skills for OpenClaw
+# OpenClaw 的 Expanso 技能
 
-Deploy data processing pipelines to your local Expanso Edge. Skills run locally, keeping credentials secure and enabling offline operation.
+您可以将数据处理管道部署到本地 Expanso Edge 上。这些技能在本地运行，能够保护您的凭据安全，并支持离线操作。
 
-## What is Expanso?
+## 什么是 Expanso？
 
-- **Expanso Edge** — Local runtime that executes pipelines on your machine
-- **Expanso Cloud** — Orchestrates and deploys pipelines to your Edge nodes
-- **Expanso Skills** — Pre-built pipelines for common data tasks
+- **Expanso Edge**：在您的机器上执行管道的本地运行时环境。
+- **Expanso Cloud**：负责编排和将管道部署到您的 Edge 节点。
+- **Expanso Skills**：为常见数据任务预先构建好的管道。
 
-## Setup
+## 设置
 
-### 1. Create an Expanso Cloud account
+### 1. 创建一个 Expanso Cloud 账户
 
-1. Go to [cloud.expanso.io](https://cloud.expanso.io) and sign up
-2. Create a new organization (or use an existing one)
-3. Note your **Cloud Endpoint URL** (e.g., `https://abc123.us1.cloud.expanso.io`)
+1. 访问 [cloud.expanso.io](https://cloud.expanso.io) 并注册。
+2. 创建一个新的组织（或使用现有的组织）。
+3. 记下您的 **Cloud Endpoint URL**（例如：`https://abc123.us1.cloud.expanso.io`）。
 
-### 2. Install the tools
+### 2. 安装所需工具
 
 ```bash
 # Install Expanso Edge (local runtime)
@@ -52,13 +52,13 @@ curl -fsSL https://get.expanso.io/edge/install.sh | bash
 curl -fsSL https://get.expanso.io/cli/install.sh | sh
 ```
 
-### 3. Get a Bootstrap Token
+### 3. 获取 Bootstrap Token
 
-1. In Expanso Cloud, go to **Settings → Edge Nodes**
-2. Click **"Add Edge Node"**
-3. Copy the **Bootstrap URL** and **Bootstrap Token**
+1. 在 Expanso Cloud 中，进入 **设置 → Edge 节点**。
+2. 点击 **“添加 Edge 节点”**。
+3. 复制 **Bootstrap URL** 和 **Bootstrap Token**。
 
-### 4. Connect your Edge to the Cloud
+### 4. 将您的 Edge 节点连接到 Cloud
 
 ```bash
 # Set the bootstrap URL and token from Expanso Cloud
@@ -69,9 +69,9 @@ export EXPANSO_EDGE_BOOTSTRAP_TOKEN="your-token-from-cloud"
 expanso-edge
 ```
 
-This connects your local Edge node to your Expanso Cloud organization. Your Edge will now receive pipeline deployments from the cloud.
+这样，您的本地 Edge 节点就可以接收来自 Cloud 的管道部署了。
 
-### 5. Deploy a skill
+### 5. 部署一个技能
 
 ```bash
 # Browse skills at https://skills.expanso.io
@@ -79,28 +79,28 @@ This connects your local Edge node to your Expanso Cloud organization. Your Edge
 expanso-cli job deploy https://skills.expanso.io/text-summarize/pipeline-cli.yaml
 ```
 
-The pipeline will be deployed through Expanso Cloud to your local Edge node.
+该管道将通过 Expanso Cloud 部署到您的本地 Edge 节点上。
 
-## Available Skills
+## 可用的技能
 
-Browse 172+ skills at **[skills.expanso.io](https://skills.expanso.io)**:
+在 **[skills.expanso.io](https://skills.expanso.io)** 上可以浏览 172 多种技能：
 
-| Category | Examples |
+| 类别 | 示例 |
 |----------|----------|
-| **AI** | text-summarize, image-describe, audio-transcribe |
-| **Security** | pii-redact, secrets-scan, hash-digest |
-| **Transforms** | json-pretty, csv-to-json, array-filter |
-| **Utilities** | uuid-generate, email-validate, mime-type |
+| **AI** | 文本摘要、图像描述、音频转录 |
+| **安全** | 个人身份信息（PII）脱敏、秘密扫描、哈希计算 |
+| **转换** | JSON 格式化、CSV 转 JSON、数组过滤 |
+| **实用工具** | UUID 生成、电子邮件验证、MIME 类型检测 |
 
-## Example: PII Redaction
+## 示例：PII 脱敏
 
-Ask OpenClaw to redact sensitive data:
+要求 OpenClaw 对敏感数据进行脱敏：
 
-> "Redact the PII from this customer feedback"
+> “从这条客户反馈中删除个人身份信息（PII）”
 
-OpenClaw will use the `pii-redact` skill running on your local Expanso Edge to process the data — your API keys and data never leave your machine.
+OpenClaw 会使用在您的本地 Expanso Edge 上运行的 `pii-redact` 技能来处理数据——您的 API 密钥和数据永远不会离开您的机器。
 
-## How It Works
+## 工作原理
 
 ```
 ┌─────────────┐     ┌───────────────┐     ┌──────────────┐
@@ -114,9 +114,9 @@ OpenClaw will use the `pii-redact` skill running on your local Expanso Edge to p
                     └─────────────┘
 ```
 
-## Resources
+## 资源
 
-- [Skills Marketplace](https://skills.expanso.io) — Browse and deploy skills
-- [Expanso Cloud](https://cloud.expanso.io) — Manage your Edge nodes
-- [Documentation](https://docs.expanso.io) — Full guides and API reference
-- [GitHub](https://github.com/expanso-io/expanso-skills) — Skill source code
+- [技能市场](https://skills.expanso.io)：浏览和部署技能。
+- [Expanso Cloud](https://cloud.expanso.io)：管理您的 Edge 节点。
+- [文档](https://docs.expanso.io)：完整指南和 API 参考。
+- [GitHub](https://github.com/expanso-io/expanso-skills)：技能源代码。

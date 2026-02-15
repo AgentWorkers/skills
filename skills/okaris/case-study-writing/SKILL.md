@@ -9,11 +9,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Case Study Writing
+# 案例研究撰写
 
-Create compelling B2B case studies with research and visuals via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用调研数据和可视化元素来撰写引人入胜的 B2B 案例研究。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -24,22 +24,22 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## The STAR Framework
+## STAR 框架
 
-Every case study follows: **Situation -> Task -> Action -> Result**
+每个案例研究都遵循以下结构：**背景情况 -> 面临的挑战 -> 采取的措施 -> 最终结果**
 
-| Section | Length | Content | Purpose |
+| 部分 | 字数 | 内容 | 目的 |
 |---------|--------|---------|---------|
-| **Situation** | 100-150 words | Who the customer is, their context | Set the scene |
-| **Task** | 100-150 words | The specific challenge they faced | Create empathy |
-| **Action** | 200-300 words | What solution was implemented, how | Show your product |
-| **Result** | 100-200 words | Measurable outcomes, before/after | Prove value |
+| **背景情况** | 100-150 字 | 客户是谁，他们的背景信息 | 设定场景 |
+| **面临的挑战** | 100-150 字 | 他们具体面临的问题 | 建立共鸣 |
+| **采取的措施** | 200-300 字 | 实施了哪些解决方案，以及实施方式 | 展示你的产品 |
+| **最终结果** | 100-200 字 | 可量化的成果（实施前后的变化） | 证明产品的价值 |
 
-**Total: 800-1200 words.** Longer loses readers. Shorter lacks credibility.
+**总字数：800-1200 字。** 字数过长会失去读者的兴趣；过短则缺乏可信度。**
 
-## Structure Template
+## 结构模板
 
-### 1. Headline (Lead with the Result)
+### 1. 标题（以结果开头）
 
 ```
 ❌ "How Company X Uses Our Product"
@@ -49,11 +49,11 @@ Every case study follows: **Situation -> Task -> Action -> Result**
 ✅ "Company X Grew Revenue 340% in 6 Months Using [Product]"
 ```
 
-The headline should be specific, quantified, and state the outcome.
+标题应当具体、量化，并明确说明最终结果。
 
-### 2. Snapshot Box
+### 2. 摘要框
 
-Place at the top for skimmers:
+放在页面顶部，便于读者快速了解内容：
 
 ```
 ┌─────────────────────────────────────┐
@@ -66,36 +66,35 @@ Place at the top for skimmers:
 └─────────────────────────────────────┘
 ```
 
-### 3. Situation
+### 3. 背景情况
 
-- Who is the customer (industry, size, location)
-- What relevant context existed before the problem
-- 1-2 sentences of company background
+- 客户是谁（所属行业、规模、地理位置）
+- 问题出现之前的相关背景信息
+- 公司的简要背景
 
-### 4. Task / Challenge
+### 4. 面临的挑战
 
-- **Quantify the pain:** "spending 40 hours/week on manual data entry" not "had data problems"
-- **Show stakes:** what would happen if unsolved (lost revenue, churn, missed deadlines)
-- Include a customer quote about the frustration
+- **量化问题**：例如“每周花费 40 小时进行手动数据录入”，而不是简单地说“存在数据问题”
+- **说明后果**：如果问题得不到解决会带来什么后果（例如收入损失、客户流失、错过截止日期）
+- 包含客户关于问题的反馈或抱怨
 
-### 5. Action / Solution
+### 5. 采取的措施/解决方案
 
-- What was implemented (your product/service)
-- Timeline: "deployed in 2 weeks" / "3-month rollout"
-- Key decisions or configurations
-- Why they chose you over alternatives (briefly)
-- 2-3 specific features that addressed the challenge
+- 实施了哪些解决方案（你的产品/服务）
+- 时间线：例如“在两周内部署”或“分三个月逐步推广”
+- 选择你的产品而非其他解决方案的原因（简要说明）
+- 2-3 个具体解决了问题的功能
 
-### 6. Results
+### 6. 最终结果
 
-- **Before/after metrics** — always quantified
-- **Timeframe** — "within 3 months" / "in the first quarter"
-- Unexpected benefits beyond the original goal
-- Customer quote about the outcome
+- **量化指标**：务必使用具体数据
+- **时间范围**：例如“在三个月内”或“第一季度”
+- 超出最初目标的意外收获
+- 客户对结果的反馈
 
-## Metrics That Matter
+## 重要的指标
 
-### How to Present Numbers
+### 如何呈现数据
 
 ```
 ❌ "Improved efficiency"
@@ -107,17 +106,17 @@ Place at the top for skimmers:
 ✅ "Saved $240,000 annually in operational costs"
 ```
 
-### Metric Categories
+### 指标类别
 
-| Category | Examples |
+| 类别 | 示例 |
 |----------|---------|
-| **Time** | Hours saved, time-to-completion, deployment speed |
-| **Money** | Revenue increase, cost reduction, ROI |
-| **Efficiency** | Throughput, error rate, automation rate |
-| **Growth** | Users gained, market expansion, feature adoption |
-| **Satisfaction** | NPS change, retention rate, support tickets reduced |
+| **时间** | 节省的时间、完成时间、部署速度 |
+| **财务** | 收入增长、成本降低、投资回报率（ROI） |
+| **效率** | 处理量、错误率、自动化程度 |
+| **增长** | 新用户数量、市场扩张、功能采用率 |
+| **满意度** | 客户净推荐值（NPS）变化、客户保留率、支持工单数量减少 |
 
-### Data Visualization
+### 数据可视化
 
 ```bash
 # Generate a before/after comparison chart
@@ -126,9 +125,9 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Customer Quotes
+## 客户反馈
 
-### What Makes a Good Quote
+### 什么是好的客户反馈
 
 ```
 ❌ "We love the product." (vague, could be about anything)
@@ -142,13 +141,13 @@ infsh app run infsh/python-executor --input '{
    — Marcus Rodriguez, Head of Analytics, DataCo
 ```
 
-### Quote Placement
+### 反馈的放置位置
 
-- **1 quote in the Challenge section** — about the frustration/pain
-- **1-2 quotes in the Results section** — about the outcome/transformation
-- Always attribute: full name, title, company
+- 在“面临的挑战”部分放置 1 条客户反馈，内容关于问题或困扰
+- 在“最终结果”部分放置 1-2 条客户反馈，内容关于成果或变化
+- 必须注明：客户的全名、职位、公司名称
 
-### Quote Formatting
+### 反馈的格式
 
 ```markdown
 > "We went from processing 50 orders a day to 200, without adding anyone to the team."
@@ -156,9 +155,9 @@ infsh app run infsh/python-executor --input '{
 > — Sarah Chen, VP Operations, Acme Corp
 ```
 
-## Research Support
+## 研究支持
 
-### Finding Industry Context
+### 如何收集行业背景信息
 
 ```bash
 # Industry benchmarks
@@ -177,18 +176,18 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-## Distribution Formats
+## 分发格式
 
-| Format | Where | Notes |
+| 格式 | 分发渠道 | 备注 |
 |--------|-------|-------|
-| **Web page** | /customers/ or /case-studies/ | Full version, SEO-optimized |
-| **PDF** | Sales team, email attachment | Designed, downloadable, gated optional |
-| **Slide deck** | Sales calls, presentations | 5-8 slides, visual-heavy |
-| **One-pager** | Trade shows, quick reference | Snapshot + key metrics + quote |
-| **Social post** | LinkedIn, Twitter | Key stat + quote + link to full |
-| **Video** | Website, YouTube | Customer interview or animated |
+| **网页** | /customers/ 或 /case-studies/ | 完整版本，优化过搜索引擎排名（SEO） |
+| **PDF** | 销售团队使用，可作为电子邮件附件 | 可下载，需授权 |
+| **幻灯片** | 销售电话、演示文稿 | 5-8 张幻灯片，以视觉内容为主 |
+| **一页纸报告** | 展览会、快速参考资料 | 包含摘要、关键指标和客户反馈 |
+| **社交媒体帖子** | LinkedIn、Twitter | 包含关键数据、客户反馈和完整报告链接 |
+| **视频** | 网站、YouTube | 客户访谈或动画视频 |
 
-### Social Media Snippet
+### 社交媒体发布要点
 
 ```
 Headline stat + brief context + customer quote + CTA
@@ -205,34 +204,34 @@ After implementing [Product]: 45 minutes per batch. 1.5% errors.
 Read the full story → [link]"
 ```
 
-## Writing Checklist
+## 撰写检查清单
 
-- [ ] Headline leads with the quantified result
-- [ ] Snapshot box with company, industry, challenge, result at top
-- [ ] Challenge is quantified, not vague
-- [ ] 2-3 specific customer quotes with attribution
-- [ ] Before/after metrics with timeframe
-- [ ] 800-1200 words total
-- [ ] Skimmable (headers, bold, bullet points)
-- [ ] Customer approved the final version
-- [ ] Visual: at least one chart or before/after comparison
+- 标题以量化结果开头
+- 摘要框中包含公司名称、行业信息、面临的挑战和最终结果
+- 面临的挑战需要具体量化，不能含糊不清
+- 包含 2-3 条带有来源的客户反馈
+- 提供带有时间范围的量化指标
+- 总字数控制在 800-1200 字之间
+- 便于阅读（使用标题、加粗字体、项目符号）
+- 客户已审核最终版本
+- 必须包含可视化内容（至少一张图表或前后对比图）
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No specific numbers | Reads like marketing fluff | Quantify everything |
-| All about your product | Reads like a sales pitch | Story is about the CUSTOMER |
-| Generic quotes | No credibility | Get specific, attributed quotes |
-| Missing the "before" | No contrast to show impact | Always show the starting point |
-| Too long | Loses reader attention | 800-1200 words max |
-| No customer approval | Legal/relationship risk | Always get sign-off |
+| 没有具体数据 | 读起来像营销宣传 | 所有内容都应量化 |
+| 内容全部围绕产品展开 | 读起来像销售演讲 | 案例研究的核心应该是客户的需求和解决方案 |
+| 使用泛泛的反馈 | 缺乏可信度 | 使用具体且带有来源的客户反馈 |
+| 忽略“实施前”的情况 | 无法体现改进效果 | 必须展示问题的起始状态 |
+| 文字过长 | 会失去读者的注意力 | 总字数控制在 800-1200 字 |
+| 未获得客户批准 | 存在法律或关系风险 | 必须获得客户的最终确认 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@web-search
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用工具：`infsh app list`

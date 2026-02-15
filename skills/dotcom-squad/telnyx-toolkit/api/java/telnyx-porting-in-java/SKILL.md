@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Porting In - Java
+# Telnyx 移动号码服务（Java 版本）
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +31,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all porting events
+## 列出所有移动号码迁移事件
 
-Returns a list of all porting events.
+返回所有移动号码迁移事件的列表。
 
 `GET /porting/events`
 
@@ -45,9 +46,9 @@ import com.telnyx.sdk.models.porting.events.EventListParams;
 EventListPage page = client.porting().events().list();
 ```
 
-## Show a porting event
+## 显示特定迁移事件
 
-Show a specific porting event.
+显示特定的迁移事件。
 
 `GET /porting/events/{id}`
 
@@ -58,9 +59,9 @@ import com.telnyx.sdk.models.porting.events.EventRetrieveResponse;
 EventRetrieveResponse event = client.porting().events().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Republish a porting event
+## 重新发布迁移事件
 
-Republish a specific porting event.
+重新发布特定的迁移事件。
 
 `POST /porting/events/{id}/republish`
 
@@ -70,9 +71,9 @@ import com.telnyx.sdk.models.porting.events.EventRepublishParams;
 client.porting().events().republish("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Preview the LOA configuration parameters
+## 预览 LOA（Letter of Authorization）配置参数
 
-Preview the LOA template that would be generated without need to create LOA configuration.
+无需创建 LOA 配置即可预览其模板。
 
 `POST /porting/loa_configuration_preview`
 
@@ -101,9 +102,9 @@ LoaConfigurationPreview0Params params = LoaConfigurationPreview0Params.builder()
 HttpResponse response = client.porting().loaConfigurations().preview0(params);
 ```
 
-## List LOA configurations
+## 列出 LOA 配置
 
-List the LOA configurations.
+列出所有的 LOA 配置。
 
 `GET /porting/loa_configurations`
 
@@ -114,9 +115,9 @@ import com.telnyx.sdk.models.porting.loaconfigurations.LoaConfigurationListParam
 LoaConfigurationListPage page = client.porting().loaConfigurations().list();
 ```
 
-## Create a LOA configuration
+## 创建 LOA 配置
 
-Create a LOA configuration.
+创建一个新的 LOA 配置。
 
 `POST /porting/loa_configurations`
 
@@ -145,9 +146,9 @@ LoaConfigurationCreateParams params = LoaConfigurationCreateParams.builder()
 LoaConfigurationCreateResponse loaConfiguration = client.porting().loaConfigurations().create(params);
 ```
 
-## Retrieve a LOA configuration
+## 获取 LOA 配置
 
-Retrieve a specific LOA configuration.
+获取特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}`
 
@@ -158,9 +159,9 @@ import com.telnyx.sdk.models.porting.loaconfigurations.LoaConfigurationRetrieveR
 LoaConfigurationRetrieveResponse loaConfiguration = client.porting().loaConfigurations().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update a LOA configuration
+## 更新 LOA 配置
 
-Update a specific LOA configuration.
+更新特定的 LOA 配置。
 
 `PATCH /porting/loa_configurations/{id}`
 
@@ -190,9 +191,9 @@ LoaConfigurationUpdateParams params = LoaConfigurationUpdateParams.builder()
 LoaConfigurationUpdateResponse loaConfiguration = client.porting().loaConfigurations().update(params);
 ```
 
-## Delete a LOA configuration
+## 删除 LOA 配置
 
-Delete a specific LOA configuration.
+删除特定的 LOA 配置。
 
 `DELETE /porting/loa_configurations/{id}`
 
@@ -202,9 +203,9 @@ import com.telnyx.sdk.models.porting.loaconfigurations.LoaConfigurationDeletePar
 client.porting().loaConfigurations().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Preview a LOA configuration
+## 预览 LOA 配置
 
-Preview a specific LOA configuration.
+预览特定的 LOA 配置。
 
 `GET /porting/loa_configurations/{id}/preview`
 
@@ -215,9 +216,9 @@ import com.telnyx.sdk.models.porting.loaconfigurations.LoaConfigurationPreview1P
 HttpResponse response = client.porting().loaConfigurations().preview1("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List all porting orders
+## 列出所有迁移订单
 
-Returns a list of your porting order.
+返回所有迁移订单的列表。
 
 `GET /porting_orders`
 
@@ -228,11 +229,11 @@ import com.telnyx.sdk.models.portingorders.PortingOrderListParams;
 PortingOrderListPage page = client.portingOrders().list();
 ```
 
-## Create a porting order
+## 创建迁移订单
 
-Creates a new porting order object.
+创建一个新的迁移订单对象。
 
-`POST /porting_orders` — Required: `phone_numbers`
+`POST /porting_orders` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.portingorders.PortingOrderCreateParams;
@@ -249,9 +250,9 @@ PortingOrderCreateParams params = PortingOrderCreateParams.builder()
 PortingOrderCreateResponse portingOrder = client.portingOrders().create(params);
 ```
 
-## Retrieve a porting order
+## 获取迁移订单详情
 
-Retrieves the details of an existing porting order.
+获取现有迁移订单的详细信息。
 
 `GET /porting_orders/{id}`
 
@@ -262,9 +263,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveResponse;
 PortingOrderRetrieveResponse portingOrder = client.portingOrders().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Edit a porting order
+## 编辑迁移订单
 
-Edits the details of an existing porting order.
+编辑现有迁移订单的详细信息。
 
 `PATCH /porting_orders/{id}`
 
@@ -275,9 +276,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderUpdateResponse;
 PortingOrderUpdateResponse portingOrder = client.portingOrders().update("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete a porting order
+## 删除迁移订单
 
-Deletes an existing porting order.
+删除现有的迁移订单。
 
 `DELETE /porting_orders/{id}`
 
@@ -287,9 +288,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderDeleteParams;
 client.portingOrders().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Activate every number in a porting order asynchronously.
+## 异步激活迁移订单中的每个号码
 
-Activate each number in a porting order asynchronously.
+异步激活迁移订单中的每个号码。
 
 `POST /porting_orders/{id}/actions/activate`
 
@@ -300,7 +301,9 @@ import com.telnyx.sdk.models.portingorders.actions.ActionActivateResponse;
 ActionActivateResponse response = client.portingOrders().actions().activate("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Cancel a porting order
+## 取消迁移订单
+
+取消迁移订单。
 
 `POST /porting_orders/{id}/actions/cancel`
 
@@ -311,9 +314,9 @@ import com.telnyx.sdk.models.portingorders.actions.ActionCancelResponse;
 ActionCancelResponse response = client.portingOrders().actions().cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Submit a porting order.
+## 提交迁移订单
 
-Confirm and submit your porting order.
+确认并提交迁移订单。
 
 `POST /porting_orders/{id}/actions/confirm`
 
@@ -324,9 +327,9 @@ import com.telnyx.sdk.models.portingorders.actions.ActionConfirmResponse;
 ActionConfirmResponse response = client.portingOrders().actions().confirm("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Share a porting order
+## 共享迁移订单
 
-Creates a sharing token for a porting order.
+为迁移订单创建共享令牌。
 
 `POST /porting_orders/{id}/actions/share`
 
@@ -337,9 +340,9 @@ import com.telnyx.sdk.models.portingorders.actions.ActionShareResponse;
 ActionShareResponse response = client.portingOrders().actions().share("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List all porting activation jobs
+## 列出所有迁移激活任务
 
-Returns a list of your porting activation jobs.
+返回所有迁移激活任务的列表。
 
 `GET /porting_orders/{id}/activation_jobs`
 
@@ -350,9 +353,9 @@ import com.telnyx.sdk.models.portingorders.activationjobs.ActivationJobListParam
 ActivationJobListPage page = client.portingOrders().activationJobs().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Retrieve a porting activation job
+## 获取迁移激活任务详情
 
-Returns a porting activation job.
+获取特定的迁移激活任务。
 
 `GET /porting_orders/{id}/activation_jobs/{activationJobId}`
 
@@ -367,9 +370,9 @@ ActivationJobRetrieveParams params = ActivationJobRetrieveParams.builder()
 ActivationJobRetrieveResponse activationJob = client.portingOrders().activationJobs().retrieve(params);
 ```
 
-## Update a porting activation job
+## 更新迁移激活任务
 
-Updates the activation time of a porting activation job.
+更新迁移激活任务的激活时间。
 
 `PATCH /porting_orders/{id}/activation_jobs/{activationJobId}`
 
@@ -384,9 +387,9 @@ ActivationJobUpdateParams params = ActivationJobUpdateParams.builder()
 ActivationJobUpdateResponse activationJob = client.portingOrders().activationJobs().update(params);
 ```
 
-## List additional documents
+## 列出附加文档
 
-Returns a list of additional documents for a porting order.
+返回迁移订单的所有附加文档列表。
 
 `GET /porting_orders/{id}/additional_documents`
 
@@ -397,9 +400,9 @@ import com.telnyx.sdk.models.portingorders.additionaldocuments.AdditionalDocumen
 AdditionalDocumentListPage page = client.portingOrders().additionalDocuments().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create a list of additional documents
+## 创建附加文档列表
 
-Creates a list of additional documents for a porting order.
+为迁移订单创建附加文档列表。
 
 `POST /porting_orders/{id}/additional_documents`
 
@@ -410,9 +413,9 @@ import com.telnyx.sdk.models.portingorders.additionaldocuments.AdditionalDocumen
 AdditionalDocumentCreateResponse additionalDocument = client.portingOrders().additionalDocuments().create("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete an additional document
+## 删除附加文档
 
-Deletes an additional document for a porting order.
+删除迁移订单中的附加文档。
 
 `DELETE /porting_orders/{id}/additional_documents/{additional_document_id}`
 
@@ -426,9 +429,9 @@ AdditionalDocumentDeleteParams params = AdditionalDocumentDeleteParams.builder()
 client.portingOrders().additionalDocuments().delete(params);
 ```
 
-## List allowed FOC dates
+## 列出允许的 FOC（Free of Charge）日期
 
-Returns a list of allowed FOC dates for a porting order.
+返回迁移订单允许的 FOC 日期列表。
 
 `GET /porting_orders/{id}/allowed_foc_windows`
 
@@ -439,9 +442,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveAllowedFocWindows
 PortingOrderRetrieveAllowedFocWindowsResponse response = client.portingOrders().retrieveAllowedFocWindows("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List all comments of a porting order
+## 列出迁移订单的所有评论
 
-Returns a list of all comments of a porting order.
+返回迁移订单的所有评论列表。
 
 `GET /porting_orders/{id}/comments`
 
@@ -452,9 +455,9 @@ import com.telnyx.sdk.models.portingorders.comments.CommentListParams;
 CommentListPage page = client.portingOrders().comments().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create a comment for a porting order
+## 为迁移订单创建评论
 
-Creates a new comment for a porting order.
+为迁移订单创建新的评论。
 
 `POST /porting_orders/{id}/comments`
 
@@ -465,7 +468,9 @@ import com.telnyx.sdk.models.portingorders.comments.CommentCreateResponse;
 CommentCreateResponse comment = client.portingOrders().comments().create("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Download a porting order loa template
+## 下载迁移订单的 LOA 模板
+
+下载迁移订单的 LOA 模板。
 
 `GET /porting_orders/{id}/loa_template`
 
@@ -476,9 +481,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveLoaTemplateParams
 HttpResponse response = client.portingOrders().retrieveLoaTemplate("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List porting order requirements
+## 列出迁移订单的需求
 
-Returns a list of all requirements based on country/number type for this porting order.
+根据国家/号码类型列出所有迁移订单的需求。
 
 `GET /porting_orders/{id}/requirements`
 
@@ -489,7 +494,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveRequirementsParam
 PortingOrderRetrieveRequirementsPage page = client.portingOrders().retrieveRequirements("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Retrieve the associated V1 sub_request_id and port_request_id
+## 获取关联的 V1 子请求 ID 和端口请求 ID
+
+获取迁移订单的关联 V1 子请求 ID 和端口请求 ID。
 
 `GET /porting_orders/{id}/sub_request`
 
@@ -500,9 +507,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveSubRequestRespons
 PortingOrderRetrieveSubRequestResponse response = client.portingOrders().retrieveSubRequest("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List verification codes
+## 获取验证代码
 
-Returns a list of verification codes for a porting order.
+获取迁移订单的所有验证代码。
 
 `GET /porting_orders/{id}/verification_codes`
 
@@ -513,9 +520,9 @@ import com.telnyx.sdk.models.portingorders.verificationcodes.VerificationCodeLis
 VerificationCodeListPage page = client.portingOrders().verificationCodes().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Send the verification codes
+## 发送验证代码
 
-Send the verification code for all porting phone numbers.
+为所有迁移号码发送验证代码。
 
 `POST /porting_orders/{id}/verification_codes/send`
 
@@ -525,9 +532,9 @@ import com.telnyx.sdk.models.portingorders.verificationcodes.VerificationCodeSen
 client.portingOrders().verificationCodes().send("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Verify the verification code for a list of phone numbers
+## 验证一系列号码的验证代码
 
-Verifies the verification code for a list of phone numbers.
+验证一系列号码的验证代码。
 
 `POST /porting_orders/{id}/verification_codes/verify`
 
@@ -538,9 +545,9 @@ import com.telnyx.sdk.models.portingorders.verificationcodes.VerificationCodeVer
 VerificationCodeVerifyResponse response = client.portingOrders().verificationCodes().verify("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List action requirements for a porting order
+## 列出迁移订单的动作需求
 
-Returns a list of action requirements for a specific porting order.
+列出特定迁移订单的所有动作需求。
 
 `GET /porting_orders/{porting_order_id}/action_requirements`
 
@@ -551,9 +558,9 @@ import com.telnyx.sdk.models.portingorders.actionrequirements.ActionRequirementL
 ActionRequirementListPage page = client.portingOrders().actionRequirements().list("porting_order_id");
 ```
 
-## Initiate an action requirement
+## 启动动作需求
 
-Initiates a specific action requirement for a porting order.
+为迁移订单启动特定的动作需求。
 
 `POST /porting_orders/{porting_order_id}/action_requirements/{id}/initiate`
 
@@ -572,11 +579,11 @@ ActionRequirementInitiateParams params = ActionRequirementInitiateParams.builder
 ActionRequirementInitiateResponse response = client.portingOrders().actionRequirements().initiate(params);
 ```
 
-## List all associated phone numbers
+## 列出所有关联的号码
 
-Returns a list of all associated phone numbers for a porting order.
+列出迁移订单的所有关联号码。
 
-`GET /porting_orders/{porting_order_id}/associated_phone_numbers`
+`GET /porting_orders/{id}/associated_phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.portingorders.associatedphonenumbers.AssociatedPhoneNumberListPage;
@@ -585,11 +592,11 @@ import com.telnyx.sdk.models.portingorders.associatedphonenumbers.AssociatedPhon
 AssociatedPhoneNumberListPage page = client.portingOrders().associatedPhoneNumbers().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create an associated phone number
+## 创建关联号码
 
-Creates a new associated phone number for a porting order.
+为迁移订单创建新的关联号码。
 
-`POST /porting_orders/{porting_order_id}/associated_phone_numbers`
+`POST /porting_orders/{id}/associated_phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.portingorders.associatedphonenumbers.AssociatedPhoneNumberCreateParams;
@@ -603,11 +610,11 @@ AssociatedPhoneNumberCreateParams params = AssociatedPhoneNumberCreateParams.bui
 AssociatedPhoneNumberCreateResponse associatedPhoneNumber = client.portingOrders().associatedPhoneNumbers().create(params);
 ```
 
-## Delete an associated phone number
+## 删除关联号码
 
-Deletes an associated phone number from a porting order.
+从迁移订单中删除关联号码。
 
-`DELETE /porting_orders/{porting_order_id}/associated_phone_numbers/{id}`
+`DELETE /porting_orders/{id}/associated_phone_numbers/{id}`
 
 ```java
 import com.telnyx.sdk.models.portingorders.associatedphonenumbers.AssociatedPhoneNumberDeleteParams;
@@ -620,11 +627,11 @@ AssociatedPhoneNumberDeleteParams params = AssociatedPhoneNumberDeleteParams.bui
 AssociatedPhoneNumberDeleteResponse associatedPhoneNumber = client.portingOrders().associatedPhoneNumbers().delete(params);
 ```
 
-## List all phone number blocks
+## 列出所有号码块
 
-Returns a list of all phone number blocks of a porting order.
+返回迁移订单的所有号码块列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_blocks`
+`GET /porting_orders/{id}/phone_number_blocks`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberblocks.PhoneNumberBlockListPage;
@@ -633,11 +640,11 @@ import com.telnyx.sdk.models.portingorders.phonenumberblocks.PhoneNumberBlockLis
 PhoneNumberBlockListPage page = client.portingOrders().phoneNumberBlocks().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create a phone number block
+## 创建号码块
 
-Creates a new phone number block.
+为迁移订单创建新的号码块。
 
-`POST /porting_orders/{porting_order_id}/phone_number_blocks`
+`POST /porting_orders/{id}/phone_number_blocks`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberblocks.PhoneNumberBlockCreateParams;
@@ -657,11 +664,11 @@ PhoneNumberBlockCreateParams params = PhoneNumberBlockCreateParams.builder()
 PhoneNumberBlockCreateResponse phoneNumberBlock = client.portingOrders().phoneNumberBlocks().create(params);
 ```
 
-## Delete a phone number block
+## 删除号码块
 
-Deletes a phone number block.
+删除迁移订单中的号码块。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_blocks/{id}`
+`DELETE /porting_orders/{id}/phone_number_blocks/{id}`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberblocks.PhoneNumberBlockDeleteParams;
@@ -674,11 +681,11 @@ PhoneNumberBlockDeleteParams params = PhoneNumberBlockDeleteParams.builder()
 PhoneNumberBlockDeleteResponse phoneNumberBlock = client.portingOrders().phoneNumberBlocks().delete(params);
 ```
 
-## List all phone number extensions
+## 列出所有号码扩展名
 
-Returns a list of all phone number extensions of a porting order.
+返回迁移订单的所有号码扩展名列表。
 
-`GET /porting_orders/{porting_order_id}/phone_number_extensions`
+`GET /porting_orders/{id}/phone_numberextensions`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberextensions.PhoneNumberExtensionListPage;
@@ -687,11 +694,11 @@ import com.telnyx.sdk.models.portingorders.phonenumberextensions.PhoneNumberExte
 PhoneNumberExtensionListPage page = client.portingOrders().phoneNumberExtensions().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create a phone number extension
+## 创建号码扩展名
 
-Creates a new phone number extension.
+为迁移订单创建新的号码扩展名。
 
-`POST /porting_orders/{porting_order_id}/phone_number_extensions`
+`POST /porting_orders/{id}/phone_numberextensions`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberextensions.PhoneNumberExtensionCreateParams;
@@ -712,11 +719,11 @@ PhoneNumberExtensionCreateParams params = PhoneNumberExtensionCreateParams.build
 PhoneNumberExtensionCreateResponse phoneNumberExtension = client.portingOrders().phoneNumberExtensions().create(params);
 ```
 
-## Delete a phone number extension
+## 删除号码扩展名
 
-Deletes a phone number extension.
+删除迁移订单中的号码扩展名。
 
-`DELETE /porting_orders/{porting_order_id}/phone_number_extensions/{id}`
+`DELETE /porting_orders/{id}/phone_number_extensions/{id}`
 
 ```java
 import com.telnyx.sdk.models.portingorders.phonenumberextensions.PhoneNumberExtensionDeleteParams;
@@ -729,9 +736,9 @@ PhoneNumberExtensionDeleteParams params = PhoneNumberExtensionDeleteParams.build
 PhoneNumberExtensionDeleteResponse phoneNumberExtension = client.portingOrders().phoneNumberExtensions().delete(params);
 ```
 
-## List all exception types
+## 列出所有可能的异常类型
 
-Returns a list of all possible exception types for a porting order.
+返回迁移订单的所有可能异常类型列表。
 
 `GET /porting_orders/exception_types`
 
@@ -742,9 +749,9 @@ import com.telnyx.sdk.models.portingorders.PortingOrderRetrieveExceptionTypesRes
 PortingOrderRetrieveExceptionTypesResponse response = client.portingOrders().retrieveExceptionTypes();
 ```
 
-## List all phone number configurations
+## 列出所有号码配置
 
-Returns a list of phone number configurations paginated.
+分页显示迁移订单的所有号码配置。
 
 `GET /porting_orders/phone_number_configurations`
 
@@ -755,9 +762,9 @@ import com.telnyx.sdk.models.portingorders.phonenumberconfigurations.PhoneNumber
 PhoneNumberConfigurationListPage page = client.portingOrders().phoneNumberConfigurations().list();
 ```
 
-## Create a list of phone number configurations
+## 创建号码配置列表
 
-Creates a list of phone number configurations.
+创建迁移订单的所有号码配置列表。
 
 `POST /porting_orders/phone_number_configurations`
 
@@ -768,9 +775,9 @@ import com.telnyx.sdk.models.portingorders.phonenumberconfigurations.PhoneNumber
 PhoneNumberConfigurationCreateResponse phoneNumberConfiguration = client.portingOrders().phoneNumberConfigurations().create();
 ```
 
-## List all porting phone numbers
+## 列出所有迁移号码
 
-Returns a list of your porting phone numbers.
+返回您的所有迁移号码列表。
 
 `GET /porting/phone_numbers`
 
@@ -781,9 +788,9 @@ import com.telnyx.sdk.models.portingphonenumbers.PortingPhoneNumberListParams;
 PortingPhoneNumberListPage page = client.portingPhoneNumbers().list();
 ```
 
-## List porting related reports
+## 列出与迁移相关的报告
 
-List the reports generated about porting operations.
+列出与迁移操作相关的报告。
 
 `GET /porting/reports`
 
@@ -794,9 +801,9 @@ import com.telnyx.sdk.models.porting.reports.ReportListParams;
 ReportListPage page = client.porting().reports().list();
 ```
 
-## Create a porting related report
+## 创建迁移相关报告
 
-Generate reports about porting operations.
+生成与迁移操作相关的报告。
 
 `POST /porting/reports`
 
@@ -814,9 +821,9 @@ ReportCreateParams params = ReportCreateParams.builder()
 ReportCreateResponse report = client.porting().reports().create(params);
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+获取特定的报告。
 
 `GET /porting/reports/{id}`
 
@@ -827,9 +834,9 @@ import com.telnyx.sdk.models.porting.reports.ReportRetrieveResponse;
 ReportRetrieveResponse report = client.porting().reports().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List available carriers in the UK
+## 列出英国的可用运营商
 
-List available carriers in the UK.
+列出英国的可用运营商。
 
 `GET /porting/uk_carriers`
 
@@ -840,9 +847,9 @@ import com.telnyx.sdk.models.porting.PortingListUkCarriersResponse;
 PortingListUkCarriersResponse response = client.porting().listUkCarriers();
 ```
 
-## Run a portability check
+## 运行迁移检查
 
-Runs a portability check, returning the results immediately.
+立即运行迁移检查并返回结果。
 
 `POST /portability_checks`
 
@@ -851,4 +858,5 @@ import com.telnyx.sdk.models.portabilitychecks.PortabilityCheckRunParams;
 import com.telnyx.sdk.models.portabilitychecks.PortabilityCheckRunResponse;
 
 PortabilityCheckRunResponse response = client.portabilityChecks().run();
+```
 ```

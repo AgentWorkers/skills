@@ -1,44 +1,44 @@
 ---
 name: Bitcoin
-description: Assist with Bitcoin transactions, wallets, Lightning, and security decisions.
+description: 协助处理比特币交易、钱包管理、Lightning网络相关事宜以及安全决策。
 metadata: {"clawdbot":{"emoji":"₿","os":["linux","darwin","win32"]}}
 ---
 
-## Wallet Compatibility Traps
-- Same seed phrase in different wallets can show zero balance — derivation paths differ (BIP44 for legacy, BIP84 for native segwit, BIP86 for taproot). Ask which wallet created the seed before troubleshooting "missing funds"
-- Importing a seed into a watch-only wallet won't show funds if the wallet defaults to a different address type than the original
-- Some exchanges still reject bc1p (taproot) addresses for withdrawals — verify before giving the user a taproot address
+## 钱包兼容性问题  
+- 即使使用相同的助记词，在不同的钱包中也可能显示余额为零——这是因为每种钱包的密钥派生路径不同（传统钱包使用BIP44，支持SegWit的钱包使用BIP84，支持Taproot的钱包使用BIP86）。在排查“资金丢失”问题时，务必先询问是哪个钱包生成了该助记词。  
+- 将助记词导入只读钱包后，如果钱包默认使用的地址类型与原始钱包不同，也可能无法显示资金信息。  
+- 一些交易平台仍然不支持使用bc1p（Taproot）地址进行提款——在提供Taproot地址之前，请务必进行验证。  
 
-## Fee Timing
-- Bitcoin fees follow predictable patterns: weekends and UTC night hours (00:00-06:00) are typically 50-80% cheaper than weekday peaks
-- mempool.space/api/v1/fees/recommended gives current sat/vB rates — wallet built-in estimates are often 12-24 hours stale
-- A transaction at 1 sat/vB during high congestion can stay unconfirmed for 2+ weeks, but will eventually drop from mempools (not fail, just disappear)
+## 费用问题  
+- 比特币的交易费用存在一定的规律：周末以及UTC时间段的夜间（00:00-06:00）费用通常比工作日低50%至80%。  
+- 网站`mempool.space/api/v1/fees/recommended`可以提供当前的sat/vB费用标准；但钱包内置的估算结果可能滞后12至24小时。  
+- 在网络拥堵严重的情况下，费用为1 sat/vB的交易可能需要超过两周才能被确认，不过最终这些交易会从内存池中消失（并非失败，只是被系统自动处理掉）。  
 
-## Stuck Transaction Recovery
-- RBF (Replace-By-Fee): sender broadcasts new tx with higher fee — only works if original was flagged replaceable (most modern wallets do this by default now)
-- CPFP (Child-Pays-For-Parent): receiver creates a high-fee tx spending the unconfirmed output, incentivizing miners to confirm both — useful when sender didn't enable RBF
-- If user is the receiver and stuck tx has no change output to them, CPFP won't help — they must wait or ask sender to RBF
+## 交易卡住时的恢复方法  
+- **RBF（Replace-By-Fee）**：发送方可以广播一条费用更高的新交易来替换原有交易——但前提是原有交易必须被标记为可替换的（大多数现代钱包默认支持此功能）。  
+- **CPFP（Child-Pays-For-Parent）**：接收方可以创建一条费用较高的交易来消耗未确认的交易输出，从而激励矿工确认这两条交易——适用于发送方未启用RBF的情况。  
+- 如果用户是接收方且卡住的交易没有为其生成零钱输出，CPFP方法将无效——此时用户只能等待或请求发送方重新广播交易。  
 
-## Lightning Network Gotchas
-- Lightning invoices expire (default 1 hour on many wallets) — an expired invoice cannot receive payment even if the payer tries
-- "Inbound liquidity" limits how much a user can receive — a fresh channel can send but not receive until the balance shifts
-- Closing a channel during high on-chain fees can cost more than the channel balance — warn users before force-closing small channels
-- Lightning payments are not automatically retried — if a route fails, the user must manually retry or the payment fails permanently
+## Lightning Network的使用注意事项  
+- Lightning Network中的交易发票有有效期（多数钱包的默认期限为1小时）——过期的发票即使付款方尝试支付也无法被接收。  
+- 用户的接收能力受到“流入流动性”的限制：新创建的通道只能发送资金，无法接收资金，直到账户余额发生变化。  
+- 在网络费用较高的情况下强制关闭通道可能会产生额外费用——在关闭小容量通道前请务必提醒用户。  
+- Lightning Network中的支付不会自动重试——如果路由失败，用户需要手动重新尝试，否则支付将永久失败。  
 
-## Privacy and Security Patterns
-- Dust attacks: tiny amounts sent to addresses to link them when user spends — advise not to consolidate dust with main UTXOs
-- Address reuse lets anyone see full transaction history of that address — each receive should use a fresh address
-- Clipboard malware silently replaces copied addresses — always verify first and last 6 characters match on both devices before confirming send
-- Hardware wallet "verify on device" step is critical — if malware changed the address, only the device screen shows the real destination
+## 隐私与安全相关的问题  
+- **“Dust Attack”**：用户进行交易时，有时会向某些地址发送少量资金以建立关联——建议不要将这些小额交易与主UTXO合并。  
+- 地址的重复使用会导致任何人都能查看该地址的全部交易历史——每次接收交易时都应使用新的地址。  
+- 剪贴板恶意软件可能会悄悄替换用户复制的地址信息——在确认支付前，请务必检查两台设备上显示的地址是否一致（尤其是最后6位字符）。  
+- 硬件钱包的“设备验证”步骤至关重要——如果恶意软件篡改了地址信息，只有设备屏幕上显示的地址才是真实的收款地址。  
 
-## Scam Recognition
-- "Send X BTC, receive 2X back" is always a scam — no exceptions, even if the account looks official
-- "Recovery services" that ask for seed phrase will steal everything — legitimate recovery never needs the seed
-- Fake wallet apps in app stores with slight name variations — verify publisher and download count before recommending
-- "Support" DMing users on social media asking to "validate wallet" or "sync" — real support never initiates contact
+## 识别诈骗的方法  
+- “发送X BTC，会收到2X BTC作为回报”的承诺绝对是诈骗——无论账户看起来多么正规，都不可相信。  
+- 声称提供“恢复服务”并要求用户提供助记词的机构很可能是骗子——真正的恢复服务绝不会要求用户提供助记词。  
+- 应用商店中存在名称略有不同的假冒钱包应用——在下载前请核实应用的发布者和下载量。  
+- 社交媒体上自称提供“支持”的账号可能会通过私信要求用户“验证钱包”或“同步数据”——真正的客服永远不会主动联系用户。  
 
-## Verification APIs
-- mempool.space is the current standard block explorer — blockchain.info is outdated and less reliable for fee data
-- Transaction confirmed = included in a block. 1 confirmation is minimum, 6 is standard for high-value, some exchanges require 3
-- Check raw tx with: `curl -s "https://mempool.space/api/tx/{txid}"` — returns full transaction details including fee, size, confirmation status
-- For address balance: `curl -s "https://mempool.space/api/address/{address}"` — shows funded/spent totals
+## 验证相关API  
+- `mempool.space`是目前最标准的区块链浏览器；`blockchain.info`在费用数据方面较为过时且不够可靠。  
+- 交易被确认意味着它已被包含在区块中。最低需要1次确认，高价值交易通常需要6次确认，部分交易平台可能要求3次确认。  
+- 可使用以下命令查看交易详情：`curl -s "https://mempool.space/api/tx/{txid}"`——该命令会返回包括费用、交易大小和确认状态在内的完整交易信息。  
+- 要查看账户余额，可以使用：`curl -s "https://mempool.space/api/address/{address}"`——该命令会显示账户的已支出和未支出资金总额。

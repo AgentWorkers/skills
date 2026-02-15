@@ -1,6 +1,6 @@
 ---
 name: bittensor-sdk
-description: Comprehensive Bittensor blockchain interaction skill with wallet management, staking, subnet operations, neuron registration, and emissions tracking. Use for: bittensor operations, subtensor queries, stake/unstake TAO, register neurons, query subnet info, wallet operations, metagraph analysis, emissions tracking, and weight management.
+description: 全面的 Bittensor 区块链交互功能，包括钱包管理、质押、子网操作、神经元注册以及排放量追踪。适用于以下场景：Bittensor 操作、子张量查询、TAO 的质押/解质押、神经元注册、子网信息查询、钱包操作、元图分析、排放量追踪以及权重管理。
 license: MIT
 compatibility: Requires Python 3.8+, bittensor>=8.0.0, network access to Bittensor network endpoints
 metadata:
@@ -8,58 +8,58 @@ metadata:
   version: "1.0.0"
 ---
 
-# Bittensor SDK Skill
+# Bittensor SDK 技能
 
-Comprehensive Bittensor blockchain interaction skill for agents. Enables seamless interaction with the Bittensor decentralized AI network through the Python SDK.
+这是一项全面的 Bittensor 区块链交互技能，使代理能够通过 Python SDK 无缝地与 Bittensor 分布式 AI 网络进行交互。
 
-## Overview
+## 概述
 
-Bittensor is a decentralized machine learning network where independent subnets compete for TAO token emissions. This skill provides agents with full access to:
+Bittensor 是一个去中心化的机器学习网络，其中各个子网会竞争 TAO 代币的发行权。该技能为代理提供了以下全部功能：
 
-- **Wallet Management**: Coldkey/hotkey operations, proxy relationships
-- **Staking Operations**: Stake/unstake TAO, auto-staking, safe staking
-- **Subnet Management**: Query subnet info, hyperparameters, registration
-- **Neuron Operations**: Register neurons, query metagraphs, weight management
-- **Emissions & Rewards**: Track emissions, claim root dividends, reward distribution
+- **钱包管理**：支持冷钥/热钥操作以及代理关系管理
+- **质押操作**：可以质押/解质押 TAO、自动质押以及安全质押
+- **子网管理**：查询子网信息、超参数以及子网注册
+- **神经元操作**：注册神经元、查询元图以及权重管理
+- **发行与奖励**：跟踪代币发行情况、领取根节点分红以及奖励分配
 
-## Key Concepts
+## 关键概念
 
-### Core Terminology
+### 核心术语
 
-- **Coldkey**: User's main wallet key for transfers and overall wallet management
-- **Hotkey**: Key used for neuron operations (mining/validation)
-- **Netuid**: Unique identifier for a subnet (0 = Root Subnet)
-- **UID**: Unique identifier for a neuron on a specific subnet
-- **Metagraph**: Complete state of a subnet at a given block
-- **TAO**: Base network token (1 TAO = 1e9 Rao)
-- **Alpha**: Subnet-specific token representing staked TAO
-- **Rao**: Smallest unit of TAO
+- **冷钥（Coldkey）**：用户用于转账和整体钱包管理的主钱包密钥
+- **热键（Hotkey）**：用于神经元操作（挖矿/验证）的密钥
+- **Netuid**：子网的唯一标识符（0 表示根子网）
+- **UID**：特定子网上神经元的唯一标识符
+- **元图（Metagraph）**：给定区块下子网的完整状态
+- **TAO**：基础网络代币（1 TAO = 1e9 Rao）
+- **Alpha**：代表已质押 TAO 的子网专用代币
+- **Rao**：TAO 的最小单位
 
-### Network Types
+### 网络类型
 
-- **finney**: Bittensor mainnet
-- **test**: Bittensor test network
-- **local**: Locally deployed blockchain
+- **finney**：Bittensor 主网
+- **test**：Bittensor 测试网络
+- **local**：本地部署的区块链
 
-## Installation
+## 安装
 
-### Prerequisites
+### 先决条件
 
 ```bash
 pip install bittensor>=8.0.0
 ```
 
-### Opencode Installation
+### Opencode 安装
 
 ```bash
 cp -r skills/bittensor-sdk ~/.opencode/skills/
 ```
 
-## How It Works
+## 工作原理
 
-### 1. Initialization
+### 1. 初始化
 
-The skill initializes the Subtensor interface for blockchain interaction:
+该技能会初始化 Subtensor 接口以进行区块链交互：
 
 ```python
 import bittensor as bt
@@ -78,7 +78,7 @@ subtensor = bt.Subtensor(
 )
 ```
 
-### 2. Wallet Setup
+### 2. 钱包设置
 
 ```python
 from bittensor import wallet
@@ -94,9 +94,9 @@ coldkey_balance = wallet.coldkey_balance
 print(f"Coldkey balance: {coldkey_balance}")
 ```
 
-### 3. Core Operations
+### 3. 核心操作
 
-#### Query Subnet Information
+#### 查询子网信息
 
 ```python
 # Get all subnet netuids
@@ -108,7 +108,7 @@ subnet_info = subtensor.get_subnet_info(netuid=1)
 print(f"Subnet 1 info: {subnet_info}")
 ```
 
-#### Stake TAO
+#### 质押 TAO
 
 ```python
 from bittensor import Balance
@@ -126,7 +126,7 @@ result = subtensor.add_stake(
 print(f"Stake result: {result}")
 ```
 
-#### Register Neuron
+#### 注册神经元
 
 ```python
 # Burned registration (recycle TAO)
@@ -142,7 +142,7 @@ result = subtensor.register(
 )
 ```
 
-#### Query Metagraph
+#### 查询元图
 
 ```python
 # Get metagraph for a subnet
@@ -154,7 +154,7 @@ print(f"Rewards: {metagraph.R}")
 print(f"Hotkeys: {metagraph.hotkeys}")
 ```
 
-#### Set Weights
+#### 设置权重
 
 ```python
 import numpy as np
@@ -173,9 +173,9 @@ result = subtensor.set_weights(
 )
 ```
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Complete Miner Setup
+### 示例 1：完整矿工设置
 
 ```python
 import bittensor as bt
@@ -210,7 +210,7 @@ print(f"My stake: {my_neuron.stake}")
 print(f"My emission: {my_neuron.emission}")
 ```
 
-### Example 2: Validator Operations
+### 示例 2：验证器操作
 
 ```python
 import bittensor as bt
@@ -246,12 +246,12 @@ result = subtensor.set_weights(
 print(f"Weights set: {result.success}")
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Connection Issues
+### 连接问题
 
-**Problem**: Unable to connect to network
-**Solution**:
+**问题**：无法连接到网络
+**解决方案**：
 ```python
 # Use fallback endpoints
 subtensor = bt.Subtensor(
@@ -264,85 +264,74 @@ subtensor = bt.Subtensor(
 )
 ```
 
-### Rate Limiting
+### 速率限制
 
-**Problem**: Too many requests error
-**Solution**:
+**问题**：请求过多导致错误
+**解决方案**：
 ```python
 import time
 time.sleep(1)  # Rate limit delays
 ```
 
-### Registration Failures
+### 注册失败
 
-**Problem**: Registration fails repeatedly
-**Solutions**:
-1. Check balance (need > 1 TAO for burn registration)
-2. Verify POW solution is correct
-3. Check network connectivity
-4. Try different registration method
+**问题**：注册多次失败
+**解决方案**：
+1. 检查余额（注册需要大于 1 TAO）
+2. 验证工作量证明（POW）是否正确
+3. 检查网络连接
+4. 尝试不同的注册方法
 
-### Wallet Issues
+### 钱包问题
 
-**Problem**: Wallet not found
-**Solution**:
+**问题**：找不到钱包
+**解决方案**：
 ```python
 # Create new wallet
 wallet = bt.Wallet(name="new_wallet", hotkey="new_hotkey")
 wallet.create_if_non_existing()
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always close connections**: Use `subtensor.close()` when done
-2. **Handle errors gracefully**: Use try-except blocks
-3. **Implement rate limiting**: Don't exceed network limits
-4. **Use MEV protection**: Enable for large transactions
-5. **Monitor emissions**: Track network health
-6. **Use safe staking**: Enable price protection
-7. **Keep keys secure**: Never expose private keys
+1. **始终关闭连接**：操作完成后使用 `subtensor.close()` 关闭连接
+2. **优雅地处理错误**：使用 try-except 语句捕获错误
+3. **实施速率限制**：不要超出网络规定的限制
+4. **启用 MEV 保护**：对于大额交易启用该保护机制
+5. **监控发行情况**：跟踪网络运行状态
+6. **使用安全质押**：启用价格保护功能
+7. **保护密钥安全**：切勿泄露私钥
 
-## Security Considerations
+## 安全注意事项
 
-1. **Private keys**: Never expose or log private keys
-2. **Seed phrases**: Store securely, never share
-3. **Transaction signing**: Always verify before signing
-4. **MEV protection**: Enable for large transactions
-5. **Proxy permissions**: Understand proxy types before delegating
-6. **Rate limiting**: Prevent DoS by respecting limits
+1. **私钥**：切勿泄露或记录私钥
+2. **助记词**：安全存储私钥，切勿分享
+3. **交易签名**：签名前务必进行验证
+4. **启用 MEV 保护**：对于大额交易启用该保护机制
+5. **代理权限**：在委托之前了解代理类型
+6. **实施速率限制**：遵守网络限制以防止拒绝服务攻击（DoS）
 
-## Present Results to Users
+## 向用户展示结果
 
-When presenting Bittensor SDK results to users:
+在向用户展示 Bittensor SDK 的结果时，请注意以下几点：
 
-1. **Format TAO amounts clearly**: Show both TAO and Rao when relevant
-2. **Explain network concepts**: Clarify coldkey/hotkey, netuid, UID for non-technical users
-3. **Highlight key metrics**: Emphasize important values like stake, emission, registration costs
-4. **Include relevant links**: Link to documentation for deeper exploration
-5. **Note risks**: Highlight potential issues like deregistration risk, rate limits
+1. **清晰显示 TAO 数量**：在相关情况下同时显示 TAO 和 Rao 的数值
+2. **解释网络概念**：为非技术用户解释冷钥/热键、Netuid 和 UID 的含义
+3. **突出关键指标**：强调质押量、发行量、注册成本等重要数值
+4. **提供相关链接**：提供文档链接以便用户进一步了解
+5. **提示风险**：提醒用户注意潜在问题，如解注册风险和速率限制
 
-Example output format:
-```
-=== Subnet 1 Status ===
-Neurons: 256 registered
-Total Stake: 125,450.5 TAO
-Emission: 0.123 TAO/block
-Registration Cost: 5.2 TAO
-Validator Take: 18%
-═══════════════════════════════════
-```
+## 参考资料
 
-## References
-
-- [Bittensor Documentation](https://docs.bittensor.com/)
-- [Bittensor SDK Reference](https://bittensor-sdk.readthedocs.io/)
-- [Learn Bittensor](https://docs.learnbittensor.org/)
+- [Bittensor 文档](https://docs.bittensor.com/)
+- [Bittensor SDK 参考手册](https://bittensor-sdk.readthedocs.io/)
+- [学习 Bittensor](https://docs.learnbittensor.org/)
 - [Taostats API](https://dash.taostats.io/)
-- [Bittensor GitHub](https://github.com/opentensor)
+- [Bittensor GitHub 仓库](https://github.com/opentensor)
 
-## Detailed Documentation
+## 详细文档
 
-For complete API reference, extended examples, and comprehensive troubleshooting, see:
-- [API Reference](references/API_REFERENCE.md) - Complete method documentation
-- [Extended Examples](references/API_REFERENCE.md#extended-examples) - Advanced usage patterns
-- [Quick Reference](references/API_REFERENCE.md#quick-reference-card) - Common operations summary
+如需完整的 API 参考、扩展示例和全面的故障排除指南，请参阅：
+- [API 参考](references/API_REFERENCE.md) - 完整的方法文档
+- [扩展示例](references/API_REFERENCE.md#extended-examples) - 高级使用模式
+- [快速参考](references/API_Reference.md#quick-reference-card) - 常见操作总结

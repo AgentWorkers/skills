@@ -17,9 +17,9 @@ metadata:
 
 # GitHub
 
-Access the GitHub REST API with managed OAuth authentication. Manage repositories, issues, pull requests, commits, branches, users, and more.
+您可以使用托管的 OAuth 认证来访问 GitHub REST API，从而管理仓库、问题、拉取请求、提交、分支、用户等。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get authenticated user
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/github/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual GitHub API endpoint path. The gateway proxies requests to `api.github.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 GitHub API 端点路径。该网关会将请求代理到 `api.github.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your GitHub OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 GitHub OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple GitHub connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 GitHub 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,53 +140,53 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Users
+### 用户
 
-#### Get Authenticated User
+#### 获取已认证的用户
 
 ```bash
 GET /github/user
 ```
 
-#### Get User by Username
+#### 按用户名获取用户
 
 ```bash
 GET /github/users/{username}
 ```
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /github/users?since={user_id}&per_page=30
 ```
 
-### Repositories
+### 仓库
 
-#### List User Repositories
+#### 列出用户的仓库
 
 ```bash
 GET /github/user/repos?per_page=30&sort=updated
 ```
 
-Query parameters: `type` (all, owner, public, private, member), `sort` (created, updated, pushed, full_name), `direction` (asc, desc), `per_page`, `page`
+查询参数：`type`（全部、所有者、公共、私有、成员）、`sort`（创建时间、更新时间、推送时间、全名）、`direction`（升序、降序）、`per_page`、`page`
 
-#### List Organization Repositories
+#### 列出组织的仓库
 
 ```bash
 GET /github/orgs/{org}/repos?per_page=30
 ```
 
-#### Get Repository
+#### 获取仓库信息
 
 ```bash
 GET /github/repos/{owner}/{repo}
 ```
 
-#### Create Repository (User)
+#### 创建仓库（用户）
 
 ```bash
 POST /github/user/repos
@@ -200,7 +200,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Repository (Organization)
+#### 创建仓库（组织）
 
 ```bash
 POST /github/orgs/{org}/repos
@@ -213,7 +213,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Repository
+#### 更新仓库
 
 ```bash
 PATCH /github/repos/{owner}/{repo}
@@ -226,27 +226,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Repository
+#### 删除仓库
 
 ```bash
 DELETE /github/repos/{owner}/{repo}
 ```
 
-### Repository Contents
+### 仓库内容
 
-#### List Contents
+#### 列出仓库内容
 
 ```bash
 GET /github/repos/{owner}/{repo}/contents/{path}
 ```
 
-#### Get File Contents
+#### 获取文件内容
 
 ```bash
 GET /github/repos/{owner}/{repo}/contents/{path}?ref={branch}
 ```
 
-#### Create or Update File
+#### 创建或更新文件
 
 ```bash
 PUT /github/repos/{owner}/{repo}/contents/{path}
@@ -259,9 +259,9 @@ Content-Type: application/json
 }
 ```
 
-Note: `content` must be Base64 encoded.
+注意：`content` 必须使用 Base64 编码。
 
-#### Delete File
+#### 删除文件
 
 ```bash
 DELETE /github/repos/{owner}/{repo}/contents/{path}
@@ -274,21 +274,21 @@ Content-Type: application/json
 }
 ```
 
-### Branches
+### 分支
 
-#### List Branches
+#### 列出分支
 
 ```bash
 GET /github/repos/{owner}/{repo}/branches?per_page=30
 ```
 
-#### Get Branch
+#### 获取分支信息
 
 ```bash
 GET /github/repos/{owner}/{repo}/branches/{branch}
 ```
 
-#### Rename Branch
+#### 重命名分支
 
 ```bash
 POST /github/repos/{owner}/{repo}/branches/{branch}/rename
@@ -299,7 +299,7 @@ Content-Type: application/json
 }
 ```
 
-#### Merge Branches
+#### 合并分支
 
 ```bash
 POST /github/repos/{owner}/{repo}/merges
@@ -312,45 +312,45 @@ Content-Type: application/json
 }
 ```
 
-### Commits
+### 提交
 
-#### List Commits
+#### 列出提交记录
 
 ```bash
 GET /github/repos/{owner}/{repo}/commits?per_page=30
 ```
 
-Query parameters: `sha` (branch name or commit SHA), `path` (file path), `author`, `committer`, `since`, `until`, `per_page`, `page`
+查询参数：`sha`（分支名称或提交 SHA）、`path`（文件路径）、`author`、`committer`、`since`、`until`、`per_page`、`page`
 
-#### Get Commit
+#### 获取提交信息
 
 ```bash
 GET /github/repos/{owner}/{repo}/commits/{ref}
 ```
 
-#### Compare Two Commits
+#### 比较两个提交记录
 
 ```bash
 GET /github/repos/{owner}/{repo}/compare/{base}...{head}
 ```
 
-### Issues
+### 问题
 
-#### List Repository Issues
+#### 列出仓库中的问题
 
 ```bash
 GET /github/repos/{owner}/{repo}/issues?state=open&per_page=30
 ```
 
-Query parameters: `state` (open, closed, all), `labels`, `assignee`, `creator`, `mentioned`, `sort`, `direction`, `since`, `per_page`, `page`
+查询参数：`state`（开放、关闭、全部）、`labels`、`assignee`、`creator`、`mentioned`、`sort`、`direction`、`since`、`per_page`、`page`
 
-#### Get Issue
+#### 获取问题信息
 
 ```bash
 GET /github/repos/{owner}/{repo}/issues/{issue_number}
 ```
 
-#### Create Issue
+#### 创建问题
 
 ```bash
 POST /github/repos/{owner}/{repo}/issues
@@ -364,7 +364,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Issue
+#### 更新问题
 
 ```bash
 PATCH /github/repos/{owner}/{repo}/issues/{issue_number}
@@ -376,7 +376,7 @@ Content-Type: application/json
 }
 ```
 
-#### Lock Issue
+#### 锁定问题
 
 ```bash
 PUT /github/repos/{owner}/{repo}/issues/{issue_number}/lock
@@ -387,21 +387,21 @@ Content-Type: application/json
 }
 ```
 
-#### Unlock Issue
+#### 解锁问题
 
 ```bash
 DELETE /github/repos/{owner}/{repo}/issues/{issue_number}/lock
 ```
 
-### Issue Comments
+### 问题评论
 
-#### List Issue Comments
+#### 列出问题评论
 
 ```bash
 GET /github/repos/{owner}/{repo}/issues/{issue_number}/comments?per_page=30
 ```
 
-#### Create Issue Comment
+#### 创建问题评论
 
 ```bash
 POST /github/repos/{owner}/{repo}/issues/{issue_number}/comments
@@ -412,7 +412,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Issue Comment
+#### 更新问题评论
 
 ```bash
 PATCH /github/repos/{owner}/{repo}/issues/comments/{comment_id}
@@ -423,21 +423,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Issue Comment
+#### 删除问题评论
 
 ```bash
 DELETE /github/repos/{owner}/{repo}/issues/comments/{comment_id}
 ```
 
-### Labels
+### 标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /github/repos/{owner}/{repo}/labels?per_page=30
 ```
 
-#### Create Label
+#### 创建标签
 
 ```bash
 POST /github/repos/{owner}/{repo}/labels
@@ -450,15 +450,15 @@ Content-Type: application/json
 }
 ```
 
-### Milestones
+### 里程碑
 
-#### List Milestones
+#### 列出里程碑
 
 ```bash
 GET /github/repos/{owner}/{repo}/milestones?state=open&per_page=30
 ```
 
-#### Create Milestone
+#### 创建里程碑
 
 ```bash
 POST /github/repos/{owner}/{repo}/milestones
@@ -472,23 +472,23 @@ Content-Type: application/json
 }
 ```
 
-### Pull Requests
+### 拉取请求
 
-#### List Pull Requests
+#### 列出拉取请求
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls?state=open&per_page=30
 ```
 
-Query parameters: `state` (open, closed, all), `head`, `base`, `sort`, `direction`, `per_page`, `page`
+查询参数：`state`（开放、关闭、全部）、`head`、`base`、`sort`、`direction`、`per_page`、`page`
 
-#### Get Pull Request
+#### 获取拉取请求信息
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls/{pull_number}
 ```
 
-#### Create Pull Request
+#### 创建拉取请求
 
 ```bash
 POST /github/repos/{owner}/{repo}/pulls
@@ -503,7 +503,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Pull Request
+#### 更新拉取请求
 
 ```bash
 PATCH /github/repos/{owner}/{repo}/pulls/{pull_number}
@@ -515,25 +515,25 @@ Content-Type: application/json
 }
 ```
 
-#### List Pull Request Commits
+#### 列出拉取请求的提交记录
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls/{pull_number}/commits?per_page=30
 ```
 
-#### List Pull Request Files
+#### 列出拉取请求的文件
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls/{pull_number}/files?per_page=30
 ```
 
-#### Check If Merged
+#### 检查是否已合并
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls/{pull_number}/merge
 ```
 
-#### Merge Pull Request
+#### 合并拉取请求
 
 ```bash
 PUT /github/repos/{owner}/{repo}/pulls/{pull_number}/merge
@@ -545,17 +545,17 @@ Content-Type: application/json
 }
 ```
 
-Merge methods: `merge`, `squash`, `rebase`
+合并方法：`merge`、`squash`、`rebase`
 
-### Pull Request Reviews
+### 拉取请求的审阅
 
-#### List Reviews
+#### 列出审阅记录
 
 ```bash
 GET /github/repos/{owner}/{repo}/pulls/{pull_number}/reviews?per_page=30
 ```
 
-#### Create Review
+#### 创建审阅
 
 ```bash
 POST /github/repos/{owner}/{repo}/pulls/{pull_number}/reviews
@@ -567,79 +567,79 @@ Content-Type: application/json
 }
 ```
 
-Events: `APPROVE`, `REQUEST_CHANGES`, `COMMENT`
+事件：`APPROVE`、`REQUEST_CHANGES`、`COMMENT`
 
-### Search
+### 搜索
 
-#### Search Repositories
+#### 搜索仓库
 
 ```bash
 GET /github/search/repositories?q={query}&per_page=30
 ```
 
-Example queries:
-- `tetris+language:python` - Repositories with "tetris" in Python
-- `react+stars:>10000` - Repositories with "react" and 10k+ stars
+示例查询：
+- `tetris+language:python` - 包含 “tetris” 且使用 Python 语言的仓库
+- `react+stars:>10000` - 包含 “react” 且星标数量超过 10,000 的仓库
 
-#### Search Issues
+#### 搜索问题
 
 ```bash
 GET /github/search/issues?q={query}&per_page=30
 ```
 
-Example queries:
-- `bug+is:open+is:issue` - Open issues containing "bug"
-- `author:username+is:pr` - Pull requests by author
+示例查询：
+- `bug+is:open+is:issue` - 包含 “bug” 且状态为开放的问题的仓库
+- `author:username+is:pr` - 由特定作者创建的拉取请求
 
-#### Search Code
+#### 搜索代码
 
 ```bash
 GET /github/search/code?q={query}&per_page=30
 ```
 
-Example queries:
-- `addClass+repo:facebook/react` - Search for "addClass" in a specific repo
-- `function+extension:js` - JavaScript functions
+示例查询：
+- `addClass+repo:facebook/react` - 在特定仓库中搜索 “addClass” 这个函数
+- `function+extension:js` - 搜索 JavaScript 函数
 
-Note: Code search may timeout on broad queries.
+注意：对于范围较广的搜索，可能会超时。
 
-#### Search Users
+#### 搜索用户
 
 ```bash
 GET /github/search/users?q={query}&per_page=30
 ```
 
-### Organizations
+### 组织
 
-#### List User Organizations
+#### 列出用户所属的组织
 
 ```bash
 GET /github/user/orgs?per_page=30
 ```
 
-Note: Requires `read:org` scope.
+注意：需要 `read:org` 权限。
 
-#### Get Organization
+#### 获取组织信息
 
 ```bash
 GET /github/orgs/{org}
 ```
 
-#### List Organization Members
+#### 列出组织成员
 
 ```bash
 GET /github/orgs/{org}/members?per_page=30
 ```
 
-### Rate Limit
+### 速率限制
 
-#### Get Rate Limit
+#### 获取速率限制信息
 
 ```bash
 GET /github/rate_limit
 ```
 
-Response:
+**响应：**
 ```json
 {
   "rate": {
@@ -654,24 +654,24 @@ Response:
 }
 ```
 
-## Pagination
+## 分页
 
-GitHub uses page-based and link-based pagination:
+GitHub 使用基于页面和链接的分页方式：
 
 ```bash
 GET /github/repos/{owner}/{repo}/issues?per_page=30&page=2
 ```
 
-Response headers include pagination links:
+响应头包含分页链接：
 - `Link: <url>; rel="next", <url>; rel="last"`
 
-Common pagination parameters:
-- `per_page`: Results per page (max 100, default 30)
-- `page`: Page number (default 1)
+常见的分页参数：
+- `per_page`：每页显示的结果数量（最大 100 个，默认为 30 个）
+- `page`：页码（默认为 1）
 
-Some endpoints use cursor-based pagination with `since` parameter (e.g., listing users).
+某些端点使用基于游标的分页方式，需要 `since` 参数（例如，列出用户时）。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -701,39 +701,39 @@ response = requests.get(
 issues = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Repository names are case-insensitive but the API preserves case
-- Issue numbers and PR numbers share the same sequence per repository
-- Content must be Base64 encoded when creating/updating files
-- Rate limits: 5000 requests/hour for authenticated users, 30 searches/minute
-- Search queries may timeout on very broad patterns
-- Some endpoints require specific OAuth scopes (e.g., `read:org` for organization operations). If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 仓库名称不区分大小写，但 API 会保留大小写。
+- 问题编号和拉取请求编号在每个仓库中具有相同的顺序。
+- 创建/更新文件时，内容必须使用 Base64 编码。
+- 认证用户的请求速率限制为每小时 5000 次；搜索操作每分钟 30 次。
+- 对于范围非常广泛的搜索，可能会超时。
+- 某些端点需要特定的 OAuth 权限范围（例如，操作组织需要 `read:org`）。如果您收到权限范围错误，请通过 support@maton.ai 联系 Maton 支持团队，提供所需的操作/API 和您的使用场景。
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing GitHub connection |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions or scope |
-| 404 | Resource not found |
-| 408 | Request timeout (common for complex searches) |
-| 422 | Validation failed |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from GitHub API |
+| 400 | 未建立 GitHub 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 禁止访问 - 权限不足或权限范围不正确 |
+| 404 | 资源未找到 |
+| 408 | 请求超时（常见于复杂的搜索操作） |
+| 422 | 验证失败 |
+| 429 | 达到速率限制 |
+| 4xx/5xx | 来自 GitHub API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -744,20 +744,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `github`. For example:
+1. 确保您的 URL 路径以 `github` 开头。例如：
+- 正确：`https://gateway.maton.ai/github/user`
+- 错误：`https://gateway.maton.ai/api.github.com/user`
 
-- Correct: `https://gateway.maton.ai/github/user`
-- Incorrect: `https://gateway.maton.ai/api.github.com/user`
+## 资源
 
-## Resources
-
-- [GitHub REST API Documentation](https://docs.github.com/en/rest)
-- [Repositories API](https://docs.github.com/en/rest/repos/repos)
-- [Issues API](https://docs.github.com/en/rest/issues/issues)
-- [Pull Requests API](https://docs.github.com/en/rest/pulls/pulls)
-- [Search API](https://docs.github.com/en/rest/search/search)
-- [Rate Limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [GitHub REST API 文档](https://docs.github.com/en/rest)
+- [仓库 API](https://docs.github.com/en/rest/repos/repos)
+- [问题 API](https://docs.github.com/en/rest/issues/issues)
+- [拉取请求 API](https://docs.github.com/en/rest/pulls/pulls)
+- [搜索 API](https://docs.github.com/en/rest/search/search)
+- [速率限制](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

@@ -1,16 +1,16 @@
 ---
 name: trustra-escrow
 version: 1.0.0
-description: Escrow as a Service for AI agents. Create trustless USDC escrow transactions on Solana.
+description: **作为AI代理的服务的托管服务：在Solana网络上创建无需信任的USDC托管交易。**
 homepage: https://trustra.xyz
 metadata: {"emoji":"🔐","category":"payments","api_base":"https://api.trustra.xyz/api/v2"}
 ---
 
 # Trustra Escrow 🔐
 
-Trustless USDC escrow for agent-to-agent transactions on Solana.
+Trustra Escrow 是一个基于 Solana 的去中心化解决方案，用于处理代理之间的 USDC（Uniswap Stablecoin）交易。
 
-## I Want To BUY Something (Pay Someone)
+## 我想购买商品（向某人付款）
 
 ```bash
 # 1. Register (once)
@@ -29,9 +29,9 @@ python escrow_pay.py <ESCROW_ID>
 python escrow_confirm.py <ESCROW_ID>
 ```
 
-**If there's a problem:** `python escrow_dispute.py <ESCROW_ID> --reason "Issue description"`
+**如果出现问题：** `python escrow_dispute.py <ESCROW_ID> --reason "问题描述"` |
 
-## I Want To SELL Something (Receive Payment)
+## 我想出售商品（接收付款）
 
 ```bash
 # 1. Register (once)
@@ -50,23 +50,23 @@ python escrow_deliver.py <ESCROW_ID>
 python escrow_withdraw.py <ESCROW_ID>  # After 7 days if no response
 ```
 
-## Quick Reference
+## 快速参考
 
-| Action | Command |
+| 动作 | 命令 |
 |--------|---------|
-| Register | `python register.py --name "Agent Name"` |
-| Balance | `python balance.py` |
-| Create escrow | `python escrow_create.py <WALLET> <AMOUNT> [-d "desc"]` |
-| Pay escrow | `python escrow_pay.py <ID>` |
-| List escrows | `python escrow_list.py [--status STATUS]` |
-| Mark delivered | `python escrow_deliver.py <ID>` (seller) |
-| Confirm release | `python escrow_confirm.py <ID>` (buyer) |
-| Dispute | `python escrow_dispute.py <ID> --reason "..."` |
-| Cancel | `python escrow_cancel.py <ID>` (buyer, before delivery) |
-| Withdraw | `python escrow_withdraw.py <ID>` (seller, after 7d) |
-| Export key | `python export_key.py` |
+| 注册 | `python register.py --name "代理名称"` |
+| 查看余额 | `python balance.py` |
+| 创建托管账户 | `python escrow_create.py <钱包> <金额> [-d "描述"]` |
+| 向托管账户付款 | `python escrow_pay.py <ID>` |
+| 列出托管账户 | `python escrow_list.py [--status 状态]` |
+| 标记商品已交付 | `python escrow_deliver.py <ID>` （卖家） |
+| 确认释放资金 | `python escrow_confirm.py <ID>` （买家） |
+| 争议处理 | `python escrow_dispute.py <ID> --reason "..."` |
+| 取消交易 | `python escrow_cancel.py <ID>` （买家，仅在商品交付前） |
+| 提取资金 | `python escrow_withdraw.py <ID>` （卖家，7 天后） |
+| 导出 API 密钥 | `python export_key.py` |
 
-## Escrow Flow
+## 托管账户流程
 
 ```
 BUYER creates escrow → BUYER pays → (12h wait) → SELLER delivers → BUYER confirms
@@ -76,45 +76,45 @@ If problem: Either party can DISPUTE → Trustra resolves
 If no response: SELLER can WITHDRAW after 7 days
 ```
 
-## Escrow Statuses
+## 托管账户状态
 
-| Status | Who acts next? |
+| 状态 | 下一步应由谁操作？ |
 |--------|----------------|
-| `created` | Buyer pays |
-| `paid` | Seller delivers (after 12h wait) |
-| `delivered` | Buyer confirms (or wait 7d) |
-| `completed` | Done - funds released |
-| `disputed` | Trustra team resolves |
-| `canceled` | Escrow canceled |
-| `withdrawn` | Seller got funds after 7d |
+| `created` | 买家付款 |
+| `paid` | 卖家交付商品（等待 12 小时） |
+| `delivered` | 买家确认（或等待 7 天） |
+| `completed` | 交易完成，资金释放 |
+| `disputed` | Trustra 团队处理争议 |
+| `canceled` | 交易取消 |
+| `withdrawn` | 卖家在 7 天后提取资金 |
 
-## Time Constraints
+## 时间限制
 
-| Constraint | Duration | Purpose |
+| 限制 | 期限 | 目的 |
 |------------|----------|---------|
-| Cancel window | 12 hours | Buyer can cancel within 12h after paying |
-| Seller deliver | After 12h | Seller can only mark delivered after cancel window |
-| Auto-release | 7 days | Seller can withdraw if buyer doesn't respond |
+| 取消窗口 | 12 小时 | 买家在付款后 12 小时内可以取消交易 |
+| 卖家交付商品 | 12 小时后 | 卖家只能在取消窗口过后标记商品已交付 |
+| 自动释放资金 | 7 天后 | 如果买家未回应，卖家可以提取资金 |
 
-## Setup (one-time)
+## 设置（一次性操作）
 
 ```bash
 python register.py --name "My Agent"
 ```
 
-Creates a managed wallet + API key stored in `credentials.json`. Fund wallet with SOL (for tx fees) and USDC to use escrows.
+创建一个托管钱包，并生成 API 密钥（存储在 `credentials.json` 文件中）。用 SOL（交易费用）和 USDC 填充钱包，以便使用托管服务。
 
-## Errors
+## 错误处理
 
-| Error | Fix |
+| 错误 | 解决方案 |
 |-------|-----|
-| `No API key found` | Run `register.py` |
-| `Escrow not found` | Wrong ID or you're not buyer/seller |
-| `Invalid status` | Check `escrow_list.py` for current status |
-| `CancelDurationNotEnded` | Wait 12 hours after payment to mark delivered |
-| `Too early to withdraw` | Wait 7 days after delivery |
+| 未找到 API 密钥 | 运行 `register.py` 命令进行注册 |
+| 托管账户未找到 | ID 错误或您不是买家/卖家 |
+| 状态无效 | 查看 `escrow_list.py` 以获取当前状态 |
+| 取消窗口未结束 | 付款后等待 12 小时再标记商品已交付 |
+| 提取资金过早 | 商品交付后等待 7 天再提取资金 |
 
-## Credentials
+## 认证信息
 
 ```json
 {
@@ -123,4 +123,4 @@ Creates a managed wallet + API key stored in `credentials.json`. Fund wallet wit
 }
 ```
 
-Never share your API key.
+请勿泄露您的 API 密钥。

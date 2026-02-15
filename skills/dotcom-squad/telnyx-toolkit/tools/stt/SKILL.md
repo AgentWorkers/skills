@@ -1,24 +1,24 @@
 ---
 name: telnyx-stt
-description: Transcribe audio files to text using Telnyx Speech-to-Text API. Use when you need to convert audio recordings, voice messages, or spoken content to text.
+description: 使用 Telnyx 的 Speech-to-Text API 将音频文件转换为文本。当您需要将音频记录、语音消息或口语内容转换为文本时，可以使用该服务。
 metadata: {"openclaw":{"emoji":"🎤","requires":{"bins":["python3"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# Telnyx Speech-to-Text
+# Telnyx 语音转文本功能
 
-Transcribe audio files to text using the Telnyx STT API (powered by Whisper).
+使用 Telnyx 的 STT（Speech-to-Text）API（该 API 基于 Whisper 技术实现）将音频文件转换为文本。
 
-## Usage
+## 使用方法
 
-To transcribe an audio file, run:
+要转录音频文件，请运行以下命令：
 
 ```bash
 {baseDir}/scripts/telnyx-stt.py /path/to/audio.mp3
 ```
 
-The script outputs the transcribed text to stdout.
+脚本会将转录后的文本输出到标准输出（stdout）。
 
-## Supported Formats
+## 支持的音频格式
 
 - MP3
 - WAV
@@ -26,17 +26,17 @@ The script outputs the transcribed text to stdout.
 - M4A
 - WebM
 
-## Example
+## 示例
 
 ```bash
 {baseDir}/scripts/telnyx-stt.py /tmp/voice-message.ogg
 ```
 
-Output:
+输出结果：
 ```
 Hello, this is a test transcription.
 ```
 
-## Environment
+## 环境要求
 
-Requires `TELNYX_API_KEY` environment variable to be set.
+需要设置 `TELNYX_API_KEY` 环境变量。

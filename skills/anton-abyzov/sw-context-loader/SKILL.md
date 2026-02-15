@@ -1,356 +1,219 @@
 ---
 name: context-loader
-description: Explains how SpecWeave achieves context efficiency through Claude's native progressive disclosure and sub-agent parallelization. Use when asking about token usage, context management, or how SpecWeave scales with large projects. Leverages Claude's built-in mechanisms without custom caching.
+description: **说明 SpecWeave 如何通过 Claude 的原生渐进式数据披露机制及子代理并行化技术来实现上下文处理的高效性。**  
+适用于询问令牌使用方式、上下文管理机制，或 SpecWeave 在处理大型项目时的扩展能力。该内容详细阐述了 SpecWeave 如何利用 Claude 的内置功能（而无需进行自定义缓存处理）。
 ---
 
-# Context Management in SpecWeave
+# SpecWeave中的上下文管理
 
-## Overview
+## 概述
 
-SpecWeave achieves efficient context usage through **two native Claude Code mechanisms**:
+SpecWeave通过**两种Claude Code的原生机制**实现了高效的上下文使用：
 
-1. **Progressive Disclosure** (Skills) - Claude's built-in skill loading system
-2. **Sub-Agent Parallelization** - Isolated context windows for parallel work
+1. **渐进式加载**（Skills）——Claude内置的技能加载系统
+2. **子代理并行化**——用于并行工作的隔离上下文窗口
 
-**Important**: SpecWeave does NOT use custom context manifests or caching systems. It leverages Claude's native capabilities.
-
----
-
-## 1. Progressive Disclosure (Skills)
-
-### How It Works
-
-Claude Code uses a **two-level progressive disclosure system** for skills:
-
-#### Level 1: Metadata Only (Always Loaded)
-
-```yaml
----
-name: nextjs
-description: NextJS 14+ implementation specialist. Creates App Router projects...
----
-```
-
-**What Claude sees initially:**
-- Only the YAML frontmatter (name + description)
-- ~50-100 tokens per skill
-- **All** skills' metadata is visible
-- Claude can decide which skills are relevant
-
-#### Level 2: Full Skill Content (Loaded On-Demand)
-
-```markdown
-# NextJS Skill
-
-[Full documentation, examples, best practices...]
-[Could be 5,000+ tokens]
-```
-
-**What Claude loads:**
-- Full SKILL.md content **only if** skill is relevant to current task
-- Prevents loading 35+ skills (175,000+ tokens) when you only need 2-3
-- **This is the actual mechanism** that saves tokens
-
-### Example Workflow
-
-```
-User: "Create a Next.js authentication page"
-    ↓
-Claude reviews skill metadata (35 skills × 75 tokens = 2,625 tokens)
-    ↓
-Claude determines relevant skills:
-  - nextjs (matches "Next.js")
-  - frontend (matches "page")
-  - (NOT loading: python-backend, devops, hetzner-provisioner, etc.)
-    ↓
-Claude loads ONLY relevant skills:
-  - nextjs: 5,234 tokens
-  - frontend: 3,891 tokens
-    ↓
-Total loaded: 9,125 tokens (vs 175,000+ if loading all skills)
-Token reduction: ~95%
-```
-
-### References
-
-- [What are Skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
-- [Agent Skills Engineering](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
-
-> "Skills work through progressive disclosure—Claude determines which Skills are relevant and loads the information it needs to complete that task, helping to prevent context window overload."
+**重要提示**：SpecWeave不使用自定义的上下文管理机制或缓存系统，而是充分利用Claude的原生功能。
 
 ---
 
-## 2. Sub-Agent Parallelization
+## 1. 渐进式加载（Skills）
 
-### How It Works
+### 工作原理
 
-Sub-agents in Claude Code have **isolated context windows**:
+Claude Code使用**两级渐进式加载机制**来加载技能：
 
-```
-Main conversation (100K tokens used)
-    ↓
-Launches 3 sub-agents in parallel
-    ↓
-├─ Sub-agent 1: Fresh context (0K tokens used)
-├─ Sub-agent 2: Fresh context (0K tokens used)
-└─ Sub-agent 3: Fresh context (0K tokens used)
-```
+#### 第一级：仅加载元数据（始终加载）
 
-**Benefits:**
+**Claude最初看到的内容：**
+- 仅加载YAML格式的前缀信息（技能名称和描述）
+- 每个技能大约包含50-100个标记（tokens）
+- 所有技能的元数据都可见
+- Claude可以判断哪些技能与当前任务相关
 
-1. **Context Isolation**
-   - Each sub-agent starts with empty context
-   - Doesn't inherit main conversation's 100K tokens
-   - Can load its own relevant skills
+#### 第二级：按需加载完整技能内容
 
-2. **Parallelization**
-   - Multiple agents work simultaneously
-   - Each with own context budget
-   - Results merged back to main conversation
+**Claude会加载的内容：**
+- **仅当**某个技能与当前任务相关时，才会加载该技能的完整内容
+- 这种机制可以避免在只需要2-3个技能时加载35个或更多技能（每个技能可能包含175,000多个标记），从而节省标记资源
 
-3. **Token Multiplication**
-   - Main: 200K token limit
-   - Sub-agent 1: 200K token limit
-   - Sub-agent 2: 200K token limit
-   - **Effective capacity**: 600K+ tokens across parallel work
-
-### Example Workflow
-
-```
-User: "Build a full-stack Next.js app with auth, payments, and admin"
-    ↓
-Main conversation launches 3 sub-agents in parallel:
-    ↓
-├─ Sub-agent 1 (Frontend)
-│  - Loads: nextjs, frontend skills
-│  - Context: 12K tokens
-│  - Implements: Auth UI, payment forms
-│
-├─ Sub-agent 2 (Backend)
-│  - Loads: nodejs-backend, security skills
-│  - Context: 15K tokens
-│  - Implements: API routes, auth logic
-│
-└─ Sub-agent 3 (DevOps)
-   - Loads: devops, hetzner-provisioner skills
-   - Context: 8K tokens
-   - Implements: Deployment configs
-    ↓
-All 3 work in parallel with isolated contexts
-    ↓
-Results merged back to main conversation
-    ↓
-Total effective context: 35K tokens across 3 agents
-(vs 175K+ if loaded all skills in main conversation)
-```
-
-### References
-
-- [Sub-Agents Documentation](https://docs.claude.com/en/docs/claude-code/sub-agents)
+### 示例工作流程
 
 ---
 
-## Actual Token Savings
+### 参考资料
+- [什么是Skills？](https://support.claude.com/en/articles/12512176-what-are-skills)
+- [代理技能工程](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
-### Progressive Disclosure Savings
-
-**Scenario**: User asks about Next.js
-
-**Without progressive disclosure:**
-```
-Load all 35 skills: ~175,000 tokens
-Context bloat: Massive
-```
-
-**With progressive disclosure:**
-```
-Metadata (all skills): ~2,625 tokens
-Load relevant (2 skills): ~9,000 tokens
-Total: ~11,625 tokens
-Reduction: ~93%
-```
-
-### Sub-Agent Savings
-
-**Scenario**: Complex multi-domain task
-
-**Single agent approach:**
-```
-Load all relevant skills: ~50,000 tokens
-Main conversation history: ~80,000 tokens
-Total context used: ~130,000 tokens
-Risk: Approaching context limit
-```
-
-**Sub-agent approach:**
-```
-Main conversation: ~5,000 tokens (coordination only)
-Sub-agent 1: ~15,000 tokens (isolated)
-Sub-agent 2: ~18,000 tokens (isolated)
-Sub-agent 3: ~12,000 tokens (isolated)
-Total: ~50,000 tokens across 4 contexts
-Reduction: ~62% (130K → 50K)
-```
-
-**Note**: Exact percentages vary by task complexity. These are approximate based on typical usage patterns.
+> “Skills通过渐进式加载机制进行工作——Claude会判断哪些技能与任务相关，并仅加载完成任务所需的信息，从而防止上下文窗口过载。”
 
 ---
 
-## How SpecWeave Leverages These Mechanisms
+## 2. 子代理并行化
 
-### 1. Skill Organization (Progressive Disclosure)
+### 工作原理
 
-SpecWeave organizes **35+ skills** with clear, focused descriptions:
+Claude Code中的子代理拥有**隔离的上下文窗口**：
 
-```yaml
-# Good: Focused description
----
-name: nextjs
-description: NextJS 14+ App Router specialist. Server Components, SSR, routing.
----
+**优点：**
+1. **上下文隔离**：
+   - 每个子代理从空上下文状态开始
+   - 不会继承主线对话中的100,000个标记
+   - 可以加载自己相关的技能
 
-# Bad: Vague description
----
-name: frontend
-description: Does frontend stuff
----
-```
+2. **并行处理**：
+   - 多个代理可以同时工作
+   - 每个代理都有自己的上下文资源限制
+   - 处理结果会被合并回主线对话中
 
-**Why this matters:**
-- Clear descriptions help Claude identify relevance quickly
-- Prevents loading irrelevant skills
-- Maximizes progressive disclosure benefits
+3. **标记资源优化**：
+   - 主线对话的标记限制为200,000个
+   - 子代理1的标记限制也为200,000个
+   - 子代理2的标记限制同样为200,000个
+   - **实际处理能力**：通过并行处理，总标记量可达到600,000个以上
 
-### 2. Agent Coordination (Sub-Agent Parallelization)
-
-SpecWeave's **role-orchestrator** skill automatically:
-- Detects multi-domain tasks
-- Launches specialized sub-agents (PM, Architect, DevOps, etc.)
-- Each sub-agent loads only its relevant skills
-- Coordinates results back to main conversation
-
-**Example:**
-
-```
-User: "/sw:inc 'Full-stack SaaS with Stripe payments'"
-    ↓
-role-orchestrator activates
-    ↓
-Launches sub-agents in parallel:
-  ├─ PM agent (requirements)
-  ├─ Architect agent (system design)
-  ├─ Security agent (threat model)
-  └─ DevOps agent (deployment)
-    ↓
-Each loads only relevant skills in isolated context
-    ↓
-Results merged into increment spec
-```
+### 示例工作流程
 
 ---
 
-## Common Misconceptions
-
-### ❌ Myth 1: "SpecWeave has custom context manifests"
-
-**Reality:** No. SpecWeave uses Claude's native progressive disclosure. Skills load based on Claude's relevance detection, not custom YAML manifests.
-
-### ❌ Myth 2: "SpecWeave caches loaded context"
-
-**Reality:** No custom caching. Claude Code handles caching internally (if applicable). SpecWeave doesn't implement additional caching layers.
-
-### ❌ Myth 3: "70-90% token reduction"
-
-**Reality:** Token savings vary by task:
-- Simple tasks: 90%+ (load 1-2 skills vs all 35)
-- Complex tasks: 50-70% (load 5-10 skills + use sub-agents)
-- Exact percentages depend on task complexity
-
-### ✅ Truth: "It just works"
-
-**Reality:** Progressive disclosure and sub-agents are **automatic**. You don't configure them. Claude handles skill loading, sub-agent context isolation happens automatically when agents are launched.
+### 参考资料
+- [子代理文档](https://docs.claude.com/en/docs/claude-code/sub-agents)
 
 ---
 
-## Best Practices
+## 实际的标记资源节省效果
 
-### For Skill Descriptions
+### 渐进式加载的节省效果
 
-**Do:**
-- Be specific about what the skill does
-- Include trigger keywords users might say
-- List technologies/frameworks explicitly
+**场景**：用户询问关于Next.js的信息
 
-**Don't:**
-- Write vague descriptions ("helps with coding")
-- Omit key activation triggers
-- Mix multiple unrelated domains in one skill
+**不使用渐进式加载时：**
+---
 
-### For Sub-Agent Usage
+**使用渐进式加载时：**
+---
 
-**When to use sub-agents:**
-- Multi-domain tasks (frontend + backend + devops)
-- Parallel work (multiple features simultaneously)
-- Large codebase exploration (different modules)
+### 子代理的节省效果
 
-**When NOT to use sub-agents:**
-- Simple single-domain tasks
-- Sequential work requiring shared context
-- When main conversation context is already low
+**场景**：复杂的跨领域任务
+
+**单代理处理方式：**
+---
+
+**子代理处理方式：**
+---
+
+**注意**：具体的节省百分比会因任务复杂性而有所不同。这些数据是基于典型使用模式估算的。
 
 ---
 
-## Debugging Context Usage
+## SpecWeave如何利用这些机制
 
-### Check Active Skills
+### 1. 技能组织（渐进式加载）
 
-When Claude mentions using a skill:
+SpecWeave对**35个以上的技能**进行了清晰、有针对性的描述：
 
-```
-User: "Create a Next.js page"
-Claude: "🎨 Using nextjs skill..."
-```
+**这样做的好处：**
+- 清晰的描述有助于Claude快速判断技能的相关性
+- 避免加载不相关的技能
+- 最大化渐进式加载带来的效率提升
 
-**This means:**
-- Progressive disclosure worked
-- Only nextjs skill loaded (not all 35)
-- Context efficient
+### 2. 代理协调（子代理并行化）
 
-### Check Sub-Agent Usage
+SpecWeave的**角色编排器**技能会自动：
+- 检测跨领域任务
+- 启动相应的子代理（如项目经理、架构师、DevOps等）
+- 每个子代理仅加载与其任务相关的技能
+- 将处理结果合并回主线对话中
 
-When Claude mentions launching agents:
-
-```
-Claude: "🤖 Launching 3 specialized agents in parallel..."
-```
-
-**This means:**
-- Sub-agent parallelization active
-- Each agent has isolated context
-- Efficient multi-domain processing
+**示例：**
 
 ---
 
-## Summary
+## 常见误解
 
-SpecWeave achieves context efficiency through:
+### ❌ 误解1：“SpecWeave使用了自定义的上下文管理机制”
 
-1. **Progressive Disclosure (Native Claude)**
-   - Skills load only when relevant
-   - Metadata-first approach
-   - 90%+ savings on simple tasks
+**事实**：SpecWeave使用的是Claude的原生渐进式加载机制。技能的加载基于Claude的自动相关性判断，而非自定义的YAML文件。
 
-2. **Sub-Agent Parallelization (Native Claude Code)**
-   - Isolated context windows
-   - Parallel processing
-   - 50-70% savings on complex tasks
+### ❌ 误解2：“SpecWeave会缓存已加载的上下文”
 
-**No custom manifests. No custom caching. Just smart use of Claude's native capabilities.**
+**事实**：SpecWeave没有使用自定义缓存机制。Claude Code内部处理缓存（如果适用的话），但SpecWeave本身不添加额外的缓存层。
+
+### ❌ 误解3：“能够节省70-90%的标记资源”
+
+**事实**：标记资源的节省比例因任务而异：
+- 简单任务：节省90%以上（只需加载1-2个技能，而非全部35个）
+- 复杂任务：节省50-70%（加载5-10个技能，并使用子代理）
+- 具体百分比取决于任务的复杂性
+
+### ✅ 真相：“这一切都是自动完成的”
+
+**事实**：渐进式加载和子代理的机制都是自动执行的。用户无需进行任何配置。Claude会自动处理技能的加载和子代理的上下文隔离。
 
 ---
 
-## References
+## 最佳实践
 
-- [Claude Skills Documentation](https://support.claude.com/en/articles/12512176-what-are-skills)
-- [Agent Skills Engineering Blog](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
-- [Sub-Agents Documentation](https://docs.claude.com/en/docs/claude-code/sub-agents)
+### 技能描述
+
+**建议：**
+- 明确说明技能的具体功能
+- 包含用户可能使用的触发关键词
+- 明确列出所使用的技术或框架
+
+**不建议：**
+- 使用模糊的描述（如“帮助编码”）
+- 省略关键的触发条件
+- 将不相关的技能混合到一个技能描述中
+
+### 子代理的使用
+
+**何时使用子代理：**
+- 处理跨领域任务（前端、后端、DevOps等）
+- 需要同时处理多个功能的任务
+- 需要探索大型代码库（不同模块）
+
+**何时不使用子代理：**
+- 处理简单的单领域任务
+- 需要共享上下文的顺序任务
+- 当主线对话的上下文资源已经很有限时
+
+---
+
+## 调试上下文使用情况
+
+### 检查当前正在使用的技能
+
+当Claude提到某个技能时：
+
+**这意味着：**
+- 渐进式加载机制生效
+- 仅加载了与Next.js相关的技能（而非全部35个技能）
+- 上下文使用效率较高
+
+### 检查子代理的使用情况
+
+当Claude启动子代理时：
+
+**这意味着：**
+- 子代理并行化正在运行
+- 每个子代理都有独立的上下文环境
+- 处理过程高效且跨领域协同
+
+---
+
+## 总结
+
+SpecWeave通过以下方式实现上下文效率的提升：
+1. **渐进式加载（Claude的原生机制）**：仅加载与任务相关的技能，首先加载元数据，从而在简单任务中节省超过90%的标记资源
+2. **子代理并行化（Claude Code的原生机制）**：通过隔离的上下文窗口实现并行处理，在复杂任务中节省50-70%的标记资源
+
+**SpecWeave没有使用任何自定义的上下文管理或缓存机制，而是充分利用了Claude的原生功能。**
+
+---
+
+## 参考资料
+- [Claude技能文档](https://support.claude.com/en/articles/12512176-what-are-skills)
+- [代理技能工程博客](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
+- [子代理文档](https://docs.claude.com/en/docs/claude-code/sub-agents)

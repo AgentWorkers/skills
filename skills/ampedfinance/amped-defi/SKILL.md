@@ -1,6 +1,6 @@
 ---
 name: amped-defi
-description: 25 DeFi tools for cross-chain swaps, bridging, and money market operations via SODAX SDK. Supply on Chain A, borrow to Chain B. Supports Ethereum, Arbitrum, Base, Optimism, Avalanche, BSC, Polygon, Sonic, LightLink, HyperEVM, Kaia.
+description: 25款DeFi工具，支持通过SODAX SDK进行跨链交易、桥接以及货币市场操作。可以在链A上供应资产，在链B上借款。兼容的链包括Ethereum、Arbitrum、Base、Optimism、Avalanche、BSC、Polygon、Sonic、LightLink和HyperEVM。
 version: 1.0.0
 author: Amped Finance
 tools:
@@ -36,41 +36,40 @@ tools:
   - amped_set_default_wallet
 ---
 
-# Amped DeFi Skill
+# Amped DeFi 技能
 
-## Overview
+## 概述
 
-The **Amped DeFi** skill provides on-chain DeFi operations capabilities for agents, enabling seamless **swaps**, **bridging**, and **money market** (supply/borrow/repay/withdraw) actions across multiple chains using the SODAX SDK. This skill abstracts the complexity of cross-chain intent flows, allowance handling, and policy enforcement, allowing agents to execute DeFi operations safely and efficiently.
+**Amped DeFi** 技能为代理提供链上 DeFi 操作能力，利用 SODAX SDK 实现跨多个链的无缝 **交易**、**桥接** 以及 **货币市场**（供应/借款/偿还/提取）操作。该技能抽象了跨链意图流、许可处理和策略执行的复杂性，使代理能够安全高效地执行 DeFi 操作。
 
-**Key capabilities:**
-- Cross-chain and same-chain token swaps via solver network
-- Token bridging between spoke chains and the Sonic hub chain
-- **Cross-chain money market operations** - supply on one chain, borrow to another!
-- Money market operations (supply, withdraw, borrow, repay) with position tracking
-- Policy enforcement (spend limits, slippage caps, allowlists)
-- Support for both execution mode (agent signs) and prepare mode (unsigned txs for external signing)
+**主要功能：**
+- 通过求解器网络进行跨链和同链代币交易
+- 在分支链与 Sonic 中心链之间进行代币桥接
+- **跨链货币市场操作**：在一个链上供应，在另一个链上借款！
+- 货币市场操作（供应、提取、借款、偿还），并支持头寸跟踪
+- 策略执行（消费限额、滑点上限、允许列表）
 
-## Tool Categories
+## 工具分类
 
-### Discovery Tools
+### 发现工具
 
-Use these tools to explore supported chains, tokens, and wallet state before executing operations.
+在执行操作之前，使用这些工具来探索支持的链、代币和钱包状态。
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `amped_supported_chains` | List all supported spoke chains (e.g., ethereum, arbitrum, sonic) |
-| `amped_supported_tokens` | Get supported tokens for a specific module (swaps/bridge/moneyMarket) on a chain |
-| `amped_wallet_address` | Resolve wallet address by walletId (validates private key ↔ address match in execute mode) |
-| `amped_money_market_reserves` | View available money market reserves (collateral/borrow markets) |
-| `amped_money_market_positions` | View user's money market positions on a SINGLE chain |
-| `amped_cross_chain_positions` | **RECOMMENDED**: View aggregated positions across ALL chains with total supply/borrow, health factor, borrowing power, net APY, and risk metrics |
-| `amped_user_intents` | Query user's swap/bridge intent history from SODAX backend API. Shows open, filled, cancelled intents with full event details. |
+| `amped_supported_chains` | 列出所有支持的分支链（例如：ethernet、arbitrum、sonic） |
+| `amped_supported_tokens` | 获取特定模块（交易/桥接/货币市场）在某个链上支持的代币 |
+| `amped_wallet_address` | 通过 walletId 解析钱包地址（在执行模式下验证私钥与地址的匹配） |
+| `amped_money_market_reserves` | 查看可用的货币市场储备（抵押品/借款市场） |
+| `amped_money_market_positions` | 查看用户在单个链上的货币市场头寸 |
+| `amped_cross_chain_positions` | **推荐**：查看所有链上的汇总头寸，包括总供应/借款量、健康因子、借款能力、净年化收益率（APY）和风险指标 |
+| `amped_user_intents` | 从 SODAX 后端 API 查询用户的交易/桥接意图历史。显示未完成、已完成和已取消的意图及其完整事件详情。 |
 
-**When to use:** Always start with discovery tools to verify chain/token support before attempting any operation.
+**使用建议：** 在尝试任何操作之前，始终先使用发现工具来验证链和代币的支持情况。
 
-### User Intent History (SODAX API)
+### 用户意图历史（SODAX API）
 
-Query the SODAX backend API to retrieve complete intent history for a wallet:
+查询 SODAX 后端 API 以获取钱包的完整意图历史：
 
 ```
 → amped_user_intents(
@@ -101,52 +100,52 @@ Query the SODAX backend API to retrieve complete intent history for a wallet:
   }
 ```
 
-**When to use:**
-- Track status of pending swap/bridge operations
-- View historical intent execution history
-- Debug failed or cancelled intents
-- Monitor solver performance and fill rates
+**使用建议：**
+- 跟踪待处理交易/桥接操作的状态
+- 查看历史意图执行历史
+- 调试失败或取消的意图
+- 监控求解器的性能和成交率
 
-### Swap Tools
+### 交易工具
 
-Cross-chain and same-chain token swaps via SODAX's intent-based solver network.
+通过 SODAX 基于意图的求解器网络进行跨链和同链代币交易。
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `amped_swap_quote` | Get an exact-in or exact-out swap quote with slippage and fee estimates |
-| `amped_swap_execute` | Execute a swap (handles allowance, approval, and execution automatically) |
-| `amped_swap_status` | Check the status of a swap transaction or intent |
-| `amped_swap_cancel` | Cancel an active swap intent (where supported) |
+| `amped_swap_quote` | 获取包含滑点和费用估算的精确交易报价 |
+| `amped_swap_execute` | 执行交易（自动处理许可、批准和执行） |
+| `amped_swap_status` | 检查交易或意图的状态 |
+| `amped_swap_cancel` | 取消活跃的交易意图（如果支持的话） |
 
-**When to use swaps:**
-- Exchanging one token for another on the same chain
-- Cross-chain swaps (e.g., USDC on Ethereum → USDT on Arbitrum)
-- When you need competitive pricing via solver competition
+**使用建议：**
+- 在同一链上交换不同代币
+- 进行跨链交易（例如：在 Ethereum 上交换 USDC 到 Arbitrum 上的 USDT）
+- 当需要通过求解器竞争获得更有竞争力的价格时
 
-**When NOT to use swaps:**
-- Moving the same token across chains (use bridge tools instead)
-- Borrowing/lending operations (use money market tools instead)
+**不建议使用交易工具的情况：**
+- 在不同链之间转移相同代币（请使用桥接工具）
+- 进行借款/贷款操作（请使用货币市场工具）
 
-### Bridge Tools
+### 桥接工具
 
-Bridge tokens between chains via the swap infrastructure.
+通过交易基础设施在链之间桥接代币。
 
-> **Note:** In SODAX, bridges and cross-chain swaps use the same underlying intent-based messaging system. The `amped_bridge_execute` tool internally delegates to the swap infrastructure, which provides better routing and reliability.
+> **注意：** 在 SODAX 中，桥接和跨链交易使用相同的基于意图的消息系统。`amped_bridge_execute` 工具内部会委托给交易基础设施，从而提供更好的路由和可靠性。
 >
-> **Recommendation:** Use cross-chain swaps (`amped_swap_quote` + `amped_swap_execute`) directly for bridging. You can swap USDC on one chain directly to native tokens (ETH, AVAX, POL, etc.) on another chain in a single operation.
+> **推荐做法：** 直接使用跨链交易（`amped_swap_quote` + `amped_swap_execute`）进行桥接。你可以在一个链上直接将 USDC 交换为另一个链上的原生代币（如 ETH、AVAX、POL 等）。
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `amped_bridge_discover` | Discover bridgeable tokens between two chains |
-| `amped_bridge_quote` | Check bridgeability, limits, and max bridgeable amount |
-| `amped_bridge_execute` | Execute bridge (delegates to swap infrastructure) |
+| `amped_bridge_discover` | 发现两个链之间可桥接的代币 |
+| `amped_bridge_quote` | 检查桥接可行性、限额和最大可桥接金额 |
+| `amped_bridge_execute` | 执行桥接（委托给交易基础设施） |
 
-**When to use bridging/cross-chain swaps:**
-- Moving tokens from one chain to another (e.g., USDC on Base → ETH on Arbitrum)
-- Getting native gas tokens on a new chain (e.g., USDC → POL on Polygon)
-- Transferring assets to/from the Sonic hub chain
+**使用建议：**
+- 将代币从一个链转移到另一个链（例如：从 Base 上的 USDC 到 Arbitrum 上的 ETH）
+- 在新链上获取原生气体代币（例如：从 USDC 到 Polygon 上的 POL）
+- 将资产转移到/从 Sonic 中心链转移
 
-**Preferred approach for gas distribution:**
+**推荐的气体分配方法：**
 ```
 // Get gas tokens on multiple chains from a single source
 → amped_swap_quote(srcChainId="base", dstChainId="polygon", srcToken="USDC", dstToken="POL", amount="0.5", ...)
@@ -154,169 +153,155 @@ Bridge tokens between chains via the swap infrastructure.
 // Result: 0.5 USDC on Base → ~4 POL on Polygon
 ```
 
-### Money Market Tools
+### 货币市场工具
 
-Supply, borrow, repay, and withdraw assets from the SODAX money market with **cross-chain capabilities**.
+使用 **跨链功能**，在 SODAX 货币市场上供应、借款、偿还和提取资产。
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `amped_mm_supply` | Supply tokens as collateral to the money market. Supports cross-chain supply. |
-| `amped_mm_withdraw` | Withdraw supplied tokens from the money market. Supports cross-chain withdraw. |
-| `amped_mm_borrow` | Borrow tokens against supplied collateral. **KEY FEATURE: Can borrow to a different chain!** |
-| `amped_mm_repay` | Repay borrowed tokens. Use amount='-1' or repayAll=true for full repay. |
-| `amped_mm_create_supply_intent` | [Advanced] Create a supply intent without executing (for custom flows) |
-| `amped_mm_create_borrow_intent` | [Advanced] Create a borrow intent without executing (supports cross-chain) |
+| `amped_mm_supply` | 向货币市场供应代币作为抵押品。支持跨链供应。 |
+| `amped_mm_withdraw` | 从货币市场提取供应的代币。支持跨链提取。 |
+| `amped_mm_borrow` | 用提供的抵押品借款。**关键功能：可以借款到不同的链！** |
+| `amped_mm_repay` | 偿还借款的代币。使用 `-1` 作为金额参数或设置 repayAll=true 以完成偿还。 |
+| `amped_mm_create_supply(intent` | [高级] 创建供应意图但不执行（用于自定义流程） |
+| `amped_mm_create_borrow(intent` | [高级] 创建借款意图但不执行（支持跨链） |
 
-**Cross-Chain Money Market Capabilities:**
+**跨链货币市场功能：**
 
-The SODAX money market supports powerful cross-chain operations:
+SODAX 货币市场支持强大的跨链操作：
 
-1. **Cross-Chain Borrow** (Most powerful feature)
-   - Supply collateral on Chain A (e.g., Ethereum)
-   - Borrow tokens to Chain B (e.g., Arbitrum)
-   - Your collateral stays on Chain A, but you receive borrowed tokens on Chain B
-   - Use `dstChainId` parameter to specify the destination chain
+1. **跨链借款**（最强大的功能）
+   - 在链 A 上供应抵押品（例如：Ethereum）
+   - 在链 B 上借款代币（例如：Arbitrum）
+   - 抵押品留在链 A 上，但你会在链 B 上收到借款的代币
+   - 使用 `dstChainId` 参数指定目标链
 
-2. **Cross-Chain Supply**
-   - Supply tokens on Chain A
-   - Collateral is recorded on Chain B (if different)
-   - Use `dstChainId` parameter
+2. **跨链供应**
+   - 在链 A 上供应代币
+   - 抵押品记录在链 B 上（如果不同）
+   - 使用 `dstChainId` 参数
 
-3. **Cross-Chain Withdraw**
-   - Withdraw collateral from Chain A
-   - Receive tokens on Chain B
-   - Use `dstChainId` parameter
+**使用货币市场的情况：**
+- 通过供应资产赚取收益
+- 用现有抵押品借款
+- **在不转移抵押品的情况下访问链 B 的流动性**
+- 在不同链之间套利利率
+- 管理杠杆头寸
+- 偿还债务以提高健康因子
 
-**When to use money market:**
-- Earning yield by supplying assets
-- Borrowing against existing collateral
-- **Accessing liquidity on Chain B without moving collateral from Chain A**
-- Arbitraging interest rates across chains
-- Managing leveraged positions
-- Repaying debt to improve health factor
+**不建议使用货币市场的情况：**
+- 简单的代币交换（使用交易工具）
+- 在不借款的情况下在不同链之间转移资产（使用桥接工具）
 
-**When NOT to use money market:**
-- Simple token exchanges (use swap tools)
-- Moving assets across chains without borrowing (use bridge tools)
+### 钱包管理工具
 
-### Wallet Management Tools
+使用昵称管理多个钱包，便于识别。
 
-Manage multiple wallets with nicknames for easy identification.
-
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| `amped_list_wallets` | List all configured wallets with their nicknames and addresses |
-| `amped_add_wallet` | Add a new wallet with a nickname (supports private key or Bankr wallets) |
-| `amped_rename_wallet` | Rename an existing wallet's nickname |
-| `amped_remove_wallet` | Remove a wallet from configuration |
-| `amped_set_default_wallet` | Set which wallet is used by default for operations |
+| `amped_list_wallets` | 列出所有配置的钱包及其昵称和地址 |
+| `amped_add_wallet` | 使用昵称添加新钱包（支持私钥或 Bankr 钱包） |
+| `amped_rename_wallet` | 重命名现有钱包的昵称 |
+| `amped_remove_wallet` | 从配置中删除钱包 |
+| `amped_set_default_wallet` | 设置默认使用的钱包 |
 
-**When to use wallet management:**
-- Setting up multiple wallets for different purposes (trading, holding, testing)
-- Organizing wallets with memorable nicknames instead of addresses
-- Switching between wallets for different operations
-- Managing a portfolio across multiple addresses
+**使用钱包管理工具的情况：**
+- 为不同目的设置多个钱包（交易、持有、测试）
+- 用易于记忆的昵称组织钱包
+- 在不同操作之间切换钱包
+- 管理多个地址的投资组合
 
-**Example workflow:**
-```
-1. amped_add_wallet(nickname="trading", address="0x...", privateKey="0x...")
-2. amped_add_wallet(nickname="vault", address="0x...")
-3. amped_set_default_wallet(nickname="trading")
-4. amped_list_wallets()  // Shows all wallets with default indicator
-5. amped_swap_execute(walletId="trading", ...)  // Uses trading wallet
-```
+## 安全规则
 
-## Safety Rules
+⚠️ **必须遵守这些规则——这些规则由策略引擎执行：**
 
-⚠️ **MUST FOLLOW — These rules are enforced by the Policy Engine:**
+1. **执行前务必获取报价**
+   - 在调用 `amped_swap_quote` 之前，切勿执行交易
+   - 在调用 `amped_bridge_quote` 之前，切勿执行桥接
+   - 查看报价输出中的滑点和输出金额是否可接受
 
-1. **Always get a quote before executing**
-   - Never execute a swap without first calling `amped_swap_quote`
-   - Never execute a bridge without first calling `amped_bridge_quote`
-   - Review the quote output for acceptable slippage and output amounts
+2. **验证链和代币是否受支持**
+   - 在执行操作之前，调用 `amped_supported_chains` 和 `amped_supported_tokens`
+   - 不支持的链/代币会返回明确的错误信息
 
-2. **Verify chain and token are supported**
-   - Call `amped_supported_chains` and `amped_supported_tokens` before operations
-   - Unsupported chains/tokens will return clear errors
+3. **检查滑点是否在可接受范围内**
+   - 滑点以 **基点（bps）** 表示：100 bps = 1%
+   - 默认最大滑点：100 bps（1%）
+   - 滑点超过配置上限的报价将被拒绝
+   - 违反策略会返回带有补救建议的结构化错误
 
-3. **Check slippage is within acceptable bounds**
-   - Slippage is specified in basis points (bps): 100 bps = 1%
-   - Default max slippage: 100 bps (1%)
-   - Quotes with slippage exceeding configured caps will be rejected
-   - Policy violations return structured errors with remediation guidance
+4. **切勿尝试耗尽整个钱包余额**
+   - 保留足够的余额用于支付气体费用
+   - 消费限额按交易和每天进行限制
+   - 策略限制：`maxSwapInputUsd`、`maxBridgeAmountToken`、`maxBorrowUsd`
 
-4. **Never attempt to drain entire wallet**
-   - Leave sufficient balance for gas fees
-   - Spend limits are enforced per-transaction and per-day
-   - Policy caps: `maxSwapInputUsd`, `maxBridgeAmountToken`, `maxBorrowUsd`
+5. **执行后务必验证交易状态**
+   - 使用 `amped_swap_status` 跟踪交易完成情况
+   - 查看 `amped_money_market_positions` 以验证头寸更新
+   - 仅凭交易哈希值不能假设操作成功
 
-5. **Always verify transaction status after execution**
-   - Use `amped_swap_status` to track swap completion
-   - Check `amped_money_market_positions` to verify position updates
-   - Never assume success based on transaction hash alone
+6. **遵守允许列表**
+   - 仅在对 `allowedChains` 和 `allowedTokensByChain` 中指定的链上进行操作
+   - 被阻止的接收者将被拒绝
+   - 策略违规会返回带有补救建议的结构化错误
 
-6. **Enforce allowlist compliance**
-   - Only operate on `allowedChains` and `allowedTokensByChain` per policy
-   - Blocked recipients are rejected
-   - Policy failures return structured errors with remediation text
+7. **模拟功能默认启用**
+   - 除非操作员进行覆盖，否则 `skipSimulation` 为 `false`
+   - 模拟可以在广播前捕获可撤销的情况
 
-7. **Simulation is enabled by default**
-   - `skipSimulation=false` unless operator override
-   - Simulations catch revert conditions before broadcast
+8. **监控货币市场头寸的健康因子**
+   - 健康因子 < 1.0 表示有清算风险
+   | 保持健康因子 > 1.5 以确保安全边际
+   - 使用 `amped_money_market_positions` 进行监控
 
-8. **Monitor health factor for money market positions**
-   - Health factor < 1.0 = liquidation risk
-   - Keep health factor > 1.5 for safety margin
-   - Use `amped_money_market_positions` to monitor
+## 参数约定
 
-## Parameter Conventions
+### 金额单位
+- **金额以人类可读的单位表示**（例如：“100”表示 100 USDC，“0.5”表示 0.5 ETH）
+- SDK 会根据 SODAX 配置中的代币小数位数内部转换为原始单位
+- 例如：
+  - “1000” USDC（USDC 有 6 位小数）→ 10000000000 原始单位
+  - “1.5” ETH（ETH 有 18 位小数）→ 1500000000000000000 原始单位
 
-### Amount Units
-- **Amounts are in human-readable units** (e.g., `"100"` for 100 USDC, `"0.5"` for 0.5 ETH)
-- The SDK internally converts to raw units using token decimals from SODAX config
-- Examples:
-  - `"1000"` USDC (USDC has 6 decimals) → 1000000000 raw units
-  - `"1.5"` ETH (ETH has 18 decimals) → 1500000000000000000 raw units
+### 滑点（基点）
+- 滑点以 **基点（bps）** 表示，其中 100 bps = 1%
+- 常见值：
+  - `50` = 0.5%（稳定对）
+  - `100` = 1%（标准）
+  - `300` = 3%（波动较大的对或跨链）
+- 超过配置的 `maxSlippageBps` 的报价将被拒绝
 
-### Slippage (Basis Points)
-- Slippage is specified in **basis points (bps)** where 100 bps = 1%
-- Common values:
-  - `50` = 0.5% (tight, for stable pairs)
-  - `100` = 1% (standard)
-  - `300` = 3% (volatile pairs or cross-chain)
-- Quotes exceeding configured `maxSlippageBps` will be rejected
+### 链标识符
+- 链 ID 是 **字符串标识符**，而不是数字链 ID：
+  - “ethereum”（Ethereum 主网）
+  - “arbitrum”（Arbitrum One）
+  - “sonic”（Sonic 中心链）
+  - “base”（Base）
+  - “optimism”（Optimism）
+  - “avalanche”（Avalanche）
+  - “bsc”（BNB 智能链）
 
-### Chain Identifiers
-- Chain IDs are **string identifiers**, not numeric chain IDs:
-  - `"ethereum"` (Ethereum mainnet)
-  - `"arbitrum"` (Arbitrum One)
-  - `"sonic"` (Sonic hub chain)
-  - `"base"` (Base)
-  - `"optimism"` (Optimism)
-  - `"avalanche"` (Avalanche)
-  - `"bsc"` (BNB Smart Chain)
+### 代币地址
+- 代币地址应该是 **校验和地址**（遵循 EIP-55 规范）
+- 例如：
+  - “0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48”（Ethereum 上的 USDC）
+  - “0x4200000000000000000000000000000000000006”（Base 上的 WETH）
 
-### Token Addresses
-- Token addresses should be **checksum addresses** (mixed-case per EIP-55)
-- Examples:
-  - `"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"` (USDC on Ethereum)
-  - `"0x4200000000000000000000000000000000000006"` (WETH on Base)
+### 钱包识别
+- 所有执行工具都需要一个 `walletId` 字符串
+- 钱包解析通过 ID 进行；私钥永远不会在工具参数中暴露
 
-### Wallet Identification
-- All execute tools require a `walletId` string
-- Wallet resolution is by ID; private keys are never exposed in tool parameters
+### 可选参数
+- `recipient`：可选的目标地址（默认为钱包地址）
+- `timeoutMs`：可选的操作超时（以毫秒为单位）
+- `policyId`：可选的策略配置文件选择器，用于自定义限制
+- `dstChainId`：**对于跨链货币市场** - 操作的目标链
 
-### Optional Parameters
-- `recipient`: Optional destination address (defaults to wallet address)
-- `timeoutMs`: Optional operation timeout in milliseconds
-- `policyId`: Optional policy profile selector for custom limits
-- `dstChainId`: **For cross-chain money market** - destination chain for the operation
+## 工作流程
 
-## Workflows
+### 交易工作流程
 
-### Swap Workflow
-
-Complete workflow for executing a token swap:
+执行代币交易的完整工作流程：
 
 ```
 Step 1: Discovery (if needed)
@@ -358,9 +343,9 @@ Step 6: Handle Failures (if needed)
   → amped_swap_cancel(walletId="main", intent=<intent>, srcChainId="ethereum")
 ```
 
-### Bridge Workflow
+### 桥接工作流程
 
-Complete workflow for bridging tokens between chains:
+在链之间桥接代币的完整工作流程：
 
 ```
 Step 1: Discover Routes
@@ -398,9 +383,9 @@ Step 4: Execute Bridge
   ← Returns: { spokeTxHash, hubTxHash }
 ```
 
-### Money Market Supply Workflow
+### 货币市场供应工作流程
 
-Complete workflow for supplying to and monitoring money market positions:
+向货币市场供应资产并监控头寸的完整工作流程：
 
 ```
 Step 1: View Available Markets
@@ -447,21 +432,21 @@ Step 4: Verify Position Update (cross-chain view)
   ← Returns: Updated positions reflecting the new supply across all chains
 ```
 
-### Cross-Chain Positions View (Recommended)
+### 跨链头寸视图（推荐）
 
-The `amped_cross_chain_positions` tool provides a **unified portfolio view** across all chains. This is the recommended way to check money market positions.
+`amped_cross_chain_positions` 工具提供了跨所有链的 **统一投资组合视图**。这是查看货币市场头寸的推荐方式。
 
-**What it shows:**
-- **Total Portfolio Summary**: Supply, borrow, net worth across ALL chains
-- **Health Metrics**: Health factor with status indicator, liquidation risk level
-- **Borrowing Power**: Available borrow amount based on collateral
-- **Yield Metrics**: Weighted supply/borrow APY, net APY
-- **Chain Breakdown**: Per-chain position summaries
-- **Collateral Utilization**: How much of your collateral is being used
-- **Risk Metrics**: Current LTV, buffer until liquidation, safe max borrow
-- **Personalized Recommendations**: AI-generated suggestions based on your position
+**显示内容：**
+- **总投资组合概览**：所有链上的供应、借款和净资产
+- **健康指标**：健康因子及状态指示器、清算风险水平
+- **借款能力**：基于抵押品的可用借款金额
+- **收益指标**：加权供应/借款年化收益率（APY）、净年化收益率（APY）
+- **链细分**：每个链上的头寸摘要
+- **抵押品利用率**：你的抵押品使用了多少
+- **风险指标**：当前杠杆率（LTV）、清算前的缓冲区、安全最大借款额
+- **个性化建议**：基于你的头寸生成的智能建议
 
-**Example Response:**
+**示例响应：**
 ```json
 {
   "success": true,
@@ -504,15 +489,15 @@ The `amped_cross_chain_positions` tool provides a **unified portfolio view** acr
 }
 ```
 
-**When to use:**
-- Always start here to get a complete picture of money market positions
-- Before any borrow/withdraw operation to check health factor
-- To monitor portfolio performance across all chains
-- To identify opportunities (available borrowing power, low utilization)
+**使用建议：**
+- 始终从这里开始，以获取货币市场头寸的完整视图
+- 在进行任何借款/提取操作之前，检查健康因子
+- 监控所有链上的投资组合表现
+- 识别机会（可用借款能力、利用率低的情况）
 
-### Cross-Chain Money Market Borrow Workflow (Advanced)
+### 跨链货币市场借款工作流程（高级）
 
-**Key Feature:** Borrow tokens to a different chain than where your collateral is supplied!
+**关键功能：** 在不同于抵押品供应的链上借款！
 
 ```
 Scenario: Supply USDC on Ethereum, borrow USDT to Arbitrum
@@ -551,7 +536,7 @@ Step 5: Verify Received Tokens on Destination Chain
   ← Check USDT balance on Arbitrum via external means or position query
 ```
 
-### Cross-Chain Money Market Supply Workflow
+### 跨链货币市场供应工作流程
 
 ```
 Scenario: Supply tokens on Arbitrum, collateral recorded on Sonic
@@ -576,9 +561,9 @@ Step 2: Verify on Destination Chain
   ← Returns: Collateral should appear on Sonic
 ```
 
-### Money Market Repay Workflow
+### 货币市场偿还工作流程
 
-Complete workflow for repaying borrowed tokens:
+偿还借款代币的完整工作流程：
 
 ```
 Step 1: Check Borrow Position
@@ -608,9 +593,9 @@ Step 3: Verify Repayment
   ← Returns: Updated positions with reduced borrow, improved healthFactor
 ```
 
-### Money Market Withdraw Workflow
+### 货币市场提取工作流程
 
-Complete workflow for withdrawing supplied tokens:
+提取供应代币的完整工作流程：
 
 ```
 Step 1: Check Position and Available Liquidity
@@ -633,9 +618,9 @@ Step 3: Verify Withdrawal
   ← Returns: Updated positions with reduced supply
 ```
 
-## Cross-Chain Money Market Examples
+## 跨链货币市场示例
 
-### Example 1: Supply on Ethereum, Borrow to Base
+### 示例 1：在 Ethereum 上供应，在 Base 上借款
 
 ```
 User: "I have USDC on Ethereum. I want to borrow USDC on Base without moving my collateral."
@@ -668,7 +653,7 @@ Agent actions:
    → amped_money_market_positions(walletId="main", chainId="base")
 ```
 
-### Example 2: Cross-Chain Withdraw
+### 示例 2：跨链提取
 
 ```
 User: "I have collateral on Sonic but I want to withdraw to Arbitrum."
@@ -683,19 +668,19 @@ Agent actions:
   )
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-| Variable | Description | Default |
+| 变量 | 描述 | 默认值 |
 |----------|-------------|---------|
-| `AMPED_OC_MODE` | Operation mode: `'execute'` (agent signs) or `'prepare'` (returns unsigned txs) | `execute` |
-| `AMPED_OC_WALLETS_JSON` | JSON map of wallet configurations keyed by walletId | `{}` |
-| `AMPED_OC_RPC_URLS_JSON` | JSON map of RPC URLs by chainId | `{}` |
-| `AMPED_OC_LIMITS_JSON` | Policy limits configuration | `{}` |
-| `AMPED_OC_SODAX_DYNAMIC_CONFIG` | Enable dynamic config via `sodax.initialize()` | `false` |
+| `AMPED_OC_MODE` | 操作模式：`execute`（代理签名）或 `prepare`（返回未签名的交易） | `execute` |
+| `AMPED_OC_WALLETS_JSON` | 按 walletId 键值对排列的钱包配置 JSON | `{}` |
+| `AMPED_oc_RPC_URLS_JSON` | 按 chainId 键值对排列的 RPC URL JSON | `{}` |
+| `AMPED_oc_LIMITS_JSON` | 策略限制配置 | `{}` |
+| `AMPED_OC_SODAX_DYNAMIC_CONFIG` | 通过 `sodax.initialize()` 启用动态配置 | `false` |
 
-### Wallet Configuration (`AMPED_OC_WALLETS_JSON`)
+### 钱包配置（`AMPED_oc_WALLETS_JSON`）
 
 ```json
 {
@@ -710,9 +695,9 @@ Agent actions:
 }
 ```
 
-**Security:** Private keys are never logged. In prepare mode, only address is required.
+**安全说明：** 私钥永远不会被记录。在准备模式下，只需要提供地址。**
 
-### Policy Limits (`AMPED_OC_LIMITS_JSON`)
+### 策略限制（`AMPED_oc_LIMITS_JSON`）
 
 ```json
 {
@@ -730,7 +715,7 @@ Agent actions:
 }
 ```
 
-### RPC Configuration (`AMPED_OC_RPC_URLS_JSON`)
+### RPC 配置（`AMPED_oc_RPC_URLS_JSON`）
 
 ```json
 {
@@ -741,91 +726,91 @@ Agent actions:
 }
 ```
 
-## Error Handling
+## 错误处理
 
-### Policy Violations
+### 策略违规
 
-Policy violations return structured errors with:
-- `code`: Error code (e.g., `POLICY_SLIPPAGE_EXCEEDED`)
-- `message`: Human-readable description
-- `remediation`: Suggested action to resolve
-- `current`: Current value that violated policy
-- `limit`: Configured limit
+策略违规会返回结构化错误，包含：
+- `code`：错误代码（例如：`POLICY_SLIPPAGE_EXCEEDED`）
+- `message`：人类可读的描述
+- `remediation`：建议的解决方法
+- `current`：违反策略的当前值
+- `limit`：配置的限制
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description | Remediation |
+| Code | 描述 | 解决方法 |
 |------|-------------|-------------|
-| `POLICY_SLIPPAGE_EXCEEDED` | Quote slippage exceeds maxSlippageBps | Increase maxSlippageBps or wait for better conditions |
-| `POLICY_SPEND_LIMIT_EXCEEDED` | Amount exceeds per-transaction or daily limit | Reduce amount or request limit increase |
-| `POLICY_CHAIN_NOT_ALLOWED` | Chain not in allowedChains | Add chain to allowedChains or use different chain |
-| `POLICY_TOKEN_NOT_ALLOWED` | Token not in allowedTokensByChain | Add token to allowlist or use different token |
-| `INSUFFICIENT_BALANCE` | Wallet balance < requested amount | Reduce amount or fund wallet |
-| `INSUFFICIENT_ALLOWANCE` | Token allowance < requested amount | Tool will auto-approve, or approve manually |
-| `QUOTE_EXPIRED` | Quote deadline has passed | Get fresh quote |
-| `BRIDGE_NOT_AVAILABLE` | Token pair not bridgeable | Use swap for different tokens or different route |
-| `MM_HEALTH_FACTOR_LOW` | Operation would cause liquidation risk | Repay debt or add collateral first |
-| `MM_CROSS_CHAIN_NOT_SUPPORTED` | Cross-chain operation not supported for this pair | Use same-chain operation or different token/chain |
+| `POLICY_SLIPPAGE_EXCEEDED` | 报价滑点超过 maxSlippageBps | 增加 maxSlippageBps 或等待更好的条件 |
+| `POLICY_SPEND_LIMIT_EXCEEDED` | 金额超过单次交易或每日限制 | 减少金额或请求增加限制 |
+| `POLICY_chain_NOT_ALLOWED` | 链不在 allowedChains 中 | 将链添加到 allowedChains 或使用不同的链 |
+| `POLICY_TOKEN_NOT_ALLOWED` | 代币不在 allowedTokensByChain 中 | 将代币添加到允许列表或使用不同的代币 |
+| `INSUFFICIENT_BALANCE` | 钱包余额不足 | 减少金额或补充钱包余额 |
+| `INSUFFICIENT_ALLOWANCE` | 代币许可不足 | 工具将自动批准，或手动批准 |
+| `QUOTE_EXPIRED` | 报价截止时间已过 | 获取新的报价 |
+| BRIDGE_NOT_AVAILABLE` | 代币对无法桥接 | 使用不同的代币或不同的路径进行交易 |
+| MM_HEALTH_FACTOR_LOW` | 操作会导致清算风险 | 先偿还债务或增加抵押品 |
+| MM_CROSSCHAIN_NOT_SUPPORTED` | 该对不支持跨链操作 | 使用相同链的操作或不同的代币/链 |
 
-## Idempotency and Retries
+## 幂等性和重试
 
-### Client Operation ID
+### 客户端操作 ID
 
-Execute tools accept an optional `clientOperationId` parameter for idempotency:
-- Duplicate operations with the same ID within the cache window return the cached result
-- Prevents duplicate broadcasts on retries
-- Recommended for automated workflows
+执行工具接受一个可选的 `clientOperationId` 参数以实现幂等性：
+- 在缓存窗口内，具有相同 ID 的重复操作将返回缓存的结果
+- 防止重复广播
+- 推荐用于自动化工作流程
 
-### Retry Guidance
+### 重试指南
 
-- **Read operations** (quotes, status, positions): Safe to retry with exponential backoff
-- **Write operations** (execute, supply, borrow): Use `clientOperationId` to prevent duplicates
-- **Timeout handling**: Bridge and money market operations specify timeouts; respect SDK defaults
+- **读取操作**（报价、状态、头寸）：可以使用指数退避策略安全地重试
+- **写入操作**（执行、供应、借款）：使用 `clientOperationId` 以防止重复
+- **超时处理**：桥接和货币市场操作需要指定超时；遵循 SDK 的默认设置
 
-## Security Model
+## 安全模型
 
-### Key Segregation
+### 关键隔离
 
-- Each agent workspace has distinct wallet configurations
-- Spoke providers are cached per `walletId` and never shared across agents
-- Private keys are resolved by `walletId` only; never passed as parameters
+- 每个代理的工作空间都有独立的钱包配置
+- 分支提供者按 `walletId` 进行缓存，不会在代理之间共享
+- 私钥仅通过 `walletId` 进行解析；永远不会作为参数传递
 
-### Execution vs Prepare Mode
+### 执行模式与准备模式
 
-| Mode | Signing | Use Case |
+| 模式 | 签名 | 使用场景 |
 |------|---------|----------|
-| `execute` | Agent signs with private key | Automated agents, server-side operations |
-| `prepare` | Returns unsigned tx for external signing | Hardware wallets, air-gapped signing, multi-sig |
+| `execute` | 代理使用私钥签名 | 自动化代理、服务器端操作 |
+| `prepare` | 返回未签名的交易以供外部签名 | 硬件钱包、隔离签名、多签名 |
 
-### Logging
+### 日志记录
 
-Structured logs include:
-- `requestId`: Unique request identifier
-- `agentId`: Agent identifier (if available)
-- `walletId`: Wallet identifier
-- `opType`: Operation type (swap, bridge, supply, etc.)
-- `chainIds`, `tokenAddresses`: Operation context
-- `txHashes`: Transaction hashes (for tracing)
+结构化日志包括：
+- `requestId`：唯一请求标识符
+- `agentId`：代理标识符（如果可用）
+- `walletId`：钱包标识符
+- `opType`：操作类型（交易、桥接、供应等）
+- `chainIds`、`tokenAddresses`：操作上下文
+- `txHashes`：交易哈希（用于追踪）
 
-**Never logged:** Private keys, full wallet JSON, sensitive configuration
+**永远不会记录：** 私钥、完整的钱包 JSON、敏感配置
 
-## Chain-Specific Notes
+## 链特定说明
 
-### Sonic Hub Chain
+### Sonic 中心链
 
-- Sonic is the **hub chain** for SODAX operations
-- Uses `SonicSpokeProvider` instead of `EvmSpokeProvider`
-- Special handling required for hub chain operations
-- Money market operations are hub-centric but support cross-chain interactions
+- Sonic 是 SODAX 操作的 **中心链**
+- 使用 `SonicSpokeProvider` 而不是 `EvmSpokeProvider`
+- 对中心链的操作需要特殊处理
+- 货币市场操作以中心链为中心，但支持跨链交互
 
-### EVM Spoke Chains
+### EVM 分支链
 
-- Use `EvmSpokeProvider` for standard EVM chains (Ethereum, Arbitrum, Base, etc.)
-- Standard allowance/approval flow applies
-- Bridge operations go: Spoke → Hub → Destination Spoke
-- Cross-chain money market operations leverage the hub for state management
+- 对于标准的 EVM 链（Ethereum、Arbitrum、Base 等），使用 `EvmSpokeProvider`
+- 应用标准的许可/批准流程
+- 桥接操作流程：分支链 → 中心链 → 目标分支链
+- 跨链货币市场操作利用中心链进行状态管理
 
-## Cross-Chain Money Market Architecture
+## 跨链货币市场架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -856,9 +841,9 @@ Structured logs include:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Examples
+## 示例
 
-### Example 1: Simple Same-Chain Swap
+### 示例 1：简单的同链交易
 
 ```
 User: "Swap 100 USDC for ETH on Ethereum"
@@ -879,7 +864,7 @@ Agent actions:
 4. amped_swap_status(txHash=<spokeTxHash>)
 ```
 
-### Example 2: Cross-Chain Bridge
+### 示例 2：跨链桥接
 
 ```
 User: "Bridge 1000 USDC from Ethereum to Sonic"
@@ -890,7 +875,7 @@ Agent actions:
 3. amped_bridge_execute(walletId="main", srcChainId="ethereum", dstChainId="sonic", srcToken="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", dstToken="0x29219dd400f2bf60e5a23d13be72b486d4038894", amount="1000")
 ```
 
-### Example 3: Supply and Borrow Loop (Same Chain)
+### 示例 3：同一链上的供应和借款循环
 
 ```
 User: "Supply 5000 USDC and borrow 2000 USDT on Sonic"
@@ -903,7 +888,7 @@ Agent actions:
 5. amped_money_market_positions(walletId="main", chainId="sonic") // Verify new health factor
 ```
 
-### Example 4: Cross-Chain Money Market (Advanced)
+### 示例 4：跨链货币市场（高级）
 
 ```
 User: "I want to use my USDC on Ethereum as collateral to borrow USDC on Arbitrum for a trading opportunity"
@@ -943,11 +928,11 @@ Agent actions:
 Result: User has 20k USDC on Arbitrum to trade with, while their 50k USDC collateral remains on Ethereum!
 ```
 
-## Transaction Execution Architecture
+## 交易执行架构
 
-### SODAX-First Routing (Mandatory)
+### SODAX-First 路由（强制要求）
 
-**Critical:** ALL DeFi operations MUST route through the SODAX SDK first. External wallet backends (like Bankr) are used ONLY for transaction execution—never for routing decisions.
+**重要提示：** 所有 DeFi 操作必须首先通过 SODAX SDK 路由。外部钱包后端（如 Bankr）仅用于交易执行——从不用于路由决策。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -971,36 +956,36 @@ Result: User has 20k USDC on Arbitrum to trade with, while their 50k USDC collat
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Supported Backends
+### 支持的后端
 
-| Backend | Description | Use Case |
+| 后端 | 描述 | 使用场景 |
 |---------|-------------|----------|
-| `localKey` | Direct signing via private key from `~/.evm-wallet.json` or config | Default, self-custody |
-| `bankr` | Bankr API for transaction submission | Managed wallets via Bankr |
+| `localKey` | 通过 `~/.evm-wallet.json` 或配置文件直接使用私钥签名 | 默认，自我托管 |
+| `bankr` | 使用 Bankr API 提交交易 | 通过 Bankr 管理钱包 |
 
-### Backend Selection
+### 后端选择
 
-The wallet backend is selected via:
+钱包后端的選擇方式如下：
 1. `config.json` → `walletBackend: "bankr" | "localKey"`
-2. Environment: `AMPED_OC_WALLET_BACKEND`
-3. Default: `localKey`
+2. 环境设置：`AMPED_OC_WALLET_BACKEND`
+3. 默认值：`localKey`
 
-### Bankr Integration
+### Bankr 集成
 
-When `walletBackend: "bankr"` is configured:
+当配置 `walletBackend: "bankr"` 时：
 
-1. **SODAX SDK prepares the transaction** - All routing, calculation, and intent creation happens in SODAX
-2. **Transaction data is passed to Bankr** - Only the raw `{to, data, value, chainId}` is sent
-3. **Bankr signs and submits** - Bankr executes exactly what SODAX prepared
-4. **No Bankr routing** - Bankr does NOT interpret or re-route the transaction
+1. **SODAX SDK 准备交易** - 所有路由、计算和意图创建都在 SODAX 中完成
+2. **交易数据传递给 Bankr** - 仅发送原始的 `{to, data, value, chainId}` 数据
+3. **Bankr 签署并提交** - Bankr 按照 SODAX 的准备内容执行交易
+4. **Bankr 不进行路由** - Bankr 不会解释或重新路由交易
 
-This ensures:
-- Consistent behavior across all backends
-- SODAX optimizations always apply
-- Audit trail shows SODAX as routing authority
-- Backend is a pure execution layer
+这确保了：
+- 所有后端的行为一致
+- 始终应用 SODAX 的优化
+- 审计跟踪显示 SODAX 为路由权威
+- 后端仅负责执行
 
-### Configuration Example (Bankr)
+### 配置示例（Bankr）
 
 ```json
 // ~/.openclaw/extensions/amped-defi/config.json
@@ -1012,4 +997,4 @@ This ensures:
 }
 ```
 
-**Security Note:** The Bankr API key is stored locally and never exposed in tool parameters or logs.
+**安全说明：** Bankr API 密钥存储在本地，永远不会在工具参数或日志中暴露。

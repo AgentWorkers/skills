@@ -1,24 +1,24 @@
 ---
 slug: "drawing-analyzer"
 display_name: "Drawing Analyzer"
-description: "Analyze construction drawings to extract dimensions, annotations, symbols, and metadata. Support quantity takeoff and design review automation."
+description: "分析施工图纸，提取尺寸、注释、符号和元数据。支持数量统计以及设计审查的自动化流程。"
 ---
 
-# Drawing Analyzer for Construction
+# 建筑绘图分析工具
 
-## Overview
+## 概述
 
-Analyze construction drawings (PDF, DWG) to extract dimensions, annotations, symbols, title block data, and support automated quantity takeoff and design review.
+本工具用于分析建筑图纸（PDF、DWG格式），提取尺寸、注释、符号以及标题块数据，同时支持自动数量统计和设计审查功能。
 
-## Business Case
+## 商业价值
 
-Drawing analysis automation enables:
-- **Faster Takeoffs**: Extract quantities from drawings
-- **Quality Control**: Verify drawing completeness
-- **Data Extraction**: Pull metadata for project systems
-- **Design Review**: Automated checking against standards
+绘图分析自动化能够实现以下目标：
+- **加快数量统计速度**：快速从图纸中提取所需数据
+- **质量控制**：验证图纸的完整性
+- **数据提取**：为项目管理系统提供必要的元数据
+- **设计审查**：自动检查图纸是否符合相关标准
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -419,7 +419,7 @@ class DrawingAnalyzer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize analyzer
@@ -448,7 +448,7 @@ report = analyzer.generate_report(result)
 print(report)
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install pdfplumber

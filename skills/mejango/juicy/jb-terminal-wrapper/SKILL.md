@@ -10,32 +10,30 @@ description: |
   additive (not restrictive).
 ---
 
-# Terminal Wrapper Pattern
+# 终端封装模式（Terminal Wrapper Pattern）
 
-## Problem
+## 问题
 
-Revnets and other projects often need extended payment functionality that can't be achieved through
-ruleset data hooks alone. Common needs include:
-- Dynamic splits specified at payment time
-- Token interception and redirection
-- Atomic multi-step operations (pay + distribute)
-- Client-specific features without breaking permissionless access
+Revnets 及其他项目通常需要扩展的支付功能，而这些功能仅通过规则集数据钩子（ruleset data hooks）是无法实现的。常见的需求包括：
+- 在支付时动态分配金额
+- 拦截并重定向代币
+- 原子化的多步骤操作（支付 + 分发）
+- 提供特定于客户端的特性，同时不破坏无权限访问（permissionless access）的原则
 
-## Context / Trigger Conditions
+## 使用场景 / 触发条件
 
-Apply this pattern when:
-- Building payment flows that need dynamic configuration
-- Working with revnets where ruleset hooks can't be edited
-- Need to bundle multiple operations atomically
-- Want to intercept tokens for further processing
-- Implementing "pay and do X" flows
+在以下情况下使用此模式：
+- 构建需要动态配置的支付流程
+- 在无法编辑规则集钩子的 revnets 环境中工作
+- 需要将多个操作原子化地组合在一起
+- 需要拦截代币以进行进一步处理
+- 实现“支付后执行某操作”的流程
 
-## Solution
+## 解决方案
 
-### Core Architecture
+### 核心架构
 
-Create a custom `IJBTerminal` that wraps `JBMultiTerminal`. Use a shared `_acceptFunds` helper
-(pattern from JBSwapTerminalRegistry) to handle ETH/ERC20 consistently:
+创建一个自定义的 `IJBTerminal`，它封装了 `JBMultiTerminal`。使用来自 `JBSwapTerminalRegistry` 的共享 `_acceptFunds` 辅助函数来统一处理 ETH/ERC20 交易：
 
 ```solidity
 contract PayWithSplitsTerminal is IJBTerminal {
@@ -105,9 +103,9 @@ contract PayWithSplitsTerminal is IJBTerminal {
 }
 ```
 
-### Beneficiary Manipulation Pattern
+### 受益人操作模式（Beneficiary Manipulation Pattern）
 
-Intercept tokens by setting beneficiary to the wrapper itself:
+通过将受益人设置为封装器本身来拦截代币：
 
 ```solidity
 function payAndStake(
@@ -144,7 +142,7 @@ function payAndStake(
 }
 ```
 
-### Metadata Encoding (Client Side)
+### 元数据编码（客户端侧）（Metadata Encoding, Client Side）
 
 ```typescript
 import { encodeAbiParameters, parseAbiParameters } from 'viem';
@@ -168,50 +166,33 @@ const metadata = encodeAbiParameters(
 );
 ```
 
-### Critical Mental Model
+### 关键思维模式（Critical Mental Model）
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    WRAPPER IS ADDITIVE                          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   Client A ──► PayWithSplitsTerminal ──► JBMultiTerminal       │
-│                    (gets special features)                      │
-│                                                                 │
-│   Client B ────────────────────────────► JBMultiTerminal       │
-│                    (still works!)                               │
-│                                                                 │
-│   BOTH ARE VALID. The wrapper cannot block direct access.       │
-│   This is a FEATURE, not a bug. Permissionless = good.          │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+**错误的想法**：“我会使用封装器来阻止不符合条件 X 的支付”
+**实际情况**：用户始终可以直接调用 `JBMultiTerminal.pay()`。
 
-**Bad thinking**: "I'll use a wrapper to block payments that don't meet criteria X"
-**Reality**: Users can always call `JBMultiTerminal.pay()` directly
+**正确的想法**：“我会使用封装器为选择使用该功能的客户提供增强功能”
 
-**Good thinking**: "I'll use a wrapper to provide enhanced functionality for clients that opt in"
+## 使用案例
 
-### Use Cases
-
-| Use Case | How Wrapper Helps |
+| 使用场景 | 封装器如何提供帮助 |
 |----------|-------------------|
-| **Pay Wrappers** | |
-| Dynamic splits at pay time | Parse splits from metadata, configure before pay |
-| Pay + distribute reserved | Atomic operation, no separate tx needed |
-| Token interception | Receive to self, then stake/lock/forward |
-| Referral tracking | Parse referrer from metadata, record on-chain |
-| Conditional logic | Check conditions before forwarding to MultiTerminal |
-| Multi-hop payments | Receive tokens, swap, pay another project |
-| **Cash Out Wrappers** | |
-| Cash out + bridge | Intercept redeemed funds, bridge to another chain |
-| Cash out + swap | Swap redeemed ETH to stablecoin before delivery |
-| Cash out + stake | Stake redeemed funds in another protocol |
-| Cash out + LP | Add redeemed funds to liquidity pool |
+| **支付封装器** | |
+| 支付时动态分配金额 | 从元数据中解析分配比例，并在支付前进行配置 |
+| 支付 + 分配预留资金 | 原子化操作，无需单独的交易 |
+| 拦截代币 | 将代币接收至封装器自身，然后进行质押、锁定或转发 |
+| 推荐人跟踪 | 从元数据中解析推荐人信息，并在链上记录 |
+| 条件逻辑 | 在转发到 `JBMultiTerminal` 之前检查条件 |
+| 多跳支付 | 接收代币，然后兑换成其他项目所需的货币 |
+| **提现封装器** | |
+| 提现 + 桥接 | 拦截已赎回的资金，并将其桥接到另一个区块链 |
+| 提现 + 兑换 | 在支付前将赎回的 ETH 兑换为稳定币 |
+| 提现 + 质押 | 将赎回的资金质押到其他协议中 |
+| 提现 + 加入流动性池 | 将赎回的资金加入流动性池 |
 
-### Cash Out Wrapper Pattern
+### 提现封装器模式（Cash Out Wrapper Pattern）
 
-Same beneficiary-to-self trick works for cash outs:
+对于提现操作，同样可以使用将受益人设置为封装器自身的方法：
 
 ```solidity
 /// @notice Cash out with automatic swap to different token.
@@ -275,28 +256,28 @@ function cashOutAndBridge(
 }
 ```
 
-### Comparison with Swap Terminal
+### 与交换终端的比较（Comparison with Swap Terminal）
 
-Swap Terminal is a canonical example of this pattern:
+交换终端（Swap Terminal）是这种模式的典型示例：
 
 ```
 User pays with USDC ──► SwapTerminal ──► Swaps to ETH ──► JBMultiTerminal
                         (wraps + transforms)
 ```
 
-Your wrapper follows the same architecture but with different transformation logic.
+你的封装器遵循相同的架构，但具有不同的处理逻辑。
 
-## Verification
+## 验证步骤
 
-1. Deploy wrapper pointing to existing JBMultiTerminal
-2. Test that direct MultiTerminal payments still work (permissionless)
-3. Test that wrapper payments get enhanced behavior
-4. Verify atomic operations complete or revert together
-5. Test metadata parsing edge cases (empty, malformed)
+1. 部署指向现有 `JBMultiTerminal` 的封装器
+2. 测试直接使用 `JBMultiTerminal` 进行的支付是否仍然可以正常工作（无需权限）
+3. 测试使用封装器进行的支付是否具有增强功能
+4. 验证原子化操作是否能够完整执行或一起回滚
+5. 测试元数据解析的边缘情况（如数据为空或格式错误）
 
-## Example
+## 示例
 
-**Complete implementation for pay-time splits:**
+**支付时动态分配金额的完整实现示例：**
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -406,18 +387,18 @@ contract DynamicSplitsTerminal is IJBTerminal {
 }
 ```
 
-## Notes
+## 注意事项
 
-- Wrapper must be granted appropriate permissions if setting splits (add to project's permission system)
-- Consider gas costs of extra operations
-- Metadata parsing adds attack surface - validate carefully
-- For revnets: this is often the ONLY way to add functionality post-deploy
-- Multiple wrappers can exist for different purposes - they don't conflict
-- Wrappers can be chained: WrapperA → WrapperB → MultiTerminal
+- 如果需要设置分配比例，封装器必须被授予相应的权限（需添加到项目的权限系统中）
+- 需要考虑额外操作所产生的 gas 成本
+- 元数据解析会增加攻击面——请仔细验证
+- 对于 revnets 来说，这通常是部署后添加功能的唯一方法
+- 可以存在多个用于不同目的的封装器——它们之间不会产生冲突
+- 封装器可以链式使用：WrapperA → WrapperB → MultiTerminal
 
-## Related Skills
+## 相关技能
 
-- `/jb-patterns` - All JB V5 design patterns (includes condensed version of this)
-- `/jb-pay-hook` - Data hooks for pay-time logic (when ruleset allows)
-- `/jb-split-hook` - Custom split distribution logic
-- `/jb-v5-api` - Core terminal and controller interfaces
+- `/jb-patterns` – 所有 JB V5 设计模式（包含此模式的简化版本）
+- `/jb-pay-hook` – 用于支付时逻辑的数据钩子（当规则集允许时）
+- `/jb-split-hook` – 自定义的分配逻辑
+- `/jb-v5-api` – 核心终端和控制器接口

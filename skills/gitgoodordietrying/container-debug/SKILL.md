@@ -1,27 +1,26 @@
 ---
 name: container-debug
-description: Debug running Docker containers and Compose services. Use when inspecting container logs, exec-ing into running containers, diagnosing networking issues, checking resource usage, debugging multi-stage builds, troubleshooting health checks, or fixing Compose service dependencies.
+description: 调试正在运行的 Docker 容器和 Compose 服务。适用于检查容器日志、在运行中的容器内执行命令、诊断网络问题、查看资源使用情况、调试多阶段构建过程、排查健康检查（health check）故障，以及修复 Compose 服务的依赖关系问题。
 metadata: {"clawdbot":{"emoji":"🐳","requires":{"bins":["docker"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Container Debug
+# 容器调试
 
-Debug running Docker containers and Compose services. Covers logs, exec, networking, resource inspection, multi-stage builds, health checks, and common failure patterns.
+本文档介绍了如何调试正在运行的 Docker 容器和 Compose 服务，涵盖了日志查看、容器内命令执行、网络配置、资源监控、多阶段构建、健康检查以及常见的故障处理方法。
 
-## When to Use
+## 适用场景
 
-- Container exits immediately or crashes on start
-- Application inside container behaves differently than on host
-- Containers can't communicate with each other
-- Container is using too much memory or CPU
-- Multi-stage Docker build produces unexpected results
-- Health checks are failing
-- Compose services start in wrong order or can't connect
+- 容器启动后立即退出或崩溃
+- 容器内的应用程序行为与主机上的应用程序不同
+- 容器之间无法互相通信
+- 容器使用过多内存或 CPU 资源
+- 多阶段 Docker 构建产生意外结果
+- 健康检查失败
+- Compose 服务启动顺序错误或无法正常连接
 
-## Container Logs
+## 容器日志
 
-### View and filter logs
-
+### 查看和过滤日志
 ```bash
 # Last 100 lines
 docker logs --tail 100 my-container
@@ -52,8 +51,7 @@ docker logs my-container > container.log 2>&1
 docker logs my-container > stdout.log 2> stderr.log
 ```
 
-### Inspect log driver
-
+### 检查日志驱动程序
 ```bash
 # Check what log driver a container uses
 docker inspect --format='{{.HostConfig.LogConfig.Type}}' my-container
@@ -65,10 +63,9 @@ docker inspect --format='{{.LogPath}}' my-container
 ls -lh $(docker inspect --format='{{.LogPath}}' my-container)
 ```
 
-## Exec Into Containers
+## 在容器内执行命令
 
-### Interactive shell
-
+### 交互式 shell
 ```bash
 # Bash (most common)
 docker exec -it my-container bash
@@ -88,8 +85,7 @@ docker exec my-container ls -la /app/
 docker exec my-container env
 ```
 
-### Debug a crashed container
-
+### 调试崩溃的容器
 ```bash
 # Container exited? Check exit code
 docker inspect --format='{{.State.ExitCode}}' my-container
@@ -113,8 +109,7 @@ docker cp my-container:/app/error.log ./error.log
 docker cp my-container:/etc/nginx/nginx.conf ./nginx.conf
 ```
 
-### Debug without a shell (distroless / scratch images)
-
+### 在无 shell 的环境中进行调试（例如使用 distroless 或 scratch 镜像）
 ```bash
 # Use docker cp to extract files
 docker cp my-container:/app/config.json ./
@@ -130,10 +125,9 @@ docker run -it --pid=container:my-container --net=container:my-container busybox
 docker debug my-container
 ```
 
-## Networking
+## 网络配置
 
-### Inspect container networking
-
+### 检查容器网络
 ```bash
 # Show container IP address
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-container
@@ -152,8 +146,7 @@ docker network inspect my-compose-network
 docker port my-container
 ```
 
-### Test connectivity between containers
-
+### 测试容器之间的连通性
 ```bash
 # From inside container A, reach container B
 docker exec container-a ping container-b
@@ -172,8 +165,7 @@ docker exec my-container wget -qO- http://api:3000/health
 docker run --rm --network container:my-container curlimages/curl curl -s http://localhost:8080
 ```
 
-### Common networking issues
-
+### 常见的网络问题
 ```bash
 # "Connection refused" between containers
 # 1. Check the app binds to 0.0.0.0, not 127.0.0.1
@@ -196,8 +188,7 @@ docker run --network my-net --name db postgres
 # Now "api" and "db" resolve to each other
 ```
 
-### Capture network traffic
-
+### 捕获网络流量
 ```bash
 # tcpdump inside a container
 docker exec my-container tcpdump -i eth0 -n port 8080
@@ -209,10 +200,9 @@ docker run --rm --net=container:my-container nicolaka/netshoot tcpdump -i eth0 -
 docker run --rm --net=container:my-container nicolaka/netshoot bash
 ```
 
-## Resource Usage
+## 资源使用情况
 
-### Real-time stats
-
+### 实时资源统计
 ```bash
 # All containers
 docker stats
@@ -227,8 +217,7 @@ docker stats --no-stream
 docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"
 ```
 
-### Memory investigation
-
+### 内存使用情况分析
 ```bash
 # Check memory limit
 docker inspect --format='{{.HostConfig.Memory}}' my-container
@@ -246,8 +235,7 @@ docker exec my-container ps aux --sort=-%mem | head -10
 docker exec my-container top -bn1
 ```
 
-### Disk usage
-
+### 磁盘使用情况
 ```bash
 # Overall Docker disk usage
 docker system df
@@ -264,10 +252,9 @@ docker exec my-container find /tmp -size +10M -type f
 docker exec my-container ls -lh /var/log/
 ```
 
-## Dockerfile Debugging
+## Dockerfile 调试
 
-### Multi-stage build debugging
-
+### 多阶段构建调试
 ```bash
 # Build up to a specific stage
 docker build --target builder -t my-app:builder .
@@ -287,8 +274,7 @@ docker build --no-cache -t my-app .
 docker build --progress=plain -t my-app .
 ```
 
-### Image inspection
-
+### 镜像检查
 ```bash
 # Show image layers (size of each)
 docker history my-image
@@ -307,39 +293,18 @@ docker diff my-container
 # A = added, C = changed, D = deleted
 ```
 
-## Health Checks
+## 健康检查
 
-### Define and debug health checks
-
+### 定义和调试健康检查规则
 ```dockerfile
 # In Dockerfile
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:8080/health || exit 1
 ```
 
-```bash
-# Check health status
-docker inspect --format='{{.State.Health.Status}}' my-container
-# "healthy", "unhealthy", or "starting"
+### Docker Compose 调试
 
-# See health check log (last 5 results)
-docker inspect --format='{{json .State.Health}}' my-container | jq
-
-# Run health check manually
-docker exec my-container curl -f http://localhost:8080/health
-
-# Override health check at run time
-docker run --health-cmd "curl -f http://localhost:8080/health || exit 1" \
-           --health-interval 10s my-image
-
-# Disable health check
-docker run --no-healthcheck my-image
-```
-
-## Docker Compose Debugging
-
-### Service startup issues
-
+### 服务启动问题
 ```bash
 # Check service status
 docker compose ps
@@ -363,8 +328,7 @@ docker compose up --force-recreate --build
 docker compose config
 ```
 
-### Service dependency and startup order
-
+### 服务依赖关系及启动顺序
 ```yaml
 # docker-compose.yml
 services:
@@ -392,6 +356,7 @@ services:
       retries: 5
 ```
 
+### 服务清理
 ```bash
 # Wait for a service to be healthy before running commands
 docker compose up -d db
@@ -399,32 +364,13 @@ docker compose exec db pg_isready  # Polls until ready
 docker compose up -d api
 ```
 
-## Cleanup
+## 提示
 
-```bash
-# Remove stopped containers
-docker container prune
-
-# Remove unused images
-docker image prune
-
-# Remove everything unused (containers, images, networks, volumes)
-docker system prune -a
-
-# Remove volumes too (WARNING: deletes data)
-docker system prune -a --volumes
-
-# Remove dangling build cache
-docker builder prune
-```
-
-## Tips
-
-- `docker logs -f` is the first thing to check. Most container failures are visible in the logs.
-- Exit code 137 means OOM-killed. Increase the memory limit or fix the memory leak.
-- Apps inside containers must bind to `0.0.0.0`, not `127.0.0.1`. Localhost inside a container is isolated.
-- Container names only resolve via DNS on user-defined networks, not the default `bridge`. Always create a custom network for multi-container setups.
-- `docker exec` only works on running containers. For crashed containers, use `docker cp` to extract logs or override the entrypoint with `docker run --entrypoint sh`.
-- `nicolaka/netshoot` is the Swiss Army knife for container networking. It has every networking tool pre-installed.
-- `--progress=plain` during builds shows full command output, which is essential for debugging build failures.
-- Health checks with `start-period` prevent false unhealthy status during slow application startup.
+- 首先使用 `docker logs -f` 命令查看日志。大多数容器故障问题都可以在日志中找到线索。
+- 出错代码 137 表示容器因内存不足（OOM）而终止。请增加内存限制或修复内存泄漏问题。
+- 容器内的应用程序应绑定到 `0.0.0.0` 地址，而不是 `127.0.0.1`（主机地址）。容器内的 localhost 是隔离的。
+- 容器名称仅在使用用户自定义网络时才能通过 DNS 解析，不能使用默认的 `bridge` 网络。在多容器环境中务必创建自定义网络。
+- `docker exec` 命令仅适用于正在运行的容器。对于崩溃的容器，可以使用 `docker cp` 命令提取日志，或者通过 `docker run --entrypoint sh` 替换容器的入口点命令。
+- `nicolaka/netshoot` 是一个非常实用的工具，集成了多种容器网络调试工具。
+- 在构建过程中使用 `--progress=plain` 选项可以显示完整的命令输出，这对调试构建错误非常有用。
+- 健康检查中的 `start-period` 参数可以防止应用程序启动缓慢时出现错误的状态显示。

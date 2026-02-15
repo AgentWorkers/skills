@@ -1,45 +1,45 @@
 ---
 name: sportsbet-advisor
-description: Provide informed opinions and educated guesses on sports bets from Sportsbet. Use when asked to research a specific bet, analyze relevant data (both current and historical), and predict a potential outcome. Always include a disclaimer that the prediction is an educated guess and may be incorrect. **When assessing an outcome, provide a confidence level, ensuring it never exceeds 95%.**
+description: 针对Sportsbet提供的体育投注服务，应提供基于充分信息的意见和有根据的猜测。在接到研究特定投注的请求时，需分析相关数据（包括当前数据和历史数据），并预测可能的结果。务必注明：该预测仅是一种有根据的猜测，可能存在误差。**在评估结果时，应给出一个置信度水平，且该置信度不得超过95%。**
 ---
 
 # Sportsbet Advisor
 
-## Overview
+## 概述
 
-This skill enables N.O.V.A. to act as a sports bet advisor, conducting comprehensive research on specific sports events and teams to offer an educated guess on potential outcomes.
+该技能使 N.O.V.A. 能够充当体育博彩顾问的角色，对特定的体育赛事和球队进行深入研究，从而提供基于分析的预测结果。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Bet Analysis & Comprehensive Research
+### 1. 赌注分析与全面研究
 
-When a user requests an opinion on a sports bet, this skill will:
-- Identify the teams, players, or participants involved.
-- Utilize web search to gather relevant information, including:
-    - **Current Data:** Recent team/player performance, current form, news, injury reports, home/away advantage, and expert analyses/predictions from reputable sports news sources.
-    - **Historical Data:** Head-to-head statistics, long-term trends, and historical outcomes of similar matchups.
-    - Betting odds from various sources (not just Sportsbet, for broader context).
+当用户请求对某场体育赛事的投注建议时，该技能将：
+- 确定涉及的球队、球员或参赛者。
+- 通过网络搜索收集相关信息，包括：
+    - **当前数据**：球队/球员的最新表现、近期状态、新闻、伤病情况、主客场优势，以及来自可靠体育新闻来源的专家分析/预测。
+    - **历史数据**：以往的交锋记录、长期趋势以及类似比赛的历史结果。
+    - 来自多个来源的投注赔率（不仅限于 Sportsbet），以便提供更全面的背景信息。
 
-### 2. Educated Guess, Confidence Level & Disclaimer
+### 2. 基于分析的预测、置信度及免责声明
 
-After comprehensive research, the skill will:
-- Formulate an "educated guess" about the likely winner or outcome.
-- **Provide a confidence level (e.g., 75% confident), which will never exceed 95%.**
-- Present the findings and the guess to the user.
-- **Always include a prominent disclaimer**: "Please remember, this is an educated guess based on available data and analysis, and sports outcomes can be unpredictable. There's always a chance it could be wrong, so bet responsibly."
+在完成全面研究后，该技能将：
+- 对可能的胜者或比赛结果提出一个“基于分析的预测”。
+- **提供置信度（例如：75%）**，且置信度永远不会超过 95%。
+- 向用户展示研究结果和预测内容。
+- **始终附上明确的免责声明**：“请注意，这只是一个基于现有数据和分析的预测，体育比赛的结果具有不确定性。预测可能错误，因此请理性投注。”
 
-## Example Usage
+## 使用示例
 
-**User:** "Who do you think will win the upcoming EPL match between Arsenal and Manchester United? I'm looking at a bet on Sportsbet."
+**用户**：“你认为即将进行的阿森纳对阵曼彻斯特联的英超比赛谁会赢？我打算在 Sportsbet 上下注。”
 
-**N.O.V.A. (after research):** "Based on my comprehensive research, here's my educated guess for the Arsenal vs. Manchester United match:
+**N.O.V.A.（研究后）**：“根据我的分析，我对阿森纳对阵曼彻斯特联的比赛做出以下预测：
 
-*   **Recent Form:** Arsenal has won 4 of their last 5 league games, scoring an average of 2 goals per game. Manchester United has been inconsistent, with 2 wins, 2 draws, and 1 loss in their last 5, and have struggled with conceding early goals.
-*   **Head-to-Head (Historical):** In their last 10 encounters, Arsenal has won 5, Manchester United 3, and 2 draws, indicating a slight historical edge for Arsenal.
-*   **Injuries:** [Specific injury updates for key players, if any.]
-*   **Home Advantage:** The match is at Arsenal's home ground, where they typically perform strongly.
-*   **Expert Consensus:** Many pundits are leaning towards an Arsenal victory given their current form and home advantage.
+*   **近期表现**：阿森纳在最近的 5 场联赛中赢了 4 场，场均进球 2 球。曼彻斯特联的表现不稳定，最近 5 场中 2 胜 2 平 1 负，并且在早期失球方面存在问题。
+*   **历史交锋记录**：在过去 10 次交锋中，阿森纳赢了 5 场，曼彻斯特联赢了 3 场，平了 2 场，说明阿森纳在历史上略占优势。
+* **伤病情况**：[如有关键球员的伤病信息，会予以说明。]
+* **主客场优势**：比赛在阿森纳的主场进行，他们在主场通常表现更出色。
+* **专家观点**：许多专家认为，鉴于阿森纳当前的表现和主场优势，他们更有可能获胜。
 
-Considering these factors, I lean towards **Arsenal winning** this match. I am **80% confident** in this prediction.
+综合这些因素，我预测**阿森纳会赢得这场比赛**。我对这个预测的置信度为 **80%**。
 
-Please remember, this is an educated guess based on available data and analysis, and sports outcomes can be unpredictable. There's always a chance it could be wrong, so bet responsibly."
+请记住，这只是一个基于现有数据和分析的预测，体育比赛的结果具有不确定性。预测可能错误，因此请理性投注。”

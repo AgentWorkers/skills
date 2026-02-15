@@ -1,71 +1,71 @@
 ---
 name: linkedin
-description: LinkedIn automation via browser relay or cookies for messaging, profile viewing, and network actions.
+description: 通过浏览器中继或cookies实现LinkedIn自动化操作，包括发送消息、查看个人资料以及执行网络相关动作。
 homepage: https://linkedin.com
 metadata: {"clawdbot":{"emoji":"💼"}}
 ---
 
 # LinkedIn
 
-Use browser automation to interact with LinkedIn - check messages, view profiles, search, and send connection requests.
+使用浏览器自动化工具与 LinkedIn 进行交互：查看消息、浏览个人资料、搜索以及发送好友请求。
 
-## Connection Methods
+## 好友请求方法
 
-### Option 1: Chrome Extension Relay (Recommended)
-1. Open LinkedIn in Chrome and log in
-2. Click the Clawdbot Browser Relay toolbar icon to attach the tab
-3. Use `browser` tool with `profile="chrome"`
+### 方法 1：Chrome 扩展程序 Relay（推荐）
+1. 在 Chrome 中打开 LinkedIn 并登录。
+2. 点击 Clawdbot 浏览器 Relay 工具栏图标，将相关标签页添加到工具栏中。
+3. 使用 `browser` 工具，并设置 `profile="chrome"`。
 
-### Option 2: Isolated Browser
-1. Use `browser` tool with `profile="clawd"` 
-2. Navigate to linkedin.com
-3. Log in manually (one-time setup)
-4. Session persists for future use
+### 方法 2：隔离浏览器（Isolated Browser）
+1. 使用 `browser` 工具，并设置 `profile="clawd"`。
+2. 访问 linkedin.com。
+3. 手动登录（只需设置一次）。
+4. 会话信息会保留下来，以便后续使用。
 
-## Common Operations
+## 常见操作
 
-### Check Connection Status
+### 查看好友请求状态
 ```
 browser action=snapshot profile=chrome targetUrl="https://www.linkedin.com/feed/"
 ```
 
-### View Notifications/Messages
+### 查看通知/消息
 ```
 browser action=navigate profile=chrome targetUrl="https://www.linkedin.com/messaging/"
 browser action=snapshot profile=chrome
 ```
 
-### Search People
+### 搜索用户
 ```
 browser action=navigate profile=chrome targetUrl="https://www.linkedin.com/search/results/people/?keywords=QUERY"
 browser action=snapshot profile=chrome
 ```
 
-### View Profile
+### 查看个人资料
 ```
 browser action=navigate profile=chrome targetUrl="https://www.linkedin.com/in/USERNAME/"
 browser action=snapshot profile=chrome
 ```
 
-### Send Message (confirm with user first!)
-1. Navigate to messaging or profile
-2. Use `browser action=act` with click/type actions
-3. Always confirm message content before sending
+### 发送消息（请先获得用户确认！）
+1. 进入消息页面或个人资料页面。
+2. 使用 `browser action=act`，并配合点击或输入操作来发送消息。
+3. 在发送消息前，请务必确认消息内容。
 
-## Safety Rules
-- **Never send messages without explicit user approval**
-- **Never accept/send connection requests without confirmation**
-- **Avoid rapid automated actions** - LinkedIn is aggressive about detecting automation
-- Rate limit: ~30 actions per hour max recommended
+## 安全规则
+- **未经用户明确同意，切勿发送任何消息**。
+- **未经确认，切勿接受或发送好友请求**。
+- **避免频繁的自动化操作**——LinkedIn 对自动化行为非常敏感。
+- 推荐的每小时操作次数上限为约 30 次。
 
-## Session Cookie Method (Advanced)
-If browser relay isn't available, extract the `li_at` cookie from browser:
-1. Open LinkedIn in browser, log in
-2. DevTools → Application → Cookies → linkedin.com
-3. Copy `li_at` value
-4. Store securely for API requests
+## 会话 Cookie 方法（高级）
+如果浏览器 Relay 不可用，可以从浏览器中提取 `li_at` Cookie：
+1. 在浏览器中打开 LinkedIn 并登录。
+2. 打开开发者工具（DevTools）→ 应用程序（Application）→ Cookies → linkedin.com。
+3. 复制 `li_at` 值。
+4. 将该值安全存储起来，以用于后续的 API 请求。
 
-## Troubleshooting
-- If logged out: Re-authenticate in browser
-- If rate limited: Wait 24 hours, reduce action frequency
-- If CAPTCHA: Complete manually in browser, then resume
+## 故障排除
+- 如果登录失败：在浏览器中重新登录。
+- 如果遇到操作次数限制：等待 24 小时后再尝试。
+- 如果出现验证码：请在浏览器中手动完成验证码验证，然后再继续操作。

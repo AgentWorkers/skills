@@ -1,105 +1,105 @@
 ---
 name: Gardening
-description: Plant care, soil management, seasonal timing, pest control, and garden planning.
+description: 植物养护、土壤管理、季节性种植时机、害虫防治以及花园规划。
 metadata:
   category: lifestyle
   skills: ["gardening", "plants", "vegetables", "landscaping", "horticulture"]
 ---
 
-## Soil Fundamentals
+## 土壤基础
 
-- Test soil before amending — pH and nutrients determine what to add, not guessing
-- Most plants prefer pH 6.0-7.0 — blueberries need acidic (4.5-5.5), lavender needs alkaline
-- Compost fixes almost everything — improite clay drainage, sandy retention, feeds soil life
-- Never work wet soil — compacts structure, takes years to recover
-- Mulch 2-3 inches around plants — retains moisture, suppresses weeds, regulates temperature
+- 在改良土壤之前先进行测试——pH值和养分含量决定了需要添加什么，而不是凭猜测。
+- 大多数植物偏好pH值在6.0-7.0之间的土壤；蓝莓需要酸性土壤（pH 4.5-5.5），薰衣草则需要碱性土壤。
+- 堆肥几乎可以解决所有土壤问题——改善粘土的排水性，增加沙土的保水性，并为土壤中的微生物提供养分。
+- 绝不要在湿润的土壤中工作——湿润的土壤会压实结构，恢复需要很长时间。
+- 在植物周围铺设2-3英寸厚的覆盖物——可以保持土壤湿度、抑制杂草生长并调节温度。
 
-## Watering Mistakes
+## 浇水误区
 
-- Deep infrequent > shallow frequent — trains roots to grow deep, builds resilience
-- Morning watering best — leaves dry before night, reduces fungal disease
-- Water soil, not leaves — wet foliage invites disease, wastes water
-- Wilting in afternoon heat is normal — check morning, if still wilted then water
-- Container plants dry faster — may need daily watering in summer
+- 深度浇水但频率较低优于频繁浅层浇水——这样能促使根系向深处生长，提高植物的抗逆性。
+- 早晨浇水最佳——让叶子在夜间之前干燥，有助于减少真菌病害。
+- 应直接浇灌土壤，而不是叶子——湿润的叶子容易引发病害，还会浪费水分。
+- 下午高温时植物出现萎蔫是正常现象——先检查早晨的情况，如果仍然萎蔫再浇水。
+- 容器种植的植物干燥得更快——夏季可能需要每天浇水。
 
-## Planting Timing
+## 种植时机
 
-- Last frost date is starting point — count back for seed starting, forward for transplant
-- Soil temperature matters more than air — cold soil rots seeds, use thermometer
-- Cool season crops: lettuce, peas, broccoli — plant early spring and fall
-- Warm season crops: tomatoes, peppers, squash — after soil reaches 60°F/15°C
-- Perennials: plant in fall — roots establish over winter, less stress than spring
+- 最后一次霜冻的日期是种植的参考点——根据这个日期倒推种子发芽的时间，提前规划移植时间。
+- 土壤温度比空气温度更重要——低温会杀死种子，使用温度计测量土壤温度。
+- 冷季作物（如生菜、豌豆、西兰花）：早春或秋季种植。
+- 温季作物（如番茄、辣椒、南瓜）：等到土壤温度达到60°F/15°C时再种植。
+- 多年生植物：秋季种植——它们的根系可以在冬季生长，比春季种植更耐受环境变化。
 
-## Spacing Reality
+## 植物间距
 
-- Seed packet spacing is minimum — crowded plants compete, underperform
-- Air circulation prevents disease — don't pack plants together
-- Mature size, not transplant size — that tiny tomato becomes 6 feet tall
-- Vertical growing saves space — trellises for cucumbers, beans, tomatoes
-- Succession planting: stagger sowings 2-3 weeks — continuous harvest, not glut
+- 种子包装上的间距只是最低要求——过于密集的植物会互相竞争，影响生长。
+- 保持良好的空气流通可以预防病害——不要将植物种得太紧密。
+- 应根据植物成熟后的大小来决定间距——即使是很小的番茄植株，长大后也可能长到6英尺高。
+- 垂直种植可以节省空间——例如使用棚架来种植黄瓜、豆类和番茄。
+- 采用轮作种植法：每隔2-3周播种一次——这样可以持续收获，避免作物集中生长导致过剩。
 
-## Fertilizer Basics
+## 肥料基础
 
-- N-P-K: Nitrogen (leaves), Phosphorus (roots/flowers), Potassium (overall health)
-- More is not better — overfertilizing burns roots, causes leggy growth
-- Organic slow-release preferred — feeds soil life, not just plants
-- Heavy feeders (tomatoes, corn) need more — light feeders (beans, herbs) need less
-- Stop fertilizing 4-6 weeks before first frost — don't encourage tender growth
+- N-P-K：氮（促进叶片生长）、磷（促进根系和开花）、钾（促进整体健康）。
+- 过量施肥并无益处——反而会烧伤根系，导致植株徒长。
+- 优先选择有机缓释肥料——它们能滋养土壤中的微生物，而不仅仅是植物本身。
+- 需要大量肥料的作物（如番茄、玉米）需要更多肥料；需少量肥料的作物（如豆类、香草）则需要较少肥料。
+- 在第一次霜冻前4-6周停止施肥——避免促进植株的脆弱生长。
 
-## Pest Management
+## 害虫管理
 
-- Identify before treating — wrong treatment wastes time, may harm beneficials
-- Healthy plants resist pests better — soil health is pest prevention
-- Beneficial insects: ladybugs eat aphids, wasps parasitize caterpillars — don't kill all bugs
-- Physical barriers first: row covers, handpicking, water spray
-- Pesticides last resort — even organic ones kill beneficials
+- 在采取任何防治措施之前先识别害虫——错误的防治方法会浪费时间，还可能伤害有益生物。
+- 健康的植物更能抵抗害虫——保持土壤健康是预防害虫的关键。
+- 有益昆虫（如瓢虫会吃蚜虫，黄蜂会寄生在毛虫身上）——不要杀死所有昆虫。
+- 首先采用物理防治方法：使用防虫网、手工捕捉或喷水。
+- 农药是最后的手段——即使是有机农药也可能伤害有益生物。
 
-## Common Pest Signs
+## 常见害虫及其迹象
 
-| Sign | Likely Cause | First Response |
+| 症状 | 可能原因 | 应对措施 |
 |------|--------------|----------------|
-| Holes in leaves | Caterpillars, beetles | Handpick, Bt spray |
-| Sticky residue | Aphids, scale | Strong water spray |
-| White powder on leaves | Powdery mildew | Improve airflow, remove affected |
-| Yellowing from bottom | Nitrogen deficiency or overwatering | Check soil moisture first |
-| Wilting despite wet soil | Root rot | Reduce watering, improve drainage |
+| 叶子上有洞 | 毛虫、甲虫 | 手工捕捉或使用Bt喷雾 |
+| 叶子上有粘性残留物 | 蚜虫、介壳虫 | 强力喷水清洗 |
+| 叶子上有白色粉末 | 白粉病 | 保持良好的空气流通，清除受感染的叶片 |
+| 叶子从底部开始变黄 | 缺氮或浇水过多 | 先检查土壤湿度 |
+| 尽管土壤湿润但植物仍然萎蔫 | 根部腐烂 | 减少浇水，改善土壤排水性 |
 
-## Pruning Principles
+## 修剪原则
 
-- Clean cuts: sharp tools, just above node or bud — ragged cuts invite disease
-- Prune spring bloomers after flowering — they set buds on old wood
-- Prune summer bloomers in late winter — they bloom on new growth
-- Remove dead/diseased/crossing branches first — the 3 Ds
-- Never remove more than 1/3 at once — stresses plant, triggers excessive regrowth
+- 使用锋利的工具，修剪位置应在节点或芽的上方——粗糙的修剪伤口容易引发病害。
+- 春季开花的植物在开花后修剪——因为它们会在旧枝条上形成新的芽。
+- 夏季开花的植物在晚冬修剪——因为它们会在新枝条上开花。
+- 先去除枯死、病态或交叉的枝条。
+- 一次修剪的枝条数量不要超过总量的1/3——否则会令植物受到压力，导致过度生长。
 
-## Composting
+## 堆肥制作
 
-- Browns (carbon): dry leaves, cardboard, straw — provide structure
-- Greens (nitrogen): kitchen scraps, grass clippings, coffee grounds — provide nutrients
-- Ratio: 3 parts brown to 1 part green — too green = smelly, too brown = slow
-- Turn every 1-2 weeks — aeration speeds decomposition
-- Finished when dark, crumbly, earthy smell — 2-6 months depending on method
+- “棕色材料”（碳源）：干树叶、纸板、稻草——为堆肥提供结构支撑。
+- “绿色材料”（氮源）：厨房废弃物、草屑、咖啡渣——为堆肥提供养分。
+- 堆肥比例：3份棕色材料对1份绿色材料——绿色材料过多会导致堆肥发臭，棕色材料过多则分解缓慢。
+- 每1-2周翻动一次堆肥——增加空气流通，加快分解速度。
+- 当堆肥变成深色、松散且带有泥土香味时，说明堆肥已经完成——根据堆肥方法的不同，这个过程需要2-6个月的时间。
 
-## Season Extension
+## 延长生长季节
 
-- Cold frames: unheated mini greenhouse — extends season 4-6 weeks each end
-- Row covers: frost protection to ~28°F/-2°C — lighter grades for pest barrier
-- Mulch heavily before frost — protects roots of perennials
-- Succession plant cold-hardy crops in fall — spinach, kale, garlic
-- Start seeds indoors 6-8 weeks before transplant date — lighting critical
+- 冷框：无需加热的小型温室——每个季节可以延长4-6周的种植时间。
+- 使用防虫网：可以防止霜冻，保护植物免受低温伤害。
+- 在霜冻前在植物周围铺设厚厚的覆盖物——保护多年生植物的根部。
+- 在秋季种植耐寒作物——如菠菜、羽衣甘蓝、大蒜。
+- 在移植前6-8周在室内开始播种——光照对植物生长至关重要。
 
-## Container Gardening
+## 容器园艺
 
-- Drainage holes mandatory — no rocks in bottom, just holes
-- Potting mix, not garden soil — garden soil compacts, drains poorly in pots
-- Size matters: tomatoes need 5+ gallons, herbs can use smaller
-- Containers dry fast — may need twice-daily watering in heat
-- Feed more frequently — nutrients wash out with watering
+- 容器必须有排水孔——底部不能放石头，只需有排水孔即可。
+- 使用专用的盆栽土，而不是普通园土——园土容易在容器中压实，排水不良。
+- 选择合适的容器大小——例如，番茄需要至少5加仑的容器，而香草类植物可以使用较小的容器。
+- 容器中的土壤干燥得很快——在高温环境下可能需要每天浇水。
+- 更频繁地施肥——因为浇水会冲走土壤中的养分。
 
-## Planning Principles
+## 规划原则
 
-- Right plant, right place — sun/shade, wet/dry requirements must match site
-- Group by water needs — don't mix drought-tolerant with water-lovers
-- Native plants easier — adapted to local conditions, support local wildlife
-- Start small, expand later — better to maintain small garden well than large garden poorly
-- Keep garden journal — what worked, what failed, when planted
+- 选择适合当地环境的植物——考虑植物的光照和水分需求。
+- 按照植物的水分需求进行分组种植——不要将耐旱植物和喜水植物混种在一起。
+- 选择本地植物——它们更适应当地环境，也有利于保护当地野生动物。
+- 从小规模开始种植——维护小花园比管理大型花园更容易。
+- 记录种植过程——记录哪些方法有效，哪些失败了，以及具体的种植时间。

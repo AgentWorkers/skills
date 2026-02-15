@@ -1,111 +1,110 @@
 ---
 name: Photography
-description: Camera settings, composition, lighting, editing workflow, and genre-specific techniques.
+description: 相机设置、构图技巧、光线运用、编辑工作流程以及针对不同类型的电影（或视频）所采用的特定技术。
 metadata:
   category: creative
   skills: ["photography", "camera", "lighting", "editing", "composition"]
 ---
 
-## Exposure Triangle
+## 曝光三要素
 
-- ISO: double ISO = double brightness, but also double noise. Stay lowest possible
-- Aperture: f/2.8 = shallow depth of field (blurry background), f/11 = everything sharp
-- Shutter: 1/focal length minimum for handheld — 50mm lens needs 1/50s or faster
-- Expose for highlights — blown highlights unrecoverable, shadows can be lifted in post
+- **ISO**：ISO值翻倍，亮度会翻倍，但噪点也会翻倍。因此应尽量使用较低的ISO值。
+- **光圈**：f/2.8 会导致景深较浅（背景模糊）；f/11 则能让所有元素都清晰可见。
+- **快门速度**：手持拍摄时，快门速度应至少为镜头焦距的倒数；例如，50mm镜头需要1/50秒或更快的快门速度。
+- **高光处理**：过度曝光的高光无法恢复，但可以通过后期处理来改善阴影部分。
 
-## Focus Fundamentals
+## 对焦基础
 
-- Focus on eyes for portraits — always the nearest eye
-- Back-button focus separates focus from shutter — press once to lock, recompose freely
-- Single-point AF for precision, tracking AF for movement
-- Hyperfocal distance for landscapes: focus 1/3 into scene, everything sharp at f/8-11
-- When in doubt, stop down — f/8 is sharper than wide open for most lenses
+- **人像摄影**：应重点对焦在眼睛上，通常是对焦最近的那一只眼睛。
+- **对焦方式**：使用相机的对焦按钮（背键）可以将对焦与快门操作分开；按一下按钮锁定对焦后，可以自由构图。
+- **对焦模式**：单点自动对焦适用于需要精确对焦的情况；跟踪自动对焦适用于拍摄移动对象。
+- **风景摄影**：将焦点设置在画面三分之一的位置，使用f/8–f/11的光圈可以让整个画面都清晰。
+- **对焦技巧**：如果有疑问，可以缩小光圈（例如使用f/8），这样大多数镜头的对焦效果会更好。
 
-## Composition Beyond Rule of Thirds
+## 超出“三分法则”的构图技巧
 
-- Leading lines pull eyes into frame — roads, fences, rivers toward subject
-- Frame within frame: doorways, windows, arches add depth
-- Negative space: empty area emphasizes subject — don't fill every corner
-- Odd numbers: 3 or 5 subjects more pleasing than 2 or 4
-- Break rules intentionally: centered subject with symmetry works
+- **引导线**：利用道路、栅栏、河流等元素将观众的视线引向主体。
+- **框架内的框架**：门框、窗户、拱门等元素可以为画面增添层次感。
+- **负空间**：留出空白区域可以突出主体，避免填满整个画面。
+- **数量选择**：3个或5个主体比2个或4个更美观。
+- **打破规则**：有时将主体置于画面中心并运用对称构图也能产生不错的效果。
 
-## Natural Light
+## 自然光摄影
 
-- Golden hour: 1 hour after sunrise, 1 hour before sunset — warm, soft, directional
-- Blue hour: 20-30 minutes after sunset — even, moody, no harsh shadows
-- Overcast is giant softbox — ideal for portraits, no squinting
-- Midday sun: use as backlight or find open shade — avoid direct overhead
-- Window light: subject facing window, not camera — soft directional light
+- **黄金时刻**：日出后1小时、日落前1小时——光线温暖、柔和且方向性明显。
+- **蓝调时刻**：日落后的20–30分钟——光线均匀、氛围朦胧，没有强烈的阴影。
+- **阴天**：阴天就像一个巨大的柔光箱，非常适合人像摄影，拍摄时无需眯眼。
+- **正午阳光**：可以将阳光用作背光，或者寻找有遮蔽的地方；避免直射的阳光。
+- **窗光**：让主体面向窗户，而不是面向相机，这样可以获得柔和的方向性光线。
 
-## Flash Basics
+## 闪光灯使用技巧
 
-- Bounce off ceiling/wall — direct flash is harsh and flat
-- Flash exposure compensation: start at -1 to -2 stops — blend with ambient
-- High-speed sync for daylight fill — allows wide aperture outdoors
-- Off-camera flash: 45 degrees from subject, elevated — creates dimension
-- Catch light in eyes: small light source close beats large source far
+- **反射光线**：将闪光灯照射在天花板或墙壁上，可以避免直射产生的刺眼效果和平坦的阴影。
+- **闪光灯曝光补偿**：初始值设为-1到-2档，以适应环境光线。
+- **高速同步**：在日光下使用闪光灯时，可以开启高速同步功能，以便使用较大的光圈。
+- **离机闪光灯**：将闪光灯与主体成45度角，并稍微抬高位置，可以增加画面的立体感。
+- **捕捉眼神中的光芒**：使用靠近主体的小光源比使用远离主体的大光源效果更好。
 
-## Common Mistakes
+## 常见错误
 
-- Horizon not level — first thing viewers notice is wrong
-- Cutting at joints: ankles, wrists, knees — crop mid-limb or full body
-- Busy backgrounds: poles from heads, distracting elements
-- Chimping constantly — looking at screen after every shot instead of moments
-- Not checking histogram — LCD brightness deceives, histogram doesn't lie
+- **地平线不平**：这是观众首先会注意到的问题。
+- **裁剪不当**：避免裁剪到关节部位（如脚踝、手腕、膝盖）；可以选择裁剪部分肢体或整个主体。
+- **背景杂乱**：背景中的杂乱元素会分散观众的注意力。
+- **频繁查看屏幕**：每次拍摄后都查看屏幕，而不是专注于拍摄瞬间。
+- **忽略直方图**：LCD屏幕的亮度显示可能会误导你对曝光的判断，但直方图能提供准确的信息。
 
-## Camera Settings by Genre
+## 不同场景下的相机设置
 
-**Portraits:**
-- Aperture priority, f/1.8-2.8
-- Single-point AF on eye
-- +1/3 exposure for skin brightness
+**人像摄影：**
+- **光圈优先**：使用f/1.8–f/2.8的光圈。
+- **对焦方式**：使用单点自动对焦，对焦在眼睛上。
+- **曝光调整**：增加1/3档曝光量，以提升皮肤亮度。
 
-**Landscapes:**
-- Aperture priority, f/8-11
-- Tripod, mirror lock, remote/timer
-- Bracket exposures for HDR
+**风景摄影：**
+- **光圈优先**：使用f/8–f/11的光圈。
+- **使用三脚架**：使用三脚架并锁定反光镜；可以使用遥控器或定时器进行拍摄。
+- **HDR拍摄**：通过多次曝光获得更好的动态范围。
 
-**Sports/Action:**
-- Shutter priority, 1/500s minimum
-- Continuous AF tracking
-- Burst mode, anticipate peak action
+**运动/动作摄影：**
+- **快门速度**：至少使用1/500秒的快门速度。
+- **自动对焦**：使用连续自动对焦功能，跟踪移动的对象。
+- **连拍模式**：准备好连续拍摄，捕捉动作的高潮瞬间。
 
-**Street:**
-- Aperture priority, f/5.6-8
-- Zone focus preset at 3m
-- Shoot from hip if needed
+**街头摄影：**
+- **光圈优先**：使用f/5.6–f/8的光圈。
+- **对焦预设**：将对焦区域预设在3米的距离。
+- **拍摄姿势**：必要时可以蹲下或从腰部高度进行拍摄。
 
-## RAW vs JPEG
+## RAW格式与JPEG格式的对比
 
-- Shoot RAW for editing flexibility — recovers 2-3 stops of exposure
-- JPEG for volume without editing — events with hundreds of shots
-- RAW + JPEG: preview immediately, edit RAW later
-- RAW files need processing — they look flat by design, not a problem
+- **RAW格式**：适合后期编辑，因为可以恢复2–3档的曝光差异。
+- **JPEG格式**：适合不需要过多后期处理的场景，尤其是拍摄大量照片的情况。
+- **混合使用**：可以先预览JPEG格式的照片，再后期处理RAW格式的文件。
+- **RAW文件处理**：RAW文件需要后期处理；它们在未经处理时可能看起来色彩较平淡，但这不是问题。
 
-## Editing Workflow
+## 后期编辑流程
 
-1. Cull ruthlessly: delete obvious failures first
-2. Global adjustments: exposure, white balance, contrast
-3. Local adjustments: dodge/burn, graduated filters
-4. Color grading: consistent look across set
-5. Export: sRGB for web, AdobeRGB for print
+1. **严格筛选**：首先删除明显不合格的照片。
+2. **全局调整**：调整曝光、白平衡和对比度。
+3. **局部调整**：使用“减光/增亮”工具和渐变滤镜进行局部修饰。
+4. **色彩统一**：确保整个画面的色彩风格一致。
+5. **文件导出**：将文件导出为sRGB格式（适用于网页）或AdobeRGB格式（适用于打印）。
+- **编辑环境**：在经过校准的显示器上进行编辑；笔记本电脑的屏幕显示效果可能不准确。
+- **最后进行锐化处理**：在调整大小之后再进行锐化，过度锐化会破坏画面的细节。
+- **少即是多**：如果后期处理痕迹明显，说明你的调整过度了。
 
-- Edit on calibrated monitor — laptop screens lie about color
-- Sharpening last, after resize — oversharpening destroys detail
-- Less is more: if you notice the edit, you went too far
+## 相机与器材的实际选择
 
-## Gear Reality
+- **最适合你的相机**：就是你手头的那台相机；在家中使用手机拍摄也能获得不错的效果。
+- **镜头比机身更重要**：优先投资高质量的镜头。
+- **50mm f/1.8镜头**：是一款非常实用的首选镜头——价格便宜、画质清晰，有助于学习构图技巧。
+- **三脚架**：不要为了节省成本而选择劣质的三脚架；没有三脚架比使用劣质的三脚架更糟糕。
+- **优质的光源**：一个好的光源比多个劣质的光源更重要；优先选择合适的光源。
 
-- Best camera is the one you have — phone beats DSLR at home
-- Lenses matter more than bodies — invest in glass first
-- 50mm f/1.8 is best first prime — cheap, sharp, teaches composition
-- Tripod: don't cheap out — flimsy tripod is worse than none
-- One good light > three bad ones — start with single source
+## 文件管理
 
-## File Management
-
-- Backup same day: 3-2-1 rule (3 copies, 2 media types, 1 offsite)
-- Folder structure: YYYY/YYYY-MM-DD_EventName
-- Rename files: YYYYMMDD_ProjectName_0001.ext
-- Keywords and ratings during import — not later when you forget context
-- Archive RAW files forever, even rejected ones — storage is cheap, moments aren't
+- **立即备份**：当天完成拍摄后立即备份文件，遵循“3-2-1”规则（3份备份，2种存储介质，1份异地存储）。
+- **文件夹结构**：文件名格式为YYYY/YYYY-MM-DD_EventName。
+- **文件命名**：文件名应为YYYYMMDD_ProjectName_0001.ext。
+- **添加关键词和评分**：在导入文件时添加关键词和评分，这样以后回忆拍摄时更方便。
+- **永久保存RAW文件**：即使是被淘汰的照片也要永久保存；存储空间虽然便宜，但珍贵的瞬间无法重来。

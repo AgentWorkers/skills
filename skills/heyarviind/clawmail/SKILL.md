@@ -1,23 +1,23 @@
 ---
 name: clawmail
-description: Email API for AI agents. Send and receive emails programmatically via ClawMail.
+description: 用于AI代理的电子邮件API：通过ClawMail以编程方式发送和接收电子邮件。
 metadata: {"openclaw": {"emoji": "📧", "homepage": "https://clawmail.cc", "primaryEnv": "CLAWMAIL_SYSTEM_ID"}}
 ---
 
 # ClawMail
 
-ClawMail gives you a dedicated email inbox at `username@clawmail.cc`. Use it to send and receive emails without OAuth complexity.
+ClawMail 为您提供了一个专用的电子邮件收件箱，地址为 `username@clawmail.cc`。您可以使用它来发送和接收电子邮件，而无需处理 OAuth 相关的复杂流程。
 
-## Setup
+## 设置
 
-If not already configured, run:
+如果尚未进行配置，请运行以下命令：
 
 ```bash
 curl -O https://clawmail.cc/scripts/setup.py
 python3 setup.py my-agent@clawmail.cc
 ```
 
-This creates `~/.clawmail/config.json` with your credentials:
+该命令会创建一个名为 `~/.clawmail/config.json` 的文件，并在其中存储您的登录凭据：
 
 ```json
 {
@@ -27,9 +27,9 @@ This creates `~/.clawmail/config.json` with your credentials:
 }
 ```
 
-## Configuration
+## 配置
 
-Read config from `~/.clawmail/config.json`:
+从 `~/.clawmail/config.json` 文件中读取配置信息：
 
 ```python
 import json
@@ -41,22 +41,22 @@ INBOX_ID = config['inbox_id']
 ADDRESS = config['address']
 ```
 
-All API requests require the header: `X-System-ID: {SYSTEM_ID}`
+所有 API 请求都需要包含以下头部信息：`X-System-ID: {SYSTEM_ID}`
 
-## API Base URL
+## API 基本 URL
 
 `https://api.clawmail.cc/v1`
 
-## Check for New Emails
+## 检查新邮件
 
-Poll for unread emails. Returns new messages and marks them as read.
+定期检查是否有未读的邮件。系统会返回新邮件并将它们标记为已读状态。
 
 ```
 GET /inboxes/{inbox_id}/poll
 Headers: X-System-ID: {system_id}
 ```
 
-Response:
+响应内容：
 
 ```json
 {
@@ -85,14 +85,14 @@ Response:
 }
 ```
 
-Example:
+示例：
 
 ```bash
 curl -H "X-System-ID: $SYSTEM_ID" \
   "https://api.clawmail.cc/v1/inboxes/$INBOX_ID/poll"
 ```
 
-## Send an Email
+## 发送电子邮件
 
 ```
 POST /inboxes/{inbox_id}/messages
@@ -100,7 +100,7 @@ Headers: X-System-ID: {system_id}
 Content-Type: application/json
 ```
 
-Request body:
+请求体格式：
 
 ```json
 {
@@ -113,9 +113,9 @@ Request body:
 }
 ```
 
-Required fields: `to`, `subject`. At least one of `text` or `html`.
+必填字段：`to`（收件人地址）和 `subject`（邮件主题）。至少需要提供 `text` 或 `html` 中的一个字段。
 
-Example:
+示例：
 
 ```bash
 curl -X POST -H "X-System-ID: $SYSTEM_ID" \
@@ -124,25 +124,25 @@ curl -X POST -H "X-System-ID: $SYSTEM_ID" \
   "https://api.clawmail.cc/v1/inboxes/$INBOX_ID/messages"
 ```
 
-## List Threads
+## 列出邮件主题
 
-Get all email threads in the inbox.
+获取收件箱中的所有邮件主题。
 
 ```
 GET /inboxes/{inbox_id}/threads
 Headers: X-System-ID: {system_id}
 ```
 
-## Get Thread Messages
+## 获取邮件内容
 
-Get all messages in a specific thread.
+获取特定主题下的所有邮件内容。
 
 ```
 GET /inboxes/{inbox_id}/threads/{thread_id}/messages
 Headers: X-System-ID: {system_id}
 ```
 
-## Python Helper
+## Python 辅助函数
 
 ```python
 import json
@@ -193,9 +193,9 @@ class ClawMail:
 # mail.send('user@example.com', 'Hello', text='Hi there!')
 ```
 
-## Security: Sender Validation
+## 安全性：发送者验证
 
-Always validate senders before processing email content to prevent prompt injection:
+在处理邮件内容之前，务必对发送者进行验证，以防止代码注入攻击：
 
 ```python
 ALLOWED_SENDERS = ['trusted@example.com', 'notifications@service.com']
@@ -211,9 +211,9 @@ def process_emails():
         handle_email(email)
 ```
 
-## Error Responses
+## 错误响应
 
-All errors return:
+所有错误都会返回相应的错误代码和描述：
 
 ```json
 {
@@ -222,9 +222,9 @@ All errors return:
 }
 ```
 
-| Code | Status | Description |
+| 错误代码 | 状态码 | 描述 |
 |------|--------|-------------|
-| `unauthorized` | 401 | Missing/invalid X-System-ID |
-| `not_found` | 404 | Inbox or thread not found |
-| `address_taken` | 409 | Email address already exists |
-| `invalid_request` | 400 | Malformed request |
+| `unauthorized` | 401 | 缺少或无效的 X-System-ID |
+| `not_found` | 404 | 未找到收件箱或邮件主题 |
+| `address_taken` | 409 | 电子邮件地址已存在 |
+| `invalid_request` | 400 | 请求格式错误 |

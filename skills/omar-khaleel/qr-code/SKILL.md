@@ -1,86 +1,81 @@
 ---
 name: qr-code
-description: Generate and read QR codes. Use when the user wants to create a QR code from text/URL, or decode/read a QR code from an image file. Supports PNG/JPG output and can read QR codes from screenshots or image files.
+description: 生成和读取二维码。适用于用户需要将文本/URL转换为二维码，或从图像文件中解码/读取二维码的场景。支持PNG/JPG格式的输出，并能够从截图或图像文件中读取二维码。
 ---
 
-# QR Code
+# QR码
 
-Generate QR codes from text/URLs and decode QR codes from images.
+本工具支持从文本或URL生成QR码，以及从图像中解码QR码。
 
-## Capabilities
+## 功能
 
-- Generate QR codes from any text, URL, or data
-- Customize QR code size and error correction level
-- Save as PNG or display in terminal
-- Read/decode QR codes from image files (PNG, JPG, etc.)
-- Read QR codes from screenshots
+- 从任意文本、URL或数据生成QR码
+- 自定义QR码的大小和纠错级别
+- 可将生成的QR码保存为PNG格式文件，或在终端中显示
+- 从PNG、JPG等图像文件中读取/解码QR码
+- 从截图中读取QR码
 
-## Requirements
+## 安装要求
 
-Install Python dependencies:
-
-### For Generation
+### 生成QR码所需依赖库
 
 ```bash
 pip install qrcode pillow
 ```
 
-### For Reading
+### 解码QR码所需依赖库
 
 ```bash
 pip install pillow pyzbar
 ```
 
-On Windows, pyzbar requires Visual C++ Redistributable.
-On macOS: `brew install zbar`
-On Linux: `apt install libzbar0`
+在Windows系统上，使用pyzbar需要安装Visual C++ Redistributable。  
+在macOS系统上：`brew install zbar`  
+在Linux系统上：`apt install libzbar0`
 
-## Generate QR Code
+## 生成QR码的命令
 
 ```bash
 python scripts/qr_generate.py "https://example.com" output.png
 ```
 
-Options:
+选项说明：
+- `--size`：QR码的边长（以像素为单位，默认值：10）
+- `--border`：QR码边框的宽度（以像素为单位，默认值：4）
+- `--error`：QR码的纠错级别（L/M/Q/H，默认值：M）
 
-- `--size`: Box size in pixels (default: 10)
-- `--border`: Border size in boxes (default: 4)
-- `--error`: Error correction level L/M/Q/H (default: M)
-
-Example with options:
+示例（包含选项）：
 
 ```bash
 python scripts/qr_generate.py "Hello World" hello.png --size 15 --border 2
 ```
 
-## Read QR Code
+## 解码QR码的命令
 
 ```bash
 python scripts/qr_read.py image.png
 ```
 
-Returns the decoded text/URL from the QR code.
+该命令会返回QR码中包含的文本或URL内容。
 
-## Quick Examples
+## 快速示例
 
-Generate QR for a URL:
-
-```python
+- 为某个URL生成QR码：  
+  ```python
 import qrcode
 img = qrcode.make("https://openclaw.ai")
 img.save("openclaw.png")
 ```
 
-Read QR from image:
-
-```python
+- 从图像中读取QR码：  
+  ```python
 from pyzbar.pyzbar import decode
 from PIL import Image
 data = decode(Image.open("qr.png"))
 print(data[0].data.decode())
 ```
 
-## Scripts
+## 相关脚本
 
-- `scripts/qr_generate.py` - Generate QR codes with customization options
-- `scripts/qr_read.py` - Decode QR codes from image files
+- `scripts/qr_generate.py`：用于生成带有自定义参数的QR码  
+- `scripts/qr_read.py`：用于从图像文件中解码QR码

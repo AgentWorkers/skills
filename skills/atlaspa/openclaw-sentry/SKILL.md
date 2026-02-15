@@ -6,67 +6,66 @@ metadata: {"openclaw":{"emoji":"🔑","requires":{"bins":["python3"]},"os":["dar
 
 # OpenClaw Sentry
 
-Scans your agent workspace for leaked secrets — API keys, tokens, passwords, private keys, and credentials that should never be in plain text.
+该工具会扫描代理工作空间中可能泄露的敏感信息，包括 API 密钥、令牌、密码、私钥等，这些信息绝不应该以明文形式存在。
 
-## The Problem
+## 问题所在
 
-Agent workspaces accumulate secrets: API keys in config files, tokens in memory logs, passwords in environment files. A single leaked credential can compromise your entire infrastructure. Existing secret scanners work on git repos — nothing watches the agent workspace itself.
+代理工作空间中会积累各种敏感信息：配置文件中存放 API 密钥，内存日志中保存令牌，环境文件中包含密码。哪怕仅有一个敏感信息泄露，也可能导致整个基础设施的安全受到威胁。现有的敏感信息扫描工具主要针对 Git 仓库进行检测，但并未监控代理工作空间本身。
 
+## 命令选项
 
-## Commands
+### 全面扫描
 
-### Full Scan
-
-Scan all workspace files for secrets and high-risk files.
+扫描工作空间中的所有文件，查找敏感信息和高风险文件。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py scan --workspace /path/to/workspace
 ```
 
-### Check Single File
+### 检查单个文件
 
-Check a specific file for secrets.
+检查指定的文件是否存在敏感信息。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py check MEMORY.md --workspace /path/to/workspace
 ```
 
-### Quick Status
+### 快速状态检查
 
-One-line summary of secret exposure risk.
+提供关于敏感信息泄露风险的简短摘要。
 
 ```bash
 python3 {baseDir}/scripts/sentry.py status --workspace /path/to/workspace
 ```
 
-## What It Detects
+## 支持检测的来源
 
-| Provider | Patterns |
+| 提供方 | 检测模式 |
 |----------|----------|
-| **AWS** | Access keys (AKIA...), secret keys |
-| **GitHub** | PATs (ghp_, gho_, ghs_, ghr_, github_pat_) |
-| **Slack** | Bot/user tokens (xox...), webhooks |
-| **Stripe** | Secret keys (sk_live_), publishable keys |
-| **OpenAI** | API keys (sk-...) |
-| **Anthropic** | API keys (sk-ant-...) |
-| **Google** | API keys (AIza...), OAuth secrets |
-| **Azure** | Storage account keys |
-| **Generic** | API keys, secrets, passwords, bearer tokens, connection strings |
-| **Crypto** | PEM private keys, .key/.pem/.p12 files |
-| **Database** | PostgreSQL/MySQL/MongoDB/Redis URLs with credentials |
-| **JWT** | JSON Web Tokens |
-| **Environment** | .env files with variables |
+| **AWS** | 访问密钥（AKIA...）、秘密密钥 |
+| **GitHub** | PAT（ghp_, gho_, ghs_, ghr_, github_pat_） |
+| **Slack** | 机器人/用户令牌（xox...）、Webhook |
+| **Stripe** | 秘密密钥（sk_live_）、可公开使用的密钥 |
+| **OpenAI** | API 密钥（sk-...） |
+| **Anthropic** | API 密钥（sk-ant-...） |
+| **Google** | API 密钥（AIza...）、OAuth 密钥 |
+| **Azure** | 存储账户密钥 |
+| **通用** | API 密钥、密码、 bearer 令牌、连接字符串 |
+| **加密** | PEM 格式的私钥（.key/.pem/.p12 文件） |
+| **数据库** | 包含敏感信息的 PostgreSQL/MySQL/MongoDB/Redis URL |
+| **JWT** | JSON Web 令牌 |
+| **环境变量** | .env 文件中的环境变量 |
 
-## Exit Codes
+## 返回码
 
-- `0` — Clean, no secrets found
-- `1` — Warnings (high-risk files detected)
-- `2` — Critical secrets found
+- `0`：未发现敏感信息
+- `1`：检测到高风险文件
+- `2`：发现关键敏感信息
 
-## No External Dependencies
+## 无需外部依赖
 
-Python standard library only. No pip install. No network calls. Everything runs locally.
+仅依赖 Python 标准库，无需安装任何第三方库（如 pip），也不进行网络请求。所有操作都在本地完成。
 
-## Cross-Platform
+## 跨平台兼容性
 
-Works with OpenClaw, Claude Code, Cursor, and any tool using the Agent Skills specification.
+支持与 OpenClaw、Claude Code、Cursor 以及任何遵循 Agent Skills 规范的工具配合使用。

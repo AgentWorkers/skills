@@ -1,77 +1,76 @@
 ---
 name: Linux
-description: Operate Linux systems avoiding permission traps, silent failures, and common admin mistakes.
+description: 操作 Linux 系统时，需避免权限陷阱、无声故障以及常见的管理错误。
 metadata: {"clawdbot":{"emoji":"🐧","os":["linux","darwin"]}}
 ---
 
-# Linux Gotchas
+# Linux 使用中的常见陷阱
 
-## Permission Traps
-- `chmod 777` fixes nothing, breaks everything — find the actual owner/group issue
-- Setuid on scripts is ignored for security — only works on binaries
-- `chown -R` follows symlinks outside target directory — use `--no-dereference`
-- Default umask 022 makes files world-readable — set 077 for sensitive systems
-- ACLs override traditional permissions silently — check with `getfacl`
+## 权限问题
+- 使用 `chmod 777` 无法解决问题，反而可能引发更多问题——应找出实际的文件所有者或组问题。
+- 为脚本设置 `setuid` 权限在安全方面无效——该权限仅对二进制文件有效。
+- `chown -R` 会跟随目标目录外的符号链接进行权限更改——使用 `--no-dereference` 选项可避免这个问题。
+- 默认的 umask 值为 022，会导致文件对所有用户可读——对于敏感系统，应将其设置为 077。
+- ACL（访问控制列表）会覆盖传统的文件权限——使用 `getfacl` 命令进行验证。
 
-## Process Gotchas
-- `kill` sends SIGTERM by default, not SIGKILL — process can ignore it
-- `nohup` doesn't work if process already running — use `disown` instead
-- Background job with `&` still dies on terminal close without `disown` or `nohup`
-- Zombie processes can't be killed — parent must call wait() or be killed
-- `kill -9` skips cleanup handlers — data loss possible, use SIGTERM first
+## 进程管理问题
+- `kill` 命令默认发送 SIGTERM 信号，而非 SIGKILL 信号——进程可能忽略该信号。
+- 如果进程已经在运行中，`nohup` 命令无法阻止其终止——此时应使用 `disown` 命令。
+- 使用 `&` 在后台运行的进程在关闭终端时仍可能终止——需要使用 `disown` 或 `nohup` 命令。
+- “僵尸进程”无法被正常终止——必须由父进程调用 `wait()` 函数或直接终止该进程。
+- 使用 `kill -9` 可能会跳过进程的清理操作——可能导致数据丢失，建议先发送 SIGTERM 信号。
 
-## Filesystem Traps
-- Deleting open file doesn't free space until process closes it — check `lsof +L1`
-- `rm -rf /path /` with accidental space = disaster — use `rm -rf /path/` trailing slash
-- Inodes exhausted while disk shows space free — many small files problem
-- Symlink loops cause infinite recursion — `find -L` follows them
-- `/tmp` cleared on reboot — don't store persistent data there
+## 文件系统问题
+- 删除打开的文件并不会立即释放磁盘空间——使用 `lsof +L1` 命令查看文件是否仍被进程占用。
+- 使用 `rm -rf /path /` 时，如果路径中包含空格，可能会导致灾难性后果——应使用 `rm -rf /path/` 的格式。
+- 磁盘显示有可用空间，但实际上可能是由于存在大量小文件造成的。
+- 符号链接循环可能导致无限递归——使用 `find -L` 命令来检测并处理这些问题。
+- `/tmp` 目录在系统重启时会被清空——不要将重要数据存储在其中。
 
-## Disk Space Mysteries
-- Deleted files held open by processes — `lsof +L1` shows them, restart process to free
-- Reserved blocks (5% default) only for root — `tune2fs -m 1` to reduce
-- Journal eating space — `journalctl --vacuum-size=500M`
-- Docker overlay eating space — `docker system prune -a`
-- Snapshots consuming space — check LVM, ZFS, or cloud provider snapshots
+## 磁盘空间管理问题
+- 被进程打开的文件即使被删除，也不会立即释放磁盘空间——使用 `lsof +L1` 命令确认。
+- 系统默认为 root 用户预留了 5% 的磁盘空间——可以使用 `tune2fs -m 1` 命令减少这一比例。
+- 日志文件会占用大量磁盘空间——使用 `journalctl --vacuum-size=500M` 命令清理日志。
+- Docker 的 overlay 目录也会占用磁盘空间——使用 `docker system prune -a` 命令进行清理。
+- 快照也会占用磁盘空间——需要检查 LVM、ZFS 或云存储服务的 snapshot 设置。
 
-## Networking
-- `localhost` and `127.0.0.1` may resolve differently — check `/etc/hosts`
-- Firewall rules flushed on reboot unless saved — `iptables-save` or use firewalld/ufw persistence
-- `netstat` deprecated — use `ss` instead
-- Port below 1024 requires root — use `setcap` for capability instead
-- TCP TIME_WAIT exhaustion under load — tune `net.ipv4.tcp_tw_reuse`
+## 网络问题
+- `localhost` 和 `127.0.0.1` 的解析结果可能因系统配置而不同——请查看 `/etc/hosts` 文件。
+- 防火墙规则在系统重启时会被清除——除非提前保存——可以使用 `iptables-save` 或 firewalld/ufw 工具来保持规则持久化。
+- `netstat` 命令已被弃用——建议使用 `ss` 命令代替。
+- 低于 1024 的端口需要 root 权限——可以使用 `setcap` 命令来设置相应的权限。
+- 在高负载情况下，TCP 的 TIME_WAIT 状态可能导致系统资源耗尽——调整 `net.ipv4.tcp_tw_reuse` 配置。
 
-## SSH Traps
-- Wrong permissions on ~/.ssh = silent auth failure — 700 for dir, 600 for keys
-- Agent forwarding exposes your keys to remote admins — avoid on untrusted servers
-- Known hosts hash doesn't match after server rebuild — remove old entry with `ssh-keygen -R`
-- SSH config Host blocks: first match wins — put specific hosts before wildcards
-- Connection timeout on idle — add `ServerAliveInterval 60` to config
+## SSH 连接问题
+- 如果 ~/.ssh 目录的权限设置不正确，可能会导致 SSH 连接失败——目录权限应设置为 700，密钥文件权限应设置为 600。
+- 使用 SSH 代理转发功能可能会泄露用户的私钥——在不受信任的服务器上应避免使用该功能。
+- 服务器重建后，已知的 SSH 主机地址可能不再匹配——使用 `ssh-keygen -R` 命令更新主机地址。
+- SSH 配置中的 `Host` 规则：首先匹配到的条目会被优先应用——应将特定主机地址放在通配符之前。
+- 如果连接长时间处于空闲状态，可能会导致连接超时——可以在配置文件中添加 `ServerAliveInterval 60` 选项。
 
-## Systemd
-- `systemctl enable` doesn't start service — also need `start`
-- `restart` vs `reload`: restart drops connections, reload doesn't (if supported)
-- Journal logs lost on reboot by default — set `Storage=persistent` in journald.conf
-- Failed service doesn't retry by default — add `Restart=on-failure` to unit
-- Dependency on network: `After=network.target` isn't enough — use `network-online.target`
+## systemd 管理问题
+- 使用 `systemctl enable` 命令只能启用服务，还需要使用 `start` 命令来实际启动服务。
+- `restart` 和 `reload` 的区别：`restart` 会中断正在进行的连接，而 `reload` 不会（如果服务支持重新加载的话）。
+- 日志文件在系统重启时可能会丢失——需要在 `journald.conf` 中设置 `Storage=persistent` 选项。
+- 失败的服务默认不会自动重试——需要在服务单元配置中添加 `Restart=on-failure` 选项。
+- 如果服务依赖于网络服务，仅设置 `After=network.target` 是不够的——还需要设置 `network-online.target`。
 
-## Cron Pitfalls
-- Cron has minimal PATH — use absolute paths or set PATH in crontab
-- Output goes to mail by default — redirect to file or `/dev/null`
-- Cron uses system timezone, not user's — set TZ in crontab if needed
-- Crontab lost if edited incorrectly — `crontab -l > backup` before editing
-- @reboot runs on daemon restart too, not just system reboot
+## Cron 定时任务问题
+- Cron 的 PATH 环境变量非常有限——应使用绝对路径或在 crontab 文件中手动设置 PATH。
+- Cron 的输出默认会被发送到邮件系统——可以将其重定向到文件或 `/dev/null`。
+- Cron 使用系统的时区设置，而非用户的时区设置——如有需要，可以在 crontab 中设置 `TZ` 变量。
+- 如果 crontab 文件被错误编辑，可能会导致任务无法正常执行——编辑前请使用 `crontab -l > backup` 命令备份文件。
+- `@reboot` 规则会在系统重启时以及守护进程重启时执行——请注意这一点。
 
-## Memory and OOM
-- OOM killer picks "best" victim, often not the offender — check dmesg for kills
-- Swap thrashing worse than OOM — monitor with `vmstat`
-- Memory usage in `free` includes cache — "available" is what matters
-- Process memory in `/proc/[pid]/status` — VmRSS is actual usage
-- cgroups limit respected before system OOM — containers die first
+## 内存和 Out-of-Memory (OOM) 问题
+- OOM（内存不足）处理机制会随机选择被终止的进程——请查看 `dmesg` 日志以确定具体原因。
+- 交换分区（swap）的频繁使用可能比 OOM 更严重——使用 `vmstat` 命令监控内存使用情况。
+- `free` 命令显示的内存使用情况包括缓存占用——实际可用内存应参考 `/proc/[pid]/status` 文件中的 VmRSS 值。
+- 容器在系统 OOM 之前会首先被终止——因为 cgroups 限制会先生效。
 
-## Commands That Lie
-- `df` shows filesystem capacity, not physical disk — check underlying device
-- `du` doesn't count sparse files correctly — file appears smaller than disk usage
-- `ps aux` memory percentage can exceed 100% (shared memory counted multiple times)
-- `uptime` load average includes uninterruptible I/O wait — not just CPU
-- `top` CPU percentage is per-core — 400% means 4 cores maxed
+## 其他需要注意的命令问题
+- `df` 命令显示的是文件系统的容量，而非物理磁盘的容量——请查看实际的磁盘设备信息。
+- `du` 命令无法正确计算稀疏文件的大小——因此文件显示的占用空间可能小于实际占用量。
+- `ps aux` 命令显示的内存使用百分比可能超过 100%（因为共享内存会被多次计算）。
+- `uptime` 命令显示的负载平均值包括不可中断的 I/O 操作时间——不仅仅是 CPU 使用情况。
+- `top` 命令显示的 CPU 使用百分比是按核心计算的——400% 表示所有核心都处于满负荷状态。

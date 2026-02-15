@@ -1,17 +1,18 @@
 ---
 name: beepctl
-description: Use when sending messages, searching chats, or managing conversations across messaging platforms (Telegram, WhatsApp, Slack, iMessage, etc.) via Beeper Desktop API.
+description: **使用说明：**  
+当您需要通过 Beeper Desktop API 在各种消息平台（如 Telegram、WhatsApp、Slack、iMessage 等）中发送消息、搜索聊天记录或管理对话时，请参考以下说明。
 homepage: https://github.com/blqke/beepctl
 metadata: {"clawdbot":{"emoji":"🐝","requires":{"bins":["beepctl"]},"install":[{"id":"npm","kind":"npm","package":"beepctl","global":true,"bins":["beepctl"],"label":"Install beepctl (npm)"}]}}
 ---
 
 # beepctl
 
-CLI for [Beeper Desktop API](https://developers.beeper.com/desktop-api) — unified messaging from your terminal. Control all your messaging platforms (Telegram, WhatsApp, Slack, iMessage, etc.) through one interface.
+这是一个用于 [Beeper Desktop API](https://developers.beeper.com/desktop-api) 的命令行工具（CLI），它允许您通过终端统一管理来自各种消息平台的消息（如 Telegram、WhatsApp、Slack、iMessage 等）。
 
-📖 **Setup & installation:** see [GitHub repo](https://github.com/blqke/beepctl)
+📖 **设置与安装：** 请参阅 [GitHub 仓库](https://github.com/blqke/beepctl)
 
-## Quick Start
+## 快速入门
 
 ```bash
 beepctl accounts                    # List connected accounts
@@ -21,21 +22,21 @@ beepctl search "meeting" --after "1d ago"  # Search messages
 beepctl send <chat-id> "Hello!"     # Send a message
 ```
 
-## Commands
+## 命令
 
-### Auth Management
+### 身份验证管理
 ```bash
 beepctl auth show           # Check auth status and token
 beepctl auth set <token>    # Set API token
 beepctl auth clear          # Clear saved token
 ```
 
-### Accounts
+### 账户管理
 ```bash
 beepctl accounts            # List all connected accounts
 ```
 
-### Browse Chats
+### 浏览聊天记录
 ```bash
 beepctl chats list                        # List inbox (non-archived)
 beepctl chats list --limit 20             # Limit results
@@ -50,9 +51,9 @@ beepctl chats show <chat-id>              # Detailed chat info with participants
 beepctl chats create <account> <users...> # Create new chat
 ```
 
-**Inbox filters:** `primary` (default), `archive`, `low-priority`, `all`
+**收件箱筛选方式：** `primary`（默认）、`archive`、`low-priority`、`all`
 
-### List Messages
+### 列出消息
 ```bash
 beepctl messages <chat-id>              # Recent messages from a chat
 beepctl messages <chat-id> --limit 10   # Limit results
@@ -60,7 +61,7 @@ beepctl messages work --after "1d ago"  # Use alias + time filter
 beepctl messages <chat-id> --before "1h ago"  # Messages before a time
 ```
 
-### Search Messages
+### 搜索消息
 ```bash
 beepctl search "query"                    # Search across all chats
 beepctl search "query" --limit 10         # Limit results
@@ -74,18 +75,18 @@ beepctl search "todo" --include-low-priority   # Include low-priority chats
 beepctl search "important" --exclude-muted     # Exclude muted chats
 ```
 
-**Combine filters:**
+**筛选方式的组合：**
 ```bash
 beepctl search "deploy" --chat work --sender others --after "1d ago" --media link
 beepctl search "hello" --chat work family  # Multiple chats (space-separated)
 beepctl search "test" --chat id1,id2,id3   # Multiple chats (comma-separated)
 ```
 
-**Time formats:** `1h ago`, `2d ago`, `3w ago`, `1mo ago`, `yesterday`, `today`  
-**Media types:** `any`, `video`, `image`, `link`, `file`
+**时间格式：** `1小时前`、`2天前`、`3周前`、`1个月前`、`昨天`、`今天`  
+**媒体类型：** `any`、`video`、`image`、`link`、`file`
 
-### Aliases
-Create shortcuts for frequently used chat IDs:
+### 别名
+为常用的聊天 ID 创建快捷方式：
 
 ```bash
 beepctl alias list                    # List all aliases
@@ -95,7 +96,7 @@ beepctl alias remove work             # Remove alias
 beepctl send work "Using alias!"      # Use alias in any command
 ```
 
-### Archive Chats
+### 归档聊天记录
 ```bash
 beepctl archive <chat-id>              # Archive a chat
 beepctl archive <chat-id> --unarchive  # Unarchive
@@ -103,10 +104,9 @@ beepctl archive work                   # Use alias
 beepctl archive <chat-id> --quiet      # No confirmation message
 ```
 
-### Send Messages
-
-⚠️ **NEVER send messages without explicit user approval first!**
-Always show the message content and recipient, then ask for confirmation.
+### 发送消息
+⚠️ **未经用户明确同意，切勿发送消息！**  
+务必先显示消息内容和接收者信息，再请求用户确认。
 
 ```bash
 beepctl send <chat-id> "Hello!"                    # Send message
@@ -115,7 +115,7 @@ beepctl send <chat-id> "Reply" --reply-to <msg-id> # Reply to message
 beepctl send <chat-id> "msg" --quiet               # No confirmation output
 ```
 
-### Focus (Bring to Foreground)
+### 将聊天窗口置顶
 ```bash
 beepctl focus                           # Bring Beeper to foreground
 beepctl focus <chat-id>                 # Open a specific chat
@@ -124,26 +124,26 @@ beepctl focus <chat-id> -d "draft"      # Pre-fill draft text
 beepctl focus <chat-id> -a /path/file   # Pre-fill draft attachment
 ```
 
-### Send Media
-`beepctl send` only supports text. To send media, use focus with draft:
+### 发送媒体文件
+`beepctl send` 仅支持发送文本消息。如需发送媒体文件，请先使用 `focus` 功能创建草稿，然后再发送：
 
 ```bash
 beepctl focus <chat-id> -a /path/to/image.png -d "Caption"
 # Then press Enter in Beeper to send
 ```
 
-### Contacts
+### 联系人管理
 ```bash
 beepctl contacts search <account> <query>  # Search contacts on an account
 ```
 
-### Download Attachments
+### 下载附件
 ```bash
 beepctl download <mxc-url>              # Download attachment (mxc:// URLs)
 beepctl download <mxc-url> -o /path     # Save to specific path
 ```
 
-### Reminders
+### 设置提醒
 ```bash
 beepctl reminders set <chat> 30m       # Remind in 30 minutes
 beepctl reminders set <chat> 1h        # Remind in 1 hour
@@ -152,8 +152,7 @@ beepctl reminders set <chat> tomorrow  # Remind tomorrow
 beepctl reminders clear <chat>         # Clear reminder
 ```
 
-## Tips
-
-- Chat IDs look like: `!gZ42vWzDxl8V0sZXWBgO:beeper.local`
-- Use aliases to avoid typing long chat IDs
-- The special alias `myself` sends to your own chat
+## 提示：
+- 聊天 ID 的格式通常为：`!gZ42vWzDxl8V0sZXWBgO:beeper.local`
+- 使用别名可以避免输入冗长的聊天 ID
+- 特殊别名 `myself` 用于发送消息到自己的聊天账户

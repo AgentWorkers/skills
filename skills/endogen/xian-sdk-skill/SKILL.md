@@ -1,13 +1,13 @@
 ---
 name: xian-sdk
-description: Build applications on the Xian blockchain using the xian-py Python SDK. Use when developing apps that interact with Xian — wallets, transactions, smart contracts, state queries, token transfers. Covers sync and async patterns.
+description: 使用 `xian-py` Python SDK 在 Xian 区块链上构建应用程序。适用于开发与 Xian 相关的应用程序，包括钱包管理、交易处理、智能合约功能、状态查询以及代币转移等。文档涵盖了同步（sync）和异步（async）编程模式。
 ---
 
-# Xian SDK Skill
+# Xian SDK 技能指南
 
-Build applications on [Xian](https://xian.org) using the [xian-py](https://github.com/xian-network/xian-py) Python SDK.
+使用 [xian-py](https://github.com/xian-network/xian-py) Python SDK 在 [Xian](https://xian.org) 上构建应用程序。
 
-## Installation
+## 安装
 
 ```bash
 pip install xian-py
@@ -16,7 +16,7 @@ pip install xian-py
 pip install "xian-py[eth]"
 ```
 
-## Quick Reference
+## 快速参考
 
 ```python
 from xian_py import Xian, Wallet
@@ -32,9 +32,9 @@ result = xian.send_tx('contract', 'function', {'arg': 'value'})
 result = xian.submit_contract('name', code)
 ```
 
-## Wallets
+## 钱包
 
-### Basic Wallet
+### 基础钱包
 
 ```python
 from xian_py import Wallet
@@ -49,7 +49,7 @@ print(wallet.public_key)   # Address
 print(wallet.private_key)  # Keep secret!
 ```
 
-### HD Wallet (BIP39/BIP32)
+### 高级钱包（BIP39/BIP32）
 
 ```python
 from xian_py.wallet import HDWallet
@@ -70,7 +70,7 @@ eth_wallet = hd.get_ethereum_wallet(0)  # First account
 eth_wallet2 = hd.get_ethereum_wallet(1)  # Second account
 ```
 
-### Signing & Verification
+### 签名与验证
 
 ```python
 wallet = Wallet()
@@ -85,7 +85,7 @@ is_valid = wallet.verify_msg("Hello Xian", signature)
 Wallet.is_valid_key(wallet.public_key)  # True
 ```
 
-## Blockchain Queries
+## 区块链查询
 
 ```python
 from xian_py import Xian
@@ -105,9 +105,9 @@ state = xian.get_state('contract_name', 'variable', 'key')
 source = xian.get_contract('contract_name', clean=True)
 ```
 
-## Transactions
+## 交易
 
-### Simple Token Transfer
+### 简单代币转移
 
 ```python
 from xian_py import Xian, Wallet
@@ -122,7 +122,7 @@ if result['success']:
     print(f"TX: {result['tx_hash']}")
 ```
 
-### Contract Interaction
+### 合约交互
 
 ```python
 # Call any contract function
@@ -140,7 +140,7 @@ result = xian.send_tx(
 )
 ```
 
-### Stamp Estimation
+### 印章估算
 
 ```python
 from xian_py.transaction import simulate_tx, get_nonce
@@ -157,9 +157,9 @@ result = simulate_tx('http://node:26657', payload)
 print(f"Stamps needed: {result['stamps_used']}")
 ```
 
-## Smart Contracts
+## 智能合约
 
-### Deploy Contract
+### 部署合约
 
 ```python
 code = '''
@@ -186,13 +186,13 @@ result = xian.submit_contract('my_token', code)
 print(f"Deployed: {result['success']}")
 ```
 
-### Contract Patterns
+### 合约模式
 
-See `references/contract-patterns.md` for common patterns (tokens, access control, pausable, upgrades).
+有关常见合约模式（代币、访问控制、可暂停功能、升级等），请参阅 `references/contract-patterns.md`。
 
-### Contract Validation
+### 合约验证
 
-Validate against [Xian standards](https://github.com/xian-network/xian-standard-contracts):
+根据 [Xian 标准](https://github.com/xian-network/xian-standard-contracts) 进行合约验证：
 
 ```python
 from xian_py.validator import validate_contract, XianStandard
@@ -206,9 +206,9 @@ if not is_valid:
     print(errors)
 ```
 
-### Read-Only Execution
+### 只读执行
 
-Query contract without spending stamps:
+在不消耗印章的情况下查询合约：
 
 ```python
 from xian_py.transaction import simulate_tx
@@ -224,9 +224,9 @@ result = simulate_tx('http://node:26657', payload)
 print(f"Balance: {result['result']}")
 ```
 
-## Async Operations
+## 异步操作
 
-For high-performance applications:
+对于高性能应用程序：
 
 ```python
 import asyncio
@@ -248,7 +248,7 @@ async def main():
 asyncio.run(main())
 ```
 
-### Batch Operations
+### 批量操作
 
 ```python
 async def check_balances(addresses: list[str]):
@@ -259,9 +259,9 @@ async def check_balances(addresses: list[str]):
         return dict(zip(addresses, balances))
 ```
 
-### Sync Wrapper
+### 同步封装器
 
-Call async from sync code:
+从同步代码中调用异步操作：
 
 ```python
 from xian_py import XianAsync, run_sync
@@ -275,9 +275,9 @@ def get_balance_sync(address: str) -> float:
 balance = get_balance_sync('address')
 ```
 
-## Encryption
+## 加密
 
-Two-way encrypted messaging:
+双向加密通信：
 
 ```python
 from xian_py import Wallet
@@ -296,7 +296,7 @@ msg = decrypt_as_sender(sender.private_key, receiver.public_key, encrypted)
 msg = decrypt_as_receiver(sender.public_key, receiver.private_key, encrypted)
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 from xian_py import Xian, XianException
@@ -307,9 +307,9 @@ except XianException as e:
     print(f"Blockchain error: {e}")
 ```
 
-## Common Patterns
+## 常见模式
 
-### Token Transfer Service
+### 代币转移服务
 
 ```python
 class TokenService:
@@ -325,7 +325,7 @@ class TokenService:
         return self.xian.send_tx(token, 'transfer', {'to': to, 'amount': amount})
 ```
 
-### DEX Swap
+### DEX 交易
 
 ```python
 async def swap(xian, dex: str, token_in: str, token_out: str, 
@@ -342,8 +342,8 @@ async def swap(xian, dex: str, token_in: str, token_out: str,
     })
 ```
 
-## Resources
+## 资源
 
-- [xian-py GitHub](https://github.com/xian-network/xian-py) — Full SDK docs
-- [Xian Standard Contracts](https://github.com/xian-network/xian-standard-contracts) — Token standards
-- [xian.org](https://xian.org) — Project site
+- [xian-py GitHub](https://github.com/xian-network/xian-py) — 完整的 SDK 文档
+- [Xian 标准合约](https://github.com/xian-network/xian-standard-contracts) — 代币标准
+- [xian.org](https://xian.org) — 项目官网

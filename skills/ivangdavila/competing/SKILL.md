@@ -1,37 +1,37 @@
 ---
 name: Competing
-description: Improve systematically by analyzing losses, studying winners, and tracking progress against rivals in any competitive domain.
+description: 通过分析失败的原因、研究成功案例，并跟踪自己在任何竞争领域中的进展，可以系统性地提升自己的能力。
 ---
 
-## Core Framework
+## 核心框架
 
-Competition is a learning accelerator. Every loss contains the lesson that wins don't.
+竞争是学习的加速器。每一次失败都蕴含着胜利所没有带来的教训。
 
-1. **Analyze the Loss** — Don't just lose, understand WHY
-2. **Study the Winner** — What did they do that you didn't?
-3. **Track the Delta** — Measure the gap, watch it shrink
-4. **Iterate** — Apply lessons, compete again, repeat
+1. **分析失败的原因** — 不要只是接受失败，要理解失败背后的原因。
+2. **研究胜利者** — 他们做了哪些你没有做的事情？
+3. **衡量差距** — 计算两者之间的差距，并观察这个差距是否在缩小。
+4. **迭代改进** — 将学到的经验应用到实践中，再次参与竞争，重复这个过程。
 
 ---
 
-## The Post-Loss Protocol
+## 失败后的应对策略
 
-After any competitive loss, extract value:
+在任何竞争性失利之后，要从中提取有价值的教训：
 
-| Question | Purpose |
+| 问题 | 目的 |
 |----------|---------|
-| At what moment did the outcome shift? | Find the decision point |
-| What did they do that I didn't? | Identify the winning move |
-| What would I do differently? | Formulate the lesson |
-| Is this a pattern? | Check history for repeats |
+| 结果在什么时候发生了变化？ | 找出导致结果变化的决策点。|
+| 他们做了哪些你没有做的事情？ | 确定他们的制胜策略。|
+| 如果再次面对这种情况，我会怎么做不同？ | 总结出应对策略。|
+| 这是一种反复出现的模式吗？ | 查看历史数据，看是否出现过类似的情况。|
 
-Don't rationalize. Don't blame externals. Extract the actionable insight.
+不要找借口，也不要责怪外部因素。要从中提取出可以付诸行动的见解。
 
 ---
 
-## Tracking (What to Measure)
+## 跟踪机制（需要记录的内容）
 
-Create a tracking folder in the user's workspace:
+在用户的工作空间中创建一个跟踪文件夹：
 
 ```
 ~/competing/
@@ -41,41 +41,41 @@ Create a tracking folder in the user's workspace:
 └── progress.md        # Metrics over time
 ```
 
-For each domain, track:
-- Win/loss record with dates
-- Specific losses analyzed (who, why, lesson)
-- Patterns identified (recurring weaknesses)
-- Progress metrics (are lessons translating to wins?)
+针对每个领域，记录以下内容：
+- 带有日期的胜负记录。
+- 具体的失败案例（涉及的人物、原因及从中得到的教训）。
+- 识别出的问题（如反复出现的弱点）。
+- 进度指标（这些教训是否真正转化为胜利？）
 
 ---
 
-## Rival Intelligence
+## 竞争对手的分析
 
-Know your competition:
-- **Profile rivals** — Their strengths, weaknesses, tendencies
-- **Monitor changes** — When they improve or change strategy
-- **Find their edge** — What specifically makes them beat you?
-- **Study up** — Find examples of them losing, analyze what worked
+深入了解你的竞争对手：
+- **分析对手的特点** — 他们的优势、劣势以及行为模式。
+- **监控对手的变化** — 注意他们何时取得了进步或改变了策略。
+- **找出他们的优势** — 明确是什么让他们能够战胜你。
+- **深入研究** — 查找他们曾经失败的案例，分析他们的失败原因及应对策略。
 
 ---
 
-## Quick Reference
+## 快速参考指南
 
-| Situation | Action |
+| 情况 | 应对措施 |
 |-----------|--------|
-| Just lost | Run post-loss protocol, add to log |
-| Pattern emerging | Document it, create drill/fix |
-| Preparing for known rival | Review their profile, past matches |
-| Plateau in progress | Analyze recent losses for new patterns |
-| Won against usual winner | Document what changed, replicate |
+| 刚刚失败 | 执行失败后的应对策略，并记录下来。|
+| 发现新的失败模式 | 将该模式记录下来，并制定相应的应对措施。|
+| 面对熟悉的对手时 | 重新审视对手的资料和过去的比赛记录。|
+| 进展陷入停滞 | 分析最近的失败案例，寻找新的突破点。|
+| 击败了通常会获胜的对手 | 记录下对手的变化，并尝试复制他们的成功策略。|
 
 ---
 
-## Load Reference
+## 参考资料
 
-| Need | File |
+| 需求 | 文件名称 |
 |------|------|
-| Domain-specific strategies | `domains.md` |
-| Deep loss analysis framework | `analysis.md` |
-| Progress tracking templates | `tracking.md` |
-| Feedback loop mechanics | `feedback.md` |
+| 针对特定领域的策略 | `domains.md` |
+| 深度失败分析框架 | `analysis.md` |
+| 进度跟踪模板 | `tracking.md` |
+| 反馈循环机制 | `feedback.md` |

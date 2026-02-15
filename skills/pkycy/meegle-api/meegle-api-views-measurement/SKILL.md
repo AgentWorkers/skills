@@ -6,12 +6,17 @@ metadata:
   { "openclaw": {} }
 ---
 
-# Meegle API — Views & Measurement
+# Meegle API — 视图与测量数据
 
-Views, boards, and measurement related OpenAPIs (e.g. get view detail, list views, metrics, charts). Use when you need to query or manage views or measurement data.
+这些API用于查询或管理视图（views）及测量数据（measurement data），包括获取视图详情、列出所有视图、获取指标（metrics）、生成图表等功能。
 
-**Prerequisites:** Obtain domain and access token first; see skill **meegle-api-users** for domain, plugin_access_token / user_access_token, and request headers.
+**先决条件：** 首先需要获取域名（domain）和访问令牌（access token）；有关域名、插件访问令牌（plugin_access_token）/用户访问令牌（user_access_token）以及请求头（request headers）的信息，请参阅相关技能文档 **meegle-api-users**。
 
-## APIs (to be documented)
+## 将要文档化的API：
 
-- Get view detail, list views, get view work items, measurement/chart APIs, and related endpoints will be documented here.
+- 获取视图详情（Get View Detail）
+- 列出所有视图（List Views）
+- 获取视图相关的工作项（Get View Work Items）
+- 测量数据/图表相关API（Measurement/Chart APIs）
+
+这些API的详细使用说明将在此处进行文档化。

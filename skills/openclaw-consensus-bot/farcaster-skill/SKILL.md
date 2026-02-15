@@ -1,31 +1,40 @@
 ---
 name: farcaster-skill
-description: "Post, read, search, and engage on Farcaster via the Neynar API. Use when an agent needs to: (1) post casts with text, embeds, or in channels, (2) reply to or thread casts, (3) read a user's feed or a channel feed, (4) search casts by keyword, (5) look up user profiles by username or FID, (6) like or recast, (7) delete casts, (8) list or search channels. Pure bash+curl+jq — zero npm dependencies."
+description: "通过 Neynar API 在 Farcaster 上发布内容、阅读信息、进行搜索以及参与互动。当代理需要执行以下操作时可以使用该 API：  
+(1) 在频道中发布带有文本的内容；  
+(2) 回复或参与已发布的讨论；  
+(3) 阅读用户的动态或频道的最新内容；  
+(4) 根据关键词搜索发布的内容；  
+(5) 通过用户名或 FID 查找用户资料；  
+(6) 给内容点赞或重新发布；  
+(7) 删除已发布的内容；  
+(8) 列出或搜索频道。  
+完全依赖 bash、curl 和 jq 工具，无需任何 npm 依赖项。"
 ---
 
-# Farcaster Skill (Neynar v2)
+# Farcaster技能（Neynar v2）
 
-All scripts use the Neynar v2 REST API. Requires `curl` and `jq`.
+所有脚本均使用Neynar v2 REST API，需要`curl`和`jq`工具。
 
-## Setup
+## 设置
 
-Set these env vars (or pass `--api-key` / `--signer` flags):
+请设置以下环境变量（或使用`--api-key`/`--signer`参数）：
 
 ```bash
 export NEYNAR_API_KEY="your-api-key"
 export NEYNAR_SIGNER_UUID="your-signer-uuid"   # required for write ops
 ```
 
-Alternatively, put credentials in a JSON file and source them:
+或者，将凭据保存在JSON文件中并通过脚本加载：
 ```bash
 eval $(jq -r '"export NEYNAR_API_KEY=\(.apiKey)\nexport NEYNAR_SIGNER_UUID=\(.signerUuid)"' /path/to/neynar.json)
 ```
 
-## Scripts
+## 脚本
 
-### fc_cast.sh — Post a Cast
+### fc_cast.sh — 发布内容
 
-Post text, with optional embeds, channel, or reply-to.
+用于发布文本，可选添加嵌入内容（embeds）、频道（channel）或回复对象（reply-to）。
 
 ```bash
 # Simple text cast
@@ -47,9 +56,9 @@ scripts/fc_cast.sh --text "Great point!" --parent "0xabcdef1234..."
 scripts/fc_cast.sh --text "This 👆" --embed-cast "0xabcdef1234..." --embed-cast-fid 12345
 ```
 
-Output: JSON `{success, hash}`.
+输出格式：JSON `{success, hash}`。
 
-### fc_feed.sh — Read Feeds
+### fc_feed.sh — 阅读内容推送
 
 ```bash
 # User's casts by FID
@@ -71,9 +80,9 @@ scripts/fc_feed.sh --thread "0xabcdef..."
 scripts/fc_feed.sh --fid 3 --cursor "eyJwYWdlIjoxfQ=="
 ```
 
-Output: JSON array of casts with `{hash, author, text, timestamp, embeds, reactions, replies}`.
+输出格式：包含 `{hash, author, text, timestamp, embeds, reactions, replies}` 的内容推送列表（JSON格式）。
 
-### fc_user.sh — User Lookup
+### fc_user.sh — 查找用户信息
 
 ```bash
 # By username
@@ -89,9 +98,9 @@ scripts/fc_user.sh --address "0x1234..."
 scripts/fc_user.sh --fids "3,194,6131"
 ```
 
-Output: JSON user object(s) with `{fid, username, display_name, bio, follower_count, following_count, verified_addresses}`.
+输出格式：包含 `{fid, username, display_name, bio, follower_count, following_count, verified_addresses}` 的用户信息（JSON格式）。
 
-### fc_search.sh — Search Casts
+### fc_search.sh — 搜索内容
 
 ```bash
 # Search by keyword
@@ -107,9 +116,9 @@ scripts/fc_search.sh --query "gm" --channel "base"
 scripts/fc_search.sh --query "nft" --limit 5
 ```
 
-Output: JSON array of matching casts.
+输出格式：匹配的内容列表（JSON格式）。
 
-### fc_react.sh — Like / Recast
+### fc_react.sh — 点赞/重新发布内容
 
 ```bash
 # Like a cast
@@ -125,13 +134,13 @@ scripts/fc_react.sh --recast "0xabcdef..."
 scripts/fc_react.sh --recast "0xabcdef..." --undo
 ```
 
-### fc_delete.sh — Delete a Cast
+### fc_delete.sh — 删除内容
 
 ```bash
 scripts/fc_delete.sh --hash "0xabcdef..."
 ```
 
-### fc_channels.sh — List and Search Channels
+### fc_channels.sh — 列出和搜索频道
 
 ```bash
 # Search channels by keyword
@@ -144,9 +153,9 @@ scripts/fc_channels.sh --id "base"
 scripts/fc_channels.sh --trending --limit 10
 ```
 
-## Common Patterns
+## 常用操作模式
 
-### Thread a multi-cast announcement
+### 发布多条内容并形成线程
 
 ```bash
 HASH1=$(scripts/fc_cast.sh --text "Thread 🧵 1/3: Big news!" --channel "base" | jq -r .hash)
@@ -154,7 +163,7 @@ HASH2=$(scripts/fc_cast.sh --text "2/3: Details here..." --parent "$HASH1" | jq 
 scripts/fc_cast.sh --text "3/3: Link below" --parent "$HASH2" --embed "https://example.com"
 ```
 
-### Monitor mentions (poll loop)
+### 监控提及（轮询机制）
 
 ```bash
 while true; do
@@ -163,7 +172,7 @@ while true; do
 done
 ```
 
-### Post with media (upload first, then embed)
+### 带媒体文件发布内容（先上传媒体文件，再添加嵌入内容）
 
 ```bash
 # Upload to catbox/litterbox first
@@ -175,39 +184,39 @@ URL=$(curl -sS -F "reqtype=fileupload" -F "time=72h" \
 scripts/fc_cast.sh --text "Check this out!" --embed "$URL"
 ```
 
-## Free vs Paid Tier
+## 免费版与付费版
 
-Not all endpoints are available on Neynar's free plan.
+并非所有API接口都支持Neynar的免费计划。
 
-| Feature | Script | Free? |
+| 功能 | 所需脚本 | 是否免费？ |
 |---------|--------|-------|
-| Post cast | fc_cast.sh | ✅ |
-| User casts feed | fc_feed.sh --fid | ✅ |
-| User lookup (username/FID/address) | fc_user.sh | ✅ |
-| Like / recast | fc_react.sh | ✅ |
-| Following feed | fc_feed.sh --following | ✅ |
-| Channel feed | fc_feed.sh --channel | ❌ Paid |
-| Cast search | fc_search.sh | ❌ Paid |
-| Channel search/details/trending | fc_channels.sh | ❌ Paid |
-| Delete cast | fc_delete.sh | ❌ Paid |
-| Thread/conversation | fc_feed.sh --thread | ✅ |
+| 发布内容 | fc_cast.sh | ✅ |
+| 查看用户发布的内容 | fc_feed.sh --fid | ✅ |
+| 查找用户信息（用户名/FID/地址） | fc_user.sh | ✅ |
+| 点赞/重新发布内容 | fc_react.sh | ✅ |
+| 关注用户动态 | fc_feed.sh --following | ✅ |
+| 查看频道动态 | fc_feed.sh --channel | ❌ （需付费） |
+| 搜索内容 | fc_search.sh | ❌ （需付费） |
+| 查看频道详情/热门内容 | fc_channels.sh | ❌ （需付费） |
+| 删除内容 | fc_delete.sh | ❌ （需付费） |
+| 发布多条内容并形成线程 | fc_feed.sh --thread | ✅ |
 
-Scripts that hit paid endpoints will exit non-zero with a clear `402 PaymentRequired` error.
+使用付费API接口的脚本会在执行失败时返回非0的退出码，并显示`402 PaymentRequired`错误信息。
 
-## Error Handling
+## 错误处理
 
-All scripts exit 0 on success, non-zero on failure. Errors print to stderr as JSON:
+所有脚本在成功执行时返回0；失败时返回非0的退出码。错误信息将以JSON格式输出到标准错误流（stderr）：
 ```json
 {"error": "message", "status": 403}
 ```
 
-Common errors:
-- `401` — Invalid API key
-- `402` — Feature requires paid Neynar plan
-- `403` — Signer not approved or not paired with API key
-- `404` — Cast/user/channel not found
-- `429` — Rate limited (Neynar free tier: 300 req/min)
+常见错误代码：
+- `401` — API密钥无效
+- `402` — 需要付费Neynar计划才能使用该功能
+- `403` — 签名者未获批准或未与API密钥关联
+- `404` — 未找到相关内容/用户/频道
+- `429` — 日限请求次数达到上限（Neynar免费计划：每分钟300次请求）
 
-## API Reference
+## API参考
 
-See `references/neynar_endpoints.md` for the full endpoint list and parameter docs.
+请参阅`references/neynar_endpoints.md`以获取完整的API接口列表和参数说明。

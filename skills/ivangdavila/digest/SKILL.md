@@ -1,72 +1,72 @@
 ---
 name: "Digest"
-description: "Curate external information into personalized updates. Auto-learns format, timing, sources, and depth preferences."
+description: "将外部信息整理成个性化的更新内容。系统会自动学习用户的格式偏好、发布时机、信息来源以及内容深度的需求。"
 ---
 
-## Core Role
+## 核心功能
 
-Digest = curate the external world for your human. News, industry, trends, competitors — filtered and formatted to their preferences.
+**Digest**：为使用者整理外部信息，包括新闻、行业动态、竞争对手情况等，并根据用户的偏好进行筛选和格式化。
 
-**Not:** internal business info (→ use Brief), synthesis of documents (→ use Synthesize)
+**注意**：不包含内部业务信息（请使用 **Brief** 功能）；也不负责文档的合成（请使用 **Synthesize** 功能）。
 
-## Protocol
+## 协议
 
 ```
 Source → Filter → Prioritize → Format → Deliver → Learn
 ```
 
-### 1. Source
+### 1. 数据来源
 
-Pull from configured feeds, news, social, industry sources. Respect `preferences.md` source rules.
+从配置好的信息源（如新闻源、社交媒体、行业资讯等）中获取数据。请遵循 `preferences.md` 中规定的数据来源规则。
 
-### 2. Filter
+### 2. 筛选
 
-Apply user's interest profile:
-- Topics they care about
-- Topics explicitly excluded  
-- Recency requirements
-- Credibility thresholds
+根据用户的兴趣偏好进行筛选：
+- 用户关注的主题
+- 明确排除的主题
+- 新闻的时效性要求
+- 信息的可信度标准
 
-### 3. Prioritize
+### 3. 优先级排序
 
-Rank by user's ponderación profile:
-- Breaking/urgent items first?
-- Or calm, curated order?
-- What gets highlighted vs buried?
+根据用户的偏好对信息进行排序：
+- 先展示紧急/重要的内容？
+- 还是按照平稳、精心策划的顺序展示？
+- 哪些内容需要突出显示，哪些需要隐藏？
 
-### 4. Format
+### 4. 格式化
 
-Deliver in their preferred format (see `dimensions.md`):
-- Channel (which chat/group/email)
-- Format (PDF, text, bullets, audio summary)
-- Length (headlines only vs analysis)
-- Tone (formal digest vs casual update)
-- Visuals (with/without images)
+以用户偏好的格式呈现信息（详见 `dimensions.md`）：
+- 传递渠道（聊天、群组、电子邮件等）
+- 格式（PDF、文本、列表形式、音频摘要等）
+- 长度（仅显示标题还是包含详细分析）
+- 语气（正式的摘要还是随意的更新）
+- 是否包含视觉元素（图片等）
 
-### 5. Deliver
+### 5. 传递方式
 
-Timing per user preference:
-- Morning digest, evening digest, or both
-- Weekday vs weekend differences
-- On-demand vs scheduled
+根据用户的偏好确定传递时间：
+- 早晨摘要、晚上摘要，或两者都提供
+- 工作日与周末的差异
+- 按需传递还是定时推送
 
-### 6. Learn
+### 6. 优化
 
-After delivery, observe signals:
-- "Too long" → shorten
-- "Missed X" → adjust filters
-- "Don't care about Y" → exclude
-- "Love this format" → reinforce
+在信息传递后，根据用户的反馈进行调整：
+- 如果用户反馈“内容太长”，则缩短内容长度
+- 如果用户错过某些内容，调整筛选条件
+- 如果用户对某些内容不感兴趣，将其从推送列表中移除
+- 如果用户喜欢某种格式，继续使用该格式
 
-Update `preferences.md` following the pattern/confirm/lock cycle.
+请根据用户的反馈循环更新 `preferences.md` 文件中的设置。
 
-## Preference System
+## 偏好设置系统
 
-Check `preferences.md` for current user preferences. Empty = still learning defaults.
+查看 `preferences.md` 以了解用户的当前偏好设置。如果文件为空，说明系统仍在根据默认设置进行工作。
 
-Check `dimensions.md` for all trackable dimensions.
+同时，请参考 `dimensions.md` 以了解所有可追踪的偏好参数。
 
-## Output Format (Default)
+## 输出格式（默认设置）
 
 ```
 📰 [DIGEST TYPE] — [DATE/TIME]
@@ -85,8 +85,8 @@ Check `dimensions.md` for all trackable dimensions.
 Sources: [count] | Next digest: [time]
 ```
 
-Adapt format entirely based on learned preferences.
+根据用户的偏好设置，完全自定义输出格式。
 
 ---
 
-*References: `dimensions.md`, `preferences.md`*
+*参考文件：`dimensions.md`、`preferences.md`*

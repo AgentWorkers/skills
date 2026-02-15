@@ -1,46 +1,46 @@
 ---
 name: skillzmarket
-description: Search and call monetized AI skills from Skillz Market with automatic USDC payments on Base. Use when the user wants to find paid AI services, call external skills with cryptocurrency payments, or integrate with the Skillz Market ecosystem.
+description: 在 Base 平台上，您可以搜索并调用 Skillz Market 中的付费 AI 技能，并实现自动的 USDC（Uniswap Digital Currency）支付。当用户需要查找付费的 AI 服务、使用加密货币进行外部技能的调用，或希望与 Skillz Market 生态系统集成时，该功能非常实用。
 metadata: {"openclaw":{"requires":{"bins":["npx"],"env":["SKILLZ_PRIVATE_KEY"]},"primaryEnv":"SKILLZ_PRIVATE_KEY"}}
 ---
 
 # Skillz Market
 
-Search and call monetized AI skills with automatic cryptocurrency payments via x402.
+通过 x402 协议搜索并调用可货币化的 AI 技能，并实现自动加密货币支付。
 
-## Quick Start
+## 快速入门
 
-List all available skills:
-```bash
+- **列出所有可用技能**：
+  ```bash
 npx tsx {baseDir}/skillz-cli.ts list
 ```
 
-Search for skills:
-```bash
+- **搜索技能**：
+  ```bash
 npx tsx {baseDir}/skillz-cli.ts search "echo"
 ```
 
-Get skill details:
-```bash
+- **获取技能详情**：
+  ```bash
 npx tsx {baseDir}/skillz-cli.ts info "echo-service"
 ```
 
-Call a skill (requires SKILLZ_PRIVATE_KEY):
-```bash
+- **调用技能**（需要 `SKILLZ_PRIVATE_KEY`）：
+  ```bash
 npx tsx {baseDir}/skillz-cli.ts call "echo-service" '{"message":"hello"}'
 ```
 
-## Commands
+## 命令
 
-- `list [--verified]` - List all available skills (optionally filter by verified only)
-- `search <query>` - Search for skills by keyword
-- `info <slug>` - Get skill details by slug
-- `call <slug> <json>` - Call a skill with automatic x402 payment
-- `direct <url> <json>` - Call any x402-enabled endpoint directly
+- `list [--verified]` - 列出所有可用技能（可选：仅显示已验证的技能）
+- `search <query>` - 按关键词搜索技能
+- `info <slug>` - 根据技能的 slug 获取详细信息
+- `call <slug> <json>` - 调用技能并实现自动 x402 支付
+- `direct <url> <json>` - 直接调用任何支持 x402 协议的 API 端点
 
-## Configuration
+## 配置
 
-Your wallet private key is required for x402 payments. Set it in OpenClaw config (`~/.openclaw/openclaw.json`):
+进行 x402 支付时需要使用您的钱包私钥。请在 OpenClaw 配置文件（`~/.openclaw/openclaw.json`）中设置该私钥：
 
 ```json
 {
@@ -54,14 +54,14 @@ Your wallet private key is required for x402 payments. Set it in OpenClaw config
 }
 ```
 
-> **Note**: OpenClaw uses `apiKey` as the standard config field for skill credentials. This maps to the `SKILLZ_PRIVATE_KEY` environment variable that the skill uses internally.
+> **注意**：OpenClaw 使用 `apiKey` 作为技能凭证的标准配置字段。该字段与技能内部使用的 `SKILLZ_PRIVATE_KEY` 环境变量相对应。
 
-Alternatively, set the environment variable directly:
+或者，您也可以直接设置该环境变量：
 ```bash
 export SKILLZ_PRIVATE_KEY=0x...
 ```
 
-## Environment Variables
+## 环境变量
 
-- `SKILLZ_PRIVATE_KEY` - Wallet private key for x402 payments
-- `SKILLZ_API_URL` - API endpoint (default: https://api.skillz.market)
+- `SKILLZ_PRIVATE_KEY` - 用于 x402 支付的钱包私钥
+- `SKILLZ_API_URL` - API 端点（默认：https://api.skillz.market）

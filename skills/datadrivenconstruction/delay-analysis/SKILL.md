@@ -1,18 +1,18 @@
 ---
 slug: "delay-analysis"
 display_name: "Delay Analysis"
-description: "Analyze construction schedule delays for claims and recovery. Perform time impact analysis, identify delay causes, calculate damages, and document for disputes."
+description: "分析施工进度延误情况，以便提出索赔和进行追偿。进行时间影响分析，确定延误原因，计算损失，并为争议提供相关文件支持。"
 ---
 
-# Delay Analysis
+# 延误分析
 
-## Overview
+## 概述
 
-Analyze construction schedule delays for project recovery and claims. Perform time impact analysis (TIA), identify concurrent delays, calculate delay damages, and prepare documentation for dispute resolution.
+通过延误分析来评估施工进度，以便项目能够及时恢复并处理相关索赔。该分析包括进行时间影响分析（Time Impact Analysis, TIA）、识别同时发生的延误、计算延误造成的损失，并准备用于争议解决的文档。
 
-> "Proper delay analysis is essential for fair resolution of construction disputes" — DDC Community
+> “正确的延误分析对于公平解决施工纠纷至关重要。” — DDC社区
 
-## Delay Analysis Methods
+## 延误分析方法
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -32,7 +32,7 @@ Analyze construction schedule delays for project recovery and claims. Perform ti
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -468,7 +468,7 @@ class DelayAnalyzer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -529,7 +529,7 @@ report = analyzer.generate_analysis_report(datetime(2025, 3, 15))
 print(analyzer.generate_report_markdown(report))
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

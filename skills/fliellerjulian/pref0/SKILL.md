@@ -1,34 +1,35 @@
 ---
 name: pref0
-description: Learn user preferences from conversations and personalize responses automatically. Preferences compound over time — corrections like "use TypeScript, not JavaScript" are captured and injected into future sessions.
+description: 从用户的对话中了解他们的偏好，并自动个性化响应内容。用户的偏好会随着时间的推移而发生变化——例如，用户要求使用 TypeScript 而不是 JavaScript 的需求会被记录下来，并应用到未来的会话中。
 version: 1.0.0
 user-invocable: true
 metadata: {"openclaw":{"requires":{"env":["PREF0_API_KEY"]},"primaryEnv":"PREF0_API_KEY"}}
 ---
 
-# pref0 — Preference Learning for AI Agents
+# pref0 — 用于AI代理的偏好学习功能
 
-You have access to the pref0 API. It learns user preferences from conversations and serves them back at inference time. The more conversations you track, the better it gets.
+您可以使用pref0 API。该API能够从用户对话中学习用户的偏好，并在推理时将这些偏好信息提供给系统。您跟踪的对话越多，其学习效果就越好。
 
-## When to use this skill
+## 何时使用此功能
 
-### After a conversation ends → Track it
+### 对话结束后 → 追踪对话内容
 
-After finishing a conversation (or at natural breakpoints), send the messages to pref0 so it can extract preferences. This is especially valuable when the user **corrects** you (e.g., "use pnpm, not npm") or states explicit preferences (e.g., "always use metric units").
+在对话结束后（或遇到自然的分界点时），将对话内容发送给pref0，以便它能够提取用户的偏好信息。当用户对您的回答进行纠正（例如：“使用pnpm，而不是npm”）或明确表达偏好（例如：“始终使用公制单位”）时，这一点尤其重要。
 
-### Before responding to a user → Fetch their preferences
+### 在回复用户之前 → 获取用户的偏好信息
 
-Before generating a response, fetch the user's learned preferences and follow them. This prevents the user from having to repeat themselves across sessions.
+在生成回复之前，先获取用户已学习的偏好信息，并据此进行回复。这样可以避免用户在多次会话中重复表达相同的内容。
 
-## API Reference
+## API参考
 
-**Base URL:** `https://api.pref0.com`
-**Auth:** `Authorization: Bearer $PREF0_API_KEY`
+**基础URL：** `https://api.pref0.com`  
+**认证方式：** `Authorization: Bearer $PREF0_API_KEY`
 
-### Track a conversation (POST /v1/track)
+### 追踪对话内容（POST /v1/track）
 
-Send a conversation so pref0 can learn from it. It extracts corrections, explicit preferences, and behavioral patterns automatically.
+发送对话内容，以便pref0从中学习用户的偏好。该API会自动提取用户的纠正信息、明确表达的偏好以及行为模式。
 
+**响应示例：**
 ```bash
 curl -X POST https://api.pref0.com/v1/track \
   -H "Authorization: Bearer $PREF0_API_KEY" \
@@ -44,102 +45,55 @@ curl -X POST https://api.pref0.com/v1/track \
   }'
 ```
 
-**Response:**
-```json
-{
-  "messagesAnalyzed": 4,
-  "preferences": { "created": 2, "reinforced": 0, "decreased": 0, "removed": 0 },
-  "patterns": { "created": 1, "reinforced": 0 }
-}
-```
+响应会告诉您处理了多少条消息（`messagesAnalyzed`），以及哪些偏好信息发生了变化：`created`（新学习到的偏好）、`reinforced`（现有偏好再次出现，置信度提高）、`decreased`（用户撤回了偏好，置信度降低）、`removed`（偏好被完全撤回并删除）。
 
-The response tells you how many messages were processed (`messagesAnalyzed`) and exactly what changed: `created` (new preference learned), `reinforced` (existing preference seen again, confidence increased), `decreased` (user retracted, confidence lowered), `removed` (fully retracted and deleted).
+### 获取用户的学习偏好信息（GET /v1/profiles/:userId）
 
-### Get learned preferences (GET /v1/profiles/:userId)
+检索用户的偏好信息。可以使用`?minConfidence=0.5`来仅获取那些置信度较高的偏好信息，以便直接用于系统提示中。
 
-Retrieve the user's learned preference profile. Use `?minConfidence=0.5` to only get well-learned preferences suitable for system prompt injection.
-
+**响应示例：**
 ```bash
 curl https://api.pref0.com/v1/profiles/<user-id>?minConfidence=0.5 \
   -H "Authorization: Bearer $PREF0_API_KEY"
 ```
 
-**Response:**
-```json
-{
-  "userId": "user_abc123",
-  "preferences": [
-    {
-      "key": "language",
-      "value": "typescript",
-      "confidence": 0.85,
-      "evidence": "User said: Use TypeScript, not JavaScript",
-      "firstSeen": "2026-01-15T10:00:00.000Z",
-      "lastSeen": "2026-02-05T14:30:00.000Z"
-    },
-    {
-      "key": "package_manager",
-      "value": "pnpm",
-      "confidence": 0.85,
-      "evidence": "User said: use pnpm instead of npm",
-      "firstSeen": "2026-01-15T10:00:00.000Z",
-      "lastSeen": "2026-02-03T09:15:00.000Z"
-    },
-    {
-      "key": "css_framework",
-      "value": "tailwind",
-      "confidence": 0.70,
-      "evidence": "User said: Use Tailwind, not Bootstrap",
-      "firstSeen": "2026-01-20T16:45:00.000Z",
-      "lastSeen": "2026-01-20T16:45:00.000Z"
-    }
-  ],
-  "patterns": [
-    { "pattern": "prefers explicit tooling choices over defaults", "confidence": 0.60 }
-  ],
-  "prompt": "The following preferences have been learned from this user's previous conversations. Follow them unless explicitly told otherwise:\n- language: typescript\n- package_manager: pnpm\n- css_framework: tailwind\n\nBehavioral patterns observed:\n- prefers explicit tooling choices over defaults"
-}
-```
+每个偏好信息都包含`evidence`（触发偏好提取的原始语句）、`firstSeen`（首次学习的时间）和`lastSeen`（最后一次确认的时间）。`prompt`字段是一个可以直接添加到系统提示中的字符串。
 
-Each preference includes `evidence` (the quote that triggered extraction), `firstSeen` (when first learned), and `lastSeen` (when last reinforced). The `prompt` field is a ready-to-use string you can append directly to your system prompt.
+### 删除用户偏好信息（DELETE /v1/profiles/:userId）
 
-### Delete a user profile (DELETE /v1/profiles/:userId)
+重置用户的偏好设置。适用于需要重置偏好或删除数据的情况。
 
-Reset a user's learned preferences. Use for preference resets or data deletion requests.
-
+**响应示例：**
 ```bash
 curl -X DELETE https://api.pref0.com/v1/profiles/<user-id> \
   -H "Authorization: Bearer $PREF0_API_KEY"
 ```
 
-Returns `204 No Content`.
+响应代码返回`204 No Content`。
 
-## How to integrate into your workflow
+## 如何将此功能集成到您的工作流程中
 
-1. **Identify the user.** Use a stable user ID (email, account ID, phone number — whatever you have).
+1. **识别用户**：使用一个稳定的用户标识符（如电子邮件、账户ID或电话号码）。
+2. **在会话开始时**，获取用户的偏好信息：
+   - 调用`GET /v1/profiles/{userId}?minConfidence=0.5`
+   - 直接使用`prompt`字段将偏好信息添加到系统提示中，或使用结构化的`preferences`数组进行更精细的控制。
+3. **在会话结束时**，跟踪对话内容：
+   - 调用`POST /v1/track`并传入完整的对话记录
+   - pref0会自动处理偏好信息的提取和置信度评估。
+4. **偏好信息会随时间累积**：用户的纠正行为会提升置信度（从0.70开始），隐含的偏好会从0.40开始累积；每次重复表达相同偏好会增加0.15的置信度，最高上限为1.0。
 
-2. **At the start of a session**, fetch preferences:
-   - Call `GET /v1/profiles/{userId}?minConfidence=0.5`
-   - Use the `prompt` field to inject into your system prompt directly, or use the structured `preferences` array for more control.
+## 置信度判断标准
 
-3. **At the end of a session**, track the conversation:
-   - Call `POST /v1/track` with the full message history
-   - pref0 handles extraction and confidence scoring automatically
+| 信号类型                | 初始置信度            | 例子                          |
+|-------------------|-------------------|-----------------------------------|
+| 明确的纠正            | 0.70               | “使用Tailwind框架，而不是Bootstrap”             |
+| 隐含的偏好            | 0.40               | “将代码部署到Vercel服务器”                 |
+| 行为模式              | 0.30               | 用户始终希望收到简短的回复                |
+| 每次重复表达          | +0.15              | 在不同会话中保持相同的偏好设置               |
 
-4. **Preferences compound over time.** Corrections start at 0.70 confidence, implied preferences at 0.40. Each repeated signal adds +0.15, capped at 1.0.
+## 设置步骤
 
-## Confidence guide
-
-| Signal type        | Starting confidence | Example                           |
-|--------------------|--------------------:|-----------------------------------|
-| Explicit correction | 0.70               | "Use Tailwind, not Bootstrap"     |
-| Implied preference  | 0.40               | "Deploy it to Vercel"             |
-| Behavioral pattern  | 0.30               | User consistently wants short replies |
-| Each repeat         | +0.15              | Same preference across sessions   |
-
-## Setup
-
-1. Sign up at [pref0.com](https://pref0.com/signup)
-2. Create an API key in the dashboard
-3. Set the `PREF0_API_KEY` environment variable
-4. First 100 requests/month are free, then $5 per 1,000 requests
+1. 在[pref0.com](https://pref0.com/signup)注册账号。
+2. 在控制面板中创建API密钥。
+3. 设置`PREF0_API_KEY`环境变量。
+4. 每月前100次请求免费，之后每1000次请求收取5美元费用。

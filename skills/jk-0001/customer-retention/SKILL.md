@@ -1,37 +1,37 @@
 ---
 name: customer-retention
-description: Build and execute customer retention strategies for a solopreneur business. Use when reducing churn, improving customer lifetime value, building loyalty programs, re-engaging inactive users, or creating retention-focused product and communication strategies. Covers churn analysis, retention cohorts, lifecycle marketing, win-back campaigns, and loyalty mechanics. Trigger on "customer retention", "reduce churn", "keep customers", "improve retention", "churn rate", "customer loyalty", "win-back campaign".
+description: 为个人创业企业（solopreneur business）制定并执行客户留存策略。这些策略可用于降低客户流失率、提升客户生命周期价值、建立客户忠诚度计划、重新吸引不活跃的用户，以及制定以客户留存为核心的产品和沟通策略。内容涵盖客户流失分析、客户留存群体划分、生命周期营销、客户挽回活动（win-back campaigns）以及客户忠诚度机制。相关关键词包括：客户留存（customer retention）、降低流失率（reduce churn）、留住客户（keep customers）、提升留存率（improve retention）、流失率（churn rate）、客户忠诚度（customer loyalty）、客户挽回活动（win-back campaign）。
 ---
 
-# Customer Retention
+# 客户留存
 
-## Overview
-Retention is the foundation of sustainable growth. It costs 5-7x more to acquire a new customer than to keep an existing one. For solopreneurs, improving retention by even 5% can dramatically increase lifetime value and profitability. This playbook shows you how to measure, understand, and improve retention systematically.
+## 概述
+客户留存是实现可持续增长的基础。获取新客户的成本是保留现有客户的5到7倍。对于独立创业者来说，即使将客户留存率提高5%，也能显著提升客户的生命周期价值（LTV）和盈利能力。本指南将向您展示如何系统地衡量、理解并提升客户留存率。
 
 ---
 
-## Step 1: Measure Your Retention
+## 第一步：衡量您的客户留存率
 
-You can't improve what you don't measure. Start by calculating your retention and churn rates.
+不进行衡量，就无法改进。首先计算您的客户留存率和流失率。
 
-**Key metrics:**
+**关键指标：**
 
-**Churn Rate (monthly):**
+**流失率（每月）：**
 ```
 Churn Rate = (Customers Lost in Month / Customers at Start of Month) × 100
 ```
-Example: Started month with 100 customers, lost 5 → 5% churn rate
+示例：月初有100位客户，流失了5位 → 流失率为5%
 
-**Retention Rate (monthly):**
+**留存率（每月）：**
 ```
 Retention Rate = 100% - Churn Rate
 ```
-Example: 5% churn = 95% retention
+示例：5%的流失率意味着95%的留存率
 
-**Cohort Retention:**
-Track what % of customers stick around after 1 month, 3 months, 6 months, 12 months.
+**客户群体留存率：**
+跟踪客户在1个月、3个月、6个月、12个月后的留存情况。
 
-Example:
+示例：
 ```
 Jan Cohort (100 customers signed up in Jan):
   Month 1: 90 still active (90% retention)
@@ -40,23 +40,23 @@ Jan Cohort (100 customers signed up in Jan):
   Month 12: 55 still active (55% retention)
 ```
 
-**Benchmarks (SaaS):**
-- **Healthy:** Monthly churn < 5%, 12-month retention > 70%
-- **Needs work:** Monthly churn 5-10%, 12-month retention 50-70%
-- **Critical:** Monthly churn > 10%, 12-month retention < 50%
+**SaaS行业的基准：**
+- **良好状态：**每月流失率 < 5%，12个月留存率 > 70%
+- **需要改进：**每月流失率 5-10%，12个月留存率 50-70%
+- **严重问题：**每月流失率 > 10%，12个月留存率 < 50%
 
-**Where to track:** Your payment processor (Stripe, Paddle), CRM, or manual spreadsheet for small customer counts.
+**数据来源：**您的支付处理平台（如Stripe、Paddle）、客户关系管理（CRM）系统，或对于客户数量较少的情况，可以使用手动电子表格。
 
 ---
 
-## Step 2: Understand WHY Customers Churn
+## 第二步：了解客户流失的原因
 
-Churn has patterns. Identify the top reasons so you can address them systematically.
+流失率存在一定的规律。找出主要原因，以便有针对性地解决问题。
 
-**How to find out why:**
+**了解原因的方法：**
 
-### Method 1: Cancellation survey
-When someone cancels, ask them why (1-2 questions max):
+### 方法1：取消服务调查
+当客户取消服务时，询问他们的原因（最多1-2个问题）：
 ```
 "We're sorry to see you go. What's the main reason you're canceling?"
   - Not using it enough
@@ -67,84 +67,79 @@ When someone cancels, ask them why (1-2 questions max):
   - Other: [text field]
 ```
 
-### Method 2: Exit interviews (for high-value customers)
-If a customer paying $100+/month cancels, reach out personally:
+### 方法2：与高价值客户进行深入交流
+如果有一位每月支付100美元以上的客户取消了服务，请亲自联系他们：
 ```
 "Hey [Name], saw you canceled. Totally understand if the timing isn't right.
 Would you be open to a 10-min call? I'd love to understand what wasn't working
 so we can improve for future customers."
 ```
 
-### Method 3: Churn cohort analysis
-Look at customers who churned vs. those who stayed. What's different?
-- Did churned customers have lower usage in their first 30 days?
-- Did they skip onboarding steps?
-- Did they have a specific profile (industry, company size, use case)?
+### 方法3：客户群体流失分析
+对比流失客户和留存客户之间的差异：
+- 流失的客户在使用的前三十天内使用频率是否较低？
+- 他们是否跳过了产品入门指导步骤？
+- 他们的行业、公司规模或使用场景是否有特殊性？
 
-**Common churn reasons and what they tell you:**
-- "Not using it enough" → Onboarding problem or product didn't fit their workflow
-- "Too expensive" → Pricing/value mismatch or they didn't see ROI
-- "Missing a feature" → Product gap (track which features are requested most)
-- "Found a better alternative" → Competitive positioning issue
-- "Didn't deliver expected value" → Product-market fit problem or messaging mismatch
-
----
-
-## Step 3: Retention Strategy by Customer Lifecycle Stage
-
-Different stages require different retention tactics.
-
-### Stage 1: First 7 Days (Onboarding)
-**Goal:** Get them to activation (see customer-onboarding skill)
-
-**Tactics:**
-- Welcome email sequence (see email-marketing skill)
-- In-app onboarding flow (tooltips, checklists)
-- Quick win template or tutorial
-- Proactive check-in (automated or manual): "How's it going? Need help?"
-
-**Why this matters:** Most churn happens in the first 30 days. Fix onboarding, fix half your churn.
-
-### Stage 2: Days 8-90 (Habit Formation)
-**Goal:** Turn them into regular users
-
-**Tactics:**
-- Usage-triggered emails: "You haven't logged in in 7 days — here's what you're missing"
-- Feature discovery emails: "Did you know you can [do X]?"
-- Weekly/monthly usage reports: "Here's what you accomplished this month"
-- Engagement loops: In-app notifications for new content, features, or milestones
-
-**Metric to track:** Weekly Active Users (WAU) or Monthly Active Users (MAU). Engaged users don't churn.
-
-### Stage 3: Month 4+ (Ongoing Value)
-**Goal:** Keep delivering value, prevent complacency
-
-**Tactics:**
-- Product updates and new features (show you're actively improving)
-- Customer success check-ins: Quarterly email or call for high-value customers
-- Exclusive content or community access (make them feel special)
-- Cross-sell or upsell: "Based on how you're using X, you might benefit from Y"
-
-**Metric to track:** NPS (Net Promoter Score) — are they likely to recommend you?
-
-### Stage 4: At-Risk (Low engagement or cancellation intent)
-**Goal:** Win them back before they churn
-
-**Tactics:**
-- Re-engagement email campaign (see Step 4)
-- Personal outreach (if high-value): "Noticed you haven't been active — everything okay?"
-- Special offer or discount (last resort): "We'd love to keep you — here's 30% off next month"
-
-**Trigger:** User hasn't logged in for 30 days, or usage dropped 50%+ from baseline.
+**常见的流失原因及启示：**
+- “使用频率不够高” → 产品入门指导不足或产品不符合他们的工作流程
+- “价格过高” → 价格与价值不匹配，或者他们没有看到投资回报
+- “缺少某些功能” → 产品存在缺陷（记录客户最常请求的功能）
+- “找到了更好的替代产品” → 产品竞争力不足
+- “产品未能提供预期的价值” → 产品与市场需求不匹配
 
 ---
 
-## Step 4: Build a Re-Engagement Campaign
+## 第三步：根据客户生命周期阶段制定留存策略
 
-For users who've gone inactive but haven't canceled yet, a re-engagement campaign can bring them back.
+不同阶段的客户需要采取不同的留存策略。
 
-**Re-engagement email sequence (3-5 emails over 14 days):**
+### 第一阶段：入职前7天
+**目标：**帮助客户完成产品入门
+**策略：**
+- 欢迎邮件系列（参见邮件营销相关内容）
+- 应用内引导流程（提示、检查清单）
+- 快速入门教程
+- 主动跟进（自动化或人工）：“使用情况如何？需要帮助吗？”
 
+**为什么这很重要：**大部分流失发生在入职后的前三十天内。解决好入门问题，就能减少一半的流失率。
+
+### 第二阶段：入职后8-90天（习惯养成期）
+**目标：**将客户转化为活跃用户
+**策略：**
+- 根据使用情况发送提醒邮件：“您已经7天没有登录了——这里有一些您可能错过的功能”
+- 发送功能发现邮件：“您知道您可以[做某件事]吗？”
+- 每周/每月发送使用报告：“这是您本月完成的任务”
+- 通过应用内通知推送新内容、新功能或重要里程碑
+
+**需要跟踪的指标：**每周活跃用户（WAU）或每月活跃用户（MAU）。活跃用户更不容易流失。
+
+### 第三阶段：第4个月及以上（持续创造价值）
+**目标：**持续提供价值，防止客户产生惰性
+**策略：**
+- 产品更新和新功能发布（展示产品的持续改进）
+- 定期与高价值客户联系，了解使用情况
+- 提供专属内容或社区访问权限（让他们感到特别）
+- 进行交叉销售或升级销售：“根据您的使用情况，您可能会对其他产品感兴趣”
+
+**需要跟踪的指标：**净推荐值（NPS）——他们是否愿意推荐您的产品？
+
+### 第四阶段：高风险客户（参与度低或有意取消服务）
+**目标：**在他们流失之前挽回他们**
+**策略：**
+- 重新激活邮件活动（参见第四步）
+- 对高价值客户进行个性化联系：“注意到您已经很久没有活跃了——一切还好吗？”
+- 特别优惠或折扣（最后手段）：“我们希望留住您——下个月可享受7折”
+
+**触发条件：**用户30天未登录，或使用频率较基线下降50%以上。
+
+---
+
+## 第四步：开展重新激活活动
+
+对于那些已经不活跃但尚未取消服务的用户，可以通过重新激活活动让他们重新使用产品。
+
+**重新激活邮件系列（14天内发送3-5封邮件）：**
 ```
 EMAIL 1 (Day 0): "We miss you!"
   Subject: "Still getting value from [Product]?"
@@ -167,77 +162,75 @@ EMAIL 5 (Day 14): "Last call"
   Body: Mention upcoming cancellation (if auto-renewing). Offer a discount or pause option.
 ```
 
-**Response rate:** 5-15% of inactive users will re-engage from a well-designed campaign.
+**效果：**设计良好的重新激活活动可以让5-15%的不活跃用户重新活跃起来。
 
 ---
 
-## Step 5: Build Customer Loyalty
+## 第五步：建立客户忠诚度
 
-Loyal customers stay longer, spend more, and refer others. Build loyalty proactively.
+忠诚的客户会停留更长时间，消费更多，并推荐新客户。积极建立客户忠诚度。
 
-**Loyalty tactics:**
+**建立忠诚度的策略：**
 
-| Tactic | How | When to Use |
+| 策略 | 实施方式 | 适用场景 |
 |---|---|---|
-| **Loyalty program** | Points or rewards for usage, referrals, or tenure | B2C or high-volume B2B |
-| **VIP tier** | Exclusive access to features, content, or community | When you have 100+ customers |
-| **Annual discounts** | 20-30% off for committing to annual vs monthly | SaaS, subscriptions |
-| **Customer advisory board** | Invite top customers to give feedback and shape the roadmap | B2B, high-touch |
-| **Surprise and delight** | Send unexpected value (free month, gift, handwritten note) | High-value customers |
+| **忠诚度计划** | 根据使用情况、推荐行为或使用时长提供积分或奖励 | 面向B2C或大量B2B客户 |
+| **VIP等级** | 为VIP客户提供专属功能、内容或社区访问权限 | 当客户数量达到100位以上时 |
+| **年度折扣** | 对年度订阅客户提供20-30%的折扣 | 适用于SaaS和订阅服务 |
+| **客户顾问委员会** | 邀请顶级客户提供反馈并参与产品路线规划 | 适用于高价值B2B客户 |
+| **惊喜回馈** | 发送意外礼物或感谢信（如免费一个月的使用权限） | 针对高价值客户 |
 
-**What builds loyalty most:** Delivering consistent value + listening to feedback + treating them like partners, not transactions.
-
----
-
-## Step 6: Retention Experiments to Run
-
-Test these to see what moves the retention needle for your business:
-
-**Experiment 1: Onboarding call for new customers**
-- Hypothesis: Personal touch in first week increases activation and retention
-- Test: Offer 15-min onboarding call to 50% of new signups
-- Measure: 30-day retention rate (call group vs no-call group)
-
-**Experiment 2: Usage milestone celebrations**
-- Hypothesis: Celebrating progress builds emotional investment
-- Test: Send automated email when user hits milestones ("You've completed 10 projects!")
-- Measure: Do users with milestone emails have higher 90-day retention?
-
-**Experiment 3: Pause option instead of cancel**
-- Hypothesis: Offering a pause (1-3 months) instead of cancel reduces churn
-- Test: Add "Pause my account" button on cancellation page
-- Measure: How many choose pause vs cancel? Do paused users return?
-
-**Experiment 4: Quarterly check-in for high-value customers**
-- Hypothesis: Proactive check-ins catch issues before churn
-- Test: Email or call top 20% of customers quarterly to ask how it's going
-- Measure: Churn rate of check-in group vs no-check-in group
+**最有效的忠诚度建设方式：**持续提供价值 + 倾听客户反馈 + 将他们视为合作伙伴，而不仅仅是交易对象。
 
 ---
 
-## Step 7: Track Retention Over Time
+## 第六步：开展客户留存实验
 
-Monthly retention review (15 min):
-- [ ] Churn rate this month vs last month (trending up or down?)
-- [ ] Cohort retention (are recent cohorts retaining better or worse?)
-- [ ] Top 3 churn reasons this month
-- [ ] Which retention experiments are running? Any results yet?
-- [ ] One action to improve retention this month
+测试不同的策略，找出哪些方法能提升您的客户留存率：
 
-**Leading indicators (predict future churn):**
-- Declining usage (logins, actions per session)
-- Support tickets with frustrated tone
-- Not opening emails (disengaging from communication)
-- Failed payment attempts (passive churn)
+**实验1：为新客户提供入职指导电话**
+- 假设：入职第一周的个性化联系可以提高激活率和留存率
+- 测试：为50%的新注册用户提供15分钟的入职指导电话
+- 测量：30天内的留存率（接受电话指导的组与未接受电话指导的组）
 
-If you see these signals, intervene before they cancel.
+**实验2：庆祝使用里程碑**
+- 假设：庆祝用户的成长可以增强他们的使用意愿
+- 测试：在用户达到使用里程碑时发送自动化邮件（例如：“您已经完成了10个项目！”）
+- 测量：收到里程碑通知的用户在90天内的留存率是否更高？
+
+**实验3：提供暂停服务选项**
+- 假设：提供暂停服务（1-3个月）而非直接取消服务可以减少流失
+- 测试：在取消页面添加“暂停服务”按钮
+- 测量：选择暂停服务的用户与直接取消服务的用户比例，以及暂停服务的用户是否会重新使用服务？
+
+**实验4：定期与高价值客户联系**
+- 假设：主动联系可以及时发现潜在问题
+- 测试：每季度联系前20%的高价值客户，了解他们的使用情况
+- 测量：定期联系的组与未联系的组的流失率
+
+## 第七步：长期跟踪客户留存情况
+
+每月进行留存率评估（15分钟）：
+- 本月流失率与上个月相比（是否有上升或下降的趋势？）
+- 最近的客户群体留存情况如何？
+- 本月最常见的流失原因是什么？
+- 目前正在进行哪些留存改进实验？有哪些成果？
+- 本月需要采取的改进措施
+
+**预测未来流失率的指标：**
+- 使用频率下降（登录次数、每次会话的操作次数）
+- 客服工单中带有不满情绪的反馈
+- 客户未打开邮件（表示他们不再关注产品）
+- 支付失败（被动流失）
+
+如果发现这些迹象，应在客户取消服务之前及时采取行动。
 
 ---
 
-## Customer Retention Mistakes to Avoid
-- **Only focusing on acquisition.** New customers don't matter if they all churn in 3 months. Retention > acquisition for sustainable growth.
-- **Not measuring churn by cohort.** Overall churn rate hides patterns. Cohort analysis reveals whether you're getting better or worse over time.
-- **Waiting until they cancel to act.** By then it's too late. Catch at-risk users while they're still customers.
-- **Ignoring low-engagement users.** Low engagement = future churn. Re-engage them proactively.
-- **Not asking why people churn.** If you don't know why, you can't fix it. Always run exit surveys or interviews.
-- **Treating all customers the same.** High-value customers deserve more attention (personal check-ins, dedicated support). Don't over-automate at the high end.
+## 需避免的常见错误：
+- **只关注新客户获取。**如果新客户在三个月内全部流失，那么获取新客户的努力就毫无意义。可持续增长的关键在于客户留存。
+- **不按客户群体划分流失率。**整体流失率掩盖了实际问题。通过客户群体分析可以了解客户留存情况是否有所改善。
+- **等到客户取消服务才采取行动。**那时已经太晚了。应在客户仍有使用意愿时及时干预。
+- **忽视低参与度的用户。**低参与度预示着未来的流失。应主动与这些用户重新建立联系。
+- **不询问客户流失的原因。**如果不了解原因，就无法解决问题。务必定期进行流失原因调查或深入交流。
+- **对所有客户一视同仁。**高价值客户需要更多的关注（如个性化联系、专属服务）。在高价值客户群体中，不要过度依赖自动化流程。

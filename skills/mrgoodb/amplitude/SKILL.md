@@ -1,21 +1,21 @@
 ---
 name: amplitude
-description: Track events and analyze product usage via Amplitude API. Query user behavior, cohorts, and funnels.
+description: 通过 Amplitude API 追踪事件并分析产品使用情况。可以查询用户行为、用户群体（cohorts）以及用户转化路径（funnels）。
 metadata: {"clawdbot":{"emoji":"📈","requires":{"env":["AMPLITUDE_API_KEY","AMPLITUDE_SECRET_KEY"]}}}
 ---
 
 # Amplitude
 
-Product analytics platform.
+产品分析平台。
 
-## Environment
+## 环境配置
 
 ```bash
 export AMPLITUDE_API_KEY="xxxxxxxxxx"
 export AMPLITUDE_SECRET_KEY="xxxxxxxxxx"
 ```
 
-## Track Event (HTTP API)
+## 跟踪事件（HTTP API）
 
 ```bash
 curl -X POST "https://api2.amplitude.com/2/httpapi" \
@@ -30,7 +30,7 @@ curl -X POST "https://api2.amplitude.com/2/httpapi" \
   }'
 ```
 
-## Batch Track Events
+## 批量跟踪事件
 
 ```bash
 curl -X POST "https://api2.amplitude.com/batch" \
@@ -44,27 +44,27 @@ curl -X POST "https://api2.amplitude.com/batch" \
   }'
 ```
 
-## Export Events (Dashboard API)
+## 导出事件数据（仪表盘 API）
 
 ```bash
 curl -u "$AMPLITUDE_API_KEY:$AMPLITUDE_SECRET_KEY" \
   "https://amplitude.com/api/2/export?start=20240101T00&end=20240102T00"
 ```
 
-## Get User Activity
+## 获取用户活动数据
 
 ```bash
 curl -u "$AMPLITUDE_API_KEY:$AMPLITUDE_SECRET_KEY" \
   "https://amplitude.com/api/2/useractivity?user=user123"
 ```
 
-## Get Active Users
+## 获取活跃用户信息
 
 ```bash
 curl -u "$AMPLITUDE_API_KEY:$AMPLITUDE_SECRET_KEY" \
   "https://amplitude.com/api/2/users/list?start=20240101&end=20240131"
 ```
 
-## Links
-- Dashboard: https://analytics.amplitude.com
-- Docs: https://www.docs.developers.amplitude.com
+## 链接：
+- 仪表盘：https://analytics.amplitude.com
+- 文档：https://www.docs.developers.amplitude.com

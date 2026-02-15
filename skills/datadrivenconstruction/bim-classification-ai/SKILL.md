@@ -1,30 +1,30 @@
 ---
 slug: "bim-classification-ai"
 display_name: "BIM Classification AI"
-description: "Classify BIM elements using AI and standard classification systems. Map elements to UniFormat, MasterFormat, OmniClass, and CWICR codes."
+description: "使用人工智能和标准分类系统对BIM元素进行分类，并将这些元素映射到UniFormat、MasterFormat、OmniClass和CWICR编码中。"
 ---
 
-# BIM Classification AI
+# BIM分类AI
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-BIM models often lack proper classification:
-- Elements without classification codes
-- Inconsistent naming conventions
-- Manual classification is tedious
-- Difficult to map to cost databases
+### 问题描述
+BIM模型通常缺乏适当的分类：
+- 缺少分类代码的元素
+- 命名规范不一致
+- 手动分类工作繁琐
+- 难以与成本数据库进行关联
 
-### Solution
-AI-powered classification system that analyzes BIM element properties and suggests appropriate classification codes from multiple standards.
+### 解决方案
+基于AI的分类系统，能够分析BIM元素的属性，并根据多种标准推荐合适的分类代码。
 
-### Business Value
-- **Automation** - Reduce manual classification effort
-- **Consistency** - Standardized classification across projects
-- **Integration** - Enable cost estimation and QTO
-- **Quality** - Improved data quality in BIM models
+### 商业价值
+- **自动化**：减少手动分类的工作量
+- **一致性**：实现项目间的分类标准化
+- **集成**：支持成本估算和量清单（QTO）流程
+- **数据质量**：提升BIM模型的数据质量
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -323,7 +323,7 @@ class BIMClassificationAI:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize classifier
@@ -341,9 +341,9 @@ print(f"Suggested: {result.selected_code.code} - {result.selected_code.title}")
 print(f"Confidence: {result.suggested_codes[0][1]:.1%}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Batch Classification
+### 1. 批量分类
 ```python
 # Load BIM elements
 elements = pd.read_excel("bim_elements.xlsx")
@@ -353,19 +353,19 @@ classified = classifier.classify_batch(elements)
 classified.to_excel("classified_elements.xlsx")
 ```
 
-### 2. Map to CWICR
+### 2. 与CWICR标准对齐
 ```python
 # Get UniFormat code for cost mapping
 uniformat = result.selected_code.code
 cwicr_code = map_uniformat_to_cwicr(uniformat)
 ```
 
-### 3. Quality Check
+### 3. 质量检查
 ```python
 summary = classifier.get_summary()
 print(f"Classification rate: {summary['classification_rate']}%")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.5 - Data Standards
-- **Reference**: UniFormat II, CSI MasterFormat
+## 资源参考
+- **DDC手册**：第2.5章 - 数据标准
+- **参考规范**：UniFormat II、CSI MasterFormat

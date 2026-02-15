@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Notifications - Python
+# Telnyx 账户通知 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List notification channels
+## 列出通知渠道
 
-List notification channels.
+列出通知渠道。
 
 `GET /notification_channels`
 
@@ -45,9 +46,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a notification channel
+## 创建通知渠道
 
-Create a notification channel.
+创建一个新的通知渠道。
 
 `POST /notification_channels`
 
@@ -56,9 +57,9 @@ notification_channel = client.notification_channels.create()
 print(notification_channel.data)
 ```
 
-## Get a notification channel
+## 获取通知渠道信息
 
-Get a notification channel.
+获取指定通知渠道的信息。
 
 `GET /notification_channels/{id}`
 
@@ -69,9 +70,9 @@ notification_channel = client.notification_channels.retrieve(
 print(notification_channel.data)
 ```
 
-## Update a notification channel
+## 更新通知渠道
 
-Update a notification channel.
+更新通知渠道的配置。
 
 `PATCH /notification_channels/{id}`
 
@@ -82,9 +83,9 @@ notification_channel = client.notification_channels.update(
 print(notification_channel.data)
 ```
 
-## Delete a notification channel
+## 删除通知渠道
 
-Delete a notification channel.
+删除指定的通知渠道。
 
 `DELETE /notification_channels/{id}`
 
@@ -95,9 +96,9 @@ notification_channel = client.notification_channels.delete(
 print(notification_channel.data)
 ```
 
-## List all Notifications Events Conditions
+## 列出所有通知事件条件
 
-Returns a list of your notifications events conditions.
+返回所有通知事件的条件列表。
 
 `GET /notification_event_conditions`
 
@@ -107,9 +108,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## List all Notifications Events
+## 列出所有通知事件
 
-Returns a list of your notifications events.
+返回所有通知事件的列表。
 
 `GET /notification_events`
 
@@ -119,9 +120,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## List all Notifications Profiles
+## 列出所有通知配置文件
 
-Returns a list of your notifications profiles.
+返回所有通知配置文件的列表。
 
 `GET /notification_profiles`
 
@@ -131,9 +132,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a notification profile
+## 创建通知配置文件
 
-Create a notification profile.
+创建一个新的通知配置文件。
 
 `POST /notification_profiles`
 
@@ -142,9 +143,9 @@ notification_profile = client.notification_profiles.create()
 print(notification_profile.data)
 ```
 
-## Get a notification profile
+## 获取通知配置文件信息
 
-Get a notification profile.
+获取指定通知配置文件的信息。
 
 `GET /notification_profiles/{id}`
 
@@ -155,9 +156,9 @@ notification_profile = client.notification_profiles.retrieve(
 print(notification_profile.data)
 ```
 
-## Update a notification profile
+## 更新通知配置文件
 
-Update a notification profile.
+更新通知配置文件的配置。
 
 `PATCH /notification_profiles/{id}`
 
@@ -168,9 +169,9 @@ notification_profile = client.notification_profiles.update(
 print(notification_profile.data)
 ```
 
-## Delete a notification profile
+## 删除通知配置文件
 
-Delete a notification profile.
+删除指定的通知配置文件。
 
 `DELETE /notification_profiles/{id}`
 
@@ -181,9 +182,9 @@ notification_profile = client.notification_profiles.delete(
 print(notification_profile.data)
 ```
 
-## List notification settings
+## 列出通知设置
 
-List notification settings.
+列出所有通知设置。
 
 `GET /notification_settings`
 
@@ -193,9 +194,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Add a Notification Setting
+## 添加通知设置
 
-Add a notification setting.
+添加一个新的通知设置。
 
 `POST /notification_settings`
 
@@ -204,9 +205,9 @@ notification_setting = client.notification_settings.create()
 print(notification_setting.data)
 ```
 
-## Get a notification setting
+## 获取通知设置信息
 
-Get a notification setting.
+获取指定通知设置的信息。
 
 `GET /notification_settings/{id}`
 
@@ -217,9 +218,9 @@ notification_setting = client.notification_settings.retrieve(
 print(notification_setting.data)
 ```
 
-## Delete a notification setting
+## 删除通知设置
 
-Delete a notification setting.
+删除指定的通知设置。
 
 `DELETE /notification_settings/{id}`
 
@@ -228,4 +229,5 @@ notification_setting = client.notification_settings.delete(
     "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
 )
 print(notification_setting.data)
+```
 ```

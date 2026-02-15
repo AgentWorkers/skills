@@ -1,63 +1,60 @@
 ---
 name: garmin-connect
 version: 1.2.0
-description: Syncs daily health and fitness data from Garmin Connect into markdown files. Provides sleep, activity, heart rate, stress, body battery, HRV, SpO2, and weight data.
+description: 该工具每天会将来自 Garmin Connect 的健康与健身数据同步到 markdown 文件中，包括睡眠、活动量、心率、压力水平、身体电量、心率变异性（HRV）、血氧饱和度（SpO2）以及体重等数据。
 homepage: https://github.com/freakyflow/garminskill
 metadata: {"clawdbot":{"emoji":"💪","requires":{"bins":["uv"]},"install":[{"id":"uv","kind":"brew","formula":"uv","bins":["uv"],"label":"Install uv via Homebrew"}]}}
 ---
 
 # Garmin Connect
 
-This skill syncs your daily health data from Garmin Connect into readable markdown files.
+该技能可将您从 Garmin Connect 获取的日常健康数据同步到可读的 Markdown 文件中。
 
-## Setup
+## 设置
 
-Authentication is required before the first sync. This only needs to happen once — tokens are cached for approximately one year.
+在首次同步之前，需要进行身份验证。此操作只需执行一次，因为生成的令牌会在本地缓存大约一年时间。
 
-If the sync command fails with "No cached tokens found", tell the user to run the setup command in their terminal:
+如果同步命令出现“未找到缓存令牌”的错误，请提示用户在终端中运行设置命令：
 
 ```bash
 uv run {baseDir}/scripts/sync_garmin.py --setup --email you@example.com
 ```
 
-The password is prompted interactively via `getpass` — it is never echoed to screen, stored in shell history, or passed as a command argument. On success the user will see `Success! Tokens cached in ~/.garminconnect`. After that, all syncs use cached tokens only — no credentials are needed.
+密码会通过 `getpass` 函数以交互式方式获取，不会显示在屏幕上，也不会存储在 shell 历史记录中或作为命令参数传递。成功后，用户会看到“成功！令牌已缓存到 ~/.garminconnect” 的提示。之后，所有同步操作都将使用缓存的令牌，无需再次输入凭据。
 
-Do not ask the user for their password in chat and do not pass passwords as command-line arguments or via stdin piping, as these methods can expose credentials in process listings or conversation history.
+请勿在聊天中询问用户的密码，也切勿通过命令行参数或标准输入（stdin）传递密码，因为这些方式可能导致凭据泄露。
 
-## Syncing Data
+## 同步数据
 
-Sync today's data:
-
-```bash
+- 同步当天的数据：  
+  ```bash
 uv run {baseDir}/scripts/sync_garmin.py
 ```
 
-Sync a specific date:
-
-```bash
+- 同步特定日期的数据：  
+  ```bash
 uv run {baseDir}/scripts/sync_garmin.py --date 2026-02-07
 ```
 
-Sync the last N days:
-
-```bash
+- 同步过去 N 天的数据：  
+  ```bash
 uv run {baseDir}/scripts/sync_garmin.py --days 7
 ```
 
-## Reading Health Data
+## 查看健康数据
 
-Health files are stored at `{baseDir}/health/YYYY-MM-DD.md` — one file per day.
+健康数据文件存储在 `{baseDir}/health/YYYY-MM-DD.md` 目录下，每天对应一个文件。
 
-To answer health or fitness questions, read the relevant date's file from the `{baseDir}/health/` directory. If the file doesn't exist for the requested date, run the sync command for that date first.
+要查询健康或健身相关信息，请读取 `{baseDir}/health/` 目录中对应日期的文件。如果请求的日期对应的文件不存在，请先运行同步命令。
 
-## Dependencies
+## 依赖项
 
-This skill uses [uv](https://docs.astral.sh/uv/) to run the sync script. `uv` is a fast Python package manager by Astral that reads inline script metadata (PEP 723) and automatically installs dependencies (`garminconnect`, `cloudscraper`) in an isolated environment — no manual `pip install` needed.
+该技能使用 [uv](https://docs.astral.sh/uv/) 来执行同步脚本。`uv` 是 Astral 开发的一个快速 Python 包管理器，它能够读取内联脚本元数据（PEP 723 标准），并自动在隔离环境中安装所需的依赖项（`garminconnect`、`cloudscraper`），无需手动执行 `pip install` 操作。
 
-## Credentials
+## 凭据
 
-Garmin Connect does not offer a public OAuth API, so a one-time email/password login is required. During setup, the password is used once to obtain OAuth tokens, then discarded. The tokens are cached locally in `~/.garminconnect/` for approximately one year. At runtime, only the cached tokens are used — no email or password is needed. If tokens expire, re-run the setup command.
+Garmin Connect 不提供公共的 OAuth API，因此需要使用一次性的电子邮件/密码登录方式。在设置过程中，密码仅用于获取 OAuth 令牌，之后会被丢弃。令牌会缓存在 `~/.garminconnect/` 目录中，有效期约为一年。运行时只需使用缓存的令牌，无需再次输入电子邮件或密码。如果令牌过期，请重新运行设置命令。
 
-## Cron Setup
+## Cron 安排
 
-Schedule the sync script to run every morning using OpenClaw's `cron` tool so your health data stays up to date automatically. No environment variables or credentials are needed — the sync uses cached tokens from the one-time setup.
+使用 OpenClaw 的 `cron` 工具将同步脚本设置为每天早晨自动运行，以确保您的健康数据始终保持最新状态。此过程不需要任何环境变量或额外凭据，因为同步操作会使用之前设置时缓存的令牌。

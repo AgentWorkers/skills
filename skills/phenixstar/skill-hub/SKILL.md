@@ -1,6 +1,10 @@
 ---
 name: skill-hub
-description: "OpenClaw skill discovery, security vetting & install. Searches 3000+ curated skills from ClawHub registry and awesome-openclaw-skills catalog. Scores credibility, detects prompt injection & malicious patterns, manages installations. Quick-checks GitHub for new skills."
+description: "OpenClaw 的技能发现、安全审核及安装功能：  
+- 从 ClawHub 注册表和 awesome-openclaw-skills 目录中搜索 3000 多个精选技能；  
+- 评估技能的可信度，检测潜在的命令注入行为及恶意模式；  
+- 管理技能的安装过程；  
+- 定期在 GitHub 上查找新的技能更新。"
 license: MIT
 version: 1.0.0
 homepage: https://github.com/PhenixStar/openclaw-skills-collection
@@ -25,14 +29,14 @@ allowed-tools:
   - Write
 ---
 
-# Skill Hub
+# 技能中心 (Skill Hub)
 
-Unified skill discovery, security vetting, and installation for OpenClaw.
+OpenClaw 提供统一的技能发现、安全审核及安装功能。
 
-## Commands
+## 命令
 
-### Search Skills
-Find skills by keyword, category, or credibility score.
+### 搜索技能
+可以通过关键词、类别或可信度评分来查找技能。
 
 ```bash
 python3 scripts/skill-hub-search.py --query "spreadsheet"
@@ -42,15 +46,15 @@ python3 scripts/skill-hub-search.py --installed                  # show only ins
 python3 scripts/skill-hub-search.py --not-installed --limit 20   # discovery mode
 ```
 
-### Install Skills
-After finding a skill, install via ClawHub:
+### 安装技能
+找到所需技能后，可通过 ClawHub 进行安装：
 
 ```bash
 npx clawhub@latest install <skill-slug>
 ```
 
-### Vet Skills (Security Scan)
-Scan a skill for malicious patterns, prompt injection, and logic weaknesses.
+### 审核技能（安全扫描）
+扫描技能是否存在恶意代码、命令注入或逻辑漏洞。
 
 ```bash
 python3 scripts/skill-hub-vet.py --slug google-sheets     # vet single skill
@@ -59,15 +63,15 @@ python3 scripts/skill-hub-vet.py --category "DevOps"       # vet category
 python3 scripts/skill-hub-vet.py --top 10                  # vet top N unvetted
 ```
 
-### Status Dashboard
-See installed vs catalog coverage, unvetted warnings, recommendations.
+### 状态仪表盘
+查看已安装的技能与目录中的技能覆盖情况，以及未经过审核的技能和相应的警告信息。
 
 ```bash
 python3 scripts/skill-hub-status.py
 ```
 
-### Quick Check (GitHub API)
-Fast check if new skills were added since last sync. Uses `gh` CLI — no full download needed.
+### 快速检查（GitHub API）
+快速检查自上次同步以来是否有新技能添加。使用 `gh` CLI 实现——无需完整下载数据。
 
 ```bash
 python3 scripts/skill-hub-quick-check.py              # check for updates
@@ -75,8 +79,8 @@ python3 scripts/skill-hub-quick-check.py --sync        # auto-sync if updates fo
 python3 scripts/skill-hub-quick-check.py --query "ai"  # check + search new skills
 ```
 
-### Browse Full Catalog
-Export catalog as formatted table (terminal or markdown), grouped by category.
+### 浏览完整目录
+将技能目录导出为格式化的表格（适用于终端或 Markdown），并按类别进行分组。
 
 ```bash
 python3 scripts/skill-hub-table-export.py                          # terminal table
@@ -84,31 +88,30 @@ python3 scripts/skill-hub-table-export.py --format markdown        # markdown ta
 python3 scripts/skill-hub-table-export.py --category "AI"          # filter category
 ```
 
-### Sync Catalog
-Full re-fetch from GitHub awesome-list. Computes credibility, preserves vet results, shows diff.
+### 同步目录
+从 GitHub 的 awesome-list 服务器重新获取所有技能信息。会保留审核结果，并显示更新内容。
 
 ```bash
 python3 scripts/skill-hub-sync.py
 ```
 
-## Credibility Scores (0-100)
+## 可信度评分（0-100）
 
-| Tier | Score | Meaning |
+| 评分等级 | 评分范围 | 含义 |
 |------|-------|---------|
-| Trusted | 85-100 | Curated + vetted + mature |
-| Good | 60-84 | Curated or vetted, some signals |
-| Unvetted | 30-59 | Exists in registry, not scanned |
-| Caution | 0-29 | Missing signals or security warnings |
+| 可信赖 | 85-100 | 经过精心挑选和审核，功能成熟 |
+| 良好 | 60-84 | 经过挑选或审核，但存在部分安全风险 |
+| 未审核 | 30-59 | 仅存在于注册表中，尚未经过安全扫描 |
+| 警告 | 0-29 | 存在安全风险或未通过审核 |
 
-## Security Checks
+## 安全检查内容
 
-Code-level: eval/exec, shell injection, obfuscation, network access, env harvesting, destructive ops.
+- **代码层面**：包括代码执行、shell 注入、代码混淆、网络访问、环境信息收集以及破坏性操作等风险。
+- **自然语言处理/命令层面**：包括隐藏指令、角色劫持、不可见的 Unicode 字符、数据泄露指令、权限提升以及社会工程学攻击等风险。
 
-NLP/Prompt-level: hidden instructions, role hijacking, invisible unicode, exfiltration prompts, authority escalation, social engineering.
+## 使用场景
 
-## When to Use
-
-- User asks "find a skill for X" or "is there a skill that can..."
-- User wants to extend capabilities with new tools
-- User wants to check if installed skills are safe
-- Before installing unknown skills from registry
+- 当用户询问“如何找到某个技能”或“是否有适合某需求的技能”时。
+- 当用户希望使用新工具来扩展系统功能时。
+- 当用户想要确认已安装的技能是否安全时。
+- 在从注册表中安装未知技能之前。

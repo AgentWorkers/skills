@@ -1,76 +1,76 @@
 ---
 name: financial-intel
-description: Stock momentum scanner and portfolio intelligence. Look up any ticker for momentum scores, RSI, coil breakout patterns, and AI analysis. Scan top signals across 6,500+ stocks and crypto. Track portfolio holdings with real-time alerts. Market pulse, sector trends, win/loss proof data, and risk assessment — all through natural conversation. Powered by 730 days of backtested data with an 80% 5-day win rate.
+description: **股票动量扫描器与投资组合智能工具**  
+您可以查询任意股票的动量评分、相对强弱指数（RSI）、价格突破模式以及人工智能分析结果。该工具能够扫描超过6,500只股票和加密货币的优质投资信号，并实时提醒您投资组合的持仓情况。通过自然语言交互，您可以获取市场动态、行业趋势、盈亏数据以及风险评估等信息。该工具基于730天的历史数据进行回测，其5天内的胜率为80%。
 metadata: {"clawdbot": {"requires": {"bins": ["python3"], "env": ["BF_API_KEY"]}, "primaryEnv": "BF_API_KEY", "emoji": "📊", "version": "1.9.0", "author": "clawd", "license": "MIT", "homepage": "https://bananafarmer.app", "tags": ["stocks", "crypto", "momentum", "portfolio", "market-data", "trading", "signals", "technical-analysis", "financial-data", "scanner"]}}
 ---
 
-# Financial Intelligence Skill
+## 金融智能技能
 
-Real-time momentum scoring and market intelligence for 6,500+ stocks and crypto assets. Powered by [Banana Farmer](https://bananafarmer.app) — an AI momentum scanner that combines technical analysis, price momentum, and social sentiment into a single 0-100 Ripeness Score.
+该技能能够实时评估6,500多只股票和加密货币资产的动量，并提供市场情报。该服务由[Banana Farmer](https://bananafarmer.app)提供——这是一个基于人工智能的动量扫描工具，它将技术分析、价格动量和市场情绪整合为一个0-100的“成熟度评分”。
 
-Backed by 730 days of tracked data across 12,450+ signals with a verified 80% five-day win rate.
+该服务基于730天的跟踪数据，涵盖了12,450多个股票指标，并且经过验证，其五天内的胜率为80%。
 
-## Quick Start
+### 快速入门
 
-**Option A — Self-provision a free key instantly (no account needed):**
+**选项A——立即免费获取API密钥（无需注册账户）：**
 ```bash
 curl -s -X POST "https://bananafarmer.app/api/bot/v1/keys/trial" \
   -H "Content-Type: application/json" \
   -d '{"name": "My Agent", "email": "you@example.com"}'
 ```
-Save the `key` from the response. One key per email, instant, no credit card.
+从响应中保存`key`。每个电子邮件地址仅提供一个密钥，无需信用卡。
 
-**Option B — Sign up for a full account:** [bananafarmer.app/developers](https://bananafarmer.app/developers)
+**选项B——注册完整账户：** [bananafarmer.app/developers](https://bananafarmer.app/developers)
+然后：
+1. **设置您的API密钥**：`export BF_API_KEY=bf_bot_your_key_here`（或将其添加到OpenClaw配置文件中）
+2. **尝试使用**：`python3 scripts/bf-lookup.py AAPL` —— 您将获得评分、徽章、RSI指标、价格走势、看涨/看跌情况以及需要关注的事项。
 
-Then:
-1. **Set your key**: `export BF_API_KEY=bf_bot_your_key_here` (or add to OpenClaw config)
-2. **Try it**: `python3 scripts/bf-lookup.py AAPL` — you get score, badge, RSI, coil, price action, bull/bear case, and what to watch for
-
-That is it. You are now scanning 6,500+ assets for momentum signals.
+就这样，您就可以开始扫描6,500多种资产以寻找动量信号了。
 
 ---
 
-## Prompt Examples
+### 常见查询示例
 
-### Single Ticker Analysis
+### 单个股票分析
 
-Look up any stock or crypto symbol for a full momentum profile: score, badge, RSI, coil pattern, EMA alignment, price action, volatility, scoring breakdown, AI summary, and bull/bear cases.
+查询任何股票或加密货币的完整动量信息：评分、徽章、RSI指标、价格走势、EMA对齐情况、价格波动性、评分细节、人工智能总结以及看涨/看跌情况。
 
-**Example prompts:**
-- "What's the momentum on AAPL?"
-- "Look up TSLA for me"
-- "How's Bitcoin looking?"
-- "Check NVDA's score and technicals"
-- "Is CRWV ripe?"
-- "What's the coil score on AMD?"
-- "Pull up the full analysis on SMCI"
-- "Is PLTR overbought right now?"
+**示例查询：**
+- “AAPL的动量如何？”
+- “帮我查询TSLA的情况”
+- “比特币的表现如何？”
+- “检查NVDA的评分和技术指标”
+- “CRWV是否已经成熟？”
+- “AMD的动量评分是多少？”
+- “查看SMCI的完整分析”
+- “PLTR现在是否被过度买入了？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-lookup.py AAPL
 python3 scripts/bf-lookup.py TSLA NVDA AMD   # Multiple tickers at once
 python3 scripts/bf-lookup.py BTC              # Crypto works too
 ```
 
-**What you get back:** Score (0-100), badge (ripe/ripening/overripe/too-late/neutral), current price, 1d and 5d change, RSI with overbought/oversold labels, coil score with breakout flag, EMA 20/50 alignment, 52-week high proximity, volatility metrics, scoring breakdown (technical/momentum/social), key drivers, AI summary bullets, bull case, bear case, and what to watch for.
+**您将获得的信息：**评分（0-100分）、徽章（成熟/正在成熟/过熟/为时已晚/中性）、当前价格、1天和5天的价格变化、带有超买/超卖标签的RSI指标、带有突破标志的动量评分、EMA 20/50的对齐情况、距离52周高点的距离、波动性指标、评分细节、关键驱动因素、人工智能总结、看涨/看跌情况以及需要关注的事项。
 
 ---
 
-### Top Signals / Batch Analysis
+### 最高评分信号/批量分析
 
-See the highest-scoring momentum signals right now — the tickers showing the strongest alignment across technical, price action, and social indicators.
+查看当前评分最高的动量信号——这些股票在技术指标、价格走势和市场情绪方面都表现出最强的一致性。
 
-**Example prompts:**
-- "What are the top signals right now?"
-- "Show me the hottest momentum setups"
-- "Any ripe signals today?"
-- "Top 5 stocks by momentum score"
-- "What's ripening that I should watch?"
-- "Show me the top 20 signals"
-- "Any ripe crypto signals?"
+**示例查询：**
+- “目前哪些信号评分最高？”
+- “显示最热门的动量指标”
+- “今天有成熟的信号吗？”
+- “按动量评分排名前5的股票”
+- “有哪些正在成熟的股票值得关注？”
+- “显示前20个信号”
+- “有成熟的加密货币信号吗？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-market.py top                        # Default top 10, all badges
 python3 scripts/bf-market.py top --limit 20             # Top 20
@@ -79,32 +79,32 @@ python3 scripts/bf-market.py top --badge ripening       # Only ripening (watchli
 python3 scripts/bf-market.py top --limit 5 --badge ripe # Top 5 ripe only
 ```
 
-**What you get back:** Ranked table with symbol, score, badge, 1-day change, 5-day change, and key drivers for each signal. Results are deduplicated by symbol automatically.
+**您将获得的信息：**按评分排名的表格，包括股票代码、评分、徽章、1天变化、5天变化以及每个信号的关键驱动因素。结果会自动去除重复项。
 
 ---
 
-### Portfolio Tracking
+### 投资组合跟踪
 
-Track multiple holdings across accounts. Get a morning-brief-style intelligence report with alerts for RSI overbought/oversold, big daily moves, ripe/overripe signals, risk flags, and P&L calculations.
+跟踪多个账户中的持股情况。系统会生成类似晨报的智能报告，包含RSI超买/超卖的警报、每日的大幅价格变动、成熟/过熟的信号、风险提示以及盈亏计算。
 
-**Example prompts:**
-- "Check my portfolio"
-- "How are my holdings doing?"
-- "Run a portfolio brief"
-- "Any alerts on my positions?"
-- "How's my aggressive account looking?"
-- "What's the P&L on my tech holdings?"
-- "Any of my holdings overbought?"
-- "Which of my stocks are ripe right now?"
+**示例查询：**
+- “检查我的投资组合”
+- “我的持股表现如何？”
+- “运行投资组合概览”
+- “我的持仓有任何警报吗？”
+- “我的激进型账户表现如何？”
+- “我的科技股持仓的盈亏情况如何？”
+- “我的任何持仓是否被过度买入了？”
+- “我的哪些股票已经成熟？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-portfolio.py portfolios.json                 # Full brief, all accounts
 python3 scripts/bf-portfolio.py portfolios.json --account aaron  # Filter to one account
 python3 scripts/bf-portfolio.py portfolios.json --json           # JSON output for piping
 ```
 
-**Portfolio file format** (`portfolios.json`):
+**投资组合文件格式**（`portfolios.json`）：
 ```json
 {
   "accounts": [
@@ -131,105 +131,103 @@ python3 scripts/bf-portfolio.py portfolios.json --json           # JSON output f
 }
 ```
 
-**What you get back:** Market status, data freshness, per-account sections with alerts (overbought, oversold, big moves, ripe/overripe signals, too-late warnings, risk-profile mismatches), and detailed holding lines showing price, score, badge, changes, RSI, shares, cost basis, and unrealized P&L with percentages.
+**您将获得的信息：**市场状态、数据更新频率、每个账户的详细信息（包括超买/超卖、大幅价格变动、成熟/过熟的信号、为时已晚的警告），以及详细的持股信息（包括价格、评分、徽章、变化幅度、RSI指标、持股数量、成本基础和未实现的盈亏百分比）。
 
-**Alert types generated:**
-- SIGNAL: holding is ripe or overripe
-- CAUTION: holding is too-late (momentum exhausted)
-- OVERBOUGHT: RSI above 70 (or 80 for strong warning)
-- OVERSOLD: RSI below 30 (potential bounce zone)
-- BIG MOVE: more than 5% daily change
-- WEEKLY: more than 10% five-day change
-- NOTE: high momentum in conservative account
+**生成的警报类型：**
+- **SIGNAL**：持股已经成熟或过熟
+- **CAUTION**：持股为时已晚（动量耗尽）
+- **OVERBOUGHT**：RSI超过70（强烈警告）
+- **OVERSOLD**：RSI低于30（可能的反弹区间）
+- **BIG MOVE**：每日价格变动超过5%
+- **WEEKLY**：五天内价格变动超过10%
 
 ---
 
-### Market Overview
+### 市场概览
 
-Get a bird's-eye view of the market: how many signals are firing by badge, what is trending, new ripe signals, and a narrative summary.
+获得市场的整体情况：按徽章分类的信号数量、当前的热门趋势、新的成熟信号以及简要的市场分析。
 
-**Example prompts:**
-- "What's the market doing today?"
-- "Give me a market pulse"
-- "How's the overall momentum landscape?"
-- "How many ripe signals are there right now?"
-- "What's trending in the market?"
-- "Any new ripe signals today?"
+**示例查询：**
+- “今天市场表现如何？”
+- “给我一个市场概览”
+- “整体动量状况如何？”
+- “目前有多少成熟的信号？”
+- “市场当前的趋势是什么？”
+- “今天有新的成熟信号吗？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-market.py pulse
 ```
 
-**What you get back:** Narrative summary, signal counts broken down by badge (ripe, ripening, overripe, too-late, neutral), trending symbols, and newly ripe signals that just crossed the threshold.
+**您将获得的信息：**市场概览、按徽章分类的信号数量（成熟、正在成熟、过熟、为时已晚、中性）、热门股票列表，以及刚刚达到成熟阈值的信号。
 
 ---
 
-### Performance Tracking / Proof Data
+### 绩效跟踪/验证数据
 
-See which signals actually played out: winners and losers with real entry prices, current prices, percentage moves, and milestone returns over multiple time horizons.
+查看哪些信号实际产生了效果：包括获胜和失败的案例，以及它们的实际入场价格、当前价格、百分比变化和多时间段的回报情况。
 
-**Example prompts:**
-- "Which signals worked this week?"
-- "Show me recent winners"
-- "What's the track record look like?"
-- "Any big movers from recent signals?"
-- "Show me winners from the last 30 days"
-- "What percentage of signals won this week?"
-- "What were the biggest losers recently?"
+**示例查询：**
+- “这周哪些信号有效？”
+- “显示最近的获胜案例”
+- “最近的表现如何？”
+- “最近有哪些大幅波动的信号？”
+- “显示过去30天的获胜案例”
+- “这周有多少信号成功了？”
+- “最近最大的亏损案例是什么？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-movers.py                       # Default: last 7 days, top 5
 python3 scripts/bf-movers.py --days 30 --limit 10  # Last 30 days, top 10
 python3 scripts/bf-movers.py --days 1 --limit 3    # Today's movers
 ```
 
-**What you get back:** Winners and losers sections, each showing symbol, percentage change, entry price, current price, and milestone returns (1d, 3d, 5d, 10d). Summary line with calculated win rate for the period.
+**您将获得的信息：**获胜和失败案例的列表，包括股票代码、百分比变化、入场价格、当前价格以及各个时间段的回报情况。同时会提供该时期的胜率总结。
 
 ---
 
-### Risk Assessment
+### 风险评估
 
-Evaluate whether a stock is extended, overbought, or showing risk flags. Combine RSI, badge, coil, and volatility data into a risk picture.
+评估股票是否处于过度买入状态或存在风险。结合RSI指标、徽章、动量评分和波动性数据来评估风险。
 
-**Example prompts:**
-- "Is TSLA overbought?"
-- "What's the risk on NVDA right now?"
-- "Is AMD overripe?"
-- "Should I be worried about my SMCI position?"
-- "What's the max drawdown on CRWV?"
-- "Is this too late to buy PLTR?"
-- "Any of the top signals looking overextended?"
+**示例查询：**
+- “TSLA是否被过度买入了？”
+- “NVDA目前的风险状况如何？”
+- “AMD是否已经过熟？”
+- “我应该担心我的SMCI持仓吗？”
+- “CRWV的最大回撤幅度是多少？”
+- “现在买入PLTR是否为时已晚？”
+- “我的顶级信号中是否有任何过度买入的？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-lookup.py TSLA   # Check RSI, badge, volatility, and bear case
 ```
 
-**What to look for in the output:**
-- RSI above 70: overbought warning, watch for pullback
-- RSI above 80: strongly overbought
-- Badge "overripe": already extended, pullback likely
-- Badge "too-late": chasing at this level carries elevated risk
-- Max drawdown percentage: historical worst case from entry
-- Average daily range: how volatile it trades
-- Bear case: the AI-generated downside scenario
+**输出中的关键信息：**
+- RSI超过70：超买警告，需警惕回调
+- RSI超过80：极度超买
+- 徽章“overripe”：已经过度买入，可能即将回调
+- 徽章“too-late”：在此水平追涨风险增加
+- 最大回撤百分比：历史上的最坏情况
+- 平均每日波动幅度：股票的波动性
 
 ---
 
-### Comparison Queries
+### 对比查询
 
-Compare multiple tickers side by side for momentum scores, technicals, and risk profiles.
+并行比较多个股票的动量评分、技术指标和风险状况。
 
-**Example prompts:**
-- "Compare AAPL vs MSFT momentum"
-- "Which has better momentum: NVDA or AMD?"
-- "Look up TSLA, RIVN, and LCID"
-- "Compare the big tech names — AAPL, GOOGL, MSFT, META"
-- "Which mega cap has the highest coil score?"
+**示例查询：**
+- “比较AAPL和MSFT的动量”
+- “NVDA和AMD哪个动量更强？”
+- “查询TSLA、RIVN和LCID”
+- “比较大型科技股——AAPL、GOOGL、MSFT、META”
+- “哪个大盘股的动量评分最高？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-compare.py AAPL MSFT          # Side-by-side table comparison
 python3 scripts/bf-compare.py NVDA AMD INTC AVGO # Compare semiconductor names
@@ -237,22 +235,22 @@ python3 scripts/bf-compare.py TSLA RIVN LCID     # EV sector comparison
 python3 scripts/bf-lookup.py AAPL MSFT           # Full deep-dive for each (more detail)
 ```
 
-**What you get back:** A formatted comparison table showing score, badge, price, RSI, coil score, EMA alignment, 52-week proximity, scoring breakdown, and volatility side by side. Includes a verdict (strongest/weakest momentum) and risk flags (overbought, coiled for breakout).
+**您将获得的信息：**一个格式化的对比表格，显示评分、徽章、价格、RSI指标、EMA对齐情况、52周距离、评分细节以及波动性。还包括评估结果（动量最强/最弱）和风险提示（过度买入、即将突破）。
 
 ---
 
-### Watchlist Management
+### 监控列表管理
 
-Use the top signals and portfolio tools together to build and track watchlists. Filter by badge to focus on ripening setups that are worth monitoring.
+使用顶级信号和投资组合工具来构建和跟踪监控列表。可以根据徽章筛选值得关注的股票。
 
-**Example prompts:**
-- "Add NVDA to my watchlist" (add to your portfolios.json)
-- "What's ripening that I should watch?"
-- "Build me a watchlist of ripening signals"
-- "Update my watchlist with today's top ripening stocks"
-- "Track these for me: AAPL, NVDA, AMD, TSLA"
+**示例查询：**
+- “将NVDA添加到我的监控列表中”
+- “有哪些正在成熟的股票值得关注？”
+- “为我生成一个包含成熟信号的监控列表”
+- “更新我的监控列表，包括今天的顶级成熟股票”
+- “跟踪这些股票：AAPL、NVDA、AMD、TSLA”
 
-**How to run:**
+**使用方法：**
 ```bash
 # Today's curated watchlist picks (pre-selected by the system)
 python3 scripts/bf-watchlist.py picks
@@ -264,36 +262,24 @@ python3 scripts/bf-market.py top --badge ripening --limit 10
 python3 scripts/bf-portfolio.py portfolios.json
 ```
 
-**Tip:** Use `bf-watchlist.py picks` for the system's daily curated picks, or create a "watchlist" account in your portfolios.json with `shares: 0` and `cost_basis: 0` for each symbol. The portfolio brief will show scores, badges, RSI, and alerts without P&L calculations.
-
-```json
-{
-  "id": "watchlist",
-  "name": "Watchlist",
-  "risk_profile": "moderate",
-  "holdings": [
-    {"symbol": "NVDA", "shares": 0, "cost_basis": 0},
-    {"symbol": "AMD", "shares": 0, "cost_basis": 0}
-  ]
-}
-```
+**提示：**可以使用`bf-watchlist.py`获取系统每日精选的信号，或者在`portfolios.json`中创建一个“watchlist”账户，设置`shares: 0`和`cost_basis: 0`。这样投资组合概览将仅显示评分、徽章、RSI指标和警报，不包括盈亏计算。
 
 ---
 
-### Sector and Theme Analysis
+### 行业和主题分析
 
-Analyze momentum across entire sectors, or drill into specific industry groups.
+分析整个行业的动量情况，或深入研究特定行业。
 
-**Example prompts:**
-- "Which sectors have the most momentum?"
-- "What's the hottest sector right now?"
-- "How are the semiconductor stocks doing?"
-- "Check the EV sector — TSLA, RIVN, LCID, NIO"
-- "Run the FAANG names for me"
-- "What's happening in biotech?"
-- "Check the momentum on airline stocks"
+**示例查询：**
+- “哪些行业的动量最强？”
+- “当前最热门的行业是哪个？”
+- “半导体股票的表现如何？”
+- “查看电动汽车行业——TSLA、RIVN、LCID、NIO”
+- “为我查询FAANG公司的情况”
+- “生物科技行业的情况如何？”
+- “航空股票的动量如何？”
 
-**How to run:**
+**使用方法：**
 ```bash
 # Full sector momentum breakdown (auto-classifies top 50 signals)
 python3 scripts/bf-sectors.py
@@ -307,23 +293,23 @@ python3 scripts/bf-compare.py AAPL MSFT GOOGL META # Big tech
 python3 scripts/bf-lookup.py TSLA RIVN LCID NIO    # Full detail per ticker
 ```
 
-**What you get back:** The sectors script groups all top signals by sector (Technology, Healthcare, Financials, Energy, Consumer, Industrials, Real Estate, etc.), shows signal count, average score, heat rating (HOT/WARM/COOL/COLD), ripe signal count, and sector leaders. Use `bf-compare.py` for side-by-side comparison within a sector group.
+**您将获得的信息：**该脚本按行业（科技、医疗保健、金融、能源、消费、工业、房地产等）分组显示所有顶级信号，包括信号数量、平均评分、热度等级（热门/温暖/冷淡）以及行业领导者。可以使用`bf-compare.py`在行业内进行并行比较。**
 
 ---
 
-### Historical Context and Win Rates
+### 历史数据和胜率
 
-Query the system's track record and statistical performance data.
+查询系统的历史记录和统计性能数据。
 
-**Example prompts:**
-- "What's the 5-day win rate for ripe signals?"
-- "How does 1-day performance compare to 5-day?"
-- "What's the average return on signals above 90?"
-- "How many signals have been tracked total?"
-- "What's the historical data span?"
-- "Does patience actually improve win rate?"
+**示例查询：**
+- “成熟信号的五天胜率是多少？”
+- “1天内的表现与5天内的表现相比如何？”
+- “评分超过90的信号的平均回报是多少？”
+- “总共跟踪了多少个信号？”
+- “历史数据的时间跨度是多少？”
+- “耐心是否真的能提高胜率？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-watchlist.py scorecard  # System win rates by holding period and score threshold
 python3 scripts/bf-watchlist.py horizons   # Time horizon analysis (how long to hold)
@@ -331,34 +317,34 @@ python3 scripts/bf-market.py health        # System stats and data freshness
 python3 scripts/bf-movers.py --days 30     # Recent track record with win rate
 ```
 
-**Track record reference** (from 12,450 signals over 730 days):
+**历史记录参考**（基于730天内的12,450个信号）：
 
-| Holding Period | Win Rate | Avg Return | Avg Win | Avg Loss |
+| 持仓周期 | 胜率 | 平均回报 | 平均胜率 | 平均亏损 |
 |----------------|----------|------------|---------|----------|
-| 1 day | 76.5% | +1.35% | +2.07% | -0.97% |
-| 3 days | 78.4% | +2.69% | +3.87% | -1.62% |
-| 5 days | 79.9% | +4.51% | +6.24% | -2.37% |
-| 10 days | 79.4% | +5.40% | +7.54% | -2.86% |
-| 1 month | 80.1% | +8.16% | +11.26% | -4.33% |
-| 2 months | 79.1% | +9.90% | +13.96% | -5.51% |
+| 1天 | 76.5% | +1.35% | +2.07% | -0.97% |
+| 3天 | 78.4% | +2.69% | +3.87% | -1.62% |
+| 5天 | 79.9% | +4.51% | +6.24% | -2.37% |
+| 10天 | 79.4% | +5.40% | +7.54% | -2.86% |
+| 1个月 | 80.1% | +8.16% | +11.26% | -4.33% |
+| 2个月 | 79.1% | +9.90% | +13.96% | -5.51% |
 
-Key insight: Win rate starts at 76.5% on day one and climbs to 80.1% by one month. The edge is patience.
+**关键发现：**第一天的胜率为76.5%，一个月后上升到80.1%。耐心是提高胜率的关键。
 
 ---
 
-### Alert-Style Queries
+### 警报查询
 
-Check for actionable conditions across your holdings or the broader market.
+检查您的持仓或整个市场是否存在可操作的信号。
 
-**Example prompts:**
-- "Alert me if any holding goes ripe"
-- "Any of my stocks overbought?"
-- "Which holdings have RSI below 30?"
-- "Are any top signals showing a coil above 70?"
-- "What in my portfolio has the biggest move today?"
-- "Any too-late warnings on my positions?"
+**示例查询：**
+- “如果任何持仓成熟，请提醒我”
+- “我的任何股票是否被过度买入了？”
+- “哪些持仓的RSI低于30？”
+- “是否有顶级信号的RSI超过70？”
+- “我的持仓中今天有最大的价格变动吗？”
+- “我的持仓中有任何为时已晚的警告吗？”
 
-**How to run:**
+**使用方法：**
 ```bash
 # Portfolio alerts (automatically flags ripe, overbought, oversold, big moves)
 python3 scripts/bf-portfolio.py portfolios.json
@@ -370,286 +356,234 @@ python3 scripts/bf-market.py top --badge ripe --limit 20
 python3 scripts/bf-lookup.py AAPL TSLA NVDA
 ```
 
-The portfolio brief automatically generates alerts. Look for the ALERTS section, which flags: SIGNAL (ripe/overripe), CAUTION (too-late), OVERBOUGHT (RSI > 70), OVERSOLD (RSI < 30), BIG MOVE (> 5% daily), WEEKLY (> 10% five-day), and risk-profile mismatches.
+投资组合概览会自动生成警报。请注意“ALERTS”部分，其中会标记：SIGNAL（成熟/过熟）、CAUTION（为时已晚）、OVERBOUGHT（RSI > 70）、OVERSOLD（RSI < 30）、BIG MOVE（每日价格变动超过5%）、WEEKLY（五天内价格变动超过10%）以及风险状况不匹配的情况。
 
 ---
 
-### System Health Check
+### 系统健康检查
 
-Verify data freshness and market status before making decisions.
+在做出决策之前，验证数据的新鲜度和市场状态。
 
-**Example prompts:**
-- "Is the data fresh?"
-- "Is the market open?"
-- "Check system health"
-- "Any data issues right now?"
+**示例查询：**
+- “数据是否新鲜？”
+- “市场是否开放？”
+- “检查系统健康状况”
+- “目前是否有数据问题？”
 
-**How to run:**
+**使用方法：**
 ```bash
 python3 scripts/bf-market.py health
 ```
 
-**What you get back:** Market status (open, closed, pre-market, after-hours), data freshness (live, recent, stale), and any safety advisory. Always check health before acting on signals — stale data during market hours means something is wrong.
+**您将获得的信息：**市场状态（开放/关闭/盘前/盘后）、数据更新频率（实时/最近/过期），以及任何安全提示。在根据信号采取行动之前，请务必检查系统健康状况——市场交易期间数据过期可能意味着有问题。**
 
 ---
 
-## Understanding the Data
+## 理解数据
 
-### Ripeness Score (0-100)
+### 成熟度评分（0-100）
 
-The score is a composite of four pillars weighted by their predictive power:
+该评分是四个维度的综合结果，每个维度的权重根据其预测能力而定：
 
-| Pillar | Weight | What It Measures |
+| 维度 | 权重 | 测量内容 |
 |--------|--------|-----------------|
-| Technical Analysis | 35-55% | Chart patterns, RSI, moving averages, coil/spring patterns |
-| Momentum | 25-30% | Price velocity in the 1-3% early sweet spot, volume confirmation |
-| Social Sentiment | 20-45% | Reddit and X mentions, early buzz detection (1.2-2.0x normal activity) |
-| Crowd Intelligence | 0-10% | Crypto only: futures positioning, funding rates |
+| 技术分析 | 35-55% | 图表模式、RSI指标、移动平均线、动量形态 |
+| 动量 | 25-30% | 1-3%价格区间内的价格速度和成交量确认 |
+| 市场情绪 | 20-45% | Reddit和X平台上的提及次数、早期市场热度（活动量是平时的1.2-2.0倍） |
+| 群众智慧 | 0-10% | 仅针对加密货币：期货持仓情况、资金率 |
 
-Higher score means stronger alignment across all pillars. A score of 80 with Technical at 45% and Social at 35% tells a different story than 80 with Technical at 55% and Social at 20% — check the scoring breakdown.
+评分越高，表示各个维度的一致性越强。例如，如果技术分析占45%、市场情绪占35%，则评分与技术分析占55%、市场情绪占20%的情况有所不同——请查看评分细节。
 
-### Badge System
+### 徽章系统
 
-| Badge | Score Range | What It Means | Action |
+| 徽章 | 评分范围 | 含义 | 行动建议 |
 |-------|------------|---------------|--------|
-| Ripe | 75-89 | High conviction setup, strong momentum with favorable entry | Best risk/reward window |
-| Ripening | 60-74 | Momentum building but not fully formed | Watch, not act — add to watchlist |
-| Overripe | 90-100 | Extended, may be due for consolidation or pullback | Caution, tighten stops |
-| Too-Late | N/A | Already made significant move, chasing carries elevated risk | Do not chase |
-| Neutral | Below 60 | No significant momentum signal | No edge, stay patient |
+| Ripe | 75-89 | 设置非常明确，动量强劲，入场时机良好 | 最佳的风险/回报窗口 |
+| Ripening | 60-74 | 动量正在积累但尚未完全形成 | 关注，暂不行动——加入监控列表 |
+| Overripe | 90-100 | 已经过度买入，可能即将回调 | 谨慎，调整止损 |
+| Too-Late | N/A | 已经出现显著价格变动，追涨风险增加 | 不要追涨 |
+| Neutral | 低于60 | 没有明显的动量信号 | 没有优势，耐心等待 |
 
-Score thresholds for significance: 95+ is rare and highest conviction, 85-94 is strong, 80-84 is actionable.
+**评分的显著性阈值：**95+表示极高信心；85-94表示较强信心；80-84表示具有操作价值。
 
-### RSI (Relative Strength Index)
+### RSI（相对强弱指数）
 
-RSI measures momentum on a 0-100 scale:
-- **Below 30**: Oversold. Price has been beaten down; potential bounce zone. Does not mean "buy" — it means selling pressure may be exhausting.
-- **30-70**: Normal range. No extreme reading.
-- **Above 70**: Overbought. Price has been running hard; watch for pullback. Does not mean "sell" — strong trends stay overbought for weeks.
-- **Above 80**: Strongly overbought. Higher probability of mean reversion.
+RSI在0-100的范围内衡量动量：
+- **低于30**：超卖。价格已被压低；可能即将反弹。但这并不意味着“买入”——可能意味着卖出压力正在减弱。
+- **30-70**：正常范围。
+- **高于70**：过度买入。价格持续上涨；需警惕回调。
+- **高于80**：极度超买。价格可能很快会反转。
 
-### Coil Score (0-100)
+### 动量评分（0-100）
 
-The coil score measures price compression — how tightly a stock's price is consolidating. Think of it as a spring being compressed:
-- **Below 40**: Loose. Price is moving freely, no compression buildup.
-- **40-69**: Moderate compression. Some consolidation, but not yet significant.
-- **70+**: Coiled. Price is compressed into a tight range. This often precedes a sharp directional move (breakout or breakdown). This is the single most predictive indicator in the system.
+动量评分衡量价格的压缩程度——即价格在多大程度上处于盘整状态。可以将其想象成被压缩的弹簧：
+- **低于40**：价格自由波动，没有明显的压缩。
+- **40-69**：中等压缩。有一定程度的盘整，但尚未达到显著程度。
+- **70+**：价格被压缩到狭窄范围内。这通常预示着价格即将出现明显的方向性变动（突破或下跌）。这是系统中最具预测性的指标。
 
-A stock with a high coil score AND a ripe badge is the strongest setup: momentum is aligned, and price compression suggests the next move could be significant.
+**同时满足高动量评分和成熟徽章的股票是最强的买入信号：动量一致，价格压缩表明接下来的价格变动可能很大。**
 
-### EMA 20 and EMA 50
+### EMA 20和EMA 50
 
-Exponential Moving Averages smooth price data over 20 and 50 days:
-- **Price above both EMAs**: Bullish trend — short and medium term aligned upward
-- **Price above EMA 20, below EMA 50**: Short-term bounce in a longer downtrend — proceed with caution
-- **Price below both EMAs**: Bearish trend — momentum is against you
-- **EMA 20 crossing above EMA 50**: Golden cross — potential trend change
+指数移动平均线在20天和50天内平滑价格数据：
+- **价格高于两条EMA**：牛市趋势——短期和中期看涨
+- **价格高于EMA 20且低于EMA 50**：在长期下跌趋势中可能出现短期反弹——谨慎操作
+- **价格低于两条EMA**：熊市趋势——动量不利于买入
+- **EMA 20穿越EMA 50**：黄金交叉——可能预示趋势转变
 
-### Proximity to 52-Week High
+### 距离52周高点的距离
 
-A decimal from 0 to 1 representing how close the current price is to its 52-week high:
-- **0.95+ (95%+)**: Near highs — strong relative strength, but resistance ahead
-- **0.80-0.95**: Healthy uptrend territory
-- **Below 0.70**: Significantly off highs — check if recovery or further decline
+一个0到1的小数，表示当前价格与52周高点的接近程度：
+- **0.95+（95%以上）**：接近高点——相对强势，但面临阻力
+- **0.80-0.95**：健康的上涨趋势
+- **低于0.70**：显著偏离高点——需关注是否即将反弹或进一步下跌
 
 ---
 
-## Track Record
+## 绩效记录
 
-The system is not new. It has been tracking signals for over two years:
+该系统已经运行了两年多，跟踪了大量的信号：
+- **分析了12,450多个信号**（730天内）
+- **跟踪了6,563只独特的股票**
+- **五天内的胜率为80%，平均回报率为+4.51%**
+- **一天内的胜率为76.5%，一个月后上升到80.1%**
+- 不同评分阈值下的胜率保持稳定：80分以上的信号胜率均在79-81%之间
 
-- **12,450+ signals analyzed** across 730 days
-- **6,563 unique stocks** tracked
-- **80% five-day win rate** with +4.51% average return
-- **76.5% one-day win rate** climbing to **80.1% by one month**
-- Win rate is consistent across score thresholds: 80+ scores all perform between 79-81%
+### 不同评分阈值的胜率（5天周期）
 
-### Win Rate by Score Threshold (5-day horizon)
-
-| Score Range | Win Rate | Avg Return | Sample Size |
+| 评分范围 | 胜率 | 平均回报 | 样本数量 |
 |-------------|----------|------------|-------------|
 | 80-85 | 80.2% | +4.60% | 3,096 |
 | 85-90 | 79.2% | +4.45% | 3,115 |
 | 90-95 | 79.4% | +4.42% | 3,124 |
 | 95+ | 80.7% | +4.56% | 3,115 |
 
-### The Patience Edge
+### 耐心带来的优势
 
-The data shows holding longer improves outcomes. Day-one win rate is 76.5%. By day five, it is 79.9%. By one month, 80.1%. Average returns scale from +1.35% (1 day) to +8.16% (1 month). The optimal risk/reward window is the 5-to-10-day holding period.
+数据显示，持有时间越长，效果越好。第一天的胜率为76.5%，一天后上升到79.9%，一个月后达到80.1%。最佳的风险/回报窗口是5-10天的持有周期。
 
-This is not a day-trading system. It catches momentum at 2% instead of 15%, then lets the move develop over days.
-
----
-
-## Error Handling
-
-### BF_API_KEY not set
-
-```
-ERROR: BF_API_KEY not set. Get your key at https://bananafarmer.app
-```
-
-**Fix:** Export your API key: `export BF_API_KEY=bf_bot_your_key_here`. Or add it to your OpenClaw config or `.env` file.
-
-### No signal data available
-
-```
-$XYZ: No signal data available
-```
-
-**Cause:** The symbol is not tracked, was delisted, or is a very low-volume OTC stock. Banana Farmer tracks 6,500+ stocks from NYSE and NASDAQ plus popular crypto. Penny stocks and OTC issues may not have enough data for a signal.
-
-**Fix:** Verify the ticker symbol is correct. Try the exchange-standard format (no special characters). Crypto tickers use their standard symbols (BTC, ETH, SOL).
-
-### API timeout or connection error
-
-```
-$AAPL: Error — <urlopen error timed out>
-```
-
-**Cause:** The Banana Farmer API did not respond within 15 seconds. This can happen during high-traffic market opens or if the service is temporarily down.
-
-**Fix:** Wait 30 seconds and retry. If repeated, check system health with `python3 scripts/bf-market.py health`. If health also times out, the API may be experiencing downtime.
-
-### Rate limiting
-
-The API rate limits depend on your tier: Free (10/min, 50/day), Pro (60/min, 10K/day), Max (120/min, 50K/day). Under normal usage you will not hit these limits. If you do:
-
-**Fix:** Space out requests. The portfolio script fetches one symbol at a time, so a portfolio of 20 holdings makes 21 API calls (20 lookups + 1 health check). This is well within limits.
-
-### Stale data warning
-
-If `bf-market.py health` reports data freshness as "stale" during market hours, the data pipeline may be delayed. Signals and scores are based on data that refreshes every 15 minutes. Stale data (> 30 minutes old) during open market hours means scores may not reflect current conditions.
-
-**Fix:** Note the staleness in your analysis. Prices move, but momentum signals are directional and usually remain valid for the session unless there is a major intraday reversal.
-
-### 403 Forbidden
-
-```
-HTTP Error 403: Forbidden
-```
-
-**Cause:** Missing or malformed `User-Agent` header. The API requires a `User-Agent: BananaFarmerBot/1.0` header.
-
-**Fix:** The scripts set this automatically. If you are calling the API directly, make sure to include the header.
+**注意：**这不是一个日内交易系统。它会在股票动量达到2%时买入，然后让价格走势发展几天。
 
 ---
 
-## Advanced Usage
+## 错误处理
 
-### JSON Output Mode
+### BF_API_KEY未设置
 
-For programmatic processing, the portfolio script supports JSON output:
+**解决方法：**导出您的API密钥：`export BF_API_KEY=bf_bot_your_key_here`。或者将其添加到OpenClaw配置文件或`.env`文件中。
 
-```bash
-python3 scripts/bf-portfolio.py portfolios.json --json
-```
+### 无信号数据
 
-This returns a JSON object with a `brief` field (the formatted text) and a `signals` field (score and badge for each looked-up symbol). Use this for piping into other tools, dashboards, or automated workflows.
+**原因：**股票未被跟踪、已退市或属于交易量极低的场外交易股票。Banana Farmer主要跟踪纽约证券交易所和纳斯达克市场的6,500多只股票以及热门加密货币。低价股和场外交易股票可能没有足够的数据来生成信号。
 
-### Multi-Account Portfolios
+**解决方法：**确认股票代码是否正确。使用标准的股票代码格式（不含特殊字符）。加密货币代码使用标准格式（如BTC、ETH、SOL）。
 
-The portfolio file supports multiple accounts with different risk profiles. Each account gets its own section in the brief with account-specific alerts. A conservative account holding a high-momentum stock will get a NOTE alert that an aggressive account would not.
+### API超时或连接错误
 
-Supported risk profiles: `conservative`, `moderate`, `aggressive`. The `--account` filter accepts partial matches on both the account `id` and `name` fields.
+**原因：**Banana Farmer API在15秒内未响应。这可能发生在市场开盘高峰期或服务暂时中断时。
 
-```bash
-python3 scripts/bf-portfolio.py portfolios.json --account ira
-python3 scripts/bf-portfolio.py portfolios.json --account retirement
-```
+**解决方法：**等待30秒后重试。如果问题持续，使用`python3 scripts/bf-market.py health`检查系统健康状况。如果系统仍然无法响应，可能是API暂时不可用。
 
-### Combining Scripts
+### 数据限制
 
-Chain scripts together for richer analysis:
+API的使用频率受到限制：免费账户（每分钟10次请求，每天50次请求），专业账户（每分钟60次请求，每天50,000次请求），高级账户（每分钟120次请求，每天50,000次请求）。在正常使用情况下，您不会遇到这些限制。如果遇到限制，请分散请求频率。投资组合脚本一次只获取一个股票的数据，因此20只股票的列表总共只会发起21次API请求。
 
-```bash
-# Morning routine: health check, then top signals, then portfolio
-python3 scripts/bf-market.py health && python3 scripts/bf-market.py top --limit 5 && python3 scripts/bf-portfolio.py portfolios.json
+### 数据过期警告
 
-# Find this week's winners, then deep-dive the top one
-python3 scripts/bf-movers.py --days 7 --limit 1
+如果`bf-market.py health`在市场交易期间报告数据过期，可能是因为数据更新延迟。信号和评分基于每15分钟更新一次的数据。如果数据过期（超过30分钟），评分可能无法反映当前市场情况。
 
-# Scan for ripe signals and look up each one
-python3 scripts/bf-market.py top --badge ripe --limit 5
-python3 scripts/bf-lookup.py AAPL NVDA AMD  # use the symbols from top output
-```
+**解决方法：**在分析过程中注意数据是否过期。虽然价格会变动，但动量信号通常是方向性的，除非市场出现重大反转，否则通常仍然有效。
 
-### Filtering Top Signals
+### 403 Forbidden错误
 
-The `top` command supports badge and limit filters:
+**原因：**缺少或格式错误的`User-Agent`头部信息。API要求必须包含`User-Agent: BananaFarmerBot/1.0`头部信息。
 
-```bash
-python3 scripts/bf-market.py top --badge ripe --limit 5     # Only highest conviction
-python3 scripts/bf-market.py top --badge ripening --limit 10 # Watchlist candidates
-python3 scripts/bf-market.py top --limit 50                  # Broad scan
-```
-
-### Movers Time Range
-
-Control the lookback window for performance tracking:
-
-```bash
-python3 scripts/bf-movers.py --days 1 --limit 3   # Today only
-python3 scripts/bf-movers.py --days 7 --limit 10   # This week
-python3 scripts/bf-movers.py --days 30 --limit 20  # This month
-```
+**解决方法：**脚本会自动设置这个头部信息。如果您直接调用API，请确保包含该头部信息。
 
 ---
 
-## Scripts Reference
+## 高级用法
 
-| Script | Purpose | Key Arguments |
+### JSON输出模式
+
+投资组合脚本支持JSON输出格式，适用于程序化处理：
+
+**使用方法：**该脚本返回一个JSON对象，其中包含`brief`字段（格式化的文本）和`signals`字段（每个股票的评分和徽章信息）。您可以将其用于其他工具、仪表板或自动化工作流程。
+
+### 多账户投资组合
+
+投资组合文件支持多个账户，每个账户都有单独的部分，并显示针对该账户的警报。持有高动量股票的保守型账户会收到特别提示。
+
+**支持的账户类型：**`conservative`（保守型）、`moderate`（中等风险）、`aggressive`（激进型）。`--account`参数可以部分匹配账户的`id`和`name`字段。
+
+**使用方法：**
+
+### 结合使用多个脚本
+
+**使用方法：**可以将多个脚本组合起来进行更深入的分析。
+
+### 筛选顶级信号
+
+`top`命令支持根据徽章和限制条件筛选信号。
+
+**使用方法：**
+
+### 控制回溯时间范围
+
+**使用方法：**您可以控制性能跟踪的回溯时间范围。
+
+---
+
+## 脚本参考
+
+| 脚本 | 功能 | 关键参数 |
 |--------|---------|---------------|
-| `bf-lookup.py` | Deep analysis of specific tickers | `SYMBOL [SYMBOL2 ...]` |
-| `bf-market.py` | Market overview and signal scanning | `health`, `top [--limit N] [--badge X]`, `pulse` |
-| `bf-portfolio.py` | Portfolio intelligence with alerts | `FILE.json [--account NAME] [--json]` |
-| `bf-movers.py` | Winners/losers proof data | `[--days N] [--limit N]` |
-| `bf-compare.py` | Side-by-side ticker comparison table | `SYMBOL1 SYMBOL2 [SYMBOL3 ...] [--json]` |
-| `bf-watchlist.py` | Curated picks, scorecard, horizons | `picks`, `scorecard`, `horizons` `[--json]` |
-| `bf-sectors.py` | Sector momentum breakdown | `[--json]` |
+| `bf-lookup.py` | 对特定股票进行深入分析 | `SYMBOL [SYMBOL2 ...]` |
+| `bf-market.py` | 市场概览和信号扫描 | `health`, `top [--limit N] [--badge X]`, `pulse` |
+| `bf-portfolio.py | 带有警报的投资组合智能 | `FILE.json [--account NAME] [--json]` |
+| `bf-movers.py | 胜利/失败案例的验证数据 | `[--days N] [--limit N]` |
+| `bf-compare.py | 并行比较多个股票 | `SYMBOL1 SYMBOL2 [SYMBOL3 ...] [--json]` |
+| `bf-watchlist.py | 精选信号、评分卡和时间范围 | `picks`, `scorecard`, `horizons` `[--json]` |
+| `bf-sectors.py | 行业动量分析 | `[--json]` |
 
-All scripts are in the `scripts/` directory. All require `python3` and `BF_API_KEY` in the environment. No additional pip packages are needed — everything uses the Python standard library.
+所有脚本都位于`scripts/`目录中。运行这些脚本需要`python3`环境和`BF_API_KEY`。无需额外的Python包。
 
 ---
 
-## Pricing
+## 价格方案
 
-| Plan | Price | What You Get |
+| 计划 | 价格 | 提供的内容 |
 |------|-------|-------------|
-| Free | $0 | Health, discover, top 3 signals. 10 req/min, 50/day. Enough to verify it works. |
-| Pro | $49/month ($39/mo annual) | Full 50+ leaderboard, all endpoints, proof images, portfolio, movers, watchlist, 30-day score history. 60 req/min, 10K/day. |
-| Max | $149/month ($119/mo annual) | Everything in Pro + historical scores with exact prices at signal, calculated returns, full 730+ day backtesting, bulk export, webhooks. 120 req/min, 50K/day. |
+| 免费 | $0 | 提供系统健康状态、发现功能、前三名信号。每分钟10次请求，每天50次请求。足以验证系统效果。 |
+| 专业版 | $49/月（每年$39） | 提供完整的排行榜、所有接口、证明图像、投资组合信息、价格变动情况、监控列表、30天的评分历史。每分钟60次请求，每天50,000次请求。 |
+| 高级版 | $149/月（每年$119） | 包含专业版的所有功能，以及详细的信号价格数据、计算出的回报、730天的回测数据、批量导出功能、Webhook接口。每分钟120次请求，每天50,000次请求。 |
 
-Get your key instantly at [bananafarmer.app/developers](https://bananafarmer.app/developers). Free tier works immediately — no credit card needed.
+您可以在[bananafarmer.app/developers](https://bananafarmer.app/developers)立即获取API密钥。免费版本立即可用，无需信用卡。
 
-For comparison: Danelfin Pro charges $79/mo for AI scores with historical data but no prices attached. Polygon.io charges $79-500/mo for raw price data with zero intelligence. Alpha Vantage is $50-250/mo for raw data. Banana Farmer Max at $149/mo gives you both — momentum intelligence AND exact prices at every signal — with 730+ days of backtesting proof. Still less than Polygon's mid-tier, with far more intelligence.
+**对比：**Danelfin Pro每月收费$79，提供带有历史数据的AI评分，但不包含价格信息；Polygon.io每月收费$79-500，提供原始价格数据但不包含分析功能；Alpha Vantage每月收费$50-250，也提供原始价格数据；Banana Farmer高级版每月收费$149，同时提供动量分析和详细的信号价格数据，以及730天的回测结果。**
 
----
+## 安全性
 
-## Security
+该服务注重透明度和安全性：
 
-This skill is designed with transparency and safety in mind:
+- **仅使用HTTPS协议**：所有脚本仅发送HTTPS请求到`bananafarmer.app`，不进行任何其他网络连接或数据泄露。
+- **无第三方依赖**：所有脚本仅使用Python的标准库（`json`, `urllib`, `ssl`, `os`, `sys`）。
+- **开源代码**：源代码完全公开，可审核。
+- **API密钥安全**：API密钥仅从`BF_API_KEY`环境变量中读取，不会被硬编码或记录。
+- **仅读取数据**：该服务仅读取市场数据，不执行交易、管理账户或修改用户系统中的文件。
+- **基础设施安全**：采用[安全措施](https://bananafarmer.app/security)，包括TLS 1.3、AES-256加密、Cloudflare WAF和Stripe PCI DSS Level 1安全标准。
+- **法律条款**：提供[服务条款](https://bananafarmer.app/terms)和[隐私政策](https://bananafarmer.app/privacy)。
 
-- **Outbound HTTPS only**: All scripts make only outbound HTTPS calls to `bananafarmer.app`. No other network connections, no inbound listeners, no file exfiltration.
-- **Zero pip dependencies**: Every script uses only the Python standard library (`json`, `urllib`, `ssl`, `os`, `sys`). No third-party packages to audit.
-- **MIT licensed**: Full source code is readable and auditable.
-- **No secrets in code**: API key is read from the `BF_API_KEY` environment variable only. Never hardcoded, never logged.
-- **Read-only**: The skill reads market data. It does not execute trades, manage accounts, or modify any files on your system.
-- **Infrastructure security**: [Security practices](https://bananafarmer.app/security) — TLS 1.3, AES-256, Cloudflare WAF, Stripe PCI DSS Level 1.
-- **Legal**: [Terms of Service](https://bananafarmer.app/terms) · [Privacy Policy](https://bananafarmer.app/privacy) · [System Status](https://bananafarmer.app/status)
+## 免责声明
 
----
+该服务提供财务数据、动量评分和分析结果，但**不提供投资建议**。所有数据仅用于信息和研究目的。
 
-## Disclaimer
+- 该工具不提供买卖建议
+- 过去的表现不能保证未来的结果
+- 用户应在做出投资决策前自行进行研究并咨询持证财务顾问
+- 胜率和回报数据基于历史数据
+- 股票数据延迟15分钟（根据交易所规定）；加密货币数据接近实时
 
-This skill provides financial data, momentum scores, and analytical intelligence. It is **not** financial advice. All data is for informational and research purposes only.
+使用该服务即表示您同意[Banana Farmer的API使用条款](https://bananafarmer.app/terms#api)。
 
-- This tool does not make buy or sell recommendations
-- Past performance does not guarantee future results
-- Users should do their own research and consult a licensed financial advisor before making investment decisions
-- Win rates and return figures are historical and based on backtested signal data
-- Stock data is delayed 15 minutes per exchange rules; crypto data is near real-time
-
-By using this skill, you agree to the [Banana Farmer API Terms](https://bananafarmer.app/terms#api).
-
-Market data sourced by [Tiingo.com](https://tiingo.com). Momentum scoring, analysis, and the Ripeness Score methodology by [Banana Farmer](https://bananafarmer.app).
+市场数据来自[Tiingo.com](https://tiingo.com)，动量评分和成熟度评分方法由[Banana Farmer](https://bananafarmer.app)提供。

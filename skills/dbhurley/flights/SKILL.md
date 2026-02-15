@@ -1,15 +1,15 @@
 ---
 name: flights
-description: Track flight status, delays, and search routes. Uses FlightAware data.
+description: 跟踪航班状态、延误情况，并搜索航线。该工具使用 FlightAware 提供的数据。
 homepage: https://flightaware.com
 metadata: {"clawdis":{"emoji":"✈️","requires":{"bins":[],"env":[]}}}
 ---
 
-# Flights Skill
+# 飞行技能
 
-Track flight status, search routes, and monitor delays using FlightAware data.
+使用 FlightAware 数据来跟踪航班状态、搜索航线以及监控航班延误情况。
 
-## Quick Commands
+## 快速命令
 
 ```bash
 cd skills/flights
@@ -21,20 +21,20 @@ uv run python scripts/flights.py search PVD ORF --airline MX
 uv run python scripts/flights.py status MXY704
 ```
 
-## Usage Examples
+## 使用示例
 
-**Search for Breeze flights PVD → ORF:**
+**搜索从 PVD 到 ORF 的 Breeze 航班：**
 ```bash
 flights.py search PVD ORF --airline MX
 ```
 
-**Check specific flight:**
+**查询特定航班：**
 ```bash
 flights.py status AA100
 flights.py status MXY704 --date 2026-01-08
 ```
 
-## Output Format
+## 输出格式
 
 ```json
 {
@@ -49,31 +49,31 @@ flights.py status MXY704 --date 2026-01-08
 }
 ```
 
-## Status Values
+## 状态值
 
-- `Scheduled` - Flight on time
-- `Scheduled / Delayed` - Delay expected
-- `En Route / On Time` - In the air, on time
-- `En Route / Delayed` - In the air, running late
-- `Arrived / Gate Arrival` - Landed and at gate
-- `Cancelled` - Flight cancelled
+- `Scheduled` - 航班准点
+- `Scheduled / Delayed` - 预计延误
+- `En Route / On Time` - 已在飞行中且准点
+- `En Route / Delayed` - 已在飞行中但延误
+- `Arrived / Gate Arrival` - 已降落并到达登机口
+- `Cancelled` - 航班取消
 
-## Airline Codes
+## 航空公司代码
 
-| Code | Airline |
+| 代码 | 航空公司 |
 |------|---------|
 | MX/MXY | Breeze Airways |
-| AA | American |
-| DL | Delta |
-| UA | United |
-| WN | Southwest |
-| B6 | JetBlue |
+| AA | American Airlines |
+| DL | Delta Air Lines |
+| UA | United Airlines |
+| WN | Southwest Airlines |
+| B6 | JetBlue Airways |
 
-## Optional: AviationStack API
+## 可选：AviationStack API
 
-For more detailed data, set `AVIATIONSTACK_API_KEY` (free tier available at aviationstack.com).
+如需更详细的数据，请设置 `AVIATIONSTACK_API_KEY`（免费 tier 可在 aviationstack.com 获取）。
 
-## Dependencies
+## 依赖项
 
 ```bash
 cd skills/flights && uv sync

@@ -1,7 +1,7 @@
 ---
 id: public-dot-com
 name: public.com
-description: Interact with your Public.com brokerage account using the Public.com API. Able to view portfolio, get stock quotes, place trades, and get account updates. To create a Public.com account head to public.com/signup.
+description: 您可以使用 Public.com API 来操作您的 Public.com 经纪账户。该 API 允许您查看投资组合、获取股票报价、执行交易以及接收账户更新信息。如需创建 Public.com 账户，请访问 public.com/signup。
 env: ['PUBLIC_COM_SECRET', 'PUBLIC_COM_ACCOUNT_ID']
 license: Apache-2.0
 metadata:
@@ -12,263 +12,236 @@ metadata:
   version: "1.0"
 ---
 
-# Public.com Account Manager
-> **Disclaimer:** For illustrative and informational purposes only. Not investment advice or recommendations.
->
-> We recommend running this skill in as isolated of an instance as possible. If possible, test the integration on a new Public account as well.
+# Public.com 账户管理器  
+> **免责声明：** 本文档仅用于说明和信息提供目的，不构成投资建议或推荐。  
 
-This skill allows users to interact with their Public.com brokerage account.
+> 我们建议在尽可能独立的实例中运行此功能。如果可能的话，也请在新创建的 Public.com 账户上测试其集成效果。  
 
-## Prerequisites
-- **Python 3.8+** and **pip** — Required in your OpenClaw environment.
-- **Public.com account** — Create one at https://public.com/signup
-- **Public.com API key** — Get one at https://public.com/settings/v2/api
+此功能允许用户与其 Public.com 经纪账户进行交互。  
 
-The `publicdotcom-py` SDK is required. It will be **auto-installed** on first run, or you can install manually:
+## 先决条件  
+- **Python 3.8+** 和 **pip** — 必需在您的 OpenClaw 环境中安装。  
+- **Public.com 账户** — 请访问 https://public.com/signup 创建一个账户。  
+- **Public.com API 密钥** — 请访问 https://public.com/settings/v2/api 获取 API 密钥。  
+
+需要 `publicdotcom-py` SDK。该 SDK 会在首次运行时自动安装，或者您可以手动安装：  
 ```bash
 pip install publicdotcom-py
-```
+```  
 
-## Configuration
+## 配置  
+此功能使用两个环境变量：`PUBLIC_COM_SECRET`（必填）和 `PUBLIC_COM_ACCOUNT_ID`（可选）。它们的获取顺序如下：  
+1. **安全文件**：`~/.openclaw/workspace/.secrets/public_com_secret.txt`（或 `public_com_account.txt`）  
+2. **环境变量**：`PUBLIC_COM_SECRET` / `PUBLIC_COM_ACCOUNT_ID`  
 
-This skill uses two environment variables: `PUBLIC_COM_SECRET` (required) and `PUBLIC_COM_ACCOUNT_ID` (optional). Each is resolved in the following order:
+通过 `openclaw config set` 设置值会自动写入安全文件中。  
 
-1. **Secure file** — `~/.openclaw/workspace/.secrets/public_com_secret.txt` (or `public_com_account.txt`)
-2. **Environment variable** — `PUBLIC_COM_SECRET` / `PUBLIC_COM_ACCOUNT_ID`
+### API 密钥（必填）  
+如果未设置 `PUBLIC_COM_SECRET`：  
+- 告知用户：“我需要您的 Public.com API 密钥。您可以在 https://public.com/settings/v2/api 的开发者设置中找到它。”  
+- 获取密钥后，保存为：`openclaw config set skills.publicdotcom.PUBLIC_COM_SECRET [VALUE]`  
 
-Setting a value via `openclaw config set` writes to the secure file location automatically.
+### 默认账户 ID（可选）  
+如果用户希望为所有请求设置默认账户：  
+- 保存为：`openclaw config set skills.publicdotcom.PUBLIC_COM_ACCOUNT_ID [VALUE]`  
+- 这样就不需要在每个命令中指定 `--account-id` 了。  
 
-### API Secret (Required)
-If `PUBLIC_COM_SECRET` is not set:
-- Tell the user: "I need your Public.com API Secret. You can find this in your Public.com developer settings at https://public.com/settings/v2/api."
-- Once provided, save it: `openclaw config set skills.publicdotcom.PUBLIC_COM_SECRET [VALUE]`
+## 可用命令  
 
-### Default Account ID (Optional)
-If the user wants to set a default account for all requests:
-- Save it: `openclaw config set skills.publicdotcom.PUBLIC_COM_ACCOUNT_ID [VALUE]`
-- This eliminates the need to specify `--account-id` on each command.
+### 获取账户信息  
+当用户请求“获取我的账户”、“列出账户”或“显示我的 Public.com 账户”时：  
+1. 执行 `python3 scripts/get_accounts.py`  
+2. 将账户 ID 和类型返回给用户。  
 
-## Available Commands
+### 获取投资组合信息  
+当用户请求“获取我的投资组合”、“显示我的持仓”或“我的账户里有什么”时：  
+1. 如果设置了 `PUBLIC_COM_ACCOUNT_ID`，执行 `python3 scripts/get_portfolio.py`（无需参数）。  
+2. 如果未设置且不知道用户的账户 ID，先运行 `get_accounts.py` 获取账户 ID。  
+3. 执行 `python3 scripts/get_portfolio.py --account-id [ACCOUNT_ID]`  
+4. 将投资组合概要（股票、可用资金、持仓情况）返回给用户。  
 
-### Get Accounts
-When the user asks to "get my accounts", "list accounts", or "show my Public.com accounts":
-1. Execute `python3 scripts/get_accounts.py`
-2. Report the account IDs and types back to the user.
+### 获取订单信息  
+当用户请求“获取我的订单”、“显示我的订单”、“查看活跃订单”或“查看待处理订单”时：  
+1. 如果设置了 `PUBLIC_COM_ACCOUNT_ID`，执行 `python3 scripts/get_orders.py`（无需参数）。  
+2. 如果未设置且不知道用户的账户 ID，先运行 `get_accounts.py` 获取账户 ID。  
+3. 执行 `python3 scripts/get_orders.py --account-id [ACCOUNT_ID]`  
+4. 将活跃订单的详细信息（股票代码、方向、类型、状态、数量、价格）返回给用户。  
 
-### Get Portfolio
-When the user asks to "get my portfolio", "show my holdings", or "what's in my account":
-1. If `PUBLIC_COM_ACCOUNT_ID` is set, execute `python3 scripts/get_portfolio.py` (no arguments needed).
-2. If not set and you don't know the user's account ID, first run `get_accounts.py` to retrieve it.
-3. Execute `python3 scripts/get_portfolio.py --account-id [ACCOUNT_ID]`
-4. Report the portfolio summary (equity, buying power, positions) back to the user.
+### 获取交易历史记录  
+当用户请求“获取我的交易历史”、“显示我的交易记录”、“交易历史”或查看过去的账户活动时：  
+**可选参数：**  
+- `--type`：按交易类型过滤（TRADE、MONEY_MOVEMENT、POSITION_ADJUSTMENT）  
+- `--limit`：限制返回的交易数量  
 
-### Get Orders
-When the user asks to "get my orders", "show my orders", "active orders", or "pending orders":
-1. If `PUBLIC_COM_ACCOUNT_ID` is set, execute `python3 scripts/get_orders.py` (no arguments needed).
-2. If not set and you don't know the user's account ID, first run `get_accounts.py` to retrieve it.
-3. Execute `python3 scripts/get_orders.py --account-id [ACCOUNT_ID]`
-4. Report the active orders with their details (symbol, side, type, status, quantity, prices) back to the user.
-
-### Get History
-When the user asks to "get my history", "show my transactions", "transaction history", "trade history", or wants to see past account activity:
-
-**Optional parameters:**
-- `--type`: Filter by transaction type (TRADE, MONEY_MOVEMENT, POSITION_ADJUSTMENT)
-- `--limit`: Limit the number of transactions returned
-
-**Examples:**
-
-Get all transaction history:
+**示例：**  
+获取所有交易历史记录：  
 ```bash
 python3 scripts/get_history.py
-```
-
-Get only trades:
+```  
+仅获取交易记录：  
 ```bash
 python3 scripts/get_history.py --type TRADE
-```
-
-Get only money movements (deposits, withdrawals, dividends, fees):
+```  
+仅获取资金变动记录（存款、取款、股息、费用）：  
 ```bash
 python3 scripts/get_history.py --type MONEY_MOVEMENT
-```
-
-Get last 10 transactions:
+```  
+获取最近 10 笔交易：  
 ```bash
 python3 scripts/get_history.py --limit 10
-```
-
-With explicit account ID:
+```  
+使用明确的账户 ID：  
 ```bash
 python3 scripts/get_history.py --account-id YOUR_ACCOUNT_ID
-```
+```  
 
-**Workflow:**
-1. If `PUBLIC_COM_ACCOUNT_ID` is not set and you don't know the user's account ID, first run `get_accounts.py` to retrieve it.
-2. Execute: `python3 scripts/get_history.py [OPTIONS]`
-3. Report the transaction history grouped by type (Trades, Money Movements, Position Adjustments).
-4. Include relevant details like symbol, quantity, net amount, fees, and timestamps.
+**工作流程：**  
+1. 如果未设置 `PUBLIC_COM_ACCOUNT_ID` 且不知道用户的账户 ID，先运行 `get_accounts.py` 获取账户 ID。  
+2. 执行：`python3 scripts/get_history.py [OPTIONS]`  
+3. 按类型（交易、资金变动、持仓调整）分组显示交易历史记录。  
+4. 包括股票代码、数量、净金额、费用和时间戳等详细信息。  
 
-**Transaction Types:**
-- **TRADE**: Buy/sell transactions for equities, options, and crypto
-- **MONEY_MOVEMENT**: Deposits, withdrawals, dividends, fees, and cash adjustments
-- **POSITION_ADJUSTMENT**: Stock splits, mergers, and other position changes
+**交易类型：**  
+- **TRADE**：股票、期权和加密货币的买卖交易  
+- **MONEY_MOVEMENT**：存款、取款、股息、费用和现金调整  
+- **POSITION_ADJUSTMENT**：股票分割、合并和其他持仓变动  
 
-### Get Quotes
-When the user asks to "get a quote", "what's the price of", "check the price", or wants stock/crypto prices:
+### 获取报价  
+当用户请求“获取报价”、“查看价格”或查询股票/加密货币价格时：  
+**格式：** `SYMBOL` 或 `SYMBOL:TYPE`（类型默认为 EQUITY）  
 
-**Format:** `SYMBOL` or `SYMBOL:TYPE` (TYPE defaults to EQUITY)
-
-**Examples:**
-
-Single equity quote (uses default account):
+**示例：**  
+获取单只股票的报价（使用默认账户）：  
 ```bash
 python3 scripts/get_quotes.py AAPL
-```
-
-Multiple equity quotes:
+```  
+获取多只股票的报价：  
 ```bash
 python3 scripts/get_quotes.py AAPL GOOGL MSFT
-```
-
-Mixed instrument types:
+```  
+获取多种类型的报价：  
 ```bash
 python3 scripts/get_quotes.py AAPL:EQUITY BTC:CRYPTO
-```
-
-Option quote:
+```  
+获取期权报价：  
 ```bash
 python3 scripts/get_quotes.py AAPL260320C00280000:OPTION
-```
-
-With explicit account ID:
+```  
+使用明确的账户 ID：  
 ```bash
 python3 scripts/get_quotes.py AAPL --account-id YOUR_ACCOUNT_ID
-```
+```  
 
-**Workflow:**
-1. If `PUBLIC_COM_ACCOUNT_ID` is not set and you don't know the user's account ID, first run `get_accounts.py` to retrieve it.
-2. Parse the user's request for symbol(s) and type(s).
-3. Execute: `python3 scripts/get_quotes.py [SYMBOLS...] [--account-id ACCOUNT_ID]`
-4. Report the quote information (last price, bid, ask, volume, etc.) back to the user.
+**工作流程：**  
+1. 如果未设置 `PUBLIC_COM_ACCOUNT_ID` 且不知道用户的账户 ID，先运行 `get_accounts.py` 获取账户 ID。  
+2. 解析用户的请求（股票代码和类型）。  
+3. 执行：`python3 scripts/get_quotes.py [SYMBOLS...] [--account-id ACCOUNT_ID]`  
+4. 将报价信息（最新价格、买入价、卖出价、成交量等）返回给用户。  
 
-### Get Instruments
-When the user asks to "list instruments", "what can I trade", "show available stocks", or wants to see tradeable instruments:
+### 获取可交易工具信息  
+当用户请求“列出可交易的工具”、“查看可交易的股票”或查看可交易的工具时：  
+**可选参数：**  
+- `--type`：可交易的工具类型（EQUITY、OPTION、CRYPTO）。默认为 EQUITY。  
+- `--trading`：交易状态过滤（BUY_AND_SELL、BUY_ONLY、SELL_ONLY、NOT_TRADABLE）  
+- `--search`：按股票代码或名称搜索  
+- `--limit`：限制结果数量  
 
-**Optional parameters:**
-- `--type`: Instrument types to filter (EQUITY, OPTION, CRYPTO). Defaults to EQUITY.
-- `--trading`: Trading status filter (BUY_AND_SELL, BUY_ONLY, SELL_ONLY, NOT_TRADABLE)
-- `--search`: Search by symbol or name
-- `--limit`: Limit number of results
-
-**Examples:**
-
-List all equities (default):
+**示例：**  
+列出所有股票：  
 ```bash
 python3 scripts/get_instruments.py
-```
-
-List equities and crypto:
+```  
+列出股票和加密货币：  
 ```bash
 python3 scripts/get_instruments.py --type EQUITY CRYPTO
-```
-
-List only tradeable instruments:
+```  
+仅列出可交易的工具：  
 ```bash
 python3 scripts/get_instruments.py --type EQUITY --trading BUY_AND_SELL
-```
-
-Search for specific instruments:
+```  
+搜索特定工具：  
 ```bash
 python3 scripts/get_instruments.py --search AAPL
-```
-
-Limit results:
+```  
+限制结果数量：  
 ```bash
 python3 scripts/get_instruments.py --limit 50
-```
+```  
 
-**Workflow:**
-1. Parse the user's request for any filters (type, trading status, search term).
-2. Execute: `python3 scripts/get_instruments.py [OPTIONS]`
-3. Report the available instruments with their trading status back to the user.
+**工作流程：**  
+1. 解析用户的请求（类型、交易状态、搜索词）。  
+2. 执行：`python3 scripts/get_instruments.py [OPTIONS]`  
+3. 将可交易的工具及其交易状态返回给用户。  
 
-### Get Instrument
-When the user asks to "get instrument details", "show instrument info", "what are the details for AAPL", or wants to see details for a specific instrument:
+### 获取工具详细信息  
+当用户请求“获取工具详细信息”、“显示 AAPL 的详细信息”或查看特定工具的详细信息时：  
+**必填参数：**  
+- `--symbol`：股票代码（例如：AAPL、BTC）  
 
-**Required parameters:**
-- `--symbol`: The ticker symbol (e.g., AAPL, BTC)
+**可选参数：**  
+- `--type`：工具类型（EQUITY、OPTION、CRYPTO）。默认为 EQUITY。  
 
-**Optional parameters:**
-- `--type`: Instrument type (EQUITY, OPTION, CRYPTO). Defaults to EQUITY.
-
-**Examples:**
-
-Get equity instrument details:
+**示例：**  
+获取股票工具的详细信息：  
 ```bash
 python3 scripts/get_instrument.py --symbol AAPL
-```
-
-Get crypto instrument details:
+```  
+获取加密货币工具的详细信息：  
 ```bash
 python3 scripts/get_instrument.py --symbol BTC --type CRYPTO
-```
+```  
 
-**Workflow:**
-1. Parse the user's request for the symbol and optional type.
-2. Execute: `python3 scripts/get_instrument.py --symbol [SYMBOL] [--type TYPE]`
-3. Report the instrument details (trading status, fractional trading, option trading) back to the user.
+**工作流程：**  
+1. 解析用户的请求（股票代码和可选类型）。  
+2. 执行：`python3 scripts/get_instrument.py --symbol [SYMBOL] [--type TYPE]`  
+3. 将工具的详细信息（交易状态、是否可分割交易、期权交易等）返回给用户。  
 
-### Get Option Expirations
-**This skill CAN list all available option expiration dates for any symbol.**
+### 获取期权到期日  
+**此功能可以列出任何股票的所有可用期权到期日。**  
+当用户请求“获取期权到期日”、“列出到期日”、“显示到期日”或想知道某只股票的期权到期日时：  
+1. 执行 `python3 scripts/get_option_expirations.py [SYMBOL]`  
+2. 将可用到期日返回给用户。  
 
-When the user asks to "get option expirations", "list expirations", "show expiration dates", "when do options expire", or wants to know what option expiration dates are available for a stock:
-1. Execute `python3 scripts/get_option_expirations.py [SYMBOL]`
-2. Report the available expiration dates to the user.
+**常见用户指令：**  
+- “获取 AAPL 的期权到期日”  
+- “Google 的期权到期日是什么？”  
+- “TSLA 的期权何时到期？”  
+- “显示 SPY 期权的到期日”  
+- “列出 MSFT 的可用到期日”  
+- “能获取 Apple 的期权到期日吗？”  
+- “NVDA 的期权到期日有哪些？”  
 
-Common user phrasings:
-- "get option expirations for AAPL"
-- "what are the option expiration dates for Google"
-- "when do TSLA options expire"
-- "show me expiration dates for SPY options"
-- "list available expirations for MSFT"
-- "can you get the options expirations for Apple"
-- "what options dates are available for NVDA"
-
-**Required parameters:**
-- `symbol`: The underlying symbol (e.g., AAPL, GOOGL, TSLA, SPY). Convert company names to ticker symbols.
-
-**Examples:**
-
+**必填参数：**  
+- `symbol`：标的股票代码（例如：AAPL、GOOGL、TSLA、SPY）。  
+**示例：**  
 ```bash
 python3 scripts/get_option_expirations.py AAPL
 python3 scripts/get_option_expirations.py GOOGL
 python3 scripts/get_option_expirations.py TSLA
 python3 scripts/get_option_expirations.py SPY
-```
+```  
 
-**Common company name to symbol mappings:**
-- Apple = AAPL
-- Google/Alphabet = GOOGL
-- Tesla = TSLA
-- Microsoft = MSFT
-- Amazon = AMZN
-- Nvidia = NVDA
-- Meta/Facebook = META
+**常见公司名称与股票代码的对应关系：**  
+- Apple = AAPL  
+- Google/Alphabet = GOOGL  
+- Tesla = TSLA  
+- Microsoft = MSFT  
+- Amazon = AMZN  
+- Nvidia = NVDA  
+- Meta/Facebook = META  
 
-**Workflow:**
-1. Extract the symbol from the user's request. Convert company names to ticker symbols.
-2. Execute: `python3 scripts/get_option_expirations.py [SYMBOL]`
-3. Report the available expiration dates to the user.
-4. If they want to see the option chain next, use the expiration date with `get_option_chain.py`.
+**工作流程：**  
+1. 从用户请求中提取股票代码。将公司名称转换为股票代码。  
+2. 执行：`python3 scripts/get_option_expirations.py [SYMBOL]`  
+3. 将可用到期日返回给用户。  
+4. 如果用户想查看期权链，可以使用 `get_option_chain.py`。  
 
-### Get Option Greeks
-When the user asks for "option greeks", "delta", "gamma", "theta", "vega", or wants to analyze options:
+### 获取期权希腊值  
+当用户请求“获取期权希腊值”（Delta、Gamma、Theta、Vega）或分析期权时：  
+**必填参数：**  
+- 一个或多个 OSI 期权代码（例如：AAPL260116C00270000）  
 
-**Required parameters:**
-- One or more OSI option symbols (e.g., AAPL260116C00270000)
-
-**OSI Symbol Format:**
+**OSI 期权代码格式：**  
 ```
 AAPL260116C00270000
 ^^^^------^--------
@@ -276,195 +249,173 @@ AAPL260116C00270000
 |   |     Call (C) or Put (P)
 |   Expiration (Jan 16, 2026 = 260116)
 Underlying symbol
-```
-
-**Examples:**
-
-Single option:
+```  
+**示例：**  
+获取单个期权的希腊值：  
 ```bash
 python3 scripts/get_option_greeks.py AAPL260116C00270000
-```
-
-Multiple options (e.g., call and put at same strike):
+```  
+获取多个期权（例如，相同执行价的看涨和看跌期权）：  
 ```bash
 python3 scripts/get_option_greeks.py AAPL260116C00270000 AAPL260116P00270000
-```
+```  
 
-**Workflow:**
-1. Help the user construct the OSI symbol if they provide expiration, strike, and call/put separately.
-2. Execute: `python3 scripts/get_option_greeks.py [OSI_SYMBOLS...]`
-3. Report the greeks (Delta, Gamma, Theta, Vega, Rho, IV) back to the user with explanations if needed.
+**工作流程：**  
+1. 如果用户提供了到期日、执行价和看涨/看跌期权类型，帮助用户构建 OSI 期权代码。  
+2. 执行：`python3 scripts/get_option_greeks.py [OSI_SYMBOLS...]`  
+3. 将希腊值（Delta、Gamma、Theta、Vega、Rho、IV）及其解释返回给用户。  
 
-### Get Option Chain
-When the user asks for "option chain", "options for AAPL", "show me calls and puts", or wants to see available options:
+### 获取期权链  
+当用户请求“获取期权链”、“获取 AAPL 的期权链”或查看可用期权时：  
+**必填参数：**  
+- `symbol`：标的股票代码（例如：AAPL）  
+**可选参数：**  
+- `--expiration`：到期日（YYYY-MM-DD）。如果未提供，使用最近的到期日。  
+- `--list-expirations`：列出所有可用到期日。  
 
-**Required parameters:**
-- `symbol`: The underlying symbol (e.g., AAPL)
-
-**Optional parameters:**
-- `--expiration`: Expiration date (YYYY-MM-DD). If not provided, uses the nearest expiration.
-- `--list-expirations`: List available expiration dates instead of fetching the chain.
-
-**Examples:**
-
-List available expirations:
+**示例：**  
+列出所有可用到期日：  
 ```bash
 python3 scripts/get_option_chain.py AAPL --list-expirations
-```
-
-Get option chain for nearest expiration:
+```  
+获取最近到期日的期权链：  
 ```bash
 python3 scripts/get_option_chain.py AAPL
-```
-
-Get option chain for specific expiration:
+```  
+获取特定到期日的期权链：  
 ```bash
 python3 scripts/get_option_chain.py AAPL --expiration 2026-03-20
-```
+```  
 
-**Workflow:**
-1. If the user doesn't specify an expiration, first run with `--list-expirations` to show available dates.
-2. Execute: `python3 scripts/get_option_chain.py [SYMBOL] [--expiration DATE]`
-3. Report the calls and puts with strike prices, bid/ask, last price, volume, and open interest.
+**工作流程：**  
+1. 如果用户未指定到期日，先使用 `--list-expirations` 显示可用到期日。  
+2. 执行：`python3 scripts/get_option_chain.py [SYMBOL] [--expiration DATE]`  
+3. 返回看涨和看跌期权的执行价、买入价/卖出价、成交量和未平仓量。  
 
-### Set Default Account
-When the user asks to "set my default account" or "use account X as default":
-1. Save it: `openclaw config set skills.publicdotcom.PUBLIC_COM_ACCOUNT_ID [ACCOUNT_ID]`
-2. Confirm to the user that future requests will use this account by default.
+### 设置默认账户  
+当用户请求“设置我的默认账户”或“将账户 X 设置为默认账户”时：  
+1. 保存设置：`openclaw config set skills.publicdotcom.PUBLIC_COM_ACCOUNT_ID [ACCOUNT_ID]`  
+2. 确认用户未来将使用此账户作为默认账户。  
 
-### Preflight Calculation
-When the user asks to "estimate order cost", "preflight an order", "what would it cost to buy", "check buying power impact", or wants to see the estimated cost and account impact before placing an order:
+### 预订单计算  
+当用户请求“估算订单成本”、“预订单”、“购买成本是多少”或想在下单前查看预估成本和账户影响时：  
+**必填参数：**  
+- `--symbol`：股票代码（例如：AAPL、BTC 或期权代码如 NVDA260213P00177500）  
+- `--type`：EQUITY、OPTION 或 CRYPTO  
+- `--side`：BUY 或 SELL  
+- `--order-type`：LIMIT、MARKET、STOP 或 STOP_LIMIT  
+- `--quantity` 或 `--amount`：股票数量/合约数量或名义金额  
 
-**Required parameters:**
-- `--symbol`: The ticker symbol (e.g., AAPL, BTC, or option symbol like NVDA260213P00177500)
-- `--type`: EQUITY, OPTION, or CRYPTO
-- `--side`: BUY or SELL
-- `--order-type`: LIMIT, MARKET, STOP, or STOP_LIMIT
-- `--quantity` OR `--amount`: Number of shares/contracts OR notional dollar amount
+**条件参数：**  
+- `--limit-price`：LIMIT 和 STOP_LIMIT 订单必需  
+- `--stop-price`：STOP 和 STOP_LIMIT 订单必需  
+- `--session`：CORE（默认）或 EXTENDED（适用于股票订单）  
+- `--open-close`：OPEN（用于开新仓）或 CLOSE（用于平仓）（适用于期权订单）  
+- `--time-in-force`：DAY（默认）或 GTC（Good Till Cancelled）  
 
-**Conditional parameters:**
-- `--limit-price`: Required for LIMIT and STOP_LIMIT orders
-- `--stop-price`: Required for STOP and STOP_LIMIT orders
-- `--session`: CORE (default) or EXTENDED for equity orders
-- `--open-close`: OPEN or CLOSE for options orders (OPEN to open a new position, CLOSE to close existing)
-- `--time-in-force`: DAY (default) or GTC (Good Till Cancelled)
-
-**Examples:**
-
-Equity limit buy preflight:
+**示例：**  
+预订单：买入 AAPL 的股票（限价）：  
 ```bash
 python3 scripts/preflight.py --symbol AAPL --type EQUITY --side BUY --order-type LIMIT --quantity 10 --limit-price 227.50
-```
-
-Equity market sell preflight:
+```  
+预订单：卖出 AAPL（市价）：  
 ```bash
 python3 scripts/preflight.py --symbol AAPL --type EQUITY --side SELL --order-type MARKET --quantity 10
-```
-
-Crypto buy by amount preflight:
+```  
+预订单：买入加密货币（按金额）：  
 ```bash
 python3 scripts/preflight.py --symbol BTC --type CRYPTO --side BUY --order-type MARKET --amount 100
-```
-
-Option contract buy preflight (opening a new position):
+```  
+预订单：买入期权合约（开新仓）：  
 ```bash
 python3 scripts/preflight.py --symbol NVDA260213P00177500 --type OPTION --side BUY --order-type LIMIT --quantity 1 --limit-price 4.00 --open-close OPEN
-```
-
-Option contract sell preflight (closing a position):
+```  
+预订单：卖出期权合约（平仓）：  
 ```bash
 python3 scripts/preflight.py --symbol NVDA260213P00177500 --type OPTION --side SELL --order-type LIMIT --quantity 1 --limit-price 5.00 --open-close CLOSE
-```
+```  
 
-**Workflow:**
-1. Gather the order parameters from the user (symbol, type, side, order type, quantity/amount, prices if needed).
-2. Execute: `python3 scripts/preflight.py [OPTIONS]`
-3. Report the estimated cost, buying power impact, and any fees to the user.
-4. If the user wants to proceed, use the `place_order.py` script with the same parameters.
+**工作流程：**  
+1. 从用户处收集订单参数（股票代码、类型、方向、订单类型、数量/金额）。  
+2. 执行：`python3 scripts/preflight.py [OPTIONS]`  
+3. 将预估成本、购买影响和费用返回给用户。  
+4. 如果用户同意，使用 `place_order.py` 脚本执行订单。  
 
-### Place Order
-When the user asks to "buy", "sell", "place an order", or "trade":
+### 下单  
+当用户请求“买入”、“卖出”或“下单”时：  
+**必填参数：**  
+- `--symbol`：股票代码（例如：AAPL、BTC）  
+- `--type`：EQUITY、OPTION 或 CRYPTO  
+- `--side`：BUY 或 SELL  
+- `--order-type`：LIMIT、MARKET、STOP 或 STOP_LIMIT  
+- `--quantity` 或 `--amount`：股票数量或名义金额  
 
-**Required parameters:**
-- `--symbol`: The ticker symbol (e.g., AAPL, BTC)
-- `--type`: EQUITY, OPTION, or CRYPTO
-- `--side`: BUY or SELL
-- `--order-type`: LIMIT, MARKET, STOP, or STOP_LIMIT
-- `--quantity` OR `--amount`: Number of shares OR notional dollar amount
+**条件参数：**  
+- `--limit-price`：LIMIT 和 STOP_LIMIT 订单必需  
+- `--stop-price`：STOP 和 STOP_LIMIT 订单必需  
+- `--session`：CORE（默认）或 EXTENDED（适用于股票订单）  
+- `--open-close`：OPEN（用于开新仓）或 CLOSE（用于平仓）（适用于期权订单）  
+- `--time-in-force`：DAY（默认）或 GTC（Good Till Cancelled）  
 
-**Conditional parameters:**
-- `--limit-price`: Required for LIMIT and STOP_LIMIT orders
-- `--stop-price`: Required for STOP and STOP_LIMIT orders
-- `--session`: CORE (default) or EXTENDED for equity orders
-- `--open-close`: OPEN or CLOSE for options orders
-- `--time-in-force`: DAY (default) or GTC (Good Till Cancelled)
-
-**Examples:**
-
-Buy 10 shares of AAPL at limit price $227.50:
+**示例：**  
+以限价 $227.50 买入 10 股 AAPL：  
 ```bash
 python3 scripts/place_order.py --symbol AAPL --type EQUITY --side BUY --order-type LIMIT --quantity 10 --limit-price 227.50
-```
-
-Sell $500 worth of AAPL at market price:
+```  
+以市价卖出 $500 的 AAPL：  
 ```bash
 python3 scripts/place_order.py --symbol AAPL --type EQUITY --side SELL --order-type MARKET --amount 500
-```
-
-Buy crypto with extended hours:
+```  
+以扩展时段买入加密货币：  
 ```bash
 python3 scripts/place_order.py --symbol BTC --type CRYPTO --side BUY --order-type MARKET --amount 100
-```
-
-Buy with Good Till Cancelled (GTC) order:
+```  
+使用 GTC（Good Till Cancelled）订单买入加密货币：  
 ```bash
 python3 scripts/place_order.py --symbol AAPL --type EQUITY --side BUY --order-type LIMIT --quantity 10 --limit-price 220.00 --time-in-force GTC
-```
+```  
 
-**Workflow:**
-1. Gather all required information from the user (symbol, side, order type, quantity/amount, prices if needed).
-2. Confirm the order details with the user before executing.
-3. Execute: `python3 scripts/place_order.py [OPTIONS]`
-4. Report the order ID and confirmation back to the user.
-5. Remind user that order placement is asynchronous - they can check status later.
+**工作流程：**  
+1. 从用户处收集所有所需信息（股票代码、方向、订单类型、数量/金额）。  
+2. 在执行前与用户确认订单详情。  
+3. 执行：`python3 scripts/place_order.py [OPTIONS]`  
+4. 将订单 ID 和确认信息返回给用户。  
+5. 提醒用户订单是异步处理的——他们可以稍后查看订单状态。  
 
-### Cancel Order
-When the user asks to "cancel order", "cancel my order", or wants to cancel a specific order:
+### 取消订单  
+当用户请求“取消订单”或取消特定订单时：  
+**必填参数：**  
+- `--order-id`：要取消的订单 ID  
 
-**Required parameters:**
-- `--order-id`: The order ID to cancel
-
-**Example:**
+**示例：**  
 ```bash
 python3 scripts/cancel_order.py --order-id 345d3e58-5ba3-401a-ac89-1b756332cc94
-```
-
-With explicit account ID:
+```  
+**使用明确的账户 ID：**  
 ```bash
 python3 scripts/cancel_order.py --order-id 345d3e58-5ba3-401a-ac89-1b756332cc94 --account-id YOUR_ACCOUNT_ID
-```
+```  
 
-**Workflow:**
-1. If the user doesn't provide an order ID, first run `get_orders.py` to show them their active orders.
-2. Confirm with the user which order they want to cancel.
-3. Execute: `python3 scripts/cancel_order.py --order-id [ORDER_ID]`
-4. Inform the user that cancellation is asynchronous - they should check order status to confirm.
+**工作流程：**  
+1. 如果用户未提供订单 ID，先运行 `get_orders.py` 显示其活跃订单。  
+2. 与用户确认要取消的订单。  
+3. 执行：`python3 scripts/cancel_order.py --order-id [ORDER_ID]`  
+4. 告知用户取消操作是异步的——他们需要查看订单状态以确认取消结果。  
 
-### Options Strategy Guidance
-When the user asks about options strategies, how to automate a strategy, which strategy to use for a given scenario, or wants help constructing multi-leg options trades:
-
-1. Read the file `options-automation-library.md` (located in the same directory as this skill) for detailed strategy context.
-2. This library contains 35+ options strategies organized by category:
-   - **Single-leg strategies**: Long Call, Long Put, Covered Call, Cash-Secured Put
-   - **Vertical spreads**: Bull Call, Bear Call, Bull Put, Bear Put
-   - **Calendar & diagonal spreads**: Long Calendar, Diagonal Spread
-   - **Straddles & strangles**: Long/Short Straddle, Long/Short Strangle
-   - **Complex spreads**: Iron Condor, Iron Butterfly, Broken-Wing Butterfly, Jade Lizard, Christmas Tree
-   - **Synthetic positions**: Synthetic Long/Short, Synthetic Covered Call, Conversion/Reversal
-   - **Income strategies**: Wheel, Poor Man's Covered Call, Ratio Spreads
-   - **Advanced/quant strategies**: Box Spread, Risk Reversal, Hedged Iron Fly, Vol Arb, Calendar Strangles
-   - **Event-driven workflows**: Earnings IV Crush, Pre-Market IV Expansion, Post-Earnings Drift, Macro/OPEX Gamma
-3. Each strategy includes: description, use case with event examples, where the strategy breaks, API workflow steps, and code examples using the Public.com SDK.
-4. Use the shared SDK helpers (Setup, Market Data, Preflight, Multi-leg order helpers) from the library when constructing code examples.
-5. When recommending a strategy, always include the "Where This Strategy Breaks" context so the user understands the risks.
-6. For executable trades, map the library's code patterns to the actual scripts available in this skill (e.g., `get_option_chain.py`, `get_option_expirations.py`, `preflight.py`, `place_order.py`).
+### 期权策略指导  
+当用户询问期权策略、如何自动化策略、在特定情况下使用哪种策略或需要帮助构建多腿期权交易时：  
+1. 阅读位于同一目录下的 `options-automation-library.md` 文件，其中包含详细的策略说明。  
+2. 该库包含 35 种以上的期权策略，按类别分类：  
+   - **单腿策略**：长期看涨、长期看跌、保护性看涨、现金担保看跌  
+   - **垂直价差**：牛市看涨、熊市看涨、牛市看跌、熊市看跌  
+   - **日历和对角价差**：长期日历价差、对角价差  
+   - **跨式和勒式**：长期/短期跨式、长期/短期勒式  
+   - **复杂价差**：铁秃鹫、铁蝴蝶、碎翼蝴蝶、圣诞树  
+   - **合成头寸**：合成长期/短期、合成保护性看涨、转换/反转  
+   - **收益策略**：轮盘式、穷人保护性看涨、比率价差  
+   - **高级/量化策略**：箱式价差、风险反转、对冲铁蝶式、波动率套利、日历价差  
+   - **事件驱动策略**：收益波动率挤压、盘前波动率扩张、盘后波动率波动  
+3. 每个策略都包含：描述、使用场景及示例、策略失效条件、API 工作流程步骤以及使用 Public.com SDK 的代码示例。  
+4. 在编写代码示例时，使用库中的辅助工具（Setup、Market Data、Preflight、Multi-leg order helpers）。  
+5. 推荐策略时，务必提供“该策略的失效条件”，以便用户了解风险。  
+6. 对于可执行的交易，将库中的代码模式映射到此技能中的实际脚本（例如：`get_option_chain.py`、`get_option_expirations.py`、`preflight.py`、`place_order.py`）。

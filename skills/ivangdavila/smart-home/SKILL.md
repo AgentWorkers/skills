@@ -1,73 +1,73 @@
 ---
 name: Smart Home
-description: Set up, automate, secure, and troubleshoot smart home devices with protocol selection, network isolation, and ecosystem-agnostic automation patterns.
+description: 通过协议选择、网络隔离以及与生态系统无关的自动化模式，来设置、自动化控制、保护智能家居设备，并解决相关故障。
 ---
 
-## Decision Tree
+## 决策树
 
-| Situation | Action |
+| 情况 | 应对措施 |
 |-----------|--------|
-| Starting from scratch | Check `setup.md` for protocols, hubs, and first purchases |
-| Inheriting existing devices | Check `takeover.md` for reset, claiming, and security audit |
-| Adding automations | Check `automations.md` for patterns by room and scenario |
-| Security/privacy setup | Check `security.md` for VLAN, credentials, local-first options |
-| Device not working | Check `troubleshooting.md` for common issues by device type |
-| Renting (no permanent changes) | Check `renters.md` for portable and non-invasive options |
+| 从零开始 | 查看 `setup.md` 文件，了解相关协议、控制中心和初始设备配置 |
+| 继承现有设备 | 查看 `takeover.md` 文件，了解设备重置、权限获取及安全审计流程 |
+| 添加自动化功能 | 查看 `automations.md` 文件，根据房间和场景设置自动化规则 |
+| 安全/隐私设置 | 查看 `security.md` 文件，配置 VLAN、密码设置及优先使用本地控制选项 |
+| 设备无法正常工作 | 查看 `troubleshooting.md` 文件，查找针对该设备类型的常见问题解决方案 |
+| 租用设备（无需永久性修改） | 查看 `renters.md` 文件，了解适用于租户的便携式、非侵入式解决方案 |
 
 ---
 
-## Universal Rules
+## 通用规则
 
-**Protocol choice matters more than brand.** Matter and Thread are the future. Zigbee and Z-Wave are mature and reliable. WiFi devices clog your network. Pick a protocol, build around it.
+**协议的选择比品牌更重要。** Matter 和 Thread 是未来的主流协议。Zigbee 和 Z-Wave 技术成熟且可靠，而 WiFi 设备可能会占用过多网络资源。请选择合适的协议，并据此进行系统构建。**
 
-**Local control beats cloud.** When the internet dies, your lights should still work. Home Assistant, Hubitat, and HomeKit prioritize local. Google Home and Alexa are cloud-first.
+**优先使用本地控制而非云服务。** 当网络断开连接时，照明设备仍应能正常工作。Home Assistant、Hubitat 和 HomeKit 更注重本地控制；而 Google Home 和 Alexa 则以云服务为主。**
 
-**Network segmentation is non-negotiable.** IoT devices belong on a separate VLAN. They don't need access to your laptop, NAS, or anything else. One compromised bulb shouldn't expose your network.
+**网络隔离是必须的。** 物联网设备应被部署在独立的 VLAN 中，避免它们访问你的笔记本电脑、NAS 等设备。一个设备的安全问题不应影响整个网络的安全。**
 
-**Start small, expand deliberately.** Buy 3 devices, live with them for a month, then add more. Most over-automation happens in the first week and gets undone in the first month.
+**从小规模开始，逐步扩展。** 先购买 3 台设备，使用一个月后再考虑增加更多设备。大多数过度自动化的设置往往在最初几周内被设置，但也会在第一个月内被取消或调整。**
 
 ---
 
-## Quick Reference
+## 快速参考
 
-**Protocol comparison:**
+**协议对比：**
 
-| Protocol | Range | Mesh | Power | Best for |
+| 协议 | 传输范围 | 支持网状网络 | 电池续航能力 | 适用场景 |
 |----------|-------|------|-------|----------|
-| Matter | Good | Yes | Mains/Battery | New setups (2024+) |
-| Zigbee | Good | Yes | Battery-friendly | Sensors, buttons |
-| Z-Wave | Better | Yes | Mains | Switches, locks |
-| WiFi | Good | No | Power-hungry | Cameras, heavy bandwidth |
-| Bluetooth | Short | Limited | Battery | Proximity triggers |
+| Matter | 良好 | 支持 | 适合使用市电或电池供电的设备 | 新系统配置（2024 年及以后） |
+| Zigbee | 良好 | 支持 | 电池友好型 | 适用于传感器、按钮等设备 |
+| Z-Wave | 更优秀 | 支持 | 适合使用市电的设备 | 适用于开关、锁等设备 |
+| WiFi | 良好 | 不支持 | 电池消耗大 | 适用于摄像头、需要大量带宽的设备 |
+| Bluetooth | 传输距离有限 | 电池续航能力较弱 | 适用于需要近距离控制的设备 |
 
-**Hub vs hubless:**
+**控制中心的使用：**
 
-| Hubless works for | Hub required for |
+| 无需控制中心的情况 | 需要控制中心的情况 |
 |-------------------|------------------|
-| 5-10 WiFi devices | 20+ devices |
-| Single ecosystem | Mixed ecosystems |
-| Basic scenes | Complex automations |
-| Renters | Homeowners building long-term |
+| 5-10 台 WiFi 设备 | 20 台以上设备 |
+| 单一生态系统 | 混合生态系统 |
+| 基本场景 | 复杂的自动化场景 |
+| 租户使用 | 房主需要长期使用系统 |
 
 ---
 
-## Security Essentials
+## 安全要点
 
-1. **Change default passwords** on EVERY device — cameras, routers, hubs
-2. **Disable UPnP** on your router — manual port rules only
-3. **Enable MFA** on accounts controlling locks, cameras, alarms
-4. **Check firmware** monthly — or enable auto-updates where available
-5. **Audit network** quarterly — remove devices you don't recognize
+1. 更改所有设备（包括摄像头、路由器、控制中心）的默认密码。
+2. 关闭路由器上的 UPnP 功能，仅允许手动设置端口规则。
+3. 为控制锁、摄像头、报警系统的账户启用多因素认证（MFA）。
+4. 每月检查设备固件，或在支持的情况下启用自动更新功能。
+5. 每季度对网络进行安全审计，移除未知或不再使用的设备。
 
 ---
 
-## When to Load More
+## 何时需要进一步了解或操作
 
-| Situation | Reference |
+| 情况 | 参考文档 |
 |-----------|-----------|
-| Choosing protocols, hubs, first devices | `setup.md` |
-| Taking over devices from previous owner | `takeover.md` |
-| Room-by-room automation patterns | `automations.md` |
-| Network isolation, privacy, local-first | `security.md` |
-| Device offline, won't pair, wrong behavior | `troubleshooting.md` |
-| Non-permanent, portable solutions for renters | `renters.md` |
+| 选择协议、控制中心及初始设备 | `setup.md` |
+| 从前任用户手中接管设备 | `takeover.md` |
+| 根据房间设置自动化规则 | `automations.md` |
+| 网络隔离、隐私保护及优先使用本地控制 | `security.md` |
+| 设备无法连接、行为异常 | `troubleshooting.md` |
+| 为租户提供临时解决方案 | `renters.md` |

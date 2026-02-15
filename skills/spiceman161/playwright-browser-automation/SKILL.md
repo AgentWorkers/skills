@@ -1,14 +1,15 @@
 ---
 name: playwright-browser-automation
-description: Browser automation using Playwright API directly. Navigate websites, interact with elements, extract data, take screenshots, generate PDFs, record videos, and automate complex workflows. More reliable than MCP approach.
+description: **使用 Playwright API 直接实现浏览器自动化**  
+可以浏览网页、与页面元素交互、提取数据、截图、生成 PDF 文件、录制视频，并自动化执行复杂的工作流程。这种方法比 MCP（Manual Code Programming）方式更为可靠。
 metadata: {"openclaw":{"emoji":"🎭","os":["linux","darwin","win32"],"requires":{"bins":["node","npx"]},"install":[{"id":"npm-playwright","kind":"npm","package":"playwright","bins":["playwright"],"label":"Install Playwright"}]}}
 ---
 
-# Playwright Browser Automation
+# Playwright 浏览器自动化
 
-Direct Playwright API for reliable browser automation without MCP complexity.
+Playwright 提供了直接的 API，用于实现可靠的浏览器自动化操作，无需处理复杂的中间件（MCP）相关问题。
 
-## Installation
+## 安装
 
 ```bash
 # Install Playwright
@@ -24,7 +25,7 @@ npx playwright install webkit
 sudo npx playwright install-deps chromium
 ```
 
-## Quick Start
+## 快速入门
 
 ```javascript
 const { chromium } = require('playwright');
@@ -40,9 +41,9 @@ const { chromium } = require('playwright');
 })();
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Locators (Auto-waiting)
+### 1. 使用定位器（自动等待）
 
 ```javascript
 // ✅ GOOD: Uses auto-waiting and retries
@@ -54,7 +55,7 @@ await page.getByPlaceholder('Search').fill('query');
 await page.click('#submit');
 ```
 
-### 2. Prefer User-Facing Attributes
+### 2. 优先选择用户可见的属性进行操作
 
 ```javascript
 // ✅ GOOD: Resilient to DOM changes
@@ -66,7 +67,7 @@ await page.getByTestId('login-button');
 await page.click('.btn-primary > div:nth-child(2)');
 ```
 
-### 3. Handle Dynamic Content
+### 3. 处理动态内容
 
 ```javascript
 // Wait for network idle
@@ -77,7 +78,7 @@ await page.waitForSelector('.results-loaded');
 await page.waitForFunction(() => document.querySelectorAll('.item').length > 0);
 ```
 
-### 4. Use Contexts for Isolation
+### 4. 使用上下文进行隔离
 
 ```javascript
 // Each context = isolated session (cookies, storage)
@@ -88,7 +89,7 @@ const page = await context.newPage();
 const page2 = await context.newPage();
 ```
 
-### 5. Network Interception
+### 5. 网络拦截
 
 ```javascript
 // Mock API responses
@@ -103,9 +104,9 @@ await page.route('**/api/users', route => {
 await page.route('**/*.{png,jpg,css}', route => route.abort());
 ```
 
-## Common Patterns
+## 常见应用场景
 
-### Form Automation
+### 表单自动化
 
 ```javascript
 // Fill form
@@ -119,7 +120,7 @@ await page.waitForURL('/dashboard');
 await expect(page.getByText('Welcome')).toBeVisible();
 ```
 
-### Data Extraction
+### 数据提取
 
 ```javascript
 // Extract table data
@@ -139,7 +140,7 @@ const data = await page.evaluate(() => {
 });
 ```
 
-### Screenshots & PDFs
+### 截图与 PDF 生成
 
 ```javascript
 // Full page screenshot
@@ -156,7 +157,7 @@ await page.pdf({
 });
 ```
 
-### Video Recording
+### 视频录制
 
 ```javascript
 const context = await browser.newContext({
@@ -172,7 +173,7 @@ const page = await context.newPage();
 await context.close(); // Video saved automatically
 ```
 
-### Mobile Emulation
+### 移动设备模拟
 
 ```javascript
 const context = await browser.newContext({
@@ -183,7 +184,7 @@ const context = await browser.newContext({
 });
 ```
 
-### Authentication
+### 认证
 
 ```javascript
 // Method 1: HTTP Basic Auth
@@ -206,9 +207,9 @@ await context.storageState({ path: 'auth.json' });
 // Later: await browser.newContext({ storageState: 'auth.json' });
 ```
 
-## Advanced Features
+## 高级功能
 
-### File Upload/Download
+### 文件上传/下载
 
 ```javascript
 // Upload
@@ -222,7 +223,7 @@ const [download] = await Promise.all([
 await download.saveAs('/path/to/save/' + download.suggestedFilename());
 ```
 
-### Dialogs Handling
+### 对话框处理
 
 ```javascript
 page.on('dialog', dialog => {
@@ -232,7 +233,7 @@ page.on('dialog', dialog => {
 });
 ```
 
-### Frames & Shadow DOM
+### 帧（Frames）与 Shadow DOM
 
 ```javascript
 // Frame by name
@@ -247,7 +248,7 @@ await frame.getByRole('button').click();
 await page.locator('my-component').locator('button').click();
 ```
 
-### Tracing (Debug)
+### 跟踪（调试）
 
 ```javascript
 await context.tracing.start({ screenshots: true, snapshots: true });
@@ -258,7 +259,7 @@ await context.tracing.stop({ path: 'trace.zip' });
 // View at https://trace.playwright.dev
 ```
 
-## Configuration Options
+## 配置选项
 
 ```javascript
 const browser = await chromium.launch({
@@ -279,7 +280,7 @@ const context = await browser.newContext({
 });
 ```
 
-## Error Handling
+## 错误处理
 
 ```javascript
 // Retry with timeout
@@ -298,9 +299,9 @@ await page.waitForFunction(() =>
 );
 ```
 
-## Sudoers Setup
+## Sudo 用户权限设置
 
-For Playwright browser installation:
+关于 Playwright 浏览器的安装方法：
 
 ```bash
 # /etc/sudoers.d/playwright
@@ -308,9 +309,9 @@ username ALL=(root) NOPASSWD: /usr/bin/npx playwright install-deps *
 username ALL=(root) NOPASSWD: /usr/bin/npx playwright install *
 ```
 
-## References
+## 参考资料
 
-- [Playwright Docs](https://playwright.dev)
-- [API Reference](https://playwright.dev/docs/api/class-playwright)
-- [Best Practices](https://playwright.dev/docs/best-practices)
-- [Locators Guide](https://playwright.dev/docs/locators)
+- [Playwright 文档](https://playwright.dev)
+- [API 参考](https://playwright.dev/docs/api/class-playwright)
+- [最佳实践指南](https://playwright.dev/docs/best-practices)
+- [定位器使用指南](https://playwright.dev/docs/locators)

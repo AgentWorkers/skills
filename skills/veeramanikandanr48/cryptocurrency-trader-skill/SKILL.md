@@ -1,194 +1,192 @@
 ---
 name: cryptocurrency-trader
-description: Production-grade AI trading agent for cryptocurrency markets with advanced mathematical modeling, multi-layer validation, probabilistic analysis, and zero-hallucination tolerance. Implements Bayesian inference, Monte Carlo simulations, advanced risk metrics (VaR, CVaR, Sharpe), chart pattern recognition, and comprehensive cross-verification for real-world trading application.
+description: 这款面向加密货币市场的生产级AI交易代理具备先进的数学建模能力、多层验证机制、概率分析功能，以及零错觉（即零错误判断）的保障。它支持贝叶斯推理、蒙特卡洛模拟、高级风险指标（如VaR、CVaR、夏普比率）的计算，同时具备图表模式识别能力，并通过全面的交叉验证来确保交易决策的准确性，适用于实际交易场景。
 ---
 
-# Cryptocurrency Trading Agent Skill
+# 加密货币交易代理技能
 
-## Purpose
+## 目的
 
-Provide production-grade cryptocurrency trading analysis with mathematical rigor, multi-layer validation, and comprehensive risk assessment. Designed for real-world trading application with zero-hallucination tolerance through 6-stage validation pipeline.
+提供具备数学严谨性、多层验证和全面风险评估的加密货币交易分析服务。该技能专为实际交易应用设计，通过六阶段验证流程确保分析结果的准确性，杜绝任何错误或误导。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when users request:
-- Analysis of specific cryptocurrency trading pairs (e.g., BTC/USDT, ETH/USDT)
-- Market scanning to find best trading opportunities
-- Comprehensive risk assessment with probabilistic modeling
-- Trading signals with advanced pattern recognition
-- Professional risk metrics (VaR, CVaR, Sharpe, Sortino)
-- Monte Carlo simulations for scenario analysis
-- Bayesian probability calculations for signal confidence
+当用户需要以下服务时，请使用此技能：
+- 分析特定的加密货币交易对（例如 BTC/USDT、ETH/USDT）
+- 扫描市场以寻找最佳交易机会
+- 利用概率模型进行全面的风险评估
+- 通过高级模式识别生成交易信号
+- 获取专业的风险指标（如 VaR、CVaR、Sharpe、Sortino）
+- 进行蒙特卡洛模拟以分析不同交易场景
+- 使用贝叶斯概率计算来评估交易信号的可靠性
 
-## Core Capabilities
+## 核心功能
 
-### Validation & Accuracy
-- 6-stage validation pipeline with zero-hallucination tolerance
-- Statistical anomaly detection (Z-score, IQR, Benford's Law)
-- Cross-verification across multiple timeframes
-- 14 circuit breakers to prevent invalid signals
+### 验证与准确性
+- 六阶段验证流程，确保分析结果的准确性
+- 统计异常检测（Z-score、IQR、本福德定律）
+- 在多个时间框架上进行交叉验证
+- 设有 14 个“断路器”机制，防止无效交易信号的生成
 
-### Analysis Methods
-- Bayesian inference for probability calculations
-- Monte Carlo simulations (10,000 scenarios)
-- GARCH volatility forecasting
-- Advanced chart pattern recognition
-- Multi-timeframe consensus (15m, 1h, 4h)
+### 分析方法
+- 使用贝叶斯推断进行概率计算
+- 进行 10,000 种情景的蒙特卡洛模拟
+- GARCH 波动性预测
+- 高级图表模式识别
+- 支持多时间框架（15 分钟、1 小时、4 小时）的数据分析
 
-### Risk Management
-- Value at Risk (VaR) and Conditional VaR (CVaR)
-- Risk-adjusted metrics (Sharpe, Sortino, Calmar)
-- Kelly Criterion position sizing
-- Automated stop-loss and take-profit calculation
+### 风险管理
+- 风险价值（VaR）和条件风险价值（CVaR）
+- 经风险调整的指标（Sharpe、Sortino、Calmar）
+- 根据凯利准则确定交易头寸大小
+- 自动计算止损和止盈价格
 
-**Detailed capabilities:** See `references/advanced-capabilities.md`
+**详细功能请参阅：`references/advanced-capabilities.md`
 
-## Prerequisites
+## 使用前提
 
-Ensure the following before using this skill:
-1. Python 3.8+ environment available
-2. Internet connection for real-time market data
-3. Required packages installed: `pip install -r requirements.txt`
-4. User's account balance known for position sizing
+在使用此技能之前，请确保满足以下条件：
+1. 搭建了 Python 3.8 及更高版本的环境
+2. 具备互联网连接，以便获取实时市场数据
+3. 安装了所有必需的软件包（使用 `pip install -r requirements.txt` 安装）
+4. 用户知道自己的账户余额，以便确定交易头寸的大小
 
-## How to Use This Skill
+## 使用方法
 
-### Quick Start Commands
+### 快速启动命令
 
-**Analyze a specific cryptocurrency:**
+**分析特定加密货币：**
 ```bash
 python skill.py analyze BTC/USDT --balance 10000
 ```
 
-**Scan market for best opportunities:**
+**扫描市场以寻找最佳交易机会：**
 ```bash
 python skill.py scan --top 5 --balance 10000
 ```
 
-**Interactive mode for exploration:**
+**交互式模式进行探索：**
 ```bash
 python skill.py interactive --balance 10000
 ```
 
-### Default Parameters
+### 默认参数
 
-- **Balance:** If not specified by user, use `--balance 10000`
-- **Timeframes:** 15m, 1h, 4h (automatically analyzed)
-- **Risk per trade:** 2% of balance (enforced by default)
-- **Minimum risk/reward:** 1.5:1 (validated by circuit breakers)
+- **账户余额：** 如果用户未指定，使用 `--balance 10000`
+- **时间框架：** 15 分钟、1 小时、4 小时（自动分析）
+- **单笔交易风险：** 账户余额的 2%（默认设置）
+- **最低风险/收益比：** 1.5:1（通过断路器机制进行验证）
 
-### Common Trading Pairs
+### 常见交易对
 
-Major: BTC/USDT, ETH/USDT, BNB/USDT, SOL/USDT, XRP/USDT
-AI Tokens: RENDER/USDT, FET/USDT, AGIX/USDT
-Layer 1: ADA/USDT, AVAX/USDT, DOT/USDT
-Layer 2: MATIC/USDT, ARB/USDT, OP/USDT
-DeFi: UNI/USDT, AAVE/USDT, LINK/USDT
-Meme: DOGE/USDT, SHIB/USDT, PEPE/USDT
+主要交易对：BTC/USDT、ETH/USDT、BNB/USDT、SOL/USDT、XRP/USDT
+AI 代币：RENDER/USDT、FET/USDT、AGIX/USDT
+Layer 1 代币：ADA/USDT、AVAX/USDT、DOT/USDT
+Layer 2 代币：MATIC/USDT、ARB/USDT、OP/USDT
+DeFi 代币：UNI/USDT、AAVE/USDT、LINK/USDT
+Meme 代币：DOGE/USDT、SHIB/USDT、PEPE/USDT
 
-### Workflow
+### 工作流程
 
-1. **Gather Information**
-   - Ask user for trading pair (if analyzing specific symbol)
-   - Ask for account balance (or use default $10,000)
-   - Confirm user wants production-grade analysis
+1. **收集信息**
+   - 询问用户所需分析的交易对
+   - 获取用户账户余额（或使用默认值 $10,000）
+   - 确认用户是否需要专业级别的分析服务
 
-2. **Execute Analysis**
-   - Run appropriate command (analyze, scan, or interactive)
-   - Wait for comprehensive analysis to complete
-   - System automatically validates through 6 stages
+2. **执行分析**
+   - 运行相应的命令（分析、扫描或交互式操作）
+   - 等待分析结果完成
+   - 系统会自动进行六阶段的验证
 
-3. **Present Results**
-   - Display trading signal (LONG/SHORT/NO_TRADE)
-   - Show confidence level and execution readiness
-   - Explain entry, stop-loss, and take-profit prices
-   - Present risk metrics and position sizing
-   - Highlight validation status (6/6 passed = execution ready)
+3. **展示结果**
+   - 显示交易建议（买入/卖出/不交易）
+   - 显示信心水平和执行准备状态
+   - 解释买入价格、止损价格和止盈价格
+   - 展示风险指标和头寸大小
+   - 显示验证状态（所有阶段均通过 = 可执行）
 
-4. **Interpret Output**
-   - Reference `references/output-interpretation.md` for detailed guidance
-   - Translate technical metrics into user-friendly language
-   - Explain risk/reward in simple terms
-   - Always include risk warnings
+4. **解读结果**
+   - 参考 `references/output-interpretation.md` 以获取详细解读
+   - 将技术指标用用户易于理解的语言表达
+   - 用简单的语言解释风险与收益的关系
+   - 始终提供风险提示
 
-5. **Handle Edge Cases**
-   - If execution_ready = NO: Explain validation failures
-   - If confidence <40%: Recommend waiting for better opportunity
-   - If circuit breakers triggered: Explain specific issue
-   - If network errors: Suggest retry with exponential backoff
+5. **处理特殊情况**
+   - 如果执行准备状态为“NO”：解释验证失败的原因
+   - 如果信心水平低于 40%：建议等待更好的交易机会
+   - 如果触发断路器机制：说明具体问题
+   - 如果出现网络错误：建议尝试重新连接并设置指数级重试间隔
 
-### Output Structure
+### 输出结构
 
-**Trading Signal:**
-- Action: LONG/SHORT/NO_TRADE
-- Confidence: 0-95% (integer only, no false precision)
-- Entry Price: Recommended entry point
-- Stop Loss: Risk management exit (always required)
-- Take Profit: Profit target
-- Risk/Reward: Minimum 1.5:1 ratio
+**交易建议：**
+- 行动：买入/卖出/不交易
+- 信心水平：0-95%（仅显示整数，避免误差）
+- 买入价格：推荐的入场价格
+- 止损价格：用于控制损失的自动退出价格
+- 止盈价格：预期的盈利目标
+- 风险/收益比：最低为 1.5:1
 
-**Probabilistic Analysis:**
-- Bayesian probabilities (bullish/bearish)
-- Monte Carlo profit probability
-- Signal strength (WEAK/MODERATE/STRONG)
-- Pattern bias confirmation
+**概率分析：**
+- 贝叶斯概率（看涨/看跌）
+- 蒙特卡洛模拟得出的盈利概率
+- 信号强度（弱/中等/强）
+- 模式识别结果
 
-**Risk Assessment:**
-- VaR and CVaR (Value at Risk metrics)
-- Sharpe/Sortino/Calmar ratios
-- Max drawdown and win rate
-- Profit factor
+**风险评估：**
+- 风险价值（VaR）和条件风险价值（CVaR）
+- Sharpe 比率、Sortino 比率、Calmar 比率
+- 最大回撤率和胜率
+- 盈利因子
 
-**Position Sizing:**
-- Standard (2% risk rule) - recommended
-- Kelly Conservative - mathematically optimal
-- Kelly Aggressive - higher risk/reward
-- Trading fees estimate
+**头寸大小：**
+- 标准策略（2% 的风险限制）
+- 凯利保守策略（数学上最优）
+- 凯利激进策略（更高的风险/收益比）
+- 交易费用估算
 
-**Validation Status:**
-- Stages passed (must be 6/6 for execution ready)
-- Circuit breakers triggered (if any)
-- Warnings and critical failures
+**验证状态：**
+- 所有阶段均通过（才能执行）
+- 是否触发了断路器机制
+- 任何警告或关键错误信息
 
-**Detailed interpretation:** See `references/output-interpretation.md`
+**详细解读请参阅：`references/output-interpretation.md`
 
-## Presenting Results to Users
+## 向用户展示结果时的语言指南**
 
-### Language Guidelines
+使用易于初学者理解的语言：
+- “买入” → “现在买入，以后高价卖出”
+- “卖出” → “现在卖出，以后低价买入”
+- “止损” → “如果判断错误，自动退出以限制损失”
+- “信心水平” → “我们对交易结果的确定性（数值越高，越可靠）”
+- “风险/收益” → “每投入 $1，潜在的收益是 $X”
 
-Use beginner-friendly explanations:
-- "LONG" → "Buy now, sell higher later"
-- "SHORT" → "Sell now, buy back cheaper later"
-- "Stop Loss" → "Automatic exit to limit loss if wrong"
-- "Confidence %" → "How certain we are (higher = better)"
-- "Risk/Reward" → "For every $1 risked, potential $X profit"
+### 必须提供的风险提示
 
-### Required Risk Warnings
+务必包含以下提醒：
+- 市场具有不确定性，即使分析结果看似完美，也可能出错
+- 建议从小额交易开始学习
+- 每笔交易的风险不得超过账户余额的 2%（系统自动执行）
+- 必须使用止损机制
+- 本工具仅提供分析结果，不构成财务建议
+- 过去的表现不能保证未来的结果
+- 用户需对所有交易决策负责
 
-ALWAYS include these reminders:
-- Markets are unpredictable - perfect analysis can still be wrong
-- Start with small amounts to learn
-- Never risk more than 2% per trade (enforced automatically)
-- Always use stop losses
-- This is analysis, NOT financial advice
-- Past performance does NOT guarantee future results
-- User is solely responsible for all trading decisions
+## 不建议交易的情形
 
-### When NOT to Trade
+在以下情况下，建议用户避免交易：
+- 验证状态未达到所有阶段通过
+- 执行准备状态为“NO”
+- 中等强度的交易信号信心水平低于 60%，高强度信号信心水平低于 70%
+- 用户不理解分析结果
+- 用户无法承受潜在损失
+- 用户处于高情绪压力或疲劳状态
 
-Advise users to avoid trading when:
-- Validation status <6/6 passed
-- Execution Ready flag = NO
-- Confidence <60% for moderate signals, <70% for strong
-- User doesn't understand the analysis
-- User can't afford potential loss
-- High emotional stress or fatigue
+## 高级用法
 
-## Advanced Usage
+### 程序化集成
 
-### Programmatic Integration
-
-For custom workflows, import directly:
+如需自定义工作流程，可直接导入相关代码：
 ```python
 from scripts.trading_agent_refactored import TradingAgent
 
@@ -197,19 +195,19 @@ analysis = agent.comprehensive_analysis('BTC/USDT')
 print(analysis['final_recommendation'])
 ```
 
-See `example_usage.py` for 5 comprehensive examples.
+请参考 `example_usage.py` 了解 5 个综合示例。
 
-### Configuration
+### 配置
 
-Customize behavior via `config.yaml`:
-- Validation strictness (strict vs normal mode)
-- Risk parameters (max risk, position limits)
-- Circuit breaker thresholds
-- Timeframe preferences
+通过 `config.yaml` 文件自定义行为：
+- 验证严格程度（严格模式/正常模式）
+- 风险参数（最大风险、头寸限制）
+- 断路器触发阈值
+- 时间框架偏好设置
 
-### Testing
+### 测试
 
-Verify installation and functionality:
+验证软件的安装和功能：
 ```bash
 # Run compatibility test
 ./test_claude_code_compat.sh
@@ -218,65 +216,65 @@ Verify installation and functionality:
 python -m pytest tests/
 ```
 
-## Reference Documentation
+## 参考文档
 
-- `references/advanced-capabilities.md` - Detailed technical capabilities
-- `references/output-interpretation.md` - Comprehensive output guide
-- `references/optimization.md` - Trading optimization strategies
-- `references/protocol.md` - Usage protocols and best practices
-- `references/psychology.md` - Trading psychology principles
-- `references/user-guide.md` - End-user documentation
-- `references/technical-docs/` - Implementation details and bug reports
+- `references/advanced-capabilities.md` – 详细的技术功能说明
+- `references/output-interpretation.md` – 输出结果解读指南
+- `references/optimization.md` – 交易优化策略
+- `references/protocol.md` – 使用协议和最佳实践
+- `references/psychology.md` – 交易心理学原理
+- `references/user-guide.md` – 最终用户文档
+- `references/technical-docs/` – 实现细节和错误报告
 
-## Architecture
+## 架构
 
-**Core Modules:**
-- `scripts/trading_agent_refactored.py` - Main trading agent (production)
-- `scripts/advanced_validation.py` - Multi-layer validation system
-- `scripts/advanced_analytics.py` - Probabilistic modeling engine
-- `scripts/pattern_recognition_refactored.py` - Chart pattern recognition
-- `scripts/indicators/` - Technical indicator calculations
-- `scripts/market/` - Data provider and market scanner
-- `scripts/risk/` - Position sizing and risk management
-- `scripts/signals/` - Signal generation and recommendation
+**核心模块：**
+- `scripts/trading_agent_refactored.py` – 主要交易代理程序
+- `scripts/advanced_validation.py` – 多层验证系统
+- `scripts/advanced_analytics.py` – 概率建模引擎
+- `scripts/pattern_recognition_refactored.py` – 图表模式识别模块
+- `scripts/indicators/` – 技术指标计算模块
+- `scripts/market/` – 数据提供和市场扫描模块
+- `scripts/risk/` – 头寸管理和风险控制模块
+- `scripts/signals/` – 交易信号生成和推荐模块
 
-**Entry Points:**
-- `skill.py` - Command-line interface (recommended)
-- `__main__.py` - Python module invocation
-- `example_usage.py` - Programmatic usage examples
+**入口点：**
+- `skill.py` – 建议使用的命令行接口
+- `__main__.py` – Python 模块的调用方式
+- `example_usage.py` – 程序化使用示例
 
-## Version
+## 版本
 
-**v2.0.1 - Production Hardened Edition**
+**v2.0.1 – 生产版**
 
-Recent improvements:
-- Fixed critical bugs (division by zero, import paths, NaN handling)
-- Enhanced network retry logic with exponential backoff
-- Improved logging infrastructure
-- Comprehensive input validation
-- UTC timezone consistency
-- Benford's Law threshold optimization
+最新改进：
+- 修复了关键错误（除以零、导入路径问题、NaN 处理）
+- 改进了带有指数级重试机制的网络连接逻辑
+- 优化了日志记录系统
+- 加强了输入数据的验证
+- 确保时间戳使用 UTC 标准
+- 优化了本福德定律的阈值设置
 
-**Status:** 🟢 PRODUCTION READY
+**状态：** 🟢 已准备好投入生产
 
-See `references/technical-docs/FIXES_APPLIED.md` for complete changelog.
+完整变更日志请参阅 `references/technical-docs/FIXES_APPLIED.md`。
 
-## Troubleshooting
+## 故障排除
 
-**Installation issues:**
+**安装问题：**
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-**Import errors:**
-Ensure running from skill directory or using `skill.py` entry point.
+**导入错误：**
+确保从 `skill` 目录运行程序，或使用 `skill.py` 作为入口文件。
 
-**Network failures:**
-System automatically retries with exponential backoff (3 attempts).
+**网络问题：**
+系统会自动尝试重新连接，并采用指数级重试策略（最多尝试 3 次）。
 
-**Validation failures:**
-Check validation report in output - explains which stage failed and why.
+**验证失败：**
+查看输出中的验证报告，了解具体哪个阶段失败及原因。
 
-**For detailed debugging:**
-Enable logging in `config.yaml` or check `references/technical-docs/BUG_ANALYSIS_REPORT.md`
+**详细调试方法：**
+在 `config.yaml` 中启用日志记录功能，或参考 `references/technical-docs/BUG_ANALYSIS_REPORT.md`。

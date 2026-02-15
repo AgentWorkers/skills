@@ -1,37 +1,48 @@
 ---
 name: ez-unifi
-description: Use when asked to manage UniFi network - list/restart/upgrade devices, block/unblock clients, manage WiFi networks, control PoE ports, manage traffic rules, create guest vouchers, or any UniFi controller task. Works with UDM Pro/SE, Dream Machine, Cloud Key Gen2+, or self-hosted controllers.
+description: **使用说明：**  
+当需要管理 UniFi 网络时，可以使用该工具执行以下操作：  
+- 列出/重启/升级设备  
+- 阻止/解除对客户端的访问  
+- 管理 WiFi 网络  
+- 控制 PoE 端口  
+- 管理流量规则  
+- 创建访客凭证  
+- 以及执行任何与 UniFi 控制器相关的任务。  
+
+该工具兼容 UDM Pro/SE、Dream Machine、Cloud Key Gen2+ 以及自托管的 UniFi 控制器。
 metadata: {"openclaw":{"emoji":"📶"}}
 ---
 
 # ez-unifi
 
-Agent-friendly UniFi Network tools powered by the `aiounifi` library. Supports UDM Pro/SE, Dream Machine, Cloud Key Gen2+, and self-hosted controllers.
+这是一个专为网络管理员设计的UniFi网络管理工具，基于`aiounifi`库开发。支持UDM Pro/SE、Dream Machine、Cloud Key Gen2+以及自托管的UniFi控制器。
 
-**Run all commands with:** `uv run scripts/unifi.py <command> [args]`
+**执行所有命令时，请使用以下命令格式：**  
+`uv run scripts/unifi.py <command> [args]`
 
-## Setup
+## 设置
 
-**Step 1: Ask user to create a dedicated local admin account**
+**步骤1：要求用户创建一个专用的本地管理员账户**
 
-> To manage your UniFi network, I need API access. Please create a dedicated local admin account:
+> 为了管理您的UniFi网络，我需要API访问权限。请创建一个专用的本地管理员账户：
 >
-> 1. Open your UniFi controller (e.g., https://192.168.1.1)
-> 2. Go to **Settings → System → Admins & Users**
-> 3. Click **Add Admin**
-> 4. Enter a username (e.g., `agent-api`)
-> 5. Enter an email and password
-> 6. **Important: Disable "Remote Access"** - local-only avoids MFA issues
-> 7. Set Role to **Super Admin** or **Site Admin**
-> 8. Click **Add**
+> 1. 打开您的UniFi控制器（例如：https://192.168.1.1）
+> 2. 进入**设置 → 系统 → 管理员与用户**
+> 3. 点击**添加管理员**
+> 4. 输入用户名（例如：`agent-api`）
+> 5. 输入电子邮件和密码
+> 6. **重要提示：禁用“远程访问”**——仅限本地访问可以避免多因素认证（MFA）的问题
+> 7. 将角色设置为**超级管理员**或**站点管理员**
+> 8. 点击**添加**
 >
-> Then provide:
-> - Controller IP (e.g., `192.168.1.1`)
-> - Username
-> - Password
-> - Is it a UDM Pro/SE/Dream Machine? (yes/no)
+> 然后提供以下信息：
+> - 控制器IP地址（例如：`192.168.1.1`
+> - 用户名
+> - 密码
+> - 该控制器是UDM Pro/SE/Dream Machine类型吗？（是/否）
 
-**Step 2: Save credentials to `.env`**
+**步骤2：将凭据保存到`.env`文件中**
 
 ```bash
 UNIFI_HOST=https://192.168.1.1
@@ -41,11 +52,11 @@ UNIFI_SITE=default
 UNIFI_IS_UDM=true
 ```
 
-Set `UNIFI_IS_UDM=false` for Cloud Key Gen1 or self-hosted controllers.
+对于Cloud Key Gen1或自托管的控制器，请将`UNIFI_IS_UDM`设置为`false`。
 
 ---
 
-## System & Sites
+## 系统与站点设置
 
 ```bash
 unifi.py sites                     # List all sites
@@ -53,7 +64,7 @@ unifi.py sysinfo                   # System information
 unifi.py health                    # Site health status (WAN, WLAN, LAN)
 ```
 
-## Devices (APs, Switches, Gateways)
+## 设备管理（AP、交换机、网关）
 
 ```bash
 unifi.py devices                   # List all devices
@@ -67,7 +78,7 @@ unifi.py led MAC on|off|default    # Set LED status
 unifi.py led MAC on --color=#FF0000 --brightness=50  # With color/brightness
 ```
 
-## Switch Ports
+## 交换机端口配置
 
 ```bash
 unifi.py ports                     # List all switch ports
@@ -78,7 +89,7 @@ unifi.py poe MAC PORT_IDX MODE     # Set PoE mode (auto|off|passthrough|24v)
 unifi.py power-cycle MAC PORT_IDX  # Power cycle a PoE port
 ```
 
-## Smart Power (PDU/Outlets)
+## 智能电源管理（PDU/插座）
 
 ```bash
 unifi.py outlets                   # List all outlets
@@ -86,7 +97,7 @@ unifi.py outlet MAC IDX on|off     # Control outlet relay
 unifi.py outlet-cycle MAC IDX on|off  # Enable/disable auto-cycle on internet down
 ```
 
-## Clients
+## 客户端管理
 
 ```bash
 unifi.py clients                   # List active clients
@@ -98,7 +109,7 @@ unifi.py reconnect MAC             # Kick/reconnect client
 unifi.py forget MAC [MAC2...]      # Forget client(s) permanently
 ```
 
-## WiFi Networks
+## WiFi网络配置
 
 ```bash
 unifi.py wlans                     # List wireless networks
@@ -110,14 +121,14 @@ unifi.py wlan-qr ID                # Generate WiFi QR code (PNG file)
 unifi.py wlan-qr ID -o myqr.png    # Custom output filename
 ```
 
-## Port Forwarding
+## 端口转发设置
 
 ```bash
 unifi.py port-forwards             # List port forwarding rules
 unifi.py port-forward ID           # Port forward details
 ```
 
-## Traffic Rules
+## 流量规则管理
 
 ```bash
 unifi.py traffic-rules             # List traffic rules
@@ -127,7 +138,7 @@ unifi.py traffic-rule-disable ID   # Disable traffic rule
 unifi.py traffic-rule-toggle ID on|off  # Toggle traffic rule state
 ```
 
-## Traffic Routes
+## 流量路由配置
 
 ```bash
 unifi.py traffic-routes            # List traffic routes
@@ -136,7 +147,7 @@ unifi.py traffic-route-enable ID   # Enable traffic route
 unifi.py traffic-route-disable ID  # Disable traffic route
 ```
 
-## Firewall
+## 防火墙设置
 
 ```bash
 unifi.py firewall-policies         # List firewall policies
@@ -145,7 +156,7 @@ unifi.py firewall-zones            # List firewall zones
 unifi.py firewall-zone ID          # Firewall zone details
 ```
 
-## DPI (Deep Packet Inspection)
+## 深度包检测（DPI）功能
 
 ```bash
 unifi.py dpi-apps                  # List DPI restriction apps
@@ -156,7 +167,7 @@ unifi.py dpi-groups                # List DPI restriction groups
 unifi.py dpi-group ID              # DPI group details
 ```
 
-## Hotspot Vouchers
+## 热点优惠券管理
 
 ```bash
 unifi.py vouchers                  # List vouchers
@@ -165,21 +176,21 @@ unifi.py voucher-create --duration=1440 --quota=5 --rate-up=5000 --rate-down=100
 unifi.py voucher-delete ID         # Delete voucher
 ```
 
-Voucher options:
-- `--duration` - Duration in minutes (default: 60)
-- `--quota` - Number of uses (default: 1)
-- `--usage-quota` - Usage quota in MB
-- `--rate-up` - Upload rate limit in Kbps
-- `--rate-down` - Download rate limit in Kbps
-- `--note` - Note/description
+优惠券使用选项：
+- `--duration`：优惠券的有效时长（单位：分钟，默认值：60分钟）
+- `--quota`：优惠券的使用次数（默认值：1次）
+- `--usage-quota`：优惠券的流量配额（单位：MB）
+- `--rate-up`：上传速率限制（单位：Kbps）
+- `--rate-down`：下载速率限制（单位：Kbps）
+- `--note`：优惠券的备注/说明
 
-## Events
+## 事件日志管理
 
 ```bash
 unifi.py events                    # Stream events in real-time (Ctrl+C to stop)
 ```
 
-## Raw API Access
+## 原始API访问权限
 
 ```bash
 unifi.py raw GET /stat/health      # Raw GET request
@@ -187,9 +198,9 @@ unifi.py raw POST /cmd/devmgr '{"cmd":"restart","mac":"aa:bb:cc:dd:ee:ff"}'
 unifi.py raw PUT /rest/wlanconf/ID '{"enabled":false}'
 ```
 
-## Output Options
+## 输出格式设置
 
-Add `--json` flag to any list command for JSON output:
+在需要以JSON格式输出结果的命令前，添加`--json`参数：
 ```bash
 unifi.py devices --json            # JSON output
 unifi.py clients --json
@@ -197,7 +208,7 @@ unifi.py clients --json
 
 ---
 
-## Examples
+## 使用示例
 
 ```bash
 # Check network health
@@ -231,17 +242,17 @@ uv run scripts/unifi.py wlan-qr "wlan_id" -o guest_wifi.png
 uv run scripts/unifi.py traffic-rule-disable "rule_id"
 ```
 
-## Finding IDs
+## 查找设备ID
 
-- **WLAN IDs**: Run `wlans` and look for the `ID` column
-- **Device MACs**: Run `devices` and look for the `MAC` column
-- **Client MACs**: Run `clients` or `clients-all` and look for the `MAC` column
-- **Traffic Rule IDs**: Run `traffic-rules` and look for the `ID` column
-- **Voucher IDs**: Run `vouchers` and look for the `ID` column
+- **WLAN设备ID**：运行`wlans`命令，查看`ID`列
+- **设备MAC地址**：运行`devices`命令，查看`MAC`列
+- **客户端MAC地址**：运行`clients`或`clients-all`命令，查看`MAC`列
+- **流量规则ID**：运行`traffic-rules`命令，查看`ID`列
+- **优惠券ID**：运行`vouchers`命令，查看`ID`列
 
-## Notes
+## 注意事项
 
-- MAC addresses can be any format (with colons, dashes, or none)
-- All output is JSON for easy parsing
-- Using a dedicated local account avoids MFA issues with cloud-linked accounts
-- If you get rate limited (429 error), wait a few minutes before retrying
+- MAC地址可以采用任何格式（包含冒号、破折号或无格式）
+- 所有输出结果均为JSON格式，便于解析
+- 使用专用本地管理员账户可以避免与云连接账户相关的多因素认证问题
+- 如果遇到速率限制（出现429错误），请等待几分钟后再尝试操作

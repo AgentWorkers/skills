@@ -1,77 +1,77 @@
 ---
 name: Car
-description: Buy, maintain, and handle car emergencies with cost estimates, maintenance schedules, and roadside problem-solving.
+description: 购买汽车、进行日常维护以及处理汽车紧急情况时，系统会提供成本估算、维护计划以及应对路边故障的解决方案。
 ---
 
-## Decision Tree
+## 决策树
 
-| Situation | Action |
+| 情况 | 应采取的行动 |
 |-----------|--------|
-| Buying a car | Check `buying.md` for price negotiation, inspection checklist, financing |
-| Maintenance due or warning light | Check `maintenance.md` for schedules, DIY vs mechanic, symptom diagnosis |
-| Breakdown or accident | Check `emergencies.md` for immediate steps, who to call, documentation |
-| Road trip planning | Pre-trip checklist below, then `emergencies.md` for kit and what-ifs |
+| 购买汽车 | 查阅 `buying.md` 了解价格谈判、检查清单和融资信息 |
+| 需要保养或警告灯亮起 | 查阅 `maintenance.md` 了解保养计划、是否可以自行修理或需要请修理工、以及症状诊断方法 |
+| 车辆抛锚或发生事故 | 查阅 `emergencies.md` 了解紧急处理步骤、应联系的对象及所需准备的文件 |
+| 长途驾驶计划 | 先查看以下出发前的检查清单，必要时再参考 `emergencies.md` 了解应急工具和应对措施 |
 
 ---
 
-## Pre-Trip Checklist
+## 出发前检查清单
 
-Before any long drive:
-- [ ] Tire pressure (including spare) at recommended PSI
-- [ ] Oil level between min/max marks
-- [ ] Coolant reservoir at proper level
-- [ ] All lights working (headlights, brake, turn signals)
-- [ ] Windshield washer fluid filled
-- [ ] Wiper blades not streaking
-- [ ] Phone charger and emergency contact numbers accessible
+在任何长途驾驶前，请务必检查以下项目：
+- [ ] 轮胎气压（包括备胎）是否达到推荐值（PSI单位）  
+- [ ] 油位是否在最低/最高标记之间  
+- [ ] 冷却液液位是否正常  
+- [ ] 所有车灯（前灯、刹车灯、转向灯）是否正常工作  
+- [ ] 雨刷液是否加满  
+- [ ] 雨刷片是否没有划痕  
+- [ ] 手机充电器和紧急联系电话是否可用  
 
 ---
 
-## Warning Lights — Quick Reference
+## 警告灯——快速参考
 
-| Light | Severity | Action |
+| 警告灯类型 | 严重程度 | 应采取的行动 |
 |-------|----------|--------|
-| Check engine (steady) | Medium | Safe to drive, diagnose within days |
-| Check engine (flashing) | Critical | Stop driving, call tow |
-| Oil pressure | Critical | Stop immediately, check oil level |
-| Temperature/coolant | Critical | Pull over, let engine cool, check coolant |
-| Battery | Medium | Drive to shop, may have 30-60 min before stall |
-| ABS | Low | Brakes work, but ABS disabled — drive carefully |
-| Tire pressure | Low | Check and inflate soon |
+| 发动机故障灯（持续亮起） | 中等程度 | 可以继续驾驶，但需在几天内进行诊断 |
+| 发动机故障灯（闪烁） | 严重程度 | 立即停车并呼叫拖车服务 |
+| 油压异常 | 严重程度 | 立即停车并检查油位 |
+| 温度/冷却液异常 | 严重程度 | 停车让发动机冷却，然后检查冷却液液位 |
+| 电池问题 | 中等程度 | 可以继续驾驶，但电池可能在使用30-60分钟后无法继续使用 |
+| ABS系统故障 | 低气压 | 刹车系统正常工作，但ABS功能关闭——请谨慎驾驶 |
+| 轮胎气压低 | 低气压 | 立即检查并补充气压 |
 
 ---
 
-## Cost Sanity Check
+## 成本合理性检查
 
-Before approving any repair, verify the quote:
-1. Get the exact repair name (not "fix the engine")
-2. Search "[repair name] + [car model] + cost" for typical range
-3. Labor: $80-150/hr is normal; over $200/hr is premium/dealer
-4. If quote is 50%+ above average, get a second opinion
+在批准任何维修之前，请核实维修报价：
+1. 获取具体的维修项目名称（例如“更换发动机”而非“修理发动机”）
+2. 在搜索引擎中输入 “[维修项目名称] + [汽车型号] + 成本” 以了解市场价格范围  
+3. 人工费用：每小时80-150美元属于正常范围；超过每小时200美元则可能属于高级服务或经销商收费  
+4. 如果报价比市场平均水平高出50%以上，请寻求第二种意见  
 
-Common repairs (USD):
-- Oil change: $30-75
-- Brake pads (pair): $150-300 installed
-- Battery replacement: $150-250
-- Alternator: $400-600
-- Timing belt: $500-1000
-
----
-
-## Fuel Efficiency Tips
-
-- Optimal highway speed: 55-65 mph (above 65, efficiency drops ~15%)
-- Tire pressure: check monthly, underinflation costs 0.2% per PSI
-- AC vs windows: AC more efficient above 45 mph
-- Remove roof racks when not in use (5% drag penalty)
-- Avoid idling more than 30 seconds
+常见维修项目的费用（以美元计）：
+- 更换机油：30-75美元  
+- 刹车片（一对）：150-300美元  
+- 更换电池：150-250美元  
+- 交流发电机：400-600美元  
+- 正时皮带：500-1000美元  
 
 ---
 
-## When to Load More
+## 节油技巧
 
-| Situation | Reference |
+- 最佳高速公路行驶速度：55-65英里/小时（超过65英里/小时，燃油效率下降约15%）  
+- 每月检查一次轮胎气压；气压不足每降低1 PSI会导致燃油效率降低0.2%  
+- 在车速超过45英里/小时时，使用空调比开窗更省油  
+- 不使用时请取下车顶行李架（会增加5%的行驶阻力）  
+- 避免车辆怠速时间超过30秒  
+
+---
+
+## 何时需要额外准备
+
+| 情况 | 参考资料 |
 |-----------|-----------|
-| Buying new or used, financing, negotiation | `buying.md` |
-| Maintenance schedules, DIY repairs, diagnostics | `maintenance.md` |
-| Accidents, breakdowns, insurance claims | `emergencies.md` |
+| 购买新车或二手车、办理融资、价格谈判 | `buying.md`  
+| 保养计划、自行维修、故障诊断 | `maintenance.md`  
+| 发生事故、车辆抛锚、申请保险理赔 | `emergencies.md`

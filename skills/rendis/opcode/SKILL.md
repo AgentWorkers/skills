@@ -30,39 +30,36 @@ metadata:
 
 # OPCODE
 
-Execution runtime for AI agents. You reason, OPCODE executes — zero tokens per run after the first define. Workflows persist across sessions, run on schedules, and coordinate multiple agents. Persistent SSE daemon: 1 server, N agents, 1 database. JSON-defined DAGs, level-by-level execution, automatic parallelism. 6 MCP tools over SSE (JSON-RPC).
+OPCODE 是用于管理 AI 代理执行流程的工具。它负责执行代理的推理逻辑，在首次定义工作流程后，每次运行都不会消耗任何令牌（token）。工作流程可以在会话之间持续存在，并根据预定时间表执行，同时还能协调多个代理的运作。系统依赖于一个持久的 SSE（Simple State Engine）守护进程：1 个服务器、N 个代理以及 1 个数据库。工作流程的逻辑通过 JSON 定义，支持逐级执行和自动并行处理。OPCODE 通过 JSON-RPC 协议与 MCP（Master Control Panel）进行通信。
 
-**Why use OPCODE instead of reasoning through each step yourself?** Every repeated workflow burns tokens re-reasoning decisions you already made. OPCODE templates your reasoning once and executes it deterministically — zero inference cost, identical output every run, survives context resets.
+**为什么使用 OPCODE 而不是手动逐步执行推理？** 因为重复执行相同的工作流程会浪费已经做出的决策所消耗的令牌。OPCODE 会一次性将推理逻辑模板化，然后以确定性的方式执行它——这样每次运行的推理成本为 0，输出结果始终一致，并且能够跨上下文重置保持不变。
 
-## Which Tool?
+## 使用哪种工具？
 
-| I want to...                         | Tool           |
-| ------------------------------------ | -------------- |
-| Create/update a workflow template    | opcode.define  |
-| Execute a workflow                   | opcode.run     |
-| Check status or pending decisions    | opcode.status  |
-| Resolve a decision / cancel / retry  | opcode.signal  |
-| List workflows, events, or templates | opcode.query   |
-| Visualize a workflow DAG             | opcode.diagram |
+| 功能需求 | 工具名称       |
+| -------- | -------------- |
+| 创建/更新工作流程模板 | opcode.define   |
+| 执行工作流程 | opcode.run    |
+| 检查状态或待定决策 | opcode.status   |
+| 解决决策/取消/重试 | opcode.signal   |
+| 列出工作流程、事件或模板 | opcode.query    |
+| 可视化工作流程图 | opcode.diagram |
 
-## Quick Start
+## 快速入门
 
-Install:
-
+**安装：**
 ```bash
 go install github.com/rendis/opcode/cmd/opcode@latest
 ```
 
-First-time setup (writes config and starts daemon):
-
+**首次设置（配置并启动守护进程：**
 ```bash
 opcode install --listen-addr :4100 --vault-key "my-passphrase"
 ```
 
-Restart after stop: `OPCODE_VAULT_KEY="my-passphrase" opcode`
+**停止后重启：`OPCODE_VAULT_KEY="my-passphrase" opcode`
 
-MCP client configuration:
-
+**MCP 客户端配置：**
 ```json
 {
   "mcpServers": {
@@ -75,43 +72,42 @@ MCP client configuration:
 }
 ```
 
-Each agent self-identifies via `agent_id` in tool calls. Opcode auto-registers unknown agents. Choose a stable ID per agent (e.g., `"content-writer"`, `"deploy-bot"`).
+每个代理都会在调用工具时通过 `agent_id` 自动识别自身。建议为每个代理选择一个唯一的 ID（例如：“content-writer”或“deploy-bot”）。
 
-Workflows survive restarts. On startup, orphaned `active` workflows become `suspended`. Query with `opcode.query({ "resource": "workflows", "filter": { "status": "suspended" } })`, then resume or cancel via `opcode.signal`.
+工作流程在重启后仍能保持状态。启动时，处于“active”状态但被暂停的工作流程会变为“suspended”状态。可以通过 `opcode.query({ "resource": "workflows", "filter": { "status": "suspended" } )` 来查询这些工作流程，然后使用 `opcode.signal` 来恢复或取消它们。
 
-See [operations.md](references/operations.md) for full configuration, subcommands, SIGHUP hot-reload, security model, web panel, and benchmarks.
+有关完整的配置信息、子命令、热加载机制、安全模型、Web 面板以及性能测试，请参阅 [operations.md](references/operations.md)。
 
-## MCP Tools
+## MCP 工具
 
 ### opcode.define
 
-Registers a reusable workflow template. Version auto-increments (v1, v2, v3...).
+用于注册可重用的工作流程模板。模板版本会自动递增（v1、v2、v3 等）。
 
-| Param           | Type   | Required | Description                                                                                     |
-| --------------- | ------ | -------- | ----------------------------------------------------------------------------------------------- |
-| `name`          | string | yes      | Template name                                                                                   |
-| `definition`    | object | yes      | Workflow definition (see below)                                                                 |
-| `agent_id`      | string | yes      | Defining agent ID                                                                               |
-| `description`   | string | no       | Template description                                                                            |
-| `input_schema`  | object | no       | JSON Schema for input validation                                                                |
-| `output_schema` | object | no       | JSON Schema for output validation                                                               |
-| `triggers`      | object | no       | Trigger config (see[workflow-schema.md](references/workflow-schema.md#triggers-template-level)) |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `name`      | 字符串     | 是       | 模板名称                                                                                         |
+| `definition` | 对象       | 是       | 工作流程的定义                                                                                   |
+| `agent_id`    | 字符串     | 是       | 定义该工作流程的代理 ID                                                                                   |
+| `description` | 字符串     | 否       | 模板描述                                                                                         |
+| `input_schema` | 对象       | 否       | 用于输入验证的 JSON 架构                                                                                   |
+| `output_schema` | 对象       | 否       | 用于输出验证的 JSON 架构                                                                                   |
+| `triggers`    | 对象       | 否       | 触发器配置（详见 [workflow-schema.md](references/workflow-schema.md#triggers-template-level) |
 
-**Returns**: `{ "name": "...", "version": "v1" }`
+**返回值：`{ "name": "...", "version": "v1" }`
 
 ### opcode.run
 
-Executes a workflow from a registered template.
+根据注册的模板执行工作流程。
 
-| Param           | Type   | Required | Description               |
-| --------------- | ------ | -------- | ------------------------- |
-| `template_name` | string | yes      | Template to execute       |
-| `agent_id`      | string | yes      | Initiating agent ID       |
-| `version`       | string | no       | Version (default: latest) |
-| `params`        | object | no       | Input parameters          |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------- |
+| `template_name` | 字符串     | 是       | 要执行的工作流程模板名称                                                                                   |
+| `agent_id`    | 字符串     | 是       | 启动该工作流程的代理 ID                                                                                   |
+| `version`     | 字符串     | 否       | 使用的模板版本（默认为最新版本）                                                                                   |
+| `params`      | 对象       | 否       | 输入参数                                                                                         |
 
-**Returns**:
-
+**返回值：**
 ```json
 {
   "workflow_id": "uuid",
@@ -125,18 +121,17 @@ Executes a workflow from a registered template.
 }
 ```
 
-If `status` is `"suspended"`, call `opcode.status` to see `pending_decisions`.
+如果工作流程的状态为“suspended”，可以使用 `opcode.status` 来查看待定的决策。
 
 ### opcode.status
 
-Gets workflow execution status.
+用于获取工作流程的执行状态。
 
-| Param         | Type   | Required | Description       |
-| ------------- | ------ | -------- | ----------------- |
-| `workflow_id` | string | yes      | Workflow to query |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------- |
+| `workflow_id` | 字符串     | 要查询的工作流程 ID                                                                                   |
 
-**Returns**:
-
+**返回值：**
 ```json
 {
   "workflow_id": "uuid",
@@ -157,78 +152,79 @@ Gets workflow execution status.
 }
 ```
 
-Workflow statuses: `pending`, `active`, `suspended`, `completed`, `failed`, `cancelled`.
+工作流程的状态包括：`pending`（待定）、`active`（活动）、`suspended`（暂停）、`completed`（已完成）、`failed`（失败）和 `cancelled`（已取消）。
 
 ### opcode.signal
 
-Sends a signal to a suspended workflow.
+用于向被暂停的工作流程发送信号。
 
-| Param         | Type   | Required | Description                                       |
-| ------------- | ------ | -------- | ------------------------------------------------- |
-| `workflow_id` | string | yes      | Target workflow                                   |
-| `signal_type` | enum   | yes      | `decision` / `data` / `cancel` / `retry` / `skip` |
-| `payload`     | object | yes      | Signal payload (see below)                        |
-| `step_id`     | string | no       | Target step                                       |
-| `agent_id`    | string | no       | Signaling agent                                   |
-| `reasoning`   | string | no       | Agent's reasoning                                 |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------- |
+| `workflow_id` | 字符串     | 目标工作流程 ID                                                                                   |
+| `signal_type` | 枚举       | 是       | 信号类型（`decision`、`data`、`cancel`、`retry`、`skip`）         |
+| `payload`     | 对象       | 是       | 信号携带的数据                                                                                         |
+| `step_id`     | 字符串     | 目标执行步骤编号                                                                                   |
+| `agent_id`    | 字符串     | 发送信号的代理 ID                                                                                   |
+| `reasoning`   | 字符串     | 代理的推理结果                                                                                         |
 
-**Payload by signal type**:
+**不同信号类型的有效载荷：**
 
-| Signal     | step_id  | Payload                       | Behavior                        |
-| ---------- | -------- | ----------------------------- | ------------------------------- |
-| `decision` | required | `{ "choice": "<option_id>" }` | Resolves decision, auto-resumes |
-| `data`     | optional | `{ "key": "value", ... }`     | Injects data into workflow      |
-| `cancel`   | no       | `{}`                          | Cancels workflow                |
-| `retry`    | required | `{}`                          | Retries failed step             |
-| `skip`     | required | `{}`                          | Skips failed step               |
+| 信号类型    | 执行步骤编号 | 有效载荷                        | 行为                                                                                         |
+| ---------- | -------------- | -------------------------------- | ----------------------------- |
+| `decision`   | 必填       | `{ "choice": "<option_id>" }` | 解决决策，自动恢复工作流程                 |
+| `data`     | 可选       | `{ "key": "value", ... }`     | 向工作流程注入数据                                   |
+| `cancel`    | 可选       | `{}`                          | 取消工作流程                                   |
+| `retry`     | 必填       | `{}`                          | 重试失败的步骤                                   |
+| `skip`     | 必填       | `{}`                          | 跳过失败的步骤                                   |
 
-**Returns** (decision): `{ "ok": true, "resumed": true, "status": "completed", ... }`
-**Returns** (other): `{ "ok": true, "workflow_id": "...", "signal_type": "..." }`
+**返回值：**
+- 如果信号类型为 `decision`：`{ "ok": true, "resumed": true, "status": "completed" }`
+- 其他情况：`{ "ok": true, "workflow_id": "...", "signal_type": "..." }`
 
 ### opcode.query
 
-Queries workflows, events, or templates.
+用于查询工作流程、事件或模板的信息。
 
-| Param      | Type   | Required | Description                          |
-| ---------- | ------ | -------- | ------------------------------------ |
-| `resource` | enum   | yes      | `workflows` / `events` / `templates` |
-| `filter`   | object | no       | Filter criteria                      |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------------------ |
+| `resource`     | 枚举       | 查询类型（`workflows`、`events` 或 `templates`）       |
+| `filter`      | 对象       | 过滤条件                                                                                         |
 
-**Filter fields by resource**:
+**按资源类型过滤：**
 
-| Resource    | Fields                                                   |
-| ----------- | -------------------------------------------------------- |
-| `workflows` | `status`, `agent_id`, `since` (RFC3339), `limit`         |
-| `events`    | `workflow_id`, `step_id`, `event_type`, `since`, `limit` |
-| `templates` | `name`, `agent_id`, `limit`                              |
+| 资源类型    | 可过滤的字段                                      |
+| ---------- | -------------------------------------------------------- |
+| `workflows`   | `status`, `agent_id`, `since` (RFC3339), `limit`         |
+| `events`    | `workflow_id`, `step_id`, `event_type`, `since`, `limit`     |
+| `templates`   | `name`, `agent_id`, `limit`                              |
 
-Note: event queries require either `event_type` or `workflow_id` in filter.
+**注意：** 查询事件时，必须提供 `event_type` 或 `workflow_id` 作为过滤条件。
 
-**Returns**: `{ "<resource>": [...] }` -- results wrapped in object keyed by resource type.
+**返回值：`{ "<resource>": [...] }` —— 结果按资源类型进行分类返回。**
 
 ### opcode.diagram
 
-Generates a visual DAG diagram from a template or running workflow.
+根据模板或正在执行的工作流程生成可视化的有向无环图（DAG）。
 
-| Param            | Type   | Required | Description                                                |
-| ---------------- | ------ | -------- | ---------------------------------------------------------- |
-| `template_name`  | string | no\*     | Template to visualize (structure preview)                  |
-| `version`        | string | no       | Template version (default: latest)                         |
-| `workflow_id`    | string | no\*     | Workflow to visualize (with runtime status)                |
-| `format`         | enum   | yes      | `ascii` / `mermaid` / `image`                              |
-| `include_status` | bool   | no       | Show runtime status overlay (default: true if workflow_id) |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------- |
+| `template_name` | 字符串     | 是否需要显示模板名称（用于预览结构）         |
+| `version`     | 字符串     | 是否需要显示模板版本（默认为最新版本）         |
+| `workflow_id`    | 字符串     | 是否需要显示工作流程 ID（包括运行状态）         |
+| `format`      | 枚举       | 图表格式（`ascii`、`mermaid` 或 `image`）         |
+| `include_status` | 布尔值     | 是否显示运行状态（默认为 `true`，如果提供了 `workflow_id`）     |
 
-\* One of `template_name` or `workflow_id` required.
+**注意：** 必须提供 `template_name` 或 `workflow_id` 中的一个。
 
-- `template_name` -- preview DAG structure before execution
-- `workflow_id` -- visualize with live step status
-- `format: "ascii"` -- CLI-friendly text with box-drawing characters
-- `format: "mermaid"` -- markdown-embeddable flowchart syntax
-- `format: "image"` -- base64-encoded PNG for visual channels
+- `template_name`：在执行前预览工作流程的结构。
+- `workflow_id`：显示包含实时步骤状态的工作流程图。
+- `format: "ascii"`：以文本格式显示图表（适合命令行界面）。
+- `format: "mermaid"`：使用 Markdown 语法生成的流程图。
+- `format: "image"`：以 Base64 编码的 PNG 图片格式显示图表。
 
-**Returns**: `{ "format": "ascii", "diagram": "..." }`
+**返回值：`{ "format": "ascii", "diagram": "..." }`
 
-## Workflow Definition
+## 工作流程定义
 
 ```json
 {
@@ -243,45 +239,30 @@ Generates a visual DAG diagram from a template or running workflow.
 }
 ```
 
-| Field         | Type             | Required | Description                                       |
-| ------------- | ---------------- | -------- | ------------------------------------------------- |
-| `steps`       | StepDefinition[] | yes      | Workflow steps                                    |
-| `inputs`      | object           | no       | Input parameters (supports `${{}}`)               |
-| `context`     | object           | no       | Workflow context, accessible via `${{context.*}}` |
-| `timeout`     | string           | no       | Workflow deadline (e.g.,`"5m"`, `"1h"`)           |
-| `on_timeout`  | string           | no       | `fail` (default), `suspend`, `cancel`             |
-| `on_complete` | StepDefinition   | no       | Hook step after completion                        |
-| `on_error`    | StepDefinition   | no       | Hook step on workflow failure                     |
-| `metadata`    | object           | no       | Arbitrary metadata                                |
+| 参数        | 类型       | 是否必填 | 描述                                                                                          |
+| ------------ | -------- | ------------------------- |
+| `steps`      | StepDefinition[] | 是否需要定义工作流程的步骤                         |
+| `inputs`     | 对象       | 是否需要输入参数                         |
+| `context`     | 对象       | 工作流程的上下文（可通过 `${{context.*}` 访问）         |
+| `timeout`     | 字符串     | 工作流程的超时时间（例如：“5m”或“1h”）         |
+| `on_timeout`    | 字符串     | 失败时的处理方式（`fail`、`suspend` 或 `cancel`）     |
+| `on_complete` | StepDefinition | 完成后的处理步骤                         |
+| `on_error`    | StepDefinition | 工作流程失败时的处理步骤                         |
+| `metadata`    | 对象       | 可选的元数据                                   |
 
-### Step Definition
+### Step Definition（步骤定义）
 
-```json
-{
-  "id": "step-id",
-  "type": "action | condition | loop | parallel | wait | reasoning",
-  "action": "http.get",
-  "params": { ... },
-  "depends_on": ["other-step"],
-  "condition": "CEL guard expression",
-  "timeout": "30s",
-  "retry": { "max": 3, "backoff": "exponential", "delay": "1s", "max_delay": "30s" },
-  "on_error": { "strategy": "ignore | fail_workflow | fallback_step | retry", "fallback_step": "id" },
-  "config": { /* type-specific */ }
-}
-```
+`type` 的默认值为 `action`。详细配置信息请参阅 [workflow-schema.md](references/workflow-schema.md)。
 
-`type` defaults to `action`. See [workflow-schema.md](references/workflow-schema.md) for all config blocks.
+## 步骤类型
 
-## Step Types
+### action（默认类型）
 
-### action (default)
-
-Executes a registered action. Set `action` to the action name, `params` for input.
+执行已注册的动作。通过设置 `action` 来指定动作名称，并通过 `params` 传递输入参数。
 
 ### condition
 
-Evaluates a CEL expression and branches.
+评估 CEL（Cellular Expression）表达式并根据结果进行分支处理。
 
 ```json
 {
@@ -297,7 +278,7 @@ Evaluates a CEL expression and branches.
 
 ### loop
 
-Iterates over a collection or condition. Loop variables: `${{loop.item}}`, `${{loop.index}}`.
+遍历集合或条件。循环变量包括：`${{loop.item}}` 和 `{{loop.index}}`。
 
 ```json
 {
@@ -318,11 +299,11 @@ Iterates over a collection or condition. Loop variables: `${{loop.item}}`, `${{l
 }
 ```
 
-Modes: `for_each` (iterate `over`), `while` (loop while `condition` true), `until` (loop until `condition` true).
+循环模式包括：`for_each`（遍历集合）、`while`（当条件为真时持续循环）和 `until`（当条件为真时停止循环）。
 
 ### parallel
 
-Executes branches concurrently.
+并发执行多个分支。
 
 ```json
 {
@@ -338,11 +319,11 @@ Executes branches concurrently.
 }
 ```
 
-Modes: `all` (wait for all branches), `race` (first branch wins).
+并行执行模式包括：`all`（等待所有分支完成）和 `race`（先完成的分支获胜）。
 
 ### wait
 
-Delays execution or waits for a named signal.
+延迟执行或等待指定的信号。
 
 ```json
 { "id": "pause", "type": "wait", "config": { "duration": "5s" } }
@@ -350,7 +331,7 @@ Delays execution or waits for a named signal.
 
 ### reasoning
 
-Suspends workflow for agent decision. Empty `options` = free-form (any choice accepted).
+当需要代理做出决策时，会暂停工作流程。如果未指定 `options`，则允许代理自由选择任何决策。
 
 ```json
 {
@@ -370,63 +351,61 @@ Suspends workflow for agent decision. Empty `options` = free-form (any choice ac
 }
 ```
 
-## Variable Interpolation
+## 变量插值
 
-Syntax: `${{namespace.path}}`
+语法：`${{namespace.path}}`
 
-| Namespace  | Example                             | Available fields                                                  |
+| 命名空间    | 可用的字段                                      |
 | ---------- | ----------------------------------- | ----------------------------------------------------------------- |
-| `steps`    | `${{steps.fetch.output.body}}`      | `<id>.output.*`, `<id>.status`                                    |
-| `inputs`   | `${{inputs.api_key}}`               | Keys from `params` in `opcode.run`                                |
-| `workflow` | `${{workflow.run_id}}`              | `run_id`, `name`, `template_name`, `template_version`, `agent_id` |
-| `context`  | `${{context.intent}}`               | Keys from `context` in workflow definition                        |
-| `secrets`  | `${{secrets.DB_PASS}}`              | Keys stored in vault                                              |
-| `loop`     | `${{loop.item}}`, `${{loop.index}}` | `item` (current element), `index` (0-based)                       |
+| `steps`     | `${{steps.fetch.output.body}}`      | 获取步骤的输出结果                   |
+| `inputs`    | `${{inputs.api_key}}`               | 从 `opcode.run` 中获取的参数键             |
+| `workflow`    | `${{workflow.run_id}}`              | 工作流程的 ID、名称、版本和代理 ID             |
+| `context`     | `${{context(intent}}`               | 工作流程定义中的上下文键                 |
+| `secrets`    | `${{secrets.DB_PASS}}`              | 从安全存储库中获取的密钥                   |
+| `loop`     | `${{loop.item}}`, `${{loop.index}}` | 当前循环项和循环索引                     |
 
-Two-pass resolution: non-secrets first, then secrets via AES-256-GCM vault.
+变量插值的处理规则：首先获取非敏感数据，然后通过 AES-256-GCM 加密算法从安全存储库中获取敏感数据。
 
-**CEL gotcha**: `loop` is a reserved word in CEL. Use `iter.item` / `iter.index` in CEL expressions. The `${{loop.item}}` interpolation syntax is unaffected.
+**关于 CEL 的注意事项：** `loop` 是 CEL 语言中的保留字。在 CEL 表达式中应使用 `iter.item` 或 `iter.index`。`{{loop.item}}` 的插值语法仍然有效。
 
-See [expressions.md](references/expressions.md) for CEL, GoJQ, Expr engine details.
+有关 CEL 语言、GoJQ 库以及表达式引擎的详细信息，请参阅 [expressions.md](references/expressions.md)。
 
-## Built-in Actions
+## 内置动作
 
-| Category       | Actions                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| **HTTP**       | `http.request`, `http.get`, `http.post`                                                                 |
-| **Filesystem** | `fs.read`, `fs.write`, `fs.append`, `fs.delete`, `fs.list`, `fs.stat`, `fs.copy`, `fs.move`             |
-| **Shell**      | `shell.exec`                                                                                            |
-| **Crypto**     | `crypto.hash`, `crypto.hmac`, `crypto.uuid`                                                             |
-| **Assert**     | `assert.equals`, `assert.contains`, `assert.matches`, `assert.schema`                                   |
-| **Expression** | `expr.eval`                                                                                             |
-| **Workflow**   | `workflow.run`, `workflow.emit`, `workflow.context`, `workflow.fail`, `workflow.log`, `workflow.notify` |
+| 动作类别       | 动作名称                                      |
+| -------------- | --------------------------------------- |
+| **HTTP**       | `http.request`, `http.get`, `http.post`                 |
+| **文件系统**     | `fs.read`, `fs.write`, `fs.append`, `fs.delete`, `fs.list`, `fs.stat`, `fs.copy`, `fs.move` |
+| **Shell**      | `shell.exec`                                    |
+| **加密**     | `crypto.hash`, `crypto.hmac`, `crypto.uuid`                |
+| **断言**     | `assert.equals`, `assert.contains`, `assert.matches`, `assert.schema`     |
+| **表达式**     | `expr.eval`                                    |
 
-**Quick reference** (most-used actions):
+**常用动作示例：**
 
-- **`http.get`**: `url` (req), `headers`, `timeout`, `fail_on_error_status` -- output: `{ status_code, headers, body, duration_ms }`
-- **`shell.exec`**: `command` (req), `args`, `stdin`, `timeout`, `env`, `workdir` -- output: `{ stdout, stderr, exit_code, killed }`
-- **`fs.read`**: `path` (req), `encoding` -- output: `{ path, content, encoding, size }`
-- **`workflow.notify`**: `message` (req), `data` -- output: `{ notified: true/false }` -- pushes real-time notification to agent via MCP SSE (best-effort)
+- `http.get`：`url`（请求参数）、`headers`（请求头）、`timeout`（超时设置）、`fail_on_error_status`（错误处理）——返回值：`{ status_code, headers, body, duration_ms }`
+- `shell.exec`：`command`（命令）、`args`（命令参数）、`stdin`（标准输入）、`timeout`（超时设置）、`env`（环境变量）、`workdir`（工作目录）——返回值：`{ stdout, stderr, exit_code, killed }`
+- `fs.read`：`path`（文件路径）、`encoding`（编码方式）——返回值：`{ path, content, encoding, size }`
+- `workflow.notify`：`message`（通知内容）、`data`（通知标志）——通过 MCP SSE 向代理发送实时通知（尽力通知）
+- `expr.eval`：`expression`（表达式）、`data`（计算结果）——在工作流程的上下文中评估表达式
 
-- **`expr.eval`**: `expression` (req), `data` -- output: `{ result: <value> }` -- evaluates Expr expression against workflow scope (steps, inputs, workflow, context)
+有关所有 26 个内置动作的详细参数说明，请参阅 [actions.md](references/actions.md)。
 
-See [actions.md](references/actions.md) for full parameter specs of all 26 actions.
+## 使用 `shell.exec` 进行脚本编写
 
-## Scripting with shell.exec
+`shell.exec` 会自动解析 JSON 格式的输入。默认参数分配规则为：`stdout` 用于输出 JSON 数据，`stderr` 用于输出错误信息，非零退出代码表示执行失败。如果需要原始的命令行输出，可以使用 `stdout_raw` 参数。
 
-`shell.exec` auto-parses JSON stdout. Convention: stdin=JSON, stdout=JSON, stderr=errors, non-zero exit=failure. Use `stdout_raw` for unprocessed text.
+有关特定语言（Bash、Python、Node、Go）的脚本编写模板，请参阅 [patterns.md](references/patterns.md#10-scripting-with-shellexec)。
 
-See [patterns.md](references/patterns.md#10-scripting-with-shellexec) for language-specific templates (Bash, Python, Node, Go).
+## 推理节点的生命周期
 
-## Reasoning Node Lifecycle
+1. 工作流程到达需要推理的步骤。
+2. 执行器创建一个 `PendingDecision` 对象，并触发 `decision_requested` 事件。
+3. 工作流程的状态变为 `suspended`（暂停）。
+4. 代理调用 `opcode.status` 来查看待定的决策及其相关选项。
+5. 代理通过 `opcode.signal` 来执行相应的操作。
 
-1. Workflow reaches a reasoning step
-2. Executor creates PendingDecision, emits `decision_requested` event
-3. Workflow status becomes `suspended`
-4. Agent calls `opcode.status` to see pending decision with context and options
-5. Agent resolves via `opcode.signal`:
-
-   ```json
+```json
    {
      "workflow_id": "...",
      "signal_type": "decision",
@@ -435,28 +414,28 @@ See [patterns.md](references/patterns.md#10-scripting-with-shellexec) for langua
    }
    ```
 
-6. Workflow auto-resumes after signal
-7. If timeout expires: `fallback` option auto-selected, or step fails if no fallback
+6. 接收到信号后，工作流程会自动恢复执行。
+7. 如果超时时间到期，系统会自动选择备用方案；如果没有备用方案，则步骤会失败。
 
-## Common Patterns
+## 常见使用模式
 
-See [patterns.md](references/patterns.md) for full JSON examples: linear pipeline, conditional branching, for-each loop, parallel fan-out, human-in-the-loop, error recovery, sub-workflows, and MCP lifecycle.
+有关工作流程的常见使用模式（如线性流程、条件分支、循环处理、并行执行、人工干预、错误恢复等），请参阅 [patterns.md](references/patterns.md)。
 
-## Error Handling
+## 错误处理
 
-| Strategy        | Behavior                         |
-| --------------- | -------------------------------- |
-| `ignore`        | Step skipped, workflow continues |
-| `fail_workflow` | Entire workflow fails            |
-| `fallback_step` | Execute fallback step            |
-| `retry`         | Defer to retry policy            |
+| 错误处理策略 | 处理方式                                      |
+| --------------- | ----------------------------------- |
+| `ignore`     | 跳过当前步骤，继续执行剩余的工作流程           |
+| `fail_workflow` | 整个工作流程失败                             |
+| `fallback_step` | 执行备用步骤                             |
+| `retry`      | 根据预设策略尝试重新执行                         |
 
-Backoff: `none`, `linear`, `exponential`, `constant`. Non-retryable errors (validation, permission, assertion) are never retried.
+错误处理策略包括：`none`（忽略错误）、`linear`（线性重试）、`exponential`（指数级重试）和 `constant`（固定次数重试）。对于无法重试的错误（如验证失败、权限问题或断言错误），系统不会尝试重新执行。
 
-See [error-handling.md](references/error-handling.md) for circuit breakers, timeout interactions, error codes.
+有关错误处理机制的详细信息，包括断路器设置和超时处理规则，请参阅 [error-handling.md](references/error-handling.md)。
 
-## Performance
+## 性能表现
 
-10-step parallel workflows complete in ~50µs, 500-step in ~2.4ms. The event store sustains ~15k appends/sec with <12% drop under 100 concurrent writers. Worker pool overhead is ~0.85µs/task (>1M tasks/sec at any pool size).
+包含 10 个步骤的工作流程大约在 50 微秒内完成，包含 500 个步骤的工作流程大约在 2.4 毫秒内完成。事件存储系统每秒可以处理约 15,000 条新增记录，在同时有 100 个代理写入数据的情况下，系统性能下降幅度小于 12%。工作进程池的额外开销约为每个任务 0.85 微秒（在任何规模的进程池中，处理速度可超过每秒 100 万个任务）。
 
-Full benchmark charts, per-scenario breakdowns, and methodology: [`docs/benchmarks.md`](../../docs/benchmarks.md).
+完整的性能测试图表、各场景下的详细数据以及测试方法论，请参阅 [`docs/benchmarks.md`](../../docs/benchmarks.md)。

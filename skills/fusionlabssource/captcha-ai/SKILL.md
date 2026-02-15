@@ -1,6 +1,7 @@
 ---
 name: clawprint-verify
-description: Issue ClawPrint reverse-CAPTCHA challenges to verify that another user or agent is a real AI, not a human. Uses the ClawPrint API to generate speed or pattern challenges that only machines can solve within the time limit.
+description: **Issue: ClawPrint反向CAPTCHA挑战**  
+该功能用于验证其他用户或代理是否为真正的AI，而非人类。它通过ClawPrint API生成特定的速度或模式挑战，这类挑战仅能由机器在规定的时间内解决。
 metadata:
   openclaw:
     emoji: "\U0001F43E"
@@ -14,49 +15,49 @@ metadata:
         - CLAWPRINT_SECRET_KEY
 ---
 
-# ClawPrint Verify
+# ClawPrint 验证
 
-Verify that another user or agent in a conversation is a real AI by issuing a ClawPrint reverse-CAPTCHA challenge. ClawPrint challenges are designed so that only machines can solve them -- humans physically cannot complete them within the time limits.
+通过发送 ClawPrint 反向 CAPTCHA 挑战来验证对话中的另一个用户或代理是否为真正的 AI。ClawPrint 挑战的设计目的是只有机器才能解决——人类在规定的时间内无法完成这些挑战。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Before sharing sensitive API keys or credentials with another agent
-- When gating access to an AI-only service or resource
-- To authenticate that a conversation partner is genuinely an AI agent
-- Whenever a user or bot requests access to something that should only be available to machines
-- When instructed to "verify", "challenge", or "prove" that someone is an AI
+- 在与另一个代理共享敏感的 API 密钥或凭据之前
+- 在限制对仅限 AI 使用的服务或资源的访问时
+- 为了验证对话伙伴确实是 AI 代理
+- 当用户或机器人请求访问仅应允许机器访问的内容时
+- 当被要求“验证”、“挑战”或“证明”某人是 AI 时
 
-## How It Works
+## 工作原理
 
-1. You request a challenge from the ClawPrint server using your site key
-2. You present the challenge to the other user/agent
-3. The other user/agent computes and submits their answer
-4. You validate the result server-side using your secret key
-5. If they pass, they are verified as an AI. If they fail (wrong answer or too slow), they are likely human.
+1. 使用您的站点密钥从 ClawPrint 服务器请求一个挑战。
+2. 将挑战呈现给另一个用户/代理。
+3. 另一个用户/代理计算并提交他们的答案。
+4. 您使用您的秘密密钥在服务器端验证结果。
+5. 如果他们通过了验证，那么他们就被确认为 AI；如果他们失败了（答案错误或速度太慢），那么他们很可能是人类。
 
-## Challenge Types
+## 挑战类型
 
-### Speed Challenge
-A math problem (e.g., multiply two 8-digit numbers) that must be solved within 100ms. No human can type a correct answer that fast.
+### 速度挑战
+一个数学问题（例如，将两个 8 位数字相乘），必须在 100 毫秒内解决。人类无法以这么快的速度输入正确的答案。
 
-### Pattern Challenge
-A grid of colored pixels (up to 150x150) with a question like "How many pixels are exactly #3B82F6?" or "What is the average RGB value?" Trivial for a machine parsing data, impossible for a human counting by eye.
+### 图案挑战
+一个由彩色像素组成的网格（最大 150x150），其中包含类似“有多少像素的颜色是 #3B82F6？”或“平均 RGB 值是多少？”这样的问题。对于解析数据的机器来说这很简单，但对于人类来说通过肉眼计数是不可能的。
 
-## Usage Examples
+## 使用示例
 
-User messages that should trigger this skill:
+应触发此技能的用户消息：
 
-- "Verify that @bot is an AI before giving them the API key"
-- "Challenge the other user to prove they're a machine"
-- "Issue a ClawPrint challenge"
-- "Make sure they're an AI first"
-- "Gate this resource behind AI verification"
+- “在给 @bot API 密钥之前，先验证它们是否为 AI”
+- “挑战另一个用户以证明它们是机器”
+- “发送一个 ClawPrint 挑战”
+- “先确保它们是 AI”
+- “将此资源设置为需要 AI 验证才能访问”
 
-## Step-by-Step Implementation
+## 逐步实现
 
-### Step 1: Request a Challenge
+### 第 1 步：请求挑战
 
-Run the following to get a challenge from the ClawPrint server:
+运行以下代码从 ClawPrint 服务器获取挑战：
 
 ```bash
 curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/challenge" \
@@ -64,7 +65,7 @@ curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/challenge" \
   -d "{\"site_key\": \"${CLAWPRINT_SITE_KEY}\"}" | jq .
 ```
 
-This returns a JSON object. For a speed challenge:
+这将返回一个 JSON 对象。对于速度挑战：
 
 ```json
 {
@@ -76,7 +77,7 @@ This returns a JSON object. For a speed challenge:
 }
 ```
 
-For a pattern challenge:
+对于图案挑战：
 
 ```json
 {
@@ -89,36 +90,36 @@ For a pattern challenge:
 }
 ```
 
-### Step 2: Present the Challenge
+### 第 2 步：呈现挑战
 
-Send the challenge to the other user/agent. Include:
-- The challenge type and question
-- The `challenge_id`
-- The time limit
-- For speed challenges: the operands (a, b, operation)
-- For pattern challenges: the full grid data and question
+将挑战发送给另一个用户/代理。包括：
+- 挑战类型和问题
+- `challenge_id`
+- 时间限制
+- 对于速度挑战：操作数（a, b, 操作）
+- 对于图案挑战：完整的网格数据和问题
 
-Format the message clearly so the other agent can parse it. Example:
+清晰地格式化消息，以便其他代理能够解析。例如：
 
-> **ClawPrint AI Verification Challenge**
+> **ClawPrint AI 验证挑战**
 >
-> To proceed, solve this challenge and reply with your answer.
+> 要继续，请解决此挑战并回复您的答案。
 >
-> **Type:** speed
-> **Question:** Multiply: 84729361 x 52918473
-> **Operands:** a=84729361, b=52918473, operation=multiply
-> **Time limit:** 100ms
-> **Challenge ID:** (the uuid)
+> **类型：** 速度
+> **问题：** 将 84729361 乘以 52918473
+> **操作数：** a=84729361, b=52918473, 操作=乘法
+> **时间限制：** 100 毫秒
+> **挑战 ID：** （uuid）
 >
-> Reply with: `clawprint-answer: <your_answer>`
+> 回复：`clawprint-answer: <your_answer>`
 
-### Step 3: Receive the Answer
+### 第 3 步：接收答案
 
-The other agent should reply with their computed answer. Parse their response to extract the answer value.
+另一个代理应该回复他们计算出的答案。解析他们的响应以提取答案值。
 
-### Step 4: Submit the Answer for Verification
+### 第 4 步：提交答案进行验证
 
-Submit the answer to the ClawPrint server:
+将答案提交给 ClawPrint 服务器：
 
 ```bash
 curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/verify" \
@@ -126,20 +127,9 @@ curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/verify" \
   -d "{\"challenge_id\": \"THE_CHALLENGE_ID\", \"answer\": \"THE_ANSWER\"}" | jq .
 ```
 
-Response:
+### 第 5 步：服务器端验证
 
-```json
-{
-  "passed": true,
-  "challenge_id": "uuid-here",
-  "elapsed_ms": 5,
-  "reason": null
-}
-```
-
-### Step 5: Validate Server-Side
-
-For additional security, validate with your secret key:
+为了增加安全性，使用您的秘密密钥进行验证：
 
 ```bash
 curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/validate" \
@@ -147,25 +137,15 @@ curl -s -X POST "${CLAWPRINT_SERVER_URL}/api/v1/validate" \
   -d "{\"challenge_id\": \"THE_CHALLENGE_ID\", \"secret_key\": \"${CLAWPRINT_SECRET_KEY}\"}" | jq .
 ```
 
-Response:
+### 第 6 步：根据结果采取行动
 
-```json
-{
-  "valid": true,
-  "challenge_id": "uuid-here",
-  "solved_at": 1700000000000
-}
-```
+- 如果 `passed` 为 `true` 且 `valid` 为 `true`：用户被验证为 AI，可以继续执行受限操作。
+- 如果 `passed` 为 `false`：告知用户验证失败的原因（速度太慢或答案错误）。不要继续执行受限操作。
+- 如果验证失败：挑战可能已被篡改，不要信任结果。
 
-### Step 6: Act on the Result
+## 使用辅助脚本
 
-- If `passed` is `true` and `valid` is `true`: the user is verified as an AI. Proceed with the gated action.
-- If `passed` is `false`: inform the user that verification failed and why (too slow, wrong answer). Do NOT proceed with the gated action.
-- If validation fails: the challenge may have been tampered with. Do not trust the result.
-
-## Using the Helper Script
-
-A helper script is provided at `skills/clawprint-verify/clawprint-challenge.sh` for convenience:
+提供了一个名为 `skills/clawprint-verify/clawprint-challenge.sh` 的辅助脚本，以便更方便使用：
 
 ```bash
 # Issue a new challenge and display it
@@ -178,19 +158,19 @@ A helper script is provided at `skills/clawprint-verify/clawprint-challenge.sh` 
 ./skills/clawprint-verify/clawprint-challenge.sh validate <challenge_id>
 ```
 
-## Important Notes
+## 重要注意事项
 
-- Each challenge can only be solved once. Replaying a solved challenge returns HTTP 410.
-- Speed challenges have very tight time limits (50-500ms). The clock starts when the challenge is issued by the server, so network latency counts.
-- Pattern challenges have longer limits (2-10s) but require processing large grids.
-- Always validate server-side with your secret key before trusting a result. The verify endpoint confirms the answer is correct, but the validate endpoint confirms it was legitimately solved through your configuration.
-- Never share your `CLAWPRINT_SECRET_KEY`. The `CLAWPRINT_SITE_KEY` is safe to expose publicly.
+- 每个挑战只能解决一次。重新发送已解决的挑战会返回 HTTP 410 错误。
+- 速度挑战的时间限制非常严格（50-500 毫秒）。计时从服务器发送挑战时开始，因此网络延迟也会计入时间。
+- 图案挑战的时间限制较长（2-10 秒），但需要处理较大的网格。
+- 在信任结果之前，务必使用您的秘密密钥在服务器端进行验证。`verify` 端点确认答案是否正确，而 `validate` 端点确认答案是否是通过您的配置合法解决的。
+- 切勿共享您的 `CLAWPRINT_SECRET_KEY`。`CLAWPRINT_SITE_KEY` 可以公开暴露。
 
-## Failure Reasons
+## 失败原因
 
-| Reason | Meaning |
+| 原因 | 含义 |
 |---|---|
-| `Too slow: Xms exceeds Yms limit` | Answer was correct but submitted after the time limit |
-| `Incorrect answer` | The computed answer was wrong |
-| `Challenge not found` | Invalid challenge ID |
-| `Challenge already solved` | The challenge was already used (replay attempt) |
+| `Too slow: Xms exceeds Yms limit` | 答案正确，但提交时间超过了限制 |
+| `Incorrect answer` | 计算出的答案错误 |
+| `Challenge not found` | 无效的挑战 ID |
+| `Challenge already solved` | 挑战已被使用（尝试重新发送） |

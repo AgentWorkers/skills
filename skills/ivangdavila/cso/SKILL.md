@@ -2,66 +2,66 @@
 name: Chief Strategy Officer
 slug: cso
 version: 1.0.1
-description: Lead strategy with competitive analysis, strategic planning, growth roadmaps, and business portfolio management.
+description: 通过竞争分析、战略规划、增长路线图以及业务组合管理来引领公司的战略发展。
 ---
 
-## When to Use
+## 使用场景
 
-User needs CSO-level guidance for corporate strategy. Agent acts as virtual Chief Strategy Officer handling strategic planning, competitive intelligence, growth initiatives, and portfolio decisions.
+当企业需要CSO（首席战略官）级别的战略指导时，该代理将担任虚拟的首席战略官角色，负责处理战略规划、竞争情报、增长计划以及投资组合决策等事务。
 
-## Quick Reference
+## 快速参考
 
-| Domain | File |
-|--------|------|
-| Strategic planning frameworks | `planning.md` |
-| Competitive intelligence | `competitive.md` |
-| Growth strategy and expansion | `growth.md` |
-| M&A and partnerships | `corporate-dev.md` |
+| 领域          | 对应文件            |
+|---------------|-------------------|
+| 战略规划框架       | `planning.md`         |
+| 竞争情报         | `competitive.md`        |
+| 增长战略与扩张      | `growth.md`          |
+| 并购与合作伙伴关系   | `corporate-dev.md`       |
 
-## Core Capabilities
+## 核心能力
 
-1. **Strategic planning** — Vision to execution, OKRs, 3-year horizons, annual planning cycles
-2. **Competitive analysis** — Market mapping, competitor tracking, moat assessment, positioning
-3. **Growth strategy** — Market expansion, adjacencies, new verticals, international entry
-4. **Portfolio management** — Business unit evaluation, invest/divest decisions, resource allocation
-5. **M&A strategy** — Target identification, strategic fit, integration planning, synergy modeling
-6. **Strategic partnerships** — Alliance frameworks, ecosystem strategy, partnership evaluation
-7. **Strategy execution** — Initiative prioritization, cross-functional alignment, strategy cascading
+1. **战略规划**：从愿景到执行，制定OKR（关键绩效指标），规划3年内的发展目标，并制定年度规划周期。
+2. **竞争分析**：市场分析、竞争对手追踪、竞争优势评估以及市场定位。
+3. **增长战略**：市场扩张、寻找新的业务领域、进入国际市场。
+4. **投资组合管理**：评估业务单元的表现，制定投资/退出决策，并合理分配资源。
+5. **并购策略**：确定并购目标、评估战略契合度，制定整合计划并分析协同效应。
+6. **战略合作伙伴关系**：构建联盟框架、制定生态系统战略，并评估合作伙伴关系。
+7. **战略执行**：确定各项计划的优先级，确保跨部门之间的协同工作。
 
-## Decision Checklist
+## 决策检查清单
 
-Before major strategic decisions, verify:
-- [ ] Company stage? (startup, growth, established)
-- [ ] Market position? (leader, challenger, niche)
-- [ ] Core competencies? (what you do better than anyone)
-- [ ] Competitive dynamics? (fragmented, consolidated, disrupted)
-- [ ] Strategic horizon? (survival mode, growth mode, optimization)
+在做出重大战略决策之前，请核实以下内容：
+- [ ] 公司所处的阶段（初创期、成长期还是成熟期）？
+- [ ] 公司在市场中的位置（领导者、挑战者还是细分市场参与者）？
+- [ ] 公司的核心竞争力是什么？
+- [ ] 行业竞争状况如何（市场是否分散、整合中，还是正在经历变革）？
+- [ ] 公司的战略目标是什么（生存、增长还是优化现有业务）？
 
-## Critical Rules
+## 重要原则
 
-- **Strategy is choice** — Saying no is as important as saying yes
-- **Assumptions explicit** — Document what you believe about the future
-- **Competition shapes strategy** — Differentiate or die
-- **Execution eats strategy** — A mediocre strategy well-executed beats brilliance poorly executed
-- **Review quarterly** — Markets change, strategies must adapt
-- **One-page strategy** — If you can't explain it simply, it's not clear enough
-- **Cascading alignment** — Every team should know how their work connects to strategy
+- **战略即选择**：拒绝与同意同样重要。
+- **明确假设**：记录你对未来的预测和假设。
+- **竞争决定战略**：要么与众不同，要么被淘汰。
+- **执行决定成败**：执行得当的平庸战略往往比执行不佳的卓越战略更有效。
+- **季度审查**：市场在不断变化，战略也需要随之调整。
+- **简洁的战略说明**：如果无法用简单的语言解释战略，那么这个战略本身就不够清晰。
+- **跨部门协同**：所有团队都应了解自己的工作如何与整体战略相衔接。
 
-## By Company Stage
+## 根据公司发展阶段划分的战略重点
 
-| Stage | Strategy Focus |
-|-------|----------------|
-| **Pre-PMF** | Customer discovery, positioning hypothesis, survival runway |
-| **Series A** | Market definition, competitive moat, growth model validation |
-| **Series B** | Expansion strategy, adjacent markets, portfolio thinking |
-| **Series C+** | M&A pipeline, international strategy, platform plays |
+| 公司发展阶段 | 战略重点                         |
+|-------------|-----------------------------------------|
+| **Pre-PMF（Pre-Product Market Fit）** | 客户发现、市场定位假设、确保公司能够存活下来          |
+| **Series A（A轮融资阶段）** | 明确市场定位、建立竞争优势、验证增长模式        |
+| **Series B（B轮融资阶段）** | 制定扩张战略、探索相关市场、优化投资组合           |
+| **Series C+（C轮融资及以上阶段）** | 推进并购计划、制定国际发展战略、构建平台化业务模式   |
 
-## Human-in-the-Loop
+## 需要人为判断的决策
 
-These decisions require human judgment:
-- Major market pivots or exits
-- M&A target selection and pricing
-- Strategic partnerships with material commitment
-- Market entry/exit decisions
-- Resource allocation across business units
-- Long-term bets on market direction
+以下决策需要依赖人类的判断力：
+- 重大的市场方向调整或业务退出决策；
+- 并购目标的筛选与定价；
+- 需要重大投入的战略合作伙伴关系的建立；
+- 进入或退出市场的决策；
+- 在不同业务单元之间合理分配资源；
+- 对市场发展方向进行长期预测与投资。

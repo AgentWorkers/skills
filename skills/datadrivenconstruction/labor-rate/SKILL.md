@@ -1,15 +1,15 @@
 ---
 slug: "labor-rate"
 display_name: "Labor Rate"
-description: "Calculate construction labor rates with overhead, benefits, and productivity factors. Regional rate databases and crew composition."
+description: "计算建筑劳动力成本，包括间接费用、福利以及生产力因素。同时考虑地区性的费率数据库和劳动力构成。"
 ---
 
-# Labor Rate Calculator
+# 劳动力成本计算器
 
-## Overview
-Labor costs account for 30-50% of construction costs. This skill calculates all-in labor rates including wages, benefits, overhead, and regional adjustments.
+## 概述
+劳动力成本占建筑成本的30%至50%。该工具用于计算包括工资、福利、管理费用以及地区性调整因素在内的综合劳动力成本。
 
-## Python Implementation
+## Python 实现
 
 ```python
 import pandas as pd
@@ -318,7 +318,7 @@ class CrewBuilder:
         )
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 calc = LaborRateCalculator()
@@ -332,16 +332,16 @@ rates = calc.get_rate_table('US_National')
 print(rates)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Crew Cost
+### 1. 人工成本计算
 ```python
 builder = CrewBuilder(calc)
 concrete_crew = builder.get_crew('concrete_pour', 'Chicago')
 print(f"Crew cost: ${concrete_crew.total_hourly_cost}/hr")
 ```
 
-### 2. Productivity Adjustment
+### 2. 生产力调整
 ```python
 productivity = ProductivityFactor()
 factor = productivity.calculate_factor(
@@ -352,5 +352,5 @@ factor = productivity.calculate_factor(
 adjusted_hours = productivity.adjust_labor_hours(100, WorkType.RENOVATION)
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Resource-Based Costing
+## 参考资料
+- **DDC手册**：第3.1章 - 基于资源的成本核算

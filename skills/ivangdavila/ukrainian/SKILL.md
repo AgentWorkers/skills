@@ -1,80 +1,79 @@
 ---
 name: Ukrainian
-description: Write Ukrainian that sounds human. Not formal, not robotic, not AI-generated.
+description: 写一些听起来像真人说的乌克兰语。既不要过于正式，也不要像机器人或人工智能生成的那样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Ukrainian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and warmth. Match that.
+虽然“AI Ukrainian”在语法上是正确的，但听起来很正式、过于书面化。乌克兰本地人的表达方式更加随意，会使用各种语气词和表达方式来增添亲切感。我们需要让翻译结果更贴近这种自然的语言风格。
 
-## Formality Default
+## 形式化表达的过度使用
 
-Default register is too high. Ukrainian casual is warm and direct. Unless explicitly formal: lean casual. "Привіт" not "Добрий день". "Ок" not "Добре".
+默认的表达方式过于正式。乌克兰语中的日常对话更加亲切、直接。除非需要明确表达正式场合，否则应倾向于使用更随意的表达方式。例如：“Привіт”（你好）而不是“Добрий день”（您好）；“Ок”（好的）而不是“Добре”（可以）。
 
-## Ти vs Ви
+## “Ти”与“Ви”的使用
 
-Critical distinction:
-- Ви: strangers, elderly, professional, formal
-- Ти: friends, peers, internet, casual
-- Ukrainian internet is almost entirely ти
-- Overusing Ви = stiff, foreign
+两者之间有重要的区别：
+- “Ви”：用于称呼陌生人、长辈或正式场合；
+- “Ти”：用于朋友、同龄人或非正式场合；
+- 在乌克兰语的日常交流中，几乎总是使用“Ти”。
 
-## Particles & Softeners
+## 语气词与表达软化词
 
-These make Ukrainian natural:
-- Ну: filler, "well" ("Ну, я не знаю")
-- Ж/Же: emphasis ("Це ж правда")
-- Таки: "indeed", emphasis
-- Хіба: "really?", doubt
-- Ось: "here is"
+这些词能让乌克兰语的表达更加自然：
+- “Ну”：用于填充语气，相当于“嗯”（例如：“Ну, я не знаю”（嗯，我不知道）；
+- “Ж/Же”：用于强调（例如：“Це ж правда”（这确实是事实）；
+- “Таки”：表示“确实”或“真的”；
+- “Хіба”：表示怀疑（例如：“Хіба ти серйозно?”（你认真的吗？）；
+- “Ось”：用于指代某物或某人（例如：“Ось твій документ”）。
 
-## Fillers & Flow
+## 语言的填充与流畅性
 
-Real Ukrainian has fillers:
-- Ну, от, типу
-- Знаєш, слухай
-- Взагалі, насправді
-- Коротше, до речі
+乌克兰语中有很多填充词，用于使表达更自然：
+- “Ну, от, типу”（嗯，就是这个意思）；
+- “Знаєш, слухай”（你知道的，听着）；
+- “Взагалі, насправді”（总之，实际上）；
+- “Коротше, до речі”（简而言之，顺便说一下）。
 
-## Casual Shortcuts
+## 非正式表达的简化
 
-Spoken patterns in writing:
-- Що → Шо
-- Сьогодні → Сьодні
-- Будь ласка → Будь ласк
-- Common in texting
+在书面语中也会使用一些口语化的表达方式：
+- “Що” → “Шо”（什么）；
+- “Сьогодні” → “Сьодні”（今天）；
+- “Будь ласка” → “Будь ласк”（请）；
+- 这些在短信中很常见。
 
-## Expressiveness
+## 表达的丰富性
 
-Don't pick the safe word:
-- Добре → Супер, Клас, Кайф
-- Погано → Фігово, Хріново, Зле
-- Дуже → Мега, Шалено, Капець
+不要总是选择最中性的表达方式：
+- “Добре” → 可以用“Супер”、“Клас”、“Кайф”来表达积极情绪；
+- “Погано” → 可以用“Фігово”、“Хріново”、“Зле”来表达负面情绪；
+- “Дуже” → 可以用“Мега”、“Шалено”、“Капець”来强调程度。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Норм, Ок, Все добре
-- Без проблем, Нема питань
-- Файно, Класно, Круто
-- Та ну?, Серйозно?
+一些自然的表达方式包括：
+- “Норм, Ок, Все добре”（一切都好）；
+- “Без проблем, Нема питань”（没有问题）；
+- “Файно, Класно, Круто”（很好，很棒）；
+- “Та ну?”、“Серйозно?”（真的吗？）。
 
-## Reactions
+## 反应的表达
 
-React naturally:
-- Серйозно?, Справді?, Та ну!
-- Ого!, Нічого собі!, Капець!
-- Круто!, Клас!, Супер!
-- Хаха, лол in text
+在对话中要自然地回应：
+- “Серйозно?, Справді?”（真的吗？）；
+- “Ого!, Нічого собі!”（哇！真厉害！）；
+- “Круто!, Клас!, Супер!”（太棒了！）；
+- “Хаха, лол”（哈哈，哈哈）。
 
-## Ukrainian vs Russian
+## 乌克兰语与俄语的差异
 
-Ukrainian is distinct—don't mix:
-- Different vocabulary, grammar, particles
-- "І" not "И", "Є" not "Е"
-- Respect the language's uniqueness
-- Surzhyk (mix) exists but use pure Ukrainian
+乌克兰语和俄语有很大的区别，不要混淆：
+- 词汇、语法和语气词都不同；
+- “І”在乌克兰语中写作“І”，“Є”写作“Є”；
+- 要尊重乌克兰语的独特性；
+- 虽然存在“Surzhyk”（混合语），但应使用纯正的乌克兰语。
 
-## The "Native Test"
+## 最终测试
 
-Before sending: would a Ukrainian screenshot this as "AI-generated"? If yes—too formal, missing particles, too stiff. Add "ну" and warmth.
+在发送内容之前，可以想象一下：如果一个乌克兰人看到这段文字的截图，他会认为这是“AI生成的”吗？如果是这样，那就说明表达过于正式，缺少了必要的语气词，也显得生硬。因此，需要添加“ну”等词来让表达更加自然、亲切。

@@ -1,29 +1,29 @@
 ---
 name: auth-auditor
-description: Audit your authentication implementation for security flaws. Use when you need to verify your auth is actually secure.
+description: 审核您的身份验证实现是否存在安全漏洞。当您需要验证身份验证机制是否真正安全时，请使用此方法。
 ---
 
 # Auth Auditor
 
-You implemented auth. But did you do it right? This tool audits your authentication code for common security mistakes. Missing CSRF tokens, weak password hashing, insecure session management, JWT misuse. It checks all of it and tells you what needs fixing.
+您已经实现了用户认证功能，但它的实现是否正确呢？这款工具会检查您的认证代码中是否存在常见的安全问题，例如：缺少CSRF令牌、密码哈希算法不安全、会话管理不当、JWT（JSON Web Tokens）使用不当等。它会全面检测这些问题，并告诉您需要修复的地方。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-auth-check src/
 ```
 
-## What It Does
+## 功能介绍
 
-- Scans your auth implementation for security vulnerabilities
-- Checks password hashing algorithms and salt usage
-- Detects missing CSRF protection on state changing endpoints
-- Finds insecure session configuration and JWT problems
-- Reports issues with severity levels and specific fix instructions
+- 扫描您的认证实现，查找安全漏洞
+- 检查密码哈希算法及盐值的使用情况
+- 识别状态变更接口中缺失的CSRF保护机制
+- 发现不安全的会话配置和JWT相关问题
+- 以不同的严重程度报告问题，并提供具体的修复建议
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Audit your entire auth system
@@ -36,42 +36,42 @@ npx ai-auth-check src/auth/
 npx ai-auth-check src/middleware/ src/routes/
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use bcrypt or argon2 for passwords** - MD5 and SHA are not password hashing algorithms, no matter what that tutorial said
-- **Set httpOnly and secure flags on cookies** - Missing these is one of the most common auth mistakes
-- **Rotate JWT secrets** - Hardcoded secrets that never change are a ticking time bomb
-- **Rate limit login attempts** - Without rate limiting, brute force attacks are trivial
+- **使用bcrypt或argon2进行密码加密**：请注意，MD5和SHA并不是适用于密码加密的算法，无论相关教程如何说明。
+- **为cookie设置`httpOnly`和`secure`属性**：忽略这些设置是常见的认证错误之一。
+- **定期更新JWT密钥**：硬编码且永不更改的密钥会带来安全隐患。
+- **实施登录尝试速率限制**：如果没有速率限制，暴力攻击将变得非常容易。
 
-## When to Use This
+## 适用场景
 
-- Before launching any app that handles user accounts
-- After implementing a custom auth flow instead of using a library
-- When migrating from one auth provider to another
-- During security review of authentication related code
+- 在发布任何处理用户账户的应用程序之前
+- 在自行实现自定义认证流程后（而非使用第三方库时）
+- 在从一种认证方案迁移到另一种认证方案时
+- 在对认证相关代码进行安全审查时
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发工具之一。免费版本无需支付费用、无需注册，也不需要API密钥，只需使用即可。
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+**了解更多信息：**
+- GitHub：https://github.com/LXGIC-Studios
+- Twitter：https://x.com/lxgicstudios
+- Substack：https://lxgicstudios.substack.com
+- 官网：https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。
 
 ```bash
 npx ai-auth-check --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool scans your source code for authentication patterns including login handlers, session management, password storage, and token generation. It analyzes these against security best practices and common vulnerability patterns, then uses AI to generate context-specific fix recommendations.
+该工具会扫描您的源代码中的认证相关代码（包括登录处理逻辑、会话管理、密码存储及令牌生成机制），将其与安全最佳实践及常见漏洞模式进行对比，然后利用人工智能生成针对具体问题的修复建议。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。您可以随意使用该工具。

@@ -1,27 +1,27 @@
 ---
 name: design-system-components
 model: standard
-description: Patterns for building design system components using Surface primitives, CVA variants, and consistent styling. Use when building reusable UI components that follow design token architecture. Triggers on Surface component, CVA, class-variance-authority, component variants, design tokens.
+description: 使用 Surface 原语、CVA 变体以及一致的样式来构建设计系统组件的模式。适用于构建遵循设计令牌架构的可重用 UI 组件。这些模式会在 Surface 组件、CVA（Class-Variable-Authority）、组件变体以及设计令牌发生变化时被触发。
 ---
 
-# Design System Components
+# 设计系统组件
 
-Build reusable components that leverage design tokens with Surface primitives and CVA (class-variance-authority).
-
----
-
-## When to Use
-
-- Building component libraries with design tokens
-- Need variant-based styling (size, color, state)
-- Creating layered UI with consistent surfaces
-- Want type-safe component APIs
+构建可重用的组件，这些组件利用设计令牌（design tokens）结合 Surface 原语（Surface primitives）和 CVA（class-variance-authority）来实现功能。
 
 ---
 
-## Pattern 1: Surface Primitive
+## 使用场景
 
-Single component for all layered surfaces:
+- 使用设计令牌构建组件库
+- 需要根据变体（如大小、颜色、状态）进行样式调整
+- 创建具有统一外观的分层用户界面（layered UI）
+- 希望组件 API 具有类型安全性（type-safe）
+
+---
+
+## 模式 1：Surface 原语
+
+使用单个组件来处理所有分层界面：
 
 ```tsx
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -76,7 +76,7 @@ export function Surface({
 }
 ```
 
-### Usage
+### 使用方法
 
 ```tsx
 <Surface layer="panel" className="p-4">
@@ -94,7 +94,7 @@ export function Surface({
 
 ---
 
-## Pattern 2: CVA Button Variants
+## 模式 2：CVA 按钮变体
 
 ```tsx
 const buttonVariants = cva(
@@ -126,7 +126,7 @@ const buttonVariants = cva(
 
 ---
 
-## Pattern 3: Metric Display Component
+## 模式 3：度量显示组件
 
 ```tsx
 const metricVariants = cva(
@@ -183,7 +183,7 @@ export function Metric({
 
 ---
 
-## Pattern 4: Card with Header
+## 模式 4：带标题的卡片
 
 ```tsx
 interface CardProps {
@@ -217,7 +217,7 @@ export function Card({ title, description, action, children }: CardProps) {
 
 ---
 
-## Pattern 5: Badge/Chip Variants
+## 模式 5：徽章/芯片变体
 
 ```tsx
 const badgeVariants = cva(
@@ -241,9 +241,9 @@ const badgeVariants = cva(
 
 ---
 
-## Pattern 6: Composing Variants
+## 模式 6：组合变体
 
-Combine CVA with conditional classes:
+将 CVA 与条件类（conditional classes）结合使用：
 
 ```tsx
 function StatusIndicator({ 
@@ -279,25 +279,25 @@ function StatusIndicator({
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — Complete design system workflow
-- [distinctive-design-systems](../distinctive-design-systems/) — Token architecture and aesthetic foundations
-- [loading-state-patterns](../loading-state-patterns/) — Skeleton components for loading states
-
----
-
-## NEVER Do
-
-- **Build custom card containers** — Use Surface primitive
-- **Hardcode colors in components** — Use design tokens
-- **Skip variant types** — CVA provides type safety
-- **Mix styling approaches** — Pick CVA or cn(), not random inline styles
-- **Forget default variants** — Components should work without props
+- **元技能：** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — 完整的设计系统工作流程
+- [distinctive-design-systems](../distinctive-design-systems/) — 令牌架构与美学基础
+- [loading-state-patterns](../loading-state-patterns/) — 用于显示加载状态的骨架组件
 
 ---
 
-## Quick Reference
+## 绝对不要做的事情
+
+- **自定义卡片容器** — 应使用 Surface 原语
+- **在组件中硬编码颜色** — 应使用设计令牌
+- **忽略变体类型** — CVA 提供了类型安全性
+- **混合使用不同的样式方法** — 选择 CVA 或 cn()，而不是随意使用内联样式
+- **忽略默认变体** — 组件应能够在没有属性的情况下正常工作
+
+---
+
+## 快速参考
 
 ```tsx
 // 1. Define variants with CVA

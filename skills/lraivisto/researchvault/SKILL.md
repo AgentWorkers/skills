@@ -1,6 +1,6 @@
 ---
 name: researchvault
-description: "Local-first research orchestration engine. Manages state, synthesis, and optional background services (MCP/Watchdog)."
+description: "本地优先的研究调度引擎。负责管理状态、数据合成以及可选的后台服务（如 MCP/Watchdog）。"
 homepage: https://github.com/lraivisto/ResearchVault
 disable-model-invocation: true
 user-invocable: true
@@ -41,51 +41,44 @@ metadata:
 
 # ResearchVault 🦞
 
-**Local-first research orchestration engine.**
+**以本地数据为中心的研究编排引擎。**
 
-ResearchVault manages persistent state, synthesis, and autonomous verification for agents.
+ResearchVault 负责管理代理的持久化状态、数据合成以及自动验证功能。
 
-## Security & Privacy (Local First)
+## 安全性与隐私（以本地数据为主）  
+- **本地存储**：所有数据都存储在本地 SQLite 数据库（路径：`~/.researchvault/research_vault.db`）中，不进行任何云同步。  
+- **网络访问控制**：仅在执行用户请求的研究任务或启用 Brave Search 功能时才会建立出站连接（如配置了相关选项）。  
+- **SSRF（安全套接字层转发）加固**：默认情况下会严格限制内部网络访问，屏蔽本地/私有 IP 地址（如 `localhost`、`10.0.0.0/8` 等）。可通过 `--allow-private-networks` 参数来覆盖此设置。  
+- **手动启动的服务**：后台监控程序和 MCP 服务器位于 `scripts/services/` 目录中，需要手动启动。  
+- **严格限制**：设置 `disable-model-invocation: true` 可防止模型自动启动后台任务。  
 
-- **Local Storage**: All data is stored in a local SQLite database (~/.researchvault/research_vault.db). No cloud sync.
-- **Network Transparency**: Outbound connections occur ONLY for user-requested research or Brave Search (if configured). 
-- **SSRF Hardening**: Strict internal network blocking by default. Local/private IPs (localhost, 10.0.0.0/8, etc.) are blocked. Use `--allow-private-networks` to override.
-- **Manual Opt-in Services**: Background watchers and MCP servers are in `scripts/services/` and must be started manually.
-- **Strict Control**: `disable-model-invocation: true` prevents the model from autonomously starting background tasks.
-
-## Installation
-
+## 安装  
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-```
+```  
 
-## Quick Start
-
-1. **Initialize Project**:
+## 快速入门  
+1. **初始化项目**：  
    ```bash
    python scripts/vault.py init --objective "Analyze AI trends" --name "Trends-2026"
-   ```
-
-2. **Ingest Data**:
+   ```  
+2. **导入数据**：  
    ```bash
    python scripts/vault.py scuttle "https://example.com" --id "trends-2026"
-   ```
-
-3. **Autonomous Strategist**:
+   ```  
+3. **自动策略执行**：  
    ```bash
    python scripts/vault.py strategy --id "trends-2026"
-   ```
+   ```  
 
-## Optional Services (Manual Start)
+## 可选服务（需手动启动）  
+- **MCP 服务器**：`python scripts/services/mcp_server.py`  
+- **监控程序**：`python scripts/services/watchdog.py --once`  
 
-- **MCP Server**: `python scripts/services/mcp_server.py`
-- **Watchdog**: `python scripts/services/watchdog.py --once`
-
-## Provenance & Maintenance
-
-- **Maintainer**: lraivisto
-- **License**: MIT
-- **Issues**: [GitHub Issues](https://github.com/lraivisto/ResearchVault/issues)
-- **Security**: See [SECURITY.md](SECURITY.md)
+## 来源信息与维护  
+- **维护者**：lraivisto  
+- **许可证**：MIT 许可证  
+- **问题反馈**：[GitHub 问题页面](https://github.com/lraivisto/ResearchVault/issues)  
+- **安全性说明**：请参阅 [SECURITY.md](SECURITY.md) 文件。

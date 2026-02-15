@@ -1,6 +1,6 @@
 ---
 name: concierge
-description: Find accommodation contact details and run AI-assisted booking calls
+description: 查找住宿的联系方式，并通过人工智能辅助进行预订电话。
 version: 1.3.1
 triggers:
   - find contact
@@ -19,19 +19,19 @@ triggers:
   - direct booking call
 ---
 
-# Travel Concierge
+# 旅行礼宾服务
 
-Find contact details (phone, email, WhatsApp, Instagram, etc.) for accommodation listings and place AI booking calls.
+该服务可查询住宿房源的联系方式（电话、电子邮件、WhatsApp、Instagram等），并自动发起AI预订电话。
 
-## Capabilities
+## 功能
 
-### 1) Find contact details from a listing URL
+### 1) 从房源URL中提取联系方式
 
 ```bash
 concierge find-contact "<url>"
 ```
 
-### 2) Place an autonomous phone call
+### 2) 自动发起电话呼叫
 
 ```bash
 concierge call "+1-555-123-4567" \
@@ -42,25 +42,25 @@ concierge call "+1-555-123-4567" \
   --context "Prefer direct booking if rate beats Booking.com"
 ```
 
-The `call` command now auto-manages infra by default: if local server is down, it starts `ngrok` + call server automatically and stops both when the call ends.
+`call` 命令现在默认会自动管理相关基础设施：如果本地服务器不可用，它会自动启动 `ngrok` 并连接呼叫服务器；通话结束后，这两个服务也会同时停止。
 
-## Supported listing platforms
+## 支持的房源预订平台
 
 - **Airbnb**: `airbnb.com/rooms/...`
 - **Booking.com**: `booking.com/hotel/...`
 - **VRBO**: `vrbo.com/...`
 - **Expedia**: `expedia.com/...Hotel...`
 
-## Examples
+## 示例
 
-### Find contacts for an Airbnb listing
-Run:
+### 查询Airbnb房源的联系方式
+运行命令：
 ```bash
 concierge find-contact "https://www.airbnb.com/rooms/12345"
 ```
 
-### Start a call and control turns manually
-Run:
+### 手动控制电话呼叫的流程
+运行命令：
 ```bash
 concierge call "+1-555-123-4567" \
   --goal "Negotiate a direct booking rate" \
@@ -70,30 +70,28 @@ concierge call "+1-555-123-4567" \
   --interactive
 ```
 
-### JSON output for scripting (contact lookup)
+### 用于脚本编写的JSON输出（联系方式查询结果）
 ```bash
 concierge find-contact --json "https://..."
 ```
 
-### Verbose output
+### 详细输出（包含调试信息）
 ```bash
 concierge --verbose find-contact "https://..."
 ```
 
-## Configuration
+## 配置
 
-The CLI stores configuration in:
+该命令行工具（CLI）的配置文件位于：
 
 `~/.config/concierge/config.json5`
 
-### Optional for contact lookup
-
+### 用于联系方式查询的可选配置项
 ```bash
 concierge config set googlePlacesApiKey "your-key"
 ```
 
-### Required for AI phone calls
-
+### 发起AI电话呼叫所必需的配置项
 ```bash
 concierge config set twilioAccountSid "<sid>"
 concierge config set twilioAuthToken "<token>"
@@ -107,15 +105,14 @@ concierge config set anthropicApiKey "<key>"
 concierge config set ngrokAuthToken "<token>"
 ```
 
-Check values:
-
+### 配置值检查
 ```bash
 concierge config show
 ```
 
-## Notes
+## 注意事项
 
-- Contact extraction uses publicly available information.
-- `call` validates local dependencies before dialing (`ffmpeg` with MP3 decode support, and `ngrok` when auto-infra is needed).
-- `call` runs preflight checks for Twilio, Deepgram, and ElevenLabs quota before dialing.
-- When auto infra is used, server/ngrok logs are written under `~/.config/concierge/call-runs/<run-id>/`.
+- 联系方式提取基于公开可获取的信息。
+- `call` 命令在拨打电话前会验证所需的本地依赖项（包括支持MP3解码的 `ffmpeg` 以及自动启用基础设施时所需的 `ngrok`）。
+- 在拨打电话前，`call` 命令会检查Twilio、Deepgram和ElevenLabs的配额使用情况。
+- 当使用自动基础设施时，服务器和 `ngrok` 的日志会保存在 `~/.config/concierge/call-runs/<run-id>/` 目录下。

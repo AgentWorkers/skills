@@ -1,55 +1,55 @@
-# Jira PAT Skill
+# Jira PAT 技能
 
-Manage Jira issues on self-hosted/enterprise Jira instances using Personal Access Tokens (PAT). This skill is designed for environments where Basic Auth doesn't work due to SSO/SAML authentication.
+使用个人访问令牌（Personal Access Tokens, PAT）来管理自托管或企业版 Jira 实例中的问题。此技能适用于因单点登录（SSO）/SAML 身份验证而无法使用基本认证（Basic Auth）的环境。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when working with:
-- Self-hosted Jira instances (e.g., Red Hat, enterprise deployments)
-- Jira instances with SSO/SAML authentication
-- Environments where `jira-cli` or Basic Auth fails
+在以下情况下使用此技能：
+- 自托管的 Jira 实例（例如 Red Hat 部署）
+- 使用 SSO/SAML 身份验证的 Jira 实例
+- `jira-cli` 或基本认证失败的环境
 
-**Note:** For Atlassian Cloud with email + API token auth, use the `clawdbot-jira-skill` instead.
+**注意：**对于使用电子邮件 + API 令牌进行身份验证的 Atlassian Cloud，请使用 `clawdbot-jira-skill` 技能。
 
-## Prerequisites
+## 先决条件
 
-1. **Personal Access Token (PAT)**: Create one in Jira:
-   - Go to your Jira profile → Personal Access Tokens
-   - Create a new token with appropriate permissions
-   - Store it in environment variable `JIRA_PAT`
+1. **个人访问令牌（PAT）**：在 Jira 中创建一个令牌：
+   - 访问您的 Jira 个人资料 → 个人访问令牌
+   - 创建具有适当权限的新令牌
+   - 将其存储在环境变量 `JIRA_PAT` 中
 
-2. **Jira Base URL**: Your Jira instance URL in `JIRA_URL`
+2. **Jira 基本 URL**：您的 Jira 实例 URL，存储在 `JIRA_URL` 变量中
 
-## Environment Variables
+## 环境变量
 
 ```bash
 export JIRA_PAT="your-personal-access-token"
 export JIRA_URL="https://issues.example.com"
 ```
 
-## Tools
+## 工具
 
-This skill uses `curl` and `jq` for all operations.
+此技能使用 `curl` 和 `jq` 来执行所有操作。
 
-## Instructions
+## 指令
 
-### Get Issue Details
+### 获取问题详情
 
-Fetch full details of a Jira issue:
+获取 Jira 问题的完整详情：
 
 ```bash
 curl -s -H "Authorization: Bearer $JIRA_PAT" \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123" | jq
 ```
 
-Get specific fields only:
+仅获取特定字段：
 
 ```bash
 curl -s -H "Authorization: Bearer $JIRA_PAT" \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123?fields=summary,status,description" | jq
 ```
 
-### Search Issues (JQL)
+### 搜索问题（JQL）
 
 ```bash
 # Find child issues of an epic
@@ -61,25 +61,25 @@ curl -s -H "Authorization: Bearer $JIRA_PAT" \
   "$JIRA_URL/rest/api/2/search?jql=project%3DPROJ%20AND%20status%3DOpen" | jq
 ```
 
-Common JQL patterns:
-- `parent=EPIC-123` - Child issues of an epic
-- `project=PROJ AND status=Open` - Open issues in project
-- `assignee=currentUser()` - Your assigned issues
-- `labels=security` - Issues with specific label
-- `updated >= -7d` - Recently updated
+常见的 JQL 模式：
+- `parent=EPIC-123` - 某个史诗任务的子问题
+- `project=PROJ AND status=Open` - 项目中的未解决问题
+- `assignee=currentUser()` - 被分配给您的任务
+- `labels=security` - 带有特定标签的问题
+- `updated >= -7d` - 最近更新的问题
 
-### Get Available Transitions
+### 获取可用的问题状态转换
 
-Before changing status, query available transitions:
+在更改问题状态之前，查询可用的状态转换：
 
 ```bash
 curl -s -H "Authorization: Bearer $JIRA_PAT" \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123/transitions" | jq '.transitions[] | {id, name}'
 ```
 
-### Transition (Change Status)
+### 更改问题状态
 
-Close an issue with a comment:
+通过添加评论来关闭问题：
 
 ```bash
 curl -s -X POST \
@@ -94,7 +94,7 @@ curl -s -X POST \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123/transitions"
 ```
 
-### Add a Comment
+### 添加评论
 
 ```bash
 curl -s -X POST \
@@ -104,7 +104,7 @@ curl -s -X POST \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123/comment"
 ```
 
-### Update Issue Fields
+### 更新问题字段
 
 ```bash
 curl -s -X PUT \
@@ -119,7 +119,7 @@ curl -s -X PUT \
   "$JIRA_URL/rest/api/2/issue/PROJECT-123"
 ```
 
-### Create an Issue
+### 创建问题
 
 ```bash
 curl -s -X POST \
@@ -137,7 +137,7 @@ curl -s -X POST \
   "$JIRA_URL/rest/api/2/issue"
 ```
 
-## Useful jq Filters
+## 有用的 `jq` 过滤器
 
 ```bash
 # Summary and status
@@ -150,14 +150,14 @@ jq '.issues[] | {key: .key, summary: .fields.summary, status: .fields.status.nam
 jq '.fields.issuelinks[] | {type: .type.name, key: (.inwardIssue // .outwardIssue).key}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| 401 Unauthorized | Invalid/expired PAT | Regenerate token, check `Bearer` format |
-| 404 Not Found | Issue doesn't exist or no access | Verify issue key and permissions |
-| 400 Bad Request on transition | Invalid transition ID | Query available transitions first |
+| 401 未经授权 | 令牌无效/过期 | 重新生成令牌，并检查 `Bearer` 格式 |
+| 404 未找到 | 问题不存在或没有访问权限 | 验证问题键和权限 |
+| 400 转换请求错误 | 转换 ID 无效 | 先查询可用的转换选项 |
 
-## Comparison with Basic Auth Skills
+## 与基本认证技能的比较
 
-This skill uses **Bearer token authentication** (`Authorization: Bearer <PAT>`), which works with self-hosted Jira instances using SSO/SAML. For Atlassian Cloud with email + API token, use skills that implement Basic Auth instead.
+此技能使用 **Bearer 令牌认证**（`Authorization: Bearer <PAT>`），适用于使用 SSO/SAML 的自托管 Jira 实例。对于使用电子邮件 + API 令牌的 Atlassian Cloud，应使用实现基本认证的技能。

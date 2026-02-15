@@ -1,83 +1,75 @@
 ---
 name: clawdbites
-description: Extract recipes from Instagram reels. Use when a user sends an Instagram reel link and wants to get the recipe from the caption. Parses ingredients, instructions, and macros into a clean format.
+description: 从 Instagram Reels 中提取食谱信息。当用户发送一个 Instagram Reel 链接并希望从中获取食谱内容时，该功能可以提取食谱的配料、制作步骤以及相关宏指令，并将其转换为格式清晰的文本。
 homepage: https://github.com/kylelol/ClawdBites
 metadata: {"clawdbot":{"emoji":"🦞","os":["darwin","linux"],"requires":{"bins":["yt-dlp","ffmpeg","whisper"]},"install":[{"id":"yt-dlp","kind":"brew","formula":"yt-dlp","bins":["yt-dlp"],"label":"Install yt-dlp via Homebrew"},{"id":"ffmpeg","kind":"brew","formula":"ffmpeg","bins":["ffmpeg"],"label":"Install ffmpeg via Homebrew"},{"id":"whisper","kind":"shell","command":"pip3 install --user openai-whisper","label":"Install Whisper (local, no API key)"}]}}
 ---
 
-# Instagram Recipe Extractor
+# Instagram食谱提取器
 
-Extract recipes from Instagram reels using a multi-layered approach:
-1. **Caption parsing** — Instant, check description first
-2. **Audio transcription** — Whisper (local, no API key)
-3. **Frame analysis** — Vision model for on-screen text
+本工具采用多层次方法从Instagram视频中提取食谱信息：
 
-No Instagram login required. Works on public reels.
+1. **字幕解析**：首先快速检查视频的描述部分，以获取食谱的基本信息。
+2. **音频转录**：使用本地工具`whisper`进行音频转录（无需API密钥）。
+3. **帧分析**：利用视觉模型识别屏幕上显示的文字内容。
 
-## When to Use
+无需登录Instagram，适用于公开发布的视频。
 
-- User sends an Instagram reel link
-- User mentions "recipe from Instagram" or "save this reel"
-- User wants to extract recipe details from a video post
+## 使用场景
 
-## How It Works (MANDATORY FLOW)
+- 用户提供Instagram视频链接。
+- 用户提及“Instagram食谱”或“保存此视频”。
+- 用户希望从视频中提取食谱详情。
 
-**ALWAYS follow this complete flow — do not stop after caption if instructions are missing:**
+## 工作流程（必须遵循的步骤）
 
-1. User sends Instagram reel URL
-2. Extract metadata using yt-dlp (`--dump-json`)
-3. Parse the caption for recipe details
-4. **Check completeness:** Does caption have BOTH ingredients AND instructions?
-   - ✅ **YES:** Present the recipe
-   - ❌ **NO (missing instructions or incomplete):** **Automatically proceed to audio transcription** — do NOT stop or ask the user
-5. If audio transcription needed:
-   - Download video: `yt-dlp -o "/tmp/reel.mp4" "URL"`
-   - Extract audio: `ffmpeg -y -i /tmp/reel.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 /tmp/reel.wav`
-   - Transcribe: `whisper /tmp/reel.wav --model base --output_format txt --output_dir /tmp`
-   - Merge caption ingredients with audio instructions
-6. Present clean, formatted recipe (combining caption + audio as needed)
-7. User decides what to do (save to notes, add to wishlist, etc.)
+**请务必按照以下完整流程操作，即使字幕信息不完整也不要中断：**
 
-**Completeness check heuristics:**
-- Has ingredients = contains 3+ quantity+item patterns (e.g., "1 cup flour", "2 lbs chicken")
-- Has instructions = contains action verbs (blend, cook, bake, mix, pour, add) + sequence OR numbered steps
+1. 用户提供Instagram视频链接。
+2. 使用`yt-dlp`工具提取视频元数据（`--dump-json`选项）。
+3. 解析字幕以获取食谱详情。
+4. **完整性检查**：字幕中是否同时包含食材和制作步骤？
+   - ✅ **是**：显示食谱信息。
+   - ❌ **否（缺少步骤或信息不完整）**：**自动进入音频转录步骤**，无需询问用户。
 
-## Extraction Command
+**如果需要音频转录：**
+   - 下载视频：`yt-dlp -o "/tmp/reel.mp4" "URL"`
+   - 提取音频：`ffmpeg -y -i /tmp/reel.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 /tmp/reel.wav`
+   - 转录音频：`whisper /tmp/reel.wav --model base --output_format txt --output_dir /tmp`
+   - 将字幕中的食材信息与音频转录内容合并。
+5. 以清晰、格式化的形式呈现提取到的食谱（根据需要结合字幕和音频内容）。
+6. 用户可选择保存到笔记、添加到愿望清单等。
+
+**完整性检查规则：**
+- **食材**：字幕中应包含具体的数量和食材名称（例如：“1杯面粉”、“2磅鸡肉”）。
+- **制作步骤**：字幕中应包含动词（如“搅拌”、“烹饪”、“烘烤”等）以及步骤顺序。
+
+## 提取命令
 
 ```bash
 yt-dlp --dump-json "https://www.instagram.com/reel/SHORTCODE/" 2>/dev/null
 ```
 
-**Key fields from JSON output:**
-- `description` — The caption containing the recipe
-- `uploader` — Creator's name
-- `channel` — Creator's handle
-- `webpage_url` — Original URL
-- `like_count` — Popularity indicator
+**JSON输出中的关键字段：**
+- `description`：包含食谱信息的字幕内容。
+- `uploader`：创作者的名称。
+- `channel`：创作者的Instagram账号。
+- `webpage_url`：视频的原始链接。
+- `like_count`：视频的点赞数量（表示受欢迎程度）。
 
-## Recipe Parsing
+## 食谱解析规则
 
-Look for these patterns in the caption:
+在字幕中查找以下信息：
 
-**Macros:**
-- "X Calories | Xg P | Xg C | Xg F"
-- "Macros per serving"
-- "Cal/Protein/Carbs/Fat"
+- **宏量营养信息**：例如“X卡路里 | X克蛋白质 | X克碳水化合物 | X克脂肪”。
+- **每份的宏量营养信息**。
+- **食材**：以数量开头的行（如“1杯面粉”、“2汤匙”）。
+- **测量单位**：如“盎司（oz）”、“杯（cup）”等。
+- **列表格式**：使用表情符号（🥩 🌽 🧀等）标记的食材列表。
 
-**Ingredients:**
-- Lines starting with quantities (1 cup, 2 tbsp, 24oz)
-- Lines with measurement units
-- Emoji bullet points (🥩 🌽 🧀 etc.)
+## 输出格式
 
-**Sections:**
-- "For the [component]:"
-- "Ingredients:"
-- "Instructions:"
-- "Directions:"
-
-## Output Format
-
-Present extracted recipe cleanly:
+以清晰、易于阅读的形式呈现提取到的食谱信息。
 
 ```
 ## [Recipe Name]
@@ -99,19 +91,18 @@ Present extracted recipe cleanly:
 Source: [original URL]
 ```
 
-## User Actions After Extraction
+## 用户操作选项
 
-Let the user decide what to do:
-- "Save to my recipes" → Save to Apple Notes (if meal-planner skill available)
-- "Add to wishlist" → Save to `memory/recipe-wishlist.json`
-- "Just show me" → Display only, no save
-- "Plan this for next week" → Hand off to meal-planner skill
+提取完成后，用户可以选择以下操作：
+- **保存到笔记**：将食谱保存到Apple Notes。
+- **添加到愿望清单**：将食谱添加到`memory/recipe-wishlist.json`文件中。
+- **仅查看**：仅显示食谱信息，不进行保存。
+- **计划下周的餐食**：将食谱信息传递给 meal-planner 工具进行后续处理。
 
-## Wishlist Storage
+## 愿望清单存储（可选）
 
-Optional storage for recipes user wants to try later:
+用户可选择性地将感兴趣的食谱保存到`memory/recipe-wishlist.json`文件中。
 
-**memory/recipe-wishlist.json:**
 ```json
 {
   "recipes": [
@@ -136,143 +127,113 @@ Optional storage for recipes user wants to try later:
 }
 ```
 
-## Error Handling
+## 错误处理
 
-**If yt-dlp fails:**
-- Check if URL is valid Instagram reel format
-- May be a private account — inform user
-- Suggest user paste caption text manually as fallback
+- **如果`yt-dlp`执行失败**：检查提供的链接是否为有效的Instagram视频格式。
+- 如果视频来自私人账号，会通知用户。
+- 建议用户手动复制字幕内容作为备用方案。
 
-**If no recipe found in caption (IMPORTANT):**
+**如果字幕中未找到食谱信息（非常重要）：**
 
-After extracting, scan the caption for recipe indicators:
-- Ingredient quantities (numbers + units like oz, cups, tbsp, lbs)
-- Recipe sections ("For the...", "Ingredients:", "Instructions:")
-- Cooking verbs (bake, cook, sauté, mix, combine)
-- Macro information (calories, protein, carbs, fat)
+提取完成后，再次检查字幕中的以下内容：
+- 食材的数量和单位（如“盎司、杯、汤匙、磅”）。
+- 食谱相关的部分（如“食材”、“制作步骤”等）。
+- 厨饪动词（如“烘烤”、“搅拌”等）。
+- 宏量营养信息（如卡路里、蛋白质、碳水化合物、脂肪）。
 
-**If none found, tell the user clearly:**
+**如果仍未找到食谱信息，请明确告知用户：**
 
-> "I pulled the caption but it doesn't look like the recipe is there — it might just be a teaser or the recipe is only shown in the video itself. Here's what the caption says:
+> “虽然提取了字幕，但看起来这里没有食谱信息——可能这只是视频的预告，或者食谱内容仅在视频中显示。以下是字幕内容：”
 > 
-> [show caption]
+> [显示字幕内容]
 > 
-> A few options:
-> 1. Check the comments — sometimes creators post recipes there
-> 2. Check their bio link — might lead to the full recipe
-> 3. Describe what you saw in the video and I can help find a similar recipe"
+> 有以下几种处理方式：
+> 1. 查看评论区——有时创作者会在评论区发布完整食谱。
+> 2. 查看创作者的个人简介链接——可能包含完整食谱。
+> 3. 请描述你在视频中看到的内容，我会帮你找到类似的食谱。”
 
-**Recipe detection heuristics:**
-```
-HAS_RECIPE if caption contains:
-- 3+ ingredient-like patterns (quantity + food item)
-- OR "recipe" + ingredient list
-- OR macro breakdown + ingredients
-- OR numbered/bulleted instructions
+## 与meal-planner工具的集成
 
-NO_RECIPE if caption is:
-- Mostly hashtags
-- Just a description/teaser
-- Under 100 characters
-- No quantities or measurements
-```
+meal-planner工具可以参考此功能：
+- 在规划餐食时，查看用户愿望清单中的未尝试过的食谱。
+- 推荐与用户库存食材匹配的食谱。
+- 在食谱被使用后，将其标记为“已尝试”。
 
-## Integration with meal-planner
+## 音频转录（第二版）（强制执行的备用方案）
 
-The meal-planner skill can reference this skill:
-- When planning meals, check wishlist for untried recipes
-- Suggest wishlist recipes that match pantry items
-- Mark recipes as "tried" after they're used in a meal plan
+**如果字幕中缺少制作步骤，必须自动进行音频转录。**无需询问用户，直接执行此步骤。因为很多创作者会在字幕中列出食材，但会在音频中说明制作步骤。
 
-## Audio Transcription (V2) — MANDATORY FALLBACK
-
-**When caption is missing instructions, ALWAYS transcribe the audio automatically.** Do not stop and ask the user — just do it. This is the most common case since creators often put ingredients in captions but speak the instructions.
-
-**Step 1: Download video**
+**步骤1：下载视频**  
 ```bash
 yt-dlp -o "/tmp/reel.mp4" "https://instagram.com/reel/XXX"
 ```
 
-**Step 2: Extract audio**
+**步骤2：提取音频**  
 ```bash
 ffmpeg -i /tmp/reel.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 /tmp/reel.wav
 ```
 
-**Step 3: Transcribe with Whisper**
+**步骤3：使用whisper进行音频转录**  
 ```bash
 /Users/kylekirkland/Library/Python/3.14/bin/whisper /tmp/reel.wav --model base --output_format txt --output_dir /tmp
 ```
 
-**Step 4: Parse transcript for recipe**
-Look for cooking instructions, ingredients mentioned verbally.
+**步骤4：从转录文本中提取食谱信息**  
+查找音频中提到的制作步骤和食材信息。
 
-## Inference for Missing Measurements
+## 缺少测量单位的处理规则
 
-**ALWAYS infer quantities when not provided.** Never present a recipe without amounts — estimate based on context and standard package sizes.
+**当食谱中未提供具体数量时，必须进行估算。**切勿在没有数量信息的情况下直接呈现食谱，应根据上下文和标准包装规格进行估算。
 
-### Vague Language → Specific Amounts
+### 不明确的语言对应的数量估算
 
-| What they say | Infer |
+| 用户描述 | 估算数量 |
 |--------------|-------|
-| "some chicken" | ~1 lb |
-| "a bit of garlic" | 2-3 cloves |
-| "handful of spinach" | ~2 cups |
-| "drizzle of oil" | 1-2 tbsp |
-| "season to taste" | ½ tsp salt, ¼ tsp pepper |
-| "splash of soy sauce" | 1-2 tbsp |
-| "a few tablespoons" | 2-3 tbsp |
-| "some rice" | 1 cup dry |
-| "cheese on top" | ½ - 1 cup shredded |
-| "diced onion" | 1 medium onion |
-| "bell peppers" | 2 peppers |
+| “一些鸡肉” | 约1磅 |
+| “少许大蒜” | 2-3瓣 |
+| “一把菠菜” | 约2杯 |
+| “少许油” | 1-2汤匙 |
+| “适量调味料” | ½茶匙盐，¼茶匙胡椒 |
+| “少许酱油” | 1-2汤匙 |
+| “几汤匙” | 2-3汤匙 |
+| “一些米饭” | 1杯干米 |
+| “表面撒奶酪” | ½-1杯奶酪丝 |
+| “切碎的洋葱” | 1个中等大小的洋葱 |
+| “甜椒” | 2个甜椒 |
 
-### Standard Package Sizes (when item mentioned without amount)
+### 标准包装规格（当食材未指定数量时）
 
-| Ingredient | Standard Package | Infer |
+| 食材 | 标准包装规格 | 估算数量 |
 |------------|------------------|-------|
-| Puff pastry | 17oz sheet | 1 sheet |
-| Ground beef/turkey | 1 lb pack | 1 lb |
-| Chicken breast | ~1.5 lb pack | 1.5 lbs |
-| Sausage links | 14oz / 4-5 links | 1 package |
-| Bacon | 12oz / 12 slices | ½ package (6 slices) |
-| Shredded cheese | 8oz bag | 1-2 cups |
-| Tortillas | 8-10 count | 1 package |
-| Canned beans | 15oz can | 1 can |
-| Broth/stock | 32oz carton | 1-2 cups |
-| Pasta | 16oz box | 8oz (half box) |
-| Rice | 2 lb bag | 1-2 cups dry |
+| 膨皮 | 17盎司/张 | 1张 |
+| 牛肉/火鸡末 | 1磅/包 | 1包 |
+| 鸡胸肉 | 约1.5磅/包 | 1.5磅 |
+- 香肠 | 14盎司/4-5根 | 1包 |
+- 培根 | 12盎司/12片 | ½包（6片） |
+- 奶酪丝 | 8盎司/袋 | 1-2杯 |
+- 面饼 | 8-10张 | 1包 |
+- 罐装豆类 | 15盎司/罐 | 1罐 |
+- 高汤/汤料 | 32盎司/盒 | 1-2杯 |
+- 意大利面 | 16盎司/盒 | 8盎司（半盒） |
+- 米饭 | 2磅/袋 | 1-2杯干米 |
 
-### Context-Aware Scaling
+### 根据上下文调整用量
 
-**By recipe type:**
-- Stir fry for 2 → 1 lb protein, 4 cups veggies
-- Soup/stew → 1.5-2 lbs protein, 4 cups broth
-- Sheet pan meal → 1.5 lbs protein, 3-4 cups veggies
-- Appetizers → smaller portions, estimate ~12-15 pieces per batch
+- **根据食谱类型调整用量：**
+  - 炒菜：1磅蛋白质，4杯蔬菜。
+  - 汤/炖菜：1.5-2磅蛋白质，4杯高汤。
+  - 平底锅菜肴：1.5磅蛋白质，3-4杯蔬菜。
+- **根据份量调整：**
+  - “可供4人食用”：按4人份量调整用量。
+  - “为下周准备餐食”：假设5-8人份量。
+- **根据用户设定的蛋白质目标调整：**
+  - 每份40-50克蛋白质：每份约6-8盎司熟肉。
 
-**By servings mentioned:**
-- "Serves 4" → Scale standard amounts for 4
-- "Meal prep for the week" → Assume 5-8 servings
-- No servings mentioned → Default to 4 servings
+**输出格式**
 
-**By protein target (if user has macro goals):**
-- 40-50g protein per serving → ~6-8oz cooked meat per portion
-- Scale recipe protein accordingly
+始终明确标注估算的数量，让用户知道哪些信息来自字幕，哪些是估算值。
 
-### Output Format
-
-Always present inferred amounts clearly:
-```
-### Ingredients
-- 1 lb ground turkey *(estimated)*
-- 1 medium onion, diced *(estimated)*
-- 2 cups broth *(estimated based on typical soup)*
-```
-
-Mark inferred quantities with *(estimated)* so user knows what came from the source vs inference.
-
-## Combined Extraction Flow
-
+**综合提取流程**  
 ```
 1. TRY CAPTION (instant)
    └── yt-dlp --dump-json → parse description
@@ -311,11 +272,11 @@ Mark inferred quantities with *(estimated)* so user knows what came from the sou
    └── Offer: search for similar recipe based on video title/description
 ```
 
-## Frame Analysis
+## 帧分析
 
-Extract key frames and analyze with vision model.
+提取关键帧，并使用视觉模型进行分析。
 
-**Extract frames:**
+**提取帧内容：**  
 ```bash
 # Extract 1 frame every 5 seconds
 ffmpeg -i /tmp/reel.mp4 -vf "fps=1/5" /tmp/frame_%02d.jpg
@@ -324,14 +285,14 @@ ffmpeg -i /tmp/reel.mp4 -vf "fps=1/5" /tmp/frame_%02d.jpg
 ffmpeg -i /tmp/reel.mp4 -vf "select='not(mod(n,30))'" -vsync vfr /tmp/frame_%02d.jpg
 ```
 
-**Send to vision model:**
-Use Claude's image analysis to read each frame:
-- Recipe cards / title screens
-- Ingredient lists shown on screen
-- Measurements in text overlays
-- Step-by-step instructions displayed
+**发送给视觉模型：**  
+使用Claude图像分析工具解析每个帧：
+- 视频中的食谱卡片/标题屏幕。
+- 屏幕上显示的食材列表。
+- 文本中的测量单位。
+- 逐步显示的制作步骤。
 
-**Vision prompt:**
+**视觉模型处理指令：**  
 ```
 Analyze this frame from a cooking video. Extract any:
 - Recipe name or title
@@ -343,32 +304,27 @@ Analyze this frame from a cooking video. Extract any:
 If no recipe text is visible, respond with "No recipe text found."
 ```
 
-**Merge strategy:**
-- Audio transcript = primary source (spoken instructions)
-- Frame analysis = supplement (exact measurements, recipe cards)
-- Combine both, prefer specific measurements from visual over inferred from audio
+**信息合并策略：**
+- 音频转录内容为主要信息来源（口头制作步骤）。
+- 帧分析结果为补充信息（精确的测量数据和食谱卡片）。
+- 优先使用视觉分析得到的具体测量数据，而非音频中的估算值。
 
-## Pinned Comment Detection
+## 检测评论中的固定食谱链接
 
-Scan caption for these phrases (case-insensitive):
-- "recipe pinned"
-- "pinned in comments"
-- "check comments"
-- "in the comments"
-- "comment below"
-- "recipe below"
-- "full recipe in comments"
+在字幕中查找以下短语（不区分大小写）：
+- “食谱已固定”。
+- “评论中固定了食谱链接”。
+- “查看评论”。
+- “在评论区”。
+- “评论中的食谱”。
 
-If detected, flag and notify user after extraction:
+如果检测到这些短语，在提取完成后通知用户：
 
-> "Heads up — the creator said the recipe is pinned in the comments. 
-> I got what I could from the audio, but yt-dlp can't access pinned comments 
-> without login. If you want the exact recipe, copy the pinned comment and 
-> send it to me — I'll format it properly."
+> “注意：创作者表示食谱链接在评论区。虽然我已从音频中提取了部分信息，但由于无法登录Instagram，无法获取评论区的固定链接。如果您需要完整食谱，请复制评论内容并发送给我，我会为您整理好。”
 
-## Requirements
+## 所需软件**
 
-- `yt-dlp` — `brew install yt-dlp`
-- `ffmpeg` — `brew install ffmpeg`
-- `whisper` — `pip3 install openai-whisper` (runs locally, no API key)
-- No Instagram login required for public reels
+- `yt-dlp`：`brew install yt-dlp`
+- `ffmpeg`：`brew install ffmpeg`
+- `whisper`：`pip3 install openai-whisper`（在本地运行，无需API密钥）
+- 公开发布的视频无需Instagram登录即可使用。

@@ -1,113 +1,113 @@
 ---
 name: elevenlabs-voices
 version: 2.1.5
-description: High-quality voice synthesis with 18 personas, 32 languages, sound effects, batch processing, and voice design using ElevenLabs API.
+description: 使用 ElevenLabs API，提供高质量的语音合成服务，支持 18 种人物角色（personas）、32 种语言、音效功能，以及批量处理和语音设计功能。
 tags: [tts, voice, speech, elevenlabs, audio, sound-effects, voice-design, multilingual]
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"ELEVEN_API_KEY":"required","ELEVENLABS_API_KEY":"optional"},"note":"Set ELEVEN_API_KEY. ELEVENLABS_API_KEY is an accepted alias."}}}
 ---
 
 # ElevenLabs Voice Personas v2.1
 
-Comprehensive voice synthesis toolkit using ElevenLabs API.
+这是一个全面的语音合成工具包，支持使用 ElevenLabs 的 API。
 
-## 🚀 First Run - Setup Wizard
+## 🚀 首次使用 - 设置向导
 
-When you first use this skill (no `config.json` exists), run the interactive setup wizard:
+当您首次使用此功能时（如果不存在 `config.json` 文件），请运行交互式设置向导：
 
 ```bash
 python3 scripts/setup.py
 ```
 
-The wizard will guide you through:
-1. **API Key** - Enter your ElevenLabs API key (required)
-2. **Default Voice** - Choose from popular voices (Rachel, Adam, Bella, etc.)
-3. **Language** - Set your preferred language (32 supported)
-4. **Audio Quality** - Standard or high quality output
-5. **Cost Tracking** - Enable usage and cost monitoring
-6. **Budget Limit** - Optional monthly spending cap
+向导将指导您完成以下步骤：
+1. **API 密钥** - 输入您的 ElevenLabs API 密钥（必需）
+2. **默认语音** - 从常见的语音中选择（如 Rachel、Adam、Bella 等）
+3. **语言** - 设置您喜欢的语言（支持 32 种语言）
+4. **音频质量** - 选择标准或高质量的输出
+5. **成本跟踪** - 启用使用情况和成本监控
+6. **预算限制** - 可选的每月支出上限
 
-**🔒 Privacy:** Your API key is stored locally in `config.json` only. It never leaves your machine and is automatically excluded from git via `.gitignore`.
+**🔒 隐私保护：** 您的 API 密钥仅存储在 `config.json` 文件中，不会离开您的设备，并且会通过 `.gitignore` 文件自动排除在 Git 仓库之外。
 
-To reconfigure at any time, simply run the setup wizard again.
-
----
-
-## ✨ Features
-
-- **18 Voice Personas** - Carefully curated voices for different use cases
-- **32 Languages** - Multi-language synthesis with the multilingual v2 model
-- **Streaming Mode** - Real-time audio output as it generates
-- **Sound Effects (SFX)** - AI-generated sound effects from text prompts
-- **Batch Processing** - Process multiple texts in one go
-- **Cost Tracking** - Monitor character usage and estimated costs
-- **Voice Design** - Create custom voices from descriptions
-- **Pronunciation Dictionary** - Custom word pronunciation rules
-- **OpenClaw Integration** - Works with OpenClaw's built-in TTS
+如果您需要重新配置，只需再次运行设置向导即可。
 
 ---
 
-## 🎙️ Available Voices
+## ✨ 主要功能
 
-| Voice | Accent | Gender | Persona | Best For |
+- **18 种语音角色** - 为不同场景精心挑选的语音
+- **32 种语言** - 支持多语言合成
+- **流式模式** - 生成音频时实时输出
+- **音效（SFX）** - 从文本描述中生成 AI 驱动的音效
+- **批量处理** - 一次处理多个文本
+- **成本跟踪** - 监控语音使用情况和预估成本
+- **语音设计** - 根据描述创建自定义语音
+- **发音词典** - 自定义单词的发音规则
+- **OpenClaw 集成** - 与 OpenClaw 的内置 TTS 功能兼容
+
+---
+
+## 🎙️ 可用语音
+
+| 语音 | 口音 | 性别 | 角色 | 适用场景 |
 |-------|--------|--------|---------|----------|
-| rachel | 🇺🇸 US | female | warm | Conversations, tutorials |
-| adam | 🇺🇸 US | male | narrator | Documentaries, audiobooks |
-| bella | 🇺🇸 US | female | professional | Business, presentations |
-| brian | 🇺🇸 US | male | comforting | Meditation, calm content |
-| george | 🇬🇧 UK | male | storyteller | Audiobooks, storytelling |
-| alice | 🇬🇧 UK | female | educator | Tutorials, explanations |
-| callum | 🇺🇸 US | male | trickster | Playful, gaming |
-| charlie | 🇦🇺 AU | male | energetic | Sports, motivation |
-| jessica | 🇺🇸 US | female | playful | Social media, casual |
-| lily | 🇬🇧 UK | female | actress | Drama, elegant content |
-| matilda | 🇺🇸 US | female | professional | Corporate, news |
-| river | 🇺🇸 US | neutral | neutral | Inclusive, informative |
-| roger | 🇺🇸 US | male | casual | Podcasts, relaxed |
-| daniel | 🇬🇧 UK | male | broadcaster | News, announcements |
-| eric | 🇺🇸 US | male | trustworthy | Business, corporate |
-| chris | 🇺🇸 US | male | friendly | Tutorials, approachable |
-| will | 🇺🇸 US | male | optimist | Motivation, uplifting |
-| liam | 🇺🇸 US | male | social | YouTube, social media |
+| Rachel | 美国 | 女性 | 温暖 | 对话、教程 |
+| Adam | 美国 | 男性 | 叙述者 | 纪录片、有声书 |
+| Bella | 美国 | 女性 | 专业 | 商务、演讲 |
+| Brian | 美国 | 男性 | 舒缓的 | 冥想、轻松内容 |
+| George | 英国 | 男性 | 讲故事的人 | 有声书、故事讲述 |
+| Alice | 英国 | 女性 | 教育者 | 教程、解释 |
+| Callum | 美国 | 男性 | 有趣的 | 游戏、轻松氛围 |
+| Charlie | 澳大利亚 | 男性 | 充满活力的 | 体育、激励性内容 |
+| Jessica | 美国 | 女性 | 有趣的 | 社交媒体、非正式场合 |
+| Lily | 英国 | 女性 | 演员 | 戏剧、优雅内容 |
+| Matilda | 美国 | 女性 | 专业 | 企业、新闻 |
+| River | 美国 | 中性 | 中立的语气 | 适合所有人、信息性内容 |
+| Roger | 美国 | 男性 | 非正式 | 播客、轻松氛围 |
+| Daniel | 英国 | 男性 | 广播员 | 新闻、公告 |
+| Eric | 美国 | 男性 | 可信赖的 | 商务、企业场景 |
+| Chris | 美国 | 男性 | 友好的 | 教程、易于接近 |
+| Will | 美国 | 男性 | 乐观的 | 激励人心、积极向上的内容 |
+| Liam | 美国 | 男性 | 社交型 | YouTube、社交媒体 |
 
-## 🎯 Quick Presets
+## 🎯 快速预设
 
-- `default` → rachel (warm, friendly)
-- `narrator` → adam (documentaries)
-- `professional` → matilda (corporate)
-- `storyteller` → george (audiobooks)
-- `educator` → alice (tutorials)
-- `calm` → brian (meditation)
-- `energetic` → liam (social media)
-- `trustworthy` → eric (business)
-- `neutral` → river (inclusive)
-- `british` → george
-- `australian` → charlie
-- `broadcaster` → daniel (news)
+- `default` → Rachel（温暖、友好的语气）
+- `narrator` → Adam（适合纪录片）
+- `professional` → Matilda（适合企业场景）
+- `storyteller` → George（适合有声书）
+- `educator` → Alice（适合教程）
+- `calm` → Brian（适合冥想）
+- `energetic` → Liam（适合社交媒体）
+- `trustworthy` → Eric（适合商务场景）
+- `neutral` → River（适合中立的语气）
+- `british` → George（英式口音）
+- `australian` → Charlie（澳大利亚口音）
+- `broadcaster` → Daniel（适合新闻）
 
 ---
 
-## 🌍 Supported Languages (32)
+## 🌍 支持的语言（32 种）
 
-The multilingual v2 model supports these languages:
+多语言 v2 模型支持以下语言：
 
-| Code | Language | Code | Language |
+| 代码 | 语言 | 代码 | 语言 |
 |------|----------|------|----------|
-| en | English | pl | Polish |
-| de | German | nl | Dutch |
-| es | Spanish | sv | Swedish |
-| fr | French | da | Danish |
-| it | Italian | fi | Finnish |
-| pt | Portuguese | no | Norwegian |
-| ru | Russian | tr | Turkish |
-| uk | Ukrainian | cs | Czech |
-| ja | Japanese | sk | Slovak |
-| ko | Korean | hu | Hungarian |
-| zh | Chinese | ro | Romanian |
-| ar | Arabic | bg | Bulgarian |
-| hi | Hindi | hr | Croatian |
-| ta | Tamil | el | Greek |
-| id | Indonesian | ms | Malay |
-| vi | Vietnamese | th | Thai |
+| en | 英语 | pl | 波兰语 |
+| de | 德语 | nl | 荷兰语 |
+| es | 西班牙语 | sv | 瑞典语 |
+| fr | 法语 | da | 丹麦语 |
+| it | 意大利语 | fi | 芬兰语 |
+| pt | 葡萄牙语 | no | 挪威语 |
+| ru | 俄语 | tr | 土耳其语 |
+| uk | 乌克兰语 | cs | 捷克语 |
+| ja | 日语 | sk | 斯洛伐克语 |
+| ko | 韩语 | hu | 匈牙利语 |
+| zh | 中文 | ro | 罗马尼亚语 |
+| ar | 阿拉伯语 | bg | 保加利亚语 |
+| hi | 印地语 | hr | 克罗地亚语 |
+| ta | 泰米尔语 | el | 希腊语 |
+| id | 印尼语 | ms | 马来语 |
+| vi | 越南语 | th | 泰语 |
 
 ```bash
 # Synthesize in German
@@ -122,9 +122,9 @@ python3 tts.py --languages
 
 ---
 
-## 💻 CLI Usage
+## 💻 命令行接口（CLI）使用
 
-### Basic Text-to-Speech
+### 基本文本转语音
 
 ```bash
 # List all voices
@@ -140,9 +140,9 @@ python3 scripts/tts.py --text "Breaking news..." --voice broadcaster --output ne
 python3 scripts/tts.py --text "Bonjour!" --voice rachel --lang fr --output french.mp3
 ```
 
-### Streaming Mode
+### 流式模式
 
-Generate audio with real-time streaming (good for long texts):
+实时生成音频（适合长文本）：
 
 ```bash
 # Stream audio as it generates
@@ -152,9 +152,9 @@ python3 scripts/tts.py --text "This is a long story..." --voice adam --stream
 python3 scripts/tts.py --text "Chapter one..." --voice george --stream --output chapter1.mp3
 ```
 
-### Batch Processing
+### 批量处理
 
-Process multiple texts from a file:
+一次性处理多个文本文件：
 
 ```bash
 # From newline-separated text file
@@ -164,7 +164,7 @@ python3 scripts/tts.py --batch texts.txt --voice rachel --output-dir ./audio
 python3 scripts/tts.py --batch batch.json --output-dir ./output
 ```
 
-**JSON batch format:**
+**JSON 批量格式：**
 ```json
 [
   {"text": "First line", "voice": "rachel", "output": "line1.mp3"},
@@ -173,14 +173,14 @@ python3 scripts/tts.py --batch batch.json --output-dir ./output
 ]
 ```
 
-**Simple text format (one per line):**
+**简单文本格式（每行一个文本）：**
 ```
 Hello, this is the first sentence.
 This is the second sentence.
 And this is the third.
 ```
 
-### Usage Statistics
+### 使用统计信息
 
 ```bash
 # Show usage stats and cost estimates
@@ -192,9 +192,9 @@ python3 scripts/tts.py --reset-stats
 
 ---
 
-## 🎵 Sound Effects (SFX)
+## 🎵 音效（SFX）
 
-Generate AI-powered sound effects from text descriptions:
+根据文本描述生成 AI 驱动的音效：
 
 ```bash
 # Generate a sound effect
@@ -213,18 +213,18 @@ python3 scripts/sfx.py --batch sounds.json --output-dir ./sfx
 python3 scripts/sfx.py --examples
 ```
 
-**Example prompts:**
-- "Thunder rumbling in the distance"
-- "Cat purring contentedly"
-- "Typing on a mechanical keyboard"
-- "Spaceship engine humming"
-- "Coffee shop background chatter"
+**示例描述：**
+- “远处的雷声隆隆”
+- “猫满足地发出呼噜声”
+- “在机械键盘上打字的声音”
+- “宇宙飞船引擎的嗡嗡声”
+- “咖啡店的背景嘈杂声”
 
 ---
 
-## 🎨 Voice Design
+## 🎨 语音设计
 
-Create custom voices from text descriptions:
+根据文本描述创建自定义语音：
 
 ```bash
 # Basic voice design
@@ -243,22 +243,22 @@ python3 scripts/voice-design.py --gender female --age young --accent american \
 python3 scripts/voice-design.py --options
 ```
 
-**Voice Design Options:**
+**语音设计选项：**
 
-| Option | Values |
+| 选项 | 可选值 |
 |--------|--------|
-| Gender | male, female, neutral |
-| Age | young, middle_aged, old |
-| Accent | american, british, african, australian, indian, latin, middle_eastern, scandinavian, eastern_european |
-| Accent Strength | 0.3-2.0 (subtle to strong) |
+| 性别 | 男性、女性、中性 |
+| 年龄 | 年轻、中年、老年 |
+| 口音 | 美国、英国、非洲、澳大利亚、印度、拉丁、中东、斯堪的纳维亚、东欧 |
+| 口音强度 | 0.3-2.0（从轻微到强烈） |
 
 ---
 
-## 📖 Pronunciation Dictionary
+## 📖 发音词典
 
-Customize how words are pronounced:
+自定义单词的发音：
 
-Edit `pronunciations.json`:
+编辑 `pronunciations.json` 文件：
 ```json
 {
   "rules": [
@@ -276,7 +276,7 @@ Edit `pronunciations.json`:
 }
 ```
 
-Usage:
+**使用方法：**
 ```bash
 # Pronunciations are applied automatically
 python3 scripts/tts.py --text "The OpenClaw API is great" --voice rachel
@@ -287,15 +287,15 @@ python3 scripts/tts.py --text "The API is great" --voice rachel --no-pronunciati
 
 ---
 
-## 💰 Cost Tracking
+## 💰 成本跟踪
 
-The skill tracks your character usage and estimates costs:
+该功能会跟踪您的语音使用情况并估算成本：
 
 ```bash
 python3 scripts/tts.py --stats
 ```
 
-**Output:**
+**输出结果：**
 ```
 📊 ElevenLabs Usage Statistics
 
@@ -312,11 +312,11 @@ python3 scripts/tts.py --stats
 
 ---
 
-## 🤖 OpenClaw TTS Integration
+## 🤖 OpenClaw TTS 集成
 
-### Using with OpenClaw's Built-in TTS
+### 与 OpenClaw 的内置 TTS 功能集成
 
-OpenClaw has built-in TTS support that can use ElevenLabs. Configure in `~/.openclaw/openclaw.json`:
+OpenClaw 内置了 TTS 支持，可以使用 ElevenLabs 的服务。请在 `~/.openclaw/openclaw.json` 文件中进行配置：
 
 ```json
 {
@@ -332,14 +332,13 @@ OpenClaw has built-in TTS support that can use ElevenLabs. Configure in `~/.open
 }
 ```
 
-### Triggering TTS in Chat
+### 在 OpenClaw 对话中触发 TTS
 
-In OpenClaw conversations:
-- Use `/tts on` to enable automatic TTS
-- Use the `tts` tool directly for one-off speech
-- Request "read this aloud" or "speak this"
+- 使用 `/tts on` 启用自动 TTS
+- 直接使用 `tts` 工具进行一次性语音播放
+- 请求 “读出这个内容” 或 “大声说出这个内容”
 
-### Using Skill Scripts from OpenClaw
+### 使用 OpenClaw 的脚本
 
 ```bash
 # OpenClaw can run these scripts directly
@@ -348,45 +347,44 @@ exec python3 /path/to/skills/elevenlabs-voices/scripts/tts.py --text "Hello" --v
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-The scripts look for API key in this order:
+脚本会按以下顺序查找 API 密钥：
+1. 环境变量 `ELEVEN_API_KEY` 或 `ELEVENLABS_API_KEY`
+2. OpenClaw 配置文件（`~/.openclaw/openclaw.json` → `tts.elevenlabs.apiKey`
+3. 本技能的本地 `.env` 文件
 
-1. `ELEVEN_API_KEY` or `ELEVENLABS_API_KEY` environment variable
-2. OpenClaw config (`~/.openclaw/openclaw.json` → tts.elevenlabs.apiKey)
-3. Skill-local `.env` file
-
-**Create .env file:**
+**创建 `.env` 文件：**
 ```bash
 echo 'ELEVEN_API_KEY=your-key-here' > .env
 ```
 
 ---
 
-## 🎛️ Voice Settings
+## 🎛️ 语音设置
 
-Each voice has tuned settings for optimal output:
+每种语音都有针对最佳输出的个性化设置：
 
-| Setting | Range | Description |
+| 设置 | 范围 | 描述 |
 |---------|-------|-------------|
-| stability | 0.0-1.0 | Higher = consistent, lower = expressive |
-| similarity_boost | 0.0-1.0 | How closely to match original voice |
-| style | 0.0-1.0 | Exaggeration of speaking style |
+| 稳定性 | 0.0-1.0 | 数值越高，语音越稳定；数值越低，表现越富有表现力 |
+| 语音相似度 | 0.0-1.0 | 与原始语音的相似程度 |
+| 风格 | 0.0-1.0 | 语音表达风格的夸张程度 |
 
 ---
 
-## 📝 Triggers
+## 📝 触发命令
 
-- "use {voice_name} voice"
-- "speak as {persona}"
-- "list voices"
-- "voice settings"
-- "generate sound effect"
-- "design a voice"
+- `use {voice_name}` 语音
+- `speak as {persona}` 以 {persona} 角色说话
+- `list voices` 列出所有可用语音
+- `voice settings` 查看语音设置
+- `generate sound effect` 生成音效
+- `design a voice` 创建自定义语音
 
 ---
 
-## 📁 Files
+## 📁 相关文件
 
 ```
 elevenlabs-voices/
@@ -407,31 +405,31 @@ elevenlabs-voices/
 
 ---
 
-## 🔗 Links
+## 🔗 链接
 
 - [ElevenLabs](https://elevenlabs.io)
-- [API Documentation](https://docs.elevenlabs.io)
-- [Voice Library](https://elevenlabs.io/voice-library)
-- [Sound Effects API](https://elevenlabs.io/docs/api-reference/sound-generation)
-- [Voice Design API](https://elevenlabs.io/docs/api-reference/voice-generation)
+- [API 文档](https://docs.elevenlabs.io)
+- [语音库](https://elevenlabs.io/voice-library)
+- [音效 API](https://elevenlabs.io/docs/api-reference/sound-generation)
+- [语音设计 API](https://elevenlabs.io/docs/api-reference/voice-generation)
 
 ---
 
-## 📋 Changelog
+## 📋 更新日志
 
 ### v2.1.0
-- Added interactive setup wizard (`scripts/setup.py`)
-- Onboarding guides through API key, voice, language, quality, and budget settings
-- Config stored locally in `config.json` (added to `.gitignore`)
-- Professional, privacy-focused setup experience
+- 添加了交互式设置向导（`scripts/setup.py`）
+- 提供关于 API 密钥、语音、语言、质量和预算设置的引导
+- 配置信息存储在本地 `config.json` 文件中（已添加到 `.gitignore` 文件）
+- 优化了设置流程，注重用户隐私
 
 ### v2.0.0
-- Added 32 language support with `--lang` parameter
-- Added streaming mode with `--stream` flag
-- Added sound effects generation (`sfx.py`)
-- Added batch processing with `--batch` flag
-- Added cost tracking with `--stats` flag
-- Added voice design tool (`voice-design.py`)
-- Added pronunciation dictionary support
-- Added OpenClaw TTS integration documentation
-- Improved error handling and progress output
+- 增加了对 32 种语言的支持（通过 `--lang` 参数）
+- 新增了流式模式（通过 `--stream` 标志）
+- 新增了音效生成功能（`sfx.py`）
+- 新增了批量处理功能（`--batch` 标志）
+- 新增了成本跟踪功能（`--stats` 标志）
+- 新增了语音设计工具（`voice-design.py`）
+- 新增了发音词典支持
+- 更新了 OpenClaw TTS 集成的文档
+- 改进了错误处理和进度显示功能

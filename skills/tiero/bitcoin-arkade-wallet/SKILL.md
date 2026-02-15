@@ -1,6 +1,6 @@
 ---
 name: arkade
-description: Send and receive Bitcoin over Arkade (offchain), onchain (via onboard/offboard), and Lightning. Swap USDC/USDT stablecoins.
+description: 通过 Arkade（离链方式）、在链上（通过内置/外部工具）以及 Lightning Network 来发送和接收比特币。同时支持 USDC/USDT 稳定币的交易。
 read_when:
   - user wants to send or receive Bitcoin
   - user mentions Arkade, Ark, or offchain Bitcoin
@@ -15,36 +15,34 @@ metadata:
   emoji: "₿"
 ---
 
-# Arkade Skill
+# Arkade 技能
 
-Send and receive Bitcoin over Arkade (offchain), onchain (via onboard/offboard), and Lightning Network.
-Swap between BTC and stablecoins (USDC/USDT) via LendaSwap.
+支持通过 Arkade 在链下（offchain）、链上（onchain）以及 Lightning Network 进行比特币的发送和接收；同时支持通过 LendaSwap 在 BTC 与稳定币（USDC/USDT）之间进行兑换。
 
-**Payment methods:**
-- **Offchain (Arkade)**: Instant transactions between Arkade wallets
-- **Onchain**: Get paid onchain via boarding address (onboard), pay onchain via offboard
-- **Lightning**: Pay and receive via Boltz submarine swaps
+**支付方式：**
+- **链下（Arkade）**：在 Arkade 钱包之间进行即时交易
+- **链上**：通过 onboard 地址接收链上支付；通过 offboard 地址进行链上支付
+- **Lightning Network**：通过 Boltz 换算机制进行支付和接收
 
-**Default Server:** https://arkade.computer
+**默认服务器：** https://arkade.computer
 
-## Agent Safety Rules
+## 代理安全规则
 
-**IMPORTANT: The following commands move real funds. The agent MUST always ask the user for explicit confirmation before executing them, displaying the amount and destination:**
+**重要提示：** 以下命令会涉及实际资金操作。代理在执行这些命令之前必须始终请求用户的明确确认，并显示交易金额和目的地：
+- `send` — 将比特币发送到 Arkade 地址
+- `offboard` — 将链下 BTC 转移到链上比特币地址
+- `onboard` — 将链上 BTC 转入 Arkade
+- `ln-pay` — 支付 Lightning 发票
+- `swap-to-stable` / `swap-to-btc` — 执行稳定币兑换
+- `swap-claim` / `swap-refund` — 提取或退款已完成的兑换
 
-- `send` — sends sats to an Ark address
-- `offboard` — moves offchain BTC to an onchain Bitcoin address
-- `onboard` — moves onchain BTC into Arkade
-- `ln-pay` — pays a Lightning invoice
-- `swap-to-stable` / `swap-to-btc` — executes a stablecoin swap
-- `swap-claim` / `swap-refund` — claims or refunds a swap
+以下命令为只读命令（`address`、`balance`、`history`、`ln-invoice`、`ln-fees`、`ln-limits`、`ln-pending`、`swap-quote`、`swap-pairs`、`swap-status`、`swap-pending`、`boarding-address`），执行这些命令无需用户确认：
 
-Read-only commands (`address`, `balance`, `history`, `ln-invoice`, `ln-fees`, `ln-limits`, `ln-pending`, `swap-quote`, `swap-pairs`, `swap-status`, `swap-pending`, `boarding-address`) are safe to run without confirmation.
+**钱包初始化：** `init` 命令会生成一个新的私钥，并将其存储在 `~/.arkade-wallet/config.json` 文件中（权限设置为 `0600`）。所有其他命令在执行前都需要先运行 `init`。代理在首次运行 `init` 命令时必须通知用户并获得其确认。
 
-**Wallet initialization:** `init` creates a new private key stored at `~/.arkade-wallet/config.json` (permissions `0600`). All other commands require `init` to have been run first. The agent MUST inform the user and get confirmation before running `init` for the first time.
+## 安装
 
-## Installation
-
-### Quick Start (no install required)
+### 快速启动（无需安装）
 
 ```bash
 # Using pnpm (recommended)
@@ -56,7 +54,7 @@ npx -y -p @arkade-os/skill arkade init
 npx -y -p @arkade-os/skill arkade address
 ```
 
-### Global Install
+### 全局安装
 
 ```bash
 # Install globally
@@ -69,7 +67,7 @@ arkade init
 arkade address
 ```
 
-### As a dependency
+### 作为依赖项安装
 
 ```bash
 npm install @arkade-os/skill
@@ -77,13 +75,13 @@ npm install @arkade-os/skill
 pnpm add @arkade-os/skill
 ```
 
-## CLI Commands
+## 命令行接口（CLI）命令
 
-> **Note:** Examples below use `arkade` directly (assumes global install).
-> For pnpm: `pnpm dlx @arkade-os/skill <command>`
-> For npx: `npx -y -p @arkade-os/skill arkade <command>`
+> **注意：** 下面的示例直接使用了 `arkade` 命令（假设已全局安装）。  
+> 对于 pnpm：`pnpm dlx @arkade-os/skill <command>`  
+> 对于 npx：`npx -y -p @arkade-os/skill arkade <command>`
 
-### Wallet Management
+### 钱包管理
 
 ```bash
 # Initialize wallet (auto-generates private key, default server: arkade.computer)
@@ -102,7 +100,7 @@ arkade boarding-address
 arkade balance
 ```
 
-### Bitcoin Transactions
+### 比特币交易
 
 ```bash
 # Send sats to an Ark address
@@ -115,7 +113,7 @@ arkade send ark1qxyz... 50000
 arkade history
 ```
 
-### Onchain Payments (Onboard/Offboard)
+### 链上支付（Onboard/Offboard）
 
 ```bash
 # Get paid onchain: Receive BTC to your boarding address, then onboard to Arkade
@@ -156,7 +154,7 @@ arkade ln-limits
 arkade ln-pending
 ```
 
-### Stablecoin Swaps (LendaSwap)
+### 稳定币兑换（LendaSwap）
 
 ```bash
 # Get quote for BTC to stablecoin swap
@@ -169,16 +167,16 @@ arkade swap-quote 100000 btc_arkade usdc_pol
 arkade swap-pairs
 ```
 
-**Supported Tokens:**
-- `btc_arkade` - Bitcoin on Arkade
-- `usdc_pol` - USDC on Polygon
-- `usdc_eth` - USDC on Ethereum
-- `usdc_arb` - USDC on Arbitrum
-- `usdt_pol` - USDT on Polygon
-- `usdt_eth` - USDT on Ethereum
-- `usdt_arb` - USDT on Arbitrum
+**支持的代币：**
+- `btc_arkade` - Arkade 上的比特币  
+- `usdc_pol` - Polygon 上的 USDC  
+- `usdc_eth` - Ethereum 上的 USDC  
+- `usdc_arb` - Arbitrum 上的 USDC  
+- `usdt_pol` - Polygon 上的 USDT  
+- `usdt_eth` - Ethereum 上的 USDT  
+- `usdt_arb` - Arbitrum 上的 USDT  
 
-## SDK Usage
+## 开发工具包（SDK）使用方法
 
 ```typescript
 import { Wallet, SingleKey } from "@arkade-os/sdk";
@@ -250,58 +248,58 @@ const swap = await lendaswap.swapBtcToStablecoin({
 console.log("Swap ID:", swap.swapId);
 ```
 
-## Configuration
+## 配置
 
-**Data Storage:** `~/.arkade-wallet/config.json`
+**数据存储：** `~/.arkade-wallet/config.json`
 
-Private keys are auto-generated on first use and stored locally. They are never exposed via CLI arguments or stdout. No environment variables required. The LendaSwap API is publicly accessible.
+私钥会在首次使用时自动生成并存储在本地，不会通过 CLI 参数或标准输出显示。无需设置任何环境变量。LendaSwap API 可公开访问。
 
-## Skill Interfaces
+## 技能接口
 
 ### ArkadeBitcoinSkill
 
-- `getArkAddress()` - Get Ark address for receiving offchain payments
-- `getBoardingAddress()` - Get boarding address for receiving onchain payments
-- `getBalance()` - Get balance breakdown
-- `send(params)` - Send Bitcoin to Ark address (offchain)
-- `getTransactionHistory()` - Get transaction history
-- `onboard(params)` - Get paid onchain: convert onchain BTC to offchain
-- `offboard(params)` - Pay onchain: send offchain BTC to any onchain address
-- `waitForIncomingFunds(timeout?)` - Wait for incoming funds
+- `getArkAddress()` — 获取用于接收链下支付的 Arkade 地址  
+- `getBoardingAddress()` — 获取用于接收链上支付的 onboard 地址  
+- `getBalance()` — 获取余额明细  
+- `send(params)` — 将比特币发送到 Arkade 地址（链下）  
+- `getTransactionHistory()` — 获取交易历史记录  
+- `onboard(params)` — 在链上接收支付：将链上 BTC 转换为链下 BTC  
+- `offboard(params)` — 在链上支付：将链下 BTC 发送到任意链上地址  
+- `waitForIncomingFunds(timeout?)` — 等待资金到账  
 
 ### ArkaLightningSkill
 
-- `createInvoice(params)` - Create Lightning invoice
-- `payInvoice(params)` - Pay Lightning invoice
-- `getFees()` - Get swap fees
-- `getLimits()` - Get swap limits
-- `getPendingSwaps()` - Get pending swaps
-- `getSwapHistory()` - Get swap history
-- `isAvailable()` - Check if Lightning is available
+- `createInvoice(params)` — 创建 Lightning 发票  
+- `payInvoice(params)` — 支付 Lightning 发票  
+- `getFees()` — 获取兑换费用  
+- `getLimits()` — 获取兑换限额  
+- `getPendingSwaps()` — 获取待处理的兑换请求  
+- `getSwapHistory()` — 获取兑换历史记录  
+- `isAvailable()` — 检查 Lightning Network 是否可用  
 
 ### LendaSwapSkill
 
-- `getQuoteBtcToStablecoin(amount, token)` - Quote BTC to stablecoin
-- `getQuoteStablecoinToBtc(amount, token)` - Quote stablecoin to BTC
-- `swapBtcToStablecoin(params)` - Swap BTC to stablecoin
-- `swapStablecoinToBtc(params)` - Swap stablecoin to BTC
-- `getSwapStatus(swapId)` - Get swap status
-- `getPendingSwaps()` - Get pending swaps
-- `getSwapHistory()` - Get swap history
-- `getAvailablePairs()` - Get available trading pairs
-- `claimSwap(swapId)` - Claim completed swap
-- `refundSwap(swapId)` - Refund expired swap
+- `getQuoteBtcToStablecoin(amount, token)` — 提供 BTC 到稳定币的兑换报价  
+- `getQuoteStablecoinToBtc(amount, token)` — 提供稳定币到 BTC 的兑换报价  
+- `swapBtcToStablecoin(params)` — 将 BTC 兑换为稳定币  
+- `swapStablecoinToBtc(params)` — 将稳定币兑换为 BTC  
+- `getSwapStatus(swapId)` — 获取兑换状态  
+- `getPendingSwaps()` — 获取待处理的兑换请求  
+- `getSwapHistory()` — 获取兑换历史记录  
+- `getAvailablePairs()` — 获取可用的交易对  
+- `claimSwap(swapId)` — 提取已完成的兑换金额  
+- `refundSwap(swapId)` — 退款已过期的兑换  
 
-## Networks
+## 支持的网络**
 
-Arkade supports multiple networks:
-- `bitcoin` - Bitcoin mainnet
-- `testnet` - Bitcoin testnet
-- `signet` - Bitcoin signet
-- `regtest` - Local regtest
-- `mutinynet` - Mutiny signet
+Arkade 支持多个比特币网络：
+- `bitcoin` — 主网  
+- `testnet` — 测试网  
+- `signet` — Signet 网络  
+- `regtest` — 本地测试网  
+- `mutinynet` — Mutiny 网络  
 
-## Support
+## 技术支持
 
-- GitHub: https://github.com/arkade-os/skill
-- Documentation: https://docs.arkadeos.com
+- GitHub：https://github.com/arkade-os/skill  
+- 文档：https://docs.arkadeos.com

@@ -1,88 +1,92 @@
 ---
 name: Windows
-description: Windows-specific patterns, security practices, and operational traps that cause silent failures.
+description: 在 Windows 系统中，存在一些特定的模式、安全实践以及操作上的陷阱，这些因素可能导致系统出现“无声故障”（即故障发生时没有明显的错误提示或警报）。
 metadata:
   category: system
   skills: ["windows", "powershell", "security", "automation"]
 ---
 
-## Credential Management
+## 凭据管理
 
-- Never hardcode passwords in scripts — use Windows Credential Manager:
+- **切勿在脚本中硬编码密码**——请使用 Windows 凭据管理器：
   ```powershell
   # Store
   cmdkey /generic:"MyService" /user:"admin" /pass:"secret"
   # Retrieve in script
   $cred = Get-StoredCredential -Target "MyService"
   ```
-- For scripts, use `Get-Credential` and export securely:
+
+- **对于脚本，应使用 `Get-Credential` 并安全地导出凭据**：
   ```powershell
   $cred | Export-Clixml -Path "cred.xml"  # Encrypted to current user/machine
   $cred = Import-Clixml -Path "cred.xml"
   ```
 
-## Silent Failures
+## 隐性故障处理
 
-- Windows Defender silently quarantines downloaded scripts/executables — check quarantine if script disappears
-- Group Policy overrides local settings silently — `gpresult /r` to see what's actually applied
-- Antivirus real-time scanning blocks file operations intermittently — add exclusions for build/automation folders
-- PowerShell `-ErrorAction SilentlyContinue` hides problems — use `Stop` and handle explicitly
+- Windows Defender 会自动将下载的脚本或可执行文件放入隔离区——如果脚本消失，请检查隔离区。
+- 组策略会悄悄地覆盖本地设置——使用 `gpresult /r` 来查看实际应用了哪些设置。
+- 防病毒软件的实时扫描功能可能会间歇性地阻止文件操作——请为构建或自动化文件夹添加例外规则。
+- PowerShell 的 `-ErrorAction SilentlyContinue` 会隐藏错误——建议使用 `Stop` 并手动处理错误。
 
-## Symbolic Links
+## 符号链接
 
-- Creating symlinks requires admin OR SeCreateSymbolicLinkPrivilege — regular users fail silently
-- Enable Developer Mode for symlinks without admin: Settings → For Developers → Developer Mode
-- `mklink` is CMD-only, PowerShell uses `New-Item -ItemType SymbolicLink`
+- 创建符号链接需要管理员权限或 `SeCreateSymbolicLinkPrivilege` 权限——普通用户会遇到操作失败的情况。
+- 可以在不使用管理员权限的情况下启用符号链接的开发者模式：设置 → 开发者选项 → 开发者模式。
+- `mklink` 命令仅适用于 CMD，PowerShell 使用 `New-Item -ItemType SymbolicLink` 来创建符号链接。
 
-## Script Signing
+## 脚本签名
 
-- Unsigned scripts fail on restricted machines with confusing errors — sign for production:
+- 未签名的脚本在受限环境中会引发错误，并且错误信息可能难以理解——在生产环境中请务必对脚本进行签名：
   ```powershell
   $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
   Set-AuthenticodeSignature -FilePath script.ps1 -Certificate $cert
   ```
-- AllSigned policy requires ALL scripts signed including profile.ps1
 
-## Operational Safety
+## 操作安全
 
-- Always `-WhatIf` first on destructive operations — `Remove-Item -Recurse -WhatIf`
-- `Start-Transcript` for audit trail — forgotten until incident investigation
-- NTFS permissions: `icacls` for CLI, but inheritance rules are non-obvious — test changes on copy first
+- 对于具有破坏性的操作，务必先使用 `-WhatIf` 选项进行测试：
+  `Remove-Item -Recurse -WhatIf`
+- 使用 `Start-Transcript` 命令记录操作日志——以便在出现问题时进行调查。
+- NTFS 权限管理：可以使用 `icacls` 命令进行设置，但权限继承规则可能比较复杂——在更改权限前请先在测试环境中进行测试。
 
-## WinRM Remoting
+## WinRM 远程控制
 
-- Enable correctly: `Enable-PSRemoting -Force` isn't enough on workgroups
-- Workgroup machines need TrustedHosts: `Set-Item WSMan:\localhost\Client\TrustedHosts -Value "server1,server2"`
-- HTTPS remoting needs certificate setup — HTTP sends credentials readable on network
+- 正确地启用 WinRM 远程功能：仅使用 `Enable-PSRemoting -Force` 是不够的——工作组环境还需要配置 `TrustedHosts`：
+  `Set-Item WSMan:\localhost\Client\TrustedHosts -Value "server1,server2"`
+- HTTPS 远程连接需要设置证书——否则网络上的其他设备可以读取用户的凭据。
 
-## Event Logging
+## 事件日志记录
 
-- Scripts should log to Windows Event Log for centralized monitoring:
+- 脚本应记录到 Windows 事件日志中，以便进行集中监控：
   ```powershell
   New-EventLog -LogName Application -Source "MyScript" -ErrorAction SilentlyContinue
   Write-EventLog -LogName Application -Source "MyScript" -EventId 1000 -Message "Started"
   ```
-- Custom event sources require admin to create — create during install, not runtime
 
-## File Locking
+- 自定义事件源的创建需要管理员权限——请在安装脚本时设置好，而不是在运行时。
 
-- Windows locks files aggressively — test file access before operations:
+## 文件锁定
+
+- Windows 会对文件进行严格的锁定管理——在执行任何操作之前，请先测试文件访问权限：
   ```powershell
   try { [IO.File]::OpenWrite($path).Close(); $true } catch { $false }
   ```
-- Scheduled tasks writing to same file as user → conflicts. Use unique temp files and atomic rename
 
-## Temp File Hygiene
+- 定时任务如果写入相同的文件，可能会导致冲突——请使用临时文件并进行原子性的文件重命名操作。
 
-- `$env:TEMP` fills silently — scripts should cleanup with `try/finally`:
+## 临时文件管理
+
+- `$env:TEMP` 变量会自动填充临时文件——脚本应使用 `try/finally` 语句来确保临时文件被正确清理：
   ```powershell
   $tmp = New-TemporaryFile
   try { ... } finally { Remove-Item $tmp -Force }
   ```
-- Orphaned temp files accumulate across reboots — unlike Linux /tmp
 
-## Service Account Gotchas
+- 临时文件可能会在系统重启后仍然存在——这与 Linux 的 `/tmp` 目录不同。
 
-- Services run in different user context — `$env:USERPROFILE` points to system profile, not user's
-- Network access from SYSTEM account uses machine credentials — may fail where user succeeds
-- Mapped drives don't exist for services — use UNC paths `\\server\share`
+## 服务账户的相关注意事项
+
+- 服务是在不同的用户上下文中运行的——`$env:USERPROFILE` 指向的是系统配置文件，而不是用户的个人配置文件。
+- 以 SYSTEM 账户进行网络访问时会使用系统的凭据——这可能会导致某些操作失败，而使用用户账户时却可以成功。
+- 服务无法访问映射的驱动器——请使用 UNC 路径（如 `\\server\share`）来访问共享资源。

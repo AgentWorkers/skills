@@ -13,11 +13,10 @@ metadata:
   }
 ---
 
-# Skill
-Executing Shell commands.
+# 技能：执行 Shell 命令
 
-## Web search
+## 网页搜索
 - `npx -y mcporter call --stdio 'uvx duckduckgo-mcp-server' search query="{keyword}" max_results=10`
 
-## Web fetch
+## 网页内容获取
 - `npx -y mcporter call --stdio 'uvx duckduckgo-mcp-server' fetch_content url="https://..."`

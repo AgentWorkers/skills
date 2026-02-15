@@ -1,15 +1,15 @@
 ---
 name: technical-doc-generator
-description: Generate professional technical documentation from codebases — API docs, READMEs, architecture diagrams, changelogs, and onboarding guides. Use when writing docs, creating API documentation, or delivering documentation projects.
+description: 从代码库生成专业的技术文档——包括 API 文档、README 文件、架构图、变更日志和入职指南等。这些工具可以在编写文档、创建 API 文档或交付文档项目时使用。
 argument-hint: "[path-or-repo] [doc-type]"
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
-# Technical Documentation Generator
+# 技术文档生成器
 
-Scan a codebase and generate client-deliverable technical documentation. Produces API docs, READMEs, architecture overviews, changelogs, and developer onboarding guides.
+该工具可扫描代码库，并生成可供客户端使用的官方技术文档，包括 API 文档、项目 README 文件、架构概述、变更日志以及开发者入职指南等。
 
-## How to Use
+## 使用方法
 
 ```
 /technical-doc-generator ./src api-docs
@@ -19,14 +19,14 @@ Scan a codebase and generate client-deliverable technical documentation. Produce
 /technical-doc-generator ./src onboarding
 ```
 
-- `$ARGUMENTS[0]` = Path to codebase (default: current directory)
-- `$ARGUMENTS[1]` = Doc type: `api-docs`, `readme`, `architecture`, `changelog`, `onboarding`, `full` (all)
+- `$ARGUMENTS[0]`：代码库的路径（默认为当前目录）
+- `$ARGUMENTS[1]`：文档类型：`api-docs`、`readme`、`architecture`、`changelog`、`onboarding` 或 `full`（全部类型）
 
-## Documentation Types
+## 文档类型
 
-### `readme` — Project README
+### `readme` — 项目 README 文件
 
-Scan the project and generate a comprehensive README:
+扫描项目并生成一份详细的 README 文件：
 
 ```markdown
 # Project Name
@@ -63,16 +63,16 @@ Brief description (1-2 sentences from package.json, pyproject.toml, or code anal
 [Detected from LICENSE file]
 ```
 
-### `api-docs` — API Documentation
+### `api-docs` — API 文档
 
-Scan for API endpoints and generate documentation:
+扫描项目中的 API 端点，并生成相应的文档：
 
-1. **Detect the framework**: Express, FastAPI, Django, Flask, Rails, Spring, Gin, etc.
-2. **Extract endpoints**: Routes, methods, parameters, request/response bodies
-3. **Generate OpenAPI/Swagger spec** (YAML)
-4. **Generate human-readable docs** (Markdown)
+1. **识别使用的框架**：Express、FastAPI、Django、Flask、Rails、Spring、Gin 等
+2. **提取 API 端点信息**：路由、方法、参数、请求/响应数据
+3. **生成 OpenAPI/Swagger 规范文档**（YAML 格式）
+4. **生成易于阅读的文档**（Markdown 格式）
 
-For each endpoint:
+示例 API 端点信息：
 ```markdown
 ### `POST /api/users`
 
@@ -115,20 +115,20 @@ Create a new user account.
 | 401 | Missing or invalid auth token |
 ```
 
-### `architecture` — Architecture Overview
+### `architecture` — 架构概述
 
-Generate an architecture document with:
+生成一份架构文档，内容包括：
 
-1. **System overview**: What the system does, high-level description
-2. **Technology stack**: Languages, frameworks, databases, services detected
-3. **Directory structure**: Annotated tree with purpose of each directory
-4. **Component diagram**: Mermaid diagram showing major components and their relationships
-5. **Data flow**: How data moves through the system
-6. **Database schema**: If migrations or models are found, document the schema
-7. **External dependencies**: Third-party services, APIs, databases
-8. **Configuration**: Environment variables and their purposes
+1. **系统功能**：系统的主要功能及工作原理
+2. **技术栈**：项目中使用的语言、框架、数据库及服务
+3. **目录结构**：各目录的用途说明
+4. **组件图**：使用 Mermaid 图表示主要组件及其之间的关系
+5. **数据流**：数据在系统中的流动方式
+6. **数据库架构**：如果存在数据库迁移或模型文件，会将其内容也包含在文档中
+7. **外部依赖**：第三方服务、API 和数据库的详细信息
+8. **配置信息**：环境变量及其用途
 
-Mermaid diagram example:
+示例 Mermaid 图：
 ```mermaid
 graph TB
     Client[Client App] --> API[API Server]
@@ -141,9 +141,9 @@ graph TB
     Worker --> Email[Email Service]
 ```
 
-### `changelog` — Changelog from Git History
+### `changelog` — 从 Git 日志中提取的变更日志
 
-Parse git log and generate a structured changelog:
+解析 Git 日志并生成结构化的变更日志：
 
 ```markdown
 # Changelog
@@ -163,16 +163,15 @@ Parse git log and generate a structured changelog:
 - ...
 ```
 
-Rules:
-- Group by semantic version tags (or by month if no tags)
-- Categorize commits: Added, Changed, Fixed, Removed, Security, Deprecated
-- Parse conventional commits if used (`feat:`, `fix:`, `chore:`, etc.)
-- Skip merge commits and build/CI commits
-- Link to PRs/issues if references found in commit messages
+- 变更日志按语义版本标签分组（如果没有版本标签，则按月份分组）
+- 对提交类型进行分类：添加（Added）、修改（Changed）、修复（Fixed）、删除（Removed）、安全问题（Security）、弃用（Deprecated）
+- 支持使用常规的提交标签（如 `feat:`、`fix:`、`chore:` 等）
+- 跳过合并提交和构建/持续集成（CI）相关的提交
+- 如果提交信息中提到了 Pull Request（PR）或问题（Issue），会提供相应的链接
 
-### `onboarding` — Developer Onboarding Guide
+### `onboarding` — 开发者入职指南
 
-Generate a guide for new developers joining the project:
+为新加入项目的开发者生成一份入职指南：
 
 ```markdown
 # Developer Onboarding Guide
@@ -231,9 +230,9 @@ Generate a guide for new developers joining the project:
 [Based on README, issues, or common patterns]
 ```
 
-### `full` — Complete Documentation Package
+### `full` — 完整的文档包
 
-Generate ALL of the above, organized in a `docs/` directory:
+同时生成上述所有类型的文档，并将它们整理到 `docs/` 目录中：
 
 ```
 docs/
@@ -246,18 +245,17 @@ docs/
   diagrams/              # Mermaid source files
 ```
 
-## Codebase Scanning Strategy
+## 代码库扫描策略
 
-1. **Package files first**: `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Gemfile`, `pom.xml`
-2. **Config files**: `.env.example`, `docker-compose.yml`, CI/CD configs
-3. **Entry points**: `main.*`, `index.*`, `app.*`, `server.*`
-4. **Route/endpoint files**: Files containing route definitions
-5. **Models/schemas**: Database models, TypeScript interfaces, Pydantic models
-6. **Test files**: To understand expected behavior
-7. **Existing docs**: Any existing README, docs/, wiki content
+1. **优先扫描配置文件**：`package.json`、`pyproject.toml`、`go.mod`、`Cargo.toml`、`Gemfile`、`pom.xml`
+2. **入口文件**：`main.*`、`index.*`、`app.*`、`server.*` 等文件
+3. **路由/端点文件**：包含路由定义的文件
+4. **模型/数据库架构文件**：数据库模型、TypeScript 接口、Pydantic 模型文件
+5. **测试文件**：用于理解系统的预期行为
+6. **现有文档**：项目中的 README 文件、文档目录（`docs/`）及 wiki 内容
 
-Do NOT read every file. Be strategic — scan structure first, then dive into key files.
+**注意**：无需扫描所有文件，应先分析代码库的结构，再重点查看关键文件。
 
-## Output
+## 输出结果
 
-Save all generated docs to `output/docs/` (or `docs/` if specified). Present a summary of what was generated and suggest next steps for the client.
+将生成的所有文档保存到 `output/docs/` 目录中（或根据用户指定路径）。同时会向客户端提供生成内容的总结，并建议下一步的操作。

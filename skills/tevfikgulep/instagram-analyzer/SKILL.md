@@ -1,6 +1,6 @@
-# Instagram Analyzer
+# Instagram 分析器
 
-A comprehensive Instagram profile and post analysis tool with engagement metrics, view tracking, and Reels-focused analytics.
+这是一个全面的 Instagram 账号和帖子分析工具，提供互动指标、观看次数统计以及专注于 Reels（Instagram 的短视频功能）的分析功能。
 
 ```yaml
 ---
@@ -36,35 +36,35 @@ metadata:
 ---
 ```
 
-## 🎯 Features
+## 🎯 功能
 
-### 📊 Single Post Analysis
-- ✅ Like count
-- ✅ Comment count  
-- ✅ Save count
-- ✅ View count (Reels)
-- ✅ Follower count
-- ✅ **View-to-Follower ratio (%)**
-- ✅ Time posted (hours/days ago)
+### 📊 单个帖子分析
+- ✅ 点赞数
+- ✅ 评论数
+- ✅ 保存次数
+- ✅ Reels 观看次数
+- ✅ 关注者数量
+- ✅ **观看次数与关注者比例 (%)**
+- ✅ 发布时间（小时/天前）
 
-### 👤 Profile Analysis
-- ✅ Minimum **60 posts** analyzed
-- ✅ **Reels-focused** analytics
-- ✅ All Reels links extraction
-- ✅ Engagement rate calculations
-- ✅ JSON/CSV export
+### 👤 账号分析
+- 至少分析 **60 条帖子**
+- **专注于 Reels** 的分析
+- 提取所有 Reels 的链接
+- 计算互动率
+- 支持导出为 JSON/CSV 格式
 
-### 🔧 Technical
-- 🌐 Browser simulation with Playwright
-- 🛡️ Stealth mode (human behavior)
-- 📁 Structured JSON/CSV output
-- ⚡ Batch processing support
+### 🔧 技术细节
+- 使用 Playwright 进行浏览器模拟
+- 支持隐身模式（模拟人类行为）
+- 输出结构化的 JSON/CSV 数据
+- 支持批量处理
 
 ---
 
-## 🚀 Usage
+## 🚀 使用方法
 
-### Profile Analysis (Default: Reels Only! 🎯)
+### 账号分析（默认仅分析 Reels！🎯）
 ```bash
 # Full profile analysis - REELS FOCUS (default behavior)
 analyze-profile "username"
@@ -76,7 +76,7 @@ analyze-profile "username" --posts 60
 analyze-profile "username" --include-posts
 ```
 
-### Single Post Analysis
+### 单个帖子分析
 ```bash
 # Analyze a Reel/post URL
 analyze-post "https://www.instagram.com/reel/ABC123xyz/"
@@ -87,9 +87,9 @@ analyze-post "https://www.instagram.com/reel/ABC123xyz/" --output json
 
 ---
 
-## 📊 Output Examples
+## 📊 输出示例
 
-### Single Post Response
+### 单个帖子分析结果
 ```json
 {
   "post_type": "reel",
@@ -117,7 +117,7 @@ analyze-post "https://www.instagram.com/reel/ABC123xyz/" --output json
 }
 ```
 
-### Profile Analysis Response
+### 账号分析结果
 ```json
 {
   "profile": {
@@ -153,20 +153,20 @@ analyze-post "https://www.instagram.com/reel/ABC123xyz/" --output json
 
 ---
 
-## 📈 Engagement Metrics Explained
+## 📈 互动指标解释
 
-| Metric | Formula | Interpretation |
+| 指标 | 公式 | 解释 |
 |--------|---------|----------------|
-| **View Rate** | (Views / Followers) × 100 | How many followers actually watched |
-| **Engagement Rate** | ((Likes + Comments + Saves) / Views) × 100 | Overall audience interaction |
-| **Like Rate** | (Likes / Views) × 100 | Content appreciation |
-| **Save Rate** | (Saves / Views) × 100 | Content value indicator |
+| **观看率** | (观看次数 / 关注者数量) × 100 | 实际观看帖子的关注者比例 |
+| **互动率** | ((点赞数 + 评论数 + 保存次数) / 观看次数) × 100 | 整体观众互动情况 |
+| **点赞率** | (点赞数 / 观看次数) × 100 | 内容受欢迎程度 |
+| **保存率** | (保存次数 / 观看次数) × 100 | 内容价值指标 |
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-Edit `config/analyzer_config.json`:
+请编辑 `config/analyzer_config.json` 文件：
 
 ```json
 {
@@ -192,37 +192,36 @@ Edit `config/analyzer_config.json`:
 
 ---
 
-## 📁 File Outputs
+## 📁 文件输出格式
 
-- **Profile data**: `data/profiles/{username}.json`
-- **Post analysis**: `data/posts/{post_id}.json`
-- **Batch results**: `data/output/batch_{timestamp}.json`
-- **Reels links**: `data/output/{username}_reels.txt`
-
----
-
-## 🔧 Troubleshooting
-
-### Login Required
-- Some metrics require login (view count, saves)
-- Configure Instagram credentials in `.env`
-
-### Rate Limiting
-- Increase `scroll_pause` in config
-- Reduce batch size
-- Use multiple accounts
-
-### Missing Data
-- Check if account is private
-- Verify post exists and is accessible
-- Instagram may hide some metrics
+- **账号数据**：`data/profiles/{username}.json`
+- **帖子分析结果**：`data/posts/{post_id}.json`
+- **批量处理结果**：`data/output/batch_{timestamp}.json`
+- **Reels 链接**：`data/output/{username}_reels.txt`
 
 ---
 
-## 📝 Requirements
+## 🔧 故障排除
 
-- Python 3.8+
-- Playwright
-- Chromium browser
-- BeautifulSoup4
-- lxml parser
+- 需要登录才能获取某些指标（如观看次数、保存次数）
+- 请在 `.env` 文件中配置 Instagram 的登录凭据
+
+- **限制策略**：
+  - 增加 `scroll_pause` 的值以减少请求频率
+  - 减少批量处理的数量
+  - 使用多个账号进行数据分析
+
+- **数据缺失**：
+  - 检查账号是否设置为私密状态
+  - 确保帖子存在且可访问
+  - Instagram 可能会隐藏某些指标
+
+---
+
+## 📝 系统要求
+
+- Python 3.8 及以上版本
+- Playwright 库
+- Chromium 浏览器
+- BeautifulSoup4 库
+- lxml 解析器

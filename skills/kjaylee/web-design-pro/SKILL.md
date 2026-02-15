@@ -1,112 +1,111 @@
 ---
 name: web-design-pro
-description: Modern web design engineering skills including design tokens, advanced UI/UX methodologies, accessibility, and game-specific UI patterns. Use for building commercial-grade, performant, and accessible web interfaces.
+description: 现代网页设计工程技能包括设计规范（design tokens）、先进的用户界面/用户体验（UI/UX）方法论、可访问性（accessibility）以及针对特定类型应用（如游戏）的UI设计模式。这些技能用于开发具有商业竞争力、高性能且符合可访问性标准的网页界面。
 metadata:
   author: misskim
   version: "1.0"
   origin: Synthesized from 2024-2026 web design standards research
 ---
 
-# Web Design Pro (Modern Design Engineering)
+# Web Design Pro (现代设计工程)
 
-웹 디자인의 심미성을 넘어, 시스템 설계, 성능 최적화, 접근성, 그리고 게임 특화 UX를 통합한 전문가 레벨의 기술셋.
+这不仅仅是一套关于网页设计的技能集，它还整合了系统设计、性能优化、可访问性以及专为游戏设计的用户体验（UX）等方面的专业技术。
 
-## 1. Design Systems & Tokens (디자인 시스템 & 토큰)
+## 1. 设计系统与设计令牌（Design Systems & Tokens）
 
-디자인 결정을 데이터로 관리하여 디자인과 코드 간의 간극을 없앤다.
+通过将设计决策数据化，消除了设计与代码之间的隔阂。
 
-### 토큰 계층 구조
-- **Primitive Tokens (Raw):** 기초적인 값 (예: `blue-500: #3B82F6`)
-- **Semantic Tokens (Meaning):** 역할과 맥락 부여 (예: `action-primary: var(--blue-500)`)
-- **Component Tokens (Specific):** 특정 컴포넌트 전용 (예: `btn-bg: var(--action-primary)`)
+### 设计令牌的层次结构
+- **基础令牌（Primitive Tokens）：** 基本值（例如：`blue-500: #3B82F6`）
+- **语义令牌（Semantic Tokens）：** 赋予元素特定的含义和用途（例如：`action-primary: var(--blue-500)`）
+- **组件令牌（Component Tokens）：** 专为特定组件设计的令牌（例如：`btn-bg: var(--action-primary)`）
 
-### 구현 가이드
-- **CSS Custom Properties:** 브라우저 네이티브 토큰으로 실시간 테마 변경 가능.
-- **Tokens Studio (Figma):** 디자인 소스에서 직접 JSON/CSS 추출.
-- **자동화:** 토큰 변경 시 `Style Dictionary` 등을 통해 빌드 타임에 각 플랫폼에 배포.
-
----
-
-## 2. UI/UX Methodologies (현대적 UX 방법론)
-
-사용자의 "진짜" 문제를 해결하기 위한 프레임워크.
-
-### 주요 방법론
-- **Jobs to be Done (JTBD):** "플레이어는 게임 소개를 읽고 싶은 게 아니라, 이 게임이 재미있는지 3초 안에 확인하고 싶어한다." -> Hero 섹션에 텍스트 대신 gameplay 영상 배치.
-- **Design Thinking:** 공감 - 정의 - 아이디어 - 프로토타입 - 테스트의 반복.
-- **Design Sprints:** 2~5일 안에 핵심 가설을 검증하는 압축 프로세스.
+### 实现指南
+- **CSS自定义属性（CSS Custom Properties）：** 使用浏览器内置的令牌实现实时主题切换。
+- **Tokens Studio（Figma）：** 直接从设计源代码中提取JSON/CSS数据。
+- **自动化流程：** 当令牌发生变化时，通过`Style Dictionary`等工具在构建时自动更新各个平台的样式。
 
 ---
 
-## 3. Responsive Design Patterns (반응형 패턴)
+## 2. 现代用户体验方法论（Modern UX Methodologies）
 
-모든 기기에서 완벽한 레이아웃을 제공하는 현대적 CSS 기법.
+这套方法论旨在解决用户的“实际”问题。
 
-### Fluid Typography & Layout
-- **`clamp()` 사용:** 미디어 쿼리 없이 화면 크기에 따라 폰트/간격을 유동적으로 조절.
+### 主要方法论
+- **“待办事项”（Jobs to Be Done, JTBD）：** “玩家不想阅读游戏介绍，他们希望能在3秒内判断游戏是否有趣。” → 因此在“Hero”区域放置游戏实况视频而非文字。
+- **设计思维（Design Thinking）：** 通过共鸣、定义、构思、原型制作和测试的循环来推进设计。
+- **设计冲刺（Design Sprints）：** 在2到5天内验证核心假设的快速迭代过程。
+
+---
+
+## 3. 响应式设计模式（Responsive Design Patterns）
+
+利用现代CSS技术，确保所有设备上都能呈现完美的布局。
+
+### 流动式排版与布局（Fluid Typography & Layout）
+- **使用`clamp()`函数：** 不需要媒体查询，即可根据屏幕大小动态调整字体大小和间距。
   ```css
   h1 { font-size: clamp(2rem, 5vw + 1rem, 4rem); }
   ```
-- **Container Queries:** 뷰포트가 아닌 부모 컨테이너 크기에 반응하는 컴포넌트 설계.
-- **Mobile-First:** 320px 모바일 레이아웃을 기본으로 작성하고, `@media (min-width: ...)`로 점진적 확장.
+- **容器查询（Container Queries）：** 组件的布局会根据父容器的大小而非视口大小进行调整。
+- **以移动设备为先（Mobile-First）：** 先设计320px分辨率的移动版布局，然后通过`@media (min-width: ...)`逐步扩展到其他屏幕。
 
 ---
 
-## 4. Accessibility Standards (접근성 표준 - WCAG 2.1)
+## 4. 可访问性标准（Accessibility Standards - WCAG 2.1）
 
-누락된 사용자가 없도록 하는 디자인의 기본.
+确保没有用户被设计所排斥。
 
-### 핵심 체크포인트
-- **Semantic HTML:** `<div>` 대신 `<nav>`, `<main>`, `<article>`, `<section>` 사용.
-- **Color Contrast:** 텍스트 대비 4.5:1 이상 (AA 레벨 기준).
-- **Keyboard Friendly:** 모든 상호작용이 Tab/Enter로 가능해야 함.
-- **ARIA Labels:** 아이콘만 있는 버튼에 반드시 `aria-label` 부여.
-- **Reduced Motion:** `prefers-reduced-motion`을 존중하여 과한 애니메이션 제어.
-
----
-
-## 5. Performance & Web Vitals (성능 최적화)
-
-속도가 곧 사용자 경험이다.
-
-### Core Web Vitals (2024 기준)
-- **LCP (Largest Contentful Paint):** 가장 큰 콘텐츠 로드 < 2.5s.
-- **INP (Interaction to Next Paint):** 상호작용 응답 속도 < 200ms. (FID 대체)
-- **CLS (Cumulative Layout Shift):** 레이아웃 흔들림 < 0.1.
-
-### 최적화 기술
-- **Image optimization:** WebP/AVIF 사용, `width`/`height` 명시로 CLS 방지.
-- **Preload:** Critical 폰트 및 Hero 이미지를 우선 로드.
-- **Defer JS:** 비필수 스크립트는 `defer`나 `async`로 처리.
+### 关键检查点
+- **语义化HTML（Semantic HTML）：** 使用`<nav>`、`<main>`、`<article>`、`<section>`等标签来明确页面结构。
+- **颜色对比度（Color Contrast）：** 文本与背景的颜色对比度至少为4.5:1（符合AA级可访问性标准）。
+- **键盘友好性（Keyboard Friendly）：** 所有交互操作都应支持Tab/Enter键。
+- **ARIA标签（ARA Labels）：** 为仅有图标的按钮添加`aria-label`属性。
+- **减少动画效果（Reduced Motion）：** 通过`prefers-reduced-motion`设置来控制动画的播放。
 
 ---
 
-## 6. Game UI/UX Specifics (게임 특화 UI)
+## 5. 性能与网页核心指标（Performance & Web Vitals）
 
-플레이어의 몰입감을 극대화하는 UI 기법.
+速度直接影响用户体验。
 
-### 게임 UI 패턴
-- **Immediate Feedback:** 모든 클릭/호버에 즉각적인 시각/청각 피드백 부여.
-- **Visual Hierarchy:** 가장 중요한 Action(예: Play Now)을 F-Pattern 상단에 배치.
-- **몰입형 레이아웃:** UI가 게임 세계관의 텍스처, 폰트, 톤과 일치해야 함.
+### 2024年的核心网页性能指标（Core Web Vitals）
+- **LCP（Largest Contentful Paint）：** 最大内容绘制时间小于2.5秒。
+- **INP（Interaction to Next Paint）：** 用户交互后的响应时间小于200毫秒（替代FID指标）。
+- **CLS（Cumulative Layout Shift）：** 布局抖动小于0.1。
 
----
-
-## 7. Actionable Skills for eastsea.monster Redesign
-
-즉시 적용 가능한 3가지 기술:
-1. **Fluid Typography (clamp):** 모든 페이지 폰트 크기를 `clamp`로 변경하여 모바일-데스크톱 간 전환을 매끄럽게 함.
-2. **WebP Batch Conversion:** 모든 게임 썸네일과 에셋을 WebP로 변환하여 LCP 개선.
-3. **Hero Video Autoplay:** 정적 이미지 대신 음소거된 gameplay 영상을 Hero 섹션에 배치 (JTBD 적용).
+### 优化技巧
+- **图片优化（Image Optimization）：** 使用WebP/AVIF格式压缩图片，并指定`width`和`height`以避免布局抖动。
+- **预加载（Preload）：** 首先加载关键字体和游戏封面图片。
+- **延迟加载JavaScript（Defer JS）：** 将非必要的脚本设置为`defer`或`async`加载。
 
 ---
 
-## Best-Practice Checklist for Game Portfolio
+## 6. 专为游戏设计的UI/UX（Game UI/UX Specifics）
 
-- [ ] Hero 섹션에 gameplay 영상(muted)이 있는가?
-- [ ] 메인 폰트가 `clamp()`를 통해 유동적으로 변하는가?
-- [ ] 모든 이미지가 WebP 포맷이며 `width/height`가 지정되었는가?
-- [ ] Tab 키만으로 모든 게임을 선택하고 플레이할 수 있는가?
-- [ ] 호버 시 버튼이 반응(scale/glow)하는가?
-- [ ] Lighthouse 접근성 점수가 90점 이상인가?
-- [ ] `prefers-reduced-motion` 설정 시 번쩍이는 효과가 꺼지는가?
+这些技巧旨在提升玩家的沉浸感。
+
+### 游戏UI设计原则
+- **即时反馈（Immediate Feedback）：** 所有点击或悬停操作都应立即有视觉/听觉反馈。
+- **视觉层次结构（Visual Hierarchy）：** 最重要的操作（如“立即播放”）应置于页面最显眼的位置。
+- **沉浸式布局（Immersive Layout）：** UI的设计应与游戏世界的纹理、字体和色调保持一致。
+
+---
+
+## 7. 适用于eastsea.monster Redesign的实用技能
+
+以下是三项可以立即应用的技能：
+1. **流动式排版（Fluid Typography）：** 使用`clamp()`函数统一所有页面的字体大小，实现流畅的移动端与桌面端切换。
+2. **WebP批量转换（WebP Batch Conversion）：** 将所有游戏缩略图和资源转换为WebP格式，以优化LCP性能。
+3. **自动播放游戏视频（Hero Video Autoplay）：** 在“Hero”区域播放静音的游戏实况视频（遵循JTBD原则）。
+
+---
+
+## 游戏作品集的最佳实践检查清单（Best-Practice Checklist for Game Portfolio）
+- [ ] “Hero”区域是否包含静音的游戏实况视频？
+- [ ] 主要字体是否通过`clamp()`函数实现动态调整？
+- [ ] 所有图片是否采用WebP格式，并指定了`width`和`height`？
+- [ ] 是否仅通过Tab键即可选择和播放所有游戏？
+- [ ] 悬停按钮是否有响应效果（如缩放或发光）？
+- [ ] 使用Lighthouse工具进行的可访问性测试得分是否超过90分？
+- [ ] 启用`prefers-reduced-motion`设置后，动画效果是否被关闭？

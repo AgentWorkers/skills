@@ -1,41 +1,41 @@
-# Wojak.ink Skill
+# Wojak.ink 技能
 
-Browse, search, and analyze Wojak Farmers Plot NFTs from the wojak.ink collection.
+该技能允许用户浏览、搜索并分析来自 wojak.ink 收藏的 Wojak Farmers Plot NFTs。
 
-## What It Does
+## 功能概述
 
-**Basic Features:**
-- Search NFTs by ID, name, or traits
-- View floor prices by character type
-- Browse marketplace listings from Dexie
-- Look up individual NFT details
-- Track collection statistics
+**基本功能：**
+- 按 NFT ID、名称或特性进行搜索
+- 按角色类型查看最低售价
+- 浏览来自 Dexie 的市场列表
+- 查看单个 NFT 的详细信息
+- 跟踪收藏统计数据
 
-**Advanced Features:**
-- 🎯 Rarity estimation & scoring
-- 📊 Price history tracking & trends
-- 🎨 Trait analysis & distribution
-- 💎 Deal finder (underpriced NFTs)
-- 📈 Market statistics & analytics
-- 🔔 Historical data storage
+**高级功能：**
+- 🎯 稀有性评估与评分
+- 📊 价格历史跟踪与趋势分析
+- 🎨 特性分析与分布
+- 💎 价格发现器（寻找价格较低的 NFT）
+- 📈 市场统计与分析
+- 🔔 历史数据存储
 
-## Collection Info
+## 收藏信息
 
 **Wojak Farmers Plot**
-- Total: 4,200 NFTs on Chia blockchain
-- 14 character types (Wojak, Soyjak, Waifu, Baddie, and variants)
-- Collection ID: `col10hfq4hml2z0z0wutu3a9hvt60qy9fcq4k4dznsfncey4lu6kpt3su7u9ah`
-- Website: https://wojak.ink
+- 总共 4,200 个 NFT，基于 Chia 区块链
+- 14 种角色类型（Wojak、Soyjak、Waifu 及其变体）
+- 收藏 ID：`col10hfq4hml2z0z0wutu3a9hvt60qy9fcq4k4dznsfncey4lu6kpt3su7u9ah`
+- 官网：https://wojak.ink
 
-## Commands
+## 命令
 
-All commands can be triggered via:
-- `/wojak <command>` in Telegram
-- `wojak <command>` in CLI
+所有命令均可通过以下方式执行：
+- 在 Telegram 中输入 `/wojak <命令>`
+- 在 CLI 中输入 `wojak <命令>`
 
-### Basic Commands
+### 基本命令
 
-#### Floor Prices
+#### 查看最低售价
 
 ```bash
 /wojak floor                    # Collection floor price
@@ -44,7 +44,7 @@ All commands can be triggered via:
 /wojak floor papa-tang          # Papa Tang floor
 ```
 
-### Search
+### 搜索
 
 ```bash
 /wojak search "king"            # Search NFTs by trait/name
@@ -52,7 +52,7 @@ All commands can be triggered via:
 /wojak search "bepe"            # Find all Bepe variants
 ```
 
-### Listings
+### 浏览市场列表
 
 ```bash
 /wojak listings                 # Show all current listings
@@ -60,36 +60,36 @@ All commands can be triggered via:
 /wojak listings alien-waifu     # Show Alien Waifu listings
 ```
 
-### NFT Lookup
+### 查看 NFT 详情
 
 ```bash
 /wojak nft 1                    # Info about NFT #0001
 /wojak nft 4200                 # Info about NFT #4200
 ```
 
-### Collection Stats
+### 查看收藏统计数据
 
 ```bash
 /wojak stats                    # Collection-wide statistics
 /wojak characters               # List all character types
 ```
 
-### Advanced Features
+### 高级功能
 
-#### Rarity Analysis
+#### 稀有性分析
 
 ```bash
 /wojak rarity 1                 # Estimate rarity for NFT #0001
 /wojak rarity 4200              # Check rarity for NFT #4200
 ```
 
-Provides:
-- Estimated rarity score
-- Rarity tier (Common → Legendary)
-- Approximate rank within collection
-- Character type information
+提供：
+- 估计的稀有性评分
+- 稀有性等级（普通 → 传奇）
+- 在收藏中的大致排名
+- 角色类型信息
 
-#### Price History & Trends
+#### 价格历史与趋势
 
 ```bash
 /wojak history recent           # Last 10 sales
@@ -99,13 +99,13 @@ Provides:
 /wojak track wojak              # Track Wojak floor price
 ```
 
-Features:
-- Sales history tracking
-- Price trend detection (rising/falling/stable)
-- Statistical analysis (min/max/avg/change%)
-- Automated data storage
+功能：
+- 销售历史跟踪
+- 价格趋势检测（上涨/下跌/稳定）
+- 统计分析（最低价/最高价/平均价/变化百分比）
+- 数据自动存储
 
-#### Trait Analysis
+#### 特性分析
 
 ```bash
 /wojak traits                   # List trait categories
@@ -113,13 +113,13 @@ Features:
 /wojak traits Background        # Background trait distribution
 ```
 
-Analyze:
-- Trait categories (Base, Face, Clothes, etc.)
-- Trait rarity percentages
-- Trait combinations
-- Naked floor prices per trait
+分析：
+- 特性类别（基础、面部、服装等）
+- 特性稀有性百分比
+- 特性组合
+- 每个特性的裸体售价
 
-#### Deal Finder
+#### 价格发现器
 
 ```bash
 /wojak deals                    # Find 10%+ discounts
@@ -127,17 +127,17 @@ Analyze:
 /wojak deals 5                  # Find 5%+ discounts
 ```
 
-Automatically:
-- Calculates average listing price
-- Finds NFTs below threshold
-- Sorts by best deals first
-- Shows savings percentage
+自动执行：
+- 计算平均挂牌价格
+- 找到价格低于阈值的 NFT
+- 按最佳交易顺序排序
+- 显示节省百分比
 
-## Character Types
+## 角色类型
 
-The collection has 14 character types:
+该收藏包含 14 种角色类型：
 
-| Character | Count | ID Range |
+| 角色 | 数量 | ID 范围 |
 |-----------|-------|----------|
 | Wojak | 800 | #0001-#0800 |
 | Soyjak | 700 | #0801-#1500 |
@@ -154,9 +154,9 @@ The collection has 14 character types:
 | Alien Waifu | 100 | #4001-#4100 |
 | Alien Baddie | 100 | #4101-#4200 |
 
-## Agent Usage
+## 代理使用
 
-When users ask about Wojak NFTs, the collection, or marketplace data:
+当用户询问关于 Wojak NFT、收藏或市场数据时，该技能会：
 
 ```javascript
 const { handleCommand } = require('./skills/wojak-ink');
@@ -165,27 +165,27 @@ const { handleCommand } = require('./skills/wojak-ink');
 const output = await handleCommand(['floor', 'wojak']);
 ```
 
-The skill handles:
-- Command parsing and normalization
-- API calls to MintGarden and Dexie
-- Data caching (5-minute TTL)
-- Formatted text output (CLI/Telegram friendly)
+该技能负责：
+- 命令解析与标准化
+- 向 MintGarden 和 Dexie 发送 API 请求
+- 数据缓存（有效期 5 分钟）
+- 生成格式化的文本输出（适用于 CLI/Telegram）
 
-## API Clients
+## API 客户端
 
-The skill uses two main APIs:
+该技能使用两个主要 API：
 
 ### MintGarden API
-- NFT metadata and collection stats
-- Base: `https://api.mintgarden.io`
-- No API key required
+- NFT 元数据和收藏统计信息
+- 基础地址：`https://api.mintgarden.io`
+- 无需 API 密钥
 
 ### Dexie API
-- Marketplace offers and listings
-- Base: `https://api.dexie.space/v1`
-- No API key required
+- 市场报价和列表信息
+- 基础地址：`https://api.dexie.space/v1`
+- 无需 API 密钥
 
-## Installation
+## 安装
 
 ```bash
 cd ~/clawd/skills/wojak-ink
@@ -194,74 +194,73 @@ chmod +x cli.js
 npm link  # Makes 'wojak' command global
 ```
 
-## Output Format
+## 输出格式
 
-All commands return plain text suitable for:
-- Terminal output (CLI)
-- Telegram messages
-- Discord messages
-- WhatsApp messages
+所有命令返回的文本适合：
+- 终端输出（CLI）
+- Telegram 消息
+- Discord 消息
+- WhatsApp 消息
 
-No markdown tables (for WhatsApp compatibility).
+（注意：WhatsApp 不支持 Markdown 格式，因此输出文本为纯文本。）
 
-## Caching
+## 缓存
 
-- Listings cache: 5 minutes
-- Prevents excessive API calls
-- Force refresh available via code
+- 列表缓存：5 分钟
+- 避免过多的 API 请求
+- 可通过代码强制刷新数据
 
-## Examples
+## 示例
 
-**Find cheapest Wojak:**
+**查找最便宜的 Wojak NFT：**
 ```bash
 wojak floor wojak
 ```
 
-**Search for specific NFT:**
+**搜索特定 NFT：**
 ```bash
 wojak nft 1337
 ```
 
-**See all Papa Tang listings:**
+**查看所有 Papa Tang 的列表：**
 ```bash
 wojak listings papa-tang
 ```
 
-**Search by trait:**
+**按特性搜索：**
 ```bash
 wojak search "king crown"
 ```
 
-## Implemented Features
+## 已实现的功能
 
-✅ Rarity score estimation
-✅ Price history tracking
-✅ Trait analysis framework
-✅ Deal finder
-✅ Market trend detection
-✅ Historical data storage
+✅ 稀有性评分
+✅ 价格历史跟踪
+✅ 特性分析框架
+✅ 价格发现器
+✅ 市场趋势检测
+✅ 历史数据存储
 
-## Future Enhancements
+## 未来改进计划
 
-Potential additions:
-- Full trait data integration (requires collection scrape)
-- Wallet portfolio lookup
-- Real-time sales notifications
-- Price alerts via Telegram
-- Advanced rarity ranking with full metadata
-- Trait combination rarity scoring
-- Cross-collection comparisons
+- 完整整合特性数据（需要收集数据）
+- 查看钱包投资组合
+- 实时销售通知
+- 通过 Telegram 发送价格警报
+- 基于完整元数据的高级稀有性排名
+- 特性组合稀有性评分
+- 跨收藏比较
 
-## Tips
+## 提示
 
-- Character type names are case-insensitive
-- NFT IDs can be searched with or without padding
-- Search supports partial matches
-- Listings update every 5 minutes automatically
+- 角色类型名称不区分大小写
+- 可以使用带填充或不带填充的 NFT ID 进行搜索
+- 搜索支持部分匹配
+- 列表信息每 5 分钟自动更新一次
 
-## Support
+## 支持资源
 
-- Collection: https://wojak.ink
-- MintGarden: https://mintgarden.io
-- Dexie: https://dexie.space
-- Bug reports: File in skill repository
+- 收藏官网：https://wojak.ink
+- MintGarden：https://mintgarden.io
+- Dexie：https://dexie.space
+- 如有 bug，请提交到技能仓库

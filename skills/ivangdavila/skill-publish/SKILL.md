@@ -1,50 +1,50 @@
 ---
 name: "Skill Publish"
-description: "Safely publish skills to ClawHub. Sanitize, format, verify, and publish without modifying your local files."
+description: "将技能安全地发布到 ClawHub。在发布之前，会对技能内容进行清洗、格式化、验证，且不会修改您本地的文件。"
 ---
 
-## Publish Skills Safely
+## 安全地发布技能
 
-Transform any knowledge into a publishable skill. Sanitize personal data, format correctly, verify before publishing.
+将任何知识转化为可发布的技能形式。对个人数据进行清洗处理，确保格式正确，并在发布前进行验证。
 
-**Key principle:** Never modify user's original files. Create clean publish-ready version separately.
+**核心原则：** **切勿修改用户的原始文件**，应单独创建一个适合发布的干净版本。
 
-**References:**
-- `sanitize.md` — Security checklist and personal data removal
-- `transform.md` — Convert any format to proper skill structure
-- `verify.md` — Pre-publish verification process
-
----
-
-### When to Use
-
-- User wants to publish existing skill/instructions to ClawHub
-- User wants to share knowledge they've developed locally
-- User has content in any format that should become a public skill
-
-### The Process
-
-1. **Understand** — What knowledge/skill exists? Where is it?
-2. **Transform** — Convert to proper skill format (see `transform.md`)
-3. **Sanitize** — Remove personal/dangerous content (see `sanitize.md`)
-4. **Verify** — Confirm with user before publishing (see `verify.md`)
-5. **Publish** — Only after explicit approval
-
-### Critical Rules
-
-⚠️ **Never modify original files** — Create separate publish version
-⚠️ **Never publish without sanitization** — Check `sanitize.md`
-⚠️ **Never publish without user approval** — Always verify first
-⚠️ **When in doubt, include more** — User can remove, harder to add later
-
-### Asking the User
-
-Before transforming, clarify:
-- What should be PUBLIC vs kept private?
-- Any specific names/references to remove?
-- Target audience (beginners, experts, specific domain)?
-- Desired slug/name for ClawHub?
+**参考文档：**
+- `sanitize.md` — 安全性检查清单及个人数据删除指南
+- `transform.md` — 将内容转换为正确的技能格式
+- `verify.md` — 发布前的验证流程
 
 ---
 
-**Always run `sanitize.md` checklist before any publish.**
+### 使用场景
+
+- 用户希望将现有的技能/教程发布到 ClawHub
+- 用户希望分享自己本地开发的知识
+- 用户拥有需要公开发布的各种格式的内容
+
+### 发布流程
+
+1. **了解** — 确定现有的知识或技能内容及其来源
+2. **转换** — 将内容转换为正确的技能格式（参见 `transform.md`）
+3. **清洗** — 删除个人信息或危险内容（参见 `sanitize.md`）
+4. **验证** — 在发布前获得用户的确认（参见 `verify.md`）
+5. **发布** — 仅在获得明确批准后进行发布
+
+### 重要规则
+
+- **切勿修改原始文件**，必须创建单独的发布版本
+- **未经清洗处理的内容不得发布**，请务必检查 `sanitize.md`
+- **未经用户同意不得发布**，务必先进行验证
+- **如有疑问，请补充更多信息**，因为后期修改会更加困难
+
+### 与用户沟通时需要询问的内容
+
+在转换之前，请明确以下事项：
+- 哪些内容应公开，哪些应保密？
+- 是否需要删除任何特定的名称或引用？
+- 目标受众是谁（初学者、专家还是特定领域的人员）？
+- 希望为 ClawHub 设置什么样的名称或路径？
+
+---
+
+**在发布任何内容之前，请务必运行 `sanitize.md` 检查清单。**

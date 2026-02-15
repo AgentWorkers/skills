@@ -1,25 +1,25 @@
 ---
 name: routemesh-rpc
-description: Call RouteMesh's unified JSON-RPC endpoint (lb.routeme.sh) for any EVM chainId using a helper script. Use when you need to fetch onchain data (eth_* methods), debug RPC responses, or demo RouteMesh routing for a chain/method.
+description: 使用辅助脚本，通过 RouteMesh 的统一 JSON-RPC 端点（lb.routeme.sh）来调用任意 EVM 链路的 chainId。当您需要获取链上数据（eth_* 方法）、调试 RPC 响应，或演示 RouteMesh 的路由功能时，可以使用此方法。
 metadata: {"openclaw":{"homepage":"https://routeme.sh","requires":{"anyBins":["python3","python"]},"primaryEnv":"ROUTEMESH_API_KEY"}}
 ---
 
-# RouteMesh RPC (JSON-RPC)
+# RouteMesh RPC（JSON-RPC）
 
-This skill standardizes how to call RouteMesh’s unified RPC endpoint:
+本技能规范了如何调用 RouteMesh 的统一 RPC 端点：
 
-- **Endpoint**: `POST https://lb.routeme.sh/rpc/{chainId}/{apiKey}`
-- **Body**: JSON-RPC 2.0 (`jsonrpc`, `id`, `method`, optional `params`)
+- **端点**：`POST https://lb.routeme.sh/rpc/{chainId}/{apiKey}`  
+- **请求体**：JSON-RPC 2.0 格式（包含 `jsonrpc`、`id`、`method`，`params` 为可选参数）
 
-## Quick start
+## 快速入门
 
-Set your API key (recommended):
+请设置您的 API 密钥（推荐操作）：
 
 ```bash
 export ROUTEMESH_API_KEY="rm_...your_key..."
 ```
 
-Make a request (example: Ethereum mainnet, `eth_blockNumber`):
+发起一个请求（示例：以太坊主网，`eth_blockNumber`）：
 
 ```bash
 python3 "{baseDir}/scripts/routemesh_rpc.py" \
@@ -28,49 +28,46 @@ python3 "{baseDir}/scripts/routemesh_rpc.py" \
   --params '[]'
 ```
 
-## Usage pattern
+## 使用方式
 
-Prefer calling via the helper script so output stays consistent and you don’t accidentally break JSON encoding.
+建议通过辅助脚本进行调用，以确保输出格式的一致性，并避免意外破坏 JSON 编码。
 
-### Script arguments
+### 脚本参数
 
-- `--chain-id`: EVM chain id (string or int, e.g. `1`, `137`, `42161`)
-- `--api-key`: optional; falls back to `ROUTEMESH_API_KEY`
-- `--method`: JSON-RPC method (e.g. `eth_getBlockByNumber`, `eth_call`)
-- `--params`: JSON string for params (default `[]`)
-- `--url`: optional base URL (default `https://lb.routeme.sh`)
+- `--chain-id`：EVM 链的 ID（字符串或整数，例如 `1`、`137`、`42161`）  
+- `--api-key`：可选；默认使用 `ROUTEMESH_API_KEY`  
+- `--method`：JSON-RPC 方法（例如 `eth_getBlockByNumber`、`eth_call`）  
+- `--params`：参数的 JSON 字符串（默认为空数组 `[]`）  
+- `--url`：可选的基 URL（默认为 `https://lb.routeme.sh`）
 
-## Common examples
+## 常见示例
 
-Get the latest block (Polygon):
-
-```bash
+- 获取最新区块（Polygon 链）：  
+  ```bash
 python3 "{baseDir}/scripts/routemesh_rpc.py" \
   --chain-id 137 \
   --method eth_getBlockByNumber \
   --params '["latest", false]'
 ```
 
-Get chain id (any EVM chain):
-
-```bash
+- 获取链 ID（任意 EVM 链）：  
+  ```bash
 python3 "{baseDir}/scripts/routemesh_rpc.py" \
   --chain-id 8453 \
   --method eth_chainId \
   --params '[]'
 ```
 
-`eth_call` (Base). `data` must be hex-encoded calldata:
-
-```bash
+- `eth_call`（基础用法）：`data` 参数必须为十六进制编码的调用数据（calldata）：  
+  ```bash
 python3 "{baseDir}/scripts/routemesh_rpc.py" \
   --chain-id 8453 \
   --method eth_call \
   --params '[{"to":"0x0000000000000000000000000000000000000000","data":"0x"}, "latest"]'
 ```
 
-## Notes / error handling
+## 注意事项 / 错误处理
 
-- RouteMesh returns standard JSON-RPC responses (`result` or `error`) and may also use HTTP error codes.
-- If you get a JSON-RPC `error.code`, refer to RouteMesh RPC error code docs in this repo: `docs/reference/Reference/get_new-endpoint.md`.
-- Keep `ROUTEMESH_API_KEY` out of logs, issues, and commits.
+- RouteMesh 会返回标准的 JSON-RPC 响应（`result` 或 `error`），也可能使用 HTTP 错误代码。  
+- 如果收到 JSON-RPC 错误代码，请参考该仓库中的 RouteMesh RPC 错误代码文档：`docs/reference/Reference/get_new-endpoint.md`。  
+- 请勿在日志、问题报告或代码提交中泄露 `ROUTEMESH_API_KEY`。

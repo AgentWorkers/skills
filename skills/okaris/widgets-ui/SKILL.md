@@ -11,15 +11,15 @@ description: |
 
 # Widget Renderer
 
-Declarative UI from JSON via [ui.inference.sh](https://ui.inference.sh).
+通过 [ui.inference.sh](https://ui.inference.sh) 从 JSON 文件中生成声明式用户界面（Declarative UI）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx shadcn@latest add https://ui.inference.sh/r/widgets.json
 ```
 
-## Basic Usage
+## 基本用法
 
 ```tsx
 import { WidgetRenderer } from "@/registry/blocks/widgets/widget-renderer"
@@ -40,9 +40,9 @@ const widget: Widget = {
 />
 ```
 
-## Widget Types
+## 组件类型
 
-### Layout
+### 布局（Layout）
 
 ```json
 { "type": "row", "gap": 2, "children": [...] }
@@ -50,7 +50,7 @@ const widget: Widget = {
 { "type": "box", "background": "gradient-ocean", "padding": 4, "radius": "lg", "children": [...] }
 ```
 
-### Typography
+### 字体样式（Typography）
 
 ```json
 { "type": "title", "value": "Heading", "size": "2xl", "weight": "bold" }
@@ -59,7 +59,7 @@ const widget: Widget = {
 { "type": "label", "value": "Field label", "fieldName": "email" }
 ```
 
-### Interactive
+### 交互式组件（Interactive Components）
 
 ```json
 { "type": "button", "label": "Submit", "variant": "default", "onClickAction": { "type": "submit" } }
@@ -69,7 +69,7 @@ const widget: Widget = {
 { "type": "checkbox", "name": "agree", "label": "I agree", "defaultChecked": false }
 ```
 
-### Display
+### 显示方式（Display Methods）
 
 ```json
 { "type": "badge", "label": "New", "variant": "secondary" }
@@ -78,7 +78,7 @@ const widget: Widget = {
 { "type": "divider" }
 ```
 
-## Example: Flight Card
+## 示例：飞行信息卡片（Flight Card Example）
 
 ```tsx
 const flightWidget: Widget = {
@@ -109,7 +109,7 @@ const flightWidget: Widget = {
 }
 ```
 
-## Example: Form
+## 示例：表单（Form Example）
 
 ```tsx
 const formWidget: Widget = {
@@ -129,17 +129,17 @@ const formWidget: Widget = {
 }
 ```
 
-## Gradients
+## 渐变效果（Gradient Effects）
 
-| Name | Description |
+| 名称 | 描述 |
 |------|-------------|
-| `gradient-ocean` | Blue teal gradient |
-| `gradient-sunset` | Orange pink gradient |
-| `gradient-purple` | Purple gradient |
-| `gradient-cool` | Cool blue gradient |
-| `gradient-midnight` | Dark blue gradient |
+| `gradient-ocean` | 蓝绿色渐变 |
+| `gradient-sunset` | 橙粉色渐变 |
+| `gradient-purple` | 紫色渐变 |
+| `gradient-cool` | 冷蓝色渐变 |
+| `gradient-midnight` | 深蓝色渐变 |
 
-## Handling Actions
+## 动作处理（Action Handling）
 
 ```tsx
 const handleAction = (action: WidgetAction, formData?: WidgetFormData) => {
@@ -154,7 +154,7 @@ const handleAction = (action: WidgetAction, formData?: WidgetFormData) => {
 }
 ```
 
-## Related Skills
+## 相关技能（Related Skills）
 
 ```bash
 # Full agent component
@@ -167,10 +167,10 @@ npx skills add inference-sh/agent-skills@chat-ui
 npx skills add inference-sh/agent-skills@tools-ui
 ```
 
-## Documentation
+## 文档资料（Documentation）
 
-- [Widgets Overview](https://inference.sh/docs/agents/widgets/overview) - Understanding widgets
-- [Widget Schema](https://inference.sh/docs/agents/widgets/schema) - Widget JSON structure
-- [Agents That Generate UI](https://inference.sh/blog/ux/generative-ui) - Building generative UIs
+- [组件概述](https://inference.sh/docs/agents/widgets/overview) - 了解组件功能 |
+- [组件 JSON 结构](https://inference.sh/docs/agents/widgets/schema) - 组件的 JSON 格式 |
+- [生成用户界面的代理（Agents That Generate UI）](https://inference.sh/blog/ux/generative-ui) - 如何构建自动生成用户界面的系统 |
 
-Component docs: [ui.inference.sh/blocks/widgets](https://ui.inference.sh/blocks/widgets)
+组件文档：[ui.inference.sh/blocks/widgets](https://ui.inference.sh/blocks/widgets)

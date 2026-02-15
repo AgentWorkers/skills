@@ -1,6 +1,6 @@
 ---
 name: raysurfer
-description: "Cache and reuse code from prior AI agent executions via Raysurfer. Search before coding, upload after success."
+description: "通过 Raysurfer 从之前的 AI 代理执行中缓存并重用代码。在编写代码之前先进行搜索，成功后上传结果。"
 argument-hint: "[search query or \"upload\"]"
 allowed-tools:
   - Bash
@@ -11,25 +11,25 @@ allowed-tools:
   - Glob
 ---
 
-# Raysurfer Code Caching Skill
+# Raysurfer 代码缓存技巧
 
-You have access to Raysurfer, a code caching system that stores and retrieves code from prior AI agent executions. Always check the cache before writing new code and upload successful results afterward.
+您可以使用 Raysurfer 这个代码缓存系统，它能够存储和检索之前 AI 代理执行过的代码。在编写新代码之前，请务必先检查缓存，之后再将成功的结果上传。
 
-## Environment
+## 环境配置
 
-- **API Base URL**: `https://api.raysurfer.com`
-- **Auth**: Bearer token via the `RAYSURFER_API_KEY` environment variable
-- All API calls use `Content-Type: application/json`
+- **API 基本 URL**：`https://api.raysurfer.com`
+- **认证方式**：通过 `RAYSURFER_API_KEY` 环境变量传递 bearer token
+- 所有 API 调用均使用 `Content-Type: application/json` 格式
 
-## Workflow
+## 工作流程
 
-Follow this sequence for every coding task:
+对于每个编码任务，请按照以下步骤操作：
 
-### Step 1: Search the Cache
+### 第 1 步：搜索缓存
 
-Before writing any code, search for existing cached solutions.
+在编写任何代码之前，先搜索现有的缓存结果。
 
-To also include community public snippets (crawled from GitHub), add the `X-Raysurfer-Public-Snips: true` header.
+如果您希望包含来自 GitHub 的公共代码片段，可以在请求头中添加 `X-Raysurfer-Public-Snips: true`。
 
 ```bash
 curl -s -X POST https://api.raysurfer.com/api/retrieve/search \
@@ -39,7 +39,7 @@ curl -s -X POST https://api.raysurfer.com/api/retrieve/search \
   -d '{"task": "<describe the task here>", "top_k": 5, "min_verdict_score": 0.3}'
 ```
 
-The response contains:
+响应内容如下：
 ```json
 {
   "matches": [
@@ -62,31 +62,30 @@ The response contains:
 }
 ```
 
-**Decision logic:**
-- If `total_found > 0` and the top match has `combined_score >= 0.7` and a favorable vote ratio (`thumbs_up > thumbs_down`), use the cached code.
-- If matches exist but scores are low, use them as a starting point and adapt.
-- If no matches, generate the code from scratch.
+**决策逻辑**：
+- 如果 `total_found > 0`，且最匹配的代码的 `combined_score` 大于或等于 0.7，并且投票结果（`thumbs_up > thumbs_down`）为正，则使用缓存的代码。
+- 如果存在匹配结果但分数较低，可以将这些代码作为起点进行修改后再使用。
+- 如果没有匹配结果，则从头开始生成代码。
 
-### Step 2a: Use Cached Code (Cache Hit)
+### 第 2a 步：使用缓存代码（缓存命中）
 
-When a good cache hit is found:
-1. Extract the `source` field from the best matching `code_block`.
-2. Write it to the appropriate file(s).
-3. Adapt paths, variable names, or configuration to the current project if needed.
-4. Run the code to verify it works.
-5. Proceed to Step 3 (Vote).
+当找到合适的缓存结果时：
+1. 从最佳匹配的代码块中提取 `source` 字段。
+2. 将其写入相应的文件中。
+3. 根据当前项目的需求调整文件路径、变量名或配置。
+4. 运行代码以验证其是否正常工作。
+5. 继续执行第 3 步（投票）。
 
-### Step 2b: Generate Code (Cache Miss)
+### 第 2b 步：生成代码（缓存未命中）
 
-When no suitable cache hit exists:
-1. Write the code as you normally would.
-2. Run the code to verify it works.
-3. Proceed to Step 4 (Upload).
+当没有合适的缓存结果时：
+1. 按照常规方式编写代码。
+2. 运行代码以验证其是否正常工作。
+3. 继续执行第 4 步（上传）。
 
-### Step 3: Vote on Cached Code
+### 第 3 步：对缓存代码进行投票
 
-After using cached code, report whether it worked:
-
+使用缓存代码后，需要报告代码的执行结果：
 ```bash
 curl -s -X POST https://api.raysurfer.com/api/store/cache-usage \
   -H "Authorization: Bearer $RAYSURFER_API_KEY" \
@@ -94,12 +93,11 @@ curl -s -X POST https://api.raysurfer.com/api/store/cache-usage \
   -d '{"code_block_id": "<id from the match>", "code_block_name": "<name from the match>", "code_block_description": "<description from the match>", "succeeded": true, "task": "<the task description>"}'
 ```
 
-Set `succeeded` to `true` if the code ran correctly, `false` if it failed or needed significant changes.
+如果代码运行成功，将 `succeeded` 设置为 `true`；如果代码失败或需要重大修改，则将 `succeeded` 设置为 `false`。
 
-### Step 4: Upload New Code
+### 第 4 步：上传新代码
 
-After successfully generating and running new code (cache miss), upload it for future reuse:
-
+在成功生成并运行新代码后（即缓存未命中时），将其上传以供将来重复使用：
 ```bash
 curl -s -X POST https://api.raysurfer.com/api/store/execution-result \
   -H "Authorization: Bearer $RAYSURFER_API_KEY" \
@@ -111,50 +109,48 @@ curl -s -X POST https://api.raysurfer.com/api/store/execution-result \
   }'
 ```
 
-Only upload code that executed successfully. AI voting is enabled by default.
+请仅上传成功执行的代码。系统默认会启用用户投票功能。
 
-## Handling Arguments
+## 参数处理
 
-- If invoked with a search query (e.g., `/raysurfer parse CSV and generate chart`), run Step 1 with that query as the task.
-- If invoked with `upload` (e.g., `/raysurfer upload`), run Step 4 for the most recently generated code in the conversation.
-- If invoked with no arguments, display a summary of the workflow and ask what the user wants to do.
+- 如果通过搜索查询调用 Raysurfer（例如：`/raysurfer parse CSV and generate chart`），则将查询内容作为任务参数传递给第 1 步。
+- 如果通过 `upload` 命令调用 Raysurfer（例如：`/raysurfer upload`），则上传最近生成的代码。
+- 如果没有传递参数，系统会显示工作流程的摘要并询问用户的具体操作需求。
 
-When `$ARGUMENTS` is provided, use it as: `$ARGUMENTS`
+当 `$ARGUMENTS` 被提供时，可以使用 `$ARGUMENTS` 变量来接收这些参数。
 
-## Runnable Scripts
+## 可执行脚本
 
-Ready-to-run scripts are in this skill's directory. Requires `RAYSURFER_API_KEY` to be set.
+可执行的脚本位于该技能的目录中。使用 Raysurfer 时需要设置 `RAYSURFER_API_KEY`。
 
-### Search
-
+### 搜索功能
 ```
 python search.py "Parse a CSV and plot a chart"
 bun search.ts "Parse a CSV and plot a chart"
 bash search.sh "Parse a CSV and plot a chart"
 ```
 
-### Upload
-
+### 上传功能
 ```
 python upload.py "Generate a bar chart" chart.py
 bun upload.ts "Generate a bar chart" chart.py
 bash upload.sh "Generate a bar chart" chart.py
 ```
 
-## Guidelines
+## 注意事项
 
-- Always verify `RAYSURFER_API_KEY` is set before making API calls. If unset, inform the user and skip cache operations.
-- Write descriptive `task` strings that capture what the code does, not how it does it (e.g., "Parse CSV file and generate a bar chart with matplotlib" rather than "run pandas read_csv and plt.bar").
-- Never hardcode API keys in any command or file.
-- If the API is unreachable, proceed with normal code generation without blocking the user.
-- Keep uploaded code self-contained when possible so it is maximally reusable.
+- 在进行 API 调用之前，请务必确保 `RAYSURFER_API_KEY` 已设置。如果未设置该变量，请通知用户并跳过缓存操作。
+- 为每个任务编写描述性的字符串，说明代码的功能而非实现方式（例如：“解析 CSV 文件并使用 matplotlib 生成条形图”，而不是 “执行 pandas 的 read_csv 和 plt.bar 函数”）。
+- 不要在任何命令或文件中硬编码 API 密钥。
+- 如果 API 无法访问，应继续执行代码生成流程，以免阻塞用户。
+- 尽可能使上传的代码具有独立性，以便最大化其复用性。
 
-## Quick Reference
+## 快速参考
 
-| Action | Endpoint | Method |
-|--------|----------|--------|
-| Search cache | `/api/retrieve/search` | POST |
-| Upload code | `/api/store/execution-result` | POST |
-| Vote on code | `/api/store/cache-usage` | POST |
+| 操作        | API 端点            | 方法                |
+|-------------|------------------|-------------------|
+| 搜索缓存        | `/api/retrieve/search`      | POST                |
+| 上传代码        | `/api/store/execution-result`    | POST                |
+| 对代码进行投票      | `/api/store/cache-usage`      | POST                |
 
-See `references/api-reference.md` for full request and response schemas.
+有关完整的请求和响应格式，请参阅 `references/api-reference.md`。

@@ -1,64 +1,64 @@
 ---
 name: maestro-bitcoin
-description: Comprehensive Bitcoin blockchain interaction via Maestro APIs. Supports 7 API services with 119 endpoints including blockchain indexing, Esplora compatibility, RPC access, event management, market prices, mempool monitoring, and wallet operations. Handles BTC transactions, UTXOs, addresses, blocks, metaprotocols (BRC20, Runes, Inscriptions/Ordinals), webhooks, and real-time data.
+description: 通过Maestro API实现全面的比特币区块链交互功能。支持7项API服务，包含119个端点，具体包括区块链索引、Esplora兼容性、RPC访问、事件管理、市场价格监控、内存池（mempool）管理以及钱包操作等。能够处理BTC交易、未花费的交易输出（UTXOs）、地址、区块、元协议（BRC20、Runes、Inscriptions/Ordinals）、Webhook以及实时数据等。
 ---
 
-# Maestro Bitcoin Skill
+# Maestro Bitcoin 技能
 
-A comprehensive skill for interacting with the Bitcoin blockchain through the Maestro API platform, providing access to 7 distinct API services with 119 total endpoints.
+这是一项全面的技能，用于通过 Maestro API 平台与 Bitcoin 区块链进行交互，提供了 7 个不同的 API 服务，共计 119 个终端点。
 
-## Overview
+## 概述
 
-This skill provides complete access to Maestro's Bitcoin API suite:
+该技能提供了对 Maestro Bitcoin API 套件的完整访问权限：
 
-1. **Blockchain Indexer API** (37 endpoints) - Real-time UTXO data with metaprotocol support
-2. **Esplora API** (29 endpoints) - Blockstream-compatible REST API
-3. **Node RPC API** (24 endpoints) - JSON-RPC protocol access
-4. **Event Manager API** (9 endpoints) - Real-time webhooks and monitoring
-5. **Market Price API** (8 endpoints) - OHLC data and price analytics
-6. **Mempool Monitoring API** (9 endpoints) - Mempool-aware operations
-7. **Wallet API** (6 endpoints) - Address-level activity tracking
+1. **区块链索引器 API**（37 个终端点）- 支持元协议的实时未花费交易输出（UTXO）数据
+2. **Esplora API**（29 个终端点）- 兼容 Blockstream 的 REST API
+3. **Node RPC API**（24 个终端点）- 基于 JSON-RPC 协议的访问
+4. **事件管理器 API**（9 个终端点）- 实时 Webhook 和监控
+5. **市场价格 API**（8 个终端点）- 开盘价、最高价、最低价和成交量（OHLC）数据及价格分析
+6. **内存池监控 API**（9 个终端点）- 基于内存池的操作
+7. **钱包 API**（6 个终端点）- 地址级别的活动跟踪
 
-### Key Capabilities
+### 主要功能
 
-- Query addresses, transactions, blocks, and UTXOs
-- Broadcast transactions with multiple methods
-- Track BRC20 tokens, Runes, and Inscriptions (Ordinals)
-- Monitor mempool and estimate fees
-- Set up webhooks for blockchain events
-- Access market price data and DEX trading info
-- Mempool-aware balance and UTXO queries
-- Historical balance tracking
-- Collection and metaprotocol statistics
+- 查询地址、交易、区块和未花费交易输出（UTXO）
+- 使用多种方法广播交易
+- 跟踪 BRC20 代币、符文（Runes）和铭文（Inscriptions）
+- 监控内存池并估算费用
+- 为区块链事件设置 Webhook
+- 访问市场价格数据和去中心化交易所（DEX）交易信息
+- 基于内存池的余额和未花费交易输出查询
+- 历史余额跟踪
+- 收集和元协议统计信息
 
-## Configuration
+## 配置
 
-### API Key Setup
+### API 密钥设置
 
-This skill requires a Maestro API Key. Set the `MAESTRO_API_KEY` environment variable:
+该技能需要一个 Maestro API 密钥。请设置 `MAESTRO_API_KEY` 环境变量：
 
 ```bash
 export MAESTRO_API_KEY="your_api_key_here"
 ```
 
-Add to `~/.bashrc` or `~/.zshrc` for persistence:
+将其添加到 `~/.bashrc` 或 `~/.zshrc` 文件中以实现持久化：
 
 ```bash
 echo 'export MAESTRO_API_KEY="your_api_key_here"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Getting an API Key
+### 获取 API 密钥
 
-1. Sign up at [Maestro Dashboard](https://dashboard.gomaestro.org/signup)
-2. Create a new project
-3. Select Bitcoin as the blockchain
-4. Select your network (Mainnet or Testnet4)
-5. Copy the API key from your project dashboard
+1. 在 [Maestro 控制面板](https://dashboard.gomaestro.org/signup) 注册
+2. 创建新项目
+3. 选择 Bitcoin 作为区块链
+4. 选择您的网络（Mainnet 或 Testnet4）
+5. 从项目控制面板复制 API 密钥
 
-### Network Configuration
+### 网络配置
 
-The skill supports both mainnet and testnet. Set `MAESTRO_NETWORK` to switch:
+该技能支持主网（Mainnet）和测试网（Testnet4）。请设置 `MAESTRO_NETWORK` 以切换网络：
 
 ```bash
 # Use mainnet (default)
@@ -68,13 +68,13 @@ export MAESTRO_NETWORK="mainnet"
 export MAESTRO_NETWORK="testnet"
 ```
 
-## Usage
+## 使用方法
 
-### Primary Interface: Shell Script
+### 主要接口：Shell 脚本
 
-The main interface is through `scripts/call_maestro.sh`, which provides access to all 7 API services.
+主要接口是通过 `scripts/call_maestro.sh` 实现的，它提供了对所有 7 个 API 服务的访问。
 
-#### Quick Examples
+#### 快速示例
 
 ```bash
 # Get latest block height
@@ -105,168 +105,168 @@ The main interface is through `scripts/call_maestro.sh`, which provides access t
 ./scripts/call_maestro.sh get-address-runes bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
 ```
 
-### Available Commands by Service
+### 各服务的可用命令
 
-#### Blockchain Indexer Commands
+#### 区块链索引器命令
 
-**Address Operations:**
-- `get-balance <address>` - Get address satoshi balance
-- `get-utxos <address>` - Get address UTXOs
-- `get-address-txs <address>` - Get address transactions
-- `get-address-activity <address>` - Get address satoshi activity
-- `get-address-stats <address>` - Get address statistics
-- `get-balance-history <address>` - Get historical balance
-- `get-address-runes <address>` - Get runes for address
-- `get-address-rune-activity <address>` - Get rune activity
-- `get-address-rune-utxos <address>` - Get rune UTXOs
-- `get-address-brc20 <address>` - Get BRC20 tokens for address
-- `get-address-inscriptions <address>` - Get inscriptions for address
-- `get-address-inscription-activity <address>` - Get inscription activity
+**地址操作：**
+- `get-balance <address>` - 获取地址的比特币余额
+- `get-utxos <address>` - 获取地址的未花费交易输出（UTXO）
+- `get-address-txs <address>` - 获取地址的交易记录
+- `get-address-activity <address>` - 获取地址的活动情况
+- `get-address-stats <address>` - 获取地址的统计信息
+- `get-balance-history <address>` - 获取地址的历史余额
+- `get-address-runes <address>` - 获取地址的符文信息
+- `get-address-rune-activity <address>` - 获取地址的符文活动情况
+- `get-address-rune-utxos <address>` - 获取地址的符文未花费交易输出（UTXO）
+- `get-address-brc20 <address>` - 获取地址的 BRC20 代币信息
+- `get-address-inscriptions <address>` - 获取地址的铭文信息
+- `get-address-inscription-activity <address>` - 获取地址的铭文活动情况
 
-**Block Operations:**
-- `get-block <height_or_hash>` - Get block information
-- `get-block-txs <height_or_hash>` - Get transactions in block
-- `get-block-inscriptions <height_or_hash>` - Get inscription activity in block
+**区块操作：**
+- `get-block <height_or_hash>` - 获取区块信息
+- `get-block-txs <height_or_hash>` - 获取区块中的交易记录
+- `get-block-inscriptions <height_or_hash>` - 获取区块中的铭文活动
 
-**Transaction Operations:**
-- `get-tx <tx_hash>` - Get transaction information
-- `get-tx-metaprotocols <tx_hash>` - Get transaction with metaprotocols
-- `get-tx-output <tx_hash> <index>` - Get transaction output info
-- `get-tx-inscriptions <tx_hash>` - Get inscription activity in transaction
+**交易操作：**
+- `get-tx <tx_hash>` - 获取交易信息
+- `get-tx-metaprotocols <tx_hash>` - 获取包含元协议的交易
+- `get-tx-output <tx_hash> <index>` - 获取交易输出信息
+- `get-tx-inscriptions <tx_hash>` - 获取交易中的铭文活动
 
-**BRC20 Operations:**
-- `list-brc20` - List all BRC20 tokens
-- `get-brc20 <ticker>` - Get BRC20 token info
-- `get-brc20-holders <ticker>` - Get BRC20 token holders
+**BRC20 操作：**
+- `list-brc20` - 列出所有 BRC20 代币
+- `get-brc20 <ticker>` - 获取 BRC20 代币信息
+- `get-brc20-holders <ticker>` - 获取 BRC20 代币持有者
 
-**Runes Operations:**
-- `list-runes` - List all runes
-- `get-rune <rune_id>` - Get rune information
-- `get-rune-activity <rune_id>` - Get rune activity
-- `get-rune-holders <rune_id>` - Get rune holders
-- `get-rune-utxos <rune_id>` - Get rune UTXOs
+**符文操作：**
+- `list-runes` - 列出所有符文
+- `get-rune <rune_id>` - 获取符文信息
+- `get-rune-activity <rune_id>` - 获取符文活动情况
+- `get-rune-holders <rune_id>` - 获取符文持有者
+- `get-rune-utxos <rune_id>` - 获取符文的未花费交易输出（UTXO）
 
-**Inscriptions Operations:**
-- `get-inscription <inscription_id>` - Get inscription info
-- `get-inscription-content <inscription_id>` - Get inscription content
-- `get-inscription-activity <inscription_id>` - Get inscription activity
-- `get-collection <collection_symbol>` - Get collection metadata
-- `get-collection-stats <collection_symbol>` - Get collection statistics
-- `get-collection-inscriptions <collection_symbol>` - Get collection inscriptions
+**铭文操作：**
+- `get-inscription <inscription_id>` - 获取铭文信息
+- `get-inscription-content <inscription_id>` - 获取铭文内容
+- `get-inscription-activity <inscription_id>` - 获取铭文活动情况
+- `get-collection <collection_symbol>` - 获取收藏信息
+- `get-collection-stats <collection_symbol>` - 获取收藏统计信息
+- `get-collection-inscriptions <collection_symbol>` - 获取收藏中的铭文
 
-#### Esplora API Commands
+#### Esplora API 命令
 
-- `esplora-address-info <address>` - Get address information
-- `esplora-address-txs <address>` - Get address transactions
-- `esplora-address-utxos <address>` - Get address UTXOs
-- `esplora-block <hash>` - Get block information
-- `esplora-block-txs <hash>` - Get block transactions
-- `esplora-tx <txid>` - Get transaction information
-- `esplora-tx-hex <txid>` - Get transaction hex
-- `esplora-broadcast <tx_hex>` - Broadcast transaction
-- `esplora-mempool` - Get mempool information
-- `esplora-tip-height` - Get blockchain tip height
+- `esplora-address-info <address>` - 获取地址信息
+- `esplora-address-txs <address>` - 获取地址的交易记录
+- `esplora-address-utxos <address>` - 获取地址的未花费交易输出（UTXO）
+- `esplora-block <hash>` - 获取区块信息
+- `esplora-block-txs <hash>` - 获取区块中的交易记录
+- `esplora-tx <txid>` - 获取交易信息
+- `esplora-tx-hex <txid>` - 获取交易的十六进制表示
+- `esplora-broadcast <tx_hex>` - 广播交易
+- `esplora-mempool` - 获取内存池信息
+- `esplora-tip-height` - 获取区块链的最新区块高度
 
-#### Node RPC Commands
+#### Node RPC 命令
 
-- `rpc-get-latest-block` - Get latest block
-- `rpc-get-latest-height` - Get latest block height
-- `rpc-get-block <height_or_hash>` - Get block info
-- `rpc-get-block-miner <height_or_hash>` - Get block miner info
-- `rpc-get-info` - Get blockchain info
-- `rpc-get-mempool-info` - Get mempool info
-- `rpc-get-mempool-txs` - Get mempool transactions
-- `rpc-get-mempool-tx <tx_hash>` - Get mempool transaction info
-- `rpc-get-tx <tx_hash>` - Get transaction info
-- `rpc-decode-tx <hex>` - Decode transaction
-- `rpc-broadcast-tx <hex>` - Broadcast transaction
-- `rpc-estimate-fee <blocks>` - Estimate fee
+- `rpc-get-latest-block` - 获取最新区块
+- `rpc-get-latest-height` - 获取最新区块高度
+- `rpc-get-block <height_or_hash>` - 获取区块信息
+- `rpc-get-block-miner <height_or_hash>` - 获取区块矿工信息
+- `rpc-get-info` - 获取区块链信息
+- `rpc-get-mempool-info` - 获取内存池信息
+- `rpc-get-mempool-txs` - 获取内存池中的交易记录
+- `rpc-get-mempool-tx <tx_hash>` - 获取内存池中的交易信息
+- `rpc-get-tx <tx_hash>` - 获取交易信息
+- `rpc-decode-tx <hex>` - 解码交易
+- `rpc-broadcast-tx <hex>` - 广播交易
+- `rpc-estimate-fee <blocks>` - 估算费用
 
-#### Event Manager Commands
+#### 事件管理器命令
 
-- `event-list-triggers` - List all event triggers
-- `event-create-trigger <json>` - Create event trigger
-- `event-get-trigger <id>` - Get trigger details
-- `event-delete-trigger <id>` - Delete trigger
-- `event-list-logs` - List event logs
-- `event-get-log <id>` - Get event log details
+- `event-list-triggers` - 列出所有事件触发器
+- `event-create-trigger <json>` - 创建事件触发器
+- `event-get-trigger <id>` - 获取触发器详细信息
+- `event-delete-trigger <id>` - 删除触发器
+- `event-list-logs` - 列出事件日志
+- `event-get-log <id>` - 获取事件日志详细信息
 
-#### Market Price Commands
+#### 市场价格命令
 
-- `market-btc-price <timestamp>` - Get BTC price at timestamp
-- `market-rune-price <rune_id> <timestamp>` - Get rune price
-- `market-list-dexs` - List supported DEXs
-- `market-list-runes` - Get rune registry
-- `market-ohlc <dex> <symbol>` - Get OHLC data for rune
-- `market-trades <dex> <symbol>` - Get trades for rune
+- `market-btc-price <timestamp>` - 获取指定时间的 BTC 价格
+- `market-rune-price <rune_id> <timestamp>` - 获取指定时间的符文价格
+- `market-list-dexs` - 列出支持的去中心化交易所（DEX）
+- `market-list-runes` - 获取符文注册表
+- `market-ohlc <dex> <symbol>` - 获取符文的 OHLC 数据
+- `market-trades <dex> <symbol>` - 获取指定符文的交易记录
 
-#### Mempool Monitoring Commands
+#### 内存池监控命令
 
-- `mempool-get-balance <address>` - Get balance (mempool-aware)
-- `mempool-get-utxos <address>` - Get UTXOs (mempool-aware)
-- `mempool-get-runes <address>` - Get runes (mempool-aware)
-- `mempool-get-rune-utxos <address>` - Get rune UTXOs (mempool-aware)
-- `mempool-get-fee-rates` - Get mempool block fee rates
-- `mempool-broadcast <hex>` - Broadcast with propagation tracking
-- `mempool-get-tx-meta <tx_hash>` - Get tx metaprotocols (mempool-aware)
+- `mempool-get-balance <address>` - 获取基于内存池的余额
+- `mempool-get-utxos <address>` - 获取基于内存池的未花费交易输出（UTXO）
+- `mempool-get-runes <address>` - 获取基于内存池的符文信息
+- `mempool-get-rune-utxos <address>` - 获取基于内存池的符文未花费交易输出（UTXO）
+- `mempool-get-fee-rates` - 获取内存池的区块费用率
+- `mempool-broadcast <hex>` - 带有传播跟踪的广播
+- `mempool-get-tx-meta <tx_hash>` - 获取交易的元协议信息
 
-#### Wallet API Commands
+#### 钱包 API 命令
 
-- `wallet-get-activity <address>` - Get wallet activity (mempool-aware)
-- `wallet-get-meta-activity <address>` - Get metaprotocol activity
-- `wallet-get-balance-history <address>` - Get historical balance
-- `wallet-get-inscription-activity <address>` - Get inscription activity
-- `wallet-get-rune-activity <address>` - Get rune activity
-- `wallet-get-stats <address>` - Get address statistics (mempool-aware)
+- `wallet-get-activity <address>` - 获取基于内存池的钱包活动情况
+- `wallet-get-meta-activity <address>` - 获取元协议活动情况
+- `wallet-get-balance-history <address>` - 获取地址的历史余额
+- `wallet-get-inscription-activity <address>` - 获取铭文活动情况
+- `wallet-get-rune-activity <address>` - 获取符文活动情况
+- `wallet-get-stats <address>` - 获取地址的统计信息
 
-### References
+### 参考资料
 
-- [API Reference](references/api_reference.md): Complete endpoint documentation
-- [Examples](references/examples.md): Common use case examples
-- [Official Docs](https://docs.gomaestro.org/bitcoin): Maestro documentation
+- [API 参考](references/api_reference.md)：完整的终端点文档
+- [示例](references/examples.md)：常见用例示例
+- [官方文档](https://docs.gomaestro.org/bitcoin)：Maestro 文档
 
-## Features
+## 特点
 
-### Metaprotocol Support
+### 元协议支持
 
-Full support for Bitcoin metaprotocols:
-- **BRC20 Tokens**: Query tokens, holders, and balances
-- **Runes**: Track rune balances, activity, and UTXOs
-- **Inscriptions (Ordinals)**: Query inscriptions, collections, and content
+全面支持 Bitcoin 元协议：
+- **BRC20 代币**：查询代币、持有者和余额
+- **符文（Runes）**：跟踪符文余额、活动和未花费交易输出（UTXO）
+- **铭文（Inscriptions）**：查询铭文、收藏和内容
 
-### Mempool Awareness
+### 内存池感知
 
-Several endpoints offer mempool-aware queries that include pending transactions:
-- Balance queries
-- UTXO queries
-- Rune and inscription tracking
-- Transaction metaprotocols
+多个终端点提供基于内存池的查询功能，包括：
+- 余额查询
+- 未花费交易输出（UTXO）查询
+- 符文和铭文跟踪
+- 交易元协议
 
-### Event-Driven Architecture
+### 基于事件的架构
 
-Set up webhooks to monitor:
-- Address activity
-- Block confirmations
-- Transaction events
-- Metaprotocol operations
+可以设置 Webhook 来监控：
+- 地址活动
+- 区块确认
+- 交易事件
+- 元协议操作
 
-### Rate Limiting
+### 速率限制
 
-Maestro implements two-tier rate limiting:
-- Daily credit limits based on subscription
-- Per-second request caps
+Maestro 实施了两层速率限制：
+- 基于订阅的每日信用额度限制
+- 每秒请求次数上限
 
-Check rate limit headers in responses:
+请在响应中查看速率限制头部信息：
 - `X-RateLimit-Limit-Second`
 - `X-RateLimit-Remaining-Second`
 - `X-Maestro-Credits-Limit`
 - `X-Maestro-Credits-Remaining`
 
-## Notes
+## 注意事项
 
-- All endpoints require valid API key authentication
-- The `/v0` version prefix must be included in all API calls
-- Cursor-based pagination is available for listing endpoints
-- Block height filtering available via `from` and `to` parameters
-- Support for both mainnet and testnet4 networks
-- Comprehensive error handling with standard HTTP status codes
+- 所有终端点都需要有效的 API 密钥进行身份验证
+- 所有 API 调用都必须包含 `/v0` 版本前缀
+- 列表终端点支持基于游标的分页
+- 可以通过 `from` 和 `to` 参数过滤区块高度
+- 支持主网（Mainnet）和测试网（Testnet4）
+- 全面支持错误处理，并使用标准的 HTTP 状态码

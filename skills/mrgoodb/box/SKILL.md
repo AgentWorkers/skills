@@ -1,28 +1,33 @@
 ---
 name: box
-description: Manage files and folders via Box API. Upload, download, and share content securely.
+description: 通过 Box API 管理文件和文件夹。安全地上传、下载和共享内容。
 metadata: {"clawdbot":{"emoji":"📦","requires":{"env":["BOX_ACCESS_TOKEN"]}}}
 ---
 # Box
-Enterprise cloud storage.
-## Environment
+企业级云存储服务。
+
+## 环境配置
 ```bash
 export BOX_ACCESS_TOKEN="xxxxxxxxxx"
 ```
-## List Files in Folder
+
+## 列出文件夹中的文件
 ```bash
 curl "https://api.box.com/2.0/folders/0/items" -H "Authorization: Bearer $BOX_ACCESS_TOKEN"
 ```
-## Upload File
+
+## 上传文件
 ```bash
 curl -X POST "https://upload.box.com/api/2.0/files/content" \
   -H "Authorization: Bearer $BOX_ACCESS_TOKEN" \
   -F "attributes={\"name\":\"file.txt\",\"parent\":{\"id\":\"0\"}}" \
   -F "file=@localfile.txt"
 ```
-## Download File
+
+## 下载文件
 ```bash
 curl "https://api.box.com/2.0/files/{fileId}/content" -H "Authorization: Bearer $BOX_ACCESS_TOKEN" -o file.txt
 ```
-## Links
-- Docs: https://developer.box.com
+
+## 链接
+- 文档：https://developer.box.com

@@ -1,37 +1,37 @@
 ---
 name: git-summary
-description: Get a quick summary of the current Git repository including status, recent commits, branches, and contributors.
+description: 快速获取当前 Git 仓库的概要信息，包括仓库状态、最近的提交记录、分支以及贡献者列表。
 user-invocable: true
 metadata: {"openclaw": {"emoji": "📊", "requires": {"bins": ["git"]}, "os": ["darwin", "linux", "win32"]}}
 ---
 
-# Git Summary Skill
+# Git 综合技能
 
-This skill provides a comprehensive overview of the current Git repository state.
+该技能提供了对当前 Git 仓库状态的全面概述。
 
-## Usage
+## 使用方法
 
-When the user asks for a git summary, repository overview, or wants to understand the current state of a git project, use the terminal to run the following commands and present the results in a clear, organized format.
+当用户请求 Git 总结、仓库概览或希望了解 Git 项目的当前状态时，可以在终端中运行以下命令，并以清晰、有条理的格式展示结果。
 
-## Instructions
+## 指令
 
-1. **Repository Status**: Run `git status --short --branch` to get the current branch and working directory status.
+1. **仓库状态**：运行 `git status --short --branch` 以获取当前分支和工作目录的状态。
 
-2. **Recent Commits**: Run `git log --oneline -10 --decorate` to show the last 10 commits with branch/tag decorations.
+2. **最近提交的记录**：运行 `git log --oneline -10 --decorate` 以显示带有分支/标签标记的最近 10 条提交记录。
 
-3. **Branch Overview**: Run `git branch -a --list` to list all local and remote branches.
+3. **分支概览**：运行 `git branch -a --list` 以列出所有本地和远程分支。
 
-4. **Remote Info**: Run `git remote -v` to show configured remotes.
+4. **远程信息**：运行 `git remote -v` 以显示已配置的远程仓库。
 
-5. **Uncommitted Changes Summary**: 
-   - Run `git diff --stat` for unstaged changes
-   - Run `git diff --cached --stat` for staged changes
+5. **未提交的更改摘要**：
+   - 运行 `git diff --stat` 查看未暂存的更改。
+   - 运行 `git diff --cached --stat` 查看已暂存的更改。
 
-6. **Contributors** (optional, for larger context): Run `git shortlog -sn --all | head -10` to show top 10 contributors.
+6. **贡献者**（可选，用于提供更多背景信息）：运行 `git shortlog -sn --all | head -10` 以显示排名前 10 的贡献者。
 
-## Output Format
+## 输出格式
 
-Present the gathered information in a structured format:
+以结构化的格式展示收集到的信息：
 
 ```
 ## 📊 Git Repository Summary
@@ -55,8 +55,8 @@ Present the gathered information in a structured format:
 <summary of staged and unstaged changes>
 ```
 
-## Notes
+## 注意事项
 
-- If not in a git repository, inform the user and suggest initializing one with `git init`.
-- For large repositories, the contributor list may take a moment - warn the user if this is expected.
-- Always respect that some information may be sensitive - don't expose full URLs if they contain tokens.
+- 如果当前环境不是 Git 仓库，请告知用户，并建议使用 `git init` 初始化一个新仓库。
+- 对于大型仓库，显示贡献者列表可能需要一些时间；如果预计会出现这种情况，请提前提醒用户。
+- 请注意某些信息可能具有敏感性——不要公开包含敏感信息的完整 URL。

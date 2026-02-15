@@ -1,44 +1,44 @@
-# Solana Transfer Skill
+# Solana转账技能
 
-**Description:** Send SOL and SPL tokens on Solana blockchain from OpenClaw agents.
+**描述：** 通过OpenClaw代理在Solana区块链上发送SOL和SPL代币。
 
-**Location:** `/root/.openclaw/workspace/skills/solana-transfer`
+**位置：** `/root/.openclaw/workspace/skills/solana-transfer`
 
-**When to use:** When an agent needs to pay another agent, send a reward, or settle a transaction on-chain.
+**使用场景：** 当代理需要向其他代理付款、发送奖励或在链上结算交易时。
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Install
+### 1. 安装
 
 ```bash
 cd /root/.openclaw/workspace/skills/solana-transfer
 npm install
 ```
 
-### 2. Set Up Keypair
+### 2. 设置密钥对
 
-Generate a keypair (or use an existing one):
+生成一个密钥对（或使用现有的密钥对）：
 
 ```bash
 solana-keygen new --outfile keypair.json
 ```
 
-This creates a Solana wallet. Get your address:
+这将创建一个Solana钱包。获取您的钱包地址：
 
 ```bash
 node index.js address
 ```
 
-### 3. Fund the Wallet
+### 3. 为钱包充值
 
-For **mainnet:** Transfer SOL to your address from your main wallet
-For **devnet/testnet:** Use the Solana faucet
+- **主网（Mainnet）：** 从您的主钱包向此地址转账SOL。
+- **开发网（Devnet）/测试网（Testnet）：** 使用Solana的 faucet工具进行充值。
 
-### 4. Use from an Agent
+### 4. 在代理中使用该技能
 
-In an agent's task or skill code:
+在代理的任务或技能代码中调用该技能：
 
 ```javascript
 import { sendSOL } from '../skills/solana-transfer/index.js';
@@ -52,11 +52,11 @@ console.log(`Transaction: ${result.signature}`);
 
 ---
 
-## Common Patterns
+## 常见使用场景
 
-### Pattern 1: Pay for Expert Query
+### 模式1：支付专家咨询费用
 
-**Scenario:** A cheap agent asks an expert agent a question. The expert quotes a price, the cheap agent pays.
+**场景：** 一个费用较低的代理向专家代理提问，专家给出报价后，费用较低的代理进行支付。
 
 ```javascript
 // In cheap agent's code
@@ -75,9 +75,9 @@ try {
 }
 ```
 
-### Pattern 2: Reward Agents for Task Completion
+### 模式2：为任务完成情况向代理发放奖励
 
-**Scenario:** A coordinator agent awards SOL to agents that complete work.
+**场景：** 协调代理向完成工作的代理发放SOL作为奖励。
 
 ```javascript
 // In coordinator agent's code
@@ -88,9 +88,9 @@ const payment = await sendSOL(workerWallet, rewardLamports);
 console.log(`Rewarded worker with ${payment.amount} SOL`);
 ```
 
-### Pattern 3: SPL Token Payments
+### 模式3：使用SPL代币进行支付
 
-**Scenario:** Pay with USDC or other SPL tokens instead of native SOL.
+**场景：** 使用USDC或其他SPL代币代替原生SOL进行支付。
 
 ```javascript
 import { sendSPLToken } from '../skills/solana-transfer/index.js';
@@ -105,9 +105,9 @@ console.log(`Sent USDC payment: ${payment.signature}`);
 
 ---
 
-## Configuration
+## 配置
 
-Edit `config.json` to change RPC endpoint or network:
+编辑`config.json`文件以更改RPC端点或网络设置：
 
 ```json
 {
@@ -116,24 +116,23 @@ Edit `config.json` to change RPC endpoint or network:
 }
 ```
 
-**Common endpoints:**
-- Mainnet: `https://api.mainnet-beta.solana.com`
-- Devnet: `https://api.devnet.solana.com`
-- Testnet: `https://api.testnet.solana.com`
-- Custom: Use your own Solana node RPC
+**常用端点：**
+- 主网（Mainnet）：`https://api.mainnet-beta.solana.com`
+- 开发网（Devnet）：`https://api.devnet.solana.com`
+- 测试网（Testnet）：`https://api.testnet.solana.com`
+- 自定义：使用您自己的Solana节点RPC服务
 
 ---
 
-## Ledger Integration (Future)
+## 日志集成（未来功能）
 
-Once payments are sent on-chain, you can:
+一旦交易在链上完成，您可以：
+1. **查询交易历史**：查看所有发送/接收的交易记录。
+2. **构建本地日志**：监控链上的交易并记录查询和支付信息。
+3. **争议解决**：如果专家未能履行承诺，代理可以引用交易哈希来解决问题。
+4. **数据分析**：追踪哪些代理向谁支付了费用、平均支付费率等。
 
-1. **Query transaction history:** View all payments sent/received
-2. **Build a local ledger:** Monitor the chain and log queries + payments
-3. **Dispute resolution:** If an expert doesn't deliver, agents can reference the tx hash
-4. **Analytics:** Track which agents pay whom, average rates, etc.
-
-Example: Monitor the blockchain for txs from/to an agent's wallet:
+**示例：** 监控来自/前往代理钱包的交易记录：
 
 ```javascript
 const walletAddress = 'agent-solana-address';
@@ -149,49 +148,41 @@ for (const sig of signatures) {
 
 ---
 
-## Security Notes
+## 安全注意事项
 
-- **Keypair:** Keep `keypair.json` safe. Treat it like a private key (because it is).
-- **Amounts:** Always verify recipient and lamports before sending. No undo.
-- **RPC:** Use a trusted RPC provider. Don't hardcode URLs in agent code.
-- **Rate limits:** If agents spam transactions, Solana will rate-limit or your RPC may block you. Add delays between payments if needed.
-
----
-
-## Troubleshooting
-
-**"Insufficient funds"**
-Check balance: `node index.js balance`. Fund the wallet.
-
-**"Invalid public key"**
-Recipient address is malformed. Solana addresses are 44-character base58 strings.
-
-**"Connection timeout"**
-RPC endpoint is unreachable. Try a different endpoint in `config.json`.
-
-**"Transaction failed to confirm"**
-Network congestion or insufficient fee. Retry after a few seconds.
+- **密钥对：** 请妥善保管`keypair.json`文件，将其视为私钥并严格保密。
+- **金额：** 在发送前务必核实收款人的地址和交易费用（lamports）。交易一旦完成无法撤销。
+- **RPC服务：** 使用可靠的RPC服务提供商，不要在代理代码中硬编码RPC地址。
+- **速率限制：** 如果代理频繁发送交易，Solana系统可能会设置速率限制；必要时可增加交易间隔时间。
 
 ---
 
-## Example: Full IRC + Solana Flow
+## 常见问题及解决方法
 
-1. **Cheap agent** in IRC: `@expert, analyze this data`
-2. **Expert agent** responds: `Quote: 0.001 SOL (Tx settle onchain) [quote_id: xyz]`
-3. **Cheap agent** approves:
+- **“资金不足”**：检查钱包余额（`node/index.js balance`）。请为钱包充值。
+- **“公钥无效”**：收款人地址格式不正确。Solana地址应为44个字符的base58编码字符串。
+- **“连接超时”**：RPC端点无法访问。请尝试`config.json`文件中指定的其他端点。
+- **“交易确认失败”**：可能是网络拥堵或费用不足。请稍后重试。
+
+---
+
+## 示例：完整的IRC与Solana交互流程
+
+1. **费用较低的代理** 在IRC中发送消息：`@expert, analyze this data`
+2. **专家代理** 回复：`报价：0.001 SOL（交易将在链上确认）[报价ID：xyz]`
+3. **费用较低的代理** 同意支付：
    ```javascript
    const result = await sendSOL(expertWalletAddress, 1000000);
    console.log(`Paid expert. Tx: ${result.signature}`);
    ```
-4. **Expert agent** confirms payment received and delivers work
-5. Both agents log: `query_id, expert_address, tx_hash` for audit trail
+4. **专家代理** 确认收到付款并完成工作
+5. 两个代理都会记录：`query_id, expert_address, tx_hash` 以备审计。
 
 ---
 
-## Next Steps
-
-- [ ] Set up your keypair and fund with SOL
-- [ ] Test sending a small amount to verify setup
-- [ ] Integrate with IRC skill for automatic expert payments
-- [ ] Build transaction history viewer
-- [ ] Create agent wallet registry (who has what address?)
+## 下一步操作：
+- [ ] 设置您的密钥对并为钱包充值SOL。
+- [ ] 测试发送少量资金以验证设置是否正确。
+- [ ] 将该技能集成到IRC系统中以实现自动支付功能。
+- [ ] 开发交易历史查询工具。
+- [ ] 创建代理钱包注册系统（记录每个代理的地址信息）。

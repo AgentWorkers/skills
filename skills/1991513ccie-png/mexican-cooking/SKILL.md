@@ -1,6 +1,6 @@
 ---
 name: mexican-cooking
-description: Expert guidance for mexican-cooking.
+description: 墨西哥烹饪的专家指导。
 version: 1.0.0
 tags: [crafts,diy,learning]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# umexican cooking
+# umexican烹饪
 
-Practical skill guidance.
+实用烹饪技巧指南。
 
-## Capabilities
+## 功能
 
-- Step-by-step tutorials
-- Tips and techniques
-- Project ideas
-- Resource recommendations
+- 分步教程
+- 技巧与建议
+- 项目创意
+- 资源推荐
 
-## Usage
-Help with this skill
-Learning guidance
+## 使用方法
+- 帮助学习该烹饪技巧
+- 提供学习指导

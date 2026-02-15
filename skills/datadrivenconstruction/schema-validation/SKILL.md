@@ -1,18 +1,18 @@
 ---
 slug: "schema-validation"
 display_name: "Schema Validation"
-description: "JSON/data schema validation for construction data exchange: API payloads, file imports, BIM exports. Ensure data structure compliance before processing."
+description: "用于建筑数据交换的 JSON 数据/模式验证：包括 API 请求体（API payloads）、文件导入（file imports）以及 BIM 导出（BIM exports）。在数据处理之前，确保数据结构符合相关规范。"
 ---
 
-# Schema Validation for Construction Data
+# 建筑数据的模式验证
 
-## Overview
+## 概述
 
-Validate data structures against defined schemas for construction data exchange. Ensure API payloads, file imports, and BIM exports conform to expected formats before processing.
+对建筑数据交换中的数据结构进行模式验证，确保API请求体（payloads）、文件导入内容以及BIM导出文件符合预期的格式，从而在进一步处理之前保证数据的一致性。
 
-## Schema Validation Framework
+## 模式验证框架
 
-### Core Schema Validator
+### 核心模式验证器
 
 ```python
 from dataclasses import dataclass, field
@@ -208,9 +208,9 @@ class SchemaValidator:
         return type_checks.get(expected, lambda v: True)(value)
 ```
 
-## Construction Data Schemas
+## 建筑数据模式
 
-### Cost Estimate Schema
+### 成本估算模式
 
 ```python
 # Define schema for cost estimate data
@@ -297,7 +297,7 @@ COST_ESTIMATE_SCHEMA = Schema(
 )
 ```
 
-### Schedule Data Schema
+### 进度计划数据模式
 
 ```python
 SCHEDULE_SCHEMA = Schema(
@@ -341,7 +341,7 @@ SCHEDULE_SCHEMA = Schema(
 )
 ```
 
-### BIM Element Schema
+### BIM元素模式
 
 ```python
 BIM_ELEMENT_SCHEMA = Schema(
@@ -387,7 +387,7 @@ BIM_ELEMENT_SCHEMA = Schema(
 )
 ```
 
-### RFI Schema
+### 咨询请求（RFI）模式
 
 ```python
 RFI_SCHEMA = Schema(
@@ -425,7 +425,7 @@ RFI_SCHEMA = Schema(
 )
 ```
 
-## Schema Registry
+## 模式注册表
 
 ```python
 class ConstructionSchemaRegistry:
@@ -466,7 +466,7 @@ class ConstructionSchemaRegistry:
         return [k for k in self.schemas.keys() if ':' in k]
 ```
 
-## Usage Examples
+## 使用示例
 
 ```python
 # Initialize registry
@@ -520,7 +520,7 @@ else:
     print(result.to_report())
 ```
 
-## JSON Schema Export
+## JSON模式导出
 
 ```python
 def export_to_json_schema(schema: Schema) -> dict:
@@ -589,7 +589,7 @@ json_schema = export_to_json_schema(COST_ESTIMATE_SCHEMA)
 print(json.dumps(json_schema, indent=2))
 ```
 
-## Integration with DDC Pipeline
+## 与DDC流程的集成
 
 ```python
 # Validate API request before processing
@@ -620,8 +620,8 @@ def create_estimate(payload: dict):
     return process_estimate(payload)
 ```
 
-## Resources
+## 资源
 
-- **JSON Schema**: https://json-schema.org/
-- **CSI MasterFormat**: Standard classification codes
-- **IFC Schema**: https://standards.buildingsmart.org/IFC/
+- **JSON模式**：https://json-schema.org/
+- **CSI MasterFormat**：标准分类代码
+- **IFC模式**：https://standards.buildingsmart.org/IFC/

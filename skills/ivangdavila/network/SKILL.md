@@ -1,72 +1,80 @@
 ---
 name: Network
-description: Understand and troubleshoot computer networks with TCP/IP, DNS, routing, and diagnostic tools.
+description: 理解并使用TCP/IP、DNS、路由以及诊断工具来排查计算机网络问题。
 metadata: {"clawdbot":{"emoji":"🌐","os":["linux","darwin","win32"]}}
 ---
 
-# Network Fundamentals
+# 网络基础
 
-## TCP/IP Basics
-- TCP guarantees delivery with retransmission — use for reliability (HTTP, SSH, databases)
-- UDP is fire-and-forget — use for speed when loss is acceptable (video, gaming, DNS queries)
-- Port numbers: 0-1023 privileged (need root), 1024-65535 available — common services have well-known ports
-- Ephemeral ports for client connections — OS assigns randomly from high range
+## TCP/IP 基础
+- TCP 通过重传机制保证数据传输的可靠性，适用于需要稳定性的场景（如 HTTP、SSH、数据库等）。
+- UDP 是一种“一次发送、不再关心”的传输方式，适用于对传输速度要求较高且可以容忍数据丢失的场景（如视频流、在线游戏、DNS 查询等）。
+- 端口编号：0-1023 是特权端口（需要 root 权限才能使用）；1024-65535 是通用端口，常见服务通常使用这些端口。
+- 客户端连接使用的临时端口由操作系统从较高编号范围内随机分配。
 
 ## DNS
-- DNS resolution is cached at multiple levels — browser, OS, router, ISP — flush all when debugging
-- TTL determines cache duration — lower before migrations, raise after for performance
-- A record for IPv4, AAAA for IPv6, CNAME for aliases, MX for mail
-- CNAME cannot exist at zone apex (root domain) — use A record or provider-specific alias
-- `dig` and `nslookup` query DNS directly — bypass local cache for accurate results
+- DNS 解析结果会在多个层级（浏览器、操作系统、路由器、互联网服务提供商）中被缓存；在调试时需要清除所有缓存。
+- TTL（Time To Live）决定了缓存的有效时间：在系统升级前应设置较短的 TTL 值，升级后则应适当延长以提高性能。
+- A 记录用于 IPv4 地址；AAAA 记录用于 IPv6 地址；CNAME 记录用于别名；MX 记录用于邮件服务器的地址解析。
+- CNAME 记录不能出现在顶级域名（根域名）下，应使用 A 记录或服务提供商提供的别名。
+- 可使用 `dig` 或 `nslookup` 命令直接查询 DNS，以绕过本地缓存并获得最准确的结果。
 
-## IP Addressing
-- Private ranges: 10.x.x.x, 172.16-31.x.x, 192.168.x.x — not routable on internet
-- CIDR notation: /24 = 256 IPs, /16 = 65536 IPs — each bit halves or doubles the range
-- 127.0.0.1 is localhost — 0.0.0.0 means all interfaces, not a valid destination
-- NAT translates private to public IPs — most home/office networks use this
-- IPv6 eliminates NAT need — but dual-stack with IPv4 still common
+## IP 地址
+- 私有 IP 地址范围：10.x.x.x、172.16-31.x.x、192.168.x.x，这些地址无法在互联网上直接路由。
+- CIDR 表示法：/24 表示 256 个 IP 地址；/16 表示 65536 个 IP 地址。每个位的变化都会使 IP 地址范围翻倍或减半。
+- 127.0.0.1 是本地主机（localhost）；0.0.0.0 表示所有网络接口，不是一个有效的目标地址。
+- NAT（网络地址转换）用于将私有 IP 地址转换为公共 IP 地址，大多数家庭/办公网络都使用这种机制。
+- IPv6 的出现消除了对 NAT 的需求，但许多系统仍同时支持 IPv4 和 IPv6（双栈架构）。
 
-## Common Ports
-- 22: SSH — 80: HTTP — 443: HTTPS — 53: DNS
-- 25/465/587: SMTP (mail sending) — 143/993: IMAP — 110/995: POP3
-- 3306: MySQL — 5432: PostgreSQL — 6379: Redis — 27017: MongoDB
-- 3000/8080/8000: Common development servers
+## 常见端口
+- 22：SSH
+- 80：HTTP
+- 443：HTTPS
+- 53：DNS
+- 25/465/587：SMTP（邮件发送）
+- 143/993：IMAP
+- 110/995：POP3
+- 3306：MySQL
+- 5432：PostgreSQL
+- 6379：Redis
+- 27017：MongoDB
+- 3000/8080/8000：常见的开发服务器端口
 
-## Troubleshooting Tools
-- `ping` tests reachability — but ICMP may be blocked, no response doesn't mean down
-- `traceroute`/`tracert` shows path — identifies where packets stop or slow down
-- `netstat -tulpn` or `ss -tulpn` shows listening ports — find what's using a port
-- `curl -v` shows full HTTP transaction — headers, timing, TLS negotiation
-- `tcpdump` and Wireshark capture packets — last resort for deep debugging
+## 故障排查工具
+- `ping` 命令用于测试网络连通性；但 ICMP 协议可能被防火墙阻止，因此无响应并不一定表示服务器故障。
+- `traceroute`/`tracert` 命令用于显示数据包传输路径，帮助识别数据包传输过程中出现问题的位置。
+- `netstat -tulpn` 或 `ss -tulpn` 命令用于查看系统中正在监听的端口及其使用情况。
+- `curl -v` 命令可显示完整的 HTTP 请求过程（包括请求头、传输时间、TLS 协议协商信息）。
+- `tcpdump` 和 Wireshark 可用于捕获网络数据包，用于深入调试。
 
-## Firewalls and NAT
-- Stateful firewalls track connections — allow response to outbound requests automatically
-- Port forwarding maps external port to internal IP:port — required to expose services behind NAT
-- Hairpin NAT for internal access to external IP — not all routers support it
-- UPnP auto-configures port forwarding — convenient but security risk, disable on servers
+## 防火墙和 NAT
+- 有状态防火墙会跟踪网络连接，并自动允许对出站请求的响应。
+- 端口转发功能可以将外部端口映射到内部服务器的特定端口，这对于暴露隐藏在 NAT 后面的服务至关重要。
+- “Hairpin NAT” 允许内部设备访问外部 IP 地址，但并非所有路由器都支持该功能。
+- UPnP（通用即插即用）协议可以自动配置端口转发，虽然方便但存在安全风险，建议在服务器上禁用该功能。
 
-## Load Balancing
-- Round-robin distributes sequentially — simple but ignores server capacity
-- Least connections sends to least busy — better for varying request durations
-- Health checks remove dead servers — configure appropriate intervals and thresholds
-- Sticky sessions (affinity) keep user on same server — needed for stateful apps, breaks scaling
+## 负载均衡
+- 轮询（Round-Robin）算法按顺序分配请求，简单易实现，但无法考虑服务器的负载情况。
+- “最少连接数”算法会将请求分配给负载最轻的服务器，适用于请求处理时间不固定的场景。
+- 健康检查机制可以自动识别并剔除故障服务器，需要配置合适的检查间隔和阈值。
+- “粘性会话”（Sticky Sessions）功能可确保用户请求始终发送到同一台服务器，适用于需要保持会话状态的应用程序，但可能影响扩展性。
 
-## VPNs and Tunnels
-- VPN encrypts traffic to exit point — all traffic appears from VPN server IP
-- Split tunneling sends only some traffic through VPN — reduces latency for local resources
-- WireGuard is modern and fast — simpler than OpenVPN, better performance
-- SSH tunnels for ad-hoc port forwarding — `ssh -L local:remote:port` creates secure tunnel
+## VPN 和隧道技术
+- VPN 对传输的数据进行加密，使数据看起来像来自 VPN 服务器。
+- “Split Tunneling” 技术仅允许部分数据通过 VPN 传输，从而减少对本地资源的延迟。
+- WireGuard 是一种现代且性能优秀的 VPN 工具，比 OpenVPN 更简单易用。
+- SSH 隧道可用于临时端口转发，例如使用 `ssh -L local:remote:port` 命令创建安全隧道。
 
-## SSL/TLS
-- TLS 1.2 minimum, prefer 1.3 — older versions have known vulnerabilities
-- Certificate chain: leaf → intermediate → root — missing intermediate causes validation failures
-- SNI allows multiple certs on one IP — older clients without SNI get default cert
-- Let's Encrypt certs expire in 90 days — automate renewal or face outages
+## SSL/TLS 协议
+- 最低建议使用 TLS 1.3 协议，因为旧版本存在已知的安全漏洞。
+- 证书链的格式为：叶子证书 → 中间证书 → 根证书；缺少中间证书会导致验证失败。
+- SNI（Server Name Indication）功能允许一个 IP 地址使用多个证书；不支持 SNI 的旧客户端会使用默认证书。
+- Let’s Encrypt 证书的有效期为 90 天，需定期自动续订以避免服务中断。
 
-## Common Mistakes
-- Assuming DNS changes are instant — TTL means old records persist in caches
-- Blocking ICMP entirely — breaks path MTU discovery, causes mysterious failures
-- Forgetting IPv6 — services may be accessible on IPv6 even with IPv4 firewall
-- Hardcoding IPs instead of hostnames — breaks when IPs change
-- Not checking both TCP and UDP — some services need UDP (DNS, VPN, game servers)
-- Confusing latency and bandwidth — high bandwidth doesn't mean low latency
+## 常见错误
+- 误以为 DNS 更新会立即生效：实际上 DNS 缓存中仍会保留旧记录。
+- 完全阻止 ICMP 协议会导致路径 MTU（Maximum Transmission Unit）检测功能失效，从而引发网络问题。
+- 忽视 IPv6 的存在：某些服务可能同时支持 IPv4 和 IPv6，即使使用 IPv4 防火墙也能访问这些服务。
+- 硬编码 IP 地址而非主机名：当 IP 地址发生变化时会导致连接失败。
+- 未同时检查 TCP 和 UDP 协议：某些服务（如 DNS、VPN、游戏服务器）同时依赖 TCP 和 UDP。
+- 混淆延迟和带宽的概念：高带宽并不一定意味着低延迟。

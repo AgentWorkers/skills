@@ -1,16 +1,16 @@
 ---
 name: quodd
-description: Fetch real-time stock quotes via Quodd API. Get current prices, daily high/low, and after-hours data for US equities. Use when the user asks for stock prices, quotes, market data, or ticker information.
+description: 通过 Quodd API 获取实时股票报价。可以获取美国股票的当前价格、每日最高/最低价以及盘后数据。当用户查询股票价格、报价、市场数据或股票代码信息时，可以使用此功能。
 metadata: {"openclaw":{"emoji":"📈","requires":{"bins":["python3"],"env":["QUODD_USERNAME","QUODD_PASSWORD"]}}}
 ---
 
-# Quodd Stock Quotes
+# Quodd 股票报价
 
-Fetch real-time stock quotes for US equities via the Quodd API.
+通过 Quodd API 获取美国股票的实时报价。
 
-For more information, visit: https://www.quodd.com/stock-and-etf-data
+更多信息，请访问：https://www.quodd.com/stock-and-etf-data
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get a quote for Apple
@@ -20,44 +20,44 @@ python scripts/quote.py AAPL
 python scripts/quote.py AAPL MSFT META
 ```
 
-## Prerequisites
+## 先决条件
 
-Set the following environment variables:
+设置以下环境变量：
 
 ```bash
 export QUODD_USERNAME="your_username"
 export QUODD_PASSWORD="your_password"
 ```
 
-## Usage
+## 使用方法
 
-### Single Ticker
+### 单个股票代码
 
 ```bash
 python scripts/quote.py AAPL
 ```
 
-### Multiple Tickers
+### 多个股票代码
 
 ```bash
 python scripts/quote.py AAPL MSFT META GOOGL
 ```
 
-### JSON Output
+### JSON 格式输出
 
 ```bash
 python scripts/quote.py AAPL --format json
 ```
 
-### Force Token Refresh
+### 强制刷新令牌
 
 ```bash
 python scripts/quote.py AAPL --no-cache
 ```
 
-## Output Format
+## 输出格式
 
-### Text (Default)
+### 文本格式（默认）
 
 ```
 Quodd Stock Quotes
@@ -66,7 +66,7 @@ Symbol   Date        Time      High      Low     Close    AH Time     AH Price
 AAPL     01/29/26    14:30    185.50   180.25   182.63   17:45:30     182.80
 ```
 
-### JSON
+### JSON 格式
 
 ```json
 {
@@ -85,18 +85,18 @@ AAPL     01/29/26    14:30    185.50   180.25   182.63   17:45:30     182.80
 }
 ```
 
-## Output Fields
+## 输出字段
 
-- **Symbol** - Stock ticker symbol
-- **Date** - Quote date
-- **Time** - Quote time
-- **High** - Day high price
-- **Low** - Day low price
-- **Close** - Last traded price
-- **AH Time** - After hours trade time
-- **AH Price** - After hours price
+- **Symbol** - 股票代码
+- **Date** - 报价日期
+- **Time** - 报价时间
+- **High** - 当日最高价
+- **Low** - 当日最低价
+- **Close** - 最后交易价格
+- **AH Time** - 收盘后交易时间
+- **AH Price** - 收盘后价格
 
-## Notes
+## 注意事项
 
-- Authentication tokens are cached at `~/.openclaw/credentials/quodd-token.json` for 20 hours
-- Use `--no-cache` if you encounter authentication errors after credential changes
+- 认证令牌会缓存在 `~/.openclaw/credentials/quodd-token.json` 文件中，缓存有效期为 20 小时。
+- 如果在更改凭证后遇到认证错误，请使用 `--no-cache` 选项。

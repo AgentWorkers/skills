@@ -1,64 +1,67 @@
 ---
 name: bridge-tokens
-description: Bridge tokens from one chain to another without swapping. Simplified cross-chain transfer where the output token is the same as the input token. Use when the user wants to move tokens between chains.
+description: 将一个链上的代币桥接到另一个链上，而无需进行交换。这是一种简化的跨链转账方式，其中输出代币与输入代币完全相同。适用于用户需要在不同链之间转移代币的场景。
 model: opus
 allowed-tools: [Task(subagent_type:cross-chain-executor), mcp__uniswap__getSupportedChains, mcp__uniswap__getTokenInfo]
 ---
 
-# Bridge Tokens
+# 桥接令牌（Bridge Tokens）
 
-## Overview
+## 概述
 
-Bridges tokens from one chain to another — a simplified cross-chain operation where the token stays the same (e.g., USDC on Ethereum to USDC on Base). Delegates to the `cross-chain-executor` agent with `tokenOut = tokenIn` to streamline the workflow.
+桥接令牌功能允许用户在不同的区块链之间转移令牌，同时保持令牌的类型不变（例如，将以太坊上的USDC转移到Base链上的USDC）。该操作通过`cross-chain-executor`代理来执行，使用`tokenOut = tokenIn`的参数来简化工作流程。
 
-This is the simpler sibling of `cross-chain-swap`. Use this when the user just wants to move tokens, not swap them.
+这是`cross-chain-swap`功能的简化版本，适用于用户仅需要转移令牌而无需进行交换的场景。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下请求时，可以使用此功能：
+- “将1000个USDC从以太坊桥接到Base链”
+- “将我的ETH转移到Arbitrum”
+- “将USDC转移到Optimism”
+- “将令牌发送到另一个区块链”
+- “桥接令牌”
+- “将我所有的USDC从Polygon转移到Base链”
 
-- "Bridge 1000 USDC from Ethereum to Base"
-- "Move my ETH to Arbitrum"
-- "Transfer USDC to Optimism"
-- "Send tokens to another chain"
-- "Bridge tokens"
-- "Move all my USDC from Polygon to Base"
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值       | 说明                                                    |
+|------------------|--------|------------|---------------------------------------------------------|
+| token               | 是      | —           | 需要桥接的令牌符号或地址                                      |
+| amount              | 是      | —           | 需要桥接的令牌数量（用户可读格式）                                   |
+| sourceChain           | 是      | —           | 源区块链名称（例如：“ethereum”）                                   |
+| destChain            | 是      | —           | 目标区块链名称（例如：“base”）                                   |
+| recipient            | 否       | 相同钱包地址    | 目标区块链上的接收者地址                                      |
 
-| Parameter        | Required | Default    | Description                                           |
-| ---------------- | -------- | ---------- | ----------------------------------------------------- |
-| token            | Yes      | —          | Token symbol or address to bridge                     |
-| amount           | Yes      | —          | Amount to bridge (human-readable)                     |
-| sourceChain      | Yes      | —          | Source chain name (e.g., "ethereum")                  |
-| destChain        | Yes      | —          | Destination chain name (e.g., "base")                 |
-| recipient        | No       | Same wallet| Recipient address on destination chain                |
+## 工作流程
 
-## Workflow
+1. **从用户请求中提取参数**：
+   - 确定需要桥接的令牌类型。
+   - 确定转移的令牌数量。
+   - 确定源区块链和目标区块链的名称。
+   - 通过`mcp__uniswap__tokenInfo`函数获取两个链上相同令牌的地址。
 
-1. **Extract parameters** from the user's request. Identify:
-   - Which token to bridge.
-   - The amount.
-   - Source and destination chains.
-   - Resolve the same token's address on both chains via `mcp__uniswap__getTokenInfo`.
+2. **验证输入**：
+   - 使用`mcp__uniswap__getSupportedChains`函数确认两个区块链是否受支持。
+   - 确认目标区块链上存在该令牌。
+   - 如果源区块链和目标区块链相同，则告知用户无需进行桥接操作。
 
-2. **Validate inputs**:
-   - Verify both chains are supported via `mcp__uniswap__getSupportedChains`.
-   - Verify the token exists on both chains.
-   - If source and destination chain are the same: inform the user no bridge is needed.
+3. **委托给跨链执行器**：
+   - 调用`Task(subagent_type:cross-chain-executor)`，传递以下参数：
+     - `tokenIn`：源区块链上的令牌地址。
+     - `tokenOut`：目标区块链上的相同令牌地址。
+     - `amount`：需要桥接的令牌数量。
+     - `sourceChain`：源区块链名称。
+     - `destChain`：目标区块链名称。
+     - `recipient`：接收者地址。
 
-3. **Delegate to cross-chain-executor**: Invoke `Task(subagent_type:cross-chain-executor)` with:
-   - tokenIn = token (on source chain).
-   - tokenOut = same token (on destination chain).
-   - amount, sourceChain, destChain, recipient.
-   - The agent handles quoting, safety, execution, monitoring, and confirmation.
+4. **处理结果**：
+   - 为用户生成桥接报告，包括：
+     - 实际转移的令牌数量（扣除桥接费用后）。
+     - 桥接费用。
+     - 结算时间。
 
-4. **Present results**: Format the bridge report for the user, highlighting:
-   - Amount sent and received (should be very close, minus bridge fee).
-   - Bridge fee.
-   - Settlement time.
-
-## Output Format
+## 输出格式
 
 ```text
 Bridge Complete
@@ -76,20 +79,20 @@ Bridge Complete
   Risk: LOW | Safety: APPROVED
 ```
 
-## Important Notes
+## 重要提示
 
-- Bridge operations transfer the same token between chains. The received amount will be slightly less due to bridge fees.
-- Settlement times vary by chain pair (typically 1-10 minutes).
-- Not all tokens are bridgeable between all chains. The executor will check availability.
-- For moving tokens AND swapping to a different token, use `cross-chain-swap` instead.
+- 桥接操作会在不同区块链之间转移相同类型的令牌。由于桥接费用的存在，实际接收到的令牌数量会略有减少。
+- 结算时间因区块链对而异（通常为1-10分钟）。
+- 并非所有令牌都能在所有区块链之间进行桥接。执行器会检查令牌的可用性。
+- 如果用户既需要转移令牌又希望进行令牌交换，请使用`cross-chain-swap`功能。
 
-## Error Handling
+## 错误处理
 
-| Error                        | User-Facing Message                                              | Suggested Action                       |
-| ---------------------------- | ---------------------------------------------------------------- | -------------------------------------- |
-| Token not available on dest  | "[Token] is not available on [destChain]."                       | Use cross-chain-swap to swap to a native token |
-| Same chain                   | "Source and destination are the same chain. No bridge needed."   | No action needed                       |
-| Unsupported chain            | "Chain [name] is not supported."                                 | Check supported chains                 |
-| Safety veto                  | "This bridge was blocked by safety checks: [reason]."           | Reduce amount or check configuration   |
-| Bridge stuck                 | "Bridge settlement is delayed. Monitoring continues."            | Wait — recovery instructions provided  |
-| Insufficient balance         | "Not enough [token] on [chain]."                                 | Check balance and reduce amount        |
+| 错误类型                | 显示给用户的消息                                        | 建议的操作                                      |
+|------------------|--------------------------------------------------|----------------------------------------|
+| 目标区块链上不存在该令牌       | “[令牌] 在 [目标区块链] 上不可用。”                                      | 使用 `cross-chain-swap` 功能进行交换                     |
+| 源区块链和目标区块链相同         | “源区块链和目标区块链相同，无需桥接。”                                      | 不需要任何操作                                      |
+| 不支持的区块链           | “[目标区块链名称] 不受支持。”                                      | 检查支持的区块链列表                         |
+| 安全检查失败             | “此桥接操作因安全原因被阻止：[具体原因]。”                             | 减少转移数量或检查配置                         |
+| 桥接操作失败             | “桥接操作暂时无法完成，正在继续监控。”                                    | 等待进一步通知                                   |
+| 账户余额不足             | “[目标区块链] 上的 [令牌] 数量不足。”                                  | 检查账户余额并减少转移数量                         |

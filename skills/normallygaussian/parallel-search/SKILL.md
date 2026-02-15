@@ -1,117 +1,119 @@
 ---
 name: parallel-search
-description: "AI-powered web search via Parallel API. Returns ranked results with LLM-optimized excerpts. Use for up-to-date research, fact-checking, and domain-scoped searching."
+description: "通过 Parallel API 实现的 AI 驱动的网络搜索功能。该搜索返回经过排序的结果，并包含针对大型语言模型（LLM）进行优化的摘录内容。适用于最新研究、事实核查以及特定领域的搜索需求。"
 homepage: https://parallel.ai
 ---
 
-# Parallel Search
+# 并行搜索
 
-High-accuracy web search built for AI agents. Returns ranked results with intelligent excerpts optimized for LLM consumption.
+专为AI代理设计的高精度网络搜索工具。返回经过优化的排名结果，其中包含适合大型语言模型（LLM）使用的摘录内容。
 
-## When to Use
+## 使用场景
 
-Trigger this skill when the user asks for:
-- "search the web", "web search", "look up", "find online"
-- "current news about...", "latest updates on..."
-- "research [topic]", "what's happening with..."
-- Fact-checking with citations needed
-- Domain-specific searches (e.g., "search GitHub for...", "find on Reddit...")
+当用户提出以下请求时，可触发此技能：
+- “在网络上搜索”  
+- “查找信息”  
+- “查询[主题]的最新资料”  
+- “核实事实（需要引用来源）”  
+- 针对特定领域的搜索（例如：“在GitHub上搜索...”）
 
-## Quick Start
+## 快速入门
 
 ```bash
 parallel-cli search "your query" --json --max-results 5
 ```
 
-## CLI Reference
+## 命令行接口（CLI）参考
 
-### Basic Usage
+### 基本用法
 
 ```bash
 parallel-cli search "<objective>" [options]
 ```
 
-### Common Flags
+### 常用参数
 
-| Flag | Description |
+| 参数 | 说明 |
 |------|-------------|
-| `-q, --query "<keyword>"` | Add keyword filter (repeatable, 3-8 recommended) |
-| `--max-results N` | Number of results (1-20, default: 10) |
-| `--json` | Output as JSON |
-| `--after-date YYYY-MM-DD` | Filter for recent content |
-| `--include-domains domain.com` | Limit to specific domains (repeatable, max 10) |
-| `--exclude-domains domain.com` | Exclude domains (repeatable, max 10) |
-| `--excerpt-max-chars-total N` | Limit total excerpt size (default: 8000) |
+| `-q, --query "<关键词>"` | 添加关键词过滤条件（建议使用3-8个关键词） |
+| `--max-results N` | 结果数量（1-20个，默认值：10） |
+| `--json` | 以JSON格式输出结果 |
+| `--after-date YYYY-MM-DD` | 仅显示指定日期之后的内容 |
+| `--include-domains domain.com` | 仅限于特定域名（最多10个域名） |
+| `--exclude-domains domain.com` | 排除特定域名（最多10个域名） |
+| `--excerpt-max-chars-total N` | 限制摘录内容的总字符数（默认值：8000） |
 
-### Examples
+### 示例
 
-**Basic search:**
+**基本搜索：**
 ```bash
 parallel-cli search "When was the United Nations founded?" --json --max-results 5
 ```
 
-**With keyword filters:**
+**使用关键词过滤条件：**
 ```bash
 parallel-cli search "Latest developments in quantum computing" \
   -q "quantum" -q "computing" -q "2026" \
   --json --max-results 10
 ```
 
-**Domain-scoped search:**
+**针对特定域名的搜索：**
 ```bash
 parallel-cli search "React hooks best practices" \
   --include-domains react.dev --include-domains github.com \
   --json --max-results 5
 ```
 
-**Recent news only:**
+**仅显示最新新闻：**
 ```bash
 parallel-cli search "AI regulation news" \
   --after-date 2026-01-01 \
   --json --max-results 10
 ```
 
-## Best-Practice Prompting
+## 最佳提示方式
 
-### Objective
-Write 1-3 sentences describing:
-- The real task context (why you need the info)
-- Freshness constraints ("prefer 2026+", "latest docs")
-- Preferred sources ("official docs", "news sites")
+### 编写提示语的技巧
 
-### Keyword Queries
-Add 3-8 keyword queries including:
-- Specific terms, version numbers, error strings
-- Common synonyms
-- Date terms if relevant ("2026", "Jan 2026")
+1. 用1-3句话描述实际任务背景（为什么需要这些信息）。
+2. 明确对结果新鲜度的要求（例如：“优先显示2026年以后的内容”或“最新文档”）。
+3. 指定首选信息来源（如“官方文档”或“新闻网站”）。
 
-## Response Format
+### 关键词查询
 
-Returns structured JSON with:
-- `search_id` — unique identifier
-- `results[]` — array of results:
-  - `url` — source URL
-  - `title` — page title
-  - `excerpts[]` — relevant text excerpts
-  - `publish_date` — when available
+请使用3-8个关键词进行查询，包括：
+- 具体术语、版本号、错误信息等。
+- 相关的常用同义词。
+- 如果适用，可包含日期信息（如“2026年”、“2026年1月”）。
 
-## Output Handling
+## 结果格式
 
-When turning results into a user-facing answer:
-- Prefer **official/primary sources** when possible
-- Quote or paraphrase **only** the relevant extracted text
-- Include **URL + publish_date** for transparency
-- If results disagree, present both and note the discrepancy
+返回结构化的JSON数据，包含以下内容：
+- `search_id` — 唯一标识符
+- `results[]` — 结果数组：
+  - `url` — 网页链接
+  - `title` — 页面标题
+  - `excerpts[]` — 相关文本摘录
+  - `publish_date` — 文章发布日期
 
-## Running Out of Context?
+## 结果展示方式
 
-For long conversations, save results and use `sessions_spawn`:
+在向用户展示结果时：
+- 尽量使用**官方/主要来源**的信息。
+- **仅**引用或改写相关的摘录内容。
+- 显示**链接和发布日期**以增加透明度。
+- 如果存在不同结果，请同时展示并说明差异。
+
+## 情况复杂时如何处理？
+
+对于较长的对话过程，可以先保存搜索结果，然后使用`sessions_spawn`函数启动一个子代理来继续处理后续任务：
 
 ```bash
 parallel-cli search "<query>" --json -o /tmp/search-<topic>.json
 ```
 
-Then spawn a sub-agent:
+之后，可以创建一个新的子代理来执行后续操作：
+
 ```json
 {
   "tool": "sessions_spawn",
@@ -120,26 +122,26 @@ Then spawn a sub-agent:
 }
 ```
 
-## Error Handling
+## 错误处理
 
-| Exit Code | Meaning |
+| 错误代码 | 含义 |
 |-----------|---------|
-| 0 | Success |
-| 1 | Unexpected error (network, parse) |
-| 2 | Invalid arguments |
-| 3 | API error (non-2xx) |
+| 0 | 操作成功 |
+| 1 | 发生意外错误（网络问题或数据解析错误） |
+| 2 | 参数格式不正确 |
+| 3 | API调用失败（非2xx状态码） |
 
-## Prerequisites
+## 先决条件
 
-1. Get an API key at [parallel.ai](https://parallel.ai)
-2. Install the CLI:
+1. 从[parallel.ai](https://parallel.ai)获取API密钥。
+2. 安装相应的命令行工具。
 
 ```bash
 curl -fsSL https://parallel.ai/install.sh | bash
 export PARALLEL_API_KEY=your-key
 ```
 
-## References
+## 参考资料
 
-- [API Docs](https://docs.parallel.ai)
-- [Search API Reference](https://docs.parallel.ai/api-reference/search)
+- [API文档](https://docs.parallel.ai)
+- [搜索API参考](https://docs.parallel.ai/api-reference/search)

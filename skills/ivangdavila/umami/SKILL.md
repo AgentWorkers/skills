@@ -1,49 +1,49 @@
 ---
 name: Umami
-description: Deploy Umami analytics avoiding data loss, tracking failures, and integration issues.
+description: 部署 Umami 分析系统，以避免数据丢失、故障跟踪以及集成问题。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-## Critical Configuration
-- `HASH_SALT` must never change — changing it invalidates all existing data, essentially a reset
-- SQLite is not supported — despite being Node.js, Umami requires PostgreSQL or MySQL
-- Database contains everything — all tracking data, config, users; backup only this
+## 关键配置
+- `HASH_SALT` 值绝对不能更改——任何更改都会使所有现有数据失效，相当于系统被重置。
+- 不支持 SQLite 数据库——尽管 Umami 是基于 Node.js 开发的，但它实际上需要使用 PostgreSQL 或 MySQL 数据库。
+- 数据库中存储了所有信息：包括跟踪数据、配置信息以及用户信息；请仅备份数据库。
 
-## Tracking Script Traps
-- `data-website-id` must match Umami config exactly — wrong ID = zero data, no error shown
-- Script blocked by ad blockers — self-host on same domain as site to avoid blocking
-- Single Page Apps don't auto-track navigation — must call `umami.track()` on route changes
-- Script in `<head>` not `<body>` — late loading misses initial pageview
+## 跟踪脚本的注意事项
+- `data-website-id` 必须与 Umami 的配置值完全匹配——如果 ID 错误，将导致无法获取任何数据，且系统不会显示任何错误信息。
+- 为避免被广告拦截器阻止，请将跟踪脚本托管在与网站相同的域名上。
+- 单页应用程序（SPA）不会自动跟踪用户导航行为——需要在页面路径发生变化时手动调用 `umami.track()` 函数。
+- 跟踪脚本应放在 `<head>` 标签内，而不是 `<body>` 标签内——否则可能会导致初始页面视图未被正确记录。
 
-## SPA Integration
-- React: call `umami.track('pageview')` in router effect or navigation handler
-- Next.js: use `@umami/next` package — handles app router and pages router
-- Vue/Nuxt: router afterEach hook with `umami.track()`
-- Check `window.umami` exists before calling — script may load after component mounts
+## 单页应用程序（SPA）的集成方式
+- React：在路由组件中的 `effect` 或导航处理函数中调用 `umami.track('pageview')`。
+- Next.js：使用 `@umami/next` 包来处理应用程序的路由逻辑。
+- Vue/Nuxt：在路由组件的 `afterEach` 回调函数中调用 `umami.track()`。
+- 在调用 `umami.track()` 之前，请先检查 `window.umami` 是否已经存在——因为脚本可能在组件挂载之后才加载完成。
 
-## Custom Events
-- Event names appear verbatim in dashboard — use consistent naming scheme
-- Properties only searchable via API — not visible in default dashboard
-- `umami.track('event', { key: 'value' })` for properties
+## 自定义事件的处理
+- 事件名称应保持原样显示在仪表板上——请使用统一的命名规范。
+- 事件相关的属性只能通过 API 进行查询——在默认的仪表板上无法直接查看这些属性。
+- 使用 `umami.track('event', { key: 'value' })` 来记录事件信息。
 
-## Self-Hosting Considerations
-- Low resources needed — 256MB RAM handles most sites
-- PostgreSQL needs more resources than Umami itself — plan accordingly
-- Reverse proxy required for HTTPS — Umami runs HTTP on port 3000
-- Backup strategy = database backup — no filesystem state to worry about
+## 自托管环境的注意事项
+- 对系统资源要求较低——256MB 的内存通常足以满足大多数网站的需求。
+- PostgreSQL 数据库需要更多的系统资源，请根据实际情况进行规划。
+- 使用反向代理（reverse proxy）来处理 HTTPS 请求——因为 Umami 使用的是 3000 端口进行 HTTP 通信。
+- 备份策略：只需备份数据库即可——无需担心文件系统的状态。
 
-## Multi-Site Setup
-- One Umami instance handles many sites — add in Dashboard > Settings > Websites
-- Each site needs unique tracking script — get from Websites settings
-- Share button available per site — generates public dashboard URL
+## 多站点环境的配置
+- 一个 Umami 实例可以管理多个网站——请在仪表板的 “设置” > “网站” 部分进行配置。
+- 每个网站都需要使用唯一的跟踪脚本——脚本信息可以从网站的设置中获取。
+- 每个网站都提供 “分享” 按钮，用于生成该网站的公共仪表板链接。
 
-## Troubleshooting
-- Zero pageviews — check browser Network tab, verify script loads without error
-- Script 404 — verify CORS headers if cross-domain, or self-host on same domain
-- Events not appearing — check browser console for `umami` errors
-- Dashboard slow — check database performance, PostgreSQL query times
+## 故障排除方法
+- 如果页面视图数量为 0，请检查浏览器的网络标签页，确保跟踪脚本能够正常加载且没有出现错误。
+- 如果脚本加载失败（返回 404 错误），请检查跨域请求的相关设置（CORS 头信息），或者尝试将脚本托管在与网站相同的域名上。
+- 如果事件数据没有显示在仪表板上，请查看浏览器的控制台以获取可能的错误信息。
+- 如果仪表板响应缓慢，请检查数据库的性能或 PostgreSQL 的查询耗时。
 
-## Common Mistakes
-- Using same website ID for dev and prod — pollutes analytics with test data
-- Not testing script after deploy — CDN caching or minification can break it
-- Expecting real-time updates — dashboard has slight delay, not instant
+## 常见错误
+- 在开发环境和生产环境中使用相同的网站 ID——这会导致分析数据被测试数据污染。
+- 部署后未对脚本进行测试——CDN 缓存或代码压缩可能会影响脚本的正常运行。
+- 期望数据能够实时更新——但实际上仪表板的显示存在轻微延迟，并非即时更新。

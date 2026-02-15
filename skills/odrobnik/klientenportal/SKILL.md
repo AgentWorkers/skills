@@ -1,6 +1,11 @@
 ---
 name: klientenportal
-description: "Automate RZL Klientenportal.at — a web-based portal by RZL Software for exchanging receipts, invoices, and reports with your tax accountant. Login/logout, upload documents (Belegübergabe), list released files, and download Kanzleidokumente via Playwright."
+description: "自动化使用 RZL Klientenportal.at 的流程：  
+RZL Klientenportal.at 是由 RZL Software 开发的一个基于 Web 的门户平台，用于与您的税务会计师交换收据、发票和报告文件。您可以使用 Playwright 功能完成以下操作：  
+- 登录/登出  
+- 上传文件（Belegübergabe）  
+- 查看已发布的文件列表  
+- 下载税务相关文件（Kanzleidokumente）。"
 summary: "RZL Klientenportal automation: upload receipts, download reports."
 version: 1.5.0
 homepage: https://github.com/odrobnik/klientenportal-skill
@@ -13,70 +18,70 @@ metadata:
       env: ["KLIENTENPORTAL_PORTAL_ID", "KLIENTENPORTAL_USER_ID", "KLIENTENPORTAL_PASSWORD"]
 ---
 
-# RZL Klientenportal
+# RZL 客户门户
 
-Automate [klientenportal.at](https://klientenportal.at) — a web portal by [RZL Software](https://www.rzl.at) for securely exchanging accounting documents between clients and their tax accountant.
+自动化 [klientenportal.at](https://klientenportal.at)——这是由 [RZL Software](https://www.rzl.at) 开发的一个 Web 门户，用于在客户与其税务会计师之间安全地交换会计文件。
 
-**Entry point:** `{baseDir}/scripts/klientenportal.py`
+**入口点：** `{baseDir}/scripts/klientenportal.py`
 
-## Setup
+## 设置
 
-See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
+有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
 
-## Commands
+## 命令
 
-### Login / Logout
+### 登录 / 注销
 
 ```bash
 python3 {baseDir}/scripts/klientenportal.py login          # Test login (validates credentials)
 python3 {baseDir}/scripts/klientenportal.py logout         # Clear stored browser session
 ```
 
-### Upload Documents (Belegübergabe)
+### 上传文件（Belegübergabe）
 
-Upload receipts/invoices to a specific Belegkreis category:
+将收据/发票上传到特定的文件分类类别：
 
 ```bash
 python3 {baseDir}/scripts/klientenportal.py upload -f invoice.pdf --belegkreis KA
 python3 {baseDir}/scripts/klientenportal.py upload -f *.xml --belegkreis SP
 ```
 
-| Code | Name | Use for |
+| 代码 | 名称 | 用途 |
 |------|------|---------|
-| ER | Eingangsrechnungen | Incoming invoices (default) |
-| AR | Ausgangsrechnungen | Outgoing invoices |
-| KA | Kassa | Credit card payments |
-| SP | Sparkasse | Bank account receipts |
+| ER | 收入发票 | 到来的发票（默认） |
+| AR | 支出发票 | 发出的发票 |
+| KA | 收银 | 信用卡付款 |
+| SP | 商业银行 | 银行账户收据 |
 
-### List Released Files
+### 列出已发布的文件
 
-Show files your accountant has released (freigegebene Dokumente):
+显示会计师已发布的文件：
 
 ```bash
 python3 {baseDir}/scripts/klientenportal.py released
 ```
 
-### Download Kanzleidokumente
+### 下载会计文件
 
-Download all available documents from your accountant:
+下载会计师提供的所有文件：
 
 ```bash
 python3 {baseDir}/scripts/klientenportal.py download                    # To default dir
 python3 {baseDir}/scripts/klientenportal.py download -o /path/to/dir    # Custom output dir
 ```
 
-Downloads all available Kanzleidokumente at once. Individual document selection is not yet supported.
+一次性下载所有可用的会计文件。目前不支持单独选择文件。
 
-Default output: `/tmp/openclaw/klientenportal/`
+默认输出路径：`/tmp/openclaw/klientenportal/`
 
-### Options
+### 选项
 
-- `--visible` — Show the browser window (useful for debugging or first login)
+- `--visible` — 显示浏览器窗口（适用于调试或首次登录）
 
-## Recommended Flow
+## 推荐的操作流程
 
 ```
 login → upload / released / download → logout
 ```
 
-Always call `logout` after completing all operations to clear the stored browser session.
+完成所有操作后，请务必调用 `logout` 以清除浏览器会话中的数据。

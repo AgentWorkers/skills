@@ -1,31 +1,31 @@
 ---
 name: telegram-ops
-description: Telegram Bot API operations for forum management. Use for creating/editing/archiving forum topics, setting topic icons, managing Telegram groups via Bot API. Use when archiving channels/topics. Requires bot token from OpenClaw config.
+description: Telegram机器人API用于论坛管理。支持创建/编辑/归档论坛主题、设置主题图标，以及通过机器人API管理Telegram群组。在归档频道或主题时需要使用OpenClaw配置中的机器人令牌。
 ---
 
-# Telegram Ops
+# Telegram 操作管理
 
-Manage Telegram forum topics and Bot API operations.
+用于管理 Telegram 论坛主题和机器人 API 操作。
 
-## Prerequisites
+## 先决条件
 
-- Bot must be admin in the group with `can_manage_topics` permission
-- Get the bot token from OpenClaw config:
+- 机器人必须在具有 `can_manage_topics` 权限的群组中担任管理员。
+- 从 OpenClaw 配置中获取机器人令牌：
   ```bash
   gateway action=config.get | jq -r '.result.parsed.channels.telegram.botToken'
   ```
 
-## Creating a Topic
+## 创建主题
 
-When creating a topic, follow all of these steps:
+创建主题时，请按照以下步骤操作：
 
-1. **Create the topic** via Telegram Bot API (returns `message_thread_id`)
-2. **Set the icon** -- pick one that matches the topic's purpose (see [Icon Reference](#topic-icons))
-3. **Choose relevant skills** -- run `openclaw skills list`, pick only `ready` skills that fit the topic's purpose
-4. **Write a system prompt** -- give the agent context for what this topic is about
-5. **Patch the OpenClaw config** -- register the topic with its skills and system prompt
+1. **通过 Telegram 机器人 API 创建主题**（返回 `message_thread_id`）。
+2. **设置图标**——选择与主题内容相符的图标（参见 [图标参考](#topic-icons)）。
+3. **选择相关技能**——运行 `openclaw skills list`，仅选择符合主题需求的可用技能。
+4. **编写系统提示**——为机器人提供关于该主题的上下文说明。
+5. **更新 OpenClaw 配置**——将主题及其关联的技能注册到系统中。
 
-### Step 1: Create via Bot API
+### 第 1 步：通过机器人 API 创建主题
 
 ```bash
 curl -X POST "https://api.telegram.org/bot<TOKEN>/createForumTopic" \
@@ -36,9 +36,9 @@ curl -X POST "https://api.telegram.org/bot<TOKEN>/createForumTopic" \
   }'
 ```
 
-Returns `message_thread_id` (the topic ID) -- you need this for all subsequent steps.
+返回 `message_thread_id`（主题 ID）——后续步骤都需要这个 ID。
 
-### Step 2: Set the Icon
+### 第 2 步：设置图标
 
 ```bash
 curl -X POST "https://api.telegram.org/bot<TOKEN>/editForumTopic" \
@@ -51,67 +51,67 @@ curl -X POST "https://api.telegram.org/bot<TOKEN>/editForumTopic" \
   }'
 ```
 
-### Step 3-5: Configure OpenClaw
+### 第 3-5 步：配置 OpenClaw
 
-Patch the config to register the topic with a system prompt:
+更新配置以注册主题及其系统提示：
 
 ```bash
 gateway action=config.patch raw='{"channels":{"telegram":{"groups":{"<GROUP_ID>":{"topics":{"<TOPIC_ID>":{"systemPrompt":"Topic-specific instructions"}}}}}}}'
 ```
 
-Topic configs inherit from the parent group -- only specify overrides.
+主题的配置会继承自其所属的父组——只需指定需要覆盖的设置即可。
 
-**Do NOT add a `skills` key** -- omitting it means all skills are available. Only restrict skills if you have a specific reason to limit the topic's capabilities.
+**请勿添加 `skills` 键**——省略该键意味着所有技能都将被启用。只有在有特殊原因需要限制主题功能时才需要对其进行限制。
 
-## Session Keys
+## 会话键
 
-Each topic gets its own isolated OpenClaw session:
+每个主题都有自己的独立 OpenClaw 会话：
 
 ```
 agent:main:telegram:group:<GROUP_ID>:topic:<TOPIC_ID>
 ```
 
-Each session has independent conversation history, context window, and compaction.
+每个会话都有独立的对话记录、上下文窗口和数据压缩机制。
 
-## Topic Icons
+## 主题图标
 
-| Emoji | ID | Use Case |
+| 表情符号 | ID | 用途 |
 |-------|-----|----------|
-| ⚡ | `5312016608254762256` | Ops, speed, alerts |
-| 💡 | `5312536423851630001` | Ideas, suggestions |
-| 📰 | `5434144690511290129` | News, announcements |
-| 🔥 | `5312241539987020022` | Hot topics, urgent |
-| ❤️ | `5312138559556164615` | Community, love |
-| 📝 | `5373251851074415873` | Notes, documentation |
-| 🤖 | `5309832892262654231` | Bots, automation |
-| 💬 | `5417915203100613993` | Chat, discussion |
-| 📊 | `5350305691942788490` | Stats, analytics |
-| 🎯 | `5418085807791545980` | Goals, targets |
+| ⚡ | `5312016608254762256` | 操作管理、快速提示、警报 |
+| 💡 | `5312536423851630001` | 意见和建议 |
+| 📰 | `5434144690511290129` | 新闻、公告 |
+| 🔥 | `5312241539987020022` | 热门话题、紧急事项 |
+| ❤️ | `5312138559556164615` | 社区动态、互动交流 |
+| 📝 | `5373251851074415873` | 笔记、文档 |
+| 🤖 | `5309832892262654231` | 机器人、自动化 |
+| 💬 | `5417915203100613993` | 聊天、讨论 |
+| 📊 | `5350305691942788490` | 统计数据、分析报告 |
+| 🎯 | `5418085807791545980` | 目标、计划 |
 
-See `references/emoji-ids.md` for complete list.
+完整的图标 ID 列表请参见 `references/emoji-ids.md`。
 
-To fetch all valid icon sticker IDs:
+**获取所有有效的图标 ID：**
 ```bash
 curl -X POST "https://api.telegram.org/bot<TOKEN>/getForumTopicIconStickers"
 ```
 
-## Archiving a Topic
+## 归档主题
 
-Archive workflow: rename with `[ARCHIVED]` prefix, set folder icon, close topic, then handle the OpenClaw session.
+归档流程：使用前缀 `[ARCHIVED` 重命名主题，设置文件夹图标，关闭该主题，然后处理相应的 OpenClaw 会话。
 
-### Step 1: Archive in Telegram
+### 第 1 步：在 Telegram 中归档主题
 
-Use the archive script:
+使用归档脚本：
 ```bash
 scripts/archive_topic.sh <TOKEN> <GROUP_ID> <TOPIC_ID> "Current Topic Name"
 ```
 
-This will:
-- Rename to `[ARCHIVED] Current Topic Name`
-- Set the 📁 folder icon (`5357315181649076022`)
-- Close the topic (locks it from new messages)
+该脚本将：
+- 将主题重命名为 `[ARCHIVED] 当前主题名称`。
+- 设置文件夹图标为 📁（ID：`5357315181649076022`）。
+- 关闭该主题（使其无法接收新消息）。
 
-### Step 2: Export and Delete OpenClaw Session
+### 第 2 步：导出并删除 OpenClaw 会话
 
 ```bash
 # Export session history to the sessions archive folder
@@ -121,18 +121,18 @@ openclaw sessions history 'agent:main:telegram:group:<GROUP_ID>:topic:<TOPIC_ID>
 # Session key: agent:main:telegram:group:<GROUP_ID>:topic:<TOPIC_ID>
 ```
 
-### Step 3: Clean Up Config (Optional)
+### 第 3 步：清理配置（可选）
 
-Remove the topic from OpenClaw config if it had custom settings:
+如果主题有自定义设置，请从 OpenClaw 配置中删除该主题的相关信息：
 ```bash
 gateway action=config.patch raw='{"channels":{"telegram":{"groups":{"<GROUP_ID>":{"topics":{"<TOPIC_ID>":null}}}}}}'
 ```
 
-## Limitations
+## 限制
 
-**No `getForumTopicInfo` method exists.** Cannot query topic name by thread ID.
+**目前没有 `getForumTopicInfo` 方法**，无法通过主题 ID 查询主题名称。
 
-Workarounds:
-1. Cache names from `forum_topic_created` events
-2. Store mapping in local config
-3. Monitor topic creation service messages
+**解决方法：**
+1. 从 `forum_topic_created` 事件中缓存主题名称。
+2. 将主题名称存储在本地配置中。
+3. 监控主题创建的相关通知信息。

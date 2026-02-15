@@ -1,65 +1,63 @@
 ---
 name: prospect-researcher
-description: Research and qualify B2B prospects using web search. Builds structured profiles with company intel, key contacts, pain points, and engagement recommendations.
+description: 通过网络搜索来研究和筛选B2B潜在客户。为这些客户建立结构化的资料档案，其中包含公司信息、关键联系人、他们面临的问题以及相应的互动建议。
 ---
 
-# Prospect Researcher
+# 前景研究员
 
-When asked to research a prospect, company, or lead, follow this systematic process to build a complete prospect profile.
+当被要求研究某个潜在客户、公司或关键联系人时，请遵循以下系统化的流程来构建完整的前景分析报告。
 
-## Research Process
+## 研究流程
 
-### Step 1: Company Overview
-Search for and gather:
-- **Company name, website, HQ location**
-- **What they do** — one-sentence summary a human would understand
-- **Industry and sub-sector**
-- **Founded year, employee count, funding stage/revenue range**
-- **Key products or services**
+### 第一步：公司概况
+搜索并收集以下信息：
+- **公司名称、官方网站、总部所在地**
+- **公司业务**——用一句话简洁明了地描述
+- **所属行业及子领域**
+- **成立时间、员工人数、融资阶段/收入范围**
+- **主要产品或服务**
 
-### Step 2: Recent Activity (Last 6 Months)
-Search for recent news, press releases, job postings, and social activity:
-- **Funding rounds or acquisitions**
-- **Product launches or pivots**
-- **Leadership changes** (new CTO, VP Eng, etc.)
-- **Hiring patterns** — what roles are they hiring for? (signals priorities)
-- **Partnerships or integrations announced**
+### 第二步：近期活动（过去6个月）
+查找近期的新闻、新闻稿、招聘信息以及社交媒体动态：
+- **融资轮次或收购情况**
+- **产品发布或业务调整**
+- **管理层变动**（如新的首席技术官、工程副总裁等）
+- **招聘需求**——他们正在招聘哪些职位？（这能反映公司的优先事项）
+- **宣布的合作伙伴关系或整合项目**
 
-### Step 3: Technology & Stack
-Where possible, identify:
-- **Tech stack signals** from job postings, BuiltWith, GitHub, or blog posts
-- **Tools and platforms they use** (CRM, cloud provider, etc.)
-- **Technical blog or engineering culture signals**
+### 第三步：技术栈与工具
+尽可能识别以下信息：
+- **从招聘信息、BuiltWith、GitHub或博客文章中获取的技术栈信息**
+- **公司使用的工具和平台**（如CRM系统、云服务提供商等）
+- **技术博客或工程文化的相关信息**
 
-### Step 4: Key Contacts
-Identify 2-5 relevant decision-makers or influencers:
-- **Name, title, LinkedIn URL** (if publicly available)
-- **Recent public activity** (posts, talks, articles)
-- **Likely priorities based on role**
+### 第四步：关键联系人
+确定2-5位具有决策权或影响力的联系人：
+- **姓名、职位、LinkedIn个人主页链接**（如果公开可访问）
+- **近期的公开活动**（发布的文章、演讲、参与的媒体报道等）
+- **根据其职位判断可能的关注点**
 
-### Step 5: Pain Point Analysis
-Based on all gathered intel, infer:
-- **Likely challenges** given their stage, industry, and hiring patterns
-- **Gaps in their stack** that your solution could fill
-- **Timing signals** — why now might be the right time to reach out
+### 第五步：痛点分析
+基于收集到的所有信息，推断出：
+- **根据公司的当前发展阶段、所属行业及招聘情况，他们可能面临的挑战**
+- **公司技术栈中的空白**——你的解决方案可以填补这些空白
+- **联系的最佳时机**——为什么现在可能是合适的沟通时机
 
-### Step 6: Engagement Recommendation
-Synthesize into:
-- **Qualification score**: Hot / Warm / Cold (with reasoning)
-- **Best entry point**: Which contact, which angle
-- **Suggested opener**: A 2-sentence personalized hook based on real intel
-- **Channels**: LinkedIn, email, warm intro, event-based, etc.
+### 第六步：沟通策略建议
+整理出以下内容：
+- **评估结果**：潜在客户属于“热门”/“中等热度”/“冷门”类别（并说明理由）
+- **最佳沟通方式**：选择哪个联系人、采用哪种沟通方式
+- **建议的开场白**：根据实际情况，撰写一段个性化的开场语
+- **沟通渠道**：LinkedIn、电子邮件、通过现有联系人引荐、基于活动的交流等
 
-## Output Format
+## 输出格式
+使用位于 `{baseDir}/research-template.md` 的模板作为输出结构，填写每个部分。对于未知的信息，应标注为“未找到”，而不是随意猜测。
 
-Use the research template at `{baseDir}/research-template.md` as the output structure. Fill in every section. Mark unknowns as "Not found" rather than guessing.
+## 注意事项：
+- **仅使用公开可获取的信息**。禁止通过登录后进行数据抓取。
+- **引用来源**——对于关键信息，请提供相应的URL。
+- **具体化描述**。例如：“该公司于2025年10月获得了Sequoia领投的1200万美元A轮融资”，比“一家资金充足的初创公司”这样的描述更具体。
+- **标注不确定性**。如果某个数据是推断出来的，请明确说明。
+- **优先考虑最新信息**。过去6个月内的信息比旧信息更具参考价值。
 
-## Guidelines
-
-- **Only use publicly available information.** No scraping behind logins.
-- **Cite sources** — include URLs for key claims.
-- **Be specific over generic.** "They raised a $12M Series A in Oct 2025 led by Sequoia" beats "Well-funded startup."
-- **Flag uncertainty.** If a data point is inferred rather than confirmed, say so.
-- **Prioritize recency.** Information from the last 6 months weighs more than older data.
-
-Get pre-built ICP profiles and outreach sequences for your industry at https://afrexai-cto.github.io/context-packs
+你可以在 [https://afrexai-cto.github.io/context-packs](https://afrexai-cto.github.io/context-packs) 获取针对你所处行业的预先构建的ICP（Investigator Contact Profile）模板和沟通建议。

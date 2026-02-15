@@ -1,70 +1,70 @@
 ---
 name: ngrok-unofficial-webhook-skill
-description: Start an ngrok tunnel to receive incoming webhooks and process them via the LLM. Use when the user asks to listen for webhooks, set up a webhook endpoint, start ngrok, or when another skill (like Zoom RTMS Meeting Assistant) needs a public webhook URL. Receives webhook payloads and lets the LLM decide how to handle them.
+description: 启动一个 ngrok 隧道，用于接收传入的 Webhook 请求并通过大型语言模型（LLM）进行处理。当用户请求监听 Webhook、设置 Webhook 端点、启动 ngrok，或者其他技能（如 Zoom RTMS 会议助手）需要一个公共 Webhook URL 时，可以使用此功能。该功能会接收 Webhook 的数据 payload，并由大型语言模型决定如何处理这些数据。
 ---
 
-# Ngrok Webhook Listener
+# Ngrok Webhook 监听器
 
-Start a public webhook endpoint via ngrok. Incoming webhooks are auto-routed to matching skills or presented to the user for manual handling.
+通过 ngrok 启动一个公共 webhook 端点。接收到的 webhook 请求会自动路由到相应的技能，或由用户手动处理。
 
-## Prerequisites
+## 先决条件
 
 ```bash
 cd skills/ngrok-unofficial-webhook-skill
 npm install
 ```
 
-## Environment Variables
+## 环境变量
 
-Set in the skill's `.env` file (copy from `.env.example`).
+在技能的 `.env` 文件中设置这些变量（可参考 `.env.example` 文件）。
 
-**Required:**
-- `NGROK_AUTHTOKEN` — ngrok auth token from https://dashboard.ngrok.com
+**必填变量：**
+- `NGROK_AUTHTOKEN` — 从 https://dashboard.ngrok.com 获取的 ngrok 认证令牌
 
-**Optional:**
-- `NGROK_DOMAIN` — stable ngrok domain for consistent URLs
-- `WEBHOOK_PORT` — local port (default: `4040`)
-- `WEBHOOK_PATH` — webhook path (default: `/webhook`)
-- `OPENCLAW_BIN` — path to openclaw binary (default: `openclaw`)
-- `OPENCLAW_NOTIFY_CHANNEL` — notification channel (default: `whatsapp`)
-- `OPENCLAW_NOTIFY_TARGET` — phone number / target for notifications
+**可选变量：**
+- `NGROK_DOMAIN` — 用于生成稳定 URL 的 ngrok 域名
+- `WEBHOOK_PORT` — 本地端口号（默认：`4040`）
+- `WEBHOOK_PATH` — webhook 路径（默认：`/webhook`）
+- `OPENCLAW_BIN` — openclaw 可执行文件的路径（默认：`openclaw`）
+- `OPENCLAW_NOTIFY_CHANNEL` — 通知通道（默认：`whatsapp`）
+- `OPENCLAW_NOTIFY_TARGET` — 通知接收者（电话号码或目标）
 
-## Usage
+## 使用方法
 
-### Start the webhook listener
+### 启动 webhook 监听器
 
-Run as a **background process**:
+以 **后台进程** 的方式运行：
 
 ```bash
 cd skills/ngrok-unofficial-webhook-skill
 node scripts/webhook-server.js
 ```
 
-The server prints its public URL to stderr:
+服务器会将自身的公共 URL 输出到标准错误流（stderr）中：
 ```
 NGROK_URL=https://xxxx.ngrok-free.app
 Webhook endpoint: https://xxxx.ngrok-free.app/webhook
 ```
 
-For long-running use, launch with `nohup`:
+若需要长时间运行，可使用 `nohup` 命令启动后台进程：
 ```bash
 nohup node scripts/webhook-server.js >> /tmp/ngrok-webhook.log 2>&1 &
 ```
 
-### What happens when a webhook arrives
+### 当 webhook 到达时
 
-1. The server immediately responds **200 OK** to the sender
-2. It discovers installed skills that declare `webhookEvents` in their `skill.json`
-3. **Auto-routing** (no user intervention needed):
-   - If a matching skill has `forwardPort` → HTTP POST to the local service
-   - If a matching skill has `webhookCommands` → runs the configured shell command
-4. **Manual routing** (user decides):
-   - If no auto-route is available, sends a WhatsApp notification with the payload and a numbered list of matching skills
-   - User replies with their choice
+1. 服务器会立即向发送者返回 **200 OK** 响应。
+2. 服务器会检查已安装的技能中是否包含 `webhookEvents` 字段。
+3. **自动路由**（无需用户干预）：
+   - 如果有匹配的技能设置了 `forwardPort`，则将请求转发到本地服务。
+   - 如果有匹配的技能设置了 `webhookCommands`，则会执行配置好的 shell 命令。
+4. **手动路由**（由用户决定）：
+   - 如果没有自动路由规则，系统会通过 WhatsApp 发送通知，通知中包含请求内容及匹配技能的列表。
+   - 用户可以选择处理方式。
 
-### Skill discovery
+### 技能配置
 
-Skills opt into webhook handling by adding `webhookEvents` to their `skill.json`:
+技能可以通过在 `skill.json` 文件中添加 `webhookEvents` 来启用 webhook 处理功能：
 
 ```json
 {
@@ -76,7 +76,7 @@ Skills opt into webhook handling by adding `webhookEvents` to their `skill.json`
 }
 ```
 
-For command-based auto-handling (no running service required):
+### 基于命令的自动处理（无需运行额外服务）
 
 ```json
 {
@@ -93,15 +93,15 @@ For command-based auto-handling (no running service required):
 }
 ```
 
-- `command` — shell command to run; `{{meeting_id}}` is replaced with the extracted value
-- `meetingIdPath` — dot-separated path to extract the meeting ID from the webhook payload
-- `description` — human-readable description for notifications
+- `command` — 需要执行的 shell 命令；`{{meeting_id}}` 会被替换为从 webhook 请求中提取的会议 ID。
+- `meetingIdPath` — 用于从 webhook 请求中提取会议 ID 的路径（格式为点分隔符）。
+- `description` — 用于通知的用户友好型描述。
 
-The ngrok skill scans all sibling skill folders for `skill.json` files with these fields.
+ngrok 会扫描所有相关技能文件夹中的 `skill.json` 文件以检测这些配置。
 
-### Stdout output
+### 标准输出
 
-The server also writes each webhook as a JSON line to **stdout** for process polling:
+服务器还会将每个接收到的 webhook 请求以 JSON 格式输出到标准输出（stdout），以便其他进程进行监控：
 
 ```json
 {
@@ -114,20 +114,20 @@ The server also writes each webhook as a JSON line to **stdout** for process pol
 }
 ```
 
-### Health check
+### 健康检查
 
 ```bash
 curl http://localhost:4040/health
 ```
 
-### Stop the listener
+### 停止监听器
 
-Kill the background process when done.
+完成任务后，需要终止后台进程。
 
-## Integration with Zoom
+## 与 Zoom 的集成
 
-Typical flow:
-1. Start this webhook listener → get ngrok URL
-2. Configure the ngrok URL in your Zoom Marketplace app's webhook settings
-3. When RTMS starts, Zoom sends `meeting.rtms_started` → auto-forwarded to the RTMS Meeting Assistant
-4. When RTMS stops, Zoom sends `meeting.rtms_stopped` → auto-forwarded, triggers cleanup
+典型集成流程：
+1. 启动此 webhook 监听器并获取 ngrok 提供的公共 URL。
+2. 在 Zoom Marketplace 应用的 webhook 设置中配置该 URL。
+3. 当 RTMS 启动时，Zoom 会发送 `meeting.rtms_started` 信号，该信号会被自动转发给 RTMS 会议助手。
+4. 当 RTMS 停止时，Zoom 会发送 `meeting.rtms_stopped` 信号，系统会自动执行清理操作。

@@ -1,21 +1,27 @@
 ---
 name: mayar-payment
-description: Mayar.id payment integration for generating invoices, payment links, and tracking transactions via MCP. Use when needing to: (1) Create payment invoices/links for customers, (2) Track payment status and transactions, (3) Generate WhatsApp-friendly payment messages, (4) Handle Indonesian payment methods (bank transfer, e-wallet, QRIS), (5) Manage subscriptions/memberships, or (6) Automate payment workflows for e-commerce, services, or digital products.
+description: Mayar.id 支付集成功能可用于通过 MCP（Mayar Integration Platform）生成发票、支付链接并追踪交易。适用于以下场景：  
+(1) 为顾客创建支付发票/链接；  
+(2) 跟踪支付状态和交易详情；  
+(3) 生成适合在 WhatsApp 上发送的支付通知；  
+(4) 支持印度尼西亚的支付方式（银行转账、电子钱包、QRIS）；  
+(5) 管理订阅服务或会员资格；  
+(6) 自动化电子商务、服务或数字产品的支付流程。
 ---
 
-# Mayar Payment Integration
+# Mayar 支付集成
 
-Integrate Mayar.id payment platform via MCP (Model Context Protocol) for Indonesian payment processing.
+通过 MCP（Model Context Protocol）集成 Mayar.id 支付平台，以实现印尼地区的支付处理功能。
 
-## Prerequisites
+## 先决条件
 
-1. **Mayar.id account** - Sign up at https://mayar.id
-2. **API Key** - Generate from https://web.mayar.id/api-keys
-3. **mcporter configured** - MCP must be set up in Clawdbot
+1. **Mayar.id 账户** - 在 https://mayar.id 注册账户。
+2. **API 密钥** - 从 https://web.mayar.id/api-keys 生成 API 密钥。
+3. **mcporter 已配置** - 必须在 Clawdbot 中设置 MCP。
 
-## Setup
+## 设置
 
-### 1. Store API Credentials
+### 1. 存储 API 凭据
 
 ```bash
 mkdir -p ~/.config/mayar
@@ -25,9 +31,9 @@ EOF
 chmod 600 ~/.config/mayar/credentials
 ```
 
-### 2. Configure MCP Server
+### 2. 配置 MCP 服务器
 
-Add to `config/mcporter.json`:
+将以下内容添加到 `config/mcporter.json` 文件中：
 
 ```json
 {
@@ -46,21 +52,21 @@ Add to `config/mcporter.json`:
 }
 ```
 
-Replace `YOUR_API_TOKEN_HERE` with actual token.
+请将 `YOUR_API_TOKEN_HERE` 替换为实际的 API 密钥。
 
-### 3. Test Connection
+### 3. 测试连接
 
 ```bash
 mcporter list mayar
 ```
 
-Should show 15+ available tools.
+应显示 15 个及以上可用的支付工具。
 
-## Core Workflows
+## 核心工作流程
 
-### Create Invoice with Payment Link
+### 创建带有支付链接的发票
 
-**Most common use case:** Generate payment link for customer.
+**最常见的使用场景：** 为客户生成支付链接。
 
 ```bash
 mcporter call mayar.create_invoice \
@@ -73,7 +79,7 @@ mcporter call mayar.create_invoice \
   items='[{"quantity":1,"rate":500000,"description":"Product A"}]'
 ```
 
-**Returns:**
+**返回值：**
 ```json
 {
   "id": "uuid",
@@ -83,13 +89,13 @@ mcporter call mayar.create_invoice \
 }
 ```
 
-**Key fields:**
-- `mobile` - MUST be string with quotes: `"\"628xxx\""`
-- `expiredAt` - ISO 8601 format with timezone
-- `items` - Array of `{quantity, rate, description}`
-- `redirectURL` - Where customer goes after payment
+**关键字段：**
+- `mobile` - 必须是一个字符串，格式为 `\"628xxx\"`。
+- `expiredAt` - 采用 ISO 8601 格式，并包含时区信息。
+- `items` - 一个数组，每个元素包含 `quantity`（数量）、`rate`（价格）和 `description`（描述）。
+- `redirectURL` - 客户完成支付后跳转的网址。
 
-### WhatsApp Integration Pattern
+### WhatsApp 集成模式
 
 ```javascript
 // 1. Create invoice
@@ -122,7 +128,7 @@ message({
 });
 ```
 
-### Check Payment Status
+### 检查支付状态
 
 ```bash
 # Get latest transactions (check if paid)
@@ -132,9 +138,9 @@ mcporter call mayar.get_latest_transactions page:1 pageSize:10
 mcporter call mayar.get_latest_unpaid_transactions page:1 pageSize:10
 ```
 
-Filter by status: `"created"` (unpaid) → `"paid"` (success).
+根据状态进行过滤：`\"created\"`（未支付）→ `\"paid\"`（已支付）。
 
-### Other Operations
+### 其他操作
 
 ```bash
 # Check account balance
@@ -154,9 +160,9 @@ mcporter call mayar.get_transactions_by_time_period \
   sortOrder:"DESC"
 ```
 
-## Common Patterns
+## 常见模式
 
-### Multi-Item Invoice
+### 多商品发票
 
 ```javascript
 items='[
@@ -166,9 +172,9 @@ items='[
 // Total: 2M (2×500K + 1×1M)
 ```
 
-### Subscription/Recurring
+### 订阅/定期支付
 
-Use membership tools:
+使用会员功能：
 
 ```bash
 mcporter call mayar.get_membership_customer_by_specific_product \
@@ -179,56 +185,56 @@ mcporter call mayar.get_membership_customer_by_specific_product \
   memberStatus:"active"
 ```
 
-### Payment Confirmation Flow
+### 支付确认流程
 
-**Option A: Webhook** (Real-time)
-- Register webhook URL with Mayar
-- Receive instant payment notifications
-- Best for production
+**选项 A：Webhook**（实时通知）**
+- 在 Mayar 中注册 webhook URL。
+- 实时接收支付通知。
+- 适合生产环境。
 
-**Option B: Polling** (Simpler)
-- Poll `get_latest_transactions` every 30-60s
-- Check for new payments
-- Best for MVP/testing
+**选项 B：轮询**（较简单）
+- 每 30-60 秒轮询一次 `get_latest_transactions` 接口。
+- 检查是否有新的支付记录。
+- 适合 MVP 或测试环境。
 
-## Troubleshooting
+## 故障排除
 
-**404 on payment link:**
-- Link format: `https://your-subdomain.myr.id/invoices/slug`
-- Check dashboard for correct subdomain
-- Default may be account name
+**支付链接显示 404 错误：**
+- 链接格式：`https://your-subdomain.myr.id/invoices/slug`
+- 确认控制面板中的子域名是否正确。
+- 默认子域名可能是账户名称。
 
-**Invalid mobile number:**
-- Mobile MUST be string: `"\"628xxx\""` (with escaped quotes)
-- Format: `628xxxxxxxxxx` (no + or spaces)
+**手机号码无效：**
+- 手机号码必须是一个字符串，格式为 `\"628xxx\"`（使用反引号）。
+- 格式应为 `628xxxxxxxxxx`（不允许包含加号或空格）。
 
-**Expired invoice:**
-- Default expiry is `expiredAt` timestamp
-- Customer can't pay after expiration
-- Create new invoice if needed
+**发票过期：**
+- 默认过期时间为 `expiredAt` 时间戳。
+- 过期后客户无法进行支付。
+- 如有需要，可以重新创建发票。
 
-## Reference Documentation
+## 参考文档
 
-- **API Details:** See [references/api-reference.md](references/api-reference.md)
-- **Integration Examples:** See [references/integration-examples.md](references/integration-examples.md)
-- **MCP Tools Reference:** See [references/mcp-tools.md](references/mcp-tools.md)
+- **API 详情：** 查看 [references/api-reference.md](references/api-reference.md)
+- **集成示例：** 查看 [references/integration-examples.md](references/integration-examples.md)
+- **MCP 工具参考：** 查看 [references/mcp-tools.md](references/mcp-tools.md)
 
-## Production Checklist
+## 生产环境检查清单
 
-- [ ] Use production API key (not sandbox)
-- [ ] Setup webhook for payment notifications
-- [ ] Error handling for failed invoice creation
-- [ ] Store invoice IDs for tracking
-- [ ] Handle payment expiration
-- [ ] Customer database integration
-- [ ] Receipt/confirmation automation
+- [ ] 使用生产环境的 API 密钥（而非沙盒环境）。
+- [ ] 设置用于接收支付通知的 webhook。
+- [ ] 处理发票创建失败的情况。
+- [ ] 存储发票 ID 以方便追踪。
+- [ ] 处理支付到期事件。
+- [ ] 集成客户数据库。
+- [ ] 自动化处理收款/确认流程。
 
-## Environments
+## 环境配置
 
-**Production:**
-- Dashboard: https://web.mayar.id
-- API Base: `https://api.mayar.id/hl/v1/`
+**生产环境：**
+- 控制面板：https://web.mayar.id
+- API 基址：`https://api.mayar.id/hl/v1/`
 
-**Sandbox (Testing):**
-- Dashboard: https://web.mayar.club
-- API Base: `https://api.mayar.club/hl/v1/`
+**沙盒环境（测试）：**
+- 控制面板：https://web.mayar.club
+- API 基址：`https://api.mayar.club/hl/v1/`

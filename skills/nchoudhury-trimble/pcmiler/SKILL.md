@@ -10,9 +10,9 @@ metadata:
 
 # PCMiler
 
-Access the PCMiler REST API with API authentication. Manage truck routing needs.
+您可以使用 API 认证来访问 PCMiler 的 REST API，从而管理卡车的路线规划需求。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Show route report
@@ -88,7 +88,7 @@ Example JSON Response
 ```
 
 
-## Setup
+## 设置
 
-Requires environment variable
-- `PCMILER_API_KEY` - PCMiler API Key
+需要设置以下环境变量：
+- `PCMILER_API_KEY` - PCMiler 的 API 密钥

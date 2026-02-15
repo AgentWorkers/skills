@@ -22,41 +22,38 @@ metadata:
     primaryEnv: FLIZ_API_KEY
 ---
 
-# Fliz API Integration Skill
+# Fliz API集成技能
 
-Transform text content into AI-generated videos programmatically.
+**功能概述：**  
+通过编程方式将文本内容转换为AI生成的视频。
 
-## Quick Reference
+## 快速参考  
 
-| Item | Value |
-|------|-------|
-| Base URL | `https://app.fliz.ai` |
-| Auth | Bearer Token (JWT) |
-| Get Token | https://app.fliz.ai/api-keys |
-| API Docs | https://app.fliz.ai/api-docs |
-| Format | JSON |
+| 项目 | 详细信息 |
+|------|---------|
+| 基本URL | `https://app.fliz.ai` |
+| 认证 | 承载令牌（JWT） |
+| 获取令牌 | `https://app.fliz.ai/api-keys` |
+| API文档 | `https://app.fliz.ai/api-docs` |
+| 数据格式 | JSON |
 
-## Authentication
+## 认证  
 
-All requests require Bearer token authentication:
-
+所有请求均需要使用承载令牌（Bearer Token）进行身份验证：  
 ```bash
 curl -X GET "https://app.fliz.ai/api/rest/voices" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json"
 ```
 
-Test connection by calling `GET /api/rest/voices` - returns 200 if token is valid.
+**测试连接：**  
+调用 `GET /api/rest/voices`——如果令牌有效，将返回200状态码。
 
-## Core Endpoints
+## 核心接口  
 
-### 1. Create Video
+### 1. 创建视频  
 
-```
-POST /api/rest/video
-```
-
-**Minimal request:**
+**最小请求格式：**  
 ```json
 {
   "fliz_video_create_input": {
@@ -66,102 +63,77 @@ POST /api/rest/video
     "lang": "en"
   }
 }
-```
-
-**Response:**
+```  
+**响应内容：**  
 ```json
 {
   "fliz_video_create": {
     "video_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
   }
 }
-```
+```  
 
-> **CRITICAL**: The `description` field must contain the FULL TEXT content. Fliz does NOT extract content from URLs - upstream systems must fetch/process content first.
+> **重要提示：** `description` 字段必须包含完整的文本内容。Fliz不会从URL中提取内容——上游系统需要先获取并处理这些内容。  
 
-### 2. Get Video Status
+### 2. 获取视频状态  
 
-```
-GET /api/rest/videos/{id}
-```
+**通过调用此接口可跟踪视频生成进度。**  
+检查 `step` 字段的值：  
+| 步骤 | 状态 |  
+|------|--------|  
+| `pending` → `scrapping` → `script` → `image_*` → `speech` → `video_rendering` | 处理中 |
+| `complete` | ✅ 已完成——`url` 字段包含MP4视频链接 |
+| `failed` / `failed_unrecoverable` | ❌ 出错——请查看 `error` 字段 |
+| `user_action` | ⚠️ 需要手动干预 |
 
-Poll this endpoint to track video generation progress. Check the `step` field:
+### 3. 列出视频  
 
-| Step | Status |
-|------|--------|
-| `pending` → `scrapping` → `script` → `image_*` → `speech` → `video_rendering` | Processing |
-| `complete` | ✅ Ready - `url` field contains MP4 |
-| `failed` / `failed_unrecoverable` | ❌ Error - check `error` field |
-| `user_action` | ⚠️ Requires manual intervention |
+### 4. 翻译视频  
 
-### 3. List Videos
+**将视频翻译成目标语言。**  
 
-```
-GET /api/rest/videos?limit=20&offset=0
-```
+### 5. 复制视频  
 
-### 4. Translate Video
+### 6. 列出可用的语音/音乐资源  
 
-```
-POST /api/rest/videos/{from_video_id}/translate?new_lang=fr
-```
+## 视频创建参数  
 
-Creates a new video in the target language.
+**必填字段：**  
+- `name`（字符串）：视频标题  
+- `description`（字符串）：完整文本内容  
+- `format`（枚举）：`size_16_9` | `size_9_16` | `square`  
+- `lang`（字符串）：ISO 639-1语言代码（如 en, fr, es, de, pt 等）  
 
-### 5. Duplicate Video
+**可选自定义参数：**  
+| 参数 | 说明 | 默认值 |  
+|-------|-------------|---------|  
+| `category` | 类型（`article`、`product`、`ad`） | `article` |  
+| `script_style` | 叙述风格 | `auto` |  
+| `image_style` | 视觉风格 | `hyperrealistic` |  
+| `caption_style` | 字幕样式 | `animated_background` |  
+| `caption_position` | 字幕位置（`bottom`、`center`、`bottom`） | `bottom` |  
+| `caption_font` | 字体 | `poppins` |  
+| `caption_color` | 十六进制颜色（#FFFFFF） | `white` |  
+| `caption_uppercase` | 是否大写显示字幕 | `false` |  
+| `voice_id` | 自定义语音ID | `auto` |  
+| `is_male_voice` | 是否使用男性声音 | `auto` |  
+| `music_id` | 音乐ID | `auto` |  
+| `music_url` | 音乐URL | `null` |  
+| `music_volume` | 音量（0-100） | `15` |  
+| `watermark_url` | 水印图片URL | `null` |  
+| `site_url` | CTA链接 | `null` |  
+| `site_name` | CTA文本 | `null` |  
+| `webhook_url` | 回调URL | `null` |  
+| `is_automatic` | 是否自动处理 | `true` |  
+| `video_animation_mode` | 视频动画模式（`full_video`、`hook_only`、`full_video`） | `full_video` |  
+| `image_urls` | 图片URL数组 | `null` |  
 
-```
-POST /api/rest/videos/{from_video_id}/duplicate
-```
+> **注意：** 对于 `product` 和 `ad` 类型的视频，必须提供 `image_urls`（3-10 张图片）。  
+完整的枚举值请参见 [references/enums-values.md]。  
 
-### 6. List Voices / Musics
+## Webhook  
 
-```
-GET /api/rest/voices
-GET /api/rest/musics
-```
-
-## Video Creation Parameters
-
-### Required Fields
-- `name` (string): Video title
-- `description` (string): Full text content
-- `format` (enum): `size_16_9` | `size_9_16` | `square`
-- `lang` (string): ISO 639-1 code (en, fr, es, de, pt, etc.)
-
-### Optional Customization
-
-| Field | Description | Default |
-|-------|-------------|---------|
-| `category` | `article` \| `product` \| `ad` | `article` |
-| `script_style` | Narrative style | auto |
-| `image_style` | Visual style | `hyperrealistic` |
-| `caption_style` | Subtitle style | `animated_background` |
-| `caption_position` | `bottom` \| `center` | `bottom` |
-| `caption_font` | Font family | `poppins` |
-| `caption_color` | Hex color (#FFFFFF) | white |
-| `caption_uppercase` | Boolean | false |
-| `voice_id` | Custom voice ID | auto |
-| `is_male_voice` | Boolean | auto |
-| `music_id` | Music track ID | auto |
-| `music_url` | Custom music URL | null |
-| `music_volume` | 0-100 | 15 |
-| `watermark_url` | Image URL | null |
-| `site_url` | CTA URL | null |
-| `site_name` | CTA text | null |
-| `webhook_url` | Callback URL | null |
-| `is_automatic` | Auto-process | true |
-| `video_animation_mode` | `full_video` \| `hook_only` | `full_video` |
-| `image_urls` | Array of URLs | null |
-
-> **Note**: For `product` and `ad` categories, `image_urls` is required (3-10 images).
-
-For complete enum values, see [references/enums-values.md](references/enums-values.md).
-
-## Webhooks
-
-Configure `webhook_url` to receive notifications when video is ready or fails:
-
+配置 `webhook_url` 以在视频生成完成或失败时接收通知：  
 ```json
 {
   "event": "video.complete",
@@ -169,65 +141,62 @@ Configure `webhook_url` to receive notifications when video is ready or fails:
   "step": "complete",
   "url": "https://cdn.fliz.ai/videos/xxx.mp4"
 }
-```
+```  
 
-## Error Handling
+## 错误处理  
 
-| HTTP Code | Meaning | Action |
-|-----------|---------|--------|
-| 200 | Success | Continue |
-| 400 | Bad Request | Check params |
-| 401 | Unauthorized | Invalid/expired token |
-| 404 | Not Found | Invalid video ID |
-| 429 | Rate Limited | Retry with backoff |
-| 500 | Server Error | Retry later |
+| HTTP状态码 | 含义 | 应对措施 |  
+|-----------|---------|--------|  
+| 200 | 成功 | 继续操作 |  
+| 400 | 请求错误 | 检查请求参数 |  
+| 401 | 未经授权 | 令牌无效/已过期 |  
+| 404 | 未找到视频 | 视频ID错误 |  
+| 429 | 请求频率限制 | 请稍后重试 |  
+| 500 | 服务器错误 | 请稍后重试 |  
 
-## Integration Patterns
+## 集成方式  
 
-### Polling Pattern (Recommended)
+### 推荐的轮询方式：**  
 ```
 1. POST /api/rest/video → get video_id
 2. Loop: GET /api/rest/videos/{id}
    - If step == "complete": done, get url
    - If step contains "failed": error
    - Else: wait 10-30s, retry
-```
-
-### Webhook Pattern
+```  
+### Webhook集成方式：**  
 ```
 1. POST /api/rest/video with webhook_url
 2. Process webhook callback when received
-```
+```  
 
-## Code Examples
+## 代码示例  
 
-See [assets/examples/](assets/examples/) for ready-to-use implementations:
-- `python_client.py` - Full Python wrapper
-- `nodejs_client.js` - Node.js implementation
-- `curl_examples.sh` - cURL commands
-- `webhook_handler.py` - Flask webhook server
+请参阅 [assets/examples/](assets/examples/)，了解可用的实现示例：  
+- `python_client.py`：完整的Python客户端示例  
+- `nodejs_client.js`：Node.js客户端实现  
+- `curl_examples.sh`：cURL命令示例  
+- `webhook_handler.py`：Flask框架下的Webhook服务器示例  
 
-## Scripts
+## 示例脚本  
 
-| Script | Usage |
-|--------|-------|
-| `scripts/test_connection.py` | Validate API key |
-| `scripts/create_video.py` | Create video from text file |
-| `scripts/poll_status.py` | Monitor video generation |
-| `scripts/list_resources.py` | Fetch voices/musics |
+| 脚本 | 用途 |  
+|--------|-------|  
+| `scripts/test_connection.py` | 验证API密钥 |  
+| `scripts/create_video.py` | 从文本文件创建视频 |  
+| `scripts/poll_status.py` | 监控视频生成进度 |  
+| `scripts/list_resources.py` | 获取可用的语音/音乐资源 |  
 
-Run with: `python scripts/<script>.py --api-key YOUR_KEY`
+**运行方式：**  
+`python scripts/<脚本>.py --api-key YOUR_KEY`  
 
-## Common Issues
+## 常见问题：  
 
-**"Invalid API response"**: Verify JSON structure matches documentation exactly.
+- **“API响应无效”**：确保JSON结构与文档完全匹配。  
+- **视频生成失败**：检查 `step` 字段的值——某些步骤（如 `user_action`）需要通过Fliz控制台进行手动处理。  
+- **无法提取视频内容**：API要求直接提供文本内容，请在集成过程中自行实现内容提取功能。  
 
-**Video stuck in processing**: Check `step` field - some steps like `user_action` require manual intervention in Fliz dashboard.
-
-**No URL extraction**: The API requires direct text input. Build content extraction into your integration.
-
-## References
-
-- [API Reference](references/api-reference.md) - Complete endpoint documentation
-- [Enum Values](references/enums-values.md) - All valid parameter values
-- [Integration Examples](assets/examples/) - Ready-to-use code
+## 参考资料：  
+- [API参考文档](references/api-reference.md)：完整接口说明  
+- [枚举值](references/enums-values.md)：所有有效的参数值  
+- [集成示例](assets/examples/)：可直接使用的代码示例

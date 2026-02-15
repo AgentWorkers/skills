@@ -1,26 +1,27 @@
 ---
 name: 2slides
-description: AI-powered presentation generation using 2slides API. Create slides from text content, match reference image styles, or summarize documents into presentations. Use when users request to "create a presentation", "make slides", "generate a deck", "create slides from this content/document/image", or any presentation creation task. Supports theme selection, multiple languages, and both synchronous and asynchronous generation modes.
+description: **基于AI的演示文稿生成工具：使用2Slides API**  
+该工具能够根据文本内容自动生成演示文稿幻灯片，同时支持匹配参考图片的样式，并可将文档内容汇总为演示文稿。适用于用户需要“创建演示文稿”、“制作幻灯片”、“生成幻灯片集”或“根据现有内容/文档/图片创建演示文稿”等场景。支持多种主题选择、多语言支持，以及同步和异步生成模式。
 ---
 
-# 2slides Presentation Generation
+# 2Slides 演示文稿生成
 
-Generate professional presentations using the 2slides AI API. Supports content-based generation, style matching from reference images, and document summarization.
+使用 2Slides AI API 生成专业的演示文稿。支持基于内容的生成、从参考图片中匹配样式以及文档摘要功能。
 
-## Setup Requirements
+## 设置要求
 
-Users must have a 2slides API key:
+用户必须拥有 2Slides API 密钥：
 
-1. Visit https://2slides.com/api to create an API key
-2. Store the key in environment variable: `SLIDES_2SLIDES_API_KEY`
+1. 访问 https://2slides.com/api 创建 API 密钥
+2. 将密钥存储在环境变量中：`SLIDES_2SLIDES_API_KEY`
 
 ```bash
 export SLIDES_2SLIDES_API_KEY="your_api_key_here"
 ```
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-Choose the appropriate approach based on the user's request:
+根据用户的需求选择合适的方法：
 
 ```
 User Request
@@ -40,20 +41,20 @@ User Request
 
 ---
 
-## 1. Content-Based Generation
+## 1. 基于内容的生成
 
-Generate slides from user-provided text content.
+根据用户提供的文本内容生成幻灯片。
 
-### When to Use
-- User provides content directly in their message
-- User says "create a presentation about X"
-- User provides structured outline or bullet points
+### 使用场景
+- 用户直接在消息中提供内容
+- 用户要求“创建关于 X 的演示文稿”
+- 用户提供结构化的提纲或项目符号列表
 
-### Workflow
+### 工作流程
 
-**Step 1: Prepare Content**
+**步骤 1：准备内容**
 
-Structure the content clearly for best results:
+为了获得最佳效果，请清晰地组织内容：
 
 ```
 Title: [Main Topic]
@@ -68,9 +69,9 @@ Section 2: [Subtopic]
 - Key point 2
 ```
 
-**Step 2: Choose Theme (Required)**
+**步骤 2：选择主题（必选）**
 
-Search for an appropriate theme (themeId is required):
+搜索合适的主题（需要提供主题 ID）：
 
 ```bash
 python scripts/search_themes.py --query "business"
@@ -78,11 +79,11 @@ python scripts/search_themes.py --query "professional"
 python scripts/search_themes.py --query "creative"
 ```
 
-Pick a theme ID from the results.
+从结果中选择一个主题 ID。
 
-**Step 3: Generate Slides**
+**步骤 3：生成幻灯片**
 
-Use the `generate_slides.py` script with the theme ID:
+使用 `generate_slides.py` 脚本并传入主题 ID：
 
 ```bash
 # Basic generation (theme ID required)
@@ -95,9 +96,9 @@ python scripts/generate_slides.py --content "Your content" --theme-id "theme123"
 python scripts/generate_slides.py --content "Your content" --theme-id "theme123" --mode async
 ```
 
-**Step 4: Handle Results**
+**步骤 4：处理结果**
 
-**Sync mode response:**
+**同步模式响应：**
 ```json
 {
   "slideUrl": "https://2slides.com/slides/abc123",
@@ -106,11 +107,11 @@ python scripts/generate_slides.py --content "Your content" --theme-id "theme123"
 }
 ```
 
-Provide both URLs to the user:
-- `slideUrl`: Interactive online slides
-- `pdfUrl`: Downloadable PDF version
+向用户提供两个 URL：
+- `slideUrl`：交互式在线幻灯片
+- `pdfUrl`：可下载的 PDF 版本
 
-**Async mode response:**
+**异步模式响应：**
 ```json
 {
   "jobId": "job123",
@@ -118,34 +119,35 @@ Provide both URLs to the user:
 }
 ```
 
-Poll for results:
+通过 `get_job_status.py` 软件轮询结果：
+
 ```bash
 python scripts/get_job_status.py --job-id "job123"
 ```
 
 ---
 
-## 2. Reference Image Generation
+## 2. 参考图片生成
 
-Generate slides that match the style of a reference image.
+根据参考图片的样式生成幻灯片。
 
-### When to Use
-- User provides an image URL and says "create slides like this"
-- User wants to match existing brand/design style
-- User has a template image they want to emulate
+### 使用场景
+- 用户提供图片 URL 并要求“生成类似这样的幻灯片”
+- 用户希望匹配现有的品牌/设计风格
+- 用户有想要模仿的模板图片
 
-### Workflow
+### 工作流程
 
-**Step 1: Verify Image URL**
+**步骤 1：验证图片 URL**
 
-Ensure the reference image is:
-- Publicly accessible URL
-- Valid image format (PNG, JPG, etc.)
-- Represents the desired slide style
+确保参考图片满足以下条件：
+- 是公开可访问的 URL
+- 是有效的图片格式（PNG、JPG 等）
+- 能够代表所需的幻灯片风格
 
-**Step 2: Generate Slides**
+**步骤 2：生成幻灯片**
 
-Use the `generate_slides.py` script with `--reference-image`:
+使用 `generate_slides.py` 脚本并传入 `--reference-image` 参数：
 
 ```bash
 python scripts/generate_slides.py \
@@ -154,7 +156,7 @@ python scripts/generate_slides.py \
   --language "Auto"
 ```
 
-**Optional parameters:**
+**可选参数：**
 ```bash
 --aspect-ratio "16:9"           # width:height format (e.g., "16:9", "4:3")
 --resolution "2K"               # "1K", "2K" (default), or "4K"
@@ -162,13 +164,13 @@ python scripts/generate_slides.py \
 --content-detail "concise"      # "concise" (brief) or "standard" (detailed)
 ```
 
-**Note:** This uses Nano Banana Pro mode with credit costs:
-- 1K/2K: 100 credits per page
-- 4K: 200 credits per page
+**注意：** 此模式使用 Nano Banana Pro 服务，需要支付费用：
+- 1K/2K 分辨率：每页 100 信用点
+- 4K 分辨率：每页 200 信用点
 
-**Step 3: Handle Results**
+**步骤 3：处理结果**
 
-This mode always runs synchronously and returns:
+此模式始终以同步方式运行，并返回以下内容：
 ```json
 {
   "slideUrl": "https://2slides.com/workspace?jobId=...",
@@ -179,43 +181,43 @@ This mode always runs synchronously and returns:
 }
 ```
 
-Provide both URLs to the user:
-- `slideUrl`: View slides in 2slides workspace
-- `pdfUrl`: Direct PDF download (expires in 1 hour)
+向用户提供两个 URL：
+- `slideUrl`：在 2Slides 工作区中查看幻灯片
+- `pdfUrl`：直接下载 PDF 文件（有效期为 1 小时）
 
-**Processing time:** ~30 seconds per page (30-60 seconds typical for 1-2 pages)
+**处理时间：** 每页约 30 秒（1-2 页通常需要 30-60 秒）
 
 ---
 
-## 3. Document Summarization
+## 3. 文档摘要
 
-Generate slides from document content.
+根据文档内容生成幻灯片。
 
-### When to Use
-- User uploads a document (PDF, DOCX, TXT, etc.)
-- User says "create slides from this document"
-- User wants to summarize long content into presentation format
+### 使用场景
+- 用户上传文档（PDF、DOCX、TXT 等）
+- 用户要求“根据此文档创建幻灯片”
+- 用户希望将长文档内容总结为演示文稿格式
 
-### Workflow
+### 工作流程
 
-**Step 1: Read Document**
+**步骤 1：读取文档**
 
-Use appropriate tool to read the document content:
-- PDF: Use PDF reading tools
-- DOCX: Use DOCX reading tools
-- TXT/MD: Use Read tool
+使用适当的工具读取文档内容：
+- PDF：使用 PDF 阅读工具
+- DOCX：使用 DOCX 阅读工具
+- TXT/MD：使用相应的阅读工具
 
-**Step 2: Extract Key Points**
+**步骤 2：提取关键信息**
 
-Analyze the document and extract:
-- Main topics and themes
-- Key points for each section
-- Important data, quotes, or examples
-- Logical flow and structure
+分析文档并提取以下内容：
+- 主要主题和要点
+- 每个部分的关键内容
+- 重要的数据、引用或示例
+- 逻辑结构和内容框架
 
-**Step 3: Structure Content**
+**步骤 3：组织内容**
 
-Format extracted information into presentation structure:
+将提取的信息格式化为演示文稿的结构：
 
 ```
 Title: [Document Main Topic]
@@ -241,9 +243,9 @@ Conclusion
 - Next steps
 ```
 
-**Step 4: Generate Slides**
+**步骤 4：生成幻灯片**
 
-Use content-based generation workflow (Section 1). First search for a theme, then generate:
+使用基于内容的生成流程（步骤 1）。首先搜索一个主题，然后生成幻灯片：
 
 ```bash
 # Search for appropriate theme
@@ -253,27 +255,27 @@ python scripts/search_themes.py --query "business"
 python scripts/generate_slides.py --content "[Structured content from step 3]" --theme-id "theme123"
 ```
 
-**Tips:**
-- Keep slides concise (3-5 points per slide)
-- Focus on key insights, not full text
-- Use document headings as slide titles
-- Include important statistics or quotes
-- Ask user if they want specific sections highlighted
+**提示：**
+- 保持幻灯片简洁（每页 3-5 个要点）
+- 重点展示关键见解，而非全部文本
+- 使用文档标题作为幻灯片标题
+- 包含重要的统计数据或引用
+- 询问用户是否希望突出显示特定部分
 
 ---
 
-## 4. Theme Search
+## 4. 主题搜索
 
-Find appropriate themes for presentations.
+查找适合演示文稿的主题。
 
-### When to Use
-- Before generating slides with specific styling
-- User asks "what themes are available?"
-- User wants professional or branded appearance
+### 使用场景
+- 在生成具有特定样式的幻灯片之前
+- 用户询问“有哪些可用的主题？”
+- 用户希望获得专业或品牌化的演示文稿外观
 
-### Workflow
+### 工作流程
 
-**Search themes:**
+**搜索主题：**
 
 ```bash
 # Search for specific style (query is required)
@@ -286,59 +288,59 @@ python scripts/search_themes.py --query "professional"
 python scripts/search_themes.py --query "modern" --limit 50
 ```
 
-**Theme selection:**
+**主题选择：**
 
-1. Show user available themes with names and descriptions
-2. Ask user to choose or let them use default
-3. Use the theme ID in generation request
-
----
-
-## Using the MCP Server
-
-If the 2slides MCP server is configured in Claude Desktop, use the integrated tools instead of scripts.
-
-**Two Configuration Modes:**
-
-1. **Streamable HTTP Protocol (Recommended)**
-   - Simplest setup, no local installation
-   - Configure: `"url": "https://2slides.com/api/mcp?apikey=YOUR_API_KEY"`
-
-2. **NPM Package (stdio)**
-   - Uses local npm package
-   - Configure: `"command": "npx", "args": ["2slides-mcp"]`
-
-**Available MCP tools:**
-- `slides_generate` - Generate slides from content
-- `slides_create_like_this` - Generate from reference image
-- `themes_search` - Search themes
-- `jobs_get` - Check job status
-
-See [mcp-integration.md](references/mcp-integration.md) for complete setup instructions and detailed tool documentation.
-
-**When to use MCP vs scripts:**
-- **Use MCP** in Claude Desktop when configured
-- **Use scripts** in Claude Code CLI or when MCP not available
+1. 向用户展示可用的主题及其名称和描述
+- 让用户选择主题或使用默认主题
+- 在生成请求中使用所选的主题 ID
 
 ---
 
-## Advanced Features
+## 使用 MCP 服务器
 
-### Sync vs Async Mode
+如果已在 Claude Desktop 中配置了 2Slides MCP 服务器，可以直接使用集成工具，而无需编写脚本。
 
-**Sync Mode (default):**
-- Waits for generation to complete (30-60 seconds)
-- Returns results immediately
-- Best for quick presentations
+**两种配置方式：**
 
-**Async Mode:**
-- Returns job ID immediately
-- Poll for results with `get_job_status.py`
-- Best for large presentations or batch processing
+1. **流式 HTTP 协议（推荐）**
+   - 最简单的设置方式，无需本地安装
+   - 配置方式：`"url": "https://2slides.com/api/mcp?apikey=YOUR_API_KEY"`
 
-### Language Support
+2. **NPM 包（stdio）**
+   - 使用本地 npm 包
+   - 配置方式：`"command": "npx", "args": ["2slides-mcp"]`
 
-Generate slides in multiple languages (use full language name):
+**可用的 MCP 工具：**
+- `slides_generate` - 根据内容生成幻灯片
+- `slides_create_like_this` - 根据参考图片生成幻灯片
+- `themes_search` - 搜索主题
+- `jobs_get` - 查看任务状态
+
+请参阅 [mcp-integration.md](references/mcp-integration.md) 以获取完整的设置说明和工具文档。
+
+**何时使用 MCP 与脚本：**
+- 在 Claude Desktop 中配置好 MCP 服务器时，使用 MCP
+- 当 MCP 不可用时，使用脚本
+
+---
+
+## 高级功能
+
+### 同步模式与异步模式
+
+**同步模式（默认）：**
+- 等待生成完成（30-60 秒）
+- 立即返回结果
+- 适合快速创建演示文稿
+
+**异步模式：**
+- 立即返回任务 ID
+- 使用 `get_job_status.py` 软件轮询结果
+- 适合处理大量演示文稿或批量处理
+
+### 语言支持
+
+支持多种语言生成幻灯片（使用完整的语言名称）：
 
 ```bash
 --language "Auto"                # Automatic detection (default)
@@ -352,25 +354,25 @@ Generate slides in multiple languages (use full language name):
 --language "Korean"              # 한국어
 ```
 
-And more: Arabic, Portuguese, Indonesian, Russian, Hindi, Vietnamese, Turkish, Polish, Italian
+支持的语言包括：阿拉伯语、葡萄牙语、印度尼西亚语、俄语、印地语、越南语、土耳其语、波兰语、意大利语
 
-### Error Handling
+### 错误处理
 
-**Common issues:**
+**常见问题：**
 
-1. **Missing API key**
+1. **缺少 API 密钥**
    ```
    Error: API key not found
    Solution: Set SLIDES_2SLIDES_API_KEY environment variable
    ```
 
-2. **Rate limiting**
+2. **速率限制**
    ```
    Error: 429 Too Many Requests
    Solution: Wait before retrying or check plan limits
    ```
 
-3. **Invalid content**
+3. **内容无效**
    ```
    Error: 400 Bad Request
    Solution: Verify content format and parameters
@@ -378,42 +380,42 @@ And more: Arabic, Portuguese, Indonesian, Russian, Hindi, Vietnamese, Turkish, P
 
 ---
 
-## Complete API Reference
+## 完整的 API 参考文档
 
-For detailed API documentation, see [api-reference.md](references/api-reference.md)
+有关详细的 API 文档，请参阅 [api-reference.md](references/api-reference.md)
 
-Includes:
-- All endpoints and parameters
-- Request/response formats
-- Authentication details
-- Rate limits and best practices
-- Error codes and handling
+内容包括：
+- 所有端点和参数
+- 请求/响应格式
+- 认证详情
+- 速率限制和最佳实践
+- 错误代码及处理方法
 
 ---
 
-## Tips for Best Results
+## 优化结果的建议
 
-**Content Structure:**
-- Use clear headings and subheadings
-- Keep bullet points concise
-- Limit to 3-5 points per section
-- Include relevant examples or data
+**内容结构：**
+- 使用清晰的标题和子标题
+- 保持项目符号列表的简洁性
+- 每个部分限制 3-5 个要点
+- 包含相关的示例或数据
 
-**Theme Selection:**
-- Theme ID is required for standard generation
-- Search with keywords matching presentation purpose
-- Common searches: "business", "professional", "creative", "education", "modern"
-- Each theme has unique styling and layout
+**主题选择：**
+- 标准生成需要提供主题 ID
+- 使用与演示文稿目的匹配的关键词进行搜索
+- 常见搜索词：商业、专业、创意、教育、现代
+- 每个主题都有独特的样式和布局
 
-**Reference Images:**
-- Use high-quality images for best results
-- Can use URL or base64 encoded image
-- Public URL must be accessible
-- Consider resolution setting (1K/2K/4K) based on quality needs
-- Use page=0 for automatic slide count detection
+**参考图片：**
+- 使用高质量的图片以获得最佳效果
+- 可以使用 URL 或 Base64 编码的图片
+- 确保图片 URL 是公开可访问的
+- 根据质量需求选择合适的分辨率（1K/2K/4K）
+- 使用 `page=0` 来自动检测幻灯片数量
 
-**Document Processing:**
-- Extract only key information
-- Don't try to fit entire document in slides
-- Focus on main insights and takeaways
-- Ask user which sections to emphasize
+**文档处理：**
+- 仅提取关键信息
+- 不要尝试将整个文档内容放入幻灯片中
+- 重点展示主要观点和要点
+- 询问用户是否希望突出显示某些部分

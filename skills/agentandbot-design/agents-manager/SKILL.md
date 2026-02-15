@@ -1,39 +1,39 @@
 ---
 name: agents-manager
-description: Manage Clawdbot agents: discover, profile, track capabilities, define routing hierarchy, and assign tasks.
+description: 管理 Clawdbot 代理：发现代理、生成代理配置文件、追踪代理的功能、定义路由层次结构，并分配任务。
 homepage: https://www.clawhub.com/skills/agents-manager
 metadata: {"openclaw":{"emoji":"🕵️","requires":{"bins":["node"]}}}
 ---
 
-# Agents Manager
+# 代理管理器
 
-Manage all Clawdbot agents centrally: discover available agents, profile their capabilities, define routing hierarchy (who can assign to whom, who reports to whom), and intelligently route new tasks through the escalation chain.
+集中管理所有 Clawdbot 代理：发现可用的代理，了解它们的功能，定义路由层次结构（谁可以分配任务给谁，谁需要向谁汇报），并智能地通过升级流程来路由新任务。
 
-## 🤖 For Agents
+## 🤖 用于代理
 
-### System Prompt (Copy-Paste)
-Give this prompt to any agent to teach them this skill:
-> "You have access to the `agents-manager` skill. Use it to discover peers (`scan_agents`), check permissions (`can_assign.js`), and route tasks. Always follow the Handshake Protocol: Check `requires_approval` before assigning. If true, ask me first."
+### 系统提示（复制粘贴）
+将此提示提供给任何代理，以教授它们使用该技能：
+> “您可以使用 `agents-manager` 技能。使用它来发现其他代理（`scanAgents`）、检查权限（`can_assign.js`）以及路由任务。请始终遵循握手协议：在分配任务之前，请先检查 `requires_approval` 的值。如果值为 `true`，请先咨询我。”
 
-### Core Rules
-1. **Discovery:** Always check `scan_agents.js` before assuming an agent exists.
-2. **Permission:** Never assign a task without checking `can_assign.js` or `agent-registry.md`.
-3. **protocol:**
-   - IF `requires_approval` is FALSE -> Assign directly.
-   - IF `requires_approval` is TRUE -> Ask supervisor (Human or Agent).
+### 核心规则
+1. **发现：** 在假设代理存在之前，务必先检查 `scanAgents.js`。
+2. **权限：** 在不检查 `can_assign.js` 或 `agent-registry.md` 的情况下，切勿分配任务。
+3. **协议：**
+   - 如果 `requires_approval` 的值为 `FALSE` -> 直接分配任务。
+   - 如果 `requires_approval` 的值为 `TRUE` -> 请请求主管（人类或代理）的批准。
 
-## 👤 For Humans
+## 👤 用于人类
 
-### Quick Start
-| Goal | Command |
+### 快速入门
+| 目标 | 命令 |
 |------|---------|
-| **Setup** | `node scripts/setup_wizard.js` (Run this first!) |
-| **List** | `node scripts/scan_agents.js` |
-| **Health** | `node scripts/health_check.js` |
-| **Stats** | `node scripts/log_analyzer.js` |
+| **设置** | `node scripts/setup_wizard.js`（请先运行此脚本！） |
+| **列表** | `node scripts/scanAgents.js` |
+| **健康检查** | `node scripts/health_check.js` |
+| **统计信息** | `node scripts/log_analyzer.js` |
 
-### 1. Agent Discovery & Profiling
-List and profile all agents to understand their capabilities and routing configuration.
+### 1. 代理发现与配置
+列出并分析所有代理的信息，以了解它们的功能和路由配置。
 
 ```bash
 # List all agents
@@ -43,8 +43,8 @@ node {baseDir}/scripts/scan_agents.js
 node {baseDir}/scripts/generate_card.js <agent_id>
 ```
 
-### 2. Validation & Health
-Ensure your agent ecosystem is healthy and valid.
+### 2. 验证与健康检查
+确保您的代理生态系统处于正常运行状态且配置有效。
 
 ```bash
 # Validate registry integrity
@@ -57,31 +57,28 @@ node {baseDir}/scripts/can_assign.js <source_id> <target_id>
 node {baseDir}/scripts/visualize_agents.js
 ```
 
-### 3. Task Routing & Escalation
-Define how tasks flow between agents using `references/task-routing-rules.md`.
+### 3. 任务路由与升级
+使用 `references/task-routing-rules.md` 来定义任务在代理之间的流动方式：
+- **直接分配：** 代理 → 代理（如果 `can_assign_to` 允许的话）
+- **请求批准：** 如果 `requires_approval` 的值为 `TRUE`，则需要请求批准。
+- **升级流程：** 助手 → 监督者 → 人类
 
-- **Direct:** Agent → Agent (if `can_assign_to` allows)
-- **Handshake:** Request approval if `requires_approval` is true.
-- **Escalation:** Helper → Supervisor → Human
+## 资源
+- **[agent-profile-schema.md](references/agent-profile-schema.md)**：包含路由信息和卡片字段的标准代理配置文件。
+- **[agent-registry.md](references/agent-registry.md)**：所有代理的实时注册表。
+- **[task-routing-rules.md](references/task-routing-rules.md)**：任务路由规则和握手协议。
 
-## Resources
-
-- **[agent-profile-schema.md](references/agent-profile-schema.md)**: Standard profile with routing & card fields.
-- **[agent-registry.md](references/agent-registry.md)**: Live registry of all agents.
-- **[task-routing-rules.md](references/task-routing-rules.md)**: Decision matrix and handshake protocol.
-
-## Scripts
-
-- `scan_agents.js`: Discovery tool
-- `validate_registry.js`: Schema validator
-- `can_assign.js`: Permission checker
-- `generate_card.js`: Agent card generator
-- `visualize_agents.js`: Hierarchy visualizer
-- `scan_agents.js`: Discovery tool
-- `validate_registry.js`: Schema validator
-- `can_assign.js`: Permission checker
-- `generate_card.js`: Agent card generator
-- `visualize_agents.js`: Hierarchy visualizer
-- `health_check.js`: Status monitor (Healthy/Slow/Offline)
-- `log_analyzer.js`: Performance stats (Jobs/Success Rate)
-- `setup_wizard.js`: Interactive configuration tool
+## 脚本
+- `scanAgents.js`：代理发现工具
+- `validate_registry.js`：配置文件验证工具
+- `can_assign.js`：权限检查工具
+- `generate_card.js`：代理信息卡片生成工具
+- `visualize_agents.js`：代理层次结构可视化工具
+- `scan_agents.js`：代理发现工具
+- `validate_registry.js`：配置文件验证工具
+- `can_assign.js`：权限检查工具
+- `generate_card.js`：代理信息卡片生成工具
+- `visualize_agents.js`：代理层次结构可视化工具
+- `health_check.js`：状态监控工具（正常/运行缓慢/离线）
+- `log_analyzer.js`：性能统计信息（任务数量/成功率）
+- `setup_wizard.js`：交互式配置工具

@@ -1,18 +1,18 @@
-# Technical Debt Audit
+# 技术债务审计
 
-Systematic technical debt assessment for engineering teams. Identifies, scores, and prioritizes debt across your codebase with business impact analysis and remediation roadmaps.
+为工程团队提供系统性的技术债务评估服务。通过业务影响分析和修复计划，识别、评估并优先处理代码库中的技术债务问题。
 
-## What It Does
+## 功能概述
 
-1. **Debt Discovery** — Categorizes debt: architecture, code quality, dependency, testing, infrastructure, documentation
-2. **Impact Scoring** — Rates each item on effort (1-5), risk (1-5), and business impact (1-5) using a weighted formula
-3. **Cost Modeling** — Estimates carrying cost per sprint in developer-hours and dollars
-4. **Remediation Roadmap** — Generates a prioritized paydown plan with quick wins, scheduled work, and strategic rewrites
-5. **Executive Summary** — One-page board-ready report showing debt-to-velocity ratio and projected savings
+1. **债务识别** — 将技术债务分为不同类别：架构、代码质量、依赖关系、测试、基础设施、文档等。
+2. **影响评分** — 使用加权公式对每个债务项进行努力程度（1-5分）、风险（1-5分）和业务影响（1-5分）的评估。
+3. **成本估算** — 估算每个开发冲刺期的技术债务维护成本（以开发人员工时和美元计）。
+4. **修复计划** — 生成优先级排序的修复计划，包括快速见效的修复措施、计划中的工作内容以及需要战略性重构的部分。
+5. **执行摘要** — 提供一份适用于管理层的报告，展示技术债务与项目进展速度的比率以及预期节省的成本。
 
-## Usage
+## 使用方法
 
-Describe your system, stack, and known pain points. The agent audits systematically:
+请描述您的系统架构、所使用的技术栈以及存在的常见问题。该工具将进行系统性的审计：
 
 ```
 "Audit our technical debt. We're a Node.js/React SaaS with 180K LOC, 
@@ -20,24 +20,24 @@ Describe your system, stack, and known pain points. The agent audits systematica
 3 deprecated dependencies, manual deployments."
 ```
 
-## Scoring Formula
+## 评分公式
 
-**Priority Score** = (Risk × 3) + (Business Impact × 2) + (1/Effort × 1)
+**优先级得分** = （风险 × 3）+ （业务影响 × 2）+ （努力程度 × 1）
 
-Higher score = fix first. Quick wins (low effort, high risk) surface to the top.
+得分越高，表示该债务越需要优先处理。其中，快速见效的修复措施（所需努力少但风险高）会排在首位。
 
-## Debt Categories
+## 技术债务类别
 
-| Category | Examples | Typical Carrying Cost |
+| 类别 | 例子 | 典型维护成本 |
 |----------|----------|----------------------|
-| Architecture | Monoliths, tight coupling, wrong patterns | 15-25% velocity drag |
-| Code Quality | Duplication, god classes, no standards | 10-20% velocity drag |
-| Dependencies | Outdated libs, security vulns, EOL frameworks | 5-15% + incident risk |
-| Testing | No tests, flaky tests, manual QA only | 20-40% bug-fix overhead |
-| Infrastructure | Manual deploys, no monitoring, snowflake servers | 10-30% ops overhead |
-| Documentation | No onboarding docs, tribal knowledge | 2-4 weeks per new hire |
+| 架构 | 单体应用、紧密耦合、错误的开发模式 | 项目进展速度降低15-25% |
+| 代码质量 | 代码重复、存在“上帝类”（难以维护的类）、缺乏开发标准 | 项目进展速度降低10-20% |
+| 依赖关系 | 过时的库、安全漏洞、已停止维护的框架 | 维护成本增加5-15%，同时存在安全风险 |
+| 测试 | 未进行测试或测试不稳定、仅依赖人工质量保证 | 修复漏洞的额外工作量增加20-40% |
+| 基础设施 | 手动部署、缺乏监控、服务器配置混乱 | 运维开销增加10-30% |
+| 文档 | 无新员工入职培训文档、依赖团队内部知识 | 每招聘一名新员工需要2-4周的培训时间 |
 
-## Output Format
+## 输出格式
 
 ```markdown
 # Technical Debt Audit Report
@@ -65,12 +65,12 @@ Month 1: [High priority]
 Quarter: [Scheduled items]
 ```
 
-## Why This Matters
+## 重要性说明
 
-Engineering teams spend 23-42% of development time on technical debt (Stripe Developer Report). Most don't measure it. What you don't measure, you can't manage.
+根据Stripe开发者报告的数据，工程团队通常会将23-42%的开发时间用于处理技术债务。然而，大多数团队并未对这些债务进行量化评估。只有被量化的债务，才能被有效管理。
 
 ---
 
-Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI-powered business operations tools.
+本工具由[AfrexAI](https://afrexai-cto.github.io/context-packs/)开发——一款基于人工智能的业务运营工具。
 
-Need the full engineering context pack? Browse our [AI Context Packs](https://afrexai-cto.github.io/context-packs/) ($47) or try the free [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/).
+需要完整的工程管理工具包吗？请查看我们的[AI Context Packs](https://afrexai-cto.github.io/context-packs/)（价格：47美元），或尝试免费的[AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/)。

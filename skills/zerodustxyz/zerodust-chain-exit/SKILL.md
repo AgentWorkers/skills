@@ -1,35 +1,34 @@
 ---
 name: zerodust-chain-exit
-description: Sweep 100% of native gas tokens from EIP-7702 compatible chains. Leaves exactly zero balance. Supports 25 mainnet chains.
+description: 从支持 EIP-7702 协议的链上清除所有原生气体（native gas）代币，确保这些链上的余额降为零。目前支持 25 个主网（mainnet）链。
 user-invocable: true
 metadata: {"openclaw": {"always": false, "emoji": "🧹", "requires": {"env": ["ZERODUST_API_KEY"]}}}
 ---
 
-# ZeroDust Chain Exit
+# ZeroDust：链退出功能
 
-ZeroDust enables sweeping native gas tokens to **exactly zero balance** using EIP-7702 sponsored execution. This only works on chains that support EIP-7702 (not all EVM chains).
+ZeroDust支持通过EIP-7702协议，将原生气体代币的数量精确地清零。该功能仅适用于支持EIP-7702的区块链（并非所有EVM区块链都支持此协议）。
 
-## When to Use This Skill
+## 适用场景
 
-Activate when the user wants to:
-- Fully exit a blockchain (move all native tokens out)
-- Sweep dust/small balances from wallets
-- Transfer 100% of their balance with zero remainder
-- Empty a wallet completely
-- Consolidate funds from multiple chains
+当用户需要执行以下操作时，可使用此功能：
+- 完全退出某个区块链（将所有原生代币转移出去）
+- 清除钱包中的小额余额
+- 将所有代币转移至新链，确保转移后余额为零
+- 彻底清空钱包
+- 将资金从多个区块链合并到一个链上
 
-## Trigger Phrases
+## 常用指令
 
-- "exit this chain completely"
-- "transfer all my balance from [chain]"
-- "sweep my dust"
-- "empty this wallet"
-- "move everything to [chain]"
-- "leave zero balance"
+- “完全退出此链”
+- “将我所有的代币转移到[目标链]”
+- “清除钱包中的小额余额”
+- “将所有代币转移到[目标链]”
+- “确保余额为零”
 
-## Supported Chains (25 EIP-7702 Compatible)
+## 支持的区块链（共25个支持EIP-7702的链）
 
-| Chain | ID | Native Token |
+| 链名 | ID | 原生代币 |
 |-------|-----|--------------|
 | Ethereum | 1 | ETH |
 | BSC | 56 | BNB |
@@ -57,15 +56,15 @@ Activate when the user wants to:
 | Soneium | 1868 | ETH |
 | X Layer | 196 | OKB |
 
-**Note:** Chains like Avalanche, Blast, Linea, and Apechain do NOT support EIP-7702 and cannot be swept.
+**注意：**Avalanche、Blast、Linea和Apechain等区块链不支持EIP-7702协议，因此无法使用此功能进行代币转移。
 
-## API Base URL
+## API基础URL
 
 ```
 https://zerodust-backend-production.up.railway.app
 ```
 
-## Step 1: Register for API Key (One-Time)
+## 第1步：注册API密钥（仅限首次使用）
 
 ```bash
 curl -X POST https://zerodust-backend-production.up.railway.app/agent/register \
@@ -76,7 +75,7 @@ curl -X POST https://zerodust-backend-production.up.railway.app/agent/register \
   }'
 ```
 
-Response:
+响应结果：
 ```json
 {
   "apiKey": "zd_abc123...",
@@ -88,17 +87,17 @@ Response:
 }
 ```
 
-Store `apiKey` as the `ZERODUST_API_KEY` environment variable.
+将`apiKey`保存为环境变量`ZERODUST_API_KEY`。
 
-## Step 2: Get Quote
+## 第2步：获取报价信息
 
-Check the user's balance and fees before sweeping:
+在清除代币前，需要先查看用户的余额及所需费用：
 
 ```bash
 curl "https://zerodust-backend-production.up.railway.app/quote?userAddress=0xUSER&fromChainId=42161&toChainId=8453&destination=0xDEST"
 ```
 
-Response:
+响应结果：
 ```json
 {
   "quoteId": "uuid",
@@ -117,9 +116,9 @@ Response:
 }
 ```
 
-## Step 3: Get Authorization Data
+## 第3步：获取授权数据
 
-Get the EIP-712 typed data for signing:
+获取用于签名的EIP-712数据：
 
 ```bash
 curl -X POST https://zerodust-backend-production.up.railway.app/authorization \
@@ -127,16 +126,16 @@ curl -X POST https://zerodust-backend-production.up.railway.app/authorization \
   -d '{"quoteId": "uuid-from-quote"}'
 ```
 
-Response contains `typedData` (EIP-712 for sweep) and `eip7702` (delegation parameters).
+响应结果中包含`typedData`（用于清除操作的EIP-712数据）和`eip7702`（授权参数）。
 
-## Step 4: User Signs Messages
+## 第4步：用户签名
 
-The user must sign:
-1. **EIP-7702 delegation authorization** - Delegates their EOA to ZeroDust contract
-2. **EIP-7702 revoke authorization** - Pre-signed revocation (executed after sweep)
-3. **EIP-712 sweep intent** - Authorizes the specific sweep parameters
+用户需要完成以下签名操作：
+1. **EIP-7702授权**：将用户的账户操作权限（EOA）委托给ZeroDust合约
+2. **EIP-7702授权撤销**：预先签署撤销授权的合约（在清除操作完成后执行）
+3. **EIP-712清除指令**：确认具体的清除参数
 
-## Step 5: Submit Sweep
+## 第5步：提交清除请求
 
 ```bash
 curl -X POST https://zerodust-backend-production.up.railway.app/sweep \
@@ -149,7 +148,7 @@ curl -X POST https://zerodust-backend-production.up.railway.app/sweep \
   }'
 ```
 
-Response:
+响应结果：
 ```json
 {
   "sweepId": "uuid",
@@ -158,11 +157,11 @@ Response:
 }
 ```
 
-Poll `GET /sweep/{sweepId}` for status updates until `status: "completed"`.
+通过`GET /sweep/{sweepId}`接口持续查询清除操作的状态，直到状态变为“completed”。
 
-## Convenience Endpoint: Combined Quote + Auth
+## 便捷接口：合并报价与授权信息
 
-For agents, use this single endpoint to get quote and auth data together:
+对于代理来说，可以使用以下接口一次性获取报价和授权信息：
 
 ```bash
 curl -X POST https://zerodust-backend-production.up.railway.app/agent/sweep \
@@ -176,9 +175,9 @@ curl -X POST https://zerodust-backend-production.up.railway.app/agent/sweep \
   }'
 ```
 
-## Batch Sweeps (Multiple Chains)
+## 批量清除（多个链）
 
-Sweep from multiple chains in one request:
+可以通过一次请求清除多个链上的代币：
 
 ```bash
 curl -X POST https://zerodust-backend-production.up.railway.app/agent/batch-sweep \
@@ -195,48 +194,44 @@ curl -X POST https://zerodust-backend-production.up.railway.app/agent/batch-swee
   }'
 ```
 
-## Fees
+## 费用说明
 
-- **Service fee:** 1% of balance (min $0.05, max $0.50)
-- **Gas costs:** Paid by ZeroDust, reimbursed from sweep amount
-- **User receives:** ~97-99% of balance (varies by gas prices)
+- **服务费用**：余额的1%（最低0.05美元，最高0.50美元）
+- **Gas费用**：由ZeroDust承担，费用将从清除后的余额中扣除
+- **用户实际获得的金额**：大约97-99%的余额（具体取决于Gas价格）
 
-## Rate Limits
+## 速率限制
 
-- Agent keys: 300 requests/minute, 1000 sweeps/day
-- Contact ZeroDust for higher limits
+- 代理账户：每分钟300次请求，每天1000次清除操作
+- 如需更高的请求次数，请联系ZeroDust
 
-## Error Codes
+## 错误代码
 
-| Error | Meaning |
+| 错误代码 | 说明 |
 |-------|---------|
-| `BALANCE_TOO_LOW` | Balance below minimum (~$0.10) |
-| `QUOTE_EXPIRED` | Quote older than 5 minutes |
-| `CHAIN_NOT_SUPPORTED` | Chain doesn't support EIP-7702 |
-| `INVALID_SIGNATURE` | Signature verification failed |
-| `RATE_LIMIT_EXCEEDED` | Daily or per-minute limit hit |
+| `BALANCE_TOO_LOW` | 余额低于最低要求（约0.10美元） |
+| `QUOTE_EXPIRED` | 报价信息已超过5分钟的有效期 |
+| `CHAIN_NOT_SUPPORTED` | 该链不支持EIP-7702协议 |
+| `INVALID_SIGNATURE` | 签名验证失败 |
+| `RATE_LIMIT_EXCEEDED` | 达到了每日或每分钟的请求限制 |
 
-## Example Agent Conversation
+## 代理操作示例
 
-**User:** "I want to move all my ETH from Arbitrum to Base"
+**用户：**“我想将我所有的ETH从Arbitrum转移到Base链。”
 
-**Agent:**
-1. Call `/quote` to check balance and fees
-2. Show user: "You have 0.005 ETH on Arbitrum. After fees (~1%), you'll receive ~0.00495 ETH on Base. This requires signing 3 messages. Proceed?"
-3. If yes, call `/authorization` to get typed data
-4. Request wallet signatures (EIP-7702 delegation, revoke, and EIP-712 sweep)
-5. Submit to `/sweep` with signatures
-6. Poll status until complete
-7. Confirm: "Done! Your Arbitrum balance is now exactly 0. 0.00494 ETH received on Base."
+**代理操作步骤：**
+1. 调用 `/quote` 获取用户的余额及费用信息
+2. 告知用户：“您在Arbitrum链上有0.005 ETH。扣除费用（约1%）后，您将在Base链上收到0.00495 ETH。需要您签署3份合约。继续吗？”
+3. 如果用户同意，调用 `/authorization` 获取所需的签名数据
+4. 用户签署相关合约（包括EIP-7702授权、撤销授权以及EIP-712清除指令）
+5. 将签名信息提交至 `/sweep` 进行清除操作
+6. 持续查询操作状态，直到状态变为“completed”
+7. 告知用户：“操作完成！您的Arbitrum链上的余额已清零，Base链上收到了0.00494 ETH。”
 
-## Important Notes
+## 重要提示：
 
-1. **EIP-7702 Required:** User's wallet must support EIP-7702. Most modern wallets do as of 2026.
-
-2. **Signatures Required:** Sweeps require user wallet signatures. ZeroDust never has custody.
-
-3. **Zero Balance Result:** After sweep, source chain balance is EXACTLY zero.
-
-4. **Cross-Chain:** Sweeps can go to any supported destination chain via Gas.zip bridging.
-
-5. **Not All EVM Chains:** Only the 25 chains listed above support EIP-7702. Do not attempt sweeps on unsupported chains.
+1. **必须支持EIP-7702**：用户的钱包必须支持该协议。截至2026年，大多数现代钱包均支持EIP-7702。
+2. **需要用户签名**：清除操作需要用户的钱包签名。ZeroDust不会持有用户的代币。
+3. **清除后的余额**：清除操作完成后，源链上的余额将精确地为零。
+4. **跨链转移**：可以通过Gas.zip桥接机制将代币转移到任何支持EIP-7702的链上。
+5. **并非所有EVM链都支持**：仅上述列出的25个链支持EIP-7702协议。请勿在不受支持的链上进行清除操作。

@@ -1,18 +1,18 @@
 ---
 slug: "data-type-classifier"
 display_name: "Data Type Classifier"
-description: "Classify construction data by type (structured, unstructured, semi-structured). Analyze data sources and recommend appropriate storage/processing methods"
+description: "按类型对构建数据进行分类（结构化数据、非结构化数据、半结构化数据）。分析数据来源，并推荐合适的存储/处理方法。"
 ---
 
-# Data Type Classifier
+# 数据类型分类器
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.1), this skill classifies construction data by type, analyzes data sources, and recommends appropriate storage, processing, and integration methods.
+本技能基于DDC方法论（第2.1章），对建筑数据按类型进行分类，分析数据来源，并推荐适当的存储、处理和集成方法。
 
-**Book Reference:** "Типы данных в строительстве" / "Data Types in Construction"
+**参考书籍**：《建筑中的数据类型》（Data Types in Construction）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -584,9 +584,9 @@ class DataTypeClassifier:
         return output
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Classify Single Data Source
+### 分类单一数据源
 
 ```python
 classifier = DataTypeClassifier()
@@ -605,7 +605,7 @@ print(f"Storage: {classification.storage_recommendation.value}")
 print(f"Tools: {classification.processing_tools}")
 ```
 
-### Classify Multiple Sources
+### 分类多个数据源
 
 ```python
 sources = [
@@ -622,7 +622,7 @@ print(f"Total: {report.total_sources}")
 print(f"By structure: {report.summary_by_structure}")
 ```
 
-### Generate Classification Report
+### 生成分类报告
 
 ```python
 report_text = classifier.generate_report(report)
@@ -633,24 +633,24 @@ with open("classification_report.md", "w") as f:
     f.write(report_text)
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `DataTypeClassifier` | Main classification engine |
-| `DataStructure` | Structure types (structured, semi, unstructured) |
-| `DataFormat` | File format detection |
-| `StorageRecommendation` | Storage system recommendations |
-| `DataClassification` | Classification result |
-| `ClassificationReport` | Multi-source report |
+| 组件            | 功能                          |
+|-----------------|-----------------------------|
+| `DataTypeClassifier`   | 主要分类引擎                         |
+| `DataStructure`     | 数据结构类型（结构化、半结构化、非结构化）           |
+| `DataFormat`      | 文件格式检测                         |
+| `StorageRecommendation` | 存储系统推荐                         |
+| `DataClassification`   | 分类结果                         |
+| `ClassificationReport` | 多数据源报告                         |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.1
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（Data-Driven Construction），第2.1章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [sql-query-builder](../sql-query-builder/SKILL.md) for structured data queries
-- Use [pdf-to-structured](../../Chapter-2.4/pdf-to-structured/SKILL.md) for unstructured data
-- Use [data-model-designer](../../Chapter-2.5/data-model-designer/SKILL.md) for schema design
+- 使用 [sql-query-builder](../sql-query-builder/SKILL.md) 进行结构化数据查询
+- 使用 [pdf-to-structured](../../Chapter-2.4/pdf-to-structured/SKILL.md) 处理非结构化数据
+- 使用 [data-model-designer](../../Chapter-2.5/data-model-designer/SKILL.md) 进行数据模型设计

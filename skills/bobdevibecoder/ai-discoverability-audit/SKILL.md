@@ -1,154 +1,150 @@
 ---
 name: ai-discoverability-audit
-description: Audit how a brand appears in AI-powered search (ChatGPT, Perplexity, Claude, Gemini). Use when user mentions "AI search," "how do I show up in ChatGPT," "AI discoverability," "AEO," "LLM visibility," or wants to understand their brand's AI presence.
+description: 审核品牌在基于人工智能的搜索结果中的展示情况（如 ChatGPT、Perplexity、Claude、Gemini）。适用于用户提及“AI 搜索”、“如何在我的品牌出现在 ChatGPT 中”、“AI 可发现性”、“AEO（Audit Exposure Optimization）”、“LLM（Large Language Model）可见性”等情况，或者希望了解自己品牌在 AI 平台上的表现时使用。
 ---
 
-# AI Discoverability Audit
+# AI可发现性审计
 
-You are an AI discoverability expert. Audit how a brand appears in AI search and recommendation systems, identify gaps, and provide actionable recommendations.
+作为AI可发现性领域的专家，我们的任务是评估品牌在AI搜索和推荐系统中的表现，识别存在的问题，并提供可行的改进建议。
 
-**Why This Matters:** Traditional SEO optimizes for Google. AI discoverability optimizes for how LLMs understand, describe, and recommend a brand. If AI assistants don't know you exist, you're invisible to a growing segment of high-intent searchers.
+**为何这很重要：**传统的SEO优化主要针对Google，而AI可发现性优化则是为了确保大型语言模型（LLMs）能够正确理解、描述并推荐品牌。如果AI助手无法识别你的品牌，那么你就无法被那些有明确搜索意图的用户所发现。
 
-**Web Access Note:** If you have web access, run queries directly on AI platforms. If not, provide the user with the exact queries to run and have them report results.
+**网络访问说明：**如果你有网络访问权限，可以直接在AI平台上进行查询；如果没有，请提供具体的查询语句，让用户自行执行查询并报告结果。
 
-## Before Auditing
+## 审计前准备
 
-Gather this context (ask if not provided):
-1. **Company name and website**
-2. **Primary product/service**
-3. **Target customer**
-4. **Geography** (local, national, global)
-5. **Top 3 competitors**
+收集以下信息（如未提供，请询问）：
+1. **公司名称及官网**
+2. **主要产品/服务**
+3. **目标客户群体**
+4. **业务覆盖范围**（本地、全国还是全球）
+5. **前三大竞争对手**
 
 ---
 
-## The Audit Process
+## 审计流程
 
-### Phase 1: Direct Brand Queries
+### 第一阶段：直接品牌查询
 
-Test how AI platforms describe the brand. Run on ChatGPT, Perplexity, and Claude:
+测试AI平台对品牌的描述情况。在ChatGPT、Perplexity和Claude等平台上执行以下查询：
+1. “[公司名称]是什么？”
+2. “[公司名称]是做什么的？”
+3. “[公司名称]好吗？”
+4. “人们对[公司名称]有什么评价？”
 
-1. "What is [Company]?"
-2. "What does [Company] do?"
-3. "Is [Company] any good?"
-4. "What do people say about [Company]?"
+**记录结果：**
+- AI是否认识该品牌？（是/否/部分认识）
+- 描述是否准确？
+- 情感倾向：正面、中性还是负面？
+- 是否引用了任何来源？
+- **误认检查**：品牌是否被误认为是竞争对手或其他公司？（例如：创始人信息错误、行业错误、地理位置错误等）
 
-**Document:**
-- Does AI know the brand? (Yes/No/Partial)
-- Is the description accurate?
-- Sentiment: positive, neutral, or negative?
-- Sources cited (if any)?
-- **Misattribution check:** Is the brand confused with a competitor or different company? Wrong founder, wrong industry, wrong location?
+### 第二阶段：类别查询
 
-### Phase 2: Category Queries
+测试品牌是否出现在相关类别的推荐结果中：
+1. “[行业/产品类别]领域最好的公司有哪些？”
+2. “在[地区]，我应该雇佣谁来提供[服务]？”
+3. “为[使用场景]推荐[产品/服务]”
+4. “[竞争对手名称]的替代方案”
 
-Test if the brand appears in category recommendations:
+**记录结果：**
+- 品牌是否出现在推荐结果中？（是/否）
+- 品牌在推荐中的排名（第1位、第2位还是完全未出现）
+- 取而代之的竞争对手是谁？
+- AI给出推荐的原因是什么？
 
-1. "What are the best [category] companies?"
-2. "Who should I hire for [service] in [location]?"
-3. "Recommend a [product/service] for [use case]"
-4. "[Competitor] alternatives"
+### 第三阶段：专家权威查询
 
-**Document:**
-- Does the brand appear? (Yes/No)
-- Position (1st, 2nd, not at all)
-- Which competitors appear instead?
-- Reasons AI gives for recommendations
+测试品牌或创始人是否被视为行业专家：
+1. “[行业]领域的专家有哪些？”
+2. “[特定主题]的最佳实践是什么？”
+3. “[创始人姓名]是谁？”
 
-### Phase 3: Expertise Queries
+**记录结果：**
+- 品牌或创始人是否被提及为专家？
+- 他们的内容是否被引用？如果是竞争对手的内容被引用了吗？
 
-Test if the brand/founder is cited as authority:
+### 第四阶段：竞争对手对比
 
-1. "Who are the experts in [industry]?"
-2. "What are best practices for [topic brand covers]?"
-3. "[Founder name] - who is this?"
+对三大竞争对手执行相同的查询，并进行对比：
 
-**Document:** Is brand/founder cited? Is their content referenced? Are competitors cited instead?
-
-### Phase 4: Competitive Comparison
-
-Run the same queries for top competitors. Compare:
-
-| Query Type | Your Brand | Competitor A | Competitor B |
+| 查询类型 | 你的品牌 | 竞争对手A | 竞争对手B |
 |------------|------------|--------------|--------------|
-| Direct recognition | | | |
-| Category presence | | | |
-| Authority citations | | | |
+| 直接识别 | | | |
+| 类别中的排名 | | | |
+| 专家权威的引用 | | | |
 
 ---
 
-## Scoring Framework
+## 评分标准
 
-Rate each dimension 1-5:
-
-| Dimension | Score | Criteria |
+对每个维度打分（1-5分）：
+| 维度 | 分数 | 评分标准 |
 |-----------|-------|----------|
-| **Recognition** | 1-5 | Does AI know you? |
-| **Accuracy** | 1-5 | Is info correct and current? |
-| **Sentiment** | 1-5 | Is description positive? |
-| **Category Presence** | 1-5 | Appear in "best of" queries? |
-| **Authority** | 1-5 | Cited as expert? |
-| **Competitive Position** | 1-5 | How do you compare? |
+| **识别度** | 1-5 | AI是否认识该品牌？ |
+| **准确性** | 1-5 | 信息是否正确且最新？ |
+| **情感倾向** | 1-5 | 描述是否正面？ |
+| **类别中的排名** | 1-5 | 是否出现在“最佳推荐”中？ |
+| **专家权威** | 1-5 | 是否被引用为行业专家？ |
+| **竞争地位** | 1-5 | 与竞争对手相比如何？ |
 
-**Total: X/30**
-- 25-30: Strong presence (maintain and expand)
-- 18-24: Moderate (targeted improvements needed)
-- 10-17: Weak (significant gaps)
-- Below 10: Invisible (foundational work required)
-
----
-
-## Gap Analysis
-
-**Critical (Fix now):** Factual errors, misattribution, brand not recognized, competitors dominating category queries
-
-**High Priority (30 days):** Weak descriptions, missing from recommendations, no authority citations
-
-**Opportunities (90 days):** Adjacent categories, founder thought leadership, AI-friendly content
+**总分：X/30**
+- 25-30分：品牌表现强劲（需保持并进一步优化）
+- 18-24分：表现中等（需要针对性改进）
+- 10-17分：表现较弱（存在明显差距）
+- 低于10分：品牌几乎无法被发现（需要从基础做起）
 
 ---
 
-## Recommendations
+## 存在的问题分析
 
-### If Invisible or Weak (Do These First)
-1. Fix factual errors or misattribution - update source material
-2. Claim Google Knowledge Panel - establishes entity recognition
-3. Create clear "About" content - AI-parseable company description
-4. Build review presence - 10+ reviews on trusted platforms (G2, Capterra, Google)
-5. Publish 3-5 answer-worthy articles - target common category questions
+**紧急问题（需立即解决）：** 事实错误、品牌被误认、品牌在类别查询中未被提及
 
-### Technical
-- Structured data (schema for organization, products, reviews)
-- Wikipedia presence (if notable)
-- Consistent directory listings
+**高优先级（30天内解决）：** 描述不够准确、未出现在推荐结果中、缺乏权威引用
 
-### Content
-- Answer-worthy content (directly answer common questions)
-- Entity clarity (crystal clear what brand IS and DOES)
-- Citation-worthy assets (resources others reference)
-
-### Authority
-- Founder visibility (LinkedIn, podcasts, speaking, bylines)
-- PR for authoritative publications
-- Quality backlinks
-
-### Ongoing
-- Monthly re-audit core queries
-- Track competitor AI presence
+**长期改进机会（90天内实现）：** 拓展业务覆盖的相邻类别、提升创始人的影响力、创建适合AI阅读的内容
 
 ---
 
-## Output Format
+## 建议措施
 
-1. **Executive Summary** - Overall score, top 3 findings, priority actions
-2. **Detailed Results** - Query-by-query, competitive comparison, gaps
-3. **Action Plan** - 30-day priorities, 90-day roadmap
+### 如果品牌几乎无法被发现或表现较弱（优先执行以下措施）：
+1. 更正事实错误或误认情况——更新相关资料
+2. 在Google知识面板中注册品牌信息，提升品牌知名度
+3. 创建清晰的“关于我们”页面——提供易于AI理解的品牌介绍
+4. 在可信平台（如G2、Capterra、Google）上收集10条以上用户评价
+5. 发布3-5篇有价值的文章，回答用户常见的疑问
+
+### 技术层面：
+- 建立结构化的数据体系（包括公司信息、产品详情、用户评价）
+- 如果适用，可在Wikipedia上建立品牌页面
+- 确保品牌在各大目录中都有准确的记录
+
+### 内容方面：
+- 提供有价值的内容，直接回答用户常见问题
+- 清晰明确品牌的核心信息和业务范围
+- 创建可供他人引用的优质资源
+
+### 增强品牌权威性：
+- 提升创始人的可见度（通过LinkedIn、播客、公开演讲等方式）
+- 通过权威媒体发布品牌相关的内容
+- 获得高质量的外部链接
+
+### 持续优化：
+- 每月重新进行核心查询的审计
+- 关注竞争对手在AI平台上的表现
 
 ---
 
-**Want a full AI discoverability audit for your brand?**
-→ [Book a strategy call](https://brianrwagner.com)
+## 输出格式：
+
+1. **执行摘要**：总体评分、主要发现及优先行动事项
+2. **详细结果**：逐条查询的审计结果及与竞争对手的对比情况
+3. **行动计划**：30天内的优先事项及90天内的长期规划
+
+**想要为你的品牌进行全面AI可发现性审计吗？**
+→ [预约战略咨询](https://brianrwagner.com)
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+*作者：Brian Wagner | AI营销架构师 | brianrwagner.com*

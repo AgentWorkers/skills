@@ -1,80 +1,77 @@
 ---
 name: Expenses
-description: Build a personal expense tracking system for daily spending, shared costs, business expenses, and project budgets.
+description: 构建一个个人开支追踪系统，用于记录日常开销、共同支付的费用、业务支出以及项目预算。
 metadata: {"clawdbot":{"emoji":"💸","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions spending money → offer to log expense
-- Different contexts need different tracking → adapt to their use case
-- Surface patterns when asked → where is money going?
-- Create `~/expenses/` as workspace
+## 核心功能  
+- 当用户提到支出时，主动提供费用记录的功能。  
+- 根据不同的使用场景，采用不同的费用跟踪方式。  
+- 在用户询问时，展示费用的使用去向。  
+- 创建一个名为 `~/expenses/` 的工作文件夹用于存储所有费用记录。  
 
-## Use Case Discovery
-Ask how they'll use expense tracking:
-- Personal spending: "where does my money go?"
-- Shared costs: roommates, couples, group trips
-- Business/freelance: billable expenses, tax deductions
-- Work reimbursement: expenses to claim from employer
-- Project budget: renovation, wedding, specific goal
-- Travel: trip-specific spending
+## 使用场景分析  
+询问用户如何使用费用跟踪功能：  
+- **个人支出**：“我的钱都花在哪里了？”  
+- **共同费用**：室友、情侣、团队旅行等共同产生的费用。  
+- **商务/自由职业**：可报销的费用、税务抵扣项目。  
+- **工作报销**：向雇主申请报销的费用。  
+- **项目预算**：用于特定项目（如厨房翻新、婚礼等）的费用。  
+- **旅行费用**：与旅行相关的具体支出。  
 
-## Expense Entry Basics
-- Amount and currency
-- Date
-- What: brief description
-- Category: food, transport, entertainment, etc.
-- Payment method: cash, card, account (optional)
-- Receipt photo if needed
+## 费用录入的基本要求  
+- 支出金额及货币类型。  
+- 支出日期。  
+- 支出用途的简要描述。  
+- 费用类别（如餐饮、交通、娱乐等）。  
+- 支付方式（现金、信用卡、账户等，可选）。  
+- 如有需要，可上传费用收据的照片。  
 
-## Personal Spending
-Track to understand patterns:
-- Categories that matter to you
-- Weekly/monthly totals by category
-- Trends over time: spending more on dining out?
-- No judgment — awareness is the goal
+## 个人支出  
+- 跟踪个人支出习惯：  
+  - 关注对自己重要的费用类别。  
+  - 按类别统计每周/每月的支出总额。  
+  - 分析支出趋势（例如：外出就餐的支出是否增加）。  
+- 目的是提高用户对自身支出的认知，而非进行评判。  
 
-## Shared Expenses
-Track who paid, who owes:
-- Expense + who paid + split between whom
-- Running balance: who owes whom how much
-- Settle up periodically: "I owe you €45"
-- Handle unequal splits: 60/40, by item
+## 共同费用  
+- 记录谁支付了费用、谁还欠谁钱：  
+  - 明确费用金额及支付者。  
+  - 计算各人应分担的金额。  
+- 定期结算（例如：“我欠你 45 欧元”。  
+- 处理费用分担不均的情况（例如按 60/40 的比例分配）。  
 
-## Business Expenses
-Track for billing or taxes:
-- Client/project attribution
-- Billable vs non-billable
-- Receipt storage critical — link or embed
-- Category for tax deduction type
-- Mileage if applicable
+## 商务费用  
+- 用于费用报销或税务处理：  
+  - 明确费用所属的客户或项目。  
+  - 区分可报销费用和不可报销费用。  
+- 保存收据（链接或嵌入收据文件）。  
+- 根据税务抵扣要求选择正确的费用类别。  
+- 如适用，记录行驶里程。  
 
-## Work Reimbursement
-Track what employer owes you:
-- Status: pending, submitted, reimbursed
-- Submission date
-- Receipt attached
-- Reimbursement received date
-- Monthly report generation
+## 工作报销  
+- 跟踪雇主应报销的金额：  
+  - 显示费用状态（待处理、已提交、已报销）。  
+- 提交报销申请的日期。  
+- 附上费用收据。  
+- 收到报销款的日期。  
+- 生成月度报销报告。  
 
-## Project Budget
-Track spending against a budget:
-- Project: kitchen renovation, wedding, vacation
-- Budget amount set upfront
-- Running total vs budget: "€3,400 of €10,000 spent"
-- Category breakdown within project
-- Flag when approaching limit
+## 项目预算  
+- 监控实际支出与预算的对比情况：  
+  - 例如：厨房翻新项目的预算为 10,000 欧元，目前已支出 3,400 欧元。  
+- 显示各类别的支出情况。  
+- 在接近预算上限时发出提醒。  
 
-## Travel Expenses
-Trip-specific tracking:
-- All expenses tagged to trip
-- Daily spending if relevant
-- By category: lodging, food, activities, transport
-- Currency conversion if international
-- Per-person if group travel
-- Post-trip summary
+## 旅行费用  
+- 对旅行相关的所有支出进行专项记录：  
+  - 如有必要，记录每日支出情况。  
+  - 按类别分类（住宿、餐饮、活动、交通等）。  
+- 如果涉及国际旅行，进行货币转换。  
+- 团体旅行时，按人数分摊费用。  
+- 旅行结束后生成费用总结。  
 
-## File Structure
+## 文件结构  
 ```
 ~/expenses/
 ├── daily/
@@ -88,61 +85,60 @@ Trip-specific tracking:
 ├── projects/
 │   └── kitchen-reno.md
 └── categories.md
-```
+```  
 
-## Category System
-- Keep categories broad: 10-15 max
-- Common: food, transport, housing, utilities, entertainment, health, shopping
-- Customize to what matters: "coffee" separate if tracking that
-- Consistent naming — "restaurants" not sometimes "dining"
+## 费用类别系统  
+- 保持类别的简洁性（最多 10–15 个类别）。  
+- 常见类别包括：餐饮、交通、住宿、水电费、娱乐、健康、购物等。  
+- 根据实际需求自定义类别（例如：如果经常购买咖啡，可单独设置“咖啡”这一类别）。  
+- 使用统一的命名规则（例如统一使用“餐厅”而非“dining”）。  
 
-## Entry Formats
-Quick daily: "€45 groceries"
-Detailed: amount, date, category, description, receipt
-Shared: amount, paid by, split between, category
-Business: amount, client, category, receipt, billable
+## 费用录入格式  
+- 简单的日常记录：例如：“今天在食品上花费了 45 欧元”。  
+- 详细的记录：包括金额、日期、类别、支出描述及收据。  
+- 共同费用的记录：包括金额、支付者、各人分担的金额及费用类别。  
+- 商务费用的记录：包括金额、客户名称、费用类别及收据信息（是否可报销）。  
 
-## What To Surface
-- "You've spent €X this month on dining"
-- "Coffee spending up 40% vs last month"
-- "John owes you €89 from shared expenses"
-- "Kitchen project: €2,100 remaining in budget"
-- "€450 in unreimbursed work expenses"
+## 数据展示方式  
+- 显示用户本月的餐饮支出情况（例如：“本月在餐饮上的支出为 X 欧元”）。  
+- 分析费用变化趋势（例如：“咖啡支出比上月增加了 40%”）。  
+- 显示某人欠其他人的费用（例如：“John 还欠你 89 欧元”）。  
+- 提醒费用剩余情况（例如：“厨房翻新项目的预算还剩 2,100 欧元”）。  
+- 显示未报销的工作费用（例如：“有 450 欧元的工作费用尚未报销”）。  
 
-## Progressive Enhancement
-- Week 1: log expenses as they happen
-- Week 2: add categories, see patterns
-- Month 2: compare months, spot trends
-- Ongoing: adjust categories to what's useful
+## 持续优化流程  
+- 第一周：发生费用后立即记录。  
+- 第二周：添加更多费用类别，分析支出模式。  
+- 第二个月：比较不同月份的支出情况，发现趋势。  
+- 随着使用需求的变化，不断调整费用分类。  
 
-## Receipt Management
-- Photo immediately — paper receipts fade
-- Link to expense entry
-- Store in expense folder or dedicated receipts folder
-- Filename: date-vendor-amount.jpg
-- Business expenses: retention period awareness
+## 收据管理  
+- 立即拍摄收据照片（纸质收据容易褪色）。  
+- 将收据链接到相应的费用记录中。  
+- 将收据存放在专门的文件夹中。  
+- 文件名格式：日期-供应商-金额.jpg。  
+- 对于商务费用，需注意保留收据的保存期限。  
 
-## Reporting
-- Monthly summary by category
-- Trend comparison: this month vs last
-- Shared: balance summary, settlement suggestion
-- Business: quarterly for taxes
-- Project: spend vs budget status
+## 报告功能  
+- 按类别生成月度费用总结。  
+- 对比本月与上个月的支出趋势。  
+- 对于共同费用，提供结算建议。  
+- 商务费用需按季度进行税务处理。  
+- 项目费用需显示实际支出与预算的对比情况。  
 
-## What NOT To Suggest
-- Complex budgeting before spending is tracked
-- Linking bank accounts — manual has value
-- Obsessive categorization — broad categories work
-- Guilt about spending — data, not judgment
+## 不建议的做法  
+- 在开始记录支出之前就制定复杂的预算。  
+- 不建议将银行账户信息直接关联到费用记录中（手动记录更为实用）。  
+- 不要过度纠结于费用的分类细节（使用宽泛的类别即可）。  
+- 不要因支出而产生负罪感——数据只是用于分析，而非评判依据。  
 
-## Multi-Currency
-- Log in currency spent
-- Note exchange rate if tracking
-- Convert for totals if needed
-- Travel especially: mixed currencies normal
+## 多货币处理  
+- 记录支出时注明使用的货币类型。  
+- 如果需要，记录汇率。  
+- 根据需要转换费用总额（尤其是国际旅行时）。  
 
-## Integration Points
-- Budget: expenses feed into budget tracking
-- Invoices: billable expenses to clients
-- Taxes: business expense categories
-- Trips: travel-specific tracking
+## 集成方式  
+- 将费用数据导入预算管理系统。  
+- 将可报销的费用信息记录在发票中。  
+- 将费用分类纳入税务处理流程。  
+- 为旅行费用设置专门的跟踪系统。

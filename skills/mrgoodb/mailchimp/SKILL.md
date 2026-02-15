@@ -1,28 +1,28 @@
 ---
 name: mailchimp
-description: Manage email marketing campaigns, audiences, and automations via Mailchimp API.
+description: 通过 Mailchimp API 管理电子邮件营销活动、受众群体以及自动化流程。
 metadata: {"clawdbot":{"emoji":"🐵","requires":{"env":["MAILCHIMP_API_KEY","MAILCHIMP_SERVER"]}}}
 ---
 
 # Mailchimp
 
-Email marketing automation.
+电子邮件营销自动化工具。
 
-## Environment
+## 环境配置
 
 ```bash
 export MAILCHIMP_API_KEY="xxxxxxxxxx-us1"
 export MAILCHIMP_SERVER="us1"  # From API key suffix
 ```
 
-## List Audiences
+## 列表管理（List Audiences）
 
 ```bash
 curl "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/lists" \
   -u "anystring:$MAILCHIMP_API_KEY"
 ```
 
-## Add Subscriber
+## 添加订阅者（Add Subscriber）
 
 ```bash
 curl -X POST "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/lists/{list_id}/members" \
@@ -35,27 +35,27 @@ curl -X POST "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/lists/{list_id}/me
   }'
 ```
 
-## List Campaigns
+## 创建营销活动（Create Campaigns）
 
 ```bash
 curl "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/campaigns" \
   -u "anystring:$MAILCHIMP_API_KEY"
 ```
 
-## Get Campaign Stats
+## 查看营销活动统计（Get Campaign Stats）
 
 ```bash
 curl "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/reports/{campaign_id}" \
   -u "anystring:$MAILCHIMP_API_KEY"
 ```
 
-## Send Campaign
+## 发送营销邮件（Send Campaign）
 
 ```bash
 curl -X POST "https://$MAILCHIMP_SERVER.api.mailchimp.com/3.0/campaigns/{campaign_id}/actions/send" \
   -u "anystring:$MAILCHIMP_API_KEY"
 ```
 
-## Links
-- Dashboard: https://mailchimp.com
-- Docs: https://mailchimp.com/developer/
+## 链接：
+- 仪表板：https://mailchimp.com
+- 文档：https://mailchimp.com/developer/

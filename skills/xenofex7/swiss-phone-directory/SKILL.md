@@ -1,6 +1,6 @@
 ---
 name: swiss-phone-directory
-description: "Swiss phone directory lookup via search.ch API. Search for businesses, people, or reverse-lookup phone numbers. Use when: (1) finding contact details for Swiss companies or people, (2) looking up addresses by name or phone number, (3) reverse phone number lookup, (4) finding business categories. Requires SEARCHCH_API_KEY."
+description: "通过 search.ch API 查找瑞士电话目录信息。可以搜索企业、个人信息，或进行电话号码的反向查询。适用场景包括：(1) 查找瑞士公司或个人的联系方式；(2) 通过名称或电话号码查找地址；(3) 进行电话号码的反向查询；(4) 查找企业所属类别。使用该服务需要 SEARCHCH_API_KEY。"
 metadata:
   openclaw:
     requires:
@@ -10,9 +10,9 @@ metadata:
 
 # Swiss Phone Directory Skill
 
-Search the Swiss phone directory (search.ch) for businesses, people, and phone numbers.
+您可以使用瑞士电话目录（search.ch）来查找企业、个人和电话号码。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Search for a business
@@ -28,10 +28,10 @@ python3 scripts/searchch.py search "+41442345678"
 python3 scripts/searchch.py search "Restaurant" --location "Bern" --type business --limit 5
 ```
 
-## Commands
+## 命令
 
 ### search
-Search for businesses, people, or phone numbers.
+用于搜索企业、个人或电话号码。
 
 ```bash
 python3 scripts/searchch.py search <query> [options]
@@ -43,7 +43,7 @@ Options:
   --lang            Output language: de, fr, it, en (default: de)
 ```
 
-### Examples
+### 示例
 
 ```bash
 # Find restaurants in Rapperswil
@@ -59,47 +59,47 @@ python3 scripts/searchch.py search "044 123 45 67"
 python3 scripts/searchch.py search "Bäckerei" -l "SG"
 ```
 
-## Output Format
+## 输出格式
 
-Results include (when available):
-- **Name** - Business or person name
-- **Type** - Organisation or Person
-- **Address** - Street, ZIP, city, canton
-- **Phone** - Clickable tel: link (e.g., `[044 123 45 67](tel:+41441234567)`)
-- **Fax** - Clickable tel: link
-- **Email** - Email address
-- **Website** - Website URL
-- **Categories** - Business categories
+搜索结果包含以下信息（如可用）：
+- **名称** - 企业或个人名称
+- **类型** - 组织或个人
+- **地址** - 街道、邮政编码、城市、州
+- **电话** - 可点击的电话链接（例如：`[044 123 45 67](tel:+41441234567)`
+- **传真** - 可点击的电话链接
+- **电子邮件** - 电子邮件地址
+- **网站** - 网站地址
+- **类别** - 企业类别
 
-### Clickable Phone Numbers 📞
+### 可点击的电话号码 📞
 
-Phone numbers are automatically formatted as Markdown links with `tel:` protocol:
+电话号码会自动格式化为带有 `tel:` 协议的 Markdown 链接：
 ```
 📞 [044 123 45 67](tel:+41441234567)
 ```
 
-This enables **one-tap calling** on mobile devices (Telegram, Signal, WhatsApp, etc.).
+这支持在移动设备（如 Telegram、Signal、WhatsApp 等）上直接拨打电话。
 
-To disable clickable links, use `--no-clickable`.
+如需禁用可点击链接，请使用 `--no-clickable` 参数。
 
-## Configuration
+## 配置
 
-### Get an API Key (free)
+### 获取 API 密钥（免费）
 
-1. **Request a key:** https://search.ch/tel/api/getkey.en.html
-2. Fill out the form (name, email, use case)
-3. **Approval:** ~10-15 minutes, key arrives via email
+1. **请求密钥**：https://search.ch/tel/api/getkey.en.html
+2. 填写表格（姓名、电子邮件、使用场景）
+3. **审核**：大约需要 10-15 分钟，密钥将通过电子邮件发送给您
 
-### Set the Environment Variable
+### 设置环境变量
 
 ```bash
 export SEARCHCH_API_KEY="your-api-key-here"
 ```
 
-For permanent setup, see [references/configuration.md](references/configuration.md).
+有关永久性设置的详细信息，请参阅 [references/configuration.md](references/configuration.md)。
 
-## API Reference
+## API 参考
 
-- Base URL: `https://search.ch/tel/api/`
-- Rate limits: Depend on API key tier
-- Full docs: https://search.ch/tel/api/help.en.html
+- 基本 URL：`https://search.ch/tel/api/`
+- 调用限制：取决于 API 密钥的等级
+- 完整文档：https://search.ch/tel/api/help.en.html

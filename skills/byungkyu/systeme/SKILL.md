@@ -18,9 +18,9 @@ metadata:
 
 # Systeme.io
 
-Access the Systeme.io API with managed OAuth authentication. Manage contacts, tags, courses, communities, and subscriptions.
+您可以使用受管理的 OAuth 认证来访问 Systeme.io API。该 API 允许您管理联系人、标签、课程、社区和订阅信息。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/systeme/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Systeme.io API endpoint path. The gateway proxies requests to `api.systeme.io` and automatically injects your API key.
+请将 `{native-api-path}` 替换为实际的 Systeme.io API 端点路径。该网关会将请求代理到 `api.systeme.io`，并自动插入您的 API 密钥。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Systeme.io connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Systeme.io 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Systeme.io connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Systeme.io 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,30 +141,30 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Contact Operations
+### 联系人操作
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /systeme/api/contacts
 ```
 
-**Query Parameters:**
-- `limit` - Number of items per page (10-100, optional)
-- `startingAfter` - ID of last received item for pagination (optional)
-- `order` - Sort order: `asc` or `desc` (default: `desc`, optional)
+**查询参数：**
+- `limit` - 每页显示的项目数量（10-100，可选）
+- `startingAfter` - 用于分页的上一页面最后一条记录的 ID（可选）
+- `order` - 排序方式：`asc` 或 `desc`（默认：`desc`，可选）
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /systeme/api/contacts/{id}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /systeme/api/contacts
@@ -185,7 +185,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PATCH /systeme/api/contacts/{id}
@@ -197,27 +197,27 @@ Content-Type: application/merge-patch+json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /systeme/api/contacts/{id}
 ```
 
-### Tag Operations
+### 标签操作
 
-#### List Tags
+#### 列出标签
 
 ```bash
 GET /systeme/api/tags
 ```
 
-#### Get Tag
+#### 获取标签信息
 
 ```bash
 GET /systeme/api/tags/{id}
 ```
 
-#### Create Tag
+#### 创建标签
 
 ```bash
 POST /systeme/api/tags
@@ -228,7 +228,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Tag
+#### 更新标签信息
 
 ```bash
 PUT /systeme/api/tags/{id}
@@ -239,15 +239,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Tag
+#### 删除标签
 
 ```bash
 DELETE /systeme/api/tags/{id}
 ```
 
-### Contact Tag Operations
+### 联系人与标签关联操作
 
-#### Assign Tag to Contact
+#### 为联系人分配标签
 
 ```bash
 POST /systeme/api/contacts/{id}/tags
@@ -258,21 +258,21 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Tag from Contact
+#### 从联系人中移除标签
 
 ```bash
 DELETE /systeme/api/contacts/{id}/tags/{tagId}
 ```
 
-### Contact Field Operations
+### 联系人字段操作
 
-#### List Contact Fields
+#### 列出联系人字段
 
 ```bash
 GET /systeme/api/contact_fields
 ```
 
-#### Create Contact Field
+#### 创建联系人字段
 
 ```bash
 POST /systeme/api/contact_fields
@@ -284,7 +284,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact Field
+#### 更新联系人字段
 
 ```bash
 PATCH /systeme/api/contact_fields/{slug}
@@ -295,27 +295,27 @@ Content-Type: application/merge-patch+json
 }
 ```
 
-#### Delete Contact Field
+#### 删除联系人字段
 
 ```bash
 DELETE /systeme/api/contact_fields/{slug}
 ```
 
-### Course Operations
+### 课程操作
 
-#### List Courses
+#### 列出课程
 
 ```bash
 GET /systeme/api/school/courses
 ```
 
-#### List Enrollments
+#### 列出报名信息
 
 ```bash
 GET /systeme/api/school/enrollments
 ```
 
-#### Create Enrollment
+#### 创建报名记录
 
 ```bash
 POST /systeme/api/school/courses/{courseId}/enrollments
@@ -327,33 +327,33 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `contactId` - The ID of the contact to enroll
-- `accessType` - Access type: `full_access`, `partial_access`, or `dripping_content`
+**必填字段：**
+- `contactId` - 要报名的联系人的 ID
+- `accessType` - 访问类型：`full_access`、`partial_access` 或 `dripping_content`
 
-**Note:** If `accessType` is `partial_access`, you must also provide a `modules` array with module IDs.
+**注意：** 如果 `accessType` 为 `partial_access`，您还需要提供包含模块 ID 的 `modules` 数组。
 
-#### Delete Enrollment
+#### 删除报名记录
 
 ```bash
 DELETE /systeme/api/school/enrollments/{id}
 ```
 
-### Community Operations
+### 社区操作
 
-#### List Communities
+#### 列出社区
 
 ```bash
 GET /systeme/api/community/communities
 ```
 
-#### List Memberships
+#### 列出成员信息
 
 ```bash
 GET /systeme/api/community/memberships
 ```
 
-#### Create Membership
+#### 创建成员资格
 
 ```bash
 POST /systeme/api/community/communities/{communityId}/memberships
@@ -364,40 +364,40 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Membership
+#### 删除成员资格
 
 ```bash
 DELETE /systeme/api/community/memberships/{id}
 ```
 
-### Subscription Operations
+### 订阅操作
 
-#### List Subscriptions
+#### 列出订阅信息
 
 ```bash
 GET /systeme/api/payment/subscriptions
 ```
 
-#### Cancel Subscription
+#### 取消订阅
 
 ```bash
 POST /systeme/api/payment/subscriptions/{id}/cancel
 ```
 
-## Pagination
+## 分页
 
-Systeme.io uses cursor-based pagination with the following parameters:
+Systeme.io 使用基于游标的分页机制，相关参数如下：
 
 ```bash
 GET /systeme/api/contacts?limit=50&startingAfter=12345&order=asc
 ```
 
-**Parameters:**
-- `limit` - Number of items per page (10-100)
-- `startingAfter` - ID of the last item from the previous page
-- `order` - Sort order: `asc` or `desc` (default: `desc`)
+**参数：**
+- `limit` - 每页显示的项目数量（10-100）
+- `startingAfter` - 上一页最后一条记录的 ID
+- `order` - 排序方式：`asc` 或 `desc`（默认：`desc`）
 
-**Response:**
+**响应：**
 ```json
 {
   "items": [...],
@@ -405,9 +405,9 @@ GET /systeme/api/contacts?limit=50&startingAfter=12345&order=asc
 }
 ```
 
-When `hasMore` is `true`, use the ID of the last item in `items` as `startingAfter` to get the next page.
+当 `hasMore` 为 `true` 时，使用 `items` 中最后一条记录的 ID 作为 `startingAfter` 以获取下一页的内容。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -436,7 +436,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Create Contact with Tag
+### 创建带有标签的联系人
 
 ```python
 import os
@@ -467,36 +467,36 @@ requests.post(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Systeme.io uses API key authentication (passed as `X-API-Key` header natively)
-- The gateway automatically handles auth header transformation
-- Use `application/merge-patch+json` content type for PATCH requests
-- Contact, tag, course, and enrollment IDs are numeric integers
-- Rate limits are enforced via `X-RateLimit-*` headers
-- Systeme.io validates email domains - only real email addresses with valid MX records are accepted
-- The subscriptions endpoint (`/api/payment/subscriptions`) may return 404 if payment features are not configured
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- Systeme.io 使用 API 密钥进行认证（以 `X-API-Key` 头的形式传递）。
+- 网关会自动处理认证头的转换。
+- 对于 `PATCH` 请求，请使用 `application/merge-patch+json` 的内容类型。
+- 联系人、标签、课程和报名记录的 ID 都是数字整数。
+- 通过 `X-RateLimit-*` 头实施速率限制。
+- Systeme.io 会验证电子邮件域名——仅接受具有有效 MX 记录的真实电子邮件地址。
+- 如果未配置支付功能，订阅端点（`/api/payment/subscriptions`）可能会返回 404 错误。
+- **重要提示：** 当 URL 中包含括号时，使用 `curl -g` 命令可以禁用全局解析。
+- **重要提示：** 在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Systeme.io connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (check `Retry-After` header) |
-| 4xx/5xx | Passthrough error from Systeme.io API |
+| 400 | 未建立 Systeme.io 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 达到速率限制（请查看 `Retry-After` 头） |
+| 4xx/5xx | 来自 Systeme.io API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -507,16 +507,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `systeme`. For example:
+1. 确保您的 URL 路径以 `systeme` 开头。例如：
+- 正确：`https://gateway.maton.ai/systeme/api/contacts`
+- 错误：`https://gateway.maton.ai/api/contacts`
 
-- Correct: `https://gateway.maton.ai/systeme/api/contacts`
-- Incorrect: `https://gateway.maton.ai/api/contacts`
+## 资源
 
-## Resources
-
-- [Systeme.io API Reference](https://developer.systeme.io/reference)
-- [Systeme.io API Overview](https://developer.systeme.io/)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Systeme.io API 参考文档](https://developer.systeme.io/reference)
+- [Systeme.io API 概述](https://developer.systeme.io/)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

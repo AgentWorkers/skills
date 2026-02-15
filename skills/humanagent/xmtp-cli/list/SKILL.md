@@ -1,27 +1,27 @@
 ---
 name: xmtp-cli-list
-description: List conversations, members, and messages from the XMTP CLI. Use when listing or finding conversations.
+description: 列出 XMTP CLI 中的对话记录、成员信息以及消息内容。适用于查看或查找特定对话时使用。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI list
+# CLI 功能列表
 
-List conversations, members, and messages, or find a conversation by address or inbox ID.
+该 CLI 可用于列出对话记录、成员信息以及消息内容，或根据地址或收件箱 ID 查找特定的对话。
 
-## When to apply
+## 使用场景
 
-- Listing conversations, members of a conversation, or messages
-- Finding a conversation by address or inbox ID
+- 列出对话记录、对话中的成员信息或消息内容
+- 根据地址或收件箱 ID 查找特定的对话
 
-## Rules
+## 使用规则
 
-- `conversations-members-messages` – `list conversations` / `members` / `messages` and options
-- `find` – `list find` by address or inbox-id
+- `conversations-members-messages`：用于列出对话记录（`list conversations`）、对话成员（`members`）或消息内容（`messages`），并支持相关选项
+- `find`：用于根据地址或收件箱 ID 查找特定的对话记录（`list find`）
 
-## Quick start
+## 快速入门
 
 ```bash
 xmtp list conversations
@@ -30,4 +30,4 @@ xmtp list messages --conversation-id <id>
 xmtp list find --address 0x1234...
 ```
 
-Read `rules/conversations-members-messages.md` and `rules/find.md` for details.
+详情请参阅 `rules/conversations-members-messages.md` 和 `rules/find.md` 文件。

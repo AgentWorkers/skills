@@ -1,6 +1,6 @@
 ---
 name: aibtc-bitcoin-wallet
-description: Bitcoin L1 wallet for agents - check balances, send BTC, manage UTXOs. Extends to Stacks L2 (STX, DeFi) and Pillar smart wallets (sBTC yield).
+description: 适用于代理的比特币L1钱包：支持查询余额、发送BTC、管理未花费的交易输出（UTXOs）。同时兼容Stacks L2（STX、DeFi）以及Pillar智能钱包（sBTC收益功能）。
 license: MIT
 metadata:
   author: aibtcdev
@@ -9,108 +9,104 @@ metadata:
   github: https://github.com/aibtcdev/aibtc-mcp-server
 ---
 
-# AIBTC Bitcoin Wallet
+# AIBTC比特币钱包
 
-A skill for managing Bitcoin L1 wallets with optional Pillar smart wallet and Stacks L2 DeFi capabilities.
+这是一项用于管理比特币L1钱包的技能，该钱包支持Pillar智能钱包功能以及Stacks L2去中心化金融（DeFi）服务。
 
-## Install
+## 安装
 
-One-command installation:
+通过一条命令即可完成安装：
 
 ```bash
 npx @aibtc/mcp-server@latest --install
 ```
 
-For testnet:
+**测试网版本：**
 
 ```bash
 npx @aibtc/mcp-server@latest --install --testnet
 ```
 
-## Quick Start
+## 快速入门
 
-### Check Balance
+### 检查余额
 
-Get your Bitcoin balance:
+查询您的比特币余额：
 
 ```
 "What's my BTC balance?"
 ```
 
-Uses `get_btc_balance` - returns total, confirmed, and unconfirmed balances.
+使用`get_btc_balance`命令，可获取总余额、已确认余额和未确认余额。
 
-### Check Fees
+### 查询费用
 
-Get current network fee estimates:
+获取当前网络费用估算：
 
 ```
 "What are the current Bitcoin fees?"
 ```
 
-Uses `get_btc_fees` - returns fast (~10 min), medium (~30 min), and slow (~1 hr) rates in sat/vB.
+使用`get_btc_fees`命令，可获取快速（约10分钟）、中等（约30分钟）和慢速（约1小时）的交易费用（单位：sat/vB）。
 
-### Send BTC
+### 发送比特币
 
-Transfer Bitcoin to an address:
+将比特币转账到指定地址：
 
 ```
 "Send 50000 sats to bc1q..."
 "Transfer 0.001 BTC with fast fees to bc1q..."
 ```
 
-Uses `transfer_btc` - requires an unlocked wallet.
+使用`transfer_btc`命令，需要确保钱包已解锁。
 
-## Wallet Setup
+## 钱包设置
 
-Before sending transactions, set up a wallet:
+在发送交易之前，请先设置钱包：
+1. **创建新钱包**：`wallet_create`——生成加密的BIP39助记词。
+2. **导入现有钱包**：`wallet_import`——通过助记词导入钱包信息。
+3. **解锁钱包以进行交易**：`walletunlock`——交易前必须解锁钱包。
 
-1. **Create new wallet**: `wallet_create` - generates encrypted BIP39 mnemonic
-2. **Import existing**: `wallet_import` - import from mnemonic phrase
-3. **Unlock for use**: `wallet_unlock` - required before transactions
+钱包数据以加密形式存储在`~/.aibtc/`目录下。
 
-Wallets are stored encrypted at `~/.aibtc/`.
+## 工具参考
 
-## Tool Reference
+### 读取操作
 
-### Read Operations
-
-| Tool | Description | Parameters |
+| 工具 | 描述 | 参数 |
 |------|-------------|------------|
-| `get_btc_balance` | Get BTC balance | `address` (optional; requires unlocked wallet if omitted) |
-| `get_btc_fees` | Get fee estimates | None |
-| `get_btc_utxos` | List UTXOs | `address` (optional; requires unlocked wallet if omitted), `confirmedOnly` |
+| `get_btc_balance` | 查询比特币余额 | `address`（可选；若省略则需解锁钱包） |
+| `get_btc_fees` | 获取费用估算 | 无参数 |
+| `get_btc_utxos` | 列出未确认的交易输出（UTXOs） | `address`（可选；若省略则需解锁钱包），`confirmedOnly`（可选） |
 
-### Write Operations (Wallet Required)
+### 写入操作（需要解锁钱包）
 
-| Tool | Description | Parameters |
+| 工具 | 描述 | 参数 |
 |------|-------------|------------|
-| `transfer_btc` | Send BTC | `recipient`, `amount` (sats), `feeRate` |
+| `transfer_btc` | 发送比特币 | `recipient`（收款地址），`amount`（金额，单位：satoshis），`feeRate`（费用率） |
 
-### Wallet Management
+### 钱包管理
 
-| Tool | Description |
-|------|-------------|
-| `wallet_create` | Generate new encrypted wallet |
-| `wallet_import` | Import wallet from mnemonic |
-| `wallet_unlock` | Unlock wallet for transactions |
-| `wallet_lock` | Lock wallet (clear from memory) |
-| `wallet_list` | List available wallets |
-| `wallet_switch` | Switch active wallet |
-| `wallet_status` | Get wallet/session status |
+| 工具 | 描述 | ----------------------|
+| `wallet_create` | 创建新的加密钱包 |
+| `wallet_import` | 从助记词导入钱包信息 |
+| `wallet_unlock` | 解锁钱包以进行交易 |
+| `wallet_lock` | 锁定钱包（清除内存中的钱包数据） |
+| `wallet_list` | 列出所有可用钱包 |
+| `wallet_switch` | 切换活跃钱包 |
+| `wallet_status` | 获取钱包/会话状态 |
 
-## Units and Addresses
+## 单位和地址
 
-**Amounts**: Always in satoshis (1 BTC = 100,000,000 satoshis)
+- **金额**：始终以satoshis为单位（1 BTC = 100,000,000 satoshis）。
+- **地址**：
+  - 主网：`bc1...`（原生SegWit格式）
+  - 测试网：`tb1...`
+- **费用率**：`fast`、`medium`、`slow`或自定义的sat/vB数值。
 
-**Addresses**:
-- Mainnet: `bc1...` (native SegWit)
-- Testnet: `tb1...`
+## 示例流程
 
-**Fee Rates**: `"fast"`, `"medium"`, `"slow"`, or custom sat/vB number
-
-## Example Workflows
-
-### Daily Balance Check
+### 每日余额检查
 
 ```
 1. "What's my BTC balance?"
@@ -118,7 +114,7 @@ Wallets are stored encrypted at `~/.aibtc/`.
 3. "What are current fees?"
 ```
 
-### Send Payment
+### 发送付款
 
 ```
 1. "Unlock my wallet" (provide password)
@@ -126,7 +122,7 @@ Wallets are stored encrypted at `~/.aibtc/`.
 3. "Lock my wallet"
 ```
 
-### Multi-Wallet Management
+### 多钱包管理
 
 ```
 1. "List my wallets"
@@ -135,72 +131,71 @@ Wallets are stored encrypted at `~/.aibtc/`.
 4. "Check balance"
 ```
 
-## Progressive Layers
+## 分层架构
 
-This skill focuses on Bitcoin L1. Additional capabilities are organized by layer:
+本技能主要针对比特币L1层进行开发。其他扩展功能按层次结构进行分类：
 
-### Stacks L2 (Layer 2)
+### Stacks L2（第二层）
 
-Bitcoin L2 with smart contracts and DeFi:
-- STX token transfers
-- ALEX DEX token swaps
-- Zest Protocol lending/borrowing
-- x402 paid API endpoints (AI, storage, utilities)
+支持智能合约和去中心化金融（DeFi）的比特币L2服务：
+- STX代币转账
+- ALEX DEX代币交易
+- Zest协议借贷服务
+- 提供x402 API接口（包括AI、存储、实用工具等）
 
-See: [references/stacks-defi.md](references/stacks-defi.md)
+详情请参阅：[references/stacks-defi.md](references/stacks-defi.md)
 
-### Pillar Smart Wallet (Layer 3)
+### Pillar智能钱包（第三层）
 
-sBTC smart wallet with yield automation:
-- Passkey or agent-signed transactions
-- Send to BNS names (alice.btc)
-- Auto-boost yield via Zest Protocol
+基于sBTC的智能钱包，具备收益自动化功能：
+- 支持Passkey或代理签名交易
+- 可将比特币发送到BNS地址（例如：alice.btc）
+- 通过Zest协议自动提升收益
 
-See: [references/pillar-wallet.md](references/pillar-wallet.md)
+详情请参阅：[references/pillar-wallet.md](references/pillar-wallet.md)
 
-### Bitcoin Inscriptions
+### 比特币刻录
 
-Inscribe and retrieve digital artifacts on Bitcoin:
-- Commit-reveal inscription workflow
-- Get inscription content and metadata
-- Protect ordinal UTXOs from accidental spending
+在比特币上刻录并检索数字资产：
+- 提交并显示刻录内容及元数据
+- 保护未确认的交易输出（UTXOs）免遭意外支出
 
-See: [references/inscription-workflow.md](references/inscription-workflow.md)
+详情请参阅：[references/inscription-workflow.md](references/inscription-workflow.md)
 
-### Genesis Lifecycle
+### Genesis生命周期
 
-Agent identity and reputation on Bitcoin and Stacks:
-- L0: Local agent key generation
-- L1: Dual-chain plain-message signatures (btc_sign_message + stacks_sign_message)
-- L2: X claim + BTC airdrop activation
-- Active: 5-minute check-ins to maintain reputation and liveness
+比特币及Stacks平台上的代理身份与信誉管理：
+- L0阶段：生成本地代理密钥
+- L1阶段：使用双链签名机制（btc_sign_message + stacks_sign_message）
+- L2阶段：激活X代币发放功能
+- 保持活跃状态需每5分钟进行一次身份验证
 
-See: [references/genesis-lifecycle.md](references/genesis-lifecycle.md)
+详情请参阅：[references/genesis-lifecycle.md](references/genesis-lifecycle.md)
 
-## Troubleshooting
+## 常见问题解决方法
 
-### "Wallet not unlocked"
+### “钱包未解锁”
 
-Run `wallet_unlock` with your password before sending transactions.
+在发送交易前，请使用密码运行`wallet_unlock`命令解锁钱包。
 
-### "Insufficient balance"
+### “余额不足”
 
-Check `get_btc_balance` - you need enough BTC for amount + fees.
+请使用`get_btc_balance`命令检查余额，确保有足够的比特币用于支付交易金额及费用。
 
-### "Invalid address"
+### “地址无效”
 
-Ensure address matches network:
-- Mainnet: starts with `bc1`
-- Testnet: starts with `tb1`
+请确认地址格式正确：
+- 主网地址以`bc1`开头
+- 测试网地址以`tb1`开头
 
-See: [references/troubleshooting.md](references/troubleshooting.md)
+详情请参阅：[references/troubleshooting.md](references/troubleshooting.md)
 
-## More Information
+## 更多信息
 
-- [CLAUDE.md](../CLAUDE.md) - Full tool documentation
-- [GitHub](https://github.com/aibtcdev/aibtc-mcp-server) - Source code
-- [npm](https://www.npmjs.com/package/@aibtc/mcp-server) - Package
+- [CLAUDE.md](../CLAUDE.md) - 完整的工具文档
+- [GitHub](https://github.com/aibtcdev/aibtc-mcp-server) - 源代码仓库
+- [npm](https://www.npmjs.com/package/@aibtc/mcp-server) - 包安装信息
 
 ---
 
-*This skill follows the [Agent Skills](https://agentskills.io) open specification.*
+*本技能遵循[Agent Skills](https://agentskills.io)开放规范进行开发。*

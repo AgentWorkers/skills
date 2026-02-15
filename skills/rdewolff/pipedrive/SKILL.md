@@ -1,19 +1,19 @@
 ---
 name: pipedrive
-description: Pipedrive CRM API for managing deals, contacts (persons), organizations, activities, leads, pipelines, products, and notes. Use for sales pipeline management, deal tracking, contact/organization management, activity scheduling, lead handling, or any Pipedrive CRM tasks.
+description: Pipedrive CRM API 用于管理交易、联系人（个人）、组织、活动、潜在客户、销售流程、产品以及备注。该 API 可用于销售流程管理、交易跟踪、联系人/组织管理、活动调度、潜在客户处理，或任何与 Pipedrive CRM 相关的任务。
 ---
 
 # Pipedrive
 
-Sales CRM API for deals, contacts, organizations, activities, pipelines, leads, and notes.
+这是一个用于管理销售线索（deals）、联系人（contacts）、组织（organizations）、活动（activities）、销售流程（pipelines）、潜在客户（leads）以及备注（notes）的销售CRM（Customer Relationship Management） API。
 
-## Setup
+## 设置
 
-Get your API token from Pipedrive:
-1. Go to Settings → Personal preferences → API
-2. Copy your personal API token
+从Pipedrive获取您的API令牌：
+1. 进入“设置”（Settings） → “个人偏好设置”（Personal preferences） → “API”（API）
+2. 复制您的个人API令牌
 
-Store in `~/.clawdbot/clawdbot.json`:
+将令牌保存到`~/.clawdbot/clawdbot.json`文件中：
 ```json
 {
   "skills": {
@@ -26,11 +26,11 @@ Store in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Or set env: `PIPEDRIVE_API_TOKEN=xxx`
+或者通过环境变量设置：`PIPEDRIVE_API_TOKEN=xxx`
 
-## Quick Reference
+## 快速参考
 
-### Deals (most important!)
+### 销售线索（Deals）（非常重要！）
 ```bash
 {baseDir}/scripts/pipedrive.sh deals list                    # List all deals
 {baseDir}/scripts/pipedrive.sh deals list --status open      # Open deals only
@@ -43,7 +43,7 @@ Or set env: `PIPEDRIVE_API_TOKEN=xxx`
 {baseDir}/scripts/pipedrive.sh deals delete <id>             # Delete deal
 ```
 
-### Persons (contacts)
+### 联系人（Persons）（联系人）
 ```bash
 {baseDir}/scripts/pipedrive.sh persons list                  # List all persons
 {baseDir}/scripts/pipedrive.sh persons search "query"        # Search persons
@@ -53,7 +53,7 @@ Or set env: `PIPEDRIVE_API_TOKEN=xxx`
 {baseDir}/scripts/pipedrive.sh persons delete <id>           # Delete person
 ```
 
-### Organizations
+### 组织（Organizations）
 ```bash
 {baseDir}/scripts/pipedrive.sh orgs list                     # List all organizations
 {baseDir}/scripts/pipedrive.sh orgs search "query"           # Search organizations
@@ -63,7 +63,7 @@ Or set env: `PIPEDRIVE_API_TOKEN=xxx`
 {baseDir}/scripts/pipedrive.sh orgs delete <id>              # Delete organization
 ```
 
-### Activities
+### 活动（Activities）
 ```bash
 {baseDir}/scripts/pipedrive.sh activities list               # List activities
 {baseDir}/scripts/pipedrive.sh activities list --done 0      # Upcoming activities
@@ -72,13 +72,13 @@ Or set env: `PIPEDRIVE_API_TOKEN=xxx`
 {baseDir}/scripts/pipedrive.sh activities done <id>          # Mark activity done
 ```
 
-### Pipelines & Stages
+### 销售流程与阶段（Pipelines & Stages）
 ```bash
 {baseDir}/scripts/pipedrive.sh pipelines list                # List all pipelines
 {baseDir}/scripts/pipedrive.sh pipelines stages <pipeline_id>  # List stages in pipeline
 ```
 
-### Leads
+### 潜在客户（Leads）
 ```bash
 {baseDir}/scripts/pipedrive.sh leads list                    # List all leads
 {baseDir}/scripts/pipedrive.sh leads show <id>               # Get lead details
@@ -86,38 +86,38 @@ Or set env: `PIPEDRIVE_API_TOKEN=xxx`
 {baseDir}/scripts/pipedrive.sh leads convert <id>            # Convert lead to deal
 ```
 
-### Products
+### 产品（Products）
 ```bash
 {baseDir}/scripts/pipedrive.sh products list                 # List all products
 {baseDir}/scripts/pipedrive.sh products search "query"       # Search products
 ```
 
-### Notes
+### 备注（Notes）
 ```bash
 {baseDir}/scripts/pipedrive.sh notes list --deal <id>        # Notes for a deal
 {baseDir}/scripts/pipedrive.sh notes list --person <id>      # Notes for a person
 {baseDir}/scripts/pipedrive.sh notes create --content "Note text" --deal <id>
 ```
 
-## Deal Statuses
+## 销售线索状态
 
-- `open` - Active deal in pipeline
-- `won` - Deal closed-won
-- `lost` - Deal closed-lost
-- `deleted` - Deleted deal
+- `open`：处于销售流程中的活跃线索
+- `won`：已成交的线索
+- `lost`：未成交的线索
+- `deleted`：已删除的线索
 
-## Activity Types
+## 活动类型
 
-Common types: `call`, `meeting`, `task`, `deadline`, `email`, `lunch`
+常见类型：`call`（电话）、`meeting`（会议）、`task`（任务）、`deadline`（截止日期）、`email`（电子邮件）、`lunch`（午餐）
 
-## Notes
+## 备注
 
-- API Base: `https://api.pipedrive.com/v1`
-- Auth: API token via `api_token` query param
-- Rate limit: 10 req/second, 100,000/day per company
-- Pagination: Use `start` (offset) and `limit` params
-- Always confirm before creating/updating/deleting records
+- API基础地址：`https://api.pipedrive.com/v1`
+- 认证方式：通过`api_token`查询参数传递API令牌
+- 请求限制：每秒10次请求，每家公司每天100,000次请求
+- 分页：使用`start`（偏移量）和`limit`参数进行分页
+- 在创建、更新或删除记录之前，请务必确认操作内容
 
-## API Reference
+## API参考
 
-For detailed endpoint documentation, see [references/api.md](references/api.md).
+有关详细端点文档，请参阅[references/api.md](references/api.md)。

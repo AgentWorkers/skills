@@ -1,50 +1,50 @@
 ---
 name: project-tree
-description: Generate a visual directory tree of the ~/projects folder and update MEMORY.md with the result. Use when the user wants to view, update, or generate a project tree structure, or when they mention "project tree", "tree view", "folder structure", or "show me my projects".
+description: 生成 `~/projects` 文件夹的可视化目录树，并将结果更新到 `MEMORY.md` 文件中。当用户需要查看、更新项目结构，或者询问“项目树”、“树状视图”、“文件夹结构”或“显示我的项目”时，可以使用此功能。
 ---
 
-# Project Tree
+# 项目结构树
 
-## Overview
+## 概述
 
-Generate a visual tree structure of the ~/projects directory and automatically update MEMORY.md with the current project organization. The tree shows folders and .md files only, with smart grouping for consecutive numbered items.
+该工具会生成 `~/projects` 目录的可视化树状结构，并自动将生成的树状结构更新到 `MEMORY.md` 文件中，以反映当前的项目组织结构。该树状结构仅显示文件夹和 `.md` 文件，并会对连续编号的文件进行智能分组。
 
-## Usage
+## 使用方法
 
-Run the tree generation script:
+运行树状结构生成脚本：
 
 ```bash
 node ~/clawd/skills/project-tree/scripts/project-tree.js
 ```
 
-Or use the convenience wrapper:
+或者使用便捷的封装脚本：
 
 ```bash
 ~/clawd/scripts/update-tree
 ```
 
-## Features
+## 主要特性
 
-- **Folder-only + .md files**: Only displays directories and markdown files, hiding code files and dependencies
-- **Smart grouping**: Detects consecutive numbered sequences (e.g., `script1-video`, `script2-video`...) and collapses them into `script[1-28]-video/ (28 items)`
-- **Auto-updates MEMORY.md**: The tree is automatically inserted into the PROJECT_TREE section of MEMORY.md
-- **Configurable depth**: Default is 3 levels deep (adjustable in script)
+- **仅显示文件夹和 `.md` 文件**：仅显示目录和 markdown 文件，隐藏代码文件及依赖项。
+- **智能分组**：能够识别连续编号的文件（例如 `script1-video`、`script2-video` 等），并将它们合并为 `script[1-28]-video/` 的形式（共 28 个文件）。
+- **自动更新 `MEMORY.md`**：生成的树状结构会自动插入到 `MEMORY.md` 文件的 `PROJECT_TREE` 部分。
+- **可配置的深度**：默认深度为 3 层（可通过脚本进行调整）。
 
-## Configuration
+## 配置
 
-Edit these values in `scripts/project-tree.js`:
+在 `scripts/project-tree.js` 文件中修改以下配置参数：
 
-- `MAX_DEPTH`: Number of directory levels to display (default: 3)
-- `EXCLUDE_DIRS`: Directories to skip (node_modules, .git, etc.)
-- `ROOT_DIR`: Base directory to scan (default: ~/projects)
+- `MAX_DEPTH`：显示的目录层级数（默认值：3）
+- `EXCLUDE_DIRS`：需要跳过的目录（例如 `node_modules`、`.git` 等）
+- `ROOT_DIR`：扫描的根目录（默认值：`~/projects`）
 
-## Automation (Hook)
+## 自动化（钩子）
 
-You can automate project tree updates to run on every session `/reset`.
+你可以通过以下步骤实现项目结构树的自动更新：
 
-### 1. Enable Internal Hooks
+### 1. 启用内部钩子
 
-Add to your `clawdbot.json`:
+在 `clawdbot.json` 文件中添加相应的配置：
 
 ```json
 {
@@ -56,9 +56,9 @@ Add to your `clawdbot.json`:
 }
 ```
 
-### 2. Create the Hook
+### 2. 创建钩子
 
-Create `~/.clawdbot/hooks/reset-project-tree/HOOK.md`:
+创建 `~/.clawdbot/hooks/reset-project-tree/HOOK.md` 文件：
 
 ```markdown
 ---
@@ -70,7 +70,7 @@ metadata: {"clawdbot":{"emoji":"🌳","events":["command:reset"],"requires":{"bi
 Generates project tree when /reset is issued.
 ```
 
-Create `~/.clawdbot/hooks/reset-project-tree/handler.ts`:
+创建 `~/.clawdbot/hooks/reset-project-tree/handler.ts` 文件：
 
 ```typescript
 import { execSync } from 'child_process';
@@ -91,15 +91,12 @@ const handler: HookHandler = async (event) => {
 export default handler;
 ```
 
-### 3. Enable and Restart
+### 3. 启用并重启 ClawDBot
 
-```bash
-clawdbot hooks enable reset-project-tree
-clawdbot gateway restart
-```
+完成上述配置后，需要重启 ClawDBot 以应用更改。
 
-## Resources
+## 相关资源
 
 ### scripts/
 
-- `project-tree.js` - Main tree generation script with smart grouping logic
+- `project-tree.js`：主要的树状结构生成脚本，包含智能分组逻辑

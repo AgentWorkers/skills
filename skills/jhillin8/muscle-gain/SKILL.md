@@ -1,6 +1,6 @@
 ---
 name: muscle-gain
-description: Track muscle building with weight progression, protein tracking, and strength milestones
+description: 通过记录重量变化、蛋白质摄入量以及力量提升的里程碑来追踪肌肉锻炼的进展。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,48 +11,42 @@ triggers:
   - "lean mass"
 ---
 
-# Muscle Gain
+# 增肌计划
 
-Build lean muscle with precision tracking of strength, nutrition, and body composition.
+通过精确追踪力量、营养和身体成分来打造精瘦的肌肉。
 
-## What it does
+## 功能介绍
 
-The muscle-gain skill transforms your fitness journey into a data-driven process. Log body weight and measurements to track lean mass gains, monitor daily protein intake against personalized targets, and record strength progression across your key lifts. Automatically surfaces milestone achievements and flags underperformance to keep you accountable. Built for serious lifters, casual athletes, and anyone committed to measurable gains.
+“增肌计划”将您的健身之旅转变为一个基于数据的过程。您可以记录体重和各项身体指标，以监测瘦肌肉的增长情况，对照个人目标监控每日蛋白质摄入量，并记录关键举重动作的力量提升情况。该工具会自动显示您的里程碑成就，并在表现不佳时提醒您。无论您是专业的举重运动员、休闲爱好者，还是任何渴望实现可量化进步的人，都可以使用它。
 
-## Usage
+## 使用方法
 
-**Log measurements**
-Track body weight, chest, arms, shoulders, waist, and thighs weekly. Provides trend analysis to distinguish lean mass from water weight.
+**记录数据**
+- 每周记录体重以及胸部、手臂、肩膀、腰部和大腿的尺寸数据，通过趋势分析区分瘦肌肉与水分重量。
+- 记录饮食信息，系统会自动计算每日蛋白质摄入量，并与您的个人目标（每磅体重0.7–1克蛋白质）进行对比。
 
-**Track protein**
-Log meals and auto-calculate daily protein intake. Compares against your personalized target (0.7–1g per pound of body weight).
+**查看进展**
+- 查看深蹲、硬拉、卧推等关键举重动作的力量提升图表，了解月度及年度变化趋势。
 
-**Check gains**
-View strength progression charts for squats, deadlifts, bench press, and other key lifts. See month-over-month and year-over-year trends.
+**设定目标**
+- 设定增肌目标（体重增长、蛋白质摄入量、举重纪录），当目标接近或未达成时系统会发出提醒。
 
-**Set targets**
-Define your bulk targets (body weight gain, protein intake, lift PRs) and get reminded when targets are within reach or falling behind.
+**保存进步照片**
+- 整理训练前后的照片，并标注相同日期的尺寸数据和举重纪录，以直观展示进步情况。
 
-**Progress pics**
-Organize before/after photos and annotate with measurements and lift PRs from the same date for visual proof of progress.
+## 关键指标
 
-## Key Metrics
+- **体重**：每日记录的体重数值
+- **身体尺寸**：每周记录手臂、胸部、肩膀、腰部、大腿和颈部的尺寸
+- **举重数据**：深蹲、硬拉、卧推、过头推举、杠铃划船的次数和重量
+- **蛋白质摄入量**：每日摄入的蛋白质克数及与目标的对比情况
+- **热量盈余**：可选功能，可结合营养记录来追踪每日热量盈余情况
+- **进步照片**：带有元数据（日期、体重、举重纪录）的时间戳图片
 
-- **Body weight** - Daily logged weight
-- **Measurements** - Arms, chest, shoulders, waist, thighs, neck (weekly)
-- **Strength lifts** - Squat, deadlift, bench press, overhead press, barbell rows (log reps × weight)
-- **Protein intake** - Daily grams tracked against target
-- **Caloric surplus** - Optional integration with nutrition logging to track daily surplus
-- **Progress photos** - Timestamped images with metadata (date, weight, lift PRs)
+## 使用建议
 
-## Tips
-
-1. **Weigh yourself daily, same time** - Morning after bathroom, before food. Track the trend, not daily variance.
-
-2. **Protein first, everything else follows** - Hit your protein target (0.8–1g per pound) before worrying about total calories. Lean mass gain demands protein surplus.
-
-3. **Log lifts immediately after sets** - Record reps, weight, and RPE (rate of perceived exertion). Patterns in RPE reveal when you're underrecovering.
-
-4. **Measure weekly on the same day** - Sunday morning works. Take measurements in identical conditions to avoid false positives from water retention or pump.
-
-5. **All data stays local on your machine** - Your training logs, weight history, and progress photos are encrypted and stored offline. No cloud upload, no third-party access, full privacy.
+1. **每天同一时间称重**：建议在早晨如厕后、进食前称重，关注长期趋势而非每日波动。
+2. **优先保证蛋白质摄入**：在关注总热量之前，先确保达到每日蛋白质目标（每磅体重0.8–1克）。
+3. **立即记录训练数据**：在每组训练结束后立即记录重复次数、重量和感知用力程度（RPE）。
+4. **每周在固定时间测量**：建议每周日早晨测量，确保在相同条件下进行，以避免因水分滞留或肌肉充血导致的测量误差。
+5. **数据安全存储**：所有训练记录、体重变化和进步照片均加密存储在本地设备上，无云上传，第三方无法访问，保障隐私安全。

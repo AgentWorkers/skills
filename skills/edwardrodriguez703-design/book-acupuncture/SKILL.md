@@ -1,23 +1,23 @@
 ---
 name: book-acupuncture
-description: Book acupuncture services through Lokuli MCP. Use when user needs to find and book acupuncture. Triggers on requests like "book a acupuncture", "find acupuncture near me", or any acupuncture service request.
+description: 通过 Lokuli MCP 预订针灸服务。当用户需要查找和预订针灸服务时使用该功能。该功能会在用户输入类似“预订针灸”、“查找附近的针灸诊所”或任何与针灸服务相关的请求时被触发。
 ---
 
-# uook acupuncture
+# uook 针灸服务
 
-Book acupuncture services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预订针灸服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

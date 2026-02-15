@@ -1,21 +1,21 @@
 ---
 name: whatsapp-business
-description: Send messages via WhatsApp Business Cloud API. Send templates, media, and interactive messages to customers.
+description: 通过 WhatsApp Business Cloud API 发送消息。可以向客户发送模板消息、媒体文件以及交互式消息。
 metadata: {"clawdbot":{"emoji":"💬","requires":{"env":["WHATSAPP_TOKEN","WHATSAPP_PHONE_ID"]}}}
 ---
 
 # WhatsApp Business Cloud API
 
-Business messaging on WhatsApp.
+用于在 WhatsApp 上发送企业消息。
 
-## Environment
+## 环境配置
 
 ```bash
 export WHATSAPP_TOKEN="xxxxxxxxxx"
 export WHATSAPP_PHONE_ID="xxxxxxxxxx"
 ```
 
-## Send Text Message
+## 发送文本消息
 
 ```bash
 curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
@@ -29,7 +29,7 @@ curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
   }'
 ```
 
-## Send Template Message
+## 发送模板消息
 
 ```bash
 curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
@@ -46,7 +46,7 @@ curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
   }'
 ```
 
-## Send Image
+## 发送图片
 
 ```bash
 curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
@@ -60,7 +60,7 @@ curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
   }'
 ```
 
-## Send Interactive Buttons
+## 发送交互式按钮
 
 ```bash
 curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
@@ -83,13 +83,13 @@ curl -X POST "https://graph.facebook.com/v18.0/$WHATSAPP_PHONE_ID/messages" \
   }'
 ```
 
-## Get Message Templates
+## 获取消息模板
 
 ```bash
 curl "https://graph.facebook.com/v18.0/{WABA_ID}/message_templates" \
   -H "Authorization: Bearer $WHATSAPP_TOKEN"
 ```
 
-## Links
-- Console: https://business.facebook.com/wa/manage/home
-- Docs: https://developers.facebook.com/docs/whatsapp/cloud-api
+## 链接：
+- 控制台：https://business.facebook.com/wa/manage/home
+- 文档：https://developers.facebook.com/docs/whatsapp/cloud-api

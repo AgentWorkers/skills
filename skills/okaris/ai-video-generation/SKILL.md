@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Video Generation
+# 人工智能视频生成
 
-Generate videos with 40+ AI models via [inference.sh](https://inference.sh) CLI.
+您可以使用 [inference.sh](https://inference.sh) 命令行工具，通过40多种人工智能模型生成视频。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install CLI
@@ -25,55 +25,55 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run google/veo-3-1-fast --input '{"prompt": "drone shot flying over a forest"}'
 ```
 
-## Available Models
+## 可用的模型
 
-### Text-to-Video
+### 文本转视频
 
-| Model | App ID | Best For |
+| 模型 | 应用ID | 适用场景 |
 |-------|--------|----------|
-| Veo 3.1 Fast | `google/veo-3-1-fast` | Fast, with optional audio |
-| Veo 3.1 | `google/veo-3-1` | Best quality, frame interpolation |
-| Veo 3 | `google/veo-3` | High quality with audio |
-| Veo 3 Fast | `google/veo-3-fast` | Fast with audio |
-| Veo 2 | `google/veo-2` | Realistic videos |
-| Grok Video | `xai/grok-imagine-video` | xAI, configurable duration |
-| Seedance 1.5 Pro | `bytedance/seedance-1-5-pro` | With first-frame control |
-| Seedance 1.0 Pro | `bytedance/seedance-1-0-pro` | Up to 1080p |
+| Veo 3.1 Fast | `google/veo-3-1-fast` | 生成速度快，支持可选音频 |
+| Veo 3.1 | `google/veo-3-1` | 视频质量最高，支持帧插值 |
+| Veo 3 | `google/veo-3` | 高质量视频，支持音频 |
+| Veo 3 Fast | `google/veo-3-fast` | 生成速度快，支持音频 |
+| Veo 2 | `google/veo-2` | 生成逼真视频 |
+| Grok Video | `xai/grok-imagine-video` | 基于xAI技术，支持自定义时长 |
+| Seedance 1.5 Pro | `bytedance/seedance-1-5-pro` | 支持对第一帧进行控制 |
+| Seedance 1.0 Pro | `bytedance/seedance-1-0-pro` | 支持最高1080p分辨率 |
 
-### Image-to-Video
+### 图片转视频
 
-| Model | App ID | Best For |
+| 模型 | 应用ID | 适用场景 |
 |-------|--------|----------|
-| Wan 2.5 | `falai/wan-2-5` | Animate any image |
-| Wan 2.5 I2V | `falai/wan-2-5-i2v` | High quality i2v |
-| Seedance Lite | `bytedance/seedance-1-0-lite` | Lightweight 720p |
+| Wan 2.5 | `falai/wan-2-5` | 可将任何图片转换为视频 |
+| Wan 2.5 I2V | `falai/wan-2-5-i2v` | 高质量的图片转视频功能 |
+| Seedance Lite | `bytedance/seedance-1-0-lite` | 轻量级应用，支持720p分辨率 |
 
-### Avatar / Lipsync
+### 虚拟形象/口型同步
 
-| Model | App ID | Best For |
+| 模型 | 应用ID | 适用场景 |
 |-------|--------|----------|
-| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | Multi-character |
-| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | Single character |
-| Fabric 1.0 | `falai/fabric-1-0` | Image talks with lipsync |
-| PixVerse Lipsync | `falai/pixverse-lipsync` | Realistic lipsync |
+| OmniHuman 1.5 | `bytedance/omnihuman-1-5` | 支持多角色虚拟形象 |
+| OmniHuman 1.0 | `bytedance/omnihuman-1-0` | 支持单一角色虚拟形象 |
+| Fabric 1.0 | `falai/fabric-1-0` | 图像与虚拟形象同步说话 |
+| PixVerse Lipsync | `falai/pixverse-lipsync` | 逼真的口型同步效果 |
 
-### Utilities
+### 辅助工具
 
-| Tool | App ID | Description |
+| 工具 | 应用ID | 功能描述 |
 |------|--------|-------------|
-| HunyuanVideo Foley | `infsh/hunyuanvideo-foley` | Add sound effects to video |
-| Topaz Upscaler | `falai/topaz-video-upscaler` | Upscale video quality |
-| Media Merger | `infsh/media-merger` | Merge videos with transitions |
+| HunyuanVideo Foley | `infsh/hunyuanvideo-foley` | 为视频添加音效 |
+| Topaz Upscaler | `falai/topaz-video-upscaler` | 提升视频分辨率 |
+| Media Merger | `infsh/media-merger` | 合并视频并添加过渡效果 |
 
-## Browse All Video Apps
+## 浏览所有视频生成工具
 
 ```bash
 infsh app list --category video
 ```
 
-## Examples
+## 示例
 
-### Text-to-Video with Veo
+### 使用Veo模型将文本转换为视频
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -81,7 +81,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Grok Video
+### 使用Grok Video模型生成视频
 
 ```bash
 infsh app run xai/grok-imagine-video --input '{
@@ -90,7 +90,7 @@ infsh app run xai/grok-imagine-video --input '{
 }'
 ```
 
-### Image-to-Video with Wan 2.5
+### 使用Wan 2.5模型将图片转换为视频
 
 ```bash
 infsh app run falai/wan-2-5 --input '{
@@ -98,7 +98,7 @@ infsh app run falai/wan-2-5 --input '{
 }'
 ```
 
-### AI Avatar / Talking Head
+### 使用虚拟形象模型生成视频
 
 ```bash
 infsh app run bytedance/omnihuman-1-5 --input '{
@@ -107,7 +107,7 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-### Fabric Lipsync
+### 使用Fabric模型实现口型同步
 
 ```bash
 infsh app run falai/fabric-1-0 --input '{
@@ -116,7 +116,7 @@ infsh app run falai/fabric-1-0 --input '{
 }'
 ```
 
-### PixVerse Lipsync
+### 使用PixVerse模型实现口型同步
 
 ```bash
 infsh app run falai/pixverse-lipsync --input '{
@@ -125,13 +125,13 @@ infsh app run falai/pixverse-lipsync --input '{
 }'
 ```
 
-### Video Upscaling
+### 视频分辨率提升
 
 ```bash
 infsh app run falai/topaz-video-upscaler --input '{"video_url": "https://..."}'
 ```
 
-### Add Sound Effects (Foley)
+### 为视频添加音效
 
 ```bash
 infsh app run infsh/hunyuanvideo-foley --input '{
@@ -140,7 +140,7 @@ infsh app run infsh/hunyuanvideo-foley --input '{
 }'
 ```
 
-### Merge Videos
+### 合并视频
 
 ```bash
 infsh app run infsh/media-merger --input '{
@@ -149,7 +149,7 @@ infsh app run infsh/media-merger --input '{
 }'
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -171,10 +171,10 @@ npx skills add inference-sh/agent-skills@ai-image-generation
 npx skills add inference-sh/agent-skills@twitter-automation
 ```
 
-Browse all apps: `infsh app list`
+**查看所有可用工具：** `infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
-- [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
+- [运行应用程序](https://inference.sh/docs/apps/running) - 如何通过命令行工具运行应用程序
+- [实时进度更新](https://inference.sh/docs/api/sdk/streaming) - 应用程序的实时运行状态
+- [内容处理流程示例](https://inference.sh/docs/examples/content-pipeline) - 如何构建媒体处理工作流程

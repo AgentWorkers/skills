@@ -1,20 +1,20 @@
 ---
 name: postmark
-description: Send transactional emails with high deliverability via Postmark API. Manage templates, track bounces, and view analytics.
+description: 通过 Postmark API 发送具有高送达率的交易性电子邮件。管理邮件模板、跟踪邮件退回情况，并查看分析数据。
 metadata: {"clawdbot":{"emoji":"📮","requires":{"env":["POSTMARK_SERVER_TOKEN"]}}}
 ---
 
 # Postmark
 
-Transactional email delivery.
+用于发送事务性（即需要确认收件人已阅读的）电子邮件。
 
-## Environment
+## 环境配置
 
 ```bash
 export POSTMARK_SERVER_TOKEN="xxxxxxxxxx"
 ```
 
-## Send Email
+## 发送电子邮件
 
 ```bash
 curl -X POST "https://api.postmarkapp.com/email" \
@@ -29,7 +29,7 @@ curl -X POST "https://api.postmarkapp.com/email" \
   }'
 ```
 
-## Send with Template
+## 使用模板发送邮件
 
 ```bash
 curl -X POST "https://api.postmarkapp.com/email/withTemplate" \
@@ -43,7 +43,7 @@ curl -X POST "https://api.postmarkapp.com/email/withTemplate" \
   }'
 ```
 
-## Send Batch
+## 批量发送邮件
 
 ```bash
 curl -X POST "https://api.postmarkapp.com/email/batch" \
@@ -55,27 +55,27 @@ curl -X POST "https://api.postmarkapp.com/email/batch" \
   ]'
 ```
 
-## List Templates
+## 模板列表
 
 ```bash
 curl "https://api.postmarkapp.com/templates" \
   -H "X-Postmark-Server-Token: $POSTMARK_SERVER_TOKEN"
 ```
 
-## Get Bounce Stats
+## 获取邮件退回统计信息
 
 ```bash
 curl "https://api.postmarkapp.com/bounces" \
   -H "X-Postmark-Server-Token: $POSTMARK_SERVER_TOKEN"
 ```
 
-## Get Delivery Stats
+## 获取邮件发送统计信息
 
 ```bash
 curl "https://api.postmarkapp.com/deliverystats" \
   -H "X-Postmark-Server-Token: $POSTMARK_SERVER_TOKEN"
 ```
 
-## Links
-- Dashboard: https://account.postmarkapp.com
-- Docs: https://postmarkapp.com/developer
+## 链接：
+- 仪表板：https://account.postmarkapp.com
+- 文档：https://postmarkapp.com/developer

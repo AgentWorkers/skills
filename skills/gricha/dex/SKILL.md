@@ -1,13 +1,13 @@
 ---
 name: dex
-description: Task tracking for async/multi-step work. Use dex to create, track, and complete tasks that span multiple sessions or require coordination (e.g., coding agent dispatches, PR reviews, background jobs). Tasks stored as JSON files in .dex/tasks/.
+description: 异步/多步骤工作的任务跟踪。使用 dex 工具来创建、跟踪和完成那些需要跨多个会话执行或需要协调的任务（例如：代码代理的调度、PR 审查、后台作业等）。任务以 JSON 格式存储在 `.dex/tasks/` 目录下。
 ---
 
-# Dex Task Tracking
+# Dex 任务跟踪
 
-Track async work: coding agent dispatches, multi-step projects, anything needing follow-up.
+用于跟踪异步工作：代码代理的调度、多步骤项目，以及任何需要跟进的任务。
 
-## Commands
+## 命令
 ```bash
 dex create -d "Description" --context "Background, goal, done-when"
 dex list                    # Pending tasks
@@ -19,12 +19,12 @@ dex edit <id> --context "Updated context"
 dex delete <id>
 ```
 
-## Task Structure
-- **Description**: One-line summary
-- **Context**: Background, requirements, done criteria
-- **Result**: What was built, decisions, follow-ups
+## 任务结构
+- **描述**：任务的简要概述
+- **背景**：任务的背景信息、需求及完成标准
+- **结果**：已完成的工作、所做的决策以及后续需要处理的事项
 
-## Example
+## 示例
 ```bash
 # Before dispatching agent
 dex create -d "Add caching to API" --context "Workspace: feat1 (100.x.x.x)
@@ -35,5 +35,5 @@ Done when: PR merged, CI green"
 dex complete abc123 --result "Merged PR #50. Redis caching with 5min TTL."
 ```
 
-## Storage
-`.dex/tasks/{id}.json` — one file per task, git-friendly.
+## 存储方式
+`.dex/tasks/{id}.json` — 每个任务对应一个文件，便于使用 Git 进行版本控制。

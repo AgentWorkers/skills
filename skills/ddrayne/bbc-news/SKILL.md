@@ -1,100 +1,100 @@
 ---
 name: bbc-news
-description: Fetch and display BBC News stories from various sections and regions via RSS feeds. Use when the user asks for BBC news, UK news headlines, world news from BBC, or news from specific BBC sections (technology, business, politics, science, health, entertainment, regional UK news, or world regions).
+description: 通过 RSS 源获取并显示 BBC 新闻的各个板块和地区的新闻内容。当用户请求 BBC 新闻、英国新闻头条、BBC 的世界新闻，或特定 BBC 板块（科技、商业、政治、科学、健康、娱乐、英国地区新闻或世界各地区新闻）时，可以使用该功能。
 ---
 
 # BBC News
 
-Fetch top stories from BBC News across different sections and regions.
+从BBC News的不同板块和地区获取头条新闻。
 
-## Quick Start
+## 快速入门
 
-Fetch top stories:
+获取头条新闻：
 ```bash
 python3 scripts/bbc_news.py
 ```
 
-Fetch from specific section:
+从特定板块获取新闻：
 ```bash
 python3 scripts/bbc_news.py uk
 python3 scripts/bbc_news.py world
 python3 scripts/bbc_news.py technology
 ```
 
-List all available sections:
+列出所有可用板块：
 ```bash
 python3 scripts/bbc_news.py --list
 ```
 
-## Available Sections
+## 可用板块
 
-### Main Sections
-- `top` - Top stories (default)
-- `uk` - UK news
-- `world` - World news
-- `business` - Business news
-- `politics` - Politics
-- `health` - Health news
-- `education` - Education
-- `science` - Science & Environment
-- `technology` - Technology news
-- `entertainment` - Entertainment & Arts
+### 主要板块
+- `top` - 头条新闻（默认）
+- `uk` - 英国新闻
+- `world` - 世界新闻
+- `business` - 商业新闻
+- `politics` - 政治新闻
+- `health` - 健康新闻
+- `education` - 教育新闻
+- `science` - 科学与环境
+- `technology` - 科技新闻
+- `entertainment` - 娱乐与艺术
 
-### UK Regional
-- `england` - England news
-- `scotland` - Scotland news
-- `wales` - Wales news
-- `northern-ireland` - Northern Ireland news
+### 英国地区板块
+- `england` - 英格兰新闻
+- `scotland` - 苏格兰新闻
+- `wales` - 威尔士新闻
+- `northern-ireland` - 北爱尔兰新闻
 
-### World Regions
-- `africa` - Africa news
-- `asia` - Asia news
-- `australia` - Australia news
-- `europe` - Europe news
-- `latin-america` - Latin America news
-- `middle-east` - Middle East news
-- `us-canada` - US & Canada news
+### 世界地区板块
+- `africa` - 非洲新闻
+- `asia` - 亚洲新闻
+- `australia` - 澳大利亚新闻
+- `europe` - 欧洲新闻
+- `latin-america` - 拉丁美洲新闻
+- `middle-east` - 中东新闻
+- `us-canada` - 美国与加拿大新闻
 
-## Options
+## 选项
 
-**Limit number of stories:**
+**限制新闻数量：**
 ```bash
 python3 scripts/bbc_news.py world --limit 5
 ```
 
-**JSON output:**
+**JSON输出：**
 ```bash
 python3 scripts/bbc_news.py technology --json
 ```
 
-## Examples
+## 示例
 
-Get top 5 UK stories:
+获取英国的前5条新闻：
 ```bash
 python3 scripts/bbc_news.py uk --limit 5
 ```
 
-Get Scotland news in JSON:
+以JSON格式获取苏格兰新闻：
 ```bash
 python3 scripts/bbc_news.py scotland --json
 ```
 
-Get latest technology headlines:
+获取最新的科技头条：
 ```bash
 python3 scripts/bbc_news.py technology --limit 3
 ```
 
-## Dependencies
+## 依赖项
 
-Requires `feedparser`:
+需要 `feedparser`：
 ```bash
 pip3 install feedparser
 ```
 
-## Resources
+## 资源
 
 ### scripts/bbc_news.py
-Python CLI that fetches and displays BBC News stories from RSS feeds. Supports all major BBC sections and regions, with text and JSON output formats.
+一个Python命令行工具，用于从RSS源获取并显示BBC News的新闻。支持所有主要的BBC板块和地区，支持文本和JSON两种输出格式。
 
 ### references/feeds.md
-Complete list of BBC News RSS feed URLs organized by section and region.
+按板块和地区整理的BBC News RSS源URL列表。

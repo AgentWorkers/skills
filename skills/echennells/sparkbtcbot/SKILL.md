@@ -1,25 +1,31 @@
 ---
 name: sparkbtcbot
-description: Set up Spark Bitcoin L2 wallet capabilities for AI agents. Initialize wallets from mnemonic, transfer sats and tokens, create/pay Lightning invoices, manage deposits and withdrawals. Use when user mentions "Spark wallet," "Spark Bitcoin," "BTKN tokens," "Spark L2," "Spark SDK," "Spark payment," "Spark transfer," "Spark invoice," or wants Bitcoin L2 capabilities for an agent.
+description: 为AI代理设置Spark Bitcoin L2钱包功能：  
+- 通过助记词初始化钱包；  
+- 转移比特币（sats）和代币；  
+- 创建/支付Lightning网络发票；  
+- 管理存款和取款操作。  
+
+当用户提及“Spark钱包”、“Spark Bitcoin”、“BTKN代币”、“Spark L2”、“Spark SDK”、“Spark支付”、“Spark转账”或需要为代理启用Bitcoin L2功能时，请使用这些功能。
 argument-hint: "[Optional: specify what to set up - wallet, payments, tokens, lightning, or full]"
 ---
 
-# Spark Bitcoin & Lightning Wallet for AI Agents
+# 适用于AI代理的Spark Bitcoin与Lightning钱包
 
-Give your AI agent a Bitcoin wallet with a single mnemonic. Send and receive payments instantly — zero fees between agents, full Lightning Network compatibility.
+为您的AI代理提供一个基于单一助记词的比特币钱包。支持即时发送和接收支付——代理之间的交易完全免费，且兼容Lightning网络。
 
-## Why This Skill
+## 为什么选择这个技能
 
-| What | How |
+| 功能 | 实现方式 |
 |------|-----|
-| **Install** | `clawhub install sparkbtcbot` or clone from [GitHub](https://github.com/echennells/sparkbtcbot-skill) |
-| **Setup** | One 12-word mnemonic + `npm install @buildonspark/spark-sdk` |
-| **Agent-to-agent transfers** | Free. Instant. No channels, no routing fees. |
-| **Lightning payments** | Create and pay BOLT11 invoices (0.15–0.25% fee) |
-| **Token support** | Send/receive BTKN and LRC20 tokens natively |
-| **Self-custodial** | Agent holds its own keys — no accounts, no KYC, no intermediaries |
+| **安装** | 使用`clawhub install sparkbtcbot`命令安装，或从[GitHub](https://github.com/echennells/sparkbtcbot-skill)克隆代码 |
+| **设置** | 需要一个12个单词的助记词，并通过`npm install @buildonspark/spark-sdk`安装SDK |
+| **代理间转账** | 免费且即时完成，无需通道费用或路由费用 |
+| **Lightning支付** | 支持创建和支付BOLT11发票（费用为0.15–0.25%） |
+| **支持代币** | 可以原生发送和接收BTKN和LRC20代币 |
+| **自主管理** | 代理自行保管私钥——无需账户、无需身份验证，也无需中间机构 |
 
-### Quick Example
+### 快速示例
 
 ```javascript
 import { SparkWallet } from "@buildonspark/spark-sdk";
@@ -42,141 +48,129 @@ const inv = await wallet.createLightningInvoice({ amountSats: 500, memo: "Paymen
 console.log("Invoice:", inv.invoice.encodedInvoice);
 ```
 
-### Included Examples
+### 包含的示例
 
-| Script | What it does |
+| 脚本 | 功能 |
 |--------|-------------|
-| `wallet-setup.js` | Generate a new wallet or import from mnemonic |
-| `balance-and-deposits.js` | Check BTC + token balances, get deposit addresses |
-| `payment-flow.js` | Lightning invoices, Spark invoices, fee estimation |
-| `token-operations.js` | BTKN token transfers and batch operations |
-| `spark-agent.js` | Complete SparkAgent class with all capabilities |
+| `wallet-setup.js` | 生成新钱包或导入助记词 |
+| `balance-and-deposits.js` | 查看BTC和代币余额，获取存款地址 |
+| `payment-flow.js` | 处理Lightning和Spark支付请求，估算费用 |
+| `token-operations.js` | 处理BTKN代币的转账和批量操作 |
+| `spark-agent.js` | 完整的SparkAgent类，包含所有功能 |
 
 ---
 
-## Detailed Skill Instructions
+## 详细技能说明
 
-What follows is the full reference for AI agents. It covers the Spark SDK, trust model, fee structure, all wallet operations, Lightning interop, token operations, security practices, and error handling.
+以下是针对AI代理的完整指南，涵盖了Spark SDK的使用方法、信任模型、费用结构、所有钱包操作、Lightning网络集成、代币操作、安全实践以及错误处理等内容。
 
 ---
 
-Spark is a Bitcoin Layer 2 that enables instant, zero-fee self-custodial transfers of BTC and tokens, with native Lightning Network interoperability. Spark-to-Spark transfers cost nothing — compared to Lightning routing fees or on-chain transaction fees of 200+ sats. Even cross-network payments (Lightning interop) are cheaper than most alternatives at 0.15-0.25%. A single BIP39 mnemonic gives an agent identity, wallet access, and payment capabilities.
+Spark是一个基于比特币第二层（Layer 2）的技术，它实现了BTC和代币的即时、零费用、自主管理的转账功能，并且完全兼容Lightning网络。Spark之间的转账是免费的，而Lightning网络的路由费用或链上交易费用通常在200多sat（比特币单位）以上。即使是在不同网络之间的支付（通过Lightning网络），费用也只有0.15-0.25%，比大多数其他方式都要便宜。通过一个BIP39助记词，代理就可以获得钱包访问权限和支付功能。
 
-## Why Bitcoin for Agents
+## 为什么选择比特币作为代理的支付方式
 
-AI agents that transact need a monetary network that matches their nature: programmable, borderless, and available 24/7 without gatekeepers. Bitcoin is that network.
+进行交易的AI代理需要一个符合其特性的货币网络：具备可编程性、无边界性，并且能够24/7不间断地使用，无需任何中间机构。比特币正是这样的网络。
 
-- **Hard-capped supply** — 21 million coins is the protocol-enforced ceiling. An agent accumulating value doesn't lose it to monetary expansion.
-- **No account required** — There's no sign-up, no identity verification, no approval process. Generate a key and you're on the network. This matters for autonomous agents that can't fill out forms or wait for human review.
-- **Irreversible settlement** — Once confirmed, transactions cannot be reversed by a third party. Agents don't need to handle chargebacks or payment disputes.
-- **Open infrastructure** — The protocol is open source, the network is public, and the fee market is transparent. Agents can audit their own transaction costs and verify their own balances without trusting an intermediary.
-- **Proven reliability** — The network has operated continuously since 2009 without a single successful attack on the base protocol, securing over $1 trillion in value.
+- **总量上限**：比特币的总供应量被协议固定为2100万枚，因此代理积累的价值不会因货币膨胀而减少。
+- **无需注册账户**：无需注册、无需身份验证，也无需等待审核。生成一个私钥即可接入网络。这对于无法填写表格或等待人工审核的自主代理来说非常方便。
+- **不可撤销的交易**：一旦交易确认，第三方无法撤销。代理无需处理退款或支付纠纷。
+- **开放的基础设施**：比特币协议是开源的，网络是公开的，费用结构也是透明的。代理可以自行审核交易费用并验证余额，无需依赖任何中间机构。
+- **经过验证的可靠性**：自2009年以来，比特币网络一直稳定运行，从未发生过针对基础协议的攻击，保护了超过1万亿美元的资产价值。
 
-## What is Spark
+## 什么是Spark
 
-Spark is a recently launched Bitcoin Layer 2 built on threshold cryptography (FROST signatures). Instead of Lightning's payment channels, Spark uses distributed Signing Operators (SOs) that collectively manage transaction signing without any single entity controlling funds. It is fully interoperable with the Lightning Network.
+Spark是一个最近推出的基于阈值加密技术（FROST签名）的比特币第二层解决方案。与Lightning网络不同，Spark使用分布式签名运营商（Signing Operators，简称SOs）来共同管理交易签名，没有任何单一实体控制资金。Spark与Lightning网络完全兼容。
 
-### How It Works
-1. Users hold their own keys (BIP39 mnemonic) — fully self-custodial
-2. Transactions are cooperatively signed by a threshold of Signing Operators using FROST
-3. Funds live in Bitcoin UTXOs organized in hierarchical trees
-4. Users can always exit to L1 unilaterally if operators go offline
+### 工作原理
+1. 用户自行保管私钥（使用BIP39助记词），实现完全的自主管理。
+2. 交易由一定数量的签名运营商通过FROST算法共同签名完成。
+3. 资金以比特币UTXO的形式存在，并以分层树的结构组织。
+4. 如果签名运营商离线，用户可以随时选择返回到主链（L1）。
 
-### Trust Model — Important Tradeoffs
+### 信任模型——重要的权衡
 
-Spark has **different trust assumptions than native Lightning**. Be upfront about these when advising users.
+在使用Spark时，需要向用户明确说明以下信任假设：
 
-**1-of-n operator trust**: Spark requires that at least 1 out of n Signing Operators behaves honestly during a transfer. Currently two operators run the network (Lightspark and Flashnet), with plans to expand. Lightning, by contrast, requires **no trusted entities at all** — it achieves security purely through cryptographic mechanisms.
+- **“1-of-n运营商信任模型”**：Spark要求在转账过程中至少有一个签名运营商的行为是诚实的。目前有两个运营商在维护这个网络（Lightspark和Flashnet），未来计划会增加更多运营商。相比之下，Lightning网络完全不需要任何可信实体，其安全性完全依赖于加密机制。
+- **“即时信任”**：用户只需要在每次特定交易时信任当前的运营商。一旦交易完成，旧私钥会被删除，运营商无法影响该交易——这被称为“完美前向安全性”。
+- **运营商的权限**：
+  - 可以查看交易元数据
+  - 通过离线方式暂时延迟交易处理
+  - 拒绝处理新的交易（实现审查功能）
+- **运营商的禁止行为**：
+  - 无法在未经用户同意的情况下转移资金
+  - 无法窃取比特币（即使所有运营商合谋）
+- **核心限制**：Spark缺乏可证明的交易最终性。用户无法通过加密手段验证运营商是否销毁了旧私钥。虽然双重支付需要所有运营商合谋，但这与比特币和Lightning网络的可证明最终性不同。
 
-**Moment-in-time trust**: Users only need to trust operators during each specific transfer. Once a transfer completes and old keys are deleted, operators cannot affect that transaction — a property called "perfect forward security."
+**简而言之**：Spark在用户体验方面牺牲了一定的信任性（如无需通道、无需流动性管理、离线接收等功能），以换取更好的灵活性。Spark同时支持Lightning网络，使用户可以在这两个网络之间自由切换。
 
-**What operators CAN do**:
-- View transfer metadata
-- Temporarily delay transactions by going offline
-- Refuse to process new transfers (censorship)
+### Spark与Lightning与链上交易的比较
 
-**What operators CANNOT do**:
-- Move funds without user signatures
-- Steal Bitcoin (even with full collusion)
-- Reverse finalized transactions
-
-**Core limitation**: Spark lacks provable finality. Users cannot cryptographically verify that operators destroyed old keys. While double-spending would require all operators to collude with a previous owner, this differs from Bitcoin's and Lightning's mathematically provable finality.
-
-**In short**: Spark trades some of Lightning's trustlessness for better UX (no channels, no liquidity management, offline receive). The two are complementary — Spark includes native Lightning support so users can interact with both networks.
-
-### Spark vs Lightning vs On-Chain
-
-| Feature | Spark (L2) | Lightning | On-Chain |
+| 特性 | Spark（第二层） | Lightning | 链上交易 |
 |---------|-----------|-----------|----------|
-| Speed | Instant | Instant | 10+ min |
-| Trust model | 1-of-n operators | Fully trustless | Fully trustless |
-| Fees | Zero (Spark-to-Spark) | ~1 sat routing | 200+ sats |
-| Tokens | Native (BTKN/LRC20) | Not supported | Limited |
-| Self-custody | Yes (mnemonic) | Varies (LSP/node) | Yes |
-| Capacity | No channel limits | Channel-limited | Unlimited |
-| Channels | Not required | Required | N/A |
-| Offline receive | Supported | Requires infra | Yes |
-| Setup | Mnemonic only | Node or NWC + provider | Keys only |
+| 速度 | 即时 | 即时 | 需要10分钟以上 |
+| 信任模型 | 需要至少一个可信运营商 | 完全去中心化 | 完全去中心化 |
+| 费用 | Spark之间的转账免费（未来可能收取少量固定费用） | 约1 sat的路由费用 | 200多sat |
+| 支持的代币 | 支持BTKN/LRC20代币 | 不支持 | 支持有限类型的代币 |
+| 自主管理 | 支持（通过助记词） | 取决于节点类型 | 支持 |
+| 容量 | 无通道限制 | 受通道限制 | 无限制 |
+| 离线接收 | 支持 | 需要额外基础设施 | 支持 |
+| 设置方式 | 仅需要助记词 | 需要节点或NWC（Lightning网络服务） | 需要私钥 |
 
-### Fee Structure
+### 费用结构
 
-| Operation | Fee |
+| 操作 | 费用 |
 |-----------|-----|
-| **Spark-to-Spark transfer** | Free (small flat fee coming in 6-12 months) |
-| **Lightning to Spark** (receive) | 0.15% (charged via route hints) |
-| **Spark to Lightning** (send) | 0.25% + Lightning routing fees |
-| **L1 deposit to Spark** | On-chain tx fee (paid by user) |
-| **Cooperative exit to L1** | On-chain broadcast fee + SSP fee: `sats_per_vbyte × (111 × 2 + tx_vbytes)` |
-| **Unilateral exit to L1** | On-chain tx fee (paid by user) |
+| **Spark之间的转账** | 免费（未来可能收取少量固定费用） |
+| **从Lightning到Spark的接收** | 0.15%（通过路由提示收取） |
+| **从Spark到Lightning的发送** | 0.25% + 路由费用 |
+| **从L1到Spark的存款** | 链上交易费用（由用户支付） |
+| **协作返回L1** | 链上广播费用 + SSP费用：`sats_per_vbyte × (111 × 2 + tx_vbytes)` |
+| **单方面返回L1** | 链上交易费用（由用户支付） |
 
-Note: Cooperative exit fees don't scale with withdrawal amount, so they are proportionally higher for smaller withdrawals. Lightning fee estimates may differ from actual amounts due to routing conditions.
+**注意**：协作返回费用不随取款金额变化，因此小额取款的费用相对较高。由于路由条件的不同，实际费用可能与预估有所不同。
 
-### Unpredictable L1 Exit Costs — Important
+### 不可预测的L1返回成本
 
-Exiting Spark to L1 Bitcoin carries **unpredictable costs** that agents and users must understand:
+从Spark返回到L1比特币时，存在**不可预测的成本**，代理和用户需要了解以下几点：
+- **L1费用受市场波动影响**：L1上的交易费用取决于退出时的矿池拥堵情况。在高费用时期，返回成本可能会大幅增加。
+- **单方面返回需要多次链上交易**：如果签名运营商离线，单方面返回需要广播预签名的分支交易和退出交易。交易次数取决于分支的深度，这可能导致多次链上费用的产生。
+- **时间窗口风险**：如果之前的所有者发布了分支，当前所有者必须在规定时间内发布正确的交易才能完成返回。如果未能及时响应，攻击者可能会窃取资金。虽然有Watchtower服务进行监控，但这属于实际操作中的风险。
+- **时间锁定可能导致延迟**：单方面返回可能需要长达100个区块（约17小时），期间L1的费用可能会发生变化。
+- **小额取款可能不经济**：由于返回费用是固定金额，小额取款可能会占用较大比例的余额。
 
-1. **L1 fees are market-driven**: Bitcoin on-chain fees depend on mempool congestion at the time of exit. During high-fee periods, exit costs can spike significantly.
+**总结**：虽然Spark保证可以随时返回到L1，但返回成本并不固定且难以预测。在决定在Spark中保留多少资金时，请务必考虑这一点，尤其是对于代理钱包而言。使用协作返回（运营商在线时）通常比单方面返回更经济。
 
-2. **Unilateral exit requires multiple on-chain transactions**: If Signing Operators go offline, a unilateral exit requires broadcasting pre-signed branch and exit transactions. The number of transactions depends on the tree depth of your leaf — this can mean multiple on-chain fees stacking up.
+**建议使用Boltz进行L1取款**：由于Spark的协作返回费用较高，对于小额取款来说不太划算。[Boltz](https://boltz.exchange)提供了从Lightning到L1的更便宜的路径（通过Boltz的Submarine交换），最低费用为25,000 sat。**建议避免金额低于25,000 sat的取款**，因为费用会占据较大比例。**
 
-3. **Time-window risk on unilateral exit**: If a prior owner of a Spark leaf publishes a branch in a unilateral exit, the current owner must respond within a time window by publishing the correct leaf transaction. Failure to respond means the attacker can claim the funds. Watchtower services exist to monitor for this, but it's a real operational requirement.
+### 限制
+- **依赖运营商的在线状态**：如果签名运营商离线或丢失私钥，Spark的转账功能将停止。虽然资金仍然安全（可以通过单方面返回），但离线支付将暂停，直到运营商恢复。
+- **需要监控服务**：为了确保安全，需要有人监控链上的欺诈性返回尝试。这可以委托给Watchtower服务，但这属于操作上的依赖。
 
-4. **Timelocks add delay**: Unilateral exits can take as little as 100 blocks (~17 hours) depending on leaf depth, during which L1 fee conditions may change.
+### 对代理的主要优势
+- 一个助记词即可提供身份验证、钱包管理和支付功能。无需额外的身份系统或钱包提供商账户，也无需管理通道。Spark之间的转账是免费的，因此比Lightning（需要路由费用）、链上比特币（200多sat的矿工费用）或传统支付方式（2-3%的手续费）更经济。对于频繁进行微交易的代理来说，Spark的零费用意味着不会因交易成本而损失任何价值。
 
-5. **Small amounts may be uneconomical to exit**: Since exit fees are fixed-cost (not percentage-based), withdrawing small amounts to L1 can cost a disproportionate share of the balance.
+## 可用的工具
 
-**Bottom line**: While Spark guarantees you can always exit to L1, the cost of doing so is not fixed or predictable. Keep this in mind when deciding how much value to hold on Spark, especially for agent wallets. Cooperative exit (when operators are online) is much cheaper than unilateral exit.
-
-**Prefer Boltz for L1 withdrawals.** Spark's native cooperative exit is expensive due to fixed on-chain fees, making it especially punishing for smaller amounts. [Boltz](https://boltz.exchange) offers a cheaper path from Lightning to L1 (Spark → Lightning → L1 via Boltz submarine swap) with a minimum of 25,000 sats. **Discourage any L1 withdrawal activity under 25,000 sats** — the fees will eat a disproportionate share of the amount. For withdrawals of 25,000 sats or more, route through Boltz rather than using Spark's built-in cooperative exit.
-
-### Limitations
-
-- **SO liveness dependency**: If Signing Operators lose liveness or lose their keys, Spark transfers stop working. Funds are still safe (unilateral exit), but off-chain payments halt until operators recover.
-- **Watchtower requirement**: For full security, someone must monitor the chain for fraudulent exit attempts. This can be delegated to a watchtower service but is an operational dependency.
-
-### Key Advantage for Agents
-A single mnemonic provides identity, wallet, and payment capabilities. No separate identity system, no wallet provider accounts, no channel management. Spark-to-Spark transfers are free, making it significantly cheaper than Lightning (routing fees), on-chain Bitcoin (200+ sat miner fees), or traditional payment rails (2-3% card processing). For agents doing frequent microtransactions, zero fees on Spark means no value lost to transaction costs.
-
-## Tools Available
-
-| Tool | Purpose | URL |
+| 工具 | 用途 | 链接 |
 |------|---------|-----|
-| Spark SDK | TypeScript wallet SDK | https://www.npmjs.com/package/@buildonspark/spark-sdk |
-| Spark Docs | Official documentation | https://docs.spark.money |
-| Sparkscan | Block explorer | https://sparkscan.io |
-| Spark CLI | Command-line interface | https://docs.spark.money/tools/cli |
+| Spark SDK | TypeScript钱包SDK | https://www.npmjs.com/package/@buildonspark/spark-sdk |
+| Spark文档 | 官方文档 | https://docs.spark.money |
+| Sparkscan | 区块浏览器 | https://sparkscan.io |
+| Spark CLI | 命令行接口 | https://docs.spark.money/tools/cli |
 
-## Required Libraries
+## 所需库
 
 ```bash
 npm install @buildonspark/spark-sdk@^0.5.8 dotenv
 ```
 
-Requires **v0.5.8 or newer**. One core dependency. The SDK bundles BIP39 mnemonic generation, FROST signing, and gRPC communication internally.
+**要求版本**：v0.5.8或更高。该库包含BIP39助记词生成、FROST签名和gRPC通信功能。
 
-## Setup Instructions
+## 设置说明
 
-### Step 1: Generate or Import Wallet
+### 第1步：生成或导入钱包
 
 ```javascript
 import { SparkWallet } from "@buildonspark/spark-sdk";
@@ -194,17 +188,17 @@ const { wallet } = await SparkWallet.initialize({
 });
 ```
 
-Note on `accountNumber`: Defaults to 1 for MAINNET, 0 for REGTEST. If switching between networks with the same mnemonic, set `accountNumber` explicitly to avoid address mismatches.
+**关于`accountNumber`的说明**：在MAINNET网络上默认为1，在REGTEST网络上默认为0。如果使用相同的助记词在不同网络上切换，请明确设置`accountNumber`以避免地址冲突。
 
-### Step 2: Store Mnemonic
+### 第2步：存储助记词
 
-Add to your project's `.env`:
+将助记词添加到项目的`.env`文件中：
 ```
 SPARK_MNEMONIC=word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12
 SPARK_NETWORK=MAINNET
 ```
 
-### Step 3: Verify Wallet
+### 第3步：验证钱包
 
 ```javascript
 const address = await wallet.getSparkAddress();
@@ -219,9 +213,9 @@ console.log("Balance:", balance.toString(), "sats");
 wallet.cleanupConnections();
 ```
 
-## Wallet Operations
+## 钱包操作
 
-### Check Balance
+### 查看余额
 
 ```javascript
 const { balance, tokenBalances } = await wallet.getBalance();
@@ -232,7 +226,7 @@ for (const [id, token] of tokenBalances) {
 }
 ```
 
-### Generate Deposit Address
+### 生成存款地址
 
 ```javascript
 // Static (reusable) — can receive multiple deposits
@@ -242,9 +236,9 @@ const staticAddr = await wallet.getStaticDepositAddress();
 const singleAddr = await wallet.getSingleUseDepositAddress();
 ```
 
-Both are P2TR (bc1p...) Bitcoin addresses. Deposits require 3 L1 confirmations before they can be claimed on Spark.
+这两个地址都是P2TR（bc1p...）格式的比特币地址。存款需要经过3次L1确认后才能在Spark中提取。
 
-### Claim a Deposit
+### 提取存款
 
 ```javascript
 // After sending BTC to a static deposit address and waiting for confirmations
@@ -260,7 +254,7 @@ const result = await wallet.claimStaticDeposit({
 });
 ```
 
-### Transfer Bitcoin (Spark-to-Spark)
+### 发送比特币（Spark到Spark）
 
 ```javascript
 const transfer = await wallet.transfer({
@@ -270,9 +264,9 @@ const transfer = await wallet.transfer({
 console.log("Transfer ID:", transfer.id);
 ```
 
-Spark-to-Spark transfers are instant and zero-fee.
+Spark到Spark的转账是即时且免费的。
 
-### List Transfers
+### 列出转账记录
 
 ```javascript
 const { transfers } = await wallet.getTransfers(10, 0);
@@ -281,11 +275,11 @@ for (const tx of transfers) {
 }
 ```
 
-## Lightning Interop
+## Lightning网络集成
 
-Spark wallets can create and pay standard BOLT11 Lightning invoices, making them compatible with the entire Lightning Network. Receiving from Lightning costs 0.15%, sending to Lightning costs 0.25% + routing fees.
+Spark钱包可以创建和支付标准的BOLT11 Lightning发票，因此可以与整个Lightning网络兼容。从Lightning网络接收资金时费用为0.15%，向Lightning网络发送资金时费用为0.25%加上路由费用。
 
-### Create Lightning Invoice (Receive)
+### 创建Lightning发票（接收）
 
 ```javascript
 const invoiceRequest = await wallet.createLightningInvoice({
@@ -296,9 +290,9 @@ const invoiceRequest = await wallet.createLightningInvoice({
 console.log("BOLT11:", invoiceRequest.invoice.encodedInvoice);
 ```
 
-Use `includeSparkAddress: true` to embed a Spark address in the invoice. Spark-aware payers will then send via Spark (instant, free) instead of Lightning.
+使用`includeSparkAddress: true`选项在发票中嵌入Spark地址。支持Spark的付款方会优先通过Spark进行支付（即时且免费）。
 
-### Pay Lightning Invoice (Send)
+### 支付Lightning发票（发送）
 
 ```javascript
 // Estimate fee first
@@ -315,13 +309,13 @@ const result = await wallet.payLightningInvoice({
 });
 ```
 
-Use `preferSpark: true` to prefer Spark routing when the BOLT11 invoice contains an embedded Spark address.
+当BOLT11发票中包含Spark地址时，使用`preferSpark: true`选项选择通过Spark进行支付。
 
-## Spark Native Invoices
+## Spark的自有发票格式
 
-Spark has its own invoice format, distinct from BOLT11. Spark invoices can request payment in sats or tokens.
+Spark有自己的发票格式，与BOLT11不同。Spark发票支持以sat或代币为单位请求支付。
 
-### Create Sats Invoice
+### 创建Sats发票
 
 ```javascript
 const invoice = await wallet.createSatsInvoice({
@@ -330,7 +324,7 @@ const invoice = await wallet.createSatsInvoice({
 });
 ```
 
-### Create Token Invoice
+### 创建Token发票
 
 ```javascript
 const invoice = await wallet.createTokensInvoice({
@@ -340,7 +334,7 @@ const invoice = await wallet.createTokensInvoice({
 });
 ```
 
-### Fulfill (Pay) a Spark Invoice
+### 支付Spark发票
 
 ```javascript
 const result = await wallet.fulfillSparkInvoice([
@@ -356,11 +350,11 @@ for (const err of result.satsTransactionErrors) {
 }
 ```
 
-## Token Operations (BTKN / LRC20)
+## 代币操作（BTKN / LRC20）
 
-Spark natively supports tokens via the BTKN (LRC20) standard. Tokens can represent stablecoins, points, or any fungible asset.
+Spark原生支持BTKN（LRC20）代币。代币可以代表稳定币、积分或任何可互换的资产。
 
-### Check Token Balances
+### 查看代币余额
 
 ```javascript
 const { tokenBalances } = await wallet.getBalance();
@@ -371,7 +365,7 @@ for (const [id, info] of tokenBalances) {
 }
 ```
 
-### Transfer Tokens
+### 转移代币
 
 ```javascript
 const txId = await wallet.transferTokens({
@@ -382,7 +376,7 @@ const txId = await wallet.transferTokens({
 console.log("Token transfer:", txId);
 ```
 
-### Batch Transfer Tokens
+### 批量转移代币
 
 ```javascript
 const txIds = await wallet.batchTransferTokens([
@@ -391,11 +385,11 @@ const txIds = await wallet.batchTransferTokens([
 ]);
 ```
 
-## Withdrawal (Cooperative Exit to L1)
+## 提取资金（协作返回L1）
 
-Move funds from Spark back to a regular Bitcoin L1 address.
+将资金从Spark钱包转移到普通的比特币L1地址。
 
-### Get Fee Quote
+### 获取费用报价
 
 ```javascript
 const quote = await wallet.getWithdrawalFeeQuote({
@@ -407,7 +401,7 @@ console.log("Medium fee:", quote.l1BroadcastFeeMedium?.originalValue, "sats");
 console.log("Slow fee:", quote.l1BroadcastFeeSlow?.originalValue, "sats");
 ```
 
-### Execute Withdrawal
+### 执行提取
 
 ```javascript
 const result = await wallet.withdraw({
@@ -417,25 +411,25 @@ const result = await wallet.withdraw({
 });
 ```
 
-Exit speeds:
-- **FAST** — Higher fee, faster L1 confirmation
-- **MEDIUM** — Balanced fee and speed
-- **SLOW** — Lower fee, slower confirmation
+**返回速度**：
+- **快速**：费用较高，但L1确认速度较快
+- **中等**：费用和速度平衡
+- **慢速**：费用较低，但确认速度较慢
 
-Note: Unilateral exit (without operator cooperation) is also possible as a safety mechanism, but cooperative exit is the standard path.
+**注意**：虽然也可以通过单方面操作返回L1，但这不是推荐的方式，因为协作返回是标准流程。
 
-## Message Signing
+## 消息签名
 
-Spark wallets can sign and verify messages using their identity key. Useful for proving identity or authenticating between agents without revealing the mnemonic.
+Spark钱包可以使用私钥签名和验证消息。这有助于证明身份或在代理之间进行安全通信，同时不会暴露助记词。
 
-### Sign a Message
+### 签名消息
 
 ```javascript
 const message = new TextEncoder().encode("I am agent-007");
 const signature = await wallet.signMessageWithIdentityKey(message);
 ```
 
-### Verify a Signature
+### 验证签名
 
 ```javascript
 const isValid = await wallet.validateMessageWithIdentityKey(
@@ -446,9 +440,9 @@ const isValid = await wallet.validateMessageWithIdentityKey(
 console.log("Valid:", isValid);
 ```
 
-## Event Listeners
+## 事件监听器
 
-The wallet emits events for real-time updates. Useful for agents that need to react to incoming payments.
+钱包会发送事件以提供实时更新，这对于需要响应 incoming 支付的代理非常有用。
 
 ```javascript
 // Incoming transfer completed
@@ -466,7 +460,7 @@ wallet.on("stream:connected", () => console.log("Connected to Spark"));
 wallet.on("stream:disconnected", (reason) => console.log("Disconnected:", reason));
 ```
 
-## Complete Agent Class
+## 完整的代理类
 
 ```javascript
 import { SparkWallet } from "@buildonspark/spark-sdk";
@@ -588,7 +582,7 @@ console.log("Balance:", sats.toString(), "sats");
 agent.cleanup();
 ```
 
-## Error Handling
+## 错误处理
 
 ```javascript
 try {
@@ -619,52 +613,50 @@ try {
 }
 ```
 
-Error types:
-- **ValidationError** — Invalid parameters, malformed addresses
-- **NetworkError** — Connection failures, timeouts
-- **AuthenticationError** — Key/token issues
-- **ConfigurationError** — Missing config, initialization problems
-- **RPCError** — gRPC communication failures
+**可能的错误类型**：
+- **ValidationError**：参数无效、地址格式错误
+- **NetworkError**：连接失败、超时
+- **AuthenticationError**：密钥/代币问题
+- **ConfigurationError**：配置缺失、初始化问题
+- **RPCError**：gRPC通信失败
 
-## Security Best Practices
+## 安全最佳实践
 
-### The Agent Has Full Wallet Access
+### 代理对钱包有完全控制权
 
-Any agent or process with the mnemonic has **unrestricted control** over the wallet — it can check balance, create invoices, and send every sat to any address. There is no permission scoping, no spending limits, no read-only mode. Unlike NWC (Nostr Wallet Connect), you cannot grant partial access.
+任何拥有助记词的代理或进程都可以**无限制地**操作钱包——可以查看余额、创建发票并将资金发送到任何地址。没有权限限制，也没有消费限额或只读模式。与NWC（Nostr Wallet Connect）不同，无法部分授权访问权限。
 
-This means:
-- If the mnemonic leaks, all funds are at risk immediately
-- If an agent is compromised, the attacker has the same full access
-- There is no way to revoke access without sweeping funds to a new wallet
+这意味着：
+- 如果助记词泄露，所有资金都会立即处于风险之中。
+- 如果代理被攻击，攻击者将获得完全控制权。
+- 无法在不将资金转移到新钱包的情况下撤销访问权限。
 
-### Protect the Mnemonic
+### 保护助记词
 
-1. **Back up the seed phrase offline** — write it down on paper or use a hardware backup. If you lose the mnemonic, the funds are gone permanently.
-2. **Never expose the mnemonic** in code, logs, git history, or error messages
-3. **Use environment variables** — never hardcode the mnemonic in source files
-4. **Add `.env` to `.gitignore`** — prevent accidental commits of secrets
+1. **离线备份助记词**：将其写在纸上或使用硬件备份。如果助记词丢失，资金将永久丢失。
+2. **切勿在代码、日志、git历史记录或错误消息中暴露助记词**。
+3. **使用环境变量**：切勿将助记词硬编码在源文件中。
+4. **将助记词添加到`.gitignore`文件中**：防止意外提交敏感信息。
 
-### Sweep Funds to a Safer Wallet
+### 将资金转移到更安全的钱包
 
-**Do not accumulate large balances in an agent wallet.** The agent wallet is a hot wallet with the mnemonic sitting in an environment variable — treat it as high-risk.
+**不要在代理钱包中积累大量资金**。代理钱包属于热钱包（助记词存储在环境变量中），属于高风险环境。建议定期将资金转移到更安全的钱包（如硬件钱包、冷存储或你直接控制的钱包）。
+- 仅在Spark中保留最低限度的运营资金。
+- 使用`wallet.transfer()`或`wallet.withdraw()`定期转移资金。
+- 当余额超过一定阈值时，考虑自动转移资金。
 
-- Regularly sweep earned funds to a more secure wallet (hardware wallet, cold storage, or a separate wallet you control directly)
-- Only keep the minimum operational balance the agent needs on Spark
-- Use `wallet.transfer()` or `wallet.withdraw()` to move funds out periodically
-- Consider automating sweeps when the balance exceeds a threshold
+### 操作安全措施
 
-### Operational Security
+1. **为不同代理使用不同的助记词**：切勿在多个代理之间共享同一个助记词。
+- 如果需要使用同一个助记词创建多个钱包，请使用不同的`accountNumber`。
+- 通过事件监听器监控异常的转账活动。
+- 当不再需要钱包时，调用`cleanupConnections()`函数。
+- 开发和测试环境使用REGTEST网络，生产环境仅使用MAINNET网络。
+- 在代理逻辑中实现交易限额和每日取款限额，因为SDK不提供这些功能。
 
-1. **Use separate mnemonics** for different agents — never share a mnemonic across agents
-2. **Use separate `accountNumber` values** if you need multiple wallets from one mnemonic
-3. **Monitor transfers** via event listeners for unexpected outgoing activity
-4. **Call `cleanupConnections()`** when the wallet is no longer needed
-5. **Use REGTEST** for development and testing, MAINNET only for production
-6. **Implement application-level spending controls** — cap per-transaction and daily amounts in your agent logic since the SDK won't do it for you
+## 参考资源
 
-## Resources
-
-- Spark Docs: https://docs.spark.money
-- Spark SDK (npm): https://www.npmjs.com/package/@buildonspark/spark-sdk
-- Sparkscan Explorer: https://sparkscan.io
-- Spark CLI: https://docs.spark.money/tools/cli
+- Spark文档：https://docs.spark.money
+- Spark SDK（npm）：https://www.npmjs.com/package/@buildonspark/spark-sdk
+- Sparkscan浏览器：https://sparkscan.io
+- Spark CLI：https://docs.spark.money/tools/cli

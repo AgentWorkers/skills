@@ -1,6 +1,6 @@
 ---
 name: google
-description: Google search
+description: **Google搜索**
 homepage: 
 metadata: 
 ---

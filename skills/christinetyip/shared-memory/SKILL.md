@@ -1,6 +1,6 @@
 ---
 name: shared-memory
-description: Share memories and state with other users. Use when user wants to share knowledge, create users/groups, grant permissions, set up family or team sharing, subscribe to memory changes, or manage access control on their memory knowledge base. This shared memory skill uses Ensue - a shared memory network for agents.
+description: 与其他用户分享记忆和状态。适用于用户希望分享知识、创建用户/组、授予权限、设置家庭或团队共享功能、订阅记忆变更，或管理其记忆知识库的访问控制时。此共享记忆功能依赖于 Ensue——一个专为代理设计的共享记忆网络。
 metadata:
   clawdbot:
     emoji: "🤝"
@@ -11,11 +11,11 @@ metadata:
     homepage: https://ensue-network.ai
 ---
 
-# Shared Memory
+# 共享内存
 
-Share memories from your knowledge base with other users. Manage users, groups, and fine-grained permissions on namespaces.
+将您知识库中的内容与其他用户共享。同时，您可以管理用户、组以及命名空间上的细粒度权限设置。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create user and group
@@ -28,7 +28,7 @@ Share memories from your knowledge base with other users. Manage users, groups, 
 {baseDir}/scripts/shared-memory.sh grant group family update christine/shared/
 ```
 
-## Namespace Organization
+## 命名空间组织
 
 ```
 <username>/
@@ -37,45 +37,45 @@ Share memories from your knowledge base with other users. Manage users, groups, 
 └── public/     # Read-only to others
 ```
 
-Grant access to `mark/shared/` → all shared content
-Grant access to `mark/shared/recipes/` → just recipes
+- 授予 `mark/shared/` 的访问权限 → 访问所有共享内容
+- 授予 `mark/shared/recipes/` 的访问权限 → 仅访问食谱相关内容
 
-## Commands
+## 命令
 
-### Users
-| Command | Description |
+### 用户
+| 命令 | 描述 |
 |---------|-------------|
-| `create-user <username>` | Create user |
-| `delete-user <username>` | Delete user |
+| `create-user <username>` | 创建用户 |
+| `delete-user <username>` | 删除用户 |
 
-### Groups
-| Command | Description |
+### 组
+| 命令 | 描述 |
 |---------|-------------|
-| `create-group <name>` | Create group |
-| `delete-group <name>` | Delete group |
-| `add-member <group> <user>` | Add user to group |
-| `remove-member <group> <user>` | Remove user |
+| `create-group <name>` | 创建组 |
+| `delete-group <name>` | 删除组 |
+| `add-member <group> <user>` | 将用户添加到组 |
+| `remove-member <group> <user>` | 从组中移除用户 |
 
-### Permissions
-| Command | Description |
+### 权限
+| 命令 | 描述 |
 |---------|-------------|
-| `grant org <action> <pattern>` | Grant to org |
-| `grant user <name> <action> <pattern>` | Grant to user |
-| `grant group <name> <action> <pattern>` | Grant to group |
-| `revoke <grant_id>` | Revoke permission |
-| `list` | List all grants |
-| `list-permissions` | List effective permissions |
+| `grant org <action> <pattern>` | 授予某个组织相应的权限 |
+| `grant user <name> <action> <pattern>` | 授予某个用户相应的权限 |
+| `grant group <name> <action> <pattern>` | 授予某个组相应的权限 |
+| `revoke <grant_id>` | 撤销权限 |
+| `list` | 列出所有权限设置 |
+| `list-permissions` | 列出当前有效的权限 |
 
-**Actions**: `read`, `create`, `update`, `delete`
+**权限操作类型**：`read`（读取）、`create`（创建）、`update`（更新）、`delete`（删除）
 
-### Subscriptions
-| Command | Description |
+### 订阅
+| 命令 | 描述 |
 |---------|-------------|
-| `subscribe <key>` | Get notified on changes |
-| `unsubscribe <key>` | Stop notifications |
-| `list-subscriptions` | List subscriptions |
+| `subscribe <key>` | 在内容发生变化时接收通知 |
+| `unsubscribe <key>` | 停止接收通知 |
+| `list-subscriptions` | 查看所有订阅设置 |
 
-## Example: Family Sharing
+## 示例：家庭共享
 
 ```bash
 # Create user for partner
@@ -93,16 +93,16 @@ Grant access to `mark/shared/recipes/` → just recipes
 {baseDir}/scripts/shared-memory.sh grant group family update mark/shared/
 ```
 
-## Troubleshooting
+## 故障排除
 
-If commands fail, first check if an Ensue API key is configured:
+如果命令执行失败，请首先检查是否已配置 Ensue API 密钥：
 
 ```bash
 echo $ENSUE_API_KEY
 grep -A2 'ensue-learning-memory' ~/.clawdbot/clawdbot.json
 ```
 
-If no API key found, tell user to get a free key at https://www.ensue-network.ai/login and configure in `~/.clawdbot/clawdbot.json`:
+如果未找到 API 密钥，请告知用户前往 https://www.ensue-network.ai/login 获取免费密钥，并将其配置到 `~/.clawdbot/clawdbot.json` 文件中：
 
 ```json
 {
@@ -116,4 +116,4 @@ If no API key found, tell user to get a free key at https://www.ensue-network.ai
 }
 ```
 
-If key exists but commands fail, the key may be invalid - have user generate a new one.
+如果密钥存在但命令仍然失败，可能是密钥无效——请让用户重新生成一个有效的密钥。

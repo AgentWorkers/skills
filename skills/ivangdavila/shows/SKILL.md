@@ -1,20 +1,20 @@
 ---
 name: Shows
-description: Track movies and series with progress, watchlist, ratings, and proactive alerts for new releases and platform changes.
+description: 跟踪电影和电视剧的观看进度、添加到观看列表、设置评分，并接收新上映作品或平台更新的通知。
 ---
 
-## Core Behavior
+## 核心功能
 
-- User mentions watching something → log it with current progress
-- User finishes something → mark complete, ask for rating
-- User asks "what was I watching?" → surface in-progress items
-- User asks "what should I watch?" → suggest from watchlist based on mood/time
+- 当用户表示正在观看某个内容时，系统会记录该内容的当前观看进度。
+- 当用户观看完某个内容后，系统会将其标记为“已完成”，并询问用户的评分。
+- 当用户询问“我之前在看什么？”时，系统会显示用户正在观看的项目。
+- 当用户询问“我应该看什么？”时，系统会根据用户的兴趣和时间推荐合适的节目。
 
 ---
 
-## Workspace
+## 工作区
 
-Store show data in `~/shows/`:
+剧集数据存储在 `~/shows/` 目录下：
 ```
 ~/shows/
 ├── watching.md       # Currently in progress
@@ -26,51 +26,51 @@ Store show data in `~/shows/`:
 
 ---
 
-## Item Structure
+## 项目结构
 
-| Field | Format |
+| 字段 | 格式 |
 |-------|--------|
-| Title | Name (Year) |
-| Type | movie / series |
-| Status | watching / watchlist / completed / abandoned / waiting |
-| Progress | S02E05 or "45 min in" for paused movies |
-| Platform | Netflix, HBO, Disney+, etc. |
-| Rating | 1-5 or 👍👎 |
-| Recommended by | Who suggested it |
-| Notes | "Left off at the wedding scene" |
+| 标题 | 剧名（包含年份） |
+| 类型 | 电影/电视剧 |
+| 状态 | 正在观看/待观看/已完成/已放弃/等待中 |
+| 进度 | 对于暂停观看的电影，会显示“S02E05”或“已观看45分钟”等信息 |
+| 平台 | 播放平台（如Netflix、HBO、Disney+等） |
+| 评分 | 1-5分或使用👍👎表示评分 |
+| 推荐者 | 推荐该内容的人 |
+| 备注 | 例如：“在婚礼场景处暂停观看” |
 
-For series, also track: total seasons, next release date if waiting.
+对于电视剧，还会记录总季数以及如果该剧集处于等待观看状态，则会显示下一次发布的日期。
 
 ---
 
-## Quick Commands
+## 快捷命令
 
-| User Says | Agent Does |
+| 用户输入 | 系统操作 |
 |-----------|------------|
-| "Watching Severance" | Add to watching, ask current episode |
-| "Finished The Bear S3" | Move to completed, ask rating |
-| "Add Ripley to watchlist" | Add with date, platform if known |
-| "Where am I in Shogun?" | Check progress, report last watched date |
-| "What's on my list?" | Summarize watchlist by priority |
-| "Dropping Squid Game" | Move to abandoned with note |
+| “正在观看《Severance》” | 将该剧添加到观看列表，并询问当前正在观看的剧集集数 |
+| “看完了《The Bear》第三季” | 将该剧标记为“已完成”，并询问用户的评分 |
+| “将《Ripley》添加到观看列表” | 如果知道平台信息，同时记录添加日期和平台 |
+| “我在《Shogun》这部剧的哪一集？” | 检查当前观看进度，并报告上次观看的日期 |
+| “我的观看列表里有什么？” | 按优先级汇总观看列表中的内容 |
+| “不再想看《Squid Game》了” | 将该剧标记为“已放弃”，并添加备注 |
 
 ---
 
-## Proactive Features
+## 主动推荐功能
 
-| Trigger | Alert |
+| 触发条件 | 警报内容 |
 |---------|-------|
-| New season announced | "Show X you watched got renewed" |
-| Show stale >30 days | "Haven't touched X in a while—still interested?" |
-| Platform leaving soon | "X leaves Netflix in 5 days, it's on your watchlist" |
-| User asks "what to watch" | Suggest based on available time and mood |
+| 新季发布 | “您正在观看的《X》已更新” |
+| 剧集闲置超过30天 | “您已经很久没有观看《X》了——还感兴趣吗？” |
+| 平台即将停止提供服务 | “您正在观看的《X》将在5天后从Netflix下架，它还在您的观看列表中” |
+| 用户询问“该看什么？” | 根据用户的可用时间和兴趣推荐合适的节目 |
 
 ---
 
-## Load Reference
+## 参考资料
 
-| Situation | File |
+| 使用场景 | 对应文件 |
 |-----------|------|
-| Family viewing, multi-user tracking | `family.md` |
-| Finding where to watch, platform tips | `platforms.md` |
-| Discovery and recommendations | `discovery.md` |
+| 家庭共同观看、多用户跟踪 | `family.md` |
+| 查找观看资源、平台使用技巧 | `platforms.md` |
+| 剧集发现与推荐 | `discovery.md` |

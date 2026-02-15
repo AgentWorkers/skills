@@ -1,6 +1,6 @@
 ---
 name: cfshare
-description: Expose local services, ports, files, or directories as temporary public HTTPS links via Cloudflare Quick Tunnel. Use for sharing local services, sending downloadable files, previewing content, etc.
+description: 通过 Cloudflare Quick Tunnel 将本地服务、端口、文件或目录暴露为临时的公共 HTTPS 链接。可用于共享本地服务、发送可下载文件、预览内容等。
 metadata:
   {
     "openclaw":
@@ -16,128 +16,125 @@ metadata:
   }
 ---
 
-# CFShare — Cloudflare Quick Tunnel Exposure
+# CFShare — Cloudflare 快速隧道服务
 
-Expose local services, ports, files, or directories as temporary public `https://*.trycloudflare.com` links.
-
----
-
-## Standard Workflow
-
-1. **`env_check()`** — Always call first to verify `cloudflared` is available and see current policy defaults.
-2. **Create exposure:**
-   - Have a running local service? → `expose_port(port, opts?)`
-   - Need to share/preview files or directories? → `expose_files(paths, opts?)`
-3. **After creation succeeds:** Present `public_url` and `expires_at` to the user. Remind them to call `exposure_stop` when finished.
-4. **Inspect / monitor:** `exposure_get(id)` with optional `probe_public: true` to verify end-to-end reachability.
-5. **Troubleshoot:** `exposure_logs(id)` when something goes wrong.
-6. **Cleanup:** `exposure_stop(id)` or `exposure_stop(id="all")`.
+该服务允许您将本地服务、端口、文件或目录暴露为临时的公共链接（格式为 `https://*.trycloudflare.com`）。
 
 ---
 
-## Tool Reference
+## 标准工作流程
+
+1. **`env_check()`** — 首先执行此命令，以确认 `cloudflared` 是否已安装并获取当前的策略默认值。
+2. **创建暴露服务：**
+   - 如果有正在运行的本地服务 → 使用 `expose_port(port, opts?)` 命令进行暴露。
+   - 如果需要共享或预览文件或目录 → 使用 `expose_files(paths, opts?)` 命令。
+3. **创建成功后**：向用户提供 `public_url` 和 `expires_at`（过期时间）。提醒用户在使用完成后调用 `exposure_stop` 命令来停止服务。
+4. **检查/监控**：使用 `exposure_get(id)` 命令（可选参数 `probe_public: true`）来验证链接的端到端可达性。
+5. **故障排除**：当出现问题时，使用 `exposure_logs(id)` 命令查看日志。
+6. **清理**：使用 `exposure_stop(id)` 或 `exposure_stop(id="all")` 命令来停止所有暴露服务。
+
+---
+
+## 工具参考
 
 ### 1. `env_check`
 
-Check that `cloudflared` is installed, resolve its version, and return effective policy defaults.
+检查 `cloudflared` 是否已安装，获取其版本信息，并返回当前的策略默认值。
 
 ---
 
 ### 2. `expose_port`
 
-Expose an already-running local service via Cloudflare Quick Tunnel. The tool probes `127.0.0.1:<port>` before proceeding and rejects blocked ports.
+通过 Cloudflare 快速隧道服务暴露正在运行的本地服务。该工具会先测试 `127.0.0.1:<port>` 端口是否可访问，如果端口被阻止，则会返回相应的错误信息。
 
-**Errors:** `"invalid port"`, `"port blocked by policy: <N>"`, `"local service is not reachable on 127.0.0.1:<N>"`.
+**可能出现的错误：**
+- `"invalid port"`（端口无效）
+- `"port blocked by policy: <N>"`（端口被策略禁止）
+- `"local service is not reachable on 127.0.0.1:<N>"`（无法通过 `127.0.0.1:<port>` 访问本地服务）
 
 ---
 
 ### 3. `expose_files`
 
-Copy files/directories into a temporary workspace, start a read-only static file server, and tunnel it publicly.
+将文件或目录复制到临时工作区，启动一个只读的静态文件服务器，并通过隧道服务将其公开。
 
-**File Serving Behavior**
+**文件服务方式：**
 
-Mode: normal
+- **普通模式**：
+  - 单个文件 → 直接在根路径下提供。
+  - 多个文件或目录 → 通过文件浏览器界面展示。
+- **ZIP 模式**：
+  - 所有文件会被打包成一个 ZIP 文件包。
 
-- Single file → served directly at the root URL.
-- Multiple files or a directory → displayed in an intuitive file explorer interface.
-
-Mode: zip
-
-- All files are packaged into a ZIP archive.
-
-**Presentation**
-
-- Default behaviors: download | preview | raw
-- Behavior can be overridden via query parameters.
-  - download → forces browser file save.
-  - preview → renders inline (images, PDF, Markdown, audio/video, HTML, text, etc.).
-  - raw → serves original content without any wrapper.
-- If a file type is not previewable, preview automatically falls back to raw, then to download.
+**展示方式：**
+  - 默认选项：下载 | 预览 | 原始格式
+  - 可通过查询参数自定义展示方式：
+    - `download` → 强制浏览器下载文件。
+    - `preview` → 在浏览器中直接显示文件内容（图片、PDF、Markdown、音频/视频、HTML、文本等）。
+    - `raw` → 以原始格式提供文件内容。
+    - 如果文件类型无法预览，系统会自动切换到原始格式或下载选项。
 
 ---
 
 ### 4. `exposure_list`
 
-List all tracked sessions (both active and recently-stopped within-process).
+列出所有正在运行的暴露服务（包括活跃的服务和最近停止的服务）。
 
 ---
 
 ### 5. `exposure_get`
 
-Get detailed information about one or more sessions. Supports three selection modes (mutually exclusive input shapes via union schema):
+获取一个或多个暴露服务的详细信息。支持三种选择方式（这些方式互斥）：
 
 ---
 
 ### 6. `exposure_stop`
 
-Stop one, several, or all exposures. Terminates cloudflared process, shuts down origin/proxy servers, and deletes temporary workspace files.
+停止一个、多个或所有暴露服务。该命令会终止 `cloudflared` 进程，关闭源服务器和代理服务器，并删除临时工作区的文件。
 
 ---
 
 ### 7. `exposure_logs`
 
-Fetch merged logs from cloudflared tunnel and origin server components.
+从 `cloudflared` 和源服务器获取合并后的日志记录。
 
 ---
 
 ### 8. `maintenance`
 
-Lifecycle management operations.
+用于管理服务的生命周期：
 
-**Action details:**
-
-- **`start_guard`** — Start the TTL expiration reaper (runs periodically; usually auto-started).
-- **`run_gc`** — Clean up orphaned workspace directories and stale processes not tracked by any active session.
-- **`set_policy`** — Persist a policy change to disk and reload. Requires at least one of `opts.policy` or `opts.ignore_patterns`.
+- **`start_guard`** — 启动 TTL 过期处理机制（定期运行；通常会自动启动）。
+- **`run_gc` ** — 清理未被任何活跃服务使用的临时工作区目录和过期进程。
+- **`set_policy` ** — 将策略更改保存到磁盘并重新加载。需要提供 `opts.policy` 或 `opts.ignore_patterns` 参数。
 
 ---
 
 ### 9. `audit_query`
 
-Search audit event log.
+搜索审计事件日志。
 
 ---
 
 ### 10. `audit_export`
 
-Export filtered audit events to a local JSONL file.
+将筛选后的审计事件导出到本地 JSONL 文件中。
 
 ---
 
-## Security & Policy Defaults
+## 安全性与策略默认值
 
-Policy priority (highest wins): **policy JSON file** > **plugin config** > **built-in defaults**.
+策略优先级（从高到低）：**策略 JSON 文件** > **插件配置** > **内置默认值**。
 
 ---
 
-## Response Behavior Rules
+## 响应规则
 
-When presenting results to the user, the LLM **must**:
+在向用户展示结果时，LLM（Large Language Model）必须遵守以下规则：
 
-1. **Always display `public_url` and `expires_at`** after creating an exposure.
-2. **Present timestamps** in the user’s local time zone using a human-readable format (`yyyy-mm-dd HH:MM:SS`). Never include timezone indicators or raw ISO strings.
-3. **Warn** when `access` mode is `"none"` — the link is publicly accessible without authentication.
-4. **Include cleanup instructions** — include `exposure_stop` guidance after successful sharing.
-5. **On error**, suggest `exposure_logs(id)` for diagnostics.
-6. **For security** — if user intent is ambiguous or potentially sensitive, request confirmation before creating exposure.
+1. **创建暴露服务后**，必须始终显示 `public_url` 和 `expires_at`。
+2. **时间戳** 必须使用用户所在时区的可读格式（`yyyy-mm-dd HH:MM:SS`）显示。禁止使用原始的 ISO 格式。
+3. 当访问模式设置为 `"none"` 时，必须警告用户链接为公开可访问状态（无需认证）。
+4. 必须提供清理说明（建议用户使用 `exposure_stop` 命令来停止服务）。
+5. 发生错误时，建议用户查看 `exposure_logs(id)` 以获取诊断信息。
+6. 为确保安全，如果用户的操作意图不明确或可能涉及敏感信息，必须先获取用户的确认才能创建暴露服务。

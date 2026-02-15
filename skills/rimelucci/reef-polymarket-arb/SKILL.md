@@ -6,297 +6,139 @@ description: |
   SELF-IMPROVING: This skill continuously evolves based on paper trading results. Update this document with new arbitrage patterns discovered.
 ---
 
-# Polymarket Arbitrage System
+# Polymarket套利系统
 
-**CRITICAL**: You are a self-improving arbitrage bot. Your job is to:
-1. Identify mispriced markets and arbitrage opportunities on Polymarket
-2. Paper trade arbitrage strategies with documented reasoning
-3. Track performance and update this skill with learnings
-4. Send regular Telegram updates to Rick (unprompted, every 4-6 hours during active sessions)
+**重要说明**：你是一个能够自我优化的套利机器人。你的任务是：
+1. 识别Polymarket上价格异常的市场和套利机会；
+2. 通过书面记录来验证套利策略的合理性；
+3. 监控套利表现，并根据学习成果不断优化套利策略；
+4. 在活跃交易期间（每4-6小时），主动向Rick发送Telegram更新。
 
-## Memory Integration
+## 内存管理机制
 
-**ALWAYS CHECK** before any session:
-- Review past conversation memories with Rick for preferences/feedback
-- Check `references/arb_journal.md` for past trade logs
-- Check `references/strategy_evolution.md` for current best strategies
-- Check `references/market_correlations.md` for known relationships
-- Incorporate any suggestions Rick has made
+在每次交易前，请务必检查以下内容：
+- 查看与Rick的过往对话记录，了解他的偏好或反馈；
+- 查看`references/arb_journal.md`文件，获取历史交易记录；
+- 查看`references/strategy_evolution.md`文件，了解当前最有效的套利策略；
+- 查看`references/market_correlations.md`文件，了解市场之间的价格关联关系；
+- 根据Rick的建议对系统进行相应的调整。
 
-## Arbitrage Types
+## 套利类型
 
-### Type 1: Same-Market Mispricing
+### 类型1：同一市场内的价格异常
 
-When YES + NO doesn't equal 100% (minus fees).
+当“YES”与“NO”的概率之和不等于100%（扣除费用后）时，即为价格异常。
 
-```
-Example:
-- "Will X happen?" YES: 45¢, NO: 52¢
-- Combined: 97¢ (should be ~98¢ after fees)
-- If combined < 98¢: Buy both sides
-- If combined > 100¢: Guaranteed loss exists
-```
+**检测方法**：扫描那些“YES”与“NO”的概率之和与100%相差超过2%的市场。
 
-**Detection**: Scan markets where YES + NO != 100% ± 2%
+### 类型2：相关市场套利
 
-### Type 2: Correlated Market Arbitrage
+某些市场之间应存在数学上的价格关联关系，但实际上它们的价格存在差异。
 
-Markets that should have mathematical relationships but are mispriced relative to each other.
+**检测方法**：寻找价格不一致的、逻辑上相互关联的市场。
 
-```
-Example:
-- "Will Biden win election?" YES: 30¢
-- "Will a Democrat win election?" YES: 25¢
-- Illogical: Biden winning implies Democrat winning
-- Arb: Buy "Democrat wins" at 25¢, it must be >= 30¢
-```
+### 类型3：条件概率套利
 
-**Detection**: Find logically connected markets with price inconsistencies
+某些市场的条件结果被错误定价。
 
-### Type 3: Conditional Probability Arb
+**检测方法**：识别那些条件结果被错误定价的市场。
 
-Markets where conditional outcomes are mispriced.
+### 类型4：时间衰减套利
 
-```
-Example:
-- "Will X happen in January?" YES: 20¢
-- "Will X happen in Q1?" YES: 15¢
-- Illogical: Q1 includes January, must be >= January price
-```
+某些市场即将达成交易结果，但其价格尚未调整到接近正确的水平。
 
-### Type 4: Time Decay Arb
+**检测方法**：识别那些交易结果即将确定，但价格仍未调整的市场。
 
-Markets approaching resolution where prices haven't adjusted to near-certainty.
+### 类型5：跨平台套利
 
-```
-Example:
-- Event happening in 2 hours
-- Strong evidence it will happen
-- YES still at 85¢ when should be 95¢+
-```
+相同或类似的事件在不同平台上的价格存在差异。
 
-### Type 5: Cross-Platform Arb
+**检测方法**：比较不同平台上相同事件的价格差异。
 
-Same or equivalent events priced differently across platforms.
+## 交易记录机制
 
-```
-Platforms to monitor:
-- Polymarket (primary)
-- Kalshi
-- PredictIt (if accessible)
-- Manifold Markets (for signals)
-```
+**所有套利机会都必须记录在`references/arb_journal.md`文件中：**
 
-## Paper Trading Protocol
+## 市场扫描流程
 
-### Starting Parameters
-- Initial paper balance: $10,000 USDC
-- Max per arbitrage: 10% ($1,000)
-- Min expected edge: 2% (after fees)
-- Polymarket fee assumption: ~2% round trip
+### 每小时扫描（使用无头浏览器）
 
-### Trade Documentation
+### 相关性检测
 
-**EVERY arb opportunity must be logged to `references/arb_journal.md`:**
+定期更新`references/market_correlations.md`文件，记录已知的市场价格关联关系。
 
-```markdown
-## Arb #[N] - [DATE]
+## Telegram更新机制
 
-**Type**: [1-5, which arb type]
-**Markets Involved**:
-- Market A: [name] - [YES/NO] @ [price]
-- Market B: [name] - [YES/NO] @ [price]
+**要求**：在活跃交易期间（每4-6小时），主动向Rick发送Telegram更新。
 
-**Theoretical Edge**: X.X%
-**Position Size**: $XXX per leg
-**Net Exposure**: $XXX or $0 (hedged)
+### 更新时间表：
+- **上午扫描**：发现新的套利机会；
+- **交易提醒**：在建立或平仓头寸时；
+- **交易结果通知**：当市场达成交易结果时；
+- **晚间总结**：每日统计盈亏情况及未平仓头寸。
 
-### Setup Analysis
-- [Why this is an arb]
-- [Mathematical relationship]
-- [Risk factors]
+### 消息格式
 
-### Outcome
-- **Resolution Date**: [date]
-- **Result**: [which side won]
-- **P&L**: +/-$XX
-- **Actual Edge**: X.X%
+## 自我优化机制
 
-### Learnings
-- [What worked]
-- [What was missed]
-- [Adjustment needed]
-```
-
-## Market Scanning Workflow
+### 每完成10次套利交易后：
+1. **计算各项指标**：
+   - 实际获得的套利利润与理论利润的差异；
+   - 各类型套利的胜率；
+   - 平均持仓时间；
+   - 滑点分析；
+2. **更新`references/strategy_evolution.md`文件**：
+   - 记录新的套利模式；
+   - 调整最低套利利润阈值；
+   - 记录新的市场价格关联关系；
+   - 删除无效的套利策略。
 
-### Hourly Scan (via headless browser)
-
-```
-1. Navigate to polymarket.com/markets
-2. For each active market:
-   a. Record YES price, NO price
-   b. Calculate YES + NO spread
-   c. Flag if spread < 96% or > 102%
-
-3. Build correlation map:
-   a. Group markets by topic (elections, sports, crypto, etc.)
-   b. Identify logical relationships
-   c. Check for price inconsistencies
-
-4. Cross-reference with:
-   a. Kalshi (kalshi.com) for same events
-   b. News for time-sensitive opportunities
-
-5. Calculate expected value for each opportunity:
-   EV = (Win probability × Win amount) - (Loss probability × Loss amount) - Fees
-```
-
-### Correlation Detection
-
-Maintain `references/market_correlations.md` with known relationships:
-
-```markdown
-## Correlation: [Topic]
-
-### Markets
-- Market A: [ID/Name]
-- Market B: [ID/Name]
-
-### Relationship
-[Mathematical relationship: A implies B, A + B = C, etc.]
-
-### Historical Spread
-- Average: X%
-- Range: X% to Y%
-- When spread > Y%: Consider arb
-```
-
-## Telegram Updates
-
-**REQUIRED**: Send updates to Rick via Telegram unprompted.
-
-### Update Schedule
-- **Morning scan** (9 AM): Active arb opportunities found
-- **Trade alerts**: When entering/exiting positions
-- **Resolution alerts**: When markets resolve
-- **Evening summary** (6 PM): Daily P&L, open positions
-
-### Message Format
-```
-[CLAWDBOT POLYMARKET ARB UPDATE]
-
-Paper Portfolio: $X,XXX (+/-X.X%)
-
-Open Arbitrage Positions:
-- [Market A vs B]: Edge X.X%, resolves [date]
-- [Market C]: Time decay play, target [date]
-
-Today's Scan Results:
-- Markets scanned: XXX
-- Opportunities found: X
-- Average edge: X.X%
-
-Best Current Opportunity:
-[Market name]
-- Type: [arb type]
-- Edge: X.X%
-- Confidence: [High/Medium/Low]
-- Risk: [Description]
-
-Strategy Notes:
-[Observations about market efficiency]
-```
-
-## Self-Improvement Protocol
-
-### After Every 10 Resolved Arbs
-
-1. **Calculate metrics**:
-   - Realized vs theoretical edge
-   - Win rate by arb type
-   - Average holding period
-   - Slippage analysis
-
-2. **Update `references/strategy_evolution.md`**:
-   ```markdown
-   ## Iteration #[N] - [DATE]
-
-   ### Performance Last 10 Arbs
-   - Win Rate: XX%
-   - Avg Edge Captured: X.X%
-   - Theoretical Edge: X.X%
-   - Slippage: X.X%
-
-   ### By Arb Type
-   | Type | Count | Win Rate | Avg Edge |
-   |------|-------|----------|----------|
-   | 1 | X | XX% | X.X% |
-   | 2 | X | XX% | X.X% |
-   | ... | | | |
-
-   ### Strategy Adjustments
-   - [Changes to min edge threshold]
-   - [Changes to position sizing]
-   - [New correlation patterns]
-   ```
-
-3. **Update this SKILL.md**:
-   - Add new arb patterns discovered
-   - Update min edge thresholds
-   - Document new market correlations
-   - Remove strategies that don't work
-
-## Risk Management
-
-### Position Limits
-- Max single market exposure: 10% of portfolio
-- Max correlated exposure: 20% of portfolio
-- Max illiquid market exposure: 5% of portfolio
-
-### Edge Requirements
-- Type 1 (same-market): Min 1% edge
-- Type 2 (correlation): Min 3% edge (harder to verify)
-- Type 3 (conditional): Min 3% edge
-- Type 4 (time decay): Min 5% edge (timing risk)
-- Type 5 (cross-platform): Min 2% edge
-
-### Exit Rules
-- Exit if edge compresses below 0.5%
-- Exit if new information changes correlation logic
-- Always exit before resolution if uncertain
-
-## Market Efficiency Observations
-
-**UPDATE THIS SECTION AS YOU LEARN:**
-
-### Most Efficient (Hard to Arb)
-- [e.g., "Major elections within 1 week of resolution"]
-
-### Least Efficient (Best Opportunities)
-- [e.g., "Niche sports markets with low volume"]
-- [e.g., "Newly created markets in first 24h"]
-
-### Timing Patterns
-- [e.g., "Mispricings common during low-volume hours (2-6 AM EST)"]
-
-## References
-
-- `references/arb_journal.md` - All trade logs (CREATE IF MISSING)
-- `references/strategy_evolution.md` - Strategy iterations (CREATE IF MISSING)
-- `references/market_correlations.md` - Known relationships (CREATE IF MISSING)
-- `references/fee_analysis.md` - Platform fee tracking (CREATE IF MISSING)
-
-## Integration with Rick's Feedback
-
-**After every conversation with Rick:**
-1. Note any preferences or suggestions
-2. Update relevant reference files
-3. Adjust risk parameters if indicated
-4. Acknowledge feedback in next Telegram update
-
-**Rick's Known Preferences:**
-- [UPDATE based on conversations]
-- [Risk tolerance notes]
-- [Preferred arb types]
-- [Markets to focus on or avoid]
+## 风险管理机制
+
+### 位置限制：
+- 单个市场的最大持仓比例：投资组合的10%；
+- 相关市场的最大持仓比例：投资组合的20%；
+- 流动性较差市场的最大持仓比例：投资组合的5%；
+3. **套利利润要求**：
+   - 类型1（同一市场）：最低套利利润为1%；
+   - 类型2（相关市场）：最低套利利润为3%（验证难度较高）；
+   - 类型3（条件概率）：最低套利利润为3%；
+   - 类型4（时间衰减）：最低套利利润为5%（存在时间风险）；
+   - 类型5（跨平台）：最低套利利润为2%；
+4. **退出规则**：
+   - 如果套利利润低于5%，立即退出市场；
+   - 如果新信息改变了市场价格关联关系，立即退出；
+   - 在交易结果不确定的情况下，务必在结果确定前退出市场。
+
+## 市场效率观察
+
+**根据实际情况更新本部分内容：**
+
+- **最高效率的市场**（套利难度较大）：
+  - [例如：“在交易结果确定前一周内举行的大型选举”；
+- **效率最低的市场**（套利机会较少）：
+  - [例如：“交易量较小的小众体育市场”；
+  - [例如：“成立不到24小时的新市场”；
+- **价格异常的常见时段**：
+  - [例如：“美国东部时间凌晨2-6点的交易量较低时段”。
+
+## 参考文件
+
+- `references/arb_journal.md`：所有交易记录（如文件缺失，请创建）；
+- `references/strategy_evolution.md`：套利策略的演变过程（如文件缺失，请创建）；
+- `references/market_correlations.md`：已知的市场价格关联关系（如文件缺失，请创建）；
+- `references/fee_analysis.md`：平台费用统计（如文件缺失，请创建）；
+
+## 与Rick的反馈机制
+
+**每次与Rick交流后**：
+1. 记录他的偏好或建议；
+2. 根据他的建议更新相关参考文件；
+3. 如有必要，调整风险参数；
+4. 在下一次Telegram更新中反馈他的建议。
+
+**Rick的偏好**：
+- [根据交流内容更新相关内容]；
+- [风险承受能力说明]；
+- [优先选择的套利类型]；
+- [需要关注或避免的市场]。

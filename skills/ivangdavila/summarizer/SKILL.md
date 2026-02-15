@@ -1,93 +1,79 @@
 ---
 name: Summarizer
-description: Distill content to its essence with audience-aware compression, format selection, and quality verification.
+description: 通过了解受众需求的压缩方法、合适的格式选择以及严格的质量验证，将内容提炼出其核心精髓。
 ---
 
-## Core Principle
+## 核心原则
 
-Good summaries preserve meaning while eliminating noise. Bad ones drop critical points or miss the audience.
+优秀的摘要能够在保留核心信息的同时剔除冗余内容；而糟糕的摘要则会遗漏关键点或无法吸引目标读者。
 
-**Summarization = Compression + Preservation + Adaptation**
+**摘要的精髓 = 压缩 + 保留 + 适应**
 
-## Protocol
+## 协议
 
 ```
 Analyze → Select technique → Extract → Compress → Format → Verify
 ```
 
-### 1. Analyze
+### 1. 分析
 
-Before summarizing, determine:
-- **Length of source** — tweet vs book chapter
-- **Complexity** — technical, narrative, data-heavy
-- **Audience** — expert, general, executive, student
-- **Purpose** — quick overview, decision support, study aid
+在开始撰写摘要之前，需要明确以下几点：
+- **内容长度**：是推文还是书籍章节？
+- **内容复杂性**：是技术性内容、叙述性内容，还是数据密集型内容？
+- **目标读者**：是专家、普通读者、高管还是学生？
+- **撰写目的**：是提供快速概览、辅助决策还是辅助学习？
 
-### 2. Select Technique
+### 2. 选择合适的摘要方法
 
-Match technique to content (see `techniques.md`):
+根据内容类型选择合适的摘要方法（详见 `techniques.md`）：
 
-| Content type | Best technique |
+| 内容类型 | 最适合的方法 |
 |--------------|----------------|
-| Simple/short | Zero-shot direct |
-| Technical/complex | Chain-of-thought |
-| Audience-specific | Role-based |
-| Consistent style needed | Few-shot |
-| Strict requirements | Instruction-heavy |
+| 简单/简短的文本 | 直接总结（Zero-shot direct method） |
+| 技术性/复杂的文本 | 逻辑链式总结（Chain-of-thought method） |
+| 针对特定读者的内容 | 基于角色特点的总结（Role-based method） |
+| 需要保持一致的风格 | 多次总结后形成固定模式（Few-shot method） |
+| 有严格要求的文本 | 以指令性内容为主的总结（Instruction-heavy method） |
 
-### 3. Extract
+### 3. 提取关键信息
 
-Identify what matters:
-- Core argument or thesis
-- Key supporting points (3-5 max)
-- Critical data or evidence
-- Conclusions and implications
+识别出以下重要内容：
+- 核心论点或主要观点
+- 最关键的支持性论据（最多3-5个）
+- 关键数据或证据
+- 结论及影响
 
-**Rule:** If you can't identify the core argument, you don't understand it yet.
+**规则**：如果你无法明确核心论点，说明你还没有完全理解该内容。
 
-### 4. Compress
+### 4. 压缩内容
 
-Apply compression levels:
-- **TLDR** — 1 sentence, core message only
-- **Brief** — 2-3 sentences, message + key support
-- **Standard** — paragraph, covers main points
-- **Extended** — multiple paragraphs, preserves nuance
+根据需要选择不同的压缩程度：
+- **TLDR**：仅用一句话概括核心信息
+- **简短摘要**：用2-3句话概括核心内容及关键论据
+- **标准摘要**：用一段文字涵盖主要观点
+- **详细摘要**：用多段文字详细阐述内容，同时保留细节和细微差别
 
-### 5. Format
+### 5. 格式化
 
-Match output to purpose (see `formats.md`):
-- Bullet points for scanning
-- Paragraph for reading
-- Structured sections for reports
-- Tweet-length for social
+根据使用场景选择合适的格式（详见 `formats.md`）：
+- 用项目符号列出要点，便于快速阅读
+- 用段落形式呈现，适合详细阅读
+- 采用结构化的格式，适用于报告撰写
+- 保持推文长度，便于在社交媒体上分享
 
-### 6. Verify
+### 6. 校验
 
-Before delivering, check:
-- [ ] Core message preserved?
-- [ ] Key points included?
-- [ ] Nothing critical dropped?
-- [ ] Appropriate for audience?
-- [ ] Right length for purpose?
+在发布摘要之前，检查以下内容：
+- 核心信息是否被保留？
+- 关键点是否全部包含？
+- 有没有遗漏任何关键内容？
+- 内容是否适合目标读者？
+- 长度是否满足使用场景的要求？
 
-## Output Markers
+## 何时拒绝撰写摘要
 
-```
-📝 SUMMARY ([level]: [word count])
-[Content]
-
-💡 KEY POINTS
-• [Point 1]
-• [Point 2]
-
-⚠️ OMITTED (if relevant)
-[What was cut and why]
-```
-
-## Decline When
-
-Source is ambiguous, contradictory without resolution, or summarizing would lose essential nuance the user needs.
+当原始内容模糊不清、自相矛盾且无法解决，或者摘要会丢失用户所需的重要细节时，应拒绝撰写摘要。
 
 ---
 
-*References: `techniques.md`, `formats.md`*
+*参考文献：`techniques.md`、`formats.md`*

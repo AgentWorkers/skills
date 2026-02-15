@@ -1,15 +1,15 @@
 ---
 name: todoist
-description: Use the td (Todoist CLI) to read and manage Todoist todos/to-dos/tasks from the terminal. Trigger when the user asks about their todos/tasks/agenda/checklist (today/upcoming/overdue), wants to list inbox/tasks/projects/labels, add a task/todo with natural language, or update/complete/delete/move tasks (e.g., add a phone number to a task description, change due dates, priorities, labels).
+description: 使用 `td`（Todoist CLI）命令行工具，可以从终端读取和管理 Todoist 中的任务列表。该工具会在用户查询任务列表、日程安排、待办事项、检查清单（今日任务、即将到期的任务、逾期任务），或者希望以自然语言方式添加新任务，以及更新、完成、删除或移动任务时被触发。例如：用户可以在任务描述中添加电话号码，修改任务的截止日期、优先级或标签等操作。
 ---
 
-# Todoist via `td` CLI
+# 通过 `td` CLI 使用 Todoist
 
-## Install / verify
+## 安装/验证
 
-Repo: https://github.com/Doist/todoist-cli
+仓库地址：https://github.com/Doist/todoist-cli
 
-If `td` is not installed (e.g., `command not found: td`), install from the repo:
+如果 `td` 未安装（例如，出现“command not found: td”错误），请从该仓库进行安装：
 
 ```bash
 git clone https://github.com/Doist/todoist-cli
@@ -19,78 +19,82 @@ npm run build
 npm link
 ```
 
-Then verify:
+安装完成后，进行验证：
 
 ```bash
 td --help
 ```
 
-Use `td` for all Todoist operations. Prefer parseable output:
+### 使用 `td` 执行所有 Todoist 操作
 
-- Use `--json` (or `--ndjson`) for listing/reading tasks.
-- Use `td task update ...` for edits (content, due, description, priority, labels, etc.).
+建议使用易于解析的输出格式：
 
-## Quick agenda
+- 使用 `--json`（或 `--ndjson`）来列出/读取任务。
+- 使用 `td task update ...` 来编辑任务（内容、截止日期、描述、优先级、标签等）。
 
-- Today + overdue:
+## 常用命令
+
+- 查看今日及过期的任务：
   - `td today --json`
-- Next N days:
+- 查看接下来 N 天内的任务：
   - `td upcoming 7 --json`
-- Inbox:
+- 查看收件箱中的任务：
   - `td inbox --json`
 
-When summarizing an agenda for the user:
-- Separate **Overdue** vs **Due today** (and optionally **Upcoming**).
-- Include priority (p1–p4) if present and any labels.
+### 为用户总结任务安排
 
-## Find the right task to edit
+- 区分**过期的任务**和**今日到期的任务**（可选地还包括**即将到期的任务**）。
+- 如果有优先级信息，请一并显示（p1–p4）以及所有标签。
 
-Preferred approaches:
+## 查找要编辑的任务
 
-1) If you already have the task id, use it directly:
-- Reference format: `id:<taskId>` (e.g., `id:6WcqCcR4wF7XW5m6`)
+**推荐方法**：
 
-2) If you only have a title/snippet, search/list then match:
-- `td task list --json` (optionally filter via other list commands like `today`, `upcoming`, `inbox`)
-- Then pick the correct item by `content` + due date + project.
+1. 如果已知任务 ID，可以直接使用该 ID：
+  - 格式示例：`id:6WcqCcR4wF7XW5m6`
 
-To view a single task:
+2. 如果只知道任务标题或部分内容，可以先搜索/列出任务，然后根据具体条件筛选：
+  - `td task list --json`（可选地使用 `today`、`upcoming`、`inbox` 等筛选条件）
+  - 之后根据任务内容、截止日期或项目名称选择正确的任务。
+
+### 查看单个任务
+
 - `td task view <ref> --json`
 
-## Common edits
+## 常见编辑操作
 
-Update description (notes):
-- `td task update <ref> --description "..."`
+- 更新任务描述：
+  - `td task update <ref> --description "..."`
 
-Update title/content:
-- `td task update <ref> --content "New task title"`
+- 更新任务标题/内容：
+  - `td task update <ref> --content "新任务标题..."`
 
-Change due date/time (natural language often works):
-- `td task update <ref> --due "tomorrow 3pm"`
+- 更改任务截止日期：
+  - `td task update <ref> --due "明天下午 3 点"`
 
-Priority:
-- `td task update <ref> --priority p1` (or p2/p3/p4)
+- 设置任务优先级：
+  - `td task update <ref> --priority p1`（或 p2/p3/p4）
 
-Labels (replaces existing labels):
-- `td task update <ref> --labels "Chores,Calls"`
+- 更改任务标签：
+  - `td task update <ref> --labels "杂务, 电话"`（替换现有标签）
 
-Complete / reopen:
-- `td task complete <ref>`
-- `td task uncomplete id:<taskId>`
+- 完成/重新开启任务：
+  - `td task complete <ref>`
+  - `td task uncomplete id:<taskId>`
 
-Delete:
-- `td task delete <ref> --yes` (only if the user explicitly wants deletion)
+- 删除任务：
+  - `td task delete <ref> --yes`（仅当用户明确表示要删除任务时使用）
 
-## Add tasks
+## 添加任务
 
-Fast natural-language add:
-- `td add "Call dentist tomorrow 10am p2 #Personal"`
+- 使用自然语言快速添加任务：
+  - `td add "明天上午 10 点看牙医 #个人事务"`
 
-Or explicit add (when you need structured fields):
-- `td task add --content "..." --due "..." --priority p2 --labels "..."`
+- 或者通过结构化字段添加任务：
+  - `td task add --content "..." --due "..." --priority p2 --labels "..."`
 
-## Safety / UX
+## 安全性/用户体验
 
-- Confirm before destructive actions (delete).
-- If multiple tasks match the user’s description, ask a clarifying question (or show candidates) before updating.
-- When the user asks to add info (e.g., a phone number), put it in the **description** unless they explicitly want it in the title.
+- 在执行删除等破坏性操作前，请务必确认。
+- 如果有多个任务符合用户的描述，在更新前请询问用户以获取确认（或展示可选的任务列表）。
+- 当用户需要添加信息（例如电话号码）时，建议将其放入**描述**字段中，除非用户特别要求将其放在标题中。

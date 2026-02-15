@@ -1,36 +1,36 @@
 ---
 name: Wiki.js
-description: Deploy and manage Wiki.js documentation sites avoiding common configuration traps.
+description: 部署和管理 Wiki.js 文档网站时，请避免常见的配置错误。
 metadata: {"clawdbot":{"emoji":"📖","os":["linux","darwin","win32"]}}
 ---
 
-## Critical Initial Config
-- Site URL must be correct from first setup — changing later breaks all internal links, no easy fix
-- PostgreSQL over SQLite for any multi-user setup — SQLite locks under concurrent writes
-- HTTPS terminates at reverse proxy — Wiki.js runs HTTP internally, don't configure SSL in Wiki.js
+## 关键初始配置
+- 网站URL在首次设置时必须正确；之后更改会导致所有内部链接失效，且无法轻易修复。
+- 对于多用户环境，应使用PostgreSQL而非SQLite——因为SQLite在并发写入时会引发锁定问题。
+- HTTPS请求会在反向代理处终止；Wiki.js内部使用HTTP协议，因此无需在Wiki.js中配置SSL。
 
-## Editor Traps
-- Visual Editor uses HTML underneath — switching from Markdown loses formatting, can't switch back cleanly
-- Markdown editor is the safe default — WYSIWYG has rendering quirks and sync issues
-- Internal links require locale prefix — `[Link](/en/path/to/page)` not just `/path/to/page`
+## 编辑器相关问题
+- 视觉编辑器实际上使用的是HTML格式；从Markdown格式切换回来后，格式可能会丢失，且无法完美恢复。
+- Markdown编辑器是更安全的默认选择——WYSIWYG编辑器存在渲染异常和同步问题。
+- 内部链接需要添加特定的前缀（例如：`[链接](/en/path/to/page)`，而不仅仅是`/path/to/page`）。
 
-## Permission Pitfalls
-- Deny rules take precedence over allow — overlapping patterns cause unexpected lockouts
-- Page rules use path patterns — `/engineering/*` covers subpages, `/engineering` is exact match only
-- Default "Users" group applies to all new accounts — configure before inviting users
+## 权限设置注意事项
+- 拒绝规则优先于允许规则；规则之间的重叠可能导致用户被意外锁定。
+- 页面权限规则使用路径模式——`/engineering/*`会匹配子页面，而`/engineering`仅匹配该页面本身。
+- 默认的“Users”组适用于所有新创建的用户账户；在邀请用户之前请先配置好权限设置。
 
-## Storage and Sync
-- Git sync is one-way by default — Wiki.js to Git only, external edits don't sync back
-- Asset storage in database bloats backups — use S3/GCS for images on larger wikis
-- Database backup IS the complete backup — all content, users, permissions stored there
+## 存储与同步
+- Git同步默认是单向的（仅从Wiki.js同步到Git，外部编辑不会反向同步到Wiki.js）。
+- 如果维基站点内容较多，建议使用S3或GCS来存储图片文件，以避免数据库膨胀。
+- 数据库备份即代表整个系统的备份（包括所有内容、用户信息和权限设置）。
 
-## Search Behavior
-- Search respects permissions — users don't find pages they can't access (can cause confusion)
-- Search index rebuilds automatically — large imports need patience, no manual trigger helps
-- Elasticsearch optional — built-in DB search works but lacks relevance ranking
+## 搜索功能
+- 搜索功能会考虑用户的权限设置；用户无法访问的页面将不会显示在搜索结果中（这可能会引起混淆）。
+- 搜索索引会自动重建；大量内容的导入需要耐心等待，系统不会提供手动触发重建的选项。
+- 可以选择使用Elasticsearch作为搜索引擎；虽然内置的数据库搜索功能可用，但缺乏相关性排序功能。
 
-## Troubleshooting Specifics
-- Login redirect loops — almost always HTTPS/HTTP mismatch in Site URL config
-- Assets not loading — Site URL doesn't match actual access URL
-- Page shows 404 after creation — special characters in path, use lowercase alphanumeric
-- Slow after import — search reindexing in progress, wait or check Admin > Utilities
+## 常见故障排除方法
+- 登录重定向循环问题：几乎总是由于网站URL配置中的HTTPS/HTTP协议不匹配引起的。
+- 资源文件无法加载：可能是网站URL与实际访问地址不一致。
+- 页面创建后显示404错误：可能是路径中包含特殊字符，请使用小写字母和数字组成路径。
+- 导入内容后系统运行缓慢：可能是由于搜索索引正在重建中，请稍等或通过“管理” > “工具”查看进度。

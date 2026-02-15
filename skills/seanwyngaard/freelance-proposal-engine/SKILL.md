@@ -1,52 +1,52 @@
 ---
 name: freelance-proposal-engine
-description: Generate tailored freelance proposals for Upwork, Fiverr, Freelancer, and PeoplePerHour job listings. Use when writing proposals, bidding on gigs, or responding to client job posts.
+description: 为 Upwork、Fiverr、Freelancer 和 PeoplePerHour 等平台上的工作列表生成定制的 freelance 提案。在撰写提案、竞标项目或回复客户的工作发布时使用这些提案。
 argument-hint: "[job-description-or-url]"
 allowed-tools: Read, Write, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 
-# Freelance Proposal Engine
+# 自由职业提案生成工具
 
-Generate high-converting freelance proposals tailored to specific job listings. This skill analyzes client needs, identifies pain points, and crafts proposals that win work.
+该工具能够根据具体的职位招聘信息生成具有高转化率的自由职业提案。它能够分析客户需求、识别潜在问题，并制定出能够赢得项目的提案。
 
-## How to Use
+## 使用方法
 
-Provide the job listing in one of these ways:
-- Paste the full job description as `$ARGUMENTS`
-- Provide a URL to the listing (Upwork, Fiverr, Freelancer, etc.)
-- Provide a file path containing the job description
+请通过以下方式提供职位招聘信息：
+- 将完整的职位描述粘贴为 `$ARGUMENTS`
+- 提供招聘信息的网址（例如 Upwork、Fiverr、Freelancer 等）
+- 提供包含职位描述的文件路径
 
-## Proposal Generation Process
+## 提案生成流程
 
-Follow these steps exactly:
+请严格按照以下步骤操作：
 
-### Step 1: Analyze the Job Listing
+### 第一步：分析职位招聘信息
 
-Extract and identify:
-- **Client pain points**: What problem are they trying to solve?
-- **Explicit requirements**: Skills, deliverables, timeline mentioned
-- **Implicit requirements**: What they need but didn't say (read between the lines)
-- **Budget signals**: Fixed price vs hourly, budget range if stated
-- **Red flags**: Unrealistic expectations, scope creep potential, low budget
-- **Client experience level**: First-time poster vs experienced buyer (review count, hire rate if visible)
-- **Keywords**: Technical terms and buzzwords the client uses (mirror these back)
+提取并识别以下内容：
+- **客户的痛点**：他们试图解决什么问题？
+- **明确的要求**：提到的技能、交付成果和时间表
+- **隐含的要求**：他们实际需要但未明确表达的内容（需要从描述中推断出来）
+- **预算情况**：是固定价格还是按小时计费？如果有预算范围，请一并说明
+- **风险提示**：不切实际的期望、项目范围可能扩大、预算过低
+- **客户的经验水平**：是首次发布招聘信息还是经验丰富的买家（可以通过查看评论数量或招聘频率来判断）
+- **关键词**：客户使用的专业术语和流行词汇（在提案中也要体现这些关键词）
 
-### Step 2: Determine Proposal Strategy
+### 第二步：确定提案策略
 
-Based on analysis, select the approach:
+根据分析结果，选择合适的策略：
 
-| Client Type | Strategy |
+| 客户类型 | 策略 |
 |-------------|----------|
-| First-time buyer | Reassure, explain process, offer milestone-based payment |
-| Experienced buyer | Be concise, lead with results, reference similar past work |
-| Technical client | Use precise technical language, skip fluff |
-| Non-technical client | Translate tech into business outcomes |
-| Urgent project | Lead with availability and fast turnaround |
-| Budget-conscious | Emphasize value, suggest MVP/phased approach |
+| 首次购买者 | 安抚客户、解释工作流程、提供分阶段付款方案 |
+| 经验丰富的买家 | 简明扼要地介绍方案、列举过往类似项目的成果 |
+| 技术型客户 | 使用专业的技术术语，避免冗余内容 |
+| 非技术型客户 | 将技术细节转化为可理解的业务成果 |
+| 紧急项目 | 强调自己的可用性和快速响应能力 |
+| 注重预算的客户 | 强调提案的价值，建议采用 MVP（最小可行产品）或分阶段交付的方式 |
 
-### Step 3: Generate the Proposal
+### 第三步：生成提案
 
-Use this structure:
+使用以下结构来编写提案：
 
 ```
 **Opening Hook** (1-2 sentences)
@@ -76,59 +76,60 @@ Use this structure:
 - Keep it conversational
 ```
 
-### Step 4: Pricing Recommendation
+### 第四步：定价建议
 
-Based on the job analysis, suggest:
-- **Your recommended rate** (based on market data and complexity)
-- **Rate justification** (1 sentence)
-- **Alternative pricing**: If the budget seems low, suggest a phased approach or reduced scope
+根据对项目的分析，提出以下建议：
+- **您推荐的收费标准**（基于市场数据和项目复杂度）
+- **收费理由**（用一句话说明）
+- **替代定价方案**：如果预算较低，建议采用分阶段交付或调整项目范围
 
-Use these market rate guidelines:
-| Service | Beginner | Mid-Level | Expert |
+以下是参考的市场收费标准：
+| 服务类型 | 初级 | 中级 | 专家 |
 |---------|----------|-----------|--------|
-| Web Development | $25-40/hr | $50-100/hr | $100-200/hr |
-| Content Writing | $0.05-0.10/word | $0.10-0.25/word | $0.25-1.00/word |
-| SEO | $30-50/hr | $75-150/hr | $150-300/hr |
-| Web Scraping | $20-40/hr | $50-100/hr | $100-200/hr |
-| Design | $25-50/hr | $50-100/hr | $100-250/hr |
-| Data Analysis | $30-50/hr | $60-120/hr | $120-250/hr |
-| Email Marketing | $25-40/hr | $50-100/hr | $100-200/hr |
-| Social Media | $20-35/hr | $40-80/hr | $80-150/hr |
+| 网页开发 | $25-40/小时 | $50-100/小时 | $100-200/小时 |
+| 内容写作 | $0.05-0.10/字 | $0.10-0.25/字 | $0.25-1.00/字 |
+| SEO | $30-50/小时 | $75-150/小时 | $150-300/小时 |
+| 网页抓取 | $20-40/小时 | $50-100/小时 | $100-200/小时 |
+| 设计 | $25-50/小时 | $50-100/小时 | $100-250/小时 |
+| 数据分析 | $30-50/小时 | $60-120/小时 | $120-250/小时 |
+| 电子邮件营销 | $25-40/小时 | $50-100/小时 | $100-200/小时 |
+| 社交媒体营销 | $20-35/小时 | $40-80/小时 | $80-150/小时 |
 
-### Step 5: Output
+### 第五步：输出提案
 
-Generate the proposal in a clean, copy-paste-ready format. Also provide:
-- **Platform-specific tips** (e.g., Upwork: keep under 300 words, Fiverr: focus on deliverables)
-- **Questions to ask the client** (2-3 clarifying questions that show expertise)
-- **Follow-up message template** (for 48hrs after if no response)
+生成一份格式清晰、可直接复制的提案。同时提供以下内容：
+- **针对不同平台的建议**（例如：Upwork 上的提案应控制在 300 字以内；Fiverr 上的提案应重点介绍交付成果）
+- **需要向客户提出的问题**（2-3 个能够体现专业性的问题）
+- **跟进信息模板**（如果 48 小时内没有收到回复，可以使用此模板发送消息）
 
-## Proposal Quality Rules
+## 提案质量规则
 
-1. **Never be generic**. Every sentence must reference something specific from the listing.
-2. **Never oversell**. Confidence without arrogance.
-3. **Never lie about experience**. If you lack direct experience, say "I haven't done X specifically, but I've done Y which involves the same skills."
-4. **Keep it scannable**. Clients review 20-50 proposals. Use short paragraphs and bullet points.
-5. **Word count**: 150-300 words for simple jobs, 300-500 for complex ones. Never more.
-6. **No templates phrases**: Ban "I am writing to express my interest", "I am confident that", "I look forward to hearing from you", "Dear Sir/Madam", "I have X years of experience."
+1. **切勿使用通用模板**。每句话都必须引用职位招聘信息中的具体内容。
+2. **切勿过度推销**。要表现出自信，但不要傲慢。
+3. **切勿夸大自己的经验**。如果缺乏相关经验，可以说明“虽然我没有直接做过某项具体任务，但我具备类似的技能”。
+4. **保持提案的易读性**。客户通常会查看 20-50 份提案，请使用简短的段落和项目符号。
+5. **字数要求**：简单项目 150-300 字；复杂项目 300-500 字，切勿超过这个范围。
+6. **避免使用固定模板语句**：例如 “我写这封邮件是为了表达我的兴趣”、“我有信心……”、“期待您的回复”、“尊敬的先生/女士”、“我拥有 X 年的经验” 等。
 
-## Example
+## 示例
 
-**Job listing**: "Need someone to scrape product data from 5 e-commerce sites. Need product name, price, description, images. CSV output. ~500 products per site."
+**职位招聘信息**：“需要有人从 5 个电子商务网站抓取产品数据，包括产品名称、价格、描述和图片，并生成 CSV 文件。每个网站大约有 500 个产品。”
 
-**Generated proposal**:
+**生成的提案**：
 
-> Scraping 2,500 products across 5 e-commerce sites with clean CSV output — I've done this exact type of project multiple times.
+> 我可以为您从 5 个电子商务网站抓取 2,500 个产品的数据，并生成清晰的 CSV 文件。我之前已经多次完成过类似的项目。
 >
-> Here's how I'd handle this:
+> 我的计划如下：
 >
-> - **Day 1**: Build scrapers for all 5 sites using Python + Playwright (handles JavaScript-rendered pages that simpler tools miss)
-> - **Day 2**: Run extraction, clean and normalize the data (consistent formatting across all 5 sources)
-> - **Day 3**: Deliver final CSVs with columns for product name, price, description, and image URLs
+> - **第一天**：使用 Python 和 Playwright 为所有 5 个网站编写抓取脚本（该工具能够处理那些简单工具无法处理的 JavaScript 渲染页面）
+> - **第二天**：运行抓取程序，清理并统一数据格式（确保所有来源的数据格式一致）
+> - **第三天**：交付包含产品名称、价格、描述和图片链接的 CSV 文件
 >
-> A few things that'll save you headaches: I'll handle pagination automatically, add retry logic for flaky pages, and deduplicate any products that appear in multiple categories.
+> 为避免您遇到麻烦，我会自动处理分页问题，为无法正常加载的页面设置重试机制，并删除重复的产品。
 >
-> Last month I scraped 15,000+ SKUs from three competitor sites for a retail client — delivered in 48 hours with 99.7% accuracy.
+> 上个月，我为一家零售客户从 3 个竞争对手网站抓取了 15,000 多个产品数据，仅用 48 小时就完成了任务，准确率达到 99.7%。
 >
-> Quick questions: Are any of these sites behind a login? And do you need this as a one-time scrape or recurring?
+> 请问：
+> - 这些网站是否需要登录才能访问？该项目是一次性完成还是需要定期更新？
 >
-> I can start today if the details check out.
+> 如果细节符合要求，我今天就可以开始工作。

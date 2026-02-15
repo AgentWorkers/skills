@@ -1,30 +1,30 @@
 ---
 slug: "progress-photo-analyzer"
 display_name: "Progress Photo Analyzer"
-description: "Analyze construction site photos to track progress, detect safety issues, and compare against BIM models using computer vision."
+description: "使用计算机视觉技术分析建筑工地的照片，以跟踪施工进度、检测安全隐患，并与BIM模型进行对比。"
 ---
 
-# Progress Photo Analyzer
+# 进度照片分析工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Site photos are underutilized for progress tracking:
-- Manual review is time-consuming
-- Subjective progress assessment
-- No systematic comparison to plans
-- Safety issues may be missed
+### 问题描述
+现场照片在进度跟踪方面的利用率较低：
+- 手动审核耗时较长
+- 进度评估具有主观性
+- 无法与计划进行系统性的对比
+- 可能会遗漏安全隐患
 
-### Solution
-AI-powered photo analysis system that extracts progress information, detects safety concerns, and compares site conditions to BIM models.
+### 解决方案
+基于人工智能的照片分析系统，能够提取进度信息、检测安全隐患，并将现场状况与BIM模型进行对比。
 
-### Business Value
-- **Automation** - Reduce manual photo review
-- **Accuracy** - Objective progress measurement
-- **Safety** - Automatic hazard detection
-- **Documentation** - Structured photo records
+### 商业价值
+- **自动化**：减少手动照片审核的工作量
+- **准确性**：实现客观的进度测量
+- **安全性**：自动识别潜在危险
+- **文档化**：生成结构化的照片记录
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -411,7 +411,7 @@ def analyze_site_photos(photo_files: List[str],
     return summary
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize analyzer
@@ -433,9 +433,9 @@ print(f"Detected activity: {result.progress_detections[0].work_activity.value}")
 print(f"Completion estimate: {result.progress_detections[0].completion_estimate}%")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Daily Progress Report
+### 1. 日度进度报告
 ```python
 from datetime import date
 
@@ -446,7 +446,7 @@ summary = analyzer.get_progress_summary(
 print(f"Photos analyzed today: {summary['total_photos']}")
 ```
 
-### 2. Safety Monitoring
+### 2. 安全监控
 ```python
 safety_photos = [r for r in analyzer.results.values() if r.safety_detections]
 for result in safety_photos:
@@ -454,11 +454,11 @@ for result in safety_photos:
         print(f"Safety issue: {issue.issue_type.value} - {issue.severity}")
 ```
 
-### 3. Export Analysis
+### 3. 分析结果导出
 ```python
 analyzer.export_report("photo_analysis_report.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Site Data Collection
-- **Reference**: Computer Vision for Construction
+## 参考资源
+- **DDC手册**：第4.1章 - 现场数据收集
+- **参考文献**：《建筑领域的计算机视觉技术》

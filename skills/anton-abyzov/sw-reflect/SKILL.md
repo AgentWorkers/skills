@@ -1,333 +1,201 @@
 ---
 name: reflect
-description: Self-improving AI memory system that persists learnings across sessions in skill-specific MEMORY.md files. Use when capturing corrections, remembering user preferences, or extracting patterns from successful implementations. Enables continual learning without starting from zero each conversation.
+description: 一种能够自我提升的人工智能记忆系统，该系统能够将学习成果持久保存在针对特定技能的 MEMORY.md 文件中。该系统可用于记录用户反馈、记住用户偏好，或从成功的操作中提取模式，从而实现无需每次对话都从头开始的学习过程。
 ---
 
-# Self-Improving Skills (Reflect)
+# 自我提升技能（Reflect）
 
-## Overview
+## 概述
 
-The Reflect system enables **continual learning across sessions**. Instead of starting from zero every conversation, Claude learns from corrections, successful patterns, and user preferences - persisting knowledge in **skill-specific MEMORY.md files**.
-
-```
-Session 1: User corrects button style → Reflect captures learning → saves to frontend skill
-Session 2: Claude uses correct button style without being reminded
-Session 3+: Knowledge compounds, Claude gets smarter over time
-```
+Reflect系统实现了**跨会话的持续学习**。Claude不再每次对话都从零开始学习，而是根据用户的纠正、成功的操作模式以及用户偏好进行学习——这些学习内容会被保存在**特定技能的MEMORY.md文件**中。
 
 ---
 
-## Architecture
+## 架构
 
-### Skill-Specific Memory
+### 特定技能的记忆存储
 
-Each skill has its own MEMORY.md file storing learned patterns:
+每种技能都有自己的MEMORY.md文件，用于存储学到的操作模式：
 
-```
-# Claude Code Environment
-~/.claude/plugins/marketplaces/specweave/plugins/specweave/skills/
-├── architect/
-│   ├── SKILL.md              # Skill definition
-│   └── MEMORY.md             # User learnings for this skill
-├── frontend/
-│   ├── SKILL.md
-│   └── MEMORY.md             # Frontend-specific learnings
-├── tech-lead/
-│   ├── SKILL.md
-│   └── MEMORY.md
-└── ...
+---
 
-# Non-Claude Environment (project-local)
-.specweave/plugins/specweave/skills/
-├── architect/
-│   ├── SKILL.md
-│   └── MEMORY.md
-└── ...
+### 跨平台支持
 
-# Category Memory (fallback for non-skill learnings)
-.specweave/memory/                  # Project learnings
-├── component-usage.md
-├── api-patterns.md
-├── testing.md
-├── deployment.md
-└── general.md
-
-~/.specweave/memory/                # Global learnings (all projects)
-```
-
-### Cross-Platform Support
-
-| Platform | Skills Location | Detection |
+| 平台 | 技能存储位置 | 检测方式 |
 |----------|-----------------|-----------|
-| **macOS/Linux** | `~/.claude/plugins/marketplaces/specweave/...` | `CLAUDE_CODE=1` or marketplace exists |
-| **Windows** | `%APPDATA%\Claude\plugins\marketplaces\specweave\...` | Same detection |
-| **Non-Claude** | `.specweave/plugins/specweave/skills/` | Fallback when Claude Code not detected |
+| **macOS/Linux** | `~/.claude/plugins/marketplaces/specweave/...` | `CLAUDE_CODE=1` 或 marketplace 存在 |
+| **Windows** | `%APPDATA%\Claude\plugins\marketplaces\specweave\...` | 同样的检测方式 |
+| **非Claude平台** | `.specweave/plugins/specweave/skills/` | 当未检测到Claude相关代码时使用此路径 |
 
-### Smart Memory Merging
+### 智能记忆合并
 
-When running `specweave refresh-marketplace` or `specweave init --refresh`:
-
-1. **User learnings are ALWAYS preserved** (never overwritten)
-2. **New defaults from marketplace are merged in** (deduplicated)
-3. **Backup created before merge** (`.memory-backups/`)
-
-```
-User Memory + Default Memory → Merged Memory
-    │              │                │
-    │              │                └── Both preserved, deduped
-    │              └── New patterns from marketplace
-    └── Your corrections (ALWAYS kept)
-```
+当运行 `specweave refresh-marketplace` 或 `specweave init --refresh` 时：
+1. **用户的学习内容** **始终会被保留**（不会被覆盖）。
+2. **市场中的新默认设置** 会被合并进来（并去重）。
+3. **合并前会创建备份**（保存在 `.memory-backups/` 文件中）。
 
 ---
 
-## ⚠️ CRITICAL: Learning Extraction Rules
+## ⚠️ 重要提示：学习内容的提取规则
 
-**This section is MANDATORY for Claude to follow when extracting learnings.**
+**Claude在提取学习内容时必须遵循这些规则。**
 
-### The Golden Rule
+### 重要原则
 
-**NEVER store user input verbatim. ALWAYS synthesize into actionable rules.**
+**永远不要原样存储用户的输入，而应该将其转化为可执行的规则。**
 
-### What Makes a Good Learning
+### 什么是好的学习内容？
 
-| Good Learning | Bad Learning | Why Bad |
+| 好的学习内容 | 差的学习内容 | 原因 |
 |--------------|--------------|---------|
-| `Use vi.fn() for mocks in Vitest, never jest.fn()` | `use vi.fn() for mocks in Vitest, never jest.fn()` | OK but could be improved with reasoning |
-| `Always specify npm registry to avoid auth errors with private packages` | `Always specify registry to avoid ~/` | Truncated, loses meaning |
-| `Voice dictation mangles slash commands - type manually or use clipboard` | `always command not recognized` | Raw symptom, not the learning |
-| `For API tests, use os.tmpdir() for temp files to avoid polluting project directory` | `Where should I deploy?` | This is a question, not a learning! |
-| `The /sw:increment skill requires an increment name argument` | `never used in any user pojrect based on specweave` | Gibberish from partial capture |
+| `在Vitest中使用vi.fn()进行模拟测试，而不是jest.fn()` | 可以改进，但需要添加解释 |
+| **总是指定npm仓库以避免使用私有包时的认证错误** | 信息不完整，缺乏意义 |
+| **语音输入会破坏斜杠命令的格式——请手动输入或使用剪贴板** | 这只是问题的表面现象，而非真正的学习内容 |
+| **对于API测试，使用os.tmpdir()来创建临时文件以避免污染项目目录** | 这是一个问题，而不是学习内容！ |
+| `/sw:increment技能需要一个增量名称参数** | 根据specweave的记录，从未有人使用过这个参数 | 信息不完整 |
 
-### Learning Quality Checklist (MUST PASS ALL)
+### 学习内容的质量检查标准（必须全部满足）
 
-Before storing ANY learning, verify:
+在存储任何学习内容之前，请验证：
+1. **✅ 这是一个完整的句子吗？** 不要被截断或只是片段。
+2. **✅ 这个内容具有可操作性吗？** 包含“应该做/不应该做/使用/避免/优先选择”的建议。
+3. **✅ 这个内容具体吗？** 提到具体的工具、模式、文件或概念。
+4. **✅ 这个内容可以独立理解吗？** 之后阅读的人能够理解它。
+5. **✅ 这不是一个问题吗？** 问题不属于学习内容。
+6. **✅ 这不是一个抱怨吗？** 抱怨需要经过转化。
+7. **✅ 这个内容有上下文吗？** 需要说明这条规则存在的原因，而不仅仅是内容本身。
 
-1. **✅ Is it a complete sentence?** Not truncated, not a fragment
-2. **✅ Is it actionable?** Contains DO/DON'T/USE/AVOID/PREFER
-3. **✅ Is it specific?** Names tools, patterns, files, or concepts
-4. **✅ Is it understandable standalone?** Someone reading it later would understand
-5. **✅ Is it NOT a question?** Questions are never learnings
-6. **✅ Is it NOT a complaint?** Complaints need transformation
-7. **✅ Does it have context?** WHY this rule exists, not just WHAT
+### 转化示例
 
-### Transformation Examples
-
-**User says a complaint → Claude extracts the underlying learning:**
-
-```
-USER: "When I use voice control, it always gives me 'command not recognized'"
-
-WRONG extraction:
-  - → always command not recognized
-  - → voice control gives command not recognized
-
-CORRECT extraction:
-  - → Voice dictation can mangle slash command syntax (e.g., "/sw:increment" becomes "slash S W increment"). Type commands manually or use clipboard paste for reliable execution.
-```
-
-**User makes a correction → Claude extracts the rule:**
-
-```
-USER: "No, don't use jest.fn(), we use Vitest here"
-
-WRONG extraction:
-  - → don't use jest.fn()
-
-CORRECT extraction:
-  - → Use vi.fn() not jest.fn() with Vitest testing framework. Import mocks from 'vitest' package.
-```
-
-**User approves something → Claude extracts the pattern:**
-
-```
-USER: "Perfect! That's exactly how we handle errors"
-
-WRONG extraction:
-  - → Perfect! That's exactly how we handle errors
-
-CORRECT extraction (look at WHAT was approved):
-  - → For API error responses, use { success: false, error: { code: string, message: string } } structure
-```
-
-### What to REJECT (Never Store)
-
-1. **Questions** - `"Where should I deploy?"` → NOT a learning
-2. **Fragments** - `"eplicilty how to g"` → Truncated garbage
-3. **Raw symptoms** - `"always command not recognized"` → No explanation
-4. **Duplicates** - Same rule phrased differently
-5. **Temporary context** - `"for this PR"`, `"just this time"`
-6. **Personal preferences** - Without universal applicability
-7. **Typos/gibberish** - `"user pojrect"`, `"promp"`
-
-### Memory Format Requirements
-
-Each entry MUST follow this format:
-
-```markdown
-- → {VERB} {specific action} {context/reason if helpful}
-```
-
-Or for corrections:
-```markdown
-- ✗→✓ {wrong way} → {right way} {reason}
-```
-
-**Examples of proper format:**
-```markdown
-- → Use vi.fn() for mocks in Vitest, never jest.fn()
-- → Use os.tmpdir() for test temp files, not project cwd
-- ✗→✓ Never suggest scripts/refresh-marketplace.sh to end users - use `specweave refresh-marketplace` CLI command
-- → Voice dictation mangles slash commands - type manually or paste from clipboard
-```
-
-### Extraction Process
-
-When `/sw:reflect` is invoked:
-
-1. **Scan conversation** for signals (corrections, rules, approvals, complaints)
-2. **For each signal**, apply transformation:
-   - Corrections → Extract the rule being taught
-   - Rules → Preserve the rule with context
-   - Approvals → Extract WHAT was approved (look at Claude's previous message)
-   - Complaints → Transform into actionable workaround/solution
-3. **Validate** each extraction against the quality checklist
-4. **REJECT** any that fail validation (better to store nothing than garbage)
-5. **Deduplicate** against existing memory
-6. **Store** with proper format
-
-### Self-Check Before Storing
-
-Ask yourself:
-> "If I read this learning in 6 months with no context, would it help me?"
-
-If NO → Don't store it.
-If MAYBE → Improve it until YES.
-If YES → Store it.
+**用户提出抱怨 → Claude提取出背后的学习内容：**
 
 ---
 
-## The Problem
-
-Every LLM session starts from zero:
-
-1. **Monday**: You correct Claude - "Use our primary button component, not a custom style"
-2. **Tuesday**: Claude makes the same mistake again
-3. **Wednesday**: Same correction, same frustration
-4. **Forever**: Without memory, you're repeating yourself indefinitely
-
-This manifests as:
-- Wrong naming conventions
-- Incorrect logging patterns
-- Missing input validation
-- Wrong component usage
-- Forgotten architectural decisions
+**用户进行了纠正 → Claude提取出相应的规则：**
 
 ---
 
-## The Solution
-
-Reflect analyzes sessions and persists learnings in **skill-specific MEMORY.md files**:
-
-```markdown
-# frontend skill's MEMORY.md
-
-# Skill Memory: frontend
-
-> Auto-generated by SpecWeave Reflect v4.0
-> Last updated: 2026-01-06T10:30:00Z
-> Skill: frontend
-
-## Learned Patterns
-
-### LRN-20260106-A1B2 (correction, high)
-**Content**: Always use `<Button variant='primary'>` from `@/components/ui/button` for primary actions. Never create custom button styles.
-**Context**: User corrected button component usage in settings page
-**Triggers**: button, primary, action, component
-**Added**: 2026-01-06
-**Source**: session:2026-01-06
-```
-
-**Key benefit**: Learnings are stored with the skill they apply to, automatically loaded when that skill activates.
+**用户表示同意 → Claude提取出操作模式：**
 
 ---
 
-## How It Works
+### 什么内容应该被拒绝（永远不要存储）：
 
-### 1. Signal Detection (ENHANCED - v4.1)
+1. **问题** - 如 “我应该在哪里部署？” → 不属于学习内容。
+2. **片段** - 如 “eplicilty how to g” → 被截断的、无意义的垃圾信息。
+3. **原始问题描述** - 如 “always command not recognized” → 没有解释原因。
+4. **重复的内容** - 用不同的方式表达的相同规则。
+5. **临时性的上下文** - 如 “for this PR” 或 “just this time”。
+6. **个人偏好** - 没有普遍适用性。
+7. **拼写错误或无意义的文字** - 如 “user pojrect” 或 “promp”。
 
-Reflect identifies signals in conversation and **captures FULL context**:
+### 记忆格式要求
 
-**⚠️ CRITICAL: Context Must Include the PROBLEM, Not Just the Fix**
-
-When a user explains a problem like:
-```
-User: "When I use voice control, it always gives me 'command not recognized'"
-```
-
-The system MUST capture:
-- **CONTEXT**: "When using voice control with skill commands" (the circumstance)
-- **LEARNING**: "Voice dictation can mangle command syntax - type commands or use clipboard" (the fix)
-- **SKILL**: If a skill name is mentioned (e.g., "the detector skill"), route there
-
-**DO NOT** store just: `"always command not recognized"` ← This loses all meaning!
+每个条目都必须遵循以下格式：
 
 ---
 
-**Corrections (High Confidence)**
-```
-User: "No, don't use that button. Use our <Button variant='primary'> component."
-      → CONTEXT: User corrected button component usage in settings page
-      → LEARNING: Always use Button component with variant='primary' from design system
-      → SKILL: frontend (auto-detected)
-      → CONFIDENCE: high
-```
+或者对于纠正内容：
 
-**Rules (High Confidence)**
-```
-User: "Always use the logger module instead of console.log"
-      → CONTEXT: User established logging convention for the project
-      → LEARNING: Use logger module for all logging, never console.log
-      → SKILL: tech-lead (auto-detected)
-      → CONFIDENCE: high
-```
+---
 
-**Problem Reports (High Confidence) - NEW!**
-```
-User: "The detector skill doesn't recognize commands when I use voice input"
-      → CONTEXT: Voice dictation causes command parsing issues
-      → LEARNING: Voice input mangles command syntax - recommend typing or clipboard
-      → SKILL: detector (explicit skill name detected!)
-      → CONFIDENCE: high
-```
+**正确格式的示例：**
 
-**Approvals (Medium Confidence)**
-```
-User: "Perfect! That's exactly how our API patterns should look."
-      → CONTEXT: User approved API response structure pattern
-      → LEARNING: Continue using this API pattern structure with status, data, error fields
-      → SKILL: backend (auto-detected)
-      → CONFIDENCE: medium
-```
+---
 
-### 2. Skill Auto-Detection (ENHANCED - v4.1)
+### 提取过程
 
-Learnings are routed using a **priority-based detection system**:
+当调用 `/sw:reflect` 时：
+1. **扫描对话内容**，寻找纠正、规则、同意或抱怨等信号。
+2. **对于每个信号**，执行以下操作：
+   - 纠正内容 → 提取被教授的规则。
+   - 规则 → 保留规则及其上下文。
+   - 同意内容 → 提取用户同意的具体内容（参考Claude之前的消息）。
+   - 抱怨内容 → 转化为可操作的解决方案。
+3. **根据质量检查标准验证** 每条提取的内容。
+4. **拒绝** 任何不符合标准的条目（宁愿不存储任何内容也不存储垃圾信息）。
+5. **与现有记忆内容进行去重**。
+6. **以正确的格式存储**。
 
-#### Priority 1: Explicit Skill Name Mention (Highest Priority)
-If the user mentions a skill by name, route directly to that skill:
-```
-"the detector skill doesn't work" → detector skill
-"increment-planner has a bug" → increment-planner skill
-"service-connect is failing" → service-connect skill
-```
+### 存储前的自我检查
 
-**Detection pattern**: `(the\s+)?(\w+[-\w]*)\s+(skill|command|agent)`
+问自己：
+> “如果6个月后我在没有上下文的情况下阅读这条学习内容，它还能帮助我吗？”
 
-#### Priority 2: Keyword-Based Detection
-If no explicit skill is mentioned, use keyword matching:
+如果不能 → 不要存储它。
+如果可能有帮助 → 改进它，直到可以存储为止。
+如果确实有帮助 → 再存储它。
 
-| Skill | Keywords |
+---
+
+## 问题
+
+每个大型语言模型（LLM）的会话都是从零开始的：
+
+1. **周一**：你纠正Claude：“使用我们的主按钮组件，而不是自定义样式。”
+2. **周二**：Claude再次犯同样的错误。
+3. **周三**：同样的纠正，同样的挫败感。
+4. **永远如此**：如果没有记忆记录，你会无休止地重复同样的错误。
+
+这会导致以下问题：
+- 错误的命名规范。
+- 不正确的日志记录模式。
+- 缺乏输入验证。
+- 错误的组件使用方式。
+- 忘记了之前的架构决策。
+
+---
+
+## 解决方案
+
+Reflect系统会分析会话内容，并将学习内容保存在**特定技能的MEMORY.md文件**中：
+
+---
+
+## 工作原理
+
+### 1. 信号检测（增强版 - v4.1）
+
+Reflect能够识别对话中的信号，并**捕获完整的上下文**：
+
+**⚠️ 重要提示：上下文必须包括问题本身，而不仅仅是解决方法**
+
+当用户解释一个问题时，系统必须记录：
+- **上下文**：例如 “在使用语音控制命令时”。
+- **学习内容**：例如 “语音输入会破坏命令的格式——请手动输入命令或使用剪贴板”。
+- **技能**：如果提到了某个技能名称（例如 “detector技能”，则将其相关内容存储到对应的技能文件中。
+
+**注意**：**不要只存储像 “always command not recognized” 这样的信息**，因为这样的信息没有实际意义！
+
+---
+
+**高置信度的纠正内容**
+---
+
+**高置信度的规则**
+---
+
+**高置信度的问题报告**
+---
+
+**中等置信度的同意内容**
+---
+
+### 2. 技能自动检测（增强版 - v4.1）
+
+学习内容的路由基于**优先级系统**：
+
+#### 优先级1：明确提及技能名称（最高优先级）
+如果用户明确提到了技能名称，直接将其相关内容存储到该技能的文件中：
+
+---
+
+**检测模式**：`(the\s+)?(\w+[-\w]*)\s+(skill|command|agent)`
+
+#### 优先级2：基于关键词的检测
+如果未明确提及技能名称，使用关键词进行匹配：
+
+| 技能 | 关键词 |
 |-------|----------|
 | `architect` | architecture, system design, adr, microservices, api design, schema |
 | `tech-lead` | code review, best practices, refactoring, technical debt, solid |
@@ -342,476 +210,6406 @@ If no explicit skill is mentioned, use keyword matching:
 | `performance` | performance, optimization, profiling, caching, latency |
 | `docs-writer` | documentation, readme, api docs, technical writing |
 
-#### Priority 3: Category Fallback
-If no skill matches, route to category memory (`.specweave/memory/{category}.md`)
+#### 优先级3：类别回退
+如果没有匹配到具体的技能，将内容存储到对应的类别记忆文件中（`.specweave/memory/{category}.md`）。
 
-### 3. Learning Format
+### 3. 学习内容的格式
 
-Each learning is structured:
-
-```typescript
-interface Learning {
-  id: string;           // LRN-YYYYMMDD-XXXX
-  timestamp: string;    // ISO 8601
-  type: 'correction' | 'rule' | 'approval';
-  confidence: 'high' | 'medium' | 'low';
-  content: string;      // The actual learning
-  context?: string;     // What triggered it
-  triggers: string[];   // Keywords for matching
-  source: string;       // session:YYYY-MM-DD
-}
-```
-
-### 4. Memory Persistence
-
-Learnings are written to skill-specific MEMORY.md files:
-
-```markdown
-# Skill Memory: frontend
-
-> Auto-generated by SpecWeave Reflect v4.0
-> Last updated: 2026-01-06T10:30:00Z
-> Skill: frontend
-
-## Learned Patterns
-
-### LRN-20260106-A1B2 (correction, high)
-**Content**: Always use `<Button variant='primary'>` from design system
-**Context**: User corrected button usage
-**Triggers**: button, primary, component
-**Added**: 2026-01-06
-**Source**: session:2026-01-06
-
-### LRN-20260105-C3D4 (rule, high)
-**Content**: Use PascalCase for component files: `UserProfile.tsx`
-**Triggers**: component, naming, file, tsx
-**Added**: 2026-01-05
-**Source**: session:2026-01-05
-```
+每个学习内容都有固定的格式：
 
 ---
 
-## Usage
+### 4. 记忆内容的持久化
 
-### Manual Reflection
+学习内容会被写入到特定技能的MEMORY.md文件中：
 
-After completing work, manually trigger reflection:
+---
 
-```bash
-# Reflect on current session (auto-detects skills)
-/sw:reflect
+## 使用方法
 
-# Reflect targeting a specific skill
-/sw:reflect --skill frontend
+### 手动触发反思
 
-# Reflect with focus prompt
-/sw:reflect "Focus on the database query patterns we discussed"
-```
+完成工作后，可以手动触发反思过程：
 
-### Skill-Specific Reflection
+---
 
-Route learnings directly to a skill:
+### 直接将学习内容关联到特定技能
 
-```bash
-# Add learning to frontend skill
-/sw:reflect --skill frontend "Always use shadcn Button component"
+---
 
-# Add learning to testing skill
-/sw:reflect --skill testing "Use vi.fn() not jest.fn() with Vitest"
+### 查看技能记忆记录
 
-# Add learning to architect skill
-/sw:reflect --skill architect "Prefer event-driven over request-response"
-```
+---
 
-### View Skill Memories
+### 显示状态信息（用于 `/sw:reflect-status`）
 
-```bash
-# List all skills with memory counts
-/sw:reflect-status
+在生成反思状态信息时，遵循以下格式：
 
-# View specific skill's learnings
-cat ~/.claude/plugins/marketplaces/specweave/plugins/specweave/skills/frontend/MEMORY.md
-```
+#### 第1部分：配置（与之前相同）
+显示反思功能的启用状态、自动反射的设置、日期以及阈值。
 
-### Status Dashboard Output (for `/sw:reflect-status`)
+#### 第2部分：**学习重点** - 反思学到了什么
 
-When generating the reflect status dashboard, follow this enhanced format:
+**重要提示**：这部分必须清楚地显示每个类别学到了什么内容。
 
-#### Section 1: Configuration (as before)
-Show reflection enabled status, auto-reflect, dates, thresholds.
+对于`.specweave/memory/`目录下的每个记忆文件：
+1. **统计学习内容的数量**（以 `-` 或 `- ✗→✓` 开头的行）。
+2. **计算占总学习内容的百分比**。
+3. **生成可视化条形图**（10个块：`■` 表示已记录的内容，`□` 表示未记录的内容）。
+4. **添加说明**，解释该类别记录了哪些内容。
 
-#### Section 2: 🎯 LEARNING FOCUS - What Reflection Learns
+**格式示例**：
 
-**CRITICAL**: This section must clearly show **WHAT** each category learns.
+---
 
-For each memory file in `.specweave/memory/`:
-1. **Count learnings** (lines starting with `- ` or `- ✗→✓`)
-2. **Calculate percentage** of total learnings
-3. **Generate visual bar** (10 blocks: `■` for filled, `□` for empty)
-4. **Add description** explaining what this category captures
+**类别说明**（使用以下具体描述）：
 
-**Format**:
-```
-Project Skills (.specweave/memory/):
-  • general.md         12 learnings  ■■■■■■□□□□ 40%
-    └─ Project conventions, file organization, tooling preferences
-
-  • testing.md          8 learnings  ■■■■□□□□□□ 27%
-    └─ Test patterns, mocking, framework usage (Vitest, Playwright)
-```
-
-**Category Descriptions** (use these exact descriptions):
-
-| File | Description |
+| 文件 | 说明 |
 |------|-------------|
-| `general.md` | Project conventions, file organization, tooling preferences |
-| `testing.md` | Test patterns, mocking, framework usage (Vitest, Playwright) |
-| `api-patterns.md` | API design, endpoint patterns, REST/GraphQL conventions |
-| `database.md` | Query patterns, schema design, ORM usage, migrations |
-| `git.md` | Commit messages, branching, Git workflows |
-| `logging.md` | Logger usage, log levels, structured logging |
-| `component-usage.md` | UI component patterns, styling, component composition |
-| `deployment.md` | Deploy commands, CI/CD, service configuration |
-| `security.md` | Auth patterns, validation, secrets management |
-| `structure.md` | File/module organization, import patterns |
+| `general.md` | 项目规范、文件组织结构、工具偏好设置 |
+| `testing.md` | 测试模式、模拟测试、框架使用（Vitest、Playwright） |
+| `api-patterns.md` | API设计、端点设计、REST/GraphQL规范 |
+| `database.md` | 查询模式、数据库模式、ORM使用、数据迁移 |
+| `git.md` | 提交信息、分支管理、Git工作流程 |
+| `logging.md` | 日志记录工具的使用、日志级别、结构化日志记录 |
+| `component-usage.md` | UI组件模式、样式设计、组件组合方式 |
+| `deployment.md` | 部署命令、CI/CD流程、服务配置 |
+| `security.md` | 认证模式、验证规则、密钥管理 |
+| `structure.md` | 文件/模块的组织结构、导入规则 |
 
-#### Section 3: Recent Activity
+#### 第3部分：最近的活动
 
-Show last modified file and extract recent learnings with confidence levels.
+显示最近修改的文件以及对应的置信度较高的学习内容。
 
-#### Section 4: Commands
+#### 第4部分：命令列表
 
-Show available commands with context-aware hints (e.g., "already on" when enabled).
+显示可用的命令，并提供上下文相关的提示（例如，如果功能已启用，则会显示 “already on”）。
 
-#### Section 5: Summary Paragraph
+#### 第5部分：总结段落**
 
-End with a plain English summary like:
-```
-The reflection system is actively learning from your corrections. Auto-reflection
-is enabled, so learnings will be automatically captured when you end sessions.
-
-You have 30 learnings across 5 categories with recent activity in general
-project rules and API patterns.
-```
-
-### Automatic Reflection
-
-Enable auto-reflection on session end:
-
-```bash
-# Enable automatic reflection (via stop hook)
-/sw:reflect-on
-
-# Disable automatic reflection
-/sw:reflect-off
-
-# Check reflection status
-/sw:reflect-status
-```
-
-When enabled, the stop hook automatically:
-1. Analyzes the session transcript
-2. Extracts corrections and approvals
-3. Auto-detects relevant skills
-4. Updates skill MEMORY.md files
-5. Falls back to category memory for non-skill learnings
+以简单的英文段落作为结尾：
 
 ---
 
-## Memory Merging During Updates
+### 自动触发反思
 
-### What Happens on `specweave refresh-marketplace`
+在会话结束时启用自动反思功能：
 
-1. **Step 1**: Download latest marketplace
-2. **Step 2**: Install plugins
-3. **Step 3**: Copy skills to installed location
-4. **Step 4**: **Merge skill memories**
-   - Reads user's existing MEMORY.md files
-   - Reads any new default learnings from marketplace
-   - Merges: user learnings + new defaults (deduplicated)
-   - Writes merged result
-   - Creates backup in `.memory-backups/`
-5. **Step 5**: Update instruction files
+---
 
-### Merge Rules
+启用此功能后，系统会自动执行以下操作：
+1. 分析会话记录。
+2. 提取用户的纠正内容和同意内容。
+3. 自动检测相关的技能。
+4. 更新相应的技能记忆文件。
+5. 对于非技能相关的学习内容，会回退到类别记忆文件中。
 
-| Scenario | Result |
+---
+
+## 更新过程中的记忆合并
+
+### 在执行 `specweave refresh-marketplace` 时会发生什么
+
+1. **步骤1**：下载最新的市场数据。
+2. **步骤2**：安装插件。
+3. **步骤3**：将技能相关的内容复制到已安装的位置。
+4. **步骤4**：合并用户的记忆文件和市场中的新默认设置：
+   - 读取用户现有的MEMORY.md文件。
+   - 读取市场中的新默认设置。
+   - 合并用户的学习内容和新默认设置（去重处理）。
+   - 生成合并后的结果。
+   - 在`.memory-backups/`文件夹中创建备份。
+5. **步骤5**：更新相关指令文件。
+
+### 合并规则
+
+| 情况 | 结果 |
 |----------|--------|
-| User has learning, marketplace doesn't | **User learning preserved** |
-| Marketplace has learning, user doesn't | **Learning added** |
-| Both have similar learning | **User's version kept** (deduplication) |
-| Both have different learnings | **Both kept** |
+| 用户有学习内容，市场没有 | **保留用户的学习内容** |
+| 市场有学习内容，用户没有 | **添加市场的学习内容** |
+| 两者都有类似的学习内容 | **保留用户的版本**（进行去重处理） |
+| 两者学习内容不同 | **保留两者的内容** |
 
-### Deduplication Strategy
+### 去重策略
 
-Learnings are considered duplicates if:
-- Content is substring of the other (>50% overlap)
-- Triggers have >50% keyword overlap
-- Same ID (exact match)
-
----
-
-## Configuration
-
-### Global Settings
-
-In `~/.claude/settings.json`:
-
-```json
-{
-  "reflect": {
-    "enabled": true,
-    "autoReflect": false,
-    "confidenceThreshold": "medium",
-    "maxLearningsPerSession": 10,
-    "maxLearningsPerSkill": 50
-  }
-}
-```
-
-### Project Settings
-
-In `.specweave/config.json`:
-
-```json
-{
-  "reflect": {
-    "enabled": true,
-    "autoReflect": true,
-    "categories": [
-      "component-usage",
-      "api-patterns",
-      "testing",
-      "deployment",
-      "security",
-      "database"
-    ]
-  }
-}
-```
+如果满足以下条件，学习内容被视为重复内容：
+- 内容是另一条内容的子字符串（重叠比例超过50%）。
+- 触发条件有超过50%的关键词重叠。
+- ID完全相同。
 
 ---
 
-## Confidence Levels
+## 配置设置
 
-| Level | Signal Type | Example | Action |
+### 全局设置
+
+在 `~/.claude/settings.json` 文件中：
+
+---
+
+### 项目级设置
+
+在 `.specweave/config.json` 文件中：
+
+---
+
+## 相信度级别
+
+| 级别 | 信号类型 | 例子 | 处理方式 |
 |-------|------------|---------|--------|
-| **High** | Explicit correction | "No, use X instead of Y" | Auto-add to skill memory |
-| **High** | Explicit rule | "Always do X" | Auto-add to skill memory |
-| **Medium** | Approval/confirmation | "Perfect!" | Add with lower priority |
-| **Low** | Observation | Pattern worked well | Queue for review |
+| **高** | 明确的纠正内容 | “不，使用X而不是Y” | 自动添加到技能记忆文件中 |
+| **高** | 明确的规则 | “总是使用X” | 自动添加到技能记忆文件中 |
+| **中等** | 同意或确认 | “太棒了！” | 以较低的优先级添加到记忆文件中 |
+| **低** | 观察到的行为 | 模式有效 | 放入待审核列表 |
 
 ---
 
-## Category Fallback
+## 当学习内容无法匹配任何技能时，会将其存储到类别记忆文件中
 
-When a learning doesn't match any skill, it goes to category memory:
+如果学习内容无法匹配到任何技能，它会被存储到对应的类别记忆文件中：
 
-| Category | Description | Triggers |
+| 类别 | 说明 | 触发条件 |
 |----------|-------------|----------|
-| `component-usage` | UI component patterns | button, component, ui, style |
-| `api-patterns` | API design and endpoints | api, endpoint, route, rest |
-| `database` | Query patterns, schema | query, database, sql, schema |
-| `testing` | Test patterns and coverage | test, spec, coverage, mock |
-| `deployment` | Deploy commands and config | deploy, wrangler, vercel, ci |
-| `security` | Auth, validation, secrets | auth, security, validation |
-| `structure` | File/module organization | file, path, import, module |
-| `general` | Everything else | (fallback) |
+| `component-usage` | UI组件模式 | button, component, ui, style |
+| `api-patterns` | API设计和端点 | api, endpoint, route, rest |
+| `database` | 查询模式、数据库模式 | query, database, sql, schema |
+| `testing` | 测试模式和覆盖率 | test, spec, coverage, mock |
+| `deployment` | 部署命令和配置 | deploy, wrangler, vercel, ci |
+| `security` | 认证、验证、密钥管理 | auth, security, validation |
+| `structure` | 文件/模块组织结构 | file, path, import, module |
 
-Category memory location:
-- **Project**: `.specweave/memory/{category}.md`
-- **Global**: `~/.specweave/memory/{category}.md`
-
----
-
-## Integration with Auto Mode
-
-When `/sw:auto` runs with reflection enabled:
-
-```
-1. Start auto session
-      ↓
-2. Claude executes tasks
-      ↓
-3. User makes corrections (if any)
-      ↓
-4. Session completes (all tasks done)
-      ↓
-5. Stop hook triggers
-      ↓
-6. Reflect analyzes transcript
-      ↓
-7. Skills auto-detected from learnings
-      ↓
-8. MEMORY.md files updated per skill
-      ↓
-9. Session ends with summary
-```
+类别记忆文件的存放位置：
+- **项目级**：`.specweave/memory/{category}.md`
+- **全局级**：`~/.specweave/memory/{category}.md`
 
 ---
 
-## API Reference (TypeScript)
+## 与自动模式集成
 
-```typescript
-import {
-  // Path resolution
-  getSkillsDirectory,
-  getSkillMemoryPath,
-  listSkills,
-  skillExists,
-  isClaudeCodeEnvironment,
-
-  // Memory operations
-  readMemoryFile,
-  writeMemoryFile,
-  addLearning,
-  mergeMemoryFiles,
-
-  // Reflection management
-  detectSkill,
-  processSignals,
-  reflectOnSkill,
-  getSkillLearnings,
-  getReflectionStats,
-} from 'specweave/core/reflection';
-
-// Add learning to a skill
-reflectOnSkill('frontend', [
-  { content: 'Use Button component from design system', type: 'correction' }
-]);
-
-// Get all learnings for a skill
-const learnings = getSkillLearnings('frontend');
-
-// Get stats across all skills
-const stats = getReflectionStats();
-console.log(`Total learnings: ${stats.totalLearnings}`);
-```
+当 `/sw:auto` 启用反射功能时：
 
 ---
 
-## Best Practices
-
-### For Corrections
-
-**Good corrections (high signal)**:
-```
-"Never use that approach. Always use X because..."
-"Don't create custom components. We have a design system..."
-"Wrong pattern. The correct way is..."
-```
-
-**Weak corrections (low signal)**:
-```
-"Hmm, maybe try something else?"
-"That doesn't look quite right"
-```
-
-### For Approvals
-
-**Strong approval (captured)**:
-```
-"Perfect! That's exactly how we do it."
-"This is the right pattern, well done."
-"Yes, always follow this approach."
-```
-
-**Neutral (not captured)**:
-```
-"OK"
-"Sure"
-"Proceed"
-```
-
-### Memory Organization
-
-1. **Skill-specific** learnings go to skill's MEMORY.md
-2. **Category** learnings go to `.specweave/memory/{category}.md`
-3. **Global** learnings go to `~/.specweave/memory/`
+## API参考（TypeScript）
 
 ---
 
-## Privacy & Security
+## 最佳实践
 
-- Memory files contain only **patterns and learnings**, not raw conversation
-- No sensitive data (credentials, keys) is ever stored
-- Memory files can be gitignored if needed
-- Clear commands available:
-  - `/sw:reflect-clear` - Clear all learnings
-  - `/sw:reflect-clear --skill frontend` - Clear specific skill
-  - `/sw:reflect-clear --learning LRN-XXX` - Remove specific learning
+### 对于纠正内容
+
+**有效的纠正内容（高置信度）**：
 
 ---
 
-## Troubleshooting
+**效果较差的纠正内容（低置信度）**：
 
-### Learnings Not Persisting
+---
 
-1. Check reflection is enabled: `/sw:reflect-status`
-2. Verify skills directory exists:
-   ```bash
-   # Claude Code
-   ls ~/.claude/plugins/marketplaces/specweave/plugins/specweave/skills/
+### 对于用户的同意或否定反馈
 
-   # Non-Claude
-   ls .specweave/plugins/specweave/skills/
+**被准确记录的同意内容**：
+
+---
+
+### 记忆内容的组织结构
+
+1. **特定技能的学习内容** 被存储在对应的技能记忆文件中。
+2. **类别相关的学习内容** 被存储在 `.specweave/memory/{category}.md` 文件中。
+3. **全局性的学习内容** 被存储在 `~/.specweave/memory/` 目录下。
+
+---
+
+## 隐私与安全
+
+- 记忆文件中只包含**模式和学习内容**，不包含原始对话记录。
+- 从不存储任何敏感数据（如凭据或密钥）。
+- 如果需要，可以通过命令清除记忆文件：
+  - `/sw:reflect-clear` - 清除所有学习内容。
+  - `/sw:reflect-clear --skill frontend` - 清除特定技能的相关内容。
+  - `/sw:reflect-clear --learning LRN-XXX` - 清除特定的学习内容。
+
+---
+
+## 故障排除
+
+### 学习内容未保存
+
+1. 检查是否启用了反思功能：`/sw:reflect-status`。
+2. 确认技能相关的目录是否存在：
    ```
-3. Check file permissions
-4. Review logs: `.specweave/logs/reflect/`
-
-### Wrong Skill Detection
-
-Force routing to specific skill:
-```bash
-/sw:reflect --skill frontend "Use Button component"
-```
-
-### Memory Not Loading
-
-1. Verify MEMORY.md exists for the skill
-2. Check skill is activated (keywords match)
-3. Restart Claude Code after marketplace refresh
-
-### Rollback a Learning
-
-```bash
-# View backup
-ls ~/.claude/plugins/.../skills/frontend/.memory-backups/
-
-# Restore from backup
-cp ~/.claude/plugins/.../skills/frontend/.memory-backups/MEMORY-2026-01-05T10-30-00.md \
-   ~/.claude/plugins/.../skills/frontend/MEMORY.md
-```
-
----
-
-## Migration from v3.0
-
-If you have learnings in the old centralized format:
-
-1. **Centralized memory files are still supported** as category fallback
-2. **New learnings go to skill-specific MEMORY.md** automatically
-3. **No migration required** - both systems work together
-
-To manually migrate old learnings:
-```bash
-# View old centralized memory
-cat .specweave/memory/component-usage.md
-
-# Add to specific skill
-/sw:reflect --skill frontend "Learning content from old file"
-```
-
----
-
-## Summary
-
-Reflect v4.0 enables **correct once, apply everywhere**:
-
-1. Make correction during session
-2. Reflect captures and routes to skill
-3. Future sessions load skill memory
-4. Claude applies learned patterns automatically
-5. Marketplace updates preserve your learnings
-
-**No embeddings. No vector databases.** Just markdown files that compound knowledge, organized by skill.
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```
+   ```

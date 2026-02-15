@@ -1,6 +1,6 @@
 ---
 name: datadog-metrics
-description: Application metrics monitoring with Datadog - collect custom metrics, create dashboards, set alerts, and analyze performance.
+description: 使用 Datadog 监控应用程序指标：收集自定义指标、创建仪表板、设置警报并分析性能。
 version: 1.0.0
 tags: [datadog, metrics, monitoring, observability, dashboard]
 author: OpenWork
@@ -14,106 +14,101 @@ metadata:
         - DATADOG_APP_KEY
 ---
 
-# Datadog Metrics
+# Datadog指标
 
-Comprehensive metrics monitoring and observability with Datadog.
+Datadog提供了全面的指标监控和可观测性功能。
 
-## Capabilities
+## 功能
 
-### Custom Metrics
-- Send metrics from application
-- Counter, gauge, histogram types
-- Distribution metrics
-- Tag-based filtering
-- DogStatsD integration
+### 自定义指标
+- 从应用程序发送指标
+- 支持计数器（Counter）、计量器（Gauge）和直方图（Histogram）类型
+- 分布式指标（Distribution metrics）
+- 基于标签的过滤（Tag-based filtering）
+- 与DogStatsD的集成（Integration with DogStatsD）
 
-### Dashboard Management
-- Create custom dashboards
-- Add widgets (graphs, numbers, logs)
-- Template variables
-- Share and export
-- Real-time updates
+### 仪表板管理
+- 创建自定义仪表板（Create custom dashboards）
+- 添加组件（Widgets）：图表（Graphs）、数字（Numbers）、日志（Logs）
+- 模板变量（Template variables）
+- 共享和导出仪表板（Share and export dashboards）
+- 实时更新（Real-time updates）
 
-### Alert Configuration
-- Metric-based alerts
-- Composite alerts
-- Downtime scheduling
-- Alert routing
-- Auto-pause for maintenance
+### 警报配置
+- 基于指标的警报（Metric-based alerts）
+- 综合警报（Composite alerts）
+- 故障时间调度（Downtime scheduling）
+- 警报路由（Alert routing）
+- 维护自动暂停功能（Auto-pause for maintenance）
 
-### Infrastructure Monitoring
-- Host metrics
-- Container monitoring
-- Kubernetes integration
-- Cloud provider integration
-- Process monitoring
+### 基础设施监控
+- 主机指标（Host metrics）
+- 容器监控（Container monitoring）
+- 与Kubernetes的集成（Integration with Kubernetes）
+- 与云服务提供商的集成（Integration with cloud providers）
+- 进程监控（Process monitoring）
 
-### APM (Application Performance)
-- Trace analysis
-- Service map
-- Performance profiling
-- Error tracking
-- Latency breakdown
+### APM（应用程序性能监控）
+- 跟踪分析（Trace analysis）
+- 服务地图（Service map）
+- 性能分析（Performance profiling）
+- 错误追踪（Error tracking）
+- 延迟分解（Latency breakdown）
 
-## Usage
+## 使用方法
 
-### Metrics Examples
+### 指标示例
 ```
 Send gauge metric cpu.usage with value 75
 Track counter requests.count with tags env:prod
 Record histogram response.time with 200ms
 ```
 
-### Dashboard Examples
+### 仪表板示例
 ```
 Create dashboard 'Production Overview'
 Add CPU and memory graph to monitoring
 Setup latency heatmap for API service
 ```
 
-### Alert Examples
+### 警报示例
 ```
 Alert when error rate > 5% for 5 minutes
 Create downtime for maintenance window
 Alert when p99 latency > 2 seconds
 ```
 
-### APM Examples
+### APM示例
 ```
 Get slowest endpoints in production
 Trace request through services
 Find errors in last hour for checkout service
 ```
 
-## Integration
+## 集成
+- AWS、GCP、Azure
+- Kubernetes、Docker
+- PostgreSQL、MySQL、Redis
+- Nginx、Apache
+- 支持400多种集成服务（Integration with over 400 services）
 
-- AWS, GCP, Azure
-- Kubernetes, Docker
-- PostgreSQL, MySQL, Redis
-- Nginx, Apache
-- 400+ integrations
+## 依赖项
+- Python 3.8及以上版本（Python 3.8+）
+- Datadog库（datadog）
 
-## Dependencies
-
-- Python 3.8+
-- datadog
-
-## Installation
-
+## 安装说明
 ```bash
 pip install datadog
 ```
 
-## Required Environment Variables
+## 必需的环境变量
+- `DATADOG_API_KEY`：来自Datadog的API密钥
+- `DATADOG_APP_KEY`：应用程序密钥
 
-- `DATADOG_API_KEY` - API key from Datadog
-- `DATADOG_APP_KEY` - Application key
-
-## Files
-
-- `SKILL.md` - This file
-- `metrics.py` - Custom metrics
-- `dashboards.py` - Dashboard management
-- `alerts.py` - Alert configuration
-- `infrastructure.py` - Infra monitoring
-- `apm.py` - Application performance
+## 相关文件
+- `SKILL.md`：本文档文件
+- `metrics.py`：自定义指标处理脚本
+- `dashboards.py`：仪表板管理脚本
+- `alerts.py`：警报配置脚本
+- `infrastructure.py`：基础设施监控脚本
+- `apm.py`：应用程序性能监控脚本

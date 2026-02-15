@@ -1,28 +1,28 @@
 ---
 name: wallet
-description: Digital wallet management for crypto and fiat. Unified interface for managing multiple wallet types.
+description: 数字钱包管理工具，支持加密货币和法定货币。提供统一的界面，用于管理多种类型的钱包。
 metadata: {"clawdbot":{"emoji":"👛","requires":{"bins":["curl","jq"]}}}
 ---
 
-# Wallet 👛
+# 钱包 👛
 
-Unified digital wallet management.
+统一化的数字钱包管理工具。
 
-## Features
+## 主要功能
 
-- Multi-currency support
-- Balance tracking
-- Transaction history
-- Send and receive funds
-- Wallet backup/recovery
+- 支持多种货币
+- 账户余额查询
+- 交易记录查看
+- 资金发送与接收
+- 钱包备份与恢复
 
-## Supported Types
+## 支持的类型
 
-- Cryptocurrency wallets
-- Digital payment wallets
-- Hardware wallet integration
+- 加密货币钱包
+- 数字支付钱包
+- 硬件钱包集成
 
-## Usage Examples
+## 使用示例
 
 ```
 "Show all my wallets"

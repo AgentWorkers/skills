@@ -1,16 +1,16 @@
 ---
 slug: "environmental-monitoring"
 display_name: "Environmental Monitoring"
-description: "Monitor environmental conditions on construction sites. Track air quality, noise levels, vibration, dust, and weather to ensure compliance and worker safety."
+description: "监控建筑工地的环境状况。实时监测空气质量、噪音水平、振动情况、灰尘浓度以及天气情况，以确保符合相关标准并保障工人的安全。"
 ---
 
-# Environmental Monitoring
+# 环境监测
 
-## Overview
+## 概述
 
-Monitor and analyze environmental conditions on construction sites including air quality, noise, vibration, dust, and weather. Support regulatory compliance, worker safety, and community relations through real-time environmental tracking.
+监测并分析建筑工地的环境状况，包括空气质量、噪音、振动、灰尘和天气情况。通过实时环境数据跟踪，支持合规性管理、保障工人安全以及维护与社区的良好关系。
 
-## Environmental Monitoring System
+## 环境监测系统
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -35,7 +35,7 @@ Monitor and analyze environmental conditions on construction sites including air
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -585,7 +585,7 @@ class EnvironmentalMonitor:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -650,7 +650,7 @@ print(f"Exceedances: {report.exceedances}")
 print(monitor.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

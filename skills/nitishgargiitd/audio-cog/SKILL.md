@@ -1,6 +1,6 @@
 ---
 name: audio-cog
-description: AI audio generation powered by CellCog. Text-to-speech, voice synthesis, voiceovers, podcast audio, narration, music generation, background music, sound design. Professional audio creation with AI.
+description: 由 CellCog 提供支持的 AI 音频生成技术：支持文本转语音（TTS）、语音合成、旁白制作、播客音频制作、故事叙述、音乐生成以及背景音乐设计等功能。利用 AI 技术实现专业级别的音频创作。
 metadata:
   openclaw:
     emoji: "🎵"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Audio Cog - AI Audio Generation Powered by CellCog
+# Audio Cog – 由 CellCog 提供的 AI 音频生成服务
 
-Create professional audio with AI - from voiceovers and narration to background music and sound design.
+使用 AI 创作出专业的音频内容，涵盖旁白、背景音乐和音效设计。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读关于 cellcog 的文档** 以了解 SDK 的安装方法。该文档将向您展示所有可用的功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,175 +38,156 @@ result = client.create_chat(
 
 ---
 
-## What Audio You Can Create
+## 可制作的音频类型
 
-### Text-to-Speech / Voiceover
+### 文本转语音 / 旁白
 
-Convert text to natural-sounding speech:
-
-- **Narration**: "Generate a professional male voiceover for this product video script"
-- **Audiobook Style**: "Create an engaging narration of this short story with emotional delivery"
-- **Podcast Intros**: "Generate a warm, friendly podcast intro: 'Welcome to The Daily Tech...'"
-- **E-Learning**: "Create clear, instructional voiceover for this training module"
-- **IVR/Phone Systems**: "Generate professional phone menu prompts"
+将文本转换为自然流畅的语音：
+- **旁白**：为产品视频脚本生成专业的男性旁白
+- **有声书风格**：为这段短故事创作富有情感的旁白
+- **播客开场白**：生成温馨友好的播客开场语：“欢迎来到《每日科技》……”
+- **电子学习内容**：为培训模块制作清晰明了的旁白
+- **IVR/电话系统**：生成专业的电话菜单提示音
 
 ---
 
-## Available Voices
+## 可用的声音选项
 
-CellCog provides 8 high-quality voices with distinct characteristics:
-
-| Voice | Gender | Best For | Characteristics |
+CellCog 提供 8 种具有独特特色的高质量声音：
+| 声音 | 性别 | 适用场景 | 特点 |
 |-------|--------|----------|-----------------|
-| **cedar** | Male | Product videos, announcements | Warm, resonant, authoritative, trustworthy |
-| **marin** | Female | Professional content, tutorials | Bright, articulate, emotionally agile |
-| **ballad** | Male | Storytelling, flowing narratives | Smooth, melodic, musical quality |
-| **coral** | Female | Energetic content, ads | Vibrant, lively, dynamic, spirited |
-| **echo** | Male | Thoughtful content, documentaries | Calm, measured, deliberate |
-| **sage** | Female | Educational, knowledge content | Wise, contemplative, reflective |
-| **shimmer** | Female | Gentle content, wellness | Soft, gentle, soothing, approachable |
-| **verse** | Male | Creative, artistic content | Poetic, rhythmic, expressive |
+| **cedar** | 男性 | 产品视频、公告 | 温暖、浑厚、权威、值得信赖 |
+| **marin** | 女性 | 专业内容、教程 | 明亮、表达清晰、情感丰富 |
+| **ballad** | 男性 | 故事讲述、流畅的叙述 | 平滑、旋律优美 |
+| **coral** | 女性 | 充满活力的内容、广告 | 活泼、动感 |
+| **echo** | 男性 | 深思熟虑的内容、纪录片 | 平静、沉稳、有条理 |
+| **sage** | 女性 | 教育类内容 | 智慧、富有思辨性 |
+| **shimmer** | 女性 | 轻柔的内容、健康相关 | 温和、舒缓、亲切 |
+| **verse** | 男性 | 创意艺术类内容 | 诗意、富有节奏感 |
 
-### Voice Recommendations by Use Case
+### 根据用途推荐的声音类型
 
-**For product videos and announcements:**
-> Use **cedar** (male) or **marin** (female) - both project confidence and professionalism.
+- **产品视频和公告**：建议使用 **cedar**（男性）或 **marin**（女性）——这两种声音能提升内容的专业感。
+- **故事讲述和有声书**：适合使用 **ballad**（男性）或 **sage**（女性）——它们适合流畅的叙述。
+- **充满活力的内容**：选择 **coral**（女性）——这种声音充满活力，非常适合广告和激动人心的公告。
+- **平静的教育类内容**：推荐使用 **echo**（男性）或 **shimmer**（女性）——它们的节奏适合学习场景。
 
-**For storytelling and audiobooks:**
-> Use **ballad** (male) or **sage** (female) - designed for engaging, flowing narratives.
+### 声音风格定制
 
-**For high-energy content:**
-> Use **coral** (female) - vibrant and dynamic, perfect for ads and exciting announcements.
+除了选择声音外，您还可以通过以下方式进一步定制语音表达：
+- **口音与方言**：美国、英国、澳大利亚、印度等
+- **情感表达**：兴奋、严肃、温暖、神秘、戏剧性
+- **语速**：缓慢而沉稳、对话式、快速而充满活力
+- **特殊效果**：低语、角色模仿
 
-**For calm, educational content:**
-> Use **echo** (male) or **shimmer** (female) - measured pacing ideal for learning.
-
-### Voice Style Customization
-
-Beyond selecting a voice, you can fine-tune delivery with style instructions:
-
-- **Accent & dialect**: American, British, Australian, Indian, etc.
-- **Emotional range**: Excited, serious, warm, mysterious, dramatic
-- **Pacing**: Slow and deliberate, conversational, fast and energetic
-- **Special effects**: Whispering, character impressions
-
-**Example with style instructions:**
-> "Generate voiceover using cedar voice with a warm, conversational tone. Speak at medium pace with slight enthusiasm when mentioning features. American accent."
+**示例（含风格说明）：**
+> “使用 **cedar** 声音，以温暖、对话式的风格生成旁白。在提及产品特性时，语速保持中等并稍带热情。使用美国口音。”
 
 ---
 
-## Music Generation
+## 音乐生成
 
-Create original background music and soundtracks:
+您可以创作原创的背景音乐和配乐：
+- **背景音乐**：为学习视频制作 2 分钟的舒缓低音音乐
+- **播客音乐**：为科技播客生成 15 秒的欢快开场曲
+- **视频配乐**：为产品发布视频创作电影风格的管弦乐
+- **环境音效**：为冥想应用生成宁静的环境音
+- **特定类型音乐**：为健身视频制作充满活力的电子音乐
 
-- **Background Music**: "Create calm lo-fi background music for a study video, 2 minutes"
-- **Podcast Music**: "Generate an upbeat intro jingle for a tech podcast, 15 seconds"
-- **Video Soundtracks**: "Create cinematic orchestral music for a product launch video"
-- **Ambient/Mood**: "Generate peaceful ambient sounds for a meditation app"
-- **Genre-Specific**: "Create energetic electronic music for a fitness video"
+### 音乐参数设置
 
-### Music Specifications
-
-| Parameter | Options |
+| 参数 | 选项 |
 |-----------|---------|
-| **Duration** | 15 seconds to 5+ minutes |
-| **Genre** | Electronic, rock, classical, jazz, ambient, lo-fi, cinematic, pop, hip-hop |
-| **Tempo** | 60 BPM (slow) to 180+ BPM (fast) |
-| **Mood** | Upbeat, calm, dramatic, mysterious, inspiring, melancholic |
-| **Instruments** | Piano, guitar, synth, strings, drums, brass, etc. |
+| **时长** | 15 秒至 5 分钟以上 |
+| **类型** | 电子音乐、摇滚、古典、爵士、低音音乐、电影音乐、流行音乐、嘻哈 |
+| **节奏** | 60 BPM（慢）至 180 BPM（快） |
+| **氛围** | 欢快、平静、戏剧性、神秘、鼓舞人心、忧郁 |
+| **乐器** | 钢琴、吉他、合成器、弦乐、鼓、铜管乐器等 |
 
-### Music Licensing
+### 音乐授权
 
-**All AI-generated music from CellCog is royalty-free and fully yours to use commercially.**
+CellCog 生成的所有音乐均为免版税的，您可以自由用于商业用途：
+- YouTube 视频（包括盈利性内容）
+- 商业项目和广告
+- 播客和流媒体服务
+- 应用程序和游戏
+- 任何其他商业或个人用途
 
-You have complete rights to use the generated music for:
-- YouTube videos (including monetized content)
-- Commercial projects and advertisements
-- Podcasts and streaming
-- Apps and games
-- Any other commercial or personal use
-
-No attribution required. No licensing fees. The music is generated uniquely for you.
+无需标注来源，也无需支付授权费用。这些音乐都是专门为您生成的。
 
 ---
 
-## Audio Output Formats
+## 音频输出格式
 
-| Format | Best For |
+| 格式 | 适用场景 |
 |--------|----------|
-| **MP3** | Standard audio delivery, voiceovers, music |
-| Combined with video | Background music for video-cog outputs |
+| **MP3** | 标准音频格式，适用于旁白和音乐 |
+| 与视频结合** | 适用于视频中的背景音乐 |
 
 ---
 
-## Chat Mode for Audio
+## 音频生成模式
 
-**Use `chat_mode="agent"`** for all audio generation tasks.
+**所有音频生成任务（包括旁白、音乐和音效设计）均支持使用 **chat_mode="agent"` 模式。**
 
-Audio generation—whether voiceovers, music, or sound design—executes efficiently in agent mode. CellCog's audio capabilities don't require multi-angle deliberation; they require precise execution, which agent mode excels at.
+CellCog 的音频功能不需要多轮讨论，而是需要精确的执行，而 **agent** 模式在这方面表现优异。
 
-There's no scenario where agent team mode provides meaningfully better audio output. Save agent team for research and complex creative work that benefits from multiple reasoning passes.
-
----
-
-## Example Audio Prompts
-
-**Professional voiceover with specific voice:**
-> "Generate a professional voiceover using the **marin** voice for this script:
-> 
-> 'Introducing TaskFlow - the project management tool that actually works. With intelligent automation, seamless collaboration, and powerful analytics, TaskFlow helps teams do their best work.'
-> 
-> Style: Confident and friendly, medium pace. Suitable for a product launch video."
-
-**Podcast intro with voice selection:**
-> "Create a podcast intro voiceover using **cedar** voice:
-> 
-> 'Welcome to Future Forward, the podcast where we explore the technologies shaping tomorrow. I'm your host, and today we're diving into...'
-> 
-> Style: Warm and engaging, conversational tone. Also generate a 10-second upbeat intro music bed to go underneath."
-
-**Background music:**
-> "Generate 2 minutes of calm, lo-fi hip-hop style background music. Should be chill and unobtrusive, good for studying or working. Include soft piano, mellow beats, and gentle vinyl crackle. 75 BPM."
-
-**Audiobook narration:**
-> "Create an audiobook-style narration using **ballad** voice for this passage:
-> 
-> [passage text]
-> 
-> Style: Warm storytelling quality, measured pace with appropriate pauses for drama."
-
-**Cinematic music:**
-> "Generate 90 seconds of cinematic orchestral music for a tech company's 'About Us' video. Start soft and inspiring, build to a confident crescendo, then resolve to a hopeful ending."
+**注：** **agent team** 模式并不适用于需要多次讨论或复杂创意工作的场景。**
 
 ---
 
-## Multi-Language Support
+## 音频生成示例
 
-CellCog can generate speech in 50+ languages:
+**使用特定声音的专业旁白：**
+> “使用 **marin** 声音为这段脚本生成专业旁白：”
+> 
+> “欢迎使用 TaskFlow——这款真正实用的项目管理工具。凭借智能自动化、无缝协作和强大的分析功能，TaskFlow 能帮助团队发挥最佳表现。”
+> 
+> 风格：自信而友好，语速适中。适合产品发布视频。”
 
-- English (multiple accents)
-- Spanish, French, German, Italian, Portuguese
-- Chinese (Mandarin, Cantonese)
-- Japanese, Korean
-- Hindi, Arabic
-- Russian, Polish, Dutch
-- And many more
+**使用指定声音的播客开场白：**
+> “使用 **cedar** 声音生成播客开场旁白：”
+> 
+> “欢迎来到《Future Forward》，这是一档探索未来技术的播客节目。我是主持人，今天我们将探讨……”
+> 
+> 风格：温暖而亲切，对话式的语气。同时生成一段 10 秒的欢快开场音乐。”
 
-Specify the language in your prompt:
-> "Generate this text in Japanese with a native female speaker using shimmer voice: 'いらっしゃいませ...'"
+**背景音乐：**
+> “生成 2 分钟的舒缓低音嘻哈风格背景音乐。音乐应轻松愉悦，适合学习或工作环境，包含柔和的钢琴声、轻柔的节拍和轻微的唱片沙沙声。节奏为 75 BPM。”
+
+**有声书旁白：**
+> “使用 **ballad** 声音为这段文字创作有声书旁白：”
+> 
+> [具体文本内容]
+> 
+> 风格：温暖的故事叙述风格，节奏适中，适当停顿以增强戏剧效果。”
+
+**电影配乐：**
+> “为科技公司的‘关于我们’视频生成 90 秒的电影风格管弦乐。开头柔和而富有启发性，随后逐渐增强，最后以充满希望的结尾收场。”
 
 ---
 
-## Tips for Better Audio
+## 多语言支持
 
-1. **Choose the right voice**: Match the voice to your content type. Cedar/marin for professional, ballad/sage for storytelling, coral for energy.
+CellCog 支持 50 多种语言的文本转语音功能：
+- 英语（多种口音）
+- 西班牙语、法语、德语、意大利语、葡萄牙语
+- 中文（普通话、粤语）
+- 日语、韩语
+- 印地语、阿拉伯语
+- 俄语、波兰语、荷兰语
+- 以及更多语言
 
-2. **Provide the complete script**: Don't say "something about our product" - write out exactly what should be said.
+在请求中指定所需语言：
+> “使用 **shimmer** 声音，用日语为这段文字生成旁白：‘いらっしゃいませ……’”
 
-3. **Include style instructions**: "Confident but warm", "slow and deliberate", "with slight excitement" helps shape delivery.
+---
 
-4. **For music**: Specify duration, tempo (BPM if you know it), mood, and genre.
+## 提高音频质量的建议：
 
-5. **Pronunciation guidance**: For names or technical terms, add hints: "CellCog (pronounced SELL-kog)"
-
-6. **Emotional beats**: For longer voiceovers, indicate tone shifts: "[excited] And now for the big reveal... [serious] But there's a catch."
+1. **选择合适的声音**：根据内容类型选择合适的声音。例如，产品视频和公告适合使用 **cedar** 或 **marin**，故事讲述适合使用 **ballad** 或 **sage**，充满活力的内容适合使用 **coral**。
+2. **提供完整的脚本**：不要只是简单地说“关于我们产品的内容”，请详细写出需要表达的具体内容。
+3. **添加风格说明**：例如“自信但温暖的语气”、“缓慢而沉稳的语速”、“略带兴奋感”等，这些有助于塑造语音表达。
+4. **对于音乐**：请明确说明时长、节奏（如果知道的话请提供 BPM）、氛围和类型。
+5. **发音提示**：对于人名或专业术语，提供发音指导（例如：“CellCog 的发音是 SELL-kog”）。
+6. **情感表达**：对于较长的旁白，需说明语气变化（例如：“[兴奋地] 现在，让我们来看看最重要的部分……[严肃地] 但这里有个小细节……”）。

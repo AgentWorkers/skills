@@ -1,6 +1,6 @@
 ---
 name: ydc-claude-agent-sdk-integration
-description: Integrate Claude Agent SDK with You.com HTTP MCP server for Python and TypeScript. Use when developer mentions Claude Agent SDK, Anthropic Agent SDK, or integrating Claude with MCP tools.
+description: 将 Claude Agent SDK 与 You.com 的 HTTP MCP 服务器集成，适用于 Python 和 TypeScript 开发环境。当开发者提到 Claude Agent SDK、Anthropic Agent SDK 或将 Claude 与 MCP 工具集成时，请参考此文档。
 license: MIT
 compatibility: Python 3.10+ or TypeScript 5.2+ (for v2), Node.js 18+
 metadata:
@@ -10,44 +10,43 @@ metadata:
   keywords: claude,anthropic,claude-agent-sdk,agent-sdk,mcp,you.com,integration,http-mcp,web-search,python,typescript
 ---
 
-# Integrate Claude Agent SDK with You.com MCP
+# 将 Claude Agent SDK 与 You.com MCP 集成
 
-Interactive workflow to set up Claude Agent SDK with You.com's HTTP MCP server.
+本文档提供了将 Claude Agent SDK 与 You.com 的 HTTP MCP 服务器集成的交互式工作流程。
 
-## Workflow
+## 工作流程
 
-1. **Ask: Language Choice**
-   * Python or TypeScript?
+1. **询问：语言选择**
+   * 选择 Python 还是 TypeScript？
 
-2. **If TypeScript - Ask: SDK Version**
-   * v1 (stable, generator-based) or v2 (preview, send/receive pattern)?
-   * Note: v2 requires TypeScript 5.2+ for `await using` support
+2. **如果选择 TypeScript - 询问：SDK 版本**
+   * v1（稳定版，基于生成器）还是 v2（预览版，支持发送/接收请求模式）？
+   * 注意：v2 版本需要 TypeScript 5.2 或更高版本才能使用 `await` 语法。
 
-3. **Install Package**
-   * Python: `pip install claude-agent-sdk`
-   * TypeScript: `npm install @anthropic-ai/claude-agent-sdk`
+3. **安装包**
+   * Python：`pip install claude-agent-sdk`
+   * TypeScript：`npm install @anthropic-ai/claude-agent-sdk`
 
-4. **Ask: Environment Variables**
-   * Using standard `YDC_API_KEY` and `ANTHROPIC_API_KEY`?
-   * Or custom names?
-   * Have they set them?
-   * If NO: Guide to get keys:
-     - YDC_API_KEY: https://you.com/platform/api-keys
-     - ANTHROPIC_API_KEY: https://console.anthropic.com/settings/keys
+4. **询问：环境变量**
+   * 是否使用标准的 `YDC_API_KEY` 和 `ANTHROPIC_API_KEY`？
+   * 或者使用自定义名称？
+   * 如果尚未设置环境变量，请参考以下链接获取 API 密钥：
+     - YDC_API_KEY：https://you.com/platform/api-keys
+     - ANTHROPIC_API_KEY：https://console.anthropic.com/settings/keys
 
-5. **Ask: File Location**
-   * NEW file: Ask where to create and what to name
-   * EXISTING file: Ask which file to integrate into (add HTTP MCP config)
+5. **询问：文件位置**
+   * 如果是新建文件，询问文件的位置和名称；
+   * 如果是现有文件，询问需要将哪些配置添加到现有文件中。
 
-6. **Create/Update File**
+6. **创建/更新文件**
 
-   **For NEW files:**
-   * Use the complete template code from the "Complete Templates" section below
-   * User can run immediately with their API keys set
+   **对于新建文件：**
+   * 使用下方“完整模板”部分提供的完整代码模板。
+   * 用户可以立即使用已设置的 API 密钥运行程序。
 
-   **For EXISTING files:**
-   * Add HTTP MCP server configuration to their existing code
-   * Python configuration block:
+   **对于现有文件：**
+   * 将 HTTP MCP 服务器的配置添加到现有代码中。
+   * Python 配置示例：
      ```python
      from claude_agent_sdk import query, ClaudeAgentOptions
 
@@ -69,7 +68,7 @@ Interactive workflow to set up Claude Agent SDK with You.com's HTTP MCP server.
      )
      ```
 
-   * TypeScript configuration block:
+   * TypeScript 配置示例：
      ```typescript
      const options = {
        mcpServers: {
@@ -89,11 +88,11 @@ Interactive workflow to set up Claude Agent SDK with You.com's HTTP MCP server.
      };
      ```
 
-## Complete Templates
+## 完整模板
 
-Use these complete templates for new files. Each template is ready to run with your API keys set.
+使用这些完整模板来创建新文件。每个模板都已准备好使用您的 API 密钥进行运行。
 
-### Python Template (Complete Example)
+### Python 模板（完整示例）
 
 ```python
 """
@@ -162,7 +161,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### TypeScript v1 Template (Complete Example)
+### TypeScript v1 模板（完整示例）
 
 ```typescript
 /**
@@ -232,7 +231,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-### TypeScript v2 Template (Complete Example)
+### TypeScript v2 模板（完整示例）
 
 ```typescript
 /**
@@ -304,11 +303,11 @@ async function main() {
 main().catch(console.error);
 ```
 
-## HTTP MCP Server Configuration
+## HTTP MCP 服务器配置
 
-All templates use You.com's **HTTP MCP server** for simplicity:
+所有模板均基于 You.com 的 **HTTP MCP 服务器** 进行配置：
 
-**Python:**
+**Python：**
 ```python
 mcp_servers={
     "ydc": {
@@ -321,7 +320,7 @@ mcp_servers={
 }
 ```
 
-**TypeScript:**
+**TypeScript：**
 ```typescript
 mcpServers: {
   ydc: {
@@ -334,24 +333,24 @@ mcpServers: {
 }
 ```
 
-**Benefits of HTTP MCP:**
-- ✅ No local installation required
-- ✅ Stateless request/response model
-- ✅ Always up-to-date with latest version
-- ✅ Consistent across all environments
-- ✅ Production-ready and scalable
-- ✅ Works with existing HTTP infrastructure
+**HTTP MCP 的优势：**
+- ✅ 无需本地安装
+- ✅ 无状态请求/响应模型
+- ✅ 始终使用最新版本
+- ✅ 在所有环境中保持一致性
+- ✅ 适合生产环境且可扩展
+- ✅ 与现有的 HTTP 基础设施兼容
 
-## Available You.com Tools
+## 可用的 You.com 工具
 
-After configuration, Claude can discover and use:
-- `mcp__ydc__you_search` - Web and news search
-- `mcp__ydc__you_express` - AI-powered answers with web context
-- `mcp__ydc__you_contents` - Web page content extraction
+配置完成后，Claude 可以使用以下工具：
+- `mcp__ydc__you_search` - 网页和新闻搜索
+- `mcp__ydc__you_express` - 基于 AI 的回答（包含网页上下文）
+- `mcp__ydc__you_contents` - 网页内容提取
 
-## Environment Variables
+## 环境变量
 
-Both API keys are required:
+需要设置以下两个 API 密钥：
 
 ```bash
 # Add to your .env file or shell profile
@@ -359,31 +358,30 @@ export YDC_API_KEY="your-you-api-key-here"
 export ANTHROPIC_API_KEY="your-anthropic-api-key-here"
 ```
 
-**Get your API keys:**
-- You.com: https://you.com/platform/api-keys
-- Anthropic: https://console.anthropic.com/settings/keys
+**获取 API 密钥：**
+- You.com：https://you.com/platform/api-keys
+- Anthropic：https://console.anthropic.com/settings/keys
 
-## Validation Checklist
+## 验证清单
 
-Before completing:
+在完成集成之前，请确保：
+- [ ] 已安装 `claude-agent-sdk`（Python）或 `@anthropic-ai/claude-agent-sdk`（TypeScript）
+- [ ] 已设置 `YDC_API_KEY` 和 `ANTHROPIC_API_KEY`
+- [ ] 已将模板复制到文件中或已向现有文件中添加配置
+- [ ] 已配置 HTTP MCP 服务器（地址：`https://api.you.com/mcp`）
+- [ ] 请求头中的 `Authorization` 字段包含 `Bearer ${YDC_API_KEY}`
+- [ ] 允许使用的工具列表中包含 You.com 提供的工具
+- [ ] 文件可执行（Python）或可编译（TypeScript）
+- [ ] 可以使用示例查询进行测试
 
-- [ ] Package installed: `claude-agent-sdk` (Python) or `@anthropic-ai/claude-agent-sdk` (TypeScript)
-- [ ] Environment variables set: `YDC_API_KEY` and `ANTHROPIC_API_KEY`
-- [ ] Template copied or configuration added to existing file
-- [ ] HTTP MCP server configured (`https://api.you.com/mcp`)
-- [ ] Authorization header includes `Bearer ${YDC_API_KEY}`
-- [ ] Allowed tools list includes You.com tools
-- [ ] File is executable (Python) or can be compiled (TypeScript)
-- [ ] Ready to test with example query
+## 测试集成
 
-## Testing Your Integration
-
-**Python:**
+**Python：**
 ```bash
 python your-file.py
 ```
 
-**TypeScript:**
+**TypeScript：**
 ```bash
 # With tsx (recommended for quick testing)
 npx tsx your-file.ts
@@ -392,13 +390,12 @@ npx tsx your-file.ts
 tsc your-file.ts && node your-file.js
 ```
 
-## Common Issues
+## 常见问题
 
 <details>
-<summary><strong>Cannot find module @anthropic-ai/claude-agent-sdk</strong></summary>
+<summary><strong>无法找到模块 @anthropic-ai/claude-agent-sdk</strong></summary>
 
-Install the package:
-
+请安装相应的包：
 ```bash
 # NPM
 npm install @anthropic-ai/claude-agent-sdk
@@ -416,64 +413,61 @@ pnpm add @anthropic-ai/claude-agent-sdk
 </details>
 
 <details>
-<summary><strong>YDC_API_KEY environment variable is required</strong></summary>
+<summary><strong>需要设置 YDC_API_KEY 环境变量</strong></summary>
 
-Set your You.com API key:
-
+请设置您的 You.com API 密钥：
 ```bash
 export YDC_API_KEY="your-api-key-here"
 ```
 
-Get your key at: https://you.com/platform/api-keys
+您可以在以下链接获取 API 密钥：https://you.com/platform/api-keys
 
 </details>
 
 <details>
-<summary><strong>ANTHROPIC_API_KEY environment variable is required</strong></summary>
+<summary><strong>需要设置 ANTHROPIC_API_KEY 环境变量</strong></summary>
 
-Set your Anthropic API key:
-
+请设置您的 Anthropic API 密钥：
 ```bash
 export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 
-Get your key at: https://console.anthropic.com/settings/keys
+您可以在以下链接获取 API 密钥：https://console.anthropic.com/settings/keys
 
 </details>
 
 <details>
-<summary><strong>MCP connection fails with 401 Unauthorized</strong></summary>
+<summary><strong>连接 HTTP MCP 服务器时出现 401 Unauthorized 错误</strong></summary>
 
-Verify your YDC_API_KEY is valid:
-1. Check the key at https://you.com/platform/api-keys
-2. Ensure no extra spaces or quotes in the environment variable
-3. Verify the Authorization header format: `Bearer ${YDC_API_KEY}`
-
-</details>
-
-<details>
-<summary><strong>Tools not available or not being called</strong></summary>
-
-Ensure `allowedTools` includes the correct tool names:
-- `mcp__ydc__you_search` (not `you_search`)
-- `mcp__ydc__you_express` (not `you_express`)
-- `mcp__ydc__you_contents` (not `you_contents`)
-
-Tool names must include the `mcp__ydc__` prefix.
+请检查：
+1. 确保 `YDC_API_KEY` 是有效的。
+2. 确保环境变量中没有多余的空格或引号。
+3. 确保 `Authorization` 头部的格式正确：`Bearer ${YDC_API_KEY}`
 
 </details>
 
 <details>
-<summary><strong>TypeScript error: Cannot use 'await using'</strong></summary>
+<summary>某些工具无法使用或未被调用</summary>
 
-The v2 SDK requires TypeScript 5.2+ for `await using` syntax.
+请确保 `allowedTools` 列表中包含正确的工具名称：
+- `mcp__ydc__you_search`（而非 `you_search`）
+- `mcp__ydc__you_express`（而非 `you_express`）
+- `mcp__ydc__you_contents`（而非 `you_contents`）
+工具名称必须以 `mcp__ydc__` 为前缀。
 
-**Solution 1: Update TypeScript**
+</details>
+
+<details>
+<summary>TypeScript 错误：无法使用 `await using` 语法</summary>
+
+v2 版本的 SDK 需要 TypeScript 5.2 或更高版本才能支持 `await using` 语法。
+
+**解决方案 1：更新 TypeScript 版本**
 ```bash
 npm install -D typescript@latest
 ```
 
-**Solution 2: Use manual cleanup**
+**解决方案 2：手动清理项目文件**
 ```typescript
 const session = unstable_v2_createSession({ /* options */ });
 try {
@@ -486,19 +480,17 @@ try {
 }
 ```
 
-**Solution 3: Use v1 SDK instead**
-Choose v1 during setup for broader TypeScript compatibility.
+**解决方案 3：改用 v1 版本的 SDK**
+在设置过程中选择 v1 版本以获得更好的 TypeScript 兼容性。
 
 </details>
 
+## 额外资源
 
-
-## Additional Resources
-
-* You.com MCP Server: https://documentation.you.com/developer-resources/mcp-server
-* Claude Agent SDK (Python): https://platform.claude.com/docs/en/agent-sdk/python
-* Claude Agent SDK (TypeScript v1): https://platform.claude.com/docs/en/agent-sdk/typescript
-* Claude Agent SDK (TypeScript v2): https://platform.claude.com/docs/en/agent-sdk/typescript-v2-preview
-* API Keys:
-  - You.com: https://you.com/platform/api-keys
-  - Anthropic: https://console.anthropic.com/settings/keys
+- You.com MCP 服务器：https://documentation.you.com/developer-resources/mcp-server
+- Claude Agent SDK（Python）：https://platform.claude.com/docs/en/agent-sdk/python
+- Claude Agent SDK（TypeScript v1）：https://platform.claude.com/docs/en/agent-sdk/typescript
+- Claude Agent SDK（TypeScript v2）：https://platform.claude.com/docs/en/agent-sdk/typescript-v2-preview
+- API 密钥：
+  - You.com：https://you.com/platform/api-keys
+  - Anthropic：https://console.anthropic.com/settings/keys

@@ -1,43 +1,43 @@
 ---
 name: coolify
-description: Manage Coolify deployments, applications, databases, and services via the Coolify API. Use when the user wants to deploy, start, stop, restart, or manage applications hosted on Coolify.
+description: 通过 Coolify API 管理 Coolify 的部署、应用程序、数据库和服务。当用户需要部署、启动、停止、重启或管理托管在 Coolify 上的应用程序时，可以使用该 API。
 homepage: https://coolify.io
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🚀","requires":{"bins":["node"],"env":["COOLIFY_TOKEN"]},"primaryEnv":"COOLIFY_TOKEN"}}
 ---
 
-# Coolify API Skill
+# Coolify API 技能
 
-Comprehensive management of Coolify deployments, applications, databases, services, and infrastructure via the Coolify API.
+通过 Coolify API 对 Coolify 的部署、应用程序、数据库、服务及基础设施进行全面管理。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user needs to:
-- Deploy applications to Coolify
-- Manage application lifecycle (start, stop, restart)
-- View application logs
-- Create and manage databases (PostgreSQL, MySQL, MongoDB, Redis, etc.)
-- Deploy Docker Compose services
-- Manage servers and infrastructure
-- Configure environment variables
-- Trigger and monitor deployments
-- Manage GitHub App integrations
-- Configure SSH private keys
+当用户需要执行以下操作时，请使用此技能：
+- 将应用程序部署到 Coolify
+- 管理应用程序的生命周期（启动、停止、重启）
+- 查看应用程序日志
+- 创建和管理数据库（PostgreSQL、MySQL、MongoDB、Redis 等）
+- 部署 Docker Compose 服务
+- 管理服务器和基础设施
+- 配置环境变量
+- 触发和监控部署
+- 管理 GitHub 应用程序集成
+- 配置 SSH 私钥
 
-## Prerequisites
+## 先决条件
 
-1. **Coolify API Token** — Generate from Coolify dashboard:
-   - Navigate to **Keys & Tokens** → **API tokens**
-   - Create token with appropriate permissions (`read`, `write`, `deploy`)
-   - Set `COOLIFY_TOKEN` environment variable
+1. **Coolify API 令牌** — 从 Coolify 仪表板生成：
+   - 转到 **Keys & Tokens** → **API tokens**
+   - 创建具有适当权限（`read`、`write`、`deploy`）的令牌
+   - 设置 `COOLIFY_TOKEN` 环境变量
 
-2. **bash, curl, jq** — Required for running bash scripts
+2. **bash、curl、jq** — 运行 bash 脚本所必需的工具
 
-3. **API Access** — Coolify Cloud (`app.coolify.io`) or self-hosted instance
+3. **API 访问权限** — Coolify Cloud（`app.coolify.io`）或自托管实例
 
-## Quick Start
+## 快速入门
 
-### Basic Commands
+### 基本命令
 
 ```bash
 # List all applications
@@ -58,15 +58,15 @@ Use this skill when the user needs to:
 
 ---
 
-## Applications
+## 应用程序
 
-### List Applications
+### 列出应用程序
 
 ```bash
 {baseDir}/scripts/coolify applications list
 ```
 
-**Output:**
+**输出：**
 ```json
 {
   "success": true,
@@ -82,13 +82,13 @@ Use this skill when the user needs to:
 }
 ```
 
-### Get Application Details
+### 获取应用程序详情
 
 ```bash
 {baseDir}/scripts/coolify applications get --uuid abc-123
 ```
 
-### Application Lifecycle
+### 应用程序生命周期
 
 ```bash
 # Start
@@ -101,13 +101,13 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify applications restart --uuid abc-123
 ```
 
-### View Logs
+### 查看日志
 
 ```bash
 {baseDir}/scripts/coolify applications logs --uuid abc-123
 ```
 
-### Environment Variables
+### 环境变量
 
 ```bash
 # List environment variables
@@ -138,7 +138,7 @@ Use this skill when the user needs to:
   --env-uuid env-456
 ```
 
-### Create Applications
+### 创建应用程序
 
 ```bash
 # Public Git repository
@@ -180,21 +180,21 @@ Use this skill when the user needs to:
 
 ---
 
-## Databases
+## 数据库
 
-### List Databases
+### 列出数据库
 
 ```bash
 {baseDir}/scripts/coolify databases list
 ```
 
-### Get Database Details
+### 获取数据库详情
 
 ```bash
 {baseDir}/scripts/coolify databases get --uuid db-123
 ```
 
-### Database Lifecycle
+### 数据库生命周期
 
 ```bash
 # Start
@@ -210,7 +210,7 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify databases delete --uuid db-123
 ```
 
-### Create Databases
+### 创建数据库
 
 ```bash
 # PostgreSQL
@@ -265,7 +265,7 @@ Use this skill when the user needs to:
   --name "my-dragonfly"
 ```
 
-### Backups
+### 备份
 
 ```bash
 # List backup configurations
@@ -306,21 +306,21 @@ Use this skill when the user needs to:
 
 ---
 
-## Services (Docker Compose)
+## 服务（Docker Compose）
 
-### List Services
+### 列出服务
 
 ```bash
 {baseDir}/scripts/coolify services list
 ```
 
-### Get Service Details
+### 获取服务详情
 
 ```bash
 {baseDir}/scripts/coolify services get --uuid service-123
 ```
 
-### Service Lifecycle
+### 服务生命周期
 
 ```bash
 # Start
@@ -336,7 +336,7 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify services delete --uuid service-123
 ```
 
-### Create Service
+### 创建服务
 
 ```bash
 {baseDir}/scripts/coolify services create \
@@ -346,7 +346,7 @@ Use this skill when the user needs to:
   --docker-compose '{"version":"3.8","services":{"web":{"image":"nginx"}}}'
 ```
 
-### Environment Variables
+### 环境变量
 
 ```bash
 # List
@@ -377,9 +377,9 @@ Use this skill when the user needs to:
 
 ---
 
-## Deployments
+## 部署
 
-### Deploy Application
+### 部署应用程序
 
 ```bash
 # Deploy by UUID
@@ -395,7 +395,7 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify deploy --uuid abc-123 --instant-deploy
 ```
 
-### List Deployments
+### 列出部署
 
 ```bash
 # List all running deployments
@@ -405,13 +405,13 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify deployments list-for-app --uuid abc-123
 ```
 
-### Get Deployment Details
+### 获取部署详情
 
 ```bash
 {baseDir}/scripts/coolify deployments get --uuid deploy-456
 ```
 
-### Cancel Deployment
+### 取消部署
 
 ```bash
 {baseDir}/scripts/coolify deployments cancel --uuid deploy-456
@@ -419,21 +419,21 @@ Use this skill when the user needs to:
 
 ---
 
-## Servers
+## 服务器
 
-### List Servers
+### 列出服务器
 
 ```bash
 {baseDir}/scripts/coolify servers list
 ```
 
-### Get Server Details
+### 获取服务器详情
 
 ```bash
 {baseDir}/scripts/coolify servers get --uuid server-123
 ```
 
-### Create Server
+### 创建服务器
 
 ```bash
 {baseDir}/scripts/coolify servers create \
@@ -444,7 +444,7 @@ Use this skill when the user needs to:
   --private-key-uuid key-456
 ```
 
-### Update Server
+### 更新服务器
 
 ```bash
 {baseDir}/scripts/coolify servers update \
@@ -453,13 +453,13 @@ Use this skill when the user needs to:
   --description "Production environment"
 ```
 
-### Validate Server
+### 验证服务器
 
 ```bash
 {baseDir}/scripts/coolify servers validate --uuid server-123
 ```
 
-### Get Server Resources
+### 获取服务器资源
 
 ```bash
 # List all resources on server
@@ -469,7 +469,7 @@ Use this skill when the user needs to:
 {baseDir}/scripts/coolify servers domains --uuid server-123
 ```
 
-### Delete Server
+### 删除服务器
 
 ```bash
 {baseDir}/scripts/coolify servers delete --uuid server-123
@@ -477,21 +477,21 @@ Use this skill when the user needs to:
 
 ---
 
-## Projects
+## 项目
 
-### List Projects
+### 列出项目
 
 ```bash
 {baseDir}/scripts/coolify projects list
 ```
 
-### Get Project Details
+### 获取项目详情
 
 ```bash
 {baseDir}/scripts/coolify projects get --uuid proj-123
 ```
 
-### Create Project
+### 创建项目
 
 ```bash
 {baseDir}/scripts/coolify projects create \
@@ -499,7 +499,7 @@ Use this skill when the user needs to:
   --description "Production project"
 ```
 
-### Update Project
+### 更新项目
 
 ```bash
 {baseDir}/scripts/coolify projects update \
@@ -507,13 +507,13 @@ Use this skill when the user needs to:
   --name "Updated Name"
 ```
 
-### Delete Project
+### 删除项目
 
 ```bash
 {baseDir}/scripts/coolify projects delete --uuid proj-123
 ```
 
-### Environments
+### 环境
 
 ```bash
 # List environments
@@ -537,27 +537,27 @@ Use this skill when the user needs to:
 
 ---
 
-## Teams
+## 团队
 
-### List Teams
+### 列出团队
 
 ```bash
 {baseDir}/scripts/coolify teams list
 ```
 
-### Get Current Team
+### 获取当前团队
 
 ```bash
 {baseDir}/scripts/coolify teams current
 ```
 
-### Get Team Members
+### 获取团队成员
 
 ```bash
 {baseDir}/scripts/coolify teams members
 ```
 
-### Get Team by ID
+### 通过 ID 获取团队
 
 ```bash
 {baseDir}/scripts/coolify teams get --id 1
@@ -565,21 +565,21 @@ Use this skill when the user needs to:
 
 ---
 
-## Security (Private Keys)
+## 安全（私钥）
 
-### List Private Keys
+### 列出私钥
 
 ```bash
 {baseDir}/scripts/coolify security keys list
 ```
 
-### Get Private Key
+### 获取私钥
 
 ```bash
 {baseDir}/scripts/coolify security keys get --uuid key-123
 ```
 
-### Create Private Key
+### 创建私钥
 
 ```bash
 {baseDir}/scripts/coolify security keys create \
@@ -588,7 +588,7 @@ Use this skill when the user needs to:
   --private-key "$(cat ~/.ssh/id_rsa)"
 ```
 
-### Update Private Key
+### 更新私钥
 
 ```bash
 {baseDir}/scripts/coolify security keys update \
@@ -596,7 +596,7 @@ Use this skill when the user needs to:
   --name "Updated Key Name"
 ```
 
-### Delete Private Key
+### 删除私钥
 
 ```bash
 {baseDir}/scripts/coolify security keys delete --uuid key-123
@@ -604,21 +604,21 @@ Use this skill when the user needs to:
 
 ---
 
-## GitHub Apps
+## GitHub 应用程序
 
-### List GitHub Apps
+### 列出 GitHub 应用程序
 
 ```bash
 {baseDir}/scripts/coolify github-apps list
 ```
 
-### Get GitHub App
+### 获取 GitHub 应用程序
 
 ```bash
 {baseDir}/scripts/coolify github-apps get --uuid gh-123
 ```
 
-### Create GitHub App
+### 创建 GitHub 应用程序
 
 ```bash
 {baseDir}/scripts/coolify github-apps create \
@@ -628,7 +628,7 @@ Use this skill when the user needs to:
   --private-key "$(cat github-app-key.pem)"
 ```
 
-### Update GitHub App
+### 更新 GitHub 应用程序
 
 ```bash
 {baseDir}/scripts/coolify github-apps update \
@@ -636,19 +636,19 @@ Use this skill when the user needs to:
   --name "Updated App Name"
 ```
 
-### Delete GitHub App
+### 删除 GitHub 应用程序
 
 ```bash
 {baseDir}/scripts/coolify github-apps delete --uuid gh-123
 ```
 
-### List Repositories
+### 列出仓库
 
 ```bash
 {baseDir}/scripts/coolify github-apps repos --uuid gh-123
 ```
 
-### List Branches
+### 列出分支
 
 ```bash
 {baseDir}/scripts/coolify github-apps branches \
@@ -659,16 +659,16 @@ Use this skill when the user needs to:
 
 ---
 
-## Common Use Cases
+## 常见用例
 
-### Deploy a New Application
+### 部署新应用程序
 
-1. **List available servers:**
+1. **列出可用服务器：**
    ```bash
    {baseDir}/scripts/coolify servers list
    ```
 
-2. **Create application:**
+2. **创建应用程序：**
    ```bash
    {baseDir}/scripts/coolify applications create-public \
      --project-uuid proj-123 \
@@ -678,7 +678,7 @@ Use this skill when the user needs to:
      --name "My App"
    ```
 
-3. **Configure environment variables:**
+3. **配置环境变量：**
    ```bash
    {baseDir}/scripts/coolify applications envs create \
      --uuid <new-app-uuid> \
@@ -687,14 +687,14 @@ Use this skill when the user needs to:
      --is-runtime true
    ```
 
-4. **Deploy:**
+4. **部署：**
    ```bash
    {baseDir}/scripts/coolify deploy --uuid <new-app-uuid>
    ```
 
-### Set Up Database with Backups
+### 设置数据库并备份
 
-1. **Create database:**
+1. **创建数据库：**
    ```bash
    {baseDir}/scripts/coolify databases create-postgresql \
      --project-uuid proj-123 \
@@ -702,7 +702,7 @@ Use this skill when the user needs to:
      --name "production-db"
    ```
 
-2. **Configure daily backups:**
+2. **配置每日备份：**
    ```bash
    {baseDir}/scripts/coolify databases backups create \
      --uuid <db-uuid> \
@@ -710,44 +710,44 @@ Use this skill when the user needs to:
      --enabled true
    ```
 
-3. **Trigger manual backup:**
+3. **手动触发备份：**
    ```bash
    {baseDir}/scripts/coolify databases backups trigger \
      --uuid <db-uuid> \
      --backup-uuid <backup-uuid>
    ```
 
-### Monitor Application Health
+### 监控应用程序状态
 
-1. **Check application status:**
+1. **检查应用程序状态：**
    ```bash
    {baseDir}/scripts/coolify applications get --uuid abc-123
    ```
 
-2. **View recent logs:**
+2. **查看最近日志：**
    ```bash
    {baseDir}/scripts/coolify applications logs --uuid abc-123
    ```
 
-3. **List recent deployments:**
+3. **列出最近部署：**
    ```bash
    {baseDir}/scripts/coolify deployments list-for-app --uuid abc-123
    ```
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "API token not configured"
+### “API 令牌未配置”
 
-**Cause:** `COOLIFY_TOKEN` environment variable not set.
+**原因：** `COOLIFY_TOKEN` 环境变量未设置。
 
-**Solution:**
+**解决方法：**
 ```bash
 export COOLIFY_TOKEN="your-token-here"
 ```
 
-Or configure in OpenClaw config at `~/.openclaw/openclaw.json`:
+或者在 OpenClaw 配置文件 `~/.openclaw/openclaw.json` 中进行配置：
 ```json
 {
   "skills": {
@@ -760,59 +760,59 @@ Or configure in OpenClaw config at `~/.openclaw/openclaw.json`:
 }
 ```
 
-### "Rate limit exceeded"
+### “超出速率限制”
 
-**Cause:** Too many API requests in a short time.
+**原因：** 短时间内发送了过多 API 请求。
 
-**Solution:** The client automatically retries with exponential backoff. Wait for the retry or reduce request frequency.
+**解决方法：** 客户端会自动进行指数级重试。请等待重试或降低请求频率。
 
-### "Application not found"
+### “找不到应用程序”
 
-**Cause:** Invalid or non-existent UUID.
+**原因：** UUID 无效或不存在。
 
-**Solution:**
+**解决方法：**
 ```bash
 # List all applications to find correct UUID
 {baseDir}/scripts/coolify applications list
 ```
 
-### "connect ECONNREFUSED"
+### “connect ECONNREFUSED”
 
-**Cause:** Cannot connect to Coolify API.
+**原因：** 无法连接到 Coolify API。
 
-**Solution for self-hosted:**
+**针对自托管实例的解决方案：**
 ```bash
 # Set custom API URL
 export COOLIFY_API_URL="https://your-coolify.example.com/api/v1"
 ```
 
-**Solution for cloud:** Verify internet connection and that `app.coolify.io` is accessible.
+**针对云环境的解决方案：** 检查网络连接，并确保 `app.coolify.io` 可访问。
 
-### "Deployment failed"
+### “部署失败”
 
-**Cause:** Build or deployment error.
+**原因：** 构建或部署过程中出现错误。
 
-**Solution:**
-1. Check deployment logs:
+**解决方法：**
+1. 检查部署日志：
    ```bash
    {baseDir}/scripts/coolify deployments get --uuid deploy-456
    ```
 
-2. Check application logs:
+2. 检查应用程序日志：
    ```bash
    {baseDir}/scripts/coolify applications logs --uuid abc-123
    ```
 
-3. Verify environment variables are correct:
+3. 确认环境变量设置正确：
    ```bash
    {baseDir}/scripts/coolify applications envs list --uuid abc-123
    ```
 
-### Node.js Not Found
+### 未找到 Node.js
 
-**Cause:** Node.js not installed or not in PATH.
+**原因：** 未安装 Node.js 或未将其添加到 PATH 环境变量中。
 
-**Solution:**
+**解决方法：**
 ```bash
 # macOS (via Homebrew)
 brew install node
@@ -823,11 +823,11 @@ node --version
 
 ---
 
-## Output Format
+## 输出格式
 
-All commands return structured JSON:
+所有命令返回结构化的 JSON 数据：
 
-### Success Response
+### 成功响应
 
 ```json
 {
@@ -837,7 +837,7 @@ All commands return structured JSON:
 }
 ```
 
-### Error Response
+### 错误响应
 
 ```json
 {
@@ -852,18 +852,18 @@ All commands return structured JSON:
 
 ---
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-| Variable | Required | Default | Description |
+| 变量 | 是否必需 | 默认值 | 描述 |
 |----------|----------|---------|-------------|
-| `COOLIFY_TOKEN` | Yes | — | API token from Coolify dashboard |
-| `COOLIFY_API_URL` | No | `https://app.coolify.io/api/v1` | API base URL (for self-hosted) |
+| `COOLIFY_TOKEN` | 是 | — | 来自 Coolify 仪表板的 API 令牌 |
+| `COOLIFY_API_URL` | 否 | `https://app.coolify.io/api/v1` | （针对自托管环境的 API 基本地址） |
 
-### Self-Hosted Coolify
+### 自托管 Coolify
 
-For self-hosted instances, set the API URL:
+对于自托管实例，请设置 API 地址：
 
 ```bash
 export COOLIFY_API_URL="https://coolify.example.com/api/v1"
@@ -872,20 +872,20 @@ export COOLIFY_TOKEN="your-token-here"
 
 ---
 
-## Additional Resources
+## 其他资源
 
-- **Coolify Documentation:** https://coolify.io/docs/
-- **API Reference:** See `{baseDir}/references/API.md`
-- **GitHub:** https://github.com/coollabsio/coolify
-- **Discord:** https://coollabs.io/discord
+- **Coolify 文档：** https://coolify.io/docs/
+- **API 参考：** 查看 `{baseDir}/references/API.md`
+- **GitHub：** https://github.com/coollabsio/coolify
+- **Discord：** https://coollabs.io/discord
 
 ---
 
-## Edge Cases and Best Practices
+## 特殊情况与最佳实践
 
-### UUID vs Name
+### UUID 与名称
 
-Most commands require UUIDs, not names. Always use `list` commands first to find UUIDs:
+大多数命令需要使用 UUID，而非名称。请始终先使用 `list` 命令来查找 UUID：
 
 ```bash
 # Bad: Using name (will fail)
@@ -896,9 +896,9 @@ Most commands require UUIDs, not names. Always use `list` commands first to find
 {baseDir}/scripts/coolify applications get --uuid abc-123
 ```
 
-### Force Deployments
+### 强制部署
 
-Use `--force` flag carefully as it rebuilds from scratch:
+请谨慎使用 `--force` 标志，因为它会从头开始重建应用程序：
 
 ```bash
 # Normal deployment (uses cache)
@@ -908,9 +908,9 @@ Use `--force` flag carefully as it rebuilds from scratch:
 {baseDir}/scripts/coolify deploy --uuid abc-123 --force
 ```
 
-### Environment Variable Updates
+### 更新环境变量
 
-After updating environment variables, restart the application:
+更新环境变量后，请重启应用程序：
 
 ```bash
 # Update env var
@@ -923,30 +923,30 @@ After updating environment variables, restart the application:
 {baseDir}/scripts/coolify applications restart --uuid abc-123
 ```
 
-### Backup Frequency
+### 备份频率
 
-Use cron expressions for backup schedules:
+使用 cron 表达式来安排备份任务：
 
-| Expression | Description |
+| 表达式 | 描述 |
 |------------|-------------|
-| `0 2 * * *` | Daily at 2 AM |
-| `0 */6 * * *` | Every 6 hours |
-| `0 0 * * 0` | Weekly on Sunday at midnight |
-| `0 0 1 * *` | Monthly on 1st at midnight |
+| `0 2 * * *` | 每天凌晨 2 点 |
+| `0 */6 * * *` | 每 6 小时 |
+| `0 0 * * 0` | 每周日午夜 |
+| `0 0 1 * *` | 每月 1 日午夜 |
 
 ---
 
-## Summary
+## 总结
 
-This skill provides complete access to Coolify's API across:
-- **Applications** — Deployment, lifecycle, logs, environment variables
-- **Databases** — 8 database types, backups, lifecycle management
-- **Services** — Docker Compose orchestration
-- **Deployments** — Trigger, monitor, cancel
-- **Servers** — Infrastructure management and validation
-- **Projects** — Organization and environment management
-- **Teams** — Access control and collaboration
-- **Security** — SSH key management
-- **GitHub Apps** — Repository integration
+此技能提供了对 Coolify API 的全面访问权限，涵盖以下方面：
+- **应用程序** — 部署、生命周期管理、日志记录、环境变量
+- **数据库** — 8 种数据库类型、备份及生命周期管理
+- **服务** — Docker Compose 服务编排
+- **部署** — 触发、监控、取消部署
+- **服务器** — 基础设施管理和验证
+- **项目** — 组织结构和环境管理
+- **团队** — 访问控制和协作
+- **安全** — SSH 密钥管理
+- **GitHub 应用程序** — 仓库集成
 
-All operations return structured JSON for easy agent consumption.
+所有操作返回结构化的 JSON 数据，便于代理程序进行处理。

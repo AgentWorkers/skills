@@ -1,37 +1,42 @@
 ---
 name: docx
-description: "Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. When Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks"
+description: "提供全面的文档创建、编辑和分析功能，支持版本控制（跟踪更改）、添加注释、保持格式不变以及文本提取。当Claude需要处理专业文档（.docx格式文件）时，可以执行以下操作：  
+(1) 创建新文档；  
+(2) 修改或编辑文档内容；  
+(3) 查看并处理已记录的更改；  
+(4) 添加注释；  
+以及完成其他与文档相关的任务。"
 license: Proprietary. LICENSE.txt has complete terms
 ---
 
-# DOCX creation, editing, and analysis
+# DOCX文件的创建、编辑与分析
 
-## Overview
+## 概述
 
-A user may ask you to create, edit, or analyze the contents of a .docx file. A .docx file is essentially a ZIP archive containing XML files and other resources that you can read or edit. You have different tools and workflows available for different tasks.
+用户可能会要求你创建、编辑或分析.docx文件的内容。.docx文件本质上是一个ZIP压缩包，其中包含XML文件和其他可读或可编辑的资源。针对不同的任务，有多种工具和工作流程可供选择。
 
-## Workflow Decision Tree
+## 工作流程决策树
 
-### Reading/Analyzing Content
-Use "Text extraction" or "Raw XML access" sections below
+### 阅读/分析内容
+可以使用以下“文本提取”或“原始XML访问”方法：
 
-### Creating New Document
-Use "Creating a new Word document" workflow
+### 创建新文档
+使用“创建新的Word文档”工作流程
 
-### Editing Existing Document
-- **Your own document + simple changes**
-  Use "Basic OOXML editing" workflow
+### 编辑现有文档
+- **自己的文档 + 简单修改**
+  使用“基本OOXML编辑”工作流程
 
-- **Someone else's document**
-  Use **"Redlining workflow"** (recommended default)
+- **他人的文档**
+  推荐使用“标记修改工作流程”
 
-- **Legal, academic, business, or government docs**
-  Use **"Redlining workflow"** (required)
+- **法律、学术、商业或政府文档**
+  必须使用“标记修改工作流程”
 
-## Reading and analyzing content
+## 阅读与分析内容
 
-### Text extraction
-If you just need to read the text contents of a document, you should convert the document to markdown using pandoc. Pandoc provides excellent support for preserving document structure and can show tracked changes:
+### 文本提取
+如果只需要阅读文档的文本内容，可以使用pandoc将文档转换为markdown格式。pandoc在保留文档结构方面表现出色，并且能够显示标记的修改内容：
 
 ```bash
 # Convert document to markdown with tracked changes
@@ -39,49 +44,48 @@ pandoc --track-changes=all path-to-file.docx -o output.md
 # Options: --track-changes=accept/reject/all
 ```
 
-### Raw XML access
-You need raw XML access for: comments, complex formatting, document structure, embedded media, and metadata. For any of these features, you'll need to unpack a document and read its raw XML contents.
+### 原始XML访问
+当需要访问文档中的注释、复杂格式、文档结构、嵌入媒体和元数据时，需要直接操作原始XML。为此，你需要解压文档并读取其原始XML内容：
 
-#### Unpacking a file
+#### 解压文档
 `python ooxml/scripts/unpack.py <office_file> <output_directory>`
 
-#### Key file structures
-* `word/document.xml` - Main document contents
-* `word/comments.xml` - Comments referenced in document.xml
-* `word/media/` - Embedded images and media files
-* Tracked changes use `<w:ins>` (insertions) and `<w:del>` (deletions) tags
+#### 主要文件结构
+* `word/document.xml` - 主文档内容
+* `word/comments.xml` - 文档.xml中引用的注释
+* `word/media/` - 嵌入的图片和媒体文件
+- 标记的修改内容使用 `<w:ins>`（插入）和 `<w:del>`（删除）标签
 
-## Creating a new Word document
+## 创建新的Word文档
 
-When creating a new Word document from scratch, use **docx-js**, which allows you to create Word documents using JavaScript/TypeScript.
+要从零开始创建新的Word文档，可以使用**docx-js**，它允许你使用JavaScript/TypeScript来生成Word文档。
 
-### Workflow
-1. **MANDATORY - READ ENTIRE FILE**: Read [`docx-js.md`](docx-js.md) (~500 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with document creation.
-2. Create a JavaScript/TypeScript file using Document, Paragraph, TextRun components (You can assume all dependencies are installed, but if not, refer to the dependencies section below)
-3. Export as .docx using Packer.toBuffer()
+### 工作流程
+1. **强制要求 - 完整阅读文件**：务必从头到尾阅读[`docx-js.md`](docx-js.md)（约500行）。在开始创建文档之前，请务必阅读完整文件内容，以了解详细的语法规范、格式规则和最佳实践。
+2. 使用`Document`、`Paragraph`、`TextRun`组件创建一个JavaScript/TypeScript脚本（假设所有依赖项都已安装；如果没有，请参考下面的依赖项说明）。
+3. 使用`Packer.toBuffer()`将脚本导出为.docx格式。
 
-## Editing an existing Word document
+## 编辑现有的Word文档
 
-When editing an existing Word document, use the **Document library** (a Python library for OOXML manipulation). The library automatically handles infrastructure setup and provides methods for document manipulation. For complex scenarios, you can access the underlying DOM directly through the library.
+在编辑现有的Word文档时，可以使用**Document库**（一个用于处理OOXML的Python库）。该库会自动处理基础设施设置，并提供文档操作的方法。对于复杂的情况，你可以直接通过库访问底层DOM。
 
-### Workflow
-1. **MANDATORY - READ ENTIRE FILE**: Read [`ooxml.md`](ooxml.md) (~600 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for the Document library API and XML patterns for directly editing document files.
-2. Unpack the document: `python ooxml/scripts/unpack.py <office_file> <output_directory>`
-3. Create and run a Python script using the Document library (see "Document Library" section in ooxml.md)
-4. Pack the final document: `python ooxml/scripts/pack.py <input_directory> <office_file>`
+### 工作流程
+1. **强制要求 - 完整阅读文件**：务必从头到尾阅读[`ooxml.md`](ooxml.md)（约600行）。在开始编辑文档之前，请务必阅读完整文件内容，以了解Document库的API和XML格式规范。
+2. 解压文档：`python ooxml/scripts/unpack.py <office_file> <output_directory>`
+3. 使用Document库创建并运行Python脚本（详见ooxml.md中的“Document库”部分）。
+4. 将最终文档打包：`python ooxml/scripts/pack.py <input_directory> <office_file>`
 
-The Document library provides both high-level methods for common operations and direct DOM access for complex scenarios.
+Document库提供了常见操作的高级方法，同时也支持直接访问底层DOM以处理复杂情况。
 
-## Redlining workflow for document review
+## 用于文档审查的标记修改工作流程
 
-This workflow allows you to plan comprehensive tracked changes using markdown before implementing them in OOXML. **CRITICAL**: For complete tracked changes, you must implement ALL changes systematically.
+此工作流程允许你在将修改内容应用到OOXML之前，使用markdown格式规划详细的修改内容。**重要提示**：对于所有标记的修改，必须系统地逐一实现它们。
 
-**Batching Strategy**: Group related changes into batches of 3-10 changes. This makes debugging manageable while maintaining efficiency. Test each batch before moving to the next.
+**分批策略**：将相关的修改内容分成每批3-10条的批次进行。这样既能方便调试，又能保持效率。在处理下一批之前，请先测试每一批修改。
 
-**Principle: Minimal, Precise Edits**
-When implementing tracked changes, only mark text that actually changes. Repeating unchanged text makes edits harder to review and appears unprofessional. Break replacements into: [unchanged text] + [deletion] + [insertion] + [unchanged text]. Preserve the original run's RSID for unchanged text by extracting the `<w:r>` element from the original and reusing it.
+**编辑原则**：仅标记实际发生变化的文本。重复未更改的文本会使得修改内容难以审查，并显得不专业。修改操作应分为以下几部分：[未更改的文本] + [删除内容] + [插入内容] + [未更改的文本]。为了保留未更改文本的原始RSID，可以从原始文档中提取 `<w:r>` 元素并重新使用它。
 
-Example - Changing "30 days" to "60 days" in a sentence:
+**示例**：将句子中的“30 days”修改为“60 days”：
 ```python
 # BAD - Replaces entire sentence
 '<w:del><w:r><w:delText>The term is 30 days.</w:delText></w:r></w:del><w:ins><w:r><w:t>The term is 60 days.</w:t></w:r></w:ins>'
@@ -90,108 +94,102 @@ Example - Changing "30 days" to "60 days" in a sentence:
 '<w:r w:rsidR="00AB12CD"><w:t>The term is </w:t></w:r><w:del><w:r><w:delText>30</w:delText></w:r></w:del><w:ins><w:r><w:t>60</w:t></w:r></w:ins><w:r w:rsidR="00AB12CD"><w:t> days.</w:t></w:r>'
 ```
 
-### Tracked changes workflow
+### 标记修改工作流程
 
-1. **Get markdown representation**: Convert document to markdown with tracked changes preserved:
+1. **获取带有标记修改的markdown格式**：将文档转换为包含标记修改的markdown格式：
    ```bash
    pandoc --track-changes=all path-to-file.docx -o current.md
    ```
 
-2. **Identify and group changes**: Review the document and identify ALL changes needed, organizing them into logical batches:
+2. **识别并分组修改内容**：仔细阅读文档，识别所有需要修改的内容，并将它们分组到合理的批次中：
+   - **定位修改位置的方法**（用于在XML中查找修改位置）：
+     - 节目/标题编号（例如：“Section 3.2”、“Article IV”）
+     - 如果有编号，则使用段落标识符
+     - 使用带有唯一上下文的grep模式
+     - 文档结构（例如：“第一段”、“签名块”
+     - **注意：不要使用markdown中的行号**——它们与XML结构不对应
 
-   **Location methods** (for finding changes in XML):
-   - Section/heading numbers (e.g., "Section 3.2", "Article IV")
-   - Paragraph identifiers if numbered
-   - Grep patterns with unique surrounding text
-   - Document structure (e.g., "first paragraph", "signature block")
-   - **DO NOT use markdown line numbers** - they don't map to XML structure
+   **分组修改内容**（每批包含3-10条相关修改）：
+     - 按节分组：“批次1：第2节的修改”，“批次2：第5节的更新”
+     - 按类型分组：“批次1：日期修正”，“批次2：政党名称的更改”
+     - 按复杂性分组：先处理简单的文本替换，再处理复杂的结构修改
+     - 按顺序分组：“批次1：第1-3页”，“批次2：第4-6页”
 
-   **Batch organization** (group 3-10 related changes per batch):
-   - By section: "Batch 1: Section 2 amendments", "Batch 2: Section 5 updates"
-   - By type: "Batch 1: Date corrections", "Batch 2: Party name changes"
-   - By complexity: Start with simple text replacements, then tackle complex structural changes
-   - Sequential: "Batch 1: Pages 1-3", "Batch 2: Pages 4-6"
+3. **阅读文档并解压**：
+   - **强制要求 - 完整阅读文件**：务必从头到尾阅读[`ooxml.md`](ooxml.md)（约600行）。请特别注意“Document库”和“标记修改模式”部分。
+   - **解压文档**：`python ooxml/scripts/unpack.py <file.docx> <dir>`
+   - **注意建议的RSID**：解压脚本会提供一个RSID，用于标记修改内容。请将此RSID复制到步骤4b中使用。
 
-3. **Read documentation and unpack**:
-   - **MANDATORY - READ ENTIRE FILE**: Read [`ooxml.md`](ooxml.md) (~600 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Pay special attention to the "Document Library" and "Tracked Change Patterns" sections.
-   - **Unpack the document**: `python ooxml/scripts/unpack.py <file.docx> <dir>`
-   - **Note the suggested RSID**: The unpack script will suggest an RSID to use for your tracked changes. Copy this RSID for use in step 4b.
+4. **分批实施修改**：按逻辑（按节、按类型或按位置）分组修改内容，并在单个脚本中一起实施这些修改。这样做：
+   - 便于调试（较小的批次更容易定位错误）
+   - 可实现逐步推进
+   - 保持效率（每批3-10条修改效果较好）
 
-4. **Implement changes in batches**: Group changes logically (by section, by type, or by proximity) and implement them together in a single script. This approach:
-   - Makes debugging easier (smaller batch = easier to isolate errors)
-   - Allows incremental progress
-   - Maintains efficiency (batch size of 3-10 changes works well)
+**建议的分组方式**：
+   - 按文档节分组（例如：“第3节的修改”、“定义”、“终止条款”）
+   - 按修改类型分组（例如：“日期修改”、“政党名称更新”、“法律术语替换”）
+   - 按位置分组（例如：“第1-3页的修改”、“文档前半部分的修改”）
 
-   **Suggested batch groupings:**
-   - By document section (e.g., "Section 3 changes", "Definitions", "Termination clause")
-   - By change type (e.g., "Date changes", "Party name updates", "Legal term replacements")
-   - By proximity (e.g., "Changes on pages 1-3", "Changes in first half of document")
+   对于每一组修改内容：
+   - **a. 将文本映射到XML**：使用grep在`word/document.xml`中查找文本，确认文本是如何分布在 `<w:r>` 元素中的。
+   - **b. 创建并运行脚本**：使用`get_node`找到相关节点，实施修改，然后调用`doc.save()`。具体方法请参阅ooxml.md中的“Document库”部分。
+   - **注意**：在编写脚本之前，请务必使用`grep word/document.xml`获取当前的行号并验证文本内容。每次运行脚本后，行号可能会发生变化。
 
-   For each batch of related changes:
-
-   **a. Map text to XML**: Grep for text in `word/document.xml` to verify how text is split across `<w:r>` elements.
-
-   **b. Create and run script**: Use `get_node` to find nodes, implement changes, then `doc.save()`. See **"Document Library"** section in ooxml.md for patterns.
-
-   **Note**: Always grep `word/document.xml` immediately before writing a script to get current line numbers and verify text content. Line numbers change after each script run.
-
-5. **Pack the document**: After all batches are complete, convert the unpacked directory back to .docx:
+5. **打包文档**：所有批次完成后，将解压后的目录转换回.docx格式：
    ```bash
    python ooxml/scripts/pack.py unpacked reviewed-document.docx
    ```
 
-6. **Final verification**: Do a comprehensive check of the complete document:
-   - Convert final document to markdown:
+6. **最终验证**：对整个文档进行全面的检查：
+   - 将最终文档转换为markdown格式：
      ```bash
      pandoc --track-changes=all reviewed-document.docx -o verification.md
      ```
-   - Verify ALL changes were applied correctly:
+   - 确认所有修改内容都正确应用：
      ```bash
      grep "original phrase" verification.md  # Should NOT find it
      grep "replacement phrase" verification.md  # Should find it
      ```
-   - Check that no unintended changes were introduced
+   - 确保没有引入任何意外的修改
 
+## 将文档转换为图像
 
-## Converting Documents to Images
+为了可视化分析Word文档，可以使用两步流程将其转换为图像：
 
-To visually analyze Word documents, convert them to images using a two-step process:
-
-1. **Convert DOCX to PDF**:
+1. **将DOCX转换为PDF**：
    ```bash
    soffice --headless --convert-to pdf document.docx
    ```
 
-2. **Convert PDF pages to JPEG images**:
+2. **将PDF页面转换为JPEG图像**：
    ```bash
    pdftoppm -jpeg -r 150 document.pdf page
    ```
-   This creates files like `page-1.jpg`, `page-2.jpg`, etc.
+   这会生成如`page-1.jpg`、`page-2.jpg`等文件。
 
-Options:
-- `-r 150`: Sets resolution to 150 DPI (adjust for quality/size balance)
-- `-jpeg`: Output JPEG format (use `-png` for PNG if preferred)
-- `-f N`: First page to convert (e.g., `-f 2` starts from page 2)
-- `-l N`: Last page to convert (e.g., `-l 5` stops at page 5)
-- `page`: Prefix for output files
+**选项**：
+- `-r 150`：设置分辨率为150 DPI（根据质量和大小需求进行调整）
+- `-jpeg`：输出JPEG格式（如需要PNG格式，请使用`-png`）
+- `-f N`：指定要转换的起始页码（例如，`-f 2`表示从第2页开始转换）
+- `-l N`：指定要转换的结束页码（例如，`-l 5`表示在第5页停止）
+- `page`：输出文件的前缀
 
-Example for specific range:
+**示例**：针对特定范围的转换：
 ```bash
 pdftoppm -jpeg -r 150 -f 2 -l 5 document.pdf page  # Converts only pages 2-5
 ```
 
-## Code Style Guidelines
-**IMPORTANT**: When generating code for DOCX operations:
-- Write concise code
-- Avoid verbose variable names and redundant operations
-- Avoid unnecessary print statements
+## 代码风格指南
+**重要提示**：在编写与DOCX操作相关的代码时：
+- 代码应简洁明了
+- 避免使用冗长的变量名和多余的代码操作
+- 避免不必要的`print`语句
 
-## Dependencies
+## 依赖项
 
-Required dependencies (install if not available):
-
-- **pandoc**: `sudo apt-get install pandoc` (for text extraction)
-- **docx**: `npm install -g docx` (for creating new documents)
-- **LibreOffice**: `sudo apt-get install libreoffice` (for PDF conversion)
-- **Poppler**: `sudo apt-get install poppler-utils` (for pdftoppm to convert PDF to images)
-- **defusedxml**: `pip install defusedxml` (for secure XML parsing)
+**必需的依赖项（如果尚未安装，请安装）**：
+- **pandoc**：`sudo apt-get install pandoc`（用于文本提取）
+- **docx**：`npm install -g docx`（用于创建新文档）
+- **LibreOffice**：`sudo apt-get install libreoffice`（用于PDF转换）
+- **Poppler**：`sudo apt-get install poppler-utils`（用于使用pdftoppm将PDF转换为图像）
+- **defusedxml**：`pip install defusedxml`（用于安全地解析XML）

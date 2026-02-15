@@ -1,17 +1,17 @@
 ---
 name: whatisxlistening-to
-description: Query Last.fm listening data, show now playing, sync scrobble history to local DB, and deploy a personal "now playing" web dashboard. Use when user asks about current music, listening stats, scrobble history, or wants to set up a Last.fm dashboard.
+description: 查询 Last.fm 的收听数据，显示当前正在播放的歌曲，将收听记录同步到本地数据库，并部署一个个性化的“当前正在播放”网页仪表板。当用户询问当前正在播放的音乐、收听统计信息或希望设置 Last.fm 仪表板时，可以使用该功能。
 ---
 
 # whatisxlistening.to
 
-Last.fm CLI + real-time "now playing" web dashboard.
+这是一个结合了Last.fm命令行界面（CLI）与实时“当前正在播放”音乐信息的网页仪表板的工具。
 
-**Live demo**: https://whatisbenlistening.to
+**在线演示**: https://whatisbenlistening.to
 
-## Quick Start
+## 快速入门
 
-### CLI
+### 命令行界面 (CLI)
 
 ```bash
 # 1. Initialize config
@@ -24,7 +24,7 @@ Last.fm CLI + real-time "now playing" web dashboard.
 ./lastfm recent
 ```
 
-### Dashboard
+### 仪表板
 
 ```bash
 # Docker
@@ -37,28 +37,28 @@ docker run -d -p 8765:8765 \
 # → http://localhost:8765
 ```
 
-## CLI Commands
+## 命令行界面 (CLI) 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `lastfm init` | Create config file template |
-| `lastfm now` | Show current/last played track |
-| `lastfm stats` | Show listening statistics |
-| `lastfm recent [N]` | Show N recent tracks (default 10) |
-| `lastfm backfill` | Download **full** listening history to local DB |
-| `lastfm sync` | Sync new scrobbles (incremental) |
-| `lastfm search <query>` | Search local DB by artist/track/album |
-| `lastfm db` | Show local database statistics |
+| `lastfm init` | 创建配置文件模板 |
+| `lastfm now` | 显示当前或最近播放的歌曲 |
+| `lastfm stats` | 显示收听统计信息 |
+| `lastfm recent [N]` | 显示最近播放的N首歌曲（默认为10首） |
+| `lastfm backfill` | 将完整的收听历史数据下载到本地数据库 |
+| `lastfm sync` | 同步新的收听记录（增量方式） |
+| `lastfm search <查询>` | 根据艺术家、歌曲或专辑在本地数据库中搜索 |
+| `lastfm db` | 显示本地数据库的统计信息 |
 
-## Setup
+## 设置
 
-### 1. Get Last.fm API Key
+### 1. 获取Last.fm API密钥
 
-1. Go to https://www.last.fm/api/account/create
-2. Create an application (any name)
-3. Copy your API Key
+1. 访问 https://www.last.fm/api/account/create
+2. 创建一个应用程序（任意名称）
+3. 复制您的API密钥
 
-### 2. Create Config
+### 2. 创建配置文件
 
 ```bash
 ./lastfm init
@@ -72,33 +72,22 @@ docker run -d -p 8765:8765 \
 }
 ```
 
-## Clawdbot Usage
+## Clawdbot 使用说明
 
-| User Says | Action |
+| 用户输入 | 执行操作 |
 |-----------|--------|
-| "What am I listening to?" | `lastfm now` |
-| "My listening stats" | `lastfm stats` |
-| "What did I listen to recently?" | `lastfm recent` |
-| "Search for Radiohead" | `lastfm search "Radiohead"` |
+| “我正在听什么？” | `lastfm now` |
+| “我的收听统计” | `lastfm stats` |
+| “我最近听了什么？” | `lastfm recent` |
+| “搜索Radiohead” | `lastfm search "Radiohead"` |
 
 ---
 
-## Dashboard Deployment
+## 仪表板部署
 
 ### Docker
 
-```bash
-docker run -d -p 8765:8765 \
-  -e LASTFM_API_KEY=your_key \
-  -e LASTFM_USERNAME=your_user \
-  -e DISPLAY_NAME="Your Name" \
-  -e TZ=America/Los_Angeles \
-  ghcr.io/poiley/whatisxlistening.to:latest
-```
-
-### Kubernetes
-
-See `k8s/` directory and `README.md` for full deployment guide with Kustomize.
+请参阅 `k8s/` 目录和 `README.md` 以获取使用Docker进行部署的完整指南。
 
 ```bash
 kubectl create namespace listening-dashboard
@@ -109,29 +98,29 @@ kubectl create secret generic lastfm-credentials \
 kubectl apply -k k8s/
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
+| 变量 | 是否必填 | 描述 |
 |----------|----------|-------------|
-| `LASTFM_API_KEY` | ✅ | Last.fm API key |
-| `LASTFM_USERNAME` | ✅ | Last.fm username |
-| `DISPLAY_NAME` | ❌ | Name in header (defaults to username) |
-| `TZ` | ❌ | Timezone for "today" stats (e.g., `America/Los_Angeles`) |
-| `PORT` | ❌ | Server port (default: 8765) |
+| `LASTFM_API_KEY` | ✅ | Last.fm API密钥 |
+| `LASTFM_USERNAME` | ✅ | Last.fm用户名 |
+| `DISPLAY_NAME` | ❌ | 仪表板标题中的显示名称（默认为用户名） |
+| `TZ` | ❌ | “今日”统计数据的时区（例如：`America/Los_Angeles`） |
+| `PORT` | ❌ | 服务器端口（默认：8765） |
 
-## API Endpoints
+## API接口
 
-| Endpoint | Description |
+| 接口 | 描述 |
 |----------|-------------|
-| `GET /` | Now playing dashboard |
-| `GET /history` | Listening history page |
-| `GET /healthz` | Health check |
-| `GET /api/config` | `{username, display_name}` |
-| `GET /api/now` | Current/last track |
-| `GET /api/stats` | Listening statistics (total, artists, today, streak) |
-| `GET /api/recent?limit=N&page=N` | Recent tracks with album art |
+| `GET /` | 当前正在播放的歌曲信息 |
+| `GET /history` | 收听历史记录页面 |
+| `GET /healthz` | 系统健康检查 |
+| `GET /api/config` | 返回用户信息（`username, display_name`） |
+| `GET /api/now` | 当前或最近播放的歌曲 |
+| `GET /api/stats` | 收听统计信息（总计、艺术家、今日收听量等） |
+| `GET /api/recent?limit=N&page=N` | 带有专辑封面的最近播放歌曲列表 |
 
-## Files
+## 相关文件
 
 ```
 whatisxlistening.to/
@@ -150,6 +139,6 @@ whatisxlistening.to/
 └── tests/                # 100% coverage
 ```
 
-## License
+## 许可证
 
-MIT
+MIT许可证

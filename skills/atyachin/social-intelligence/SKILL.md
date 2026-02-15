@@ -1,6 +1,6 @@
 ---
 name: social-intelligence
-description: "Social Intelligence — AI-powered social media research across Twitter, Instagram, and Reddit. 1.5B+ posts indexed. Find experts, generate leads, monitor brands, analyze sentiment, discover influencers, and export data. The complete social intelligence toolkit for AI agents via MCP."
+description: "社交智能（Social Intelligence）——一款基于人工智能的社交媒体研究工具，支持分析Twitter、Instagram和Reddit上的内容。目前已索引超过15亿条帖子。该工具能够帮助用户寻找专家、挖掘潜在客户、监控品牌动态、分析用户情绪、发现具有影响力的用户，并导出相关数据。它是专为AI代理（AI agents）设计的全面社交智能解决方案，通过MCP（Media Control Platform）进行部署和使用。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -28,97 +28,101 @@ tags:
   - competitive-intelligence
 ---
 
-# Social Intelligence
+# 社交智能
 
-**The complete social intelligence platform for AI agents — 1.5B+ posts across Twitter, Instagram, and Reddit.**
+**专为AI代理设计的全面社交智能平台——涵盖Twitter、Instagram和Reddit上的15亿多条帖子。**
 
-Xpoz turns your AI agent into a social media analyst. Search posts, find experts, generate leads, monitor brands, analyze sentiment, discover influencers — all through a single MCP server.
-
----
-
-## ⚡ Setup
-
-👉 **Follow [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)** — one-click auth, works in 2 minutes.
+Xpoz可将您的AI代理转变为一个社交媒体分析师。通过单一的MCP服务器，您可以搜索帖子、寻找专家、挖掘潜在客户、监控品牌动态、分析用户情绪、发现影响力人物。
 
 ---
 
-## Setup
+## ⚡ 设置
 
-Run `xpoz-setup` skill. Verify: `mcporter call xpoz.checkAccessKeyStatus`
+👉 **请关注 [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)`——支持一键认证，设置仅需2分钟。
 
-## What You Can Do
+---
 
-### 🔍 Search & Monitor
-Search posts across Twitter (1B+), Instagram (400M+), and Reddit (100M+) with boolean queries, date filters, and CSV export.
+## 如何使用
+
+运行 `xpoz-setup` 工具，然后验证认证状态：`mcporter call xpoz.checkAccessKeyStatus`
+
+## 功能介绍
+
+### 🔍 搜索与监控
+- 可在Twitter（10亿多条帖子）、Instagram（4亿多条帖子）和Reddit（1亿多条帖子）中通过布尔查询进行搜索；
+- 支持日期筛选，并可导出CSV格式的数据。
 
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords query="your brand" startDate=2026-01-01
 ```
 
-### 🎯 Find Leads
-Discover people actively looking for solutions like yours — complaining about competitors, asking for recommendations, or describing pain points you solve.
+### 🎯 挖掘潜在客户
+- 发现那些正在寻找类似解决方案的用户（例如：对竞争对手表示不满、寻求建议或描述您能解决的痛点）；
+- 详情请参阅 **[lead-generation](https://clawhub.ai/skills/lead-generation)** 工具。
 
-→ See **[lead-generation](https://clawhub.ai/skills/lead-generation)** skill
+### 🔬 寻找专家
+- 通过分析那些深入且持续发布技术相关内容的人，识别行业权威、意见领袖和实践者；
+- 详情请参阅 **[expert-finder](https://clawhub.ai/skills/expert-finder)** 工具。
 
-### 🔬 Find Experts
-Identify domain authorities, thought leaders, and practitioners by analyzing who posts about technical topics with depth and consistency.
+### 📊 分析用户情绪
+- 跟踪品牌在用户心中的形象，对比竞争对手的表现，发现反复出现的抱怨或正面评价，以及具有传播力的内容；
+- 详情请参阅 **[social-sentiment](https://clawhub.ai/skills/social-sentiment)** 工具。
 
-→ See **[expert-finder](https://clawhub.ai/skills/expert-finder)** skill
+### 👥 发现影响力人物
+- 根据实际创作的内容（而非粉丝数量）来评估和排名影响力人物；
+- 重视用户互动的质量，而非表面的数据指标。
 
-### 📊 Analyze Sentiment
-Track brand perception, compare competitors, surface recurring complaints and praise, identify viral moments.
-
-→ See **[social-sentiment](https://clawhub.ai/skills/social-sentiment)** skill
-
-### 👥 Discover Influencers
-Find and rank influencers by what they actually create, not just follower count. Engagement quality over vanity metrics.
-
-### 📦 Export Data
-Every search generates a full CSV export — up to 64K rows per query. Real example: 63,936 tweets in one download (38MB).
+### 📦 数据导出
+- 每次搜索都会生成完整的CSV文件（每次查询最多可导出64,000行数据）；示例：一次下载可获取63,936条推文（文件大小约38MB）。
 
 ---
 
-## Available Skills (Install What You Need)
+## 可用工具（根据需求安装）
 
-| Skill | Purpose | Install |
+| 工具 | 功能 | 安装方式 |
 |-------|---------|---------|
-| **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** | Core search across all platforms | `clawhub install xpoz-social-search` |
-| **[expert-finder](https://clawhub.ai/skills/expert-finder)** | Find domain experts & thought leaders | `clawhub install expert-finder` |
-| **[social-lead-gen](https://clawhub.ai/skills/social-lead-gen)** | Find high-intent buyers | `clawhub install social-lead-gen` |
-| **[social-sentiment](https://clawhub.ai/skills/social-sentiment)** | Brand & sentiment analysis | `clawhub install social-sentiment` |
-| **[reddit-search](https://clawhub.ai/skills/reddit-search)** | Reddit-focused search | `clawhub install reddit-search` |
-| **[instagram-search](https://clawhub.ai/skills/instagram-search)** | Instagram-focused search | `clawhub install instagram-search` |
-| **[twitter-api-alternative](https://clawhub.ai/skills/twitter-api-alternative)** | Twitter data without the API | `clawhub install twitter-api-alternative` |
+| **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** | 跨平台核心搜索功能 | `clawhub install xpoz-social-search` |
+| **[expert-finder](https://clawhub.ai/skills/expert-finder)** | 识别行业专家和意见领袖 | `clawhub install expert-finder` |
+| **[social-lead-gen](https://clawhub.ai/skills/social-lead-gen)** | 寻找有购买意向的用户 | `clawhub install social-lead-gen` |
+| **[social-sentiment](https://clawhub.ai/skills/social-sentiment)** | 品牌与用户情绪分析 | `clawhub install social-sentiment` |
+| **[reddit-search](https://clawhub.ai/skills/reddit-search)** | 专注于Reddit的搜索工具 | `clawhub install reddit-search` |
+| **[instagram-search](https://clawhub.ai/skills/instagram-search)** | 专注于Instagram的搜索工具 | `clawhub install instagram-search` |
+| **[twitter-api-alternative](https://clawhub.ai/skills/twitter-api-alternative)** | 无需API即可获取Twitter数据 | `clawhub install twitter-api-alternative` |
 
-All skills share the same Xpoz MCP backend — authenticate once, use everywhere.
-
----
-
-## 35 MCP Tools Available
-
-**Twitter (12):** Search posts, find users, look up profiles, get connections, interactions, retweets, quotes, comments, post count
-
-**Instagram (9):** Search posts (including reel subtitles), find users, look up profiles, get connections, interactions, comments
-
-**Reddit (8):** Search posts, search comments, find users, discover subreddits, look up profiles
-
-**TikTok (5):** Search posts, find users, look up profiles
-
-**Utility:** Operation status polling, access key verification
+所有工具均基于相同的Xpoz MCP后端——只需认证一次，即可在所有平台上使用。
 
 ---
 
-## Why Xpoz?
+## 提供的35种MCP工具
 
-- **Multi-platform** — One tool for Twitter + Instagram + Reddit + TikTok
-- **MCP-native** — Built for AI agents, not dashboards
-- **Natural language** — Boolean queries, no coding required
-- **Massive scale** — 1.5B+ posts, CSV exports up to 64K rows
-- **Affordable** — Free tier available, $20/mo for full access
-- **2-minute setup** — No API keys, no developer accounts
+**Twitter（12种工具）：**  
+- 搜索帖子、查找用户、查看个人资料、获取互动记录、转发次数、引用内容、评论以及帖子数量  
+
+**Instagram（9种工具）：**  
+- 搜索帖子（包括Reel视频的字幕）、查找用户、查看个人资料、获取互动记录和评论  
+
+**Reddit（8种工具）：**  
+- 搜索帖子、搜索评论、查找用户以及发现子版块  
+
+**TikTok（5种工具）：**  
+- 搜索帖子、查找用户以及查看个人资料  
+
+**实用工具：**  
+- 系统运行状态监控、访问密钥验证  
 
 ---
 
-**Website:** [xpoz.ai](https://xpoz.ai) • **Free tier available**
+## 选择Xpoz的理由：
 
-Built for ClawHub • 2026
+- **多平台支持**：一个工具即可覆盖Twitter、Instagram、Reddit和TikTok  
+- **专为AI代理设计**：专为AI代理量身打造，而非用于仪表板  
+- **自然语言查询**：支持布尔查询，无需编写代码  
+- **大规模处理能力**：处理15亿多条帖子，支持高达64,000行的CSV导出  
+- **价格实惠**：提供免费试用版，全额访问权限每月仅需20美元  
+- **快速设置**：无需API密钥或开发者账户  
+
+---
+
+**官方网站：** [xpoz.ai](https://xpoz.ai) • **提供免费试用版**
+
+专为ClawHub平台开发 • 2026年发布

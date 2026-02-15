@@ -1,13 +1,13 @@
 ---
 name: telegram-ascii-table
-description: Format tabular data as ASCII box tables for Telegram. Stdin-only input eliminates shell injection risks. Handles smart column sizing, text wrapping, and proper padding for monospace display.
+description: 将表格数据格式化为适用于 Telegram 的 ASCII 箱式表格。仅使用标准输入（stdin）可以消除 shell 注入的风险。该工具支持智能调整列宽、文本换行以及为等宽显示提供适当的填充效果。
 ---
 
-# Telegram ASCII Tables
+# Telegram ASCII 表格
 
-Format tabular data as ASCII box-drawing tables that render correctly in Telegram code blocks.
+将表格数据格式化为 ASCII 箱形绘制表格，以便在 Telegram 代码块中正确显示。
 
-## Quick Start
+## 快速入门
 
 ```bash
 {baseDir}/scripts/ascii-table.py <<'EOF'
@@ -17,11 +17,11 @@ Database|db-01|Syncing
 EOF
 ```
 
-Wrap output in triple backticks when sending to Telegram.
+在发送到 Telegram 时，需要将输出内容用三引号括起来。
 
-## Usage
+## 使用方法
 
-### Heredoc (recommended)
+### Heredoc（推荐）
 
 ```bash
 # Desktop mode (default): Unicode box chars, 58 char width
@@ -45,7 +45,7 @@ data|more data
 EOF
 ```
 
-### Pipe
+### 管道（Pipe）
 
 ```bash
 cat data.txt | ascii-table
@@ -53,7 +53,7 @@ echo -e 'Name|Value\nRow1|Data1' | ascii-table
 some-command | ascii-table --mobile
 ```
 
-## Options
+## 选项
 
 ```
 ┌───────────┬───────┬────────────────────────────────────────────┐
@@ -67,7 +67,7 @@ some-command | ascii-table --mobile
 └───────────┴───────┴────────────────────────────────────────────┘
 ```
 
-## Mode Comparison
+## 模式比较
 
 ```
 ┌───────────────┬──────────────────────┬─────────────────────┐
@@ -83,18 +83,18 @@ some-command | ascii-table --mobile
 └───────────────┴──────────────────────┴─────────────────────┘
 ```
 
-Unicode box-drawing characters render at inconsistent widths on mobile Telegram. Use `--mobile` for mobile recipients.
+在移动版 Telegram 中，Unicode 箱形绘制字符的显示宽度可能不一致。对于移动设备接收者，可以使用 `--mobile` 选项。
 
-## Input Format
+## 输入格式
 
-- One row per line via stdin
-- Columns separated by `|`
-- Empty lines ignored
-- Whitespace around cells trimmed
+- 每行表示一条数据
+- 列之间用 `|` 分隔
+- 空行会被忽略
+- 单元格周围的空白字符会被去除
 
-## Output Examples
+## 输出示例
 
-### Desktop
+### 桌面版
 ```
 ┌──────────┬──────────┬──────────┐
 │ Server   │ Status   │ Uptime   │
@@ -105,7 +105,7 @@ Unicode box-drawing characters render at inconsistent widths on mobile Telegram.
 └──────────┴──────────┴──────────┘
 ```
 
-### Mobile
+### 移动版
 ```
 +------------+----------+----------+
 | Server     | Status   | Uptime   |
@@ -116,7 +116,7 @@ Unicode box-drawing characters render at inconsistent widths on mobile Telegram.
 +------------+----------+----------+
 ```
 
-### With Wrapping
+### 带有换行符的情况
 ```
 ┌─────────┬────────┬──────────────────────────────────────┐
 │ Task    │ Status │ Notes                                │
@@ -128,17 +128,17 @@ Unicode box-drawing characters render at inconsistent widths on mobile Telegram.
 └─────────┴────────┴──────────────────────────────────────┘
 ```
 
-## Design Note: Stdin-Only Input
+## 设计说明：仅支持标准输入（stdin）
 
-This script intentionally does not accept row data as CLI arguments.
+该脚本故意不接受通过命令行参数（CLI）输入的数据。
 
-Shell argument parsing happens *before* any script runs. Characters like `` ` ``, `$`, and `!` in double-quoted args get executed or expanded by the shell — not by the script receiving them. For example, `` `whoami` `` would execute and substitute its output before the script ever sees it.
+Shell 参数解析会在脚本执行之前完成。在双引号中包含的字符（如 ``` ` ``, `$`, `!`）会被 Shell 解释或执行，而不是由接收这些参数的脚本处理。例如，``` `whoami` `` 会在脚本看到其内容之前就被执行并替换结果。
 
-By requiring stdin input, user data bypasses shell parsing entirely. A quoted heredoc (`<<'EOF'`) passes everything through literally — no escaping needed, no execution possible.
+由于要求通过标准输入（stdin）传递数据，用户输入可以完全绕过 Shell 的解析过程。使用带引号的 Heredoc（`<<'EOF'`）格式时，所有内容都会原样传递——无需进行任何转义或执行操作。
 
-## Limitations
+## 限制
 
-- **Pipe delimiter** — `|` separates columns (cannot appear in cell content)
-- **Word breaks** — long words may split mid-word
-- **Wide characters** — emoji/CJK may cause alignment issues
-- **Left-aligned only** — no numeric right-alignment
+- **管道分隔符**：使用 `|` 来分隔列（但该字符不能出现在单元格内容中）
+- **单词分割**：较长的单词可能会在中间被分割
+- **宽字符**：表情符号（emoji）和汉字可能会导致对齐问题
+- **仅支持左对齐**：不支持数字的右对齐

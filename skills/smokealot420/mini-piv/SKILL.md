@@ -1,16 +1,15 @@
 ---
 name: mini-piv
-description: "Lightweight PIV workflow - discovery-driven feature builder. No PRD needed. Asks quick questions, generates PRP, executes with validation loop. For small-to-medium features when you want to skip PRD ceremony."
+description: "轻量级 PIV 工作流程——基于发现驱动的功能构建工具。无需编写产品需求文档（PRD）。用户可以快速提出问题，系统会自动生成项目请求（PRP），并执行相应的功能开发流程，同时包含验证环节。适用于开发小型到中型功能时，当您希望跳过传统的产品需求文档编写流程时。"
 user-invocable: true
 disable-model-invocation: true
 metadata: {"openclaw":{"emoji":"zap","homepage":"https://github.com/SmokeAlot420/ftw","requires":{"bins":["git"]},"os":["darwin","linux"]}}
 ---
 
-# Mini PIV Ralph - Lightweight Feature Builder
+# Mini PIV Ralph - 轻量级特性构建工具
 
-## Arguments: $ARGUMENTS
-
-Parse arguments:
+## 参数：$ARGUMENTS
+解析参数：
 ```
 FEATURE_NAME = $ARGUMENTS[0] or null (will ask user during discovery)
 PROJECT_PATH = $ARGUMENTS[1] or current working directory
@@ -18,32 +17,29 @@ PROJECT_PATH = $ARGUMENTS[1] or current working directory
 
 ---
 
-## Philosophy: Quick & Quality
+## 设计理念：快速且高质量
+> “当你只是想快速构建某个功能，而不想先编写产品需求文档（PRD）时，Mini PIV Ralph就是你的最佳选择。”
 
-> "When you just want to build something without writing a PRD first."
+使用与常规流程相同的质量控制流程（执行 → 验证 → 调试），但整个过程从简短的沟通开始，而非编写PRD。
 
-Same quality pipeline (Execute → Validate → Debug), but starts from a quick conversation instead of a PRD.
+**你是整个流程的协调者**——保持流程的简洁性，为需要处理复杂任务的子代理分配相应的任务。
 
-**You are the orchestrator** - stay lean, spawn fresh sub-agents for heavy lifting.
-
-**Sub-agent spawning:** Use the `sessions_spawn` tool to create fresh sub-agent sessions. Each spawn is non-blocking — you'll receive results via an announce step. Wait for each agent's results before proceeding to the next step.
+**子代理的创建**：使用`sessions_spawn`工具来创建新的子代理会话。每个子代理的创建都是非阻塞的，你可以通过通知机制获取其执行结果。在进入下一步之前，请务必等待所有子代理完成它们的工作。
 
 ---
 
-## Required Reading by Role
-
-| Role | Instructions |
+## 各角色所需阅读的文档
+| 角色 | 需要阅读的文档 |
 |------|-------------|
-| Orchestrator | This file only |
-| Research Agent | {baseDir}/references/codebase-analysis.md + {baseDir}/references/generate-prp.md |
-| Executor | {baseDir}/references/piv-executor.md + {baseDir}/references/execute-prp.md |
-| Validator | {baseDir}/references/piv-validator.md |
-| Debugger | {baseDir}/references/piv-debugger.md |
+| 协调者 | 仅阅读本文件 |
+| 研究代理 | {baseDir}/references/codebase-analysis.md + {baseDir}/references/generate-prp.md |
+| 执行代理 | {baseDir}/references/piv-executor.md + {baseDir}/references/execute-prp.md |
+| 验证代理 | {baseDir}/references/piv-validator.md |
+| 调试代理 | {baseDir}/references/piv-debugger.md |
 
 ---
 
-## Visual Workflow
-
+## 可视化工作流程
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ 1. DISCOVERY → Ask 3-5 questions                          │
@@ -57,24 +53,20 @@ Same quality pipeline (Execute → Validate → Debug), but starts from a quick 
 
 ---
 
-## Step 1: Discovery Phase
+## 第1步：发现阶段
+### 1a. 确定特性名称
+- 如果名称未提供：询问用户或根据上下文推断；
+- 将名称转换为驼峰式命名法（kebab-case）。
 
-### 1a. Determine Feature Name
-
-If not provided: ask user or infer from context. Normalize to kebab-case.
-
-### 1b. Check for Existing PRP
-
+### 1b. 检查是否存在现有的产品需求文档（PRP）
 ```bash
 ls -la PROJECT_PATH/PRPs/ 2>/dev/null | grep -i "mini-{FEATURE_NAME}"
 ```
 
-If exists, ask: "Overwrite, rename, or skip to execution?"
+如果存在PRP，请询问用户：“是直接覆盖现有文档、重命名该特性，还是跳过此步骤直接进入执行阶段？”
 
-### 1c. Ask Discovery Questions
-
-Present in a single conversational message:
-
+### 1c. 提出相关问题
+以对话的形式向用户提出以下问题：
 ```
 I've got a few quick questions so I can build this right:
 
@@ -85,10 +77,9 @@ I've got a few quick questions so I can build this right:
 5. **Anything explicitly OUT of scope?**
 ```
 
-Adapt for feature type (UI, API, contracts, integrations).
+根据特性的类型（UI、API、合同、集成等）调整问题内容。
 
-### 1d. Structure Discovery Answers
-
+### 1d. 整理用户的回答
 ```yaml
 feature:
   name: {FEATURE_NAME}
@@ -101,10 +92,8 @@ feature:
 
 ---
 
-## Step 2: Research & PRP Generation
-
-Spawn a **fresh sub-agent** using `sessions_spawn`:
-
+## 第2步：研究及生成产品需求文档（PRP）
+使用`sessions_spawn`创建一个新的子代理来执行特性相关的研究工作：
 ```
 MINI PIV: RESEARCH & PRP GENERATION
 ====================================
@@ -137,14 +126,12 @@ Output to: {PROJECT_PATH}/PRPs/mini-{FEATURE_NAME}.md
 Do BOTH steps yourself. DO NOT spawn sub-agents.
 ```
 
-**Wait for completion.**
+**等待研究结果完成。**
 
 ---
 
-## Step 3: Spawn EXECUTOR
-
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+## 第3步：创建执行代理
+使用`sessions_spawn`创建一个新的子代理来执行特性的实现工作：
 ```
 EXECUTOR MISSION - Mini PIV
 ============================
@@ -161,16 +148,13 @@ Output EXECUTION SUMMARY.
 
 ---
 
-## Validation Sizing Decision
+## 验证阶段的决策
+在创建完整的验证代理之前，先评估以下情况：
+- 如果更改的文件少于5个，代码行数少于100行，且没有涉及外部API调用，则进行快速验证（协调者自行审核更改内容）；
+- 否则，创建完整的验证代理（进入第4步）。
 
-Before spawning a full validator, assess:
-- **<5 files changed, <100 lines, no external APIs** → Quick validation (review changes yourself as orchestrator)
-- **Otherwise** → Spawn full validator sub-agent (Step 4)
-
-## Step 4: Spawn VALIDATOR
-
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+## 第4步：创建验证代理
+使用`sessions_spawn`创建一个新的子代理来进行验证工作：
 ```
 VALIDATOR MISSION - Mini PIV
 =============================
@@ -185,14 +169,15 @@ Verify ALL requirements independently.
 Output VERIFICATION REPORT with Grade, Checks, Gaps.
 ```
 
-**Process result:** PASS → commit | GAPS_FOUND → debugger | HUMAN_NEEDED → ask user
+**处理验证结果**：
+- 如果验证通过 → 提交代码；
+- 如果发现漏洞 → 交由调试代理处理；
+- 如果需要人工干预 → 请用户提供进一步的信息或指导。
 
 ---
 
-## Step 5: Debug Loop (Max 3 iterations)
-
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+## 第5步：调试循环（最多3次迭代）
+使用`sessions_spawn`创建一个新的子代理来进行调试：
 ```
 DEBUGGER MISSION - Mini PIV - Iteration {I}
 ============================================
@@ -208,12 +193,14 @@ Fix root causes. Run tests after each fix.
 Output FIX REPORT.
 ```
 
-After debugger: re-validate → PASS (commit) or loop (max 3) or escalate.
+调试完成后：
+- 如果验证通过 → 提交代码；
+- 如果仍然存在问题 → 进入第5次迭代；
+- 如果问题持续存在 → 提升问题处理级别。
 
 ---
 
-## Step 6: Smart Commit
-
+## 智能提交代码
 ```bash
 cd PROJECT_PATH && git status && git diff --stat
 git add -A
@@ -229,8 +216,7 @@ Built with FTW (First Try Works) - https://github.com/SmokeAlot420/ftw"
 
 ---
 
-## Completion
-
+## 工作完成
 ```
 ## MINI PIV RALPH COMPLETE
 
@@ -253,28 +239,26 @@ All requirements verified and passing.
 
 ---
 
-## Error Handling
+## 错误处理
+- 如果执行代理遇到阻塞或无法继续执行 → 请用户提供帮助；
+- 如果验证代理需要人工干预 → 请用户提供指导；
+- 如果经过3次调试循环问题仍未解决 → 提升问题处理级别，并附上问题清单。
 
-- **Executor BLOCKED**: Ask user for guidance
-- **Validator HUMAN_NEEDED**: Ask user for guidance
-- **3 debug cycles exhausted**: Escalate with persistent issues list
-
-### Sub-Agent Timeout/Failure
-When a sub-agent times out or fails:
-1. Check for partial work (files created, tests written)
-2. Retry once with a simplified, shorter prompt
-3. If retry fails, escalate to user with what was accomplished
+### 子代理的超时/失败处理
+当某个子代理超时或失败时：
+1. 检查该子代理是否完成了部分工作（例如：是否生成了必要的文件、编写了测试代码）；
+2. 用更简洁的提示重新尝试一次；
+- 如果重试仍然失败，将已完成的成果以及存在的问题提交给用户处理。
 
 ---
 
-## Quick Reference
-
-| Scenario | Use This |
+## 快速参考指南
+| 使用场景 | 选择哪种工具 |
 |----------|----------|
-| Small/medium feature, no PRD | **Mini PIV** |
-| Large feature with phases | Full PIV (/piv) |
+| 规模较小/中等的特性，无需编写PRD | **Mini PIV Ralph** |
+| 规模较大、包含多个开发阶段的特性 | **完整的PIV流程（/piv）** |
 
-### File Naming
+### 文件命名规则
 ```
 PRPs/mini-{feature-name}.md                  # PRP
 PRPs/planning/mini-{feature-name}-analysis.md # Analysis

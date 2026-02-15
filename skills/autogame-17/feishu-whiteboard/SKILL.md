@@ -1,27 +1,26 @@
 # Feishu Whiteboard Skill
 
-Allows creating and manipulating Feishu Whiteboards programmatically.
+该技能允许通过编程方式创建和操作 Feishu Whiteboards。
 
-## Configuration
-Requires `FEISHU_APP_ID` and `FEISHU_APP_SECRET` in environment or `config.json`.
-Scopes required: `board:whiteboard:node:create`
+## 配置要求
+需要环境变量或 `config.json` 文件中包含 `FEISHU_APP_ID` 和 `FEISHU_APP_SECRET`。
+所需权限：`board:whiteboard:node:create`
 
-## Usage
+## 使用方法
 
-### Create a Board
+### 创建白板
 ```bash
 node skills/feishu-whiteboard/create.js "My Architecture Diagram"
 ```
-Output: JSON containing `whiteboard_id`.
+输出：包含 `whiteboard_id` 的 JSON 数据。
 
-### Add Nodes (Demo)
+### 添加节点（示例）
 ```bash
 node skills/feishu-whiteboard/draw.js <whiteboard_id> demo
 ```
-Adds a rectangle and a circle connected by a line.
+添加一个矩形和一个圆形，并用一条线将它们连接起来。
 
-### Programmatic Usage
-
+### 编程使用方法
 ```javascript
 const { createWhiteboard } = require('./create');
 const { addNodes, createShape, createConnector } = require('./draw');
@@ -35,5 +34,5 @@ const nodes = [
 await addNodes(board.whiteboard_id, nodes);
 ```
 
-## Troubleshooting
-If you encounter `404 page not found`, it usually means the Whiteboard API is not enabled for your tenant or the endpoint URL has changed. The current implementation uses `/open-apis/board/v1/whiteboards`.
+## 故障排除
+如果遇到 “404 页面未找到”的错误，通常表示您的租户尚未启用 Whiteboard API，或者端点 URL 发生了变化。当前实现的端点为 `/open-apis/board/v1/whiteboards`。

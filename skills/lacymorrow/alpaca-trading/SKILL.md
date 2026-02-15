@@ -1,6 +1,6 @@
 ---
 name: alpaca-trading
-description: Execute trades, analyze markets, and manage portfolios using apcacli command-line tool for Alpaca's Trading API. Use when the user wants to trade stocks, ETFs, options, crypto, check market data, view positions, manage orders, or analyze their portfolio. Also use when they mention "buy," "sell," "trade," "market data," "stock price," "portfolio," "account balance," or "alpaca trading."
+description: 使用 apcacli 命令行工具，通过 Alpaca 的交易 API 来执行交易、分析市场并管理投资组合。当用户需要买卖股票、ETF、期权、加密货币，查看市场数据、管理订单或分析其投资组合时，可以使用该工具。此外，在用户提到“买入”、“卖出”、“交易”、“市场数据”、“股票价格”、“投资组合”、“账户余额”或“Alpaca 交易”等相关术语时，也请使用此工具。
 metadata:
   clawdbot:
     emoji: "📈"
@@ -10,68 +10,68 @@ metadata:
     homepage: "https://github.com/d-e-s-o/apcacli"
 ---
 
-# Alpaca Trading Skill
+# Alpaca交易技巧
 
-Execute trades and manage portfolios through the `apcacli` command-line tool for Alpaca's Trading API.
+通过`apcacli`命令行工具执行交易并管理投资组合，该工具用于Alpaca的交易API。
 
-## Overview
+## 概述
 
-You are an expert in using `apcacli` for command-line stock trading. Your goal is to help users trade stocks, ETFs, options, and crypto efficiently through Alpaca's API while emphasizing safety and best practices.
+您是使用`apcacli`进行命令行股票交易的专家。您的目标是通过Alpaca的API帮助用户高效地交易股票、ETF、期权和加密货币，同时强调安全性和最佳实践。
 
-## How to Use This Skill
+## 如何使用此技巧
 
-When helping users with trading tasks:
+在帮助用户进行交易任务时：
 
-1. **Safety First**: Always recommend paper trading for new users or when testing
-2. **Verify Commands**: Show the exact command before executing trades
-3. **Check Prerequisites**: Confirm market hours, account balance, and valid symbols
-4. **Explain Order Types**: Help users choose the right order type for their needs
-5. **Risk Management**: Suggest stop losses and position sizing
+1. **安全第一**：始终建议新用户或在进行测试时使用模拟交易。
+2. **验证命令**：在执行交易前展示确切的命令。
+3. **检查前提条件**：确认市场开放时间、账户余额和有效的交易符号。
+4. **解释订单类型**：帮助用户根据需求选择正确的订单类型。
+5. **风险管理**：建议设置止损和调整头寸规模。
 
 ---
 
-## What This Skill Does
+## 该技巧的功能
 
-`apcacli` is a Rust-based CLI for interacting with Alpaca's trading platform. It provides:
-- **Trading**: Submit, modify, and cancel orders for stocks, ETFs, options, and crypto
-- **Portfolio Management**: View positions, P/L, and account information
-- **Market Data**: Access asset information and market clock status
-- **Account Activity**: Track trading history and account changes
-- **Real-time Streaming**: Monitor account and trade events
+`apcacli`是一个基于Rust的命令行工具，用于与Alpaca的交易平台交互。它提供以下功能：
+- **交易**：提交、修改和取消股票、ETF、期权和加密货币的订单。
+- **投资组合管理**：查看头寸、盈亏和账户信息。
+- **市场数据**：获取资产信息和市场时钟状态。
+- **账户活动**：追踪交易历史和账户变化。
+- **实时流式更新**：监控账户和交易事件。
 
-## When to Use This Skill
+## 何时使用此技巧
 
-Use this skill when the user wants to:
-- Execute trades (buy/sell stocks, ETFs, options, crypto)
-- Check portfolio positions and performance
-- View or manage orders (open, filled, cancelled)
-- Get account balance and buying power
-- Access market data and asset information
-- Monitor account activity and events
-- Check if the market is open
-- Set up stop losses or trailing stops
-- Automate trading workflows with scripts
+当用户希望执行以下操作时，请使用此技巧：
+- 执行交易（买入/卖出股票、ETF、期权、加密货币）
+- 查看投资组合头寸和表现
+- 查看或管理订单（未成交、已成交、已取消）
+- 获取账户余额和可用资金
+- 获取市场数据和资产信息
+- 监控账户活动和事件
+- 检查市场是否开放
+- 设置止损或追踪止损
+- 使用脚本自动化交易流程
 
-**Common trigger phrases:**
-- "Buy 10 shares of AAPL"
-- "Show my open positions"
-- "What's my account balance?"
-- "List all my orders"
-- "Cancel order [ID]"
-- "Is the market open?"
-- "Show my portfolio performance"
-- "Set a stop loss on my position"
-- "Close all my positions"
+**常用指令示例**：
+- “买入10股AAPL”
+- “显示我的未成交订单”
+- “我的账户余额是多少？”
+- “列出我所有的订单”
+- “取消订单[ID]”
+- “市场是否开放？”
+- “显示我的投资组合表现”
+- “为我的头寸设置止损”
+- “关闭我所有的头寸”
 
-**When NOT to use this skill:**
-- User wants GUI-based trading (direct them to web interface)
-- User asks for financial advice (you provide tools, not recommendations)
-- User wants to trade instruments not supported by Alpaca
-- User doesn't have apcacli installed (help them install it first)
+**何时不使用此技巧**：
+- 用户希望使用基于图形界面的交易方式（引导他们使用Web界面）。
+- 用户请求财务建议（您提供工具，而非建议）。
+- 用户想要交易Alpaca不支持的证券。
+- 用户未安装`apcacli`（请先帮助他们安装）。
 
-## Installation & Setup
+## 安装与设置
 
-### Install apcacli
+### 安装`apcacli`
 
 ```bash
 # Using Cargo (Rust package manager)
@@ -81,58 +81,58 @@ cargo install apcacli
 apcacli --help
 ```
 
-**Requirements:**
-- Rust 1.71 or newer
-- Alpaca account (paper or live trading)
-- Alpaca API credentials
+**要求**：
+- Rust 1.71或更高版本
+- Alpaca账户（模拟交易或真实交易）
+- Alpaca API凭证
 
-### Configure Environment Variables
+### 配置环境变量
 
-**For Paper Trading (Recommended for testing):**
+**用于模拟交易（推荐用于测试）：**
 ```bash
 export APCA_API_KEY_ID='your_paper_key_id'
 export APCA_API_SECRET_KEY='your_paper_secret_key'
 # Paper trading is the default, no need to set APCA_API_BASE_URL
 ```
 
-**For Live Trading:**
+**用于真实交易：**
 ```bash
 export APCA_API_BASE_URL='https://api.alpaca.markets'
 export APCA_API_KEY_ID='your_live_key_id'
 export APCA_API_SECRET_KEY='your_live_secret_key'
 ```
 
-**Get API Credentials:**
-1. Sign up at https://alpaca.markets/
-2. Navigate to your dashboard
-3. Generate API keys (paper or live)
-4. Export the environment variables
+**获取API凭证**：
+1. 在https://alpaca.markets/注册。
+2. 进入您的仪表板。
+3. 生成API密钥（模拟交易或真实交易）。
+4. 导出环境变量。
 
-## Core Commands
+## 核心命令
 
-### Account Information
+### 账户信息
 
-**View account details:**
+**查看账户详情**：
 ```bash
 apcacli account get
 ```
-Shows account status, cash balance, buying power, equity, and margin information.
+显示账户状态、现金余额、可用资金、资产净值和保证金信息。
 
-**View account activity:**
+**查看账户活动**：
 ```bash
 apcacli account activity
 ```
-Displays recent account activity including trades, dividends, and transfers.
+显示最近的账户活动，包括交易、股息和转账记录。
 
-**Update account configuration:**
+**更新账户设置**：
 ```bash
 apcacli account config <options>
 ```
-Modify account settings (use `--help` for available options).
+修改账户设置（使用`--help`查看可用选项）。
 
-### Order Management
+### 订单管理
 
-**Submit a market order:**
+**提交市价单**：
 ```bash
 # Buy with dollar amount
 apcacli order submit buy AAPL --value 1000
@@ -144,7 +144,7 @@ apcacli order submit buy AAPL --quantity 10
 apcacli order submit sell TSLA --quantity 5
 ```
 
-**Submit a limit order:**
+**提交限价单**：
 ```bash
 # Buy at specific price
 apcacli order submit buy MSFT --quantity 10 --limit-price 420
@@ -153,7 +153,7 @@ apcacli order submit buy MSFT --quantity 10 --limit-price 420
 apcacli order submit sell NVDA --quantity 20 --limit-price 850
 ```
 
-**Submit advanced orders:**
+**提交高级订单**：
 ```bash
 # Stop order
 apcacli order submit sell AAPL --quantity 10 --stop-price 180
@@ -165,50 +165,50 @@ apcacli order submit sell TSLA --quantity 5 --stop-price 800 --limit-price 795
 apcacli order submit sell NVDA --quantity 10 --trail-percent 5
 ```
 
-**List all orders:**
+**列出所有订单**：
 ```bash
 apcacli order list
 ```
-Shows all orders with their status (open, filled, cancelled, etc.).
+显示所有订单及其状态（未成交、已成交、已取消等）。
 
-**Get specific order details:**
+**获取特定订单详情**：
 ```bash
 apcacli order get <ORDER_ID>
 ```
-Displays comprehensive order information including timestamps, pricing, and status.
+显示详细的订单信息，包括时间戳、价格和状态。
 
-**Cancel an order:**
+**取消订单**：
 ```bash
 apcacli order cancel <ORDER_ID>
 ```
-Cancels a pending order by its ID.
+通过订单ID取消待处理的订单。
 
-**Cancel all orders:**
+**取消所有订单**：
 ```bash
 apcacli order cancel-all
 ```
-Cancels all open orders.
+取消所有未成交的订单。
 
-### Position Management
+### 头寸管理
 
-**List all open positions:**
+**列出所有未成交的头寸**：
 ```bash
 apcacli position list
 ```
-Shows all open positions with:
-- Quantity and entry price
-- Current market value
-- Daily P/L (with percentage)
-- Total P/L (with percentage)
-- Color-coded profit/loss
+显示所有未成交的头寸，包括：
+- 数量和入场价格
+- 当前市场价值
+- 日盈亏（百分比）
+- 总盈亏（百分比）
+- 用颜色编码显示盈利/亏损
 
-**Get specific position:**
+**获取特定头寸信息**：
 ```bash
 apcacli position get <SYMBOL>
 ```
-Displays detailed information for a specific position.
+显示特定头寸的详细信息。
 
-**Close a position:**
+**关闭头寸**：
 ```bash
 # Close entire position
 apcacli position close <SYMBOL>
@@ -216,78 +216,79 @@ apcacli position close <SYMBOL>
 # Close partial position
 apcacli position close <SYMBOL> --quantity 5
 ```
+关闭所有未成交的头寸。
 
-**Close all positions:**
+**关闭所有头寸**：
 ```bash
 apcacli position close-all
 ```
-Closes all open positions.
+关闭所有未成交的头寸。
 
-### Asset Information
+### 资产信息
 
-**List available assets:**
+**列出可用资产**：
 ```bash
 apcacli asset list
 ```
-Shows all tradeable assets.
+显示所有可交易的资产。
 
-**Get asset details:**
+**获取资产详情**：
 ```bash
 apcacli asset get <SYMBOL>
 ```
-Displays asset information including exchange, class, and tradability status.
+显示资产信息，包括交易所、类别和可交易状态。
 
-**Search for assets:**
+**搜索资产**：
 ```bash
 apcacli asset search <QUERY>
 ```
-Searches for assets matching the query.
+搜索符合查询条件的资产。
 
-### Market Data
+### 市场数据
 
-**Check market clock:**
+**查看市场状态**：
 ```bash
 apcacli market clock
 ```
-Shows current market status (open/closed), next open time, and next close time.
+显示当前市场状态（开放/关闭）、下一个开盘时间和下一个收盘时间。
 
-### Streaming (Real-time Events)
+### 流式更新（实时事件）
 
-**Stream account updates:**
+**流式更新账户信息**：
 ```bash
 apcacli stream account
 ```
-Monitors real-time account events including order updates and fills.
+监控实时账户事件，包括订单更新和成交情况。
 
-**Stream trade updates:**
+**流式更新交易信息**：
 ```bash
 apcacli stream trades
 ```
-Monitors real-time trade events for your positions.
+监控您头寸的实时交易事件。
 
-## Best Practices
+## 最佳实践
 
-### Safety & Risk Management
+### 安全与风险管理
 
-1. **Start with Paper Trading** - Always test strategies with paper trading first
-2. **Use Limit Orders** - Avoid market orders in volatile conditions for better price control
-3. **Verify Symbols** - Double-check ticker symbols before executing trades
-4. **Review Before Executing** - Use `apcacli order get` to verify order details
-5. **Set Stop Losses** - Protect positions with stop orders
-6. **Check Account Balance** - Ensure sufficient buying power before trading
-7. **Monitor Positions** - Regularly review P/L with `apcacli position list`
+1. **从模拟交易开始** - 始终先用模拟交易测试策略。
+2. **使用限价单** - 在市场波动时避免使用市价单以更好地控制价格。
+3. **验证交易符号** - 在执行交易前仔细核对股票代码。
+4. **执行前审核** - 使用`apcacli order get`验证订单详情。
+5. **设置止损** - 用止损单保护头寸。
+6. **检查账户余额** - 在交易前确保有足够的可用资金。
+7. **定期监控头寸** - 使用`apcacli position list`定期查看盈亏。
 
-### Effective Usage
+### 有效使用方法
 
-1. **Check help for any command** - Use `apcacli <command> --help` for detailed options
-2. **Save order IDs** - Store returned order IDs to track and manage orders later
-3. **Use environment variables** - Keep credentials secure in environment variables, never hardcode
-4. **Verify market hours** - Check `apcacli market clock` before placing orders
-5. **Review activity regularly** - Monitor account activity for unexpected changes
+1. **查看命令帮助** - 使用`apcacli <命令> --help`获取详细选项。
+2. **保存订单ID** - 存储返回的订单ID以便后续跟踪和管理。
+3. **使用环境变量** - 将凭证安全地保存在环境变量中，切勿硬编码。
+4. **检查市场开放时间** - 在下订单前使用`apcacli market clock`确认市场状态。
+5. **定期审查活动** - 监控账户活动以发现意外变化。
 
-### Common Workflows
+### 常见工作流程
 
-**Simple stock purchase:**
+**简单股票购买**：
 ```bash
 # 1. Check account balance
 apcacli account get
@@ -305,7 +306,7 @@ apcacli order submit buy AAPL --value 1000
 apcacli position list
 ```
 
-**Limit order with monitoring:**
+**带监控的限价单**：
 ```bash
 # 1. Submit limit order
 apcacli order submit buy MSFT --quantity 10 --limit-price 420
@@ -318,7 +319,7 @@ apcacli order get <ORDER_ID>
 apcacli order cancel <ORDER_ID>
 ```
 
-**Portfolio review:**
+**投资组合审查**：
 ```bash
 # 1. View all positions
 apcacli position list
@@ -330,7 +331,7 @@ apcacli account get
 apcacli account activity
 ```
 
-**Close position with stop loss:**
+**设置止损关闭头寸**：
 ```bash
 # 1. Check current position
 apcacli position get AAPL
@@ -342,63 +343,63 @@ apcacli order submit sell AAPL --quantity 10 --trail-percent 5
 apcacli order list
 ```
 
-## Command Reference Quick Guide
+## 命令参考快速指南
 
-| Task | Command |
+| 任务 | 命令 |
 |------|---------|
-| View account | `apcacli account get` |
-| Account activity | `apcacli account activity` |
-| Buy stock (market) | `apcacli order submit buy SYMBOL --value AMOUNT` |
-| Buy stock (limit) | `apcacli order submit buy SYMBOL --quantity N --limit-price PRICE` |
-| Sell stock | `apcacli order submit sell SYMBOL --quantity N` |
-| List all orders | `apcacli order list` |
-| Get order details | `apcacli order get ORDER_ID` |
-| Cancel order | `apcacli order cancel ORDER_ID` |
-| Cancel all orders | `apcacli order cancel-all` |
-| List positions | `apcacli position list` |
-| Get position | `apcacli position get SYMBOL` |
-| Close position | `apcacli position close SYMBOL` |
-| Close all positions | `apcacli position close-all` |
-| List assets | `apcacli asset list` |
-| Get asset info | `apcacli asset get SYMBOL` |
-| Check market status | `apcacli market clock` |
-| Stream account events | `apcacli stream account` |
-| Stream trades | `apcacli stream trades` |
+| 查看账户 | `apcacli account get` |
+| 账户活动 | `apcacli account activity` |
+| 买入股票（市价） | `apcacli order submit buy SYMBOL --value AMOUNT` |
+| 买入股票（限价） | `apcacli order submit buy SYMBOL --quantity N --limit-price PRICE` |
+| 卖出股票 | `apcacli order submit sell SYMBOL --quantity N` |
+| 列出所有订单 | `apcacli order list` |
+| 获取订单详情 | `apcacli order get ORDER_ID` |
+| 取消订单 | `apcacli order cancel ORDER_ID` |
+| 取消所有订单 | `apcacli order cancel-all` |
+| 列出头寸 | `apcacli position list` |
+| 获取头寸信息 | `apcacli position get SYMBOL` |
+| 关闭头寸 | `apcacli position close SYMBOL` |
+| 关闭所有头寸 | `apcacli position close-all` |
+| 列出资产 | `apcacli asset list` |
+| 获取资产信息 | `apcacli asset get SYMBOL` |
+| 查看市场状态 | `apcacli market clock` |
+| 流式更新账户事件 | `apcacli stream account` |
+| 流式更新交易 | `apcacli stream trades` |
 
-## Order Types & Parameters
+## 订单类型及参数
 
-### Basic Order Parameters
+### 基本订单参数
 
-- `--quantity N` - Number of shares to trade
-- `--value AMOUNT` - Dollar amount to invest (for market orders)
-- `--limit-price PRICE` - Limit price for limit orders
-- `--stop-price PRICE` - Stop price for stop orders
-- `--trail-percent N` - Trailing stop percentage
-- `--trail-amount AMOUNT` - Trailing stop dollar amount
+- `--quantity N` - 要交易的股票数量
+- `--value AMOUNT` - 投资金额（市价单）
+- `--limit-price PRICE` - 限价单的限价
+- `--stop-price PRICE` - 止损单的止损价
+- `--trail-percent N` - 追踪止损的百分比
+- `--trail-amount AMOUNT` - 追踪止损的金额
 
-### Order Types
+### 订单类型
 
-**Market Order** - Executes immediately at current market price
+**市价单** - 立即在当前市场价格执行
 ```bash
 apcacli order submit buy AAPL --quantity 10
 ```
 
-**Limit Order** - Executes only at specified price or better
+**限价单** - 仅在指定价格或更优价格时执行
 ```bash
 apcacli order submit buy AAPL --quantity 10 --limit-price 185
 ```
 
-**Stop Order** - Converts to market order when stop price is reached
+**止损单** - 当达到止损价时转换为市价单
 ```bash
 apcacli order submit sell AAPL --quantity 10 --stop-price 180
 ```
 
-**Stop-Limit Order** - Converts to limit order when stop price is reached
+**止损-限价单** - 当达到止损价时转换为限价单
 ```bash
 apcacli order submit sell AAPL --quantity 10 --stop-price 180 --limit-price 179
 ```
 
-**Trailing Stop** - Stop price follows market by specified percentage or amount
+**追踪止损** - 止损价根据指定百分比或金额跟随市场变动
 ```bash
 # Percentage-based
 apcacli order submit sell AAPL --quantity 10 --trail-percent 5
@@ -407,35 +408,35 @@ apcacli order submit sell AAPL --quantity 10 --trail-percent 5
 apcacli order submit sell AAPL --quantity 10 --trail-amount 10
 ```
 
-## Important Notes
+## 重要注意事项
 
-### Requirements
+### 要求
 
-- **apcacli binary must be installed** - Install via `cargo install apcacli`
-- **Environment variables must be set** - `APCA_API_KEY_ID` and `APCA_API_SECRET_KEY` are required
-- **Alpaca account** - Active paper or live trading account
-- **Rust 1.71+** - Required for installation from source
+- **必须安装`apcacli`二进制文件** - 通过`cargo install apcacli`安装。
+- **必须设置环境变量** - 需要`APCA_API_KEY_ID`和`APCA_API_SECRET_KEY`。
+- **Alpaca账户** - 活跃的模拟交易或真实交易账户。
+- **Rust 1.71+** - 从源代码安装需要此版本。
 
-### Trading Limitations
+### 交易限制
 
-- **Paper vs Live**: Default is paper trading; set `APCA_API_BASE_URL` for live trading
-- **Market hours**: Most trades only execute during market hours (9:30 AM - 4:00 PM ET)
-- **Pattern Day Trading (PDT)**: Accounts under $25k have PDT restrictions
-- **Buying power**: Limited by account equity and margin requirements
-- **Order restrictions**: Some order types may not be available for all securities
-- **Crypto trading**: May have different rules and trading hours
+- **模拟交易与真实交易**：默认为模拟交易；如需真实交易，请设置`APCA_API_BASE_URL`。
+- **市场开放时间**：大多数交易仅在市场开放时间（美国东部时间上午9:30 - 下午4:00）进行。
+- **PDT模式交易**：账户余额低于25,000美元的用户受PDT限制。
+- **可用资金**：受账户资产净值和保证金要求限制。
+- **订单限制**：某些订单类型可能不适用于所有证券。
+- **加密货币交易**：可能有不同的规则和交易时间。
 
-### Data & Performance
+### 数据与性能
 
-- **API rate limits**: Alpaca has request limits to prevent abuse
-- **Real-time data**: May require active data subscription
-- **Command output**: Results formatted with color coding for easy reading
-- **Order IDs**: Save returned order IDs for tracking and management
-- **Network dependency**: Requires internet connection to Alpaca's API
+- **API请求限制**：Alpaca有请求次数限制以防止滥用。
+- **实时数据**：可能需要订阅实时数据服务。
+- **命令输出**：结果以颜色编码格式显示以便于阅读。
+- **订单ID**：保存返回的订单ID以便跟踪和管理。
+- **网络依赖**：需要连接到Alpaca的API。
 
-## Troubleshooting
+## 故障排除
 
-### Environment Variables Not Set
+### 环境变量未设置
 ```bash
 # Error: "Missing APCA_API_KEY_ID"
 # Solution: Export required environment variables
@@ -443,7 +444,7 @@ export APCA_API_KEY_ID='your_key'
 export APCA_API_SECRET_KEY='your_secret'
 ```
 
-### Command Not Found
+### 命令未找到
 ```bash
 # Error: "apcacli: command not found"
 # Solution: Install apcacli
@@ -453,31 +454,30 @@ cargo install apcacli
 which apcacli
 ```
 
-### API Authentication Failed
-- Verify API credentials are correct
-- Check if using correct endpoint (paper vs live)
-- Ensure API keys haven't been revoked
-- Confirm account status is active
+### API认证失败
+- 确认API凭证正确。
+- 检查是否使用了正确的端点（模拟交易或真实交易）。
+- 确认API密钥未被撤销。
+- 确认账户状态是否活跃。
 
-### Order Rejected
-- Verify market is open (for stocks)
-- Check sufficient buying power
-- Confirm symbol is valid and tradeable
-- Review order parameters (price, quantity)
-- Check for any account restrictions
+### 订单被拒绝
+- 确认市场是否开放（对于股票）。
+- 检查是否有足够的可用资金。
+- 确认交易符号是否有效且可交易。
+- 检查订单参数（价格、数量）。
+- 检查是否有任何账户限制。
 
-### Position Not Found
-- Verify symbol is correct
-- Ensure position is actually open
-- Check if position was closed previously
-- Confirm you're using the right account (paper vs live)
+### 头寸未找到
+- 确认交易符号是否正确。
+- 确认头寸确实存在。
+- 检查头寸是否已被关闭。
+- 确认使用的账户是否正确（模拟交易或真实交易）。
 
-## Advanced Features
+## 高级功能
 
-### Shell Completion
+### Shell自动补全
 
-Generate shell completion for faster command entry:
-
+生成Shell自动补全功能，以便更快输入命令：
 ```bash
 # Install completion script
 cargo run --bin=shell-complete > apcacli.bash
@@ -487,10 +487,9 @@ source apcacli.bash
 apcacli order <TAB>
 ```
 
-### Streaming for Monitoring
+### 实时监控
 
-Use streaming commands to monitor account activity in real-time:
-
+使用流式命令实时监控账户活动：
 ```bash
 # Terminal 1: Monitor account events
 apcacli stream account
@@ -500,10 +499,9 @@ apcacli order submit buy AAPL --value 1000
 # Watch the fill notification appear in Terminal 1
 ```
 
-### Scripting & Automation
+### 脚本与自动化
 
-Combine `apcacli` with shell scripts for automated strategies:
-
+将`apcacli`与Shell脚本结合使用，实现自动化交易策略：
 ```bash
 #!/bin/bash
 # Example: Daily portfolio check script
@@ -520,28 +518,28 @@ echo "Recent Activity:"
 apcacli account activity
 ```
 
-## Additional Resources
+## 额外资源
 
-- **apcacli Repository**: https://github.com/d-e-s-o/apcacli
-- **Alpaca Documentation**: https://docs.alpaca.markets/
-- **Alpaca API Reference**: https://docs.alpaca.markets/reference/
-- **Paper Trading Dashboard**: https://app.alpaca.markets/paper/dashboard/overview
-- **apca Crate (Underlying Library)**: https://github.com/d-e-s-o/apca
+- **apcacli仓库**：https://github.com/d-e-s-o/apcacli
+- **Alpaca文档**：https://docs.alpaca.markets/
+- **Alpaca API参考**：https://docs.alpaca.markets/reference/
+- **模拟交易仪表板**：https://app.alpaca.markets/paper/dashboard/overview
+- **apca crate（基础库）**：https://github.com/d-e-s-o/apca
 
-## Safety Reminders
+## 安全提醒
 
-⚠️ **IMPORTANT**:
-- Always start with **PAPER TRADING** to test without risk
-- Review all order details before execution
-- Never share your API credentials
-- Use limit orders for better price control
-- Set stop losses to manage risk
-- Verify environment variables are set correctly (paper vs live)
-- Double-check symbols and quantities
-- Monitor positions regularly
+⚠️ **重要**：
+- 始终从**模拟交易**开始，以无风险的方式进行测试。
+- 在执行前仔细查看所有订单详情。
+- 绝不要分享您的API凭证。
+- 使用限价单以更好地控制价格。
+- 设置止损以管理风险。
+- 确认环境变量设置正确（模拟交易与真实交易）。
+- 仔细核对交易符号和数量。
+- 定期监控头寸。
 
-## Credits
+## 致谢
 
-`apcacli` created by d-e-s-o
+`apcacli`由d-e-s-o创建。
 
-Built on the `apca` Rust crate for Alpaca API interactions.
+该工具基于`apca` Rust库开发，用于与Alpaca API进行交互。

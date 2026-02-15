@@ -1,41 +1,41 @@
 ---
 name: sui-knowledge
-description: Answer questions about Sui blockchain ecosystem, concepts, tokenomics, validators, staking, and general knowledge. Use when users ask "what is Sui", "how does Sui work", "Sui vs other chains", or any Sui-related questions that aren't specifically about Move programming.
+description: 回答关于 Sui 区块链生态系统、概念、代币经济、验证器、质押机制以及相关基础知识的问题。当用户询问“什么是 Sui？”、“Sui 是如何运作的？”、“Sui 与其他区块链相比有何优势？”或任何与 Sui 相关但并非专门针对 Move 编程的问题时，可以使用这些信息进行解答。
 version: 1.0.0
 metadata:
   author: EasonClawdbot1
   tags: sui, blockchain, web3, knowledge, ecosystem
 ---
 
-# Sui Knowledge Base
+# Sui知识库
 
-Expert knowledge about Sui blockchain ecosystem. Use this skill to answer questions about Sui concepts, architecture, tokenomics, and ecosystem.
+本知识库涵盖了关于Sui区块链生态系统的专业知识。您可以使用这些信息来回答有关Sui的概念、架构、代币经济系统以及生态系统的相关问题。
 
-## When to Use This Skill
+## 适用场景
 
-Activate when users ask about:
-- What is Sui? How does it work?
-- Sui vs Ethereum/Solana/other chains
-- SUI token, tokenomics, staking
-- Validators, consensus, transactions
-- Sui ecosystem, projects, wallets
-- Object model, ownership concepts
-- Performance, TPS, finality
+当用户提出以下问题时，请使用本知识库：
+- 什么是Sui？它是如何运作的？
+- Sui与Ethereum/Solana等区块链的比较
+- SUI代币、代币经济系统、质押机制
+- 验证者、共识机制、交易流程
+- Sui生态系统中的项目及钱包
+- 对象模型、所有权概念
+- 性能、每秒交易处理量（TPS）以及交易确认时间
 
-**For Move programming questions → use `sui-move` skill instead**
+**对于与Move编程相关的问题，请使用`sui-move`知识库。**
 
-## Setup References
+## 设置参考资料
 
 ```bash
 cd {baseDir}
 chmod +x setup.sh && ./setup.sh
 ```
 
-This clones:
-- Sui official documentation
-- Sui whitepaper and technical docs
+这些资源会克隆：
+- Sui的官方文档
+- Sui的白皮书和技术文档
 
-## Quick Search
+## 快速搜索
 
 ```bash
 # Search Sui docs
@@ -45,18 +45,17 @@ rg -i "keyword" {baseDir}/references/sui-docs/ --type md -C 2
 rg -i "object|ownership|transfer" {baseDir}/references/ --type md
 ```
 
-## Core Concepts
+## 核心概念
 
-### What is Sui?
+### 什么是Sui？
 
-Sui is a Layer 1 blockchain designed for high throughput and low latency. Key innovations:
+Sui是一个面向高吞吐量和低延迟设计的第1层（Layer 1）区块链。其主要创新点包括：
+1. **基于对象的模型**：与基于账户的区块链不同，Sui将所有数据视为具有唯一ID的对象。
+2. **并行执行**：交易可以并行执行，无需全局排序。
+3. **Move语言**：一种安全、面向资源的智能合约编程语言。
+4. **Mysticeti共识机制**：共享对象的确认时间非常快（约390毫秒）。
 
-1. **Object-Centric Model**: Unlike account-based chains, Sui treats everything as objects with unique IDs
-2. **Parallel Execution**: Independent transactions execute in parallel without global ordering
-3. **Move Language**: Safe, resource-oriented smart contract language
-4. **Mysticeti Consensus**: Fast finality (~390ms) for shared objects
-
-### Object Model
+### 对象模型
 
 ```
 ┌─────────────────────────────────────────┐
@@ -69,119 +68,123 @@ Sui is a Layer 1 blockchain designed for high throughput and low latency. Key in
 └─────────────────────────────────────────┘
 ```
 
-- Every object has a unique `ObjectID` (32 bytes)
-- Objects have `version` that increments on mutation
-- Owned object transactions don't need consensus (fast path)
+- 每个对象都有一个唯一的`ObjectID`（32字节）。
+- 对象的`version`会在其被修改时递增。
+- 对于被拥有的对象，其交易不需要经过共识机制（处理速度更快）。
 
-### Transaction Types
+### 交易类型
 
-| Type | Consensus | Speed | Use Case |
+| 交易类型 | 共识机制 | 处理速度 | 适用场景 |
 |------|-----------|-------|----------|
-| Owned Object | No (fast path) | ~200ms | Transfers, simple ops |
-| Shared Object | Yes (Mysticeti) | ~390ms | DEX, auctions, games |
+| 被拥有的对象 | 无需共识（快速路径） | 约200毫秒 | 转移、简单操作 |
+| 共享对象 | 需要共识（Mysticeti机制） | 约390毫秒 | 交易所以及拍卖、游戏等场景 |
 
-### SUI Token
+### SUI代币
 
-- **Ticker**: SUI
-- **Total Supply**: 10 billion SUI
-- **Uses**: Gas fees, staking, governance
-- **Smallest Unit**: MIST (1 SUI = 10^9 MIST)
+- **代币名称**：SUI
+- **总供应量**：100亿SUI
+- **用途**：支付Gas费用、参与质押、参与治理
+- **最小单位**：MIST（1 SUI = 10^9 MIST）
 
-### Gas Model
+### Gas模型
 
-- Gas price in MIST per computation unit
-- Storage rebates: Get gas back when deleting objects
-- Sponsored transactions: Third party pays gas
+- 每个计算单元的Gas费用以MIST为单位。
+- 删除对象时可以退还部分Gas费用。
+- 被赞助的交易费用由第三方支付。
 
-### Validators & Staking
+### 验证者与质押机制
 
-- Delegated Proof of Stake (DPoS)
-- ~100+ active validators
-- Stake SUI to validators to earn rewards
-- Epoch: ~24 hours
+- 采用委托式权益证明（Delegated Proof of Stake, DPoS）机制。
+- 活跃验证者数量约100多个。
+- 用户可以通过质押SUI来获得奖励。
+- 一个周期约为24小时。
 
-### Consensus: Mysticeti
+### 共识机制：Mysticeti
 
-- DAG-based consensus protocol
-- Sub-second finality for shared objects
-- Replaces Narwhal/Bullshark (used previously)
+- 基于DAG（Directed Acyclic Graph）的共识协议。
+- 共享对象的确认时间在几秒钟内完成。
+- 替代了之前使用的Narwhal和Bullshark共识机制。
 
-## Sui vs Other Chains
+## Sui与其他区块链的比较
 
-| Feature | Sui | Ethereum | Solana |
+| 特性 | Sui | Ethereum | Solana |
 |---------|-----|----------|--------|
-| Model | Object-centric | Account-based | Account-based |
-| Language | Move | Solidity | Rust |
-| TPS | 100k+ | ~15 | ~65k |
-| Finality | <1s | ~12min | ~400ms |
-| Parallel Exec | Yes (objects) | Limited | Yes |
+| 模型 | 基于对象的模型 | 基于账户的模型 | 基于账户的模型 |
+| 编程语言 | Move | Solidity | Rust |
+| 每秒交易处理量（TPS） | 超过10万笔 | 约15笔 | 约6.5万笔 |
+| 交易确认时间 | 小于1秒 | 约12分钟 | 约400毫秒 |
+| 并行执行能力 | 支持（针对共享对象） | 有限 | 支持 |
 
-## Ecosystem
+## 生态系统
 
-### Wallets
-- Sui Wallet (official)
+### 钱包
+
+- Sui官方钱包
 - Suiet
-- Ethos
-- Martian
+- Ethos钱包
+- Martian钱包
 
-### DEXs
-- Cetus
-- Turbos
-- DeepBook (order book)
+### 交易所以及去中心化交易所（DEX）
 
-### NFT Marketplaces
-- BlueMove
-- Clutchy
-- Hyperspace
+- Cetus交易所
+- Turbos交易所
+- DeepBook（订单簿）
 
-### Developer Tools
-- Sui CLI
-- Sui Explorer
-- Move Analyzer (VSCode)
+### 非同质化代币（NFT）市场
 
-## Common Questions
+- BlueMove平台
+- Clutchy平台
+- Hyperspace平台
 
-### "Is Sui EVM compatible?"
-No. Sui uses Move, not EVM. However, bridges exist to transfer assets from EVM chains.
+### 开发工具
 
-### "How fast is Sui?"
-- Owned object txs: ~200ms
-- Shared object txs: ~390ms
-- Theoretical TPS: 100,000+
+- Sui命令行工具（Sui CLI）
+- Sui浏览器
+- Move代码分析工具（VSCode插件）
 
-### "How do I stake SUI?"
-1. Open Sui Wallet
-2. Go to Staking tab
-3. Choose a validator
-4. Enter amount and confirm
+## 常见问题解答
 
-### "What's the difference between Sui Move and Aptos Move?"
-- Sui uses object-centric storage
-- Different standard library
-- Sui has native object primitives
-- Some syntax differences in Move 2024
+### “Sui是否兼容EVM？”
+Sui使用的是Move语言，而非EVM。不过，存在桥梁机制可以将资产从EVM区块链转移到Sui区块链上。
 
-## Answering Workflow
+### “Sui的运行速度如何？”
+- 被拥有的对象的交易处理速度约为200毫秒。
+- 共享对象的交易处理速度约为390毫秒。
+- 理论上的每秒交易处理量（TPS）超过10万笔。
 
-1. **Identify the question type**:
-   - General knowledge → Answer from this skill
-   - Move programming → Refer to sui-move skill
-   - Specific API/code → Search references
+### “如何质押SUI？”
+1. 打开Sui钱包。
+2. 进入“质押”（Staking）选项卡。
+3. 选择合适的验证者。
+4. 输入质押金额并确认操作。
 
-2. **Search if needed**:
+### “Sui Move和Aptos Move有什么区别？”
+- Sui采用基于对象的存储模型。
+- 两者使用不同的标准库。
+- Sui内置了对象原语。
+- Move 2.0版本在语法上存在一些差异。
+
+## 回答问题的流程
+
+1. **判断问题类型**：
+   - 如果是关于基础知识的问题，直接从本知识库中寻找答案。
+   - 如果是关于Move编程的问题，请参考`sui-move`知识库。
+   - 如果是关于特定API或代码的问题，请查阅相关参考资料。
+
+2. **如有需要，进行快速搜索**：
    ```bash
    rg -i "question keywords" {baseDir}/references/
    ```
 
-3. **Provide clear answer** with:
-   - Direct answer first
-   - Supporting details
-   - Links to official docs if relevant
+3. **提供清晰的答案**：
+   - 首先给出直接答案。
+   - 提供支持性细节。
+   - 如有必要，附上官方文档的链接。
 
-## Official Resources
+## 官方资源
 
-- Website: https://sui.io
-- Docs: https://docs.sui.io
-- GitHub: https://github.com/MystenLabs/sui
-- Discord: https://discord.gg/sui
-- Twitter: @SuiNetwork
+- 官网：https://sui.io
+- 文档：https://docs.sui.io
+- GitHub仓库：https://github.com/MystenLabs/sui
+- Discord社区：https://discord.gg/sui
+- Twitter账号：@SuiNetwork

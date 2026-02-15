@@ -1,60 +1,60 @@
 ---
 name: Joan Workflow
-description: This skill should be used when the user asks about "joan", "pods", "workspace", "domain knowledge", "context sync", "joan init", "joan todo", or needs guidance on how Joan's knowledge management system works. Provides workflow guidance for pods, todos, plans, and workspace management.
+description: 当用户询问关于“joan”、“pods”、“workspace”、“domain knowledge”、“context sync”、“joan init”、“joan todo”的问题，或者需要了解Joan的知识管理系统的工作原理时，应使用此技能。该技能为pod管理、待办事项管理、计划制定以及工作空间管理提供工作流程指导。
 version: 0.1.0
 ---
 
-# Joan Workflow
+# Joan 工作流程
 
-Joan is a workspace-based knowledge and task management system for AI-assisted development. This skill covers when and how to use Joan's core concepts.
+Joan 是一个基于工作空间的知识与任务管理系统，专为人工智能辅助开发而设计。本文档介绍了如何以及何时使用 Joan 的核心功能。
 
-## Core Concepts
+## 核心概念
 
-### Workspaces
+### 工作空间（Workspaces）
 
-Workspaces are the top-level organizational unit in Joan. Each workspace contains:
-- **Pods**: Versioned domain knowledge documents
-- **Todos**: Tasks scoped to the workspace
-- **Plans**: Implementation specs linked to todos
-- **Members**: Team members with roles (admin, member)
+工作空间是 Joan 的最高级组织单元。每个工作空间包含以下内容：
+- **Pods**：版本化的领域知识文档
+- **Todos**：属于该工作空间的任务
+- **Plans**：与 Todos 相关联的实施规范
+- **Members**：具有不同角色的团队成员（管理员、普通成员）
 
 ### Pods
 
-Pods are versioned markdown documents containing domain knowledge. Use pods to:
-- Document project architecture and design decisions
-- Store domain-specific terminology and business rules
-- Share knowledge across team members and AI assistants
-- Maintain living documentation that evolves with the project
+Pods 是版本化的 Markdown 文档，用于存储领域知识。可以通过 Pods 来：
+- 记录项目架构和设计决策
+- 存储特定领域的术语和业务规则
+- 在团队成员和人工智能助手之间共享知识
+- 维护随项目发展而不断更新的文档
 
-**Pod lifecycle:**
-1. Create locally with `joan pod create`
-2. Edit the markdown file in `.joan/pods/`
-3. Push to server with `joan pod push`
-4. Pull latest with `joan pod pull`
+**Pod 的生命周期：**
+1. 使用 `joan pod create` 在本地创建 Pods
+2. 在 `.joan/pods/` 目录下编辑 Markdown 文件
+3. 使用 `joan pod push` 将更改推送到服务器
+4. 使用 `joan pod pull` 从服务器拉取最新版本
 
 ### Todos
 
-Todos are tasks scoped to a workspace. Use todos to:
-- Track work items across team members
-- Assign tasks and set priorities
-- Link implementation plans to tasks
+Todos 是属于某个工作空间的任务。可以通过 Todos 来：
+- 跟踪团队成员的工作进度
+- 分配任务并设置优先级
+- 将实施计划与任务关联起来
 
-**Todo workflow:**
-1. Create with `joan todo create`
-2. List with `joan todo list`
-3. Update status as work progresses
-4. Archive when complete
+**Todo 的工作流程：**
+1. 使用 `joan todo create` 创建任务
+2. 使用 `joan todo list` 查看任务列表
+3. 随着工作进展更新任务状态
+4. 完成任务后将其归档
 
 ### Plans
 
-Plans are implementation specs linked to todos. Use plans to:
-- Document how a feature will be implemented
-- Break down complex tasks into steps
-- Share implementation approach with team
+Plans 是与 Todos 相关联的实施规范。可以通过 Plans 来：
+- 记录功能的实现方式
+- 将复杂任务分解为具体的步骤
+- 与团队分享实施方案
 
-## CLI Commands Reference
+## 命令行接口（CLI）命令参考
 
-### Project Initialization
+### 项目初始化
 
 ```bash
 joan init                    # Interactive workspace selection
@@ -62,7 +62,7 @@ joan init -w <workspace-id>  # Non-interactive with specific workspace
 joan status                  # Show project and auth status
 ```
 
-### Pod Management
+### Pods 管理
 
 ```bash
 joan pod list               # List tracked pods
@@ -74,7 +74,7 @@ joan pod push               # Push local pods to server
 joan pod open               # Open pod in browser
 ```
 
-### Todo Management
+### Todos 管理
 
 ```bash
 joan todo list              # List todos for tracked pods
@@ -84,7 +84,7 @@ joan todo update <id>       # Update todo fields
 joan todo archive <id>      # Archive completed todo
 ```
 
-### Plan Management
+### Plans 管理
 
 ```bash
 joan plan list <todo-id>    # List plans for a todo
@@ -93,53 +93,53 @@ joan plan pull <todo-id>    # Pull plans from server
 joan plan push <todo-id>    # Push plans to server
 ```
 
-### Context Generation
+### 上下文生成
 
 ```bash
 joan context claude         # Generate CLAUDE.md with Joan context
 ```
 
-## When to Use What
+## 适用场景与使用方法
 
-### Starting a New Project
+### 启动新项目
 
-1. Run `joan init` to connect project to a workspace
-2. Select pods relevant to the project domain
-3. Run `joan context claude` to inject context into CLAUDE.md
-4. Read the generated pod references before coding
+1. 运行 `joan init` 将项目连接到工作空间
+2. 选择与项目领域相关的 Pods
+3. 运行 `joan context claude` 将上下文信息注入 CLAUDE.md 文件
+4. 在编码前阅读生成的 Pod 参考信息
 
-### Before Coding a Feature
+### 在开始编码之前
 
-1. Check if relevant pods exist: `joan pod list --all`
-2. Add any missing pods: `joan pod add`
-3. Pull latest: `joan pod pull`
-4. Read pods to understand domain context
+1. 检查是否存在相关的 Pods：`joan pod list --all`
+2. 添加缺失的 Pods：`joan pod add`
+3. 拉取最新版本：`joan pod pull`
+4. 阅读 Pods 以了解领域背景知识
 
-### After Completing Work
+### 完成工作后
 
-1. Consider if learnings should become a pod
-2. Update or create todos to reflect progress
-3. Push any local changes: `joan pod push` and `joan todo push`
+1. 考虑是否需要将新学到的知识整理成 Pods
+2. 更新或创建 Todos 以反映工作进展
+3. 将本地更改推送到服务器：`joan pod push` 和 `joan todo push`
 
-### Documenting New Knowledge
+### 记录新知识
 
-1. Create a pod: `joan pod create`
-2. Write domain knowledge in markdown
-3. Push to share: `joan pod push`
-4. Update CLAUDE.md context: `joan context claude`
+1. 创建一个新的 Pod：`joan pod create`
+2. 用 Markdown 编写领域知识
+3. 将更改推送到服务器：`joan pod push`
+4. 更新 CLAUDE.md 文件中的上下文信息：`joan context claude`
 
-## MCP Integration
+## MCP 集成
 
-Joan provides an MCP server at `https://joan.land/mcp/joan` with tools:
-- `list_workspaces` - List accessible workspaces
-- `list_pods` - List pods in a workspace
-- `get_pod` - Retrieve pod content
+Joan 提供了一个名为 `https://joan.land/mcp/joan` 的 MCP 服务器，其中包含以下工具：
+- `list_workspaces` - 列出可访问的工作空间
+- `list_pods` - 列出工作空间内的 Pods
+- `get_pod` - 获取 Pod 的内容
 
-The MCP server uses OAuth 2.1 authentication. Authenticate via the CLI first with `joan auth login`.
+MCP 服务器支持 OAuth 2.1 认证。首先需要通过 CLI 使用 `joan auth login` 进行身份验证。
 
-## Project Configuration
+## 项目配置
 
-Joan stores project config in `.joan/config.yaml`:
+Joan 将项目配置存储在 `.joan/config.yaml` 文件中：
 
 ```yaml
 workspace_id: <uuid>
@@ -148,27 +148,27 @@ tracked_pods:
     id: <uuid>
 ```
 
-Pods are stored locally in `.joan/pods/` as markdown files.
+Pods 以 Markdown 文件的形式存储在本地目录 `.joan/pods/` 中。
 
-## Best Practices
+## 最佳实践
 
-### Pod Authoring
+### Pods 的编写规范
 
-- Use clear, descriptive titles
-- Include context about when the knowledge applies
-- Keep pods focused on a single domain concept
-- Update pods when knowledge evolves
-- Reference related pods when helpful
+- 使用清晰、描述性强的标题
+- 包括知识适用范围的上下文信息
+- 每个 Pod 都应专注于一个具体的领域概念
+- 随着知识的更新及时更新 Pods
+- 在需要时引用相关的 Pods
 
-### Todo Management
+### Todos 的管理
 
-- Create todos at the right granularity (not too big, not too small)
-- Link todos to relevant pods for context
-- Update status promptly to keep team informed
-- Archive completed todos to reduce noise
+- 以适当的粒度创建 Todos（既不要过大也不要过小）
+- 将 Todos 与相关的 Pods 关联起来以提供上下文信息
+- 及时更新任务状态以保持团队成员的知情
+- 将已完成的任务归档以减少信息冗余
 
-### Context Synchronization
+### 上下文同步
 
-- Run `joan context claude` after changing tracked pods
-- Pull pods before starting significant work
-- Push changes promptly to share with team
+- 在修改了相关 Pods 后运行 `joan context claude`
+- 在开始重要工作之前拉取最新的 Pods
+- 及时推送更改以便与团队共享

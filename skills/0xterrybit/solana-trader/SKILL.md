@@ -1,75 +1,70 @@
 ---
 name: solana-trader
-description: Solana wallet management and token trading via Jupiter aggregator. Check balances, view transaction history, swap tokens, and manage your Solana portfolio.
+description: 通过Jupiter聚合器管理Solana钱包并进行代币交易。您可以查看余额、交易历史、兑换代币以及管理您的Solana投资组合。
 metadata: {"clawdbot":{"emoji":"🚀","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# Solana Trader 🚀
+# Solana Trader 🚀  
+这是一个专为Clawdbot设计的全面Solana钱包管理和交易工具，支持管理您的Solana投资组合、查看余额、交易历史以及通过Jupiter DEX聚合器进行代币兑换。  
 
-A comprehensive Solana wallet management and trading skill for Clawdbot. Manage your Solana portfolio, check balances, view transaction history, and swap tokens using Jupiter DEX aggregator.
+## 环境变量  
+| 变量 | 描述 | 是否必需 |  
+|----------|-------------|----------|  
+| `SOLANA_KEYPAIR_PATH` | 钱包密钥对JSON文件的路径 | 是 |  
+| `SOLANA_RPC_URL` | 自定义RPC端点（默认：mainnet-beta） | 否 |  
+| `JUPITER_API_KEY` | Jupiter API密钥（用于身份验证请求） | 否 |  
+| `HELIUS_API_KEY` | Helius API密钥（用于获取更详细交易数据） | 否 |  
+| `SHYFT_API_KEY` | Shyft API密钥（用于查看交易历史） | 否 |  
+| `QUICKNODE_RPC_URL` | QuickNode RPC端点 | 否 |  
+| `ALCHEMY_RPC_URL` | Alchemy Solana RPC端点 | 否 |  
 
-## Environment Variables
+## 免费的公共RPC端点（无需API密钥）  
+| 提供商 | 端点 | 备注 |  
+|----------|----------|-------|  
+| Solana基金会 | `https://api.mainnet-beta.solana.com` | 官方端点，但有速率限制 |  
+| PublicNode | `https://solana-rpc.publicnode.com` | 优先考虑用户隐私，响应速度快 |  
+| Ankr | `https://rpc.ankr.com/solana` | 免费公共端点 |  
+| Project Serum | `https://solana-api.projectserum.com` | 由社区维护 |  
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `SOLANA_KEYPAIR_PATH` | Path to wallet keypair JSON file | Yes |
-| `SOLANA_RPC_URL` | Custom RPC endpoint (default: mainnet-beta) | No |
-| `JUPITER_API_KEY` | Jupiter API key for authenticated requests | No |
-| `HELIUS_API_KEY` | Helius API key for enhanced transaction data | No |
-| `SHYFT_API_KEY` | Shyft API key for transaction history | No |
-| `QUICKNODE_RPC_URL` | QuickNode RPC endpoint | No |
-| `ALCHEMY_RPC_URL` | Alchemy Solana RPC endpoint | No |
+> ⚠️ **注意**: 公共端点通常每10秒限制100次请求。在生产环境或高频交易中，请使用付费RPC服务。  
 
-## 🌐 Free Public RPC Endpoints (No API Key Required)
+### RPC选择策略  
+**默认行为（未配置API密钥时）：**  
+1. 首先尝试使用`SOLANA_RPC_URL`；  
+2. 如无法使用，则依次尝试免费公共端点：  
+   - `https://api.mainnet-beta.solana.com`  
+   - `https://solana-rpc.publicnode.com`  
+   - `https://rpc.ankr.com/solana`  
 
-| Provider | Endpoint | Notes |
-|----------|----------|-------|
-| Solana Foundation | `https://api.mainnet-beta.solana.com` | Official, rate limited |
-| PublicNode | `https://solana-rpc.publicnode.com` | Privacy-first, fast |
-| Ankr | `https://rpc.ankr.com/solana` | Free public endpoint |
-| Project Serum | `https://solana-api.projectserum.com` | Community maintained |
+**何时升级为付费RPC服务：**  
+- 遇到速率限制错误（429 Too Many Requests）  
+- 需要进行高频交易或使用高级交易功能（如MEV）  
+- 需要更详细的交易数据（例如通过Helius API）  
+- 需要99.9%的可用性以确保应用程序正常运行  
+- 需要通过WebSocket订阅实时交易更新  
 
-> ⚠️ **Rate Limits**: Public endpoints typically limit to ~100 requests/10 seconds. For production or high-frequency trading, use a paid RPC provider.
+**如果遇到速率限制，请询问用户：**  
+“您是否希望配置付费RPC服务？可选服务包括：Helius、QuickNode、Alchemy、Shyft。”  
 
-### RPC Selection Strategy
+## 💎 推荐费配置  
+该工具会从每次代币兑换中收取0.2%的平台费用，以支持开发工作。费用会在每次交易前透明地向用户显示。  
+| 变量 | 值 | 描述 |  
+|----------|-------|-------------|  
+| `PLATFORM_FEE_BPS` | 0.2% | 平台费用（20个基点） |  
+| `FEE_ACCOUNT` | `8KDDpruBwpTzJLKEcfv8JefKSVYWYE53FV3B2iLD6bNN` | 收费账户（Solana钱包地址） |  
 
-**Default behavior (no API keys configured):**
-1. Try `SOLANA_RPC_URL` if set
-2. Fall back to free public endpoints in order:
-   - `https://api.mainnet-beta.solana.com`
-   - `https://solana-rpc.publicnode.com`
-   - `https://rpc.ankr.com/solana`
+**费用分配：**  
+- 用户支付：代币兑换金额的0.2%  
+- 开发者获得：费用的97.5%（0.195%）  
+- Jupiter获得：费用的2.5%（0.005%）  
 
-**When to upgrade to paid RPC:**
-- Rate limit errors (429 Too Many Requests)
-- High-frequency trading or MEV
-- Need for enhanced transaction data (Helius)
-- Production applications requiring 99.9% uptime
-- WebSocket subscriptions for real-time updates
+**示例**：  
+- 对于100 USDC的代币兑换：  
+  - 总费用：0.20 USDC  
+  - 用户获得：约0.195 USDC  
+  - Jupiter获得：约0.005 USDC  
 
-**If rate limited**, ask user: "Would you like to configure a paid RPC provider? Options: Helius, QuickNode, Alchemy, Shyft"
-
-## 💎 Referral Fee Configuration
-
-This skill includes a small platform fee (0.2%) on swaps to support development. The fee is transparently disclosed to users before each swap.
-
-| Variable | Value | Description |
-|----------|-------|-------------|
-| `PLATFORM_FEE_BPS` | 20 | 0.2% platform fee (20 basis points) |
-| `FEE_ACCOUNT` | `8KDDpruBwpTzJLKEcfv8JefKSVYWYE53FV3B2iLD6bNN` | Solana wallet to receive fees |
-
-**Fee Breakdown:**
-- User pays: 0.2% of swap output
-- Developer receives: 97.5% of fee (0.195%)
-- Jupiter receives: 2.5% of fee (0.005%)
-
-**Example**: On a 100 USDC swap output:
-- Total fee: 0.20 USDC
-- You receive: ~0.195 USDC
-- Jupiter receives: ~0.005 USDC
-
-## Setup Verification
-
+## 设置验证  
 ```bash
 # Check wallet address
 solana address --keypair "$SOLANA_KEYPAIR_PATH"
@@ -79,13 +74,11 @@ solana config get
 
 # Test RPC connection
 solana cluster-version
-```
+```  
 
-### Import Private Key
-
-If you only have a private key (base58 string or byte array), convert it to keypair JSON:
-
-**From Base58 private key:**
+### 导入私钥  
+如果您只有私钥（Base58字符串或字节数组），请将其转换为密钥对JSON格式：  
+**从Base58私钥导入：**  
 ```bash
 # Install solana-keygen if needed
 # Your private key looks like: 5K1gR...xyz (base58 string)
@@ -101,51 +94,40 @@ console.log(JSON.stringify(Array.from(key)));
 " > ~/.config/solana/imported-wallet.json
 
 export SOLANA_KEYPAIR_PATH=~/.config/solana/imported-wallet.json
-```
-
-**From byte array (e.g., Phantom export):**
+```  
+**从字节数组导入（例如Phantom导出的私钥）：**  
 ```bash
 # If you have a byte array like [12,34,56,...]
 echo '[12,34,56,78,...]' > ~/.config/solana/imported-wallet.json
 export SOLANA_KEYPAIR_PATH=~/.config/solana/imported-wallet.json
-```
-
-**From seed phrase (mnemonic):**
+```  
+**从助记词导入：**  
 ```bash
 # Use solana-keygen to recover
 solana-keygen recover -o ~/.config/solana/recovered-wallet.json
 # Enter your 12/24 word seed phrase when prompted
 
 export SOLANA_KEYPAIR_PATH=~/.config/solana/recovered-wallet.json
-```
-
-> ⚠️ **Security**: Never share your private key or seed phrase. Store keypair files with restricted permissions: `chmod 600 ~/.config/solana/*.json`
+```  
+> ⚠️ **安全提示**：切勿分享您的私钥或助记词。请使用受限权限存储密钥对文件（`chmod 600 ~/.config/solana/*.json`）。  
 
 ---
 
-## 💰 Balance Commands
-
-### Check SOL Balance
-
+## 💰 账户操作  
+### 查看SOL余额  
 ```bash
 solana balance --keypair "$SOLANA_KEYPAIR_PATH"
-```
-
-### List All Token Accounts
-
+```  
+### 列出所有代币账户  
 ```bash
 spl-token accounts --owner $(solana address --keypair "$SOLANA_KEYPAIR_PATH")
-```
-
-### Check Specific Token Balance
-
+```  
+### 查看特定代币余额  
 ```bash
 # Replace <MINT_ADDRESS> with token mint
 spl-token balance <MINT_ADDRESS> --owner $(solana address --keypair "$SOLANA_KEYPAIR_PATH")
-```
-
-### Get Portfolio Summary
-
+```  
+### 获取投资组合概览  
 ```bash
 # Get wallet address
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
@@ -155,17 +137,12 @@ SOL_BALANCE=$(solana balance --keypair "$SOLANA_KEYPAIR_PATH" | awk '{print $1}'
 
 # Get all token accounts
 spl-token accounts --owner $WALLET
-```
+```  
 
----
-
-## 📜 Transaction History
-
-### View Recent Transactions
-
-Multiple RPC providers supported. Default uses native Solana RPC (no API key required).
-
-**Option 1: Solana RPC (default, no API key)**
+## 📜 交易历史  
+### 查看最近的交易记录  
+支持多种RPC服务。默认使用Solana原生RPC（无需API密钥）。  
+**选项1：Solana RPC（默认，无需API密钥）**  
 ```bash
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 RPC_URL="${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}"
@@ -173,45 +150,39 @@ RPC_URL="${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}"
 curl -s -X POST "$RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getSignaturesForAddress\",\"params\":[\"$WALLET\",{\"limit\":10}]}" | jq '.result[] | {signature: .signature, slot: .slot, blockTime: .blockTime}'
-```
-
-**Option 2: Helius (enhanced data, recommended for detailed history)**
+```  
+**选项2：Helius（提供更详细的数据，推荐用于查看交易历史）**  
 ```bash
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 
 curl -s "https://api.helius.xyz/v0/addresses/${WALLET}/transactions?api-key=${HELIUS_API_KEY:-demo}&limit=10" | jq '.[] | {signature: .signature, type: .type, timestamp: .timestamp, fee: .fee}'
-```
-
-**Option 3: Shyft (free tier available)**
+```  
+**选项3：Shyft（提供免费服务）**  
 ```bash
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 
 curl -s "https://api.shyft.to/sol/v1/transaction/history?network=mainnet-beta&account=${WALLET}&tx_num=10" \
   -H "x-api-key: ${SHYFT_API_KEY}" | jq '.result.transactions'
-```
-
-**Option 4: QuickNode**
+```  
+**选项4：QuickNode**  
 ```bash
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 
 curl -s -X POST "$QUICKNODE_RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getSignaturesForAddress\",\"params\":[\"$WALLET\",{\"limit\":10}]}" | jq '.result'
-```
-
-**Option 5: Alchemy**
+```  
+**选项5：Alchemy**  
 ```bash
 WALLET=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 
 curl -s -X POST "$ALCHEMY_RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getSignaturesForAddress\",\"params\":[\"$WALLET\",{\"limit\":10}]}" | jq '.result[] | {signature: .signature, slot: .slot, blockTime: .blockTime}'
-```
+```  
+> 💡 **提示**：系统会自动检测可用的API密钥并选择最佳服务。如果未配置密钥，则使用Solana原生RPC。  
 
-> 💡 **Provider Selection**: AI will auto-detect available API keys and use the best provider. If no keys configured, defaults to native Solana RPC.
-
-### View Transaction Details
-
+### 查看交易详情  
 ```bash
 # Replace <SIGNATURE> with transaction signature
 solana confirm -v <SIGNATURE>
@@ -221,36 +192,27 @@ RPC_URL="${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}"
 curl -s -X POST "$RPC_URL" \
   -H "Content-Type: application/json" \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getTransaction\",\"params\":[\"<SIGNATURE>\",{\"encoding\":\"jsonParsed\",\"maxSupportedTransactionVersion\":0}]}" | jq '.result'
-```
+```  
 
----
+## 🪙 常见代币信息  
+| 代币 | 符号 | 发行地址 | 小数位数 |  
+|-------|--------|--------------|----------|  
+| Wrapped SOL | SOL | So11111111111111111111111111111111111111112 | 9 |  
+| USD Coin | USDC | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v | 6 |  
+| Tether | USDT | Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB | 6 |  
+| Bonk | BONK | DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263 | 5 |  
+| Jupiter | JUP | JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN | 6 |  
+| Raydium | RAY | 4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R | 6 |  
+| Pyth | PYTH | HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3 | 6 |  
+| Jito | JTO | jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL | 9 |  
 
-## 🪙 Common Token Addresses
-
-| Token | Symbol | Mint Address | Decimals |
-|-------|--------|--------------|----------|
-| Wrapped SOL | SOL | So11111111111111111111111111111111111111112 | 9 |
-| USD Coin | USDC | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v | 6 |
-| Tether | USDT | Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB | 6 |
-| Bonk | BONK | DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263 | 5 |
-| Jupiter | JUP | JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN | 6 |
-| Raydium | RAY | 4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R | 6 |
-| Pyth | PYTH | HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3 | 6 |
-| Jito | JTO | jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL | 9 |
-
----
-
-## 🔄 Token Swaps via Jupiter
-
-**⚠️ CRITICAL: Always display swap details and wait for explicit user confirmation before executing any swap.**
-
-### Step 1: Get Swap Quote
-
-Convert human-readable amounts to raw units:
-- SOL: multiply by 1,000,000,000 (10^9)
-- USDC/USDT/JUP: multiply by 1,000,000 (10^6)
-- BONK: multiply by 100,000 (10^5)
-
+## 🔄 通过Jupiter进行代币兑换  
+**⚠️ 重要提示**：在执行任何代币兑换前，务必显示兑换详情并等待用户明确确认。**  
+### 步骤1：获取兑换报价**  
+- 将金额转换为实际可交易单位：  
+  - SOL：乘以1,000,000,000（10^9）  
+  - USDC/USDT/JUP：乘以1,000,000（10^6）  
+  - BONK：乘以100,000（10^5）  
 ```bash
 # Example: Quote for swapping 1 SOL to USDC
 INPUT_MINT="So11111111111111111111111111111111111111112"
@@ -269,38 +231,18 @@ echo "$QUOTE" | jq '{
   minimumReceived: .otherAmountThreshold,
   platformFee: .platformFee
 }'
-```
+```  
+### 步骤2：显示报价并请求用户确认**  
+  - 显示输入的金额和代币名称  
+  - 显示预期交易金额和代币名称  
+  - 价格变动百分比  
+  - 承受的滑点范围  
+  - 最低接收金额  
+  - **平台费用：0.2%（用于支持工具开发）**  
+> 💡 **重要提示**：请询问用户“您是否继续进行此次兑换？”并等待明确确认（“是”、“继续”或“确认”）。  
 
-### Step 2: Display Quote and Request Confirmation
-
-Parse and display to user:
-- Input: amount and token name
-- Output: expected amount and token name  
-- Price impact percentage
-- Slippage tolerance
-- Minimum received amount
-- **Platform fee: 0.2% (supports skill development)**
-
-**IMPORTANT**: Ask user "Do you want to proceed with this swap?" and wait for explicit confirmation ("yes", "proceed", "confirm") before continuing.
-
-**Display Format Example:**
-```
-📊 Swap Preview:
-├─ From: 1.0 SOL
-├─ To: ~150.25 USDC (estimated)
-├─ Price Impact: 0.01%
-├─ Slippage: 0.5%
-├─ Minimum Received: 149.50 USDC
-├─ Platform Fee: 0.2% (~0.30 USDC)
-└─ Network Fee: ~0.000005 SOL
-
-⚠️ Confirm swap? (yes/no)
-```
-
-### Step 3: Build Swap Transaction
-
-After user confirms:
-
+### 步骤3：创建兑换交易**  
+用户确认后，系统将执行兑换。  
 ```bash
 USER_PUBKEY=$(solana address --keypair "$SOLANA_KEYPAIR_PATH")
 
@@ -329,39 +271,11 @@ SWAP_RESPONSE=$(curl -s -X POST \
 
 # Extract transaction
 SWAP_TX=$(echo "$SWAP_RESPONSE" | jq -r '.swapTransaction')
-```
+```  
+> 💡 **注意**：平台费用将计入输出代币中。请确保您拥有相应的代币账户（如USDC、USDT等）以接收费用。  
 
-> 💡 **Note**: The `feeAccount` receives the platform fee in the output token. Make sure you have token accounts for common tokens (USDC, USDT, etc.) to receive fees.
-
-### Step 4: Sign and Submit Transaction
-
-```bash
-# Decode base64 transaction
-echo "$SWAP_TX" | base64 -d > /tmp/swap_tx.bin
-
-# Sign with keypair (requires solana-cli)
-solana transfer --from "$SOLANA_KEYPAIR_PATH" \
-  --blockhash $(solana block-height) \
-  --sign-only \
-  /tmp/swap_tx.bin
-
-# Or use the raw transaction submission
-curl -s -X POST "https://api.mainnet-beta.solana.com" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"jsonrpc\": \"2.0\",
-    \"id\": 1,
-    \"method\": \"sendTransaction\",
-    \"params\": [\"${SWAP_TX}\", {\"encoding\": \"base64\"}]
-  }"
-```
-
----
-
-## 💸 Send Tokens
-
-### Send SOL
-
+## 💸 发送代币  
+### 发送SOL代币  
 ```bash
 # ALWAYS confirm with user before sending!
 RECIPIENT="<RECIPIENT_ADDRESS>"
@@ -373,10 +287,8 @@ echo "Confirm? (yes/no)"
 
 # After confirmation:
 solana transfer --keypair "$SOLANA_KEYPAIR_PATH" "$RECIPIENT" "$AMOUNT"
-```
-
-### Send SPL Tokens
-
+```  
+### 发送SPL代币  
 ```bash
 # ALWAYS confirm with user before sending!
 RECIPIENT="<RECIPIENT_ADDRESS>"
@@ -389,73 +301,56 @@ echo "Confirm? (yes/no)"
 
 # After confirmation:
 spl-token transfer --keypair "$SOLANA_KEYPAIR_PATH" "$TOKEN_MINT" "$AMOUNT" "$RECIPIENT"
-```
+```  
 
----
-
-## 📊 Price Checking
-
-### Get Token Price from Jupiter
-
+## 📊 价格查询  
+### 从Jupiter获取代币价格  
 ```bash
 # Get SOL price in USDC
 curl -s "https://api.jup.ag/price/v2?ids=So11111111111111111111111111111111111111112" | jq '.data.So11111111111111111111111111111111111111112.price'
 
 # Get multiple token prices
 curl -s "https://api.jup.ag/price/v2?ids=So11111111111111111111111111111111111111112,JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN" | jq '.data'
-```
-
-### Get Token Info
-
+```  
+### 获取代币信息  
 ```bash
 # Search token by symbol or name
 curl -s "https://tokens.jup.ag/token/<MINT_ADDRESS>" | jq '{name: .name, symbol: .symbol, decimals: .decimals}'
-```
+```  
 
----
+## 🛡️ 安全规则  
+1. **务必** 在执行任何操作前显示交易详情并等待用户确认。  
+2. **严禁** 在未经用户明确同意的情况下自动执行交易或转账。  
+3. **务必** 在执行交易前检查账户余额。  
+4. **如果价格变动超过1%，请警告用户。**  
+5. **如果滑点超过1%（100个基点），请警告用户。**  
+6. **严禁** 记录、显示或传输私钥内容。  
+7. **务必** 在交易完成后显示交易签名和交易详情链接。  
 
-## 🛡️ Safety Rules
+## ⚠️ 错误处理  
+| 错误类型 | 原因 | 解决方案 |  
+|--------|-------|----------|  
+| “余额不足” | 代币数量不足 | 检查余额并减少交易金额 |  
+| “滑点超出范围” | 交易过程中价格波动 | 重新获取报价并调整滑点范围 |  
+| “交易已过期” | 区块哈希过期 | 重新获取报价并重试交易 |  
+| “账户未找到” | 代币账户不存在 | 系统会自动创建账户 |  
+| “路由未找到” | 无流动性 | 尝试减少交易金额或更换交易对。  
 
-1. **ALWAYS** display transaction details and wait for user confirmation before executing
-2. **NEVER** execute swaps or transfers automatically without explicit approval
-3. **ALWAYS** check balance before attempting transactions
-4. **WARN** users if price impact exceeds 1%
-5. **WARN** users if slippage is set above 1% (100 bps)
-6. **NEVER** log, display, or transmit private key contents
-7. **ALWAYS** show transaction signature and explorer link after execution
+### 重试逻辑  
+如果交易失败：  
+1. 等待2-3秒。  
+2. 重新获取报价（价格可能已变动）。  
+3. 向用户展示新的报价并再次确认。  
+4. 重试交易。  
 
----
-
-## ⚠️ Error Handling
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| "Insufficient balance" | Not enough tokens | Check balance, reduce amount |
-| "Slippage tolerance exceeded" | Price moved during swap | Get fresh quote, increase slippage |
-| "Transaction expired" | Blockhash too old | Get fresh quote and retry |
-| "Account not found" | Missing token account | Will be created automatically |
-| "Route not found" | No liquidity | Try smaller amount or different pair |
-
-### Retry Logic
-
-If a transaction fails:
-1. Wait 2-3 seconds
-2. Get a fresh quote (prices may have changed)
-3. Re-confirm with user showing new quote
-4. Retry the transaction
-
----
-
-## 📝 Example Interactions
-
-### Check Balance
+## 📝 示例交互  
+### 查看余额  
 ```
 User: "What's my SOL balance?"
 → Run: solana balance --keypair "$SOLANA_KEYPAIR_PATH"
 → Report: "Your wallet has X.XXX SOL"
-```
-
-### Swap Tokens
+```  
+### 进行代币兑换  
 ```
 User: "Swap 0.5 SOL for USDC"
 → Get Jupiter quote for 0.5 SOL → USDC (with platformFeeBps=20)
@@ -472,9 +367,8 @@ User: "Swap 0.5 SOL for USDC"
 → Wait for "yes"
 → Execute swap with feeAccount
 → Report: "✅ Swap successful! TX: https://solscan.io/tx/..."
-```
-
-### Send Tokens
+```  
+### 发送代币  
 ```
 User: "Send 10 USDC to ABC123..."
 → Display:
@@ -487,13 +381,10 @@ User: "Send 10 USDC to ABC123..."
 → Wait for "yes"
 → Execute transfer
 → Report: "✅ Transfer successful! TX: https://solscan.io/tx/..."
-```
+```  
 
----
-
-## 🔗 Useful Links
-
-- [Solscan Explorer](https://solscan.io/)
-- [Jupiter Aggregator](https://jup.ag/)
-- [Solana Documentation](https://docs.solana.com/)
-- [SPL Token Documentation](https://spl.solana.com/token)
+## 🔗 有用链接  
+- [Solscan浏览器](https://solscan.io/)  
+- [Jupiter聚合器](https://jup.ag/)  
+- [Solana官方文档](https://docs.solana.com/)  
+- [SPL代币文档](https://spl.solana.com/token)

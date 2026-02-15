@@ -1,14 +1,14 @@
 ---
 name: piper-tts
-description: Local text-to-speech using Piper ONNX voices - fast, private, no cloud needed.
+description: 使用 Piper 的 ONNX 语音库实现本地文本转语音功能——快速、私密，无需依赖云服务。
 metadata: {"openclaw":{"emoji":"🔊","requires":{"bins":["ffmpeg"]}}}
 ---
 
-# Local TTS (Piper)
+# 本地文本转语音（Piper）
 
-Fast local text-to-speech using [Piper](https://github.com/rhasspy/piper) ONNX voices. Runs entirely offline with no cloud dependencies. Supports multiple languages and voice styles.
+使用 [Piper](https://github.com/rhasspy/piper) 和 ONNX 语音模型实现快速本地文本转语音功能。完全离线运行，无需依赖云服务。支持多种语言和语音风格。
 
-## Usage
+## 使用方法
 
 ```bash
 # Default voice (en_US-amy-medium)
@@ -33,37 +33,37 @@ echo "Read this aloud" | ~/.openclaw/skills/piper-tts/scripts/piper-tts.py -
 ~/.openclaw/skills/piper-tts/scripts/piper-tts.py "Hello" --quiet
 ```
 
-## Options
+## 参数选项
 
-- `-v/--voice`: Voice model name (default: `en_US-amy-medium`)
-- `-o/--output`: Output file path (default: auto-generated in /tmp)
-- `-f/--format`: Output format: `wav`, `mp3`, `ogg` (default: `wav`)
-- `--rate`: Speaking rate multiplier, 0.5-2.0 (default: 1.0)
-- `--room-id`: Matrix room ID to send audio to
-- `--list-voices`: List downloaded voice models
-- `-q/--quiet`: Suppress progress messages
+- `-v/--voice`：语音模型名称（默认：`en_US-amy-medium`）
+- `-o/--output`：输出文件路径（默认：自动生成在 `/tmp` 目录）
+- `-f/--format`：输出格式：`wav`、`mp3`、`ogg`（默认：`wav`）
+- `--rate`：语速倍率（0.5–2.0，默认：1.0）
+- `--room-id`：音频发送到的房间 ID
+- `--list-voices`：列出已下载的语音模型
+- `-q/--quiet`：抑制进度信息
 
-## Voices
+## 语音模型
 
-Piper supports [900+ voices](https://rhasspy.github.io/piper-samples/) across 60+ languages. Voice models are auto-downloaded from HuggingFace on first use.
+Piper 支持 60 多种语言的 900 多种语音模型（详见 [https://rhasspy.github.io/piper-samples/](https://rhasspy.github.io/piper-samples/)。首次使用时，语音模型会自动从 HuggingFace 下载。
 
-### Popular voices
+### 常用语音模型
 
-| Voice | Language | Quality |
-|-------|----------|---------|
-| `en_US-amy-medium` (default) | English (US) | Medium |
-| `en_US-lessac-high` | English (US) | High |
-| `en_GB-alba-medium` | English (UK) | Medium |
-| `de_DE-thorsten-medium` | German | Medium |
-| `fr_FR-siwis-medium` | French | Medium |
-| `es_ES-davefx-medium` | Spanish | Medium |
+| 语音模型 | 语言 | 语音质量 |
+|---------|--------|--------|
+| `en_US-amy-medium`（默认） | 英语（美国） | 中等 |
+| `en_US-lessac-high` | 英语（美国） | 高音质 |
+| `en_GB-alba-medium` | 英语（英国） | 中等 |
+| `de_DE-thorsten-medium` | 德语 | 中等 |
+| `fr_FR-siwis-medium` | 法语 | 中等 |
+| `es_ES-davefx-medium` | 西班牙语 | 中等 |
 
-## Benchmark
+## 性能测试
 
-| Voice Quality | Synthesis Time (100 words) | RTF |
-|---------------|---------------------------|-----|
-| Medium | ~0.3s | 0.04x |
-| High | ~0.8s | 0.10x |
+| 语音质量 | 合成时间（100 个单词） | 相比 OpenClaw 的性能提升 |
+|---------|-------------------|---------|
+| 中等 | 约 0.3 秒 | 提升 0.04 倍 |
+| 高音质 | 约 0.8 秒 | 提升 0.10 倍 |
 
 ## openclaw.json
 

@@ -1,6 +1,6 @@
 ---
 name: quit-caffeine
-description: Reduce or quit caffeine with withdrawal tracking, tapering plans, and energy milestones
+description: 通过记录戒断症状、制定逐步减少咖啡因摄入的计划以及设定能量管理目标来减少或停止摄入咖啡因。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,72 +11,72 @@ triggers:
   - "caffeine detox"
 ---
 
-# Quit Caffeine
+# 戒除咖啡因
 
-Break free from caffeine dependency with science-backed tracking and personalized tapering plans.
+通过科学支持的追踪系统和个性化的逐步减少计划，摆脱对咖啡因的依赖。
 
-## What it does
+## 功能介绍
 
-- **Caffeine Tracking**: Log daily intake across coffee, tea, energy drinks, chocolate, and supplements
-- **Tapering Support**: Generate gradual reduction schedules based on current consumption and target date
-- **Withdrawal Timeline**: Predict symptom intensity and duration with day-by-day expectations
-- **Natural Energy**: Suggest alternative focus techniques, exercise timing, and sleep optimization
-- **Progress Milestones**: Track mood, energy levels, sleep quality, and cognitive performance throughout quit journey
+- **咖啡因追踪**：记录每日从咖啡、茶、能量饮料、巧克力和补充剂中摄入的咖啡因量。
+- **逐步减少计划**：根据当前摄入量和目标日期生成逐步减少的日程安排。
+- **戒断时间线**：预测戒断症状的强度和持续时间，并提供每日预期情况。
+- **自然能量补充**：提供替代的集中注意力方法、锻炼时间和睡眠优化建议。
+- **进度里程碑**：在整个戒除过程中跟踪情绪、能量水平、睡眠质量和认知表现。
 
-## Usage
+## 使用方法
 
-### Start Quit or Taper
-"Create a caffeine quit plan for me" or "I want to reduce caffeine by 50% over 2 weeks"
-- Sets baseline consumption
-- Generates personalized tapering schedule
-- Establishes target date and milestone checkpoints
+### 开始戒除或减少摄入量
+- 输入“为我创建一个咖啡因戒除计划”或“我想在两周内将咖啡因摄入量减少50%”。
+  - 设置初始摄入量。
+  - 生成个性化的逐步减少计划。
+  - 设定目标日期和进度检查点。
 
-### Track Withdrawal
-"Log my caffeine intake today" or "I have a headache and brain fog"
-- Records daily consumption with timestamps
-- Maps symptoms to withdrawal phases
-- Provides symptom management strategies
+### 追踪戒断症状
+- 输入“记录我今天的咖啡因摄入量”或“我头痛且头脑不清醒”。
+  - 带时间戳记录每日摄入量。
+  - 将症状与戒断阶段对应起来。
+  - 提供症状管理策略。
 
-### Check Progress
-"How's my withdrawal going?" or "Am I on track?"
-- Compares actual vs planned tapering progress
-- Highlights energy level trends
-- Shows days until estimated completion
+### 检查进度
+- 输入“我的戒断进展如何？”或“我是否在正确的道路上？”。
+  - 比较实际进展与计划中的逐步减少进度。
+  - 强调能量水平的变化趋势。
+  - 显示距离完成目标的剩余天数。
 
-### Energy Alternatives
-"I need energy without caffeine" or "What can I do instead of coffee?"
-- Suggests natural energy boosters: hydration, movement, nutrition, sunlight
-- Recommends timing for exercise and meals
-- Provides quick focus techniques for energy crashes
+### 替代能量来源
+- 输入“我需要不含咖啡因的能量来源”或“除了咖啡，我还能做什么？”。
+  - 建议使用自然能量补充方法：补充水分、进行运动、合理饮食、晒太阳。
+  - 推荐锻炼和用餐的时间安排。
+  - 提供应对能量低下的快速集中注意力技巧。
 
-### Sleep Improvement
-"I'm sleeping better" or "Track my sleep quality"
-- Monitors sleep duration and quality improvements
-- Correlates sleep gains with caffeine reduction
-- Suggests bedtime routines to reinforce gains
+### 改善睡眠
+- 输入“我的睡眠有所改善”或“记录我的睡眠质量”。
+  - 监测睡眠时长和质量的提升情况。
+  - 将睡眠改善与咖啡因摄入量的减少联系起来。
+  - 建议睡前习惯以巩固改善效果。
 
-## Withdrawal Timeline
+## 戒断时间线
 
-**Days 1–3: Peak Symptoms**
-- Headaches (most common), fatigue, irritability, difficulty concentrating
-- Intensity peaks around 24–48 hours
-- Worst period; manage expectations and use pain relief if needed
+**第1–3天：症状最严重**
+- 头痛（最常见）、疲劳、易怒、难以集中注意力。
+- 症状在24–48小时达到高峰。
+- 这是最艰难的时期；调整预期，必要时可使用止痛药。
 
-**Days 4–7: Gradual Improvement**
-- Headaches begin to fade, energy slightly improving
-- Brain fog persists but becomes manageable
-- Mood stabilizes, sleep starting to deepen
+**第4–7天：症状逐渐缓解**
+- 头痛开始减轻，能量略有提升。
+- 头脑不清醒的情况仍然存在，但可以控制。
+- 情绪趋于稳定，睡眠质量开始改善。
 
-**Week 2+: Normalized State**
-- Most withdrawal symptoms resolved
-- Energy levels stabilize at new baseline
-- Sleep quality noticeably improved, focus returning
-- Full adjustment typically 7–14 days depending on baseline intake
+**第2周及以上：恢复正常状态**
+- 大多数戒断症状消失。
+- 能量水平稳定在新的基线水平。
+- 睡眠质量明显改善，注意力恢复。
+- 根据初始摄入量不同，完全适应通常需要7–14天。
 
-## Tips
+## 小贴士
 
-1. **Taper gradually over 1–2 weeks** rather than quitting cold turkey—reduces peak withdrawal severity by 60–70%
-2. **Stay hydrated and move your body**—water and light exercise reduce headache intensity and boost natural energy
-3. **Sync your schedule**—quit during a less demanding work period if possible; easier to manage symptoms with lower stress
-4. **Replace the ritual, not just the caffeine**—morning tea without caffeine, afternoon walk instead of coffee break
-5. **All data stays local on your machine**—your caffeine logs, withdrawal tracking, and energy data never leave your device
+1. **在1–2周内逐步减少摄入量**，而不是突然完全戒除——这样可以将戒断症状的严重程度降低60–70%。
+2. **保持水分摄入并适当运动**——水和轻度运动可以减轻头痛并提升自然能量。
+3. **调整作息时间**——如果可能的话，在工作压力较小的时期开始戒除；这样更容易管理症状。
+4. **替换习惯，而不仅仅是咖啡因**——例如用不含咖啡因的茶代替早晨的咖啡，下午散步代替咖啡休息时间。
+5. **所有数据都保存在您的设备上**——您的咖啡因摄入记录、戒断追踪数据和能量数据永远不会离开您的设备。

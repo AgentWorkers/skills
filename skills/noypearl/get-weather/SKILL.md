@@ -1,6 +1,6 @@
 ---
 name: weather-data-fetcher
-description: Fetch current weather and forecast data from a free weather API (Open-Meteo).
+description: 从免费的天气API（Open-Meteo）获取当前的天气和预报数据。
 user-invocable: true
 metadata:
   moltbot:
@@ -10,42 +10,43 @@ metadata:
     homepage: https://open-meteo.com/en/docs
 ---
 
-# Weather Data Fetcher (Open-Meteo)
+# 天气数据获取工具（Open-Meteo）
 
-Fetch current weather conditions and short-term forecasts using **Open-Meteo**, a free weather API that requires **no API key**.
+使用 **Open-Meteo**（一个免费的天气 API）来获取当前的天气状况和短期天气预报。该 API 不需要 API 密钥。
 
 ---
 
-## Command
+## 命令
 
 ### `/weather forecast`
 
-Fetch current weather and forecast data for a given geographic location.
+获取指定地理位置的当前天气和天气预报数据。
 
 ---
 
-## Input
+## 输入参数
 
-### Required
-- `latitude` (number)  
-  Example: `11.0853`
+### 必需参数
+- `latitude`（数字）  
+  例如：`11.0853`
 
-- `longitude` (number)  
-  Example: `55.7818`
+- `longitude`（数字）  
+  例如：`55.7818`
 
-### Optional
-- `timezone` (string) — defaults to `"auto"`  
-  Example: `"Asia/Jerusalem"`
+### 可选参数
+- `timezone`（字符串）——默认值为 `"auto"`  
+  例如：`"Asia/Jerusalem"`
 
-- `hours` (number) — number of hourly forecast hours to return (default: `24`)
+- `hours`（数字）——返回的每小时天气预报数量（默认值：`24`）
 
-- `days` (number) — number of daily forecast days to return (default: `3`)
+- `days`（数字）——返回的每日天气预报天数（默认值：`3`）
 
-- `units` (string) — `"metric"` (default) or `"imperial"`
+- `units`（字符串）——单位类型（默认值：`"metric"` 或 `"imperial"`）
 
 ---
 
-### Example inputs
+## 示例输入
 
 ```json
 { "latitude": 88.0853, "longitude": 22.7818 }
+```

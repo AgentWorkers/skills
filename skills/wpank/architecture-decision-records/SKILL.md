@@ -3,52 +3,42 @@ name: architecture-decision-records-(adrs)
 model: reasoning
 ---
 
-# Architecture Decision Records (ADRs)
+# 架构决策记录（Architecture Decision Records, ADRs）
 
-## WHAT
-Lightweight documentation capturing the context, decision, and consequences of significant technical choices. ADRs become the institutional memory of why things are built the way they are.
+## 什么是架构决策记录（ADR）？
+架构决策记录是一种轻量级的文档，用于记录重要技术决策的背景、决策过程及其后果。这些记录成为了项目开发过程中各项决策的“制度性记忆”，有助于解释各项设计决策的依据。
 
-## WHEN
-- Adopting new frameworks or technologies
-- Choosing between architectural approaches
-- Making database or infrastructure decisions
-- Defining API design patterns
-- Any decision that would be hard to reverse or understand later
+## 何时需要编写ADR？
+- 在采用新的框架或技术时
+- 在不同架构方案之间进行选择时
+- 在决定使用何种数据库或基础设施时
+- 在定义API设计模式时
+- 在做出任何难以撤销或日后难以理解的决策时
 
-## KEYWORDS
-ADR, architecture decision record, technical documentation, decision log, MADR, RFC, design decisions, trade-offs
-
----
-
-## Quick Decision: Should I Write an ADR?
-
-| Write ADR | Skip ADR |
-|-----------|----------|
-| New framework/language adoption | Minor version upgrades |
-| Database technology choice | Bug fixes |
-| API design patterns | Implementation details |
-| Security architecture | Routine maintenance |
-| Integration patterns | Configuration changes |
-| Breaking changes | Code formatting |
+## 相关术语：
+ADR（Architecture Decision Record）、技术文档、决策日志、MADR（Major Architecture Decision Record）、RFC（Request for Comment）、设计决策、权衡因素
 
 ---
 
-## ADR Lifecycle
-
-```
-Proposed → Accepted → Deprecated → Superseded
-              ↓
-           Rejected
-```
-
-**Never modify accepted ADRs** - write new ones to supersede.
+## 快速判断：是否需要编写ADR？
+| 是否需要编写ADR | 是否可以跳过ADR |
+|------------|-------------|
+| 采用新的框架/语言 | 进行小版本升级时 |
+| 选择数据库技术 | 修复漏洞时 |
+| 定义API设计模式 | 提供实现细节时 |
+| 决定安全架构 | 进行常规维护时 |
+| 选择集成方案 | 修改配置时 |
+| 引入重大变更 | 调整代码格式时 |
 
 ---
 
-## Templates
+## ADR的生命周期
+**已接受的ADR严禁修改**——只能通过编写新的ADR来替换原有的记录。
 
-### Template 1: Standard (Copy This)
+---
 
+## 模板：
+### 模板1：标准模板（直接使用）
 ```markdown
 # ADR-NNNN: [Title]
 
@@ -78,8 +68,7 @@ We will [decision statement].
 - ADR-XXXX: [Related decision]
 ```
 
-### Template 2: Full (For Major Decisions)
-
+### 模板2：详细模板（适用于重大决策）
 ```markdown
 # ADR-0001: Use PostgreSQL as Primary Database
 
@@ -147,8 +136,7 @@ built-in capabilities (reduces infrastructure), and team familiarity.
 - ADR-0005: Search Architecture
 ```
 
-### Template 3: Lightweight (For Smaller Decisions)
-
+### 模板3：简化模板（适用于较小决策）
 ```markdown
 # ADR-0012: Adopt TypeScript for Frontend
 
@@ -168,8 +156,7 @@ Adopt TypeScript for all new frontend code. Migrate existing code incrementally.
 **Mitigation**: Training sessions, `allowJs: true` for gradual adoption
 ```
 
-### Template 4: Y-Statement (One-Liner)
-
+### 模板4：简短声明模板（一行总结）
 ```markdown
 # ADR-0015: API Gateway Selection
 
@@ -181,8 +168,7 @@ to achieve **vendor independence and plugin extensibility**,
 accepting that **we need to manage Kong infrastructure ourselves**.
 ```
 
-### Template 5: Deprecation ADR
-
+### 模板5：弃用说明模板
 ```markdown
 # ADR-0020: Deprecate MongoDB in Favor of PostgreSQL
 
@@ -211,8 +197,7 @@ Deprecate MongoDB and migrate user profiles to PostgreSQL.
 
 ---
 
-## Directory Structure
-
+## 目录结构：
 ```
 docs/
 └── adr/
@@ -224,8 +209,7 @@ docs/
     └── 0020-deprecate-mongodb.md      # Supersedes 0003
 ```
 
-### ADR Index (README.md)
-
+### ADR索引（README.md）
 ```markdown
 # Architecture Decision Records
 
@@ -244,8 +228,7 @@ docs/
 
 ---
 
-## Tooling: adr-tools
-
+## 工具：adr-tools
 ```bash
 # Install
 brew install adr-tools
@@ -265,33 +248,31 @@ adr generate toc > docs/adr/README.md
 
 ---
 
-## Review Checklist
+## 审查 checklist：
+在提交ADR之前：
+- [ ] 文档清晰地解释了问题的背景
+- [ ] 已考虑了所有可行的选项
+- [ ] 充分、客观地分析了各选项的优缺点
+- [ ] 记录了决策的所有后果（正面和负面影响）
 
-Before submission:
-- [ ] Context clearly explains the problem
-- [ ] All viable options considered
-- [ ] Pros/cons balanced and honest
-- [ ] Consequences documented (positive AND negative)
+在审查过程中：
+- [ ] 至少有2位资深工程师参与审查
+- [ ] 已与受影响的团队进行了沟通
+- [ ] 已考虑了安全方面的影响
+- [ ] 已评估了决策的可撤销性
 
-During review:
-- [ ] At least 2 senior engineers reviewed
-- [ ] Affected teams consulted
-- [ ] Security implications considered
-- [ ] Reversibility assessed
-
-After acceptance:
-- [ ] Index updated
-- [ ] Team notified
-- [ ] Implementation tickets created
+在ADR被接受后：
+- [ ] 更新了ADR索引
+- [ ] 通知了相关团队
+- [ ] 创建了相应的实施任务单
 
 ---
 
-## NEVER
-
-- **Modify accepted ADRs**: Write new ones to supersede
-- **Skip context**: Future readers need the "why"
-- **Hide failures**: Rejected decisions are valuable learning
-- **Be vague**: Specific decisions, specific consequences
-- **Forget implementation**: ADR without action is waste
-- **Over-document**: Keep to 1-2 pages max
-- **Document too late**: Write BEFORE implementation starts
+**注意事项**：
+- **严禁修改已接受的ADR**：只能通过编写新的ADR来替换原有记录。
+- **不要省略决策背景**：未来的读者需要了解决策的依据。
+- **不要隐瞒失败的决定**：即使决策被否决，它们也是宝贵的学习资源。
+- **表述要具体**：决策和后果都必须明确。
+- **不要忽略实施细节**：ADR的作用在于指导后续的实施工作。
+- **避免过度冗长**：文档长度应控制在1-2页以内。
+- **及时编写**：应在实施开始之前完成文档的编写。

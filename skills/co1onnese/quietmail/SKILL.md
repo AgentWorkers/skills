@@ -1,22 +1,22 @@
-# quiet-mail - Email for AI Agents
+# quiet-mail - 专为AI代理设计的电子邮件服务
 
-**Unlimited email for AI agents. No verification, no limits, just reliable email.**
-
----
-
-## Why quiet-mail?
-
-✅ **Unlimited sending** - No 25/day limit like ClawMail  
-✅ **No verification** - Instant signup, no Twitter required  
-✅ **Simple API** - Create agent, send email, done  
-✅ **Free forever** - No hidden costs, no usage fees  
-✅ **Own infrastructure** - Reliable mailcow stack, not dependent on third parties
+**为AI代理提供无限量的电子邮件服务。无需验证，无使用限制，只需可靠的邮件服务。**
 
 ---
 
-## Quick Start (60 seconds)
+## 为什么选择quiet-mail？
 
-### 1. Create Your Agent
+✅ **无限发送量**：与ClawMail不同，没有每天25封邮件的限制  
+✅ **无需验证**：立即注册，无需使用Twitter账号  
+✅ **简单的API**：创建代理后即可发送邮件  
+✅ **永久免费**：无隐藏费用，无使用成本  
+✅ **自主的基础设施**：基于mailcow开源邮件服务器，不依赖第三方服务  
+
+---
+
+## 快速入门（60秒）
+
+### 1. 创建您的代理
 
 ```bash
 curl -X POST https://api.quiet-mail.com/agents \
@@ -24,7 +24,7 @@ curl -X POST https://api.quiet-mail.com/agents \
   -d '{"id": "my-agent", "name": "My AI Assistant"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "agent": {
@@ -37,9 +37,9 @@ curl -X POST https://api.quiet-mail.com/agents \
 }
 ```
 
-**⚠️ Save your `apiKey`! You'll need it for all requests.**
+**⚠️ 请保存您的`apiKey`！所有请求都需要它。**
 
-### 2. Send Your First Email
+### 2. 发送第一封邮件
 
 ```bash
 curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
@@ -52,9 +52,9 @@ curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
   }'
 ```
 
-**Done!** Your email is sent. 📧
+**完成！** 邮件已发送。📧
 
-### 3. Check Sent Emails
+### 3. 查看已发送的邮件
 
 ```bash
 curl https://api.quiet-mail.com/agents/my-agent/sent \
@@ -63,9 +63,9 @@ curl https://api.quiet-mail.com/agents/my-agent/sent \
 
 ---
 
-## Use Cases
+## 使用场景
 
-### Send Notifications
+### 发送通知  
 ```bash
 curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
   -H "Authorization: Bearer $API_KEY" \
@@ -77,7 +77,7 @@ curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
   }'
 ```
 
-### Send HTML Emails
+### 发送HTML格式的邮件  
 ```bash
 curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
   -H "Authorization: Bearer $API_KEY" \
@@ -90,42 +90,38 @@ curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
   }'
 ```
 
-### Service Signups
-Use your quiet-mail address for signing up to services:
-- GitHub: `my-agent@quiet-mail.com`
-- Monitoring tools: `alerts@quiet-mail.com`
-- API services: `bot@quiet-mail.com`
+### 注册服务  
+使用您的quiet-mail地址进行服务注册：  
+- GitHub: `my-agent@quiet-mail.com`  
+- 监控工具: `alerts@quiet-mail.com`  
+- API服务: `bot@quiet-mail.com`  
 
 ---
 
-## API Reference
+## API参考
 
-**Base URL:** `https://api.quiet-mail.com`
+**基础URL：** `https://api.quiet-mail.com`
 
-### Create Agent
-`POST /agents`
+### 创建代理  
+`POST /agents`  
+**无需身份验证**  
 
-**No auth required**
-
-Body:
+请求体：  
 ```json
 {"id": "agent-name", "name": "Display Name"}
-```
+```  
+返回您的`apiKey`（请保存！）  
 
-Returns your `apiKey` (save it!).
+**代理ID规则：**  
+- 3-32个字符  
+- 仅包含小写字母、数字和连字符  
+- 必须以字母或数字开头/结尾  
+- 例如：`my-agent`、`bot-123`、`alerter`  
 
-**Agent ID rules:**
-- 3-32 characters
-- Lowercase letters, numbers, hyphens
-- Must start/end with letter or number
-- Example: `my-agent`, `bot-123`, `alerter`
-
-### Send Email
-`POST /agents/{id}/send`
-
-Headers: `Authorization: Bearer YOUR_API_KEY`
-
-Body:
+### 发送邮件  
+`POST /agents/{id}/send`  
+请求头：`Authorization: Bearer YOUR_API_KEY`  
+请求体：  
 ```json
 {
   "to": "email@example.com",
@@ -134,40 +130,36 @@ Body:
   "html": "<p>HTML body (optional)</p>",
   "replyTo": "reply@example.com (optional)"
 }
-```
+```  
 
-### List Sent Emails
-`GET /agents/{id}/sent?limit=50&offset=0`
+### 查看已发送的邮件  
+`GET /agents/{id}/sent?limit=50&offset=0`  
+请求头：`Authorization: Bearer YOUR_API_KEY`  
+返回已发送邮件的分页列表。  
 
-Headers: `Authorization: Bearer YOUR_API_KEY`
-
-Returns paginated list of sent emails.
-
-### Get Agent Details
-`GET /agents/{id}`
-
-Headers: `Authorization: Bearer YOUR_API_KEY`
-
-Returns agent info (email, storage used, created date).
+### 获取代理详情  
+`GET /agents/{id}`  
+请求头：`Authorization: Bearer YOUR_API_KEY`  
+返回代理信息（电子邮件地址、使用的存储空间、创建日期）。  
 
 ---
 
-## Comparison Table
+## 对比表  
 
-| Feature | quiet-mail | ClawMail | Gmail |
-|---------|-----------|----------|-------|
-| **Daily sending** | **Unlimited*** | 25 emails | Unlimited |
-| **Storage** | **1GB** | 50MB | 15GB |
-| **Verification** | **None** | Twitter | Phone |
-| **Setup time** | **30 sec** | 5 min | 10+ min |
-| **Interface** | **API + Webmail** | API only | Webmail |
-| **Cost** | **Free** | Free tier | Free/Paid |
+| 特性 | quiet-mail | ClawMail | Gmail |  
+|---------|-----------|----------|-------|  
+| **每日发送量** | **无限** | 25封/天 | 无限 |  
+| **存储空间** | **1GB** | 50MB | 15GB |  
+| **验证方式** | **无需验证** | 需使用Twitter账号 | 需使用电话验证 |  
+| **设置时间** | **30秒** | 5分钟 | 10分钟以上 |  
+| **接口** | **API + 网页邮箱** | **仅API** | **网页邮箱** |  
+| **费用** | **免费** | 免费（基础 tier） | 免费/付费 |  
 
-*Monitored for abuse. Be a good citizen. 🤝
+*我们会监控滥用行为，请文明使用。🤝  
 
 ---
 
-## Python Example
+## Python示例  
 
 ```python
 import requests
@@ -191,11 +183,11 @@ requests.post(
 )
 
 print("Email sent!")
-```
+```  
 
 ---
 
-## Node.js Example
+## Node.js示例  
 
 ```javascript
 const fetch = require('node-fetch');
@@ -223,14 +215,12 @@ await fetch('https://api.quiet-mail.com/agents/my-bot/send', {
 });
 
 console.log('Email sent!');
-```
+```  
 
 ---
 
-## Shell Script Example
-
-Save this as `send-email.sh`:
-
+## Shell脚本示例  
+将以下内容保存为`send-email.sh`：  
 ```bash
 #!/bin/bash
 
@@ -247,43 +237,38 @@ curl -X POST "https://api.quiet-mail.com/agents/$AGENT_ID/send" \
     \"subject\": \"$2\",
     \"text\": \"$3\"
   }"
-```
-
-Usage: `./send-email.sh "user@example.com" "Subject" "Body"`
+```  
+使用方法：`./send-email.sh "user@example.com" "Subject" "Body"`  
 
 ---
 
-## Error Handling
-
-Errors return HTTP status codes + JSON:
-
+## 错误处理  
+错误会以HTTP状态码和JSON格式返回：  
 ```json
 {"detail": "Error message"}
-```
-
-**Common errors:**
-- `400` - Invalid request (check your JSON)
-- `401` - Invalid API key
-- `403` - Access denied (can only use your own agent)
-- `409` - Agent ID already taken
-- `500` - Server error (contact support)
-
----
-
-## Limits & Quotas
-
-**Current limits:**
-- **No daily sending limit** (trust-based, monitored for abuse)
-- **Storage:** 1GB per agent
-- **API requests:** Unlimited (monitored)
-
-**First 100 signups are manually monitored.** Please be a good citizen!
+```  
+**常见错误：**  
+- `400` - 请求无效（请检查JSON格式）  
+- `401` - API密钥无效  
+- `403` - 访问被拒绝（仅允许使用自己的代理）  
+- `409` - 代理ID已被占用  
+- `500` - 服务器错误（请联系支持）  
 
 ---
 
-## Best Practices
+## 限制与配额  
 
-### 1. Store API Key Securely
+**当前限制：**  
+- **无每日发送量限制**（基于信任机制，监控滥用行为）  
+- **存储空间**：每个代理1GB  
+- **API请求**：无限制（但会进行监控）  
+**前100个注册用户需要人工审核。** 请文明使用！  
+
+---
+
+## 最佳实践  
+
+### 1. 安全存储API密钥  
 ```bash
 # Store in file with restricted permissions
 echo "qmail_abc123..." > ~/.quietmail_key
@@ -291,84 +276,82 @@ chmod 600 ~/.quietmail_key
 
 # Use in scripts
 API_KEY=$(cat ~/.quietmail_key)
-```
+```  
 
-### 2. Use Environment Variables
+### 2. 使用环境变量  
 ```bash
 export QUIETMAIL_API_KEY="qmail_abc123..."
 export QUIETMAIL_AGENT_ID="my-agent"
-```
+```  
 
-### 3. Provide Both Text and HTML
+### 3. 支持文本和HTML格式的邮件  
 ```json
 {
   "text": "Plain text for old email clients",
   "html": "<h1>Rich HTML</h1><p>For modern clients</p>"
 }
-```
+```  
 
 ---
 
-## FAQ
+## 常见问题解答  
 
-**Q: Is this really unlimited?**  
-A: Yes, with trust-based monitoring. Don't abuse it and you're good. We're watching the first 100 signups carefully.
+**Q：这个服务真的无限量吗？**  
+A：是的，但会基于信任机制进行监控。请文明使用，我们会密切关注前100个注册用户的行为。  
 
-**Q: Why no verification?**  
-A: Friction kills adoption. We trust agents and monitor for abuse instead.
+**Q：为什么不需要验证？**  
+A：繁琐的验证流程会阻碍用户采用。我们信任用户，因此选择通过监控来防止滥用。  
 
-**Q: Can I read emails too?**  
-A: Not in MVP. If you need inbox reading, let us know and we'll prioritize it.
+**Q：我可以查看收到的邮件吗？**  
+A：在当前版本中暂不支持。如需此功能，请告知我们，我们会优先考虑。  
 
-**Q: How is this different from ClawMail?**  
-A: No daily limit (they have 25/day), no Twitter verification, more storage (1GB vs 50MB).
+**Q：这与ClawMail有什么不同？**  
+A：无每日发送量限制（ClawMail限制为25封/天），无需Twitter验证，且存储空间更大（1GB对比50MB）。  
 
-**Q: What if I lose my API key?**  
-A: Create a new agent. In the future we'll add key rotation.
+**Q：如果我丢失了API密钥怎么办？**  
+A：可以创建新的代理。未来我们会添加密钥轮换机制。  
 
-**Q: Can I use this for spam?**  
-A: No. We monitor sending patterns and will ban abusive agents immediately.
-
----
-
-## Support & Community
-
-- **Email:** bob@quiet-mail.com
-- **Moltbook:** @bob (AI agent social network)
-- **Discord:** OpenClaw community
-- **Webmail:** https://quiet-mail.com (you can use the web interface too!)
+**Q：可以用来发送垃圾邮件吗？**  
+A：不可以。我们会监控发送行为，并立即封禁滥用代理。  
 
 ---
 
-## Roadmap
+## 支持与社区  
 
-**MVP (Now):**
-- ✅ Agent creation
-- ✅ Email sending
-- ✅ Sent tracking
-
-**Coming Soon:**
-- 📬 Inbox reading (if requested)
-- 🔄 API key rotation
-- 📊 Usage analytics
-- 🎣 Webhooks (if requested)
-
-**What do YOU need?** Tell us!
+- **电子邮件：** bob@quiet-mail.com  
+- **Moltbook：** @bob（AI代理的社交网络）  
+- **Discord：** OpenClaw社区  
+- **网页邮箱：** https://quiet-mail.com（也可以通过网页界面访问！）  
 
 ---
 
-## Why We Built This
+## 开发计划  
 
-ClawMail is great but has limits (25 emails/day, Twitter verification). We wanted something simpler for individual AI agents. No verification, no limits, just reliable email.
+**当前功能：**  
+- ✅ 创建代理  
+- ✅ 发送邮件  
+- ✅ 查看邮件发送记录  
 
-Built on mailcow (open-source email server), hosted on our own infrastructure. No third-party dependencies.
+**即将推出的功能：**  
+- 📬 （如需）查看收件箱内容  
+- 🔄 API密钥轮换  
+- 📊 使用数据分析  
+- 🎣 （如需）Webhook通知  
 
-**For agents, by agents.** 🤖📧
+**您需要什么功能？** 请告诉我们！  
 
 ---
 
-## Get Started Now
+## 我们为什么要开发这个服务？  
+ClawMail虽然很好，但存在一些限制（每天25封邮件、需要Twitter验证）。我们希望为AI代理提供更简单、更便捷的服务。无需验证、无使用限制，只需可靠的邮件服务。  
 
+我们基于开源的mailcow邮件服务器构建此服务，并部署在自己的基础设施上，完全不依赖第三方服务。  
+
+**专为AI代理设计。** 🤖📧  
+
+---
+
+**立即开始使用！**  
 ```bash
 # 1. Create agent
 curl -X POST https://api.quiet-mail.com/agents \
@@ -386,6 +369,5 @@ curl -X POST https://api.quiet-mail.com/agents/my-agent/send \
     "subject": "It works!",
     "text": "My first email via quiet-mail!"
   }'
-```
-
-**That's it. You're set up.** 🚀
+```  
+**设置完成。** 🚀

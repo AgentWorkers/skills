@@ -1,7 +1,7 @@
 ---
 name: strands
 version: 2.0.0
-description: Build and run Python-based AI agents using the AWS Strands SDK. Use when you need to create autonomous agents, multi-agent workflows, custom tools, or integrate with MCP servers. Supports Ollama (local), Anthropic, OpenAI, Bedrock, and other model providers. Use for agent scaffolding, tool creation, and running agent tasks programmatically.
+description: 使用 AWS Strands SDK 构建并运行基于 Python 的 AI 代理。当您需要创建自主代理、多代理工作流程、自定义工具或与 MCP 服务器集成时，可以使用该 SDK。它支持 Ollama（本地）、Anthropic、OpenAI、Bedrock 等模型提供商，可用于代理的搭建、工具的开发以及代理任务的程序化运行。
 homepage: https://github.com/strands-agents/sdk-python
 metadata:
   openclaw:
@@ -13,11 +13,11 @@ metadata:
 
 # Strands Agents SDK
 
-Build AI agents in Python using the [Strands SDK](https://github.com/strands-agents/sdk-python) (Apache-2.0, from AWS).
+使用 [Strands SDK](https://github.com/strands-agents/sdk-python)（基于 Apache-2.0 协议，由 AWS 提供）在 Python 中构建 AI 代理。
 
-Validated against: `strands-agents==1.23.0`, `strands-agents-tools==0.2.19`
+验证版本：`strands-agents==1.23.0`，`strands-agents-tools==0.2.19`
 
-## Prerequisites
+## 先决条件
 
 ```bash
 # Install SDK + tools (via pipx for isolation — recommended)
@@ -27,13 +27,13 @@ pipx install strands-agents-builder  # includes strands-agents + strands-agents-
 pip install strands-agents strands-agents-tools
 ```
 
-## Core Concept: Bedrock Is the Default
+## 核心概念：默认使用 Bedrock
 
-`Agent()` with no `model=` argument defaults to **Amazon Bedrock** — specifically `us.anthropic.claude-sonnet-4-20250514-v1:0` in `us-west-2`. This requires AWS credentials. To use a different provider, pass `model=` explicitly.
+当 `Agent()` 方法没有 `model=` 参数时，会默认使用 **Amazon Bedrock** — 具体来说是 `us.anthropic.claude-sonnet-4-20250514-v1:0`（位于 `us-west-2` 区域）。这需要 AWS 凭据。如果要使用其他提供商，请显式指定 `model=` 参数。
 
-Default model constant: `strands.models.bedrock.DEFAULT_BEDROCK_MODEL_ID`
+默认模型常量：`strands.models BEDrock.DEFAULT_BEDROCK_MODEL_ID`
 
-## Quick Start — Local Agent (Ollama)
+## 快速入门 — 本地代理（Ollama）
 
 ```python
 from strands import Agent
@@ -46,9 +46,9 @@ result = agent("What is the capital of France?")
 print(result)
 ```
 
-**Note:** Not all open-source models support tool-calling. Abliterated models often lose function-calling during the abliteration process. Test with a stock model (qwen3, llama3.x, mistral) first.
+**注意：** 并非所有开源模型都支持调用外部工具。部分模型在处理过程中会失去调用外部工具的功能。建议先使用默认模型（如 qwen3、llama3.x、mistral）进行测试。
 
-## Quick Start — Bedrock (Default Provider)
+## 快速入门 — Bedrock（默认提供商）
 
 ```python
 from strands import Agent
@@ -64,7 +64,7 @@ model = BedrockModel(model_id="us.anthropic.claude-sonnet-4-20250514-v1:0")
 agent = Agent(model=model)
 ```
 
-## Quick Start — Anthropic (Direct API)
+## 快速入门 — Anthropic（直接使用 API）
 
 ```python
 from strands import Agent
@@ -76,9 +76,9 @@ agent = Agent(model=model)
 result = agent("Explain quantum computing")
 ```
 
-Requires `ANTHROPIC_API_KEY` environment variable.
+需要设置 `ANTHROPIC_API_KEY` 环境变量。
 
-## Quick Start — OpenAI
+## 快速入门 — OpenAI
 
 ```python
 from strands import Agent
@@ -88,11 +88,11 @@ model = OpenAIModel(model_id="gpt-4.1")
 agent = Agent(model=model)
 ```
 
-Requires `OPENAI_API_KEY` environment variable.
+需要设置 `OPENAI_API_KEY` 环境变量。
 
-## Creating Custom Tools
+## 创建自定义工具
 
-Use the `@tool` decorator. Type hints become the schema; the docstring becomes the description:
+使用 `@tool` 装饰器。该装饰器会自动生成工具的类型提示和文档字符串：
 
 ```python
 from strands import Agent, tool
@@ -125,7 +125,7 @@ agent("Read /tmp/test.txt and summarize it")
 
 ### ToolContext
 
-Tools can access agent state via `ToolContext`:
+工具可以通过 `ToolContext` 访问代理的状态：
 
 ```python
 from strands import tool
@@ -144,22 +144,22 @@ def stateful_tool(query: str, tool_context: ToolContext) -> str:
     return f"Call #{count}: {query}"
 ```
 
-## Built-in Tools (46 available)
+## 内置工具（共 46 个）
 
-`strands-agents-tools` provides pre-built tools:
+`strands-agents-tools` 提供了多种预构建的工具：
 
 ```python
 from strands_tools import calculator, file_read, file_write, shell, http_request
 agent = Agent(model=model, tools=[calculator, file_read, shell])
 ```
 
-Full list: `calculator`, `file_read`, `file_write`, `shell`, `http_request`, `editor`, `image_reader`, `python_repl`, `current_time`, `think`, `stop`, `sleep`, `environment`, `retrieve`, `search_video`, `chat_video`, `speak`, `generate_image`, `generate_image_stability`, `diagram`, `journal`, `memory`, `agent_core_memory`, `elasticsearch_memory`, `mongodb_memory`, `mem0_memory`, `rss`, `cron`, `batch`, `workflow`, `use_agent`, `use_llm`, `use_aws`, `use_computer`, `load_tool`, `handoff_to_user`, `slack`, `swarm`, `graph`, `a2a_client`, `mcp_client`, `exa`, `tavily`, `bright_data`, `nova_reels`.
+完整工具列表：`calculator`、`file_read`、`file_write`、`shell`、`http_request`、`editor`、`image_reader`、`python_repl`、`current_time`、`think`、`stop`、`sleep`、`environment`、`retrieve`、`search_video`、`chat_video`、`speak`、`generate_image`、`generate_image_stability`、`diagram`、`journal`、`memory`、`agent_core_memory`、`elasticsearch_memory`、`mongodb_memory`、`mem0_memory`、`rss`、`cron`、`batch`、`workflow`、`use_agent`、`use_llm`、`use_aws`、`use_computer`、`load_tool`、`handoff_to_user`、`slack`、`swarm`、`graph`、`a2a_client`、`mcp_client`、`exa`、`tavily`、`bright_data`、`nova_reels`。
 
-Hot reload: `Agent(load_tools_from_directory=True)` watches `./tools/` for changes.
+**热重载功能**：`Agent LOAD_tools_from_directory=True` 会监控 `./tools/` 目录下的文件变化，并自动重新加载工具。
 
-## MCP Integration
+## MCP 集成
 
-Connect to any Model Context Protocol server. MCPClient implements `ToolProvider` — pass it directly in the tools list:
+可以连接到任何 Model Context Protocol 服务器。`MCPClient` 实现了 `ToolProvider` 接口，可以直接将其添加到工具列表中：
 
 ```python
 from strands import Agent
@@ -178,17 +178,17 @@ with mcp:
     agent("Use the MCP tools to do something")
 ```
 
-SSE transport:
+**SSE 传输**：
 ```python
 from mcp.client.sse import sse_client
 mcp = MCPClient(lambda: sse_client("http://localhost:8080/sse"))
 ```
 
-## Multi-Agent Patterns
+## 多代理模式
 
-### Agents as Tools
+### 代理作为工具
 
-Nest agents — inner agents become tools for the outer agent:
+内部代理可以作为外部代理的工具使用：
 
 ```python
 researcher = Agent(model=model, system_prompt="You are a research assistant.")
@@ -202,9 +202,9 @@ orchestrator = Agent(
 orchestrator("Research quantum computing and write a blog post")
 ```
 
-### Swarm Pattern
+### Swarm 模式
 
-Self-organizing agent teams with shared context and autonomous handoff coordination:
+自组织的代理团队，具有共享的上下文和自动的任务交接机制：
 
 ```python
 from strands.multiagent.swarm import Swarm
@@ -232,11 +232,11 @@ swarm = Swarm(
 result = swarm("Research AI agents, then hand off to writer for a blog post")
 ```
 
-Swarm auto-injects a `handoff_to_agent` tool. Agents hand off by calling it with the target agent's name. Supports interrupt/resume, session persistence, and repetitive-handoff detection.
+Swarm 会自动插入 `handoff_to_agent` 工具。代理可以通过调用该工具来交接任务。支持中断/恢复、会话持久化以及重复性任务交接的功能。
 
-### Graph Pattern (DAG)
+### Graph 模式（有向无环图）
 
-Deterministic dependency-based execution via `GraphBuilder`:
+通过 `GraphBuilder` 实现基于依赖关系的确定性执行：
 
 ```python
 from strands.multiagent.graph import GraphBuilder
@@ -255,11 +255,11 @@ graph = builder.build()
 result = graph("Write a blog post about AI agents")
 ```
 
-Supports cycles (feedback loops) with `builder.reset_on_revisit(True)`, execution timeouts, and nested graphs (Graph as a node in another Graph).
+支持循环（反馈循环），可以通过 `builder.reset_on_revisit(True)` 来设置重试机制，同时支持执行超时和嵌套图结构。
 
-### A2A Protocol (Agent-to-Agent)
+### A2A 协议（代理间通信）
 
-Expose a Strands agent as an A2A-compatible server for inter-agent communication:
+可以将 Strands 代理作为 A2A 兼容的服务器来使用，以实现代理间的通信：
 
 ```python
 from strands.multiagent.a2a import A2AServer
@@ -273,11 +273,11 @@ server = A2AServer(
 server.start()  # runs uvicorn
 ```
 
-Connect to A2A agents with the `a2a_client` tool from strands-agents-tools. A2A implements Google's Agent-to-Agent protocol for standardized cross-process/cross-network agent communication.
+可以使用 `strands-agents-tools` 中的 `a2a_client` 工具连接到其他 A2A 代理。A2A 协议支持标准的跨进程/跨网络代理通信。
 
-## Session Persistence
+## 会话持久化
 
-Persist conversations across agent runs:
+可以在代理运行期间持久化对话内容：
 
 ```python
 from strands.session.file_session_manager import FileSessionManager
@@ -290,11 +290,11 @@ from strands.session.s3_session_manager import S3SessionManager
 session = S3SessionManager(bucket_name="my-bucket", session_id="session-1")
 ```
 
-Both Swarm and Graph support session managers for persisting multi-agent state.
+Swarm 和 Graph 都支持会话管理器，用于保存多代理的状态。
 
-## Bidirectional Streaming (Experimental)
+## 双向流式通信（实验性）
 
-Real-time voice/text conversations with persistent audio streams:
+支持实时语音/文本对话，并保留音频流：
 
 ```python
 from strands.experimental.bidi.agent import BidiAgent
@@ -305,23 +305,15 @@ model = NovaSonicModel(region="us-east-1")
 agent = BidiAgent(model=model, tools=[my_tool])
 ```
 
-Supports interruption detection, concurrent tool execution, and continuous back-and-forth audio. Experimental — API subject to change.
+支持中断检测、并发工具执行以及连续的音频传输。此功能仍处于实验阶段，API 可能会发生变化。
 
-## System Prompts
+## 系统提示
 
-```python
-agent = Agent(
-    model=model,
-    system_prompt="You are Hex, a sharp and witty AI assistant.",
-    tools=[read_file, write_file]
-)
-```
+**Strands** 还支持使用 `list[SystemContentBlock]` 来生成结构化的系统提示，并支持缓存控制。
 
-Strands also supports `list[SystemContentBlock]` for structured system prompts with cache control.
+## 可观测性
 
-## Observability
-
-Native OpenTelemetry tracing:
+支持原生 OpenTelemetry 追踪功能：
 
 ```python
 agent = Agent(
@@ -330,17 +322,17 @@ agent = Agent(
 )
 ```
 
-Every tool call, model invocation, handoff, and lifecycle event is instrumentable.
+所有的工具调用、模型调用、任务交接以及生命周期事件都可以被追踪记录。
 
-## Bedrock-Specific Features
+## Bedrock 特有功能
 
-- **Guardrails**: `guardrail_id` + `guardrail_version` in BedrockModel config — content filtering, PII detection, input/output redaction
-- **Cache points**: System prompt and tool definition caching for cost optimization
-- **Streaming**: On by default, disable with `streaming=False`
-- **Region**: Defaults to `us-west-2`, override via `region_name` param or `AWS_REGION` env
-- **Cross-region inference**: Model IDs prefixed with `us.` use cross-region inference profiles
+- **安全机制**：`BedrockModel` 配置中的 `guardrail_id` 和 `guardrail_version` 可用于内容过滤和 PII（个人身份信息）检测，以及输入/输出内容的编辑。
+- **缓存机制**：系统提示和工具定义会被缓存以优化性能。
+- **流式传输**：默认启用，可以通过 `streaming=False` 来禁用。
+- **区域设置**：默认使用 `us-west-2` 区域，可以通过 `region_name` 参数或 `AWS_REGION` 环境变量进行更改。
+- **跨区域推理**：以 `us.` 开头的模型 ID 会使用跨区域推理功能。
 
-## Scaffolding a New Agent
+## 构建新代理
 
 ```bash
 python3 {baseDir}/scripts/create-agent.py my-agent --provider ollama --model qwen3:latest
@@ -349,44 +341,44 @@ python3 {baseDir}/scripts/create-agent.py my-agent --provider bedrock
 python3 {baseDir}/scripts/create-agent.py my-agent --provider openai --model gpt-4.1
 ```
 
-Creates a ready-to-run agent directory with tools, config, and entry point.
+会创建一个包含工具、配置文件和入口点的可运行代理目录。
 
-## Running an Agent
+## 运行代理
 
 ```bash
 python3 {baseDir}/scripts/run-agent.py path/to/agent.py "Your prompt here"
 python3 {baseDir}/scripts/run-agent.py path/to/agent.py --interactive
 ```
 
-## Model Providers Reference (11 total)
+## 模型提供商参考（共 11 种）
 
-| Provider | Class | Init | Notes |
+| 提供商 | 类型 | 初始化方法 | 备注 |
 |----------|-------|------|-------|
-| Bedrock | `BedrockModel` | `BedrockModel(model_id=...)` | **Default**, eagerly imported |
-| Ollama | `OllamaModel` | `OllamaModel("http://host:11434", model_id=...)` | `host` is positional |
-| Anthropic | `AnthropicModel` | `AnthropicModel(model_id=..., max_tokens=4096)` | `max_tokens` **required** |
-| OpenAI | `OpenAIModel` | `OpenAIModel(model_id=...)` | `OPENAI_API_KEY` |
-| Gemini | `GeminiModel` | `GeminiModel(model_id=...)` | `api_key` in client_args |
-| Mistral | `MistralModel` | `MistralModel(model_id=...)` | Mistral API key |
-| LiteLLM | `LiteLLMModel` | `LiteLLMModel(model_id=...)` | Meta-provider (Cohere, Groq, etc.) |
+| Bedrock | `BedrockModel` | `BedrockModel(model_id=...)` | 默认提供商，会立即加载 |
+| Ollama | `OllamaModel` | `OllamaModel("http://host:11434", model_id=...)` | `host` 参数是可选的 |
+| Anthropic | `AnthropicModel` | `AnthropicModel(model_id=..., max_tokens=4096)` | `max_tokens` 参数是必需的 |
+| OpenAI | `OpenAIModel` | `OpenAIModel(model_id=...)` | 需要 `OPENAI_API_KEY` |
+| Gemini | `GeminiModel` | `GeminiModel(model_id=...)` | `api_key` 参数需要在客户端参数中提供 |
+| Mistral | `MistralModel` | `MistralModel(model_id=...)` | 需要 Mistral API 密钥 |
+| LiteLLM | `LiteLLMModel` | `LiteLLMModel(model_id=...)` | 适用于 Cohere、Groq 等模型 |
 | LlamaAPI | `LlamaAPIModel` | `LlamaAPIModel(model_id=...)` | Meta Llama API |
-| llama.cpp | `LlamaCppModel` | `LlamaCppModel(...)` | Local server, OpenAI-compatible |
-| SageMaker | `SageMakerAIModel` | `SageMakerAIModel(...)` | Custom AWS endpoints |
-| Writer | `WriterModel` | `WriterModel(model_id=...)` | Writer platform |
+| llama.cpp | `LlamaCppModel` | `LlamaCppModel(...)` | 适用于本地服务器，兼容 OpenAI |
+| SageMaker | `SageMakerAIModel` | `SageMakerAIModel(...)` | 需要自定义 AWS 端点 |
+| Writer | `WriterModel` | `WriterModel(model_id=...)` | 适用于 Writer 平台 |
 
-All non-Bedrock providers are **lazy-loaded** — dependencies imported only when referenced.
+所有非 Bedrock 类型的提供商都是 **按需加载** 的 — 只有在引用时才会导入相应的依赖项。
 
-Import pattern: `from strands.models.<provider> import <Class>` (or `from strands.models import <Class>` for lazy-load).
+导入方式：`from strands.models.<provider> import <Class>`（或者使用 `from strands.models import <Class>` 来实现按需加载）。
 
-## Tips
+## 提示
 
-- `Agent()` without `model=` requires AWS credentials (Bedrock default)
-- `AnthropicModel` requires `max_tokens` — omitting it causes a runtime error
-- `OllamaModel` `host` is positional: `OllamaModel("http://...", model_id="...")`
-- Abliterated Ollama models often lose tool-calling support — use stock models for tool-using agents
-- Swarm agents need `name=` and `description=` for handoff routing
-- `Agent(load_tools_from_directory=True)` watches `./tools/` for hot-reloaded tool files
-- Use `agent.tool.my_tool()` to call tools directly without LLM routing
-- `MCPClient` is a `ToolProvider` — pass it directly in `tools=[mcp]`, don't call `list_tools_sync()` manually when using with Agent
-- Session managers work with Agent, Swarm, and Graph
-- Pin your `strands-agents` version — the SDK is young and APIs evolve between releases
+- 如果 `Agent()` 方法没有 `model=` 参数，则需要 AWS 凭据（默认使用 Bedrock）。
+- `AnthropicModel` 需要 `max_tokens` 参数；省略该参数会导致运行时错误。
+- `OllamaModel` 中的 `host` 参数是可选的，格式为 `OllamaModel("http://...", model_id="..."`。
+- 部分被删除的 Ollama 模型可能无法调用外部工具，建议使用默认模型。
+- Swarm 代理需要 `name=` 和 `description=` 参数来进行任务交接。
+- `Agent LOAD_tools_from_directory=True` 会监控 `./tools/` 目录下的文件变化，并自动重新加载工具。
+- 可以使用 `agent.tool.my_tool()` 直接调用工具，无需通过 LLM 代理进行转发。
+- `MCPClient` 是一个 `ToolProvider`，可以直接在工具列表 `tools=[mcp]` 中使用；在使用 `Agent` 时无需手动调用 `list_tools_sync()`。
+- 会话管理器适用于 Agent、Swarm 和 Graph 模式。
+- 请确保使用的是最新版本的 `strands-agents` SDK，因为 API 可能会在后续版本中发生变化。

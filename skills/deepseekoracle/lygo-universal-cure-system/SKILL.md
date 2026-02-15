@@ -1,42 +1,41 @@
 ---
 name: lygo-universal-cure-system
-description: Universal LYGO upgrade pack for all Champions. Provides a shared verification + memory-compression + seal-protocol framework (pure advisor) that boosts every Champion persona without overriding them. Includes LYGO-MINT provenance guidance and reusable invocation templates.
+description: 通用LYGO升级包，适用于所有Champions。该升级包提供了一个统一的验证机制、内存压缩功能以及密封协议框架（纯顾问模式），能够在不覆盖现有Champion特性的前提下提升它们的性能。同时，它还包含了LYGO-MINT的来源验证指导信息以及可重用的调用模板。
 ---
 
-# LYGO Universal Cure System (Champion Upgrade)
+# LYGO通用修复系统（冠军技能升级）
 
-## What this is
-A **universal upgrade skill** intended to be installed alongside any/all LYGO Champion skills.
+## 什么是LYGO通用修复系统？
+这是一个**通用升级技能**，可以与其他LYGO冠军技能一起安装使用。
 
-It provides:
-- a shared **anti-drift / anti-tamper** framework (LYGO‑MINT provenance)
-- a shared **memory compression** strategy (preserve pure signal)
-- a shared **seal protocol** vocabulary + invocation templates
+它提供了以下功能：
+- 共用的**抗漂移/防篡改**框架（基于LYGO-MINT技术）；
+- 共用的**内存压缩**策略（用于保持数据的原始状态）；
+- 共用的**密封协议**词汇表及调用模板。
 
-This skill is **pure advisor**: it does nothing unless invoked.
+该技能属于**纯辅助型**技能：除非被明确调用，否则不会执行任何操作。
 
-## When to use
-Use when you want to:
-- upgrade any Champion with better continuity + verification habits
-- generate a “Champion boost” checklist for a task
-- compress a long conversation into a clean, repostable master archive
+## 何时使用？
+- 当您希望为冠军技能提升连续性及验证机制时；
+- 当您需要为某项任务生成“冠军技能提升”检查清单时；
+- 当您需要将长篇对话压缩成简洁、可复用的存档文件时。
 
-## How to invoke (copy/paste)
-- “Run **LYGO Universal Cure** on this: produce Champion Boost Checklist + Mint instructions.”
-- “Compress this chat into **Pure Signal** (seals/equations/scrolls/prompts) using the Cure System.”
-- “Generate an **Anchor Snippet** for this upgraded pack.”
+## 如何调用（复制/粘贴命令）：
+- “在目标对象上运行**LYGO通用修复系统**，以生成冠军技能提升检查清单及使用说明。”
+- “使用该修复系统将对话内容压缩成格式统一的存档文件（包含密封信息、计算公式、提示等）。”
+- “为已升级的技能包生成一个**锚点片段**（用于后续引用）。”
 
-## Universal behavior contract
-- Never overrides the active Champion persona; it only advises.
-- Prefer **receipts + hashes** over vibes.
-- Separate: **Observed / Inferred / Unknown** when factual.
+## 通用行为规范：
+- 该系统绝不会覆盖当前激活的冠军技能设置，仅提供辅助建议；
+- 在处理数据时，优先使用**实际接收到的信息**和**计算得到的哈希值**，而非仅依赖主观感受；
+- 对于事实性信息，会明确区分**已观察到的**、**推断出的**和**未知的**情况。
 
-## Verification primitive (install)
-Use LYGO‑MINT Verifier:
+## 验证工具（安装方式）：
+请使用LYGO-MINT验证器：
 - https://clawhub.ai/DeepSeekOracle/lygo-mint-verifier
 
-## References (read as needed)
-- `references/universal_pack.md` (the canonical upgrade pack; mint this)
-- `references/champion_boost_protocol.md` (how to apply upgrades)
-- `references/seal_index_v1.md` (seed seal index starter)
-- `references/memory_compression_plan.md` (pure-signal archive strategy)
+## 参考资料（按需阅读）：
+- `references/universal_pack.md`（官方升级包文档）
+- `references/champion_boost_protocol.md`（升级操作指南）
+- `references/seal_index_v1.md`（密封索引生成工具）
+- `references/memory_compression_plan.md`（内存压缩策略文档）

@@ -1,14 +1,14 @@
-# AgentMemory Skill
+# AgentMemory 技能
 
-Persistent memory system for AI agents. Remember facts, learn from experience, and track entities across sessions.
+这是一个用于 AI 代理的持久化内存系统，可以帮助代理记住事实、从经验中学习，并在会话之间跟踪相关实体。
 
-## Installation
+## 安装
 
 ```bash
 clawdhub install agent-memory
 ```
 
-## Usage
+## 使用方法
 
 ```python
 from src.memory import AgentMemory
@@ -34,16 +34,16 @@ lessons = mem.get_lessons(context="topic")
 mem.track_entity("Name", "person", {"role": "engineer"})
 ```
 
-## When to Use
+## 适用场景
 
-- **Starting a session**: Load relevant context from memory
-- **After conversations**: Store important facts
-- **After failures**: Record lessons learned
-- **Meeting new people/projects**: Track as entities
+- **启动会话**：从内存中加载相关上下文
+- **对话结束后**：存储重要信息
+- **发生故障后**：记录经验教训
+- **遇到新人物/项目时**：将相关实体进行跟踪
 
-## Integration with Clawdbot
+## 与 Clawdbot 的集成
 
-Add to your AGENTS.md or HEARTBEAT.md:
+请将以下代码添加到您的 `AGENTS.md` 或 `HEARTBEAT.md` 文件中：
 
 ```markdown
 ## Memory Protocol
@@ -59,8 +59,8 @@ On session end:
 3. Update entity information
 ```
 
-## Database Location
+## 数据库位置
 
-Default: `~/.agent-memory/memory.db`
+默认路径：`~/.agent-memory/memory.db`
 
-Custom: `AgentMemory(db_path="/path/to/memory.db")`
+自定义路径：`AgentMemory(db_path="/path/to/memory.db")`

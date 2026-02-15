@@ -1,76 +1,75 @@
 ---
 name: osori
-description: "Osori — Local project registry & context loader. Find, switch, list, add/remove projects, check status. Triggers: work on X, find project X, list projects, project status, project switch. | 오소리 — 로컬 프로젝트 레지스트리. 프로젝트 찾아, 프로젝트 목록, 작업하자, 프로젝트 추가, 프로젝트 상태."
+description: "Osori — 一个用于管理本地项目的项目注册系统及上下文加载工具。支持查找、切换项目、列出项目、添加/删除项目以及检查项目状态等功能。相关操作包括：开始在某个项目上工作、查找特定项目、列出所有项目、查看项目状态以及切换当前项目。"
 ---
 
 # Osori (오소리)
 
-Local project registry & context loader for AI agents.
+这是一个用于AI代理的本地项目注册表和上下文加载工具。
 
-## Prerequisites
+## 先决条件
 
-- **macOS**: `mdfind` (Spotlight, built-in), `python3`, `git`, `gh` CLI
-- **Linux**: `mdfind` unavailable → uses `find` as fallback automatically. `python3`, `git`, `gh` CLI required.
+- **macOS**: 需要`mdfind`（内置在Spotlight中）、`python3`、`git`以及`gh`命令行工具。
+- **Linux**: 由于`mdfind`不可用，系统会自动使用`find`作为替代工具。同样需要`python3`、`git`以及`gh`命令行工具。
 
-## Dependencies
+## 依赖项
 
-- **python3** — Required. Used for JSON processing.
-- **git** — Project detection and status checks.
+- **python3**：必需。用于处理JSON数据。
+- **git**：用于检测项目及其状态。
 
-## Registry
+## 注册表
 
-`${OSORI_REGISTRY:-$HOME/.openclaw/osori.json}`
+注册表的路径为：`${OSORI_REGISTRY:-$HOME/.openclaw/osori.json}`
 
-Override with the `OSORI_REGISTRY` environment variable.
+可以通过设置`OSORI_REGISTRY`环境变量来更改注册表的路径。
 
-## Finding Projects (when path is unknown)
+## 查找项目（当项目路径未知时）
 
-When the project path is unknown, search in order:
+当项目路径未知时，系统会按以下顺序进行查找：
 
-1. **Registry lookup** — Fuzzy match name in `osori.json`
-2. **mdfind** (macOS only) — `mdfind "kMDItemFSName == '<name>'" | head -5`
-3. **find fallback** — Search paths defined in `OSORI_SEARCH_PATHS` env var. If unset, ask the user for search paths.
-   `find <search_paths> -maxdepth 4 -type d -name '<name>' 2>/dev/null`
-4. **Ask the user** — If all methods fail, ask for the project path directly.
-5. Offer to register the found project in the registry.
+1. **在注册表中查找**：在`osori.json`文件中模糊匹配项目名称。
+2. **使用`mdfind`（仅限macOS）**：执行命令 `mdfind "kMDItemFSName == '<name>'" | head -5`。
+3. **使用`find`命令**：如果`OSORI_SEARCH_PATHS`环境变量未设置，系统会提示用户输入搜索路径，然后使用 `find <search_paths> -maxdepth 4 -type d -name '<name>' 2>/dev/null` 命令进行搜索。
+4. **询问用户**：如果以上方法都失败，系统会直接询问用户项目路径。
+5. **将找到的项目添加到注册表中**。
 
-## Commands
+## 命令
 
-### List
-Show all registered projects. Supports `--tag`, `--lang` filters.
+### 列出
+显示所有已注册的项目。支持使用`--tag`和`--lang`参数进行过滤。
 ```
 Read osori.json and display as a table.
 ```
 
-### Switch
-1. Search registry (fuzzy match)
-2. If not found → run "Finding Projects" flow above
-3. Load context:
+### 切换操作
+1. 在注册表中搜索项目（通过名称进行模糊匹配）。
+2. 如果未找到项目，则执行上述的查找流程。
+3. 加载项目的上下文信息：
    - `git status --short`
    - `git branch --show-current`
    - `git log --oneline -5`
-   - `gh issue list -R <repo> --limit 5` (when repo is set)
-4. Present summary
+   - `gh issue list -R <repo> --limit 5`（当指定了仓库时）
+4. 显示项目的简要信息。
 
-### Add
+### 添加项目
 ```bash
 bash skills/osori/scripts/add-project.sh <path> [--tag <tag>] [--name <name>]
 ```
-Auto-detects: git remote, language, description.
+系统会自动检测项目的远程仓库地址、使用的语言以及项目描述等信息。
 
-### Scan
+### 扫描目录
 ```bash
 bash skills/osori/scripts/scan-projects.sh <root-dir> [--depth 3]
 ```
-Bulk-scan a directory for git repos and add them to the registry.
+批量扫描目录中的Git仓库，并将它们添加到注册表中。
 
-### Remove
-Delete an entry from `osori.json` by name.
+### 删除项目
+根据项目名称从`osori.json`文件中删除相应的记录。
 
-### Status
-Run `git status` + `gh issue list` for one or all projects.
+### 查看项目状态
+可以运行`git status`和`gh issue list`命令来查看单个项目或所有项目的状态。
 
-## Schema
+## 数据结构（schema）
 
 ```json
 {
@@ -84,10 +83,10 @@ Run `git status` + `gh issue list` for one or all projects.
 }
 ```
 
-## Auto-trigger Rules
+## 自动触发规则
 
-- "work on X" / "X 프로젝트 작업하자" → switch X
-- "find project X" / "X 찾아줘" / "X 경로" → registry search or discover
-- "list projects" / "프로젝트 목록" → list
-- "add project" / "프로젝트 추가" → add
-- "project status" / "프로젝트 상태" → status all
+- 输入“work on X”/“开始处理X项目” → 切换到对应的项目。
+- 输入“find project X”/“查找X项目”/“提供X项目的路径” → 在注册表中搜索或发现该项目。
+- 输入“list projects”/“显示项目列表” → 显示所有项目。
+- 输入“add project”/“添加项目” → 添加新项目。
+- 输入“project status”/“查看项目状态” → 查看所有项目的状态。

@@ -1,55 +1,54 @@
 ---
 name: notion-clipper-skill
-description: Clip web pages to Notion. Fetches any URL via Chrome CDP, converts HTML to Markdown, then to Notion blocks, and saves to user-specified Notion database or page. Use when user wants to save/clip a webpage to Notion, or mentions "clip to notion", "save page to notion", "网页剪藏到Notion".
+description: 将网页内容复制到 Notion 中：该功能通过 Chrome 的 CDP（Content Delivery Protocol）获取任意网页的 URL，将 HTML 内容转换为 Markdown 格式，再将其转换为 Notion 可用的区块，并保存到用户指定的 Notion 数据库或页面中。适用于用户需要将网页内容保存到 Notion 中的情况，例如当用户输入“复制到 Notion”、“将页面保存到 Notion”或“将网页剪藏到 Notion”等指令时。
 ---
 
 # Notion Clipper
 
-Clip any web page to Notion. Uses Chrome CDP for full JavaScript rendering, converts to Markdown, then to Notion blocks.
+这款工具可以将任何网页内容复制到 Notion 中。它利用 Chrome 的 CDP（Content Delivery Pipeline）功能进行完整的 JavaScript 渲染，然后将渲染后的内容转换为 Markdown 格式，最后插入到 Notion 中。
 
-## Prerequisites
+## 先决条件
 
-1. **Notion API Key**: Create an integration at https://notion.so/my-integrations
-2. **Store the key**:
-```bash
+1. **Notion API 密钥**：请在 [https://notion.so/my-integrations](https://notion.so/my-integrations) 上创建一个集成。  
+2. **保存 API 密钥**：  
+   ```bash
 mkdir -p ~/.config/notion
 echo "ntn_your_key_here" > ~/.config/notion/api_key
-```
-3. **Share target database/page** with your integration (click "..." → "Connect to" → your integration name)
+```  
+3. **将目标数据库/页面共享给您的集成**：点击 “...” → “连接” → 选择您的集成名称。
 
-## First Time Setup
+## 首次设置
 
-Dependencies are auto-installed when the script runs. No manual setup needed.
+脚本运行时会自动安装所有依赖项，无需手动配置。
 
-## Agent Execution Instructions
+## 代理执行说明
 
-**CRITICAL**: Always use the command pattern below. It auto-installs dependencies on first run.
+**重要提示**：务必使用以下命令格式。首次运行时会自动安装依赖项。
 
-1. Determine this SKILL.md file's directory path as `SKILL_DIR`
-2. **Command pattern** (package.json in `scripts/`; always run lazy install first):
-```bash
+1. 将当前 SKILL.md 文件所在的目录路径设置为 `SKILL_DIR`。
+2. **命令格式**（位于 `scripts/` 目录下的 `package.json` 文件中；务必先运行 `lazy install` 命令）：  
+   ```bash
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && npx -y tsx main.ts <args>)
-```
-3. Replace `${SKILL_DIR}` with the actual path (e.g. `/Users/xxx/.claude/skills/notion-clipper-skill`)
+```  
+3. 将 `${SKILL_DIR}` 替换为实际路径（例如：`/Users/xxx/.claude/skills/notion-clipper-skill`）。
 
-## Usage
+## 使用方法
 
-**IMPORTANT - Use this command pattern for best results:**
-
+**为获得最佳效果，请使用以下命令格式：**  
 ```bash
 # Recommended: Clear proxy env vars and use tsx runtime
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts <url> --database-name "Resources")
 ```
 
-**Why this pattern?**
-- `unset http_proxy https_proxy all_proxy` - Avoids ECONNREFUSED from proxy conflicts
-- `tsx` runtime - Node.js runtime that properly handles direct connections (bun has proxy issues)
-- `(test -d node_modules || npm install)` - Auto-installs dependencies if missing
+**为什么使用这种命令格式？**
+- `unset http_proxy https_proxy all_proxy`：避免因代理冲突导致的 `ECONNREFUSED` 错误。
+- `tsx` 运行时环境：`tsx` 是一个能正确处理直接网络连接的 Node.js 运行时环境（`bun` 可能存在代理相关问题）。
+- `(test -d node_modules || npm install)`：如果依赖项缺失，会自动进行安装。
 
-**If you encounter network issues:**
-1. Close any VPN/proxy software
-2. Switch to a stable network (mobile hotspot often works)
-3. Use the recommended command pattern above
+**如果遇到网络问题：**
+1. 关闭所有 VPN 或代理软件。
+2. 切换到稳定的网络环境（移动热点通常效果较好）。
+3. 使用上述推荐的命令格式。
 
 ```bash
 # Clip to a Notion database by NAME (recommended - searches for database)
@@ -68,149 +67,147 @@ Dependencies are auto-installed when the script runs. No manual setup needed.
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && npx -y tsx main.ts <url> --database-name "Resource" --wait)
 ```
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `<url>` | URL to clip |
-| `--database-name, -n <name>` | Target database by name (searches for match) |
-| `--database, -d <id>` | Target Notion database by ID |
-| `--page, -p <id>` | Target Notion page ID (appends blocks) |
-| `--list-databases, -l` | List all accessible databases and exit |
-| `--wait, -w` | Wait for user signal before capturing |
-| `--timeout, -t <ms>` | Page load timeout (default: 30000) |
-| `--no-bookmark` | Don't include bookmark block at top |
+| `<url>` | 要复制的网页 URL |
+| `--database-name, -n <名称>` | 按名称查找目标数据库 |
+| `--database, -d <ID>` | 按 ID 查找目标 Notion 数据库 |
+| `--page, -p <ID>` | 指定目标 Notion 页面的 ID（内容将添加到该页面） |
+| `--list-databases, -l` | 列出所有可访问的数据库并退出程序 |
+| `--wait, -w` | 在捕获内容前等待用户操作 |
+| `--timeout, -t <毫秒>` | 页面加载超时时间（默认值：30000 毫秒） |
+| `--no-bookmark` | 不在结果中添加书签块 |
 
-## Capture Modes
+## 复制模式
 
-| Mode | Behavior | Use When |
+| 模式 | 行为 | 适用场景 |
 |------|----------|----------|
-| Auto (default) | Capture on network idle | Public pages, static content |
-| Wait (`--wait`) | User signals when ready | Login-required, lazy loading, paywalls |
+| 自动（默认） | 在网络空闲时自动复制内容 | 公开页面、静态内容 |
+| 等待（`--wait`） | 等待用户操作后复制内容 | 需要登录的页面、懒加载页面、有付费墙的页面 |
 
-**Wait mode workflow**:
-1. Run with `--wait` → Chrome opens, script outputs "Press Enter when ready"
-2. Log in or navigate as needed in the browser
-3. Press Enter in terminal to trigger capture
+**等待模式的工作流程：**
+1. 使用 `--wait` 参数运行脚本，Chrome 会打开网页。
+2. 在浏览器中登录或浏览页面。
+3. 在终端中按 Enter 键触发内容复制。
 
-## Output Structure
+## 输出结构
 
-When saving to a **database**, creates a new page with:
-- **Name**: Page title
-- **URL**: Source URL (if database has URL property)
-- **Content**: Bookmark block + converted content blocks
+- 当内容保存到数据库中时，会创建一个新页面，包含：
+  - **页面标题**：网页的标题。
+  - **URL**：源网页的 URL（如果数据库支持该字段）。
+  - **内容**：书签块 + 转换后的 Markdown 内容。
 
-When appending to a **page**, adds:
-- Bookmark block (link to source)
-- Divider
-- Converted content blocks
+- 当内容添加到现有页面中时，会添加：
+  - 书签块（链接指向源网页）。
+  - 分隔符。
+  - 转换后的 Markdown 内容。
 
-## Database Setup
+## 数据库设置
 
-For best results, create a Notion database with these properties:
-- **Name** (Title) - Required, will contain page title
-- **URL** (URL) - Optional, will contain source URL
+为获得最佳效果，请创建一个具有以下属性的 Notion 数据库：
+- **名称**：页面的标题。
+- **URL**：源网页的 URL（可选）。
 
-## Examples
+## 示例
 
-**Clip a tweet to "Resource" database (by name):**
-```bash
+- 将一条推文复制到名为 “Resource” 的数据库中：  
+  ```bash
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts "https://x.com/dotey/status/123456" -n "Resource")
 ```
 
-**List all databases first:**
-```bash
+- 首先列出所有可用的数据库：  
+  ```bash
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts --list-databases)
 ```
 
-**Clip article requiring login:**
-```bash
+- 复制需要登录才能访问的文章：  
+  ```bash
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts "https://medium.com/article" -n "Reading" --wait)
 ```
 
-**Append to reading notes page:**
-```bash
+- 将内容添加到阅读笔记页面中：  
+  ```bash
 (cd "${SKILL_DIR}/scripts" && (test -d node_modules || npm install) && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts "https://blog.example.com/post" -p xyz789)
 ```
 
-**Quick alias (add to your ~/.bashrc or ~/.zshrc):**
-```bash
+## 快捷别名（可添加到您的 `.bashrc` 或 `.zshrc` 文件中）：  
+  ```bash
 alias notion-clip='(cd "${SKILL_DIR}/scripts" && unset http_proxy https_proxy all_proxy && npx -y tsx main.ts)'
 
 # Usage: notion-clip <url> -n "Resources"
 ```
 
-## How It Works
+## 工作原理
 
-1. **Fetch**: Launch Chrome via CDP, navigate to URL
-2. **Render**: Wait for JavaScript to execute, scroll to trigger lazy loading
-3. **Extract**: Run cleanup script to remove ads/nav, extract main content
-4. **Convert**: HTML → Markdown → Notion blocks
-5. **Save**: Call Notion API to create page or append blocks
+1. **获取内容**：通过 CDP 打开 Chrome 浏览器并导航到目标 URL。
+2. **渲染内容**：等待 JavaScript 代码执行完毕，然后滚动页面以触发懒加载。
+3. **提取内容**：运行清理脚本，移除广告和导航栏，提取主要内容。
+4. **转换格式**：将 HTML 内容转换为 Markdown 格式。
+5. **保存结果**：调用 Notion API，将内容保存到数据库或现有页面中。
 
-## Dependencies
+## 所需依赖项
 
-- Chrome/Chromium browser (installed locally)
-- Node.js (script runs with `tsx`; Bun may route through proxy and return empty body, use Node)
-- Notion API key configured
+- 安装了 Chrome/Chromium 浏览器。
+- Node.js（脚本使用 `tsx` 运行；`bun` 可能会通过代理导致问题，因此建议使用 Node.js）。
+- 配置了 Notion API 密钥。
 
-(Other dependencies auto-install on first run.)
+（其他依赖项会在首次运行时自动安装。）
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `NOTION_CLIPPER_CHROME_PATH` | Custom Chrome executable path |
-| `NOTION_CLIPPER_CHROME_PROFILE_DIR` | Custom Chrome profile directory |
-| `https_proxy` / `HTTP_PROXY` | Proxy for Notion API (e.g. `http://127.0.0.1:7890`) |
-| `http_proxy` / `HTTPS_PROXY` | Same as above |
-| `all_proxy` | Optional, e.g. `socks5://127.0.0.1:7890` |
+| `NOTION_CLIPPER_CHROME_PATH` | 自定义的 Chrome 可执行文件路径 |
+| `NOTION_CLIPPER_CHROME_PROFILE_DIR` | 自定义的 Chrome 配置文件路径 |
+| `https_proxy` / `HTTP_PROXY` | 用于访问 Notion API 的代理地址（例如：`http://127.0.0.1:7890`） |
+| `http_proxy` / `HTTPS_PROXY` | 同 `https_proxy` |
+| `all_proxy` | 可选代理地址（例如：`socks5://127.0.0.1:7890`） |
 
-**Example (proxy on port 7890):**
+**示例（使用代理服务器 7890）：**  
 ```bash
 export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Network Issues
+### 网络问题
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |--------|---------|-----------|
-| `ECONNREFUSED 208.103.161.1:443` | DNS returns blocked IP; proxy conflict | 1. Close VPN/proxy software<br>2. Use `unset http_proxy https_proxy all_proxy`<br>3. Switch network (e.g., mobile hotspot) |
-| `Notion API returned empty body (status 200)` | Using `bun` which routes through proxy incorrectly | Run with **tsx**: `npx -y tsx main.ts ...` (NOT `bun`) |
-| `fetch failed` or `ECONNREFUSED` | Proxy env vars set but Node.js `https` doesn't support them | Either:<br>1. Use network without proxy (unset env vars)<br>2. Ensure proxy allows HTTPS traffic |
-| `CloudFlare 403` | Direct IP access triggers security protection | Use hostname instead of IP; ensure proper `Authorization` header |
-| Mixed: Sometimes works, sometimes fails | Unstable network or DNS returns different IPs | Script now has **6 retries with exponential backoff** (1s, 2s, 4s, 4s...) |
+| `ECONNREFUSED 208.103.161.1:443` | DNS 返回被阻止的 IP 地址；代理冲突 | 1. 关闭 VPN 或代理软件。<br>2. 使用 `unset http_proxy https_proxy all_proxy`。<br>3. 切换网络环境（例如使用移动热点）。 |
+| Notion API 返回空内容（状态码 200） | `bun` 在使用代理时可能出错 | 使用 `tsx` 运行脚本：`npx -y tsx main.ts ...`（不要使用 `bun`）。 |
+| `fetch` 失败或 `ECONNREFUSED` | Node.js 的 `https` 环境变量未正确设置 | 1. 不使用代理；<br>2. 确保代理支持 HTTPS 流量。 |
+| CloudFlare 返回 403 错误 | 直接访问被阻止；请使用域名而非 IP 地址；确保设置正确的 `Authorization` 头部。 |
+| 内容复制失败 | 网络不稳定或 DNS 返回错误的 IP 地址 | 脚本现在具有 **6 次重试机制，并采用指数级退避策略（1 秒、2 秒、4 秒……）**。
 
-**Best Practice**: For reliable Notion API access, use a stable network (mobile hotspot often works better than corporate VPN).
+**最佳实践**：为了稳定地访问 Notion API，请使用稳定的网络环境（移动热点通常比企业 VPN 更可靠）。
 
-### Content Issues
+### 内容相关问题
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |--------|---------|-----------|
-| `Invalid URL for link` | Notion API rejects non-http(s) URLs | Script now **removes all markdown links** by default to avoid validation errors. Content is preserved, only links are stripped. |
+| 链接无效 | Notion API 不支持非 HTTP 协议的链接 | 脚本现在默认会移除所有无效的链接，以避免验证错误。内容会被保留，仅链接会被删除。 |
+- **注意**：脚本会自动移除以下类型的无效链接：
+  - `javascript:`、`data:`、`file:`、`about:` 协议。
+  - 微信内部链接（`weixin:`、`wx://`）。
+- 相对路径（`/path`、`./path`）。
+- 仅包含哈希值的链接（`#anchor`）。
+- 空链接。
 
-**Note**: The script automatically removes these invalid URL types:
-- `javascript:`, `data:`, `file:`, `about:` protocols
-- WeChat internal links (`weixin:`, `wx://`)
-- Relative paths (`/path`, `./path`)
-- Hash-only links (`#anchor`)
-- Empty links
+### 其他问题
 
-### General Issues
+- **Chrome 未找到**：请设置 `NOTION_CLIPPER_CHROME_PATH` 环境变量。
+- **超时错误**：增加 `--timeout` 参数的值，或使用 `--wait` 模式。
+- **内容缺失**：对于动态加载的页面，请使用 `--wait` 模式。
+- **Notion API 错误（401/403）**：检查 API 密钥的有效性和集成权限。
+- **Notion API 错误**：确保集成具有访问目标数据库/页面的权限。
 
-- **Chrome not found**: Set `NOTION_CLIPPER_CHROME_PATH` environment variable
-- **Timeout errors**: Increase `--timeout` value or use `--wait` mode
-- **Content missing**: Try `--wait` mode for dynamic/lazy-loaded pages
-- **Notion API error (401/403)**: Check API key validity and integration permissions
-- **Notion API error**: Ensure integration has access to target database/page
+### 代码优化
 
-### Code Optimizations Applied
-
-The following optimizations have been implemented to handle unstable networks and invalid URLs:
-
-1. **Auto-retry mechanism**: Up to 6 retries with exponential backoff (1s → 2s → 4s → 4s...)
-2. **Increased timeout**: 30s for Notion API requests (was 25s)
-3. **URL cleaning**: Removes invalid URLs before Notion API submission
-4. **Using tsx**: Node.js runtime that properly handles direct connections (unlike Bun)
+为了解决网络不稳定或链接无效的问题，我们进行了以下优化：
+1. **自动重试机制**：最多尝试 6 次，每次尝试间隔时间逐渐增加（1 秒 → 2 秒 → 4 秒……）。
+2. **增加超时时间**：将 Notion API 请求的超时时间设置为 30 秒（之前为 25 秒）。
+3. **链接清洗**：在提交数据之前，会先移除无效的 URL。
+4. **使用 `tsx` 运行时环境**：`tsx` 是一个能正确处理直接网络连接的 Node.js 运行时环境。

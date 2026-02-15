@@ -9,11 +9,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# FLUX Image Generation
+# FLUX 图像生成
 
-Generate images with FLUX models via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）使用 FLUX 模型生成图像。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -21,16 +21,16 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run falai/flux-dev-lora --input '{"prompt": "a futuristic city at night"}'
 ```
 
-## FLUX Models
+## FLUX 模型
 
-| Model | App ID | Speed | Quality | Use Case |
+| 模型 | 应用 ID | 生成速度 | 图像质量 | 适用场景 |
 |-------|--------|-------|---------|----------|
-| FLUX Dev LoRA | `falai/flux-dev-lora` | Medium | Highest | Production, custom styles |
-| FLUX.2 Klein LoRA | `falai/flux-2-klein-lora` | Fastest | Good | Fast iteration, 4B/9B sizes |
+| FLUX Dev LoRA | `falai/flux-dev-lora` | 中等 | 最高画质 | 适用于生产环境及自定义样式 |
+| FLUX.2 Klein LoRA | `falai/flux-2-klein-lora` | 生成速度最快 | 图像质量良好 | 适用于快速迭代，支持 4B/9B 大小的图像 |
 
-## Examples
+## 示例
 
-### High-Quality Generation
+### 高画质生成
 
 ```bash
 infsh app run falai/flux-dev-lora --input '{
@@ -38,13 +38,13 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-### Fast Generation (Klein)
+### 快速生成（Klein 模型）
 
 ```bash
 infsh app run falai/flux-2-klein-lora --input '{"prompt": "abstract art, colorful"}'
 ```
 
-### With LoRA Custom Styles
+### 使用 LoRA 自定义样式生成图像
 
 ```bash
 infsh app sample falai/flux-dev-lora --save input.json
@@ -53,7 +53,7 @@ infsh app sample falai/flux-dev-lora --save input.json
 infsh app run falai/flux-dev-lora --input input.json
 ```
 
-### Image-to-Image
+### 图像到图像的转换
 
 ```bash
 infsh app run falai/flux-dev-lora --input '{
@@ -62,7 +62,7 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## For Other Image Tasks
+## 其他图像处理任务
 
 ```bash
 # Image editing with natural language
@@ -72,7 +72,7 @@ infsh app run falai/reve --input '{"prompt": "change background to beach"}'
 infsh app run falai/topaz-image-upscaler --input '{"image_url": "https://..."}'
 ```
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -85,10 +85,10 @@ npx skills add inference-sh/agent-skills@ai-image-generation
 npx skills add inference-sh/agent-skills@image-upscaling
 ```
 
-Browse all apps: `infsh app list`
+- 查看所有可用应用：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Image Generation Example](https://inference.sh/docs/examples/image-generation) - Complete image generation guide
-- [Streaming Results](https://inference.sh/docs/api/sdk/streaming) - Real-time progress updates
+- [运行应用](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用
+- [图像生成示例](https://inference.sh/docs/examples/image-generation) - 完整的图像生成指南
+- [实时进度更新](https://inference.sh/docs/api/sdk/streaming) - 实时进度显示功能

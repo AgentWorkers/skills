@@ -1,20 +1,20 @@
 ---
 slug: "docx-construction"
 display_name: "DOCX Construction"
-description: "Word document generation for construction: contracts, proposals, reports, specifications, transmittals. Template-based with dynamic content insertion."
+description: "用于建筑行业的文档生成工具：合同、提案、报告、规范文件等。基于模板，并支持动态内容的插入。"
 ---
 
-# Word Document Generation for Construction
+# 用于建筑行业的Word文档生成工具
 
-## Overview
+## 概述
 
-Create professional Word documents for construction workflows using python-docx. Generate contracts, proposals, reports, and specifications from templates with dynamic data.
+使用`python-docx`为建筑工作流程创建专业的Word文档。可以从包含动态数据的模板中生成合同、提案、报告和规范文件。
 
-## Construction Use Cases
+## 建筑行业应用场景
 
-### 1. Contract Generation
+### 1. 合同生成
 
-Generate construction contracts from templates with project-specific data.
+根据项目特定数据，从模板中生成建筑合同。
 
 ```python
 from docx import Document
@@ -55,9 +55,9 @@ def generate_subcontract(template_path: str, contract_data: dict, output_path: s
     return output_path
 ```
 
-### 2. Proposal Document
+### 2. 提案文档
 
-Create professional project proposals.
+创建专业的工程项目提案。
 
 ```python
 def create_proposal(project_info: dict, scope_items: list, pricing: dict) -> Document:
@@ -111,9 +111,9 @@ def create_proposal(project_info: dict, scope_items: list, pricing: dict) -> Doc
     return doc
 ```
 
-### 3. Daily Report Generation
+### 3. 日报生成
 
-Generate daily construction reports.
+生成每日建筑工作报告。
 
 ```python
 def generate_daily_report(report_data: dict, output_path: str) -> str:
@@ -172,9 +172,9 @@ def generate_daily_report(report_data: dict, output_path: str) -> str:
     return output_path
 ```
 
-### 4. Transmittal Letter
+### 4. 提交函生成
 
-Generate transmittal documents for submittals.
+为项目提交生成相应的提交文件。
 
 ```python
 def create_transmittal(transmittal_data: dict) -> Document:
@@ -221,9 +221,9 @@ def create_transmittal(transmittal_data: dict) -> Document:
     return doc
 ```
 
-### 5. Specification Section Writer
+### 5. 规范部分编写
 
-Generate specification sections.
+生成规范文档的相关内容。
 
 ```python
 def generate_spec_section(spec_data: dict) -> Document:
@@ -275,7 +275,7 @@ def generate_spec_section(spec_data: dict) -> Document:
     return doc
 ```
 
-## Integration with DDC Pipeline
+## 与DDC流程的集成
 
 ```python
 # Example: Generate contract from estimate data
@@ -300,13 +300,13 @@ contract_data = {
 generate_subcontract('templates/subcontract.docx', contract_data, 'contracts/SC-2026-001.docx')
 ```
 
-## Dependencies
+## 所需依赖库
 
 ```bash
 pip install python-docx
 ```
 
-## Resources
+## 资源
 
 - **python-docx**: https://python-docx.readthedocs.io/
 - **ConsensusDocs Templates**: https://www.consensusdocs.org/

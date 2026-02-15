@@ -1,6 +1,6 @@
 ---
 name: netlify-deploy
-description: Expert guidance for this DevOps skill.
+description: 关于这项DevOps技能的专家指导。
 version: 1.0.0
 tags: [devops,cloud,engineering]
 author: OpenWork
@@ -13,15 +13,15 @@ metadata:
 
 # unetlify deploy
 
-Expert guidance for DevOps.
+DevOps 的专家指导。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Configuration guides
-- Troubleshooting tips
-- Resource recommendations
+- 最佳实践
+- 配置指南
+- 故障排除技巧
+- 资源推荐
 
-## Usage
-Help with this skill
-Configuration guidance
+## 使用方法
+- 获取此技能的帮助
+- 配置指南

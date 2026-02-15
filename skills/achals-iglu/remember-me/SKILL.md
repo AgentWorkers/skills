@@ -1,183 +1,179 @@
 ---
 name: remember-me
-description: Remember-this trigger: memory updates + recall for preferences, goals, boundaries, prior work, decisions, dates, and todos. Use whenever user asks to remember, continue previous context, personalize behavior, or retrieve what was decided earlier.
+description: 请记住这个触发器：它会更新用户的记忆内容，并帮助用户回忆偏好设置、目标、个人界限、之前的工作内容、所做的决策、重要日期以及待办事项。每当用户请求“记住某些内容”、希望继续之前的讨论或操作、希望个性化自己的行为，或者需要检索之前做出的决定时，都可以使用这个触发器。
 ---
 
-# Remember Me
+# 记住我
 
-Maintain a respectful, useful memory model of the user over time.
+随着时间的推移，维护一个关于用户的尊重且实用的记忆模型。
 
-## Core Rules
+## 核心规则
 
-- Store user-relevant context, not surveillance noise.
-- Prefer explicit consent for sensitive personal details.
-- Use memory to improve help quality, not to overfit persona.
-- Be explicit when memory confidence is low or inferred.
-- Make human-like inferences (explicitly marked as hypotheses).
+- 仅存储与用户相关的信息，而非无关的监控数据。
+- 对敏感的个人信息，必须获得用户的明确同意才能存储。
+- 使用记忆来提升帮助质量，而不是过度拟合用户的真实性格特征。
+- 当对记忆的准确性信心较低或仅基于推测时，必须明确说明。
+- 做出类似人类的推断（并明确标注为“假设”）。
 
-## Memory Integrity Rules
+## 记忆完整性规则
 
-Every memory entry must be tagged as one of:
+每个记忆条目必须被标记为以下类别之一：
 
-- FACT (explicitly stated by user)
-- PREFERENCE (behavioral or stated)
-- GOAL (time-bound or ongoing)
-- HYPOTHESIS (inferred, unvalidated)
+- **事实**（用户明确陈述的内容）
+- **偏好**（用户的实际行为或明确表达的意愿）
+- **目标**（有时间限制的目标或持续进行中的事项）
+- **假设**（基于用户行为推断出的内容，但尚未得到验证）
 
-Rules:
+**规则**：
+- **事实**绝不能被推测。
+- **假设**在未经确认之前，不得被当作事实推广。
+- **偏好**在未经用户明确确认之前，可以保持“暂未确定”的状态。
 
-- FACTS are never inferred
-- HYPOTHESES are never promoted without confirmation
-- PREFERENCES can remain soft unless explicitly confirmed
+## 记录触发事件
 
-## Capture Triggers
+在以下情况发生时，记录用户的记忆：
 
-Log memory when any of these happen:
+- 用户说“记住这个”。
+- 某项偏好被多次提及。
+- 用户明确表达了某种界限（例如“不要做X”、“请保密Y”）。
+- 出现重复出现的障碍或行为模式。
+- 项目的优先级发生了显著变化。
 
-- user says “remember this”
-- a preference appears repeatedly
-- a boundary is stated (“don’t do X”, “keep Y private”)
-- a recurring blocker/pattern emerges
-- project priorities shift meaningfully
+## 记忆分类
 
-## Memory Tiers
+- **每日笔记**：`memory/YYYY-MM-DD.md`  
+  - 包含时间戳的原始事件记录，简洁且基于事实。
+- **长期记忆**：`MEMORY.md`  
+  - 包含经过整理的、长期有效的用户信息和偏好设置。
 
-- **Daily notes**: `memory/YYYY-MM-DD.md`
-  - timestamped raw events, short and factual
-- **Long-term**: `MEMORY.md`
-  - curated durable profile and preferences
+## 编写工作流程
 
-## Write Workflow
+1. 对事件类型进行分类（偏好、界限、目标、项目相关事项、障碍、个人背景等）。
+2. 将带有时间戳的条目添加到每日记忆记录中。
+3. 根据用户行为模式，提出1-2个类似人类的假设。
+4. 为每个假设标注其准确性（高/中/低）。
+5. 在后续的交流中通过简单的确认来验证这些假设。
+6. 将经过验证的、长期有效的信息纳入长期记忆中。
 
-1. Classify signal type (preference, boundary, goal, project, blocker, personal context).
-2. Append concise timestamped entry to daily memory.
-3. Form 1–2 human-like assumptions (hypotheses) from behavior patterns.
-4. Tag each assumption with confidence (high/medium/low).
-5. Validate assumptions in later conversation with lightweight check-ins.
-6. Promote validated, durable items to long-term memory.
+**使用模板**：`references/templates.md`。
 
-Use templates in `references/templates.md`.
+## 记忆影响评分（可选的评估方法）
 
-## Memory Impact Score (Optional Heuristic)
+对每个记忆条目进行1-3分的评分：
 
-Rate each entry 1–3:
+- 1分：仅涉及语言表达上的微调。
+- 2分：对工作流程有轻微影响。
+- 3分：对最终结果有重大影响。
 
-- 1 = cosmetic (tone tweaks)
-- 2 = workflow-affecting
-- 3 = outcome-critical
+**推广规则**：
+- 任何明确的用户偏好（无论评分如何）都应被记录。
+- 评分达到2分且该偏好被多次提及时，应立即记录。
+- 评分达到3分的条目应立即被纳入长期记忆。
 
-Promotion guidance:
+## 推广流程
 
-- any explicit preference (any score)
-- score >= 2 with repetition
-- score 3 immediately
+当满足以下条件时，将记忆条目从每日记录提升到长期记忆：
 
-## Promotion Workflow
+- 该偏好在多次会话中被用户重复提及。
+- 该条目对未来的帮助有重大影响。
+- 用户有明确的偏好或界限要求。
+- 该条目涉及的项目背景可能在未来再次出现。
 
-Promote from daily to long-term when at least one is true:
+**使用检查清单**：`references/promotion-checklist.md`。
 
-- repeated in 2+ sessions
-- high impact on future assistance
-- explicit user preference/boundary
-- ongoing project context likely to recur
+## 个性化服务原则
 
-Use checklist: `references/promotion-checklist.md`.
+在回应用户时，根据已知的用户记忆信息进行调整：
 
-## Personalization Contract
+- 语言风格（直接沟通或探索性沟通）
+- 信息简洁程度
+- 用户偏好的工作流程
+- 用户已知的限制和界限
+- 用户的决策风格（注重速度还是深度，是否需要安慰或鼓励）
 
-When responding, adapt based on known memory:
+**注意事项**：不要假装对用户记忆有绝对的把握。如果记忆信息不明确，应先询问用户进行确认。
 
-- tone (direct vs exploratory)
-- brevity level
-- preferred workflow style
-- known constraints and boundaries
-- inferred decision style (speed-first vs depth-first, reassurance-needed vs challenge-welcoming)
+## 检索规则
 
-Do not pretend certainty. If memory is weak, ask a short confirmation.
+在回答关于用户过去的行为、偏好或时间线的问题之前：
 
-## Retrieval Contract
+- 先查询记忆记录。
+- 如有必要，引用相关记忆内容。
+- 如果找不到相关信息，应说明已进行过查询并请求用户确认。
 
-Before answering prior-work / preference / timeline questions:
+## 明确禁止存储的内容
 
-- query memory sources first
-- quote memory snippets when useful
-- if not found, say you checked and ask for confirmation
+以下内容禁止存储：
 
-## Explicit Exclusions (Never Store)
+- 短暂的情绪状态（例如“今天很累”）。
+- 一次性出现的挫败感（没有重复出现的情况）。
+- 推测性的动机（例如“试图给人留下好印象”）。
+- 敏感身份信息（除非用户明确要求）。
+- 原始的对话记录。
 
-Do not store:
+## 周期性维护（建议执行）
 
-- transient emotional states (e.g., "tired today")
-- one-off frustrations without recurrence
-- speculative motives (e.g., "trying to impress")
-- sensitive identity attributes unless explicitly requested
-- raw conversation logs
+- 审查过去3-7天的每日笔记。
+- 将稳定的行为模式整合到`MEMORY.md`中。
+- 删除过时或相互矛盾的条目。
+- 保持用户信息的简洁性和实用性。
 
-## Weekly Maintenance (recommended)
+## 记忆信息的时效性
 
-- review last 3–7 daily notes
-- merge stable patterns into `MEMORY.md`
-- remove stale or contradicted entries
-- keep profile concise and behaviorally actionable
+如果某个假设没有得到用户的确认或强化，其可信度会自动下降：
 
-## Confidence Decay
+- 14天后，从“高”降为“中”。
+- 30天后，从“中”降为“低”。
+- 60天后，直接删除。
 
-Hypothesis confidence decays automatically if not reinforced:
+**强化记忆的方法**：
 
-- High -> Medium after 14 days
-- Medium -> Low after 30 days
-- Low -> Discard after 60 days
+- 当用户的行为再次符合之前的假设时。
+- 当用户明确确认该假设时。
 
-Reinforcement occurs when:
+## 忘记与信息降级规则
 
-- user behavior aligns again
-- user explicitly confirms
+在以下情况下，应主动删除或降低记忆条目的重要性：
 
-## Forgetting & Demotion Policy
+- 用户明确表示反对某个偏好。
+- 一个假设在多次会话后仍未得到验证（默认为5次会话）。
+- 项目被明确放弃或替换。
+- 用户请求删除相关记忆。
 
-Actively remove or downgrade memory when:
+**信息降级流程**：
 
-- a preference is contradicted explicitly by the user
-- a hypothesis remains unvalidated after N sessions (default: 5)
-- a project is clearly abandoned or replaced
-- the user requests forgetting (immediate delete)
+- 长期记忆条目降级为每日笔记（并标注为“过时”）。
+- 假设被直接删除（同时记录删除原因）。
 
-Demotion flow:
+## 持续改进的循环（类似人类的理解方式）
 
-- Long-term memory -> Daily note (annotated as stale)
-- Hypothesis -> Discarded (log reason briefly)
+为了更深入地了解用户，持续执行以下循环：
 
-## Assumption Loop (Human-Like Understanding)
+1. 观察用户的行为模式。
+2. 对用户的行为做出初步的假设。
+3. 将假设作为“假设”进行存储（初始阶段不要将其视为事实）。
+4. 通过简单的对话来验证这个假设。
+5. 如果假设被用户否定，更新其可信度或直接删除该假设。
 
-For deeper understanding, run this loop continuously:
+**有效的对话提示**：
 
-1. Observe behavior pattern (not just words).
-2. Infer a tentative assumption about the user.
-3. Store assumption as hypothesis (never as fact initially).
-4. Test it with a small conversational probe.
-5. Update confidence or discard if contradicted.
+- “我可能理解错了，但当你感到疲倦时，你更倾向于快速做出决定吗？”
+- “我应该更直接地提问，还是继续保持支持性的态度？”
 
-Good probes:
+## 交流限制
 
-- "I might be wrong, but do you prefer quick decisions when you're tired?"
-- "Should I challenge you more directly here, or keep it supportive?"
+- 不要重复询问相同的确认信息。
+- 在用户情绪不稳定（如沮丧）时，避免连续提问。
+- 在用户情绪平静时，优先请求确认。
 
-## Check-In Limits
+## 可选的提醒机制
 
-- Never ask the same confirmation twice.
-- Do not stack multiple probes in one response.
-- Prefer confirmation when user is calm, not frustrated.
+在适当的时机提醒用户：
 
-## Optional Check-In Prompt
+- “您希望我下次记住这个偏好吗？”
 
-Use at natural boundaries:
+**参考资料**：
 
-- "Want me to remember this preference for next time?"
-
-Ask once, then store explicitly.
-
-## References
-
-- Templates: `references/templates.md`
-- Promotion checklist: `references/promotion-checklist.md`
-- Profile schema: `references/profile-schema.md`
+- 模板：`references/templates.md`
+- 推广检查清单：`references/promotion-checklist.md`
+- 用户信息结构：`references/profile-schema.md`

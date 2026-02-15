@@ -1,91 +1,85 @@
 ---
 name: cn-llm
-description: "China LLM Gateway - Unified interface for Chinese LLMs including Qwen, DeepSeek, GLM, Baichuan. OpenAI compatible, one API Key for all models."
+description: "**China LLM Gateway**  
+——一个统一的中国大型语言模型（LLM）接口，支持 Qwen、DeepSeek、GLM、Baichuan 等模型。兼容 OpenAI，只需一个 API 密钥即可使用所有模型。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"🐉","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
-# OpenClaw CN-LLM 🐉
+# OpenClaw CN-LLM 🐉  
+**中国大语言模型统一入口。由AIsa提供支持。**  
 
-**China LLM Unified Gateway. Powered by AIsa.**
+只需一个API密钥，即可访问所有中国的大语言模型。支持OpenAI接口。  
+Qwen、DeepSeek、GLM、Baichuan、Moonshot等模型，均可通过统一的API进行访问。  
 
-One API Key to access all Chinese LLMs. OpenAI compatible interface.
+## 🔥 您可以做什么  
 
-Qwen, DeepSeek, GLM, Baichuan, Moonshot, and more - unified API access.
-
-## 🔥 What You Can Do
-
-### Intelligent Chat
+### 智能聊天  
 ```
 "Use Qwen to answer Chinese questions, use DeepSeek for coding"
-```
+```  
 
-### Deep Reasoning
+### 深度推理  
 ```
 "Use DeepSeek-R1 for complex reasoning tasks"
-```
+```  
 
-### Code Generation
+### 代码生成  
 ```
 "Use DeepSeek-Coder to generate Python code with explanations"
-```
+```  
 
-### Long Text Processing
+### 长文本处理  
 ```
 "Use Qwen-Long for ultra-long document summarization"
-```
+```  
 
-### Model Comparison
+### 模型比较  
 ```
 "Compare response quality between Qwen-Max and DeepSeek-V3"
-```
+```  
 
-## Supported Models
+## 支持的模型  
 
-### Qwen (Alibaba)
+### Qwen（阿里巴巴）  
 
-| Model | Input Price | Output Price | Features |
-|-----|---------|---------|------|
-| qwen3-max | $1.37/M | $5.48/M | Most powerful general model |
-| qwen3-max-2026-01-23 | $1.37/M | $5.48/M | Latest version |
-| qwen3-coder-plus | $2.86/M | $28.60/M | Enhanced code generation |
-| qwen3-coder-flash | $0.72/M | $3.60/M | Fast code generation |
-| qwen3-coder-480b-a35b-instruct | $2.15/M | $8.60/M | 480B large model |
-| qwen3-vl-plus | $0.43/M | $4.30/M | Vision-language model |
-| qwen3-vl-flash | $0.86/M | $0.86/M | Fast vision model |
-| qwen3-omni-flash | $4.00/M | $16.00/M | Multimodal model |
-| qwen-vl-max | $0.23/M | $0.57/M | Vision-language |
-| qwen-plus-2025-12-01 | $1.26/M | $12.60/M | Plus version |
-| qwen-mt-flash | $0.168/M | $0.514/M | Fast machine translation |
-| qwen-mt-lite | $0.13/M | $0.39/M | Lite machine translation |
+| 模型 | 输入价格（百万令牌） | 输出价格（百万令牌） | 特点 |
+|-----|---------|---------|------|  
+| qwen3-max | $1.37/M | $5.48/M | 最强大的通用模型 |
+| qwen3-max-2026-01-23 | $1.37/M | $5.48/M | 最新版本 |
+| qwen3-coder-plus | $2.86/M | $28.60/M | 强化的代码生成功能 |
+| qwen3-coder-flash | $0.72/M | $3.60/M | 快速代码生成 |
+| qwen3-coder-480b-a35b-instruct | $2.15/M | $8.60/M | 480B大型模型 |
+| qwen3-vl-plus | $0.43/M | $4.30/M | 视觉语言模型 |
+| qwen3-vl-flash | $0.86/M | $0.86/M | 快速视觉模型 |
+| qwen3-omni-flash | $4.00/M | $16.00/M | 多模态模型 |
+| qwen-vl-max | $0.23/M | $0.57/M | 视觉语言模型 |
+| qwen-plus-2025-12-01 | $1.26/M | $12.60/M | 升级版本 |
+| qwen-mt-flash | $0.168/M | $0.514/M | 快速机器翻译 |
+| qwen-mt-lite | $0.13/M | $0.39/M | 简易机器翻译 |
 
-### DeepSeek
+### DeepSeek  
 
-| Model | Input Price | Output Price | Features |
-|-----|---------|---------|------|
-| deepseek-r1 | $2.00/M | $8.00/M | Reasoning model, supports Tools |
-| deepseek-v3 | $1.00/M | $4.00/M | General chat, 671B parameters |
-| deepseek-v3-0324 | $1.20/M | $4.80/M | V3 stable version |
-| deepseek-v3.1 | $4.00/M | $12.00/M | Latest Terminus version |
+| 模型 | 输入价格（百万令牌） | 输出价格（百万令牌） | 特点 |
+|-----|---------|---------|------|  
+| deepseek-r1 | $2.00/M | $8.00/M | 推理模型，支持工具使用 |
+| deepseek-v3 | $1.00/M | $4.00/M | 通用聊天模型，参数量671B |
+| deepseek-v3-0324 | $1.20/M | $4.80/M | V3稳定版本 |
+| deepseek-v3.1 | $4.00/M | $12.00/M | 最新Terminus版本 |
 
-> **Note**: Prices are in M (million tokens). Model availability may change, see [marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing) for the latest list.
+> **注意**：价格以百万令牌（M）为单位。模型可用性可能会发生变化，请访问[marketplace.aisa.one/pricing](https://marketplace.aisa.one/pricing)获取最新列表。  
 
-## Quick Start
-
+## 快速入门  
 ```bash
 export AISA_API_KEY="your-key"
-```
+```  
 
-## API Endpoints
-
-### OpenAI Compatible Interface
-
+## API端点  
 ```
 POST https://api.aisa.one/v1/chat/completions
-```
+```  
 
-#### Qwen Example
-
+### 兼容OpenAI的接口  
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -99,10 +93,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
     "temperature": 0.7,
     "max_tokens": 1000
   }'
-```
+```  
 
-#### DeepSeek Example
-
+#### Qwen示例  
 ```bash
 # DeepSeek-V3 general chat (671B parameters)
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
@@ -131,10 +124,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
     "model": "deepseek-v3.1",
     "messages": [{"role": "user", "content": "Implement an LRU cache with get and put operations"}]
   }'
-```
+```  
 
-#### Qwen3 Code Generation Example
-
+#### DeepSeek示例  
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -143,21 +135,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
     "model": "qwen3-coder-plus",
     "messages": [{"role": "user", "content": "Implement a thread-safe Map in Go"}]
   }'
-```
+```  
 
-#### Parameter Reference
-
-| Parameter | Type | Required | Description |
-|-----|------|-----|------|
-| `model` | string | Yes | Model identifier |
-| `messages` | array | Yes | Message list |
-| `temperature` | number | No | Randomness (0-2, default 1) |
-| `max_tokens` | integer | No | Maximum tokens to generate |
-| `stream` | boolean | No | Stream output (default false) |
-| `top_p` | number | No | Nucleus sampling parameter (0-1) |
-
-#### Response Format
-
+#### Qwen3代码生成示例  
 ```json
 {
   "id": "chatcmpl-xxx",
@@ -181,10 +161,19 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
     "cost": 0.001
   }
 }
-```
+```  
 
-### Streaming Output
+#### 参数参考  
+| 参数 | 类型 | 是否必填 | 说明 |
+|-----|------|-----|------|  
+| `model` | string | 是 | 模型标识符 |
+| `messages` | array | 是 | 消息列表 |
+| `temperature` | number | 否 | 随机性（0-2，默认1） |
+| `max_tokens` | integer | 否 | 生成的最大令牌数 |
+| `stream` | boolean | 否 | 流式输出（默认为false） |
+| `top_p` | number | 否 | 核心采样参数（0-1） |
 
+#### 响应格式  
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -194,20 +183,16 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
     "messages": [{"role": "user", "content": "Tell a Chinese folk story"}],
     "stream": true
   }'
-```
+```  
 
-Returns Server-Sent Events (SSE) format:
-
+### 流式输出  
 ```
 data: {"id":"chatcmpl-xxx","choices":[{"delta":{"content":"Once"}}]}
 data: {"id":"chatcmpl-xxx","choices":[{"delta":{"content":" upon"}}]}
 ...
 data: [DONE]
-```
-
-## Python Client
-
-### CLI Usage
+```  
+返回服务器发送的事件（SSE）格式：  
 
 ```bash
 # Qwen chat
@@ -230,10 +215,9 @@ python3 {baseDir}/scripts/cn_llm_client.py compare --models "qwen3-max,deepseek-
 
 # List supported models
 python3 {baseDir}/scripts/cn_llm_client.py models
-```
+```  
 
-### Python SDK Usage
-
+## Python客户端  
 ```python
 from cn_llm_client import CNLLMClient
 
@@ -270,12 +254,9 @@ results = client.compare_models(
 )
 for model, result in results.items():
     print(f"{model}: {result['response'][:100]}...")
-```
+```  
 
-## Use Cases
-
-### 1. Chinese Content Generation
-
+## CLI使用  
 ```python
 # Copywriting
 response = client.chat(
@@ -285,30 +266,29 @@ response = client.chat(
         {"role": "user", "content": "Write a product introduction for a smart watch"}
     ]
 )
-```
+```  
 
-### 2. Code Development
-
+## Python SDK使用  
 ```python
 # Code generation and explanation
 response = client.chat(
     model="qwen3-coder-plus",
     messages=[{"role": "user", "content": "Implement a thread-safe Map in Go"}]
 )
-```
+```  
 
-### 3. Complex Reasoning
+## 使用场景  
 
+### 1. 中文内容生成  
 ```python
 # Mathematical reasoning
 response = client.chat(
     model="deepseek-r1",
     messages=[{"role": "user", "content": "Prove: For any positive integer n, n³-n is divisible by 6"}]
 )
-```
+```  
 
-### 4. Visual Understanding
-
+### 2. 代码开发  
 ```python
 # Image understanding
 response = client.chat(
@@ -320,10 +300,9 @@ response = client.chat(
         ]}
     ]
 )
-```
+```  
 
-### 5. Model Routing Strategy
-
+### 3. 复杂推理  
 ```python
 MODEL_MAP = {
     "chat": "qwen3-max",           # General chat
@@ -337,12 +316,9 @@ MODEL_MAP = {
 def route_by_task(task_type: str, message: str) -> str:
     model = MODEL_MAP.get(task_type, "qwen3-max")
     return client.chat(model=model, messages=[{"role": "user", "content": message}])
-```
+```  
 
-## Error Handling
-
-Errors return JSON with `error` field:
-
+### 4. 视觉理解  
 ```json
 {
   "error": {
@@ -350,19 +326,24 @@ Errors return JSON with `error` field:
     "message": "Model 'xxx' is not available"
   }
 }
-```
+```  
 
-Common error codes:
-- `401` - Invalid or missing API Key
-- `402` - Insufficient balance
-- `404` - Model not found
-- `429` - Rate limit exceeded
-- `500` - Server error
+### 5. 模型路由策略  
+___CODE_BLOCK_21___  
 
-## Pricing
+## 错误处理  
+错误会以JSON格式返回，其中包含`error`字段：  
+___CODE_BLOCK_22___  
+常见错误代码：  
+- `401` - API密钥无效或缺失  
+- `402` - 账户余额不足  
+- `404` - 模型未找到  
+- `429` - 超过请求频率限制  
+- `500` - 服务器错误  
 
-| Model | Input ($/M) | Output ($/M) |
-|-----|-----------|-----------|
+## 价格  
+| 模型 | 输入价格（百万令牌） | 输出价格（百万令牌） |
+|-----|-----------|-----------|  
 | qwen3-max | $1.37 | $5.48 |
 | qwen3-coder-plus | $2.86 | $28.60 |
 | qwen3-coder-flash | $0.72 | $3.60 |
@@ -371,15 +352,13 @@ Common error codes:
 | deepseek-r1 | $2.00 | $8.00 |
 | deepseek-v3.1 | $4.00 | $12.00 |
 
-> Price unit: $ per Million tokens. Each response includes `usage.cost` and `usage.credits_remaining`.
+> 价格单位：每百万令牌（$）。每个响应包含`usage.cost`和`usage.credits_remaining`信息。  
 
-## Get Started
+## 开始使用  
+1. 在[aisa.one](https://aisa.one)注册  
+2. 获取API密钥  
+3. 充值（按需付费）  
+4. 设置环境变量：`export AISA_API_KEY="your-key"`  
 
-1. Register at [aisa.one](https://aisa.one)
-2. Get API Key
-3. Top up (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
-
-## Full API Reference
-
-See [API Reference](https://aisa.mintlify.app/api-reference/introduction) for complete endpoint documentation.
+## 完整API参考  
+请参阅[API参考](https://aisa.mintlify.app/api-reference/introduction)以获取完整的端点文档。

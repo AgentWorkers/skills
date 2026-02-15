@@ -1,6 +1,6 @@
 ---
 name: competitor-watch
-description: Know what your competitors ship before their customers do. Automated monitoring of competitor websites, product pages, pricing, content, and social presence. Detects changes, extracts new features, tracks pricing updates, and alerts you with digestible summaries. Your agent watches the competition 24/7 so you can focus on building. Configure competitor tiers (fierce rivals get deep monitoring, adjacents get high-level), set check frequency, define alert thresholds, and receive smart diffs highlighting what actually matters. Use when setting up competitive intelligence, tracking product launches, monitoring pricing changes, or staying ahead of market moves.
+description: 在客户之前，了解竞争对手的产品发布情况。通过自动化监控竞争对手的网站、产品页面、价格信息、内容以及他们在社交媒体上的表现，可以及时发现变化、提取新功能、跟踪价格更新，并以易于理解的摘要形式向您发出警报。我们的系统全天候监控竞争对手的动态，让您能够专注于产品开发。您可以配置不同的监控级别（激烈竞争的对手会接受更详细的监控，而关系较远的竞争对手则只需接受概览性的监控），设置检查频率、定义警报阈值，并接收能够突出显示关键信息的智能对比报告。该工具适用于构建竞争情报、跟踪产品发布、监控价格变动或抢先了解市场动态等场景。
 metadata:
   clawdbot:
     emoji: "🔍"
@@ -8,296 +8,198 @@ metadata:
       skills: []
 ---
 
-# Competitor Watch — Your 24/7 Competitive Intelligence Agent
+# 竞争对手监控——您的24/7竞争情报助手  
+
+**他们发布了新功能，您能在几分钟内得知，而无需等待数周。**  
+
+Competitor Watch会自动监控您的竞争环境——包括网站、产品页面、价格信息、博客文章以及社交媒体账号——并在有变化时及时向您发出警报。再也不用等到您的竞争对手的客户已经知道新功能后，您才意识到他们已经推出了同样的功能。  
+
+**它的独特之处在于：**  
+- **分层监控**：对直接竞争对手进行深度监控，对相关公司进行初步监控；  
+- **智能差异分析**：仅突出重要变化，过滤掉无关信息；  
+- **易于理解的摘要**：直接告诉您“发生了什么”以及“为什么这很重要”，而非简单地展示原始的HTML变化内容。  
 
-**They ship a feature. You know in minutes, not weeks.**
+## 问题所在  
 
-Competitor Watch monitors your competitive landscape automatically—websites, product pages, pricing, blog posts, social accounts—and alerts you when something changes. No more finding out your rival launched that feature you've been building after their customers already know about it.
+您是创始人或产品负责人，可能面临3到5个直接竞争对手，以及十几个处于相似市场领域的公司。这些公司都在不断推出新产品、调整价格或发布新内容。您通常只有在客户提到相关情况时才会手动去查看这些信息。但等到您注意到重大变化时，往往已经来不及采取战略行动了。  
 
-**What makes it different:** Tiered monitoring (fierce rivals get deep tracking, adjacents get high-level), intelligent diffing (highlights what matters, filters noise), and digestible summaries that tell you *so what* instead of dumping raw HTML changes.
+手动收集竞争情报的方式难以扩展——仅仅将竞争对手的网址添加书签并每周检查一次是远远不够的。您需要一个能够持续监控的“助手”，只有在真正有重要情况发生时才向您发出警报。  
 
-## The Problem
-
-You're a founder or product leader. You have 3-5 direct competitors and maybe a dozen companies in adjacent spaces. They're all shipping, pricing, pivoting, and posting. You check manually when you remember (usually when a customer mentions it). By the time you notice a major move, it's too late to react strategically.
+## 功能介绍  
 
-Manual competitive intelligence doesn't scale. Bookmarking competitor URLs and checking them weekly doesn't work. You need an agent that watches constantly and only interrupts when something actually matters.
-
-## What It Does
-
-- **Website Monitoring**: Track homepage, product pages, pricing pages, docs
-- **Change Detection**: Smart diffing that filters out timestamps, session IDs, ads
-- **Content Extraction**: Pull new blog posts, feature announcements, case studies
-- **Pricing Tracking**: Detect price changes, plan additions, new tiers
-- **Social Listening**: Monitor Twitter/LinkedIn for major announcements
-- **Tiered Tracking**: Deep monitoring for direct rivals, high-level for adjacents
-- **Smart Alerts**: Summaries that tell you *what changed* and *why it matters*
+- **网站监控**：跟踪首页、产品页面和价格页面的内容。  
+- **变化检测**：通过智能差异分析过滤掉时间戳、会话ID和广告等无关信息。  
+- **内容提取**：获取新的博客文章、功能公告和案例研究。  
+- **价格跟踪**：检测价格变动、新增计划或价格等级的变化。  
+- **社交媒体监控**：监控Twitter和LinkedIn上的重要公告。  
+- **分层监控**：对直接竞争对手进行深度监控，对相关公司进行初步监控。  
+- **智能警报**：提供简洁的摘要，说明具体变化内容及其重要性。  
 
-## Setup
+## 设置方法  
 
-1. Run `scripts/setup.sh` to initialize config and data directories
-2. Edit `~/.config/competitor-watch/config.json` with your competitive landscape
-3. Add competitors: `scripts/add-competitor.sh "CompanyName" https://example.com --tier=fierce`
-4. Test monitoring: `scripts/check.sh --dry-run`
-5. Set up cron or heartbeat: Run `check.sh` every 30-60 minutes
+1. 运行`scripts/setup.sh`以初始化配置文件和数据目录。  
+2. 使用`~/.config/competitor-watch/config.json`配置您的竞争环境。  
+3. 使用`scripts/add-competitor.sh`添加竞争对手（例如：`scripts/add-competitor.sh "CompanyName" https://example.com --tier=fierce`）。  
+4. 通过`scripts/check.sh --dry-run`测试监控功能。  
+5. 设置定时任务（cron或heartbeat），使`check.sh`每30到60分钟运行一次。  
 
-## Config
+## 配置文件（`~/.config/competitor-watch/config.json`）  
 
-Config lives at `~/.config/competitor-watch/config.json`. See `config.example.json` for full schema.
+配置文件中包含以下关键信息：  
+- **competitors**：需要监控的公司列表（名称、网址、监控级别和标签）。  
+- **tiers**：定义监控的深度（直接竞争对手、重要竞争对手、相关公司）。  
+- **monitoring**：需要监控的内容（页面、内容、价格、社交媒体）。  
+- **diffing**：变化检测的设置（忽略某些内容）。  
+- **alerts**：通知的时间和方式（变化幅度阈值、冷却时间、通知渠道）。  
+- **scheduling**：不同级别的监控频率。  
 
-Key sections:
-- **competitors** — List of companies to track (name, URLs, tier, tags)
-- **tiers** — Define monitoring depth (fierce, important, watching, adjacent)
-- **monitoring** — What to track (pages, content, pricing, social)
-- **diffing** — Change detection settings (ignore patterns, similarity threshold)
-- **alerts** — When and how to notify (min change size, cooldown, channel)
-- **scheduling** — Check frequency per tier
+### 分层监控规则  
 
-### Tiered Monitoring
+**直接竞争对手（fierce）**：  
+- 每30分钟检查一次。  
+- 监控内容：价格、功能、文档、博客、社交媒体。  
+- 在有重要变化时发出警报。  
+- 保留90天的数据快照。  
 
-**Fierce** (direct competitors in every deal):
-- Check every 30 minutes
-- Monitor: pricing, features, docs, blog, social
-- Alert on: any meaningful change
-- Keep: 90 days of snapshots
+**重要竞争对手（important）**：  
+- 每2小时检查一次。  
+- 监控内容：价格、功能、博客。  
+- 在有中等程度以上变化时发出警报。  
+- 保留30天的数据快照。  
 
-**Important** (frequent competitive overlap):
-- Check every 2 hours
-- Monitor: pricing, features, blog
-- Alert on: medium+ changes
-- Keep: 30 days of snapshots
+**潜在威胁（watching）**：  
+- 每天检查一次。  
+- 监控内容：首页、博客。  
+- 仅在有重大变化时发出警报。  
+- 保留14天的数据快照。  
 
-**Watching** (potential future threat):
-- Check daily
-- Monitor: homepage, blog
-- Alert on: major changes only
-- Keep: 14 days of snapshots
+**相关公司（adjacent）**：  
+- 每周检查一次。  
+- 监控内容：博客和重要公告。  
+- 在有重大调整或新产品发布时发出警报。  
+- 保留7天的数据快照。  
 
-**Adjacent** (different market, relevant trends):
-- Check weekly
-- Monitor: blog, major announcements
-- Alert on: significant pivots or launches
-- Keep: 7 days of snapshots
+## 脚本说明  
 
-## Scripts
+- `scripts/setup.sh`：初始化配置文件和数据目录。  
+- `scripts/add-competitor.sh`：添加竞争对手（支持交互式操作或批量添加）。  
+- `scripts/check.sh`：执行全面的监控或针对特定级别的监控。  
+- `scripts/diff.sh`：比较数据快照并生成变化报告。  
+- `scripts/report.sh`：格式化最近的变化摘要。  
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/setup.sh` | Initialize config and data directories |
-| `scripts/add-competitor.sh` | Add a competitor (interactive or flags) |
-| `scripts/check.sh` | Run monitoring sweep (all or specific tier) |
-| `scripts/diff.sh` | Compare snapshots, generate change report |
-| `scripts/report.sh` | Format digest of recent changes |
+所有脚本都支持`--dry-run`选项，以便在不存储数据快照的情况下进行测试。  
 
-All scripts support `--dry-run` for testing without storing snapshots.
+## 监控周期  
 
-## Monitoring Cycle
+按照预定时间（通过cron或heartbeat）运行`scripts/check.sh`：  
+1. 根据配置级别加载竞争对手列表。  
+2. 获取每个需要监控的网址（使用`web_fetch`或浏览器）。  
+3. 保存带有时间戳的数据快照。  
+4. 与之前的快照进行对比（调用`diff.sh`）。  
+5. 评估变化的重要性（基于文本差异、价格变动和新内容的添加）。  
+6. 如果达到阈值，则生成警报。  
+7. 更新最后检查的时间戳和变化日志。  
 
-Run `scripts/check.sh` on schedule (cron or heartbeat). The check:
-1. Loads competitor list filtered by tier schedule
-2. Fetches each configured URL (web_fetch or browser if needed)
-3. Stores snapshot with timestamp
-4. Compares to previous snapshot (calls `diff.sh`)
-5. Scores change significance (text diff size, pricing changes, new sections)
-6. Generates alert if threshold met
-7. Updates last-check timestamp and change log
-
-## Diffing Logic
-
-`diff.sh` does intelligent comparison:
-
-**Filters out noise:**
-- Timestamps, session IDs, cache busters (`?v=123`)
-- Dynamic ad content, tracking pixels
-- Social share counts, "Last updated" dates
-- Common CMS artifacts
-
-**Highlights signal:**
-- New product sections or features
-- Pricing/plan changes (keyword matching)
-- Added/removed navigation items
-- New blog posts or case studies
-- Significant text additions (>200 words)
-
-**Change scoring:**
-- Minor: <5% content change, cosmetic updates → No alert
-- Medium: 5-15% change, new blog post → Alert if Important+ tier
-- Major: >15% change, pricing update, new product section → Always alert
-- Critical: Explicit keywords ("launching", "announcing", "now available") → Urgent alert
-
-## Alerts
-
-When a meaningful change is detected, `report.sh` generates a summary:
-
-```
-🚨 COMPETITOR CHANGE: Acme Corp (fierce rival)
-
-Page: https://acme.com/pricing
-Detected: 2026-02-11 13:45 EST
-Change: MAJOR (pricing update + new tier)
-
-What changed:
-• New "Enterprise" tier added at $999/mo
-• "Pro" tier price increased from $49 to $79 (+61%)
-• Added "Custom AI workflows" feature to all plans
-
-Raw diff: ~/.config/competitor-watch/data/snapshots/acme-corp/pricing/diff-2026-02-11-1345.txt
-
-—
-View full snapshot: check.sh --snapshot acme-corp pricing
-```
-
-Alerts respect cooldown (don't spam on every tiny update) and tier settings.
-
-## Adding Competitors
-
-Interactive mode:
-```bash
-scripts/add-competitor.sh
-# Prompts for: name, homepage, tier, pages to track, tags
-```
-
-Flag mode:
-```bash
-scripts/add-competitor.sh "Acme Corp" https://acme.com \
-  --tier fierce \
-  --pages pricing,features,blog \
-  --tags "direct-competitor,ai-tools" \
-  --twitter @acmecorp
-```
-
-## Managing Competitors
-
-```bash
-# List all
-scripts/check.sh --list
-
-# Check specific competitor
-scripts/check.sh --competitor "Acme Corp"
-
-# Check tier only
-scripts/check.sh --tier fierce
-
-# View change history
-scripts/report.sh --competitor "Acme Corp" --days 30
-
-# Update tier
-# (Edit ~/.config/competitor-watch/config.json, or re-run add-competitor)
-```
-
-## Data Files
-
-```
-~/.config/competitor-watch/
-├── config.json              # Competitor list and settings
-├── data/
-│   ├── snapshots/
-│   │   ├── acme-corp/
-│   │   │   ├── pricing/
-│   │   │   │   ├── 2026-02-11-1000.txt
-│   │   │   │   ├── 2026-02-11-1030.txt
-│   │   │   │   └── diff-2026-02-11-1030.txt
-│   │   │   └── features/...
-│   │   └── competitor-b/...
-│   ├── change-log.json      # All detected changes
-│   ├── last-checks.json     # When each URL was last checked
-│   └── alert-history.json   # Sent alerts (for cooldown)
-└── reports/
-    └── daily-digest-2026-02-11.md
-```
-
-## Scheduling
-
-### Cron (recommended for production)
-```bash
-# Check fierce rivals every 30 min
-*/30 * * * * /path/to/skills/competitor-watch/scripts/check.sh --tier fierce
-
-# Check important every 2 hours
-0 */2 * * * /path/to/skills/competitor-watch/scripts/check.sh --tier important
-
-# Daily digest report at 9 AM
-0 9 * * * /path/to/skills/competitor-watch/scripts/report.sh --daily
-```
-
-### Heartbeat (for integrated monitoring)
-Add to your `HEARTBEAT.md`:
-```markdown
-## Competitor Watch
-- Run `skills/competitor-watch/scripts/check.sh --tier fierce` (if >30 min since last)
-- Check alert-history.json for unsent alerts
-```
-
-## Integration with Clawdbot
-
-Alerts can be sent via:
-- **Telegram/Discord/Slack**: Direct message with summary
-- **File**: Write report to workspace, mention in next interaction
-- **Heartbeat**: Surface in proactive check ("Acme Corp updated pricing")
-
-## Best Practices
-
-**Tier carefully:**
-- Only 2-3 competitors should be "fierce" (high monitoring cost)
-- Use "important" for companies in 30%+ of deals
-- "Watching" for emerging threats or fast-growing startups
-- "Adjacent" for market signals, not tactical intel
-
-**Focus on delta:**
-- You don't need to read their entire website daily
-- The diff is the product—new features, pricing changes, messaging shifts
-- Archive old snapshots after tier retention window
-
-**Combine with human intel:**
-- Competitor Watch automates the tedious part (checking URLs)
-- You still need: sales call notes, customer chatter, market analysis
-- Use this skill to ensure you never miss the *public* signals
-
-**Avoid over-alerting:**
-- Set thresholds appropriate to tier (minor changes on fierce rivals OK, but only major for adjacents)
-- Use cooldown periods (don't alert twice in 6 hours for same page)
-- Weekly digest > real-time spam for lower tiers
-
-## Use Cases
-
-**Product team:**
-- Track feature launches → Validate roadmap prioritization
-- Monitor docs/changelogs → Understand their capabilities
-- Watch integrations page → Know their ecosystem moves
-
-**Sales/GTM:**
-- Pricing changes → Update battlecards and objection handling
-- New case studies → Understand their positioning and wins
-- Messaging shifts → Adjust competitive positioning
-
-**Marketing:**
-- Content velocity → Benchmark publishing cadence
-- Campaign themes → Spot market narrative shifts
-- Social engagement → Understand what resonates
-
-**Founders:**
-- High-level awareness without daily manual checking
-- React strategically to major moves (launches, pivots, funding)
-- Focus on building, not obsessing over competitors
-
-## Privacy & Ethics
-
-- Only monitors **public** web content
-- Respects robots.txt and rate limits
-- No scraping of authenticated/paywalled content
-- No impersonation or deceptive data collection
-- Use for competitive intelligence, not corporate espionage
-
-## Future Enhancements
-
-- **Social listening**: Twitter/LinkedIn post monitoring (beyond just checking profile)
-- **GitHub tracking**: Public repo commits, release notes, contributor activity
-- **Product Hunt launches**: Auto-add when competitor ships on PH
-- **App store monitoring**: iOS/Android app updates, rating changes
-- **Job postings**: Track hiring (eng roles = product expansion signals)
-- **LLM-powered summaries**: GPT-4 analysis of change significance
-- **Slack/Discord webhooks**: Push alerts to team channels
-- **Browser automation**: Handle JS-heavy sites that web_fetch can't parse
-
----
-
-**Know what they're shipping. Before their customers do.**
+## 差异分析逻辑  
+
+`diff.sh`采用智能分析方法：  
+- 过滤掉时间戳、会话ID、缓存破坏性链接（如`?v=123`）、动态广告内容、社交分享计数、更新日期等无关信息。  
+- 突出重要变化：新添加的产品部分或功能、价格/计划变更、导航栏的增减、新的博客文章或案例研究、较长的文本添加（超过200字）。  
+
+**变化评分标准：**  
+- **轻微变化**：内容变化小于5%，属于外观性更新，不触发警报。  
+- **中等变化**：内容变化5-15%，如果是重要竞争对手，则触发警报。  
+- **重大变化**：内容变化超过15%，或价格更新、新增产品部分，必定触发警报。  
+- **紧急变化**：包含明确的关键字（如“发布”、“宣布”、“现已上线”），触发紧急警报。  
+
+## 报警机制  
+
+当检测到重要变化时，`report.sh`会生成相应的摘要。  
+
+警报系统遵循冷却时间规则，避免因琐碎变化而频繁发送通知。  
+
+## 添加竞争对手的方法  
+
+- **交互式添加**：……  
+- **批量添加**：……  
+
+## 竞争对手管理方法：……  
+
+## 数据文件存储：……  
+
+## 定时任务设置  
+
+- **推荐使用cron**（适用于生产环境）。  
+- **Heartbeat**：用于集成监控。  
+
+## 与其他工具的集成  
+
+警报可以通过以下方式发送：  
+- **Telegram/Discord/Slack**：直接发送摘要信息。  
+- **文件**：将报告保存在工作区或下次交流时提及。  
+- **Heartbeat**：在系统检查时自动显示（例如：“Acme Corp更新了价格”。  
+
+## 使用建议：  
+
+- **谨慎设置监控级别**：  
+  - 只有2到3个竞争对手应设置为“直接竞争对手”（需要较高程度的监控）。  
+  - 对于参与30%以上业务合作的竞争对手，使用“重要竞争对手”级别。  
+  - 将“相关公司”设置为潜在威胁或快速发展的初创企业。  
+  - “相关公司”主要用于获取市场动态，而非详细战术情报。  
+
+- **关注关键变化**：  
+  - 您无需每天阅读所有竞争对手的网站内容。  
+  - 关键变化（新功能、价格变动、信息更新）才是重点。  
+  - 在指定时间窗口过后，可删除旧的数据快照。  
+
+- **结合人工情报**：  
+  - Competitor Watch自动处理繁琐的网址检查工作。  
+  - 您仍需关注销售电话记录、客户反馈和市场分析。  
+  - 利用该工具确保不会错过任何公开的信息。  
+
+- **避免过度警报**：  
+  - 根据不同级别设置合适的警报阈值（直接竞争对手的轻微变化可忽略；相关公司只需在重大变化时才触发警报）。  
+  - 设置冷却时间（同一页面在6小时内不重复警报）。  
+  - 低级别竞争对手的警报频率应低于实时通知的频率。  
+
+## 使用场景：  
+
+- **产品团队**：  
+  - 跟踪新功能发布，验证产品路线图的优先级。  
+  - 监控文档和变更日志，了解竞争对手的能力。  
+  - 关注集成信息，了解他们的生态系统动态。  
+
+- **销售/销售团队**：  
+  - 价格变动时更新销售资料和应对策略。  
+  - 新的案例研究有助于了解竞争对手的市场定位和成功案例。  
+  - 关注信息更新，调整竞争策略。  
+
+- **市场团队**：  
+  - 监控内容更新频率，评估发布节奏。  
+  - 发现市场趋势的变化。  
+  - 了解消费者的反馈。  
+
+- **创始人**：  
+  - 无需每天手动检查，即可全面了解市场动态。  
+  - 对重大变化（新产品发布、战略调整、融资等）及时做出战略反应。  
+  - 专注于产品开发，而非过度关注竞争对手。  
+
+## 隐私与伦理规范：  
+
+- 仅监控公开可访问的网站内容。  
+- 遵守robots.txt文件和请求速率限制。  
+- 不抓取需要认证或付费的内容。  
+- 不进行身份冒充或数据欺骗。  
+- 仅用于收集竞争情报，而非商业间谍活动。  
+
+## 未来改进方向：  
+- **扩展社交媒体监控**：监控Twitter和LinkedIn上的动态（而不仅仅是个人资料）。  
+- **GitHub监控**：跟踪公开仓库的提交、发布说明和贡献者活动。  
+- **自动添加新功能**：当竞争对手发布新功能时自动更新监控列表。  
+- **应用商店监控**：监控iOS/Android应用更新和评分变化。  
+- **招聘信息监控**：跟踪招聘信息（招聘岗位的变化可能预示产品扩展）。  
+- **利用AI分析**：使用GPT-4分析变化的重要性。  
+- **集成通知渠道**：通过Slack/Discord将警报推送到团队频道。  
+- **处理复杂网站**：支持解析JavaScript较多的网站。  
+
+**提前了解竞争对手的动态，比他们的客户更快。**

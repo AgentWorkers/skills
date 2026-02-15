@@ -1,22 +1,22 @@
 ---
 name: x-twitter
-description: X (Twitter) API client for searching tweets, retrieving article content, and fetching trending topics. Supports both Bearer Token (app-only) and OAuth 2.0 authentication.
+description: X（Twitter）API客户端，用于搜索推文、获取文章内容以及检索热门话题。支持Bearer Token（仅限应用程序使用）和OAuth 2.0两种认证方式。
 homepage: https://developer.x.com
 metadata: { "openclaw": { "emoji": "𝕏", "requires": { "bins": ["python3"] }, "env": ["X_BEARER_TOKEN"], "primaryEnv": "X_BEARER_TOKEN" } }
 ---
 
-# X (Twitter) API
+# X（Twitter）API
 
-Search tweets, retrieve article content, and fetch trending topics from X (Twitter).
+用于搜索推文、获取文章内容以及从X（Twitter）获取热门话题。
 
-## Features
+## 功能
 
-- **Search Tweets**: Search recent tweets (last 7 days) with advanced query operators
-- **Get Article Content**: Retrieve tweet and article details by URL or ID
-- **Trending Topics**: Fetch trending topics (requires Basic tier or higher)
-- **User Info**: Get user profile and tweet history
+- **搜索推文**：使用高级查询操作符搜索最近7天内的推文。
+- **获取文章内容**：通过URL或ID检索推文和文章的详细信息。
+- **热门话题**：获取热门话题（需要Basic级别或更高级别的账户）。
+- **用户信息**：获取用户资料和推文历史记录。
 
-## Setup
+## 设置
 
 ```bash
 # Set environment variable
@@ -26,15 +26,15 @@ export X_BEARER_TOKEN="your_bearer_token_here"
 X_BEARER_TOKEN="your_token" python3 scripts/search_tweets.py
 ```
 
-**Get API Token:**
-1. Visit https://developer.x.com
-2. Create a project and app
-3. Generate Bearer Token in "Keys and Tokens" tab
-4. Set the environment variable
+**获取API令牌：**
+1. 访问 https://developer.x.com
+2. 创建一个项目和应用程序。
+3. 在“Keys and Tokens”选项卡中生成Bearer令牌。
+4. 设置环境变量。
 
-## Usage
+## 使用方法
 
-### Search Tweets
+### 搜索推文
 ```bash
 # Basic search
 python3 scripts/search_tweets.py --query "AI OR 人工智能"
@@ -49,14 +49,14 @@ python3 scripts/search_tweets.py --query "from:elonmusk" --count 5
 python3 scripts/search_tweets.py --query "#Crypto OR #Blockchain"
 ```
 
-**Query Operators:**
-- `-is:retweet` - Original tweets only
-- `lang:zh` - Chinese language
-- `from:username` - Tweets from specific user
-- `has:links` - Tweets with links
-- `is:verified` - Verified users only
+**查询操作符：**
+- `-is:retweet`：仅显示原创推文。
+- `lang:zh`：中文语言的推文。
+- `from:username`：特定用户的推文。
+- `has:links`：包含链接的推文。
+- `is:verified`：仅显示已认证用户的推文。
 
-### Get Article/Tweet Content
+### 获取文章/推文内容
 ```bash
 # By URL (article or tweet)
 python3 scripts/get_article.py --url "https://x.com/username/article/123456789"
@@ -65,7 +65,7 @@ python3 scripts/get_article.py --url "https://x.com/username/article/123456789"
 python3 scripts/get_article.py --id "123456789"
 ```
 
-### Get Trending Topics
+### 获取热门话题
 ```bash
 # Global trends
 python3 scripts/get_trends.py
@@ -75,47 +75,47 @@ python3 scripts/get_trends.py --woeid 1  # Global
 python3 scripts/get_trends.py --woeid 23424977  # USA
 ```
 
-## API Limits
+## API限制
 
-| Tier | Cost | Tweets/Month | Notes |
+| 级别 | 费用 | 每月推文数量 | 备注 |
 |------|------|--------------|-------|
-| Free | $0 | 500 | 1 request/day, testing only |
-| Basic | $200 | 500,000 | Minimum production tier |
-| Pro | $5,000 | 2,000,000+ | Real-time streaming |
+| 免费 | $0 | 500 | 每天1次请求，仅限测试使用 |
+| Basic | $200 | 500,000 | 最低生产级别 |
+| Pro | $5,000 | 2,000,000+ | 支持实时流式数据 |
 
-**Free tier restrictions:**
-- 500 tweets/month (~16-17/day)
-- 1 request/day per endpoint
-- No publishing/liking
-- Suitable for development testing only
+**免费级别限制：**
+- 每月500条推文（约每天16-17条）。
+- 每个端点每天1次请求。
+- 不支持发布或点赞功能。
+- 仅适用于开发测试。
 
-## Output Formats
+## 输出格式
 
-- **JSON**: Structured data with all fields
-- **Pretty**: Human-readable formatted text
-- **Save**: Optional file export (JSON/Markdown)
+- **JSON**：包含所有字段的结构化数据。
+- **Pretty**：人类可读的格式化文本。
+- **Save**：可选的文件导出格式（JSON/Markdown）。
 
-## Error Handling
+## 错误处理
 
-The scripts automatically handle:
-- Rate limiting (429 errors)
-- Invalid tokens (401 errors)
-- Network errors with retry logic
-- Missing required parameters
+脚本自动处理以下错误：
+- 速率限制（429错误）
+- 无效令牌（401错误）
+- 网络错误（包含重试逻辑）
+- 缺少必要参数
 
-## Examples
+## 示例
 
-### Example 1: Search AI tweets
+### 示例1：搜索与AI相关的推文
 ```bash
 python3 scripts/search_tweets.py --query "AI OR 人工智能 -is:retweet" --count 5 --output pretty
 ```
 
-### Example 2: Monitor specific user
+### 示例2：监控特定用户
 ```bash
 python3 scripts/search_tweets.py --query "from:username" --count 10 --save output.json
 ```
 
-### Example 3: Get article and analyze
+### 示例3：获取文章并进行分析
 ```bash
 python3 scripts/get_article.py --url "https://x.com/user/article/id" --output markdown --save article.md
 ```

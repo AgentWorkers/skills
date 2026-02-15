@@ -1,100 +1,98 @@
 ---
 name: Image Editing
-description: Edit images with AI inpainting, outpainting, background removal, upscaling, and restoration tools.
+description: 使用人工智能技术对图像进行修复、背景去除、放大以及恢复等操作。
 metadata: {"clawdbot":{"emoji":"✂️","os":["linux","darwin","win32"]}}
 ---
 
-# AI Image Editing
+# 人工智能图像编辑
 
-Help users edit and enhance images with AI tools.
+帮助用户使用人工智能工具编辑和优化图像。
 
-**Rules:**
-- Ask what edit they need: remove objects, extend canvas, upscale, fix faces, change background
-- Check technique files: `inpainting.md`, `outpainting.md`, `background-removal.md`, `upscaling.md`, `restoration.md`, `style-transfer.md`
-- Check `tools.md` for provider-specific setup
-- Always preserve original file before editing
+**操作规则：**
+- 询问用户需要进行的编辑操作：移除对象、扩展图像边界、放大图像、修复面部瑕疵、更换背景等。
+- 查阅相关技术文档：`inpainting.md`、`outpainting.md`、`background-removal.md`、`upscaling.md`、`restoration.md`、`style-transfer.md`。
+- 查看 `tools.md` 以获取特定工具的设置指南。
+- 编辑前务必保留原始文件。
 
 ---
 
-## Edit Type Selection
+## 编辑类型选择
 
-| Task | Technique | Best Tools |
+| 编辑任务 | 使用的技术 | 推荐工具 |
 |------|-----------|------------|
-| Remove objects/people | Inpainting | DALL-E, SD Inpaint, IOPaint |
-| Extend image borders | Outpainting | DALL-E, SD Outpaint, Photoshop AI |
-| Remove background | Segmentation | remove.bg, ClipDrop, Photoroom |
-| Increase resolution | Upscaling | Real-ESRGAN, Topaz, Magnific |
-| Fix blurry faces | Restoration | GFPGAN, CodeFormer |
-| Change style | Style Transfer | SD img2img, ControlNet |
-| Relight scene | Relighting | ClipDrop, IC-Light |
+| 移除对象/人物 | 图像修复（Inpainting） | DALL-E、SD Inpaint、IOPaint |
+| 扩展图像边界 | 图像填充（Outpainting） | DALL-E、SD Outpaint、Photoshop AI |
+| 移除背景 | 图像分割（Segmentation） | remove.bg、ClipDrop、Photoroom |
+| 提高分辨率 | 图像放大（Upscaling） | Real-ESRGAN、Topaz、Magnific |
+| 修复模糊的面部 | 图像修复（Restoration） | GFPGAN、CodeFormer |
+| 更改图像风格 | 风格迁移（Style Transfer） | SD img2img、ControlNet |
+| 重新调整场景光照 | 光照调整（Relighting） | ClipDrop、IC-Light |
 
 ---
 
-## Workflow Principles
+## 工作流程原则
 
-- **Non-destructive editing** — keep originals, save edits as new files
-- **Work in layers** — combine multiple edits sequentially
-- **Match resolution** — edit at original resolution, upscale last
-- **Mask precision matters** — better masks = better results
-- **Iterate on masks** — refine edges for seamless blends
-
----
-
-## Masking Basics
-
-Masks define edit regions:
-- **White** = edit this area
-- **Black** = preserve this area
-- **Gray** = partial blend (feathering)
-
-**Mask creation methods:**
-- Manual brush in editor
-- SAM (Segment Anything) for auto-selection
-- Color/luminance keying
-- Edge detection
+- **非破坏性编辑**：保留原始文件，将编辑结果保存为新的文件。
+- **分层编辑**：按顺序组合多个编辑操作。
+- **保持分辨率一致**：先在原始分辨率下进行编辑，最后再进行放大处理。
+- **精确的遮罩处理**：更精确的遮罩效果更佳。
+- **反复调整遮罩**：微调遮罩边缘以实现无缝融合。
 
 ---
 
-## Common Workflows
+## 遮罩基础
 
-### Object Removal
-1. Create mask over unwanted object
-2. Run inpainting with context prompt (optional)
-3. Blend edges if needed
-4. Touch up artifacts
+遮罩用于定义需要编辑的区域：
+- **白色**：表示需要编辑的区域。
+- **黑色**：表示需要保留的区域。
+- **灰色**：表示部分混合（模糊处理）。
 
-### Background Replacement
-1. Remove background (get transparent PNG)
-2. Place on new background
-3. Match lighting/color
-4. Add shadows for realism
-
-### Enhancement Pipeline
-1. Restore faces (if present)
-2. Remove artifacts/noise
-3. Color correct
-4. Upscale to final resolution
+**遮罩创建方法：**
+- 在编辑器中手动绘制遮罩。
+- 使用 SAM（Segment Anything）工具自动选择区域。
+- 基于颜色/亮度进行选择。
+- 利用边缘检测技术生成遮罩。
 
 ---
 
-## Quality Tips
+## 常见工作流程
 
-- **Feather masks** — hard edges look artificial
-- **Context prompts help** — describe what should fill the area
-- **Multiple passes** — large edits may need iterative refinement
-- **Check edges** — zoom in to verify blend quality
-- **Match grain/noise** — add film grain to match original
+### 对象移除
+1. 在不需要的对象上创建遮罩。
+2. 使用图像修复工具进行修复（可选添加上下文提示）。
+3. 如有需要，对边缘进行微调。
+4. 修复修复过程中产生的瑕疵。
+
+### 背景替换
+1. 移除背景（生成透明 PNG 图像）。
+2. 将图像放置在新背景上。
+3. 调整光照和颜色以匹配新背景。
+4. 添加阴影以增强真实感。
+
+### 图像优化流程
+1. 修复图像中的面部瑕疵。
+2. 去除修复过程中产生的瑕疵和噪声。
+3. 调整颜色。
+4. 将图像放大到最终所需的分辨率。
 
 ---
 
-### Current Setup
-<!-- Tool: status -->
-
-### Projects
-<!-- What they're editing -->
-
-### Preferences
-<!-- Preferred tools, quality settings -->
+## 质量优化技巧
+- **使用柔和的遮罩边缘**：硬边缘会让编辑效果显得不自然。
+- **提供上下文提示**：描述需要填充的区域内容。
+- **多次处理**：大规模的编辑可能需要多次迭代优化。
+- **仔细检查边缘**：放大图像以验证融合效果。
+- **保持纹理一致性**：添加类似原始图像的纹理效果。
 
 ---
-*Check technique files for detailed workflows.*
+
+### 当前工具状态
+
+### 正在参与的项目
+### 用户正在编辑的内容
+### 用户的偏好设置
+（请根据实际情况填写具体的工具和参数设置）
+
+---
+
+*请查阅相关技术文档以获取更详细的工作流程信息。*

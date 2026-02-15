@@ -1,363 +1,203 @@
 ---
 name: outlook-delegate
-description: Read, search, and manage Outlook emails and calendar via Microsoft Graph API with delegate support. Supports sending as self, as owner (Send As), and on behalf of owner (Send on Behalf). Modified for delegate access from https://clawhub.ai/jotamed/outlook
+description: 通过 Microsoft Graph API，您可以阅读、搜索和管理 Outlook 邮件及日历，并支持代理访问功能。支持以“自己”的身份发送邮件、以“所有者”的身份发送邮件（Send As），以及代表所有者发送邮件（Send on Behalf）。该功能已针对代理访问进行了修改，详情请参考：https://clawhub.ai/jotamed/outlook
 version: 1.1.0
 author: 87marc
 ---
 
-# Outlook Delegate Skill
+# Outlook 代理技能
 
-Access another user's Outlook/Microsoft 365 email and calendar as a **delegate** via Microsoft Graph API. Supports three sending modes: as yourself, as the owner, or on behalf of the owner.
+通过 Microsoft Graph API，以代理身份访问其他用户的 Outlook/Microsoft 365 邮箱和日历。支持三种发送模式：以代理自身身份发送、以所有者身份发送或代表所有者发送。
 
-## Delegate Architecture
+## 代理架构
 
-This skill is designed for scenarios where:
-- **Your AI assistant** (the delegate) has its own Microsoft 365 account
-- **The owner** has granted the assistant delegate access to their mailbox/calendar
-- The assistant can send emails as itself, as the owner, or on behalf of the owner
+此技能适用于以下场景：
+- **您的 AI 助手**（即代理）拥有自己的 Microsoft 365 账户；
+- **所有者**已授予助手对其邮箱/日历的代理访问权限；
+- 助手可以以自身身份、所有者身份或代表所有者身份发送邮件。
 
-### Sending Modes Explained
+### 发送模式说明
 
-All three modes use the same Graph API call (`/users/{delegate}/sendMail` with the `from` field set). **The difference between Send As and Send on Behalf is determined entirely by which Exchange permission is granted**, not by the API endpoint.
+三种模式都使用相同的 Graph API 调用（`/users/{delegate}/sendMail`），并设置 `from` 字段。**“以代理自身身份发送”（Send As）和“代表所有者发送”（Send On Behalf）之间的区别完全取决于 Exchange 授予的权限，而非 API 端点**。
 
-| Mode | Command | Exchange Permission Required | `from` field | `sender` field | What Recipient Sees |
+| 模式 | 命令 | 所需 Exchange 权限 | `from` 字段 | `sender` 字段 | 收件人看到的内容 |
 |------|---------|------------------------------|--------------|----------------|---------------------|
-| As Self | `send` | (none extra) | Delegate | Delegate | "From: Assistant" |
-| As Owner (Send As) | `send-as` | **SendAs only** | Owner | Owner | "From: Owner" |
-| On Behalf Of | `send-behalf` | **SendOnBehalf only** | Owner | Delegate | "From: Assistant on behalf of Owner" |
+| 以代理自身身份发送 | `send` | （无需额外权限） | 代理 | 代理 | “发件人：助手” |
+| 以所有者身份发送（Send As） | `send-as` | **仅需要 SendAs 权限** | 所有者 | 所有者 | “发件人：所有者” |
+| 代表所有者发送 | `send-behalf` | **仅需要 SendOnBehalf 权限** | 所有者 | 代理 | “发件人：助手代表所有者” |
 
-> **⚠️ CRITICAL:** Do NOT grant both SendAs and SendOnBehalf permissions. If both are granted, Exchange always uses SendAs, and the "on behalf of" indication will never appear. Choose ONE based on your desired behavior.
+> **⚠️ 重要提示：** 请不要同时授予 SendAs 和 SendOnBehalf 权限。如果同时授予这两种权限，Exchange 会始终使用 SendAs，且“代表所有者”这一提示将不会显示。请根据您的需求选择其中一种权限。
 
-### How It Works Under the Hood
+### 内部工作原理
 
-When you call `send-as` or `send-behalf`, the skill makes the same API call: it sends via the delegate's endpoint with the owner in the `from` field. Microsoft Graph automatically sets the `sender` property to the authenticated user (the delegate). Whether the recipient sees "on behalf of" depends solely on the Exchange permission:
+当您调用 `send-as` 或 `send-behalf` 时，该技能会通过代理的端点发送邮件，并在 `from` 字段中设置所有者信息。Microsoft Graph 会自动将 `sender` 属性设置为已认证的用户（即助手）。收件人是否看到“代表所有者”这一提示，完全取决于 Exchange 的权限设置：
+- **具有 SendAs 权限** → Graph 会将 `sender` 和 `from` 都设置为所有者。此时不会显示代理信息。
+- **具有 SendOnBehalf 权限** → Graph 会将 `sender` 设置为助手，`from` 设置为所有者。此时收件人会看到“代表所有者”这一提示。
 
-- **SendAs permission** → Graph sets both `sender` and `from` to the owner. No indication of delegation.
-- **SendOnBehalf permission** → Graph keeps `sender` as the delegate and `from` as the owner. Recipient sees "on behalf of."
+## 配置
 
-## Configuration
-
-### Config File: `~/.outlook-mcp/config.json`
+### 配置文件：`~/.outlook-mcp/config.json`
 
 ```json
 {
-  "client_id": "your-app-client-id",
-  "client_secret": "your-app-client-secret",
-  "tenant_id": "your-tenant-id",
-  "owner_email": "owner@yourdomain.com",
-  "owner_name": "Owner Display Name",
-  "delegate_email": "assistant@yourdomain.com",
-  "delegate_name": "AI Assistant",
-  "timezone": "America/New_York"
+  "client_id": "Microsoft Entra ID 应用注册客户端 ID",
+  "client_secret": "Microsoft Entra ID 应用注册客户端密钥",
+  "tenant_id": "您的 Microsoft Entra 租户 ID" (设置时会自动检测),
+  "owner_email": "助手作为代理访问的邮箱地址",
+  "owner_name": "所有者的显示名称（用于 `from` 字段）",
+  "delegate_email": "助手自己的电子邮件地址",
+  "delegate_name": "助手的显示名称",
+  "timezone": "日历操作的 IANA 时区（例如：America/New_York, Europe/London, UTC)"
 }
 ```
 
-| Field | Description |
-|-------|-------------|
-| `client_id` | Microsoft Entra ID App Registration client ID |
-| `client_secret` | Microsoft Entra ID App Registration client secret |
-| `tenant_id` | Your Microsoft Entra tenant ID (auto-detected during setup) |
-| `owner_email` | The mailbox the assistant accesses as delegate |
-| `owner_name` | Display name for the owner (used in From field) |
-| `delegate_email` | The assistant's own email address |
-| `delegate_name` | Display name for the assistant |
-| `timezone` | IANA timezone for calendar operations (e.g., `America/New_York`, `Europe/London`, `UTC`) |
+## 设置要求
 
-## Setup Requirements
+### 1. Microsoft Entra ID 应用注册
 
-### 1. Microsoft Entra ID App Registration
+在 Azure 门户中创建应用注册：
+1. 访问 portal.azure.com → Microsoft Entra ID → 应用注册
+2. 新建注册：
+   - 名称："AI Assistant Mail Access"
+   - 支持的账户类型：**“仅此组织目录内的账户”**（单租户）
+   - 重定向 URI：`http://localhost:8400/callback`
+3. 记下 **应用程序（client）ID** 和 **目录（tenant）ID**。
 
-Create an app registration in Azure Portal:
+### 2. 配置 API 权限
 
-1. Go to portal.azure.com → Microsoft Entra ID → App registrations
-2. New registration:
-   - Name: "AI Assistant Mail Access"
-   - Supported account types: **"Accounts in this organizational directory only"** (single tenant)
-   - Redirect URI: `http://localhost:8400/callback`
-3. Note the **Application (client) ID** and **Directory (tenant) ID**
+在您的应用设置中 → API 权限 → 添加权限 → Microsoft Graph → 代理权限：
+- **所有模式都需要**：
+  - `Mail.ReadWrite` — 读取/写入助手自己的邮件
+  - `Mail.Send` — 以助手身份发送邮件
+  - `Calendars.ReadWrite` — 读取/写入日历
+  - `User.Read` — 读取自己的个人资料
+  - `offline_access` — 刷新令牌
 
-### 2. Configure API Permissions
+- **代理访问需要**：
+  - `Mail.ReadWrite.Shared` — 读取/写入共享邮箱
+  - `Mail.Send.Shared` — 代表他人发送邮件
+  - `Calendars.ReadWrite.Shared` — 读取/写入共享日历
 
-In your app → API permissions → Add a permission → Microsoft Graph → Delegated permissions:
+点击 **“授予管理员同意”**（需要管理员权限）。
 
-**Required for all modes:**
-- `Mail.ReadWrite` — Read/write assistant's own mail
-- `Mail.Send` — Send mail as assistant
-- `Calendars.ReadWrite` — Read/write calendars
-- `User.Read` — Read own profile
-- `offline_access` — Refresh tokens
+### 3. 创建客户端密钥
 
-**Required for delegate access:**
-- `Mail.ReadWrite.Shared` — Read/write shared mailboxes
-- `Mail.Send.Shared` — Send on behalf of others
-- `Calendars.ReadWrite.Shared` — Read/write shared calendars
+1. 在证书和密钥设置中创建新的客户端密钥
+2. 描述："AI Assistant"
+3. 设置有效期
+4. **立即复制密钥值**（仅显示一次）
 
-Click **"Grant admin consent"** (requires admin).
+### 4. 授予 Exchange 代理权限
 
-### 3. Create Client Secret
+所有者（或管理员）必须通过 PowerShell 授予助手相应的权限。
 
-1. Certificates & secrets → New client secret
-2. Description: "AI Assistant"
-3. Expiration: Choose appropriate duration
-4. **Copy the Value immediately** (shown only once)
+**首先选择您的发送模式**，然后授予相应的权限：
 
-### 4. Grant Exchange Delegate Permissions
+**然后选择以下其中一种权限——切勿同时授予两种权限：**
 
-The owner (or an admin) must grant the assistant access via PowerShell.
+**验证权限：**
 
-**Choose your sending mode FIRST**, then grant the appropriate permissions:
+### 权限概览
 
-```powershell
-# Connect to Exchange Online
-Install-Module -Name ExchangeOnlineManagement
-Connect-ExchangeOnline -UserPrincipalName admin@yourdomain.com
-
-# REQUIRED: Full Mailbox Access (for reading owner's mail)
-Add-MailboxPermission -Identity "owner@yourdomain.com" `
-    -User "assistant@yourdomain.com" `
-    -AccessRights FullAccess `
-    -InheritanceType All `
-    -AutoMapping $false
-
-# REQUIRED: Calendar Delegate Access
-Add-MailboxFolderPermission -Identity "owner@yourdomain.com:\Calendar" `
-    -User "assistant@yourdomain.com" `
-    -AccessRights Editor `
-    -SharingPermissionFlags Delegate
-```
-
-**Then choose ONE of the following — do NOT grant both:**
-
-```powershell
-# OPTION A: Send As (emails appear directly from owner, no indication)
-Add-RecipientPermission -Identity "owner@yourdomain.com" `
-    -Trustee "assistant@yourdomain.com" `
-    -AccessRights SendAs `
-    -Confirm:$false
-```
-
-```powershell
-# OPTION B: Send on Behalf (emails show "assistant on behalf of owner")
-Set-Mailbox -Identity "owner@yourdomain.com" `
-    -GrantSendOnBehalfTo "assistant@yourdomain.com"
-```
-
-**Verify permissions:**
-```powershell
-# Check mailbox permissions
-Get-MailboxPermission -Identity "owner@yourdomain.com" | Where-Object {$_.User -like "*assistant*"}
-
-# Check Send As
-Get-RecipientPermission -Identity "owner@yourdomain.com" | Where-Object {$_.Trustee -like "*assistant*"}
-
-# Check Send on Behalf
-Get-Mailbox "owner@yourdomain.com" | Select-Object GrantSendOnBehalfTo
-
-# Check Calendar permissions
-Get-MailboxFolderPermission -Identity "owner@yourdomain.com:\Calendar"
-```
-
-### 5. Permissions Summary
-
-| Action | Graph Permission | Exchange Permission |
+| 功能 | Graph 权限 | Exchange 权限 |
 |--------|-----------------|---------------------|
-| Read owner's mail | `Mail.ReadWrite.Shared` | FullAccess |
-| Send as self | `Mail.Send` | (none needed) |
-| Send as owner | `Mail.Send.Shared` | SendAs **only** |
-| Send on behalf of owner | `Mail.Send.Shared` | SendOnBehalf **only** |
-| Read/write owner's calendar | `Calendars.ReadWrite.Shared` | Editor |
+| 读取所有者的邮件 | `Mail.ReadWrite.Shared` | FullAccess |
+| 以代理自身身份发送 | `Mail.Send` | （无需额外权限） |
+| 以所有者身份发送 | `Mail.Send.Shared` | 仅需要 SendAs 权限 |
+| 代表所有者发送 | `Mail.Send.Shared` | 仅需要 SendOnBehalf 权限 |
+| 读取/写入所有者的日历 | `Calendars.ReadWrite.Shared` | Editor |
 
-## Usage
+## 使用方法
 
-### Token Management
-```bash
-./scripts/outlook-token.sh refresh   # Refresh expired token
-./scripts/outlook-token.sh test      # Test connection to both accounts
-./scripts/outlook-token.sh get       # Print access token
-./scripts/outlook-token.sh info      # Show configuration info
-```
+### 令牌管理
 
-### Reading Owner's Emails
-```bash
-./scripts/outlook-mail.sh inbox [count]           # Owner's inbox
-./scripts/outlook-mail.sh unread [count]          # Owner's unread
-./scripts/outlook-mail.sh search "query" [count]  # Search owner's mail
-./scripts/outlook-mail.sh from <email> [count]    # Owner's mail from sender
-./scripts/outlook-mail.sh read <id>               # Read email content
-./scripts/outlook-mail.sh attachments <id>        # List attachments
-```
+### 读取所有者的邮件
 
-### Managing Owner's Emails
-```bash
-./scripts/outlook-mail.sh mark-read <id>          # Mark as read
-./scripts/outlook-mail.sh mark-unread <id>        # Mark as unread
-./scripts/outlook-mail.sh flag <id>               # Flag as important
-./scripts/outlook-mail.sh unflag <id>             # Remove flag
-./scripts/outlook-mail.sh delete <id>             # Move to trash
-./scripts/outlook-mail.sh archive <id>            # Move to archive
-./scripts/outlook-mail.sh move <id> <folder>      # Move to folder
-```
+### 管理所有者的邮件
 
-### Sending Emails
+### 发送邮件
 
-**As Assistant (self):**
-```bash
-./scripts/outlook-mail.sh send <to> <subject> <body>
-./scripts/outlook-mail.sh reply <id> "body"
-./scripts/outlook-mail.sh forward <id> <to> [message]
-```
-Recipient sees: **"From: AI Assistant <assistant@domain.com>"**
+**以代理自身身份发送：**
+收件人看到的内容：**“发件人：AI Assistant <assistant@domain.com>”
 
-**As Owner (Send As — requires SendAs permission, no indication):**
-```bash
-./scripts/outlook-mail.sh send-as <to> <subject> <body>
-./scripts/outlook-mail.sh reply-as <id> "body"
-./scripts/outlook-mail.sh forward-as <id> <to> [message]
-```
-Recipient sees: **"From: Owner <owner@domain.com>"**
+**以所有者身份发送（需要 SendAs 权限）：**
+收件人看到的内容：**“发件人：所有者 <owner@domain.com>”
 
-**On Behalf of Owner (requires SendOnBehalf permission):**
-```bash
-./scripts/outlook-mail.sh send-behalf <to> <subject> <body>
-./scripts/outlook-mail.sh reply-behalf <id> "body"
-./scripts/outlook-mail.sh forward-behalf <id> <to> [message]
-```
-Recipient sees: **"From: AI Assistant on behalf of Owner <owner@domain.com>"**
+**代表所有者发送（需要 SendOnBehalf 权限）：**
+收件人看到的内容：**“发件人：AI Assistant 代表所有者 <owner@domain.com>”
 
-### Drafts
-```bash
-./scripts/outlook-mail.sh draft <to> <subject> <body>  # Create draft in owner's mailbox
-./scripts/outlook-mail.sh drafts [count]               # List owner's drafts
-./scripts/outlook-mail.sh send-draft <id>              # Send draft as self
-./scripts/outlook-mail.sh send-draft-as <id>           # Send draft as owner
-./scripts/outlook-mail.sh send-draft-behalf <id>       # Send draft on behalf of owner
-```
+### 草稿
 
-### Folders & Stats
-```bash
-./scripts/outlook-mail.sh folders                 # List mail folders
-./scripts/outlook-mail.sh stats                   # Inbox statistics
-./scripts/outlook-mail.sh whoami                  # Show delegate info
-```
+### 文件夹和日历操作
 
-### Calendar
+### 查看日历事件：
 
-**Viewing Events:**
-```bash
-./scripts/outlook-calendar.sh events [count]      # Owner's upcoming events (future only)
-./scripts/outlook-calendar.sh today               # Today's events (timezone-aware)
-./scripts/outlook-calendar.sh week                # This week's events
-./scripts/outlook-calendar.sh read <id>           # Event details
-./scripts/outlook-calendar.sh calendars           # List all calendars
-./scripts/outlook-calendar.sh free <start> <end>  # Check availability
-```
+### 创建日历事件：
+日期格式：`YYYY-MM-DDTHH:MM`（例如：`2026-01-26T10:00`
 
-**Creating Events:**
-```bash
-./scripts/outlook-calendar.sh create <subject> <start> <end> [location]
-./scripts/outlook-calendar.sh quick <subject> [time]
-```
-Date format: `YYYY-MM-DDTHH:MM` (e.g., `2026-01-26T10:00`)
+### 管理日历事件：
+字段：`subject`（主题）、`location`（地点）、`start`（开始时间）、`end`（结束时间）
 
-**Managing Events:**
-```bash
-./scripts/outlook-calendar.sh update <id> <field> <value>
-./scripts/outlook-calendar.sh delete <id>
-```
-Fields: `subject`, `location`, `start`, `end`
+## 发送邮件的行为
 
-## Sent Items Behavior
+发送邮件的副本保存位置取决于使用的 API 端点，而非发送模式：
 
-Where the sent copy is saved depends on the endpoint used, not the sending mode:
-
-| Command | Endpoint Used | Saved To |
+| 命令 | 使用的 API 端点 | 保存位置 |
 |---------|--------------|----------|
-| `send` (as self) | `/users/{delegate}/sendMail` | Delegate's Sent Items |
-| `send-as` | `/users/{delegate}/sendMail` | Delegate's Sent Items * |
-| `send-behalf` | `/users/{delegate}/sendMail` | Delegate's Sent Items * |
-| All draft sends | `/users/{owner}/messages/{id}/send` | Owner's Sent Items |
+| `send`（以代理自身身份发送） | `/users/{delegate}/sendMail` | 代理的已发送邮件文件夹 |
+| `send-as` | `/users/{delegate}/sendMail` | 代理的已发送邮件文件夹 |
+| `send-behalf` | `/users/{delegate}/sendMail` | 代理的已发送邮件文件夹 |
+| 所有草稿的发送 | `/users/{owner}/messages/{id}/send` | 所有者的已发送邮件文件夹 |
 
-\* Administrators can configure Exchange to also save a copy in the owner's Sent Items using:
-```powershell
-Set-Mailbox -Identity "owner@yourdomain.com" -MessageCopyForSentAsEnabled $true -MessageCopyForSendOnBehalfEnabled $true
-```
+**管理员可以通过以下方式配置 Exchange，使副本也保存在所有者的已发送邮件文件夹中：**
 
-## Troubleshooting
+## 故障排除
 
-**"Access denied" or "403 Forbidden"**
-→ Check that the assistant has MailboxPermission on the owner's mailbox
+- **“访问被拒绝”或“403 禁止访问”**：检查助手是否具有对所有者邮箱的 `MailboxPermission` 权限。
+- **“ErrorSendAsDenied”**：可能是因为缺少 SendAs 或 SendOnBehalf 权限。请运行上述 PowerShell 命令。
+- **邮件未显示“代表所有者”**：可能是同时授予了 SendAs 和 SendOnBehalf 权限。在这种情况下，Exchange 会始终使用 SendAs，导致“代表所有者”提示无法显示。如果需要显示该提示，请取消 SendAs 权限。
+- **“找不到邮箱”**：请确认 `config.json` 中的 `owner_email` 是否正确。
+- **“AADSTS90002: 租户未找到”**：请检查 `config.json` 中的 `tenant_id` 是否与您的 Microsoft Entra 租户匹配。
+- **令牌过期**：运行 `outlook-token.sh refresh` 命令刷新令牌。
+- **日历时区设置错误**：请更新 `config.json` 中的 `timezone`（使用 IANA 格式，例如：`America/New_York`）。
 
-**"ErrorSendAsDenied"**
-→ Missing SendAs or SendOnBehalf permission. Run the PowerShell commands above.
+## 安全注意事项
 
-**Emails don't show "on behalf of"**
-→ You may have both SendAs and SendOnBehalf granted. When both exist, Exchange always uses SendAs (which hides the delegate). Remove the SendAs permission if you want "on behalf of" to appear.
+1. **凭证保护**：`~/.outlook-mcp/` 目录的权限设置为 700，凭证文件的权限设置为 600。
+2. **防止信息泄露**：令牌刷新和 Exchange 操作通过标准输入（stdin）传递凭证，不会通过命令行参数。
+3. **输入验证**：所有用户输入都会通过 `jq` 进行 JSON 转义，以防止注入攻击。
+4. **审计记录**：所有操作都会记录在所有者的日历审计日志中。
+5. **权限限制**：助手只能访问明确授予的权限范围。
+6. **权限撤销**：所有者可以通过 Exchange PowerShell 或 Outlook 设置撤销代理权限。
 
-**"The mailbox is not found"**
-→ Verify `owner_email` in config.json is correct
+## 相关文件
 
-**"AADSTS90002: Tenant not found"**
-→ Check `tenant_id` in config.json matches your Microsoft Entra tenant
+- `~/.outlook-mcp/config.json` — 配置信息（客户端 ID、租户 ID、邮箱地址、时区）
+- `~/.outlook-mcp/credentials.json` — OAuth 令牌（访问权限和刷新令牌）
 
-**"Token expired"**
-→ Run `outlook-token.sh refresh`
-
-**Wrong timezone for calendar**
-→ Update `timezone` in config.json (use IANA format like `America/New_York`)
-
-## Security Considerations
-
-1. **Credential Protection**: The `~/.outlook-mcp/` directory is automatically set to `700` and credential files to `600`
-2. **No Process Leaks**: Token refresh and exchange operations pass secrets via stdin, not command-line arguments
-3. **Input Sanitization**: All user input is JSON-escaped via `jq` to prevent injection
-4. **Audit Trail**: All actions are logged in the owner's mailbox audit log
-5. **Scope Limitation**: The assistant only has access to what's explicitly granted
-6. **Revocation**: Owner can revoke access via Exchange PowerShell or Outlook settings
-
-## Revoking Access
-
-```powershell
-# Remove all permissions
-Remove-MailboxPermission -Identity "owner@yourdomain.com" -User "assistant@yourdomain.com" -AccessRights FullAccess -Confirm:$false
-
-# Remove Send As (if granted)
-Remove-RecipientPermission -Identity "owner@yourdomain.com" -Trustee "assistant@yourdomain.com" -AccessRights SendAs -Confirm:$false
-
-# Remove Send on Behalf (if granted)
-Set-Mailbox -Identity "owner@yourdomain.com" -GrantSendOnBehalfTo @{Remove="assistant@yourdomain.com"}
-
-# Remove Calendar access
-Remove-MailboxFolderPermission -Identity "owner@yourdomain.com:\Calendar" -User "assistant@yourdomain.com" -Confirm:$false
-```
-
-## Files
-
-- `~/.outlook-mcp/config.json` — Configuration (client ID, tenant ID, emails, timezone)
-- `~/.outlook-mcp/credentials.json` — OAuth tokens (access + refresh)
-
-## Changelog
+## 更新日志
 
 ### v1.1.0
-- **FIXED**: Reply command no longer sends duplicate emails (removed dead code that sent a garbage email)
-- **FIXED**: All reply/forward variants now use proper Graph API threading (createReply/createForward → patch from → send)
-- **FIXED**: send-as and send-behalf now correctly documented — behavior depends on Exchange permissions, not API endpoint
-- **FIXED**: send-draft-behalf no longer deletes draft before sending (prevents data loss on send failure)
-- **FIXED**: All user input is now JSON-escaped via `jq` to prevent injection and malformed payloads
-- **FIXED**: Credentials file permissions enforced on every write (`chmod 600`)
-- **FIXED**: Config directory permissions enforced (`chmod 700`)
-- **FIXED**: Client secrets no longer visible in process list (sent via stdin)
-- **FIXED**: Calendar `events` command now shows only future events
-- **FIXED**: Sent Items behavior documented accurately
-- **FIXED**: Version number corrected
-- Updated Microsoft Entra ID naming (formerly Azure Active Directory)
-- Setup guide now explicitly warns against granting both SendAs and SendOnBehalf
-- Revocation commands updated (GrantSendOnBehalfTo uses @{Remove=...} syntax)
+- **修复**：回复命令不再发送重复邮件（移除了发送无效邮件的代码）。
+- **修复**：所有回复/转发操作现在都使用正确的 Graph API 调用顺序（`createReply/createForward → patch from → send`）。
+- **修复**：`send-as` 和 `send-behalf` 的文档已更新——其行为取决于 Exchange 权限，而非 API 端点。
+- **修复**：`send-draft-behalf` 命令在发送前不再删除草稿（防止发送失败时数据丢失）。
+- **修复**：所有用户输入现在都会通过 `jq` 进行 JSON 转义，以防止注入攻击和格式错误。
+- **修复**：对所有写入操作强制执行凭证文件权限（`chmod 600`）。
+- **修复**：配置目录的权限设置（`chmod 700`）。
+- **修复**：客户端密钥不再在进程列表中显示（通过 stdin 传递）。
+- **修复**：日历 `events` 命令现在只显示未来的事件。
+- **修复**：已发送邮件的保存位置说明已更新。
+- **修复**：版本号已更新。
+- 更新了 Microsoft Entra ID 的命名（之前称为 Azure Active Directory）。
+- 设置指南现在明确警告不要同时授予 SendAs 和 SendOnBehalf 权限。
+- 更新了撤销权限的命令（`GrantSendOnBehalfTo` 使用 `{Remove=...}` 语法）。
 
 ### v1.0.0
-- Three sending modes: as self, as owner (Send As), on behalf of owner
-- Tenant-specific authentication (no `/common` endpoint)
-- Configurable timezone for calendar operations
-- Display names for owner and delegate
-- Drafts saved to owner's mailbox
-- Comprehensive PowerShell setup commands
-- Based on outlook v1.3.0 by jotamed (https://clawhub.ai/jotamed/outlook)
+- 支持三种发送模式：以代理自身身份发送、以所有者身份发送、代表所有者发送。
+- 使用租户特定的身份验证（不再使用 `/common` 端点）。
+- 日历操作的时区可配置。
+- 显示所有者和代理的显示名称。
+- 草稿保存在所有者的邮箱中。
+- 提供了详细的 PowerShell 设置命令。
+- 基于 jotamed 的 outlook v1.3.0 版本（https://clawhub.ai/jotamed/outlook）开发。

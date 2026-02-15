@@ -1,28 +1,28 @@
 ---
 name: bundle-checker
-description: Analyze bundle size and get AI suggestions to reduce it. Use when your builds are getting bloated.
+description: 分析软件包的大小，并获取减少其大小的AI建议。当你的构建文件变得过于庞大（即文件大小不断增加）时，可以使用此方法。
 ---
 
-# Bundle Checker
+# 包体积检查工具（Bundle Checker）
 
-Your bundle is 2MB and you don't know why. This tool analyzes your build output and tells you exactly what's eating up space and how to fix it.
+你的项目生成的包文件体积达到了2MB，但你却不知道具体是哪些部分导致了这么大的文件大小。这个工具会分析你的构建输出，精确地指出哪些部分占用了过多的空间，并提供相应的解决方案。
 
-**One command. Zero config. Just works.**
+**只需一条命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-bundle-check
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes your bundle composition
-- Identifies the largest dependencies
-- Suggests tree-shaking opportunities
-- Recommends lighter alternatives
+- 分析你的包文件结构
+- 识别占用空间最大的依赖项
+- 提出优化建议（例如通过“tree-shaking”技术减少代码体积）
+- 推荐更轻量级的替代方案
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Analyze current project
@@ -35,42 +35,42 @@ npx ai-bundle-check ./my-project/
 npx ai-bundle-check --verbose
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Check before shipping** - catch size regressions early
-- **Consider alternatives** - moment.js vs date-fns makes a huge difference
-- **Dynamic imports** - split code that isn't needed immediately
-- **Monitor trends** - track bundle size in CI
+- **在发布前进行检查**：及早发现文件大小的异常变化
+- **考虑使用替代库**：比如使用`moment.js`代替`date-fns`可以显著减少文件大小
+- **使用动态导入**：将不立即需要的代码分开加载
+- **监控文件大小趋势**：在持续集成（CI）过程中定期检查包文件大小
 
-## When to Use This
+## 适用场景
 
-- Your app loads slowly and you suspect the bundle
-- Adding a new dependency and want to check the impact
-- Performance audit flagged JavaScript size
-- CI bundle size check is failing
+- 当你的应用程序加载速度较慢时，怀疑是包文件体积过大导致的
+- 添加新依赖项后，需要了解其对项目性能的影响
+- 当性能审计指出JavaScript代码体积过大时
+- 当持续集成过程中的包文件大小检查失败时
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于LXGIC开发工具包（LXGIC Dev Toolkit）的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发者工具之一。免费版本完全免费，无需注册或使用API密钥，只需使用即可。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令运行即可。建议使用Node.js 18及以上版本。运行该工具需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-bundle-check --help
 ```
 
-## How It Works
+## 工作原理
 
-Scans your package.json and build output, identifies heavy dependencies, and sends the analysis to GPT-4o-mini. The AI knows common bundle bloat patterns and suggests specific optimizations like switching libraries or adding tree-shaking config.
+该工具会扫描你的`package.json`文件和构建输出文件，识别出占用大量空间的依赖项，并将分析结果发送给GPT-4o-mini模型。GPT-4o-mini能够识别常见的代码冗余模式，并提供具体的优化建议（如更换库或使用“tree-shaking”技术）。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具。

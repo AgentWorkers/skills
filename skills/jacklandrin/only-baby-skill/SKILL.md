@@ -1,64 +1,65 @@
 ---
 name: only-baby-skills
-description: Analyze contraction JSON and baby log JSON to assess mum's labour/contraction situation and baby's feeding and diaper status. Use when the user provides (or references) contractions_*.json and babyLogs_*.json files and wants to know if mum is safe and baby is healthy, or asks for a summary of contractions, feeding, or diaper changes.
+description: 分析 `contractions_*.json` 和 `babyLogs_*.json` 文件，以评估母亲的宫缩情况、婴儿的喂养状况以及尿布更换情况。当用户提供（或引用）这些文件，并希望了解母亲的安全状况、婴儿的健康状况，或请求获取宫缩情况、喂养记录或尿布更换情况的汇总时，可以使用该功能。
 ---
 
-# Analyze Mum & Baby Logs
+# 分析孕产妇与婴儿的日志数据
 
-Analyze two JSON data sources to produce a safety and health summary: **mum's contraction situation** and **baby's milk feeding and diaper change status**. Always end with a clear verdict and any recommendations.
+本功能会分析两个JSON数据源，生成关于母婴安全和健康状况的总结：**孕产妇的宫缩情况**以及**婴儿的喂养和换尿布状态**。最终会给出明确的判断结果及相应的建议。
 
-## When to Use
+## 使用场景
 
-- User provides or references contraction and baby log JSON files (e.g. `contractions_*.json`, `babyLogs_*.json`).
-- User asks whether mum is safe, baby is healthy, or for a summary of contractions / feeding / diapers.
+- 用户提供了或引用了包含宫缩和婴儿日志的JSON文件（例如：`contractions_*.json`、`babyLogs_*.json`）。
+- 用户希望了解孕产妇的安全状况、婴儿的健康情况，或获取宫缩、喂养、换尿布的相关信息。
 
-## Input Files
+## 输入文件
 
-1. **Contractions JSON** – Array of objects with `id`, `startTime`, `endTime` (ISO 8601).
-2. **Baby logs JSON** – Object with `babyLog` (array of entries) and `birthday` (ISO 8601). Each entry has `id`, `timestamp`, `type`, and type-specific details:
-   - `type === "feeding"`: `feedingDetails.volumeML` (number, mL).
-   - `type === "diaper"`: `diaperDetails.hasPee`, `diaperDetails.hasPoo` (booleans).
-   - `type === "breastFeeding"`: `breastFeedingDetails.durationSeconds` (number).
+1. **宫缩日志JSON**：包含`id`、`startTime`（ISO 8601格式）的数组对象。
+2. **婴儿日志JSON**：包含`babyLog`（条目数组）和`birthday`（ISO 8601格式）的对象。每个条目包含`id`、`timestamp`、`type`以及特定类型的详细信息：
+   - `type === "feeding"`：`feedingDetails.volumeML`（喂奶量，单位：毫升）。
+   - `type === "diaper"`：`diaperDetails.hasPee`（是否排尿）、`diaperDetails.hasPoo`（是否排便）（布尔值）。
+   - `type === "breastFeeding"`：`breastFeedingDetails.durationSeconds`（母乳喂养时长，单位：秒）。
 
-See [references/schemas-and-thresholds.md](references/schemas-and-thresholds.md) for exact schemas and health/safety thresholds.
+具体数据结构和健康/安全阈值请参考[references/schemas-and-thresholds.md](references/schemas-and-thresholds.md)。
 
-## Workflow
+## 工作流程
 
-### 1. Load and parse both JSON files
+### 1. 加载并解析两个JSON文件
 
-- Resolve file paths from user message or workspace (e.g. Downloads, project paths).
-- Parse contractions as an array; baby data as object with `babyLog` and `birthday`.
+- 从用户提供的路径或工作区（如下载目录、项目文件夹）中读取文件。
+- 将宫缩数据解析为数组；将婴儿数据解析为包含`babyLog`和`birthday`的对象。
 
-### 2. Analyze contractions
+### 2. 分析宫缩情况
 
-- Sort contractions by `startTime` (ascending = chronological).
-- For each contraction compute **duration** = `endTime - startTime` (in seconds/minutes).
-- Compute **interval** = time from previous contraction's `endTime` to current `startTime` (minutes). For the first contraction, interval is N/A.
-- Summarize: count, time range of data, typical duration, typical interval, and any pattern (e.g. regular vs irregular).
-- Apply safety rules from [references/schemas-and-thresholds.md](references/schemas-and-thresholds.md) (e.g. 5-1-1 rule, when to seek care).
+- 按`startTime`对宫缩记录进行排序（时间顺序）。
+- 计算每次宫缩的**持续时间**（`endTime - startTime`，单位：秒或分钟）。
+- 计算两次宫缩之间的**间隔时间**（从上一次宫缩的`endTime`到当前`startTime`的分钟数）。首次宫缩的间隔时间视为N/A。
+- 统计宫缩次数、时间范围、平均持续时间、平均间隔时间，并分析宫缩模式（规律性或不规律性）。
+- 应用[references/schemas-and-thresholds.md](references/schemas-and-thresholds.md)中规定的安全标准（例如“5-1-1规则”，即何时需要就医）。
 
-### 3. Analyze baby logs
+### 3. 分析婴儿日志
 
-- From `birthday` and latest log timestamp, compute **baby's age** (e.g. days or weeks).
-- Split `babyLog` by `type`: **feeding**, **diaper**, and **breastFeeding**.
-- **Feeding** (bottle/expressed): extract `feedingDetails.volumeML` and `timestamp`. Compute total volume and feed count over last 24 h (and optionally last 48 h). Compute average volume per feed, average volume per hour (total mL / hours in window), and approximate interval between feeds.
-- **BreastFeeding**: extract `breastFeedingDetails.durationSeconds` and `timestamp`. Compute session count and total duration (e.g. total minutes) over last 24 h (and optionally last 48 h). Optionally report average session length.
-- **Diaper**: count wet (`diaperDetails.hasPee`), dirty (`diaperDetails.hasPoo`), and both. Compute counts over last 24 h (and optionally last 48 h).
-- Compare to age-appropriate thresholds in [references/schemas-and-thresholds.md](references/schemas-and-thresholds.md) (feeds/sessions per day, wet/dirty diaper expectations).
+- 根据`birthday`和最新的日志时间戳计算婴儿的年龄（以天或周为单位）。
+- 将`babyLog`按类型（`feeding`、`diaper`、`breastFeeding`）进行分类：
+   - **喂养**：提取`feedingDetails.volumeML`和`timestamp`，统计过去24小时（可选：过去48小时）内的总喂养量和喂养次数；计算每次喂养的平均量及每小时平均量。
+   - **母乳喂养**：提取`breastFeedingDetails.durationSeconds`和`timestamp`，统计过去24小时（可选：过去48小时）内的喂养次数和总时长；可选：计算平均每次喂养的时长。
+   - **换尿布**：统计过去24小时（可选：过去48小时）内婴儿的排尿/排便次数。
+- 将这些数据与[references/schemas-and-thresholds.md]中规定的年龄对应阈值进行比较。
 
-### 4. Produce report and verdict
+### 4. 生成报告并给出判断结果
 
-Output:
+- **孕产妇的宫缩情况总结**：
+  - 宫缩次数、时间范围、持续时间及间隔时间分布。
+  - 判断孕产妇是否安全（安全/需要监测/需要就医），并附上简要原因及后续建议（例如：“继续记录宫缩情况；如果符合5-1-1规则，请就医”）。
 
-1. **Mum – Contraction summary**  
-   Count, date range, duration/interval stats, pattern. Then: **Mum safe?** (Yes / Monitor / Seek care) with short reason and any next step (e.g. "Continue timing; if 5-1-1, go to hospital").
+- **婴儿的喂养与换尿布情况总结**：
+  - 婴儿年龄；过去24小时内的喂养次数及总喂养量（瓶喂/母乳喂养）；过去24小时内的换尿布次数及状态（湿润/脏污）。
+  - 判断婴儿是否健康（健康/需要监测/存在问题），并附上简要原因及建议（例如：“确保每天至少喂养8次，尿布湿润或脏污的次数达到6次以上”）。
 
-2. **Baby – Feeding & diaper summary**  
-   Age; bottle feeds in last 24 h (count + total mL); breastfeeding sessions in last 24 h (count + total duration if present); diapers in last 24 h (wet/dirty). Then: **Baby healthy?** (Yes / Monitor / Concern) with short reason and any recommendation (e.g. "Ensure 8+ feeds and 6+ wet diapers per day").
+### 注意事项
 
-3. **Caveat**  
-   One line: this is not medical advice; when in doubt, contact a midwife, OB, or paediatrician.
+- 本功能仅提供参考信息，不构成医疗建议。如有疑问，请咨询助产士、产科医生或儿科医生。
 
-## Output format
+## 输出格式
 
-Use clear headings and bullet points. Lead with the two verdicts (mum safe? baby healthy?) then expand with numbers and brief reasoning. Keep the report scannable and under one screen where possible.
+使用清晰的标题和项目符号进行排版。首先列出两个判断结果（孕产妇是否安全？婴儿是否健康？），然后详细说明各项数据及分析结果。确保报告易于阅读，尽量控制在一页内显示。

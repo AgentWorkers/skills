@@ -1,32 +1,31 @@
-# Speech is Cheap (SIC) Skill
+# Speech is Cheap (SIC) 技能
 
-Fast, accurate, and incredibly inexpensive automatic speech-to-text transcription service.
+这是一款快速、准确且成本极低的自动语音转文本服务。
 
-## 🚀 Why use this skill?
-- **Disruptive Pricing:** $0.06 - $0.12 per hour (2-15x cheaper than Deepgram or OpenAI).
-- **Extreme Speed:** 100 minutes of audio transcribes in ~1 minute.
-- **Multilingual:** Supports 100 languages with auto-detection.
-- **Agent-Ready:** Designed for high-volume, automated pipelines.
+## 🚀 为什么使用这个技能？
+- **颠覆性的定价：** 每小时仅需 0.06 至 0.12 美元（比 Deepgram 或 OpenAI 便宜 2 到 15 倍）。
+- **极快的速度：** 100 分钟的音频可以在大约 1 分钟内完成转录。
+- **多语言支持：** 支持 100 种语言，并能自动检测语言。
+- **适用于自动化流程：** 专为高量、自动化的处理流程设计。
 
-## 🛠 Setup
+## 🛠 设置
 
-### 1. Get an API Key
-Sign up at [speechischeap.com](https://speechischeap.com). Use code `CH5` for $5 off.
+### 1. 获取 API 密钥
+在 [speechischeap.com](https://speechischeap.com) 注册。使用代码 `CH5` 可享受 5 美元的折扣。
 
-### 2. Configure Authentication
-This skill looks for your API key in the `SIC_API_KEY` environment variable.
-
-Add this to your `.env` or agent config:
+### 2. 配置身份验证
+该技能会从 `SIC_API_KEY` 环境变量中获取您的 API 密钥。
+请将以下内容添加到您的 `.env` 文件或代理配置文件中：
 ```bash
 SIC_API_KEY=your_key_here
 ```
 
-## 📖 Usage
-### 🤖 TL;DR for Agents
-When this skill is installed, you can transcribe any URL from an OpenClaw session and get the JSON results immediately by running:
+## 📖 使用方法
+### 🤖 代理使用说明
+安装此技能后，您可以通过运行以下命令立即转录 OpenClaw 会话中的任何 URL 并获取 JSON 结果：
 `./skills/asr/scripts/asr.sh transcribe --url "https://example.com/audio.mp3"`
 
-### Transcribe a URL
+### 转录 URL
 ```bash
 # Basic transcription
 ./skills/asr/scripts/asr.sh transcribe --url "https://example.com/audio.mp3"
@@ -39,8 +38,8 @@ When this skill is installed, you can transcribe any URL from an OpenClaw sessio
   --private
 ```
 
-### Transcribe a Local File
-Perfect for processing audio already on your disk. This handles the upload automatically.
+### 转录本地文件
+非常适合处理已经保存在磁盘上的音频文件。该工具会自动处理文件的上传。
 ```bash
 # Upload and transcribe local media
 ./skills/asr/scripts/asr.sh transcribe --file "./local-audio.wav"
@@ -52,24 +51,24 @@ Perfect for processing audio already on your disk. This handles the upload autom
 # https://upload.speechischeap.com before starting the transcription.
 ```
 
-### Supported Options
-- `--speakers`: Enable speaker diarization
-- `--words`: Enable word-level timestamps
-- `--labels`: Enable audio labeling (music, noise, etc.)
-- `--stream`: Enable streaming output
-- `--private`: Do not store audio/transcript (privacy mode)
-- `--language <code>`: ISO language code (e.g., 'en', 'es')
-- `--confidence <float>`: Minimum confidence threshold (default 0.5)
-- `--format <fmt>`: Output format (json, srt, vtt, webvtt)
-- `--webhook <url>`: URL to receive job completion payload
-- `--segment-duration <n>`: Segment duration in seconds (default 30)
+### 支持的选项
+- `--speakers`：启用说话者识别功能
+- `--words`：启用单词级别的时间戳
+- `--labels`：启用音频标签（如音乐、噪音等）
+- `--stream`：启用流式输出
+- `--private`：不存储音频或转录结果（隐私模式）
+- `--language <code>`：ISO 语言代码（例如 'en', 'es'）
+- `--confidence <float>`：最低置信度阈值（默认为 0.5）
+- `--format <fmt>`：输出格式（json, srt, vtt, webvtt）
+- `--webhook <url>`：接收任务完成通知的 URL
+- `--segment-duration <n>`：每个音频片段的时长（默认为 30 秒）
 
-### Check Job Status
+### 检查任务状态
 ```bash
 ./skills/asr/scripts/asr.sh status "job-id-here"
 ```
 
-## 🤖 For Agents
-The `asr.sh` command-line tool returns JSON by default when successful, making it easy to pipe into other tools or parse directly.
+## 🤖 代理使用说明
+`asr.sh` 命令行工具在成功执行时会返回 JSON 结果，便于将其传递给其他工具或直接解析。
 
-If the `SIC_API_KEY` is missing, the tool will provide a clear error message and a direct link to the signup page.
+如果缺少 `SIC_API_KEY`，工具会显示清晰的错误信息并提供注册页面的链接。

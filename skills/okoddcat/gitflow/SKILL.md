@@ -1,129 +1,123 @@
 ---
 name: gitflow
-description: Automatically monitor CI/CD pipeline status of new push across GitHub and GitLab in one place. Auto DevOps this is the way 🦞!
+description: 在新代码被推送到 GitHub 或 GitLab 时，能够自动监控 CI/CD 管道的状态。这就是自动 DevOps 的实现方式 🦞！
 ---
 
-# GitFlow — OpenClaw Skill
+# GitFlow — OpenClaw 技能
 
-## Overview
-**GitFlow** is an OpenClaw skill that automates code pushes and provides real-time CI/CD pipeline status monitoring for GitHub and GitLab repositories. It streamlines developer workflows by reducing context switching between repositories and pipeline dashboards.
+## 概述
+**GitFlow** 是 OpenClaw 提供的一项功能，它能够自动推送代码更改，并为 GitHub 和 GitLab 仓库提供实时的持续集成/持续交付（CI/CD）管道状态监控。通过减少开发者在不同仓库和管道仪表板之间切换的频率，该功能显著提升了开发效率。
 
-The skill can automatically push changes and report pipeline results, enabling faster feedback and smoother deployments.
+该技能可以自动推送代码更改并报告管道运行结果，从而实现更快速的反馈和更顺畅的部署过程。
 
-## Features
-GitFlow can:
+## 主要功能
+GitFlow 可以：
+- 自动推送本地提交
+- 触发远程的 CI/CD 管道
+- 获取管道状态和结果
+- 报告构建的成功或失败情况
+- 显示管道的 URL 和日志
+- 监控多个仓库
 
-- Push local commits automatically
-- Trigger remote CI/CD pipelines
-- Fetch pipeline status and results
-- Report build success or failure
-- Display pipeline URLs and logs
-- Monitor multiple repositories
+## 典型工作流程
+1. 开发者在本地提交代码更改。
+2. GitFlow 自动或根据指令推送这些更改。
+3. 远程的 CI/CD 管道开始运行。
+4. GitFlow 报告管道的运行状态。
+5. 开发者立即收到关于构建或部署的反馈。
 
+## GitHub 命令行接口（CLI）命令
+在推送代码后，可以使用 `gh` CLI 工具来获取工作流程的状态：
 
-## Typical Workflow
-1. Developer commits changes locally.
-2. GitFlow pushes changes automatically or on command.
-3. CI/CD pipeline runs remotely.
-4. Skill reports pipeline status.
-5. Developer receives build/deploy feedback instantly.
-
-
-## GitHub CLI Commands
-
-Use the `gh` CLI tool to fetch workflow status after pushing:
-
-### Check Workflow Run Status
+### 检查工作流程运行状态
 ```bash
 gh run list
 ```
-Lists recent workflow runs for the repository.
+列出仓库最近的工作流程运行记录。
 
-### View Latest Run for Current Branch
+### 查看当前分支的最新运行记录
 ```bash
 gh run list --branch $(git branch --show-current) --limit 1
 ```
-Shows the most recent workflow run for the current branch.
+显示当前分支最近的一次工作流程运行情况。
 
-### View Run Details
+### 查看运行详情
 ```bash
 gh run view <run-id>
 ```
-Displays detailed information about a specific workflow run.
+显示特定工作流程运行的详细信息。
 
-### Watch Run in Real-Time
+### 实时监控运行过程
 ```bash
 gh run watch
 ```
-Watches the most recent run until completion, streaming status updates.
+实时监控最近一次工作流程的运行情况，并接收状态更新。
 
-### View Run Logs
+### 查看运行日志
 ```bash
 gh run view <run-id> --log
 ```
-Displays the full logs for a workflow run.
+显示某次工作流程的完整日志。
 
-### View Failed Job Logs
+### 查看失败任务的日志
 ```bash
 gh run view <run-id> --log-failed
 ```
-Shows only the logs from failed jobs.
+仅显示失败任务的日志。
 
-### Rerun Failed Jobs
+### 重新运行失败的任务
 ```bash
 gh run rerun <run-id> --failed
 ```
-Reruns only the failed jobs from a workflow run.
+仅重新运行工作流程中失败的任务。
 
 ---
 
-## GitLab CLI Commands
+## GitLab 命令行接口（CLI）命令
+在推送代码后，可以使用 `glab` CLI 工具来获取管道状态：
 
-Use the `glab` CLI tool to fetch pipeline status after pushing:
-
-### Check Pipeline Status
+### 检查管道状态
 ```bash
 glab ci status
 ```
-Shows the status of the most recent pipeline on the current branch.
+显示当前分支上最新管道的运行状态。
 
-### View Pipeline Details
+### 查看管道详情
 ```bash
 glab ci view
 ```
-Opens an interactive view of the current pipeline with job details.
+以交互式方式查看当前管道的详细信息。
 
-### List Recent Pipelines
+### 列出最近的管道
 ```bash
 glab ci list
 ```
-Lists recent pipelines for the repository.
+列出仓库中最近的所有管道。
 
-### View Specific Pipeline
+### 查看特定管道
 ```bash
 glab ci view <pipeline-id>
 ```
-View details of a specific pipeline by ID.
+通过 ID 查看特定管道的详细信息。
 
-### Watch Pipeline in Real-Time
+### 实时监控管道
 ```bash
 glab ci status --live
 ```
-Continuously monitors the pipeline status until completion.
+持续监控管道的运行状态，直到完成。
 
-### Get Pipeline Job Logs
+### 获取管道任务日志
 ```bash
 glab ci trace <job-id>
 ```
-Streams the logs of a specific job.
+实时显示特定任务的日志。
 
 ---
 
-## Post-Push Hook Example
+## 推送后的钩子示例
+Git 没有原生的推送后钩子功能，但你可以创建一个 Git 别名来实现推送后自动监控管道状态的功能。
 
-Git doesn't have a native post-push hook, but you can create a git alias to automatically monitor pipeline status after pushing.
-
-Add this to your `~/.gitconfig`:
+将以下内容添加到你的 `~/.gitconfig` 文件中：
 
 ```ini
 [alias]
@@ -138,12 +132,10 @@ Add this to your `~/.gitconfig`:
     }; f"
 ```
 
-### Usage
-
+### 使用方法
 ```bash
 git pushflow
 git pushflow origin main
 ```
 
 ---
-

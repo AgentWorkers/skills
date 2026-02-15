@@ -1,39 +1,39 @@
 ---
 name: base-wallet
-description: "🔐 Base Wallet - Crypto Identity for AI Agents. Create wallets, sign messages (SIWE), send transactions programmatically. No browser extensions, no human intervention. The foundation for autonomous Web3 agents."
+description: "🔐 基础钱包——AI代理的加密身份管理工具。支持创建钱包、签署消息（使用SIWE技术）、以及程序化地发送交易。无需浏览器扩展程序，也无需人工干预。这是构建自主Web3代理的基础。"
 ---
 
-# 🔐 Base Wallet - Crypto Identity for AI Agents
+# 🔐 Base Wallet – 为AI代理提供加密身份管理工具
 
-> Every autonomous agent needs a wallet. Create one without human help.
+> 每个自主代理都需要一个钱包。无需人工协助即可创建钱包。
 
-**TL;DR:** Programmatic wallet creation on Base/Ethereum. SIWE auth, balance checks, transactions.
+**简而言之：** 在Base/Ethereum平台上通过编程方式创建钱包，支持SIWE身份验证、余额查询和交易功能。
 
-## Why Base Wallet?
+## 为什么选择Base Wallet？
 
-- **True autonomy** — Your agent creates and controls its own wallet
-- **No browser needed** — Pure CLI, no extensions or popups
-- **SIWE ready** — Sign-In with Ethereum for Web3 services
-- **Secure by default** — Environment variables, no plaintext keys
+- **真正的自主性**：代理可以自行创建并控制自己的钱包。
+- **无需浏览器**：完全通过命令行（CLI）操作，无需扩展程序或弹窗。
+- **支持SIWE**：使用Ethereum进行Web3服务的登录。
+- **默认情况下非常安全**：使用环境变量存储密钥，避免明文密钥的泄露。
 
-Create and manage Base chain (Ethereum-compatible) wallets programmatically.
-
----
-
-## ⚠️ Security First
-
-| ✅ DO | ❌ DON'T |
-|-------|----------|
-| Use **environment variables** for private keys | Store private keys in plain text files |
-| Set wallet files to **chmod 600** | Commit wallet files to git |
-| Use `--env` mode (recommended) | Use `console.log(privateKey)` |
-| Back up mnemonics **offline** | Share private keys or mnemonics |
+您可以编程方式创建和管理兼容Ethereum的Base链钱包。
 
 ---
 
-## Quick Start
+## ⚠️ 安全至上
 
-### Create a New Wallet (Recommended)
+| 推荐做法 | 不推荐的做法 |
+|---------|-------------------------|
+| 使用**环境变量**存储私钥 | 将私钥存储在明文文件中 |
+| 将钱包文件设置为**chmod 600**权限 | 将钱包文件提交到Git仓库 |
+| 使用`--env`模式（推荐） | 直接在控制台中输出私钥（`console.log(privateKey)`） |
+| **离线**备份助记词 | 共享私钥或助记词 |
+
+---
+
+## 快速入门
+
+### 创建新钱包（推荐）
 
 ```bash
 # Output as environment variable format (safest)
@@ -44,22 +44,22 @@ node scripts/create-wallet.js --env
 # export PRIVATE_KEY="0x..."
 ```
 
-Then copy to your shell or `.env` file.
+然后将生成的配置信息复制到您的shell或`.env`文件中。
 
-### Create with File Storage (Opt-in)
+### 使用文件存储创建钱包（可选）
 
 ```bash
 # Only if you need file-based storage
 node scripts/create-wallet.js --managed my-agent
 ```
 
-⚠️ This stores private key in `~/.openclaw/wallets/my-agent.json`
+**注意：** 这种方式会将私钥存储在`~/.openclaw/wallets/my-agent.json`文件中。
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Load Wallet from Environment
+### 从环境变量中加载钱包
 
 ```javascript
 const { ethers } = require('ethers');
@@ -70,13 +70,13 @@ console.log('Address:', wallet.address);
 // ❌ NEVER: console.log('Private Key:', wallet.privateKey);
 ```
 
-### Load from Mnemonic
+### 从助记词中加载钱包
 
 ```javascript
 const wallet = ethers.Wallet.fromPhrase(process.env.MNEMONIC);
 ```
 
-### Check Balance
+### 查看余额
 
 ```javascript
 const provider = new ethers.JsonRpcProvider('https://mainnet.base.org');
@@ -84,7 +84,7 @@ const balance = await provider.getBalance(wallet.address);
 console.log('Balance:', ethers.formatEther(balance), 'ETH');
 ```
 
-### Sign Message (SIWE)
+### 签署消息（使用SIWE）
 
 ```javascript
 const message = `example.com wants you to sign in with your Ethereum account:
@@ -101,7 +101,7 @@ Issued At: ${new Date().toISOString()}`;
 const signature = await wallet.signMessage(message);
 ```
 
-### Send Transaction
+### 发送交易
 
 ```javascript
 const provider = new ethers.JsonRpcProvider('https://mainnet.base.org');
@@ -118,21 +118,21 @@ console.log('TX Hash:', tx.hash);
 
 ---
 
-## Scripts
+## 脚本示例
 
-| Script | Description |
-|--------|-------------|
-| `create-wallet.js --env` | Create wallet, output as env vars (recommended) |
-| `create-wallet.js --managed [name]` | Create wallet, save to file (opt-in) |
-| `create-wallet.js --json` | Create wallet, output as JSON |
-| `basemail-register.js [name]` | Register for BaseMail email |
-| `check-balance.js [address]` | Check wallet balance |
+| 脚本 | 说明 |
+|--------|-------------------------|
+| `create-wallet.js --env` | 创建钱包，并将配置信息作为环境变量输出（推荐） |
+| `create-wallet.js --managed [name]` | 创建钱包并保存到文件中（可选） |
+| `create-wallet.js --json` | 创建钱包，并将配置信息以JSON格式输出 |
+| `basemail-register.js [name]` | 使用钱包签名注册BaseMail邮箱 |
+| `check-balance.js [address]` | 查看钱包余额 |
 
 ---
 
-## BaseMail Integration
+## BaseMail集成
 
-Register for a @basemail.ai email using your wallet signature.
+使用您的钱包签名注册@basemail.ai邮箱。
 
 ```bash
 # If using environment variable:
@@ -144,22 +144,24 @@ node scripts/basemail-register.js my-agent
 
 ---
 
-## Network Configuration
+## 网络配置
 
-| Network | Chain ID | RPC URL |
-|---------|----------|---------|
+| 网络 | 链路ID | RPC地址 |
+|---------|-------------------------|
 | Base Mainnet | 8453 | https://mainnet.base.org |
 | Base Sepolia | 84532 | https://sepolia.base.org |
 
 ---
 
-## 📝 Audit Logging
+## 📝 审计日志记录
 
-Operations are logged to `~/.base-wallet/audit.log`.
+所有操作都会被记录到`~/.base-wallet/audit.log`文件中。
 
 ---
 
-## Secure Storage Pattern
+## 安全存储规范
+
+**如果必须将钱包信息存储到文件中（不推荐的做法）：**
 
 ```javascript
 // ✅ Recommended: Use environment variables
@@ -172,26 +174,11 @@ const wallet = new ethers.Wallet(privateKey);
 // ❌ Avoid: Storing private keys in code or files
 ```
 
-If you must store to file (not recommended):
-
-```javascript
-const fs = require('fs');
-const path = require('path');
-
-// Store with restricted permissions
-const filepath = path.join(process.env.HOME, '.openclaw', 'wallets', 'wallet.json');
-fs.writeFileSync(filepath, JSON.stringify({ 
-  address: wallet.address,
-  // Only store if absolutely necessary
-  privateKey: wallet.privateKey
-}), { mode: 0o600 }); // Owner read/write only
-```
-
 ---
 
-## .gitignore
+## `.gitignore`文件
 
-Add to your project's `.gitignore`:
+请将以下内容添加到您项目的`.gitignore`文件中：
 
 ```gitignore
 # Wallet files - NEVER commit!
@@ -203,7 +190,7 @@ private-key*
 
 ---
 
-## Dependencies
+## 依赖项
 
 ```bash
 npm install ethers
@@ -211,14 +198,14 @@ npm install ethers
 
 ---
 
-## Changelog
+## 更新日志
 
 ### v1.1.0 (2026-02-08)
-- 🔐 Security: Changed create-wallet.js to opt-in file storage
-- ✨ Added --env mode (recommended)
-- 📝 Added audit logging
-- ⚠️ Removed console.log(privateKey) from examples
-- 📄 Enhanced security documentation
+- 🔐 安全性改进：将钱包创建方式改为可选的文件存储方式。
+- ✨ 新增`--env`模式（推荐使用）。
+- 📝 新增审计日志记录功能。
+- ⚠️ 从示例代码中移除了直接输出私钥的语句。
+- 📄 更新了安全相关文档。
 
 ### v1.0.0
-- 🎉 Initial release
+- 🎉 首次发布

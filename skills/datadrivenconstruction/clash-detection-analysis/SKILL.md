@@ -1,23 +1,23 @@
 ---
 slug: "clash-detection-analysis"
 display_name: "Clash Detection Analysis"
-description: "Detect and analyze geometric clashes between BIM elements. Identify hard clashes, soft clashes, and workflow conflicts using spatial analysis and rule-based detection."
+description: "检测并分析BIM元素之间的几何冲突。通过空间分析和基于规则的检测方法，识别出硬冲突（即无法解决的物理冲突）、软冲突（即可以通过调整设计来解决的冲突）以及工作流程上的冲突。"
 ---
 
-# Clash Detection Analysis
+# 冲突检测分析
 
-## Overview
+## 概述
 
-This skill implements automated clash detection for BIM models. Identify conflicts between building elements before construction to prevent costly rework and delays.
+该功能实现了针对BIM模型的自动化冲突检测。在施工前识别建筑元素之间的冲突，从而避免昂贵的返工和延误。
 
-**Types of Clashes:**
-- **Hard Clash**: Physical intersection of elements
-- **Soft Clash**: Clearance/tolerance violations
-- **Workflow Clash**: Scheduling/sequencing conflicts
+**冲突类型：**
+- **硬冲突**：元素之间的物理交叠
+- **软冲突**：间隙/公差违规
+- **工作流程冲突**：调度/顺序问题
 
-> "Обнаружение коллизий на этапе проектирования может сократить затраты на исправление ошибок до 10 раз по сравнению с исправлением на стройплощадке."
+> “在设计阶段发现冲突可以将错误修复的成本降低10倍以上。”
 
-## Quick Start
+## 快速入门
 
 ```python
 import ifcopenshell
@@ -66,9 +66,9 @@ for s_elem in structural:
 print(f"Found {len(clashes)} potential clashes")
 ```
 
-## Clash Detection Engine
+## 冲突检测引擎
 
-### Core Detector Class
+### 核心检测类
 
 ```python
 import ifcopenshell
@@ -303,9 +303,9 @@ class ClashDetector:
         }
 ```
 
-## Clash Sets Configuration
+## 冲突集配置
 
-### Common Clash Test Sets
+### 常见冲突测试集
 
 ```python
 # Define common clash test configurations
@@ -372,9 +372,9 @@ def run_all_clash_tests(detector: ClashDetector, clash_sets: Dict = None) -> Dic
     return results
 ```
 
-## Report Generation
+## 报告生成
 
-### Export Clash Report
+### 导出冲突报告
 
 ```python
 def export_clash_report(detector: ClashDetector, output_path: str):
@@ -445,28 +445,28 @@ def generate_clash_html_report(detector: ClashDetector, output_path: str):
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Clash Type | Description | Typical Clearance |
+| 冲突类型 | 描述 | 典型间隙值 |
 |------------|-------------|-------------------|
-| Hard Clash | Physical intersection | 0 mm |
-| Soft Clash | Clearance violation | 50-150 mm |
-| Workflow | Schedule conflict | N/A |
+| 硬冲突 | 元素之间的物理交叠 | 0毫米 |
+| 软冲突 | 间隙违规 | 50-150毫米 |
+| 工作流程冲突 | 调度问题 | 无具体要求 |
 
-| Severity | Distance | Action Required |
+| 严重程度 | 间隙值 | 所需措施 |
 |----------|----------|-----------------|
-| Critical | < 10 mm | Immediate redesign |
-| High | 10-50 mm | Priority fix |
-| Medium | 50-100 mm | Review needed |
-| Low | > 100 mm | Monitor |
+| 严重 | < 10毫米 | 立即重新设计 |
+| 高度严重 | 10-50毫米 | 优先修复 |
+| 中等严重 | 50-100毫米 | 需要审查 |
+| 轻微 | > 100毫米 | 监控即可 |
 
-## Resources
+## 资源
 
-- **IfcOpenShell**: https://ifcopenshell.org
-- **DDC Website**: https://datadrivenconstruction.io
+- **IfcOpenShell**：https://ifcopenshell.org
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `4d-simulation` for time-based clash analysis
-- See `bim-validation-pipeline` for validation workflows
-- See `ifc-data-extraction` for element data
+- 查看`4d-simulation`以了解基于时间的冲突分析
+- 查看`bim-validation-pipeline`以了解验证工作流程
+- 查看`ifc-data-extraction`以获取元素数据

@@ -1,6 +1,6 @@
 ---
 name: mlx-stt
-description: Speech-To-Text with MLX (Apple Silicon) and opensource models (default GLM-ASR-Nano-2512) locally.
+description: 使用 MLX（苹果自研的硅芯片）以及开源模型（默认为 GLM-ASR-Nano-2512）实现语音转文本功能，并在本地进行处理。
 version: 1.0.7
 author: guoqiao
 metadata: {"openclaw":{"always":true,"emoji":"🦞","homepage":"https://github.com/guoqiao/skills/blob/main/mlx-stt/mlx-stt/SKILL.md","os":["darwin"],"requires":{"bins":["brew"]}}}
@@ -14,32 +14,32 @@ triggers:
 
 # MLX STT
 
-Speech-To-Text/ASR/Transcribe with MLX (Apple Silicon) and opensource models (default GLM-ASR-Nano-2512) locally.
+使用 MLX（基于苹果硅架构）和开源模型（默认为 GLM-ASR-Nano-2512）实现语音转文本（Speech-to-Text/Automatic Speech Recognition/Transcribe）功能，支持本地运行。
 
-Free and Accurate. No api key required. No server required.
+完全免费且准确，无需 API 密钥或服务器。
 
-## Requirements
+## 系统要求
 
-- `mlx`: macOS with Apple Silicon
-- `brew`: used to install deps if not available
+- 系统：安装了苹果硅架构的 macOS。
+- 必需安装 `brew` 工具，用于在缺少某些依赖库时自动安装它们。
 
-## Installation
+## 安装
 
 ```bash
 bash ${baseDir}/install.sh
 ```
-This script will use `brew` to install these cli tools if not available:
-- `ffmpeg`: convert audio format when needed
-- `uv`: install python package and run python script
-- `mlx_audio`: do the real job
+如果系统缺少以下工具，此脚本会使用 `brew` 来安装它们：
+- `ffmpeg`：用于在需要时转换音频格式。
+- `uv`：用于安装 Python 包并运行相关 Python 脚本。
+- `mlx_audio`：负责执行实际的语音转文本处理任务。
 
-## Usage
+## 使用方法
 
-To transcribe an audio file, run this script:
+要转录一个音频文件，请运行以下脚本：
 
 ```bash
 bash  ${baseDir}/mlx-stt.sh <audio_file_path>
 ```
 
-- First run could be a little slow, since it will need to download model.
-- The transcript result will be printed to stdout.
+- 首次运行时可能会稍慢，因为系统需要下载相关模型文件。
+- 转录结果会直接输出到标准输出（stdout）中。

@@ -1,22 +1,22 @@
 ---
 name: sage-did
-description: Sage DID (Decentralized Identifier) operations. List DIDs, create new DIDs, transfer ownership, update metadata, normalize.
+description: Sage DID（去中心化标识符）相关操作：列出现有的DIDs、创建新的DIDs、转移所有权、更新元数据以及进行数据规范化处理。
 ---
 
 # Sage DIDs
 
-DID (Decentralized Identifier) operations.
+DID（去中心化标识符）相关操作
 
-## Endpoints
+## 终端点（Endpoints）
 
-### Query DIDs
+### 查询 DIDs
 
-| Endpoint | Payload | Description |
+| 终端点 | 数据格式 | 描述 |
 |----------|---------|-------------|
-| `get_dids` | `{}` | List all DIDs |
-| `get_minter_did_ids` | `{"offset": 0, "limit": 50}` | List minter DIDs |
+| `get_dids` | `{}` | 列出所有 DIDs |
+| `get_minter_did_ids` | `{"offset": 0, "limit": 50}` | 列出矿工的 DIDs |
 
-### Create DID
+### 创建 DID
 
 ```json
 {
@@ -26,7 +26,7 @@ DID (Decentralized Identifier) operations.
 }
 ```
 
-### Update DID
+### 更新 DID
 
 ```json
 {
@@ -36,7 +36,7 @@ DID (Decentralized Identifier) operations.
 }
 ```
 
-### Transfer DIDs
+### 转移 DIDs
 
 ```json
 {
@@ -48,9 +48,9 @@ DID (Decentralized Identifier) operations.
 }
 ```
 
-### Normalize DIDs
+### 规范化 DIDs
 
-Update DID records to latest on-chain state:
+将 DID 记录更新为最新的链上状态：
 
 ```json
 {
@@ -60,7 +60,7 @@ Update DID records to latest on-chain state:
 }
 ```
 
-## DID Record Structure
+## DID 记录结构
 
 ```json
 {
@@ -72,7 +72,7 @@ Update DID records to latest on-chain state:
 }
 ```
 
-## Examples
+## 示例（Examples）
 
 ```bash
 # List DIDs
@@ -101,9 +101,9 @@ sage_rpc update_did '{
 }'
 ```
 
-## Use Cases
+## 使用场景（Use Cases）
 
-- **NFT Minting**: DIDs provide verifiable provenance for minted NFTs
-- **Identity**: DIDs act as on-chain identities for profiles
-- **Collections**: Link NFT collections to a minter DID
-- **Authentication**: Sign messages with DID keys for verification
+- **NFT 铸造**：DIDs 为铸造的 NFT 提供可验证的出处信息。
+- **身份验证**：DIDs 作为链上的身份标识。
+- **作品集管理**：将 NFT 集合与矿工的 DID 关联起来。
+- **消息认证**：使用 DID 密钥对消息进行签名以供验证。

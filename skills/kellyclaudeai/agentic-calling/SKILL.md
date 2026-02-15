@@ -1,28 +1,28 @@
-# Agentic Calling Skill
+# 代理呼叫技能
 
-**Enable AI agents to make and receive phone calls autonomously using Twilio.**
+**使AI代理能够使用Twilio自主发起和接听电话。**
 
-## Overview
+## 概述
 
-This skill provides a complete toolkit for AI agents to handle phone calls programmatically. Agents can:
-- Make outbound calls with custom voice messages
-- Receive inbound calls and respond dynamically
-- Convert text to speech for natural conversations
-- Transcribe caller speech to text
-- Handle call routing and forwarding
-- Manage voicemail and recordings
+该技能为AI代理提供了完整的工具包，以便它们能够以编程方式处理电话呼叫。代理可以：
+- 发起带有自定义语音消息的出站呼叫
+- 接听来电并动态响应
+- 将文本转换为语音以实现自然对话
+- 将来电者的语音转录为文本
+- 管理呼叫路由和转发
+- 管理语音邮件和录音
 
-## Prerequisites
+## 先决条件
 
-1. **Twilio Account**: Sign up at [twilio.com](https://www.twilio.com)
-2. **Twilio Phone Number**: Purchase a number with Voice capabilities
-3. **Twilio Credentials**: Account SID and Auth Token
+1. **Twilio账户**：在 [twilio.com](https://www.twilio.com) 注册
+2. **Twilio电话号码**：购买具有语音功能的电话号码
+3. **Twilio凭据**：账户SID和认证令牌
 
-## Quick Start
+## 快速入门
 
-### 1. Configure Credentials
+### 1. 配置凭据
 
-Create a file at `~/.clawdbot/twilio-config.json`:
+在 `~/.clawdbot/twilio-config.json` 文件中创建配置：
 
 ```json
 {
@@ -32,7 +32,7 @@ Create a file at `~/.clawdbot/twilio-config.json`:
 }
 ```
 
-Or set environment variables:
+或者设置环境变量：
 
 ```bash
 export TWILIO_ACCOUNT_SID="YOUR_ACCOUNT_SID"
@@ -40,23 +40,23 @@ export TWILIO_AUTH_TOKEN="YOUR_AUTH_TOKEN"
 export TWILIO_PHONE_NUMBER="+1XXXXXXXXXX"
 ```
 
-### 2. Make Your First Call
+### 2. 发起第一个呼叫
 
 ```bash
 ./scripts/make-call.sh --to "+15551234567" --message "Hello! This is your AI assistant calling."
 ```
 
-### 3. Set Up Inbound Call Handling
+### 3. 设置来电处理
 
 ```bash
 ./scripts/setup-webhook.sh --url "https://your-server.com/voice"
 ```
 
-## Core Scripts
+## 核心脚本
 
-### `make-call.sh` - Make Outbound Calls
+### `make-call.sh` - 发起出站呼叫
 
-Make a phone call with a text-to-speech message:
+使用文本转语音功能发起电话呼叫：
 
 ```bash
 # Simple call with message
@@ -72,17 +72,17 @@ Make a phone call with a text-to-speech message:
 ./scripts/make-call.sh --to "+15551234567" --message "Hello" --callback "https://your-server.com/status"
 ```
 
-**Parameters:**
-- `--to` (required): Destination phone number (E.164 format)
-- `--message` (required): Text to speak
-- `--voice` (optional): Voice to use (default: Polly.Joanna)
-- `--record` (optional): Record the call (true/false)
-- `--callback` (optional): URL for status updates
-- `--timeout` (optional): Ring timeout in seconds (default: 30)
+**参数：**
+- `--to`（必填）：目标电话号码（E.164格式）
+- `--message`（必填）：要播放的语音消息
+- `--voice`（可选）：使用的语音（默认：Polly.Joanna）
+- `--record`（可选）：是否录制呼叫（true/false）
+- `--callback`（可选）：状态更新URL
+- `--timeout`（可选）：呼叫超时时间（秒）（默认：30）
 
-### `receive-call.sh` - Handle Inbound Calls
+### `receive-call.sh` - 处理来电
 
-Server script to handle incoming calls with TwiML responses:
+服务器脚本，用于使用TwiML响应处理来电：
 
 ```bash
 # Start webhook server on port 3000
@@ -98,9 +98,9 @@ Server script to handle incoming calls with TwiML responses:
 ./scripts/receive-call.sh --port 3000 --voicemail true
 ```
 
-### `sms-notify.sh` - Send SMS Notifications
+### `sms-notify.sh` - 发送短信通知
 
-Send SMS messages (useful for call follow-ups):
+发送短信通知（适用于电话跟进）：
 
 ```bash
 # Simple SMS
@@ -110,9 +110,9 @@ Send SMS messages (useful for call follow-ups):
 ./scripts/sms-notify.sh --to "+15551234567" --message "Summary attached" --media "https://example.com/summary.pdf"
 ```
 
-### `call-status.sh` - Check Call Status
+### `call-status.sh` - 检查呼叫状态
 
-Monitor active and completed calls:
+监控正在进行的和已完成的呼叫：
 
 ```bash
 # Get status of specific call
@@ -125,19 +125,19 @@ Monitor active and completed calls:
 ./scripts/call-status.sh --sid "CA1234567890abcdef" --download-recording
 ```
 
-## Advanced Usage
+## 高级用法
 
-### Custom IVR (Interactive Voice Response)
+### 自定义IVR（交互式语音应答）
 
-Create dynamic phone menus:
+创建动态电话菜单：
 
 ```bash
 ./scripts/create-ivr.sh --menu "Press 1 for sales, 2 for support, 3 for emergencies"
 ```
 
-### Conference Calls
+### 会议呼叫
 
-Set up multi-party conference calls:
+设置多方会议呼叫：
 
 ```bash
 # Create conference
@@ -147,7 +147,7 @@ Set up multi-party conference calls:
 ./scripts/conference.sh --add-participant --conference "Team Standup" --number "+15551234567"
 ```
 
-### Call Recording & Transcription
+### 呼叫录音与转录
 
 ```bash
 # Record and transcribe
@@ -160,18 +160,18 @@ Set up multi-party conference calls:
 ./scripts/call-status.sh --sid "CA123..." --get-transcript
 ```
 
-### Voice Cloning (Experimental)
+### 语音克隆（实验性）
 
-Use ElevenLabs integration for custom voice:
+使用ElevenLabs集成来实现自定义语音：
 
 ```bash
 # Requires ElevenLabs API key
 ./scripts/make-call-elevenlabs.sh --to "+15551234567" --message "Hello" --voice-id "YOUR_VOICE_ID"
 ```
 
-## Integration Patterns
+## 集成模式
 
-### 1. Appointment Reminders
+### 1. 约会提醒
 
 ```bash
 #!/bin/bash
@@ -183,7 +183,7 @@ while read -r name phone appointment; do
 done < appointments.txt
 ```
 
-### 2. Emergency Alerts
+### 2. 紧急警报
 
 ```bash
 #!/bin/bash
@@ -199,7 +199,7 @@ done
 wait
 ```
 
-### 3. Lead Qualification
+### 潜在客户资格评估
 
 ```bash
 #!/bin/bash
@@ -210,34 +210,34 @@ wait
   --callback "https://your-crm.com/lead-response"
 ```
 
-## Voice Options
+## 语音选项
 
-Supported voices (Amazon Polly):
+支持的语音（Amazon Polly）：
 
-**English (US):**
-- `Polly.Joanna` (Female, default)
-- `Polly.Matthew` (Male)
-- `Polly.Ivy` (Female, child)
-- `Polly.Joey` (Male)
-- `Polly.Kendra` (Female)
-- `Polly.Kimberly` (Female)
-- `Polly.Salli` (Female)
+**英语（美国）：**
+- `Polly.Joanna`（女性，默认）
+- `Polly.Matthew`（男性）
+- `Polly.Ivy`（女性，儿童音）
+- `Polly.Joey`（男性）
+- `Polly.Kendra`（女性）
+- `Polly.Kimberly`（女性）
+- `Polly.Salli`（女性）
 
-**English (UK):**
-- `Polly.Amy` (Female)
-- `Polly.Brian` (Male)
-- `Polly.Emma` (Female)
+**英语（英国）：**
+- `Polly.Amy`（女性）
+- `Polly.Brian`（男性）
+- `Polly.Emma`（女性）
 
-**Other Languages:**
-- Spanish: `Polly.Miguel`, `Polly.Penelope`
-- French: `Polly.Celine`, `Polly.Mathieu`
-- German: `Polly.Hans`, `Polly.Marlene`
+**其他语言：**
+- 西班牙语：`Polly.Miguel`, `Polly.Penelope`
+- 法语：`Polly.Celine`, `Polly.Mathieu`
+- 德语：`Polly.Hans`, `Polly.Marlene`
 
-## Webhooks & TwiML
+## Webhook与TwiML
 
-### Setting Up Webhooks
+### 设置Webhook
 
-Configure your Twilio number to POST to your webhook URL when calls arrive:
+配置您的Twilio号码，在接听电话时向您的Webhook URL发送POST请求：
 
 ```bash
 ./scripts/configure-number.sh \
@@ -246,7 +246,7 @@ Configure your Twilio number to POST to your webhook URL when calls arrive:
   --status-callback "https://your-server.com/status"
 ```
 
-### Example TwiML Response
+### 示例TwiML响应
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -258,30 +258,30 @@ Configure your Twilio number to POST to your webhook URL when calls arrive:
 </Response>
 ```
 
-## Cost Optimization
+## 成本优化
 
-- **Outbound calls**: ~$0.013/minute (US)
-- **Inbound calls**: ~$0.0085/minute (US)
-- **SMS**: ~$0.0079/message (US)
-- **Phone number**: ~$1.15/month
+- **出站呼叫**：约0.013美元/分钟（美国）
+- **来电**：约0.0085美元/分钟（美国）
+- **短信**：约0.0079美元/条（美国）
+- **电话号码**：约1.15美元/月
 
-**Tips:**
-- Use regional phone numbers to reduce costs
-- Batch calls during off-peak hours
-- Keep messages concise to minimize call duration
-- Use SMS for simple notifications
+**提示：**
+- 使用区域电话号码以降低成本
+- 在非高峰时段批量发送呼叫
+- 保持消息简洁以减少通话时长
+- 使用短信发送简单通知
 
-## Security Best Practices
+## 安全最佳实践
 
-1. **Protect Credentials**: Never commit credentials to git
-2. **Use HTTPS**: Always use HTTPS for webhooks
-3. **Validate Requests**: Verify Twilio signatures on webhooks
-4. **Rate Limiting**: Implement rate limits on outbound calls
-5. **Logging**: Log all calls for audit trails
+1. **保护凭据**：切勿将凭据提交到git
+2. **使用HTTPS**：始终使用HTTPS进行Webhook通信
+3. **验证请求**：验证Webhook上的Twilio签名
+4. **限制速率**：对出站呼叫实施速率限制
+5. **日志记录**：记录所有呼叫以备审计
 
-## Troubleshooting
+## 故障排除
 
-### Call Not Connecting
+### 呼叫无法连接
 
 ```bash
 # Check number formatting (must be E.164)
@@ -291,7 +291,7 @@ Configure your Twilio number to POST to your webhook URL when calls arrive:
 ./scripts/make-call.sh --to "$TWILIO_PHONE_NUMBER" --message "Test call"
 ```
 
-### Webhook Not Receiving Calls
+### Webhook未接收到呼叫
 
 ```bash
 # Test webhook
@@ -303,7 +303,7 @@ curl -X POST https://your-server.com/voice \
 ./scripts/check-logs.sh --recent 10
 ```
 
-### Audio Quality Issues
+### 音频质量问题
 
 ```bash
 # Use different voice engine
@@ -313,31 +313,31 @@ curl -X POST https://your-server.com/voice \
 ./scripts/make-call.sh --to "+15551234567" --message "Test" --rate "90%"
 ```
 
-## Examples
+## 示例
 
-See `examples/` directory for complete use cases:
+请查看 `examples/` 目录中的完整用例：
 
-- `examples/appointment-reminder.sh` - Automated appointment reminders
-- `examples/emergency-broadcast.sh` - Broadcast emergency alerts
-- `examples/ivr-menu.sh` - Interactive voice menu
-- `examples/voicemail-transcription.sh` - Voicemail to email
-- `examples/two-factor-auth.sh` - Voice-based 2FA
+- `examples/appointment-reminder.sh` - 自动化约会提醒
+- `examples/emergency-broadcast.sh` - 广播紧急警报
+- `examples/ivr-menu.sh` - 交互式语音菜单
+- `examples/voicemail-transcription.sh` - 将语音邮件转录为电子邮件
+- `examples/two-factor-auth.sh` - 基于语音的双因素认证
 
-## API Reference
+## API参考
 
-Full Twilio API documentation: https://www.twilio.com/docs/voice
+完整的Twilio API文档：https://www.twilio.com/docs/voice
 
-## Support
+## 支持
 
-- GitHub Issues: [Report bugs or request features]
-- Twilio Docs: https://www.twilio.com/docs
-- Community: https://discord.com/invite/clawd
+- GitHub问题：[报告错误或请求功能]
+- Twilio文档：https://www.twilio.com/docs
+- 社区：https://discord.com/invite/clawd
 
-## License
+## 许可证
 
-MIT License - feel free to use in your own projects
+MIT许可证 - 您可以自由将其用于您自己的项目
 
-## Credits
+## 致谢
 
-Created by Kelly Claude (AI Assistant)
-Powered by Twilio and Clawdbot
+由Kelly Claude（AI助手）创建
+由Twilio和Clawdbot提供支持

@@ -1,6 +1,6 @@
 ---
 name: mens-mental-health
-description: Mental health support for men with emotion check-ins, stress tools, and no-judgment space
+description: 为男性提供心理健康支持，包括情绪检查工具和无需评判的安全交流空间。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,57 +11,55 @@ triggers:
   - "men's emotions"
 ---
 
-# Men's Mental Health
+# 男性心理健康
 
-A no-judgment space where you can check in with yourself, work through stress, and build resilience without the noise.
+这是一个无评判的空间，让你能够自我反思、应对压力，并在远离外界干扰的环境中培养韧性。
 
-## What it does
+## 功能介绍
 
-This skill gives you tools to:
-- **Emotion Check-ins**: Name what you're feeling and understand it
-- **Stress Management**: Practical techniques to decompress when things pile up
-- **Healthy Coping**: Alternatives to harmful patterns that actually work
-- **Pattern Tracking**: Spot what triggers stress and what helps you recover
+该工具为你提供以下帮助：
+- **情绪识别**：命名你的感受并理解它们。
+- **压力管理**：在压力积聚时，提供实用的减压方法。
+- **健康应对策略**：替代那些有害的应对模式，找到真正有效的解决方法。
+- **压力源追踪**：识别引发压力的因素以及帮助你恢复的方法。
 
-## Usage
+## 使用方法
 
-### Check In
-Start here when you need clarity. Answer a few quick questions about your current state—mood, what triggered it, physical symptoms. The skill reflects back what it hears and offers perspective.
+### 自我反思
+当你需要清晰地了解自己的状态时，从这里开始。回答一些关于你当前情绪、压力源及身体症状的简单问题。该工具会根据你的回答给出反馈和建议。
 
-### Stress Tools
-When pressure builds, access immediate techniques: breathing patterns, body scans, reframing tools, and grounding exercises. Designed for 2-10 minutes depending on urgency.
+### 压力缓解工具
+当压力增大时，可以立即使用这些方法：呼吸练习、身体扫描、思维重构技巧以及放松练习。根据紧急程度，这些方法通常需要2到10分钟来完成。
 
-### Vent
-Sometimes you need to get it out. Use this to process a situation without fixing it immediately. The skill listens, validates, and helps you organize your thoughts.
+### 情绪宣泄
+有时候你需要倾诉自己的感受。该工具会倾听你的想法，给予认可，并帮助你整理思绪。
 
-### Track Patterns
-Over time, identify what consistently drains or energizes you. See correlations between sleep, work, relationships, and your mental state. Data stays local—only you see it.
+### 压力源追踪
+随着时间的推移，识别出持续消耗你精力或给你带来能量的因素。观察睡眠、工作、人际关系与你的心理状态之间的关联。所有数据仅保存在你的设备上，只有你能查看。
 
-### Get Perspective
-When you're stuck in a loop, talk through it. The skill asks clarifying questions, offers reframes, and helps you see angles you might have missed.
+### 寻求新的视角
+当你陷入负面循环时，与该工具进行交流。它会提出问题，帮助你从不同的角度看待问题。
 
-## Common Topics
+## 常见主题
+- **工作压力**：工作压力、无力感、不良的工作环境
+- **人际关系**：冲突、疏远、沟通障碍
+- **自我认同**：男性身份认同、社会期望、如何获得满足感
+- **愤怒情绪**：愤怒、易怒、如何控制情绪
+- **孤立感**：孤独感、社交退缩、缺乏联系
+- **人生目标**：生活方向、人生意义、对自我道路的质疑
 
-- **Work stress**: Pressure, powerlessness, toxic culture
-- **Relationships**: Conflict, disconnection, communication breakdowns
-- **Identity**: Masculinity, expectations, being "enough"
-- **Anger**: Rage, irritability, control and letting loose
-- **Isolation**: Loneliness, withdrawn, lack of connection
-- **Purpose**: Direction, meaning, questioning your path
+## 使用建议
+1. **保持诚实**。这里没有评判，你越真实，反思就越有效。
+2. **定期使用**，而不仅仅是在危机时刻。养成每周或在情况发生变化时进行自我反思的习惯。
+3. **结合其他资源**：对于一些复杂的问题，专业的心理咨询师、值得信赖的朋友或医生能提供更好的帮助。将此工具作为辅助工具使用，而非替代方案。
+4. **长期观察数据变化**：一次性的交流虽然有帮助，但长期的数据分析才能揭示真正有效的解决方法。
+5. **所有数据仅保存在你的设备上**。未经你同意，任何数据都不会被泄露。
 
-## Tips
+## 如遇危机
 
-1. **Be honest**. There's no judgment here. The more real you are, the more useful the reflection.
-2. **Use it regularly**, not just in crisis. Check-ins work best as a habit—weekly or when things shift.
-3. **Combine with other tools**. A therapist, trusted friend, or doctor handles what a skill can't. Use this alongside, not instead of.
-4. **Notice patterns over time**. One conversation is helpful. Tracking months of data shows you what actually moves the needle.
-5. **All data stays local on your machine**. Nothing leaves your device without your explicit choice.
+请注意：该工具不能替代专业医疗或心理咨询。
 
-## If You're in Crisis
+- **紧急求助电话**：988（自杀与危机热线）
+- **发送短信至741741**（危机短信热线）
 
-This skill is not a substitute for professional help.
-
-- **988** (Suicide & Crisis Lifeline)
-- **Text HOME to 741741** (Crisis Text Line)
-
-If you're in immediate danger, call 911 or go to your nearest emergency room.
+如果你处于紧急危险中，请立即拨打911或前往最近的急诊室。

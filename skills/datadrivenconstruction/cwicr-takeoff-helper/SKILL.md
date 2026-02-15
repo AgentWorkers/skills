@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-takeoff-helper"
 display_name: "CWICR Takeoff Helper"
-description: "Assist with quantity takeoff using CWICR data. Calculate quantities from dimensions, apply waste factors, and suggest related work items."
+description: "使用 CWICR 数据协助进行数量统计。根据尺寸计算所需数量，应用损耗系数，并提出相关的工作建议。"
 ---
 
-# CWICR Takeoff Helper
+# CWICR 计量辅助工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Quantity takeoff requires:
-- Accurate calculations from dimensions
-- Correct unit conversions
-- Waste factor application
-- Complete scope coverage
+### 问题描述
+进行数量计量时需要：
+- 根据尺寸数据进行精确的计算
+- 正确的单位转换
+- 应用相应的损耗系数
+- 确保覆盖所有相关项目
 
-### Solution
-Assist takeoff process with CWICR-based calculations, automatic waste factors, unit conversions, and related item suggestions.
+### 解决方案
+通过基于 CWICR 的计算、自动损耗系数计算、单位转换以及相关项目的推荐来辅助计量过程。
 
-### Business Value
-- **Accuracy** - Validated calculations
-- **Completeness** - Related items suggested
-- **Speed** - Quick quantity calculations
-- **Consistency** - Standard approaches
+### 商业价值
+- **准确性**：经过验证的计算结果
+- **完整性**：提供相关的建议项目
+- **速度**：快速完成数量计算
+- **一致性**：采用标准化的计算方法
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -386,8 +385,7 @@ class CWICRTakeoffHelper:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize helper
 helper = CWICRTakeoffHelper()
@@ -404,9 +402,9 @@ print(f"Order Qty: {concrete.net_quantity} m3")
 print(f"Calculation: {concrete.calculation}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Room Takeoff
+### 1. 房间面积计量
 ```python
 room = helper.room_takeoff(
     length=5,
@@ -419,25 +417,25 @@ for item in room.items:
     print(f"{item.description}: {item.net_quantity} {item.unit}")
 ```
 
-### 2. Unit Conversion
+### 2. 单位转换
 ```python
 meters = helper.convert_unit(100, 'ft', 'm')
 print(f"100 ft = {meters:.2f} m")
 ```
 
-### 3. Rebar from Concrete
+### 3. 从混凝土中提取钢筋的数量
 ```python
 concrete = helper.calculate_concrete(10, 8, 0.3)
 rebar = helper.calculate_rebar(concrete.gross_quantity, kg_per_m3=120)
 print(f"Rebar: {rebar.net_quantity} kg")
 ```
 
-### 4. Related Items
+### 4. 相关项目统计
 ```python
 related = helper.suggest_related_items("CONC-SLAB-001")
 print(f"Related: {related}")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Quantity Takeoff Methods
+- **DDC 书籍**: 第 3.1 章 - 数量计量方法

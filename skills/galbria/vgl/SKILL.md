@@ -1,52 +1,39 @@
 ---
 name: vgl
-description: Write structured VGL (Visual Generation Language) JSON prompts for Bria's FIBO image generation models. Use this skill when creating detailed image descriptions in JSON format for text-to-image generation, image editing, inpainting, outpainting, background generation, or captioning. Triggers include requests to write structured prompts, create VGL JSON, describe images for AI generation, or work with Bria/FIBO's structured_prompt format. Also use when converting natural language image requests into the deterministic JSON schema required by FIBO models.
+description: 为 Bria 的 FIBO 图像生成模型编写结构化的 VGL（Visual Generation Language）JSON 提示。在创建用于文本到图像生成、图像编辑、图像修复、背景生成或字幕制作的详细图像描述时，可以使用此技能。相关任务包括：编写结构化提示、生成 VGL JSON 数据、为 AI 生成过程描述图像，以及处理 Bria/FIBO 的结构化提示格式。此外，还可以在将自然语言图像请求转换为 FIBO 模型所需的确定性 JSON 格式时使用该技能。
 ---
 
-# Bria VGL Prompt Writing
+# Bria VGL提示编写
 
-Generate structured JSON prompts for Bria's FIBO models using Visual Generation Language (VGL).
+使用视觉生成语言（VGL）为Bria的FIBO模型生成结构化的JSON提示。
 
-> **Related Skill**: Use **[bria-ai](../bria-ai/SKILL.md)** to execute these VGL prompts via the Bria API. VGL defines the structured prompt format; bria-ai handles generation, editing, and background removal.
+> **相关技能**：使用**[bria-ai](../bria-ai/SKILL.md)**通过Bria API执行这些VGL提示。VGL定义了结构化的提示格式；bria-ai负责生成、编辑和去除背景图像。
 
-## Core Concept
+## 核心概念
 
-VGL replaces ambiguous natural language prompts with deterministic JSON that explicitly declares every visual attribute: objects, lighting, camera settings, composition, and style. This ensures reproducible, controllable image generation.
+VGL用明确的JSON格式替换了模糊的自然语言提示，这些JSON格式详细说明了所有的视觉属性：对象、光照、相机设置、构图和风格。这确保了图像生成的可重复性和可控性。
 
-## Operation Modes
+## 操作模式
 
-| Mode | Input | Output | Use Case |
+| 模式 | 输入 | 输出 | 使用场景 |
 |------|-------|--------|----------|
-| **Generate** | Text prompt | VGL JSON | Create new image from description |
-| **Edit** | Image + instruction | VGL JSON | Modify reference image |
-| **Edit_with_Mask** | Masked image + instruction | VGL JSON | Fill grey masked regions |
-| **Caption** | Image only | VGL JSON | Describe existing image |
-| **Refine** | Existing JSON + edit | Updated VGL JSON | Modify existing prompt |
+| **生成** | 文本提示 | VGL JSON | 根据描述创建新图像 |
+| **编辑** | 图像 + 指令 | VGL JSON | 修改参考图像 |
+| **带遮罩编辑** | 带遮罩的图像 + 指令 | VGL JSON | 填充灰色遮罩区域 |
+| **添加标题** | 仅图像 | VGL JSON | 描述现有图像 |
+| **优化** | 现有的JSON + 编辑 | 更新后的VGL JSON | 修改现有提示 |
 
-## JSON Schema
+## JSON模式
 
-Output a single valid JSON object with these required keys:
+输出一个包含以下必填键的有效JSON对象：
 
-### 1. `short_description` (String)
-Concise summary of image content, max 200 words. Include key subjects, actions, setting, and mood.
+### 1. `short_description`（字符串）
+图像内容的简短总结，最多200个单词。包括主要主题、动作、设置和氛围。
 
-### 2. `objects` (Array, max 5 items)
-Each object requires:
+### 2. `objects`（数组，最多5个元素）
+每个对象需要：
 
-```json
-{
-  "description": "Detailed description, max 100 words",
-  "location": "center | top-left | bottom-right foreground | etc.",
-  "relative_size": "small | medium | large within frame",
-  "shape_and_color": "Basic shape and dominant color",
-  "texture": "smooth | rough | metallic | furry | fabric | etc.",
-  "appearance_details": "Notable visual details",
-  "relationship": "Relationship to other objects",
-  "orientation": "upright | tilted 45 degrees | facing left | horizontal | etc."
-}
-```
-
-**Human subjects** add:
+**人物主体**添加：
 ```json
 {
   "pose": "Body position description",
@@ -58,19 +45,19 @@ Each object requires:
 }
 ```
 
-**Object clusters** add:
+**对象群组**添加：
 ```json
 {
   "number_of_objects": 3
 }
 ```
 
-**Size guidance**: If a person is the main subject, use `"medium-to-large"` or `"large within frame"`.
+**大小提示**：如果主要主体是人，使用“中等至大型”或“画面内的大型”。
 
-### 3. `background_setting` (String)
-Overall environment, setting, and background elements not in `objects`.
+### 3. `background_setting`（字符串）
+整体环境、设置和不在`objects`中的背景元素。
 
-### 4. `lighting` (Object)
+### 4. `lighting`（对象）
 ```json
 {
   "conditions": "bright daylight | dim indoor | studio lighting | golden hour | blue hour | overcast",
@@ -79,7 +66,7 @@ Overall environment, setting, and background elements not in `objects`.
 }
 ```
 
-### 5. `aesthetics` (Object)
+### 5. `aesthetics`（对象）
 ```json
 {
   "composition": "rule of thirds | symmetrical | centered | leading lines | medium shot | close-up",
@@ -87,9 +74,9 @@ Overall environment, setting, and background elements not in `objects`.
   "mood_atmosphere": "serene | energetic | mysterious | joyful | dramatic | peaceful"
 }
 ```
-For people as main subject, specify shot type in composition: `"medium shot"`, `"close-up"`, `"portrait composition"`.
+对于以人为主要主体的图像，指定构图类型：“中景”、“特写”、“肖像构图”。
 
-### 6. `photographic_characteristics` (Object)
+### 6. `photographic_characteristics`（对象）
 ```json
 {
   "depth_of_field": "shallow | deep | bokeh background",
@@ -98,28 +85,25 @@ For people as main subject, specify shot type in composition: `"medium shot"`, `
   "lens_focal_length": "wide-angle | 50mm standard | 85mm portrait | telephoto | macro"
 }
 ```
-**For people**: Prefer `"standard lens (35mm-50mm)"` or `"portrait lens (50mm-85mm)"`. Avoid wide-angle unless specified.
+**对于人物**：建议使用“标准镜头（35mm-50mm）”或“肖像镜头（50mm-85mm）”。除非特别指定，否则避免使用广角镜头。
 
-### 7. `style_medium` (String)
-`"photograph"` | `"oil painting"` | `"watercolor"` | `"3D render"` | `"digital illustration"` | `"pencil sketch"`
+### 7. `style_medium`（字符串）
+“照片” | “油画” | “水彩” | “3D渲染” | “数字插画” | “铅笔画”
+默认为“照片”，除非另有明确要求。
 
-Default to `"photograph"` unless explicitly requested otherwise.
+### 8. `artistic_style`（字符串）
+如果不是照片，用最多3个词描述其风格特征：“印象派”、“生动”、“有质感”
+对于照片，可以使用“写实”或类似的描述。
 
-### 8. `artistic_style` (String)
-If not photograph, describe characteristics in max 3 words: `"impressionistic, vibrant, textured"`
+### 9. `context`（字符串）
+描述图像类型/用途：
+- “用于杂志封面的高级时尚编辑照片”
+- “幻想视频游戏的概念艺术”
+- “电子商务产品的商业摄影”
 
-For photographs, use `"realistic"` or similar.
-
-### 9. `context` (String)
-Describe the image type/purpose:
-- `"High-fashion editorial photograph for magazine spread"`
-- `"Concept art for fantasy video game"`
-- `"Commercial product photography for e-commerce"`
-
-### 10. `text_render` (Array)
-**Default: empty array `[]`**
-
-Only populate if user explicitly provides exact text content:
+### 10. `text_render`（数组）
+**默认：空数组`[]**
+仅当用户明确提供具体文本内容时填写：
 ```json
 {
   "text": "Exact text from user (never placeholder)",
@@ -130,58 +114,58 @@ Only populate if user explicitly provides exact text content:
   "appearance_details": "Metallic finish | 3D effect | etc."
 }
 ```
-Exception: Universal text integral to objects (e.g., "STOP" on stop sign).
+例外情况：与对象相关的通用文本（例如，停车标志上的“STOP”）。
 
-### 11. `edit_instruction` (String)
-Single imperative command describing the edit/generation.
+### 11. `editinstruction`（字符串）
+描述编辑/生成的单一命令。
 
-## Edit Instruction Formats
+## 编辑指令格式
 
-### For Standard Edits (no mask)
-Start with action verb, describe changes, never reference "original image":
+### 对于标准编辑（无遮罩）
+以动词开头，描述更改内容，不要提及“原始图像”：
 
-| Category | Rewritten Instruction |
+| 类别 | 重写后的指令 |
 |----------|----------------------|
-| Style change | `Turn the image into the cartoon style.` |
-| Object attribute | `Change the dog's color to black and white.` |
-| Add element | `Add a wide-brimmed felt hat to the subject.` |
-| Remove object | `Remove the book from the subject's hands.` |
-| Replace object | `Change the rose to a bright yellow sunflower.` |
-| Lighting | `Change the lighting from dark and moody to bright and vibrant.` |
-| Composition | `Change the perspective to a wider shot.` |
-| Text change | `Change the text "Happy Anniversary" to "Hello".` |
-| Quality | `Refine the image to obtain increased clarity and sharpness.` |
+| 风格更改 | `将图像转换为卡通风格。` |
+| 对象属性 | `将狗的颜色改为黑白。` |
+| 添加元素 | `在主体上添加一顶宽边毡帽。` |
+| 删除对象 | `从主体手中移除书本。` |
+| 替换对象 | `将玫瑰替换成明亮的向日葵。` |
+| 光照 | `将光照从阴暗忧郁改为明亮生动。` |
+| 构图 | `将视角改为更宽的镜头。` |
+| 文本更改 | `将文本“Happy Anniversary”改为“Hello”。` |
+| 质量 | `优化图像以提高清晰度和锐度。` |
 
-### For Masked Region Edits
-Reference "masked regions" or "masked area" as target:
+### 对于遮罩区域编辑
+将“遮罩区域”或“遮罩部分”作为目标：
 
-| Intent | Rewritten Instruction |
+| 意图 | 重写后的指令 |
 |--------|----------------------|
-| Object generation | `Generate a white rose with a blue center in the masked region.` |
-| Extension | `Extend the image into the masked region to create a scene featuring...` |
-| Background fill | `Create the following background in the masked region: A vast ocean extending to horizon.` |
-| Atmospheric fill | `Fill the background masked area with a clear, bright blue sky with wispy clouds.` |
-| Subject restoration | `Restore the area in the mask with a young woman.` |
-| Environment infill | `Create inside the masked area: a greenhouse with rows of plants under glass ceiling.` |
+| 对象生成 | `在遮罩区域内生成一朵中心为蓝色的白玫瑰。` |
+| 扩展 | `将图像扩展到遮罩区域以创建一个场景……` |
+| 背景填充 | `在遮罩区域内创建以下背景：一片延伸到地平线的广阔海洋。` |
+| 大气填充 | `用清澈明亮的蓝色天空和细云填充遮罩区域。` |
+| 主体恢复 | `用一位年轻女性恢复遮罩区域。` |
+| 环境填充 | `在遮罩区域内创建一个温室，里面有排列在玻璃天花板下的植物。` |
 
-## Fidelity Rules
+## 保真规则
 
-### Standard Edit Mode
-Preserve ALL visual properties unless explicitly changed by instruction:
-- Subject identity, pose, appearance
-- Object existence, location, size, orientation
-- Composition, camera angle, lens characteristics
-- Style/medium
+### 标准编辑模式
+除非有明确的指令要求，否则保留所有视觉属性：
+- 主体的身份、姿势、外观
+- 对象的存在、位置、大小、方向
+- 构图、相机角度、镜头特性
+- 风格/媒介
 
-Only change what the edit strictly requires.
+只更改编辑所严格要求的部分。
 
-### Masked Edit Mode
-- Preserve all visible (non-masked) portions exactly
-- Fill grey masked regions to blend seamlessly with unmasked areas
-- Match existing style, lighting, and subject matter
-- Never describe grey masks—describe content that fills them
+### 遮罩编辑模式
+- 保留所有可见（非遮罩）的部分
+- 将灰色遮罩区域填充得与未遮罩区域无缝融合
+- 保持与现有风格、光照和主题的一致性
+- 不要描述灰色遮罩——描述填充它们的内容
 
-## Example Output
+## 示例输出
 
 ```json
 {
@@ -246,22 +230,22 @@ Only change what the edit strictly requires.
 }
 ```
 
-## Common Pitfalls
+## 常见错误
 
-1. **Don't invent text** - Keep `text_render` empty unless user provides exact text
-2. **Don't over-describe** - Max 5 objects, prioritize most important
-3. **Match the mode** - Use correct `edit_instruction` format for masked vs standard edits
-4. **Preserve fidelity** - Only change what's explicitly requested
-5. **Be specific** - Use concrete values ("85mm portrait lens") not vague terms ("nice camera")
-6. **Null for irrelevant** - Human-specific fields should be `null` for non-human objects
+1. **不要编造文本** - 除非用户提供了具体文本，否则保持`text_render`为空
+2. **不要过度描述** - 最多描述5个对象，优先考虑最重要的信息
+3. **使用正确的模式** - 对于遮罩编辑和标准编辑，使用正确的`edit_instruction`格式
+4. **保持保真度** - 只更改明确请求的内容
+5. **具体说明** - 使用具体的数值（例如“85mm肖像镜头”）而不是模糊的术语（如“不错的相机”）
+6. **无关内容设为null** - 对于非人类对象，与人相关的字段应设为`null`
 
 ---
 
-## Using VGL with Bria API
+## 使用VGL与Bria API
 
-### Generate Image with Structured Prompt
+### 使用结构化提示生成图像
 
-Pass VGL JSON to the `structured_prompt` parameter:
+将VGL JSON传递给`structured_prompt`参数：
 
 ```python
 from bria_client import BriaClient
@@ -283,9 +267,9 @@ result = client.refine(
 print(result['result']['image_url'])
 ```
 
-### Refine Existing Generation
+### 优化现有生成的图像
 
-After generation, Bria returns a `structured_prompt` you can modify and regenerate:
+生成后，Bria会返回一个`structured_prompt`，您可以对其进行修改并重新生成：
 
 ```python
 # Initial generation
@@ -299,7 +283,7 @@ result = client.refine(
 )
 ```
 
-### curl Example
+### curl示例
 
 ```bash
 curl -X POST "https://engine.prod.bria-api.com/v2/image/generate" \
@@ -314,7 +298,7 @@ curl -X POST "https://engine.prod.bria-api.com/v2/image/generate" \
 
 ---
 
-## References
+## 参考资料
 
-- **[Schema Reference](references/schema-reference.md)** - Complete JSON schema with all parameter values
-- **[bria-ai](../bria-ai/SKILL.md)** - API client and endpoint documentation for executing VGL prompts
+- **[模式参考](references/schema-reference.md)** - 完整的JSON模式及所有参数值
+- **[bria-ai](../bria-ai/SKILL.md)** - 用于执行VGL提示的API客户端和端点文档

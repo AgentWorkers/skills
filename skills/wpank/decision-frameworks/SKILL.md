@@ -1,15 +1,14 @@
 ---
 name: decision-frameworks
 model: reasoning
-description: Structured decision-making patterns for common engineering choices — library selection, architecture, build vs buy, prioritization, reversibility analysis, and ADRs. Use when choosing between tools, architectures, or approaches, or when documenting technical decisions.
+description: 结构化决策模式适用于常见的工程选择场景，包括库的选择、架构设计、自行开发与购买的决策、任务优先级的确定、代码可维护性的分析（Reversibility Analysis），以及事后决策回顾（After-Decision Reviews, ADRs）。这些模式在需要在工具、架构或方法之间进行选择时，或在记录技术决策时非常有用。
 ---
 
-# Decision Frameworks (Meta-Skill)
+# 决策框架（元技能）
 
-Structured approaches for making engineering decisions with confidence and traceability.
+这是一套结构化的方法，帮助你在工程决策中保持信心并确保决策的可追溯性。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -17,46 +16,43 @@ Structured approaches for making engineering decisions with confidence and trace
 npx clawhub@latest install decision-frameworks
 ```
 
+---
+
+## 适用场景
+
+- 在库、框架或工具之间进行选择
+- 面对“自建”与“购买”之间的决策
+- 选择架构模式（单体应用 vs 微服务、SQL vs NoSQL 等）
+- 当存在多个有效选项时，需要团队达成共识
+- 为技术 backlog 或技术路线图确定优先级
+- 记录重要的技术决策以供将来参考
 
 ---
 
-## When to Use
+## 决策矩阵模板
 
-- Choosing between libraries, frameworks, or tools
-- Facing a build-vs-buy decision
-- Selecting an architecture pattern (monolith vs microservices, SQL vs NoSQL, etc.)
-- Multiple valid options exist and the team needs alignment
-- Prioritizing a backlog or technical roadmap
-- Documenting a significant technical decision for future reference
+当需要比较三个或更多选项时，可以使用加权评分矩阵。
 
----
-
-## Decision Matrix Template
-
-Use a weighted scoring matrix when comparing 3+ options across measurable criteria.
-
-| Criteria | Weight | Option A | Option B | Option C |
+| 标准 | 权重 | 选项 A | 选项 B | 选项 C |
 |----------------------|--------|----------|----------|----------|
-| Performance | 5 | 4 (20) | 3 (15) | 5 (25) |
-| Developer Experience | 4 | 5 (20) | 4 (16) | 3 (12) |
-| Community Support | 3 | 5 (15) | 3 (9) | 2 (6) |
-| Learning Curve | 3 | 3 (9) | 4 (12) | 2 (6) |
-| Cost | 2 | 5 (10) | 3 (6) | 4 (8) |
-| **Total** | | **74** | **58** | **57** |
+| 性能 | 5 | 4 (20) | 3 (15) | 5 (25) |
+| 开发者体验 | 4 | 5 (20) | 4 (16) | 3 (12) |
+| 社区支持 | 3 | 5 (15) | 3 (9) | 2 (6) |
+| 学习曲线 | 3 | 3 (9) | 4 (12) | 2 (6) |
+| 成本 | 2 | 5 (10) | 3 (6) | 4 (8) |
+| **总分** | | **74** | **58** | **57** |
 
-**How to use:**
-
-1. List criteria relevant to the decision
-2. Assign weights (1-5) based on project priorities
-3. Score each option per criterion (1-5)
-4. Multiply score x weight, sum per option
-5. Highest total wins — but sanity-check the result against gut feel
+**使用方法：**
+1. 列出与决策相关的标准。
+2. 根据项目优先级为每个标准分配权重（1-5）。
+3. 对每个选项在每个标准上的得分进行乘法运算，然后求和。
+4. 总分最高的选项获胜——但也要根据直觉对结果进行合理性检查。
 
 ---
 
-## Build vs Buy Framework
+## “自建”与“购买”框架的决策
 
-Follow this decision tree:
+遵循以下决策树：
 
 ```
 Is it a core differentiator for your product?
@@ -70,192 +66,164 @@ Is it a core differentiator for your product?
         └── NO → Buy / adopt
 ```
 
-**Factor comparison:**
+**因素比较：**
 
-| Factor | Build | Buy / Adopt |
+| 因素 | 自建 | 购买/采用 |
 |----------------------|--------------------------------|---------------------------------|
-| Maintenance cost | Ongoing — your team owns it | Vendor/community maintains it |
-| Customization | Unlimited flexibility | Limited to extension points |
-| Time to market | Slower — development required | Faster — ready-made |
-| Team expertise | Must have or acquire skills | Abstracted away |
-| Long-term cost | Scales with internal capacity | License/subscription fees |
-| Vendor lock-in risk | None | Medium to high |
-| Security control | Full audit capability | Dependent on vendor transparency |
+| 维护成本 | 持续维护——由你的团队负责 | 由供应商或社区维护 |
+| 定制性 | 极高的灵活性 | 受限于扩展点 |
+| 上市时间 | 较慢——需要开发 | 更快——现成的 |
+| 团队技能 | 必须具备相关技能 | 技能要求被抽象掉了 |
+| 长期成本 | 随内部能力扩展 | 需要许可证/订阅费用 |
+| 供应商锁定风险 | 无 | 中等到高 |
+| 安全控制 | 具有完整的审计能力 | 取决于供应商的透明度 |
 
 ---
 
-## Library / Framework Selection
+## 库/框架的选择
 
-Evaluate candidate libraries against these criteria before adopting:
+在采用之前，根据以下标准评估候选库：
 
-| Criterion | What to Check | Red Flag |
+| 标准 | 检查内容 | 警示信号 |
 |--------------------------|----------------------------------------------------|------------------------------------|
-| Maintenance activity | Commits in last 90 days, open issues trend | No commits in 6+ months |
-| Community size | GitHub stars, npm weekly downloads, Discord/forum | < 1k weekly downloads for critical lib |
-| Bundle size | Bundlephobia, tree-shaking support | > 50 KB gzipped for a utility lib |
-| TypeScript support | Built-in types vs DefinitelyTyped, type quality | No types or outdated @types |
-| Breaking change history | Changelog, semver adherence, migration guides | Frequent majors without guides |
-| License | OSI-approved, compatible with your project | AGPL in a SaaS product, no license |
-| Security audit | Snyk/Socket score, CVE history, dependency depth | Known unpatched CVEs |
-| Documentation quality | Getting started guide, API reference, examples | README-only, no examples |
+| 维护活动 | 过去 90 天内的提交记录、开放问题的趋势 | 超过 6 个月无提交 |
+| 社区规模 | GitHub 星星数量、npm 每周下载量、Discord/论坛活跃度 | 对于关键库，每周下载量少于 1000 次 |
+| 包大小 | 包的大小；是否支持拆分和重组 | 对于实用工具库，压缩后的包大小是否超过 50 KB |
+| TypeScript 支持 | 是否内置类型系统；类型质量如何 | 是否没有类型系统或使用的类型系统过时 |
+| 变更历史 | 更改日志、遵循 semver 版本控制、迁移指南 | 是否频繁进行重大更改且没有相应的指南 |
+| 许可证 | 是否获得 OSI 认证；是否与你的项目兼容 | SaaS 产品使用 AGPL 许可证；某些许可证可能不适用 |
+| 安全审计 | 是否通过 Snyk/Socket 评估；是否有 CVE 历史；依赖关系的深度 | 是否存在未修复的 CVE |
+| 文档质量 | 是否有入门指南、API 参考文档、示例代码 | 是否只有 README 文件，没有示例代码 |
 
-**Quick heuristic:** If you cannot replace the library within one sprint, treat the decision as a one-way door (see Reversibility Check below).
+**快速判断规则：** 如果你无法在一个冲刺周期内替换当前库，那么这个决策就是不可逆的（请参见下面的“可逆性检查”部分）。
 
 ---
 
-## Architecture Decision Framework
+## 架构决策框架
 
-Use these tradeoff tables when choosing between architectural approaches.
+在选择架构方案时，可以使用以下权衡表：
 
-### Monolith vs Microservices
+### 单体应用 vs 微服务
 
-| Factor | Monolith | Microservices |
+| 因素 | 单体应用 | 微服务 |
 |---------------------|----------------------------------|--------------------------------------|
-| Complexity | Low at start, grows over time | High from day one |
-| Deployment | Single artifact | Independent per service |
-| Team scaling | Harder beyond 10-15 engineers | Enables autonomous teams |
-| Data consistency | ACID transactions | Eventual consistency, sagas |
-| Debugging | Single process, easy tracing | Distributed tracing required |
-| Best when | Early-stage, small team, MVP | Proven domain boundaries, scale needs |
+| 复杂度 | 初始时较低，但会随时间增长 | 从一开始就很高 |
+| 部署 | 需要部署一个单一的文件 | 每个服务都可以独立部署 |
+| 团队扩展性 | 超过 10-15 名工程师时扩展困难 | 支持团队自主开发 |
+| 数据一致性 | 支持 ACID 事务 | 数据一致性需要通过事件驱动的方式实现 |
+| 调试 | 单一进程，易于追踪 | 需要分布式追踪机制 |
+| 适用场景 | 项目初期、团队规模较小、MVP 需求 | 需要明确的业务边界和扩展能力 |
 
 ### SQL vs NoSQL
 
-| Factor | SQL (Relational) | NoSQL (Document/Key-Value) |
+| 因素 | SQL（关系型数据库） | NoSQL（文档型/键值型数据库） |
 |---------------------|----------------------------------|--------------------------------------|
-| Schema | Strict, enforced | Flexible, schema-on-read |
-| Relationships | Native joins, foreign keys | Denormalized, application-level joins |
-| Scaling | Vertical (read replicas help) | Horizontal by design |
-| Consistency | Strong (ACID) | Tunable (eventual to strong) |
-| Query flexibility | Ad-hoc queries, aggregations | Limited to access patterns |
-| Best when | Complex relations, reporting | High write volume, flexible schema |
+| 数据模型 | 结构严格、强制性强 | 数据模型灵活，可以在读取时动态生成 |
+| 关系处理 | 支持原生连接和外键 | 数据模型非结构化，需要应用程序级别的连接 |
+| 扩展性 | 可垂直扩展（通过增加副本） | 设计上支持水平扩展 |
+| 一致性 | 支持强一致性（ACID） | 一致性可以通过事件驱动的方式实现 |
+| 查询灵活性 | 支持复杂的查询和聚合操作 | 查询操作受到限制 |
+| 适用场景 | 数据关系复杂、需要报告功能 | 数据写入量较大、数据模型需要灵活调整 |
 
 ### REST vs GraphQL
 
-| Factor | REST | GraphQL |
+| 因素 | REST | GraphQL |
 |---------------------|----------------------------------|--------------------------------------|
-| Simplicity | Simple, well-understood | Schema definition required |
-| Over/under-fetching | Common — multiple endpoints | Clients request exact fields |
-| Caching | HTTP caching built-in | Requires custom caching layer |
-| Tooling | Mature ecosystem | Growing — Apollo, Relay, urql |
-| Versioning | URL or header versioning | Schema evolution, deprecation |
-| Best when | CRUD APIs, public APIs | Complex UIs, mobile + web clients |
+| 简单性 | 设计简单、易于理解 | 需要定义数据模型 |
+| 数据获取 | 可以根据需求获取全部数据 | 客户端需要请求特定的数据字段 |
+| 缓存 | 支持 HTTP 缓存 | 需要自定义缓存机制 |
+| 工具生态 | 已经成熟 | 正在发展中的工具（如 Apollo、Relay、urql） |
+| 版本控制 | 通过 URL 或请求头进行版本控制 | 数据模型需要频繁更新 |
+| 适用场景 | 需要实现 CRUD 操作的 API；公共 API | 需要复杂用户界面的应用 |
 
-### SSR vs CSR vs SSG
+### SSR（服务器端渲染） vs CSR（客户端渲染） vs SSG（服务器端生成静态资源）
 
-| Factor | SSR | CSR | SSG |
+| 因素 | SSR | CSR | SSG |
 |---------------------|------------------------|------------------------|-----------------------------|
-| Initial load | Fast (HTML from server) | Slow (JS bundle parse) | Fastest (pre-built HTML) |
-| SEO | Excellent | Poor without hydration | Excellent |
-| Best when | Personalized pages | Dashboards, SPAs | Blogs, docs, marketing |
+| 初始加载速度 | 速度快（服务器直接渲染 HTML） | 速度较慢（客户端解析 JavaScript） | 速度最快（服务器预先生成静态 HTML） |
+| SEO | SEO 效果好 | 如果没有客户端渲染，SEO 效果较差 | SEO 效果好 |
+| 适用场景 | 需要个性化页面的应用 | 需要仪表盘或单页应用 | 博客、文档、营销内容 |
 
-### Monorepo vs Polyrepo
+### 单一仓库 vs 多个仓库
 
-| Factor | Monorepo | Polyrepo |
+| 因素 | 单一仓库 | 多个仓库 |
 |---------------------|----------------------------------|--------------------------------------|
-| Code sharing | Trivial — same repo | Requires published packages |
-| CI/CD complexity | Needs smart filtering (Turborepo) | Simple per-repo pipelines |
-| Best when | Shared libs, aligned releases | Independent teams, different stacks |
+| 代码共享 | 代码共享简单——所有代码都在同一个仓库 | 需要发布独立的包 |
+| 持续集成/持续部署的复杂性 | 需要复杂的过滤机制（如 Turborepo） | 每个仓库都有独立的持续集成/部署流程 |
+| 适用场景 | 需要共享库或同步发布的应用 | 团队独立开发、使用不同的技术栈 |
 
 ---
 
-## Priority Matrices — RICE Scoring
+## 优先级矩阵 — RICE 评分法
 
-Score and rank features/tasks:
+对功能/任务进行评分和排序：
 
 ```
 RICE Score = (Reach x Impact x Confidence) / Effort
 ```
 
-| Factor | Scale |
+| 因素 | 评分标准 |
 |------------|--------------------------------------------------------|
-| Reach | Number of users/events affected per quarter |
-| Impact | 3 = massive, 2 = high, 1 = medium, 0.5 = low, 0.25 = minimal |
-| Confidence | 100% = high, 80% = medium, 50% = low |
-| Effort | Person-weeks (or person-sprints) |
+| 影响范围 | 每季度受影响的用户数/事件数量 |
+| 影响程度 | 3 = 高度影响；2 = 中等影响；1 = 低影响；0.5 = 微弱影响；0.25 = 极低影响 |
+| 信心程度 | 100% = 高信心；80% = 中等信心；50% = 低信心 |
+| 所需工作量 | 以人周或人冲刺为单位计算的工作量 |
 
-### MoSCoW Method
+### MoSCoW 方法
 
-| Category | Meaning | Budget Target |
+| 类别 | 含义 | 预算分配 |
 |--------------|------------------------------------------------|----------------|
-| **Must** | Non-negotiable for this release | ~60% of effort |
-| **Should** | Important but not critical | ~20% of effort |
-| **Could** | Desirable if time permits | ~15% of effort |
-| **Won't** | Explicitly out of scope (this time) | ~5% (planning) |
+| **必须** | 对于此次发布来说，这是不可协商的 | 大约占工作量的 60% |
+| **应该** | 很重要但不是绝对必要的 | 大约占工作量的 20% |
+| **可以** | 如果时间允许，可以考虑 | 大约占工作量的 15% |
+| **不会** | 明确不在当前阶段的范围内 | 大约占工作量的 5%（用于规划） |
 
 ---
 
-## Reversibility Check
+## 可逆性检查
 
-Classify every significant decision as a one-way or two-way door.
+将每个重要的决策分类为“不可逆”或“可逆”类型。
 
-| Aspect | One-Way Door (Type 1) | Two-Way Door (Type 2) |
+| 类型 | 定义 | 特征 |
 |------------------|-------------------------------------|-------------------------------------|
-| Definition | Irreversible or very costly to undo | Easily reversed with low cost |
-| Examples | Database engine migration, public API contract, language rewrite | UI framework for internal tool, feature flag experiment, library swap behind interface |
-| How to identify | Would reverting require > 1 sprint of rework? Data migration? Customer communication? | Can you revert with a config change, flag toggle, or single PR? |
-| Approach | Invest in analysis, prototype, get stakeholder sign-off | Decide fast, ship, measure, iterate |
-| Time to decide | Days to weeks — thorough evaluation | Hours — bias toward action |
+| **不可逆决策** | 需要付出巨大成本才能撤销的决策 | 可以通过低成本轻松撤销的决策 |
+| **例子** | 数据库引擎的迁移、公共 API 合同的更改、语言的重新选择 | 内部工具的 UI 框架的更换、功能开关的实验 |
+| **如何判断** | 撤销这样的决策是否需要超过一个冲刺周期的重新开发？是否需要数据迁移？是否需要与客户沟通？ |
+| **处理方法** | 先进行充分的分析，制作原型，并获得相关方的同意；然后快速决策、发布并持续改进 |
+| **决策时间** | 需要几天到几周的时间进行彻底评估 | 需要几小时的时间，但应倾向于快速行动 |
 
-**Rule of thumb:** Wrap risky choices behind interfaces/abstractions. This converts many one-way doors into two-way doors by isolating the implementation from consumers.
-
----
-
-## ADR Template
-
-Document significant decisions using a lightweight Architecture Decision Record.
-
-```markdown
-# ADR-NNNN: [Short Title]
-
-## Status
-[Proposed | Accepted | Deprecated | Superseded by ADR-XXXX]
-
-## Context
-What is the problem or situation that motivates this decision?
-Include constraints, requirements, and forces at play.
-
-## Decision
-What is the change being proposed or adopted?
-State the decision clearly and concisely.
-
-## Consequences
-
-### Positive
-- [Benefit 1]
-- [Benefit 2]
-
-### Negative
-- [Tradeoff 1]
-- [Tradeoff 2]
-
-### Risks
-- [Risk and mitigation]
-```
-
-Store in `docs/adr/` or `decisions/`. Number sequentially. Never delete — mark superseded. Review during onboarding and quarterly audits.
+**经验法则：** 将高风险决策封装在接口或抽象层中。这样可以避免许多原本不可逆的决策变成可逆的决策。
 
 ---
 
-## Anti-Patterns
+## ADR（架构决策记录）模板
 
-| Anti-Pattern | Description | Counter |
+使用轻量级的架构决策记录来文档化重要的决策。
+
+**存储位置：`docs/adr/` 或 `decisions/`**。按顺序编号。切勿删除已过时的记录。在团队入职培训和季度审核时进行审查。
+
+---
+
+## 避免的错误模式
+
+| 错误模式 | 描述 | 对策 |
 |--------------------------|------------------------------------------------------|---------------------------------------------|
-| Analysis Paralysis | Endless evaluation, no decision made | Set a decision deadline; use the matrix |
-| HiPPO | Highest Paid Person's Opinion overrides data | Require data or a scored matrix for all options |
-| Sunk Cost Fallacy | Continuing because of past investment, not future value | Evaluate options as if starting fresh today |
-| Bandwagon Effect | Choosing because "everyone uses it" | Score against your actual criteria |
-| Premature Optimization | Optimizing before measuring or validating need | Profile first; optimize only proven bottlenecks |
-| Resume-Driven Development | Picking tech to pad a resume, not to solve the problem | Align choices with team skills and project goals |
-| Not Invented Here | Rejecting external solutions out of pride | Run the Build vs Buy framework honestly |
+| **分析瘫痪** | 无休止的评估，导致无法做出决策 | 设定决策的截止日期；使用决策矩阵来帮助决策 |
+| **最高薪酬者的意见优先** | 仅根据最高薪酬者的意见来做出决策 | 需要根据数据和评分矩阵来评估所有选项 |
+| **沉没成本谬误** | 因过去的投入而继续使用现有方案，而不考虑未来的价值 | 应像重新开始一样评估所有选项 |
+| **从众效应** | 仅仅因为“大家都在使用”就选择某个方案 | 应根据实际的标准来评估选项 |
+| **过早优化** | 在没有测量或验证需求之前就进行优化 | 先分析问题，只有在确认存在瓶颈时再进行优化 |
+| **为了简历而选择技术** | 选择技术只是为了提升简历的吸引力，而不是为了解决实际问题 | 应根据团队技能和项目目标来选择技术 |
+| **盲目拒绝外部解决方案** | 因为自尊心而拒绝外部解决方案 | 应诚实地使用“自建”与“购买”的决策框架 |
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情：
 
-1. **NEVER skip writing down the decision** — undocumented decisions get relitigated endlessly
-2. **NEVER decide by committee without a single owner** — assign a DRI (Directly Responsible Individual)
-3. **NEVER treat all decisions as equal weight** — classify by reversibility and impact first
-4. **NEVER ignore second-order effects** — ask "and then what?" at least twice
-5. **NEVER lock in without an exit plan** — define how you would migrate away before committing
-6. **NEVER conflate familiarity with superiority** — evaluate on criteria, not comfort
-7. **NEVER defer a one-way door decision indefinitely** — the cost of delay often exceeds the cost of a wrong choice
+1. **绝不要不记录决策** —— 未记录的决策会导致问题反复出现 |
+2. **绝不要在没有明确负责人的情况下由委员会来做出决策** —— 应为每个决策指定一个直接负责人（DRI） |
+3. **绝不要将所有决策视为同等重要** —— 应首先根据决策的可逆性和影响程度来分类 |
+4. **绝不要忽视潜在的副作用** —— 至少要问两次“这样做之后会怎样？” |
+5. **绝不要在没有退出计划的情况下就锁定决策** —— 在做出决策之前，应明确如何迁移现有的系统 |
+6. **绝不要因为熟悉某个方案就认为它一定更好** —— 应根据实际的标准来评估方案，而不是基于个人喜好 |
+7. **绝不要无限期地推迟需要做出不可逆决策的时间** —— 延迟的代价往往高于错误的决策所带来的代价

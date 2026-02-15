@@ -1,7 +1,7 @@
 ---
 name: pyzotero-cli
 version: 1.0.0
-description: Command-line interface for Zotero - search your local Zotero library, list collections, and manage items from the terminal.
+description: Zotero 的命令行界面：您可以通过终端搜索本地 Zotero 图书馆、列出收藏夹以及管理其中的条目。
 homepage: https://github.com/urschrei/pyzotero
 metadata:
   {
@@ -31,9 +31,9 @@ metadata:
 
 # Pyzotero CLI
 
-Command-line interface for Zotero - search your local Zotero library, list collections, and manage items from the terminal.
+这是一个用于Zotero的命令行接口，允许您在终端中搜索本地Zotero图书馆、列出收藏夹以及管理文献。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install (PEP 668 systems)
@@ -52,47 +52,46 @@ pyzotero search -q "machine learning"
 pyzotero search -q "attention mechanisms" --fulltext
 ```
 
-📖 **Detailed guide:** [QUICKSTART.md](QUICKSTART.md)
+📖 **详细指南：** [QUICKSTART.md](QUICKSTART.md)
 
-## Installation
+## 安装
 
-### pipx (Recommended for PEP 668 systems)
+### pipx（推荐用于符合PEP 668标准的系统）
 ```bash
 pipx install "pyzotero[cli]"
 ```
 
-### pip (Generic)
+### pip（通用安装方式）
 ```bash
 pip install --user "pyzotero[cli]"
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
-📖 **Complete installation guide:** [INSTALL.md](INSTALL.md)
+📖 **完整安装指南：** [INSTALL.md](INSTALL.md)
 
-## Prerequisites
+## 先决条件
 
-### Enable Local Zotero Access
+### 启用本地Zotero访问权限
 
-**Required for CLI usage:**
+**使用CLI的前提条件：**
+1. 安装Zotero 7（或更高版本）。
+2. 进入**Zotero > 设置 > 高级设置**。
+3. 勾选“允许其他应用程序与此Zotero实例进行通信”。
+4. 重启Zotero。
 
-1. Open Zotero 7 (or newer)
-2. Go to **Edit > Preferences > Advanced**
-3. Check **"Allow other applications on this computer to communicate with Zotero"**
-4. Restart Zotero
+## 核心命令
 
-## Core Commands
-
-| Command | Description |
+| 命令 | 功能描述 |
 |---------|-------------|
-| `pyzotero search -q "topic"` | Search library |
-| `pyzotero search --fulltext` | Search with full-text (PDFs) |
-| `pyzotero search --collection ID` | Search in specific collection |
-| `pyzotero listcollections` | List all collections |
-| `pyzotero itemtypes` | List item types |
+| `pyzotero search -q "主题"` | 搜索指定主题的文献 |
+| `pyzotero search --fulltext` | 使用全文功能进行搜索（包括PDF文件） |
+| `pyzotero search --collection ID` | 在特定收藏夹中搜索文献 |
+| `pyzotero listcollections` | 列出所有收藏夹 |
+| `pyzotero itemtypes` | 显示文献的类型 |
 
-## Search Examples
+## 搜索示例
 
-### Basic Search
+### 基本搜索
 ```bash
 # Search titles and metadata
 pyzotero search -q "machine learning"
@@ -101,13 +100,13 @@ pyzotero search -q "machine learning"
 pyzotero search -q "\"deep learning\""
 ```
 
-### Full-Text Search
+### 全文搜索
 ```bash
 # Search in PDFs and attachments
 pyzotero search -q "neural networks" --fulltext
 ```
 
-### Advanced Filtering
+### 高级过滤
 ```bash
 # Filter by item type
 pyzotero search -q "methodology" --itemtype book --itemtype journalArticle
@@ -116,14 +115,14 @@ pyzotero search -q "methodology" --itemtype book --itemtype journalArticle
 pyzotero search --collection ABC123 -q "test"
 ```
 
-## Output Formats
+## 输出格式
 
-### Human-Readable
+### 人类可读格式
 ```bash
 pyzotero search -q "python"
 ```
 
-### JSON Output
+### JSON格式
 ```bash
 pyzotero search -q "topic" --json
 
@@ -131,38 +130,38 @@ pyzotero search -q "topic" --json
 pyzotero search -q "topic" --json | jq '.[] | .title'
 ```
 
-## Documentation
+## 文档资源
 
-| Document | Description |
+| 文档 | 说明 |
 |----------|-------------|
-| [QUICKSTART.md](QUICKSTART.md) | 5-minute quick start guide |
-| [INSTALL.md](INSTALL.md) | Comprehensive installation guide |
-| [EXAMPLES.md](EXAMPLES.md) | Practical usage examples |
-| [README.md](README.md) | Project overview |
+| [QUICKSTART.md] | 5分钟快速入门指南 |
+| [INSTALL.md] | 安装详细步骤 |
+| [EXAMPLES.md] | 实用使用示例 |
+| [README.md] | 项目概述 |
 
-## Troubleshooting
+## 故障排除
 
-**Connection error (local Zotero):**
+**连接错误（本地Zotero）：**
 ```
 Make sure Zotero is running
 Enable local API: Settings > Advanced > "Allow other applications on this computer to communicate with Zotero"
 Restart Zotero
 ```
 
-**Command not found:**
+**命令未找到：**
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 pipx ensurepath
 ```
 
-**Permission denied (PEP 668 systems):**
+**权限问题（符合PEP 668标准的系统）：**
 ```bash
 pipx install "pyzotero[cli]"
 ```
 
-📖 **Detailed troubleshooting:** [INSTALL.md](INSTALL.md)
+📖 **详细故障排除指南：** [INSTALL.md](INSTALL.md)
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Search
@@ -181,8 +180,8 @@ pyzotero search --collection ABC123 -q "topic"
 
 ---
 
-**For complete documentation:**
-- [QUICKSTART.md](QUICKSTART.md) - Get started
-- [INSTALL.md](INSTALL.md) - Installation details
-- [EXAMPLES.md](EXAMPLES.md) - Usage examples
-- [README.md](README.md) - Full overview
+**如需完整文档，请参阅：**
+- [QUICKSTART.md] - 快速入门
+- [INSTALL.md] - 安装指南
+- [EXAMPLES.md] - 使用示例
+- [README.md] - 项目概述

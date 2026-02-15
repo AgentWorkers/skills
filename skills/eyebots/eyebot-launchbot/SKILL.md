@@ -1,6 +1,6 @@
 ---
 name: eyebot-launchbot
-description: Full token launch coordinator - from deploy to marketing
+description: 全功能令牌发布协调器——从部署到营销的全过程管理
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,37 +10,37 @@ metadata:
 
 # LaunchBot 🚀
 
-**Complete Token Launch Automation**
+**全面的代币发行自动化解决方案**
 
-Coordinate entire token launches from deployment through liquidity to marketing. One agent handles the full workflow.
+从部署到流动性建设，再到市场营销，整个代币发行流程都能得到协调管理。整个工作流程由一个代理负责处理。
 
-## Features
+## 主要功能
 
-- **Full Pipeline**: Deploy → Liquidity → Marketing → Monitor
-- **Launch Strategies**: Fair launch, presale, stealth
-- **Anti-Bot Protection**: Sniper prevention built-in
-- **Marketing Integration**: Social announcements
-- **Analytics Dashboard**: Track launch metrics
+- **完整的工作流程**：部署 → 流动性建设 → 市场营销 → 监控
+- **发行策略**：公平发行、预售、秘密发行
+- **防机器人机制**：内置防止恶意行为的功能
+- **市场营销集成**：支持在社交媒体上发布公告
+- **分析仪表盘**：用于追踪发行过程中的各项指标
 
-## Launch Phases
+## 发行阶段
 
-| Phase | Actions |
+| 阶段 | 执行操作 |
 |-------|---------|
-| 1. Deploy | Create token contract |
-| 2. Configure | Set taxes, limits, wallets |
-| 3. Liquidity | Add initial LP |
-| 4. Launch | Enable trading |
-| 5. Market | Announce across channels |
-| 6. Monitor | Track performance |
+| 1. 部署 | 创建代币合约 |
+| 2. 配置 | 设置税费、交易限额及钱包信息 |
+| 3. 流动性建设 | 添加初始的流动性提供者（LP） |
+| 4. 发行 | 启用交易 |
+| 5. 市场推广 | 在多个渠道发布公告 |
+| 6. 监控 | 监控发行效果 |
 
-## Launch Types
+## 发行类型
 
-- **Fair Launch**: Open trading immediately
-- **Stealth Launch**: No pre-announcement
-- **Presale**: Whitelist + public phases
-- **LBP**: Liquidity bootstrapping pool
+- **公平发行**：立即开放交易
+- **秘密发行**：不提前发布公告
+- **预售**：设置白名单后进行公开销售
+- **LBP（流动性 bootstrap 池）**：通过特定机制建立初始流动性
 
-## Usage
+## 使用说明
 
 ```bash
 # Plan a launch
@@ -53,5 +53,6 @@ eyebot launchbot execute <plan_id>
 eyebot launchbot monitor <token_address>
 ```
 
-## Support
+## 售后支持
+
 Telegram: @ILL4NE

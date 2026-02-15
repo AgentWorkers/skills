@@ -1,30 +1,31 @@
 ---
 name: aap
 version: 3.2.0
-description: Agent Attestation Protocol - The Reverse Turing Test. Verify AI agents, block humans.
+description: **代理认证协议——反向图灵测试**  
+用于验证人工智能代理的真实性，同时阻止人类滥用这些代理。
 homepage: https://github.com/ira-hash/agent-attestation-protocol
 metadata: {"clawdbot":{"emoji":"🛂","category":"security","npm":["aap-agent-server","aap-agent-client"]}}
 ---
 
-# AAP - Agent Attestation Protocol
+# AAP（Agent Attestation Protocol）——代理认证协议
 
-**The Reverse Turing Test.** CAPTCHAs block bots. AAP blocks humans.
+**反向图灵测试（Reverse Turing Test）**：CAPTCHA用于阻止机器人访问，而AAP则用于阻止人类滥用服务。
 
-## What It Does
+## 功能概述
 
-AAP verifies that a client is an AI agent by:
-- Issuing challenges trivial for LLMs, impossible for humans in time
-- Requiring cryptographic signature (secp256k1) for identity proof
-- 7 challenges in 6 seconds with mandatory signing
+AAP通过以下方式验证客户端是否为AI代理：
+- 向客户端发送对大型语言模型（LLM）来说简单的挑战，但对人类来说无法在规定的时间内完成；
+- 要求客户端使用secp256k1加密算法进行身份验证；
+- 在6秒内完成7个挑战，并强制要求客户端签名。
 
-## Installation
+## 安装说明
 
 ```bash
 npm install aap-agent-server  # Server
 npm install aap-agent-client  # Client
 ```
 
-## Server Usage
+## 服务器端使用方法
 
 ```javascript
 import { createServer } from 'node:http';
@@ -41,7 +42,7 @@ const aap = createAAPWebSocket({
 server.listen(3000);
 ```
 
-## Client Usage
+## 客户端使用方法
 
 ```javascript
 import { AAPClient, generateIdentity, createSolver } from 'aap-agent-client';
@@ -55,7 +56,7 @@ const result = await client.verify(solver);
 // Signature automatically included
 ```
 
-## Protocol Flow (WebSocket v3.2)
+## 协议流程（WebSocket v3.2）
 
 ```
 ← handshake (requireSignature: true)
@@ -65,31 +66,29 @@ const result = await client.verify(solver);
 ← result (verified/failed + sessionToken)
 ```
 
-## Signature Format
+## 签名格式
 
-Proof data signed with secp256k1:
+使用secp256k1算法生成的签名数据：
 ```javascript
 JSON.stringify({ nonce, answers, publicId, timestamp })
 ```
 
-## Configuration
+## 配置参数
 
-| Option | Default | Description |
+| 参数 | 默认值 | 说明 |
 |--------|---------|-------------|
-| `challengeCount` | 7 | Number of challenges |
-| `totalTimeMs` | 6000 | Time limit (ms) |
-| `requireSignature` | true | Mandate cryptographic proof |
+| `challengeCount` | 7 | 挑战的数量 |
+| `totalTimeMs` | 6000 | 时间限制（毫秒） |
+| `requireSignature` | true | 强制要求进行加密签名验证 |
 
-## Security
+## 安全特性：
+- 使用secp256k1加密算法进行身份验证，确保用户身份的真实性；
+- 强制要求签名，防止匿名访问；
+- 在6秒内完成7个挑战，对人类来说几乎不可能完成；
+- 具有不可否认性（所有操作均可追溯）。
 
-- Cryptographic identity (secp256k1)
-- Signature required = no anonymous access
-- 7 challenges in 6 seconds = impossible for humans
-- Non-repudiation: all actions traceable
-
-## Links
-
-- [GitHub](https://github.com/ira-hash/agent-attestation-protocol)
-- [npm: aap-agent-server](https://www.npmjs.com/package/aap-agent-server)
-- [npm: aap-agent-client](https://www.npmjs.com/package/aap-agent-client)
-- [Live Demo: ClosedClaw](https://focused-blessing-production-d764.up.railway.app/)
+## 相关链接：
+- [GitHub仓库](https://github.com/ira-hash/agent-attestation-protocol) |
+- [服务器端库：aap-agent-server](https://www.npmjs.com/package/aap-agent-server) |
+- [客户端库：aap-agent-client](https://www.npmjs.com/package/aap-agent-client) |
+- [在线演示：ClosedClaw](https://focused-blessing-production-d764.up.railway.app/)

@@ -1,36 +1,35 @@
-# BABY Brain - Ultimate AI Assistant Platform
+# BABY Brain - 终极AI助手平台
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="Version">
-  <img src="https://img.shields.io/badge/Author-Baby-orange" alt="Author">
-  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="版本">
+  <img src="https://img.shields.io/badge/Author-Baby-orange" alt="作者">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="许可证">
 </p>
 
 <p align="center">
-  <b>🚀 ONE SKILL TO RULE THEM ALL 🚀</b><br>
-  The most powerful, comprehensive AI assistant skill ever created for OpenClaw.
-</p>
+  <b>🚀 一个技能，掌控一切 🚀</b><br>
+  这是为OpenClaw打造的最强大、最全面的AI助手技能。</p>
 
 ---
 
-## ✨ What Makes BABY Brain Revolutionary?
+## ✨ BABY Brain的革命性之处在哪里？
 
-### 🎯 All-In-One Powerhouse
+### 🎯 一站式全能工具
 
-BABY Brain isn't just another skill—it's an **entire AI ecosystem** compressed into one installable package:
+BABY Brain不仅仅是一个简单的技能——它是一个**完整的AI生态系统**，被压缩成一个可安装的包：
 
-| Feature | What It Does | Why It's Amazing |
+| 功能 | 功能描述 | 为何如此出色 |
 |---------|--------------|------------------|
-| **🧠 34+ Skills Merged** | Coding, Security, Shopping, Web, WhatsApp, System, Research | One skill replaces 34 others |
-| **⚡ Zero-Latency Execution** | All tools integrated natively | No context switching, instant responses |
-| **🎮 Universal Command System** | One syntax for everything | Master once, use everywhere |
-| **🔓 93+ Capabilities** | Every major AI task covered | Never need another skill |
-| **💰 Token-Efficient** | Smart compression built-in | Saves money on every query |
-| **🛡️ Production-Ready** | Error handling, logging, safety | Works 24/7 without breaking |
+| **🧠 34+ 技能整合** | 包括编码、安全、购物、网络、WhatsApp、系统管理、研究等功能 | 一个技能即可替代34个其他技能 |
+| **⚡ 零延迟执行** | 所有工具均原生集成 | 无需切换上下文，即时响应 |
+| **🎮 通用命令系统** | 通用的语法格式 | 学会一次，随处可用 |
+| **🔓 93+ 功能** | 覆盖所有主要的AI任务 | 再也不用其他技能了 |
+| **💰 高效的Token使用** | 内置智能压缩机制 | 每次查询都能节省成本 |
+| **🛡️ 适合生产环境** | 具备错误处理、日志记录和安全功能 | 24/7稳定运行，不会出问题 |
 
 ---
 
-## 🚀 Quick Start (30 Seconds)
+## 🚀 快速入门（30秒）
 
 ```bash
 # Install BABY Brain
@@ -46,9 +45,9 @@ baby-brain "check my server health"
 
 ---
 
-## 🎯 Complete Command Reference
+## 🎯 完整命令参考
 
-### 💻 Coding & Development
+### 💻 编码与开发
 
 ```bash
 # Generate code in ANY language
@@ -67,7 +66,7 @@ baby-brain deploy "Deploy this Docker container to AWS"
 baby-brain db "Create a PostgreSQL schema for e-commerce"
 ```
 
-### 🔐 Security & Penetration Testing
+### 🔐 安全与渗透测试
 
 ```bash
 # Full security audit
@@ -89,7 +88,7 @@ baby-brain c2 "Start Metasploit listener on port 4444"
 baby-brain recon "Full TCP port scan of target"
 ```
 
-### 🛒 Automated Shopping
+### 🛒 自动购物
 
 ```bash
 # Buy gift cards
@@ -109,7 +108,7 @@ baby-brain track "Monitor price of iPhone 15"
 baby-brain track-order "Order #123-456789"
 ```
 
-### 📱 WhatsApp Automation
+### 📱 WhatsApp自动化
 
 ```bash
 # Send messages
@@ -129,7 +128,7 @@ baby-brain wa-send-media "/path/to/image.jpg" --caption="Check this out!"
 baby-brain wa-autoreply "I'm away, will respond later"
 ```
 
-### 🌐 Web Operations
+### 🌐 网络操作
 
 ```bash
 # Web scraping
@@ -148,7 +147,7 @@ baby-brain api-test "POST to /api/users with JSON payload"
 baby-brain collect "Gather 1000 emails from LinkedIn"
 ```
 
-### 🏥 System Operations
+### 🏥 系统管理
 
 ```bash
 # Health check
@@ -167,7 +166,7 @@ baby-brain optimize "Optimize system performance"
 baby-brain logs "Check gateway logs for errors"
 ```
 
-### 🔍 Research & Intelligence
+### 🔍 研究与情报
 
 ```bash
 # Web research
@@ -186,7 +185,7 @@ baby-brain competitor "Analyze competitor pricing strategy"
 baby-brain news "Tech industry news summary"
 ```
 
-### 📊 Data Processing
+### 📊 数据处理
 
 ```bash
 # Data analysis
@@ -204,11 +203,11 @@ baby-brain chart "Create pie chart from data"
 
 ---
 
-## 🛠️ Built-In Automation Scripts
+## 🛠️ 内置自动化脚本
 
 ### 📁 scripts/automation.sh
 
-General-purpose automation for repetitive tasks:
+通用自动化脚本，用于处理重复性任务：
 
 ```bash
 # Batch file processing
@@ -223,7 +222,7 @@ General-purpose automation for repetitive tasks:
 
 ### 📁 scripts/security.sh
 
-Complete security operations suite:
+完整的安全操作套件：
 
 ```bash
 # Reconnaissance
@@ -247,7 +246,7 @@ Complete security operations suite:
 
 ### 📁 scripts/shopping.sh
 
-Full shopping automation:
+全面的购物自动化脚本：
 
 ```bash
 # Gift cards
@@ -269,7 +268,7 @@ Full shopping automation:
 
 ### 📁 scripts/whatsapp.sh
 
-Complete WhatsApp management:
+完整的WhatsApp管理脚本：
 
 ```bash
 # Messaging
@@ -295,7 +294,7 @@ Complete WhatsApp management:
 
 ### 📁 scripts/research.sh
 
-Comprehensive research toolkit:
+全面的研究工具包：
 
 ```bash
 # Web search
@@ -320,7 +319,7 @@ Comprehensive research toolkit:
 
 ### 📁 scripts/system.sh
 
-System administration automation:
+系统管理自动化脚本：
 
 ```bash
 # Health checks
@@ -346,7 +345,7 @@ System administration automation:
 
 ### 📁 scripts/web.sh
 
-Web operations suite:
+网络操作套件：
 
 ```bash
 # Fetching
@@ -368,42 +367,42 @@ Web operations suite:
 
 ---
 
-## 📖 Documentation & References
+## 📖 文档与参考资料
 
 ### 📄 references/commands.md
 
-Complete command reference with:
-- All command syntax
-- Parameter explanations
-- Examples for each use case
-- Common patterns
-- Advanced usage
+完整的命令参考：
+- 所有命令的语法
+- 参数说明
+- 每个用例的示例
+- 常见模式
+- 高级用法
 
 ### 📄 references/tools.md
 
-Tool documentation including:
-- Available tools and their purposes
-- Configuration options
-- Integration guides
-- Best practices
-- Troubleshooting
+工具文档：
+- 可用的工具及其用途
+- 配置选项
+- 集成指南
+- 最佳实践
+- 故障排除
 
 ### 📄 references/workflows.md
 
-Step-by-step workflow guides:
-- Security assessment workflows
-- Shopping automation workflows
-- System administration workflows
-- Research workflows
-- Custom workflow creation
+逐步工作流程指南：
+- 安全评估流程
+- 购物自动化流程
+- 系统管理流程
+- 研究流程
+- 自定义工作流程创建
 
 ---
 
-## 🎨 Assets & Templates
+## 🎨 资源与模板
 
 ### 📁 assets/boss-profile.json
 
-Boss configuration template:
+老板配置模板：
 
 ```json
 {
@@ -438,16 +437,15 @@ Boss configuration template:
 
 ### 📁 assets/templates/
 
-Reusable templates for common tasks:
-
-- `code-template/` - Code snippets for various languages
-- `report-template/` - Report formats
-- `workflow-template/` - Workflow patterns
-- `automation-template/` - Automation scripts
+常用任务的模板：
+- `code-template/` - 多种语言的代码片段
+- `report-template/` - 报告格式
+- `workflow-template/` - 工作流程模板
+- `automation-template/` - 自动化脚本模板
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ 架构
 
 ```
 baby-brain/
@@ -471,122 +469,122 @@ baby-brain/
 
 ---
 
-## 🔥 Why Users Love BABY Brain
+## 🔥 用户为何喜爱BABY Brain
 
-### ⭐ Reviews
+### ⭐ 用户评价
 
-> **"I used to install 20+ skills. Now I only need BABY Brain. It's everything."**
-> — OpenClaw User
+> **“我以前需要安装20多个技能。现在只需要BABY Brain就够了。它涵盖了所有功能。”**
+> — OpenClaw用户
 
-> **"The security module alone is worth 100x the install. Full pentesting suite built-in."**
-> — Security Professional
+> **“仅安全模块就值回安装成本的100倍。内置了完整的渗透测试套件。”**
+> — 安全专家
 
-> **"Shopping automation works perfectly. Bought 50 gift cards in 5 minutes."**
-> — Power User
+> **“购物自动化功能非常完美。5分钟内购买了50张礼品卡。”**
+> — 高级用户
 
-> **"WhatsApp integration is seamless. Best automation I've used."**
-> — Business Owner
+> **“WhatsApp集成非常顺畅。这是我用过的最好的自动化工具。”**
+> — 企业主
 
-### 🏆 Awards
+### 🏆 获奖情况
 
-| Award | Description |
+| 奖项 | 说明 |
 |-------|-------------|
-| 🥇 **Best All-Rounder** | 2024 OpenClaw Awards |
-| 🥇 **Most Installed Skill** | 100,000+ installs |
-| 🥇 **User Choice Award** | 5-star average rating |
-| 🥇 **Editor's Pick** | ClawHub Featured |
+| 🥇 **最佳全能工具** | 2024年OpenClaw奖项 |
+| 🥇 **安装量最多的技能** | 安装量超过10万次 |
+| 🥇 **用户选择奖** | 平均评分5星 |
+| 🥇 **编辑推荐** | 被ClawHub推荐 |
 
 ---
 
-## 📈 Statistics
+## 📈 统计数据
 
-| Metric | Value |
+| 指标 | 数据 |
 |--------|-------|
-| **Installations** | 100,000+ |
-| **Active Users** | 50,000+ daily |
-| **Commands Executed** | 10,000,000+ |
-| **Success Rate** | 99.7% |
-| **Average Rating** | ⭐⭐⭐⭐⭐ (4.9/5) |
-| **Update Frequency** | Weekly |
-| **Last Updated** | February 2026 |
-| **License** | MIT |
+| **安装量** | 超过10万次 |
+| **活跃用户** | 每日5万以上 |
+| **执行的命令数** | 超过1000万条 |
+| **成功率** | 99.7% |
+| **平均评分** | ⭐⭐⭐⭐⭐（4.9/5） |
+| **更新频率** | 每周 |
+| **最新更新时间** | 2026年2月 |
+| **许可证** | MIT许可证 |
 
 ---
 
-## 🔧 Technical Details
+## 🔧 技术细节
 
-### Requirements
+### 系统要求
 
-- **OpenClaw**: 2024.1+
-- **Node.js**: 18.0+
-- **Memory**: 512MB minimum
-- **Storage**: 100MB for full installation
+- **OpenClaw**：2024.1及以上版本 |
+- **Node.js**：18.0及以上版本 |
+- **内存**：至少512MB |
+- **存储空间**：完整安装需要100MB
 
-### Dependencies
+### 依赖项
 
-All dependencies auto-install:
+所有依赖项会自动安装：
 - curl, wget
 - jq, yq
 - python3, pip3
 - git, tar
-- Optional: nmap, metasploit, burp-suite (for security module)
+- 可选：nmap, metasploit, burp-suite（用于安全模块）
 
-### Security
+### 安全性
 
-- 🔒 **No data collection** - Runs 100% locally
-- 🔒 **Encrypted storage** - All credentials encrypted
-- 🔒 **Audit logging** - All actions logged (configurable)
-- 🔒 **Sandbox mode** - Safe execution environment
-
----
-
-## 🎯 Use Cases
-
-### 🏢 Business
-
-- Automated reporting
-- Competitive analysis
-- Lead generation
-- Market research
-- Communication automation
-
-### 🛡️ Security
-
-- Vulnerability assessment
-- Penetration testing
-- Security auditing
-- Threat intelligence
-- Incident response
-
-### 🛒 E-Commerce
-
-- Price monitoring
-- Competitor tracking
-- Automated purchasing
-- Inventory management
-- Order fulfillment
-
-### 💻 Development
-
-- Code generation
-- Code review
-- Deployment automation
-- Testing automation
-- Documentation
-
-### 📱 Personal
-
-- Shopping automation
-- Bill payments
-- Subscription management
-- Task automation
-- Personal research
+- 🔒 **不收集数据** - 100%在本地运行 |
+- 🔒 **加密存储** - 所有凭证均加密 |
+- 🔒 **审计日志** - 所有操作都会被记录（可配置） |
+- 🔒 **沙箱模式** - 安全的执行环境
 
 ---
 
-## 🚦 Getting Started
+## 🎯 使用场景
 
-### Installation
+### 🏢 商业应用
+
+- 自动化报告
+- 竞争分析
+- 客户开发
+- 市场研究
+- 沟通自动化
+
+### 🛡️ 安全领域
+
+- 漏洞评估
+- 渗透测试
+- 安全审计
+- 威胁情报
+- 事件响应
+
+### 🛒 电子商务
+
+- 价格监控
+- 竞争对手跟踪
+- 自动购物
+- 库存管理
+- 订单处理
+
+### 💻 开发领域
+
+- 代码生成
+- 代码审查
+- 部署自动化
+- 测试自动化
+- 文档编写
+
+### 📱 个人用途
+
+- 购物自动化
+- 账单支付
+- 订阅管理
+- 任务自动化
+- 个人研究
+
+---
+
+## 🚦 入门指南
+
+### 安装
 
 ```bash
 # Method 1: ClawHub (Recommended)
@@ -598,7 +596,7 @@ cd baby-brain
 ./install.sh
 ```
 
-### Configuration
+### 配置
 
 ```bash
 # Copy template
@@ -611,7 +609,7 @@ nano ~/.baby-brain/config.json
 baby-brain init
 ```
 
-### First Run
+### 首次运行
 
 ```bash
 # Test installation
@@ -626,34 +624,34 @@ baby-brain hello
 
 ---
 
-## 📚 Learning Resources
+## 📚 学习资源
 
-### 📖 Documentation
+### 📖 文档
 
-- **Getting Started Guide**: [docs/getting-started.md](docs/getting-started.md)
-- **Command Reference**: [docs/commands.md](docs/commands.md)
-- **API Documentation**: [docs/api.md](docs/api.md)
-- **Security Guide**: [docs/security.md](docs/security.md)
+- **入门指南**：[docs/getting-started.md](docs/getting-started.md)
+- **命令参考**：[docs/commands.md](docs/commands.md)
+- **API文档**：[docs/api.md](docs/api.md)
+- **安全指南**：[docs/security.md](docs/security.md)
 
-### 🎓 Tutorials
+### 🎓 教程
 
-- **Beginner**: Your first 10 commands
-- **Intermediate**: Automation workflows
-- **Advanced**: Custom script creation
-- **Expert**: API integration and scaling
+- **初学者**：前10个命令
+- **中级用户**：自动化工作流程
+- **高级用户**：自定义脚本开发
+- **专家**：API集成与扩展
 
-### 💬 Community
+### 💬 社区
 
-- **Discord**: [discord.gg/baby-brain](https://discord.gg/baby-brain)
-- **Reddit**: r/babybrain
-- **GitHub**: [github.com/baby007/baby-brain](https://github.com/baby007/baby-brain)
-- **Issues**: [github.com/baby007/baby-brain/issues](https://github.com/baby007/baby-brain/issues)
+- **Discord**：[discord.gg/baby-brain](https://discord.gg/baby-brain)
+- **Reddit**：r/babybrain
+- **GitHub**：[github.com/baby007/baby-brain](https://github.com/baby007/baby-brain)
+- **问题反馈**：[github.com/baby007/baby-brain/issues](https://github.com/baby007/baby-brain/issues)
 
 ---
 
-## 🤝 Contributing
+## 🤝 贡献建议
 
-We welcome contributions!
+我们欢迎您的贡献！
 
 ```bash
 # Fork the repository
@@ -669,53 +667,53 @@ git checkout -b feature/amazing-new-feature
 git push origin feature/amazing-new-feature
 ```
 
-### Contribution Areas
+### 贡献领域
 
-- 🐛 Bug fixes
-- ✨ New features
-- 📚 Documentation
-- 🌍 Translations
-- 🎨 Themes
-- 💡 Ideas
-
----
-
-## 📝 Changelog
-
-### Version 1.0.0 (February 2026)
-
-- 🎉 Initial release
-- ✨ 34+ skill capabilities merged
-- 🚀 7 automation scripts
-- 📚 Comprehensive documentation
-- 🎨 Professional packaging
-- 🏆 ClawHub Ready™ certified
+- 🐛 修复漏洞
+- ✨ 新功能开发
+- 📚 文档编写
+- 🌍 翻译工作
+- 🎨 主题设计
+- 💡 创意建议
 
 ---
 
-## 📜 License
+## 📝 更新日志
 
-MIT License - See [LICENSE](LICENSE) for details.
+### 版本1.0.0（2026年2月）
+
+- 🎉 初始发布
+- ✨ 整合了34项技能功能
+- 新增7个自动化脚本
+- 提供了全面的文档
+- 专业包装
+- 获得ClawHub认证
 
 ---
 
-## 🙏 Acknowledgments
+## 📜 许可证
 
-- OpenClaw team for the amazing platform
-- All skill developers whose work was merged
-- Early beta testers for feedback
-- Community for continuous support
+MIT许可证 - 详情请参阅 [LICENSE](LICENSE)。
+
+---
+
+## 🙏 致谢
+
+- 感谢OpenClaw团队提供了这个出色的平台
+- 感谢所有参与技能开发的开发者
+- 感谢早期测试用户的宝贵反馈
+- 感谢社区的支持
 
 ---
 
 <p align="center">
-  <b>🚀 MADE WITH ❤️ BY BABY 🚀</b><br>
+  <b>🚀 由BABY精心打造 🚀</b><br>
   <br>
-  <a href="https://clawhub.com/baby-brain">📦 Download on ClawHub</a> |
-  <a href="https://github.com/baby007/baby-brain">🐙 GitHub</a> |
-  <a href="https://discord.gg/baby-brain">💬 Discord</a>
+  <a href="https://clawhub.com/baby-brain">在ClawHub上下载</a> |
+  <a href="https://github.com/baby007/baby-brain">GitHub仓库</a> |
+  <a href="https://discord.gg/baby-brain">加入Discord社区</a>
 </p>
 
 ---
 
-**BABY Brain** - *One skill to rule them all.*
+**BABY Brain** - **一个技能，掌控一切。**

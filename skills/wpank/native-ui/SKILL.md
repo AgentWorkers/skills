@@ -9,49 +9,48 @@ description: >
 tags: [expo, react-native, ios, mobile, navigation, native-ui]
 ---
 
-# Native UI with Expo Router
+# 使用 Expo Router 的原生 UI
 
-Patterns and conventions for building native mobile applications with Expo Router and React Native.
+使用 Expo Router 和 React Native 构建原生移动应用程序的模式和惯例。
 
-## References
+## 参考资料
 
-Consult these as needed:
+根据需要查阅以下文档：
 
-- `./references/route-structure.md` — Route conventions, dynamic routes, groups, folder organization
-- `./references/tabs.md` — Native tab bar with NativeTabs, iOS 26 features
-- `./references/icons.md` — SF Symbols with expo-symbols, icon names, animations, weights
-- `./references/controls.md` — Native iOS controls: Switch, Slider, SegmentedControl, DateTimePicker
-- `./references/visual-effects.md` — Blur effects (expo-blur) and liquid glass (expo-glass-effect)
-- `./references/animations.md` — Reanimated: entering, exiting, layout, scroll-driven, gestures
-- `./references/search.md` — Search bar with headers, useSearch hook, filtering patterns
-- `./references/gradients.md` — CSS gradients via experimental_backgroundImage (New Architecture only)
-- `./references/media.md` — Camera, audio, video, file saving
-- `./references/storage.md` — SQLite, AsyncStorage, SecureStore
-- `./references/webgpu-three.md` — 3D graphics and GPU visualizations with WebGPU/Three.js
-- `./references/toolbar-and-headers.md` — Stack headers and toolbar with buttons, menus, search bars (iOS)
-- `./references/form-sheet.md` — Form sheet presentation patterns
+- `./references/route-structure.md` — 路由规范、动态路由、路由组、文件夹组织结构
+- `./references/tabs.md` — 原生标签栏（使用 NativeTabs 实现），支持 iOS 26 的特性
+- `./references/icons.md` — 使用 expo-symbols 提供的 SF Symbols 图标，包括图标名称和动画效果
+- `./references/controls.md` — 原生 iOS 控件：Switch、Slider、SegmentedControl、DateTimePicker
+- `./references/visual-effects.md` — 模糊效果（expo-blur）和液态玻璃效果（expo-glass-effect）
+- `./references/animations.md` — 动画效果：进入/离开屏幕、布局变化、滚动操作、手势交互
+- `./references/search.md` — 搜索栏，包括搜索框和过滤功能
+- `./references/gradients.md` — 通过 experimental-backgroundImage 实现 CSS 渐变效果（仅适用于新架构）
+- `./references/media.md` — 相机、音频、视频处理及文件保存功能
+- `./references/storage.md` — SQLite、AsyncStorage、SecureStore 数据存储
+- `./references/webgpu-three.md` — 使用 WebGPU/Three.js 实现 3D 图形和 GPU 可视化
+- `./references toolbar-and-headers.md` — 带有按钮和菜单的导航栏（iOS 版本）
+- `./references/form-sheet.md` — 表单组件的展示方式
 
-## Running the App
+## 运行应用程序
 
-**Always try Expo Go first before creating custom builds.**
+**在创建自定义构建之前，请务必先尝试使用 Expo Go。**
 
-1. Start with `npx expo start` and scan the QR code
-2. Test features in Expo Go
-3. Only create custom builds when required
+1. 使用 `npx expo start` 启动应用程序，并扫描 QR 码。
+2. 在 Expo Go 中测试应用程序的功能。
+3. 仅在需要时才创建自定义构建。
 
-### When Custom Builds Are Required
+### 需要创建自定义构建的情况
 
-Use `npx expo run:ios/android` or `eas build` only for:
+仅在使用以下情况时使用 `npx expo run:ios/android` 或 `eas build`：
 
-- Local Expo modules (custom native code in `modules/`)
-- Apple targets (widgets, app clips via `@bacons/apple-targets`)
-- Third-party native modules not in Expo Go
-- Custom native configuration beyond `app.json`
+- 本地 Expo 模块（位于 `modules/` 目录中的自定义原生代码）
+- Apple 平台的目标应用（使用 `@bacons/apple-targets`）
+- 未包含在 Expo Go 中的第三方原生模块
+- 需要修改 `app.json` 中的自定义原生配置
 
-Expo Go supports all `expo-*` packages, Expo Router, Reanimated, Gesture Handler, push notifications, and deep links out of the box.
+Expo Go 支持所有的 `expo-*` 包、Expo Router、Reanimated、Gesture Handler、推送通知以及深度链接功能。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -59,102 +58,96 @@ Expo Go supports all `expo-*` packages, Expo Router, Reanimated, Gesture Handler
 npx clawhub@latest install native-ui
 ```
 
-
 ---
 
-## Code Style
+## 代码风格规范
 
-- Escape nested backticks and quotes correctly
-- Always use import statements at the top of the file
-- Use kebab-case for file names: `comment-card.tsx`
-- Remove old route files when restructuring navigation
-- No special characters in file names
-- Configure `tsconfig.json` path aliases; prefer aliases over relative imports
+- 正确处理嵌套的反引号和引号。
+- 文件开头必须包含导入语句。
+- 文件名应使用驼峰式命名法（例如：`comment-card.tsx`）。
+- 重构导航结构时，请删除旧的路由文件。
+- 文件名中不允许使用特殊字符。
+- 配置 `tsconfig.json` 中的路径别名；优先使用别名而非相对导入。
 
-## Routes
+## 路由规则
 
-See `./references/route-structure.md` for detailed conventions.
+详细规范请参阅 `./references/route-structure.md`：
 
-- Routes belong in the `app` directory
-- Never co-locate components, types, or utilities in `app/` — this is an anti-pattern
-- Always have a route matching `/`, possibly inside a group route
+- 路由文件应放在 `app` 目录下。
+- 组件、类型或工具类不应与路由文件放在同一目录下（这是反模式）。
+- 必须存在一个匹配 `/` 的路由，该路由可能位于某个路由组内。
 
-## Library Preferences
+## 库的替代使用
 
-| Use | Instead of |
+| 库名 | 替代库名 |
 |-----|------------|
 | `expo-audio` | `expo-av` |
 | `expo-video` | `expo-av` |
 | `expo-symbols` | `@expo/vector-icons` |
-| `react-native-safe-area-context` | RN SafeAreaView |
+| `react-native-safe-area-context` | `RN SafeAreaView` |
 | `process.env.EXPO_OS` | `Platform.OS` |
 | `React.use` | `React.useContext` |
-| `expo-image` | Intrinsic `img` element |
-| `expo-glass-effect` | Custom glass backdrops |
+| `expo-image` | 内置的 `img` 元素 |
+| `expo-glass-effect` | 自定义的玻璃背景效果 |
 
-Never use deprecated modules: Picker, WebView, SafeAreaView, AsyncStorage (from RN core), or legacy `expo-permissions`.
-
----
-
-## Responsiveness
-
-- Wrap root components in a scroll view
-- Use `<ScrollView contentInsetAdjustmentBehavior="automatic" />` instead of `<SafeAreaView>`
-- Apply `contentInsetAdjustmentBehavior="automatic"` to FlatList and SectionList too
-- Use flexbox instead of Dimensions API
-- Prefer `useWindowDimensions` over `Dimensions.get()` for screen measurement
-
-## Behavior
-
-- Use `expo-haptics` conditionally on iOS for delightful interactions
-- Use views with built-in haptics (`<Switch />`, `@react-native-community/datetimepicker`)
-- First child of a Stack route should almost always be a ScrollView with `contentInsetAdjustmentBehavior="automatic"`
-- Prefer `headerSearchBarOptions` in Stack.Screen options for search bars
-- Use `<Text selectable />` on data that users may want to copy
-- Format large numbers: 1.4M, 38k
-- Never use intrinsic elements (`img`, `div`) outside webviews or Expo DOM components
+请避免使用已弃用的模块：Picker、WebView、SafeAreaView、AsyncStorage（来自 RN 核心库），以及旧的 `expo-permissions`。
 
 ---
 
-## Styling
+## 响应式设计
 
-Follow Apple Human Interface Guidelines.
+- 将根组件包裹在 `ScrollView` 中。
+- 使用 `<ScrollView contentInsetAdjustmentBehavior="automatic" />` 代替 `<SafeAreaView>`。
+- 也应用 `contentInsetAdjustmentBehavior="automatic"` 到 `FlatList` 和 `SectionList` 上。
+- 使用 flexbox 替代 `Dimensions` API 进行屏幕尺寸获取。
+- 使用 `useWindowDimensions` 而不是 `Dimensions.get()` 来获取屏幕尺寸。
 
-### General Rules
+## 行为规范
 
-- Prefer flex gap over margin and padding
-- Prefer padding over margin
-- Always account for safe area via stack headers, tabs, or `contentInsetAdjustmentBehavior="automatic"`
-- Ensure both top and bottom safe area insets are handled
-- Inline styles preferred over `StyleSheet.create` unless reusing styles
-- Add entering/exiting animations for state changes
-- Use `{ borderCurve: 'continuous' }` for rounded corners (not capsule shapes)
-- Use navigation stack title instead of custom text headers
-- On ScrollView, use `contentContainerStyle` for padding/gap (avoids clipping)
-- CSS and Tailwind are not supported — use inline styles
+- 在 iOS 上根据需要条件性地使用 `expo-haptics` 以实现更好的交互体验。
+- 使用具有内置触觉效果的视图（如 `<Switch />`、`@react-native-community/datetimepicker`）。
+- `Stack` 路由的第一个子元素通常应该是 `contentInsetAdjustmentBehavior="automatic"` 的 `ScrollView`。
+- 对于搜索栏，建议使用 `Stack.Screen` 选项中的 `headerSearchBarOptions`。
+- 对于用户可能想要复制的文本，使用 `<Text selectable />`。
+- 大数字的格式化方式：1.4M、38k。
+- 请勿在 WebView 或 Expo DOM 组件之外使用内置元素（如 `img`、`div`）。
 
-### Text Styling
+## 样式设计
 
-- Add `selectable` prop to `<Text/>` elements showing important data or errors
-- Use `{ fontVariant: 'tabular-nums' }` on counters for alignment
+遵循 Apple 人类界面指南：
 
-### Shadows
+- 相比边距（margin）和内边距（padding），优先使用弹性间距（flex gap）。
+- 相比内边距（padding），优先使用内边距（padding）。
+- 通过导航栏、标签栏或 `contentInsetAdjustmentBehavior="automatic"` 确保安全区域（safe area）得到处理。
+- 除非需要重用样式，否则优先使用内联样式（inline styles）而非 `StyleSheet.create`。
+- 为状态变化添加进入/离开屏幕的动画效果。
+- 使用 `{ borderCurve: 'continuous' }` 以实现圆角效果（而非胶囊形状）。
+- 使用导航栏标题（navigation stack title）代替自定义文本标题。
+- 在 `ScrollView` 中使用 `contentContainerStyle` 来设置内边距/间距（避免裁剪问题）。
+- 不支持 CSS 和 Tailwind，请使用内联样式。
 
-Use CSS `boxShadow` style prop. Never use legacy RN shadow or elevation styles.
+### 文本样式
+
+- 对于显示重要数据或错误的 `<Text/>` 元素，添加 `selectable` 属性。
+- 对于计数器，使用 `{ fontVariant: 'tabular-nums' }` 来对齐文本。
+
+### 阴影效果
+
+使用 CSS 的 `boxShadow` 样式属性。请勿使用旧版的 RN 阴影效果或 `elevation` 样式。
 
 ```tsx
 <View style={{ boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)" }} />
 ```
 
-Inset shadows are supported.
+支持内边距阴影（Inset shadows）。
 
 ---
 
-## Navigation
+## 导航功能
 
-### Link
+### 链接（Links）
 
-Use `<Link href="/path" />` from `expo-router` for navigation.
+使用 `expo-router` 提供的 `<Link href="/path" />` 进行导航。
 
 ```tsx
 import { Link } from 'expo-router';
@@ -166,17 +159,17 @@ import { Link } from 'expo-router';
 </Link>
 ```
 
-Include `<Link.Preview>` whenever possible to follow iOS conventions. Add context menus and previews frequently.
+尽可能使用 `<Link.Preview>` 来遵循 iOS 的规范，并添加上下文菜单和预览功能。
 
-### Stack
+### 导航栈（Navigation Stack）
 
-- Always use `_layout.tsx` files to define stacks
-- Use `Stack` from `expo-router/stack` for native navigation stacks
-- Set page titles in Stack.Screen options: `options={{ title: "Home" }}`
+- 使用 `_layout.tsx` 文件来定义导航栈结构。
+- 使用 `expo-router/stack` 中的 `Stack` 组件来实现原生导航。
+- 在 `Stack.Screen` 选项中设置页面标题：`options={{ title: "Home" }}`。
 
-### Context Menus
+### 上下文菜单（Context Menus）
 
-Add long-press context menus to Link components:
+为 `<Link>` 组件添加长按触发的上下文菜单：
 
 ```tsx
 <Link href="/settings" asChild>
@@ -194,7 +187,7 @@ Add long-press context menus to Link components:
 </Link>
 ```
 
-### Link Previews
+### 链接预览（Link Previews）
 
 ```tsx
 <Link href="/settings">
@@ -205,21 +198,21 @@ Add long-press context menus to Link components:
 </Link>
 ```
 
-Can be combined with context menus.
+可以结合上下文菜单一起使用。
 
-### Modal
+### 模态框（Modal）
 
-Present a screen as a modal:
+将屏幕以模态框的形式展示：
 
 ```tsx
 <Stack.Screen name="modal" options={{ presentation: "modal" }} />
 ```
 
-Prefer this over custom modal components.
+建议使用这种方式而不是自定义的模态框组件。
 
-### Sheet
+### 表单组件（Form Sheets）
 
-Present as a dynamic form sheet:
+将表单组件以动态形式展示：
 
 ```tsx
 <Stack.Screen
@@ -233,13 +226,13 @@ Present as a dynamic form sheet:
 />
 ```
 
-`contentStyle: { backgroundColor: "transparent" }` enables liquid glass on iOS 26+.
+`contentStyle: { backgroundColor: "transparent" }` 可以在 iOS 26 及更高版本上实现液态玻璃效果。
 
 ---
 
-## Common Route Structure
+## 常见的路由结构
 
-Standard app layout with tabs and stacks:
+标准的应用程序布局包含标签栏和导航栈：
 
 ```
 app/
@@ -250,7 +243,7 @@ app/
     search.tsx       — Search view
 ```
 
-**Root layout:**
+**根布局（Root Layout）：**
 
 ```tsx
 // app/_layout.tsx
@@ -272,7 +265,7 @@ export default function Layout() {
 }
 ```
 
-**Shared group layout:**
+**共享组件布局（Shared Component Layout）：**
 
 ```tsx
 // app/(index,search)/_layout.tsx

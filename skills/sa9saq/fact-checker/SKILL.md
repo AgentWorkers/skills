@@ -1,39 +1,39 @@
 ---
-description: Verify claims with web search, assign confidence scores, and generate structured fact-check reports.
+description: 通过网络搜索验证声明内容，为这些声明分配置信度分数，并生成结构化的事实核查报告。
 ---
 
-# Fact Checker
+# 事实核查工具
 
-Automated fact-checking with confidence scoring and source attribution.
+该工具提供自动化的事实核查功能，包括置信度评分和来源标注。
 
-**Use when** verifying claims, checking article accuracy, or fact-checking content before publishing.
+**适用场景**：用于验证声明、检查文章的准确性，或在发布内容前进行事实核查。
 
-## Requirements
+## 使用要求
 
-- `web_search` tool access
-- No API keys needed
+- 需要访问 `web_search` 工具。
+- 无需 API 密钥。
 
-## Instructions
+## 使用步骤
 
-1. **Extract claims** from the provided text. List each claim separately. Skip opinions and subjective statements — only fact-check factual assertions.
+1. **从提供的文本中提取声明**。将每个声明单独列出。忽略观点和主观性陈述，仅核查事实性的断言。
 
-2. **Search for evidence** using `web_search` for each claim. Search for the core factual assertion, not the full sentence. Run 2-3 searches with different phrasings if initial results are inconclusive.
+2. **使用 `web_search` 为每个声明寻找证据**。搜索核心的事实性断言，而非完整的句子。如果初始搜索结果不明确，可以尝试使用不同的表述进行 2-3 次搜索。
 
-3. **Evaluate sources** with this hierarchy:
-   - 🥇 Official sources (government, organizations cited in the claim)
-   - 🥈 Peer-reviewed research, established wire services (AP, Reuters)
-   - 🥉 Major news outlets with editorial standards
-   - ⚠️ Blogs, social media, opinion pieces (note as weak evidence)
+3. **根据以下层级评估证据来源**：
+   - 🥇 官方来源（政府机构、声明中引用的组织）
+   - 🥈 同行评审的研究成果、知名新闻机构（如 AP、路透社）
+   - 🥉 具有编辑标准的主要新闻媒体
+   - ⚠️ 博客、社交媒体、观点文章（视为较弱的证据）
 
-4. **Assign verdict** to each claim:
-   | Verdict | Confidence | Criteria |
+4. **为每个声明分配判定结果**：
+   | 判定结果 | 置信度 | 评估标准 |
    |---------|-----------|----------|
-   | ✅ Verified | 90-100% | Multiple reliable sources confirm |
-   | ⚠️ Partially True | 50-89% | True with caveats or missing context |
-   | ❌ False | 0-29% | Contradicted by reliable sources |
-   | 🔍 Unverifiable | N/A | Insufficient sources to determine |
+   | ✅ 已验证 | 90-100% | 多个可靠来源予以证实 |
+   | ⚠️ 部分正确 | 50-89% | 信息部分正确但存在疑点或缺少背景信息 |
+   | ❌ 错误 | 0-29% | 被可靠来源反驳 |
+   | 🔍 无法验证 | N/A | 证据不足，无法确定事实 |
 
-5. **Output format**:
+5. **输出格式**：
    ```
    ## 🔍 Fact Check Report
    **Source:** [article/text title]
@@ -54,16 +54,16 @@ Automated fact-checking with confidence scoring and source attribution.
    **Overall accuracy: X/Y claims verified**
    ```
 
-## Edge Cases & Troubleshooting
+## 特殊情况与故障排除
 
-- **Date-sensitive claims**: Note when the info was last verified. Facts about statistics, rankings, or prices change frequently.
-- **Ambiguous claims**: If a claim can be interpreted multiple ways, check the most charitable interpretation first, then note caveats.
-- **No sources found**: Mark as 🔍 Unverifiable — absence of evidence is not evidence of absence.
-- **Conflicting sources**: Report the conflict explicitly. Note which sources are more authoritative and why.
-- **Satire/parody**: Flag if the original source appears to be satirical.
+- **时效性强的声明**：请注明信息最后一次被验证的时间。统计数据、排名或价格等信息会频繁变化。
+- **含义模糊的声明**：如果一个声明有多种解释，先采用最合理的解释，然后注明相关注意事项。
+- **未找到证据来源**：标记为 🔍 无法验证——缺乏证据并不代表该声明一定错误。
+- **来源冲突**：明确指出来源之间的矛盾，并说明哪些来源更权威以及原因。
+- **讽刺/恶搞内容**：如果原始来源明显具有讽刺或恶搞性质，请予以标注。
 
-## Security Considerations
+## 安全注意事项
 
-- Never fabricate sources or URLs — only cite actually found results.
-- Don't present search snippets as verified facts; always cross-reference.
-- Disclose limitations transparently in the report.
+- 严禁伪造来源或网址——仅引用实际存在的搜索结果。
+- 不要将搜索结果直接作为已验证的事实呈现；务必进行交叉验证。
+- 在报告中透明地说明工具的局限性。

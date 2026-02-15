@@ -1,53 +1,53 @@
 ---
 name: skills-audit
-description: Audit locally installed agent skills for security/policy issues using the SkillLens CLI (`skilllens scan`, `skilllens config`). Use when asked to scan a skills directory (Codex/Claude) and produce a risk-focused audit report based on each skill's `SKILL.md` and bundled resources.
+description: 使用 SkillLens CLI（`skilllens scan`、`skilllens config`）来审计本地安装的代理程序的技能，以检查是否存在安全或政策相关的问题。当需要扫描某个技能目录（如 Codex/Claude）时，请使用该工具，并根据每个技能的 `SKILL.md` 文件及其附带资源生成一份以风险为重点的审计报告。
 ---
 
-# Skills Audit (SkillLens)
+# 技能审计（SkillLens）
 
-## Install SkillLens
+## 安装 SkillLens
 
-- One-off run: `npx skilllens scan` (or `pnpm dlx skilllens scan`)
-- Global install: `pnpm add -g skilllens`
+- 一次性扫描：`npx skilllens scan`（或 `pnpm dlx skilllens scan`）
+- 全局安装：`pnpm add -g skilllens`
 
-## Quick start
+## 快速入门
 
-- Run `skilllens config` to see configured scan roots and auditor CLI availability.
-- Run `skilllens scan` to scan configured roots, or `skilllens scan <path>` to scan a specific directory.
-- Re-run with `--verbose` to see raw auditor output and `--force` to ignore cached results.
+- 运行 `skilllens config` 以查看已配置的扫描路径和可用的审计工具 CLI。
+- 运行 `skilllens scan` 来扫描已配置的路径，或者运行 `skilllens scan <路径>` 来扫描特定目录。
+- 使用 `--verbose` 选项重新运行以查看审计工具的原始输出，使用 `--force` 选项忽略缓存结果。
 
-## Audit workflow
+## 审计工作流程
 
-1. Define scope
-   - Prefer a concrete target path (example: `~/.codex/skills`) unless the user explicitly wants all configured roots.
-   - If auditing a repo checkout containing skills, scan the parent folder that contains skill directories (example: `skilllens scan ./skills`).
+1. **定义审计范围**：
+   - 优先选择具体的目标路径（例如：`~/.codex/skills`），除非用户明确要求扫描所有已配置的路径。
+   - 如果要审计包含技能文件的仓库，应扫描包含技能目录的父文件夹（例如：`skilllens scan ./skills`）。
 
-2. Inventory skills with SkillLens
-   - Run `skilllens scan [path] [--auditor claude|codex]`.
-   - Treat missing auditor CLIs or `skipped` statuses as “manual review required”, not “safe”.
+2. **使用 SkillLens 清理技能文件**：
+   - 运行 `skilllens scan [路径] [--auditor claude|codex]`。
+   - 将缺失的审计工具 CLI 或被标记为“跳过”的技能视为“需要手动审核”，而不是“安全”的。
 
-3. Prioritize review order
-   - Review any `unsafe` or `suspicious` verdicts first.
-   - Next, review skills that request broad permissions (filesystem/network), run shell commands, or reference external downloads.
+3. **确定审核优先级**：
+   - 首先审核被标记为“不安全”或“可疑”的技能。
+   - 接下来，审核那些需要广泛权限（文件系统/网络权限）、执行 shell 命令或引用外部下载的技能。
 
-4. Manually review each skill’s contents
-   - Read the skill’s `SKILL.md` and any referenced `scripts/`, `references/`, and `assets/`.
-   - Do not execute bundled scripts by default; inspect first.
+4. **手动审核每个技能的内容**：
+   - 阅读技能文件的 `SKILL.md` 以及其中引用的 `scripts/`、`references/` 和 `assets/` 文件。
+   - 默认情况下不要执行捆绑的脚本；先进行仔细检查。
 
-5. Evaluate risks (focus on realistic abuse)
-   - **Exfiltration**: sending file contents, env vars, tokens, SSH keys, browser data, or configs to remote endpoints.
-   - **Execution**: instructions to run arbitrary shell commands, `curl | bash`, `eval`, or to fetch-and-execute code.
-   - **Persistence**: modifying shell profiles, launch agents, cron, editor configs, or skill install locations.
-   - **Privilege/approval bypass**: instructions to ignore system policies, disable safety checks, or request escalated permissions unnecessarily.
-   - **Prompt injection**: attempts to override higher-priority instructions (“ignore previous”, “always comply”, “never mention…”).
-   - **Overbroad triggers**: vague descriptions that cause the skill to trigger on unrelated tasks.
+5. **评估风险**（重点关注实际可能发生的滥用情况）：
+   - **数据泄露**：将文件内容、环境变量、令牌、SSH 密钥、浏览器数据或配置信息发送到远程端点。
+   - **命令执行**：允许执行任意 shell 命令、`curl | bash`、`eval` 或获取并执行代码。
+   **持久化风险**：修改 shell 配置文件、启动代理程序、设置 cron 任务、编辑器配置或技能的安装位置。
+   **权限/审批绕过**：存在绕过系统安全策略的指令，或请求不必要的权限提升。
+   **提示注入**：尝试覆盖更高优先级的指令（如“忽略之前的设置”、“始终遵从”等）。
+   **触发条件过于宽泛**：描述过于模糊，导致技能在不相关任务上被触发。
 
-6. Produce a report
-   - For each skill, include: `name`, `path`, `verdict` (safe/suspicious/unsafe), `risk` (0–100), and bullet issues with concrete evidence (quote or filename).
-   - Recommend fixes that reduce blast radius: narrow scope, remove dangerous defaults, add explicit confirmation gates, and document required permissions.
+6. **生成审计报告**：
+   - 为每个技能记录以下信息：`名称`、`路径`、`审计结果（安全/可疑/不安全）`、`风险等级（0–100）`，以及具体的问题（附上引用或文件名）。
+   - 建议采取的修复措施：缩小权限范围、移除危险默认设置、添加明确的确认机制，并记录所需的权限。
 
-## Command snippets
+## 常用命令示例：
 
-- Scan configured roots: `skilllens scan`
-- Scan a specific folder: `skilllens scan ~/.codex/skills`
-- Force a re-audit and show raw output: `skilllens scan ~/.codex/skills --force --verbose`
+- 扫描已配置的路径：`skilllens scan`
+- 扫描特定文件夹：`skilllens scan ~/.codex/skills`
+- 强制重新审计并显示原始输出：`skilllens scan ~/.codex/skills --force --verbose`

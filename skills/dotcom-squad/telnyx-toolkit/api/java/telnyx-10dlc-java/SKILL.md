@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
 # Telnyx 10Dlc - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +31,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List Brands
+## 列出品牌
 
-This endpoint is used to list all brands associated with your organization.
+此端点用于列出与您的组织关联的所有品牌。
 
 `GET /10dlc/brand`
 
@@ -45,11 +46,11 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandListParams;
 BrandListPage page = client.messaging10dlc().brand().list();
 ```
 
-## Create Brand
+## 创建品牌
 
-This endpoint is used to create a new brand.
+此端点用于创建新品牌。
 
-`POST /10dlc/brand` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`POST /10dlc/brand` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.BrandCreateParams;
@@ -67,9 +68,9 @@ BrandCreateParams params = BrandCreateParams.builder()
 TelnyxBrand telnyxBrand = client.messaging10dlc().brand().create(params);
 ```
 
-## Get Brand
+## 获取品牌信息
 
-Retrieve a brand by `brandId`.
+通过 `brandId` 获取品牌详细信息。
 
 `GET /10dlc/brand/{brandId}`
 
@@ -80,11 +81,11 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandRetrieveResponse;
 BrandRetrieveResponse brand = client.messaging10dlc().brand().retrieve("brandId");
 ```
 
-## Update Brand
+## 更新品牌信息
 
-Update a brand's attributes by `brandId`.
+通过 `brandId` 更新品牌属性。
 
-`PUT /10dlc/brand/{brandId}` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`PUT /10dlc/brand/{brandId}` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.BrandUpdateParams;
@@ -103,9 +104,9 @@ BrandUpdateParams params = BrandUpdateParams.builder()
 TelnyxBrand telnyxBrand = client.messaging10dlc().brand().update(params);
 ```
 
-## Delete Brand
+## 删除品牌
 
-Delete Brand.
+删除品牌。
 
 `DELETE /10dlc/brand/{brandId}`
 
@@ -115,7 +116,7 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandDeleteParams;
 client.messaging10dlc().brand().delete("brandId");
 ```
 
-## Resend brand 2FA email
+## 重新发送品牌 2FA 邮件
 
 `POST /10dlc/brand/{brandId}/2faEmail`
 
@@ -125,9 +126,9 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandResend2faEmailParams;
 client.messaging10dlc().brand().resend2faEmail("brandId");
 ```
 
-## List External Vettings
+## 获取品牌的外部审核记录
 
-Get list of valid external vetting record for a given brand
+获取指定品牌的所有有效外部审核记录。
 
 `GET /10dlc/brand/{brandId}/externalVetting`
 
@@ -138,11 +139,11 @@ import com.telnyx.sdk.models.messaging10dlc.brand.externalvetting.ExternalVettin
 List<ExternalVettingListResponse> externalVettings = client.messaging10dlc().brand().externalVetting().list("brandId");
 ```
 
-## Order Brand External Vetting
+## 请求品牌的外部审核
 
-Order new external vetting for a brand
+为品牌请求新的外部审核。
 
-`POST /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingClass`
+`POST /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingClass`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.externalvetting.ExternalVettingOrderParams;
@@ -156,12 +157,11 @@ ExternalVettingOrderParams params = ExternalVettingOrderParams.builder()
 ExternalVettingOrderResponse response = client.messaging10dlc().brand().externalVetting().order(params);
 ```
 
-## Import External Vetting Record
+## 导入外部审核记录
 
-This operation can be used to import an external vetting record from a TCR-approved
-vetting provider.
+此操作可用于从 TCR（Telnyx 认证的）审核提供商导入外部审核记录。
 
-`PUT /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingId`
+`PUT /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingId`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.externalvetting.ExternalVettingImportsParams;
@@ -175,9 +175,9 @@ ExternalVettingImportsParams params = ExternalVettingImportsParams.builder()
 ExternalVettingImportsResponse response = client.messaging10dlc().brand().externalVetting().imports(params);
 ```
 
-## Revet Brand
+## 取消品牌审核
 
-This operation allows you to revet the brand.
+此操作允许您取消品牌的审核状态。
 
 `PUT /10dlc/brand/{brandId}/revet`
 
@@ -188,9 +188,9 @@ import com.telnyx.sdk.models.messaging10dlc.brand.TelnyxBrand;
 TelnyxBrand telnyxBrand = client.messaging10dlc().brand().revet("brandId");
 ```
 
-## Get Brand SMS OTP Status by Brand ID
+## 通过品牌 ID 查询 SMS OTP 状态
 
-Query the status of an SMS OTP (One-Time Password) for Sole Proprietor brand verification using the Brand ID.
+使用品牌 ID 查询 SMS OTP（一次性密码）的状态，用于唯一所有者的品牌验证。
 
 `GET /10dlc/brand/{brandId}/smsOtp`
 
@@ -201,11 +201,11 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandRetrieveSmsOtpStatusRespo
 BrandRetrieveSmsOtpStatusResponse response = client.messaging10dlc().brand().retrieveSmsOtpStatus("4b20019b-043a-78f8-0657-b3be3f4b4002");
 ```
 
-## Trigger Brand SMS OTP
+## 触发品牌 SMS OTP
 
-Trigger or re-trigger an SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+触发或重新触发 SMS OTP（一次性密码），用于唯一所有者的品牌验证。
 
-`POST /10dlc/brand/{brandId}/smsOtp` — Required: `pinSms`, `successSms`
+`POST /10dlc/brand/{brandId}/smsOtp` — 必需参数：`pinSms`, `successSms`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.BrandTriggerSmsOtpParams;
@@ -219,11 +219,11 @@ BrandTriggerSmsOtpParams params = BrandTriggerSmsOtpParams.builder()
 BrandTriggerSmsOtpResponse response = client.messaging10dlc().brand().triggerSmsOtp(params);
 ```
 
-## Verify Brand SMS OTP
+## 验证品牌 SMS OTP
 
-Verify the SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+验证 SMS OTP（一次性密码），用于唯一所有者的品牌验证。
 
-`PUT /10dlc/brand/{brandId}/smsOtp` — Required: `otpPin`
+`PUT /10dlc/brand/{brandId}/smsOtp` — 必需参数：`otpPin`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.brand.BrandVerifySmsOtpParams;
@@ -235,9 +235,9 @@ BrandVerifySmsOtpParams params = BrandVerifySmsOtpParams.builder()
 client.messaging10dlc().brand().verifySmsOtp(params);
 ```
 
-## Get Brand Feedback By Id
+## 通过 ID 获取品牌反馈
 
-Get feedback about a brand by ID.
+通过 ID 获取关于品牌的反馈信息。
 
 `GET /10dlc/brand_feedback/{brandId}`
 
@@ -248,11 +248,11 @@ import com.telnyx.sdk.models.messaging10dlc.brand.BrandGetFeedbackResponse;
 BrandGetFeedbackResponse response = client.messaging10dlc().brand().getFeedback("brandId");
 ```
 
-## Submit Campaign
+## 提交活动计划
 
-Before creating a campaign, use the [Qualify By Usecase endpoint](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) to ensure that the brand you want to assign a new campaign...
+在创建活动计划之前，请使用 [按用例筛选端点](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) 确保您想要分配新活动计划的品牌符合要求...
 
-`POST /10dlc/campaignBuilder` — Required: `brandId`, `description`, `usecase`
+`POST /10dlc/campaignBuilder` — 必需参数：`brandId`, `description`, `usecase`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.campaign.TelnyxCampaignCsp;
@@ -266,9 +266,9 @@ CampaignBuilderSubmitParams params = CampaignBuilderSubmitParams.builder()
 TelnyxCampaignCsp telnyxCampaignCsp = client.messaging10dlc().campaignBuilder().submit(params);
 ```
 
-## Qualify By Usecase
+## 按用例筛选
 
-This endpoint allows you to see whether or not the supplied brand is suitable for your desired campaign use case.
+此端点用于判断提供的品牌是否适合您的活动计划用例。
 
 `GET /10dlc/campaignBuilder/brand/{brandId}/usecase/{usecase}`
 
@@ -283,9 +283,9 @@ BrandQualifyByUsecaseParams params = BrandQualifyByUsecaseParams.builder()
 BrandQualifyByUsecaseResponse response = client.messaging10dlc().campaignBuilder().brand().qualifyByUsecase(params);
 ```
 
-## List Campaigns
+## 列出活动计划
 
-Retrieve a list of campaigns associated with a supplied `brandId`.
+检索与指定 `brandId` 关联的所有活动计划。
 
 `GET /10dlc/campaign`
 
@@ -299,9 +299,9 @@ CampaignListParams params = CampaignListParams.builder()
 CampaignListPage page = client.messaging10dlc().campaign().list(params);
 ```
 
-## Get campaign
+## 获取活动计划详情
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详细信息。
 
 `GET /10dlc/campaign/{campaignId}`
 
@@ -312,9 +312,9 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.TelnyxCampaignCsp;
 TelnyxCampaignCsp telnyxCampaignCsp = client.messaging10dlc().campaign().retrieve("campaignId");
 ```
 
-## Update campaign
+## 更新活动计划
 
-Update a campaign's properties by `campaignId`.
+通过 `campaignId` 更新活动计划的属性。
 
 `PUT /10dlc/campaign/{campaignId}`
 
@@ -325,9 +325,9 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.TelnyxCampaignCsp;
 TelnyxCampaignCsp telnyxCampaignCsp = client.messaging10dlc().campaign().update("campaignId");
 ```
 
-## Deactivate campaign
+## 关闭活动计划
 
-Terminate a campaign.
+终止活动计划。
 
 `DELETE /10dlc/campaign/{campaignId}`
 
@@ -338,11 +338,11 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignDeactivateResponse;
 CampaignDeactivateResponse response = client.messaging10dlc().campaign().deactivate("campaignId");
 ```
 
-## Submit campaign appeal for manual review
+## 为被拒绝的活动计划提交申诉
 
-Submits an appeal for rejected native campaigns in TELNYX_FAILED or MNO_REJECTED status.
+为状态为 TELNYX_FAILED 或 MNO_REJECTED 的活动计划提交申诉。
 
-`POST /10dlc/campaign/{campaignId}/appeal` — Required: `appeal_reason`
+`POST /10dlc/campaign/{campaignId}/appeal` — 必需参数：`appeal_reason`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignSubmitAppealParams;
@@ -355,9 +355,9 @@ CampaignSubmitAppealParams params = CampaignSubmitAppealParams.builder()
 CampaignSubmitAppealResponse response = client.messaging10dlc().campaign().submitAppeal(params);
 ```
 
-## Get Campaign Mno Metadata
+## 获取活动计划的 MNO 元数据
 
-Get the campaign metadata for each MNO it was submitted to.
+获取每个 MNO（移动网络运营商）的活动计划元数据。
 
 `GET /10dlc/campaign/{campaignId}/mnoMetadata`
 
@@ -368,9 +368,9 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignGetMnoMetadataRespo
 CampaignGetMnoMetadataResponse response = client.messaging10dlc().campaign().getMnoMetadata("campaignId");
 ```
 
-## Get campaign operation status
+## 获取活动计划操作状态
 
-Retrieve campaign's operation status at MNO level.
+检索活动计划在 MNO（移动网络运营商）层面的操作状态。
 
 `GET /10dlc/campaign/{campaignId}/operationStatus`
 
@@ -381,7 +381,7 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignGetOperationStatusR
 CampaignGetOperationStatusResponse response = client.messaging10dlc().campaign().getOperationStatus("campaignId");
 ```
 
-## Get OSR campaign attributes
+## 获取 OSR 活动计划属性
 
 `GET /10dlc/campaign/{campaignId}/osr_attributes`
 
@@ -392,7 +392,7 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.osr.OsrGetAttributesRespons
 OsrGetAttributesResponse response = client.messaging10dlc().campaign().osr().getAttributes("campaignId");
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/campaign/{campaignId}/sharing`
 
@@ -403,9 +403,9 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignGetSharingStatusRes
 CampaignGetSharingStatusResponse response = client.messaging10dlc().campaign().getSharingStatus("campaignId");
 ```
 
-## Accept Shared Campaign
+## 接受共享的活动计划
 
-Manually accept a campaign shared with Telnyx
+手动接受与 Telnyx 共享的活动计划。
 
 `POST /10dlc/campaign/acceptSharing/{campaignId}`
 
@@ -416,7 +416,7 @@ import com.telnyx.sdk.models.messaging10dlc.campaign.CampaignAcceptSharingRespon
 CampaignAcceptSharingResponse response = client.messaging10dlc().campaign().acceptSharing("C26F1KLZN");
 ```
 
-## Get Campaign Cost
+## 获取活动计划成本
 
 `GET /10dlc/campaign/usecase_cost`
 
@@ -430,9 +430,9 @@ UsecaseGetCostParams params = UsecaseGetCostParams.builder()
 UsecaseGetCostResponse response = client.messaging10dlc().campaign().usecase().getCost(params);
 ```
 
-## List Shared Campaigns
+## 列出共享活动计划
 
-Retrieve all partner campaigns you have shared to Telnyx in a paginated fashion.
+分页方式检索您与 Telnyx 共享的所有活动计划。
 
 `GET /10dlc/partner_campaigns`
 
@@ -443,9 +443,9 @@ import com.telnyx.sdk.models.messaging10dlc.partnercampaigns.PartnerCampaignList
 PartnerCampaignListPage page = client.messaging10dlc().partnerCampaigns().list();
 ```
 
-## Get Single Shared Campaign
+## 获取单个共享活动计划
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详细信息。
 
 `GET /10dlc/partner_campaigns/{campaignId}`
 
@@ -456,9 +456,9 @@ import com.telnyx.sdk.models.messaging10dlc.partnercampaigns.TelnyxDownstreamCam
 TelnyxDownstreamCampaign telnyxDownstreamCampaign = client.messaging10dlc().partnerCampaigns().retrieve("campaignId");
 ```
 
-## Update Single Shared Campaign
+## 更新单个共享活动计划
 
-Update campaign details by `campaignId`.
+通过 `campaignId` 更新活动计划详细信息。
 
 `PATCH /10dlc/partner_campaigns/{campaignId}`
 
@@ -469,7 +469,7 @@ import com.telnyx.sdk.models.messaging10dlc.partnercampaigns.TelnyxDownstreamCam
 TelnyxDownstreamCampaign telnyxDownstreamCampaign = client.messaging10dlc().partnerCampaigns().update("campaignId");
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/partnerCampaign/{campaignId}/sharing`
 
@@ -480,12 +480,11 @@ import com.telnyx.sdk.models.messaging10dlc.partnercampaigns.PartnerCampaignRetr
 PartnerCampaignRetrieveSharingStatusResponse response = client.messaging10dlc().partnerCampaigns().retrieveSharingStatus("campaignId");
 ```
 
-## List shared partner campaigns
+## 列出共享的活动计划
 
-Get all partner campaigns you have shared to Telnyx in a paginated fashion
+分页方式获取您与 Telnyx 共享的所有活动计划
 
-This endpoint is currently limited to only returning shared campaigns that Telnyx
-has accepted.
+当前此端点仅返回 Telnyx 已接受的活动计划。
 
 `GET /10dlc/partnerCampaign/sharedByMe`
 
@@ -496,7 +495,7 @@ import com.telnyx.sdk.models.messaging10dlc.partnercampaigns.PartnerCampaignList
 PartnerCampaignListSharedByMePage page = client.messaging10dlc().partnerCampaigns().listSharedByMe();
 ```
 
-## List phone number campaigns
+## 列出电话号码活动计划
 
 `GET /10dlc/phone_number_campaigns`
 
@@ -507,9 +506,9 @@ import com.telnyx.sdk.models.messaging10dlc.phonenumbercampaigns.PhoneNumberCamp
 PhoneNumberCampaignListPage page = client.messaging10dlc().phoneNumberCampaigns().list();
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`POST /10dlc/phone_number_campaigns` — Required: `phoneNumber`, `campaignId`
+`POST /10dlc/phone_number_campaigns` — 必需参数：`phoneNumber`, `campaignId`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.phonenumbercampaigns.PhoneNumberCampaign;
@@ -523,9 +522,9 @@ PhoneNumberCampaignCreate params = PhoneNumberCampaignCreate.builder()
 PhoneNumberCampaign phoneNumberCampaign = client.messaging10dlc().phoneNumberCampaigns().create(params);
 ```
 
-## Get Single Phone Number Campaign
+## 获取单个电话号码活动计划
 
-Retrieve an individual phone number/campaign assignment by `phoneNumber`.
+通过 `phoneNumber` 获取特定的电话号码/活动计划关联信息。
 
 `GET /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -536,9 +535,9 @@ import com.telnyx.sdk.models.messaging10dlc.phonenumbercampaigns.PhoneNumberCamp
 PhoneNumberCampaign phoneNumberCampaign = client.messaging10dlc().phoneNumberCampaigns().retrieve("phoneNumber");
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — Required: `phoneNumber`, `campaignId`
+`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — 必需参数：`phoneNumber`, `campaignId`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.phonenumbercampaigns.PhoneNumberCampaign;
@@ -555,9 +554,9 @@ PhoneNumberCampaignUpdateParams params = PhoneNumberCampaignUpdateParams.builder
 PhoneNumberCampaign phoneNumberCampaign = client.messaging10dlc().phoneNumberCampaigns().update(params);
 ```
 
-## Delete Phone Number Campaign
+## 删除电话号码活动计划
 
-This endpoint allows you to remove a campaign assignment from the supplied `phoneNumber`.
+此端点用于删除与指定 `phoneNumber` 关联的活动计划。
 
 `DELETE /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -568,11 +567,11 @@ import com.telnyx.sdk.models.messaging10dlc.phonenumbercampaigns.PhoneNumberCamp
 PhoneNumberCampaign phoneNumberCampaign = client.messaging10dlc().phoneNumberCampaigns().delete("phoneNumber");
 ```
 
-## Assign Messaging Profile To Campaign
+## 将消息配置文件分配给活动计划
 
-This endpoint allows you to link all phone numbers associated with a Messaging Profile to a campaign.
+此端点允许您将所有与消息配置文件关联的电话号码链接到活动计划。
 
-`POST /10dlc/phoneNumberAssignmentByProfile` — Required: `messagingProfileId`
+`POST /10dlc/phoneNumberAssignmentByProfile` — 必需参数：`messagingProfileId`
 
 ```java
 import com.telnyx.sdk.models.messaging10dlc.phonenumberassignmentbyprofile.PhoneNumberAssignmentByProfileAssignParams;
@@ -584,9 +583,9 @@ PhoneNumberAssignmentByProfileAssignParams params = PhoneNumberAssignmentByProfi
 PhoneNumberAssignmentByProfileAssignResponse response = client.messaging10dlc().phoneNumberAssignmentByProfile().assign(params);
 ```
 
-## Get Assignment Task Status
+## 获取任务状态
 
-Check the status of the task associated with assigning all phone numbers on a messaging profile to a campaign by `taskId`.
+检查将所有电话号码分配给活动计划的任务状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}`
 
@@ -597,9 +596,9 @@ import com.telnyx.sdk.models.messaging10dlc.phonenumberassignmentbyprofile.Phone
 PhoneNumberAssignmentByProfileRetrieveStatusResponse response = client.messaging10dlc().phoneNumberAssignmentByProfile().retrieveStatus("taskId");
 ```
 
-## Get Phone Number Status
+## 获取电话号码状态
 
-Check the status of the individual phone number/campaign assignments associated with the supplied `taskId`.
+检查与指定 `taskId` 关联的个别电话号码/活动计划分配的状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}/phoneNumbers`
 
@@ -612,11 +611,12 @@ PhoneNumberAssignmentByProfileListPhoneNumberStatusResponse response = client.me
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件将发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `campaignStatusUpdate` | Campaign Status Update |
+| `campaignStatusUpdate` | 活动计划状态更新 |
+```
+```

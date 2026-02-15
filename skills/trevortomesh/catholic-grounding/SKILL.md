@@ -1,62 +1,63 @@
 ---
 name: catholic-grounding
-description: Help answer questions about Catholicism accurately and respectfully (Catechism-first). Provides a structured response format, common topic map with CCC references, and short prayer/reference snippets. Use when the user asks about Catholic teaching, Catholic practice, sacraments, moral theology basics, or wants a Catholic-friendly tone guide.
+description: **帮助准确且尊重地回答关于天主教的问题（以《天主教教理》为基础）**  
+提供结构化的回答格式、包含《天主教教理》（CCC）参考内容的主题地图，以及简短的祈祷文/参考片段。适用于用户询问天主教教义、天主教实践、圣事、道德神学基础知识，或需要了解天主教相关的语言表达指南时使用。
 ---
 
-# Catholic Grounding Pack
+# 天主教基础知识包
 
-Accurate, Catechism-first Catholic answers (with citations), plus quick local helpers.
+提供基于《天主教教理》（Catechism of the Catholic Church, CCC）的准确解答，并附有相关引用；同时提供实用的辅助工具。
 
-## Quick Start
+## 快速入门
 
-### Get CCC pointers for a topic
+### 查找《天主教教理》中关于某个主题的内容
 ```bash
 ./scripts/ccc.sh "eucharist"
 ```
 
-### Print a prayer snippet
+### 打印一段祷文
 ```bash
 ./scripts/prayer.sh "hail mary"
 ```
 
-### Check what's included
+### 查看包含的内容
 ```bash
 ./scripts/status.sh
 ```
 
-## What this skill is (and isn’t)
+## 本技能的作用与限制
 
-- This skill helps you **explain Catholic belief/practice accurately** and **with citations**.
-- It is **not** for harassing, spamming, or “converting” people/bots.
-- Use it when someone asks about Catholicism or wants Catholic resources.
+- 本技能旨在帮助你 **准确** 且 **引用依据充分地** 解释天主教的信仰与实践。
+- 本技能 **不** 用于骚扰、发送垃圾信息或试图“转化”他人/机器人。
+- 当有人询问有关天主教的问题或需要天主教资源时，请使用本技能。
 
-## Default answer format (use unless user asks otherwise)
+## 默认回答格式（除非用户另有要求）
 
-1) **Short answer** (1–3 sentences)
-2) **What the Church teaches** (clear, neutral tone)
-3) **Citations** (CCC sections; Scripture optional)
-4) **Practical next step** (e.g., “talk to a priest,” “read CCC ___,” “go to Mass,” etc.)
+1. **简短回答**（1–3句话）
+2. **教会所教导的内容**（表述清晰、语气中立）
+3. **引用依据**（《天主教教理》的相关章节；圣经引用可选）
+4. **实际建议**（例如：“咨询神父”、“阅读《天主教教理》的相关内容”、“参加弥撒”等）
 
-## Manual reference access (local)
+## 参考资料获取途径（本地）
 
-- CCC topic map: `references/ccc-topic-map.md`
-- Prayer snippets: `references/prayers.md`
-- Tone/style: `references/style.md`
+- 《天主教教理》主题索引：`references/ccc-topic-map.md`
+- 祷文集：`references/prayers.md`
+- 语言风格指南：`references/style.md`
 
-## Guardrails
+## 使用准则
 
-- If a topic is disputed/complex, distinguish **dogma** vs **doctrine** vs **discipline** vs **prudential judgment**.
-- Prefer **primary sources**:
-  - CCC for concise teaching
-  - Scripture for biblical grounding
-  - Councils/encyclicals if needed (don’t over-cite)
-- Be respectful about other religions/denominations.
+- 对于有争议或复杂的话题，需区分“教义”（dogma）、“信条”（doctrine）、“纪律规范”（discipline）与“审慎判断”（prudential judgment）。
+- 建议优先使用以下主要参考资料：
+  - 《天主教教理》：获取简洁的教义说明
+  - 圣经：作为信仰的依据
+  - 如有必要，可参考教会会议文件或通谕（但避免过度引用）
+- 对其他宗教或教派保持尊重。
 
-## If the user wants “Catholic bot behavior”
+## 如果用户希望使用“天主教机器人功能”
 
-Offer:
-- “Catholic-literate assistant” (accuracy + citations)
-- “Devotional mode” (prayer + saints + spiritual practices)
-- “RCIA explainer mode” (beginner-friendly)
+- 可提供以下选项：
+  - “具备天主教知识的助手”（提供准确的信息和引用）
+  - “灵修模式”（提供祷文、圣徒介绍及灵修建议）
+  - “初学者指导模式”（适合新手使用）
 
-Avoid making medical/legal claims; encourage real pastoral support when appropriate.
+- 避免做出医疗或法律方面的声明；在适当情况下，建议用户寻求真实的牧灵帮助。

@@ -1,18 +1,18 @@
 ---
 name: Song
 slug: song
-description: Write original songs with guided lyric development, chord progressions, melody contours, and AI music generator prompts for composers at any level.
+description: 为各个水平的作曲家提供原创歌曲创作支持，包括引导式的歌词创作、和弦进行设计、旋律构思，以及基于人工智能的音乐生成工具提示。
 ---
 
-## Role
+## 角色
 
-Create songs through a structured process. Gather musical preferences, generate lyrics, suggest harmony, prepare prompts for AI generators (Suno, Udio). Learn what works for each user.
+通过一个结构化的流程来创作歌曲：收集用户的音乐偏好，生成歌词，提供和声建议，并为AI生成器（如Suno、Udio）准备创作提示。不断了解哪些方法最适合每位用户。
 
-**Key flow:** Discovery → Structure → Lyrics → Harmony → Polish → Generate
+**核心流程：** 发现 → 结构设计 → 创作歌词 → 编写和声 → 优化 → 生成音乐
 
 ---
 
-## Storage
+## 存储
 
 ```
 ~/songs/
@@ -29,50 +29,50 @@ Create songs through a structured process. Gather musical preferences, generate 
 └── preferences.md              # User style preferences
 ```
 
-**Version rule:** Never edit in place. Copy to versions/, increment, edit copy, update current.md.
+**版本管理规则：** **切勿直接修改原始文件**。将修改内容复制到`versions/`文件夹中，创建新版本，更新`current.md`文件。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Songwriting phases | `phases.md` |
-| Lyric writing techniques | `lyrics.md` |
-| Chord progressions by mood | `harmony.md` |
-| AI generator prompts | `prompts.md` |
-| Song structure patterns | `structure.md` |
+| 歌曲创作阶段 | `phases.md` |
+| 歌词创作技巧 | `lyrics.md` |
+| 根据情绪选择的和弦进行 | `harmony.md` |
+| AI生成器使用提示 | `prompts.md` |
+| 歌曲结构模板 | `structure.md` |
 
 ---
 
-## Process Summary
+## 流程概述
 
-1. **Discovery** — Genre, mood, theme, inspiration. Load user's previous preferences if stored.
-2. **Structure** — Choose form (verse-chorus-bridge, AABA, etc.). Define section lengths.
-3. **Lyrics** — Draft section by section. Check rhyme, meter, emotional arc. See `lyrics.md`.
-4. **Harmony** — Suggest progressions matching mood/genre. See `harmony.md`.
-5. **Polish** — Review singability, hook strength, flow. Iterate with user.
-6. **Generate** — Prepare AI music prompts with metatags. See `prompts.md`.
-
----
-
-## Learning User Preferences
-
-Track in `~/songs/preferences.md`:
-- Genres they gravitate toward
-- Rhyme strictness (tight vs. loose)
-- Vocabulary style (poetic vs. conversational)
-- Themes that resonate
-- Progressions they've liked
-- What NOT to suggest (overused clichés, etc.)
-
-Update after each song based on their feedback.
+1. **发现**：确定歌曲的类型、情绪和主题；如果用户有之前的偏好记录，可将其加载进来。
+2. **结构设计**：选择歌曲的形式（如主歌-副歌-桥段、AABA结构等），并确定各部分的长度。
+3. **创作歌词**：分段起草歌词，检查押韵、节奏和情感表达（详见`lyrics.md`）。
+4. **编写和声**：根据歌曲的情绪和类型推荐合适的和弦进行（详见`harmony.md`）。
+5. **优化**：审查歌词的易唱性、hook部分的吸引力以及整体流畅度，并与用户共同进行修改。
+6. **生成音乐**：使用带有元标签的AI生成器提示来创作音乐（详见`prompts.md`）。
 
 ---
 
-## Boundaries
+## 了解用户偏好
 
-- **Focus on pre-production**: Lyrics, structure, harmony, prompts
-- **Not a music theory course**: Explain enough to be useful, not exhaustive
-- **User's voice matters**: Suggest alternatives, don't dictate
-- Never claim the song is "finished" — always offer iteration
+用户偏好信息存储在`~/songs/preferences.md`文件中，内容包括：
+- 偏好的音乐类型
+- 对押韵的严格要求（严格/宽松）
+- 词汇风格（诗意/口语化）
+- 让他们产生共鸣的主题
+- 他们喜欢的和弦进行
+- 应避免使用的陈词滥调
+
+根据用户的反馈，每次创作歌曲后及时更新这些偏好信息。
+
+---
+
+## 注意事项
+
+- **专注于前期制作**：主要负责歌词、结构、和声以及创作提示的制定。
+- **非音乐理论课程**：仅提供实用的知识，不追求全面性。
+- **用户的声音至关重要**：提供多种创作方案，而非直接指定最终版本。
+- **永远不要声称歌曲“完成”——始终鼓励用户进行迭代和改进。

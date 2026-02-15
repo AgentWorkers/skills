@@ -1,16 +1,16 @@
 ---
 slug: "cashflow-forecaster"
 display_name: "Cashflow Forecaster"
-description: "Forecast construction project cash flow. Project income and expenses, identify funding gaps, and optimize payment timing for improved financial management."
+description: "预测建筑项目的现金流。分析项目的收入和支出，识别资金缺口，并优化支付时间，以提升财务管理水平。"
 ---
 
-# Cashflow Forecaster
+# 现金流预测器
 
-## Overview
+## 概述
 
-Forecast construction project cash flow based on schedule, billing cycles, and payment terms. Identify potential cash shortfalls, optimize payment timing, and support project financing decisions.
+根据项目进度、计费周期和付款条款来预测项目的现金流。识别潜在的现金流短缺问题，优化付款时间安排，并为项目的融资决策提供支持。
 
-## Cash Flow Curve
+## 现金流曲线
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -34,7 +34,7 @@ Forecast construction project cash flow based on schedule, billing cycles, and p
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -417,7 +417,7 @@ class CashFlowForecaster:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime
@@ -452,7 +452,7 @@ for name, scen in scenarios.items():
 print(forecaster.generate_report(forecast))
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

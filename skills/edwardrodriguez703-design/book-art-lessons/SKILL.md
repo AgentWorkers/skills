@@ -1,23 +1,23 @@
 ---
 name: book-art-lessons
-description: Book art-lessons services through Lokuli MCP. Use when user needs to find and book art-lessons. Triggers on requests like "book a art-lessons", "find art-lessons near me", or any art-lessons service request.
+description: 通过 Lokuli MCP 提供艺术课程预订服务。当用户需要查找或预订艺术课程时，可以使用该服务。该服务会在用户发起诸如“预订艺术课程”、“查找附近的艺术课程”或任何与艺术课程相关的请求时被触发。
 ---
 
-# uook art lessons
+# 图书艺术课程服务
 
-Book art-lessons services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预订艺术课程。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输方式：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

@@ -1,181 +1,158 @@
-# Client Discovery — Qualify, Diagnose, Close
+# 客户发现——评估、诊断、确定下一步行动
 
-Run discovery conversations that qualify prospects, diagnose real problems, and position your solution as the obvious next step.
-Sources: Consulting Success (2026), Melisa Liberman (36 questions framework), Freelance Cake, HubSpot, Highspot.
-All outputs go to `workspace/artifacts/`.
+通过对话来评估潜在客户，诊断实际问题，并将您的解决方案定位为显而易见的下一步选择。
+资料来源：Consulting Success（2026年）、Melisa Liberman（36个问题框架）、Freelance Cake、HubSpot、Highspot。
+所有输出结果都会保存到`workspace/artifacts/`目录中。
 
-## Use when
-- Preparing for a discovery call with a prospect
-- Qualifying whether a lead is worth pursuing
-- Drafting discovery questions for a specific industry/niche
-- Reviewing notes from a call to identify next steps
-- Writing a proposal based on discovery findings
-- Evaluating client fit before committing to a project
+## 适用场景：
+- 为与潜在客户的发现会议做准备
+- 评估某个潜在客户是否值得跟进
+- 为特定行业或细分市场起草发现性问题
+- 回顾会议记录以确定下一步行动
+- 根据发现结果撰写提案
+- 在承诺项目之前评估客户是否符合需求
 
-## Don't use when
-- Cold outreach (use cold-outreach skill — discovery comes AFTER they respond)
-- Existing client check-ins (different dynamic — you already have context)
-- Pricing decisions (use pricing-psychology skill)
-- Building the actual deliverable (discovery is pre-build)
+## 不适用场景：
+- 冷启动的外联（使用冷启动的外联技巧——发现工作应在客户回应之后进行）
+- 对现有客户的跟进（情况不同——您已经掌握了相关背景信息）
+- 定价决策（使用定价心理学相关技巧）
+- 开始实际开发产品或服务（发现工作应在开发之前完成）
 
-## Negative examples
-- "Write me a proposal" → Borderline. Discovery must happen BEFORE the proposal. If you haven't done discovery, do that first.
-- "Help me negotiate a rate" → No. That's pricing/negotiation, not discovery.
-- "How do I find leads?" → No. That's lead generation, not qualification.
+## 错误示例：
+- “直接给我写个提案吧。” → 这是错误的做法。发现工作必须在提案之前完成。
+- “帮我协商价格。” → 这属于定价或谈判范畴，而非发现工作。
+- “我该如何找到潜在客户？” → 这属于潜在客户开发工作，而非评估工作。
 
-## Edge cases
-- Upwork job evaluation → YES. Reading a job post IS discovery. Assess fit before bidding.
-- Text/DM-based discovery → YES. Same principles apply, just compressed format.
-- Qualifying yourself OUT of a bad fit → YES. The best outcome of discovery is sometimes "no."
+## 特殊情况：
+- 在Upwork平台上评估工作机会时：可以。阅读职位描述本身就属于发现工作的一部分。在投标前先评估客户是否符合需求。
+- 通过短信或私信进行发现交流：同样适用这些原则，只是形式更为简洁。
 
----
+## 核心理念：
+**彼得·德鲁克**：“作为一名顾问，我最强的能力就是保持无知状态，然后提出几个问题。”
 
-## The Core Truth
+发现工作不是推销会议。您的目的是**诊断问题**，而不是展示自己的解决方案。如果您在尚未了解客户问题的情况下就开始谈论解决方案，那就已经失败了。
 
-**Peter Drucker**: "My greatest strength as a consultant is to be ignorant and ask a few questions."
+### 80/20法则（Melisa Liberman）：
+- **80%的时间用于倾听**，**20%的时间用于提问**。（理想目标是倾听的时间远多于说话的时间，尽管具体比例可能有所不同。）
+- 说话时要多提问，不要滔滔不绝。
+- 要能够接受沉默。提出问题后，耐心等待回答。即使这让人感到不适。
+- 潜在客户应该感受到被认真倾听，而不是被强行推销产品或服务。
 
-Discovery is not a pitch meeting. You're not there to impress — you're there to **diagnose**. The moment you start talking about your solution before understanding their problem, you've lost.
+### 这对收入的重要性：
+Freelance Cake的Austin Church指出：“有洞察力的问题比华丽的独白更能体现您的专业能力。”提出正确的问题往往能**扩大项目范围**——如果通过发现工作发现了一个真正的问题，原本只愿意支付2500美元的潜在客户，可能会愿意每月支付2500美元的长期服务费用。
 
-### The 80/20 Rule (Melisa Liberman)
-- **Listen 80%** of the time. Talk 20%. (Aspirational target — the point is to listen far more than you talk, even if exact ratios vary.)
-- When you do talk, ask questions — don't monologue.
-- Be comfortable with silence. Ask, then wait. Even if it's uncomfortable.
-- The prospect should feel heard, not sold to.
+## 发现工作框架：5个阶段
 
-### Why This Matters for Revenue
-Freelance Cake's Austin Church: "Insightful questions testify to your competence more than your clever monologues." Asking the right questions often **increases project scope** — a prospect willing to pay $2,500 for a plan may happily pay $2,500/month for a retainer when you uncover the real problem.
+### 第1阶段：背景信息（热身）
+**目标**：了解客户的业务状况及当前面临的问题。
+**问题**：
+1. “请介绍一下您的业务——您是做什么的？服务于哪些客户？”
+2. “您是如何了解到我们的？”（了解信息来源的有效性）
+3. “是什么促使您现在联系我们？”（了解问题的紧迫性）
+4. “您通常的一天/一周的工作流程是怎样的？”（了解工作流程）
 
----
+**需要关注的信息**：公司的规模、团队规模、当前使用的工具、问题的直接诱因。
 
-## The Discovery Framework: 5 Phases
+### 第2阶段：问题诊断
+**目标**：揭示真正的问题（通常不是客户最初所说的问题）。
+**问题**：
+5. “您目前面临的最大挑战是什么？”
+6. “这个问题已经存在多久了？”（了解问题的严重程度）
+7. “您之前尝试过哪些解决方法？”（了解哪些方法无效）
+8. “如果不解决这个问题，会有什么后果？”（了解不采取行动的代价）
+9. “还有哪些人会受到这个问题的影响？”（了解相关利益方）
+10. “这个问题有多紧急？”（帮助客户确定优先级）
 
-### Phase 1: Context (Warm-Up)
-**Goal:** Understand who they are and what's happening now.
+**需要关注的信息**：问题的严重程度、之前的失败尝试、以及谁有权做出决策。
 
-Questions:
-1. "Tell me about your business — what do you do and who do you serve?"
-2. "How did you hear about us?" (reveals channel effectiveness)
-3. "What prompted you to reach out now?" (reveals urgency trigger)
-4. "What does a typical day/week look like for you?" (reveals workflow)
+**关键技巧（Freelance Cake）**：深入探究问题的根本原因。例如，“我的网站无法转化访客”可能实际上意味着“我没有明确的定位”或“我针对的目标受众不对”。不断追问“为什么”，直到找到问题的核心。
 
-**Listen for:** Scale, team size, current tools, immediate triggers.
+### 第3阶段：期望的结果
+**目标**：用客户的语言来定义成功的标准。
+**问题**：
+11. “如果我们完美地解决了这个问题，6个月后情况会怎样？”
+12. “哪些指标能证明问题已经解决？”（量化成功的标准）
+13. “如果问题解决了，您的生活会有哪些改变？”（通过情感诉求来加深理解）
+14. “您见过别人成功解决这个问题吗？他们是如何做到的？”（了解客户的期望）
 
-### Phase 2: Problem Diagnosis
-**Goal:** Uncover the REAL problem (often not what they initially say).
+**需要关注的信息**：具体的数字、客户的情感表达以及可以参考的案例。
 
-Questions:
-5. "What's the biggest challenge you're facing right now?"
-6. "How long has this been a problem?" (reveals severity)
-7. "What have you tried so far to fix it?" (reveals what didn't work)
-8. "What happens if you don't solve this?" (reveals cost of inaction)
-9. "Who else is affected by this problem?" (reveals stakeholders)
-10. "On a scale of 1-10, how urgent is this?" (forces prioritization)
+### 第4阶段：评估客户是否符合需求
+**目标**：确定您是否真的能够帮助客户，以及客户是否有能力支付费用。
+**问题**：
+15. “您对此有预算范围吗？”（直接但必要的问题）
+16. “还需要哪些人批准这个决定？”（了解决策流程）
+17. “您希望什么时候完成这个项目？”（了解项目的紧迫性）
+18. “什么能让您有信心继续推进？”（提前发现客户的顾虑）
 
-**Listen for:** Pain level, failed attempts (so you don't repeat them), who owns the decision.
+**不符合条件的信号（可以结束对话）**：
+- 没有预算和时间表 → “只是在探索中”
+- 决策需要超过5个部门的批准 → 决策流程过于繁琐
+- 客户希望以500美元的价格获得价值1万美元的解决方案 → 预期不匹配
+- 客户之前已经聘请过3位顾问 → 问题可能出在客户自身
+- 客户无法清晰地描述成功的标准 → 项目范围不明确（可能导致范围扩大）
+- 客户抗拒分享信息或开放合作
+- 客户没有明确的目标或优先事项，只是希望“让情况变好”
 
-**Key technique (Freelance Cake):** Push past symptoms to root causes. "My website doesn't convert" might really be "I have no positioning" or "I'm targeting the wrong audience." Keep asking "why" until you hit bedrock.
+### 第5阶段：为提案做准备
+**目标**：总结您了解到的信息，确认双方共识，并确定下一步行动。
+**问题**：
+19. “让我确认一下……”（总结客户的问题、期望的结果以及限制条件）
+20. “根据您提供的信息，我认为我们应该这样做……”（简要说明下一步计划）
+21. “您还有哪些问题想问我的？”（给客户发言的机会）
+22. “接下来最好的步骤是什么？”（让客户主导下一步行动）
 
-### Phase 3: Desired Outcome
-**Goal:** Define what success looks like in their words.
+**每次发现会议结束时，都必须**确定一个明确的下一步行动和时间节点。例如：“我会在周五之前发送提案”或“我们安排周二再跟进”。
 
-Questions:
-11. "If we solve this perfectly, what does that look like 6 months from now?"
-12. "What metrics would tell you this is working?" (quantifies success)
-13. "What would change in your daily life if this was fixed?" (emotional anchor)
-14. "Have you seen anyone do this well? What impressed you?" (reveals expectations)
+## 注意事项（危险信号与积极信号）
 
-**Listen for:** Specific numbers, emotional language, reference points.
+### 🟢 积极信号（客户适合合作）：
+- 客户能够清晰地描述问题
+- 客户有预算和时间表
+- 客户之前尝试过其他解决方案（表明他们认真对待这个问题）
+- 有明确的决策者或决策流程
+- 客户能够提出有深度的问题
+- 问题的紧迫性很高（例如：“这个问题每月让我们损失了X美元”
 
-### Phase 4: Qualification (Fit Check)
-**Goal:** Determine if you can actually help AND if they can actually pay.
+### 🔴 危险信号（需谨慎处理或拒绝合作）：
+- “您能直接给我一个报价吗？”（没有进行充分发现工作 → 项目可能不合适）
+- “我们需要在明天之前得到结果”（除非提供高端服务，否则不现实）
+- “之前的3家供应商都无法解决这个问题”（问题可能出在客户自身）
+- 在通话过程中项目范围不断扩大，但预算没有增加
+- 客户完全不回答关于预算的问题
+- “我们稍后再讨论细节”（表明项目范围可能会扩大）
+- 客户希望您先免费提供服务来“证明自己的能力”
 
-Questions:
-15. "Do you have a budget range in mind for this?" (direct but necessary)
-16. "Who else needs to approve this decision?" (reveals decision chain)
-17. "What's your timeline for getting this done?" (reveals urgency vs. browsing)
-18. "What would make you confident enough to move forward?" (reveals objections early)
+## 在Upwork平台上进行发现工作时的注意事项：
+在评估Upwork上的工作机会时，可以对职位描述本身进行简要的发现工作：
+- **阅读职位描述并回答以下问题**：
+  - 问题是否被清晰地定义了？（积极信号）
+  - 预算是否符合项目范围？（检查预算的合理性）
+  - 有多少家公司提交了提案？（少于10家 = 是个好机会）
+  - 客户是否有付款记录（确认客户的真实性）
+  - 您现有的技能和工具能否完成这个项目？（评估客户是否符合合作条件）
+  - 这个项目之后是否有继续合作的机会？（评估潜在的收入来源）
 
-**Disqualification signals (walk away):**
-- No budget and no timeline → "just exploring"
-- Decision requires 5+ approvals → bureaucratic nightmare
-- They want a $10K solution for $500 → misaligned expectations
-- They've fired 3 previous consultants → the problem might be them
-- They can't articulate what success looks like → unclear scope = scope creep
-- Resistance to sharing information or collaborating openly
-- No clear goals or priorities beyond "make it better"
+**在提案中体现发现工作的成果**：
+- 提及客户的具体问题（证明您认真阅读了职位描述）
+- 提出1-2个问题以进一步澄清情况（显示您在制定方案前进行了思考）
+- 提出的项目范围要符合客户的预算（而不是您自己的期望）
 
-### Phase 5: Bridge to Proposal
-**Goal:** Summarize what you heard, confirm alignment, set next steps.
-
-19. "Let me make sure I have this right..." (summarize their problem, desired outcome, and constraints)
-20. "Based on what you've shared, here's what I think we should do..." (brief, directional)
-21. "What questions do you have for me?" (give them the floor)
-22. "What's the best next step from here?" (let them tell you)
-
-**Never end a discovery call without:** A clear next step with a date. "I'll send a proposal by Friday" or "Let's schedule a follow-up for Tuesday."
-
----
-
-## Red Flags & Green Flags
-
-### 🟢 Green Flags (good fit)
-- They can articulate the problem clearly
-- They have a budget and timeline
-- They've tried solutions before (means they take it seriously)
-- Single decision-maker or clear decision process
-- They ask smart questions back
-- Urgency is real ("this is costing us $X/month")
-
-### 🔴 Red Flags (proceed with caution or decline)
-- "Can you just give me a quick quote?" (no discovery = bad project)
-- "We need this by tomorrow" (unrealistic unless premium pricing)
-- "Our last 3 vendors couldn't do this" (the problem may not be the vendors)
-- Scope keeps expanding during the call with no budget increase
-- They won't answer budget questions at all
-- "We'll figure out the details later" (scope creep incoming)
-- They want you to "prove yourself" with free work first
-
----
-
-## Upwork-Specific Discovery
-
-When evaluating Upwork jobs, run a mini-discovery on the posting itself:
-
-**Read the post and answer:**
-1. Is the problem clearly defined? (Green flag)
-2. Is the budget realistic for the scope? (Check range)
-3. How many proposals submitted? (<10 = good opportunity)
-4. Is the client verified with payment history? (Green flag)
-5. Can I deliver this with existing skills/tools? (Fit check)
-6. Is there a follow-up opportunity beyond this project? (Revenue potential)
-
-**In your proposal, demonstrate discovery:**
-- Reference their specific problem (proves you read it)
-- Ask 1-2 clarifying questions (shows you think before building)
-- Propose a scope that matches their budget (not your wishlist)
-
----
-
-## Post-Discovery: The Problem Statement
-
-After every discovery call, write a 2-3 sentence problem statement:
-
+## 发现工作后的步骤：
+每次发现会议结束后，需要写一段2-3句话的问题陈述：
 ```
 [Client name] is a [business type] struggling with [specific problem].
 This is costing them [quantified impact: money, time, customers].
 They need [solution category] by [timeline] with a budget of [range].
 ```
 
-This becomes the foundation of your proposal. If you can't write this clearly, you need another discovery conversation.
+这段陈述将成为您提案的基础。如果您无法清晰地写出问题陈述，那就需要再次与客户进行沟通。
 
----
-
-## Common Mistakes (Consulting Success + Liberman)
-
-1. **Talking too much** — You're not pitching, you're diagnosing.
-2. **Treating it like a job interview** — You're a peer consultant, not an applicant.
-3. **Trying to prove yourself** — Curiosity builds more trust than credentials.
-4. **Skipping the budget question** — If you don't ask, you'll waste time on proposals they can't afford.
-5. **Writing proposals for uncommitted prospects** — No proposal until you've confirmed budget, timeline, and decision-maker.
-6. **Not taking notes** — Write everything down. Review before writing the proposal.
-7. **Rushing to solution mode** — Sit with the problem longer. The real issue is usually 2-3 layers deeper than what they first say.
+## 常见错误（参考Consulting Success和Liberman的建议）：
+1. **说得太多** — 你的目的是诊断问题，而不是推销解决方案。
+2. **把这次交流当作面试** — 你是一名顾问，而不是求职者。
+3. **试图证明自己的能力** — 好奇心比资历更能建立信任。
+4. **忽略预算问题** — 如果不询问预算，就会浪费时间去准备客户无法负担的提案。
+5. 在没有确认预算、时间表和决策者的情况下就撰写提案。
+6. **不做笔记** — 一定要把所有信息都记录下来，并在撰写提案前仔细复习。
+7. **急于提供解决方案** — 应该先花更多时间深入了解问题。真正的问题通常比客户最初描述的要复杂得多。

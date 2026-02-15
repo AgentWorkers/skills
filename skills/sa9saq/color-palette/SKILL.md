@@ -1,34 +1,40 @@
 ---
-description: Generate color palettes and check WCAG accessibility compliance for UI design.
+description: 生成颜色调色板，并检查用户界面设计的 WCAG 可访问性合规性。
 ---
 
-# Color Palette
+# 色彩调色板
 
-Generate harmonious color palettes and verify accessibility compliance.
+生成和谐的色彩调色板，并验证其是否符合无障碍设计（WCAG）标准。
 
-## Instructions
+## 使用说明
 
-1. **Generate palette** from a base color (hex, RGB, HSL, or name):
-   - **Complementary**: Opposite on color wheel (+180°)
-   - **Analogous**: Adjacent colors (±30°)
-   - **Triadic**: Three evenly spaced (120° apart)
-   - **Split-complementary**: Base + two adjacent to complement
-   - **Monochromatic**: Shades/tints of one hue
+1. **从基础颜色生成调色板**（支持十六进制、RGB、HSL或颜色名称）：
+   - **互补色**：色轮上相对的颜色（相差180°）
+   - **类似色**：相邻的颜色（相差±30°）
+   - **三原色**：在色轮上等间距分布的三种颜色（相差120°）
+   - **分裂互补色**：基础颜色加上两个相邻的互补色
+   - **单色**：同一色调的不同明暗程度
 
-2. **Brand palette**: From brand description or existing colors, suggest:
-   - Primary, Secondary, Accent, Background, Text, Error, Success
+2. **根据品牌需求生成调色板**：根据品牌描述或现有颜色，建议使用以下颜色：
+   - 主色调（Primary）
+   - 次要色调（Secondary）
+   - 强调色（Accent）
+   - 背景色（Background）
+   - 文本色（Text）
+   - 错误提示色（Error）
+   - 成功提示色（Success）
 
-3. **WCAG Accessibility Check**: For any fg/bg pair, calculate contrast ratio:
+3. **WCAG无障碍性检查**：对于任何前景色（fg）和背景色（bg）的组合，计算对比度：
    ```
    Linearize: c ≤ 0.04045 → c/12.92, else ((c+0.055)/1.055)^2.4
    Luminance: L = 0.2126*R + 0.7152*G + 0.0722*B
    Ratio: (L_light + 0.05) / (L_dark + 0.05)
    ```
-   - AA normal text: ≥ 4.5:1
-   - AA large text: ≥ 3:1
-   - AAA normal text: ≥ 7:1
+   - AA级（普通文本）：对比度 ≥ 4.5:1
+   - AA级（大字体文本）：对比度 ≥ 3:1
+   - AAA级（高对比度文本）：对比度 ≥ 7:1
 
-4. **Output format**:
+4. **输出格式**：
    ```
    🎨 Palette: Analogous from #3B82F6
    | Role      | Hex     | RGB           | Name       |
@@ -41,18 +47,18 @@ Generate harmonious color palettes and verify accessibility compliance.
    ❌ #94A3B8 on #F8FAFC → 2.8:1 (AA Fail — try #64748B)
    ```
 
-5. **Export**: Generate CSS custom properties or Tailwind config:
+5. **导出结果**：生成CSS自定义属性或Tailwind配置文件：
    ```css
    :root { --color-primary: #3B82F6; --color-secondary: #6366F1; }
    ```
 
-## Edge Cases
+## 特殊情况处理
 
-- **Dark mode**: Generate both light and dark variants
-- **Color blindness**: Warn if palette relies on red/green distinction alone
-- **Near-failing contrast**: Suggest nearest passing alternative
+- **暗模式**：同时生成亮色和暗色版本的调色板
+- **色盲用户**：如果调色板仅依赖红色和绿色的区分，请发出警告
+- **对比度接近不合格的情况**：建议使用更符合标准的替代方案
 
-## Requirements
+## 要求
 
-- No dependencies — pure calculation
-- No API keys needed
+- 无需依赖任何外部库或API，仅使用纯计算方法
+- 无需使用API密钥

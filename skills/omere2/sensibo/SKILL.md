@@ -1,20 +1,20 @@
 ---
 name: sensibo
-description: Control Sensibo smart AC devices via their REST API. Use when the user asks to turn on/off AC, change temperature, set modes, check room temperature/humidity, or manage climate schedules. Triggers on phrases like "turn on AC", "set bedroom to 22", "how hot is it", "AC off", "cooling mode".
+description: 通过 REST API 控制 Sensibo 智能空调设备。适用于用户需要开启/关闭空调、调节温度、设置模式、查看室内温度/湿度或管理气候控制计划的情况。可响应以下指令：“开启空调”、“将卧室温度设置为 22 度”、“现在有多热？”、“关闭空调”、“制冷模式”等语音指令。
 ---
 
-# Sensibo AC Control
+# Sensibo空调控制
 
-Control smart AC units via the Sensibo REST API.
+通过Sensibo的REST API来控制智能空调设备。
 
-## First-Time Setup
+## 首次设置
 
-1. Get API key from https://home.sensibo.com/me/api
-2. List devices to get IDs:
+1. 从 https://home.sensibo.com/me/api 获取API密钥。
+2. 列出设备以获取设备ID：
    ```bash
    curl --compressed "https://home.sensibo.com/api/v2/users/me/pods?fields=id,room&apiKey={API_KEY}"
    ```
-3. Store in TOOLS.md:
+3. 将设备ID保存到TOOLS.md文件中：
    ```markdown
    ## Sensibo
    API Key: `{your_key}`
@@ -25,45 +25,45 @@ Control smart AC units via the Sensibo REST API.
    | Bedroom | xyz789 |
    ```
 
-## API Reference
+## API参考
 
-**Base URL:** `https://home.sensibo.com/api/v2`  
-**Auth:** `?apiKey={key}` query parameter  
-**Always use:** `--compressed` flag for better rate limits
+**基础URL:** `https://home.sensibo.com/api/v2`
+**认证:** 使用查询参数 `?apiKey={key}` 进行认证
+**建议使用:** 使用 `--compressed` 标志以获得更好的速率限制
 
-### Turn ON/OFF
+### 开/关空调
 
 ```bash
 curl --compressed -X POST "https://home.sensibo.com/api/v2/pods/{device_id}/acStates?apiKey={key}" \
   -H "Content-Type: application/json" -d '{"acState":{"on":true}}'
 ```
 
-### Set Temperature
+### 设置温度
 
 ```bash
 curl --compressed -X PATCH "https://home.sensibo.com/api/v2/pods/{device_id}/acStates/targetTemperature?apiKey={key}" \
   -H "Content-Type: application/json" -d '{"newValue":23}'
 ```
 
-### Set Mode
+### 设置运行模式
 
-Options: `cool`, `heat`, `fan`, `auto`, `dry`
+可选模式：`cool`（制冷）、`heat`（制热）、`fan`（风扇模式）、`auto`（自动模式）、`dry`（除湿模式）
 
 ```bash
 curl --compressed -X PATCH "https://home.sensibo.com/api/v2/pods/{device_id}/acStates/mode?apiKey={key}" \
   -H "Content-Type: application/json" -d '{"newValue":"cool"}'
 ```
 
-### Set Fan Level
+### 设置风扇转速
 
-Options: `low`, `medium`, `high`, `auto`
+可选档位：`low`（低速）、`medium`（中速）、`high`（高速）、`auto`（自动调节）
 
 ```bash
 curl --compressed -X PATCH "https://home.sensibo.com/api/v2/pods/{device_id}/acStates/fanLevel?apiKey={key}" \
   -H "Content-Type: application/json" -d '{"newValue":"auto"}'
 ```
 
-### Full State Change
+### 全面状态更改
 
 ```bash
 curl --compressed -X POST "https://home.sensibo.com/api/v2/pods/{device_id}/acStates?apiKey={key}" \
@@ -71,47 +71,47 @@ curl --compressed -X POST "https://home.sensibo.com/api/v2/pods/{device_id}/acSt
   -d '{"acState":{"on":true,"mode":"cool","targetTemperature":22,"fanLevel":"auto","temperatureUnit":"C"}}'
 ```
 
-## AC State Properties
+## 空调状态属性
 
-| Property | Type | Values |
-|----------|------|--------|
-| on | boolean | true, false |
-| mode | string | cool, heat, fan, auto, dry |
-| targetTemperature | integer | varies by AC unit |
-| temperatureUnit | string | C, F |
-| fanLevel | string | low, medium, high, auto |
-| swing | string | stopped, rangeful |
+| 属性          | 类型         | 值         |
+|---------------|-------------|------------|
+| on            | boolean       | true        | false        |
+| mode           | string       | cool        | heat        | fan        | auto        | dry        |
+| targetTemperature | integer      | （根据空调型号不同而变化） |
+| temperatureUnit    | string       | C          | F          |
+| fanLevel       | string       | low        | medium      | high        | auto        |
+| swing          | string       | stopped     | rangeful     |
 
-## Reading Sensor Data
+## 读取传感器数据
 
-### Current Measurements
+### 当前测量数据
 
-Include `measurements` in fields:
+在响应中包含 `measurements` 字段：
 ```bash
 curl --compressed "https://home.sensibo.com/api/v2/pods/{device_id}?fields=measurements&apiKey={key}"
 ```
 
-Response includes:
+响应内容示例：
 ```json
 {"measurements": {"temperature": 24.5, "humidity": 55, "time": "2024-01-15T12:00:00Z"}}
 ```
 
-### Historical Data
+### 历史数据
 
 ```bash
 curl --compressed "https://home.sensibo.com/api/v2/pods/{device_id}/historicalMeasurements?days=1&apiKey={key}"
 ```
 
-## Climate React (Smart Automation)
+## 气候反应（智能自动化）
 
-### Enable/Disable
+### 启用/禁用
 
 ```bash
 curl --compressed -X PUT "https://home.sensibo.com/api/v2/pods/{device_id}/smartmode?apiKey={key}" \
   -H "Content-Type: application/json" -d '{"enabled":true}'
 ```
 
-### Configure Thresholds
+### 配置阈值
 
 ```bash
 curl --compressed -X POST "https://home.sensibo.com/api/v2/pods/{device_id}/smartmode?apiKey={key}" \
@@ -125,17 +125,17 @@ curl --compressed -X POST "https://home.sensibo.com/api/v2/pods/{device_id}/smar
   }'
 ```
 
-## Schedules
+## 安排任务
 
-**Note:** Schedules use API v1 base URL: `https://home.sensibo.com/api/v1`
+**注意：** 安排任务的API使用基础URL：`https://home.sensibo.com/api/v1`
 
-### List Schedules
+### 列出所有安排任务
 
 ```bash
 curl --compressed "https://home.sensibo.com/api/v1/pods/{device_id}/schedules/?apiKey={key}"
 ```
 
-### Create Schedule
+### 创建新的安排任务
 
 ```bash
 curl --compressed -X POST "https://home.sensibo.com/api/v1/pods/{device_id}/schedules/?apiKey={key}" \
@@ -148,15 +148,15 @@ curl --compressed -X POST "https://home.sensibo.com/api/v1/pods/{device_id}/sche
   }'
 ```
 
-### Delete Schedule
+### 删除安排任务
 
 ```bash
 curl --compressed -X DELETE "https://home.sensibo.com/api/v1/pods/{device_id}/schedules/{schedule_id}/?apiKey={key}"
 ```
 
-## Timer
+## 定时器
 
-Set a one-time delayed action:
+设置一次性延迟操作：
 
 ```bash
 curl --compressed -X PUT "https://home.sensibo.com/api/v1/pods/{device_id}/timer/?apiKey={key}" \
@@ -164,10 +164,10 @@ curl --compressed -X PUT "https://home.sensibo.com/api/v1/pods/{device_id}/timer
   -d '{"minutesFromNow": 30, "acState": {"on": false}}'
 ```
 
-## Usage Tips
+## 使用技巧
 
-1. **Match room names:** When user says "living room" or "bedroom", look up device ID in TOOLS.md
-2. **Check response:** Verify `"status": "success"` in API response
-3. **Temperature ranges:** Depend on the specific AC unit's capabilities
-4. **Rate limits:** Use `--compressed` to get higher rate limits
-5. **Bulk operations:** Loop through device IDs for "turn off all ACs"
+1. **匹配房间名称：** 当用户输入“living room”（客厅）或“bedroom”（卧室）时，在TOOLS.md中查找对应的设备ID。
+2. **检查响应状态：** 确保API响应中包含 `“status”: “success”。
+3. **温度范围：** 取决于具体的空调型号。
+4. **速率限制：** 使用 `--compressed` 标志来提高请求的发送频率。
+5. **批量操作：** 遍历设备ID以批量执行操作（例如“关闭所有空调”）。

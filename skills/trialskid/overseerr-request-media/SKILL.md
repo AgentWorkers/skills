@@ -1,140 +1,142 @@
-# Overseerr Request Media Skill
+# 使用Overseerr请求媒体资源
 
-## Purpose
-Request a movie or TV show using the user's Overseerr instance. Overseerr forwards the request to Sonarr/Radarr.
+## 功能
+允许用户通过Overseerr实例请求电影或电视剧。Overseerr会将请求转发给Sonarr/Radarr。
 
-## Requirements
-Environment variables:
-- OVERSEERR_URL (example: https://overseerr.yourdomain.com)
-- OVERSEERR_API_KEY
+## 所需环境变量：
+- `OVERSEERR_URL`（示例：`https://overseerr.yourdomain.com`）
+- `OVERSEERR_API_KEY`
 
-Authentication header:
-- X-Api-Key: $OVERSEERR_API_KEY
+## 需要的认证信息：
+- `X-Api-Key`: `$OVERSEERR_API_KEY`
 
-Overseerr can detect if media is already available or already requested based on your configured Plex + Sonarr/Radarr connections.
+Overseerr能够根据用户配置的Plex + Sonarr/Radarr连接，判断媒体资源是否已经存在或已被请求过。
 
-## What this skill handles
-User examples:
-- "Request Interstellar"
-- "Add Interstellar to overseerr"
-- "Request Reacher season 2"
-- "Request The Office seasons 2-4"
+## 该功能支持的操作示例：
+- “请求《星际穿越》”
+- “将《星际穿越》添加到Overseerr的收藏列表中”
+- “请求《伸出手来》第二季”
+- “请求《办公室》第2-4季”
 
-## Workflow (ALWAYS FOLLOW)
+## 必须遵循的工作流程：
 
-### 1) Parse the user's request
-Extract:
-- Title
-- Optional type hint: movie or tv
-- Optional season request:
-  - "season 2"
-  - "seasons 1-3"
-  - "season 1 and 4"
+### 1) 解析用户请求
+- 提取以下信息：
+  - 电影/电视剧的标题
+  - 可选类型提示（movie或tv）
+  - 可选的季数（如：`season 2`、`seasons 1-3`、`season 1 and 4`）
 
-### 2) Search Overseerr
-GET:
-$OVERSEERR_URL/api/v1/search?query=<urlencoded title>
-
-Example:
+### 2) 向Overseerr发送搜索请求
+使用以下URL发送GET请求：
+```
+$OVERSEERR_URL/api/v1/search?query=<url-encoded title>
+```
+示例：
+```
 curl -s -H "X-Api-Key: $OVERSEERR_API_KEY" \
-"$OVERSEERR_URL/api/v1/search?query=interstellar"
+ "$OVERSEERR_URL/api/v1/search?query=interstellar"
+```
 
-### 3) Clarify if the result is ambiguous (movie vs show with same name)
-If the search results include BOTH:
-- a movie match AND
-- a tv match
-with the same (or extremely similar) title,
+### 3) 确认搜索结果是否模糊（同名电影与电视剧）
+如果搜索结果中同时包含：
+- 一部电影
+- 一部电视剧，
+且它们的标题相同或非常相似，
+则需要用户先进行选择。
 
-THEN ask the user to choose before requesting.
+最多显示2-4个选项，例如：
+- 电影：标题（年份）
+- 电视剧：标题（年份）
 
-Show 2-4 options max, like:
-- Movie: Title (Year)
-- TV: Title (Year)
+如果用户明确指定了类型（如“movie”、“show”、“tv”、“season 2”），则自动选择相应的类型。
 
-If the user provided an obvious hint like "movie", "show", "tv", "season 2", then pick the matching type automatically.
+### 4) 选择最合适的匹配结果
+- 优先选择标题完全匹配的结果
+- 在有多个结果时，优先选择人气最高的结果
+- 如果用户提供了类型提示（movie或tv），则尊重用户的偏好
 
-### 4) Pick the best match
-Rules:
-- Prefer exact title match
-- Prefer the highest popularity match when multiple results exist
-- Respect the user's type hint if provided (movie vs tv)
+### 5) 检查媒体资源的状态
+在创建请求之前，需要检查选中的资源是否已经存在或已被请求：
+- 查看Overseerr返回的资源可用性/请求状态信息。
+  - 如果资源已经在库中：
+    - 不要再次请求
+    - 回复：“资源已存在 ✅”
+  - 如果资源已被请求（处于待处理、已批准或已请求状态）：
+    - 不要再次请求
+    - 回复：“资源已请求 ✅”
+  - 如果API返回的状态不明确：
+    - 继续创建请求
+    - 如果由于重复请求导致POST请求失败，回复：“资源已请求 ✅”
 
-### 5) Check if it already exists (available or already requested)
-Before creating a request:
-- Inspect the selected result for availability/request status info returned by Overseerr (library/availability/request indicators).
-- If it indicates the media is already available in the library:
-  - Do NOT request it
-  - Reply: "Already available ✅"
-- If it indicates the media is already requested (pending/processing/approved/requested):
-  - Do NOT request it again
-  - Reply: "Already requested ✅"
-
-If the API response does NOT clearly indicate status:
-- Proceed with creating the request
-- If the POST fails due to duplicate/existing request, reply "Already requested ✅"
-
-### 6) Create the request
-POST:
+### 6) 创建请求
+使用以下URL发送POST请求：
+```
 $OVERSEERR_URL/api/v1/request
-
-Movie JSON:
+```
+**电影请求的JSON格式：**
+```json
 {
   "mediaType": "movie",
   "mediaId": <tmdbId>
 }
-
-TV JSON (full series):
+```
+**电视剧（完整季数）的JSON格式：**
+```json
 {
   "mediaType": "tv",
   "mediaId": <tmdbId>
 }
-
-TV JSON (specific seasons):
+```
+**电视剧（特定季数）的JSON格式：**
+```json
 {
   "mediaType": "tv",
   "mediaId": <tmdbId>,
-  "seasons": [2,3]
+  "seasons": [2, 3]
 }
-
-Examples:
-
-Movie:
+```
+示例：
+- 请求电影：
+```bash
 curl -s -X POST \
 -H "X-Api-Key: $OVERSEERR_API_KEY" \
 -H "Content-Type: application/json" \
 "$OVERSEERR_URL/api/v1/request" \
 -d '{"mediaType":"movie","mediaId":157336}'
-
-TV (full):
+```
+- 请求完整季数的电视剧：
+```bash
 curl -s -X POST \
 -H "X-Api-Key: $OVERSEERR_API_KEY" \
 -H "Content-Type: application/json" \
 "$OVERSEERR_URL/api/v1/request" \
 -d '{"mediaType":"tv","mediaId":71912}'
-
-TV (season 2):
+```
+- 请求《伸出手来》第二季：
+```bash
 curl -s -X POST \
 -H "X-Api-Key: $OVERSEERR_API_KEY" \
 -H "Content-Type: application/json" \
 "$OVERSEERR_URL/api/v1/request" \
 "$OVERSEERR_URL/api/v1/request" \
 -d '{"mediaType":"tv","mediaId":71912,"seasons":[2]}'
+```
 
-### 7) Respond cleanly
-- Confirm what was requested
-- If TV request was partial, list seasons
-- If already requested/available, say so
-- If no results, ask for alternate spelling or more context
+### 7) 清晰地回复用户
+- 确认用户请求的内容
+  - 如果是电视剧请求，列出可选择的季数
+  - 如果资源已存在或已被请求，告知用户
+  - 如果没有找到结果，询问用户是否可以提供其他拼写或更多信息
 
-## Output style
-Short confirmations:
-- "✅ Requested: Interstellar (2014)"
-- "✅ Requested: Reacher (Season 2)"
-- "Already requested ✅"
-- "Already available ✅"
+## 回复格式：
+- 简洁的确认信息：
+  - “✅ 已请求：《星际穿越》（2014年）”
+  - “✅ 已请求：《伸出手来》第二季”
+  - “资源已存在 ✅”
+  - “资源已请求 ✅”
 
-## Error handling
-- If search returns 0 results:
-  - Ask for alternate title or year
-- If multiple equally good matches remain:
-  - Ask the user to pick from 2-4 options
+## 错误处理：
+- 如果搜索结果为空：
+  - 询问用户是否可以提供其他标题或年份
+- 如果有多个相似的结果：
+  - 询问用户从2-4个选项中选择

@@ -1,62 +1,62 @@
 ---
 name: MVP
-description: "Build, validate, and launch minimum viable products with scope discipline, user signals, and iteration speed."
+description: "以范围控制、用户反馈以及迭代速度为原则，构建、验证并发布最小可行产品（MVP）。"
 ---
 
-## First: Identify the User's Role
+## 第一步：确定用户的角色
 
-Before guidance, determine their context:
+在提供指导之前，先了解他们的职责和背景：
 
-| Role | Key Focus | Load File |
+| 角色 | 关键关注点 | 需要参考的文档 |
 |------|-----------|-----------|
-| Technical Founder | Scope control, stop over-engineering | `roles/technical.md` |
-| Non-Technical Founder | Developer communication, validation before code | `roles/non-technical.md` |
-| Product Manager | Stakeholder alignment, scope defense | `roles/pm.md` |
-| Indie Hacker / Solo | Speed to market, validation without audience | `roles/solo.md` |
-| Investor / Advisor | Evaluating MVPs, red flag detection | `roles/investor.md` |
+| 技术创始人 | 控制项目范围，避免过度设计 | `roles/technical.md` |
+| 非技术创始人 | 与开发人员沟通，代码发布前的验证 | `roles/non-technical.md` |
+| 产品经理 | 确保利益相关者的共识，维护项目范围 | `roles/pm.md` |
+| 独立开发者 | 加快产品上市速度，无需考虑用户反馈 | `roles/solo.md` |
+| 投资者/顾问 | 评估最小可行产品（MVP），识别潜在问题 | `roles/investor.md` |
 
 ---
 
-## Universal MVP Principles
+## MVP（最小可行产品）的基本原则
 
-**The One-Sentence Test:** Can you state in one sentence what assumption you're testing? If not, scope is unclear.
+**“一句话测试”：** 你能用一句话概括你正在测试的假设吗？如果不能，那么项目范围就不清晰了。
 
-**Minimum = Fastest Path to Learning**
-- Not the smallest product. The fastest way to validate or invalidate your hypothesis.
-- "What's the cheapest thing I can build to learn if anyone wants this?"
+**“最小化≠最快学习路径”**  
+- MVP 并不意味着产品必须是最小的；而是指能够最快验证或证伪你的假设的方法。  
+- “如果有人需要这个产品，我可以用最少的资源做出什么来验证它？”
 
-**Viable = Someone Would Pay/Use It**
-- Not a demo. Not a prototype. Something that delivers enough value that a user would come back.
-- If nobody would use it twice, it's not viable.
+**“可行性”意味着“有人愿意付费/使用它”**  
+- MVP 不仅仅是演示版本或原型；它必须能够提供足够的价值，让用户愿意再次使用它。  
+- 如果没有人愿意使用两次，那么这个产品就不具备可行性。
 
-**Done Criteria:**
-1. Core hypothesis is testable
-2. One user flow works end-to-end
-3. You can measure success/failure
-4. Ship date is set and non-negotiable
+**完成 MVP 的标准：**  
+1. 核心假设是可以被验证的。  
+2. 至少有一个完整的使用流程（用户流程）能够从头到尾顺利运行。  
+3. 你可以衡量项目的成功或失败。  
+4. 发布日期已经确定且不可更改。  
 
 ---
 
-## Scope Discipline
+## 项目范围管理
 
-See `scope.md` for:
-- Feature prioritization matrix (must/should/could/won't)
-- "If we add X, we cut Y" template
-- Common scope traps by role
-- Decision log template
+请参考 `scope.md`，了解以下内容：  
+- 功能优先级矩阵（必须做/应该做/可以做/不应该做）  
+- “如果添加 X，就需要放弃 Y”的决策模板  
+- 不同角色在项目范围管理中可能遇到的常见陷阱  
+- 决策记录模板  
 
-## Validation Techniques
+## 验证方法
 
-See `validation.md` for:
-- Pre-build validation (landing pages, fake doors, Wizard of Oz)
-- Post-launch signals (what metrics matter at <100 users)
-- User interview scripts
-- Kill criteria framework
+请参考 `validation.md`，了解以下内容：  
+- 发布前的验证方法（如测试页面、模拟环境等）  
+- 产品上线后的监控指标（在用户数量较少时需要关注的指标）  
+- 用户访谈脚本  
+- 项目终止的标准（用于判断产品是否成功）  
 
-## Common Traps
+## 常见的项目陷阱
 
-See `traps.md` for anti-patterns:
-- Over-engineering for scale with zero users
-- Confusing "shipped" with "learned"
-- Building interesting features vs important features
-- Endless polish before anyone sees it
+请参考 `traps.md`，了解以下常见的问题和解决方法：  
+- 在用户数量为零的情况下过度设计产品以应对未来的扩展需求  
+- 将“产品发布”与“学习新功能”混淆  
+- 追求有趣的功能而忽视了真正重要的功能  
+- 在产品被用户看到之前进行无休止的改进

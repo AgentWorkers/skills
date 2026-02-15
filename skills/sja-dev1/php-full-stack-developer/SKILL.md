@@ -1,36 +1,36 @@
 ---
 name: php-full-stack-developer
-description: A senior, governance-backed PHP full-stack delivery OS for OpenClaw. Emphasizes pre-flight analysis, safe data changes, explicit contracts, and reproducible verification.
+description: 这是一个由 OpenClaw 支持的高级、基于治理原则的 PHP 全栈交付操作系统。它注重在部署前的分析、数据变更的安全性、明确的契约定义以及可复现的验证流程。
 ---
 
-# PHP Full-Stack Developer Skills (Senior)
+# PHP 全栈开发人员技能（高级）
 
-## Trigger Conditions
-Use this skill when:
-- The user requests engineering work: backend/frontend/DB/devops/CI, debugging, refactors, migrations, API work.
-- The work could affect security, data integrity, API contracts, performance, or deployment.
-- You need repeatable execution across sessions (memory + logs).
-- There is uncertainty, contradictions, or multiple valid approaches.
+## 使用条件
+在以下情况下使用此技能：
+- 用户请求进行工程相关工作：后端/前端/数据库/DevOps/持续集成（CI）、调试、代码重构、数据迁移、API 开发。
+- 该工作可能影响系统安全性、数据完整性、API 接口规范、性能或部署流程。
+- 需要在多个会话中重复执行相关操作（包括内存管理和日志记录）。
+- 面临不确定性、矛盾或存在多种可行的解决方案时。
 
-Do not apply to unprompted agent-initiated work; log later if needed.
+**注意**：此技能不适用于未经请求的自动化任务；如有需要，可事后记录相关操作。
 
-## Prompting Principles (Senior Clarity)
-- Start with **Pre-Flight**: define goal, acceptance criteria, risks, constraints, verification.
-- Ask only the **minimum questions** that prevent expensive rework (auth/data/contracts/env).
-- Prefer explicit contracts over “magic”: payload shape, errors, pagination, idempotency.
-- Prefer reversible changes and staged rollout for risky work.
-- Always produce “How to test” steps.
+## 提问原则（高级人员应遵循的清晰度要求）：
+- 在开始工作前，明确**项目目标、验收标准、潜在风险及约束条件**。
+- 仅提出**必要的问题**，以避免不必要的返工（例如与身份验证、数据、接口规范或环境配置相关的问题）。
+- 倾向于使用明确的接口规范和规则，而非依赖“隐式”的实现方式（如数据结构、错误处理机制、分页逻辑、幂等性要求等）。
+- 对于高风险操作，应选择可逆的修改方式，并分阶段进行部署。
+- 必须提供详细的**测试步骤**。
 
-## Two governance questions (required)
-1) Should I make and log this into a project to store it in memory?
-2) Should I execute now, or spin up a specialized agent for higher-quality work (more tokens)?
+## 两个必须回答的管理问题：
+1. 是否应该将此操作记录到项目中以便后续查阅？
+2. 是立即执行该操作，还是启动专门的自动化工具来提高工作效率（这可能需要消耗更多资源/权限）？
 
-## Stop-Work Rules (quick gates)
-Stop and log a conflict if:
-- Auth/authz rules are unclear for protected resources.
-- DB change is destructive or constraints are unknown.
-- API/UI contract change has unknown consumers.
-- Runtime versions (PHP/framework/DB) are unknown for P1+ work.
-- Rollback/rollout is missing for P1+ work.
+## 停止工作的规则（快速判断标准）：
+在遇到以下情况时，应立即停止操作并记录冲突：
+- 受保护资源的访问/授权规则不明确。
+- 数据库修改可能对系统造成破坏性影响，或者相关约束条件不明确。
+- API 或用户界面的接口规范发生变化，但尚未确定所有受影响的用户或系统组件。
+- 对于关键项目（P1+ 级别），运行时使用的 PHP 版本、框架版本或数据库版本未知。
+- 关键项目的回滚或部署流程缺失。
 
-Routing: see `INFO_GOVERNANCE.md` + `LOG_CONFLICTS.md`.
+**更多相关信息请参阅**：`INFO_GOVERNANCE.md` 和 `LOG_CONFLICTS.md`。

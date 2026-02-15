@@ -1,376 +1,376 @@
 ---
 name: merc-income-guide
-description: Complete guide to making $42/hr on Mercor platform. Use when you want to start freelancing on Mercor, optimize your profile, or maximize earnings on the platform.
+description: **在Mercor平台上每小时赚取42美元的完整指南**  
+本指南适用于希望在Mercor平台上开始自由职业、优化个人资料或最大化收入的人士。
 ---
 
-# Merc Income Guide
-
-Complete step-by-step guide to making $42/hr on the Mercor platform. This guide covers everything from getting started to optimizing your earnings, based on proven strategies from successful freelancers.
-
-## When to Use This Skill
-
-- Starting your journey on Mercor as a freelancer
-- Optimizing your profile for higher-paying opportunities
-- Preparing for Mercor interviews and screening processes
-- Troubleshooting issues with your Mercor account
-- Maximizing your earning potential on the platform
-
-## Quick Start: The 9-Step Process
-
-### Step 1: Sign Up
-1. Go to [Mercor.ai](https://mercor.ai)
-2. Create your account with email or social login
-3. Complete basic profile information
-
-### Step 2: Create a Super Profile
-Your profile is your first impression. Make it stand out:
-- **Professional photo**: High-quality headshot (use AI Portrait Generator Skill!)
-- **Compelling headline**: Clear, specific (e.g., "AI/ML Engineer with 5+ years experience")
-- **Detailed bio**: Highlight relevant skills, experience, and achievements
-- **Portfolio links**: GitHub, LinkedIn, personal website
-
-### Step 3: Upload Your CV
-**Create a professional CV on Canva (FREE):**
-1. Choose a modern, professional template
-2. Include: Contact info, Skills, Experience, Education, Projects
-3. Use keywords relevant to your target roles
-4. Export as PDF and upload to Mercor
-
-**CV Best Practices:**
-- Keep it 1-2 pages
-- Use action verbs (Developed, Designed, Led)
-- Quantify achievements (e.g., "Increased efficiency by 40%")
-- Tailor to your target roles
-
-### Step 4: Browse and Apply to Opportunities
-1. Navigate to the "Opportunities" tab in your dashboard
-2. Filter by: Skills, Experience Level, Hourly Rate
-3. Read job descriptions thoroughly
-4. Apply to roles matching your expertise
-5. **Tip**: Apply to 5-10 relevant opportunities daily
-
-### Step 5: Read Job Descriptions Carefully
-Before applying, analyze each job description:
-- **Required skills**: Do you match at least 80%?
-- **Responsibilities**: Is the scope clear?
-- **Compensation**: Is the rate competitive ($42/hr is the target)
-- **Timeline**: Can you commit to the hours?
-
-### Step 6: Wait for Interview Invitations
-- Invitations come via email from Mercor talent managers
-- Response time varies (typically 1-7 days)
-- Check your spam folder regularly
-- Respond promptly to invitations
-
-### Step 7: Talent Manager Screening (15-30 mins)
-**What to expect:**
-- Video interview via Zoom/Google Meet
-- Questions about your experience and skills
-- Technical assessment or portfolio review
-- Availability and rate negotiation
-
-**Preparation:**
-- Research the company and role beforehand
-- Prepare specific examples of your work
-- Have your portfolio ready to share
-- Be ready to discuss your hourly rate
-
-### Step 8: Client Interview (Final Round)
-**What to expect:**
-- Direct interview with the hiring company
-- More in-depth technical questions
-- Culture fit assessment
-- Project-specific discussions
-
-**Preparation:**
-- Review the client's website and products
-- Prepare relevant project examples
-- Practice answering technical questions
-- Have questions ready to ask them
-
-### Step 9: Receive Offer and Start Working
-- Response time: 3-7 days after interview
-- Review the offer carefully (rate, hours, scope)
-- Sign the contract through Mercor platform
-- Track hours and get paid weekly
-
-## Essential Tools & Skills
-
-### Must-Knowledge Platforms
-You should be familiar with these tools:
-
-**Communication & Collaboration:**
-- **Slack** - Team communication and channels
-- **Zoom/Google Meet** - Video meetings and screen sharing
-- **Notion** - Documentation and project management
-- **Zendesk** - Customer support systems
-
-**Development & Design:**
-- **GitHub** - Version control and code repositories
-- **Figma** - UI/UX design and prototyping (for design/product roles)
-- **Jira** - Project tracking and issue management
-- **Asana** - Task and project management
-- **Trello** - Kanban-style project boards
-
-### Time Tracking
-Mercor uses its own time tracking system - no additional setup needed.
-
-### Payment
-- Hourly rates typically range from $30-$50/hr
-- Payments processed weekly
-- Secure payments through Mercor platform
-- Track all earnings in your dashboard
-
-## Profile Optimization Tips
-
-### 1. Complete All Sections
-- ✅ Professional photo
-- ✅ Complete bio
-- ✅ Skills list (prioritize top skills)
-- ✅ Work history with achievements
-- ✅ Portfolio links
-- ✅ Education
-- ✅ Certifications
-
-### 2. Use Keywords Strategically
-Include keywords from your target job descriptions:
-- "Machine Learning", "Deep Learning", "NLP"
-- "React", "Node.js", "Python", "TypeScript"
-- "Project Management", "Agile", "Scrum"
-
-### 3. Showcase Relevant Projects
-- Add your best projects with clear descriptions
-- Include links to GitHub repositories or live demos
-- Highlight your specific contributions
-- Quantify results (e.g., "Improved load time by 50%")
-
-### 4. Get Recommendations
-- Ask former colleagues for recommendations
-- Reach out to clients for testimonials
-- Add recommendations to your profile
-- They boost credibility and visibility
-
-## Interview Preparation
-
-### Talent Manager Screening
-**Common Questions:**
-- "Tell me about your experience with [skill]"
-- "Walk me through your portfolio"
-- "What's your availability?"
-- "What's your target hourly rate?"
-
-**Tips:**
-- Be honest about your skills and experience
-- Show enthusiasm for the opportunity
-- Ask clarifying questions about the role
-- Research the company beforehand
-
-### Client Interview
-**Technical Questions:**
-- Be ready for live coding or system design
-- Prepare to discuss your technical decisions
-- Have examples of past projects
-- Be ready to solve problems in real-time
-
-**Behavioral Questions:**
-- "Tell me about a time you [situation]"
-- "How do you handle [challenge]?"
-- "Describe your approach to [process]"
-
-**STAR Method:**
-- **S**ituation: Describe the context
-- **T**ask: Explain what needed to be done
-- **A**ction: Describe what you did
-- **R**esult: Share the outcome
-
-## Maximizing Your Earnings
-
-### 1. Target Higher-Paying Roles
-- Focus on roles with $40-50/hr rates
-- Prioritize skills that command premium rates:
-  - AI/ML: $40-60/hr
-  - Full-stack Development: $35-50/hr
-  - DevOps/Cloud: $35-55/hr
-  - UI/UX Design: $35-50/hr
-
-### 2. Build Long-Term Relationships
-- Deliver quality work consistently
-- Be responsive and communicative
-- Ask for referrals to new opportunities
-- Repeat business reduces client acquisition costs
-
-### 3. Upskill Continuously
-- Take courses on Udemy, Coursera
-- Build portfolio projects
-- Get certified in high-demand technologies
-- Follow industry trends
-
-### 4. Optimize Your Profile Regularly
-- Update with new skills and projects
-- Refresh your portfolio links
-- Ask for new recommendations
-- Monitor your profile views and application success rate
-
-## Troubleshooting Common Issues
-
-### Issue: Not getting interview invitations
-**Solutions:**
-- Review and optimize your profile (complete all sections)
-- Improve your CV (make it more compelling)
-- Apply to more opportunities (5-10 daily)
-- Check if your skills match job requirements
-- Consider lowering your initial rate to build experience
-
-### Issue: Screening interviews but no client interviews
-**Solutions:**
-- Practice technical skills and problem-solving
-- Prepare a portfolio with case studies
-- Improve communication skills
-- Be more specific about your experience
-- Ask for feedback from talent managers
-
-### Issue: Client interviews but no offers
-**Solutions:**
-- Research clients more thoroughly
-- Prepare more thoroughly for technical questions
-- Show more enthusiasm and cultural fit
-- Be more flexible with rates initially
-- Ask for specific feedback after rejections
-
-### Issue: Inconsistent work
-**Solutions:**
-- Apply to multiple opportunities daily
-- Build relationships with multiple clients
-- Consider part-time roles to fill gaps
-- Maintain availability calendar
-- Respond quickly to new opportunities
-
-## Success Stories
-
-### Example 1: AI Engineer
-- Started at $35/hr, now earns $50/hr
-- Applied to 50 opportunities in first month
-- Landed first role after 2 weeks
-- Now works with 3 regular clients
-- Monthly earnings: ~$8,000
-
-### Example 2: Full-stack Developer
-- Specialized in React + Node.js
-- Created portfolio of 3 projects
-- Applied to roles requiring both skills
-- Got first client after 10 days
-- Monthly earnings: ~$6,000
-
-### Example 3: Data Scientist
-- Up-skilled in MLOps and cloud deployment
-- Highlighted specific project outcomes
-- Applied to AI/ML roles exclusively
-- Negotiated $45/hr from the start
-- Monthly earnings: ~$7,000
-
-## Rate Negotiation Tips
-
-### Before the Interview
-- Research market rates for your skills
-- Determine your minimum acceptable rate
-- Set a target rate (e.g., $42/hr)
-- Be prepared to justify your rate with examples
-
-### During Negotiation
-- Lead with confidence: "Based on my experience, I'm targeting $42/hr"
-- Highlight unique value you bring
-- Be willing to compromise within reason
-- Don't underprice yourself significantly
-
-### After the Offer
-- Review total compensation (rate x hours)
-- Consider benefits and flexibility
-- Negotiate for review period (e.g., rate increase after 3 months)
-- Get everything in writing
-
-## Time Management
-
-### Working Multiple Clients
-- Use calendar to block time for each client
-- Set clear boundaries and working hours
-- Communicate proactively about deadlines
-- Prioritize tasks across projects
-
-### Avoiding Burnout
-- Don't overcommit (max 40-50 hours/week)
-- Take regular breaks
-- Set "offline" hours for personal time
-- Learn to say no to low-paying or ill-fitting roles
-
-## Next Steps
-
-### Week 1: Setup
-- [ ] Create Mercor account
-- [ ] Build and upload CV
-- [ ] Complete profile
-- [ ] Apply to 20 opportunities
-
-### Week 2: Initial Success
-- [ ] Get first screening interview
-- [ ] Get first client interview
-- [ ] Land first role
-- [ ] Start working and tracking hours
-
-### Month 1: Momentum
-- [ ] Complete first project
-- [ ] Get positive feedback
-- [ ] Apply to 50+ opportunities
-- [ ] Land 2-3 regular clients
-
-### Month 3: Scaling
-- [ ] Increase rate to $42/hr
-- [ ] Build portfolio of work
-- [ ] Get recommendations
-- [ ] Earn consistent $5,000-7,000/month
-
-## Additional Resources
-
-### Learning Platforms
-- Coursera - Professional certificates
-- Udemy - Skill-specific courses
-- edX - University-level courses
-- freeCodeCamp - Coding tutorials
-
-### Portfolio Building
-- GitHub - Code repositories
-- Behance - Design portfolios
-- Dribbble - UI/UX designs
-- Personal website - Central hub
-
-### Community
-- Reddit: r/freelance, r/forhire
-- Discord communities for tech roles
-- LinkedIn professional groups
-- Twitter tech communities
-
-## FAQ
-
-### Q: How long until I get my first role?
-A: Typically 1-3 weeks if you apply consistently (5-10 roles daily) and have a complete profile.
-
-### Q: Can I work multiple jobs on Mercor?
-A: Yes! Many freelancers work with 2-4 clients simultaneously to maximize earnings.
-
-### Q: What if I don't have experience?
-A: Start by building portfolio projects, take courses, and apply to entry-level roles. Be willing to start at a lower rate initially.
-
-### Q: How do I get paid?
-A: Mercor handles all payments. You'll track hours through their platform and get paid weekly via bank transfer.
-
-### Q: Can I negotiate my rate?
-A: Absolutely! Most roles have flexibility. Start by asking for your target rate ($42/hr) and be prepared to negotiate.
-
-### Q: What if I want to leave a role?
-A: Provide 2-4 weeks notice (depending on contract terms), complete handover documentation, and maintain professionalism.
+# Mercor平台收入指南
+
+这是一份详细的步骤指南，教你如何在Mercor平台上每小时赚取42美元的收入。本指南涵盖了从入门到优化收入的全部内容，基于成功自由职业者的经验策略。
+
+## 适用场景
+
+- 刚开始在Mercor平台作为自由职业者的你
+- 希望优化个人资料以获得更高薪机会的你
+- 需要准备Mercor面试和筛选流程的你
+- 遇到Mercor账户问题的你
+- 希望在平台上最大化收入的你
+
+## 快速入门：9个步骤
+
+### 第1步：注册
+1. 访问 [Mercor.ai](https://mercor.ai)
+2. 使用电子邮件或社交媒体登录创建账户
+3. 填写基本个人资料信息
+
+### 第2步：创建高级个人资料
+你的个人资料是给别人的第一印象，一定要让它脱颖而出：
+- **专业照片**：高质量的头像（可以使用AI肖像生成工具！）
+- **吸引人的标题**：清晰具体（例如：“拥有5年以上经验的人工智能/机器学习工程师”）
+- **详细的个人简介**：突出相关技能、经验和成就
+- **作品集链接**：GitHub、LinkedIn或个人网站
+
+### 第3步：上传简历
+**在Canva上创建专业简历（免费）**：
+1. 选择一个现代、专业的模板
+2. 包括：联系方式、技能、经验、教育背景、项目经历
+3. 使用与目标职位相关的关键词
+4. 导出为PDF并上传到Mercor
+
+**简历编写技巧**：
+- 保持1-2页
+- 使用动词（如“开发”、“设计”、“领导”等）
+- 量化成就（例如：“效率提高了40%”）
+- 根据目标职位进行定制
+
+### 第4步：浏览并申请职位
+1. 进入仪表板中的“职位”标签页
+2. 按照技能、经验水平和时薪筛选职位
+3. 仔细阅读职位描述
+4. 申请符合你专业能力的职位
+**建议**：每天申请5-10个相关职位
+
+### 第5步：仔细阅读职位描述
+在申请之前，分析每个职位描述：
+- **所需技能**：你是否至少符合80%的要求？
+- **职责范围**：工作内容是否清晰？
+- **薪酬**：时薪是否具有竞争力（目标为42美元）？
+- **时间安排**：你能否保证完成工作所需的时间？
+
+### 第6步：等待面试邀请
+- 邀请将通过Mercor的招聘经理发送电子邮件
+- 回复时间因情况而异（通常为1-7天）
+- 定期检查垃圾邮件文件夹
+- 及时回复邀请
+
+### 第7步：招聘经理筛选（15-30分钟）
+**预期流程**：
+- 通过Zoom/Google Meet进行视频面试
+- 询问关于你的经验和技能的问题
+- 技术评估或作品集审核
+- 探讨工作时间和薪酬
+
+**准备事项**：
+- 提前了解公司和职位要求
+- 准备具体的工作案例
+- 准备好分享你的作品集
+- 准备好讨论你的时薪
+
+### 第8步：客户面试（最终环节）
+**预期流程**：
+- 与招聘公司直接面试
+- 更深入的技术问题
+- 企业文化匹配评估
+- 项目相关讨论
+
+**准备事项**：
+- 查看客户的公司网站和产品
+- 准备相关的项目案例
+- 练习回答技术问题
+- 准备好向客户提问
+
+### 第9步：收到录用通知并开始工作
+- 面试后3-7天内收到通知
+- 仔细审核录用通知（时薪、工作内容等）
+- 通过Mercor平台签订合同
+- 记录工作时间并按周领取报酬
+
+## 必备工具与技能
+
+### 必须掌握的平台
+你应该熟悉以下工具：
+
+**沟通与协作**：
+- **Slack** - 团队沟通工具
+- **Zoom/Google Meet** - 视频会议和屏幕共享工具
+- **Notion** - 文档和项目管理工具
+- **Zendesk** - 客户服务系统
+
+**开发与设计**：
+- **GitHub** - 版本控制和代码仓库
+- **Figma** - 用户界面/用户体验设计工具
+- **Jira** - 项目跟踪和问题管理工具
+- **Asana** - 任务和项目管理工具
+- **Trello** - 卡诺布式项目管理工具
+
+### 时间管理
+Mercor使用自己的时间管理系统，无需额外设置。
+
+### 薪酬
+- 时薪通常在30-50美元之间
+- 薪酬每周结算一次
+- 通过Mercor平台安全支付
+- 在仪表板中跟踪所有收入
+
+## 个人资料优化建议
+
+### 1. 填写所有部分
+- ✅ 专业照片
+- ✅ 详细个人简介
+- ✅ 技能列表（优先列出核心技能）
+- ✅ 工作经历及成就
+- ✅ 作品集链接
+- ✅ 教育背景
+- ✅ 证书
+
+### 2. 战略性地使用关键词
+在个人资料中包含目标职位描述中的关键词：
+- “机器学习”、“深度学习”、“自然语言处理”
+- “React”、“Node.js”、“Python”、“TypeScript”
+- “项目管理”、“敏捷”、“Scrum”
+
+### 3. 展示相关项目
+- 添加最佳项目并附上清晰描述
+- 包含GitHub仓库链接或实时演示
+- 突出你的具体贡献
+- 量化成果（例如：“页面加载速度提高了50%”）
+
+### 4. 获取推荐信
+- 向前同事请求推荐
+- 联系客户获取评价
+- 将推荐信添加到个人资料中
+- 这有助于提高可信度和可见度
+
+## 面试准备
+
+### 招聘经理筛选
+**常见问题**：
+- “请谈谈你在[技能]方面的经验”
+- “请展示一下你的作品集”
+- “你的工作时间安排如何？”
+- “你的目标时薪是多少？”
+
+**建议**：
+- 如实说明你的技能和经验
+- 对机会表现出热情
+- 对职位有疑问时及时提问
+- 提前了解公司情况
+
+### 客户面试
+**技术问题**：
+- 准备好现场编程或系统设计
+- 准备讨论你的技术决策
+- 准备过去的项目案例
+- 准备好实时解决问题
+
+**行为问题**：
+- “请描述一次[特定情境]”
+- “你如何处理[挑战]？”
+- “描述你的[流程]方法”
+
+**STAR方法**：
+- **情境**：描述具体情境
+- **任务**：说明需要完成的工作
+- **行动**：描述你的做法
+- **结果**：分享最终成果
+
+## 提高收入
+
+### 1. 争取更高薪的职位
+- 专注于时薪40-50美元的职位
+- 优先选择高薪技能：
+  - 人工智能/机器学习：40-60美元/小时
+  - 全栈开发：35-50美元/小时
+  - DevOps/云计算：35-55美元/小时
+  - 用户界面/用户体验设计：35-50美元/小时
+
+### 2. 建立长期合作关系
+- 持续提供高质量的工作
+- 及时响应并保持沟通
+- 请求推荐新的机会
+- 重复业务可以降低客户获取成本
+
+### 3. 持续提升技能
+- 在Udemy、Coursera等平台学习课程
+- 制作作品集项目
+- 获得热门技术的认证
+- 关注行业趋势
+
+### 4. 定期优化个人资料
+- 更新新的技能和项目
+- 更新作品集链接
+- 请求新的推荐信
+- 监控个人资料的浏览量和申请成功率
+
+## 常见问题解决
+
+### 问题：没有收到面试邀请
+**解决方法**：
+- 重新审视并优化个人资料（确保所有部分完整）
+- 改进简历（使其更具吸引力）
+- 每天申请更多职位（5-10个）
+- 确认你的技能是否符合职位要求
+- 考虑降低初始时薪以积累经验
+
+### 问题：通过筛选但未收到客户面试邀请
+**解决方法**：
+- 练习技术技能和解决问题的能力
+- 准备包含案例研究的作品集
+- 提高沟通技巧
+- 更详细地描述你的经验
+- 向招聘经理寻求反馈
+
+### 问题：通过客户面试但未收到录用通知
+**解决方法**：
+- 更深入地了解客户
+- 更充分地准备技术问题
+- 表现出更多的热情和适应性
+- 对时薪有更大的灵活性
+- 在被拒绝后请求具体反馈
+
+### 问题：工作表现不稳定
+**解决方法**：
+- 每天申请多个职位
+- 与多个客户建立关系
+- 考虑兼职工作以填补空缺
+- 保持时间表的灵活性
+- 对新机会迅速响应
+
+## 成功案例
+
+### 示例1：人工智能工程师
+- 初始时薪35美元，现在达到50美元/小时
+- 第一个月申请了50个职位
+- 两周后获得了第一个职位
+- 现在有3个固定客户
+- 月收入约8,000美元
+
+### 示例2：全栈开发者
+- 专注于React和Node.js
+- 制作了3个项目的作品集
+- 申请了需要这两种技能的职位
+- 10天后获得了第一个客户
+- 月收入约6,000美元
+
+### 示例3：数据科学家
+- 提升了机器学习运维和云部署方面的技能
+- 专门申请人工智能/机器学习相关的职位
+- 一开始就谈到了45美元/小时的时薪
+- 月收入约7,000美元
+
+## 薪酬谈判技巧
+
+### 面试前
+- 研究市场对你技能的薪酬水平
+- 确定你的最低可接受时薪
+- 设定目标时薪（例如42美元/小时）
+- 准备好用实例证明你的价值
+
+### 谈判时
+- 自信地提出：“根据我的经验，我期望的时薪是42美元/小时”
+- 强调你能带来的独特价值
+- 在合理范围内愿意妥协
+- 不要大幅低估自己的价值
+
+### 收到录用通知后
+- 核对总薪酬（时薪×工作小时数）
+- 考虑福利和灵活性
+- 谈判试用期（例如3个月后调整时薪）
+- 确保一切都有书面记录
+
+## 时间管理
+
+### 多个客户的工作安排
+- 使用日历为每个客户安排工作时间
+- 设定明确的界限和工作时间
+- 主动沟通截止日期
+- 在不同项目中合理分配任务
+
+### 避免过度劳累
+- 每周工作不超过40-50小时
+- 定期休息
+- 设定“非工作时间”
+- 学会拒绝低薪或不合适的职位
+
+## 下一步计划
+
+### 第1周：设置
+- [ ] 注册Mercor账户
+- [ ] 创建并上传简历
+- [ ] 完善个人资料
+- [ ] 申请20个职位
+
+### 第2周：初见成效
+- [ ] 获得第一次筛选面试
+- [ ] 获得第一次客户面试
+- [ ] 获得第一个职位
+- [ ] 开始工作并记录工作时间
+
+### 第1个月：取得进展
+- [ ] 完成第一个项目
+- [ ] 获得正面反馈
+- [ ] 申请50个以上职位
+- [ ] 获得2-3个固定客户
+
+### 第3个月：扩大规模
+- [ ] 将时薪提高到42美元/小时
+- [ ] 建立作品集
+- [ ] 获取推荐信
+- [ ] 月收入稳定在5,000-7,000美元
+
+## 额外资源
+
+### 学习平台
+- Coursera - 提供专业证书
+- Udemy - 提供特定技能的课程
+- edX - 提供大学级别的课程
+- freeCodeCamp - 提供编程教程
+
+### 作品集建设
+- GitHub - 代码仓库
+- Behance - 设计作品集平台
+- Dribbble - 用户界面/用户体验设计平台
+- 个人网站 - 作品集展示中心
+
+### 社区资源
+- Reddit：r/freelance, r/forhire
+- 技术领域的Discord社区
+- LinkedIn专业群组
+- Twitter技术社区
+
+## 常见问题解答
+
+### Q：我多久能获得第一个职位？
+A：如果你持续申请（每天申请5-10个职位）并且个人资料完整，通常需要1-3周。
+
+### Q：我可以在Mercor平台上同时做多个项目吗？
+A：可以！许多自由职业者同时与2-4个客户合作以最大化收入。
+
+### Q：如果我没有工作经验怎么办？
+A：从制作作品集项目开始，参加课程，并申请入门级职位。初期可以接受较低的时薪。
+
+### Q：我如何领取报酬？
+A：Mercor负责所有的支付。你可以通过他们的平台记录工作时间，并每周通过银行转账领取报酬。
+
+### Q：我可以谈判时薪吗？
+A：当然可以！大多数职位都有灵活性。首先提出你的目标时薪（42美元/小时），并准备好进行谈判。
+
+### Q：如果我想离职怎么办？
+A：根据合同条款提前2-4周通知，完成交接工作，并保持专业态度。
 
 ---
 
-*Based on proven strategies from successful Mercor freelancers*
-*Source: @Onlgig on X (Twitter)*
-*247 likes, 130 retweets, 71 replies*
-*Last updated: 2026-01-30*
+*基于成功Mercor自由职业者的经验策略*
+*来源：@Onlgig（Twitter）
+*247个赞，130次转发，71条评论*
+*最后更新时间：2026-01-30*

@@ -1,76 +1,66 @@
 ---
 name: alicloud-ai-audio-tts-realtime
-description: Real-time speech synthesis with Alibaba Cloud Model Studio Qwen TTS Realtime models. Use when low-latency interactive speech is required, including instruction-controlled realtime synthesis.
+description: 实时语音合成功能支持使用阿里巴巴云模型工作室（Alibaba Cloud Model Studio）的 Qwen TTS 实时模型。当需要低延迟的交互式语音服务时，该功能非常实用，例如在需要根据用户指令进行实时语音合成的场景中。
 ---
 
-Category: provider
+**类别：提供者**  
+# Model Studio Qwen TTS 实时版  
 
-# Model Studio Qwen TTS Realtime
+使用实时 TTS 模型实现低延迟的语音流输出。  
 
-Use realtime TTS models for low-latency streaming speech output.
+## 关键模型名称  
+请使用以下模型名称之一：  
+- `qwen3-tts-flash-realtime`  
+- `qwen3-tts-instruct-flash-realtime`  
+- `qwen3-tts-instruct-flash-realtime-2026-01-22`  
 
-## Critical model names
-
-Use one of these exact model strings:
-- `qwen3-tts-flash-realtime`
-- `qwen3-tts-instruct-flash-realtime`
-- `qwen3-tts-instruct-flash-realtime-2026-01-22`
-
-## Prerequisites
-
-- Install SDK in a virtual environment:
-
+## 先决条件  
+- 在虚拟环境中安装 SDK：  
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install dashscope
-```
-- Set `DASHSCOPE_API_KEY` in your environment, or add `dashscope_api_key` to `~/.alibabacloud/credentials`.
+```  
+- 将 `DASHSCOPE_API_KEY` 设置在您的环境中，或将其添加到 `~/.alibabacloud/credentials` 文件中。  
 
-## Normalized interface (tts.realtime)
+## 标准化接口（tts.realtime）  
 
-### Request
-- `text` (string, required)
-- `voice` (string, required)
-- `instruction` (string, optional)
-- `sample_rate` (int, optional)
+### 请求  
+- `text`（字符串，必填）  
+- `voice`（字符串，必填）  
+- `instruction`（字符串，可选）  
+- `sample_rate`（整数，可选）  
 
-### Response
-- `audio_base64_pcm_chunks` (array<string>)
-- `sample_rate` (int)
-- `finish_reason` (string)
+### 响应  
+- `audio_base64pcm_chunks`（字符串数组）  
+- `sample_rate`（整数）  
+- `finish_reason`（字符串）  
 
-## Operational guidance
+## 操作指南  
+- 使用 WebSocket 或流式接口实现实时模式。  
+- 为降低延迟，请确保每次语音生成的时长较短。  
+- 对于指令型模型，务必使指令明确且简洁。  
+- 某些 SDK/运行时组合可能不支持通过 `MultiModalConversation` 调用实时模型；请使用下面的测试脚本来验证兼容性。  
 
-- Use websocket or streaming endpoint for realtime mode.
-- Keep each utterance short for lower latency.
-- For instruction models, keep instruction explicit and concise.
-- Some SDK/runtime combinations may reject realtime model calls over `MultiModalConversation`; use the probe script below to verify compatibility.
-
-## Local demo script
-
-Use the probe script to verify realtime compatibility in your current SDK/runtime, and optionally fallback to a non-realtime model for immediate output:
-
+## 本地演示脚本  
+使用测试脚本来验证当前 SDK/运行时的实时兼容性；如果需要，可回退到非实时模型以立即获得输出：  
 ```bash
 .venv/bin/python skills/ai/audio/alicloud-ai-audio-tts-realtime/scripts/realtime_tts_demo.py \
   --text "这是一个 realtime 语音演示。" \
   --fallback \
   --output output/ai-audio-tts-realtime/audio/fallback-demo.wav
-```
+```  
 
-Strict mode (for CI / gating):
-
+**严格模式（用于持续集成/权限控制）：**  
 ```bash
 .venv/bin/python skills/ai/audio/alicloud-ai-audio-tts-realtime/scripts/realtime_tts_demo.py \
   --text "realtime health check" \
   --strict
-```
+```  
 
-## Output location
+## 输出路径  
+- 默认输出路径：`output/ai-audio-tts-realtime/audio/`  
+- 可通过 `OUTPUT_DIR` 变量覆盖默认路径。  
 
-- Default output: `output/ai-audio-tts-realtime/audio/`
-- Override base dir with `OUTPUT_DIR`.
-
-## References
-
+## 参考资料  
 - `references/sources.md`

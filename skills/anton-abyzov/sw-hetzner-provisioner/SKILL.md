@@ -1,63 +1,63 @@
 ---
 name: hetzner-provisioner
-description: Provisions infrastructure on Hetzner Cloud with Terraform/Pulumi. Generates IaC code for CX11/CX21/CX31 instances, managed Postgres, SSL configuration, Docker deployment. Activates for deploy on Hetzner, Hetzner Cloud, budget deployment, cheap hosting, $10/month hosting.
+description: 使用 Terraform/Pulumi 在 Hetzner Cloud 上搭建基础设施。为 CX11/CX21/CX31 实例生成基础设施即代码（IaC）代码，配置 Postgres 数据库管理、SSL 设置以及 Docker 部署。支持在 Hetzner Cloud 上进行部署，提供经济实惠的托管服务（每月仅需 10 美元）。
 ---
 
-# Hetzner Cloud Provisioner
+# Hetzner Cloud 配置工具
 
-Automated infrastructure provisioning for Hetzner Cloud - the budget-friendly alternative to Vercel and AWS.
+这是一个自动化基础设施配置工具，专为 Hetzner Cloud 设计——它是 Vercel 和 AWS 的经济实惠的替代方案。
 
-## Purpose
+## 使用目的
 
-Generate and deploy infrastructure-as-code (Terraform/Pulumi) for Hetzner Cloud, enabling $10-15/month SaaS deployments instead of $50-100/month on other platforms.
+该工具用于生成和部署适用于 Hetzner Cloud 的基础设施即代码（Infrastructure-as-Code，IaC）资源，使得每月只需花费 10-15 美元的成本即可实现 SaaS 应用程序的部署，而其他平台的成本通常在 50-100 美元之间。
 
-## When to Use
+## 使用场景
 
-Activates when user mentions:
-- "deploy on Hetzner"
-- "Hetzner Cloud"
-- "budget deployment"
-- "cheap hosting"
-- "deploy for $10/month"
-- "cost-effective infrastructure"
+当用户提及以下关键词时，该工具会被激活：
+- “在 Hetzner 上部署”
+- “Hetzner Cloud”
+- “经济型部署”
+- “低成本托管”
+- “每月 10 美元的部署方案”
+- “高性价比的基础设施”
 
-## What It Does
+## 功能概述
 
-1. **Analyzes requirements**:
-   - Application type (NextJS, Node.js, Python, etc.)
-   - Database needs (Postgres, MySQL, Redis)
-   - Expected traffic/users
-   - Budget constraints
+1. **分析需求**：
+   - 应用程序类型（NextJS、Node.js、Python 等）
+   - 数据库需求（Postgres、MySQL、Redis）
+   - 预计的流量/用户数量
+   - 预算限制
 
-2. **Generates Infrastructure-as-Code**:
-   - Terraform configuration for Hetzner Cloud
-   - Alternative: Pulumi for TypeScript-native IaC
-   - Server instances (CX11, CX21, CX31)
-   - Managed databases (Postgres, MySQL)
-   - Object storage (if needed)
-   - Networking (firewall rules, floating IPs)
+2. **生成基础设施即代码**：
+   - 为 Hetzner Cloud 生成 Terraform 配置文件
+   - 或者使用 Pulumi（适用于 TypeScript 项目的基础设施即代码管理）
+   - 选择合适的服务器实例（CX11、CX21、CX31）
+   - 管理型数据库（Postgres、MySQL）
+   - 对象存储（如需要）
+   - 网络配置（防火墙规则、浮动 IP）
 
-3. **Configures Production Setup**:
-   - Docker containerization
-   - SSL certificates (Let's Encrypt)
-   - DNS configuration (Cloudflare or Hetzner DNS)
-   - GitHub Actions CI/CD pipeline
-   - Monitoring (Uptime Kuma, self-hosted)
-   - Automated backups
+3. **配置生产环境**：
+   - Docker 容器化
+   - SSL 证书（使用 Let’s Encrypt）
+   - DNS 配置（Cloudflare 或 Hetzner 自带 DNS 服务）
+   - 配置 GitHub Actions 进行持续集成/持续部署（CI/CD）
+   - 监控系统（Uptime Kuma，自行部署）
+   - 自动化备份
 
-4. **Outputs Deployment Guide**:
-   - Step-by-step deployment instructions
-   - Cost breakdown
-   - Monitoring URLs
-   - Troubleshooting guide
+4. **提供部署指南**：
+   - 详细的部署步骤
+   - 成本明细
+   - 监控地址
+   - 故障排除指南
 
 ---
 
-## ⚠️ CRITICAL: Secrets Required (MANDATORY CHECK)
+## ⚠️ 重要提示：必须提供秘钥
 
-**BEFORE generating Terraform/Pulumi code, CHECK for Hetzner API token.**
+**在生成 Terraform/Pulumi 代码之前，请务必检查 Hetzner API 令牌是否存在。**
 
-### Step 1: Check If Token Exists
+### 第一步：检查令牌是否存在
 
 ```bash
 # Check .env file
@@ -68,7 +68,7 @@ else
 fi
 ```
 
-### Step 2: If Token Missing, STOP and Show This Message
+### 第二步：如果令牌缺失，请停止操作并显示此提示信息
 
 ```
 🔐 **Hetzner API Token Required**
@@ -97,7 +97,7 @@ I need your Hetzner API token to provision infrastructure.
 Please paste your Hetzner API token:
 ```
 
-### Step 3: Validate Token Format
+### 第三步：验证令牌格式
 
 ```bash
 # Hetzner tokens are 64 alphanumeric characters
@@ -111,7 +111,7 @@ if [[ ! "$HETZNER_API_TOKEN" =~ ^[a-zA-Z0-9]{64}$ ]]; then
 fi
 ```
 
-### Step 4: Save Token Securely
+### 第四步：安全存储令牌
 
 ```bash
 # Save to .env
@@ -133,7 +133,7 @@ echo "✅ Token saved to .env (gitignored)"
 echo "✅ Created .env.example for team (commit this)"
 ```
 
-### Step 5: Use Token in Terraform
+### 第五步：在 Terraform 中使用令牌
 
 ```hcl
 # terraform/variables.tf
@@ -155,11 +155,11 @@ provider "hcloud" {
 
 ---
 
-## Example Usage
+## 使用示例
 
-**User**: "Deploy my NextJS app on Hetzner with Postgres, as cheaply as possible"
+**用户**：“我希望以最低的成本在 Hetzner 上部署我的 NextJS 应用程序，并使用 Postgres 数据库。”
 
-**hetzner-provisioner**:
+**hetzner-provisioner**：
 ```markdown
 I'll provision your NextJS app on Hetzner Cloud for ~$12/month.
 
@@ -186,56 +186,54 @@ Next steps:
 Deployment URL: https://your-app.yourdomain.com (after DNS configured)
 ```
 
-## Configuration
+## 配置选项
 
-Supports multiple instance types:
-- **CX11** (1 vCPU, 2GB RAM): $5.83/month - Small apps, 100-1000 users
-- **CX21** (2 vCPU, 4GB RAM): $6.90/month - Medium apps, 1000-10000 users
-- **CX31** (2 vCPU, 8GB RAM): $14.28/month - Larger apps, 10000+ users
+支持多种服务器实例类型：
+- **CX11**（1 个 vCPU，2GB 内存）：每月 5.83 美元——适用于小型应用程序，支持 100-1000 名用户
+- **CX21**（2 个 vCPU，4GB 内存）：每月 6.90 美元——适用于中型应用程序，支持 1000-10000 名用户
+- **CX31**（2 个 vCPU，8GB 内存）：每月 14.28 美元——适用于大型应用程序，支持 10000 名以上用户
 
-Database options:
-- Managed Postgres (2GB): $5/month
-- Managed MySQL (2GB): $5/month
-- Self-hosted (included in instance cost)
+数据库选项：
+- 管理型 Postgres（2GB 内存）：每月 5 美元
+- 管理型 MySQL（2GB 内存）：每月 5 美元
+- 自行托管数据库（包含在实例费用中）
 
-## Cost Comparison
+## 成本对比
 
-| Platform | Small App | Medium App | Large App |
-|----------|-----------|------------|-----------|
-| **Hetzner** | $12/mo | $15/mo | $25/mo |
-| Vercel | $60/mo | $120/mo | $240/mo |
-| AWS | $25/mo | $80/mo | $200/mo |
-| Railway | $20/mo | $50/mo | $100/mo |
+| 平台 | 小型应用 | 中型应用 | 大型应用 |
+|------|--------|---------|---------|
+| **Hetzner** | 12 美元/月 | 15 美元/月 | 25 美元/月 |
+| Vercel | 60 美元/月 | 120 美元/月 | 240 美元/月 |
+| AWS | 25 美元/月 | 80 美元/月 | 200 美元/月 |
+| Railway | 20 美元/月 | 50 美元/月 | 100 美元/月 |
 
-**Savings**: 50-80% vs alternatives
+**成本节省**：相比其他方案可节省 50-80% 的费用
 
-## Technical Details
+## 技术细节
 
-**Terraform Provider**: `hetznercloud/hcloud`
-**API**: Hetzner Cloud API v1
-**Regions**: Nuremberg, Falkenstein, Helsinki (Germany/Finland)
-**Deployment**: Docker + GitHub Actions
-**Monitoring**: Uptime Kuma (self-hosted, free)
+- **Terraform 提供者**：`hetznercloud/hcloud`
+- **API**：Hetzner Cloud API v1
+- **可用区域**：纽伦堡、福尔肯施泰因、赫尔辛基（德国/芬兰）
+- **部署方式**：使用 Docker 和 GitHub Actions
+- **监控系统**：Uptime Kuma（自行部署，免费）
 
-## Integration
+## 集成能力**
 
-Works with:
-- `cost-optimizer` - Recommends Hetzner when budget-conscious
-- `devops-agent` - Strategic infrastructure planning
-- `nextjs-agent` - NextJS-specific deployment
-- Any backend framework (Node.js, Python, Go, etc.)
+- 与 `cost-optimizer` 集成：在预算有限的情况下推荐使用 Hetzner
+- 与 `devops-agent` 集成：用于战略性的基础设施规划
+- 与 `nextjs-agent` 集成：专门用于 NextJS 应用程序的部署
+- 支持多种后端框架（Node.js、Python、Go 等）
 
-## Limitations
+## 限制条件
 
-- EU-only data centers (GDPR-friendly)
-- Requires Hetzner Cloud account
-- Manual DNS configuration needed
-- Not suitable for multi-region deployments (use AWS/GCP for that)
+- 仅支持欧盟地区的数据中心（符合 GDPR 规范）
+- 需要拥有 Hetzner Cloud 账户
+- 需要手动配置 DNS
+- 不支持跨区域部署（如需跨区域部署，请使用 AWS/GCP）
 
-## Future Enhancements
+## 未来计划
 
-- Kubernetes support (k3s on Hetzner)
-- Load balancer configuration
-- Multi-region deployment
-- Disaster recovery setup
-
+- 将支持 Kubernetes（在 Hetzner 上部署 Kubernetes 集群）
+- 提供负载均衡器配置功能
+- 支持多区域部署
+- 加强灾难恢复机制

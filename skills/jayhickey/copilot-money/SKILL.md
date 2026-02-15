@@ -1,21 +1,21 @@
 ---
 name: copilot-money
-description: Query Copilot Money personal finance data (accounts, transactions, net worth, holdings, asset allocation) and refresh bank connections. Use when the user asks about finances, account balances, recent transactions, net worth, investment allocation, or wants to sync/refresh bank data.
+description: 查询 Copilot Money 的个人财务数据（账户、交易、净资产、持仓、资产配置），并刷新银行账户连接。当用户询问财务相关问题（如账户余额、近期交易、净资产、投资分配）或希望同步/刷新银行数据时，可使用此功能。
 ---
 
 # Copilot Money CLI
 
-Command-line interface for [Copilot Money](https://copilot.money), a personal finance app. Authenticate once and query accounts, transactions, holdings, and allocation data from your terminal.
+这是一个用于 [Copilot Money](https://copilot.money)（一款个人财务管理应用）的命令行接口。只需完成一次身份验证，即可通过终端查询账户信息、交易记录、资产持有情况以及资金分配情况。
 
-> **Note:** This is an unofficial tool and is not affiliated with Copilot Money.
+> **注意：** 这是一个非官方工具，与 Copilot Money 无任何关联。
 
-## Install
+## 安装
 
 ```bash
 pip install copilot-money-cli
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 copilot-money config init
@@ -23,7 +23,7 @@ copilot-money accounts
 copilot-money networth
 ```
 
-## Commands
+## 命令
 
 ```bash
 copilot-money refresh                     # Refresh all bank connections
@@ -44,17 +44,17 @@ copilot-money config init --source chrome # From specific browser
 copilot-money config init --source manual # Manual token entry
 ```
 
-## Authentication
+## 身份验证
 
-Config stored at `~/.config/copilot-money/config.json`. The CLI auto-detects your Copilot Money refresh token from supported browsers on macOS.
+配置文件存储在 `~/.config/copilot-money/config.json` 中。该 CLI 会自动从 macOS 上支持的浏览器中检测您的 Copilot Money 会话令牌。
 
-- Auto-detect: `copilot-money config init`
-- Explicit source: `copilot-money config init --source arc|chrome|safari|firefox`
-- Manual entry: `copilot-money config init --source manual`
+- 自动检测：`copilot-money config init`
+- 显式指定来源：`copilot-money config init --source arc|chrome|safari|firefox`
+- 手动输入：`copilot-money config init --source manual`
 
-When using browser auto-detection, the CLI reads your browser's local IndexedDB storage to find your Copilot Money session token. This happens locally — no data is sent anywhere except to Copilot Money's API.
+当使用浏览器自动检测功能时，CLI 会读取浏览器本地的 IndexedDB 存储来获取您的 Copilot Money 会话令牌。此过程仅在本地进行，数据不会被发送到任何其他地方，只会被发送到 Copilot Money 的 API。
 
-## Requirements
+## 系统要求
 
-- Python 3.10+
-- macOS for browser token extraction (manual token entry works everywhere)
+- Python 3.10 或更高版本
+- 需要 macOS 环境以获取浏览器生成的令牌（手动输入令牌的功能在所有平台上均可用）

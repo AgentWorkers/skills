@@ -1,6 +1,6 @@
 ---
 name: ai-slides
-description: Generate complete presentations with AI - from outline to polished slides
+description: 使用 AI 生成完整的演示文稿——从大纲到精美的幻灯片
 author: claude-office-skills
 version: "1.0"
 tags: [presentation, ai, automation, slides, content]
@@ -10,25 +10,24 @@ tools: [computer, code_execution, file_operations]
 
 # AI Slides Skill
 
-## Overview
+## 概述
 
-This skill enables AI-powered presentation generation. Provide a topic or outline, and get a complete, polished presentation with proper structure, content, and formatting.
+该技能支持使用人工智能生成演示文稿。只需提供一个主题或大纲，即可获得结构完整、内容丰富且格式规范的演示文稿。
 
-## How to Use
+## 使用方法
 
-1. Provide a topic, outline, or rough notes
-2. Specify audience and presentation length
-3. I'll generate a complete presentation
+1. 提供主题、大纲或简要的笔记；
+2. 指定目标受众和演示文稿的时长；
+3. 我将为您生成完整的演示文稿。
 
-**Example prompts:**
-- "Create a 10-slide presentation about machine learning"
-- "Generate a pitch deck for a SaaS startup"
-- "Build training slides on cybersecurity basics"
-- "Make a quarterly review presentation from this data"
+**示例提示：**
+- “生成一份关于机器学习的10页演示文稿”；
+- “为一家SaaS初创公司制作一份 pitching deck（推介材料）”；
+- “根据这些数据制作一份季度回顾演示文稿”；
 
-## Domain Knowledge
+## 相关领域知识
 
-### Presentation Structure
+### 演示文稿结构
 
 ```yaml
 # Effective presentation structure
@@ -62,7 +61,7 @@ structure:
       qa_prompt: true
 ```
 
-### Content Generation Pattern
+### 内容生成机制
 
 ```python
 def generate_presentation(topic, audience, slide_count=10):
@@ -100,7 +99,7 @@ def generate_outline(topic, count):
     return outline
 ```
 
-### Marp Output
+### Marp 的输出结果
 
 ```python
 def format_as_marp(slides):
@@ -136,7 +135,7 @@ paginate: true
     return marp
 ```
 
-## Example: Generate Tech Talk
+## 示例：生成技术相关演示文稿
 
 ```python
 topic = "Introduction to Docker"
@@ -199,14 +198,15 @@ Containerization Made Simple
 # Getting Started
 
 ```bash
-# Pull an image
+# 下载一张图片
 docker pull nginx
 
-# Run a container
+# 运行容器
 docker run -p 8080:80 nginx
 
-# List containers
+# 列出所有容器
 docker ps
+
 ```
 
 ---
@@ -252,16 +252,16 @@ Resources: docs.docker.com
 """
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Know Your Audience**: Tailor complexity and examples
-2. **One Idea Per Slide**: Keep focused
-3. **6x6 Rule**: Max 6 bullets, 6 words each
-4. **Visual First**: Suggest images/diagrams
-5. **Strong Opening/Closing**: Hook and call-to-action
+1. **了解目标受众**：根据受众调整内容的复杂度和示例的适用性；
+2. **每张幻灯片只展示一个核心观点**：保持内容的简洁性；
+3. **遵循“6x6规则”**：每个项目符号最多6个单词；
+4. **优先使用视觉元素**：适当添加图片或图表；
+5. **设计引人注目的开头和结尾**：激发观众的兴趣并引导他们的行动。
 
-## Resources
+## 可用资源
 
-- [Marp](https://marp.app/) - Markdown presentations
-- [Slidev](https://sli.dev/) - Vue-powered slides
-- [reveal.js](https://revealjs.com/) - HTML presentations
+- [Marp](https://marp.app/) – 基于Markdown的演示文稿工具；
+- [Slidev](https://sli.dev/) – 基于Vue技术的幻灯片生成工具；
+- [reveal.js](https://revealjs.com/) – 基于HTML的演示文稿生成工具。

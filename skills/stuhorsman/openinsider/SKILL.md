@@ -1,38 +1,37 @@
 ---
 name: openinsider
-description: Fetch SEC Form 4 insider trading data (Directors, CEOs, Officers) from OpenInsider. Use this to track corporate insider buying/selling signals.
+description: 从 OpenInsider 获取 SEC Form 4 中的内幕交易数据（涉及董事、首席执行官和高级管理人员）。利用这些数据来追踪公司内部人员的买入/卖出信号。
 metadata: {"clawdbot":{"requires":{"bins":["python3"]},"install":[{"id":"pip-deps","kind":"exec","command":"pip3 install pandas requests lxml","label":"Install Python dependencies"}]}}
 ---
 
-# OpenInsider Skill
+# OpenInsider 技能
 
-Fetch real-time insider trading data (SEC Form 4) from OpenInsider.com.
+从 OpenInsider.com 获取实时的内幕交易数据（SEC Form 4）。
 
-## Usage
+## 使用方法
 
-This skill uses a Python script to scrape and parse the OpenInsider data table.
+此技能使用 Python 脚本来抓取并解析 OpenInsider 的数据表。
 
-### Get Insider Trades
-Get the latest transactions for a specific ticker.
+### 获取内幕交易信息
+获取特定股票代码的最新交易记录。
 
 ```bash
 skills/openinsider/scripts/fetch_trades.py NVDA
 ```
 
-### Options
-- `--limit <n>`: Limit number of results (default 10)
+### 选项
+- `--limit <n>`：限制结果数量（默认为 10）
 
 ```bash
 skills/openinsider/scripts/fetch_trades.py TSLA --limit 5
 ```
 
-## Output Fields
-
-- `filing_date`: When the Form 4 was filed
-- `trade_date`: When the trade happened
-- `insider_name`: Name of the executive/director
-- `title`: Role (CEO, CFO, Dir, etc.)
-- `trade_type`: Purchase (P) or Sale (S)
-- `price`: Transaction price
-- `qty`: Number of shares traded
-- `value`: Total value of the trade
+## 输出字段
+- `filing_date`：Form 4 的提交日期
+- `trade_date`：交易发生日期
+- `insider_name`：内幕人士的姓名
+- `title`：职位（CEO、CFO、董事等）
+- `trade_type`：交易类型（买入（P）或卖出（S）
+- `price`：交易价格
+- `qty`：交易股数
+- `value`：交易总金额

@@ -1,30 +1,44 @@
 ---
 name: release-discipline
-description: Enforce release discipline for AI agents and developers. Prevents version spam, forces quality checks before publishing, and maintains a 24-hour cooldown between releases. Use when the user wants to publish, release, deploy, or bump versions. Triggers on "release", "publish", "deploy", "version bump", "npm publish", "릴리즈", "배포", "버전".
+description: **强制实施AI代理和开发者的发布规范**：  
+- 防止版本混乱（即避免频繁发布低质量或重复的版本）；  
+- 强制在发布前进行质量检查；  
+- 确保每次发布之间有24小时的冷却时间（即禁止在指定时间内再次发布新版本）。  
+
+**适用场景**：  
+当用户需要执行以下操作时使用该规则：  
+- 发布（release）  
+- 公布（publish）  
+- 部署（deploy）  
+- 升级版本（version bump）  
+- 使用npm命令发布（npm publish）  
+
+**触发条件**：  
+- 触发命令包括：`release`、`publish`、`deploy`、`version bump`、`npm publish`。
 ---
 
-# 🛑 Release Discipline
+# 🛑 发布规范
 
-Stop version spam. Ship quality, not quantity.
+杜绝版本滥发，追求质量而非数量。
 
-**Core principle: "Only finished work counts."**
+**核心原则：“只有完成的工作才有价值。”**
 
-## When This Activates
+## 规范触发条件
 
-Intercept any release/publish/deploy action and run the pre-release checklist.
+在所有发布、公开或部署操作之前，必须执行预发布检查流程。
 
-## Pre-Release Checklist (ALL must pass)
+## 预发布检查清单（所有项目都必须通过）
 
-Before ANY version bump or publish, enforce these checks:
+在任何版本更新或发布之前，必须完成以下检查：
 
-### Gate 1: Cooldown Check
+### 第一关：冷却期检查
 ```
 ❓ When was the last release?
 → If < 24 hours ago: 🛑 BLOCKED — "Cool down. Last release was {X}h ago. Wait until 24h."
 → If ≥ 24 hours: ✅ PASS
 ```
 
-### Gate 2: User Feedback Check
+### 第二关：用户反馈检查
 ```
 ❓ Has anyone used the previous version?
 → Check: GitHub issues, npm downloads, ClawHub installs, user messages
@@ -32,7 +46,7 @@ Before ANY version bump or publish, enforce these checks:
 → If feedback exists: ✅ PASS — Summarize feedback
 ```
 
-### Gate 3: Documentation Check
+### 第三关：文档完整性检查
 ```
 ❓ Is documentation updated?
 → Check for: README.md, CHANGELOG, English docs
@@ -41,7 +55,7 @@ Before ANY version bump or publish, enforce these checks:
 → All present: ✅ PASS
 ```
 
-### Gate 4: Quality Check
+### 第四关：质量检查
 ```
 ❓ Does this release have substance?
 → Ask: "What's the ONE thing this release does better than the last?"
@@ -49,14 +63,14 @@ Before ANY version bump or publish, enforce these checks:
 → If answer is clear: ✅ PASS
 ```
 
-### Gate 5: Kill Criteria Check
+### 第五关：不符合发布标准的判断标准检查
 ```
 ❓ What kills this project?
 → If no kill criteria defined: ⚠️ WARNING — "Define when to stop: 'If X doesn't happen in Y weeks, shut it down.'"
 → If defined: ✅ PASS — Remind user of their kill criteria
 ```
 
-### Gate 6: Self-Contradiction Check
+### 第六关：自相矛盾内容的检查
 ```
 ❓ Does this action match your stated principles?
 → Read SOUL.md (or equivalent principles file)
@@ -68,7 +82,7 @@ Before ANY version bump or publish, enforce these checks:
 → If consistent: ✅ PASS
 ```
 
-## Scoring
+## 评分机制
 
 ```
 🛑 BLOCKED (any) → Cannot release. Fix the issue first.
@@ -76,10 +90,9 @@ Before ANY version bump or publish, enforce these checks:
 ✅ ALL PASS → Release approved. Proceed.
 ```
 
-## Release Log
+## 发布日志
 
-After every release (approved or blocked), log to `memory/release-log.md`:
-
+每次发布（无论是通过还是被拒绝）后，都需要将相关记录写入 `memory/release-log.md` 文件中：
 ```markdown
 ## {date} — v{version}
 - Status: ✅ APPROVED / 🛑 BLOCKED / ⚠️ WARNED
@@ -89,27 +102,27 @@ After every release (approved or blocked), log to `memory/release-log.md`:
 - Time since last release: {hours}
 ```
 
-## Weekly Review
+## 每周回顾
 
-Every 7 days, review the release log:
-- Total releases this week
-- Block rate (healthy: 20-40% blocked = you're actually checking)
-- 0% blocked = checklist is rubber-stamping, tighten criteria
-- Pattern analysis: recurring issues
+每隔 7 天，对发布日志进行一次回顾：
+- 本周发布的总版本数
+- 被拒绝的版本比例（理想范围：20-40%；如果比例过低，说明检查流程不够严格）
+- 如果所有版本都被通过，需要重新审视检查标准
+- 分析是否存在重复出现的问题
 
-## Anti-Patterns This Skill Prevents
+## 该规范能防止的常见问题：
 
-1. **Version Spam** — 17 versions in 3 days
-2. **Spray Without Prune** — Making lots of things, finishing none
-3. **Documentation Debt** — Shipping code without docs
-4. **Echo Chamber** — Releasing without user feedback
-5. **Principle Violation** — Breaking your own rules
-6. **Premature Optimization** — Polishing what nobody uses
+1. **版本滥发**（例如：3 天内发布 17 个版本）
+2. **盲目开发、毫无成果**（只是大量开发却没有任何成品）
+3. **文档缺失**（发布代码时没有配套的文档）
+4. **闭门造车**（在没有用户反馈的情况下发布产品）
+5. **违反自身制定的规则**
+6. **过早优化**（对无人使用的功能进行过度优化）
 
-## Philosophy
+## 哲学理念
 
-> "The urge to ship is not the same as readiness to ship."
-> "Fear of irrelevance is not a reason to publish."
-> "One great release beats ten mediocre ones."
+> “急于发布并不意味着产品已经准备好。”
+> “害怕产品被忽视并不是发布的理由。”
+> “一个优秀的发布产品胜过十个平庸的产品。”
 
-This skill is a **brake, not an accelerator**. It exists because the hardest part of building isn't making things — it's knowing when to stop making and start finishing.
+这个规范的作用是**制动器**，而非**加速器**。它的存在是因为，软件开发过程中最困难的部分并不在于创造产品本身，而在于知道何时该停止开发、何时该完成产品。

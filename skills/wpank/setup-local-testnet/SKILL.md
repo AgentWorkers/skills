@@ -12,80 +12,77 @@ allowed-tools:
   - mcp__uniswap__get_supported_chains
 ---
 
-# Setup Local Testnet
+# 设置本地测试网
 
-## Overview
+## 概述
 
-Spins up a local Anvil testnet forking a live chain with all Uniswap contracts available, pre-funded test accounts, and real pool state. This is the foundation for all local testing -- every other testnet skill depends on it.
+该功能会创建一个基于Anvil的本地测试网，该测试网是从实际运行中的以太坊链分叉而来的，包含所有Uniswap合约、预先资助的测试账户以及真实的交易池状态。这是所有本地测试的基础——其他所有本地测试功能都依赖于这个测试网。
 
-**Why this is 10x better than doing it manually:**
+**为什么这种方式比手动操作好10倍：**
 
-1. **One command**: Instead of writing 30+ lines of shell script to start Anvil, impersonate whales, fund accounts, and verify contracts, you say "set up a local testnet" and it's done.
-2. **Pre-funded accounts**: Each test account gets 10,000 ETH plus 1M USDC, 1M USDT, 10K DAI, 100 WETH, and 10K UNI -- ready for any testing scenario.
-3. **Real pool state**: Fork mode gives you every Uniswap pool with real liquidity, real prices, and real tick state. No mocking required.
-4. **Contract discovery**: Returns all relevant Uniswap contract addresses (V3Factory, NonfungiblePositionManager, UniversalRouter, Permit2, QuoterV2) so you can immediately interact with them.
-5. **Port management**: Automatically finds an available port, handles conflicts, and cleans up previous testnets.
-6. **Follow-up integration**: Output is designed to feed directly into `create-test-pool` and `time-travel` skills.
+1. **一键完成**：无需编写30多行的Shell脚本来启动Anvil、模拟大资金持有者的操作、为账户充值或验证合约，只需输入“设置本地测试网”，即可完成所有设置。
+2. **预资助的账户**：每个测试账户都会获得10,000 ETH、100万USDC、100万USDT、1万DAI和1万UNI，适用于各种测试场景。
+3. **真实的交易池状态**：采用分叉模式，因此可以访问具有真实流动性和价格的Uniswap交易池，无需进行任何模拟操作。
+4. **合约地址自动获取**：会返回所有相关的Uniswap合约地址（如V3Factory、NonfungiblePositionManager、UniversalRouter、Permit2、QuoterV2），便于立即进行交互。
+5. **端口自动管理**：工具会自动选择可用端口，处理端口冲突，并清理之前的测试网残留数据。
+6. **后续集成便捷**：生成的测试环境可以直接用于`create-test-pool`和`time-travel`等功能。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户提出以下请求时，可以使用此功能：
+- “设置一个本地测试网”
+- “启动一个基于Anvil的本地测试网”
+- “我需要一个用于Uniswap的测试环境”
+- “在本地分叉以太坊链”
+- “创建一个开发环境”
+- “我想在不消耗真实Gas的情况下进行测试”
+- “启动包含Uniswap功能的Anvil测试环境”
+- “为我的测试代理创建一个测试环境”
 
-- "Set up a local testnet"
-- "Start a local Anvil fork"
-- "I need a test environment for Uniswap"
-- "Fork Ethereum locally"
-- "Set up a dev environment"
-- "I want to test without spending real gas"
-- "Spin up Anvil with Uniswap"
-- "Create a test environment for my agent"
+**不适用场景**：
+- 如果用户已经运行了测试网，但只是想添加新的交易池（请使用`create-test-pool`功能）或回溯时间（请使用`time-travel`功能）。
 
-**Do NOT use** when the user already has a testnet running and just wants to add pools (use `create-test-pool`) or advance time (use `time-travel`).
+## 参数
 
-## Parameters
+| 参数                | 是否必填 | 默认值            | 获取方式                                                                                                                         |
+|------------------|--------|------------------|-------------------------------------------------------------------------------------------------------------------------|
+| mode                | 否       | fork             | “fork”或“mock”（默认推荐模式）                                                                                              |
+| forkFrom             | 否       | ethereum         | “ethereum”、“base”、“arbitrum”、“optimism”、“polygon”                                                                                         |
+| blockNumber          | 否       | latest            | 如果用户指定了具体的区块号                                                                                                      |
+| seedLiquidity        | 否       | true             | 仅当用户请求“空测试网”或“不使用代币”时设置为false                                                                                         |
+| fundedAccounts        | 否       | 3               | 用户指定的账户数量（1-5个）                                                                                                      |
+| port                | 否       | auto             | 如果用户指定了具体的端口，则使用该端口                                                                                                   |
 
-| Parameter      | Required | Default    | How to Extract                                                        |
-| -------------- | -------- | ---------- | --------------------------------------------------------------------- |
-| mode           | No       | fork       | "fork" or "mock" -- fork is the default and recommended               |
-| forkFrom       | No       | ethereum   | "ethereum", "base", "arbitrum", "optimism", "polygon"                 |
-| blockNumber    | No       | latest     | Specific block number if the user mentions one                        |
-| seedLiquidity  | No       | true       | Set to false only if user says "empty testnet" or "no tokens"         |
-| fundedAccounts | No       | 3          | Number of accounts (1-5) if user specifies                            |
-| port           | No       | auto       | Specific port if user mentions one                                    |
+## 工作流程
 
-## Workflow
+### 第1步：检查前提条件
 
-### Step 1: Check Prerequisites
-
-Before calling the MCP tool, verify the environment:
-
-1. **Anvil availability**: The tool will return a clear error if Anvil is not installed. If you see `TESTNET_ANVIL_NOT_FOUND`, tell the user:
+在调用`mcp`工具之前，请确认以下条件：
+1. **Anvil是否已安装**：如果未安装Anvil，工具会返回错误提示。如果看到`TESTNET_ANVIL_NOT_FOUND`，请告知用户：
    ```
    Anvil (Foundry) is required but not installed.
    Install: curl -L https://foundry.paradigm.xyz | bash && foundryup
    ```
 
-2. **Network access**: Fork mode requires network access to the chain's RPC. If you see `TESTNET_STARTUP_TIMEOUT`, suggest checking network connectivity or trying a different chain.
+2. **网络连接**：分叉模式需要能够访问以太坊链的RPC接口。如果看到`TESTNET_STARTUP_TIMEOUT`，请检查网络连接或尝试其他以太坊链。
 
-### Step 2: Extract Parameters
+### 第2步：解析用户请求
 
-Parse the user's request for any specific requirements:
+根据用户的输入，提取相关参数：
+- 选择的以太坊链：例如“fork Base” → 设置`forkFrom: "base"`
+- 特定区块号：例如“从区块19000000开始分叉” → 设置`blockNumber: 19000000`
+- 账户数量：例如“创建5个测试账户” → 设置`fundedAccounts: 5`
+- 是否需要预资助：例如“创建空测试网” → 设置`seedLiquidity: false`
 
-- Chain preference: "fork Base" → `forkFrom: "base"`
-- Block number: "at block 19000000" → `blockNumber: 19000000`
-- Account count: "5 test accounts" → `fundedAccounts: 5`
-- No funding: "empty testnet" → `seedLiquidity: false`
+如果用户没有指定具体参数，将使用默认值（使用以太坊链、创建3个账户、启用资金支持）。
 
-If the user doesn't specify, use all defaults (fork Ethereum, 3 funded accounts, seed liquidity).
+### 第3步：调用`setup_local_testnet`函数
 
-### Step 3: Call setup_local_testnet
+使用提取到的参数调用`mcp__uniswap__setup_local_testnet`函数。
 
-Call `mcp__uniswap__setup_local_testnet` with the extracted parameters.
+### 第4步：展示结果
 
-### Step 4: Present Results
-
-Format the response as a rich summary:
-
+以易于理解的格式呈现测试网设置结果：
 ```text
 Local Testnet Ready
 
@@ -120,10 +117,9 @@ Local Testnet Ready
     Account #3: 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a
 ```
 
-### Step 5: Suggest Next Steps
+### 第5步：提供后续操作建议
 
-Always end with actionable follow-ups:
-
+最后，给出具体的下一步操作建议：
 ```text
   Next Steps:
   - Create a custom pool: "Create a WETH/DAI pool with thin liquidity"
@@ -133,21 +129,21 @@ Always end with actionable follow-ups:
   - Configure your MCP server: Set RPC_URL_1=http://127.0.0.1:8545 in .env
 ```
 
-## Important Notes
+## 重要注意事项
 
-- **Anvil must be installed.** This skill requires Foundry's Anvil. If not installed, provide the installation command.
-- **Fork mode requires network access.** The initial fork downloads state from the live chain's RPC. Subsequent operations are local.
-- **Port conflicts are handled automatically.** If port 8545 is in use, the tool finds the next available port.
-- **Previous testnets are cleaned up.** Starting a new testnet kills any existing one.
-- **Private keys are Anvil defaults.** These are well-known test keys -- never use them on mainnet.
-- **The testnet persists until the MCP server process exits** or a new testnet is started.
+- **必须安装Anvil**：此功能依赖于Foundry提供的Anvil工具。如果未安装，请提供安装命令。
+- **分叉模式需要网络连接**：工具会从实际链的RPC接口下载初始数据，后续操作均在本地环境中进行。
+- **端口冲突会自动处理**：如果端口8545已被占用，工具会自动选择其他可用端口。
+- **会清理之前的测试网残留数据**：启动新测试网时会清除所有旧的测试网数据。
+- **使用的私钥为预设的测试密钥**：这些密钥仅用于测试环境，切勿在主网上使用。
+- **测试网会持续运行，直到`mcp`服务器进程结束或新的测试网启动**。
 
-## Error Handling
+## 错误处理
 
-| Error                          | User-Facing Message                                                      | Suggested Action                                                |
-| ------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| `TESTNET_ANVIL_NOT_FOUND`      | "Anvil (Foundry) is not installed."                                      | Install: `curl -L https://foundry.paradigm.xyz \| bash && foundryup` |
-| `TESTNET_STARTUP_TIMEOUT`      | "Anvil did not start within 30s. Fork RPC may be unreachable."           | Check network, try a different chain, or retry                  |
-| `TESTNET_INVALID_FORK_CHAIN`   | "Chain X is not supported for forking."                                  | Use ethereum, base, arbitrum, optimism, or polygon              |
-| `TESTNET_MOCK_NOT_IMPLEMENTED` | "Mock mode is not yet implemented."                                      | Use fork mode instead                                           |
-| `TESTNET_SETUP_FAILED`         | "Failed to set up testnet: {reason}"                                     | Check Anvil installation and network access                     |
+| 错误类型                | 显示给用户的提示信息                                      | 建议采取的措施                                                                                                      |
+|------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `TESTNET_ANVIL_NOT_FOUND`      | “Anvil（Foundry提供的工具）未安装。”                                      | 安装Anvil：`curl -L https://foundry.paradigm.xyz \| bash && foundryup`                         |
+| `TESTNET_STARTUP_TIMEOUT`      | “Anvil未能在30秒内启动。可能是网络问题或RPC接口不可用。”                        | 检查网络连接或尝试其他以太坊链                         |
+| `TESTNET_INVALID_FORK_chain`   | “当前链不支持分叉操作。”                                      | 选择支持的以太坊链（如ethereum、base、arbitrum、optimism或polygon）                   |
+| `TESTNET_MOCK_NOTImplemented` | “模拟模式尚未实现。”                                      | 使用分叉模式（fork）                                                                                         |
+| `TESTNET_setup_FAILED`         | “设置测试网失败：{错误原因}”                                    | 检查Anvil的安装情况和网络连接                         |

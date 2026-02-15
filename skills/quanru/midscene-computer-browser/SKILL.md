@@ -19,57 +19,57 @@ allowed-tools:
   - Bash
 ---
 
-# Browser Automation
+# 浏览器自动化
 
-> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+> **重要规则 — 违反这些规则将导致工作流程中断：**
 >
-> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/web` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
-> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
-> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+> 1. **切勿在任何用于中间场景命令的 Bash 工具调用中设置 `run_in_background: true`**。每个 `npx @midscene/web` 命令都必须使用 `run_in_background: false`（或完全省略该参数）。在后台执行会导致任务结束后出现大量通知，从而破坏截图分析-执行循环。
+> 2. **每次 Bash 工具调用只能发送一个中间场景 CLI 命令**。等待其结果，读取截图，然后决定下一步操作。切勿使用 `&&`、`;` 或 `sleep` 来链接命令。
+> 3. **为每次 Bash 工具调用设置 `timeout: 60000`（60 秒）**，以确保中间场景命令有足够的时间同步完成。
 
-Automate web browsing using `npx @midscene/web`. Launches a headless Chrome via Puppeteer that **persists across CLI calls** — no session loss between commands. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+使用 `npx @midscene/web` 自动化网页浏览。该工具会通过 Puppeteer 启动一个无头 Chrome 浏览器，并且 **在多次 CLI 调用之间保持会话的连续性**——命令之间不会丢失会话信息。每个 CLI 命令都直接对应一个 MCP 工具——你（AI 代理）根据截图来决定执行哪些操作。
 
-## When to Use
+## 适用场景
 
-Use this skill when:
-- The user wants to browse or navigate to a specific URL
-- You need to scrape, extract, or collect data from websites
-- You want to verify or test frontend UI behavior
-- The user wants screenshots of web pages
+当以下情况发生时，可以使用此技能：
+- 用户希望浏览或导航到特定 URL
+- 需要从网站中抓取、提取或收集数据
+- 需要验证或测试前端用户界面的行为
+- 用户需要获取网页的截图
 
-If you need to preserve login sessions or work with the user's existing browser tabs, use the **Chrome Bridge Automation** skill instead.
+如果需要保留登录会话或使用用户的现有浏览器标签页，请改用 **Chrome Bridge Automation** 技能。
 
-## Prerequisites
+## 先决条件
 
-The CLI automatically loads `.env` from the current working directory. Before first use, verify the `.env` file exists and contains the API key:
+CLI 会自动从当前工作目录加载 `.env` 文件。首次使用前，请确认 `.env` 文件存在并且包含 API 密钥：
 
 ```bash
 cat .env | grep MIDSCENE_MODEL_API_KEY | head -c 30
 ```
 
-If no `.env` file or no API key, ask the user to create one. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
+如果没有 `.env` 文件或 API 密钥，请让用户创建一个。有关支持的提供者，请参阅 [模型配置](https://midscenejs.com/zh/model-common-config.html)。
 
-**Do NOT run `echo $MIDSCENE_MODEL_API_KEY`** — the key is loaded from `.env` at runtime, not from shell environment.
+**请勿运行 `echo $MIDSCENE_MODEL_API_KEY`**——密钥是在运行时从 `.env` 文件中加载的，而不是从 shell 环境中加载的。
 
-## Commands
+## 命令
 
-### Connect to a Web Page
+### 连接到网页
 
 ```bash
 npx @midscene/web connect --url https://example.com
 ```
 
-### Take Screenshot
+### 截取截图
 
 ```bash
 npx @midscene/web take_screenshot
 ```
 
-After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
+截取截图后，先读取保存的图像文件以了解当前页面的状态，然后再决定下一步操作。
 
-### Perform Actions
+### 执行操作
 
-Use actionSpace tools to interact with the page:
+使用 `actionSpace` 工具与页面进行交互：
 
 ```bash
 npx @midscene/web Tap --locate '{"prompt":"the Login button"}'
@@ -80,69 +80,67 @@ npx @midscene/web KeyboardPress --value Enter
 npx @midscene/web DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
-### Natural Language Action
+### 自然语言操作
 
-Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
+使用 `act` 在一个命令中执行多步骤操作——适用于处理瞬态用户界面：
 
 ```bash
 npx @midscene/web act --prompt "click the country dropdown and select Japan"
 ```
 
-### Disconnect
+### 断开连接
 
-Disconnect from the page but keep the browser running:
+断开与页面的连接，但保持浏览器运行：
 
 ```bash
 npx @midscene/web disconnect
 ```
 
-### Close Browser
+### 关闭浏览器
 
-Close the browser completely when finished:
+操作完成后完全关闭浏览器：
 
 ```bash
 npx @midscene/web close
 ```
 
-## Workflow Pattern
+## 工作流程模式
 
-The browser **persists across CLI calls** via a background Chrome process. Follow this pattern:
+通过后台的 Chrome 进程，浏览器在多次 CLI 调用之间保持会话的连续性。请遵循以下模式：
+1. **连接到** 目标 URL 以打开新标签页
+2. **截取截图** 以查看当前页面状态
+3. **分析截图** 以决定下一步操作
+4. **执行操作**（点击、输入、滚动等）
+5. **再次截取截图** 以验证结果
+6. **重复步骤 3-5 直到任务完成
+7. **完成后关闭** 浏览器（或**断开连接** 以备后续使用）
 
-1. **Connect** to a URL to open a new tab
-2. **Take screenshot** to see the current state
-3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
-5. **Take screenshot** again to verify the result
-6. **Repeat** steps 3-5 until the task is complete
-7. **Close** the browser when done (or **disconnect** to keep it for later)
+## 最佳实践
 
-## Best Practices
+1. **始终先连接**：在任何交互之前，使用 `connect --url` 导航到目标 URL。
+2. **频繁截图**：在每个操作之前和之后截图，以验证状态变化。
+3. **在定位提示时具体说明**：不要使用 “the button”，而应使用 “联系表单中的蓝色提交按钮”。
+4. **使用自然语言**：描述你在页面上看到的内容，而不是使用 CSS 选择器。例如，说 “红色的立即购买按钮” 而不是 “#buy-btn”。
+5. **处理加载状态**：在导航或触发页面加载的操作之后，截取截图以确认页面已加载。
+6. **完成后关闭**：使用 `close` 命令关闭浏览器并释放资源。
+7. **切勿在后台运行**：在每次 Bash 工具调用中，要么省略 `run_in_background` 参数，要么明确将其设置为 `false`。切勿将其设置为 `run_in_background: true`。
 
-1. **Always connect first**: Navigate to the target URL with `connect --url` before any interaction.
-2. **Take screenshots frequently**: Before and after each action to verify state changes.
-3. **Be specific in locate prompts**: Instead of `"the button"`, say `"the blue Submit button in the contact form"`.
-4. **Use natural language**: Describe what you see on the page, not CSS selectors. Say `"the red Buy Now button"` instead of `"#buy-btn"`.
-5. **Handle loading states**: After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
-6. **Close when done**: Use `close` to shut down the browser and free resources.
-7. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
+### 处理瞬态用户界面
 
-### Handle Transient UI
+下拉菜单、自动完成弹窗、工具提示和确认对话框在命令执行过程中可能会消失。在处理瞬态用户界面时：
+- **使用 `act` 来执行多步骤操作**——它会在一个进程中完成所有操作
+- **或者快速连续执行命令**——不要在步骤之间截图
+- **不要暂停进行分析**——连续执行所有与瞬态界面相关的命令
+- 持久性的用户界面元素（页面内容、导航栏、侧边栏）可以在不同的命令之间进行交互
 
-Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** between commands. When interacting with transient UI:
-
-- **Use `act` for multi-step transient interactions** — it executes everything in a single process
-- **Or execute commands rapidly in sequence** — do NOT take screenshots between steps
-- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
-- Persistent UI (page content, navigation bars, sidebars) is fine to interact with across separate commands
-
-**Example — Dropdown selection using `act` (recommended for transient UI):**
+**示例 — 使用 `act` 进行下拉菜单选择（推荐用于处理瞬态用户界面）：**
 
 ```bash
 npx @midscene/web act --prompt "click the country dropdown and select Japan"
 npx @midscene/web take_screenshot
 ```
 
-**Example — Dropdown selection using individual commands (alternative):**
+**示例 — 使用单独的命令进行下拉菜单选择（另一种方法）：**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
@@ -152,9 +150,9 @@ npx @midscene/web Tap --locate '{"prompt":"Japan option in the dropdown list"}'
 npx @midscene/web take_screenshot
 ```
 
-## Common Patterns
+## 常见模式
 
-### Simple Browsing
+### 简单浏览
 
 ```bash
 npx @midscene/web connect --url 'https://news.ycombinator.com'
@@ -163,7 +161,7 @@ npx @midscene/web take_screenshot
 npx @midscene/web close
 ```
 
-### Multi-Step Interaction
+### 多步骤交互
 
 ```bash
 npx @midscene/web connect --url 'https://example.com'
@@ -176,7 +174,7 @@ npx @midscene/web take_screenshot
 npx @midscene/web close
 ```
 
-### Frontend Verification
+### 前端验证
 
 ```bash
 npx @midscene/web connect --url 'http://localhost:3000'
@@ -190,7 +188,7 @@ npx @midscene/web take_screenshot
 npx @midscene/web close
 ```
 
-### Data Extraction
+### 数据提取
 
 ```bash
 npx @midscene/web connect --url 'https://example.com/products'
@@ -199,31 +197,30 @@ npx @midscene/web take_screenshot
 npx @midscene/web close
 ```
 
-## Frontend Verification Workflow
+## 前端验证工作流程
 
-When asked to verify or test a frontend application:
+当需要验证或测试前端应用程序时：
+1. 如果开发服务器尚未运行，请先启动它（例如，`npm run dev`）。
+2. **连接到** 本地 URL（例如，`http://localhost:3000`）。
+3. **截取截图** 以查看初始状态。
+4. **分析截图** 以确认预期的用户界面元素是否存在。
+5. **执行操作**（点击、输入、滚动等）以测试用户流程。
+6. **每步操作后截取截图** 以验证结果。
+7. **完成后关闭** 浏览器。
 
-1. **Start the dev server** if not already running (e.g., `npm run dev`).
-2. **Connect** to the local URL (e.g., `http://localhost:3000`).
-3. **Take a screenshot** to see the initial state.
-4. **Analyze the screenshot** to verify expected UI elements are present.
-5. **Perform interactions** (Tap, Input, Scroll) to test user flows.
-6. **Take screenshots** after each step to verify outcomes.
-7. **Close** the browser when finished.
+## 故障排除
 
-## Troubleshooting
+### 连接失败
+- 确保系统上安装了 Chrome/Chromium（Puppeteer 会默认下载所需的浏览器）。
+- 检查防火墙是否阻塞了 Chrome 的调试端口。
 
-### Connection Failures
-- Ensure Chrome/Chromium is installed on the system (Puppeteer downloads its own by default).
-- Check that no firewall blocks local Chrome debugging ports.
+### API 密钥错误
+- 确保 `.env` 文件中包含 `MIDSCENE_MODEL_API_KEY=<your-key>`。
+- 验证该密钥是否适用于配置的模型提供者。
 
-### API Key Errors
-- Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
-- Verify the key is valid for the configured model provider.
+### 超时
+- 网页可能需要时间加载。连接后，先截取截图以确认页面已准备好再进行交互。
+- 对于加载速度较慢的页面，在步骤之间稍作等待。
 
-### Timeouts
-- Web pages may take time to load. After connecting, take a screenshot to verify readiness before interacting.
-- For slow pages, wait briefly between steps.
-
-### Screenshots Not Displaying
-- The screenshot path is an absolute path to a local file. Use the Read tool to view it.
+### 截图未显示
+- 截图路径是指向本地文件的绝对路径。可以使用 Read 工具来查看截图文件。

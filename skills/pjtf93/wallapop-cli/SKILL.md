@@ -1,71 +1,71 @@
 ---
 name: wallapop-cli
-description: Use the wallapop CLI to search listings, fetch item details, view user profiles, and list categories. Apply when a user asks for Wallapop marketplace data or when you need CLI commands and flags for wallapop-cli usage.
+description: 使用 Wallapop CLI 来搜索列表、获取商品详情、查看用户资料以及列出分类。当用户请求 Wallapop 市场数据时，或者当你需要使用 Wallapop CLI 的命令和参数时，可以参考这些说明。
 compatibility: Requires wallapop-cli installed (Node.js 18+), network access to api.wallapop.com, and optional WALLAPOP_ACCESS_TOKEN for non-search endpoints.
 ---
 
-## Purpose
-Provide concise, correct commands for using wallapop-cli.
+## 目的  
+提供简洁、正确的命令，用于使用 wallapop-cli。  
 
-## When to use
-- User asks how to search Wallapop listings from the terminal.
-- User needs CLI flags for filtering search (price, location, category, limit).
-- User needs item or user lookup commands.
-- User needs JSON output for scripting.
+## 使用场景  
+- 用户询问如何从终端搜索 Wallapop 上的房源信息。  
+- 用户需要通过 CLI 参数来过滤搜索结果（价格、位置、类别、数量限制）。  
+- 用户需要查询房源或用户的信息。  
+- 用户需要 JSON 格式的输出结果以便进行脚本编写。  
 
-## Commands
-### Search listings
+## 命令  
+### 搜索房源  
 ```
 wallapop search "<query>" [--lat <lat>] [--lng <lng>] [--min-price <n>] [--max-price <n>] [--category <id>] [--limit <n>]
-```
-Notes:
-- Defaults to configured location if `--lat/--lng` omitted.
-- `--limit` trims results locally.
+```  
+**注意：**  
+- 如果省略了 `--lat` 或 `--lng` 参数，系统会使用配置的位置信息。  
+- `--limit` 参数用于限制搜索结果的数量。  
 
-### Item details
+### 查看房源详情  
 ```
 wallapop item <item_id>
-```
+```  
 
-### User profile
+### 查看用户资料  
 ```
 wallapop user <user_id>
-```
+```  
 
-### Categories
+### 查看房源类别  
 ```
 wallapop categories
-```
+```  
 
-### JSON output (all commands)
-Add the global flag `--json`:
+### 输出格式（所有命令）  
+添加全局参数 `--json` 可以使输出结果为 JSON 格式：  
 ```
 wallapop --json search "laptop"
 wallapop --json item abc123
-```
+```  
 
-## Configuration
-- Location defaults can be set via env vars:
-  - `WALLAPOP_LAT`
-  - `WALLAPOP_LNG`
-- Optional auth token for non-search endpoints:
-  - `WALLAPOP_ACCESS_TOKEN`
+## 配置  
+- 位置信息可以通过环境变量设置：  
+  - `WALLAPOP_LAT`  
+  - `WALLAPOP_LNG`  
+- 非搜索功能的访问令牌（可选）：  
+  - `WALLAPOP_ACCESS_TOKEN`  
 
-## Output expectations
-- Search: table or JSON array of results with id, title, price, distance, and user.
-- Item: table or JSON with title, description, taxonomy, user, images.
-- User: table or JSON with profile fields.
-- Categories: table or JSON list of category ids and names.
+## 输出格式要求  
+- 搜索结果：包含房源 ID、标题、价格、距离以及发布用户信息的表格或 JSON 数组。  
+- 房源详情：包含房源标题、描述、分类信息、发布用户信息的表格或 JSON 数据。  
+- 用户资料：包含用户个人信息的表格或 JSON 数据。  
+- 房源类别：包含类别 ID 和名称的表格或 JSON 列表。  
 
-## Examples (safe placeholders)
+## 示例（使用占位符）  
 ```
 wallapop search "camera" --min-price 50 --max-price 200
 wallapop search "chair" --lat 40.0 --lng -3.0 --limit 5
 wallapop item abc123
 wallapop user user123
 wallapop --json categories
-```
+```  
 
-## Error handling
-- Non-zero exit code on failure.
-- For scripted use, prefer `--json` and handle errors by checking exit code.
+## 错误处理  
+- 如果操作失败，程序会返回非零的退出码。  
+- 在脚本中使用 `--json` 参数时，应通过检查退出码来处理错误。

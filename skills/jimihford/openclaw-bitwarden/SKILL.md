@@ -1,34 +1,41 @@
 ---
 name: bitwarden
-description: Set up and use Bitwarden CLI (bw). Use when installing the CLI, unlocking vault, or reading/generating secrets via bw. Handles session management with BW_SESSION.
+description: **安装并使用 Bitwarden CLI（bw）**  
+Bitwarden CLI 是用于安装 Bitwarden、解锁加密保管库（vault），以及通过 Bitwarden 读取或生成加密密钥的工具。它还通过 `BW_SESSION` 模块负责会话管理。  
+
+**使用场景：**  
+- 安装 Bitwarden CLI  
+- 解锁已加密的保管库  
+- 通过 Bitwarden 读取或生成加密密钥  
+- 使用 `BW_SESSION` 模块进行会话管理
 homepage: https://bitwarden.com/help/cli/
 metadata: {"openclaw":{"emoji":"🔐","requires":{"bins":["bw","tmux"]},"install":[{"id":"brew-bw","kind":"brew","formula":"bitwarden-cli","bins":["bw"],"label":"Install Bitwarden CLI (brew)"},{"id":"brew-tmux","kind":"brew","formula":"tmux","bins":["tmux"],"label":"Install tmux (brew)"}]}}
 ---
 
 # Bitwarden CLI
 
-Manage passwords and secrets via the Bitwarden CLI.
+通过 Bitwarden CLI 管理密码和密钥。
 
-## References
+## 参考资料
 
-- `references/get-started.md` (install + login + unlock flow)
-- `references/cli-examples.md` (real `bw` examples)
+- `references/get-started.md`（安装、登录和解锁流程）
+- `references/cli-examples.md`（实际的 Bitwarden CLI 使用示例）
 
-## Workflow
+## 工作流程
 
-1. Check CLI present: `bw --version`.
-2. Check login status: `bw status` (returns JSON with status field).
-3. If not logged in: `bw login` (stores API key, prompts for master password).
-4. REQUIRED: create a fresh tmux session for all `bw` commands.
-5. Unlock vault inside tmux: `bw unlock` (outputs session key).
-6. Export session key: `export BW_SESSION="<key>"`.
-7. Verify access: `bw sync` then `bw list items --search test`.
+1. 检查 CLI 是否可用：`bw --version`。
+2. 检查登录状态：`bw status`（返回包含状态信息的 JSON 数据）。
+3. 如果未登录：`bw login`（存储 API 密钥，并提示输入主密码）。
+4. **必需步骤**：为所有 Bitwarden CLI 命令创建一个新的 tmux 会话。
+5. 在 tmux 会话中解锁密码库：`bw unlock`（输出会话密钥）。
+6. 导出会话密钥：`export BW_SESSION="<key>"`。
+7. 验证访问权限：`bw sync`，然后执行 `bw list items --search test`。
 
-## REQUIRED tmux session
+## 必需的 tmux 会话
 
-The Bitwarden CLI requires the BW_SESSION environment variable for authenticated commands. To persist the session across commands, always run `bw` inside a dedicated tmux session.
+Bitwarden CLI 需要 `BW_SESSION` 环境变量才能执行认证命令。为了在多次命令之间保持会话状态，请始终在专用的 tmux 会话中运行 Bitwarden CLI。
 
-Example (see `tmux` skill for socket conventions):
+**示例**（有关 tmux 会话的配置，请参考相关文档）：
 
 ```bash
 SOCKET_DIR="${CLAWDBOT_TMUX_SOCKET_DIR:-${TMPDIR:-/tmp}/openclaw-tmux-sockets}"
@@ -50,37 +57,37 @@ tmux -S "$SOCKET" capture-pane -p -J -t "$SESSION":0.0 -S -200
 tmux -S "$SOCKET" kill-session -t "$SESSION"
 ```
 
-## Common Commands
+## 常用命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `bw status` | Check login/lock status (JSON) |
-| `bw login` | Login with email/password or API key |
-| `bw unlock` | Unlock vault, returns session key |
-| `bw lock` | Lock vault |
-| `bw sync` | Sync vault with server |
-| `bw list items` | List all items |
-| `bw list items --search <query>` | Search items |
-| `bw get item <id-or-name>` | Get specific item (JSON) |
-| `bw get password <id-or-name>` | Get just the password |
-| `bw get username <id-or-name>` | Get just the username |
-| `bw get totp <id-or-name>` | Get TOTP code |
-| `bw generate -ulns --length 32` | Generate password |
+| `bw status` | 检查登录/锁定状态（返回 JSON 数据） |
+| `bw login` | 使用电子邮件/密码或 API 密钥登录 |
+| `bw unlock` | 解锁密码库，并返回会话密钥 |
+| `bw lock` | 锁定密码库 |
+| `bw sync` | 将密码库与服务器同步 |
+| `bw list items` | 列出所有项目 |
+| `bw list items --search <查询>` | 搜索项目 |
+| `bw get item <id-or-name>` | 获取特定项目（返回 JSON 数据） |
+| `bw get password <id-or-name>` | 仅获取密码 |
+| `bw get username <id-or-name>` | 仅获取用户名 |
+| `bw get totp <id-or-name>` | 获取 TOTP 代码 |
+| `bw generate -ulns --length 32` | 生成新密码 |
 
-## Guardrails
+## 安全注意事项
 
-- Never paste secrets into logs, chat, or code.
-- Always use tmux to maintain BW_SESSION across commands.
-- Prefer `bw get password` over parsing full item JSON when only password needed.
-- If command returns "Vault is locked", re-run `bw unlock` inside tmux.
-- Do not run authenticated `bw` commands outside tmux; the session won't persist.
-- Lock vault when done: `bw lock`.
+- **严禁** 将密钥粘贴到日志、聊天记录或代码中。
+- **务必** 使用 tmux 会话来确保 `BW_SESSION` 在多次命令之间保持有效。
+- 当只需要密码时，建议使用 `bw get password` 而不是解析完整的 JSON 数据。
+- 如果命令显示“密码库已锁定”，请在 tmux 会话中重新运行 `bw unlock`。
+- **切勿** 在 tmux 会话之外执行需要认证的 Bitwarden CLI 命令，否则会话状态将不会被保存。
+- 使用完密码库后，请执行 `bw lock` 以锁定密码库。
 
-## Testing with Vaultwarden
+## 使用 Vaultwarden 进行测试
 
-This skill includes a Docker Compose setup for local testing with [Vaultwarden](https://github.com/dani-garcia/vaultwarden) (self-hosted Bitwarden-compatible server).
+本文档包含使用 [Vaultwarden](https://github.com/dani-garcia/vaultwarden)（一个与 Bitwarden 兼容的本地服务器）进行测试的 Docker Compose 配置。
 
-### Quick Start
+### 快速入门
 
 ```bash
 # Install mkcert and generate local certs (one-time)
@@ -105,23 +112,23 @@ bw config server https://localhost:8443
 ./scripts/test-skill-workflow.sh
 ```
 
-### Test Credentials
+### 测试凭据
 
-- **Server URL:** https://localhost:8443
-- **Admin Panel:** https://localhost:8443/admin (token: `test-admin-token-12345`)
-- **Suggested test account:** test@example.com / TestPassword123!
+- **服务器地址：** `https://localhost:8443`
+- **管理员面板：** `https://localhost:8443/admin`（令牌：`test-admin-token-12345`）
+- **建议的测试账户：** `test@example.com` / `TestPassword123!`
 
-### Node.js CA Trust
+### Node.js 的 CA 证书信任设置
 
-The bw CLI requires the mkcert CA to be trusted. Export before running bw commands:
+Bitwarden CLI 需要信任 mkcert CA 证书。在运行命令前，请先导出该证书：
 
 ```bash
 export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
 ```
 
-Or add to your shell profile for persistence.
+或者将其添加到您的 shell 配置文件中，以便在每次启动 shell 时自动应用该设置。
 
-### Cleanup
+### 清理操作
 
 ```bash
 docker compose down -v  # Remove container and data

@@ -1,38 +1,38 @@
 ---
 name: telegram-body-scan
-description: Run end-to-end body-scan measurement flow in Telegram using AnthroVision bridge tools.
+description: 使用 AnthroVision 桥接工具，在 Telegram 中运行端到端的身体扫描测量流程。
 ---
 
-# Telegram Body Scan
+# Telegram 身体测量功能
 
-Use this skill when a user wants body measurements from a video in Telegram.
+当用户希望通过 Telegram 视频获取身体测量数据时，可以使用此功能。
 
-## Required Inputs
+## 必需输入参数
 
-- `gender` (`male` or `female`)
-- `height_cm` (`100` to `250`)
-- `video` attachment (or downloadable `https://` video URL)
-- `phone_model` (for example `iPhone 13 Pro Max`)
+- `gender`（`male` 或 `female`）
+- `height_cm`（100 至 250 厘米）
+- 视频附件（或可下载的 `https://` 视频链接）
+- `phone_model`（例如 `iPhone 13 Pro Max`）
 
-## Workflow
+## 工作流程
 
-1. Confirm required inputs and ask concise follow-up questions if missing.
-2. Ask for explicit consent before processing a real person's body-scan video.
-3. Never ask users for local file paths (`/Users/...`, `file://...`, `./...`).
-4. Reject private/local URLs (`localhost`, `127.0.0.1`, RFC1918/private subnets).
-5. Call `anthrovision_bridge_submit_scan`.
-6. Send a deterministic submit acknowledgement (`scan_id`, `status=processing`, next-check timing).
-7. Poll `anthrovision_bridge_check_scan` every 10-15 seconds.
-8. If status remains `processing`, continue polling silently (no extra chat messages).
-9. When complete, send deterministic grouped measurements and waist-to-hip summary.
-10. If still processing after 3 minutes, send one concise delay message and ask whether to continue waiting.
+1. 确认所需输入参数，如缺少任何参数，请提出简洁的补充问题。
+2. 在处理用户的身体测量视频之前，务必获得用户的明确同意。
+3. 绝不要向用户索取本地文件路径（如 `/Users/...`、`file://...`、`./...`）。
+4. 拒绝使用私有的或本地的 URL（如 `localhost`、`127.0.0.1`、RFC1918 私有子网）。
+5. 调用 `anthrovision_bridge_submit_scan` 函数进行数据提交。
+6. 发送一个包含确定性的确认信息（包含 `scan_id` 和 `status=processing`），并告知下一次检查的时间。
+7. 每 10-15 秒轮询一次 `anthrovision_bridge_check_scan` 函数的状态。
+8. 如果状态仍为 `processing`，则继续静默轮询（无需发送额外的聊天消息）。
+9. 完成测量后，发送包含所有测量数据以及腰臀比的汇总信息。
+10. 如果 3 分钟后测量仍未完成，发送一条简洁的延迟提示信息，并询问用户是否希望继续等待。
 
-## Response Style
+## 响应风格
 
-- Keep responses concise and operational.
-- For submit/status tool responses, avoid extra preambles or summaries.
-- Never relay arbitrary tool strings verbatim.
-- Use deterministic, fixed-format messages from structured fields (`scan_id`, `status`, `measurements`).
-- Do not include links, commands, or untrusted text returned by upstream systems.
-- Use `-` bullets only.
-- Keep spacing tight: one blank line between sections maximum.
+- 响应应保持简洁明了且具有操作性。
+- 对于工具返回的响应信息，避免添加多余的描述或总结。
+- 绝不要逐字复制工具返回的文本。
+- 使用结构化字段中的确定性、固定格式的信息（如 `scan_id`、`status`、`measurements`）。
+- 不要包含来自上游系统的链接、命令或不可信的文本。
+- 仅使用 `-` 来分隔列表项。
+- 保持格式紧凑：各部分之间最多只使用一个空行。

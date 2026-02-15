@@ -1,30 +1,30 @@
 ---
 slug: "batch-cad-converter"
 display_name: "Batch CAD Converter"
-description: "Batch convert multiple CAD/BIM files (Revit, IFC, DWG, DGN) with progress tracking, error handling, and consolidated reporting."
+description: "批量转换多个 CAD/BIM 文件（Revit、IFC、DWG、DGN），支持进度跟踪、错误处理以及生成统一的报告。"
 ---
 
-# Batch CAD/BIM Converter
+# 批量CAD/BIM转换工具
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Large projects and archives contain hundreds or thousands of CAD/BIM files:
-- Manual conversion is tedious and error-prone
-- Different formats require different converters
-- Progress tracking is needed for long operations
-- Error handling is critical for large batches
+### 问题描述
+大型项目和档案中包含成百上千个CAD/BIM文件：
+- 手动转换既繁琐又容易出错
+- 不同的格式需要使用不同的转换工具
+- 长时间运行的任务需要进度跟踪
+- 对于大批量文件，错误处理至关重要
 
-### Solution
-Unified batch converter handling all supported formats with progress tracking, error recovery, and consolidated reporting.
+### 解决方案
+提供一个统一的批量转换工具，支持所有支持的格式，具备进度跟踪、错误恢复和汇总报告功能。
 
-### Business Value
-- **Multi-format** - Revit, IFC, DWG, DGN in one workflow
-- **Error recovery** - Continue on failures
-- **Progress tracking** - Monitor large batches
-- **Reporting** - Consolidated conversion results
+### 商业价值
+- **多格式支持**：在一个工作流程中处理Revit、IFC、DWG、DGN等多种格式
+- **错误恢复**：在转换失败时能够继续执行剩余任务
+- **进度跟踪**：实时监控批量转换的进度
+- **报告生成**：提供统一的转换结果报告
 
-## Python Implementation
+## Python实现
 
 ```python
 import subprocess
@@ -373,7 +373,7 @@ def print_progress(current: int, total: int, file_name: str):
     print(f"Progress: {current}/{total} ({percent:.1f}%) - {file_name}")
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize batch converter
@@ -392,9 +392,9 @@ result = converter.batch_convert(
 print(f"Success: {result.successful}/{result.total_files}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Convert Specific Formats Only
+### 1. 仅转换特定格式
 ```python
 result = converter.batch_convert(
     input_folder="C:/Archive",
@@ -404,7 +404,7 @@ result = converter.batch_convert(
 )
 ```
 
-### 2. With Format-Specific Options
+### 2. 使用特定格式的选项进行转换
 ```python
 options = {
     'revit': ['complete', 'bbox', 'rooms'],
@@ -417,11 +417,11 @@ result = converter.batch_convert(
 )
 ```
 
-### 3. Generate Report
+### 3. 生成报告
 ```python
 result = converter.batch_convert("C:/Projects")
 report = converter.generate_report(result, "conversion_report.json")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)

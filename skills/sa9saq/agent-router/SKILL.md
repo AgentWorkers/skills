@@ -1,40 +1,40 @@
 ---
-description: Route prompts to the optimal AI model based on task type, complexity, and cost constraints.
+description: 根据任务类型、复杂性和成本限制，将提示路由到最合适的人工智能模型。
 ---
 
-# Agent Router
+# 代理路由器（Agent Router）
 
-Route prompts to the optimal AI model based on task characteristics.
+根据任务特性，将请求路由到最合适的 AI 模型。
 
-## What This Does
+## 功能介绍
 
-Analyzes a task/prompt and recommends the best model, considering task type, complexity, cost, speed, and context length.
+该系统会分析任务内容，并根据任务类型、复杂性、成本、响应速度以及上下文长度等因素，推荐最适合的模型。
 
-## Model Routing Table
+## 模型路由表
 
-| Task Type | Complexity | Recommended | Fallback |
-|-----------|-----------|-------------|----------|
-| Coding (generation) | High | claude-opus / gpt-5 | claude-sonnet |
-| Coding (simple edits) | Low | claude-sonnet / gpt-4.1 | claude-haiku |
-| Creative writing | High | claude-opus | gpt-5 |
-| Summarization | Low | claude-haiku / gpt-4.1-mini | gemini-flash |
-| Data analysis | Medium | claude-sonnet | gpt-4.1 |
-| Vision/Image | Any | claude-sonnet / gpt-4.1 | gemini-pro |
-| Translation | Low | gpt-4.1-mini | claude-haiku |
-| Long context (>100k) | Any | gemini-pro | claude-sonnet |
-| Real-time/fast | Any | claude-haiku / gpt-4.1-mini | gemini-flash |
-| Math/reasoning | High | claude-opus / o3 | deepseek-r1 |
+| 任务类型 | 复杂性 | 推荐模型 | 备用模型 |
+|---------|---------|-----------|---------|
+| 编程（代码生成） | 高     | claude-opus / gpt-5   | claude-sonnet |
+| 编程（简单编辑） | 低     | claude-sonnet / gpt-4.1  | claude-haiku |
+| 创意写作 | 高     | claude-opus    | gpt-5    |
+| 摘要生成 | 低     | claude-haiku / gpt-4.1-mini | gemini-flash |
+| 数据分析 | 中等     | claude-sonnet | gpt-4.1   |
+| 视觉/图像处理 | 任意类型 | claude-sonnet / gpt-4.1 | gemini-pro |
+| 翻译     | 低     | gpt-4.1-mini | claude-haiku |
+| 长篇文本（超过 10 万字符） | 任意类型 | gemini-pro | claude-sonnet |
+| 实时处理/快速响应 | 任意类型 | claude-haiku / gpt-4.1-mini | gemini-flash |
+| 数学/推理 | 高     | claude-opus / o3    | deepseek-r1   |
 
-## Instructions
+## 使用说明
 
-1. **Analyze the task**: Classify by type, complexity (low/medium/high), and constraints (cost, speed, context length).
-2. **Check user preferences**: Factor in model preferences, cost limits, or subscription tiers.
-3. **Route decision**: Using the table above, recommend primary + fallback model.
-4. **For Codex CLI routing** (local dev):
-   - Heavy coding → `codex exec` (GPT-5.3-Codex, free via subscription)
-   - Quick questions → current model
-   - Cost-sensitive batch work → claude-haiku or gpt-4.1-mini
-5. **Output format**:
+1. **分析任务**：根据任务类型、复杂性（低/中/高）以及成本、响应速度等约束条件对任务进行分类。
+2. **考虑用户偏好**：结合用户的模型偏好、成本限制或订阅等级来选择模型。
+3. **路由决策**：根据上述路由表，推荐主要使用的模型以及备用模型。
+4. **针对 Codex CLI 的路由规则**（本地开发环境）：
+   - 复杂的编程任务 → 使用 `codex exec`（GPT-5.3-Codex，可通过订阅免费使用）
+   - 简单问题 → 使用当前可用的模型
+   - 对成本敏感的批量处理任务 → 使用 claude-haiku 或 gpt-4.1-mini
+5. **输出格式**：
    ```
    🔀 Route: <task_type> | Complexity: <level>
    ✅ Recommended: <model>
@@ -42,16 +42,16 @@ Analyzes a task/prompt and recommends the best model, considering task type, com
    💰 Est. cost: <low/medium/high>
    💡 Reason: <why>
    ```
-6. **Batch routing**: For multiple tasks, create a routing plan table showing which model handles each task.
+6. **批量路由**：对于多个任务，需要创建一个路由计划表，明确每个任务应使用哪个模型。
 
-## Edge Cases
+## 特殊情况处理
 
-- **Ambiguous tasks**: Default to claude-sonnet as the best general-purpose choice
-- **Multi-modal tasks** (text + image): Ensure the chosen model supports vision
-- **Context overflow**: If input exceeds model's context window, suggest chunking or switching to a larger-context model
-- **Rate limits**: If primary model is rate-limited, auto-route to fallback
+- **任务描述不明确**：默认选择 claude-sonnet 作为通用模型。
+- **多模态任务**（文本 + 图像）：确保所选模型支持图像处理功能。
+- **上下文超出模型处理范围**：如果输入内容超出模型的处理能力，建议分块处理或切换到支持更大上下文的模型。
+- **模型使用频率限制**：如果主要模型受到使用频率限制，系统会自动切换到备用模型。
 
-## Requirements
+## 系统要求
 
-- No API keys or dependencies — this is a decision framework, not an API
-- Update routing table as model pricing/capabilities change
+- 该系统不依赖任何 API 密钥或外部服务，仅作为一个决策框架使用。
+- 需要根据模型价格或功能的变更及时更新路由表。

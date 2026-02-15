@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Web Search & Extraction
+# 网页搜索与内容提取
 
-Search the web and extract content via [inference.sh](https://inference.sh) CLI.
+您可以使用 [inference.sh](https://inference.sh) 命令行工具在网页上搜索并提取内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -23,24 +23,24 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run tavily/search-assistant --input '{"query": "latest AI developments 2024"}'
 ```
 
-## Available Apps
+## 可用的应用程序
 
 ### Tavily
 
-| App | App ID | Description |
+| 应用程序 | 应用程序 ID | 说明 |
 |-----|--------|-------------|
-| Search Assistant | `tavily/search-assistant` | AI-powered search with answers |
-| Extract | `tavily/extract` | Extract content from URLs |
+| Search Assistant | `tavily/search-assistant` | 基于 AI 的搜索工具，可提供答案 |
+| Extract | `tavily/extract` | 从 URL 中提取内容 |
 
 ### Exa
 
-| App | App ID | Description |
+| 应用程序 | 应用程序 ID | 说明 |
 |-----|--------|-------------|
-| Search | `exa/search` | Smart web search with AI |
-| Answer | `exa/answer` | Direct factual answers |
-| Extract | `exa/extract` | Extract and analyze web content |
+| Search | `exa/search` | 智能网页搜索工具，支持 AI 功能 |
+| Answer | `exa/answer` | 提供直接的事实性答案 |
+| Extract | `exa/extract` | 从网页中提取并分析内容 |
 
-## Examples
+## 示例
 
 ### Tavily Search
 
@@ -50,7 +50,7 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-Returns AI-generated answers with sources and images.
+返回带有来源和图片的 AI 生成答案。
 
 ### Tavily Extract
 
@@ -60,7 +60,7 @@ infsh app run tavily/extract --input '{
 }'
 ```
 
-Extracts clean text and images from multiple URLs.
+从多个 URL 中提取纯文本和图片。
 
 ### Exa Search
 
@@ -70,7 +70,7 @@ infsh app run exa/search --input '{
 }'
 ```
 
-Returns highly relevant links with context.
+返回高度相关的链接及其上下文信息。
 
 ### Exa Answer
 
@@ -80,7 +80,7 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-Returns direct factual answers.
+提供直接的事实性答案。
 
 ### Exa Extract
 
@@ -90,9 +90,9 @@ infsh app run exa/extract --input '{
 }'
 ```
 
-Extracts and analyzes web page content.
+从网页中提取并分析内容。
 
-## Workflow: Research + LLM
+## 工作流程：研究 + 大语言模型 (LLM)
 
 ```bash
 # 1. Search for information
@@ -106,7 +106,7 @@ infsh app run openrouter/claude-sonnet-45 --input '{
 }'
 ```
 
-## Workflow: Extract + Summarize
+## 工作流程：内容提取 + 摘要
 
 ```bash
 # 1. Extract content from URL
@@ -120,15 +120,15 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Research**: Gather information on any topic
-- **RAG**: Retrieval-augmented generation
-- **Fact-checking**: Verify claims with sources
-- **Content aggregation**: Collect data from multiple sources
-- **Agents**: Build research-capable AI agents
+- **研究**：收集任何主题的信息
+- **检索增强生成 (RAG)**：结合检索结果进行内容生成
+- **事实核查**：通过来源验证信息
+- **内容聚合**：从多个来源收集数据
+- **智能助手**：构建具备研究能力的人工智能助手
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -141,10 +141,10 @@ npx skills add inference-sh/agent-skills@llm-models
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-Browse all apps: `infsh app list`
+查看所有应用程序：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Adding Tools to Agents](https://inference.sh/docs/agents/adding-tools) - Equip agents with search
-- [Building a Research Agent](https://inference.sh/blog/guides/research-agent) - LLM + search integration guide
-- [Tool Integration Tax](https://inference.sh/blog/tools/integration-tax) - Why pre-built tools matter
+- [将工具添加到智能助手中](https://inference.sh/docs/agents/adding-tools) - 为智能助手配备搜索功能
+- [构建研究型智能助手](https://inference.sh/blog/guides/research-agent) - 大语言模型与搜索功能的集成指南
+- [工具集成指南](https://inference.sh/blog/tools/integration-tax) - 为什么使用预构建的工具很重要

@@ -1,54 +1,54 @@
 ---
 name: youtube-transcription-generator
-description: "Use VLM Run (vlmrun) to generate transcriptions from YouTube videos. Download a video with yt-dlp, then run vlmrun to transcribe with optional timestamps. VLMRUN_API_KEY must be in .env; follow vlmrun-cli-skill for CLI setup and options."
+description: "使用 VLM Run (vlmrun) 从 YouTube 视频中生成字幕。首先使用 yt-dlp 下载视频，然后运行 vlmrun 进行字幕生成（可选添加时间戳）。VLMRUN_API_KEY 必须存储在 `.env` 文件中；有关 CLI 的设置和选项，请参考 vlmrun-cli-skill 文档。"
 ---
 
-## YouTube Transcription Generator (VLM Run)
+## YouTube 字幕生成器（使用 vlmrun）
 
-Generate transcriptions from YouTube videos using **vlmrun** for speech-to-text and optional timestamps. This skill:
+使用 **vlmrun** 从 YouTube 视频生成字幕，同时支持添加时间戳。该技能包括以下步骤：
 
-1. **Downloads** the YouTube video (or audio) with **yt-dlp**.
-2. **Transcribes** the video with **vlmrun** (Orion visual AI).
-3. **Saves** the transcript to a file (plain text or with timestamps).
+1. 使用 **yt-dlp** 下载 YouTube 视频（或仅下载音频）。
+2. 使用 **vlmrun**（Orion 视觉 AI）对视频进行转录。
+3. 将生成的字幕保存为文件（纯文本格式或包含时间戳的格式）。
 
-Refer to **vlmrun-cli-skill** for vlmrun CLI setup, environment variables, and all `vlmrun chat` options.
-
----
-
-## How the assistant should use this skill
-
-- **Check `.env` for API key**
-  - Ensure `.env` (or `.env.local`) contains `VLMRUN_API_KEY`.
-  - If missing, instruct the user to set it before running any `vlmrun` commands.
-
-- **Use vlmrun for transcription only**
-  - For **transcription** (and optional timestamps), use the **vlmrun** CLI with a **video file** as input (`-i <video>`).
-  - vlmrun accepts video files (e.g. `.mp4`). For YouTube, the skill first downloads the video with **yt-dlp**, then passes the file to vlmrun.
-
-- **Workflow**
-  - User provides a **YouTube URL** (and optionally output path).
-  - Download the video (or audio-only for faster/smaller) with **yt-dlp**.
-  - Run: `vlmrun chat "Transcribe this video with timestamps for each section. Output the full transcript in a clear, readable format." -i <downloaded_file> -o <output_dir>`.
-  - Capture vlmrun’s response and save it as the transcript file (e.g. `transcript.txt`).
+有关 **vlmrun** 的 CLI 设置、环境变量以及所有 `vlmrun` 命令选项的详细信息，请参考 **vlmrun-cli-skill**。
 
 ---
 
-## Prerequisites
+## 助手应如何使用此技能
 
-- **Python 3.10+**
-- **VLMRUN_API_KEY** (required for vlmrun)
-- **vlmrun CLI** (`vlmrun[cli]`)
-- **yt-dlp** (for downloading YouTube videos)
+- **检查 `.env` 文件中的 API 密钥**
+  - 确保 `.env`（或 `.env.local`）文件中包含 `VLMRUN_API_KEY`。
+  - 如果缺失，请在运行任何 `vlmrun` 命令之前指导用户设置该密钥。
 
-> See **vlmrun-cli-skill** for detailed vlmrun usage and examples (including video transcription).
+- **仅使用 vlmrun 进行转录**
+  - 要进行转录（并可选地添加时间戳），请使用 `vlmrun` CLI，并提供视频文件作为输入（格式：`-i <video>`）。
+  `vlmrun` 支持多种视频格式（例如 `.mp4`）。对于 YouTube 视频，该技能会先使用 **yt-dlp** 下载视频，然后再将其传递给 `vlmrun` 进行转录。
+
+- **工作流程**
+  - 用户提供 YouTube 视频的 URL（以及可选的输出路径）。
+  - 使用 **yt-dlp** 下载视频（或仅下载音频以加快下载速度或减小文件大小）。
+  - 运行命令：`vlmrun chat "为该视频添加时间戳，并以清晰易读的格式输出完整字幕。" -i <下载的文件> -o <输出目录>`。
+  - 将 `vlmrun` 的输出结果保存为字幕文件（例如 `transcript.txt`）。
 
 ---
 
-## Installation & Setup
+## 先决条件
 
-From the `youtube-transcription-generator` directory:
+- **Python 3.10 或更高版本**
+- **VLMRUN_API_KEY**（用于 `vlmrun`）
+- **vlmrun CLI**（`vlmrun[cli]`）
+- **yt-dlp**（用于下载 YouTube 视频）
 
-**Windows (PowerShell):**
+> 有关 `vlmrun` 的详细使用方法和示例，请参阅 **vlmrun-cli-skill**。
+
+---
+
+## 安装与配置
+
+在 `youtube-transcription-generator` 目录下：
+
+**Windows（PowerShell）：**
 
 ```powershell
 cd path\to\youtube-transcription-generator
@@ -57,7 +57,7 @@ uv venv
 uv pip install -r requirements.txt
 ```
 
-**macOS/Linux:**
+**macOS/Linux：**
 
 ```bash
 cd path/to/youtube-transcription-generator
@@ -66,26 +66,25 @@ source .venv/bin/activate
 uv pip install -r requirements.txt
 ```
 
-Copy `.env_template` to `.env` and set `VLMRUN_API_KEY`.
+将 `.env_template` 复制到 `.env` 文件中，并设置 `VLMRUN_API_KEY`。
 
 ---
 
-## Quick Start: Transcribe a YouTube Video
+## 快速入门：转录 YouTube 视频
 
-### Option A: Run the script (recommended)
+### 选项 A：运行脚本（推荐）
 
 ```bash
 # From youtube-transcription-generator directory, with venv activated
 python scripts/run_transcription.py "https://www.youtube.com/watch?v=VIDEO_ID" -o ./output
 ```
 
-This will:
+此操作将：
+1. 使用 `yt-dlp` 将视频下载到指定的输出目录。
+2. 运行 `vlmrun` 对视频进行转录。
+3. 将生成的字幕保存为 `output/transcript.txt`（相关文件保存在 `output/` 目录中）。
 
-1. Download the video with yt-dlp into the output directory.
-2. Run vlmrun to transcribe the video.
-3. Save the transcript as `output/transcript.txt` (and keep artifacts in `output/`).
-
-### Option B: Manual vlmrun (after downloading the video yourself)
+### 选项 B：手动下载视频后使用 vlmrun**
 
 ```bash
 # 1) Download with yt-dlp
@@ -95,42 +94,39 @@ yt-dlp -f "bv*[ext=mp4]+ba/best[ext=mp4]/best" -o video.mp4 "https://www.youtube
 vlmrun chat "Transcribe this video with timestamps for each section. Output the full transcript in a clear, readable format." -i video.mp4 -o ./output
 ```
 
-Capture the vlmrun stdout and save it as your transcript, or use `--json` if you need structured output.
+将 `vlmrun` 的输出结果捕获并保存为字幕文件；如果需要结构化输出，可以使用 `--json` 选项。
 
 ---
 
-## Prompt variants for vlmrun
+## `vlmrun` 的命令提示语示例
 
-- **With timestamps:**  
-  `"Transcribe this video with timestamps for each section. Output the full transcript in a clear, readable format."`
+- **包含时间戳：**
+  `"为该视频添加时间戳，并以清晰易读的格式输出完整字幕。"`
 
-- **Plain transcript only:**  
-  `"Transcribe everything said in this video. Output only the spoken text, no timestamps."`
+- **仅生成纯文本字幕：**
+  `"转录视频中的所有内容。仅输出语音文本，不包含时间戳。"
 
-- **Structured (e.g. JSON):**  
-  Use `--json` and ask for a structured format in the prompt (e.g. list of `{ "time": "...", "text": "..." }`).
-
----
-
-## Workflow checklist
-
-- [ ] Confirm `vlmrun` is installed and `VLMRUN_API_KEY` is set (see vlmrun-cli-skill).
-- [ ] Install dependencies: `uv pip install -r requirements.txt` (includes `vlmrun[cli]` and `yt-dlp`).
-- [ ] Run `python scripts/run_transcription.py <youtube_url> -o ./output` or download + vlmrun manually.
-- [ ] Find transcript in the output directory (e.g. `output/transcript.txt`).
+- **结构化输出（例如 JSON 格式）：**
+  使用 `--json` 选项，并指定所需的输出格式（例如：`[{"time": "...", "text": "..."}` 的列表）。
 
 ---
 
-## Troubleshooting
+## 工作流程检查清单
 
-- **vlmrun not found**  
-  Activate the venv and run: `uv pip install "vlmrun[cli]"`. See vlmrun-cli-skill.
+- [ ] 确保已安装 `vlmrun` 并设置了 `VLMRUN_API_KEY`（请参考 vlmrun-cli-skill）。
+- [ ] 安装所需依赖项：`uv pip install -r requirements.txt`（包括 `vlmrun[cli` 和 `yt-dlp`）。
+- [ ] 运行命令：`python scripts/run_transcription.py <youtube_url> -o ./output`，或手动下载视频后使用 `vlmrun`。
+- [ ] 在输出目录（例如 `output/`）中查找字幕文件（例如 `output/transcript.txt`）。
 
-- **Authentication errors**  
-  Verify `VLMRUN_API_KEY` in `.env` or the current shell.
+---
 
-- **yt-dlp fails**  
-  Update yt-dlp: `uv pip install -U yt-dlp`. Check the URL is a valid public YouTube video.
+## 常见问题及解决方法
 
-- **Large or long videos**  
-  Use audio-only download in the script (e.g. `-f bestaudio`) to reduce size and speed up transcription.
+- **找不到 vlmrun**  
+  激活虚拟环境（venv），然后运行：`uv pip install "vlmrun[cli]"`。详情请参阅 vlmrun-cli-skill。
+- **身份验证错误**  
+  确认 `.env` 文件或当前 shell 中的 `VLMRUN_API_KEY` 是否正确。
+- **yt-dlp 下载失败**  
+  更新 `yt-dlp`：`uv pip install -U yt-dlp`。请检查提供的 URL 是否为有效的 YouTube 视频链接。
+- **视频文件过大或过长**  
+  在脚本中选择仅下载音频（例如使用 `-f bestaudio` 选项）以减小文件大小并加快转录速度。

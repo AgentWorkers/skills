@@ -1,21 +1,21 @@
 ---
 slug: "vector-search"
 display_name: "Vector Search"
-description: "Implement semantic vector search for construction data. Build AI-powered search using embeddings and vector databases (Qdrant, ChromaDB) for intelligent querying of specifications, standards, and project documents."
+description: "为建筑数据实现语义向量搜索功能。利用嵌入技术和向量数据库（如 Qdrant、ChromaDB）构建基于人工智能的搜索系统，以实现对规范、标准和项目文档的智能查询。"
 ---
 
-# Vector Search for Construction
+# 建筑领域的向量搜索技术
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 4.4), this skill implements semantic vector search for construction data. Move beyond keyword matching - find documents and data by meaning, not just words.
+本技术基于DDC方法论（第4.4章）实现了对建筑相关数据的语义向量搜索功能。它超越了简单的关键词匹配，能够根据数据的实际含义来查找文档和信息，而不仅仅是基于文字内容。
 
-**Book Reference:** "Современные технологии работы с данными" / "Modern Data Technologies"
+**参考书籍**：《Современные технологии работы с данными》（《现代数据技术》）
 
-> "Векторные базы данных позволяют находить семантически похожие документы, даже если они используют разную терминологию."
-> — DDC Book, Chapter 4.4
+> “向量数据库能够找到在语义上相似的文档，即使这些文档使用了不同的术语。”  
+> — DDC书籍，第4.4章
 
-## Quick Start
+## 快速入门
 
 ```python
 from sentence_transformers import SentenceTransformer
@@ -63,9 +63,9 @@ for result in results:
     print(f"Score: {result.score:.3f} - {result.payload['text']}")
 ```
 
-## Vector Database Setup
+## 向量数据库的设置
 
-### Qdrant Setup
+### Qdrant的设置
 
 ```python
 from qdrant_client import QdrantClient
@@ -166,7 +166,7 @@ class ConstructionVectorDB:
         return semantic_results[:limit]
 ```
 
-### ChromaDB Alternative
+### ChromaDB的替代方案
 
 ```python
 import chromadb
@@ -229,9 +229,9 @@ class ChromaConstructionDB:
         ]
 ```
 
-## Construction-Specific Applications
+## 建筑领域特定的应用
 
-### Specification Search
+### 规范搜索
 
 ```python
 class SpecificationSearchEngine:
@@ -266,7 +266,7 @@ class SpecificationSearchEngine:
         return self.db.search(self.collection, query, limit=limit)
 ```
 
-### Standards and Codes Search
+### 标准和代码搜索
 
 ```python
 class StandardsSearchEngine:
@@ -314,7 +314,7 @@ class StandardsSearchEngine:
         )
 ```
 
-### Work Item Search (OpenConstructionEstimate)
+### 工作项搜索（OpenConstructionEstimate）
 
 ```python
 class WorkItemSearchEngine:
@@ -378,81 +378,9 @@ class WorkItemSearchEngine:
         }
 ```
 
-## RAG for Construction
+## 建筑领域的RAG（Retrieval Augmented Generation，检索增强生成）
 
-### Retrieval Augmented Generation
-
-```python
-from openai import OpenAI
-
-class ConstructionRAG:
-    """RAG system for construction queries"""
-
-    def __init__(self, vector_db: ConstructionVectorDB, openai_client=None):
-        self.db = vector_db
-        self.llm = openai_client or OpenAI()
-
-    def answer_query(self, query, collection, n_context=5):
-        """Answer query using RAG"""
-        # Retrieve relevant context
-        context_docs = self.db.search(collection, query, limit=n_context)
-
-        # Build context string
-        context = "\n\n".join([
-            f"Document {i+1}:\n{doc['text']}"
-            for i, doc in enumerate(context_docs)
-        ])
-
-        # Generate answer
-        prompt = f"""Based on the following construction documents, answer the query.
-
-Context:
-{context}
-
-Query: {query}
-
-Provide a detailed, accurate answer based only on the provided context.
-If the context doesn't contain enough information, say so."""
-
-        response = self.llm.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a construction industry expert."},
-                {"role": "user", "content": prompt}
-            ]
-        )
-
-        return {
-            'answer': response.choices[0].message.content,
-            'sources': context_docs,
-            'query': query
-        }
-
-    def summarize_specifications(self, topic, collection="specifications"):
-        """Summarize specifications on a topic"""
-        docs = self.db.search(collection, topic, limit=10)
-
-        context = "\n".join([doc['text'] for doc in docs])
-
-        prompt = f"""Summarize the following construction specifications related to: {topic}
-
-Specifications:
-{context}
-
-Provide a structured summary with key requirements and recommendations."""
-
-        response = self.llm.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}]
-        )
-
-        return {
-            'summary': response.choices[0].message.content,
-            'source_count': len(docs)
-        }
-```
-
-## Document Indexing Pipeline
+### 文档索引流程
 
 ```python
 import os
@@ -534,16 +462,16 @@ class DocumentIndexingPipeline:
         return total_indexed
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Description | Use Case |
+| 组件 | 描述 | 使用场景 |
 |-----------|-------------|----------|
-| Qdrant | High-performance vector DB | Production deployments |
-| ChromaDB | Simple embedded vector DB | Development/testing |
-| SentenceTransformers | Embedding models | Text to vectors |
-| RAG | Retrieval + Generation | Q&A over documents |
+| Qdrant | 高性能向量数据库 | 生产环境部署 |
+| ChromaDB | 简单的嵌入式向量数据库 | 开发/测试 |
+| SentenceTransformers | 嵌入式模型 | 将文本转换为向量 |
+| RAG | 检索 + 生成 | 基于文档的问答系统 |
 
-## Embedding Models for Construction
+## 建筑领域的嵌入模型
 
 ```python
 # Recommended models by use case
@@ -555,16 +483,16 @@ EMBEDDING_MODELS = {
 }
 ```
 
-## Resources
+## 资源推荐
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 4.4
-- **Website**: https://datadrivenconstruction.io
-- **Qdrant**: https://qdrant.tech
-- **ChromaDB**: https://www.trychroma.com
-- **SentenceTransformers**: https://www.sbert.net
+- **书籍**：Artem Boiko所著的《Data-Driven Construction》，第4.4章
+- **网站**：https://datadrivenconstruction.io
+- **Qdrant**：https://qdrant.tech
+- **ChromaDB**：https://www.trychroma.com
+- **SentenceTransformers**：https://www.sbert.net
 
-## Next Steps
+## 下一步操作
 
-- See `llm-data-automation` for LLM integration
-- See `document-classification-nlp` for document categorization
-- See `rag-construction` for RAG applications
+- 请参阅`llm-data-automation`以了解大语言模型（LLM）的集成方法
+- 请参阅`document-classification-nlp`以了解文档分类技术
+- 请参阅`rag-construction`以了解RAG（检索增强生成）的应用

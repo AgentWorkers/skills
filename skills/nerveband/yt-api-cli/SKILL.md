@@ -1,14 +1,14 @@
 ---
 name: yt-api-cli
-description: Manage your YouTube account from the command line. Complete CLI for YouTube Data API v3 - list/search videos, upload, manage playlists, and more.
+description: 通过命令行管理您的 YouTube 账户。这是一个完整的 YouTube Data API v3 命令行接口（CLI）实现，支持视频列表/搜索、上传、播放列表管理等功能。
 metadata: {"clawdbot":{"emoji":"▶️","os":["darwin","linux"],"requires":{"env":["YT_API_AUTH_TYPE", "YT_API_CLIENT_ID", "YT_API_CLIENT_SECRET"]}}}
 ---
 
 # yt-api-cli
 
-Manage your YouTube account from the terminal. A complete CLI for the YouTube Data API v3.
+这是一个用于通过终端管理您的YouTube账户的命令行工具，它是YouTube Data API v3的完整命令行接口（CLI）。
 
-## Installation
+## 安装
 
 ```bash
 # Using go install
@@ -20,16 +20,16 @@ chmod +x yt-api
 sudo mv yt-api /usr/local/bin/
 ```
 
-## Setup
+## 设置
 
-### 1. Google Cloud Console Setup
+### 1. Google Cloud Console 设置
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create/enable YouTube Data API v3
-3. Create OAuth 2.0 credentials (Desktop app)
-4. Download client configuration
+1. 访问 [Google Cloud Console](https://console.cloud.google.com)
+2. 创建/启用YouTube Data API v3
+3. 创建OAuth 2.0凭据（适用于桌面应用程序）
+4. 下载客户端配置文件
 
-### 2. Configure yt-api
+### 2. 配置 yt-api
 
 ```bash
 mkdir -p ~/.yt-api
@@ -42,16 +42,16 @@ oauth:
 EOF
 ```
 
-### 3. Authenticate
+### 3. 验证身份
 
 ```bash
 yt-api auth login  # Opens browser for Google login
 yt-api auth status # Check auth state
 ```
 
-## Commands
+## 命令
 
-### List Operations
+### 列出操作
 
 ```bash
 # List your videos
@@ -67,7 +67,7 @@ yt-api list playlists --mine
 yt-api list subscriptions --mine
 ```
 
-### Search
+### 搜索
 
 ```bash
 # Basic search
@@ -77,7 +77,7 @@ yt-api search --query "golang tutorial"
 yt-api search --query "music" --type video --duration medium --order viewCount
 ```
 
-### Upload Operations
+### 上传操作
 
 ```bash
 # Upload video
@@ -91,7 +91,7 @@ yt-api upload video ./video.mp4 \
 yt-api upload thumbnail ./thumb.jpg --video-id VIDEO_ID
 ```
 
-### Playlist Management
+### 播放列表管理
 
 ```bash
 # Create playlist
@@ -101,7 +101,7 @@ yt-api insert playlist --title "My Playlist" --privacy private
 yt-api insert playlist-item --playlist-id PLxxx --video-id VIDxxx
 ```
 
-### Channel Operations
+### 频道操作
 
 ```bash
 # Get channel info
@@ -111,7 +111,7 @@ yt-api list channels --id UCxxx --part snippet,statistics
 yt-api update channel --id UCxxx --description "New description"
 ```
 
-## Output Formats
+## 输出格式
 
 ```bash
 # JSON (default - LLM-friendly)
@@ -127,42 +127,42 @@ yt-api list videos --mine -o yaml
 yt-api list videos --mine -o csv > videos.csv
 ```
 
-## Global Flags
+## 全局参数
 
-| Flag | Short | Description |
+| 参数 | 缩写 | 说明 |
 |------|-------|-------------|
-| `--output` | `-o` | Output format: json (default), yaml, csv, table |
-| `--quiet` | `-q` | Suppress stderr messages |
-| `--config` | | Path to config file |
-| `--auth-type` | | Auth method: oauth (default), service-account |
+| `--output` | `-o` | 输出格式：json（默认），yaml，csv，table |
+| `--quiet` | `-q` | 忽略stderr信息 |
+| `--config` | | 配置文件路径 |
+| `--auth-type` | | 认证方式：oauth（默认），service-account |
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 说明 |
 |----------|-------------|
-| `YT_API_AUTH_TYPE` | Auth method: oauth or service-account |
-| `YT_API_OUTPUT` | Default output format |
-| `YT_API_CLIENT_ID` | OAuth client ID |
-| `YT_API_CLIENT_SECRET` | OAuth client secret |
-| `YT_API_CREDENTIALS` | Path to service account JSON |
+| `YT_API_AUTH_TYPE` | 认证方式：oauth或service-account |
+| `YT_API_OUTPUT` | 默认输出格式 |
+| `YT_API_CLIENT_ID` | OAuth客户端ID |
+| `YT_API_CLIENT_SECRET` | OAuth客户端密钥 |
+| `YT_API_CREDENTIALS` | 服务账户JSON文件的路径 |
 
-## Authentication Methods
+## 认证方式
 
-### OAuth 2.0 (Default)
-Best for interactive use and accessing your own YouTube account.
+### OAuth 2.0（默认）
+最适合交互式使用和访问您的个人YouTube账户。
 
 ```bash
 yt-api auth login  # Opens browser
 ```
 
-### Service Account
-Best for server-side automation.
+### 服务账户
+最适合服务器端自动化操作。
 
 ```bash
 yt-api --auth-type service-account --credentials ./key.json list videos
 ```
 
-## Quick Diagnostic Commands
+## 快速诊断命令
 
 ```bash
 yt-api info                      # Full system state
@@ -172,30 +172,30 @@ yt-api auth status               # Authentication details
 yt-api version                   # Version info
 ```
 
-## Error Handling
+## 错误处理
 
-Exit codes:
-- `0` - Success
-- `1` - General error
-- `2` - Authentication error
-- `3` - API error (quota, permissions)
-- `4` - Input error
+退出代码：
+- `0` - 成功
+- `1` - 一般错误
+- `2` - 认证错误
+- `3` - API错误（配额、权限问题）
+- `4` - 输入错误
 
-## For LLMs and Automation
+## 适用于大型语言模型（LLMs）和自动化脚本
 
-- JSON output by default
-- Structured errors as JSON objects
-- `--quiet` mode for parsing
-- `--dry-run` validates without executing
-- Stdin support for piping data
+- 默认输出格式为JSON
+- 错误信息以JSON对象的形式呈现
+- 可使用`--quiet`模式进行解析
+- `--dry-run`模式用于验证操作而不执行实际操作
+- 支持通过标准输入（stdin）传递数据
 
-## Notes
+## 注意事项
 
-- Requires valid Google Cloud credentials with YouTube Data API v3 enabled
-- OAuth tokens stored in `~/.yt-api/tokens.json` (0600 permissions)
-- Default output is JSON (LLM-optimized)
-- Supports all YouTube Data API v3 resources
+- 需要有效的Google Cloud凭据，并且已启用YouTube Data API v3
+- OAuth令牌存储在`~/.yt-api/tokens.json`文件中（权限设置为0600）
+- 默认输出格式为JSON（优化了大型语言模型的处理）
+- 支持YouTube Data API v3的所有资源
 
-## Source
+## 来源
 
 GitHub: https://github.com/nerveband/youtube-api-cli

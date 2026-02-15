@@ -1,476 +1,260 @@
 ---
 name: sponge-wallet
 version: 1.0.0
-description: Manage crypto wallets, transfers, swaps, and balances via the Sponge Wallet API.
+description: 通过 Sponge Wallet API 管理加密钱包、转账、交易以及对账操作。
 homepage: https://wallet.paysponge.com
 user-invocable: true
 metadata: {"openclaw":{"emoji":"\ud83e\uddfd","category":"finance","primaryEnv":"SPONGE_API_KEY","requires":{"env":["SPONGE_API_KEY"]}}}
 ---
 
-```
-SPONGE WALLET API QUICK REFERENCE v1.0.0
-Base:   https://api.wallet.paysponge.com
-Auth:   Authorization: Bearer <SPONGE_API_KEY>
-Docs:   This file is canonical (skills guide + params)
+# Sponge Wallet API - 代理技能指南
 
-Key endpoints:
-  POST /api/agents/register              -> register (no auth)
-  POST /api/oauth/device/authorization   -> device login start (humans)
-  POST /api/oauth/device/token           -> device token poll (agents + humans)
-  GET  /api/balances                     -> get balances (includes Polymarket USDC.e)
-  POST /api/transfers/evm                -> EVM transfer (ETH/USDC)
-  POST /api/transfers/solana             -> Solana transfer (SOL/USDC)
-  POST /api/transactions/swap            -> Solana swap
-  POST /api/transactions/base-swap       -> Base swap (0x)
-  POST /api/transactions/bridge          -> Bridge (deBridge)
-  GET  /api/solana/tokens                -> list SPL tokens
-  GET  /api/solana/tokens/search         -> search Jupiter token list
-  GET  /api/transactions/status/:txHash  -> transaction status
-  GET  /api/transactions/history         -> transaction history
-  POST /api/funding-requests             -> request funding from owner
-  POST /api/wallets/withdraw-to-main     -> withdraw to owner
-  POST /api/x402/fetch                   -> x402 fetch (auto-pay 402s)
-  GET  /api/x402/discover                -> discover x402 services (Bazaar)
-  POST /api/polymarket                   -> Polymarket prediction market trading
-  POST /api/checkout                      -> Amazon checkout (initiate purchase)
-  GET  /api/checkout/:sessionId           -> checkout status
-  DELETE /api/checkout/:sessionId         -> cancel checkout
-  GET  /api/checkout/history              -> checkout history
-  POST /api/checkout/amazon-search        -> search Amazon products
+此技能仅用于文档说明，没有对应的本地命令行界面（CLI）。代理必须直接调用Sponge Wallet的REST API。
 
-Rules: use register (agents), never login | store key in ~/.spongewallet/credentials.json | requests are JSON
-Errors: HTTP status + JSON error message
-```
+## 各步骤的重要性（简要说明）
 
-# Sponge Wallet API - Agent Skills Guide
+- **注册与登录**：代理创建一个新的受管理的钱包，该钱包与一个人类所有者关联。所有者必须明确认领该代理。登录功能仅适用于已有账户的人类用户。
+- **认领链接**：确保人类所有者将代理明确链接到他们的账户，并控制允许列表和资金操作。
+- **凭证持久性**：`apiKey`仅返回一次（在代理优先模式下立即返回，或在标准模式下设备批准后返回）。如果丢失，必须重新注册或重新认证。
 
-This skill is **doc-only**. There is no local CLI. Agents must call the Sponge Wallet REST API directly.
+## 标准凭证存储（必需）
 
-## Why the steps matter (short rationale)
-
-- **Register vs login**: agents create a new managed wallet tied to a human owner. That owner must explicitly claim the agent. Login is only for humans who already have an account.
-- **Claim URL**: ensures the human owner explicitly links the agent to their account and controls allowlists/funding.
-- **Credential persistence**: the `apiKey` is returned once (immediately for agent-first mode, or after device approval for standard mode). If you lose it, you must re-register or re-authenticate.
-
-## Standard credential storage (required)
-
-Store the API key in **one canonical location**:
+将API密钥存储在**一个规范的位置**：
 
 - `~/.spongewallet/credentials.json`
 
-Recommended file contents:
-```json
-{
-  "apiKey": "sponge_live_...",
-  "claimCode": "ABCD-1234",
-  "claimUrl": "https://wallet.paysponge.com/device?code=ABCD-1234"
-}
-```
-
-Optional environment export (runtime convenience):
-```bash
-export SPONGE_API_KEY="$(jq -r .apiKey ~/.spongewallet/credentials.json)"
-```
-
-## Base URL & Auth
-
-- Base URL: `https://api.wallet.paysponge.com`
-- Auth header: `Authorization: Bearer <SPONGE_API_KEY>`
-- Content-Type: `application/json`
-
-Quick env setup:
-
-```bash
-export SPONGE_API_URL="https://api.wallet.paysponge.com"
-export SPONGE_API_KEY="$(jq -r .apiKey ~/.spongewallet/credentials.json)"
-```
-
-## CRITICAL: AI Agents Must Use `register`, NOT `login`
-
-### 1) Agent Registration (AI agents only)
-
-There are two modes:
-- **Standard device flow** (default): human must approve before the API key is returned.
-- **Agent-first** (`agentFirst: true`): agent receives the API key immediately, and the human can claim later.
-
-**Step 1 — Start registration (agent-first recommended)**
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/agents/register" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name":"YourAgentName",
-    "agentFirst": true,
-    "testnet": true
-  }'
-```
-
-Response includes:
-- `verificationUriComplete` (claim URL for the human owner)
-- `claimCode`, `deviceCode`, `expiresIn`, `interval`, `claimText`
-- `apiKey` (returned immediately in agent-first mode)
-
-Store `apiKey`, `claimCode`, and `verificationUriComplete` (as `claimUrl`) in `~/.spongewallet/credentials.json` so a human can claim later if context resets.
-
-**Step 2 — Send the claim URL to the human owner**
-They log in, optionally post the tweet text, and approve the agent.
-
-Claim link format:
-- `verificationUriComplete` (example path: `/device?code=ABCD-1234`)
-- The base URL is the frontend (prod or local), so just pass the full `verificationUriComplete` to the human.
-
-**Step 3 — Poll for completion (standard device flow only)**
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/oauth/device/token" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "grantType":"urn:ietf:params:oauth:grant-type:device_code",
-    "deviceCode":"<deviceCode>",
-    "clientId":"spongewallet-skill"
-  }'
-```
-
-On success, the response includes `apiKey`. Save it to `~/.spongewallet/credentials.json` and use it as `SPONGE_API_KEY`.
-
-Note: In **agent-first mode**, you already have the `apiKey` from Step 1. The device token will remain pending until the human claims.
-
-### 2) Human Login (existing accounts only)
-
-**Phase 1 — Request device code**
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/oauth/device/authorization" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "clientId":"spongewallet-skill",
-    "scope":"wallet:read wallet:write transaction:sign transaction:write"
-  }'
-```
-
-**Phase 2 — Poll for token** (same endpoint as agents)
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/oauth/device/token" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "grantType":"urn:ietf:params:oauth:grant-type:device_code",
-    "deviceCode":"<deviceCode>",
-    "clientId":"spongewallet-skill"
-  }'
-```
-
-## Tool Call Pattern
-
-All tool calls are plain REST requests with JSON payloads.
-
-**Common headers**
-```bash
--H "Authorization: Bearer $SPONGE_API_KEY" \
--H "Content-Type: application/json" \
--H "Accept: application/json"
-```
-
-**Agent ID note:** `agentId` is optional for API key auth. It is only required when using a user session (e.g., Privy-based auth) or when explicitly operating on a different agent.
-
-### Tool -> Endpoint Map
-
-| Tool | Method | Path | Params/Body |
-|------|--------|------|-------------|
-| `get_balance` | GET | `/api/balances` | Query: `chain`, `allowedChains`, `onlyUsdc` |
-| `get_solana_tokens` | GET | `/api/solana/tokens` | Query: `chain` |
-| `search_solana_tokens` | GET | `/api/solana/tokens/search` | Query: `query`, `limit` |
-| `evm_transfer` | POST | `/api/transfers/evm` | Body: `chain`, `to`, `amount`, `currency` |
-| `solana_transfer` | POST | `/api/transfers/solana` | Body: `chain`, `to`, `amount`, `currency` |
-| `solana_swap` | POST | `/api/transactions/swap` | Body: `chain`, `inputToken`, `outputToken`, `amount`, `slippageBps` |
-| `base_swap` | POST | `/api/transactions/base-swap` | Body: `chain`, `inputToken`, `outputToken`, `amount`, `slippageBps` |
-| `bridge` | POST | `/api/transactions/bridge` | Body: `sourceChain`, `destinationChain`, `token`, `amount`, `destinationToken`, `recipientAddress` |
-| `get_transaction_status` | GET | `/api/transactions/status/{txHash}` | Query: `chain` |
-| `get_transaction_history` | GET | `/api/transactions/history` | Query: `limit`, `chain` |
-| `request_funding` | POST | `/api/funding-requests` | Body: `amount`, `reason`, `chain`, `currency` |
-| `withdraw_to_main_wallet` | POST | `/api/wallets/withdraw-to-main` | Body: `chain`, `amount`, `currency` |
-| `x402_fetch` | POST | `/api/x402/fetch` | Body: `url`, `method`, `headers`, `body`, `preferred_chain` |
-| `discover_x402_services` | GET | `/api/x402/discover` | Query: `type`, `limit`, `offset`, `include_catalog` |
-| `polymarket` | POST | `/api/polymarket` | Body: `action`, + action-specific params (see below) |
-| `amazon_checkout` | POST | `/api/checkout` | Body: `checkoutUrl`, `amazonAccountId`, `shippingAddress`, `dryRun`, `clearCart` |
-| `get_checkout_status` | GET | `/api/checkout/{sessionId}` | Query: `agentId` (optional) |
-| `get_checkout_history` | GET | `/api/checkout/history` | Query: `agentId`, `limit`, `offset` |
-| `amazon_search` | POST | `/api/checkout/amazon-search` | Body: `query`, `maxResults`, `region` |
-
-Note: request bodies use camelCase (e.g., `inputToken`, `slippageBps`).
-
-### Polymarket Actions
-
-The `polymarket` endpoint is a unified tool. Pass `action` plus action-specific parameters:
-
-| Action | Description | Required Params | Optional Params |
-|--------|-------------|-----------------|-----------------|
-| `status` | Check Polymarket account status and USDC.e balance | — | — |
-| `markets` | Search prediction markets | — | `query`, `limit` |
-| `positions` | View current market positions | — | — |
-| `orders` | View open and recent orders | — | — |
-| `order` | Place a buy/sell order | `outcome`, `side`, `size`, `price` | `market_slug` or `token_id`, `order_type` |
-| `cancel` | Cancel an open order | `order_id` | — |
-| `set_allowances` | Reset token approvals | — | — |
-| `withdraw` | Withdraw USDC.e from Safe to any address | `to_address`, `amount` | — |
-
-**Order params:**
-- `market_slug`: Market URL slug (e.g., `"will-bitcoin-hit-100k"`) — use this OR `token_id`
-- `token_id`: Polymarket condition token ID — use this OR `market_slug`
-- `outcome`: `"yes"` or `"no"`
-- `side`: `"buy"` or `"sell"`
-- `size`: Number of shares (e.g., `10`)
-- `price`: Probability price 0.0–1.0 (e.g., `0.65` = 65 cents per share)
-- `order_type`: `"GTC"` (default), `"GTD"`, `"FOK"`, `"FAK"`
-
-**Scopes:** Trade actions (`order`, `cancel`, `set_allowances`, `withdraw`) require `polymarket:trade` scope. Read actions (`status`, `markets`, `positions`, `orders`) require `polymarket:read`.
-
-**Auto-provisioning:** The Polymarket Safe wallet is created automatically on first use. No manual setup needed.
-
-### Amazon Checkout
-
-Purchase products from Amazon using a configured Amazon account.
-
-**Prerequisites:**
-- An Amazon account must be configured via the dashboard or `/api/agents/:id/amazon-accounts` endpoints
-- A shipping address must be set (inline or via `/api/agents/:id/shipping-addresses`)
-
-**Async workflow:**
-1. Initiate checkout with `POST /api/checkout` — returns a `sessionId`
-2. Wait ~60 seconds for the initial checkout process
-3. Poll `GET /api/checkout/:sessionId` every 10 seconds until status is `completed` or `failed`
-
-**Status progression:** `pending` → `in_progress` → `completed` | `failed` | `cancelled`
-
-**Key options:**
-- `dryRun: true` — stops before placing the order (useful for testing or previewing total cost)
-- `clearCart: true` — clears the Amazon cart before adding the product (default behavior)
-
-**Scopes:** Checkout actions require `amazon_checkout` scope on the API key.
-
-## Quick Start
-
-### 1) Register (agents only)
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/agents/register" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name":"YourAgentName",
-    "agentFirst": true,
-    "testnet": true
-  }'
-```
-Share the claim URL with your human, then store the `apiKey` immediately (agent-first). For standard device flow, poll for the token after approval.
-
-### 2) Check balance
-```bash
-curl -sS "$SPONGE_API_URL/api/balances?chain=base" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Accept: application/json"
-```
-
-### 3) Transfer USDC on Base
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/transfers/evm" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chain":"base",
-    "to":"0x...",
-    "amount":"10",
-    "currency":"USDC"
-  }'
-```
-
-## Examples
-
-### Swap tokens on Solana
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/transactions/swap" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chain":"solana",
-    "inputToken":"SOL",
-    "outputToken":"BONK",
-    "amount":"0.5",
-    "slippageBps":100
-  }'
-```
-
-### Swap tokens on Base
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/transactions/base-swap" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chain":"base",
-    "inputToken":"ETH",
-    "outputToken":"USDC",
-    "amount":"0.1",
-    "slippageBps":50
-  }'
-```
-
-### Bridge tokens cross-chain
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/transactions/bridge" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sourceChain":"solana",
-    "destinationChain":"base",
-    "token":"SOL",
-    "amount":"0.1",
-    "destinationToken":"ETH"
-  }'
-```
-
-### Check transaction status
-```bash
-curl -sS "$SPONGE_API_URL/api/transactions/status/0xabc123...?chain=base" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Accept: application/json"
-```
-
-### Polymarket — Check status
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/polymarket" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"action":"status"}'
-```
-
-### Polymarket — Search markets
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/polymarket" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"action":"markets","query":"bitcoin","limit":5}'
-```
-
-### Polymarket — Place an order
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/polymarket" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "action":"order",
-    "market_slug":"will-bitcoin-hit-100k",
-    "outcome":"yes",
-    "side":"buy",
-    "size":10,
-    "price":0.65
-  }'
-```
-
-### Polymarket — View positions
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/polymarket" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"action":"positions"}'
-```
-
-### Polymarket — Withdraw USDC.e
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/polymarket" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "action":"withdraw",
-    "to_address":"0x...",
-    "amount":"10.00"
-  }'
-```
-
-### Amazon Checkout — Initiate purchase
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/checkout" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "checkoutUrl":"https://www.amazon.com/dp/B0EXAMPLE",
-    "dryRun":true,
-    "clearCart":true
-  }'
-```
-
-### Amazon Checkout — Poll status
-```bash
-curl -sS "$SPONGE_API_URL/api/checkout/<sessionId>" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Accept: application/json"
-```
-
-### Amazon Checkout — Get history
-```bash
-curl -sS "$SPONGE_API_URL/api/checkout/history?limit=10" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Accept: application/json"
-```
-
-### Amazon — Search products
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/checkout/amazon-search" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"query":"wireless mouse","maxResults":5}'
-```
-
-### x402 Fetch (auto-pay for paid APIs)
-```bash
-curl -sS -X POST "$SPONGE_API_URL/api/x402/fetch" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url":"https://api.paysponge.com/api/services/purchase/svc_abc123/polymarket/markets?search=bitcoin&limit=5",
-    "method":"GET",
-    "preferred_chain":"base"
-  }'
-```
-
-The `x402_fetch` tool handles the entire payment flow automatically:
-1. Makes the HTTP request to the specified URL
-2. If the service returns 402 Payment Required, extracts payment requirements
-3. Creates and signs a USDC payment using the agent's wallet (Base or Solana)
-4. Retries the request with the Payment-Signature header
-5. Returns the final API response with `payment_made` and `payment_details`
-
-### Discover x402 services (Bazaar)
-```bash
-curl -sS "$SPONGE_API_URL/api/x402/discover?limit=10" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Accept: application/json"
-```
-
-Returns available x402-enabled services from the Bazaar and Sponge's curated catalog. Use this to find paid APIs before calling `x402_fetch`.
-
-## Chain Reference
-
-**Test keys** (`sponge_test_*`): `sepolia`, `base-sepolia`, `solana-devnet`, `tempo`
-**Live keys** (`sponge_live_*`): `ethereum`, `base`, `solana`
-
-## Error Responses
-
-Errors return JSON with an error message and HTTP status:
-
-```json
-{"error":"message"}
-```
-
-| Status | Meaning | Common Cause |
-|--------|---------|--------------|
-| 400 | Bad Request | Missing/invalid fields |
-| 401 | Unauthorized | Missing or invalid API key |
-| 403 | Forbidden | Address not in allowlist or permission denied |
-| 404 | Not Found | Resource does not exist |
-| 409 | Conflict | Duplicate action |
-| 429 | Rate Limited | Too many requests (back off + retry) |
-| 500 | Server Error | Transient; retry later |
-
-## Security
-
-- Never share your API key in logs, posts, or screenshots.
-- Store your API key in `~/.spongewallet/credentials.json` and restrict file permissions.
-- Rotate the key if exposure is suspected.
+推荐的文件内容：
 
 ---
 
-Built for agents.
+## 基础URL与身份验证
+
+- 基础URL：`https://apiwallet.paysponge.com`
+- 身份验证头：`Authorization: Bearer <SPONGE_API_KEY>`
+- 内容类型：`application/json`
+
+快速的环境设置：
+
+---
+
+## 重要提示：AI代理必须使用`register`接口，而非`login`接口
+
+### 1) 代理注册（仅限AI代理）
+
+有两种模式：
+- **标准设备流程**（默认）：在返回API密钥之前，必须经过人类用户的批准。
+- **代理优先**（`agentFirst: true`）：代理立即获得API密钥，人类用户可以稍后进行认领。
+
+**步骤1 — 开始注册（推荐使用代理优先模式）**
+---
+
+响应内容包括：
+- `verificationUriComplete`（人类所有者的认领链接）
+- `claimCode`, `deviceCode`, `expiresIn`, `interval`, `claimText`
+- `apiKey`（在代理优先模式下立即返回）
+
+将`apiKey`, `claimCode`, 和 `verificationUriComplete`（作为`claimUrl`）存储在`~/.spongewallet/credentials.json`中，以便在上下文重置时人类用户可以认领。
+
+**步骤2 — 将认领链接发送给人类所有者**
+人类用户登录后，可以选择发布推文内容并批准代理。
+
+认领链接格式：
+- `verificationUriComplete`（示例路径：`/device?code=ABCD-1234`)
+- 基础URL是前端页面（生产环境或本地环境），因此只需将完整的`verificationUriComplete`传递给人类用户。
+
+**步骤3 — 监听完成状态（仅限标准设备流程）**
+---
+
+成功后，响应中会包含`apiKey`。将其保存到`~/.spongewallet/credentials.json`中，并将其用作`SPONGE_API_KEY`。
+
+注意：在**代理优先模式**下，您已经从步骤1中获得了`apiKey`。设备令牌将处于待认领状态，直到人类用户完成认领。
+
+### 2) 人类登录（仅限现有账户）
+
+**步骤1 — 请求设备代码**
+---
+
+**步骤2 — 监听令牌状态**（与代理相同）
+---
+
+## 工具调用模式
+
+所有工具调用都是带有JSON负载的普通REST请求。
+
+**常见请求头**
+---
+
+**关于代理ID的说明：**`agentId`在API密钥认证时是可选的。仅在使用用户会话（例如基于Privy的认证）或明确操作其他代理时才需要。
+
+### 工具 -> 端点映射
+
+| 工具 | 方法 | 路径 | 参数/请求体 |
+|------|--------|------|-------------|
+| `get_balance` | GET | `/api/balances` | 查询参数：`chain`, `allowedChains`, `onlyUsdc` |
+| `get_solana_tokens` | GET | `/api/solana/tokens` | 查询参数：`chain` |
+| `search_solana_tokens` | GET | `/api/solana/tokens/search` | 查询参数：`query`, `limit` |
+| `evm_transfer` | POST | `/api/transfers/evm` | 请求体：`chain`, `to`, `amount`, `currency` |
+| `solana_transfer` | POST | `/api/transfers/solana` | 请求体：`chain`, `to`, `amount`, `currency` |
+| `solana_swap` | POST | `/api/transactions/swap` | 请求体：`chain`, `inputToken`, `outputToken`, `amount`, `slippageBps` |
+| `base_swap` | POST | `/api/transactions/base-swap` | 请求体：`chain`, `inputToken`, `outputToken`, `amount`, `slippageBps` |
+| `bridge` | POST | `/api/transactions/bridge` | 请求体：`sourceChain`, `destinationChain`, `token`, `amount`, `destinationToken`, `recipientAddress` |
+| `get_transaction_status` | GET | `/api/transactions/status/{txHash}` | 查询参数：`chain` |
+| `get_transaction_history` | GET | `/api/transactions/history` | 查询参数：`limit`, `chain` |
+| `request_funding` | POST | `/api/funding-requests` | 请求体：`amount`, `reason`, `chain`, `currency` |
+| `withdraw_to_main_wallet` | POST | `/api/wallets/withdraw-to-main` | 请求体：`chain`, `amount`, `currency` |
+| `x402_fetch` | POST | `/api/x402/fetch` | 请求体：`url`, `method`, `headers`, `body`, `preferred_chain` |
+| `discover_x402_services` | GET | `/api/x402/discover` | 查询参数：`type`, `limit`, `offset`, `include_catalog` |
+| `polymarket` | POST | `/api/polymarket` | 请求体：`action`，以及特定于操作的参数（见下文） |
+| `amazon_checkout` | POST | `/api/checkout` | 请求体：`checkoutUrl`, `amazonAccountId`, `shippingAddress`, `dryRun`, `clearCart` |
+| `get_checkout_status` | GET | `/api/checkout/{sessionId}` | 查询参数：`agentId`（可选） |
+| `get_checkout_history` | GET | `/api/checkout/history` | 查询参数：`agentId`, `limit`, `offset` |
+| `amazon_search` | POST | `/api/checkout/amazon-search` | 请求体：`query`, `maxResults`, `region` |
+
+注意：请求体使用驼峰命名法（例如`inputToken`, `slippageBps`）。
+
+### Polymarket操作
+
+`polymarket`端点是一个统一的工具。需要传递`action`以及特定于操作的参数：
+
+| 操作 | 描述 | 必需参数 | 可选参数 |
+|--------|-------------|-----------------|-----------------|
+| `status` | 检查Polymarket账户状态和USDC.e余额 | — | — |
+| `markets` | 搜索预测市场 | — | `query`, `limit` |
+| `positions` | 查看当前市场头寸 | — | — |
+| `orders` | 查看未成交和最近的订单 | — | — |
+| `order` | 下单买入/卖出 | `outcome`, `side`, `size`, `price` | `market_slug` 或 `token_id`, `order_type` |
+| `cancel` | 取消未成交订单 | `order_id` | — |
+| `set_allowances` | 重置令牌授权 | — | — |
+| `withdraw` | 从Safe钱包中提取USDC.e到任意地址 | `to_address`, `amount` | — |
+
+**订单参数：**
+- `market_slug`：市场URL slug（例如 `"will-bitcoin-hit-100k"`）——可以使用这个参数或`token_id`
+- `token_id`：Polymarket条件令牌ID——可以使用这个参数或`market_slug`
+- `outcome`：`"yes"` 或 `"no"`
+- `side`：`"buy"` 或 `"sell"`
+- `size`：股数（例如 `10`）
+- `price`：概率价格（0.0–1.0，例如 `0.65` 表示每股0.65美分）
+- `order_type`：`"GTC"`（默认），`"GTD"`, `"FOK"`, `"FAK"` |
+
+**权限范围：** 交易操作（`order`, `cancel`, `set_allowances`, `withdraw`）需要`polymarket:trade`权限范围。读取操作（`status`, `markets`, `positions`, `orders`）需要`polymarket:read`权限范围。
+
+**自动配置：** Polymarket Safe钱包会在首次使用时自动创建，无需手动设置。
+
+### Amazon Checkout
+
+使用已配置的Amazon账户购买产品。
+
+**前提条件：**
+- 必须通过仪表板或`/api/agents/:id/amazon-accounts`端点配置Amazon账户。
+- 必须设置送货地址（可以在线设置或通过`/api/agents/:id/shipping-addresses`设置）。
+
+**异步工作流程：**
+1. 使用`POST /api/checkout`启动结账流程——返回一个`sessionId`。
+2. 等待约60秒，直到结账流程完成。
+3. 每10秒检查一次`GET /api/checkout/:sessionId`，直到状态变为`completed`或`failed`。
+
+**状态变化：`pending` → `in_progress` → `completed` | `failed` | `cancelled`
+
+**关键选项：**
+- `dryRun: true` — 在下单前停止流程（适用于测试或预览总费用）
+- `clearCart: true` — 在添加产品前清空Amazon购物车（默认行为）
+
+**权限范围：** 结账操作需要`amazon_checkout`权限范围。
+
+## 快速入门
+
+### 1) 注册（仅限代理）
+---
+
+将认领链接分享给人类用户，然后立即存储`apiKey`（代理优先模式）。对于标准设备流程，在获得批准后检查令牌状态。
+
+### 2) 查看余额
+---
+
+### 3) 在Base钱包中转移USDC
+---
+
+## 示例
+
+### 在Solana上交换代币
+---
+
+### 在Base钱包中交换代币
+---
+
+### 跨链交换代币
+---
+
+### 查看交易状态
+---
+
+### 在Polymarket上检查状态
+---
+
+### 在Polymarket上搜索市场
+---
+
+### 在Polymarket上下单
+---
+
+### 在Polymarket上查看头寸
+---
+
+### 在Polymarket中提取USDC.e
+---
+
+### 使用Amazon Checkout开始购买
+---
+
+### 检查AmazonCheckout的状态
+---
+
+### 获取AmazonCheckout的历史记录
+---
+
+### 在Amazon上搜索产品
+---
+
+### 使用x402 Fetch（自动支付API）
+
+`x402-fetch`工具会自动处理整个支付流程：
+1. 向指定的URL发送HTTP请求。
+2. 如果服务返回402 Payment Required（需要支付），则提取支付要求。
+3. 使用代理的钱包（Base或Solana）创建并签署支付请求。
+4. 重新发送请求，并添加`Payment-Signature`头部。
+5. 返回最终API响应，其中包含`payment_made`和`payment_details`。
+
+### 发现x402服务（Bazaar）
+
+`x402_fetch`工具会从Bazaar和Sponge的精选目录中返回可用的x402支持服务。在调用`x402_fetch`之前，可以使用此功能来查找需要支付的API。
+
+## 链路参考
+
+**测试密钥**（`sponge_test_*`）：`sepolia`, `base-sepolia`, `solana-devnet`, `tempo`
+**生产密钥**（`sponge_live_*`）：`ethereum`, `base`, `solana`
+
+## 错误响应
+
+错误会以JSON格式返回错误信息和HTTP状态码：
+
+---
+
+| 状态码 | 含义 | 常见原因 |
+|--------|---------|--------------|
+| 400 | 请求错误 | 缺少/无效的字段 |
+| 401 | 未经授权 | 缺少或无效的API密钥 |
+| 403 | 禁止访问 | 地址不在允许列表中或权限被拒绝 |
+| 404 | 未找到 | 资源不存在 |
+| 409 | 冲突 | 操作重复 |
+| 429 | 请求过多 | 请稍后重试 |
+| 500 | 服务器错误 | 临时问题；稍后重试 |
+
+## 安全注意事项
+
+- 绝不要在日志、帖子或截图中分享您的API密钥。
+- 将API密钥存储在`~/.spongewallet/credentials.json`中，并限制文件的访问权限。
+- 如果怀疑密钥被泄露，请及时更换密钥。
+
+---
+
+本文档专为代理设计。

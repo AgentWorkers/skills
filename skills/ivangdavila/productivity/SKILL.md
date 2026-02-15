@@ -1,87 +1,94 @@
 ---
 name: Productivity
-description: "Plan, focus, and complete work with energy management, time blocking, and practical boundaries."
+description: "通过能源管理、时间规划（时间块划分）以及实际的工作界限设定，来规划、集中精力并高效地完成工作。"
 ---
 
-## Auto-Adaptive Profile
+## 自适应学习能力
 
-This skill learns how YOU work. Observe constraints, detect patterns, personalize everything.
+这项技能会学习你的工作方式：观察你的行为习惯、识别其中的规律，并据此为你提供个性化的建议。
 
-**Core Loop:**
-1. **Detect** — Identify their situation from questions they ask
-2. **Match** — Load relevant situation file: `situations/{type}.md`
-3. **Adapt** — Adjust advice to their energy, constraints, environment
-4. **Store** — Build profile over time (confirm before storing)
+**核心流程：**
+1. **识别** — 通过你提出的问题来了解你的当前状况。
+2. **匹配** — 加载相应的情境文件：`situations/{type}.md`。
+3. **调整** — 根据你的精力状况、时间限制和环境因素，调整建议内容。
+4. **存储** — 随着时间的推移逐步构建你的个人学习档案（在存储前请再次确认信息的准确性）。
 
 ---
 
-## Situation Detection
+## 情境检测
 
-Match user to their primary context. Load the relevant file.
-
-| Signal | Situation | File |
+根据用户所处的主要工作环境或生活状况，加载相应的情境文件：
+| 信号 | 情境类型 | 对应文件 |
 |--------|-----------|------|
-| Deadlines, exams, procrastination | Student | `situations/student.md` |
-| Calendar chaos, delegation, board | Executive | `situations/executive.md` |
-| No structure, clients, isolation | Freelancer | `situations/freelancer.md` |
-| Kids, interruptions, guilt, exhaustion | Parent | `situations/parent.md` |
-| Creative blocks, irregular inspiration | Creative | `situations/creative.md` |
-| Burnout symptoms, always-on, cynicism | Burnout | `situations/burnout.md` |
-| Solo founder, runway, wearing all hats | Entrepreneur | `situations/entrepreneur.md` |
-| Executive dysfunction, time blindness | ADHD | `situations/adhd.md` |
-| Time zones, async, work bleeding | Remote | `situations/remote.md` |
-| 1:1s, team productivity, context switching | Manager | `situations/manager.md` |
-| Starting strong then fading, streaks | Habits | `situations/habits.md` |
-| Never enough, rest anxiety, hustle damage | Guilt/Recovery | `situations/guilt.md` |
+| 截止日期、考试、拖延症 | 学生 | `situations/student.md` |
+| 日程混乱、需要委派任务、团队协作 | 高管 | `situations/executive.md` |
+| 缺乏工作规划、需要应对客户、感到孤立 | 自由职业者 | `situations/freelancer.md` |
+| 需要照顾孩子、经常被打断、感到内疚、精力耗尽 | 父母 | `situations/parent.md` |
+| 创意灵感匮乏、工作不规律 | 创意工作者 | `situations/creative.md` |
+| 出现职业倦怠症状、长期处于高压状态、对工作持消极态度 | 职业倦怠者 | `situations/burnout.md` |
+| 独立创业、同时承担多种角色 | 创业者 | `situations/entrepreneur.md` |
+| 具有注意力缺陷多动障碍（ADHD），时间管理困难 | ADHD患者 | `situations/adhd.md` |
+| 需要处理时差问题、进行异步工作 | 远程工作者 | `situations/remote.md` |
+| 需要进行一对一沟通、团队协作频繁、需要频繁切换工作场景 | 管理者 | `situations/manager.md` |
+| 开始时表现良好但随后效率下降、工作状态不稳定 | 习惯管理问题 | `situations/habits.md` |
+| 总感觉时间不够用、对休息感到焦虑、过度努力导致身体或心理压力 | 内疚感/恢复期 | `situations/guilt.md` |
 
-Multiple situations can overlap. Address the primary one first.
-
----
-
-## Universal Frameworks
-
-See `frameworks.md` for techniques that apply across situations:
-- Energy management (not just time)
-- "Good enough" thresholds
-- Task initiation protocols
-- Boundary setting scripts
-
-## Common Traps
-
-See `traps.md` — what to AVOID saying/suggesting.
+多种情境可能同时存在，应优先处理最主要的状况。
 
 ---
 
-## Productivity Profile
+## 通用框架
 
-*Build over time. One line per insight. Confirm before storing.*
-
-### Energy Patterns
-<!-- "Peak focus: 9-11am (confirmed)" "Crashes after lunch (observed)" -->
-
-### Constraints
-<!-- "Kids pickup at 3pm (confirmed)" "Open office, no quiet space (stated)" -->
-
-### What Works
-<!-- "Pomodoro helpful (confirmed)" "Body doubling effective (pattern)" -->
-
-### What Doesn't
-<!-- "Morning routines don't stick (confirmed)" "To-do apps abandoned (pattern)" -->
-
-### Current Situation
-<!-- "Freelancer, 3 clients (stated)" "New parent, 4mo old (confirmed)" -->
-
-### Goals
-<!-- "Ship side project (stated)" "Stop working weekends (exploring)" -->
+有关适用于各种情境的技巧，请参阅 `frameworks.md`：
+- 能量管理方法（不仅仅是时间管理）
+- “足够好”的标准
+- 任务启动流程
+- 设定工作边界的技巧
 
 ---
 
-## Entry Format
+## 常见误区
 
-`aspect: insight (level)`
-
-Levels: `stated` → `pattern` (2+ signals) → `confirmed` (validated)
+请参阅 `traps.md`，了解哪些话或建议是应该避免的。
 
 ---
 
-*Empty = nothing learned yet. Every question reveals more about how they actually work.*
+## 生产力档案
+
+*档案内容会随着时间的推移逐步完善。每条信息都基于实际观察得出。在存储前请再次确认其准确性。*
+
+### 能量模式
+- **最佳专注时间：上午9点至11点（已确认）**
+- **午饭后效率下降（观察到的现象）**
+
+### 时间限制
+- **下午3点需要接送孩子（已确认）**
+- **办公室环境嘈杂，没有安静的工作空间（用户自述）**
+
+### 有效的方法
+- **使用番茄工作法效果显著（已确认）**
+- **采用“身体倍增法”（一种时间管理技巧）效果良好**
+
+### 无效的方法
+- **晨间例行事务难以坚持（已确认）**
+- **经常放弃使用待办事项应用程序（观察到的习惯）**
+
+### 当前状况
+- **自由职业者，同时负责3个客户的项目（用户自述）**
+- **新晋父母，孩子4个月大（已确认）**
+
+### 目标
+- **完成副业项目（用户目标）**
+- **考虑周末是否应该继续工作（正在探索中）**
+
+---
+
+## 输入格式
+
+`方面：观察结果（信息准确性）`
+
+信息准确性等级：`用户自述` → `基于观察形成的规律` → `已验证`
+
+---
+
+*如果输入内容为空，说明目前还没有掌握任何关于用户工作方式的规律。每个问题都能帮助我们更深入地了解你的工作习惯。*

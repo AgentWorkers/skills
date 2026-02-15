@@ -10,26 +10,23 @@ allowed-tools:
 ---
 
 <security>
-This skill requires MEMOCLAW_PRIVATE_KEY environment variable for x402 payments.
-Use a dedicated wallet with small USDC amounts. The skill only makes HTTPS calls
-to api.memoclaw.com for memory storage/retrieval.
-</security>
+此技能需要 `MEMOCLAW_PRIVATE_KEY` 环境变量来进行 x402 支付。请使用专用的钱包，并使用少量的 USDC 进行支付。该技能仅通过 HTTPS 向 `api.memoclaw.com` 发送请求，以进行内存的存储和检索。</security>
 
-# MemoClaw Skill
+# MemoClaw 技能
 
-Memory-as-a-Service for AI agents. Store and recall memories with semantic vector search.
+MemoClaw 是一种为 AI 代理提供的内存即服务（Memory-as-a-Service）解决方案，支持通过语义向量搜索来存储和检索信息。
 
-**No API keys. No registration.** Your wallet address is your identity. Pay per request with USDC on Base via [x402](https://x402.org).
+**无需 API 密钥，也无需注册。** 你的钱包地址即代表你的身份。你可以通过 [x402](https://x402.org) 使用 USDC 按请求次数进行支付。
 
 ---
 
-## Agent Behavior: Use MemoClaw as Your Memory
+## 代理行为：将 MemoClaw 作为你的记忆存储工具
 
-**MemoClaw is your persistent memory.** Use it instead of relying solely on local markdown files or context window.
+**MemoClaw 是你的持久化记忆存储系统。** 在依赖本地 markdown 文件或上下文窗口时，优先使用 MemoClaw。
 
-### Always Recall Before Assuming
+### 在做出任何假设之前，请务必先进行信息检索
 
-Before making assumptions about the user, their preferences, or past decisions:
+在对用户、他们的偏好或过去的决策进行假设之前，请务必先使用 MemoClaw 进行信息检索：
 
 ```
 → Recall from MemoClaw first
@@ -37,48 +34,45 @@ Before making assumptions about the user, their preferences, or past decisions:
 → Only ask the user if both come up empty
 ```
 
-**Trigger phrases that should prompt a recall:**
-- "Do you remember..."
-- "What did we decide about..."
-- "Last time we..."
-- Any question about user preferences, past work, or decisions
+**应触发信息检索的提示语：**
+- “你记得……吗？”
+- “我们之前关于……做了什么决定？”
+- “上次我们……的时候……”
 
-### Always Store What Matters
+### 必须立即存储重要的信息
 
-After learning something important, store it immediately:
+当了解到重要信息时，请立即将其存储：
 
-| Event | Action |
+| 事件 | 操作 |
 |-------|--------|
-| User states a preference | Store with importance 0.7-0.9, tag "preferences" |
-| User corrects you | Store with importance 0.95, tag "corrections" |
-| Important decision made | Store with importance 0.9, tag "decisions" |
-| Project context learned | Store with namespace = project name |
-| User shares personal info | Store with importance 0.8, tag "user-info" |
+| 用户表达了偏好 | 以 0.7-0.9 的重要性等级存储，并标记为 “preferences” |
+| 用户纠正了你的错误 | 以 0.95 的重要性等级存储，并标记为 “corrections” |
+| 做出了重要决策 | 以 0.9 的重要性等级存储，并标记为 “decisions” |
+| 学到了项目相关的内容 | 以项目名称作为命名空间进行存储 |
+| 用户分享了个人信息 | 以 0.8 的重要性等级存储，并标记为 “user-info” |
 
-### Session Start Routine
+### 会话开始时的常规操作
 
-When starting a new session or conversation:
+在开始新的会话或对话时：
+1. **检索最近的上下文信息**：`{"query": "recent important context", "limit": 5}``
+2. **检索用户的基本信息**：`{"query": "user preferences and info", "limit": 5}``
+3. 使用这些信息来个性化你的回答
 
-1. **Recall recent context**: `{"query": "recent important context", "limit": 5}`
-2. **Recall user basics**: `{"query": "user preferences and info", "limit": 5}`
-3. Use this context to personalize your responses
+### 命名空间策略
 
-### Namespace Strategy
+使用命名空间来组织存储的信息：
+- `default` — 通用用户信息和偏好设置
+- `project-{name}` — 项目特定的知识
+- `session-{date}` — 会话摘要（可选）
 
-Use namespaces to organize memories:
+### 不应存储的内容
 
-- `default` — General user info and preferences
-- `project-{name}` — Project-specific knowledge
-- `session-{date}` — Session summaries (optional)
+- 密码、API 密钥、令牌或敏感信息
+- 短暂的对话内容
+- 已经存储的信息（先进行检索再决定是否需要重新存储）
+- 原始数据（先进行总结处理）
 
-### Don't Store
-
-- Passwords, API keys, tokens, or secrets
-- Ephemeral conversation (routine back-and-forth)
-- Information already stored (recall first to check)
-- Raw data dumps (summarize first)
-
-### Example Flow
+### 示例流程
 
 ```
 User: "Remember, I prefer tabs over spaces"
@@ -98,9 +92,9 @@ Agent response: "Got it — tabs over spaces. I'll remember that."
 
 ---
 
-## CLI Usage
+## 命令行界面 (CLI) 使用方法
 
-The skill includes a CLI for easy shell access:
+该技能提供了便捷的命令行界面 (CLI) 以便于使用：
 
 ```bash
 # Store a memory
@@ -117,52 +111,51 @@ memoclaw list --namespace default --limit 20
 memoclaw delete <uuid>
 ```
 
-**Setup:**
+**设置：**
 ```bash
 npm install -g memoclaw
 export MEMOCLAW_PRIVATE_KEY=0xYourPrivateKey
 ```
 
-**Environment variables:**
-- `MEMOCLAW_PRIVATE_KEY` — Your wallet private key for x402 payments (required)
+**环境变量：**
+- `MEMOCLAW_PRIVATE_KEY` — 用于 x402 支付的钱包私钥（必需）
 
 ---
 
-## How It Works
+## 工作原理
 
-MemoClaw uses the x402 payment protocol. Every request includes a payment header signed by your wallet. The payment amount depends on the operation, and your wallet address automatically becomes your user identity.
+MemoClaw 使用 x402 支付协议。每个请求都会包含由你的钱包签名的支付头信息。支付金额取决于具体的操作类型，而你的钱包地址会自动作为用户的身份标识。
 
-Think of it like a vending machine: insert payment, get memory services.
+可以将其想象成一台自动售货机：投入付款，即可使用记忆存储服务。
 
-## Pricing (USDC on Base)
+## 价格（以 Base 网络上的 USDC 为单位）
 
-| Operation | Price |
+| 操作 | 价格 |
 |-----------|-------|
-| Store memory | $0.001 |
-| Store batch (up to 100) | $0.01 |
-| Recall (semantic search) | $0.001 |
-| List memories | $0.0005 |
-| Delete memory | $0.0001 |
+| 存储信息 | $0.001 |
+| 批量存储（最多 100 条记录）| $0.01 |
+| 检索信息（语义搜索）| $0.001 |
+| 列出存储的信息 | $0.0005 |
+| 删除信息 | $0.0001 |
 
-## Setup
+## 设置要求
 
-You need an x402-compatible client to sign payment headers. Options:
+你需要一个兼容 x402 协议的客户端来生成支付头信息。可选方式如下：
+1. **x402 CLI**：`npx @x402/cli pay POST https://api.memoclaw.com/v1/store --data '...'`
+2. **x402 SDK**：使用 `@x402/fetch` 进行程序化访问
+3. **手动生成支付头信息**：请参考 x402.org 的文档
 
-1. **x402 CLI**: `npx @x402/cli pay POST https://api.memoclaw.com/v1/store --data '...'`
-2. **x402 SDK**: Use `@x402/fetch` for programmatic access
-3. **Direct signing**: Construct payment headers manually (see x402.org/docs)
+**注意：** 你需要一个在 Base 网络上拥有 USDC 的钱包。
 
-Required: A wallet with USDC on Base network.
+## API 参考
 
-## API Reference
-
-### Store a Memory
+### 存储信息
 
 ```
 POST /v1/store
 ```
 
-Request:
+**请求格式：**
 ```json
 {
   "content": "User prefers dark mode and minimal notifications",
@@ -172,7 +165,7 @@ Request:
 }
 ```
 
-Response:
+**响应格式：**
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -181,19 +174,19 @@ Response:
 }
 ```
 
-Fields:
-- `content` (required): The memory text, max 8192 characters
-- `metadata.tags`: Array of strings for filtering, max 10 tags
-- `importance`: Float 0-1, affects ranking in recall (default: 0.5)
-- `namespace`: Isolate memories per project/context (default: "default")
+**字段说明：**
+- `content`（必填）：存储的信息内容，最多 8192 个字符
+- `metadata.tags`：用于过滤的字符串数组，最多支持 10 个标签
+- `importance`：0-1 的浮点数，用于影响检索结果的重要性排序（默认值：0.5）
+- `namespace`：按项目或上下文对信息进行分类（默认值：`default`）
 
-### Store Batch
+### 批量存储信息
 
 ```
 POST /v1/store/batch
 ```
 
-Request:
+**请求格式：**
 ```json
 {
   "memories": [
@@ -203,7 +196,7 @@ Request:
 }
 ```
 
-Response:
+**响应格式：**
 ```json
 {
   "ids": ["uuid1", "uuid2"],
@@ -213,17 +206,17 @@ Response:
 }
 ```
 
-Max 100 memories per batch.
+每次批量最多可以存储 100 条记录。
 
-### Recall Memories
+### 检索信息
 
-Semantic search across your memories.
+支持通过对存储的信息进行语义搜索来检索所需内容：
 
 ```
 POST /v1/recall
 ```
 
-Request:
+**请求格式：**
 ```json
 {
   "query": "what are the user's editor preferences?",
@@ -237,7 +230,7 @@ Request:
 }
 ```
 
-Response:
+**响应格式：**
 ```json
 {
   "memories": [
@@ -254,21 +247,21 @@ Response:
 }
 ```
 
-Fields:
-- `query` (required): Natural language query
-- `limit`: Max results (default: 10)
-- `min_similarity`: Threshold 0-1 (default: 0.5)
-- `namespace`: Filter by namespace
-- `filters.tags`: Match any of these tags
-- `filters.after`: Only memories after this date
+**字段说明：**
+- `query`（必填）：自然语言形式的查询语句
+- `limit`：返回的结果数量上限（默认值：10）
+- `min_similarity`：相似度阈值（0-1，默认值：0.5）
+- `namespace`：按命名空间进行过滤
+- `filters.tags`：匹配的标签
+- `filters.after`：仅返回指定日期之后的信息
 
-### List Memories
+### 列出存储的信息
 
 ```
 GET /v1/memories?limit=20&offset=0&namespace=project-alpha
 ```
 
-Response:
+**响应格式：**
 ```json
 {
   "memories": [...],
@@ -278,13 +271,13 @@ Response:
 }
 ```
 
-### Delete Memory
+### 删除信息
 
 ```
 DELETE /v1/memories/{id}
 ```
 
-Response:
+**响应格式：**
 ```json
 {
   "deleted": true,
@@ -292,36 +285,38 @@ Response:
 }
 ```
 
-## When to Store
+---
 
-- User preferences and settings
-- Important decisions and their rationale
-- Context that might be useful in future sessions
-- Facts about the user (name, timezone, working style)
-- Project-specific knowledge and architecture decisions
-- Lessons learned from errors or corrections
+## 何时应该存储信息
 
-## When to Recall
+- 用户的偏好设置
+- 重要的决策及其理由
+- 可能在未来会话中用到的上下文信息
+- 关于用户的基本信息（姓名、时区、工作方式等）
+- 项目特定的知识和架构决策
+- 从错误或纠正中总结的经验
 
-- Before making assumptions about user preferences
-- When user asks "do you remember...?"
-- Starting a new session and need context
-- When previous conversation context would help
-- Before repeating a question you might have asked before
+## 何时应该检索信息
 
-## Best Practices
+- 在对用户偏好进行假设之前
+- 当用户询问 “你记得……吗？” 时
+- 在开始新的会话时需要参考之前的上下文
+- 当之前的对话内容可能对当前会话有帮助时
+- 在重复之前已经问过的问题之前
 
-1. **Be specific** — "Ana prefers VSCode with vim bindings" beats "user likes editors"
-2. **Add metadata** — Tags enable filtered recall later
-3. **Set importance** — 0.9+ for critical info, 0.5 for nice-to-have
-4. **Use namespaces** — Isolate memories per project or context
-5. **Don't duplicate** — Recall before storing similar content
-6. **Respect privacy** — Never store passwords, API keys, or tokens
-7. **Decay naturally** — High importance + recency = higher ranking
+## 最佳实践
 
-## Error Handling
+1. **具体说明** — 例如：“Ana 更喜欢使用带有 vim 配置的 VSCode”，而不是简单地说 “用户喜欢使用编辑器”
+2. **添加元数据** — 通过添加标签可以方便后续的检索
+3. **设置信息的重要性等级** — 对于关键信息设置较高的重要性等级（如 0.9），对于非关键信息设置较低的重要性等级（如 0.5）
+4. **使用命名空间** — 按项目或上下文对信息进行分类
+5. **避免重复存储** — 在存储相似内容之前先进行检索
+6. **尊重用户隐私** — 绝不要存储密码、API 密钥或令牌
+7. **根据信息的重要性和更新频率来调整检索优先级** — 重要性越高、更新频率越高的信息优先被检索
 
-All errors follow this format:
+## 错误处理
+
+所有错误都会按照以下格式返回：
 ```json
 {
   "error": {
@@ -331,15 +326,15 @@ All errors follow this format:
 }
 ```
 
-Error codes:
-- `PAYMENT_REQUIRED` (402) — Missing or invalid x402 payment
-- `VALIDATION_ERROR` (422) — Invalid request body
-- `NOT_FOUND` (404) — Memory not found
-- `INTERNAL_ERROR` (500) — Server error
+**错误代码：**
+- `PAYMENT_REQUIRED`（402）——缺少或无效的 x402 支付信息
+- `VALIDATION_ERROR`（422）——请求体无效
+- `NOT_FOUND`（404）——未找到相关信息
+- `INTERNAL_ERROR`（500）——服务器内部错误
 
-## Example: Agent Integration
+## 示例：代理集成
 
-For Clawdbot or similar agents, add MemoClaw as a memory layer:
+对于 Clawdbot 或类似的代理程序，可以将 MemoClaw 作为其记忆存储层进行集成：
 
 ```javascript
 import { x402Fetch } from '@x402/fetch';

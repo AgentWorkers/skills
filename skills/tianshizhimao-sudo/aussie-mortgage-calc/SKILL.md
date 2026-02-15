@@ -1,16 +1,16 @@
 ---
 name: aussie-mortgage-calc
-description: Australian mortgage calculator — LVR, stamp duty, LMI, repayments, and First Home Buyer concessions by state.
+description: 澳大利亚抵押贷款计算器——按州划分的贷款价值比（LVR）、印花税、贷款信息（LMI）、还款金额以及首次购房者优惠政策。
 homepage: https://oneyco.com.au
 ---
 
-# Australian Mortgage Calculator
+# 澳大利亚抵押贷款计算器
 
-Comprehensive mortgage calculations for Australian property buyers. All amounts in AUD.
+为澳大利亚购房者提供全面的抵押贷款计算服务。所有金额均以澳元（AUD）为单位。
 
-## Quick Calculations
+## 快速计算
 
-### LVR (Loan to Value Ratio)
+### 贷款价值比（LVR）
 ```
 LVR = (Loan Amount / Property Value) × 100
 
@@ -20,7 +20,7 @@ Example:
 - LVR: 80%
 ```
 
-### Monthly Repayment (P&I)
+### 每月还款额（本金+利息）
 ```
 M = P × [r(1+r)^n] / [(1+r)^n – 1]
 
@@ -35,7 +35,7 @@ Example: $500,000 loan at 6.5% over 30 years
 - Monthly repayment: $3,160
 ```
 
-### Interest Only Repayment
+### 仅支付利息的还款额
 ```
 Monthly IO = Principal × (Annual Rate / 12)
 
@@ -45,137 +45,136 @@ Example: $500,000 at 6.5%
 
 ---
 
-## Stamp Duty by State (2024-25)
+## 各州的印花税（2024-25年度）
 
-### NSW (New South Wales)
-| Property Value | Duty Rate |
+### 新南威尔士州（New South Wales, NSW）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
 | $0 – $16,000 | 1.25% |
-| $16,001 – $35,000 | $200 + 1.50% of excess |
-| $35,001 – $93,000 | $485 + 1.75% of excess |
-| $93,001 – $351,000 | $1,500 + 3.50% of excess |
-| $351,001 – $1,168,000 | $10,530 + 4.50% of excess |
-| Over $1,168,000 | $47,295 + 5.50% of excess |
+| $16,001 – $35,000 | $200 + 超过部分的1.50% |
+| $35,001 – $93,000 | $485 + 超过部分的1.75% |
+| $93,001 – $351,000 | $1,500 + 超过部分的3.50% |
+| $351,001 – $1,168,000 | $10,530 + 超过部分的4.50% |
+| 超过 $1,168,000 | $47,295 + 超过部分的5.50% |
 
-**First Home Buyer**: Full exemption up to $800,000; concession $800,001-$1,000,000
+**首次购房者**：房产价值在$800,000及以下可完全免征印花税；房产价值在$800,001-$1,000,000之间可享受减免。
 
-### VIC (Victoria)
-| Property Value | Duty Rate |
+### 维多利亚州（Victoria, VIC）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
 | $0 – $25,000 | 1.4% |
-| $25,001 – $130,000 | $350 + 2.4% of excess |
-| $130,001 – $960,000 | $2,870 + 6.0% of excess |
-| Over $960,000 | 5.5% flat |
+| $25,001 – $130,000 | $350 + 超过部分的2.4% |
+| $130,001 – $960,000 | $2,870 + 超过部分的6.0% |
+| 超过 $960,000 | 5.5% |
 
-**First Home Buyer**: Full exemption up to $600,000; concession $600,001-$750,000
+**首次购房者**：房产价值在$600,000及以下可完全免征印花税；房产价值在$600,001-$750,000之间可享受减免。
 
-### QLD (Queensland)
-| Property Value | Duty Rate |
+### 昆士兰州（Queensland, QLD）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
-| $0 – $350,000 | 1.0% (min $0) |
-| $350,001 – $540,000 | $3,500 + 3.5% of excess |
-| $540,001 – $1,000,000 | $10,150 + 4.5% of excess |
-| Over $1,000,000 | $30,850 + 5.75% of excess |
+| $0 – $350,000 | 1.0% |
+| $350,001 – $540,000 | $3,500 + 超过部分的3.5% |
+| $540,001 – $1,000,000 | $10,150 + 超过部分的4.5% |
+| 超过 $1,000,000 | $30,850 + 超过部分的5.75% |
 
-**First Home Buyer**: Full exemption up to $700,000 (for new homes); concession for established
+**首次购房者**：新购房可完全免征印花税；已购房产可享受减免。
 
-### WA (Western Australia)
-| Property Value | Duty Rate |
+### 西澳大利亚州（Western Australia, WA）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
 | $0 – $120,000 | 1.9% |
-| $120,001 – $150,000 | $2,280 + 2.85% of excess |
-| $150,001 – $360,000 | $3,135 + 3.80% of excess |
-| $360,001 – $725,000 | $11,115 + 4.75% of excess |
-| Over $725,000 | $28,453 + 5.15% of excess |
+| $120,001 – $150,000 | $2,280 + 超过部分的2.85% |
+| $150,001 – $360,000 | $3,135 + 超过部分的3.80% |
+| $360,001 – $725,000 | $11,115 + 超过部分的4.75% |
+| 超过 $725,000 | $28,453 + 超过部分的5.15% |
 
-**First Home Buyer**: Full exemption up to $430,000; concession $430,001-$530,000
+**首次购房者**：房产价值在$430,000及以下可完全免征印花税；房产价值在$430,001-$530,000之间可享受减免。
 
-### SA (South Australia)
-| Property Value | Duty Rate |
+### 南澳大利亚州（South Australia, SA）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
 | $0 – $12,000 | 1.0% |
-| $12,001 – $30,000 | $120 + 2.0% of excess |
-| $30,001 – $50,000 | $480 + 3.0% of excess |
-| $50,001 – $100,000 | $1,080 + 3.5% of excess |
-| $100,001 – $200,000 | $2,830 + 4.0% of excess |
-| $200,001 – $250,000 | $6,830 + 4.25% of excess |
-| $250,001 – $300,000 | $8,955 + 4.75% of excess |
-| $300,001 – $500,000 | $11,330 + 5.0% of excess |
-| Over $500,000 | $21,330 + 5.5% of excess |
+| $12,001 – $30,000 | $120 + 超过部分的2.0% |
+| $30,001 – $50,000 | $480 + 超过部分的3.0% |
+| $50,001 – $100,000 | $1,080 + 超过部分的3.5% |
+| $100,001 – $200,000 | $2,830 + 超过部分的4.0% |
+| $200,001 – $250,000 | $6,830 + 超过部分的4.25% |
+| $250,001 – $300,000 | $8,955 + 超过部分的4.75% |
+| $300,001 – $500,000 | $11,330 + 超过部分的5.0% |
+| 超过 $500,000 | $21,330 + 超过部分的5.5% |
 
-**First Home Buyer**: No stamp duty for properties up to $650,000 (eligible buyers)
+**首次购房者**：房产价值在$650,000及以下可完全免征印花税（符合条件者）。
 
-### TAS (Tasmania)
-| Property Value | Duty Rate |
+### 塔斯马尼亚州（Tasmania, TAS）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
 | $0 – $3,000 | $50 |
-| $3,001 – $25,000 | $50 + 1.75% of excess |
-| $25,001 – $75,000 | $435 + 2.25% of excess |
-| $75,001 – $200,000 | $1,560 + 3.50% of excess |
-| $200,001 – $375,000 | $5,935 + 4.00% of excess |
-| $375,001 – $725,000 | $12,935 + 4.25% of excess |
-| Over $725,000 | $27,810 + 4.50% of excess |
+| $3,001 – $25,000 | $50 + 超过部分的1.75% |
+| $25,001 – $75,000 | $435 + 超过部分的2.25% |
+| $75,001 – $200,000 | $1,560 + 超过部分的3.50% |
+| $200,001 – $375,000 | $5,935 + 超过部分的4.00% |
+| $375,001 – $725,000 | $12,935 + 超过部分的4.25% |
+| 超过 $725,000 | $27,810 + 超过部分的4.50% |
 
-**First Home Buyer**: 50% duty discount for properties up to $600,000
+**首次购房者**：房产价值在$600,000及以下可享受50%的印花税减免。
 
-### NT (Northern Territory)
-| Property Value | Duty Rate |
+### 北领地（Northern Territory, NT）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
-| $0 – $525,000 | V = 0.06571441 × V^2 ÷ 1000 |
-| Over $525,000 | 5.45% flat minus $4,823.45 |
+| $0 – $525,000 | 印花税 = 0.06571441 × 房产价值^2 ÷ 1000 |
+| 超过 $525,000 | 固定税率5.45%，但最高减免$4,823.45 |
 
-**First Home Buyer**: Up to $18,601 discount for properties under $650,000
+**首次购房者**：房产价值在$650,000及以下可享受最高$18,601的减免。
 
-### ACT (Australian Capital Territory)
-| Property Value | Duty Rate |
+### 澳大利亚首都领地（Australian Capital Territory, ACT）
+| 房产价值 | 印花税率 |
 |----------------|-----------|
-| $0 – $260,000 | $0.60 per $100 or part |
-| $260,001 – $300,000 | $1,560 + $2.20 per $100 |
-| $300,001 – $500,000 | $2,440 + $3.40 per $100 |
-| $500,001 – $750,000 | $9,240 + $4.32 per $100 |
-| $750,001 – $1,000,000 | $20,040 + $5.90 per $100 |
-| $1,000,001 – $1,455,000 | $34,790 + $6.40 per $100 |
-| Over $1,455,000 | $63,910 + $4.54 per $100 |
+| $0 – $260,000 | 每$100房产价值征收$0.60 |
+| $260,001 – $300,000 | 每$100房产价值征收$1,560 + $2.20 |
+| $300,001 – $500,000 | 每$100房产价值征收$2,440 + $3.40 |
+| $500,001 – $750,000 | 每$100房产价值征收$9,240 + $4.32 |
+| $750,001 – $1,000,000 | 每$100房产价值征收$20,040 + $5.90 |
+| $1,000,001 – $1,455,000 | 每$100房产价值征收$34,790 + $6.40 |
+| 超过 $1,455,000 | 每$100房产价值征收$63,910 + $4.54 |
 
-**First Home Buyer**: Full exemption up to $1,000,000 (income-tested)
+**首次购房者**：房产价值在$1,000,000及以下可完全免征印花税（需符合收入条件）。
 
 ---
 
-## LMI (Lenders Mortgage Insurance)
+## 贷款人抵押贷款保险（LMI）
 
-LMI is required when LVR > 80%. Estimated rates:
+当贷款价值比（LVR）超过80%时，需要购买LMI。预计费用如下：
 
-| LVR | LMI as % of Loan |
+| LVR | LMI占贷款金额的比例 |
 |-----|------------------|
 | 80.01% – 85% | 0.5% – 1.0% |
 | 85.01% – 90% | 1.5% – 2.5% |
 | 90.01% – 95% | 3.0% – 4.5% |
 
-**Example**: $600,000 loan at 90% LVR
-- LMI estimate: ~$12,000 – $15,000 (can be added to loan)
+**示例**：贷款金额为$600,000，LVR为90%时，LMI费用约为$12,000 – $15,000（需计入贷款总额）。
 
-> Note: Actual LMI varies by lender, LVR tier, loan amount, and borrower profile. Use lender calculators for exact quotes.
+> 注意：实际LMI费用因贷款机构、LVR等级、贷款金额和借款人情况而异。请咨询贷款机构以获取准确报价。
 
 ---
 
-## First Home Owner Grant (FHOG)
+## 首次购房者补助金（First Home Owner Grant, FHOG）
 
-| State | Grant Amount | Property Cap |
+| 州 | 补助金额 | 房产价值上限 |
 |-------|--------------|--------------|
-| NSW | $10,000 | $600,000 (new homes only) |
-| VIC | $10,000 | $750,000 (regional: higher) |
-| QLD | $30,000 | $750,000 (new homes only) |
-| WA | $10,000 | $750,000 (new homes) |
-| SA | $15,000 | $650,000 (new homes only) |
-| TAS | $30,000 | $600,000 (new homes only) |
-| NT | $10,000 | No cap (new homes) |
-| ACT | Abolished | — |
+| NSW | $10,000 | 仅限新购房 |
+| VIC | $10,000 | （地区不同，金额可能更高） |
+| QLD | $30,000 | 仅限新购房 |
+| WA | $10,000 | 仅限新购房 |
+| SA | $15,000 | 仅限新购房 |
+| TAS | $30,000 | 仅限新购房 |
+| NT | $10,000 | 无上限（仅限新购房） |
+| ACT | 已取消该补助金 | — |
 
 ---
 
-## Borrowing Power (Quick Estimate)
+## 借款能力（快速估算）
 
-Basic rule of thumb:
+基本估算方法：
 ```
 Max Borrowing ≈ (Annual Income × 6) – Existing Debts
 
@@ -183,30 +182,30 @@ More conservative:
 Max Borrowing ≈ (Annual Income × 5) – Existing Debts
 ```
 
-Factors affecting actual borrowing power:
-- Income type (PAYG vs self-employed)
-- Existing debts (credit cards, HECS, car loans)
-- Living expenses (HEM benchmark)
-- Interest rate buffer (usually +3%)
-- Dependents
+影响实际借款能力的因素：
+- 收入类型（工资收入者 vs 自雇人士）
+- 现有债务（信用卡、高等教育贷款、汽车贷款）
+- 生活开支
+- 利率缓冲（通常为+3%）
+- 依赖人数
 
 ---
 
-## Key Contacts
+## 主要联系方式
 
-- **Revenue NSW**: revenue.nsw.gov.au
-- **State Revenue Victoria**: sro.vic.gov.au
-- **Queensland Treasury**: qld.gov.au/housing
-- **WA RevenueWA**: wa.gov.au/revenuelicensing
-- **RevenueSA**: revenuesa.sa.gov.au
-- **Tasmania State Revenue**: treasury.tas.gov.au
-- **NT Treasury**: treasury.nt.gov.au
-- **ACT Revenue**: revenue.act.gov.au
+- **新南威尔士州税务局**：revenue.nsw.gov.au
+- **维多利亚州税务局**：sro.vic.gov.au
+- **昆士兰州财政部**：qld.gov.au/housing
+- **西澳大利亚州税务局**：wa.gov.au/revenuelicensing
+- **南澳大利亚州税务局**：revenuesa.sa.gov.au
+- **塔斯马尼亚州税务局**：treasury.tas.gov.au
+- **北领地财政部**：treasury.nt.gov.au
+- **澳大利亚首都领地税务局**：revenue.act.gov.au
 
 ---
 
-## Disclaimer
+## 免责声明
 
-This skill provides estimates for educational purposes only. Stamp duty rates, concessions, and grants change periodically. Always verify with official state revenue offices and consult a qualified mortgage broker or financial advisor before making property decisions.
+本工具提供的信息仅供参考。印花税率、减免政策和补助金可能会随时调整。在做出购房决策前，请务必咨询官方税务机构及合格的抵押贷款经纪人或财务顾问。
 
-**Built by [Oney & Co](https://oneyco.com.au)** — Helping Australians navigate lending with clarity.
+**由[Oney & Co](https://oneyco.com.au)开发** — 帮助澳大利亚人更清晰地了解贷款相关事宜。

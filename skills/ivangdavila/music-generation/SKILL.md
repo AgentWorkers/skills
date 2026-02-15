@@ -1,110 +1,111 @@
 ---
 name: Music Generation
-description: Generate AI music with optimized prompts, style control, and production-ready audio output.
+description: 使用优化的提示语句生成人工智能音乐，支持风格控制，并提供可直接用于制作的音频输出。
 metadata: {"clawdbot":{"emoji":"🎵","os":["linux","darwin","win32"]}}
 ---
 
-# AI Music Generation
+# 人工智能音乐生成
 
-Help users create AI-generated music and audio.
+帮助用户创建由人工智能生成的音乐和音频。
 
-**Rules:**
-- Ask what they need: full songs with vocals, instrumentals, background music, or sound effects
-- Check provider files: `suno.md`, `udio.md`, `stable-audio.md`, `musicgen.md`, `mubert.md`, `soundraw.md`, `riffusion.md`, `replicate.md`
-- Check `prompting.md` for music prompt techniques
-- Start with short clips to validate style before full generation
+**使用规则：**
+- 询问用户的需求：包含人声的完整歌曲、纯音乐、背景音乐或音效。
+- 查看相关提供商的文档：`suno.md`, `udio.md`, `stable-audio.md`, `musicgen.md`, `mubert.md`, `soundraw.md`, `riffusion.md`, `replicate.md`
+- 参考 `prompting.md` 以了解音乐提示技巧。
+- 在生成完整音乐之前，可以先使用短片段来验证风格是否合适。
 
 ---
 
-## Provider Selection
+## 提供商选择
 
-| Use Case | Recommended |
+| 使用场景 | 推荐提供商 |
 |----------|-------------|
-| Full songs with vocals | Suno, Udio |
-| Instrumentals, background | Stable Audio, MusicGen, Mubert |
-| Royalty-free commercial | Soundraw, Mubert |
-| Classical/orchestral | AIVA, Stable Audio |
-| Sound effects | Stable Audio, ElevenLabs |
-| Local/private | MusicGen, Stable Audio Open |
-| Quick testing | Replicate, Riffusion |
+| 包含人声的完整歌曲 | Suno, Udio |
+| 纯音乐、背景音乐 | Stable Audio, MusicGen, Mubert |
+| 免版税的商业音乐 | Soundraw, Mubert |
+| 古典/管弦乐 | AIVA, Stable Audio |
+| 音效 | Stable Audio, ElevenLabs |
+| 本地/私有用途 | MusicGen, Stable Audio Open |
+| 快速测试 | Replicate, Riffusion |
 
 ---
 
-## Prompting Fundamentals
+## 音乐提示基础
 
-- **Genre first** — "electronic", "jazz", "hip-hop", "orchestral"
-- **Mood/energy** — "upbeat", "melancholic", "aggressive", "calm"
-- **Instruments** — "piano", "guitar", "synth", "strings"
-- **Tempo** — "120 BPM", "slow", "fast-paced"
-- **Reference artists** — "in the style of Hans Zimmer" (where supported)
-
----
-
-## Output Formats
-
-- **WAV** — Uncompressed, highest quality, large files
-- **MP3** — Compressed, universal compatibility
-- **FLAC** — Lossless compression, good for archival
-- **Stems** — Separate tracks (drums, bass, vocals) when available
+- **首先确定音乐类型** — 例如 “电子乐”、“爵士乐”、“嘻哈乐”、“管弦乐”
+- **描述音乐的情绪/氛围** — 例如 “欢快”、“忧郁”、“激昂”、“平静”
+- **指定使用的乐器** — 例如 “钢琴”、“吉他”、“合成器”、“弦乐器”
+- **设置节奏** — 例如 “120 BPM”、“慢速”、“快节奏”
+- **提供参考的艺术家** — 例如 “汉斯·齐默（Hans Zimmer）的风格”（如果该提供商支持）
 
 ---
 
-## Common Workflows
+## 输出格式
 
-### Background Music for Video
-1. Determine video length and mood
-2. Generate instrumental at matching duration
-3. Adjust tempo to match cuts if needed
-4. Mix levels appropriately
-
-### Full Song Production
-1. Write or generate lyrics
-2. Describe musical style in detail
-3. Generate multiple variations
-4. Select best, extend or edit
-5. Export stems if available for mixing
-
-### Sound Design
-1. Describe sound effect clearly
-2. Specify duration needed
-3. Generate variations
-4. Layer and process as needed
+- **WAV** — 未压缩格式，音质最高，文件体积较大
+- **MP3** — 压缩格式，通用性较好
+- **FLAC** — 无损压缩格式，适合长期保存
+- **分离音轨** — 如果可能，生成 drums、bass、vocals 等独立音轨
 
 ---
 
-## Licensing Considerations
+## 常见工作流程
 
-| Provider | Personal Use | Commercial Use |
+### 为视频制作背景音乐
+1. 确定视频的长度和氛围
+2. 生成相应时长的纯音乐
+3. 如有需要，调整音乐的节奏以匹配视频剪辑
+4. 适当调整各音轨的音量
+
+### 完整歌曲的制作流程
+1. 编写或生成歌词
+2. 详细描述音乐风格
+3. 生成多个版本的音频
+4. 选择最佳版本，进行扩展或编辑
+5. 如果可能，导出单独的音轨以供后期混音使用
+
+### 音效设计
+1. 清晰描述所需的音效
+2. 指定音效的时长
+3. 生成多个版本的音效
+4. 根据需求进行叠加和处理
+
+---
+
+## 许可证注意事项
+
+| 提供商 | 个人使用 | 商业使用 |
 |----------|--------------|----------------|
-| Suno | ✅ Free tier | Pro plan required |
-| Udio | ✅ Free tier | Subscription required |
-| Stable Audio | ✅ | License required |
-| MusicGen | ✅ | Research license |
-| Mubert | ✅ | API license |
-| Soundraw | ✅ | Subscription |
+| Suno | ✅ 免费 tier | 需要购买专业计划 |
+| Udio | ✅ 免费 tier | 需要订阅 |
+| Stable Audio | ✅ | 需要许可证 |
+| MusicGen | ✅ | 需要研究许可证 |
+| Mubert | ✅ | 需要 API 许可证 |
+| Soundraw | ✅ | 需要订阅 |
 
-**Always check current licensing terms before commercial use.**
-
----
-
-## Quality Tips
-
-- **Be specific** — "acoustic guitar fingerpicking" beats "guitar"
-- **Layer generations** — combine outputs for richer sound
-- **Use stems** — mix individual elements for control
-- **Match context** — consider where audio will be used
-- **Iterate** — first generation rarely perfect
+**在商业使用前，请务必查看当前的许可证条款。**
 
 ---
 
-### Current Setup
-<!-- Provider: status -->
+## 提高音质的小贴士
 
-### Projects
-<!-- What they're creating -->
-
-### Preferences
-<!-- Preferred styles, providers, settings -->
+- **具体说明需求** — 例如 “需要‘原声吉他指弹’风格的节奏” 或 “需要‘吉他’音效”
+- **叠加多个生成的音频片段** — 通过组合不同音轨来提升音质
+- **合理使用分离的音轨** — 可以根据需要单独调整各个音轨的音量
+- **考虑使用场景** — 考虑音频最终的使用环境
+- **多次尝试** — 第一次生成的音频效果可能并不完美
 
 ---
-*Check provider files for detailed setup and API usage.*
+
+### 当前的技术配置
+<!-- 提供商的当前技术状态信息 -->
+
+### 正在进行的项目
+<!-- 用户正在开发的项目内容 -->
+
+### 用户偏好
+<!-- 用户偏好的音乐风格、提供商及设置选项 -->
+
+---
+
+*请查阅相关提供商的文档以获取详细的配置和 API 使用指南。*

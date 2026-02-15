@@ -1,22 +1,22 @@
 ---
 name: freeride-opencode
-description: Configure and optimize OpenCode Zen free models with smart fallbacks for subtasks, heartbeat, and cron jobs. Use when setting up cost-effective AI model routing with automatic failover between free models.
+description: 配置并优化 OpenCode Zen 的免费模型，为子任务、心跳检测（heartbeat）和定时任务（cron jobs）提供智能的备用方案。在设置经济高效的人工智能模型路由系统时，可利用这些功能实现免费模型之间的自动故障转移（failover）。
 version: 1.2.0
 ---
 
 # Freeride OpenCode
 
-Configure OpenCode Zen free models with intelligent fallbacks to optimize costs while maintaining reliability.
+通过配置 OpenCode Zen 的免费模型，并结合智能的回退机制，可以在保持可靠性的同时优化成本。
 
-> **⚠️ Important:** To use this skill, you need **two API keys**:
-> 1. **OpenCode Zen API key** - For OpenCode free models (MiniMax M2.1, Kimi K2.5, GLM 4.7, GPT 5 Nano)
-> 2. **OpenRouter API key** - For OpenRouter free models (Trinity Large and other OpenRouter providers)
->
-> Configure both keys in your OpenCode/Zen settings before applying these configurations.
+> **⚠️ 重要提示：** 使用此功能需要 **两个 API 密钥**：
+> 1. **OpenCode Zen API 密钥** - 用于 OpenCode 的免费模型（MiniMax M2.1、Kimi K2.5、GLM 4.7、GPT 5 Nano）
+> 2. **OpenRouter API 密钥** - 用于 OpenRouter 的免费模型（Trinity Large 及其他 OpenRouter 提供商的模型）
 
-## Quick Start
+> 在应用这些配置之前，请先在您的 OpenCode/Zen 设置中配置好这两个密钥。
 
-Apply optimal free model configuration with provider diversification:
+## 快速入门
+
+通过使用多种提供商的免费模型来优化配置：
 
 ```json
 {
@@ -40,29 +40,29 @@ Apply optimal free model configuration with provider diversification:
 }
 ```
 
-## 🔑 API Keys Required
+## 🔑 所需 API 密钥
 
-This skill uses models from **two different providers**, so you need both API keys configured:
+此功能使用了来自 **两个不同提供商** 的模型，因此您需要配置这两个 API 密钥：
 
-### 1. OpenCode Zen API Key
-**Required for:**
+### 1. OpenCode Zen API 密钥
+**适用模型：**
 - `opencode/minimax-m2.1-free`
 - `opencode/kimi-k2.5-free`
 - `opencode/glm-4.7-free`
 - `opencode/gpt-5-nano`
 
-**Where to get:** Sign up at [OpenCode Zen](https://opencode.ai) and generate an API key.
+**获取方式：** 在 [OpenCode Zen](https://opencode.ai) 注册并生成 API 密钥。
 
-### 2. OpenRouter API Key
-**Required for:**
+### 2. OpenRouter API 密钥
+**适用模型：**
 - `openrouter/arcee-ai/trinity-large-preview:free`
-- Any other OpenRouter free models you add
+- 您添加的任何其他 OpenRouter 免费模型
 
-**Where to get:** Sign up at [OpenRouter.ai](https://openrouter.ai) and generate an API key.
+**获取方式：** 在 [OpenRouter.ai](https://openrouter.ai) 注册并生成 API 密钥。
 
-### Configuration
+### 配置
 
-Add both keys to your OpenCode configuration:
+将这两个密钥添加到您的 OpenCode 配置中：
 
 ```json
 {
@@ -77,37 +77,37 @@ Add both keys to your OpenCode configuration:
 }
 ```
 
-### Fallback Behavior by Provider
+### 提供商的回退策略
 
-- If **OpenCode models** fail → tries next OpenCode fallback or OpenRouter model
-- If **OpenRouter models** fail → tries next OpenRouter or OpenCode fallback
-- Configure both providers for maximum reliability
+- 如果 **OpenCode 模型** 失效 → 尝试下一个 OpenCode 模型或 OpenRouter 模型
+- 如果 **OpenRouter 模型** 失效 → 尝试下一个 OpenRouter 模型或 OpenCode 模型
+- 通过配置多个提供商来确保最大的可靠性
 
-## Model Selection Guide
+## 模型选择指南
 
-See [models.md](models.md) for detailed model comparisons, capabilities, and provider information.
+请参阅 [models.md](models.md)，以获取详细的模型比较、功能及提供商信息。
 
-| Task Type | Recommended Model | Rationale |
+| 任务类型 | 推荐模型 | 选择理由 |
 |-----------|------------------|-----------|
-| **Primary/General** | MiniMax M2.1 Free | Best free model capability |
-| **Fallback 1** | Trinity Large Free | Different provider (OpenRouter) for rate limit resilience |
-| **Fallback 2** | Kimi K2.5 Free | General purpose, balance |
-| **Heartbeat** | GLM 4.7 Free | Multilingual, cost-effective for frequent checks |
-| **Subtasks/Subagents** | Kimi K2.5 Free | Balanced capability for secondary tasks |
+| **主要/通用任务** | MiniMax M2.1 Free | 最适合通用任务的免费模型 |
+| **第一级回退** | Trinity Large Free | 来自不同提供商（OpenRouter）的模型，以提高抗限制能力 |
+| **第二级回退** | Kimi K2.5 Free | 多功能、性能均衡的模型 |
+| **心跳检测** | GLM 4.7 Free | 支持多语言，适合频繁检测 |
+| **子任务/子代理** | Kimi K2.5 Free | 功能均衡，适合执行次要任务 |
 
-### Free Models Available
+### 可用的免费模型
 
-| Model | ID | Best For |
+| 模型 | ID | 适用场景 |
 |-------|-----|----------|
-| **MiniMax M2.1 Free** | `opencode/minimax-m2.1-free` | Complex reasoning, coding (Primary) |
-| **Trinity Large Free** | `openrouter/arcee-ai/trinity-large-preview:free` | High-quality OpenRouter option (Fallback 1) |
-| **Kimi K2.5 Free** | `opencode/kimi-k2.5-free` | General purpose, balance (Fallback 2) |
+| **MiniMax M2.1 Free** | `opencode/minimax-m2.1-free` | 适用于复杂推理和编码任务 |
+| **Trinity Large Free** | `openrouter/arcee-ai/trinity-large-preview:free` | 高质量的 OpenRouter 模型（第一级回退选项） |
+| **Kimi K2.5 Free** | `opencode/kimi-k2.5-free` | 多功能、性能均衡的模型（第二级回退选项） |
 
-## Fallback Strategy
+## 回退策略
 
-### Provider Diversification (v1.2.0)
+### 提供商多样化（v1.2.0）
 
-This version implements **provider diversification** to maximize resilience against rate limits and service disruptions:
+此版本实现了 **提供商多样化**，以最大化对速率限制和服务中断的抵御能力：
 
 ```json
 "fallbacks": [
@@ -116,26 +116,26 @@ This version implements **provider diversification** to maximize resilience agai
 ]
 ```
 
-**Why Provider Diversification Matters:**
-- **Rate limit isolation:** If OpenCode experiences rate limits, OpenRouter models remain available (and vice versa)
-- **First fallback from different provider:** Trinity Large on OpenRouter ensures continuity even if all OpenCode models are rate-limited
-- **Maximum resilience:** By spreading across providers, you avoid a single point of failure
+**为什么需要提供商多样化：**
+- **速率限制隔离：** 如果 OpenCode 遭遇速率限制，OpenRouter 模型仍然可用（反之亦然）
+- **优先选择不同提供商的模型进行回退：** 即使所有 OpenCode 模型都受到速率限制，Trinity Large 仍能确保服务的连续性
+- **最大化可靠性：** 通过分散使用多个提供商，可以避免单一故障点
 
-**Fallback triggers:**
-- Rate limits exceeded
-- Auth failures
-- Timeouts
-- Provider unavailability
+**触发回退的情况：**
+- 超过速率限制
+- 认证失败
+- 超时
+- 提供商不可用
 
-### Fallback Behavior by Provider
+### 提供商的回退行为
 
-- If **OpenCode models** fail → tries OpenRouter fallback first (Trinity Large), then back to OpenCode (Kimi)
-- If **OpenRouter model** fails → tries OpenCode fallback (Kimi)
-- This cross-provider approach ensures at least one model is usually available
+- 如果 **OpenCode 模型** 失效 → 首先尝试使用 OpenRouter 的模型（Trinity Large），然后尝试使用 OpenCode 的模型（Kimi）
+- 如果 **OpenRouter 模型** 失效 → 首先尝试使用 OpenCode 的模型（Kimi）
+- 这种跨提供商的策略确保至少有一个模型始终可用
 
-## Per-Task Configuration
+## 按任务配置模型
 
-### Heartbeat (Every 30 min)
+### 心跳检测（每 30 分钟一次）
 
 ```json
 "heartbeat": {
@@ -144,9 +144,9 @@ This version implements **provider diversification** to maximize resilience agai
 }
 ```
 
-Use the cheapest model for frequent, lightweight checks.
+对于频繁且轻量级的检测任务，使用成本最低的模型。
 
-### Subtasks/Subagents
+### 子任务/子代理
 
 ```json
 "subagents": {
@@ -154,9 +154,9 @@ Use the cheapest model for frequent, lightweight checks.
 }
 ```
 
-Good balance for secondary tasks that need reasonable capability.
+对于需要合理功能的次要任务，这种配置能够实现良好的平衡。
 
-### Complete Example
+### 完整示例
 
 ```json
 {
@@ -186,9 +186,9 @@ Good balance for secondary tasks that need reasonable capability.
 }
 ```
 
-## Applying Configuration
+## 应用配置
 
-Use OpenClaw CLI:
+使用 OpenClaw CLI 进行配置：
 
 ```bash
 openclaw config.patch --raw '{
@@ -205,47 +205,47 @@ openclaw config.patch --raw '{
 }'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Provider diversification** - Always have your first fallback from a different provider (e.g., OpenRouter) to avoid rate limits affecting all models
-2. **Keep fallbacks minimal** - 2-3 well-chosen fallbacks are better than many
-3. **Match model to task** - Don't use MiniMax for simple checks
-4. **Test fallback order** - Put more capable models first, with provider diversification
-5. **Monitor usage** - Track which models get used most
+1. **提供商多样化** - 始终选择来自不同提供商的第一个回退选项（例如 OpenRouter），以避免所有模型同时受到速率限制的影响
+2. **保持回退策略的简洁性** - 2-3 个精心挑选的回退方案比多个方案更有效
+3. **根据任务选择合适的模型** - 对于简单任务，不要使用 MiniMax 模型
+4. **测试回退顺序** - 将功能更强的模型放在优先位置，并确保采用提供商多样化策略
+5. **监控使用情况** - 记录哪些模型被最频繁地使用
 
-## Troubleshooting
+## 故障排除
 
-**Authentication errors (401/403)?**
-- Check that you have **both** API keys configured:
-  - OpenCode Zen API key for OpenCode models
-  - OpenRouter API key for Trinity Large and OpenRouter models
-- Verify keys are valid and have not expired
+**出现认证错误（401/403）？**
+- 确保已配置 **两个** API 密钥：
+  - OpenCode Zen 模型的 OpenCode Zen API 密钥
+  - OpenRouter 模型的 OpenRouter API 密钥
+- 验证密钥的有效性及是否过期
 
-**Rate limits still occurring?**
-- Add provider diversification (ensure first fallback is from different provider)
-- Consider reducing heartbeat frequency
+**仍然遇到速率限制？**
+- 添加提供商多样化策略（确保第一个回退选项来自不同的提供商）
+- 考虑降低心跳检测的频率
 
-**Responses too slow?**
-- Move GPT 5 Nano higher in fallback chain
-- Use simpler model for subtasks
+**响应速度过慢？**
+- 将 GPT 5 Nano 提升到回退序列的更靠前的位置
+- 对于子任务，使用功能更简单的模型
 
-**Model not available?**
-- Check model ID format: `opencode/model-id-free` or `openrouter/provider/model:free`
-- Verify model is still free (check [models.md](models.md))
-- Ensure you have the correct API key for the provider
+**模型无法使用？**
+- 检查模型 ID 的格式：`opencode/model-id-free` 或 `openrouter/provider/model:free`
+- 确认模型是否仍处于免费状态（参考 [models.md](models.md)
+- 确保使用了正确的提供商 API 密钥
 
-**OpenRouter models not working?**
-- Verify OpenRouter API key is configured
-- Check OpenRouter account has credits/access
-- Some models may have additional access requirements
+**OpenRouter 模型无法使用？**
+- 验证 OpenRouter API 密钥是否已正确配置
+- 检查 OpenRouter 账户是否有足够的信用或访问权限
+- 某些模型可能需要额外的访问权限
 
-## References
+## 参考资料
 
 ### [models.md](models.md)
-Complete reference of all free models with capabilities, providers, performance comparisons, and error handling.
+包含所有免费模型的完整信息，包括功能、提供商、性能对比及错误处理方法。
 
 ### [templates.md](templates.md)
-Ready-to-use configuration templates for different use cases (minimal, complete, cost-optimized, performance-optimized).
+提供适用于不同场景的配置模板（基础配置、完整配置、成本优化配置、性能优化配置）。
 
 ### [examples/usage.md](examples/usage.md)
-Practical examples showing how to use this skill in real scenarios.
+包含实际使用此功能的示例。

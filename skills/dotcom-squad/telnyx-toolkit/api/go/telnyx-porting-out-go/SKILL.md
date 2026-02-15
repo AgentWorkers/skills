@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 本文档由 Telnyx OpenAPI 规范自动生成，请勿修改。 -->
 
-# Telnyx Porting Out - Go
+# Telnyx 的 Porting Out 功能（Go 语言实现）
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化完成。
 
-## List portout requests
+## 列出 Portout 请求
 
-Returns the portout requests according to filters
+根据筛选条件返回 Portout 请求：
 
 `GET /portouts`
 
@@ -53,9 +53,9 @@ Returns the portout requests according to filters
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get a portout request
+## 获取 Portout 请求
 
-Returns the portout request based on the ID provided
+根据提供的 ID 获取相应的 Portout 请求：
 
 `GET /portouts/{id}`
 
@@ -67,9 +67,9 @@ Returns the portout request based on the ID provided
 	fmt.Printf("%+v\n", portout.Data)
 ```
 
-## List all comments for a portout request
+## 查看 Portout 请求的评论
 
-Returns a list of comments for a portout request.
+返回 Portout 请求的所有评论：
 
 `GET /portouts/{id}/comments`
 
@@ -81,9 +81,9 @@ Returns a list of comments for a portout request.
 	fmt.Printf("%+v\n", comments.Data)
 ```
 
-## Create a comment on a portout request
+## 为 Portout 请求添加评论
 
-Creates a comment on a portout request.
+为 Portout 请求创建新的评论：
 
 `POST /portouts/{id}/comments`
 
@@ -99,9 +99,9 @@ Creates a comment on a portout request.
 	fmt.Printf("%+v\n", comment.Data)
 ```
 
-## List supporting documents on a portout request
+## 查看 Portout 请求的相关支持文档
 
-List every supporting documents for a portout request.
+列出 Portout 请求的所有支持文档：
 
 `GET /portouts/{id}/supporting_documents`
 
@@ -113,9 +113,9 @@ List every supporting documents for a portout request.
 	fmt.Printf("%+v\n", supportingDocuments.Data)
 ```
 
-## Create a list of supporting documents on a portout request
+## 创建 Portout 请求的支持文档
 
-Creates a list of supporting documents on a portout request.
+为 Portout 请求创建新的支持文档：
 
 `POST /portouts/{id}/supporting_documents`
 
@@ -131,11 +131,11 @@ Creates a list of supporting documents on a portout request.
 	fmt.Printf("%+v\n", supportingDocument.Data)
 ```
 
-## Update Status
+## 更新 Portout 请求的状态
 
-Authorize or reject portout request
+授权或拒绝 Portout 请求：
 
-`PATCH /portouts/{id}/{status}` — Required: `reason`
+`PATCH /portouts/{id}/{status}` — 必需参数：`reason`
 
 ```go
 	response, err := client.Portouts.UpdateStatus(
@@ -152,9 +152,9 @@ Authorize or reject portout request
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all port-out events
+## 列出所有 Portout 事件
 
-Returns a list of all port-out events.
+返回所有 Portout 事件的列表：
 
 `GET /portouts/events`
 
@@ -166,9 +166,9 @@ Returns a list of all port-out events.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Show a port-out event
+## 查看具体的 Portout 事件
 
-Show a specific port-out event.
+显示特定的 Portout 事件：
 
 `GET /portouts/events/{id}`
 
@@ -180,9 +180,9 @@ Show a specific port-out event.
 	fmt.Printf("%+v\n", event.Data)
 ```
 
-## Republish a port-out event
+## 重新发布 Portout 事件
 
-Republish a specific port-out event.
+重新发布特定的 Portout 事件：
 
 `POST /portouts/events/{id}/republish`
 
@@ -193,9 +193,9 @@ Republish a specific port-out event.
 	}
 ```
 
-## List eligible port-out rejection codes for a specific order
+## 查看特定 Portout 的拒绝代码
 
-Given a port-out ID, list rejection codes that are eligible for that port-out
+根据提供的 Portout ID，列出该 Portout 可能接受的拒绝代码：
 
 `GET /portouts/rejections/{portout_id}`
 
@@ -211,9 +211,9 @@ Given a port-out ID, list rejection codes that are eligible for that port-out
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List port-out related reports
+## 查看与 Portout 相关的报告
 
-List the reports generated about port-out operations.
+列出与 Portout 操作相关的所有报告：
 
 `GET /portouts/reports`
 
@@ -225,9 +225,9 @@ List the reports generated about port-out operations.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a port-out related report
+## 创建与 Portout 相关的报告
 
-Generate reports about port-out operations.
+生成关于 Portout 操作的报告：
 
 `POST /portouts/reports`
 
@@ -244,9 +244,9 @@ Generate reports about port-out operations.
 	fmt.Printf("%+v\n", report.Data)
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+检索特定的报告：
 
 `GET /portouts/reports/{id}`
 

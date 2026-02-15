@@ -23,29 +23,29 @@ description: |
 
 # UGC-Manual
 
-Generate lip-sync videos by combining an image with a custom audio file using ComfyDeploy's UGC-MANUAL workflow.
+使用 ComfyDeploy 的 UGC-Manual 工作流程，可以通过将图片与自定义音频文件结合来生成对口型视频。
 
-## Overview
+## 概述
 
-UGC-Manual takes:
-1. An image (person/character with visible face)
-2. An audio file (user's voice recording)
+UGC-Manual 需要：
+1. 一张包含清晰面部特征的图片（人物或角色）
+2. 一个音频文件（用户录制的语音）
 
-And produces a video where the person in the image lip-syncs to the audio.
+最终生成的视频中，图片中的人物会随着音频进行对口型表演。
 
-## API Details
+## API 详情
 
-**Endpoint:** `https://api.comfydeploy.com/api/run/deployment/queue`
-**Deployment ID:** `075ce7d3-81a6-4e3e-ab0e-7a25edf601b5`
+**端点：** `https://api.comfydeploy.com/api/run/deployment/queue`
+**部署 ID：** `075ce7d3-81a6-4e3e-ab0e-7a25edf601b5`
 
-## Required Inputs
+## 必需输入参数
 
-| Input | Description | Formats |
-|-------|-------------|---------|
-| `image` | Image with a visible face | JPG, PNG |
-| `input_audio` | Audio file to lip-sync | MP3, WAV, OGG |
+| 输入参数 | 描述 | 格式 |
+|---------|------------------|---------|
+| `image` | 包含清晰面部特征的图片 | JPG、PNG |
+| `input_audio` | 用于对口型的音频文件 | MP3、WAV、OGG |
 
-## Usage
+## 使用方法
 
 ```bash
 uv run ~/.clawdbot/skills/ugc-manual/scripts/generate.py \
@@ -54,7 +54,8 @@ uv run ~/.clawdbot/skills/ugc-manual/scripts/generate.py \
   --output "output-video.mp4"
 ```
 
-### With URLs:
+### 使用 URL 的示例：
+
 ```bash
 uv run ~/.clawdbot/skills/ugc-manual/scripts/generate.py \
   --image "https://example.com/image.jpg" \
@@ -62,15 +63,15 @@ uv run ~/.clawdbot/skills/ugc-manual/scripts/generate.py \
   --output "result.mp4"
 ```
 
-## Workflow Integration
+## 工作流程集成
 
-### Typical Use Cases
+### 典型使用场景
 
-1. **Custom voice recordings** - User records their own audio via Telegram/WhatsApp
-2. **Pre-generated TTS** - Audio generated externally (ElevenLabs, etc.)
-3. **Music/sound sync** - Sync mouth movements to any audio
+1. **自定义语音录制**：用户通过 Telegram/WhatsApp 录制自己的语音。
+2. **预生成的 TTS**：从外部服务（如 ElevenLabs）生成的音频。
+3. **音乐/声音同步**：将人物的口型动作与任何音频同步。
 
-### Example Pipeline
+### 示例工作流程：
 
 ```bash
 # 1. Convert Telegram voice message to MP3 (if needed)
@@ -80,19 +81,19 @@ ffmpeg -i voice.ogg -acodec libmp3lame -q:a 2 voice.mp3
 uv run ugc-manual... --image face.jpg --audio voice.mp3 --output video.mp4
 ```
 
-## Difference from VEED-UGC
+## 与 VEED-UGC 的区别
 
-| Feature | UGC-Manual | VEED-UGC |
+| 特性 | UGC-Manual | VEED-UGC |
 |---------|------------|----------|
-| Audio source | User provides | Generated from brief |
-| Script | N/A | Auto-generated |
-| Voice | User's recording | ElevenLabs TTS |
-| Use case | Custom audio | Automated content |
+| 音频来源 | 用户提供 | 由系统自动生成 |
+| 脚本 | 无 | 自动生成 |
+| 语音 | 用户录制的语音 | ElevenLabs 提供的 TTS 服务 |
+| 使用场景 | 需要自定义音频 | 适用于自动化内容生成 |
 
-## Notes
+## 注意事项
 
-- Image should have a clearly visible face (frontal or 3/4 view)
-- Audio quality affects output quality
-- Processing time: ~2-5 minutes depending on audio length
-- **Audio auto-conversion**: The script automatically converts any audio format (MP3, OGG, M4A, etc.) to WAV PCM 16-bit mono 48kHz before sending to FabricLipsync
-- Requires `ffmpeg` installed on the system
+- 图片中的面部必须清晰可见（正面或 3/4 视角）。
+- 音频质量会影响最终视频的质量。
+- 处理时间：根据音频长度大约为 2-5 分钟。
+- **音频自动转换**：系统会自动将所有音频格式（MP3、OGG、M4A 等）转换为 WAV PCM 16 位单声道 48kHz 格式，然后再发送到 FabricLipsync。
+- 系统需要安装 `ffmpeg` 工具。

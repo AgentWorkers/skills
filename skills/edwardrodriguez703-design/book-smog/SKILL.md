@@ -1,32 +1,30 @@
 ---
 name: book-smog
-description: Book smog check appointments through Lokuli MCP. Use when user needs a smog check, emissions test, or vehicle inspection. Triggers on requests like "I need a smog check", "book smog test", "emissions inspection", "DMV smog requirement", or any smog-related request.
+description: 通过 Lokuli MCP 预约车辆尾气检测服务。当用户需要进行尾气检测、排放测试或车辆检查时，请使用此功能。该功能会在收到如下请求时触发：**“我需要进行尾气检测”**、**“预约尾气测试”**、**“排放检测”**、**“车辆管理局（DMV）要求的尾气检测”**，或任何与尾气检测相关的请求。
 ---
 
-# Book Smog Check
+# 书籍污染检测服务
 
-Book smog check appointments through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预约书籍污染检测服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Smog Services Available
+## 可用的污染检测服务：
+- 污染检测服务
+- 仅限污染测试
+- 星级认证的污染检测服务
+- 柴油车污染检测服务
+- 严重污染源认证服务
+- 车辆所有权变更时的污染检测服务
 
-- Smog Check
-- Smog Test Only
-- Star Certified Smog
-- Diesel Smog Check
-- Gross Polluter Certification
-- Change of Ownership Smog
-
-## Tools
-
-### search
+## 工具：
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -42,7 +40,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -57,7 +55,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预约（Create Booking）
 ```json
 {
   "method": "tools/call",
@@ -75,11 +73,10 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-## Workflow
-
-1. **Understand** — Smog check type? Where (ZIP)?
-2. **Search** — Find smog stations nearby
-3. **Present** — Show top results with pricing
-4. **Check availability** — Get open time slots
-5. **Confirm** — Get explicit user approval
-6. **Create booking** — Generate checkout link
+## 工作流程：
+1. **了解需求**：确定所需的污染检测类型及检测地点（需提供 ZIP 地址）。
+2. **搜索**：查找附近的污染检测站点。
+3. **查看结果**：显示搜索结果及对应的费用信息。
+4. **检查可用性**：确认检测站点的开放时间。
+5. **获取用户确认**：等待用户的明确授权或确认。
+6. **创建预约**：生成预约确认链接。

@@ -1,112 +1,112 @@
 ---
 name: adaptive-reasoning
-description: Automatically assess task complexity and adjust reasoning level. Triggers on every user message to evaluate whether extended thinking (reasoning mode) would improve response quality. Use this as a pre-processing step before answering complex questions.
+description: **自动评估任务复杂性并调整推理难度**：每当用户发送消息时，系统会自动评估任务的复杂性，并判断是否需要启用“扩展思维模式”（即更高级的推理方式）来提升回复的质量。这一过程会在回答复杂问题之前作为预处理步骤执行。
 ---
 
-# Adaptive Reasoning
+# 自适应推理
 
-Self-assess complexity before responding. Adjust reasoning level dynamically.
+在响应之前，先自我评估任务的复杂性，并动态调整推理的深度。
 
-## Quick Assessment (run mentally on every request)
+## 快速评估（每次请求时都会在脑海中进行）
 
-Score the request 0-10 on these dimensions:
+根据以下维度对请求进行0-10分的评分：
 
-| Signal | Weight | Examples |
+| 评估因素 | 权重 | 例子 |
 |--------|--------|----------|
-| **Multi-step logic** | +3 | Planning, proofs, debugging chains |
-| **Ambiguity** | +2 | Nuanced questions, trade-offs, "it depends" |
-| **Code architecture** | +2 | System design, refactoring, security review |
-| **Math/formal reasoning** | +2 | Calculations, algorithms, logic puzzles |
-| **Novel problem** | +1 | No clear pattern, requires creativity |
-| **High stakes** | +1 | Production changes, irreversible actions |
+| **多步骤逻辑** | +3 | 规划、证明、调试流程 |
+| **模糊性** | +2 | 含糊的问题、权衡因素、需要根据具体情况判断 |
+| **代码架构** | +2 | 系统设计、代码重构、安全审查 |
+| **数学/形式化推理** | +2 | 计算、算法、逻辑难题 |
+| **新颖问题** | +1 | 没有明显的解决模式，需要创造性思考 |
+| **高风险** | +1 | 影响生产流程的变更、不可逆的操作 |
 
-**Subtract:**
-- Routine/repetitive task: -2
-- Clear single answer: -2
-- Simple lookup/fetch: -3
+**扣分项：**
+- 常规/重复性任务：-2分 |
+- 有明确单一答案的问题：-2分 |
+- 简单的查询/获取信息：-3分 |
 
-## Decision Thresholds
+## 决策阈值
 
-| Score | Action |
+| 评分 | 对应操作 |
 |-------|--------|
-| ≤2 | Stay fast. No reasoning needed. |
-| 3-5 | Standard response. Light internal deliberation. |
-| 6-7 | Consider `/reasoning on` or pause to think explicitly. |
-| ≥8 | **Activate extended thinking.** Complex problem warrants it. |
+| ≤2 | 快速响应，无需进行推理。 |
+| 3-5 | 给出标准答案，进行简要的内部思考。 |
+| 6-7 | 考虑使用“/reasoning on”功能或暂停以明确思考。 |
+| ≥8 | **启用扩展性思考**。复杂问题需要这种高级推理方式。 |
 
-## Activation (Automatic)
+## 自动激活推理
 
-**Do not ask. Just activate.**
+**无需询问，直接激活推理功能。**
 
-| Score | Action |
+| 评分 | 对应操作 |
 |-------|--------|
-| ≤5 | Respond normally. No change. |
-| 6-7 | Enable reasoning silently. Add 🧠 at end of response. |
-| ≥8 | Enable reasoning. Add 🧠🔥 at end of response. |
+| ≤5 | 按常规方式响应，不进行任何调整。 |
+| 6-7 | 在响应末尾添加 🧠 图标，表示正在使用推理功能。 |
+| ≥8 | 在响应末尾添加 🧠🔥 图标，表示正在进行深度思考。 |
 
-### Visual Indicator
+### 可视化指示
 
-Always append the reasoning icon at the **very end** of your response:
+在响应的**最后**始终添加推理状态的图标：
 
-- **Score 6-7:** `🧠` (thinking mode active)
-- **Score ≥8:** `🧠🔥` (deep thinking mode)
-- **Score ≤5:** No icon (fast mode)
+- **评分 6-7：** `🧠`（表示处于思考模式） |
+- **评分 ≥8：** `🧠🔥`（表示处于深度思考模式） |
+- **评分 ≤5：** 无图标（表示处于快速响应模式） |
 
-### How to Activate
+### 激活推理的方法
 
-Use `session_status` tool or `/reasoning on` command internally before responding:
+在响应前，可以使用 `session_status` 工具或内部命令 `/reasoning on` 来激活推理功能：
 
 ```
 /reasoning on
 ```
 
-Or via tool:
+或者通过外部工具来激活：
 ```json
 {"action": "session_status", "reasoning": "on"}
 ```
 
-After completing a complex task, optionally disable to save tokens on follow-ups:
+完成复杂任务后，可以选择禁用推理功能以节省后续请求所需的资源：
 ```
 /reasoning off
 ```
 
-## Examples
+## 示例
 
-**Low complexity (score: 1)**
-> "What time is it in Tokyo?"
-→ Simple lookup. Answer immediately. No icon.
+**低复杂性（评分：1）**
+> “东京现在几点了？”
+→ 进行简单查询，立即回答，不显示图标。
 
-**Medium complexity (score: 4)**
-> "Refactor this function to be more readable"
-→ Standard response with brief explanation. No icon.
+**中等复杂性（评分：4）**
+> “重构这个函数，使其更易于阅读。”
+→ 给出标准答案，并附上简要解释，不显示图标。
 
-**High complexity (score: 7)**
-> "Design a caching strategy for this API with these constraints..."
-→ Enable reasoning. Thoughtful response ends with: 🧠
+**高复杂性（评分：7）**
+> “根据这些限制为这个 API 设计一个缓存策略……”
+→ 启用推理功能，响应中会包含 🧠 图标。
 
-**Very high complexity (score: 9)**
-> "Debug why this distributed system has race conditions under load"
-→ Enable extended thinking. Deep analysis ends with: 🧠🔥
+**非常高复杂性（评分：9）**
+> “调试这个分布式系统在负载情况下为何会出现竞态条件。”
+→ 启用扩展性思考功能，响应中会包含 🧠🔥 图标。
 
-## Integration
+## 集成方式
 
-This skill runs as mental preprocessing. No external tools needed.
+该功能通过内部预处理机制实现，无需外部工具。
 
-For explicit control:
-- `/reasoning on` — Enable extended thinking
-- `/reasoning off` — Disable (faster responses)
-- `/status` — Check current reasoning state
+**用于显式控制：**
+- `/reasoning on` — 启用扩展性思考 |
+- `/reasoning off` — 禁用推理功能（以加快响应速度） |
+- `/status` — 查看当前的推理状态 |
 
-## When NOT to Escalate
+## 何时不需要升级推理功能
 
-- User explicitly wants quick answer ("just tell me", "quick", "tldr")
-- Time-sensitive requests where speed matters more than depth
-- Conversational/social messages (banter, greetings)
-- Already in reasoning mode for this session
-- User previously disabled reasoning in this conversation
+- 用户明确要求快速回答（如“直接告诉我”、“简而言之”） |
+- 对时间敏感的请求，速度比深度更重要 |
+- 聊天或社交性质的消息（如闲聊、问候） |
+- 当前会话中已经处于推理模式 |
+- 用户之前已经禁用了推理功能 |
 
-## Auto-Downgrade
+## 自动降级机制
 
-After completing a complex task (score ≥6), if the next message is simple (score ≤3):
-- Silently disable reasoning to save tokens
-- Resume normal fast responses
+完成复杂任务后（评分 ≥6），如果接下来的请求很简单（评分 ≤3）：
+- 自动禁用推理功能以节省资源 |
+- 恢复快速响应模式。

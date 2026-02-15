@@ -1,6 +1,6 @@
 ---
 name: cinema4d
-description: Expert guidance for this creative skill.
+description: 关于这项创造性技能的专业指导。
 version: 1.0.0
 tags: [creative,design,art]
 author: OpenWork
@@ -13,15 +13,15 @@ metadata:
 
 # ucinema4d
 
-Expert guidance and tutorials.
+专家指导与教程。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Tips and techniques
-- Step-by-step guides
-- Resource recommendations
+- 最佳实践
+- 技巧与建议
+- 分步指南
+- 资源推荐
 
-## Usage
-Help with this skill
-Tips and guidance
+## 使用方法
+- 帮助学习该技能
+- 提供相关技巧与指导

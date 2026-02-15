@@ -1,22 +1,22 @@
 ---
 name: ticktick
-description: Manage TickTick tasks and projects from the command line with OAuth2 auth, batch operations, and rate limit handling.
+description: 通过 OAuth2 认证、批量操作以及速率限制管理功能，从命令行界面来管理 TickTick 的任务和项目。
 ---
 
-# TickTick CLI Skill
+# TickTick CLI 技能
 
-Manage TickTick tasks and projects from the command line.
+通过命令行管理 TickTick 任务和项目。
 
-## Setup
+## 设置
 
-### 1. Register a TickTick Developer App
+### 1. 注册 TickTick 开发者应用
 
-1. Go to [TickTick Developer Center](https://developer.ticktick.com/manage)
-2. Create a new application
-3. Set the redirect URI to `http://localhost:8080`
-4. Note your `Client ID` and `Client Secret`
+1. 访问 [TickTick 开发者中心](https://developer.ticktick.com/manage)
+2. 创建一个新的应用
+3. 将重定向 URI 设置为 `http://localhost:8080`
+4. 记下您的 `Client ID` 和 `Client Secret`
 
-### 2. Authenticate
+### 2. 验证身份
 
 ```bash
 # Set credentials and start OAuth flow
@@ -29,20 +29,20 @@ bun run scripts/ticktick.ts auth --status
 bun run scripts/ticktick.ts auth --logout
 ```
 
-### Headless / Manual Authentication
+### 无头/手动身份验证
 
 ```bash
 # Use manual mode on headless servers
 bun run scripts/ticktick.ts auth --client-id YOUR_CLIENT_ID --client-secret YOUR_CLIENT_SECRET --manual
 ```
 
-This prints an authorization URL. Open it in a browser, approve access, then copy the full redirect URL (it looks like `http://localhost:8080/?code=XXXXX&state=STATE`) and paste it back into the CLI.
+此操作会生成一个授权 URL。在浏览器中打开该 URL，批准访问权限后，复制完整的重定向 URL（格式如下：`http://localhost:8080/?code=XXXXX&state=STATE`），然后将其粘贴回 CLI 中。
 
-The CLI will open your browser to authorize access. After approving, tokens are stored in `~/.clawdbot/credentials/ticktick-cli/config.json`.
+CLI 会自动在浏览器中打开页面以完成身份验证。验证通过后，授权令牌会被存储在 `~/.clawdbot/credentials/ticktick-cli/config.json` 文件中。
 
-## Commands
+## 命令
 
-### List Tasks
+### 列出任务
 
 ```bash
 # List all tasks
@@ -59,7 +59,7 @@ bun run scripts/ticktick.ts tasks --status completed
 bun run scripts/ticktick.ts tasks --json
 ```
 
-### Create Task
+### 创建任务
 
 ```bash
 # Basic task creation
@@ -77,7 +77,7 @@ bun run scripts/ticktick.ts task "Meeting" --list "Work" --due "2024-12-25"
 bun run scripts/ticktick.ts task "Research" --list "Work" --tag research important
 ```
 
-### Update Task
+### 更新任务
 
 ```bash
 # Update by task name or ID
@@ -88,7 +88,7 @@ bun run scripts/ticktick.ts task "abc123" --update --due tomorrow --content "Upd
 bun run scripts/ticktick.ts task "Review PR" --update --list "Work" --priority low
 ```
 
-### Complete Task
+### 完成任务
 
 ```bash
 # Mark task as complete
@@ -98,7 +98,7 @@ bun run scripts/ticktick.ts complete "Buy groceries"
 bun run scripts/ticktick.ts complete "Review PR" --list "Work"
 ```
 
-### Abandon Task (Won't Do)
+### 放弃任务
 
 ```bash
 # Mark task as won't do
@@ -108,7 +108,7 @@ bun run scripts/ticktick.ts abandon "Old task"
 bun run scripts/ticktick.ts abandon "Obsolete item" --list "Do"
 ```
 
-### Batch Abandon (Multiple Tasks)
+### 批量放弃任务（多个任务）
 
 ```bash
 # Abandon multiple tasks in a single API call
@@ -118,9 +118,9 @@ bun run scripts/ticktick.ts batch-abandon <taskId1> <taskId2> <taskId3>
 bun run scripts/ticktick.ts batch-abandon abc123def456... xyz789... --json
 ```
 
-Note: `batch-abandon` requires task IDs (24-character hex strings), not task names. Use `tasks --json` to get task IDs first.
+注意：`batch-abandon` 命令需要任务 ID（24 位的十六进制字符串），而非任务名称。请先使用 `tasks --json` 命令获取任务 ID。
 
-### List Projects
+### 列出项目
 
 ```bash
 # List all projects
@@ -130,7 +130,7 @@ bun run scripts/ticktick.ts lists
 bun run scripts/ticktick.ts lists --json
 ```
 
-### Create Project
+### 创建项目
 
 ```bash
 # Create new project
@@ -140,7 +140,7 @@ bun run scripts/ticktick.ts list "New Project"
 bun run scripts/ticktick.ts list "Work Tasks" --color "#FF5733"
 ```
 
-### Update Project
+### 更新项目
 
 ```bash
 # Rename project
@@ -150,35 +150,35 @@ bun run scripts/ticktick.ts list "Old Name" --update --name "New Name"
 bun run scripts/ticktick.ts list "Work" --update --color "#00FF00"
 ```
 
-## Options Reference
+## 选项参考
 
-### Priority Levels
-- `none` - No priority (default)
-- `low` - Low priority
-- `medium` - Medium priority
-- `high` - High priority
+### 优先级级别
+- `none` - 无优先级（默认值）
+- `low` - 低优先级
+- `medium` - 中等优先级
+- `high` - 高优先级
 
-### Due Date Formats
-- `today` - Due today
-- `tomorrow` - Due tomorrow
-- `in N days` - Due in N days (e.g., "in 3 days")
-- `next monday` - Next occurrence of weekday
-- ISO date - `YYYY-MM-DD` or full ISO format
+### 截止日期格式
+- `today` - 今天到期
+- `tomorrow` - 明天到期
+- `in N days` - N 天后到期（例如：“in 3 days”）
+- `next monday` - 下一个工作日到期
+- ISO 日期格式 - `YYYY-MM-DD` 或完整的 ISO 格式
 
-### Global Options
-- `--json` - Output results in JSON format (useful for scripting)
-- `--help` - Show help for any command
+### 全局选项
+- `--json` - 以 JSON 格式输出结果（适用于脚本编写）
+- `--help` - 显示任意命令的帮助信息
 
-## Agent Usage Tips
+## 代理使用提示
 
-When using this skill as an AI agent:
+当将此技能作为 AI 代理使用时，请注意以下事项：
 
-1. **Always use `--json` flag** for machine-readable output
-2. **List projects first** with `lists --json` to get valid project IDs
-3. **Use project IDs** rather than names when possible for reliability
-4. **Check task status** before completing to avoid errors
+1. **始终使用 `--json` 标志** 以获得机器可读的输出结果。
+2. **先使用 `lists --json` 命令列出所有项目，以获取有效的项目 ID**。
+3. **尽可能使用项目 ID 而不是项目名称，以确保操作的准确性**。
+4. **在完成任务前检查任务状态，以避免错误**。
 
-Example agent workflow:
+示例代理工作流程：
 ```bash
 # 1. Get available projects
 bun run scripts/ticktick.ts lists --json
@@ -190,9 +190,9 @@ bun run scripts/ticktick.ts task "Agent task" --list "PROJECT_ID" --priority hig
 bun run scripts/ticktick.ts complete "Agent task" --list "PROJECT_ID" --json
 ```
 
-## Configuration
+## 配置
 
-Tokens are stored in `~/.clawdbot/credentials/ticktick-cli/config.json`:
+授权令牌存储在 `~/.clawdbot/credentials/ticktick-cli/config.json` 文件中：
 ```json
 {
   "clientId": "YOUR_CLIENT_ID",
@@ -204,38 +204,38 @@ Tokens are stored in `~/.clawdbot/credentials/ticktick-cli/config.json`:
 }
 ```
 
-Note: Credentials are stored in plaintext. The CLI attempts to set file permissions to 700/600; treat this file as sensitive.
+注意：凭证以明文形式存储。CLI 会尝试将文件的权限设置为 700/600；请将此文件视为敏感文件。
 
-The CLI automatically refreshes tokens when they expire.
+CLI 会在令牌过期时自动刷新它们。
 
-## Troubleshooting
+## 故障排除
 
-### "Not authenticated" error
-Run `bun run scripts/ticktick.ts auth` to authenticate.
+### 出现 “未授权” 错误
+运行 `bun run scripts/ticktick.ts auth` 命令进行身份验证。
 
-### "Project not found" error
-Use `bun run scripts/ticktick.ts lists` to see available projects and their IDs.
+### 出现 “项目未找到” 错误
+使用 `bun run scripts/ticktick.ts lists` 命令查看可用项目及其 ID。
 
-### "Task not found" error
-- Check the task title matches exactly (case-insensitive)
-- Try using the task ID instead
-- Use `--list` to narrow the search to a specific project
+### 出现 “任务未找到” 错误
+- 确保任务标题完全匹配（不区分大小写）。
+- 尝试使用任务 ID 进行操作。
+- 使用 `--list` 命令将搜索范围缩小到特定项目。
 
-### Token expired errors
-The CLI should auto-refresh tokens. If issues persist, run `bun run scripts/ticktick.ts auth` again.
+### 令牌过期错误
+CLI 应该会自动刷新令牌。如果问题仍然存在，请再次运行 `bun run scripts/ticktick.ts auth` 命令。
 
-## API Notes
+## API 说明
 
-This CLI uses the [TickTick Open API v1](https://developer.ticktick.com/api).
+此 CLI 使用的是 [TickTick Open API v1](https://developer.ticktick.com/api)。
 
-### Rate Limits
-- **100 requests per minute**
-- **300 requests per 5 minutes**
+### 限制
+- **每分钟 100 次请求**
+- **每 5 分钟 300 次请求**
 
-The CLI makes multiple API calls per operation (listing projects to find task), so bulk operations can hit limits quickly.
+由于 CLI 在执行某些操作（如列出项目以查找任务）时需要多次调用 API，因此批量操作可能会很快达到请求限制。
 
-### Batch Endpoint
-The CLI supports TickTick's batch endpoint for bulk operations:
+### 批量操作端点
+CLI 支持 TickTick 的批量操作端点：
 ```
 POST https://api.ticktick.com/open/v1/batch/task
 {
@@ -244,8 +244,8 @@ POST https://api.ticktick.com/open/v1/batch/task
   "delete": [...]  // { taskId, projectId }[]
 }
 ```
-Use `batch-abandon` to abandon multiple tasks in one API call. The batch API method is also exposed for programmatic use.
+可以使用 `batch-abandon` 命令一次性放弃多个任务。批量 API 方法也可用于程序化操作。
 
-### Other Limitations
-- Maximum 500 tasks per project
-- Some advanced features (focus time, habits) not supported by the API
+### 其他限制
+- 每个项目最多支持 500 个任务。
+- 一些高级功能（如专注时间、习惯设置）不支持通过 API 进行操作。

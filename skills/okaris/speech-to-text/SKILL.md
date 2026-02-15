@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Speech-to-Text
+# 语音转文本
 
-Transcribe audio to text via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）将音频内容转录为文本。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -23,22 +23,22 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run infsh/fast-whisper-large-v3 --input '{"audio_url": "https://audio.mp3"}'
 ```
 
-## Available Models
+## 可用的模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Fast Whisper V3 | `infsh/fast-whisper-large-v3` | Fast transcription |
-| Whisper V3 Large | `infsh/whisper-v3-large` | Highest accuracy |
+| Fast Whisper V3 | `infsh/fast-whisper-large-v3` | 快速转录 |
+| Whisper V3 Large | `infsh/whisper-v3-large` | 最高的准确率 |
 
-## Examples
+## 示例
 
-### Basic Transcription
+### 基本转录
 
 ```bash
 infsh app run infsh/fast-whisper-large-v3 --input '{"audio_url": "https://meeting.mp3"}'
 ```
 
-### With Timestamps
+### 带时间戳的转录
 
 ```bash
 infsh app sample infsh/fast-whisper-large-v3 --save input.json
@@ -51,7 +51,7 @@ infsh app sample infsh/fast-whisper-large-v3 --save input.json
 infsh app run infsh/fast-whisper-large-v3 --input input.json
 ```
 
-### Translation (to English)
+### 翻译（英文）
 
 ```bash
 infsh app run infsh/whisper-v3-large --input '{
@@ -60,7 +60,7 @@ infsh app run infsh/whisper-v3-large --input '{
 }'
 ```
 
-### From Video
+### 从视频中转录
 
 ```bash
 # Extract audio from video first
@@ -70,7 +70,7 @@ infsh app run infsh/video-audio-extractor --input '{"video_url": "https://video.
 infsh app run infsh/fast-whisper-large-v3 --input '{"audio_url": "<audio-url>"}'
 ```
 
-## Workflow: Video Subtitles
+## 工作流程：为视频添加字幕
 
 ```bash
 # 1. Transcribe video audio
@@ -86,28 +86,28 @@ infsh app run infsh/caption-videos --input '{
 }'
 ```
 
-## Supported Languages
+## 支持的语言
 
-Whisper supports 99+ languages including:
-English, Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean, Arabic, Hindi, Russian, and many more.
+Whisper 支持 99 种以上的语言，包括：
+英语、西班牙语、法语、德语、意大利语、葡萄牙语、中文、日语、韩语、阿拉伯语、印地语、俄语等。
 
-## Use Cases
+## 使用场景
 
-- **Meetings**: Transcribe recordings
-- **Podcasts**: Generate transcripts
-- **Subtitles**: Create captions for videos
-- **Voice Notes**: Convert to searchable text
-- **Interviews**: Transcription for research
-- **Accessibility**: Make audio content accessible
+- **会议**：转录会议记录
+- **播客**：生成播客文字稿
+- **字幕**：为视频添加字幕
+- **语音笔记**：将语音内容转换为可搜索的文本
+- **采访**：为研究目的进行转录
+- **无障碍访问**：使音频内容更易于访问
 
-## Output Format
+## 输出格式
 
-Returns JSON with:
-- `text`: Full transcription
-- `segments`: Timestamped segments (if requested)
-- `language`: Detected language
+返回 JSON 格式的数据，包含：
+- `text`：完整的转录文本
+- `segments`：带时间戳的音频片段（如需）
+- `language`：检测到的语言
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -123,10 +123,10 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@ai-avatar-video
 ```
 
-Browse all audio apps: `infsh app list --category audio`
+浏览所有音频应用：`infsh app list --category audio`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Audio Transcription Example](https://inference.sh/docs/examples/audio-transcription) - Complete transcription guide
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
+- [运行应用](https://inference.sh/docs/apps/running) - 通过 CLI 运行应用的步骤
+- [音频转录示例](https://inference.sh/docs/examples/audio-transcription) - 完整的转录指南
+- [应用概览](https://inference.sh/docs/apps/overview) - 了解应用生态系统

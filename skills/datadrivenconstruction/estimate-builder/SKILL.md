@@ -1,25 +1,24 @@
 ---
 slug: "estimate-builder"
 display_name: "Estimate Builder"
-description: "Build construction project estimates. Generate detailed cost breakdowns with labor, materials, equipment, and overhead."
+description: "生成建筑项目的估算报告。详细列出劳动力、材料、设备以及管理费用等各项成本构成。"
 ---
 
-# Estimate Builder
+# 估算生成器（Estimate Builder）
 
-## Business Case
+## 商业案例（Business Case）
 
-### Problem Statement
-Estimate creation challenges:
-- Complex cost structures
-- Multiple cost categories
-- Markup calculations
-- Format requirements vary
+### 问题陈述（Problem Statement）
+在创建估算时遇到的挑战：
+- 复杂的成本结构
+- 多种成本类别
+- 加价计算
+- 格式要求各不相同
 
-### Solution
-Structured estimate builder that creates professional construction estimates with proper cost categorization, markups, and export capabilities.
+### 解决方案（Solution）
+一个结构化的估算生成器，能够生成专业的建筑估算报告，具备正确的成本分类、加价计算功能以及导出功能。
 
-## Technical Implementation
-
+## 技术实现（Technical Implementation）
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -274,8 +273,7 @@ class EstimateBuilder:
         return issues
 ```
 
-## Quick Start
-
+## 快速入门（Quick Start）
 ```python
 # Create estimate
 estimate = EstimateBuilder("Office Building A", "PRJ-2024-001")
@@ -295,27 +293,27 @@ print(f"Direct Cost: ${result['cost_summary']['direct_cost']:,.2f}")
 print(f"Grand Total: ${result['grand_total']:,.2f}")
 ```
 
-## Common Use Cases
+## 常见使用场景（Common Use Cases）
 
-### 1. Cost by Category
+### 1. 按类别划分成本（Cost by Category）
 ```python
 summary = estimate.get_cost_summary()
 print(f"Labor: ${summary.labor:,.2f}")
 print(f"Material: ${summary.material:,.2f}")
 ```
 
-### 2. Export to Excel
+### 2. 导出到 Excel（Export to Excel）
 ```python
 estimate.export_to_excel("estimate_output.xlsx")
 ```
 
-### 3. Validate Estimate
+### 3. 验证估算结果（Validate Estimate）
 ```python
 issues = estimate.validate()
 for issue in issues:
     print(f"Warning: {issue}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Calculations and Estimates
-- **Website**: https://datadrivenconstruction.io
+## 参考资源（Resources）
+- **DDC手册**：第3.1章 - 成本计算与估算（DDC Book: Chapter 3.1 - Cost Calculations and Estimates）
+- **官方网站**：https://datadrivenconstruction.io

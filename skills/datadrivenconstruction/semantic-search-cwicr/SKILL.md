@@ -1,35 +1,35 @@
 ---
 slug: "semantic-search-cwicr"
 display_name: "Semantic Search CWICR"
-description: "Semantic search in DDC CWICR construction database using vector embeddings. Find similar work items and resources for cost estimation."
+description: "在 DDC CWICR 构建数据库中，使用向量嵌入技术进行语义搜索。通过该技术可以找到用于成本估算的相似工作项和资源。"
 ---
 
-# Semantic Search in DDC CWICR Database
+# DDC CWICR 数据库中的语义搜索
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Construction cost estimation requires finding relevant work items from large databases. Traditional keyword search fails when:
-- Users describe work in natural language
-- Terminology varies across regions and languages
-- Similar work items have different naming conventions
+### 问题描述
+在估算建筑成本时，需要从庞大的数据库中查找相关的工作项。传统的关键词搜索方法存在以下问题：
+- 用户使用自然语言描述工作内容时，搜索效果不佳；
+- 不同地区和语言之间的术语存在差异；
+- 相似的工作项可能有不同的命名规范。
 
-### Solution
-DDC CWICR database provides pre-computed embeddings (OpenAI text-embedding-3-large, 3072 dimensions) enabling semantic similarity search across 55,719 work items in 9 languages.
+### 解决方案
+DDC CWICR 数据库提供了预计算好的嵌入向量（使用 OpenAI 的 text-embedding-3-large 模型，维度为 3072），支持在 9 种语言中对 55,719 个工作项进行语义相似性搜索。
 
-### Business Value
-- **90% faster** work item lookup compared to manual search
-- **Multi-language** support: Arabic, Chinese, German, English, Spanish, French, Hindi, Portuguese, Russian
-- **Higher accuracy** by finding semantically similar items, not just keyword matches
+### 商业价值
+- **搜索速度提升 90%**：相比手动搜索，查询速度更快；
+- **多语言支持**：支持阿拉伯语、中文、德语、英语、西班牙语、法语、印地语、葡萄牙语和俄语；
+- **更高的搜索准确性**：能够找到语义上相似的工作项，而不仅仅是关键词匹配的结果。
 
-## Technical Implementation
+## 技术实现
 
-### Prerequisites
+### 先决条件
 ```bash
 pip install qdrant-client openai pandas
 ```
 
-### Database Setup
+### 数据库配置
 ```bash
 # Download Qdrant snapshot
 wget https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR/releases/download/v0.1.0/qdrant_snapshot_en.tar.gz
@@ -38,8 +38,7 @@ wget https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWIC
 docker run -p 6333:6333 -v $(pwd)/qdrant_storage:/qdrant/storage qdrant/qdrant
 ```
 
-### Python Implementation
-
+### Python 实现
 ```python
 import pandas as pd
 from qdrant_client import QdrantClient
@@ -122,9 +121,9 @@ class CWICRSemanticSearch:
         }
 ```
 
-## Usage Examples
+## 使用示例
 
-### Basic Search
+### 基本搜索
 ```python
 search = CWICRSemanticSearch()
 
@@ -133,7 +132,7 @@ results = search.search_work_items("brick masonry wall construction")
 print(results[['description', 'unit', 'unit_price', 'similarity_score']])
 ```
 
-### Cost Estimation
+### 成本估算
 ```python
 # Find work items for foundation work
 foundation_items = search.search_work_items(
@@ -150,29 +149,27 @@ estimate = search.estimate_cost(foundation_items, quantities)
 print(f"Estimated Cost: ${estimate['total_cost']:,.2f}")
 ```
 
-## Database Schema
+## 数据库架构
 
-| Field | Type | Description |
+| 字段 | 类型 | 说明 |
 |-------|------|-------------|
-| work_item_code | string | Unique identifier |
-| description | string | Work item description |
-| unit | string | Measurement unit |
-| labor_norm | float | Labor hours per unit |
-| material_cost | float | Material cost per unit |
-| equipment_cost | float | Equipment cost per unit |
-| unit_price | float | Total price per unit |
-| category | string | Work category |
-| embedding | vector[3072] | Pre-computed embedding |
+| work_item_code | string | 唯一标识符 |
+| description | string | 工作项描述 |
+| unit | string | 计量单位 |
+| labor_norm | float | 每单位的劳动时间 |
+| material_cost | float | 每单位的材料成本 |
+| equipment_cost | float | 每单位的设备成本 |
+| unit_price | float | 每单位的总价格 |
+| category | string | 工作类别 |
+| embedding | vector[3072] | 预计算得到的嵌入向量 |
 
-## Best Practices
+## 最佳实践
+1. **使用具体的查询条件**：例如 “reinforced concrete slab 200mm” 比 “concrete” 更能提高搜索精度；
+2. **按类别筛选**：将搜索结果限制在相关的工作类型范围内；
+3. **检查相似度得分**：得分低于 0.7 的结果可能需要人工验证；
+4. **与工程量清单（QTO）结合使用**：结合 BIM 数据进行自动化成本估算。
 
-1. **Use specific queries** - "reinforced concrete slab 200mm" beats "concrete"
-2. **Filter by category** - Narrow results to relevant work types
-3. **Check similarity scores** - Scores below 0.7 may need manual verification
-4. **Combine with QTO** - Use BIM quantities for automated estimation
-
-## Resources
-
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **Releases**: [v0.1.0 Database Downloads](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR/releases)
-- **Qdrant Docs**: https://qdrant.tech/documentation/
+## 资源
+- **GitHub 项目**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **版本信息**：[v0.1.0 数据库下载链接](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR/releases)
+- **Qdrant 文档**：https://qdrant.tech/documentation/

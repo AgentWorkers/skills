@@ -1,81 +1,81 @@
 ---
 name: MongoDB
-description: Design schemas, write queries, and configure MongoDB for consistency and performance.
+description: 设计数据模式（设计数据库结构），编写查询语句，并配置 MongoDB 以保障数据的一致性和性能。
 metadata: {"clawdbot":{"emoji":"🍃","requires":{"anyBins":["mongosh","mongo"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Schema Design Decisions
+## 架构设计决策
 
-- Embed when data is queried together and doesn't grow unboundedly
-- Reference when data is large, accessed independently, or many-to-many
-- Arrays that grow infinitely = disaster—document size limit 16MB; use bucketing pattern
-- Denormalize for read performance, accept update complexity—no JOINs means duplicate data
+- 当数据需要一起查询且不会无限制地增长时，应采用嵌入式存储方式。
+- 当数据量较大、需要独立访问或存在多对多关系时，应使用引用方式。
+- 如果数组的大小会无限增长，将会导致严重问题（文档大小限制为16MB）——此时应采用分桶（bucketing）策略。
+- 为了提升读取性能，可以对其进行反规范化处理；但这样做会增加更新的复杂性——因为无法使用JOIN操作，从而导致数据重复。
 
-## Array Pitfalls
+## 数组使用中的常见陷阱
 
-- Arrays > 1000 elements hurt performance—pagination inside documents is hard
-- `$push` without `$slice` = unbounded growth; use `$push: {$each: [...], $slice: -100}`
-- Multikey indexes on arrays: index entry per element—can explode index size
-- Can't have multikey index on more than one array field in compound index
+- 数组中的元素数量超过1000个时，性能会显著下降；此时在文档内部进行分页操作会变得非常困难。
+- 使用`$push`操作时如果没有同时使用`$slice`，数组的大小将会无限制地增长——应使用`$push: {$each: [...], $slice: -100}`来限制数组大小。
+- 在数组上创建多键索引会导致索引大小急剧增加。
+- 在复合索引中，不能对多个数组字段同时创建多键索引。
 
-## $lookup Is Not a JOIN
+## `$lookup`操作并非JOIN操作
 
-- `$lookup` performance degrades with collection size—no index usage on foreign collection (until 5.0)
-- One `$lookup` per pipeline stage—nested lookups get complex and slow
-- Consider embedding or application-side joins for frequent lookups
-- `$lookup` with pipeline (5.0+) can filter before joining—massive performance improvement
+- `$lookup`的操作性能会随着集合大小的增加而下降；在4.0版本之前，`$lookup`操作不会使用索引。
+- 每个处理阶段只能进行一次`$lookup`操作——嵌套的`$lookup`操作会变得复杂且效率低下。
+- 对于频繁的查询操作，可以考虑使用嵌入式存储方式或应用程序端的JOIN操作。
+- 从5.0版本开始，`$lookup`操作可以在连接数据之前进行过滤，从而大幅提升性能。
 
-## Index Strategy
+## 索引策略
 
-- ESR rule for compound indexes: Equality fields first, Sort fields next, Range fields last
-- MongoDB doesn't do efficient index intersection—single compound index often better than multiple
-- Only one text index per collection—plan carefully; use Atlas Search for complex text
-- TTL index for auto-expiration: `{createdAt: 1}, {expireAfterSeconds: 86400}`
+- 对于复合索引，应遵循ESR（Equality, Sort, Range）的创建顺序：先创建相等性字段的索引，再创建排序字段的索引，最后创建范围字段的索引。
+- MongoDB不支持高效的索引交集操作——通常单个复合索引比多个索引更有效。
+- 每个集合只能创建一个文本索引；对于复杂的文本查询，建议使用Atlas Search功能。
+- 可以使用TTL（Time-To-Live）索引来实现数据的自动过期：`{createdAt: 1}, {expireAfterSeconds: 86400}`。
 
-## Aggregation Pipeline
+## 聚合操作流程
 
-- Stage order matters: `$match` and `$project` early to reduce documents flowing through
-- `$match` at start can use indexes; `$match` after `$unwind` or `$lookup` cannot
-- `allowDiskUse: true` for large aggregations—without it, 100MB memory limit per stage
-- `$facet` for multiple aggregations in one query—but all facets process same documents
+- 操作阶段的顺序非常重要：应尽早执行`$match`和`$project`操作，以减少需要处理的文档数量。
+- 在`$unwind`或`$lookup`操作之后执行`$match`操作会导致性能下降。
+- 对于大规模的聚合操作，应设置`allowDiskUse: true`——否则每个阶段的内存使用限制为100MB。
+- 使用`$facet`可以在一个查询中执行多个聚合操作——但所有聚合操作都会处理相同的文档。
 
-## Consistency & Transactions
+## 一致性与事务
 
-- Default read/write concern not fully consistent—`{w: "majority", readConcern: "majority"}` for strong consistency
-- Multi-document transactions since 4.0—but add latency and lock overhead; design to minimize
-- Single-document operations are atomic—exploit this by embedding related data
-- `retryWrites: true` in connection string—handles transient failures
+- 默认的读写策略并不能保证数据的一致性——为了实现强一致性，应设置`{w: "majority", readConcern: "majority"`。
+- 从4.0版本开始，MongoDB支持多文档事务——但这会增加延迟和锁的开销；设计时应注意尽量减少事务的使用。
+- 单个文档的操作是原子的——可以通过嵌入相关数据来充分利用这一特性。
+- 在连接字符串中设置`retryWrites: true`可以处理临时性的故障。
 
-## ObjectId Behavior
+## ObjectId的行为特性
 
-- Contains timestamp: `ObjectId.getTimestamp()`—can extract creation time
-- Roughly time-ordered—can sort by `_id` for creation order
-- Not random—predictable if you know creation time and machine; don't rely on for security
-- 12 bytes: 4 timestamp + 5 random + 3 counter
+- ObjectId包含时间戳：`ObjectId.getTimestamp()`可以获取文档的创建时间。
+- ObjectId大致按照创建时间排序；可以通过 `_id`字段对文档进行排序。
+- ObjectId不是随机生成的——如果知道创建时间和机器环境，可以预测其值；但不应依赖这种方式来保证数据的安全性。
+- ObjectId的长度为12字节：4字节用于存储时间戳，5字节用于存储随机数，3字节用于存储计数器。
 
-## Explain & Performance
+## 查询分析与性能优化
 
-- `explain("executionStats")` shows actual execution—not just plan
-- Look for `COLLSCAN`—means no index used; add appropriate index
-- `totalDocsExamined` vs `nReturned`—ratio should be close to 1; otherwise index missing
-- Covered queries: `IXSCAN` + `"totalDocsExamined": 0`—all data from index
+- `explain("executionStats")`可以显示实际的执行情况，而不仅仅是查询计划。
+- 如果查询过程中没有使用索引，可以查看`COLLSCAN`提示；此时应添加相应的索引。
+- `totalDocsExamined`与`nReturned`的比值应接近1；否则说明索引缺失。
+- 如果查询使用了`IXSCAN`且`"totalDocsExamined": 0`，则表示所有数据都是从索引中获取的。
 
-## Document Size
+## 文档大小限制
 
-- 16MB max per document—plan for this; use GridFS for large files
-- BSON overhead: field names repeated per document—short names save space at scale
-- Nested depth limit 100 levels—rarely hit but exists
+- 每个文档的最大大小为16MB；对于较大的文件，应使用GridFS存储。
+- BSON格式的文档会在每个文档中重复存储字段名称；使用简短的字段名可以在大规模数据存储时节省空间。
+- 文档的嵌套深度限制为100层；虽然这种情况很少发生，但确实存在。
 
-## Read Preferences
+## 读取偏好设置
 
-- `primary` for strong consistency; `secondaryPreferred` for read scaling with eventual consistency
-- Stale reads on secondaries—replication lag can be seconds
-- `nearest` for lowest latency—but may read stale data
-- Write always goes to primary—read preference doesn't affect writes
+- `primary`选项用于实现强一致性；`secondaryPreferred`选项用于在最终一致性要求下提升读取性能。
+- 从辅助（secondary）副本上读取数据可能会导致数据延迟（复制延迟可能长达几秒）。
+- `nearest`选项可以提供最低的延迟，但可能会读取到过时的数据。
+- 写操作始终会写入主副本；读取偏好设置不会影响写操作。
 
-## Common Mistakes
+## 常见错误
 
-- Treating MongoDB as "schemaless"—still need schema design; just enforced in app
-- Not adding indexes—scans entire collection; every query pattern needs index
-- Giant documents via array pushes—hit 16MB limit or slow BSON parsing
-- Ignoring write concern—data may appear written but not persisted/replicated
+- 有些人误认为MongoDB是“无架构”的数据库——实际上仍然需要明确的架构设计，只是这种设计在应用程序层面进行强制实施。
+- 不添加索引会导致整个集合被扫描；所有查询模式都需要相应的索引。
+- 通过`$push`操作创建过大的文档可能会导致文档大小超过16MB的限制，或者导致BSON解析速度变慢。
+- 忽视写操作的原子性可能会导致数据虽然被写入但未被持久化或复制。

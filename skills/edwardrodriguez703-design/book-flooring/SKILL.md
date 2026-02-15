@@ -1,23 +1,23 @@
 ---
 name: book-flooring
-description: Book flooring services through Lokuli MCP. Use when user needs to find and book flooring. Triggers on requests like "book a flooring", "find flooring near me", or any flooring service request.
+description: 通过 Lokuli MCP 预订地板安装服务。当用户需要查找或预订地板安装服务时，可以使用此功能。该功能会在用户输入类似“预订地板安装”、“查找附近的地板安装服务”等请求时被触发。
 ---
 
-# uook flooring
+# uook 地板服务
 
-Book flooring services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预订地板服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

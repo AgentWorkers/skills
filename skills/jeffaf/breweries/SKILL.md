@@ -1,7 +1,7 @@
 ---
 name: breweries
 version: 1.0.0
-description: "CLI for AI agents to find breweries for their humans. Uses Open Brewery DB. No auth required."
+description: "这是一个用于AI代理帮助人类寻找啤酒厂的命令行工具（CLI），它依赖于Open Brewery DB数据库，且无需任何身份验证。"
 homepage: https://www.openbrewerydb.org
 metadata:
   openclaw:
@@ -11,13 +11,13 @@ metadata:
     tags: ["breweries", "beer", "search", "openbrewerydb", "cli"]
 ---
 
-# Brewery Lookup
+# 酿酒厂查询工具
 
-CLI for AI agents to find breweries for their humans. "What breweries are in Portland?" — now your agent can answer.
+这是一个为AI代理设计的命令行工具，用于帮助用户查找附近的酿酒厂。例如：“波特兰有哪些酿酒厂？”——现在你的AI代理可以回答这个问题了。
 
-Uses Open Brewery DB. No account or API key needed.
+该工具使用Open Brewery数据库（Open Brewery DB）进行数据查询，无需注册账户或API密钥。
 
-## Usage
+## 使用方法
 
 ```
 "Find breweries named Sierra Nevada"
@@ -27,29 +27,29 @@ Uses Open Brewery DB. No account or API key needed.
 "What brewpubs are there?"
 ```
 
-## Commands
+## 命令列表
 
-| Action | Command |
-|--------|---------|
-| Search by name | `breweries search "name"` |
-| Find by city | `breweries city "city name"` |
-| Find by state | `breweries state "state"` |
-| Find by type | `breweries type <type>` |
-| Random | `breweries random [count]` |
+| 功能 | 命令                |
+|--------|-------------------|
+| 按名称搜索 | `breweries search "名称"`     |
+| 按城市搜索 | `breweries city "城市名称"`     |
+| 按州搜索 | `breweries state "州名称"`     |
+| 按类型搜索 | `breweries type <类型>`     |
+| 随机推荐 | `breweries random [数量]`     |
 
-### Brewery Types
-- `micro` — Most craft breweries
-- `nano` — Very small breweries
-- `regional` — Regional craft breweries
-- `brewpub` — Brewery with restaurant/bar
-- `large` — Large national breweries
-- `planning` — Breweries in planning
-- `bar` — Bars that brew on premises
-- `contract` — Contract brewing
-- `proprietor` — Alternating proprietor
-- `closed` — Closed breweries
+### 酿酒厂类型
+- `micro`  — 大多数精酿啤酒厂
+- `nano`  — 非常小的酿酒厂
+- `regional` — 地区性精酿啤酒厂
+- `brewpub` — 同时提供餐饮服务的酿酒厂
+- `large`  — 大型全国性酿酒厂
+- `planning` — 正在规划中的酿酒厂
+- `bar`  — 在店内自酿啤酒的酒吧
+- `contract` — 合作生产啤酒的酿酒厂
+- `proprietor` — 酿酒厂所有者频繁更换的酿酒厂
+- `closed` — 已关闭的酿酒厂
 
-### Examples
+### 使用示例
 
 ```bash
 breweries search "stone brewing"    # Find breweries by name
@@ -59,39 +59,40 @@ breweries type brewpub              # Find all brewpubs
 breweries random 3                  # Get 3 random breweries
 ```
 
-## Output
+## 查询结果展示
 
 ```
 🍺 Sierra Nevada Brewing Co. — Chico, California, Regional Brewery
    https://sierranevada.com
 ```
 
-## Notes
+## 注意事项
 
-- Uses Open Brewery DB API v1 (api.openbrewerydb.org)
-- No authentication required
-- No rate limiting documented
-- Returns up to 10 results per query
-- State names can be full name or abbreviation
+- 该工具基于Open Brewery DB API v1（api.openbrewerydb.org）进行数据查询
+- 无需身份验证
+- 无明确的请求速率限制
+- 每次查询最多返回10条结果
+- 州名可以是全称或缩写形式
 
 ---
 
-## Agent Implementation Notes
+## AI代理实现说明
 
-**Script location:** `{skill_folder}/breweries` (wrapper) → `scripts/breweries`
+**脚本位置：** `{skill_folder}/breweries`（封装脚本） → `scripts/breweries`
 
-**When user asks about breweries:**
-1. Run `./breweries search "name"` to find by name
-2. Run `./breweries city "city"` for location-based search
-3. Run `./breweries state "state"` for state-wide search
-4. Run `./breweries type brewpub` for specific types
-5. Run `./breweries random` for discovery/recommendations
+**当用户询问酿酒厂相关信息时：**
+1. 使用 `./breweries search "名称"` 按名称搜索酿酒厂
+2. 使用 `./breweries city "城市名称"` 按城市搜索酿酒厂
+3. 使用 `./breweries state "州名称"` 按州搜索酿酒厂
+4. 使用 `./breweries type <类型>` 按特定类型搜索酿酒厂
+5. 使用 `./breweries random` 随机推荐酿酒厂
 
-**Common patterns:**
-- "Find me a brewery in [city]" → `breweries city "[city]"`
-- "What breweries are in [state]?" → `breweries state "[state]"`
-- "Search for [name] brewery" → `breweries search "[name]"`
-- "Surprise me with a brewery" → `breweries random`
-- "Where can I get craft beer in [city]?" → `breweries city "[city]"` or `breweries type micro`
+**常见使用场景：**
+- “在[城市]找一家酿酒厂” → `breweries city "[城市名称]"
+- “[州]有哪些酿酒厂？” → `breweries state "[州名称]"
+- “搜索[名称]酿酒厂” → `breweries search "[名称]"
+- “随机推荐一家酿酒厂” → `breweries random`
+- “在[城市]哪里可以喝到精酿啤酒？” → `breweries city "[城市名称]"` 或 `breweries type micro`
 
-**Don't use for:** Bars without brewing, liquor stores, wine/spirits.
+**不适用场景：**
+- 不适用于不生产啤酒的酒吧、酒类商店或葡萄酒/烈酒销售场所

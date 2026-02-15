@@ -1,6 +1,6 @@
 ---
 name: tempest-weather
-description: Get current weather conditions from a WeatherFlow Tempest station using the Tempest REST API. Use when asked for backyard/home weather, Tempest station readings, wind/gust/rain/lightning from a specific station, or quick local weather summaries sourced from Tempest data.
+description: 使用 Tempest REST API 从 WeatherFlow 的 Tempest 站点获取当前天气状况。该功能适用于以下场景：查询后院/家中的天气信息、特定站点的风速/阵风/降雨/雷电数据，或基于 Tempest 数据生成的快速本地天气概要。
 version: 1.0.6
 license: MIT
 metadata:
@@ -19,24 +19,24 @@ metadata:
 
 # Tempest Weather
 
-Use this skill to fetch current conditions from a Tempest station or device and summarize them clearly.
+使用此技能可以从 Tempest 站点或设备获取当前天气信息，并以清晰的方式对其进行汇总。
 
-## Run the fetch script
+## 运行获取脚本
 
-Use:
+使用以下命令：
 
 ```bash
 python3 scripts/get_tempest_weather.py
 ```
 
-The script reads configuration from environment variables by default, if both station and device id are set device_id is used by default:
+该脚本默认从环境变量中读取配置信息。如果同时设置了站点 ID（station_id）和设备 ID（device_id），则会使用设备 ID：
 
-- `TEMPEST_API_TOKEN` (required)
-- `TEMPEST_STATION_ID` (optional if `TEMPEST_DEVICE_ID` is set)
-- `TEMPEST_DEVICE_ID` (optional if `TEMPEST_STATION_ID` is set)
-- `TEMPEST_UNITS` (optional: `metric` or `us`, default `us`)
+- `TEMPEST_API_TOKEN`（必需）
+- `TEMPEST_STATION_ID`（如果设置了 `TEMPEST_DEVICE_ID`，则可选）
+- `TEMPEST_DEVICE_ID`（如果设置了 `TEMPEST_STATION_ID`，则可选）
+- `TEMPEST_units`（可选：`metric` 或 `us`，默认为 `us`）
 
-## Useful command options
+## 有用的命令选项
 
 ```bash
 # Explicit station/token
@@ -52,28 +52,28 @@ python3 scripts/get_tempest_weather.py --units metric
 python3 scripts/get_tempest_weather.py --json
 ```
 
-## Output behavior
+## 输出格式
 
-- Emit concise JSON (always)
-- Include a short human summary unless `--json` is used
-- Include timestamp and source URL for traceability
+- 始终以简洁的 JSON 格式输出数据
+- 除非使用了 `--json` 选项，否则会提供简短的人类可读性摘要
+- 会包含时间戳和数据来源 URL 以便追踪
 
-## If data fetch fails
+## 如果数据获取失败
 
-- Check token validity and station/device ID
-- Retry once for transient network errors
-- Return a short actionable error message
+- 检查 API 密钥（token）的有效性以及站点/设备 ID 的正确性
+- 对于短暂的网络问题，尝试重新获取一次数据
+- 返回一条简短且易于理解的错误信息
 
-## Field mapping reference
+## 字段映射参考
 
-For Tempest observation index mapping and response notes, read:
+有关 Tempest 观测数据的字段映射和响应格式的详细信息，请参阅：
 
 - `references/tempest-api.md`
 
-## License
+## 许可证
 
-- `LICENSE` (MIT)
+- 使用 MIT 许可证（License: MIT）
 
-## Source
+## 代码来源
 
 - https://github.com/wranglerdriver/tempest-weather

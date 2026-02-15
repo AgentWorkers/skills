@@ -1,23 +1,23 @@
 ---
 name: uniswap-swap-simulation
-description: Simulate and analyze Uniswap swaps including price impact, slippage, optimal routing, and gas estimation. Use when the user asks about swap execution, routing, price impact, or MEV considerations.
+description: 模拟并分析 Uniswap 交易，包括价格影响、滑点、最优路由选择以及交易费用（gas）的估算。当用户询问交易执行、路由策略、价格变动或最大经济价值（Maximum Economic Value, MEV）相关问题时，可使用此功能。
 ---
 
-# Uniswap Swap Simulation
+# Uniswap 交易模拟
 
-## Overview
+## 概述
 
-This skill covers simulating Uniswap swaps, calculating price impact, and analyzing routing decisions.
+本技能涵盖 Uniswap 交易的模拟、价格影响的计算以及路由决策的分析。
 
-## Key Concepts
+## 关键概念
 
-- **Price Impact**: The change in pool price caused by a swap. Larger swaps have higher impact.
-- **Slippage**: Difference between expected and executed price, including price movement between submission and execution.
-- **Routing**: Finding the optimal path across pools and protocols for best execution.
+- **价格影响**：交易导致的池内价格变动。交易金额越大，价格影响越大。
+- **滑点**：预期价格与实际执行价格之间的差异，包括提交交易到执行交易之间的价格波动。
+- **路由**：在多个池和协议中寻找最佳的执行路径。
 
-## Simulating a Swap
+## 模拟交易
 
-Use the Quoter contract to simulate swaps without executing:
+使用 Quoter 合约来模拟交易（无需实际执行交易）：
 
 ```typescript
 import { createPublicClient, http, encodeFunctionData } from "viem";
@@ -41,7 +41,7 @@ const quote = await client.readContract({
 // Returns: [amountOut, sqrtPriceX96After, initializedTicksCrossed, gasEstimate]
 ```
 
-## Price Impact Calculation
+## 价格影响计算
 
 ```typescript
 function calculatePriceImpact(
@@ -57,22 +57,22 @@ function calculatePriceImpact(
 }
 ```
 
-## Slippage Tolerance
+## 滑点容忍度
 
-- **Stablecoin pairs**: 0.01% - 0.05%
-- **Major pairs** (ETH/USDC): 0.1% - 0.5%
-- **Volatile pairs**: 0.5% - 1.0%
-- **Low liquidity**: 1% - 5%
+- **稳定币对**：0.01% - 0.05%
+- **主要币对**（如 ETH/USDC）：0.1% - 0.5%
+- **高波动性币对**：0.5% - 1.0%
+- **流动性较低的交易**：1% - 5%
 
-Calculate minimum amount out:
+计算最小交易金额：
 
 ```typescript
 const minAmountOut = (amountOut * (10000n - BigInt(slippageBps))) / 10000n;
 ```
 
-## Multi-hop Routing
+## 多跳路由
 
-For tokens without direct pools, route through intermediary tokens:
+对于没有直接交易池的代币，需要通过中间代币进行路由：
 
 ```typescript
 // ETH -> USDC -> DAI (two hops)
@@ -89,20 +89,20 @@ const quote = await client.readContract({
 });
 ```
 
-## Gas Estimation
+## 交易手续费估算
 
-Typical gas costs by swap complexity:
+根据交易复杂度，典型的手续费成本如下：
 
-- Single hop: ~130,000 gas
-- Two hops: ~200,000 gas
-- Three hops: ~270,000 gas
+- 单跳交易：约 130,000 gas
+- 两跳交易：约 200,000 gas
+- 三跳交易：约 270,000 gas
 
-Always add a 15-20% buffer to gas estimates.
+在手续费估算中始终保留 15-20% 的缓冲空间。
 
-## MEV Considerations
+## MEV（最大经济价值）考虑
 
-When building swap tools:
+在开发交易模拟工具时：
 
-- Recommend private RPCs (Flashbots Protect) for large swaps
-- Warn users about sandwich attack risk for high-impact swaps
-- Suggest using deadline parameters to limit exposure
+- 建议对大额交易使用私有的 RPC（如 Flashbots Protect）进行保护
+- 对于影响较大的交易，提醒用户注意“三明治攻击”风险
+- 建议使用截止时间参数来限制交易风险

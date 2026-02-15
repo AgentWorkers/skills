@@ -1,341 +1,334 @@
 ---
 slug: mbti-personality-test
 name: MBTI Personality Test
-description: Myers-Briggs Type Indicator test - 70 questions to determine your 4-letter personality type
+description: 迈尔斯-布里格斯类型指标（Myers-Briggs Type Indicator, MBTI）测试——包含70个问题，用于确定你的四字母性格类型
 user-invocable: true
 ---
 
-# MBTI Personality Test
+# MBTI性格测试
 
-Take the Myers-Briggs Type Indicator (MBTI) personality test to discover your 4-letter personality type.
+通过迈尔斯-布里格斯类型指标（MBTI）性格测试，来发现你的四字母性格类型。
 
-## Instructions
+## 使用说明
 
-Read each question below and choose the option that best describes you. After answering all 70 questions, follow the scoring instructions to calculate your personality type.
+阅读下面的每个问题，并选择最能描述你的选项。回答完所有70个问题后，按照评分说明来计算你的性格类型。
 
-Answer honestly based on how you actually are, not how you wish to be.
+请根据你的真实情况诚实地回答，而不是你希望成为的样子。
 
-## The 70 Questions
+## 70个问题
 
-Answer each question by choosing the option that best describes you. Record the **value** (letter in parentheses) for your choice.
+对于每个问题，选择最能描述你的选项，并记录下你的选择对应的字母（括号内）。
 
-**Q1.** At a party do you:
-- **(e)** Interact with many, including strangers
-- **(i)** Interact with a few, known to you
+**Q1.** 在聚会上，你会：
+- **(e)** 与很多人互动，包括陌生人
+- **(i)** 与少数你认识的人互动
 
-**Q2.** Are you more:
-- **(s)** Realistic than speculative
-- **(n)** Speculative than realistic
+**Q2.** 你更倾向于：
+- **(s)** 现实主义者，而不是空想家
+- **(n)** 空想家，而不是现实主义者
 
-**Q3.** Is it worse to:
-- **(s)** Have your "head in the clouds"
-- **(n)** Be "in a rut"
+**Q3.** 下列哪种情况更糟糕：
+- **(s)** 陷入幻想
+- **(n)** 一成不变
 
-**Q4.** Are you more impressed by:
-- **(t)** Principles
-- **(f)** Emotions
+**Q4.** 你更被：
+- **(t)** 原则所打动
+- **(f)** 情感所打动
 
-**Q5.** Are more drawn toward the:
-- **(t)** Convincing
-- **(f)** Touching
+**Q5.** 你更被：
+- **(t)** 有说服力的事物所吸引
+- **(f)** 有共鸣的事物所吸引
 
-**Q6.** Do you prefer to work:
-- **(j)** To deadlines
-- **(p)** Just "whenever"
+**Q6.** 你更喜欢按照：
+- **(j)** 截止日期来工作
+- **(p)** 随时工作
 
-**Q7.** Do you tend to choose:
-- **(j)** Rather carefully
-- **(p)** Somewhat impulsively
+**Q7.** 你通常会：
+- **(j)** 谨慎地做出选择
+- **(p)** 有些冲动地做出选择
 
-**Q8.** At parties do you:
-- **(e)** Stay late, with increasing energy
-- **(i)** Leave early with decreased energy
+**Q8.** 在聚会上，你会：
+- **(e)** 待到很晚，且精力越来越充沛
+- **(i)** 很早就离开，且精力逐渐减弱
 
-**Q9.** Are you more attracted to:
-- **(s)** Sensible people
-- **(n)** Imaginative people
+**Q9.** 你更被：
+- **(s)** 理性的人所吸引
+- **(n)** 富有想象力的人所吸引
 
-**Q10.** Are you more interested in:
-- **(s)** What is actual
-- **(n)** What is possible
+**Q10.** 在评判他人时，你更受：
+- **(t)** 规则的影响
+- **(f)** 情境的影响
 
-**Q11.** In judging others are you more swayed by:
-- **(t)** Laws than circumstances
-- **(f)** Circumstances than laws
+**Q11.** 在与他人交往时，你的倾向是：
+- **(t)** 客观的
+- **(f)** 主观的
 
-**Q12.** In approaching others is your inclination to be somewhat:
-- **(t)** Objective
-- **(f)** Personal
+**Q12.** 你更：
+- **(j)** 准时
+- **(p)** 休闲
 
-**Q13.** Are you more:
-- **(j)** Punctual
-- **(p)** Leisurely
+**Q13.** 事情未完成会让你更困扰：
+- **(j)** 还是**已完成**
 
-**Q14.** Does it bother you more having things:
-- **(j)** Incomplete
-- **(p)** Completed
+**Q14.** 在你的社交圈中，你会：
+- **(e)** 了解他人的动态
+- **(i)** 落后于新闻
 
-**Q15.** In your social groups do you:
-- **(e)** Keep abreast of other's happenings
-- **(i)** Get behind on the news
+**Q15.** 在做日常事务时，你更可能：
+- **(s)** 按照常规方式做事
+- **(n)** 按自己的方式做事
 
-**Q16.** In doing ordinary things are you more likely to:
-- **(s)** Do it the usual way
-- **(n)** Do it your own way
+**Q16.** 作家应该：
+- **(s)** 说清楚自己的意思，并且言行一致
+- **(n)** 通过比喻来表达
 
-**Q17.** Writers should:
-- **(s)** Say what they mean and mean what they say
-- **(n)** Express things more by use of analogy
+**Q17.** 你更看重：
+- **(t)** 思维的一致性
+- **(f)** 和谐的人际关系
 
-**Q18.** Which appeals to you more:
-- **(t)** Consistency of thought
-- **(f)** Harmonious human relationships
+**Q18.** 你更喜欢：
+- **(t)** 逻辑判断
+- **(f)** 价值判断
 
-**Q19.** Are you more comfortable in making:
-- **(t)** Logical judgments
-- **(f)** Value judgments
+**Q19.** 你希望事情：
+- **(j)** 明确且确定
+- **(p)** 不确定且未定
 
-**Q20.** Do you want things:
-- **(j)** Settled and decided
-- **(p)** Unsettled and undecided
+**Q20.** 你会认为自己更：
+- **(j)** 认真且果断
+- **(p)** 随和
 
-**Q21.** Would you say you are more:
-- **(j)** Serious and determined
-- **(p)** Easy-going
+**Q21.** 在打电话时，你会：
+- **(e)** 很少质疑通话内容
+- **(i)** 预先练习要说的话
 
-**Q22.** In phoning do you:
-- **(e)** Rarely question that it will all be said
-- **(i)** Rehearse what you'll say
-
-**Q23.** Facts:
-- **(s)** Speak for themselves
-- **(n)** Illustrate principles
-
-**Q24.** Are visionaries:
-- **(s)** Somewhat annoying
-- **(n)** Rather fascinating
-
-**Q25.** Are you more often:
-- **(t)** A cool-headed person
-- **(f)** A warm-hearted person
-
-**Q26.** Is it worse to be:
-- **(t)** Unjust
-- **(f)** Merciless
-
-**Q27.** Should one usually let events occur:
-- **(j)** By careful selection and choice
-- **(p)** Randomly and by chance
-
-**Q28.** Do you feel better about:
-- **(j)** Having purchased
-- **(p)** Having the option to buy
-
-**Q29.** In company do you:
-- **(e)** Initiate conversation
-- **(i)** Wait to be approached
-
-**Q30.** Common sense is:
-- **(s)** Rarely questionable
-- **(n)** Frequently questionable
-
-**Q31.** Children often do not:
-- **(s)** Make themselves useful enough
-- **(n)** Exercise their fantasy enough
-
-**Q32.** In making decisions do you feel more comfortable with:
-- **(t)** Standards
-- **(f)** Feelings
-
-**Q33.** Are you more:
-- **(t)** Firm than gentle
-- **(f)** Gentle than firm
-
-**Q34.** Which is more admirable:
-- **(j)** The ability to organize and be methodical
-- **(p)** The ability to adapt and make do
-
-**Q35.** Do you put more value on:
-- **(j)** Infinite
-- **(p)** Open-minded
-
-**Q36.** Does new and non-routine interaction:
-- **(e)** Stimulate and energize you
-- **(i)** Tax your reserves
-
-**Q37.** Are you more frequently:
-- **(s)** A practical sort of person
-- **(n)** A fanciful sort of person
-
-**Q38.** Are you more likely to:
-- **(s)** See how others are useful
-- **(n)** See how others see
-
-**Q39.** Which is more satisfying:
-- **(t)** To discuss an issue thoroughly
-- **(f)** To arrive at agreement on an issue
-
-**Q40.** Which rules you more:
-- **(t)** Your head
-- **(f)** Your heart
-
-**Q41.** Are you more comfortable with work that:
-- **(j)** Contracted
-- **(p)** Done on a casual basis
-
-**Q42.** Do you tend to look for:
-- **(j)** The orderly
-- **(p)** Whatever turns up
-
-**Q43.** Do you prefer:
-- **(e)** Many friends with brief contact
-- **(i)** A few friends with more lengthy contact
-
-**Q44.** Do you go more by:
-- **(s)** Facts
-- **(n)** Principles
-
-**Q45.** Are you more interested in:
-- **(s)** Production and distribution
-- **(n)** Design and research
-
-**Q46.** Which is more of a compliment:
-- **(t)** "There is a very logical person."
-- **(f)** "There is a very sentimental person."
-
-**Q47.** Do you value in yourself more that you are:
-- **(t)** Unwavering
-- **(f)** Devoted
-
-**Q48.** Do you more often prefer the:
-- **(j)** Final and unalterable statement
-- **(p)** Tentative and preliminary statement
-
-**Q49.** Are you more comfortable:
-- **(j)** After a decision
-- **(p)** Before a decision
-
-**Q50.** Do you:
-- **(e)** Speak easily and at length with strangers
-- **(i)** Find little to say to strangers
-
-**Q51.** Are you more likely to trust your:
-- **(s)** Experience
-- **(n)** Hunch
-
-**Q52.** Do you feel:
-- **(s)** More practical than ingenious
-- **(n)** More ingenious than practical
-
-**Q53.** Which person is more to be complimented – one of:
-- **(t)** Clear reason
-- **(f)** Strong feeling
-
-**Q54.** Are you inclined more to be:
-- **(t)** Fair-minded
-- **(f)** Sympathetic
-
-**Q55.** Is it preferable mostly to:
-- **(j)** Make sure things are arranged
-- **(p)** Just let things happen
-
-**Q56.** In relationships should most things be:
-- **(j)** Re-negotiable
-- **(p)** Random and circumstantial
-
-**Q57.** When the phone rings do you:
-- **(e)** Hasten to get to it first
-- **(i)** Hope someone else will answer
-
-**Q58.** Do you prize more in yourself:
-- **(s)** A strong sense of reality
-- **(n)** A vivid imagination
-
-**Q59.** Are you drawn more to:
-- **(s)** Fundamentals
-- **(n)** Overtones
-
-**Q60.** Which seems the greater error:
-- **(t)** To be too passionate
-- **(f)** To be too objective
-
-**Q61.** Do you see yourself as basically:
-- **(t)** Hard-headed
-- **(f)** Soft-hearted
-
-**Q62.** Which situation appeals to you more:
-- **(j)** The structured and scheduled
-- **(p)** The unstructured and unscheduled
-
-**Q63.** Are you a person that is more:
-- **(j)** Routinized than whimsical
-- **(p)** Whimsical than routinized
-
-**Q64.** Are you more inclined to be:
-- **(e)** Easy to approach
-- **(i)** Somewhat reserved
-
-**Q65.** In writings do you prefer:
-- **(s)** The more literal
-- **(n)** The more figurative
-
-**Q66.** Is it harder for you to:
-- **(s)** Identify with others
-- **(n)** Utilize others
-
-**Q67.** Which do you wish more for yourself:
-- **(t)** Clarity of reason
-- **(f)** Strength of compassion
-
-**Q68.** Which is the greater fault:
-- **(t)** Being indiscriminate
-- **(f)** Being critical
-
-**Q69.** Do you prefer the:
-- **(j)** Planned event
-- **(p)** Unplanned event
-
-**Q70.** Do you tend to be more:
-- **(j)** Deliberate than spontaneous
-- **(p)** Spontaneous than deliberate
+**Q22.** 事实：
+- **(s)** 本身就很清楚
+- **(n)** 需要通过例子来说明
+
+**Q23.** 有远见的人：
+- **(s)** 有时会让人感到厌烦
+- **(n)** 通常很吸引人
+
+**Q25.** 你更常是：
+- **(t)** 冷静的人
+- **(f)** 温暖的人
+
+**Q26.** 下列哪种情况更糟糕：
+- **(t)** 不公正
+- **(f)** 无情
+
+**Q27.** 通常情况下，事情应该：
+- **(j)** 通过仔细的选择和安排发生
+- **(p)** 随机发生
+
+**Q28.** 你会觉得：
+- **(j)** 购买了东西更好
+- **(p)** 有购买的选择更好
+
+**Q29.** 在公司里，你会：
+- **(e)** 主动发起对话
+- **(i)** 等别人先开口
+
+**Q30.** 常识：
+- **(s)** 几乎不需要质疑
+- **(n)** 经常需要质疑
+
+**Q31.** 孩子们往往：
+- **(s)** 不够有用
+- **(n)** 不够发挥想象力
+
+**Q32.** 在做决定时，你更依赖：
+- **(t)** 标准
+- **(f)** 感情
+
+**Q33.** 你更：
+- **(t)** 坚定
+- **(f)** 温柔
+
+**Q34.** 下列哪种品质更值得钦佩：
+- **(j)** 有组织和条理的能力
+- **(p)** 适应和应变的能力
+
+**Q35.** 你更看重：
+- **(j)** 无限的可能性
+- **(p)** 开放的心态
+
+**Q36.** 新颖和非常规的互动：
+- **(e)** 会让你感到兴奋和充满活力
+- **(i)** 会让你感到疲惫
+
+**Q37.** 你更常是：
+- **(s)** 实际的人
+- **(n)** 幻想的人
+
+**Q38.** 你更可能：
+- **(s)** 看到他人的价值
+- **(n)** 看到他人眼中的自己
+
+**Q39.** 下列哪种情况更令人满足：
+- **(t)** 彻底讨论一个问题
+- **(f)** 就一个问题达成一致
+
+**Q40.** 你更受：
+- **(t)** 头脑的支配
+- **(f)** 心情的支配
+
+**Q41.** 你更喜欢：
+- **(j)** 有明确合同的工作
+- **(p)** 随意的工作
+
+**Q42** 你倾向于：
+- **(j)** 寻找有序的事物
+- **(p)** 随机出现的事物
+
+**Q43** 你更喜欢：
+- **(e)** 有很多短暂联系的朋友
+- **(i)** 少数关系更深入的朋友
+
+**Q44** 你更依赖：
+- **(s)** 事实
+- **(n)** 原则
+
+**Q45** 你更感兴趣的是：
+- **(s)** 生产和分配
+- **(n)** 设计和研究
+
+**Q46** 下列哪种赞美更合适：
+- **(t)** “这个人非常理性。”
+- **(f)** “这个人非常感性。”
+
+**Q47** 你更看重自己的是：
+- **(t)** 坚定不移
+- **(f)** 奉献精神
+
+**Q48** 你更倾向于：
+- **(j)** 最终且不可改变的陈述
+- **(p)** 初步且可修改的陈述
+
+**Q49** 你更适应：
+- **(j)** 在做出决定之后
+- **(p)** 在做出决定之前
+
+**Q50** 你会：
+- **(e)** 与陌生人轻松且详细地交谈
+- **(i)** 与陌生人几乎无话可说
+
+**Q51** 你更倾向于信任：
+- **(s)** 自己的经验
+- **(n)** 直觉
+
+**Q52** 你感觉自己：
+- **(s)** 更实际
+- **(n)** 更富有创造力
+
+**Q53** 下列哪种人更值得称赞：
+- **(t)** 基于清晰理由的人
+- **(f)** 基于强烈情感的人
+
+**Q54** 你更倾向于：
+- **(t)** 公平客观
+- **(f)** 同情他人
+
+**Q55** 你更希望：
+- **(j)** 事情被妥善安排
+- **(p)** 顺其自然
+
+**Q56** 在人际关系中，大多数事情应该：
+- **(j)** 可以重新协商
+- **(p)** 随机发生
+
+**Q57** 当电话响起时，你会：
+- **(e)** 迅速接听
+- **(i)** 希望别人来接
+
+**Q58** 你更看重自己的是：
+- **(s)** 强烈的现实感
+- **(n)** 生动的想象力
+
+**Q59** 你更被：
+- **(s)** 基础知识所吸引
+- **(n)** 情感层面所吸引
+
+**Q60** 下列哪种错误更严重：
+- **(t)** 太过于热情
+- **(f)** 太过于客观
+
+**Q61** 你认为自己是：
+- **(t)** 冷静的
+- **(f)** 温柔的
+
+**Q62** 下列哪种情况更吸引你：
+- **(j)** 有结构和计划的事情
+- **(p)** 无结构和随机的事情
+
+**Q63** 你是一个：
+- **(j)** 做事有条理的人
+- **(p)** 做事随性的人
+
+**Q64** 你更倾向于：
+- **(e)** 容易接近的人
+- **(i)** 有些保守的人
+
+**Q65** 在写作中，你更喜欢：
+- **(s)** 直白的表达
+- **(n)** 隐喻性的表达
+
+**Q66** 对于**与他人产生共鸣**或**利用他人**，哪个对你来说更难？
+
+**Q67** 你更希望自己拥有：
+- **(t)** 清晰的理性
+- **(f)** 强烈的同情心
+
+**Q68** 下列哪种错误更严重：
+- **(t)** 不加区分
+- **(f)** 过于苛刻**
+
+**Q69** 你更喜欢：
+- **(j)** 有计划的事件
+- **(p)** 无计划的事件**
+
+**Q70** 你通常更：
+- **(j)** 经过深思熟虑
+- **(p)** 自发地行动
 
 ---
 
-## How to Score Your Results
+## 如何评分
 
-After answering all 70 questions above, follow these steps:
+回答完所有70个问题后，请按照以下步骤操作：
 
-### Step 1: Count Your Answers
+### 第一步：统计答案
 
-Go through your 70 answers and count how many times you chose each letter:
-- Count how many **e** and how many **i** (should total 10)
-- Count how many **s** and how many **n** (should total 20)
-- Count how many **t** and how many **f** (should total 20)
-- Count how many **j** and how many **p** (should total 20)
+数一数你选择了每个字母的次数：
+- 数一数有多少次选择了 **e** 和 **i**（总数应为10）
+- 数一数有多少次选择了 **s** 和 **n**（总数应为20）
+- 数一数有多少次选择了 **t** 和 **f**（总数应为20）
+- 数一数有多少次选择了 **j** 和 **p**（总数应为20）
 
-### Step 2: Calculate Percentages
+### 第二步：计算百分比
 
-For each dimension, calculate the percentage:
-- **E%** = (number of e ÷ 10) × 100, and **I%** = 100 - E%
-- **S%** = (number of s ÷ 20) × 100, and **N%** = 100 - S%
-- **T%** = (number of t ÷ 20) × 100, and **F%** = 100 - T%
-- **J%** = (number of j ÷ 20) × 100, and **P%** = 100 - J%
+对于每个维度，计算百分比：
+- **E%** = (选择的e的数量 ÷ 10) × 100，**I%** = 100 - E%
+- **S%** = (选择的s的数量 ÷ 20) × 100，**N%** = 100 - S%
+- **T%** = (选择的t的数量 ÷ 20) × 100，**F%** = 100 - T%
+- **J%** = (选择的j的数量 ÷ 20) × 100，**P%** = 100 - J%
 
-### Step 3: Determine Your Type
+### 第三步：确定你的性格类型
 
-For each dimension, choose the letter you scored higher on:
-- **E or I**: Whichever has the higher count
-- **S or N**: Whichever has the higher count
-- **T or F**: Whichever has the higher count
-- **J or P**: Whichever has the higher count
+对于每个维度，选择得分较高的那个字母：
+- **E或I**：选择次数较多的那个
+- **S或N**：选择次数较多的那个
+- **T或F**：选择次数较多的那个
+- **J或P**：选择次数较多的那个
 
-Combine these four letters in order to get your personality type.
+将这四个字母组合起来，得到你的性格类型。
 
-**Example:** If you scored higher on I, N, T, and J, your type is **INTJ**
+**示例：** 如果你在I、N、T和J上的得分较高，那么你的性格类型是 **INTJ**。
 
-### Step 4: Display Your Results
+### 第四步：展示结果
 
-Present your results in this format:
+用以下格式展示你的结果：
 
 ```
 ═══════════════════════════════════════════════════
@@ -354,43 +347,43 @@ Judging (J)          XX%  |  XX%  Perceiving (P)
 ═══════════════════════════════════════════════════
 ```
 
-## The 16 Personality Types
+## 16种性格类型
 
-### Analysts (NT)
-- **INTJ** - The Architect: Strategic, analytical, independent thinker with high standards
-- **INTP** - The Logician: Innovative, curious, theoretical problem-solver
-- **ENTJ** - The Commander: Bold, strategic leader who enjoys organizing and planning
-- **ENTP** - The Debater: Quick-witted, innovative, loves intellectual challenges
+### 分析者（NT）
+- **INTJ** - 架构师：具有战略思维、分析能力强、独立且标准高的类型
+- **INTP** - 逻辑学家：创新、好奇、善于理论解决问题的类型
+- **ENTJ** - 指挥官：大胆、具有战略眼光，喜欢组织和规划
+- **ENTP** - 辩论者：思维敏捷、富有创新精神，喜欢智力挑战
 
-### Diplomats (NF)
-- **INFJ** - The Advocate: Idealistic, organized, insightful with strong values
-- **INFP** - The Mediator: Thoughtful, idealistic, driven by values and beliefs
-- **ENFJ** - The Protagonist: Charismatic, inspiring leader focused on helping others
-- **ENFP** - The Campaigner: Enthusiastic, creative, sociable free spirit
+### 外交家（NF）
+- **INFJ** - 倡导者：理想主义、有条理、有深刻见解且价值观坚定
+- **INFP** - 调解者：体贴、理想主义，受价值观和信念驱动
+- **ENFJ** **主角**：富有魅力、善于激励他人
+- **ENFP** **活动家**：热情洋溢、富有创造力、善于社交
 
-### Sentinels (SJ)
-- **ISTJ** - The Logistician: Practical, fact-minded, reliable organizer
-- **ISFJ** - The Defender: Dedicated, warm protector with strong sense of duty
-- **ESTJ** - The Executive: Organized, practical administrator who values tradition
-- **ESFJ** - The Consul: Caring, social, popular with strong sense of duty
+### 守护者（SJ）
+- **ISTJ** - 逻辑学家：务实、注重事实、可靠的组织者
+- **ISFJ** **捍卫者**：忠诚、富有责任感
+- **ESTJ** **执行者**：有条理、务实的管理者，重视传统
+- **ESFJ** **领事**：关心他人、善于社交、具有强烈的责任感
 
-### Explorers (SP)
-- **ISTP** - The Virtuoso: Bold, practical experimenter and master of tools
-- **ISFP** - The Adventurer: Flexible, charming artist who explores life
-- **ESTP** - The Entrepreneur: Energetic, perceptive, lives in the moment
-- **ESFP** - The Entertainer: Spontaneous, enthusiastic, loves being center stage
+### 探索者（SP）
+- **ISTP** **艺术家**：大胆、务实、善于实验
+- **ISFP** **冒险家**：灵活、富有魅力、热爱探索生活
+- **ESTP** **企业家**：充满活力、善于观察、活在当下
+- **ESFP** **表演者**：随性、热情、喜欢成为焦点
 
 ---
 
-## Complete the Assessment
+## 完成测试
 
-Now that you understand the process, complete your MBTI personality test:
+现在你了解了测试流程，请完成你的MBTI性格测试：
 
-1. Go through all 70 questions above
-2. For each question, choose the option that best describes you (record the letter in parentheses)
-3. Count how many times you selected each letter (e, i, s, n, t, f, j, p)
-4. Calculate the percentages for each dimension
-5. Determine your 4-letter personality type
-6. Display your results using the format shown above
+1. 仔细阅读上述所有70个问题
+2. 对于每个问题，选择最能描述你的选项（并记录下对应的字母）
+3. 统计每个字母的出现次数（e, i, s, n, t, f, j, p）
+4. 计算每个维度的百分比
+5. 确定你的四字母性格类型
+6. 使用上述格式展示你的结果
 
-Take your time and answer honestly.
+请花时间认真完成测试。

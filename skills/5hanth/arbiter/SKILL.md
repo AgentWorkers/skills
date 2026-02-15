@@ -1,65 +1,65 @@
 ---
 name: arbiter
-description: Push decisions to Arbiter Zebu for async human review. Use when you need human input on plans, architectural choices, or approval before proceeding.
+description: 将决策提交给仲裁者 Zebu 进行异步人工审核。当您需要在计划、架构选择或继续执行之前获得人工输入或批准时，请使用此方法。
 metadata: {"openclaw":{"requires":{"bins":["arbiter-push"]}}}
 ---
 
-# Arbiter Skill
+# Arbiter 技能
 
-Push decisions to Arbiter Zebu for async human review. Use when you need human input on plans, architectural choices, or approval before proceeding.
+将决策推送到 Arbiter Zebu 进行异步人工审核。当您需要对计划、架构选择或在继续执行前需要获得人工批准时，请使用此功能。
 
-## Installation
+## 安装
 
-**Quick install via ClawHub:**
+**通过 ClawHub 快速安装：**
 ```bash
 clawhub install arbiter
 ```
 
-**Or via bun (makes CLI commands available globally):**
+**或通过 bun（使 CLI 命令全局可用）：**
 ```bash
 bun add -g arbiter-skill
 ```
 
-**Or manual:**
+**或手动安装：**
 ```bash
 git clone https://github.com/5hanth/arbiter-skill.git
 cd arbiter-skill && npm install && npm run build
 ln -s $(pwd) ~/.clawdbot/skills/arbiter
 ```
 
-### Prerequisites
+### 先决条件
 
-- [Arbiter Zebu](https://github.com/5hanth/arbiter-zebu) bot running (or just `bunx arbiter-zebu`)
-- `~/.arbiter/queue/` directory (created automatically by the bot)
+- [Arbiter Zebu](https://github.com/5hanth/arbiter-zebu) 机器人正在运行（或只需运行 `bunx arbiter-zebu`）
+- `~/.arbiter/queue/` 目录（由机器人自动创建）
 
-## Environment Variables
+## 环境变量
 
-Set these in your agent's environment for automatic agent/session detection:
+在您的代理环境中设置以下变量，以便自动检测代理/会话：
 
-| Variable | Description | Example |
+| 变量 | 描述 | 示例 |
 |----------|-------------|---------|
-| `CLAWDBOT_AGENT` | Agent ID | `ceo`, `swe1` |
-| `CLAWDBOT_SESSION` | Session key | `agent:ceo:main` |
+| `CLAWDBOT_AGENT` | 代理 ID | `ceo`, `swe1` |
+| `CLAWDBOT_SESSION` | 会话密钥 | `agent:ceo:main` |
 
-## When to Use
+## 使用场景
 
-- Plan review before implementation
-- Architectural decisions with tradeoffs
-- Anything blocking that needs human judgment
-- Multiple related decisions as a batch
+- 在实施前审查计划
+- 需要权衡的各种架构决策
+- 任何需要人工判断的阻碍性事项
+- 多个相关决策的批量处理
 
-**Do NOT use for:**
-- Simple yes/no that doesn't need explanation
-- Urgent real-time decisions (use direct message instead)
-- Technical questions you can research yourself
+**请勿用于：**
+- 无需解释的简单“是/否”问题
+- 紧急的实时决策（请使用直接消息）
+- 可以自行研究的技术问题
 
-## Tools
+## 工具
 
 ### arbiter_push
 
-Create a decision plan for human review.
+创建一个决策计划以供人工审核。
 
-**CLI:** `arbiter-push '<json>'` — takes a single JSON argument containing all fields.
+**CLI：`arbiter-push '<json>'`** — 接受一个包含所有字段的 JSON 参数。
 
 ```bash
 arbiter-push '{
@@ -93,32 +93,31 @@ arbiter-push '{
 }'
 ```
 
-**JSON Fields:**
+**JSON 字段：**
 
-| Field | Required | Description |
+| 字段 | 是否必填 | 描述 |
 |-------|----------|-------------|
-| `title` | Yes | Plan title |
-| `tag` | No | Tag for filtering (e.g., project name) |
-| `context` | No | Background for reviewer |
-| `priority` | No | `low`, `normal`, `high`, `urgent` (default: normal) |
-| `notify` | No | Session to notify when complete |
-| `agent` | No | Agent ID (auto-detected from `CLAWDBOT_AGENT` env) |
-| `session` | No | Session key (auto-detected from `CLAWDBOT_SESSION` env) |
-| `decisions` | Yes | Array of decisions |
+| `title` | 是 | 计划标题 |
+| `tag` | 否 | 用于过滤的标签（例如，项目名称） |
+| `context` | 否 | 供审核者参考的背景信息 |
+| `priority` | 否 | `low`, `normal`, `high`, `urgent`（默认：normal） |
+| `notify` | 否 | 完成后通知的会话 |
+| `agent` | 否 | 代理 ID（从 `CLAWDBOT_AGENT` 环境变量自动检测） |
+| `session` | 否 | 会话密钥（从 `CLAWDBOT_SESSION` 环境变量自动检测） |
+| `decisions` | 是 | 决策数组 |
 
-**Decision object:**
+**决策对象：**
 
-| Field | Required | Description |
+| 字段 | 是否必填 | 描述 |
 |-------|----------|-------------|
-| `id` | Yes | Unique ID within plan |
-| `title` | Yes | Decision title |
-| `context` | No | Explanation for reviewer |
-| `options` | Yes | Array of `{key, label, note?}` |
-| `allowCustom` | No | Allow free-text answer (default: false) |
-| `default` | No | Suggested option key |
+| `id` | 是 | 计划内的唯一 ID |
+| `title` | 是 | 决策标题 |
+| `context` | 否 | 供审核者参考的说明 |
+| `options` | 是 | `{key, label, note?}` 的数组 |
+| `allowCustom` | 否 | 是否允许自由文本回答（默认：false） |
+| `default` | 否 | 建议的选项键 |
 
-**Returns:**
-
+**返回值：**
 ```json
 {
   "planId": "abc123",
@@ -130,9 +129,9 @@ arbiter-push '{
 
 ### arbiter_status
 
-Check the status of a decision plan.
+检查决策计划的状态。
 
-**CLI:** `arbiter-status <plan-id>` or `arbiter-status --tag <tag>`
+**CLI：`arbiter-status <plan-id>` 或 `arbiter-status --tag <tag>`
 
 ```bash
 arbiter-status abc12345
@@ -140,8 +139,7 @@ arbiter-status abc12345
 arbiter-status --tag nft-marketplace
 ```
 
-**Returns:**
-
+**返回值：**
 ```json
 {
   "planId": "abc123",
@@ -160,9 +158,9 @@ arbiter-status --tag nft-marketplace
 
 ### arbiter_get
 
-Get answers from a completed plan.
+获取已完成计划的答案。
 
-**CLI:** `arbiter-get <plan-id>` or `arbiter-get --tag <tag>`
+**CLI：`arbiter-get <plan-id>` 或 `arbiter-get --tag <tag>`
 
 ```bash
 arbiter-get abc12345
@@ -170,8 +168,7 @@ arbiter-get abc12345
 arbiter-get --tag nft-marketplace
 ```
 
-**Returns:**
-
+**返回值：**
 ```json
 {
   "planId": "abc123",
@@ -185,8 +182,7 @@ arbiter-get --tag nft-marketplace
 }
 ```
 
-**Error if not complete:**
-
+**如果未完成：**
 ```json
 {
   "error": "Plan not complete",
@@ -197,20 +193,19 @@ arbiter-get --tag nft-marketplace
 
 ### arbiter_await
 
-Block until plan is complete (with timeout).
+阻塞直到计划完成（带有超时设置）。
 
 ```bash
 arbiter-await abc12345 --timeout 3600
 ```
 
-Polls every 30 seconds until complete or timeout.
+每 30 秒检查一次，直到计划完成或超时。
 
-**Returns:** Same as `arbiter_get` on completion.
+**返回值：** 完成后与 `arbiter_get` 的返回值相同。
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Plan Review
-
+### 示例 1：计划审查
 ```bash
 # Push plan decisions (single JSON argument)
 RESULT=$(arbiter-push '{"title":"Clean IT i18n Plan","tag":"clean-it","priority":"high","notify":"agent:swe3:main","decisions":[{"id":"library","title":"i18n Library","options":[{"key":"i18next","label":"i18next"},{"key":"formatjs","label":"FormatJS"}]},{"id":"keys","title":"Key Structure","options":[{"key":"flat","label":"Flat (login.button)"},{"key":"nested","label":"Nested ({login:{button}})"}]}]}')
@@ -219,8 +214,7 @@ PLAN_ID=$(echo $RESULT | jq -r '.planId')
 echo "Pushed plan $PLAN_ID — waiting for human review"
 ```
 
-### Example 2: Check and Proceed
-
+### 示例 2：检查后继续执行
 ```bash
 # Check if decisions are ready
 STATUS=$(arbiter-status --tag nft-marketplace)
@@ -235,8 +229,7 @@ else
 fi
 ```
 
-### Example 3: Blocking Wait
-
+### 示例 3：等待结果
 ```bash
 # Wait up to 1 hour for decisions
 ANSWERS=$(arbiter-await abc12345 --timeout 3600)
@@ -249,26 +242,25 @@ else
 fi
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Batch related decisions** — Don't push one at a time
-2. **Provide context** — Human needs to understand tradeoffs
-3. **Use tags** — Makes filtering easy (`--tag project-name`)
-4. **Set notify** — So blocked agents get woken up
-5. **Use priority sparingly** — Reserve `urgent` for true blockers
+1. **批量处理相关决策** — 不要一次只推送一个决策
+2. **提供背景信息** — 人工审核者需要了解各种权衡因素
+3. **使用标签** — 便于过滤（例如：`--tag project-name`）
+4. **设置通知** — 以便被阻塞的代理能够收到通知
+5. **谨慎使用优先级** — 将 `urgent` 状态保留给真正需要紧急处理的决策
 
-## File Locations
+## 文件位置
 
-| Path | Purpose |
+| 路径 | 用途 |
 |------|---------|
-| `~/.arbiter/queue/pending/` | Plans awaiting review |
-| `~/.arbiter/queue/completed/` | Answered plans (archive) |
-| `~/.arbiter/queue/notify/` | Agent notifications |
+| `~/.arbiter/queue/pending/` | 待审核的计划 |
+| `~/.arbiter/queue/completed/` | 已回答的计划（存档） |
+| `~/.arbiter/queue/notify/` | 代理通知 |
 
-## Checking Notifications (Agent Heartbeat)
+## 检查通知（代理心跳）
 
-In your HEARTBEAT.md, add:
-
+在您的 HEARTBEAT.md 文件中添加以下内容：
 ```markdown
 ## Check Arbiter Notifications
 
@@ -277,15 +269,15 @@ In your HEARTBEAT.md, add:
 3. Delete notification file after processing
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Plan not showing in Arbiter | Check file is valid YAML frontmatter |
-| Answers not appearing | Check `arbiter_status`, may be incomplete |
-| Notification not received | Ensure `--notify` was set correctly |
+| 计划未显示在 Arbiter 中 | 确保文件具有有效的 YAML 标头信息 |
+| 回答未显示 | 检查 `arbiter_status`，可能计划尚未完成 |
+| 未收到通知 | 确保正确设置了 `--notify` 参数 |
 
-## See Also
+## 参见
 
-- [Arbiter Zebu Architecture](https://github.com/5hanth/arbiter-zebu/blob/main/ARCHITECTURE.md)
-- [Arbiter Zebu Bot](https://github.com/5hanth/arbiter-zebu)
+- [Arbiter Zebu 架构](https://github.com/5hanth/arbiter-zebu/blob/main/ARCHITECTURE.md)
+- [Arbiter Zebu 机器人](https://github.com/5hanth/arbiter-zebu)

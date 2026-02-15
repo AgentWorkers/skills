@@ -1,41 +1,41 @@
 ---
 name: weekly-report
-description: Generate consistent, professional weekly status reports for teams and stakeholders
+description: 为团队和利益相关者生成一致、专业的每周状态报告。
 version: 1.0.0
 author: Claude Office Skills Contributors
 license: MIT
 tags: [productivity, reporting, communication]
 ---
 
-# Weekly Report
+# 周报
 
-## Overview
+## 概述
 
-This skill helps you create consistent, well-structured weekly status reports that communicate progress, blockers, and plans effectively to your team, manager, or stakeholders.
+本技能可帮助您创建结构清晰、内容一致的周度状态报告，有效向团队、经理或利益相关者传达项目进展、遇到的阻碍以及后续计划。
 
-**Use Cases:**
-- Individual contributor status updates
-- Team lead rollup reports
-- Project status updates
-- Executive summaries
-- Client progress reports
+**使用场景：**
+- 个人贡献者的状态更新
+- 团队领导的汇总报告
+- 项目进度更新
+- 高管摘要
+- 客户进度报告
 
-## How to Use
+## 使用方法
 
-1. Tell me what you accomplished this week
-2. Share any blockers or challenges
-3. Describe your plans for next week
-4. Specify your audience (manager, team, executives, clients)
+1. 说明您本周完成了哪些工作
+2. 分享遇到的阻碍或挑战
+3. 描述下周的计划
+4. 指定报告的受众（经理、团队、高管或客户）
 
-**Example prompts:**
-- "Create my weekly status report for my manager"
-- "Generate a team rollup report from these individual updates"
-- "Write an executive summary of our project progress"
-- "Draft a client-facing weekly update"
+**示例提示：**
+- “为我的经理生成每周状态报告”
+- “根据这些个人更新内容生成团队汇总报告”
+- “撰写项目进度的 executive summary”
+- “起草面向客户的周度更新报告”
 
-## Report Templates
+## 报告模板
 
-### Individual Weekly Report
+### 个人周报
 
 ```markdown
 # Weekly Status Report
@@ -74,7 +74,7 @@ This skill helps you create consistent, well-structured weekly status reports th
 - [Any additional information]
 ```
 
-### Team Rollup Report
+### 团队汇总报告
 
 ```markdown
 # Team Weekly Report
@@ -121,7 +121,7 @@ This skill helps you create consistent, well-structured weekly status reports th
 - [Request for other teams/management]
 ```
 
-### Executive Summary Report
+### 高管摘要报告
 
 ```markdown
 # Executive Weekly Update
@@ -160,7 +160,7 @@ This skill helps you create consistent, well-structured weekly status reports th
 - [Key activities/milestones]
 ```
 
-### Client Progress Report
+### 客户进度报告
 
 ```markdown
 # Weekly Progress Update
@@ -208,35 +208,35 @@ Best regards,
 [Your Name]
 ```
 
-## Writing Guidelines
+## 编写指南
 
-### Accomplishments
-- Start with action verbs (Completed, Delivered, Launched, Resolved)
-- Be specific about outcomes, not just activities
-- Quantify impact when possible
-- Link to business value
+### 成就
+- 使用动词开头（已完成、交付、启动、解决）
+- 具体说明成果，而不仅仅是活动
+- 在可能的情况下量化影响
+- 链接到业务价值
 
-**Good:** "Reduced API response time by 40%, improving user experience for 50K daily users"
-**Bad:** "Worked on performance improvements"
+**示例：**“将 API 响应时间缩短了 40%，提升了每天 5 万用户的体验”
+**示例：**“一直在优化系统性能”
 
-### Blockers
-- Be specific about the issue
-- Explain the impact (delays, dependencies)
-- State what help you need
-- Include any attempted solutions
+### 障碍
+- 明确问题的具体内容
+- 说明影响（延误、依赖关系）
+- 说明需要哪些帮助
+- 包括尝试过的解决方案
 
-**Good:** "Waiting on API credentials from IT (ticket #1234). This blocks the integration work scheduled for this week. Need escalation to IT manager."
-**Bad:** "Can't make progress on integration"
+**示例：**“正在等待 IT 部门的 API 访问权限（工单编号 #1234）。这阻碍了本周的集成工作。需要向 IT 经理请示。”
+**示例：**“无法继续进行集成工作”
 
-### Next Week Plans
-- Be realistic about capacity
-- Prioritize top 3-5 items
-- Include dependencies
-- Note any risks or assumptions
+### 下周计划
+- 根据实际情况制定合理计划
+- 确定优先级（前 3-5 项任务）
+- 说明依赖关系
+- 提及任何风险或假设
 
-## Output Format
+## 输出格式
 
-I'll generate a report matching your needs:
+我将根据您的需求生成报告：
 
 ```markdown
 # [Report Title]
@@ -248,55 +248,56 @@ I'll generate a report matching your needs:
 [Structured content based on template]
 ```
 
-## Customization Options
+## 自定义选项
 
-Tell me your preferences:
-- **Length:** Brief (bullet points), standard, detailed
-- **Audience:** Team, manager, executives, clients
-- **Focus:** Accomplishments, blockers, metrics
-- **Frequency:** Can adapt for daily/bi-weekly/monthly
-- **Tone:** Casual team update or formal stakeholder report
+请告知您的偏好：
+- **长度**：简短（项目符号形式）、标准格式或详细格式
+- **受众**：团队、经理、高管或客户
+- **重点**：成就、阻碍或指标
+- **频率**：可以每日/每两周/每月生成
+- **语气**：非正式的团队更新或正式的利益相关者报告
 
-## Limitations
+## 限制
 
-- Cannot access your actual work systems or calendars
-- Relies on information you provide
-- May need adjustment for your organization's specific format
-- Should be reviewed for accuracy before sending
+- 无法访问您的实际工作系统或日历
+- 报告内容基于您提供的信息
+- 可能需要根据您组织的具体格式进行调整
+- 在发送前请核对报告的准确性
 
-## Examples
+## 示例
 
-### Example: Quick Status Update
+### 示例：快速状态更新
 
-**Input:** "I finished the dashboard redesign, fixed 3 bugs, still working on the user auth feature which is delayed because I'm waiting on the security review. Next week I'll focus on finishing auth and starting the mobile optimization."
+**输入：**“我完成了仪表盘的重设计，修复了 3 个漏洞，目前仍在处理用户身份验证功能，但由于等待安全审查而进度延迟。下周我将专注于完成身份验证功能并开始移动端优化。”
 
-**Output:**
+**输出：**
 
-# Weekly Status Report
+# 周报
 
-**Name:** [Your Name]
-**Week of:** [Current Week]
+**姓名：** [您的姓名]
+**周次：** [当前周]
 
-## 🎯 Summary
-Completed dashboard redesign milestone. User authentication feature in progress, pending security review.
+## 🎯 摘要
+- 完成了仪表盘重设计的里程碑
+- 用户身份验证功能正在进行中，等待安全审查结果
 
-## ✅ Accomplishments
-- Completed dashboard redesign (UI/UX milestone)
-- Resolved 3 bugs in production
-- Advanced user authentication feature development
+## ✅ 成就
+- 完成了仪表盘重设计（UI/UX 里程碑）
+- 修复了 3 个生产环境中的漏洞
+- 用户身份验证功能开发进展中
 
-## 🚧 In Progress
-| Task | Status | Expected Completion |
+## 🚧 进行中
+| 任务 | 状态 | 预计完成时间 |
 |------|--------|---------------------|
-| User Authentication Feature | 70% | Pending security review |
+| 用户身份验证功能 | 70% | 等待安全审查结果 |
 
-## 🚫 Blockers
-- **Security Review Pending** - User auth feature cannot be deployed until security team completes review. Impact: 2-3 day delay. *Action needed: Follow up with security team on timeline.*
+## 🚫 障碍
+- **安全审查待定** – 在安全团队完成审查之前，用户身份验证功能无法部署。影响：延误 2-3 天。*需要采取的行动：与安全团队确认审查时间表。*
 
-## 📅 Next Week's Priorities
-1. Complete user authentication feature (post-security review)
-2. Begin mobile optimization work
-3. Address any feedback from dashboard redesign
+## 📅 下周计划
+1. 完成用户身份验证功能（安全审查后）
+2. 开始移动端优化工作
+3. 处理仪表盘重设计中收到的反馈
 
-## 💬 Notes
-- Dashboard redesign ready for stakeholder demo when needed
+## 💬 备注
+- 仪表盘重设计已完成，可根据需要向利益相关者进行演示

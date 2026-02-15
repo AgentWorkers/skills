@@ -1,6 +1,6 @@
 ---
 name: portfolio-management
-description: Expert guidance for portfolio-management.
+description: 专家级的项目组合管理指南。
 version: 1.0.0
 tags: [finance,investment,wealth]
 author: OpenWork
@@ -11,17 +11,18 @@ metadata:
       env: []
 ---
 
-# uportfolio management
+# uPortfolio管理
 
-Financial guidance and education.
+提供财务指导与教育服务。
 
-## Capabilities
+## 功能
 
-- Analysis methods
-- Strategy guidance
-- Best practices
-- Tips and recommendations
+- 分析方法
+- 战略规划建议
+- 最佳实践
+- 技巧与推荐
 
-## Usage
-Help with finance
-Investment guidance
+## 使用方式
+
+- 协助财务规划
+- 投资指导

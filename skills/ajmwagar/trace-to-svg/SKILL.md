@@ -1,6 +1,6 @@
 ---
 name: trace-to-svg
-description: Trace bitmap images (PNG/JPG/WebP) into clean SVG paths using potrace/mkbitmap. Use to convert logos/silhouettes into vectors for downstream CAD workflows (e.g., create-dxf etch_svg_path) and for turning reference images into manufacturable outlines.
+description: 使用 potrace/mkbitmap 将轮廓位图图像（PNG/JPG/WebP 格式）转换为干净的 SVG 路径。该工具可用于将徽标/剪影转换为矢量图形，以便后续的 CAD 工作流程（如 create-dxf etch-svg_path）使用，同时也可将参考图像转换为可用于制造的轮廓文件。
 metadata:
   openclaw:
     requires:
@@ -20,9 +20,9 @@ metadata:
 
 # trace-to-svg
 
-Convert a bitmap into a vector SVG using `mkbitmap` + `potrace`.
+使用 `mkbitmap` 和 `potrace` 将位图转换为矢量 SVG。
 
-## Quick start
+## 快速入门
 
 ```bash
 # 1) Produce a silhouette-friendly SVG
@@ -36,8 +36,8 @@ bash scripts/trace_to_svg.sh input.png --out out.svg --threshold 0.6 --turdsize 
 # - store the traced SVG and reference it in your pipeline.
 ```
 
-## Notes
+## 注意事项
 
-- This is best for **logos, silhouettes, high-contrast shapes**.
-- For photos or complex shading, results depend heavily on thresholding.
-- Output is usually one or more `<path>` elements.
+- 该方法最适合用于 **徽标、剪影图像以及高对比度的形状**。
+- 对于照片或具有复杂阴影效果的图像，转换效果很大程度上取决于阈值设置。
+- 输出结果通常为一个或多个 `<path>` 元素。

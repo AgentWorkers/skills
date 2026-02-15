@@ -1,6 +1,6 @@
 ---
 name: github-mentions
-description: Monitor and track GitHub mentions for your username across your orgs. Queries for new mentions, tracks status (pending/in_progress/completed) to avoid redundant work. Use to check for new mentions or mark mentions as being addressed.
+description: 监控并追踪您在所在组织中GitHub上的提及情况。查询新的提及记录，跟踪其状态（待处理/进行中/已完成），以避免重复工作。该工具可用于查看新的提及记录，或将已处理的提及标记为已解决。
 version: 1.0.0
 metadata:
   clawdhub:
@@ -11,21 +11,21 @@ metadata:
       - github
 ---
 
-# GitHub Mentions Monitor
+# GitHub 提及监控
 
-Track and manage GitHub mentions for your username across your organizations. Prevents redundant queries and duplicate work by maintaining state.
+该技能用于跟踪和管理您在所有组织中收到的 GitHub 提及。通过维护状态信息，可避免重复查询和重复工作。
 
-## Prerequisites
+## 先决条件
 
-- `gh` CLI authenticated (`gh auth login`)
-- `jq` for JSON processing
-- The `github` skill (dependency)
+- 已使用 `gh` CLI 进行身份验证（`gh auth login`）
+- 需要 `jq` 工具来处理 JSON 数据
+- 必须安装 `github` 技能（作为依赖项）
 
-## Configuration
+## 配置
 
-### Config File
+### 配置文件
 
-Runtime configuration is stored in `config.json` (default: `skills/github-mentions/config.json`):
+运行时配置信息存储在 `config.json` 文件中（默认路径：`skills/github-mentions/config.json`）：
 
 ```json
 {
@@ -36,28 +36,28 @@ Runtime configuration is stored in `config.json` (default: `skills/github-mentio
 }
 ```
 
-**Configuration options:**
-- `orgOnly=true` (default): Only track mentions from repos within your orgs
-- `orgOnly=false`: Track all mentions (including from repos outside your orgs)
-- `orgMembersOnly=true` (default): Only track mentions from org members
-- `orgMembersOnly=false`: Track mentions from anyone (including external contributors, bots)
-- `memberCacheHours`: How often to refresh the org member list (default: 1 hour)
+**配置选项：**
+- `orgOnly=true`（默认值）：仅跟踪来自您所在组织的仓库的提及
+- `orgOnly=false`：跟踪所有提及（包括来自外部组织的仓库）
+- `orgMembersOnly=true`（默认值）：仅跟踪来自组织成员的提及
+- `orgMembersOnly=false`：跟踪来自任何人的提及（包括外部贡献者和机器人）
+- `memberCacheHours`：组织成员列表的刷新频率（默认值：1 小时）
 
-**Set config via CLI:**
+**通过 CLI 设置配置：**
 ```bash
 github-mentions config orgOnly false           # Track all mentions
 github-mentions config orgMembersOnly false    # Include non-org-members
 github-mentions config memberCacheHours 2      # Refresh members every 2 hours
 ```
 
-### Environment Variables (optional)
+### 环境变量（可选）
 
-- `GITHUB_MENTIONS_STATE` - Path to state file (default: `~/.openclaw/workspace/memory/github-mentions-state.json`)
-- `GITHUB_MENTIONS_CONFIG` - Path to config file (default: `skills/github-mentions/config.json`)
+- `GITHUB_MENTIONS_STATE`：状态文件的路径（默认值：`~/.openclaw/workspace/memory/github-mentions-state.json`）
+- `GITHUB_MENTIONS_CONFIG`：配置文件的路径（默认值：`skills/github-mentions/config.json`）
 
-## State File
+## 状态文件
 
-The skill maintains state in a JSON file:
+该技能将状态信息保存在 JSON 文件中：
 
 ```json
 {
@@ -77,62 +77,62 @@ The skill maintains state in a JSON file:
 }
 ```
 
-## Commands
+## 命令
 
-### Check for new mentions
+### 检查新提及
 
 ```bash
 github-mentions check
 ```
 
-Queries GitHub for new mentions since last check. Adds new mentions as "pending". Returns a summary of new and pending mentions.
+查询自上次检查以来收到的新提及，并将新提及标记为“待处理”状态。返回新提及和待处理提及的汇总信息。
 
-**Query strategy:**
-1. Search issues/PRs in each org where you're mentioned
-2. Filter to mentions from other org members (not self-mentions)
-3. Compare against state to find new ones
+**查询策略：**
+1. 在您被提及的每个组织中搜索问题/拉取请求（issues/PRs）。
+2. 过滤掉来自同一组织成员的提及（排除自我提及）。
+3. 与当前状态信息进行比较，找出新的提及。
 
-### List current mentions
+### 列出当前提及
 
 ```bash
 github-mentions list [--status <pending|in_progress|completed>]
 ```
 
-Shows all tracked mentions, optionally filtered by status.
+显示所有被跟踪的提及，可根据需要按状态进行筛选。
 
-### Start working on a mention
+### 开始处理提及
 
 ```bash
 github-mentions start <mention-id>
 ```
 
-Marks a mention as "in_progress". The mention-id is the format `owner/repo#number`.
+将某个提及标记为“进行中”状态。提及的格式为 `owner/repo#number`。
 
-### Complete a mention
+### 完成提及
 
 ```bash
 github-mentions done <mention-id>
 ```
 
-Marks a mention as "completed".
+将某个提及标记为“已完成”状态。
 
-### View mention details
+### 查看提及详情
 
 ```bash
 github-mentions view <mention-id>
 ```
 
-Shows full details of a mention including the issue/PR body and recent comments.
+显示提及的详细信息，包括问题/拉取请求的内容以及最近的评论。
 
-## Workflow
+## 工作流程
 
-1. **Check for mentions**: `github-mentions check`
-2. **Review pending**: `github-mentions list --status pending`
-3. **Start work**: `github-mentions start trifle-labs/repo#123`
-4. **Address the mention** (reply, fix issue, etc.)
-5. **Mark done**: `github-mentions done trifle-labs/repo#123`
+1. **检查提及**：`github-mentions check`
+2. **查看待处理的提及**：`github-mentions list --status pending`
+3. **开始处理提及**：`github-mentions start trifle-labs/repo#123`
+4. **处理提及**（回复、修复问题等）
+5. **标记为已完成**：`github-mentions done trifle-labs/repo#123`
 
-## Example Usage
+## 示例用法
 
 ```bash
 # Check for new mentions across your orgs
@@ -157,9 +157,9 @@ github-mentions view trifle-labs/clawdbot#456
 github-mentions done trifle-labs/clawdbot#456
 ```
 
-## Implementation Notes
+## 实现说明
 
-**Detecting mentions:**
+**检测提及：**
 ```bash
 # Search for issues/PRs mentioning you in an org
 gh search issues "org:<org> mentions:<username>" --json number,repository,title,author,createdAt,url --limit 50
@@ -168,28 +168,27 @@ gh search issues "org:<org> mentions:<username>" --json number,repository,title,
 gh search prs "org:<org> review-requested:<username>" --json number,repository,title,author,createdAt,url --limit 50
 ```
 
-**Filtering org members only:**
+**仅过滤组织成员的提及：**
 ```bash
 # Get org members
 gh api orgs/<org>/members --jq '.[].login'
 ```
 
-Only track mentions from users in this list (excluding self).
+仅跟踪此列表中用户的提及（排除自我提及）。
 
-**Avoiding redundant queries:**
-- Store `lastChecked` timestamp
-- Use `created:>YYYY-MM-DD` in search to limit results
-- Skip mentions already in state file
+**避免重复查询：**
+- 存储 `lastChecked` 时间戳
+- 在搜索中使用 `created:>YYYY-MM-DD` 来限制结果范围
+- 跳过状态文件中已记录的提及
 
-## Cron Setup
+## Cron 任务设置
 
-Add as an OpenClaw gateway cron job for automatic processing. From the gateway UI (Cron tab), create a new job:
-
-- **Name:** GitHub Mentions Check
-- **Schedule:** `*/5 * * * *` (every 5 minutes)
-- **Session:** isolated
-- **Wake mode:** next-heartbeat
-- **Payload (agentTurn):**
+将此技能设置为 OpenClaw 的 Cron 任务以自动执行。在 OpenClaw 的网关界面（Cron 标签）中创建一个新的任务：
+- **名称：** GitHub 提及监控
+- **调度时间：** `*/5 * * * *`（每 5 分钟执行一次）
+- **会话模式：** 孤立会话
+- **唤醒模式：** 下一次心跳时触发
+- **负载（agentTurn）：**
   ```
   Run the GitHub mentions check and process any results:
   1. Run: bash ~/.openclaw/workspace/skills/github-mentions/github-mentions.sh check
@@ -200,4 +199,4 @@ Add as an OpenClaw gateway cron job for automatic processing. From the gateway U
   6. If no new mentions, do nothing
   ```
 
-This ensures the agent responds directly on GitHub and then notifies via Telegram as secondary.
+这样确保代理直接在 GitHub 上作出响应，然后通过 Telegram 发送通知。

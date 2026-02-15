@@ -1,16 +1,16 @@
 ---
 name: send-email
-description: Send emails via SMTP. Configure in ~/.openclaw/openclaw.json under skills.entries.send-email.env.
+description: 通过 SMTP 发送电子邮件。在 `~/.openclaw/openclaw.json` 文件的 `skills.entries.send-email.env` 部分进行配置。
 metadata: {"openclaw":{"emoji":"📧","requires":{"anyBins":["python3"]}}}
 ---
 
-# Send Email
+# 发送电子邮件
 
-Send emails via the Python script. SMTP settings are **injected by OpenClaw at runtime** when the script runs (from `~/.openclaw/openclaw.json` → `skills.entries.send-email.env`). **Do not read** any config file (e.g. `~/.openclaw/openclaw.json` or `workspace/openclaw.json`) — that would expose credentials in tool output. Just run the script; env is injected automatically. Do not use ~/.msmtprc.
+通过Python脚本发送电子邮件。SMTP设置由OpenClaw在脚本运行时动态注入（来自`~/.openclaw/openclaw.json`文件中的`skills.entries.send-email.env`）。**请勿**读取任何配置文件（例如`~/.openclaw/openclaw.json`或`workspace/openclaw.json`），因为这可能会导致敏感信息泄露。只需运行脚本即可，环境变量会自动注入。请勿使用`~/.msmtprc`文件。
 
-## Configuration
+## 配置
 
-Configure in **`~/.openclaw/openclaw.json`**:
+在`~/.openclaw/openclaw.json`文件中进行配置：
 
 ```json
 "skills": {
@@ -28,36 +28,37 @@ Configure in **`~/.openclaw/openclaw.json`**:
 }
 ```
 
-| Variable | Description |
-|----------|-------------|
-| EMAIL_SMTP_SERVER | SMTP server, e.g. smtp.163.com, smtp.gmail.com |
-| EMAIL_SMTP_PORT | Port, 465 (SSL) or 587 (TLS) |
-| EMAIL_SENDER | Sender email address |
-| EMAIL_SMTP_PASSWORD | Authorization code / app password (163/QQ: auth code; Gmail: App Password) |
+| 变量          | 描述                          |
+|----------------|--------------------------------------------|
+| EMAIL_SMTP_SERVER | SMTP服务器地址，例如smtp.163.com、smtp.gmail.com         |
+| EMAIL_SMTP_PORT    | 端口，465（SSL）或587（TLS）                   |
+| EMAIL_SENDER     | 发件人电子邮件地址                     |
+| EMAIL_SMTP_PASSWORD | 认证码/应用密码（163/QQ：认证码；Gmail：应用密码）         |
 
-## Agent instructions
+## 代理指令
 
-1. **Credentials**: Never read config files. OpenClaw injects `skills.entries.send-email.env` when the script runs — do not use the read tool on `~/.openclaw/openclaw.json` or `workspace/openclaw.json` (exposes secrets). If the skill is enabled, assume env is configured; do not ask the user for passwords. Do not use ~/.msmtprc.
-2. **Send mail**: Run the script under **workspace** (do not use the path under node_modules):
+1. **凭证管理**：切勿读取配置文件。OpenClaw会在脚本运行时自动注入`skills.entries.send-email.env`中的环境变量；请勿使用`~/.openclaw/openclaw.json`或`workspace/openclaw.json`文件来获取凭证（这可能导致信息泄露）。如果该功能已启用，请默认环境变量已配置好，无需向用户询问密码。请勿使用`~/.msmtprc`文件。
+2. **发送邮件**：在`workspace`目录下运行脚本（请勿使用`node_modules`目录下的路径）：
    ```bash
    python3 ~/.openclaw/workspace/skills/send-email/send_email.py "recipient" "Subject" "Body"
    ```
-3. **Attachment**: `python3 ~/.openclaw/workspace/skills/send-email/send_email.py "recipient" "Subject" "Body" "/path/to/file.pdf"`
+3. **附件**：使用以下命令发送邮件：
+   `python3 ~/.openclaw/workspace/skills/send-email/send_email.py "收件人" "主题" "正文" "/path/to/file.pdf"`
 
-## Usage examples
+## 使用示例
 
 ```bash
 python3 ~/.openclaw/workspace/skills/send-email/send_email.py 'recipient@example.com' 'Subject' 'Body text'
 python3 ~/.openclaw/workspace/skills/send-email/send_email.py 'recipient@example.com' 'Subject' 'Body' '/path/to/file.pdf'
 ```
 
-## SMTP reference
+## SMTP参考信息
 
-- 163: `smtp.163.com:465`, requires authorization code (not login password)
-- Gmail: `smtp.gmail.com:587`, requires App Password
-- QQ: `smtp.qq.com:465`, requires authorization code
+- 163: `smtp.163.com:465`：需要认证码（而非登录密码）
+- Gmail: `smtp.gmail.com:587`：需要应用密码
+- QQ: `smtp.qq.com:465`：需要认证码
 
-## Troubleshooting
+## 故障排除
 
-- Authentication failed: Check that `EMAIL_SMTP_PASSWORD` is the authorization code or App Password.
-- Connection failed: Check `EMAIL_SMTP_SERVER` and `EMAIL_SMTP_PORT`.
+- 认证失败：请检查`EMAIL_SMTP_PASSWORD`是否为正确的认证码或应用密码。
+- 连接失败：请检查`EMAIL_SMTP_SERVER`和`EMAIL_SMTP_PORT`的值是否正确。

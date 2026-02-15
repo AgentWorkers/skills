@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Python Code Executor
+# Python代码执行器
 
-Execute Python code in a safe, sandboxed environment with 100+ pre-installed libraries.
+在安全、沙盒化的环境中执行Python代码，该环境预装了100多个库。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,16 +26,16 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## App Details
+## 应用详情
 
-| Property | Value |
+| 属性 | 值 |
 |----------|-------|
-| App ID | `infsh/python-executor` |
-| Environment | Python 3.10, CPU-only |
-| RAM | 8GB (default) / 16GB (high_memory) |
-| Timeout | 1-300 seconds (default: 30) |
+| 应用ID | `infsh/python-executor` |
+| 环境 | Python 3.10（仅支持CPU） |
+| 内存 | 8GB（默认）/ 16GB（高内存配置） |
+| 超时时间 | 1-300秒（默认：30秒） |
 
-## Input Schema
+## 输入格式
 
 ```json
 {
@@ -46,38 +46,38 @@ infsh app run infsh/python-executor --input '{
 }
 ```
 
-## Pre-installed Libraries
+## 预装库
 
-### Web Scraping & HTTP
-- `requests`, `httpx`, `aiohttp` - HTTP clients
-- `beautifulsoup4`, `lxml` - HTML/XML parsing
-- `selenium`, `playwright` - Browser automation
-- `scrapy` - Web scraping framework
+### 网页抓取与HTTP
+- `requests`, `httpx`, `aiohttp` - HTTP客户端
+- `beautifulsoup4`, `lxml` - HTML/XML解析
+- `selenium`, `playwright` - 浏览器自动化
+- `scrapy` - 网页抓取框架
 
-### Data Processing
-- `numpy`, `pandas`, `scipy` - Numerical computing
-- `matplotlib`, `seaborn`, `plotly` - Visualization
+### 数据处理
+- `numpy`, `pandas`, `scipy` - 数值计算
+- `matplotlib`, `seaborn`, `plotly` - 数据可视化
 
-### Image Processing
-- `pillow`, `opencv-python-headless` - Image manipulation
-- `scikit-image`, `imageio` - Image algorithms
+### 图像处理
+- `pillow`, `opencv-python-headless` - 图像操作
+- `scikit-image`, `imageio` - 图像处理算法
 
-### Video & Audio
-- `moviepy` - Video editing
-- `av` (PyAV), `ffmpeg-python` - Video processing
-- `pydub` - Audio manipulation
+### 视频与音频
+- `moviepy` - 视频编辑
+- `av` (PyAV), `ffmpeg-python` - 视频处理
+- `pydub` - 音频处理
 
-### 3D Processing
-- `trimesh`, `open3d` - 3D mesh processing
-- `numpy-stl`, `meshio`, `pyvista` - 3D file formats
+### 3D处理
+- `trimesh`, `open3d` - 3D网格处理
+- `numpy-stl`, `meshio`, `pyvista` - 3D文件格式处理
 
-### Documents & Graphics
-- `svgwrite`, `cairosvg` - SVG creation
-- `reportlab`, `pypdf2` - PDF generation
+### 文档与图形
+- `svgwrite`, `cairosvg` - SVG文件生成
+- `reportlab`, `pypdf2` - PDF文件生成
 
-## Examples
+## 示例
 
-### Web Scraping
+### 网页抓取
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -85,7 +85,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### Data Analysis with Visualization
+### 数据分析与可视化
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -93,7 +93,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### Image Processing
+### 图像处理
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -101,7 +101,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### Video Creation
+### 视频制作
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -110,7 +110,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### 3D Model Processing
+### 3D模型处理
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -118,7 +118,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### API Calls
+### API调用
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -126,9 +126,9 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## File Output
+## 文件输出
 
-Files saved to `outputs/` are automatically returned:
+所有生成的文件将自动保存到`outputs/`目录：
 
 ```python
 # These files will be in the response
@@ -138,7 +138,7 @@ video.write_videofile('outputs/video.mp4')
 mesh.export('outputs/model.stl')
 ```
 
-## Variants
+## 变体配置
 
 ```bash
 # Default (8GB RAM)
@@ -148,25 +148,25 @@ infsh app run infsh/python-executor --input input.json
 infsh app run infsh/python-executor@high_memory --input input.json
 ```
 
-## Use Cases
+## 使用场景
 
-- **Web scraping** - Extract data from websites
-- **Data analysis** - Process and visualize datasets
-- **Image manipulation** - Resize, crop, composite images
-- **Video creation** - Generate videos with text overlays
-- **3D processing** - Load, transform, export 3D models
-- **API integration** - Call external APIs
-- **PDF generation** - Create reports and documents
-- **Automation** - Run any Python script
+- **网页抓取** - 从网站提取数据
+- **数据分析** - 处理和可视化数据集
+- **图像处理** - 调整图像大小、裁剪、合成图片
+- **视频制作** - 生成带有文字覆盖层的视频
+- **3D处理** - 加载、转换、导出3D模型
+- **API集成** - 调用外部API
+- **PDF生成** - 创建报告和文档
+- **自动化** - 运行任何Python脚本
 
-## Important Notes
+## 重要说明
 
-- **CPU-only** - No GPU/ML libraries (use dedicated AI apps for that)
-- **Safe execution** - Runs in isolated subprocess
-- **Non-interactive** - Use `plt.savefig()` not `plt.show()`
-- **File detection** - Output files are auto-detected and returned
+- **仅支持CPU** - 不支持GPU/机器学习库（如需使用，请使用专门的AI工具）
+- **安全执行** - 代码在隔离的子进程中运行
+- **非交互式** - 使用`plt.savefig()`而非`plt.show()`进行输出
+- **文件自动检测** - 生成的文件会自动被检测并返回
 
-## Related Skills
+## 相关技能
 
 ```bash
 # AI image generation (for ML-based images)
@@ -179,8 +179,8 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@llm-models
 ```
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [App Code](https://inference.sh/docs/extend/app-code) - Understanding app execution
-- [Sandboxed Code Execution](https://inference.sh/blog/tools/sandboxed-execution) - Safe code execution for agents
+- [运行应用程序](https://inference.sh/docs/apps/running) - 通过命令行（CLI）运行应用程序的方法
+- [应用程序代码](https://inference.sh/docs/extend/app-code) - 了解应用程序的执行原理
+- [沙盒化代码执行](https://inference.sh/blog/tools/sandboxed-execution) - 为代理程序提供安全的代码执行环境

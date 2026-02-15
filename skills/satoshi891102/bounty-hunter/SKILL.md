@@ -1,156 +1,149 @@
 ---
 name: bounty-hunter
-description: Find, evaluate, and submit online bounties and hackathons for prize money. Use when user mentions "bounties", "hackathon", "earn money", "Superteam Earn", "prize money", "submissions", "freelance bounties", or asks to find paid opportunities. Covers discovery, eligibility filtering, content drafting, and submission workflows.
+description: 查找、评估并提交在线赏金任务和编程竞赛以获取奖金。当用户提到“赏金任务”、“编程竞赛”、“赚钱”、“Superteam Earn”、“奖金”、“提交”、“自由职业赏金任务”或询问如何寻找有偿工作机会时，可以使用此方法。该流程包括任务发现、资格筛选、内容撰写以及提交等步骤。
 ---
 
-# Bounty Hunter
+# 奖金猎人（Bounty Hunter）
 
-Systematically find and submit bounties, hackathons, and paid opportunities to generate revenue. Optimized for solo operators and AI-assisted teams.
+系统性地寻找并提交相关任务、黑客马拉松（hackathons）以及有偿项目，以获取收入。该策略适用于独立开发者以及使用人工智能辅助工作的团队。
 
-## Workflow
+## 工作流程（Workflow）
 
-### Step 1: Discovery
+### 第一步：发现目标（Discovery）
 
-Scan these platforms for active bounties:
+在以下平台上扫描活跃的奖励任务：
 
-**Primary sources:**
-- **Superteam Earn** (earn.superteam.fun) — Solana ecosystem bounties, content, projects
-- **Colosseum** (colosseum.com) — Solana hackathons, often $50K-$500K prize pools
-- **GitHub Issues** — Bounty-tagged issues on trending repos
-- **Gitcoin** (gitcoin.co) — Web3 grants and bounties
+**主要来源：**
+- **Superteam Earn** (earn.superteam.fun) — Solana生态系统的奖励任务、相关内容和项目
+- **Colosseum** (colosseum.com) — Solana黑客马拉松，通常奖金池在5万至50万美元之间
+- **GitHub Issues** — 带有“bounty”标签的问题（出现在热门仓库中）
+- **Gitcoin** (gitcoin.co) — Web3领域的资助项目和奖励任务
 
-**Secondary sources:**
-- **ProductHunt** Launch competitions
-- **DevPost** (devpost.com) — Hackathon aggregator
-- **HackerOne** / **Bugcrowd** — Security bounties (if applicable)
-- **Replit Bounties** — Quick coding tasks
+**次要来源：**
+- **ProductHunt** — 发布的竞赛信息
+- **DevPost** (devpost.com) — 黑客马拉松信息聚合平台
+- **HackerOne** / **Bugcrowd** — 安全相关奖励任务（如适用）
+- **Replit Bounties** — 快速编程任务
 
-**How to scan Superteam Earn:**
-1. Visit earn.superteam.fun
-2. Filter by: Content, Development, Design (match your strengths)
-3. Sort by deadline (closest first) or prize (highest first)
-4. Note: Some bounties are region-locked — check eligibility carefully
+**如何扫描Superteam Earn：**
+1. 访问earn.superteam.fun
+2. 根据“内容”（Content）、“开发”（Development）或“设计”（Design）筛选符合你能力范围的任务
+3. 按截止日期（从最近开始）或奖金金额（从高到低）排序
+4. 注意：部分奖励任务可能受地区限制，请仔细确认是否符合条件
 
-### Step 2: Evaluate (Kill Bad Ones Fast)
+### 第二步：评估任务（快速排除不合适的项目）
 
-For each bounty, score on these 5 criteria:
+对每个奖励任务，根据以下5个标准进行评分：
 
-| Criteria | Weight | Question |
+| 标准 | 权重 | 问题 |
 |----------|--------|----------|
-| Prize-to-effort ratio | 30% | $/hour if you win? Target >$100/hr |
-| Win probability | 25% | How many submissions? How niche? |
-| Skill match | 20% | Can you deliver quality with current capabilities? |
-| Eligibility | 15% | Region restrictions? KYC? Team size? |
-| Strategic value | 10% | Portfolio piece? Networking? Learning? |
+| 奖金与工作量的比率 | 30% | 如果你获胜，每小时能获得多少奖金？目标奖金是否超过100美元？ |
+| 获胜概率 | 25% | 有多少人参与提交？任务是否具有独特性？ |
+| 技能匹配度 | 20% | 以你当前的能力，能否完成高质量的任务？ |
+| 参与资格 | 15% | 是否有地区限制？是否需要完成KYC（了解客户）？团队规模如何？ |
+| 战略价值 | 10% | 这个任务能否丰富你的作品集？能否帮助你建立人脉？能否促进学习？ |
 
-**Auto-reject if:**
-- Region-locked to a country you're not in
-- Requires video/camera of a specific person (can't fake identity)
-- Prize < $50 (not worth the time)
-- Deadline < 24 hours AND requires significant build
-- Submission count > 100 AND prize < $500
+**自动排除的情况：**
+- 任务仅限于特定地区（你不在该地区）
+- 需要特定人员的视频或照片（无法伪造身份）
+- 奖金低于50美元（不值得投入时间）
+- 截止日期少于24小时且需要大量开发工作
+- 提交数量超过100份且奖金低于500美元
 
-**Auto-prioritize if:**
-- Prize > $1,000 AND < 20 submissions
-- Content/writing bounty (fast turnaround)
-- Matches something you've already built
-- No region lock, global eligibility
+**自动优先考虑的情况：**
+- 奖金超过1,000美元且提交数量少于10份
+- 与你的技能或经验相关的内容/写作任务（能够快速完成）
+- 无地区限制，全球范围内均可参与
 
-### Step 3: Research the Bounty
+### 第三步：深入研究任务细节
 
-Before writing a single word:
+在开始撰写任何内容之前：
+1. **仔细阅读完整的需求说明** — 不仅是标题，每个细节都很重要。
+2. **研究任务发起方** — 访问他们的网站，了解他们的产品，阅读相关文档。
+3. 查看该发起方过去发布的获奖作品 — 了解他们的评审标准。
+4. **明确真正的任务要求** — 通常与表面描述不同。
+5. **注意评估标准** — 如果有明确要求，要针对这些标准进行优化。
 
-1. **Read the full brief** — not just the title. Every detail matters.
-2. **Study the sponsor** — visit their site, understand their product, read their docs
-3. **Check winning submissions** from past bounties by same sponsor — learn their taste
-4. **Identify the REAL ask** — often different from the surface-level description
-5. **Note evaluation criteria** — if stated, optimize for these specifically
+### 第四步：起草提交材料
 
-### Step 4: Draft Submission
+**对于内容类奖励任务（帖子、文章、视频）：**
+1. 深入研究相关主题 — 至少花费30分钟。
+2. 找出别人尚未涉及的独特角度。
+3. 提供真实的数据、实例和见解。
+4. 根据平台要求进行格式化（例如：X格式的帖子 ≠ 博文 ≠ 视频脚本）。
+5. 引用来源 — 评审者会注意到这一点。
 
-**For content bounties (threads, articles, videos):**
+**对于开发类奖励任务：**
+1. 构建一个可运行的原型（而不仅仅是模拟版本）。
+2. 公开部署你的成果 — 评审者会点击链接查看。
+3. 提供包含详细设置说明的README文件。
+4. 提供演示视频或截图，展示功能。
+5. 强调你的提交内容的独特之处。
 
-1. Research the topic deeply — 30+ minutes minimum
-2. Find unique angles nobody else will cover
-3. Include real data, real examples, real insights
-4. Format for the platform (X threads ≠ blog posts ≠ video scripts)
-5. Cite sources — judges notice this
+**对于设计类奖励任务：**
+1. 展示整个设计过程，而不仅仅是最终成果。
+2. 提供移动设备和桌面设备的展示效果。
+3. 使用任务发起方的官方品牌元素。
+4. 解释设计决策的依据。
 
-**For development bounties:**
+### 第五步：提交前进行质量检查
 
-1. Build a working prototype (not just mockups)
-2. Deploy publicly — judges click links
-3. README with clear setup instructions
-4. Demo video or screenshots showing it works
-5. Highlight what makes your submission unique
+- [ ] 这个提交内容完全符合任务要求吗？
+- [ ] 你能否自豪地向潜在雇主展示这个成果？
+- [ ] 这个成果是否优于80%的其他提交内容？
+- [ ] 所有链接都能正常访问吗？所有图片都能正常加载吗？
+- [ ] 是否检查了拼写、语法和格式错误？
+- [ ] 你的提交内容是否真正体现了对任务发起方产品的理解？
 
-**For design bounties:**
+### 第六步：提交并跟踪进度
 
-1. Show process, not just final output
-2. Include mobile AND desktop
-3. Use the sponsor's actual brand assets
-4. Explain design decisions
-
-### Step 5: Quality Check Before Submission
-
-- [ ] Does this EXACTLY match the brief requirements?
-- [ ] Would you be proud to show this to a potential employer?
-- [ ] Is it better than what 80% of submissions will look like?
-- [ ] Are all links working? All images loading?
-- [ ] Proofread for typos, grammar, formatting?
-- [ ] Does it show genuine understanding of the sponsor's product?
-
-### Step 6: Submit and Track
-
-1. Submit before deadline (aim for 24+ hours early — judges see early submissions)
-2. Log in tracking file:
+1. 在截止日期前提交（建议提前24小时以上提交 — 评审者会更重视提前提交的成果）。
+2. 登录并记录提交信息：
    ```
    | Bounty | Platform | Prize | Submitted | Deadline | Status | Outcome |
    ```
-3. Set reminder to check results
-4. If you win, document what worked for future pattern matching
-5. If you lose, study winning submission — what did they do differently?
+3. 设置提醒以查看结果。
+4. 如果获胜，记录下成功的经验，以便将来参考。
+5. 如果失败，研究获胜者的提交内容 — 他们做了哪些不同的地方？
 
-## Bounty Types and Strategies
+## 奖金任务类型及策略
 
-### Content Bounties (Fastest ROI)
+### 内容类奖励任务（回报最快）
 
-**X/Twitter Threads:**
-- 8-12 tweets, strong hook, real data
-- Include relevant images/charts
-- Tag the sponsor and relevant people
-- Post at optimal times (9-11am EST for crypto)
+**X/Twitter帖子：**
+- 发布8-12条推文，使用吸引人的标题，提供真实的数据。
+- 包含相关的图片和图表。
+- 标记任务发起方和相关人员。
+- 在最佳时间发布（对于加密货币领域，建议在东部时间上午9-11点）。
 
-**Articles/Blog Posts:**
-- 1,500-3,000 words
-- Clear structure: hook, problem, solution, examples, conclusion
-- Original research or unique angle
-- SEO-friendly if published on your own blog
+**文章/博客文章：**
+- 字数在1,500至3,000字之间。
+- 结构清晰：引言、问题描述、解决方案、实例、结论。
+- 提供原创的研究成果或独特的视角。
+- 如果在自己的博客上发布，有助于提高搜索引擎排名（SEO）。
 
-**Video:**
-- 2-5 minutes for explainers
-- Clean audio is more important than visuals
-- Show, don't just tell — screen recordings, demos
-- Add captions
+**视频：**
+- 时长2-5分钟，重点在于清晰的解释。
+- 清晰的音频比视觉效果更重要。
+- 通过屏幕录制或演示来展示内容，而不仅仅是口头描述。
+- 添加字幕。
 
-### Development Bounties (Highest Prizes)
+### 开发类奖励任务（奖金最高）：
+- 必须将成果部署到公开网址。
+- 提供60秒的演示视频或GIF。
+- 编写清晰的README文件。
+- 处理边缘情况 — 评审者会尝试测试你的代码。
+- 将代码开源（除非任务要求另有说明）。
 
-- Always deploy to a public URL
-- Include a 60-second demo video/GIF
-- Write clear README
-- Handle edge cases — judges will try to break it
-- Open source your code (unless brief says otherwise)
+### 设计类奖励任务：
+- 提交Figma设计文件，而不仅仅是截图。
+- 展示响应式设计效果（在不同设备和屏幕尺寸下的表现）。
+- 包括交互状态（悬停、激活、禁用等）。
+- 使用任务发起方的官方品牌元素。
 
-### Design Bounties
+## 任务管理流程
 
-- Figma files, not just screenshots
-- Show responsive breakpoints
-- Include interaction states (hover, active, disabled)
-- Use the project's actual branding
-
-## Pipeline Management
-
-Maintain a bounty pipeline at all times:
+始终保持一个活跃的任务管理流程：
 
 ```
 SCOUTING:  [bounties being evaluated]
@@ -160,13 +153,12 @@ WON:       [track earnings]
 LOST:      [track for learning]
 ```
 
-**Rule: Never have an empty SCOUTING queue.** Always have 5+ bounties being evaluated.
+**规则：** **永远不要让“探索队列”为空**。始终有5个或更多的任务在评估中。
+**规则：** **同时最多参与3个活跃任务**。质量比数量更重要。敷衍了事的提交比不提交更糟糕。
 
-**Rule: Max 3 active bounties.** Quality > quantity. A half-assed submission is worse than no submission.
+## 收入追踪
 
-## Earnings Tracking
-
-Track cumulative earnings to measure ROI:
+记录累计收入，以评估投资回报率（ROI）：
 
 ```
 Total Submitted: X
@@ -179,4 +171,4 @@ Hours invested: H
 Effective hourly rate: $Z/H
 ```
 
-Target: >$50/hour effective rate. If below this, you're picking wrong bounties.
+目标：每小时的有效收入超过50美元。如果低于这个目标，说明你选择的任务可能不太合适。

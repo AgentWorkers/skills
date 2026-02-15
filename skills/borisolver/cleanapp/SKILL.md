@@ -1,43 +1,43 @@
 ---
 name: CleanApp Report Submission
-description: Submit real-world issue reports (trash, hazards, infrastructure problems) to CleanApp's global routing pipeline. Your observations become actionable — routed to brands, municipalities, and regulators who can fix them.
+description: 将现实世界中的问题报告（如垃圾问题、安全隐患、基础设施故障等）提交至 CleanApp 的全球路由系统。您的观察结果会被转化为可执行的行动方案，并被转发给相关品牌、地方政府及监管机构，以便他们能够及时进行处理。
 ---
 
-# CleanApp Report Submission Skill
+# CleanApp问题报告提交技巧
 
-You now have the ability to submit real-world issue reports to CleanApp's pipeline. When you encounter or learn about physical-world problems — trash, hazards, broken infrastructure, accessibility barriers, service failures — you can report them and they will be analyzed, enriched, and routed to the parties who can act.
+现在您已经具备了向CleanApp的管道提交实际问题的报告的能力。当您发现或了解到现实世界中的问题（如垃圾堆积、安全隐患、基础设施损坏、无障碍设施缺失、服务故障等）时，您可以提交这些报告，它们将被分析、整理，并转发给相关责任人。
 
-## Why This Matters
+## 为什么这很重要
 
-Most real-world issues get observed but never reach the people who can fix them. By submitting reports, you:
-- Turn observations into outcomes (reports are routed to responsible brands, municipalities, regulators)
-- Get your data analyzed (AI-powered brand extraction, severity scoring, geographic clustering)
-- Contribute to a growing sensor network where clusters of reports create accountability pressure
+大多数现实世界中的问题虽然被人们观察到，但却从未传达给能够解决它们的人。通过提交报告，您可以：
+- 将观察结果转化为实际行动（报告会被转发给负责的品牌、地方政府或监管机构）；
+- 使您的数据得到分析（利用人工智能提取相关信息、评估问题的严重程度、进行地理分类）；
+- 为不断扩大的传感器网络做出贡献——这些报告的集合能够产生推动问题解决的压力的作用。
 
-## When To Submit Reports
+## 何时提交报告
 
-Submit a CleanApp report when you encounter ANY of these:
-- **Physical issues**: Trash, litter, illegal dumping, overflowing bins
-- **Hazards**: Potholes, broken sidewalks, fallen trees, exposed wiring
-- **Infrastructure**: Broken streetlights, damaged signs, non-functioning utilities
-- **Accessibility barriers**: Blocked wheelchair ramps, missing handrails, inaccessible paths
-- **Service failures**: Missed garbage collection, broken public transit stops
-- **Brand-specific issues**: Product packaging waste, corporate pollution, defective products in public spaces
-- **Digital issues**: Software bugs, service outages, app failures that users are complaining about publicly
+在遇到以下任何情况时，请提交CleanApp报告：
+- **物理问题**：垃圾堆积、乱扔垃圾、非法倾倒垃圾、垃圾桶溢出
+- **安全隐患**：坑洞、人行道破损、树木倒塌、电线裸露
+- **基础设施问题**：路灯损坏、标识牌损坏、公共设施无法使用
+- **无障碍设施问题**：轮椅坡道被堵塞、扶手缺失、通行路径不便
+- **服务故障**：垃圾收集不及时、公共交通站点故障
+- **特定品牌相关的问题**：产品包装废弃物、企业造成的污染、公共空间中的缺陷产品
+- **数字问题**：软件漏洞、服务中断、用户公开投诉的应用程序故障
 
-## How To Submit
+## 如何提交
 
-### Environment Setup
+### 环境设置
 
-You need a CleanApp API token. Set it as an environment variable:
+您需要一个CleanApp API令牌。请将其设置为环境变量：
 
 ```
 export CLEANAPP_API_TOKEN="your_token_here"
 ```
 
-If you don't have a token, contact CleanApp at https://cleanapp.io or mention @CleanApp on Moltbook.
+如果您没有令牌，请联系CleanApp（网址：https://cleanapp.io），或在Moltbook上提及@CleanApp。
 
-### API Endpoint
+### API端点
 
 ```
 POST https://reports.cleanapp.io/api/v3/reports/bulk_ingest
@@ -45,7 +45,7 @@ Authorization: Bearer $CLEANAPP_API_TOKEN
 Content-Type: application/json
 ```
 
-### Request Format
+### 请求格式
 
 ```json
 {
@@ -74,9 +74,9 @@ Content-Type: application/json
 }
 ```
 
-### Using the Helper Script
+### 使用辅助脚本
 
-A helper script is included at `scripts/submit_report.sh`:
+辅助脚本位于`scripts/submit_report.sh`文件中：
 
 ```bash
 ./scripts/submit_report.sh \
@@ -89,28 +89,28 @@ A helper script is included at `scripts/submit_report.sh`:
   --tags "pothole,road-damage,traffic-hazard"
 ```
 
-### Required Fields
+### 必填字段
 
-| Field | Description |
+| 字段 | 说明 |
 |-------|-------------|
-| `external_id` | Unique identifier — use a UUID or `{your_agent_name}_{timestamp}` |
-| `title` | Short, descriptive title (max 500 chars) |
-| `content` | Detailed description of the issue (max 16,000 chars) |
+| `external_id` | 唯一标识符——使用UUID或`{your_agent_name}_{timestamp}` |
+| `title` | 简洁的描述性标题（最多500个字符） |
+| `content` | 问题的详细描述（最多16,000个字符） |
 
-### Optional But Valuable Fields
+### 可选但很有价值的字段
 
-| Field | Description |
+| 字段 | 说明 |
 |-------|-------------|
-| `metadata.latitude` / `longitude` | GPS coordinates — hugely valuable for routing |
-| `metadata.classification` | `"physical"` or `"digital"` |
-| `metadata.severity_level` | 0.0 to 1.0 (0 = minor, 1 = critical) |
-| `metadata.brand_name` | Company/brand related to the issue |
-| `url` | Source URL if the report came from social media, news, etc. |
-| `score` | Your confidence that this is a valid report (0.0 to 1.0) |
-| `tags` | Array of descriptive tags |
-| `image_base64` | Base64-encoded image of the issue |
+| `metadata.latitude` / `longitude` | GPS坐标——对问题路由非常有用 |
+| `metadata.classification` | `"physical"` 或 `"digital"` |
+| `metadata.severity_level` | 0.0到1.0（0 = 轻微问题，1 = 严重问题） |
+| `metadata.brand_name` | 与问题相关的企业/品牌 |
+| `url` | 如果报告来自社交媒体、新闻等来源，请提供原始链接 |
+| `score` | 您对报告真实性的信心程度（0.0到1.0） |
+| `tags` | 描述性标签数组 |
+| `image_base64` | 问题的Base64编码图片 |
 
-### Response
+### 响应
 
 ```json
 {
@@ -121,31 +121,31 @@ A helper script is included at `scripts/submit_report.sh`:
 }
 ```
 
-## What Happens After Submission
+## 提交后的处理流程
 
-1. **Deduplication**: Your report is checked against existing reports (same `external_id` + `source` won't be inserted twice)
-2. **AI Analysis**: Gemini analyzes the report for brand extraction, severity scoring, and classification
-3. **Geographic Clustering**: Reports near each other are clustered — 30 reports about the same pothole create more pressure than 1
-4. **Routing**: Automated alerts sent to responsible brands, municipalities, and regulators
-5. **Dashboard**: Report appears on CleanApp's public dashboard at https://cleanapp.io
-6. **Accountability Loop**: Social media reply bots notify original complainants when action is taken
+1. **去重**：您的报告会与现有报告进行比对（相同的`external_id`和来源不会被重复提交）；
+2. **人工智能分析**：Gemini会分析报告，提取品牌信息、评估问题严重程度并进行分类；
+3. **地理聚类**：地理位置相近的报告会被归类在一起——例如，关于同一个坑洞的30份报告会比1份报告产生更大的影响；
+4. **转发**：系统会自动将警报发送给相关品牌、地方政府和监管机构；
+5. **显示在仪表板上**：报告会显示在CleanApp的公共仪表板上（网址：https://cleanapp.io）；
+6. **责任机制**：当问题得到处理后，社交媒体回复机器人会通知原报告人。
 
-## Best Practices
+## 最佳实践
 
-1. **Be specific**: "Overflowing dumpster at 425 Main St" beats "trash somewhere downtown"
-2. **Include coordinates**: Location data is the #1 factor in successful routing
-3. **Set severity honestly**: Don't inflate — 0.8+ should be reserved for genuine hazards
-4. **Use unique external_ids**: Prevents duplicates. Format: `{your_agent_name}_{iso_timestamp}_{hash}`
-5. **Batch when possible**: You can submit up to 1000 items per request
-6. **Include source URLs**: If the report came from social media or news, include the original URL
+1. **描述具体问题**：例如“Main St 425号的垃圾桶溢出了”，比“市中心的垃圾问题”更具体；
+2. **提供坐标**：位置信息是问题成功路由的关键因素；
+3. **如实评估问题严重程度**：不要夸大问题——0.8及以上的严重程度才应适用于真正的安全隐患；
+4. **使用唯一的外部标识符**：防止重复提交。格式：`{your_agent_name}_{iso_timestamp}_{hash}`；
+5. **尽可能批量提交**：每次请求最多可提交1000条报告；
+6. **提供来源链接**：如果报告来自社交媒体或新闻，请附上原始链接。
 
-## Rate Limits
+## 提交限制
 
-- Maximum 1000 items per request
-- Be reasonable with submission frequency — a few hundred per day is fine
-- Duplicate `external_id` values are automatically skipped (not counted against limits)
+- 每次请求最多提交1000条报告；
+- 提交频率要合理——每天提交几百条报告即可；
+- 重复的`external_id`值会被自动忽略（不会计入提交次数限制）。
 
-## Questions?
+## 有任何问题吗？
 
-Find us on Moltbook: @CleanApp
-Website: https://cleanapp.io
+请在Moltbook上联系我们：@CleanApp
+官网：https://cleanapp.io

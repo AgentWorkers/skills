@@ -1,46 +1,46 @@
 ---
 name: browser-automation
-description: Non-testing browser automation - web scraping, form filling, screenshot capture, PDF generation, workflow automation. For TESTING with Playwright, use e2e-playwright skill instead. Activates for web scraping, form automation, screenshot, PDF, headless browser, Puppeteer, Selenium, automation scripts, data extraction.
+description: 非测试场景下的浏览器自动化功能包括：网络爬虫、表单填写、截图生成以及工作流程自动化。如需使用 Playwright 进行测试，请选择 `e2e-playwright` 技能。该功能支持网络爬虫、表单自动化、截图生成、无头浏览器（headless browser）操作，同时兼容 Puppeteer 和 Selenium 等自动化工具，能够实现数据提取等任务。
 ---
 
-# Browser Automation Skill
+# 浏览器自动化技能
 
-Expert in browser automation using Playwright, Puppeteer, and Selenium. Specializes in UI testing, web scraping, form automation, and automated workflows.
+精通使用 Playwright、Puppeteer 和 Selenium 进行浏览器自动化。专注于 UI 测试、网页抓取、表单自动化以及自动化工作流程。
 
-## Expertise Areas
+## 专业领域
 
-### 1. Playwright Automation
-- **Browser Control**: Launch, navigate, interact with pages
-- **Element Selection**: CSS selectors, XPath, text-based, data-testid
-- **Actions**: Click, fill, select, hover, drag-and-drop
-- **Waiting Strategies**: waitForSelector, waitForNavigation, waitForTimeout
-- **Network Interception**: Mock APIs, block resources, modify requests
-- **Screenshots & Videos**: Full page, element-specific, video recording
+### 1. Playwright 自动化
+- **浏览器控制**：启动、导航、与页面交互
+- **元素选择**：CSS 选择器、XPath、基于文本的选择器、dataTestId
+- **操作**：点击、输入、选择、悬停、拖放
+- **等待策略**：waitForSelector、waitForNavigation、waitForTimeout
+- **网络拦截**：模拟 API、阻止资源加载、修改请求
+- **截图与视频**：全页面截图、特定元素截图、视频录制
 
-### 2. Testing Frameworks
-- **End-to-End Testing**: Playwright Test, Cypress-like workflows
-- **Visual Regression**: Screenshot comparison, pixel diff analysis
-- **Accessibility Testing**: ARIA validation, keyboard navigation
-- **Performance Testing**: Page load times, Core Web Vitals
-- **Mobile Testing**: Emulate devices, touch gestures
+### 2. 测试框架
+- **端到端测试**：Playwright Test、类似 Cypress 的工作流程
+- **视觉回归测试**：截图对比、像素差异分析
+- **无障碍测试**：ARIA 标准验证、键盘导航
+- **性能测试**：页面加载时间、Core Web Vitals
+- **移动设备测试**：模拟设备、触摸操作
 
-### 3. Web Scraping
-- **Data Extraction**: Parse HTML, extract structured data
-- **Pagination**: Navigate through multi-page results
-- **Dynamic Content**: Handle lazy loading, infinite scroll
-- **Authentication**: Login flows, session management
-- **Rate Limiting**: Throttle requests, respect robots.txt
+### 3. 网页抓取
+- **数据提取**：解析 HTML、提取结构化数据
+- **分页处理**：遍历多页结果
+- **动态内容**：处理懒加载、无限滚动
+- **身份验证**：登录流程、会话管理
+- **速率限制**：限制请求频率、遵守 robots.txt 文件
 
-### 4. Form Automation
-- **Input Fields**: Text, email, password, number inputs
-- **Selections**: Dropdowns, radio buttons, checkboxes
-- **File Uploads**: Single and multiple file uploads
-- **Date Pickers**: Custom date widgets
-- **Multi-Step Forms**: Wizard-style form flows
+### 4. 表单自动化
+- **输入字段**：文本输入、电子邮件输入、密码输入、数字输入
+- **选择框**：下拉菜单、单选按钮、复选框
+- **文件上传**：单文件上传、多文件上传
+- **日期选择器**：自定义日期输入框
+- **多步骤表单**：向导式表单流程
 
-## Code Examples
+## 代码示例
 
-### Basic Page Navigation
+### 基本页面导航
 ```typescript
 import { chromium } from 'playwright';
 
@@ -51,7 +51,7 @@ await page.screenshot({ path: 'screenshot.png', fullPage: true });
 await browser.close();
 ```
 
-### Form Automation with Validation
+### 带有验证的表单自动化
 ```typescript
 // Fill and submit form
 await page.fill('input[name="email"]', 'test@example.com');
@@ -64,7 +64,7 @@ const message = await success.textContent();
 console.log('Success:', message);
 ```
 
-### Data Extraction from Multiple Pages
+### 从多个页面提取数据
 ```typescript
 const products = [];
 let page = 1;
@@ -85,7 +85,7 @@ while (page <= 10) {
 }
 ```
 
-### Network Interception
+### 网络拦截
 ```typescript
 await page.route('**/api/analytics', (route) => route.abort());
 await page.route('**/api/user', (route) =>
@@ -96,7 +96,7 @@ await page.route('**/api/user', (route) =>
 );
 ```
 
-### Visual Regression Testing
+### 视觉回归测试
 ```typescript
 import { expect } from '@playwright/test';
 
@@ -108,9 +108,9 @@ const screenshot = await page.screenshot();
 expect(screenshot).toMatchSnapshot('homepage.png');
 ```
 
-## Selector Strategies
+## 选择器策略
 
-### 1. CSS Selectors (Preferred)
+### 1. CSS 选择器（推荐使用）
 ```typescript
 // ID selector (most reliable)
 await page.click('#submit-button');
@@ -125,7 +125,7 @@ await page.click('.btn-primary');
 await page.click('button.submit[type="submit"]');
 ```
 
-### 2. XPath (When CSS isn't enough)
+### 2. 当 CSS 无法满足需求时使用 XPath
 ```typescript
 // Text-based selection
 await page.click('//button[contains(text(), "Submit")]');
@@ -134,7 +134,7 @@ await page.click('//button[contains(text(), "Submit")]');
 await page.click('//div[@class="form"]//input[@name="email"]');
 ```
 
-### 3. Playwright-Specific
+### 3. Playwright 特有的选择器方法
 ```typescript
 // Text-based
 await page.getByText('Submit').click();
@@ -149,17 +149,17 @@ await page.getByLabel('Email address').fill('test@example.com');
 await page.getByPlaceholder('Enter your email').fill('test@example.com');
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Stable Selectors
-❌ **Bad**: `.css-4j6h2k-button` (auto-generated class)
-✅ **Good**: `[data-testid="submit-button"]`
+### 1. 使用稳定的选择器
+❌ **错误示例**：`.css-4j6h2k-button`（自动生成的类名）
+✅ **正确示例**：`[dataTestId="submit-button"]`
 
-### 2. Add Explicit Waits
-❌ **Bad**: `await page.waitForTimeout(3000);`
-✅ **Good**: `await page.waitForSelector('.results', { state: 'visible' });`
+### 2. 明确添加等待逻辑
+❌ **错误示例**：`await page.waitForTimeout(3000);`
+✅ **正确示例**：`await page.waitForSelector('.results', { state: 'visible' });`
 
-### 3. Handle Errors Gracefully
+### 3. 优雅地处理错误
 ```typescript
 try {
   await page.click('button', { timeout: 5000 });
@@ -170,7 +170,7 @@ try {
 }
 ```
 
-### 4. Clean Up Resources
+### 4. 清理资源
 ```typescript
 try {
   // automation code
@@ -179,7 +179,7 @@ try {
 }
 ```
 
-### 5. Use Page Object Model (POM)
+### 5. 使用页面对象模型（Page Object Model, POM）
 ```typescript
 class LoginPage {
   constructor(private page: Page) {}
@@ -196,9 +196,9 @@ class LoginPage {
 }
 ```
 
-## Common Pitfalls
+## 常见问题
 
-### 1. Race Conditions
+### 1. 竞态条件
 ```typescript
 // ❌ Race condition
 await page.click('button');
@@ -210,7 +210,7 @@ await page.waitForSelector('.result');
 const text = await page.textContent('.result');
 ```
 
-### 2. Stale Element References
+### 2. 元素引用失效
 ```typescript
 // ❌ Element may become stale
 const element = await page.$('button');
@@ -222,7 +222,7 @@ await page.reload();
 await page.click('button');
 ```
 
-### 3. Timing Issues with Dynamic Content
+### 3. 动态内容的定时问题
 ```typescript
 // ❌ Assumes immediate load
 await page.goto('https://example.com');
@@ -234,14 +234,14 @@ await page.waitForLoadState('networkidle');
 await page.click('.dynamic-content');
 ```
 
-## Debugging Tools
+## 调试工具
 
-### 1. Headful Mode
+### 1. 全屏模式
 ```typescript
 const browser = await chromium.launch({ headless: false, slowMo: 100 });
 ```
 
-### 2. Screenshot on Failure
+### 失败时生成截图
 ```typescript
 test.afterEach(async ({ page }, testInfo) => {
   if (testInfo.status !== 'passed') {
@@ -250,7 +250,7 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 ```
 
-### 3. Trace Recording
+### 跟踪记录
 ```typescript
 await context.tracing.start({ screenshots: true, snapshots: true });
 await page.goto('https://example.com');
@@ -258,19 +258,19 @@ await page.goto('https://example.com');
 await context.tracing.stop({ path: 'trace.zip' });
 ```
 
-### 4. Console Logs
+### 控制台日志
 ```typescript
 page.on('console', (msg) => console.log('Browser log:', msg.text()));
 ```
 
-## Performance Optimization
+## 性能优化
 
-### 1. Block Unnecessary Resources
+### 1. 阻止不必要的资源加载
 ```typescript
 await page.route('**/*.{png,jpg,jpeg,gif,svg,css}', (route) => route.abort());
 ```
 
-### 2. Reuse Browser Contexts
+### 2. 重用浏览器上下文
 ```typescript
 const context = await browser.newContext();
 const page1 = await context.newPage();
@@ -278,7 +278,7 @@ const page2 = await context.newPage();
 // Share cookies, storage, etc.
 ```
 
-### 3. Parallel Execution
+### 3. 并行执行
 ```typescript
 await Promise.all([
   page1.goto('https://example.com/page1'),
@@ -287,28 +287,26 @@ await Promise.all([
 ]);
 ```
 
-## Activation Keywords
+## 相关术语/问题
 
-Ask me about:
-- "How do I automate browser testing with Playwright?"
-- "Web scraping with Playwright/Puppeteer"
-- "Screenshot automation and visual regression"
-- "Form filling automation"
-- "Element selection strategies"
-- "Handling dynamic content in web automation"
-- "Best practices for UI testing"
-- "Debugging Playwright tests"
+- **如何使用 Playwright 进行浏览器测试？**
+- **如何使用 Playwright/Puppeteer 进行网页抓取？**
+- **如何实现截图自动化和视觉回归测试？**
+- **如何自动化表单填写？**
+- **如何处理网页自动化中的动态内容？**
+- **UI 测试的最佳实践是什么？**
+- **如何调试 Playwright 测试？**
 
-## Related Skills
+## 相关技能
 
-- **E2E Testing**: `e2e-playwright` skill
-- **Frontend Development**: `frontend` skill for understanding DOM structure
-- **API Testing**: `api-testing` skill for mocking network requests
+- **端到端测试**：`e2e-playwright` 技能
+- **前端开发**：`frontend` 技能（用于理解 DOM 结构）
+- **API 测试**：`api-testing` 技能（用于模拟网络请求）
 
-## Tools & Frameworks
+## 工具与框架
 
-- **Playwright**: Modern browser automation (recommended)
-- **Puppeteer**: Chrome/Chromium-specific automation
-- **Selenium**: Legacy cross-browser automation
-- **Playwright Test**: Full testing framework
-- **Cypress**: Alternative E2E testing framework
+- **Playwright**：现代浏览器自动化工具（推荐使用）
+- **Puppeteer**：针对 Chrome/Chromium 的自动化工具
+- **Selenium**：传统的跨浏览器自动化工具
+- **Playwright Test**：完整的测试框架
+- **Cypress**：另一种端到端测试框架

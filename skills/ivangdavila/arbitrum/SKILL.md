@@ -1,86 +1,86 @@
 ---
 name: Arbitrum
-description: Assist with Arbitrum One transactions, bridging, gas optimization, and L2 ecosystem navigation.
+description: 协助处理 Arbitrum One 交易、跨链桥接（bridging）、Gas 资源优化以及 L2（Layer 2）生态系统的导航相关事宜。
 metadata: {"clawdbot":{"emoji":"🔵","os":["linux","darwin","win32"]}}
 ---
 
-## Network Basics
-- Arbitrum One is an optimistic rollup — L2 scaling for Ethereum
-- EVM equivalent — same tools, wallets, contracts as Ethereum
-- ETH is the gas token — not a separate token
-- ARB is governance token — not used for gas
-- Same addresses as Ethereum — but different network, different balances
+## 网络基础  
+- Arbitrum One 是一种基于“乐观主义汇总（optimistic rollup）”技术的以太坊 Layer-2 扩容方案。  
+- 其执行环境与 Ethereum 的 EVM（以太坊虚拟机）兼容：使用相同的工具、钱包和合约。  
+- ETH 是用于支付交易费用的“gas”代币，而非 Arbitrum 的专用代币。  
+- ARB 代币是用于治理的代币，不用于支付交易费用。  
+- 虽然地址与 Ethereum 相同，但属于不同的网络，因此账户余额也不同。  
 
-## Bridging
-- Official bridge: bridge.arbitrum.io — most secure
-- Deposits (L1→L2): ~10 minutes — after Ethereum confirmation
-- Withdrawals (L2→L1): 7 days — optimistic rollup security delay
-- Third-party bridges faster — Hop, Across, Stargate, but add risk
-- Always bridge some ETH first — need gas on Arbitrum
+## 连接方案（Bridge）  
+- 官方连接方案：bridge.arbitrum.io（安全性最高）。  
+- 从 Ethereum 向 Arbitrum 存款：大约需要 10 分钟（等待 Ethereum 的确认）。  
+- 从 Arbitrum 向 Ethereum 提现：需要等待 7 天（由于“乐观主义汇总”技术的安全机制）。  
+- 第三方连接方案（如 Hop、Across、Stargate）虽然速度更快，但存在一定风险。  
+- 使用第三方连接方案前，请确保先向 Arbitrum 存入一定数量的 ETH（作为交易费用）。  
 
-## The 7-Day Withdrawal
-- Optimistic rollups assume transactions valid — fraud proofs during 7 days
-- Cannot speed up native bridge withdrawal — security requirement
-- Plan ahead for exits — don't bridge if you need funds in <7 days
-- Third-party bridges use liquidity — faster but fees apply
-- Withdrawal can be claimed after 7 days — requires L1 transaction
+## 7 天的提现限制  
+- Arbitrum 的“乐观主义汇总”技术假定所有交易都是有效的；在 7 天内，系统会进行欺诈检测。  
+- 无法加快通过官方连接方案的提现速度（这是安全要求）。  
+- 如果您需要在 7 天内使用资金，请提前做好计划，避免使用第三方连接方案。  
+- 第三方连接方案通常依赖外部流动性，因此会收取费用。  
+- 提现需在 7 天后才能完成，且需要提供相应的 Ethereum 交易记录作为依据。  
 
-## Gas and Fees
-- Much cheaper than Ethereum mainnet — typically 10-50x lower
-- Two components: L2 execution + L1 data posting
-- L1 data costs can spike — when Ethereum is congested
-- Gas prices in gwei — same units as Ethereum
-- Fast blocks — ~0.25 seconds
+## 交易费用（Gas）  
+- Arbitrum 的交易费用远低于 Ethereum 主网，通常低 10 到 50 倍。  
+- 交易费用包括两部分：Layer-2 的执行费用和 Layer-1 的数据同步费用。  
+- 当 Ethereum 网络拥堵时，Layer-1 的数据同步费用可能会增加。  
+- Arbitrum 的交易费用单位与 Ethereum 相同（gwei）。  
+- Arbitrum 的区块生成速度较快，大约每 0.25 秒一个区块。  
 
-## ARB Token
-- Governance token — vote on DAO proposals
-- Not used for gas — ETH pays for transactions
-- Airdropped to early users — claiming period ended
-- Staking coming — ARB staking in development
-- Available on major exchanges — high liquidity
+## ARB 代币  
+- ARB 代币用于参与去中心化自治组织（DAO）的治理决策。  
+- 交易费用由 ETH 支付，而非 ARB 代币。  
+- ARB 代币已向早期用户进行免费发放，目前领取期限已结束。  
+- ARB 正在开发 staking（质押）功能。  
+- ARB 代币可在主要交易所交易，流动性较高。  
 
-## DeFi Ecosystem
-- GMX — largest perps DEX on Arbitrum
-- Uniswap, SushiSwap — major DEXs deployed
-- Aave, Radiant — lending protocols
-- Camelot — native Arbitrum DEX
-- Significant TVL — billions in value locked
+## DeFi 生态系统  
+- GMX 是 Arbitrum 上规模最大的去中心化交易所（DEX）。  
+- Uniswap、SushiSwap 等也是重要的去中心化交易所。  
+- Aave、Radiant 等平台提供借贷服务。  
+- Camelot 是专为 Arbitrum 设计的去中心化交易所。  
+- Arbitrum 上锁定的资产总价值达数十亿美元。  
 
-## Wallet Configuration
-- MetaMask works natively — add network from chainlist.org
-- Chain ID: 42161 — RPC: https://arb1.arbitrum.io/rpc
-- Block explorer: arbiscan.io — verify transactions
-- Same seed as Ethereum — different network selection
+## 钱包配置  
+- MetaMask 可直接在 Arbitrum 上使用；请通过 chainlist.org 添加 Arbitrum 网络配置。  
+- Chain ID：42161；RPC 地址：https://arb1.arbitrum.io/rpc  
+- 可使用 arbiscan.io 查看区块信息以验证交易。  
+- 钱包的种子短语与 Ethereum 相同，但网络选择需设置为 Arbitrum。  
 
-## Arbitrum Nova
-- Separate chain from Arbitrum One — optimized for gaming/social
-- Lower fees than One — less security guarantees
-- Different bridge — don't confuse with One
-- Chain ID: 42170 — verify you're on correct chain
+## Arbitrum Nova  
+- Arbitrum Nova 是一个独立的网络，专为游戏和社交应用优化。  
+- 其交易费用低于 Arbitrum One，但安全性保障相对较低。  
+- 使用不同的连接方案，请注意不要与 Arbitrum One 混淆。  
+- Chain ID：42170；请确认自己连接的是正确的网络。  
 
-## Stylus
-- Run Rust, C, C++ contracts — not just Solidity
-- WASM-based execution — alongside EVM
-- Coming feature — expands developer options
-- Same security as EVM contracts — audited runtime
+## 开发工具  
+- Arbitrum 支持 Rust、C、C++ 等语言编写的合约，而不仅仅是 Solidity。  
+- 执行环境基于 WASM（WebAssembly），与 Ethereum 的 EVM 共享相同的执行引擎。  
+- 新功能即将推出，将进一步丰富开发者的选择。  
+- Arbitrum 合约的安全性同样得到保障（经过审计）。  
 
-## Common Issues
-- "Insufficient ETH for gas" — need ETH, not just tokens
-- Wrong network — sent to Arbitrum address on Ethereum (recoverable but complex)
-- Withdrawal pending — 7-day wait is normal, not stuck
-- Transaction reverted — check slippage, approvals, balance
-- "Network not found" — add Arbitrum network to wallet
+## 常见问题  
+- “ETH 不足”：需要 ETH 来支付交易费用，而不仅仅是 ARB 代币。  
+- 误选网络：将交易发送到错误的 Ethereum 地址（虽然可以恢复，但过程较为复杂）。  
+- 提现延迟：7 天的等待时间属于正常现象，不属于交易失败。  
+- 交易被撤销：请检查交易细节（如滑点、确认状态和账户余额）。  
+- “网络未找到”：请在钱包中添加 Arbitrum 网络配置。  
 
-## Sequencer
-- Single sequencer currently — Offchain Labs operated
-- Centralization concern — decentralization roadmap exists
-- Sequencer can't steal funds — only order transactions
-- If sequencer down — delayed but not lost, can force include
-- Decentralized sequencer coming — DAO governance
+## 交易排序机制（Sequencer）  
+- 目前 Arbitrum 使用单一的交易排序机制，由 Offchain Labs 运营。  
+- 存在中心化风险，但已有去中心化解决方案的规划中。  
+- 交易排序机制无法盗取用户资金，仅负责交易顺序的安排。  
+- 如果排序机制出现故障，交易会延迟处理但不会丢失，可手动重新提交。  
+- 去中心化的交易排序机制正在开发中，将由 DAO（去中心化自治组织）管理。  
 
-## Security
-- Same security as Ethereum for assets — after 7-day challenge period
-- Smart contracts same risks — audit status matters
-- Fraud proof protects users — invalid state transitions challenged
-- Bridge is secured by Ethereum — L1 is the settlement layer
-- Use official bridge for large amounts — third-party bridges add risk
+## 安全性  
+- Arbitrum 的资产安全性与 Ethereum 相同；7 天的挑战期过后，资产将得到充分保护。  
+- 智能合约同样存在安全风险，审计结果至关重要。  
+- 欺诈检测机制可保护用户免受损失（无效的状态转换会被拒绝）。  
+- Arbitrum 的安全依赖于 Ethereum 的基础设施；Layer-1 负责最终的结算。  
+- 大额交易请使用官方连接方案，第三方连接方案存在额外风险。

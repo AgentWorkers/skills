@@ -1,7 +1,7 @@
 ---
 name: simmer-mertsniper
 displayName: Mert Sniper
-description: Near-expiry conviction trading on Polymarket. Snipe markets about to resolve when the odds are heavily skewed. Filter by topic, cap your bets, and only trade strong splits close to deadline.
+description: 在 Polymarket 上，有一种接近到期的“定罪交易”策略。这种策略通常在市场概率严重失衡时进行操作（即交易机会极不均衡）。你可以按主题筛选交易机会，设置投注上限，并且只在截止日期临近时交易那些具有高收益潜力的交易（即那些价格波动较大的资产）。
 metadata: {"clawdbot":{"emoji":"🎯","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
@@ -11,47 +11,47 @@ version: "1.0.1"
 
 # Mert Sniper
 
-Near-expiry conviction trading on Polymarket. Snipe markets about to resolve when the odds are heavily skewed.
+这是一种在Polymarket平台上使用的策略，主要用于在合约即将到期时进行交易。该策略专注于那些赔率严重失衡的市场进行交易。
 
-> Strategy by [@mert](https://x.com/mert/status/2020216613279060433) — filter by topic, cap your bets, wait until near expiry, and only trade strong splits.
+> 策略来源：[@mert](https://x.com/mert/status/2020216613279060433) — 可通过主题进行筛选，限制投注金额，等待合约接近到期时间，仅交易赔率较高的市场。
 
-## When to Use This Skill
+## 适用场景
 
-> **Polymarket only.** All trades execute on Polymarket with real USDC. Use `--live` for real trades, dry-run is the default.
+> **仅适用于Polymarket平台。** 所有交易均使用真实的USDC在Polymarket上执行。使用`--live`选项可进行实时交易，否则为模拟交易。
 
-Use this skill when the user wants to:
-- Trade markets that are about to resolve (last-minute conviction bets)
-- Filter by topic (e.g. only SOL/crypto markets)
-- Cap bet size (e.g. never more than $10)
-- Only trade when odds are strongly skewed (e.g. 60/40 or better)
-- Run an automated expiry-sniping strategy
+当用户希望执行以下操作时，可以使用此策略：
+- 交易那些即将到期的合约（最后时刻的投注）
+- 按主题筛选市场（例如，仅交易SOLANA或加密货币相关市场）
+- 限制投注金额（例如，每次不超过10美元）
+- 仅交易赔率严重失衡的市场（例如，赔率至少为60/40）
+- 运行自动化的到期交易策略
 
-## Setup Flow
+## 设置流程
 
-1. **Ask for Simmer API key**
-   - Get it from simmer.markets/dashboard -> SDK tab
-   - Store in environment as `SIMMER_API_KEY`
+1. **获取Simmer API密钥**
+   - 从simmer.markets/dashboard的SDK选项卡中获取API密钥
+   - 将其存储在环境变量中，命名为`SIMMER_API_KEY`
 
-2. **Ask about settings** (or confirm defaults)
-   - Market filter: Which markets to scan (default: all)
-   - Max bet: Maximum per trade (default $10)
-   - Expiry window: How close to resolution (default 2 minutes)
-   - Min split: Minimum odds skew (default 60/40)
+2. **确认设置**（或使用默认值）
+   - 市场筛选：要扫描的市场（默认：所有市场）
+   - 最大投注金额：每次交易的最大金额（默认：10美元）
+   - 到期时间窗口：距离合约到期还有多少时间（默认：2分钟）
+   - 最小赔率差异：最低的赔率差异（默认：60/40）
 
-3. **Save settings to config.json or environment variables**
+3. **将设置保存到config.json文件或环境变量中**
 
-## Configuration
+## 配置参数
 
-| Setting | Environment Variable | Default | Description |
+| 参数 | 环境变量 | 默认值 | 说明 |
 |---------|---------------------|---------|-------------|
-| Market filter | `SIMMER_MERT_FILTER` | (all) | Tag or keyword filter (e.g. `solana`, `crypto`) |
-| Max bet | `SIMMER_MERT_MAX_BET` | 10.00 | Maximum USD per trade |
-| Expiry window | `SIMMER_MERT_EXPIRY_MINS` | 2 | Only trade markets resolving within N minutes |
-| Min split | `SIMMER_MERT_MIN_SPLIT` | 0.60 | Only trade when YES or NO >= this (e.g. 0.60 = 60/40) |
-| Max trades/run | `SIMMER_MERT_MAX_TRADES` | 5 | Maximum trades per scan cycle |
-| Smart sizing % | `SIMMER_MERT_SIZING_PCT` | 0.05 | % of balance per trade |
+| 市场筛选 | `SIMMER_MERT_FILTER` | (all) | 标签或关键词筛选（例如：`solana`、`crypto`） |
+| 最大投注金额 | `SIMMER_MERT_MAX_BET` | 10.00 | 每次交易的最大金额（美元） |
+| 到期时间窗口 | `SIMMER_MERT_EXPIRY_MINS` | 2 | 仅交易在N分钟内到期的市场 |
+| 最小赔率差异 | `SIMMER_MERT_MIN_SPLIT` | 0.60 | 仅当赔率达到或超过此值时进行交易（例如：0.60表示赔率为60/40） |
+| 每次扫描的最大交易次数 | `SIMMER_MERT_MAX_TRADES` | 5 | 每次扫描周期内的最大交易次数 |
+| 智能投注比例 | `SIMMER_MERT_SIZING_PCT` | 0.05 | 每次交易的投注金额占余额的百分比 |
 
-## Quick Commands
+## 快速命令
 
 ```bash
 # Check account balance and positions
@@ -61,13 +61,13 @@ python scripts/status.py
 python scripts/status.py --positions
 ```
 
-**API Reference:**
-- Base URL: `https://api.simmer.markets`
-- Auth: `Authorization: Bearer $SIMMER_API_KEY`
-- Portfolio: `GET /api/sdk/portfolio`
-- Positions: `GET /api/sdk/positions`
+**API参考：**
+- 基础URL：`https://api.simmer.markets`
+- 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
+- 财产组合信息：`GET /api/sdk/portfolio`
+- 持有头寸信息：`GET /api/sdk/positions`
 
-## Running the Skill
+## 运行该策略
 
 ```bash
 # Dry run (default -- shows opportunities, no trades)
@@ -95,18 +95,18 @@ python mert_sniper.py --config
 python mert_sniper.py --no-safeguards
 ```
 
-## How It Works
+## 工作原理
 
-Each cycle the script:
-1. Fetches active markets from Simmer API (optionally filtered by tag/keyword)
-2. Filters to markets resolving within the expiry window (default 2 minutes)
-3. Checks the price split -- only trades when one side >= min_split (default 60%)
-4. Determines direction: backs the favored side (higher probability)
-5. **Safeguards**: Checks context for flip-flop warnings, slippage, market status
-6. **Execution**: Places trade on the favored side, capped at max bet
-7. Reports summary of scanned, filtered, and traded markets
+该脚本每个周期会执行以下操作：
+1. 从Simmer API获取活跃市场列表（可选地根据标签/关键词进行筛选）
+2. 筛选出在到期时间窗口内到期的市场
+3. 检查价格赔率差异——仅当某一方的赔率达到或超过最小阈值（默认为60%）时进行交易
+4. 确定交易方向：选择赔率较高的那一方进行投注
+5. **安全措施**：检查市场状态、价格波动情况以及可能出现的反转风险
+6. **执行交易**：在赔率较高的那一方进行投注，同时遵守最大投注金额的限制
+7. 报告已扫描、筛选和实际交易的市场列表
 
-## Example Output
+## 示例输出
 
 ```
 🎯 Mert Sniper - Near-Expiry Conviction Trading
@@ -143,24 +143,24 @@ Each cycle the script:
   [DRY RUN MODE - no real trades executed]
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-**"No markets found"**
-- Check your filter -- try without a filter first
-- Markets may not be available (check simmer.markets)
+**“未找到符合条件市场”**
+- 检查你的筛选条件——可以先尝试不使用任何筛选条件
+- 可能是因为某些市场暂时不可用（请查看simmer.markets的相关信息）
 
-**"No markets expiring within window"**
-- Increase expiry window: `--expiry 10` (10 minutes)
-- Or run more frequently (cron every minute)
+**“没有在指定时间内到期的市场”**
+- 增加到期时间窗口：`--expiry 10`（表示10分钟后到期）
+- 或者增加扫描频率（例如，使用cron任务每分钟扫描一次）
 
-**"Split too narrow"**
-- Lower the min split: `--set min_split=0.55`
-- This trades more often but with less conviction
+**“赔率差异太小”**
+- 降低最小赔率阈值：`--set min_split=0.55`
+- 这会提高交易频率，但每次交易的赔率优势会降低
 
-**"Resolves in: 17h" on 15-min markets**
-- Polymarket's `endDate` is the event-level end-of-day, not the individual market close time
-- For 15-min crypto markets (e.g. "BTC Up or Down - Feb 8, 11PM ET"), the actual close time is in the question text but not in the API
-- This is a Polymarket data limitation — widen the expiry window (`--expiry 1080`) as a workaround, or use the split filter to find conviction opportunities regardless of timing
+**“某些市场在17小时后到期”**
+- Polymarket的`endDate`指的是整个平台的日终时间，并非单个市场的具体关闭时间
+- 对于15分钟周期的加密货币市场（例如“BTC上涨或下跌 - 2月8日晚上11点（ET时间）”，实际的交易结束时间可能在文本中提及，但API中并未提供
+- 这是Polymarket的数据限制——可以尝试增加到期时间窗口（`--expiry 1080`），或者使用赔率筛选条件来寻找交易机会
 
-**"API key invalid"**
-- Get new key from simmer.markets/dashboard -> SDK tab
+**“API密钥无效”**
+- 请从simmer.markets/dashboard的SDK选项卡中重新获取API密钥

@@ -1,91 +1,103 @@
 ---
 name: google-news-api-skill
-description: This skill automates the extraction of structured news data from Google News via BrowserAct API. Use this skill when the user asks for tasks such as: 1. Searching for news about a specific topic; 2. Tracking industry trends; 3. Monitoring public relations or sentiment; 4. Collecting competitor updates; 5. Getting the latest reports on specific keywords; 6. Monitoring brand exposure in media; 7. Researching market hot topics; 8. Summarizing daily industry news; 9. Tracking media activities of specific individuals; 10. Retrieving hot events from the past 24 hours; 11. Extracting structured data for market research; 12. Monitoring global breaking news.
+description: 该技能通过BrowserAct API自动化地从Google News中提取结构化新闻数据。当用户需要执行以下任务时，可以使用此技能：  
+1. 搜索关于特定主题的新闻；  
+2. 跟踪行业趋势；  
+3. 监测公共关系或公众情绪；  
+4. 收集竞争对手的更新信息；  
+5. 获取特定关键词的最新报道；  
+6. 监控品牌在媒体中的曝光情况；  
+7. 研究市场热点话题；  
+8. 汇总每日行业新闻；  
+9. 跟踪特定个人的媒体活动；  
+10. 获取过去24小时内的热门事件；  
+11. 提取用于市场研究的结构化数据；  
+12. 监控全球突发新闻。
 ---
 
-# Google News Automation Skill
+# Google 新闻自动化技能
 
-## 📖 Introduction
-This skill provides a one-stop news collection service using BrowserAct's Google News API template. It extracts structured news results directly from Google News, including headlines, sources, publication times, and article links, providing clean and ready-to-use data without manual scraping.
+## 📖 介绍
+该技能利用 BrowserAct 的 Google News API 模板，提供一站式新闻采集服务。它可以直接从 Google News 中提取结构化新闻数据，包括标题、来源、发布时间和文章链接，无需手动抓取即可获得干净、可直接使用的数据。
 
-## ✨ Features
-1. **No Hallucinations**: Uses predefined workflows to ensure stable and accurate data extraction, avoiding AI-generated hallucinations.
-2. **No CAPTCHA Issues**: Built-in mechanisms to bypass reCAPTCHA or other verification challenges automatically.
-3. **No IP Restrictions**: Overcomes regional IP limitations and geofencing for stable global access.
-4. **Fast Execution**: Executes tasks significantly faster than pure AI-driven browser automation.
-5. **Cost-Effective**: Reduces data acquisition costs compared to token-heavy AI solutions.
+## ✨ 特点
+1. **数据稳定可靠**：采用预定义的工作流程，确保数据提取的稳定性和准确性，避免 AI 生成的不准确信息。
+2. **自动绕过验证码**：内置机制可自动绕过 reCAPTCHA 或其他验证挑战。
+3. **无 IP 限制**：克服地域 IP 限制和地理屏蔽，实现全球范围内的稳定访问。
+4. **执行速度快**：执行速度远超纯 AI 驱动的浏览器自动化方案。
+5. **成本效益高**：相比依赖大量 API 令牌的 AI 解决方案，降低了数据采集成本。
 
-## 🔑 API Key Guidance
-Before running, check for the `BROWSERACT_API_KEY` environment variable. If it is not set, do not proceed with other actions. Instead, request and wait for the user to provide the key.
-**Agent must inform the user**:
-> "Since the BrowserAct API Key is not configured, please go to the [BrowserAct Console](https://www.browseract.com/reception/integrations) to get your Key and provide it to me here."
+## 🔑 API 密钥说明
+在运行之前，请检查 `BROWSERACT_API_KEY` 环境变量是否已设置。如果未设置，请等待用户提供 API 密钥。
+**代理应告知用户**：
+> “由于未配置 BrowserAct API 密钥，请前往 [BrowserAct 控制台](https://www.browseract.com/reception/integrations) 获取密钥，并在此处提供给我。”
 
-## 🛠️ Input Parameters Details
-The Agent should configure the following parameters based on user needs when calling the script:
+## 🛠️ 输入参数详情
+代理在调用脚本时，应根据用户需求配置以下参数：
 
-1. **Search_Keywords**
-   - **Type**: `string`
-   - **Description**: The keywords to search on Google News (e.g., company name, industry terms, competitor names).
-   - **Example**: `Generative AI`, `Tesla`, `SpaceX`
+1. **Search_Keywords**  
+   - **类型**：`string`  
+   - **描述**：要在 Google News 中搜索的关键词（例如：公司名称、行业术语、竞争对手名称）。  
+   - **示例**：`Generative AI`、`Tesla`、`SpaceX`
 
-2. **Publish_date**
-   - **Type**: `string`
-   - **Description**: Filters news based on publication time.
-   - **Options**: 
-     - `any time`: No time restriction.
-     - `past hours`: Within the last few hours (best for breaking news).
-     - `past 24 hours`: Within the last 24 hours (recommended for daily monitoring).
-     - `past week`: Within the last week (short-term trend analysis).
-     - `past year`: Within the last year (long-term research).
-   - **Default**: `past week`
+2. **Publish_date**  
+   - **类型**：`string`  
+   - **描述**：根据发布时间筛选新闻。  
+   - **选项**：  
+     - `any time`：无时间限制。  
+     - `past hours`：过去几小时内（适合获取突发新闻）。  
+     - `past 24 hours`：过去 24 小时内（适合日常监控）。  
+     - `past week`：过去一周内（适合短期趋势分析）。  
+     - `past year`：过去一年内（适合长期研究）。  
+   - **默认值**：`past week`
 
-3. **Datelimit**
-   - **Type**: `number`
-   - **Description**: Maximum number of news items to extract in a single task.
-   - **Default**: `30`
-   - **Recommendation**: Use 10-30 for real-time monitoring; use larger values for deep research.
+3. **Datelimit**  
+   - **类型**：`number`  
+   - **描述**：单次任务中提取的最大新闻条目数量。  
+   - **默认值**：`30`  
+   - **建议**：实时监控使用 10-30 条；深度研究可使用更多条目。
 
-## 🚀 How to Call (Recommended)
-The Agent should execute the following command to get results:
+## 🚀 调用方法（推荐）
+代理应执行以下命令以获取结果：
 
 ```bash
 # Example call
 python -u ./.cursor/skills/google-news-api-skill/scripts/google_news_api.py "search keywords" "time range" limit
 ```
 
-### ⏳ Progress Monitoring
-Since this task involves automated browser operations, it may take several minutes. The script will continuously output timestamped status logs (e.g., `[14:30:05] Task Status: running`).
-**Agent Note**:
-- Stay focused on the terminal output while waiting for the script.
-- As long as new status logs are being printed, the task is running normally. Do not assume it is hung or unresponsive.
-- Only consider retrying if the status remains unchanged for a long time or the script stops without returning results.
+### ⏳ 进度监控
+由于此任务涉及自动化浏览器操作，可能需要几分钟时间。脚本会持续输出带有时间戳的状态日志（例如：`[14:30:05] 任务状态：运行中`）。
+**代理注意事项**：
+- 在等待脚本执行期间，请密切关注终端输出。
+- 只要仍有新的状态日志输出，说明任务正在正常运行。不要误认为脚本卡住了或无响应。
+- 仅当状态长时间不变或脚本停止且未返回结果时，才考虑重试。
 
-## 📊 Output Data Specification
-Upon success, the script prints results parsed from the API response. Fields include:
-- `headline`: Title of the news article.
-- `source`: Publisher or news outlet.
-- `news_link`: Resolved destination URL of the article.
-- `published_time`: Timestamp displayed on Google News.
-- `author`: Name of the author (if available).
+## 📊 输出数据格式
+成功执行后，脚本会输出从 API 响应中解析出的数据。字段包括：
+- `headline`：新闻文章的标题。
+- `source`：新闻来源或发布机构。
+- `news_link`：文章的完整链接。
+- `published_time`：在 Google News 上显示的发布时间。
+- `author`：作者名称（如有提供）。
 
-## ⚠️ Error Handling & Retry Mechanism
-If an error occurs (e.g., network issues or task failure), follow this logic:
+## ⚠️ 错误处理与重试机制
+如果发生错误（例如网络问题或任务失败），请按照以下步骤处理：
 
-1. **Check Output**:
-   - If output contains `"Invalid authorization"`, the API Key is invalid. **Do not retry**. Guide the user to provide a correct API Key.
-   - If output does not contain `"Invalid authorization"` but the task fails (e.g., output starts with `Error:` or result is empty), the Agent should **automatically retry once**.
+1. **检查输出**：
+   - 如果输出包含 “Invalid authorization”，说明 API 密钥无效。**不要重试**，请引导用户提供正确的 API 密钥。
+   - 如果输出不包含 “Invalid authorization” 但任务仍然失败（例如输出以 “Error:” 开头或结果为空），代理应**自动重试一次**。
 
-2. **Retry Limit**:
-   - Automatic retry is limited to **one** attempt. If it fails again, stop and report the error message to the user.
+2. **重试次数限制**：
+   - 自动重试次数限制为 **一次**。如果再次失败，请停止并向用户报告错误信息。
 
-## 🌟 Typical Use Cases
-1. **Industry Trend Tracking**: Find the latest developments in fields like "Low-altitude economy" or "Generative AI".
-2. **PR Monitoring**: Monitor media exposure of a specific brand or company over the past 24 hours.
-3. **Competitor Intelligence**: Collect information on new products or marketing activities from competitors over the past week.
-4. **Market Research**: Get popular reports on specific keywords across different time dimensions.
-5. **Individual Tracking**: Retrieve the latest news reports on industry leaders or public figures.
-6. **Daily News Summary**: Automatically extract and summarize daily news in specific domains.
-7. **Global Breaking News**: Get real-time updates on major global events.
-8. **Structured Data Extraction**: Extract structured information like headlines, sources, and links for analysis.
-9. **Media Exposure Analysis**: Evaluate the propagation heat of a project or event in mainstream news media.
-10. **Long-term Research**: Retrieve all in-depth reports on a specific technical topic from the past year.
+## 🌟 典型应用场景
+1. **行业趋势跟踪**：查找 “低空经济” 或 “生成式 AI” 等领域的最新发展动态。
+2. **公关监控**：监控特定品牌或公司在过去 24 小时内的媒体曝光情况。
+3. **竞争对手情报**：收集竞争对手在过去一周内的新产品或营销活动信息。
+4. **市场研究**：获取特定关键词在不同时间维度上的热门报道。
+5. **个人关注**：检索行业领袖或公众人物的最新新闻报道。
+6. **每日新闻汇总**：自动提取并总结特定领域的每日新闻。
+7. **全球突发新闻**：获取重大全球事件的实时更新。
+8. **结构化数据提取**：提取标题、来源和链接等结构化信息以供分析。
+9. **媒体曝光分析**：评估项目或事件在主流新闻媒体中的传播热度。
+10. **长期研究**：检索过去一年内关于特定技术主题的所有深度报道。

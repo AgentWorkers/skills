@@ -1,62 +1,62 @@
 ---
 name: MATLAB
-description: Avoid common MATLAB mistakes — indexing traps, matrix vs element-wise ops, and vectorization pitfalls.
+description: 避免常见的 MATLAB 错误——索引陷阱、矩阵运算与元素级运算的混淆，以及向量化操作中的常见误区。
 metadata: {"clawdbot":{"emoji":"📐","requires":{"bins":["matlab"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Indexing
-- 1-based indexing — first element is `A(1)`, not `A(0)`
-- `end` keyword for last index — `A(end)`, `A(end-1)`, works in any dimension
-- Linear indexing on matrices — `A(5)` accesses 5th element column-major order
-- Logical indexing returns vector — `A(A > 0)` gives 1D result regardless of A's shape
+## 索引
+- 索引从1开始计数——第一个元素是`A(1)`，而不是`A(0)`  
+- 使用`end`关键字可以获取最后一个元素：`A(end)`、`A(end-1)`，适用于任何维度  
+- 矩阵的线性索引：`A(5)`表示按列优先顺序访问第5个元素  
+- 逻辑索引会返回一个向量：`A(A > 0)`无论矩阵的形状如何，都会返回一个一维结果  
 
-## Matrix vs Element-wise
-- `*` is matrix multiplication — `.*` for element-wise
-- `/` solves `A*x = B` — `./` for element-wise division
-- `^` is matrix power — `.^` for element-wise power
-- Forgetting the dot is silent bug — dimensions might accidentally match
+## 矩阵与元素级操作  
+- `*`表示矩阵乘法；`.*`表示元素级乘法  
+- `/`用于解方程`A*x = B`；`./`用于元素级除法  
+- `^`表示矩阵的幂运算；`.^`表示元素级的幂运算  
+- 如果省略点（`.`），可能会导致意外的维度匹配，从而引发错误  
 
-## Vector Shape Matters
-- Row vector: `[1 2 3]` or `[1, 2, 3]` — shape is 1×3
-- Column vector: `[1; 2; 3]` — shape is 3×1
-- Transpose with `'` (conjugate) or `.'` (non-conjugate) — for complex, they differ
-- `*` between row and column gives scalar or matrix — depending on order
+## 向量的形状很重要  
+- 行向量：`[1 2 3]`或`[1, 2, 3]`——形状为1×3  
+- 列向量：`[1; 2; 3]`——形状为3×1  
+- 转置可以使用`'`（共轭转置）或`.`（非共轭转置）；对于复数矩阵，两者结果不同  
+- 当对行向量使用`*`运算时，结果可能是标量或矩阵，具体取决于运算顺序  
 
-## Array Preallocation
-- Growing arrays in loops is slow — preallocate: `A = zeros(1000, 1)`
-- `zeros`, `ones`, `nan` for preallocation — specify size upfront
-- Cell arrays: `cell(n, m)` — preallocate cells too
+## 数组的预分配  
+- 在循环中动态分配数组效率较低；建议预先分配：`A = zeros(1000, 1)`  
+- `zeros`、`ones`、`nan`用于预分配数组——需要提前指定数组的大小  
+- 单元数组（cell array）：`cell(n, m)`——也可以进行预分配  
 
-## Broadcasting
-- Implicit expansion since R2016b — `A + b` works if dimensions compatible
-- Singleton dimensions expand — `[1;2;3] + [10 20]` gives 3×2
-- Before R2016b needed `bsxfun` — legacy code may still use it
+## 广播操作（Broadcasting）  
+- 自R2016b版本起，如果数组维度兼容，`A + b`可以直接进行广播运算  
+- 单个维度的数组在广播时会自动扩展：`[1;2;3] + [10 20]`的结果是3×2  
+- 在R2016b之前需要使用`bsxfun`函数；旧代码可能仍然需要这个函数  
 
-## NaN Handling
-- `NaN ~= NaN` is true — use `isnan()` to check
-- Most operations propagate NaN — `sum([1 NaN 3])` is NaN
-- Use `'omitnan'` flag — `sum(A, 'omitnan')`, `mean(A, 'omitnan')`
+## NaN值的处理  
+- `NaN ~= NaN`是正确的比较结果；使用`isnan()`函数进行判断  
+- 大多数运算会传播NaN值：`sum([1 NaN 3])`的结果仍然是NaN  
+- 可以使用`'omitnan'`标志来忽略NaN值：`sum(A, 'omitnan')`、`mean(A, 'omitnan')`  
 
-## Cell Arrays vs Matrices
-- `{}` for cell arrays — hold mixed types, different sizes
-- `()` indexing returns cell — `C(1)` is 1×1 cell
-- `{}` indexing extracts content — `C{1}` is the actual value
-- Comma-separated list from `C{:}` — useful for function arguments
+## 单元数组与矩阵  
+- 单元数组用`{}`表示，可以包含不同类型的元素，且大小可以不同  
+- 使用`()`索引时返回的是一个单元：`C(1)`是一个1×1的单元  
+- 使用`{}`索引时直接获取单元的值：`C{1}`就是该单元的实际值  
+- 从`C{:}`中提取元素时，可以使用逗号分隔的列表——这对函数参数非常有用  
 
-## Common Mistakes
-- `=` for assignment, `==` for comparison — `if x = 5` is error in MATLAB
-- Semicolon suppresses output — forget it and flood command window
-- `clear` removes all variables — use `clearvars` for selective, `close all` for figures
-- `i` and `j` are imaginary unit — don't use as loop variables, or reassign explicitly
-- String vs char: `"text"` vs `'text'` — double quotes are string arrays (R2017a+)
+## 常见错误  
+- 在MATLAB中，使用`=`进行赋值，使用`==`进行比较是错误的；`if x = 5`是错误的写法  
+- 分号`;`会抑制输出；使用分号可能会导致命令窗口显示大量信息  
+- `clear`会删除所有变量；使用`clearvars`可以有选择地删除变量，`close all`可以关闭所有图形窗口  
+- `i`和`j`是虚数单位；不要将它们用作循环变量，需要显式重新赋值  
+- 字符串与字符（char）的区别：`"text"`使用双引号，`'text'`使用单引号；双引号表示字符串数组（从R2017a版本开始）  
 
-## Functions
-- Anonymous functions: `f = @(x) x^2` — quick inline functions
-- Multiple outputs: `[a, b] = func()` — must capture or use `~` to ignore
-- `nargin`/`nargout` for optional args — check how many inputs/outputs provided
-- `varargin`/`varargout` for variable args — cell array of extra arguments
+## 函数  
+- 匿名函数：`f = @(x) x^2`——用于创建简单的内联函数  
+- 如果函数有多个输出，需要使用`[a, b] = func()`来捕获输出结果；也可以使用`~`来忽略多余的输出  
+- `nargin`/`nargout`用于获取函数的输入参数数量/输出参数数量  
+- `varargin`/`varargout`用于处理可变数量的输入参数  
 
-## Debugging
-- `dbstop if error` — breakpoint on any error
-- `keyboard` in code pauses execution — enter debug mode at that line
-- `whos` shows variable sizes — `size(A)` for specific variable
+## 调试  
+- `dbstop if error`——在任何错误发生时设置断点  
+- 使用`keyboard`可以在代码中暂停执行，从而进入调试模式  
+- `whos`可以显示变量的大小；`size(A)`可以获取特定变量的大小

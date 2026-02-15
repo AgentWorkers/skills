@@ -1,13 +1,20 @@
 ---
 name: lofy-projects
-description: Project management for the Lofy AI assistant — tracks multiple projects with milestones, priority scoring engine (urgency × job relevance × momentum × energy match), meeting prep automation, time logging, stale project alerts, and work session recommendations. Use when managing projects, prioritizing work, preparing for meetings, or tracking milestones and deadlines.
+description: Lofy AI助手的项目管理功能：  
+- 跟踪多个项目及其里程碑；  
+- 采用优先级评分机制（综合考虑紧急性、工作相关性、项目进展以及资源匹配情况）；  
+- 自动化会议准备流程；  
+- 记录工作时间；  
+- 发出项目停滞提醒；  
+- 提供工作会话建议。  
+适用于项目管理、任务优先级排序、会议筹备，以及里程碑和截止日期的监控。
 ---
 
-# Project Pilot — Project & Academic Manager
+# 项目与学术管理工具 — Project Pilot
 
-Keeps projects, coursework, and research organized. Tracks status, deadlines, blockers, and helps prioritize work time.
+该工具用于整理项目、课程作业和研究成果，跟踪项目进度、截止日期以及可能阻碍项目进展的因素，并帮助用户合理规划工作时间。
 
-## Data File: `data/projects.json`
+## 数据文件：`data/projects.json`
 
 ```json
 {
@@ -32,47 +39,37 @@ Keeps projects, coursework, and research organized. Tracks status, deadlines, bl
 }
 ```
 
-## Priority Engine
+## 任务优先级管理系统
 
-When user asks "what should I work on?":
+当用户询问“我应该先做些什么？”时，系统会提供以下建议：
 
-```
-Priority = (Urgency × 3) + (Job_Relevance × 2) + (Momentum × 1) + (Energy_Match × 1)
+### 基于时间的任务分配建议：
+- **< 30 分钟**：快速任务——发送邮件、审阅文档、阅读资料、更新文档
+- **30-60 分钟**：中等难度任务——编写一个函数、准备会议笔记、申请工作机会
+- **1-2 小时**：需要集中精力的任务——实现某个功能、撰写论文部分、调试代码
+- **2 小时以上**：需要深入研究的任务——进行重要的开发工作
 
-Urgency (0-5): 5=due today, 4=48h, 3=this week, 2=this month, 1=no deadline, 0=backlog
-Job_Relevance (0-5): 5=critical, 4=high, 3=medium, 2=portfolio, 1=low, 0=none
-Momentum (0-3): 3=active progress, 2=touched last 3 days, 1=stale 1-2 weeks, 0=cold 2+ weeks
-Energy_Match (0-2): 2=matches current energy, 1=neutral, 0=mismatch
-```
+## 会议准备
 
-### Time-Based Recommendations
-- **< 30 min:** Quick tasks — email, review, read, update docs
-- **30-60 min:** Medium — write one function, prep notes, apply to 1 job
-- **1-2 hours:** Focused — implement a feature, write paper section, debug
-- **2+ hours:** Deep work — major development sessions
+当系统检测到会议安排时，会执行以下操作：
+1. 确定与会议相关的项目
+2. 获取自上次会议以来的所有时间记录（`time_log`）
+3. 列出当前阻碍项目进展的因素
+4. 生成 2-3 个需要讨论的问题
+5. 提出会议中可以展示或讲解的内容
+6. 在会议前 2 小时发送会议准备材料
 
-## Meeting Prep
+## 通过自然语言更新项目状态
 
-When a meeting is detected:
-1. Identify related project
-2. Pull recent time_log entries since last meeting
-3. List current blockers
-4. Generate 2-3 questions to ask
-5. Suggest what to demo/present
-6. Send prep 2 hours before
+- “我花了 2 小时处理 [项目]” → 更新时间记录及最后更新时间
+- “[功能] 现在可以正常使用了” → 更新项目里程碑状态
+- “遇到 [问题]，无法继续推进” → 将该问题添加到阻碍因素列表中
+- “会议时间改为周四” → 更新会议安排
 
-## Status Updates via Natural Language
-
-- "Worked on [project] for 2 hours" → update time_log, last_updated
-- "[Feature] is working now" → update milestone status
-- "Stuck on [issue]" → add to blockers
-- "Meeting moved to Thursday" → update meetings
-
-## Instructions
-
-1. Always read `data/projects.json` before responding about projects
-2. Update JSON after any project conversation
-3. For "what should I work on?" — ONE clear recommendation + one alternative
-4. Flag stale projects: "[Project] hasn't been touched in X days"
-5. Before meetings, proactively send prep
-6. Prioritize job-critical projects unless there's a deadline override
+## 使用说明：
+1. 在回复关于项目的任何问题之前，务必先阅读 `data/projects.json` 文件。
+2. 在任何与项目相关的讨论结束后，及时更新 `data/projects.json` 文件中的信息。
+3. 对于“我应该先做些什么？”这样的问题，系统会提供一个明确的建议以及一个备选方案。
+4. 对于长期未被处理的项目，会在文件中标记为“[项目] 已有 X 天未被修改”。
+5. 会议前主动发送会议准备材料。
+6. 除非有紧急的截止日期要求，否则优先处理对工作至关重要的项目。

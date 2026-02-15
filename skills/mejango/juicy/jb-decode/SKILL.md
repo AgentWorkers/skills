@@ -1,13 +1,13 @@
 ---
 name: jb-decode
-description: Decode and analyze Juicebox V5 transaction calldata. Explain what a transaction does, decode function parameters, and analyze historical transactions using cast or ethers.js.
+description: 解码并分析 Juicebox V5 交易的数据结构（calldata）。解释交易的执行过程，解析函数参数，并使用 `cast` 或 `ethers.js` 工具来分析历史交易记录。
 ---
 
-# Juicebox V5 Transaction Decoder
+# Juicebox V5 交易解码器
 
-Decode and analyze Juicebox V5 transaction calldata.
+用于解码和分析 Juicebox V5 交易的输入数据（calldata）。
 
-## Common Function Selectors
+## 常用函数选择器
 
 ### JBMultiTerminal
 ```
@@ -43,9 +43,9 @@ burnTokensOf(address,uint256,uint256,string)
   - Burn tokens
 ```
 
-## Decoding with Cast
+## 使用 `Cast` 进行解码
 
-### Decode Calldata
+### 解码输入数据（Calldata）
 ```bash
 # Get the function signature
 cast 4byte <first-4-bytes-of-calldata>
@@ -54,7 +54,7 @@ cast 4byte <first-4-bytes-of-calldata>
 cast calldata-decode "pay(uint256,address,uint256,address,uint256,string,bytes)" <calldata>
 ```
 
-### Decode Transaction
+### 解码交易信息（Transaction）
 ```bash
 # Get transaction details
 cast tx <txhash> --rpc-url $RPC_URL
@@ -63,7 +63,7 @@ cast tx <txhash> --rpc-url $RPC_URL
 cast tx <txhash> --rpc-url $RPC_URL | grep input
 ```
 
-### Example: Decode a Pay Transaction
+### 示例：解码支付交易
 ```bash
 # Assuming calldata starts with pay() selector
 cast calldata-decode \
@@ -79,9 +79,9 @@ cast calldata-decode \
     # metadata: 0x...
 ```
 
-## Decoding with ethers.js
+## 使用 `ethers.js` 进行解码
 
-### Setup
+### 设置解码环境
 ```typescript
 import { ethers } from 'ethers';
 
@@ -95,7 +95,7 @@ const TERMINAL_ABI = [
 const iface = new ethers.Interface(TERMINAL_ABI);
 ```
 
-### Decode Calldata
+### 解码输入数据（Calldata）
 ```typescript
 function decodeCalldata(calldata: string) {
     try {
@@ -111,7 +111,7 @@ function decodeCalldata(calldata: string) {
 }
 ```
 
-### Decode Transaction from Hash
+### 从哈希值解码交易信息
 ```typescript
 async function decodeTransaction(txHash: string) {
     const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -131,9 +131,9 @@ async function decodeTransaction(txHash: string) {
 }
 ```
 
-## Transaction Analysis Examples
+## 交易分析示例
 
-### Pay Transaction
+### 支付交易
 ```
 Function: pay(uint256,address,uint256,address,uint256,string,bytes)
 Parameters:
@@ -148,7 +148,7 @@ Parameters:
 Effect: Sends 1 ETH to project #123, mints tokens to 0xABC...
 ```
 
-### Cash Out Transaction
+### 提现交易
 ```
 Function: cashOutTokensOf(...)
 Parameters:
@@ -163,7 +163,7 @@ Parameters:
 Effect: Burns 1000 tokens, sends proportional ETH to 0xABC...
 ```
 
-### Queue Rulesets Transaction
+### 队列规则集交易
 ```
 Function: queueRulesetsOf(...)
 Parameters:
@@ -174,11 +174,11 @@ Parameters:
 Effect: Queues new ruleset(s) that activate when current ends
 ```
 
-## Decoding Hook Metadata
+## 解码挂钩元数据（Decoding Hook Metadata）
 
-Hook metadata is ABI-encoded. Common patterns:
+挂钩元数据采用 ABI 编码格式。常见模式包括：
 
-### Buyback Hook Metadata
+### 回购挂钩元数据（Buyback Hook Metadata）
 ```solidity
 // Encode
 bytes memory metadata = abi.encode(amountToSwapWith, minimumSwapAmountOut);
@@ -187,7 +187,7 @@ bytes memory metadata = abi.encode(amountToSwapWith, minimumSwapAmountOut);
 (uint256 amountToSwapWith, uint256 minimumSwapAmountOut) = abi.decode(metadata, (uint256, uint256));
 ```
 
-### 721 Hook Metadata
+### 721 挂钩元数据（721 Hook Metadata）
 ```solidity
 // Encode tier IDs to mint
 bytes memory metadata = abi.encode(tierIds);
@@ -196,17 +196,17 @@ bytes memory metadata = abi.encode(tierIds);
 uint256[] memory tierIds = abi.decode(metadata, (uint256[]));
 ```
 
-## Generation Guidelines
+## 生成指南
 
-1. **Identify the contract** from the `to` address
-2. **Extract function selector** (first 4 bytes)
-3. **Decode parameters** using the appropriate ABI
-4. **Explain the effect** in plain language
-5. **Decode nested metadata** if present
+1. 通过 `to` 地址识别合约。
+2. 提取函数选择器（前 4 个字节）。
+3. 使用相应的 ABI 解码参数。
+4. 用通俗的语言解释交易的效果。
+5. 如果存在嵌套元数据，也需要进行解码。
 
-## Example Prompts
+## 示例提示：
 
-- "What does this transaction do? 0x..."
-- "Decode this calldata for JBMultiTerminal"
-- "Explain what happened in transaction 0xabc..."
-- "What parameters were used in this pay() call?"
+- “这笔交易是做什么的？地址为 0x...”
+- “解码 JBMultiTerminal 的输入数据。”
+- “解释地址为 0xabc... 的交易中发生了什么？”
+- “这次支付（pay()）调用使用了哪些参数？”

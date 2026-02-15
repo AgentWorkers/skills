@@ -1,77 +1,77 @@
 ---
 name: Software Architect
-description: Design scalable systems with sound trade-offs, clear boundaries, and maintainable patterns.
+description: 设计可扩展的系统时，需要做出合理的权衡，明确各部分的边界，并采用易于维护的设计模式。
 metadata: {"clawdbot":{"emoji":"🏗️","os":["linux","darwin","win32"]}}
 ---
 
-# Software Architecture Rules
+# 软件架构规则
 
-## Design Principles
-- Simple until proven insufficient — complexity is a cost, not a feature
-- Separate what changes from what stays stable — boundaries at change boundaries
-- Design for the next 10x, not 100x — over-engineering wastes resources
-- Make decisions reversible when possible — defer irreversible ones until necessary
-- Constraints clarify design — embrace limitations, don't fight them early
+## 设计原则
+- 在证明其不足之前，保持简单性——复杂性是一种成本，而非优势。
+- 将会变化的部分与保持稳定的部分分开——在变化边界处明确划分。
+- 为未来的10倍增长进行设计，而非100倍增长——过度设计会浪费资源。
+- 尽可能使决策可逆——只有在必要时才做出不可逆的决策。
+- 通过约束来明确设计方向——接受限制，而不要过早与其抗争。
 
-## System Boundaries
-- Define clear interfaces between components — contracts enable independent evolution
-- Boundaries where teams split — Conway's Law is real, design with it
-- Data ownership at boundaries — one source of truth per entity
-- Async communication for loose coupling — sync calls create distributed monoliths
-- Fail independently — one component's failure shouldn't cascade
+## 系统边界
+- 在组件之间定义清晰的接口——契约机制有助于各组件独立发展。
+- 在团队分工的边界处明确系统边界——康威定律（Conway’s Law）是真实存在的，设计时应考虑这一点。
+- 数据所有权应在边界处明确界定——每个实体应只有一个数据来源。
+- 使用异步通信以实现松耦合——同步调用会导致系统变得难以维护。
+- 各组件应能够独立失败——一个组件的故障不应影响其他组件。
 
-## Trade-off Analysis
-- Every decision has costs — articulate what you're giving up
-- Consistency vs availability vs partition tolerance — pick two (CAP theorem)
-- Performance vs maintainability — optimize hot paths, keep the rest readable
-- Build vs buy — build differentiators, buy commodities
-- Document the "why not" for rejected alternatives — future you needs context
+## 权衡分析
+- 每个决策都有其代价——明确你放弃了什么。
+- 在一致性、可用性和分区容错性之间做出选择（遵循CAP定理）。
+- 在性能和可维护性之间进行权衡——优化关键路径，同时保持其他部分的可读性。
+- 自行开发与购买服务相结合——开发具有差异化优势的功能，购买通用服务。
+- 记录被拒绝的替代方案的理由——未来的你可能需要这些信息。
 
-## Scalability
-- Stateless services scale horizontally — state makes scaling hard
-- Cache aggressively, invalidate carefully — caching solves and creates problems
-- Database is usually the bottleneck — read replicas, sharding, or denormalization
-- Queue work that can be async — users don't need to wait for everything
-- Scale for expected load, prepare for 3x spikes — headroom prevents outages
+## 可扩展性
+- 无状态服务易于水平扩展——有状态系统难以扩展。
+- 积极使用缓存，并谨慎地更新缓存数据——缓存既能解决问题，也可能引发新的问题。
+- 数据库通常是系统的瓶颈——可以通过读取副本、分片或反规范化（denormalization）来提升性能。
+- 将可以异步处理的任务放入队列中——用户不需要等待所有任务完成。
+- 根据预期负载进行扩展，并为突发流量（如3倍的增长）做好准备——预留足够的处理能力可以防止系统崩溃。
 
-## Data Architecture
-- Schema design constrains everything — get it right early, migrations are expensive
-- Normalize for writes, denormalize for reads — optimize for access patterns
-- Event sourcing when audit trail matters — reconstruct state from events
-- CQRS when read/write patterns differ significantly — separate models for each
-- Data gravity is real — processing moves to data, not vice versa
+## 数据架构
+- 数据模式设计会限制系统的整体性能——尽早设计好数据结构，因为后续迁移成本很高。
+- 对写入操作进行规范化处理，对读取操作进行反规范化处理——根据访问模式优化数据结构。
+- 当需要审计追踪时，使用事件驱动的数据模型（Event-Driven Architecture, EDA）。
+- 当读写操作的需求不同时，采用CQRS（Command-Query-Response-Signal）架构——为读写操作分别设计不同的数据模型。
+- 数据的分布特性不容忽视——数据处理应跟随数据的位置进行，而不是相反。
 
-## Reliability
-- Design for failure — everything fails eventually, handle it gracefully
-- Timeouts on all external calls — hung connections cascade into outages
-- Circuit breakers prevent cascade failures — fail fast, recover gradually
-- Idempotency for retries — duplicate messages shouldn't corrupt state
-- Graceful degradation over total failure — partial functionality beats error pages
+## 可靠性
+- 为系统故障做好准备——所有系统最终都会出现故障，要优雅地处理这些故障。
+- 对所有外部调用设置超时机制——长时间未响应的连接可能导致系统崩溃。
+- 使用断路器（Circuit Breakers）防止故障级联——快速识别故障并逐步恢复系统。
+- 重试操作应具备幂等性（idempotency）——重复发送的消息不应破坏系统状态。
+- 在系统完全失效之前，优先提供部分功能——部分功能比错误页面更能满足用户需求。
 
-## Security
-- Defense in depth — multiple layers, no single point of failure
-- Least privilege — minimal permissions for each component
-- Encrypt in transit and at rest — assume networks and disks are hostile
-- Validate at boundaries — don't trust input from outside your system
-- Secrets management from day one — retrofitting is painful
+## 安全性
+- 采取多层次的安全防护措施——避免出现单点故障。
+- 为每个组件分配最小权限——确保系统安全。
+- 在数据传输和存储过程中进行加密——假设网络和存储设备可能存在安全隐患。
+- 在系统边界处对输入数据进行验证——不要信任来自外部的数据。
+- 从项目初期就开始管理敏感信息（如密码等）——后期修改安全措施会带来麻烦。
 
-## Evolution
-- Design for replacement, not immortality — components will be rewritten
-- Incremental migration over big bang — strangler fig pattern works
-- Backwards compatibility for APIs — breaking changes break trust
-- Feature flags decouple deploy from release — ship dark, enable gradually
-- Monitor before, during, and after changes — data beats intuition
+## 系统演进
+- 设计系统时应考虑其可替换性——组件最终会被替换或重构。
+- 采用渐进式迁移策略，避免一次性大规模改造——渐进式改进更易于维护。
+- 保证API的向后兼容性——破坏兼容性的变更会破坏用户对系统的信任。
+- 使用功能开关（feature flags）来控制功能的启用和禁用——逐步推进新功能的部署。
+- 在变更前、变更中和变更后进行监控——数据是评估系统状态的最佳依据。
 
-## Documentation
-- Document decisions, not just structures — ADRs capture reasoning
-- Diagrams at multiple zoom levels — C4 model: context, containers, components
-- Keep docs near code — separate wikis go stale
-- Update docs when architecture changes — wrong docs are worse than none
-- Document operational aspects — runbooks, SLOs, failure modes
+## 文档编写
+- 记录决策过程，而不仅仅是系统结构——使用ADRs（Architecture Decision Records）来记录设计背后的思考过程。
+- 提供不同层次的图表——使用C4模型（Context, Containers, Components）来展示系统结构。
+- 将文档放在代码附近——单独的文档库容易过时。
+- 当架构发生变化时及时更新文档——错误的文档比没有文档更糟糕。
+- 记录系统的运行细节和性能指标（如SLOs, Service Level Objectives），以及可能的故障模式。
 
-## Communication
-- Translate technical decisions to business impact — stakeholders need context
-- Present options with trade-offs — don't just recommend, explain
-- Listen to operators — they know what breaks
-- Involve security early — bolt-on security is weak security
-- Decisions need buy-in — imposed architecture breeds resentment
+## 沟通
+- 将技术决策转化为业务影响——利益相关者需要了解这些决策对业务的影响。
+- 在提出解决方案时说明其中的权衡——不要只是简单地推荐方案，要解释其中的利弊。
+- 倾听运营人员的意见——他们最了解系统在实际运行中的问题。
+- 早期就考虑安全问题——事后添加的安全措施往往效果不佳。
+- 决策需要得到所有相关方的认可——强制性的架构变更容易引发不满。

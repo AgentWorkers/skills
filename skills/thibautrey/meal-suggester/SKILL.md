@@ -1,83 +1,82 @@
 ---
 name: meal-suggester
-description: Quick dinner companion blending taste profiles, inventory tracking, and learning-based recipe rotation. Use to generate ≤25‑minute meals, log ingredients, and build shopping suggestions that respect both your and your partner’s preferences.
+description: 这款快速晚餐助手能够融合不同的口味偏好、管理食材库存，并根据用户的口味习惯自动推荐合适的食谱。它可以帮助您在25分钟内准备一顿美餐，记录食材的使用情况，同时提供符合您和您的伴侣口味偏好的购物建议。
 ---
 
-# Meal Suggester Skill
+# 餐点推荐技能
 
-Suggest quick dinner recipes (≤25 min) tailored to your household's tastes and available ingredients.
+根据您家庭的口味和现有食材，快速推荐晚餐食谱（烹饪时间≤25分钟）。
 
-## Features
+## 主要功能
 
-- **Daily suggestions at 19:00** via cron job
-- **Taste profiles** for you and your partner (preferences, dislikes, dietary needs)
-- **Ingredient inventory** — markdown-based kitchen stock tracker
-- **Learning system** — feedback improves future suggestions
-- **Recipe matching** — respects time, tastes, and available ingredients
-- **Ingredient tracking** — logs what you use to build a shopping list
-- **Variety** — 15+ recipes that rotate, no monotony
+- **每日19:00通过cron作业发送推荐**  
+- **个性化口味设置**：为您和您的伴侣分别设置口味偏好（喜欢/不喜欢的食物、饮食需求）  
+- **食材库存管理**：基于Markdown格式的厨房食材追踪工具  
+- **学习机制**：用户的反馈有助于优化未来的推荐结果  
+- **食谱匹配**：充分考虑烹饪时间、口味和可用食材  
+- **食材记录**：自动记录您使用的食材，帮助生成购物清单  
+- **食谱多样性**：提供15种以上轮换的食谱，避免重复  
 
-## Files
+## 相关文件
 
-- `SKILL.md` — this file
-- `README.md` — setup & usage
-- `preferences/user1.md` — first person's taste profile
-- `preferences/user2.md` — second person's taste profile
-- `inventory/stock.md` — current kitchen ingredients
-- `inventory/history.md` — past suggestions & feedback
-- `inventory/shopping-list.md` — suggested shopping list based on usage patterns
-- `scripts/suggest-meal.sh` — main suggestion script
+- `SKILL.md`：本技能的配置文件  
+- `README.md`：使用说明  
+- `preferences/user1.md`：用户1的口味设置文件  
+- `preferences/user2.md`：用户2的口味设置文件  
+- `inventory/stock.md`：当前厨房食材清单  
+- `inventory/history.md`：以往的推荐记录及用户反馈  
+- `inventory/shopping-list.md`：根据使用习惯生成的购物清单  
+- `scripts/suggest-meal.sh`：负责生成推荐食谱的脚本  
 
-## Usage
+## 使用方法
 
-### Get a suggestion
+### 获取推荐食谱  
 ```bash
 clawdbot skill run meal-suggester
-```
+```  
 
-### Log ingredients used
-After cooking, just tell me: "on a utilisé lardons, pois chiches, une carotte"
-I'll automatically update `stock.md` and track what needs reordering.
+### 记录使用的食材  
+烹饪完成后，只需告诉我：“我使用了培根、青豆和胡萝卜”。  
+系统会自动更新`inventory/stock.md`文件，并记录需要补充的食材。  
 
-### Update inventory
-Add items to `inventory/stock.md` with quantities and categories.
+### 更新食材库存  
+将新购买的食材及其数量、类别添加到`inventory/stock.md`中。  
 
-### Provide feedback
-Edit `inventory/history.md` with what you cooked + feedback (liked/disliked/would-repeat).
+### 提供反馈  
+在`inventory/history.md`中记录您烹饪的菜品以及您的反馈（喜欢/不喜欢/是否愿意再次尝试）。  
 
-### View shopping suggestions
-Check `inventory/shopping-list.md` for items that are running low or needed.
+### 查看购物建议  
+查看`inventory/shopping-list.md`，了解哪些食材即将用完或需要购买。  
 
-### View profiles
-Check `preferences/user1.md` and `preferences/user2.md` to see what the system knows about each user.
+### 查看用户信息  
+通过`preferences/user1.md`和`preferences/user2.md`了解系统对每位用户的偏好设置。  
 
-## How It Works
+## 工作原理  
 
-1. **Reads current inventory** from `inventory/stock.md`
-2. **Checks preferences** from both taste profiles
-3. **Tracks usage** — you tell me what you used, I update stock
-4. **Suggests shopping** — when stock runs low, I build a shopping list
-5. **Generates recipe** that:
-   - Uses ingredients you have on hand
-   - Respects both people's preferences
-   - Takes ≤25 minutes
-   - Avoids dislikes
-   - Rotates through variety (15+ recipes)
-6. **Logs suggestion** to history for learning
+1. 从`inventory/stock.md`中读取当前食材库存情况。  
+2. 结合两位用户的口味设置进行推荐。  
+3. 根据您的使用记录更新食材库存。  
+4. 当食材即将用完时，系统会生成购物清单。  
+5. 生成的食谱会：  
+   - 使用您手头的食材  
+   - 兼顾两位用户的口味偏好  
+   - 烹饪时间不超过25分钟  
+   - 避免使用用户不喜欢的食材  
+   - 保持食谱的多样性（提供15种以上的食谱）。  
+6. 将推荐记录保存到`inventory/history.md`中，以便系统持续学习。  
 
-## Cron Schedule
+## Cron调度  
 
-Daily at 19:00 (7 PM) — a reminder with a recipe idea lands in your chat.
+每天19:00，系统会通过聊天消息向您发送当天的推荐食谱建议。  
 
-## Feedback Loop
+## 反馈循环  
 
-- Try the recipe → tell me what you think + what you used
-- System learns from "I loved this" / "too spicy" / "we'd make this again"
-- Stock updates automatically
-- Shopping list builds itself
-- Next suggestions get smarter
+- 尝试推荐的食谱后，请告诉我们您的感受及使用的食材。  
+- 系统会根据您的反馈不断优化推荐结果。  
+- 食材库存会自动更新。  
+- 购物清单会自动生成。  
+- 下一次的推荐会更加精准。  
 
 ---
 
-*A kitchen memory that learns and never gets boring.*
-
+*这是一个会不断学习、永远不会让您感到乏味的厨房助手。*

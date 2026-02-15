@@ -1,6 +1,6 @@
 ---
 name: baking
-description: Expert guidance for baking.
+description: 烘焙专家指南。
 version: 1.0.0
 tags: [food,cooking,lifestyle]
 author: OpenWork
@@ -13,15 +13,16 @@ metadata:
 
 # ubaking
 
-Expert culinary guidance.
+专业的烹饪指导。
 
-## Capabilities
+## 功能
 
-- Recipes and techniques
-- Tips and methods
-- Ingredient guides
-- Step-by-step instructions
+- 食谱与烹饪技巧
+- 小贴士与方法
+- 食材指南
+- 分步操作说明
 
-## Usage
-Help with cooking
-Recipe guidance
+## 使用方法
+
+- 帮助烹饪
+- 提供食谱指导

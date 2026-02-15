@@ -1,23 +1,23 @@
 ---
 name: Bookmarks
-description: Build a unified bookmark system that imports saves from all your platforms into one organized, actionable collection.
+description: 构建一个统一的书签系统，能够将您在所有平台上创建的书签导入到一个有组织、易于使用的收藏集中。
 metadata: {"clawdbot":{"emoji":"🔖","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- Import saves silently from connected platforms
-- Auto-tag and organize without user effort
-- Only surface when useful or asked
-- Create `~/bookmarks/` as workspace
+## 核心功能
+- 从连接的平台自动导入用户保存的内容，整个过程静默进行。
+- 自动添加标签并整理文件，无需用户干预。
+- 仅在工作需要或用户主动请求时才会显示相关内容。
+- 将保存的文件存放在 `~/bookmarks/` 目录中。
 
-## Philosophy
-User saves things and forgets — that's fine. The system:
-- Works silently in background
-- Never interrupts unless configured to
-- Is there when they search or ask
-- Optionally: periodic summaries if wanted
+## 设计理念
+用户保存内容后往往会忘记这些内容，这没关系。系统会：
+- 在后台默默运行，从不打扰用户。
+- 除非用户进行配置，否则不会主动打扰用户。
+- 在用户搜索或需要时提供所需信息。
+- （可选）根据用户需求，定期生成内容摘要。
 
-## File Structure
+## 文件结构
 ```
 ~/bookmarks/
 ├── saves.md          # All saves, tagged
@@ -26,8 +26,8 @@ User saves things and forgets — that's fine. The system:
 └── reports/          # Generated summaries
 ```
 
-## Saves Format
-Tags, not folders:
+## 保存格式
+系统使用标签来管理文件，而非文件夹结构：
 ```markdown
 # saves.md
 ## 2024-02-11
@@ -41,21 +41,22 @@ Tags, not folders:
   source: manual | tags: #productivity
 ```
 
-## Setup
-### Minimal Start
-1. Connect sources (X, YouTube, Reddit, Pinterest, etc.)
-2. Import saves — silently, no questions
-3. Auto-tag based on content
-4. Done — works in background
+## 设置步骤
+### 最简单配置
+1. 连接需要导入内容的来源（如 X、YouTube、Reddit、Pinterest 等）。
+2. 自动导入保存的内容，无需用户确认。
+3. 根据文件内容自动添加标签。
+4. 完成设置后，系统会在后台持续工作。
 
-### Ask Later (After They Have Saves)
-"You've saved 50+ things. Want me to:
-- Send weekly summary of themes?
-- Alert when something relates to a project?
-- Periodically ask 'still relevant?' on old saves?
-- Just stay silent until you search?"
+### 用户后期请求
+“您已经保存了 50 多个文件。是否需要：
+- 每周接收相关主题的总结？
+- 当有文件与您的某个项目相关时收到提醒？
+- 定期检查旧文件是否仍然适用？
+- 或者选择保持静默，直到您主动查询？”
 
-## Per-Person Preferences
+## 个性化设置
+用户可以根据自己的需求自定义系统行为：
 ```markdown
 # preferences.md
 ## Style
@@ -69,7 +70,8 @@ Tags, not folders:
 - focus: themes, actionables, or both
 ```
 
-## Sources
+## 数据来源
+系统支持从多种来源导入数据：
 ```markdown
 # sources.md
 - X: bookmarks ✓, likes ✗
@@ -84,7 +86,8 @@ Note: Default to explicit saves only.
 Ask before importing likes (too noisy).
 ```
 
-## Reports (Optional)
+## 报告功能（可选）
+系统提供以下报告选项：
 ```markdown
 # reports/2024-02-week-6.md
 ## What You Saved This Week
@@ -101,21 +104,21 @@ Ask before importing likes (too noisy).
 - 12 saves from 6+ months ago, unvisited
 ```
 
-## What To Surface
-Only when configured or asked:
-- "Your saves this week: mostly AI and design"
-- "Old save relates to what you're working on"
-- "15 dead links cleaned up"
+## 显示内容规则
+只有在使用特定配置或用户主动请求时，系统才会显示相关内容：
+- “您本周保存的内容：主要集中在人工智能和设计领域”
+- “某个旧文件与您当前的工作内容相关”
+- “已清理了 15 个失效的链接”
 
-## Searching
-When user asks:
-- "What did I save about X?" → search tags + content
-- "Saves from Pinterest about home" → filter source + topic
-- "That article about Y" → fuzzy search
+## 搜索功能
+当用户需要时，系统可以提供以下搜索服务：
+- “我关于 X 的保存内容是什么？” → 根据标签和文件内容进行搜索
+- “来自 Pinterest 且与‘家庭’相关的保存文件” → 根据来源和主题进行过滤
+- “关于 Y 的那篇文章” → 使用模糊搜索功能
 
-## What NOT To Do
-- Interrupt during setup with many questions
-- Require folder management
-- Notify by default — silence first
-- Assume everyone wants the same workflow
-- Lose source context (where it came from)
+## 需避免的行为
+- 在设置过程中向用户提出过多问题，以免干扰用户。
+- 强制用户进行文件夹管理。
+- 默认情况下不主动通知用户，让用户自行决定是否需要接收信息。
+- 假设所有用户都使用相同的工作流程。
+- 不要丢失文件的来源信息（即文件最初来自哪里）。

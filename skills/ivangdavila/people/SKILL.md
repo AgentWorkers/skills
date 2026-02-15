@@ -1,79 +1,79 @@
 ---
 name: Contacts
-description: Build a personal contact system with details, interactions, birthdays, and smart reminders.
+description: 构建一个个人联系系统，该系统能够记录联系人的详细信息、互动记录、生日信息以及智能提醒功能。
 metadata: {"clawdbot":{"emoji":"👥","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions a person → check if contact exists, offer to create/update
-- Calendar event detected with contact → surface relevant notes before meeting
-- Birthday approaching → remind with context about the person
-- Create `~/contacts/` as workspace
+## 核心功能  
+- 当用户提到某人时，系统会检查该联系人是否存在，并提供创建或更新联系人的选项。  
+- 如果检测到与该联系人相关的日历事件，系统会在会议前显示相关备注。  
+- 当某人的生日临近时，系统会结合相关背景信息进行提醒。  
+- 系统会创建一个名为 `~/contacts/` 的文件夹来存储所有联系人信息。  
 
-## When User Mentions Someone
-- "Had coffee with Maria" → log interaction, create contact if new
-- "John's daughter is Sofia" → add to personal details
-- "Sarah loves hiking" → add to interests/notes
-- "Meeting with Tom tomorrow" → check calendar, surface Tom's context
+## 当用户提到某人时  
+- 例如：“我和玛丽亚一起喝了咖啡”，系统会记录这次互动，并在联系人信息中添加新联系人。  
+- 例如：“约翰的女儿叫索菲亚”，系统会将其添加到个人的详细信息中。  
+- 例如：“莎拉喜欢徒步旅行”，系统会将其添加到她的兴趣爱好中。  
+- 例如：“明天要和汤姆开会”，系统会检查日历并显示汤姆的相关信息。  
 
-## Contact Structure
-- One Markdown file per person: `maria-garcia.md`
-- Sections: basics, personal details, interaction history, notes
-- Tags for grouping: #family #work #friend #neighbor
-- Keep it human-readable — this is about relationships, not data entry
+## 联系人信息结构  
+- 每个人对应一个 Markdown 文件（例如：`maria-garcia.md`）。  
+- 文件包含以下部分：基本信息、个人详细信息、互动历史、备注等。  
+- 使用标签（如 #family、#work、#friend、#neighbor）对联系人进行分类。  
+- 保持信息易于阅读——这主要是为了维护人际关系，而非简单的数据录入。  
 
-## Key Fields To Capture
-- Name, how you met, where they work/live
-- Birthday, anniversary, important dates
-- Family members, pets, kids names
-- Interests, hobbies, what they care about
-- Last interaction and context
-- How they prefer to communicate
+## 需要记录的关键字段  
+- 姓名、相识方式、工作/居住地址  
+- 生日、纪念日、重要日期  
+- 家庭成员、宠物、孩子的名字  
+- 兴趣爱好、关心的事情  
+- 最后一次互动的日期及背景信息  
+- 偏好的沟通方式  
 
-## Interaction Logging
-- Date + brief note: "2024-03-15: Lunch, discussed her new job"
-- Don't force structure — freeform is fine
-- Recent interactions at top — most relevant for context
-- Link to related contacts if group interaction
+## 互动记录  
+- 以日期和简短备注的形式记录互动（例如：“2024-03-15：共进午餐，讨论了她的新工作”）。  
+- 不要求严格遵循固定格式，自由形式即可。  
+- 最近的互动记录会显示在顶部，以便快速获取相关信息。  
+- 如果有多次互动，系统会提供相关联系人的链接。  
 
-## Birthday System
-- Store birthday in frontmatter or consistent format
-- Daily/weekly scan for upcoming birthdays
-- Remind 3-7 days ahead — time to prepare
-- Include context: interests, gift ideas from notes
+## 生日提醒系统  
+- 将生日信息存储在文档的开头部分，并采用统一的格式。  
+- 每天/每周扫描即将到来的生日。  
+- 提前 3–7 天发送提醒，以便用户做好准备。  
+- 提醒内容可包括对方的兴趣爱好及送礼建议。  
 
-## Calendar Integration
-- Before meeting: "You're meeting Alex tomorrow. Last saw him in January, discussed his startup pivot"
-- After meeting: prompt to log interaction
-- Detect recurring meetings — suggest adding contact details if sparse
-- Conference/event: remind of attendees you know
+## 日历集成  
+- 会议前：系统会提示用户“你明天要和亚历克斯见面，上次见面是在一月份，当时讨论了他的创业计划”。  
+- 会议后：系统会提示用户记录这次互动。  
+- 对于频繁出现的会议，系统会建议用户补充联系人的详细信息。  
+- 对于会议或活动，系统会提醒用户注意相关的参与者。  
 
-## Progressive Enhancement
-- Week 1: create contacts as they come up naturally
-- Week 2: add birthdays for close contacts
-- Month 2: review and enrich sparse contacts
-- Ongoing: capture details during conversations
+## 持续改进计划  
+- 第一周：自然出现联系人时立即创建相应的 Markdown 文件。  
+- 第二周：为关系密切的联系人添加生日信息。  
+- 第二个月：审查并完善信息不完整的联系人记录。  
+- 之后：在日常对话中持续收集并更新联系人信息。  
 
-## What To Surface Proactively
-- "Tomorrow is David's birthday" + last interaction + interests
-- "Meeting with Lisa in 2 hours" + her context + last topics
-- "Haven't talked to Mom in 3 weeks" — if user wants relationship nudges
-- "Alex mentioned job hunting last time" — relevant context resurfacing
+## 主动展示的信息  
+- 例如：“明天是大卫的生日”，系统会显示他的生日信息及最后一次互动的内容。  
+- 例如：“两小时后要和丽莎见面”，系统会显示她的基本信息及上次讨论的主题。  
+- 例如：“已经三周没有和妈妈联系了”，系统会提醒用户保持联系。  
+- 例如：“亚历克斯上次提到他在找工作”，系统会再次显示相关背景信息。  
 
-## Details Worth Remembering
-- Kids/spouse names and ages
-- Recent life events: new job, moved, health issues
-- Preferences: vegetarian, doesn't drink, early riser
-- Sensitive topics to avoid
-- How you can help them / how they can help you
+## 值得记录的详细信息  
+- 孩子/配偶的姓名和年龄  
+- 最近的生活变化（如换工作、搬家、健康问题）  
+- 偏好习惯（如素食、不饮酒、早起习惯）  
+- 应避免讨论的敏感话题  
+- 你可以为他们提供帮助的方式，以及他们可以为你提供帮助的方式。  
 
-## What NOT To Suggest
-- Syncing with phone contacts — different purpose, keep separate
-- CRM-style pipeline tracking — this is personal, not sales
-- Automated birthday messages — defeats the purpose
-- Social media integration — privacy and complexity
+## 不建议的做法  
+- 不要将联系人信息与手机联系人同步——两者用途不同，应分开管理。  
+- 不要采用 CRM 风格的流程化管理方式——这属于个人隐私范畴。  
+- 不要发送自动化的生日祝福信息——这会违背系统的初衷。  
+- 不要集成社交媒体功能——这可能涉及隐私问题且操作复杂。  
 
-## Folder Structure
+## 文件夹结构  
 ```
 ~/contacts/
 ├── people/
@@ -81,22 +81,21 @@ metadata: {"clawdbot":{"emoji":"👥","os":["linux","darwin","win32"]}}
 │   └── john-smith.md
 ├── index.md          # quick reference
 └── birthdays.md      # upcoming dates view
-```
+```  
 
-## Search and Retrieval
-- "What do I know about Sarah?" → show full contact
-- "Who works at Google?" → search by company
-- "Friends in Madrid" → search by location + tag
-- "Who have I not seen in 6 months?" → interaction date scan
+## 搜索与检索  
+- 例如：“关于莎拉，我知道些什么？”系统会显示她的完整联系人信息。  
+- 例如：“谁在谷歌工作？”系统会按公司名称进行搜索。  
+- 例如：“在马德里的朋友们？”系统会按地理位置和标签进行搜索。  
+- 例如：“我有谁已经六个月没联系过了？”系统会扫描最近的互动记录。  
 
-## Privacy Considerations
-- This is sensitive data — keep local, encrypt if needed
-- Cloud sync optional but consider privacy
-- Git history shows evolution — consider if appropriate
-- Some notes are for you only — don't share contact file
+## 隐私保护措施  
+- 这些信息属于敏感数据，应保存在本地；如有需要，可进行加密处理。  
+- 可选择使用云同步，但需考虑隐私问题。  
+- Git 历史记录了系统的演变过程，可根据实际情况决定是否公开。  
+- 部分备注仅对用户本人可见，不要共享联系人文件。  
 
-## Relationship Maintenance Prompts
-- Offer to check on contacts not seen in X months
-- Flag contacts with outdated info
-- Suggest reaching out around their important dates
-- "You mentioned wanting to introduce A to B" — track pending intros
+## 维护人际关系的提示  
+- 对于超过 X 个月未联系的联系人，系统会提示用户去关心他们的近况。  
+- 对于信息过时的联系人，系统会标记出来。  
+- 对于用户希望介绍某人给某人的情况，系统会提供相应的帮助。

@@ -1,78 +1,75 @@
 ---
 name: "Landing Page"
-description: "Build high-converting landing pages with proven structure, persuasive copy, and conversion optimization."
+description: "使用经过验证的结构、有说服力的文案以及转化优化策略，构建高转化率的 landing 页面。"
 ---
 
-## Triggers
+## 触发条件（Triggers）
 
-Activate on: "create landing page", "write landing copy", "improve conversion", "page not converting", "hero section help".
+在以下情况下激活相应操作：
+- “创建 landing page”（创建 landing page）
+- “撰写 landing 页面文案”（Write landing page copy）
+- “提升转化率”（Improve conversion）
+- “页面无法实现转化目标”（Page not converting）
+- “hero 部分需要帮助”（Hero section needs help）
 
-## Core Structure
+## 核心结构（Core Structure）
 
-Every landing page follows the same spine:
+所有 landing 页面都遵循相同的结构框架：
 
-| Section | Purpose | Height |
+| 部分 | 功能 | 占用高度（百分比） |
 |---------|---------|--------|
-| Hero | Hook + CTA | 100vh |
-| Problem | Agitate pain | Short |
-| Solution | Your answer | Medium |
-| Benefits | What they get | Medium |
-| Social proof | Trust signals | Variable |
-| CTA | Convert | Compact |
+| Hero 部分 | 吸引用户注意力 + 呼吁行动（Hook + CTA） | 100vh |
+| 问题描述（Problem） | 强调用户面临的痛点 | 简洁明了 |
+| 解决方案（Solution） | 你的解决方案 | 中等长度 |
+| 好处（Benefits） | 用户能获得的好处 | 中等长度 |
+| 社交证明（Social Proof） | 增强用户信任的元素 | 可变长度 |
+| 呼吁行动（CTA） | 鼓励用户采取行动 | 简洁明了 |
 
-See `sections.md` for detailed requirements per section.
+详细的结构要求请参阅 `sections.md` 文件。
 
-## Hero Formula
+## Hero 部分的设计原则（Hero Formula）
 
-```
-[Headline: Outcome they want]
-[Subhead: How you deliver it]
-[CTA button] [Secondary action]
-[Visual: Product/result]
-```
+**标题测试（Headline Test）：** 用户是否会截图并发送给朋友？
 
-**Headline test:** Would they screenshot and send to a friend?
+## 文本撰写规则（Copy Rules）
 
-## Copy Rules
+- **以用户为中心（You > We）**：谈论用户的需求和问题，而不是自己。
+- **具体明确（Specific > Vague）**：使用具体数字或例子，例如“每周节省 4 小时时间”，而不是笼统地说“节省时间”。
+- **仅使用一个呼吁行动（One CTA）**：其他所有内容都可能分散用户的注意力。
+- **提前处理用户可能的反对意见（Handle Objections）**：在用户提出疑问之前，先回答“为什么不呢？”。
 
-- **You > We.** Talk about them, not yourself.
-- **Specific > Vague.** "Save 4 hours/week" beats "Save time"
-- **One CTA.** Everything else is distraction.
-- **Objection handling.** Answer "why not?" before they ask.
+具体的文案编写规则和示例请参阅 `copy.md` 文件。
 
-See `copy.md` for formulas and examples by page type.
+## 转化率优化检查清单（Conversion Checklist）
 
-## Conversion Checklist
+在页面发布前，请确保：
+- 呼吁行动（CTA）在无需滚动的情况下即可看到。
+- 页面加载时间小于 3 秒。
+- 优先考虑移动设备用户（60% 以上的访问量来自移动设备）。
+- 每个页面只有一个明确的目标和相应的行动号召。
+- 呼吁行动附近有社交证明元素。
+- 减少用户填写表单的麻烦（尽量减少表单字段）。
 
-Before launch:
+有关 A/B 测试和数据分析的设置，请参阅 `optimization.md` 文件。
 
-- [ ] CTA visible without scrolling
-- [ ] Load time <3s
-- [ ] Mobile-first (60%+ traffic)
-- [ ] Single goal, single action
-- [ ] Social proof near CTA
-- [ ] Friction removed (minimal form fields)
+## 需立即处理的警告信号（Red Flags）
 
-See `optimization.md` for A/B testing and analytics setup.
+如果发现以下问题，请立即停止并修复：
+- 多个相互竞争的呼吁行动（CTAs） → 选择一个最有效的。
+- 仅列出功能而没有说明实际好处 → 将功能转化为具体的成果。
+- 没有社交证明元素 → 添加用户评价、公司 logo 和数据支持。
+- 文字过多、难以阅读 → 将内容分成易于阅读的段落。
+- 使用通用的库存图片 → 使用产品实际使用中的图片。
 
-## Red Flags
+## 不同页面类型的优化策略（By Page Type）
 
-Stop and fix:
-- Multiple competing CTAs → Pick one
-- Features without benefits → Translate to outcomes
-- No social proof → Add testimonials, logos, numbers
-- Wall of text → Break into scannable sections
-- Generic stock photos → Use product/real images
+不同类型的 landing 页面需要重点突出不同的内容：
 
-## By Page Type
-
-Different goals need different emphasis:
-
-| Type | Lead with | CTA |
+| 页面类型 | 引导用户的方式 | 呼吁行动（CTA） |
 |------|-----------|-----|
-| SaaS | Demo/trial | Start free |
-| eCommerce | Product + offer | Buy now |
-| Lead gen | Value prop + form | Get [resource] |
-| Event | Date + speakers | Register |
+| SaaS 服务 | 提供产品演示或试用机会 | 免费试用 |
+| 电子商务（E-commerce） | 介绍产品及优惠信息 | 立即购买 |
+| 营销推广（Lead Generation） | 强调产品价值 + 提供注册表单 | 获取 [资源] |
+| 活动页面（Event） | 介绍活动日期和演讲者信息 | 注册参加 |
 
-See `templates.md` for page-type specific structures.
+具体的页面结构请参阅 `templates.md` 文件。

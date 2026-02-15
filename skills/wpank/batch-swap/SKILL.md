@@ -11,39 +11,37 @@ allowed-tools: >-
 model: opus
 ---
 
-# Batch Swap
+# 批量交换
 
-Execute multiple token swaps in sequence with independent safety validation per swap.
+依次执行多个代币交换操作，每次交换都进行独立的安全性验证。
 
-## Activation
+## 激活方式
 
-Use this skill when the user says any of:
-- "Swap X for Y and Z"
-- "Rebalance to 50% ETH 50% USDC"
-- "Buy 3 different tokens"
-- "Execute these swaps: ..."
+当用户输入以下指令时，使用此功能：
+- “将 X 交换为 Y 和 Z”
+- “将资产重新平衡为 50% ETH 和 50% USDC”
+- “购买 3 种不同的代币”
+- “执行以下交换操作：...”
 
-## Input Extraction
+## 输入参数提取
 
-| Parameter | Required | Default | Source |
-|-----------|----------|---------|--------|
-| `swaps` | Yes | — | List of {tokenIn, tokenOut, amount} |
-| `chain` | No | ethereum | Default chain for all swaps |
-| `stopOnFailure` | No | true | Whether to halt on first failure |
+| 参数          | 是否必填 | 默认值    | 来源            |
+|---------------|---------|---------|-------------------|
+| `swaps`       | 是       | —         | {tokenIn, tokenOut, amount} 的列表 |
+| `chain`       | 否       | ethereum   | 所有交换操作的默认链 |
+| `stopOnFailure` | 否       | true       | 是否在首次失败时停止所有操作 |
 
-## Workflow
+## 工作流程
 
-1. **Parse all swaps** from the user's message. Confirm token symbols resolve.
+1. **解析用户输入的交换指令**，确保所有代币符号都能被正确识别。
+2. **预检查**：使用 `check_safety_status` 和 `get_agent_balance` 函数验证总花费是否在每日限额范围内，以及所有交换操作所需的余额是否充足。
+3. **依次执行交换操作**：
+   - 对于每个交换操作，启动 `Task(subagent_type:trade-executor)` 并传递相应的参数。
+   - 在开始下一个交换操作之前，等待前一个操作的确认结果。
+   - 更新每次交换后的剩余余额。
+   - 如果 `stopOnFailure` 为 `true` 且某个交换操作失败，则停止剩余的所有操作。
 
-2. **Pre-flight check**: Verify total spending within daily limits and sufficient balance for all swaps using `check_safety_status` and `get_agent_balance`.
-
-3. **Sequential execution**: For each swap:
-   - Launch `Task(subagent_type:trade-executor)` with swap parameters
-   - Wait for confirmation before starting next swap
-   - Update running balance between swaps
-   - If `stopOnFailure=true` and swap fails, halt remaining swaps
-
-4. **Report summary**:
+4. **生成操作总结报告**：
 
 ```
 Batch Swap Complete (3/3 succeeded)
@@ -56,10 +54,10 @@ Batch Swap Complete (3/3 succeeded)
   Total gas: $1.26
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | User Message | Suggested Action |
-|-------|-------------|-----------------|
-| `BATCH_PARTIAL_FAILURE` | "Swap #N failed. Remaining halted." | Review failed swap, re-run remaining |
-| `INSUFFICIENT_BALANCE` | "Insufficient balance for full batch." | Reduce amounts |
-| `SAFETY_AGGREGATE_LIMIT` | "Total batch exceeds daily limit." | Reduce total batch size |
+| 错误类型         | 用户提示信息 | 建议操作                |
+|-----------------|-----------------|----------------------|
+| `BATCH_PARTIAL_FAILURE` | “交换操作 #N 失败。剩余操作将停止。” | 查看失败的交换操作并重新运行剩余的操作 |
+| `INSUFFICIENT_BALANCE` | “余额不足，无法完成全部操作。” | 减少每次交换的金额 |
+| `SAFETY_AGGREGATE_LIMIT` | “总交换金额超过每日限额。” | 减少交换操作的总量 |

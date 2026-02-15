@@ -1,87 +1,87 @@
 ---
 name: role-orchestrator
-description: Multi-agent orchestration system that coordinates PM, Architect, DevOps, QA, Tech Lead, and Security agents for complex tasks. Use when building full products, creating SaaS applications, or any end-to-end implementation requiring multiple specialized roles. Implements hierarchical orchestrator-worker pattern.
+description: 这是一个多代理协调系统，能够整合产品经理（PM）、架构师（Architect）、DevOps团队、质量保证（QA）人员、技术负责人（Tech Lead）以及安全专家（Security Agent），共同完成复杂任务。该系统适用于构建完整产品、开发SaaS应用程序，或任何需要多个专业团队协作的端到端项目。它采用了分层式的协调器-工作者（Orchestrator-Worker）架构模式。
 ---
 
-# Role Orchestrator - Multi-Agent Coordination
+# 角色编排器 - 多代理协调系统
 
-**Self-contained orchestration that works in ANY user project after `specweave init`.**
+**一个独立运行的编排系统，可在任何用户项目中使用，只需执行 `specweave init` 即可。**
 
 ---
 
-## Purpose
+## 目的
 
-Coordinate multiple specialized agents for complex, multi-step tasks through intelligent decomposition and role assignment.
+通过智能的任务分解和角色分配，协调多个专业代理来执行复杂的多步骤任务。
 
-**Architecture**: Hierarchical Orchestrator-Worker Pattern
+**架构**：分层式的编排器-工作节点模式
 ```
 User Request → Orchestrator → PM → Architect → Tech Lead → Implement → QA → Deploy
 ```
 
 ---
 
-## When to Activate
+## 何时启用
 
-Activates for requests requiring **3+ agents** or **full product development**:
+在需要 **3个或更多代理** 或 **完整产品开发** 的情况下启用该系统：
 
-| User Says | Agents Needed | Pattern |
+| 用户需求 | 所需代理 | 运行模式 |
 |-----------|---------------|---------|
-| "Build a SaaS for X" | PM → Architect → Tech Lead → Implement → QA → DevOps | Sequential |
-| "Create real-time chat" | Architect → Backend + Frontend (parallel) → QA | Parallel |
-| "Secure authentication" | Security → Tech Lead → Backend → QA | Sequential |
-| "Optimize performance" | Tech Lead → Performance → Backend → DevOps | Iterative |
+| “开发一个SaaS产品” | 产品经理 → 架构师 → 技术负责人 → 开发人员 → 测试人员 → DevOps团队 | 顺序执行 |
+| “创建实时聊天功能” | 架构师 → 后端开发 → 前端开发 → 测试人员 | 并行执行 |
+| “实现安全认证机制” | 安全专家 → 技术负责人 → 后端开发 → 测试人员 | 顺序执行 |
+| “优化系统性能” | 技术负责人 → 性能优化团队 → 后端开发 → DevOps团队 | 迭代执行 |
 
 ---
 
-## Agent Roles
+## 代理角色
 
-### Strategic Layer
+### 战略层
 
-**PM Agent (pm-agent)**
-- Product strategy, user stories, prioritization
-- **When**: Starting new products/features
+**产品经理代理 (pm-agent)**
+- 负责产品策略、用户需求梳理及优先级制定
+- **适用场景**：新产品/功能的启动阶段
 
-**Architect Agent (architect-agent)**
-- System design, ADRs, technology stack
-- **When**: Designing systems or major features
+**架构师代理 (architect-agent)**
+- 负责系统设计及技术选型
+- **适用场景**：系统设计或重要功能的开发阶段
 
-### Execution Layer
+### 执行层
 
-**Tech Lead Agent (tech-lead-agent)**
-- Technical planning, code review, quality standards
-- **When**: Complex technical decisions
+**技术负责人代理 (tech-lead-agent)**
+- 负责技术规划、代码审查及质量标准制定
+- **适用场景**：需要做出复杂技术决策的场景
 
-**Backend Agents**
-- nodejs-backend, python-backend, dotnet-backend
-- **When**: Server-side implementation
+**后端开发代理 (backend-agent)**
+- 负责使用 Node.js、Python 或 .NET 开发后端服务
+- **适用场景**：服务器端代码实现
 
-**Frontend Agent (frontend-agent)**
-- React/Next.js, UI/UX implementation
-- **When**: Building user interfaces
+**前端开发代理 (frontend-agent)**
+- 负责使用 React/Next.js 等技术进行前端界面开发
+- **适用场景**：用户界面的构建
 
-### Quality & Operations Layer
+### 质量与运维层
 
-**QA Lead Agent (qa-lead-agent)**
-- Test strategy, quality assurance, coverage
-- **When**: Defining testing approach
+**测试负责人代理 (qa-lead-agent)**
+- 负责测试策略的制定及质量保证工作
+- **适用场景**：测试流程的规划阶段
 
-**Security Agent (security-agent)**
-- Security architecture, threat modeling, compliance
-- **When**: Security-critical features
+**安全专家代理 (security-agent)**
+- 负责安全架构的设计及威胁建模
+- **适用场景**：涉及安全性的关键功能开发
 
-**DevOps Agent (devops-agent)**
-- Infrastructure, CI/CD, deployment, monitoring
-- **When**: Operations tasks
+**DevOps 代理 (devops-agent)**
+- 负责基础设施搭建、持续集成/持续部署（CI/CD）及监控工作
+- **适用场景**：运维相关任务的执行
 
 ---
 
-## CRITICAL: Safe Orchestration Pattern
+## 关键规则：安全的编排流程
 
-**Rule**: Orchestrator creates structure, guides user to invoke agents in MAIN context (NOT nested spawning).
+**规则**：编排器负责构建整体框架，并指导用户按主流程调用各个代理（禁止嵌套调用代理）。
 
-### Phase 0: Create Increment Structure FIRST
+### 第0阶段：首先创建增量开发结构
 
-Before invoking ANY agents, create increment folder:
+在调用任何代理之前，必须先创建一个增量开发文件夹：
 
 ```typescript
 // 1. Parse user request
@@ -107,7 +107,7 @@ write ${incrementPath}plan.md (basic template)
 write ${incrementPath}tasks.md (basic template)
 ```
 
-**metadata.json template** (CREATE FIRST!):
+**metadata.json 模板**（必须先创建！）：
 ```json
 {
   "id": "0001-project-name",
@@ -119,7 +119,7 @@ write ${incrementPath}tasks.md (basic template)
 }
 ```
 
-**spec.md template** (create AFTER metadata.json):
+**spec.md 模板**（在创建 metadata.json 之后创建）：
 ```yaml
 ---
 increment: 0001-project-name
@@ -139,9 +139,9 @@ created: 2025-11-24
 (To be filled by PM Agent)
 ```
 
-### Phase 1: Guide User Through Agent Workflow
+### 第1阶段：指导用户完成代理工作流程
 
-**Output this workflow to user**:
+**将此工作流程展示给用户**：
 
 ```
 ✅ Increment structure created: .specweave/increments/0001-project-name/
@@ -183,28 +183,28 @@ Tell Claude: "Plan deployment for increment 0001-project-name"
 ⚠️  Run these sequentially in MAIN conversation to prevent context explosion!
 ```
 
-**DO NOT spawn all agents from this skill using Task() tool!**
+****请勿使用 Task() 工具同时启动所有代理！**
 
 ---
 
-## Orchestration Patterns
+## 编排模式
 
-### Pattern 1: Sequential (Default)
+### 模式1：顺序执行（默认模式）
 
-**When**: Dependencies between steps
+**适用场景**：任务之间存在依赖关系
 ```
 PM → Architect → Tech Lead → Backend → Frontend → QA → DevOps
 ```
 
-**User workflow**:
-1. Create increment structure
-2. Guide user to invoke agents one by one
-3. Each agent completes before next starts
-4. User tracks progress
+**用户操作流程**：
+1. 创建增量开发结构
+2. 按顺序调用各个代理
+3. 每个代理完成后再启动下一个代理
+4. 用户实时跟踪进度
 
-### Pattern 2: Parallel Execution
+### 模式2：并行执行
 
-**When**: Independent work streams
+**适用场景**：任务之间相互独立
 ```
 PM + Architect (parallel)
     ↓
@@ -213,70 +213,70 @@ Backend + Frontend (parallel)
 QA + DevOps (parallel)
 ```
 
-**User workflow**:
-1. Create increment structure
-2. Identify parallel opportunities
-3. Guide user: "You can run these in parallel: [list]"
-4. User invokes agents concurrently
+**用户操作流程**：
+1. 创建增量开发结构
+2. 识别可以并行执行的代理任务
+3. 指导用户：“这些任务可以同时执行：[代理列表]”
+4. 用户同时启动这些代理
 
-### Pattern 3: Adaptive (Context-Aware)
+### 模式3：自适应执行（根据实际情况调整）
 
-**When**: Requirements discovered during execution
+**适用场景**：在执行过程中发现新的需求
 ```
 PM → Architect → [Discover need] → Security → Tech Lead → ...
 ```
 
-**User workflow**:
-1. Start with basic plan
-2. Agent discovers additional needs
-3. Inject new agents mid-workflow
-4. Adjust plan dynamically
+**用户操作流程**：
+1. 根据初始计划开始执行
+2. 代理在运行过程中发现新的需求
+3. 在流程中动态添加新的代理
+4. 动态调整执行计划
 
 ---
 
-## Quality Gates (Checkpoints)
+## 质量检查点（关卡）
 
-### Gate 1: After PM (Requirements Complete)
-**Check**:
-- [ ] User stories defined with AC-IDs
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
-- [ ] Out of scope defined
+### 第1关卡：产品经理完成需求梳理后
+**检查内容**：
+- [ ] 用户需求已明确，并分配了相应的 AC 编号
+- [ ] 成功标准已确定
+- [ ] 任务之间的依赖关系已明确
+- [ ] 超出项目范围的需求已被排除
 
-**Decision**: Proceed to architecture OR refine requirements
+**决策**：继续进行系统设计或进一步完善需求
 
-### Gate 2: After Architect (Design Complete)
-**Check**:
-- [ ] System design documented
-- [ ] ADRs created (≥3)
-- [ ] Technology stack chosen
-- [ ] Data model defined
+### 第2关卡：架构师完成设计后
+**检查内容**：
+- [ ] 系统设计文档已完成
+- [ ] 详细的设计文档（ADRs）已生成（至少3份）
+- [ ] 技术选型已确定
+- [ ] 数据模型已定义
 
-**Decision**: Proceed to implementation OR redesign
+**决策**：继续进行代码实现或重新设计系统
 
-### Gate 3: After Implementation (Code Complete)
-**Check**:
-- [ ] All P1 tasks completed
-- [ ] Tests passing (≥80% coverage)
-- [ ] Code reviewed
-- [ ] Documentation updated
+### 第3关卡：代码实现完成后
+**检查内容**：
+- [ ] 所有 P1 阶段的任务均已完成
+- [ ] 测试通过率达到80%以上
+- [ ] 代码已通过审查
+- [ ] 文档已更新
 
-**Decision**: Proceed to deployment OR fix issues
+**决策**：准备进行部署或解决存在的问题
 
-### Gate 4: Before Deployment (Production Ready)
-**Check**:
-- [ ] Security review passed
-- [ ] Performance acceptable
-- [ ] Monitoring configured
-- [ ] Rollback plan exists
+### 第4关卡：部署前
+**检查内容**：
+- [ ] 安全审查已通过
+- [ ] 系统性能符合要求
+- [ ] 监控机制已配置
+- [ ] 有备用的回滚方案
 
-**Decision**: Deploy OR address blockers
+**决策**：进行部署或解决剩余问题
 
 ---
 
-## Error Handling
+## 错误处理
 
-### Agent Failure
+### 代理故障处理
 ```
 If agent fails:
 1. Capture error details
@@ -286,7 +286,7 @@ If agent fails:
 5. NEVER fail silently
 ```
 
-### Graceful Degradation
+### 优雅的降级处理
 ```
 If PM fails → Use basic template
 If Architect fails → Tech Lead creates simple design
@@ -294,7 +294,7 @@ If Backend fails → Create manual implementation guide
 If DevOps fails → Create manual deployment steps
 ```
 
-### User Intervention
+### 用户干预机制
 ```
 If orchestrator stuck:
 1. Show current state
@@ -305,11 +305,11 @@ If orchestrator stuck:
 
 ---
 
-## Progress Tracking
+## 进度跟踪
 
-### Real-Time Updates
+**实时更新**
 
-Show user current phase and progress:
+向用户展示当前的工作阶段和进度：
 ```
 🚀 Building SaaS for Event Management
 
@@ -329,13 +329,13 @@ Current: Backend implementing user authentication (T-015/45)
 
 ---
 
-## Example Workflows
+## 示例工作流程
 
-### Example 1: Build SaaS Product
+### 示例1：开发SaaS产品
 
-**User request**: "Build a SaaS for event management"
+**用户需求**：“开发一个用于事件管理的SaaS产品”
 
-**Orchestrator response**:
+**编排器响应**：
 ```
 🎯 Creating increment for Event Management SaaS
 
@@ -378,11 +378,11 @@ Tell Claude: "Setup deployment for increment 0001"
 Start with Phase 1!
 ```
 
-### Example 2: Critical Hotfix
+### 示例2：紧急修复安全漏洞
 
-**User request**: "Fix critical security vulnerability CVE-2024-1234"
+**用户需求**：“修复安全漏洞 CVE-2024-1234”
 
-**Orchestrator response**:
+**编排器响应**：
 ```
 🚨 CRITICAL HOTFIX WORKFLOW
 
@@ -408,30 +408,29 @@ Total estimated time: 35 minutes
 
 ---
 
-## Best Practices
+## 最佳实践
 
-**✅ DO**:
-- Create increment structure FIRST
-- Guide user through sequential workflow
-- Use quality gates between phases
-- Track progress and show user updates
-- Handle errors gracefully with retry
-- Allow user to skip optional phases
+**✅ 应该**：
+- 首先创建增量开发结构
+- 按顺序指导用户完成各个步骤
+- 在每个阶段设置质量检查点
+- 实时跟踪进度并向用户展示更新情况
+- 优雅地处理错误并允许重试
+- 允许用户跳过某些可选步骤
 
-**❌ DON'T**:
-- Spawn all agents at once (context explosion)
-- Skip increment creation
-- Proceed without quality gate checks
-- Fail silently on agent errors
-- Assume agents are infallible
-- Block user from manual intervention
+**❌ 不应该**：
+- 同时启动所有代理（避免系统崩溃）
+- 跳过增量开发结构的创建
+- 在没有通过质量检查的情况下直接继续执行
+- 对代理的错误置之不理
+- 假设代理永远不会出错
+- 阻止用户进行手动干预
 
 ---
 
-## Integration with SpecWeave Commands
+## 与 SpecWeave 命令的集成
 
-**After orchestration complete**:
-
+**编排完成后**：
 ```bash
 # Check status
 /sw:status
@@ -448,4 +447,4 @@ Total estimated time: 35 minutes
 
 ---
 
-**This skill is self-contained and works in ANY user project after `specweave init`.**
+**本系统是一个独立运行的工具，可在任何使用 SpecWeave 的项目中使用，只需执行 `specweave init` 即可。**

@@ -1,6 +1,6 @@
 ---
 name: visualization
-description: Expert guidance for visualization.
+description: 可视化方面的专家指导。
 version: 1.0.0
 tags: [mind,wellness,self-improvement]
 author: OpenWork
@@ -11,17 +11,18 @@ metadata:
       env: []
 ---
 
-# uvisualization
+# 可视化（Visualization）
 
-Mental training and wellness.
+心理训练与健康维护。
 
-## Capabilities
+## 功能（Capabilities）
 
-- Techniques and methods
-- Practice exercises
-- Tips and guidance
-- Scientific background
+- 技巧与方法（Techniques and Methods）
+- 练习练习（Practice Exercises）
+- 提示与指导（Tips and Guidance）
+- 科学依据（Scientific Background）
 
-## Usage
-Help with this skill
-Practice guidance
+## 使用方法（Usage）
+
+- 帮助提升该技能（Help with this skill）
+- 练习指导（Practice Guidance）

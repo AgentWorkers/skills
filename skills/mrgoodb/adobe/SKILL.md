@@ -1,21 +1,22 @@
 ---
 name: adobe
-description: Access Adobe Creative Cloud APIs - Photoshop, Lightroom, PDF Services, and Firefly AI. Automate creative workflows.
+description: **访问 Adobe Creative Cloud API——Photoshop、Lightroom、PDF 服务以及 Firefly AI**  
+实现创意工作流程的自动化。
 metadata: {"clawdbot":{"emoji":"🎨","requires":{"env":["ADOBE_CLIENT_ID","ADOBE_ACCESS_TOKEN"]}}}
 ---
 
 # Adobe Creative Cloud
 
-Creative and document APIs.
+提供用于创意设计和文档处理的API接口。
 
-## Environment
+## 开发环境
 
 ```bash
 export ADOBE_CLIENT_ID="xxxxxxxxxx"
 export ADOBE_ACCESS_TOKEN="xxxxxxxxxx"
 ```
 
-## Photoshop API - Remove Background
+## Photoshop API - 去除背景
 
 ```bash
 curl -X POST "https://image.adobe.io/sensei/cutout" \
@@ -28,7 +29,7 @@ curl -X POST "https://image.adobe.io/sensei/cutout" \
   }'
 ```
 
-## PDF Services - Create PDF
+## PDF服务 - 创建PDF文件
 
 ```bash
 curl -X POST "https://pdf-services.adobe.io/operation/createpdf" \
@@ -40,7 +41,7 @@ curl -X POST "https://pdf-services.adobe.io/operation/createpdf" \
   }'
 ```
 
-## PDF Services - Export PDF to Word
+## PDF服务 - 将PDF文件导出为Word格式
 
 ```bash
 curl -X POST "https://pdf-services.adobe.io/operation/exportpdf" \
@@ -53,7 +54,7 @@ curl -X POST "https://pdf-services.adobe.io/operation/exportpdf" \
   }'
 ```
 
-## Firefly - Generate Image (AI)
+## Firefly - 生成图片（基于人工智能技术）
 
 ```bash
 curl -X POST "https://firefly-api.adobe.io/v2/images/generate" \
@@ -67,7 +68,7 @@ curl -X POST "https://firefly-api.adobe.io/v2/images/generate" \
   }'
 ```
 
-## Lightroom - Get Catalog
+## Lightroom - 获取作品集信息
 
 ```bash
 curl "https://lr.adobe.io/v2/catalogs" \
@@ -75,6 +76,6 @@ curl "https://lr.adobe.io/v2/catalogs" \
   -H "x-api-key: $ADOBE_CLIENT_ID"
 ```
 
-## Links
-- Console: https://developer.adobe.com/console
-- Docs: https://developer.adobe.com/apis
+## 相关链接：
+- 控制台：https://developer.adobe.com/console
+- 文档资料：https://developer.adobe.com/apis

@@ -1,14 +1,14 @@
 ---
 name: database-query
-description: Query database safely with parameterized statements
+description: 使用参数化语句安全地查询数据库
 license: MIT
 allowed-tools: [Python]
 ---
 
-# Database Query Skill
+# 数据库查询技能
 
-Safely query databases using parameterized statements.
+使用参数化语句安全地查询数据库。
 
-## Usage
+## 使用方法
 
-Provide query parameters and get results safely.
+提供查询参数并安全地获取结果。

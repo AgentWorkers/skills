@@ -1,23 +1,23 @@
 ---
 name: book-alignment
-description: Book alignment services through Lokuli MCP. Use when user needs to find and book alignment. Triggers on requests like "book a alignment", "find alignment near me", or any alignment service request.
+description: 通过 Lokuli MCP 提供对齐服务。当用户需要查找或预订对齐服务时可以使用该功能。该功能会在用户发起“预订对齐服务”、“查找附近的对齐服务”等请求时被触发。
 ---
 
-# uook alignment
+# 书籍排版服务
 
-Book alignment services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供书籍排版服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订
 ```json
 {
   "method": "tools/call",

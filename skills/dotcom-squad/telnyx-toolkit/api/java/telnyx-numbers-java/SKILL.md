@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
-# Telnyx Numbers - Java
+# Telnyx 数字服务 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,9 +31,9 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get country coverage
+## 获取国家覆盖范围
 
 `GET /country_coverage`
 
@@ -43,7 +44,7 @@ import com.telnyx.sdk.models.countrycoverage.CountryCoverageRetrieveResponse;
 CountryCoverageRetrieveResponse countryCoverage = client.countryCoverage().retrieve();
 ```
 
-## Get coverage for a specific country
+## 获取特定国家的覆盖范围
 
 `GET /country_coverage/countries/{country_code}`
 
@@ -54,9 +55,9 @@ import com.telnyx.sdk.models.countrycoverage.CountryCoverageRetrieveCountryRespo
 CountryCoverageRetrieveCountryResponse response = client.countryCoverage().retrieveCountry("US");
 ```
 
-## Create an inventory coverage request
+## 创建库存覆盖请求
 
-Creates an inventory coverage request.
+创建一个库存覆盖请求。
 
 `GET /inventory_coverage`
 
@@ -67,9 +68,9 @@ import com.telnyx.sdk.models.inventorycoverage.InventoryCoverageListResponse;
 InventoryCoverageListResponse inventoryCoverages = client.inventoryCoverage().list();
 ```
 
-## List number reservations
+## 列出号码预订信息
 
-Gets a paginated list of phone number reservations.
+获取分页显示的电话号码预订信息。
 
 `GET /number_reservations`
 
@@ -80,9 +81,9 @@ import com.telnyx.sdk.models.numberreservations.NumberReservationListParams;
 NumberReservationListPage page = client.numberReservations().list();
 ```
 
-## Create a number reservation
+## 创建号码预订
 
-Creates a Phone Number Reservation for multiple numbers.
+为多个号码创建电话号码预订。
 
 `POST /number_reservations`
 
@@ -93,11 +94,11 @@ import com.telnyx.sdk.models.numberreservations.NumberReservationCreateResponse;
 NumberReservationCreateResponse numberReservation = client.numberReservations().create();
 ```
 
-## Retrieve a number reservation
+## 获取号码预订信息
 
-Gets a single phone number reservation.
+获取单个电话号码的预订信息。
 
-`GET /number_reservations/{number_reservation_id}`
+`GET /number_reservations/{numberreservation_id}`
 
 ```java
 import com.telnyx.sdk.models.numberreservations.NumberReservationRetrieveParams;
@@ -106,11 +107,11 @@ import com.telnyx.sdk.models.numberreservations.NumberReservationRetrieveRespons
 NumberReservationRetrieveResponse numberReservation = client.numberReservations().retrieve("number_reservation_id");
 ```
 
-## Extend a number reservation
+## 延长号码预订有效期
 
-Extends reservation expiry time on all phone numbers.
+延长所有号码的预订有效期。
 
-`POST /number_reservations/{number_reservation_id}/actions/extend`
+`POST /number_reservations/{numberreservation_id}/actions/extend`
 
 ```java
 import com.telnyx.sdk.models.numberreservations.actions.ActionExtendParams;
@@ -119,9 +120,9 @@ import com.telnyx.sdk.models.numberreservations.actions.ActionExtendResponse;
 ActionExtendResponse response = client.numberReservations().actions().extend("number_reservation_id");
 ```
 
-## List number orders
+## 列出号码订单信息
 
-Get a paginated list of number orders.
+获取分页显示的号码订单信息。
 
 `GET /number_orders`
 
@@ -132,9 +133,9 @@ import com.telnyx.sdk.models.numberorders.NumberOrderListParams;
 NumberOrderListPage page = client.numberOrders().list();
 ```
 
-## Create a number order
+## 创建号码订单
 
-Creates a phone number order.
+创建一个电话号码订单。
 
 `POST /number_orders`
 
@@ -145,9 +146,9 @@ import com.telnyx.sdk.models.numberorders.NumberOrderCreateResponse;
 NumberOrderCreateResponse numberOrder = client.numberOrders().create();
 ```
 
-## Retrieve a number order
+## 获取号码订单信息
 
-Get an existing phone number order.
+获取现有的电话号码订单信息。
 
 `GET /number_orders/{number_order_id}`
 
@@ -158,9 +159,9 @@ import com.telnyx.sdk.models.numberorders.NumberOrderRetrieveResponse;
 NumberOrderRetrieveResponse numberOrder = client.numberOrders().retrieve("number_order_id");
 ```
 
-## Update a number order
+## 更新号码订单信息
 
-Updates a phone number order.
+更新电话号码订单信息。
 
 `PATCH /number_orders/{number_order_id}`
 
@@ -171,9 +172,9 @@ import com.telnyx.sdk.models.numberorders.NumberOrderUpdateResponse;
 NumberOrderUpdateResponse numberOrder = client.numberOrders().update("number_order_id");
 ```
 
-## List number block orders
+## 列出号码块订单信息
 
-Get a paginated list of number block orders.
+获取分页显示的号码块订单信息。
 
 `GET /number_block_orders`
 
@@ -184,11 +185,11 @@ import com.telnyx.sdk.models.numberblockorders.NumberBlockOrderListParams;
 NumberBlockOrderListPage page = client.numberBlockOrders().list();
 ```
 
-## Create a number block order
+## 创建号码块订单
 
-Creates a phone number block order.
+创建一个电话号码块订单。
 
-`POST /number_block_orders` — Required: `starting_number`, `range`
+`POST /number_block_orders` — 必需参数：`starting_number`、`range`
 
 ```java
 import com.telnyx.sdk.models.numberblockorders.NumberBlockOrderCreateParams;
@@ -201,9 +202,9 @@ NumberBlockOrderCreateParams params = NumberBlockOrderCreateParams.builder()
 NumberBlockOrderCreateResponse numberBlockOrder = client.numberBlockOrders().create(params);
 ```
 
-## Retrieve a number block order
+## 获取号码块订单信息
 
-Get an existing phone number block order.
+获取现有的电话号码块订单信息。
 
 `GET /number_block_orders/{number_block_order_id}`
 
@@ -214,9 +215,9 @@ import com.telnyx.sdk.models.numberblockorders.NumberBlockOrderRetrieveResponse;
 NumberBlockOrderRetrieveResponse numberBlockOrder = client.numberBlockOrders().retrieve("number_block_order_id");
 ```
 
-## Retrieve a list of phone numbers associated to orders
+## 获取与订单关联的电话号码列表
 
-Get a list of phone numbers associated to orders.
+获取与订单关联的电话号码列表。
 
 `GET /number_order_phone_numbers`
 
@@ -227,9 +228,9 @@ import com.telnyx.sdk.models.numberorderphonenumbers.NumberOrderPhoneNumberListR
 NumberOrderPhoneNumberListResponse numberOrderPhoneNumbers = client.numberOrderPhoneNumbers().list();
 ```
 
-## Update requirement group for a phone number order
+## 更新号码订单中的需求组
 
-`POST /number_order_phone_numbers/{id}/requirement_group` — Required: `requirement_group_id`
+`POST /number_order_phone_numbers/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```java
 import com.telnyx.sdk.models.numberorderphonenumbers.NumberOrderPhoneNumberUpdateRequirementGroupParams;
@@ -242,9 +243,9 @@ NumberOrderPhoneNumberUpdateRequirementGroupParams params = NumberOrderPhoneNumb
 NumberOrderPhoneNumberUpdateRequirementGroupResponse response = client.numberOrderPhoneNumbers().updateRequirementGroup(params);
 ```
 
-## Retrieve a single phone number within a number order.
+## 获取号码订单中的单个电话号码信息
 
-Get an existing phone number in number order.
+获取号码订单中的某个电话号码信息。
 
 `GET /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -255,9 +256,9 @@ import com.telnyx.sdk.models.numberorderphonenumbers.NumberOrderPhoneNumberRetri
 NumberOrderPhoneNumberRetrieveResponse numberOrderPhoneNumber = client.numberOrderPhoneNumbers().retrieve("number_order_phone_number_id");
 ```
 
-## Update requirements for a single phone number within a number order.
+## 更新号码订单中的单个电话号码需求
 
-Updates requirements for a single phone number within a number order.
+更新号码订单中某个电话号码的需求信息。
 
 `PATCH /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -268,9 +269,9 @@ import com.telnyx.sdk.models.numberorderphonenumbers.NumberOrderPhoneNumberUpdat
 NumberOrderPhoneNumberUpdateRequirementsResponse response = client.numberOrderPhoneNumbers().updateRequirements("number_order_phone_number_id");
 ```
 
-## List sub number orders
+## 列出子号码订单信息
 
-Get a paginated list of sub number orders.
+获取分页显示的子号码订单信息。
 
 `GET /sub_number_orders`
 
@@ -281,9 +282,9 @@ import com.telnyx.sdk.models.subnumberorders.SubNumberOrderListResponse;
 SubNumberOrderListResponse subNumberOrders = client.subNumberOrders().list();
 ```
 
-## Update requirement group for a sub number order
+## 更新子号码订单的需求组
 
-`POST /sub_number_orders/{id}/requirement_group` — Required: `requirement_group_id`
+`POST /sub_number_orders/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```java
 import com.telnyx.sdk.models.subnumberorders.SubNumberOrderUpdateRequirementGroupParams;
@@ -296,9 +297,9 @@ SubNumberOrderUpdateRequirementGroupParams params = SubNumberOrderUpdateRequirem
 SubNumberOrderUpdateRequirementGroupResponse response = client.subNumberOrders().updateRequirementGroup(params);
 ```
 
-## Retrieve a sub number order
+## 获取子号码订单信息
 
-Get an existing sub number order.
+获取现有的子号码订单信息。
 
 `GET /sub_number_orders/{sub_number_order_id}`
 
@@ -309,9 +310,9 @@ import com.telnyx.sdk.models.subnumberorders.SubNumberOrderRetrieveResponse;
 SubNumberOrderRetrieveResponse subNumberOrder = client.subNumberOrders().retrieve("sub_number_order_id");
 ```
 
-## Update a sub number order's requirements
+## 更新子号码订单的需求信息
 
-Updates a sub number order.
+更新子号码订单的需求信息。
 
 `PATCH /sub_number_orders/{sub_number_order_id}`
 
@@ -322,9 +323,9 @@ import com.telnyx.sdk.models.subnumberorders.SubNumberOrderUpdateResponse;
 SubNumberOrderUpdateResponse subNumberOrder = client.subNumberOrders().update("sub_number_order_id");
 ```
 
-## Cancel a sub number order
+## 取消子号码订单
 
-Allows you to cancel a sub number order in 'pending' status.
+允许取消处于“待处理”状态的子号码订单。
 
 `PATCH /sub_number_orders/{sub_number_order_id}/cancel`
 
@@ -335,9 +336,9 @@ import com.telnyx.sdk.models.subnumberorders.SubNumberOrderCancelResponse;
 SubNumberOrderCancelResponse response = client.subNumberOrders().cancel("sub_number_order_id");
 ```
 
-## Create a sub number orders report
+## 创建子号码订单报告
 
-Create a CSV report for sub number orders.
+为子号码订单创建 CSV 报告。
 
 `POST /sub_number_orders/report`
 
@@ -348,9 +349,9 @@ import com.telnyx.sdk.models.subnumberordersreport.SubNumberOrdersReportCreateRe
 SubNumberOrdersReportCreateResponse subNumberOrdersReport = client.subNumberOrdersReport().create();
 ```
 
-## Retrieve a sub number orders report
+## 获取子号码订单报告
 
-Get the status and details of a sub number orders report.
+获取子号码订单的报告状态和详细信息。
 
 `GET /sub_number_orders/report/{report_id}`
 
@@ -361,9 +362,9 @@ import com.telnyx.sdk.models.subnumberordersreport.SubNumberOrdersReportRetrieve
 SubNumberOrdersReportRetrieveResponse subNumberOrdersReport = client.subNumberOrdersReport().retrieve("12ade33a-21c0-473b-b055-b3c836e1c293");
 ```
 
-## Download a sub number orders report
+## 下载子号码订单报告
 
-Download the CSV file for a completed sub number orders report.
+下载已完成的子号码订单的 CSV 文件。
 
 `GET /sub_number_orders/report/{report_id}/download`
 
@@ -373,7 +374,9 @@ import com.telnyx.sdk.models.subnumberordersreport.SubNumberOrdersReportDownload
 String response = client.subNumberOrdersReport().download("12ade33a-21c0-473b-b055-b3c836e1c293");
 ```
 
-## List Advanced Orders
+## 列出高级订单信息
+
+获取高级订单信息。
 
 `GET /advanced_orders`
 
@@ -384,7 +387,9 @@ import com.telnyx.sdk.models.advancedorders.AdvancedOrderListResponse;
 AdvancedOrderListResponse advancedOrders = client.advancedOrders().list();
 ```
 
-## Create Advanced Order
+## 创建高级订单
+
+创建一个高级订单。
 
 `POST /advanced_orders`
 
@@ -397,7 +402,9 @@ AdvancedOrder params = AdvancedOrder.builder().build();
 AdvancedOrderCreateResponse advancedOrder = client.advancedOrders().create(params);
 ```
 
-## Update Advanced Order
+## 更新高级订单
+
+更新高级订单的信息。
 
 `PATCH /advanced_orders/{advanced-order-id}/requirement_group`
 
@@ -413,7 +420,9 @@ AdvancedOrderUpdateRequirementGroupParams params = AdvancedOrderUpdateRequiremen
 AdvancedOrderUpdateRequirementGroupResponse response = client.advancedOrders().updateRequirementGroup(params);
 ```
 
-## Get Advanced Order
+## 获取高级订单信息
+
+获取高级订单的详细信息。
 
 `GET /advanced_orders/{order_id}`
 
@@ -424,9 +433,9 @@ import com.telnyx.sdk.models.advancedorders.AdvancedOrderRetrieveResponse;
 AdvancedOrderRetrieveResponse advancedOrder = client.advancedOrders().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List inexplicit number orders
+## 获取非明确指定的号码订单信息
 
-Get a paginated list of inexplicit number orders.
+获取分页显示的非明确指定号码订单信息。
 
 `GET /inexplicit_number_orders`
 
@@ -437,11 +446,11 @@ import com.telnyx.sdk.models.inexplicitnumberorders.InexplicitNumberOrderListPar
 InexplicitNumberOrderListPage page = client.inexplicitNumberOrders().list();
 ```
 
-## Create an inexplicit number order
+## 创建非明确指定的号码订单
 
-Create an inexplicit number order to programmatically purchase phone numbers without specifying exact numbers.
+创建一个非明确指定的号码订单，以便在不指定具体号码的情况下程序化购买电话号码。
 
-`POST /inexplicit_number_orders` — Required: `ordering_groups`
+`POST /inexplicit_number_orders` — 必需参数：`ordering_groups`
 
 ```java
 import com.telnyx.sdk.models.inexplicitnumberorders.InexplicitNumberOrderCreateParams;
@@ -457,9 +466,9 @@ InexplicitNumberOrderCreateParams params = InexplicitNumberOrderCreateParams.bui
 InexplicitNumberOrderCreateResponse inexplicitNumberOrder = client.inexplicitNumberOrders().create(params);
 ```
 
-## Retrieve an inexplicit number order
+## 获取非明确指定的号码订单信息
 
-Get an existing inexplicit number order by ID.
+通过 ID 获取现有的非明确指定号码订单。
 
 `GET /inexplicit_number_orders/{id}`
 
@@ -470,7 +479,9 @@ import com.telnyx.sdk.models.inexplicitnumberorders.InexplicitNumberOrderRetriev
 InexplicitNumberOrderRetrieveResponse inexplicitNumberOrder = client.inexplicitNumberOrders().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Retrieve all comments
+## 获取所有评论信息
+
+获取所有评论信息。
 
 `GET /comments`
 
@@ -481,7 +492,9 @@ import com.telnyx.sdk.models.comments.CommentListResponse;
 CommentListResponse comments = client.comments().list();
 ```
 
-## Create a comment
+## 创建评论
+
+创建一条评论。
 
 `POST /comments`
 
@@ -492,7 +505,9 @@ import com.telnyx.sdk.models.comments.CommentCreateResponse;
 CommentCreateResponse comment = client.comments().create();
 ```
 
-## Retrieve a comment
+## 获取评论信息
+
+获取特定评论的详细信息。
 
 `GET /comments/{id}`
 
@@ -503,7 +518,9 @@ import com.telnyx.sdk.models.comments.CommentRetrieveResponse;
 CommentRetrieveResponse comment = client.comments().retrieve("id");
 ```
 
-## Mark a comment as read
+## 将评论标记为已读
+
+将评论标记为已读。
 
 `PATCH /comments/{id}/read`
 
@@ -514,7 +531,9 @@ import com.telnyx.sdk.models.comments.CommentMarkAsReadResponse;
 CommentMarkAsReadResponse response = client.comments().markAsRead("id");
 ```
 
-## List available phone number blocks
+## 列出可用的电话号码块
+
+获取可用的电话号码块信息。
 
 `GET /available_phone_number_blocks`
 
@@ -525,7 +544,9 @@ import com.telnyx.sdk.models.availablephonenumberblocks.AvailablePhoneNumberBloc
 AvailablePhoneNumberBlockListResponse availablePhoneNumberBlocks = client.availablePhoneNumberBlocks().list();
 ```
 
-## List available phone numbers
+## 列出可用的电话号码
+
+获取可用的电话号码信息。
 
 `GET /available_phone_numbers`
 
@@ -536,9 +557,11 @@ import com.telnyx.sdk.models.availablephonenumbers.AvailablePhoneNumberListRespo
 AvailablePhoneNumberListResponse availablePhoneNumbers = client.availablePhoneNumbers().list();
 ```
 
-## Retrieve the features for a list of numbers
+## 获取号码列表的功能信息
 
-`POST /numbers_features` — Required: `phone_numbers`
+获取号码列表的功能信息。
+
+`POST /numbers_features` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.numbersfeatures.NumbersFeatureCreateParams;
@@ -552,11 +575,12 @@ NumbersFeatureCreateResponse numbersFeature = client.numbersFeatures().create(pa
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 头部字段以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `numberOrderStatusUpdate` | Number Order Status Update |
+| `numberOrderStatusUpdate` | 数字订单状态更新 |
+```
+```

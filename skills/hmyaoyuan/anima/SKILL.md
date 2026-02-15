@@ -1,257 +1,174 @@
 ---
-description: Anima Avatar - Interactive Video Generation Engine. Generates 16:9 videos with dynamic character sprites (Shutiao), synced audio (Fish Audio), and text overlay.
+description: **Anima Avatar** – 一个交互式视频生成引擎。该引擎能够生成 16:9 比例的视频，其中包含动态的角色精灵（Shutiao）、同步的音频（Fish Audio）以及文本叠加效果。
 ---
 
-# Anima Avatar (Project Anima)
-
-Generates high-quality interactive videos where Shutiao speaks the text with appropriate expressions, gestures, and voice.
-
-## Capabilities
-- **True Voice**: Uses Fish Audio API for realistic speech synthesis.
-- **Dynamic Sprites**: Auto-selects from a library of 30+ sprites (Happy, Angry, Shy, Think, Action) based on emotion tags.
-- **Smart Director**: Handles parallel rendering, audio-sync, and video composition (FFmpeg).
-- **Pro Delivery**: Uploads as native stream to Feishu for direct playback (with correct duration).
-
-## Structure
-- `src/director.js`: The core engine. Generates frames (sharp + SVG), audio (Fish Audio), and video (FFmpeg).
-- `src/send_video_pro.js`: Delivery script. Handles transcoding, duration calculation, and Feishu upload.
-- `src/batch_generator.js`: Batch sprite generator. Uses Gemini image generation to produce sprite variants.
-- `assets/sprites/`: The sprite library (1920x1080 PNG files).
-- `assets/production_plan.csv`: The asset registry (25 sprites).
-- `assets/manifest.json`: Sprite metadata for reference.
-- `output/`: Generated videos.
-
-## IMPORTANT: Sprites Not Included
-
-**ClawHub only distributes text files.** The sprite PNG images are **not included** in the published package.
-
-After installing, follow the steps below **in order** to prepare your sprites before first use.
-
-All image generation steps use **Gemini API (Nano Banana)** as the AI image generator. It works by "reference image + text prompt" — you give it an existing image and a text description of what to change, and it returns a new image with the changes applied. This is how both the base sprite (character + background fusion) and all expression variants are created.
-
-### Step 1: Prepare your character image
-
-You need a **standalone character illustration** (transparent background PNG recommended).
-
-- This is your character's "identity" — it defines the look for all sprites.
-- Resolution: at least 1920x1080. Full-body is best.
-- Example: a full-body anime character PNG with transparent background.
-
-Save it somewhere accessible (e.g. `avatars/my_character.png`).
-
-### Step 2: Prepare your background image
-
-You need a **background scene** for the character to stand in.
-
-- This is the environment that appears behind the character in every video frame.
-- Resolution: at least 1920x1080.
-- Example: a cherry blossom garden, a classroom, a city street.
-
-Save it at: `assets/backgrounds/` (e.g. `assets/backgrounds/cherry_blossom_bg.png`).
-
-### Step 3: Fuse character + background into base sprite
-
-This step uses **Gemini (Nano Banana) image generation** to merge your character onto the background. The AI sees both images and creates a natural-looking composite — this is NOT a simple overlay/paste, but an AI-generated fusion that handles lighting, shadows, and blending.
-
-How to do it:
-
-**Method A: Use Gemini directly (recommended)**
-Use any Gemini-compatible image generation tool (like Nano Banana, Google AI Studio, or the Gemini API) with:
-- **Input image**: Your background image
-- **Reference/overlay**: Your character image
-- **Prompt**: e.g. "Place this character naturally in the center of this background scene, full body visible, gentle smile"
-
-Save the output as: `assets/sprites/shutiao_base.png`
-
-**Method B: Use the built-in compose script (simple overlay)**
-If you just want a quick mechanical overlay (no AI blending), `src/compose_base.js` can paste your character onto the background using sharp:
-1. Edit `src/compose_base.js` — update `BG_PATH` and `AVATAR_PATH` to point to your files.
-2. Run: `node src/compose_base.js`
-3. Output: `assets/sprites/shutiao_base.png`
-
-Note: Method B is a plain image composite. Method A (Gemini) produces much better results because it handles lighting and integration naturally.
-
-### Step 4: Plan your sprite variants
-
-Now that you have a base sprite, plan what expression/pose variants you want.
-
-Open `assets/production_plan.csv` and customize it:
-
-```
-ID,Emotion,Variant,Description,Filename,Prompt,Status
-001,Base,v1,Standard,shutiao_base.png,gentle smile looking at viewer,Done
-003,Happy,v1,Smile,shutiao_happy.png,big happy smile eyes closed,Pending
-007,Angry,v1,Pout,shutiao_angry.png,angry face pouting,Pending
-...
-```
-
-Column meanings:
-- **Emotion**: Category used by the video director to pick sprites (Happy, Angry, Shy, Think, Sad, Action, Base).
-- **Filename**: Output filename. Must follow `shutiao_<emotion>_<variant>.png` format.
-- **Prompt**: Describes how this variant differs from the base. The generator sends the base image + this prompt to Gemini, asking it to change only the expression/pose while keeping everything else the same.
-- **Status**: `Pending` = will be generated. `Done` = already exists, skip.
-
-The default CSV has 25 entries. You can add, remove, or modify rows freely.
-
-### Step 5: Generate sprite variants
-
-This step uses **Gemini (Nano Banana) image generation** again. For each `Pending` row, the batch generator sends your base sprite + the prompt to Gemini, asking: "Same image, change facial expression to [prompt]. Keep clothes and background exactly same."
-
-1. Set your Gemini API key in `skills/anima/.env`:
-```ini
-GEMINI_API_KEY=your_key_here
-```
-
-2. Make sure `assets/sprites/shutiao_base.png` (or `shutiao_base_1k.png`) exists from Step 3.
-
-3. Run the batch generator:
-```bash
-node skills/anima/src/batch_generator.js
-```
-
-What happens:
-- Reads `production_plan.csv`
-- Finds all rows with `Status=Pending`
-- For each: sends the base sprite + prompt to Gemini API
-- Saves the generated image as a PNG in `assets/sprites/`
-- Updates the CSV row to `Status=Done`
-- Waits 10 seconds between generations (API rate limit cooldown)
-
-### Step 6: Verify
-
-Check that `assets/sprites/` now has a PNG file for every row in `production_plan.csv`:
-```bash
-ls assets/sprites/*.png | wc -l
-```
-
-Then do a quick test run:
-```bash
-node skills/anima/run.js --preview --script '[{"text":"Test","emotion":"Happy"}]'
-```
-
-Check the generated frame at `temp/frame_0.png` — you should see your character with the text overlay.
-
-If a sprite is missing at runtime, the director will fall back to a white background with a warning in the console.
-
-## Setup & Requirements
-
-### 1. System Dependencies
-- **ffmpeg** (required for video processing):
-  - macOS: `brew install ffmpeg`
-  - Linux: `sudo apt install ffmpeg`
-  - Windows: Download/Install FFmpeg and add to PATH.
-
-### 2. Node Dependencies
-Install inside the skill folder:
-```bash
-cd skills/anima
-npm install
-```
-
-The only native dependency is `sharp`, which ships prebuilt binaries for all major platforms via N-API. It does **not** need recompilation when Node versions change — install once, run everywhere.
-
-### 3. External Services (API Keys Required)
-
-This skill depends on two external services. You need to provide your own API keys.
-
-#### Fish Audio (TTS - Text to Speech)
-- **What**: Generates realistic voice audio from text.
-- **Used by**: `src/director.js` (the `generateAudio()` function).
-- **Get a key**: https://fish.audio/dashboard/api
-- **Env vars needed**:
-  - `FISH_AUDIO_KEY` — Your API key (starts with `sk-...` or a hex string).
-  - `FISH_AUDIO_REF_ID` — The voice model reference ID. You can use Fish Audio's default models or clone your own voice.
-
-#### Gemini API (Image Generation - Optional)
-- **What**: Generates sprite variants using Google Gemini image generation.
-- **Used by**: `src/batch_generator.js` (only needed if you want to create new sprite variants).
-- **Self-contained**: No external skills needed. `batch_generator.js` calls the Gemini API directly via curl.
-- **Get a key**: https://aistudio.google.com/apikey
-- **Env var needed**: `GEMINI_API_KEY`
-- **Not needed** for normal video generation — only for creating new character sprites.
-
-#### Feishu / Lark (Delivery - Optional)
-- **What**: Uploads videos to Feishu as native media messages.
-- **Used by**: `src/send_video_pro.js`.
-- **Env vars needed**:
-  - `FEISHU_APP_ID` — Your Feishu app ID.
-  - `FEISHU_APP_SECRET` — Your Feishu app secret.
-- **Not needed** if you only use `--preview` mode.
-
-### 4. Environment Configuration
-Create a `.env` file **inside the skill folder** (`skills/anima/.env`):
-```ini
-# Fish Audio (Required for TTS)
-FISH_AUDIO_KEY=your_key_here
-FISH_AUDIO_REF_ID=your_model_ref_id_here
-
-# Gemini (Optional, for sprite generation)
-GEMINI_API_KEY=your_key_here
-
-# Feishu/Lark (Optional, for delivery)
-FEISHU_APP_ID=cli_...
-FEISHU_APP_SECRET=...
-```
-
-**Important**: The `.env` file is loaded from the skill folder first (least-privilege). Never commit `.env` files — the `.clawignore` already excludes it.
-
-## Usage
-
-### Generate & Send
-```bash
-# Basic usage (Demo script)
-node skills/anima/run.js --target "ou_..."
-
-# With custom script (JSON string)
-node skills/anima/run.js --target "ou_..." --script '[{"text":"Hello World","emotion":"Happy"}]'
-
-# With custom script (File)
-node skills/anima/run.js --target "ou_..." --script "path/to/script.json"
-
-# Preview only (No upload)
-node skills/anima/run.js --script '[{"text":"Test","emotion":"Happy"}]' --preview
-```
-
-### One-Liner (for agent use)
-```bash
-node skills/anima/run.js --target "<open_id>" --script '[{"text":"Hello","emotion":"Happy"}]'
-```
-
-## Script Format
-Each scene in the script is a JSON object:
-```json
-[
-  { "text": "Hello boss!", "emotion": "Happy" },
-  { "text": "Let me think...", "emotion": "Think" },
-  { "text": "I got it!", "emotion": "Action" }
-]
-```
-
-**Available emotions**: `Base`, `Happy`, `Angry`, `Shy`, `Think`, `Sad`, `Action`.
-
-## Extension: Custom TTS
-
-To use a different TTS provider (e.g., OpenAI, ElevenLabs):
-
-1. Open `src/director.js`.
-2. Locate the `generateAudio(text, filename)` function.
-3. Replace the Fish Audio API call with your provider's logic.
-4. **Contract**: The function must return: `{ path: "/path/to/audio.wav", duration: 1.5 }` (duration in seconds).
-
-## Advanced: Adding More Sprite Variants
-
-To add new expressions or poses after the initial setup:
-
-1. Add a new row to `assets/production_plan.csv` with `Status=Pending`.
-2. Write a clear prompt describing the change from the base (e.g. `angry expression, arms crossed, looking away`).
-3. Run `node src/batch_generator.js` — it will only process `Pending` rows.
-4. The new sprite will auto-register in the director's emotion pool via `loadSprites()`.
-
-See `ASSETS_PLAN.md` for the full production matrix and design philosophy.
-
-## Troubleshooting
-- **Duration 00:00**: Ensure `send_video_pro.js` calculates duration in **ms** and passes it to both upload and message payload.
-- **Fish Audio 400**: Check that your Ref ID matches the API Key owner's model.
-- **Video Black**: Check `ffmpeg` transcoding logs and verify source frame images in `temp/frame_*.png`.
-- **SVG text not rendering**: Ensure the system has CJK fonts installed (macOS has them by default; on Linux: `sudo apt install fonts-noto-cjk`).
-- **No audio fallback**: If `FISH_AUDIO_KEY` is missing, the skill falls back to macOS `say` command (English only).
+# Anima Avatar（Anima项目）
+
+该项目能够生成高质量的互动视频，让Shutiao根据文本内容使用恰当的表情、手势和声音进行演绎。
+
+## 功能特点
+- **真实语音**：采用Fish Audio API实现逼真的语音合成。
+- **动态精灵图**：根据情感标签，从包含30多种精灵图（快乐、愤怒、害羞、思考、动作）的库中自动选择合适的精灵图。
+- **智能导演**：负责视频的并行渲染、音频同步和视频合成（使用FFmpeg工具）。
+- **专业交付**：将生成的视频作为原生流媒体上传到Feishu平台，实现直接播放（时长准确无误）。
+
+## 项目结构
+- `src/director.js`：核心引擎，负责生成帧图像（使用sharp和SVG格式）、音频（Fish Audio处理）以及视频（FFmpeg生成）。
+- `src/send_video_pro.js`：负责视频的上传和交付，包括转码、时长计算以及与Feishu平台的交互。
+- `src/batch_generator.js`：批量生成精灵图的工具，利用Gemini图像生成技术生成不同的精灵图变体。
+- `assets/sprites/`：精灵图库，包含1920x1080像素的PNG格式图片。
+- `assets/production_plan.csv`：记录所有精灵图信息的文件。
+- `assets/manifest.json`：精灵图的元数据文件。
+- `output/`：存放生成后的视频文件。
+
+**重要提示**：精灵图不包含在发布包中
+
+**ClawHub仅负责分发文本文件**。发布的软件包中不包含精灵图的PNG图片。
+
+安装完成后，请按照以下步骤**依次**准备所需的精灵图，以便首次使用。
+
+所有图像生成过程都使用**Gemini API（Nano Banana）**作为AI图像生成工具。该工具通过“参考图像 + 文本描述”的方式工作：您提供一张参考图像和文字描述，它便会生成一张包含所需变化的新图像。这样就可以生成基础精灵图（角色与背景的融合图像）及其各种表情变体。
+
+### 第1步：准备角色图像
+您需要一张**独立的角色插画图片**（建议使用透明背景的PNG格式）。
+- 这张图片将决定所有精灵图的外观。
+- 分辨率至少为1920x1080像素，全身图像效果最佳。
+- 例如：一张具有透明背景的全身动漫角色PNG图片。
+- 将图片保存在可访问的位置（例如：`avatars/my_character.png`）。
+
+### 第2步：准备背景图像
+您需要为角色准备一个**背景场景图片**。
+- 这张图片会在每个视频帧中显示在角色身后。
+- 分辨率至少为1920x1080像素。
+- 例如：樱花花园、教室或城市街道的背景图片。
+- 将图片保存在`assets/backgrounds/`文件夹中（例如：`assets/backgrounds/cherry_blossom_bg.png`）。
+
+### 第3步：将角色与背景融合成基础精灵图
+此步骤使用**Gemini（Nano Banana）**图像生成工具将角色图像融合到背景中。AI会自动处理光照、阴影和混合效果，生成自然的外观。
+**操作方法**：
+**方法A：直接使用Gemini**（推荐）：
+使用任何支持Gemini的图像生成工具（如Nano Banana、Google AI Studio或Gemini API），输入背景图片和角色图片，并输入描述（例如：“将角色自然地放置在这个背景场景中，全身可见，面带微笑”）。
+- 保存生成的图片为`assets/sprites/shutiao_base.png`。
+
+**方法B：使用内置的合成脚本（简单叠加）**：
+如果您只需要简单的图像叠加效果（不使用AI混合），可以运行`src/compose_base.js`：
+1. 修改`src/compose_base.js`文件，将`BG_PATH`和`AVATAR_PATH`设置为相应的文件路径。
+2. 运行`node src/compose_base.js`。
+- 生成结果保存为`assets/sprites/shutiao_base.png`。
+**注意**：方法B仅生成简单的图像叠加效果，而方法A（使用Gemini）能生成更自然的效果。
+
+### 第4步：规划精灵图变体
+现在您已经有了基础精灵图，接下来需要规划所需的表情和姿势变体。
+打开`assets/production_plan.csv`文件并进行自定义：
+
+**列说明**：
+- **Emotion**：视频生成工具用于选择精灵图的类别（快乐、愤怒、害羞、思考、悲伤、动作、基础）。
+- **Filename**：输出文件的名称，格式为`shutiao_<emotion>_<variant>.png`。
+- **Prompt**：描述该变体与基础版本的差异。生成工具会使用基础图像和该提示，仅改变角色的表情或姿势。
+- **Status**：`Pending`表示待生成；`Done`表示已生成，可以跳过。
+
+默认的CSV文件包含25个条目。您可以自由添加、删除或修改条目。
+
+### 第5步：生成精灵图变体
+此步骤再次使用**Gemini（Nano Banana）**图像生成工具。对于所有标记为`Pending`的条目，批量生成工具会将基础精灵图和描述发送给Gemini API，要求其仅改变角色的表情或姿势，其他部分保持不变。
+1. 在`skills/anima/.env`文件中设置Gemini API密钥：
+2. 确保步骤3中生成的`assets/sprites/shutiao_base.png`（或`shutiao_base_1k.png`）文件存在。
+3. 运行`src/batch_generator.js`：
+
+**生成过程**：
+- 读取`production_plan.csv`文件。
+- 找到所有标记为`Pending`的条目。
+- 对每个条目，将基础精灵图和描述发送给Gemini API。
+- 将生成的图片保存为PNG格式的文件，放入`assets/sprites/`文件夹。
+- 更新CSV文件中的状态为`Done`。
+- 每次生成之间等待10秒（遵循API的速率限制）。
+
+### 第6步：验证结果
+检查`assets/sprites/`文件夹中是否包含`production_plan.csv`文件中的所有精灵图文件。
+
+然后进行一次快速测试：
+检查`temp/frame_0.png`文件，确认角色图像和文字显示正确。
+
+如果运行时某个精灵图缺失，系统会使用白色背景并在控制台显示警告信息。
+
+## 设置与要求
+
+### 1. 系统依赖
+- **ffmpeg**（视频处理必备）：
+  - macOS：`brew install ffmpeg`
+  - Linux：`sudo apt install ffmpeg`
+  - Windows：下载并安装FFmpeg，并将其添加到系统路径中。
+
+### 2. Node.js依赖
+在`skills`文件夹内安装相关依赖：
+（具体依赖项已在代码中列出）
+
+**注意**：唯一的原生依赖库是`sharp`，它通过N-API为所有主要平台提供了预编译的二进制文件。即使Node.js版本更新，也无需重新编译。
+
+### 3. 外部服务（需要API密钥）
+该项目依赖两个外部服务，您需要提供自己的API密钥：
+
+#### Fish Audio（TTS - 文本转语音）
+- 功能：将文本转换为逼真的语音。
+- 使用位置：`src/director.js`中的`generateAudio()`函数。
+- 获取密钥方式：https://fish.audio/dashboard/api
+- 需要的环境变量：
+  - `FISH_AUDIO_KEY`：您的API密钥（以`sk-...`或十六进制字符串开头）。
+  - `FISH_AUDIO_REF_ID`：语音模型的引用ID。您可以使用Fish Audio提供的默认模型，也可以自定义模型。
+
+#### Gemini API（图像生成 - 可选）
+- 功能：使用Google Gemini生成精灵图变体。
+- 使用位置：`src/batch_generator.js`（仅在使用新精灵图变体时需要）。
+- 无需额外依赖：`batch_generator.js`会直接通过curl调用Gemini API。
+- 获取密钥方式：https://aistudio.google.com/apikey
+- 注意：常规视频生成不需要此API，仅用于创建新角色精灵图。
+
+#### Feishu / Lark（视频上传服务 - 可选）
+- 功能：将视频作为原生媒体消息上传到Feishu平台。
+- 使用位置：`src/send_video_pro.js`。
+- 需要的环境变量：
+  - `FEISHU_APP_ID`：您的Feishu应用ID。
+  - `FEISHU_APP_SECRET`：您的Feishu应用密钥。
+- 如果仅使用`--preview`模式，则无需此API。
+
+### 4. 环境配置
+在`skills`文件夹内创建一个`.env`文件（`skills/anima/.env`）：
+（具体配置内容已在代码中列出）
+
+**重要提示**：`.env`文件优先从`skills`文件夹加载（具有最低权限）。请勿提交`.env`文件，因为它已被`.clawignore`文件排除在版本控制之外。
+
+## 使用方法
+
+### 生成并上传视频
+（具体操作步骤已在代码中列出）
+
+### 一键式使用（适用于代理）
+（具体命令已在代码中列出）
+
+## 脚本格式
+脚本中的每个场景都是一个JSON对象：
+（具体结构已在代码中列出）
+
+**支持的表情**：`Base`、`Happy`、`Angry`、`Shy`、`Think`、`Sad`、`Action`。
+
+## 扩展：自定义TTS服务
+如果您想使用其他TTS服务（如OpenAI、ElevenLabs）：
+1. 打开`src/director.js`文件。
+2. 找到`generateAudio(text, filename)`函数。
+3. 将Fish Audio API的调用替换为新的TTS服务的逻辑。
+4. 确保该函数返回的格式为：`{ path: "/path/to/audio.wav", duration: 1.5 }`（时长以秒为单位）。
+
+## 高级功能：添加更多精灵图变体
+- 要添加新的表情或姿势，可以在`assets/production_plan.csv`中添加新的条目，并设置`Status=Pending`。
+- 为每个新条目编写描述变化的提示（例如：“愤怒的表情，双臂交叉，目光移开”）。
+- 运行`node src/batch_generator.js`，它只会处理标记为`Pending`的条目。
+- 新生成的精灵图会自动添加到角色的表情库中。
+
+有关完整的制作流程和设计理念，请参阅`ASSETS_PLAN.md`文件。
+
+## 常见问题解决方法
+- **时长为00:00**：确保`send_video_pro.js`函数以毫秒为单位计算时长，并将该时长传递给上传和消息数据。
+- **Fish Audio出现错误（例如400）**：检查您的Ref ID是否与API密钥对应的模型匹配。
+- **视频显示黑屏**：查看`ffmpeg`的转码日志，并检查`temp/frame_*.png`文件中的源图像。
+- **SVG文本无法显示**：确保系统中安装了CJK字体（macOS默认已安装；Linux用户需运行`sudo apt install fonts-noto-cjk`）。
+- **无音频输出**：如果`FISH_AUDIO_KEY`缺失，系统会使用macOS的`say`命令（仅提供英文语音）。

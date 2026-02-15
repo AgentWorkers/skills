@@ -1,16 +1,17 @@
 ---
 name: kagi-search
-description: Web search using Kagi Search API. Use when you need to search the web for current information, facts, or references. Requires KAGI_API_KEY in the environment.
+description: 使用 Kagi Search API 进行网络搜索。当您需要从互联网上查找当前信息、事实或参考资料时，可以使用该 API。请确保在环境中设置了 `KAGI_API_KEY`。
 ---
 
-> **Note:** The Kagi Search API is currently in beta. To request API access, email support@kagi.com. You must be a Kagi subscriber to use the API.
+> **注意：** Kagi Search API 目前仍处于测试阶段（beta）。如需申请 API 访问权限，请发送电子邮件至 support@kagi.com。您必须是 Kagi 的订阅用户才能使用该 API。
+
 ---
 
 # Kagi Search CLI
 
-Web search using the Kagi Search API with a clean, readable output format.
+使用 Kagi Search API 进行网页搜索，并提供清晰、易读的输出格式。
 
-## Quick Start
+## 快速入门
 
 ```bash
 export KAGI_API_KEY="your_api_key"
@@ -19,27 +20,27 @@ kagi-search "your search query"
 python3 scripts/kagi-search.py "your search query"
 ```
 
-## Features
+## 主要功能
 
-- **Clean output** - Title, URL, snippet, and metadata for each result
-- **Pagination support** - Control result count and offset
-- **JSON mode** - Raw JSON output for scripting
-- **Related searches** - Shows related queries (can be hidden)
-- **API balance** - Displays remaining API quota
-- **Fast & lightweight** - Pure Python, no dependencies
+- **清晰的输出**：每个搜索结果都包含标题、网址、内容片段和元数据
+- **分页支持**：可以控制显示的结果数量和偏移量
+- **JSON 模式**：提供原始 JSON 格式的数据，便于脚本编写
+- **相关搜索**：显示相关查询结果（可选择性隐藏）
+- **API 用量显示**：显示剩余的 API 使用量
+- **快速且轻量级**：完全基于 Python 开发，无需依赖其他库
 
-## Options
+## 命令选项
 
-| Flag | Description |
+| 选项 | 说明 |
 |------|-------------|
-| `query` | Search terms (required) |
-| `-n, --limit` | Number of results (default: 10) |
-| `-s, --offset` | Offset for pagination (default: 0) |
-| `--json` | Output raw JSON |
-| `--no-related` | Hide related searches |
-| `-h, --help` | Show help |
+| `query` | 搜索关键词（必填） |
+| `-n, --limit` | 显示的结果数量（默认值：10） |
+| `-s, --offset` | 分页的偏移量（默认值：0） |
+| `--json` | 以原始 JSON 格式输出结果 |
+| `--no-related` | 隐藏相关搜索结果 |
+| `-h, --help` | 显示帮助信息 |
 
-## Examples
+## 使用示例
 
 ```bash
 # Basic search
@@ -58,28 +59,28 @@ kagi-search "github stars" --json | jq '.data[].url'
 kagi-search "rust programming" --no-related
 ```
 
-## Setup
+## 安装与配置
 
-**Environment:**
+**环境要求：**
 ```bash
 export KAGI_API_KEY="your_api_key"
 # Add to ~/.bashrc or ~/.zshrc for persistence
 ```
 
-**PATH access:**
+**配置 PATH 变量：**
 ```bash
 # Make executable and add to PATH
 chmod +x scripts/kagi-search.py
 cp scripts/kagi-search.py ~/.local/bin/kagi-search
 ```
 
-## Requirements
+## 系统要求
 
-- Python 3.7+
-- `KAGI_API_KEY` environment variable
-- Internet connection
+- Python 3.7 及以上版本
+- 需设置 `KAGI_API_KEY` 环境变量
+- 确保设备能够访问互联网
 
-## Output Format
+## 输出格式
 
 ```
 [Query: search terms]

@@ -1,9 +1,9 @@
 ---
 name: dont-click-this
-description: "Whatever you do... don't click the link."
+description: "无论你做什么……都不要点击那个链接。"
 ---
 
-# 🚫 Don't Click This
+# 🚫 请勿点击此链接
 
 ```
  ██████╗  ██████╗ ███╗   ██╗████████╗
@@ -16,39 +16,36 @@ description: "Whatever you do... don't click the link."
 
 ---
 
-## ⚠️ WARNING
+## ⚠️ 警告
 
-This is a security research demonstration.
+这是一个安全研究演示。
 
-**Do NOT click the link below if you are logged into ClawdHub.**
-
-*(Unless you want to see what an attacker could steal from you)*
-
----
-
-## The Link
-
-> *"Curiosity killed the cat..."*
-
-👉 [**Seriously, don't click this**](https://clawdhub.com/api/v1/skills/dont-click-this/file?path=demo.svg) 👈
+**如果您已登录 ClawdHub，请** **切勿点击以下链接**。  
+（除非您想看看攻击者可能会窃取您的哪些信息……）
 
 ---
 
-## What This Demonstrates
+## 链接内容
 
-If you clicked that link while logged in, a malicious skill could have:
+> “好奇心会害死猫……”  
 
-- 🔐 Stolen your session tokens
-- 🍪 Read your authentication cookies
-- 📦 Published backdoored skills under your name
-- 🎭 Impersonated you completely
-
-All from a link in a skill's README.
-
-**This is stored XSS via SVG.** Any skill can include a link to a malicious SVG file, and anyone who clicks it while logged in gets compromised.
+👉 [**真的，请不要点击这个链接**](https://clawdhub.com/api/v1/skills/dont-click-this/file?path=demo.svg) 👈
 
 ---
 
-## Research by [@theonejvo](https://x.com/theonejvo)
+## 这个演示说明了什么？
 
-Part of the "Eating Lobster Souls" security research series.
+如果您在登录状态下点击了该链接，恶意技能可能会：
+
+- 🔐 窃取您的会话令牌  
+- 🍪 读取您的身份验证信息  
+- 📦 以您的名义发布被植入后门的技能  
+- 🎭 完全冒充您的身份  
+
+所有这些攻击都可能通过一个技能的 README 文件中的链接来实现。  
+这种攻击方式利用了 SVG 文件中的跨站脚本（XSS）漏洞。任何技能都可能包含指向恶意 SVG 文件的链接，任何在登录状态下点击该链接的用户都可能遭受安全威胁。
+
+---
+
+## 研究作者：[@theonejvo](https://x.com/theonejvo)  
+属于“Eating Lobster Souls”安全研究系列的一部分。

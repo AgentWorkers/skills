@@ -1,6 +1,6 @@
 ---
 name: ping-monitor
-description: "ICMP health check for hosts, phones, and daemons"
+description: "针对主机、手机和守护进程的 ICMP 健康检查"
 metadata:
   {
     "openclaw":
@@ -12,11 +12,11 @@ metadata:
   }
 ---
 
-# Ping Monitor
+# Ping 监控工具
 
-ICMP health check for hosts, phones, and daemons. Uses the standard `ping` utility to verify network reachability of any target host.
+该工具用于对主机、手机及后台进程（daemon）进行 ICMP 健康检查，通过标准的 `ping` 工具来验证目标主机的网络可达性。
 
-## Commands
+## 命令
 
 ```bash
 # Ping a host with default settings
@@ -26,6 +26,6 @@ ping-monitor <host>
 ping-monitor check <host> --count 3
 ```
 
-## Install
+## 安装
 
-No installation needed. `ping` is always present on the system.
+无需安装。`ping` 工具已预装在系统中。

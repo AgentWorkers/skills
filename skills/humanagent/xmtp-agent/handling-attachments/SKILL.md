@@ -1,44 +1,44 @@
 ---
 name: handling-attachments
-description: File attachment handling for XMTP agents. Use when sending or receiving images, files, or any encrypted remote attachments. Triggers on file upload, image sending, or remote attachment handling.
+description: XMTP代理的文件附件处理功能：适用于发送或接收图片、文件或任何加密的远程附件时使用。该功能会在文件上传、图片发送或远程附件处理过程中被触发。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# XMTP attachments
+# XMTP附件
 
-Handle file attachments using encrypted remote attachments. Files are encrypted locally, uploaded to your storage provider, and sent as a remote attachment message.
+使用加密的远程附件来处理文件附件。文件会在本地被加密，然后上传到您的存储提供商，并作为远程附件消息发送。
 
-## When to apply
+## 适用场景
 
-Reference these guidelines when:
-- Sending files or images from an agent
-- Receiving and downloading attachments
-- Implementing custom upload storage
-- Working with encrypted file transfers
+在以下情况下请参考这些指南：
+- 从代理发送文件或图片
+- 接收和下载附件
+- 实现自定义的上传存储机制
+- 处理加密文件传输
 
-## Rule categories by priority
+## 规则类别（按优先级排序）
 
-| Priority | Category | Impact | Prefix |
+| 优先级 | 类别 | 影响程度 | 前缀 |
 |----------|----------|--------|--------|
-| 1 | Send | CRITICAL | `send-` |
-| 2 | Receive | CRITICAL | `receive-` |
-| 3 | Upload | HIGH | `upload-` |
+| 1 | 发送 | 关键性 | `send-` |
+| 2 | 接收 | 关键性 | `receive-` |
+| 3 | 上传 | 高优先级 | `upload-` |
 
-## Quick reference
+## 快速参考
 
-### Send (CRITICAL)
-- `send-remote-attachment` - Send encrypted file attachments
+### 发送（关键性）
+- `send-remote-attachment` - 发送加密的文件附件
 
-### Receive (CRITICAL)
-- `receive-attachment` - Download and decrypt attachments
+### 接收（关键性）
+- `receive-attachment` - 下载并解密附件
 
-### Upload (HIGH)
-- `upload-callback` - Implement custom upload storage (Pinata, S3, etc.)
+### 上传（高优先级）
+- `upload-callback` - 实现自定义的上传存储机制（如Pinata、S3等）
 
-## Quick start
+## 快速入门
 
 ```typescript
 import { type AttachmentUploadCallback } from "@xmtp/agent-sdk/util";
@@ -54,13 +54,12 @@ agent.on("attachment", async (ctx) => {
 });
 ```
 
-## How to use
+## 使用方法
 
-Read individual rule files for detailed explanations:
+请阅读各个规则文件以获取详细说明：
 
 ```
 rules/send-remote-attachment.md
 rules/receive-attachment.md
 rules/upload-callback.md
 ```
-

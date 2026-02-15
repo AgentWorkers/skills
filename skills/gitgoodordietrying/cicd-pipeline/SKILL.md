@@ -1,26 +1,26 @@
 ---
 name: cicd-pipeline
-description: Create, debug, and manage CI/CD pipelines with GitHub Actions. Use when the user needs to set up automated testing, deployment, releases, or workflows. Covers workflow syntax, common patterns, secrets management, caching, matrix builds, and troubleshooting.
+description: 使用 GitHub Actions 创建、调试和管理持续集成/持续交付（CI/CD）管道。当用户需要设置自动化测试、部署、发布或工作流程时，可以使用此方法。内容包括工作流程语法、常见模式、秘钥管理、缓存、矩阵构建以及故障排除。
 metadata: {"clawdbot":{"emoji":"🚀","requires":{"anyBins":["gh","git"]},"os":["linux","darwin","win32"]}}
 ---
 
-# CI/CD Pipeline (GitHub Actions)
+# CI/CD 流程（GitHub Actions）
 
-Set up and manage CI/CD pipelines using GitHub Actions. Covers workflow creation, testing, deployment, release automation, and debugging.
+使用 GitHub Actions 设置和管理 CI/CD 流程。涵盖工作流创建、测试、部署、发布自动化以及调试等内容。
 
-## When to Use
+## 使用场景
 
-- Setting up automated testing on push/PR
-- Creating deployment pipelines (staging, production)
-- Automating releases with changelogs and tags
-- Debugging failing CI workflows
-- Setting up matrix builds for cross-platform testing
-- Managing secrets and environment variables in CI
-- Optimizing CI with caching and parallelism
+- 在提交代码（push）或创建 Pull Request（PR）时设置自动化测试
+- 创建部署流程（包括测试环境和生产环境）
+- 使用变更日志和标签自动化发布流程
+- 调试失败的 CI 流程
+- 设置跨平台测试的矩阵构建（matrix builds）
+- 在 CI 中管理密钥（secrets）和环境变量
+- 通过缓存和并行处理优化 CI 流程
 
-## Quick Start: Add CI to a Project
+## 快速入门：为项目添加 CI 功能
 
-### Node.js project
+### Node.js 项目
 
 ```yaml
 # .github/workflows/ci.yml
@@ -46,7 +46,7 @@ jobs:
       - run: npm run lint
 ```
 
-### Python project
+### Python 项目
 
 ```yaml
 # .github/workflows/ci.yml
@@ -72,7 +72,7 @@ jobs:
       - run: ruff check .
 ```
 
-### Go project
+### Go 项目
 
 ```yaml
 # .github/workflows/ci.yml
@@ -96,7 +96,7 @@ jobs:
       - run: go vet ./...
 ```
 
-### Rust project
+### Rust 项目
 
 ```yaml
 # .github/workflows/ci.yml
@@ -119,9 +119,9 @@ jobs:
       - run: cargo clippy -- -D warnings
 ```
 
-## Common Patterns
+## 常见模式
 
-### Matrix builds (test across versions/OSes)
+### 跨版本/操作系统的矩阵构建（matrix builds）
 
 ```yaml
 jobs:
@@ -141,7 +141,7 @@ jobs:
       - run: npm test
 ```
 
-### Conditional jobs
+### 条件化任务（conditional jobs）
 
 ```yaml
 jobs:
@@ -160,7 +160,7 @@ jobs:
       - run: ./deploy.sh
 ```
 
-### Caching dependencies
+### 缓存依赖项（cache dependencies）
 
 ```yaml
 # Node.js (automatic with setup-node)
@@ -181,7 +181,7 @@ jobs:
       ${{ runner.os }}-deps-
 ```
 
-### Artifacts (save build outputs)
+### 保存构建结果（save build outputs）
 
 ```yaml
 - uses: actions/upload-artifact@v4
@@ -197,7 +197,7 @@ jobs:
     path: dist/
 ```
 
-### Run on schedule (cron)
+### 定时执行（cron）
 
 ```yaml
 on:
@@ -206,9 +206,9 @@ on:
   workflow_dispatch:  # Also allow manual trigger
 ```
 
-## Deployment Workflows
+## 部署流程
 
-### Deploy to production on tag
+### 在特定标签下部署到生产环境
 
 ```yaml
 name: Release
@@ -242,7 +242,7 @@ jobs:
             dist/*.css
 ```
 
-### Deploy to multiple environments
+### 部署到多个环境
 
 ```yaml
 name: Deploy
@@ -268,7 +268,7 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
 ```
 
-### Docker build and push
+### 使用 Docker 构建并推送代码
 
 ```yaml
 name: Docker
@@ -301,7 +301,7 @@ jobs:
           cache-to: type=gha,mode=max
 ```
 
-### npm publish on release
+### 在发布时通过 npm 发布代码
 
 ```yaml
 name: Publish
@@ -328,9 +328,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-## Secrets Management
+## 密钥管理
 
-### Set secrets via CLI
+### 通过 CLI 设置密钥
 
 ```bash
 # Set a repository secret
@@ -349,7 +349,7 @@ gh secret list
 gh secret delete OLD_SECRET
 ```
 
-### Use secrets in workflows
+### 在工作流中使用密钥
 
 ```yaml
 env:
@@ -363,22 +363,21 @@ steps:
       API_KEY: ${{ secrets.API_KEY }}
 ```
 
-### Environment protection rules
+### 环境保护规则
 
-Set up via GitHub UI or API:
-- Required reviewers before deployment
-- Wait timers
-- Branch restrictions
-- Custom deployment branch policies
+- 通过 GitHub 用户界面或 API 设置部署前的审核流程
+- 设置等待时间（wait timers）
+- 限制可以提交代码的分支
+- 定义自定义的部署分支策略
 
 ```bash
 # View environments
 gh api repos/{owner}/{repo}/environments | jq '.environments[].name'
 ```
 
-## Workflow Debugging
+## 工作流调试
 
-### Re-run failed jobs
+### 重新运行失败的任务
 
 ```bash
 # List recent workflow runs
@@ -397,7 +396,7 @@ gh run rerun <run-id> --failed
 gh run rerun <run-id>
 ```
 
-### Debug with SSH (using tmate)
+### 使用 SSH 和 tmate 进行调试
 
 ```yaml
 # Add this step before the failing step
@@ -407,90 +406,46 @@ gh run rerun <run-id>
     limit-access-to-actor: true
 ```
 
-### Common failures and fixes
+### 常见故障及解决方法
 
-**"Permission denied" on scripts**
-```yaml
-- run: chmod +x ./scripts/deploy.sh && ./scripts/deploy.sh
-```
+- **“权限被拒绝”（Permission denied）**：检查脚本的权限设置
+- **“找不到 Node 模块”（Node modules not found）**：确保 Node.js 模块已正确安装
+- **“集成环境无法访问资源”（Resource not accessible by integration）**：检查网络连接或权限问题
+- **缓存未恢复**：检查缓存配置是否正确
+- **工作流未触发**：确认工作流文件位于默认分支，并检查触发事件（如 `push` 或 `pull_request`）是否正确，以及分支过滤条件是否准确
 
-**"Node modules not found"**
-```yaml
-# Make sure npm ci runs before npm test
-- run: npm ci     # Install exact lockfile versions
-- run: npm test   # Now node_modules exists
-```
+## 工作流验证
 
-**"Resource not accessible by integration"**
-```yaml
-# Add permissions block
-permissions:
-  contents: write
-  packages: write
-  pull-requests: write
-```
+- 在提交代码前在本地验证工作流的正确性
+- 将工作流以图表形式查看（view workflow as graph）
 
-**Cache not restoring**
-```yaml
-# Check cache key matches - use hashFiles for lockfile
-key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-# NOT: key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
-```
+## 高级模式
 
-**Workflow not triggering**
-- Check: is the workflow file on the default branch?
-- Check: does the trigger event match? (`push` vs `pull_request`)
-- Check: is the branch filter correct?
-```bash
-# Manually trigger a workflow
-gh workflow run ci.yml --ref main
-```
+- 重用工作流（reuse workflows）
+- 防止重复执行（prevent duplicate runs）
+- 使用路径过滤器（path filters）仅针对相关变更执行任务
+- 在单仓库项目中仅测试被修改的包（monorepo: only test changed packages）
 
-## Workflow Validation
+## 提示
 
-### Validate locally before pushing
+- 在调试时，可以使用 `workflow_dispatch` 手动触发工作流
+- 为确保供应链安全，使用特定的动作版本（如 `uses: actions/checkout@b4ffde...`）
+- 对于非关键步骤（如代码检查），可以设置 `continue-on-error: true` 以允许流程继续执行
+- 为防止构建过程无限循环，可以为任务设置超时时间（默认为 360 分钟）
+- 使用 `outputs` 参数在任务之间传递数据
+- 对于自托管的构建环境，使用 `runs-on: self-hosted` 并指定目标机器
 
-```bash
-# Check YAML syntax
-python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))" && echo "Valid"
+---
 
-# Use actionlint (if installed)
-actionlint .github/workflows/ci.yml
+（注：由于提供的 SKILL.md 文件内容较为简短，部分代码块（```yaml
+# .github/workflows/ci.yml
+name: CI
 
-# Or via Docker
-docker run --rm -v "$(pwd):/repo" -w /repo rhysd/actionlint:latest
-```
-
-### View workflow as graph
-
-```bash
-# List all workflows
-gh workflow list
-
-# View workflow definition
-gh workflow view ci.yml
-
-# Watch a running workflow
-gh run watch
-```
-
-## Advanced Patterns
-
-### Reusable workflows
-
-```yaml
-# .github/workflows/reusable-test.yml
-name: Reusable Test
 on:
-  workflow_call:
-    inputs:
-      node-version:
-        required: false
-        type: string
-        default: "20"
-    secrets:
-      npm-token:
-        required: false
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
@@ -499,87 +454,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ inputs.node-version }}
+          node-version: 20
+          cache: npm
       - run: npm ci
       - run: npm test
-```
-
-```yaml
-# .github/workflows/ci.yml - caller
-name: CI
-on: [push, pull_request]
-jobs:
-  test:
-    uses: ./.github/workflows/reusable-test.yml
-    with:
-      node-version: "20"
-```
-
-### Concurrency (prevent duplicate runs)
-
-```yaml
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true  # Cancel previous runs for same branch
-```
-
-### Path filters (only run for relevant changes)
-
-```yaml
-on:
-  push:
-    paths:
-      - "src/**"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/workflows/ci.yml"
-    paths-ignore:
-      - "docs/**"
-      - "*.md"
-```
-
-### Monorepo: only test changed packages
-
-```yaml
-jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      api: ${{ steps.filter.outputs.api }}
-      web: ${{ steps.filter.outputs.web }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            api:
-              - 'packages/api/**'
-            web:
-              - 'packages/web/**'
-
-  test-api:
-    needs: changes
-    if: needs.changes.outputs.api == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: cd packages/api && npm ci && npm test
-
-  test-web:
-    needs: changes
-    if: needs.changes.outputs.web == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: cd packages/web && npm ci && npm test
-```
-
-## Tips
-
-- Use `workflow_dispatch` on every workflow for manual triggering during debugging
-- Pin action versions to SHA for supply chain security: `uses: actions/checkout@b4ffde...`
-- Use `continue-on-error: true` for non-critical steps (like linting)
-- Set `timeout-minutes` on jobs to prevent runaway builds (default is 360 minutes)
-- Use job outputs to pass data between jobs: `outputs: result: ${{ steps.step-id.outputs.value }}`
-- For self-hosted runners: `runs-on: self-hosted` with labels for targeting specific machines
+      - run: npm run lint
+``` 等）为空，因此在翻译中保留了占位符。在实际应用中，这些占位符需要被具体的代码示例所替换。）

@@ -15,9 +15,9 @@ metadata:
 
 # Xero
 
-Access the Xero API with managed OAuth authentication. Manage contacts, invoices, payments, bank transactions, and run financial reports.
+使用托管的 OAuth 认证方式访问 Xero API，可以管理联系人、发票、支付记录、银行交易，并生成财务报告。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List contacts
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/xero/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Xero API endpoint path. The gateway proxies requests to `api.xero.com` and automatically injects your OAuth token and Xero-Tenant-Id header.
+请将 `{native-api-path}` 替换为实际的 Xero API 端点路径。该网关会将请求代理到 `api.xero.com`，并自动添加您的 OAuth 令牌和 `Xero-Tenant-Id` 标头。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Xero OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Xero OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Xero connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Xero 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,25 +138,25 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /xero/api.xro/2.0/Contacts
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /xero/api.xro/2.0/Contacts/{contactId}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /xero/api.xro/2.0/Contacts
@@ -171,15 +171,15 @@ Content-Type: application/json
 }
 ```
 
-### Invoices
+### 发票
 
-#### List Invoices
+#### 列出发票
 
 ```bash
 GET /xero/api.xro/2.0/Invoices
 ```
 
-#### Create Invoice
+#### 创建发票
 
 ```bash
 POST /xero/api.xro/2.0/Invoices
@@ -199,62 +199,62 @@ Content-Type: application/json
 }
 ```
 
-### Accounts
+### 账户
 
-#### List Accounts
+#### 列出账户信息
 
 ```bash
 GET /xero/api.xro/2.0/Accounts
 ```
 
-### Payments
+### 支付记录
 
-#### List Payments
+#### 列出支付记录
 
 ```bash
 GET /xero/api.xro/2.0/Payments
 ```
 
-### Bank Transactions
+### 银行交易
 
-#### List Bank Transactions
+#### 列出银行交易记录
 
 ```bash
 GET /xero/api.xro/2.0/BankTransactions
 ```
 
-### Reports
+### 报告
 
-#### Profit and Loss
+#### 利润与损失报告
 
 ```bash
 GET /xero/api.xro/2.0/Reports/ProfitAndLoss?fromDate=2024-01-01&toDate=2024-12-31
 ```
 
-#### Balance Sheet
+#### 资产负债表
 
 ```bash
 GET /xero/api.xro/2.0/Reports/BalanceSheet?date=2024-12-31
 ```
 
-#### Trial Balance
+#### 试算平衡表
 
 ```bash
 GET /xero/api.xro/2.0/Reports/TrialBalance?date=2024-12-31
 ```
 
-### Organisation
+### 组织信息
 
 ```bash
 GET /xero/api.xro/2.0/Organisation
 ```
 
-## Invoice Types
+## 发票类型
 
-- `ACCREC` - Accounts Receivable (sales invoice)
-- `ACCPAY` - Accounts Payable (bill)
+- `ACCREC` - 应收账款（销售发票）
+- `ACCPAY` - 应付账款（账单）
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -281,33 +281,33 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- `Xero-Tenant-Id` header is automatically injected
-- Dates are in `YYYY-MM-DD` format
-- Multiple records can be created in a single request using arrays
-- Use `where` query parameter for filtering
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- `Xero-Tenant-Id` 标头会自动添加到请求中。
+- 日期格式为 `YYYY-MM-DD`。
+- 可以使用数组在单个请求中创建多个记录。
+- 使用 `where` 查询参数进行过滤。
+- 重要提示：当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 命令以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析环境变量 `$MATON_API_KEY`，这可能会导致 “无效 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Xero connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Xero API |
+| 400 | 未找到 Xero 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求限制（每秒 10 次） |
+| 4xx/5xx | 来自 Xero API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -318,20 +318,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `xero`. For example:
+1. 确保您的 URL 路径以 `xero` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/xero/api.xro/2.0/Contacts`
+- 错误的路径：`https://gateway.maton.ai/api.xro/2.0/Contacts`
 
-- Correct: `https://gateway.maton.ai/xero/api.xro/2.0/Contacts`
-- Incorrect: `https://gateway.maton.ai/api.xro/2.0/Contacts`
+## 资源
 
-## Resources
-
-- [Xero API Overview](https://developer.xero.com/documentation/api/accounting/overview)
-- [Contacts](https://developer.xero.com/documentation/api/accounting/contacts)
-- [Invoices](https://developer.xero.com/documentation/api/accounting/invoices)
-- [Accounts](https://developer.xero.com/documentation/api/accounting/accounts)
-- [Payments](https://developer.xero.com/documentation/api/accounting/payments)
-- [Reports](https://developer.xero.com/documentation/api/accounting/reports)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Xero API 概述](https://developer.xero.com/documentation/api/accounting/overview)
+- [联系人](https://developer.xero.com/documentation/api/accounting/contacts)
+- [发票](https://developer.xero.com/documentation/api/accounting/invoices)
+- [账户](https://developer.xero.com/documentation/api/accounting/accounts)
+- [支付记录](https://developer.xero.com/documentation/api/accounting/payments)
+- [报告](https://developer.xero.com/documentation/api/accounting/reports)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

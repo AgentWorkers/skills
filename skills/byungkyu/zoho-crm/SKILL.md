@@ -17,9 +17,9 @@ metadata:
 
 # Zoho CRM
 
-Access the Zoho CRM API with managed OAuth authentication. Manage leads, contacts, accounts, deals, and other CRM modules with full CRUD operations including search and bulk operations.
+您可以使用受管理的 OAuth 认证来访问 Zoho CRM API。通过完整的 CRUD 操作（包括搜索和批量操作），您可以管理潜在客户（Leads）、联系人（Contacts）、账户（Accounts）、销售机会（Deals）以及其他 CRM 模块。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List leads
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/zoho-crm/crm/v8/{endpoint}
 ```
 
-The gateway proxies requests to `www.zohoapis.com/crm/v8` and automatically injects your OAuth token.
+该网关会将请求代理到 `www.zohoapis.com/crm/v8`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Zoho CRM OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Zoho CRM OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Zoho CRM connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Zoho CRM 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,45 +140,45 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略该头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Modules
+### 模块
 
-Zoho CRM organizes data into modules. Core modules include:
+Zoho CRM 将数据组织成不同的模块。核心模块包括：
 
-| Module | API Name | Description |
+| 模块 | API 名称 | 描述 |
 |--------|----------|-------------|
-| Leads | `Leads` | Potential customers |
-| Contacts | `Contacts` | Individual people |
-| Accounts | `Accounts` | Organizations/companies |
-| Deals | `Deals` | Sales opportunities |
-| Campaigns | `Campaigns` | Marketing campaigns |
-| Tasks | `Tasks` | To-do items (requires additional OAuth scope) |
-| Calls | `Calls` | Phone call logs (requires additional OAuth scope) |
-| Events | `Events` | Calendar appointments (requires additional OAuth scope) |
-| Products | `Products` | Items you sell (requires additional OAuth scope) |
+| 潜在客户（Leads） | `Leads` | 潜在客户信息 |
+| 联系人（Contacts） | `Contacts` | 个人信息 |
+| 账户（Accounts） | `Accounts` | 组织/公司信息 |
+| 销售机会（Deals） | `Deals` | 销售机会信息 |
+| 营销活动（Campaigns） | `Campaigns` | 营销活动信息 |
+| 任务（Tasks） | `Tasks` | 待办事项（需要额外的 OAuth 权限范围） |
+| 电话记录（Calls） | `Calls` | 电话通话记录（需要额外的 OAuth 权限范围） |
+| 日程事件（Events） | `Events` | 日程安排（需要额外的 OAuth 权限范围） |
+| 产品（Products） | `Products` | 产品信息（需要额外的 OAuth 权限范围） |
 
-### List Records
+### 列出记录
 
 ```bash
 GET /zoho-crm/crm/v8/{module_api_name}?fields={field1},{field2}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `fields` | string | **Required.** Comma-separated field API names (max 50) |
-| `page` | integer | Page number (default: 1) |
-| `per_page` | integer | Records per page (default/max: 200) |
-| `sort_by` | string | Sort by: `id`, `Created_Time`, or `Modified_Time` |
-| `sort_order` | string | `asc` or `desc` (default) |
-| `cvid` | long | Custom view ID |
-| `page_token` | string | For >2000 records pagination |
+| `fields` | 字符串 | **必填。** 以逗号分隔的字段 API 名称（最多 50 个） |
+| `page` | 整数 | 页码（默认：1） |
+| `per_page` | 整数 | 每页显示的记录数（默认/最大：200） |
+| `sort_by` | 字符串 | 排序方式：`id`、`Created_Time` 或 `Modified_Time` |
+| `sort_order` | 字符串 | `asc` 或 `desc`（默认） |
+| `cvid` | 长整型 | 自定义视图 ID |
+| `page_token` | 字符串 | 当记录数超过 2000 条时用于分页 |
 
-**Example - List Leads:**
+**示例 - 列出潜在客户：**
 
 ```bash
 python <<'EOF'
@@ -189,7 +189,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -214,7 +214,7 @@ EOF
 }
 ```
 
-**Example - List Contacts:**
+**示例 - 列出联系人：**
 
 ```bash
 python <<'EOF'
@@ -225,7 +225,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Example - List Accounts:**
+**示例 - 列出账户：**
 
 ```bash
 python <<'EOF'
@@ -236,7 +236,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Example - List Deals:**
+**示例 - 列出销售机会：**
 
 ```bash
 python <<'EOF'
@@ -247,13 +247,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Record
+### 获取记录信息
 
 ```bash
 GET /zoho-crm/crm/v8/{module_api_name}/{record_id}
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -264,7 +264,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Records
+### 创建记录
 
 ```bash
 POST /zoho-crm/crm/v8/{module_api_name}
@@ -279,19 +279,19 @@ Content-Type: application/json
 }
 ```
 
-**Mandatory Fields by Module:**
+**各模块的必填字段：**
 
-| Module | Required Fields |
+| 模块 | 必填字段 |
 |--------|-----------------|
-| Leads | `Last_Name` |
-| Contacts | `Last_Name` |
-| Accounts | `Account_Name` |
-| Deals | `Deal_Name`, `Stage` |
-| Tasks | `Subject` |
-| Calls | `Subject`, `Call_Type`, `Call_Start_Time`, `Call_Duration` |
-| Events | `Event_Title`, `Start_DateTime`, `End_DateTime` |
+| 潜在客户（Leads） | `Last_Name` |
+| 联系人（Contacts） | `Last_Name` |
+| 账户（Accounts） | `Account_Name` |
+| 销售机会（Deals） | `Deal_Name`, `Stage` |
+| 任务（Tasks） | `Subject` |
+| 电话记录（Calls） | `Subject`, `Call_Type`, `Call_Start_Time`, `Call_Duration` |
+| 日程事件（Events） | `Event_Title`, `Start_DateTime`, `End_DateTime` |
 
-**Example - Create Lead:**
+**示例 - 创建潜在客户：**
 
 ```bash
 python <<'EOF'
@@ -312,7 +312,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -338,7 +338,7 @@ EOF
 }
 ```
 
-**Example - Create Contact:**
+**示例 - 创建联系人：**
 
 ```bash
 python <<'EOF'
@@ -358,7 +358,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Example - Create Account:**
+**示例 - 创建账户：**
 
 ```bash
 python <<'EOF'
@@ -377,7 +377,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Update Records
+### 更新记录
 
 ```bash
 PUT /zoho-crm/crm/v8/{module_api_name}
@@ -393,7 +393,7 @@ Content-Type: application/json
 }
 ```
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -412,7 +412,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -438,20 +438,20 @@ EOF
 }
 ```
 
-### Delete Records
+### 删除记录
 
 ```bash
 DELETE /zoho-crm/crm/v8/{module_api_name}?ids={record_id1},{record_id2}
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `ids` | string | Comma-separated record IDs (required, max 100) |
-| `wf_trigger` | boolean | Execute workflows (default: true) |
+| `ids` | 字符串 | 以逗号分隔的记录 ID（必填，最多 100 个） |
+| `wf_trigger` | 布尔值 | 是否执行工作流（默认：true） |
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -462,7 +462,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -478,31 +478,31 @@ EOF
 }
 ```
 
-### Search Records
+### 搜索记录
 
 ```bash
 GET /zoho-crm/crm/v8/{module_api_name}/search
 ```
 
-**Query Parameters (one required):**
+**查询参数（至少需要一个）：**
 
-| Parameter | Type | Description |
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `criteria` | string | Search criteria (e.g., `(Last_Name:equals:Smith)`) |
-| `email` | string | Search by email address |
-| `phone` | string | Search by phone number |
-| `word` | string | Global text search |
-| `page` | integer | Page number |
-| `per_page` | integer | Records per page (max 200) |
+| `criteria` | 字符串 | 搜索条件（例如：`(Last_Name:equals:Smith)` |
+| `email` | 字符串 | 按电子邮件地址搜索 |
+| `phone` | 字符串 | 按电话号码搜索 |
+| `word` | 字符串 | 全文搜索 |
+| `page` | 整数 | 页码 |
+| `per_page` | 整数 | 每页显示的记录数（最大 200） |
 
-**Criteria Format:** `((field_api_name:operator:value) and/or (...))`
+**条件格式：`((field_api_name:operator:value) and/or (...))`
 
-**Operators:**
-- Text fields: `equals`, `not_equal`, `starts_with`, `in`
-- Date/Number fields: `equals`, `not_equal`, `greater_than`, `less_than`, `between`, `in`
-- Boolean fields: `equals`, `not_equal`
+**操作符：**
+- 文本字段：`equals`, `not_equal`, `starts_with`, `in`
+- 日期/数字字段：`equals`, `not_equal`, `greater_than`, `less_than`, `between`, `in`
+- 布尔字段：`equals`, `not_equal`
 
-**Example - Search by email:**
+**示例 - 按电子邮件搜索：**
 
 ```bash
 python <<'EOF'
@@ -513,7 +513,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Example - Search by criteria:**
+**示例 - 根据条件搜索：**
 
 ```bash
 python <<'EOF'
@@ -526,7 +526,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -546,15 +546,15 @@ EOF
 }
 ```
 
-## Pagination
+## 分页
 
-Zoho CRM uses page-based pagination with optional page tokens for large datasets:
+Zoho CRM 使用基于页码的分页方式，对于大量数据集提供可选的页码令牌：
 
 ```bash
 GET /zoho-crm/crm/v8/{module_api_name}?fields=First_Name,Last_Name&page=1&per_page=50
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -572,11 +572,11 @@ Response includes pagination info:
 }
 ```
 
-- For up to 2,000 records: Use `page` parameter (increment each request)
-- For 2,000+ records: Use `page_token` from previous response
-- Page tokens expire after 24 hours
+- 对于最多 2,000 条记录：使用 `page` 参数（每次请求递增页码）。
+- 对于超过 2,000 条记录：使用上一次响应中的 `page_token`。
+- 页码令牌在 24 小时后失效。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -606,49 +606,49 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- The `fields` parameter is **required** for list operations (max 50 fields)
-- Module API names are case-sensitive (e.g., `Leads`, not `leads`)
-- Maximum 100 records per create/update request
-- Maximum 100 records per delete request
-- Maximum 200 records returned per GET request
-- Maximum 2,000 records without page_token; up to 100,000 with page_token
-- Use field API names (not display names) in requests
-- Some modules (Tasks, Events, Calls, Products) require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- Empty datasets return HTTP 204 (No Content) with empty body
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- `fields` 参数对于列表操作是 **必填的**（最多 50 个字段）。
+- 模块 API 名称区分大小写（例如：`Leads`，而不是 `leads`）。
+- 每次创建/更新请求最多允许 100 条记录。
+- 每次删除请求最多允许 100 条记录。
+- 每次 GET 请求最多返回 200 条记录。
+- 不使用页码令牌时最多返回 2,000 条记录；使用页码令牌时最多返回 100,000 条记录。
+- 在请求中使用字段的 API 名称（而不是显示名称）。
+- 某些模块（任务、事件、电话记录、产品）需要额外的 OAuth 权限范围。如果您收到权限范围错误，请联系 Maton 支持团队（support@maton.ai），并提供所需的操作/API 以及您的使用场景。
+- 空数据集会返回 HTTP 204（No Content）状态码，且响应体为空。
+- **重要提示：** 当 URL 包含括号时，使用 `curl -g` 选项来禁用全局解析。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Zoho CRM connection, missing required parameter, or invalid request |
-| 401 | Invalid or missing Maton API key, or OAuth scope mismatch |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Zoho CRM API |
+| 400 | 未建立 Zoho CRM 连接，缺少必需参数，或请求无效 |
+| 401 | Maton API 密钥无效或缺失，或 OAuth 权限范围不匹配 |
+| 404 | 资源未找到 |
+| 429 | 请求频率受限 |
+| 4xx/5xx | 来自 Zoho CRM API 的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| `OAUTH_SCOPE_MISMATCH` | OAuth token lacks required permissions for the endpoint |
-| `MANDATORY_NOT_FOUND` | Required field is missing |
-| `INVALID_DATA` | Data type mismatch or format error |
-| `DUPLICATE_DATA` | Record violates unique field constraint |
-| `RECORD_NOT_FOUND` | The specified record ID does not exist |
+| `OAUTH_SCOPE_MISMATCH` | OAuth 令牌缺乏访问该端点的必要权限 |
+| `MANDATORY_NOT_FOUND` | 必需字段缺失 |
+| `INVALID_DATA` | 数据类型不匹配或格式错误 |
+| `DUPLICATE_DATA` | 记录违反了唯一性字段规则 |
+| `RECORD_NOT_FOUND` | 指定的记录 ID 不存在 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -659,20 +659,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `zoho-crm`. For example:
+1. 确保您的 URL 路径以 `zoho-crm` 开头。例如：
+- 正确：`https://gateway.maton.ai/zoho-crm/crm/v8/Leads`
+- 错误：`https://gateway.maton.ai/crm/v8/Leads`
 
-- Correct: `https://gateway.maton.ai/zoho-crm/crm/v8/Leads`
-- Incorrect: `https://gateway.maton.ai/crm/v8/Leads`
+## 资源
 
-## Resources
-
-- [Zoho CRM API v8 Documentation](https://www.zoho.com/crm/developer/docs/api/v8/)
-- [Get Records API](https://www.zoho.com/crm/developer/docs/api/v8/get-records.html)
-- [Insert Records API](https://www.zoho.com/crm/developer/docs/api/v8/insert-records.html)
-- [Update Records API](https://www.zoho.com/crm/developer/docs/api/v8/update-records.html)
-- [Delete Records API](https://www.zoho.com/crm/developer/docs/api/v8/delete-records.html)
-- [Search Records API](https://www.zoho.com/crm/developer/docs/api/v8/search-records.html)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Zoho CRM API v8 文档](https://www.zoho.com/crm/developer/docs/api/v8/)
+- [获取记录 API](https://www.zoho.com/crm/developer/docs/api/v8/get-records.html)
+- [插入记录 API](https://www.zoho.com/crm/developer/docs/api/v8/insert-records.html)
+- [更新记录 API](https://www.zoho.com/crm/developer/docs/api/v8/update-records.html)
+- [删除记录 API](https://www.zoho.com/crm/developer/docs/api/v8/delete-records.html)
+- [搜索记录 API](https://www.zoho.com/crm/developer/docs/api/v8/search-records.html)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

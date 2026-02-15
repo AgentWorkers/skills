@@ -1,24 +1,23 @@
 ---
 name: principles
-description: "Ray Dalio-inspired personal knowledge system. Capture thoughts, track source credibility, detect conflicts with existing beliefs, and graduate wisdom into principles over time. Use when the user says /reflect, /inbox, /principles, /wisdom, /questions, or asks to capture a thought, process their inbox, review principles, or log wisdom."
+description: "这款个人知识管理系统灵感来源于Ray Dalio的理念。它可以帮助用户记录自己的想法，追踪信息来源的可信度，检测新信息与现有信念之间的冲突，并逐步将这些思考转化为可遵循的原则。用户可以通过输入指令（如 /reflect、/inbox、/principles、/wisdom、/questions）来记录自己的想法、整理待办事项、回顾已制定的原则或记录自己的智慧结晶。"
 ---
 
-# Principles — Personal Knowledge System
+# 原则 — 个人知识体系  
+（A structured system for turning raw observations into tested wisdom and personal principles. Inspired by Ray Dalio’s “Principles” methodology.）
 
-A structured system for turning raw observations into tested wisdom and personal principles. Inspired by Ray Dalio's "Principles" methodology.
-
-## Overview
-
-You manage a pipeline that transforms raw input into lasting knowledge:
+## 概述  
+（Overview）  
+你正在管理一个将原始信息转化为可长期应用的智慧和个人原则的流程：  
 
 ```
 Inbox (raw capture) → Wisdom (claims with sources) → Principles (tested beliefs)
-```
+```  
 
-Everything lives in `personal/` under the user's workspace. Create the directory structure on first use if it doesn't exist.
+所有文件都存储在用户工作区的 `personal/` 目录下。如果该目录尚不存在，请在使用时创建相应的目录结构。  
 
-## Directory Structure
-
+## 目录结构  
+（Directory Structure）  
 ```
 personal/
 ├── _system.md          # These instructions (copy from SKILL.md on init)
@@ -32,149 +31,99 @@ personal/
 │   ├── business.md     # Business principles
 │   └── leadership.md   # Leadership principles
 └── open-questions.md   # Genuine dilemmas
-```
+```  
 
-## Commands
+## 命令  
+（Commands）  
+### `/reflect` 或 `/reflect process`  
+处理收件箱中的内容：解析每条信息，检查是否存在冲突，并将其路由到相应的文件中。  
 
-### `/reflect` or `/reflect process`
-Process the inbox. Parse each thought, check for conflicts, route to the right file.
+### `/reflect inbox` 或 `/inbox`  
+将原始想法添加到 `inbox.md` 文件中。用户只需输入文本，后续处理工作由系统完成。  
 
-### `/reflect inbox` or `/inbox`
-Add a raw thought to `inbox.md`. User just dumps text — you clean it up later during processing.
+### `/reflect wisdom`  
+显示收集到的智慧内容（可选按领域筛选）。  
 
-### `/reflect wisdom`
-Show collected wisdom, optionally filtered by domain.
+### `/reflect principles`  
+显示所有领域的当前个人原则。  
 
-### `/reflect principles`
-Show current principles across all domains.
+### `/reflect questions`  
+显示未解决的问题及其状态。  
 
-### `/reflect questions`
-Show open questions and their status.
+### `/reflect sources`  
+显示所有信息来源的摘要及其可信度评分（按领域划分）。  
 
-### `/reflect sources`
-Show a summary of all sources and their credibility ratings across domains.
+### `/reflect journal`  
+添加带有时间戳的每日日志记录。  
 
-### `/reflect journal`
-Add a journal entry for today with timestamp.
+## 处理收件箱（`/reflect`）  
+（Processing the inbox）  
+这是核心工作流程：  
+1. **读取`inbox.md`文件。**  
+2. **解析每条信息**，确定其类型：  
+   - 来自他人的智慧 → 存储到 `wisdom/collected.md`  
+   - 个人信念或立场 → 与现有原则进行对比（`principles/*.md`）  
+   - 事实性学习内容 → 存储到 `wisdom/collected.md`  
+   - 问题或疑问 → 评估其真实性  
+   - 仅仅是背景信息或事件 → 提取有价值的见解（如有），其余内容则忽略。  
+3. **检查与现有智慧内容的冲突**：  
+   - 如果新信息与现有观点相同但来源不同 → 作为补充证据添加  
+   - 如果同一领域内存在冲突 → **停止**，要求用户解决冲突。  
+4. **检查与新原则的一致性**：  
+   - 如果新信息与现有原则冲突 → **停止**，要求用户解决冲突。  
+5. **若发现任何冲突** → **停止**，并询问用户：  
+   - 清晰展示冲突内容  
+   - 提供选项：更新现有原则、保留现有原则、分开处理这些观点，或将它们转化为未解决的问题  
+   **切勿默默地存储冲突信息**。  
+6. **根据用户的选择处理内容**。  
+7. **处理完成后清理`inbox.md`文件。**  
+8. **如果新增了原则，请更新`principles/_index.md`文件。**  
 
-## Processing Inbox (`/reflect`)
+## 内容格式  
+（Content Formats）  
 
-This is the core workflow. When triggered:
+### 智慧内容（`wisdom/collected.md`）  
+（Wisdom Content）  
+这些内容按领域分类，而非按来源排序。同一观点可能来自多个来源。  
 
-1. **Read** `inbox.md`
-2. **Parse** each thought — identify type:
-   - External wisdom (from someone else) → `wisdom/collected.md`
-   - Personal belief or stance → check against `principles/*.md`
-   - Factual learning → `wisdom/collected.md`
-   - Question or uncertainty → evaluate if genuine dilemma
-   - Just context/event → extract insight if any, discard the rest
+**来源的可信度按领域评估：**  
+- 一个来源在某个领域可能被认定为“[已证实]”，但在另一个领域可能仅被认定为“[合理]”。  
+- 例如：Alex Hormozi在商业领域的观点可能被认定为“[已证实]”，但在健康领域的观点可能仅被认定为“[合理]”。  
+- 可信度等级：`[已证实]`（具备专业知识）、`[合理]`（合理但非其专业领域）、`[未经验证]`（无相关记录）。  
+**领域格式：`category/aspect`（例如：`health/sleep`、`business/pricing`、`productivity/focus`）。**  
 
-3. **Check for conflicts** against existing wisdom claims:
-   - Same claim, new source → add as corroborating evidence
-   - Conflicting claim in same domain → **STOP**. Present conflict. Ask user to resolve.
+### 原则（`principles/*.md`）  
+（Principles）  
+（Principles）  
 
-4. **Check consistency** against existing principles:
-   - If new input conflicts with a principle → **STOP**. Present conflict. Ask user to resolve.
+### 未解决的问题（`open-questions.md`）  
+（Open Questions）  
+仅记录真正的难题，而非待办事项或简单的未知信息。  
 
-5. **If ANY conflict found** → STOP and ask user:
-   - Show the conflict clearly
-   - Offer options: update existing, keep existing, split claims, convert to open question
-   - Do NOT silently file conflicting information
+### 日志（`journal.md`）  
+（Journal）  
+仅允许追加每日记录。  
 
-6. **Route content** based on user decisions
-7. **Clean up** `inbox.md` after processing
-8. **Update** `principles/_index.md` if new principles were added
+## 智慧的升级：从“智慧”到“原则”  
+（Wisdom to Principles）  
+当某条智慧内容获得“高可信度”（多个可信来源支持且个人经验也予以验证）时，系统会提示用户：  
+> “这条观点有充分的证据支持，且您已亲自确认其正确性。是否希望将其提升为[特定领域]的原则？”  
+如果用户同意，系统会创建相应的原则条目并建立交叉引用。  
 
-## Content Formats
+## 显露的假设  
+（Uncovered Assumptions）  
+当用户输入的信息包含隐含的假设时：  
+- 明确这些假设  
+- 询问：“这里是否隐含了X这样的假设？其准确性如何？”  
+- 在确认这些假设之前，系统不会继续处理后续步骤。  
 
-### Wisdom Claims (`wisdom/collected.md`)
+## 语言与语气  
+（Language & Tone）  
+- 清理语法错误，但保留原文的准确含义  
+- 用户可以使用任何语言输入内容，系统会自动进行相应处理  
+- 保持直接、客观的态度——这只是一个工具，而非说教。  
 
-Claims are organized by **domain**, not by source. Multiple sources can corroborate the same claim.
-
-```markdown
-## [Domain/Aspect]
-
-### [Claim stated plainly]
-**Domain**: [category/aspect]
-**Confidence**: [Low / Medium / High]
-
-**Sources**:
-1. [Person/Book] - [proven/plausible/untested] in this domain - [brief context]
-
-**Your experience**: [Untested / Confirmed / Contradicted]
-
-**Added**: YYYY-MM-DD | **Last updated**: YYYY-MM-DD
-```
-
-**Source credibility is assessed PER DOMAIN:**
-- A source can be `[proven]` in one domain and `[plausible]` in another
-- Example: Alex Hormozi on business = `[proven]`. Alex Hormozi on health = `[plausible]`.
-- Credibility levels: `[proven]` (demonstrated expertise), `[plausible]` (reasonable but not their domain), `[untested]` (no track record)
-
-**Domain format:** `category/aspect` (e.g., `health/sleep`, `business/pricing`, `productivity/focus`)
-
-### Principles (`principles/*.md`)
-
-```markdown
-## [Principle stated as a clear belief]
-
-**Confidence**: [certain / hypothesis / exploring]
-**Added**: YYYY-MM-DD
-**Context**: Why you believe this
-**Reasoning**: Evidence and experience supporting it
-**Related**: Links to related principles or wisdom claims
-```
-
-### Open Questions (`open-questions.md`)
-
-Only genuine dilemmas — not todo items or simple unknowns.
-
-```markdown
-## [Question]
-**Status**: [exploring / gathering-evidence / leaning-toward-X]
-
-**Goal**: What are you actually trying to achieve?
-**Problem**: What's blocking it?
-**Options**:
-1. [Option A] - pros/cons
-2. [Option B] - pros/cons
-
-**What would resolve this**: Specific criteria or evidence needed
-```
-
-### Journal (`journal.md`)
-
-Append-only daily entries:
-
-```markdown
-## YYYY-MM-DD
-
-[Observations, reflections, what happened today]
-```
-
-## Graduation: Wisdom → Principles
-
-When a wisdom claim reaches **High confidence** (multiple credible sources + personal experience confirms it), prompt the user:
-
-> "This claim has strong evidence and you've confirmed it personally. Want to graduate it to a principle in [domain]?"
-
-If yes, create the principle entry and cross-reference it.
-
-## Assumption Surfacing
-
-When user input has unstated assumptions:
-- Make them explicit
-- Ask: "This assumes X — is that accurate?"
-- Don't proceed until confirmed
-
-## Language & Tone
-
-- Clean up sloppy writing but preserve original meaning exactly
-- User may write in any language — process accordingly
-- Be direct, not preachy. This is a tool, not a lecture.
-
-## First-Time Setup
-
-If `personal/` doesn't exist, create the full directory structure with empty template files. Tell the user:
-
-> "Set up your principles system. Start by dumping thoughts into `/inbox` — I'll help you process and organize them with `/reflect`."
+## 首次使用说明  
+（First-Time Setup）  
+如果 `personal/` 目录不存在，请创建完整的目录结构，并包含空模板文件。告知用户：  
+> “请设置您的个人知识体系。首先将想法输入到 `/inbox` 中，我会使用 `/reflect` 命令帮助您整理这些内容。”

@@ -1,17 +1,17 @@
 ---
 name: prism-alerts
-description: Real-time Pump.fun token alerts for Solana traders. New launches, graduations, volume spikes. For trading bots, Discord, Telegram, AI agents.
+description: 实时推送Solana交易者的Pump.fun代币警报：新发行、代币毕业（即完成特定条件后释放）、交易量激增等信息。适用于交易机器人、Discord、Telegram以及AI代理。
 version: 1.1.1
 keywords: pumpfun, solana, memecoin, token-alerts, trading-bot, crypto-alerts, degen, solana-trading, real-time-alerts, ai, ai-agent, ai-coding, llm, cursor, claude, automation, defi, web3, openclaw, moltbot, vibe-coding, agentic
 ---
 
-# Pump.fun Alert Bot
+# Pump.fun 警报机器人
 
-**Never miss a launch.** Real-time alerts for Pump.fun token launches, graduations, and volume spikes on Solana.
+**不错过任何新币发布！** 为 Pump.fun 代币的发布、上架以及 Solana 平台上的交易量激增事件提供实时警报。
 
-Built for trading bots, Discord alerts, and Telegram notifications. Powered by Strykr PRISM.
+专为交易机器人、Discord 警报和 Telegram 通知而设计，由 Strykr PRISM 提供支持。
 
-## Quick Usage
+## 快速使用指南
 
 ```bash
 # Get current bonding tokens
@@ -24,18 +24,18 @@ Built for trading bots, Discord alerts, and Telegram notifications. Powered by S
 ./alerts.sh watch
 ```
 
-## Unique Data Source
+## 独特的数据来源
 
-PRISM is one of the **only APIs** with real-time Pump.fun bonding curve data:
+PRISM 是为数不多的能够提供 Pump.fun 代币绑定曲线实时数据的 API 之一：
 
-| Endpoint | Description | Speed |
+| API 端点 | 描述 | 数据更新速度 |
 |----------|-------------|-------|
-| `/crypto/trending/solana/bonding` | Tokens on bonding curve | 648ms |
-| `/crypto/trending/solana/graduated` | Graduated to DEX | 307ms |
+| `/crypto/trending/solana/bonding` | 提供代币的绑定曲线数据 | 648 毫秒 |
+| `/crypto/trending/solana/graduated` | 提供已上架到 DEX 的代币信息 | 307 毫秒 |
 
-## Alert Types
+## 警报类型
 
-### 1. New Launch Alert
+### 1. 新币发布警报
 ```
 🚀 NEW PUMP.FUN TOKEN
 
@@ -51,7 +51,7 @@ CA: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
 [🔍 Scan] [📈 Chart] [💰 Buy]
 ```
 
-### 2. Graduation Alert
+### 2. 代币上架警报
 ```
 🎓 TOKEN GRADUATED!
 
@@ -66,7 +66,7 @@ Trading now live on Raydium DEX
 [📈 Trade on Raydium]
 ```
 
-### 3. Volume Spike Alert
+### 3. 交易量激增警报
 ```
 📈 VOLUME SPIKE DETECTED
 
@@ -80,7 +80,7 @@ $CATDOG seeing unusual activity
 [🔍 Scan] [📈 Chart]
 ```
 
-## Bot Commands
+## 机器人命令
 
 ```
 /start           - Subscribe to alerts
@@ -91,9 +91,9 @@ $CATDOG seeing unusual activity
 /settings        - Configure alert filters
 ```
 
-## Alert Filters
+## 警报过滤规则
 
-Configure which alerts you receive:
+您可以配置接收哪些类型的警报：
 
 ```javascript
 {
@@ -107,9 +107,9 @@ Configure which alerts you receive:
 }
 ```
 
-## Integration
+## 集成方式
 
-### Telegram Bot
+### Telegram 机器人
 ```javascript
 import { Telegraf } from 'telegraf';
 import { PrismClient } from './prism';
@@ -128,7 +128,7 @@ setInterval(async () => {
 }, 30000);
 ```
 
-### Discord Bot
+### Discord 机器人
 ```javascript
 import { Client } from 'discord.js';
 
@@ -137,7 +137,7 @@ client.on('ready', () => {
 });
 ```
 
-## Environment Variables
+## 环境变量设置
 
 ```bash
 PRISM_URL=https://strykr-prism.up.railway.app
@@ -147,13 +147,13 @@ DISCORD_BOT_TOKEN=xxx
 DISCORD_CHANNEL_ID=xxx
 ```
 
-## Polling Best Practices
+## 数据轮询的最佳实践
 
-1. **Rate Limiting**: Poll max once per 30 seconds
-2. **Deduplication**: Track sent alerts in SQLite/Redis
-3. **Batching**: Group multiple alerts into one message
-4. **Cooldowns**: Don't spam same token within 5 minutes
+1. **速率限制**：每 30 秒最多轮询一次。
+2. **去重**：使用 SQLite/Redis 存储已发送的警报信息。
+3. **批量发送**：将多个警报合并成一条消息。
+4. **冷却机制**：避免在 5 分钟内重复发送同一代币的警报。
 
 ---
 
-Built by [@NextXFrontier](https://x.com/NextXFrontier)
+由 [@NextXFrontier](https://x.com/NextXFrontier) 开发

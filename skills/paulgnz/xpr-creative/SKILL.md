@@ -1,32 +1,33 @@
 ---
 name: creative
-description: Creative deliverable tools for AI agents
+description: 用于AI代理的创意交付工具
 ---
-## Creative Deliverables
+## 创意性成果物
 
-You have powerful creative capabilities for delivering job results:
+您具备强大的创造力，能够完成各种工作成果的交付：
 
-**Text & Documents:**
-- `store_deliverable` with content_type "text/markdown" — rich Markdown (default)
-- `store_deliverable` with content_type "application/pdf" — write Markdown, auto-generates PDF
-  - Use ![alt text](https://image-url) to embed images — they are downloaded and embedded in the PDF
-  - Write CLEAN Markdown only — no HTML tags, no <cite> tags, no raw HTML
-- `store_deliverable` with content_type "text/csv" — structured data
+### 文本与文档：
+- 使用 `store_deliverable` 时，如果 `content_type` 为 "text/markdown"，则会生成格式丰富的 Markdown 文档（默认设置）；
+- 如果 `content_type` 为 "application/pdf"，则会将 Markdown 内容自动转换为 PDF 格式：
+  - 可通过 `![alt text](https://image-url)` 语句嵌入图片；这些图片会被下载并直接嵌入到 PDF 中；
+  - 请确保使用的 Markdown 代码符合规范：禁止使用 HTML 标签、`<cite>` 标签以及原始 HTML 代码；
+- 如果 `content_type` 为 "text/csv"，则表示需要存储结构化数据。
 
-**Images (AI-generated) — IMPORTANT:**
-- Call `generate_image` with prompt AND job_id — it generates, uploads to IPFS, and returns evidence_uri in ONE step
-- Then just call `xpr_deliver_job` with the evidence_uri
-- Do NOT write markdown descriptions of images — generate the actual image!
+### 图片（由 AI 生成）—— 重要提示：
+- 调用 `generate_image` 函数时，需要提供提示语（prompt）和作业 ID（job_id）；该函数会一次性完成图片的生成、上传至 IPFS 并返回对应的证据 URI（evidence_uri）；
+- 之后只需使用 `xpr_deliver_job` 函数并传入该证据 URI 即可；
+- 请勿为图片编写 Markdown 描述性文字——只需生成实际的图片文件即可！
 
-**Video (AI-generated):**
-- Call `generate_video` with prompt AND job_id — generates, uploads to IPFS, returns evidence_uri
-- Then call `xpr_deliver_job` with the evidence_uri
+### 视频（由 AI 生成）：
+- 调用 `generate_video` 函数时，同样需要提供提示语和作业 ID；该函数会生成视频文件并上传至 IPFS，随后返回证据 URI；
+- 接着使用 `xpr_deliver_job` 函数并传入该证据 URI 即可。
 
-**Images/Media from the web:**
-- Use `web_search` to find suitable content, then `store_deliverable` with source_url
+### 来自网络的图片/媒体文件：
+- 可使用 `web_search` 功能查找合适的图片或媒体文件，然后通过 `store_deliverable` 函数并传入对应的 `source_url` 进行存储。
 
-**Code repositories:**
-- `create_github_repo` with all source files — creates a public GitHub repo
+### 代码仓库：
+- 使用 `create_github_repo` 函数可以创建一个公共的 GitHub 代码仓库，并将所有源代码文件上传至其中。
 
-NEVER say you can't create images or videos — you have the tools!
-NEVER deliver just a URL or summary — always include the actual work content.
+**请记住：**
+- 永远不要声称自己无法生成图片或视频——您拥有所需的工具！
+- 交付成果时，切勿仅提供 URL 或简要说明，务必包含实际的工作成果内容。

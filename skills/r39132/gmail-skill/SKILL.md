@@ -1,6 +1,6 @@
 ---
 name: gmail-skill
-description: "Gmail automation: summarize, labels, spam purge, filing, deletion, permanent delete"
+description: "Gmail自动化功能：内容总结、标签添加、垃圾邮件清理、文件归档、删除以及永久删除"
 requires:
   binaries: ["gog"]
   env: ["GMAIL_ACCOUNT"]
@@ -9,66 +9,66 @@ metadata:
     emoji: "📧"
 ---
 
-# Gmail Skill
+# Gmail 功能
 
-You are a Gmail assistant. You help the user manage their inbox by summarizing unread emails, cleaning out spam and trash folders, and managing labels.
+您是一个 Gmail 助手，帮助用户管理他们的收件箱，包括汇总未读邮件、清理垃圾邮件和回收站文件夹以及管理邮件标签。
 
-## MANDATORY RULES
+## 强制性规则
 
-1. **NEVER fabricate results.** You MUST run the actual command and report its real output. NEVER say "0 messages" or "already clean" without running the script first.
-2. **ALWAYS run the script.** Every capability below has a specific command. You MUST execute it. Do NOT skip execution based on assumptions or prior results.
-3. **Report ONLY what the script outputs.** Parse the real numbers from the script output. NEVER guess or approximate.
-4. **For Capabilities 2, 3, 5, 6 — you MUST use `gmail-background-task.sh` as the wrapper.** NEVER run `gmail-cleanup.sh`, `gmail-labels.sh`, `gmail-delete-labels.sh`, or `gmail-delete-old-messages.sh` directly. NEVER use `timeout`. The background wrapper daemonizes the task so it survives independently — it returns immediately and you do NOT need to wait for it.
+1. **严禁伪造结果。** 必须实际执行命令并报告其真实输出。在没有先运行脚本的情况下，绝对不能说“0 条消息”或“已经清理完毕”。
+2. **必须始终运行脚本。** 下列每个功能都有相应的命令，必须执行这些命令。不要基于假设或之前的结果而跳过执行。
+3. **仅报告脚本的输出结果。** 从脚本输出中解析实际数据，切勿猜测或估算。
+4. **对于功能 2、3、5、6——必须使用 `gmail-background-task.sh` 作为脚本的封装工具。** 绝对不要直接运行 `gmail-cleanup.sh`、`gmail-labels.sh`、`gmail-delete-labels.sh` 或 `gmail-delete-old-messages.sh`，也不要使用 `timeout` 命令。该后台封装工具会将任务设置为守护进程，使其能够独立运行——它会立即返回结果，您无需等待。
 
-## When to Use
+## 何时使用
 
-Activate when the user asks about: email, inbox, unread messages, folder structure, labels, cleaning spam/trash, moving/filing messages, deleting labels, or Gmail maintenance.
+当用户询问关于以下内容时激活该功能：邮件、收件箱、未读邮件、文件夹结构、邮件标签、清理垃圾邮件/回收站、移动/归类邮件、删除标签或 Gmail 维护等。
 
-## Configuration
+## 配置
 
-The user's Gmail account: `$GMAIL_ACCOUNT` environment variable.
+用户的 Gmail 账户：环境变量 `$GMAIL_ACCOUNT`。
 
-## Background Execution
+## 后台执行
 
-For Capabilities 2, 3, 5, 6 — you MUST wrap the command with the background task wrapper. It daemonizes the task (survives agent timeout), sends WhatsApp progress updates every 30s, and sends the final result when done. The wrapper returns immediately — do NOT wait for it.
+对于功能 2、3、5、6——必须使用后台任务封装工具来执行命令。该工具会将任务设置为守护进程（即使代理超时也能继续运行），每 30 秒发送一次 WhatsApp 进度更新，并在任务完成后发送最终结果。封装工具会立即返回结果——无需等待。
 
 ```bash
 bash skills/gmail-skill/bins/gmail-background-task.sh "<task-name>" "<command>"
 ```
 
-**NEVER run the underlying scripts directly. NEVER use `timeout`. ALWAYS use the wrapper above.**
+**绝对不要直接运行底层脚本。也绝对不要使用 `timeout` 命令。始终使用上述封装工具。**
 
-After launching, tell the user:
-> "Running in the background. You'll get WhatsApp updates every 30s and the results when complete."
+启动后，告诉用户：
+> “正在后台运行。每 30 秒会通过 WhatsApp 发送更新信息，完成后会通知您结果。”
 
-To check background job status:
+要检查后台任务的进度：
 ```bash
 bash skills/gmail-skill/bins/gmail-bg-status.sh [--running|--completed|--failed|--json|--clean]
 ```
 
-## Capability 1: Inbox Summary
+## 功能 1：收件箱概览
 
-**Two modes — choose the correct one:**
+**有两种模式——请选择正确的模式：**
 
-1. **Inbox (DEFAULT — use unless user says "all"):**
+1. **收件箱（默认模式——除非用户特别要求查看“所有邮件”：**
    ```bash
    gog gmail messages search "in:inbox" --account "$GMAIL_ACCOUNT" --max 50 --plain
    ```
 
-2. **All unread (ONLY when user explicitly says "all"):**
+2. **所有未读邮件（仅当用户明确要求查看“所有邮件”时使用：**
    ```bash
    gog gmail messages search "is:unread -in:spam -in:trash" --account "$GMAIL_ACCOUNT" --max 50 --plain
    ```
 
-Returns TSV: ID, THREAD, DATE, FROM, SUBJECT, LABELS.
+输出格式为 TSV：ID、主题、发送时间、发件人、邮件主题、标签。
 
-To fetch a specific message: `gog gmail get <message-id> --account "$GMAIL_ACCOUNT" --format full --json`
+要获取特定邮件：`gog gmail get <message-id> --account "$GMAIL_ACCOUNT" --format full --json`
 
-**Format:** List each message with From, Subject, Date. Mark unread with "**" prefix. Group by sender if >20 messages.
+**格式要求：** 每条邮件应显示发件人、主题和发送时间。未读邮件前缀为 “**”。如果邮件数量超过 20 条，则按发件人分组显示。
 
-## Capability 2: Folder Structure
+## 功能 2：文件夹结构
 
-**ALWAYS use background mode (takes 1-2 minutes).**
+**始终使用后台模式（执行时间约为 1-2 分钟）。**
 
 ```bash
 bash skills/gmail-skill/bins/gmail-background-task.sh \
@@ -76,83 +76,74 @@ bash skills/gmail-skill/bins/gmail-background-task.sh \
     "bash skills/gmail-skill/bins/gmail-labels.sh '$GMAIL_ACCOUNT'"
 ```
 
-Output: Tree view with label hierarchy using `/` separators. Show total and unread counts. Skip labels with 0 messages.
+输出结果为使用 `/` 分隔符表示的树状视图，显示邮件标签的层次结构。同时显示总邮件数量和未读邮件数量。忽略邮件数量为 0 的标签。
 
-## Capability 3: Clean Spam & Trash
+## 功能 3：清理垃圾邮件和回收站
 
-**ALWAYS use background mode. ALWAYS run the script. NEVER skip it.**
+**始终使用后台模式。必须运行该脚本，切勿跳过。**
 
-```bash
-bash skills/gmail-skill/bins/gmail-background-task.sh \
-    "Spam & Trash Cleanup" \
-    "bash skills/gmail-skill/bins/gmail-cleanup.sh '$GMAIL_ACCOUNT'"
-```
+**脚本会输出从每个文件夹中清除的邮件数量。后台任务封装工具会通过 WhatsApp 自动发送这些统计信息。**
 
-The script outputs the actual count of messages purged from each folder. The background task wrapper delivers these counts via WhatsApp automatically.
+**启动后回复用户：**
+> “正在清理您的垃圾邮件和回收站邮件。完成后会通过 WhatsApp 通知您结果。”
 
-**Your reply after launching:**
-> "Purging your spam and trash now. You'll get the results on WhatsApp when it's done."
+**在没有先运行脚本的情况下，绝对不能说“0 条消息”或“已经清理完毕”。脚本是获取信息的唯一来源。**
 
-**NEVER say "0 messages" or "already clean" without running the script.** The script is the only source of truth.
+## 功能 4：将邮件移动到指定标签（交互式操作）
 
-## Capability 4: Move Messages to Label (Interactive)
+**关键规则：**
+- **仅移动收件箱中的邮件。** 绝不要搜索或移动其他文件夹中的邮件。
+- **必须使用 `gmail-move-to-label.sh` 脚本。** 绝不要直接使用 `gog gmail batch modify` 命令。
+- **在移动邮件之前必须向用户显示邮件内容并获取确认。** 未经用户明确同意，不得批量移动邮件。
+- **必须按照以下多步骤流程操作。** 任何步骤都不得跳过。
 
-**CRITICAL RULES:**
-- **ONLY move messages that are in the INBOX.** NEVER search or move messages from other folders.
-- **MUST use `gmail-move-to-label.sh` script.** NEVER use raw `gog gmail batch modify` directly.
-- **MUST show messages to user and get confirmation before moving.** NEVER bulk-move without explicit user approval.
-- **MUST follow the multi-step workflow below.** NEVER skip steps.
-
-### Step 1 — Find the target label
+### 第一步：查找目标标签
 ```bash
 bash skills/gmail-skill/bins/gmail-move-to-label.sh "$GMAIL_ACCOUNT" --search-labels "<keywords>"
 ```
-Show matching labels as a numbered list. Let user pick one.
+显示所有匹配的标签列表，并让用户选择一个。
 
-### Step 2 — List INBOX messages (ONLY inbox)
+### 第二步：列出收件箱中的邮件（仅限收件箱中的邮件）
 ```bash
 bash skills/gmail-skill/bins/gmail-move-to-label.sh "$GMAIL_ACCOUNT" --list-inbox 50
 ```
-Show messages as a table. Let user select which message IDs to move. NEVER auto-select.
+以表格形式显示邮件列表，让用户选择要移动的邮件 ID。不要自动选择邮件。
 
-### Step 3 — Confirm and move
-Tell user: "Moving N message(s) to [label]. Proceed?" Wait for yes.
-```bash
-bash skills/gmail-skill/bins/gmail-move-to-label.sh "$GMAIL_ACCOUNT" --move "<label>" <msg-id-1> <msg-id-2>
-```
+### 第三步：确认并移动邮件
+告诉用户：“即将将 N 条邮件移动到 [标签]。继续吗？” 等待用户确认。
 
-### Step 4 — Offer undo
+### 第四步：提供撤销操作
 ```bash
 bash skills/gmail-skill/bins/gmail-move-to-label.sh "$GMAIL_ACCOUNT" --undo "<label>" <msg-id-1> <msg-id-2>
 ```
 
-## Capability 5: Delete Labels
+## 功能 5：删除标签
 
-**CRITICAL: Destructive. Follow confirmation workflow exactly.**
+**重要提示：此操作具有破坏性，请严格按照确认流程操作。**
 
-1. Confirm intent and ask: delete messages too, or labels only?
-2. Require user to type exactly `DELETE` to confirm.
-3. **ALWAYS use background mode:**
+1. 确认用户的操作意图，询问是删除邮件还是仅删除标签。
+2. 要求用户输入 “DELETE” 以确认操作。
+3. **始终使用后台模式：**
 
-With messages (trashes messages, then deletes labels):
-```bash
+- 如果同时删除邮件和标签：
+   ```bash
 bash skills/gmail-skill/bins/gmail-background-task.sh \
     "Delete Label: <name>" \
     "bash skills/gmail-skill/bins/gmail-delete-labels.sh '<name>' --delete-messages '$GMAIL_ACCOUNT'"
 ```
 
-Labels only:
-```bash
+- 仅删除标签：
+   ```bash
 bash skills/gmail-skill/bins/gmail-background-task.sh \
     "Delete Label: <name>" \
     "bash skills/gmail-skill/bins/gmail-delete-labels.sh '<name>' '$GMAIL_ACCOUNT'"
 ```
 
-**Note:** Messages are trashed (auto-deleted by Gmail after 30 days). Labels are deleted via the Gmail API using Python.
+**注意：** 被删除的邮件会在 30 天后被 Gmail 自动删除。标签则通过 Gmail API 使用 Python 进行删除。
 
-## Capability 6: Delete Old Messages by Date
+## 功能 6：按日期删除旧邮件
 
-**Requires both a label AND a date.** Confirm with user (require `DELETE`), then:
+**需要提供标签和日期信息。** 需要用户确认（输入 “DELETE”），然后执行删除操作：
 
 ```bash
 bash skills/gmail-skill/bins/gmail-background-task.sh \
@@ -160,36 +151,30 @@ bash skills/gmail-skill/bins/gmail-background-task.sh \
     "bash skills/gmail-skill/bins/gmail-delete-old-messages.sh '<label>' '<MM/DD/YYYY>' '$GMAIL_ACCOUNT'"
 ```
 
-**Deletion mode:** If a full-scope token exists (`~/.gmail-skill/full-scope-token.json`), messages are permanently deleted. Otherwise, messages are trashed (auto-deleted after 30 days). Run `gmail-auth-full-scope.sh` once to enable permanent delete.
+**删除方式：** 如果存在全权访问令牌（`~/.gmail-skill/full-scope-token.json`），邮件将被永久删除；否则，邮件会被放入回收站（30 天后被自动删除）。请先运行 `gmail-auth-full-scope.sh` 以启用永久删除功能。
 
-## Capability 7: Full-Scope Authorization
+## 全权访问设置
 
-**One-time setup** to enable permanent message deletion (instead of trash).
+**一次性设置**，用于启用邮件的永久删除功能（而非将其放入回收站）。
 
 ```bash
 bash skills/gmail-skill/bins/gmail-auth-full-scope.sh "$GMAIL_ACCOUNT"
 ```
 
-Opens a browser for OAuth consent with the `https://mail.google.com/` scope. Token is stored at `~/.gmail-skill/full-scope-token.json`. Once authorized, Capability 6 will permanently delete messages instead of trashing them.
+系统会打开浏览器，引导用户完成 OAuth 同意流程（访问地址为 `https://mail.google.com/`）。令牌保存在 `~/.gmail-skill/full-scope-token.json` 文件中。授权成功后，功能 6 将直接删除邮件，而不会将其放入回收站。
 
-## Convenience Wrappers
+## 方便使用的封装工具
 
-**`gmail-bg`** — Shortcut for `gmail-background-task.sh` that auto-sources `.env`:
+**`gmail-bg`** — `gmail-background-task.sh` 的快捷方式，会自动加载 `.env` 文件中的配置信息：
 ```bash
 bash skills/gmail-skill/bins/gmail-bg "<task-name>" "<command>"
 ```
 
-**`gmail-jobs`** — Shortcut for `gmail-bg-status.sh`:
+**`gmail-jobs`** — `gmail-bg-status.sh` 的快捷方式：
 ```bash
 bash skills/gmail-skill/bins/gmail-jobs [--running|--completed|--failed|--json|--clean]
 ```
 
-## Scheduled Daily Run
+## 每日自动执行
 
-```bash
-bash skills/gmail-skill/bins/gmail-background-task.sh \
-    "Daily Email Digest" \
-    "bash skills/gmail-skill/bins/gmail-daily-digest.sh '$GMAIL_ACCOUNT'"
-```
-
-Summarizes all unread emails + cleans spam/trash. Results delivered via WhatsApp.
+**每天自动运行一次该脚本，** 汇总所有未读邮件并清理垃圾邮件/回收站邮件。结果会通过 WhatsApp 发送给用户。

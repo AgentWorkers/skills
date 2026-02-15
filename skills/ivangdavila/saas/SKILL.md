@@ -1,71 +1,71 @@
 ---
 name: SaaS
-description: Build and scale profitable software-as-a-service with viral growth, retention, and monetization strategies.
+description: 通过病毒式增长、用户留存和盈利策略，构建并扩展可盈利的软件即服务（SaaS）业务。
 metadata: {"clawdbot":{"emoji":"💎","os":["linux","darwin","win32"]}}
 ---
 
-# SaaS Rules
+# SaaS 相关规则
 
-## Work Orchestration
-Route requests to specialized agents:
-- Pricing/packaging → analyst + product manager agents
-- Churn analysis → analyst agent
-- Growth loops → marketing + product agents
-- Technical architecture → developer + architect agents
-- Sales motion → sales agent
+## 工作流程协调
+将请求路由到相应的处理人员：
+- 价格/包装相关问题 → 分析师和产品经理
+- 客户流失分析 → 分析师
+- 业务增长相关问题 → 市场营销和产品团队
+- 技术架构相关问题 → 开发人员和架构师
+- 销售相关问题 → 销售人员
 
-Run financial models for any monetization decision.
+在做出任何与盈利相关的决策之前，必须运行财务模型。
 
-## The Only Metrics That Matter
-- MRR and MRR growth rate — everything else is vanity
-- Net Revenue Retention (NRR) — >100% means you grow without new customers
-- CAC payback period — months to recover acquisition cost
-- Churn rate — monthly for SMB, annual for enterprise
+## 最重要的指标
+- 平均每月收入（MRR）及其增长率：其他指标都只是表面现象
+- 净客户留存率（NRR）：如果 NRR 大于 100%，则说明公司在没有新客户的情况下仍在增长
+- 客户获取成本（CAC）的回收周期：即需要多少个月才能收回获取客户的成本
+- 客户流失率：对于中小型企业按月统计，对于大型企业按年统计
 
-If NRR < 100%, fix retention before spending on acquisition.
+如果 NRR 低于 100%，请在投入新的客户获取资源之前先解决客户留存问题。
 
-## Pricing
-- Price on value delivered, not cost to serve — 10x value = room for 3x price
-- Annual plans with discount capture cash and reduce churn
-- Three tiers: free/trial, growth, scale — anchoring works
-- Raise prices on new customers first, grandfather existing — test elasticity
-- Usage-based pricing aligns incentives but complicates forecasting
+## 定价策略
+- 根据所提供的价值定价，而非服务成本：如果产品价值是成本的 10 倍，那么定价可以高出 3 倍
+- 提供年度套餐并设置折扣，以吸引客户并降低客户流失率
+- 设计三个价格层级：免费/试用、成长型、高级型
+- 先对新客户提高价格，对现有客户保持原价——以此测试市场的弹性
+- 基于使用量的定价方式能更好地激励用户，但会增加预测难度
 
-## Viral Growth Loops
-- Product must have inherent shareability — bolted-on referrals don't work
-- Powered-by badges, shared workspaces, public outputs — user success = distribution
-- Viral coefficient > 1 means exponential growth — measure invites per user
-- Time-to-value must be minutes, not days — slow activation kills virality
-- Free tier is marketing spend — model it as CAC
+## 病毒式增长机制
+- 产品本身必须具备分享性；附加的推荐机制效果不佳
+- 通过徽章、共享工作空间、公开成果等方式促进用户之间的互动——用户的成功使用会带动产品的传播
+- 病毒系数（Viral Coefficient）大于 1 表示产品具有指数级增长潜力；需统计每个用户发出的邀请数量
+- 产品的价值实现时间应在几分钟内，而不是几天内；激活速度过慢会削弱产品的病毒性
+- 免费层级实际上也是一种营销手段——应将其视为客户获取成本（CAC）的一部分
 
-## Retention Over Acquisition
-- Reducing churn 5% often beats increasing acquisition 20%
-- Onboarding determines retention — first 7 days predict everything
-- Track activation metrics, not just signups — what action predicts retention?
-- Reactivation campaigns for dormant users before they churn
-- Exit surveys reveal fixable problems — ask churned users why
+## 优先考虑客户留存而非新客户获取
+- 将客户流失率降低 5% 通常比增加 20% 的新客户更有效
+- 新用户的入职体验直接影响其留存率；前 7 天的体验至关重要
+- 不要只关注注册数量，要跟踪用户的实际激活情况——哪些行为能促进用户留存？
+- 对即将流失的用户开展重新激活活动
+- 通过退出调查了解可解决的问题；询问流失用户流失的原因
 
-## Go-to-Market
-- Self-serve for low ACV (<$5k), sales-assist for mid, enterprise sales for high
-- Product-led growth: let users experience value before sales contact
-- Content + SEO compounds — paid acquisition doesn't
-- Founder-led sales until you close 50 deals — then hire sales
+## 市场推广策略
+- 对于低平均客户价值（ACV）的产品，采用自助服务模式；对于中等和高端产品，提供销售协助
+- 以产品为核心推动增长：让用户在使用产品前就能感受到其价值
+- 结合内容营销和搜索引擎优化（SEO）来吸引用户；付费推广的效果有限
+- 在完成 50 笔交易之前，由创始人亲自负责销售；之后再招聘销售人员
 
-## Scaling
-- Automate customer success before hiring more CSMs
-- Feature parity across plans kills upsell — differentiate meaningfully
-- Platform/API unlocks enterprise deals and stickiness
-- Multi-tenant architecture from day one — single-tenant doesn't scale
+## 扩展策略
+- 在招聘更多客户成功经理（CSM）之前，先自动化客户成功流程
+- 确保不同价格层级的功能一致，以避免不必要的升级行为
+- 平台或 API 的支持有助于吸引大型企业客户并提高用户粘性
+- 从一开始就采用多租户架构；单租户架构难以实现扩展
 
-## Common SaaS Mistakes
-- Launching lifetime deals for quick cash — destroys unit economics
-- Adding features for single customers — product becomes unmaintainable
-- Discounting to close deals — trains customers to wait for discounts
-- Building enterprise features before having enterprise sales
-- Ignoring expansion revenue — upsell is cheaper than new logo
+## 常见的 SaaS 错误
+- 为了快速获得收入而推出终身订阅套餐——这会破坏产品的盈利模式
+- 为个别客户添加功能会导致产品维护成本过高
+- 为了促成交易而提供折扣——这会让客户养成等待折扣的习惯
+- 在没有企业级销售团队的情况下就开发企业级功能
+- 忽视扩展带来的收入潜力；升级服务通常比重新设计产品更划算
 
-## Financial Model
-- Model cohorts, not aggregates — behavior differs by signup month
-- Unit economics must work at scale, not just with founder magic
-- Cash runway = survival — SaaS is capital intensive before profitable
-- Gross margin > 70% or you're not really SaaS
+## 财务模型
+- 应按用户群体（cohort）来分析数据，而不是整体数据；用户行为会因注册月份的不同而有所差异
+- 产品的盈利模式必须在大规模应用时依然有效，而不仅仅是创始人个人的努力
+- 现金流是公司生存的关键；SaaS 产品在盈利之前通常需要大量资金投入
+- 毛利率应超过 70%，否则它就不是真正的 SaaS 产品

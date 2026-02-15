@@ -1,31 +1,31 @@
 # render-stl-png
 
-Render an STL to a PNG from a nice, consistent 3D angle ("Blender-ish" default perspective) with a solid color.
+该工具可以将 STL 文件渲染为 PNG 格式的图像，呈现出美观且一致的 3D 视角效果（类似于 Blender 的默认视角），并且图像背景为纯色。
 
-This is a **deterministic software renderer**:
-- No OpenGL
-- No Blender dependency
-- Uses a simple camera + z-buffer + Lambert shading
+这是一个 **确定性渲染器**（deterministic renderer）：
+- 不使用 OpenGL；
+- 不依赖于 Blender；
+- 采用简单的相机模型、z-缓冲区（z-buffer）以及 Lambert 着色算法。
 
-## Inputs
+## 输入参数
 
-- STL file path (ASCII or binary)
-- Output PNG path
+- STL 文件路径（ASCII 或二进制格式）
+- 输出 PNG 文件路径
 
-## Parameters
+## 配置参数
 
-- `--size <px>`: image width/height (square), default `1024`
-- `--bg "#rrggbb"`: background color, default `#0b0f14`
-- `--color "#rrggbb"`: mesh base color, default `#4cc9f0`
-- `--azim-deg <deg>`: camera azimuth around Z, default `-35`
-- `--elev-deg <deg>`: camera elevation, default `25`
-- `--fov-deg <deg>`: perspective field of view, default `35`
-- `--margin <0..0.4>`: framing margin as fraction of view, default `0.08`
-- `--light-dir "x,y,z"`: directional light vector, default `-0.4,-0.3,1.0`
+- `--size <px>`：图像的宽度和高度（以像素为单位），默认值为 `1024`
+- `--bg "#rrggbb"`：背景颜色，默认值为 `#0b0f14`
+- `--color "#rrggbb"`：网格的基本颜色，默认值为 `#4cc9f0`
+- `--azim-deg <deg>`：相机在 Z 轴上的方位角，默认值为 `-35`
+- `--elev-deg <deg>`：相机的高度角，默认值为 `25`
+- `--fov-deg <deg>`：视角的视场角，默认值为 `35`
+- `--margin <0..0.4>`：图像边框的占视图比例，默认值为 `0.08`
+- `--light-dir "x,y,z"`：方向光向量，默认值为 `-0.4,-0.3,1.0`
 
-## Usage
+## 使用方法
 
-### One-shot
+### 单次渲染
 
 ```bash
 python3 scripts/render_stl_png.py \
@@ -36,15 +36,15 @@ python3 scripts/render_stl_png.py \
   --size 1200
 ```
 
-### Wrapper (recommended)
+### 推荐的封装方式（Wrapper）
 
-The wrapper creates a cached venv (so `pillow` is available) and runs the renderer.
+该封装工具会创建一个虚拟环境（venv），以便可以使用 `pillow` 库，并执行渲染任务。
 
 ```bash
 bash scripts/render_stl_png.sh /path/to/model.stl /tmp/model.png --color "#ffb703"
 ```
 
-## Notes
+## 注意事项
 
-- This is meant for **marketing/preview images**, not photorealism.
-- If you need studio lighting / materials, use Blender — but this gets you 80% quickly and reproducibly.
+- 该工具主要用于生成 **营销/预览图片**，而非追求高度真实的图像效果；
+- 如果需要复杂的灯光效果或材质模型，请使用 Blender；不过使用该工具可以快速且一致地获得所需的渲染结果。

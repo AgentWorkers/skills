@@ -1,55 +1,51 @@
 ---
 name: customer-feedback
-description: Collect, analyze, and act on customer feedback to improve your product and business. Use when building feedback systems, running customer interviews, analyzing feature requests, measuring satisfaction (NPS, CSAT), or closing the feedback loop. Covers feedback collection methods, interview techniques, analysis frameworks, and how to decide what feedback to act on. Trigger on "customer feedback", "collect feedback", "user research", "customer interviews", "NPS", "feature requests", "feedback system".
+description: 收集、分析客户反馈，并根据这些反馈来改进产品和服务。该方法适用于构建反馈系统、进行客户访谈、分析功能需求、衡量客户满意度（如NPS、CSAT）以及完善反馈处理流程。内容涵盖反馈收集方法、访谈技巧、分析框架，以及如何确定哪些反馈需要采取行动。相关关键词包括“客户反馈”、“收集反馈”、“用户研究”、“客户访谈”、“NPS”、“功能需求”、“反馈系统”。
 ---
 
-# Customer Feedback
+# 客户反馈
 
-## Overview
-Customer feedback is your compass. It tells you what's working, what's broken, and what to build next. But most solopreneurs either ignore feedback (and build the wrong things) or blindly implement every suggestion (and lose focus). This playbook shows you how to collect high-quality feedback, analyze it systematically, and act on what matters.
+## 概述
+客户反馈是你的指路明灯。它告诉你哪些功能有效，哪些存在问题，以及接下来应该开发什么。然而，大多数独立创业者要么忽视反馈（从而做出错误的决策），要么盲目地执行每一个建议（导致失去方向）。本指南将教你如何收集高质量的反馈，系统地分析这些反馈，并针对关键问题采取行动。
 
 ---
 
-## Step 1: Build Your Feedback Collection System
+## 第一步：建立反馈收集系统
+反馈不会自动出现，你需要建立相应的渠道来持续收集它。
 
-Feedback doesn't come automatically. You need channels to capture it consistently.
-
-**Feedback channels to set up:**
-
-| Channel | When to Use | Setup |
+**需要设置的反馈渠道：**
+| 渠道 | 使用时机 | 设置方法 |
 |---|---|---|
-| **In-app feedback widget** | Capture feedback at the moment of use | Tools: Canny, UserVoice, or custom form |
-| **Email surveys** | Periodic check-ins (quarterly or post-milestone) | Tools: Typeform, Google Forms |
-| **Customer interviews** | Deep qualitative insights | Manual scheduling (Calendly) |
-| **Support tickets** | Capture pain points and bugs | Tools: Intercom, Help Scout, Zendesk |
-| **NPS surveys** | Measure overall satisfaction | Tools: Delighted, SurveyMonkey |
-| **Cancellation surveys** | Understand why people leave | Trigger on cancellation (see customer-retention) |
-| **Feature request board** | Public place for customers to vote on ideas | Tools: Canny, ProductBoard |
+| **应用内反馈插件** | 在用户使用产品时收集反馈 | 可使用的工具：Canny、UserVoice或自定义表单 |
+| **电子邮件调查** | 定期（季度或项目里程碑后）收集反馈 | 可使用的工具：Typeform、Google Forms |
+| **客户访谈** | 深入了解用户的真实需求和体验 | 通过Calendly安排时间 |
+| **支持工单** | 收集用户的痛点和使用中的问题 | 可使用的工具：Intercom、Help Scout、Zendesk |
+| **NPS调查** | 测量整体满意度 | 可使用的工具：Delighted、SurveyMonkey |
+| **退订调查** | 了解用户退订的原因 | 在用户退订时发送调查 |
+| **功能需求板** | 公开平台，让用户对产品功能进行投票 | 可使用的工具：Canny、ProductBoard |
 
-**Minimum viable feedback system (for solopreneurs):**
-1. In-app feedback button or email address for suggestions
-2. NPS survey sent quarterly to all customers
-3. Cancellation survey on every churn
-4. Monthly customer interview with 2-3 active users
+**独立创业者应具备的最低限度反馈系统：**
+1. 应用内反馈按钮或电子邮件地址，用于接收用户建议 |
+2. 每季度向所有客户发送NPS调查 |
+3. 对每个退订用户发送退订调查 |
+4. 每月与2-3位活跃用户进行访谈 |
 
 ---
 
-## Step 2: Run Customer Interviews That Uncover Truth
+## 第二步：开展深入的客户访谈
+访谈是获取高质量反馈的有效方式，但大多数人提出的问题不够深入，导致得到的回答也仅停留在表面。
 
-Interviews are the highest-value feedback method. But most people ask bad questions and get surface-level answers.
-
-**Interview structure (30-45 min):**
-
-### Part 1: Context (5-10 min)
-Understand their situation and workflow.
+**访谈结构（30-45分钟）：**
+### 第一部分：背景信息（5-10分钟）
+了解用户的使用场景和工作流程。
 ```
 "Tell me about your role and what a typical day looks like."
 "What were you doing before you started using [Product]?"
 "What made you look for a solution like ours?"
 ```
 
-### Part 2: Usage (10-15 min)
-Understand how they use your product.
+### 第二部分：产品使用情况（10-15分钟）
+了解用户如何使用你的产品。
 ```
 "Walk me through the last time you used [Product]. What were you trying to do?"
 "What do you love about [Product]?"
@@ -57,84 +53,81 @@ Understand how they use your product.
 "If you could change one thing about it, what would it be?"
 ```
 
-### Part 3: Outcomes (10-15 min)
-Understand the value they're getting (or not getting).
+### 第三部分：使用效果（10-15分钟）
+了解用户从产品中获得了哪些价值（或没有获得什么价值）。
 ```
 "What problem does [Product] solve for you?"
 "How do you measure success when using it?"
 "What would happen if you stopped using [Product] tomorrow?"
 ```
 
-### Part 4: Future (5 min)
-Understand what they need next.
+### 第四部分：未来需求（5分钟）
+了解用户未来的需求。
 ```
 "What's the next big challenge you're facing that [Product] doesn't solve yet?"
 "If we could build one thing for you, what would make this 10x more valuable?"
 ```
 
-**Interview best practices:**
-- Ask open-ended questions ("How do you...?" not "Do you like...?")
-- Follow up with "Why?" or "Tell me more" to go deeper
-- Listen 80%, talk 20%
-- Don't sell or pitch during the interview — just learn
-- Record with permission (tools: Zoom, Otter.ai) so you can focus on listening
+**访谈的最佳实践：**
+- 提出开放式问题（例如：“你是如何……的？”而不是“你喜欢……吗？”）
+- 通过追问“为什么？”或“请详细说说”来深入了解用户想法 |
+- 倾听时间占80%，发言时间占20% |
+- 访谈过程中不要推销产品或推广新功能——只需专注于倾听 |
+- 在用户同意的情况下进行录音（使用工具：Zoom、Otter.ai）
 
-**Who to interview:**
-- **Power users** (use it most, see the most value) → understand best-case usage
-- **Struggling users** (signed up but rarely use) → understand barriers
-- **Churned customers** (canceled recently) → understand what failed
+**访谈对象：**
+- **核心用户**（频繁使用产品、从中获得最大价值的人）→ 了解产品的最佳使用方式 |
+- **使用困难的用户**（注册后很少使用产品的人）→ 了解他们遇到的障碍 |
+- **近期退订的用户**→ 了解产品失败的原因 |
 
-**Goal:** 2-3 interviews per month minimum. More if you're making big product decisions.
+**目标：**每月至少进行2-3次访谈。如果正在做出重大产品决策，可增加访谈次数。
 
 ---
 
-## Step 3: Measure Satisfaction with NPS
+## 第三步：通过NPS调查衡量满意度
+NPS（净推荐值）是一种简单有效的满意度衡量指标。
 
-NPS (Net Promoter Score) is a simple way to measure overall satisfaction and loyalty.
-
-**The question:**
+**调查问题：**
 ```
 "On a scale of 0-10, how likely are you to recommend [Product] to a friend or colleague?"
 ```
 
-**Follow-up:**
+**后续跟进：**
 ```
 "What's the main reason for your score?"
 ```
 
-**Scoring:**
-- **9-10 = Promoters** (love your product, will refer others)
-- **7-8 = Passives** (satisfied but not enthusiastic)
-- **0-6 = Detractors** (unhappy, at risk of churn)
+**评分标准：**
+- **9-10分 = 高度推荐者**（非常喜欢产品，愿意推荐给他人） |
+- **7-8分 = 中立者**（满意但缺乏热情） |
+- **0-6分 = 低度推荐者**（不满意，有流失风险）
 
-**NPS Calculation:**
+**NPS计算方法：**
 ```
 NPS = % Promoters - % Detractors
 ```
 
-Example: 50% promoters, 10% detractors → NPS = +40
+**示例：**如果有50%的用户给予高度推荐，10%的用户表示不满意，则NPS为+40分。
 
-**Benchmarks:**
-- NPS > +50 = Excellent
-- NPS +30 to +50 = Good
-- NPS 0 to +30 = Needs work
-- NPS < 0 = Critical (more detractors than promoters)
+**基准值：**
+- NPS > +50分 = 表现优秀 |
+- NPS +30至+50分 = 表现良好 |
+- NPS 0至+30分 = 需要改进 |
+- NPS < 0分 = 问题严重（低度推荐者多于高度推荐者）
 
-**When to send:** Quarterly to all active customers. Or trigger after 30-90 days of usage.
+**发送时间：**每季度向所有活跃用户发送NPS调查；或在用户使用产品30-90天后再次发送。
 
-**What to do with the data:**
-- **Follow up with detractors** (< 7): "Thanks for the feedback. Can I ask what we could do better?"
-- **Celebrate promoters** (9-10): "So glad to hear that! Would you be open to leaving a review?"
-- **Look for patterns in the "why" responses** → These are your action items
+**数据用途：**
+- **对低度推荐者进行跟进**（评分<7分）：“感谢您的反馈。有什么我们可以改进的吗？” |
+- **对高度推荐者表示感谢**（评分9-10分）：“很高兴听到您的评价！您愿意留下评价吗？” |
+- **分析用户反馈中的关键信息** → 这些信息将指导你的下一步行动。
 
 ---
 
-## Step 4: Organize and Analyze Feedback
+## 第四步：整理和分析反馈
+原始的反馈信息往往杂乱无章，只有经过整理后的反馈才能提供有用的信息。
 
-Raw feedback is noise. Organized feedback is signal.
-
-**How to organize feedback (use a simple spreadsheet or tool like Canny, Notion):**
-
+**如何整理反馈（可以使用简单的电子表格或工具，如Canny、Notion）：**
 ```
 FEEDBACK | SOURCE | CATEGORY | CUSTOMER SEGMENT | PRIORITY | STATUS
 "Need bulk export" | In-app | Feature Request | Power users | High | Roadmap
@@ -142,81 +135,73 @@ FEEDBACK | SOURCE | CATEGORY | CUSTOMER SEGMENT | PRIORITY | STATUS
 "Price is too high" | Cancellation Survey | Pricing | SMB | Medium | Tracking
 ```
 
-**Categories:**
-- Feature request (new functionality)
-- Bug or technical issue
-- UX or usability issue
-- Pricing or billing
-- Docs or support gap
+**分类标准：**
+- 功能需求（新功能） |
+- 错误或技术问题 |
+- 用户体验或可用性问题 |
+- 价格或计费问题 |
+- 文档或支持方面的问题 |
 
-**Analysis workflow (monthly, 30 min):**
-1. Review all feedback from the past month
-2. Group by theme (which issues or requests are mentioned most?)
-3. Identify the top 3 patterns
-4. Cross-reference with product roadmap (see product-roadmap skill)
-5. Decide what to act on (see Step 5)
+**分析流程（每月进行一次，每次30分钟）：**
+1. 查看过去一个月的所有反馈 |
+2. 按主题分类（哪些问题或需求被提及最多？） |
+3. 确定最常见的几个问题或需求 |
+4. 与产品路线图进行对照（参考“产品路线图”相关内容） |
+5. 决定哪些问题需要优先处理（见第五步） |
 
-**Look for:**
-- **High-frequency requests** (10+ people ask for the same thing → strong signal)
-- **High-value customer requests** (your top 20% of revenue — these carry more weight)
-- **Early churn triggers** (feedback from users who cancel in first 30 days → onboarding issues)
+**关注重点：**
+- **高频出现的问题**（超过10位用户提出相同的问题） |
+- **高价值的需求**（贡献收入最高的20%的用户提出的需求） |
+- **导致用户流失的早期问题**（用户在产品使用30天内退订时提出的反馈） |
 
 ---
 
-## Step 5: Decide What Feedback to Act On
+## 第五步：确定需要采取行动的反馈
+并非所有反馈都值得重视。你需要筛选出真正有价值的信息。
 
-Not all feedback is equal. Some is gold. Most is noise. Your job is to filter.
+**筛选标准：** 如果反馈满足以下两个或更多条件，就值得采取行动：**
+1. **高频出现**：超过10位用户提到该问题 |
+2. **高价值**：来自贡献收入最高的20%的用户 |
+3. **符合产品战略**：与产品愿景和路线图一致 |
+4. **有助于防止用户流失**：解决这些问题可以留住有流失风险的用户 |
+5. **实施成本低、效果显著**：可以在一周内完成改进
 
-**Framework: Act on feedback if it meets 2+ of these criteria:**
-
-1. **High frequency:** 10+ customers mention it
-2. **High value:** Requested by top 20% of customers (by revenue)
-3. **Strategic fit:** Aligns with your product vision and roadmap
-4. **Prevents churn:** Addressing it would keep at-risk customers
-5. **Quick win:** Low effort, high impact (can ship in < 1 week)
-
-**Examples:**
-
-| Feedback | Frequency | Value Segment | Strategic Fit | Act? |
+**示例：**
+| 反馈内容 | 提出频率 | 相关用户群体 | 是否符合产品战略 | 是否需要采取行动？ |
 |---|---|---|---|---|
-| "Add bulk export" | 15 mentions | Power users | Yes | ✅ Yes (high freq + strategic fit) |
-| "Support Android app" | 2 mentions | SMB | No | ❌ No (low freq + not strategic) |
-| "Dashboard loads slowly" | 30 mentions | All segments | Yes | ✅ Yes (high freq + prevents churn) |
-| "Can you integrate with [obscure tool]?" | 1 mention | One user | No | ❌ No (one-off request) |
+| “添加批量导出功能” | 15次提及 | 核心用户 | 是 | ✅ 是（高频提出且符合战略） |
+| “支持安卓应用” | 2次提及 | 中小企业用户 | 否 | ❌ 否（提出频率低且不符合战略） |
+| “仪表盘加载速度慢” | 30次提及 | 所有用户群体 | 是 | ✅ 是（高频提出且有助于防止用户流失） |
+| “能否与[特定工具]集成？” | 1次提及 | 仅一位用户 | 否 | ❌ 不符合实际需求（一次性请求） |
 
-**How to say no to feedback:**
+**如何拒绝用户的反馈：**
 ```
 "Thanks for the suggestion! We're focused on [current theme] right now, so this
 won't make it into the next few months. We'll keep it on the radar and revisit
 as priorities evolve."
 ```
 
----
+## 第六步：完成反馈闭环
+最容易破坏用户信任的方式就是收集反馈后却置之不理。务必完成反馈的闭环处理。
 
-## Step 6: Close the Feedback Loop
+**反馈闭环的处理方式：**
+1. **确认收到反馈**：“感谢您的反馈，我们已记录在案并将进行审查。” |
+2. **分享进展**：如果已经采取行动，告知用户：“您之前提到的X功能我们已经实现了！” |
+3. **解释未采取行动的原因**：如果未采取行动，要解释原因：“我们考虑了X选项，但决定优先处理Y选项，原因如下……”
 
-The fastest way to lose trust is to ask for feedback and then ignore it. Always close the loop.
+**沟通渠道：**
+- **应用内更新日志**（公布新功能和修复内容） |
+- **电子邮件更新**（每月或每季度发送更新邮件，告知用户产品更新情况） |
+- **针对提出具体需求的用户进行直接沟通** |
 
-**What closing the loop looks like:**
-
-1. **Acknowledge receipt:** "Thanks for the feedback — we've logged it and will review it."
-2. **Share progress:** If you act on it, tell them. "Hey, remember you asked for X? We just shipped it!"
-3. **Explain why not:** If you don't act on it, explain why. "We considered X but decided to focus on Y because [reason]."
-
-**Communication channels:**
-- **In-app changelog** (announce new features and fixes)
-- **Email updates** (monthly or quarterly newsletter with what shipped)
-- **Direct outreach** (for high-value customers who requested something you built)
-
-**Why this matters:** When customers see their feedback leads to real changes, they feel heard and invested. They become advocates, not just users.
+**这样做的重要性：**当用户看到他们的反馈真正带来了改变时，他们会感到自己的意见被重视，从而成为产品的积极推广者，而不仅仅是普通用户。
 
 ---
 
-## Step 7: Feedback Mistakes to Avoid
-
-- **Not collecting feedback proactively.** Waiting for customers to reach out means you only hear from the loudest or most frustrated. Set up regular channels.
-- **Asking leading questions.** "Would you like it if we added X?" is a bad question. People will say yes to be polite. Ask open-ended questions instead.
-- **Acting on every piece of feedback.** You're not a feature factory. Filter ruthlessly.
-- **Only collecting feedback from happy customers.** Churned customers and struggling users have the most valuable insights.
-- **Not closing the loop.** If you ask for feedback and never act on it or explain your decisions, people stop giving feedback.
-- **Treating all feedback equally.** Feedback from your best customers (high LTV, engaged, aligned with your ICP) matters 10x more than feedback from low-fit customers.
+## 第七步：避免在反馈处理中犯的错误**
+- **不主动收集反馈**：等待用户主动联系意味着你只能听到那些声音最大或最不满的用户的声音。应定期设置反馈收集渠道。 |
+- **提出引导性问题**：例如“如果您希望我们添加X功能，您会同意吗？”这样的问题并不合适。应提出开放式问题。 |
+- **对所有反馈都采取行动**：你并非一个功能开发机器，需要严格筛选有价值的反馈。 |
+- **只收集满意用户的反馈**：实际上，退订用户和使用困难的用户提供的反馈往往最有价值。 |
+- **不完成反馈闭环**：如果你收集了反馈却不采取行动或不解释决策原因，用户会停止提供反馈。 |
+- **平等对待所有反馈**：来自高价值用户（生命周期价值高、积极参与产品使用、与产品战略一致的用户）的反馈比来自低价值用户的反馈重要得多。

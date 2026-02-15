@@ -1,6 +1,6 @@
 ---
 name: parallel
-description: High-accuracy web search and research via Parallel.ai API. Optimized for AI agents with rich excerpts and citations. Supports authenticated/private sources.
+description: 通过 Parallel.ai API 进行高精度的网络搜索和研究。该服务专为 AI 代理优化，提供丰富的摘录和引用信息，并支持访问经过身份验证的私有资源。
 user-invocable: true
 disable-model-invocation: true
 triggers:
@@ -22,43 +22,43 @@ metadata:
 
 # Parallel.ai
 
-High-accuracy web research API built for AI agents.
+这是一个专为AI代理设计的高精度网络研究API。
 
-## Setup
+## 设置
 
-Install required Python packages:
+安装所需的Python包：
 
 ```bash
 pip install parallel-sdk requests
 ```
 
-Set your API key:
+设置您的API密钥：
 
 ```bash
 export PARALLEL_API_KEY="your-key"
 ```
 
-Get your key at: https://platform.parallel.ai
+您可以在以下链接获取API密钥：https://platform.parallel.ai
 
-Optional — for authenticated source access (not required for basic usage):
+**可选**——用于身份验证的源访问（基本使用无需此步骤）：
 
 ```bash
 export BROWSERUSE_API_KEY="your-key"  # Only if using authenticated sources
 ```
 
-## APIs Overview
+## API概述
 
-| API | Use Case | Speed |
+| API | 使用场景 | 速度 |
 |-----|----------|-------|
-| **Search** | Quick lookups, current events | Fast |
-| **Task** | Deep research, enrichment, reports | Medium-Slow |
-| **FindAll** | Entity discovery → structured datasets | Slow (async) |
-| **Extract** | Clean content from URLs/PDFs | Fast |
-| **Monitor** | Continuous tracking with alerts | Recurring |
+| **Search** | 快速查询、当前事件 | 非常快 |
+| **Task** | 深度研究、数据丰富化、生成报告 | 中等速度 |
+| **FindAll** | 实体发现 → 结构化数据集 | 较慢（异步） |
+| **Extract** | 从URL/PDF中提取干净内容 | 非常快 |
+| **Monitor** | 持续跟踪并发送警报 | 定期更新 |
 
 ---
 
-## Search API - Quick web search
+## Search API - 快速网络搜索
 
 ```bash
 python3 {baseDir}/scripts/search.py "Who is the CEO of Anthropic?" --max-results 5
@@ -67,7 +67,7 @@ python3 {baseDir}/scripts/search.py "latest AI news" --json
 
 ---
 
-## Task API - Deep research & enrichment
+## Task API - 深度研究与数据丰富化
 
 ```bash
 # Simple question → answer
@@ -85,19 +85,19 @@ export BROWSERUSE_API_KEY="your-key"
 python3 {baseDir}/scripts/task.py "Extract specs from https://nxp.com/products/K66_180"
 ```
 
-### Processors
+### 处理器
 
-| Processor | Speed | Depth | Use Case |
+| 处理器 | 速度 | 深度 | 使用场景 |
 |-----------|-------|-------|----------|
-| `base` | Fast | Light | Simple lookups, fact checks |
-| `core` | Medium | Standard | Enrichment, structured data |
-| `ultra` | Slow | Deep | Reports, multi-hop research |
+| `base` | 快速 | 轻量级 | 简单查询、事实核查 |
+| `core` | 中等 | 标准 | 数据丰富化、结构化数据 |
+| `ultra` | 慢速 | 深度 | 生成报告、多步骤研究 |
 
 ---
 
-## FindAll API - Entity discovery (NEW Feb 2026)
+## FindAll API - 实体发现（2026年2月新增）
 
-Turn natural language into structured datasets. "Find all dental practices in Ohio with 4+ star reviews" → enriched list with citations.
+将自然语言转换为结构化数据集。例如：“查找俄亥俄州评分4星以上的所有牙科诊所” → 生成包含引用信息的丰富列表。
 
 ```bash
 # Basic entity discovery
@@ -114,25 +114,25 @@ python3 {baseDir}/scripts/findall.py "residential roofing companies in Charlotte
 python3 {baseDir}/scripts/findall.py --status findall_abc123
 ```
 
-### Generators
+### 生成器
 
-| Generator | Coverage | Cost | Use Case |
+| 生成器 | 覆盖范围 | 成本 | 使用场景 |
 |-----------|----------|------|----------|
-| `base` | Limited | Low | Quick discovery, prototyping |
-| `core` | Balanced | Medium | Most use cases |
-| `pro` | Comprehensive | High | Maximum recall (61% benchmark) |
+| `base` | 有限 | 低成本 | 快速发现、原型设计 |
+| `core` | 平衡性良好 | 中等 | 大多数使用场景 |
+| `pro` | 全面 | 高成本 | 最高召回率（61%的基准测试结果） |
 
-### How it works
-1. **Ingest**: Converts natural language → entity type + match conditions
-2. **Generate**: Searches web for candidate entities
-3. **Evaluate**: Validates each candidate against match conditions
-4. **Enrich**: Extracts additional fields for matched entities
+### 工作原理
+1. **输入**：将自然语言转换为实体类型及匹配条件 |
+2. **搜索**：在网络上搜索符合条件的实体 |
+3. **评估**：验证每个候选实体是否符合匹配条件 |
+4. **丰富化**：为匹配到的实体提取额外字段 |
 
 ---
 
-## Extract API - Clean content extraction (NEW Feb 2026)
+## Extract API - 提取干净内容（2026年2月新增）
 
-Convert any URL into clean markdown - handles JS-heavy pages, PDFs, paywalls.
+可将任何URL转换为干净的Markdown格式——支持处理包含JavaScript的页面、PDF文件以及有付费墙的内容。
 
 ```bash
 # Basic extraction with excerpts
@@ -148,17 +148,17 @@ python3 {baseDir}/scripts/extract.py https://sec.gov/10-K.htm --objective "Extra
 python3 {baseDir}/scripts/extract.py https://url1.com https://url2.com --json
 ```
 
-### Use Cases
-- **API documentation** - Pull complete references and code examples
-- **PDF research papers** - Extract methodology, results, citations
-- **SEC filings** - Extract specific sections from 10-Ks, earnings reports
-- **News articles** - Get clean text without ads/nav/paywalls
+### 使用场景
+- **API文档**：提取完整的参考文献和代码示例 |
+- **PDF研究论文**：提取方法论、结果和引用信息 |
+- **证券文件**：从10-K报表和收益报告中提取特定内容 |
+- **新闻文章**：获取不含广告、导航栏和付费墙的干净文本 |
 
 ---
 
-## Monitor API - Continuous tracking (NEW Feb 2026)
+## Monitor API - 持续跟踪（2026年2月新增）
 
-Set up recurring queries - get alerts when things change.
+设置定期查询——在内容发生变化时接收警报。
 
 ```bash
 # Create a monitor
@@ -180,34 +180,34 @@ python3 {baseDir}/scripts/monitor.py events monitor_abc123 --lookback 10d
 python3 {baseDir}/scripts/monitor.py delete monitor_abc123
 ```
 
-### Cadences
-- `hourly` - Fast-moving topics, stock/price tracking
-- `daily` - News, competitive intel (most common)
-- `weekly` - Slower changes, policy updates
+### 查询频率
+- **每小时**：适用于变化迅速的主题、股票/价格跟踪 |
+- **每天**：新闻、行业动态（最常见） |
+- **每周**：变化较慢的内容、政策更新 |
 
-### Example queries
-- **News**: "Let me know when someone mentions Parallel Web Systems"
-- **Competitive**: "Alert me when Apple announces new MacBook models"
-- **Price**: "Notify me when PS5 Pro is back in stock at Best Buy"
-- **Policy**: "Track changes to OpenAI's terms of service"
+### 示例查询
+- **新闻**：“当有人提到Parallel Web Systems时通知我” |
+- **竞争情报**：“苹果发布新MacBook型号时提醒我” |
+- **价格**：“当PS5 Pro在Best Buy重新有货时通知我” |
+- **政策**：“跟踪OpenAI服务条款的变更”
 
 ---
 
-## Authenticated Sources (Jan 2026)
+## 身份验证的源（2026年1月新增）
 
-Task API supports **authentication-gated private data sources** via MCP servers:
-- Internal wikis & dashboards
-- Industry databases (NXP, IEEE, etc.)
-- CRM systems & subscription services
+Task API支持通过MCP服务器访问需要身份验证的私有数据源：
+- 内部维基和仪表板 |
+- 行业数据库（如NXP、IEEE等） |
+- 客户关系管理系统（CRM）和订阅服务
 
-Uses [browser-use.com](https://browser-use.com) MCP integration:
+使用[browser-use.com](https://browser-use.com)进行MCP集成：
 
-### Setup
-1. Get API key from [browser-use.com](https://browser-use.com)
-2. Create a **profile** with saved login sessions
-3. Set `BROWSERUSE_API_KEY` env var
+### 设置
+1. 从[browser-use.com](https://browser-use.com)获取API密钥 |
+2. 创建一个包含保存的登录会话的**个人资料** |
+3. 设置`BROWSERUSE_API_KEY`环境变量
 
-### Usage
+### 使用方法
 ```bash
 export BROWSERUSE_API_KEY="your-key"
 python3 {baseDir}/scripts/task.py "Extract migration guide from NXP K66 docs"
@@ -215,43 +215,43 @@ python3 {baseDir}/scripts/task.py "Extract migration guide from NXP K66 docs"
 
 ---
 
-## When to Use Each API
+## 各API的使用场景
 
-| Scenario | API | Why |
+| 场景 | API | 使用原因 |
 |----------|-----|-----|
-| Quick fact lookup | Search | Fast, simple |
-| Company enrichment | Task | Structured output with citations |
-| Build a prospect list | FindAll | Discovers + validates + enriches |
-| Extract content from URL | Extract | Handles JS, PDFs, paywalls |
-| Ongoing tracking | Monitor | Set once, get alerts |
-| Deep research report | Task (--report) | Multi-hop with citations |
-| Access gated content | Task + MCP | Authenticated browsing |
+| 快速查询事实 | Search | 快速且简单 |
+| 公司信息丰富化 | Task | 提供带有引用的结构化输出 |
+| 构建潜在客户列表 | FindAll | 发现、验证并丰富数据 |
+| 从URL提取内容 | Extract | 支持处理包含JavaScript的页面、PDF文件和有付费墙的内容 |
+| 持续跟踪 | Monitor | 设置一次后接收警报 |
+| 深度研究报告 | Task | 进行多步骤研究并生成带有引用的报告 |
+| 访问受保护的内容 | Task + MCP | 需要身份验证 |
 
 ---
 
-## API Reference
+## API参考
 
-- Docs: https://docs.parallel.ai
-- Platform: https://platform.parallel.ai
-- Changelog: https://parallel.ai/blog
+- 文档：https://docs.parallel.ai |
+- 平台：https://platform.parallel.ai |
+- 更新日志：https://parallel.ai/blog |
 
 ---
 
-## Security & Permissions
+## 安全性与权限
 
-**What this skill does:**
-- Makes API calls to `api.parallel.ai` for web search, research, extraction, and monitoring
-- `monitor.py` uses the `requests` library; all other scripts use the `parallel-sdk` package
-- All scripts are read-only research tools — they do not modify any local or remote data
-- The `BROWSERUSE_API_KEY` (optional) is only used for authenticated source access via `api.browser-use.com`
+**该技能的功能：**
+- 通过`api.parallel.ai`发送API请求以进行网络搜索、研究、内容提取和监控 |
+- `monitor.py`使用`requests`库；其他脚本使用`parallel-sdk`包 |
+- 所有脚本均为只读研究工具，不会修改任何本地或远程数据 |
+- `BROWSERUSE_API_KEY`（可选）仅用于通过`api.browser-use.com`进行身份验证的访问 |
 
-**What this skill does NOT do:**
-- Does not send your API keys to any endpoint other than `api.parallel.ai` and `api.browser-use.com`
-- Does not access local files, databases, or system resources
-- Does not read config files or access the filesystem
-- Does not write to disk (except JSON output when using `--json`)
-- Cannot be invoked autonomously by the agent (`disable-model-invocation: true`)
+**该技能不执行以下操作：**
+- 不会将您的API密钥发送到除`api.parallel.ai`和`api.browser-use.com`之外的任何端点 |
+- 不会访问本地文件、数据库或系统资源 |
+- 不会读取配置文件或访问文件系统 |
+- 不会写入磁盘（除非使用`--json`选项生成JSON输出） |
+- 代理无法自主调用该技能（`disable-model-invocation: true`）
 
-**Python dependencies:** `parallel-sdk`, `requests` (install via `pip install parallel-sdk requests`)
+**Python依赖库：`parallel-sdk`、`requests`（通过`pip install parallel-sdk requests`安装）**
 
-Review `scripts/` before first use to verify behavior.
+首次使用前，请查看`scripts/`目录以确认脚本的行为。

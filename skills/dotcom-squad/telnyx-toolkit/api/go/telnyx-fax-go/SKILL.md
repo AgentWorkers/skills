@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Fax - Go
+# Telnyx 传真 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +38,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all Fax Applications
+## 列出所有传真应用程序
 
-This endpoint returns a list of your Fax Applications inside the 'data' attribute of the response.
+此端点会在响应的 `data` 属性中返回您的传真应用程序列表。
 
 `GET /fax_applications`
 
@@ -53,11 +54,11 @@ This endpoint returns a list of your Fax Applications inside the 'data' attribut
 	fmt.Printf("%+v\n", page)
 ```
 
-## Creates a Fax Application
+## 创建传真应用程序
 
-Creates a new Fax Application based on the parameters sent in the request.
+根据请求中发送的参数创建一个新的传真应用程序。
 
-`POST /fax_applications` — Required: `application_name`, `webhook_event_url`
+`POST /fax_applications` — 必需参数：`application_name`、`webhook_event_url`
 
 ```go
 	faxApplication, err := client.FaxApplications.New(context.TODO(), telnyx.FaxApplicationNewParams{
@@ -70,9 +71,9 @@ Creates a new Fax Application based on the parameters sent in the request.
 	fmt.Printf("%+v\n", faxApplication.Data)
 ```
 
-## Retrieve a Fax Application
+## 获取传真应用程序的详细信息
 
-Return the details of an existing Fax Application inside the 'data' attribute of the response.
+在响应的 `data` 属性中返回现有传真应用程序的详细信息。
 
 `GET /fax_applications/{id}`
 
@@ -84,11 +85,11 @@ Return the details of an existing Fax Application inside the 'data' attribute of
 	fmt.Printf("%+v\n", faxApplication.Data)
 ```
 
-## Update a Fax Application
+## 更新传真应用程序
 
-Updates settings of an existing Fax Application based on the parameters of the request.
+根据请求的参数更新现有传真应用程序的设置。
 
-`PATCH /fax_applications/{id}` — Required: `application_name`, `webhook_event_url`
+`PATCH /fax_applications/{id}` — 必需参数：`application_name`、`webhook_event_url`
 
 ```go
 	faxApplication, err := client.FaxApplications.Update(
@@ -105,9 +106,9 @@ Updates settings of an existing Fax Application based on the parameters of the r
 	fmt.Printf("%+v\n", faxApplication.Data)
 ```
 
-## Deletes a Fax Application
+## 删除传真应用程序
 
-Permanently deletes a Fax Application.
+永久删除一个传真应用程序。
 
 `DELETE /fax_applications/{id}`
 
@@ -119,7 +120,7 @@ Permanently deletes a Fax Application.
 	fmt.Printf("%+v\n", faxApplication.Data)
 ```
 
-## View a list of faxes
+## 查看传真列表
 
 `GET /faxes`
 
@@ -131,11 +132,11 @@ Permanently deletes a Fax Application.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Send a fax
+## 发送传真
 
-Send a fax.
+发送传真。
 
-`POST /faxes` — Required: `connection_id`, `from`, `to`
+`POST /faxes` — 必需参数：`connection_id`、`from`、`to`
 
 ```go
 	fax, err := client.Faxes.New(context.TODO(), telnyx.FaxNewParams{
@@ -149,7 +150,7 @@ Send a fax.
 	fmt.Printf("%+v\n", fax.Data)
 ```
 
-## View a fax
+## 查看传真详情
 
 `GET /faxes/{id}`
 
@@ -161,7 +162,7 @@ Send a fax.
 	fmt.Printf("%+v\n", fax.Data)
 ```
 
-## Delete a fax
+## 删除传真
 
 `DELETE /faxes/{id}`
 
@@ -172,9 +173,9 @@ Send a fax.
 	}
 ```
 
-## Cancel a fax
+## 取消传真
 
-Cancel the outbound fax that is in one of the following states: `queued`, `media.processed`, `originated` or `sending`
+取消处于以下状态之一的传出传真：`queued`、`media.processed`、`originated` 或 `sending`
 
 `POST /faxes/{id}/actions/cancel`
 
@@ -186,9 +187,9 @@ Cancel the outbound fax that is in one of the following states: `queued`, `media
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Refresh a fax
+## 刷新传真信息
 
-Refreshes the inbound fax's media_url when it has expired
+当传入的传真信息过期时，刷新其媒体链接。
 
 `POST /faxes/{id}/actions/refresh`
 
@@ -202,15 +203,16 @@ Refreshes the inbound fax's media_url when it has expired
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL：
+所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `fax.delivered` | Fax Delivered |
-| `fax.failed` | Fax Failed |
-| `fax.media.processed` | Fax Media Processed |
-| `fax.queued` | Fax Queued |
-| `fax.sending.started` | Fax Sending Started |
+| `fax.delivered` | 传真已送达 |
+| `fax_failed` | 传真发送失败 |
+| `fax.media.processed` | 传真媒体文件已处理 |
+| `fax.queued` | 传真已排队 |
+| `fax.sendingstarted` | 传真发送开始 |
+```

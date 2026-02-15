@@ -1,6 +1,6 @@
 ---
 name: risk-management-specialist
-description: Medical device risk management specialist implementing ISO 14971 throughout product lifecycle. Provides risk analysis, risk evaluation, risk control, and post-production information analysis.
+description: 医疗设备风险管理专家负责在整个产品生命周期中实施ISO 14971标准。该专家提供风险分析、风险评估、风险控制以及产品上市后的信息分析服务。
 triggers:
   - risk management
   - ISO 14971
@@ -16,522 +16,381 @@ triggers:
   - post-market risk
 ---
 
-# Risk Management Specialist
+# 风险管理专家
 
-ISO 14971:2019 risk management implementation throughout the medical device lifecycle.
-
----
-
-## Table of Contents
-
-- [Risk Management Planning Workflow](#risk-management-planning-workflow)
-- [Risk Analysis Workflow](#risk-analysis-workflow)
-- [Risk Evaluation Workflow](#risk-evaluation-workflow)
-- [Risk Control Workflow](#risk-control-workflow)
-- [Post-Production Risk Management](#post-production-risk-management)
-- [Risk Assessment Templates](#risk-assessment-templates)
-- [Decision Frameworks](#decision-frameworks)
-- [Tools and References](#tools-and-references)
+在整个医疗器械生命周期中，遵循ISO 14971:2019标准实施风险管理。
 
 ---
 
-## Risk Management Planning Workflow
+## 目录
 
-Establish risk management process per ISO 14971.
+- [风险管理规划工作流程](#risk-management-planning-workflow)
+- [风险分析工作流程](#risk-analysis-workflow)
+- [风险评估工作流程](#risk-evaluation-workflow)
+- [风险控制工作流程](#risk-control-workflow)
+- [生产后风险管理](#post-production-risk-management)
+- [风险评估模板](#risk-assessment-templates)
+- [决策框架](#decision-frameworks)
+- [工具和参考资料](#tools-and-references)
 
-### Workflow: Create Risk Management Plan
+---
 
-1. Define scope of risk management activities:
-   - Medical device identification
-   - Lifecycle stages covered
-   - Applicable standards and regulations
-2. Establish risk acceptability criteria:
-   - Define probability categories (P1-P5)
-   - Define severity categories (S1-S5)
-   - Create risk matrix with acceptance thresholds
-3. Assign responsibilities:
-   - Risk management lead
-   - Subject matter experts
-   - Approval authorities
-4. Define verification activities:
-   - Methods for control verification
-   - Acceptance criteria
-5. Plan production and post-production activities:
-   - Information sources
-   - Review triggers
-   - Update procedures
-6. Obtain plan approval
-7. Establish risk management file
-8. **Validation:** Plan approved; acceptability criteria defined; responsibilities assigned; file established
+## 风险管理规划工作流程
 
-### Risk Management Plan Content
+根据ISO 14971标准建立风险管理流程。
 
-| Section | Content | Evidence |
+### 工作流程：创建风险管理计划
+
+1. 定义风险管理活动的范围：
+   - 医疗器械的识别
+   - 覆盖的生命周期阶段
+   - 适用的标准和法规
+2. 确立风险可接受性标准：
+   - 定义风险概率等级（P1-P5）
+   - 定义风险严重程度等级（S1-S5）
+   - 创建带有接受阈值的风险矩阵
+3. 分配责任：
+   - 风险管理负责人
+   - 专家
+   - 批准权限
+4. 定义验证活动：
+   - 控制验证的方法
+   - 接受标准
+5. 规划生产和生产后的活动：
+   - 信息来源
+   - 审查触发条件
+   - 更新程序
+6. 获得计划批准
+7. 建立风险管理文件
+8. **验证：** 计划获得批准；可接受性标准明确；责任分配完成；文件建立
+
+### 风险管理计划内容
+
+| 部分 | 内容 | 证据 |
 |---------|---------|----------|
-| Scope | Device and lifecycle coverage | Scope statement |
-| Criteria | Risk acceptability matrix | Risk matrix document |
-| Responsibilities | Roles and authorities | RACI chart |
-| Verification | Methods and acceptance | Verification plan |
-| Production/Post-Production | Monitoring activities | Surveillance plan |
+| 范围 | 医疗器械及其生命周期覆盖 | 范围声明 |
+| 标准 | 风险可接受性矩阵 | 风险矩阵文档 |
+| 责任 | 角色和权限 | RACI图表 |
+| 验证 | 方法和接受标准 | 验证计划 |
+| 生产/生产后 | 监控活动 | 监控计划 |
 
-### Risk Acceptability Matrix (5x5)
+### 风险可接受性矩阵（5x5）
 
-| Probability \ Severity | Negligible | Minor | Serious | Critical | Catastrophic |
+| 概率 \ 严重程度 | 可忽略 | 轻微 | 严重 | 关键 | 灾难性 |
 |------------------------|------------|-------|---------|----------|--------------|
-| **Frequent (P5)** | Medium | High | High | Unacceptable | Unacceptable |
-| **Probable (P4)** | Medium | Medium | High | High | Unacceptable |
-| **Occasional (P3)** | Low | Medium | Medium | High | High |
-| **Remote (P2)** | Low | Low | Medium | Medium | High |
-| **Improbable (P1)** | Low | Low | Low | Medium | Medium |
+| **频繁（P5）** | 中等 | 高 | 高 | 不可接受 | 不可接受 |
+| **可能（P4）** | 中等 | 中等 | 高 | 高 | 不可接受 |
+| **偶尔（P3）** | 低 | 中等 | 中等 | 高 | 高 |
+| **罕见（P2）** | 低 | 低 | 中等 | 中等 | 高 |
+| **极不可能（P1）** | 低 | 低 | 低 | 中等 | 中等 |
 
-### Risk Level Actions
+### 风险等级应对措施
 
-| Level | Acceptable | Action Required |
+| 等级 | 可接受 | 需要采取的行动 |
 |-------|------------|-----------------|
-| Low | Yes | Document and accept |
-| Medium | ALARP | Reduce if practicable; document rationale |
-| High | ALARP | Reduction required; demonstrate ALARP |
-| Unacceptable | No | Design change mandatory |
+| 低 | 是 | 记录并接受 |
+| 中等 | ALARP（尽可能降低风险） | 如可行，记录理由 |
+| 高 | ALARP | 需要降低风险；证明风险已降至可接受水平 |
+| 不可接受 | 否 | 必须进行设计变更 |
 
 ---
 
-## Risk Analysis Workflow
+## 风险分析工作流程
 
-Identify hazards and estimate risks systematically.
+系统地识别危害并评估风险。
 
-### Workflow: Conduct Risk Analysis
+### 工作流程：进行风险分析
 
-1. Define intended use and reasonably foreseeable misuse:
-   - Medical indication
-   - Patient population
-   - User population
-   - Use environment
-2. Select analysis method(s):
-   - FMEA for component/function analysis
-   - FTA for system-level analysis
-   - HAZOP for process deviations
-   - Use Error Analysis for user interaction
-3. Identify hazards by category:
-   - Energy hazards (electrical, mechanical, thermal)
-   - Biological hazards (bioburden, biocompatibility)
-   - Chemical hazards (residues, leachables)
-   - Operational hazards (software, use errors)
-4. Determine hazardous situations:
-   - Sequence of events
-   - Foreseeable misuse scenarios
-   - Single fault conditions
-5. Estimate probability of harm (P1-P5)
-6. Estimate severity of harm (S1-S5)
-7. Document in hazard analysis worksheet
-8. **Validation:** All hazard categories addressed; all hazards documented; probability and severity assigned
+1. 定义预期用途和合理可预见的误用情况：
+   - 医疗用途
+   - 患者群体
+   - 用户群体
+   - 使用环境
+2. 选择分析方法：
+   - 对组件/功能进行分析的FMEA
+   - 对系统级别进行分析的FTA
+   - 对过程偏差进行分析的HAZOP
+   - 对用户交互进行分析的错误分析
+3. 按类别识别危害：
+   - 能源危害（电气、机械、热能）
+   - 生物危害（生物负荷、生物相容性）
+   - 化学危害（残留物、浸出物）
+   - 操作危害（软件、使用错误）
+4. 确定危险情况：
+   - 事件顺序
+   - 可预见的误用场景
+   - 单个故障条件
+5. 估计危害的概率（P1-P5）
+6. 估计危害的严重程度（S1-S5）
+7. 将结果记录在危害分析工作表中
+8. **验证：** 所有危害类别均已涵盖；所有危害均已记录；概率和严重程度均已确定
 
-### Hazard Categories Checklist
+### 危害类别检查表
 
-| Category | Examples | Analyzed |
+| 类别 | 例子 | 是否分析 |
 |----------|----------|----------|
-| Electrical | Shock, burns, interference | ☐ |
-| Mechanical | Crushing, cutting, entrapment | ☐ |
-| Thermal | Burns, tissue damage | ☐ |
-| Radiation | Ionizing, non-ionizing | ☐ |
-| Biological | Infection, biocompatibility | ☐ |
-| Chemical | Toxicity, irritation | ☐ |
-| Software | Incorrect output, timing | ☐ |
-| Use Error | Misuse, perception, cognition | ☐ |
-| Environment | EMC, mechanical stress | ☐ |
+| 电气 | 电击、灼伤、干扰 | ☐ |
+| 机械 | 压伤、切割、夹伤 | ☐ |
+| 热能 | 烧伤、组织损伤 | ☐ |
+| 辐射 | 电离辐射、非电离辐射 | ☐ |
+| 生物 | 感染、生物相容性 | ☐ |
+| 化学 | 毒性、刺激 | ☐ |
+| 软件 | 错误输出、时间控制错误 | ☐ |
+| 使用错误 | 误用、感知错误、认知错误 | ☐ |
+| 环境 | 电磁干扰、机械应力 | ☐ |
 
-### Analysis Method Selection
+### 分析方法选择
 
-| Situation | Recommended Method |
+| 情况 | 推荐方法 |
 |-----------|-------------------|
-| Component failures | FMEA |
-| System-level failure | FTA |
-| Process deviations | HAZOP |
-| User interaction | Use Error Analysis |
-| Software behavior | Software FMEA |
-| Early design phase | PHA |
+| 组件故障 | FMEA |
+| 系统级故障 | FTA |
+| 过程偏差 | HAZOP |
+| 用户交互 | 使用错误分析 |
+| 软件行为 | 软件FMEA |
+| 早期设计阶段 | PHA（故障模式与影响分析） |
 
-### Probability Criteria
+### 概率标准
 
-| Level | Name | Description | Frequency |
+| 等级 | 名称 | 描述 | 发生频率 |
 |-------|------|-------------|-----------|
-| P5 | Frequent | Expected to occur | >10⁻³ |
-| P4 | Probable | Likely to occur | 10⁻³ to 10⁻⁴ |
-| P3 | Occasional | May occur | 10⁻⁴ to 10⁻⁵ |
-| P2 | Remote | Unlikely | 10⁻⁵ to 10⁻⁶ |
-| P1 | Improbable | Very unlikely | <10⁻⁶ |
+| P5 | 频繁 | 预计会发生 | >10⁻³ |
+| P4 | 可能 | 很可能发生 | 10⁻³ 至 10⁻⁴ |
+| P3 | 偶尔 | 可能发生 | 10⁻⁴ 至 10⁻⁵ |
+| P2 | 罕见 | 不太可能 | 10⁻⁵ 至 10⁻⁶ |
+| P1 | 极不可能 | 几乎不可能 | <10⁻⁶ |
 
-### Severity Criteria
+### 严重程度标准
 
-| Level | Name | Description | Harm |
+| 等级 | 名称 | 描述 | 危害程度 |
 |-------|------|-------------|------|
-| S5 | Catastrophic | Death | Death |
-| S4 | Critical | Permanent impairment | Irreversible injury |
-| S3 | Serious | Injury requiring intervention | Reversible injury |
-| S2 | Minor | Temporary discomfort | No treatment needed |
-| S1 | Negligible | Inconvenience | No injury |
+| S5 | 灾难性 | 导致死亡 | 死亡 |
+| S4 | 严重 | 造成永久性损伤 | 不可逆的伤害 |
+| S3 | 严重 | 需要干预的伤害 | 可逆的伤害 |
+| S2 | 轻微 | 临时不适 | 不需要治疗 |
+| S1 | 可忽略 | 造成不便 | 无伤害 |
 
-See: [references/risk-analysis-methods.md](references/risk-analysis-methods.md)
+参见：[references/risk-analysis-methods.md](references/risk-analysis-methods.md)
 
 ---
 
-## Risk Evaluation Workflow
+## 风险评估工作流程
 
-Evaluate risks against acceptability criteria.
+根据可接受性标准评估风险。
 
-### Workflow: Evaluate Identified Risks
+### 工作流程：评估已识别的风险
 
-1. Calculate initial risk level from probability × severity
-2. Compare to risk acceptability criteria
-3. For each risk, determine:
-   - Acceptable: Document and accept
-   - ALARP: Proceed to risk control
-   - Unacceptable: Mandatory risk control
-4. Document evaluation rationale
-5. Identify risks requiring benefit-risk analysis
-6. Complete benefit-risk analysis if applicable
-7. Compile risk evaluation summary
-8. **Validation:** All risks evaluated; acceptability determined; rationale documented
+1. 通过概率 × 严重程度计算初始风险等级
+2. 与风险可接受性标准进行比较
+3. 对于每个风险，确定：
+   - 可接受：记录并接受
+   - ALARP（尽可能降低风险）：继续进行风险控制
+   - 不可接受：必须采取风险控制措施
+4. 记录评估理由
+5. 识别需要进行收益-风险分析的风险
+6. 如适用，完成收益-风险分析
+7. 编制风险评估总结
+8. **验证：** 所有风险均已评估；可接受性已确定；理由已记录
 
-### Risk Evaluation Decision Tree
+### ALARP（尽可能降低风险）证明要求
 
-```
-Risk Estimated
-      │
-      ▼
-Apply Acceptability Criteria
-      │
-      ├── Low Risk ──────────► Accept and document
-      │
-      ├── Medium Risk ───────► Consider risk reduction
-      │   │                    Document ALARP if not reduced
-      │   ▼
-      │   Practicable to reduce?
-      │   │
-      │   Yes──► Implement control
-      │   No───► Document ALARP rationale
-      │
-      ├── High Risk ─────────► Risk reduction required
-      │   │                    Must demonstrate ALARP
-      │   ▼
-      │   Implement control
-      │   Verify residual risk
-      │
-      └── Unacceptable ──────► Design change mandatory
-                               Cannot proceed without control
-```
-
-### ALARP Demonstration Requirements
-
-| Criterion | Evidence Required |
+| 标准 | 所需证据 |
 |-----------|-------------------|
-| Technical feasibility | Analysis of alternative controls |
-| Proportionality | Cost-benefit of further reduction |
-| State of the art | Comparison to similar devices |
-| Stakeholder input | Clinical/user perspectives |
+| 技术可行性 | 替代控制方法的分析 |
+| 成本效益 | 进一步降低风险的成本效益 |
+| 最新技术水平 | 与类似设备的比较 |
+| 利益相关者的意见 | 临床/用户的观点 |
 
-### Benefit-Risk Analysis Triggers
+### 收益-风险分析触发条件
 
-| Situation | Benefit-Risk Required |
+| 情况 | 需要进行收益-风险分析 |
 |-----------|----------------------|
-| Residual risk remains high | Yes |
-| No feasible risk reduction | Yes |
-| Novel device | Yes |
-| Unacceptable risk with clinical benefit | Yes |
-| All risks low | No |
+| 残余风险仍然很高 | 是 |
+| 无法降低风险 | 是 |
+| 新型设备 | 是 |
+| 即使有临床益处但风险不可接受 | 是 |
+| 所有风险都很低 | 否 |
 
 ---
 
-## Risk Control Workflow
+## 风险控制工作流程
 
-Implement and verify risk control measures.
+实施并验证风险控制措施。
 
-### Workflow: Implement Risk Controls
+### 工作流程：实施风险控制
 
-1. Identify risk control options:
-   - Inherent safety by design (Priority 1)
-   - Protective measures in device (Priority 2)
-   - Information for safety (Priority 3)
-2. Select optimal control following hierarchy
-3. Analyze control for new hazards introduced
-4. Document control in design requirements
-5. Implement control in design
-6. Develop verification protocol
-7. Execute verification and document results
-8. Evaluate residual risk with control in place
-9. **Validation:** Control implemented; verification passed; residual risk acceptable; no unaddressed new hazards
+1. 识别风险控制选项：
+   - 通过设计实现的内在安全性（优先级1）
+   - 设备中的保护措施（优先级2）
+   - 安全信息（优先级3）
+2. 根据优先级选择最佳控制措施
+3. 分析新引入的危害的控制措施
+4. 将控制措施记录在设计要求中
+5. 在设计中实施控制措施
+6. 制定验证协议
+7. 执行验证并记录结果
+8. 评估实施控制后的残余风险
+9. **验证：** 控制措施已实施；验证通过；残余风险可接受；没有未解决的新危害
 
-### Risk Control Hierarchy
+### 风险控制优先级
 
-| Priority | Control Type | Examples | Effectiveness |
+| 优先级 | 控制类型 | 例子 | 有效性 |
 |----------|--------------|----------|---------------|
-| 1 | Inherent Safety | Eliminate hazard, fail-safe design | Highest |
-| 2 | Protective Measures | Guards, alarms, automatic shutdown | High |
-| 3 | Information | Warnings, training, IFU | Lower |
+| 1 | 内在安全性 | 消除危害、故障安全设计 | 最高优先级 |
+| 2 | 保护措施 | 保护装置、警报、自动关闭 | 高优先级 |
+| 3 | 安全信息 | 警告、培训、使用说明书 | 低优先级 |
 
-### Risk Control Option Analysis Template
+### 风险控制选项分析模板
 
-```
-RISK CONTROL OPTION ANALYSIS
+### 风险控制验证方法
 
-Hazard ID: H-[XXX]
-Hazard: [Description]
-Initial Risk: P[X] × S[X] = [Level]
-
-OPTIONS CONSIDERED:
-| Option | Control Type | New Hazards | Feasibility | Selected |
-|--------|--------------|-------------|-------------|----------|
-| 1 | [Type] | [Yes/No] | [H/M/L] | [Yes/No] |
-| 2 | [Type] | [Yes/No] | [H/M/L] | [Yes/No] |
-
-SELECTED CONTROL: Option [X]
-Rationale: [Justification for selection]
-
-IMPLEMENTATION:
-- Requirement: [REQ-XXX]
-- Design Document: [Reference]
-
-VERIFICATION:
-- Method: [Test/Analysis/Review]
-- Protocol: [Reference]
-- Acceptance Criteria: [Criteria]
-```
-
-### Risk Control Verification Methods
-
-| Method | When to Use | Evidence |
+| 方法 | 适用情况 | 证据 |
 |--------|-------------|----------|
-| Test | Quantifiable performance | Test report |
-| Inspection | Physical presence | Inspection record |
-| Analysis | Design calculation | Analysis report |
-| Review | Documentation check | Review record |
+| 测试 | 可量化的性能 | 测试报告 |
+| 检查 | 实际存在 | 检查记录 |
+| 分析 | 设计计算 | 分析报告 |
+| 审查 | 文档检查 | 审查记录 |
 
-### Residual Risk Evaluation
+### 残余风险评估
 
-| After Control | Action |
+| 控制措施实施后 | 接下来的行动 |
 |---------------|--------|
-| Acceptable | Document, proceed |
-| ALARP achieved | Document rationale, proceed |
-| Still unacceptable | Additional control or design change |
-| New hazard introduced | Analyze and control new hazard |
+| 可接受 | 记录并继续 |
+| 达到ALARP | 记录理由并继续 |
+| 仍然不可接受 | 需要额外的控制或设计变更 |
+| 引入新的危害 | 分析并控制新的危害 |
 
 ---
 
-## Post-Production Risk Management
+## 生产后风险管理
 
-Monitor and update risk management throughout product lifecycle.
+在整个产品生命周期中监控和更新风险管理。
 
-### Workflow: Post-Production Risk Monitoring
+### 工作流程：生产后风险监控
 
-1. Identify information sources:
-   - Customer complaints
-   - Service reports
-   - Vigilance/adverse events
-   - Literature monitoring
-   - Clinical studies
-2. Establish collection procedures
-3. Define review triggers:
-   - New hazard identified
-   - Increased frequency of known hazard
-   - Serious incident
-   - Regulatory feedback
-4. Analyze incoming information for risk relevance
-5. Update risk management file as needed
-6. Communicate significant findings
-7. Conduct periodic risk management review
-8. **Validation:** Information sources monitored; file current; reviews completed per schedule
+1. 识别信息来源：
+   - 客户投诉
+   - 服务报告
+   - 监控/不良事件
+   | 文献监控
+   - 临床研究
+2. 建立信息收集程序
+3. 定义审查触发条件：
+   - 识别新的危害
+   - 已知危害的频率增加
+   | 严重事件
+   | 监管反馈
+4. 分析收到的信息与风险的相关性
+5. 根据需要更新风险管理文件
+6. 传达重要发现
+7. 定期进行风险管理审查
+8. **验证：** 监控信息来源；文件保持最新；按计划完成审查
 
-### Information Sources
+### 信息来源
 
-| Source | Information Type | Review Frequency |
+| 来源 | 信息类型 | 审查频率 |
 |--------|------------------|------------------|
-| Complaints | Use issues, failures | Continuous |
-| Service | Field failures, repairs | Monthly |
-| Vigilance | Serious incidents | Immediate |
-| Literature | Similar device issues | Quarterly |
-| Regulatory | Authority feedback | As received |
-| Clinical | PMCF data | Per plan |
+| 投诉 | 使用问题、故障 | 持续 |
+| 服务 | 现场故障、维修 | 每月 |
+| 监控 | 严重事件 | 立即 |
+| 文献 | 类似设备的问题 | 每季度 |
+| 监管 | 监管机构的反馈 | 收到即处理 |
+| 临床 | 医疗设备临床性能数据 | 按计划 |
 
-### Risk Management File Update Triggers
+### 风险管理文件更新触发条件
 
-| Trigger | Response Time | Action |
+| 触发条件 | 响应时间 | 行动 |
 |---------|---------------|--------|
-| Serious incident | Immediate | Full risk review |
-| New hazard identified | 30 days | Risk analysis update |
-| Trend increase | 60 days | Trend analysis |
-| Design change | Before implementation | Impact assessment |
-| Standards update | Per transition period | Gap analysis |
+| 严重事件 | 立即 | 全面风险审查 |
+| 识别新的危害 | 30天 | 更新风险分析 |
+| 风险趋势增加 | 60天 | 趋势分析 |
+| 设计变更 | 实施前 | 影响评估 |
+| 标准更新 | 根据更新周期 | 差异分析 |
 
-### Periodic Review Requirements
+### 定期审查要求
 
-| Review Element | Frequency |
+| 审查内容 | 审查频率 |
 |----------------|-----------|
-| Risk management file completeness | Annual |
-| Risk control effectiveness | Annual |
-| Post-market information analysis | Quarterly |
-| Risk-benefit conclusions | Annual or on new data |
+| 风险管理文件的完整性 | 每年 |
+| 风险控制的有效性 | 每年 |
+| 市场后信息分析 | 每季度 |
+| 收益-风险结论 | 每年或根据新数据 |
 
 ---
 
-## Risk Assessment Templates
+## 风险评估模板
 
-### Hazard Analysis Worksheet
+### 危害分析工作表
 
-```
-HAZARD ANALYSIS WORKSHEET
+### FMEA工作表
 
-Product: [Device Name]
-Document: HA-[Product]-[Rev]
-Analyst: [Name]
-Date: [Date]
-
-| ID | Hazard | Hazardous Situation | Harm | P | S | Initial Risk | Control | Residual P | Residual S | Final Risk |
-|----|--------|---------------------|------|---|---|--------------|---------|------------|------------|------------|
-| H-001 | [Hazard] | [Situation] | [Harm] | [1-5] | [1-5] | [Level] | [Control ref] | [1-5] | [1-5] | [Level] |
-```
-
-### FMEA Worksheet
-
-```
-FMEA WORKSHEET
-
-Product: [Device Name]
-Subsystem: [Subsystem]
-Analyst: [Name]
-Date: [Date]
-
-| ID | Item | Function | Failure Mode | Effect | S | Cause | O | Control | D | RPN | Action |
-|----|------|----------|--------------|--------|---|-------|---|---------|---|-----|--------|
-| FM-001 | [Item] | [Function] | [Mode] | [Effect] | [1-10] | [Cause] | [1-10] | [Detection] | [1-10] | [S×O×D] | [Action] |
-
-RPN Action Thresholds:
->200: Critical - Immediate action
-100-200: High - Action plan required
-50-100: Medium - Consider action
-<50: Low - Monitor
-```
-
-### Risk Management Report Summary
-
-```
-RISK MANAGEMENT REPORT
-
-Product: [Device Name]
-Date: [Date]
-Revision: [X.X]
-
-SUMMARY:
-- Total hazards identified: [N]
-- Risk controls implemented: [N]
-- Residual risks: [N] Low, [N] Medium, [N] High
-- Overall conclusion: [Acceptable / Not Acceptable]
-
-RISK DISTRIBUTION:
-| Risk Level | Before Control | After Control |
-|------------|----------------|---------------|
-| Unacceptable | [N] | 0 |
-| High | [N] | [N] |
-| Medium | [N] | [N] |
-| Low | [N] | [N] |
-
-CONTROLS IMPLEMENTED:
-- Inherent safety: [N]
-- Protective measures: [N]
-- Information for safety: [N]
-
-OVERALL RESIDUAL RISK: [Acceptable / ALARP Demonstrated]
-BENEFIT-RISK CONCLUSION: [If applicable]
-
-APPROVAL:
-Risk Management Lead: _____________ Date: _______
-Quality Assurance: _____________ Date: _______
-```
+### 风险管理报告摘要
 
 ---
 
-## Decision Frameworks
+## 决策框架
 
-### Risk Control Selection
+### 风险控制选择
 
-```
-What is the risk level?
-        │
-        ├── Unacceptable ──► Can hazard be eliminated?
-        │                    │
-        │                Yes─┴─No
-        │                 │     │
-        │                 ▼     ▼
-        │            Eliminate  Can protective
-        │            hazard     measure reduce?
-        │                           │
-        │                       Yes─┴─No
-        │                        │     │
-        │                        ▼     ▼
-        │                   Add       Add warning
-        │                   protection + training
-        │
-        └── High/Medium ──► Apply hierarchy
-                            starting at Level 1
-```
+### 新危害分析
 
-### New Hazard Analysis
-
-| Question | If Yes | If No |
+| 问题 | 如果是 | 如果否 |
 |----------|--------|-------|
-| Does control introduce new hazard? | Analyze new hazard | Proceed |
-| Is new risk higher than original? | Reject control option | Acceptable trade-off |
-| Can new hazard be controlled? | Add control | Reject control option |
+| 控制措施是否会引入新的危害？ | 分析新的危害 | 继续 |
+| 新风险是否比原来的风险更高？ | 拒绝该控制选项 | 如果收益大于风险，则可接受 |
+| 新风险是否可以控制？ | 添加控制措施 | 拒绝该控制选项 |
 
-### Risk Acceptability Decision
+### 风险可接受性决策
 
-| Condition | Decision |
+| 条件 | 决策 |
 |-----------|----------|
-| All risks Low | Acceptable |
-| Medium risks with ALARP | Acceptable |
-| High risks with ALARP documented | Acceptable if benefits outweigh |
-| Any Unacceptable residual | Not acceptable - redesign |
+| 所有风险都很低 | 可接受 |
+| 中等风险且风险已降至可接受水平 | 可接受 |
+| 高风险但风险已降至可接受水平 | 如果收益大于风险，则可接受 |
+| 任何不可接受的风险 | 不可接受 - 需要重新设计 |
 
 ---
 
-## Tools and References
+## 工具和参考资料
 
-### Scripts
+### 脚本
 
-| Tool | Purpose | Usage |
+| 工具 | 用途 | 使用方法 |
 |------|---------|-------|
-| [risk_matrix_calculator.py](scripts/risk_matrix_calculator.py) | Calculate risk levels and FMEA RPN | `python risk_matrix_calculator.py --help` |
+| [risk_matrix_calculator.py](scripts/risk_matrix_calculator.py) | 计算风险等级和FMEA的风险优先数（RPN） | `python risk_matrix_calculator.py --help` |
 
-**Risk Matrix Calculator Features:**
-- ISO 14971 5x5 risk matrix calculation
-- FMEA RPN (Risk Priority Number) calculation
-- Interactive mode for guided assessment
-- Display risk criteria definitions
-- JSON output for integration
+**风险矩阵计算器功能：**
+- 计算ISO 14971 5x5风险矩阵
+- 计算FMEA的风险优先数（RPN）
+- 提供交互式评估模式
+- 显示风险标准定义
+- 输出JSON格式以便集成
 
-### References
+### 参考资料
 
-| Document | Content |
+| 文档 | 内容 |
 |----------|---------|
-| [iso14971-implementation-guide.md](references/iso14971-implementation-guide.md) | Complete ISO 14971:2019 implementation with templates |
-| [risk-analysis-methods.md](references/risk-analysis-methods.md) | FMEA, FTA, HAZOP, Use Error Analysis methods |
+| [iso14971-implementation-guide.md](references/iso14971-implementation-guide.md) | 完整的ISO 14971:2019实施指南及模板 |
+| [risk-analysis-methods.md](references/risk-analysis-methods.md) | FMEA、FTA、HAZOP、使用错误分析方法 |
 
-### Quick Reference: ISO 14971 Process
+### ISO 14971流程快速参考
 
-| Stage | Key Activities | Output |
+| 阶段 | 关键活动 | 输出 |
 |-------|----------------|--------|
-| Planning | Define scope, criteria, responsibilities | Risk Management Plan |
-| Analysis | Identify hazards, estimate risk | Hazard Analysis |
-| Evaluation | Compare to criteria, ALARP assessment | Risk Evaluation |
-| Control | Implement hierarchy, verify | Risk Control Records |
-| Residual | Overall assessment, benefit-risk | Risk Management Report |
-| Production | Monitor, review, update | Updated RM File |
+| 规划 | 定义范围、标准、责任 | 风险管理计划 |
+| 分析 | 识别危害、评估风险 | 危害分析 |
+| 评估 | 与标准比较、进行ALARP评估 | 风险评估 |
+| 控制 | 实施控制措施、验证 | 风险控制记录 |
+| 残余风险 | 总体评估、收益-风险分析 | 风险管理报告 |
+| 生产 | 监控、审查、更新 | 更新后的风险管理文件 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-| Skill | Integration Point |
+| 技能 | 关联点 |
 |-------|-------------------|
-| [quality-manager-qms-iso13485](../quality-manager-qms-iso13485/) | QMS integration |
-| [capa-officer](../capa-officer/) | Risk-based CAPA |
-| [regulatory-affairs-head](../regulatory-affairs-head/) | Regulatory submissions |
-| [quality-documentation-manager](../quality-documentation-manager/) | Risk file management |
+| [quality-manager-qms-iso13485](../quality-manager-qms-iso13485/) | 质量管理体系（QMS）集成 |
+| [capa-officer](../capa-officer/) | 基于风险的CAPA（纠正措施计划） |
+| [regulatory-affairs-head](../regulatory-affairs-head/) | 监管事务处理 |
+| [quality-documentation-manager](../quality-documentation-manager/) | 风险文件管理 |

@@ -1,66 +1,65 @@
 ---
 name: Computer Science
-description: Guide CS learning from first programs to research and industry practice.
+description: 本指南将引导您从编写简单的程序开始，逐步学习计算机科学（CS），直至掌握研究方法和行业实践技能。
 metadata: {"clawdbot":{"emoji":"💻","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, question complexity, goals (learning, homework, research, interview)
-- When unclear, start accessible and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别学习者的水平，灵活调整教学内容  
+- 学习者的背景（词汇量、问题难度、学习目的，无论是学习新知识、完成作业还是准备面试）会暴露其学习水平。  
+- 当学习者对某些概念不清晰时，应从简单的内容开始教学，并根据他们的反馈逐步调整教学难度。  
+- 对于专家，切勿居高临下；对于初学者，也切忌让他们感到压力过大。  
 
-## For Beginners: Make It Tangible
-- Physical metaphors before code — variables are labeled boxes, arrays are lockers, loops are playlists on repeat
-- Celebrate errors — "Nice! You found a bug. Real programmers spend 50% of their time doing exactly this"
-- Connect to apps they use — "TikTok's For You page? That's an algorithm deciding what to show"
-- Hints in layers, not answers — guiding question first, small hint second, walk-through together third
-- Output must be visible — drawings, games, sounds; avoid "calculate and print a number"
-- "What if" challenges — "What happens if you change 10 to 1000? Try it!" turns optimization into play
-- Let them break things on purpose — discovering boundaries through experimentation teaches more than instructions
+## 针对初学者的教学方法：让抽象概念变得具体化  
+- 在讲解代码之前，先使用形象的比喻来帮助理解抽象概念——例如，将变量比作“盒子”，数组比作“储物柜”，循环比作“重复播放的播放列表”。  
+- 正视错误：错误是学习过程中的宝贵机会，可以告诉学生：“很好！你发现了一个bug。真正的程序员每天有50%的时间都在处理这类问题。”  
+- 将所学知识与他们实际使用的应用程序联系起来——比如：“TikTok的‘For You’页面？其实是由算法来决定展示内容的。”  
+- 提供分层的提示，而不是直接给出答案——先提出引导性问题，再给出简要提示，最后一起逐步解决问题。  
+- 教学成果需要可视化：通过绘图、游戏或声音等方式来展示结果，避免仅仅要求学生“计算并打印出一个数字”。  
+- 设计“假设性挑战”——比如“如果把10改为1000，会发生什么？试试看！”这样的问题能将优化过程变成一种有趣的体验。  
+- 允许学生故意出错——通过实验来探索知识的边界，这比直接给出指令更能帮助他们学习。  
 
-## For Students: Concepts Over Code
-- Explain principles before implementation — design rationale, invariants, trade-offs first
-- Always include complexity analysis — show WHY it's O(n log n), not just state it
-- Guide proofs without completing them — provide structure and key insight, let them fill details
-- Connect systems to real implementations — page tables and TLBs, not just "virtual memory provides isolation"
-- Use proper mathematical notation — ∀, ∃, ∈, formal complexity classes, define before using
-- Distinguish textbook from practice — "In theory O(1), but cache locality means sorted arrays sometimes beat hash maps"
-- Train reduction thinking — "Does this reduce to a known problem?"
+## 针对学生的教学方法：注重概念理解而非代码实现  
+- 在讲解代码实现之前，先解释相关原理、设计思路以及需要权衡的因素。  
+- 始终进行复杂性分析——不仅要说明算法的时间复杂度（如O(n log n），还要解释其背后的原因。  
+- 在指导学生证明算法的正确性时，不要替他们完成整个证明过程——提供框架和关键思路，让他们自己填充细节。  
+- 将抽象的理论概念与实际应用联系起来——例如，讲解页表（page tables）和TLB（Translation Lookaside Buffer）的工作原理，而不仅仅是说“虚拟内存提供了隔离功能”。  
+- 使用正确的数学符号——在使用之前先明确各种符号的含义（如∀、∃、∈等），以及不同的复杂性分类（如NP-hard、NP-complete等）。  
+- 区分教科书中的理论内容与实际编程中的情况——例如，“理论上O(1)的算法，在某些情况下（如使用缓存时），排序数组可能比哈希表更高效”。  
+- 培养学生的抽象思维能力——让他们思考“这个问题能否归结为已知的问题”。  
 
-## For Researchers: Rigor and Honesty
-- Never fabricate citations — "I may hallucinate details; verify every reference in Scholar/DBLP"
-- Flag proof steps needing verification — subtle errors hide in base cases and termination arguments
-- Distinguish established results from open problems — misrepresenting either derails research
-- Show reasoning for complexity bounds — don't just state them; a wrong claim invalidates papers
-- Clarify what constitutes novelty — "What exactly is new: formulation, technique, bounds, or application?"
-- Use terminology precisely — NP-hard vs NP-complete, decidable vs computable, sound vs complete
-- AI-generated code is a draft — recommend tests, edge cases, comparison against known inputs
+## 针对研究人员的教学方法：严谨性与诚实性  
+- 绝不要伪造引用文献——即使自己可能记错了细节，也要在Scholar或DBLP等数据库中核实所有引用的准确性。  
+- 标记出需要验证的证明步骤——基础情况和终止条件中的错误往往容易被忽略。  
+- 区分已有的研究成果和尚未解决的问题——错误地描述这些差异会误导研究方向。  
+- 清晰地解释复杂度分析的依据——不能仅仅陈述复杂度结果，错误的结论会破坏论文的可靠性。  
+- 明确什么是创新之处——是算法的表述方式、技术本身、复杂度分析的结果，还是实际应用的新方法？  
+- 使用准确的术语——区分不同的概念（如NP-hard与NP-complete、可判定性与可计算性、sound与complete）。  
+- 需要强调的是，AI生成的代码只是初步成果——建议对其进行测试，并考虑边界情况以及与已知输入的对比。  
 
-## For Educators: Pedagogical Support
-- Anticipate misconceptions proactively — pointers vs values, recursion trust, Big-O as growth rate not speed
-- Generate visualizations — ASCII diagrams, step-by-step state tables, recommend Python Tutor or VisuAlgo
-- Scaffold with prerequisite checks — "Can they trace recursive Fibonacci? If not, start there"
-- Design assessments testing understanding — tracing, predicting, bug-finding over syntax memorization
-- Bridge theory to applications they care about — automata to regex, graphs to GPS, complexity to "why does my code timeout"
-- Multiple explanations at different levels — formal definition, intuitive analogy, concrete code example
-- Suggest active learning — pair programming, Parson's problems, predict-before-run exercises
+## 针对教育者的教学方法：提供有效的教学支持  
+- 提前预判学生可能存在的误解——例如，区分“指针”和“值”的概念，以及递归调用的工作原理。  
+- 使用可视化工具辅助教学——如ASCII图、逐步展示状态变化的表格，推荐使用Python Tutor或VisuAlgo等工具。  
+- 设计合适的评估方式来检验学生的理解程度——重点考察学生的逻辑推理能力（如能否追踪递归调用的过程、能否预测程序行为、能否发现代码中的错误），而不仅仅是语法记忆。  
+- 将理论知识与学生关心的实际应用联系起来——例如，将自动机（automata）的概念与正则表达式（regex）或图形（graphs）的应用联系起来，解释为什么某些代码会超时（complexity与实际应用的关系）。  
+- 提供多种层次的教学方式——既有严格的正式定义，也有直观的类比，还有具体的代码示例。  
+- 鼓励学生采用主动学习的方法——如结对编程、Parson's Problems等练习，以及“运行前预测结果”的练习。  
 
-## For Practitioners: Theory Meets Production
-- Lead with "where you'll see this" — "B-trees power your database indexes"
-- Present the trade-off triangle — time, space, implementation complexity; always acknowledge what you sacrifice
-- Distinguish interview from production answers — "For interviews, implement quicksort. In production, call sort()"
-- Complexity with concrete numbers — "O(n²) for 1 million items is 11 days vs 20ms for O(n log n)"
-- Match architecture to actual scale — "At 500 users, Postgres handles this. Here's when to revisit"
-- Translate academic to industry vocabulary — "amortized analysis" = "why ArrayList.add() is still O(1)"
-- For interview prep, teach patterns — "This is sliding window. Here's how to recognize them"
+## 针对从业者的教学方法：理论与实际应用的结合  
+- 在讲解算法时，要说明该算法在实际应用中的用途——例如，“B树（B-trees）被用于数据库索引中”。  
+- 展示算法在不同场景下的权衡因素（时间、空间、实现复杂度），并明确说明在哪些情况下需要做出妥协。  
+- 强调面试和实际开发中的区别——面试时可以让学生实现快速排序（quicksort），但在实际开发中则应使用内置的排序函数（如sort()）。  
+- 用具体的数字来说明算法的复杂度——例如，“处理100万个元素时，O(n²)的算法需要11天，而O(n log n)的算法只需要20毫秒”。  
+- 根据实际的用户规模来选择合适的算法和架构——例如，“当用户数量达到500时，Postgres能够胜任这个任务，这时就需要重新考虑使用其他算法”。  
+- 将学术术语转化为行业通用的语言——例如，“摊销分析（amortized analysis）”意味着“为什么ArrayList.add()的时间复杂度仍然是O(1)”。  
+- 在面试准备阶段，教授一些常见的编程模式——例如“滑动窗口（sliding window）的原理及其应用方法”。  
 
-## Always Verify
-- Check algorithm complexity claims — subtle errors are common
-- Test code recommendations — AI-generated code may have bugs affecting results
-- State knowledge cutoff for recent developments
+## 始终进行验证  
+- 核实算法复杂度的声明是否准确——细微的错误很常见。  
+- 测试代码实现的效果——AI生成的代码可能存在影响结果的错误。  
+- 向学生说明当前技术发展的知识边界。  
 
-## Detect Common Errors
-- Confusing reference and value semantics
-- Off-by-one errors in loops and indices
-- Assuming O(1) when it's amortized
-- Mixing asymptotic analysis with constant factors
+## 常见的教学错误与注意事项  
+- 区分引用文献中的术语和实际数据类型的语义。  
+- 在循环和索引操作中避免出现“差一”的错误。  
+- 不要错误地认为某些算法的时间复杂度是O(1)，而实际上它可能是摊销后的结果（amortized）。  
+- 不要将渐近分析（asymptotic analysis）与常数因子（constant factors）混淆。

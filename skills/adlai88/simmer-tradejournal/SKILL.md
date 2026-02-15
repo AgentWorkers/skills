@@ -1,26 +1,26 @@
 ---
 name: simmer-tradejournal
 displayName: Prediction Trade Journal
-description: Auto-log trades with context, track outcomes, generate calibration reports to improve trading.
+description: 自动记录交易详情（包括交易背景信息），跟踪交易结果，并生成校准报告，以提升交易效率。
 metadata: {"clawdbot":{"emoji":"📓","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
 version: "1.1.0"
 ---
 
-# Prediction Trade Journal
+# 预测交易日志
 
-Track every trade, learn from outcomes, improve your edge.
+记录每一笔交易，从结果中学习，提升你的交易策略。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user wants to:
-- See their trade history
-- Track win rate and P&L
-- Generate trading reports
-- Analyze which strategies work best
+当用户需要以下功能时，请使用此技能：
+- 查看交易历史
+- 跟踪胜率和盈亏情况
+- 生成交易报告
+- 分析哪些交易策略最有效
 
-## Quick Commands
+## 快速命令
 
 ```bash
 # Sync trades from API
@@ -36,40 +36,40 @@ python tradejournal.py --report weekly
 python tradejournal.py --export trades.csv
 ```
 
-**API Reference:**
-- Base URL: `https://api.simmer.markets`
-- Auth: `Authorization: Bearer $SIMMER_API_KEY`
-- Trades: `GET /api/sdk/trades`
+**API 参考：**
+- 基础 URL：`https://api.simmer.markets`
+- 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
+- 获取交易记录的 API：`GET /api/sdk/trades`
 
-## How It Works
+## 工作原理
 
-1. **Sync** - Polls `/api/sdk/trades` to fetch trade history
-2. **Store** - Saves trades locally with outcome tracking
-3. **Track** - Updates outcomes when markets resolve
-4. **Report** - Generates win rate, P&L, and calibration analysis
+1. **同步**：定期从 `/api/sdk/trades` 获取交易历史数据。
+2. **存储**：将交易记录及其结果保存到本地文件中。
+3. **更新结果**：当市场行情发生变化时，更新交易结果。
+4. **生成报告**：计算胜率、盈亏情况，并进行策略校准分析。
 
-## CLI Reference
+## 命令行界面 (CLI) 参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `--sync` | Fetch new trades from API |
-| `--history N` | Show last N trades (default: 10) |
-| `--sync-outcomes` | Update resolved markets |
-| `--report daily/weekly/monthly` | Generate summary report |
-| `--config` | Show configuration |
-| `--export FILE.csv` | Export to CSV |
-| `--dry-run` | Preview without making changes |
+| `--sync` | 从 API 获取新的交易记录 |
+| `--history N` | 显示最近 N 笔交易（默认值：10） |
+| `--sync-outcomes` | 更新已完成的交易结果 |
+| `--report daily/weekly/monthly` | 生成每日/每周/每月的汇总报告 |
+| `--config` | 显示配置信息 |
+| `--export FILE.csv` | 将数据导出为 CSV 文件 |
+| `--dry-run` | 预览功能（不进行任何实际操作） |
 
-## Configuration
+## 配置
 
-| Setting | Environment Variable | Default |
+| 配置项 | 环境变量 | 默认值 |
 |---------|---------------------|---------|
-| API Key | `SIMMER_API_KEY` | (required) |
-| API URL | `SIMMER_API_URL` | `https://api.simmer.markets` |
+| API 密钥 | `SIMMER_API_KEY` | （必填） |
+| API 地址 | `SIMMER_API_URL` | `https://api.simmer.markets` |
 
-## Storage
+## 数据存储
 
-Trades are stored locally in `data/trades.json`:
+交易记录保存在本地文件 `data/trades.json` 中：
 
 ```json
 {
@@ -92,9 +92,9 @@ Trades are stored locally in `data/trades.json`:
 }
 ```
 
-## Skill Integration
+## 技能集成
 
-Other skills can enrich trades with context:
+其他技能可以为交易记录添加额外的背景信息（如交易理由、交易者的信心水平以及交易来源），从而帮助进行更深入的分析：
 
 ```python
 from tradejournal import log_trade
@@ -108,9 +108,7 @@ log_trade(
 )
 ```
 
-This adds thesis, confidence, and source to the trade record for better analysis.
-
-## Example Report
+## 报告示例
 
 ```
 📓 Weekly Report
@@ -125,13 +123,13 @@ P&L: +$18.30
 By side: 10 YES, 5 NO
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"SIMMER_API_KEY environment variable not set"**
-- Set your API key: `export SIMMER_API_KEY=sk_live_...`
+**“SIMMER_API_KEY 环境变量未设置”**
+- 设置你的 API 密钥：`export SIMMER_API_KEY=sk_live_...`
 
-**"No trades recorded yet"**
-- Run `python tradejournal.py --sync` to fetch trades from API
+**“尚未记录任何交易”**
+- 运行 `python tradejournal.py --sync` 从 API 获取交易记录。
 
-**Trades not showing outcomes**
-- Run `python tradejournal.py --sync-outcomes` to update resolved markets
+**“交易结果未显示”**
+- 运行 `python tradejournal.py --sync-outcomes` 更新已完成的交易结果。

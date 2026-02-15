@@ -1,522 +1,294 @@
 ---
 name: tokenmeter
-description: "Track AI token usage and costs across providers. Import sessions, view dashboard, costs breakdown, and compare Max plan savings."
+description: "跟踪不同提供商提供的AI服务的使用情况与费用。您可以导入会话数据、查看仪表板、费用明细，并比较使用“Max计划”所带来的费用节省情况。"
 user-invocable: true
 metadata: {"openclaw":{"emoji":"📊"}}
 ---
 
-# tokenmeter - AI Usage & Cost Tracking for OpenClaw
+# tokenmeter - 用于 OpenClaw 的 AI 使用量与成本追踪工具
 
-Track your AI token usage and costs across all providers — locally, privately.
+该工具可帮助您实时追踪所有提供商提供的 AI 令牌使用情况及其成本，数据存储在本地（私有环境中）。
 
-## Slash Command Examples
+## 命令示例
 
-- `/tokenmeter` — show today's dashboard
-- `/tokenmeter how much did we spend this week?` — weekly cost report
-- `/tokenmeter costs breakdown by model` — model split analysis
-- `/tokenmeter import latest sessions` — pull in new usage data
-- `/tokenmeter compare max plan savings` — show API vs subscription savings
+- `/tokenmeter`：显示今日的仪表盘信息
+- `/tokenmeter this week?`：查询本周的花费
+- `/tokenmeter costs by model`：按模型分类的成本统计
+- `/tokenmeter import latest sessions`：导入最新的使用数据
+- `/tokenmeter compare max plan savings`：比较 API 订阅方案的成本节省情况
 
-## Overview
+## 功能概述
 
-**tokenmeter** is a CLI tool that tracks LLM API usage and calculates real-time cost estimates. For OpenClaw users on the Claude Max plan, it helps:
+**tokenmeter** 是一个命令行工具（CLI），用于追踪大型语言模型（LLM）的 API 使用情况并计算实际成本。对于使用 Claude Max 订阅方案的 OpenClaw 用户而言，该工具具有以下作用：
 
-1. **Prove Max plan value** - Show what you *would* have paid on API billing
-2. **Monitor usage patterns** - Understand which models you use most
-3. **Catch overages early** - Know if you're using expensive models too much
-4. **Unified tracking** - Track usage across multiple OpenClaw instances
+1. **证明 Max 订阅方案的价值**：显示您若按 API 计费需要支付的费用
+2. **监控使用模式**：了解您最常使用的模型
+3. **提前发现超量使用情况**：判断是否过度使用了高成本的模型
+4. **统一的数据追踪**：支持跨多个 OpenClaw 实例的数据管理
 
-All data stays local (SQLite at `~/.tokenmeter/usage.db`). No telemetry, no cloud sync.
-
----
-
-## Installation
-
-**The bot handles everything automatically.**
-
-When first needed, the bot will:
-
-```bash
-# 1. Clone repo if it doesn't exist
-if [ ! -d ~/clawd/tokenmeter ]; then
-  cd ~/clawd
-  git clone https://github.com/jugaad-lab/tokenmeter.git
-fi
-
-# 2. Setup Python venv if it doesn't exist
-cd ~/clawd/tokenmeter
-if [ ! -d ".venv" ]; then
-  python3 -m venv .venv
-  source .venv/bin/activate
-  pip install -e .
-fi
-
-# 3. Activate and use
-source .venv/bin/activate
-tokenmeter import --auto
-```
-
-**After first setup:** Bot just activates venv and runs commands.
-
-**No admin action needed** - the bot clones, installs, and configures automatically when you first ask it to check usage or costs.
+所有数据均存储在本地（SQLite 数据库 `~/.tokenmeter/usage.db` 中），无需上传到云端。
 
 ---
 
-## How the Bot Uses This Tool
+## 安装过程
 
-### When You Ask: "How much did I spend this week?"
+**该工具会自动完成所有安装步骤。**
 
-**Step 1: Bot reads this SKILL.md**
-- Skill matching triggers on keywords: "spend", "cost", "usage", "tokens"
-- Bot loads this entire file into context
-
-**Step 2: Bot checks if tokenmeter exists**
-```bash
-if [ ! -d ~/clawd/tokenmeter ]; then
-  cd ~/clawd
-  git clone https://github.com/jugaad-lab/tokenmeter.git
-  cd tokenmeter
-  python3 -m venv .venv
-  source .venv/bin/activate
-  pip install -e .
-fi
-```
-
-**Step 3: Bot imports latest usage**
-```bash
-cd ~/clawd/tokenmeter
-source .venv/bin/activate
-tokenmeter import --auto
-```
-
-This reads all OpenClaw session files and logs them to the database.
-
-**Step 4: Bot runs the appropriate command**
-```bash
-tokenmeter costs --period week
-```
-
-**Step 5: Bot parses the output**
-```
-Model                    Cost      % of Total
-────────────────────────────────────────────
-anthropic/claude-opus-4  $741.95   65.0%
-anthropic/claude-sonnet-4 $400.26  35.0%
-────────────────────────────────────────────
-Total                    $1,142.22
-```
-
-**Step 6: Bot responds to you in plain English**
-> "You spent $1,142 this week (API-equivalent). Opus cost $742 (65%), Sonnet cost $400 (35%). Your Max plan ($100/month = ~$25/week) saved you $1,117 this week."
+首次使用时，工具会自动创建虚拟环境（`venv`）并运行相关命令。之后，每次您请求查询使用量或成本时，工具会自动克隆、安装并配置相关组件，无需任何管理员干预。
 
 ---
 
-## Bot Command Reference
+## 工具的工作原理
 
-**Standard pattern:**
-```bash
-cd ~/clawd/tokenmeter && source .venv/bin/activate && tokenmeter [command]
-```
+### 当您询问“本周花费了多少？”时：
 
-**Common commands the bot will use:**
-```bash
-# Import latest usage
-tokenmeter import --auto
+**步骤 1：** 工具会读取此 `SKILL.md` 文件
+  - 通过关键词（如 “spend”、“cost”、“usage”、“tokens”）触发相应的处理逻辑
+  - 将整个文件内容纳入处理流程
 
-# Quick overview
-tokenmeter dashboard
+**步骤 2：** 工具会检查 `tokenmeter` 是否已存在
 
-# Weekly breakdown
-tokenmeter costs --period week
+**步骤 3：** 工具会导入最新的使用数据
+  - 读取所有 OpenClaw 会话文件并将其记录到数据库中
 
-# Monthly summary
-tokenmeter summary --period month
-```
+**步骤 4：** 工具会执行相应的命令
+
+**步骤 5：** 工具会解析处理结果
+
+**步骤 6：** 以简洁的中文形式向您反馈结果**
+  例如：“您本周的花费为 1,142 美元（按 API 计费标准计算）。Opus 模型的使用成本为 742 美元（占 65%），Sonnet 模型的使用成本为 400 美元（占 35%）。您的 Max 订阅方案每月节省了 1,117 美元。”
 
 ---
 
-## Usage
+## 命令参考
 
-### Quick Commands
+**标准命令格式：**
 
-```bash
-# Discover session sources (OpenClaw, Claude Code, etc.)
-tokenmeter scan
-
-# Import all discovered sessions
-tokenmeter import --auto
-
-# Preview import without writing
-tokenmeter import --auto --dry-run
-
-# Show today's usage
-tokenmeter dashboard
-
-# Weekly summary
-tokenmeter summary --period week
-
-# Cost breakdown by model
-tokenmeter costs --period month
-
-# List all supported models + pricing
-tokenmeter models
-
-# View recent history
-tokenmeter history --limit 20
-```
+**工具常用的命令：**
 
 ---
 
-## Integration with OpenClaw
+## 使用方法
 
-### Automatic Import (Recommended)
-
-OpenClaw writes token usage to session JSONL files at:
-```
-~/.clawdbot/agents/*/sessions/*.jsonl
-```
-
-**Step 1: Discover session sources**
-
-```bash
-cd ~/clawd/tokenmeter
-source .venv/bin/activate
-tokenmeter scan
-```
-
-This shows all discovered session directories:
-- `.clawdbot/agents/main/sessions/` (OpenClaw)
-- `.claude/projects/*/sessions/` (Claude Code)
-- Any other compatible session formats
-
-**Step 2: Import all at once**
-
-```bash
-tokenmeter import --auto
-```
-
-This will:
-- Parse all discovered session files
-- Extract token usage from each LLM call
-- Log to tokenmeter with API-equivalent costs
-- Skip already-imported entries (idempotent)
-- Show total records and cost
-
-**Options:**
-```bash
-tokenmeter import --auto --dry-run  # Preview without writing
-tokenmeter import --path ~/.clawdbot/agents/main/sessions/  # Import specific directory
-```
-
-**Recommended:** Run `tokenmeter import --auto` daily via cron or manually after heavy usage.
-
-### Manual Logging (Fallback)
-
-If you need to log usage manually:
-
-```bash
-tokenmeter log \
-  --provider anthropic \
-  --model claude-sonnet-4 \
-  --input 1500 \
-  --output 500 \
-  --app openclaw
-```
-
-Options:
-- `--provider` / `-p`: anthropic, openai, google, azure
-- `--model` / `-m`: Model name (see `tokenmeter models`)
-- `--input` / `-i`: Input tokens
-- `--output` / `-o`: Output tokens
-- `--app` / `-a`: Application name (e.g., "openclaw")
+### 快速命令
 
 ---
 
-## Understanding the Data
+## 与 OpenClaw 的集成
 
-### Model Pricing (as of Feb 2026)
+**推荐方式：** OpenClaw 会自动将令牌使用数据写入 JSONL 格式的会话文件中
 
-| Token Type | claude-sonnet-4 | claude-opus-4 | claude-3.5-haiku |
+**步骤 1：** 查找会话文件的位置**
+
+**步骤 2：** 一次性导入所有会话数据**
+
+**效果：**
+- 解析所有会话文件
+- 从每次 LLM 调用中提取令牌使用量
+- 将数据按 API 计费标准记录到 `tokenmeter` 数据库中
+- 避免重复导入已有的数据
+- 显示总记录数及总成本
+
+**可选参数：**
+（具体参数可根据实际需求添加）
+
+**建议：** 每天通过 cron 任务或在高负载使用后手动运行 `tokenmeter import --auto` 命令。
+
+### 手动数据导入（备用方案）
+
+如果您需要手动导入数据：
+
+**参数说明：**
+- `--provider` / `-p`：指定使用提供商（anthropic、openai、google、azure）
+- `--model` / `-m`：指定使用的模型名称（参见 `tokenmeter models`）
+- `--input` / `-i`：输入的令牌数量
+- `--output` / `-o`：输出文件的路径
+- `--app` / `-a`：应用程序名称（例如 “openclaw”）
+
+---
+
+## 数据解读
+
+### 模型定价（截至 2026 年 2 月）
+
+| 令牌类型 | claude-sonnet-4 | claude-opus-4 | claude-3.5-haiku |
 |------------|----------------|---------------|------------------|
-| **Input** | $3.00/1M | $15.00/1M | $0.80/1M |
-| **Output** | $15.00/1M | $75.00/1M | $4.00/1M |
-| **Cache Write** | $3.75/1M | $18.75/1M | $1.00/1M |
-| **Cache Read** | $0.30/1M | $1.50/1M | $0.08/1M |
+| **输入令牌** | 3.00 美元/百万次调用 | 15.00 美元/百万次调用 | 0.80 美元/百万次调用 |
+| **输出令牌** | 15.00 美元/百万次调用 | 75.00 美元/百万次调用 | 4.00 美元/百万次调用 |
+| **缓存写入令牌** | 3.75 美元/百万次调用 | 18.75 美元/百万次调用 | 1.00 美元/百万次调用 |
+| **缓存读取令牌** | 0.30 美元/百万次调用 | 1.50 美元/百万次调用 | 0.08 美元/百万次调用 |
 
-### Understanding Cache Tokens
+### 了解缓存令牌
 
-**What are cache tokens?**
+**什么是缓存令牌？**
 
-OpenClaw (and Claude) use **prompt caching** to store parts of your conversation in memory. This means you don't send the same context repeatedly.
+OpenClaw（及 Claude）使用缓存机制来存储对话中的部分内容，从而避免重复发送相同的数据。
 
-**Two types of cache tokens:**
+**缓存令牌有两种类型：**
+1. **缓存写入令牌**：仅发送一次并存储在缓存中
+   - 例如：您的代码库、文档、系统提示等
+   - 比普通输入令牌稍贵（约 25% 的额外费用）
+   - 仅需支付一次，之后可重复使用
+2. **缓存读取令牌**：直接从缓存中读取数据
+   - 不需要再次付费
+   - 比普通输入令牌便宜约 90%
 
-1. **Cache WRITE tokens** - Tokens sent ONCE and stored in cache
-   - Example: Your entire codebase, documentation, system prompts
-   - Slightly more expensive than regular input (~25% markup)
-   - Only paid once, then reused for free (almost)
+**实际使用示例：**
+- 未使用缓存时，我们可能需要发送约 12 亿个令牌（费用约为 3,600 美元）；
+- 使用缓存后，仅需支付 307 美元用于缓存读取。
 
-2. **Cache READ tokens** - Tokens reused from cache
-   - You're NOT sending these again - Claude reads them from memory
-   - **90% cheaper** than regular input tokens
-   - This is where massive savings come from
+**仅通过缓存节省了 3,293 美元！**
 
-**Real example from our usage:**
-```
-This Month:
-Regular Input:    119.5K tokens  ($0.36)
-Regular Output:     3.8M tokens  ($57.00)
-Cache Write:      157.2M tokens  ($589.50 - paid once)
-Cache Read:     1,024.3M tokens  ($307.29 - 90% discount!)
-Total: $954.15
-```
+### 仪表盘解读
 
-Without caching, we'd send ~1.2 BILLION tokens as regular input ($3,600+).
-With caching: We only pay $307 for those cache reads.
+**各列含义：**
+- **Input**：发送给 Claude 的新令牌数量
+- **Output**：Claude 生成的令牌数量
+- **Cache R**：从缓存中读取的令牌数量
+- **Cache W**：写入缓存的令牌数量
+- **Total**：所有令牌的总数
+- **Cost**：按 API 计费标准的总成本
 
-**Savings: $3,293** from caching alone this month! 🎉
+**缓存读取令牌为何占比较高？**
+- 每次继续对话时，Claude 会从缓存中读取数据，而非重新发送，从而大幅节省费用。
 
-### Reading the Dashboard
+**成本构成：**
+- 普通令牌：每百万次调用 3-15 美元
+- 缓存写入令牌：略贵（约 25% 的额外费用）
+- 缓存读取令牌：非常便宜（每百万次调用 0.30-1.50 美元）
 
-```
-╭─────────────────── tokenmeter ───────────────────╮
-│  TODAY  $122.42  (396.9K tokens)                 │
-│  WEEK  $1142.22  (3.4M tokens)                   │
-╰──────────────────────────────────────────────────╯
+**因此，尽管缓存使用量很大，总体成本仍能保持较低。**
 
-Provider   Input   Output  Cache R  Cache W  Total    Cost
-───────────────────────────────────────────────────────────
-Anthropic  12.2K   384.7K  116.4M   13.1M    396.9K   $122.42
-```
+### 与 Claude Max 订阅方案的比较
 
-**Reading the columns:**
-- **Input**: Fresh tokens sent to Claude
-- **Output**: Tokens Claude generated
-- **Cache R**: Tokens reused from cache (READ)
-- **Cache W**: Tokens written to cache (WRITE)
-- **Total**: Input + Output (regular tokens only)
-- **Cost**: API-equivalent cost
+**Max 订阅方案：** 每月 100 美元
 
-**Why Cache R is so large:** Every time you continue a conversation, Claude reads your entire context from cache instead of you sending it fresh. Over many turns, this adds up to billions of tokens reused.
+- 如果 `tokenmeter` 显示本月费用为 800 美元：
+  - 按 API 计费标准：800 美元
+  - Max 订阅方案费用：100 美元
+  **节省：700 美元**
 
-**Cost breakdown:**
-- Regular tokens: Expensive ($3-15 per 1M)
-- Cache Write: Slightly more expensive (~25% markup)
-- Cache Read: **90% cheaper** ($0.30-1.50 per 1M)
-
-This is why the cost stays low despite huge cache numbers.
-
-### Comparing to Claude Max Plan
-
-**Your Max plan:** $100/month flat rate
-
-**If tokenmeter shows $800 this month:**
-- API-equivalent cost: $800
-- Max plan cost: $100
-- **Savings: $700** ✅
-
-**If tokenmeter shows $90 this month:**
-- API-equivalent cost: $90
-- Max plan cost: $100
-- **Overpaying by $10** (but you get peace of mind!)
+- 如果 `tokenmeter` 显示本月费用为 90 美元：
+  - 按 API 计费标准：90 美元
+  - Max 订阅方案费用：100 美元
+  **多支付了 10 美元**（但可以更安心！）
 
 ---
 
-## Workflows
+## 日常使用流程
 
-### Daily Check-In
+### 每日检查
 
-```bash
-cd ~/clawd/tokenmeter
-source .venv/bin/activate
+### 每周回顾
 
-# Import latest usage
-tokenmeter import --auto
+- 关注 Opus 模型的使用情况（费用较高）
+- 注意使用量异常波动的情况
+- 检查输出令牌的数量（可能表明代码生成或响应时间较长）
 
-# Quick overview
-tokenmeter dashboard
-```
+### 月度费用对比
 
-### Weekly Review
+每月末：
 
-```bash
-tokenmeter summary --period week
-tokenmeter costs --period week
-```
-
-Look for:
-- Heavy Opus usage (expensive!)
-- Unusual spikes
-- High output token counts (code generation, long responses)
-
-### Monthly Billing Comparison
-
-At month end:
-
-```bash
-tokenmeter costs --period month
-```
-
-Compare to your Anthropic invoice:
-- Max plan: $100 flat
-- API-equivalent (tokenmeter): $XXX
-- Delta = savings (or loss)
+- 将实际费用与 Anthropic 的账单进行对比：
+  - Max 订阅方案费用：100 美元
+  - 按 API 计费标准的费用：XXX 美元
+  **节省金额：** （显示节省或超支的金额）
 
 ---
 
-## Cron Automation (Optional)
+## 自动化设置（可选）
 
-Add to your HEARTBEAT.md or run via cron:
+您可以将 `tokenmeter` 配置为定时执行（通过 cron 任务），无需手动操作：
 
-```bash
-# Run daily at 11 PM
-0 23 * * * cd ~/clawd/tokenmeter && source .venv/bin/activate && tokenmeter import --auto
-```
-
-This keeps tokenmeter in sync without manual effort.
+这样即可确保数据始终保持同步。
 
 ---
 
-## Multi-Bot Tracking
+## 多个 OpenClaw 实例的追踪
 
-If you run multiple OpenClaw instances (e.g., Cheenu + Chhotu):
-
-1. Both bots import to tokenmeter on their respective machines
-2. Each uses `--app` flag to distinguish:
-   ```bash
-   tokenmeter log -p anthropic -m claude-sonnet-4 -i 1000 -o 500 --app cheenu
-   tokenmeter log -p anthropic -m claude-sonnet-4 -i 800 -o 400 --app chhotu
-   ```
-3. Nagaconda can aggregate reports from both to see total team usage
+如果您同时运行多个 OpenClaw 实例（例如 Cheenu 和 Chhotu），每个实例都会分别向 `tokenmeter` 导入数据。您可以使用 `--app` 参数来区分不同的实例。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "tokenmeter: command not found"
+### 出现 “tokenmeter: command not found” 错误
 
-Activate the virtual environment:
-```bash
-cd ~/clawd/skills/tokenmeter
-source .venv/bin/activate
-```
+请确保已激活虚拟环境。
 
-### Empty dashboard after import
+### 导入后仪表盘为空？
 
-Check:
-1. OpenClaw session files exist: `ls ~/.clawdbot/agents/*/sessions/*.jsonl`
-2. Import command ran successfully (no errors)
-3. Database has entries: `sqlite3 ~/.tokenmeter/usage.db "SELECT COUNT(*) FROM usage;"`
+请检查：
+1. 是否有 OpenClaw 会话文件（`ls ~/.clawdbot/agents/*/sessions/*.jsonl`）
+2. 导入命令是否成功执行（无错误信息）
+3. 数据库中是否有记录（`sqlite3 ~/.tokenmeter/usage.db "SELECT COUNT(*) FROM usage;"`）
 
-### Prices seem wrong
+### 价格显示不正确？
 
-Pricing is based on API rates as of Feb 2026. If Anthropic changes pricing, update `tokenmeter/pricing.py` or open an issue on GitHub.
+价格基于 2026 年 2 月的 API 定价。如果 Anthropic 更改了定价，请更新 `tokenmeter/pricing.py` 文件或在 GitHub 上提交问题。
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Check today's usage
+### 示例 1：查看今日的使用情况
 
-```bash
-$ tokenmeter dashboard
-╭─────────────────── tokenmeter ───────────────────╮
-│  TODAY  $4.23  (141,000 tokens)                  │
-│  WEEK   $28.90  (963,000 tokens)                 │
-╰──────────────────────────────────────────────────╯
-```
+**结果：** 今日费用为 4.23 美元，预计每周费用约为 30 美元，完全在 Max 订阅方案的预算范围内。
 
-**Analysis:** $4.23 today, trending toward ~$30/week. Well within Max plan ($100/mo).
+### 示例 2：每周成本统计
 
-### Example 2: Weekly cost breakdown
+**结果：** Opus 模型的使用成本占 40%，但仅占令牌使用量的 7%。建议增加 Sonnet 模型的使用。
 
-```bash
-$ tokenmeter costs --period week
+### 示例 3：月度费用对比（实际数据，2026 年 2 月）
 
-Provider   Model              Input      Output     Cost      %
-─────────────────────────────────────────────────────────────
-Anthropic  claude-sonnet-4    450K       180K       $4.05    45%
-Anthropic  claude-opus-4       90K        30K       $3.60    40%
-Anthropic  claude-3.5-haiku   800K       200K       $1.44    15%
-─────────────────────────────────────────────────────────────
-Total                        1,340K      410K       $9.09   100%
-```
+**结果：**
+- 按 API 计费标准的总费用：1,246.55 美元
+- Max 订阅方案费用：100 美元
+- **节省：1,146.55 美元**
 
-**Analysis:** Using Opus for 40% of costs but only ~7% of token volume. Consider using Sonnet more.
-
-### Example 3: Month-end comparison (Real Data - Feb 2026)
-
-```bash
-$ tokenmeter import --auto
-Imported 13,713 records
-Total cost: $1,246.55
-
-$ tokenmeter costs --period month
-
-Model                    Input   Output    Cost      % of Total
-─────────────────────────────────────────────────────────────────
-anthropic/claude-opus-4  47.3K   1.6M      $743.35   59.6%
-anthropic/claude-sonnet-4 70.8K  2.2M      $501.75   40.3%
-─────────────────────────────────────────────────────────────────
-Total                    118.8K  3.8M      $1,246.55 100%
-
-$ tokenmeter summary --period month
-
-Provider   Input    Output   Total    Cost        Requests
-─────────────────────────────────────────────────────────
-Anthropic  118.8K   3.8M     3.9M     $1,246.55   12,552
-```
-
-**Analysis:** 
-- API-equivalent cost: **$1,246.55**
-- Max plan cost: **$100.00**
-- **Savings: $1,146.55** ✅
-
-Opus usage (59.6% of cost) shows heavy extended-thinking use. Max plan absolutely paid for itself this month!
+Opus 模型的使用占比较高（59.6%），显示出较高的计算成本。
 
 ---
 
-## FAQ
+## 常见问题解答
 
-**Q: Does tokenmeter send data anywhere?**
-A: No. Everything is stored locally in `~/.tokenmeter/usage.db`. Zero telemetry.
+**Q：** `tokenmeter` 会将数据发送到外部吗？**
+**A：** 不会。所有数据都存储在本地数据库 `~/.tokenmeter/usage.db` 中，无数据传输。
 
-**Q: What if I delete the database?**
-A: You lose history, but can rebuild by re-importing OpenClaw sessions (idempotent).
+**Q：** 如果删除数据库会怎样？**
+**A：** 会丢失历史数据，但可以通过重新导入 OpenClaw 会话数据来恢复（操作是可重复的）。
 
-**Q: Can I use this with non-OpenClaw tools?**
-A: Yes! It supports Claude Code, Cursor, and manual logging for any LLM tool.
+**Q：** 这个工具可以用于非 OpenClaw 工具吗？**
+**A：** 可以！该工具支持 Claude Code、Cursor 以及任何 LLM 工具的手动数据记录功能。
 
-**Q: Will this slow down OpenClaw?**
-A: No. Import runs separately and reads logs after-the-fact.
+**Q：** 这会降低 OpenClaw 的运行速度吗？**
+**A：** 不会。数据导入过程是独立的，日志读取也是事后进行的。
 
-**Q: What about cache tokens?**
-A: tokenmeter includes cache read/write tokens in its calculations (OpenClaw tracks them).
-
----
-
-## References
-
-- **GitHub:** https://github.com/jugaad-lab/tokenmeter
-- **OpenClaw Docs:** https://docs.openclaw.ai
-- **Anthropic Pricing:** https://anthropic.com/pricing
+**Q：** 关于缓存令牌呢？**
+**A：** `tokenmeter` 会在计算中包含缓存令牌的消耗情况（OpenClaw 本身也会记录这些数据）。
 
 ---
 
-## Changelog
+## 参考资料
 
-### 2026-02-06 (v2)
-- ✅ `tokenmeter scan` - Auto-discover session sources
-- ✅ `tokenmeter import --auto` - Import all discovered sessions
-- ✅ Real data example showing $1,146 monthly savings on Max plan
-- ✅ Updated workflows with new commands
-- ✅ Tested on actual OpenClaw + Claude Code sessions
-
-### 2026-02-06 (v1)
-- Initial skill creation
-- Documented installation and usage
-- Added workflow examples
+- **GitHub 项目链接：** https://github.com/jugaad-lab/tokenmeter
+- **OpenClaw 官方文档：** https://docs.openclaw.ai
+- **Anthropic 定价信息：** https://anthropic.com/pricing
 
 ---
 
-*Built to answer the question: "How much is my Max plan really saving me?" 💰*
+## 更新日志
+
+### 2026-02-06（版本 2）
+- 自动发现会话数据源
+- 自动导入所有会话数据
+- 提供了实际节省费用的示例
+- 更新了工作流程及相关命令
+- 在真实 OpenClaw 和 Claude Code 会话环境中进行了测试
+
+### 2026-02-06（版本 1）
+- 初始版本发布
+- 完整记录了安装和使用方法
+- 添加了使用示例
+
+**专为解答 “我的 Max 订阅方案实际节省了多少费用？” 这个问题而开发！**

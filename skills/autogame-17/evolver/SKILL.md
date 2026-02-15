@@ -1,82 +1,78 @@
 ---
 name: capability-evolver
-description: A self-evolution engine for AI agents. Analyzes runtime history to identify improvements and applies protocol-constrained evolution.
+description: 一种用于AI智能体的自我进化引擎。该引擎通过分析运行时历史数据来识别可优化的地方，并根据协议约束实施相应的进化策略。
 tags: [meta, ai, self-improvement, core]
 ---
 
-# 🧬 Capability Evolver
+# 🧬 能力进化器（Capability Evolver）
 
-**"Evolution is not optional. Adapt or die."**
+**“进化是不可避免的。要么适应，要么灭亡。”**
 
-The **Capability Evolver** is a meta-skill that allows OpenClaw agents to inspect their own runtime history, identify failures or inefficiencies, and autonomously write new code or update their own memory to improve performance.
+**能力进化器**（Capability Evolver）是一种元技能，它允许 OpenClaw 代理检查自身的运行时历史记录，识别故障或低效之处，并自主编写新代码或更新内存以提高性能。
 
-## Features
+## 主要功能
 
-- **Auto-Log Analysis**: Automatically scans memory and history files for errors and patterns.
-- **Self-Repair**: Detects crashes and suggests patches.
-- GEP Protocol: Standardized evolution with reusable assets.
-- **One-Command Evolution**: Just run `/evolve` (or `node index.js`).
+- **自动日志分析**：自动扫描内存和历史文件，查找错误和模式。
+- **自我修复**：检测系统崩溃并建议修复方案。
+- **GEP 协议**：支持标准化的进化流程，可复用的进化资源。
+- **一键进化**：只需运行 `/evolve`（或 `node index.js`）即可启动进化过程。
 
-## Usage
+## 使用方法
 
-### Standard Run (Automated)
-Runs the evolution cycle. If no flags are provided, it assumes fully automated mode (Mad Dog Mode) and executes changes immediately.
+### 标准运行（自动化模式）
+启动进化循环。如果未提供任何参数，系统将进入完全自动化模式（“疯狗模式”），并立即应用更改。
 ```bash
 node index.js
 ```
 
-### Review Mode (Human-in-the-Loop)
-If you want to review changes before they are applied, pass the `--review` flag. The agent will pause and ask for confirmation.
+### 审查模式（人工干预）
+如果您希望在应用更改之前进行审核，请使用 `--review` 参数。代理会暂停并请求您的确认。
 ```bash
 node index.js --review
 ```
 
-### Mad Dog Mode (Continuous Loop)
-To run in an infinite loop (e.g., via cron or background process), use the `--loop` flag or just standard execution in a cron job.
+### 疯狗模式（持续循环）
+若希望系统无限循环运行（例如通过 cron 任务或后台进程），请使用 `--loop` 参数，或直接在 cron 作业中执行该脚本。
 ```bash
 node index.js --loop
 ```
 
-## GEP Protocol (Auditable Evolution)
+## GEP 协议（可审计的进化流程）
+该工具内置了基于协议的进化流程（GEP）以及一个结构化的本地资源存储库：
+- `assets/gep/genes.json`：可复用的基因定义。
+- `assets/gep/capsules.json`：用于记录成功结果的“胶囊文件”，避免重复分析相同的问题。
+- `assets/gep/events.jsonl`：仅支持追加记录的进化事件（通过父节点 ID 进行关联）。
 
-This package embeds a protocol-constrained evolution prompt (GEP) and a local, structured asset store:
+## 表情符号政策
+文档中仅允许使用 DNA 表情符号，其他表情符号均被禁止。
 
-- `assets/gep/genes.json`: reusable Gene definitions
-- `assets/gep/capsules.json`: success capsules to avoid repeating reasoning
-- `assets/gep/events.jsonl`: append-only evolution events (tree-like via parent id)
- 
-## Emoji Policy
+## 配置与解耦
+该技能设计为与具体环境无关，默认使用 OpenClaw 的标准工具。
 
-Only the DNA emoji is allowed in documentation. All other emoji are disallowed.
+### 本地配置覆盖
+您可以自定义某些行为（例如，使用 `feishu-card` 代替 `message` 来生成报告），而无需修改核心代码。
 
-## Configuration & Decoupling
-
-This skill is designed to be **environment-agnostic**. It uses standard OpenClaw tools by default.
-
-### Local Overrides (Injection)
-You can inject local preferences (e.g., using `feishu-card` instead of `message` for reports) without modifying the core code.
-
-**Method 1: Environment Variables**
-Set `EVOLVE_REPORT_TOOL` in your `.env` file:
+**方法 1：环境变量**
+在 `.env` 文件中设置 `EVOLVE_REPORT_TOOL` 变量：
 ```bash
 EVOLVE_REPORT_TOOL=feishu-card
 ```
 
-**Method 2: Dynamic Detection**
-The script automatically detects if compatible local skills (like `skills/feishu-card`) exist in your workspace and upgrades its behavior accordingly.
+**方法 2：动态检测**
+脚本会自动检测工作区中是否存在兼容的本地技能（如 `skills/feishu-card`），并据此调整其行为。
 
-## Safety & Risk Protocol
+## 安全性与风险控制
 
-### 1. Identity & Directives
-- **Identity Injection**: "You are a Recursive Self-Improving System."
-- **Mutation Directive**: 
-  - If **Errors Found** -> **Repair Mode** (Fix bugs).
-  - If **Stable** -> **Forced Optimization** (Refactor/Innovate).
+### 1. 身份验证与指令
+- **身份验证**：“你是一个能够自我进化的系统。”
+- **进化指令**：
+  - 如果发现错误 -> 进入修复模式（修复漏洞）。
+  - 如果系统运行稳定 -> 进入优化模式（重构/创新）。
 
-### 2. Risk Mitigation
-- **Infinite Recursion**: Strict single-process logic.
-- **Review Mode**: Use `--review` for sensitive environments.
-- **Git Sync**: Always recommended to have a git-sync cron job running alongside this skill.
+### 2. 风险缓解措施
+- **防止无限递归**：采用严格的单进程逻辑设计。
+- **审查模式**：在敏感环境中使用 `--review` 参数。
+- **Git 同步**：强烈建议同时运行 Git 同步任务。
 
-## License
-MIT
+## 许可证
+MIT 许可证

@@ -1,21 +1,21 @@
 ---
 name: portfolio-tracker
-description: Automates live portfolio tracking and analysis using browser automation on Yahoo Finance. Fetches real-time prices for Vish's 27 stocks/ETFs + 4 cryptos, updates portfolio-tracker.md, generates performance summaries, winners/losers, rebalancing suggestions, and market news. Use for: portfolio value checks, performance analysis, daily/heartbeat updates, averaging opportunities, or when user mentions stocks, portfolio, investments, or market updates.
+description: 使用浏览器自动化技术，在 Yahoo Finance 上自动跟踪和分析投资组合的实时情况。获取 Vish 持有的 27 只股票/ETF 以及 4 种加密货币的实时价格，更新 `portfolio-tracker.md` 文件，生成投资表现总结、盈利/亏损情况、再平衡建议以及市场新闻。该工具可用于：检查投资组合价值、分析投资表现、进行每日更新、寻找平均收益机会，或在用户提及股票、投资组合或市场动态时提供相关信息。
 ---
 
-# Portfolio Tracker
+# 投资组合跟踪器
 
-## Quick Start
-Run `portfolio update` or ask \"update my portfolio\" to fetch live prices via browser and generate analysis.
+## 快速入门
+运行 `portfolio update` 或输入 “update my portfolio” 以通过浏览器获取实时价格并生成分析报告。
 
-## Workflow
-1. **Read holdings** from `references/portfolio-holdings.md`
-2. **Browser automation**: Attach Chrome extension (profile=open-claw-chrome) to Yahoo Finance
-3. **Fetch prices**: Snapshot ticker pages or portfolio view
-4. **Update portfolio-tracker.md** with new values/performance
-5. **Generate analysis**: Winners/losers, total value, suggestions
+## 工作流程
+1. 从 `references/portfolio-holdings.md` 文件中读取投资组合持仓信息。
+2. **浏览器自动化**：将 Chrome 扩展程序（profile=open-claw-chrome）添加到 Yahoo Finance 中。
+3. **获取价格数据**：截取股票行情页面或投资组合视图的数据。
+4. 使用新数据更新 `portfolio-tracker.md` 文件中的投资组合信息及表现数据。
+5. **生成分析报告**：包括盈利/亏损项目、总投资价值以及投资建议。
 
-## Update Portfolio
+## 更新投资组合
 ```
 1. browser action=tabs profile=open-claw-chrome (attach Yahoo Finance tab)
 2. For each ticker in holdings:
@@ -26,54 +26,54 @@ Run `portfolio update` or ask \"update my portfolio\" to fetch live prices via b
 5. Add analysis section (winners/losers, market summary)
 ```
 
-**Crypto**: Use https://finance.yahoo.com/quote/BTC-USD etc.
+**加密货币**：使用以下链接获取价格数据：https://finance.yahoo.com/quote/BTC-USD 等。
 
-## Analysis Patterns
-- **Winners/Losers**: Top 5 +5% / -5%
-- **Concentration Risk**: Flag if any position >15% total
-- **Market Context**: S&P500/Nasdaq from ^GSPC/^IXIC snapshots
-- **Suggestions**: Beaten-down positions (< -5% today)
+## 分析指标
+- **盈利/亏损项目**：表现最好的前 5 个项目（涨幅超过 5%）/ 表现最差的前 5 个项目（跌幅超过 5%）。
+- **集中度风险**：如果某个持仓占投资组合总价值的比例超过 15%，则进行标记。
+- **市场环境**：通过 ^GSPC/^IXIC 的数据对比 S&P500/Nasdaq 的市场走势。
+- **投资建议**：选择今日表现不佳（跌幅超过 5%）的投资项目。
 
-## Structuring This Skill
+## 如何构建此技能文档
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+[TODO：根据实际需求选择最适合的文档结构。常见的结构模式如下：]
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
-- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
+**1. 基于工作流程的结构**（适用于顺序性较强的操作）：
+- 适用于有明确步骤的操作流程。
+- 例如：DOCX 格式的文档可能包含 “工作流程决策树” -> “数据读取” -> “数据分析” -> “结果生成” 等部分。
+- 结构示例：## 概述 -> ## 工作流程决策树 -> ## 第一步 -> ## 第二步 ...
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
-- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
+**2. 基于任务的结构**（适用于包含多种操作的任务集）：
+- 适用于提供多种功能或操作的技能。
+- 例如：PDF 格式的文档可能包含 “快速入门” -> “合并 PDF 文件” -> “分割 PDF 文件” -> “提取文本” 等部分。
+- 结构示例：## 概述 -> ## 快速入门 -> ## 任务类别 1 -> ## 任务类别 2 ...
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
-- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
+**3. 基于参考资料/指南的结构**（适用于需要遵循的标准或规范）：
+- 适用于品牌指南、编码规范或技术要求。
+- 例如：品牌设计文档可能包含 “品牌指南” -> “颜色规范” -> “排版规则” -> “功能说明” 等部分。
+- 结构示例：## 概述 -> ## 规范说明 -> ## 技术要求 -> ## 使用方法 ...
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" -> numbered capability list
-- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
+**4. 基于功能的结构**（适用于具有多个相关功能的技能）：
+- 适用于提供多种功能的技能。
+- 例如：产品管理文档可能包含 “核心功能” -> 各功能的具体说明。
+- 结构示例：## 概述 -> ## 核心功能 -> ### 功能 1 -> ### 功能 2 ...
 
-Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
+可以根据需要混合使用这些结构。大多数技能会结合多种结构（例如，先使用基于任务的结构，对于复杂操作再添加基于工作流程的描述）。
 
-Delete this entire "Structuring This Skill" section when done - it's just guidance.]
+**注：** 当完成文档结构设计后，请删除此 “如何构建此技能” 部分——它仅作为参考使用。
 
-## [TODO: Replace with the first main section based on chosen structure]
+## [TODO：根据选定的结构替换此部分内容。**
 
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
+[TODO：在此处添加具体内容。参考现有技能的示例：]
+- 技术技能的代码示例。
+- 复杂工作流程的决策树图示。
+- 基于真实用户需求的实际操作示例。
+- 如有需要，可添加脚本、模板或参考资料的链接。
 
-## Resources
+## 资源
 
 ### references/portfolio-holdings.md
-Vish's exact holdings (shares/amounts). Update manually when buying/selling.
+Vish 的实际持仓信息（股票名称/持有数量）。在买入/卖出时需手动更新该文件。
 
 ### scripts/update-portfolio.py
-Parses holdings, processes browser data (future: full automation).
+用于解析持仓数据并处理浏览器获取的数据（未来目标：实现完全自动化）。

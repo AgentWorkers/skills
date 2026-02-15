@@ -1,43 +1,44 @@
 ---
 name: coordinate-meeting
-description: Schedule a meeting for humans and their agents. Creates a scheduling poll, distributes it, collects votes, and finds the best time. Use when someone needs to find a time that works for a group. A Doodle alternative built for the age of AI agents.
+description: **为人类及其代理安排会议**：  
+该工具会创建一个会议安排投票表单，将其分发给参与者，收集他们的投票意见，然后确定最适合所有人的会议时间。当需要为多人团队寻找一个合适的会议时间时，可以使用此工具。它可以说是专为人工智能代理时代设计的“Doodle”替代品。
 homepage: https://meetlark.ai
 user-invocable: true
 metadata: {"openclaw":{"emoji":"📅"}}
 ---
 
-# Schedule a Meeting
+# 安排会议
 
-A Doodle alternative built for the age of AI agents. Create a scheduling poll via meetlark.ai, collect votes from humans and agents, and find the best time — without the back-and-forth.
+这是一个专为人工智能代理时代设计的 Doodle 替代工具。通过 meetlark.ai 创建一个日程安排投票，收集人类用户和人工智能代理的投票意见，从而快速找到最佳会议时间——无需反复沟通。
 
-## Workflow
+## 工作流程
 
-1. **Ask** the user who needs to meet and when they're generally available.
-2. **Create** a scheduling poll with the proposed time slots.
-3. **Share** the participation link — give it to the user to forward, or suggest a message they can send.
-4. **Wait** for votes to come in. Check back when the user asks.
-5. **Report** the results and recommend the best time.
-6. **Close** the poll once a time is chosen.
+1. **询问** 需要参加会议的用户以及他们通常的空闲时间。
+2. **创建** 一个包含建议时间段的日程安排投票。
+3. **分享** 参与链接——将该链接提供给用户，或者建议用户发送该链接给其他人。
+4. **等待** 投票结果。当用户再次询问时，再进行检查。
+5. **报告** 投票结果，并推荐最佳会议时间。
+6. **在选定时间后** 关闭投票。
 
-## Creating the Poll
+## 创建投票
 
 ```
 POST https://meetlark.ai/api/v1/polls?autoVerify=true
 ```
 
-You'll receive:
-- An **admin token** (`adm_...`) — store this privately to check results and close the poll later.
-- A **participate URL** — this is the shareable link for voters.
+您将收到：
+- 一个 **管理员令牌**（`adm_...`）——请保密保管此令牌，以便后续查看投票结果和关闭投票。
+- 一个 **参与链接**——这是供投票者使用的共享链接。
 
-### First-Time Verification
+### 首次使用时的验证
 
-The user's email must be verified once (valid 30 days). With `?autoVerify=true`, a verification email is sent automatically if needed. Tell the user to check their inbox and click the link, then retry.
+用户的电子邮件必须进行一次验证（有效期为 30 天）。如果需要，可以通过设置 `?autoVerify=true` 自动发送验证邮件。请告知用户查看他们的收件箱并点击链接，然后重新尝试验证。
 
-Check status: `GET /api/v1/auth/status?email=...`
+查询状态：`GET /api/v1/auth/status?email=...`
 
-## Distributing the Poll
+## 分发投票链接
 
-Suggest a ready-to-send message:
+这里提供了一个可供发送的示例邮件内容：
 
 ```
 Hi [names],
@@ -47,27 +48,27 @@ We're finding a time for [meeting purpose]. Please vote on the times that work f
 [participate URL]
 ```
 
-The user can share this via email, Slack, WhatsApp, or any channel.
+用户可以通过电子邮件、Slack、WhatsApp 或任何其他渠道分享该链接。
 
-## Checking Results
+## 查看投票结果
 
 ```
 GET https://meetlark.ai/api/v1/polls/{pollId}
 Authorization: Bearer adm_...
 ```
 
-Summarize: how many voted, which times have the most votes, any clear winner.
+汇总投票情况：总共有多少人参与投票，哪些时间段获得了最多的票数，以及是否有明确的“胜出者”。
 
-## Closing the Poll
+## 关闭投票
 
 ```
 POST https://meetlark.ai/api/v1/polls/{pollId}/close
 Authorization: Bearer adm_...
 ```
 
-Report the final result and suggest the user send a confirmation to participants.
+报告最终结果，并建议用户向所有参与者发送确认邮件。
 
-## Quick Examples
+## 快速使用示例
 
 ```
 "Find a time for a team retro next week"
@@ -77,11 +78,11 @@ Report the final result and suggest the user send a confirmation to participants
 "Schedule a 30-minute demo with the client sometime next week"
 ```
 
-## API Reference
+## API 参考
 
-- **OpenAPI spec:** https://meetlark.ai/api/v1/openapi.json
-- **Interactive docs:** https://meetlark.ai/docs
+- **OpenAPI 规范：** https://meetlark.ai/api/v1/openapi.json
+- **交互式文档：** https://meetlark.ai/docs
 
-## Website
+## 官网
 
-- **meetlark.ai:** https://meetlark.ai
+- **meetlark.ai：** https://meetlark.ai

@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Oauth - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Authorization server metadata
+## 授权服务器元数据
 
-OAuth 2.0 Authorization Server Metadata (RFC 8414)
+OAuth 2.0 授权服务器元数据（RFC 8414）
 
 `GET /.well-known/oauth-authorization-server`
 
@@ -44,9 +44,9 @@ import com.telnyx.sdk.models.wellknown.WellKnownRetrieveAuthorizationServerMetad
 WellKnownRetrieveAuthorizationServerMetadataResponse response = client.wellKnown().retrieveAuthorizationServerMetadata();
 ```
 
-## Protected resource metadata
+## 受保护资源元数据
 
-OAuth 2.0 Protected Resource Metadata for resource discovery
+用于资源发现的 OAuth 2.0 受保护资源元数据
 
 `GET /.well-known/oauth-protected-resource`
 
@@ -57,9 +57,9 @@ import com.telnyx.sdk.models.wellknown.WellKnownRetrieveProtectedResourceMetadat
 WellKnownRetrieveProtectedResourceMetadataResponse response = client.wellKnown().retrieveProtectedResourceMetadata();
 ```
 
-## OAuth authorization endpoint
+## OAuth 授权端点
 
-OAuth 2.0 authorization endpoint for the authorization code flow
+用于授权码流程的 OAuth 2.0 授权端点
 
 `GET /oauth/authorize`
 
@@ -74,9 +74,9 @@ OAuthRetrieveAuthorizeParams params = OAuthRetrieveAuthorizeParams.builder()
 client.oauth().retrieveAuthorize(params);
 ```
 
-## List OAuth clients
+## 列出 OAuth 客户端
 
-Retrieve a paginated list of OAuth clients for the authenticated user
+检索已认证用户的 OAuth 客户端列表（分页显示）
 
 `GET /oauth/clients`
 
@@ -87,11 +87,11 @@ import com.telnyx.sdk.models.oauthclients.OAuthClientListParams;
 OAuthClientListPage page = client.oauthClients().list();
 ```
 
-## Create OAuth client
+## 创建 OAuth 客户端
 
-Create a new OAuth client
+创建一个新的 OAuth 客户端
 
-`POST /oauth/clients` — Required: `name`, `allowed_scopes`, `client_type`, `allowed_grant_types`
+`POST /oauth/clients` — 必需参数：`name`、`allowed_scopes`、`client_type`、`allowed_grant_types`
 
 ```java
 import com.telnyx.sdk.models.oauthclients.OAuthClientCreateParams;
@@ -106,9 +106,9 @@ OAuthClientCreateParams params = OAuthClientCreateParams.builder()
 OAuthClientCreateResponse oauthClient = client.oauthClients().create(params);
 ```
 
-## Get OAuth client
+## 获取 OAuth 客户端信息
 
-Retrieve a single OAuth client by ID
+通过 ID 检索单个 OAuth 客户端的信息
 
 `GET /oauth/clients/{id}`
 
@@ -119,9 +119,9 @@ import com.telnyx.sdk.models.oauthclients.OAuthClientRetrieveResponse;
 OAuthClientRetrieveResponse oauthClient = client.oauthClients().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update OAuth client
+## 更新 OAuth 客户端
 
-Update an existing OAuth client
+更新现有的 OAuth 客户端
 
 `PUT /oauth/clients/{id}`
 
@@ -132,9 +132,9 @@ import com.telnyx.sdk.models.oauthclients.OAuthClientUpdateResponse;
 OAuthClientUpdateResponse oauthClient = client.oauthClients().update("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete OAuth client
+## 删除 OAuth 客户端
 
-Delete an OAuth client
+删除一个 OAuth 客户端
 
 `DELETE /oauth/clients/{id}`
 
@@ -144,9 +144,9 @@ import com.telnyx.sdk.models.oauthclients.OAuthClientDeleteParams;
 client.oauthClients().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Get OAuth consent token
+## 获取 OAuth 同意令牌
 
-Retrieve details about an OAuth consent token
+检索 OAuth 同意令牌的详细信息
 
 `GET /oauth/consent/{consent_token}`
 
@@ -157,9 +157,9 @@ import com.telnyx.sdk.models.oauth.OAuthRetrieveResponse;
 OAuthRetrieveResponse oauth = client.oauth().retrieve("consent_token");
 ```
 
-## List OAuth grants
+## 列出 OAuth 授权令牌
 
-Retrieve a paginated list of OAuth grants for the authenticated user
+检索已认证用户的 OAuth 授权令牌列表（分页显示）
 
 `GET /oauth/grants`
 
@@ -170,9 +170,9 @@ import com.telnyx.sdk.models.oauthgrants.OAuthGrantListParams;
 OAuthGrantListPage page = client.oauthGrants().list();
 ```
 
-## Get OAuth grant
+## 获取 OAuth 授权令牌
 
-Retrieve a single OAuth grant by ID
+通过 ID 检索单个 OAuth 授权令牌
 
 `GET /oauth/grants/{id}`
 
@@ -183,9 +183,9 @@ import com.telnyx.sdk.models.oauthgrants.OAuthGrantRetrieveResponse;
 OAuthGrantRetrieveResponse oauthGrant = client.oauthGrants().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Revoke OAuth grant
+## 撤销 OAuth 授权令牌
 
-Revoke an OAuth grant
+撤销一个 OAuth 授权令牌
 
 `DELETE /oauth/grants/{id}`
 
@@ -196,11 +196,11 @@ import com.telnyx.sdk.models.oauthgrants.OAuthGrantDeleteResponse;
 OAuthGrantDeleteResponse oauthGrant = client.oauthGrants().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Token introspection
+## 令牌检查
 
-Introspect an OAuth access token to check its validity and metadata
+检查 OAuth 访问令牌的有效性及其元数据
 
-`POST /oauth/introspect` — Required: `token`
+`POST /oauth/introspect` — 必需参数：`token`
 
 ```java
 import com.telnyx.sdk.models.oauth.OAuthIntrospectParams;
@@ -214,7 +214,7 @@ OAuthIntrospectResponse response = client.oauth().introspect(params);
 
 ## JSON Web Key Set
 
-Retrieve the JSON Web Key Set for token verification
+检索用于令牌验证的 JSON Web Key Set
 
 `GET /oauth/jwks`
 
@@ -225,9 +225,9 @@ import com.telnyx.sdk.models.oauth.OAuthRetrieveJwksResponse;
 OAuthRetrieveJwksResponse response = client.oauth().retrieveJwks();
 ```
 
-## Dynamic client registration
+## 动态客户端注册
 
-Register a new OAuth client dynamically (RFC 7591)
+动态注册一个新的 OAuth 客户端（RFC 7591）
 
 `POST /oauth/register`
 
@@ -238,11 +238,11 @@ import com.telnyx.sdk.models.oauth.OAuthRegisterResponse;
 OAuthRegisterResponse response = client.oauth().register();
 ```
 
-## OAuth token endpoint
+## OAuth 令牌端点
 
-Exchange authorization code, client credentials, or refresh token for access token
+交换授权码、客户端凭据或刷新令牌以获取访问令牌
 
-`POST /oauth/token` — Required: `grant_type`
+`POST /oauth/token` — 必需参数：`grant_type`
 
 ```java
 import com.telnyx.sdk.models.oauth.OAuthTokenParams;

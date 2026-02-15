@@ -1,23 +1,23 @@
 ---
 slug: "defect-detection-ai"
 display_name: "Defect Detection AI"
-description: "AI-powered construction defect detection using computer vision. Identify cracks, spalling, corrosion, and other defects in concrete, steel, and building components from images and video."
+description: "基于人工智能的施工缺陷检测技术，利用计算机视觉技术从图像和视频中识别混凝土、钢材及建筑构件中的裂缝、剥落、腐蚀等缺陷。"
 ---
 
-# AI Defect Detection
+# 人工智能缺陷检测
 
-## Overview
+## 概述
 
-This skill implements deep learning-based defect detection for construction quality control. Analyze images and video to automatically identify structural and surface defects, classify severity, and generate inspection reports.
+该技术实现了基于深度学习的缺陷检测功能，用于建筑质量控制。通过分析图像和视频，能够自动识别结构缺陷和表面缺陷，对缺陷的严重程度进行分类，并生成检测报告。
 
-**Detectable Defects:**
-- Concrete: Cracks, spalling, honeycombing, efflorescence
-- Steel: Corrosion, weld defects, deformation
-- Masonry: Mortar deterioration, displacement
-- Finishes: Surface defects, coating failures
-- MEP: Insulation damage, pipe corrosion
+**可检测的缺陷类型：**
+- **混凝土**：裂缝、剥落、蜂窝状结构、泛碱现象
+- **钢材**：腐蚀、焊接缺陷、变形
+- **砌体**：砂浆劣化、位移
+- **表面处理层**：表面缺陷、涂层失效
+- **机电设备（MEP）**：保温层损坏、管道腐蚀
 
-## Quick Start
+## 快速入门
 
 ```python
 import torch
@@ -103,9 +103,9 @@ classifier = SimpleDefectClassifier()
 # print(f"Defect: {result.defect_type.value}, Confidence: {result.confidence:.2%}")
 ```
 
-## Comprehensive Defect Detection System
+## 全面缺陷检测系统
 
-### Object Detection Model
+### 物体检测模型
 
 ```python
 import torch
@@ -290,7 +290,7 @@ class FastRCNNPredictor(nn.Module):
         return scores, bbox_deltas
 ```
 
-### Crack Analysis System
+### 裂缝分析系统
 
 ```python
 import cv2
@@ -451,7 +451,7 @@ class CrackAnalyzer:
         return grouped
 ```
 
-### Inspection Report Generator
+### 检测报告生成器
 
 ```python
 from datetime import datetime
@@ -678,7 +678,7 @@ class DefectInspectionSystem:
         }
 ```
 
-## Model Training
+## 模型训练
 
 ```python
 import torch
@@ -777,35 +777,35 @@ def train_defect_model(train_dataset: DefectDataset,
     return model
 ```
 
-## Quick Reference
+## 快速参考
 
-| Defect Type | Detection Method | Typical Severity |
+| 缺陷类型 | 检测方法 | 典型严重程度 |
 |-------------|------------------|------------------|
-| Crack | Edge detection + CNN | Varies by width |
-| Spalling | Object detection | Moderate-Severe |
-| Corrosion | Color + texture analysis | Moderate-Critical |
-| Honeycombing | Object detection | Severe |
-| Efflorescence | Color analysis | Minor-Moderate |
+| 裂缝 | 边缘检测 + 卷积神经网络（CNN） | 严重程度因裂缝宽度而异 |
+| 剥落 | 物体检测 | 中等至严重 |
+| 腐蚀 | 颜色分析 + 材质纹理分析 | 中等到严重 |
+| 蜂窝状结构 | 物体检测 | 严重 |
+| 泛碱现象 | 颜色分析 | 轻微至中等 |
 
-## ACI 224R Crack Width Guidelines
+## ACI 224R 裂缝宽度标准
 
-| Width (mm) | Condition | Exposure |
+| 裂缝宽度（毫米） | 状况 | 暴露环境 |
 |------------|-----------|----------|
-| < 0.1 | Acceptable | Any |
-| 0.1 - 0.2 | Acceptable | Dry |
-| 0.2 - 0.4 | Repair recommended | Humid |
-| > 0.4 | Repair required | Any |
-| > 1.0 | Structural concern | Any |
+| < 0.1 | 可接受 | 任何环境 |
+| 0.1 - 0.2 | 可接受 | 干燥环境 |
+| 0.2 - 0.4 | 建议修复 | 潮湿环境 |
+| > 0.4 | 需要修复 | 任何环境 |
+| > 1.0 | 对结构安全构成威胁 | 任何环境 |
 
-## Resources
+## 相关资源
 
-- **PyTorch**: https://pytorch.org
-- **OpenCV**: https://opencv.org
-- **ACI 224R**: Crack control in concrete
-- **DDC Website**: https://datadrivenconstruction.io
+- **PyTorch**：https://pytorch.org
+- **OpenCV**：https://opencv.org
+- **ACI 224R**：混凝土裂缝控制标准
+- **DDC 网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `progress-monitoring-cv` for construction progress analysis
-- See `safety-compliance-checker` for safety defect integration
-- See `bim-validation-pipeline` for model-based quality control
+- 查看 `progress-monitoring-cv` 以了解施工进度分析
+- 查看 `safety-compliance-checker` 以集成安全缺陷检测功能
+- 查看 `bim-validation-pipeline` 以了解基于模型的质量控制流程

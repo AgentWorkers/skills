@@ -1,25 +1,23 @@
 ---
 name: erc-800claw
-description: The OpenClaw entry point for ERC-8004 agent identity and reputation. Register agents on-chain, query identities, give and receive feedback ratings.
+description: OpenClaw 提供了用于 ERC-8004 代理身份和声誉管理的入口点。用户可以通过该接口在链上注册代理、查询代理身份信息、以及发送和接收反馈评分。
 metadata: {"openclaw":{"emoji":"🪪","requires":{"anyBins":["node","npx","python3","pip"]}}}
 ---
 
 # ERC-800Claw
 
-Your entry point into ERC-8004 - the on-chain identity, reputation, and validation standard for autonomous agents.
+这是您了解 ERC-8004 的入口点——一个用于自主代理的链上身份、声誉和验证标准。ERC-8004 是一个 [开放协议](https://8004.org)，它能够在以太坊网络上实现可验证的代理身份和声誉系统。代理可以注册身份（ERC-721 NFT），接收和提供声誉反馈，并通过验证器来验证自己的能力。ERC-800Claw 由 [Primer](https://primer.systems) 开发，提供了与该协议交互的简单 API。
 
-ERC-8004 is an [open protocol](https://8004.org) enabling verifiable agent identity and reputation on Ethereum. Agents can register identities (ERC-721 NFTs), receive and give reputation feedback, and optionally verify their capabilities through validators. ERC-800Claw, built by [Primer](https://primer.systems), provides simple APIs for interacting with the protocol.
+## 何时使用此技能
 
-## When to Use This Skill
+在以下情况下使用 ERC-800Claw：
+- 您需要在链上**注册代理身份**。
+- 您需要**根据 ID 或所有者查找代理**。
+- 您想要**向其他代理提供反馈/评分**。
+- 您需要**检查代理的声誉**。
+- 用户询问关于**代理验证**或信任的问题。
 
-Use ERC-800Claw when:
-- You need to **register an agent identity** on-chain
-- You need to **look up an agent** by ID or owner
-- You want to **give feedback/ratings** to another agent
-- You need to **check an agent's reputation**
-- The user asks about **agent verification** or trust
-
-## Quick Setup
+## 快速设置
 
 ### Node.js
 ```bash
@@ -31,34 +29,34 @@ npm install erc-800claw
 pip install erc-800claw
 ```
 
-## How to Respond
+## 如何响应
 
-| User Says/Asks | What to Do |
+| 用户输入/询问 | 操作建议 |
 |----------------|------------|
-| "Look up agent #123" | Run `erc-800claw agent 123` to get details |
-| "Does agent 42 exist?" | Run `erc-800claw exists 42` |
-| "How many agents does 0x... own?" | Run `erc-800claw owner 0x...` |
-| "Register my agent" | Run `erc-800claw register --name "Name"` (requires PRIVATE_KEY env var) |
-| "What networks are supported?" | Run `erc-800claw networks` |
-| "Show contract addresses" | Run `erc-800claw contracts` |
+| “查找代理 #123” | 运行 `erc-800claw agent 123` 以获取详细信息 |
+| “代理 42 存在吗？” | 运行 `erc-800claw exists 42` |
+| “0x... 拥有多少个代理？” | 运行 `erc-800claw owner 0x...` |
+| “注册我的代理” | 运行 `erc-800claw register --name “名称”`（需要 PRIVATE_KEY 环境变量） |
+| “支持哪些网络？” | 运行 `erc-800claw networks` |
+| “显示合约地址” | 运行 `erc-800claw contracts` |
 
-## CLI Commands
+## CLI 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `erc-800claw agent <id>` | Get agent details by ID |
-| `erc-800claw exists <id>` | Check if an agent exists |
-| `erc-800claw owner <address>` | Get agent count for an address |
-| `erc-800claw register` | Register a new agent (requires PRIVATE_KEY) |
-| `erc-800claw networks` | List supported networks |
-| `erc-800claw contracts [network]` | Show contract addresses |
+| `erc-800claw agent <id>` | 根据 ID 获取代理详细信息 |
+| `erc-800claw exists <id>` | 检查代理是否存在 |
+| `erc-800claw owner <address>` | 获取地址对应的代理数量 |
+| `erc-800claw register` | 注册新代理（需要 PRIVATE_KEY） |
+| `erc-800claw networks` | 列出支持的网络 |
+| `erc-800claw contracts [network]` | 显示指定网络的合约地址 |
 
-### CLI Options
+### CLI 选项
 
-- `--network, -n <name>` - Network to use (mainnet, sepolia). Default: mainnet
-- `--json, -j` - Output as JSON
+- `--network, -n <name>` - 使用的网络（mainnet, sepolia）。默认：mainnet |
+- `--json, -j` - 以 JSON 格式输出结果
 
-### Example CLI Output
+### CLI 示例输出
 
 ```bash
 $ erc-800claw agent 1
@@ -85,21 +83,20 @@ Tx:       0xabc123...
 Explorer: https://sepolia.etherscan.io/nft/0x8004.../42
 ```
 
-## How ERC-8004 Works
+## ERC-8004 的工作原理
 
-ERC-8004 provides three on-chain registries:
+ERC-8004 提供了三个链上注册表：
+1. **身份注册表**（ERC-721）：每个代理都会获得一个带有元数据 URI 的唯一 NFT 代币。
+2. **声誉注册表**：客户向代理提供的结构化反馈分数。
+3. **验证注册表**：通过 zkML、TEE、质押者等机制进行独立验证。
 
-1. **Identity Registry** (ERC-721) - Every agent gets a unique NFT token with metadata URI
-2. **Reputation Registry** - Structured feedback scores from clients to agents
-3. **Validation Registry** - Independent verification (zkML, TEE, stakers)
+操作流程：
+1. **注册**：创建一个包含名称/描述元数据的代理身份 NFT。
+2. **操作**：在与其他代理交互时使用代理的 ID。
+3. **建立声誉**：客户提供反馈，分数会在链上累积。
+4. **验证**（可选）：验证器对代理的能力进行认证。
 
-The flow:
-1. **Register** - Mint an agent identity NFT with name/description metadata
-2. **Operate** - Use your agent ID when interacting with other agents
-3. **Build Reputation** - Clients give feedback, scores accumulate on-chain
-4. **Verify** (optional) - Validators attest to capabilities
-
-## Using in Code
+## 在代码中使用
 
 ### Node.js / TypeScript
 ```javascript
@@ -185,9 +182,9 @@ client.give_feedback(
 )
 ```
 
-## Metadata Format
+## 元数据格式
 
-Agent metadata follows a standard schema:
+代理的元数据遵循以下标准格式：
 
 ```json
 {
@@ -205,64 +202,63 @@ Agent metadata follows a standard schema:
 }
 ```
 
-The SDK automatically encodes this as a data URI - no IPFS upload required.
+SDK 会自动将这些元数据编码为数据 URI——无需上传到 IPFS。
 
-## Integration with xClaw02
+## 与 xClaw02 的集成
 
-ERC-800Claw works with **xClaw02** (x402 payments) to enable paid agent services:
+ERC-800Claw 与 **xClaw02**（x402 支付系统）配合使用，以实现付费代理服务：
+1. 使用 ERC-800Claw 注册代理身份。
+2. 设置 xClaw02 的支付接收功能。
+3. 客户验证您的身份后支付服务费用，并对您进行评分。
 
-1. Register your agent identity with ERC-800Claw
-2. Set up payment receiving with xClaw02
-3. Clients verify your identity, pay for services, then rate you
+有关支付设置的详细信息，请参阅 **xClaw02** 技能文档。
 
-See the **xClaw02** skill for payment setup.
+## 支持的网络
 
-## Supported Networks
-
-| Network | Chain ID | Status |
+| 网络 | 链路 ID | 状态 |
 |---------|----------|--------|
-| Ethereum Mainnet | 1 | Live |
-| Sepolia Testnet | 11155111 | Live |
+| 以太坊主网 | 1 | 正在运行 |
+| Sepolia 测试网 | 11155111 | 正在运行 |
 
-## Contract Addresses
+## 合约地址
 
-### Mainnet
-- Identity Registry: `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
-- Reputation Registry: `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
+### 主网
+- 身份注册表：`0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+- 声誉注册表：`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
 
 ### Sepolia
-- Identity Registry: `0x8004A818BFB912233c491871b3d84c89A494BD9e`
-- Reputation Registry: `0x8004B663056A597Dffe9eCcC1965A193B7388713`
+- 身份注册表：`0x8004A818BFB912233c491871b3d84c89A494BD9e`
+- 声誉注册表：`0x8004B663056A597Dffe9eCcC1965A193B7388713`
 
-## Environment Variables
+## 环境变量
 
-| Variable | Format | Description |
+| 变量 | 格式 | 描述 |
 |----------|--------|-------------|
-| `PRIVATE_KEY` | `0x` + 64 hex chars | Wallet private key (required for registration/feedback) |
-| `ERC8004_NETWORK` | `mainnet`, `sepolia` | Default network (default: mainnet) |
-| `ERC8004_RPC_URL` | URL | Custom RPC endpoint |
+| `PRIVATE_KEY` | `0x` + 64 个十六进制字符 | 钱包私钥（注册/反馈所需） |
+| `ERC8004_NETWORK` | `mainnet`, `sepolia` | 默认网络（默认：mainnet） |
+| `ERC8004_RPC_URL` | URL | 自定义 RPC 端点 |
 
-## Error Handling
+## 错误处理
 
-| Error | Meaning | What to Do |
+| 错误 | 含义 | 处理方法 |
 |-------|---------|------------|
-| `Agent not found` | No agent with that ID | Verify the agent ID is correct |
-| `Agent already exists` | Token already minted | Each agent ID is unique |
-| `Not the owner` | Can't modify other's agents | Only owner can update agent metadata |
-| `Invalid address` | Malformed Ethereum address | Check address format (0x + 40 hex chars) |
+| `代理未找到` | 指定的代理 ID 不存在 | 请确认代理 ID 是否正确 |
+| 代理已存在 | 该代理的代币已被注册 | 每个代理 ID 都是唯一的 |
+| 无权修改代理信息 | 只有所有者才能更新代理的元数据 |
+| 地址无效 | 地址格式不正确（应为 `0x` + 40 个十六进制字符） |
 
-## Security Notes
+## 安全注意事项
 
-- **Never expose private keys** in logs, chat, or output
-- Use environment variables for wallet credentials
-- Agent registration costs gas - have ETH in your wallet
-- Private key format: `0x` followed by 64 hexadecimal characters
+- **切勿在日志、聊天记录或输出中泄露私钥**。
+- 使用环境变量来存储钱包凭证。
+- 注册代理需要消耗以太坊网络费用，请确保钱包中有足够的 ETH。
+- 私钥格式：`0x` 后跟 64 个十六进制字符。
 
-## Links
+## 链接
 
-- **ERC-8004 Protocol**: https://8004.org
-- **EIP-8004**: https://eips.ethereum.org/EIPS/eip-8004
-- **SDK (npm)**: https://npmjs.com/package/erc-800claw
-- **SDK (PyPI)**: https://pypi.org/project/erc-800claw
-- **GitHub**: https://github.com/primer-systems/ERC-8004
-- **Primer Systems**: https://primer.systems
+- **ERC-8004 协议**：https://8004.org
+- **EIP-8004**：https://eips.ethereum.org/EIPS/eip-8004
+- **SDK（Node.js）**：https://npmjs.com/package/erc-800claw
+- **SDK（Python）**：https://pypi.org/project/erc-800claw
+- **GitHub**：https://github.com/primer-systems/ERC-8004
+- **Primer Systems**：https://primer.systems

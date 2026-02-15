@@ -1,6 +1,6 @@
 ---
 name: slides-cog
-description: "Great slides need two things: content worth presenting and design worth looking at. #1 on DeepResearch Bench (Feb 2026) — CellCog researches and fills content mindfully from minimal prompts, no filler. State-of-the-art PDF generation for presentations, pitch decks, keynotes, and slideshows you can present as-is."
+description: "优秀的幻灯片需要具备两个要素：值得呈现的内容和吸引人的设计。#1 来自 DeepResearch Bench（2026 年 2 月）——CellCog 根据最少的提示来精心研究和填充内容，绝不使用任何填充内容。该工具能够生成用于演示文稿、提案资料、主题演讲和幻灯片展示的先进 PDF 文件，你可以直接使用这些文件进行展示。"
 metadata:
   openclaw:
     emoji: "📽️"
@@ -8,28 +8,28 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Slides Cog - Content Worth Presenting, Design Worth Looking At
+# Slides Cog – 有价值的内容，值得欣赏的设计
 
-**Great slides need two things: content worth presenting and design worth looking at.** CellCog takes both seriously.
+优秀的幻灯片需要具备两个要素：有价值的内容和令人赏心悦目的设计。CellCog非常重视这两点。
 
-- **Content:** #1 on DeepResearch Bench (Feb 2026) — your prompt can be minimal and CellCog will research and fill in the substance mindfully, not just pad slides with filler
-- **Design:** State-of-the-art PDF generation — we've invested heavily in making every slide presentation-ready, with layouts, typography, and visuals you can present as-is
+- **内容**：来自 DeepResearch Bench（2026年2月）的最新研究结果——您的提示可以非常简洁，CellCog 会认真研究并充实内容，而不会只是用填充物来凑数。
+- **设计**：采用最先进的 PDF 生成技术——我们投入了大量精力，确保每张幻灯片都具备完美的布局、排版和视觉效果，可以直接用于演示。
 
-Pitch decks, keynotes, board presentations, image slideshows — ready to present, not ready to fix.
+无论是产品推介稿、主题演讲还是董事会报告，CellCog 都能快速生成，无需再进行任何修改。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能文档**，以了解如何进行 SDK 设置。该文档会向您展示所有可能的功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -43,190 +43,172 @@ result = client.create_chat(
 
 ---
 
-## PDF is the Default (And the Future)
+## PDF 是默认且未来的选择
 
-**CellCog generates all presentations and slides as PDF by default.** No questions asked.
+**CellCog 默认生成所有演示文稿和幻灯片为 PDF 格式**，无需额外设置。
 
-### Why PDF?
+### 为什么选择 PDF？
 
-AI excels at generating complete, beautiful documents directly. PDF captures AI's full creative capability:
-- Full control over layout, typography, and design
-- Perfect rendering across all devices
-- Professional, polished results every time
-- Supports images, charts, complex layouts without compromise
+人工智能在直接生成完整、精美的文档方面表现出色。PDF 格式能够充分发挥 AI 的创造力：
+- 完全控制布局、排版和设计；
+- 在所有设备上都能呈现完美的效果；
+- 每次生成的文档都专业且精致；
+- 支持图片、图表和复杂的布局，且无需妥协。
 
-**PDF is the future of AI-generated documents.** The paradigm has shifted—AI generates finished products, not editable drafts.
+**PDF 是人工智能生成文档的未来趋势**。现在的人工智能生成的是成品，而非可编辑的草稿。
 
-### What About PPTX/DOCX?
+### PPTX/DOCX 格式呢？
 
-PPTX and DOCX formats were designed for humans to manually build documents with complex editing features. They constrain AI's creative output.
+PPTX 和 DOCX 是为人类设计的，用于手动创建具有复杂编辑功能的文档。这些格式限制了 AI 的创作能力。
 
-**If you absolutely need PPTX or DOCX:**
-- You must explicitly request it in your prompt: "Create this as PPTX" or "I need an editable DOCX"
-- Be aware that quality will be noticeably lower (~30-40% of PDF quality)
-- Consider: Generate PDF first, then use external tools to convert if editing is essential
+**如果您确实需要 PPTX 或 DOCX 格式：**
+- 请在提示中明确说明：“请以 PPTX 格式生成”或“我需要一个可编辑的 DOCX 文件”；
+- 请注意，其质量会比 PDF 低约 30-40%；
+- 建议先生成 PDF，如有编辑需求再使用外部工具进行转换。
 
-**We don't ask which format you want.** PDF is the answer. If you need something else, tell us upfront.
-
----
-
-## What Presentations You Can Create
-
-### Pitch Decks
-
-Investor and stakeholder presentations:
-
-- **Startup Pitch**: "Create a 12-slide pitch deck for a fintech startup disrupting small business lending"
-- **Investor Update**: "Build a quarterly investor update presentation covering metrics, milestones, and roadmap"
-- **Funding Ask**: "Create a Series A pitch deck for an AI healthcare company seeking $5M"
-
-### Business Presentations
-
-Corporate and professional presentations:
-
-- **Quarterly Business Review**: "Create a QBR presentation covering sales performance, challenges, and next quarter plans"
-- **Strategy Presentation**: "Build a strategic planning presentation for entering the European market"
-- **Board Deck**: "Create a board meeting presentation with financials, KPIs, and key decisions needed"
-- **Project Proposal**: "Build a project proposal presentation for implementing a new CRM system"
-
-### Sales Presentations
-
-Customer-facing decks:
-
-- **Product Demo Deck**: "Create a product demo presentation for our project management software"
-- **Capabilities Deck**: "Build a company capabilities presentation for enterprise sales"
-- **Case Study Presentation**: "Create a case study presentation showing how Client X achieved 3x ROI"
-- **Pricing Presentation**: "Build a pricing and packaging presentation for our three tiers"
-
-### Educational Presentations
-
-Teaching and training content:
-
-- **Course Slides**: "Create lecture slides for an introduction to machine learning"
-- **Training Deck**: "Build employee onboarding slides covering company culture and policies"
-- **Workshop Presentation**: "Create workshop slides for a design thinking session"
-- **Tutorial Slides**: "Build a step-by-step tutorial presentation for using Excel pivot tables"
-
-### Event Presentations
-
-Conferences and special events:
-
-- **Keynote**: "Create a keynote presentation on the future of artificial intelligence"
-- **Conference Talk**: "Build a 20-minute conference presentation on scaling engineering teams"
-- **All-Hands**: "Create an all-hands meeting presentation covering company updates and wins"
-- **Product Launch**: "Build a product launch presentation for unveiling our new feature"
-
-### Image Slideshows
-
-Visual storytelling with images:
-
-- **Portfolio Slideshow**: "Create a photography portfolio slideshow with minimal text"
-- **Travel Presentation**: "Build a vacation recap slideshow with photos and captions"
-- **Event Highlights**: "Create an event highlight slideshow from conference photos"
-- **Visual Story**: "Build a brand story slideshow using images and minimal text"
+**我们不会询问您希望使用哪种格式**。PDF 是最佳选择。如果您有其他需求，请提前告知我们。
 
 ---
 
-## Presentation Features
+## 可制作的演示文稿类型
 
-CellCog presentations can include:
+### 产品推介稿
 
-| Element | Description |
+- **针对投资者的推介稿**：
+  - 为一家颠覆小型企业贷款服务的金融科技初创公司制作 12 张幻灯片的推介稿；
+  - 为投资者制作季度更新报告，涵盖关键指标、里程碑和路线图；
+  - 为一家寻求 500 万美元融资的 AI 医疗健康公司制作 A 轮融资推介稿。
+
+### 商业演示文稿
+
+- **季度业务回顾**：
+  - 制作季度业务回顾报告，涵盖销售业绩、面临的挑战和下一季度的计划；
+  - 制作进入欧洲市场的战略规划演示文稿；
+  - 为董事会会议制作包含财务数据、关键绩效指标和所需决策的演示文稿；
+  - 为实施新 CRM 系统的项目制作提案演示文稿。
+
+### 销售演示文稿
+
+- **面向客户的演示文稿**：
+  - 为我们的项目管理软件制作产品演示文稿；
+  - 为企业销售团队制作公司能力介绍演示文稿；
+  - 通过案例研究展示客户 X 如何实现 3 倍的投资回报率；
+  - 为我们的产品定价和包装策略制作演示文稿。
+
+### 教育演示文稿
+
+- **教学和培训材料**：
+  - 为机器学习入门课程制作讲座幻灯片；
+  - 为员工入职培训制作涵盖公司文化和政策的演示文稿；
+  - 为设计思维工作坊制作演示文稿；
+  - 为 Excel 数据透视表的使用制作逐步教程演示文稿。
+
+### 活动演示文稿
+
+- **会议和特别活动**：
+  - 制作关于人工智能未来的主题演讲；
+  - 制作 20 分钟的会议演讲，介绍工程团队的扩展策略；
+  - 为全体员工会议制作包含公司更新和成果的演示文稿；
+  - 为新产品发布制作演示文稿。
+
+### 图片幻灯片展示
+
+- **使用图片进行视觉叙事**：
+  - 制作摄影作品集幻灯片，文字极少；
+  - 制作旅行回顾幻灯片，包含照片和文字说明；
+  - 从会议照片中提取亮点制作活动回顾幻灯片；
+  - 使用图片和简洁文字制作品牌故事幻灯片。
+
+---
+
+## 演示文稿的功能
+
+CellCog 生成的演示文稿可以包含以下元素：
+
+| 元素 | 描述 |
 |---------|-------------|
-| **Title Slides** | Bold, impactful opening slides |
-| **Content Slides** | Text, bullets, and layouts |
-| **Charts & Graphs** | Bar, line, pie, and more |
-| **Images** | AI-generated or placeholder for your images |
-| **Data Tables** | Clean, formatted tables |
-| **Timelines** | Visual timelines and roadmaps |
-| **Comparison Slides** | Side-by-side comparisons |
-| **Quote Slides** | Testimonials and callouts |
+| **标题页** | 突出显示的标题页 |
+| **内容页** | 文本、项目符号和布局 |
+| **图表与图形** | 条形图、折线图、饼图等 |
+| **图片** | 由 AI 生成的图片或供您替换的占位图片 |
+| **数据表格** | 清晰格式化的表格 |
+| **时间线** | 可视化的时间线和路线图 |
+| **对比页** | 并排展示的对比内容 |
+| **引用页** | 客户评价和重点信息 |
 
 ---
 
-## Output Format Summary
+## 输出格式概览
 
-| Format | Quality | When to Use |
+| 格式 | 质量 | 适用场景 |
 |--------|---------|-------------|
-| **PDF** | ⭐⭐⭐⭐⭐ Excellent | **Default for everything** |
-| **Interactive HTML** | ⭐⭐⭐⭐ Great | Web-based presentations, internal tools |
-| **PPTX** | ⭐⭐ Limited | Only when explicitly requested AND editing in PowerPoint is absolutely required |
+| **PDF** | ⭐⭐⭐⭐⭐ | 所有场景的默认格式 |
+| **交互式 HTML** | ⭐⭐⭐⭐ | 适用于基于 Web 的演示或内部工具 |
+| **PPTX** | ⭐⭐ | 仅在明确要求且必须在 PowerPoint 中编辑时使用 |
 
 ---
 
-## Chat Mode for Presentations
+## 演示文稿的生成模式
 
-| Scenario | Recommended Mode |
+| 演示文稿类型 | 推荐的生成模式 |
 |----------|------------------|
-| Standard decks, educational slides, image slideshows, training materials | `"agent"` |
-| Investor pitch decks, board presentations, keynotes requiring narrative craft | `"agent team"` |
+| 标准演示文稿、教育类幻灯片、图片幻灯片、培训材料 | 使用 “agent” 模式 |
+| 需要叙事技巧的投资者推介稿、董事会演示文稿、主题演讲 | 使用 “agent team” 模式 |
 
-**Use `"agent"` for most presentations.** Standard business decks, training materials, and informational slides execute well in agent mode.
+**大多数情况下，建议使用 “agent” 模式**。标准商业演示文稿、培训材料和信息类幻灯片使用 “agent” 模式效果最佳。
 
-**Use `"agent team"` for high-stakes presentations** where narrative flow, persuasion, and multi-angle thinking matter—investor pitches, board decks, conference keynotes where every slide needs to build a compelling story.
-
----
-
-## Example Presentation Prompts
-
-**Startup pitch deck:**
-> "Create a 12-slide Series A pitch deck for 'DataSync' - a B2B SaaS company that helps enterprises sync data across cloud applications.
-> 
-> Include slides for: Problem, Solution, Product Demo, Market Size, Business Model, Traction, Team, Competition, Go-to-Market, Financials, Ask, Contact.
-> 
-> Key metrics: $50K MRR, 30 customers, 15% MoM growth, seeking $5M for expansion.
-> 
-> Modern, professional design. Blue and white color scheme."
-
-**Quarterly business review:**
-> "Create a QBR presentation for Q4 2025:
-> 
-> 1. Executive Summary
-> 2. Revenue Performance (hit 95% of target)
-> 3. Customer Metrics (NPS improved to 72)
-> 4. Key Wins (3 enterprise deals closed)
-> 5. Challenges (churn increased in SMB segment)
-> 6. Q1 2026 Priorities
-> 7. Resource Asks
-> 
-> Include relevant charts. Corporate professional style."
-
-**Educational slides:**
-> "Create a 15-slide presentation for teaching 'Introduction to Python Programming':
-> 
-> 1. What is Python?
-> 2. Why Learn Python?
-> 3. Setting Up Your Environment
-> 4. Variables and Data Types
-> 5. Basic Operations
-> 6. Strings
-> 7. Lists
-> 8. Conditionals (if/else)
-> 9. Loops
-> 10. Functions
-> 11. Simple Project: Calculator
-> 12. Resources for Learning More
-> 
-> Beginner-friendly, include code examples, clean modern design."
-
-**Image slideshow:**
-> "Create a visual slideshow presentation showcasing 10 images of modern architecture around the world. Each slide should have: one stunning building image, the building name, location, and architect. Minimal text, maximum visual impact. Generate the images."
-
-**Explicitly requesting PPTX (only when necessary):**
-> "Create a 10-slide sales deck as PPTX (I need to edit it in PowerPoint). Note: I understand PDF quality is better, but I need the editable format for my team's workflow."
+**对于需要流畅叙事、具有说服力以及多角度思考的演示文稿（如投资者推介稿、董事会演示文稿、会议主题演讲），请使用 “agent team” 模式**——因为这些场景需要每张幻灯片都能构建一个引人入胜的故事。
 
 ---
 
-## Tips for Better Presentations
+## 演示文稿示例提示
 
-1. **Specify slide count**: "10-12 slides" helps scope appropriately. Pitch decks are typically 10-15 slides. Training can be 20-30.
+**初创公司推介稿：**
+> “为 B2B SaaS 公司 ‘DataSync’ 制作 12 张幻灯片的 A 轮融资推介稿，该公司帮助企业实现跨云应用的数据同步。
+  - 包括以下内容：问题、解决方案、产品演示、市场规模、商业模式、市场表现、团队情况、竞争分析、市场策略、财务数据、融资需求和联系方式。
+  - 关键指标：每月 5 万美元的经常性收入（MRR）、30 客户、每月 15% 的增长率，寻求 500 万美元的融资。
+  - 设计风格：现代感强，采用蓝白色配色方案。”
 
-2. **List the slides you want**: Even a rough outline helps. "Include: Problem, Solution, Market, Team, Ask."
+**季度业务回顾：**
+> “为 2025 年第四季度制作季度业务回顾报告：
+  - 1. 执行摘要；
+  - 收入表现（达到目标的 95%）；
+  - 客户指标（净推荐值提升至 72%）；
+  - 重要成果（达成 3 笔企业交易）；
+  - 面临的挑战（中小企业客户流失率增加）；
+  - 2026 年第一季度的优先事项；
+  - 资源需求。
+  - 包含相关图表，采用专业的企业风格。”
 
-3. **Provide key content**: Actual metrics, quotes, and facts make better slides than placeholders.
+**教育类幻灯片：**
+> “为 Python 编程入门课程制作 15 张幻灯片的演示文稿：
+  - 1. 什么是 Python？
+  - 2. 为什么学习 Python？
+  - 3. 环境设置；
+  - 4. 变量和数据类型；
+  - 5. 基本操作；
+  - 6. 字符串；
+  - 7. 列表；
+  - 8. 条件语句（if/else）；
+  - 9. 循环；
+  - 10. 函数；
+  - 11. 简单项目：计算器示例；
+  - 12. 学习资源。
+  - 适合初学者的内容，包含代码示例，设计简洁现代。”
 
-4. **Design direction**: "Minimal and modern", "Corporate professional", "Bold and colorful", specific colors.
+**图片幻灯片展示：**
+> “制作一个展示世界各地现代建筑的 10 张图片幻灯片。每张幻灯片应包含：一座建筑的精美图片、建筑名称、位置和建筑师信息。文字极少，注重视觉效果。”
 
-5. **Mention the audience**: "For investors", "For technical team", "For executives" changes tone and detail level.
+**明确要求使用 PPTX 格式（仅在必要时）：**
+> “请以 PPTX 格式制作 10 张销售演示文稿（我需要在 PowerPoint 中进行编辑）。请注意，虽然 PDF 的质量更高，但我需要可编辑的格式以便团队使用。”
 
-6. **Trust PDF**: It's the default for a reason. Only request PPTX/DOCX if you truly need to edit the file afterward.
+---
+
+## 提高演示文稿质量的技巧
+
+1. **指定幻灯片数量**：指定“10-12 张”有助于合理规划内容。推介稿通常为 10-15 张；培训材料可能需要 20-30 张。
+2. **列出您需要的幻灯片内容**：即使是一个粗略的提纲也有帮助。例如：“包括：问题、解决方案、市场分析、团队介绍、融资需求”。
+3. **提供关键内容**：使用实际的数据、引用和事实，比使用占位符更能提升幻灯片的质量。
+4. **设计方向**：可以选择“简洁现代”、“企业专业风格”或“色彩鲜明”的设计风格。
+5. **明确目标受众**：根据受众的不同（投资者、技术团队或高管），调整内容和细节的呈现方式。
+6. **优先选择 PDF**：PDF 是默认格式，有其独特的优势。只有在确实需要后期编辑时才选择 PPTX/DOCX 格式。

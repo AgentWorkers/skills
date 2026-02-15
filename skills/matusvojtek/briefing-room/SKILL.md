@@ -1,6 +1,7 @@
 ---
 name: Briefing Room
-description: "Daily news briefing generator — produces a conversational radio-host-style audio briefing + DOCX document covering weather, X/Twitter trends, web trends, world news, politics, tech, local news, sports, markets, and crypto. macOS only (uses Apple TTS and afplay). Use when user asks for a news briefing, morning briefing, daily update, or similar."
+description: "**每日新闻简报生成器**  
+该工具可生成以广播主持人风格进行的音频简报，并附带相应的 DOCX 文档，内容涵盖天气、社交媒体（X/Twitter）趋势、网络热点、世界新闻、政治、科技、本地新闻、体育、市场动态以及加密货币信息。仅支持 macOS 系统（使用 Apple 的 TTS 语音合成技术和 afplay 播放器）。适用于用户请求新闻简报、晨间更新或类似需求的情况。"
 metadata:
   {
     "openclaw":
@@ -11,52 +12,50 @@ metadata:
   }
 ---
 
-# Briefing Room 📻
+# 简报室 📻
 
-**Your personal daily news briefing — audio + document.**
+**您的个人每日新闻简报 — 音频 + 文档形式。**
 
-On demand, research and compose a comprehensive ~10 minute news briefing in a conversational radio-host style. Output: audio file (MP3) + formatted document (DOCX).
+根据需求，您可以研究并制作一份约10分钟的综合性新闻简报，采用对话式广播主持人的风格。输出形式为：音频文件（MP3格式）+ 格式化的文档（DOCX格式）。
 
-### 💸 100% Free
+### 💸 100% 免费
 
-- **No subscriptions, API keys, or paid services**
-- Uses free public APIs (Open-Meteo weather, Coinbase prices, Google Trends RSS), web search, and local TTS
-- TTS is fully local, no keys needed: MLX-Audio Kokoro (English) or Apple `say` (any language)
-- Reads/writes: `~/.briefing-room/config.json` (settings) and `~/Documents/Briefing Room/` (output)
+- **无需订阅、API密钥或付费服务**
+- 使用免费的公共API（Open-Meteo天气数据、Coinbase价格信息、Google Trends RSS源）、网络搜索以及本地文本转语音（TTS）服务
+- 文本转语音功能完全基于本地资源，无需额外密钥：支持MLX-Audio Kokoro（英语版本）或Apple的`say`功能（支持多种语言）
+- 配置文件：`~/.briefing-room/config.json`；输出文件保存路径：`~/Documents/Briefing Room/`
 
-## First-Run Setup
+## 首次使用设置
 
-On first use, check if `~/.briefing-room/config.json` exists. If not, run:
+首次使用时，请检查`~/.briefing-room/config.json`文件是否存在。如果不存在，请运行以下命令：
 
 ```bash
 python3 SKILL_DIR/scripts/config.py init
 ```
 
-This creates default config. The user can customize:
-- **Location** — city, latitude, longitude, timezone (for weather)
-- **Language** — `en`, `sk`, `de`, etc.
-- **Voices** — per-language TTS engine and voice selection
-- **Sections** — which news sections to include
-- **Output folder** — where briefings are saved
+该命令会生成默认配置文件。用户可以自定义以下内容：
+- **位置**：城市名称、纬度、经度、时区（用于获取天气信息）
+- **语言**：`en`（英语）、`sk`（斯洛伐克语）等
+- **语音**：对应语言的文本转语音引擎及语音选择
+- **包含的新闻板块**：需要展示的新闻板块
+- **输出文件夹**：简报文件的保存路径
 
-Show setup status:
+查看设置状态：
 ```bash
 python3 SKILL_DIR/scripts/config.py status
 ```
 
-## Quick Start
+## 快速启动
 
-When user asks for a briefing (e.g. "give me a briefing", "morning update", "what's happening today"):
+当用户请求简报时（例如：“给我一份简报”、“早上更新”、“今天发生了什么”），系统将执行以下操作：
+1. 检查配置文件是否存在（如果不存在则执行设置脚本）
+2. 播放通知音效：`afplay /System/Library/Sounds/Blow.aiff`
+3. 立即启动一个子代理来执行整个简报生成流程
+4. 回复用户：“📻 简报室正在准备中——正在收集今天的新闻。准备完成后会通知您！”
 
-1. Check config exists (run setup if not)
-2. Play notification sound: `afplay /System/Library/Sounds/Blow.aiff &`
-3. Spawn a sub-agent with the full pipeline task **immediately**
-4. Reply: "📻 Briefing Room is firing up — gathering today's news. I'll ping you when it's ready!"
-5. **DO NOT BLOCK** — spawn and move on instantly
+**语言切换：** 如果用户请求使用其他语言（如“用斯洛伐克语”、“用德语”等），请将语言信息传递给子代理。系统会自动选择macOS支持的语言；代理会使用相应语言编写脚本，并通过TTS引擎选择合适的语音。
 
-**Language override:** If user says "po slovensky", "v slovenčine", "auf deutsch", "en français", etc. → pass that to the sub-agent. Otherwise use the configured default language. Any language macOS supports will work — the agent writes the script in that language and TTS auto-detects a matching voice.
-
-### Spawn Command
+### 启动命令
 
 ```
 sessions_spawn(
@@ -67,22 +66,22 @@ sessions_spawn(
 )
 ```
 
-The task message should include ALL the pipeline steps below so the sub-agent is fully self-contained. **Replace all `SKILL_DIR` references with the actual absolute path to this skill's directory.**
+该命令包含了简报生成过程中的所有步骤，确保子代理能够独立完成任务。请将`SKILL_DIR`替换为该技能的实际目录路径。
 
-**Host name:** Read `host.name` from config. If empty, use your own agent name (from your identity). Pass it to the sub-agent as the radio host name (e.g. "Good morning, I'm Jackie, and this is your Briefing Room...").
+**广播主持人名称：** 从配置文件`host.name`中读取主持人名称；如果文件为空，则使用用户的身份信息中的名称。该名称将用于简报中的广播主持人口白（例如：“早上好，我是Jackie，这是您的简报室……”）
 
-## Configuration
+## 配置文件
 
-Config file: `~/.briefing-room/config.json`
+配置文件路径：`~/.briefing-room/config.json`
 
-Read values:
+**读取配置值：**  
 ```bash
 python3 SKILL_DIR/scripts/config.py get location.city
 python3 SKILL_DIR/scripts/config.py get language
 python3 SKILL_DIR/scripts/config.py get voices.en.mlx_voice
 ```
 
-Set values:
+**设置配置值：**  
 ```bash
 python3 SKILL_DIR/scripts/config.py set location.city "Vienna"
 python3 SKILL_DIR/scripts/config.py set location.latitude 48.21
@@ -90,27 +89,27 @@ python3 SKILL_DIR/scripts/config.py set location.longitude 16.37
 python3 SKILL_DIR/scripts/config.py set language "de"
 ```
 
-### Key Config Options
+### 主要配置选项
 
-| Key | Default | Description |
-|-----|---------|-------------|
-| `location.city` | Bratislava | City name for weather + local news |
-| `location.latitude` | 48.15 | Weather API latitude |
-| `location.longitude` | 17.11 | Weather API longitude |
-| `location.timezone` | Europe/Bratislava | Timezone for weather API |
-| `language` | en | Default briefing language |
-| `output.folder` | ~/Documents/Briefing Room | Output directory |
-| `audio.enabled` | true | Generate audio |
-| `audio.format` | mp3 | Audio format (mp3, wav, aiff) |
-| `audio.tts_engine` | auto | TTS engine (auto, mlx, kokoro, builtin) |
-| `sections` | all 11 (see below) | Which sections to include |
-| `host.name` | (empty = agent name) | Radio host name for the briefing |
-| `trends.regions` | united-states,united-kingdom, | X/Twitter trend regions (comma-separated, trailing comma = worldwide) |
-| `webtrends.regions` | US,GB, | Google Trends regions (ISO codes, trailing comma = worldwide) |
+| 配置项 | 默认值 | 说明 |
+|---------|---------|-------------|
+| `location.city` | Bratislava | 用于获取天气和本地新闻的城市名称 |
+| `location.latitude` | 48.15 | 天气API的纬度值 |
+| `location.longitude` | 17.11 | 天气API的经度值 |
+| `location.timezone` | Europe/Bratislava | 天气API的时区 |
+| `language` | en | 默认简报语言 |
+| `output_folder` | ~/Documents/Briefing Room | 简报文件的输出目录 |
+| `audio.enabled` | true | 是否生成音频 |
+| `audio.format` | mp3 | 音频格式（支持mp3、wav、aiff） |
+| `audio.tts_engine` | auto | 文本转语音引擎（自动选择：mlx、kokoro或内置引擎） |
+| `sections` | all 11 | 需要包含的新闻板块 |
+| `host.name` | （空值时使用代理名称） | 简报中的广播主持人名称 |
+| `trends.regions` | united-states,united-kingdom | X/Twitter的趋势地区（用逗号分隔，末尾加逗号表示“全球”） |
+| `webtrends.regions` | US,GB | Google Trends的地区（使用ISO代码，末尾加逗号表示“全球” |
 
-### Voice Configuration Per Language
+### 各语言的语音配置
 
-Each language can have its own TTS engine and voice:
+每种语言都可以配置独立的文本转语音引擎和语音：
 
 ```json
 {
@@ -136,25 +135,19 @@ Each language can have its own TTS engine and voice:
 }
 ```
 
-**Engine priority (when `auto`):**
-- English: mlx → kokoro → builtin
-- Other languages: builtin (Apple TTS has good multilingual voices)
+**引擎优先级（当设置为`auto`时）：**
+- 英语：mlx → kokoro → 内置引擎
+- 其他语言：使用Apple内置的TTS引擎（支持多种语言）
 
-Users can add any language by adding a voices entry + a matching `builtin_voice` from `say -v '?'`.
+用户可以通过添加`voices`条目及相应的`builtin_voice`来支持更多语言（使用命令`say -v ?`查询可用的语音）。
 
-## Output Structure
+## 输出文件结构
 
-```
-~/Documents/Briefing Room/YYYY-MM-DD/
-├── briefing-YYYY-MM-DD-HHMM.docx    # Formatted document
-└── briefing-YYYY-MM-DD-HHMM.mp3     # Audio briefing (~10 min)
-```
+**请勿将`.md`格式的临时文件保存在输出文件夹中**。请使用`/tmp/`作为临时工作文件夹，并使用完成后删除该文件。
 
-**Do NOT save the .md working file in the output folder.** Use `/tmp/` for working files, delete after.
+## 完整的简报生成流程
 
-## Full Pipeline
-
-### Step 0: Setup
+### 第0步：设置
 
 ```bash
 # Read config
@@ -171,9 +164,9 @@ OUTPUT_DIR="$OUTPUT_FOLDER/$DATE"
 mkdir -p "$OUTPUT_DIR"
 ```
 
-### Step 1: Gather Data — Weather
+### 第1步：获取天气数据
 
-Use the configured location coordinates:
+使用配置的位置坐标：
 
 ```bash
 # Current weather
@@ -192,86 +185,81 @@ curl -s "$BASE?latitude=$LAT&longitude=$LON\
 &daily=$DAILY&timezone=$TZ_ENC"
 ```
 
-Or use the helper: `bash SKILL_DIR/scripts/briefing.sh weather`
+或者使用辅助脚本`bash SKILL_DIR/scripts/briefing.sh weather`来获取天气信息。
 
-Map `weather_code` to descriptions:
-- 0: Clear sky ☀️
-- 1-3: Partly cloudy ⛅
-- 45-48: Fog 🌫️
-- 51-55: Drizzle 🌦️
-- 61-65: Rain 🌧️
-- 71-75: Snow ❄️
-- 80-82: Rain showers 🌦️
-- 95-99: Thunderstorm ⛈️
+将`weather_code`与对应的天气描述关联：
+- 0：晴朗 ☀️
+- 1-3：多云 ⛅
+- 45-48：有雾 🌫️
+- 51-55：小雨 🌦️
+- 61-65：中雨 🌧️
+- 71-75：大雪 ❄️
+- 80-82：阵雨 🌦️
+- 95-99：雷暴 ⛈️
 
-### Step 2: Gather Data — News (Web Search)
+### 第2步：获取新闻数据（网络搜索）
 
-Use `web_search` tool for each section. Add current date to queries for freshness. Use the configured `$CITY` for local news.
+使用`web_search`工具为每个新闻板块获取内容。在查询中加入当前日期以确保信息的时效性。使用配置的`$CITY`参数来获取本地新闻。
 
-**X/Twitter Trends (from getdaytrends.com — real-time, no API key):**
+**X/Twitter趋势数据（来自getdaytrends.com — 实时数据，无需API密钥）：**
 ```bash
 bash SKILL_DIR/scripts/briefing.sh trends
 ```
-This fetches top 25 trends from US, UK, and Worldwide. Use the output to:
-- Identify the most interesting/newsworthy trends (skip generic ones like "Good Tuesday", "Taco Tuesday")
-- Filter out non-Latin script trends unless they're globally significant
-- Pick ~5-10 trends that overlap across regions or seem newsworthy
-- Use `web_search` to get context on the top trends you selected
+该脚本会获取美国、英国和全球的热门趋势。根据这些数据：
+- 筛选出最有趣或具有新闻价值的趋势（忽略如“美好星期二”之类的通用主题）
+- 仅选择具有全球影响力的趋势
+- 选择5-10个在多个地区都有体现或具有新闻价值的趋势
+- 使用`web_search`工具获取所选趋势的详细背景信息
 
-**Web Trends (from Google Trends RSS — what people are searching):**
+**Google Trends数据（来自RSS源）：**
 ```bash
 bash SKILL_DIR/scripts/briefing.sh webtrends
 ```
-This fetches trending Google searches from US, UK, and Worldwide with:
-- Search term and approximate traffic volume
-- Top news headline explaining why it's trending
-Use this data for the Web Trends section. The headlines already provide context — no extra searching needed for most items.
+该脚本会获取美国、英国和全球的热门搜索词及搜索量信息
+- 使用这些数据生成“网络趋势”板块的内容；大多数搜索词本身已经包含了足够的背景信息
 
-**World News:**
+**全球新闻：**
 ```
 web_search("top world news today {date}", count=8)
 web_search("breaking news today", count=5)
 ```
 
-**Politics:**
+**政治新闻：**
 ```
 web_search("US politics news today {date}", count=5)
 web_search("EU politics news today {date}", count=5)
 web_search("geopolitics news today", count=5)
 ```
 
-**⚠️ Source diversity:** All sources have bias. For balanced reporting:
-- Search the same story with different framing
-- Present what happened factually, note what each side says
-- Don't adopt any outlet's framing as truth
-- Stick to verifiable facts: numbers, dates, quotes, actions
+**⚠️ 注意：** 所有新闻来源都可能存在偏见。为了保持报道的客观性：
+- 用不同的视角报道同一事件
+- 客观呈现事实，同时引用各方的观点
+- 不要盲目接受任何媒体的观点
+- 仅引用可验证的事实：数字、日期、引文、具体事件
 
-**Tech & AI:**
+**科技与人工智能：**
 ```
 web_search("tech news today {date}", count=5)
 web_search("AI artificial intelligence news today {date}", count=5)
 ```
 
-**Local news** (based on configured city):
+**本地新闻**（基于配置的城市）：
 ```
 web_search("$CITY news today {date}", count=5)
 ```
-Also search in the configured language if not English:
+
+如果配置的语言不是英语，也可以使用相应的语言进行搜索：
 ```
 web_search("$CITY [news today] in $LANG {date}", count=5)
 ```
-Examples:
-- Slovak: `"Bratislava správy dnes"`
-- German: `"Wien Nachrichten heute"`
-- Czech: `"Praha zprávy dnes"`
 
-**Sports:**
+**体育新闻：**
 ```
 web_search("sports news today {date}", count=5)
 web_search("football soccer results today", count=5)
 ```
 
-### Step 3: Gather Data — Markets & Crypto (APIs + Search)
+### 第3步：获取市场与加密货币数据（通过API和网络搜索）
 
 ```bash
 # Or use helper:
@@ -292,55 +280,53 @@ web_search("gold price silver price today", count=3)
 web_search("crypto market today {date}", count=5)
 ```
 
-### Step 4: Compose the Briefing Script
+### 第4步：编写简报脚本
 
-Write as a **conversational radio-host monologue**.
+以对话式广播主持人的风格撰写简报内容：
 
-**Style guidelines:**
-- Write like a smart, engaging radio host — NOT a list of headlines
-- **Use the host name** — introduce yourself: "Good morning, I'm [host name], and this is your Briefing Room for [date]..."
-- Sprinkle the name naturally throughout (sign-off, transitions) — don't overdo it
-- Do NOT start markdown with a `# Title` header — pandoc adds title from metadata
-- Connect stories with transitions
-- Add context: "here's why this matters"
-- **Stay neutral and balanced** — report facts, present sides, let listener decide
-- Target ~2,500-3,500 words for ~10 minutes
-- No emojis in the script (break TTS)
-- Write out numbers/abbreviations for TTS:
-  - "$96,500" → "ninety-six thousand five hundred dollars"
-  - "S&P 500" → "S and P 500"
-  - "BTC" → "Bitcoin"
-  - "°C" → "degrees celsius"
+- 语言风格要像一位聪明、引人入胜的广播主持人
+- 自我介绍时使用广播主持人名称（例如：“早上好，我是[主持人名称]，这是您的[日期]简报室……”）
+- 在脚本中自然地使用主持人名称（在结尾和过渡句中）
+- 不要在Markdown文件中使用`# 标题`格式——pandoc会从元数据中自动添加标题
+- 使用过渡语句连接各个新闻板块
+- 添加背景解释：“这是为什么这条新闻重要的原因”
+- 保持中立和客观的报道态度
+- 保持文章长度在2500-3500字左右（约10分钟）
+- 脚本中不要使用表情符号（以免影响TTS播放）
+- 为TTS方便阅读，将数字和缩写写成文字形式：
+  - “$96,500” → “九万六千五百美元”
+  - “S&P 500” → “标准普尔500指数”
+  - “BTC” → “比特币”
+  - “°C” → “摄氏度”
 
-**If language is not English**, write the entire script in that language.
+**如果使用非英语语言，** 请将整个脚本翻译成相应语言。
 
-**Section order:**
-1. **Opening** — Date, quick teaser of top stories
-2. **Weather** — Current + week outlook for configured city
-3. **Trending on X** — What's hot on X/Twitter
-4. **Web Trends** — What people are searching (Google Trends)
-5. **World** — Top 3-5 global stories
-6. **Politics** — US, EU, geopolitics
-7. **Tech & AI** — Launches, breakthroughs
-8. **Local** — News for configured city/country
-9. **Sports** — Headlines, results
-10. **Markets** — S&P 500, Dow, Nasdaq, movers
-11. **Crypto & Commodities** — BTC, ETH, alts, gold, silver
-12. **This Day in History** — 1-2 interesting events that happened on this date
-13. **Closing** — Wrap-up, sign-off
+**新闻板块顺序：**
+1. **开场**：日期、热门新闻的简要介绍
+2. **天气**：当前天气及未来一周的天气预报
+3. **X/Twitter趋势**：X/Twitter上的热门话题
+4. **全球趋势**：用户搜索的热门内容
+5. **政治新闻**：美国、欧盟的政治动态
+6. **科技与人工智能**：最新的科技进展和突破
+7. **本地新闻**：配置城市的本地新闻
+8. **体育新闻**：体育赛事的头条和结果
+9. **市场动态**：标准普尔500指数、道琼斯指数、纳斯达克指数的表现
+10. **加密货币与商品**：比特币、以太坊、其他加密货币的价格及黄金、白银的价格
+11. **今日历史**：当天发生的1-2件有趣或值得关注的事件
+12. **结尾**：总结语和告别语
 
-**This Day in History:** No research needed — use your own knowledge. Pick 1-2 interesting, surprising, or fun events that happened on today's date. Mix it up: science, culture, politics, weird stuff. Keep it conversational: "And before I let you go — did you know that on this day in 1996..."
+**今日历史**：无需额外研究——可以根据自己的知识选择1-2件有趣、具有历史意义或有趣的事件。内容可以涵盖科学、文化、政治等领域。保持对话式的表达方式：“在结束之前，您知道吗……”
 
-Only include sections from the configured `sections` list. Skip sections the user has removed.
+请仅包含配置文件中指定的新闻板块。如果用户已移除了某些板块，请跳过这些板块。
 
-Save as `/tmp/briefing_draft_$TIMESTAMP.md` (working file).
+将临时脚本文件保存为`/tmp/briefing_draft_$TIMESTAMP.md`。
 
-**For the markdown**, include:
-- Section headers with emojis: `## 🌤️ Weather`, `## 🌍 World`, `## 📜 This Day in History`, etc.
-- Source links after key facts
-- Key data in bold
+**Markdown格式要求：**
+- 使用表情符号作为板块标题（例如：`## 🌤️ 天气`, ## 🌍 全球新闻`, ## 📜 今日历史`）
+- 关键信息后需附上来源链接
+- 重要数据需加粗显示
 
-### Step 5: Generate DOCX
+### 第5步：生成DOCX文档
 
 ```bash
 pandoc "/tmp/briefing_draft_$TIMESTAMP.md" \
@@ -348,19 +334,20 @@ pandoc "/tmp/briefing_draft_$TIMESTAMP.md" \
   --metadata title="Briefing Room - $DATE"
 ```
 
-If pandoc is not available, skip DOCX and note it.
+如果系统没有安装pandoc工具，可以跳过DOCX生成步骤。
 
-### Step 6: Generate Audio
+### 第6步：生成音频文件
 
-Read the config to determine TTS engine and voice for the current language.
+根据配置文件确定当前语言对应的文本转语音引擎和语音资源。
 
-**MLX-Audio (English, or if configured for language):**
-
+**使用MLX-Audio（英语）：**
 ```bash
 python3 SKILL_DIR/scripts/config.py get voices.$LANG.engine
 # → if "mlx":
 ```
 
+**使用Apple内置的TTS（支持多种语言）：**
+如果未配置相应语言的语音资源，系统会自动选择默认的语音引擎：
 ```python
 import os, re, glob, json, subprocess
 from datetime import datetime
@@ -418,39 +405,10 @@ python_bin = os.path.join(mlx_path, ".venv/bin/python3")
 # ... generate_audio call with resolved voice, speed, lang_code
 ```
 
-**Built-in Apple TTS (any language):**
+**备用方案：Kokoro PyTorch**
+Kokoro使用PyTorch作为后端；详情请参考TubeScribe技能文档。
 
-If there's no voice configured for the language, auto-detect one:
-```bash
-# Try to get configured voice, fall back to auto-detect
-VOICE=$(python3 SKILL_DIR/scripts/config.py get voices.$LANG.builtin_voice)
-if [ "$VOICE" = "None" ] || [ -z "$VOICE" ]; then
-    # Auto-detect: match locale (e.g. sk_SK, de_DE, fr_FR)
-    # Prefer Enhanced/Premium voices, fall back to any
-    VOICE=$(say -v '?' | grep "${LANG}_" \
-      | grep -i "Enhanced\|Premium" | head -1 \
-      | sed 's/ *[a-z][a-z]_[A-Z][A-Z].*//' | xargs)
-    [ -z "$VOICE" ] && VOICE=$(say -v '?' \
-      | grep "${LANG}_" | head -1 \
-      | sed 's/ *[a-z][a-z]_[A-Z][A-Z].*//' | xargs)
-fi
-RATE=$(python3 SKILL_DIR/scripts/config.py get voices.$LANG.builtin_rate)
-# Strip markdown for TTS
-DRAFT="/tmp/briefing_draft_$TIMESTAMP.md"
-TTS_TXT="/tmp/briefing_tts_$TIMESTAMP.txt"
-sed -E 's/#+//g; s/\*+//g; s/\[([^]]*)\]\([^)]*\)/\1/g' \
-  "$DRAFT" > "$TTS_TXT"
-say -v "$VOICE" ${RATE:+-r $RATE} \
-  -o "$OUTPUT_DIR/briefing-$TIMESTAMP.aiff" \
-  -f "$TTS_TXT"
-rm -f "/tmp/briefing_tts_$TIMESTAMP.txt"
-```
-
-**Kokoro PyTorch (fallback):**
-
-Similar to MLX but uses PyTorch backend. See TubeScribe skill for Kokoro usage patterns.
-
-### Step 6b: Convert to MP3
+### 第6b步：将音频文件转换为MP3格式
 
 ```bash
 # Find the raw audio file (MLX outputs .wav, Apple TTS outputs .aiff)
@@ -473,30 +431,26 @@ if [ -n "$RAW" ]; then
 fi
 ```
 
-### Step 6c: Cleanup
+### 第7步：清理临时文件
 
 ```bash
 rm -f "/tmp/briefing_draft_$TIMESTAMP.md"
 ```
 
-### Step 7: Open Output Folder
+### 第8步：展示简报文件
 
-```bash
-open "$OUTPUT_DIR"
-```
+**请勿自动播放简报文件**。由于简报文件较长，建议用户手动控制播放。
 
-**Do NOT auto-play.** Briefings are long and need playback controls.
+### 第9步：提供相关信息
 
-### Step 8: Report
+向用户报告以下内容：
+- 简报的日期和语言
+- 覆盖的新闻板块
+- 3-4个热门新闻标题
+- 音频文件的时长
+- 文件的保存位置
 
-Report back with:
-- Date and language of briefing
-- Sections covered
-- Top 3-4 headlines
-- Audio duration
-- File locations
-
-## Helper Script
+## 辅助脚本
 
 ```bash
 bash SKILL_DIR/scripts/briefing.sh setup     # Check dependencies + config
@@ -510,35 +464,35 @@ bash SKILL_DIR/scripts/briefing.sh clean      # Remove briefings >30 days old
 bash SKILL_DIR/scripts/briefing.sh config     # Show raw config JSON
 ```
 
-## Tips
+## 使用技巧：
 
-- Full pipeline takes 3-5 minutes (research + composition + TTS)
-- For shorter briefing, say "quick briefing" — cover top 3 sections only
-- If markets are closed (weekend/holiday), note it and skip detailed data
-- The agent IS the intelligence — read search results, compose the script, decide what matters
-- Users can add new languages by adding a `voices` entry + installing the voice via `say -v '?'`
+- 整个简报生成过程大约需要3-5分钟（包括数据收集、内容编写和文本转语音）
+- 如需简短的简报，可以请求“快速简报”，仅涵盖前3个新闻板块
+- 如果市场处于休市状态（周末或节假日），请告知用户并跳过相关数据
+- 该脚本会自动处理所有数据查询和内容编写工作
+- 用户可以通过添加新的语言配置项（`voices`）并安装相应的语音资源来扩展语言支持
 
-## Dependencies
+## 所需依赖软件：
 
-**Required:**
-- `curl` — API calls (built into macOS)
-- `web_search` tool — News research (OpenClaw built-in)
+**必备软件：**
+- `curl`：用于API请求（macOS内置）
+- `web_search`工具：用于新闻搜索（OpenClaw内置）
 
-**Recommended:**
-- MLX-Audio Kokoro — fast English TTS
-- `pandoc` — DOCX generation: `brew install pandoc`
-- `ffmpeg` — MP3 conversion: `brew install ffmpeg`
+**推荐软件：**
+- MLX-Audio Kokoro：快速的英语文本转语音工具
+- `pandoc`：用于生成DOCX文档（使用`brew install pandoc`命令安装）
+- `ffmpeg`：用于音频文件转换（使用`brew install ffmpeg`命令安装）
 
-**Built-in (macOS):**
-- Apple `say` — multilingual TTS (always available as fallback)
+**macOS内置工具：**
+- Apple的`say`：支持多种语言的文本转语音功能（作为备用方案）
 
-## Error Handling
+## 错误处理：
 
-| Issue | Action |
-|-------|--------|
-| No config file | Run `python3 SKILL_DIR/scripts/config.py init` |
-| API timeout | Retry once, skip that source, note it |
-| Web search empty | Try alternative query, note gaps |
-| TTS fails | Fall back to Apple `say` (always available) |
-| Pandoc not found | Skip DOCX, deliver MP3 only |
-| No internet | Cannot generate — inform user |
+| 错误类型 | 处理方式 |
+|---------|---------|
+| 未找到配置文件 | 运行`python3 SKILL_DIR/scripts/config.py init`命令来初始化配置 |
+| API请求超时 | 重试一次，并跳过该数据源 |
+- 网络搜索无结果 | 尝试其他查询方式，并记录异常情况 |
+- 文本转语音失败 | 使用Apple的`say`功能（始终可用） |
+- 未找到pandoc工具 | 仅生成MP3音频文件 |
+- 无法连接互联网 | 无法生成简报文件，请通知用户

@@ -1,6 +1,6 @@
 ---
 name: excel-automation
-description: Advanced Excel automation with Python using xlwings - interact with live Excel instances
+description: 使用 `xlwings` 通过 Python 实现高级 Excel 自动化——与实时运行的 Excel 实例进行交互
 author: claude-office-skills
 version: "1.0"
 tags: [excel, automation, xlwings, macros, python]
@@ -12,37 +12,37 @@ library:
   stars: 3.3k
 ---
 
-# Excel Automation Skill
+# Excel自动化技能
 
-## Overview
+## 概述
 
-This skill enables advanced Excel automation using **xlwings** - a library that can interact with live Excel instances. Unlike openpyxl (file-only), xlwings can control Excel in real-time, execute VBA, update dashboards, and automate complex workflows.
+本技能利用**xlwings**库实现高级Excel自动化。xlwings能够与正在运行的Excel实例进行交互，与仅处理Excel文件的openpyxl不同，它支持实时控制Excel、执行VBA代码、更新数据仪表板以及自动化复杂的工作流程。
 
-## How to Use
+## 使用方法
 
-1. Describe the Excel automation task you need
-2. Specify if you need live Excel interaction or file processing
-3. I'll generate xlwings code and execute it
+1. 描述您需要的Excel自动化任务。
+2. 指明是需要与正在运行的Excel进行交互还是仅处理Excel文件。
+3. 我将为您生成xlwings代码并执行它。
 
-**Example prompts:**
-- "Update this live Excel dashboard with new data"
-- "Run this VBA macro and get the results"
-- "Create an Excel add-in for data validation"
-- "Automate monthly report generation with live charts"
+**示例提示：**
+- “用新数据更新这个实时运行的Excel仪表板”
+- “运行这个VBA宏并获取结果”
+- “创建一个用于数据验证的Excel插件”
+- “使用实时图表自动化每月报告的生成”
 
-## Domain Knowledge
+## 领域知识
 
-### xlwings vs openpyxl
+### xlwings与openpyxl的比较
 
-| Feature | xlwings | openpyxl |
+| 特性 | xlwings | openpyxl |
 |---------|---------|----------|
-| Requires Excel | Yes | No |
-| Live interaction | Yes | No |
-| VBA execution | Yes | No |
-| Speed (large files) | Fast | Slow |
-| Server deployment | Limited | Easy |
+| 是否需要Excel安装 | 是 | 否 |
+| 实时交互 | 是 | 否 |
+| VBA代码执行 | 是 | 否 |
+| 处理大文件时的速度 | 快 | 慢 |
+| 服务器端部署 | 有限支持 | 易于实现 |
 
-### xlwings Fundamentals
+### xlwings基础
 
 ```python
 import xlwings as xw
@@ -62,9 +62,9 @@ sheet = wb.sheets['Sheet1']
 sheet = wb.sheets[0]
 ```
 
-### Working with Ranges
+### 操作单元格范围
 
-#### Reading and Writing
+#### 读取和写入数据
 ```python
 # Single cell
 sheet['A1'].value = 'Hello'
@@ -82,7 +82,7 @@ sheet['A1'].expand().value  # All connected data
 sheet['A1'].expand('table').value  # Table format
 ```
 
-#### Dynamic Ranges
+#### 动态单元格范围
 ```python
 # Current region (like Ctrl+Shift+End)
 data = sheet['A1'].current_region.value
@@ -97,7 +97,7 @@ last_row = sheet['A1'].end('down').row
 rng = sheet['A1'].resize(10, 5)  # 10 rows, 5 columns
 ```
 
-### Formatting
+### 格式设置
 ```python
 # Font
 sheet['A1'].font.bold = True
@@ -120,9 +120,9 @@ sheet['1:1'].row_height = 30
 sheet['A:D'].autofit()
 ```
 
-### Excel Features
+### Excel功能
 
-#### Charts
+#### 图表
 ```python
 # Add chart
 chart = sheet.charts.add(left=100, top=100, width=400, height=250)
@@ -135,7 +135,7 @@ chart = sheet.charts['Sales Chart']
 chart.chart_type = 'line'
 ```
 
-#### Tables
+#### 表格
 ```python
 # Create Excel Table
 rng = sheet['A1'].expand()
@@ -148,7 +148,7 @@ table.refresh()
 table_data = table.data_body_range.value
 ```
 
-#### Pictures
+#### 图片
 ```python
 # Add picture
 sheet.pictures.add('logo.png', left=10, top=10, width=100, height=50)
@@ -160,7 +160,7 @@ ax.plot([1, 2, 3], [1, 4, 9])
 sheet.pictures.add(fig, name='MyPlot', update=True)
 ```
 
-### VBA Integration
+### VBA集成
 ```python
 # Run VBA macro
 wb.macro('MacroName')()
@@ -175,7 +175,7 @@ result = wb.macro('CalculateTotal')(100, 200)
 vb_code = wb.api.VBProject.VBComponents('Module1').CodeModule.Lines(1, 10)
 ```
 
-### User Defined Functions (UDFs)
+### 用户自定义函数（UDFs）
 ```python
 # Define a UDF (in Python file)
 import xlwings as xw
@@ -195,7 +195,7 @@ def my_array_func(data):
 # These become Excel functions: =my_sum(A1, B1)
 ```
 
-### Application Control
+### 应用程序控制
 ```python
 # Excel application settings
 app = xw.apps.active
@@ -211,17 +211,17 @@ app.calculation = 'automatic'
 app.display_alerts = True
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Disable Screen Updating**: For batch operations
-2. **Use Arrays**: Read/write entire ranges, not cell-by-cell
-3. **Manual Calculation**: Turn off auto-calc during data loading
-4. **Close Connections**: Properly close workbooks when done
-5. **Error Handling**: Handle Excel not being installed
+1. **禁用屏幕更新**：在进行批量操作时使用此设置。
+2. **使用数组**：一次性读取/写入整个单元格范围，而不是逐个单元格处理。
+3. **手动计算**：在加载数据时关闭自动计算功能。
+4. **正确关闭工作簿**：操作完成后务必关闭工作簿连接。
+5. **错误处理**：确保Excel已正确安装。
 
-## Common Patterns
+## 常见应用模式
 
-### Performance Optimization
+### 性能优化
 ```python
 import xlwings as xw
 
@@ -244,7 +244,7 @@ def batch_update(data, workbook_path):
         app.quit()
 ```
 
-### Dashboard Update
+### 数据仪表板更新
 ```python
 def update_dashboard(data_dict):
     wb = xw.books.active
@@ -264,7 +264,7 @@ def update_dashboard(data_dict):
     dashboard['A1'].value = f'Last Updated: {datetime.now()}'
 ```
 
-### Report Generator
+### 报告生成
 ```python
 def generate_monthly_report(month, data):
     template = xw.Book('template.xlsx')
@@ -283,9 +283,9 @@ def generate_monthly_report(month, data):
     template.save(f'report_{month}.xlsx')
 ```
 
-## Examples
+## 示例
 
-### Example 1: Live Dashboard Update
+### 示例1：实时更新仪表板
 ```python
 import xlwings as xw
 import pandas as pd
@@ -324,7 +324,7 @@ for chart in dashboard.charts:
 print("Dashboard updated!")
 ```
 
-### Example 2: Batch Processing Multiple Files
+### 示例2：批量处理多个文件
 ```python
 import xlwings as xw
 from pathlib import Path
@@ -378,7 +378,7 @@ def process_sales_files(folder_path, output_path):
 process_sales_files('/path/to/sales/', 'consolidated_sales.xlsx')
 ```
 
-### Example 3: Excel Add-in with UDFs
+### 示例3：使用UDFs的Excel插件
 ```python
 # myudfs.py - Place in xlwings project
 
@@ -418,15 +418,15 @@ def SENTIMENT(text):
     return 'Neutral'
 ```
 
-## Limitations
+## 限制
 
-- Requires Excel to be installed
-- Limited support on macOS for some features
-- Not suitable for server-side processing
-- VBA features require trust settings
-- Performance varies with Excel version
+- 需要安装Excel。
+- 在macOS上部分功能的支持有限。
+- 不适合服务器端处理。
+- VBA功能的启用需要设置Excel的安全权限。
+- 性能会因Excel版本的不同而有所差异。
 
-## Installation
+## 安装方法
 
 ```bash
 pip install xlwings
@@ -435,9 +435,9 @@ pip install xlwings
 xlwings addin install
 ```
 
-## Resources
+## 资源
 
-- [xlwings Documentation](https://docs.xlwings.org/)
-- [GitHub Repository](https://github.com/xlwings/xlwings)
-- [UDF Tutorial](https://docs.xlwings.org/en/stable/udfs.html)
-- [Excel VBA Reference](https://docs.microsoft.com/en-us/office/vba/api/overview/excel)
+- [xlwings官方文档](https://docs.xlwings.org/)
+- [GitHub仓库](https://github.com/xlwings/xlwings)
+- [UDF使用教程](https://docs.xlwings.org/en/stable/udfs.html)
+- [Excel VBA参考](https://docs.microsoft.com/en-us/office/vba/api/overview/excel)

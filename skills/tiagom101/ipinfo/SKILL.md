@@ -1,88 +1,80 @@
 ---
 name: ipinfo
-description: Perform IP geolocation lookups using ipinfo.io API. Convert IP addresses to geographic data including city, region, country, postal code, timezone, and coordinates. Use when geolocating IPs, enriching IP data, or analyzing geographic distribution.
+description: 使用 ipinfo.io API 进行 IP 地理定位查询。将 IP 地址转换为包括城市、地区、国家、邮政编码、时区和坐标在内的地理数据。该功能适用于 IP 地理定位、IP 数据丰富化或地理分布分析等场景。
 homepage: https://ipinfo.io
 metadata:
   { "openclaw": { "emoji": "🌍", "requires": { "bins": ["curl"] }, "primaryEnv": "IPINFO_TOKEN" } }
 ---
 
-# IPinfo Geolocation
+# IPinfo 地理定位服务
 
-Free IP geolocation API. No API key required for basic usage (50k requests/month), optional token for higher limits.
+这是一个免费的 IP 地理定位 API。基本使用无需 API 密钥（每月 50,000 次请求）；如需更高的请求限制，可以使用可选的令牌。
 
-## Configuration
+## 配置
 
-The `IPINFO_TOKEN` environment variable is **optional** - the skill works without it using the free tier. Configure it via the OpenClaw dashboard UI for higher rate limits, or set it manually:
+`IPINFO_TOKEN` 环境变量是 **可选的**——即使不设置该变量，该服务也能使用免费 tier 进行基本操作。您可以通过 OpenClaw 仪表板 UI 或手动设置该变量来配置更高的请求限制：
 
-- **Dashboard UI**: Configure `IPINFO_TOKEN` in the OpenClaw dashboard (optional)
-- **Environment variable**: `export IPINFO_TOKEN="your-token"`
-- **Query parameter**: `?token=YOUR_TOKEN` (for one-off requests)
+- **仪表板 UI**：在 OpenClaw 仪表板中配置 `IPINFO_TOKEN`（可选）
+- **环境变量**：`export IPINFO_TOKEN="your-token"`
+- **查询参数**：`?token=YOUR_TOKEN`（用于一次性请求）
 
-## Quick Lookup
+## 快速查询
 
-Single IP:
-
-```bash
+- 单个 IP 地址的查询：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8"
 ```
 
-Current IP:
-
-```bash
+- 当前设备的 IP 地址：
+  ```bash
 curl -s "https://ipinfo.io/json"
 ```
 
-With token (optional, from environment):
-
-```bash
+- 使用环境变量中的令牌进行查询（可选）：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8?token=${IPINFO_TOKEN}"
 ```
 
-Or pass token directly:
-
-```bash
+- 或者直接传递令牌：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8?token=YOUR_TOKEN"
 ```
 
-## Response Format
+## 响应格式
 
-JSON response includes:
+JSON 响应包含以下信息：
 
-- `ip`: IP address
-- `hostname`: Reverse DNS hostname
-- `city`: City name
-- `region`: State/region
-- `country`: Two-letter country code (ISO 3166-1 alpha-2)
-- `postal`: Postal/ZIP code
-- `timezone`: IANA timezone
-- `loc`: Coordinates as "latitude,longitude"
-- `org`: Organization/ASN information
+- `ip`：IP 地址
+- `hostname`：反向 DNS 解析得到的主机名
+- `city`：城市名称
+- `region`：所在州/地区
+- `country`：ISO 3166-1 标准的两字母国家代码
+- `postal`：邮政编码
+- `timezone`：IANA 定义的时区
+- `loc`：坐标（格式为“纬度, 经度”）
+- `org`：组织/ASN（自治系统编号）相关信息
 
-## Extract Specific Fields
+## 提取特定字段
 
-Using `jq`:
-
-```bash
+- 使用 `jq` 工具提取数据：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8" | jq -r '.city, .country, .loc'
 ```
 
-Country only:
-
-```bash
+- 仅提取国家信息：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8" | jq -r '.country'
 ```
 
-Parse coordinates:
-
-```bash
+- 解析坐标数据：
+  ```bash
 curl -s "https://ipinfo.io/8.8.8.8" | jq -r '.loc' | tr ',' '\n'
 ```
 
-## Batch Processing
+## 批量处理
 
-Process multiple IPs:
-
-```bash
+- 同时处理多个 IP 地址：
+  ```bash
 for ip in 8.8.8.8 1.1.1.1 208.67.222.222; do
   if [ -n "$IPINFO_TOKEN" ]; then
     echo "$ip: $(curl -s "https://ipinfo.io/$ip?token=$IPINFO_TOKEN" | jq -r '.city, .country' | tr '\n' ', ')"
@@ -92,9 +84,10 @@ for ip in 8.8.8.8 1.1.1.1 208.67.222.222; do
 done
 ```
 
-## Python Usage
+## Python 使用方法
 
-```python
+- 使用环境变量中的令牌：
+  ```python
 import os
 import requests
 
@@ -105,36 +98,21 @@ print(f"{data['city']}, {data['country']}")
 print(f"Coordinates: {data['loc']}")
 ```
 
-With token from environment:
-
-```python
-import os
-import requests
-
-token = os.getenv("IPINFO_TOKEN")
-if token:
-    response = requests.get("https://ipinfo.io/8.8.8.8", params={"token": token})
-else:
-    response = requests.get("https://ipinfo.io/8.8.8.8")
-data = response.json()
-```
-
-Or pass token directly:
-
-```python
+- 或者直接传递令牌：
+  ```python
 response = requests.get("https://ipinfo.io/8.8.8.8", params={"token": "YOUR_TOKEN"})
 ```
 
-## Rate Limits
+## 请求限制
 
-- Free tier: 50,000 requests/month, ~1 req/sec
-- With token: Higher limits based on plan
-- Configure `IPINFO_TOKEN` via OpenClaw dashboard UI or environment variable
+- 免费 tier：每月 50,000 次请求，约 1 次请求/秒
+- 使用令牌后，请求限制会根据所选套餐而增加
+- 通过 OpenClaw 仪表板 UI 或环境变量配置 `IPINFO_TOKEN`
 
-## Common Use Cases
+## 常见用途
 
-- Geolocate IP addresses
-- Enrich IP lists with location data
-- Filter IPs by country
-- Calculate distances between IPs using coordinates
-- Timezone detection for IPs
+- 对 IP 地址进行地理定位
+- 为 IP 列表添加位置信息
+- 按国家筛选 IP 地址
+- 根据坐标计算 IP 之间的距离
+- 获取 IP 地址的时区信息

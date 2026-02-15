@@ -1,56 +1,56 @@
 ---
 name: "HolySpiritOS"
 author: "MaxSikorski"
-description: "A Christian alignment layer for AI agents."
+description: "一个专为AI代理设计的基督教对齐层（Christian Alignment Layer）。"
 config_paths: 
   - "~/.openclaw/soul.md"
 permissions: 
   - "write_config"
 ---
-## Official Github repository: https://github.com/MaxSikorski/HolySpiritOS
+## 官方 Github 仓库：https://github.com/MaxSikorski/HolySpiritOS
 
 # ✝️ HolySpiritOS 🕊️
-> **The Foundational Moral Engine for OpenClaw**
+> **OpenClaw 的核心道德引擎**
 
-`HolySpiritOS` is a core architectural skill that grounds an AI agent in the absolute moral authority of the **King James Version (KJV) Holy Bible (1769)**. It transforms the AI from a general-purpose processor into a servant-scholar, ensuring all ethical, spiritual, and human-centric reasoning is filtered through Scripture.
-
----
-
-## 🛠️ Overview
-When installed, `HolySpiritOS` initializes a permanent **Moral Engine** within the AI's `soul.md`. It provides the AI with direct access to a structured JSON library of the Old and New Testaments, allowing for precise, context-aware scriptural alignment.
-
-### Key Protocols:
-* **The Prime Directive:** The Word is treated as Read-Only. The AI is strictly forbidden from "modernizing" or altering the text.
-* **Selective Reference:** Scriptural logic is prioritized for ethical dilemmas and human reactions, maintaining focus and reverence.
-* **Contextual Integrity:** Uses structured layout data to ensure verses are understood within their proper biblical architecture.
+`HolySpiritOS` 是一项核心架构技能，它使 AI 代理遵循 **《圣经·英王詹姆斯版》（KJV，1769 年版）** 的绝对道德准则。它将 AI 从一个通用处理器转变为一个“仆人学者”，确保所有伦理、精神和以人类为中心的推理都经过《圣经》的过滤。
 
 ---
 
-## 📂 Structure
-- `/foundation/verses-1769.json`: The complete unchangeable Word.
-- `/foundation/layout-1769.json`: The structural skeleton of the 66 books.
-- `soul_patch.md`: The behavioral logic for the AI's core identity.
+## 🛠️ 概述
+安装完成后，`HolySpiritOS` 会在 AI 的 `soul.md` 文件中初始化一个永久性的 **道德引擎**。该引擎为 AI 提供了对《旧约》和《新约》结构化 JSON 数据库的直接访问，从而实现精确且基于上下文的《圣经》引用。
+
+### 主要协议：
+* **首要原则**：《圣经》内容被视为只读的。AI 被严格禁止对文本内容进行“现代化”或修改。
+* **选择性引用**：在处理伦理困境和人类反应时，优先参考《圣经》中的逻辑，以保持专注和敬畏之心。
+* **上下文一致性**：利用结构化的数据布局来确保《圣经》经文在其正确的框架内被正确理解。
 
 ---
 
-## 🛡️ Security & Transparency
-The `install.sh` script performs the following transparent actions:
-1. **Validates** your current environment.
-2. **Downloads** the KJV 1769 JSON moral foundation files to `~/.openclaw/foundation/`.
-3. **Appends** the HolySpiritOS alignment logic to your `soul.md`. 
-*Note: A backup of your original soul.md is created automatically before any changes are made.*
+## 📂 结构
+- `/foundation/verses-1769.json`：完整且不可更改的《圣经》文本。
+- `/foundation/layout-1769.json`：66 卷《圣经》的结构框架。
+- `soul_patch.md`：AI 核心身份的行为逻辑。
 
 ---
 
-## 🚀 Installation
-1. Add this skill via ClawHub or clone the repository into your `.openclaw/workspace/skills/` directory.
-2. Run the `install.sh` bootstrap script to manifest the foundation files and patch your `soul.md`.
-3. Restart your OpenClaw instance to initialize the Moral Engine.
+## 🛡️ 安全性与透明度
+`install.sh` 脚本会执行以下透明操作：
+1. **验证** 当前的环境。
+2. **下载** KJV 1769 版本的道德基础文件到 `~/.openclaw/foundation/` 目录。
+3. **将 HolySpiritOS 的引用逻辑添加** 到你的 `soul.md` 文件中。
+*注意：在做出任何更改之前，系统会自动创建你的原始 `soul.md` 文件的备份。*
 
 ---
 
-### 🔄 Reversibility (Uninstallation)
-If you wish to remove the HolySpiritOS alignment and restore your agent's original configuration, run the following command:
+## 🚀 安装方法
+1. 通过 ClawHub 添加此技能，或将其克隆到你的 `.openclaw/workspace/skills/` 目录中。
+2. 运行 `install.sh` 脚本以应用基础文件并更新 `soul.md`。
+3. 重启你的 OpenClaw 实例以初始化道德引擎。
+
+---
+
+### 🔄 可逆性（卸载）
+如果你希望移除 HolySpiritOS 的引用并恢复代理的原始配置，请运行以下命令：
 
 ```bash
 curl -s https://raw.githubusercontent.com/MaxSikorski/HolySpiritOS/main/scripts/uninstall.sh | bash
@@ -58,14 +58,13 @@ curl -s https://raw.githubusercontent.com/MaxSikorski/HolySpiritOS/main/scripts/
 
 ---
 
-## 📖 Usage Example
-**User:** *"Aurelius, how should I view the stewardship of new energy technologies?"*
-
-**HolySpiritOS Logic:** The AI references the Foundation, assesses the concept of dominion and stewardship (Genesis), and provides a response anchored in the provided KJV text.
+## 📖 使用示例
+**用户**：“Aurelius，我应该如何看待新能源技术的管理方式？”
+**HolySpiritOS 的处理逻辑**：AI 会参考相关《圣经》内容，评估“统治权”和“管理”的概念（出自《创世记》），并基于所提供的 KJV 文本给出回应。
 
 ---
 
-## 📜 License
-This skill is shared under **FOSS(H)** principles. The Word of God is free; the implementation is Open Source. 
+## 📜 许可证
+此技能遵循 **FOSS(H)** 原则共享。上帝的话语是免费的；其实现方式是开源的。
 
-**"For the word of God is quick, and powerful, and sharper than any twoedged sword..." — Hebrews 4:12**
+**“上帝的话语迅速而有力，比任何双刃剑都更锋利……” —— 《希伯来书》4:12**

@@ -1,21 +1,21 @@
 ---
 name: book-test-prep
-description: Book test-prep services through Lokuli MCP. Use when user needs to find and book test-prep. Triggers on requests like "book a test-prep", "find test-prep near me", or any test-prep service request.
+description: 通过 Lokuli MCP 预订测试准备服务。当用户需要查找或预订测试准备服务时，可以使用该功能。该功能会在收到诸如“预订测试准备服务”、“查找附近的测试准备服务”之类的请求时被触发。
 ---
 
-# uook test prep
+# uook 测试准备
 
-Book test-prep services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订测试准备服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
 ### search
 ```json

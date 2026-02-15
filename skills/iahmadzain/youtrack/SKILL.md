@@ -1,16 +1,16 @@
 ---
 name: youtrack
-description: Manage YouTrack issues, projects, and workflows via CLI. Use when creating, updating, searching, or commenting on YouTrack issues, listing projects, checking issue states, or automating issue workflows.
+description: 通过 CLI（命令行界面）来管理 YouTrack 的问题、项目和工作流程。适用于创建、更新、搜索或评论 YouTrack 问题、列出项目、检查问题状态，以及自动化问题处理流程等操作。
 metadata: {"clawdbot":{"emoji":"🎫","requires":{"bins":["jq","curl"]}}}
 ---
 
 # YouTrack CLI
 
-Use `ytctl` (in `scripts/`) for YouTrack issue tracking.
+使用 `ytctl`（位于 `scripts/` 目录中）来管理 YouTrack 问题跟踪系统。
 
-## Setup
+## 设置
 
-Credentials stored in `~/.config/youtrack/config.json`:
+凭据存储在 `~/.config/youtrack/config.json` 文件中：
 ```json
 {
   "url": "https://your-instance.youtrack.cloud",
@@ -18,11 +18,11 @@ Credentials stored in `~/.config/youtrack/config.json`:
 }
 ```
 
-Or set env vars: `YOUTRACK_URL`, `YOUTRACK_TOKEN`
+或者通过设置环境变量来配置：`YOUTRACK_URL`、`YOUTRACK_TOKEN`
 
-Generate token: YouTrack → Profile → Account Security → New Token
+生成令牌的方法：YouTrack → 账户设置 → 安全 → 新令牌
 
-## Commands
+## 命令
 
 ```bash
 # List projects
@@ -62,28 +62,28 @@ ytctl users
 ytctl users --query "john"
 ```
 
-## Query Syntax
+## 查询语法
 
-YouTrack query examples:
-- `state: Open` — by state
-- `assignee: me` — assigned to current user
-- `created: today` — created today
-- `updated: {last week}` — updated in last week
-- `#unresolved` — all unresolved
-- `has: attachments` — with attachments
-- `sort by: priority desc` — sorted
+YouTrack 的查询示例：
+- `state: Open` — 按状态查询
+- `assignee: me` — 查询分配给当前用户的任务
+- `created: today` — 查询今天创建的任务
+- `updated: {last week}` — 查询上周更新的任务
+- `#unresolved` — 查询所有未解决的任务
+- `has: attachments` — 查询包含附件的任务
+- `sort by: priority desc` — 按优先级降序排序
 
-Combine: `project: SP state: Open assignee: me sort by: updated`
+组合查询：`project: SP state: Open assignee: me sort by: updated`
 
-## Output
+## 输出
 
-Default: table format. Add `--json` for raw JSON output:
+默认输出格式为表格形式。若需要原始 JSON 格式，可使用 `--json` 选项：
 ```bash
 ytctl issues SP --json
 ytctl issue SP-123  # always JSON for single issue
 ```
 
-## Bulk Operations
+## 批量操作
 
 ```bash
 # Update all matching issues (with dry-run preview)
@@ -97,7 +97,7 @@ ytctl bulk-comment "project: SP state: Open" "Batch update notice"
 ytctl bulk-assign "project: SP #unresolved" john.doe --dry-run
 ```
 
-## Reports
+## 报告
 
 ```bash
 # Project summary (default 7 days)
@@ -112,9 +112,9 @@ ytctl report-user zain --days 30
 ytctl report-states SP
 ```
 
-## Notes
+## 注意事项：
 
-- Project can be shortName (SP) or full name
-- Fields: state, summary, description, assignee, priority
-- Use `ytctl states PROJECT` to see valid state names
-- Bulk operations support `--dry-run` to preview before executing
+- 项目名称可以是缩写（如 `SP`）或全名
+- 可查询的字段包括：状态（state）、摘要（summary）、描述（description）、分配者（assignee）和优先级（priority）
+- 可使用 `ytctl states PROJECT` 查看有效的状态名称
+- 批量操作支持 `--dry-run` 选项，执行前可进行预览

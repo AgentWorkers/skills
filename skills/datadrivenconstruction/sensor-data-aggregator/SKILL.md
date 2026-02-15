@@ -1,16 +1,16 @@
 ---
 slug: "sensor-data-aggregator"
 display_name: "Sensor Data Aggregator"
-description: "Aggregate and analyze IoT sensor data from construction sites. Collect data from multiple sensor types, detect anomalies, and trigger alerts for safety and quality monitoring."
+description: "汇总并分析建筑工地的物联网传感器数据。从多种类型的传感器中收集数据，检测异常情况，并触发警报以进行安全和质量监控。"
 ---
 
-# Sensor Data Aggregator
+# 传感器数据聚合器
 
-## Overview
+## 概述
 
-Collect, aggregate, and analyze data from IoT sensors deployed across construction sites. Support real-time monitoring of environmental conditions, equipment status, structural integrity, and worker safety through unified data processing.
+该系统负责收集、汇总并分析部署在建筑工地的物联网（IoT）传感器所采集的数据。通过统一的数据处理流程，支持对环境状况、设备状态、结构安全以及工人安全的实时监控。
 
-## IoT Sensor Architecture
+## 物联网传感器架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -39,7 +39,7 @@ Collect, aggregate, and analyze data from IoT sensors deployed across constructi
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -502,7 +502,7 @@ class SensorDataAggregator:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -567,7 +567,7 @@ print(f"Anomalies found: {len(anomalies)}")
 print(aggregator.generate_report())
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

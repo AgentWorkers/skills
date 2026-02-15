@@ -1,28 +1,28 @@
 ---
 name: prisma-gen
-description: Generate Prisma schema from plain English. Use when starting a database schema.
+description: 从纯文本描述生成 Prisma 数据库模式。适用于开始设计数据库架构时使用。
 ---
 
 # Prisma Generator
 
-Designing database schemas means thinking about relations, indexes, and constraints. Describe your data and get a complete Prisma schema.
+设计数据库模式意味着需要考虑数据之间的关系、索引以及约束条件。通过描述你的数据，Prisma 会自动生成完整的数据库模式。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-prisma-gen "e-commerce with users, products, and orders"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete Prisma schema from descriptions
-- Sets up proper relations and constraints
-- Includes common fields (createdAt, updatedAt)
-- Handles enums and indexes
+- 根据用户提供的数据描述生成完整的 Prisma 模式
+- 自动设置正确的数据关系和约束条件
+- 包含常见的字段（如 `createdAt`、`updatedAt`）
+- 支持枚举类型和索引的创建
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # E-commerce schema
@@ -35,42 +35,42 @@ npx ai-prisma-gen "SaaS with organizations, users, and subscriptions"
 npx ai-prisma-gen "social app with users, posts, likes, and follows"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use relations** - let Prisma handle joins
-- **Add indexes** - for frequently queried fields
-- **Consider soft deletes** - deletedAt instead of actual delete
-- **Review and refine** - AI gets 80%, you add the rest
+- **合理使用数据关系**：让 Prisma 自动处理数据之间的连接操作
+- **为频繁查询的字段添加索引**  
+- **采用“软删除”机制**：使用 `deletedAt` 而不是直接删除数据  
+- **持续审查和优化**：AI 可生成 80% 的代码，其余部分由用户自行完成
 
-## When to Use This
+## 适用场景
 
-- Starting a new database design
-- Learning Prisma schema syntax
-- Rapid prototyping
-- Getting a baseline to customize
+- 开始新的数据库设计时  
+- 学习 Prisma 模式的语法  
+- 快速原型开发  
+- 获取可供进一步定制的数据库基础结构  
 
-## Part of the LXGIC Dev Toolkit
+## Prisma Generator 是 LXGIC Dev Toolkit 的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+Prisma Generator 是 LXGIC Studios 开发的 110 多款免费开发工具之一。所有功能均免费提供，无需支付费用、注册账号或使用 API 密钥。  
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+**了解更多：**  
+- GitHub: https://github.com/LXGIC-Studios  
+- Twitter: https://x.com/lxgicstudios  
+- Substack: https://lxgicstudios.substack.com  
+- 官网: https://lxgicstudios.com  
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。  
 
 ```bash
 npx ai-prisma-gen --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your plain English description of data models and relationships, then generates valid Prisma schema syntax with proper types, relations, and indexes.
+Prisma Generator 会解析用户用自然语言描述的数据模型和关系结构，然后生成符合 Prisma 标准的数据库模式语法，其中包含正确的字段类型、数据关系和索引设置。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+Prisma Generator 使用 MIT 许可证，永久免费。你可以随心所欲地使用它。

@@ -1,14 +1,14 @@
 ---
 name: zendesk
-description: Manage support tickets, users, and help center via Zendesk API. Create, update, and search tickets programmatically.
+description: 通过 Zendesk API 管理支持工单、用户和帮助中心。可以编程方式创建、更新和搜索工单。
 metadata: {"clawdbot":{"emoji":"🎫","requires":{"env":["ZENDESK_SUBDOMAIN","ZENDESK_EMAIL","ZENDESK_API_TOKEN"]}}}
 ---
 
 # Zendesk
 
-Customer support ticket management.
+客户支持工单管理。
 
-## Environment
+## 环境配置
 
 ```bash
 export ZENDESK_SUBDOMAIN="yourcompany"
@@ -16,14 +16,14 @@ export ZENDESK_EMAIL="admin@company.com"
 export ZENDESK_API_TOKEN="xxxxxxxxxx"
 ```
 
-## List Tickets
+## 列出工单
 
 ```bash
 curl "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/tickets.json" \
   -u "$ZENDESK_EMAIL/token:$ZENDESK_API_TOKEN"
 ```
 
-## Create Ticket
+## 创建工单
 
 ```bash
 curl -X POST "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/tickets.json" \
@@ -39,7 +39,7 @@ curl -X POST "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/tickets.json" \
   }'
 ```
 
-## Update Ticket
+## 更新工单
 
 ```bash
 curl -X PUT "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/tickets/{id}.json" \
@@ -48,13 +48,13 @@ curl -X PUT "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/tickets/{id}.json" \
   -d '{"ticket": {"status": "solved", "comment": {"body": "Issue resolved!"}}}'
 ```
 
-## Search Tickets
+## 搜索工单
 
 ```bash
 curl "https://$ZENDESK_SUBDOMAIN.zendesk.com/api/v2/search.json?query=status:open" \
   -u "$ZENDESK_EMAIL/token:$ZENDESK_API_TOKEN"
 ```
 
-## Links
-- Admin: https://yourcompany.zendesk.com/admin
-- Docs: https://developer.zendesk.com/api-reference
+## 链接
+- 管理员入口：https://yourcompany.zendesk.com/admin
+- 文档中心：https://developer.zendesk.com/api-reference

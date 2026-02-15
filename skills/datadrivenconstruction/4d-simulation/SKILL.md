@@ -1,21 +1,21 @@
 ---
 slug: "4d-simulation"
 display_name: "4D Simulation"
-description: "Create 4D construction simulations by linking BIM elements to project schedules. Generate time-based visualizations, sequence analysis, and construction phasing with Gantt integration."
+description: "通过将 BIM 元素与项目进度计划关联起来，创建 4D 建筑施工模拟。利用 Gantt 图表集成功能生成基于时间的可视化效果、序列分析以及施工进度阶段划分。"
 ---
 
-# 4D Simulation for Construction
+# 建筑领域的4D仿真技术
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 3.3), this skill implements 4D BIM simulations - linking 3D model elements to the 4th dimension: time. Visualize construction sequences, detect scheduling conflicts, and optimize work phasing.
+本技能基于DDC方法论（第3.3章）实现4D BIM仿真，即将3D模型元素与时间这一“第四维度”相结合。通过该技术可以可视化施工流程、检测进度冲突，并优化施工阶段安排。
 
-**Book Reference:** "4D, 6D-8D и расчет CO2" / "4D-8D BIM and CO2 Calculation"
+**参考书籍**：《4D、6D-8D与二氧化碳计算》（"4D-8D BIM and CO2 Calculation"）
 
-> "4D моделирование позволяет визуализировать последовательность строительства и выявлять конфликты на этапе планирования."
-> — DDC Book, Chapter 3.3
+> “4D建模技术能够可视化施工顺序，并在规划阶段发现潜在冲突。”
+— DDC方法论书籍，第3.3章
 
-## Quick Start
+## 快速入门
 
 ```python
 import pandas as pd
@@ -45,9 +45,9 @@ print(f"Elements under construction on {target_date.date()}:")
 print(active_elements[['ElementId', 'Category']])
 ```
 
-## 4D Data Model
+## 4D数据模型
 
-### Schedule-Element Linking
+### 进度元素关联
 
 ```python
 import pandas as pd
@@ -151,7 +151,7 @@ class ScheduleElementLinker:
         )
 ```
 
-### 4D Simulation Engine
+### 4D仿真引擎
 
 ```python
 class Simulation4D:
@@ -244,9 +244,9 @@ class Simulation4D:
         return pd.DataFrame(parallel_work)
 ```
 
-## Gantt Chart Integration
+## 甘特图集成
 
-### Gantt Chart Generator
+### 甘特图生成器
 
 ```python
 import matplotlib.pyplot as plt
@@ -376,9 +376,9 @@ class GanttChartGenerator:
         return fig
 ```
 
-## Sequence Analysis
+## 流程分析
 
-### Construction Sequence Optimizer
+### 施工顺序优化器
 
 ```python
 class SequenceAnalyzer:
@@ -501,7 +501,7 @@ class SequenceAnalyzer:
         return critical
 ```
 
-## Export and Integration
+## 导出与集成
 
 ```python
 def export_4d_schedule(elements: pd.DataFrame, output_path: str):
@@ -530,22 +530,22 @@ def export_4d_schedule(elements: pd.DataFrame, output_path: str):
     return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Concept | Description |
+| 概念 | 描述 |
 |---------|-------------|
-| 4D = 3D + Time | BIM model linked to schedule |
-| Activity | Scheduled work item |
-| Element State | not_started / in_progress / completed |
-| Critical Path | Longest sequence determining project duration |
+| 4D = 3D + 时间 | 将BIM模型与施工进度关联起来 |
+| 活动 | 已安排的工作项 |
+| 元素状态 | 未开始 / 进行中 / 完成 |
+| 关键路径 | 决定项目总时长的最长施工流程 |
 
-## Resources
+## 参考资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 3.3
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的施工》（"Data-Driven Construction"），第3.3章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `gantt-chart` for schedule visualization
-- See `co2-estimation` for 6D (sustainability) analysis
-- See `clash-detection-analysis` for 4D conflict detection
+- 查看`gantt-chart`以可视化施工进度
+- 查看`co2-estimation`以进行6D（可持续性）分析
+- 查看`clash-detection-analysis`以检测4D施工过程中的冲突

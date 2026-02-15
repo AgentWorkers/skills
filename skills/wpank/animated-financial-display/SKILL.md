@@ -1,27 +1,53 @@
 ---
 name: animated-financial-display
 model: standard
-description: Patterns for animating financial numbers with spring physics, formatting, and visual feedback. Covers animated counters, price tickers, percentage changes, and value flash effects. Use when building financial dashboards or trading UIs. Triggers on animated number, price animation, financial display, number formatting, spring animation, value ticker.
+description: **使用弹簧物理效果、格式化以及视觉反馈来动画化财务数字的技巧**  
+涵盖了动画化计数器、价格行情显示、百分比变化以及数值闪烁效果等内容。适用于构建财务仪表板或交易用户界面时使用。这些技巧可用于实现数字的动画效果、价格动态显示、数值格式化以及视觉上的反馈效果。  
+
+**适用场景**：  
+- 动画化财务数据（如计数器、价格行情）  
+- 百分比变化展示  
+- 数值闪烁效果  
+
+**技术要点**：  
+- **弹簧物理效果**：利用物理模拟原理实现数字的平滑动画效果  
+- **格式化**：自定义数字的显示格式（如货币单位、小数位数等）  
+- **视觉反馈**：通过颜色变化、动画效果等增强用户交互体验  
+
+**应用场景示例**：  
+- 在金融仪表板中，数字会随着数据的更新而平滑地移动或闪烁，以吸引用户的注意力  
+- 价格行情界面中，价格数字会随着市场波动而实时更新并伴有动画效果  
+- 百分比变化时，数字会以动画方式显示变化幅度  
+
+**推荐使用场景**：  
+- 财务数据分析工具  
+- 交易软件界面  
+- 投资决策支持系统  
+
+**注意事项**：  
+- 确保动画效果与整体设计风格保持一致  
+- 根据实际需求调整动画的节奏和细节  
+- 测试不同设备上的显示效果，确保兼容性
 ---
 
-# Animated Financial Display
+# 动态财务数据显示
 
-Create engaging financial number displays with smooth animations, proper formatting, and visual feedback on value changes.
-
----
-
-## When to Use
-
-- Building trading dashboards with live prices
-- Showing portfolio values that update in real-time
-- Displaying metrics that need attention on change
-- Any financial UI that benefits from motion
+通过流畅的动画、正确的格式以及数值变化的视觉反馈，打造引人入胜的财务数字展示效果。
 
 ---
 
-## Pattern 1: Spring-Animated Number
+## 使用场景
 
-Using framer-motion's spring physics:
+- 构建显示实时价格的交易仪表板
+- 实时更新投资组合价值
+- 显示需要关注的指标变化
+- 任何可以从动态效果中受益的财务用户界面
+
+---
+
+## 模式 1：弹簧动画数字（Spring-Animated Number）
+
+使用 framer-motion 的弹簧物理效果实现动画：
 
 ```tsx
 import { useSpring, animated } from '@react-spring/web';
@@ -62,7 +88,7 @@ export function AnimatedNumber({
 }
 ```
 
-### Usage
+### 使用方法
 
 ```tsx
 <AnimatedNumber value={price} prefix="$" decimals={2} />
@@ -71,9 +97,9 @@ export function AnimatedNumber({
 
 ---
 
-## Pattern 2: Value with Flash Effect
+## 模式 2：数值变化时的闪光效果（Value with Flash Effect）
 
-Flash color on value change:
+数值发生变化时，数字会闪烁：
 
 ```tsx
 import { useEffect, useState, useRef } from 'react';
@@ -114,7 +140,9 @@ export function FlashingValue({ value, formatter }: FlashingValueProps) {
 
 ---
 
-## Pattern 3: Financial Number Formatting
+## 模式 3：财务数字格式化（Financial Number Formatting）
+
+对财务数字进行专业的格式化处理：
 
 ```typescript
 // lib/formatters.ts
@@ -177,7 +205,9 @@ export function formatNumber(
 
 ---
 
-## Pattern 4: Price Ticker Component
+## 模式 4：价格行情组件（Price Ticker Component）
+
+用于显示实时价格变化的组件：
 
 ```tsx
 interface PriceTickerProps {
@@ -220,7 +250,9 @@ export function PriceTicker({
 
 ---
 
-## Pattern 5: Metric Card with Animation
+## 模式 5：带动画的指标卡片（Metric Card with Animation）
+
+为关键指标添加动画效果：
 
 ```tsx
 interface MetricCardProps {
@@ -271,7 +303,9 @@ export function MetricCard({
 
 ---
 
-## Pattern 6: CSS Value Flash Animation
+## 模式 6：CSS 数值闪烁动画（CSS Value Flash Animation）
+
+利用 CSS 实现数值变化的动画效果：
 
 ```css
 @keyframes value-flash-up {
@@ -307,26 +341,26 @@ export function MetricCard({
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — Complete design system workflow
-- [financial-data-visualization](../financial-data-visualization/) — Chart theming and data visualization
-- [realtime-react-hooks](../../realtime/realtime-react-hooks/) — Real-time data hooks for live updates
-
----
-
-## NEVER Do
-
-- **Skip tabular-nums** — Numbers will jump as they change
-- **Use linear animations** — Spring/ease-out feels more natural
-- **Animate decimals rapidly** — Too much motion is distracting
-- **Forget compact formatting** — Large numbers need abbreviation
-- **Show raw floats** — Always format with appropriate precision
-- **Flash on every render** — Only flash on actual value changes
+- **元技能：** [ai/skills/meta/design-system-creation/](../../meta/design-system-creation/) — 完整的设计系统工作流程
+- [financial-data-visualization](../financial-data-visualization/) — 数据图表化和可视化技术
+- [realtime-react-hooks](../../realtime/realtime-react-hooks/) — 实时数据更新钩子
 
 ---
 
-## Typography for Numbers
+## 绝对不要这样做
+
+- **省略表格格式** — 数字在变化时可能会突然跳动
+- **使用线性动画** — 弹簧/缓动效果更自然
+- **快速动画化小数部分** — 过度的动画效果会分散注意力
+- **忽略简洁的格式** — 大数字需要使用缩写
+- **直接显示原始浮点数** — 必须使用适当的精度进行格式化
+- **每次渲染都闪烁** — 仅在数值实际变化时才显示动画效果
+
+---
+
+## 数字的排版规范（Typography for Numbers）
 
 ```css
 .metric {

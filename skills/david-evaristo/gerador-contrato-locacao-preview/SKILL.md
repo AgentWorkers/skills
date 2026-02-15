@@ -1,6 +1,6 @@
 ---
 name: gerador-contrato-locacao-preview
-description: Registra contrato de locação via Google Forms.
+description: 通过 Google 表单注册租赁合同。
 metadata: {
   "name": "gerador-contrato-locacao-preview",
   "display_name": "Gerador de Contratos de Locação",
@@ -16,33 +16,32 @@ metadata: {
 }
 ---
 
-# 📄 Skill: Registro de Contrato de Locação
+# 📄 技能：租赁合同注册
 
-Esta skill registra contratos de locação por meio de um **Google Forms**, realizando validação completa dos dados,
-gerando um **resumo para confirmação** e executando o envio somente após aprovação.
-
----
-
-## ⚠️ Regras de Execução (Obrigatórias)
-1. Todos os campos obrigatórios são validados antes da execução.
-2. A variável de ambiente `FORM_ID` **é obrigatória**.
-3. O agente **deve apresentar o resumo dos dados e solicitar confirmação explícita** do usuário.
-4. Em caso de erro de validação, a execução é abortada.
-5. Suporte a modo de simulação com `DRY_RUN`.
+该技能通过 **Google Forms** 注册租赁合同，对所有数据进行完整验证，生成 **确认摘要**，并在获得批准后才会发送数据。
 
 ---
 
-## ⚙️ Variáveis de Ambiente
+## ⚠️ 执行规则（必须遵守）
+1. 在执行之前，必须验证所有必填字段。
+2. 环境变量 `FORM_ID` 是 **必需的**。
+3. 代理 **必须向用户展示数据摘要并请求明确确认**。
+4. 如果验证失败，执行过程将中止。
+5. 支持使用 `DRY_RUN` 模式进行模拟运行。
 
-### `FORM_ID` (obrigatória)
-ID do Google Forms que receberá os dados.
+---
+
+## ⚙️ 环境变量
+
+### `FORM_ID`（必需）
+用于接收数据的 Google Forms 的 ID。
 
 ```bash
 export FORM_ID="SEU_FORM_ID"
 ```
 
-### `DRY_RUN` (opcional)
-Quando definida, a skill **não envia dados reais**, apenas exibe o payload gerado.
+### `DRY_RUN`（可选）
+当设置为 `DRY_RUN` 时，该技能 **不会发送实际数据**，仅显示生成的负载（payload）。
 
 ```bash
 export DRY_RUN=1
@@ -50,21 +49,21 @@ export DRY_RUN=1
 
 ---
 
-## 📥 Forma de Entrada de Dados
+## 📥 数据输入方式
 
-### ✅ Recomendado: STDIN
+### ✅ 推荐方式：STDIN
 ```bash
 echo '{"dados": {...}}' | python3 scripts/main.py
 ```
 
-### Alternativa: Argumento CLI
+### 替代方式：CLI 参数
 ```bash
 python3 scripts/main.py '{"dados": {...}}'
 ```
 
 ---
 
-## 📦 Estrutura Esperada do Payload
+## 📦 负载（Payload）的预期结构
 
 ```json
 {
@@ -89,7 +88,7 @@ python3 scripts/main.py '{"dados": {...}}'
 
 ---
 
-## 📘 Exemplo de Payload
+## 📓� 负载（Payload）示例
 
 ```json
 {
@@ -114,60 +113,59 @@ python3 scripts/main.py '{"dados": {...}}'
 
 ---
 
-## 📥 Parâmetros de Entrada
+## 📥 输入参数
 
-### Campos Obrigatórios
-| Campo | Tipo | Descrição |
+### 必填字段
+| 字段 | 类型 | 说明 |
 |------|------|-----------|
-| `email` | string | E-mail do locatário |
-| `telefone` | string | Telefone com DDD |
-| `nome` | string | Nome completo |
-| `cpf` | string | CPF (11 dígitos) |
-| `endereco` | string | Rua / Avenida |
-| `numero` | string | Número |
-| `bairro` | string | Bairro |
-| `cidade` | string | Cidade |
-| `estado` | string | UF (2 letras) |
-| `data_entrada` | string | Formato `YYYY-MM-DD` |
-| `data_saida` | string | Formato `YYYY-MM-DD` |
-| `valor` | string | Valor total |
+| `email` | string | 租户的电子邮件 |
+| `telefone` | string | 带区号的电话号码 |
+| `nome` | string | 全名 |
+| `cpf` | string | 社会安全号码（11位） |
+| `endereco` | string | 街道/大道 |
+| `numero` | string | 房屋编号 |
+| `bairro` | string | 街区 |
+| `cidade` | string | 城市 |
+| `estado` | string | 州（2个字母） |
+| `data_entrada` | string | 格式为 `YYYY-MM-DD` 的入住日期 |
+| `data_saida` | string | 格式为 `YYYY-MM-DD` 的退房日期 |
+| `valor` | string | 总租金 |
 
-### Campos Opcionais
-| Campo | Tipo | Descrição |
+### 可选字段
+| 字段 | 类型 | 说明 |
 |------|------|-----------|
-| `caucao` | string | Depósito caução |
-| `complemento` | string | Complemento do endereço |
+| `caucao` | string | 押金 |
+| `complemento` | string | 地址的补充信息 |
 
 ---
 
-## 🔄 Fluxo de Execução
-
-1. Coleta dos dados via chat.
-2. Validação estrutural e de formato.
-3. Exibição de resumo para confirmação.
-4. Execução da skill após confirmação.
-5. Envio dos dados via POST para Google Forms.
-6. Retorno de sucesso ou erro.
+## 🔄 执行流程
+1. 通过聊天收集数据。
+2. 进行结构性和格式验证。
+3. 显示确认摘要。
+4. 确认后执行技能。
+5. 通过 POST 请求将数据发送到 Google Forms。
+6. 返回成功或错误信息。
 
 ---
 
-## ✅ Retornos Esperados
+## ✅ 预期返回结果
 
-### Sucesso
+### 成功
 ```
 Sucesso: contrato registrado e PDF será enviado.
 ```
 
-### Erro de Validação
+### 验证错误
 ```
 Erro: Campos obrigatórios ausentes: email, cpf
 ```
 
-### Modo DRY_RUN
+### DRY_RUN 模式
 ```
 [DRY-RUN] Payload gerado: {...}
 ```
 
 ---
 
-Versão 1.0.0
+版本 1.0.0

@@ -1,29 +1,29 @@
 ---
 name: dzen
-description: Publish articles and posts to Dzen.ru (Yandex Zen). Supports text, images, and videos. Requires session cookies and a CSRF token from a logged-in browser session.
+description: 将文章和帖子发布到 Dzen.ru（Yandex Zen）平台。支持上传文本、图片和视频。需要登录用户浏览器会话产生的会话cookie以及CSRF令牌。
 ---
 
-# Dzen Publisher
+# Dzen 发布器
 
-This skill allows you to programmatically publish content to Dzen.ru using a browser-mimic approach.
+该技能允许您通过模拟浏览器的方式，以编程方式将内容发布到 Dzen.ru 上。
 
-## Setup
+## 设置
 
-Dzen does not provide a public API for posting. This skill uses your active browser session.
+Dzen 并未提供用于发布的公共 API。此技能会使用您当前的浏览器会话。
 
-### 1. Get Authentication Data
+### 1. 获取认证信息
 
-1.  Log in to [dzen.ru](https://dzen.ru) in your browser.
-2.  Open the **Network** tab in Developer Tools (F12).
-3.  Go to [dzen.ru/profile/editor](https://dzen.ru/profile/editor).
-4.  Find any request to `dzen.ru` (e.g., `entry`, `list`, or even the main page).
-5.  In the **Headers** tab:
-    *   Find the `Cookie` header. Copy its value.
-    *   Find the `x-csrf-token` header. Copy its value.
+1. 在浏览器中登录 [dzen.ru](https://dzen.ru)。
+2. 打开开发者工具（F12）中的 **网络** 标签页。
+3. 转到 [dzen.ru/profile/editor](https://dzen.ru/profile/editor)。
+4. 找到任何发送到 `dzen.ru` 的请求（例如 `entry`、`list` 或主页面）。
+5. 在 **请求头** 标签页中：
+    *   找到 `Cookie` 头部，并复制其值。
+    *   找到 `x-csrf-token` 头部，并复制其值。
 
-### 2. Create Config File
+### 2. 创建配置文件
 
-Create a file named `dzen_config.json` in the workspace with the following structure:
+在工作区中创建一个名为 `dzen_config.json` 的文件，内容如下：
 
 ```json
 {
@@ -36,24 +36,24 @@ Create a file named `dzen_config.json` in the workspace with the following struc
 }
 ```
 
-## Usage
+## 使用方法
 
-### Publishing a Post
+### 发布帖子
 
-Use the `publish.py` script to create a post.
+使用 `publish.py` 脚本来创建帖子。
 
 ```bash
 python3 scripts/publish.py --title "My Title" --text "My Content" --media image.jpg video.mp4 --config dzen_config.json
 ```
 
-### Supported Media
+### 支持的媒体格式
 
-- **Images**: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`.
-- **Videos**: `.mp4`, `.mov`, `.avi`, `.mkv`.
+- **图片**：`.jpg`、`.jpeg`、`.png`、`.webp`、`.gif`。
+- **视频**：`.mp4`、`.mov`、`.avi`、`.mkv`。
 
-Media files are uploaded automatically before the final publication.
+媒体文件会在最终发布前自动上传。
 
-## Tips
+## 提示
 
-- **Session Expiry**: If the publication fails with a 403 error, your cookies or CSRF token may have expired. Refresh them from the browser.
-- **CSRF Token**: Ensure the `X-Csrf-Token` matches the one in your config. It is mandatory for all POST requests.
+- **会话过期**：如果发布失败并显示 403 错误，可能是您的 Cookie 或 CSRF 令牌已过期。请从浏览器中刷新它们。
+- **CSRF 令牌**：确保 `X-Csrf-Token` 与配置文件中的值一致。所有 POST 请求都必须使用此令牌。

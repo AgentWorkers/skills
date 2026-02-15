@@ -1,25 +1,25 @@
 ---
 name: supermemory
-description: Store and retrieve memories using the SuperMemory API. Add content, search memories, and chat with your knowledge base.
+description: 使用 SuperMemory API 存储和检索记忆。可以添加新内容、搜索记忆，还可以与你的知识库进行交流。
 metadata: {"moltbot":{"emoji":"🧠","requires":{"env":["SUPERMEMORY_API_KEY"]},"primaryEnv":"SUPERMEMORY_API_KEY"},"user-invocable":true}
 ---
 
 # SuperMemory
 
-Store, search, and chat with your personal knowledge base using SuperMemory's API.
+使用 SuperMemory 的 API 来存储、搜索和与您的个人知识库进行交互。
 
-## Setup
+## 设置
 
-Configure your SuperMemory API key:
+配置您的 SuperMemory API 密钥：
 ```bash
 export SUPERMEMORY_API_KEY="sm_oiZHA2HcwT4tqSKmA7cCoK_opSRFViNFNxbYqjkjpVNfjSPqQWCNoOBAcxKZkKBfRVVrEQDVxLWHJPvepxqwEPe"
 ```
 
-## Usage
+## 使用方法
 
-### Add a Memory
+### 添加记忆内容
 
-**Add content to your memory store:**
+**将内容添加到您的记忆库中：**
 ```bash
 # Add a memory with content
 supermemory add "Your memory content here"
@@ -28,53 +28,53 @@ supermemory add "Your memory content here"
 supermemory add "Important project details" --description "Project requirements"
 ```
 
-### Search Memories
+### 搜索记忆内容
 
-**Search your stored memories:**
+**搜索您存储的记忆：**
 ```bash
 supermemory search "search query"
 ```
 
-### Chat with Memories
+### 与记忆库进行对话
 
-**Chat with your memory database:**
+**与您的记忆数据库进行对话：**
 ```bash
 supermemory chat "What do you know about my projects?"
 ```
 
-## Implementation
+## 实现细节
 
-### Add Memory
+### 添加记忆内容
 
-When user wants to store information:
+当用户想要存储信息时：
 ```bash
 bash /root/clawd/skills/supermemory/scripts/add-memory.sh "content" "description (optional)"
 ```
 
-### Search Memories
+### 搜索记忆内容
 
-When user wants to find something in their memories:
+当用户想要在记忆中查找信息时：
 ```bash
 bash /root/clawd/skills/supermemory/scripts/search.sh "query"
 ```
 
-### Chat with Memory Base
+### 与记忆库进行对话
 
-When user wants to query their memory database conversationally:
+当用户想要以对话的形式查询记忆数据库中的内容时：
 ```bash
 bash /root/clawd/skills/supermemory/scripts/chat.sh "question"
 ```
 
-## Examples
+## 示例
 
-**Store important information:**
-- "Remember that my API key is xyz" → `supermemory add "My API key is xyz" --description "API credentials"`
-- "Save this link for later" → `supermemory add "https://example.com" --description "Bookmarked link"`
+**存储重要信息：**
+- “记住我的 API 密钥是 xyz” → `supermemory add "My API key is xyz" --description "API credentials"`
+- “保存这个链接以备后续使用” → `supermemory add "https://example.com" --description "Bookmarked link"`
 
-**Find information:**
-- "What did I save about Python?" → `supermemory search "Python"`
-- "Find my notes on the project" → `supermemory search "project notes"`
+**查找信息：**
+- “我保存了关于 Python 的哪些内容？” → `supermemory search "Python"`
+- “找到我关于项目的笔记” → `supermemory search "project notes"`
 
-**Query your knowledge:**
-- "What do I know about the marketing strategy?" → `supermemory chat "What do I know about the marketing strategy?"`
-- "Summarize what I've learned about AI" → `supermemory chat "Summarize what I've learned about AI"`
+**查询知识：**
+- “我对营销策略了解多少？” → `supermemory chat "What do I know about the marketing strategy?"
+- “总结一下我对 AI 的了解” → `supermemory chat "Summarize what I've learned about AI"`

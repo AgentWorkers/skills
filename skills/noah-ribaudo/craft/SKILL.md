@@ -1,24 +1,23 @@
 ---
 name: craft
-description: Manage Craft notes, documents, and tasks via CLI. Use when the user asks to add notes, create documents, manage tasks, search their Craft documents, or work with daily notes. Craft is a note-taking app for macOS/iOS.
+description: 通过 CLI（命令行界面）来管理 Craft 的笔记、文档和任务。当用户需要添加笔记、创建文档、管理任务、搜索 Craft 文档或处理日常笔记时，可以使用该功能。Craft 是一款专为 macOS/iOS 设计的笔记应用程序。
 metadata: {"clawdbot":{"install":[{"id":"craft-cli","kind":"script","path":"scripts/craft","dest":"~/bin/craft","label":"Install Craft CLI"}]}}
 ---
 
 # Craft CLI
 
-Interact with Craft.do documents, blocks, and tasks.
+用于与 Craft.do 文档、模块（blocks）和任务（tasks）进行交互。
 
-## Setup
+## 设置（Setup）
 
-1. Install: Copy `scripts/craft` to `~/bin/craft` and make executable
-2. Get API URL from Craft: Settings > Integrations > Craft Connect > Create Link
-3. Set env var: `export CRAFT_API_URL='https://connect.craft.do/links/YOUR_LINK/api/v1'`
+1. 安装：将 `scripts/craft` 文件复制到 `~/bin/craft` 目录，并使其可执行。
+2. 获取 Craft 的 API URL：在设置（Settings）> 集成（Integrations）> Craft Connect 中创建链接（Create Link）。
+3. 设置环境变量：`export CRAFT_API_URL='https://connect.craft.do/links/YOUR LINK/api/v1'`。
+   将此变量添加到 shell 配置文件中以实现持久化。
 
-Add to shell profile for persistence.
+## 命令（Commands）
 
-## Commands
-
-### Documents
+### 文档（Documents）
 
 ```bash
 craft folders                    # List all folders
@@ -29,7 +28,7 @@ craft search <term>              # Search across documents
 craft create-doc "Title" [folderId]  # Create new document
 ```
 
-### Blocks
+### 模块（Blocks）
 
 ```bash
 craft add-block <docId> "markdown"      # Add block to document
@@ -38,7 +37,7 @@ craft update-block <blockId> "markdown" # Update existing block
 craft delete-block <blockId>...         # Delete block(s)
 ```
 
-### Tasks
+### 任务（Tasks）
 
 ```bash
 craft tasks [scope]              # List tasks (inbox, active, upcoming, logbook)
@@ -47,16 +46,16 @@ craft complete-task <id>         # Mark task as done
 craft delete-task <id>           # Delete task
 ```
 
-### Collections
+### 集合（Collections）
 
 ```bash
 craft collections                # List all collections
 craft collection-items <id>      # Get items from collection
 ```
 
-## Notes
+## 注意事项（Notes）
 
-- Markdown content passed as arguments; escape quotes if needed
-- Dates: `today`, `yesterday`, or `YYYY-MM-DD`
-- Task scopes: `inbox` (default), `active`, `upcoming`, `logbook`
-- Document locations: `unsorted`, `trash`, `templates`, `daily_notes`
+- 参数以 Markdown 格式传递；如有需要，请对引号进行转义。
+- 日期格式：`today`、`yesterday` 或 `YYYY-MM-DD`。
+- 任务范围：`inbox`（默认）、`active`、`upcoming`、`logbook`。
+- 文档存储位置：`unsorted`、`trash`、`templates`、`daily_notes`。

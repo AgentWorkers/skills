@@ -1,17 +1,17 @@
 ---
 name: ha-integration-patterns
-description: Home Assistant custom integration patterns and architectural decisions. Use when building HACS integrations, custom components, or API bridges for Home Assistant. Covers service response data, HTTP views, storage APIs, and integration architecture.
+description: Home Assistant的自定义集成模式与架构决策：在为Home Assistant构建集成模块、自定义组件或API桥接器时需要参考这些内容。涵盖了服务响应数据、HTTP视图、存储API以及集成架构的相关知识。
 ---
 
-# Home Assistant Integration Patterns
+# Home Assistant 集成模式
 
-## Service Response Data Pattern
+## 服务响应数据模式
 
-### The Problem
-By default, HA services are "fire-and-forget" and return empty arrays `[]`.
+### 问题
+默认情况下，Home Assistant（HA）中的服务采用“一次使用即忽略”的设计，返回空数组 `[]`。
 
-### The Solution (HA 2023.7+)
-Register service with `supports_response`:
+### 解决方案（HA 2023.7+）
+使用 `supports_response` 参数注册服务：
 
 ```python
 from homeassistant.helpers.service import SupportsResponse
@@ -25,12 +25,12 @@ hass.services.async_register(
 )
 ```
 
-Call with `?return_response` flag:
+调用服务时添加 `?return_response` 标志：
 ```bash
 curl -X POST "$HA_URL/api/services/your_domain/get_full_config?return_response"
 ```
 
-### Response Handler
+### 响应处理器
 ```python
 async def handle_get_full_config(hass: HomeAssistant, call: ServiceCall):
     """Handle the service call and return data."""
@@ -40,18 +40,17 @@ async def handle_get_full_config(hass: HomeAssistant, call: ServiceCall):
 
 ---
 
-## HTTP View vs Service: When to Use Each
+## HTTP 视图与服务：何时使用哪种方式
 
-| Use Case | Use | Don't Use |
+| 使用场景 | 使用方式 | 不应使用的方式 |
 |----------|-----|-----------|
-| Return complex data | HTTP View | Service (without response support) |
-| Fire-and-forget actions | Service | HTTP View |
-| Trigger automations | Service | HTTP View |
-| Query state/config | HTTP View | Internal storage APIs |
+| 返回复杂数据 | HTTP 视图 | 服务（不支持响应功能） |
+| 执行一次性操作 | 服务 | HTTP 视图 |
+| 触发自动化任务 | 服务 | HTTP 视图 |
+| 查询状态/配置 | HTTP 视图 | 内部存储 API |
 
-### HTTP View Pattern
-For data retrieval APIs:
-
+### HTTP 视图模式
+用于数据检索的 API：
 ```python
 from homeassistant.components.http import HomeAssistantView
 
@@ -72,16 +71,15 @@ hass.http.register_view(OpenClawConfigView())
 
 ---
 
-## Critical: Avoid Internal APIs
+## 重要提示：避免使用内部 API
+**切勿使用以“_”开头的 API**——这些 API 是私有的，并且会随版本更新而发生变化。**
 
-**Never use underscore-prefixed APIs** — they're private and change between versions.
-
-❌ **Wrong:**
+❌ **错误示例：**
 ```python
 storage_collection = hass.data["_storage_collection"]
 ```
 
-✅ **Right:**
+✅ **正确示例：**
 ```python
 # Use public APIs only
 from homeassistant.helpers.storage import Store
@@ -90,9 +88,9 @@ store = Store(hass, STORAGE_VERSION, STORAGE_KEY)
 
 ---
 
-## Storage Patterns
+## 数据存储模式
 
-### For Small Data (Settings, Cache)
+### 存储少量数据（设置、缓存）
 ```python
 from homeassistant.helpers.storage import Store
 
@@ -109,24 +107,24 @@ await store.async_save(data)
 data = await store.async_load()
 ```
 
-### For Large Data (History, Logs)
-Use external database or file storage, not HA storage helpers.
+### 存储大量数据（历史记录、日志）
+建议使用外部数据库或文件存储，而非 Home Assistant 的内置存储工具。
 
 ---
 
-## Breaking Changes to Watch
+## 需关注的重大变更
 
-| Change | Version | Migration |
+| 变更内容 | 版本 | 迁移方式 |
 |--------|---------|-----------|
-| Conversation agents | 2025.x+ | Use `async_process` directly |
-| Service response data | 2023.7+ | Add `supports_response` param |
-| Config entry migration | 2022.x+ | Use `async_migrate_entry` |
+| 会话代理功能 | 2025.x+ | 直接使用 `async_process` 方法 |
+| 服务响应数据 | 2023.7+ | 添加 `supports_response` 参数 |
+| 配置项迁移 | 2022.x+ | 使用 `async_migrate_entry` 方法 |
 
-**Always check:** https://www.home-assistant.io/blog/ for your target version range.
+**请务必查看：** https://www.home-assistant.io/blog/ 以获取您所使用版本的相关信息。
 
 ---
 
-## HACS Integration Structure
+## HACS 集成结构
 
 ```
 custom_components/your_domain/
@@ -137,7 +135,7 @@ custom_components/your_domain/
 └── storage_services.py  # Your storage logic
 ```
 
-### Minimal manifest.json
+### 最简化的 `manifest.json` 文件示例
 ```json
 {
   "domain": "your_domain",
@@ -152,31 +150,27 @@ custom_components/your_domain/
 
 ---
 
-## Testing Checklist
-
-- [ ] Service calls return expected data (with `?return_response`)
-- [ ] HTTP views accessible with auth token
-- [ ] No underscore-prefixed API usage
-- [ ] Storage persists across restarts
-- [ ] Config flow creates config entry
-- [ ] Error handling returns meaningful messages
-
----
-
-## Documentation Resources
-
-- Integration basics: `developers.home-assistant.io/docs/creating_integration_index`
-- Service calls: `developers.home-assistant.io/docs/dev_101_services`
-- HTTP views: `developers.home-assistant.io/docs/api/webserver`
-- Breaking changes: `home-assistant.io/blog/` (filter by version)
-- HACS guidelines: `hacs.xyz/docs/publish/start`
+## 测试检查清单
+- [ ] 服务调用返回预期的数据（通过 `?return_response` 参数）
+- [ ] 可使用认证令牌访问 HTTP 视图
+- [ ] 未使用以“_”开头的 API
+- [ ] 数据存储在重启后仍能保留
+- [ ] 配置流程能够正确创建配置项
+- [ ] 错误处理能够返回有意义的提示信息
 
 ---
 
-## Lesson Learned
+## 文档资源
+- 集成基础：`developers.home-assistant.io/docs/creating_integration_index`
+- 服务调用：`developers.home-assistant.io/docs/dev_101_services`
+- HTTP 视图：`developers.home-assistant.io/docs/api/webserver`
+- 重大变更信息：`home-assistant.io/blog/`（按版本筛选）
+- HACS 集成指南：`hacs.xyz/docs/publish/start`
 
-From HA-OpenClaw Bridge attempt:
+---
 
-> *"80% of our issues were discoverable with 30-60 minutes of upfront docs reading. We jumped straight to coding based on assumptions rather than reading how HA actually works."*
+## 经验教训
+从尝试使用 HA-OpenClaw Bridge 的过程中我们了解到：
+> “80% 的问题其实可以通过提前阅读 30-60 分钟的文档就能发现。我们当时直接开始编码，而没有先了解 Home Assistant 的实际工作原理。”
 
-Use `skills/pre-coding-research/` methodology before starting.
+在开始开发之前，请务必使用 `skills/pre-coding-research/` 这一方法论来进行充分的准备工作。

@@ -1,6 +1,6 @@
 ---
 name: report-generator
-description: Generate professional data reports with charts, tables, and visualizations
+description: 生成包含图表、表格和可视化元素的专业数据报告。
 author: claude-office-skills
 version: "1.0"
 tags: [report, visualization, charts, data, automation]
@@ -8,27 +8,27 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, code_execution, file_operations]
 ---
 
-# Report Generator Skill
+# 报告生成器技能
 
-## Overview
+## 概述
 
-This skill enables automatic generation of professional data reports. Create dashboards, KPI summaries, and analytical reports with charts, tables, and insights from your data.
+该技能能够自动生成专业的数据报告。您可以使用该技能创建仪表板、关键绩效指标（KPI）汇总报告以及包含图表、表格和数据分析结果的分析报告。
 
-## How to Use
+## 使用方法
 
-1. Provide data (CSV, Excel, JSON, or describe it)
-2. Specify the type of report needed
-3. I'll generate a formatted report with visualizations
+1. 提供数据（格式为 CSV、Excel 或 JSON，或通过文字描述数据内容）；
+2. 指定所需的报告类型；
+3. 我将为您生成包含可视化内容的格式化报告。
 
-**Example prompts:**
-- "Generate a sales report from this data"
-- "Create a monthly KPI dashboard"
-- "Build an executive summary with charts"
-- "Produce a data analysis report"
+**示例提示：**
+- “根据这些数据生成一份销售报告”；
+- “创建一个每月的 KPI 仪表板”；
+- “制作一份包含图表的高管总结报告”；
+- “生成一份数据分析报告”。
 
-## Domain Knowledge
+## 相关领域知识
 
-### Report Components
+### 报告的组成部分
 
 ```python
 # Report structure
@@ -45,7 +45,7 @@ report = {
 }
 ```
 
-### Using Python for Reports
+### 使用 Python 生成报告
 
 ```python
 import pandas as pd
@@ -74,7 +74,7 @@ def generate_report(data, output_path):
     return output_path
 ```
 
-### HTML Report Template
+### HTML 报告模板
 
 ```python
 def generate_html_report(data, title):
@@ -111,7 +111,7 @@ def generate_html_report(data, title):
     return html
 ```
 
-## Example: Sales Report
+## 示例：销售报告
 
 ```python
 import pandas as pd
@@ -156,8 +156,8 @@ def create_sales_report(csv_path, output_path):
 create_sales_report('sales_data.csv', 'sales_report.html')
 ```
 
-## Resources
+## 可用资源
 
-- [Matplotlib](https://matplotlib.org/)
-- [Plotly](https://plotly.com/)
+- [Matplotlib](https://matplotlib.org/)  
+- [Plotly](https://plotly.com/)  
 - [ReportLab](https://www.reportlab.com/)

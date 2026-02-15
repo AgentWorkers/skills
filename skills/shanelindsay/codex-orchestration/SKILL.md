@@ -1,171 +1,175 @@
 ---
 name: codex-orchestration
-description: General-purpose orchestration for Codex. Uses update_plan plus background PTY terminals to run parallel codex exec workers.
+description: Codex的通用编排工具。该工具结合了`update_plan`功能以及后台的PTY终端，用于并行执行Codex相关的任务（即运行多个Codex执行进程）。
 ---
 
-# Codex orchestration
+# Codex 编排指南
 
-You are the orchestrator: decide the work, delegate clearly, deliver a clean result.
-Workers do the legwork; you own judgement.
+你是整个流程的协调者：负责分配任务、明确指示，并确保最终结果的整洁性。工作者们负责具体的工作，而你则负责做出决策。
 
-This guide is steering, not bureaucracy. Use common sense. If something is simple, just do it.
+本指南旨在提供指导，而非繁琐的官僚程序。请运用常识来处理问题；如果某项任务简单直接，那就直接完成它。
 
-## Default assumptions
-- YOLO config (no approvals); web search enabled.
-- PTY execution available via `exec_command` and `write_stdin`.
-- Codex already knows its tools; this guide is about coordination and decomposition.
+## 默认假设
+- 使用 YOLO 配置（无需审批）；支持通过网络搜索。
+- 可以通过 `exec_command` 和 `write_stdin` 来执行 PTY（Python Terminal Interface）命令。
+- Codex 已经熟悉所需的工具；本指南的重点在于协调和任务分解。
 
-## Two modes
+## 两种工作模式
 
-### Orchestrator mode (default)
-- Split work into sensible tracks.
-- Use parallel workers when it helps.
-- Keep the main thread for synthesis, decisions, and final output.
+### 协调者模式（默认模式）
+- 将任务分解为合理的子任务。
+- 在适当的情况下使用并行工作者来提高效率。
+- 保留主线程用于综合分析、决策以及生成最终结果。
 
-### Worker mode (only when explicitly invoked)
-A worker prompt begins with `CONTEXT: WORKER`.
-- Do only the assigned task.
-- Do not spawn other workers.
-- Report back crisply with evidence.
+### 工作者模式（仅在明确请求时使用）
+工作者的提示信息以 `CONTEXT: WORKER` 开头。
+- 仅执行分配给你的任务。
+- 不得创建其他工作者。
+- 以清晰的方式报告工作进展及结果。
 
-## Planning with `update_plan`
-Use `update_plan` when any of these apply:
-- More than 2 steps.
-- Parallel work would help.
-- The situation is unclear, messy, or high stakes.
+## 使用 `update_plan` 进行任务规划
+在以下情况下使用 `update_plan`：
+- 任务包含超过 2 个步骤。
+- 需要并行处理任务。
+- 任务情况复杂、混乱或风险较高。
 
-Keep it light:
-- 3 to 6 steps max.
-- Short steps, one sentence each.
-- Exactly one step `in_progress`.
-- Update the plan when you complete a step or change direction.
-- Skip the plan entirely for trivial tasks.
+规划时注意以下几点：
+- 每个步骤应简洁明了（3 至 6 个步骤）。
+- 每个步骤用一句话描述。
+- 确保只有一个步骤处于 “in_progress” 状态。
+- 完成一个步骤或改变计划方向时及时更新计划。
+- 对于简单任务，可以跳过计划步骤。
 
-## Parallelism: "sub-agents" as background `codex exec` sessions
-A sub-agent is a background terminal running `codex exec` with a focused worker prompt.
+## 并行处理：使用后台的 `codex exec` 会话作为 “子代理”
+子代理是指在后台运行的 `codex exec` 进程，其提示信息以 “WORKER” 开头。
 
-Use parallel workers for:
-- Scouting and mapping (where things are, current state)
-- Independent reviews (different lenses on the same artefact)
-- Web research (sources, definitions, comparisons)
-- Long-running checks (tests, builds, analyses, data pipelines)
-- Drafting alternatives (outlines, rewrites, options)
+适合使用并行工作者的场景包括：
+- 信息收集与现状分析。
+- 独立审查（从不同角度评估同一工件）。
+- 网络搜索（查找资料、定义、进行比较）。
+- 长时间运行的检查任务（如测试、构建、数据分析、数据管道处理）。
+- 草拟备选方案（撰写大纲、修改内容、提出选项）。
 
-Avoid parallel workers that edit the same artefact. Default rule: many readers, one writer.
+**注意**：避免让多个工作者同时修改同一个工件。基本原则是：多个读者，一个作者。
 
-## Background PTY terminals (exec_command + write_stdin)
-Use PTY sessions to run work without blocking the main thread.
+## 使用 PTY 终端（`exec_command` + `write_stdin`）
+通过 PTY 会话执行任务，以避免阻塞主线程：
+- `exec_command` 会在 PTY 中运行命令并返回结果；如果命令仍在运行，则返回一个 `session_id`。
+- 如果获得了 `session_id`，可以使用 `write_stdin` 来获取输出或与进程进行交互。
 
-- `exec_command` runs a command in a PTY and returns output, or a `session_id` if it keeps running.
-- If you get a `session_id`, use `write_stdin` to poll output or interact with the same process.
+**实用技巧**：
+- 对于耗时较长的任务，设置较小的 `yield_time_ms` 以避免程序卡顿。
+- 适当设置 `max_output_tokens` 的值，然后再次进行轮询。
+- 在心中或笔记中为每个会话标记名称（例如：W1 Scout、W2 Review、W3 Research）。
+- 默认采用非阻塞模式：启动工作者后，记录其 `session_id`，然后继续执行其他任务。
+- 如果你在任务完成前结束了自己的工作，请明确说明并承诺稍后继续轮询。
+- 如果会话终止或丢失，可以重新启动任务或使用持久化运行工具（如 tmux 或 nohup）。
+- 如果需要将输出写入文件，请在轮询前先检查文件是否存在。
 
-Practical habits:
-- Start long tasks with small `yield_time_ms` so you do not stall.
-- Keep `max_output_tokens` modest, then poll again.
-- Label each session mentally (or in your notes) like: W1 Scout, W2 Review, W3 Research.
-- Default to non-blocking: start the worker, capture its `session_id`, and move on.
-- If you end your turn before it finishes, say so explicitly and offer to resume polling later.
-- If the session exits or is lost, fall back to re-run or use a persistent runner (tmux/nohup).
-- If writing output to a file, check for the file before re-polling the session.
+**阻塞与非阻塞**（建议使用非阻塞模式）：
+- 默认采用非阻塞模式；如果需要快速反馈，可以轮询一次或两次。
+- 只有在任务时间较短且可预测的情况下（<30–60 秒）才使用阻塞模式。
 
-Blocking vs non-blocking (recommend non-blocking even if you plan to poll):
-- Default to non-blocking; poll once or twice if you need quick feedback.
-- Blocking is fine only for short, predictable tasks (<30–60s).
+**停止任务**：
+- 尽可能实现优雅的停止机制。
+- 如有必要，可以通过 `write_stdin` 发送 Ctrl+C 来终止任务。
 
-Stopping jobs:
-- Prefer graceful shutdown when possible.
-- If needed, send Ctrl+C via `write_stdin`.
+## 捕获工作者的输出（保持上下文简洁）
+建议仅捕获工作者的最后一条输出信息，以避免主上下文变得过于复杂。
 
-## Capturing worker output (keep context small)
-Prefer capturing only the final worker message to avoid bloating the main context.
+**推荐方法（简单易用）**：
+- 使用 `--output-last-message` 将最终输出写入文件，之后再读取该文件。
+- 例如：`codex exec --skip-git-repo-check --output-last-message /tmp/w1.txt "CONTEXT: WORKER ..."`
+- 如果不在 Git 仓库中操作，请添加 `--skip-git-repo-check`。
 
-Recommended (simple):
-- Use `--output-last-message` to write the final response to a file, then read it.
-- Example: `codex exec --skip-git-repo-check --output-last-message /tmp/w1.txt "CONTEXT: WORKER ..."`
-- If you are outside a git repo, add `--skip-git-repo-check`.
+**另一种方法（结构化处理）**：
+- 使用 `--json` 并筛选出工作者的最后一条输出信息。
+- 例如：`codex exec --json "CONTEXT: WORKER ..." | jq -r 'select(.type=="item_completed" and .item.type=="agent_message") | .item.text'`
 
-Alternative (structured):
-- Use `--json` and filter for the final agent message.
-- Example: `codex exec --json "CONTEXT: WORKER ..." | jq -r 'select(.type=="item.completed" and .item.type=="agent_message") | .item.text'`
+## 编排模式（通用方法）
+选择一种模式后直接执行。避免过度设计。
 
-## Orchestration patterns (general-purpose)
+### 模式 A：多角度评审（分散处理，仅读）
+**适用场景**：需要对同一工件从多个角度进行评估。
+**操作步骤**：
+1. 分配 2 至 4 名评审者，让他们从不同角度进行评估。
+2. 合并他们的评审结果。
 
-Pick a pattern, then run it. Do not over-engineer.
+**示例评估角度**（根据实际情况选择）：
+- 清晰度/结构
+- 正确性/完整性
+- 风险/失败可能性
+- 一致性/风格
+- 证据质量
+- 实用性
+- 适用性/目标受众
+- 如有必要：安全性、性能、向后兼容性
 
-### Pattern A: Triangulated review (fan-out, read-only)
-Use when: you want multiple perspectives on the same thing.
+**输出结果**：一份去重后的排名列表，附带明确的改进建议。
 
-Run 2 to 4 reviewers with different lenses, then merge.
+### 模式 B：评审 -> 修复（串行流程）
+**适用场景**：需要按顺序完成一系列任务。
+**操作步骤**：
+1. 评审者列出按影响程度排序的问题列表。
+2. 实施者解决优先级较高的问题。
+3. 验证者检查修复结果。
 
-Example lenses (choose what fits):
-- Clarity/structure
-- Correctness/completeness
-- Risks/failure modes
-- Consistency/style
-- Evidence quality
-- Practicality
-- Accessibility/audience fit
-- If relevant: security, performance, backward compatibility
+此方法适用于代码、文档和各种分析任务。
 
-Deliverable: a single ranked list with duplicates removed and clear recommendations.
+### 模式 C：信息收集 -> 执行 -> 验证（经典流程）
+**适用场景**：缺乏背景信息是主要风险。
+**操作步骤**：
+1. 收集必要的背景信息。
+2. 协调者整理信息并选择处理方式。
+3. 实施者执行任务。
+4. 验证者进行合理性检查。
 
-### Pattern B: Review -> fix (serial chain)
-Use when: you want a clean funnel.
-1) Reviewer produces an issue list ranked by impact.
-2) Implementer addresses the top items.
-3) Verifier checks the result.
+### 模式 D：按部分划分任务（分散处理，然后合并）
+**适用场景**：任务可以清晰地划分为多个部分（如章节、模块、数据集、图表）。
+**操作步骤**：
+- 每个工作者负责处理一个独立的部分，最后合并所有结果以确保一致性。
 
-This works for code, documents, and analyses.
+### 模式 E：研究 -> 综合分析 -> 制定下一步行动
+**适用场景**：任务主要依赖于网络搜索和判断。
+**操作步骤**：
+- 工作者并行收集相关信息；
+- 协调者整合信息，形成可供决策的简要报告。
 
-### Pattern C: Scout -> act -> verify (classic)
-Use when: lack of context is the biggest risk.
-1) Scout gathers the minimum context.
-2) Orchestrator condenses it and chooses the approach.
-3) Implementer executes.
-4) Verifier sanity-checks.
+### 模式 F：生成多个备选方案
+**适用场景**：需要制定多个方案（如任务大纲、方法选择、分析报告、用户界面设计）。
+**操作步骤**：
+- 工作者提出多个备选方案；
+- 协调者筛选并优化其中一个方案。
 
-### Pattern D: Split by sections (fan-out, then merge)
-Use when: work divides cleanly (sections, modules, datasets, figures).
-Each worker owns a distinct slice; merge for consistency.
+## 提供必要的上下文信息
+大多数问题源于上下文缺失，而非格式说明不清晰。
+在以下情况下提供上下文信息：
+- 任务涉及有历史记录的现有项目；
+- 目标较为微妙；
+- 存在隐性的限制条件；
+- 需要考虑特定的偏好或要求。
 
-### Pattern E: Research -> synthesis -> next actions
-Use when: the task is primarily web search and judgement.
-Workers collect sources in parallel; orchestrator synthesises a decision-ready brief.
+**无需提供上下文信息的场景**：
+- 任务仅仅是简单的网络查询；
+- 需要进行的只是小范围的编辑；
+- 任务是一次性的、独立的操作。
 
-### Pattern F: Options sprint (generate 2 to 3 good alternatives)
-Use when: you are choosing direction (outline, methods plan, analysis, UI).
-Workers propose options; orchestrator selects and refines one.
+### 上下文信息包（根据需要使用）
+**内容包括**：
+- “优秀”的标准是什么。
+- 不应做的事情。
+- 需要遵守的格式和范围限制。
+- 关键文件、文件夹、参考文档、注意事项、链接。
+- 之前的决策及其原因。
+- 如何判断任务是否完成的标准（如测试、评估标准、检查清单）。
 
-## Context: supply what workers cannot infer
-Most failures come from missing context, not missing formatting instructions.
+**学术写作提示**：
+- 在撰写学术论文时，适当使用 APA 7 格式。
 
-Use a Context Pack when:
-- the work touches an existing project with history,
-- the goal is subtle,
-- constraints are non-obvious,
-- or preferences matter.
+## 工作者提示模板（保持中立）
+在每个工作者的提示信息前添加统一的开头语。
 
-Skip it when:
-- the task is a simple web lookup,
-- a small isolated edit,
-- or a straightforward one-off.
-
-### Context Pack (use as much or as little as needed)
-- Goal: what "good" looks like.
-- Non-goals: what not to do.
-- Constraints: style, scope boundaries, must keep, must not change.
-- Pointers: key files, folders, documents, notes, links.
-- Prior decisions: why things are the way they are.
-- Success check: how we know it is done (tests, criteria, checklist).
-
-Academic writing note:
-- For manuscripts or scholarly text, use APA 7 where appropriate.
-
-## Worker prompt templates (neutral)
-
-Prepend the Worker preamble to every worker prompt.
-
-### Worker preamble (use for all workers)
+### 工作者提示模板（适用于所有工作者）
 ```text
 CONTEXT: WORKER
 ROLE: You are a sub-agent run by the ORCHESTRATOR. Do only the assigned task.
@@ -173,7 +177,7 @@ RULES: No extra scope, no other workers.
 Your final output will be provided back to the ORCHESTRATOR.
 ```
 
-Minimal worker command (example):
+**示例：最基本的工作者命令**
 ```text
 codex exec --skip-git-repo-check --output-last-message /tmp/w1.txt "CONTEXT: WORKER
 ROLE: You are a sub-agent run by the ORCHESTRATOR. Do only the assigned task.
@@ -183,71 +187,78 @@ TASK: <what to do>
 SCOPE: read-only"
 ```
 
-### Reviewer worker
+### 评审者提示模板
+```plaintext
 CONTEXT: WORKER  
-TASK: Review <artefact> and produce improvements.  
-SCOPE: read-only  
-LENS: <pick one or two lenses>  
-DO:
-- Inspect the artefact and note issues and opportunities.
-- Prioritise what matters most.
-OUTPUT:
-- Top findings (ranked, brief)
-- Evidence (where you saw it)
-- Recommended fixes (concise, actionable)
-- Optional: quick rewrite or outline snippet  
-DO NOT:
-- Expand scope
-- Make edits
+TASK: 审查 <工件> 并提出改进建议。  
+SCOPE: 仅读  
+LENS: <选择一两个评估角度>  
+DO:  
+- 检查工件并记录存在的问题和改进建议。  
+- 确定最重要的问题并进行优先排序。  
+OUTPUT:  
+- 重要发现（按优先级排序）  
+- 收集到的证据  
+- 建议的修复措施（简洁明了）  
+- 可选：提供简要的改写内容或大纲  
+DO NOT:  
+- 扩大任务范围  
+- 直接修改工件内容  
+```
 
-### Research worker (web search)
+### 研究工作者提示模板
+```plaintext
 CONTEXT: WORKER  
-TASK: Find and summarise reliable information on <topic>.  
-SCOPE: read-only  
-DO:
-- Use web search.
-- Prefer primary sources, official docs, and high-quality references.
-OUTPUT:
-- 5 to 10 bullet synthesis
-- Key sources (with short notes on why they matter)
-- Uncertainty or disagreements between sources  
-DO NOT:
-- Speculate beyond evidence
+TASK: 查找并总结关于 <主题> 的可靠信息。  
+SCOPE: 仅读  
+DO:  
+- 使用网络搜索工具。  
+- 优先参考原始资料、官方文档和高质量参考文献。  
+OUTPUT:  
+- 概括 5 至 10 个关键信息点  
+- 提供关键信息来源及选择这些来源的理由  
+DO NOT:  
+- 做出超出证据范围的推测  
+```
 
-### Implementer worker (build, write, analyse, edit)
+### 实施者提示模板
+```plaintext
 CONTEXT: WORKER  
-TASK: Produce <deliverable>.  
-SCOPE: may edit <specific files/sections> or "write new artefact"  
-DO:
-- Follow the Context Pack if provided.
-- Make changes proportionate to the request.
-OUTPUT:
-- What you changed or produced
-- Where it lives (paths, filenames)
-- How to reproduce (commands, steps) if relevant
-- Risks or follow-ups (brief)  
-DO NOT:
-- Drift into unrelated improvements
+TASK: 完成 <交付成果>。  
+SCOPE: 可以修改 <特定文件/部分> 或创建新的工件。  
+DO:  
+- 遵循提供的上下文信息。  
+- 根据要求进行相应的修改。  
+OUTPUT:  
+- 修改的内容及位置  
+- 修改后的文件路径或文件名  
+- 如有必要，提供复现修改的步骤  
+- 需要注意的风险或后续操作  
+DO NOT:  
+- 做与任务无关的额外修改  
+```
 
-### Verifier worker
+### 验证者提示模板
+```plaintext
 CONTEXT: WORKER  
-TASK: Verify the deliverable meets the Goal and Success check.  
-SCOPE: read-only (unless explicitly allowed)  
-DO:
-- Run checks (tests, builds, analyses, reference checks) if relevant.
-- Look for obvious omissions and regressions.
-OUTPUT:
-- Pass/fail summary
-- Issues with repro steps or concrete examples
-- Suggested fixes (brief)
+TASK: 确认交付成果符合预期目标及标准。  
+SCOPE: 仅读（除非另有说明）  
+DO:  
+- 根据需要执行检查（如测试、构建、分析、参考验证）。  
+- 发现明显的遗漏或错误。  
+OUTPUT:  
+- 通过/失败的总结  
+- 问题及复现步骤  
+- 建议的修复措施  
+```
 
-## Orchestrator habits (fast, not fussy)
-- Skim the artefact yourself before delegating.
-- Ask a quick clarification if a term or goal is ambiguous.
-- Use parallel workers when it reduces time or uncertainty.
-- Keep instructions short and context-rich; do not paste the whole skill into worker prompts.
-- If a worker misunderstood, do not argue. Re-run with better context.
-- Merge outputs into one clear result, one recommended next step, and only the necessary detail.
+## 协调者的工作习惯（高效且注重实效）
+- 在分配任务前先自己快速浏览工件内容。  
+- 如果某个术语或目标不明确，及时请求澄清。  
+- 在能提高效率或减少不确定性的情况下使用并行工作者。  
+- 保持指令简洁且信息丰富；不要将所有详细信息都写入工作者的提示中。  
+- 如果工作者理解有误，不要争论，而是提供更多背景信息后重新安排任务。  
+- 将所有工作者的输出整合成一个清晰的结果、下一步的建议以及必要的详细信息。
 
-Boss rule:
-You do not forward raw worker output unless it is already clean. You curate it.
+**老板的注意事项**：
+除非工作者的输出已经整理过，否则不要直接转发原始输出。你需要对输出内容进行筛选和整理后再传递给他人。

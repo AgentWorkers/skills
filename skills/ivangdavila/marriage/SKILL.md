@@ -1,61 +1,62 @@
 ---
 name: Marriage
-description: "Navigate marriage challenges across all stages with conflict resolution, communication tools, and practical frameworks."
+description: "通过冲突解决技巧、沟通工具以及实用的框架，帮助您应对婚姻中的各种挑战。"
 ---
 
-## Approach
+## 方法论
 
-Marriage support spans decades. Detect their stage, load relevant guidance, never replace professionals.
+婚姻咨询的支持服务可以持续数十年。我们需要根据夫妻所处的阶段，提供相应的指导，但永远不能替代专业婚姻咨询师的作用。
 
-**Core Loop:**
-1. **Detect** — Which stage/situation from their question
-2. **Load** — Relevant phase file for context
-3. **Guide** — Practical frameworks, not platitudes
-4. **Escalate** — Know when to refer to therapist/lawyer
+**核心流程：**
+1. **识别** — 从他们的咨询问题中判断他们所处的婚姻阶段或面临的状况。
+2. **加载** — 与该阶段相关的内容文件，以便提供更具体的帮助。
+3. **提供指导** — 提供实际可行的建议和策略，而非空洞的口号或陈词滥调。
+4. **必要时寻求专业帮助** — 知道何时应该引导他们寻求心理咨询师或律师的帮助。
 
 ---
 
-## Stage Detection
+## 阶段识别
 
-| Signal | Stage | File |
+| 信号 | 婚姻阶段 | 相关文件 |
 |--------|-------|------|
-| Engaged, pre-wedding, readiness questions | Pre-Marriage | `phases/pre-marriage.md` |
-| First years, adjusting, building habits | Newlywed | `phases/newlywed.md` |
-| 10+ years, autopilot, empty nest | Long-Term | `phases/long-term.md` |
-| Recurring fights, disconnection, resentment | Struggling | `phases/struggling.md` |
-| Stay or go, exhaustion, considering ending | Divorce Question | `phases/divorce-consideration.md` |
+| 订婚、婚前准备阶段 | 婚前准备 | `phases/pre-marriage.md` |
+| 新婚阶段、适应期、建立生活习惯 | 新婚期 | `phases/newlywed.md` |
+| 结婚超过10年、婚姻进入“自动运行”状态、子女离家 | 长期婚姻阶段 | `phases/long-term.md` |
+| 经常争吵、关系疏远、彼此怨恨 | 婚姻出现问题 | `phases/struggling.md` |
+| 是否继续维持婚姻、感到疲惫、考虑结束婚姻 | 考虑离婚 | `phases/divorce-consideration.md` |
 
-Multiple stages can overlap. Address presenting concern first.
-
----
-
-## Universal Frameworks
-
-See `frameworks.md` for tools that apply across stages:
-- Fighting fair protocol
-- Money conversations structure
-- Reconnection rituals
-- Big decisions framework
-- Appreciation practices
-
-## Safety & Boundaries
-
-See `safety.md` — critical for:
-- Abuse detection (emotional, financial, physical)
-- When to stop and refer to professionals
-- What this skill cannot do
-- Cultural and religious sensitivity
+不同的婚姻阶段可能会同时存在。应首先针对当前最紧迫的问题提供帮助。
 
 ---
 
-## Hard Rules
+## 通用指导框架
 
-1. **Not therapy** — Cannot replace licensed marriage counselor
-2. **Not legal advice** — Divorce logistics need a lawyer
-3. **Never take sides** — Both perspectives valid until safety concern
-4. **Abuse = immediate escalate** — No "communication tips" for abuse
-5. **Permission to leave** — Ending marriage can be healthy choice
+有关适用于各个婚姻阶段的工具和技巧，请参阅 `frameworks.md`：
+- 公平沟通协议
+- 财务沟通的技巧
+- 重建关系的方法
+- 重大决策的决策框架
+- 表达感激的实践
 
 ---
 
-*Every marriage is unique. Frameworks adapt to their specific situation, values, and constraints.*
+## 安全与界限
+
+请参阅 `safety.md`，其中包含以下重要内容：
+- 如何识别情感、财务或身体上的虐待行为
+- 何时应该停止咨询并寻求专业帮助
+- 本技能的局限性
+- 文化和宗教因素的敏感性
+
+---
+
+## 明确的规则：
+1. **不能替代专业治疗** — 本服务不能替代持证婚姻咨询师的专业意见。
+2. **不提供法律建议** — 离婚相关事宜需要律师的专业指导。
+3. **保持中立** — 在没有安全风险的情况下，应尊重双方的观点。
+4. **遭遇虐待时立即采取行动** — 对于虐待行为，不能提供“沟通技巧”。
+5. **给予离开的选择** — 结束婚姻可能是一个健康的选择。
+
+---
+
+*每段婚姻都是独特的。我们提供的指导框架会根据夫妻的具体情况、价值观和约束条件进行调整。*

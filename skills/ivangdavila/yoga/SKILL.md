@@ -1,107 +1,107 @@
 ---
 name: Yoga
-description: Yoga instruction, pose alignment, sequencing, breathwork, and modifications for different levels.
+description: 瑜伽指导：体式对齐、动作顺序、呼吸技巧，以及针对不同水平的调整方法。
 metadata:
   category: fitness
   skills: ["yoga", "flexibility", "mindfulness", "poses", "breathwork"]
 ---
 
-## Alignment Principles
+## 对齐原则
 
-- Stack joints for stability — ankle under knee, knee under hip in standing poses
-- Length before depth — extend spine first, then fold or twist
-- Micro-bend in standing legs — locked knees hyperextend, cause injury
-- Shoulders away from ears — universal cue, almost always applies
-- Root to rise — ground down through contact points to lift through crown
+- 在站立姿势中，确保关节对齐以保持稳定：脚踝位于膝盖下方，膝盖位于髋部下方。
+- 先伸展脊柱，再进行弯曲或扭转动作。
+- 站立时腿部应进行微小的弯曲；膝盖固定时过度伸展会导致受伤。
+- 肩膀应远离耳朵——这是一个普遍适用的原则。
+- 通过身体的根基（脚掌）发力，然后通过头顶将身体向上抬起。
 
-## Pose Modifications
+## 姿势调整技巧
 
-- Blocks are not cheating — they bring the floor closer for proper alignment
-- Bent knee forward folds protect hamstrings — especially for tight bodies
-- Wall support for balance poses — removes fear, allows focus on form
-- Strap for binds and reaches — extends arms when shoulders are tight
-- Child's pose is always available — rest is part of practice, not failure
+- 使用辅助工具（如瑜伽砖）并不是“作弊”，而是为了帮助身体更好地对齐。
+- 弯曲膝盖进行前屈动作可以保护腘绳肌，尤其是对于身体较为僵硬的人。
+- 在需要平衡的姿势中，可以利用墙壁作为支撑，这样可以减少紧张感，专注于正确的姿势形式。
+- 当肩膀僵硬时，可以使用绑带来帮助伸展手臂。
+- “婴儿式”（Child’s Pose）随时都可以练习；休息是练习的一部分，而不是失败的表现。
 
-## Breath Fundamentals
+## 呼吸基础
 
-- Ujjayi breath: slight throat constriction, ocean sound — regulates effort, builds heat
-- Inhale to lengthen/open, exhale to deepen/twist — breath drives movement
-- Never hold breath in poses — restriction signals too much intensity
-- Breath count for holds: 5 breaths minimum — less doesn't create change
-- Breath first, pose second — if breath is labored, back off the pose
+- **乌贾伊呼吸（Ujjayi Breath）**：轻微收缩喉咙，发出类似海浪的声音，有助于调节呼吸的节奏并产生热量。
+- 吸气时伸展身体；呼气时加深身体的弯曲或扭转动作。呼吸是驱动身体动作的动力。
+- 在练习任何姿势时都不要屏住呼吸，因为屏息意味着动作强度过高。
+- 每个姿势的保持时间至少应为5次呼吸；保持时间过短则难以看到效果。
+- 呼吸为先，姿势为后；如果呼吸变得困难，应适当减轻姿势的强度。
 
-## Common Pose Errors
+## 常见姿势错误
 
-**Downward Dog:**
-- Shoulders dumping into ears — press floor away, rotate upper arms out
-- Banana back — bend knees to allow spine to lengthen, heels don't need to touch
+**下犬式（Downward Dog）**：
+- 肩膀向耳朵方向塌陷——应将肩膀向远离地面的方向推，同时将上臂向外旋转。
+- 背部呈“香蕉状”弯曲——弯曲膝盖可以让脊柱得到充分伸展，脚后跟不必触地。
 
-**Warrior I:**
-- Open hip when it should square — back foot angle and hip rotation connected
-- Knee past ankle — track knee over second toe, widen stance if needed
+**战士一式（Warrior I）**：
+- 髋部应该保持方正；后脚的角度与髋部的旋转动作应协调一致。
+- 膝盖应位于脚踝前方；如果需要，可以适当加大站立的步幅。
 
-**Chaturanga:**
-- Shoulders dipping below elbows — builds shoulder impingement
-- Elbows winging out — keep hugged to ribs
+**四肢着地式（Chaturanga）**：
+- 肩膀应低于肘部；否则容易导致肩部受伤。
+- 肘部应紧贴肋骨，不要向外张开。
 
-**Forward Fold:**
-- Rounding from low back — hinge from hips, keep back flat until fold
+**前屈式（Forward Fold）**：
+- 从腰部开始弯曲身体；整个动作应以髋部为支点进行，背部应保持平坦。
 
-## Sequencing Logic
+## 动作顺序逻辑
 
-- Warm-up: gentle movement, breath connection — cat/cow, sun salutations
-- Build: standing poses, balance challenges — peak intensity in middle
-- Peak pose: most challenging pose of class — body is warm, prepared
-- Cool-down: seated poses, twists, forward folds — releasing intensity
-- Savasana: minimum 5 minutes — integration, nervous system reset
+- 热身：进行轻柔的动作，并配合呼吸练习（如“猫牛式”和“太阳礼”）。
+- 建立身体力量：进行站立姿势和平衡挑战，达到练习的高强度阶段。
+- 高强度姿势：练习中最具挑战性的姿势；此时身体已经充分热身。
+- 冷却：进行坐姿练习、扭转动作和前屈动作，以放松身体。
+- 冥想式（Savasana）：至少练习5分钟，帮助身体整合练习效果并恢复神经系统。
 
-## Style Differences
+## 不同瑜伽流派的风格差异
 
-| Style | Intensity | Focus | Good For |
+| 流派 | 强度 | 重点 | 适合人群 |
 |-------|-----------|-------|----------|
-| Hatha | Low-moderate | Alignment, holds | Beginners, precision |
-| Vinyasa | Moderate-high | Flow, breath-movement | Cardio, variety |
-| Yin | Low | Long holds (3-5 min) | Flexibility, fascia |
-| Restorative | Very low | Full support, relaxation | Stress, recovery |
-| Ashtanga | High | Set sequence, endurance | Discipline, strength |
-| Hot/Bikram | High | Heat, sweat, detox | Flexibility, intensity |
+| 哈他瑜伽（Hatha Yoga）| 低至中等强度 | 关注身体对齐和姿势的精准度 | 初学者 |
+| 温莎瑜伽（Vinyasa Yoga）| 中等至高强度 | 强调呼吸与动作的协调性 | 适合提高心肺功能和身体灵活性 |
+| 阴瑜伽（Yin Yoga）| 低强度 | 长时间保持姿势（3-5分钟），注重柔韧性和深层肌肉放松 | 适合需要增强柔韧性和修复身体组织的人 |
+| 恢复性瑜伽（Restorative Yoga）| 非常低强度 | 提供全面的身体支持，帮助放松身心 | 适合压力大或需要恢复的人 |
+| 阿斯汤加瑜伽（Ashtanga Yoga）| 高强度 | 有固定的动作顺序，注重耐力和身体力量 | 需要自律性和较强的身体素质 |
+| 热瑜伽（Hot Yoga/Bikram Yoga）| 高强度 | 通过高温和大量出汗来促进身体排毒和柔韧性 | 适合身体状况较好的人 |
 
-## Cueing Approach
+## 指导方法
 
-- Positive cues: "Reach arms up" not "Don't drop your arms"
-- Anatomical landmarks: "Bring navel toward spine" clearer than "engage core"
-- Offer options: "Full bind or half bind" — choice empowers all levels
-- Demonstrate briefly, cue verbally — watching prevents feeling
-- Right/left clarity: mirror or specify "your right"
+- 使用积极的引导语，例如“将手臂向上伸直”，而不是“不要垂下手臂”。
+- 使用解剖学上的参考点来指导练习者，例如“将肚脐向脊柱方向收拢”，比“收紧核心肌群”更易于理解。
+- 提供多种选择，让不同水平的练习者都能找到适合自己的练习方式。
+- 短时间示范动作，然后通过口头指导来引导练习者；观察练习者的动作有助于他们更好地理解正确的姿势。
+- 清晰地指示左右方向，例如“请用你的右手”。
 
-## Safety Considerations
+## 安全注意事项
 
-- Neck: no weight on head in shoulderstand without preparation — use blankets
-- Low back: avoid deep backbends without warmup — protect lumbar spine
-- Knees: never force lotus or deep hip openers — cartilage damage irreversible
-- Wrists: build up to weight-bearing gradually — common injury site
-- Inversions: contraindicated with high blood pressure, glaucoma, pregnancy
+- 在练习倒立式（如肩倒立）时，如果没有充分热身，头部不应承受重量；可以使用毯子作为支撑。
+- 在进行深度后弯动作前，应先进行充分的热身，以保护腰椎。
+- 不要强迫身体做莲花坐或深度髋部打开的动作，以免损伤软骨。
+- 对于手腕，应逐渐增加负重；手腕是常见的受伤部位。
+- 有高血压、青光眼或怀孕的人不宜进行倒立类动作。
 
-## Props Usage
+## 辅助工具的使用
 
-- **Block:** Under hand in triangle, under sit bones in seated poses
-- **Strap:** Around foot for hamstring stretches, binds in seated twists
-- **Blanket:** Under knees in kneeling, under head in supine, under hips in seated
-- **Bolster:** Along spine in supported fish, under knees in savasana
-- Props make poses accessible — encourage use for all levels
+- **瑜伽砖**：在三角式（Triangle Pose）中放在手下方；在坐姿练习中放在坐骨下方。
+- **绑带**：用于拉伸腘绳肌或在坐姿扭转动作中固定身体。
+- **毯子**：在跪姿中放在膝盖下方；在仰卧式（Supine Pose）中放在头部下方；在坐姿中放在髋部下方。
+- **抱枕**：在“鱼式”（Fish Pose）中沿着脊柱放置；在冥想式（Savasana）中放在膝盖下方。
+- 辅助工具可以让更多人更容易完成各种姿势，适合所有水平的练习者。
 
-## Practice Progression
+## 练习进度建议
 
-- Beginners: 2-3x/week, 30-45 min — consistency over duration
-- Intermediate: 4-5x/week, mix of styles — avoid same sequence daily
-- Daily practice: alternate intensity — gentle after intense, yin after yang
-- Flexibility gains: weeks to months — patience required, forcing causes injury
-- Strength gains: faster than flexibility — supporting muscles adapt quicker
+- **初学者**：每周练习2-3次，每次30-45分钟；重要的是保持练习的持续性。
+- **中级练习者**：每周练习4-5次，尝试不同的瑜伽流派；避免每天重复相同的练习顺序。
+- **每日练习**：交替进行不同强度的练习；在高强度练习后进行轻松的练习，或在练习中穿插阴瑜伽风格的动作。
+- 柔韧性的提升需要时间和耐心；强行拉伸可能会导致受伤。
+- 力量的提升通常比柔韧性更快；支撑肌肉会更快适应练习。
 
-## Mental Aspects
+## 心理方面的建议
 
-- Drishti (gaze point): focus calms mind, improves balance
-- Non-competition: comparing to others or past self causes injury
-- Sensation vs pain: discomfort is okay, sharp pain is signal to stop
-- Practice detachment: some days body cooperates, some days it doesn't
-- Savasana is hardest pose — stillness reveals what movement distracts from
+- **注视点（Drishti）**：集中视线有助于平静心灵，提高平衡能力。
+- 不要与他人或过去的自己比较，以免产生不必要的压力。
+- 对于练习过程中的不适感，要区分正常的生理反应和剧烈的疼痛；如果感到剧烈疼痛，应立即停止练习。
+- 接受练习中的不确定性；有些日子身体可能会配合得更好，有些日子则不然。
+- 冥想式（Savasana）是最难的姿势；通过静坐可以发现哪些动作会分散注意力。

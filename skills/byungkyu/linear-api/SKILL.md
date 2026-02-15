@@ -17,9 +17,9 @@ metadata:
 
 # Linear
 
-Access the Linear API with managed OAuth authentication. Query and manage issues, projects, teams, cycles, labels, and comments using GraphQL.
+您可以使用受管理的 OAuth 认证来访问 Linear API。通过 GraphQL 查询和管理问题（Issues）、项目（Projects）、团队（Teams）、周期（Cycles）、标签（Labels）以及评论（Comments）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user
@@ -33,39 +33,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/linear/graphql
 ```
 
-All requests use POST to the GraphQL endpoint. The gateway proxies requests to `api.linear.app` and automatically injects your OAuth token.
+所有请求都使用 POST 方法发送到 GraphQL 端点。网关会将请求代理到 `api.linear.app`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Linear OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Linear OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Linear connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Linear 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -144,13 +144,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-Linear uses a GraphQL API. All operations are sent as POST requests with a JSON body containing the `query` field.
+Linear 使用 GraphQL API。所有操作都以 POST 请求的形式发送，请求体中包含 `query` 字段。
 
-### Viewer (Current User)
+### 查看器（当前用户）
 
 ```bash
 POST /linear/graphql
@@ -159,7 +159,7 @@ Content-Type: application/json
 {"query": "{ viewer { id name email } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -172,7 +172,7 @@ Content-Type: application/json
 }
 ```
 
-### Organization
+### 组织（Organization）
 
 ```bash
 POST /linear/graphql
@@ -181,9 +181,9 @@ Content-Type: application/json
 {"query": "{ organization { id name urlKey } }"}
 ```
 
-### Teams
+### 团队（Teams）
 
-#### List Teams
+#### 列出团队
 
 ```bash
 POST /linear/graphql
@@ -192,7 +192,7 @@ Content-Type: application/json
 {"query": "{ teams { nodes { id name key } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -209,7 +209,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Team
+#### 获取团队信息
 
 ```bash
 POST /linear/graphql
@@ -218,9 +218,9 @@ Content-Type: application/json
 {"query": "{ team(id: \"TEAM_ID\") { id name key issues { nodes { id identifier title } } } }"}
 ```
 
-### Issues
+### 问题（Issues）
 
-#### List Issues
+#### 列出问题
 
 ```bash
 POST /linear/graphql
@@ -229,7 +229,7 @@ Content-Type: application/json
 {"query": "{ issues(first: 10) { nodes { id identifier title state { name } priority createdAt } pageInfo { hasNextPage endCursor } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -253,7 +253,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Issue by ID or Identifier
+#### 通过 ID 或标识符获取问题
 
 ```bash
 POST /linear/graphql
@@ -262,10 +262,9 @@ Content-Type: application/json
 {"query": "{ issue(id: \"MTN-527\") { id identifier title description state { name } priority assignee { name } team { key name } createdAt updatedAt } }"}
 ```
 
-#### Filter Issues
+#### 过滤问题
 
-Filter by state type:
-
+- 按状态类型过滤：
 ```bash
 POST /linear/graphql
 Content-Type: application/json
@@ -273,8 +272,7 @@ Content-Type: application/json
 {"query": "{ issues(first: 10, filter: { state: { type: { eq: \"started\" } } }) { nodes { id identifier title state { name type } } } }"}
 ```
 
-Filter by title:
-
+- 按标题过滤：
 ```bash
 POST /linear/graphql
 Content-Type: application/json
@@ -282,7 +280,7 @@ Content-Type: application/json
 {"query": "{ issues(first: 10, filter: { title: { containsIgnoreCase: \"bug\" } }) { nodes { id identifier title } } }"}
 ```
 
-#### Search Issues
+#### 搜索问题
 
 ```bash
 POST /linear/graphql
@@ -291,7 +289,7 @@ Content-Type: application/json
 {"query": "{ searchIssues(first: 10, term: \"shopify\") { nodes { id identifier title } } }"}
 ```
 
-#### Create Issue
+#### 创建问题
 
 ```bash
 POST /linear/graphql
@@ -300,7 +298,7 @@ Content-Type: application/json
 {"query": "mutation { issueCreate(input: { teamId: \"TEAM_ID\", title: \"New issue title\", description: \"Issue description\" }) { success issue { id identifier title state { name } } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -317,7 +315,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Issue
+#### 更新问题
 
 ```bash
 POST /linear/graphql
@@ -326,9 +324,9 @@ Content-Type: application/json
 {"query": "mutation { issueUpdate(id: \"ISSUE_ID\", input: { title: \"Updated title\", priority: 2 }) { success issue { id identifier title priority } } }"}
 ```
 
-### Projects
+### 项目（Projects）
 
-#### List Projects
+#### 列出项目
 
 ```bash
 POST /linear/graphql
@@ -337,9 +335,9 @@ Content-Type: application/json
 {"query": "{ projects(first: 10) { nodes { id name state createdAt } } }"}
 ```
 
-### Cycles
+### 周期（Cycles）
 
-#### List Cycles
+#### 列出周期
 
 ```bash
 POST /linear/graphql
@@ -348,9 +346,9 @@ Content-Type: application/json
 {"query": "{ cycles(first: 10) { nodes { id name number startsAt endsAt } } }"}
 ```
 
-### Labels
+### 标签（Labels）
 
-#### List Labels
+#### 列出标签
 
 ```bash
 POST /linear/graphql
@@ -359,7 +357,7 @@ Content-Type: application/json
 {"query": "{ issueLabels(first: 20) { nodes { id name color } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -375,7 +373,7 @@ Content-Type: application/json
 }
 ```
 
-### Workflow States
+### 工作流程状态（Workflow States）
 
 ```bash
 POST /linear/graphql
@@ -384,7 +382,7 @@ Content-Type: application/json
 {"query": "{ workflowStates(first: 20) { nodes { id name type team { key } } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -401,7 +399,7 @@ Content-Type: application/json
 }
 ```
 
-### Users
+### 用户（Users）
 
 ```bash
 POST /linear/graphql
@@ -410,9 +408,9 @@ Content-Type: application/json
 {"query": "{ users(first: 20) { nodes { id name email active } } }"}
 ```
 
-### Comments
+### 评论（Comments）
 
-#### List Comments
+#### 列出评论
 
 ```bash
 POST /linear/graphql
@@ -421,7 +419,7 @@ Content-Type: application/json
 {"query": "{ comments(first: 10) { nodes { id body createdAt issue { identifier } user { name } } } }"}
 ```
 
-#### Create Comment
+#### 创建评论
 
 ```bash
 POST /linear/graphql
@@ -430,9 +428,9 @@ Content-Type: application/json
 {"query": "mutation { commentCreate(input: { issueId: \"ISSUE_ID\", body: \"Comment text here\" }) { success comment { id body } } }"}
 ```
 
-## Pagination
+## 分页
 
-Linear uses Relay-style cursor-based pagination with `first/after` and `last/before` arguments.
+Linear 使用基于游标的分页机制，支持 `first/after` 和 `last/before` 参数。
 
 ```bash
 # First page
@@ -444,7 +442,7 @@ POST /linear/graphql
 {"query": "{ issues(first: 10, after: \"CURSOR_VALUE\") { nodes { id identifier title } pageInfo { hasNextPage endCursor } } }"}
 ```
 
-Response includes `pageInfo`:
+响应中包含 `pageInfo`：
 
 ```json
 {
@@ -460,7 +458,7 @@ Response includes `pageInfo`:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -497,27 +495,27 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Linear uses GraphQL exclusively (no REST API)
-- Issue identifiers like `MTN-527` can be used in place of UUIDs for the `id` parameter
-- Priority values: 0 = No priority, 1 = Urgent, 2 = High, 3 = Medium, 4 = Low
-- Workflow state types: `backlog`, `unstarted`, `started`, `completed`, `canceled`
-- The GraphQL schema is introspectable at `https://api.linear.app/graphql`
-- Use `searchIssues(term: "...")` for full-text search across issues
-- Some mutations (delete, create labels/projects) may require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
+- Linear 仅使用 GraphQL（不提供 REST API）。
+- 可以使用问题标识符（如 `MTN-527`）代替 UUID 作为 `id` 参数。
+- 优先级值：0 = 无优先级，1 = 紧急，2 = 高，3 = 中等，4 = 低。
+- 工作流程状态类型：`backlog`、`unstarted`、`started`、`completed`、`canceled`。
+- GraphQL 架构可以在 `https://api.linear.appgraphql` 上查看。
+- 使用 `searchIssues(term: "...")` 进行全文搜索问题。
+- 某些操作（如删除、创建标签/项目）可能需要额外的 OAuth 权限范围。如果您收到权限范围错误，请通过 support@maton.ai 联系 Maton 支持团队，提供具体的操作/API 和您的使用场景。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Linear connection or GraphQL validation error |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient OAuth scope for the operation |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Linear API |
+| 400 | 缺少 Linear 连接或 GraphQL 验证错误 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 操作所需的 OAuth 权限范围不足 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Linear API 的传递错误 |
 
-GraphQL errors are returned in the `errors` array:
+GraphQL 错误会包含在 `errors` 数组中：
 
 ```json
 {
@@ -534,15 +532,15 @@ GraphQL errors are returned in the `errors` array:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -553,18 +551,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `linear`. For example:
+1. 确保您的 URL 路径以 `linear` 开头。例如：
+- 正确：`https://gateway.maton.ai/lineargraphql`
+- 错误：`https://gateway.maton.aigraphql`
 
-- Correct: `https://gateway.maton.ai/linear/graphql`
-- Incorrect: `https://gateway.maton.ai/graphql`
+## 资源
 
-## Resources
-
-- [Linear API Overview](https://linear.app/developers)
-- [Linear GraphQL Getting Started](https://linear.app/developers/graphql)
-- [Linear GraphQL Schema (Apollo Studio)](https://studio.apollographql.com/public/Linear-API/schema/reference?variant=current)
-- [Linear API and Webhooks](https://linear.app/docs/api-and-webhooks)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Linear API 概述](https://linear.app/developers)
+- [Linear GraphQL 快速入门](https://linear.app/developersgraphql)
+- [Linear GraphQL 架构（Apollo Studio）](https://studio.apollographql.com/public/Linear-API/schema/reference?variant=current)
+- [Linear API 和 Webhooks](https://linear.app/docs/api-and-webhooks)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

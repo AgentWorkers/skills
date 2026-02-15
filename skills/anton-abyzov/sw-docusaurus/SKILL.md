@@ -1,44 +1,44 @@
 ---
 name: docusaurus
-description: Docusaurus 3.x documentation framework - MDX authoring, theming, versioning, i18n. Use for documentation sites or spec-weave.com.
+description: Docusaurus 3.x 文档框架：支持 MDX 格式的编写、主题定制、版本管理以及国际化（i18n）功能。适用于构建文档网站或类似 spec-weave.com 的平台。
 ---
 
-# Docusaurus Expert Skill
+# Docusaurus 专家技能
 
-Expert in Docusaurus 3.x documentation framework - the modern static site generator for technical documentation, blogs, and landing pages.
+我是 Docusaurus 3.x 文档框架的专家——这是一个用于技术文档、博客和登录页的现代静态站点生成器。
 
-## Core Competencies
+## 核心能力
 
-### 1. Site Setup & Configuration
-- **Installation**: Quick start with templates
-- **Configuration**: `docusaurus.config.ts` best practices
-- **Plugins**: Content, search, analytics, sitemap
-- **Themes**: Classic, Material, custom themes
-- **Deployment**: GitHub Pages, Netlify, Vercel, AWS
+### 1. 站点设置与配置
+- **安装**：使用模板快速入门
+- **配置**：`docusaurus.config.ts` 的最佳实践
+- **插件**：内容管理、搜索功能、分析工具、站点地图
+- **主题**：经典主题、Material 主题以及自定义主题
+- **部署**：GitHub Pages、Netlify、Vercel、AWS
 
-### 2. Content Authoring
-- **Markdown**: Standard Markdown with Docusaurus extensions
-- **MDX**: React components in Markdown
-- **Code Blocks**: Syntax highlighting, live code editors
-- **Admonitions**: Notes, tips, warnings, danger alerts
-- **Tabs**: Multi-language examples, platform-specific content
+### 2. 内容创作
+- **Markdown**：支持 Docusaurus 扩展的标准 Markdown
+- **MDX**：在 Markdown 中使用 React 组件
+- **代码块**：语法高亮显示、实时代码编辑器
+- **警告提示**：用于显示注意事项、提示、警告和危险提示
+- **标签页**：支持多语言示例及平台特定内容
 
-### 3. Advanced Features
-- **Versioning**: Multi-version documentation management
-- **i18n**: Internationalization and localization
-- **Search**: Algolia DocSearch, local search plugins
-- **Mermaid**: Diagram support with @docusaurus/theme-mermaid
-- **OpenAPI**: API documentation with docusaurus-plugin-openapi-docs
+### 3. 高级功能
+- **版本管理**：多版本文档管理
+- **国际化（i18n）**：支持多语言本地化
+- **搜索**：使用 Algolia DocSearch 或本地搜索插件
+- **Mermaid 图表**：通过 `@docusaurus/theme-mermaid` 支持 Mermaid 图表
+- **OpenAPI**：使用 `docusaurus-plugin-openapi-docs` 生成 API 文档
 
-### 4. Customization
-- **Custom Components**: React components for docs
-- **Styling**: CSS modules, Tailwind CSS integration
-- **Swizzling**: Customize theme components
-- **Plugins**: Custom plugin development
+### 4. 自定义
+- **自定义组件**：为文档创建 React 组件
+- **样式设置**：使用 CSS 模块和 Tailwind CSS
+- **主题定制**：自定义主题组件
+- **插件开发**：开发自定义插件
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 npx create-docusaurus@latest my-website classic --typescript
@@ -46,7 +46,7 @@ cd my-website
 npm start
 ```
 
-### Project Structure
+### 项目结构
 
 ```
 my-website/
@@ -66,9 +66,9 @@ my-website/
 └── package.json
 ```
 
-## Configuration
+## 配置
 
-### Basic Configuration
+### 基本配置
 
 ```typescript
 // docusaurus.config.ts
@@ -147,9 +147,9 @@ const config: Config = {
 export default config;
 ```
 
-## MDX Content Features
+## MDX 内容特性
 
-### Admonitions
+### 警告提示
 
 ```markdown
 :::note
@@ -173,10 +173,12 @@ This is an info box with a custom title
 :::
 ```
 
-### Code Blocks with Features
+### 带有功能的代码块
 
 ```markdown
-\```typescript title="src/components/HelloWorld.tsx" showLineNumbers {1,3-5}
+\```typescript
+title="src/components/HelloWorld.tsx"
+showLineNumbers {1, 3-5}
 import React from 'react';
 
 export function HelloWorld() {
@@ -185,7 +187,7 @@ export function HelloWorld() {
 \```
 ```
 
-### Tabs
+### 标签页
 
 ```markdown
 import Tabs from '@theme/Tabs';
@@ -205,10 +207,11 @@ import TabItem from '@theme/TabItem';
 </Tabs>
 ```
 
-### Interactive Code Editors
+### 实时代码编辑器
 
 ```markdown
-\```jsx live
+\```jsx
+live
 function Clock() {
   const [date, setDate] = useState(new Date());
   useEffect(() => {
@@ -220,9 +223,9 @@ function Clock() {
 \```
 ```
 
-## Plugins
+## 插件
 
-### Essential Plugins
+### 必备插件
 
 ```typescript
 // docusaurus.config.ts
@@ -258,11 +261,13 @@ plugins: [
 ],
 ```
 
-### Mermaid Diagrams
+### Mermaid 图表
 
 ```bash
 npm install @docusaurus/theme-mermaid
 ```
+
+### 其他插件
 
 ```typescript
 // docusaurus.config.ts
@@ -272,14 +277,16 @@ markdown: {
 },
 ```
 
+### 使用 Mermaid 图表
+
 ```markdown
 \```mermaid
 graph TD
-  A[Start] -->|Process| B[End]
+  A[开始] -->|处理| B[结束]
 \```
 ```
 
-### Search
+### 搜索
 
 #### Algolia DocSearch
 
@@ -293,11 +300,13 @@ themeConfig: {
 },
 ```
 
-#### Local Search
+#### 本地搜索
 
 ```bash
 npm install @easyops-cn/docusaurus-search-local
 ```
+
+#### 自定义搜索
 
 ```typescript
 themes: [
@@ -311,15 +320,15 @@ themes: [
 ],
 ```
 
-## Versioning
+## 版本管理
 
-### Enable Versioning
+### 启用版本管理
 
 ```bash
 npm run docusaurus docs:version 1.0.0
 ```
 
-### Version Structure
+### 版本结构
 
 ```
 website/
@@ -333,7 +342,7 @@ website/
 └── versions.json       # List of versions
 ```
 
-### Version Configuration
+### 版本配置
 
 ```typescript
 themeConfig: {
@@ -348,9 +357,9 @@ themeConfig: {
 },
 ```
 
-## Internationalization (i18n)
+## 国际化（i18n）
 
-### Configuration
+### 配置
 
 ```typescript
 // docusaurus.config.ts
@@ -371,7 +380,7 @@ i18n: {
 },
 ```
 
-### Directory Structure
+### 目录结构
 
 ```
 website/
@@ -384,15 +393,15 @@ website/
 └── docs/              # Default locale content
 ```
 
-### Build for Specific Locale
+### 为特定语言生成文档
 
 ```bash
 npm run build -- --locale fr
 ```
 
-## Custom Components
+## 自定义组件
 
-### Create Component
+### 创建自定义组件
 
 ```tsx
 // src/components/FeatureCard.tsx
@@ -410,7 +419,7 @@ export function FeatureCard({title, description, icon}) {
 }
 ```
 
-### Use in MDX
+### 在 MDX 中使用自定义组件
 
 ```markdown
 ---
@@ -428,9 +437,9 @@ import {FeatureCard} from '@site/src/components/FeatureCard';
 />
 ```
 
-## Deployment
+## 部署
 
-### GitHub Pages
+### 使用 GitHub Pages
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -459,7 +468,7 @@ jobs:
           publish_dir: ./build
 ```
 
-### Netlify
+### 使用 Netlify
 
 ```toml
 # netlify.toml
@@ -473,7 +482,7 @@ jobs:
   status = 200
 ```
 
-### Vercel
+### 使用 Vercel
 
 ```json
 {
@@ -482,100 +491,34 @@ jobs:
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Organize Content Logically
+- **逻辑清晰地组织内容**
+- **使用 Frontmatter（文档头部信息）**
+- **充分利用 MDX 的功能**
+- **优化图片质量**
+- **添加编辑链接**
 
-```
-docs/
-├── getting-started/
-│   ├── installation.md
-│   └── quick-start.md
-├── guides/
-│   ├── beginner/
-│   ├── intermediate/
-│   └── advanced/
-└── reference/
-    ├── api/
-    └── cli/
-```
+## 故障排除
 
-### 2. Use Frontmatter
+- **构建错误处理**
+- **修复失效的链接**
+- **检查端口是否已被占用**
 
-```markdown
----
-id: my-doc
-title: My Document
-sidebar_label: Short Label
-sidebar_position: 1
-description: Document description for SEO
-keywords: [docusaurus, documentation, seo]
----
-```
+## 资源
 
-### 3. Leverage MDX
+- [官方文档](https://docusaurus.io/)
+- [案例展示](https://docusaurus.io/showcase)
+- [Discord 社区](https://discord.gg/docusaurus)
+- [GitHub 仓库](https://github.com/facebook/docusaurus)
 
-```markdown
-import MyComponent from '@site/src/components/MyComponent';
+## 常见问题解答
 
-<MyComponent prop="value" />
-```
-
-### 4. Optimize Images
-
-```markdown
-![Alt text](./img/photo.jpg)
-
-<!-- Or with sizing -->
-<img src={require('./img/photo.jpg').default} width="600" />
-```
-
-### 5. Add Edit Links
-
-```typescript
-docs: {
-  editUrl: 'https://github.com/org/repo/edit/main/',
-},
-```
-
-## Troubleshooting
-
-### Build Errors
-
-```bash
-# Clear cache
-npm run clear
-npm run build
-```
-
-### Broken Links
-
-```bash
-# Check for broken links during build
-npm run build -- --debug
-```
-
-### Port Already in Use
-
-```bash
-PORT=3001 npm start
-```
-
-## Resources
-
-- [Official Docs](https://docusaurus.io/)
-- [Showcase](https://docusaurus.io/showcase)
-- [Discord Community](https://discord.gg/docusaurus)
-- [GitHub](https://github.com/facebook/docusaurus)
-
-## Activation Keywords
-
-Ask me about:
-- "How do I set up Docusaurus?"
-- "Docusaurus configuration best practices"
-- "Adding search to Docusaurus"
-- "Docusaurus versioning"
-- "MDX components in Docusaurus"
-- "Deploy Docusaurus to GitHub Pages"
-- "Internationalization in Docusaurus"
-- "Custom Docusaurus themes"
+- **如何设置 Docusaurus？**
+- **Docusaurus 的配置最佳实践**
+- **如何为 Docusaurus 添加搜索功能？**
+- **如何对 Docusaurus 进行版本管理？**
+- **如何在 Docusaurus 中使用 MDX 组件？**
+- **如何将 Docusaurus 部署到 GitHub Pages？**
+- **如何实现 Docusaurus 的国际化？**
+- **如何自定义 Docusaurus 主题？**

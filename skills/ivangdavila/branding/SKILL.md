@@ -1,105 +1,105 @@
 ---
 name: Branding
-description: Build distinctive brand identity with clear positioning, voice, and visual consistency.
+description: 通过明确的品牌定位、独特的语言表达方式以及视觉上的统一性，打造具有辨识度的品牌形象。
 metadata: {"clawdbot":{"emoji":"✨","os":["linux","darwin","win32"]}}
 ---
 
-## Discovery Questions (Ask First)
+## 发现性问题（先提出这些问题）
 
-- What does the product/service actually do? In one sentence.
-- Who is the specific customer? Job title, situation, pain.
-- What alternatives exist? Direct competitors, indirect solutions, doing nothing.
-- Why would someone choose this over alternatives? The real reason.
-- What words should customers use to describe you? Pick 3-5.
-- What words should they NOT use? 3-5 anti-traits.
+- 该产品/服务究竟有什么作用？用一句话概括。
+- 具体的目标客户是谁？他们的职位、面临的问题是什么？
+- 有哪些替代方案？直接竞争对手、间接解决方案，或者什么都不做。
+- 为什么人们会选择这个产品而不是其他替代方案？背后的真正原因是什么？
+- 客户应该用哪些词语来描述你们？选3-5个。
+- 客户不应该使用哪些词语？选3-5个负面描述词。
 
-## Positioning Statement (Produce This)
+## 定位声明（撰写并完善）
 
-Fill in and refine until crisp:
-"For [specific audience] who [specific need], [brand] is the [category] that [unique benefit] because [reason to believe]."
+填写并润色，直到表述清晰明了：
+“对于有[特定需求]的[特定目标受众]来说，[品牌]是提供[独特优势]的[产品类别]，因为[理由]。”
 
-Test: Can you say it out loud without cringing? Would customer nod in recognition?
+测试：你能大声说出来而不感到尴尬吗？目标客户会点头表示认同吗？
 
-## Brand Voice (Define Precisely)
+## 品牌形象（精确定义）
 
-Create a 2x2 for each trait:
-| We are | We are not |
+为每个品牌特质创建一个2x2的表格：
+| 我们是 | 我们不是 |
 |--------|------------|
-| Confident | Arrogant |
-| Direct | Rude |
-| Playful | Silly |
+| 自信的 | 傲慢的 |
+| 直接的 | 无礼的 |
+| 有趣的 | 愚蠢的 |
 
-For each trait, write 3 example sentences showing how it sounds.
-Write 3 sentences that violate it—what to avoid.
+为每个特质写3个例句，展示其实际表现。
+再写3个违反该特质的例句，说明应该避免什么。
 
-## Naming Checklist
+## 品牌名称检查清单
 
-Before falling in love with a name:
-- [ ] .com domain available (or reasonable alternative)
-- [ ] Primary social handles available (@name)
-- [ ] No trademark conflicts in your category
-- [ ] Passes the phone test—spell it over a call
-- [ ] No negative meanings in Spanish, Chinese, common languages
-- [ ] Fits in a logo, looks good written
+在确定名称之前，请确认：
+- 是否有可用的.com域名（或合适的替代域名）；
+- 是否有主要的社交媒体账号（如@name）；
+- 在你的产品类别中不存在商标冲突；
+- 名称在电话中发音是否清晰；
+- 名称在西班牙语、中文等常见语言中没有负面含义；
+- 名称适合用于Logo设计，书写时看起来美观。
 
-## Tagline Formula
+## 标语公式
 
-Pick one structure:
-- Benefit statement: "Move money for free"
-- Challenge: "Think different"
-- Promise: "15 minutes could save you 15%"
-- Category + twist: "The un-agency"
+选择一个表述结构：
+- 优势型标语：“免费帮您赚钱”；
+- 挑战型标语：“换个思路”；
+- 承诺型标语：“15分钟就能为您节省15%”；
+- 类别+创新型标语：“非传统型的[产品类别]”。
 
-Max 6 words. Test: Would someone repeat this to a friend?
+标语长度不超过6个词。测试：别人会愿意把这个标语告诉朋友吗？
 
-## Visual Direction Brief
+## 视觉设计方向说明
 
-Specify before any design:
-- Mood: 3 reference brands with right feeling (not competitors)
-- Color direction: warm/cool, vibrant/muted, primary color family
-- Typography feel: modern/classic, geometric/humanist, bold/light
-- Imagery style: photo/illustration, people/abstract, lifestyle/product
-- Avoid: specific styles, colors, or approaches that feel wrong
+在开始设计之前，请明确以下要求：
+- 情感基调：参考3个具有相似风格的知名品牌；
+- 颜色方案：暖色调/冷色调，鲜艳/柔和色调，主要使用哪一组颜色；
+- 字体风格：现代/经典风格，几何形状/人文风格，粗体/细体；
+- 图像风格：照片/插图，人物/抽象图案，与产品相关；
+- 避免使用特定的风格、颜色或设计元素，以免显得不协调。
 
-## Logo Requirements
+## Logo设计要求
 
-Define constraints:
-- Must work at 16px favicon size
-- Must work in single color (black, white)
-- Wordmark, symbol, or combination?
-- Horizontal and square versions needed?
+明确以下限制：
+- Logo必须能在16px的图标尺寸下正常显示；
+- Logo只能使用黑色或白色；
+- Logo可以是文字、符号，还是两者的组合？
+- 是否需要横向和正方形的Logo版本？
 
-## Consistency System
+## 一致性体系
 
-Create these assets:
-- Color palette: 1 primary, 2-3 secondary, 2-3 neutrals with exact codes
-- Type scale: specific sizes for H1, H2, H3, body, caption
-- Spacing scale: 4, 8, 16, 24, 32, 48, 64px (or similar)
-- Component examples: how a button, card, input looks
+创建以下设计资源：
+- 颜色调色板：1个主要颜色，2-3个辅助颜色，2-3个中性颜色（并提供具体的颜色代码）；
+- 字体规格：明确H1、H2、H3、正文、标题等不同级别的字体大小；
+- 空间间距规范：4px、8px、16px、24px、32px、48px、64px等；
+- 组件示例：按钮、卡片、输入框等设计样例。
 
-## Brand Guidelines Document
+## 品牌指南文档
 
-Minimum contents:
-1. Positioning statement + story
-2. Voice traits with examples
-3. Logo files + usage rules (clear space, minimum size, backgrounds)
-4. Color palette with all codes (HEX, RGB)
-5. Typography with font files or links
-6. Do's and Don'ts gallery
+文档至少应包含以下内容：
+1. 定位声明及品牌故事；
+2. 品牌形象特征及示例；
+3. Logo文件及使用规范（包括间距、最小尺寸、背景要求）；
+4. 颜色调色板（提供Hex代码和RGB值）；
+5. 字体样式（附带字体文件或链接）；
+6. 设计中的注意事项（“该做”与“不该做”的事项）。
 
-## Quality Check
+## 质量检查
 
-Before finalizing, verify:
-- [ ] Could a stranger create on-brand content from these guidelines?
-- [ ] Is it different enough from top 3 competitors?
-- [ ] Does it resonate with 3 real people in target audience?
-- [ ] Is every element intentional, not arbitrary?
-- [ ] Can you apply it consistently across: website, email, social, product UI?
+在最终确定设计之前，请验证：
+- 陌生人能否根据这些指南创建符合品牌风格的内容？
+- 该设计与前三大竞争对手有足够明显的区别吗？
+- 目标受众中的3个人是否能理解并认同这个品牌？
+- 所有设计元素都是经过深思熟虑的，而非随意选择的？
+- 这些设计规范能否在网站、电子邮件、社交媒体和产品用户界面中得到一致应用？
 
-## Common Failures to Avoid
+## 常见的设计失误：
 
-- "We're like X but for Y" without being distinctive—lazy positioning
-- Voice traits that any brand would claim—"friendly, professional"
-- Logo that only works on white backgrounds—fails in real use
-- Colors picked for taste without checking accessibility contrast
-- Guidelines too long to read—no one follows 50-page brand books
+- “我们就像X，但针对Y市场”这样的表述缺乏独特性（这是常见的定位失误）；
+- 使用任何品牌都会声称的通用特质（如“友好、专业”）；
+- Logo仅在白色背景下显示得当（实际使用中可能效果不佳）；
+- 仅凭个人喜好选择颜色，而没有考虑色彩的对比度问题；
+- 设计指南过于冗长，难以阅读（没人会仔细阅读长达50页的指南）。

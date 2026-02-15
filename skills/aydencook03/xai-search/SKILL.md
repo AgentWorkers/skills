@@ -1,23 +1,23 @@
 ---
 name: xai-search
-description: Search X/Twitter and the web in real-time using xAI's Grok API with agentic search tools.
+description: 使用 xAI 的 Grok API 结合代理搜索工具（agent-based search tools），可以实时搜索 X/Twitter 以及整个互联网上的内容。
 metadata: {"clawdbot":{"emoji":"🔍"}}
 ---
 
-# xAI Search (Grok API)
+# xAI 搜索（Grok API）
 
-Use xAI's agentic search to query X/Twitter and the web in real-time. This leverages Grok's `web_search` and `x_search` tools.
+使用 xAI 的智能搜索功能实时查询 X/Twitter 和网页内容。该功能基于 Grok 的 `web_search` 和 `x_search` 工具实现。
 
-**Docs:** https://docs.x.ai/docs/
+**文档链接：** https://docs.x.ai/docs/
 
-## Requirements
+## 必备条件
 
-- `XAI_API_KEY` environment variable
-- Python 3 + xai-sdk: `pip install xai-sdk`
+- 环境变量 `XAI_API_KEY`
+- Python 3 及 xai-sdk：`pip install xai-sdk`
 
-## Quick Usage (curl)
+## 快速使用（curl 命令）
 
-### Web Search
+### 网页搜索
 ```bash
 curl -s https://api.x.ai/v1/chat/completions \
   -H "Authorization: Bearer $XAI_API_KEY" \
@@ -29,7 +29,7 @@ curl -s https://api.x.ai/v1/chat/completions \
   }' | jq -r '.choices[0].message.content'
 ```
 
-### X/Twitter Search
+### X/Twitter 搜索
 ```bash
 curl -s https://api.x.ai/v1/chat/completions \
   -H "Authorization: Bearer $XAI_API_KEY" \
@@ -41,7 +41,7 @@ curl -s https://api.x.ai/v1/chat/completions \
   }' | jq -r '.choices[0].message.content'
 ```
 
-### Combined (Web + X)
+### 综合搜索（网页 + X/Twitter）
 ```bash
 curl -s https://api.x.ai/v1/chat/completions \
   -H "Authorization: Bearer $XAI_API_KEY" \
@@ -56,9 +56,9 @@ curl -s https://api.x.ai/v1/chat/completions \
   }' | jq -r '.choices[0].message.content'
 ```
 
-## Helper Script
+## 辅助脚本
 
-For convenience, use the `xai-search.py` script in the `scripts/` folder:
+为方便使用，请运行 `scripts/` 目录下的 `xai-search.py` 脚本：
 
 ```bash
 # Web search (adjust path to your skill location)
@@ -71,27 +71,27 @@ python ~/.clawdbot/skills/xai-search/scripts/xai-search.py x "what are people sa
 python ~/.clawdbot/skills/xai-search/scripts/xai-search.py both "current events today"
 ```
 
-## Models
+## 模型
 
-- `grok-3-fast` — fast, good for quick searches
-- `grok-4-1-fast` — reasoning model, better for complex queries
+- `grok-3-fast`：快速搜索模型，适用于简单查询
+- `grok-4-1-fast`：推理模型，更适合复杂查询
 
-## X Search Filters
+## X/Twitter 搜索过滤器
 
-You can filter X searches by:
-- `allowed_x_handles` / `excluded_x_handles` — limit to specific accounts
-- `from_date` / `to_date` — date range (ISO8601 format)
-- `enable_image_understanding` — analyze images in posts
-- `enable_video_understanding` — analyze videos in posts
+您可以通过以下方式过滤搜索结果：
+- `allowed_xHandles` / `excluded_xHandles`：限制搜索范围至特定账户
+- `from_date` / `to_date`：时间范围（ISO8601 格式）
+- `enable_image_understanding`：分析帖子中的图片
+- `enable_video_understanding`：分析帖子中的视频
 
-## Web Search Filters
+## 网页搜索过滤器
 
-- `allowed_domains` / `excluded_domains` — limit to specific sites
-- `enable_image_understanding` — analyze images on pages
+- `allowed_domains` / `excluded_domains`：限制搜索范围至特定网站
+- `enable_image_understanding`：分析页面中的图片
 
-## Tips
+## 使用建议
 
-- For breaking news: use X search
-- For factual/research queries: use web search or both
-- For sentiment/opinions: use X search
-- The model will make multiple search calls if needed (agentic)
+- 对于突发新闻：使用 X/Twitter 搜索
+- 对于事实性或研究性查询：使用网页搜索
+- 对于情感分析或观点提取：使用 X/Twitter 搜索
+- 系统会根据需要多次发起搜索请求（智能搜索机制）

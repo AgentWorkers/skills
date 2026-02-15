@@ -1,4 +1,4 @@
 ---
 name: base
-description: Placeholder for Base skill.
+description: **Base Skill 的占位符。**
 ---

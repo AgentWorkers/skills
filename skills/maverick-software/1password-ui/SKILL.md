@@ -1,28 +1,28 @@
 ---
 name: 1password-ui
-description: 1Password UI tab for OpenClaw dashboard. Manage secrets, credential mappings, and auth state from the Control UI.
+description: OpenClaw仪表板的1Password UI标签页：通过控制界面（Control UI）管理密钥、凭据映射以及认证状态。
 version: 1.1.0
 author: OpenClaw Community
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"clawdbot":">=2026.1.0"},"category":"tools"}}
 ---
 
-# 1Password UI Extension
+# 1Password UI 扩展
 
-Adds a **1Password** tab to the OpenClaw Control dashboard under the **Tools** group. Browse vaults, manage credential mappings for skills, and handle authentication — all from the web UI.
+该扩展为 OpenClaw 控制面板中的 **工具** 组添加了一个 **1Password** 选项卡。用户可以通过网页界面浏览密码库、管理技能的凭证映射以及处理身份验证相关操作。
 
-## Features
+## 主要功能
 
-| Feature | Description |
-|---------|-------------|
-| **Dashboard Tab** | "1Password" under Tools in sidebar |
-| **Connection Status** | See signed-in account, CLI/Connect mode |
-| **Sign In Flow** | Authenticate directly from the UI |
-| **Docker Support** | Works with 1Password Connect for containers |
-| **Credential Mappings** | Map 1Password items to skill configs |
+| 功能        | 说明                                      |
+|------------|-----------------------------------------|
+| **控制面板选项卡** | 侧边栏中的 “1Password” 选项卡                         |
+| **连接状态**   | 显示当前登录账户及使用的连接模式（CLI/Connect）                |
+| **登录流程**   | 直接通过 UI 进行身份验证                         |
+| **Docker 支持**   | 支持与 1Password Connect 集成，适用于容器环境           |
+| **凭证映射**   | 将 1Password 中的凭证信息映射到技能配置中                   |
 
-## Agent Installation Prompt
+## 代理安装提示
 
-To install this skill, give your agent this prompt:
+要安装此扩展，请向您的代理发送以下提示：
 
 ```
 Install the 1password-ui skill from ClawHub.
@@ -41,11 +41,11 @@ Summary of changes needed:
 8. Build and restart: pnpm build && pnpm ui:build && clawdbot gateway restart
 ```
 
-## Prerequisites
+## 先决条件
 
-### For Local Installations (Ubuntu/Windows/macOS)
+### 本地安装（Ubuntu/Windows/macOS）
 
-1. **1Password CLI** (`op`):
+1. **1Password CLI**（`op`）：
    ```bash
    # macOS/Linux
    brew install 1password-cli
@@ -53,31 +53,31 @@ Summary of changes needed:
    # Or from https://1password.com/downloads/command-line/
    ```
 
-2. **CLI Integration** enabled in 1Password app:
-   - Settings → Developer → "Integrate with 1Password CLI" ✓
+2. 确保 1Password 应用程序已启用 **CLI 集成**：
+   - 设置 → 开发者 → “与 1Password CLI 集成”（已勾选）
 
-### For Docker Installations
+### Docker 安装
 
-See [Docker Setup](#docker-setup-1password-connect) below.
+请参阅下面的 [Docker 设置](#docker-setup-1password-connect) 文章。
 
-## Usage
+## 使用方法
 
-### Sign In
+### 登录
 
-1. Open OpenClaw Dashboard → **Tools** → **1Password**
-2. Click **Sign In with 1Password**
-3. Authorize in the 1Password app popup (or run `op signin` in terminal)
-4. Status shows "Connected" with your account
+1. 打开 OpenClaw 控制面板 → **工具** → **1Password**
+2. 点击 “使用 1Password 登录”
+3. 在 1Password 应用程序的弹出窗口中完成授权（或在终端中运行 `op signin`）
+4. 状态栏会显示 “已连接” 以及您的账户信息
 
-### Credential Mappings
+### 凭证映射
 
-Once signed in, you can map 1Password items to skills:
+登录成功后，您可以执行以下操作：
 
-1. Skills like Pipedream can read credentials from 1Password
-2. Mappings are stored in `~/clawd/config/1password-mappings.json`
-3. Format: `{ "skillId": { "item": "Item Name", "vault": "Private", "fields": {...} } }`
+1. 如 Pipedream 等技能可以从 1Password 中读取凭证信息。
+2. 凭证映射信息存储在 `~/clawd/config/1password-mappings.json` 文件中。
+3. 文件格式：`{ "skillId": { "item": "凭证名称", "vault": "密码库名称", "fields": {...} } }`
 
-### Example: Pipedream with 1Password
+### 示例：Pipedream 与 1Password 的集成
 
 ```bash
 # Store Pipedream credentials in 1Password
@@ -91,27 +91,27 @@ op item create --category="API Credential" --title="Pipedream Connect" \
 PIPEDREAM_1PASSWORD_ITEM="Pipedream Connect" python3 ~/clawd/scripts/pipedream-token-refresh.py
 ```
 
-## Gateway RPC Methods
+## Gateway RPC 方法
 
-| Method | Description |
-|--------|-------------|
-| `1password.status` | Get CLI/Connect status, signed-in account |
-| `1password.signin` | Trigger sign-in flow |
-| `1password.signout` | Sign out of current session |
-| `1password.vaults` | List available vaults |
-| `1password.items` | List items in a vault |
-| `1password.getItem` | Get item field structure (not values) |
-| `1password.readSecret` | Read a secret (backend only) |
-| `1password.mappings.list` | Get skill → 1Password mappings |
-| `1password.mappings.set` | Create/update a mapping |
-| `1password.mappings.delete` | Remove a mapping |
-| `1password.mappings.test` | Test if a mapping works |
+| 方法        | 说明                                      |
+|------------|-----------------------------------------|
+| `1password.status` | 获取 CLI/Connect 的连接状态及登录账户信息           |
+| `1password.signin` | 触发登录流程                               |
+| `1password.signout` | 退出当前会话                                 |
+| `1password.vaults`   | 列出可用的密码库                         |
+| `1password.items` | 列出密码库中的所有凭证                         |
+| `1password.getItem` | 获取凭证的字段结构（不包含实际值）                   |
+| `1password.readSecret` | 读取凭证内容（仅限后端使用）                     |
+| `1password.mappings.list` | 获取技能与 1Password 之间的映射关系                   |
+| `1password.mappings.set` | 创建或更新凭证映射                         |
+| `1password.mappings.delete` | 删除凭证映射                         |
+| `1password.mappings.test` | 测试凭证映射是否正常工作                         |
 
-## Docker Setup (1Password Connect)
+## Docker 设置（1Password Connect）
 
-For Docker-based OpenClaw installations, use 1Password Connect instead of the CLI.
+对于基于 Docker 的 OpenClaw 安装环境，请使用 1Password Connect 代替 CLI。
 
-### Step 1: Deploy 1Password Connect
+### 第一步：部署 1Password Connect
 
 ```yaml
 # docker-compose.yml
@@ -134,14 +134,14 @@ volumes:
   op-data:
 ```
 
-### Step 2: Get Credentials
+### 第二步：获取凭证信息
 
-1. Go to [my.1password.com](https://my.1password.com) → Integrations → Secrets Automation
-2. Create a Connect server
-3. Download `1password-credentials.json`
-4. Create an access token
+1. 访问 [my.1password.com](https://my.1password.com) → “集成” → “Secrets Automation”
+2. 创建一个 Connect 服务器
+3. 下载 `1password-credentials.json` 文件
+4. 生成访问令牌
 
-### Step 3: Configure OpenClaw
+### 第三步：配置 OpenClaw
 
 ```yaml
 services:
@@ -151,9 +151,9 @@ services:
       - OP_CONNECT_TOKEN=your-access-token
 ```
 
-The UI automatically detects Connect mode.
+UI 会自动检测当前使用的连接模式（CLI/Connect）。
 
-## Files Included
+## 所包含的文件
 
 ```
 1password-ui/
@@ -170,74 +170,74 @@ The UI automatically detects Connect mode.
     └── op-helper.py              # CLI/Connect bridge for skills
 ```
 
-## Security Considerations
+## 安全性考虑
 
-### ✅ Safe by Design
+### ✅ 设计上的安全性保障
 
-| Aspect | Implementation |
-|--------|----------------|
-| **Secrets not in UI** | `getItem` and `items` return field names only, never values |
-| **No network installers** | No `curl \| sh` or remote scripts — all code is local |
-| **Manual installation** | Requires explicit code edits, no automated patching |
-| **Mapping file perms** | `1password-mappings.json` should be 0600 (contains references, not secrets) |
-| **CLI auth** | Uses 1Password app integration for biometric auth when available |
+| 安全方面        | 实现方式                                      |
+|----------------|-----------------------------------------|
+| **凭证不显示在 UI 中** | `getItem` 和 `items` 方法仅返回字段名称，不显示实际值           |
+| **无网络安装脚本**   | 无 `curl` 或 `sh` 脚本等网络安装工具，所有代码均为本地执行       |
+| **手动安装**       | 需要手动修改代码，无自动更新机制                   |
+| **映射文件权限设置** | `1password-mappings.json` 文件的权限设置为 0600（仅包含文件引用，不含敏感信息） |
+| **CLI 认证**     | 支持使用 1Password 应用程序的生物特征认证功能（如可用）           |
 
-### ⚠️ Documented Risks
+### ⚠️ 已记录的风险及应对措施
 
-| Risk | Mitigation |
-|------|------------|
-| **`readSecret` RPC available** | The `1password.readSecret` method IS exposed via gateway RPC. This is intentional — skills need to read secrets. Security relies on: (1) 1Password requiring user auth, (2) gateway access control (loopback-only by default). |
-| **Gateway exposure** | All `1password.*` methods are RPC calls. If you expose your gateway to the network, protect it with authentication. |
-| **Connect token** | In Docker mode, `OP_CONNECT_TOKEN` grants vault access. Keep it secure like any API key. |
+| 风险        | 应对措施                                      |
+|------------|-----------------------------------------|
+| **`readSecret` 方法的暴露** | `1password.readSecret` 方法通过 Gateway RPC 提供，这是有意为之（技能需要访问凭证）。安全性依赖于：(1) 1Password 的用户认证机制；(2) Gateway 的访问控制（默认为仅限本地访问）。 |
+| **Gateway 的安全性** | 所有 1password.* 方法均为 RPC 调用。如果将 Gateway 暴露到网络中，需采取相应的安全措施。 |
+| **Connect 令牌**     | 在 Docker 模式下，`OP_CONNECT_TOKEN` 用于控制对密码库的访问权限。请像保护 API 密钥一样保护该令牌。 |
 
-### File Security
+### 文件安全
 
 ```bash
 # Recommended permissions for mapping file
 chmod 600 ~/clawd/config/1password-mappings.json
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "1Password CLI Not Found"
+### “找不到 1Password CLI”
 ```bash
 brew install 1password-cli
 # or download from 1password.com/downloads/command-line/
 ```
 
-### "Not signed in"
+### “未登录”
 ```bash
 op signin
 op whoami  # verify
 ```
 
-### Sign-in fails / "authorization denied"
-- Unlock the 1Password app
-- Enable CLI integration: Settings → Developer → "Integrate with 1Password CLI"
+### 登录失败 / “授权被拒绝”
+- 确保已登录 1Password 应用程序。
+- 启用 CLI 集成：设置 → 开发者 → “与 1Password CLI 集成”。
 
-### Docker: "connection refused"
+### Docker 使用时出现 “连接拒绝” 错误
 ```bash
 docker ps | grep op-connect  # check containers running
 ```
 
-### Docker: "401 unauthorized"
-- Verify `OP_CONNECT_TOKEN` is set correctly
-- Check token hasn't expired
+### Docker 使用时出现 “401 未经授权” 错误
+- 确保 `OP_CONNECT_TOKEN` 设置正确。
+- 检查令牌是否过期。
 
-## Support
+## 技术支持
 
-- **ClawHub**: [clawhub.ai/skills/1password-ui](https://clawhub.ai/skills/1password-ui)
-- **1Password CLI**: [developer.1password.com/docs/cli](https://developer.1password.com/docs/cli)
-- **1Password Connect**: [developer.1password.com/docs/connect](https://developer.1password.com/docs/connect)
-- **OpenClaw Discord**: [discord.com/invite/clawd](https://discord.com/invite/clawd)
+- **ClawHub**：[clawhub.ai/skills/1password-ui](https://clawhub.ai/skills/1password-ui)
+- **1Password CLI**：[developer.1password.com/docs/cli](https://developer.1password.com/docs/cli)
+- **1Password Connect**：[developer.1password.com/docs/connect](https://developer.1password.com/docs/connect)
+- **OpenClaw 的 Discord 社区**：[discord.com/invite/clawd](https://discord.com/invite/clawd)
 
-## Changelog
+## 更新日志
 
 ### v1.1.0 (2025-02-11)
-- Full working implementation with dashboard UI
-- Sign-in flow from web interface
-- CLI and Connect mode support
-- Credential mapping system
+- 完整实现了与控制面板 UI 的集成。
+- 支持通过网页界面登录。
+- 支持 CLI 和 Connect 模式。
+- 引入了凭证映射功能。
 
 ### v1.0.0 (2025-02-11)
-- Initial release with reference implementations
+- 首次发布版本，包含基础功能实现。

@@ -1,13 +1,15 @@
 ---
 name: todozi
-description: "Todozi Eisenhower matrix API client + LangChain tools. Create matrices, tasks, goals, notes; list/search/update; bulk operations; webhooks. Categories: do, done, dream, delegate, defer, dont."
+description: "Todozi Eisenhower Matrix API客户端 + LangChain工具：  
+支持创建任务矩阵、任务、目标及笔记；实现任务列表的显示、搜索、更新功能；支持批量操作；支持Webhook触发。  
+任务分类：待办（do）、已完成（done）、梦想中的任务（dream）、需委派（delegate）、需推迟（defer）、无需处理（dont）。"
 ---
 
 # Todozi
 
-## Quick Start
+## 快速入门
 
-**As SDK:**
+**作为SDK：**
 ```python
 from skills.todozi.scripts.todozi import TodoziClient
 
@@ -17,32 +19,30 @@ task = await client.create_task("Build feature", priority="high")
 await client.complete_item(task.id)
 ```
 
-**As LangChain Tools:**
+**作为LangChain工具：**
 ```python
 from skills.todozi.scripts.todozi import TODOZI_TOOLS
 # Add to agent tools list
 ```
 
-## SDK Overview
+## SDK概述
 
-| Class | Purpose |
+| 类别 | 功能 |
 |-------|---------|
-| `TodoziClient` | Async API client |
-| `TodoziTask` | Task dataclass |
-| `TodoziMatrix` | Matrix dataclass |
-| `TodoziStats` | Stats dataclass |
+| `TodoziClient` | 异步API客户端 |
+| `TodoziTask` | 任务数据类 |
+| `TodoziMatrix` | 矩阵数据类 |
+| `TodoziStats` | 统计数据类 |
 
-### Environment
-
+### 环境配置
 ```bash
 export TODOZI_API_KEY=your_key
 export TODOZI_BASE=https://todozi.com/api  # optional, default provided
 ```
 
-## Client Methods
+## 客户端方法
 
-### Matrices
-
+### 矩阵操作
 ```python
 # List all matrices
 matrices = await client.list_matrices()
@@ -57,8 +57,7 @@ matrix = await client.get_matrix("matrix_id")
 await client.delete_matrix("matrix_id")
 ```
 
-### Tasks / Goals / Notes
-
+### 任务/目标/备注
 ```python
 # Create task
 task = await client.create_task(
@@ -88,8 +87,7 @@ await client.complete_item("item_id")
 await client.delete_item("item_id")
 ```
 
-### Lists
-
+### 列表操作
 ```python
 # List tasks (with filters)
 tasks = await client.list_tasks(status="todo", priority="high")
@@ -104,9 +102,9 @@ notes = await client.list_notes()
 all_items = await client.list_all()
 ```
 
-### Search
+### 搜索
 
-**Searches only:** title, description, tags (NOT content)
+**搜索条件：** 标题、描述、标签（不包含内容）
 
 ```python
 results = await client.search(
@@ -120,8 +118,7 @@ results = await client.search(
 )
 ```
 
-### Bulk Operations
-
+### 批量操作
 ```python
 # Update multiple
 await client.bulk_update([
@@ -136,8 +133,7 @@ await client.bulk_complete(["id1", "id2"])
 await client.bulk_delete(["id1", "id2"])
 ```
 
-### Webhooks
-
+### Webhook（事件通知）
 ```python
 # Create webhook
 webhook = await client.create_webhook(
@@ -155,8 +151,7 @@ await client.update_webhook(webhook_id, url, ["*"])
 await client.delete_webhook(webhook_id)
 ```
 
-### System
-
+### 系统管理
 ```python
 # Stats
 stats = await client.get_stats()
@@ -171,9 +166,9 @@ valid = await client.validate_api_key()
 keys = await client.register(webhook="https://url.com")
 ```
 
-## LangChain Tools
+## LangChain工具
 
-The skill provides `@tool` decorated functions for agent integration:
+该技能提供了带有`@tool`标记的函数，用于与代理（agent）集成：
 
 ```python
 from skills.todozi.scripts.todozi import TODOZI_TOOLS
@@ -187,37 +182,37 @@ from skills.todozi.scripts.todozi import TODOZI_TOOLS
 # - todozi_list_matrices()
 ```
 
-## Categories
+## 分类
 
-| Category | Description |
+| 分类 | 描述 |
 |----------|-------------|
-| `do` | Do now (urgent + important) |
-| `delegate` | Delegate (urgent + not important) |
-| `defer` | Defer (not urgent + important) |
-| `done` | Completed items |
-| `dream` | Goals/dreams (not urgent + not important) |
-| `dont` | Don't do (neither) |
+| `do` | 立即执行（紧急且重要） |
+| `delegate` | 委派他人处理（紧急但不重要） |
+| `defer` | 延期处理（不紧急但重要） |
+| `done` | 已完成任务的项目 |
+| `dream` | 目标/梦想（不紧急且不重要） |
+| `dont` | 不要做（两者都不符合） |
 
-## Common Patterns
+## 常用操作模式
 
-**Auto-create default matrix:**
-```python
+- **自动创建默认矩阵：**  
+  ```python
 task = await client.create_task("My task")  # Creates "Default" matrix if needed
 ```
 
-**Get stats with completion rate:**
-```python
+- **获取包含完成率的统计信息：**  
+  ```python
 stats = await client.get_stats()
 rate = stats.completed_tasks / stats.total_tasks * 100 if stats.total_tasks > 0 else 0
 ```
 
-**Search with multiple filters:**
-```python
+- **使用多个条件进行搜索：**  
+  ```python
 results = await client.search("feature", type_="task", status="pending", priority="high")
 ```
 
-**Complete multiple tasks:**
-```python
+- **完成多个任务：**  
+  ```python
 tasks = await client.list_tasks(status="todo")
 ids = [t.id for t in tasks[:5]]
 await client.bulk_complete(ids)

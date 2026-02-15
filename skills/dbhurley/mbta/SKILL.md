@@ -1,14 +1,14 @@
 ---
 name: mbta
-description: Real-time MBTA transit predictions for Boston-area subway, bus, commuter rail, and ferry. Query departure times, search stops/routes, check service alerts, and run a live dashboard. Use when asked about Boston transit, T schedules, when to leave for the train, or MBTA service status.
+description: 实时MBTA交通预测服务，涵盖波士顿地区的地铁、公交、通勤铁路和渡轮。您可以查询出发时间、搜索站点/路线、查看服务公告，并使用实时仪表板获取相关信息。该服务适用于需要了解波士顿交通状况、列车时刻表、出行建议或MBTA服务状态的场景。
 metadata: {"clawdbot":{"requires":{"bins":["python3"],"pip":["requests"]}}}
 ---
 
-# MBTA Transit
+# MBTA 交通服务
 
-Query real-time MBTA predictions via the v3 API.
+通过 v3 API 查询 MBTA 的实时列车信息。
 
-## Setup
+## 设置
 
 ```bash
 # Optional but recommended for higher rate limits
@@ -18,7 +18,7 @@ export MBTA_API_KEY=your_key_here  # Free at https://api-v3.mbta.com/portal
 pip install requests pyyaml flask  # flask only needed for dashboard
 ```
 
-## Quick Commands
+## 快速命令
 
 ```bash
 cd skills/mbta
@@ -47,9 +47,9 @@ python scripts/mbta.py departures --config config.yaml
 python scripts/mbta.py dashboard --config config.yaml --port 6639
 ```
 
-## Configuration
+## 配置
 
-Edit `config.yaml` to set up your stops:
+编辑 `config.yaml` 文件以设置您的目的地站点：
 
 ```yaml
 panels:
@@ -64,12 +64,12 @@ panels:
         limit: 3
 ```
 
-Key fields:
-- `walk_minutes`: Trains departing sooner than this are filtered out
-- `direction_id`: 0 = outbound/north, 1 = inbound/south (varies by line)
-- `headsign_contains`: Optional filter (e.g., "Ashmont" to exclude Braintree)
+关键字段：
+- `walk_minutes`：过滤掉出发时间早于此时间的列车
+- `direction_id`：0 = 出站/北向；1 = 进站/南向（具体线路可能有所不同）
+- `headsign_contains`：可选过滤器（例如，输入 “Ashmont” 可以排除 Braintree 站点）
 
-## Finding Stop/Route IDs
+## 查找站点/路线 ID
 
 ```bash
 # Search stops
@@ -81,18 +81,18 @@ python scripts/mbta.py routes --type rail
 # Returns route IDs like "Red", "Orange", "Green-E"
 ```
 
-## JSON Output
+## JSON 输出
 
-Add `--json` for machine-readable output:
+添加 `--json` 选项以获取机器可读的输出格式：
 
 ```bash
 python scripts/mbta.py next --stop place-alfcl --json
 python scripts/mbta.py departures --config config.yaml --json
 ```
 
-## Common Stop IDs
+## 常见站点 ID
 
-| Station | Stop ID |
+| 站点 | 站点 ID |
 |---------|---------|
 | Alewife | place-alfcl |
 | Harvard | place-harsq |
@@ -103,22 +103,22 @@ python scripts/mbta.py departures --config config.yaml --json
 | Back Bay | place-bbsta |
 | Downtown Crossing | place-dwnxg |
 
-## Answering User Questions
+## 回答用户问题
 
-**"When's the next Red Line train?"**
+**“下一班红线列车什么时候到？”**
 ```bash
 python scripts/mbta.py next --stop place-alfcl --route Red
 ```
 
-**"Should I leave now to catch the T?"**
-Check departures against their walk time. If next train is ≤ walk_minutes, say "leave now!"
+**“我现在出发能赶上地铁吗？”**
+根据出发时间与步行所需时间进行判断：如果下一班列车的到达时间在 `walk_minutes` 之内，建议 “现在就出发！”
 
-**"Are there any delays on the Orange Line?"**
+**“橙线列车有延误吗？”**
 ```bash
 python scripts/mbta.py alerts --route Orange
 ```
 
-**"What buses go to Harvard?"**
+**“有哪些公交车可以到达 Harvard？”**
 ```bash
 python scripts/mbta.py stops --search "Harvard"
 # Then check routes at that stop

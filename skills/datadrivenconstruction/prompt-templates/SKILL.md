@@ -1,18 +1,18 @@
 ---
 slug: "prompt-templates"
 display_name: "Prompt Templates"
-description: "Reusable prompt templates for construction AI tasks: cost estimation, schedule analysis, document processing, BIM queries. Structured prompts for consistent results."
+description: "可重复使用的提示模板，适用于建筑人工智能（AI）任务，如成本估算、进度分析、文档处理以及BIM数据查询等。这些结构化的提示能够确保每次操作都能获得一致的结果。"
 ---
 
-# Prompt Templates for Construction AI
+# 建筑行业人工智能的提示模板
 
-## Overview
+## 概述
 
-Structured, reusable prompt templates optimized for construction industry AI tasks. These templates ensure consistent, high-quality outputs for cost estimation, schedule analysis, document processing, and BIM data queries.
+这些结构化、可重用的提示模板专为建筑行业的人工智能任务设计，能够确保成本估算、进度分析、文档处理和BIM数据查询等任务的输出结果具有一致性和高质量。
 
-## Template Framework
+## 模板框架
 
-### Base Template Structure
+### 基本模板结构
 
 ```python
 from dataclasses import dataclass, field
@@ -80,9 +80,9 @@ class ConstructionPromptLibrary:
             self.register(template)
 ```
 
-## Cost Estimation Templates
+## 成本估算模板
 
-### Line Item Classification
+### 项目分类
 
 ```python
 COST_LINE_ITEM_CLASSIFICATION = PromptTemplate(
@@ -134,7 +134,7 @@ Use standard CSI MasterFormat 2020 divisions:
 )
 ```
 
-### Unit Cost Validation
+### 单位成本验证
 
 ```python
 COST_UNIT_PRICE_VALIDATION = PromptTemplate(
@@ -171,7 +171,7 @@ Consider regional cost factors, labor rates, and material costs for $location.
 )
 ```
 
-### Estimate Summary Generation
+### 估算摘要生成
 
 ```python
 COST_ESTIMATE_SUMMARY = PromptTemplate(
@@ -205,9 +205,9 @@ Write in a professional tone suitable for owner/stakeholder presentation.
 )
 ```
 
-## Schedule Analysis Templates
+## 进度分析模板
 
-### Critical Path Analysis
+### 关键路径分析
 
 ```python
 SCHEDULE_CRITICAL_PATH = PromptTemplate(
@@ -243,7 +243,7 @@ Focus on activities that could impact the project completion date.
 )
 ```
 
-### Delay Analysis
+### 延误分析
 
 ```python
 SCHEDULE_DELAY_ANALYSIS = PromptTemplate(
@@ -286,7 +286,7 @@ Use the Time Impact Analysis (TIA) methodology.
 )
 ```
 
-### Resource Leveling
+### 资源平衡
 
 ```python
 SCHEDULE_RESOURCE_LEVELING = PromptTemplate(
@@ -323,9 +323,9 @@ Maintain critical path while optimizing resource usage.
 )
 ```
 
-## Document Processing Templates
+## 文档处理模板
 
-### RFI Response Generation
+### RFI（请求信息）响应生成
 
 ```python
 DOC_RFI_RESPONSE = PromptTemplate(
@@ -363,7 +363,7 @@ Maintain a professional, unambiguous tone.
 )
 ```
 
-### Specification Extraction
+### 规格提取
 
 ```python
 DOC_SPEC_EXTRACTION = PromptTemplate(
@@ -403,7 +403,7 @@ Flag any ambiguous or conflicting requirements.
 )
 ```
 
-### Change Order Justification
+### 变更订单理由说明
 
 ```python
 DOC_CHANGE_ORDER = PromptTemplate(
@@ -437,9 +437,9 @@ Maintain a factual, professional tone suitable for owner review.
 )
 ```
 
-## BIM Query Templates
+## BIM查询模板
 
-### Element Quantity Extraction
+### 元素数量提取
 
 ```python
 BIM_QTO_EXTRACTION = PromptTemplate(
@@ -479,7 +479,7 @@ Ensure quantities are in standard construction units (SF, LF, CY, EA, etc.).
 )
 ```
 
-### Clash Analysis Summary
+### 碰撞分析摘要
 
 ```python
 BIM_CLASH_ANALYSIS = PromptTemplate(
@@ -514,7 +514,7 @@ Focus on actionable insights for the coordination team.
 )
 ```
 
-## Template Usage
+## 模板使用
 
 ```python
 # Initialize library
@@ -541,7 +541,7 @@ response = llm.generate(prompt)
 prompt_with_examples = template.with_examples(n=2)
 ```
 
-## Custom Template Creation
+## 自定义模板创建
 
 ```python
 # Create project-specific template
@@ -560,16 +560,16 @@ my_template = PromptTemplate(
 library.register(my_template)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Be Specific**: Include domain context (CSI codes, construction terms)
-2. **Define Output Format**: Always specify expected JSON/Markdown structure
-3. **Include Examples**: Few-shot examples improve consistency
-4. **Version Templates**: Track changes for reproducibility
-5. **Test Thoroughly**: Validate outputs match expected format
+1. **具体明确**：包含领域相关内容（如CSI代码、建筑术语）。
+2. **定义输出格式**：始终指定预期的JSON/Markdown格式。
+3. **提供示例**：通过少量示例来提高模板的一致性。
+4. **版本管理**：跟踪模板的变化，以确保可重复使用性。
+5. **彻底测试**：验证输出是否与预期格式相符。
 
-## Resources
+## 资源
 
-- **Prompt Engineering Guide**: https://www.promptingguide.ai/
-- **CSI MasterFormat**: https://www.csiresources.org/standards/masterformat
-- **Construction Terminology**: AIA, AGC, CMAA glossaries
+- **提示工程指南**：https://www.promptingguide.ai/
+- **CSI MasterFormat**：https://www.csiresources.org/standards/masterformat
+- **建筑行业术语**：AIA、AGC、CMAA等组织的术语表

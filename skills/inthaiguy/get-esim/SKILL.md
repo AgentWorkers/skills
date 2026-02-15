@@ -1,74 +1,74 @@
-# Get eSIM Skill
+# 获取eSIM服务
 
-Purchase eSIM data packages using USDC on Base Mainnet (or testnet for testing) via the x402 protocol.
+用户可以使用USDC在Base Mainnet（或用于测试的testnet）上，通过x402协议购买eSIM数据套餐。
 
-## Description
+## 说明
 
-This skill enables AI agents to purchase eSIM data packages for users. It uses the x402 payment protocol to pay with USDC on Base Mainnet (default) or Base Sepolia testnet (for testing), then delivers the eSIM installation page.
+此服务允许AI代理为用户购买eSIM数据套餐。它使用x402支付协议，在Base Mainnet（默认）或Base Sepolia testnet（用于测试）上进行支付，然后提供eSIM安装页面。
 
-**Default Network**: Base Mainnet (production - real eSIMs)
-**Test Network**: Base Sepolia (testing - mock eSIMs)
+**默认网络**：Base Mainnet（生产环境 - 使用真实eSIM）
+**测试网络**：Base Sepolia（测试环境 - 使用模拟eSIM）
 
-## Prerequisites
+## 先决条件
 
-- A wallet skill or USDC-capable wallet on Base (Mainnet or Sepolia)
-- USDC balance for purchases
-- ETH for gas (if using `transfer` scheme)
+- 在Base（Mainnet或Sepolia）上拥有支持USDC支付的钱包
+- 具备足够的USDC余额用于购买
+- 如果使用`transfer`方案，还需要ETH作为交易手续费
 
-Suggested wallets: Coinbase Agentic Wallet, any x402-compatible wallet, or any wallet that supports Base USDC transfers.
+推荐的钱包：Coinbase Agentic Wallet、任何兼容x402的钱包，或支持Base USDC转账的钱包。
 
-## Network Selection
+## 网络选择
 
-By default, purchases happen on **Base Mainnet** (real eSIMs). For testing, explicitly specify the testnet network.
+默认情况下，购买操作在**Base Mainnet**（生产环境）上进行（使用真实eSIM）。如需测试，请明确指定测试网络。
 
-### When to Use Each Network
+### 各网络的使用场景
 
-| Network | Use Case | eSIM Type |
+| 网络 | 使用场景 | eSIM类型 |
 |---------|----------|-----------|
-| **Base Mainnet** (default) | Production purchases | Real eSIMs |
-| **Base Sepolia** | Development/testing | Mock eSIMs |
+| **Base Mainnet**（默认） | 生产环境购买 | 使用真实eSIM |
+| **Base Sepolia** | 开发/测试 | 使用模拟eSIM |
 
-### Specifying Network
+### 指定网络
 
-The user can indicate their preference by:
-- Saying "testnet", "testing", "mock", or "demo" → Use Sepolia testnet
-- Not specifying, or saying "mainnet", "production", "real" → Use Base mainnet (default)
+用户可以通过以下方式指定网络：
+- 输入“testnet”、“testing”、“mock”或“demo” → 使用Sepolia测试网络
+- 未指定或输入“mainnet”、“production”、“real” → 使用Base Mainnet（默认）
 
-## Invocation
+## 调用方式
 
-Use this skill when a user:
-- Asks for an eSIM or mobile data
-- Needs cellular data for travel
-- Wants to buy a data plan for a specific country
-- Mentions needing connectivity abroad
-- Requests "test" or "mock" eSIM for development
+当用户出现以下情况时，可以使用此服务：
+- 请求eSIM或移动数据
+- 需要旅行时的蜂窝数据
+- 希望为特定国家购买数据套餐
+- 表示需要海外连接
+- 请求用于开发的“test”或“mock”eSIM
 
-## Important: Transaction Timing
+## 重要提示：交易时间
 
-Crypto and eSIM transactions are NOT instant. Expect:
-- **USDC transfer**: 5-15 seconds for on-chain confirmation
-- **Purchase completion**: Additional 3-30 seconds for API to verify the transaction on-chain
-- **Total purchase flow**: Can take 30-60 seconds from payment initiation to eSIM delivery
+加密货币和eSIM交易并非即时完成。请注意：
+- **USDC转账**：链上确认需要5-15秒
+- **购买完成**：API需要额外3-30秒来验证链上的交易
+- **整个购买流程**：从支付发起到eSIM交付可能需要30-60秒
 
-Inform the user that the purchase is processing and to wait for confirmation.
+请告知用户购买正在处理中，请等待确认。
 
-## Workflow
+## 工作流程
 
-1. **Determine network**: Ask or detect if user wants mainnet (real) or testnet (testing)
-2. **Discover needs**: Ask which country they need data for
-3. **Search packages**: Query esimqr.link for available packages
-4. **Present options**: Show available data plans with prices
-5. **Get selection**: User picks a package
-6. **Confirm purchase**: Show price, network (mainnet/testnet), and wallet balance, get confirmation
-7. **Execute x402 flow**:
-   - POST to /api/agent/purchase (mainnet) or /api/agent-testnet/purchase (testnet) → receive 402 with payment details
-   - Pay using your wallet
-   - Retry POST with payment proof header
-8. **Deliver eSIM**: Return the `esimPageUrl` - a user-friendly page with QR code and install buttons
+1. **确定网络**：询问用户是否需要Mainnet（生产环境）或testnet（测试环境）
+2. **了解需求**：询问用户需要数据的国家
+3. **搜索套餐**：查询esimqr.link以获取可用套餐
+4. **展示选项**：显示可用的数据套餐及其价格
+5. **用户选择套餐**：用户挑选一个套餐
+6. **确认购买**：显示价格、网络（Mainnet/testnet）和钱包余额，并获取用户确认
+7. **执行x402支付流程**：
+   - 向 `/api/agent/purchase`（Mainnet）或 `/api/agent-testnet/purchase`（testnet）发送POST请求 → 接收到包含支付详情的402响应
+   - 使用钱包完成支付
+   - 重新发送POST请求，并添加`PAYMENT-SIGNATURE`头部
+8. **提供eSIM信息**：返回`esimPageUrl`——一个包含二维码和安装按钮的用户友好页面
 
-## Example Conversation
+## 示例对话
 
-### Mainnet (Real eSIM)
+### Mainnet（使用真实eSIM）
 ```
 User: I need an eSIM for my trip to USA
 
@@ -103,7 +103,7 @@ Your eSIM is ready! Install it here:
 https://esimqr.link/web3/esim/agent_1707184523_abc123
 ```
 
-### Testnet (Mock eSIM for Testing)
+### Testnet（使用模拟eSIM进行测试）
 ```
 User: Get me a test eSIM for USA
 
@@ -136,88 +136,86 @@ Your mock eSIM is ready! (For testing only):
 https://esimqr.link/web3/esim/mockagent_1707184523_abc123
 ```
 
-## API Endpoints
+## API接口
 
-Base URL: `https://esimqr.link`
+基础URL：`https://esimqr.link`
 
-### Mainnet Endpoints (Production)
-| Endpoint | Method | Description |
+### Mainnet接口（生产环境）
+| 接口 | 方法 | 说明 |
 |----------|--------|-------------|
-| `/api/agent/quote` | GET | Get price quote |
-| `/api/agent/purchase` | POST | Initiate/complete purchase |
-| `/api/agent/esim/{id}` | GET | Get eSIM status |
+| `/api/agent/quote` | GET | 获取价格报价 |
+| `/api/agent/purchase` | POST | 启动/完成购买 |
+| `/api/agent/esim/{id}` | GET | 获取eSIM状态 |
 
-### Testnet Endpoints (Testing)
-| Endpoint | Method | Description |
+### Testnet接口（测试环境）
+| 接口 | 方法 | 说明 |
 |----------|--------|-------------|
-| `/api/agent-testnet/quote` | GET | Get price quote |
-| `/api/agent-testnet/purchase` | POST | Initiate/complete purchase |
-| `/api/agent-testnet/esim/{id}` | GET | Get eSIM status |
+| `/api/agent-testnet/quote` | GET | 获取价格报价 |
+| `/api/agent-testnet/purchase` | POST | 启动/完成购买 |
+| `/api/agent-testnet/esim/{id}` | GET | 获取eSIM状态 |
 
-### Shared Endpoints (Both Networks)
-| Endpoint | Method | Description |
+### 共享接口（两种网络均可使用）
+| 接口 | 方法 | 说明 |
 |----------|--------|-------------|
-| `/api/web3/packages?q={country}` | GET | Search packages (works for both) |
+| `/api/web3/packages?q={country}` | GET | 搜索套餐 |
 
-### Rate Limiting
+### 速率限制
 
-- **Limit**: 10 requests per minute per IP
-- **Response**: HTTP 429 with `Retry-After` header
-- Handle rate limits gracefully by respecting the `Retry-After` value
+- **限制**：每分钟每个IP地址最多10次请求
+- **响应**：返回HTTP 429错误，并附带`Retry-After`头部
+- 请根据`Retry-After`值优雅地处理速率限制
 
-## Network Configuration
+## 网络配置
 
-### Base Mainnet (Default)
-| Parameter | Value |
+### Base Mainnet（默认设置）
+| 参数 | 值 |
 |-----------|-------|
 | Network | Base Mainnet |
 | Chain ID | 8453 |
 | CAIP-2 | eip155:8453 |
 | USDC Token | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
-| USDC Decimals | 6 |
+| USDC 小数位数 | 6 |
 
-### Base Sepolia (Testnet)
-| Parameter | Value |
+### Base Sepolia（测试环境）
+| 参数 | 值 |
 |-----------|-------|
-| Network | Base Sepolia (testnet) |
+| Network | Base Sepolia（测试环境） |
 | Chain ID | 84532 |
 | CAIP-2 | eip155:84532 |
 | USDC Token | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
-| USDC Decimals | 6 |
+| USDC 小数位数 | 6 |
 
-**Note**: Payment wallet addresses are returned dynamically by the API in quote and 402 responses. Do not hardcode payment addresses.
+**注意**：支付钱包地址由API在报价和402响应中动态生成。切勿硬编码钱包地址。
 
-## Payment Schemes (x402)
+## 支付方式（x402）
 
-The 402 response offers two payment options in the `accepts` array. Choose based on your wallet capabilities:
+402响应中的`accepts`数组提供了两种支付选项。根据您的钱包功能进行选择：
 
-| Scheme | Header | Wallet Requirements | Gas |
+| 支付方式 | 头部信息 | 需要的钱包支持 | 手续费（gas） |
 |--------|--------|---------------------|-----|
-| `exact` | `PAYMENT-SIGNATURE` | EIP-3009 signing (Circle, x402 SDK) | Gasless |
-| `transfer` | `X-PAYMENT` | Standard USDC transfer | You pay gas |
+| `exact` | `PAYMENT-SIGNATURE` | 支持EIP-3009签名的钱包（如Circle、x402兼容的SDK） | 无需支付手续费 |
+| `transfer` | `X-PAYMENT` | 标准的USDC转账 | 需要用户支付手续费 |
 
-### Which Scheme to Use
+### 选择哪种支付方式
 
-- **Use `exact` if**: Your wallet supports EIP-3009 `transferWithAuthorization` signing (Circle wallets, x402-compatible SDKs). Benefits: gasless - the facilitator broadcasts for you.
+- **使用`exact`方式**：如果您的钱包支持EIP-3009 `transferWithAuthorization`签名（例如Circle钱包、x402兼容的SDK）。优点：无需支付手续费，由平台代为完成交易。
+- **使用`transfer`方式**：如果您的钱包支持标准USDC转账但不支持EIP-3009。适用于所有支持Base网络的钱包。用户需要支付手续费。
+- **不确定如何选择？**：`transfer`方式适用于所有支持USDC支付的钱包。
 
-- **Use `transfer` if**: Your wallet can do standard USDC transfers but doesn't support EIP-3009. Works with any wallet that supports Base. You pay gas fees.
+### 使用`exact`方式的流程（无需支付手续费）：
+1. 向 `/api/agent/purchase`（Mainnet）或 `/api/agent-testnet/purchase`（testnet）发送POST请求 → 接收到包含EIP-3009参数的402响应
+2. 签署`transferWithAuthorization`消息（无需链上交易）
+3. 重新发送POST请求，并添加`PAYMENT-SIGNATURE: <base64-encoded-payload>`头部
+4. 平台会代为完成交易
 
-- **Not sure?**: The `transfer` scheme works with any USDC-capable wallet.
+### 使用`transfer`方式的流程：
+1. 向 `/api/agent/purchase`（Mainnet）或 `/api/agent-testnet/purchase`（testnet）发送POST请求 → 接收到包含支付详情的402响应
+2. 在正确的网络上将USDC转账到`payTo`地址
+3. 重新发送POST请求，并添加`X-PAYMENT: txHash=0x..., nonce=...`头部
 
-### Exact Scheme Flow (gasless):
-1. POST `/api/agent/purchase` (mainnet) or `/api/agent-testnet/purchase` (testnet) → receive 402 with EIP-3009 parameters
-2. Sign a `transferWithAuthorization` message (no on-chain tx needed)
-3. Retry POST with header: `PAYMENT-SIGNATURE: <base64-encoded-payload>`
-4. Facilitator broadcasts the transaction for you
+## API响应示例
 
-### Transfer Scheme Flow:
-1. POST `/api/agent/purchase` (mainnet) or `/api/agent-testnet/purchase` (testnet) → receive 402 with payment details
-2. Transfer USDC on-chain to `payTo` address (on the correct network!)
-3. Retry POST with header: `X-PAYMENT: txHash=0x...,nonce=...`
-
-## API Response Examples
-
-### Search Packages
+### 搜索套餐
 ```json
 GET /api/web3/packages?q=US
 
@@ -228,7 +226,7 @@ GET /api/web3/packages?q=US
 }
 ```
 
-### Quote (Mainnet)
+### 获取价格报价（Mainnet）
 ```json
 GET /api/agent/quote?packageCode=US_1_7
 
@@ -245,7 +243,7 @@ GET /api/agent/quote?packageCode=US_1_7
 }
 ```
 
-### Quote (Testnet)
+### 获取价格报价（Testnet）
 ```json
 GET /api/agent-testnet/quote?packageCode=US_1_7
 
@@ -263,7 +261,7 @@ GET /api/agent-testnet/quote?packageCode=US_1_7
 }
 ```
 
-### 402 Payment Required
+### 需要支付（使用402协议）
 ```json
 POST /api/agent/purchase
 Body: {"packageCode": "US_1_7"}
@@ -277,9 +275,9 @@ Body: {"packageCode": "US_1_7"}
 }
 ```
 
-**Important**: Always use the `payTo` address from the 402 response. Never hardcode payment addresses.
+**重要提示**：始终使用402响应中的`payTo`地址。切勿硬编码支付地址。
 
-### Purchase Success
+### 购买成功
 ```json
 POST /api/agent/purchase
 Headers: X-PAYMENT: txHash=0x...,nonce=abc123
@@ -296,36 +294,35 @@ Body: {"packageCode": "US_1_7"}
 }
 ```
 
-## Status Values
+## 状态码
 
-- `pending` - Order created, awaiting provisioning
-- `processing` - eSIM being provisioned
-- `ready` - eSIM ready for installation
-- `activated` - eSIM installed on device
-- `failed` - Order failed (contact support)
-- `cancelled` - Mock eSIM auto-cancelled (testnet only)
+- `pending`：订单已创建，正在准备中
+- `processing`：eSIM正在配置中
+- `ready`：eSIM已准备好安装
+- `activated`：eSIM已安装到设备上
+- `failed`：订单失败（请联系支持）
+- `cancelled`：模拟eSIM自动取消（仅限测试环境）
 
-## Documentation
+## 文档链接
 
-- **Mainnet**: https://esimqr.link/api/agent/docs
-- **Testnet**: https://esimqr.link/api/agent-testnet/docs
-- **Landing**: https://esimqr.link/agents
+- **Mainnet**：https://esimqr.link/api/agent/docs
+- **Testnet**：https://esimqr.link/api/agent-testnet/docs
+- **用户指南**：https://esimqr.link/agents
 
-## Files
+## 相关文件
 
-- `esim_api.py` - API client for esimqr.link (supports both mainnet and testnet)
+- `esim_api.py`：用于esimqr.link的API客户端（支持Mainnet和testnet）
 
-## Dependencies
-
+## 依赖项
 ```
 requests>=2.28.0
 ```
 
-## Hackathon Submission
+## 需要提交的资料（用于黑客马拉松）
 
-- **Track**: Agentic Commerce
-- **Protocol**: x402 (HTTP 402 Payment Required)
-- **Networks**: Base Mainnet (production), Base Sepolia (testing)
-- **Payment**: USDC
+- **项目跟踪链接**：Agenic Commerce
+- **使用的协议**：x402（需要使用HTTP 402支付）
+- **支持的网络**：Base Mainnet（生产环境）、Base Sepolia（测试环境）
+- **支付方式**：USDC
 
-Submitted to: https://www.moltbook.com/m/usdc
+提交链接：https://www.moltbook.com/m/usdc

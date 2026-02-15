@@ -1,23 +1,23 @@
 ---
 name: whcli
-description: Willhaben CLI for searching Austria's largest classifieds marketplace. Search listings, view details, check seller profiles.
+description: **Willhaben CLI**：用于搜索奥地利最大的分类广告市场。您可以搜索广告列表、查看详细信息以及卖家资料。
 homepage: https://github.com/pasogott/whcli
 metadata: {"clawdis":{"emoji":"🏠","requires":{"bins":["whcli"]},"install":[{"id":"brew","kind":"brew","formula":"pasogott/tap/whcli","bins":["whcli"],"label":"Install whcli (Homebrew)"},{"id":"source","kind":"shell","command":"git clone https://github.com/pasogott/whcli.git && cd whcli && uv sync","label":"Install from source (uv)"}]}}
 ---
 
 # whcli - Willhaben CLI 🏠
 
-Search and browse [willhaben.at](https://willhaben.at), Austria's largest classifieds marketplace from the command line.
+通过命令行搜索和浏览 [willhaben.at](https://willhaben.at)，这是奥地利最大的分类广告交易平台。
 
-## Installation
+## 安装
 
-### Homebrew (recommended)
+### 使用 Homebrew（推荐）
 
 ```bash
 brew install pasogott/tap/whcli
 ```
 
-### From source (with uv)
+### 从源代码安装（使用 uv）
 
 ```bash
 git clone https://github.com/pasogott/whcli.git
@@ -26,9 +26,9 @@ uv sync
 uv run whcli --help
 ```
 
-## Commands
+## 命令
 
-### Search
+### 搜索
 
 ```bash
 # Basic search
@@ -47,20 +47,20 @@ whcli search "playstation" --paylivery
 whcli search "laptop" --format json
 ```
 
-**Options:**
-| Option | Short | Description |
+**选项：**
+| 选项 | 简写 | 描述 |
 |--------|-------|-------------|
-| `--category` | `-c` | Category slug (grafikkarten, smartphones, etc.) |
-| `--min-price` | | Minimum price in EUR |
-| `--max-price` | | Maximum price in EUR |
-| `--condition` | | neu, gebraucht, defekt, neuwertig |
-| `--location` | `-l` | Location/region filter |
-| `--rows` | `-n` | Number of results (default: 30) |
-| `--page` | `-p` | Page number |
-| `--paylivery` | | Only PayLivery listings |
-| `--format` | `-f` | table, json, csv |
+| `--category` | `-c` | 商品类别（例如：grafikkarten、smartphones 等） |
+| `--min-price` | | 最低价格（欧元） |
+| `--max-price` | | 最高价格（欧元） |
+| `--condition` | | 商品状态（例如：neu、gebraucht、defekt、neuwertig） |
+| `--location` | `-l` | 地点/区域筛选 |
+| `--rows` | `-n` | 显示结果数量（默认：30） |
+| `--page` | `-p` | 页码 |
+| `--paylivery` | | 仅显示 PayLivery 广告 |
+| `--format` | `-f` | 输出格式（table、json、csv） |
 
-### Show Listing Details
+### 查看商品详情
 
 ```bash
 # View listing by ID
@@ -70,14 +70,14 @@ whcli show 1993072190
 whcli show 1993072190 --format json
 ```
 
-### Seller Profile
+### 卖家资料
 
 ```bash
 # View seller profile and ratings
 whcli seller 29159134
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Find cheap iPhones in Vienna
@@ -93,23 +93,23 @@ whcli search "ps5" --condition neu
 whcli search "furniture" -l "1220" -n 50 --format csv > results.csv
 ```
 
-## Common Categories
+## 常见商品类别：
 
-- `grafikkarten` - Graphics cards
-- `smartphones` - Phones
-- `notebooks-laptops` - Laptops
-- `spielkonsolen` - Gaming consoles
-- `fahrraeder` - Bicycles
-- `moebel` - Furniture
+- `grafikkarten` - 显卡
+- `smartphones` - 手机
+- `notebooks-laptops` - 笔记本电脑
+- `spielkonsolen` - 游戏机
+- `fahrraeder` - 自行车
+- `moebel` - 家具
 
-## Known Limitations
+## 注意事项：
 
-- ⚠️ `show` command has a bug (being fixed)
-- Location filter works but may include nearby regions
-- No OAuth login yet (messaging/watching not available)
+- ⚠️ `show` 命令存在 bug（正在修复中）
+- 地点筛选功能可用，但可能会显示附近的地区信息
+- 目前尚不支持 OAuth 登录（因此无法发送消息或查看卖家信息）
 
-## Links
+## 链接：
 
-- **Repository:** https://github.com/pasogott/whcli
-- **Issues:** https://github.com/pasogott/whcli/issues
-- **Homebrew Tap:** https://github.com/pasogott/homebrew-tap
+- **仓库：** https://github.com/pasogott/whcli
+- **问题报告：** https://github.com/pasogott/whcli/issues
+- **Homebrew 配置源：** https://github.com/pasogott/homebrew-tap

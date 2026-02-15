@@ -1,26 +1,26 @@
-# Progressive Memory
+# 进阶式内存系统（Progressive Memory）
 
-Token-efficient memory system for AI agents. Scan an index first, fetch details on demand. Based on progressive disclosure principles from claude-mem.
+这是一种专为AI智能体设计的、高效利用内存的系统。系统会先扫描索引，然后根据需求获取具体信息。该设计基于Claude-Mem提出的“渐进式数据披露”（progressive disclosure）原则。
 
-## The Problem
+## 问题所在
 
-Traditional memory dumps everything into context:
-- Load 3500 tokens of history
-- 94% is irrelevant to current task
-- Wastes attention budget, causes context rot
+传统的内存管理系统会将所有数据一次性加载到内存中：
+- 通常会加载3500个“令牌”（tokens）量的历史数据；
+- 其中94%的数据与当前任务无关；
+- 这不仅浪费了计算资源，还导致内存中的数据变得陈旧（无法有效利用）。
 
-## The Solution
+## 解决方案
 
-**Progressive disclosure:** Show what exists first, let the agent decide what to fetch.
+**渐进式数据披露**：先展示用户需要了解的信息，再由智能体决定是否需要进一步获取更多数据。
 
 ```
 Before: 3500 tokens loaded → 200 relevant (6%)
 After:  100 token index → fetch 200 needed (100%)
 ```
 
-## Memory Format
+## 内存格式
 
-### Daily Files (`memory/YYYY-MM-DD.md`)
+### 每日文件（`memory/YYYY-MM-DD.md`）
 
 ```markdown
 # 2026-02-01 (AgentName)
@@ -41,7 +41,7 @@ After:  100 token index → fetch 200 needed (100%)
 **Status:** Unresolved
 ```
 
-### Long-Term Memory (`MEMORY.md`)
+### 长期存储文件（`MEMORY.md`）
 
 ```markdown
 ## 📋 Index (~100 tokens)
@@ -59,54 +59,54 @@ After:  100 token index → fetch 200 needed (100%)
 - VERIFY everything before reporting done
 ```
 
-## Observation Types
+## 数据类型及其使用场景
 
-| Icon | Type | When to Use |
+| 图标 | 类型 | 使用场景 |
 |------|------|-------------|
-| 🚨 | rule | Critical rule, must follow |
-| 🔴 | gotcha | Pitfall, don't repeat this |
-| 🟡 | fix | Bug fix, workaround |
-| 🔵 | how | Technical explanation |
-| 🟢 | change | What changed, deployed |
-| 🟣 | discovery | Learning, insight |
-| 🟠 | why | Design rationale |
-| 🟤 | decision | Architecture decision |
-| ⚖️ | tradeoff | Deliberate compromise |
+| 🚨 | 规则 | 必须严格遵守的规则 |
+| 🔴 | 陷阱/误区 | 避免重复犯同样的错误 |
+| 🟡 | 修复方案 | 缺陷修复方法 |
+| 🔵 | 技术说明 | 相关的技术细节 |
+| 🟢 | 变更内容 | 已更新或部署的内容 |
+| 🟣 | 新发现 | 学习成果或新见解 |
+| 🟠 | 设计理由 | 功能设计的依据 |
+| 🟤 | 决策依据 | 技术架构的决策 |
+| ⚖️ | 权衡方案 | 经过权衡后的折中方案 |
 
-## Token Estimation
+## 数据量估算
 
-| Content Type | Tokens |
+| 数据类型 | 所需令牌数 |
 |--------------|--------|
-| Simple fact | ~30-50 |
-| Short explanation | ~80-150 |
-| Detailed context | ~200-400 |
-| Full summary | ~500-1000 |
+| 简单事实 | 约30-50个令牌 |
+| 简短说明 | 约80-150个令牌 |
+| 详细内容 | 约200-400个令牌 |
+| 完整总结 | 约500-1000个令牌 |
 
-## How It Works
+## 工作原理
 
-1. **Session starts** → Agent scans index tables (~100-200 tokens)
-2. **Agent sees types** → Prioritizes 🔴 gotchas over 🟢 changes
-3. **Agent sees costs** → Decides if 400-token entry is worth it
-4. **Fetch on demand** → Only load what's relevant to current task
+1. **会话开始** → 智能体扫描索引表（约100-200个令牌）；
+2. **智能体识别数据类型** → 优先显示需要避免的陷阱（🔴），而非已更新的内容（🟢）；
+3. **智能体评估数据价值** → 判断是否值得加载400个令牌量的数据；
+4. **按需获取** → 仅加载与当前任务相关的数据。
 
-## Benefits
+## 相关优势
 
-- **Token savings:** ~65,000 tokens/day with 20 memory checks
-- **Faster scanning:** Icons enable visual pattern recognition
-- **Precise references:** IDs like #1, G3, D5 for exact lookup
-- **Cost awareness:** Token counts for ROI decisions
+- **节省令牌**：每天最多可节省约65,000个令牌（假设进行20次内存查询）；
+- **更快的扫描速度**：图标帮助用户快速识别数据类型；
+- **精确的引用方式**：使用编号（如#1、G3、D5）进行快速查找；
+- **成本意识**：通过令牌数量来评估数据使用的成本效益。
 
-## Integration
+## 集成方式
 
-Works with any markdown-based memory system. No database required.
+该系统可与任何基于Markdown的存储系统配合使用，无需额外的数据库支持。
 
-For Clawdbot users:
-1. Update `AGENTS.md` with format instructions
-2. Restructure `MEMORY.md` with index
-3. Use format in daily `memory/YYYY-MM-DD.md` files
+**针对Clawdbot用户的操作步骤：**
+1. 更新`AGENTS.md`文件，添加相关的格式说明；
+2. 重新组织`MEMORY.md`文件的结构，使其包含索引信息；
+3. 在每日生成的`memory/YYYY-MM-DD.md`文件中遵循新的格式规范。
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**开发团队：[LXGIC Studios](https://lxgicstudios.com)**
 
-🔗 [GitHub](https://github.com/lxgicstudios/progressive-memory) · [Twitter](https://x.com/lxgicstudios)
+🔗 [GitHub仓库](https://github.com/lxgicstudios/progressive-memory) · [Twitter账号](https://x.com/lxgicstudios)

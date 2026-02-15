@@ -1,15 +1,15 @@
 ---
 name: proxy-pay
-description: Quick command to create a payment via Proxy. Usage: /proxy-pay [amount] [merchant] [description]. Creates payment intent and provisions virtual card.
+description: 用于通过 Proxy 创建支付的快捷命令。使用方法：/proxy-pay [金额] [商家名称] [支付描述]。该命令会生成支付意图（payment intent）并配置虚拟卡片（virtual card）信息。
 disable-model-invocation: true
 argument-hint: "[amount] [merchant] [description]"
 ---
 
-# Make a Payment
+# 进行支付
 
-Create a payment intent and get a virtual card.
+创建一个支付意图（payment intent）并获取一张虚拟卡。
 
-## Usage
+## 使用方法
 
 ```
 /proxy-pay 49.99 Amazon office supplies
@@ -17,17 +17,17 @@ Create a payment intent and get a virtual card.
 /proxy-pay 29.99 Netflix monthly subscription
 ```
 
-## Instructions
+## 指令
 
-Parse the request from: $ARGUMENTS
+从 `$ARGUMENTS` 中解析请求内容：
 
-### Step 1: Check Balance
+### 第一步：检查余额
 ```
 Call: proxy.balance.get
 If insufficient: Inform user, offer proxy.funding.get
 ```
 
-### Step 2: Create Intent
+### 第二步：创建支付意图
 ```
 Call: proxy.intents.create
 Parameters:
@@ -36,10 +36,10 @@ Parameters:
   - description: (remaining text or generate one)
 ```
 
-### Step 3: Handle Response
+### 第三步：处理响应
 
-**If `status: "pending"` or `status: "card_issued"`:**
-```
+- 如果 `status: "pending"` 或 `status: "card_issued"`：
+  ```
 Call: proxy.cards.get_sensitive
 Provide card details formatted as:
 
@@ -49,14 +49,14 @@ Expiry: 12/26
 Billing ZIP: 10001
 ```
 
-**If `status: "pending_approval"`:**
-```
+- 如果 `status: "pending_approval"`：
+  ```
 Inform user: "This purchase requires approval because it exceeds
 your auto-approve limit. You'll be notified when approved."
 ```
 
-**If error:**
-```
+- 如果出现错误：
+  ```
 Explain the error clearly based on error code.
 Provide resolution steps.
 ```

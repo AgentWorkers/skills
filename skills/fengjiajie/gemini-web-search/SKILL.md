@@ -1,68 +1,67 @@
 ---
 name: gemini-web-search
-description: Use Gemini CLI (@google/gemini-cli) to do web search / fact-finding and return a sourced summary. Use when the user asks “why did X happen today”, “what’s the latest news”, “search the web”, “find sources/links”, or any task requiring up-to-date info. Prefer this over other search tools when Gemini is available but slow; run it with a TTY, wait longer, and verify source quality.
+description: 使用 Gemini CLI（@google/gemini-cli）进行网络搜索或信息查询，并返回带有来源信息的摘要。当用户询问“为什么今天会发生X事件？”、“最新的消息是什么？”、“在网络上搜索”或任何需要最新信息的问题时，可以使用该工具。如果 Gemini 可用但运行速度较慢，建议优先选择它；请通过 TTY（终端）来执行该命令，因为可能需要更长的等待时间，并且需要验证信息的来源质量。
 ---
 
-# Gemini Web Search
+# Gemini网络搜索
 
-Use Gemini CLI to search the web and produce a concise, sourced answer.
+使用Gemini CLI进行网络搜索，并生成简洁、有来源依据的答案。
 
-## Quick workflow
+## 快速工作流程
 
-1) **Formulate a tight query**
-- Include: entity + ticker/name + date/time window + what you need (%, $, cause, quotes, links)
-- Example: `PayPal (PYPL) fell Feb 4 2026: % change, $ change, main catalyst(s), 3 sources`
+1) **构建精确的查询**
+- 包括：实体 + 股票代码/名称 + 日期/时间范围 + 你需要获取的信息（百分比变化、价格变化、原因、引用链接等）
+- 例如：`PayPal (PYPL) 在2026年2月4日的价格变化：百分比变化是多少？价格变化了多少美元？主要的影响因素有哪些？来源有哪些？`
 
-2) **Run Gemini CLI with a TTY and long timeout**
-Gemini CLI can hang or be slow without a pseudo-TTY.
+2) **使用TTY并设置较长的超时时间来运行Gemini CLI**
+- 如果不使用伪TTY（pseudo-TTY），Gemini CLI可能会卡顿或运行缓慢。
+- 推荐的调用方式：
+  - 使用 `functions.exec` 并设置 `pty: true`
+  - 设置超时时间为300–600秒（对于复杂的搜索，可以设置更长时间）
+  - 先使用 `yieldMs` 循环约10000次，然后使用 `process.poll` 等待搜索完成
 
-Preferred (OpenClaw tool call):
-- Use `functions.exec` with `pty: true`
-- Use `timeout` 300–600s (longer for heavy searches)
-- Use `yieldMs` ~10000 then `process.poll` until completion
+命令模板：
+- `~/.npm-global/bin/gemini -p "<查询内容>`
 
-Command template:
-- `~/.npm-global/bin/gemini -p "<prompt>"`
+如果 `pty:true` 仍然表现不佳，可以使用伪TTY包装器：
+- `script -q -c "~/.npm-global/bin/gemini -p \"<查询内容>\"" /dev/null`
 
-If `pty:true` still behaves poorly, use a pseudo-tty wrapper:
-- `script -q -c "~/.npm-global/bin/gemini -p \"<prompt>\"" /dev/null`
+3) **以结构化的方式提取答案**
+- 返回以下信息：
+  - 关键的数值数据（例如：百分比变化、价格变化、收盘价/盘中价）
+- 2–4个主要的影响因素
+- **引用链接**（必须提供）
 
-3) **Extract the answer in a structured way**
-Return:
-- The key numeric facts (e.g., % move, $ move, close/intraday)
-- 2–4 bullets of the main catalyst(s)
-- **Links** (always)
+4) **质量控制（强制要求）**
+- 优先选择公司发布的投资者关系（IR）材料、SEC文件、路透社（Reuters）、彭博社（Bloomberg）、《华尔街日报》（WSJ）/《金融时报》（FT）、CNBC等权威媒体。
+- 避免依赖质量较低的财经博客或SEO网站。
+- 如果来源之间存在矛盾或看起来不可靠，请告知用户并要求其提供截图或链接，或者使用更明确的查询内容重新运行搜索。
 
-4) **Quality control (mandatory)**
-- Prefer: company IR/SEC filing, Reuters, Bloomberg, WSJ/FT, CNBC, reputable outlets.
-- Avoid relying on low-quality finance blogs/SEO sites.
-- If sources conflict or look unreliable: say so and ask user for a screenshot/link, or re-run with a stricter prompt.
+## 有效的查询示例
 
-## Prompts that work well
+- **快速筛选**：
+  `搜索网络：<主题>。提供3个主要信息点以及2个权威的链接。`
 
-- **Fast triage**:
-  `Search the web: <topic>. Give 3 bullets + 2 reputable links.`
+- **市场动态**：
+  `搜索网络：<股票代码> 今天（<日期>）为何波动？请提供准确的百分比变化和价格变化（包括收盘价和盘中价），并附上主要的影响因素及来源链接。`
 
-- **Market move**:
-  `Search the web: Why did <TICKER> move today (<date>)? Provide exact % and $ move (close + intraday if available) and the main catalyst(s). Cite sources with links.`
+- **要求更可靠的来源**：
+  `搜索网络，并优先使用路透社或公司发布的投资者关系材料。如果找不到这些信息，请告知用户。查询主题：<...>。请提供相关链接。`
 
-- **Force better sources**:
-  `Search the web and prioritize Reuters/company IR/SEC filing. If you cannot find them, say so. Topic: <...>. Provide links.`
+## 常见问题及解决方法
 
-## Failure modes & fixes
+- **Gemini显示“我将开始搜索……”后卡住**：
+  - 等待更长时间（搜索可能较慢）。
+  - 确保使用了TTY：通过 `pty:true` 或 `script -q -c ... /dev/null` 来运行命令。
 
-- **Gemini prints “I will search…” then stalls**
-  - Wait longer (it can be slow).
-  - Ensure TTY: run with `pty:true` or `script -q -c ... /dev/null`.
+- **输出内容包含可疑信息（例如：奇怪的CEO新闻）**：
+  - 重新运行命令，并指定仅使用路透社或公司发布的投资者关系材料；否则标记为“信息未知”。
+  - 通过至少2个独立的权威来源进行交叉验证。
 
-- **Output has suspicious claims (e.g., odd CEO news)**
-  - Re-run with: “use Reuters/company IR/SEC filing only; otherwise say unknown”.
-  - Cross-check with at least 2 independent reputable sources.
+- **需要数值数据但来源未提供**：
+  - 请用户从其使用的市场数据应用程序中提供报价或截图，并进行核对。
 
-- **Need numbers but sources don’t show them**
-  - Ask user for the quote/screenshot from their market data app and reconcile.
+## 本地设置说明
 
-## Local setup notes
-
-- Gemini CLI binary: `~/.npm-global/bin/gemini`
-- Auth: already completed by Jiajie (should work without re-login)
+- Gemini CLI二进制文件路径：`~/.npm-global/bin/gemini`
+- 认证：已由Jiajie完成，无需重新登录即可使用。

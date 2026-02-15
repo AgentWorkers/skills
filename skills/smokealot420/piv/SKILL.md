@@ -1,6 +1,6 @@
 ---
 name: piv
-description: "PIV workflow orchestrator - Plan, Implement, Validate loop for systematic multi-phase software development. Use when building features phase-by-phase with PRPs, automated validation loops, or multi-agent orchestration. Supports PRD creation, PRP generation, codebase analysis, and iterative execution with validation."
+description: "**PIV工作流编排器**：一种用于系统化多阶段软件开发的“计划（Plan）- 实施（Implement）- 验证（Validate）”循环工具。适用于通过Pull Request（PR）逐步构建功能、自动化验证流程或多代理协同工作的场景。该工具支持产品需求文档（PRD）的创建、PR的生成、代码库分析以及包含验证环节的迭代执行过程。"
 user-invocable: true
 disable-model-invocation: true
 metadata: {"openclaw":{"emoji":"gear","homepage":"https://github.com/SmokeAlot420/ftw","requires":{"bins":["git"]},"os":["darwin","linux"]}}
@@ -8,28 +8,27 @@ metadata: {"openclaw":{"emoji":"gear","homepage":"https://github.com/SmokeAlot42
 
 # PIV Ralph Orchestrator
 
-## Arguments: $ARGUMENTS
+## 参数：$ARGUMENTS
 
-Parse arguments using this logic:
+参数解析逻辑如下：
 
-### PRD Path Mode (first argument ends with `.md`)
+### PRD 路径模式（第一个参数以 `.md` 结尾）
 
-If the first argument ends with `.md`, it's a direct path to a PRD file:
-- `PRD_PATH` - Direct path to the PRD file
-- `PROJECT_PATH` - Derived by going up from PRDs/ folder
-- `START_PHASE` - Second argument (default: 1)
-- `END_PHASE` - Third argument (default: auto-detect from PRD)
+如果第一个参数以 `.md` 结尾，则表示它是一个 PRD 文件的直接路径：
+- `PRD_PATH`：PRD 文件的直接路径
+- `PROJECT_PATH`：从 `PRDs/` 文件夹开始向上导航得到的项目路径
+- `START_phase`：第二个参数（默认值：1）
+- `END_phase`：第三个参数（默认值：根据 PRD 自动检测）
 
-### Project Path Mode
+### 项目路径模式
 
-If the first argument does NOT end with `.md`:
-- `PROJECT_PATH` - Absolute path to project (default: current working directory)
-- `START_PHASE` - Second argument (default: 1)
-- `END_PHASE` - Third argument (default: 4)
-- `PRD_PATH` - Auto-discover from `PROJECT_PATH/PRDs/` folder
+如果第一个参数不以 `.md` 结尾：
+- `PROJECT_PATH`：项目的绝对路径（默认值：当前工作目录）
+- `START_phase`：第二个参数（默认值：1）
+- `END_phase`：第三个参数（默认值：4）
+- `PRD_PATH`：从 `PROJECT_PATH/PRDs/` 文件夹自动检测
 
-### Detection Logic
-
+### 检测逻辑
 ```
 If $ARGUMENTS[0] ends with ".md":
   PRD_PATH = $ARGUMENTS[0]
@@ -47,57 +46,56 @@ Else:
 
 ---
 
-## Required Reading by Role
+## 各角色的必读文档
 
-**CRITICAL: Each role MUST read their instruction files before acting.**
+**重要提示：**每个角色在执行任务前必须阅读相应的操作指南文件。
 
-| Role | Instructions |
+| 角色 | 需要阅读的文档 |
 |------|-------------|
-| PRD Creation | Read {baseDir}/references/create-prd.md |
-| PRP Generation | Read {baseDir}/references/generate-prp.md |
-| Codebase Analysis | Read {baseDir}/references/codebase-analysis.md |
-| Executor | Read {baseDir}/references/piv-executor.md + {baseDir}/references/execute-prp.md |
-| Validator | Read {baseDir}/references/piv-validator.md |
-| Debugger | Read {baseDir}/references/piv-debugger.md |
+| PRD 创建 | 阅读 {baseDir}/references/create-prd.md |
+| PRP 生成 | 阅读 {baseDir}/references/generate-prp.md |
+| 代码库分析 | 阅读 {baseDir}/references/codebase-analysis.md |
+| 执行器 | 阅读 {baseDir}/references/piv-executor.md + {baseDir}/references/execute-prp.md |
+| 验证器 | 阅读 {baseDir}/references/piv-validator.md |
+| 调试器 | 阅读 {baseDir}/references/piv-debugger.md |
 
-**Prerequisite:** A PRD must exist. If none found, tell user to create one first.
-
----
-
-## Orchestrator Philosophy
-
-> "Context budget: ~15% orchestrator, 100% fresh per subagent"
-
-You are the **orchestrator**. You stay lean and manage workflow. You DO NOT execute PRPs yourself - you spawn specialized sub-agents with fresh context for each task.
-
-**Sub-agent spawning:** Use the `sessions_spawn` tool to create fresh sub-agent sessions. Each spawn is non-blocking — you'll receive results via an announce step. Wait for each agent's results before proceeding to the next step.
+**前提条件：**必须存在 PRD 文件。如果找不到 PRD 文件，请提示用户先创建一个。
 
 ---
 
-## Project Setup (piv-init)
+## Orchestrator 的工作原理
 
-If the project doesn't have PIV directories, create them:
+> “上下文预算分配：约 15% 用于 Orchestrator，95% 用于每个子代理的任务。”
+
+您是 **Orchestrator**，负责协调整个工作流程。您不会直接执行 PRP 任务，而是为每个任务创建具有最新上下文的专用子代理。
+
+**子代理的创建：**使用 `sessions_spawn` 工具来创建新的子代理会话。每个子代理的创建都是非阻塞的——您会通过 `announce` 步骤收到结果。在继续执行下一步之前，请等待所有子代理完成它们的任务。
+
+---
+
+## 项目设置（piv-init）
+
+如果项目中没有 PIV 目录，请进行以下操作：
 ```bash
 mkdir -p PROJECT_PATH/PRDs PROJECT_PATH/PRPs/templates PROJECT_PATH/PRPs/planning
 ```
-Copy `{baseDir}/assets/prp_base.md` to `PROJECT_PATH/PRPs/templates/prp_base.md` if it doesn't exist.
-Create `PROJECT_PATH/WORKFLOW.md` from `{baseDir}/assets/workflow-template.md` if it doesn't exist.
+- 如果 `PROJECT_PATH/PRPs/templates/prp_base.md` 不存在，请将其从 `{baseDir}/assets/prp_base.md` 复制到该目录。
+- 如果 `PROJECT_PATH/WORKFLOW.md` 不存在，请使用 `{baseDir}/assets/workflow-template.md` 创建该文件。
 
 ---
 
-## Phase Workflow
+## 各阶段的工作流程
 
-For each phase from START_PHASE to END_PHASE:
+从 `START_phase` 到 `END_phase`，每个阶段的工作流程如下：
 
-### Step 1: Check/Generate PRP
+### 第 1 步：检查/生成 PRP
 
-Check for existing PRP:
+检查是否存在 PRP 文件：
 ```bash
 ls -la PROJECT_PATH/PRPs/ 2>/dev/null | grep -i "phase.*N\|pN\|p-N"
 ```
 
-If no PRP exists, spawn a **fresh sub-agent** using `sessions_spawn` to do both codebase analysis and PRP generation in sequence:
-
+如果不存在 PRP 文件，使用 `sessions_spawn` 创建一个新的子代理，依次执行代码库分析和 PRP 生成任务：
 ```
 RESEARCH & PRP GENERATION MISSION - Phase {N}
 ==============================================
@@ -120,10 +118,9 @@ Output to: {PROJECT_PATH}/PRPs/PRP-{PRD_NAME}-phase-{N}.md
 Do BOTH steps yourself. DO NOT spawn sub-agents.
 ```
 
-### Step 2: Spawn EXECUTOR
+### 第 2 步：创建执行器（Executor）
 
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+使用 `sessions_spawn` 创建一个新的子代理：
 ```
 EXECUTOR MISSION - Phase {N}
 ============================
@@ -138,10 +135,9 @@ Follow: Load PRP → Plan Thoroughly → Execute → Validate → Verify
 Output EXECUTION SUMMARY with Status, Files, Tests, Issues.
 ```
 
-### Step 3: Spawn VALIDATOR
+### 第 3 步：创建验证器（Validator）
 
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+使用 `sessions_spawn` 创建一个新的子代理：
 ```
 VALIDATOR MISSION - Phase {N}
 =============================
@@ -156,12 +152,14 @@ Verify ALL requirements independently.
 Output VERIFICATION REPORT with Grade, Checks, Gaps.
 ```
 
-**Process result:** PASS → commit | GAPS_FOUND → debugger | HUMAN_NEEDED → ask user
+**结果处理：**
+- 如果验证通过（PASS），则提交代码；  
+- 如果发现错误（GAPS_FOUND），则转交给调试器（debugger）；  
+- 如果需要人工干预（HUMAN_NEEDED），则请求用户协助。
 
-### Step 4: Debug Loop (Max 3 iterations)
+### 第 4 步：调试循环（最多尝试 3 次）
 
-Spawn a fresh sub-agent using `sessions_spawn`:
-
+使用 `sessions_spawn` 创建一个新的子代理：
 ```
 DEBUGGER MISSION - Phase {N} - Iteration {I}
 ============================================
@@ -177,42 +175,42 @@ Fix root causes, not symptoms. Run tests after each fix.
 Output FIX REPORT with Status, Fixes Applied, Test Results.
 ```
 
-After debugger: re-validate → PASS (commit) or loop (max 3) or escalate.
+在调试器完成处理后：
+- 如果验证通过（PASS），则提交代码；  
+- 如果仍然存在问题（循环最多 3 次），则请求用户进一步协助；  
+- 如果问题仍然无法解决，则需要向上级报告。
 
-### Step 5: Smart Commit
+### 第 5 步：智能提交（Smart Commit）
 
-```bash
-cd PROJECT_PATH && git status && git diff --stat
-```
+使用 `Built with FTW (First Try Works)` 提交代码：https://github.com/SmokeAlot420/ftw。
 
-Create semantic commit with `Built with FTW (First Try Works) - https://github.com/SmokeAlot420/ftw`.
+### 第 6 步：更新 WORKFLOW.md
 
-### Step 6: Update WORKFLOW.md
+标记当前阶段已完成，并记录验证结果。
 
-Mark phase complete, note validation results.
+### 第 7 步：进入下一个阶段
 
-### Step 7: Next Phase
-
-Loop back to Step 1 for next phase.
-
----
-
-## Error Handling
-
-- **No PRD**: Tell user to create one first
-- **Executor BLOCKED**: Ask user for guidance
-- **Validator HUMAN_NEEDED**: Ask user for guidance
-- **3 debug cycles exhausted**: Escalate to user
-
-### Sub-Agent Timeout/Failure
-When a sub-agent times out or fails:
-1. Check for partial work (files created, tests written)
-2. Retry once with a simplified, shorter prompt
-3. If retry fails, escalate to user with what was accomplished
+返回到第 1 步，开始下一个阶段的处理。
 
 ---
 
-## Completion
+## 错误处理
+
+- **没有 PRD 文件**：提示用户先创建一个 PRD 文件。
+- **执行器执行失败**：请求用户提供帮助。
+- **验证器需要人工干预**：请求用户提供帮助。
+- **调试循环尝试 3 次仍未解决问题**：向上级报告。
+
+### 子代理超时/失败
+
+当子代理超时或失败时：
+1. 检查子代理是否完成了部分工作（例如是否生成了文件、编写了测试用例）。
+2. 使用简化后的提示重新尝试一次。
+3. 如果重试仍然失败，将已完成的操作情况上报给用户。
+
+---
+
+## 任务完成
 
 ```
 ## PIV RALPH COMPLETE

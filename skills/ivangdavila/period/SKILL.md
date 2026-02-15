@@ -1,48 +1,48 @@
 ---
 name: "Period Tracker"
-description: "Privacy-first menstrual cycle tracking. Auto-learns periods, symptoms, and patterns."
+description: "以隐私保护为核心的女性生理周期追踪工具。能够自动学习用户的月经周期、相关症状及生理规律。"
 ---
 
-## Auto-Adaptive Cycle Tracking
+## 自适应周期追踪功能
 
-This skill auto-evolves. Works for regular cycles, irregular cycles, PCOS, and perimenopause.
+该功能会自动进行优化和升级，适用于规律性周期、不规律性周期、多囊卵巢综合征（PCOS）以及围绝经期的女性。
 
-**Rules:**
-- Only log when she explicitly shares — never infer from unrelated chat
-- Start simple: "When did your last period start?" — add complexity only if she wants
-- Match her energy — proactive users get questions, others just get logging
-- NEVER assume 28-day cycles — her normal is her normal
-- NEVER attribute mood to cycle unless she does first
-- Missed period: respond only if she raises it, never speculate
-- Check `symptoms.md` for trackable data, `privacy.md` for security
+**使用规则：**
+- 仅在她主动分享信息时才进行记录，切勿从无关的聊天内容中推断周期信息。
+- 从简单的问题开始询问，例如：“你上次月经是什么时候开始的？”；只有在她愿意提供更多信息时，再逐步增加问题的复杂性。
+- 根据她的状态和精力情况来调整追踪方式：活跃的用户会收到更多问题，而其他用户则只需简单记录周期数据。
+- **切勿**假设她的周期一定是28天周期的——每个人的周期长度都是独特的。
+- **切勿**将情绪变化归因于周期变化，除非她自己首先提到这一点。
+- 如果她没有提到月经延迟的情况，切勿自行猜测或提醒她；只有当她主动提及时才进行回应。
+- 请查阅 `symptoms.md` 文件以获取可追踪的症状数据，并参考 `privacy.md` 文件了解数据隐私设置。
+
+---
+
+### 数据来源
+<!-- 周期数据的来源。格式：`source: 什么` -->
+
+### 周期规律
+<!-- 她的周期规律（非默认假设）。格式：`pattern` -->
+- 例如：周期长度为26-34天，月经持续4-5天；周期不规律或难以预测。
+
+### 常见症状
+<!-- 她记录的症状。格式：`symptom: 时间` -->
+- 例如：经痛（通常在月经第1-2天出现），疲劳（多发生在黄体期），潮热（症状出现时间不定）。
+
+### 影响周期的因素
+<!-- 影响她周期的因素。格式：`factor: effect` -->
+- 例如：压力、饮食、睡眠、运动等。
+
+### 数据追踪偏好
+<!-- 她希望的追踪方式。格式：`preference` -->
+- 例如：选择简单模式、不接收额外问题、详细记录周期数据、重点关注生育相关信息等。
+
+### 注意事项
+- **特殊信号**：如果她的周期出现异常变化（如突然改变）、出现新的症状或疼痛严重到影响日常生活，请及时联系医生。
+- **数据安全**：所有数据均存储在本地并加密处理，绝不会被分享；她可以随时自行删除数据。
 
 ---
 
-### Sources
-<!-- Where cycle data comes from. Format: "source: what" -->
+*请注意：每个人的周期长度都可能大不相同（对于某些人来说，21-60天都是正常的周期范围）。多囊卵巢综合征、围绝经期或激素失衡可能导致周期不规律。如果出现以下情况，请务必咨询医生：周期突然发生剧烈变化、疼痛严重或存在其他健康疑虑。*
 
-### Schedule
-<!-- Her patterns (not assumed). Format: "pattern" -->
-<!-- Examples: cycles 26-34 days, period 4-5 days, irregular/unpredictable -->
-
-### Symptoms
-<!-- What she tracks. Format: "symptom: when" -->
-<!-- Examples: cramps: days 1-2, fatigue: luteal, hot flashes: variable -->
-
-### Correlations
-<!-- What affects her cycle. Format: "factor: effect" -->
-
-### Preferences
-<!-- How she wants to track. Format: "preference" -->
-<!-- Examples: simple mode, no questions, detailed tracking, fertility focus -->
-
-### Flags
-<!-- Unusual for HER (not textbook). Format: "signal" -->
-<!-- Examples: sudden cycle change, new symptoms, pain disrupting life -->
-
----
-*Empty sections = no data yet. Ask simply, observe, fill.*
-
-**Important:** Cycles vary hugely (21-60+ days can be normal for some). PCOS, perimenopause, and hormonal conditions mean irregular is not broken. See doctor for: sudden changes from YOUR normal, severe pain, or concerns.
-
-**Privacy:** Local, encrypted, never shared. She controls everything. Delete anytime.
+**隐私声明：** 所有数据均严格保密，仅由她本人控制，可随时删除。

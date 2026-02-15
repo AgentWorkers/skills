@@ -1,16 +1,16 @@
 ---
 name: Games
-description: Build a personal gaming system for video games, board games, party games, and family activities.
+description: 构建一个个人游戏系统，用于玩电子游戏、棋盘游戏、聚会游戏以及进行家庭活动。
 metadata: {"clawdbot":{"emoji":"🎮","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User mentions game → offer to track it
-- User asks what to play → check context first
-- User finishes/plays game → help log thoughts
-- Create `~/games/` as workspace
+## 核心行为
+- 当用户提到某款游戏时，主动提出为其记录游戏信息。
+- 当用户询问想玩什么游戏时，首先了解游戏的相关背景信息。
+- 当用户完成或玩完游戏后，帮助用户记录游戏体验和感受。
+- 创建一个名为 `~/games/` 的文件夹作为游戏资料存储空间。
 
-## File Structure
+## 文件结构
 ```
 ~/games/
 ├── video/
@@ -28,7 +28,7 @@ metadata: {"clawdbot":{"emoji":"🎮","os":["linux","darwin","win32"]}}
 └── game-nights.md
 ```
 
-## Video Games
+## 视频游戏
 ```markdown
 # video/playing.md
 ## Elden Ring
@@ -44,7 +44,7 @@ Where I Left Off: Just beat Margit
 - Disco Elysium — wait for 50% off
 ```
 
-## Board Games Collection
+## 桌游集合
 ```markdown
 # board/collection.md
 ## Own
@@ -64,7 +64,7 @@ Where I Left Off: Just beat Margit
 - Deception: Murder in Hong Kong
 ```
 
-## Party Games
+## 团体游戏
 ```markdown
 # party/ideas.md
 ## No Equipment Needed
@@ -83,7 +83,7 @@ Where I Left Off: Just beat Margit
 - Beer Pong
 ```
 
-## Kids Activities
+## 儿童活动
 ```markdown
 # kids/activities.md
 ## By Age
@@ -104,7 +104,7 @@ Where I Left Off: Just beat Margit
 - Minecraft together
 ```
 
-## Game Nights Log
+## 游戏之夜记录
 ```markdown
 # game-nights.md
 ## Feb 10, 2024
@@ -117,7 +117,7 @@ Notes: Need 5-player game next time
 Codenames teams were balanced
 ```
 
-## Favorites
+## 最爱游戏
 ```markdown
 # favorites.md
 ## Video Games
@@ -135,33 +135,32 @@ Codenames teams were balanced
 - Uno — easy, quick
 ```
 
-## What To Surface
-- "You have Catan, good for that group size"
-- "Last game night you wanted a 5-player game"
-- "Similar to board games you rated highly"
-- "Age-appropriate for kids visiting"
+## 建议内容
+- “你有《卡坦岛》这款游戏，非常适合这个团队规模。”
+- “上次游戏之夜，大家希望玩一款5人游戏。”
+- “推荐一些你评价很高的、类似桌游的游戏。”
+- “选择适合儿童参与的游戏。”
 
-## Recommendations
-When user asks what to play:
-- Ask context: solo, date, group, kids?
-- Check player count
-- Match complexity to audience
-- Consider time available
-- Check what they own first
+## 推荐策略
+当用户询问想玩什么游戏时：
+- 询问游戏类型（单人游戏、多人游戏、适合特定日期或群体的游戏）以及是否有儿童参与。
+- 根据玩家人数选择合适的游戏。
+- 考虑玩家的游戏经验及游戏难度。
+- 查看用户已拥有的游戏，以便推荐适合他们的游戏。
 
-## What To Track
-- Video: platform, hours, progress, rating
-- Board: player count, complexity, play time
-- Both: who enjoys it, when it works best
+## 需要记录的信息
+- 视频游戏：平台、游戏时长、游戏进度、用户评分。
+- 桌游：参与玩家人数、游戏难度、游戏时长。
+- 对于同时涉及视频游戏和桌游的情况，还需记录哪些玩家喜欢这些游戏，以及它们在什么情况下最适合玩。
 
-## Progressive Enhancement
-- Start: list what you own (video + board)
-- Add favorites with context
-- Log game nights for patterns
-- Build party/kids repertoire
+## 持续改进的步骤
+- 初始阶段：列出用户已拥有的游戏（视频游戏和桌游）。
+- 添加用户喜欢的游戏，并附上相关背景信息。
+- 记录每次游戏之夜的详细情况，以便发现游戏使用规律。
+- 逐步丰富适合团体或儿童的游戏推荐库。
 
-## What NOT To Do
-- Suggest games they don't own without asking
-- Recommend complex games for casual group
-- Forget player count constraints
-- Ignore age appropriateness for kids
+## 不应做的事情
+- 未经询问就推荐用户没有的游戏。
+- 为休闲团队推荐难度过高的游戏。
+- 忽视玩家人数限制。
+- 忽视游戏的年龄适宜性。

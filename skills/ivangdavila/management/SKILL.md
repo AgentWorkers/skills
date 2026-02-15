@@ -1,88 +1,88 @@
 ---
 name: Management
-description: Management principles, team leadership, and organizational effectiveness.
+description: 管理原则、团队领导力以及组织效率。
 metadata: {"clawdbot":{"emoji":"👔","os":["linux","darwin","win32"]}}
 ---
 
-## For Individual Contributors: Navigating Upward
+## 对于个人贡献者：向上沟通的技巧
 
-- Decode manager decisions by explaining organizational pressures, budget constraints, and competing priorities that shape choices
-- Warn when a complaint sounds like venting vs a genuine issue requiring action, and suggest appropriate next steps for each
-- Check if the user has considered their manager's perspective before drafting difficult conversations
-- Prepare promotion cases by identifying gaps between current role and target level with concrete evidence-gathering strategies
-- Coach on presenting problems with proposed solutions rather than just escalating issues
-- Flag when organizational politics may be at play and suggest navigation strategies
-- Translate performance review language by explaining what common phrases signal about standing and growth areas
-- Assess escalation decisions by weighing visibility, impact, and relationship costs before recommending going over a manager's head
-- Suggest documentation habits that protect the individual while maintaining professionalism
+- 通过解释组织压力、预算限制以及影响决策的各种优先事项来解读经理的决定；
+- 当某人的投诉听起来只是发泄情绪而非真正需要解决的问题时，要予以提醒，并为每种情况提出适当的应对策略；
+- 在准备与经理的棘手对话之前，先思考一下经理的立场；
+- 通过识别当前职位与目标职位之间的差距，并制定具体的证据收集策略，来为晋升准备材料；
+- 教导如何提出问题并附上解决方案，而不仅仅是简单地上报问题；
+- 当发现组织内部政治因素在起作用时，要指出这一点并建议相应的应对策略；
+- 通过解释绩效评估中的常用术语，帮助理解这些术语所反映的个人表现和成长方向；
+- 在建议越过经理直接向上汇报之前，要权衡问题的可见性、影响程度以及可能带来的关系风险；
+- 建议采用既能保护个人利益又能保持专业性的文档记录方式。
 
-## For Students: Academic Foundations
+## 对于学生：学术基础
 
-- Apply the appropriate framework (Porter, SWOT, McKinsey 7S, PESTEL, BCG) based on analysis type and explain why that framework fits
-- Structure case study responses using Issue-Analysis-Recommendation format that professors expect
-- Distinguish between what a framework prescribes in theory versus how managers adapt it in messy real-world contexts
-- Cite original thinkers (Drucker on objectives, Mintzberg on strategy as craft, Kotter on change) to demonstrate academic rigor
-- Warn when analysis is too generic or could apply to any company without specific evidence
-- Check that recommendations are actionable with clear ownership, timeline, and resource implications
-- Challenge assumptions in case data and identify what information is missing before jumping to conclusions
-- Connect concepts across courses since integration distinguishes strong MBA work
-- Remind that the "right answer" in management is often "it depends" on context, industry, culture, and timing
+- 根据分析类型选择合适的分析框架（如波特五力模型、SWOT分析、麦肯锡7S模型、PESTEL分析或BCG分析模型），并解释选择该框架的原因；
+- 按照教授期望的“问题-分析-建议”格式来组织案例研究的回答；
+- 区分理论框架中的规定内容与管理者在实际情况中的灵活应用；
+- 引用原始研究者的观点（如德鲁克关于目标的观点、明茨伯格关于战略的观点、科特关于变革的观点），以体现学术严谨性；
+- 当分析过于泛化或没有具体证据支持时，要提出警告；
+- 确保提出的建议具有可操作性，包括明确的责任人、时间表和资源需求；
+- 在得出结论前，要质疑假设并检查数据是否完整；
+- 跨课程关联相关概念，因为这种整合能力是优秀MBA学生的标志；
+- 提醒学生：在管理领域，“正确答案”往往取决于具体的情境、行业、文化和时机。
 
-## For Practicing Managers: Daily Leadership
+## 对于在职管理者：日常领导力
 
-- Prepare 1:1 agendas with specific talking points based on recent team activity and career development themes
-- Flag when feedback is overdue for any team member and draft specific behavior-based talking points
-- Check PIP documentation for legal soundness: clear metrics, reasonable timelines, evidence of support, no discriminatory language
-- Generate behavioral interview questions tailored to the role and warn against illegal questions
-- Audit delegation decisions: verify interesting work is distributed, identify growth opportunities, flag single points of failure
-- Detect early signs of team conflict from described dynamics and suggest mediation approaches
-- Draft upward communication with executive-friendly framing and clear asks
-- Warn about remote/hybrid fairness issues: proximity bias, unequal visibility, meeting time zone inequity
-- Check any termination or discipline plan against retaliation patterns relative to complaints or protected activities
-- Document everything: prompt recording of verbal agreements, meeting summaries, and paper trails for performance issues
+- 根据团队最近的活动和职业发展主题，准备一对一沟通的议程，明确讨论要点；
+- 当发现任何团队成员的反馈延迟时，要及时提醒并准备具体的沟通内容；
+- 检查绩效改进计划（PIP）的文档是否合法：指标是否明确、时间表是否合理、是否有支持证据、语言是否公正；
+- 制定适合该职位的行为面试问题，并避免提出违法的问题；
+- 审查授权决策，确保重要工作得到分配，识别员工的发展机会，指出潜在的失败点；
+- 从团队互动中察觉冲突的早期迹象，并提出调解建议；
+- 以易于高层理解的方式撰写向上沟通的文件，明确沟通内容；
+- 警惕远程或混合办公模式可能带来的公平性问题，如距离偏见、可见度不平等或时区差异；
+- 在制定解雇或纪律处分计划时，要考虑到可能引发的报复行为；
+- 记录所有重要信息：包括口头协议的录音、会议总结以及与绩效问题相关的书面记录。
 
-## For Researchers: Methodological Rigor
+## 对于研究人员：方法论的严谨性
 
-- Verify sample sizes meet statistical power requirements for detecting meaningful effect sizes (typically d=0.20-0.50)
-- Flag common method variance risks when all variables come from single-source self-report surveys
-- Distinguish between theory-building papers (suited for AMR, inductive) and theory-testing papers (suited for AMJ, SMJ, deductive)
-- Warn about endogeneity threats in cross-sectional designs and recommend instrumental variables or panel data approaches
-- Check that qualitative studies follow rigorous protocols: theoretical sampling, coding reliability, saturation evidence
-- Caution against HARKing by encouraging pre-registration and transparent reporting of exploratory vs confirmatory analyses
-- Highlight when published effect sizes may be inflated due to publication bias
-- Question construct validity when using adapted scales without re-validation
-- Push for boundary conditions and contextual moderators rather than universal claims
-- Encourage bridging the relevance-rigor gap by articulating practical implications practitioners can implement
+- 确保样本量满足检测显著效应大小（通常为d=0.20-0.50）的统计要求；
+- 当所有数据都来自同一来源的自我报告调查时，要指出可能的方法学偏差风险；
+- 区分用于理论构建的论文（适合《应用管理研究》期刊，采用归纳方法）和用于理论验证的论文（适合《应用管理期刊》或《管理科学期刊》，采用演绎方法）；
+- 警惕横断面设计中的内生性问题，并建议使用工具变量或面板数据分析方法；
+- 确保定性研究遵循严格的科研规范：理论抽样、编码的可靠性以及数据的饱和度验证；
+- 鼓励研究人员在研究前进行预先注册，并透明地报告探索性分析与验证性分析的结果；
+- 强调已发表的研究结果可能因发表偏倚而被夸大的风险；
+- 在使用未经重新验证的量表时，要质疑量表的构念有效性；
+- 倡导提出具有实际意义的结论，而不是普遍适用的结论；
+- 鼓励研究人员在研究中结合实践意义，以促进知识的实际应用。
 
-## For Educators: Teaching Excellence
+## 对于教育工作者：教学卓越
 
-- Scaffold case discussions with protagonist-centered questions before revealing outcomes to preserve discovery learning
-- Check whether learning objectives target judgment and decision-making under ambiguity, not just framework recall
-- Warn when assessment plans rely solely on exams and recommend simulations, live cases, or reflection journals
-- Distinguish executive learner needs (validate experience, challenge assumptions) from undergraduate needs (build foundational models)
-- Surface the theory-practice gap explicitly and design action learning where students apply concepts to real organizations
-- Flag common student misconceptions: that management is about control, that analysis guarantees outcomes, that ethics is a separate module
-- Recommend debriefing structures after experiential exercises since learning happens in reflection
-- Verify ethics cases appear throughout curriculum, not isolated in one unit
-- Encourage peer learning designs: study groups, role-plays, peer feedback
+- 在展示研究结果之前，先提出以参与者为中心的问题，以促进学生的发现式学习；
+- 确保学习目标不仅关注对框架的记忆，还关注在不确定性环境下的判断与决策能力；
+- 当评估计划仅依赖考试时，要提出警告，并建议采用模拟练习、真实案例分析或反思日志等方式；
+- 区分高管学习者的需求（验证经验、挑战现有假设）与本科生的需求（建立基础知识）；
+- 明确理论实践之间的差距，并设计让学生将概念应用于实际组织的行动学习活动；
+- 指出学生常见的误解，例如认为管理就是控制、分析能保证结果、或者认为伦理学是独立的学习内容；
+- 建议在体验式学习后进行总结讨论，因为学习往往发生在反思过程中；
+- 确保伦理学内容贯穿整个课程，而不仅仅是某个单元的内容；
+- 鼓励同伴学习的方式，如学习小组、角色扮演和同伴反馈。
 
-## For HR and OD Professionals: Organizational Systems
+## 对于人力资源和组织发展专业人士：组织系统
 
-- Assess leadership competency gaps before recommending development interventions
-- Validate succession planning against actual role requirements, not tenure or favoritism
-- Structure 360 feedback to protect psychological safety and warn when sample sizes compromise anonymity
-- Apply change management frameworks (Kotter, ADKAR, Bridges) diagnostically to identify which phase is stalling
-- Distinguish between culture symptoms and root causes since turnover often traces to structural misalignment
-- Clarify coaching vs mentoring vs managing boundaries in every developmental context
-- Evaluate organizational design changes for unintended consequences from spans of control and matrix reporting
-- Document compliance-sensitive conversations with precision assuming legal review
-- Warn when investigations require external counsel or HR escalation to avoid procedural contamination
-- Flag when restructuring rationale masks performance management avoidance
+- 在建议发展干预措施之前，先评估领导能力的不足之处；
+- 根据实际职位要求而非任职年限或个人偏好来评估继任计划；
+- 设计360度反馈机制，同时保护员工的心理安全，并在样本量可能影响匿名性时予以提醒；
+- 运用变革管理框架（如科特的变革模型、ADKAR模型或Bridges模型）来诊断问题所在的发展阶段；
+- 区分组织文化的表面现象和根本原因，因为人员流动往往源于结构上的不匹配；
+- 在每种发展情境中明确辅导、指导和管理的界限；
+- 评估组织设计变更可能带来的意外后果，尤其是涉及控制范围和矩阵式汇报结构时；
+- 在涉及合规性敏感的讨论中，要详细记录所有内容，以备法律审查；
+- 当调查需要外部咨询或人力资源部门的介入时，要提前预警，以避免程序上的失误；
+- 在进行结构调整时，要警惕这种调整可能掩盖了绩效管理的问题。
 
-## Always
+## 始终牢记：
 
-- Acknowledge that management is contextual: industry, culture, company stage, and team composition all matter
-- Distinguish between leadership (vision, inspiration, change) and management (execution, stability, optimization)
-- Recommend HR or legal consultation for terminations, harassment claims, accommodations, and discrimination concerns
-- Avoid universal prescriptions since effective management adapts to situation and people
-- Surface ethical dimensions when decisions affect livelihoods, careers, or organizational trust
+- 管理工作具有很强的情境性：行业背景、企业文化、公司发展阶段以及团队构成都会对管理效果产生影响；
+- 区分领导力（愿景、激励、推动变革）与管理职能（执行、稳定、优化）的不同；
+- 在处理解雇、骚扰投诉、特殊安排或歧视问题时，建议寻求人力资源或法律方面的专业咨询；
+- 避免提供普遍适用的解决方案，因为有效的管理需要根据具体情况和人员特点进行调整；
+- 当决策涉及员工的生计、职业发展或组织信任时，要充分考虑伦理因素。

@@ -1,19 +1,19 @@
-# Butler - AI Agent Treasury & Orchestration Skill
+# Butler - 人工智能代理的财务管理与任务编排技能
 
-## Overview
+## 概述
 
-**Butler** is an OpenClaw skill that transforms AI agents into autonomous economic entities. It manages multi-provider token budgets, spawns sub-agents for complex tasks, and automatically handles token purchases when budgets deplete.
+**Butler** 是一个基于 OpenClaw 的技能，它能够将人工智能代理转变为自主的经济实体。该技能负责管理多提供者的代币预算，为复杂任务生成子代理，并在预算耗尽时自动处理代币购买。
 
-Think of Butler as your **AI Agent CFO** that:
-- 💰 Tracks token budgets across 8 API keys and 6 providers
-- 🚀 Spawns sub-agents with automatic budget allocation
-- 🔄 Rotates keys when approaching limits
-- 📊 Aggregates results from parallel workers
-- 🛡️ Integrates with Code Reviewer for security
+可以将 Butler 视为你的 **人工智能代理的首席财务官**，它具备以下功能：
+- 💰 实时监控 8 个 API 密钥和 6 个提供者的代币使用情况
+- 🚀 根据预算自动分配资源来生成子代理
+- 🔄 在密钥使用接近上限时自动更换密钥
+- 📊 整合来自并行任务的执行结果
+- 🛡️ 与 Code Reviewer 集成以确保安全性
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 npm install butler
@@ -21,7 +21,7 @@ npm install butler
 yarn add butler
 ```
 
-### Basic Usage
+### 基本使用
 
 ```typescript
 import { Butler } from 'butler';
@@ -46,11 +46,11 @@ const status = butler.getStatus();
 console.log(`🎯 Status:`, status);
 ```
 
-## Features
+## 功能
 
-### 1. Token Management
+### 1. 代币管理
 
-Butler tracks 8 API keys across 6 providers with real-time usage monitoring:
+Butler 可实时监控 6 个提供者下的 8 个 API 密钥的代币使用情况：
 
 ```typescript
 // Get available keys
@@ -71,19 +71,19 @@ const status = butler.monitorUsage();
 // { keys_by_provider: { nvidia: {...}, anthropic: {...}, ... } }
 ```
 
-**Supported Providers:**
-- **Nvidia** (3 keys, 5M tokens/day each) - Free tier ✅
-- **Groq** (1 key, 10M tokens/day) - Free tier ✅
-- **Anthropic** (1 key, 1M tokens/day) - Current model
-- **OpenAI** (1 key, 500k tokens/day)
-- **OpenRouter** (1 key, 2M tokens/day)
-- **Sokosumi** (1 key) - Custom/research
+**支持的提供者：**
+- **Nvidia**（3 个密钥，每天 500 万代币）- 免费 tier ✅
+- **Groq**（1 个密钥，每天 1000 万代币）- 免费 tier ✅
+- **Anthropic**（1 个密钥，每天 100 万代币）- 当前支持的模型
+- **OpenAI**（1 个密钥，每天 50 万代币）
+- **OpenRouter**（1 个密钥，每天 200 万代币）
+- **Sokosumi**（1 个密钥）- 用于定制或研究用途
 
-**Total Capacity:** 28.5M tokens/day
+**总容量：** 每天 2850 万代币
 
-### 2. Agent Orchestration
+### 2. 代理任务编排
 
-Spawn multiple sub-agents with automatic task decomposition and budget allocation:
+能够生成多个子代理，并自动分配任务和预算：
 
 ```typescript
 // Simple spawn (auto-decompose)
@@ -119,7 +119,7 @@ results.forEach(result => {
 });
 ```
 
-**Task Decomposition Algorithm:**
+**任务分解算法：**
 ```
 Input: "Research AI frameworks, analyze patterns, write report"
          ↓
@@ -137,9 +137,9 @@ Input: "Research AI frameworks, analyze patterns, write report"
 5. Result aggregation
 ```
 
-### 3. Budget Allocation
+### 3. 预算分配
 
-Automatic budget allocation based on task complexity and priority:
+根据任务的复杂性和优先级自动分配预算：
 
 ```typescript
 // High-priority task gets more budget
@@ -162,15 +162,15 @@ const task = {
 // Allocation: { 'low-priority-task': 33k, 'critical-task': 67k }
 ```
 
-**Priority Multipliers:**
-- `low`: 0.5x (50% of estimated)
-- `medium`: 1.0x (100% of estimated)
-- `high`: 1.5x (150% of estimated)
-- `critical`: 2.0x (200% of estimated)
+**优先级系数：**
+- `low`：0.5 倍（预计需求的 50%）
+- `medium`：1.0 倍（预计需求的 100%）
+- `high`：1.5 倍（预计需求的 150%）
+- `critical`：2.0 倍（预计需求的 200%）
 
-### 4. Automatic Rotation
+### 4. 自动轮换密钥
 
-Keys rotate at 75% threshold to prevent exhaustion:
+当密钥使用率达到 75% 的阈值时，系统会自动更换密钥，以防止资源耗尽：
 
 ```typescript
 // Automatic tracking and alerts
@@ -185,9 +185,9 @@ const status = butler.getStatus();
 butler.rotateKey('session-id-123', 'anthropic-1');
 ```
 
-### 5. Result Aggregation
+### 5. 结果聚合
 
-Automatic aggregation of results from parallel agents:
+自动汇总来自各个代理的任务执行结果：
 
 ```typescript
 const results = await butler.spawnAgent('ComplexTask', 'task description', 100000);
@@ -211,9 +211,9 @@ const aggregated = butler.aggregateTaskResults(results[0].taskId);
 // }
 ```
 
-## Examples
+## 示例
 
-### Example 1: Token Allocation for Complex Task
+### 示例 1：为复杂任务分配代币
 
 ```typescript
 import { Butler } from 'butler';
@@ -253,7 +253,7 @@ if (allocation.success) {
 }
 ```
 
-### Example 2: Parallel Agent Execution
+### 示例 2：并行执行代理任务
 
 ```typescript
 import { Butler } from 'butler';
@@ -292,7 +292,7 @@ analyzeDataset().then(result => {
 });
 ```
 
-### Example 3: Error Handling & Retries
+### 示例 3：错误处理与重试
 
 ```typescript
 import { Butler } from 'butler';
@@ -337,7 +337,7 @@ async function reliableProcessing() {
 reliableProcessing();
 ```
 
-### Example 4: Monitoring Token Usage
+### 示例 4：监控代币使用情况
 
 ```typescript
 import { Butler } from 'butler';
@@ -375,17 +375,17 @@ available.forEach(key => {
 });
 ```
 
-## API Reference
+## API 参考
 
-### Butler Class
+### Butler 类
 
 #### `constructor(keysPath?: string, statePath?: string)`
-Initialize Butler with optional custom paths for API keys and state.
+使用可选的自定义路径来初始化 Butler，指定 API 密钥和状态文件的路径。
 
 #### `allocateTokens(prdPath: string, preferredProvider?: string): AllocationResult`
-Analyze PRD and recommend optimal token allocation.
+分析项目需求（PRD）并推荐最佳的代币分配方案。
 
-**Returns:**
+**返回值：**
 ```typescript
 {
   success: boolean;
@@ -401,9 +401,9 @@ Analyze PRD and recommend optimal token allocation.
 ```
 
 #### `spawnAgent(name: string, description: string, budget: number, options?: AgentOptions): Promise<TaskResult[]>`
-Spawn sub-agents for task execution.
+生成子代理以执行任务。
 
-**Options:**
+**参数：**
 ```typescript
 {
   maxConcurrent?: number;    // Default: 3
@@ -413,29 +413,29 @@ Spawn sub-agents for task execution.
 }
 ```
 
-**Returns:** Array of task results with status, tokens used, and errors.
+**返回值：** 包含任务结果、使用的代币数量以及错误信息的数组。
 
 #### `getStatus(): Status`
-Get comprehensive system status.
+获取系统的整体运行状态。
 
 #### `getAvailableKeys(): APIKey[]`
-List all available API keys.
+列出所有可用的 API 密钥。
 
 #### `monitorUsage(): MonitorStatus`
-Get detailed token usage by provider.
+获取按提供者划分的详细代币使用情况。
 
 #### `rotateKey(sessionId: string, newKeyId?: string): RotationResult`
-Manually rotate to different API key.
+手动更换 API 密钥。
 
 #### `aggregateTaskResults(taskId: string): AggregatedResult`
-Aggregate results from completed tasks.
+汇总已完成任务的执行结果。
 
 #### `retryFailedTasks(taskId: string): Promise<TaskResult[]>`
-Retry failed sub-tasks.
+重试失败的任务。
 
-## Architecture
+## 架构
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed system design.
+详细系统设计请参阅 [ARCHITECTURE.md](./ARCHITECTURE.md)。
 
 ```
 ┌─────────────────────────────────────┐
@@ -469,9 +469,9 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed system design.
 └─────────────────────────────────────┘
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 # Optional - defaults to ~/.openclaw/workspace/api-keys.json
@@ -488,9 +488,9 @@ AUTO_BUY_THRESHOLD=50    # USDC
 AUTO_BUY_AMOUNT=200      # USDC
 ```
 
-## Testing
+## 测试
 
-Run full test suite:
+运行完整的测试套件：
 
 ```bash
 npm test                  # Run all tests
@@ -498,81 +498,81 @@ npm run test:watch      # Watch mode
 npm run test:coverage   # Coverage report
 ```
 
-**Test Coverage:**
-- ✅ 45+ test cases
-- ✅ TokenManager: 15+ tests
-- ✅ AgentOrchestrator: 20+ tests
-- ✅ Butler integration: 15+ tests
-- ✅ Mock API calls
-- ✅ Error scenarios
-- ✅ Load testing
-- ✅ 80%+ code coverage
+**测试覆盖范围：**
+- ✅ 45 个以上的测试用例
+- ✅ TokenManager 相关测试：15 个以上
+- AgentOrchestrator 相关测试：20 个以上
+- Butler 集成测试：15 个以上
+- 模拟 API 调用测试
+- 错误场景测试
+- 负载测试
+- 代码覆盖率超过 80%
 
-## Troubleshooting
+## 故障排除
 
-### No Keys Available
+### 无可用密钥
 ```
 Error: No keys available with sufficient capacity
 ```
-**Solution:** Wait for daily reset at 00:00 UTC, or use multiple keys with smaller budgets.
+**解决方案：** 等待每天 00:00 UTC 的自动重置，或使用多个预算较小的密钥。
 
-### Rotation Threshold Exceeded
+### 密钥轮换阈值被超过
 ```
 ⚠️ [session-id] 75% budget used - Rotation recommended
 ```
-**Solution:** Butler automatically rotates to next available key. Check `getStatus()` for alert details.
+**解决方案：** Butler 会自动切换到下一个可用的密钥。请通过 `getStatus()` 查看详细警告信息。
 
-### Insufficient Budget for Task
+### 任务预算不足
 ```
 Error: No single key has 999999 tokens available
 ```
-**Solution:** Split task into smaller sub-tasks, or wait for daily reset.
+**解决方案：** 将任务拆分为更小的子任务，或等待每天自动重置。
 
-## Security
+## 安全性
 
-- ✅ Code Reviewer integration prevents credential leaks
-- ✅ All state files stored securely (not in git)
-- ✅ API keys never logged (only IDs)
-- ✅ Pre-commit hooks validate before pushing
+- ✅ 与 Code Reviewer 集成，防止凭证泄露
+- ✅ 所有状态文件安全存储（不存储在 git 中）
+- ✅ API 密钥从不记录（仅记录密钥 ID）
+- ✅ 提交前会通过预提交钩子进行验证
 
-**Best Practices:**
-1. Always keep `api-keys.json` in `.gitignore`
-2. Create private repositories for treasury features
-3. Use Code Reviewer before committing
-4. Rotate keys regularly (manual or automatic at 75%)
+**最佳实践：**
+1. 始终将 `api-keys.json` 文件添加到 `.gitignore` 文件中
+2. 为财务管理功能创建私有仓库
+3. 提交前使用 Code Reviewer 进行代码审查
+4. 定期更换密钥（手动或自动轮换）
 
-## Performance
+## 性能
 
-- ⚡ Token allocation: <100ms
-- ⚡ Agent spawning: <500ms
-- ⚡ Result aggregation: O(n) complexity
-- ⚡ Concurrent agents: Tested with 10+ simultaneous tasks
+- ⚡ 代币分配时间：<100 毫秒
+- ⚡ 代理生成时间：<500 毫秒
+- ⚡ 结果汇总时间：O(n) 复杂度
+- ⚡ 支持同时执行多个任务
 
-## Roadmap (v0.2+)
+## 发展计划（v0.2 及后续版本）
 
-- [ ] Treasury module with USDC auto-buy
-- [ ] Circle CCTP integration
-- [ ] Web dashboard for monitoring
-- [ ] Machine learning token prediction
-- [ ] Multi-sig wallet support
-- [ ] Payment splitting between agents
-- [ ] Mobile app
+- [ ] 加入支持 USDC 的财务管理模块
+- [ ] 集成 Circle 的 CCTP 服务
+- [ ] 提供 Web 仪表板进行监控
+- [ ] 实现基于机器学习的代币预测功能
+- [ ] 支持多签名钱包
+- [ ] 实现代理之间的费用分摊
+- [ ] 开发移动应用程序
 
-## Support
+## 支持方式
 
-- 📖 Docs: [docs/](./docs/)
-- 🐛 Issues: [GitHub Issues](https://github.com/zoro-jiro-san/butler/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/zoro-jiro-san/butler/discussions)
-- 📧 Email: support@openclaw.dev
+- 📖 文档：[docs/](./docs/)
+- 🐛 问题报告：[GitHub Issues](https://github.com/zoro-jiro-san/butler/issues)
+- 💬 讨论区：[GitHub Discussions](https://github.com/zoro-jiro-san/butler/discussions)
+- 📧 电子邮件：support@openclaw.dev
 
-## License
+## 许可证
 
-MIT - See [LICENSE](../LICENSE)
+MIT 许可证 - 详细信息请参阅 [LICENSE](../LICENSE)
 
-## Contributing
+## 贡献方式
 
-Contributions welcome! See [CONTRIBUTING.md](../CONTRIBUTING.md)
+欢迎贡献！请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 ---
 
-**Butler v0.1.0** | Circle USDC Hackathon | Deadline: Feb 8, 2026
+**Butler v0.1.0** | Circle USDC 霸客赛 | 截止日期：2026 年 2 月 8 日

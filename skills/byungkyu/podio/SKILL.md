@@ -18,9 +18,9 @@ metadata:
 
 # Podio
 
-Access the Podio API with managed OAuth authentication. Manage organizations, workspaces (spaces), apps, items, tasks, comments, and files.
+您可以使用受管理的OAuth认证来访问Podio API，从而管理组织、工作空间（spaces）、应用程序（apps）、项目（items）、任务（tasks）、评论（comments）和文件（files）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List organizations
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/podio/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Podio API endpoint path. The gateway proxies requests to `api.podio.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的Podio API端点路径。该网关会将请求代理到 `api.podio.com` 并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Podio OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的Podio OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Podio connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Podio连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,21 +141,21 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Organization Operations
+### 组织操作
 
-#### List Organizations
+#### 列出组织
 
-Returns all organizations and spaces the user is a member of.
+返回用户所属的所有组织和工作空间。
 
 ```bash
 GET /podio/org/
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -178,21 +178,21 @@ GET /podio/org/
 ]
 ```
 
-#### Get Organization
+#### 获取组织信息
 
 ```bash
 GET /podio/org/{org_id}
 ```
 
-### Space (Workspace) Operations
+### 工作空间（Workspace）操作
 
-#### Get Space
+#### 获取工作空间信息
 
 ```bash
 GET /podio/space/{space_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "space_id": 789,
@@ -210,7 +210,7 @@ GET /podio/space/{space_id}
 }
 ```
 
-#### Create Space
+#### 创建工作空间
 
 ```bash
 POST /podio/space/
@@ -226,7 +226,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "space_id": 790,
@@ -234,24 +234,24 @@ Content-Type: application/json
 }
 ```
 
-### Application Operations
+### 应用程序操作
 
-#### Get Apps by Space
+#### 按工作空间获取应用程序
 
 ```bash
 GET /podio/app/space/{space_id}/
 ```
 
-Optional query parameters:
-- `include_inactive` - Include inactive apps (default: false)
+可选查询参数：
+- `includeinactive` - 包括非活动应用程序（默认值：false）
 
-#### Get App
+#### 获取应用程序信息
 
 ```bash
 GET /podio/app/{app_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "app_id": 456,
@@ -267,18 +267,18 @@ GET /podio/app/{app_id}
 }
 ```
 
-### Item Operations
+### 项目操作
 
-#### Get Item
+#### 获取项目信息
 
 ```bash
 GET /podio/item/{item_id}
 ```
 
-Optional query parameters:
-- `mark_as_viewed` - Mark notifications as viewed (default: true)
+可选查询参数：
+- `mark_as_viewed` - 将通知标记为已查看（默认值：true）
 
-**Response:**
+**响应：**
 ```json
 {
   "item_id": 123,
@@ -303,7 +303,7 @@ Optional query parameters:
 }
 ```
 
-#### Filter Items
+#### 过滤项目
 
 ```bash
 POST /podio/item/app/{app_id}/filter/
@@ -320,7 +320,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total": 150,
@@ -337,7 +337,7 @@ Content-Type: application/json
 }
 ```
 
-#### Add New Item
+#### 添加新项目
 
 ```bash
 POST /podio/item/app/{app_id}/
@@ -354,11 +354,11 @@ Content-Type: application/json
 }
 ```
 
-Optional query parameters:
-- `hook` - Execute hooks (default: true)
-- `silent` - Suppress notifications (default: false)
+可选查询参数：
+- `hook` - 执行钩子（default: true）
+- `silent` - 抑制通知（default: false）
 
-**Response:**
+**响应：**
 ```json
 {
   "item_id": 124,
@@ -366,7 +366,7 @@ Optional query parameters:
 }
 ```
 
-#### Update Item
+#### 更新项目信息
 
 ```bash
 PUT /podio/item/{item_id}
@@ -380,11 +380,11 @@ Content-Type: application/json
 }
 ```
 
-Optional query parameters:
-- `hook` - Execute hooks (default: true)
-- `silent` - Suppress notifications (default: false)
+可选查询参数：
+- `hook` - 执行钩子（default: true）
+- `silent` - 抑制通知（default: false）
 
-**Response:**
+**响应：**
 ```json
 {
   "revision": 6,
@@ -392,21 +392,21 @@ Optional query parameters:
 }
 ```
 
-#### Delete Item
+#### 删除项目
 
 ```bash
 DELETE /podio/item/{item_id}
 ```
 
-Optional query parameters:
-- `hook` - Execute hooks (default: true)
-- `silent` - Suppress notifications (default: false)
+可选查询参数：
+- `hook` - 执行钩子（default: true）
+- `silent` - 抑制通知（default: false）
 
-### Task Operations
+### 任务操作
 
-#### Get Tasks
+#### 获取任务信息
 
-**Note:** Tasks require at least one filter: `org`, `space`, `app`, `responsible`, `reference`, `created_by`, or `completed_by`.
+**注意：** 任务至少需要一个过滤条件：`org`、`space`、`app`、`responsible`、`reference`、`created_by` 或 `completed_by`。
 
 ```bash
 GET /podio/task/?org={org_id}
@@ -414,26 +414,26 @@ GET /podio/task/?space={space_id}
 GET /podio/task/?app={app_id}&completed=false
 ```
 
-Query parameters:
-- `org` - Filter by organization ID (required if no other filter)
-- `space` - Filter by space ID
-- `app` - Filter by app ID
-- `completed` - Filter by completion status (`true` or `false`)
-- `responsible` - Filter by responsible user IDs
-- `created_by` - Filter by creator
-- `due_date` - Date range (YYYY-MM-DD-YYYY-MM-DD)
-- `limit` - Maximum results
-- `offset` - Result offset
-- `sort_by` - Sort by: created_on, completed_on, rank (default: rank)
-- `grouping` - Group by: due_date, created_by, responsible, app, space, org
+查询参数：
+- `org` - 按组织ID过滤（如果没有其他过滤条件，则此参数为必填）
+- `space` - 按工作空间ID过滤
+- `app` - 按应用程序ID过滤
+- `completed` - 按完成状态过滤（`true` 或 `false`）
+- `responsible` - 按负责用户ID过滤
+- `created_by` - 按创建者过滤
+- `due_date` - 日期范围（YYYY-MM-DD-YYYY-MM-DD）
+- `limit` - 最大结果数量
+- `offset` - 结果偏移量
+- `sort_by` - 排序方式：created_on, completed_on, rank（默认值：rank）
+- `grouping` - 分组方式：due_date, created_by, responsible, app, space, org
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /podio/task/{task_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "task_id": 789,
@@ -453,7 +453,7 @@ GET /podio/task/{task_id}
 }
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /podio/task/
@@ -472,11 +472,11 @@ Content-Type: application/json
 }
 ```
 
-Optional query parameters:
-- `hook` - Execute hooks (default: true)
-- `silent` - Suppress notifications (default: false)
+可选查询参数：
+- `hook` - 执行钩子（default: true）
+- `silent` - 抑制通知（default: false）
 
-**Response:**
+**响应：**
 ```json
 {
   "task_id": 790,
@@ -484,21 +484,21 @@ Optional query parameters:
 }
 ```
 
-### Comment Operations
+### 评论操作
 
-#### Get Comments on Object
+#### 获取对象的评论信息
 
 ```bash
 GET /podio/comment/{type}/{id}/
 ```
 
-Where `{type}` is the object type (e.g., "item", "task") and `{id}` is the object ID.
+其中 `{type}` 是对象类型（例如 "item"、"task"），`{id}` 是对象ID。
 
-Optional query parameters:
-- `limit` - Maximum comments (default: 100)
-- `offset` - Pagination offset (default: 0)
+可选查询参数：
+- `limit` - 最多显示的评论数量（默认值：100）
+- `offset` - 分页偏移量（默认值：0）
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -514,7 +514,7 @@ Optional query parameters:
 ]
 ```
 
-#### Add Comment to Object
+#### 向对象添加评论
 
 ```bash
 POST /podio/comment/{type}/{id}
@@ -527,12 +527,12 @@ Content-Type: application/json
 }
 ```
 
-Optional query parameters:
-- `alert_invite` - Auto-invite mentioned users (default: false)
-- `hook` - Execute hooks (default: true)
-- `silent` - Suppress notifications (default: false)
+可选查询参数：
+- `alertInvite` - 自动邀请被提及的用户（default: false）
+- `hook` - 执行钩子（default: true）
+- `silent` - 抑制通知（default: false）
 
-**Response:**
+**响应：**
 ```json
 {
   "comment_id": 457,
@@ -540,9 +540,9 @@ Optional query parameters:
 }
 ```
 
-## Pagination
+## 分页
 
-Podio uses offset-based pagination with `limit` and `offset` parameters:
+Podio使用基于偏移量的分页机制，通过 `limit` 和 `offset` 参数实现分页：
 
 ```bash
 POST /podio/item/app/{app_id}/filter/
@@ -554,7 +554,7 @@ Content-Type: application/json
 }
 ```
 
-Response includes total counts:
+响应中包含总记录数：
 ```json
 {
   "total": 150,
@@ -563,7 +563,7 @@ Response includes total counts:
 }
 ```
 
-For subsequent pages, increment the offset:
+要查看后续页面，请增加 `offset` 值：
 ```json
 {
   "limit": 30,
@@ -571,7 +571,7 @@ For subsequent pages, increment the offset:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -600,41 +600,41 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Organization IDs, space IDs, app IDs, and item IDs are integers
-- Field values can be specified by field_id or external_id
-- Category fields use option IDs (integers), not text values
-- Deleting an item also deletes associated tasks (cascade delete)
-- Tasks require at least one filter (org, space, app, responsible, reference, created_by, or completed_by)
-- Use `silent=true` to suppress notifications for bulk operations
-- Use `hook=false` to skip webhook triggers
-- Include `revision` in update requests for conflict detection (returns 409 if conflict)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 组织ID、工作空间ID、应用程序ID和项目ID均为整数。
+- 字段值可以通过 `field_id` 或 `external_id` 来指定。
+- 分类字段使用选项ID（整数），而不是文本值。
+- 删除项目时会同时删除关联的任务（级联删除）。
+- 任务操作至少需要一个过滤条件（org、space、app、responsible、reference、created_by 或 completed_by）。
+- 对于批量操作，使用 `silent=true` 可以抑制通知。
+- 使用 `hook=false` 可以跳过Webhook触发。
+- 在更新请求中包含 `revision` 以检测冲突（如果发生冲突，返回409状态码）。
+- **重要提示：** 当URL包含括号时，使用 `curl -g` 可以防止glob解析。
+- **重要提示：** 当将curl输出传递给 `jq` 或其他命令时，在某些shell环境中环境变量 `$MATON_API_KEY` 可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Podio connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 409 | Conflict (revision mismatch on update) |
-| 410 | Resource has been deleted |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Podio API |
+| 400 | 未建立Podio连接或请求无效 |
+| 401 | Maton API密钥无效或缺失 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 409 | 更新时发生冲突（版本号不匹配） |
+| 410 | 资源已被删除 |
+| 429 | 请求频率受限 |
+| 4xx/5xx | 来自Podio API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -645,18 +645,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `podio`. For example:
+1. 确保您的URL路径以 `podio` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/podio/org/`
+- 错误的路径：`https://gateway.maton.ai/org/`
 
-- Correct: `https://gateway.maton.ai/podio/org/`
-- Incorrect: `https://gateway.maton.ai/org/`
+## 资源
 
-## Resources
-
-- [Podio API Documentation](https://developers.podio.com/doc)
-- [Podio API Authentication](https://developers.podio.com/authentication)
-- [Podio Items API](https://developers.podio.com/doc/items)
-- [Podio Tasks API](https://developers.podio.com/doc/tasks)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Podio API文档](https://developers.podio.com/doc)
+- [Podio API认证](https://developers.podio.com/authentication)
+- [Podio项目API](https://developers.podio.com/doc/items)
+- [Podio任务API](https://developers.podio.com/doc/tasks)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

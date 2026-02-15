@@ -1,6 +1,6 @@
 ---
 name: snapmaker-2
-description: "Control and monitor Snapmaker 2.0 3D printers via their HTTP API. Status, job management, progress watching, and event monitoring."
+description: "通过 HTTP API 控制和监控 Snapmaker 2.0 3D 打印机：可以查看设备状态、管理打印任务、监控打印进度以及接收设备发出的事件通知。"
 summary: "Snapmaker 2.0 3D printer control: status, jobs, monitoring."
 version: 1.2.1
 homepage: https://github.com/odrobnik/snapmaker-skill
@@ -14,202 +14,128 @@ metadata:
   }
 ---
 
-# Snapmaker 2.0 Skill
+# Snapmaker 2.0 技能
 
-Control and monitor Snapmaker 2.0 3D printers via their HTTP API.
+通过 HTTP API 控制和监控 Snapmaker 2.0 3D 打印机。
 
-## Features
+## 功能
 
-- **Status monitoring** - Real-time printer status (temperatures, progress, position)
-- **Job management** - Send, start, pause, resume, and stop print jobs
-- **Safety features** - Prevents interfering with active prints without confirmation
-- **Progress watching** - Live monitoring of print progress
-- **Notification support** - Detect print completion, filament issues, errors
+- **状态监控** - 实时显示打印机状态（温度、进度、位置）
+- **作业管理** - 发送、启动、暂停、恢复和停止打印作业
+- **安全功能** - 在未经确认的情况下，禁止干扰正在进行的打印操作
+- **进度监控** - 实时显示打印进度
+- **通知支持** - 检测打印完成、耗材耗尽或出现错误
 
-## Configuration
+## 配置
 
-Create `config.json` in your workspace's `snapmaker/` folder (e.g. `~/clawd/snapmaker/config.json`).
-Start from `config.json.example`.
+在工作区的 `snapmaker/` 文件夹中创建 `config.json` 文件（例如：`~/clawd/snapmaker/config.json`）。
+请参考 `config.json.example` 作为配置的起点。
 
-Config format:
+### 获取令牌：
 
-```json
-{
-  "ip": "192.168.0.32",
-  "token": "your-token-here",
-  "port": 8080
-}
-```
+打开 Snapmaker Luban 应用程序，连接到您的打印机，在连接设置中找到令牌，并将其复制到 `config.json` 文件中。
 
-**Finding your token:**
-Open the Snapmaker Luban app, connect to your printer, and find the token
-in the connection settings. Copy it into your `config.json`.
+## 使用方法
 
-## Usage
+### 发现打印机（Discovery）
 
-### Discovery
+Snapmaker 使用 UDP 广播协议进行发现（无需认证）。如果 UDP 没有收到响应（例如，因为位于不同的子网中），则会切换到使用 HTTP 进行连接。
 
-```bash
-# Find Snapmaker printers on the local network (UDP broadcast, port 20054)
-python3 scripts/snapmaker.py discover
+### 基本命令
 
-# Probe a specific IP (useful across subnets)
-python3 scripts/snapmaker.py discover --target 192.168.0.32
+### 作业控制
 
-# JSON output
-python3 scripts/snapmaker.py discover --json
-```
+### 安全选项
 
-Discovery uses the Snapmaker UDP broadcast protocol (no auth required).
-Falls back to HTTP probe using config if UDP gets no reply (e.g. different subnet).
+- `--yes` - 跳过确认提示（请谨慎使用！）
+- `--force` - 强制忽略安全检查（不推荐）
 
-### Basic Commands
+所有修改打印机状态的命令都需要确认，除非指定了 `--yes`。
 
-```bash
-# Get current printer status
-python3 scripts/snapmaker.py status
+## API 端点
 
-# Watch print progress (updates every 5 seconds)
-python3 scripts/snapmaker.py watch
+该技能使用以下 Snapmaker HTTP API v1 端点：
 
-# Get status as JSON
-python3 scripts/snapmaker.py status --json
-```
+- `POST /api/v1/connect` - 建立连接
+- `GET /api/v1/status` - 获取打印机状态
+- `POST /api/v1/prepare_print` - 上传文件
+- `POST /api/v1/start_print` - 开始打印
+- `POST /api/v1/pause` - 暂停打印
+- `POST /api/v1/resume` - 恢复打印
+- `POST /api/v1/stop` - 停止/取消打印
+- `GET /api/v1/print_file` - 下载最后一个打印的文件
 
-### Job Control
+## 状态字段
 
-```bash
-# Send a file (prepares but doesn't start)
-python3 scripts/snapmaker.py send ~/prints/model.gcode
+`status` 命令返回以下信息：
 
-# Send and start immediately
-python3 scripts/snapmaker.py send ~/prints/model.gcode --start --yes
+- **status** - 总体状态（IDLE、RUNNING、PAUSED）
+- **printStatus** - 当前是否正在打印
+- **progress** - 打印进度（0.0 到 1.0）
+- **fileName** - 当前/最后一个打印的文件名
+- **currentLine** / **totalLines** - G-code 编程的进度
+- **elapsedTime** / **remainingTime** - 已经过去的时间/剩余时间（以秒为单位）
+- **nozzleTemperature1** / **nozzleTargetTemperature1** - 喷嘴温度
+- **heatedBedTemperature** / **heatedBedTargetTemperature** - 加热床温度
+- **x** / **y** / **z** - 当前位置
+- **isFilamentOut** - 是否耗材耗尽
+- **isEnclosureDoorOpen** - 机箱门状态
 
-# Pause current print
-python3 scripts/snapmaker.py pause --yes
+## 通知
 
-# Resume paused print
-python3 scripts/snapmaker.py resume --yes
+### 事件检测
 
-# Stop/cancel print (requires confirmation)
-python3 scripts/snapmaker.py stop
-```
+- **打印完成** - `status` 等于 "IDLE" 且 `progress` 大于或等于 0.99
+- **耗材耗尽** - `isFilamentOut` 为 true
+- **机箱门打开** - `isEnclosureDoorOpen` 为 true
+- **错误** - 通过 `status` 字段检测错误
 
-### Safety Flags
+## 安全特性
 
-- `--yes` - Skip confirmation prompts (use with caution!)
-- `--force` - Override safety checks (NOT RECOMMENDED)
+1. **正在打印时的保护** - 打印过程中无法发送文件
+2. **确认提示** - 所有可能破坏打印的操作都需要用户确认
+3. **状态验证** - 命令执行前会检查打印机状态
+4. **明确警告** - 停止命令会显示醒目的警告信息
 
-All commands that modify state require confirmation unless `--yes` is provided.
+## 示例
 
-## API Endpoints
+- **检查打印机是否忙碌**  
+- **获取剩余时间**  
+- **监控温度**  
 
-The skill uses these Snapmaker HTTP API v1 endpoints:
+## 故障排除
 
-- `POST /api/v1/connect` - Establish connection
-- `GET /api/v1/status` - Get printer status
-- `POST /api/v1/prepare_print` - Upload file
-- `POST /api/v1/start_print` - Start printing
-- `POST /api/v1/pause` - Pause print
-- `POST /api/v1/resume` - Resume print
-- `POST /api/v1/stop` - Stop/cancel print
-- `GET /api/v1/print_file` - Download last file
+- **“机器尚未连接”（401 错误）**：
+  - 在进行任何状态查询之前，必须先调用 `/api/v1/connect`。
+  - 示例：`curl -X POST "http://192.168.0.32:8080/api/v1/connect?token=YOUR_TOKEN"`
+  - Python 脚本会在首次请求时自动处理此情况。
+  - 连接会建立会话，直到打印机关闭。
+  - 如果使用原始的 curl 命令，请务必先调用 `connect`。
 
-## Status Fields
+- **连接被拒绝**：
+  - 验证打印机 IP 地址：`ping 192.168.0.32`
+  - 确保打印机已开启
+  - 确保您在同一个网络中。
 
-The status command returns:
+- **令牌无效**：
+  - 重新连接 Luban 应用程序到打印机（在触摸屏上接受新的令牌）
+  - 从 Luban 的连接设置中复制新的令牌，并更新 `config.json` 文件。
 
-- **status** - Overall state (IDLE, RUNNING, PAUSED)
-- **printStatus** - Printing / Idle
-- **progress** - 0.0 to 1.0
-- **fileName** - Current/last file
-- **currentLine** / **totalLines** - G-code progress
-- **elapsedTime** / **remainingTime** - In seconds
-- **nozzleTemperature1** / **nozzleTargetTemperature1**
-- **heatedBedTemperature** / **heatedBedTargetTemperature**
-- **x** / **y** / **z** - Current position
-- **isFilamentOut** - Filament runout detection
-- **isEnclosureDoorOpen** - Door state
+- **无法发送文件**：
+  - 检查打印机是否忙碌：`python3 scripts/snapmaker.py status`
+  - 等待当前打印任务完成
+  - 仅在绝对必要时使用 `--force`。
 
-## Notifications
+## 参考资料
 
-To detect events:
+- [Snapmaker 论坛：自动启动指南](https://forum.snapmaker.com/t/guide-automatic-start-via-drag-drop/29177)
+- [Snapmaker 论坛：API 文档](https://forum.snapmaker.com/t/documentation-of-the-web-api/20976/16)
 
-```bash
-# Watch for completion
-python3 scripts/snapmaker.py watch
-
-# Or poll status in a loop
-while true; do
-  python3 scripts/snapmaker.py status --json | jq -r '.printStatus'
-  sleep 10
-done
-```
-
-Event detection:
-- **Print complete** - status == "IDLE" && progress >= 0.99
-- **Filament out** - isFilamentOut == true
-- **Door opened** - isEnclosureDoorOpen == true
-- **Error** - Check status field for errors
-
-## Safety Features
-
-1. **Active print protection** - Cannot send files while printing
-2. **Confirmation prompts** - All destructive actions require confirmation
-3. **State validation** - Commands check printer state before executing
-4. **Clear warnings** - Stop command shows prominent warning
-
-## Examples
-
-### Check if printer is busy
-```bash
-python3 scripts/snapmaker.py status | grep -q "RUNNING" && echo "Busy" || echo "Available"
-```
-
-### Get remaining time
-```bash
-python3 scripts/snapmaker.py status --json | jq -r '.remainingTime'
-```
-
-### Monitor temperatures
-```bash
-python3 scripts/snapmaker.py status --json | jq '{nozzle: .nozzleTemperature1, bed: .heatedBedTemperature}'
-```
-
-## Troubleshooting
-
-**"Machine is not connected yet" (401 error):**
-- The API requires calling `/api/v1/connect` first before any status queries
-- Example: `curl -X POST "http://192.168.0.32:8080/api/v1/connect?token=YOUR_TOKEN"`
-- The Python script handles this automatically on first request
-- Connection establishes a session that persists until the printer is powered off
-- If using raw curl commands, always call connect first
-
-**Connection refused:**
-- Verify printer IP: `ping 192.168.0.32`
-- Check printer is powered on
-- Ensure you're on the same network
-
-**Invalid token:**
-- Reconnect Luban to the printer (accept on touchscreen)
-- Copy the new token from Luban's connection settings
-- Update your `config.json`
-
-**Can't send file:**
-- Check if printer is busy: `python3 scripts/snapmaker.py status`
-- Wait for current print to finish
-- Use `--force` only if absolutely necessary
-
-## References
-
-- [Snapmaker Forum: Auto-start Guide](https://forum.snapmaker.com/t/guide-automatic-start-via-drag-drop/29177)
-- [Snapmaker Forum: API Documentation](https://forum.snapmaker.com/t/documentation-of-the-web-api/20976/16)
-
-## Dependencies
+## 依赖项
 
 - Python 3.6+
-- `requests` library (install: `pip3 install requests`)
+- `requests` 库（安装方法：`pip3 install requests`
 
-## License
+## 许可证
 
-Part of OpenClaw skills collection.
+本技能属于 OpenClaw 技能集合的一部分。

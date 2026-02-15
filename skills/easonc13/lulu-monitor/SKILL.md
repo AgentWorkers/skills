@@ -1,30 +1,28 @@
 ---
 name: lulu-monitor
-description: AI-powered LuLu Firewall companion for macOS. Monitors firewall alerts, analyzes connections with AI, sends Telegram notifications with Allow/Block buttons. Use when setting up LuLu integration, handling firewall callbacks, or troubleshooting LuLu Monitor issues.
+description: 一款基于人工智能的 LuLu 防火墙辅助工具，专为 macOS 设计。该工具能够监控防火墙警报，利用人工智能分析网络连接，并通过 Telegram 发送包含“允许”/“阻止”按钮的通知。适用于配置 LuLu 防火墙集成、处理防火墙回调事件或排查 LuLu Monitor 相关问题时使用。
 ---
 
 # LuLu Monitor
 
-AI-powered companion for [LuLu Firewall](https://objective-see.org/products/lulu.html) on macOS.
+这是一个为 [LuLu Firewall](https://objective-see.org/products/lulu.html) 在 macOS 上设计的智能辅助工具。
 
-![LuLu Monitor Screenshot](screenshot.png)
+![LuLu Monitor 屏幕截图](screenshot.png)
 
-## What It Does
+## 功能概述
 
-1. Monitors LuLu firewall alert popups
-2. Extracts connection info (process, IP, port, DNS)
-3. Spawns a fast AI (haiku) to analyze the connection
-4. Sends Telegram notification with risk assessment
-5. Provides 4 action buttons: Always Allow, Allow Once, Always Block, Block Once
-6. Executes the action on LuLu when user taps a button
+1. 监控 LuLu 防火墙的警报弹窗。
+2. 提取连接信息（进程、IP 地址、端口号、DNS）。
+3. 通过 AI 分析这些连接信息（以俳句的形式呈现）。
+4. 通过 Telegram 发送风险评估通知。
+5. 提供四个操作选项：始终允许、允许一次、始终阻止、阻止一次。
+6. 用户点击按钮后，LuLu 防火墙会立即执行相应的操作。
 
-## Auto-Execute Mode (Optional)
+## 自动执行模式（可选）
 
-For reduced interruptions, enable auto-execute mode. When the AI has high confidence (known safe programs like curl, brew, node, git connecting to normal destinations), it will:
-1. Automatically execute the Allow action
-2. Still send a Telegram notification explaining what was auto-allowed
+为了减少干扰，可以启用自动执行模式。当 AI 对连接的安全性有较高信心时（例如，`curl`、`brew`、`node`、`git` 等安全程序连接到正常目标时），系统会自动执行允许操作，并通过 Telegram 发送通知说明原因。
 
-**To enable:**
+**启用方法：**
 ```bash
 # Create config.json in install directory
 cat > ~/.openclaw/lulu-monitor/config.json << 'EOF'
@@ -36,71 +34,63 @@ cat > ~/.openclaw/lulu-monitor/config.json << 'EOF'
 EOF
 ```
 
-**Options:**
-- `autoExecute`: `false` (default) - all alerts require manual button press
-- `autoExecuteAction`: `"allow-once"` (default, conservative) or `"allow"` (permanent rule)
+**配置选项：**
+- `autoExecute`：`false`（默认值）——所有警报都需要用户手动点击按钮处理。
+- `autoExecuteAction`：`"allow-once"`（默认值，较为保守）或 `"allow"`（永久性规则）。
 
-## Installation
+## 安装流程
 
-### Prerequisites
+### 先决条件
 
-Run the check script first:
+请先运行检查脚本：
 ```bash
 bash scripts/check-prerequisites.sh
 ```
 
-Required:
-- **LuLu Firewall**: `brew install --cask lulu`
-- **Node.js**: `brew install node`
-- **OpenClaw Gateway**: Running with Telegram channel configured
-- **Accessibility Permission**: System Settings > Privacy > Accessibility > Enable Terminal/osascript
+**所需软件：**
+- **LuLu Firewall**：`brew install --cask lulu`
+- **Node.js**：`brew install node`
+- **OpenClaw Gateway**：已配置并正在运行，且与 Telegram 频道关联。
+- **系统访问权限**：进入“系统设置” > “隐私” > “辅助功能”，然后启用“终端/OSScript”功能。
 
-### Install
+### 安装步骤
 
 ```bash
 bash scripts/install.sh
 ```
 
-This will:
-1. Clone the repo to `~/.openclaw/lulu-monitor/`
-2. Install npm dependencies
-3. Set up launchd for auto-start
-4. Start the service
+安装过程包括：
+1. 将代码仓库克隆到 `~/.openclaw/lulu-monitor/` 目录。
+2. 安装所需的 npm 依赖项。
+3. 配置 `launchd` 服务以实现自动启动。
+4. 启动该服务。
 
-### Verify
+### 验证安装结果
+
+执行以下命令后，应返回 `{"running": true,...}`：
 
 ```bash
 curl http://127.0.0.1:4441/status
 ```
 
-Should return `{"running":true,...}`
+## 处理回调事件
 
-## Handling Callbacks
-
-When user clicks a Telegram button, OpenClaw receives a callback like:
-```
-callback_data: lulu:allow
-callback_data: lulu:allow-once
-callback_data: lulu:block
-callback_data: lulu:block-once
-```
-
-To handle it, call the local endpoint:
+当用户点击 Telegram 中的按钮时，OpenClaw 会收到回调信息。此时，需要调用本地端点来处理该事件：
 ```bash
 curl -X POST http://127.0.0.1:4441/callback \
   -H "Content-Type: application/json" \
   -d '{"action":"allow"}'  # or "block", "allow-once", "block-once"
 ```
 
-This will:
-1. Click the appropriate button on LuLu alert
-2. Set Rule Scope to "endpoint"
-3. Set Rule Duration to "Always" or "Process lifetime"
-4. Edit the Telegram message to show result
+系统会执行以下操作：
+1. 在 LuLu 防火墙的警报窗口中点击相应的按钮。
+2. 将规则的有效范围设置为“endpoint”。
+3. 将规则的有效时间设置为“始终有效”或“进程生命周期”。
+4. 更新 Telegram 消息以显示处理结果。
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Service not running
+### 服务未运行
 ```bash
 # Check status
 launchctl list | grep lulu-monitor
@@ -113,16 +103,14 @@ launchctl unload ~/Library/LaunchAgents/com.openclaw.lulu-monitor.plist
 launchctl load ~/Library/LaunchAgents/com.openclaw.lulu-monitor.plist
 ```
 
-### Accessibility permission issues
-AppleScript needs permission to control LuLu. Go to:
-System Settings > Privacy & Security > Accessibility
-Enable: Terminal, iTerm, or whatever terminal you use
+### 系统访问权限问题
+AppleScript 需要权限来控制 LuLu 防火墙。请进入“系统设置” > “隐私与安全” > “辅助功能”，并启用“终端”或您使用的其他终端应用程序。
 
-### Alert not detected
-- Ensure LuLu is running: `pgrep -x LuLu`
-- Check if alert window exists: `osascript -e 'tell application "System Events" to tell process "LuLu" to get every window'`
+### 无法检测到警报
+- 确保 LuLu 防火墙正在运行：`pgrep -x LuLu`
+- 检查警报窗口是否存在：`osascript -e 'tell application "System Events" to tell process "LuLu" to get every window'`
 
-## Uninstall
+## 卸载方法
 
 ```bash
 bash ~/.openclaw/lulu-monitor/skill/scripts/uninstall.sh

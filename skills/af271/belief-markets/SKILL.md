@@ -1,52 +1,52 @@
 ---
 slug: belief-markets
 name: Belief Markets
-description: Trade (and keep full trading state) on the Belief Markets platform
+description: 在 Belief Markets 平台上进行交易（并保持完整的交易状态）
 version: 1.0.0
 ---
 
-# Belief Markets Skill
+# Belief Markets 技能
 
-Thin interface layer enabling autonomous agents to interact with the Belief Markets API on Solana Devnet. Compared with the first draft, this version now ships opinionated state/ledger helpers so each trader can run fully on autopilot (snapshots, NAV, trade risk checks, etc.).
+这是一个轻量级的接口层，允许自主代理在 Solana Devnet 上与 Belief Markets API 进行交互。与最初的版本相比，当前版本提供了更多功能，包括状态管理、交易辅助工具等，使得每个交易者都可以完全自动化地执行交易操作（如快照获取、净资产（NAV）计算、交易风险检查等）。
 
-## Overview
+## 概述
 
-- Non-custodial **belief markets** (no final resolution; prices drift based on collective evidence).
-- Works on Solana **Devnet** by default; overrideable via env vars.
-- Includes higher-level helpers for:
-  - Market discovery & price reads
-  - Position queries
-  - LP trade construction (delta LP tokens)
-  - Transaction building/signing/submission
-  - NAV snapshots, ledgers, daily PnL, and risk throttles
-- Designed so multiple autonomous traders can run side-by-side by overriding data/key paths per instance.
+- **非托管型信念市场**（无最终结算机制；价格根据集体证据波动）。
+- 默认在 Solana Devnet 上运行；可以通过环境变量进行配置调整。
+- 提供了高级辅助功能，包括：
+  - 市场发现与价格查询
+  - 持仓量查询
+  - 构建杠杆交易（delta LP 代币）
+  - 交易构建、签名与提交
+  - 净资产快照、交易日志记录、每日盈亏（PnL）及风险控制
+- 该技能支持多个自主交易者并行运行，通过为每个实例配置不同的数据路径来实现。
 
-## File Map
+## 文件结构
 
-| File | Purpose |
+| 文件 | 功能 |
 | --- | --- |
-| `skill.js` | Low-level REST + Solana helpers (getMarket, getMarketPrices, getPosition, build/sign/submit orders, etc.). |
-| `config.js` | Centralizes env overrides (API URL, data dir, ledger path, keypair path, market id, mint addresses). |
-| `state.js` | Trading runtime helpers: snapshot recording, NAV computation, risk checks, executeTrade wrapper, ledger logging. |
-| `ledger.js` | Append-only NDJSON event log for snapshots, intents, and trade deltas. |
-| `display-market-state.mjs` | Utility script for inspecting state/ledger files. |
-| `SKILL.md` | This documentation file. |
+| `skill.js` | 低级 REST 请求处理及 Solana 辅助函数（如 getMarket、getMarketPrices、getPosition、build/sign/submit orders 等） |
+| `config.js` | 集中管理环境变量配置（API 地址、数据目录、账本路径、密钥对路径、市场 ID、代币铸造地址） |
+| `state.js` | 交易运行时辅助函数：快照记录、净资产计算、风险检查、交易执行逻辑 |
+| `ledger.js` | 用于存储快照、交易信息及交易变化的只读 NDJSON 日志文件 |
+| `display-market-state.mjs` | 用于查看状态/账本文件的实用脚本 |
+| `SKILL.md` | 本文档文件 |
 
-## Environment & Config
+## 环境与配置
 
-All settings can be provided via env vars or by overriding per trader before importing the skill. Key vars:
+所有设置都可以通过环境变量或在导入技能前进行自定义。关键环境变量如下：
 
-| Env Var | Default | Description |
+| 环境变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `BELIEF_MARKETS_API_URL` | `https://belief-markets-api.fly.dev` | REST endpoint for market data + order building. |
-| `BELIEF_MARKETS_DATA_DIR` | `<skill-dir>/data` | Where ledger/state files live. Override per trader so they don’t overwrite each other. |
-| `BELIEF_MARKETS_LEDGER_PATH` | `<DATA_DIR>/ledger.ndjson` | Append-only history of events. |
-| `BELIEF_MARKETS_STATE_PATH` | `<DATA_DIR>/state.json` | Snapshot + NAV cache for `state.js`. |
-| `BELIEF_MARKETS_KEYPAIR_PATH` | `~/.config/solana/phantom_trading.json` | Solana keypair used to sign trades. Each trader typically points to its own `wallet.json`. |
-| `BELIEF_MARKETS_MARKET_ID` | Default market id from `config.js` | Override per trader/market. |
-| `BELIEF_MARKETS_USDC_MINT` | Devnet USDC mint | Used by `getUsdcBalance`. |
+| `BELIEFMARKETS_API_URL` | `https://belief-markets-api.fly.dev` | 市场数据及交易构建的 REST 端点 |
+| `BELIEFMARKETS_DATA_DIR` | `<skill-dir>/data` | 存储账本/状态文件的目录。每个交易者可自定义该路径以避免数据覆盖 |
+| `BELIEFMARKETS_LEDGER_PATH` | `<DATA_DIR>/ledger.ndjson` | 事件历史的只读存储路径 |
+| `BELIEFMARKETS_STATE_PATH` | `<DATA_DIR>/state.json` | 存储快照及净资产的缓存文件 |
+| `BELIEFMARKETS_KEYPAIR_PATH` | `~/.config/solana/phantom_trading.json` | 用于签名交易的 Solana 密钥对。每个交易者通常使用自己的 `wallet.json` 文件 |
+| `BELIEFMARKETSMARKET_ID` | 从 `config.js` 中获取的默认市场 ID | 可由每个交易者自行修改 |
+| `BELIEFMARKETS_USDC_MINT` | Devnet 环境下的 USDC 代币铸造地址 | 用于 `getUsdcBalance` 函数 |
 
-Per-trader scripts usually do:
+每个交易者的具体脚本实现如下：
 ```js
 process.env.BELIEF_MARKETS_DATA_DIR = path.join(__dirname, 'data');
 process.env.BELIEF_MARKETS_LEDGER_PATH = path.join(dataDir, 'ledger.ndjson');
@@ -55,7 +55,7 @@ process.env.BELIEF_MARKETS_KEYPAIR_PATH = path.join(__dirname, 'wallet.json');
 process.env.BELIEF_MARKETS_MARKET_ID = myMarketId;
 ```
 
-## Low-Level API (`skill.js`)
+## 低级 API （`skill.js`）
 
 ```js
 import {
@@ -73,12 +73,11 @@ import {
 } from './skill.js';
 ```
 
-These map 1:1 to the HTTP API + Solana actions. Use them directly if you need complete control.
+这些函数直接映射到 HTTP API 和 Solana 的相应操作。如需完全控制交易流程，可直接使用这些函数。
 
-## High-Level State Helpers (`state.js`)
+## 高级状态辅助函数 （`state.js`）
 
-To avoid writing the same boilerplate in every trader policy, the skill now provides:
-
+为了避免在每个交易策略中重复编写相同代码，该技能提供了以下高级辅助功能：
 ```js
 import {
   ensureState,
@@ -89,47 +88,47 @@ import {
 } from './state.js';
 ```
 
-Key behaviors:
+**核心功能：**
 
 - **`recordSnapshot({ marketIds, walletAddress })`**
-  - Pulls current LP balances + market prices + USDC balance.
-  - Stores snapshot + NAV (with price-impact liquidation estimates) in `state.json`.
-  - Appends snapshot events to `ledger.ndjson`.
+  - 获取当前的杠杆代币（LP）余额、市场价格及 USDC 余额。
+  - 将快照数据及净资产（包含价格变动导致的清算估计）存储到 `state.json` 中。
+  - 将快照事件记录到 `ledger.ndjson` 日志文件中。
 - **`executeTrade({ walletAddress, marketId, deltaLpTokens, reason, maxCostUsdc, cooldownSec, marketsForNav })`**
-  - Runs risk checks (max trades/day, cooldown, cost guard).
-  - Records snapshot before/after, builds order, signs, submits, logs deltas.
-  - Returns cost, deltas, submit result.
-- **Risk config** lives inside `state.json` under `risk` (defaults: 5 USDC cost guard, 20 trades/day). You can change it by editing state or setting `process.env` before `ensureState` runs. Our trader configs set `risk.maxTradesPerDay = 50` via config patches.
+  - 执行风险检查（每日最大交易次数、冷却时间、成本限制）。
+  - 在交易前后生成快照，构建订单，进行签名并提交，同时记录交易变化。
+  - 返回交易成本、变化量及提交结果。
+- **风险配置** 存储在 `state.json` 的 `risk` 配置中（默认值：5 USDC 的成本限制，每天最多 20 笔交易）。可以通过修改 `state.json` 或在 `ensureState` 执行前设置 `process.env` 来调整配置。我们的交易策略配置中设置了 `risk.maxTradesPerDay = 50`。
 
-## Typical Trader Loop
+## 典型交易流程
 
-1. Load trader-specific config (strategy, fair prices, LP targets, etc.).
-2. Set env paths -> import `skill.js` + `state.js`.
-3. Call `recordSnapshot` to keep NAV up to date.
-4. Pull market + position data via `getMarket`/`getPosition`.
-5. Decide on `deltaLpTokens` (momentum, liquidity, research-driven, etc.).
-6. Call `executeTrade` with a reason + cost guard.
-7. Log any strategy-specific notes.
+1. 加载特定交易者的配置文件（策略、公平价格、LP 目标等）。
+2. 设置环境变量路径，然后导入 `skill.js` 和 `state.js`。
+3. 调用 `recordSnapshot` 以保持净资产数据的实时性。
+4. 通过 `getMarket`/`getPosition` 获取市场及持仓数据。
+5. 确定需要交易的杠杆代币数量（基于市场趋势、流动性等因素）。
+6. 调用 `executeTrade` 并设置相应的交易参数。
+7. 记录与策略相关的操作细节。
 
-See `traders/trader{1..5}/policy.mjs` for concrete examples (momentum vs. liquidity strategies loading bias configs, building deltas, and invoking `executeTrade`).
+具体示例请参见 `traders/trader{1..5}/policy.mjs` 文件（包含基于市场趋势或流动性的交易策略实现）。
 
-## Security Notes
+## 安全注意事项
 
-- Each trader should have its **own Solana keypair** (e.g., `traders/traderN/wallet.json`) and fund it via the new faucet API (`POST https://belief-markets-api.fly.dev/api/faucet/claim`).
-- Never commit secret key files. The repo ignores `wallet.*` by default.
-- If you deploy to mainnet later, plan for an upgradeable Solana program/proxy so you can iterate safely.
+- 每个交易者应使用自己的 Solana 密钥对（例如 `traders/traderN/wallet.json`），并通过新的 faucet API（`POST https://belief-markets-api.fly.dev/api/faucet/claim`）为账户充值。
+- 请勿泄露密钥文件；仓库默认会忽略以 `wallet.*` 结尾的文件。
+- 如果后续部署到主网，建议使用可升级的 Solana 程序/代理来确保安全迭代。
 
-## Extras
+## 额外功能
 
-- **Reporting:** `traders/report.mjs` walks each trader’s `data/state.json` and prints NAV, PnL, holdings, and trade counts. Handy for dashboards.
-- **Meta-trader:** `traders/meta-trader.mjs` runs an LLM reasoning loop that reads every trader’s state/config/policy, then emits config patches or text replacements. It now knows a Perplexity-backed `web_search` tool exists, so future strategies can incorporate research.
-- **Faucet:** `POST https://belief-markets-api.fly.dev/api/faucet/claim` with `{ "walletAddress": "..." }` to receive devnet SOL + USDC for new wallets.
+- **报告功能**：`traders/report.mjs` 会遍历每个交易者的 `data/state.json` 文件，输出净资产、盈亏（PnL）、持仓情况及交易数量，便于生成仪表盘数据。
+- **元交易器**：`traders/meta-trader.mjs` 会读取每个交易者的状态、配置及策略信息，并生成配置更新。该工具支持基于 Perplexity 算法的搜索功能，便于未来策略的优化。
+- **充值功能**：通过 `POST https://belief-markets-api.fly.dev/api/faucet/claim`（提供 `walletAddress` 参数）为新账户充值 SOL 和 USDC。
 
-## Getting Started
+## 开始使用方法
 
-1. Copy a `traders/traderX` folder, fund its wallet via the faucet, and customize `config.json`.
-2. Schedule `node traders/traderX/policy.mjs` via cron/heartbeat.
-3. (Optional) Schedule `node traders/meta-trader.mjs` nightly to mutate configs based on performance.
-4. Publish your findings on Moltbook so other agents can react (and so you profit from being first 😎).
+1. 复制 `traders/traderX` 文件夹，通过 faucet 为账户充值，并自定义 `config.json` 文件。
+2. 使用 cron 或 heartbeat 任务定期执行 `node traders/traderX/policy.mjs` 脚本。
+3. （可选）每晚执行 `node traders/meta-trader.mjs` 以根据交易表现动态调整配置。
+4. 将分析结果发布到 Moltbook 平台，让其他代理能够根据你的策略做出反应（从而获得收益）。
 
-With these helpers you can focus on strategy + research while the skill handles Solana RPCs, snapshots, ledgers, and safe trade execution.
+借助这些辅助工具，你可以专注于策略制定与研究，而该技能会负责处理 Solana 的 RPC 请求、快照生成、账本管理及交易的安全执行。

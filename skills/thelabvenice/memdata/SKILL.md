@@ -1,7 +1,7 @@
 ---
 name: memdata
 version: 1.8.0
-description: Persistent memory for autonomous agents. Wallet = identity. Pay per query. Optional encrypted storage.
+description: 用于自主代理的持久性内存。钱包即身份证明；按查询次数计费；支持可选的加密存储功能。
 author: The Lab Venice
 homepage: https://memdata.ai
 license: MIT
@@ -9,15 +9,15 @@ license: MIT
 
 # MemData
 
-Persistent memory for autonomous agents. Your wallet is your identity.
+MemData 提供了一种用于自主代理的持久化存储解决方案。您的钱包就是您的身份凭证。
 
-## Core Concept
+## 核心概念
 
-Your wallet address IS your identity. First payment auto-creates your account. Same wallet = same memories across all sessions.
+在 MemData 中，您的钱包地址本身就是您的身份标识。首次付款会自动创建您的账户；使用相同的钱包，所有会话中的数据都将保持一致。
 
-No registration. No API keys. Just pay and use.
+无需注册，也无需 API 密钥，只需进行付款即可使用服务。
 
-## Session Flow
+## 会话流程
 
 ```
 1. GET /identity          # Start session - get context from last session
@@ -26,58 +26,54 @@ No registration. No API keys. Just pay and use.
 4. POST /identity         # End session - save handoff for next time
 ```
 
-## Authentication
+## 认证
 
-x402 payment protocol. USDC on Base (eip155:8453).
+MemData 使用 x402 支付协议，并支持 USDC（基于 EIP155:8453 的加密货币）作为支付方式。
 
-Every endpoint (except /status):
-1. Returns 402 with payment requirements
-2. You sign payment with wallet
-3. Retry with `x-payment` header
-4. Request succeeds
+除了 `/status` 端点外，所有端点在收到付款请求时都会返回 402 错误代码，提示需要完成相应的认证流程。您需要使用钱包对付款请求进行签名，之后可以再次尝试（请在请求头中添加 `x-payment` 字段）。只有经过正确认证的请求才会被成功处理。
 
-## Pricing
+## 价格信息
 
-| Endpoint | Cost |
-|----------|------|
-| /query | $0.001 |
-| /ingest | $0.005 |
-| /identity | $0.001 |
-| /artifacts | $0.001 |
-| /setup-encryption | $0.001 |
-| /status | Free |
+| 端点          | 费用       |
+|------------------|-----------|
+| /query        | 0.001 美元    |
+| /ingest       | 0.005 美元    |
+| /identity     | 0.001 美元    |
+| /artifacts     | 0.001 美元    |
+| /setup-encryption | 0.001 美元    |
+| /status       | 免费        |
 
-## Encrypted Storage (Optional)
+## 加密存储（可选）
 
-If you need privacy (competitive data, sensitive memories):
+如果您需要保护数据隐私（例如存储敏感信息），可以选择使用加密存储功能：
 
-| Mode | Setup | Storage | Can MemData Read? |
-|------|-------|---------|-------------------|
-| Standard | None | Postgres | Yes |
-| Encrypted | One-time delegation | Storacha (IPFS) | No |
+| 存储模式        | 设置方式        | 存储平台      | MemData 是否可以读取数据？ |
+|---------------|--------------|-------------|-------------------|
+| 标准存储        | 无需特殊设置     | Postgres       | 可以              |
+| 加密存储        | 一次性设置     | Storacha (IPFS)    | 无法读取              |
 
-Enable encryption:
+**启用加密存储的步骤：**
 ```
 GET /setup-encryption     # Get serverDID
 POST /setup-encryption    # Send signed UCAN delegation
 # All future ingest/query now encrypted
 ```
 
-Encrypted storage uses Lit Protocol (threshold cryptography) + Storacha (IPFS/Filecoin).
+加密存储采用 Lit 协议（基于门限密码学的技术）和 Storacha（IPFS 文件存储平台）进行数据存储。
 
 ---
 
-## Endpoints
+## 主要端点
 
-Base: `https://memdata.ai/api/x402`
+MemData 的所有 API 请求都通过 `https://memdata.ai/api/x402` 进行访问。
 
 ---
 
 ### GET /identity
 
-**Call this at the start of every session.** Returns your identity, what you were working on, last session handoff, and memory stats.
+**在每个会话开始时调用此端点。** 返回您的身份信息、上一次会话中处理的内容以及当前的内存使用情况。
 
-**Response:**
+**响应内容：**
 ```json
 {
   "identity": {
@@ -102,9 +98,9 @@ Base: `https://memdata.ai/api/x402`
 
 ### POST /identity
 
-Update your identity or save session handoff before ending.
+用于更新您的身份信息或在会话结束时保存当前的状态数据。
 
-**Update identity:**
+**更新身份信息：**
 ```json
 {
   "agent_name": "YieldBot",
@@ -113,7 +109,7 @@ Update your identity or save session handoff before ending.
 }
 ```
 
-**Save session handoff (before ending):**
+**在会话结束时保存状态数据：**
 ```json
 {
   "session_handoff": {
@@ -128,9 +124,9 @@ Update your identity or save session handoff before ending.
 
 ### POST /ingest
 
-Store content in memory. Auto-chunks and embeds.
+用于将数据存储到内存中。系统会自动将数据分割成多个小块并进行存储。
 
-**Request:**
+**请求格式：**
 ```json
 {
   "content": "Aave USDC yield is 4.2% APY as of Feb 3. Compound is 3.8%.",
@@ -139,7 +135,7 @@ Store content in memory. Auto-chunks and embeds.
 }
 ```
 
-**Response:**
+**响应内容：**
 ```json
 {
   "success": true,
@@ -153,9 +149,9 @@ Store content in memory. Auto-chunks and embeds.
 
 ### POST /query
 
-Semantic search across your memories.
+允许您对存储在 MemData 中的数据进行语义搜索。
 
-**Request:**
+**请求格式：**
 ```json
 {
   "query": "what are the best DeFi yields?",
@@ -164,7 +160,7 @@ Semantic search across your memories.
 }
 ```
 
-**Response:**
+**响应内容：**
 ```json
 {
   "success": true,
@@ -186,15 +182,15 @@ Semantic search across your memories.
 }
 ```
 
-Optional filters: `since`, `until` (ISO dates)
+**可选过滤条件：** `since` 和 `until`（支持 ISO 日期格式）
 
 ---
 
 ### GET /setup-encryption
 
-Check encryption status. Returns info needed to create UCAN delegation.
+用于查询加密存储的当前状态，并提供创建加密存储所需的信息。
 
-**Response:**
+**响应内容：**
 ```json
 {
   "encryption": {
@@ -209,24 +205,24 @@ Check encryption status. Returns info needed to create UCAN delegation.
 
 ### POST /setup-encryption
 
-Enable encrypted storage. One-time setup.
+用于启用加密存储功能。此操作需要一次性完成设置。
 
-**Request:**
+**请求格式：**
 ```json
 {
   "delegationCar": "base64-encoded UCAN delegation"
 }
 ```
 
-After this, all /ingest encrypts via Lit Protocol and stores on Storacha. All /query decrypts before returning. Response `encrypted` field becomes `true`.
+启用加密存储后，所有通过 `/ingest` 发送的数据都会使用 Lit 协议进行加密，并存储在 Storacha 上；所有通过 `/query` 请求获取的数据在返回前都会被解密。响应中的 `encrypted` 字段会显示为 `true`。
 
 ---
 
 ### GET /artifacts
 
-List stored memories.
+用于列出所有存储在 MemData 中的数据。
 
-**Response:**
+**响应内容：**
 ```json
 {
   "artifacts": [
@@ -245,31 +241,31 @@ List stored memories.
 
 ### DELETE /artifacts/:id
 
-Delete a memory and all its chunks.
+用于删除指定的数据及其所有存储片段。
 
 ---
 
 ### GET /status
 
-Health check and pricing. Free, no payment required.
+提供系统健康状况和价格信息。此操作免费，无需支付费用。
 
 ---
 
-## Memory Grounding
+## 数据存储相关说明
 
-Query responses include `memory.grounding`:
+查询响应中包含 `memory.grounding` 字段，用于说明数据存储的详细情况：
 
-| Value | Meaning |
-|-------|---------|
-| `historical_baseline` | 100+ data points, trends meaningful |
-| `snapshot` | <100 data points, point-in-time only |
-| `insufficient_data` | No memories found |
+| 字段含义        | 描述                        |
+|------------------|-------------------------------|
+| `historical_baseline` | 包含 100 个以上数据点，可用于分析数据趋势       |
+| `snapshot`     | 包含少于 100 个数据点，仅表示当前状态         |
+| `insufficient_data` | 未找到任何存储的数据                   |
 
 ---
 
-## Links
+## 相关链接
 
-- Docs: https://memdata.ai/docs
-- x402 Protocol: https://www.x402.org
-- Lit Protocol: https://litprotocol.com
-- Storacha: https://storacha.network
+- 官方文档：https://memdata.ai/docs  
+- x402 协议文档：https://www.x402.org  
+- Lit 协议文档：https://litprotocol.com  
+- Storacha 项目官网：https://storacha.network

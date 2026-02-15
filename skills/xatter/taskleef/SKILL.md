@@ -1,169 +1,170 @@
 ---
 name: taskleef
-description: Use when managing todos, tasks, projects, or kanban boards via Taskleef.com. Supports adding, listing, completing, deleting todos, organizing with projects, and managing kanban boards. Use when the user wants to track tasks, manage their todo list, organize work by projects, or use kanban workflows.
+description: **使用场景：**  
+适用于通过 Taskleef.com 管理待办事项（todos）、任务（tasks）、项目（projects）或看板（kanban boards）的场景。支持添加、查看、完成待办事项，以及将待办事项与项目关联并进行组织。同时，也支持使用看板工作流程来跟踪任务、管理待办列表或按项目划分工作内容。
 metadata: {"clawdbot":{"emoji":"✅","requires":{"bins":["todo","curl","jq"],"env":["TASKLEEF_API_KEY"]},"primaryEnv":"TASKLEEF_API_KEY","homepage":"https://taskleef.com","install":[{"id":"todo-cli","kind":"download","url":"https://raw.githubusercontent.com/Xatter/taskleef/main/taskleef-cli/todo","bins":["todo"],"label":"Install Taskleef CLI (todo)"},{"id":"jq-brew","kind":"brew","formula":"jq","bins":["jq"],"label":"Install jq via Homebrew","os":["darwin"]},{"id":"jq-linux-amd64","kind":"download","url":"https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64","bins":["jq"],"label":"Install jq (Linux x86_64)","os":["linux"]},{"id":"jq-linux-arm64","kind":"download","url":"https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-arm64","bins":["jq"],"label":"Install jq (Linux ARM64)","os":["linux"]}]}}
 ---
 
 # Taskleef
 
-Manage todos, projects, and kanban boards using the Taskleef CLI. Taskleef.com is a flexible todo application that supports simple task lists, project organization, and kanban board workflows.
+使用 Taskleef CLI 管理待办事项、项目和看板。Taskleef.com 是一个功能灵活的待办事项管理工具，支持简单的任务列表、项目组织和看板工作流程。
 
-## Prerequisites
+## 先决条件
 
-The `todo` CLI requires:
-- `curl` - for making API requests
-- `jq` - for parsing JSON responses
-- `TASKLEEF_API_KEY` environment variable
+`todo` CLI 需要以下工具：
+- `curl` - 用于发送 API 请求
+- `jq` - 用于解析 JSON 响应
+- `TASKLEEF_API_KEY` 环境变量
 
-## Authentication
+## 认证
 
-The CLI uses the `TASKLEEF_API_KEY` environment variable. Users can get their API key from https://taskleef.com.
+CLI 使用 `TASKLEEF_API_KEY` 环境变量进行认证。用户可以从 https://taskleef.com 获取自己的 API 密钥。
 
-Optionally, users can use `--auth-file` flag to specify an auth file:
+可选地，用户可以使用 `--auth-file` 标志来指定认证文件：
 ```bash
 todo --auth-file ~/.taskleef.auth list
 todo -a ~/.taskleef.auth list
 ```
 
-## Core Commands
+## 核心命令
 
-### Todo Management
+### 待办事项管理
 
-**List todos:**
+**列出所有待办事项：**
 ```bash
 todo list           # List pending todos
 todo ls             # Alias for list
 todo list -a        # List all todos including completed
 ```
 
-**Add todos:**
+**添加待办事项：**
 ```bash
 todo add "Buy groceries"
 todo "Buy groceries"    # Quick add without 'add' keyword
 ```
 
-**Show todo details:**
+**查看待办事项详情：**
 ```bash
 todo show <title-or-id>
 ```
 
-**Complete todos:**
+**完成待办事项：**
 ```bash
 todo complete <title-or-id>
 todo done <title-or-id>
 ```
 
-**Delete todos:**
+**删除待办事项：**
 ```bash
 todo delete <title-or-id>
 todo rm <title-or-id>
 ```
 
-**View inbox:**
+**查看收件箱：**
 ```bash
 todo inbox    # List todos not assigned to any project
 ```
 
-### Subtasks
+### 子任务
 
-**Add subtasks:**
+**添加子任务：**
 ```bash
 todo subtask <parent-title-or-id> "Subtask title"
 ```
 
-### Projects
+### 项目
 
-**List projects:**
+**列出项目：**
 ```bash
 todo project list
 ```
 
-**Create project:**
+**创建项目：**
 ```bash
 todo project add "Project Name"
 ```
 
-**Show project details:**
+**查看项目详情：**
 ```bash
 todo project show <project-name-or-id>
 ```
 
-**Delete project:**
+**删除项目：**
 ```bash
 todo project delete <project-name-or-id>
 ```
 
-**Add todo to project:**
+**将待办事项分配给项目：**
 ```bash
 todo project add-todo <project-name-or-id> <todo-title-or-id>
 ```
 
-**Remove todo from project:**
+**从项目中移除待办事项：**
 ```bash
 todo project remove-todo <project-name-or-id> <todo-title-or-id>
 ```
 
-### Kanban Boards
+### 看板
 
-**Show board:**
+**查看看板：**
 ```bash
 todo board                           # Show default board (ASCII view)
 todo board show <board-name-or-id>   # Show specific board
 ```
 
-**List boards:**
+**列出所有看板：**
 ```bash
 todo board list
 ```
 
-**List column cards:**
+**列出看板中的卡片：**
 ```bash
 todo board column <column-name-or-id>
 ```
 
-**Move card:**
+**移动卡片：**
 ```bash
 todo board move <card-title-or-id> <column-name-or-id>
 ```
 
-**Mark card done:**
+**标记卡片为已完成：**
 ```bash
 todo board done <card-title-or-id>
 ```
 
-**Assign card:**
+**分配卡片负责人：**
 ```bash
 todo board assign <card-title-or-id>
 ```
 
-**Clear column:**
+**清除某一列的卡片：**
 ```bash
 todo board clear <column-name-or-id>
 ```
 
-## Identifier Matching
+## 标识符匹配规则
 
-Commands accept:
-- **ID prefix**: First few characters of UUID (e.g., `abc12`)
-- **Title match**: Partial, case-insensitive title match (e.g., `groceries` matches "Buy groceries")
+命令支持以下匹配方式：
+- **ID 前缀**：UUID 的前几个字符（例如 `abc12`）
+- **标题匹配**：不区分大小写的标题匹配（例如，`groceries` 匹配 “Buy groceries”）
 
-## Priority Indicators
+## 优先级指示
 
-When listing todos, you'll see:
-- ○ No priority
-- ● (green) Low priority
-- ● (yellow) Medium priority
-- ● (red) High priority
+在列出待办事项时，优先级会以以下方式显示：
+- ○ 无优先级
+- ● （绿色）低优先级
+- ● （黄色）中等优先级
+- ● （红色）高优先级
 
-## Usage Tips
+## 使用技巧
 
-1. **Finding items**: You can reference todos, projects, boards, columns, and cards by partial title or ID prefix
-2. **Quick workflow**: Use `todo "task"` for fast task entry
-3. **Project organization**: Group related todos under projects for better organization
-4. **Kanban boards**: Use boards for visual workflow management
-5. **Subtasks**: Break down complex tasks into subtasks for better tracking
+1. **查找项目/卡片**：可以通过部分标题或 ID 前缀来查找待办事项、项目、看板和卡片。
+2. **快速操作**：使用 `todo "task"` 可以快速添加新任务。
+3. **项目组织**：将相关待办事项归类到项目中，以便更好地管理。
+4. **看板管理**：利用看板进行可视化的任务流程管理。
+5. **子任务**：将复杂任务分解为子任务，以便更清晰地跟踪进度。
 
-## Examples
+## 示例
 
 ```bash
 # Add and complete a todo
@@ -179,11 +180,11 @@ todo board
 todo board move "Feature A" "Done"
 ```
 
-## Error Handling
+## 错误处理
 
-If the `TASKLEEF_API_KEY` is not set or invalid, commands will fail. Ensure the API key is configured before running commands.
+如果未设置 `TASKLEEF_API_KEY` 或 API 密钥无效，命令将无法执行。请确保在运行命令前配置好 API 密钥。
 
-## Additional Resources
+## 额外资源
 
-- Website: https://taskleef.com
-- Generate API key: https://taskleef.com (user dashboard)
+- 官网：https://taskleef.com
+- 生成 API 密钥：https://taskleef.com（用户控制台）

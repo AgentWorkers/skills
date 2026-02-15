@@ -1,15 +1,13 @@
 ---
 name: lightning-security-module
-description: Set up an lnd remote signer container that holds private keys separately from the agent. Exports a credentials bundle (accounts JSON, TLS cert, admin macaroon) for watch-only litd nodes. Container-first with Docker, native fallback. Use when firewalling private key material from AI agents.
+description: 设置一个 LND（Lightning Network Daemon）远程签名器容器，用于将私钥与代理程序分离存储。该容器会导出一组凭证文件（包括账户信息 JSON 数据、TLS 证书以及管理员专用的密钥文件），以便供仅具有查看权限的 Lightning Network 节点使用。优先使用 Docker 构建该容器；如果 Docker 不可用，则采用原生解决方案。此方法适用于需要隔离 AI 代理程序中的私钥数据的场景（例如，通过防火墙进行保护）。
 ---
 
-# Lightning Security Module (Remote Signer)
+# Lightning 安全模块（远程签名器）
 
-Set up an lnd remote signer container that holds private keys on a separate,
-secured machine. The signer never routes payments or opens channels — it only
-holds keys and signs when asked by a watch-only litd node.
+请设置一个 lnd 远程签名器容器，该容器将私钥存储在单独的、安全的机器上。该签名器从不负责路由支付或打开通道——它仅负责存储私钥，并在受到仅具有查看权限的 litd 节点请求时执行签名操作。
 
-## Architecture
+## 架构
 
 ```
 Agent Machine                     Signer Machine (secure)
@@ -22,16 +20,13 @@ Agent Machine                     Signer Machine (secure)
 └─────────────────┘              └─────────────────────┘
 ```
 
-The watch-only node handles all networking and channel management. The signer
-node holds the seed and performs cryptographic signing. Even if the agent machine
-is fully compromised, the attacker cannot extract private keys.
+仅具有查看权限的节点负责所有的网络管理和通道管理。签名器节点则负责存储种子短语并执行加密签名操作。即使代理机器遭到完全入侵，攻击者也无法提取私钥。
 
-See [references/architecture.md](references/architecture.md) for the full
-architecture explainer.
+有关完整的架构说明，请参阅 [references/architecture.md](references/architecture.md)。
 
-## Quick Start (Container — Recommended)
+## 快速入门（推荐使用容器）
 
-### On the Signer Machine
+### 在签名器机器上
 
 ```bash
 # 1. Install lnd signer image
@@ -47,7 +42,7 @@ skills/lightning-security-module/scripts/setup-signer.sh
 #    The setup script prints the bundle path and base64 string.
 ```
 
-### On the Agent Machine
+### 在代理机器上
 
 ```bash
 # 5. Import credentials bundle
@@ -63,9 +58,9 @@ skills/lnd/scripts/create-wallet.sh
 skills/lnd/scripts/lncli.sh getinfo
 ```
 
-### Two-Container Local Setup
+### 在同一台机器上设置两个容器
 
-For testing both on the same machine:
+用于在同一台机器上进行测试：
 
 ```bash
 # Start litd + signer together
@@ -79,26 +74,25 @@ skills/lnd/scripts/import-credentials.sh --bundle ~/.lnget/signer/credentials-bu
 skills/lnd/scripts/create-wallet.sh --container litd
 ```
 
-## Installation
+## 安装
 
-Default: pulls the lnd Docker image for the signer.
+默认情况下，会从 Docker Hub 下载 lnd 的 Docker 镜像。
 
 ```bash
 skills/lightning-security-module/scripts/install.sh
 ```
 
-This pulls `lightninglabs/lnd:v0.20.0-beta` from Docker Hub. The signer only
-needs plain lnd (not litd) since it only holds keys and signs.
+该操作会从 Docker Hub 下载 `lightninglabs/lnd:v0.20.0-beta` 镜像。由于签名器仅负责存储私钥和执行签名操作，因此只需要普通的 lnd 镜像（无需 litd 镜像）。
 
-### Build from Source (Fallback)
+### 从源代码构建（备用方案）
 
 ```bash
 skills/lightning-security-module/scripts/install.sh --source
 ```
 
-## Native Mode
+## 本地模式
 
-For running the signer without Docker:
+如果不想使用 Docker，可以按照以下步骤运行签名器：
 
 ```bash
 # Set up signer natively
@@ -111,9 +105,9 @@ skills/lightning-security-module/scripts/start-signer.sh --native
 skills/lightning-security-module/scripts/stop-signer.sh --native
 ```
 
-## Remote Nodes
+## 远程节点
 
-Export credentials from a remote signer:
+如何从远程签名器导出凭据：
 
 ```bash
 skills/lightning-security-module/scripts/export-credentials.sh \
@@ -122,34 +116,33 @@ skills/lightning-security-module/scripts/export-credentials.sh \
     --macaroonpath ~/signer-admin.macaroon
 ```
 
-## Credential Bundle Format
+## 凭据包格式
 
-The exported bundle (`~/.lnget/signer/credentials-bundle/`) contains:
+导出的凭据包（位于 `~/.lnget/signer/credentials-bundle/` 目录下）包含以下文件：
 
-| File | Purpose |
+| 文件 | 用途 |
 |------|---------|
-| `accounts.json` | Account xpubs for watch-only wallet import |
-| `tls.cert` | Signer's TLS certificate for authenticated gRPC |
-| `admin.macaroon` | Signer's admin macaroon for RPC authentication |
+| `accounts.json` | 仅用于导入仅具有查看权限的钱包的账户公钥（xpubs） |
+| `tls.cert` | 签名器的 TLS 证书，用于身份验证的 gRPC 连接 |
+| `admin.macaroon` | 签名器的管理员 macaroon，用于 RPC 身份验证 |
 
-The bundle is also available as a single base64-encoded tar.gz file
-(`credentials-bundle.tar.gz.b64`) for easy copy-paste transfer between machines.
+该凭据包也可以被压缩为单个 base64 编码的 tar.gz 文件（`credentials-bundle.tar.gz.b64`），以便在不同机器之间轻松复制和传输。
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `install.sh` | Pull lnd signer image (or build from source) |
-| `docker-start.sh` | Start signer container |
-| `docker-stop.sh` | Stop signer container |
-| `setup-signer.sh` | Create signer wallet and export credentials |
-| `start-signer.sh` | Start signer (delegates to Docker by default) |
-| `stop-signer.sh` | Stop signer (delegates to Docker by default) |
-| `export-credentials.sh` | Re-export credentials from running signer |
+| `install.sh` | 下载 lnd 签名器镜像（或从源代码构建） |
+| `docker-start.sh` | 启动签名器容器 |
+| `docker-stop.sh` | 停止签名器容器 |
+| `setup-signer.sh` | 创建签名器钱包并导出凭据 |
+| `start-signer.sh` | 启动签名器（默认通过 Docker 运行） |
+| `stop-signer.sh` | 停止签名器（默认通过 Docker 运行） |
+| `export-credentials.sh` | 从正在运行的签名器重新导出凭据 |
 
-## Managing the Signer
+## 管理签名器
 
-### Start
+### 启动签名器
 
 ```bash
 # Docker (default)
@@ -159,7 +152,7 @@ skills/lightning-security-module/scripts/start-signer.sh
 skills/lightning-security-module/scripts/start-signer.sh --network mainnet
 ```
 
-### Stop
+### 停止签名器
 
 ```bash
 # Docker stop (preserve data)
@@ -169,85 +162,81 @@ skills/lightning-security-module/scripts/stop-signer.sh
 skills/lightning-security-module/scripts/stop-signer.sh --clean
 ```
 
-### Re-export Credentials
+### 重新导出凭据
 
-If TLS certificates or macaroons have been regenerated:
+如果 TLS 证书或 macaroon 被重新生成，需要执行以下操作：
 
 ```bash
 skills/lightning-security-module/scripts/export-credentials.sh
 ```
 
-## Configuration
+## 配置
 
-### Container Config
+### 容器配置
 
-The signer compose template is at
-`skills/lightning-security-module/templates/docker-compose-signer.yml`. Config
-is passed via command-line arguments.
+签名器的 Docker Compose 配置文件位于 `skills/lightning-security-module/templates/docker-compose-signer.yml`。配置信息通过命令行参数传递。
 
-### Native Config
+### 本地配置
 
-The native signer config template is at
-`skills/lightning-security-module/templates/signer-lnd.conf.template`. Key
-differences from a standard lnd node:
+签名器的本地配置文件位于 `skills/lightning-security-module/templates/signer-lnd.conf.template`。与标准 lnd 节点的主要区别包括：
 
-- **No P2P listening** (`--listen=`) — signer doesn't route
-- **RPC on 0.0.0.0:10012** — accepts connections from watch-only node
-- **REST on localhost:10013** — local only, for wallet creation
-- **TLS extra IP 0.0.0.0** — watch-only on a different machine can connect
-- **No autopilot, no routing fees** — signer is signing-only
+- **不支持 P2P 监听**（`--listen=`）——签名器不负责路由交易 |
+- **RPC 服务地址为 0.0.0.0:10012**——仅接受来自仅具有查看权限的节点的连接 |
+- **REST 服务地址为 localhost:10013**——仅用于本地钱包创建 |
+- **TLS 服务地址为 0.0.0.0`——允许来自其他机器的仅具有查看权限的节点连接 |
+- **不启用 autopilot 功能，也不收取路由费用**——签名器仅负责签名操作 |
 
-## Security Model
+## 安全模型
 
-**What stays on the signer:**
-- 24-word seed mnemonic
-- All private keys (funding, revocation, HTLC)
-- Wallet database with key material
+**签名器上保留的内容：**
+- 24 个单词的种子短语（用于恢复钱包）
+- 所有私钥（包括用于资金转移、撤销交易和 HTLC 的密钥）
+- 包含密钥信息的钱包数据库
 
-**What gets exported:**
-- Account xpubs (public keys only — cannot spend)
-- TLS certificate (for authenticated connection)
-- Admin macaroon (for RPC auth — scope down for production)
+**导出的内容：**
+- 账户的公钥（xpubs，仅用于导入钱包，无法用于交易）
+- 签名器的 TLS 证书（用于身份验证的连接）
+- 签名器的管理员 macaroon（用于 RPC 身份验证，生产环境中使用范围受限）
 
-**Threat model:**
-- Compromised agent machine cannot sign transactions or extract keys
-- Attacker with agent access can see balances and channel state but not spend
-- Signer machine should have minimal attack surface
+**威胁模型：**
+- 即使代理机器被入侵，攻击者也无法签名交易或提取私钥 |
+- 具有代理访问权限的攻击者可以查看账户余额和通道状态，但无法进行交易 |
+- 签名器机器的攻击面应尽可能小
 
-**Production hardening:**
-- Replace admin macaroon with a signer-only macaroon (see `macaroon-bakery`)
-- Restrict signer RPC to specific IP addresses via firewall
-- Run signer on dedicated hardware or a hardened VM
-- Use Lightning Node Connect (LNC) via `lightning-mcp-server` for read-only agent access
+**生产环境的安全加固措施：**
+- 将管理员 macaroon 更改为仅适用于签名器的 macaroon（参见 `macaroon-bakery` 文档） |
+- 通过防火墙限制签名器的 RPC 连接，仅允许特定 IP 地址访问 |
+- 将签名器运行在专用硬件或加固过的虚拟机上 |
+- 使用 `lightning-mcp-server` 通过 Lightning Node Connect (LNC) 提供仅读的代理访问功能
 
-## Macaroon Bakery for Signer
+## 为签名器生成 macaroon
 
-For production, bake a signing-only macaroon:
+在生产环境中，需要生成专用于签名的 macaroon：
 
 ```bash
 skills/macaroon-bakery/scripts/bake.sh --role signer-only \
     --container litd-signer --rpc-port 10012
 ```
 
-Then re-export the credentials bundle with the scoped macaroon.
+然后使用生成的 macaroon 重新导出凭据包。
 
-## Container & Ports
+## 容器和端口
 
-| Container | Purpose | Ports |
+| 容器 | 用途 | 端口 |
 |-----------|---------|-------|
-| `litd-signer` | Remote signer (lnd) | 10012, 10013 |
+| `litd-signer` | 远程签名器（基于 lnd 构建） | 10012, 10013 |
 
-| Port  | Service | Interface | Description |
+| 端口 | 服务 | 接口 | 说明 |
 |-------|---------|-----------|-------------|
-| 10012 | gRPC | 0.0.0.0 | Signer RPC (watch-only connects here) |
-| 10013 | REST | 0.0.0.0 | REST for wallet creation |
+| 10012 | gRPC | 0.0.0.0 | 签名器的 RPC 服务（仅允许具有查看权限的节点连接） |
+| 10013 | REST | 0.0.0.0 | 用于钱包创建的 REST 服务 |
 
-## File Locations
+## 文件位置
 
-| Path | Purpose |
+| 路径 | 用途 |
 |------|---------|
-| `~/.lnget/signer/wallet-password.txt` | Signer wallet passphrase (0600) |
-| `~/.lnget/signer/seed.txt` | Signer seed mnemonic (0600) |
-| `~/.lnget/signer/credentials-bundle/` | Exported credentials |
-| `~/.lnget/signer/signer-lnd.conf` | Signer config (native mode) |
-| `versions.env` | Pinned container image versions |
+| `~/.lnget/signer/wallet-password.txt` | 签名器钱包的密码文件（需要设置密码） |
+| `~/.lnget/signer/seed.txt` | 签名器的种子短语文件 |
+| `~/.lnget/signer/credentials-bundle/` | 导出的凭据包 |
+| `~/.lnget/signer/signer-lnd.conf` | 签名器的配置文件（本地模式） |
+| `versions.env` | 固定的容器镜像版本信息 |

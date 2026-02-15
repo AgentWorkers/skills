@@ -1,28 +1,29 @@
 ---
 name: prompt-assemble
-description: Token-safe prompt assembly with memory orchestration. Use for any agent that needs to construct LLM prompts with memory retrieval. Guarantees no API failure due to token overflow. Implements two-phase context construction, memory safety valve, and hard limits on memory injection.
+description: **具有内存管理功能的令牌安全提示生成系统**  
+适用于所有需要通过内存检索来构建大型语言模型（LLM）提示的代理程序。该系统能够确保不会出现因令牌溢出导致的API故障。它采用了两阶段上下文构建机制、内存安全保护机制以及对内存注入的严格限制。
 ---
 
 # Prompt Assemble
 
-## Overview
+## 概述
 
-A standardized, token-safe prompt assembly framework that guarantees API stability. Implements **Two-Phase Context Construction** and **Memory Safety Valve** to prevent token overflow while maximizing relevant context.
+这是一个标准化且安全的提示生成框架，能够确保API的稳定性。该框架采用了**两阶段上下文构建**（Two-Phase Context Construction）和**内存安全阀**（Memory Safety Valve）机制，以防止令牌（token）溢出，同时最大化利用相关上下文信息。
 
-**Design Goals:**
-- ✅ Never fail due to memory-related token overflow
-- ✅ Memory is always discardable enhancement, never rigid dependency
-- ✅ Token budget decisions centralized at prompt assemble layer
+**设计目标：**
+- ✅ 绝不会因内存相关的令牌溢出而导致系统故障
+- ✅ 内存资源始终是可丢弃的（即非刚性依赖），避免产生固定依赖关系
+- ✅ 令牌使用量的决策权集中在提示生成层（prompt assemble layer）
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-1. Building or modifying any agent that constructs prompts
-2. Implementing memory retrieval systems
-3. Adding new prompt-related logic to existing agents
-4. Any scenario where token budget safety is required
+在以下情况下使用此功能：
+1. 构建或修改用于生成提示的代理（agent）程序
+2. 实现内存检索系统
+3. 为现有代理添加与提示生成相关的逻辑
+4. 任何需要确保令牌使用量安全性的场景
 
-## Core Workflow
+## 核心工作流程
 
 ```
 User Input
@@ -42,9 +43,9 @@ Safety Valve Decision
 Final Prompt → LLM Call
 ```
 
-## Phase Details
+## 各阶段详细信息
 
-### Phase 0: Base Configuration
+### 第0阶段：基础配置
 ```python
 # Model Context Windows (2026-02-04)
 # - MiniMax-M2.1: 204,000 tokens (default)
@@ -57,17 +58,17 @@ MEMORY_TOP_K = 3                     # Max 3 memories
 MEMORY_SUMMARY_MAX = 3 lines        # Max 3 lines per memory
 ```
 
-**Design Philosophy**:
-- Leave 25% buffer for safety (model overhead, estimation errors, spikes)
-- Better to underutilize capacity than to overflow
+**设计理念：**
+- 为安全起见，预留25%的内存缓冲空间（用于模型开销、估算误差及突发情况）
+- 优先选择“内存使用不足”而非“内存溢出”
 
-### Phase 1: Minimal Context
-- System prompt
-- Recent N messages (N=3, trimmed)
-- Current user input
-- **No memory by default**
+### 第1阶段：最小化所需上下文信息
+- 系统提示信息
+- 最近的N条消息（N=3，经过筛选）
+- 当前用户输入
+- **默认情况下不使用内存**
 
-### Phase 2: Memory Need Decision
+### 第2阶段：判断是否需要使用内存
 ```python
 def need_memory(user_input):
     triggers = [
@@ -86,51 +87,51 @@ def need_memory(user_input):
     return False
 ```
 
-### Phase 3: Memory Retrieval (Optional)
+### 第3阶段：内存获取（可选）
 ```python
 memories = memory_search(query=user_input, top_k=MEMORY_TOP_K)
 for mem in memories:
     summarized_memories.append(summarize(mem, max_lines=MEMORY_SUMMARY_MAX))
 ```
 
-### Phase 4: Token Estimation
-Calculate estimated tokens for base_context + summarized_memories.
+### 第4阶段：令牌数量估算
+计算基础上下文信息（base_context）和已获取内存信息（summarized_memories）所需的令牌数量。
 
-### Phase 5: Safety Valve (Critical)
+### 第5阶段：安全阀（关键步骤）
 ```python
 if estimated_tokens > SAFETY_MARGIN:
     base_context.append("[System Notice] Relevant memory skipped due to token budget.")
     return assemble(base_context)
 ```
 
-**Hard Rules:**
-- ❌ Never downgrade system prompt
-- ❌ Never truncate user input
-- ❌ No "lucky splicing"
-- ✅ Only memory layer is expendable
+**严格规则：**
+- ❌ 绝不允许降低系统提示信息的质量
+- ❌ 绝不允许截断用户输入内容
+- ❌ 禁止使用“随机拼接”（lucky splicing）的方式来处理数据
+- ✅ 只有内存资源是可以被消耗的（即可以丢弃的）
 
-### Phase 6: Final Assembly
+### 第6阶段：最终提示生成
 ```python
 final_prompt = assemble(base_context + summarized_memories)
 return final_prompt
 ```
 
-## Memory Data Standards
+## 内存数据标准
 
-### Allowed in Long-Term Memory
-- ✅ User preferences / identity / long-term goals
-- ✅ Confirmed important conclusions
-- ✅ System-level settings and rules
+### 可保存到长期内存中的数据：
+- ✅ 用户偏好设置 / 身份信息 / 长期目标
+- ✅ 已确认的重要结论
+- ✅ 系统级设置和规则
 
-### Forbidden in Long-Term Memory
-- ❌ Raw conversation logs
-- ❌ Reasoning traces
-- ❌ Temporary discussions
-- ❌ Information recoverable from chat history
+### 不允许保存到长期内存中的数据：
+- ❌ 原始对话记录
+- ❌ 推理过程痕迹
+- ❌ 临时性的讨论内容
+- ❌ 可从聊天记录中恢复的信息
 
-## Quick Start
+## 快速入门
 
-Copy `scripts/prompt_assemble.py` to your agent and use:
+将 `scripts/prompt_assemble.py` 文件复制到您的代理程序中，然后按照文档中的说明进行使用：
 
 ```python
 from prompt_assemble import build_prompt
@@ -139,11 +140,11 @@ from prompt_assemble import build_prompt
 final_prompt = build_prompt(user_input, memory_search_fn, get_recent_dialog_fn)
 ```
 
-## Resources
+## 相关资源
 
 ### scripts/
-- `prompt_assemble.py` - Complete implementation with all phases (PromptAssembler class)
+- `prompt_assemble.py` - 包含所有阶段的完整实现代码（PromptAssembler 类）
 
-### references/
-- `memory_standards.md` - Detailed memory content guidelines
-- `token_estimation.md` - Token counting strategies
+### 参考资料/
+- `memory_standards.md` - 详细的内存数据使用规范
+- `token_estimation.md` - 令牌数量估算策略

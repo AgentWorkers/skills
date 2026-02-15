@@ -1,36 +1,36 @@
 ---
 name: internal-linking-optimizer
-description: Analyzes and optimizes internal link structure to improve site architecture, distribute page authority, and help search engines understand content relationships. Creates strategic internal linking plans.
+description: 分析并优化内部链接结构，以改善网站架构、分配页面权重（page authority），并帮助搜索引擎理解内容之间的关系。制定策略性的内部链接计划。
 geo-relevance: "low"
 ---
 
-# Internal Linking Optimizer
+# 内部链接优化器
 
-This skill analyzes your site's internal link structure and provides recommendations to improve SEO through strategic internal linking. It helps distribute authority, establish topical relevance, and improve crawlability.
+该工具会分析您网站的内部链接结构，并提供通过战略性内部链接来提升SEO的建议。它有助于分配网站权重、建立主题相关性以及提高网站的爬虫可访问性。
 
-## When to Use This Skill
+## 适用场景
 
-- Improving site architecture for SEO
-- Distributing authority to important pages
-- Fixing orphan pages with no internal links
-- Creating topic cluster internal link strategies
-- Optimizing anchor text for SEO
-- Recovering pages that have lost rankings
-- Planning internal links for new content
+- 优化网站架构以提升SEO效果
+- 将权重分配给重要页面
+- 修复没有内部链接的“孤儿页面”
+- 制定主题集群的内部链接策略
+- 优化锚文本以提升SEO效果
+- 恢复排名下降的页面
+- 为新内容规划内部链接
 
-## What This Skill Does
+## 功能概述
 
-1. **Link Structure Analysis**: Maps current internal linking patterns
-2. **Authority Flow Mapping**: Shows how PageRank flows through site
-3. **Orphan Page Detection**: Finds pages with no internal links
-4. **Anchor Text Optimization**: Improves anchor text diversity
-5. **Topic Cluster Linking**: Creates pillar-cluster link strategies
-6. **Link Opportunity Finding**: Identifies where to add links
-7. **Navigation Optimization**: Improves site-wide link elements
+1. **链接结构分析**：绘制当前的内部链接模式
+2. **权重流动图**：展示PageRank在网站中的流动情况
+3. **孤儿页面检测**：找出没有内部链接的页面
+4. **锚文本优化**：提高锚文本的多样性
+5. **主题集群链接**：创建支柱页面与集群文章之间的链接策略
+6. **寻找链接机会**：确定需要添加链接的位置
+7. **导航优化**：优化整个网站的链接元素
 
-## How to Use
+## 使用方法
 
-### Analyze Current Structure
+### 分析当前链接结构
 
 ```
 Analyze internal linking structure for [domain/sitemap]
@@ -40,7 +40,7 @@ Analyze internal linking structure for [domain/sitemap]
 Find internal linking opportunities for [URL]
 ```
 
-### Create Linking Strategy
+### 制定链接策略
 
 ```
 Create internal linking plan for topic cluster about [topic]
@@ -50,7 +50,7 @@ Create internal linking plan for topic cluster about [topic]
 Suggest internal links for this new article: [content/URL]
 ```
 
-### Fix Issues
+### 修复问题
 
 ```
 Find orphan pages on [domain]
@@ -60,27 +60,27 @@ Find orphan pages on [domain]
 Optimize anchor text across the site
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的详细信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~web crawler + ~~analytics connected:**
-Claude can automatically perform a full site crawl via ~~web crawler to map the complete link graph, fetch page performance metrics from ~~analytics to identify high-value pages, and analyze link flow throughout the site. This enables data-driven internal linking strategies.
+**当与 ~~网络爬虫 + ~~分析工具连接时：**
+Claude可以通过 ~~网络爬虫** 自动完成整个网站的爬取，绘制完整的链接图；通过 ~~分析工具** 获取页面性能指标，识别高价值页面，并分析网站内的链接流动情况。这有助于制定基于数据的内部链接策略。
 
-**With manual data only:**
-Ask the user to provide:
-1. Sitemap URL or list of important pages
-2. Key page URLs that need more internal links
-3. Content categories or topic clusters
-4. Any existing link structure documentation
+**仅使用手动数据时：**
+请用户提供以下信息：
+1. 网站地图URL或重要页面列表
+2. 需要更多内部链接的关键页面URL
+3. 内容类别或主题集群
+4. 任何现有的链接结构文档
 
-Proceed with the analysis using provided data. Note in the output which findings are from automated crawl vs. manual review.
+根据提供的数据进行分析。在输出结果中明确标注哪些发现来自自动爬取，哪些来自人工审核。
 
-## Instructions
+## 使用说明
 
-When a user requests internal linking optimization:
+当用户请求内部链接优化时，请按照以下步骤操作：
 
-1. **Analyze Current Internal Link Structure**
+1. **分析当前内部链接结构**
 
    ```markdown
    ## Internal Link Structure Analysis
@@ -120,7 +120,7 @@ When a user requests internal linking optimization:
    **Structure Score**: [X]/10
    ```
 
-2. **Identify Orphan Pages**
+2. **识别孤儿页面**
 
    ```markdown
    ## Orphan Page Analysis
@@ -152,9 +152,9 @@ When a user requests internal linking optimization:
    2. [URL] - Delete or noindex
    ```
 
-3. **Analyze Anchor Text Distribution**
+3. **分析锚文本分布**
 
-   > **CORE-EEAT alignment**: Internal linking quality maps to R08 (Internal Link Graph) in the CORE-EEAT benchmark -- use descriptive anchors, ensure links support topical authority. See [content-quality-auditor](../../cross-cutting/content-quality-auditor/) for full audit.
+   > **CORE-EEAT对齐**：内部链接的质量与CORE-EEAT基准测试中的R08（内部链接图）相匹配——使用描述性强的锚文本，确保链接能够体现主题权重。详情请参阅 [content-quality-auditor](../../cross-cutting/content-quality-auditor/)。
 
    ```markdown
    ## Anchor Text Analysis
@@ -198,7 +198,7 @@ When a user requests internal linking optimization:
    **Anchor Score**: [X]/10
    ```
 
-4. **Create Topic Cluster Link Strategy**
+4. **制定主题集群链接策略**
 
    ```markdown
    ## Topic Cluster Internal Linking
@@ -211,28 +211,28 @@ When a user requests internal linking optimization:
    ### Current Link Map
    
    ```
-   [Pillar Page]
-      ├── [Cluster Article 1] ←→ [linked?]
-      ├── [Cluster Article 2] ←→ [linked?]
-      ├── [Cluster Article 3] ←→ [linked?]
-      └── [Cluster Article 4] ←→ [linked?]
+   [支柱页面]
+      ├── [集群文章1] ←→ [已链接？]
+      ├── [集群文章2] ←→ [已链接？]
+      ├── [集群文章3] ←→ [已链接？]
+      └── [集群文章4] ←→ [已链接？]
    ```
    
    ### Recommended Link Structure
    
    ```
-   [Pillar Page]
-      ├── Links TO all cluster articles ✅
+   [支柱页面]
+      ├── 链接到所有集群文章 ✅
       │
-      ├── [Cluster Article 1]
-      │   ├── Link TO pillar ✅
-      │   └── Link TO related cluster articles
+      ├── [集群文章1]
+      │   ├── 链接到支柱页面 ✅
+      │   └── 链接到相关集群文章
       │
-      ├── [Cluster Article 2]
-      │   ├── Link TO pillar ✅
-      │   └── Link TO related cluster articles
+      ├── [集群文章2]
+      │   ├── 链接到支柱页面 ✅
+      │   └── 链接到相关集群文章
       │
-      └── [etc.]
+      └── [等等]
    ```
    
    ### Links to Add
@@ -244,7 +244,7 @@ When a user requests internal linking optimization:
    | [Pillar] | [Cluster 1] | "[anchor]" | [section] |
    ```
 
-5. **Find Contextual Link Opportunities**
+5. **寻找合适的链接机会**
 
    ```markdown
    ## Contextual Link Opportunities
@@ -287,7 +287,7 @@ When a user requests internal linking optimization:
       [etc.]
    ```
 
-6. **Optimize Navigation and Footer Links**
+6. **优化导航和页脚链接**
 
    ```markdown
    ## Site-Wide Link Optimization
@@ -322,7 +322,7 @@ When a user requests internal linking optimization:
    1. [Page] - Move to [footer/remove] because [reason]
    ```
 
-7. **Generate Link Implementation Plan**
+7. **生成链接实施计划**
 
    ```markdown
    # Internal Linking Optimization Plan
@@ -406,24 +406,24 @@ When a user requests internal linking optimization:
    - [ ] Internal link distribution changes
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Site structure or sitemap provided (URL or file)
-- [ ] Target pages or topic clusters clearly defined
-- [ ] If optimizing specific page, page URL or content provided
+### 输入验证
+- [ ] 提供了网站结构或站点地图（URL或文件）
+- [ ] 明确了目标页面或主题集群
+- [ ] 如果针对特定页面进行优化，请提供该页面的URL或内容
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] All link suggestions include source page, target page, and recommended anchor text
-- [ ] Orphan page lists include URLs and recommended actions
-- [ ] Source of each data point clearly stated (~~web crawler data, ~~analytics, user-provided, or manual analysis)
+### 输出验证
+- [ ] 每条建议都引用了具体的数据支持
+- [ ] 所有的链接建议都包含源页面、目标页面和推荐的锚文本
+- [ ] 孤儿页面列表中包含URL及推荐的优化措施
+- [ ] 明确指出每个数据点的来源（来自~~网络爬虫数据、~~分析工具、用户提供的数据或人工分析）
 
-## Example
+## 示例
 
-**User**: "Find internal linking opportunities for my blog post about 'email marketing best practices'"
+**用户**：“为我关于‘电子邮件营销最佳实践’的博客文章寻找内部链接机会”
 
-**Output**:
+**输出结果：**
 
 ```markdown
 ## Internal Linking Opportunities
@@ -456,27 +456,27 @@ When a user requests internal linking optimization:
 3. Add to "Marketing" category page
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Quality over quantity** - Add relevant links, not random ones
-2. **User-first thinking** - Links should help users navigate
-3. **Vary anchor text** - Avoid over-optimization
-4. **Link to important pages** - Distribute authority strategically
-5. **Regular audits** - Internal links need maintenance as content grows
+1. **质量优先于数量** — 添加相关链接，而非随机链接
+2. **以用户为中心** — 链接应有助于用户导航
+3. **多样化锚文本** — 避免过度优化
+4. **链接到重要页面** — 战略性地分配权重
+5. **定期审计** — 随着内容更新，需要定期维护内部链接
 
-## Link Architecture Patterns
+## 链接架构模式
 
-### Common Architecture Models
+### 常见架构模型
 
-| Model | Description | Best For | Limitations |
+| 模型 | 描述 | 适用场景 | 限制 |
 |-------|------------|---------|------------|
-| **Hub-and-Spoke** | Central pillar links to/from cluster pages | Topic authority, content hubs | Can isolate topic clusters |
-| **Silo Structure** | Strict category hierarchies, vertical linking | Large e-commerce, strict taxonomy | Limits cross-topic discovery |
-| **Flat Architecture** | All pages 2-3 clicks from homepage | Small sites (<100 pages) | Doesn't scale to large sites |
-| **Pyramid** | Homepage → Categories → Subcategories → Pages | News sites, large blogs | Deep pages get less authority |
-| **Mesh/Matrix** | Cross-links between related content freely | Knowledge bases, wikis | Can become chaotic without rules |
+| **中心辐射式** | 中心支柱页面链接到各个集群页面 | 适用于需要明确主题权重的场景 | 可能导致某些主题集群被孤立 |
+| **孤立结构** | 严格的分类层次结构，垂直链接方式 | 适用于大型电子商务网站或具有严格分类体系的网站 | 限制了跨主题内容的发现 |
+| **扁平结构** | 所有页面从首页最多只需2-3次点击即可访问 | 适用于小型网站（少于100页） | 不适合大型网站 |
+| **金字塔结构** | 首页 → 分类 → 子分类 → 页面 | 适用于新闻网站或大型博客 | 深层页面的权重可能较低 |
+| **网状/矩阵结构** | 相关内容之间自由链接 | 适用于知识库或维基网站 | 无规则时可能导致链接结构混乱 |
 
-### Hub-and-Spoke Implementation
+### 中心辐射式架构的实现方式
 
 ```
 Homepage
@@ -491,66 +491,66 @@ Homepage
 Cross-links: A2 → B1 (related subtopics)
 ```
 
-## Anchor Text Diversity Framework
+## 锚文本多样性框架
 
-### Anchor Text Types
+### 锚文本类型
 
-| Type | Example | Target Distribution | Risk Level |
+| 类型 | 例子 | 目标分布 | 风险等级 |
 |------|---------|-------------------|------------|
-| Exact match | "keyword research tools" | 10-15% | Over-optimization risk if higher |
-| Partial match | "best tools for keyword research" | 20-30% | Safe, natural variation |
-| Branded | "Ahrefs keyword explorer" | 15-25% | Always safe |
-| Generic | "click here", "learn more", "read this" | 5-10% | Low SEO value |
-| Descriptive/natural | "this comprehensive guide covers..." | 20-30% | Most natural, recommended |
-| Naked URL | "example.com/page" | 5-10% | Natural for citations |
+| 完全匹配 | “关键词研究工具” | 10-15% | 如果比例过高，可能导致过度优化 |
+| 部分匹配 | “最佳关键词研究工具” | 20-30% | 安全且自然 |
+| 品牌化锚文本 | “Ahrefs关键词探索器” | 15-25% | 始终是安全的 |
+| 通用性锚文本 | “点击这里”、“了解更多”、“阅读此内容” | 5-10% | SEO价值较低 |
+| 描述性/自然语言锚文本 | “本指南涵盖了……” | 20-30% | 最自然的方式，推荐使用 |
+| 裸露的URL | “example.com/page” | 5-10% | 适用于引用链接 |
 
-### Anchor Text Best Practices
-- Vary anchor text for the same target page
-- Use descriptive text that tells users AND search engines what to expect
-- Never use identical anchor text for different target pages
-- Monitor for accidental over-optimization of commercial keywords
+### 锚文本的最佳实践
+- 对于同一个目标页面，使用多样化的锚文本
+- 使用能够同时向用户和搜索引擎传达信息的描述性文本
+- 不要对不同的目标页面使用相同的锚文本
+- 注意避免过度使用商业关键词
 
-## Link Equity Flow Model
+## 链接权重流动模型
 
-### Link Equity Distribution
+### 链接权重分配
 
-| Page Position | Equity Received | Action to Increase |
+| 页面位置 | 接收到的权重 | 提高权重的方法 |
 |--------------|----------------|-------------------|
-| Homepage | Highest (all external links flow here) | Distribute to key pages via prominent links |
-| Category pages | High (linked from homepage + child pages) | Link to from blog posts, not just nav |
-| Top content | Medium-High (if well-linked internally) | Increase internal links from other strong pages |
-| Deep pages | Low (few internal links) | Add contextual links from related pages |
-| Orphan pages | Zero (no internal links!) | Critical: add at least 3 internal links |
+| 首页 | 权重最高（所有外部链接都指向首页） | 通过显眼的链接将权重分配给关键页面 |
+| 分类页面 | 权重较高（来自首页和其他子页面的链接） | 除了导航链接外，还应从博客文章中添加指向这些页面的链接 |
+| 优质内容页面 | 权重中等偏高（如果有较多的内部链接） | 增加来自其他优质页面的链接 |
+| 深层页面 | 权重较低（内部链接较少） | 从相关页面添加上下文相关的链接 |
+| 孤儿页面 | 权重为零（没有内部链接） | 非常重要：至少添加3个内部链接 |
 
-### Link Equity Optimization Rules
-1. **Link from strong pages to weak pages** — pages with high authority should link to priority pages
-2. **Reduce click depth** — important pages should be within 3 clicks of homepage
-3. **Fix orphan pages** — every page needs at least one internal link
-4. **Use contextual links** — links within body content pass more value than navigation/footer links
-5. **Limit links per page** — diminishing returns above 100 internal links per page
+### 链接权重优化规则
+1. **从权重较高的页面链接到权重较低的页面** — 权重较高的页面应链接到关键页面
+2. **减少点击深度** — 重要页面应在首页的3次点击范围内
+3. **修复孤儿页面** — 每个页面都至少需要一个内部链接
+4. **使用上下文相关的链接** — 文本正文中的链接比导航/页脚链接更具价值
+5. **控制每页的链接数量** — 每页的链接数量超过100个后，效果会逐渐减弱
 
-## Internal Link Audit Checklist
+## 内部链接审计检查清单
 
-| Check | Tool/Method | Pass Criteria |
+| 检查项 | 工具/方法 | 合格标准 |
 |-------|------------|--------------|
-| Orphan pages | Crawl report | Zero orphan pages |
-| Click depth | Crawl report | All priority pages ≤3 clicks from home |
-| Broken internal links | Crawl report | Zero 404 internal links |
-| Redirect chains | Crawl report | No chain >2 redirects |
-| Anchor text diversity | Manual audit | No anchor text >30% exact match |
-| Bidirectional links | Manual audit | Related pages link to each other |
-| Navigation consistency | Manual audit | Key pages in main nav |
-| Contextual links per page | Manual audit | 3-5 contextual links per 1000 words |
+| 孤儿页面 | 爬取报告 | 不存在孤儿页面 |
+| 点击深度 | 爬取报告 | 所有关键页面都在首页的3次点击范围内 |
+| 故障的内部链接 | 爬取报告 | 不存在404错误的内部链接 |
+| 重定向链 | 爬取报告 | 不存在超过2次的重定向链 |
+| 锚文本多样性 | 人工审核 | 链接文本中完全匹配的锚文本占比不超过30% |
+| 双向链接 | 人工审核 | 相关页面之间互相链接 |
+| 导航一致性 | 人工审核 | 关键页面在主导航中可见 |
+| 每1000个单词内的上下文相关链接数量 | 人工审核 | 每1000个单词至少有3个上下文相关的链接 |
 
-## Reference Materials
+## 参考资料
 
-- [Link Architecture Patterns](./references/link-architecture-patterns.md) — Architecture models, implementation guides, and link equity optimization strategies
+- [链接架构模式](./references/link-architecture-patterns.md) — 架构模型、实施指南和链接权重优化策略
 
-## Related Skills
+## 相关技能
 
-- [content-gap-analysis](../../research/content-gap-analysis/) — Find content to link to
-- [seo-content-writer](../../build/seo-content-writer/) — Create linkable content
-- [on-page-seo-auditor](../on-page-seo-auditor/) — Audit overall on-page SEO
-- [technical-seo-checker](../technical-seo-checker/) — Check crawlability
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-- [schema-markup-generator](../../build/schema-markup-generator/) — Breadcrumb and navigation schema
+- [内容缺口分析](../../research/content-gap-analysis/) — 寻找需要链接的内容
+- [SEO内容编写工具](../../build/seo-content-writer/) — 创建适合链接的内容
+- [页面SEO审计工具](../on-page-seo-auditor/) — 审计页面上的SEO情况
+- [技术SEO检查工具](../technical-seo-checker/) — 检查网站的爬虫可访问性
+- [内容质量审计工具](../../cross-cutting/content-quality-auditor/) — 全面的80项CORE-EEAT审计
+- [结构标记生成工具](../../build/schema-markup-generator/) — 生成面包屑导航和站点结构标记

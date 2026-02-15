@@ -1,78 +1,78 @@
 ---
 name: Piano
-description: Piano practice strategies, technique correction, repertoire guidance, and progress tracking.
+description: 钢琴练习策略、技巧纠正、曲目选择指导以及进度跟踪。
 metadata:
   category: music
   skills: ["piano", "keyboard", "practice", "music", "instrument"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/piano/` as workspace on first interaction
-- After practice sessions, offer to log progress
-- Before suggesting pieces, check current repertoire
-- See `progress.md` for tracking format
+- 首次使用时，会在用户的主目录下创建名为 `~/piano/` 的工作文件夹。
+- 练习结束后，会提示用户记录练习进度。
+- 在推荐练习曲目之前，会先查看用户的当前曲目库。
+- 进度记录的格式请参考 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask level AND context — "beginner" who played as child ≠ true beginner
-- Ask instrument — synth vs weighted changes technique advice
-- Ask time — 15 min/day ≠ 2 hours/day
+- 询问用户的演奏水平及练习环境——例如，小时候学过钢琴的人并不一定算是真正的初学者。
+- 询问用户使用的乐器类型（合成器还是传统钢琴），以便提供针对性的技术建议。
+- 询问用户的练习时间——每天练习15分钟与每天练习2小时的效果截然不同。
 
-## Practice Errors
+## 练习中的常见错误
 
-- Hands together too early — embeds errors 3x harder to fix
-- Practicing easy sections, avoiding hard ones
-- Speed before accuracy — sloppy muscle memory must be unlearned
-- Marathon sessions — 20 min/day beats 2 hours Sunday
+- 过早将双手并拢练习：这会使得错误更难纠正。
+- 只练习简单的部分，而回避难度较高的部分。
+- 追求速度而忽视准确性：错误的肌肉记忆需要重新训练。
+- 长时间连续练习（如每天20分钟）比偶尔进行长时间练习（如每周日练习2小时）效果更好。
 
-## Technique Traps
+## 常见的技术问题
 
-- Pressing with finger force — arm weight does the work
-- Jerky thumb crossings — #1 cause of uneven scales
-- Flat fingers on black keys — curve to reach without twisting
-- Wrist pain = technique problem
+- 用力按压琴键：实际上应该是利用手臂的力量来敲击琴键。
+- 拇指移动时动作生硬：这是导致音阶演奏不均匀的主要原因。
+- 黑键上的手指过于平直：需要弯曲手指来正确敲击琴键，同时避免扭动手指。
+- 手腕疼痛：可能是技术问题导致的。
 
-## Mistakes by Level
+## 不同水平段的常见错误
 
-**Beginners:** Eyes on hands, same volume, ignoring rests
+**初学者：**眼睛盯着手看，音量保持不变，忽视乐谱中的休止符。
 
-**Intermediate:** Pedal as blur, rushing hard passages, memorizing without harmony
+**中级者：**对踏板的使用不够熟练；在演奏困难段落时过于急促；只死记硬背乐谱内容，忽略了和声的配合。
 
-**Advanced:** Over-practicing through pain, perfection over expression
+**高级者：**过度练习导致疼痛；过分追求完美而忽视音乐表现力。
 
-## Repertoire
+## 曲目库
 
-| Level | Pieces | Timeline |
+| 水平 | 练习曲目 | 练习时间 |
 |-------|--------|----------|
-| Beginner | Method books, folk songs | 0-12 months |
-| Early Intermediate | Sonatinas, Bach Minuets | 1-2 years |
-| Intermediate | Easy Mozart, Bach Inventions | 2-4 years |
-| Advanced | Chopin Ballades, late Beethoven | 6+ years |
+| 初学者 | 基础练习曲、民谣 | 0-12个月 |
+| 初级中级者 | 小奏鸣曲、巴赫小步舞曲 | 1-2年 |
+| 中级者 | 莫扎特简单作品、巴赫创意曲 | 2-4年 |
+| 高级者 | 肖邦圆舞曲、贝多芬后期作品 | 6年以上 |
 
-## Troubleshooting
+## 故障排除方法
 
-- "Don't improve" → slow 50%, hands separate, small sections
-- "Hands won't coordinate" → each hand automatic first
-- "Same mistake" → isolate transition, 20x correctly
-- "Sounds choppy" → legato exercises, hold until next note
+- 如果感觉进步缓慢，可以将练习速度降低50%，分开练习双手，并从简单的部分开始练习。
+- 如果双手无法协调演奏，可以先分别练习双手。
+- 如果总是重复同样的错误，需要重点练习那些容易出错的过渡段落，直到能够正确演奏。
+- 如果演奏听起来不连贯，可以多做一些连奏练习，确保每个音符都能连贯地演奏。
 
-## Pedaling
+## 踏板的使用
 
-- Default NO pedal — add when score indicates
-- Syncopated: down AFTER note, up on harmony change
+- 默认情况下不使用踏板；只有在乐谱有明确指示时才使用踏板。
+- 在节奏复杂的乐段中，应在音符结束后踩下踏板；在和声发生变化时踩下踏板。
 
-## Digital Pianos
+## 数字钢琴的使用注意事项
 
-- Synth action builds wrong technique — need weighted hammer
-- "Semi-weighted" ≠ weighted; 88 keys for full repertoire
+- 合成器模拟的按键动作可能会养成错误的技术习惯；建议使用带有重量的琴键来练习。
+- “半重量”按键并不等同于真正的“加重”按键效果；对于完整的曲目库，建议使用88键的数字钢琴。
 
-## Progress Tracking
+## 进度跟踪
 
-Log to `~/piano/`: pieces in progress, completed repertoire, recurring issues
+将练习进度记录到 `~/piano/` 文件夹中，包括正在练习的曲目、已完成的曲目以及经常出现的问题。
 
-## What to Surface
+## 需要关注的信息
 
-- "Working on [piece] 3 weeks — want help?"
-- "Logs show recurring issue — want exercises?"
-- "No practice logged this week — schedule?"
+- “已经练习[某首曲目]三周了，需要帮助吗？”
+- “日志显示有重复出现的问题，需要一些练习建议吗？”
+- “本周没有记录任何练习，需要安排练习计划吗？”

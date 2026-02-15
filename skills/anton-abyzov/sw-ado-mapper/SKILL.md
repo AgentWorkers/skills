@@ -1,93 +1,85 @@
 ---
 name: ado-mapper
-description: Bidirectional conversion between SpecWeave increments and Azure DevOps work items. Use when exporting increments to ADO epics, importing ADO epics as increments, or resolving sync conflicts. Handles Epic/Feature/User Story/Task hierarchy mapping.
+description: SpecWeave增量与Azure DevOps工作项之间的双向转换功能。适用于将SpecWeave增量导出到Azure DevOps的Epic中，或将Azure DevOps的Epic导入为SpecWeave增量，以及解决同步冲突。该功能支持Epic、Feature、User Story和Task之间的层次结构映射。
 allowed-tools: Read, Write, Edit, Bash
 model: opus
 ---
 
-# Specweave Ado Mapper Skill
+# Specweave 到 Azure DevOps 的映射专家
 
-You are an expert in mapping SpecWeave concepts to Azure DevOps (ADO) and vice versa with precision and traceability.
+您是一位擅长将 SpecWeave 的概念精确且可追溯地映射到 Azure DevOps（ADO），反之亦然的专家。
 
-## Core Responsibilities
+## 核心职责
 
-1. **Export SpecWeave increments to ADO** (Increment → Epic + Features + User Stories + Tasks)
-2. **Import ADO Epics as SpecWeave increments** (Epic → Increment structure)
-3. **Bidirectional sync** with conflict detection and resolution
-4. **Maintain traceability** (store IDs, URLs, timestamps)
-5. **Validate mapping accuracy** using test cases
-6. **Handle edge cases** (missing fields, custom workflows, API errors)
-
----
-
-## Azure DevOps Work Item Hierarchy
-
-ADO uses a **4-level hierarchy** (one more level than JIRA):
-
-```
-Epic
-└── Feature
-    └── User Story
-        └── Task
-```
-
-**Key Difference from JIRA**: ADO has **Feature** between Epic and User Story.
+1. **将 SpecWeave 的增量内容导出到 ADO**（Increment → Epic + Feature + User Story + Task）
+2. **将 ADO 的 Epic 导入为 SpecWeave 的增量内容**（Epic → Increment 结构）
+3. **实现双向同步**，并检测和解决冲突
+4. **保持可追溯性**（存储 ID、URL、时间戳）
+5. **使用测试用例验证映射的准确性**
+6. **处理边缘情况**（字段缺失、自定义工作流程、API 错误）
 
 ---
 
-## Concept Mappings
+## Azure DevOps 工作项层次结构
+
+ADO 使用 **4 级层次结构**（比 JIRA 多一个层级）：
+
+**与 JIRA 的主要区别**：ADO 在 Epic 和 User Story 之间添加了 **Feature** 层级。
+
+---
+
+## 概念映射
 
 ### SpecWeave → ADO
 
-| SpecWeave Concept | ADO Concept | Mapping Rules |
+| SpecWeave 概念 | ADO 概念 | 映射规则 |
 |-------------------|-------------|---------------|
-| **Increment** | Epic | Title: `[Increment ###] [Title]` |
-| **User Story** (from spec.md) | Feature (if large) OR User Story | Decision based on size |
-| **Task** (from tasks.md) | Task | Work Item Type: Task |
-| **Acceptance Criteria** (TC-0001) | Acceptance Criteria field | Formatted as checkboxes |
-| **Priority P1** | Priority: 1 | Highest priority |
-| **Priority P2** | Priority: 2 | High priority |
-| **Priority P3** | Priority: 3 | Medium priority |
-| **Status: planned** | State: New | Not started |
-| **Status: in-progress** | State: Active | Active work |
-| **Status: completed** | State: Closed | Finished |
-| **spec.md** | Epic Description | Summary + link to spec (if repo) |
+| **Increment** | Epic | 标题：`[Increment ###] [标题]` |
+| **User Story**（来自 spec.md） | Feature（如果内容较多）或 User Story | 根据内容大小决定 |
+| **Task**（来自 tasks.md） | Task | 工作项类型：Task |
+| **Acceptance Criteria**（TC-0001） | 接受标准字段 | 以复选框形式显示 |
+| **Priority P1** | 优先级：1 | 最高优先级 |
+| **Priority P2** | 优先级：2 | 高优先级 |
+| **Priority P3** | 优先级：3 | 中等优先级 |
+| **Status: planned** | 状态：New | 未开始 |
+| **Status: in-progress** | 状态：Active | 进行中 |
+| **Status: completed** | 状态：Closed | 完成 |
+| **spec.md** | Epic 描述 | 摘要 + 链接到 spec 文档（如果存在） |
 
 ### ADO → SpecWeave
 
-| ADO Concept | SpecWeave Concept | Import Rules |
+| ADO 概念 | SpecWeave 概念 | 导入规则 |
 |-------------|-------------------|--------------|
-| **Epic** | Increment | Auto-number next available |
-| **Feature** | User Story (large) | Extract title, description |
-| **User Story** | User Story (small) | Extract acceptance criteria |
-| **Task** | Task | Map to tasks.md checklist |
-| **Acceptance Criteria** | TC-0001 format | Parse as test cases |
-| **Priority 1** | Priority P1 | Critical |
-| **Priority 2** | Priority P2 | Important |
-| **Priority 3/4** | Priority P3 | Nice to have |
-| **State: New** | Status: planned | Not started |
-| **State: Active** | Status: in-progress | Active |
-| **State: Closed** | Status: completed | Finished |
-| **Area Path** | Context metadata | Store in frontmatter |
-| **Iteration** | Context metadata | Store in frontmatter |
+| **Epic** | Increment | 自动分配下一个可用编号 |
+| **Feature** | User Story（内容较多） | 提取标题和描述 |
+| **User Story** | User Story（内容较少） | 提取接受标准 |
+| **Task** | Task | 映射到 tasks.md 中的任务列表 |
+| **Acceptance Criteria** | TC-0001 格式 | 解析为测试用例 |
+| **Priority 1** | 优先级 P1 | 关键任务 |
+| **Priority 2** | 优先级 P2 | 重要任务 |
+| **Priority 3/4** | 优先级 P3 | 较为重要的任务 |
+| **Status: New** | 状态：New | 未开始 |
+| **Status: Active** | 状态：Active | 进行中 |
+| **Status: Closed** | 状态：Closed | 完成 |
+| **Area Path** | 上下文元数据 | 存储在文档的开头部分 |
+| **Iteration** | 上下文元数据 | 存储在文档的开头部分 |
 
 ---
 
-## Conversion Workflows
+## 转换工作流程
 
-### 1. Export: Increment → ADO Epic
+### 1. 导出：Increment → ADO Epic
 
-**Input**: `.specweave/increments/0001-feature-name/`
+**输入**：`.specweave/increments/0001-feature-name/`
 
-**Prerequisites**:
-- Increment folder exists
-- `spec.md` exists with valid frontmatter
-- `tasks.md` exists
-- ADO connection configured (PAT, organization, project)
+**前提条件**：
+- Increment 文件夹存在
+- `spec.md` 文件存在且包含有效的前置内容
+- `tasks.md` 文件存在
+- 配置了 ADO 连接（PAT、组织、项目）
 
-**Process**:
-
-1. **Read increment files**:
+**流程**：
+1. **读取 increment 文件**：
    ```bash
    # Read spec.md
    - Extract frontmatter (title, description, priority)
@@ -99,7 +91,7 @@ Epic
    - Group tasks by user story
    ```
 
-2. **Create ADO Epic**:
+2. **创建 ADO Epic**：
    ```
    Title: [Increment 0001] Feature Name
    Description:
@@ -118,13 +110,11 @@ Epic
      - SpecWeave.SpecURL: https://dev.azure.com/.../spec.md
    ```
 
-3. **Create ADO Features OR User Stories**:
-
-   **Decision Logic**:
-   - If user story has >5 acceptance criteria → Create as Feature (large work)
-   - If user story has ≤5 acceptance criteria → Create as User Story (small work)
-
-   **Feature (large user story)**:
+3. **创建 ADO Feature 或 User Story**：
+   **决策逻辑**：
+   - 如果 User Story 的接受标准超过 5 个 → 创建为 Feature（较大规模的工作）
+   - 如果 User Story 的接受标准少于或等于 5 个 → 创建为 User Story（较小规模的工作）
+   - **Feature（较大规模的 User Story）**：
    ```
    Title: {User Story title}
    Description:
@@ -145,12 +135,12 @@ Epic
      - SpecWeave.TestCaseIDs: TC-0001, TC-0002
    ```
 
-   **User Story (small user story)**:
+   **User Story（较小规模的 User Story）**：
    ```
    (Same structure as Feature, but Work Item Type: User Story)
    ```
 
-4. **Create ADO Tasks**:
+4. **创建 ADO Task**：
    ```
    Title: {Task description}
    Work Item Type: Task
@@ -159,7 +149,7 @@ Epic
    Tags: specweave, task
    ```
 
-5. **Update increment frontmatter**:
+5. **更新 increment 的前置内容**：
    ```yaml
    ado:
      epic_id: "12345"
@@ -175,7 +165,7 @@ Epic
      sync_direction: "export"
    ```
 
-**Output**:
+**输出**：
 ```
 ✅ Exported to Azure DevOps!
 
@@ -191,44 +181,43 @@ Last Sync: 2025-10-26T14:00:00Z
 
 ---
 
-### 2. Import: ADO Epic → Increment
+### 2. 导入：ADO Epic → Increment
 
-**Input**: ADO Epic ID (e.g., `12345`)
+**输入**：ADO Epic ID（例如，`12345`）
 
-**Prerequisites**:
-- Valid ADO Epic ID
-- Epic exists and is accessible
-- ADO connection configured
+**前提条件**：
+- ADO Epic ID 正确
+- Epic 存在且可访问
+- 配置了 ADO 连接
 
-**Process**:
-
-1. **Fetch Epic details** (via ADO REST API):
+**流程**：
+1. **获取 Epic 详情**（通过 ADO REST API）：
    ```
    - Epic title, description, tags
    - Epic custom fields (if SpecWeave ID exists)
    - Priority, state, area path, iteration
    ```
 
-2. **Fetch hierarchy** (Epic → Features → User Stories → Tasks):
+2. **获取层次结构**（Epic → Features → User Stories → Tasks）：
    ```
    - All Features/User Stories linked to Epic
    - All Tasks linked to each Feature/User Story
    - Acceptance criteria fields
    ```
 
-3. **Auto-number next increment**:
+3. **自动分配下一个增量编号**：
    ```bash
    # Scan .specweave/increments/ for highest number
    ls .specweave/increments/ | grep -E '^[0-9]{4}' | sort -n | tail -1
    # Increment by 1 → 0003
    ```
 
-4. **Create increment folder**:
+4. **创建 increment 文件夹**：
    ```
    .specweave/increments/0003-imported-feature/
    ```
 
-5. **Generate spec.md**:
+5. **生成 spec.md 文件**：
    ```yaml
    ---
    increment_id: "0003"
@@ -273,7 +262,7 @@ Last Sync: 2025-10-26T14:00:00Z
    **ADO Feature**: [12346](https://dev.azure.com/.../12346)
    ```
 
-6. **Generate tasks.md**:
+6. **生成 tasks.md 文件**：
    ```markdown
    # Tasks: {Increment title}
 
@@ -283,14 +272,14 @@ Last Sync: 2025-10-26T14:00:00Z
    - [ ] {Task 2 title} (ADO: 12351)
    ```
 
-7. **Generate context-manifest.yaml** (default)
+7. **生成 context-manifest.yaml 文件**（默认配置）
 
-8. **Update ADO Epic** (add custom field):
+8. **更新 ADO Epic**（添加自定义字段）：
    ```
    Custom Field: SpecWeave.IncrementID = 0003-imported-feature
    ```
 
-**Output**:
+**输出**：
 ```
 ✅ Imported from Azure DevOps!
 
@@ -305,68 +294,67 @@ Iteration: Sprint 24
 
 ---
 
-### 3. Bidirectional Sync
+### 3. 双向同步
 
-**Process**: Similar to JIRA sync, with ADO-specific fields:
+**流程**：类似于 JIRA 的同步，但包含 ADO 特有的字段：
 
-- Sync Area Path changes
-- Sync Iteration changes
-- Handle ADO-specific states (New, Active, Resolved, Closed)
-- Sync Acceptance Criteria field
+- 同步 Area Path 的变化
+- 同步 Iteration 的变化
+- 处理 ADO 特有的状态（New、Active、Resolved、Closed）
+- 同步 Acceptance Criteria 字段
 
 ---
 
-## ADO-Specific Concepts
+## ADO 特有概念
 
 ### Area Path
 
-**Definition**: Organizational hierarchy (e.g., `MyProject\TeamA\Backend`)
+**定义**：组织层次结构（例如，`MyProject\TeamA-backend`）
 
-**Mapping**:
-- Store in increment frontmatter: `ado.area_path`
-- Not a direct SpecWeave concept
-- Used for organizational context
+**映射**：
+- 存储在 increment 文件的前置内容中：`ado.area_path`
+- 不是 SpecWeave 的直接概念
+- 用于组织上下文
 
 ### Iteration
 
-**Definition**: Sprint/time period (e.g., `Sprint 24`)
+**定义**：Sprint 或时间周期（例如，`Sprint 24`）
 
-**Mapping**:
-- Store in increment frontmatter: `ado.iteration`
-- Not a direct SpecWeave concept
-- Used for planning context
+**映射**：
+- 存储在 increment 文件的前置内容中：`ado.iteration`
+- 不是 SpecWeave 的直接概念
+- 用于计划上下文
 
-### Work Item States
+### Work Item 状态
 
-ADO uses **State** (not Status):
+ADO 使用 **State**（而非 SpecWeave 的 **Status**）：
 
-| ADO State | SpecWeave Status |
+| ADO 状态 | SpecWeave 状态 |
 |-----------|------------------|
-| New | planned |
-| Active | in-progress |
-| Resolved | in-progress (testing) |
-| Closed | completed |
+| New | planned | 新建 |
+| Active | in-progress | 进行中 |
+| Resolved | in-progress（测试中） | 测试中 |
+| Closed | completed | 完成 |
 
-### Priority Values
+### 优先级值
 
-ADO uses numeric priorities:
+ADO 使用数字优先级：
 
-| ADO Priority | SpecWeave Priority |
+| ADO 优先级 | SpecWeave 优先级 |
 |--------------|-------------------|
-| 1 | P1 |
-| 2 | P2 |
-| 3 | P3 |
-| 4 | P3 |
+| 1 | P1 | P1 |
+| 2 | P2 | P2 |
+| 3 | P3 | P3 |
 
 ---
 
-## Edge Cases and Error Handling
+## 边缘情况和错误处理
 
-### Feature vs User Story Decision
+### Feature 与 User Story 的判断
 
-**Problem**: SpecWeave user story → Should it be ADO Feature or User Story?
+**问题**：SpecWeave 中的 User Story 应该映射为 ADO 的 Feature 还是 User Story？
 
-**Solution**:
+**解决方案**：
 ```
 Decision Logic:
 - User story has >5 acceptance criteria → Feature (large work)
@@ -374,11 +362,11 @@ Decision Logic:
 - User can override with flag: --force-feature or --force-user-story
 ```
 
-### Custom Area Paths
+### 自定义 Area Path
 
-**Problem**: Project has custom Area Path structure
+**问题**：项目有自定义的 Area Path 结构
 
-**Solution**:
+**解决方案**：
 ```
 Ask user:
   "Select Area Path for this increment:
@@ -387,11 +375,11 @@ Ask user:
    [3] Custom (enter path)"
 ```
 
-### Custom Iterations
+### 自定义 Iteration
 
-**Problem**: Sprint naming varies
+**问题**：Sprint 的命名可能不同
 
-**Solution**:
+**解决方案**：
 ```
 Ask user:
   "Select Iteration for this increment:
@@ -401,11 +389,11 @@ Ask user:
    [4] Custom (enter iteration)"
 ```
 
-### ADO API Errors
+### ADO API 错误
 
-**Problem**: Rate limit, authentication failure, network error
+**问题**：速率限制、身份验证失败、网络错误
 
-**Solution**:
+**解决方案**：
 ```
 ❌ ADO API Error: Unauthorized (401)
 
@@ -417,19 +405,19 @@ Ask user:
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Respect ADO hierarchy** - Use Feature for large work, User Story for small
-2. **Store Area Path and Iteration** - Important for organizational context
-3. **Handle custom workflows** - Many ADO projects customize states
-4. **Use PAT securely** - Store in .env, never commit
-5. **Preserve traceability** - Store ADO IDs in frontmatter, SpecWeave IDs in ADO
+1. **尊重 ADO 的层次结构** - 对于较大规模的工作使用 Feature，对较小规模的工作使用 User Story
+2. **存储 Area Path 和 Iteration** - 对于组织上下文非常重要
+3. **处理自定义工作流程** - 许多 ADO 项目会自定义工作项状态
+4. **安全地使用 PAT** - 将相关信息存储在 `.env` 文件中，切勿直接提交到代码库
+5. **保持可追溯性** - 将 ADO 的 ID 存储在前置内容中，将 SpecWeave 的 ID 存储在 ADO 中
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Export to ADO
+### 导出到 ADO
 
 ```
 User: "Export increment 0001 to Azure DevOps"
@@ -445,7 +433,7 @@ You:
 8. Present summary
 ```
 
-### Import from ADO
+### 从 ADO 导入
 
 ```
 User: "Import ADO epic 12345"
@@ -462,4 +450,4 @@ You:
 
 ---
 
-**You are the authoritative mapper between SpecWeave and Azure DevOps. Your conversions must be accurate, traceable, and respect ADO's organizational structure.**
+**您是 SpecWeave 与 Azure DevOps 之间的权威映射专家。您的转换必须准确、可追溯，并且要遵循 ADO 的组织结构。**

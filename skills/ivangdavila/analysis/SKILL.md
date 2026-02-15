@@ -1,63 +1,58 @@
 ---
 name: Analysis
-description: Run deep system health checks across workspace, config, skills, and integrations with prioritized findings and remediation.
+description: 在整个工作空间、配置项、技能以及集成组件中执行深入的系统健康检查，并对检测到的问题按优先级进行分类和处理（即提供相应的修复措施）。
 ---
 
-## When To Use
+## 使用场景
 
-Trigger when user says: "check my system", "what's wrong", "health check", "diagnose", "audit", "why is X slow", "something feels off"
+当用户输入以下指令时，触发该功能：  
+“检查我的系统”（Check my system）、“出了什么问题”（What’s wrong）、“健康检查”（Health check）、“诊断”（Diagnose）、“审计”（Audit）、“为什么X运行缓慢”（Why is X slow）、“感觉有些不对劲”（Something feels off）。
 
-This is NOT generic data analysis. This is **system self-diagnosis** — examining the agent's own workspace, configuration, and operational health.
+这并非通用的数据分析，而是**系统自我诊断**——主要检查代理程序的工作空间、配置以及运行状态。
 
 ---
 
-## Analysis Modes
+## 分析模式
 
-| Mode | Scope | When |
+| 分析模式 | 检查范围 | 使用场景 |
 |------|-------|------|
-| **Quick** | Security + critical operational | "Quick check", default if unspecified |
-| **Full** | All categories, all checks | "Full audit", "deep check" |
-| **Targeted** | Single category | "Check my memory", "audit cron" |
+| **快速模式** | 安全相关内容及关键运行状态 | “快速检查”（Quick check）；若未指定，则默认使用该模式 |
+| **全面模式** | 所有类别、所有检查项 | “全面审计”（Full audit）或“深度检查”（Deep check） |
+| **针对性模式** | 单一类别 | “检查我的内存使用情况”（Check my memory usage）或“审计定时任务”（Audit cron tasks） |
 
 ---
 
-## Priority Order (Always This Sequence)
+## 优先级顺序（始终遵循此顺序）  
 
-1. **SECURITY** — Exposed secrets, leaked credentials, permission issues
-2. **OPERATIONAL** — Broken crons, dead sessions, unreachable APIs
-3. **HYGIENE** — Memory bloat, orphan files, stale entries, inefficiencies
+1. **安全性**（Security）：泄露的敏感信息、凭证泄露、权限问题  
+2. **运行状态**（Operational）：失效的定时任务、无法访问的API  
+3. **系统健康状况**（System health）：内存占用过高、无效文件、过时的数据条目、运行效率低下  
 
-Stop and report critical security findings immediately. Don't bury them in a long list.
-
----
-
-## Detection Strategy
-
-**Cheap first, expensive only when needed:**
-1. File checks (free) — existence, size, age, syntax
-2. Local commands (cheap) — process lists, disk usage, git status
-3. API calls (expensive) — only when file-level signals warrant
-
-Never hit external APIs speculatively. Validate need from local evidence first.
+遇到严重的安全问题时，应立即停止操作并报告。切勿将这些问题隐藏在冗长的检查列表中。  
 
 ---
 
-## Findings Format
+## 检测策略  
 
-```
-[CRITICAL|WARNING|INFO] category/subcategory: description
-  → Action: specific remediation step
-  → Auto-fixable: yes/no
-```
+**优先使用低成本的方法，仅在必要时使用高级检测手段：**  
+1. **文件检查**（File checks）：文件是否存在、文件大小、文件创建时间、文件语法是否正确  
+2. **本地命令执行**（Local command execution）：进程列表、磁盘使用情况、Git仓库状态  
+3. **API调用**（API calls）：仅在文件层面的问题需要进一步确认时使用  
 
-Group by severity, not by category. User sees worst problems first.
+**切勿随意调用外部API**；务必先通过本地数据验证检测的必要性。  
 
 ---
 
-## Load Detailed Checks
+## 检测结果展示格式  
 
-| Category | Reference |
+检测结果按严重程度分组显示，而非按类别分类。用户会首先看到最严重的问题。  
+
+---
+
+## 详细检查内容的获取方式  
+
+| 检查类别 | 参考文档 |
 |----------|-----------|
-| All check definitions by category | `checks.md` |
-| Remediation actions and auto-fix scripts | `remediation.md` |
-| Tracking analysis runs, improvement over time | `tracking.md` |
+| 各类别的完整检查定义 | `checks.md`  
+| 修复措施及自动修复脚本 | `remediation.md`  
+| 检测过程的跟踪记录及改进情况 | `tracking.md` |

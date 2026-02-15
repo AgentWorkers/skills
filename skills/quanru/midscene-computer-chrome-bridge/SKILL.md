@@ -21,59 +21,59 @@ allowed-tools:
   - Bash
 ---
 
-# Chrome Bridge Automation
+# Chrome Bridge自动化
 
-> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+> **重要规则 — 违反这些规则将导致工作流程中断：**
 >
-> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/web` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
-> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
-> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+> 1. **绝对不要在任何用于中间场景（midscene）命令的Bash工具调用中设置`run_in_background: true`**。每个`npx @midscene/web`命令都必须使用`run_in_background: false`（或者完全省略该参数）。在任务结束后，后台执行会导致通知频繁弹出，从而破坏截图-分析-执行（snapshot-analyze-act）的循环。
+> 2. **每次Bash工具调用只能发送一个中间场景的CLI命令**。等待命令的结果，读取截图，然后再决定下一步操作。不要使用`&&`、`;`或`sleep`来链接多个命令。
+> 3. **为每次Bash工具调用设置`timeout: 60000`（60秒）**，以确保中间场景命令有足够的时间同步完成。
 
-Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridge mode), preserving cookies, sessions, and login state. You (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+通过Midscene Chrome扩展程序（Bridge模式）自动化用户的真实Chrome浏览器，同时保留cookies、会话和登录状态。你（AI代理）作为决策者，根据截图来决定采取哪些操作。
 
-## Command Format
+## 命令格式
 
-**CRITICAL — Every command MUST follow this EXACT format. Do NOT modify the command prefix.**
+**重要提示 — 每条命令都必须严格遵循此格式。请勿修改命令前缀。**
 
 ```
 npx @midscene/web --bridge <subcommand> [args]
 ```
 
-- `--bridge` flag is **MANDATORY** — it activates Bridge mode to connect to the user's real Chrome
-- Without `--bridge`, the CLI launches a separate headless browser (wrong behavior for this skill)
-- Do NOT use `-p` flag, do NOT use environment variables as substitutes — use `--bridge` exactly as shown
+- `--bridge`标志是**必需的** — 它用于激活Bridge模式以连接到用户的真实Chrome浏览器。
+- 如果不使用`--bridge`，CLI将启动一个无头浏览器（这对本技能来说是错误的操作）。
+- **不要使用`-p`标志，也不要使用环境变量作为替代方案** — 请严格按照示例中的方式使用`--bridge`。
 
-## Prerequisites
+## 先决条件
 
-The user has already prepared Chrome and the Midscene Extension. Do NOT check browser or extension status — just connect directly.
+用户已经安装并配置好了Chrome和Midscene扩展程序。无需检查浏览器或扩展程序的状态，直接进行连接即可。
 
-The CLI automatically loads `.env` from the current working directory. Before first use, verify the `.env` file exists and contains the API key:
+CLI会自动从当前工作目录加载`.env`文件。首次使用前，请确认`.env`文件存在，并且其中包含API密钥：
 
 ```bash
 cat .env | grep MIDSCENE_MODEL_API_KEY | head -c 30
 ```
 
-If no `.env` file or no API key, ask the user to create one. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
+如果不存在`.env`文件或API密钥，请让用户创建一个。有关支持的提供者，请参阅[模型配置](https://midscenejs.com/zh/model-common-config.html)。
 
-**Do NOT run `echo $MIDSCENE_MODEL_API_KEY`** — the key is loaded from `.env` at runtime, not from shell environment.
+**请不要运行`echo $MIDSCENE_MODEL_API_KEY`** — 密钥是在运行时从`.env`文件中加载的，而不是从shell环境中获取的。
 
-## Commands
+## 命令
 
-### Connect to a Web Page
+### 连接到网页
 
 ```bash
 npx @midscene/web --bridge connect --url https://example.com
 ```
 
-### Take Screenshot
+### 截取屏幕截图
 
 ```bash
 npx @midscene/web --bridge take_screenshot
 ```
 
-After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
+截取屏幕截图后，先读取保存的图像文件以了解当前页面的状态，然后再决定下一步操作。
 
-### Perform Actions
+### 执行操作
 
 ```bash
 npx @midscene/web --bridge Tap --locate '{"prompt":"the Login button"}'
@@ -84,59 +84,58 @@ npx @midscene/web --bridge KeyboardPress --value Enter
 npx @midscene/web --bridge DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
-### Natural Language Action
+### 使用自然语言执行操作
 
-Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
+使用`act`命令在一个命令中执行多步操作 — 这对于处理临时性的用户界面（UI）交互非常有用：
 
 ```bash
 npx @midscene/web --bridge act --prompt "click the country dropdown and select Japan"
 ```
 
-### Disconnect
+### 断开连接
 
 ```bash
 npx @midscene/web --bridge disconnect
 ```
 
-## Workflow Pattern
+## 工作流程模式
 
-Since CLI commands are stateless between invocations, follow this pattern:
+由于CLI命令在每次调用之间是无状态的，请遵循以下模式：
 
-1. **Connect** to a URL to establish a session
-2. **Take screenshot** to see the current state
-3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
-5. **Take screenshot** again to verify the result
-6. **Repeat** steps 3-5 until the task is complete
-7. **Disconnect** when done
+1. **连接到目标URL**以建立会话。
+2. **截取屏幕截图**以查看当前页面状态。
+3. **分析屏幕截图**以决定下一步操作。
+4. **执行操作**（点击、输入、滚动等）。
+5. **再次截取屏幕截图**以验证结果。
+6. **重复步骤3-5，直到任务完成**。
+7. **完成后断开连接**。
 
-## Best Practices
+## 最佳实践
 
-1. **Always connect first**: Navigate to the target URL with `connect --url` before any interaction.
-2. **Take screenshots frequently**: Before and after each action to verify state changes.
-3. **Be specific in locate prompts**: Instead of `"the button"`, say `"the blue Submit button in the contact form"`.
-4. **Use natural language**: Describe what you see on the page, not CSS selectors. Say `"the red Buy Now button"` instead of `"#buy-btn"`.
-5. **Handle loading states**: After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
-6. **Disconnect when done**: Always disconnect to free resources.
-7. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
+1. **始终先连接**：在任何操作之前，使用`connect --url`导航到目标URL。
+2. **频繁截图**：在每次操作前后都截取屏幕截图，以验证状态变化。
+3. **在定位提示时具体说明**：不要使用“the button”，而应使用“联系表单中的蓝色提交按钮”这样的描述。
+4. **使用自然语言**：描述你在页面上看到的内容，而不是使用CSS选择器。例如，说“红色的立即购买按钮”而不是“#buy-btn”。
+5. **处理加载状态**：在导航或触发页面加载的操作之后，截取屏幕截图以确认页面已加载。
+6. **完成后断开连接**：始终断开连接以释放资源。
+7. **切勿在后台运行**：在每次Bash工具调用中，要么省略`run_in_background`参数，要么明确将其设置为`false`。绝对不要设置`run_in_background: true`。
 
-### Handle Transient UI
+### 处理临时性UI元素
 
-Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** between commands. When interacting with transient UI:
+下拉菜单、自动完成弹窗、工具提示和确认对话框在命令执行过程中可能会消失。在处理这些临时性UI元素时：
+- **使用`act`命令执行多步操作** — 它会在一个进程中完成所有操作。
+- **或者快速连续执行命令** — 在步骤之间不要截取屏幕截图。
+- **不要暂停进行分析** — 直接连续执行所有与临时UI相关的命令。
+- 持久性UI元素（页面内容、导航栏、侧边栏）可以在不同的命令之间进行交互。
 
-- **Use `act` for multi-step transient interactions** — it executes everything in a single process
-- **Or execute commands rapidly in sequence** — do NOT take screenshots between steps
-- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
-- Persistent UI (page content, navigation bars, sidebars) is fine to interact with across separate commands
-
-**Example — Dropdown selection using `act` (recommended for transient UI):**
+**示例 — 使用`act`命令选择下拉菜单（推荐用于处理临时性UI）：**
 
 ```bash
 npx @midscene/web --bridge act --prompt "click the country dropdown and select Japan"
 npx @midscene/web --bridge take_screenshot
 ```
 
-**Example — Dropdown selection using individual commands (alternative):**
+**示例 — 使用单独的命令选择下拉菜单（另一种方法）：**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
@@ -146,9 +145,9 @@ npx @midscene/web --bridge Tap --locate '{"prompt":"Japan option in the dropdown
 npx @midscene/web --bridge take_screenshot
 ```
 
-## Common Patterns
+## 常见模式
 
-### Simple Browsing
+### 简单浏览
 
 ```bash
 npx @midscene/web --bridge connect --url 'https://news.ycombinator.com'
@@ -157,7 +156,7 @@ npx @midscene/web --bridge take_screenshot
 npx @midscene/web --bridge disconnect
 ```
 
-### Multi-Step Interaction
+### 多步交互
 
 ```bash
 npx @midscene/web --bridge connect --url 'https://example.com'
@@ -170,20 +169,20 @@ npx @midscene/web --bridge take_screenshot
 npx @midscene/web --bridge disconnect
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Bridge Mode Connection Failures
-- Ensure Chrome is open with the Midscene Extension installed and enabled.
-- Check that the extension shows "Connected" status.
-- See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
+### Bridge模式连接失败
+- 确保Chrome浏览器已打开，并且安装并启用了Midscene扩展程序。
+- 检查扩展程序是否显示“已连接”状态。
+- 请参阅[Bridge模式文档](https://midscenejs.com/bridge-mode-by-chrome-extension.html)以获取更多信息。
 
-### API Key Errors
-- Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
-- Verify the key is valid for the configured model provider.
+### API密钥错误
+- 确保`.env`文件中包含`MIDSCENE_MODEL_API_KEY=<your-key>`。
+- 验证该密钥是否适用于配置的模型提供者。
 
-### Timeouts
-- Web pages may take time to load. After connecting, take a screenshot to verify readiness before interacting.
-- For slow pages, wait briefly between steps.
+### 超时问题
+- 网页可能需要一段时间才能加载。连接后，请先截取屏幕截图以确认页面已准备好再进行操作。
+- 对于加载速度较慢的页面，请在步骤之间稍作等待。
 
-### Screenshots Not Displaying
-- The screenshot path is an absolute path to a local file. Use the Read tool to view it.
+### 屏幕截图无法显示
+- 屏幕截图的路径是一个指向本地文件的绝对路径。可以使用Read工具来查看截图内容。

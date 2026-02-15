@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Networking - JavaScript
+# Telnyx 网络服务 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List all Regions
+## 列出所有区域
 
-List all regions and the interfaces that region supports
+列出所有区域及其支持的接口
 
 `GET /regions`
 
@@ -44,9 +44,9 @@ const regions = await client.regions.list();
 console.log(regions.data);
 ```
 
-## List all Networks
+## 列出所有网络
 
-List all Networks.
+列出所有网络。
 
 `GET /networks`
 
@@ -57,9 +57,9 @@ for await (const networkListResponse of client.networks.list()) {
 }
 ```
 
-## Create a Network
+## 创建网络
 
-Create a new Network.
+创建一个新的网络。
 
 `POST /networks`
 
@@ -69,9 +69,9 @@ const network = await client.networks.create({ name: 'test network' });
 console.log(network.data);
 ```
 
-## Retrieve a Network
+## 获取网络信息
 
-Retrieve a Network.
+检索网络信息。
 
 `GET /networks/{id}`
 
@@ -81,9 +81,9 @@ const network = await client.networks.retrieve('6a09cdc3-8948-47f0-aa62-74ac943d
 console.log(network.data);
 ```
 
-## Update a Network
+## 更新网络
 
-Update a Network.
+更新网络信息。
 
 `PATCH /networks/{id}`
 
@@ -95,9 +95,9 @@ const network = await client.networks.update('6a09cdc3-8948-47f0-aa62-74ac943d6c
 console.log(network.data);
 ```
 
-## Delete a Network
+## 删除网络
 
-Delete a Network.
+删除网络。
 
 `DELETE /networks/{id}`
 
@@ -107,7 +107,7 @@ const network = await client.networks.delete('6a09cdc3-8948-47f0-aa62-74ac943d6c
 console.log(network.data);
 ```
 
-## Get Default Gateway status.
+## 获取默认网关状态
 
 `GET /networks/{id}/default_gateway`
 
@@ -119,7 +119,7 @@ const defaultGateway = await client.networks.defaultGateway.retrieve(
 console.log(defaultGateway.data);
 ```
 
-## Create Default Gateway.
+## 创建默认网关
 
 `POST /networks/{id}/default_gateway`
 
@@ -131,7 +131,7 @@ const defaultGateway = await client.networks.defaultGateway.create(
 console.log(defaultGateway.data);
 ```
 
-## Delete Default Gateway.
+## 删除默认网关
 
 `DELETE /networks/{id}/default_gateway`
 
@@ -143,9 +143,9 @@ const defaultGateway = await client.networks.defaultGateway.delete(
 console.log(defaultGateway.data);
 ```
 
-## List all Interfaces for a Network.
+## 获取网络的所有接口
 
-`GET /networks/{id}/network_interfaces`
+`GET /networks/{id}/networkInterfaces`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -156,11 +156,11 @@ for await (const networkListInterfacesResponse of client.networks.listInterfaces
 }
 ```
 
-## List all WireGuard Interfaces
+## 列出所有 WireGuard 接口
 
-List all WireGuard Interfaces.
+列出所有 WireGuard 接口。
 
-`GET /wireguard_interfaces`
+`GET /wireguardInterfaces`
 
 ```javascript
 // Automatically fetches more pages as needed.
@@ -169,11 +169,11 @@ for await (const wireguardInterfaceListResponse of client.wireguardInterfaces.li
 }
 ```
 
-## Create a WireGuard Interface
+## 创建新的 WireGuard 接口
 
-Create a new WireGuard Interface.
+创建一个新的 WireGuard 接口。
 
-`POST /wireguard_interfaces`
+`POST /wireguardInterfaces`
 
 ```javascript
 const wireguardInterface = await client.wireguardInterfaces.create({ region_code: 'ashburn-va' });
@@ -181,11 +181,11 @@ const wireguardInterface = await client.wireguardInterfaces.create({ region_code
 console.log(wireguardInterface.data);
 ```
 
-## Retrieve a WireGuard Interfaces
+## 获取 WireGuard 接口信息
 
-Retrieve a WireGuard Interfaces.
+检索 WireGuard 接口信息。
 
-`GET /wireguard_interfaces/{id}`
+`GET /wireguardInterfaces/{id}`
 
 ```javascript
 const wireguardInterface = await client.wireguardInterfaces.retrieve(
@@ -195,11 +195,11 @@ const wireguardInterface = await client.wireguardInterfaces.retrieve(
 console.log(wireguardInterface.data);
 ```
 
-## Delete a WireGuard Interface
+## 删除 WireGuard 接口
 
-Delete a WireGuard Interface.
+删除 WireGuard 接口。
 
-`DELETE /wireguard_interfaces/{id}`
+`DELETE /wireguardInterfaces/{id}`
 
 ```javascript
 const wireguardInterface = await client.wireguardInterfaces.delete(
@@ -209,9 +209,9 @@ const wireguardInterface = await client.wireguardInterfaces.delete(
 console.log(wireguardInterface.data);
 ```
 
-## List all WireGuard Peers
+## 列出所有 WireGuard 对等体
 
-List all WireGuard peers.
+列出所有 WireGuard 对等体。
 
 `GET /wireguard_peers`
 
@@ -222,9 +222,9 @@ for await (const wireguardPeerListResponse of client.wireguardPeers.list()) {
 }
 ```
 
-## Create a WireGuard Peer
+## 创建新的 WireGuard 对等体
 
-Create a new WireGuard Peer.
+创建一个新的 WireGuard 对等体。
 
 `POST /wireguard_peers`
 
@@ -236,9 +236,9 @@ const wireguardPeer = await client.wireguardPeers.create({
 console.log(wireguardPeer.data);
 ```
 
-## Retrieve the WireGuard Peer
+## 获取 WireGuard 对等体信息
 
-Retrieve the WireGuard peer.
+检索 WireGuard 对等体信息。
 
 `GET /wireguard_peers/{id}`
 
@@ -248,9 +248,9 @@ const wireguardPeer = await client.wireguardPeers.retrieve('6a09cdc3-8948-47f0-a
 console.log(wireguardPeer.data);
 ```
 
-## Update the WireGuard Peer
+## 更新 WireGuard 对等体信息
 
-Update the WireGuard peer.
+更新 WireGuard 对等体信息。
 
 `PATCH /wireguard_peers/{id}`
 
@@ -260,9 +260,9 @@ const wireguardPeer = await client.wireguardPeers.update('6a09cdc3-8948-47f0-aa6
 console.log(wireguardPeer.data);
 ```
 
-## Delete the WireGuard Peer
+## 删除 WireGuard 对等体
 
-Delete the WireGuard peer.
+删除 WireGuard 对等体。
 
 `DELETE /wireguard_peers/{id}`
 
@@ -272,7 +272,7 @@ const wireguardPeer = await client.wireguardPeers.delete('6a09cdc3-8948-47f0-aa6
 console.log(wireguardPeer.data);
 ```
 
-## Retrieve Wireguard config template for Peer
+## 获取 WireGuard 对等体的配置模板
 
 `GET /wireguard_peers/{id}/config`
 
@@ -282,9 +282,9 @@ const response = await client.wireguardPeers.retrieveConfig('6a09cdc3-8948-47f0-
 console.log(response);
 ```
 
-## Get all Private Wireless Gateways
+## 获取用户所有的私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户所有的私有无线网关。
 
 `GET /private_wireless_gateways`
 
@@ -295,11 +295,11 @@ for await (const privateWirelessGateway of client.privateWirelessGateways.list()
 }
 ```
 
-## Create a Private Wireless Gateway
+## 为已创建的网络创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+异步地为已创建的网络的 SIM 卡创建私有无线网关。
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`, `name`
 
 ```javascript
 const privateWirelessGateway = await client.privateWirelessGateways.create({
@@ -310,9 +310,9 @@ const privateWirelessGateway = await client.privateWirelessGateways.create({
 console.log(privateWirelessGateway.data);
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+检索私有无线网关的信息。
 
 `GET /private_wireless_gateways/{id}`
 
@@ -324,9 +324,9 @@ const privateWirelessGateway = await client.privateWirelessGateways.retrieve(
 console.log(privateWirelessGateway.data);
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关。
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -338,9 +338,9 @@ const privateWirelessGateway = await client.privateWirelessGateways.delete(
 console.log(privateWirelessGateway.data);
 ```
 
-## List all Public Internet Gateways
+## 列出所有公共互联网网关
 
-List all Public Internet Gateways.
+列出所有公共互联网网关。
 
 `GET /public_internet_gateways`
 
@@ -351,9 +351,9 @@ for await (const publicInternetGatewayListResponse of client.publicInternetGatew
 }
 ```
 
-## Create a Public Internet Gateway
+## 创建公共互联网网关
 
-Create a new Public Internet Gateway.
+创建一个新的公共互联网网关。
 
 `POST /public_internet_gateways`
 
@@ -363,9 +363,9 @@ const publicInternetGateway = await client.publicInternetGateways.create();
 console.log(publicInternetGateway.data);
 ```
 
-## Retrieve a Public Internet Gateway
+## 获取公共互联网网关信息
 
-Retrieve a Public Internet Gateway.
+检索公共互联网网关的信息。
 
 `GET /public_internet_gateways/{id}`
 
@@ -377,9 +377,9 @@ const publicInternetGateway = await client.publicInternetGateways.retrieve(
 console.log(publicInternetGateway.data);
 ```
 
-## Delete a Public Internet Gateway
+## 删除公共互联网网关
 
-Delete a Public Internet Gateway.
+删除公共互联网网关。
 
 `DELETE /public_internet_gateways/{id}`
 
@@ -391,9 +391,9 @@ const publicInternetGateway = await client.publicInternetGateways.delete(
 console.log(publicInternetGateway.data);
 ```
 
-## List all Virtual Cross Connects
+## 列出所有虚拟跨连接
 
-List all Virtual Cross Connects.
+列出所有虚拟跨连接。
 
 `GET /virtual_cross_connects`
 
@@ -404,9 +404,9 @@ for await (const virtualCrossConnectListResponse of client.virtualCrossConnects.
 }
 ```
 
-## Create a Virtual Cross Connect
+## 创建虚拟跨连接
 
-Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the option of creating the primary connection first and the secondary connection later.
+创建一个新的虚拟跨连接。<br /><br />对于 AWS 和 GCE，您可以先创建主连接，然后再创建次级连接。
 
 `POST /virtual_cross_connects`
 
@@ -416,9 +416,9 @@ const virtualCrossConnect = await client.virtualCrossConnects.create({ region_co
 console.log(virtualCrossConnect.data);
 ```
 
-## Retrieve a Virtual Cross Connect
+## 获取虚拟跨连接信息
 
-Retrieve a Virtual Cross Connect.
+检索虚拟跨连接的信息。
 
 `GET /virtual_cross_connects/{id}`
 
@@ -430,9 +430,9 @@ const virtualCrossConnect = await client.virtualCrossConnects.retrieve(
 console.log(virtualCrossConnect.data);
 ```
 
-## Update the Virtual Cross Connect
+## 更新虚拟跨连接
 
-Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched during the `created` state, as GCE will only inform you of your generated IP once the pending connection requested has bee...
+更新虚拟跨连接。<br /><br />只有在“创建”状态下才能修改云 IP 地址；因为 GCE 会在连接请求完成后再通知您生成的 IP 地址...
 
 `PATCH /virtual_cross_connects/{id}`
 
@@ -444,9 +444,9 @@ const virtualCrossConnect = await client.virtualCrossConnects.update(
 console.log(virtualCrossConnect.data);
 ```
 
-## Delete a Virtual Cross Connect
+## 删除虚拟跨连接
 
-Delete a Virtual Cross Connect.
+删除虚拟跨连接。
 
 `DELETE /virtual_cross_connects/{id}`
 
@@ -458,9 +458,9 @@ const virtualCrossConnect = await client.virtualCrossConnects.delete(
 console.log(virtualCrossConnect.data);
 ```
 
-## List Virtual Cross Connect Cloud Coverage
+## 查看虚拟跨连接的覆盖范围
 
-List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which cloud regions are available for the `location_code` your Virtual Cross Connect will be provisioned in.
+查看虚拟跨连接的覆盖范围。<br /><br />此端点显示虚拟跨连接将被配置到的云区域。
 
 `GET /virtual_cross_connects/coverage`
 
@@ -471,9 +471,9 @@ for await (const virtualCrossConnectsCoverageListResponse of client.virtualCross
 }
 ```
 
-## List all Global IPs
+## 列出所有全局 IP 地址
 
-List all Global IPs.
+列出所有全局 IP 地址。
 
 `GET /global_ips`
 
@@ -484,9 +484,9 @@ for await (const globalIPListResponse of client.globalIPs.list()) {
 }
 ```
 
-## Create a Global IP
+## 创建全局 IP 地址
 
-Create a Global IP.
+创建一个新的全局 IP 地址。
 
 `POST /global_ips`
 
@@ -496,9 +496,9 @@ const globalIP = await client.globalIPs.create();
 console.log(globalIP.data);
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址信息
 
-Retrieve a Global IP.
+检索全局 IP 地址的信息。
 
 `GET /global_ips/{id}`
 
@@ -508,9 +508,9 @@ const globalIP = await client.globalIPs.retrieve('6a09cdc3-8948-47f0-aa62-74ac94
 console.log(globalIP.data);
 ```
 
-## Delete a Global IP
+## 删除全局 IP 地址
 
-Delete a Global IP.
+删除全局 IP 地址。
 
 `DELETE /global_ips/{id}`
 
@@ -520,7 +520,9 @@ const globalIP = await client.globalIPs.delete('6a09cdc3-8948-47f0-aa62-74ac943d
 console.log(globalIP.data);
 ```
 
-## List all Global IP Allowed Ports
+## 列出所有允许使用的全局 IP 地址端口
+
+列出所有允许使用的全局 IP 地址端口。
 
 `GET /global_ip_allowed_ports`
 
@@ -530,7 +532,9 @@ const globalIPAllowedPorts = await client.globalIPAllowedPorts.list();
 console.log(globalIPAllowedPorts.data);
 ```
 
-## Global IP Assignment Health Check Metrics
+## 全局 IP 地址分配的健康检查指标
+
+获取全局 IP 地址分配的健康检查指标。
 
 `GET /global_ip_assignment_health`
 
@@ -540,9 +544,9 @@ const globalIPAssignmentHealth = await client.globalIPAssignmentHealth.retrieve(
 console.log(globalIPAssignmentHealth.data);
 ```
 
-## List all Global IP assignments
+## 列出所有全局 IP 地址分配记录
 
-List all Global IP assignments.
+列出所有全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments`
 
@@ -553,9 +557,9 @@ for await (const globalIPAssignment of client.globalIPAssignments.list()) {
 }
 ```
 
-## Create a Global IP assignment
+## 创建全局 IP 地址分配记录
 
-Create a Global IP assignment.
+创建一个新的全局 IP 地址分配记录。
 
 `POST /global_ip_assignments`
 
@@ -565,9 +569,9 @@ const globalIPAssignment = await client.globalIPAssignments.create();
 console.log(globalIPAssignment.data);
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址分配记录
 
-Retrieve a Global IP assignment.
+检索全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments/{id}`
 
@@ -579,9 +583,9 @@ const globalIPAssignment = await client.globalIPAssignments.retrieve(
 console.log(globalIPAssignment.data);
 ```
 
-## Update a Global IP assignment
+## 更新全局 IP 地址分配记录
 
-Update a Global IP assignment.
+更新全局 IP 地址的分配记录。
 
 `PATCH /global_ip_assignments/{id}`
 
@@ -594,9 +598,9 @@ const globalIPAssignment = await client.globalIPAssignments.update(
 console.log(globalIPAssignment.data);
 ```
 
-## Delete a Global IP assignment
+## 删除全局 IP 地址分配记录
 
-Delete a Global IP assignment.
+删除全局 IP 地址的分配记录。
 
 `DELETE /global_ip_assignments/{id}`
 
@@ -608,7 +612,9 @@ const globalIPAssignment = await client.globalIPAssignments.delete(
 console.log(globalIPAssignment.data);
 ```
 
-## Global IP Assignment Usage Metrics
+## 全局 IP 地址分配的使用情况指标
+
+获取全局 IP 地址分配的使用情况指标。
 
 `GET /global_ip_assignments/usage`
 
@@ -618,9 +624,9 @@ const globalIPAssignmentsUsage = await client.globalIPAssignmentsUsage.retrieve(
 console.log(globalIPAssignmentsUsage.data);
 ```
 
-## List all Global IP Health check types
+## 列出所有全局 IP 地址的健康检查类型
 
-List all Global IP Health check types.
+列出所有全局 IP 地址的健康检查类型。
 
 `GET /global_ip_health_check_types`
 
@@ -630,9 +636,9 @@ const globalIPHealthCheckTypes = await client.globalIPHealthCheckTypes.list();
 console.log(globalIPHealthCheckTypes.data);
 ```
 
-## List all Global IP health checks
+## 列出所有全局 IP 地址的健康检查记录
 
-List all Global IP health checks.
+列出所有全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks`
 
@@ -643,9 +649,9 @@ for await (const globalIPHealthCheckListResponse of client.globalIPHealthChecks.
 }
 ```
 
-## Create a Global IP health check
+## 创建全局 IP 地址的健康检查记录
 
-Create a Global IP health check.
+创建一个新的全局 IP 地址健康检查记录。
 
 `POST /global_ip_health_checks`
 
@@ -655,9 +661,9 @@ const globalIPHealthCheck = await client.globalIPHealthChecks.create();
 console.log(globalIPHealthCheck.data);
 ```
 
-## Retrieve a Global IP health check
+## 获取全局 IP 地址的健康检查记录
 
-Retrieve a Global IP health check.
+检索全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks/{id}`
 
@@ -669,9 +675,9 @@ const globalIPHealthCheck = await client.globalIPHealthChecks.retrieve(
 console.log(globalIPHealthCheck.data);
 ```
 
-## Delete a Global IP health check
+## 删除全局 IP 地址的健康检查记录
 
-Delete a Global IP health check.
+删除全局 IP 地址的健康检查记录。
 
 `DELETE /global_ip_health_checks/{id}`
 
@@ -683,7 +689,9 @@ const globalIPHealthCheck = await client.globalIPHealthChecks.delete(
 console.log(globalIPHealthCheck.data);
 ```
 
-## Global IP Latency Metrics
+## 全局 IP 地址的延迟指标
+
+获取全局 IP 地址的延迟指标。
 
 `GET /global_ip_latency`
 
@@ -693,7 +701,9 @@ const globalIPLatency = await client.globalIPLatency.retrieve();
 console.log(globalIPLatency.data);
 ```
 
-## List all Global IP Protocols
+## 列出所有全局 IP 协议
+
+列出所有全局 IP 协议。
 
 `GET /global_ip_protocols`
 
@@ -703,7 +713,9 @@ const globalIPProtocols = await client.globalIPProtocols.list();
 console.log(globalIPProtocols.data);
 ```
 
-## Global IP Usage Metrics
+## 全局 IP 地址的使用情况指标
+
+获取全局 IP 地址的使用情况指标。
 
 `GET /global_ip_usage`
 

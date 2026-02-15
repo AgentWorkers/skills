@@ -1,24 +1,24 @@
 ---
 slug: "material-tracker"
 display_name: "Material Tracker"
-description: "Track material orders, deliveries, and inventory on construction sites. Monitor lead times, delivery status, and stock levels."
+description: "在建筑工地上跟踪材料订单、交付情况以及库存状况。监控交货周期、交付状态和库存水平。"
 ---
 
-# Material Tracker
+# 物料跟踪系统
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-Material management challenges:
-- Tracking multiple orders
-- Coordinating deliveries
-- Avoiding stockouts
-- Managing lead times
+### 问题描述
+物料管理面临的挑战：
+- 跟踪多个订单
+- 协调交货
+- 避免库存短缺
+- 管理交货周期
 
-### Solution
-Comprehensive material tracking system to monitor orders, deliveries, inventory, and alert on potential issues.
+### 解决方案
+一个全面的物料跟踪系统，用于监控订单、交货情况、库存状况，并在出现潜在问题时发出警报。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -378,7 +378,7 @@ class MaterialTracker:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date, timedelta
@@ -407,27 +407,27 @@ tracker.update_order_status("PO-001", OrderStatus.CONFIRMED)
 tracker.record_delivery("PO-001", quantity=200, received_by="John Smith")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Check Late Orders
+### 1. 查看延迟的订单
 ```python
 late = tracker.get_late_orders()
 for order in late:
     print(f"{order['order_id']}: {order['days_late']} days late")
 ```
 
-### 2. Low Stock Alert
+### 2. 低库存警报
 ```python
 low_stock = tracker.get_low_stock_items()
 for item in low_stock:
     print(f"{item['material_name']}: {item['current_stock']} {item['unit']} - {item['urgency']}")
 ```
 
-### 3. Delivery Schedule
+### 3. 交货计划
 ```python
 schedule = tracker.get_delivery_schedule(days_ahead=7)
 print(schedule)
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.2 - Material Management
+## 资源参考
+- **DDC手册**：第3.2章 - 物料管理

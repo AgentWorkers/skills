@@ -1,15 +1,14 @@
 ---
 name: resilient-connections
 model: standard
-description: Patterns for building resilient API clients and real-time connections with retry logic, circuit breakers, and graceful degradation. Use when building production systems that need to handle failures. Triggers on retry logic, circuit breaker, connection resilience, exponential backoff, API client, fault tolerance.
+description: 用于构建具有弹性功能的API客户端和实时连接的技术模式，这些模式包含了重试逻辑、断路器（circuit breaker）以及优雅的降级（graceful degradation）机制。适用于需要处理故障的生产系统开发。这些技术模式涵盖了重试逻辑（retry logic）、断路器（circuit breaker）的应用、连接稳定性（connection resilience）、指数级退避策略（exponential backoff）、API客户端（API client）以及容错性（fault tolerance）等方面的实现。
 ---
 
-# Resilient Connections
+# 弹性连接
 
-Build API clients and real-time connections that handle failures gracefully with retries, circuit breakers, and fallbacks.
+构建能够优雅地处理故障的 API 客户端和实时连接机制，通过重试、断路器和备用方案来实现这一目标。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,16 +19,16 @@ npx clawhub@latest install resilient-connections
 
 ---
 
-## When to Use
+## 使用场景
 
-- Building API clients that need to handle transient failures
-- Real-time connections that should reconnect automatically
-- Systems that need graceful degradation
-- Any production system calling external services
+- 需要处理临时性故障的 API 客户端开发
+- 需要自动重新连接的实时连接
+- 需要实现优雅降级的系统
+- 任何调用外部服务的生产系统
 
 ---
 
-## Pattern 1: Exponential Backoff
+## 模式 1：指数退避（Exponential Backoff）
 
 ```typescript
 interface RetryOptions {
@@ -75,7 +74,7 @@ const data = await withRetry(
 
 ---
 
-## Pattern 2: Circuit Breaker
+## 模式 2：断路器（Circuit Breaker）
 
 ```typescript
 enum CircuitState {
@@ -131,7 +130,7 @@ class CircuitBreaker {
 
 ---
 
-## Pattern 3: Resilient Fetch Wrapper
+## 模式 3：弹性数据获取封装器（Resilient Fetch Wrapper）
 
 ```typescript
 interface FetchOptions extends RequestInit {
@@ -175,7 +174,7 @@ async function resilientFetch(
 
 ---
 
-## Pattern 4: Reconnecting WebSocket
+## 模式 4：重新连接 WebSocket
 
 ```typescript
 class ReconnectingWebSocket {
@@ -225,7 +224,7 @@ class ReconnectingWebSocket {
 
 ---
 
-## Pattern 5: Graceful Degradation
+## 模式 5：优雅降级（Graceful Degradation）
 
 ```typescript
 async function fetchWithFallback<T>(
@@ -263,25 +262,25 @@ const data = await fetchWithFallback(
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Meta-skill:** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — Complete realtime dashboard guide
-- [realtime-react-hooks](../realtime-react-hooks/) — Hook usage
-- [websocket-hub-patterns](../websocket-hub-patterns/) — Server patterns
-
----
-
-## NEVER Do
-
-- **NEVER retry non-idempotent requests** — POST/PUT might succeed but fail to respond
-- **NEVER use fixed delays** — Always add jitter to prevent thundering herd
-- **NEVER retry 4xx errors** — Client errors won't resolve themselves
-- **NEVER keep circuit open forever** — Always have a timeout to half-open
-- **NEVER hide connection failures** — Show users the degraded state
+- **元技能：** [ai/skills/meta/realtime-dashboard/](../../meta/realtime-dashboard/) — 完整的实时仪表盘指南
+- [realtime-react-hooks](../realtime-react-hooks/) — 钩子（Hook）的使用方法
+- [websocket-hub-patterns](../websocket-hub-patterns/) — 服务器端模式
 
 ---
 
-## Quick Reference
+## 绝对不要做的事情
+
+- **绝对不要重试非幂等请求** — POST/PUT 请求可能成功，但无法响应
+- **绝对不要使用固定的延迟时间** — 总是添加随机延迟以避免大量请求同时发送
+- **绝对不要重试 4xx 错误** — 客户端错误无法自行解决
+- **绝对不要让连接永远保持开启状态** — 必须设置超时机制以控制连接状态
+- **绝对不要隐藏连接故障** — 向用户显示系统的降级状态
+
+---
+
+## 快速参考
 
 ```typescript
 // Exponential backoff

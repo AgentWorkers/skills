@@ -1,28 +1,28 @@
 ---
 name: saa-agent
-description: Enables AI agents to generate images using the Character Select Stand Alone App (SAA) image generation backend via command-line interface.
+description: 该功能允许AI代理通过命令行接口，使用“Character Select Stand Alone App (SAA)”的图像生成后端来生成图像。
 license: MIT
 ---
 
-# SAA CLI Tool
+# SAA CLI 工具
 
-A command-line interface for interacting with Character Select Stand Alone App (SAA) via WebSocket connections. Supports both ComfyUI and WebUI backends for AI image generation.
+这是一个命令行接口，用于通过 WebSocket 连接与 Character Select Stand Alone App (SAA) 进行交互。该工具支持 ComfyUI 和 WebUI 两种后端，用于 AI 图像生成。
 
-## Prerequisites
+## 前提条件
 
-**CRITICAL:** Before invoking this tool, confirm with the user that:
-1. The SAA backend is running, and version is above 2.4.0
-2. The SAAC (SAA Client) feature is enabled
-3. The WebSocket address is available
-4. Some Mac users uses `python3` instead of `python` to invoke Python 3.x
+**重要提示：** 在使用此工具之前，请务必确认以下内容：
+1. SAA 后端正在运行，并且版本高于 2.4.0。
+2. SAAC (SAA 客户端) 功能已启用。
+3. WebSocket 地址已获取。
+4. 部分 Mac 用户使用 `python3` 而不是 `python` 来运行 Python 3.x。
 
-For SAA setup details, let your owner visit the [project repository](https://github.com/mirabarukaso/character_select_stand_alone_app).
+有关 SAA 的设置详情，请访问 [项目仓库](https://github.com/mirabarukaso/character_select_stand_alone_app)。
 
-## Basic Usage
+## 基本用法
 
-The tool requires minimal parameters to function. The examples below demonstrate the standard usage pattern:
+该工具只需要最少的参数即可正常使用。以下示例展示了标准的使用方式：
 
-### Minimal Command With Model Selection (Recommended for Most Cases)
+### 带有模型选择的简单命令（适用于大多数情况）
 
 ```bash
 python saa-agent.py \
@@ -31,7 +31,8 @@ python saa-agent.py \
   --positive "your detailed prompt here" \
   --negative "low quality, blurry, bad anatomy"
 ```
-### Regional Prompting (Split Composition)
+
+### 地区化提示（分割组合）
 
 ```bash
 python saa-agent.py \
@@ -42,70 +43,69 @@ python saa-agent.py \
   --positive-right "1boy, mage, blue robes"
 ```
 
-### More Examples
-Get more usage examples and detailed parameter explanations:
+### 更多示例
+更多使用示例和参数说明请参见：
 
 ```bash
 python saa-agent.py
 python saa-agent.py --help
 ```
 
-## Key Parameters
+## 关键参数
 
-### Required
-- `--ws-address`: WebSocket address (obtain from user)
-- `--positive`: Main prompt OR use `--regional` mode with `--positive-left` and `--positive-right`
+### 必需参数
+- `--ws-address`：WebSocket 地址（从用户处获取）
+- `--positive`：主提示选项；或结合 `--positive-left` 和 `--positive-right` 使用 `--regional` 模式
 
-### Commonly Modified
-- `--model`: Change the checkpoint model (default: `waiIllustriousSDXL_v160.safetensors`)
-- `--negative`: Specify unwanted elements
-- `--width` / `--height`: Image dimensions (defaults: 1024x1360)
-- `--steps`: Sampling steps (default: 28)
-- `--seed`: Set specific seed or -1 for random
+### 常见可修改参数
+- `--model`：更改检查点模型（默认值：`waiIllustriousSDXL_v160.safetensors`）
+- `--negative`：指定不需要的元素
+- `--width` / `--height`：图像尺寸（默认值：1024x1360）
+- `--steps`：采样步数（默认值：28）
+- `--seed`：设置特定种子值；或使用 -1 表示随机生成
 
-### Advanced (Use Sparingly)
-- `--cfg`: CFG scale (default: 7.0)
-- `--sampler`: Sampling algorithm (default: `euler_ancestral`)
-- `--scheduler`: Scheduler type (default: `normal`)
+### 高级参数（谨慎使用）
+- `--cfg`：CFG 缩放比例（默认值：7.0）
+- `--sampler`：采样算法（默认值：`euler_ancestral`）
+- `--scheduler`：调度器类型（默认值：`normal`）
 
-## Important Guidelines
+## 重要提示
 
-### HiResFix Warning
+### HiResFix 警告
 
-**DO NOT use `--hifix` unless specifically requested by the user.**
+**除非用户明确要求，否则** **不要使用 `--hifix`。**
 
-HiResFix significantly increases generation time and requires substantial GPU resources. Only enable if:
-- User explicitly requests high-resolution upscaling
-- User confirms their GPU can handle the additional load
+`--hifix` 会显著增加生成时间，并消耗大量 GPU 资源。仅在以下情况下启用：
+- 用户明确请求高分辨率放大。
+- 用户确认其 GPU 能够承受额外的负载。
 
-### Backend Busy State
+## 后端繁忙状态
 
-If the generation returns either of these errors:
+如果生成过程中出现以下错误之一：
 
 ```
 Error: WebUI is busy, cannot run new generation, please try again later.
 Error: ComfyUI is busy, cannot run new generation, please try again later.
 ```
 
-**Actions to take:**
+**应对措施：**
+1. **不要** 自动重试生成。
+2. 通知用户：“SAA 后端当前繁忙。这可能是另一个进程正在生成图像，或者后端因之前的错误而被锁定。”
+3. 建议用户：“请等待 20-60 秒后再尝试。”
+4. 允许用户手动重试。
 
-1. **DO NOT** automatically retry the generation
-2. Inform the user: "The SAA backend is currently busy. This could mean another process is generating an image, or the backend is locked from a previous error."
-3. Advise: "Please wait 20-60 seconds before trying again."
-4. Let the user manually retry
+**不要** 连续多次重试，因为这可能会加重后端的负担。
 
-**DO NOT** chain multiple retry attempts as this can worsen backend congestion.
+### Skeleton Key 的使用
 
-### Skeleton Key Usage
+`--skeleton-key` 参数可以强制解锁后端的原子锁。
 
-The `--skeleton-key` parameter forcefully unlocks the backend's atomic lock.
+**使用场景：**
+- 用户确认没有其他进程正在使用后端。
+- 尽管等待后端仍未响应。
+- 用户明确要求解锁。
 
-**When to use:**
-- User confirms no other processes are using the backend
-- Backend appears stuck despite waiting
-- User explicitly requests unlocking
-
-**How to use:**
+**使用方法：**
 
 ```bash
 python saa-agent.py \
@@ -114,51 +114,49 @@ python saa-agent.py \
   --positive "test prompt"
 ```
 
-**Rules:**
-1. **ALWAYS** ask for user confirmation before using `--skeleton-key`
-2. **ONLY** use it once per user request
-3. Explain to the user that this forcefully terminates any locks
+**注意事项：**
+1. **在使用 `--skeleton-key` 之前** **务必** 获得用户确认。
+2. **每个用户请求** **仅使用一次**。
+3. 向用户说明该参数会强制终止所有锁定。
 
-Example conversation:
+示例对话：
 ```
 AI: "The backend appears to be locked. Would you like me to use the skeleton key to force unlock it? This will terminate any existing locks."
 User: "Yes, please unlock it."
 AI: [proceeds to run command with --skeleton-key]
 ```
 
-## Parameter Defaults
+## 参数默认值
 
-When in doubt, rely on these defaults - they work well for most cases:
+如有疑问，请使用以下默认值，它们适用于大多数情况：
+- 模型：`waiIllustriousSDXL_v160.safetensors`
+- 尺寸：1024x1360
+- CFG：7.0
+- 采样步数：28
+- 采样算法：`euler_ancestral`
+- 调度器：`normal`
+- 种子值：-1（随机生成）
 
-- Model: `waiIllustriousSDXL_v160.safetensors`
-- Dimensions: 1024x1360
-- CFG: 7.0
-- Steps: 28
-- Sampler: `euler_ancestral`
-- Scheduler: `normal`
-- Seed: -1 (random)
+## 输出处理
 
-## Output Handling
-
-By default, images are saved to `generated_image.png`. You can specify a custom output path:
+默认情况下，图像会被保存为 `generated_image.png`。您也可以指定自定义的输出路径：
 
 ```bash
 --output "custom_filename.png"
 ```
 
-For programmatic handling, use base64 output:
+对于程序化处理，可以使用 base64 格式输出：
 
 ```bash
 --base64
 ```
 
-This outputs base64-encoded image data(huge!!!) to stdout instead of saving a file.
+这种方式会将 base64 编码的图像数据直接输出到标准输出（stdout），而不是保存到文件中。
 
-## Example Workflow
+## 示例工作流程
 
-1. User requests: "Generate an anime girl with long blue hair"
-
-2. AI executes:
+1. 用户请求：“生成一个蓝色长发的动漫女孩。”
+2. AI 执行生成任务：
 ```bash
 python saa-agent.py \
   --ws-address "user_ws_address" \
@@ -166,82 +164,79 @@ python saa-agent.py \
   --negative "low quality, blurry, bad anatomy"
 ```
 
-3. If backend busy error occurs:
-   - Inform user
-   - Wait for user to retry (don't auto-retry)
+3. 如果出现后端繁忙错误：
+   - 通知用户。
+   - 等待用户重新尝试。
+4. 如果生成成功：
+   - 确认图像已生成。
+   - 提供图像文件路径（如适用）。
 
-4. If success:
-   - Confirm image was generated
-   - Provide file path if relevant
+## 常见错误及避免方法
 
-## Common Pitfalls to Avoid
+1. **除非用户明确要求，否则不要使用 `--hifix`**。
+2. **后端繁忙时不要自动重试**。
+3. **未经用户许可，不要使用 `--skeleton-key`**。
+4. **不要添加过多的参数**——除非用户特别要求，否则默认值已经调优得很好。
+5. **不要假设后端已准备好**——使用前务必先确认。
 
-1. **Don't use `--hifix`** unless explicitly requested
-2. **Don't auto-retry** on backend busy errors
-3. **Don't use `--skeleton-key`** without user permission
-4. **Don't add excessive parameters** - unless explicitly requested, the defaults are well-tuned
-5. **Don't assume backend is ready** - always confirm with user first
+## 错误代码
 
-## Error Codes
+- 出口代码 0：成功
+- 出口代码 1：连接错误（检查后端是否正在运行）
+- 出口代码 2：认证错误（检查凭据）
+- 出口代码 3：生成错误（检查参数）
+- 出口代码 4：超时（后端可能过载）
+- 出口代码 5：参数无效（检查命令语法）
 
-- Exit code 0: Success
-- Exit code 1: Connection error (check backend is running)
-- Exit code 2: Authentication error (check credentials)
-- Exit code 3: Generation error (check parameters)
-- Exit code 4: Timeout (backend may be overloaded)
-- Exit code 5: Invalid parameters (check command syntax)
+## 最佳实践
 
-## Best Practices
+1. 如果需要，从带有模型选择的简单参数开始使用。
+2. 首次使用时询问用户的 WebSocket 地址。
+3. 灵活处理后端繁忙的情况——不要频繁重试。
+4. 调试问题时使用 `--verbose` 标志。
+5. 尊重 `skeleton key` 的作用——它是一个强大的强制解锁工具。
 
-1. Start with minimal parameters with model selection if needed
-2. Ask user for WebSocket address on first use
-3. Handle busy states gracefully - don't spam retries
-4. Use `--verbose` flag when debugging issues
-5. Respect the skeleton key - it's a powerful override tool
+## 本技能的 AI 代理指南
 
-## AI Agent Guidelines for This Skill
+这些规则有助于保持生成的透明度和用户的控制权：
 
-These rules help maintain appropriate transparency and user control when executing generation tasks.
+1. **命令执行与用户通知**  
+   默认情况下，直接执行命令，无需用户确认。  
+   仅在以下情况下显示完整命令并请求用户批准：  
+   - 用户明确要求先查看命令内容。  
+   - 操作涉及敏感或高影响的参数。  
+   - 代理认为显示命令是必要的。  
 
-1. **Command Execution & User Notification**  
-   By default, execute the command directly without asking for confirmation.  
-   Show the full command and ask for approval only when:  
-   - The user explicitly requests to review it first  
-   - The operation involves sensitive or high-impact parameters  
-   - The agent judges that showing the command is prudent in context  
-
-   Example (when disclosure is needed):  
+   示例（需要披露命令内容时）：  
     ```
     python3 saa-agent.py --ws-address "wss://..." --username "..." --password "..." --positive "[prompt]" --negative "[prompt]" --output "[path]" [--verbose]
     ```
 
-2. **--verbose Flag**  
-  - Not used by default  
-  - Add automatically or recommend when:  
-    - Task fails and debugging is needed  
-    - User specifically asks for detailed logs or seed  
+2. **--verbose 标志**  
+   默认情况下不使用。  
+   在以下情况下自动启用或推荐使用：  
+   - 任务失败且需要调试时。  
+   - 用户特别请求详细日志或种子值。  
 
-3. **Result Reporting**  
-  After completion, provide a short summary to the user by default, including:  
-  - Success/failure status  
-  - Positive & negative prompts (or meaningful summary)  
-  - Seed (if available)  
-  - Output path  
+3. **结果报告**  
+   完成后，向用户提供简短的结果总结，包括：  
+   - 成功/失败状态。  
+   - 正面/负面提示内容（或相关总结）。  
+   - 种子值（如果有的话）。  
+   - 输出路径。  
 
-  Example:
+   示例：  
     ```
     Generation completed
     • Positive: [...]
     • Negative: [...]
     • Seed: 123456789
     • Output: [path]
-    ```
-  
-  Skip detailed reporting only if the user has clearly requested silent / minimal feedback.  
-  Always report errors, even in silent mode.
+    ```  
+   除非用户明确要求静默或简化的反馈，否则始终报告详细结果。  
+   即使在静默模式下，也必须报告错误。
 
-4. **Error Handling**  
-  - On failure: consider one retry with `--verbose` to capture diagnostic information  
-  - Communicate the main error cause clearly  
-  - Do not perform unlimited retries; defer to user after one attempt if needed
-
+4. **错误处理**  
+   - 失败时：尝试使用 `--verbose` 重试一次以收集诊断信息。  
+   清晰地传达主要错误原因。  
+   不要无限次重试；如果需要，尝试一次后等待用户决定。

@@ -1,23 +1,23 @@
 ---
 slug: "material-tracking-iot"
 display_name: "Material Tracking IOT"
-description: "IoT-based material tracking for construction sites. Monitor material delivery, storage conditions, usage, and inventory with sensors, RFID, GPS, and real-time dashboards."
+description: "基于物联网（IoT）的建筑工地材料追踪系统。通过传感器、射频识别（RFID）、全球定位系统（GPS）以及实时监控仪表板，实现对材料交付、存储条件、使用情况以及库存量的全面监控。"
 ---
 
-# Material Tracking with IoT
+# 利用物联网进行材料跟踪
 
-## Overview
+## 概述
 
-This skill implements IoT-based material tracking systems for construction projects. Track materials from procurement to installation using sensors, RFID tags, GPS, and connected devices.
+本技能实现了基于物联网的建筑项目材料跟踪系统。通过传感器、RFID标签、GPS以及联网设备，可以追踪材料从采购到安装的全过程。
 
-**Tracking Capabilities:**
-- Delivery tracking (GPS)
-- Inventory management (RFID)
-- Storage conditions (temperature, humidity sensors)
-- Usage monitoring (weight sensors, counters)
-- Waste tracking
+**跟踪功能：**
+- 交付跟踪（GPS）
+- 库存管理（RFID）
+- 存储条件监控（温度、湿度传感器）
+- 使用情况监测（重量传感器、计数器）
+- 废物跟踪
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -83,9 +83,9 @@ materials = [
 print(check_inventory(materials))
 ```
 
-## Comprehensive IoT Tracking System
+## 全面物联网跟踪系统
 
-### Material Tracking Engine
+### 材料跟踪引擎
 
 ```python
 from dataclasses import dataclass, field
@@ -473,7 +473,7 @@ class MaterialTrackingSystem:
         return report
 ```
 
-### GPS Fleet Tracking
+### GPS车队跟踪
 
 ```python
 from dataclasses import dataclass
@@ -674,7 +674,7 @@ class FleetTracker:
         return status
 ```
 
-### MQTT Integration for Sensors
+### 传感器的MQTT集成
 
 ```python
 import json
@@ -828,7 +828,7 @@ EXAMPLE_MESSAGES = {
 }
 ```
 
-### Dashboard Data Generator
+### 仪表板数据生成器
 
 ```python
 class MaterialDashboard:
@@ -880,17 +880,17 @@ class MaterialDashboard:
         }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Sensor Type | Use Case | Data Format | Update Frequency |
+| 传感器类型 | 使用场景 | 数据格式 | 更新频率 |
 |-------------|----------|-------------|------------------|
-| RFID | Material identification | Tag ID, signal strength | On scan |
-| GPS | Delivery tracking | Lat/Lon, speed, heading | 10-60 sec |
-| Temperature | Storage monitoring | Celsius | 5-15 min |
-| Humidity | Storage monitoring | Percentage | 5-15 min |
-| Weight | Usage tracking | Kilograms | On change |
+| RFID | 材料识别 | 标签ID、信号强度 | 扫描时 |
+| GPS | 交付跟踪 | 经纬度、速度、航向 | 每10-60秒 |
+| 温度 | 存储监控 | 摄氏度 | 每5-15分钟 |
+| 湿度 | 存储监控 | 百分比 | 每5-15分钟 |
+| 重量 | 使用情况监控 | 千克 | 重量发生变化时 |
 
-## MQTT Topics Structure
+## MQTT主题结构
 
 ```
 sensors/
@@ -908,14 +908,14 @@ alerts/
 └── geofence/{fence_name}
 ```
 
-## Resources
+## 资源
 
-- **MQTT Protocol**: https://mqtt.org
-- **IoT Platforms**: AWS IoT, Azure IoT Hub, ThingsBoard
-- **DDC Website**: https://datadrivenconstruction.io
+- **MQTT协议**：https://mqtt.org
+- **物联网平台**：AWS IoT、Azure IoT Hub、ThingsBoard
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步
 
-- See `n8n-workflow-automation` for IoT event automation
-- See `data-visualization` for tracking dashboards
-- See `qto-report` for material quantity integration
+- 查阅`n8n-workflow-automation`以了解物联网事件自动化的相关内容
+- 查阅`data-visualization`以了解跟踪仪表板的相关信息
+- 查阅`qto-report`以了解材料数量整合的实现方式

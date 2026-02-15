@@ -1,24 +1,25 @@
 ---
 name: linkedin-automation
-description: LinkedIn automation — post (with image upload), comment (with @mentions), edit/delete comments, repost, read feed, analytics, like monitoring, engagement tracking, and content calendar with approval workflow. Uses Playwright with persistent browser profile. Use for any LinkedIn task including content strategy, scheduled publishing, engagement analysis, and audience growth.
+description: LinkedIn自动化工具：支持发布内容（包含图片上传）、发表评论（可@提及他人）、编辑/删除评论、重新发布内容、查看动态流、分析用户互动数据、监控点赞情况、跟踪用户参与度，以及管理内容发布的审批流程。该工具基于Playwright框架开发，能够持久化保存浏览器会话状态。适用于各种LinkedIn相关任务，包括内容策略制定、定时发布内容、分析用户互动情况以及提升受众规模。
 ---
 
-# LinkedIn Automation
+# LinkedIn自动化
 
-> **Author:** Community Contributors
+> **作者：**社区贡献者
+
 >
-> ⚠️ **DISCLAIMER — PERSONAL USE ONLY**
-> This skill is provided for **personal, non-commercial use only**. It automates your own LinkedIn account for personal productivity and engagement. Do NOT use this skill for spam, mass outreach, scraping other users' data, or any commercial automation service. Use responsibly and in accordance with [LinkedIn's User Agreement](https://www.linkedin.com/legal/user-agreement). The author assumes no liability for misuse or account restrictions.
+> ⚠️ **免责声明 — 仅限个人使用**
+> 本技能仅用于**个人、非商业用途**。它可自动化您的LinkedIn账户，提升个人的生产力和互动效率。请勿将此技能用于发送垃圾信息、大规模联系用户、抓取其他用户的数据或任何商业自动化服务。请负责任地使用，并遵守[LinkedIn的用户协议](https://www.linkedin.com/legal/user-agreement)。作者对滥用或账户被封禁的情况不承担任何责任。
 
-Automate LinkedIn interactions via headless Playwright browser with a persistent session.
+通过无头Playwright浏览器和持久会话来自动化LinkedIn上的互动。
 
-## Prerequisites
+## 先决条件
 
-- Python 3.10+ with Playwright installed (`pip install playwright && playwright install chromium`)
-- A logged-in LinkedIn browser session (persistent Chromium profile)
-- Adjust paths in `scripts/lib/browser.py` to match your setup
+- 安装了Python 3.10及Playwright（`pip install playwright && playwright install chromium`）
+- 已登录的LinkedIn浏览器会话（持久的Chromium配置文件）
+- 根据您的设置调整`scripts/lib/browser.py`中的路径
 
-## Commands
+## 命令
 
 ```bash
 CLI={baseDir}/scripts/linkedin.py
@@ -60,42 +61,42 @@ python3 $CLI scan-likes --count 15
 python3 $CLI activity --profile-url "https://linkedin.com/in/someone/" --count 5
 ```
 
-All commands output JSON. Enable debug logging: `LINKEDIN_DEBUG=1`.
+所有命令的输出均为JSON格式。启用调试日志记录：`LINKEDIN_DEBUG=1`。
 
-## @Mentions
+## @提及
 
-Comments support `@FirstName LastName` syntax. The skill:
-1. Types `@FirstName` → waits for typeahead dropdown
-2. Progressively types last name letter by letter if needed
-3. Clicks the match only if first+last name both match
-4. Falls back to plain text if person not found (returns `mention_failed` warning)
+评论支持`@FirstName LastName`的语法。该技能：
+1. 输入`@FirstName`后，会等待自动完成输入的姓氏选项；
+2. 如需要，会逐个输入姓氏的字母；
+3. 仅当名字和姓氏都匹配时才会点击对应的链接；
+4. 如果找不到匹配的人，会返回`mention_failed`的警告。
 
-Check `mentions` in the JSON result to see if mentions succeeded.
+请在JSON结果中查看`mentions`字段，以确认提及操作是否成功。
 
-## Like Monitor
+## 点赞监控
 
-The `scan-likes` command checks your recent likes/reactions activity and returns any **new likes since the last check**. State is persisted to avoid duplicate alerts. Ideal for cron/heartbeat integration:
+`scan-likes`命令会检查您最近的点赞/互动记录，并返回**自上次检查以来的新点赞**。为了避免重复提醒，系统会保留这些信息。非常适合与cron/心跳任务集成：
 
 ```
 # In HEARTBEAT.md or cron job:
 python3 $CLI scan-likes → if new likes found → suggest comment for each
 ```
 
-## ⚠️ Golden Rule
+## ⚠️ 重要规则
 
-**NEVER post, comment, repost, edit, or delete anything without EXPLICIT user approval.**
+**未经用户明确同意，切勿发布、评论、转发、编辑或删除任何内容。**
 
-Always show the user exactly what will be posted and get a clear "yes" before executing. Read-only actions (feed, analytics, check-session, scan-likes) are safe to run freely.
+在执行任何操作前，务必向用户明确展示将要显示的内容，并获得用户的明确许可。只读操作（如查看动态、分析数据、检查会话状态、扫描点赞记录）可以自由执行。
 
-## Content Calendar (Scheduled Publishing)
+## 内容日历（定时发布）
 
-Full approval-based publishing workflow with auto-posting. See **[references/content-calendar.md](references/content-calendar.md)** for setup.
+基于用户批准的完整发布流程，支持自动发布。详情请参阅**[references/content-calendar.md]**。
 
-- **Webhook** (`scripts/cc-webhook.py`): Receives approve/edit/skip from a frontend UI
-- **Auto-apply**: Simple edits (`"old text -> new text"`) applied instantly by webhook
-- **Agent processing**: Complex edits flagged for AI-powered text rewriting
-- **Auto-post**: Approved posts past their scheduled time are posted automatically via cron
-- **Image strategy**: Real photos + AI-generated story overlays (not stock photos)
+- **Webhook**（`scripts/cc-webhook.py`）：从前端UI接收批准/编辑/跳过的指令；
+- **自动应用**：简单的编辑（如“旧文本 → 新文本”）会通过Webhook立即生效；
+- **代理处理**：复杂的编辑内容会由AI进行文本重写；
+- **自动发布**：已批准但未在预定时间发布的帖子会通过cron任务自动发布；
+- **图片策略**：使用真实照片和AI生成的故事叠加层（而非库存图片）。
 
 ```bash
 # Start the webhook (or install as systemd service)
@@ -107,52 +108,52 @@ python3 scripts/cc-webhook.py
 # CC_WEBHOOK_PORT=8401
 ```
 
-## Content Strategy & Engagement
+## 内容策略与互动
 
-- **[references/content-strategy.md](references/content-strategy.md)** — Hook formulas, post structure, posting times, hashtag strategy, 4-1-1 rule
-- **[references/engagement.md](references/engagement.md)** — Algorithm signals, comment quality formula, rate limits, weekly routine
-- **[references/dom-patterns.md](references/dom-patterns.md)** — Known LinkedIn DOM patterns for troubleshooting
-- **[references/content-calendar.md](references/content-calendar.md)** — Content calendar setup, data format, webhook API
+- **[references/content-strategy.md]** — 发布策略、帖子结构、发布时间、标签策略、4-1-1规则
+- **[references/engagement.md]** — 算法提示、评论质量标准、频率限制、每周例行任务
+- **[references/dom-patterns.md]** — LinkedIn的DOM模式解析，用于故障排除
+- **[references/content-calendar.md]** — 内容日历设置、数据格式、Webhook API
 
-## Rate Limits
+## 频率限制
 
-| Action | Daily Max | Weekly Max |
+| 操作 | 每日最大次数 | 每周最大次数 |
 |--------|----------|-----------|
-| Posts | 2–3 | 10–15 |
-| Comments | 20–30 | — |
-| Likes | 100 | — |
-| Connection requests | 30 | 100 |
+| 发布帖子 | 2–3次 | 10–15次 |
+| 评论 | 20–30次 | — |
+| 点赞 | 100次 | — |
+| 添加好友请求 | 30次 | 100次 |
 
-## Setup
+## 设置步骤
 
-1. Install dependencies: `pip install playwright && playwright install chromium`
-2. Configure browser profile path in `scripts/lib/browser.py` (or set `LINKEDIN_BROWSER_PROFILE` env var)
-3. Log in to LinkedIn manually once (the session persists)
-4. Run `python3 scripts/linkedin.py check-session` to verify
-5. **Learn your voice:** Run `python3 scripts/linkedin.py learn-profile` — this scans your recent posts and comments to learn your tone, topics, language, and style. The agent uses this profile when suggesting comments/posts so they sound like **you**, not like a generic bot.
+1. 安装依赖项：`pip install playwright && playwright install chromium`
+2. 在`scripts/lib/browser.py`中配置浏览器配置文件路径（或设置`LINKEDIN_BROWSER_PROFILE`环境变量）
+3. 手动登录LinkedIn一次（会话会持续保存）
+4. 运行`python3 scripts/linkedin.py check-session`进行验证
+5. **学习您的发言风格**：运行`python3 scripts/linkedin.py learn-profile`——该脚本会扫描您最近的帖子和评论，以学习您的发言风格、主题、语言和表达方式。代理在生成评论或帖子时将使用此配置文件，确保内容听起来像您本人，而非机器人。
 
-## Voice & Style
+## 语音与风格
 
-On first setup, `learn-profile` analyzes your content and saves a style profile (`~/.linkedin-style.json`) containing:
-- **Language** (de/en/mixed)
-- **Tone** (casual / professional / professional-friendly)
-- **Emoji usage** (heavy / moderate / minimal)
-- **Top hashtags** you use
-- **Sample posts and comments** for voice reference
+在首次设置时，`learn-profile`会分析您的内容并生成一个风格配置文件（`~/.linkedin-style.json`），其中包含：
+- **语言**（德语/英语/混合）
+- **语气**（随意/正式/友好）
+- **表情符号的使用频率**（高/中等/低）
+- **您常用的标签**
+- **用于参考的样例帖子和评论**
 
-The agent should ALWAYS read this profile (`get-style`) before drafting any comment or post suggestion. Never impose a foreign voice — match the user's natural style.
+代理在生成任何评论或帖子建议前，必须始终读取此配置文件（`get-style`）。切勿强行使用与用户风格不符的语气。
 
-## Post Age Warning
+## 帖子发布时间警告
 
-**CRITICAL:** Before suggesting a comment on any post, check how old the post is:
-- **< 2 weeks:** Safe to comment
-- **> 2 weeks:** Warn the user explicitly ("⚠️ This post is X weeks old — commenting on old posts can look like bot behavior. Still want to?")
-- **> 1 month:** Strongly discourage unless there's a specific reason
+**重要提示：**在建议对任何帖子发表评论之前，请检查帖子的发布时间：
+- **< 2周**：可以安全地发表评论；
+- **> 2周**：请明确告知用户（“⚠️ 这篇帖子已发布X周了——在旧帖子上评论可能会被误认为是机器人行为。您仍要评论吗？”）；
+- **> 1个月**：除非有特殊原因，否则强烈建议不要评论。
 
-Commenting on old posts makes it look like you're mining someone's history with a bot. Always flag post age.
+在旧帖子上评论可能会让人觉得您像是在用机器人刷数据。务必标记帖子的发布时间。
 
-## Troubleshooting
+## 故障排除
 
-- **Session expired**: Log in again via browser profile
-- **Selectors broken**: LinkedIn updates UI frequently — check `references/dom-patterns.md` and update `scripts/lib/selectors.py`
-- **Debug screenshots**: Saved to `/tmp/linkedin_debug_*.png` on failure
+- **会话过期**：通过浏览器配置文件重新登录；
+- **选择器失效**：LinkedIn的UI经常更新——请查看`references/dom-patterns.md`并更新`scripts/lib/selectors.py`；
+- **调试截图**：失败时截图会保存在`/tmp/linkedin_debug_*.png`文件夹中。

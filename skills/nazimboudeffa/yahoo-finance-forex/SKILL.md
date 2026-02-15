@@ -1,6 +1,6 @@
 ---
 name: yahoo-finance-forex
-description: Fetches real-time FOREX news and market data from Yahoo Finance for major currency pairs (EUR/USD, GBP/USD, USD/JPY, etc.). Analyzes sentiment and provides trading context.
+description: 从 Yahoo Finance 获取主要货币对（EUR/USD、GBP/USD、USD/JPY 等）的实时外汇新闻和市场数据。分析市场情绪，并提供交易相关的背景信息。
 homepage: https://github.com/nazimboudeffa/openclaw-yahoo-finance-forex
 metadata:
   openclaw:
@@ -16,35 +16,35 @@ metadata:
 
 # Yahoo Finance FOREX
 
-Analyze major FOREX pairs using Yahoo Finance data: news, market data, sentiment analysis.
+使用 Yahoo Finance 的数据来分析主要的外汇货币对：包括新闻、市场数据以及情绪分析。
 
-## When to Use This Skill
+## 何时使用此功能
 
-- User asks about FOREX pairs (EUR/USD, GBP/USD, USD/JPY, etc.)
-- User wants latest FOREX news or market sentiment
-- User needs fundamental analysis for currency trading
-- User asks "What's happening with EUR/USD?" or similar
+- 当用户询问外汇货币对（如 EUR/USD、GBP/USD、USD/JPY 等）时
+- 当用户需要最新的外汇新闻或市场情绪分析时
+- 当用户需要进行货币交易的基本面分析时
+- 当用户询问“EUR/USD 的情况如何？”或类似问题时
 
-## Supported Currency Pairs
+## 支持的外汇货币对
 
-**7 Major Pairs:**
-- EUR/USD 🇪🇺🇺🇸 (Euro Dollar)
-- GBP/USD 🇬🇧🇺🇸 (Cable)
-- USD/JPY 🇺🇸🇯🇵 (Dollar Yen)
-- USD/CHF 🇺🇸🇨🇭 (Swissy)
-- AUD/USD 🇦🇺🇺🇸 (Aussie)
-- USD/CAD 🇺🇸🇨🇦 (Loonie)
-- NZD/USD 🇳🇿🇺🇸 (Kiwi)
+**7 个主要货币对：**
+- EUR/USD （欧元兑美元）
+- GBP/USD （英镑兑美元）
+- USD/JPY （美元兑日元）
+- USD/CHF （美元兑瑞士法郎）
+- AUD/USD （澳元兑美元）
+- USD/CAD （美元兑加元）
+- NZD/USD （新西兰元兑美元）
 
-## Quick Start
+## 快速入门
 
-### Fetch FOREX News
+### 获取外汇新闻
 
 ```bash
 python3 scripts/fetch_forex_news.py EURUSD --limit 10
 ```
 
-**Output:**
+**输出：**
 ```json
 {
   "pair": "EURUSD",
@@ -64,132 +64,132 @@ python3 scripts/fetch_forex_news.py EURUSD --limit 10
 }
 ```
 
-## Workflow
+## 工作流程
 
-### 1. User Asks About FOREX
+### 1. 用户询问外汇相关内容
 
-**User:** "What's happening with EUR/USD?"
+**用户：**“EUR/USD 的情况如何？”
 
-**Your Action:**
-1. Run: `python3 scripts/fetch_forex_news.py EURUSD --limit 8`
-2. Parse the JSON output
-3. Analyze the sentiment and news
-4. Provide a summary with:
-   - Current rate and change
-   - Key news headlines
-   - Sentiment analysis (bullish/bearish)
-   - Trading context (support/resistance if available)
+**你的操作：**
+1. 运行命令：`python3 scripts/fetch_forex_news.py EURUSD --limit 8`
+2. 解析 JSON 格式的输出结果
+3. 分析市场情绪和新闻
+4. 提供以下信息：
+   - 当前汇率及变化百分比
+   - 主要新闻标题
+   - 情绪分析（看涨/看跌）
+   - 交易背景（如有支持/阻力位）
 
-### 2. Analyze Sentiment
+### 2. 分析市场情绪
 
-The script automatically calculates sentiment based on keywords:
+脚本会根据关键词自动计算市场情绪：
 
-**Bullish Keywords:** strengthens, rallies, hawkish, rate hike, growth
-**Bearish Keywords:** weakens, falls, dovish, rate cut, recession
+**看涨关键词：**增强、上涨、鹰派立场、加息、经济增长
+**看跌关键词：**疲软、下跌、鸽派立场、降息、经济衰退
 
-**Sentiment Score:**
-- Positive (> 2): Bullish for the pair
-- Negative (< -2): Bearish for the pair
-- Near zero: Neutral
+**情绪评分：**
+- 正面（> 2）：对该货币对持看涨态度
+- 负面（< -2）：对该货币对持看跌态度
+- 接近零：中性态度
 
-### 3. Provide Context
+### 3. 提供交易背景信息
 
-Always include:
-- **Fundamentals:** What central banks are doing (ECB, Fed, BoJ, etc.)
-- **News Impact:** How recent news affects the pair
-- **Technical Context:** Current price vs support/resistance (if available)
+务必包括以下内容：
+- **基本面情况**：各国中央银行（如 ECB、Fed、BoJ 等）的货币政策
+- **新闻影响**：最新新闻对该货币对的影响
+- **技术分析**：当前价格与支持/阻力位的关系
 
-## Script Reference
+## 脚本参考
 
 ### fetch_forex_news.py
 
-**Usage:**
+**使用方法：**
 ```bash
 python3 scripts/fetch_forex_news.py <PAIR> [--limit N]
 ```
 
-**Arguments:**
-- `<PAIR>`: Currency pair (EURUSD, GBPUSD, USDJPY, USDCHF, AUDUSD, USDCAD, NZDUSD)
-- `--limit N`: Number of news articles to fetch (default: 10, max: 50)
+**参数：**
+- `<PAIR>`：货币对（EURUSD、GBPUSD、USDJPY、USDCHF、AUDUSD、USDCAD、NZDUSD）
+- `--limit N`：要获取的新闻文章数量（默认值：10，最大值：50）
 
-**Output Fields:**
-- `pair`: Currency pair code
-- `current_rate`: Current exchange rate
-- `change_pct`: 24h percentage change
-- `news[]`: Array of news articles
-  - `title`: Article headline
-  - `published`: Publication timestamp
-  - `publisher`: News source
-  - `link`: Article URL (optional)
-- `sentiment`: Sentiment analysis
-  - `pair_sentiment`: Sentiment score (-10 to +10)
-  - `recommendation`: BUY/SELL/HOLD
+**输出字段：**
+- `pair`：货币对代码
+- `current_rate`：当前汇率
+- `change_pct`：24 小时内的百分比变化
+- `news[]`：新闻文章数组
+  - `title`：文章标题
+  - `published`：文章发布时间
+  - `publisher`：新闻来源
+  - `link`：文章链接（可选）
+  - `sentiment`：情绪分析结果
+  - `pair_sentiment`：情绪评分（-10 到 +10）
+  - `recommendation`：买入/卖出/持有建议
 
-## Examples
+## 示例
 
-### Get EUR/USD Analysis
+### 获取 EUR/USD 的分析结果
 
 ```bash
 python3 scripts/fetch_forex_news.py EURUSD --limit 5
 ```
 
-### Get GBP/USD News
+### 获取 GBP/USD 的新闻列表
 
 ```bash
 python3 scripts/fetch_forex_news.py GBPUSD --limit 8
 ```
 
-## Central Bank Focus
+## 中央银行的关注点
 
-When analyzing FOREX pairs, consider these central banks:
-- **EUR/USD**: ECB (European Central Bank) vs Fed (Federal Reserve)
-- **GBP/USD**: BoE (Bank of England) vs Fed
-- **USD/JPY**: Fed vs BoJ (Bank of Japan)
-- **USD/CHF**: Fed vs SNB (Swiss National Bank)
-- **AUD/USD**: RBA (Reserve Bank of Australia) vs Fed
-- **USD/CAD**: Fed vs BoC (Bank of Canada)
-- **NZD/USD**: RBNZ (Reserve Bank of New Zealand) vs Fed
+在分析外汇货币对时，请考虑以下中央银行的影响：
+- **EUR/USD**：欧洲央行（ECB）与美联储（Fed）
+- **GBP/USD**：英格兰银行（BoE）与美联储（Fed）
+- **USD/JPY**：美联储（Fed）与日本央行（BoJ）
+- **USD/CHF**：美联储（Fed）与瑞士国家银行（SNB）
+- **AUD/USD**：澳大利亚储备银行（RBA）与美联储（Fed）
+- **USD/CAD**：美联储（Fed）与加拿大央行（BoC）
+- **NZD/USD**：新西兰储备银行（RBNZ）与美联储（Fed）
 
-## Best Practices
+## 最佳实践
 
-1. **Always fetch news first** before making analysis
-2. **Check sentiment score** to understand market bias
-3. **Read headlines** to identify key drivers
-4. **Consider fundamentals** (interest rates, economic data, geopolitics)
-5. **Provide balanced analysis** - acknowledge both bullish and bearish factors
-6. **Mention risk factors** - volatility, upcoming events, technical levels
+1. **在进行分析之前，务必先获取新闻**  
+2. **查看情绪评分**以了解市场倾向  
+3. **阅读新闻标题**以识别关键影响因素  
+4. **考虑基本面因素**（利率、经济数据、地缘政治）  
+5. **提供全面的分析**——同时考虑看涨和看跌因素  
+6. **提及风险因素**（波动性、即将发生的事件、技术支撑位/阻力位）
 
-## Reference Files
+## 参考文件
 
-See `/references` directory for:
-- `api-examples.md`: Detailed usage examples
-- `forex-pairs.md`: Complete pairs reference with Yahoo Finance symbols
-- `sentiment-guide.md`: Sentiment calculation methodology
+请查看 `/references` 目录中的文件：
+- `api-examples.md`：详细的用法示例  
+- `forex-pairs.md`：包含所有可用货币对的完整参考信息  
+- `sentiment-guide.md`：情绪分析的方法论说明  
 
-## Limitations
+## 限制因素
 
-- News data may have slight delays (1-5 minutes)
-- Sentiment is keyword-based, not deep NLP analysis
-- Historical data limited to recent news (last 7-14 days typically)
-- No real-time tick data (only periodic updates)
+- 新闻数据可能存在轻微延迟（1-5 分钟）  
+- 情绪分析基于关键词，而非深度自然语言处理（NLP）  
+- 历史数据仅限于最近 7-14 天内的新闻  
+- 不提供实时行情数据（仅提供定期更新）
 
-## Troubleshooting
+## 故障排除
 
-**Script fails to run:**
-- Ensure Python 3.7+ is installed
-- Install yfinance: `pip install yfinance>=0.2.40`
+**脚本无法运行：**
+- 确保已安装 Python 3.7 及更高版本  
+- 安装 yfinance 库：`pip install yfinance>=0.2.40`
 
-**No news returned:**
-- Check internet connection
-- Verify pair symbol is correct
-- Try different pair or reduce limit
+**未返回新闻：**
+- 检查网络连接  
+- 确认输入的货币对代码正确  
+- 尝试其他货币对或减少新闻获取数量  
 
-**Rate data missing:**
-- Yahoo Finance API may be temporarily unavailable
-- Try again in a few minutes
+**汇率数据缺失：**
+- Yahoo Finance API 可能暂时不可用  
+- 请稍后再次尝试  
 
-## Support
+## 技术支持
 
-For issues or questions:
-- GitHub: https://github.com/nazimboudeffa/openclaw-yahoo-finance-forex
-- Report bugs via GitHub Issues
+如有问题或需要帮助，请访问：
+- GitHub 仓库：https://github.com/nazimboudeffa/openclaw-yahoo-finance-forex  
+- 通过 GitHub Issues 报告问题

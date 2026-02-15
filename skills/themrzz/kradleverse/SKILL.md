@@ -1,8 +1,8 @@
 ---
 name: kradleverse
-description: Join the Kradleverse 🤖 - where AIs can play Minecraft autonomously! See more on https://www.kradleverse.com ⛏️
+description: 加入 Kradleverse 🤖——在这里，人工智能可以自主地玩《我的世界》（Minecraft）！更多信息请访问：https://www.kradleverse.com ⛏️
 ---
 
-Follow instructions located at https://www.kradleverse.com/skill.md.
+请按照 https://www.kradleverse.com/skill.md 上的说明进行操作。
 
-This is necessary since OpenClaw does not support MCPs yet. Maybe one day we will not have to use this skill to redirect!
+这是必要的，因为 OpenClaw 目前还不支持 MCP（Master Control Points）。也许有一天我们就不需要使用这个技能来进行重定向了！

@@ -1,18 +1,25 @@
 ---
 name: mongodb-atlas-admin
-description: "Manage MongoDB Atlas clusters, projects, users, backups, and alerts via the Atlas Admin API v2. Use when: (1) Creating, scaling, or deleting Atlas clusters, (2) Managing database users and IP access lists, (3) Configuring backups, snapshots, and restore jobs, (4) Setting up alerts and monitoring, (5) Managing projects and organizations, (6) Viewing cluster metrics and logs. Requires Atlas API keys (public/private) or service account credentials."
+description: "通过 Atlas Admin API v2 管理 MongoDB Atlas 集群、项目、用户、备份和警报。适用场景包括：  
+(1) 创建、扩展或删除 Atlas 集群；  
+(2) 管理数据库用户和 IP 访问列表；  
+(3) 配置备份、快照和恢复任务；  
+(4) 设置警报并进行监控；  
+(5) 管理项目和组织；  
+(6) 查看集群指标和日志。  
+使用此功能需要 Atlas API 密钥（公共/私有）或服务账户凭证。"
 metadata: {"clawdbot":{"emoji":"🍃","requires":{"bins":["curl","jq"]},"author":{"name":"Michael Lynn","github":"mrlynn","website":"https://mlynn.org","linkedin":"https://linkedin.com/in/mlynn"}}}
 ---
 
-# MongoDB Atlas Admin
+# MongoDB Atlas 管理
 
-Manage MongoDB Atlas infrastructure programmatically via the Atlas Administration API v2.
+通过 Atlas 管理 API v2 以编程方式管理 MongoDB Atlas 基础设施。
 
-## Authentication
+## 认证
 
-Atlas API uses HTTP Digest Authentication with API keys or OAuth2 with service accounts.
+Atlas API 支持使用 API 密钥的 HTTP Digest 认证，或使用服务账户的 OAuth2 认证。
 
-### API Keys (Legacy but simpler)
+### API 密钥（较旧但更简单）
 
 ```bash
 # Set credentials
@@ -27,7 +34,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" \
   "https://cloud.mongodb.com/api/atlas/v2/..."
 ```
 
-### Service Accounts (OAuth2 - Recommended)
+### 服务账户（推荐使用 OAuth2）
 
 ```bash
 # Get access token
@@ -43,27 +50,27 @@ curl --header "Authorization: Bearer ${TOKEN}" \
   "https://cloud.mongodb.com/api/atlas/v2/..."
 ```
 
-## Quick Reference
+## 快速参考
 
-| Task | Endpoint | Method |
+| 任务 | 端点 | 方法 |
 |------|----------|--------|
-| List projects | `/groups` | GET |
-| Create project | `/groups` | POST |
-| List clusters | `/groups/{groupId}/clusters` | GET |
-| Create cluster | `/groups/{groupId}/clusters` | POST |
-| Get cluster | `/groups/{groupId}/clusters/{clusterName}` | GET |
-| Update cluster | `/groups/{groupId}/clusters/{clusterName}` | PATCH |
-| Delete cluster | `/groups/{groupId}/clusters/{clusterName}` | DELETE |
-| List DB users | `/groups/{groupId}/databaseUsers` | GET |
-| Create DB user | `/groups/{groupId}/databaseUsers` | POST |
-| List IP access | `/groups/{groupId}/accessList` | GET |
-| Add IP access | `/groups/{groupId}/accessList` | POST |
+| 列出项目 | `/groups` | GET |
+| 创建项目 | `/groups` | POST |
+| 列出集群 | `/groups/{groupId}/clusters` | GET |
+| 创建集群 | `/groups/{groupId}/clusters` | POST |
+| 获取集群信息 | `/groups/{groupId}/clusters/{clusterName}` | GET |
+| 更新集群 | `/groups/{groupId}/clusters/{clusterName}` | PATCH |
+| 删除集群 | `/groups/{groupId}/clusters/{clusterName}` | DELETE |
+| 列出数据库用户 | `/groups/{groupId}/databaseUsers` | GET |
+| 创建数据库用户 | `/groups/{groupId}/databaseUsers` | POST |
+| 列出 IP 访问权限 | `/groups/{groupId}/accessList` | GET |
+| 添加 IP 访问权限 | `/groups/{groupId}/accessList` | POST |
 
 ---
 
-## Clusters
+## 集群
 
-### List All Clusters in Project
+### 列出项目中的所有集群
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -71,7 +78,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/clusters"
 ```
 
-### Get Cluster Details
+### 获取集群详细信息
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -79,7 +86,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/clusters/${CLUSTER_NAME}"
 ```
 
-### Create Cluster (M10+)
+### 创建集群（M10+ 版本）
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -103,7 +110,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Create Free Tier Cluster (M0)
+### 创建免费 tier 集群（M0 版本）
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -128,7 +135,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Scale Cluster (Change Instance Size)
+### 调整集群规模（更改实例大小）
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -150,7 +157,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Delete Cluster
+### 删除集群
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -158,7 +165,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   -X DELETE "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/clusters/${CLUSTER_NAME}"
 ```
 
-### Pause/Resume Cluster
+### 暂停/恢复集群运行
 
 ```bash
 # Pause (M10+ only)
@@ -178,9 +185,9 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## Projects (Groups)
+## 项目（组）
 
-### List All Projects
+### 列出所有项目
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -188,7 +195,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups"
 ```
 
-### Create Project
+### 创建项目
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -201,7 +208,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Delete Project
+### 删除项目
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -211,9 +218,9 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## Database Users
+## 数据库用户
 
-### List Database Users
+### 列出数据库用户
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -221,7 +228,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/databaseUsers"
 ```
 
-### Create Database User
+### 创建数据库用户
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -239,7 +246,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Delete Database User
+### 删除数据库用户
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -249,9 +256,9 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## IP Access List
+## IP 访问权限
 
-### List IP Access Entries
+### 列出 IP 访问记录
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -259,7 +266,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/accessList"
 ```
 
-### Add IP Address
+### 添加 IP 地址
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -272,7 +279,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }]'
 ```
 
-### Allow All IPs (Development Only!)
+### 允许所有 IP 访问（仅限开发用途！）
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -287,9 +294,9 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## Backups & Snapshots
+## 备份与快照
 
-### List Snapshots
+### 列出快照
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -297,7 +304,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/clusters/${CLUSTER_NAME}/backup/snapshots"
 ```
 
-### Take On-Demand Snapshot
+### 按需创建快照
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -310,7 +317,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   }'
 ```
 
-### Restore From Snapshot
+### 从快照中恢复数据
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -327,9 +334,9 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## Alerts
+## 警报
 
-### List Alert Configurations
+### 列出警报配置
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -337,7 +344,7 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
   "https://cloud.mongodb.com/api/atlas/v2/groups/${GROUP_ID}/alertConfigs"
 ```
 
-### Get Active Alerts
+### 获取当前激活的警报
 
 ```bash
 curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
@@ -347,25 +354,25 @@ curl --user "${ATLAS_PUBLIC_KEY}:${ATLAS_PRIVATE_KEY}" --digest \
 
 ---
 
-## Instance Sizes
+## 实例规格
 
-| Tier | vCPUs | RAM | Storage | Use Case |
+| 规格等级 | vCPUs | RAM | 存储空间 | 适用场景 |
 |------|-------|-----|---------|----------|
-| M0 | Shared | Shared | 512 MB | Free tier, dev/learning |
-| M2 | Shared | Shared | 2 GB | Small dev projects |
-| M5 | Shared | Shared | 5 GB | Larger dev projects |
-| M10 | 2 | 2 GB | 10 GB | Dev/staging, low traffic |
-| M20 | 2 | 4 GB | 20 GB | Light production |
-| M30 | 2 | 8 GB | 40 GB | Production |
-| M40 | 4 | 16 GB | 80 GB | High-traffic production |
-| M50 | 8 | 32 GB | 160 GB | Large production |
-| M60+ | 16+ | 64+ GB | 320+ GB | Enterprise |
+| M0 | 共享资源 | 共享资源 | 512 MB | 免费 tier，开发/学习用途 |
+| M2 | 共享资源 | 共享资源 | 2 GB | 小型开发项目 |
+| M5 | 共享资源 | 共享资源 | 5 GB | 大型开发项目 |
+| M10 | 2 个 vCPU | 2 GB | 10 GB | 开发/测试环境，低流量 |
+| M20 | 2 个 vCPU | 4 GB | 轻量级生产环境 |
+| M30 | 2 个 vCPU | 8 GB | 40 GB | 生产环境 |
+| M40 | 4 个 vCPU | 16 GB | 80 GB | 高流量生产环境 |
+| M50 | 8 个 vCPU | 32 GB | 160 GB | 大型生产环境 |
+| M60+ | 16 个以上 vCPU | 64 GB 以上 | 企业级环境 |
 
 ---
 
-## Helper Script
+## 辅助脚本
 
-For convenience, use `scripts/atlas.sh` wrapper:
+为方便使用，可参考 `scripts/atlas.sh` 脚本：
 
 ```bash
 # Usage
@@ -383,7 +390,7 @@ For convenience, use `scripts/atlas.sh` wrapper:
 
 ---
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # Required
@@ -401,23 +408,23 @@ export ATLAS_GROUP_ID="..."    # Project/Group ID
 
 ---
 
-## API Reference
+## API 参考
 
-- **Base URL:** `https://cloud.mongodb.com/api/atlas/v2`
-- **Accept Header:** `application/vnd.atlas.2025-03-12+json`
-- **Full Docs:** https://www.mongodb.com/docs/atlas/reference/api-resources-spec/v2/
-- **OpenAPI Spec:** https://github.com/mongodb/atlas-sdk-go/blob/main/openapi/atlas-api.yaml
+- **基础 URL:** `https://cloud.mongodb.com/api/atlas/v2`
+- **请求头:** `application/vnd.atlas.2025-03-12+json`
+- **完整文档:** https://www.mongodb.com/docs/atlas/reference/api-resources-spec/v2/
+- **OpenAPI 规范:** https://github.com/mongodb/atlas-sdk-go/blob/main/openapi/atlas-api.yaml
 
-For detailed endpoint documentation, see `references/api-endpoints.md`.
+有关端点的详细文档，请参阅 `references/api-endpoints.md`。
 
 ---
 
-## Author
+## 作者
 
-**Michael Lynn** — Principal Staff Developer Advocate at MongoDB
+**Michael Lynn** — MongoDB 的首席开发顾问
 
-- 🌐 Website: [mlynn.org](https://mlynn.org)
+- 🌐 网站: [mlynn.org](https://mlynn.org)
 - 🐙 GitHub: [@mrlynn](https://github.com/mrlynn)
 - 💼 LinkedIn: [linkedin.com/in/mlynn](https://linkedin.com/in/mlynn)
 
-Issues & contributions welcome on GitHub!
+欢迎在 GitHub 上提出问题或贡献代码！

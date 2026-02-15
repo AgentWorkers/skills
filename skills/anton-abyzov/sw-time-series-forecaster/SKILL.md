@@ -4,31 +4,31 @@ description: |
   Time series forecasting with ARIMA, Prophet, LSTM, and statistical methods. Activates for "time series", "forecasting", "predict future", "trend analysis", "seasonality", "ARIMA", "Prophet", "sales forecast", "demand prediction", "stock prediction". Handles trend decomposition, seasonality detection, multivariate forecasting, and confidence intervals with SpecWeave increment integration.
 ---
 
-# Time Series Forecaster
+# 时间序列预测
 
-## Overview
+## 概述
 
-Specialized forecasting pipelines for time-dependent data. Handles trend analysis, seasonality detection, and future predictions using statistical methods, machine learning, and deep learning approaches—all integrated with SpecWeave's increment workflow.
+专为时间依赖型数据设计的预测流程。通过统计方法、机器学习和深度学习技术来处理趋势分析、季节性检测和未来预测——所有这些功能都集成在 SpecWeave 的增量工作流中。
 
-## Why Time Series is Different
+## 时间序列数据的特殊性
 
-**Standard ML assumptions violated**:
-- ❌ Data is NOT independent (temporal correlation)
-- ❌ Data is NOT identically distributed (trends, seasonality)
-- ❌ Random train/test split is WRONG (breaks temporal order)
+**标准机器学习假设的违反**：
+- ❌ 数据并非独立（存在时间相关性）
+- ❌ 数据分布不均匀（存在趋势和季节性变化）
+- ❌ 随机划分训练集和测试集的方法是错误的（会破坏时间顺序）
 
-**Time series requirements**:
-- ✅ Temporal order preserved
-- ✅ No data leakage from future
-- ✅ Stationarity checks
-- ✅ Autocorrelation analysis
-- ✅ Seasonality decomposition
+**时间序列数据的要求**：
+- ✅ 保持时间顺序
+- ✅ 避免使用未来的数据
+- ✅ 进行平稳性检验
+- ✅ 进行自相关分析
+- ✅ 进行季节性分解
 
-## Forecasting Methods
+## 预测方法
 
-### 1. Statistical Methods (Baseline)
+### 1. 统计方法（基础方法）
 
-**ARIMA (AutoRegressive Integrated Moving Average)**:
+**ARIMA（自回归积分滑动平均）**：
 ```python
 from specweave import TimeSeriesForecaster
 
@@ -51,7 +51,7 @@ forecast = forecaster.predict(horizon=30)
 # - Forecast with confidence intervals
 ```
 
-**Seasonal Decomposition**:
+**季节性分解**：
 ```python
 # Decompose into trend + seasonal + residual
 decomposition = forecaster.decompose(
@@ -67,10 +67,9 @@ decomposition = forecaster.decompose(
 # - Strength of trend/seasonality metrics
 ```
 
-### 2. Prophet (Facebook)
+### 2. Prophet（Facebook 开发的工具）
 
-**Best for**: Business time series (sales, website traffic, user growth)
-
+**适用场景**：商业时间序列数据（如销售数据、网站流量、用户增长等）
 ```python
 from specweave import ProphetForecaster
 
@@ -97,7 +96,7 @@ forecast = forecaster.predict(horizon=90)
 # - Cross-validation results
 ```
 
-**Prophet with Custom Regressors**:
+**使用自定义回归器的 Prophet**：
 ```python
 # Add external variables (marketing spend, weather, etc.)
 forecaster.add_regressor("marketing_spend")
@@ -106,10 +105,9 @@ forecaster.add_regressor("temperature")
 # Prophet incorporates external factors into forecast
 ```
 
-### 3. Deep Learning (LSTM/GRU)
+### 3. 深度学习（LSTM/GRU）
 
-**Best for**: Complex patterns, multivariate forecasting, non-linear relationships
-
+**适用场景**：处理复杂模式、多变量预测以及非线性关系
 ```python
 from specweave import LSTMForecaster
 
@@ -140,9 +138,9 @@ forecast = forecaster.predict(horizon=7)
 # - Forecast uncertainty estimation
 ```
 
-### 4. Multivariate Forecasting
+### 4. 多变量预测
 
-**VAR (Vector AutoRegression)** - Multiple related time series:
+**VAR（向量自回归）**：用于处理多个相关的时间序列数据
 ```python
 from specweave import VARForecaster
 
@@ -161,9 +159,9 @@ forecast = forecaster.predict(horizon=30)
 # Returns forecasts for all 3 stores
 ```
 
-## Time Series Best Practices
+## 时间序列预测的最佳实践
 
-### 1. Temporal Train/Test Split
+### 1. 时间序列数据的训练集/测试集划分
 
 ```python
 # ❌ WRONG: Random split (data leakage!)
@@ -179,7 +177,7 @@ train = data[:-30]  # All but last 30 observations
 test = data[-30:]   # Last 30 observations
 ```
 
-### 2. Stationarity Testing
+### 2. 平稳性检验
 
 ```python
 from specweave import TimeSeriesAnalyzer
@@ -197,7 +195,7 @@ if not stationarity['is_stationary']:
     data_detrended = analyzer.detrend(data)
 ```
 
-**Stationarity Report**:
+**平稳性检验报告**：
 ```markdown
 # Stationarity Analysis
 
@@ -216,7 +214,7 @@ After differencing:
 - Result: ✅ STATIONARY
 ```
 
-### 3. Seasonality Detection
+### 3. 季节性检测
 
 ```python
 # Automatic seasonality detection
@@ -229,7 +227,7 @@ seasonality = analyzer.detect_seasonality(data)
 # - Yearly: False
 ```
 
-### 4. Cross-Validation for Time Series
+### 4. 时间序列数据的交叉验证
 
 ```python
 # Time series cross-validation (expanding window)
@@ -246,7 +244,7 @@ cv_results = forecaster.cross_validate(
 # - Model stability over time
 ```
 
-### 5. Handling Missing Data
+### 5. 处理缺失数据
 
 ```python
 # Time series-specific imputation
@@ -262,9 +260,9 @@ forecaster.handle_missing(
 )
 ```
 
-## Common Time Series Patterns
+## 常见的时间序列数据模式
 
-### Pattern 1: Sales Forecasting
+### 模式 1：销售预测
 
 ```python
 from specweave import SalesForecastPipeline
@@ -295,7 +293,7 @@ forecast = pipeline.predict(horizon=90)  # 90 days ahead
 # - Anomaly flags for past data
 ```
 
-### Pattern 2: Demand Forecasting
+### 模式 2：需求预测
 
 ```python
 from specweave import DemandForecastPipeline
@@ -319,7 +317,7 @@ forecasts = pipeline.fit_predict(
 # - Reorder point recommendations
 ```
 
-### Pattern 3: Stock Price Prediction
+### 模式 3：股票价格预测
 
 ```python
 from specweave import FinancialForecastPipeline
@@ -346,7 +344,7 @@ forecast = pipeline.predict(horizon=7)
 # - Risk metrics
 ```
 
-### Pattern 4: Sensor Data / IoT
+### 模式 4：传感器数据 / 物联网数据
 
 ```python
 from specweave import SensorForecastPipeline
@@ -374,10 +372,9 @@ forecast = pipeline.predict(horizon=24)  # 24 hours ahead
 # - Maintenance alerts
 ```
 
-## Evaluation Metrics
+## 评估指标
 
-**Time series-specific metrics**:
-
+**针对时间序列数据的特定评估指标**：
 ```python
 from specweave import TimeSeriesEvaluator
 
@@ -396,7 +393,7 @@ metrics = evaluator.evaluate(
 # - Directional Accuracy - did we predict up/down correctly?
 ```
 
-**Evaluation Report**:
+**评估报告**：
 ```markdown
 # Time Series Forecast Evaluation
 
@@ -421,9 +418,9 @@ metrics = evaluator.evaluate(
 ✅ DEPLOY: Model meets accuracy targets and is well-calibrated.
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-### Increment Structure
+### SpecWeave 的增量工作流结构
 
 ```
 .specweave/increments/0042-sales-forecast/
@@ -451,45 +448,13 @@ metrics = evaluator.evaluate(
     └── forecast_evaluation.md
 ```
 
-### Living Docs Integration
+### 文档的实时更新机制
 
 ```bash
 /sw:sync-docs update
 ```
 
-Updates:
-```markdown
-<!-- .specweave/docs/internal/architecture/time-series-forecasting.md -->
-
-## Sales Forecasting Model (Increment 0042)
-
-### Method Selected: Prophet
-- Reason: Handles multiple seasonality + holidays well
-- Alternatives tried: ARIMA (MAPE 12%), LSTM (MAPE 10%)
-- Prophet: MAPE 8.2% ✅ BEST
-
-### Seasonality Detected
-- Weekly: Strong (7-day cycle)
-- Monthly: Moderate (30-day cycle)
-- Yearly: Weak
-
-### Holiday Effects
-- Black Friday: +180% sales (strongest)
-- Christmas: +120% sales
-- Thanksgiving: +80% sales
-
-### Forecast Horizon
-- 90 days ahead
-- Confidence intervals: 80%, 95%
-- Update frequency: Weekly retraining
-
-### Model Performance
-- MAPE: 8.2% (target: <10%)
-- Directional accuracy: 73%
-- Deployed: 2024-01-15
-```
-
-## Commands
+## 命令操作
 
 ```bash
 # Create time series forecast
@@ -502,9 +467,9 @@ Updates:
 /ml:decompose-timeseries 0042
 ```
 
-## Advanced Features
+## 高级功能
 
-### 1. Ensemble Forecasting
+### 1. 集成预测（Ensemble Forecasting）
 
 ```python
 # Combine multiple methods for robustness
@@ -520,7 +485,7 @@ forecast = ensemble.predict(horizon=30)
 # Ensemble typically 10-20% more accurate than single model
 ```
 
-### 2. Forecast Reconciliation
+### 2. 预测结果的一致性校验
 
 ```python
 # For hierarchical time series (e.g., total sales = store1 + store2 + store3)
@@ -538,7 +503,7 @@ reconciled = reconciler.reconcile(
 )
 ```
 
-### 3. Forecast Monitoring
+### 3. 预测结果的监控
 
 ```python
 # Track forecast accuracy over time
@@ -555,15 +520,15 @@ if monitor.accuracy_degraded():
     print("⚠️ Forecast accuracy dropped 15% - retrain model!")
 ```
 
-## Summary
+## 总结
 
-Time series forecasting requires specialized techniques:
-- ✅ Temporal validation (no random split)
-- ✅ Stationarity testing
-- ✅ Seasonality detection
-- ✅ Trend decomposition
-- ✅ Cross-validation (expanding window)
-- ✅ Confidence intervals
-- ✅ Forecast monitoring
+时间序列预测需要采用专门的技术：
+- ✅ 保持时间顺序（避免随机划分数据）
+- ✅ 进行平稳性检验
+- ✅ 检测数据中的季节性变化
+- ✅ 进行趋势分解
+- ✅ 使用交叉验证方法
+- ✅ 计算预测的置信区间
+- ✅ 监控预测结果
 
-This skill handles all time series complexity within SpecWeave's increment workflow, ensuring forecasts are reproducible, documented, and production-ready.
+该技能能够在 SpecWeave 的增量工作流中处理所有时间序列数据的复杂性，确保预测结果的可重复性、可记录性以及适用于生产环境。

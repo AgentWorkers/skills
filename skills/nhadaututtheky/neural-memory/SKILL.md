@@ -13,26 +13,27 @@ homepage: https://github.com/nhadaututtheky/neural-memory
 metadata: {"openclaw":{"emoji":"brain","primaryEnv":"NEURALMEMORY_BRAIN","requires":{"bins":["python3"],"env":["NEURALMEMORY_BRAIN"]},"os":["darwin","linux","win32"],"install":[{"id":"pip","kind":"node","package":"neural-memory","bins":["nmem"],"label":"pip install neural-memory"}]}}
 ---
 
-# NeuralMemory — Associative Memory for AI Agents
+# NeuralMemory — 为AI代理设计的联想式记忆系统
 
-A biologically-inspired memory system that uses spreading activation instead of keyword/vector search. Memories form a neural graph where neurons connect via 20 typed synapses. Frequently co-accessed memories strengthen their connections (Hebbian learning). Stale memories decay naturally. Contradictions are auto-detected.
+这是一个受生物学启发的记忆系统，它采用“扩散激活”（spreading activation）机制，而非传统的关键词/向量搜索方式。记忆以神经图的形式存在，神经元通过20种不同类型的突触相互连接。频繁被访问的记忆会加强它们之间的连接（基于赫布学习原理，Hebbian learning），而过时的记忆会自然衰退。系统能够自动检测记忆之间的矛盾。
 
-**Why not just vector search?** Vector search finds documents similar to your query. NeuralMemory finds *conceptually related* memories through graph traversal — even when there's no keyword or embedding overlap. "What decision did we make about auth?" activates time + entity + concept neurons simultaneously and finds the intersection.
+**为什么不用传统的向量搜索呢？**  
+向量搜索只能找到与查询内容相似的文档，而NeuralMemory则通过遍历神经图来找到*概念上相关*的记忆——即使这些记忆之间没有关键词或嵌入信息的重叠。例如，当用户询问“我们关于授权问题做了什么决定？”时，系统会同时激活与时间、实体和概念相关的神经元，从而找到相关的记忆。
 
-## Setup
+## 设置
 
-### 1. Install NeuralMemory
+### 1. 安装NeuralMemory
 
 ```bash
 pip install neural-memory
 nmem init
 ```
 
-This creates `~/.neuralmemory/` with a default brain and configures MCP automatically.
+安装完成后，系统会在`~/.neuralmemory/`目录下创建一个默认的记忆结构，并自动配置MCP（Memory Control Protocol）。
 
-### 2. Configure MCP for OpenClaw
+### 2. 为OpenClaw配置MCP
 
-Add to your OpenClaw MCP configuration (`~/.openclaw/mcp.json` or project `openclaw.json`):
+将以下配置添加到OpenClaw的MCP配置文件（`~/.openclaw/mcp.json`或项目配置文件`openclaw.json`）中：
 
 ```json
 {
@@ -48,61 +49,60 @@ Add to your OpenClaw MCP configuration (`~/.openclaw/mcp.json` or project `openc
 }
 ```
 
-### 3. Verify
+### 3. 验证配置
 
 ```bash
 nmem stats
 ```
 
-You should see brain statistics (neurons, synapses, fibers).
+此时，你应该能够看到系统的基本统计信息（包括神经元数量、突触数量等）。
 
-## Tools Reference
+## 工具参考
 
-### Core Memory Tools
+### 核心记忆工具
 
-| Tool | Purpose | When to Use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `nmem_remember` | Store a memory | After decisions, errors, facts, insights, user preferences |
-| `nmem_recall` | Query memories | Before tasks, when user references past context, "do you remember..." |
-| `nmem_context` | Get recent memories | At session start, inject fresh context |
-| `nmem_todo` | Quick TODO with 30-day expiry | Task tracking |
+| `nmem_remember` | 存储记忆 | 在做出决策、遇到错误或需要记录事实、见解时使用 |
+| `nmem_recall` | 查询记忆 | 在执行任务前，或用户需要回顾过去的信息时使用 |
+| `nmem_context` | 获取最近的记忆 | 会话开始时，用于注入新的上下文信息 |
+| `nmem_todo` | 创建有效期为30天的待办事项列表 | 用于任务管理 |
 
-### Intelligence Tools
+### 智能辅助工具
 
-| Tool | Purpose | When to Use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `nmem_auto` | Auto-extract memories from text | After important conversations — captures decisions, errors, TODOs automatically |
-| `nmem_recall` (depth=3) | Deep associative recall | Complex questions requiring cross-domain connections |
-| `nmem_habits` | Workflow pattern suggestions | When user repeats similar action sequences |
+| `nmem_auto` | 从文本中自动提取记忆 | 在重要对话后，自动捕捉决策、错误和待办事项 |
+| `nmem_recall`（深度=3） | 深度联想回忆 | 需要跨领域关联的复杂问题 |
+| `nmem_habits` | 提供工作流程建议 | 当用户重复相似的操作序列时使用 |
 
-### Management Tools
+### 管理工具
 
-| Tool | Purpose | When to Use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `nmem_health` | Brain health diagnostics | Periodic checkup, before sharing brain |
-| `nmem_stats` | Brain statistics | Quick overview of memory counts |
-| `nmem_version` | Brain snapshots and rollback | Before risky operations, version checkpoints |
-| `nmem_transplant` | Transfer memories between brains | Cross-project knowledge sharing |
+| `nmem_health` | 检查记忆系统的健康状况 | 定期检查系统性能，特别是在共享记忆之前 |
+| `nmem_stats` | 查看记忆系统的统计信息 | 快速了解记忆的使用情况 |
+| `nmem_version` | 创建记忆系统的快照并进行回滚 | 在执行高风险操作前，用于备份数据 |
+| `nmem_transplant` | 在不同系统之间传输记忆 | 实现知识共享 |
 
-## Workflow
+## 工作流程
 
-### At Session Start
-1. Call `nmem_context` to inject recent memories into your awareness
-2. If user mentions a specific topic, call `nmem_recall` with that topic
+### 会话开始时
+1. 调用`nmem_context`将最近的记忆加载到用户的认知中。
+2. 如果用户提到了某个特定主题，可以调用`nmem_recall`来检索与该主题相关的记忆。
 
-### During Conversation
-3. When a decision is made: `nmem_remember` with type="decision"
-4. When an error occurs: `nmem_remember` with type="error"
-5. When user states a preference: `nmem_remember` with type="preference"
-6. When asked about past events: `nmem_recall` with appropriate depth
+### 对话过程中
+- 当做出决策时：使用`nmem_remember`并指定记忆类型为“decision”。
+- 当出现错误时：使用`nmem_remember`并指定记忆类型为“error”。
+- 当用户表达偏好时：使用`nmem_remember`并指定记忆类型为“preference”。
+- 当需要回顾过去的事件时：根据需要调用`nmem_recall`并设置适当的搜索深度。
 
-### At Session End
-7. Call `nmem_auto` with action="process" on important conversation segments
-8. This auto-extracts facts, decisions, errors, and TODOs
+### 会话结束时
+1. 对于重要的对话内容，调用`nmem_auto`并指定操作类型为“process”，系统会自动提取相关的事实、决策和待办事项。
 
-## Examples
+## 示例
 
-### Remember a decision
+### 记录一个决策
 ```
 nmem_remember(
   content="Use PostgreSQL for production, SQLite for development",
@@ -112,7 +112,7 @@ nmem_remember(
 )
 ```
 
-### Recall with spreading activation
+### 通过扩散激活机制进行回忆
 ```
 nmem_recall(
   query="database configuration for production",
@@ -120,53 +120,52 @@ nmem_recall(
   max_tokens=500
 )
 ```
-Returns memories found via graph traversal, not keyword matching. Related memories (e.g., "deploy uses Docker with pg_dump backups") surface even without shared keywords.
+该机制通过遍历神经图来检索记忆，而不是依赖关键词匹配。即使没有共享的关键词，系统也能找到相关的记忆（例如：“部署任务使用了Docker，并进行了pg_dump备份”）。
 
-### Trace causal chains
+### 追踪因果关系链
 ```
 nmem_recall(
   query="why did the deployment fail last week?",
   depth=2
 )
 ```
-Follows CAUSED_BY and LEADS_TO synapses to trace cause-and-effect chains.
+系统通过`CAUSED_BY`和`LEADS_TO`突触来追踪事件之间的因果关系。
 
-### Auto-capture from conversation
+### 从对话中自动提取信息
 ```
 nmem_auto(
   action="process",
   text="We decided to switch from REST to GraphQL because the frontend needs flexible queries. The migration will take 2 sprints. TODO: update API docs."
 )
 ```
-Automatically extracts: 1 decision, 1 fact, 1 TODO.
+系统会自动提取：1个决策、1个事实、1个待办事项。
 
-## Key Features
+## 主要特性
 
-- **Zero LLM dependency** — Pure algorithmic: regex, graph traversal, Hebbian learning
-- **Spreading activation** — Associative recall through neural graph, not keyword/vector search
-- **20 synapse types** — Temporal (BEFORE/AFTER), causal (CAUSED_BY/LEADS_TO), semantic (IS_A/HAS_PROPERTY), emotional (FELT/EVOKES), conflict (CONTRADICTS)
-- **Memory lifecycle** — Short-term → Working → Episodic → Semantic with Ebbinghaus decay
-- **Contradiction detection** — Auto-detects conflicting memories, deprioritizes outdated ones
-- **Hebbian learning** — "Neurons that fire together wire together" — memory improves with use
-- **Temporal reasoning** — Causal chain traversal, event sequences, temporal range queries
-- **Brain versioning** — Snapshot, rollback, diff brain state
-- **Brain transplant** — Transfer filtered knowledge between brains
-- **Vietnamese + English** — Full bilingual support for extraction and sentiment
+- **完全不依赖大型语言模型（LLM）**：完全基于算法实现，包括正则表达式处理、神经图遍历和赫布学习机制。
+- **扩散激活**：通过神经图进行联想式回忆，而非关键词/向量搜索。
+- **支持20种突触类型**：用于表示时间顺序（BEFORE/AFTER）、因果关系（CAUSED_BY/LEADS_TO）、语义关系（IS_A/HAS_PROPERTY）、情感状态（FELT/EVOKES）以及记忆的冲突（CONTRADICTS）。
+- **记忆生命周期**：从短期记忆到长期记忆，再到具有艾宾浩斯遗忘规律的语义记忆。
+- **自动检测矛盾**：系统能自动识别相互冲突的记忆，并优先处理过时的记忆。
+- **赫布学习**：经常一起激活的神经元会形成更牢固的连接，从而提升记忆的稳定性。
+- **时间推理**：支持因果链的追踪、事件序列的分析以及时间范围的查询。
+- **记忆版本管理**：支持创建记忆快照和回滚功能，以便在不同版本间进行数据交换。
+- **支持多语言**：同时支持越南语和英语，便于信息的提取和情感分析。
 
-## Depth Levels
+## 回忆深度
 
-| Depth | Name | Speed | Use Case |
+| 回忆深度 | 名称 | 处理速度 | 使用场景 |
 |-------|------|-------|----------|
-| 0 | Instant | <10ms | Quick facts, recent context |
-| 1 | Context | ~50ms | Standard recall (default) |
-| 2 | Habit | ~200ms | Pattern matching, workflow suggestions |
-| 3 | Deep | ~500ms | Cross-domain associations, causal chains |
+| 0 | 即时回忆 | <10毫秒 | 快速获取事实或最近的信息 |
+| 1 | 基本回忆 | 约50毫秒 | 标准的回忆功能 |
+| 2 | 工作流程建议 | 约200毫秒 | 用于模式匹配和工作流程建议 |
+| 3 | 深度回忆 | 约500毫秒 | 支持跨领域的关联分析和因果关系链的追踪 |
 
-## Notes
+## 注意事项
 
-- Memories are stored locally in SQLite at `~/.neuralmemory/brains/<brain>.db`
-- No data is sent to external services (unless optional embedding provider is configured)
-- Brain isolation: each brain is independent, no cross-contamination
-- `nmem_remember` returns fiber_id for reference tracking
-- Priority scale: 0 (trivial) to 10 (critical), default 5
-- Memory types: fact, decision, preference, todo, insight, context, instruction, error, workflow, reference
+- 记忆数据存储在本地SQLite数据库（路径：`~/.neuralmemory/brains/<brain>.db`）中。
+- 除非配置了外部嵌入服务，否则系统不会将数据发送到任何外部服务。
+- 每个记忆系统都是独立的，不存在数据交叉污染的问题。
+- `nmem_remember`会返回一个`fiber_id`，用于追踪记忆的来源。
+- 记忆的优先级范围从0（最不重要）到10（最重要），默认值为5。
+- 记忆类型包括：事实、决策、偏好、待办事项、见解、上下文、指令、错误、工作流程信息等。

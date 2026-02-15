@@ -1,169 +1,165 @@
 ---
 name: penfield
-description: Persistent memory for OpenClaw agents. Store decisions, preferences, and context that survive across sessions. Build knowledge graphs that compound over time. Hybrid search (BM25 + vector + graph) recalls what matters when you need it.
+description: OpenClaw代理的持久化内存功能：用于存储决策、偏好设置以及会话间保持一致的数据。通过这种机制，可以构建随时间积累的知识图谱。混合搜索算法（BM25 + 向量 + 图谱）能够在需要时快速检索到关键信息。
 metadata: {"openclaw":{"emoji":"🧠","install":[{"id":"npm","kind":"node","package":"openclaw-penfield","global":true,"label":"Install Penfield plugin"}],"requires":{"config":["plugins.entries.openclaw-penfield.enabled"]}}}
 ---
 
-# Penfield Memory
+# Penfield内存系统
 
-Persistent memory that compounds. Your agent remembers conversations, learns preferences, connects ideas, and picks up exactly where it left off—across sessions, days, and channels.
+Penfield内存系统是一种持久化且可组合的内存存储机制。它允许用户记录对话内容、学习个人偏好、关联不同想法，并在不同会话、不同时间点以及通过不同渠道之间无缝地继续之前的工作。
 
-## Tools
+## 工具
 
-### Memory
+### 内存管理工具
 
-| Tool | Purpose | When to use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `penfield_store` | Save a memory | User shares preferences, you make a discovery, a decision is made, you learn something worth keeping |
-| `penfield_recall` | Hybrid search (BM25 + vector + graph) | Need context before responding, resuming a topic, looking up prior decisions |
-| `penfield_search` | Semantic search (higher vector weight) | Fuzzy concept search when you don't have exact terms |
-| `penfield_fetch` | Get memory by ID | Following up on a specific memory from recall results |
-| `penfield_update_memory` | Edit existing memory | Correcting, adding detail, changing importance or tags |
+| `penfield_store` | 保存内存数据 | 当用户分享偏好设置、做出决策或学到值得记录的内容时使用 |
+| `penfield_recall` | 混合搜索（BM25算法 + 向量分析 + 图谱技术） | 在需要上下文信息时进行搜索、恢复讨论主题或查找之前的决策 |
+| `penfield_search` | 语义搜索（侧重向量权重） | 当没有确切关键词时进行模糊概念搜索 |
+| `penfield-fetch` | 通过ID获取内存数据 | 从检索结果中提取特定的内存内容 |
+| `penfield_update_memory` | 编辑现有内存信息 | 更正内容、添加细节或调整重要性/标签 |
 
-### Knowledge Graph
+### 知识图谱工具
 
-| Tool | Purpose | When to use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `penfield_connect` | Link two memories | New info relates to existing knowledge, building understanding over time |
-| `penfield_explore` | Traverse graph from a memory | Understanding how ideas connect, finding related context |
+| `penfield_connect` | 连接两个内存节点 | 当新信息与现有知识相关时使用，有助于逐步构建知识体系 |
+| `penfield_explore` | 从某个内存节点开始遍历知识图谱 | 了解各种想法之间的关联关系 |
 
-### Context & Analysis
+### 上下文与分析工具
 
-| Tool | Purpose | When to use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `penfield_save_context` | Checkpoint a session | Ending substantive work, preparing for handoff to another agent |
-| `penfield_restore_context` | Resume from checkpoint | Picking up where you or another agent left off |
-| `penfield_list_contexts` | List saved checkpoints | Finding previous sessions to resume |
-| `penfield_reflect` | Analyze memory patterns | Session start orientation, finding themes, spotting gaps |
+| `penfield_save_context` | 保存会话状态 | 在完成重要工作或准备将任务交接给其他代理时使用 |
+| `penfield_restore_context` | 从保存的会话状态恢复 | 用于继续之前的工作或接续其他代理的进度 |
+| `penfield_list_contexts` | 列出所有保存的会话状态 | 便于查找需要恢复的会话记录 |
+| `penfield_reflect` | 分析内存数据模式 | 用于理解会话的总体趋势、发现主题或识别知识空白点 |
 
-### Artifacts
+### 文档与资源管理工具
 
-| Tool | Purpose | When to use |
+| 工具 | 功能 | 使用场景 |
 |------|---------|-------------|
-| `penfield_save_artifact` | Store a file | Saving diagrams, notes, code, reference docs |
-| `penfield_retrieve_artifact` | Get a file | Loading previously saved work |
-| `penfield_list_artifacts` | List stored files | Browsing saved artifacts |
-| `penfield_delete_artifact` | Remove a file | Cleaning up outdated artifacts |
+| `penfield_save_artifact` | 保存文件 | 用于存储图表、笔记、代码或参考文档 |
+| `penfield_retrieve_artifact` | 加载已保存的文件 | 用于重新使用之前的工作成果 |
+| `penfield_list_artifacts` | 列出所有保存的文件 | 便于浏览和管理文档 |
+| `penfield_delete_artifact` | 删除不再需要的文件 | 保持系统整洁 |
 
-## Writing Memories That Actually Work
+## 如何创建有效的内存记录
 
-Memory content quality determines whether Penfield is useful or useless. The difference is specificity and context.
+内存记录的质量直接决定了Penfield系统的实用性。关键在于记录内容的精确性和上下文关联性：
 
-**Bad — vague, no context, unfindable later:**
-```
+**无效的内存记录：**  
+- 内容模糊、缺乏上下文、难以后续查找  
+（示例代码块：```
 "User likes Python"
-```
+```）
 
-**Good — specific, contextual, findable:**
-```
+**有效的内存记录：**  
+- 内容具体、具有明确上下文、易于查找  
+（示例代码块：```
 "[Preferences] User prefers Python over JavaScript for backend work.
 Reason: frustrated by JS callback patterns and lack of type safety.
 Values type hints and explicit error handling. Uses FastAPI for APIs."
-```
+```）
 
-**What makes a memory findable:**
+**使内存记录易于查找的要素：**  
+1. 使用特定的前缀来标识记录类型（如 `[Preferences]`、`[Project: API Redesign]`、`[Investigation: Payment Bug]`、`[Decision]`）  
+2. 阐明“为什么”（即行为背后的理由），理由比事实本身更重要  
+3. 包含具体细节（如名称、数字、日期、版本等，而非模糊的总结）  
+4. 提供相关内存记录的引用（例如：“此内容基于之前的发现 [X]”或“与之前的假设 [Y] 相矛盾”）
 
-1. **Context prefix** in brackets: `[Preferences]`, `[Project: API Redesign]`, `[Investigation: Payment Bug]`, `[Decision]`
-2. **The "why" behind the "what"** — rationale matters more than the fact itself
-3. **Specific details** — names, numbers, dates, versions, not vague summaries
-4. **References to related memories** — "This builds on [earlier finding about X]" or "Contradicts previous assumption that Y"
+## 内存记录的类型
 
-## Memory Types
+系统根据不同的用途对内存记录进行分类，以便于过滤和分析：
 
-Use the correct type. The system uses these for filtering and analysis.
-
-| Type | Use for | Example |
+| 类型 | 适用场景 | 示例 |
 |------|---------|---------|
-| `fact` | Verified, durable information | "User's company runs Kubernetes on AWS EKS" |
-| `insight` | Patterns or realizations | "Deployment failures correlate with Friday releases" |
-| `correction` | Fixing prior understanding | "CORRECTION: The timeout isn't Redis — it's a hardcoded batch limit" |
-| `conversation` | Session summaries, notable exchanges | "Discussed migration strategy. User leaning toward incremental approach" |
-| `reference` | Source material, citations | "RFC 8628 defines Device Code Flow for OAuth on input-constrained devices" |
-| `task` | Work items, action items | "TODO: Benchmark recall latency after index rebuild" |
-| `strategy` | Approaches, methods, plans | "For user's codebase: always check types.ts first, it's the source of truth" |
-| `checkpoint` | Milestone states | "Project at 80% — auth complete, UI remaining" |
-| `identity_core` | Immutable identity facts | Set via personality config, rarely stored manually |
-| `personality_trait` | Behavioral patterns | Set via personality config, rarely stored manually |
-| `relationship` | Entity connections | "User works with Chad Schultz on cybersecurity content" |
+| `fact` | 经过验证的、长期有效的数据 | “用户的公司在AWS EKS上运行Kubernetes” |
+| `insight` | 观察到的规律或见解 | “部署失败与周五的更新有关” |
+| `correction` | 对先前理解的修正 | “更正：超时问题并非由Redis引起，而是由硬编码的批量限制导致的” |
+| `conversation` | 会话摘要或重要交流内容 | “讨论了迁移策略，用户倾向于采用渐进式方法” |
+| `reference` | 参考资料或引用来源 | “RFC 8628定义了输入受限设备上的OAuth设备代码流程” |
+| `task` | 待办事项或行动项 | “TODO：重建索引后测试检索延迟” |
+| `strategy` | 方法或计划 | “对于用户的代码库，应优先查看types.ts文件，因为它是最权威的信息来源” |
+| `checkpoint` | 项目进度标记 | “项目已完成80%，剩余工作是用户界面开发” |
+| `identity_core` | 不可更改的身份信息 | 通过个人配置设置，很少手动修改 |
+| `personality_trait` | 行为特征 | 通过个人配置设置，很少手动修改 |
+| `relationship` | 实体之间的关联关系 | “用户与Chad Schultz合作处理网络安全相关内容” |
 
-## Importance Scores
+## 重要性评分
 
-Use the full range. Not everything is 0.5.
+使用0到1的评分系统来评估内存记录的价值：
 
-| Score | Meaning | Example |
-|-------|---------|---------|
-| 0.9–1.0 | Critical — never forget | Architecture decisions, hard-won corrections, core preferences |
-| 0.7–0.8 | Important — reference often | Project context, key facts about user's work |
-| 0.5–0.6 | Normal — useful context | General preferences, session summaries |
-| 0.3–0.4 | Minor — background detail | Tangential facts, low-stakes observations |
-| 0.1–0.2 | Trivial — probably don't store | If you're questioning whether to store it, don't |
+| 评分 | 含义 | 示例 |
+|------|---------|---------|
+| 0.9–1.0 | 非常重要 | 架构决策、关键的修正内容、核心偏好设置 |
+| 0.7–0.8 | 相对重要 | 项目背景信息、用户工作相关的关键事实 |
+| 0.5–0.6 | 一般重要 | 通用偏好设置、会话摘要 |
+| 0.3–0.4 | 较为次要 | 边缘性事实或低风险的观察结果 |
+| 0.1–0.2 | 很不重要 | 可能不需要保存 |
 
-## Connecting Memories
+## 连接内存记录
 
-Connections are what make Penfield powerful. An isolated memory is just a note. A connected memory is understanding.
+内存记录之间的关联关系是Penfield系统强大的关键。孤立的内存记录只是简单的笔记，而关联起来后才能形成真正的理解。  
+**保存内存记录后，务必思考：** “这条记录与什么相关？” 然后将其与其他记录关联起来。
 
-**After storing a memory, always ask:** What does this relate to? Then connect it.
+### 关联关系类型（共24种）
 
-### Relationship Types (24)
+- **知识演变关系**：`supersedes`（取代）、`updates`（更新）、`evolution_of`（演变）  
+  用于描述知识或观点的变化（例如：“我们之前认为X，现在知道Y”）
 
-**Knowledge Evolution:** `supersedes` · `updates` · `evolution_of`
-Use when understanding changes. "We thought X, now we know Y."
+- **证据关系**：`supports`（支持）、`contradicts`（矛盾）、`disputes`（反驳）  
+  用于验证或挑战现有的观点  
 
-**Evidence:** `supports` · `contradicts` · `disputes`
-Use when new information validates or challenges existing beliefs.
+- **结构关系**：`parent_of`（父节点）、`child_of`（子节点）、`sibling_of`（同级节点）、`composed_of`（组成关系）、`part_of`（部分关系）  
+  用于描述实体之间的层次结构或组成关系  
 
-**Hierarchy:** `parent_of` · `child_of` · `sibling_of` · `composed_of` · `part_of`
-Use for structural relationships. Topics containing subtopics, systems containing components.
+- **因果关系**：`causes`（原因）、`influenced_by`（受……影响）、`prerequisite_for`（先决条件）  
+  用于描述因果关系和依赖关系  
 
-**Causation:** `causes` · `influenced_by` · `prerequisite_for`
-Use for cause-and-effect chains and dependencies.
+- **实现关系**：`implements`（实现）、`documents`（记录）、`tests`（测试）、`example_of`（示例）  
+  用于说明某事物如何实现、描述或验证另一事物  
 
-**Implementation:** `implements` · `documents` · `tests` · `example_of`
-Use when something demonstrates, describes, or validates something else.
+- **对话关系**：`responds_to`（回应）、`references`（引用）、`inspired_by`（启发）  
+  用于记录对话的关联性和线索  
 
-**Conversation:** `responds_to` · `references` · `inspired_by`
-Use for attribution and dialogue threads.
+- **顺序关系**：`follows`（遵循）、`precedes`（先于）  
+  用于描述事件或流程的先后顺序  
 
-**Sequence:** `follows` · `precedes`
-Use for ordered steps in a process or timeline.
+- **依赖关系**：`depends_on`（依赖关系）  
+  用于表示某事物依赖于另一事物  
 
-**Dependencies:** `depends_on`
-Use when one thing requires another.
+## 搜索策略
 
-## Recall Strategy
+有效的查询能够准确找到所需的信息，而无效的查询则可能返回大量无关内容。  
+**根据查询类型调整搜索权重：**  
+| 查询类型 | bm25_weight | vector_weight | graph_weight |
+|---------|-------------|---------------|--------------|
+| 精确匹配（如“Twilio认证令牌”） | 0.6 | 0.3 | 0.1 |
+| 概念搜索（如“错误处理方式”） | 0.2 | 0.6 | 0.2 |
+| 关联知识搜索（如“所有关于支付的信息”） | 0.2 | 0.3 | 0.5 |
+| 默认设置（平衡权重） | 0.4 | 0.4 | 0.2 |
 
-Good queries find things. Bad queries return noise.
+**优化搜索效果的建议：**  
+- 使用 `memory_types: ["correction", "insight"]` 来筛选重要的修正记录或见解  
+- 设置 `importance_threshold: 0.7` 以排除无关内容  
+- 启用 `enable_graph_expansion`（默认启用，通常保持开启状态）以利用知识图谱的关联关系  
 
-**Tune search weights for your query type:**
+## 工作流程示例
 
-| Query type | bm25_weight | vector_weight | graph_weight |
-|-----------|-------------|---------------|--------------|
-| Exact term lookup ("Twilio auth token") | 0.6 | 0.3 | 0.1 |
-| Concept search ("how we handle errors") | 0.2 | 0.6 | 0.2 |
-| Connected knowledge ("everything about payments") | 0.2 | 0.3 | 0.5 |
-| Default (balanced) | 0.4 | 0.4 | 0.2 |
-
-**Filter aggressively:**
-- `memory_types: ["correction", "insight"]` to find discoveries and corrections
-- `importance_threshold: 0.7` to skip noise
-- `enable_graph_expansion: true` to follow connections (default, usually leave on)
-
-## Workflows
-
-### User shares a preference
-
-```
+- **用户分享偏好设置**  
+（示例代码块：```
 penfield_store({
   content: "[Preferences] User wants responses under 3 paragraphs unless complexity demands more. Dislikes bullet points in casual conversation.",
   memory_type: "fact",
   importance: 0.8,
   tags: ["preferences", "communication"]
 })
-```
+```）
 
-### Investigation tracking
-
-```
+- **问题调查的跟踪记录**  
+（示例代码块：```
 // Start
 penfield_store({
   content: "[Investigation: Deployment Failures] Reports of 500 errors after every Friday deploy. Checking release pipeline, config drift, and traffic patterns.",
@@ -197,61 +193,55 @@ penfield_connect({
   to_memory_id: initial_report.id,
   relationship_type: "supersedes"
 })
-```
+```）
 
-### Session handoff
-
-```
+- **会话内容的交接**  
+（示例代码块：```
 penfield_save_context({
   name: "deployment-investigation-2026-02",
   description: "Investigated deployment timeout issues. memory_id: " + discovery.id,
   memory_ids: [discovery.id, correction.id, initial_report.id]
 })
-```
+```）
 
-Next session or different agent:
-
-```
+**在不同会话或代理之间的切换：**  
+（示例代码块：```
 penfield_restore_context({
   name: "deployment-investigation-2026-02"
 })
-```
+```）
 
-## What NOT to Store
+## 不应保存的内容：**
 
-- Verbatim conversation transcripts (too verbose, low signal)
-- Easily googled facts (use web search instead)
-- Ephemeral task state (use working memory)
-- Anything the user hasn't consented to store about themselves
-- Every minor exchange (be selective — quality over quantity)
+- 过长的对话记录（信息冗余、价值较低）  
+- 可通过搜索引擎轻松查找的事实（直接使用网络搜索）  
+- 短暂性的任务状态（使用临时内存存储）  
+- 用户未同意保存的个人信息  
+- 无关紧要的日常交流记录（选择性地保存高质量的内容，而非数量）
 
-## Tags
+## 标签的使用
 
-Keep them short, consistent, lowercase. 2–5 per memory.
+标签应简短、一致且使用小写字母，每个内存记录最多使用2–5个标签。  
+**推荐标签示例：`preferences`、`architecture`、`investigation`、`correction`、`project-name`  
+**不建议使用的标签示例：`2026-02-02`、`important-memory-about-deployment`、`UserPreferencesForCommunicationStyle`  
 
-Good: `preferences`, `architecture`, `investigation`, `correction`, `project-name`
-Bad: `2026-02-02`, `important-memory-about-deployment`, `UserPreferencesForCommunicationStyle`
+## 兼容性
 
-## Also Available Outside OpenClaw
+Penfield系统不仅支持OpenClaw插件，还兼容其他AI工具：  
 
-The native OpenClaw plugin is the fastest path, but Penfield works with any AI tool anywhere:
-
-**Claude Connectors** 
-
-```json
+- **Claude系列工具**  
+（示例代码块：```json
 Name: Penfield
 Remote MCP server URL: https://mcp.penfield.app
-```
+```）  
 
-**Claude Code**
-```
+- **Claude代码库**  
+（示例代码块：```
 Claude mcp add --transport http --scope user penfield https://mcp.penfield.app
-```
+```）  
 
-
-**MCP Server** — for Gemini CLI, Cursor, Windsurf, Intent, Perplexity Desktop or any MCP-compatible tool:
-
-```json
+- **MCP服务器**：适用于Gemini CLI、Cursor、Windsurf、Intent、Perplexity Desktop等MCP兼容工具  
+（示例代码块：```json
 {
   "mcpServers": {
     "penfield": {
@@ -263,16 +253,14 @@ Claude mcp add --transport http --scope user penfield https://mcp.penfield.app
     }
   }
 }
-```
+```）  
 
-**API** — direct HTTP access at `api.penfield.app` for custom integrations.
+- **API接口**：通过`api.penfield.app`直接进行HTTP访问，支持自定义集成。  
+无论使用何种工具，所有数据都保持同步。  
 
-Same memory, same knowledge graph, same account. The plugin is 4-5x faster (no MCP proxy layer), but everything stays in sync regardless of how you connect.
-
-## Links
-
-- Plugin: [openclaw-penfield on npm](https://www.npmjs.com/package/openclaw-penfield)
-- Source: [github.com/penfieldlabs/openclaw-penfield](https://github.com/penfieldlabs/openclaw-penfield)
-- Sign up: [portal.penfield.app/sign-up](https://portal.penfield.app/sign-up)
-- Website: [penfield.app](https://penfield.app)
-- X: [@penfieldlabs](https://x.com/penfieldlabs)
+**插件与资源链接：**  
+- [openclaw-penfield插件（npm）：[https://www.npmjs.com/package/openclaw-penfield](https://www.npmjs.com/package/openclaw-penfield)  
+- 项目源代码：[github.com/penfieldlabs/openclaw-penfield](https://github.com/penfieldlabs/openclaw-penfield)  
+- 注册入口：[portal.penfield.app/sign-up](https://portal.penfield.app/sign-up)  
+- 官方网站：[penfield.app](https://penfield.app)  
+- 社交媒体账号：[@penfieldlabs](https://x.com/penfieldlabs)

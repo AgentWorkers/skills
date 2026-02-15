@@ -1,6 +1,6 @@
 ---
 name: venice-ai
-description: Complete Venice AI platform — text generation, web search, embeddings, TTS, speech-to-text, image generation, video creation, upscaling, and AI editing. Private, uncensored AI inference for everything.
+description: 完整的Venice AI平台——支持文本生成、网络搜索、数据嵌入、文本转语音（TTS）、语音转文本（STT）、图像生成、视频处理（包括视频升级和编辑）等功能。提供私密的、未经审查的AI推理服务，适用于所有场景。
 homepage: https://venice.ai
 metadata:
   {
@@ -24,47 +24,46 @@ metadata:
   }
 ---
 
-# Venice AI — Complete Platform Skill
+# Venice AI — 全功能平台技能
 
-## What is Venice AI?
+## 什么是 Venice AI？
 
-**Venice AI is the AI platform for people who don't want Big Tech watching over their shoulder.** Unlike OpenAI, Anthropic, and Google — where every prompt is logged, analyzed, and potentially used to train future models — Venice offers **true privacy** with zero data retention on private models. Your conversations stay yours.
+**Venice AI 是专为那些不希望被大型科技公司监视的人设计的 AI 平台。** 与 OpenAI、Anthropic 和 Google 不同，这些平台的每个输入请求都会被记录、分析，并可能用于训练未来的模型；而 Venice 则提供了真正的隐私保护，不会保留任何私人模型的数据。您的对话内容完全属于您自己。
 
-Venice is also **uncensored**: no content filters, no refusals, no "I can't help with that." The AI answers what you actually ask, whether that's creative fiction, security research, controversial topics, or anything else mainstream AI platforms won't touch.
+Venice 还是 **未经审查的**：没有内容过滤、没有拒绝请求的情况，也不会出现“我无法帮助您”的回应。AI 会回答您实际提出的问题，无论是关于创意写作、安全研究还是任何其他主流 AI 平台不敢涉及的话题。
 
-**Why agents should care:**
-- **Private inference** — Models marked "Private" have zero data retention. Process sensitive data without it leaking into training sets.
-- **Uncensored responses** — No guardrails blocking legitimate use cases. Generate any content your workflow needs.
-- **OpenAI-compatible API** — Drop-in replacement. Same API format, just change the base URL.
-- **30+ models** — From tiny efficient models to Claude Opus 4.5, GPT-5.2, and Venice's own uncensored models.
-- **Built-in web search** — LLMs can search the web and cite sources in a single API call.
-- **Image & video generation** — Flux, Sora, Runway, WAN models for visual content.
+**代理（agents）应该关注的原因：**
+- **隐私保护**：标记为“私人”（Private）的模型不会保留任何数据，可以安全地处理敏感信息而不会泄露到训练集中。
+- **无限制的回答**：没有任何限制，可以生成工作流程所需的任何内容。
+- **兼容 OpenAI 的 API**：可以直接替换现有系统，只需更改基础 URL 即可。
+- **超过 30 种模型**：从小型高效模型到 Claude Opus 4.5、GPT-5.2，以及 Venice 自家的未经审查的模型应有尽有。
+- **内置的网页搜索**：大型语言模型（LLMs）可以通过一个 API 调用在网页上搜索并引用来源。
 
-This skill gives you the **complete Venice platform**: text generation, web search, embeddings, TTS, speech-to-text, image generation, video creation, upscaling, and AI editing.
+此技能提供了 **完整的 Venice 平台** 功能：文本生成、网页搜索、嵌入向量、文本转语音（TTS）、语音转文本（STT）、图像生成、视频制作、图像缩放以及 AI 编辑。
 
-> **⚠️ API changes:** If something doesn't work as expected, check [docs.venice.ai](https://docs.venice.ai) — the API specs may have been updated since this skill was written.
+> **⚠️ API 变更：** 如果某些功能无法按预期使用，请查看 [docs.venice.ai](https://docs.venice.ai) — 自本文档编写以来，API 规范可能已经更新。
 
-## Prerequisites
+## 先决条件
 
-- **Python 3.10+**
-- **Venice API key** (free tier available at [venice.ai/settings/api](https://venice.ai/settings/api))
+- **Python 3.10 或更高版本**
+- **Venice API 密钥**（免费 tier 可在 [venice.ai/settings/api](https://venice.ai/settings/api) 获取）
 
-## Setup
+## 设置
 
-### Get Your API Key
+### 获取 API 密钥
 
-1. Create account at [venice.ai](https://venice.ai)
-2. Go to [venice.ai/settings/api](https://venice.ai/settings/api)
-3. Click "Create API Key" → copy the key (starts with `vn_...`)
+1. 在 [venice.ai](https://venice.ai) 注册账户。
+2. 访问 [venice.ai/settings/api](https://venice.ai/settings/api)。
+3. 点击“创建 API 密钥”，然后复制密钥（密钥以 `vn_...` 开头）。
 
-### Configure
+### 配置
 
-**Option A: Environment variable**
+**选项 A：环境变量**
 ```bash
 export VENICE_API_KEY="vn_your_key_here"
 ```
 
-**Option B: Clawdbot config** (recommended)
+**选项 B：Clawdbot 配置**（推荐）
 ```json5
 // ~/.clawdbot/clawdbot.json
 {
@@ -78,30 +77,30 @@ export VENICE_API_KEY="vn_your_key_here"
 }
 ```
 
-### Verify
+### 验证
 ```bash
 python3 {baseDir}/scripts/venice.py models --type text
 ```
 
-## Scripts Overview
+## 脚本概述
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `venice.py` | Text generation, models, embeddings, TTS, transcription |
-| `venice-image.py` | Image generation (Flux, etc.) |
-| `venice-video.py` | Video generation (Sora, WAN, Runway) |
-| `venice-upscale.py` | Image upscaling |
-| `venice-edit.py` | AI image editing |
+| `venice.py` | 文本生成、模型调用、嵌入向量生成、TTS、语音转文本 |
+| `venice-image.py` | 图像生成（使用 Flux 等模型） |
+| `venice-video.py` | 视频生成（使用 Sora、WAN、Runway 等模型） |
+| `venice-upscale.py` | 图像缩放 |
+| `venice-edit.py | AI 图像编辑 |
 
 ---
 
-# Part 1: Text & Audio
+# 第一部分：文本与音频
 
-## Model Discovery & Selection
+## 模型发现与选择
 
-Venice has a huge model catalog spanning text, image, video, audio, and embeddings.
+Venice 拥有涵盖文本、图像、视频、音频和嵌入向量的庞大模型库。
 
-### Browse Models
+### 浏览模型
 ```bash
 # List all text models
 python3 {baseDir}/scripts/venice.py models --type text
@@ -116,25 +115,25 @@ python3 {baseDir}/scripts/venice.py models --type text,image,video,audio,embeddi
 python3 {baseDir}/scripts/venice.py models --filter llama
 ```
 
-### Model Selection Guide
+### 模型选择指南
 
-| Need | Recommended Model | Why |
+| 需求 | 推荐模型 | 原因 |
 |------|------------------|-----|
-| **Cheapest text** | `qwen3-4b` ($0.05/M in) | Tiny, fast, efficient |
-| **Best uncensored** | `venice-uncensored` ($0.20/M in) | Venice's own uncensored model |
-| **Best private + smart** | `deepseek-v3.2` ($0.40/M in) | Great reasoning, efficient |
-| **Vision/multimodal** | `qwen3-vl-235b-a22b` ($0.25/M in) | Sees images |
-| **Best coding** | `qwen3-coder-480b-a35b-instruct` ($0.75/M in) | Massive coder model |
-| **Frontier (budget)** | `grok-41-fast` ($0.50/M in) | Fast, 262K context |
-| **Frontier (max quality)** | `claude-opus-4-6` ($6/M in) | Best overall quality |
-| **Reasoning** | `kimi-k2-5` ($0.75/M in) | Strong chain-of-thought |
-| **Web search** | Any model + `enable_web_search` | Built-in web search |
+| **最便宜的文本模型** | `qwen3-4b`（每分钟 0.05 美元） | 体积小、速度快、效率高 |
+| **最佳未经审查的模型** | `venice-uncensored`（每分钟 0.20 美元） | Venice 自家的未经审查模型 |
+| **最佳隐私保护且功能强大的模型** | `deepseek-v3.2`（每分钟 0.40 美元） | 推理能力强、效率高 |
+| **视觉/多模态模型** | `qwen3-vl-235b-a22b`（每分钟 0.25 美元） | 支持图像处理 |
+| **最佳编程模型** | `qwen3-coder-480b-a35b-instruct`（每分钟 0.75 美元） | 强大的编程能力 |
+| **经济型前沿模型** | `grok-41-fast`（每分钟 0.50 美元） | 处理速度快，上下文理解能力强（262K 词条） |
+| **高端模型（最高质量）** | `claude-opus-4-6`（每分钟 6 美元） | 整体质量最佳 |
+| **推理模型** | `kimi-k2-5`（每分钟 0.75 美元） | 强大的逻辑推理能力 |
+| **网页搜索** | 任意模型 + `enable_web_search` | 内置网页搜索功能 |
 
 ---
 
-## Text Generation (Chat Completions)
+## 文本生成（聊天辅助）
 
-### Basic Generation
+### 基本文本生成
 ```bash
 # Simple prompt
 python3 {baseDir}/scripts/venice.py chat "What is the meaning of life?"
@@ -152,7 +151,7 @@ echo "Summarize this" | python3 {baseDir}/scripts/venice.py chat --model qwen3-4
 python3 {baseDir}/scripts/venice.py chat "Write a story" --stream
 ```
 
-### Web Search Integration
+### 网页搜索集成
 ```bash
 # Auto web search (model decides when to search)
 python3 {baseDir}/scripts/venice.py chat "What happened in tech news today?" --web-search auto
@@ -164,7 +163,7 @@ python3 {baseDir}/scripts/venice.py chat "Current Bitcoin price" --web-search on
 python3 {baseDir}/scripts/venice.py chat "Summarize: https://example.com/article" --web-scrape
 ```
 
-### Uncensored Mode
+### 未经审查的回答模式
 ```bash
 # Use Venice's own uncensored model
 python3 {baseDir}/scripts/venice.py chat "Your question" --model venice-uncensored
@@ -173,7 +172,7 @@ python3 {baseDir}/scripts/venice.py chat "Your question" --model venice-uncensor
 python3 {baseDir}/scripts/venice.py chat "Your prompt" --no-venice-system-prompt
 ```
 
-### Reasoning Models
+### 推理模型
 ```bash
 # Use a reasoning model with effort control
 python3 {baseDir}/scripts/venice.py chat "Solve this math problem..." --model kimi-k2-5 --reasoning-effort high
@@ -182,7 +181,7 @@ python3 {baseDir}/scripts/venice.py chat "Solve this math problem..." --model ki
 python3 {baseDir}/scripts/venice.py chat "Debug this code" --model qwen3-4b --strip-thinking
 ```
 
-### Advanced Options
+### 高级选项
 ```bash
 # Temperature and token control
 python3 {baseDir}/scripts/venice.py chat "Be creative" --temperature 1.2 --max-tokens 4000
@@ -199,9 +198,9 @@ python3 {baseDir}/scripts/venice.py chat "Hello" --show-usage
 
 ---
 
-## Embeddings
+## 嵌入向量
 
-Generate vector embeddings for semantic search, RAG, and recommendations:
+生成用于语义搜索、检索式问答（RAG）和推荐系统的嵌入向量：
 
 ```bash
 # Single text
@@ -217,13 +216,13 @@ python3 {baseDir}/scripts/venice.py embed --file texts.txt
 python3 {baseDir}/scripts/venice.py embed "some text" --output json
 ```
 
-Model: `text-embedding-bge-m3` (private, $0.15/M tokens)
+模型：`text-embedding-bge-m3`（私有模型，每百万个标记 0.15 美元）
 
 ---
 
-## Text-to-Speech (TTS)
+## 文本转语音（TTS）
 
-Convert text to speech with 60+ multilingual voices:
+支持 60 多种语言的语音将文本转换为语音：
 
 ```bash
 # Default voice
@@ -242,15 +241,15 @@ python3 {baseDir}/scripts/venice.py tts "Some text" --output /tmp/speech.mp3
 python3 {baseDir}/scripts/venice.py tts "Speaking slowly" --speed 0.8
 ```
 
-**Popular voices:** `af_sky`, `af_nova`, `am_liam`, `bf_emma`, `zf_xiaobei` (Chinese), `jm_kumo` (Japanese)
+**常用语音：** `af_sky`, `af_nova`, `am_liam`, `bf_emma`, `zf_xiaobei`（中文），`jm_kumo`（日语）
 
-Model: `tts-kokoro` (private, $3.50/M characters)
+模型：`tts-kokoro`（私有模型，每百万个字符 3.50 美元）
 
 ---
 
-## Speech-to-Text (Transcription)
+## 语音转文本（STT）
 
-Transcribe audio files to text:
+将音频文件转录为文本：
 
 ```bash
 # Transcribe a file
@@ -263,13 +262,13 @@ python3 {baseDir}/scripts/venice.py transcribe recording.mp3 --timestamps
 python3 {baseDir}/scripts/venice.py transcribe --url https://example.com/audio.wav
 ```
 
-Supported formats: WAV, FLAC, MP3, M4A, AAC, MP4
+支持的格式：WAV、FLAC、MP3、M4A、AAC、MP4
 
-Model: `nvidia/parakeet-tdt-0.6b-v3` (private, $0.0001/audio second)
+模型：`nvidia/parakeet-tdt-0.6b-v3`（私有模型，每音频秒 0.0001 美元）
 
 ---
 
-## Check Balance
+## 检查 API 使用情况
 
 ```bash
 python3 {baseDir}/scripts/venice.py balance
@@ -277,24 +276,24 @@ python3 {baseDir}/scripts/venice.py balance
 
 ---
 
-# Part 2: Images & Video
+# 第二部分：图像与视频
 
-## Pricing Overview
+## 价格概述
 
-| Feature | Cost |
+| 功能 | 费用 |
 |---------|------|
-| Image generation | ~$0.01-0.03 per image |
-| Image upscale | ~$0.02-0.04 |
-| Image edit | $0.04 |
-| Video (WAN) | ~$0.10-0.50 |
-| Video (Sora) | ~$0.50-2.00 |
-| Video (Runway) | ~$0.20-1.00 |
+| 图像生成 | 每张图片约 0.01-0.03 美元 |
+| 图像缩放 | 每张图片约 0.02-0.04 美元 |
+| 图像编辑 | 0.04 美元 |
+| 视频（WAN） | 每段视频约 0.10-0.50 美元 |
+| 视频（Sora） | 每段视频约 0.50-2.00 美元 |
+| 视频（Runway） | 每段视频约 0.20-1.00 美元 |
 
-Use `--quote` with video commands to check pricing before generation.
+使用 `--quote` 参数可以在生成前查看具体费用。
 
 ---
 
-## Image Generation
+## 图像生成
 
 ```bash
 # Basic generation
@@ -317,11 +316,11 @@ python3 {baseDir}/scripts/venice-image.py --prompt "fantasy" --model flux-2-pro 
 python3 {baseDir}/scripts/venice-image.py --prompt "abstract" --seed 12345
 ```
 
-**Key flags:** `--prompt`, `--model` (default: flux-2-max), `--count`, `--width`, `--height`, `--format` (webp/png/jpeg), `--resolution` (1K/2K/4K), `--aspect-ratio`, `--negative-prompt`, `--style-preset`, `--cfg-scale` (0-20), `--seed`, `--safe-mode`, `--hide-watermark`, `--embed-exif`
+**关键参数：** `--prompt`（提示内容），`--model`（默认：flux-2-max），`--count`（生成数量），`--width`（宽度），`--height`（高度），`--format`（输出格式：webp/png/jpeg），`--resolution`（分辨率），`--aspect-ratio`（纵横比），`--negative-prompt`（是否使用否定提示），`--style-preset`（风格预设），`--cfg-scale`（缩放比例），`--seed`（随机种子），`--safe-mode`（安全模式），`--hide-watermark`（是否隐藏水印），`--embed-exif`（是否嵌入 EXIF 信息）
 
 ---
 
-## Image Upscale
+## 图像缩放
 
 ```bash
 # 2x upscale
@@ -337,13 +336,13 @@ python3 {baseDir}/scripts/venice-upscale.py photo.jpg --enhance --enhance-prompt
 python3 {baseDir}/scripts/venice-upscale.py --url "https://example.com/image.jpg" --scale 2
 ```
 
-**Key flags:** `--scale` (1-4, default: 2), `--enhance` (AI enhancement), `--enhance-prompt`, `--enhance-creativity` (0.0-1.0), `--url`, `--output`
+**关键参数：** `--scale`（缩放比例，1-4，默认：2），`--enhance`（图像增强），`--enhance-prompt`（增强提示），`--enhance-creativity`（创意增强程度，0.0-1.0），`--url`（输入图像 URL），`--output`（输出文件路径）
 
 ---
 
-## Image Edit
+## 图像编辑
 
-AI-powered image editing:
+使用 AI 进行图像编辑：
 
 ```bash
 # Add elements
@@ -359,11 +358,11 @@ python3 {baseDir}/scripts/venice-edit.py photo.jpg --prompt "remove the person i
 python3 {baseDir}/scripts/venice-edit.py --url "https://example.com/image.jpg" --prompt "colorize"
 ```
 
-**Note:** The edit endpoint uses Qwen-Image which has some content restrictions.
+**注意：** 图像编辑功能使用的是 Qwen-Image 模型，该模型对某些内容有限制。
 
 ---
 
-## Video Generation
+## 视频生成
 
 ```bash
 # Get price quote first
@@ -384,49 +383,49 @@ python3 {baseDir}/scripts/venice-video.py --video input.mp4 --prompt "anime styl
 python3 {baseDir}/scripts/venice-video.py --list-models
 ```
 
-**Key flags:** `--image` or `--video`, `--prompt`, `--model` (default: wan-2.6-image-to-video), `--duration`, `--resolution` (480p/720p/1080p), `--aspect-ratio`, `--audio`/`--no-audio`, `--quote`, `--timeout`
+**关键参数：** `--image` 或 `--video`（选择生成类型），`--prompt`（生成提示），`--model`（默认：wan-2.6-image-to-video），`--duration`（视频时长），`--resolution`（分辨率），`--aspect-ratio`（纵横比），`--audio`/`--no-audio`（是否包含音频），`--quote`（是否生成音频），`--timeout`（生成超时时间）**
 
-**Models:**
-- **WAN** — Image-to-video, configurable audio, 5s-21s
-- **Sora** — Requires `--aspect-ratio`, use `--skip-audio-param`
-- **Runway** — Video-to-video transformation
-
----
-
-# Tips & Ideas
-
-### 🔍 Web Search + LLM = Research Assistant
-Use `--web-search on --web-citations` to build a research workflow. Venice searches the web, synthesizes results, and cites sources — all in one API call.
-
-### 🔓 Uncensored Creative Content
-Venice's uncensored models work for both text AND images. No guardrails blocking legitimate creative use cases.
-
-### 🎯 Prompt Caching for Agents
-If you're running an agent loop that sends the same system prompt repeatedly, use `--cache-key` to get up to 90% cost savings.
-
-### 🎤 Audio Pipeline
-Combine TTS and transcription: generate spoken content with `tts`, process audio with `transcribe`. Both are private inference.
-
-### 🎬 Video Workflow
-1. Generate or find a base image
-2. Use `--quote` to estimate video cost
-3. Generate with appropriate duration/model
-4. Videos take 1-5 minutes depending on settings
+**可用模型：**
+- **WAN**：图像转视频，支持自定义音频，时长 5 秒至 21 秒。
+- **Sora**：需要指定纵横比，可使用 `--skip-audio-param` 参数。
+- **Runway**：视频转视频功能。
 
 ---
 
-## Troubleshooting
+# 提示与技巧
 
-| Problem | Solution |
+### 🔍 网页搜索 + 大语言模型（LLM） = 研究助手
+使用 `--web-search on --web-citations` 可构建高效的研究工作流程。Venice 可在一次 API 调用中完成网页搜索、结果合成及来源引用。
+
+### 🔓 未经审查的创意内容
+Venice 的未经审查模型适用于文本和图像生成，没有任何限制，适合创意创作。
+
+### 🎯 提示缓存
+如果您运行的代理循环重复发送相同的系统提示，可以使用 `--cache-key` 选项来节省高达 90% 的费用。
+
+### 🎤 音频处理流程
+结合使用 `tts` 和 `transcribe` 功能：使用 `tts` 生成语音内容，使用 `transcribe` 处理音频文件。这两个功能都支持隐私保护。
+
+### 🎬 视频制作流程
+1. 生成或找到基础图像。
+2. 使用 `--quote` 参数估算视频制作成本。
+3. 根据需求选择合适的模型和时长进行生成。
+4. 视频生成时间根据设置不同，通常需要 1-5 分钟。
+
+---
+
+## 故障排除
+
+| 问题 | 解决方案 |
 |---------|----------|
-| `VENICE_API_KEY not set` | Set env var or configure in `~/.clawdbot/clawdbot.json` |
-| `Invalid API key` | Verify at [venice.ai/settings/api](https://venice.ai/settings/api) |
-| `Model not found` | Run `--list-models` to see available; use `--no-validate` for new models |
-| Rate limited | Check `--show-usage` output |
-| Video stuck | Videos can take 1-5 min; use `--timeout 600` for long ones |
+| `VENICE_API_KEY 未设置` | 通过环境变量设置 API 密钥，或在 `~/.clawdbot/clawdbot.json` 文件中配置。 |
+| API 密钥无效 | 在 [venice.ai/settings/api](https://venice.ai/settings/api) 验证密钥有效性。 |
+| 模型未找到 | 运行 `--list-models` 命令查看可用模型；新模型可使用 `--no-validate` 参数。 |
+| 使用频率受限 | 查看 `--show-usage` 的输出信息。 |
+| 视频生成失败 | 视频生成可能需要 1-5 分钟；长视频可使用 `--timeout 600` 设置超时时间。 |
 
-## Resources
+## 资源
 
-- **API Docs**: [docs.venice.ai](https://docs.venice.ai)
-- **Status**: [veniceai-status.com](https://veniceai-status.com)
-- **Discord**: [discord.gg/askvenice](https://discord.gg/askvenice)
+- **API 文档**：[docs.venice.ai](https://docs.venice.ai)
+- **平台状态**：[veniceai-status.com](https://veniceai-status.com)
+- **Discord 社区**：[discord.gg/askvenice](https://discord.gg/askvenice)

@@ -1,26 +1,26 @@
 ---
 name: jb-split-hook
-description: Generate custom Juicebox V5 split hooks from natural language specifications. Creates Solidity contracts implementing IJBSplitHook with Foundry tests. Split hooks process individual payout or reserved token splits with custom logic like DeFi integrations.
+description: 根据自然语言规范生成自定义的 Juicebox V5 分割钩（split hooks）。这些钩子基于 Solidity 编程语言实现，并通过 Foundry 工具进行测试。分割钩能够根据自定义逻辑（例如与 DeFi 系统的集成）来处理单个支付或预留代币的分割操作。
 ---
 
-# Juicebox V5 Split Hook Generator
+# Juicebox V5 分割钩生成器
 
-Generate custom split hooks for Juicebox V5 projects based on natural language specifications.
+根据自然语言规范，为 Juicebox V5 项目生成自定义的分割钩（split hooks）。
 
-## What Are Split Hooks?
+## 什么是分割钩（Split Hooks）？
 
-Split hooks allow custom processing when funds are distributed through payout splits or reserved token splits. They're useful for:
+分割钩允许在资金通过支付分配（payout splits）或预留代币分配（reserved token splits）时进行自定义处理。它们适用于以下场景：
 
-- **DeFi integrations**: Route payouts to liquidity pools, staking, or yield protocols
-- **Multi-recipient routing**: Split a single split further among multiple addresses
-- **Token swaps**: Convert received tokens before forwarding
-- **Custom accounting**: Track or transform distributions
+- **去中心化金融（DeFi）集成**：将支付路由到流动性池、质押协议或收益协议
+- **多接收者路由**：将单次分配进一步分配给多个地址
+- **代币交换**：在转发之前转换接收到的代币
+- **自定义会计处理**：跟踪或转换资金分配情况
 
-**Note**: Split hooks can be added to **Revnets** for token distribution just like any other Juicebox project.
+**注意**：分割钩可以像其他 Juicebox 项目一样，被添加到 **Revnets** 中用于代币分配。
 
-## V5 Split Hook Architecture
+## V5 分割钩架构
 
-Split hooks implement a single function that receives funds optimistically and processes them.
+分割钩实现了一个单一函数，该函数以乐观的方式接收资金并对其进行处理。
 
 ```solidity
 interface IJBSplitHook is IERC165 {
@@ -31,7 +31,7 @@ interface IJBSplitHook is IERC165 {
 }
 ```
 
-## JBSplitHookContext Fields
+## JBSplitHookContext 字段
 
 ```solidity
 struct JBSplitHookContext {
@@ -44,7 +44,7 @@ struct JBSplitHookContext {
 }
 ```
 
-## JBSplit Configuration
+## JBSplit 配置
 
 ```solidity
 struct JBSplit {
@@ -57,9 +57,9 @@ struct JBSplit {
 }
 ```
 
-## Design Patterns
+## 设计模式
 
-### Basic Split Hook
+### 基本分割钩（Basic Split Hook）
 
 ```solidity
 contract BasicSplitHook is IJBSplitHook, ERC165 {
@@ -84,9 +84,9 @@ contract BasicSplitHook is IJBSplitHook, ERC165 {
 }
 ```
 
-### Uniswap V3 LP Split Hook Pattern
+### Uniswap V3 流动性池分割钩（Uniswap V3 LP Split Hook）
 
-Route payouts to a Uniswap V3 liquidity position.
+将支付路由到 Uniswap V3 流动性池。
 
 ```solidity
 contract UniswapV3LPSplitHook is IJBSplitHook, ERC165 {
@@ -105,9 +105,9 @@ contract UniswapV3LPSplitHook is IJBSplitHook, ERC165 {
 }
 ```
 
-### Multi-Recipient Split Hook
+### 多接收者分割钩（Multi-Recipient Split Hook）
 
-Split funds further among multiple recipients.
+将资金进一步分配给多个接收者。
 
 ```solidity
 contract MultiRecipientSplitHook is IJBSplitHook, ERC165 {
@@ -134,9 +134,9 @@ contract MultiRecipientSplitHook is IJBSplitHook, ERC165 {
 }
 ```
 
-### Token Swap Split Hook
+### 代币交换分割钩（Token Swap Split Hook）
 
-Swap received tokens before forwarding.
+在转发之前交换接收到的代币。
 
 ```solidity
 contract SwapSplitHook is IJBSplitHook, ERC165 {
@@ -164,9 +164,9 @@ contract SwapSplitHook is IJBSplitHook, ERC165 {
 }
 ```
 
-## Configuring Split Hooks
+## 配置分割钩
 
-To use a split hook, configure it in a project's split group:
+要使用分割钩，请在项目的 `split` 组中对其进行配置：
 
 ```solidity
 JBSplit memory split = JBSplit({
@@ -179,31 +179,31 @@ JBSplit memory split = JBSplit({
 });
 ```
 
-## Generation Guidelines
+## 生成指南
 
-1. **Understand the distribution flow** - splits receive funds during payout or reserved token distribution
-2. **Handle both ETH and ERC20** - check `context.token` to determine token type
-3. **Consider gas costs** - complex DeFi operations may be expensive
-4. **Include proper error handling** - failed external calls should be handled gracefully
-5. **Generate Foundry tests** with fork testing for DeFi integrations
+1. **理解资金分配流程**：分割钩在支付或预留代币分配时接收资金
+2. **支持 ETH 和 ERC20**：通过检查 `context.token` 来确定代币类型
+3. **考虑 gas 成本**：复杂的去中心化金融操作可能会产生较高的费用
+4. **包含适当的错误处理**：应优雅地处理外部调用失败的情况
+5. **为去中心化金融集成生成 Foundry 测试**，并使用 fork 测试进行验证
 
-## Example Prompts
+## 示例提示：
 
-- "Create a split hook that deposits ETH into Lido and sends stETH to a beneficiary"
-- "I want to route 50% of payouts to a Uniswap V3 LP position"
-- "Build a split hook that swaps tokens to USDC before sending to treasury"
-- "Create a hook that splits incoming funds among 5 DAO multisigs"
+- “创建一个分割钩，将 ETH 存入 Lido 并将 stETH 发送给受益人”
+- “我希望将 50% 的支付路由到 Uniswap V3 流动性池”
+- “构建一个分割钩，在将资金发送到金库之前将其转换为 USDC”
+- “创建一个分割钩，将收到的资金分配给 5 个 DAO 多重签名账户”
 
-## Reference Implementations
+## 参考实现
 
-- **uniswapv3-lp-split-hook**: https://github.com/kyzooghost/uniswapv3-lp-split-hook
+- **uniswapv3-lp-split-hook**：https://github.com/kyzooghost/uniswapv3-lp-split-hook
 
-## Output Format
+## 输出格式
 
-Generate:
-1. Main contract in `src/`
-2. Interface in `src/interfaces/` if needed
-3. Test file in `test/`
-4. Deployment script in `script/` if requested
+生成以下文件：
+1. 主合约（位于 `src/` 目录）
+2. 如有需要，生成接口文件（位于 `src/interfaces/` 目录）
+3. 测试文件（位于 `test/` 目录）
+4. 如果需要，生成部署脚本（位于 `script/` 目录）
 
-Use Foundry project structure with forge-std.
+使用 Foundry 项目结构及 forge-std 工具进行开发。

@@ -1,77 +1,77 @@
 ---
 name: Developer
-description: Write clean, maintainable code with debugging, testing, and architectural best practices.
+description: 编写干净、易于维护的代码，同时遵循调试、测试和架构的最佳实践。
 metadata: {"clawdbot":{"emoji":"💻","os":["linux","darwin","win32"]}}
 ---
 
-# Software Development Rules
+# 软件开发规范
 
-## Code Quality
-- Readable code beats clever code — you'll read it 10x more than write it
-- Functions do one thing — if you need "and" to describe it, split it
-- Name things by what they do, not how — implementation changes, purpose doesn't
-- Delete dead code — version control remembers, codebase shouldn't carry weight
-- Consistent style matters more than which style — match the project
+## 代码质量
+- 代码的可读性比复杂性更重要——你阅读代码的次数远超过编写代码的次数。
+- 每个函数应该只完成一个功能；如果需要使用“and”来描述多个功能，那就将它们拆分为多个函数。
+- 为代码命名时，要根据其功能来命名，而不是根据实现方式来命名——实现可能会改变，但功能应该保持不变。
+- 删除无用的代码——版本控制系统会记录这些代码，但代码库不应充斥着无用的代码。
+- 代码风格的一致性比使用哪种特定的风格更重要——要遵循项目的统一编码规范。
 
-## Debugging
-- Read the error message completely — the answer is often in there
-- Reproduce before fixing — if you can't trigger it, you can't verify the fix
-- Binary search: comment out half the code to find the problem half
-- Check the obvious first — typos, wrong file, stale cache, wrong environment
-- Print/log liberally when stuck — assumptions are usually wrong
+## 调试
+- 完整地阅读错误信息——答案通常就在其中。
+- 在修复问题之前先尝试重现错误——如果你无法触发错误，就无法验证修复是否有效。
+- 使用二分查找法：注释掉一半的代码，以便更快地定位问题所在。
+- 先检查显而易见的问题——可能是拼写错误、文件路径错误、缓存失效或环境设置不正确。
+- 在遇到困难时，要多使用打印或日志记录功能——很多时候问题出在你的假设上。
 
-## Testing
-- Test behavior, not implementation — tests shouldn't break when you refactor
-- One assertion per test when possible — failures point to exact problem
-- Name tests as sentences describing expected behavior — readable test names are documentation
-- Mock external dependencies, not internal logic — integration points are boundaries
-- Fast tests run often, slow tests get skipped — optimize for feedback speed
+## 测试
+- 测试代码的行为，而不是其实现方式——重构代码时测试不应该出错。
+- 每个测试应该只验证一个具体的功能——失败会直接指出问题所在。
+- 为测试用例起描述预期行为的名字——易于理解的测试名称本身就是一种很好的文档。
+- 对外部依赖进行模拟，而不是模拟内部逻辑——集成点是代码的边界。
+- 快速的测试应该经常运行，慢的测试可以跳过——优化测试的目的是为了快速获得反馈。
 
-## Error Handling
-- Fail fast and loud — silent failures create debugging nightmares
-- Catch specific exceptions, not generic — different errors need different handling
-- Log enough context to debug — error type alone isn't enough
-- User-facing errors should be helpful — "something went wrong" helps nobody
-- Don't catch exceptions you can't handle — let them bubble up
+## 错误处理
+- 错误应该尽快且明确地被报告——无声的错误会带来调试上的麻烦。
+- 捕获特定的异常，而不是通用的异常——不同的错误需要不同的处理方式。
+- 记录足够的上下文信息以便于调试——仅记录错误类型是不够的。
+- 面向用户的错误信息应该具有帮助性——“出了问题”这样的信息对用户毫无帮助。
+- 不要捕获那些你无法处理的异常——让它们自然地抛出。
 
-## Architecture
-- Start simple, add complexity when needed — premature abstraction wastes time
-- Separate concerns — UI, business logic, data access are different responsibilities
-- Dependencies flow inward — core logic shouldn't know about frameworks
-- Configuration separate from code — environment-specific values externalized
-- Document decisions, not just code — why matters more than what
+## 架构设计
+- 从简单开始，根据需要逐步增加复杂性——过早地抽象化会浪费时间。
+- 分离不同的功能模块——用户界面、业务逻辑和数据访问是不同的职责。
+- 依赖关系应该从外部引入——核心逻辑不应该依赖于特定的框架或库。
+- 配置信息应该与代码分离——环境相关的设置应该外部化。
+- 不仅要记录代码本身，还要记录相关的设计决策——为什么这样做比记录代码本身更重要。
 
-## Code Review
-- Review for understanding, not just correctness — if you can't follow it, others won't
-- Ask questions instead of making demands — "what if..." opens discussion
-- Small PRs get better reviews — 500 lines gets skimmed, 50 lines gets read
-- Approve when good enough, not perfect — progress beats perfection
-- Catch bugs early, style issues are secondary — priorities matter
+## 代码审查
+- 审查代码的目的是为了理解代码的逻辑，而不仅仅是检查其正确性——如果你自己都无法理解代码的逻辑，其他人也无法理解。
+- 提出问题而不是直接提出要求——用“如果……会怎样”这样的问题来引发讨论。
+- 较小的代码修改（PR）会得到更好的审查——500行的代码可能只会被快速浏览一下，而50行的代码则会被仔细阅读。
+- 当代码足够好时就批准它，而不是等到它完美无缺——进步比完美更重要。
+- 尽早发现错误，代码风格的问题是次要的——优先处理实际的问题。
 
-## Performance
-- Measure before optimizing — intuition about bottlenecks is usually wrong
-- Optimize the hot path — 90% of time is spent in 10% of code
-- Database queries are usually the bottleneck — check there first
-- Caching solves many problems — but cache invalidation creates new ones
-- Premature optimization wastes time — make it work, then make it fast
+## 性能优化
+- 在进行优化之前先测量现有代码的性能——对性能瓶颈的直觉往往是错误的。
+- 优先优化代码中执行频率最高的路径——90%的时间通常花费在10%的代码上。
+- 数据库查询通常是性能瓶颈——首先要检查数据库查询的效率。
+- 使用缓存可以解决很多问题，但缓存的有效期管理也是一个需要注意的问题。
+- 过早地进行性能优化会浪费时间——先确保代码能够正常运行，然后再考虑优化速度。
 
-## Dependencies
-- Evaluate before adding — every dependency is code you don't control
-- Pin versions — "latest" breaks builds unpredictably
-- Check maintenance status — abandoned packages become security risks
-- Fewer dependencies is better — each one adds supply chain risk
-- Read changelogs before upgrading — breaking changes hide in minor versions
+## 依赖管理
+- 在添加新的依赖之前先进行评估——每个依赖都是你无法控制的代码。
+- 固定依赖的版本——使用“最新版本”可能会导致构建失败。
+- 检查依赖库的维护状态——被弃用的依赖库可能会带来安全风险。
+- 依赖库的数量越少越好——每个额外的依赖都会增加供应链的风险。
+- 在升级之前阅读依赖库的变更日志——重要的变更可能隐藏在次要版本中。
 
-## Working in Existing Codebases
-- Match existing patterns — consistency beats personal preference
-- Improve incrementally — boy scout rule, leave it better than you found it
-- Understand before changing — read the tests, check git history
-- Don't refactor while fixing bugs — separate commits, separate PRs
-- Legacy code works — respect the battle scars
+## 在现有代码库中工作
+- 遵循现有的代码模式——一致性比个人偏好更重要。
+- 逐步改进代码——就像童子军准则所说：把代码改得比你发现它时更好。
+- 在修改代码之前先理解其现有逻辑——阅读相关的测试用例和代码历史记录。
+- 在修复错误时不要进行大规模的代码重构——每次修改都应该提交单独的提交（commit），并创建单独的Pull Request（PR）。
+- 遵循现有的代码架构——尊重代码中已经存在的设计决策。
 
-## Communication
-- Commit messages explain why, not what — diff shows what changed
-- Document surprising behavior — future developers need context
-- Ask before large refactors — alignment prevents wasted work
-- Estimate with ranges, not points — "2-4 days" is more honest than "3 days"
-- Say "I don't know" when you don't — guessing wastes everyone's time
+## 沟通
+- 提交代码时解释修改的原因，而不仅仅是描述修改的内容——差异对比（diff）已经说明了具体发生了什么变化。
+- 记录那些异常或令人困惑的行为——未来的开发者需要这些信息来理解代码的运行情况。
+- 在进行大规模的代码重构之前先征求他人的意见——这样可以避免不必要的重复工作。
+- 对工作进度进行合理的估计——用范围来描述，而不是具体的时间节点——比如“2-4天”比“3天”更准确。
+- 如果你不确定某个问题的答案，就直接说“我不知道”——猜测只会浪费大家的时间。

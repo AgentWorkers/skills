@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Access - Java
+# Telnyx 账户访问 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all addresses
+## 列出所有地址
 
-Returns a list of your addresses.
+返回您的地址列表。
 
 `GET /addresses`
 
@@ -45,11 +45,11 @@ import com.telnyx.sdk.models.addresses.AddressListParams;
 AddressListPage page = client.addresses().list();
 ```
 
-## Creates an address
+## 创建地址
 
-Creates an address.
+创建一个新的地址。
 
-`POST /addresses` — Required: `first_name`, `last_name`, `business_name`, `street_address`, `locality`, `country_code`
+`POST /addresses` — 必需参数：`first_name`、`last_name`、`business_name`、`street_address`、`locality`、`country_code`
 
 ```java
 import com.telnyx.sdk.models.addresses.AddressCreateParams;
@@ -66,9 +66,9 @@ AddressCreateParams params = AddressCreateParams.builder()
 AddressCreateResponse address = client.addresses().create(params);
 ```
 
-## Retrieve an address
+## 获取地址详情
 
-Retrieves the details of an existing address.
+获取现有地址的详细信息。
 
 `GET /addresses/{id}`
 
@@ -79,9 +79,9 @@ import com.telnyx.sdk.models.addresses.AddressRetrieveResponse;
 AddressRetrieveResponse address = client.addresses().retrieve("id");
 ```
 
-## Deletes an address
+## 删除地址
 
-Deletes an existing address.
+删除现有的地址。
 
 `DELETE /addresses/{id}`
 
@@ -92,7 +92,7 @@ import com.telnyx.sdk.models.addresses.AddressDeleteResponse;
 AddressDeleteResponse address = client.addresses().delete("id");
 ```
 
-## Accepts this address suggestion as a new emergency address for Operator Connect and finishes the uploads of the numbers associated with it to Microsoft.
+## 接受此地址建议作为新的紧急联系方式，并完成将其相关信息上传至 Microsoft 的操作。
 
 `POST /addresses/{id}/actions/accept_suggestions`
 
@@ -103,11 +103,11 @@ import com.telnyx.sdk.models.addresses.actions.ActionAcceptSuggestionsResponse;
 ActionAcceptSuggestionsResponse response = client.addresses().actions().acceptSuggestions("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Validate an address
+## 验证地址
 
-Validates an address for emergency services.
+验证地址是否适用于紧急服务。
 
-`POST /addresses/actions/validate` — Required: `country_code`, `street_address`, `postal_code`
+`POST /addresses/actions/validate` — 必需参数：`country_code`、`street_address`、`postal_code`
 
 ```java
 import com.telnyx.sdk.models.addresses.actions.ActionValidateParams;
@@ -121,9 +121,9 @@ ActionValidateParams params = ActionValidateParams.builder()
 ActionValidateResponse response = client.addresses().actions().validate(params);
 ```
 
-## List all SSO authentication providers
+## 列出所有 SSO（单点登录）认证提供者
 
-Returns a list of your SSO authentication providers.
+返回您的 SSO 认证提供者列表。
 
 `GET /authentication_providers`
 
@@ -134,11 +134,11 @@ import com.telnyx.sdk.models.authenticationproviders.AuthenticationProviderListP
 AuthenticationProviderListPage page = client.authenticationProviders().list();
 ```
 
-## Creates an authentication provider
+## 创建认证提供者
 
-Creates an authentication provider.
+创建一个新的认证提供者。
 
-`POST /authentication_providers` — Required: `name`, `short_name`, `settings`
+`POST /authentication_providers` — 必需参数：`name`、`short_name`、`settings`
 
 ```java
 import com.telnyx.sdk.models.authenticationproviders.AuthenticationProviderCreateParams;
@@ -157,9 +157,9 @@ AuthenticationProviderCreateParams params = AuthenticationProviderCreateParams.b
 AuthenticationProviderCreateResponse authenticationProvider = client.authenticationProviders().create(params);
 ```
 
-## Retrieve an authentication provider
+## 获取认证提供者详情
 
-Retrieves the details of an existing authentication provider.
+获取现有认证提供者的详细信息。
 
 `GET /authentication_providers/{id}`
 
@@ -170,9 +170,9 @@ import com.telnyx.sdk.models.authenticationproviders.AuthenticationProviderRetri
 AuthenticationProviderRetrieveResponse authenticationProvider = client.authenticationProviders().retrieve("id");
 ```
 
-## Update an authentication provider
+## 更新认证提供者
 
-Updates settings of an existing authentication provider.
+更新现有认证提供者的设置。
 
 `PATCH /authentication_providers/{id}`
 
@@ -183,9 +183,9 @@ import com.telnyx.sdk.models.authenticationproviders.AuthenticationProviderUpdat
 AuthenticationProviderUpdateResponse authenticationProvider = client.authenticationProviders().update("id");
 ```
 
-## Deletes an authentication provider
+## 删除认证提供者
 
-Deletes an existing authentication provider.
+删除现有的认证提供者。
 
 `DELETE /authentication_providers/{id}`
 
@@ -196,7 +196,9 @@ import com.telnyx.sdk.models.authenticationproviders.AuthenticationProviderDelet
 AuthenticationProviderDeleteResponse authenticationProvider = client.authenticationProviders().delete("id");
 ```
 
-## List all billing groups
+## 列出所有计费组
+
+获取您的计费组列表。
 
 `GET /billing_groups`
 
@@ -207,7 +209,9 @@ import com.telnyx.sdk.models.billinggroups.BillingGroupListParams;
 BillingGroupListPage page = client.billingGroups().list();
 ```
 
-## Create a billing group
+## 创建计费组
+
+创建一个新的计费组。
 
 `POST /billing_groups`
 
@@ -218,7 +222,9 @@ import com.telnyx.sdk.models.billinggroups.BillingGroupCreateResponse;
 BillingGroupCreateResponse billingGroup = client.billingGroups().create();
 ```
 
-## Get a billing group
+## 获取计费组详情
+
+获取特定计费组的详细信息。
 
 `GET /billing_groups/{id}`
 
@@ -229,7 +235,9 @@ import com.telnyx.sdk.models.billinggroups.BillingGroupRetrieveResponse;
 BillingGroupRetrieveResponse billingGroup = client.billingGroups().retrieve("f5586561-8ff0-4291-a0ac-84fe544797bd");
 ```
 
-## Update a billing group
+## 更新计费组
+
+更新现有计费组的设置。
 
 `PATCH /billing_groups/{id}`
 
@@ -240,7 +248,9 @@ import com.telnyx.sdk.models.billinggroups.BillingGroupUpdateResponse;
 BillingGroupUpdateResponse billingGroup = client.billingGroups().update("f5586561-8ff0-4291-a0ac-84fe544797bd");
 ```
 
-## Delete a billing group
+## 删除计费组
+
+删除现有的计费组。
 
 `DELETE /billing_groups/{id}`
 
@@ -251,9 +261,9 @@ import com.telnyx.sdk.models.billinggroups.BillingGroupDeleteResponse;
 BillingGroupDeleteResponse billingGroup = client.billingGroups().delete("f5586561-8ff0-4291-a0ac-84fe544797bd");
 ```
 
-## List integration secrets
+## 列出所有集成密钥
 
-Retrieve a list of all integration secrets configured by the user.
+获取用户配置的所有集成密钥列表。
 
 `GET /integration_secrets`
 
@@ -264,11 +274,11 @@ import com.telnyx.sdk.models.integrationsecrets.IntegrationSecretListParams;
 IntegrationSecretListPage page = client.integrationSecrets().list();
 ```
 
-## Create a secret
+## 创建集成密钥
 
-Create a new secret with an associated identifier that can be used to securely integrate with other services.
+创建一个新的集成密钥，并为其指定一个标识符，以便与其他服务安全地集成。
 
-`POST /integration_secrets` — Required: `identifier`, `type`
+`POST /integration_secrets` — 必需参数：`identifier`、`type`
 
 ```java
 import com.telnyx.sdk.models.integrationsecrets.IntegrationSecretCreateParams;
@@ -281,9 +291,9 @@ IntegrationSecretCreateParams params = IntegrationSecretCreateParams.builder()
 IntegrationSecretCreateResponse integrationSecret = client.integrationSecrets().create(params);
 ```
 
-## Delete an integration secret
+## 删除集成密钥
 
-Delete an integration secret given its ID.
+根据密钥 ID 删除相应的集成密钥。
 
 `DELETE /integration_secrets/{id}`
 
@@ -293,7 +303,9 @@ import com.telnyx.sdk.models.integrationsecrets.IntegrationSecretDeleteParams;
 client.integrationSecrets().delete("id");
 ```
 
-## List all Access IP Addresses
+## 列出所有访问 IP 地址
+
+获取您的访问 IP 地址列表。
 
 `GET /access_ip_address`
 
@@ -304,9 +316,11 @@ import com.telnyx.sdk.models.accessipaddress.AccessIpAddressListParams;
 AccessIpAddressListPage page = client.accessIpAddress().list();
 ```
 
-## Create new Access IP Address
+## 创建新的访问 IP 地址
 
-`POST /access_ip_address` — Required: `ip_address`
+创建一个新的访问 IP 地址。
+
+`POST /access_ip_address` — 必需参数：`ip_address`
 
 ```java
 import com.telnyx.sdk.models.accessipaddress.AccessIpAddressCreateParams;
@@ -318,7 +332,9 @@ AccessIpAddressCreateParams params = AccessIpAddressCreateParams.builder()
 AccessIpAddressResponse accessIpAddressResponse = client.accessIpAddress().create(params);
 ```
 
-## Retrieve an access IP address
+## 获取访问 IP 地址详情
+
+获取特定访问 IP 地址的详细信息。
 
 `GET /access_ip_address/{access_ip_address_id}`
 
@@ -329,7 +345,9 @@ import com.telnyx.sdk.models.accessipaddress.AccessIpAddressRetrieveParams;
 AccessIpAddressResponse accessIpAddressResponse = client.accessIpAddress().retrieve("access_ip_address_id");
 ```
 
-## Delete access IP address
+## 删除访问 IP 地址
+
+删除指定的访问 IP 地址。
 
 `DELETE /access_ip_address/{access_ip_address_id}`
 
@@ -340,7 +358,9 @@ import com.telnyx.sdk.models.accessipaddress.AccessIpAddressResponse;
 AccessIpAddressResponse accessIpAddressResponse = client.accessIpAddress().delete("access_ip_address_id");
 ```
 
-## List all Access IP Ranges
+## 列出所有访问 IP 范围
+
+获取您的访问 IP 范围列表。
 
 `GET /access_ip_ranges`
 
@@ -351,9 +371,11 @@ import com.telnyx.sdk.models.accessipranges.AccessIpRangeListParams;
 AccessIpRangeListPage page = client.accessIpRanges().list();
 ```
 
-## Create new Access IP Range
+## 创建新的访问 IP 范围
 
-`POST /access_ip_ranges` — Required: `cidr_block`
+创建一个新的访问 IP 范围。
+
+`POST /access_ipRanges` — 必需参数：`cidr_block`
 
 ```java
 import com.telnyx.sdk.models.accessipranges.AccessIpRange;
@@ -365,7 +387,9 @@ AccessIpRangeCreateParams params = AccessIpRangeCreateParams.builder()
 AccessIpRange accessIpRange = client.accessIpRanges().create(params);
 ```
 
-## Delete access IP ranges
+## 删除访问 IP 范围
+
+删除指定的访问 IP 范围。
 
 `DELETE /access_ip_ranges/{access_ip_range_id}`
 

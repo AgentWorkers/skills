@@ -1,31 +1,31 @@
 ---
 name: gmail-client-PM
-description: Read and send emails via Gmail. Use to list unread messages, read specific emails by ID, or send new emails.
+description: 通过Gmail阅读和发送电子邮件。可以用来查看未读邮件、按邮件ID查找特定邮件，或者发送新邮件。
 ---
 
-# Gmail Client
+# Gmail 客户端
 
-A simple Python-based tool to interact with Gmail using IMAP/SMTP.
+这是一个基于 Python 的简单工具，使用 IMAP/SMTP 协议与 Gmail 进行交互。
 
-## Configuration
+## 配置
 
-Requires `GMAIL_USER` and `GMAIL_PASS` (App Password) environment variables.
+需要 `GMAIL_USER` 和 `GMAIL_PASS`（应用密码）环境变量。
 
-## Usage
+## 使用方法
 
-### List Unread Emails
+### 列出未读邮件
 
 ```bash
 python3 skills/gmail-client/scripts/gmail_tool.py list
 ```
 
-### Read an Email
+### 阅读邮件
 
 ```bash
 python3 skills/gmail-client/scripts/gmail_tool.py read <EMAIL_ID>
 ```
 
-### Send an Email
+### 发送邮件
 
 ```bash
 python3 skills/gmail-client/scripts/gmail_tool.py send <TO> <SUBJECT> <BODY>

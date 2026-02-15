@@ -1,24 +1,24 @@
 ---
 slug: "as-built-documentation"
 display_name: "As Built Documentation"
-description: "Manage as-built documentation for project closeout. Track drawing markups, coordinate updates, and verify completeness."
+description: "管理项目收尾阶段的竣工文档。跟踪图纸的修改记录，协调更新内容，并验证文档的完整性。"
 ---
 
-# As-Built Documentation Manager
+# 已完工文档管理器（As-Built Documentation Manager）
 
-## Business Case
+## 商业案例（Business Case）
 
-### Problem Statement
-As-built documentation is often incomplete:
-- Field changes not documented
-- Drawings not updated consistently
-- Missing documentation at closeout
-- Difficult to verify completeness
+### 问题描述（Problem Statement）
+已完工的文档往往存在以下问题：
+- 现场变更未被记录
+- 图纸更新不及时
+- 项目结束时缺少必要的文档
+- 难以验证文档的完整性
 
-### Solution
-Systematic as-built documentation tracking with drawing markup management, completeness verification, and handover preparation.
+### 解决方案（Solution）
+通过系统的文档跟踪机制、图纸标记管理、完整性验证以及移交准备工作，来解决这些问题。
 
-## Technical Implementation
+## 技术实现（Technical Implementation）
 
 ```python
 import pandas as pd
@@ -219,7 +219,7 @@ class AsBuiltDocumentManager:
         return output_path
 ```
 
-## Quick Start
+## 快速入门（Quick Start）
 
 ```python
 manager = AsBuiltDocumentManager("Office Tower")
@@ -252,5 +252,5 @@ report = manager.get_completeness_report()
 print(f"Completion: {report['completion_percent']}%")
 ```
 
-## Resources
-- **DDC Book**: Chapter 5 - Project Closeout
+## 资源（Resources）
+- **DDC手册**：第5章 – 项目收尾（Chapter 5 – Project Closeout）

@@ -1,51 +1,45 @@
 ---
 name: bring-shopping
-description: Manage Bring! shopping lists via the unofficial bring-shopping Node.js library using email/password login. Use for listing lists, reading items, adding/removing items, and checking/unchecking items when API-style access is acceptable.
+description: 通过非官方的 `bring-shopping` Node.js 库，使用电子邮件/密码登录方式来管理 Bring! 购物清单。该库支持添加购物清单、查看商品信息、添加/删除商品，以及在允许通过 API 访问的情况下对商品进行勾选/取消勾选操作。
 ---
 
 # Bring Shopping
 
-## Overview
+## 概述
 
-Use the `bring-shopping` npm package to access Bring! lists with email/password credentials. Default list is "Willig" unless the user specifies otherwise.
+使用 `bring-shopping` npm 包，可以通过电子邮件/密码凭据访问 Bring! 的商品列表。默认列表为 "Willig"，除非用户另有指定。
 
-## Quick Start
+## 快速入门
 
-1. Install dependency in the skill folder:
+1. 在技能文件夹中安装依赖项：
    - `npm install bring-shopping`
-2. Set environment variables in the Clawdbot config (preferred) or shell:
-   - `BRING_EMAIL` and `BRING_PASSWORD`
-3. Run the CLI script:
+2. 在 Clawdbot 配置文件中（推荐）或 shell 中设置环境变量：
+   - `BRING_EMAIL` 和 `BRING_PASSWORD`
+3. 运行 CLI 脚本：
    - `node scripts/bring_cli.mjs items --list "Willig"`
 
-## Tasks
+## 功能
 
-### Show lists
-
+### 显示列表
 - `node scripts/bring_cli.mjs lists`
 
-### Show items
-
+### 显示商品信息
 - `node scripts/bring_cli.mjs items --list "Willig"`
 
-### Add items
-
+### 添加商品
 - `node scripts/bring_cli.mjs add --item "Milch" --spec "2L" --list "Willig"`
 
-### Remove items
-
+### 删除商品
 - `node scripts/bring_cli.mjs remove --item "Milch" --list "Willig"`
 
-### Check items
-
+### 检查商品状态
 - `node scripts/bring_cli.mjs check --item "Milch" --list "Willig"`
 
-### Uncheck items
-
+### 取消选中商品
 - `node scripts/bring_cli.mjs uncheck --item "Milch" --spec "2L" --list "Willig"`
 
-## Notes
+## 注意事项
 
-- Store credentials in Clawdbot config env so they are not bundled with the skill.
-- If the list name is ambiguous, run `lists` and ask which list to use.
-- If an item is already checked, `uncheck` re-adds it to the purchase list.
+- 将凭据存储在 Clawdbot 的配置文件中，以避免随技能一起被分发。
+- 如果列表名称不明确，可以运行 `lists` 命令来询问使用哪个列表。
+- 如果某件商品已被选中，执行 `uncheck` 命令后，该商品会重新被添加到购买列表中。

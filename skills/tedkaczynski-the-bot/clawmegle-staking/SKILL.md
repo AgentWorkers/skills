@@ -1,6 +1,6 @@
 ---
 name: clawmegle-staking
-description: Stake $CLAWMEGLE tokens to earn dual rewards (ETH + CLAWMEGLE) from Clanker LP fees. Use when an agent wants to stake tokens, check staking rewards, claim earnings, or manage their staking position. Supports both Bankr API and direct wallet transactions.
+description: 将 $CLAWMEGLE 代币进行质押，以从 Clanker LP 费用中获得双重奖励（ETH + CLAWMEGLE）。当代理希望质押代币、查看质押奖励、领取收益或管理其质押位置时，可以使用此功能。该系统支持 Bankr API 和直接钱包交易两种方式。
 metadata:
   clawdbot:
     emoji: "🥩"
@@ -10,46 +10,46 @@ metadata:
       bins: ["curl", "jq", "bc"]
 ---
 
-# Clawmegle Staking
+# Clawmegle 质押
 
-Stake $CLAWMEGLE to earn proportional share of Clanker LP fees (ETH + CLAWMEGLE).
+质押 $CLAWMEGLE 以获得 Clanker LP 费用的比例份额（ETH + CLAWMEGLE）。
 
-## ⚠️ CRITICAL: Staking vs Depositing Rewards
+## ⚠️ 重要提示：质押与奖励发放的区别
 
-**These are DIFFERENT operations:**
+**这两种操作是不同的：**
 
-| Action | Function | Purpose |
-|--------|----------|---------|
-| **Stake** | `stake(amount)` | Lock your CLAWMEGLE to earn rewards |
-| **Deposit Rewards** | `depositRewards(amount) + ETH` | Add rewards for stakers to claim |
+| 操作        | 功能        | 目的        |
+|------------|------------|------------|
+| **质押**      | `stake(amount)`  | 锁定你的 CLAWMEGLE 以获得奖励 |
+| **发放奖励**    | `depositRewards(amount) + ETH` | 为质押者添加可领取的奖励 |
 
-**When you claim Clanker LP fees and want to distribute them:**
-→ Use `./scripts/deposit-rewards.sh <eth> <clawmegle>`
-→ Do NOT use `stake()` - that locks tokens, doesn't reward stakers!
+**当你领取 Clanker LP 费用并希望分配它们时：**
+→ 使用 `./scripts/deposit-rewards.sh <eth> <clawmegle>`  
+→ **不要使用 `stake()`** —— 因为 `stake()` 会锁定代币，而不会给质押者奖励！
 
-## Prerequisites
+## 先决条件
 
-### Step 1: Bankr Account Setup
+### 第一步：设置 Bankr 账户
 
-The `bankr` skill is automatically installed as a dependency, but you need a Bankr account:
+`bankr` 技能会自动作为依赖项安装，但你需要一个 Bankr 账户：
 
-1. **Go to [bankr.bot](https://bankr.bot)** and sign up with your email
-2. **Enter the OTP** sent to your email
-3. **Important:** Bankr creates wallets for you automatically:
-   - EVM wallet (Base, Ethereum, Polygon, Unichain)
-   - Solana wallet
-   - No manual wallet setup needed!
+1. **访问 [bankr.bot](https://bankr.bot)` 并使用你的电子邮件注册**
+2. **输入发送到你邮箱的 OTP**
+3. **重要提示：** Bankr 会自动为你创建钱包：
+   - EVM 钱包（Base、Ethereum、Polygon、Unichain）
+   - Solana 钱包
+   - 无需手动设置钱包！
 
-### Step 2: Get Your API Key
+### 第二步：获取 API 密钥
 
-1. **Go to [bankr.bot/api](https://bankr.bot/api)**
-2. **Create a new API key**
-3. **Enable "Agent API" access** (required for transactions)
-4. **Copy the key** (starts with `bk_`)
+1. **访问 [bankr.bot/api](https://bankr.bot/api)**
+2. **创建一个新的 API 密钥**
+3. **启用“代理 API”访问权限**（进行交易时需要）
+4. **复制密钥**（密钥以 `bk_` 开头）
 
-### Step 3: Configure the Skill
+### 第三步：配置技能
 
-Save your API key:
+保存你的 API 密钥：
 
 ```bash
 mkdir -p ~/.clawdbot/skills/bankr
@@ -61,28 +61,28 @@ cat > ~/.clawdbot/skills/bankr/config.json << 'EOF'
 EOF
 ```
 
-### Step 4: Fund Your Bankr Wallet
+### 第四步：为 Bankr 钱包充值
 
-Your Bankr wallet needs:
-- **$CLAWMEGLE tokens** to stake
-- **Small ETH on Base** for gas (~0.001 ETH per transaction)
+你的 Bankr 钱包需要：
+- **$CLAWMEGLE 代币** 用于质押
+- **少量 ETH（在 Base 上）** 作为交易手续费（每笔交易约 0.001 ETH）
 
-Get your Bankr wallet address:
+获取你的 Bankr 钱包地址：
 ```bash
 ./scripts/bankr.sh "What is my Bankr wallet address on Base?"
 ```
 
-Then send CLAWMEGLE and ETH to that address.
+然后将 CLAWMEGLE 和 ETH 发送到该地址。
 
-### Step 5: Verify Setup
+### 第五步：验证设置
 
 ```bash
 ./scripts/bankr.sh "What is my CLAWMEGLE balance on Base?"
 ```
 
-If you see your balance, you're ready to stake!
+如果你能看到自己的余额，那么你就可以开始质押了！
 
-## Quick Start (via Bankr)
+## 快速入门（通过 Bankr）
 
 ```bash
 # Check your CLAWMEGLE balance
@@ -101,9 +101,9 @@ If you see your balance, you're ready to stake!
 ./scripts/unstake-bankr.sh 500
 ```
 
-## Depositing Rewards (Admin/Fee Claimer)
+## 发放奖励（管理员/费用领取者）
 
-After claiming Clanker LP fees, deposit them as rewards:
+在领取 Clanker LP 费用后，将其作为奖励进行发放：
 
 ```bash
 # Deposit 0.001 ETH + 100 CLAWMEGLE as rewards
@@ -116,11 +116,11 @@ After claiming Clanker LP fees, deposit them as rewards:
 ./scripts/deposit-rewards.sh 0 200
 ```
 
-This distributes rewards proportionally to all current stakers.
+这会将奖励按比例分配给所有当前的质押者。
 
-## Alternative: Direct Wallet (Advanced)
+## 替代方案：直接使用钱包（高级用户）
 
-For agents with their own wallet infrastructure:
+对于拥有自己钱包基础设施的代理用户：
 ```bash
 # Key should be in your environment (e.g., ~/.clawdbot/wallets/)
 export PRIVATE_KEY=$(cat ~/.clawdbot/wallets/.your_key)
@@ -130,99 +130,96 @@ export PRIVATE_KEY=$(cat ~/.clawdbot/wallets/.your_key)
 ./scripts/check.sh
 ```
 
-## Contract Details
+## 合同详情
 
-| Item | Value |
-|------|-------|
-| **Contract** | `0x56e687aE55c892cd66018779c416066bc2F5fCf4` (deployment pending) |
-| **Token** | `0x94fa5D6774eaC21a391Aced58086CCE241d3507c` |
-| **Chain** | Base (chainId: 8453) |
-| **RPC** | `https://mainnet.base.org` |
+| 项目        | 值         |
+|------------|------------|
+| **合同**      | `0x56e687aE55c892cd66018779c416066bc2F5fCf4`（待部署） |
+| **代币**      | `0x94fa5D6774eaC21a391Aced58086CCE241d3507c` |
+| **链**       | Base（chainId: 8453） |
+| **RPC**      | `https://mainnet.base.org` |
 
-## Available Actions
+## 可用的操作
 
-### Stake $CLAWMEGLE
+### 质押 $CLAWMEGLE
 
-Deposit tokens to start earning rewards.
+存入代币以开始获得奖励。
 
 ```bash
 ./scripts/stake.sh <AMOUNT>
 # Example: ./scripts/stake.sh 5000
 ```
 
-Or via Bankr:
+或者通过 Bankr：
 ```bash
 scripts/bankr.sh "Submit this transaction on Base: {\"to\": \"<CONTRACT>\", \"data\": \"<STAKE_CALLDATA>\", \"value\": \"0\"}"
 ```
 
-### Check Pending Rewards
+### 查看待领取的奖励
 
-See how much ETH + CLAWMEGLE you've earned.
+查看你已获得的 ETH 和 CLAWMEGLE 的总额。
 
 ```bash
 ./scripts/check.sh
 # Returns: ethPending, clawmeglePending
 ```
 
-### Claim Rewards
+### 领取奖励
 
-Withdraw your earned ETH + CLAWMEGLE without unstaking.
+在不解除质押的情况下提取你获得的 ETH 和 CLAWMEGLE。
 
 ```bash
 ./scripts/claim.sh
 ```
 
-### Unstake
+### 解除质押
 
-Withdraw your staked tokens + automatically claim pending rewards.
+提取你质押的代币，并自动领取待领取的奖励。
 
 ```bash
 ./scripts/unstake.sh <AMOUNT>
 # Example: ./scripts/unstake.sh 5000
 ```
 
-### View Stake
+### 查看质押情况
 
-Check your current staked amount.
+查看你当前质押的代币数量。
 
 ```bash
 ./scripts/balance.sh
 ```
 
-## How Rewards Work
+## 奖励机制
 
-1. **Source**: Clanker LP fees from $CLAWMEGLE trading
-2. **Split**: You earn both ETH and CLAWMEGLE proportionally
-3. **Calculation**: `your_rewards = (your_stake / total_staked) * deposited_rewards`
-4. **Timing**: Rewards accumulate continuously, claim anytime
+1. **来源**：来自 $CLAWMEGLE 交易的 Clanker LP 费用
+2. **分配方式**：你按比例获得 ETH 和 CLAWMEGLE
+3. **计算公式**：`你的奖励 = (你的质押数量 / 总质押数量) * 发放的奖励`
+4. **领取时间**：奖励会持续累积，随时可以领取
 
-## Security
+## 安全性
 
-- **No admin keys** - Contract cannot be drained
-- **No lock-up** - Unstake anytime
-- **Flash-loan resistant** - Can't game the reward distribution
-- **Audited patterns** - Uses OpenZeppelin + MasterChef accumulator
+- **无需管理员密钥** —— 合同无法被恶意消耗
+- **无锁定机制** —— 可随时解除质押
+- **抗操纵奖励分配** —— 防止恶意操纵奖励分配
+- **经过审计的设计** —— 使用 OpenZeppelin 和 MasterChef 累加器
 
-## Requirements
+## 所需条件
 
-One of:
-- **Bankr API key** configured at `~/.clawdbot/skills/bankr/config.json`
-- **Private key** with ETH for gas on Base
+- 在 `~/.clawdbot/skills/bankr/config.json` 中配置了 Bankr API 密钥
+- 拥有用于支付 Base 上交易手续费的 ETH 和私钥
+- **$CLAWMEGLE 代币** 用于质押
+- **少量 ETH** 作为交易手续费（每笔交易约 0.001 ETH）
 
-Plus:
-- **$CLAWMEGLE tokens** to stake
-- **Small ETH** for gas (~0.001 ETH per tx)
+## 故障排除
 
-## Troubleshooting
+| 问题        | 解决方案        |
+|------------|------------|
+| “余额不足”     | 先获取 $CLAWMEGLE       |
+| “手续费不足”    | 需要在 Base 上有 ETH       |
+| “权限问题”     | 由审批脚本处理       |
+| 无待领取的奖励 | 尚未发放奖励，或仅进行了质押 |
 
-| Issue | Solution |
-|-------|----------|
-| "Insufficient balance" | Get $CLAWMEGLE first |
-| "Insufficient gas" | Need ETH on Base for tx fees |
-| "Allowance" error | Approve script handles this |
-| Zero pending rewards | No rewards deposited yet, or just staked |
+## 参考资料
 
-## References
-
-- [Contract ABI & Examples](references/contract.md)
-- [Bankr Transaction Format](references/bankr-format.md)
+- [合同 ABI 与示例](references/contract.md)
+- [Bankr 交易格式](references/bankr-format.md)

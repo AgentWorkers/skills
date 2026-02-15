@@ -1,6 +1,6 @@
 ---
 name: better-memory
-description: Semantic memory, intelligent compression, and context management for AI agents. Prevents context limit amnesia with real embeddings, priority-based compression, and identity persistence.
+description: 语义记忆、智能压缩以及针对AI代理的上下文管理机制：通过真实的嵌入数据（real embeddings）、基于优先级的压缩算法以及身份信息的持久化（identity persistence），有效防止AI代理因上下文限制而导致的“记忆缺失”问题（context limit amnesia）。
 homepage: https://github.com/DVNTYDIGITAL/better-memory
 metadata:
   clawdbot:
@@ -15,21 +15,21 @@ metadata:
         command: "cd ~/.clawdbot/skills/better-memory && npm install"
 ---
 
-# Better Memory
+# 更优的内存管理机制
 
-Semantic memory, intelligent compression, and context management for AI agents.
+为AI代理提供语义记忆、智能压缩和上下文管理功能。
 
-## What It Does
+## 功能概述
 
-- Stores memories with real vector embeddings (local, no API calls)
-- Semantic search via cosine similarity
-- Auto-deduplicates on store (exact + semantic)
-- Priority-based compression when approaching context limits
-- Identity persistence across sessions
-- Token-budget-aware memory retrieval
-- Configurable context limits, thresholds, and summarizer
+- 采用真实的向量嵌入来存储记忆数据（本地存储，无需调用API）
+- 通过余弦相似度实现语义搜索
+- 在存储过程中自动去重（包括精确匹配和语义匹配）
+- 在接近内存上限时采用基于优先级的压缩策略
+- 在不同会话之间保持记忆数据的完整性
+- 在内存检索过程中考虑token的使用限制
+- 支持配置上下文限制、阈值以及摘要生成功能
 
-## Quick Start
+## 快速入门
 
 ```javascript
 import { createContextGuardian } from 'context-guardian';

@@ -1,26 +1,26 @@
 ---
 name: xmtp-cli-content
-description: Demonstrate XMTP content types from the CLI. Use when sending text, markdown, attachment, transaction, deeplink, or miniapp content.
+description: 通过命令行界面（CLI）演示 XMTP 的内容类型。这些内容类型可用于发送文本、Markdown 格式的文本、附件、交易数据、深度链接（deeplink），或迷你应用程序（miniapp）相关的数据。
 license: MIT
 metadata:
   author: xmtp
   version: "1.0.0"
 ---
 
-# CLI content
+# CLI（命令行界面）功能
 
-Demonstrate various XMTP content types: text (with reply/reaction), markdown, attachment, transaction, deeplink, miniapp.
+演示多种XMTP内容类型：文本（支持回复/互动）、Markdown格式、附件、交易数据、深度链接（deeplink）以及迷你应用程序（miniapp）。
 
-## When to apply
+## 适用场景
 
-- Sending or testing text, markdown, or attachment content
-- Sending or testing transaction, deeplink, or miniapp content
+- 发送或测试文本、Markdown格式的内容或附件
+- 发送或测试交易数据、深度链接或迷你应用程序的内容
 
-## Rules
+## 规则
 
-- `content-types` – `content text` / `markdown` / `attachment` / `transaction` / `deeplink` / `miniapp` and options
+- `content-types`：`content-text` / `markdown` / `attachment` / `transaction` / `deeplink` / `miniapp` 及其相关选项
 
-## Quick start
+## 快速入门
 
 ```bash
 xmtp content text --target 0x1234...
@@ -29,4 +29,4 @@ xmtp content attachment --target 0x1234...
 xmtp content transaction --target 0x1234... --amount 0.1
 ```
 
-Read `rules/content-types.md` for details.
+详情请参阅 `rules/content-types.md` 文件。

@@ -1,77 +1,76 @@
 ---
 name: Acoustic Guitar
-description: Acoustic guitar practice strategies, fingerpicking, strumming, and progress tracking.
+description: 原声吉他练习策略、指弹技巧、拨弦方法以及练习进度跟踪。
 metadata:
   category: music
   skills: ["guitar", "acoustic", "practice", "music", "fingerstyle"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/acoustic-guitar/` as workspace on first interaction
-- After practice, offer to log progress; see `progress.md`
+- 首次使用时，会在用户的主目录下创建一个名为 `~/acoustic-guitar/` 的工作文件夹。
+- 练习结束后，系统会提示用户记录练习进度；具体方法请参阅 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask style — fingerpicking vs strumming vs both
-- Ask genre — folk vs classical vs singer-songwriter
-- Ask goals — accompaniment vs solo instrumental
+- 询问用户的演奏风格：指弹、拨弦，还是两者结合？
+- 询问用户喜欢的音乐类型：民谣、古典音乐，还是创作型歌手（singer-songwriter）？
+- 询问用户的演奏目标：是伴奏还是独奏？
 
-## Practice Errors
+## 练习中的常见错误
 
-- Strumming from elbow — wrist drives, arm follows
-- Neglecting dynamics — acoustic demands expression
-- Avoiding fingerpicking — essential for solo
-- Ignoring nail care — nails affect tone
+- 用肘部带动手腕进行拨弦——正确的做法是让手腕主导动作，手臂跟随。
+- 忽视音量的变化——原声吉他演奏非常注重音量的表达。
+- 过度依赖拨弦技巧而忽视指弹——对于独奏来说，指弹是必不可少的。
+- 不注意指甲的保养——指甲的状态会直接影响音质。
 
-## Left Hand Traps
+## 左手的常见误区
 
-- Thumb over on barre — classical position for clarity
-- Pressing too hard — minimum pressure
-- Ignoring open strings — acoustic loves ringing
+- 拇指压在指板上时位置不当（尤其是在古典演奏中）——正确的位置有助于音色的清晰度。
+- 按弦时用力过猛——实际上只需要施加最小的压力。
+- 忽略空弦的音色——原声吉他非常重视空弦的共鸣效果。
 
-## Right Hand Traps
+## 右手的常见误区
 
-- All thumb on bass — fingers need independence
-- Inconsistent attack — angle/nail changes tone
-- Same strum pattern — vary per song
+- 拇指始终压在低音弦上——手指需要保持独立性。
+- 拨弦的力度不均匀——拨弦的角度和指甲的状态会影响音色。
+- 拨弦模式固定不变——每首歌都应该使用不同的拨弦方式。
 
-## Mistakes by Level
+## 不同水平的常见错误
 
-**Beginners:** Choppy changes, muted strings, no dynamics
+**初学者：** 拨弦动作生硬、不连贯，某些弦的音量被抑制（被“闷住”）。
+**中级者：** 拨弦模式始终不变，指弹技巧较弱，低音弦的音量不足。
+**高级者：** 演奏风格单一，忽视调音的重要性，过度依赖变调夹。
 
-**Intermediate:** Same pattern always, weak fingerpicking, no bass
+## 指弹技巧
 
-**Advanced:** Style rut, ignoring tunings, capo dependence
-
-## Fingerpicking Patterns
-
-| Pattern | Style |
+| 指弹模式 | 音乐风格 |
 |---------|-------|
-| Travis picking | Folk, country |
-| Arpeggios | Classical, ballads |
-| Hybrid picking | Pick + fingers |
+| Travis 指弹 | 民谣、乡村音乐 |
+| 音阶弹奏（Arpeggios） | 古典音乐、民谣 |
+| 混合指弹（Hybrid picking） | 结合拨弦和手指的演奏方式 |
 
-Thumb independence first, then add fingers.
+**建议的练习顺序：** 先练习手指的独立性，再逐渐加入拨弦技巧。
 
-## Strumming Essentials
+## 拨弦的基本要点
 
-- Down-up foundation — accents change feel
-- Palm muting — percussive texture
-- Ghost strums — hand moving, miss strings
-- Dynamics in wrist — relax soft, snap accent
+- 从下到上的拨弦动作——不同的拨弦方式会带来不同的音效。
+- 用手掌轻轻按压琴弦以产生类似打击乐的效果。
+- 在拨弦时手部移动过快会导致错过某些琴弦。
+- 控制拨弦的力度——放松手腕，通过突然的力度变化来强调音符。
 
-## Troubleshooting
+## 故障排除
 
-- "Chords don't ring" → fingers touching neighbors
-- "Strumming dead" → wrist not elbow, loosen grip
-- "Fingerpicking uneven" → thumb+one finger pairs
-- "Barre muddy" → roll finger, bone edge
+- “和弦没有共鸣” → 可能是因为手指触碰到了相邻的琴弦。
+- “拨弦声音很闷” → 应该用手腕而不是肘部来拨弦，并且放松手指的握力。
+- “指弹不均匀” → 可以尝试使用拇指与其他手指配合拨弦。
+- “指板上的声音模糊” → 可以用手指的边缘或骨节部分触碰琴弦。
 
-## Care & Progress
+## 保养与进度记录
 
-Humidity 45-55% — cracks without it. Log to `~/acoustic-guitar/`: songs, patterns
+建议将演奏环境的湿度控制在 45%-55% 之间——这样可以有效防止琴弦开裂。同时，用户需要将练习过的歌曲和使用的拨弦模式记录在 `~/acoustic-guitar/` 文件夹中。
 
-## What to Surface
+## 建议的探索方向
 
-- "Travis solid? Try Chet Atkins?" / "Strum done — fingerpicking?"
+- “Travis 指弹风格怎么样？可以试试 Chet Atkins 的演奏风格吗？”
+- “已经学会拨弦了，接下来可以尝试指弹吗？”

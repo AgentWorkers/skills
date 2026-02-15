@@ -1,13 +1,14 @@
 ---
 name: wiim
-description: Control WiiM audio devices (play, pause, stop, next, prev, volume, mute, play URLs, presets). Use when the user wants to control music playback, adjust volume, discover WiiM/LinkPlay speakers on the network, or play audio from a URL on a WiiM device.
+description: **控制WiiM音频设备（播放、暂停、停止、下一曲、上一曲、调节音量、静音、播放URL、预设设置）**  
+当用户需要控制音乐播放、调节音量、发现网络中的WiiM/LinkPlay音箱，或从WiiM设备播放URL中的音频时，可以使用该功能。
 ---
 
 # WiiM CLI
 
-Control WiiM and LinkPlay audio devices from the command line.
+通过命令行控制WiiM和LinkPlay音频设备。
 
-## Installation
+## 安装
 
 ```bash
 # Install globally
@@ -17,19 +18,19 @@ uv tool install wiim-cli
 uvx --from wiim-cli wiim --help
 ```
 
-Requires Python >=3.11.
+需要Python >=3.11版本。
 
-## Quick Reference
+## 快速参考
 
-All commands accept `--host <ip>` to target a specific device. If omitted and only one device is on the network, it auto-discovers.
+所有命令都支持使用`--host <ip>`参数来指定目标设备。如果省略该参数且网络中仅有一个设备，系统会自动检测目标设备。
 
-### Discovery
+### 设备发现
 
 ```bash
 wiim discover                    # Find devices on the network
 ```
 
-### Playback
+### 播放媒体
 
 ```bash
 wiim status                      # Show what's playing
@@ -42,7 +43,7 @@ wiim seek 90                     # Seek to 1:30
 wiim shuffle true                # Enable shuffle
 ```
 
-### Volume
+### 调节音量
 
 ```bash
 wiim volume                      # Show current volume
@@ -51,16 +52,16 @@ wiim mute                        # Mute
 wiim unmute                      # Unmute
 ```
 
-### Play Media
+### 播放媒体文件
 
 ```bash
 wiim play-url "https://example.com/stream.mp3"     # Play a URL
 wiim play-preset 1                                   # Play saved preset #1
 ```
 
-## Notes
+## 注意事项
 
-- The WiiM must be on the same local network as the machine running the CLI.
-- Discovery uses SSDP/UPnP — may not work across subnets/VLANs.
-- Spotify, AirPlay, and other streaming services are controlled from their own apps. Once playing on the WiiM, this CLI can pause/play/skip/adjust volume.
-- `play-url` works with direct audio URLs (MP3, FLAC, M3U streams, etc.).
+- WiiM必须与运行CLI的机器位于同一局域网内。
+- 设备发现功能基于SSDP/UPnP协议，可能无法跨子网或VLAN使用。
+- Spotify、AirPlay等流媒体服务需要通过各自的应用程序进行控制；一旦音乐在WiiM上开始播放，该CLI可以暂停、播放、跳过曲目或调节音量。
+- `play-url`命令支持直接使用音频URL（如MP3、FLAC、M3U流等）进行播放。

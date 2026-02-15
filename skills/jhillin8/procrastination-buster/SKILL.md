@@ -1,6 +1,24 @@
 ---
 name: procrastination-buster
-description: Beat procrastination with task breakdown, 2-minute starts, and accountability tracking
+description: **用任务分解、2分钟启动规则和责任追踪来克服拖延症**
+
+拖延症是许多人的难题。以下是一些实用的方法，可以帮助你更有效地管理时间，减少拖延：
+
+1. **任务分解**：
+   - 将大任务分解成小任务。这会让任务看起来不那么艰巨，更容易开始。
+   - 为每个小任务设定明确的目标和截止日期。
+   - 使用任务列表或项目管理工具来跟踪这些小任务的进度。
+
+2. **2分钟启动规则**：
+   - 每天设定一个“2分钟启动时间”，在这个时间内专注于开始一个新任务，无论这个任务有多简单。
+   - 不要让任何事情拖延太久；哪怕只是花2分钟来开始一个项目。
+
+3. **责任追踪**：
+   - 为每个任务分配一个负责人或团队成员。
+   - 定期检查任务进度，并确保每个人都对自己的工作负责。
+   - 使用项目管理工具来记录任务的完成情况。
+
+通过这些方法，你可以提高工作效率，减少拖延，从而更好地完成你的工作。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,68 +29,64 @@ triggers:
   - "just start"
 ---
 
-# Procrastination Buster
+# 战胜拖延的工具
 
-**Start today, finish stronger—powered by small momentum and honest tracking.**
+**从今天开始，以更强的执行力完成任务——依靠微小的动力和诚实的记录。**
 
-## What it does
+## 它的作用
 
-Procrastination-Buster breaks the cycle of avoidance by combining behavioral science with practical friction reduction:
+“战胜拖延的工具”通过结合行为科学和实际的障碍消除方法，打破了逃避问题的循环：
 
-- **Task Breakdown** - Splits overwhelming projects into atomic, startable units (not "write report" but "outline 5 sections")
-- **2-Minute Starts** - Removes the startup barrier by anchoring commitment to a single, trivial first step
-- **Friction Reduction** - Identifies and removes mental blockers (unclear goals, environment chaos, skill gaps)
-- **Accountability Tracking** - Records what you commit to, what you start, and what you finish—building a win history
+- **任务分解**：将复杂的项目分解成可立即开始的小任务（例如，不是“写报告”，而是“列出5个部分”）
+- **2分钟启动法**：通过设定一个简单的初始步骤来消除启动的障碍
+- **减少阻碍**：识别并消除心理上的障碍（目标不明确、环境混乱、技能不足等）
+- **责任追踪**：记录你的承诺、开始的工作以及完成的任务——建立成功的记录
 
-## Usage
+## 使用方法
 
-### Break Down Task
-Ask clawd: *"Break down [task name] into 5 startable steps"*
-- Returns concrete first action with time estimate
-- Eliminates ambiguity that feeds avoidance
+### 分解任务
+向clawd提问：“将[任务名称]分解成5个可开始的步骤”
+- 会返回具体的第一步以及所需时间
+- 消除导致拖延的模糊性
 
-### 2-Minute Start
-Ask clawd: *"Give me a 2-minute start for [task]"*
-- Identifies the single smallest action (open file, write one sentence, gather materials)
-- Momentum compounds once friction drops
+### 2分钟启动法
+向clawd提问：“给我一个[任务]的2分钟启动方案”
+- 确定最简单的初始行动（打开文件、写一句话、收集材料）
+- 一旦障碍减少，动力就会逐渐积累
 
-### Log Blockers
-Ask clawd: *"What's stopping me from starting [task]?"*
-- Tracks emotional, practical, or skill-based barriers
-- Suggests removal strategies per blocker type
+### 记录阻碍因素
+向clawd提问：“是什么阻止了我开始[任务]？”
+- 追踪情感上、实际操作上或技能上的障碍
+- 根据障碍类型提供解决方法
 
-### Accountability Partner
-Ask clawd: *"Track my progress on [task]—check in tomorrow"*
-- Simple commit → simple check-in
-- Persistent memory remembers your pattern, builds trust
+### 责任伙伴
+向clawd提问：“追踪我在[任务]上的进展——明天再检查”
+- 简单的承诺 → 简单的汇报
+- 持续的记录会帮助你记住自己的行为模式，增强信心
 
-### Celebrate Wins
-Ask clawd: *"What did I finish this week?"*
-- Surfaces completed work (easy to forget)
-- Feeds motivation for next task
+### 庆祝成就
+向clawd提问：“这周我完成了什么？”
+- 引出已完成的工作（这些成果很容易被遗忘）
+- 为下一个任务提供动力
 
-## Techniques
+## 技巧
 
-**The 2-Minute Rule**
-Start, don't finish. Commit to 2 minutes of the task. Momentum usually carries past the barrier. If it doesn't, you've still moved forward.
+**2分钟规则**
+开始行动，不必立即完成。先承诺完成2分钟的工作。通常情况下，动力会帮助你克服初始的障碍。如果做不到，至少你也向前迈进了一步。
 
-**Pomodoro Starts**
-Chain three 25-minute sprints with 5-minute breaks. After the first sprint, procrastination usually evaporates—the task becomes real.
+**番茄工作法**
+连续进行三个25分钟的专注工作，然后休息5分钟。完成第一个25分钟的专注时间后，拖延的冲动通常会消失——任务就变得切实可行了。
 
-**Environment Design**
-Remove friction from your space: close unneeded tabs, silence notifications, place materials within arm's reach. Friction is silent procrastination.
+**环境优化**
+减少工作环境中的干扰：关闭不必要的标签页，关闭通知，将所需材料放在手边。这些看似微小的“阻碍”实际上也是拖延的根源。
 
-**Future Self Letter**
-Write a note to yourself after finishing: *"I did this. Here's what I learned. Here's what to do next time."* Future you reads it before the next task and starts stronger.
+**给未来的自己写信**
+完成任务后，给自己写一封信：“我做到了这一点。我学到了什么。下次应该怎么做。”未来的你会在开始下一个任务前阅读这封信，从而以更强的状态开始。
 
-## Tips
+## 小贴士
 
-1. **Break before you build** - Spend 5 minutes outlining steps before starting. Clarity kills procrastination.
-
-2. **Track the start, not the finish** - Win the hardest battle first. Starting is 80% of the work; finishing follows naturally.
-
-3. **Blockers are data** - Avoid blaming willpower. Document what's actually stopping you (unclear deadline? fear of judgment? lack of skill?). Attack the real blocker.
-
-4. **Commit small, compound wins** - "Finish by Friday" is abstract. "Work 25 minutes today" is doable. String five doable commits together and you're done.
-
-5. **All data stays local on your machine** - Your task history, blockers, and commitments live on your device. No cloud sync, no tracking, just you and your persistence.
+1. **先规划再行动**：在开始之前花5分钟列出步骤。清晰的目标能消除拖延。
+2. **关注开始，而非完成**：先打赢最艰难的战斗。开始本身就是完成工作的80%；完成只是自然的结果。
+3. **障碍就是数据**：不要责怪自己的意志力。记录真正阻碍你的因素（截止日期不明确？害怕被评判？缺乏技能？）。针对真正的障碍采取行动。
+4. **从小处开始，逐步积累成就**：“周五前完成”这样的目标很抽象。“今天工作25分钟”才是可行的目标。将五个可行的小目标连贯起来，你就完成了任务。
+5. **所有数据都保存在本地设备上**：你的任务记录、障碍因素和承诺都存储在你的设备上。无需云同步或额外的追踪工具，只需要你的坚持和自律。

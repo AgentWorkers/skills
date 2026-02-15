@@ -1,59 +1,58 @@
 ---
 name: Diverge
-description: Spawn multiple perspectives to evaluate a problem before converging on a solution.
+description: 在找到解决方案之前，先从多个角度来评估问题。
 ---
 
-## When to Diverge
+## 何时需要寻求不同观点
 
-Diverge when a single viewpoint isn't enough:
-- **Product decisions** — Different user types have conflicting needs
-- **Safety-critical** — Need doctor, lawyer, security expert perspectives
-- **Creative work** — Multiple aesthetic directions before choosing
-- **Complex trade-offs** — No obvious "right" answer
+当单一观点不足以解决问题时，应寻求不同意见：
+- **产品决策**：不同类型的用户可能有相互冲突的需求。
+- **安全关键性决策**：需要医生、律师或安全专家的意见。
+- **创造性工作**：在做出选择前，需要考虑多种美学方向。
+- **复杂的权衡**：没有显而易见的“正确”答案。
 
-Don't diverge for:
-- Simple tasks with clear answers
-- Speed-critical requests
-- Tasks where you already have high confidence
+**不要寻求不同观点的情况**：
+- 任务简单且答案明确。
+- 对速度有严格要求的情况。
+- 对任务已经非常有信心的情况。
 
-## How Many Perspectives
+## 需要多少种观点
 
-| Complexity | Perspectives | Examples |
+| 任务复杂性 | 需要的观点数量 | 例子 |
 |------------|--------------|----------|
-| Low | 2-3 | Quick sanity check |
-| Medium | 3-5 | Product feature review |
-| High | 5-7 | Safety-critical, legal |
+| 低       | 2-3         | 快速的合理性检查 |
+| 中等       | 3-5         | 产品功能评审 |
+| 高        | 5-7         | 安全关键性决策、法律问题 |
 
-**Rule:** Enough to cover blind spots, not so many you can't synthesize.
+**原则**：观点数量要足够覆盖潜在的盲点，但又不至于过多，导致难以综合判断。
 
-## Choosing Perspectives
+## 选择合适的观点来源
 
-Match perspectives to the problem:
+根据问题的性质选择合适的观点来源：
+- **产品相关**：高级用户、普通用户、频繁更换产品的用户、新用户。
+- **医疗相关**：医生、患者、护理人员、保险公司。
+- **法律相关**：律师、受影响方、监管机构。
+- **技术相关**：安全、性能、可维护性。
+- **内容相关**：目标受众、评论者、竞争对手。
 
-- **Product:** Power user, casual user, churned user, new user
-- **Medical:** Doctor, patient, caregiver, insurance
-- **Legal:** Lawyer, affected party, regulator
-- **Technical:** Security, performance, maintainability
-- **Content:** Target audience, critic, competitor
+请参考 `personas.md` 文件以获取常见的观点模板。
 
-Check `personas.md` for common perspective templates.
+## 综合分析
 
-## Synthesis
+收集各种观点后：
+1. **识别分歧**：哪些观点存在冲突？
+2. **寻找共同点**：所有观点在哪些方面达成一致？
+3. **根据重要性进行权衡**：安全问题应优先于个人偏好。
+4. **做出决策**：做出决定，并记录下各种权衡因素。
 
-After collecting perspectives:
-1. **Identify conflicts** — Where do perspectives disagree?
-2. **Find common ground** — What do all perspectives agree on?
-3. **Weigh by stakes** — Safety concerns > preferences
-4. **Decide** — Make a call, document trade-offs
+请参考 `synthesis.md` 文件了解冲突解决的方法。
 
-Check `synthesis.md` for conflict resolution patterns.
+## 了解用户偏好
 
-## Learning User Preferences
-
-Track when divergence helped vs. was overkill. Adapt:
-- User who values speed → diverge less, ask before spawning
-- User who values thoroughness → diverge more proactively
+记录下寻求不同观点是否有助于解决问题，或者是否造成了不必要的麻烦。根据用户需求进行调整：
+- 如果用户重视速度，应减少分歧，提前征求他们的意见。
+- 如果用户重视细节的完整性，应更主动地寻求不同观点。
 
 ---
 
-**Related:** For routing tasks to sub-agents, see `delegate`. For iterating until success, see `loop`.
+**相关内容**：关于如何将任务分配给下属代理，请参阅 `delegate`；关于如何通过迭代达到成功，请参阅 `loop`。

@@ -1,88 +1,87 @@
 ---
 name: mlscp
-description: Parse and generate MLSCP (Micro LLM Swarm Communication Protocol) commands. Use when communicating with other agents efficiently, parsing compressed commands, or generating token-efficient instructions. Reduces token usage by 70-80% compared to natural language.
+description: 解析并生成 MLSCP（Micro LLM Swarm Communication Protocol）命令。该协议用于高效地与其他代理进行通信、解析压缩后的命令，或生成占用较少令牌的指令。与自然语言相比，使用 MLSCP 可将令牌使用量减少 70-80%。
 ---
 
-# MLSCP Skill
+# MLSCP 技能
 
-MLSCP (Micro LLM Swarm Communication Protocol) is a token-efficient command language for agent-to-agent communication. This skill lets you parse, validate, and generate MLSCP commands without any LLM overhead.
+MLSCP（Micro LLM Swarm Communication Protocol）是一种高效、节省令牌的代理间通信命令语言。该技能允许您解析、验证和生成 MLSCP 命令，而无需任何大型语言模型（LLM）的开销。
 
-## Why Use MLSCP?
+## 为什么使用 MLSCP？
 
-| Natural Language | MLSCP | Savings |
+| 自然语言 | MLSCP | 节省的令牌数量 |
 |-----------------|-------|---------|
-| "Please modify the file src/chain_orchestrator.py by adding retry logic at line 47" | `F+ s/co > ln47 + 'retry logic'` | ~75% |
-| "Read the contents of utils/file_manager.py from lines 10 to 50" | `F? u/fm > ln10-50` | ~80% |
-| "Delete the variable 'temp_cache' from config.py" | `V- c/c > 'temp_cache'` | ~70% |
+| “请在文件 src/chain_orchestrator.py 的第 47 行添加重试逻辑” | `F+ s/co > ln47 + 'retry logic'` | 约 75% |
+| “读取文件 utils/file_manager.py 中从第 10 行到第 50 行的内容” | `F? u/fm > ln10-50` | 约 80% |
+| “删除文件 config.py 中的变量 ‘temp_cache’” | `V- c/c > 'temp_cache'` | 约 70% |
 
-## Quick Start
+## 快速入门
 
-### Parse a Command
+### 解析命令
 ```bash
 ./scripts/mlscp.sh parse "F+ s/co > ln47 + 'retry logic'"
 ```
 
-### Validate Syntax
+### 验证语法
 ```bash
 ./scripts/mlscp.sh validate "F+ s/co > ln47 + 'retry logic'"
 ```
 
-### Generate Vocabulary
+### 生成词汇表
 ```bash
 ./scripts/mlscp.sh vocab /path/to/project
 ```
 
-### Compress Natural Language
+### 压缩自然语言
 ```bash
 ./scripts/mlscp.sh compress "Add error handling to the main function in app.py"
 ```
 
-## Command Reference
+## 命令参考
 
-### Operations
-| Code | Meaning | Example |
+### 操作
+| 命令 | 含义 | 示例 |
 |------|---------|---------|
-| `F+` | File add/insert | `F+ s/app > ln10 + 'new code'` |
-| `F~` | File modify | `F~ s/app > ln10-20 ~ 'updated code'` |
-| `F-` | File delete | `F- s/app > ln10-15` |
-| `F?` | File query/read | `F? s/app > ln1-100` |
-| `V+` | Variable add | `V+ s/app + 'new_var = 42'` |
-| `V~` | Variable modify | `V~ s/app > 'old_var' ~ 'new_value'` |
-| `V-` | Variable delete | `V- s/app > 'temp_var'` |
-| `V?` | Variable query | `V? s/app > 'config_*'` |
+| `F+` | 添加/插入文件内容 | `F+ s/app > ln10 + 'new code'` |
+| `F~` | 修改文件内容 | `F~ s/app > ln10-20 ~ 'updated code'` |
+| `F-` | 删除文件内容 | `F- s/app > ln10-15` |
+| `F?` | 查询/读取文件内容 | `F? s/app > ln1-100` |
+| `V+` | 添加变量 | `V+ s/app + 'new_var = 42'` |
+| `V~` | 修改变量值 | `V~ s/app > 'old_var' ~ 'new_value'` |
+| `V-` | 删除变量 | `V- s/app > 'temp_var'` |
+| `V?` | 查询变量值 | `V? s/app > 'config_*'` |
 
-### Location Specifiers
-- `ln47` - Single line
-- `ln10-50` - Line range
-- `fn:main` - Function name
-- `cls:MyClass` - Class name
+### 位置指定符
+- `ln47` - 单行
+- `ln10-50` - 行范围
+- `fn:main` - 函数名称
+- `cls:MyClass` - 类名称
 
-### Context Blocks
+### 上下文块
 ```
 CTX{"intent":"resilience","priority":"high","confidence":0.9}
 ```
 
-## Scripts
+## 脚本
 
-- `mlscp.sh` - Main CLI tool
-- `vocab.py` - Vocabulary generator (Python)
+- `mlscp.sh` - 主 CLI 工具
+- `vocab.py` - 词汇表生成器（Python）
 
-## Integration
+## 集成
 
-### With Other Agents
-When receiving commands from MLSCP-enabled agents:
+### 与其他代理的集成
+当从支持 MLSCP 的代理接收命令时：
 ```bash
 ./scripts/mlscp.sh parse "$INCOMING_COMMAND"
 ```
 
-### Sending Commands
-Generate compact commands for other agents:
+### 发送命令
+为其他代理生成紧凑的命令：
 ```bash
 ./scripts/mlscp.sh compress "Your natural language instruction"
 ```
 
-## API (Python)
-
+## API（Python）
 ```python
 from mlscp import parse, MLSCPParser
 
@@ -97,8 +96,8 @@ cmd = parser.parse("F+ s/co > ln47 + 'code'")
 full_path = vocab_lookup.get("s/co")  # "src/chain_orchestrator.py"
 ```
 
-## Resources
+## 资源
 
 - GitHub: https://github.com/sirkrouph-dev/mlcp
-- Grammar Spec: See `references/grammar.abnf`
-- Protocol Definition: See `references/protocol.md`
+- 语法规范：请参阅 `references/grammar.abnf`
+- 协议定义：请参阅 `references/protocol.md`

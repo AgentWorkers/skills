@@ -1,23 +1,23 @@
 ---
 name: book-lashes
-description: Book lashes services through Lokuli MCP. Use when user needs to find and book lashes. Triggers on requests like "book a lashes", "find lashes near me", or any lashes service request.
+description: 通过 Lokuli MCP 预订睫毛护理服务。当用户需要查找和预订睫毛护理服务时，可以使用此功能。该功能会在用户发送“预订睫毛护理服务”、“查找附近的睫毛护理服务”等相关请求时被触发。
 ---
 
-# uook lashes
+# uook 睫毛服务
 
-Book lashes services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订睫毛服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
-### search
+### search（搜索）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### check_availability（检查可用性）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### create_booking（创建预订）
 ```json
 {
   "method": "tools/call",

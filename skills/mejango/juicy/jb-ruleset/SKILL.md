@@ -1,25 +1,25 @@
 ---
 name: jb-ruleset
-description: Configure and queue Juicebox V5 rulesets. Design ruleset parameters including issuance rate, reserved rate, cash out tax rate, splits, payout limits, and approval hooks. Generate scripts for queueing new rulesets.
+description: 配置并安排 Juicebox V5 规则集的运行顺序。设计规则集参数，包括发放频率、预留频率、提现税率、分成比例、支付限额以及审批流程。生成用于排队新规则集的脚本。
 ---
 
-# Juicebox V5 Ruleset Configuration
+# Juicebox V5 规则集配置
 
-Design and queue rulesets for Juicebox V5 projects.
+用于设计和排队 Juicebox V5 项目的规则集。
 
-## What Are Rulesets?
+## 什么是规则集？
 
-Rulesets are time-bounded configuration packages that define project behavior:
-- **Token economics**: Weight (minting rate), reserved rate
-- **Cash out behavior**: Cash out tax rate
-- **Fund distribution**: Payout limits, splits
-- **Governance**: Approval hooks for change control
+规则集是具有时间限制的配置包，用于定义项目的行为：
+- **代币经济**：发行速率（minting rate）、预留速率（reserved rate）
+- **提现行为**：提现税率（cash out tax rate）
+- **资金分配**：支付限额（payout limits）、分配比例（splits）
+- **治理**：用于变更控制的审批机制（approval hooks）
 
-When a ruleset ends, the next queued ruleset becomes active. If no ruleset is queued, the current one recycles (with optional issuance cut).
+当一个规则集结束后，下一个排队的规则集将生效。如果没有规则集排队，则当前规则集将重新启用（可选择减少发行量）。
 
-## Ruleset Parameters
+## 规则集参数
 
-### JBRuleset (Read-Only State)
+### JBRuleset（只读状态）
 
 ```solidity
 struct JBRuleset {
@@ -61,9 +61,9 @@ struct JBRulesetMetadata {
 }
 ```
 
-## Queue Rulesets
+## 排队规则集
 
-Use `JBController.queueRulesetsOf()` to queue future rulesets:
+使用 `JBController.queueRulesetsOf()` 来排队未来的规则集：
 
 ```solidity
 function queueRulesetsOf(
@@ -73,9 +73,9 @@ function queueRulesetsOf(
 ) external returns (uint256 rulesetId);
 ```
 
-## Configuration Examples
+## 配置示例
 
-### Basic Ruleset (Indefinite Duration)
+### 基本规则集（无限期）
 
 ```solidity
 JBRulesetMetadata memory metadata = JBRulesetMetadata({
@@ -112,7 +112,7 @@ JBRulesetConfig memory config = JBRulesetConfig({
 });
 ```
 
-### Weekly Cycles with Weight Cut
+### 带有发行量削减的每周周期
 
 ```solidity
 JBRulesetConfig memory config = JBRulesetConfig({
@@ -127,7 +127,7 @@ JBRulesetConfig memory config = JBRulesetConfig({
 });
 ```
 
-### With Approval Hook (3-Day Delay)
+### 带有审批机制的规则集（3 天延迟）
 
 ```solidity
 // JBDeadline requires 3 days notice for ruleset changes
@@ -145,7 +145,7 @@ JBRulesetConfig memory config = JBRulesetConfig({
 });
 ```
 
-### With Data Hook
+### 带有数据通知机制的规则集
 
 ```solidity
 JBRulesetMetadata memory metadata = JBRulesetMetadata({
@@ -157,11 +157,11 @@ JBRulesetMetadata memory metadata = JBRulesetMetadata({
 });
 ```
 
-## Splits Configuration
+## 分配配置
 
-### Payout Splits
+### 支付分配
 
-Distribute funds when payouts are triggered:
+在触发支付时分配资金：
 
 ```solidity
 JBSplit[] memory payoutSplits = new JBSplit[](2);
@@ -193,9 +193,9 @@ splitGroups[0] = JBSplitGroup({
 });
 ```
 
-### Reserved Token Splits
+### 预留代币分配
 
-Distribute reserved tokens:
+分配预留代币：
 
 ```solidity
 JBSplit[] memory reservedSplits = new JBSplit[](1);
@@ -215,9 +215,9 @@ splitGroups[1] = JBSplitGroup({
 });
 ```
 
-## Fund Access Limits
+## 资金访问限制
 
-Set payout limits and surplus allowance:
+设置支付限额和剩余资金分配：
 
 ```solidity
 JBCurrencyAmount[] memory payoutLimits = new JBCurrencyAmount[](1);
@@ -241,7 +241,7 @@ fundAccessLimits[0] = JBFundAccessLimitGroup({
 });
 ```
 
-## Queue Script Example
+## 排队脚本示例
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -269,21 +269,21 @@ contract QueueRuleset is Script {
 }
 ```
 
-## Generation Guidelines
+## 生成指南
 
-1. **Understand current ruleset** - check existing parameters before changes
-2. **Consider timing** - rulesets activate when current one ends
-3. **Use approval hooks** for governance-controlled projects
-4. **Configure appropriate limits** - payout limits prevent rug pulls
-5. **Lock critical splits** with `lockedUntil` timestamp
+1. **了解当前规则集**——在修改之前检查现有参数。
+2. **考虑时机**——当前规则集结束后，新的规则集才会生效。
+3. **为需要治理控制的项目使用审批机制**。
+4. **配置适当的限额**——支付限额可防止资金突然被提取（rug pull）。
+5. **使用 `lockedUntil` 时间戳锁定关键分配比例。
 
-## Example Prompts
+## 示例提示
 
-- "Queue a ruleset that increases reserved rate to 20%"
-- "Set up monthly payout cycles of 5 ETH max"
-- "Add a 3-day approval delay for ruleset changes"
-- "Configure splits to send 30% to a DAO treasury"
+- “排队一个将预留速率提高到 20% 的规则集。”
+- “设置每月最高 5 ETH 的支付周期。”
+- “为规则集的更改添加 3 天的审批延迟。”
+- “配置分配比例，将 30% 的资金发送到 DAO 储备金。”
 
-## Reference
+## 参考资料
 
-- **nana-core-v5**: https://github.com/Bananapus/nana-core-v5
+- **nana-core-v5**：https://github.com/Bananapus/nana-core-v5

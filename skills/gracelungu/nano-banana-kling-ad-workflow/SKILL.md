@@ -1,93 +1,91 @@
 ---
 name: nano-banana-kling-ad-workflow
-description: Recreate low-budget AI video ad workflows using Nano Banana image generation plus Kling 3.0 video synthesis with dialogue, including prompt design, scene planning, cost control, and export handoff. Use when a user wants to produce a cinematic ad quickly (often in a few hours) with a small credit budget, or asks for a Deon-style Nano Banana + Kling pipeline.
+description: 使用 Nano Banana 图像生成技术和 Kling 3.0 视频合成工具（支持对话功能），重新构建低成本的人工智能视频广告制作工作流程。该流程包括提示设计、场景规划、成本控制以及视频导出等环节。适用于用户希望在有限的预算下（通常为几小时内）快速制作出具有电影质感的广告，或者需要使用 Deon 风格的 Nano Banana + Kling 工作流程的情况。
 ---
 
-# Nano Banana Kling Ad Workflow
+# Nano Banana Kling 广告制作工作流程
 
-## Overview
-Build a short ad from scratch using a fast two-stage pipeline: generate stills in Nano Banana, animate them in Kling 3.0, then stitch a publishable cut. Optimize for speed, visual consistency, and low spend.
+## 概述
+使用一个快速的两阶段流程从零开始制作广告：首先在 Nano Banana 中生成静态图片，然后在 Kling 3.0 中为这些图片添加动画效果，最后剪辑出一个可发布的广告片段。目标是优化制作速度、视觉一致性以及成本控制。
 
-## Workflow
+## 工作流程
 
-### 1) Define outcome before generating assets
-Capture these constraints first:
-- Product or story concept
-- Audience and tone
-- Target duration (15s, 30s, or 45s)
-- Delivery format (X, TikTok, Reels, YouTube)
-- Budget ceiling in credits
+### 1) 在生成素材之前明确最终效果
+首先确定以下关键要素：
+- 产品或故事概念
+- 目标受众及风格
+- 广告时长（15秒、30秒或45秒）
+- 发布平台（TikTok、Reels、YouTube 等）
+- 预算上限（以镜头数为单位）
 
-If missing, ask for only the minimum required details and proceed.
+如果某些信息缺失，只需提供最低限度的细节即可继续进行。
 
-### 2) Build a shot list
-Create 5-9 shots with:
-- Shot number
-- Scene goal
-- Subject + environment
-- Camera style
-- On-screen line or dialogue intent
+### 2) 制定镜头列表
+创建 5-9 个镜头，每个镜头包含以下信息：
+- 镜头编号
+- 镜头目的
+- 主体及场景环境
+- 摄影风格
+- 屏幕上的文字或对话内容
 
-Keep each shot prompt short and concrete.
+每个镜头的描述应简洁明了。
 
-### 3) Generate base visuals in Nano Banana
-For each shot:
-- Prompt for one clear hero frame
-- Keep recurring anchors stable (character traits, wardrobe, color palette, lens style)
-- Generate 2-4 variations max, pick one
+### 3) 在 Nano Banana 中生成基础视觉素材
+对于每个镜头：
+- 提供一个清晰的主视觉画面
+- 保持角色特征、服装、色彩搭配及镜头风格的稳定性
+- 最多生成 2-4 个变体，从中选择一个
 
-If consistency drifts, add explicit anchor text to the next prompt.
+如果视觉效果出现不一致，请在后续的提示中明确说明需要保持的元素。
 
-### 4) Animate in Kling 3.0
-Import selected stills into Kling 3.0 and add:
-- Motion direction (camera push, pan, dolly, parallax)
-- Dialogue or narration intent
-- Timing per clip (usually 2-5s)
+### 4) 在 Kling 3.0 中添加动画效果
+将选定的静态图片导入 Kling 3.0，并添加以下元素：
+- 动作方向（推镜、平移、摇摄、视差效果）
+- 对话或旁白内容
+- 每个镜头的时长（通常为 2-5 秒）
 
-Prefer subtle motion over aggressive movement unless the concept requires action-heavy pacing.
+除非广告概念需要强烈的动态效果，否则应优先选择柔和的动画风格。
 
-### 5) Assemble final cut
-Sequence clips by narrative flow:
-- Hook (first 1-2 shots)
-- Value demonstration
-- Clear CTA
+### 5) 组装最终广告片段
+按照叙事逻辑顺序排列各个镜头：
+- 开场镜头（前 1-2 个镜头）
+- 产品价值展示镜头
+- 明确的呼吁行动（CTA）镜头
 
-Add captions if platform autoplay is likely muted.
+如果平台可能默认关闭字幕，建议添加字幕。
 
-### 6) Track cost and output quality
-After generation, report:
-- Total clips generated
-- Credits used and estimated cost
-- Final runtime
-- Export ratio(s)
-- What to improve in next iteration
+### 6) 监控成本和输出质量
+生成完成后，报告以下信息：
+- 生成的广告片段总数
+- 使用的镜头数量及预估成本
+- 最终广告时长
+- 导出格式
+- 下一次迭代需要改进的地方
 
-## Prompt pattern
-Use this compact prompt shape for each Nano Banana shot:
+## 提示模板
+使用以下模板为每个 Nano Banana 镜头编写描述：
+“[主体]，在 [场景环境] 中执行 [动作]，采用 [光线条件] 和 [摄影构图]，保持[风格元素]的统一性，适合广告制作，不允许添加文字叠加”
 
-"[subject], [action], in [environment], [lighting], [camera framing], [style anchors], ultra-clean composition, ad-grade, no text overlays"
+使用以下模板为 Kling 镜头编写动画说明：
+“使用 [动画效果] 为这张静态图片添加动态效果，保持主体形象的稳定性，追求电影般的真实感，控制[动画时长]，并添加[对话/情感提示]，确保过渡流畅”
 
-Use this compact Kling prompt shape:
+## 快速制作标准
+- 广告时长：20-30 秒
+- 镜头数量：6 个
+- 每个镜头的变体数量：3 个
+- 每个镜头的时长：3-4 秒
+- 修改次数：1 次内容初稿 + 1 次细节优化
 
-"Animate this still with [motion], keep subject identity stable, cinematic realism, [timing], [dialogue/emotion cue], smooth transitions"
+## 故障处理策略
+- 如果角色形象出现变化：重新设定关键元素并简化动画效果
+- 如果场景看起来过于复杂：简化镜头描述并减少风格元素的叠加
+- 如果成本上升过快：减少镜头变体数量并缩短镜头列表
+- 如果项目进度滞后：先制作一个 15 秒的版本，再逐步延长时长
 
-## Fast defaults
-- Runtime target: 20-30 seconds
-- Shot count: 6
-- Variations per shot: 3
-- Clip length: 3-4 seconds
-- Revision passes: 1 content pass + 1 polish pass
-
-## Failure handling
-- If faces drift: repeat identity anchors and reduce motion complexity
-- If scenes look noisy: simplify prompts and reduce style stacking
-- If cost rises too fast: reduce variations and shorten shot list
-- If timeline slips: ship a 15-second cut first, then extend
-
-## Deliverable format
-When executing this skill, output:
-1. Final shot list
-2. Prompt set used
-3. Generation and edit log
-4. Final export summary
-5. Next-iteration recommendations
+## 交付成果
+完成制作后，需提供以下文件：
+1. 最终镜头列表
+2. 使用的所有提示内容
+3. 制作和编辑过程中的记录
+4. 最终导出结果总结
+5. 下一次迭代的改进建议

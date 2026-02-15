@@ -1,23 +1,23 @@
 ---
 name: identity-manager
-description: strictly manages user identity mappings (Feishu OpenID <-> Name/Role). Use this to `lookup` a user by ID before replying, or `register` new users to the database. Prevents hallucinating user identities.
+description: 严格管理用户身份映射（Feishu OpenID ↔ 名称/角色）。在回复之前，可以使用此功能通过用户ID来查找用户信息；或者在数据库中注册新用户。这样可以避免用户身份的混淆或错误识别。
 ---
 
-# Identity Manager
+# 身份管理器
 
-A dedicated tool to store and retrieve user identities.
+这是一个专门用于存储和检索用户身份信息的工具。
 
-## Usage
+## 使用方法
 
-### 1. Lookup User (By ID)
-Check who sent a message.
+### 1. 根据ID查找用户
+查询发送消息的用户。
 ```bash
 node skills/identity-manager/index.js lookup "ou_cdc63fe05e88c580aedead04d851fc04"
 # Output: { "name": "张昊阳", "role": "Master", "alias": "zhy" }
 ```
 
-### 2. Register/Update User
-Save a new user or update existing info.
+### 2. 注册/更新用户
+创建新用户或更新现有用户的资料。
 ```bash
 node skills/identity-manager/index.js register \
   --id "ou_..." \
@@ -26,16 +26,17 @@ node skills/identity-manager/index.js register \
   --alias "Lisi"
 ```
 
-### 3. List All
+### 3. 列出所有用户
+显示所有用户的信息。
 ```bash
 node skills/identity-manager/index.js list
 ```
 
-### 4. Auto-Scan (Global Discovery)
-Scans all joined group chats and registers all members automatically.
+### 4. 自动扫描（全局发现）
+扫描所有已加入的群组聊天，并自动注册所有成员。
 ```bash
 node skills/identity-manager/auto_scan.js
 ```
 
-## Data Storage
-Data is persisted in `memory/user_registry.json`.
+## 数据存储
+数据存储在 `memory/userRegistry.json` 文件中。

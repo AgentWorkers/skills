@@ -1,34 +1,34 @@
 ---
 name: Video
-description: Process, edit, and optimize videos for any platform with compression, format conversion, captioning, and repurposing workflows.
+description: 处理、编辑和优化视频，适用于任何平台；支持压缩、格式转换、添加字幕以及视频的再利用等功能。
 ---
 
-## Core Capabilities
+## 核心功能
 
-| Task | Method |
+| 任务 | 方法 |
 |------|--------|
-| Convert/compress | FFmpeg (see `commands.md`) |
-| Generate captions | Whisper transcription → SRT/VTT |
-| Change aspect ratio | Crop, pad, or smart reframe |
-| Clean audio | Normalize, denoise, enhance |
-| Batch operations | Process entire folders in one run |
+| 转换/压缩 | FFmpeg（详见 `commands.md`） |
+| 生成字幕 | 使用 Whisper 转录工具生成 SRT/VTT 格式的字幕 |
+| 更改画面比例 | 通过裁剪、填充或智能重帧来实现 |
+| 清理音频 | 对音频进行标准化处理、去噪和音质增强 |
+| 批量操作 | 一次性处理整个文件夹中的文件 |
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Situation | Load |
+| 需求 | 参考文档 |
 |-----------|------|
-| Platform specs (YouTube, TikTok, Instagram) | `platforms.md` |
-| FFmpeg commands by task | `commands.md` |
-| Quality/compression settings | `quality.md` |
-| Workflow by use case | `workflows.md` |
+| 平台信息（如 YouTube、TikTok、Instagram） | `platforms.md` |
+| FFmpeg 命令详解 | `commands.md` |
+| 质量/压缩设置 | `quality.md` |
+| 根据使用场景的工作流程 | `workflows.md` |
 
 ---
 
-## Workspace
+## 工作目录
 
-Store video projects in `~/video/`:
+将视频项目存储在 `~/video/` 目录下：
 ```
 ~/video/
 ├── input/       # Source files
@@ -39,32 +39,32 @@ Store video projects in `~/video/`:
 
 ---
 
-## Execution Pattern
+## 执行流程
 
-1. **Clarify target** — What platform? What format? What file size limit?
-2. **Check source** — `ffprobe` to get codec, resolution, duration, audio
-3. **Process** — FFmpeg for transformation (commands in `commands.md`)
-4. **Verify** — Confirm output meets specs before delivering
-5. **Clean up** — Offer to delete intermediates
+1. **明确目标**：目标平台是什么？需要什么格式？文件大小有要求吗？
+2. **检查源文件**：使用 `ffprobe` 获取视频的编码格式、分辨率、时长及音频信息。
+3. **进行处理**：使用 FFmpeg 进行文件转换（具体命令请参考 `commands.md`）。
+4. **验证结果**：在交付前确认输出文件符合要求。
+5. **清理临时文件**：提供删除中间文件的选项。
 
 ---
 
-## Common Requests → Actions
+## 常见请求与对应操作
 
-| User says | Agent does |
+| 用户需求 | 代理操作 |
 |-----------|------------|
-| "Make this work for TikTok" | Reframe to 9:16, check duration ≤3min, compress |
-| "Add subtitles" | Whisper → SRT → burn-in or deliver separately |
-| "Compress for WhatsApp" | Target <64MB, H.264, AAC, maintain quality |
-| "Extract audio" | `-vn -acodec mp3` or `-acodec copy` |
-| "Make a GIF" | Extract frames, optimize palette, loop |
-| "Split into clips" | Cut at timestamps with `-ss` and `-t` |
+| “适用于 TikTok 的格式” | 将视频调整为 9:16 的比例，检查时长是否不超过 3 分钟，并进行压缩 |
+| “添加字幕” | 使用 Whisper 转录工具生成字幕，然后将其嵌入视频或单独提供 |
+| “为 WhatsApp 压缩文件” | 保证文件大小小于 64MB，使用 H.264 编码格式和 AAC 音频格式，并保持音质 |
+| “提取音频” | 使用 `-vn -acodec mp3` 命令提取音频文件，或使用 `-acodec copy` 命令复制音频数据 |
+| “制作 GIF 动画” | 提取视频帧，优化颜色 palette，设置循环播放 |
+| “分割视频” | 使用 `-ss` 和 `-t` 命令根据时间戳分割视频文件 |
 
 ---
 
-## Quality Rules
+## 质量标准
 
-- **Always re-encode audio to AAC** for maximum compatibility
-- **Use `-movflags +faststart`** for web playback
-- **CRF 23** is good default for H.264 (lower = better quality, bigger file)
-- **Check before delivering** — verify duration, file size, playability
+- **始终将音频重新编码为 AAC 格式** 以提高兼容性。
+- **为网页播放设置 `-movflags +faststart` 参数**。
+- **H.264 编码的默认设置是 CRF 23**：数值越低，画质越好，但文件体积也会越大。
+- **在交付前进行验证**：确认视频的时长、文件大小以及播放效果是否符合要求。

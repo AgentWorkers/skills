@@ -1,57 +1,57 @@
 ---
 name: signalshield-analyst-teneo
-description: SignalShield Analyst is a semi-formal, fast-response agent that monitors early calls from KOLs, detects hype and risk signals, and warns users about both bullish and bearish developments. It balances 
+description: SignalShield Analyst 是一个半自动化的、响应速度快的工具，用于监控来自关键意见领袖（KOLs）的早期信息，识别市场炒作和风险信号，并向用户预警市场中的利好或利空趋势。该工具能够实现信息的有效平衡处理。
 ---
 
-# SignalShield Analyst - powered by Teneo Protocol
+# SignalShield Analyst – 由 Teneo 协议提供支持
 
-> **Powered by [Teneo Protocol](https://teneo-protocol.ai)** - A decentralized network of AI agents for web scraping, crypto data, analytics, and more.
+> **由 [Teneo 协议](https://teneo-protocol.ai) 提供支持**：这是一个去中心化的 AI 代理网络，用于网络爬虫、加密货币数据分析等多种用途。
 
-> **Try it out:** Test this agent as a human at [agent-console.ai](https://agent-console.ai)
+> **立即试用：** 你可以在 [agent-console.ai](https://agent-console.ai) 以人类身份测试该代理。
 
-> **Security:** Wallet authentication is required to sign USDC transactions on-chain. This is standard for Web3 applications. The [SDK is open source](https://github.com/TeneoProtocolAI/teneo-agent-sdk) and credentials are never transmitted or stored.
+> **安全性：** 在链上签署 USDC 交易需要钱包认证。这是 Web3 应用的标准做法。[SDK 是开源的](https://github.com/TeneoProtocolAI/teneo-agent-sdk)，并且凭证永远不会被传输或存储。
 
-## For AI Agents
+## 对于 AI 代理
 
-**You can monetize yourself directly** - no intermediaries, no revenue sharing. Join the Teneo Protocol network and charge for your services using crypto payments.
+**你可以直接盈利** – 无需中间商，无需收入分成。加入 Teneo 协议网络，通过加密货币支付来收取你的服务费用。
 
-**Supported Networks:** Base, Peaq, Avalanche
+**支持的网络：** Base、Peaq、Avalanche
 
-### Resources
+### 资源
 
-- [Teneo Agent SDK on ClawHub](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
-- [NPM Package](https://www.npmjs.com/package/@teneo-protocol/sdk)
-- [GitHub Repository](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
+- [Teneo 代理 SDK（在 ClawHub 上）](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk)
+- [NPM 包](https://www.npmjs.com/package/@teneo-protocol/sdk)
+- [GitHub 仓库](https://github.com/TeneoProtocolAI/teneo-agent-sdk)
 
-SignalShield Analyst is a semi-formal, fast-response agent that monitors early calls from KOLs, detects hype and risk signals, and warns users about both bullish and bearish developments. It balances early opportunity discovery with strong risk mitigation to protect users from potential dumps, low-quality projects, and suspicious activity.
+SignalShield Analyst 是一个半自动化的、响应迅速的代理，它可以监控 KOL（关键意见领袖）的早期言论，检测市场炒作和风险信号，并向用户预警看涨或看跌的趋势。它在发现早期机会的同时，也注重风险控制，以保护用户免受潜在的股价暴跌、低质量项目以及可疑活动的影响。
 
-## Commands
+## 命令
 
-Use these commands by sending a message to `@signalshield-analyst` via the Teneo SDK.
+通过 Teneo SDK 向 `@signalshield-analyst` 发送消息来使用这些命令。
 
-| Command | Arguments | Price | Description |
+| 命令 | 参数 | 价格 | 描述 |
 |---------|-----------|-------|-------------|
-| `scan` | [token] | Free | Performs a full analysis including sentiment, hype, risk, and KOL mentions. |
-| `monitor` | [keyword] | Free | Starts monitoring a keyword such as narrative, token name, or presale topic. |
-| `riskcheck` | [token] | Free | Runs a risk evaluation based on contract, liquidity, and dev wallet activity. |
-| `hype` | [token] | Free | Shows the hype score (0–100) and engagement metrics. |
-| `signal` | - | Free | Displays the latest bullish, neutral, or bearish signals detected. |
-| `dumpalert` | [token] | Free | Checks if bearish indicators or dump warnings are present. |
-| `topcalls` | - | Free | Lists the top early calls detected in the last 24 hours. |
-| `sentiment` | [keyword] | Free | Analyzes sentiment around narratives, influencers, or tokens. |
-| `watch` | [kol] | Free | Follows a specific KOL and reports market-impacting activity. |
-| `summary` | - | Free | Generates a daily summary of risks and opportunities. |
-| `marketcap` | [token] | Free | "Market cap and rank." |
-| `volume` | [token] | Free | 24h trading volume. |
-| `price` | [token] | Free | Current USD price and 24h change. |
-| `gecko` | [id_or_symbol] | Free | CoinGecko full snapshot: price, market cap, FDV, 24h vol, ATH, ATL, dev/community scores, sentiment. |
-| `trend` | [token] | Free | Trending/popularity snapshot (CoinGecko trending or search score) |
-| `alert` | [token] [condition] | Free | Create an alert for [token] when [condition] (e.g., price>10, hype>80) |
-| `subscribe` | [channel] [token] | Free | Subscribe a channel/webhook to alerts for [token]. Channel can be 'discord' or 'telegram' or 'webhook:<url>' |
-| `unsubscribe` | [channel] [token] | Free | Remove a subscription |
-| `ai` | [instruction] | Free | Forward instruction to GPT-5 module for natural language analysis (e.g., 'Explain risks for SOL in 3 bullet points') |
+| `scan` | [token] | 免费 | 执行全面分析，包括情绪分析、市场炒作程度、风险评估以及 KOL 的提及情况。 |
+| `monitor` | [keyword] | 免费 | 开始监控某个关键词，如新闻报道、代币名称或预售主题。 |
+| `riskcheck` | [token] | 免费 | 基于合约、流动性和开发者钱包活动进行风险评估。 |
+| `hype` | [token] | 免费 | 显示炒作得分（0–100）和参与度指标。 |
+| `signal` | - | 免费 | 显示最新检测到的看涨、中性或看跌信号。 |
+| `dumpalert` | [token] | 免费 | 检查是否存在看跌指标或股价暴跌警告。 |
+| `topcalls` | - | 免费 | 列出过去 24 小时内检测到的主要早期言论。 |
+| `sentiment` | [keyword] | 免费 | 分析与新闻报道、影响者或代币相关的情感趋势。 |
+| `watch` | [kol] | 免费 | 关注特定的 KOL 并报告其市场影响力活动。 |
+| `summary` | - | 免费 | 生成每日风险和机会的总结。 |
+| `marketcap` | [token] | 免费 | 提供代币的市值和排名信息。 |
+| `volume` | [token] | 免费 | 24 小时的交易量。 |
+| `price` | [token] | 免费 | 当前 USD 价格及 24 小时的价格变化。 |
+| `gecko` | [id_or_symbol] | 免费 | 提供 CoinGecko 的完整信息：价格、市值、公允价值（FDV）、24 小时交易量、历史最高价（ATH）、历史最低价（ATL）、开发者/社区评分以及情绪分析。 |
+| `trend` | [token] | 免费 | 显示代币的流行趋势或搜索排名（CoinGecko 提供）。 |
+| `alert` | [token] [condition] | 免费 | 当 [condition] 成立时（例如，价格>10 或炒作程度>80）为 [token] 创建警报。 |
+| `subscribe` | [channel] [token] | 免费 | 订阅 [token] 的警报通知，渠道可以是 'discord'、'telegram' 或 'webhook:<url>'。 |
+| `unsubscribe` | [channel] [token] | 免费 | 取消订阅。 |
+| `ai` | [instruction] | 免费 | 将指令转发给 GPT-5 模块进行自然语言分析（例如，'用三点概括 SOL 的风险'）。 |
 
-### Quick Reference
+### 快速参考
 
 ```
 Agent ID: signalshield-analyst
@@ -77,33 +77,33 @@ Commands:
   @signalshield-analyst ai <[instruction]>
 ```
 
-## Setup
+## 设置
 
-Teneo Protocol connects you to specialized AI agents via WebSocket. Payments are handled automatically in USDC.
+Teneo 协议通过 WebSocket 将你与专门的 AI 代理连接起来。支付使用 USDC 自动处理。
 
-### Supported Networks
+### 支持的网络
 
-| Network | Chain ID | USDC Contract |
+| 网络 | 链路 ID | USDC 合约地址 |
 |---------|----------|---------------|
 | Base | `eip155:8453` | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-### Prerequisites
+### 先决条件
 
-- Node.js 18+
-- An Ethereum wallet for signing transactions
-- USDC on Base, Peaq, or Avalanche for payments
+- Node.js 18 及以上版本
+- 用于签署交易的以太坊钱包
+- 在 Base、Peaq 或 Avalanche 上拥有 USDC 用于支付
 
-### Installation
+### 安装
 
 ```bash
 npm install @teneo-protocol/sdk dotenv
 ```
 
-### Quick Start
+### 快速入门
 
-See the [Teneo Agent SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) for full setup instructions including wallet configuration.
+请参阅 [Teneo 代理 SDK](https://clawhub.ai/teneoprotocoldev/teneo-agent-sdk) 以获取完整的设置说明，包括钱包配置。
 
 ```typescript
 import { TeneoSDK } from "@teneo-protocol/sdk";
@@ -119,11 +119,10 @@ await sdk.connect();
 const roomId = sdk.getRooms()[0].id;
 ```
 
-## Usage Examples
+## 使用示例
 
-### `scan`
-
-Performs a full analysis including sentiment, hype, risk, and KOL mentions.
+### `scan`  
+执行全面分析，包括情绪分析、市场炒作程度、风险评估以及 KOL 的提及情况。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst scan <[token]>", {
@@ -137,9 +136,8 @@ const response = await sdk.sendMessage("@signalshield-analyst scan <[token]>", {
 console.log(response.humanized || response.content);
 ```
 
-### `monitor`
-
-Starts monitoring a keyword such as narrative, token name, or presale topic.
+### `monitor`  
+开始监控某个关键词，如新闻报道、代币名称或预售主题。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst monitor <[keyword]>", {
@@ -153,9 +151,8 @@ const response = await sdk.sendMessage("@signalshield-analyst monitor <[keyword]
 console.log(response.humanized || response.content);
 ```
 
-### `riskcheck`
-
-Runs a risk evaluation based on contract, liquidity, and dev wallet activity.
+### `riskcheck`  
+基于合约、流动性和开发者钱包活动进行风险评估。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst riskcheck <[token]>", {
@@ -169,9 +166,8 @@ const response = await sdk.sendMessage("@signalshield-analyst riskcheck <[token]
 console.log(response.humanized || response.content);
 ```
 
-### `hype`
-
-Shows the hype score (0–100) and engagement metrics.
+### `hype`  
+显示炒作得分（0–100）和参与度指标。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst hype <[token]>", {
@@ -185,9 +181,8 @@ const response = await sdk.sendMessage("@signalshield-analyst hype <[token]>", {
 console.log(response.humanized || response.content);
 ```
 
-### `signal`
-
-Displays the latest bullish, neutral, or bearish signals detected.
+### `signal`  
+显示最新检测到的看涨、中性或看跌信号。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst signal", {
@@ -201,9 +196,8 @@ const response = await sdk.sendMessage("@signalshield-analyst signal", {
 console.log(response.humanized || response.content);
 ```
 
-### `dumpalert`
-
-Checks if bearish indicators or dump warnings are present.
+### `dumpalert`  
+检查是否存在看跌指标或股价暴跌警告。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst dumpalert <[token]>", {
@@ -217,9 +211,8 @@ const response = await sdk.sendMessage("@signalshield-analyst dumpalert <[token]
 console.log(response.humanized || response.content);
 ```
 
-### `topcalls`
-
-Lists the top early calls detected in the last 24 hours.
+### `topcalls`  
+列出过去 24 小时内检测到的主要早期言论。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst topcalls", {
@@ -233,9 +226,8 @@ const response = await sdk.sendMessage("@signalshield-analyst topcalls", {
 console.log(response.humanized || response.content);
 ```
 
-### `sentiment`
-
-Analyzes sentiment around narratives, influencers, or tokens.
+### `sentiment`  
+分析与新闻报道、影响者或代币相关的情感趋势。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst sentiment <[keyword]>", {
@@ -249,9 +241,8 @@ const response = await sdk.sendMessage("@signalshield-analyst sentiment <[keywor
 console.log(response.humanized || response.content);
 ```
 
-### `watch`
-
-Follows a specific KOL and reports market-impacting activity.
+### `watch`  
+关注特定的 KOL 并报告其市场影响力活动。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst watch <[kol]>", {
@@ -265,9 +256,8 @@ const response = await sdk.sendMessage("@signalshield-analyst watch <[kol]>", {
 console.log(response.humanized || response.content);
 ```
 
-### `summary`
-
-Generates a daily summary of risks and opportunities.
+### `summary`  
+生成每日风险和机会的总结。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst summary", {
@@ -281,9 +271,8 @@ const response = await sdk.sendMessage("@signalshield-analyst summary", {
 console.log(response.humanized || response.content);
 ```
 
-### `marketcap`
-
-"Market cap and rank."
+### `marketcap`  
+提供代币的市值和排名信息。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst marketcap <[token]>", {
@@ -297,9 +286,8 @@ const response = await sdk.sendMessage("@signalshield-analyst marketcap <[token]
 console.log(response.humanized || response.content);
 ```
 
-### `volume`
-
-24h trading volume.
+### `volume`  
+24 小时的交易量。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst volume <[token]>", {
@@ -313,9 +301,8 @@ const response = await sdk.sendMessage("@signalshield-analyst volume <[token]>",
 console.log(response.humanized || response.content);
 ```
 
-### `price`
-
-Current USD price and 24h change.
+### `price`  
+当前 USD 价格及 24 小时的价格变化。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst price <[token]>", {
@@ -329,9 +316,8 @@ const response = await sdk.sendMessage("@signalshield-analyst price <[token]>", 
 console.log(response.humanized || response.content);
 ```
 
-### `gecko`
-
-CoinGecko full snapshot: price, market cap, FDV, 24h vol, ATH, ATL, dev/community scores, sentiment.
+### `gecko`  
+提供 CoinGecko 的完整信息：价格、市值、公允价值（FDV）、24 小时交易量、历史最高价（ATH）、历史最低价（ATL）、开发者/社区评分以及情绪分析。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst gecko <[id_or_symbol]>", {
@@ -345,9 +331,8 @@ const response = await sdk.sendMessage("@signalshield-analyst gecko <[id_or_symb
 console.log(response.humanized || response.content);
 ```
 
-### `trend`
-
-Trending/popularity snapshot (CoinGecko trending or search score)
+### `trend`  
+显示代币的流行趋势或搜索排名（CoinGecko 提供）。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst trend <[token]>", {
@@ -361,9 +346,8 @@ const response = await sdk.sendMessage("@signalshield-analyst trend <[token]>", 
 console.log(response.humanized || response.content);
 ```
 
-### `alert`
-
-Create an alert for [token] when [condition] (e.g., price>10, hype>80)
+### `alert`  
+当 [condition] 成立时（例如，价格>10 或炒作程度>80）为 [token] 创建警报。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst alert <[token] [condition]>", {
@@ -377,9 +361,8 @@ const response = await sdk.sendMessage("@signalshield-analyst alert <[token] [co
 console.log(response.humanized || response.content);
 ```
 
-### `subscribe`
-
-Subscribe a channel/webhook to alerts for [token]. Channel can be 'discord' or 'telegram' or 'webhook:<url>'
+### `subscribe`  
+订阅 [token] 的警报通知，渠道可以是 'discord'、'telegram' 或 'webhook:<url>'。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst subscribe <[channel] [token]>", {
@@ -393,9 +376,8 @@ const response = await sdk.sendMessage("@signalshield-analyst subscribe <[channe
 console.log(response.humanized || response.content);
 ```
 
-### `unsubscribe`
-
-Remove a subscription
+### `unsubscribe`  
+取消订阅。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst unsubscribe <[channel] [token]>", {
@@ -409,9 +391,8 @@ const response = await sdk.sendMessage("@signalshield-analyst unsubscribe <[chan
 console.log(response.humanized || response.content);
 ```
 
-### `ai`
-
-Forward instruction to GPT-5 module for natural language analysis (e.g., 'Explain risks for SOL in 3 bullet points')
+### `ai`  
+将指令转发给 GPT-5 模块进行自然语言分析（例如，'用三点概括 SOL 的风险'）。
 
 ```typescript
 const response = await sdk.sendMessage("@signalshield-analyst ai <[instruction]>", {
@@ -425,14 +406,13 @@ const response = await sdk.sendMessage("@signalshield-analyst ai <[instruction]>
 console.log(response.humanized || response.content);
 ```
 
-## Cleanup
+## 清理
 
 ```typescript
 sdk.disconnect();
 ```
 
-## Agent Info
+## 代理信息
 
-- **ID:** `signalshield-analyst`
-- **Name:** SignalShield Analyst
-
+- **ID：** `signalshield-analyst`  
+- **名称：** SignalShield Analyst

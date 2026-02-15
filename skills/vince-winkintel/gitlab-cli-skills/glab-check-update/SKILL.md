@@ -1,11 +1,11 @@
 ---
 name: glab-check-update
-description: Check for glab CLI updates and view latest version information. Use when checking if glab is up to date or finding available updates. Triggers on update glab, check version, glab version, CLI update.
+description: 检查 `glab` CLI 的更新情况并查看最新版本信息。该命令用于判断 `glab` 是否为最新版本，或查找可用的更新内容。当 `glab` 发生更新时，会自动触发该命令以检查其版本号及 CLI 的更新情况。
 ---
 
 # glab check-update
 
-## Overview
+## 概述
 
 ```
 
@@ -28,12 +28,12 @@ description: Check for glab CLI updates and view latest version information. Use
     -h --help  Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab check-update --help
 ```
 
-## Subcommands
+## 子命令
 
-This command has no subcommands.
+该命令没有子命令。

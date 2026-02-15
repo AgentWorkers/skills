@@ -1,87 +1,99 @@
 ---
 name: google-maps-api-skill
-description: This skill helps users automatically scrape business data from Google Maps using the BrowserAct Google Maps API. Agent should proactively trigger this skill for needs like: 1. Find restaurants in a specific city; 2. Extract contact info of dental clinics; 3. Research local competitors; 4. Collect addresses of coffee shops; 5. Generate lead lists for specific industries; 6. Monitor business ratings and reviews; 7. Get opening hours of local services; 8. Find specialized stores (e.g., Turkish-style restaurants); 9. Analyze business categories in a region; 10. Extract website links from local businesses; 11. Gather phone numbers for sales outreach; 12. Map out service providers in a specific country.
+description: 该技能可帮助用户使用 BrowserAct Google Maps API 自动从 Google 地图中抓取商业数据。代理应根据以下需求主动触发该技能：  
+1. 在特定城市查找餐厅；  
+2. 提取牙科诊所的联系方式；  
+3. 研究当地竞争对手；  
+4. 收集咖啡店的地址；  
+5. 为特定行业生成潜在客户名单；  
+6. 监控企业的评分和评论；  
+7. 获取当地服务的营业时间；  
+8. 查找特色店铺（例如土耳其风味餐厅）；  
+9. 分析某个地区的商业类别；  
+10. 从当地企业中提取网站链接；  
+11. 收集用于销售推广的电话号码；  
+12. 绘制特定国家的服务提供商地图。
 ---
 
-# Google Maps Automation Scraper Skill
+# Google 地图自动化抓取技能
 
-## 📖 Introduction
-This skill leverages BrowserAct's Google Maps API template to provide a one-stop business data collection service. It extracts structured details directly from Google Maps, including business names, categories, contact info, ratings, and more. Simply provide the search keywords and location bias to get clean, actionable data.
+## 📖 介绍
+该技能利用 BrowserAct 的 Google 地图 API 模板，提供一站式商业数据收集服务。它可以直接从 Google 地图中提取结构化信息，包括企业名称、类别、联系信息、评分等。只需提供搜索关键词和地理位置偏好，即可获得清晰、可操作的数据。
 
-## ✨ Features
-1. **No Hallucinations, Stable & Precise Data Extraction**: Preset workflows avoid AI-generated hallucinations.
-2. **No CAPTCHA Issues**: Built-in mechanisms bypass reCAPTCHA and other verification challenges.
-3. **No IP Access Restrictions or Geo-fencing**: Overcomes regional IP limits for global access.
-4. **Faster Execution**: Tasks run more quickly than pure AI-driven browser automation.
-5. **High Cost-Effectiveness**: Significantly reduces data acquisition costs compared to high-token AI solutions.
+## ✨ 特点
+1. **数据稳定且准确**：预设的工作流程避免了 AI 生成的不准确数据。
+2. **无需处理验证码**：内置机制可绕过 reCAPTCHA 等验证挑战。
+3. **无 IP 访问限制或地理屏蔽**：克服了区域 IP 限制，实现全球访问。
+4. **执行速度快**：相比纯 AI 驱动的浏览器自动化，任务执行速度更快。
+5. **高性价比**：与高成本的人工解决方案相比，显著降低了数据采集成本。
 
-## 🔑 API Key Setup
-Before running, ensure the `BROWSERACT_API_KEY` environment variable is set. If missing, do not proceed; request the user to provide it.
-**Agent must inform the user**:
-> "Since you haven't configured the BrowserAct API Key, please go to the [BrowserAct Console](https://www.browseract.com/reception/integrations) to get your Key and provide it in this chat."
+## 🔑 API 密钥设置
+在运行之前，请确保 `BROWSERACT_API_KEY` 环境变量已设置。如果未设置，请让用户提供该密钥。
+**代理应告知用户**：
+> “由于您尚未配置 BrowserAct API 密钥，请访问 [BrowserAct 控制台](https://www.browseract.com/reception/integrations) 获取密钥，并在此聊天中提供。”
 
-## 🛠️ Input Parameters
-Configure the following parameters based on user requirements:
+## 🛠️ 输入参数
+根据用户需求配置以下参数：
 
-1. **keywords (Search Keywords)**
-   - **Type**: `string`
-   - **Description**: The query you would search for on Google Maps.
-   - **Example**: `coffee shop`, `dental clinic`, `Turkish-style restaurant`
+1. **关键词（搜索关键词）**
+   - **类型**：`string`
+   - **描述**：您在 Google 地图上要搜索的查询内容。
+   - **示例**：`咖啡店`、`牙科诊所`、`土耳其风味餐厅`
 
-2. **language (UI Language)**
-   - **Type**: `string`
-   - **Description**: Defines the UI language and returned text language (e.g., en, zh-CN).
-   - **Default**: `en`
+2. **语言（用户界面语言）**
+   - **类型**：`string`
+   - **描述**：定义用户界面语言和返回文本的语言（例如，en、zh-CN）。
+   - **默认值**：`en`
 
-3. **country (Country Bias)**
-   - **Type**: `string`
-   - **Description**: Specifies the country or region bias (e.g., us, gb, ca).
-   - **Default**: `us`
+3. **国家（地理位置偏好）**
+   - **类型**：`string`
+   - **描述**：指定国家或地区的偏好（例如，us、gb、ca）。
+   - **默认值**：`us`
 
-## 🚀 How to Call
-Execute the following script to get results in one command:
+## 🚀 使用方法
+执行以下脚本即可获取结果：
 
 ```bash
 # Example call
 python -u ./scripts/google_maps_api.py "keywords" "language" "country"
 ```
 
-### ⏳ Execution Monitoring
-As this involves automated browser operations, it may take several minutes. The script will output timestamped status logs (e.g., `[14:30:05] Task Status: running`).
-**Agent Note**:
-- Monitor the terminal output while waiting.
-- New status logs mean the task is running; do not assume it is hung.
-- Retry only if the status stops updating or the script exits without results.
+### ⏳ 执行监控
+由于涉及自动化浏览器操作，可能需要几分钟时间。脚本会输出带有时间戳的状态日志（例如：`[14:30:05] 任务状态：运行中`）。
+**代理注意事项**：
+- 在等待过程中，请监控终端输出。
+- 新的状态日志表示任务正在运行；不要误以为任务已挂起。
+- 仅当状态停止更新或脚本无结果退出时才重新尝试。
 
-## 📊 Output Data
-Upon success, the script parses and prints the following fields from the API:
-- `Title Name`: Official business name
-- `Category_primary`: Main business category
-- `Address`: Full street address
-- `Phone number`: Contact phone number
-- `Website link`: Official URL
-- `Rating`: Average star rating
-- `reviews_count`: Total number of reviews
-- `business_status`: Operational status (e.g., operational)
+## 📊 输出数据
+成功执行后，脚本会解析并打印以下字段：
+- `Title Name`：企业官方名称
+- `Category_primary`：主要业务类别
+- `Address`：完整街道地址
+- `Phone number`：联系电话号码
+- `Website link`：企业官方网站
+- `Rating`：平均星级评分
+- `reviews_count`：总评论数量
+- `business_status`：经营状态（例如：营业中）
 
-## ⚠️ Error Handling & Retry
-If an error occurs (network issues or task failure), follow this logic:
+## ⚠️ 错误处理与重试
+如果发生错误（网络问题或任务失败），请按照以下步骤处理：
 
-1. **Check Output**:
-   - If it contains `"Invalid authorization"`, the API Key is invalid. **Do not retry**; ask the user for a correct Key.
-   - Otherwise, if it starts with `Error:` or returns no results, **automatically retry once**.
+1. **检查输出**：
+   - 如果输出中包含 “Invalid authorization”，则 API 密钥无效。**不要重试**；请用户提供正确的密钥。
+   - 否则，如果输出以 “Error:” 开头或未返回结果，则**自动重试一次**。
 
-2. **Retry Limit**:
-   - Only one automatic retry. If it fails again, report the specific error to the user.
+2. **重试次数限制**：
+   - 仅允许自动重试一次。如果再次失败，请向用户报告具体错误。
 
-## 🌟 Typical Use Cases
-1. **Lead Generation**: Find "SaaS companies" in "us" for sales outreach.
-2. **Competitor Research**: Extract data on "coffee shops" in a specific neighborhood.
-3. **Market Analysis**: Identify the density of "dental clinics" in a region.
-4. **Contact Info Retrieval**: Get phone numbers and websites for "real estate agencies".
-5. **Local Service Discovery**: Find "Turkish-style restaurants" with high ratings.
-6. **Business Status Monitoring**: Check if specific stores are "operational".
-7. **Directory Building**: Gather addresses and categories for a local business directory.
-8. **Rating Benchmarking**: Compare ratings of various "luxury hotels".
-9. **Global Scouting**: Research "tech startups" in different countries like "gb" or "au".
-10. **Automated Data Sync**: Periodically pull local business data into a CRM.
+## 🌟 典型用途
+1. **潜在客户挖掘**：在 “us” 地区查找 “SaaS 公司” 以进行销售推广。
+2. **竞争对手研究**：提取特定社区内的 “咖啡店” 数据。
+3. **市场分析**：识别某个地区的 “牙科诊所” 分布情况。
+4. **联系信息获取**：获取 “房地产中介”的电话号码和网站信息。
+5. **本地服务搜索**：查找评分较高的 “土耳其风味餐厅”。
+6. **企业状态监控**：检查特定店铺是否 “营业中”。
+7. **目录编制**：收集本地企业的地址和类别信息以制作目录。
+8. **评分对比**：比较不同 “豪华酒店”的评分。
+9. **全球调研**：研究 “gb” 或 “au” 等国家的 “科技初创企业”。
+10. **自动化数据同步**：定期将本地企业数据导入 CRM 系统。

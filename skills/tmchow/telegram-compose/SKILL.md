@@ -23,22 +23,21 @@ allowed-tools: exec, Read
 
 # Telegram Compose
 
-Format and deliver rich, scannable Telegram messages via direct API with HTML formatting.
+通过直接调用API，可以使用HTML格式来格式化并发送丰富的、便于阅读的Telegram消息。
 
-## How This Skill Gets Used
+## 该技能的使用方式
 
-**This skill is auto-invoked by the main session agent.** No other skills need to know about it.
+**该技能会由主会话代理自动触发。**其他技能无需了解该技能的详细信息。
 
-### Decision Rule (for the main session agent)
+### 主会话代理的决策规则
 
-Before sending a message to Telegram, check:
+在向Telegram发送消息之前，请检查以下内容：
+- **简短回复（<3行，无结构）**：直接使用OpenClaw的`message`工具发送即可。
+- **较长内容（>3行，或包含列表/统计数据/章节/报告）**：启动该技能作为子代理来处理。
 
-- **Short reply (<3 lines, no structure):** Send directly via OpenClaw `message` tool. Done.
-- **Substantive content (>3 lines, or has lists/stats/sections/reports):** Spawn this skill as a sub-agent.
+### 启动子代理
 
-### Spawning the sub-agent
-
-The main session agent calls `sessions_spawn` with:
+主会话代理会调用`sessions_spawn`函数，传入以下参数：
 
 ```
 sessions_spawn(
@@ -47,7 +46,7 @@ sessions_spawn(
 )
 ```
 
-**Task template:**
+**任务模板：**
 
 ```
 Read the telegram-compose skill at {baseDir}/SKILL.md for formatting rules, then format and send this content to Telegram.
@@ -64,25 +63,25 @@ Content to format:
 After sending, reply with the message_id on success or the error on failure. Do NOT include the formatted message in your reply — it's already been sent to Telegram.
 ```
 
-**IMPORTANT:** The caller MUST specify which bot account to use. The sub-agent must NOT auto-select or iterate accounts.
+**重要提示：**调用者必须指定要使用的机器人账户。子代理不能自动选择或遍历多个账户。
 
-**CRITICAL:** The sub-agent announcement routes back to the main session, NOT to Telegram. So the main session should reply `NO_REPLY` after spawning to avoid double-messaging. The sub-agent's curl call is what delivers to Telegram.
+**注意事项：**子代理发送的消息会返回给主会话，而不是直接发送到Telegram。因此，子代理启动后，主会话应回复`NO_REPLY`以避免重复发送消息。实际发送到Telegram的消息是由子代理通过curl命令完成的。
 
-### What the sub-agent receives
+### 子代理接收到的信息
 
-1. **Skill path** — so it can read the formatting rules
-2. **Bot account name** — which Telegram bot account to use (must be specified, never auto-selected)
-3. **Chat ID** — where to send
-4. **Thread ID** — topic thread if applicable
-5. **Raw content** — the unformatted text/data to turn into a rich message
+1. **技能路径**：用于读取格式化规则。
+2. **机器人账户名称**：指定要使用的Telegram机器人账户（必须手动输入，不能自动选择）。
+3. **聊天ID**：消息发送的目标聊天频道。
+4. **主题ID**：（如果适用）消息所属的聊天线程ID。
+5. **原始内容**：未格式化的文本或数据，需要被转换成富格式消息。
 
 ---
 
-## Credentials
+## 凭据信息
 
-**Bot token:** Stored in the OpenClaw config file under `channels.telegram.accounts.<name>.botToken`.
+**机器人令牌：**存储在OpenClaw的配置文件中，路径为`channelsTelegram.accounts.<name>.botToken`。
 
-**The account name is always provided by the caller.** Never auto-select or iterate accounts.
+**账户名称始终由调用者提供。**子代理不能自动选择或遍历多个账户。
 
 ```bash
 # Auto-detect config path
@@ -101,7 +100,7 @@ fi
 
 ---
 
-## Sending
+## 发送消息
 
 ```bash
 CONFIG=$([ -f ~/.openclaw/openclaw.json ] && echo ~/.openclaw/openclaw.json || echo ~/.openclaw/clawdbot.json)
@@ -139,9 +138,9 @@ curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
 
 ---
 
-## Formatting Rules
+## 格式化规则
 
-### HTML Tags
+### HTML标签
 
 ```
 <b>bold</b>  <i>italic</i>  <u>underline</u>  <s>strike</s>
@@ -153,16 +152,16 @@ curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
 <a href="tg://user?id=123">mention by ID</a>
 ```
 
-### Escaping
+### 特殊字符的转义
 
-Escape these characters in **text content only** (not in your HTML tags):
-- `&` → `&amp;`  (do this FIRST to avoid double-escaping)
+仅在**文本内容**中需要对以下字符进行转义（HTML标签内无需转义）：
+- `&` → `&amp;`（先进行转义，以避免双重转义）
 - `<` → `&lt;`
 - `>` → `&gt;`
 
-Common gotcha: content containing `&` (e.g., "R&D", "Q&A") will break HTML parsing if not escaped.
+**常见错误：**如果内容中包含`&`（例如“R&D”或“Q&A”），未进行转义会导致HTML解析错误。
 
-### Structure Pattern
+### 结构格式
 
 ```
 EMOJI <b>HEADING IN CAPS</b>
@@ -185,17 +184,17 @@ Long details go in expandable blocks.</blockquote>
 <a href="https://...">Action Link →</a>
 ```
 
-### Style Rules
+### 样式规则
 
-1. **Faux headings:** `EMOJI <b>CAPS TITLE</b>` with blank line after
-2. **Emojis:** 1-3 per message as visual anchors, not decoration
-3. **Whitespace:** Blank lines between sections
-4. **Long content:** Use `<blockquote expandable>`
-5. **Links:** Own line, with arrow: `Link Text →`
+1. **伪标题：**使用`EMOJI <b>标题</b>`，后面跟随空行。
+2. **表情符号：**每条消息中最多使用1-3个表情符号作为视觉标识，仅用于增强可读性，而非装饰。
+3. **空白行：**各部分之间需要使用空行分隔。
+4. **长内容：**使用`<blockquote expandable>`来展示。
+5. **链接：**链接应单独占一行，并使用箭头表示：`链接文本 →`
 
-### Examples
+### 示例
 
-**Status update:**
+**状态更新：**
 ```
 📋 <b>TASK COMPLETE</b>
 
@@ -206,7 +205,7 @@ Long details go in expandable blocks.</blockquote>
 <blockquote>All health checks passing.</blockquote>
 ```
 
-**Alert:**
+**警告：**
 ```
 ⚠️ <b>ATTENTION NEEDED</b>
 
@@ -216,7 +215,7 @@ Long details go in expandable blocks.</blockquote>
 <a href="https://dashboard.example.com">View Dashboard →</a>
 ```
 
-**List:**
+**列表：**
 ```
 ✅ <b>PRIORITIES</b>
 
@@ -229,11 +228,11 @@ Long details go in expandable blocks.</blockquote>
 
 ---
 
-## Mobile-Friendly Data Display
+## 适用于移动设备的显示方式
 
-**Never use `<pre>` for stats, summaries, or visual layouts.** `<pre>` uses monospace font and wraps badly on mobile, breaking alignment and tree characters. Reserve `<pre>` for actual code/commands only.
+**切勿使用`<pre>`标签来显示统计数据、摘要或视觉布局。**`<pre>`标签会导致文本以等宽字体显示，在移动设备上容易破坏对齐效果。**请仅将`<pre>`用于显示实际代码或命令。
 
-**For structured data, use emoji + bold + separators:**
+**对于结构化数据，建议使用表情符号、加粗文字和分隔符来组织内容：**
 
 ```
 ❌ BAD (wraps on mobile):
@@ -249,9 +248,9 @@ Long details go in expandable blocks.</blockquote>
 🗣️ <b>Top voices:</b> @handle1 · @handle2 · r/subreddit
 ```
 
-**Other patterns:**
+**其他格式示例：**
 
-Record cards:
+记录卡片：
 ```
 <b>Ruby</b>
 Birthday: Jun 16 · Age: 11
@@ -260,7 +259,7 @@ Birthday: Jun 16 · Age: 11
 Birthday: Oct 1 · Age: 8
 ```
 
-Bullet lists:
+项目列表：
 ```
 • <b>hzl-cli:</b> 1.12.0
 • <b>skill:</b> 1.0.6
@@ -268,46 +267,45 @@ Bullet lists:
 
 ---
 
-## Limits and Splitting
+## 限制与分割规则
 
-- **Message max:** 4,096 characters
-- **Caption max:** 1,024 characters
+- **消息长度上限：**4,096个字符。
+- **标题长度上限：**1,024个字符。
 
-**If formatted message exceeds 4,096 chars:**
-1. Split at section boundaries (blank lines between `<b>HEADING</b>` blocks)
-2. Each chunk must be valid HTML (don't split inside a tag)
-3. Send chunks sequentially with a 1-second delay between them
-4. First chunk gets the full heading; subsequent chunks get a continuation indicator: `<i>(continued)</i>`
+**如果格式化后的消息超过4,096个字符：**
+1. 在`<b>标题</b>标签之间的空白行处分割消息。
+2. 每个分割后的部分都必须是有效的HTML内容（不能在标签内部进行分割）。
+3. 分别发送各个部分，并在每次发送之间等待1秒。
+4. 第一个部分应包含完整的标题；后续部分需添加“（续）”的提示。
 
 ---
 
-## Error Handling
+## 错误处理
 
-**If Telegram API returns an error:**
+**如果Telegram API返回错误：**
 
-| Error | Action |
+| 错误类型 | 处理方式 |
 |-------|--------|
-| `Bad Request: can't parse entities` | HTML is malformed. Strip all HTML tags and resend as plain text. |
-| `Bad Request: message is too long` | Split per the rules above and retry. |
-| `Bad Request: message thread not found` | Retry without `message_thread_id` (sends to General). |
-| `Too Many Requests: retry after X` | Wait X seconds, then retry once. |
-| Any other error | Report the error back; don't retry. |
+| **请求错误：无法解析实体** | 删除所有HTML标签后，以纯文本形式重新发送消息。 |
+| **请求错误：消息过长** | 按上述规则分割消息并重新尝试。 |
+| **请求错误：未找到消息对应的聊天线程** | 不使用`message_thread_id`，直接发送消息到通用聊天频道。 |
+| **请求次数过多** | 等待X秒后重新尝试。 |
+| 其他错误** | 报告错误信息，不要再次尝试发送。 |
 
-**Fallback rule:** If HTML formatting fails twice, send as plain text rather than not sending at all. Delivery matters more than formatting.
+**备用方案：**如果HTML格式化失败两次，应直接以纯文本形式发送消息，而不是不发送任何内容。**消息的送达比格式正确性更为重要。
 
 ---
 
-## Sub-Agent Execution Checklist
+## 子代理执行流程
 
-When running as a sub-agent, follow this sequence:
-
-1. **Parse the task** — extract Bot account name, Chat ID, Thread ID (if any), skill path, and raw content
-2. **Read this SKILL.md** — load the formatting rules
-3. **Format the content** — apply HTML tags, structure pattern, style rules, mobile-friendly data display
-4. **Escape special chars** — `&` then `<` then `>` in text content only (not in your HTML tags)
-5. **Check length** — if >4,096 chars, split at section boundaries
-6. **Get bot token** — auto-detect config path, extract token for the specified account (error if not found)
-7. **Send via curl** — use the appropriate template (with/without thread ID)
-8. **Check response** — parse curl output for `"ok": true`
-9. **Handle errors** — follow the error handling table above
-10. **Report back** — reply with message_id on success, or error details on failure
+作为子代理运行时，请按照以下步骤操作：
+1. **解析任务参数**：提取机器人账户名称、聊天ID、主题ID（如有）、技能路径以及原始内容。
+2. **读取本文档（SKILL.md）**：加载格式化规则。
+3. **格式化内容**：应用HTML标签、结构规则和样式规则。
+4. **转义特殊字符**：仅在文本内容中转义`&`、`<`和`>`字符。
+5. **检查消息长度**：如果超过4,096个字符，按照规则进行分割。
+6. **获取机器人令牌**：自动检测配置文件中的路径，提取指定账户的令牌（若未找到令牌则报错）。
+7. **通过curl发送消息**：使用相应的模板（是否包含聊天线程ID取决于具体需求）。
+8. **检查响应结果**：检查curl返回的响应是否包含`"ok"`。
+9. **处理错误**：根据上述错误处理规则进行处理。
+10. **反馈结果**：成功时返回消息ID；失败时返回错误详细信息。

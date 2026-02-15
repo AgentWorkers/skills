@@ -1,29 +1,29 @@
 ---
 name: daily-review
 version: 1.0.0
-description: Comprehensive daily performance review with communication tracking, meeting analysis, output metrics, and focus time monitoring. Your AI performance coach.
+description: 全面的每日绩效评估，包括沟通记录、会议分析、输出指标以及专注时间的监控。您的AI绩效教练。
 author: henrino3
 tags: [productivity, performance, tracking, review, coach]
 ---
 
-# Daily Review Skill
+# 日常绩效回顾功能
 
-Generate comprehensive daily performance reviews with AI coaching insights.
+该功能利用人工智能技术生成全面的每日绩效报告，并提供相应的辅导建议。
 
-## Features
+## 功能列表
 
-| Feature | Source | Status |
-|---------|--------|--------|
-| Emails sent | Gmail API | ✅ |
-| Slack messages | Slack API | ✅ |
-| X.com mentions | Bird CLI | ✅ |
-| Meetings attended | Fireflies (speaker verified) | ✅ |
-| Git commits | git log | ✅ |
-| Docs modified | Google Drive API | ✅ |
-| Screen Time | macOS knowledgeC.db | ✅ |
-| ActivityWatch | AW API | ✅ |
+| 功能                | 来源                | 状态                |
+|------------------|------------------|------------------|
+| 发送的电子邮件       | Gmail API            | ✅                |
+| Slack消息             | Slack API            | ✅                |
+| X.com上的提及           | Bird CLI             | ✅                |
+| 参加的会议             | Fireflies（确认发言者身份）    | ✅                |
+| Git提交             | git log             | ✅                |
+| 修改的文档             | Google Drive API        | ✅                |
+| 屏幕使用时间         | macOS knowledgeC.db       | ✅                |
+| ActivityWatch         | AW API             | ✅                |
 
-## Usage
+## 使用方法
 
 ```bash
 # Run daily review for today
@@ -33,7 +33,7 @@ Generate comprehensive daily performance reviews with AI coaching insights.
 ~/clawd/skills/daily-review/scripts/daily-review.sh 2026-01-15
 ```
 
-## Sample Output
+## 示例输出
 
 ```
 🏆 Daily Performance Review - 2026-01-15
@@ -67,30 +67,30 @@ Generate comprehensive daily performance reviews with AI coaching insights.
   • Chrome: 45min
 ```
 
-## Requirements
+## 系统要求
 
-### APIs & Services
-- **Gmail**: Google Workspace service account or gog OAuth
-- **Slack**: Slack API token (user_token for search)
-- **Fireflies**: API key for meeting transcripts
-- **Google Drive**: Service account for docs tracking
+### 所需API与服务
+- **Gmail**: Google Workspace服务账户或gog OAuth认证
+- **Slack**: Slack API令牌（用于搜索功能）
+- **Fireflies**: 会议记录的API密钥
+- **Google Drive**: 用于跟踪文档变更的服务账户
 
-### Tools
-- **Bird CLI**: For X.com/Twitter (requires auth_token + ct0 cookies)
-- **ActivityWatch**: Local app tracking (http://localhost:5600)
+### 所需工具
+- **Bird CLI**: 用于处理X.com/Twitter数据（需要auth_token和ct0 cookies）
+- **ActivityWatch**: 用于记录用户活动的本地应用程序（http://localhost:5600）
 
-### macOS (for Screen Time)
-- SSH access to Mac
-- `get_screentime.py` script for knowledgeC.db queries
+### macOS（用于获取屏幕使用时间）
+- 需要通过SSH访问Mac电脑
+- 使用`get_screentime.py`脚本查询knowledgeC.db数据库中的数据
 
-## Installation
+## 安装步骤
 
-1. Copy skill to your clawd workspace:
+1. 将该功能复制到您的clawd工作空间：
 ```bash
 cp -r daily-review ~/clawd/skills/
 ```
 
-2. Install dependencies:
+2. 安装所需依赖项：
 ```bash
 # Bird CLI (on Mac)
 cd ~/Code && git clone https://github.com/steipete/bird.git
@@ -100,7 +100,7 @@ cd bird && npm install && npm run build:dist
 # Download from https://activitywatch.net/
 ```
 
-3. Configure secrets:
+3. 配置相关密钥：
 ```bash
 # Bird (X.com)
 cat > ~/clawd/secrets/bird.env << 'EOF'
@@ -115,14 +115,14 @@ echo "your_api_key" > ~/clawd/secrets/fireflies.key
 echo '{"user_token": "xoxp-xxx"}' > ~/clawd/secrets/slack-super-ada.json
 ```
 
-4. Add cron job for daily 09:00 review:
+4. 设置每日09:00自动执行审查任务的cron作业：
 ```bash
 clawdbot cron add --name "daily-review" --schedule "0 9 * * *"
 ```
 
-## Screen Time Query
+## 屏幕使用时间查询
 
-The skill queries macOS Screen Time directly from `knowledgeC.db`:
+该功能直接从`knowledgeC.db`数据库中获取Mac电脑的屏幕使用时间数据：
 
 ```python
 SELECT 
@@ -135,9 +135,9 @@ GROUP BY ZVALUESTRING
 ORDER BY seconds DESC
 ```
 
-## Fireflies Speaker Verification
+## Fireflies发言者身份验证
 
-Meetings are verified by checking if user actually spoke (not just invited):
+会议的有效性通过检查用户是否实际参与了发言（而不仅仅是被邀请）来确认：
 
 ```graphql
 {
@@ -148,8 +148,8 @@ Meetings are verified by checking if user actually spoke (not just invited):
 }
 ```
 
-Only meetings where `speaker_name` contains user's name are counted.
+只有`speaker_name`字段中包含用户姓名的会议才会被计入统计范围内。
 
-## License
+## 许可证
 
-MIT
+MIT许可证

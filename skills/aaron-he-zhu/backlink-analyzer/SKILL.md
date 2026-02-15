@@ -1,81 +1,82 @@
 ---
 name: backlink-analyzer
-description: Analyzes backlink profiles to understand link authority, identify toxic links, discover link building opportunities, and monitor competitor link acquisition. Essential for off-page SEO strategy.
+description: 分析反向链接的概况，以了解链接的权威性、识别有害链接、发现建立链接的机会，并监控竞争对手的链接获取情况。这对离站SEO策略至关重要。
 geo-relevance: "low"
 ---
 
-# Backlink Analyzer
+# 回链分析器
 
-This skill helps you analyze, monitor, and optimize your backlink profile. It identifies link quality, discovers opportunities, and tracks competitor link building activities.
+该技能可帮助您分析、监控和优化您的回链状况。它能识别链接的质量，发现潜在的机会，并追踪竞争对手的链接建设活动。
 
-## When to Use This Skill
+## 适用场景
 
-- Auditing your current backlink profile
-- Identifying toxic or harmful links
-- Discovering link building opportunities
-- Analyzing competitor backlink strategies
-- Monitoring new and lost links
-- Evaluating link quality for outreach
-- Preparing for link disavow
+- 审查当前的回链状况
+- 识别有害或不良链接
+- 发现链接建设的机会
+- 分析竞争对手的链接策略
+- 监控新增或丢失的链接
+- 评估用于外联的链接质量
+- 为链接撤销（disavow）做准备
 
-## What This Skill Does
+## 功能概述
 
-1. **Profile Analysis**: Comprehensive backlink profile overview
-2. **Quality Assessment**: Evaluates link authority and relevance
-3. **Toxic Link Detection**: Identifies harmful links
-4. **Competitor Analysis**: Compares link profiles across competitors
-5. **Opportunity Discovery**: Finds link building prospects
-6. **Trend Monitoring**: Tracks link acquisition over time
-7. **Disavow Guidance**: Helps create disavow files
+1. **回链状况分析**：提供全面的回链概况
+2. **质量评估**：评估链接的权威性和相关性
+3. **有害链接检测**：识别有害链接
+4. **竞争对手分析**：比较不同竞争对手的链接状况
+5. **机会发现**：寻找链接建设的潜在机会
+6. **趋势监控**：跟踪链接获取的变化
+7. **撤销指导**：协助生成链接撤销文件
 
-## How to Use
+## 使用方法
 
-### Analyze Your Profile
+### 分析您的回链状况
 
 ```
 Analyze backlink profile for [domain]
 ```
 
-### Find Opportunities
+### 发现链接建设机会
 
 ```
 Find link building opportunities by analyzing [competitor domains]
 ```
 
-### Detect Issues
+### 识别问题链接
 
 ```
 Check for toxic backlinks on [domain]
 ```
 
-### Compare Profiles
+### 比较竞争对手的回链状况
 
 ```
 Compare backlink profiles: [your domain] vs [competitor domains]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。
 
-**With ~~link database + ~~SEO tool connected:**
-Automatically pull comprehensive backlink profiles including referring domains, anchor text distribution, link quality metrics (DA/DR), link velocity, and toxic link detection from ~~link database. Competitor backlink data from ~~SEO tool for gap analysis.
+**当连接到 ~~链接数据库 + ~~SEO 工具时：**
+- 自动获取包括引用域名、锚文本分布、链接质量指标（DA/DR）、链接速度和有害链接检测在内的全面回链信息。
+- 从 ~~SEO 工具中获取竞争对手的回链数据，用于对比分析。
 
-**With manual data only:**
-Ask the user to provide:
-1. Backlink export CSV (with source domains, anchor text, link type)
-2. Referring domains list with authority metrics
-3. Competitor domains for comparison
-4. Recent link gains/losses if tracking changes
-5. Any known toxic or spammy links
+**仅使用手动数据时：**
+- 要求用户提供：
+  - 回链数据的 CSV 文件（包含来源域名、锚文本、链接类型）
+  - 带有权威性指标的引用域名列表
+  - 用于对比的竞争对手域名
+  - 最近的链接增减情况（用于追踪变化）
+  - 任何已知的有害或垃圾链接
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+**使用提供的数据进行完整分析。** 在输出中明确标注哪些指标来自自动化收集，哪些来自用户提供的数据。
 
-## Instructions
+## 操作步骤
 
-When a user requests backlink analysis:
+当用户请求回链分析时：
 
-1. **Generate Profile Overview**
+1. **生成回链概况**
 
    ```markdown
    ## Backlink Profile Overview
@@ -115,7 +116,7 @@ When a user requests backlink analysis:
    **Profile Health Score**: [X]/100
    ```
 
-2. **Analyze Link Quality**
+2. **分析链接质量**
 
    ```markdown
    ## Link Quality Analysis
@@ -163,7 +164,7 @@ When a user requests backlink analysis:
    | [Country 3] | [X] | [Y]% |
    ```
 
-3. **Identify Toxic Links**
+3. **识别有害链接**
 
    ```markdown
    ## Toxic Link Analysis
@@ -198,9 +199,9 @@ When a user requests backlink analysis:
    
    **Domains to disavow** ([X] total):
    ```
-   domain:[spam-site-1.com]
-   domain:[spam-site-2.com]
-   domain:[link-farm.com]
+   域名：[spam-site-1.com]
+   域名：[spam-site-2.com]
+   域名：[link-farm.com]
    ```
    
    **Individual URLs to disavow** ([X] total):
@@ -210,7 +211,7 @@ When a user requests backlink analysis:
    ```
    ```
 
-4. **Compare Against Competitors**
+4. **与竞争对手对比**
 
    ```markdown
    ## Competitive Backlink Analysis
@@ -252,7 +253,7 @@ When a user requests backlink analysis:
    **Insight**: [What content types attract most links in this niche]
    ```
 
-5. **Find Link Building Opportunities**
+5. **寻找链接建设机会**
 
    ```markdown
    ## Link Building Opportunities
@@ -308,7 +309,7 @@ When a user requests backlink analysis:
    | Guest posts | High | High | ⭐⭐⭐ |
    ```
 
-6. **Track Link Changes**
+6. **跟踪链接变化**
 
    ```markdown
    ## Link Change Tracking
@@ -344,7 +345,7 @@ When a user requests backlink analysis:
    | [domain 2] | High | Update content they linked to |
    ```
 
-7. **Generate Backlink Report**
+7. **生成回链报告**
 
    ```markdown
    # Backlink Analysis Report
@@ -418,39 +419,39 @@ When a user requests backlink analysis:
    | Toxic link % | [X]% | <5% |
    ```
 
-### CITE Item Mapping
+### CITE 评分系统
 
-When running `domain-authority-auditor` after this analysis, the following data feeds directly into CITE scoring:
+在执行 `domain-authority-auditor` 分析后，以下数据将直接用于 CITE 评分：
 
-| Backlink Metric | CITE Item | Dimension |
+| 回链指标 | CITE 评分项 | 评分维度 |
 |----------------|-----------|-----------|
-| Referring domains count | C01 (Referring Domain Volume) | Citation |
-| Authority distribution (DA breakdown) | C02 (Referring Domains Quality) | Citation |
-| Link velocity | C04 (Link Velocity) | Citation |
-| Geographic distribution | C10 (Link Source Diversity) | Citation |
-| Dofollow/Nofollow ratio | T02 (Dofollow Ratio Normality) | Trust |
-| Toxic link analysis | T01 (Link Profile Naturalness), T03 (Link-Traffic Coherence) | Trust |
-| Competitive link intersection | T05 (Profile Uniqueness) | Trust |
+| 引用域名数量 | C01（引用域名数量） | 引用次数 |
+| 权威性分布（DA 分析） | C02（引用域名的质量） | 引用次数 |
+| 链接速度 | C04（链接速度） | 引用次数 |
+| 地理分布 | C10（链接来源多样性） | 引用次数 |
+| 跟随/不跟随链接比例 | T02（跟随链接比例的合理性） | 信任度 |
+| 有害链接分析 | T01（链接内容的自然性）、T03（链接流量的连贯性） | 信任度 |
+| 竞争对手链接的交集 | T05（链接状况的独特性） | 信任度 |
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Target domain backlink data is complete and current
-- [ ] Competitor domains specified for comparison analysis
-- [ ] Backlink data includes necessary fields (source domain, anchor text, link type)
-- [ ] Authority metrics available (DA/DR or equivalent)
+### 输入验证
+- [ ] 目标域名的回链数据完整且最新
+- [ ] 指定了用于对比分析的竞争对手域名
+- [ ] 回链数据包含必要的字段（来源域名、锚文本、链接类型）
+- [ ] 提供了权威性指标（DA/DR 或等效指标）
 
-### Output Validation
-- [ ] Every metric cites its data source and collection date
-- [ ] Toxic link assessments include risk justification
-- [ ] Link opportunity recommendations are specific and actionable
-- [ ] Source of each data point clearly stated (~~link database data, ~~SEO tool data, user-provided, or estimated)
+### 输出验证
+- [ ] 每个指标都标明了数据来源和收集日期
+- [ ] 有害链接的评估包含风险说明
+- [ ] 链接建设建议具体且可操作
+- [ ] 明确标注了每个数据点的来源（链接数据库数据、SEO 工具数据、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Find link building opportunities by analyzing HubSpot, Salesforce, and Mailchimp"
+**用户请求：** “通过分析 HubSpot、Salesforce 和 Mailchimp 来寻找链接建设机会”
 
-**Output**:
+**输出：**
 
 ```markdown
 ## Link Intersection Analysis
@@ -489,107 +490,100 @@ If you acquire links from top 10 opportunities:
 - Estimated ranking impact: +2-5 positions for competitive keywords
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Quality over quantity** - One DA 80 link beats ten DA 20 links
-2. **Monitor regularly** - Catch lost links and toxic links early
-3. **Study competitors** - Learn from their link building success
-4. **Diversify your profile** - Mix of link types and anchors
-5. **Disavow carefully** - Only disavow clearly toxic links
+1. **质量胜过数量** — 一个 DA 80 的链接比十个 DA 20 的链接更有价值
+2. **定期监控** — 及时发现丢失或有害的链接
+3. **研究竞争对手** — 学习他们的链接建设方法
+4. **多样化链接来源** — 混合使用不同类型和内容的链接
+5. **谨慎处理链接撤销** — 仅撤销明显有害的链接
 
-## Link Quality Assessment Framework
+## 链接质量评估框架
 
-### Link Quality Scoring Matrix
+### 链接质量评分矩阵
 
-| Factor | Weight | Score 1 (Low) | Score 3 (Medium) | Score 5 (High) |
+| 评估因素 | 权重 | 评分 1（低） | 评分 3（中等） | 评分 5（高） |
 |--------|--------|--------------|------------------|----------------|
-| Domain Authority | 25% | DR <20 | DR 20-50 | DR 50+ |
-| Topical Relevance | 25% | Unrelated niche | Broadly related | Same niche/topic |
-| Traffic to Page | 15% | No traffic | Some traffic | Significant traffic |
-| Link Position | 15% | Footer/sidebar | Body (generic) | Body (contextual, editorial) |
-| Anchor Text | 10% | Generic/naked URL | Partial match | Descriptive, natural |
-| Follow Status | 10% | Nofollow/UGC | Sponsored (disclosed) | Dofollow, editorial |
+| 域名权威性 | 25% | DR <20 | DR 20-50 | DR 50+ |
+| 主题相关性 | 25% | 完全不相关 | 部分相关 | 完全相关 |
+| 页面流量 | 15% | 无流量 | 有一定流量 | 流量较大 |
+| 链接位置 | 15% | 底部/侧边栏 | 正文（通用内容） | 正文（相关/编辑内容） |
+| 锚文本 | 10% | 通用/裸露的 URL | 部分匹配 | 描述性且自然 |
+| 链接状态 | 10% | 不跟随/用户生成内容 | 赞助链接（明确标注） | 跟随链接 |
 
-**Link Quality Score** = Sum(Factor x Weight) — High (4-5), Medium (2.5-3.9), Low (<2.5)
+**链接质量总分** = 各因素得分之和 × 权重
 
-### Toxic Link Identification Criteria
+### 有害链接识别标准
 
-| Red Flag | Risk Level | Action |
+| 危险信号 | 风险等级 | 应对措施 |
 |----------|-----------|--------|
-| From PBN (Private Blog Network) | Critical | Disavow |
-| Paid link without nofollow | Critical | Contact webmaster, then disavow |
-| From hacked/spam site | Critical | Disavow |
-| Exact match anchor from low-quality site | High | Monitor, consider disavow |
-| From link farm / directory network | High | Disavow |
-| From irrelevant foreign language site | Medium | Monitor |
-| Sitewide footer/sidebar link | Medium | Request removal or nofollow |
-| From scraper/auto-generated content | Medium | Disavow |
-| Reciprocal link schemes | Low-Medium | Reduce reciprocal ratio |
+| 来自私人博客网络（PBN）的链接 | 高风险 | 立即撤销 |
+| 付费链接但标记为“不跟随” | 高风险 | 联系网站管理员后撤销 |
+| 来自被黑的/垃圾网站的链接 | 高风险 | 立即撤销 |
+| 来自低质量网站的完全匹配锚文本链接 | 高风险 | 监控并考虑撤销 |
+| 来自链接农场/目录网络的链接 | 高风险 | 立即撤销 |
+| 来自无关外语网站的链接 | 中等风险 | 监控 |
+| 网站全站范围的底部/侧边栏链接 | 中等风险 | 请求移除或标记为“不跟随” |
+| 来自爬虫/自动生成内容的链接 | 中等风险 | 立即撤销 |
+| 互惠链接策略 | 低至中等风险 | 降低互惠链接的比例 |
 
-## Link Building Strategy Matrix
+## 链接建设策略矩阵
 
-### Strategy Comparison
+### 策略比较
 
-| Strategy | Difficulty | Scalability | Link Quality | Time to Results | Best For |
+| 策略 | 难度 | 可扩展性 | 链接质量 | 成效时间 | 适用场景 |
 |----------|-----------|-------------|-------------|-----------------|---------|
-| **Guest Posting** | Medium | Medium | Medium-High | 1-3 months | Building relationships + links |
-| **Digital PR** | High | High | Very High | 2-6 months | Brand authority + high-DR links |
-| **Broken Link Building** | Low-Medium | Medium | Medium | 1-2 months | Quick wins at scale |
-| **Resource Page Links** | Low | Low | Medium | 1-2 months | Niche-relevant links |
-| **HARO/Source Pitching** | Medium | Medium | High | 1-3 months | Authority + press mentions |
-| **Original Research** | High | Very High | Very High | 3-6 months | Long-term link magnet |
-| **Free Tools/Calculators** | Very High | Very High | Very High | 6-12 months | Passive link acquisition |
-| **Skyscraper Technique** | Medium | Low | Medium-High | 2-4 months | Outranking specific content |
-| **Unlinked Mentions** | Low | Low | High | 1-2 weeks | Converting existing brand mentions |
-| **Community Engagement** | Low | Low | Low-Medium | Ongoing | Niche authority building |
+| **客座投稿** | 中等 | 中等 | 中等至高 | 1-3 个月 | 建立关系并获取链接 |
+| **数字公关** | 高 | 高 | 非常高 | 2-6 个月 | 增强品牌权威性和高质量链接 |
+| **修复失效链接** | 低至中等 | 中等 | 中等 | 1-2 个月 | 快速获取链接 |
+| **资源页面链接** | 低 | 低 | 中等 | 1-2 个月 | 与主题相关的链接 |
+| **HARO/主动请求链接** | 中等 | 中等 | 高 | 1-3 个月 | 增强权威性 |
+| **原创研究** | 高 | 非常高 | 非常高 | 3-6 个月 | 长期获取高质量链接 |
+| **免费工具/计算器** | 非常高 | 非常高 | 6-12 个月 | 被动获取链接 |
+| **Skyscraper 技巧** | 中等 | 低 | 中等至高 | 2-4 个月 | 提升特定内容的排名 |
+| **未链接的提及** | 低 | 低 | 高 | 1-2 周 | 将现有品牌提及转化为链接 |
+| **社区互动** | 低 | 低 | 低至中等 | 持续进行 | 建立领域权威性 |
 
-### Link Building Cadence
+## 链接建设节奏
 
-| Site Stage | Monthly Link Target | Strategy Focus |
+| 网站阶段 | 每月目标链接数量 | 策略重点 |
 |-----------|-------------------|---------------|
-| New site (0-6 months) | 5-10 quality links | Guest posts, resource pages, HARO |
-| Growing (6-18 months) | 10-25 quality links | Digital PR, original research, skyscraper |
-| Established (18+ months) | Maintenance + strategic | Passive from content, digital PR campaigns |
+| 新网站（0-6 个月） | 5-10 个高质量链接 | 客座投稿、资源页面、HARO |
+| 发展中网站（6-18 个月） | 10-25 个高质量链接 | 数字公关、原创研究 |
+| 成熟网站（18 个月以上） | 维护现有链接 + 战略性链接 | 通过内容或数字公关获取链接 |
 
-## Outreach Best Practices
+## 外联最佳实践
 
-### Email Outreach Framework
+### 邮件外联模板
 
-**Subject Line Formulas:**
-- "Quick question about [their article title]"
-- "Resource for your [topic] page"
-- "[Mutual connection] suggested I reach out"
-- "Found a broken link on [their page]"
+**邮件主题示例：**
+- “关于 [他们的文章标题] 的快速问题”
+- “[您的 [主题] 页面的相关资源”
+- “[共同联系人] 建议我与您联系”
+- “在 [他们的页面] 上发现了一个失效链接”
 
-**Email Structure:**
-1. Personal hook (reference their specific content — prove you read it)
-2. Value proposition (what's in it for them, not you)
-3. The ask (specific, easy to act on)
-4. Social proof (brief — one line max)
-5. Easy opt-out (no pressure)
+**邮件结构：**
+1. 个人化的开场白（提及他们的具体内容——证明您看过该内容）
+2. 提供价值（对对方的好处，而非对您的好处）
+3. 提出具体请求（明确且易于执行）
+4. 提供社交证明（简短说明）
+5. 提供便捷的退订方式（不施加压力）
 
-### Outreach Response Rate Benchmarks
+### 外联响应率参考
 
-| Approach | Average Response Rate | Average Link Win Rate |
+| 方法 | 平均响应率 | 平均链接获取率 |
 |----------|---------------------|---------------------|
-| Broken link building | 8-12% | 3-5% |
-| Guest post pitching | 5-10% | 2-4% |
-| Resource page outreach | 6-10% | 2-4% |
-| Unlinked mention | 15-25% | 10-15% |
-| HARO pitching | 3-8% | 1-3% |
-| Digital PR campaign | 5-15% | 2-8% |
+| 修复失效链接 | 8-12% | 3-5% |
+| 客座投稿请求 | 5-10% | 2-4% |
+| 资源页面外联 | 6-10% | 2-4% |
+| 未链接的提及 | 15-25% | 10-15% |
+| HARO 请求 | 3-8% | 1-3% |
+| 数字公关活动 | 5-15% | 2-8% |
 
-## Reference Materials
+## 参考资料
 
-- [Link Quality Rubric](./references/link-quality-rubric.md) — Quality scoring matrix with weighted factors and toxic link identification criteria
-- [Outreach Templates](./references/outreach-templates.md) — Email frameworks, subject line formulas, and response rate benchmarks
-
-## Related Skills
-
-- [domain-authority-auditor](../../cross-cutting/domain-authority-auditor/) — Backlink data feeds directly into CITE C dimension; run after this analysis for full domain scoring
-- [competitor-analysis](../../research/competitor-analysis/) — Full competitor analysis
-- [content-gap-analysis](../../research/content-gap-analysis/) — Create linkable content
-- [alert-manager](../alert-manager/) — Set up link alerts
-- [performance-reporter](../performance-reporter/) — Include in reports
-- [entity-optimizer](../../cross-cutting/entity-optimizer/) — Branded backlinks strengthen entity signals
-
+- [链接质量评分标准](./references/link-quality-rubric.md) — 包含评分因素和有害链接识别标准
+- [外联模板](./references/outreach-templates.md) — 邮件模板、主题示例和响应率参考
+- [警报管理器](../alert-manager/) — 设置链接警报
+- [绩效报告器](../performance-reporter/) — 将分析结果纳入报告
+- [实体优化器](../entity-optimizer/) — 增强品牌的链接权威性

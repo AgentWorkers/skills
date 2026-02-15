@@ -13,10 +13,9 @@ version: 2.7.6
 
 # Turborepo
 
-Build system for JavaScript/TypeScript monorepos. Caches task outputs and runs tasks in parallel based on dependency graph.
+Turborepo 是一个专为 JavaScript/TypeScript 单仓库（monorepo）设计的构建系统。它能够缓存任务输出，并根据依赖关系图（dependency graph）并行执行任务。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -24,28 +23,26 @@ Build system for JavaScript/TypeScript monorepos. Caches task outputs and runs t
 npx clawhub@latest install turborepo
 ```
 
+## 必须遵守的规则：
 
-## NEVER
+- **绝对不要** 创建全局任务（root tasks）——每个包的 `package.json` 中都应创建包级别的任务。
+- **绝对不要** 在代码中使用 `turbo <task>` 的简写形式——应在 `package.json` 和持续集成（CI）脚本中使用 `turbo run <task>`。
+- **绝对不要** 直接运行任务，而应通过 `turbo run` 来执行任务。
+- **绝对不要** 使用 `&&` 来链接多个 `turbo` 任务——应使用 `dependsOn` 来管理任务的依赖关系。
+- **绝对不要** 使用 `--parallel` 标志——应正确配置 `dependsOn`。
+- **绝对不要** 将 `.env` 文件放在仓库根目录下——应使用包级别的 `.env` 文件来管理环境变量。
+- **绝对不要** 在任务输入中使用 `../`——应使用 `$TURBO_ROOT$/path` 来引用仓库根目录下的文件。
 
-- **NEVER create root tasks** - Always create package-level tasks in each package's `package.json`
-- **NEVER use `turbo <task>` shorthand in code** - Use `turbo run <task>` in package.json and CI
-- **NEVER bypass turbo** - Root scripts must delegate via `turbo run`, not run tasks directly
-- **NEVER chain turbo tasks with `&&`** - Let turbo orchestrate dependencies via `dependsOn`
-- **NEVER use `--parallel` flag** - Configure `dependsOn` correctly instead
-- **NEVER put `.env` at repo root** - Use package-level `.env` files for clarity
-- **NEVER use `../` in inputs** - Use `$TURBO_ROOT$/path` for repo root files
+## 重要提示：使用包级别任务，而非全局任务
 
-## IMPORTANT: Package Tasks, Not Root Tasks
+**切勿创建全局任务。始终使用包级别任务。**
 
-**DO NOT create Root Tasks. ALWAYS create package tasks.**
+在创建任务、脚本或构建流程时，必须遵循以下步骤：
+1. 将相关脚本添加到每个包的 `package.json` 中。
+2. 在全局的 `turbo.json` 中注册该任务。
+3. `package.json` 中的任务执行应通过 `turbo run <task>` 来触发。
 
-When creating tasks/scripts/pipelines, you MUST:
-
-1. Add the script to each relevant package's `package.json`
-2. Register the task in root `turbo.json`
-3. Root `package.json` only delegates via `turbo run <task>`
-
-**DO NOT** put task logic in root `package.json`. This defeats Turborepo's parallelization.
+**切勿** 将任务逻辑放在全局 `package.json` 中，因为这会破坏 Turborepo 的并行执行机制。
 
 ```json
 // DO THIS: Scripts in each package
@@ -93,11 +90,11 @@ When creating tasks/scripts/pipelines, you MUST:
 }
 ```
 
-Root Tasks (`//#taskname`) are ONLY for tasks that truly cannot exist in packages (rare).
+全局任务（以 `#taskname` 开头）仅用于那些确实无法在包内部实现的任务（这种情况较为罕见）。
 
-## Secondary Rule: `turbo run` vs `turbo`
+## 其他规则：
 
-**Always use `turbo run` when the command is written into code:**
+- **当命令直接写在代码中时，始终使用 `turbo run`：**
 
 ```json
 // package.json - ALWAYS "turbo run"
@@ -108,167 +105,26 @@ Root Tasks (`//#taskname`) are ONLY for tasks that truly cannot exist in package
 }
 ```
 
-```yaml
-# CI workflows - ALWAYS "turbo run"
-- run: turbo run build --affected
-```
+**`turbo <tasks>` 的简写形式** 仅适用于人类或自动化工具直接在终端中执行的单次性命令。切勿在 `package.json`、CI 脚本或构建流程中使用 `turbo build`。
 
-**The shorthand `turbo <tasks>` is ONLY for one-off terminal commands** typed directly by humans or agents. Never write `turbo build` into package.json, CI, or scripts.
+## 常见问题解答：
 
-## Quick Decision Trees
+- **“我需要配置一个任务”**：请参考 [configuration/README.md](./references/configuration/README.md)。
+- **“我的缓存不起作用”**：请检查任务是否正确设置了缓存策略。
+- **“我只想运行已更改的包”**：可以使用 `--affected` 标志来仅运行已更改的包。
+- **“我想过滤包”**：请参考 [configuration/package-configurations](./references/configuration/package-configurations)。
+- **“环境变量没有生效”**：请确保环境变量被正确配置。
+- **“我需要设置持续集成（CI）”**：请参考相关文档进行配置。
+- **“我想在开发过程中监控文件变化”**：请参考相关文档了解如何实现实时监控。
+- **“我需要创建/组织仓库结构”**：请参考相关文档来构建合适的仓库结构。
+- **“如何组织我的单仓库？”**：请参考相关文档来设计合理的仓库结构。
+- **“我想强制执行特定的架构规则”**：请参考相关文档来确保架构的一致性。
 
-### "I need to configure a task"
+## 需避免的错误用法：
 
-```
-Configure a task?
-├─ Define task dependencies → references/configuration/tasks.md
-├─ Lint/check-types (parallel + caching) → Use Transit Nodes pattern (see below)
-├─ Specify build outputs → references/configuration/tasks.md#outputs
-├─ Handle environment variables → references/environment/README.md
-├─ Set up dev/watch tasks → references/configuration/tasks.md#persistent
-├─ Package-specific config → references/configuration/README.md#package-configurations
-└─ Global settings (cacheDir, daemon) → references/configuration/global-options.md
-```
-
-### "My cache isn't working"
-
-```
-Cache problems?
-├─ Tasks run but outputs not restored → Missing `outputs` key
-├─ Cache misses unexpectedly → references/caching/gotchas.md
-├─ Need to debug hash inputs → Use --summarize or --dry
-├─ Want to skip cache entirely → Use --force or cache: false
-├─ Remote cache not working → references/caching/remote-cache.md
-└─ Environment causing misses → references/environment/gotchas.md
-```
-
-### "I want to run only changed packages"
-
-```
-Run only what changed?
-├─ Changed packages + dependents (RECOMMENDED) → turbo run build --affected
-├─ Custom base branch → --affected --affected-base=origin/develop
-├─ Manual git comparison → --filter=...[origin/main]
-└─ See all filter options → references/filtering/README.md
-```
-
-**`--affected` is the primary way to run only changed packages.** It automatically compares against the default branch and includes dependents.
-
-### "I want to filter packages"
-
-```
-Filter packages?
-├─ Only changed packages → --affected (see above)
-├─ By package name → --filter=web
-├─ By directory → --filter=./apps/*
-├─ Package + dependencies → --filter=web...
-├─ Package + dependents → --filter=...web
-└─ Complex combinations → references/filtering/patterns.md
-```
-
-### "Environment variables aren't working"
-
-```
-Environment issues?
-├─ Vars not available at runtime → Strict mode filtering (default)
-├─ Cache hits with wrong env → Var not in `env` key
-├─ .env changes not causing rebuilds → .env not in `inputs`
-├─ CI variables missing → references/environment/gotchas.md
-└─ Framework vars (NEXT_PUBLIC_*) → Auto-included via inference
-```
-
-### "I need to set up CI"
-
-```
-CI setup?
-├─ GitHub Actions → references/ci/github-actions.md
-├─ Vercel deployment → references/ci/vercel.md
-├─ Remote cache in CI → references/caching/remote-cache.md
-├─ Only build changed packages → --affected flag
-├─ Skip unnecessary builds → turbo-ignore (references/cli/commands.md)
-└─ Skip container setup when no changes → turbo-ignore
-```
-
-### "I want to watch for changes during development"
-
-```
-Watch mode?
-├─ Re-run tasks on change → turbo watch (references/watch/README.md)
-├─ Dev servers with dependencies → Use `with` key (references/configuration/tasks.md#with)
-├─ Restart dev server on dep change → Use `interruptible: true`
-└─ Persistent dev tasks → Use `persistent: true`
-```
-
-### "I need to create/structure a package"
-
-```
-Package creation/structure?
-├─ Create an internal package → references/best-practices/packages.md
-├─ Repository structure → references/best-practices/structure.md
-├─ Dependency management → references/best-practices/dependencies.md
-├─ Best practices overview → references/best-practices/README.md
-├─ JIT vs Compiled packages → references/best-practices/packages.md#compilation-strategies
-└─ Sharing code between apps → references/best-practices/README.md#package-types
-```
-
-### "How should I structure my monorepo?"
-
-```
-Monorepo structure?
-├─ Standard layout (apps/, packages/) → references/best-practices/README.md
-├─ Package types (apps vs libraries) → references/best-practices/README.md#package-types
-├─ Creating internal packages → references/best-practices/packages.md
-├─ TypeScript configuration → references/best-practices/structure.md#typescript-configuration
-├─ ESLint configuration → references/best-practices/structure.md#eslint-configuration
-├─ Dependency management → references/best-practices/dependencies.md
-└─ Enforce package boundaries → references/boundaries/README.md
-```
-
-### "I want to enforce architectural boundaries"
-
-```
-Enforce boundaries?
-├─ Check for violations → turbo boundaries
-├─ Tag packages → references/boundaries/README.md#tags
-├─ Restrict which packages can import others → references/boundaries/README.md#rule-types
-└─ Prevent cross-package file imports → references/boundaries/README.md
-```
-
-## Critical Anti-Patterns
-
-### Using `turbo` Shorthand in Code
-
-**`turbo run` is recommended in package.json scripts and CI pipelines.** The shorthand `turbo <task>` is intended for interactive terminal use.
-
-```json
-// WRONG - using shorthand in package.json
-{
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev"
-  }
-}
-
-// CORRECT
-{
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev"
-  }
-}
-```
-
-```yaml
-# WRONG - using shorthand in CI
-- run: turbo build --affected
-
-# CORRECT
-- run: turbo run build --affected
-```
-
-### Root Scripts Bypassing Turbo
-
-Root `package.json` scripts MUST delegate to `turbo run`, not run tasks directly.
+- **在代码中使用 `turbo` 的简写形式**：建议在 `package.json` 脚本和 CI 流程中使用 `turbo run`，而 `turbo <task>` 仅用于终端交互。
+- **全局脚本直接执行任务**：全局 `package.json` 脚本必须通过 `turbo run` 来触发任务。
+- **使用 `&&` 来链接多个 `turbo` 任务**：应让 Turborepo 自动管理任务的依赖关系。
 
 ```json
 // WRONG - bypasses turbo entirely
@@ -288,646 +144,42 @@ Root `package.json` scripts MUST delegate to `turbo run`, not run tasks directly
 }
 ```
 
-### Using `&&` to Chain Turbo Tasks
+**注意：`prebuild` 脚本会手动构建依赖关系**  
+如果 `package.json` 中声明了依赖关系（例如 `@repo/types: "workspace:*"`），则无需使用 `prebuild` 脚本，因为 Turborepo 会自动处理这些依赖关系。如果未声明依赖关系，需要手动将依赖关系添加到 `package.json` 中（例如 `@repo/types: "workspace:*"`），然后再移除 `prebuild` 脚本。
 
-Don't chain turbo tasks with `&&`. Let turbo orchestrate.
+**关键提示：** `^build` 标志仅会在包含该依赖关系的包中触发构建。如果没有依赖关系声明，Turborepo 不会自动执行构建。
 
-```json
-// WRONG - turbo task not using turbo run
-{
-  "scripts": {
-    "changeset:publish": "bun build && changeset publish"
-  }
-}
+### 注意事项：
 
-// CORRECT
-{
-  "scripts": {
-    "changeset:publish": "turbo run build && changeset publish"
-  }
-}
-```
+- **`globalDependencies` 的使用**：`globalDependencies` 会影响所有包中的任务，因此请确保其配置是具体的。
+- **重复的配置**：如果多个任务有相同的配置，可以将其提取出来并共享，以减少重复代码。
+- **`globalEnv` 和 `globalDependencies` 的使用**：`globalEnv` 用于影响所有任务，适用于全局配置；`env` 和 `inputs` 用于特定任务的配置。
 
-### `prebuild` Scripts That Manually Build Dependencies
+### 注意：大型 `env` 数组**  
+即使包含 50 多个环境变量，也不属于问题——这通常表示用户已经仔细声明了构建所需的环境依赖关系。
 
-Scripts like `prebuild` that manually build other packages bypass Turborepo's dependency graph.
+### 使用 `--parallel` 标志**  
+`--parallel` 标志会绕过 Turborepo 的依赖关系管理机制。如果需要并行执行任务，应正确配置 `dependsOn`。
 
-```json
-// WRONG - manually building dependencies
-{
-  "scripts": {
-    "prebuild": "cd ../../packages/types && bun run build && cd ../utils && bun run build",
-    "build": "next build"
-  }
-}
-```
+### 包级别的配置**  
+当多个包需要不同的任务配置时，应在每个包的 `turbo.json` 中设置相应的配置，而不是在全局 `turbo.json` 中进行覆盖。
 
-**However, the fix depends on whether workspace dependencies are declared:**
+### 使用 `../` 的注意事项**  
+不要使用相对路径（如 `../`）来引用仓库根目录外的文件，应使用 `$TURBO_ROOT$/path`。
 
-1. **If dependencies ARE declared** (e.g., `"@repo/types": "workspace:*"` in package.json), remove the `prebuild` script. Turbo's `dependsOn: ["^build"]` handles this automatically.
+### 关于缓存输出的问题**  
+在报告缓存输出缺失的问题之前，请先确认任务实际是否产生了输出文件。例如，某些构建工具（如 tsc）即使不生成 JavaScript 文件，也可能产生缓存文件（请参考相关文档）。
 
-2. **If dependencies are NOT declared**, the `prebuild` exists because `^build` won't trigger without a dependency relationship. The fix is to:
-   - Add the dependency to package.json: `"@repo/types": "workspace:*"`
-   - Then remove the `prebuild` script
+## 其他相关文档：  
+- [configuration/README.md](./references/configuration/README.md)：Turborepo 的基本配置和包级别配置。
+- [caching/README.md](./references/caching/README.md)：缓存机制的详细信息。
+- [environment/README.md](./references/environment/README.md)：环境变量的使用和配置。
+- [filtering/README.md](./references/filtering/README.md)：过滤规则的介绍。
 
-```json
-// CORRECT - declare dependency, let turbo handle build order
-// package.json
-{
-  "dependencies": {
-    "@repo/types": "workspace:*",
-    "@repo/utils": "workspace:*"
-  },
-  "scripts": {
-    "build": "next build"
-  }
-}
+## 参考链接：  
+- [ci/README.md](./references/ci/README.md)：持续集成（CI）的相关文档。
+- [cli/README.md](./references/cli/README.md)：Turborepo 的命令行接口（CLI）使用指南。
+- [best-practices/README.md](./references/best-practices/README.md)：单仓库的最佳实践。
 
-// turbo.json
-{
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"]
-    }
-  }
-}
-```
-
-**Key insight:** `^build` only runs build in packages listed as dependencies. No dependency declaration = no automatic build ordering.
-
-### Overly Broad `globalDependencies`
-
-`globalDependencies` affects ALL tasks in ALL packages. Be specific.
-
-```json
-// WRONG - heavy hammer, affects all hashes
-{
-  "globalDependencies": ["**/.env.*local"]
-}
-
-// BETTER - move to task-level inputs
-{
-  "globalDependencies": [".env"],
-  "tasks": {
-    "build": {
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**"]
-    }
-  }
-}
-```
-
-### Repetitive Task Configuration
-
-Look for repeated configuration across tasks that can be collapsed. Turborepo supports shared configuration patterns.
-
-```json
-// WRONG - repetitive env and inputs across tasks
-{
-  "tasks": {
-    "build": {
-      "env": ["API_URL", "DATABASE_URL"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"]
-    },
-    "test": {
-      "env": ["API_URL", "DATABASE_URL"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"]
-    },
-    "dev": {
-      "env": ["API_URL", "DATABASE_URL"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-
-// BETTER - use globalEnv and globalDependencies for shared config
-{
-  "globalEnv": ["API_URL", "DATABASE_URL"],
-  "globalDependencies": [".env*"],
-  "tasks": {
-    "build": {},
-    "test": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-```
-
-**When to use global vs task-level:**
-
-- `globalEnv` / `globalDependencies` - affects ALL tasks, use for truly shared config
-- Task-level `env` / `inputs` - use when only specific tasks need it
-
-### NOT an Anti-Pattern: Large `env` Arrays
-
-A large `env` array (even 50+ variables) is **not** a problem. It usually means the user was thorough about declaring their build's environment dependencies. Do not flag this as an issue.
-
-### Using `--parallel` Flag
-
-The `--parallel` flag bypasses Turborepo's dependency graph. If tasks need parallel execution, configure `dependsOn` correctly instead.
-
-```bash
-# WRONG - bypasses dependency graph
-turbo run lint --parallel
-
-# CORRECT - configure tasks to allow parallel execution
-# In turbo.json, set dependsOn appropriately (or use transit nodes)
-turbo run lint
-```
-
-### Package-Specific Task Overrides in Root turbo.json
-
-When multiple packages need different task configurations, use **Package Configurations** (`turbo.json` in each package) instead of cluttering root `turbo.json` with `package#task` overrides.
-
-```json
-// WRONG - root turbo.json with many package-specific overrides
-{
-  "tasks": {
-    "test": { "dependsOn": ["build"] },
-    "@repo/web#test": { "outputs": ["coverage/**"] },
-    "@repo/api#test": { "outputs": ["coverage/**"] },
-    "@repo/utils#test": { "outputs": [] },
-    "@repo/cli#test": { "outputs": [] },
-    "@repo/core#test": { "outputs": [] }
-  }
-}
-
-// CORRECT - use Package Configurations
-// Root turbo.json - base config only
-{
-  "tasks": {
-    "test": { "dependsOn": ["build"] }
-  }
-}
-
-// packages/web/turbo.json - package-specific override
-{
-  "extends": ["//"],
-  "tasks": {
-    "test": { "outputs": ["coverage/**"] }
-  }
-}
-
-// packages/api/turbo.json
-{
-  "extends": ["//"],
-  "tasks": {
-    "test": { "outputs": ["coverage/**"] }
-  }
-}
-```
-
-**Benefits of Package Configurations:**
-
-- Keeps configuration close to the code it affects
-- Root turbo.json stays clean and focused on base patterns
-- Easier to understand what's special about each package
-- Works with `$TURBO_EXTENDS$` to inherit + extend arrays
-
-**When to use `package#task` in root:**
-
-- Single package needs a unique dependency (e.g., `"deploy": { "dependsOn": ["web#build"] }`)
-- Temporary override while migrating
-
-See `references/configuration/README.md#package-configurations` for full details.
-
-### Using `../` to Traverse Out of Package in `inputs`
-
-Don't use relative paths like `../` to reference files outside the package. Use `$TURBO_ROOT$` instead.
-
-```json
-// WRONG - traversing out of package
-{
-  "tasks": {
-    "build": {
-      "inputs": ["$TURBO_DEFAULT$", "../shared-config.json"]
-    }
-  }
-}
-
-// CORRECT - use $TURBO_ROOT$ for repo root
-{
-  "tasks": {
-    "build": {
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/shared-config.json"]
-    }
-  }
-}
-```
-
-### Missing `outputs` for File-Producing Tasks
-
-**Before flagging missing `outputs`, check what the task actually produces:**
-
-1. Read the package's script (e.g., `"build": "tsc"`, `"test": "vitest"`)
-2. Determine if it writes files to disk or only outputs to stdout
-3. Only flag if the task produces files that should be cached
-
-```json
-// WRONG: build produces files but they're not cached
-{
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"]
-    }
-  }
-}
-
-// CORRECT: build outputs are cached
-{
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    }
-  }
-}
-```
-
-Common outputs by framework:
-
-- Next.js: `[".next/**", "!.next/cache/**"]`
-- Vite/Rollup: `["dist/**"]`
-- tsc: `["dist/**"]` or custom `outDir`
-
-**TypeScript `--noEmit` can still produce cache files:**
-
-When `incremental: true` in tsconfig.json, `tsc --noEmit` writes `.tsbuildinfo` files even without emitting JS. Check the tsconfig before assuming no outputs:
-
-```json
-// If tsconfig has incremental: true, tsc --noEmit produces cache files
-{
-  "tasks": {
-    "typecheck": {
-      "outputs": ["node_modules/.cache/tsbuildinfo.json"] // or wherever tsBuildInfoFile points
-    }
-  }
-}
-```
-
-To determine correct outputs for TypeScript tasks:
-
-1. Check if `incremental` or `composite` is enabled in tsconfig
-2. Check `tsBuildInfoFile` for custom cache location (default: alongside `outDir` or in project root)
-3. If no incremental mode, `tsc --noEmit` produces no files
-
-### `^build` vs `build` Confusion
-
-```json
-{
-  "tasks": {
-    // ^build = run build in DEPENDENCIES first (other packages this one imports)
-    "build": {
-      "dependsOn": ["^build"]
-    },
-    // build (no ^) = run build in SAME PACKAGE first
-    "test": {
-      "dependsOn": ["build"]
-    },
-    // pkg#task = specific package's task
-    "deploy": {
-      "dependsOn": ["web#build"]
-    }
-  }
-}
-```
-
-### Environment Variables Not Hashed
-
-```json
-// WRONG: API_URL changes won't cause rebuilds
-{
-  "tasks": {
-    "build": {
-      "outputs": ["dist/**"]
-    }
-  }
-}
-
-// CORRECT: API_URL changes invalidate cache
-{
-  "tasks": {
-    "build": {
-      "outputs": ["dist/**"],
-      "env": ["API_URL", "API_KEY"]
-    }
-  }
-}
-```
-
-### `.env` Files Not in Inputs
-
-Turbo does NOT load `.env` files - your framework does. But Turbo needs to know about changes:
-
-```json
-// WRONG: .env changes don't invalidate cache
-{
-  "tasks": {
-    "build": {
-      "env": ["API_URL"]
-    }
-  }
-}
-
-// CORRECT: .env file changes invalidate cache
-{
-  "tasks": {
-    "build": {
-      "env": ["API_URL"],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.*"]
-    }
-  }
-}
-```
-
-### Root `.env` File in Monorepo
-
-A `.env` file at the repo root is an anti-pattern — even for small monorepos or starter templates. It creates implicit coupling between packages and makes it unclear which packages depend on which variables.
-
-```
-// WRONG - root .env affects all packages implicitly
-my-monorepo/
-├── .env              # Which packages use this?
-├── apps/
-│   ├── web/
-│   └── api/
-└── packages/
-
-// CORRECT - .env files in packages that need them
-my-monorepo/
-├── apps/
-│   ├── web/
-│   │   └── .env      # Clear: web needs DATABASE_URL
-│   └── api/
-│       └── .env      # Clear: api needs API_KEY
-└── packages/
-```
-
-**Problems with root `.env`:**
-
-- Unclear which packages consume which variables
-- All packages get all variables (even ones they don't need)
-- Cache invalidation is coarse-grained (root .env change invalidates everything)
-- Security risk: packages may accidentally access sensitive vars meant for others
-- Bad habits start small — starter templates should model correct patterns
-
-**If you must share variables**, use `globalEnv` to be explicit about what's shared, and document why.
-
-### Strict Mode Filtering CI Variables
-
-By default, Turborepo filters environment variables to only those in `env`/`globalEnv`. CI variables may be missing:
-
-```json
-// If CI scripts need GITHUB_TOKEN but it's not in env:
-{
-  "globalPassThroughEnv": ["GITHUB_TOKEN", "CI"],
-  "tasks": { ... }
-}
-```
-
-Or use `--env-mode=loose` (not recommended for production).
-
-### Shared Code in Apps (Should Be a Package)
-
-```
-// WRONG: Shared code inside an app
-apps/
-  web/
-    shared/          # This breaks monorepo principles!
-      utils.ts
-
-// CORRECT: Extract to a package
-packages/
-  utils/
-    src/utils.ts
-```
-
-### Accessing Files Across Package Boundaries
-
-```typescript
-// WRONG: Reaching into another package's internals
-import { Button } from "../../packages/ui/src/button";
-
-// CORRECT: Install and import properly
-import { Button } from "@repo/ui/button";
-```
-
-### Too Many Root Dependencies
-
-```json
-// WRONG: App dependencies in root
-{
-  "dependencies": {
-    "react": "^18",
-    "next": "^14"
-  }
-}
-
-// CORRECT: Only repo tools in root
-{
-  "devDependencies": {
-    "turbo": "latest"
-  }
-}
-```
-
-## Common Task Configurations
-
-### Standard Build Pipeline
-
-```json
-{
-  "$schema": "https://turborepo.dev/schema.v2.json",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-```
-
-Add a `transit` task if you have tasks that need parallel execution with cache invalidation (see below).
-
-### Dev Task with `^dev` Pattern (for `turbo watch`)
-
-A `dev` task with `dependsOn: ["^dev"]` and `persistent: false` in root turbo.json may look unusual but is **correct for `turbo watch` workflows**:
-
-```json
-// Root turbo.json
-{
-  "tasks": {
-    "dev": {
-      "dependsOn": ["^dev"],
-      "cache": false,
-      "persistent": false  // Packages have one-shot dev scripts
-    }
-  }
-}
-
-// Package turbo.json (apps/web/turbo.json)
-{
-  "extends": ["//"],
-  "tasks": {
-    "dev": {
-      "persistent": true  // Apps run long-running dev servers
-    }
-  }
-}
-```
-
-**Why this works:**
-
-- **Packages** (e.g., `@acme/db`, `@acme/validators`) have `"dev": "tsc"` — one-shot type generation that completes quickly
-- **Apps** override with `persistent: true` for actual dev servers (Next.js, etc.)
-- **`turbo watch`** re-runs the one-shot package `dev` scripts when source files change, keeping types in sync
-
-**Intended usage:** Run `turbo watch dev` (not `turbo run dev`). Watch mode re-executes one-shot tasks on file changes while keeping persistent tasks running.
-
-**Alternative pattern:** Use a separate task name like `prepare` or `generate` for one-shot dependency builds to make the intent clearer:
-
-```json
-{
-  "tasks": {
-    "prepare": {
-      "dependsOn": ["^prepare"],
-      "outputs": ["dist/**"]
-    },
-    "dev": {
-      "dependsOn": ["prepare"],
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-```
-
-### Transit Nodes for Parallel Tasks with Cache Invalidation
-
-Some tasks can run in parallel (don't need built output from dependencies) but must invalidate cache when dependency source code changes.
-
-**The problem with `dependsOn: ["^taskname"]`:**
-
-- Forces sequential execution (slow)
-
-**The problem with `dependsOn: []` (no dependencies):**
-
-- Allows parallel execution (fast)
-- But cache is INCORRECT - changing dependency source won't invalidate cache
-
-**Transit Nodes solve both:**
-
-```json
-{
-  "tasks": {
-    "transit": { "dependsOn": ["^transit"] },
-    "my-task": { "dependsOn": ["transit"] }
-  }
-}
-```
-
-The `transit` task creates dependency relationships without matching any actual script, so tasks run in parallel with correct cache invalidation.
-
-**How to identify tasks that need this pattern:** Look for tasks that read source files from dependencies but don't need their build outputs.
-
-### With Environment Variables
-
-```json
-{
-  "globalEnv": ["NODE_ENV"],
-  "globalDependencies": [".env"],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
-      "env": ["API_URL", "DATABASE_URL"]
-    }
-  }
-}
-```
-
-## Reference Index
-
-### Configuration
-
-| File                                                                            | Purpose                                                  |
-| ------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| [configuration/README.md](./references/configuration/README.md)                 | turbo.json overview, Package Configurations              |
-| [configuration/tasks.md](./references/configuration/tasks.md)                   | dependsOn, outputs, inputs, env, cache, persistent       |
-| [configuration/global-options.md](./references/configuration/global-options.md) | globalEnv, globalDependencies, cacheDir, daemon, envMode |
-| [configuration/gotchas.md](./references/configuration/gotchas.md)               | Common configuration mistakes                            |
-
-### Caching
-
-| File                                                            | Purpose                                      |
-| --------------------------------------------------------------- | -------------------------------------------- |
-| [caching/README.md](./references/caching/README.md)             | How caching works, hash inputs               |
-| [caching/remote-cache.md](./references/caching/remote-cache.md) | Vercel Remote Cache, self-hosted, login/link |
-| [caching/gotchas.md](./references/caching/gotchas.md)           | Debugging cache misses, --summarize, --dry   |
-
-### Environment Variables
-
-| File                                                          | Purpose                                   |
-| ------------------------------------------------------------- | ----------------------------------------- |
-| [environment/README.md](./references/environment/README.md)   | env, globalEnv, passThroughEnv            |
-| [environment/modes.md](./references/environment/modes.md)     | Strict vs Loose mode, framework inference |
-| [environment/gotchas.md](./references/environment/gotchas.md) | .env files, CI issues                     |
-
-### Filtering
-
-| File                                                        | Purpose                  |
-| ----------------------------------------------------------- | ------------------------ |
-| [filtering/README.md](./references/filtering/README.md)     | --filter syntax overview |
-| [filtering/patterns.md](./references/filtering/patterns.md) | Common filter patterns   |
-
-### CI/CD
-
-| File                                                      | Purpose                         |
-| --------------------------------------------------------- | ------------------------------- |
-| [ci/README.md](./references/ci/README.md)                 | General CI principles           |
-| [ci/github-actions.md](./references/ci/github-actions.md) | Complete GitHub Actions setup   |
-| [ci/vercel.md](./references/ci/vercel.md)                 | Vercel deployment, turbo-ignore |
-| [ci/patterns.md](./references/ci/patterns.md)             | --affected, caching strategies  |
-
-### CLI
-
-| File                                            | Purpose                                       |
-| ----------------------------------------------- | --------------------------------------------- |
-| [cli/README.md](./references/cli/README.md)     | turbo run basics                              |
-| [cli/commands.md](./references/cli/commands.md) | turbo run flags, turbo-ignore, other commands |
-
-### Best Practices
-
-| File                                                                          | Purpose                                                         |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [best-practices/README.md](./references/best-practices/README.md)             | Monorepo best practices overview                                |
-| [best-practices/structure.md](./references/best-practices/structure.md)       | Repository structure, workspace config, TypeScript/ESLint setup |
-| [best-practices/packages.md](./references/best-practices/packages.md)         | Creating internal packages, JIT vs Compiled, exports            |
-| [best-practices/dependencies.md](./references/best-practices/dependencies.md) | Dependency management, installing, version sync                 |
-
-### Watch Mode
-
-| File                                            | Purpose                                         |
-| ----------------------------------------------- | ----------------------------------------------- |
-| [watch/README.md](./references/watch/README.md) | turbo watch, interruptible tasks, dev workflows |
-
-### Boundaries (Experimental)
-
-| File                                                      | Purpose                                               |
-| --------------------------------------------------------- | ----------------------------------------------------- |
-| [boundaries/README.md](./references/boundaries/README.md) | Enforce package isolation, tag-based dependency rules |
-
-## Source Documentation
-
-This skill is based on the official Turborepo documentation at:
-
-- Source: `docs/site/content/docs/` in the Turborepo repository
-- Live: https://turborepo.dev/docs
+## 注意：Turborepo 的文档基于官方文档：  
+所有详细信息和最佳实践均来自 Turborepo 的官方文档仓库。

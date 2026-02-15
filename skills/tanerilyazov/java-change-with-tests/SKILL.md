@@ -1,32 +1,32 @@
 # java-change-with-tests
 
-## When to use
-- Any Java change that must be merged safely (feature/refactor/bugfix).
+## 适用场景
+- 任何需要安全合并的 Java 代码更改（无论是新增功能、重构代码还是修复漏洞）。
 
-## Inputs to request (if missing)
-- Acceptance criteria (1-3 bullets).
-- Module name (if multi-module repo).
-- Build tool and test conventions.
-- Whether integration tests are required for the change.
+## 请求所需的信息（如信息缺失，请补充）：
+- 接受标准（以 1-3 条 bullet 点的形式列出）。
+- 模块名称（如果项目使用多模块仓库）。
+- 构建工具和测试规范。
+- 该更改是否需要集成测试。
 
-## Steps
-1. Repo map (brief): identify the module, entrypoint, and test location.
-2. Plan: smallest diff that meets acceptance criteria.
-3. Implement: minimal edits.
-4. Tests:
-   - prefer fast unit tests first
-   - add integration tests only when required to validate behavior
-5. Verify:
-   - run targeted tests
-   - run `mvn -q test` (or module-scoped equivalent)
-6. Output PR-ready summary with evidence.
+## 执行步骤：
+1. **仓库信息梳理**：确定涉及的模块、入口文件以及测试文件的 위치。
+2. **计划**：制定最小的代码修改方案，以确保更改符合接受标准。
+3. **实现代码**：进行必要的最小化修改。
+4. **测试**：
+   - 首先优先执行单元测试。
+   - 只有在需要验证代码行为时，才添加集成测试。
+5. **验证结果**：
+   - 运行针对性的测试。
+   - 执行 `mvn -q test`（或相应的模块级测试命令）。
+6. **生成 PR 准备好的总结报告**：包含所有测试结果和验证依据。
 
-## Verification commands (project-specific)
-- Use the repo's build tool and record the exact commands and results.
-- Prefer targeted unit tests before full test suites.
+## 验证命令（具体项目可能有所不同）：
+- 使用项目的构建工具，并记录所有执行的命令及其结果。
+- 在执行完整的测试套件之前，优先进行针对性的单元测试。
 
-## Output contract
-1) Plan (3-6 steps)
-2) Files changed + intent
-3) Commands run + results
-4) Risks + follow-ups
+## 需要提供的输出内容：
+1. **实施计划**（包括 3-6 个步骤）。
+2. **被修改的文件及修改目的**。
+3. **执行的命令及测试结果**。
+4. **潜在风险及后续处理措施**。

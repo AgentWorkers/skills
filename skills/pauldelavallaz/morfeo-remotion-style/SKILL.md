@@ -1,13 +1,16 @@
 ---
 name: morfeo-remotion-style
-description: Morfeo Academy's Remotion video style guide. Use when creating Remotion videos, stories, or animations for Paul/Morfeo Academy. Triggers on "estilo Morfeo", "mi estilo Remotion", "video para Morfeo", "story estilo Morfeo", or any Remotion video request from Paul.
+description: Morfeo Academy的Remotion视频风格指南：  
+在为Paul/Morfeo Academy创建Remotion视频、故事或动画时，请遵循本指南。  
+该指南适用于以下场景：  
+- 使用“estilo Morfeo”、“mi estilo Remotion”、“video para Morfeo”或任何与Morfeo相关的Remotion视频请求时。
 ---
 
-# Morfeo Remotion Style
+# Morfeo Remotion 样式
 
-Style guide for Remotion videos matching Morfeo Academy's brand.
+本样式指南适用于与 Morfeo Academy 品牌相匹配的 Remotion 视频制作。
 
-## Brand Colors
+## 品牌颜色
 
 ```typescript
 export const colors = {
@@ -19,7 +22,7 @@ export const colors = {
 };
 ```
 
-## Typography
+## 字体排版
 
 ```typescript
 import { loadFont as loadDMSans } from "@remotion/google-fonts/DMSans";
@@ -33,14 +36,14 @@ export const fonts = {
 };
 ```
 
-**Rules:**
-- Headings: Instrument Serif, **always italic**, weight 400
-- Body: DM Sans, weight 400-600
-- Code/tech: JetBrains Mono
+**规则：**
+- 标题：使用 **Instrument Serif** 字体，**始终使用斜体**，字体大小为 400
+- 正文：使用 DM Sans 字体，字体大小为 400-600
+- 代码/技术内容：使用 JetBrains Mono 字体
 
-## Emojis
+## 表情符号
 
-Use Apple emojis via CDN (Remotion can't render system emojis):
+通过 CDN 使用 Apple 表情符号（Remotion 无法渲染系统自带的表情符号）：
 
 ```typescript
 // See references/AppleEmoji.tsx for full component
@@ -48,9 +51,9 @@ Use Apple emojis via CDN (Remotion can't render system emojis):
 <InlineEmoji emoji="🎙️" size={38} />  // For inline with text
 ```
 
-## Brand Icons (WhatsApp, Telegram, etc.)
+## 品牌图标（WhatsApp、Telegram 等）
 
-Use inline SVGs, not icon libraries (they don't work in Remotion):
+使用内联 SVG 图标，而非图标库（图标库在 Remotion 中无法正常显示）：
 
 ```typescript
 // See references/BrandIcon.tsx for full component
@@ -58,7 +61,7 @@ Use inline SVGs, not icon libraries (they don't work in Remotion):
 <BrandIcon brand="telegram" size={44} />
 ```
 
-## Animation Style
+## 动画风格
 
 ### Spring Config
 ```typescript
@@ -71,13 +74,13 @@ spring({
 });
 ```
 
-### Entry Sequence (staggered reveals)
-1. **Tag** (frame 0-15): Fade in + slide from top
-2. **Emoji** (frame 15+): Scale spring from 0
-3. **Title** (frame 30-50): Fade + slide from bottom
-4. **Lines** (frame 60, 90, 120): Staggered fade in
+### 视频元素展示顺序（交错式显示）
+1. **标签**（第 0-15 帧）：从顶部逐渐显示并滑动
+2. **表情符号**（第 15 帧以后）：从 0 开始逐渐放大
+3. **标题**（第 30-50 帧）：从底部逐渐显示并滑动
+4. **文字**（第 60、90、120 帧）：交错式逐渐显示
 
-### Pulsing Effect (for emojis)
+### 表情符号的脉动效果
 ```typescript
 const pulse = interpolate(
   frame % 60,
@@ -87,9 +90,9 @@ const pulse = interpolate(
 );
 ```
 
-## Common Elements
+## 常见元素
 
-### Lime Tag (top of screen)
+### 绿色标签（屏幕顶部）
 ```typescript
 <div style={{
   position: "absolute",
@@ -109,12 +112,12 @@ const pulse = interpolate(
 </div>
 ```
 
-### Big Emoji (center)
+### 大号表情符号（屏幕中央）
 ```typescript
 <AppleEmoji emoji="🗣️" size={140} />
 ```
 
-### Title (Instrument Serif italic)
+### 标题（使用斜体的 Instrument Serif 字体）
 ```typescript
 <h1 style={{
   fontSize: 68,
@@ -129,21 +132,20 @@ const pulse = interpolate(
 </h1>
 ```
 
-## Video Specs
+## 视频规格
+- **格式：** 1080x1920（9:16 的竖屏视频）
+- **帧率：** 30 帧/秒
+- **时长：** 每个视频片段 5 秒（共 150 帧）
+- **背景颜色：** 始终使用 `colors.black`（#050508）
 
-- **Format:** 1080x1920 (9:16 vertical stories)
-- **FPS:** 30
-- **Duration:** 5 seconds (150 frames) per story
-- **Background:** Always `colors.black` (#050508)
-
-## Project Setup
+## 项目设置
 
 ```bash
 npx create-video@latest --template blank
 npm i @remotion/google-fonts
 ```
 
-## File Structure
+## 文件结构
 
 ```
 src/
@@ -154,17 +156,15 @@ src/
 └── Root.tsx           # Composition setup
 ```
 
-## References
+## 参考资料
+- `references/styles.ts` - 完整的样式文件
+- `references/AppleEmoji.tsx` - Apple 表情符号组件
+- `references/BrandIcon.tsx` - 品牌图标组件
+- `references/MorfeoStory-example.tsx` - 完整的视频示例文件
 
-- `references/styles.ts` - Complete styles file
-- `references/AppleEmoji.tsx` - Apple emoji component
-- `references/BrandIcon.tsx` - Brand icons component
-- `references/MorfeoStory-example.tsx` - Full story example
-
-## DO NOT
-
-- ❌ Use system fonts (won't render)
-- ❌ Use icon libraries like simple-icons (won't work)
-- ❌ Use non-italic headings
-- ❌ Use colors outside the palette
-- ❌ Forget the lime accent color
+## 禁止使用的内容
+- ❌ **禁止使用系统自带的字体**（无法正常显示）
+- ❌ **禁止使用 simple-icons 等图标库**（无法在 Remotion 中使用）
+- ❌ **禁止使用非斜体的标题**
+- ❌ **禁止使用 palette 之外的颜色**
+- ❌ **必须使用绿色作为视觉重点颜色**

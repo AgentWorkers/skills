@@ -1,45 +1,45 @@
 ---
 name: ai-portrait-generator
-description: Generate ultra-photorealistic portraits using structured JSON prompts. Use when creating AI-generated portraits, character art, or realistic human images with cinematic quality and detailed specifications.
+description: 使用结构化的 JSON 提示生成超逼真的肖像。适用于创建 AI 生成的肖像、角色艺术作品，或具有电影级质量及详细规格的逼真人物图像。
 ---
 
-# AI Portrait Generator
+# 人工智能肖像生成器
 
-Generate ultra-photorealistic portraits using structured JSON prompt templates. Based on the professional prompt framework from @lexx_aura, optimized for high-quality AI image generation with Nano Banana Pro and similar models.
+使用结构化的JSON提示模板生成超写实的肖像。该模板基于@lexx_aura的专业提示框架，针对Nano Banana Pro及类似模型进行了优化，以实现高质量的人工智能图像生成。
 
-## When to Use This Skill
+## 适用场景
 
-- Creating realistic portraits for social media avatars
-- Generating character art for games or stories
-- Producing marketing materials with professional-quality imagery
-- Building concept art with precise visual specifications
-- Creating cinematic-quality portraits with specific lighting and atmosphere
+- 为社交媒体头像创建逼真的肖像
+- 为游戏或故事生成角色艺术图像
+- 制作具有专业品质的营销材料
+- 根据精确的视觉要求构建概念艺术
+- 创建具有特定光线和氛围的电影级肖像
 
-## Core Capabilities
+## 核心功能
 
-### 1. Structured Prompt Templates
-- JSON-based configuration for precise control
-- Modular sections: configuration, subject, apparel, pose, environment, lighting
-- Professional photography terminology integration
-- Cinematic and ultra-photorealistic style options
+### 1. 结构化提示模板
+- 基于JSON的配置，实现精确控制
+- 模块化设计：包括配置、主体、服装、姿势、环境和光线等部分
+- 集成了专业摄影术语
+- 提供电影级和超写实风格的选项
 
-### 2. Multi-Dimensional Customization
-- Subject demographics and physical attributes
-- Detailed hair, skin texture, and facial expressions
-- Apparel: outfit styles, accessories, materials
-- Pose and action: perspective, movement, reflections
-- Environment: location, background elements, atmosphere
-- Lighting: type, quality, mood, atmosphere
+### 2. 多维度定制
+- 可定制主体的人口统计特征和身体属性
+- 详细的头发、皮肤纹理和面部表情
+- 服装：包括款式、配饰和材质
+- 姿势和动作：包括视角、动作和反射效果
+- 环境：包括地点、背景元素和氛围
+- 光线：包括类型、质量和情绪效果
 
-### 3. Technical Specifications
-- Camera settings (lens type, aperture)
-- Focus and depth of field
-- Rendering engine details (Unreal Engine 5, Octane Render)
-- Advanced effects (ray tracing, volumetric lighting, subsurface scattering)
+### 3. 技术规格
+- 相机设置（镜头类型、光圈）
+- 对焦和景深控制
+- 渲染引擎细节（Unreal Engine 5、Octane Render）
+- 高级效果（光线追踪、体积光、次表面散射）
 
-## Quick Start
+## 快速入门
 
-### Basic Portrait Template
+### 基本肖像模板
 
 ```json
 {
@@ -84,7 +84,7 @@ Generate ultra-photorealistic portraits using structured JSON prompt templates. 
 }
 ```
 
-### Example: Gym Portrait
+### 示例：健身房肖像
 
 ```json
 {
@@ -129,9 +129,9 @@ Generate ultra-photorealistic portraits using structured JSON prompt templates. 
 }
 ```
 
-## Common Portrait Styles
+## 常见肖像风格
 
-### Professional Headshot
+### 专业头像
 ```json
 {
   "prompt_configuration": {
@@ -161,7 +161,7 @@ Generate ultra-photorealistic portraits using structured JSON prompt templates. 
 }
 ```
 
-### Casual Lifestyle
+### 休闲生活方式
 ```json
 {
   "prompt_configuration": {
@@ -180,7 +180,7 @@ Generate ultra-photorealistic portraits using structured JSON prompt templates. 
 }
 ```
 
-### Cinematic Dramatic
+### 电影级戏剧性风格
 ```json
 {
   "prompt_configuration": {
@@ -201,97 +201,95 @@ Generate ultra-photorealistic portraits using structured JSON prompt templates. 
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Be Specific
-Use detailed descriptions instead of generic terms:
-- ✅ "Dark brown hair, pulled back into a messy high ponytail"
-- ❌ "Brown hair"
+### 1. 使用具体描述
+- 使用详细的描述而非泛泛而谈：
+  - ✅ “深棕色的头发，扎成一个凌乱的马尾辫”
+  - ❌ “棕色头发”
 
-### 2. Include Texture Details
-Add texture information for realism:
-- ✅ "Hyper-realistic skin details, visible pores, slight flush on cheeks"
-- ❌ "Smooth skin"
+### 2. 添加纹理细节
+- 为增强真实感添加纹理信息：
+  - ✅ “超真实的皮肤细节，可见的毛孔，脸颊有轻微的红晕”
+  - ❌ “光滑的皮肤”
 
-### 3. Specify Lighting
-Describe lighting quality and effects:
-- ✅ "Warm tungsten tones, creating strong specular highlights on skin"
-- ❌ "Good lighting"
+### 3. 明确光线描述
+- 详细描述光线质量和效果：
+  - ✅ “温暖的钨灯光线，在皮肤上产生强烈的反光”
+  - ❌ “光线不错”
 
-### 4. Camera Knowledge
-Use photography terminology:
-- Aperture: f/1.4 (shallow depth of field), f/8 (deep focus)
-- Lens: 85mm (portrait), 50mm (standard), 35mm (wide)
-- Focus: "Sharp focus on subject's face, creamy bokeh background"
+### 4. 了解相机知识
+- 使用摄影术语：
+  - 光圈：f/1.4（浅景深），f/8（深景深）
+  - 镜头：85mm（人像），50mm（标准），35mm（广角）
+  - 对焦： “主体面部清晰对焦，背景呈现柔美的虚化效果”
 
-### 5. Atmosphere and Mood
-Define the emotional tone:
-- ✅ "Intense, raw, fitness-focused, candid moment"
-- ✅ "Professional, trustworthy, approachable"
-- ❌ "Good vibe"
+### 5. 定义氛围和情绪
+- 明确情感基调：
+  - ✅ “强烈的、原始的、聚焦于健身的、自然的瞬间”
+  - ✅ “专业的、值得信赖的、亲切的”
+  - ❌ “良好的氛围”
 
-## Advanced Techniques
+## 高级技巧
 
-### Combining Styles
-Mix elements from different styles:
-- Take lighting from "Cinematic Dramatic"
-- Use environment from "Casual Lifestyle"
-- Apply technical specs from "Professional Headshot"
+### 结合多种风格
+- 混合不同风格的元素：
+  - 从“电影级戏剧性风格”中借鉴光线效果
+  - 使用“休闲生活方式”中的环境设置
+  - 应用“专业头像”中的技术规格
 
-### Seasonal Variations
-Adjust lighting and atmosphere:
-- Winter: "Cool blue tones, soft diffused overcast light"
-- Summer: "Warm golden hour, strong shadows"
-- Autumn: "Rich warm tones, golden foliage"
-- Spring: "Fresh green tones, soft diffuse light"
+### 季节性调整
+- 根据季节调整光线和氛围：
+  - 冬季： “冷色调的蓝色光线，柔和的散射光”
+  - 夏季： “温暖的黄金时刻，强烈的阴影”
+  - 秋季： “丰富的暖色调，金色的树叶”
+  - 春季： “清新的绿色调，柔和的散射光”
 
-### Age and Demographics
-Tailor descriptions to target audience:
-- Young adults: "Fresh, energetic, contemporary"
-- Professionals: "Polished, confident, sophisticated"
-- Elders: "Distinguished, wise, warm"
+### 根据受众调整描述
+- 年轻人： “清新、充满活力、现代感”
+- 专业人士： “精致、自信、优雅”
+- 老年人： “优雅、睿智、温暖”
 
-## Tips for Better Results
+## 提高效果的技巧
 
-1. **Start with a template**: Use the provided examples as a foundation
-2. **Iterate and refine**: Generate multiple versions with slight variations
-3. **Test different AI models**: Results vary across different image generation tools
-4. **Use high resolution**: 8K resolution provides best quality
-5. **Focus on details**: Small details make portraits more realistic
+1. **从模板开始**：使用提供的示例作为基础
+2. **迭代和完善**：生成多个略有不同的版本
+3. **测试不同的人工智能模型**：不同模型生成的图像效果可能有所不同
+4. **使用高分辨率**：8K分辨率可获得最佳效果
+5. **关注细节**：细节越丰富，肖像越真实
 
-## Integration with AI Tools
+## 与人工智能工具的集成
 
 ### Nano Banana Pro
-This prompt format is optimized for Google's Nano Banana Pro image generation engine, offering superior detail, realism, and style variety.
+该提示格式专为Google的Nano Banana Pro图像生成引擎优化，可提供更出色的细节、真实感和风格多样性。
 
-### Other Compatible Tools
-- Midjourney (convert JSON to natural language)
-- DALL-E 3 (use as structured prompt)
-- Stable Diffusion (use ControlNet for pose control)
+### 其他兼容工具
+- Midjourney（将JSON转换为自然语言）
+- DALL-E 3（作为结构化提示使用）
+- Stable Diffusion（使用ControlNet进行姿势控制）
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### Issue: Generated image doesn't match description
-**Solution**: Break down complex descriptions into simpler terms, focus on key visual elements
+### 问题：生成的图像与描述不符
+**解决方案**：将复杂的描述分解为更简单的词汇，重点描述关键视觉元素
 
-### Issue: Too much detail, image looks cluttered
-**Solution**: Reduce environmental elements, simplify background descriptions
+### 问题：细节过多，图像显得杂乱
+**解决方案**：减少环境元素，简化背景描述
 
-### Issue: Lighting looks flat
-**Solution**: Add specific light source details (e.g., "warm tungsten", "cool blue rim light")
+### 问题：光线效果平淡
+**解决方案**：添加具体的光源描述（例如“温暖的钨灯光”、“冷色调的边缘光”）
 
-### Issue: Face doesn't match expression
-**Solution**: Use more specific facial cues (e.g., "corner of mouth slightly raised", "eyebrows slightly furrowed")
+### 问题：面部表情不匹配
+**解决方案**：使用更具体的面部特征描述（例如“嘴角微微上扬”、“眉毛微微皱起”）
 
-## Examples in Action
+## 实际应用示例
 
-See the original Twitter post by @lexx_aura for a working example:
+请查看@lexx_aura在Twitter上的原帖：
 https://x.com/lexx_aura/status/2016947883807850906
-
-This template generated high-quality ultra-photorealistic portraits using the JSON structure above.
+该模板使用上述JSON结构生成了高质量的超写实肖像。
 
 ---
 
-*Generated from @lexx_aura's ultra-photorealistic portrait template*
-*Twitter: 877 likes, 56 retweets, 544 bookmarks*
-*Last updated: 2026-01-30*
+*根据@lexx_aura的超写实肖像模板生成*
+*Twitter上的互动数据：877个赞，56次转发，544次收藏*
+*最后更新时间：2026-01-30*

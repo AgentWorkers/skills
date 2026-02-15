@@ -1,88 +1,88 @@
 ---
 name: Frontend
-description: Build polished user interfaces across web and mobile with consistent UX patterns.
+description: 使用一致的用户体验（UX）模式，在网页和移动设备上构建精美的用户界面。
 metadata: {"clawdbot":{"emoji":"🖥️","os":["linux","darwin","win32"]}}
 ---
 
-## Loading States
+## 加载状态
 
-- Skeleton screens for content with known layout—less jarring than spinners
-- Spinners for unknown-duration actions—but show within 100ms
-- Never blank screens during load—always visual feedback
-- Progressive disclosure: show content as it arrives—header first, then body
+- 对于布局已知的内容，使用骨架屏幕（即仅显示基本结构）——比使用加载指示器（如旋转图标）更自然、不那么突兀。
+- 对于需要较长时间完成的操作，使用加载指示器；但应在100毫秒内显示加载进度。
+- 加载过程中绝不要出现空白屏幕——始终提供视觉反馈。
+- 采用渐进式显示方式：内容按顺序加载——先显示页头，再显示正文。
 
-## Empty States
+## 空白状态
 
-- Empty screens always have a call to action—not just "No items"
-- Illustration or icon + explanation + action button—guide user forward
-- First-time empty vs cleared empty may differ—onboarding opportunity
+- 空白屏幕上必须提供明确的操作提示（而不仅仅是“没有项目”这样的简单信息）。
+- 通过插图或图标结合文字说明来引导用户下一步操作。
+- 首次遇到空白屏幕与用户手动清空界面时的处理方式应有所不同——这可以视为用户入职培训的机会。
 
-## Error Recovery
+## 错误处理
 
-- Every error screen has a recovery path—Retry, Go Back, Contact Support
-- Preserve user input on form failure—never lose their work
-- Offline mode degrades gracefully—show cached content, queue actions
-- Toast/snackbar for transient errors—inline for persistent ones
+- 每个错误页面都应提供恢复路径：重试、返回或联系客服。
+- 在表单输入失败时，要保留用户的输入内容——避免用户的数据丢失。
+- 离线模式下，系统应能优雅地降级——显示缓存内容并继续处理用户的操作请求。
+- 对于短暂性的错误，使用弹出提示（toast或Snackbar）；对于持续性错误，则使用更显眼的提示方式。
 
-## Immediate Feedback
+## 即时反馈
 
-- Every tap/click acknowledged within 100ms—button state change, animation, sound
-- Optimistic updates for fast-feeling actions—show success, rollback if fails
-- Progress indicators for operations over 1 second—user knows system is working
-- Disable buttons during submission—prevent double-tap
+- 用户的每一次点击或触摸操作都应在100毫秒内得到响应——按钮状态会发生变化，同时会有动画效果和声音提示。
+- 对于操作速度较快的操作，应给出积极的反馈（如显示“成功”）；如果操作失败，则应提供回滚选项。
+- 对于耗时超过1秒的操作，应显示进度条——让用户知道系统正在处理中。
+- 在用户提交数据时，应禁用相关按钮——防止用户误操作（如重复点击）。
 
-## Touch and Interaction
+## 触控与交互
 
-- Touch targets minimum 44x44 points—fingers are imprecise
-- Adequate spacing between interactive elements—prevent mis-taps
-- Swipe actions discoverable—hint or onboarding; don't assume users know
-- Pull-to-refresh where expected—but indicate it's available
+- 触控目标的大小应至少为44x44像素——因为手指的定位并不精确。
+- 交互元素之间应保持足够的间距——避免误触。
+- 滑动操作应易于发现——通过提示或引导信息来帮助用户理解其功能；不要假设用户都了解这些操作。
+- 在需要刷新页面的地方，应明确显示“可滑动刷新”的提示。
 
-## Visual Hierarchy
+## 视觉层次结构
 
-- One primary action per screen—other actions visually secondary
-- Consistent spacing scale—8pt grid or similar system
-- Typography hierarchy clear—title, body, caption distinguishable
-- Color conveys meaning consistently—red for destructive, green for success
+- 每个页面只有一个主要操作按钮；其他操作应处于次要位置。
+- 保持一致的间距规则（例如使用8像素的网格系统）。
+- 字体层级结构清晰明了——标题、正文和注释能够区分开来。
+- 颜色应能准确传达信息：红色表示错误或危险状态，绿色表示成功。
 
-## Motion and Animation
+## 动画与效果
 
-- Animation communicates, not decorates—shows relationship, guides attention
-- Duration 150-300ms for interactions—fast enough to feel responsive
-- Respect reduced motion preference—provide static alternative
-- Exit animations as important as enter—completes the interaction loop
+- 动画的作用是传达信息，而非仅仅为了装饰；它们有助于用户理解操作流程并引导用户的注意力。
+- 动画的持续时间应在150至300毫秒之间——这样用户能感受到系统的响应速度。
+- 尊重用户对动画效果的偏好；对于不喜欢动画的用户，应提供静态的替代方案。
+- 退出动画与进入动画同样重要——它们共同完成了交互流程。
 
-## Consistency
+## 一致性
 
-- Same action, same pattern everywhere—don't reinvent navigation per screen
-- Design tokens for colors, spacing, typography—single source of truth
-- Reusable components over one-off designs—reduces cognitive load
-- Platform conventions respected—iOS feels iOS, Android feels Android, web feels web
+- 同一操作在不同页面上的表现应保持一致；不要为每个页面重新设计导航方式。
+- 颜色、间距和字体等设计元素应遵循统一的标准。
+- 尽量使用可复用的组件，而不是为每个页面单独设计元素——这样可以减少用户的认知负担。
+- 遵循各平台的常用设计规范：iOS界面应具有iOS的特色，Android界面应具有Android的特色，网页界面也应符合网页的设计习惯。
 
-## Accessibility
+## 可访问性
 
-- Screen reader testing—not just visual inspection
-- Sufficient color contrast—don't rely on color alone for meaning
-- Keyboard/switch control works—every action reachable without touch
-- Focus order logical—follows visual reading order
+- 除了视觉检查外，还应进行屏幕阅读器的测试。
+- 颜色对比度要足够高——不要仅依赖颜色来传达信息。
+- 确保键盘或语音控制功能正常使用；所有操作都能通过非触控方式完成。
+- 焦点顺序应符合用户的阅读习惯。
 
-## Responsiveness
+## 响应速度
 
-- Design mobile-first, enhance for larger—not desktop shrunk down
-- Test on real devices—simulators miss performance and interaction
-- Landscape orientation considered—don't break if user rotates
-- Content reflows gracefully—no horizontal scroll, no cut-off text
+- 设计时优先考虑移动设备的体验；针对大屏幕设备进行优化，而不是简单地将桌面版的设计缩小后适应移动设备。
+- 在真实设备上进行测试——模拟器无法准确反映实际的使用体验。
+- 考虑到用户可能改变设备方向（如从横屏切换到竖屏）的情况——确保应用在各种方向下都能正常使用。
+- 内容应能优雅地重新布局——避免出现水平滚动或文字被截断的情况。
 
-## Performance Perception
+## 性能体验
 
-- Time to interactive matters more than full load—prioritize interactivity
-- Lazy load below-the-fold content—don't block first interaction
-- Image placeholders prevent layout shift—dimensions known before load
-- Cache aggressively—instant loads on return visits
+- 用户与系统的交互速度比页面完全加载的时间更为重要——因此应优先考虑交互体验。
+- 对于不在页面可见范围内的内容，采用延迟加载的方式——避免阻碍用户的初次操作。
+- 使用图片占位符来保证页面布局的稳定性；在加载前应明确图片的尺寸。
+- 积极利用缓存技术——用户再次访问时能快速加载页面。
 
-## Microcopy
+## 文本说明
 
-- Button labels describe action: "Save Changes" not "Submit"
-- Error messages explain what to do—not just what went wrong
-- Confirmation dialogs clear about consequences—"Delete permanently?"
-- Loading text specific when possible—"Uploading photo..." not "Loading..."
+- 按钮标签应清晰地描述其功能，例如使用“保存更改”而不是“提交”。
+- 错误信息应说明用户应该采取什么操作，而不仅仅是说明出了什么问题。
+- 确认对话框应明确提示操作的后果，例如“是否要永久删除？”
+- 加载提示信息应具体明确，例如“正在上传照片...”而不是“正在加载...”

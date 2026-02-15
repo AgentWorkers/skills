@@ -2,7 +2,7 @@
 
 name: novafon\_api
 
-description: Novafon Data API и Call API интеграция и примеры запросов — работа с данными, отчётами и управлением звонками через JSON-RPC.
+description: Novafon Data API与Call API的集成及请求示例——通过JSON-RPC进行数据操作、报表查询以及通话管理。
 
 metadata: {"clawdbot":{"emoji":"📞","always":true,"requires":{"bins":\["curl","jq"]}}}
 
@@ -10,101 +10,53 @@ metadata: {"clawdbot":{"emoji":"📞","always":true,"requires":{"bins":\["curl",
 
 
 
-\# Novafon API 📞
+# Novafon API 📞
 
+Novafon 提供了两个 JSON-RPC API：**Data API** 用于访问数据和报表，以及 **Call API** 用于创建和管理通话。 :contentReference\[oaicite:1]{index=1}
 
+## 🔑 配置
 
-Novafon предоставляет два JSON-RPC API — \*\*Data API\*\* для доступа к данным и отчётам, и \*\*Call API\*\* для создания и управления звонками. :contentReference\[oaicite:1]{index=1}
+### 📦 环境变量
 
-
-
-\## 🔑 Настройка
-
-
-
-\### 📦 Переменные окружения
-
-
-
-| Variable | Description | Required |
-
-|----------|-------------|----------|
-
-| `NOVAFON\_DATA\_API\_URL` | Base URL Data API (обычно dataapi-jsonrpc.novofon.ru/v2.0) | Yes |
-
-| `NOVAFON\_CALL\_API\_URL` | Base URL Call API (обычно callapi-jsonrpc.novofon.ru/v4.0) | Yes |
-
-| `NOVAFON\_API\_TOKEN` | Доступный \*\*access\_token\*\* (ключ API или сессия) | Yes |
-
-
+| 变量          | 描述                | 是否必填 |
+|--------------|-------------------|-------|
+| `NOVAFON_DATA_API_URL` | Data API 的基础 URL（通常为 dataapi-jsonrpc.novofon.ru/v2.0） | 是     |
+| `NOVAFON_CALL_API_URL` | Call API 的基础 URL（通常为 callapi-jsonrpc.novofon.ru/v4.0） | 是     |
+| `NOVAFON_API_TOKEN` | 可用的 **access_token**（API 密钥或会话令牌） | 是     |
 
 ---
 
+## 🧠 常见信息
 
-
-\## 🧠 Общие сведения
-
-
-
-📌 Обе API используют \*\*JSON-RPC 2.0\*\* (метод POST, тело запроса JSON). :contentReference\[oaicite:2]{index=2}  
-
-📌 Все параметры и поля — \*\*snake\_case\*\*. :contentReference\[oaicite:3]{index=3}  
-
-📌 Требуется добавление IP в белый список в админ-панели. :contentReference\[oaicite:4]{index=4}
-
-
+- 两个 API 都使用 **JSON-RPC 2.0** 协议（POST 方法，请求体为 JSON 格式）。 :contentReference\[oaicite:2]{index=2}
+- 所有参数和字段均采用 **snake_case** 命名规则。 :contentReference\[oaicite:3]{index=3}
+- 需要在管理面板中将相关 IP 地址添加到白名单中。 :contentReference\[oaicite:4]{index=4}
 
 ---
 
+## 🗂 Data API — 数据与报表操作
 
+### 📌 基本原理
 
-\## 🗂 Data API — работа с данными и отчётами
-
-
-
-\### 📌 Основные принципы
-
-
-
-\- Базовый URL: `${NOVAFON\_DATA\_API\_URL}` → JSON-RPC запросы. :contentReference\[oaicite:5]{index=5}  
-
-\- Обработка ошибок подробно описана (коды, мнемоники). :contentReference\[oaicite:6]{index=6}  
-
-\- Поддерживаются фильтрация, сортировка и пагинация. :contentReference\[oaicite:7]{index=7}
-
-
+- 基础 URL：`${NOVAFON_DATA_API_URL}`，用于发送 JSON-RPC 请求。 :contentReference\[oaicite:5]{index=5}
+- 错误处理方式有详细说明（包括错误代码和提示信息）。 :contentReference\[oaicite:6]{index=6}
+- 支持过滤、排序和分页功能。 :contentReference\[oaicite:7]{index=7}
 
 ---
 
-
-
-\### 📊 📈 📉 Базовые запросы
-
-
+### 📊 📈 📉 基本请求示例
 
 ```bash
+# Data API 的基本请求示例
 
-\# Пример базового запроса Data API
-
-curl -s "${NOVAFON\_DATA\_API\_URL}" \\
-
-&nbsp; -H "Content-Type: application/json" \\
-
-&nbsp; -d '{
-
-&nbsp;   "jsonrpc":"2.0",
-
-&nbsp;   "id":"req1",
-
-&nbsp;   "method":"get.account",
-
-&nbsp;   "params":{
-
-&nbsp;     "access\_token":"'"${NOVAFON\_API\_TOKEN}"'"
-
-&nbsp;   }
-
-&nbsp; }' | jq '.'
-
-
-
+curl -s "${NOVAFON_DATA_API_URL}" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "jsonrpc": "2.0",
+        "id": "req1",
+        "method": "get.account",
+        "params": {
+            "access_token": "${NOVAFON_API_TOKEN}"
+        }
+    }' | jq '.'
+```

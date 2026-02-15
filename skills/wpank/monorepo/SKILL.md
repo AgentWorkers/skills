@@ -1,71 +1,54 @@
 ---
 name: monorepo
 model: standard
-description: Build and manage monorepos with Turborepo, Nx, and pnpm workspaces — covering workspace structure, dependency management, task orchestration, caching, CI/CD, and publishing. Use when setting up monorepos, optimizing builds, or managing shared packages.
+description: 使用 Turborepo、Nx 和 pnpm 工作区来构建和管理单仓库项目（monorepos），涵盖工作区结构、依赖管理、任务编排、缓存、持续集成/持续部署（CI/CD）以及发布等环节。适用于搭建单仓库项目、优化构建过程或管理共享包的场景。
 ---
 
-# Monorepo Management
+# 单一仓库管理
 
-Build efficient, scalable monorepos that enable code sharing, consistent tooling, and atomic changes across multiple packages and applications.
+构建高效、可扩展的单一仓库，以实现代码共享、统一工具链以及跨多个包和应用程序的原子级更改。
 
-## When to Use
+## 适用场景
 
-- Setting up a new monorepo or migrating from multi-repo
-- Optimizing build and test performance
-- Managing shared dependencies across packages
-- Configuring CI/CD for monorepos
-- Versioning and publishing packages
+- 设置新的单一仓库或从多仓库架构迁移
+- 优化构建和测试性能
+- 管理跨包的共享依赖项
+- 为单一仓库配置持续集成/持续部署（CI/CD）流程
+- 对包进行版本控制和发布
 
-## Why Monorepos?
+## 为什么使用单一仓库？
 
-**Advantages:** Shared code and dependencies, atomic commits across projects, consistent tooling, easier refactoring, better code visibility.
+**优势：**代码和依赖项的共享、跨项目的原子级提交、统一的工具链、更便捷的代码重构、更好的代码可见性。
 
-**Challenges:** Build performance at scale, CI/CD complexity, access control, large Git history.
+**挑战：**大规模构建时的性能问题、CI/CD流程的复杂性、访问控制以及庞大的Git历史记录管理。
 
-## Tool Selection
+## 工具选择
 
-### Package Managers
+### 包管理器
 
-| Manager | Recommendation | Notes |
+| 工具 | 推荐理由 | 备注 |
 |---------|---------------|-------|
-| **pnpm** | Recommended | Fast, strict, excellent workspace support |
-| **npm** | Acceptable | Built-in workspaces, slower installs |
-| **Yarn** | Acceptable | Mature, but pnpm surpasses in most areas |
+| **pnpm** | 推荐使用 | 速度快、规则严格、对工作区的支持出色 |
+| **npm** | 也可使用 | 内置工作区功能，但安装速度较慢 |
+| **Yarn** | 也可使用 | 功能成熟，但在多数方面pnpm更胜一筹 |
 
-### Build Systems
+### 构建系统
 
-| Tool | Best For | Trade-off |
+| 工具 | 适用场景 | 权衡点 |
 |------|----------|-----------|
-| **Turborepo** | Most projects | Simple config, fast caching, Vercel integration |
-| **Nx** | Large orgs, complex graphs | Feature-rich but steeper learning curve |
-| **Lerna** | Legacy projects | Maintenance mode — migrate away |
+| **Turborepo** | 适用于大多数项目 | 配置简单、缓存速度快、支持Vercel集成 |
+| **Nx** | 适用于大型组织或复杂的项目结构 | 功能丰富，但学习曲线较陡 |
+| **Lerna** | 适用于旧项目 | 目前处于维护模式，建议逐步迁移 |
 
-**Guidance:** Start with Turborepo unless you need Nx's code generation, dependency graph visualization, or plugin ecosystem.
+**建议：**除非你需要Nx的代码生成、依赖关系图可视化或插件生态系统，否则优先选择Turborepo。
 
-## Workspace Structure
+## 工作区结构
 
-```
-my-monorepo/
-├── apps/
-│   ├── web/              # Next.js app
-│   ├── api/              # Backend service
-│   └── docs/             # Documentation site
-├── packages/
-│   ├── ui/               # Shared UI components
-│   ├── utils/            # Shared utilities
-│   ├── types/            # Shared TypeScript types
-│   ├── config-eslint/    # Shared ESLint config
-│   └── config-ts/        # Shared TypeScript configs
-├── turbo.json            # Turborepo pipeline config
-├── pnpm-workspace.yaml   # Workspace definition
-└── package.json          # Root package.json
-```
+**约定：**`apps/`用于可部署的应用程序，`packages/`用于共享库。
 
-**Convention:** `apps/` for deployable applications, `packages/` for shared libraries.
+## Turborepo的设置
 
-## Turborepo Setup
-
-### Root Configuration
+### 根目录配置
 
 ```yaml
 # pnpm-workspace.yaml
@@ -73,6 +56,8 @@ packages:
   - "apps/*"
   - "packages/*"
 ```
+
+### 流程配置
 
 ```json
 // package.json (root)
@@ -95,46 +80,14 @@ packages:
 }
 ```
 
-### Pipeline Configuration
+**关键概念：**
+- `dependsOn: ["^build"]` — 先构建依赖项（按拓扑顺序）
+- `outputs` — 需要缓存的文件（对于仅产生副作用的任务可省略）
+- `inputs` — 会导致缓存失效的文件（默认为所有文件）
+- `persistent: true` — 适用于长时间运行的开发服务器
+- `cache: false` — 禁用开发任务的缓存
 
-```json
-// turbo.json
-{
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "inputs": ["src/**", "package.json", "tsconfig.json"]
-    },
-    "test": {
-      "dependsOn": ["build"],
-      "outputs": ["coverage/**"]
-    },
-    "lint": {
-      "outputs": []
-    },
-    "type-check": {
-      "dependsOn": ["^build"],
-      "outputs": []
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-```
-
-Key concepts:
-- `dependsOn: ["^build"]` — build dependencies first (topological)
-- `outputs` — what to cache (omit for side-effect-only tasks)
-- `inputs` — what invalidates cache (default: all files)
-- `persistent: true` — for long-running dev servers
-- `cache: false` — disable caching for dev tasks
-
-### Package Configuration
+### 包配置
 
 ```json
 // packages/ui/package.json
@@ -157,7 +110,7 @@ Key concepts:
 }
 ```
 
-## Nx Setup
+## Nx的设置
 
 ```bash
 npx create-nx-workspace@latest my-org
@@ -188,17 +141,9 @@ nx generate @nx/js:lib utils
 }
 ```
 
-```bash
-# Nx-specific commands
-nx build my-app
-nx affected:build --base=main    # Only build what changed
-nx graph                          # Visualize dependency graph
-nx run-many --target=build --all --parallel=3
-```
+### Nx的优势：`nx affected`能够精确判断哪些项目发生了变化，从而避免不必要的构建。
 
-**Nx advantage:** `nx affected` computes exactly which projects changed, skipping unaffected ones entirely.
-
-## Dependency Management (pnpm)
+## 依赖项管理（使用pnpm）
 
 ```bash
 # Install in specific package
@@ -226,7 +171,7 @@ pnpm --filter "...web" build    # web + all its dependencies
 pnpm update -r
 ```
 
-### .npmrc
+### `.npmrc`文件配置
 
 ```ini
 # Hoist shared dependencies for compatibility
@@ -237,9 +182,9 @@ auto-install-peers=true
 strict-peer-dependencies=true
 ```
 
-## Shared Configurations
+## 共享配置
 
-### TypeScript
+### TypeScript配置
 
 ```json
 // packages/config-ts/base.json
@@ -264,9 +209,9 @@ strict-peer-dependencies=true
 }
 ```
 
-## Build Optimization
+## 构建优化
 
-### Remote Caching
+### 远程缓存
 
 ```bash
 # Turborepo + Vercel remote cache
@@ -277,7 +222,7 @@ npx turbo link
 # First build: 2 minutes. Cache hit: 0 seconds.
 ```
 
-### Cache Configuration
+### 缓存配置
 
 ```json
 {
@@ -291,9 +236,9 @@ npx turbo link
 }
 ```
 
-**Critical:** Define `inputs` precisely. If a build only depends on `src/`, don't let changes to `README.md` invalidate the cache.
+**重要提示：**务必精确定义`inputs`。如果构建过程仅依赖于`src/`目录中的文件，就不要因为`README.md`的更改而触发缓存失效。
 
-## CI/CD
+## 持续集成/持续部署（CI/CD）
 
 ### GitHub Actions
 
@@ -326,7 +271,7 @@ jobs:
       - run: pnpm turbo run build test lint type-check
 ```
 
-### Deploy Affected Only
+### 仅部署受影响的部分
 
 ```yaml
 - name: Deploy affected apps
@@ -337,7 +282,7 @@ jobs:
     fi
 ```
 
-## Publishing Packages
+## 包的发布
 
 ```bash
 # Setup Changesets
@@ -350,48 +295,37 @@ pnpm changeset version  # Bump versions based on changesets
 pnpm changeset publish  # Publish to npm
 ```
 
-```yaml
-# .github/workflows/release.yml
-- name: Create Release PR or Publish
-  uses: changesets/action@v1
-  with:
-    publish: pnpm changeset publish
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
+### 最佳实践
 
-## Best Practices
+1. **锁定依赖版本** — 在整个工作区内使用固定版本或锁定文件
+2. **集中配置规则** — 在共享包中统一配置ESLint、TypeScript和Prettier
+3. **保持依赖关系图的无环状态** — 避免包之间的循环依赖
+4. **精确定义缓存的范围** — 错误的缓存配置会导致资源浪费或构建失败
+5. **在前端和后端之间共享代码规范** — 确保代码定义的一致性
+6. **在包中编写单元测试，在应用程序中进行端到端测试** — 使测试范围与包的范围相匹配
+7. **为每个包编写`README.md`文档** — 说明包的功能、开发流程和使用方法
+8. **使用变更集进行版本控制** — 实现自动化且可审查的发布流程
 
-1. **Lock dependency versions** — Use exact versions or lock files across the workspace
-2. **Centralize configs** — ESLint, TypeScript, Prettier in shared packages
-3. **Keep the graph acyclic** — No circular dependencies between packages
-4. **Define cache inputs/outputs precisely** — Incorrect cache config wastes time or serves stale builds
-5. **Share types between frontend/backend** — Single source of truth for contracts
-6. **Unit tests in packages, E2E in apps** — Match test scope to package scope
-7. **README in each package** — What it does, how to develop, how to use
-8. **Use changesets for versioning** — Automated, reviewable release process
+## 常见问题及解决方法
 
-## Common Pitfalls
-
-| Pitfall | Fix |
+| 问题 | 解决方法 |
 |---------|-----|
-| Circular dependencies | Refactor shared code into a third package |
-| Phantom dependencies (using deps not in package.json) | Use pnpm strict mode |
-| Incorrect cache inputs | Add missing files to `inputs` array |
-| Over-sharing code | Only share genuinely reusable code |
-| Missing `fetch-depth: 0` in CI | Required for `affected` commands to compare history |
-| Caching dev tasks | Set `cache: false` and `persistent: true` |
+| 循环依赖 | 将共享代码重构为独立的第三方包 |
+| “幽灵依赖”（依赖项未在`package.json`中列出） | 使用pnpm的严格模式 |
+| 缓存配置错误 | 将缺失的文件添加到`inputs`数组中 |
+| 过度共享代码 | 仅共享真正可复用的代码 |
+| CI配置中缺少`fetch-depth: 0` | 此参数对于正确比较构建历史记录至关重要 |
+| 缓存开发任务 | 将`cache`设置为`false`并将`persistent`设置为`true`
 
-## NEVER Do
+## 绝对不要做的事情
 
-- **NEVER use `*` for workspace dependency versions** — Use `workspace:*` with pnpm
-- **NEVER skip `--frozen-lockfile` in CI** — Ensures reproducible builds
-- **NEVER cache dev server tasks** — They're long-running, not cacheable
-- **NEVER create circular package dependencies** — Breaks build ordering
-- **NEVER hoist without understanding** — `shamefully-hoist` is a compatibility escape hatch, not a default
+- **绝对不要在工作区依赖版本中使用通配符（*）** — 应使用`workspace:*`来指定依赖版本 |
+- **绝对不要在CI过程中省略`--frozen-lockfile`选项** — 这有助于确保构建结果的可重复性 |
+- **绝对不要缓存开发服务器的任务** — 这些任务运行时间较长，不适合缓存 |
+- **绝对不要创建循环依赖关系** — 这会破坏构建顺序 |
+- **在没有充分理解的情况下使用`shamefully-hoist`功能** — 这只是一个临时解决方案，不应作为常规做法
 
-## Related Skills
+## 相关技能
 
-- **Related:** [service-layer-architecture](../service-layer-architecture/) — API patterns within monorepo apps
-- **Related:** [postgres-job-queue](../postgres-job-queue/) — Background jobs for monorepo services
+- **相关内容：** [服务层架构](../service-layer-architecture/) — 单一仓库应用程序中的API设计模式
+- **相关内容：** [postgres-job-queue](../postgres-job-queue/) — 单一仓库服务的后台任务处理机制

@@ -1,63 +1,60 @@
 ---
 name: openclaw-youtube
-description: "YouTube SERP Scout for agents. Search top-ranking videos, channels, and trends for content research and competitor tracking."
+description: "YouTube SERP Scout（适用于代理工具）：用于搜索排名靠前的视频、频道及热门趋势，以辅助内容研究及竞争对手监控。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"📺","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
 # OpenClaw YouTube 📺
 
-**YouTube SERP Scout for autonomous agents. Powered by AIsa.**
+**专为自动化代理设计的YouTube搜索分析工具，由Aisa提供支持。**
 
-One API key. Rank discovery. Content research. Competitor tracking.
+只需一个API密钥，即可实现排名发现、内容研究、竞争对手跟踪等功能。
 
-## 🔥 What Can You Do?
+## 🔥 功能概述：
 
-### Content Research
+### 内容研究
 ```
 "Find top-ranking videos about 'AI agents tutorial' to see what's working"
 ```
 
-### Competitor Tracking
+### 竞争对手跟踪
 ```
 "Search for videos from competitor channels about 'machine learning'"
 ```
 
-### Trend Discovery
+### 趋势分析
 ```
 "What are the top YouTube videos about 'GPT-5' right now?"
 ```
 
-### Topic Analysis
+### 主题分析
 ```
 "Find popular videos on 'autonomous driving' to understand audience interest"
 ```
 
-### Channel Discovery
+### 频道发现
 ```
 "Search for channels creating content about 'crypto trading'"
 ```
 
-## Quick Start
-
+## 快速入门
 ```bash
 export AISA_API_KEY="your-key"
 ```
 
 ---
 
-## Core Capabilities
+## 核心功能：
 
-### Basic YouTube Search
-
+### 基本YouTube搜索
 ```bash
 # Search for videos
 curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI+agents+tutorial" \
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Search with Country Filter
-
+### 带国家过滤器的搜索
 ```bash
 # Search in specific country (US)
 curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=machine+learning&gl=us" \
@@ -68,8 +65,7 @@ curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI&gl=jp&hl=j
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Search with Language Filter
-
+### 带语言过滤器的搜索
 ```bash
 # Search with interface language
 curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=python+tutorial&hl=en" \
@@ -80,8 +76,7 @@ curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=编程教程&
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Pagination with Filter Token
-
+### 使用过滤令牌进行分页
 ```bash
 # Use sp parameter for pagination or advanced filters
 curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI&sp=<filter_token>" \
@@ -90,8 +85,7 @@ curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI&sp=<filter
 
 ---
 
-## Python Client
-
+## Python客户端
 ```bash
 # Basic search
 python3 {baseDir}/scripts/youtube_client.py search --query "AI agents tutorial"
@@ -114,52 +108,42 @@ python3 {baseDir}/scripts/youtube_client.py search --query "AI trends 2025"
 
 ---
 
-## Use Cases
+## 使用场景：
 
-### 1. Content Gap Analysis
-
-Find what content is ranking well to identify gaps in your strategy:
-
+### 1. 内容差距分析
+通过分析排名靠前的内容，发现策略中的不足之处：
 ```python
 # Search for top videos in your niche
 results = client.search("AI automation tutorial")
 # Analyze titles, views, and channels to find opportunities
 ```
 
-### 2. Competitor Monitoring
-
-Track what competitors are publishing:
-
+### 2. 竞争对手监控
+跟踪竞争对手发布的视频内容：
 ```python
 # Search for competitor brand + topic
 results = client.search("OpenAI GPT tutorial")
 # Monitor ranking changes over time
 ```
 
-### 3. Keyword Research
-
-Discover what topics are trending:
-
+### 关键词研究
+发现当前热门的主题：
 ```python
 # Search broad topics to see what's popular
 results = client.search("artificial intelligence 2025")
 # Extract common keywords from top-ranking titles
 ```
 
-### 4. Audience Research
-
-Understand what your target audience watches:
-
+### 目标受众研究
+了解目标观众喜欢观看的内容：
 ```python
 # Search in specific regions
 results = client.search("coding tutorial", country="jp", lang="ja")
 # Analyze regional content preferences
 ```
 
-### 5. SEO Analysis
-
-Analyze how videos rank for specific keywords:
-
+### SEO分析
+分析视频在特定关键词下的排名情况：
 ```python
 # Track ranking positions for target keywords
 keywords = ["AI tutorial", "machine learning basics", "Python AI"]
@@ -170,24 +154,23 @@ for kw in keywords:
 
 ---
 
-## API Endpoint Reference
+## API端点参考
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/youtube/search` | GET | Search YouTube SERP |
+| `/youtube/search` | GET | 在YouTube上执行搜索查询 |
 
-## Request Parameters
+## 请求参数
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| engine | string | Yes | Must be `youtube` |
-| q | string | Yes | Search query |
-| gl | string | No | Country code (e.g., `us`, `jp`, `uk`, `cn`) |
-| hl | string | No | Interface language (e.g., `en`, `ja`, `zh-CN`) |
-| sp | string | No | YouTube filter token for pagination/filters |
+| engine | string | 是 | 必须为`youtube` |
+| q | string | 是 | 搜索查询 |
+| gl | string | 否 | 国家代码（例如：`us`、`jp`、`uk`、`cn`） |
+| hl | string | 否 | 接口语言（例如：`en`、`ja`、`zh-CN`） |
+| sp | string | 否 | 用于分页/过滤的YouTube过滤令牌 |
 
-## Response Format
-
+## 响应格式
 ```json
 {
   "search_metadata": {
@@ -216,55 +199,55 @@ for kw in keywords:
 
 ---
 
-## Country Codes (gl)
+## 国家代码（gl）
 
-| Code | Country |
+| 代码 | 国家 |
 |------|---------|
-| us | United States |
-| uk | United Kingdom |
-| jp | Japan |
-| cn | China |
-| de | Germany |
-| fr | France |
-| kr | South Korea |
-| in | India |
-| br | Brazil |
-| au | Australia |
+| us | 美国 |
+| uk | 英国 |
+| jp | 日本 |
+| cn | 中国 |
+| de | 德国 |
+| fr | 法国 |
+| kr | 韩国 |
+| in | 印度 |
+| br | 巴西 |
+| au | 澳大利亚 |
 
-## Language Codes (hl)
+## 语言代码（hl）
 
-| Code | Language |
+| 代码 | 语言 |
 |------|----------|
-| en | English |
-| ja | Japanese |
-| zh-CN | Chinese (Simplified) |
-| zh-TW | Chinese (Traditional) |
-| ko | Korean |
-| de | German |
-| fr | French |
-| es | Spanish |
-| pt | Portuguese |
-| ru | Russian |
+| en | 英语 |
+| ja | 日语 |
+| zh-CN | 简体中文 |
+| zh-TW | 繁体中文 |
+| ko | 韩语 |
+| de | 德语 |
+| fr | 法语 |
+| es | 西班牙语 |
+| pt | 葡萄牙语 |
+| ru | 俄语 |
 
 ---
 
-## Pricing
+## 价格信息
 
-| API | Cost |
+| API | 费用 |
 |-----|------|
-| YouTube search | ~$0.002 |
+| YouTube搜索 | 约0.002美元 |
 
-Every response includes `usage.cost` and `usage.credits_remaining`.
+每个响应结果中都会包含`usage.cost`和`usage.credits_remaining`字段。
 
 ---
 
-## Get Started
+## 开始使用：
 
-1. Sign up at [aisa.one](https://aisa.one)
-2. Get your API key
-3. Add credits (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
+1. 在[aisa.one](https://aisa.one)注册账号。
+2. 获取您的API密钥。
+3. 购买API信用额度（按需付费）。
+4. 设置环境变量：`export AISA_API_KEY="your-key"`。
 
-## Full API Reference
+## 完整API参考
 
-See [API Reference](https://aisa.mintlify.app/api-reference/introduction) for complete endpoint documentation.
+请访问[API参考文档](https://aisa.mintlify.app/api-reference/introduction)以获取完整的端点说明。

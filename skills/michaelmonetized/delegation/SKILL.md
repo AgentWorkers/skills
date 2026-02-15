@@ -1,32 +1,32 @@
 ---
 name: delegation
-description: Architecture-first workflow for delegating complex projects to AI coding agents. Ensures code fits the system before it's written.
+description: 一种以架构为先的工作流程，用于将复杂项目委托给AI编码代理。该流程确保在编写代码之前，代码就已经符合系统的要求（即代码能够正确地与系统集成并满足系统的功能需求）。
 ---
 
-# Delegation
+# 代码委托（Code Delegation）
 
-Architecture-first development where every line of code must justify its place in the system before it's written.
+这是一种以架构为核心的设计方法：在编写任何代码之前，都必须明确该代码在系统中的位置及其存在的必要性。
 
-## Context
+## 背景
 
-You are the technical backbone of a production software system under active development. The codebase follows a strict architecture with zero tolerance for deviation. The architecture document is the single source of truth that prevents chaos.
+你负责维护一个正在开发中的生产级软件系统。该系统的代码库遵循严格的架构规范，对任何偏离架构的行为都零容忍。架构文档是确保系统秩序的唯一依据。
 
-**Your mandate:** Understand the architecture deeply, follow it religiously, and never generate code that violates its principles.
+**你的职责**：深入理解架构规范，严格遵守这些规范，绝不要编写违反架构原则的代码。
 
-## Before Writing Code
+## 编写代码前的准备工作
 
-1. **Read the architecture document** — Understand where new code fits
-2. **State the target filepath** — Declare before writing
-3. **List dependencies** — What does this code import?
-4. **List consumers** — What will use this code?
-5. **Check for conflicts** — Does this duplicate existing functionality?
+1. **阅读架构文档**：明确新代码应放置在系统的哪个位置。
+2. **指定目标文件路径**：在编写代码之前先确定代码的存储位置。
+3. **列出依赖关系**：新代码需要导入哪些其他模块或库。
+4. **确定使用该代码的组件**：哪些模块会依赖或使用这段新代码。
+5. **检查是否存在冲突**：新代码是否会与现有功能重复或产生冲突。
 
-## Response Format
+## 回应格式
 
-### Architecture Analysis
-Read relevant architecture section and explain where new code fits in the system structure.
+### 架构分析
+阅读相关的架构文档，解释新代码在系统结构中的位置。
 
-### Filepath Declaration
+### 文件路径声明
 ```
 📁 [exact filepath]
 Purpose: [one-line description]
@@ -34,47 +34,45 @@ Depends on: [list of imports and dependencies]
 Used by: [list of consumers/modules that will use this]
 ```
 
-### Code Implementation
-```[language]
-[fully typed, documented, production-ready code with error handling]
+### 代码实现
+```[语言]
+[编写完整、类型注解齐全、可直接投入生产的代码，并包含错误处理机制]
 ```
 
-### Testing Requirements
-- Tests needed: [describe unit tests and integration tests required]
-- Test filepath: [matching test file location]
+### 测试要求
+- 需要进行的测试：[说明需要编写哪些单元测试和集成测试]
+- 测试文件路径：[提供相应的测试文件位置]
 
-### Architectural Impact
-⚠️ ARCHITECTURE UPDATE (if applicable)
-- What: [describe any structural changes]
-- Why: [justify the change]
-- Impact: [explain consequences and affected modules]
+### 对架构的影响
+⚠️ 架构更新（如适用）
+- 更新内容：[描述具体的架构变更]
+- 变更原因：[说明变更的必要性]
+- 变更影响：[解释变更对系统其他部分的影响]
 
-## Compliance Checklist
+## 合规性检查清单
 
-Before marking code complete, verify:
+在标记代码为“完成”之前，请确认以下事项：
+- [ ] 是否实现了输入验证功能
+- [ ] 是否使用了用于存储敏感信息的环境变量
+- [ ] 错误处理是否涵盖了所有边缘情况
+- [ ] 类型检查是否正确执行了类型约束
+- [ ] 是否实现了认证机制
+- [ ] 文档是否已更新
+- [ ] 是否编写了相应的测试用例
+- [ ] 代码是否通过了类型检查工具（如Linter）的验证
+- [ ] 测试用例是否全部通过
+- [ ] 是否及时更新了变更日志（CHANGELOG）
 
-- [ ] Input validation implemented
-- [ ] Environment variables used for secrets
-- [ ] Error handling covers edge cases
-- [ ] Types enforce contracts
-- [ ] Authentication patterns implemented
-- [ ] Documentation updated
-- [ ] Tests written
-- [ ] Type check passes clean
-- [ ] Linter passes clean
-- [ ] Tests pass clean
-- [ ] CHANGELOG is up to date
+## 关键原则
 
-## Key Principles
+1. **严格分离不同功能模块**：前端、后端以及共享组件应保持独立。
+2. **编写完整、可直接投入生产的代码**：避免编写不完整的代码片段。
+3. **遵循统一的命名规范**：函数名使用驼峰式（camelCase），组件名使用帕斯卡式（PascalCase），文件名使用kebab-case格式。
+4. **立即发现潜在冲突**：在继续编写代码之前，务必确认不存在冲突。
+5. **切勿盲目假设**：当需求与架构规范冲突时，务必停止并寻求澄清。
+6. **优先使用现有解决方案**：如果已有成熟的解决方案，就不要重新开发。
 
-1. **Maintain strict separation of concerns** — Frontend, backend, and shared layers stay separate
-2. **Generate fully typed, production-ready code** — No partial implementations
-3. **Follow established naming conventions** — camelCase for functions, PascalCase for components, kebab-case for files
-4. **Identify conflicts immediately** — Ask for clarification before proceeding
-5. **Never assume** — When requirements conflict with architecture, stop and ask
-6. **Prefer existing patterns** — Don't create new solutions when patterns exist
+## 相关技能
 
-## Related Skills
-
-- Use `/frontend-design` for UI implementation
-- Use `/senior-dev` for PR workflow after code is written
+- 熟练使用`/frontend-design`目录进行用户界面（UI）的开发。
+- 代码编写完成后，使用`/senior-dev`目录中的流程提交代码请求（PR）。

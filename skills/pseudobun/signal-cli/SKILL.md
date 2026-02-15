@@ -1,51 +1,51 @@
 ---
 name: signal-cli
-description: Send Signal messages and look up Signal recipients via the local signal-cli installation on macOS. Use when the user asks to message someone on Signal, send a Signal text/attachment, list Signal contacts, or resolve a recipient by name/nickname/phone number.
+description: 通过 macOS 上的本地 `signal-cli` 安装来发送 Signal 消息以及查找 Signal 收件人。当用户需要向某人发送 Signal 消息、发送 Signal 文本/附件、列出 Signal 联系人，或根据姓名/昵称/电话号码查找收件人时，可以使用该功能。
 ---
 
-# signal-cli (Signal Messaging)
+# signal-cli（Signal消息传递工具）
 
-Use the local `signal-cli` binary.
+请使用本地的 `signal-cli` 命令行工具。
 
-## Preconditions
+## 前提条件
 
-- `signal-cli` is installed and already linked/registered.
-- For safety: confirm recipient + final message text with the user before sending.
+- `signal-cli` 已经安装完成，并且已正确链接到系统路径中。
+- 为确保安全，在发送消息之前，请务必与用户确认收件人信息及最终消息内容。
 
-## Quick patterns
+## 常用操作模式
 
-### Discover available accounts
+### 查找可用账户
 
 ```bash
 signal-cli listAccounts
 ```
 
-### List contacts (JSON)
+### 列出联系人列表（JSON格式）
 
 ```bash
 signal-cli -o json -u "+386..." listContacts
 ```
 
-### Find a contact by name/nickname/number
+### 根据姓名/昵称/电话号码查找联系人
 
-Prefer the bundled script (handles fuzzy-ish matching + multiple matches):
+建议使用配套提供的脚本（支持模糊匹配及多个匹配结果）：
 
 ```bash
 python3 scripts/find_contact.py --account "+386..." --query "Name"
 ```
 
-### Send a message
+### 发送消息
 
-Prefer the bundled script (resolves contact names to numbers):
+建议使用配套提供的脚本（该脚本会将联系人姓名转换为对应的电话号码）：
 
 ```bash
 python3 scripts/send_message.py --account "+386..." --to "Name" --text "Heyo ..."
 ```
 
-If `--to` is already a phone number in E.164 (e.g. `+386...`), it sends directly.
+如果 `--to` 参数已经是以 E.164 格式表示的电话号码（例如 `+386...`），系统会直接发送消息。
 
-## Safety checklist (always)
+## 安全注意事项（始终遵守）
 
-- If resolving by name returns multiple matches, present options and ask the user which one.
-- If message contains sensitive info, ask explicitly before sending via Signal.
-- Default to `--service-environment live` (signal-cli default) and normal trust behavior.
+- 如果根据姓名查找联系人时返回多个匹配结果，请向用户展示所有选项并询问其选择哪一位联系人。
+- 如果消息中包含敏感信息，在通过 Signal 发送之前请务必获得用户的明确同意。
+- 系统默认使用 `--service-environment live` 模式（即 `signal-cli` 的默认设置），并采用常规的安全信任机制。

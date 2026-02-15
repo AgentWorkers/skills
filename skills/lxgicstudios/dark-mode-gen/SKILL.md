@@ -1,28 +1,28 @@
 ---
 name: dark-mode-gen
-description: Add dark mode support to components. Use when implementing dark theme.
+description: 为组件添加深色模式（dark mode）支持。在实现深色主题时可以使用该功能。
 ---
 
-# Dark Mode Generator
+# 暗模式生成器
 
-Adding dark mode means updating every component with CSS variables or Tailwind dark: prefixes. This tool does it automatically for single files or entire directories.
+启用暗模式意味着需要使用CSS变量或Tailwind的`dark:`前缀来更新所有组件。这个工具可以自动为单个文件或整个目录完成这项工作。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-dark-mode ./src/components/Card.tsx
 ```
 
-## What It Does
+## 功能介绍
 
-- Adds dark mode styles to React components
-- Works with CSS variables, Tailwind, or styled-components
-- Handles prefers-color-scheme media queries
-- Preserves existing styles and structure
+- 为React组件添加暗模式样式
+- 支持CSS变量、Tailwind或`styled-components`
+- 处理` prefers-color-scheme`媒体查询
+- 保留现有的样式和结构
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Single component
@@ -35,42 +35,42 @@ npx ai-dark-mode ./src/components/
 npx ai-dark-mode ./src/components/Card.tsx --dry-run
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use CSS variables** - easier to maintain than hardcoded colors
-- **Test both modes** - make sure contrast is good in both
-- **Don't forget images** - some graphics need light/dark variants
-- **Respect system preference** - use prefers-color-scheme
+- **使用CSS变量**：比硬编码的颜色更易于维护
+- **测试两种模式**：确保两种模式下的对比度都良好
+- **不要忽略图片**：某些图形需要 light/dark 版本
+- **尊重系统设置**：使用` prefers-color-scheme`来决定显示模式
 
-## When to Use This
+## 适用场景
 
-- Adding dark mode to an existing project
-- Converting components that only have light styles
-- Standardizing dark mode implementation across files
-- Quick prototyping with dark mode support
+- 为现有项目添加暗模式功能
+- 将仅支持亮模式的组件转换为支持暗模式的组件
+- 在多个文件中统一暗模式的实现方式
+- 快速原型设计时添加暗模式支持
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发者工具之一。免费版本无需支付费用、无需注册，也不需要API密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令运行。建议使用Node.js 18及以上版本。需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-dark-mode --help
 ```
 
-## How It Works
+## 工作原理
 
-Reads your component files, identifies color definitions and styles, then adds appropriate dark mode variants. For Tailwind it adds dark: prefixes. For CSS it uses CSS variables with prefers-color-scheme.
+该工具会读取你的组件文件，识别其中的颜色定义和样式，然后添加相应的暗模式版本。对于Tailwind样式，它会添加`dark:`前缀；对于CSS样式，则会使用` prefers-color-scheme`来处理暗模式切换。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证。永久免费，你可以随意使用这个工具。

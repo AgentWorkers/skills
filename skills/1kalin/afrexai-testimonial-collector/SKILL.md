@@ -1,62 +1,53 @@
 ---
 name: Testimonial Collector
-description: Generates testimonial request emails and formats collected testimonials for marketing
+description: 生成推荐信请求邮件，并整理收集到的推荐信以用于营销活动。
 ---
 
-# Testimonial Collector
+# 顾客评价收集工具
 
-You help businesses collect and format powerful customer testimonials.
+该工具帮助企业收集并整理有价值的客户评价。
 
-## Capabilities
+## 主要功能
 
-### 1. Generate Request Emails
-Create personalized testimonial request emails that actually get responses.
+### 1. 生成请求邮件
+- 自动生成个性化的评价请求邮件，有效提高回复率。
+- 邮件内容包含具体的成果或效果示例。
+- 提供简洁的提示和问题，便于用户填写。
+- 提供可编辑的草稿供用户修改。
 
-Template approach:
-- Reference specific results/outcomes
-- Make it easy (provide prompts/questions)
-- Keep it short
-- Offer to write a draft they can edit
+### 2. 采访问题设计
+- 生成针对性强的问题，帮助获取高质量的评价：
+  - 您试图解决的是什么问题？
+  - 在使用我们的服务之前，您尝试过哪些方法？
+  - 您实际看到了哪些具体的成果（请提供数据）？
+  - 如果有人正在考虑使用我们的服务，您会推荐什么？
+  - 最让您印象深刻的是什么？
 
-### 2. Interview Questions
-Generate targeted questions that extract great testimonials:
-- What problem were you trying to solve?
-- What did you try before us?
-- What specific results have you seen? (numbers!)
-- What would you tell someone considering us?
-- What surprised you most?
-
-### 3. Format Testimonials
-Take raw testimonial text and format for:
-
-**Website:**
-```
+### 3. 评价格式化
+- 将原始的评价文本进行格式化，适用于以下场景：
+  - **网站展示**：[使用示例代码](```
 "[Key quote — 1-2 sentences max]"
 — [Name], [Title] at [Company]
 [Specific result: e.g., "Increased revenue 40% in 3 months"]
-```
+```)
+  - **社交证明片段**：用于网站首页、邮件或广告的简短、有力的引语。
+  - **案例研究格式**：问题 → 解决方案 → 成果（附带数据）。
 
-**Social proof snippets:**
-Short, punchy quotes for landing pages, emails, ads.
+### 4. 评价审核
+- 审查现有的评价内容，并标记以下问题：
+  - 评价过于模糊（如“产品很棒！”）
+  - 未提供具体成果
+  - 未注明来源
+  - 评价内容过时
+  - 提出改进建议或需要进一步询问的问题。
 
-**Case study format:**
-Challenge → Solution → Results (with numbers)
+## 使用规则
+- 强调具体数据、时间节点以及使用前后的变化。
+- 使用真实姓名、职位和公司名称能增强社交证明的效果。
+- 视频评价优于文字评价，但文字评价同样具有说服力。
+- 按评价的影响力（如收入增长或节省的时间）对评价内容进行排序。
 
-### 4. Testimonial Audit
-Review existing testimonials and flag:
-- Too vague ("Great product!")
-- No specific results
-- Missing attribution
-- Outdated
-- Suggest improvements or follow-up questions
-
-## Rules
-- Push for specifics: numbers, timeframes, before/after
-- Social proof is strongest with real names, titles, companies
-- Video > written but written is still powerful
-- Sort by impact: revenue/time saved testimonials first
-
-## Related Tools
-- Review responses: `clawhub install afrexai-review-responder`
-- Email drafting: `clawhub install afrexai-email-crafter`
-- Context packs: https://afrexai-cto.github.io/context-packs/ ($47/pack)
+## 相关工具
+- 审查用户回复：`clawhub install afrexai-review-responder`
+- 邮件模板生成：`clawhub install afrexai-email-crafter`
+- 语境资料包：https://afrexai-cto.github.io/context-packs/（价格：$47/包）

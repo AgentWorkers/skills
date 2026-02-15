@@ -1,29 +1,29 @@
 ---
 name: test-writer
-description: Generate unit tests from source files. Use when you need test coverage fast.
+description: 从源文件生成单元测试。当您需要快速获得测试覆盖率时，可以使用此方法。
 ---
 
 # Test Writer
 
-You know that feeling when you finish building something and realize you haven't written a single test? Yeah. This tool takes your source files and generates real unit tests. Pick your framework, point it at your code, and get tests that actually cover your functions. Not placeholder garbage, real assertions based on what your code does.
+你是否遇到过这样的情况：好不容易完成了代码的编写，却发现一个测试脚本都没有写？这个工具可以自动从你的源代码文件生成真正的单元测试。只需选择所需的测试框架，指定要测试的代码部分，它就能生成能够覆盖所有函数功能的测试用例——这些测试用例基于你的代码实际执行的逻辑，而不是空洞的占位符内容。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-test-gen src/utils.ts
 ```
 
-## What It Does
+## 工作原理
 
-- Reads your source files and understands the function signatures and logic
-- Generates unit tests with real assertions, not just empty describe blocks
-- Supports Jest, Vitest, and Mocha out of the box
-- Accepts glob patterns so you can test multiple files at once
-- Writes output to a file or prints to stdout
+- 该工具会读取你的源代码文件，解析函数签名和逻辑结构；
+- 生成包含实际断言的单元测试用例（而不仅仅是空白的描述性代码）；
+- 支持Jest、Vitest和Mocha等常用测试框架；
+- 支持使用通配符来批量测试多个文件；
+- 可将测试结果输出到文件中，或直接显示在控制台（stdout）。
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate Jest tests for a single file
@@ -36,42 +36,42 @@ npx ai-test-gen src/helpers.ts --framework vitest -o tests/helpers.test.ts
 npx ai-test-gen "src/**/*.ts" --framework mocha
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Start with utility functions** - Pure functions with clear inputs and outputs get the best generated tests. Start there, then move to more complex code.
-- **Pick the right framework** - Use --framework to match what your project already uses. Mixing test frameworks is a headache nobody needs.
-- **Review edge cases** - The generated tests cover the happy path well. Add your own edge cases for null inputs, empty arrays, and boundary conditions.
-- **Use it as a starting point** - Generated tests are a great foundation. Tweak them to match your team's testing style.
+- **从辅助函数开始**：具有明确输入和输出值的纯函数能够生成最有效的测试用例。先从这些函数开始测试，再逐步扩展到更复杂的代码；
+- **选择合适的测试框架**：根据项目实际使用的框架来指定测试工具（混合使用不同框架会带来不必要的麻烦）；
+- **检查边界条件**：虽然生成的测试用例已经涵盖了大部分正常情况，但建议额外添加针对空值、空数组等边界条件的测试用例；
+- **将其作为测试的起点**：生成的测试用例是一个很好的基础，你可以根据团队的测试习惯对其进行调整。
 
-## When to Use This
+## 适用场景
 
-- You're adding tests to a project that has none
-- You just wrote a bunch of utility functions and need coverage
-- You want a starting point for tests instead of writing boilerplate from scratch
-- Code review requires tests and you're short on time
+- 当你的项目还没有任何测试代码时；
+- 当你刚刚编写了一些辅助函数，需要为它们编写测试时；
+- 当你需要一个测试的起点，而不想从头开始编写重复性的代码时；
+- 当代码审查需要测试用例，但时间紧张时。
 
-## How It Works
+## 工作流程
 
-The tool reads your source files and analyzes function signatures, types, and logic flow. It sends that context to an AI model that generates test cases with meaningful assertions. You pick the framework and it formats everything to match.
+该工具会读取源代码，分析函数签名、数据类型及逻辑流程，然后将这些信息传递给AI模型以生成具有实际意义的测试用例。用户只需选择所需的测试框架，工具会自动完成后续的格式化工作。
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装任何额外的软件，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。
 
 ```bash
 npx ai-test-gen --help
 ```
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多种免费开发工具之一。免费版本完全开放，无需注册或支付API密钥，只需使用即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## License
+## 许可协议
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具，无需遵守任何额外的限制。

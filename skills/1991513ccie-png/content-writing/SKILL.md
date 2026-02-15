@@ -1,6 +1,6 @@
 ---
 name: content-writing
-description: Expert guidance for content-writing.
+description: 内容写作的专家指导。
 version: 1.0.0
 tags: [content,writing,ai]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# ucontent writing
+# ucontent 写作
 
-Expert guidance and training.
+专家指导与培训。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Techniques and methods
-- Tips and tricks
-- Examples
+- 最佳实践
+- 技巧与方法
+- 小贴士与窍门
+- 示例
 
-## Usage
-Help with this skill
-Tips and guidance
+## 使用方法
+- 帮助掌握这项技能
+- 提供相关提示与指导

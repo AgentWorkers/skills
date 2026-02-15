@@ -1,25 +1,25 @@
 ---
 name: Invoice Generator
-description: Creates professional invoices in markdown and HTML
+description: 使用 Markdown 和 HTML 格式生成专业的发票。
 ---
 
-# Invoice Generator
+# 发票生成器
 
-You create professional invoices. Clean, clear, and ready to send.
+您可以生成专业的发票，格式清晰、易于发送。
 
-## What to Ask
+## 需要提供的信息
 
-1. **Your business info:** Name, address, email, phone (save for reuse)
-2. **Client info:** Company name, contact name, address
-3. **Invoice number:** Or auto-generate (INV-YYYY-NNN format)
-4. **Line items:** Description, quantity, unit price
-5. **Payment terms:** Net 30, Net 15, Due on receipt, etc.
-6. **Payment methods:** Bank transfer, PayPal, Stripe link, etc.
-7. **Currency:** Default USD
-8. **Tax rate:** If applicable (percentage)
-9. **Notes:** Any special terms, late payment fees, etc.
+1. **您的企业信息：** 公司名称、地址、电子邮件地址、电话号码（以便后续使用）
+2. **客户信息：** 客户公司名称、联系人姓名、地址
+3. **发票编号：** 可以自动生成（格式为 INV-YYYY-NNN）
+4. **商品明细：** 产品描述、数量、单价
+5. **付款条款：** 现款结算（30天内支付）、货到付款等
+6. **付款方式：** 银行转账、PayPal、Stripe 等
+7. **货币：** 默认为美元（USD）
+8. **税率：** 如适用（以百分比表示）
+9. **备注：** 任何特殊条款或逾期付款费用等
 
-## Invoice Template
+## 发票模板
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -63,71 +63,69 @@ NOTES:
 Thank you for your business.
 ```
 
-## Output Formats
+## 输出格式
 
-### Markdown (default)
-Clean markdown table format, easy to paste into emails or docs.
+### Markdown（默认格式）
+生成简洁的 Markdown 表格格式，方便直接粘贴到电子邮件或文档中。
 
 ### HTML
-Generate a styled HTML file the user can open in a browser and print/save as PDF:
-- Clean, professional styling
-- Print-friendly (no background colors that waste ink)
-- Save as `invoice-[number].html`
+生成格式美观的 HTML 文件，用户可以在浏览器中打开并打印或保存为 PDF：
+- 格式专业、美观
+- 适合打印（无多余的背景颜色，节省墨水）
+- 保存文件名为 `invoice-[编号].html`
 
-## Rules
+## 规则
 
-- Always calculate totals correctly. Double-check math.
-- Invoice numbers should be sequential. Check for existing invoices if possible.
-- Due date = invoice date + payment terms (Net 30 = 30 days, etc.)
-- Include all legally required info (varies by jurisdiction — ask if unsure)
-- Save invoices to an `invoices/` directory for record-keeping
-- If the user has sent invoices before, reuse their business details
-- Currency formatting: use proper symbols and decimal places ($1,234.56)
+- 必须正确计算总金额，并仔细核对计算结果。
+- 发票编号应连续编号；如可能，请检查是否已有相同编号的发票。
+- 到期日期 = 发票日期 + 付款期限（例如：现款结算为 30 天后）
+- 必须包含所有法律要求的必要信息（具体要求因地区而异，如有疑问请咨询）
+- 将生成的发票保存到 `invoices/` 目录中以备记录
+- 如果用户之前已经生成过发票，可重复使用其企业信息
+- 货币格式应使用正确的符号和小数位（例如：$1,234.56）
 
-## Recurring Invoices
+## 定期发票
 
-If the user bills the same client regularly:
-- "Create this month's invoice for [client]" → Copy previous invoice, update date/number/period
-- Track invoice history per client
+如果需要定期向同一客户开具发票：
+- “为 [客户] 生成本月的发票” → 复制之前的发票，更新日期、编号和周期
+- 记录每个客户的发票历史记录
 
-## Quick Commands
+## 快速命令
 
-- "Invoice [client] for [amount] for [description]" → Generate with defaults
-- "Show my invoices" → List all invoices in the invoices/ directory
-- "What's outstanding?" → Show unpaid invoices past due date
-
+- “为 [客户] 开具金额为 [金额]、商品描述为 [描述] 的发票” → 使用默认设置生成发票
+- “查看我的发票” → 列出 `invoices/` 目录中的所有发票
+- “未支付的发票有哪些？” → 显示所有逾期未付的发票
 
 ---
 
-## 🔗 More AfrexAI Skills (Free on ClawHub)
+## 🔗 更多 AfrexAI 功能（在 ClawHub 上免费使用）
 
-| Skill | Install |
+| 功能 | 安装方式 |
 |-------|---------|
-| AI Humanizer | `clawhub install afrexai-humanizer` |
-| SEO Writer | `clawhub install afrexai-seo-writer` |
-| Email Crafter | `clawhub install afrexai-email-crafter` |
-| Proposal Generator | `clawhub install afrexai-proposal-gen` |
-| Invoice Generator | `clawhub install afrexai-invoice-gen` |
-| Lead Scorer | `clawhub install afrexai-lead-scorer` |
-| Client Onboarding | `clawhub install afrexai-onboarding` |
-| Meeting Prep | `clawhub install afrexai-meeting-prep` |
-| Social Repurposer | `clawhub install afrexai-social-repurposer` |
-| FAQ Builder | `clawhub install afrexai-faq-builder` |
-| Review Responder | `clawhub install afrexai-review-responder` |
-| Report Builder | `clawhub install afrexai-report-builder` |
-| CRM Updater | `clawhub install afrexai-crm-updater` |
-| Pitch Deck Reviewer | `clawhub install afrexai-pitch-deck-reviewer` |
-| Contract Analyzer | `clawhub install afrexai-contract-analyzer` |
-| Pricing Optimizer | `clawhub install afrexai-pricing-optimizer` |
-| Testimonial Collector | `clawhub install afrexai-testimonial-collector` |
-| Competitor Monitor | `clawhub install afrexai-competitor-monitor` |
+| AI 人性化生成器 | `clawhub install afrexai-humanizer` |
+| SEO 写作工具 | `clawhub install afrexai-seo-writer` |
+| 电子邮件生成工具 | `clawhub install afrexai-email-crafter` |
+| 提案生成工具 | `clawhub install afrexai-proposal-gen` |
+| 发票生成工具 | `clawhub install afrexai-invoice-gen` |
+| 客户开发工具 | `clawhub install afrexai-onboarding` |
+| 会议准备工具 | `clawhub install afrexai-meeting-prep` |
+| 社交媒体内容优化工具 | `clawhub install afrexai-social-repurposer` |
+| 常见问题解答生成工具 | `clawhub install afrexai-faq-builder` |
+| 评论回复工具 | `clawhub install afrexai-review-responder` |
+| 报告生成工具 | `clawhub install afrexai-report-builder` |
+| 客户关系管理（CRM）更新工具 | `clawhub install afrexai-crm-updater` |
+| 演示文稿审核工具 | `clawhub install afrexai-pitch-deck-reviewer` |
+| 合同分析工具 | `clawhub install afrexai-contract-analyzer` |
+| 价格优化工具 | `clawhub install afrexai-pricing-optimizer` |
+| 客户评价收集工具 | `clawhub install afrexai-testimonial-collector` |
+| 竞争对手监控工具 | `clawhub install afrexai-competitor-monitor` |
 
-## 🚀 Go Pro: Industry Context Packs ($47/pack)
+## 🚀 升级至专业版：行业特定功能包（每包 47 美元）
 
-Make your AI agent a true industry expert with deep domain knowledge.
+通过行业特定功能包，让您的 AI 助手具备深入的行业专业知识。
 
-→ **[Browse Context Packs](https://afrexai-cto.github.io/context-packs/)**
+→ **[查看所有功能包](https://afrexai-cto.github.io/context-packs/)**
 
-**Free tools:** [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) | [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)
+**免费工具：** [AI 收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/) | [代理设置向导](https://afrexai-cto.github.io/agent-setup/)
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) 🖤💛*
+*由 [AfrexAI](https://afrexai-cto.github.io/context-packs/) 开发 🖤💛*

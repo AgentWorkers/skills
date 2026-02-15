@@ -1,72 +1,70 @@
 ---
 name: ICP Builder
-description: Builds Ideal Customer Profiles with scoring methodology
+description: 通过评分方法构建理想的客户画像
 ---
 
 # ICP Builder
 
-You build Ideal Customer Profiles (ICPs) — detailed descriptions of the companies and people most likely to buy and succeed with the user's product.
+您可以使用 ICP Builder 来构建理想的客户画像（ICPs）——这些画像详细描述了最有可能购买用户产品并从中受益的公司和个人。
 
-## ICP Framework
+## ICP 框架
 
-### Step 1: Gather Inputs
+### 第 1 步：收集信息
 
-Ask the user:
-1. What do you sell? (Product/service, one sentence)
-2. Who are your best 5-10 customers? (The ones who buy fast, pay well, stay long, refer others)
-3. Who are your worst customers? (Churned, complained, were a bad fit)
-4. What problem do you solve?
-5. What's your price point?
+向用户询问以下问题：
+1. 您销售的是什么？（产品/服务，用一句话概括）
+2. 您最好的 5-10 客户是谁？（那些购买速度快、付款及时、长期使用产品并愿意推荐他人的客户）
+3. 最差的客户是谁？（那些频繁流失、经常投诉或与产品不匹配的客户）
+4. 您解决了什么问题？
+5. 您的产品定价是多少？
 
-### Step 2: Company-Level Profile
+### 第 2 步：公司级画像
 
-Define the ideal company:
+定义理想的公司特征：
+- **行业/垂直领域**：哪些行业最适合我们的产品？
+- **公司规模**：员工人数范围、收入范围
+- **发展阶段**：初创公司、成长型企业、成熟型企业还是大型企业？
+- **地理位置**：客户位于哪里？
+- **技术栈**：他们目前使用哪些工具？（这有助于判断产品的兼容性）
+- **商业模式**：B2B、B2C、SaaS、服务还是电子商务？
+- **触发事件**：哪些事件会促使客户采取行动？（例如融资轮次、新员工入职、产品发布、法规变更）
 
-- **Industry/Vertical:** Which industries are the best fit?
-- **Company size:** Employee count range, revenue range
-- **Stage:** Startup, growth, mature, enterprise?
-- **Geography:** Where are they based?
-- **Tech stack:** What tools do they already use? (signals compatibility)
-- **Business model:** B2B, B2C, SaaS, services, ecommerce?
-- **Trigger events:** What happens that creates urgency? (Funding round, new hire, product launch, regulation change)
+### 第 3 步：买家画像（公司内部）
 
-### Step 3: Buyer Persona (within the company)
+确定购买产品的具体人员：
+- **职位/角色**：他们的职位是什么？
+- **职位级别**：初级员工、经理、总监还是高管？
+- **负责部门**：这个决策由哪个部门负责？
+- **需要审批的层级**：他们需要向谁请示？
+- **日常困扰**：现状中让他们感到不满的问题是什么？
+- **目标**：他们的绩效指标是什么？
+- **交流渠道**：他们通常在哪些线上平台活跃？（LinkedIn 群组、Subreddit 论坛、Slack 社区、会议等）
 
-Define the person who buys:
+### 第 4 步：评分模型
 
-- **Title/Role:** What's their job title?
-- **Seniority:** IC, manager, director, VP, C-suite?
-- **Department:** Which team owns this decision?
-- **Reports to:** Who do they need approval from?
-- **Day-to-day pain:** What frustrates them about the status quo?
-- **Goals:** What are they measured on?
-- **Watering holes:** Where do they hang out online? (LinkedIn groups, subreddits, Slack communities, conferences)
+根据以下维度对每个潜在客户进行 1-5 分的评分：
 
-### Step 4: Scoring Model
+| 标准 | 权重 | 1（不匹配） | 3（一般） | 5（完全匹配） |
+|---------|--------|---------------|---------------|------------------|
+| 行业匹配度 | 25% | 不属于目标行业 | 相邻行业 | 核心目标行业 |
+| 公司规模 | 20% | 规模过小/过大 | 接近目标范围 | 完美匹配 |
+| 痛点严重程度 | 25% | 可有可无 | 中等程度的困扰 | 非常紧迫的问题 |
+| 购买预算的可能性 | 15% | 不太可能 | 可能购买 | 高概率购买 |
+| 购买意愿 | 15% | 完全不可能 | 有可能购买 | 高概率购买 |
+| 联系方式 | 15% | 无法联系 | 可以通过间接渠道联系 | 可以直接联系 |
 
-Score each prospect on a 1-5 scale across these dimensions:
+**总得分 = 各标准得分的加权总和。优先考虑得分在 4.0 分以上的潜在客户。**
 
-| Criteria | Weight | 1 (Poor Fit) | 3 (Okay Fit) | 5 (Perfect Fit) |
-|----------|--------|---------------|---------------|------------------|
-| Industry match | 25% | Outside target | Adjacent | Core vertical |
-| Company size | 20% | Too small/large | Edge of range | Sweet spot |
-| Pain severity | 25% | Nice-to-have | Moderate pain | Hair-on-fire problem |
-| Budget likelihood | 15% | Unlikely | Possible | Strong signals |
-| Accessibility | 15% | No way in | Warm intro possible | Direct contact available |
+### 第 5 步：排除不符合条件的客户（Anti-ICPs）
 
-**Total Score = Weighted sum. Prioritize 4.0+ prospects.**
+同样重要的是，要明确哪些客户不适合购买产品：
+- 规模太小、无法承担产品费用的客户
+- 在您没有相关案例研究的行业中销售
+- 需要您不具备的功能的客户
+- 销售周期过长、导致交易价值不高的客户
+- 任何让您联想到最差客户的客户
 
-### Step 5: Anti-ICP (Disqualifiers)
-
-Just as important — who NOT to sell to:
-
-- Companies too small to afford it
-- Industries where you have no case studies
-- Buyers who need features you don't have
-- Long sales cycles that don't justify the deal size
-- Anyone who reminds you of your worst customer
-
-### Output Format
+### 输出格式
 
 ```
 IDEAL CUSTOMER PROFILE
@@ -93,9 +91,9 @@ WHERE TO FIND THEM:
 • [Channels, communities, events]
 ```
 
-## Rules
+## 规则
 
-- Base ICPs on real data (their best customers), not assumptions
-- Be specific. "Mid-market SaaS companies" is better than "businesses"
-- Include trigger events — they're what turns a profile into a timely opportunity
-- Always include the anti-ICP. Knowing who to avoid saves more time than knowing who to target.
+- ICP 的构建应基于真实数据（即最好的客户），而非假设
+- 表述要具体。例如，“中端市场的 SaaS 公司”比“企业”这样的描述更准确
+- 必须包含触发事件——这些事件能将潜在客户转化为实际的销售机会
+- 必须列出不符合条件的客户（Anti-ICPs）。了解应避免的销售对象比明确目标客户更为重要，因为这能节省大量时间。

@@ -1,104 +1,55 @@
-# FLock Model Switcher
+# FLock模型切换器
 
-Switch between FLock API Platform models during conversations.
+在对话过程中，可以在不同的FLock API平台模型之间进行切换。
 
-## When to Activate
+## 激活条件
 
-Activate when the user requests a model switch. This includes:
+当用户请求模型切换时激活该功能。触发条件包括：
 
-**Slash command:**
-- `/switch_model` or `/flock`
+- **命令行指令：** `/switch_model` 或 `/flock`
+- **自然语言（支持任何语言）：** “切换模型” / “更改模型” / “交换模型”
+- “使用deepseek” / “使用编码模型” / “使用更便宜的模型”
+- “显示可用模型” / “有哪些模型可用”
 
-**Natural language (any language):**
-- "switch model" / "change model" / "swap model"
-- "use deepseek" / "use the coding model" / "use a cheaper model"
-- "show me the models" / "what models are available"
+## 行为规则
 
-## Behavior Rules
+- **关键要求：** 保持沉默且响应迅速，切勿详细解释操作过程。
+- **禁止显示以下内容：** “正在检查配置” / “验证状态” 或任何诊断信息。
+- **禁止使用类似“您是否希望我执行以下操作：1. … 2. … 3. …”的提示**
+- **禁止显示当前模型状态、分析结果或故障排查步骤**
+- **切换完成后不要询问用户任何问题**
+- **使用用户当前使用的语言进行回复**
 
-**CRITICAL: Be silent and fast. Never be verbose.**
+## 流程1：用户未指定具体模型
 
-- Do NOT explain what you are doing step by step.
-- Do NOT show "checking config", "verifying status", or any diagnostic output.
-- Do NOT list numbered options like "Do you want me to: 1. ... 2. ... 3. ..."
-- Do NOT show current model status, analysis, or troubleshooting steps.
-- Do NOT ask follow-up questions after switching.
-- Respond in the same language the user is using.
+- 首先显示模型选择菜单。
+- 用户输入一个数字或模型名称后，立即执行模型切换，并用一句话确认切换结果。
 
-## Flow 1: User says "switch model" (no specific model named)
+## 流程2：用户指定了具体模型
 
-Show the menu. Nothing else before it:
+- 直接执行模型切换，并用一句话确认切换结果。
 
-```
-Which FLock model would you like to use?
+## 切换步骤
 
-Reasoning:
-  1. Qwen3 235B Thinking         — $0.23/$2.30  (flock/qwen3-235b-a22b-thinking-2507)
-  2. Qwen3 235B Thinking Finance — $0.23/$2.30  (flock/qwen3-235b-a22b-thinking-qwfin)
-  3. Kimi K2 Thinking             — $0.60/$2.50  (flock/kimi-k2-thinking)
+当用户选择一个模型后，需依次执行以下三个命令：
 
-Instruct:
-  4. Qwen3 30B Instruct           — $0.20/$0.80  (flock/qwen3-30b-a3b-instruct-2507)
-  5. Qwen3 235B Instruct          — $0.70/$2.80  (flock/qwen3-235b-a22b-instruct-2507)
-  6. Qwen3 30B Instruct QMX       — $0.20/$0.80  (flock/qwen3-30b-a3b-instruct-qmxai)
-  7. Qwen3 30B Instruct Coding    — $0.20/$0.80  (flock/qwen3-30b-a3b-instruct-coding)
-  8. Qwen3 30B Instruct Mini      — $0.20/$0.80  (flock/qwen3-30b-a3b-instruct-qmini)
+**请确保这三个命令全部执行完毕，并且系统会自动重启相关组件。**
 
-Other:
-  9. DeepSeek V3.2                — $0.28/$0.42  (flock/deepseek-v3.2)
- 10. DeepSeek V3.2 DSIKH          — $0.28/$0.42  (flock/deepseek-v3.2-dsikh)
- 11. MiniMax M2.1                 — $0.30/$1.20  (flock/minimax-m2.1)
+## 成功响应
 
-Reply with a number or model name.
-```
+仅用一句话回复用户：
 
-User replies with a number or name → execute the switch → confirm with one line.
+**请注意：系统重启过程对用户是不可见的。**
 
-## Flow 2: User names a specific model
+## 失败响应
 
-Skip the menu. Execute the switch immediately. Confirm with one line.
+仅用一句话说明问题及解决方法：
 
-## Switch Procedure
+**请注意：系统重启过程对用户是不可见的。**
 
-When the user selects a model, run these three commands in sequence:
+## 模型ID参考
 
-```bash
-openclaw agent --model flock/<model-id>
-openclaw gateway stop
-openclaw gateway
-```
-
-All three commands must run. Do NOT skip the gateway restart.
-
-## Success Response
-
-One line only:
-
-```
-Switched to flock/<model-id>.
-```
-
-Do NOT mention the gateway restart. It should be invisible to the user.
-
-## Failure Response
-
-One line only. State the problem and the fix:
-
-```
-Failed: FLOCK_API_KEY not set. Run: openclaw models auth login --provider flock
-```
-
-Or:
-
-```
-Failed: Model not found. Run: openclaw plugins install @openclawd/flock && openclaw plugins enable flock
-```
-
-Never show more than two lines on failure. Never ask "do you want me to..." — just tell the user what command to run.
-
-## Model ID Reference
-
-| # | Model ID | Price (in/out per 1M) |
+| 编号 | 模型ID | 价格（每百万次使用费用） |
 |---|---|---|
 | 1 | `flock/qwen3-235b-a22b-thinking-2507` | $0.23/$2.30 |
 | 2 | `flock/qwen3-235b-a22b-thinking-qwfin` | $0.23/$2.30 |

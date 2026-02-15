@@ -1,15 +1,15 @@
 ---
 name: clawdbot-update-plus
-description: Full backup, update, and restore for Clawdbot - config, workspace, and skills with auto-rollback
+description: Clawdbot的全备份、更新及恢复功能：包括配置文件、工作区数据以及各项技能设置，并支持自动回滚功能。
 version: 2.1.1
 metadata: {"clawdbot":{"emoji":"🔄","requires":{"bins":["git","jq","rsync"],"commands":["clawdbot"]}}}
 ---
 
 # 🔄 Clawdbot Update Plus
 
-A comprehensive backup, update, and restore tool for your entire Clawdbot environment. Protect your config, workspace, and skills with automatic rollback, encrypted backups, and cloud sync.
+这是一个全面的备份、更新和恢复工具，适用于您的整个Clawdbot环境。通过自动回滚、加密备份和云同步功能，保护您的配置文件、工作区和技能设置。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check for available updates
@@ -28,21 +28,21 @@ clawdbot-update-plus update --dry-run
 clawdbot-update-plus restore clawdbot-update-2026-01-25-12:00:00.tar.gz
 ```
 
-## Features
+## 主要功能
 
-| Feature | Description |
+| 功能 | 描述 |
 |---------|-------------|
-| **Full Backup** | Backup entire environment (config, workspace, skills) |
-| **Auto Backup** | Creates backup before every update |
-| **Auto Rollback** | Reverts to previous commit if update fails |
-| **Smart Restore** | Restore everything or specific parts (config, workspace) |
-| **Multi-Directory** | Separate prod/dev skills with independent update settings |
-| **Encrypted Backups** | Optional GPG encryption |
-| **Cloud Sync** | Upload backups to Google Drive, S3, Dropbox via rclone |
-| **Notifications** | Get notified via WhatsApp, Telegram, or Discord |
-| **Modular Architecture** | Clean, maintainable codebase |
+| **完整备份** | 备份整个环境（配置文件、工作区和技能设置） |
+| **自动备份** | 每次更新前自动创建备份 |
+| **自动回滚** | 如果更新失败，可恢复到之前的版本 |
+| **智能恢复** | 恢复全部或部分数据（配置文件、工作区） |
+| **多目录支持** | 支持针对生产环境（prod）和开发环境（dev）分别设置备份策略 |
+| **加密备份** | 可选GPG加密 |
+| **云同步** | 通过rclone将备份文件上传到Google Drive、S3或Dropbox |
+| **通知机制** | 通过WhatsApp、Telegram或Discord接收通知 |
+| **模块化架构** | 代码结构清晰，易于维护 |
 
-## Installation
+## 安装
 
 ```bash
 # Via ClawdHub
@@ -52,9 +52,9 @@ clawdhub install clawdbot-update-plus --dir ~/.clawdbot/skills
 git clone https://github.com/hopyky/clawdbot-update-plus.git ~/.clawdbot/skills/clawdbot-update-plus
 ```
 
-### Add to PATH
+### 将工具添加到系统路径
 
-Create a symlink to use the command globally:
+创建一个符号链接，以便全局使用该工具：
 
 ```bash
 mkdir -p ~/bin
@@ -63,19 +63,19 @@ source ~/.zshrc
 ln -sf ~/.clawdbot/skills/clawdbot-update-plus/bin/clawdbot-update-plus ~/bin/clawdbot-update-plus
 ```
 
-### Dependencies
+### 所需依赖项
 
-| Dependency | Required | Purpose |
+| 依赖项 | 是否必需 | 用途 |
 |------------|----------|---------|
-| `git` | Yes | Update skills from repositories |
-| `jq` | Yes | Parse JSON configuration |
-| `rsync` | Yes | Efficient file copying |
-| `rclone` | No | Cloud storage sync |
-| `gpg` | No | Backup encryption |
+| `git` | 是 | 用于从仓库拉取技能更新 |
+| `jq` | 是 | 用于解析JSON配置文件 |
+| `rsync` | 是 | 用于高效文件复制 |
+| `rclone` | 可选 | 用于云存储同步 |
+| `gpg` | 可选 | 用于备份文件加密 |
 
-## Configuration
+## 配置
 
-Create `~/.clawdbot/clawdbot-update.json`:
+创建`~/.clawdbot/clawdbot-update.json`配置文件：
 
 ```json
 {
@@ -108,17 +108,17 @@ Create `~/.clawdbot/clawdbot-update.json`:
 }
 ```
 
-## Backup Paths
+## 备份路径配置
 
-Configure what to backup with `backup_paths`:
+使用`backup_paths`参数配置备份内容：
 
-| Option | Description |
+| 参数 | 描述 |
 |--------|-------------|
-| `path` | Directory to backup (supports `~`) |
-| `label` | Name in logs and restore |
-| `exclude` | Files/folders to exclude |
+| `path` | 备份目录（支持使用`~`符号） |
+| `label` | 备份文件在日志中的标签 |
+| `exclude` | 需要排除的文件或文件夹 |
 
-### Recommended Setup
+### 推荐配置方案
 
 ```json
 "backup_paths": [
@@ -127,43 +127,36 @@ Configure what to backup with `backup_paths`:
 ]
 ```
 
-## Skills Update
+## 技能更新
 
-Configure which skills to update with `skills_dirs`:
+使用`skills_dirs`参数配置需要更新的技能：
 
-| Option | Description |
+| 参数 | 描述 |
 |--------|-------------|
-| `path` | Skills directory |
-| `label` | Name in logs |
-| `update` | Run `git pull` (true/false) |
+| `path` | 技能目录路径 |
+| `label` | 备份文件在日志中的标签 |
+| `update` | 是否执行`git pull`操作（true/false） |
 
-### Recommended Setup
+### 推荐配置方案
 
-```json
-"skills_dirs": [
-  {"path": "~/.clawdbot/skills", "label": "prod", "update": true},
-  {"path": "~/clawd/skills", "label": "dev", "update": false}
-]
-```
+- **生产环境（Prod）**：自动从ClawdHub或GitHub获取更新 |
+- **开发环境（Dev）**：仅手动更新（保护开发中的数据）
 
-- **Prod**: Auto-update from ClawdHub/GitHub
-- **Dev**: Manual only (protects your work)
+## 命令行工具
 
-## Commands
-
-### `backup` — Create Full Backup
+### `backup` — 创建完整备份
 
 ```bash
 clawdbot-update-plus backup
 ```
 
-### `list-backups` — List Available Backups
+### `list-backups` — 列出所有可用备份
 
 ```bash
 clawdbot-update-plus list-backups
 ```
 
-### `update` — Update Everything
+### `update` — 更新所有内容
 
 ```bash
 # Standard update (with automatic backup)
@@ -179,7 +172,7 @@ clawdbot-update-plus update --no-backup
 clawdbot-update-plus update --force
 ```
 
-### `restore` — Restore from Backup
+### `restore` — 从备份中恢复数据
 
 ```bash
 # Restore everything
@@ -195,13 +188,13 @@ clawdbot-update-plus restore backup.tar.gz workspace
 clawdbot-update-plus restore backup.tar.gz --force
 ```
 
-### `check` — Check for Updates
+### `check` — 检查是否有更新可用
 
 ```bash
 clawdbot-update-plus check
 ```
 
-### `install-cron` — Automatic Updates
+### `install-cron` — 自动执行更新任务
 
 ```bash
 # Install daily at 2 AM
@@ -214,9 +207,9 @@ clawdbot-update-plus install-cron "0 3 * * 0"  # Sundays at 3 AM
 clawdbot-update-plus uninstall-cron
 ```
 
-## Notifications
+## 通知机制
 
-Get notified when updates complete or fail:
+当更新完成或失败时，系统会发送通知：
 
 ```json
 "notifications": {
@@ -227,14 +220,14 @@ Get notified when updates complete or fail:
 }
 ```
 
-Target format determines channel:
+通知渠道的设置方式：
 - `+1234567890` → WhatsApp
 - `@username` → Telegram
 - `channel:123` → Discord
 
-## Cloud Storage
+## 云存储设置
 
-### Setup rclone
+### 配置rclone工具
 
 ```bash
 # Install
@@ -245,7 +238,7 @@ curl https://rclone.org/install.sh | sudo bash  # Linux
 rclone config
 ```
 
-### Enable in Config
+### 在配置文件中启用云存储功能
 
 ```json
 "remote_storage": {
@@ -255,7 +248,7 @@ rclone config
 }
 ```
 
-## Encrypted Backups
+## 加密备份
 
 ```json
 "encryption": {
@@ -264,9 +257,9 @@ rclone config
 }
 ```
 
-## Logs
+## 日志记录
 
-All operations are logged to `~/.clawdbot/backups/update.log`:
+所有操作都会被记录到`~/.clawdbot/backups/update.log`文件中：
 
 ```
 [2026-01-25 20:22:48] === Update started 2026-01-25 20:22:48 ===
@@ -278,17 +271,17 @@ All operations are logged to `~/.clawdbot/backups/update.log`:
 [2026-01-25 20:23:43] Notification sent to +1234567890 via whatsapp
 ```
 
-**Log retention**: Logs older than 30 days are automatically deleted.
+**日志保留策略**：超过30天的日志会自动删除。
 
-## Retention Policy
+## 数据保留规则
 
-| Type | Retention | Config |
+| 数据类型 | 保留策略 | 配置参数 |
 |------|-----------|--------|
-| Backups (local) | Last N backups | `backup_count: 5` |
-| Backups (remote) | Last N backups | Same as local |
-| Logs | 30 days | Automatic |
+| 本地备份 | 保留最近N份备份 | `backup_count: 5` |
+| 远程备份 | 保留最近N份备份 | 与本地相同 |
+| 日志文件 | 保留30天 | 自动删除 |
 
-## Architecture (v2.0)
+## 架构（v2.0）
 
 ```
 bin/
@@ -303,40 +296,42 @@ bin/
     └── cron.sh              # Cron management
 ```
 
-## Changelog
+## 更新日志
 
 ### v2.0.0
-- Complete architecture rewrite
-- Modular design (7 separate modules)
-- Cleaner codebase (~150 lines per module vs 1000+ monolith)
-- Better error handling
-- Improved restore with label support
-- Auto-detect notification channel from target format
-- Fixed `--no-backup` flag being ignored
-- Detailed logging to file with auto-purge
-- Backup retention policy (local + remote)
+- 完整重构架构 |
+- 模块化设计（分为7个独立模块） |
+- 代码更简洁（每个模块约150行，而非之前的1000多行） |
+- 改进了错误处理机制 |
+- 支持使用标签进行智能恢复 |
+- 自动识别通知渠道 |
+- 修复了`--no-backup`参数被忽略的问题 |
+- 日志记录更加详细，并支持自动清理 |
+- 实现了本地和远程备份的保留策略 |
+
+### 其他版本更新记录
 
 ### v1.7.0
-- Smart restore with label support
-- Auto-detect backup format
+- 引入了基于标签的智能恢复功能 |
+- 自动识别备份文件格式 |
 
 ### v1.6.0
-- Added `backup_paths` for full environment backup
-- Separated backup logic from update logic
+- 新增了`backup_paths`参数，支持完整环境备份 |
+- 将备份逻辑与更新逻辑分离 |
 
 ### v1.5.0
-- Multi-directory support (`skills_dirs`)
+- 支持多目录备份（通过`skills_dirs`参数配置）
 
 ### v1.4.0
-- Notifications via Clawdbot messaging
+- 增加了通过Clawdbot发送通知的功能
 
 ### v1.3.0
-- Added `check`, `diff-backups`, `install-cron` commands
+- 新增了`check`、`diff-backups`和`install-cron`命令
 
-## Author
+## 开发者
 
-Created by **hopyky**
+由 **hopyky** 创建
 
-## License
+## 许可证
 
-MIT
+MIT许可证

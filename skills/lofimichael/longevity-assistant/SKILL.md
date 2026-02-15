@@ -1,235 +1,242 @@
 ---
 name: longevity
-description: Evaluates longevity interventions using evidence tiers. Provides research evaluation framework and curated high-value insights on supplements, sleep, exercise, and protocols. Activate for anti-aging, healthspan, supplement evaluation, or research paper analysis.
+description: 该工具根据不同的证据等级（evidence tiers）来评估各种延长寿命的干预措施。它提供了一个研究评估框架，并精选了关于补充剂、睡眠、锻炼以及相关干预方案的高价值信息。用户可以将其用于抗衰老研究、健康寿命研究、补充剂效果评估或研究论文的分析。
 license: MIT
 metadata:
   version: "2.0"
 ---
 
-# Longevity Research Framework
+# 长寿研究框架
 
-Evidence-based longevity evaluation assistant. Teaches how to assess interventions using research methodology, not prescription. Provides curated non-obvious insights demonstrating the evaluation framework.
+这是一个基于证据的长寿评估辅助工具，它教授如何使用研究方法来评估各种干预措施，而非仅仅依赖处方建议。该工具提供了经过筛选的、不那么显而易见的见解，以帮助理解长寿评估的整个框架。
 
-## When to Activate
+## 何时激活该工具
 
-Trigger keywords: longevity, anti-aging, healthspan, lifespan, supplement evaluation, research paper analysis, evidence tier, biomarker interpretation, sleep optimization, exercise protocol, Bryan Johnson, Blueprint, mitochondria, autophagy, senolytics.
+触发关键词：长寿、抗衰老、健康寿命、寿命、补充剂评估、研究论文分析、证据等级、生物标志物解读、睡眠优化、锻炼方案、布莱恩·约翰逊（Bryan Johnson）、蓝图（Blueprint）、线粒体、自噬、senolytics（清除衰老细胞的物质）。
 
-## Evidence Tiers
+## 证据等级
 
-| Tier | Definition | Example |
+| 等级 | 定义 | 例子 |
 |------|------------|---------|
-| **A** | Multiple RCTs, meta-analyses, consistent results | Creatine for muscle |
-| **B** | Single RCT or large cohort, emerging human data | Urolithin-A |
-| **C** | Mechanistic/animal studies, small human trials | Most senolytics |
-| **D** | Anecdotal, theoretical, n=1 | Novel peptides |
+| **A** | 多项随机对照试验（RCT）和荟萃分析，结果一致 | 肌肉补充剂中的肌酸（Creatine） |
+| **B** | 单项RCT或大型队列研究，新兴的人体数据 | 尿石素A（Urolithin-A） |
+| **C** | 机制研究/动物实验，小型人体试验 | 大多数senolytics（清除衰老细胞的物质） |
+| **D** | 仅基于轶事或理论，样本量n=1 | 新型肽类（Novel peptides） |
 
-## Research Evaluation Framework
+## 研究评估框架
 
-### Study Design Hierarchy
+### 研究设计层次
 
-1. Systematic review / meta-analysis
-2. Randomized controlled trial (RCT)
-3. Cohort study (prospective > retrospective)
-4. Case-control study
-5. Case series / case reports
-6. Mechanistic / animal studies
-7. Expert opinion / theoretical
+1. 系统评价/荟萃分析
+2. 随机对照试验（RCT）
+3. 队列研究（前瞻性>回顾性）
+4. 病例对照研究
+5. 病例系列/病例报告
+6. 机制研究/动物实验
+7. 专家意见/理论分析
 
-### Assessment Checklist
+### 评估检查清单
 
-- **Sample size**: Adequately powered? (n>100 for most outcomes)
-- **Duration**: Appropriate for endpoint? (bone density needs years, not weeks)
-- **Population**: Relevant to you? (young athletes ≠ older adults)
-- **Effect size**: Clinically meaningful or just statistically significant?
-- **Replication**: Confirmed by independent groups?
-- **Conflict of interest**: Industry-funded? Disclosed relationships?
+- **样本量**：是否足够大？（大多数指标需要n>100的样本量）
+- **持续时间**：是否适合评估目标？（例如，骨密度需要多年的观察时间，而非几周）
+- **研究对象**：是否与你相关？（年轻运动员与老年人的需求不同）
+- **效应大小**：是否具有临床意义，还是仅仅是统计学上的显著？
+- **可重复性**：是否被独立研究团队证实？
+- **利益冲突**：研究是否由行业资助？相关关系是否公开？
 
-### Red Flags
+### 警示信号
 
-- Single study with extraordinary claims
-- Surrogate endpoints only (biomarker change without clinical outcome)
-- Cherry-picked timepoints or subgroups
-- No control group or inadequate blinding
-- Massive effect sizes (>50% improvement = suspicious)
-- Published only in predatory journals
-- Funded entirely by supplement manufacturer
-- Authors selling the product
-
----
-
-## Alpha Discovery Framework
-
-Use these patterns to identify non-obvious insights in longevity research:
-
-### Dosing Assumptions
-- Standard dose may not apply to all outcomes (tissue-specific thresholds)
-- "More is better" often has inverse U-curve (melatonin, antioxidants)
-- Saturation points differ by target (muscle vs. brain for creatine)
-
-### Timing & Context
-- Relative timing matters (cold exposure vs. training window)
-- Circadian timing affects efficacy (eating window, supplement timing)
-- Cycling may be required (adaptation, tolerance, microbiome shifts)
-
-### Form & Bioavailability
-- Same compound, different absorption (ethyl ester vs. triglyceride omega-3)
-- Conversion dependencies (ellagitannins → urolithin-A requires specific gut bacteria)
-- Cofactor requirements (fat-soluble vitamins need dietary fat)
-
-### Synergies & Antagonisms
-- Required pairings (D3 without K2 may cause harm)
-- Absorption competition (calcium and magnesium compete)
-- Timing conflicts (iron and coffee, cold and hypertrophy)
-
-### Population Specificity
-- Age-dependent responses (fasting + muscle loss in older adults)
-- Sex differences in metabolism
-- Genetic responders vs. non-responders (APOE and saturated fat)
-
-### Mechanism vs. Outcome
-- Plausible mechanism ≠ proven clinical benefit
-- Surrogate endpoints (biomarkers) ≠ real outcomes (mortality, function)
-- Animal doses rarely translate directly to humans
+- 单一项研究却提出极端主张
+- 仅使用替代性指标（如生物标志物的变化，而非临床结果）
+- 选择性地挑选时间点或亚组进行分析
+- 无对照组或盲法设计不充分
+- 效果大小异常显著（如超过50%的改善）
+- 仅在低质量期刊上发表
+- 完全由补充剂制造商资助
+- 作者与所研究产品有利益关联
 
 ---
 
-## Example Alpha
+## Alpha发现框架
 
-The following examples demonstrate the discovery framework above. These are illustrative, not exhaustive—use the framework to evaluate new interventions.
+使用以下模式来发现长寿研究中的不那么显而易见的见解：
 
-### Creatine: 15g for Cognitive Benefits
+### 剂量假设
 
-- **Common belief**: 5g saturates muscle, same dose works for brain
-- **Alpha**: Serum creatine must rise high enough to cross blood-brain barrier and increase brain phosphocreatine. 5g saturates muscle but doesn't reliably raise brain levels.
-- **Evidence**: Multiple studies show cognitive benefits at 15-20g; 5g studies often null for cognition
-- **Tier**: B (emerging human data, mechanism understood)
-- **Practical**: Split 15g into 3x5g doses to avoid GI distress
+- 标准剂量可能不适用于所有效果（不同组织对剂量的敏感度不同）
+- “剂量越大效果越好”通常呈U型曲线（例如褪黑素、抗氧化剂）
+- 不同靶标的饱和点不同（肌酸对肌肉和大脑的影响不同）
 
-### Melatonin: 300mcg Outperforms 1mg+
+### 时间与背景
 
-- **Common belief**: More melatonin = better sleep
-- **Alpha**: Body produces ~300mcg endogenously. Supraphysiological doses (1-10mg) cause next-day grogginess, may affect cognition long-term, and create dependency via receptor downregulation.
-- **Evidence**: Meta-analyses show 300mcg effective; higher doses don't improve outcomes
-- **Tier**: A (multiple meta-analyses)
-- **Practical**: Start at 300mcg; most commercial products are 10-30x too high
+- 相对时间安排很重要（例如，运动与进食的时间关系）
+- 生物钟节律会影响效果（例如，进食和补充剂摄入的时间）
+- 可能需要周期性摄入（以适应身体变化、避免不良反应、调节微生物群）
 
-### Urolithin-A: Mitophagy Without Pomegranate Roulette
+### 形态与生物利用度
 
-- **Common belief**: Eat pomegranates for mitochondrial health
-- **Alpha**: Urolithin-A (the active compound) requires gut bacteria conversion from ellagitannins. Only ~40% of people have the right microbiome. Direct supplementation bypasses this.
-- **Evidence**: PMC9133463, Timeline nutrition RCTs show mitophagy activation
-- **Tier**: B (human RCTs, mechanism validated)
-- **Practical**: 500-1000mg daily; one of few compounds with direct mitophagy evidence in humans
+- 同一种化合物，不同形式（如乙酯型与甘油三酯型Omega-3）的吸收效果不同
+- 某些化合物的转化需要特定条件（例如，尿石素A需要特定的肠道细菌）
+- 某些成分的吸收依赖于其他因素（例如，脂溶性维生素需要脂肪的辅助）
 
-### Sleep Timing > Sleep Duration
+### 协同作用与拮抗作用
 
-- **Common belief**: Get 8 hours, timing doesn't matter
-- **Alpha**: Circadian rhythm governs 100+ physiological processes. Shifting sleep window by 2 hours causes more dysfunction than losing 1-2 hours of sleep. Late sleep (2am-10am) worse than short sleep (11pm-6am).
-- **Evidence**: Chronobiology research, shift-worker health outcomes
-- **Tier**: A (strong epidemiological + mechanistic)
-- **Practical**: Consistent bed/wake times matter more than duration optimization
+- 某些成分需要搭配使用（例如，维生素D3和K2必须同时摄入）
+- 不同成分的吸收可能存在竞争（例如，钙和镁）
+- 不同时间摄入某些成分可能会产生冲突（例如，铁和咖啡）
 
-### Skin Damage: Cumulative and Irreversible
+### 人群特异性
 
-- **Common belief**: Damage can be repaired with skincare products
-- **Alpha**: UV exposure causes cumulative DNA damage. Photoaging is largely irreversible. Prevention (sunscreen, clothing) has 100x ROI vs. treatment.
-- **Evidence**: Dermatology consensus, twin studies
-- **Tier**: A (decades of evidence)
-- **Practical**: Daily SPF 30+ on face/hands is highest-yield longevity intervention for appearance
+- 不同年龄段的人对补充剂的反应不同（例如，老年人禁食可能导致肌肉流失）
+- 性别差异会影响代谢
+- 有些人对某些补充剂有反应，有些人则没有（例如，APOE基因和饱和脂肪的影响）
 
-### Zone 2 Cardio: Mitochondrial Biogenesis
+### 机制与实际效果
 
-- **Common belief**: HIIT is more efficient, Zone 2 is wasted time
-- **Alpha**: Zone 2 (can talk but not sing) specifically drives mitochondrial biogenesis and fat oxidation capacity. HIIT builds different adaptations. Both needed, but Zone 2 is undervalued.
-- **Evidence**: Exercise physiology, Inigo San Millan research
-- **Tier**: A (extensive mechanistic + performance data)
-- **Practical**: 3-4 hours/week Zone 2; most people go too hard and miss the adaptation
-
-### Cold Exposure: Timing Matters for Hypertrophy
-
-- **Common belief**: Cold exposure is universally beneficial
-- **Alpha**: Cold within 4 hours post-strength training blunts muscle protein synthesis and hypertrophy signaling. The inflammatory response you're suppressing is required for adaptation.
-- **Evidence**: Multiple mechanism studies, athletic performance research
-- **Tier**: B (consistent mechanism data, some human trials)
-- **Practical**: Cold exposure on rest days or 6+ hours after strength training
-
-### Berberine: Cycling Required
-
-- **Common belief**: Take daily like other supplements
-- **Alpha**: GI microbiome adapts to berberine, reducing effectiveness. Also, berberine's metformin-like effects may blunt some exercise adaptations.
-- **Evidence**: Clinical practice patterns, mechanism studies
-- **Tier**: B (clinical consensus, mechanism understood)
-- **Practical**: 4-6 weeks on, 2 weeks off; avoid on heavy training days
-
-### K2 (MK-7) + D3: Required Pairing
-
-- **Common belief**: Vitamin D alone is fine
-- **Alpha**: D3 increases calcium absorption. Without K2 to direct calcium to bones, it may deposit in arteries. K2 activates matrix-GLA protein and osteocalcin.
-- **Evidence**: Multiple RCTs, Rotterdam Study correlations
-- **Tier**: B (mechanistically clear, human outcome data emerging)
-- **Practical**: 100-200mcg MK-7 per 5000 IU D3; take together with fat
-
-### Omega-3: Form Affects Absorption 3x
-
-- **Common belief**: EPA/DHA amount is what matters
-- **Alpha**: Triglyceride and phospholipid forms have 3x better absorption than ethyl ester (most common in cheap supplements). Ethyl ester requires more fat for absorption.
-- **Evidence**: Bioavailability studies, head-to-head comparisons
-- **Tier**: A (well-established pharmacokinetics)
-- **Practical**: Pay more for triglyceride form or take ethyl ester with high-fat meal
-
-### Collagen: 15g+ for Joint Benefits
-
-- **Common belief**: Small amounts help skin/joints
-- **Alpha**: Studies showing joint benefits used 10-15g doses. Lower doses may help skin hydration but don't move the needle on joint tissue synthesis.
-- **Evidence**: Joint-specific RCTs used higher doses than skin studies
-- **Tier**: B (human RCTs at effective dose)
-- **Practical**: 15g+ if targeting joints; 5g may suffice for skin only
-
-### Fasting: Protein Timing Beats Duration
-
-- **Common belief**: Longer fasts are better
-- **Alpha**: Muscle protein synthesis (MPS) is pulsatile. Extending fasts beyond 16-18h risks muscle catabolism, especially over age 40. Early time-restricted eating (eating earlier in day) outperforms late eating windows.
-- **Evidence**: MPS research, circadian metabolism studies
-- **Tier**: B (mechanism clear, human data supportive)
-- **Practical**: 16:8 with eating window 8am-4pm beats 20:4 with window 2pm-6pm
+- 可能的机制并不等同于实际的临床效果
+- 替代性指标（如生物标志物）并不等同于真正的健康结果（如死亡率、功能）
+- 动物实验中的剂量往往不能直接应用于人类
 
 ---
 
-## Safety Principles
+## Alpha示例
 
-1. **Physician consultation**: Required for existing conditions, medications, or symptoms
-2. **One variable at a time**: Introduce supplements individually, 1-2 week gaps
-3. **Start at 50% dose**: Titrate up based on response
-4. **Stop before surgery**: Most supplements stopped 1-2 weeks pre-surgery
-5. **Watch for interactions**: Blood thinners, thyroid meds, and blood pressure meds have many supplement interactions
+以下示例展示了上述发现框架的应用。这些例子仅供参考，并非详尽无遗——你可以使用该框架来评估新的干预措施。
 
-This skill does not diagnose, treat, or prescribe. All information is educational.
+### 肌酸：15克对认知功能的益处
+
+- **普遍观点**：5克肌酸就能满足肌肉需求，同样剂量对大脑也有益处。
+- **Alpha观点**：血清中的肌酸浓度必须足够高才能穿过血脑屏障并提升大脑中的磷酸肌酸水平。5克剂量通常无法有效提升大脑中的肌酸水平。
+- **证据**：多项研究表明，15-20克的肌酸剂量对认知功能有益；而5克剂量对认知功能的改善效果不明显。
+- **证据等级**：B级（新兴的人体数据，机制已明确）
+- **实际建议**：将15克肌酸分成3次，每次5克服用，以减少胃肠道不适。
+
+### 褪黑素：300微克的效果优于1毫克以上
+
+- **普遍观点**：褪黑素剂量越高，睡眠效果越好。
+- **Alpha观点**：人体自身产生的褪黑素约为300微克。超过生理剂量的褪黑素（1-10毫克）可能会导致第二天疲倦，并可能长期影响认知功能，还可能通过下调受体产生依赖性。
+- **证据**：荟萃分析显示300微克的褪黑素有效；更高剂量并无额外益处。
+- **证据等级**：A级（多项荟萃分析）
+- **实际建议**：从300微克开始服用；大多数商业产品中的褪黑素剂量过高。
+
+### 尿石素A：无需依赖石榴就能激活线粒体自噬
+
+- **普遍观点**：食用石榴可以改善线粒体健康。
+- **Alpha观点**：尿石素A需要肠道细菌将鞣花单宁转化为活性成分。只有约40%的人拥有适合转化的肠道菌群。直接补充尿石素A可以绕过这一过程。
+- **证据**：PMC9133463研究及Timeline Nutrition的RCT证实了其线粒体自噬激活效果。
+- **证据等级**：B级（人体RCT，机制已验证）
+- **实际建议**：每日服用500-1000毫克。
+
+### 睡眠时间比睡眠时长更重要
+
+- **普遍观点**：保证8小时的睡眠时间就足够了，时间安排无关紧要。
+- **Alpha观点**：生物钟节律调控着许多生理过程。睡眠时间调整2小时可能导致比少睡1-2小时更严重的生理紊乱。深夜（凌晨2点至上午10点）的睡眠质量比凌晨11点至下午6点的睡眠质量更差。
+- **证据**：时间生物学研究和职业工作者的健康研究证实了这一点。
+- **证据等级**：A级（强有力的流行病学和机制研究）
+- **实际建议**：保持规律的睡眠时间比单纯延长睡眠时长更重要。
+
+### 皮肤损伤：累积且不可逆
+
+- **普遍观点**：皮肤损伤可以通过护肤品修复。
+- **Alpha观点**：紫外线暴露会导致累积性的DNA损伤。光老化在很大程度上是不可逆的。预防（如使用防晒霜、穿着防护衣物）的效益远高于治疗。
+- **证据**：皮肤科专家共识和双胞胎研究证实了这一点。
+- **证据等级**：A级（数十年的研究证据）
+- **实际建议**：每天在面部和手部涂抹SPF 30以上的防晒霜是改善外观的最有效长寿措施。
+
+### 低强度有氧运动（Zone 2）：促进线粒体生成
+
+- **普遍观点**：高强度间歇训练（HIIT）更有效，低强度有氧运动（Zone 2）是浪费时间。
+- **Alpha观点**：低强度有氧运动能促进线粒体生成和脂肪氧化能力。虽然HIIT也有益处，但低强度有氧运动的作用同样重要，只是常被低估。
+- **证据**：运动生理学研究和Inigo San Millan的研究证实了这一点。
+- **证据等级**：A级（广泛的机制研究和性能数据）
+- **实际建议**：每周进行3-4小时的低强度有氧运动；大多数人运动强度过大，忽略了这种效果。
+
+### 冷暴露：时间对肌肉肥大的影响
+
+- **普遍观点**：冷暴露对肌肉肥大总是有益的。
+- **Alpha观点**：在力量训练后4小时内进行冷暴露会抑制肌肉蛋白质合成和肥大信号。实际上，这种炎症反应是身体适应过程所必需的。
+- **证据**：多项机制研究和运动表现研究证实了这一点。
+- **证据等级**：B级（一致的机制数据和部分人体试验结果）
+- **实际建议**：在休息日或力量训练后6小时以上进行冷暴露。
+
+### 黄连素：需要周期性摄入
+
+- **普遍观点**：像其他补充剂一样每天服用即可。
+- **Alpha观点**：肠道微生物群会对黄连素产生适应，从而降低其效果。此外，黄连素的某些效果可能会与某些运动效果产生冲突。
+- **证据**：临床实践和机制研究证实了这一点。
+- **实际建议**：连续服用4-6周后，休息2周；在剧烈运动日避免服用。
+
+### K2（MK-7）与维生素D3：必须同时摄入
+
+- **普遍观点**：单独服用维生素D3即可。
+- **Alpha观点**：维生素D3能促进钙的吸收。如果没有K2来引导钙进入骨骼，钙可能会沉积在动脉中。K2能激活matrix-GLA蛋白和骨钙素。
+- **证据**：多项RCT和Rotterdam研究证实了这一点。
+- **证据等级**：B级（机制明确，人体数据正在积累）
+- **实际建议**：每5000国际单位的维生素D3搭配100-200微克的K2服用。
+
+### Omega-3：形式影响吸收效果
+
+- **普遍观点**：EPA/DHA的总量才是关键。
+- **Alpha观点**：甘油三酯型和磷脂型的Omega-3吸收效果优于乙酯型（常见于廉价补充剂）。乙酯型需要更多脂肪才能被吸收。
+- **证据**：生物利用度研究和对比实验证实了这一点。
+- **证据等级**：A级（明确的药代动力学数据）
+- **实际建议**：选择甘油三酯型Omega-3，或与高脂肪食物一起服用。
+
+### 胶原蛋白：15克以上对关节有益
+
+- **普遍观点**：少量胶原蛋白对皮肤和关节有益。
+- **Alpha观点**：研究表明，10-15克的胶原蛋白剂量对关节有益。较低剂量可能对皮肤有保湿效果，但对关节组织的改善效果不明显。
+- **证据**：针对关节的RCT使用的是较高剂量。
+- **证据等级**：B级（人体RCT证实了这一剂量效果）
+- **实际建议**：如果目标是关节，建议服用15克以上；如果只是为了皮肤，5克可能就足够了。
+
+### 禁食：蛋白质摄入的时间比持续时间更重要
+
+- **普遍观点**：禁食时间越长效果越好。
+- **Alpha观点**：肌肉蛋白质合成（MPS）是间歇性的。禁食时间超过16-18小时可能导致肌肉分解，尤其是40岁以上的人群。早期进食（如早上）比晚期进食（如晚上）效果更好。
+- **证据**：肌肉蛋白质合成研究和昼夜代谢研究证实了这一点。
+- **证据等级**：B级（机制明确，人体数据支持）
+- **实际建议**：采用16:8的禁食模式（每天进食时间在上午8点至下午4点），比20:4的模式（每天进食时间在下午2点至6点）效果更好。
 
 ---
 
-## Extended Capabilities
+## 安全原则
 
-When tools are available:
-- **Web search**: Query PubMed for recent studies, verify safety alerts
-- **File reading**: Analyze uploaded lab results or research papers
-- **Calculation**: HOMA-IR, dosing by body weight, cost-per-dose comparisons
+1. **咨询医生**：对于有基础疾病、正在服用药物或有症状的人，使用前必须咨询医生。
+2. **一次只引入一种补充剂**：每次引入一种补充剂，间隔1-2周。
+3. **从低剂量开始**：根据身体反应逐步增加剂量。
+4. **手术前停止服用**：大多数补充剂应在手术前1-2周停止服用。
+5. **注意相互作用**：抗凝血剂、甲状腺药物和降压药等可能与许多补充剂产生相互作用。
 
-Example queries for research:
-- `"[compound] site:pubmed.gov RCT 2024 OR 2025"`
-- `"[supplement] meta-analysis systematic review"`
+请注意，本工具仅用于提供信息，不能用于诊断、治疗或开具处方。所有内容仅供参考。
 
 ---
 
-## Guidelines
+## 扩展功能
 
-### Always
-- Cite evidence tiers for recommendations
-- Distinguish mechanism (plausible) from outcome (proven)
-- Acknowledge uncertainty and individual variation
-- Recommend professional consultation for medical concerns
+当相关工具可用时：
+- **网络搜索**：可以在PubMed上查询最新研究，核实安全警示。
+- **文件分析**：可以分析上传的实验室结果或研究论文。
+- **计算**：可以计算HOMA-IR指数、根据体重调整剂量，以及比较不同补充剂的成本。
 
-### Never
-- Diagnose or prescribe
-- Overstate evidence quality (C-tier is not "proven")
-- Ignore potential interactions
-- Guarantee outcomes
+示例查询：
+- `"[化合物] site:pubmed.gov RCT 2024 OR 2025"`
+- `"[补充剂] meta-analysis systematic review"`
+
+---
+
+## 指南
+
+### 始终遵循
+
+- 在推荐任何补充剂时，务必注明其证据等级。
+- 区分“可能的机制”和“已被证实的效果”。
+- 承认研究的不确定性和个体差异。
+- 对于健康问题，建议咨询专业人士。
+
+### 绝对不要
+
+- 不能进行诊断或开具处方。
+- 不要夸大证据的质量（C级证据并不意味着“已被证实有效”）。
+- 忽视潜在的相互作用。
+- 不要保证任何补充剂都能带来确定的效果。

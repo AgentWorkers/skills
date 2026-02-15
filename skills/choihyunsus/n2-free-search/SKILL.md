@@ -1,26 +1,26 @@
 ---
 name: n2-free-search
-description: Free, unlimited web search for AI agents via SearXNG — no API keys needed.
+description: 通过 SearXNG，您可以免费、无限制地进行 AI 代理的在线搜索——无需使用 API 密钥。
 homepage: https://nton2.com
 user-invocable: true
 ---
 
-# 🔍 N2 Free Search — MCP Server Skill
+# 🔍 N2 免费搜索 — MCP 服务器技能
 
-Free, private, unlimited web search for your AI agent. No API keys, no credit cards, no rate limits.
+为您的 AI 代理提供免费、私密的、无限制的网页搜索服务。无需 API 密钥、无需信用卡，也没有请求速率限制。
 
-## Why Use This?
+## 为什么使用这个工具？
 
-| | Brave Search API | Google Custom Search | **N2 Free Search** |
+| | Brave Search API | Google 自定义搜索 | **N2 免费搜索** |
 |---|---|---|---|
-| **Cost** | $5 / 1,000 queries | $5 / 1,000 queries | **Free forever** |
-| **API Key** | Required | Required | **Not needed** |
-| **Search Engines** | Brave only | Google only | **70+ engines** |
+| **费用** | 每 1,000 次查询 5 美元 | 每 1,000 次查询 5 美元 | **永久免费** |
+| **API 密钥** | 必需 | 必需 | **无需** |
+| **搜索引擎** | 仅支持 Brave | 仅支持 Google | **支持 70 多种搜索引擎** |
 
-## Quick Setup
+## 快速设置
 
-### Option 1: Public Mode (Zero Setup)
-Add to your MCP config:
+### 选项 1：公共模式（无需设置）
+将以下代码添加到您的 MCP 配置中：
 ```json
 {
   "mcpServers": {
@@ -32,7 +32,7 @@ Add to your MCP config:
 }
 ```
 
-### Option 2: Self-Hosted (Maximum Privacy)
+### 选项 2：自托管（最高程度的隐私保护）
 ```json
 {
   "mcpServers": {
@@ -47,17 +47,17 @@ Add to your MCP config:
 }
 ```
 
-## Available Tools
-- **n2_web_search** — Search the web (Google, Bing, DuckDuckGo + 70 more)
-- **n2_news_search** — Search recent news articles
-- **n2_image_search** — Search for images
-- **n2_video_search** — Search for videos
-- **n2_suggest** — Get search suggestions / autocomplete
+## 可用工具
+- **n2_web_search** — 进行网页搜索（支持 Google、Bing、DuckDuckGo 等 70 多种搜索引擎）
+- **n2_news_search** — 搜索最新新闻文章
+- **n2_image_search** — 搜索图片
+- **n2_video_search** — 搜索视频
+- **n2_suggest** — 获取搜索建议/自动完成功能
 
-## Links
+## 链接
 - NPM: https://www.npmjs.com/package/n2-free-search
 - GitHub: https://github.com/choihyunsus/n2-free-search
-- Website: https://nton2.com
+- 官网: https://nton2.com
 
 ---
-*Part of the N2 AI Body series — Building the Body for AI*
+*属于 N2 AI 系列的一部分 — 为 AI 构建基础功能*

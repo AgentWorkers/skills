@@ -1,34 +1,40 @@
 ---
 name: auth0
-description: Manage users, applications, and authentication via Auth0 Management API.
+description: 通过 Auth0 Management API 来管理用户、应用程序和身份验证。
 metadata: {"clawdbot":{"emoji":"🔐","requires":{"env":["AUTH0_DOMAIN","AUTH0_MGMT_TOKEN"]}}}
 ---
 # Auth0
-Identity platform.
-## Environment
+身份验证平台（Identity platform）。
+
+## 环境设置（Environment）
 ```bash
 export AUTH0_DOMAIN="your-tenant.auth0.com"
 export AUTH0_MGMT_TOKEN="xxxxxxxxxx"
 ```
-## List Users
+
+## 用户管理（User Management）
 ```bash
 curl "https://$AUTH0_DOMAIN/api/v2/users" -H "Authorization: Bearer $AUTH0_MGMT_TOKEN"
 ```
-## Create User
+
+## 创建用户（Create User）
 ```bash
 curl -X POST "https://$AUTH0_DOMAIN/api/v2/users" \
   -H "Authorization: Bearer $AUTH0_MGMT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"email": "user@example.com", "password": "Pass123!", "connection": "Username-Password-Authentication"}'
 ```
-## Get User
+
+## 获取用户信息（Get User Information）
 ```bash
 curl "https://$AUTH0_DOMAIN/api/v2/users/{userId}" -H "Authorization: Bearer $AUTH0_MGMT_TOKEN"
 ```
-## List Applications
+
+## 应用程序管理（Application Management）
 ```bash
 curl "https://$AUTH0_DOMAIN/api/v2/clients" -H "Authorization: Bearer $AUTH0_MGMT_TOKEN"
 ```
-## Links
-- Dashboard: https://manage.auth0.com
-- Docs: https://auth0.com/docs/api/management/v2
+
+## 链接（Links）
+- 仪表板：https://manage.auth0.com
+- 文档：https://auth0.com/docs/api/management/v2

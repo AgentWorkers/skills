@@ -13,22 +13,20 @@ author: skills-factory
 
 # Prometheus
 
-Production Prometheus setup covering scrape configuration, service discovery,
-recording rules, alert rules, and operational best practices for infrastructure
-and application monitoring.
+本文档介绍了Prometheus在生产环境中的配置方法，包括数据抓取（scraping）配置、服务发现（service discovery）、记录规则（recording rules）和警报规则（alert rules）的设置，以及基础设施和应用程序监控的最佳实践。
 
-## When to Use
+## 使用场景
 
-| Scenario | Example |
+| 场景 | 例子 |
 |----------|---------|
-| Set up metrics collection | New service needs Prometheus scraping |
-| Configure service discovery | K8s pods, file-based, or static targets |
-| Create recording rules | Pre-compute expensive PromQL queries |
-| Design alert rules | SLO-based alerts for availability and latency |
-| Production deployment | HA setup with retention and storage planning |
-| Troubleshoot scraping | Targets down, metrics missing, relabeling issues |
+| 设置指标采集 | 新服务需要Prometheus进行数据抓取 |
+| 配置服务发现 | K8s Pod、基于文件的配置方式或静态目标 |
+| 创建记录规则 | 预先计算复杂的PromQL查询语句 |
+| 设计警报规则 | 基于服务水平目标（SLO）的可用性和延迟警报 |
+| 生产环境部署 | 高可用性（HA）设置及存储策略规划 |
+| 故障排除 | 数据抓取失败、指标缺失或标签重命名问题 |
 
-## Architecture
+## 架构
 
 ```
 Applications ──(/metrics)──→ Prometheus Server ──→ AlertManager → Slack/PD
@@ -37,9 +35,9 @@ Applications ──(/metrics)──→ Prometheus Server ──→ AlertManager 
   (prom client)             └──→ Thanos/Cortex (long-term storage)
 ```
 
-## Installation
+## 安装
 
-### Kubernetes (Helm)
+### Kubernetes（使用Helm）
 
 ```bash
 helm repo add prometheus-community \
@@ -50,7 +48,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
   --set prometheus.prometheusSpec.storageVolumeSize=50Gi
 ```
 
-## Core Configuration
+## 核心配置
 
 ### prometheus.yml
 
@@ -96,9 +94,9 @@ scrape_configs:
       - targets: ["app1:9090", "app2:9090"]
 ```
 
-## Service Discovery
+## 服务发现
 
-### Kubernetes Pods (Annotation-Based)
+### 基于Kubernetes Pod的配置（使用注释）
 
 ```yaml
 scrape_configs:
@@ -127,7 +125,7 @@ scrape_configs:
         target_label: pod
 ```
 
-**Pod annotations to enable scraping:**
+**启用数据抓取的Pod注释：**
 
 ```yaml
 metadata:
@@ -137,7 +135,7 @@ metadata:
     prometheus.io/path: "/metrics"
 ```
 
-### File-Based Discovery
+### 基于文件的配置方式
 
 ```yaml
 scrape_configs:
@@ -156,19 +154,19 @@ scrape_configs:
 }]
 ```
 
-### Discovery Method Comparison
+## 发现方法比较
 
-| Method | Best For | Dynamic |
+| 方法 | 适用场景 | 是否支持动态配置 |
 |--------|----------|---------|
-| `static_configs` | Fixed infrastructure, dev | No |
-| `file_sd_configs` | CM-managed inventories | Yes (file watch) |
-| `kubernetes_sd_configs` | K8s workloads | Yes (API watch) |
-| `consul_sd_configs` | Consul service mesh | Yes (Consul watch) |
-| `ec2_sd_configs` | AWS EC2 instances | Yes (API poll) |
+| `static_configs` | 固定基础设施环境 | 不支持 |
+| `file_sd_configs` | 由配置管理工具（如CM）管理的资源列表 | 支持（文件监控） |
+| `kubernetes_sd_configs` | K8s工作负载 | 支持（API监控） |
+| `consul_sd_configs` | Consul服务网格 | 支持（Consul监控） |
+| `ec2_sd_configs` | AWS EC2实例 | 支持（API监控） |
 
-## Recording Rules
+## 记录规则
 
-Pre-compute expensive queries for dashboard and alert performance:
+为了提高仪表盘和警报的响应速度，建议预先计算复杂的PromQL查询语句：
 
 ```yaml
 # /etc/prometheus/rules/recording_rules.yml
@@ -210,19 +208,19 @@ groups:
             / node_filesystem_size_bytes) * 100)
 ```
 
-### Naming Convention
+## 命名规范
 
 ```
 level:metric_name:operations
 ```
 
-| Part | Example | Meaning |
+| 部分 | 例子 | 含义 |
 |------|---------|---------|
-| level | `job:`, `instance:` | Aggregation level |
-| metric_name | `http_requests` | Base metric |
-| operations | `:rate5m`, `:ratio` | Applied functions |
+| `level` | `job:`、`instance:` | 数据聚合的层级 |
+| `metric_name` | `http_requests` | 基础指标名称 |
+| `operations` | `:rate5m`、`:ratio` | 应用的计算函数 |
 
-## Alert Rules
+## 警报规则
 
 ```yaml
 # /etc/prometheus/rules/alert_rules.yml
@@ -278,15 +276,15 @@ groups:
           summary: "Disk {{ $value }}% on {{ $labels.instance }}"
 ```
 
-### Alert Severity Guide
+## 警报严重程度指南
 
-| Severity | Threshold | Response |
+| 严重程度 | 阈值 | 对应措施 |
 |----------|-----------|----------|
-| `critical` | Service down, data loss risk | Page on-call immediately |
-| `warning` | Degraded, approaching limit | Investigate within hours |
-| `info` | Notable but not urgent | Review in next business day |
+| `critical` | 服务不可用，存在数据丢失风险 | 立即通知相关人员 |
+| `warning` | 系统性能下降，接近阈值 | 在几小时内进行调查 |
+| `info` | 问题明显但不紧急 | 下一个工作日进行审查 |
 
-## Validation
+## 验证
 
 ```bash
 # Validate config syntax
@@ -302,47 +300,47 @@ promtool query instant http://localhost:9090 'up'
 curl -X POST http://localhost:9090/-/reload
 ```
 
-## Best Practices
+## 最佳实践
 
-| Practice | Detail |
+| 实践 | 详细说明 |
 |----------|--------|
-| Naming: `prefix_name_unit` | Snake_case, `_total` for counters, `_seconds`/`_bytes` for units |
-| Scrape intervals 15–60s | Shorter wastes resources and storage |
-| Recording rules for dashboards | Pre-compute anything queried repeatedly |
-| Monitor Prometheus itself | `prometheus_tsdb_*`, `scrape_duration_seconds` |
-| HA deployment | 2+ instances scraping same targets |
-| Retention planning | Match `--storage.tsdb.retention.time` to disk capacity |
-| Federation for scale | Global Prometheus aggregates from regional instances |
-| Long-term storage | Thanos or Cortex for >30d retention |
+| 命名规则：`prefix_name_unit` | 使用蛇形命名法（snake_case），计数器使用`_total`，单位使用`_seconds`/`_bytes` |
+| 数据抓取间隔设置为15–60秒 | 过短的间隔会浪费资源和存储空间 |
+| 为仪表盘预先计算常用指标 | 对于频繁查询的指标，应预先计算结果 |
+| 监控Prometheus本身的运行状态 | 监控`prometheus_tsdb_*`和`scrape_duration_seconds`等指标 |
+| 高可用性部署 | 部署多个Prometheus实例以同时抓取数据 |
+| 规划存储策略 | 根据磁盘容量设置`--storage.tsdb.retention.time` |
+| 使用联邦架构进行数据聚合 | 从多个区域实例收集数据并统一处理 |
+| 长期存储策略 | 使用Thanos或Cortex等工具进行超过30天的数据保留 |
 
-## Troubleshooting Quick Reference
+## 故障排除快速参考
 
-| Problem | Diagnosis | Fix |
+| 问题 | 原因 | 解决方法 |
 |---------|-----------|-----|
-| Target shows `DOWN` | Check `/targets` page for error | Fix firewall, verify endpoint, check TLS |
-| Metrics missing | Query `up{job="x"}` | Verify scrape config, check `/metrics` endpoint |
-| High cardinality | `prometheus_tsdb_head_series` growing | Drop high-cardinality labels with `metric_relabel_configs` |
-| Storage filling up | Check `prometheus_tsdb_storage_*` | Reduce retention, add disk, enable compaction |
-| Slow queries | Check `prometheus_engine_query_duration_seconds` | Add recording rules, reduce range, limit series |
-| Config not applied | Check `prometheus_config_last_reload_successful` | Fix syntax, POST `/-/reload` |
+| 目标状态显示为`DOWN` | 检查 `/targets` 页面是否有错误 | 修复防火墙设置，验证端点连接，检查TLS协议 |
+| 指标缺失 | 查询`up{job="x"}` | 验证数据抓取配置，检查 `/metrics` 端点 |
+| 数据量过大（高基数） | `prometheus_tsdb_head_series` 文件增长过快 | 使用`metric_relabel_configs`删除高基数标签 |
+| 存储空间不足 | 检查`prometheus_tsdb_storage_*` | 减少数据保留时间，增加磁盘空间，启用数据压缩 |
+| 查询速度慢 | 检查`prometheus_engine_query_duration_seconds` | 增加记录规则，缩小查询范围，限制数据保留的时间范围 |
+| 配置未生效 | 检查`prometheus_config_last_reload_successful` | 修复配置语法，通过`/-/reload`命令重新加载配置 |
 
-## NEVER Do
+## 绝对不要这样做
 
-| Anti-Pattern | Why | Do Instead |
+| 不推荐的做法 | 原因 | 应该怎么做 |
 |-------------|-----|------------|
-| Scrape interval < 5s | Overwhelms targets and storage | Use 15–60s intervals |
-| High-cardinality labels (user ID, request ID) | Explodes TSDB series count | Use logs for high-cardinality data |
-| Alert without `for` duration | Fires on transient spikes | Always set `for: 1m` minimum |
-| Skip recording rules | Dashboards compute expensive queries every load | Pre-compute with recording rules |
-| Store secrets in prometheus.yml | Config often in Git | Use file-based secrets or env substitution |
-| Ignore `up` metric | Miss targets silently going down | Alert on `up == 0` for all jobs |
-| Single Prometheus instance in prod | Single point of failure | Run 2+ replicas with shared targets |
-| Unbounded retention | Disk fills, Prometheus crashes | Set explicit `--storage.tsdb.retention.time` |
+| 数据抓取间隔小于5秒 | 会导致目标服务器和存储系统负担过重 | 使用15–60秒的间隔 |
+| 使用高基数标签（如用户ID、请求ID） | 会导致TSDB中的数据量激增 | 对于高基数数据，使用日志记录方式 |
+| 警报规则不设置`for`参数 | 会导致不必要的警报 | 必须设置`for: 1m`的最小时间间隔 |
+| 跳过记录规则 | 仪表盘会每次加载时都重新计算复杂查询 | 应使用预计算的记录结果 |
+| 将敏感信息直接存储在`prometheus.yml`中 | 配置信息应存储在Git中 | 使用文件或环境变量进行安全管理 |
+| 忽略`up`指标 | 会导致关键目标的状态变化未被及时发现 | 对所有指标设置`up == 0`的警报规则 |
+| 在生产环境中仅使用一个Prometheus实例 | 会导致单点故障 | 应部署多个实例并共享数据抓取任务 |
+| 不设置数据保留时间限制 | 会导致磁盘空间耗尽，Prometheus崩溃 | 明确设置`--storage.tsdb.retention.time` |
 
-## Templates
+## 模板
 
-| Template | Description |
+| 模板 | 说明 |
 |----------|-------------|
-| [templates/prometheus.yml](templates/prometheus.yml) | Full config with static, file-based, and K8s discovery |
-| [templates/alert-rules.yml](templates/alert-rules.yml) | 25+ alert rules by category |
-| [templates/recording-rules.yml](templates/recording-rules.yml) | Pre-computed metrics for HTTP, latency, resources, SLOs |
+| [templates/prometheus.yml] | 包含静态配置、基于文件的配置和基于Kubernetes的服务发现设置 |
+| [templates/alert-rules.yml] | 按类别分类的25个以上警报规则模板 |
+| [templates/recording-rules.yml] | 预计算好的HTTP、延迟、资源使用情况和SLO相关指标的记录规则模板 |

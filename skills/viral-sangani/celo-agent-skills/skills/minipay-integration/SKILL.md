@@ -1,48 +1,48 @@
 ---
 name: minipay-integration
-description: Build Mini Apps for MiniPay wallet. Use when building applications for MiniPay, detecting MiniPay wallet, or creating mobile-first dApps for Celo.
+description: 为 MiniPay 钱包构建迷你应用程序。这些应用程序可用于开发与 MiniPay 相关的应用程序、检测 MiniPay 钱包的存在，或为 Celo 平台创建以移动设备为主导的去中心化应用（dApps）。
 license: Apache-2.0
 metadata:
   author: celo-org
   version: "1.0.0"
 ---
 
-# MiniPay Integration
+# MiniPay集成
 
-This skill covers building Mini Apps for MiniPay, the fastest growing non-custodial wallet in the Global South with 10M+ activations.
+本技能涵盖了为MiniPay构建Mini App的相关内容。MiniPay是目前全球南方地区增长最快的非托管钱包服务，拥有超过1000万的活跃用户。
 
-## When to Use
+## 使用场景
 
-- Building Mini Apps for MiniPay
-- Detecting MiniPay wallet in your dApp
-- Creating mobile-first payment applications
-- Integrating with MiniPay's discovery page
+- 为MiniPay构建Mini App
+- 在你的dApp中检测用户是否使用MiniPay钱包
+- 开发以移动设备为主的支付应用程序
+- 与MiniPay的发现页面进行集成
 
-## What is MiniPay?
+## 什么是MiniPay？
 
-MiniPay is a stablecoin wallet with a built-in Mini App discovery page. It's available as:
-- Built into Opera Mini browser (Android)
-- Standalone app (Android and iOS)
+MiniPay是一款支持内置Mini App发现页面的稳定币钱包。它可以通过以下方式使用：
+- 集成到Opera Mini浏览器（Android版本）中
+- 作为独立的应用程序（Android和iOS版本）
 
-Key features:
-- Phone number mapping to wallet addresses
-- Sub-cent transaction fees
-- 2MB lightweight footprint
-- Supports USDm (cUSD), USDC, and USDT
+主要特性：
+- 可将手机号码映射到钱包地址
+- 交易手续费极低（低于1美分）
+- 代码体积极小（仅2MB）
+- 支持USDm（cUSD）、USDC和USDT等稳定币
 
-## Quick Start
+## 快速入门
 
-### Create a MiniPay App
+### 创建MiniPay App
 
 ```bash
 npx @celo/celo-composer@latest create -t minipay
 ```
 
-This scaffolds a Next.js app pre-configured for MiniPay.
+这段代码用于创建一个预先配置好以支持MiniPay功能的Next.js应用程序框架。
 
-## Detecting MiniPay
+## 检测用户是否使用MiniPay
 
-Check if the user is using MiniPay:
+检查用户当前是否正在使用MiniPay钱包：
 
 ```typescript
 function isMiniPay(): boolean {
@@ -51,11 +51,11 @@ function isMiniPay(): boolean {
 }
 ```
 
-**Important:** This code must run in a browser environment, not Node.js.
+**注意：** 该代码必须在浏览器环境中运行，不能在Node.js环境中执行。
 
-## Connecting Wallet
+## 连接钱包
 
-MiniPay automatically injects the wallet. Request account access:
+MiniPay会自动完成钱包的连接。若需要请求账户访问权限，请执行以下操作：
 
 ```typescript
 async function connectWallet(): Promise<string | null> {
@@ -72,7 +72,7 @@ async function connectWallet(): Promise<string | null> {
 }
 ```
 
-**Important:** Hide the "Connect Wallet" button when inside MiniPay - the connection is implicit.
+**注意：** 当用户已经在使用MiniPay时，应隐藏“连接钱包”按钮，因为此时钱包已经处于连接状态。
 
 ```typescript
 const [address, setAddress] = useState<string | null>(null);
@@ -96,7 +96,7 @@ return (
 );
 ```
 
-## Reading Balances
+## 查看余额
 
 ```typescript
 import { createPublicClient, http, formatUnits } from "viem";
@@ -131,9 +131,9 @@ async function getUSDmBalance(address: string): Promise<string> {
 }
 ```
 
-## Sending Transactions
+## 发送交易
 
-Use viem or wagmi for transactions. MiniPay does not support ethers.js.
+建议使用viem或wagmi库来处理交易。MiniPay不支持ethers.js库。
 
 ```typescript
 import { createWalletClient, custom, parseUnits, encodeFunctionData } from "viem";
@@ -176,46 +176,46 @@ async function sendUSDm(to: string, amount: string): Promise<string> {
 }
 ```
 
-## Testing Your Mini App
+## 测试你的Mini App
 
-### 1. Set Up ngrok
+### 1. 设置ngrok
 
-MiniPay cannot access localhost. Use ngrok to create a tunnel:
+由于MiniPay无法直接访问本地主机（localhost），你需要使用ngrok来创建一个代理服务器：
 
 ```bash
 ngrok http 3000
 ```
 
-### 2. Enable Developer Mode in MiniPay
+### 2. 启用MiniPay的开发模式
 
-1. Open MiniPay > Settings > About
-2. Tap Version number repeatedly until Developer Mode is enabled
-3. Go to Settings > Developer Settings
-4. Enable "Use Testnet" for Celo Sepolia
+1. 打开MiniPay应用，进入“设置” > “关于”
+2. 连续点击版本号，直到开发模式被启用
+3. 进入“设置” > “开发者设置”
+4. 启用“使用Celo Sepolia测试网”功能
 
-### 3. Load Your App
+### 3. 加载你的应用程序
 
-1. Open MiniPay > Tap compass icon
-2. Select "Test Page"
-3. Enter your ngrok HTTPS URL
-4. Tap "Go"
+1. 打开MiniPay应用，点击指南针图标
+2. 选择“测试页面”
+3. 输入你的ngrok HTTPS地址
+4. 点击“开始”
 
-## Requirements and Limitations
+## 支持的环境和限制
 
-### Supported
-- Celo Mainnet and Celo Sepolia Testnet only
-- viem v2+ and wagmi libraries
-- TypeScript v5+, Node.js v20+
-- USDm (cUSD), USDC, and USDT stablecoins
+### 支持的环境
+- 仅支持Celo主网和Celo Sepolia测试网
+- 必须使用viem v2+及wagmi库
+- 必须使用TypeScript v5+和Node.js v20+版本
+- 支持USDm（cUSD）、USDC和USDT等稳定币
 
-### Not Supported
-- ethers.js (use viem instead)
-- EIP-1559 transactions (legacy only)
-- Message signing
-- Android/iOS emulators (use real device)
-- Other blockchain networks
+### 不支持的功能
+- 不支持ethers.js库（请改用viem）
+- 不支持EIP-1559交易（仅限旧版本）
+- 不支持消息签名功能
+- 不支持Android/iOS模拟器（请使用真实设备进行测试）
+- 不支持其他区块链网络
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -229,8 +229,8 @@ ngrok http 3000
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [testing-guide.md](references/testing-guide.md) - Detailed testing instructions
-- [troubleshooting.md](references/troubleshooting.md) - Common issues and solutions
-- [code-examples.md](references/code-examples.md) - Gas estimation, fee currency, React hooks
+- [testing-guide.md](references/testing-guide.md) - 详细的测试指南
+- [troubleshooting.md](references/troubleshooting.md) - 常见问题及解决方法
+- [code-examples.md](references/code-examples.md) - 有关Gas费用计算、费用货币设置以及React Hooks的使用示例

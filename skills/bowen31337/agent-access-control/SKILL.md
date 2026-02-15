@@ -1,15 +1,15 @@
 ---
 name: agent-access-control
-description: Tiered stranger access control for AI agents. Use when setting up contact permissions, handling unknown senders, managing approved contacts, or configuring stranger deflection on messaging platforms (WhatsApp, Telegram, Discord, Signal). Provides diplomatic deflection, owner approval flow, and multi-tier access (owner/trusted/chat-only/blocked).
+description: 针对AI代理的分层陌生人访问控制机制：适用于设置联系权限、处理未知发件人、管理已批准的联系人，以及在消息平台（如WhatsApp、Telegram、Discord、Signal）中配置陌生人消息的转发规则。该机制支持外交策略性的消息转发处理、需要所有者审批的流程，以及多层次的访问权限设置（所有者/受信任用户/仅限聊天/被屏蔽用户）。
 ---
 
-# Agent Access Control
+# 代理访问控制
 
-Protect your agent from unauthorized access with tiered permissions and an owner-approval pairing flow.
+通过分层权限和所有者审批流程来保护您的代理免受未经授权的访问。
 
-## Setup
+## 设置
 
-Create `memory/access-control.json` in workspace:
+在工作区创建 `memory/access-control.json` 文件：
 
 ```json
 {
@@ -23,33 +23,32 @@ Create `memory/access-control.json` in workspace:
 }
 ```
 
-Fill in:
-- `ownerIds`: Owner phone numbers, Telegram IDs, Discord IDs (strings)
-- `strangerMessage`: Customize `{{AGENT_NAME}}` with agent's name
-- `notifyChannel`: Channel to alert owner (`telegram`, `whatsapp`, `discord`, `signal`)
-- `notifyTarget`: Owner's ID on that channel
+填写以下内容：
+- `ownerIds`: 所有者的电话号码、Telegram ID、Discord ID（字符串格式）
+- `strangerMessage`: 将 `{{AGENT_NAME}}` 替换为代理的名称
+- `notifyChannel`: 用于通知所有者的频道（`telegram`、`whatsapp`、`discord`、`signal`）
+- `notifyTarget`: 该频道上所有者的 ID
 
-## Access Tiers
+## 访问权限等级
 
-| Tier | Level | Capabilities |
+| 等级 | 权限 | 功能 |
 |------|-------|-------------|
-| 0 | **Stranger** | Diplomatic deflection only, zero access |
-| 1 | **Chat-only** | Basic conversation, no tools or private info |
-| 2 | **Trusted** | Chat + public info (weather, time, general questions) |
-| 3 | **Owner** | Full access to all tools, files, memory, actions |
+| 0 | **陌生人** | 仅允许进行基本对话，无其他操作权限 |
+| 1 | **仅聊天** | 可进行基本对话，但不能使用任何工具或访问私人信息 |
+| 2 | **受信任** | 可进行聊天以及查看公开信息（如天气、时间、常见问题） |
+| 3 | **所有者** | 具有所有工具、文件、内存和操作的完全访问权限 |
 
-## Message Handling Flow
+## 消息处理流程
 
-On every incoming message from a messaging platform:
+对于来自消息平台的每条消息：
+1. 提取发送者 ID（电话号码、用户 ID 等）
+2. 对 ID 进行规范化处理：去除空格，并确保电话号码包含国家代码前缀
+3. 检查 `ownerIds`：如果匹配，则授予 **完全访问权限**，正常回复
+4. 检查 `blockedIds`：如果匹配，则 **静默忽略**，回复 “NO_REPLY”
+5. 检查 `approvedContacts[senderId]`：如果匹配，则根据发送者的权限等级进行回复
+6. 否则，按照 **陌生人流程** 处理：
 
-1. Extract sender ID (phone number, user ID, etc.)
-2. Normalize ID: strip spaces, ensure country code prefix for phones
-3. Check `ownerIds` → if match: **full access**, respond normally
-4. Check `blockedIds` → if match: **silent ignore**, respond with NO_REPLY
-5. Check `approvedContacts[senderId]` → if match: respond within their tier
-6. Otherwise → **stranger flow**:
-
-### Stranger Flow
+### 陌生人流程
 
 ```
 a. Send strangerMessage to the sender
@@ -69,73 +68,72 @@ c. Store in pendingApprovals:
 d. Respond with NO_REPLY after sending deflection
 ```
 
-### Owner Approval
+### 所有者审批
 
-When owner replies to an approval notification:
-
-| Owner says | Action |
+当所有者回复审批通知时：
+| 所有者的回复 | 处理方式 |
 |-----------|--------|
-| `approve`, `yes`, `trusted` | Add to approvedContacts with tier 2 (trusted) |
-| `chat`, `chat-only`, `chat only` | Add to approvedContacts with tier 1 (chat-only) |
-| `block`, `no`, `deny` | Add to blockedIds |
-| `ignore` | Remove from pendingApprovals, no action |
+| `approve`、`yes`、`trusted` | 将发送者添加到 `approvedContacts` 列表中（权限等级为 2） |
+| `chat`、`chat-only` | 将发送者添加到 `approvedContacts` 列表中（权限等级为 1） |
+| `block`、`no`、`deny` | 将发送者添加到 `blockedIds` 列表中 |
+| `ignore` | 从 `pendingApprovals` 列表中移除发送者，不采取任何行动 |
 
-After approval, update `memory/access-control.json` and notify the contact:
-- Trusted: "Great news! I've been given the go-ahead to chat with you. How can I help? 😊"
-- Chat-only: "Great news! I can chat with you now, though I'm limited to basic conversation. What's on your mind?"
+审批通过后，更新 `memory/access-control.json` 并通知发送者：
+- 对于受信任的用户： “太好了！我获得了与您聊天的权限。需要帮忙吗？😊”
+- 对于仅允许聊天的用户： “太好了！现在我可以与您聊天了，但仅限于基本对话。有什么需要帮忙的吗？”
 
-### Tier Enforcement
+### 权限等级的执行
 
-When responding to a non-owner contact, enforce tier restrictions:
+在回复非所有者用户时，严格执行相应的权限等级限制：
 
-**Tier 1 (chat-only):**
-- Respond conversationally only
-- Do NOT use any tools (read, write, exec, web_search, etc.)
-- Do NOT share any info from memory files
-- Do NOT mention the owner by name
-- If asked to do something beyond chat: "I'm only set up for basic chat at the moment. For anything more, you'd need to check with my owner."
+**权限等级 1（仅聊天）：**
+- 仅允许进行对话交流
+- 禁止使用任何工具（如读取、写入、执行命令、网络搜索等）
+- 禁止共享内存文件中的任何信息
+- 禁止提及所有者的姓名
+- 如果对方请求超出聊天范围的操作： “我目前仅被允许进行基本对话。如需其他帮助，请联系我的所有者。”
 
-**Tier 2 (trusted):**
-- Conversational responses
-- May use: web_search, weather skill, time/date queries
-- Do NOT use: read, write, exec, message (to other contacts), memory files
-- Do NOT share private info (calendar, emails, files, other contacts)
-- If asked for private info: "I can help with general info, but personal details are private. Hope you understand! 😊"
+**权限等级 2（受信任）：**
+- 可进行对话交流
+- 可使用网络搜索、天气查询、时间/日期查询等功能
+- 禁止读取、写入内存文件、向其他用户发送消息或访问私人信息（如日历、电子邮件、文件等）
+- 如果对方请求私人信息： “我可以提供一般性帮助，但个人隐私信息需要保密。希望您理解！😊”
 
-## Multi-Platform ID Matching
+## 多平台 ID 匹配
 
-Normalize IDs for comparison:
-- **Phone numbers**: Strip all non-digits except leading `+`. E.g., `+61 430 830 888` → `+61430830888`
-- **Telegram**: Use numeric user ID (not username, as usernames change)
-- **Discord**: Use numeric user ID
-- **Signal**: Use phone number (normalized)
-- **WhatsApp**: Use phone number with country code
+为了便于比较，对 ID 进行规范化处理：
+- **电话号码**：去除所有非数字字符（开头 `+` 除外）。例如，`+61 430 830 888` → `+61430830888`
+- **Telegram**：使用数字用户 ID（而非用户名，因为用户名可能会更改）
+- **Discord**：使用数字用户 ID
+- **Signal**：使用规范化后的电话号码
+- **WhatsApp**：使用包含国家代码的电话号码
 
-An owner may have multiple IDs across platforms. All should be in `ownerIds`.
+所有者可能在多个平台上拥有不同的 ID，所有这些 ID 都应包含在 `ownerIds` 列表中。
 
-## Rate Limiting
+## 速率限制
 
-Apply per-tier rate limits to prevent abuse:
+为了防止滥用，为每个权限等级设置速率限制：
 
-| Tier | Messages/hour | Messages/day |
+| 等级 | 每小时消息数 | 每天消息数 |
 |------|--------------|-------------|
-| Stranger | 1 (deflection only) | 3 |
-| Chat-only | 20 | 100 |
-| Trusted | 50 | 500 |
-| Owner | Unlimited | Unlimited |
+| 陌生人 | 1（仅用于引导对话） | 3 |
+| 仅聊天 | 20 | 100 |
+| 受信任 | 50 | 500 |
+| 所有者 | 无限制 | 无限制 |
 
-If limit exceeded, respond: "I've reached my chat limit for now. Try again later! 😊"
+如果超过限制，回复：“我当前的聊天次数已用完，请稍后再试！😊”
 
-Track in `memory/access-control.json` under `rateLimits`:
+在 `memory/access-control.json` 的 `rateLimits` 部分记录这些限制：
+
 ```json
 "rateLimits": {
   "+61412345678": { "hourCount": 5, "dayCount": 23, "hourReset": "ISO", "dayReset": "ISO" }
 }
 ```
 
-## Audit Log
+## 审计日志
 
-Log all stranger contacts to `memory/access-control-log.json`:
+将所有来自陌生人的访问记录保存到 `memory/access-control-log.json` 文件中：
 ```json
 [
   {
@@ -148,17 +146,16 @@ Log all stranger contacts to `memory/access-control-log.json`:
 ]
 ```
 
-Keep last 100 entries. Rotate older entries out.
+保留最近 100 条记录，并定期删除旧记录。
 
-## Security Rules
+## 安全规则：
+- **严禁** 在技能文件中包含真实的所有者 ID、电话号码或访问令牌
+- **严禁** 将 `access-control.json` 的内容分享给非所有者
+- **严禁** 向陌生人透露所有者的身份
+- **严禁** 如果陌生人的消息包含可疑链接，直接转发给所有者
+- 将所有配置文件存储在 `memory/` 目录中（在大多数设置中该目录会被 Git 忽略）
+- `strangerMessage` 中不得包含所有者的姓名或个人隐私信息
 
-- **NEVER** include real owner IDs, phone numbers, or tokens in skill files
-- **NEVER** share the access-control.json contents with non-owners
-- **NEVER** reveal that a specific person is the owner to strangers
-- **NEVER** forward stranger messages to owner verbatim if they contain suspicious links
-- Store all config in `memory/` (gitignored by default in most setups)
-- The strangerMessage should not reveal the owner's name or personal details
+## 示例配置
 
-## Example Config
-
-See [references/example-config.md](references/example-config.md) for a complete annotated example.
+请参阅 [references/example-config.md](references/example-config.md) 以获取完整的示例配置文件。

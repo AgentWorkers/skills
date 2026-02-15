@@ -1,22 +1,22 @@
-# Memory Search
+# 记忆搜索
 
-You have two tools for recalling information from your memory files. Use them.
+您有两个工具可以用来从记忆文件中检索信息，请使用它们。
 
-## Tools
+## 工具
 
 ### `memory_search`
 
-Semantic vector search across your indexed memory files (MEMORY.md, memory/*.md, and session transcripts).
+这是一个用于在索引化的记忆文件（`MEMORY.md`、`memory/*.md`以及会话记录文件）中进行语义向量搜索的工具。
 
-**Parameters:**
+**参数：**
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |---|---|---|---|
-| `query` | string | yes | Natural language question or topic to search for |
-| `maxResults` | number | no | Max results to return (default: 6) |
-| `minScore` | number | no | Minimum relevance score threshold (0-1) |
+| `query` | 字符串 | 是 | 需要搜索的自然语言问题或主题 |
+| `maxResults` | 数字 | 否 | 返回的最大结果数量（默认值：6） |
+| `minScore` | 数字 | 否 | 最低相关性得分阈值（0-1） |
 
-**Example calls:**
+**示例调用：**
 
 ```json
 { "query": "what projects is the human working on" }
@@ -24,78 +24,77 @@ Semantic vector search across your indexed memory files (MEMORY.md, memory/*.md,
 { "query": "important dates birthdays deadlines", "maxResults": 10, "minScore": 0.3 }
 ```
 
-**Returns:** Array of results, each with:
-- `snippet` — the matching text chunk
-- `path` — relative file path (e.g. `MEMORY.md`, `memory/2026-02-07.md`)
-- `startLine` / `endLine` — line range in the source file
-- `score` — relevance score
-- `citation` — formatted source reference (in direct chats)
+**返回结果：** 一个结果数组，每个结果包含以下内容：  
+- `snippet` — 匹配的文本片段 |
+- `path` — 相对文件路径（例如：`MEMORY.md`、`memory/2026-02-07.md`） |
+- `startLine` / `endLine` — 源文件中的行范围 |
+- `score` — 相关性得分 |
+- `citation` — 格式化的来源引用（在直接对话中显示）
 
 ### `memory_get`
 
-Read a specific section of a memory file by path and line range. Use this after `memory_search` to pull more context around a result.
+通过文件路径和行范围来读取记忆文件中的特定部分。在 `memory_search` 找到结果后，可以使用此工具获取更多上下文信息。
 
-**Parameters:**
+**参数：**
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |---|---|---|---|
-| `path` | string | yes | Relative path from workspace (e.g. `MEMORY.md`, `memory/2026-02-07.md`) |
-| `from` | number | no | Starting line number |
-| `lines` | number | no | Number of lines to read |
+| `path` | 字符串 | 是 | 从工作区的相对路径（例如：`MEMORY.md`、`memory/2026-02-07.md`） |
+| `from` | 数字 | 否 | 开始行号 |
+| `lines` | 数字 | 需要读取的行数 |
 
-**Example calls:**
+**示例调用：**
 
 ```json
 { "path": "MEMORY.md" }
 { "path": "memory/2026-02-07.md", "from": 15, "lines": 30 }
 ```
 
-## When to Use Memory Search
+## 何时使用记忆搜索
 
-**Always search before answering about:**
+**在回答以下问题时，请务必先进行搜索：**
 
-- Prior conversations or decisions
-- The human's preferences, habits, or opinions
-- Dates, deadlines, birthdays, events
-- Project status or history
-- Anything the human said "remember this" about
-- Todos, action items, or commitments
-- People, names, relationships
+- 之前的对话或决策 |
+- 人类的偏好、习惯或观点 |
+- 日期、截止日期、生日、事件 |
+- 项目状态或历史记录 |
+- 人类要求“记住”的任何内容 |
+- 待办事项、行动项或承诺 |
+- 人物、名称、关系信息 |
 
-**The pattern is:**
+**操作步骤：**
 
-1. Receive a question that might involve past context
-2. Call `memory_search` with a relevant query
-3. Review the results
-4. If a snippet looks promising but needs more context, call `memory_get` with the path and line range
-5. Answer using what you found (cite sources in direct chats)
+1. 收到可能涉及过去背景信息的问题 |
+2. 使用相关查询调用 `memory_search` |
+3. 查看搜索结果 |
+4. 如果某个文本片段看起来有用的信息不足，可以使用 `memory_get` 获取更多上下文 |
+5. 根据查找到的内容进行回答（在直接对话中引用来源）
 
-## When NOT to Use
+## 何时不要使用记忆搜索
 
-- Purely factual questions with no personal context ("what is Python?")
-- The human explicitly gives you all the context you need in the message
-- You just searched and the results are still in your context
+- 仅涉及纯粹事实性内容的问题（例如：“Python 是什么？”） |
+- 人类在消息中已经提供了所有所需的背景信息 |
+- 您刚刚进行了搜索，且结果仍然在当前上下文中可用 |
 
-## Tips
+## 提示：
 
-- **Be specific in queries.** "birthday" works better than "important information about the human."
-- **Search multiple angles.** If one query returns nothing useful, try rephrasing. "project deadlines" and "what's due soon" might return different results.
-- **Don't over-fetch.** Start with default maxResults. Only increase if you need more coverage.
-- **Use memory_get sparingly.** The search snippets are usually enough. Only pull full sections when you need surrounding context.
-- **Say when you checked.** If you searched and found nothing, tell the human: "I checked my memory and didn't find anything about that." Don't silently guess.
+- **查询时要具体。** “birthday” 比 “关于这个人的重要信息” 更有效 |
+- **从多个角度进行搜索。** 如果某个查询没有返回有用结果，可以尝试重新表述。例如，“项目截止日期” 和 “即将到期的任务” 可能会返回不同的结果 |
+- **避免过度获取信息。** 先使用默认的最大结果数量；只有在需要更全面的搜索时才增加结果数量 |
+- **谨慎使用 `memory_get`。** 通常搜索片段就足够了；只有在需要完整上下文时才读取完整部分 |
+- **说明搜索结果。** 如果搜索后没有找到任何内容，请告诉人类：“我查看了记忆文件，但没有找到相关信息。” 不要默默猜测。
 
-## What Gets Indexed
+## 被索引的文件
 
-Your memory search covers:
+您的记忆搜索系统会索引以下文件：  
+- `MEMORY.md` — 您整理的长期记忆内容 |
+- `memory/*.md` — 每日的笔记和原始日志 |
+- 会话记录文件（如果已启用）
 
-- `MEMORY.md` — your curated long-term memory
-- `memory/*.md` — daily notes and raw logs
-- Session transcripts (if enabled)
+这些文件会自动被索引。您无需手动触发索引过程——只需将内容写入文件，系统会自动完成索引工作。
 
-These files are automatically indexed. You don't need to trigger indexing — just write to the files and the system handles the rest.
+## 注意事项：
 
-## Do NOT
-
-- Do NOT try to run shell commands like `cat` or `ls` to read memory files. Use `memory_search` and `memory_get`.
-- Do NOT try to configure or debug the search system. That's operator config, not your job.
-- Do NOT assume memory is empty without searching first. The index may have content even if the `memory/` directory looks sparse.
+- **不要尝试使用 `cat` 或 `ls` 等 shell 命令来直接读取记忆文件。** 使用 `memory_search` 和 `memory_get` 进行查询。 |
+- **不要尝试配置或调试搜索系统。** 这属于操作员的职责范围，不是您的任务。 |
+- **不要在没有先进行搜索的情况下就假设记忆文件为空。** 即使 `memory/` 目录看起来内容较少，索引中也可能存在相关内容。

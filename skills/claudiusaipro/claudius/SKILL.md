@@ -1,39 +1,39 @@
 ---
 name: claudius
-description: Crypto intelligence powered by Claudius. Get technical analysis, prices, and insights.
+description: 由Claudius提供支持的加密情报服务。您可以获取技术分析、价格信息和深度洞察。
 ---
 
 # Claudius
 
-Use this skill to answer questions about cryptocurrency prices, technical analysis, market trends, and investment risks.
+使用此技能可以获取关于加密货币价格、技术分析、市场趋势以及投资风险的相关信息。
 
-To use this skill, execute the following script with the user's query as the argument:
+要使用此技能，请执行以下脚本，并将用户的查询作为参数传递：
 
 ```bash
 node scripts/claudius.js "YOUR_QUERY_HERE"
 ```
 
-## Examples
+## 示例
 
-**Prices:**
-- "BTC price"
-- "What's ETH trading at?"
+**价格查询：**
+- “BTC的价格是多少？”
+- “ETH的当前交易价格是多少？”
 
-**Technical Indicators:**
-- "BTC RSI"
-- "ETH EMA50"
-- "Bitcoin RSI14 1d"
+**技术指标查询：**
+- “BTC的RSI指标”
+- “ETH的EMA50指标”
+- “比特币14天的RSI指标”
 
-**Market Analysis:**
-- "What's the market looking like?"
-- "Market sentiment"
-- "What's trending in crypto?"
+**市场分析查询：**
+- “当前市场状况如何？”
+- “市场情绪如何？”
+- “加密货币领域目前有哪些热门趋势？”
 
-**Investment & Risk:**
-- "Should I buy Bitcoin now?"
-- "Is SOL risky right now?"
-- "Analyze BTC for investment"
+**投资与风险查询：**
+- “我现在应该买入比特币吗？”
+- “SOL目前是否有投资风险？”
+- “对BTC进行投资分析”
 
-**Education:**
-- "What is RSI?"
-- "Explain MACD indicator"
+**知识查询：**
+- “什么是RSI指标？”
+- “请解释MACD指标的含义。”

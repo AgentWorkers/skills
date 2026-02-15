@@ -3,35 +3,34 @@ name: react-composition-patterns
 model: standard
 ---
 
-# React Composition Patterns
+# React 组合模式
 
-Build flexible, maintainable React components using compound components, context providers, and explicit variants. Avoid boolean prop proliferation.
+使用复合组件（compound components）、上下文提供者（context providers）和明确的变体（explicit variants）来构建灵活且易于维护的 React 组件。避免使用过多的布尔型属性（boolean props）。
 
-## WHAT
+## 什么是组合模式（What are Composition Patterns）？
 
-Composition patterns that scale:
-- Compound components with shared context
-- State/actions/meta context interface for dependency injection
-- Explicit variant components over boolean props
-- Lifted state in provider components
-- Children composition over render props
+组合模式能够实现组件的可扩展性：
+- 具有共享上下文的复合组件（compound components）
+- 用于依赖注入的状态/动作/元数据上下文接口（state/actions/meta context interface）
+- 通过明确的变体组件替代布尔型属性
+- 将状态管理提升到提供者组件中（Lift state in provider components）
+- 使用子组件进行组合，而非直接使用渲染属性（Children composition over render props）
 
-## WHEN
+## 何时使用这些模式（When to Use These Patterns）？
 
-- Refactoring components with many boolean props
-- Building reusable component libraries
-- Designing flexible component APIs
-- Creating compound components (Card, Dialog, Form, etc.)
-- Components need shared state across sibling elements
+- 当需要重构具有大量布尔型属性的组件时
+- 在构建可重用的组件库时
+- 在设计灵活的组件 API 时
+- 在创建复合组件（如 Card、Dialog、Form 等）时
+- 当组件需要在同级元素之间共享状态时
 
-## KEYWORDS
+## 关键词（Keywords）：
 
-composition, compound components, context, provider, boolean props, variants, react patterns, component architecture, render props, children
+组合（composition）、复合组件（compound components）、上下文（context）、提供者（provider）、布尔型属性（boolean props）、变体（variants）、React 模式（React patterns）、组件架构（component architecture）、渲染属性（render props）、子组件（children）
 
-**Source:** Vercel Engineering
+**来源：** Vercel Engineering
 
-
-## Installation
+## 安装（Installation）
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -42,9 +41,9 @@ npx clawhub@latest install composition-patterns
 
 ---
 
-## Core Principle
+## 核心原则（Core Principles）
 
-**Avoid boolean prop proliferation.** Each boolean doubles possible states.
+**避免使用过多的布尔型属性。** 每一个布尔型属性都会导致状态数量的倍增。**
 
 ```tsx
 // BAD: 4 booleans = 16 possible states
@@ -57,51 +56,11 @@ npx clawhub@latest install composition-patterns
 
 ---
 
-## Pattern 1: Compound Components
+## 模式 1：复合组件（Pattern 1: Compound Components）
 
-Structure complex components with shared context. Consumers compose what they need.
+使用共享上下文来构建复杂的组件。组件使用者可以根据需要组合所需的组件部分。
 
-```tsx
-const ComposerContext = createContext<ComposerContextValue | null>(null)
-
-// Provider handles state
-function ComposerProvider({ children, state, actions, meta }: ProviderProps) {
-  return (
-    <ComposerContext value={{ state, actions, meta }}>
-      {children}
-    </ComposerContext>
-  )
-}
-
-// Subcomponents access context
-function ComposerInput() {
-  const { state, actions: { update }, meta: { inputRef } } = use(ComposerContext)
-  return (
-    <TextInput
-      ref={inputRef}
-      value={state.input}
-      onChangeText={(text) => update(s => ({ ...s, input: text }))}
-    />
-  )
-}
-
-function ComposerSubmit() {
-  const { actions: { submit } } = use(ComposerContext)
-  return <Button onPress={submit}>Send</Button>
-}
-
-// Export as namespace
-const Composer = {
-  Provider: ComposerProvider,
-  Frame: ComposerFrame,
-  Input: ComposerInput,
-  Submit: ComposerSubmit,
-  Header: ComposerHeader,
-  Footer: ComposerFooter,
-}
-```
-
-**Usage:**
+**用法：**
 
 ```tsx
 <Composer.Provider state={state} actions={actions} meta={meta}>
@@ -118,34 +77,11 @@ const Composer = {
 
 ---
 
-## Pattern 2: Generic Context Interface
+## 模式 2：通用上下文接口（Pattern 2: Generic Context Interface）
 
-Define a contract any provider can implement: `state`, `actions`, `meta`.
+定义一个所有提供者都可以实现的契约：`state`（状态）、`actions`（动作）、`meta`（元数据）。
 
-```tsx
-interface ComposerState {
-  input: string
-  attachments: Attachment[]
-  isSubmitting: boolean
-}
-
-interface ComposerActions {
-  update: (updater: (state: ComposerState) => ComposerState) => void
-  submit: () => void
-}
-
-interface ComposerMeta {
-  inputRef: React.RefObject<TextInput>
-}
-
-interface ComposerContextValue {
-  state: ComposerState
-  actions: ComposerActions
-  meta: ComposerMeta
-}
-```
-
-**Same UI, different providers:**
+**相同的 UI，不同的提供者：**
 
 ```tsx
 // Local state provider
@@ -177,28 +113,15 @@ function ChannelProvider({ channelId, children }) {
 }
 ```
 
-Both work with the same `<Composer.Input />` component.
+这两种方式都可以与相同的 `<Composer.Input />` 组件配合使用。
 
 ---
 
-## Pattern 3: Explicit Variants
+## 模式 3：明确的变体（Pattern 3: Explicit Variants）
 
-Create named components for each use case instead of boolean modes.
+为每种使用场景创建专门的组件，而不是使用布尔型属性来表示不同的状态。
 
-```tsx
-// BAD: What does this render?
-<Composer
-  isThread
-  isEditing={false}
-  channelId="abc"
-  showAttachments
-/>
-
-// GOOD: Self-documenting
-<ThreadComposer channelId="abc" />
-```
-
-**Implementation:**
+**实现方式：**
 
 ```tsx
 function ThreadComposer({ channelId }: { channelId: string }) {
@@ -233,76 +156,19 @@ function EditComposer({ messageId }: { messageId: string }) {
 
 ---
 
-## Pattern 4: Lifted State
+## 模式 4：状态管理提升（Pattern 4: Lifted State）
 
-Components outside the visual hierarchy can access state via provider.
+位于视觉层次结构之外的组件可以通过提供者来访问状态。
 
-```tsx
-function ForwardMessageDialog() {
-  return (
-    <ForwardMessageProvider>
-      <Dialog>
-        {/* Composer UI */}
-        <Composer.Frame>
-          <Composer.Input placeholder="Add a message" />
-          <Composer.Footer>
-            <Composer.Formatting />
-          </Composer.Footer>
-        </Composer.Frame>
-
-        {/* Preview OUTSIDE composer but reads its state */}
-        <MessagePreview />
-
-        {/* Actions OUTSIDE composer but can submit */}
-        <DialogActions>
-          <CancelButton />
-          <ForwardButton />
-        </DialogActions>
-      </Dialog>
-    </ForwardMessageProvider>
-  )
-}
-
-// Can access context despite being outside Composer.Frame
-function ForwardButton() {
-  const { actions: { submit } } = use(ComposerContext)
-  return <Button onPress={submit}>Forward</Button>
-}
-
-function MessagePreview() {
-  const { state } = use(ComposerContext)
-  return <Preview message={state.input} attachments={state.attachments} />
-}
-```
-
-**Key insight:** Provider boundary matters, not visual nesting.
+**关键点：** 提供者的边界很重要，而不是组件的视觉嵌套方式。
 
 ---
 
-## Pattern 5: Children Over Render Props
+## 模式 5：使用子组件进行组合（Pattern 5: Children Over Render Props）
 
-Use children for composition, render props only when passing data.
+使用子组件来进行组合；仅在需要传递数据时才使用渲染属性。
 
-```tsx
-// BAD: Render props for structure
-<Composer
-  renderHeader={() => <CustomHeader />}
-  renderFooter={() => <Formatting />}
-  renderActions={() => <Submit />}
-/>
-
-// GOOD: Children for structure
-<Composer.Frame>
-  <CustomHeader />
-  <Composer.Input />
-  <Composer.Footer>
-    <Formatting />
-    <Submit />
-  </Composer.Footer>
-</Composer.Frame>
-```
-
-**When render props ARE appropriate:**
+**何时使用渲染属性：**
 
 ```tsx
 // Passing data to children
@@ -314,9 +180,9 @@ Use children for composition, render props only when passing data.
 
 ---
 
-## Pattern 6: Decouple State from UI
+## 模式 6：将状态与 UI 解耦（Pattern 6: Decouple State from UI）
 
-Only the provider knows how state is managed. UI consumes the interface.
+只有提供者知道状态是如何被管理的。UI 只需要使用提供的接口来获取状态。
 
 ```tsx
 // BAD: UI coupled to state implementation
@@ -355,34 +221,35 @@ function ChannelComposer() {
 
 ---
 
-## Quick Reference
+## 快速参考（Quick Reference）
 
-| Anti-Pattern | Solution |
+| 不推荐的做法 | 推荐的解决方案 |
 |--------------|----------|
-| Boolean props | Explicit variant components |
-| Render props for structure | Children composition |
-| State in component | Lift to provider |
-| Coupled to state impl | Generic context interface |
-| Many conditional renders | Compose pieces explicitly |
+| 使用布尔型属性 | 使用明确的变体组件 |
+| 用渲染属性来构建组件结构 | 使用子组件进行组合 |
+- 将状态放在组件内部 | 将状态管理提升到提供者中 |
+- 使组件依赖于具体的状态实现 | 使用通用的上下文接口 |
+- 使用大量的条件渲染 | 明确地组合组件的各个部分 |
 
 ---
 
-## Files
+## 相关文件（Related Files）：
 
-- `rules/architecture-avoid-boolean-props.md` - Detailed boolean prop guidance
-- `rules/architecture-compound-components.md` - Compound component pattern
-- `rules/state-context-interface.md` - Context interface design
-- `rules/state-decouple-implementation.md` - State isolation
-- `rules/state-lift-state.md` - Provider pattern
-- `rules/patterns-explicit-variants.md` - Variant components
-- `rules/patterns-children-over-render-props.md` - Composition over callbacks
+- `rules/architecture-avoid-boolean-props.md` - 关于避免使用布尔型属性的详细指导
+- `rules/architecture-compound-components.md` - 复合组件模式
+- `rules/state-context-interface.md` - 上下文接口的设计
+- `rules/state-decouple-implementation.md` - 状态的解耦
+- `rules/state-lift-state.md` - 提供者模式
+- `rules/patterns-explicit-variants.md` - 明确的变体组件
+- `rules/patterns-children-over-render-props.md` - 使用子组件进行组合
 
 ---
 
-## NEVER
+**注意事项：**
 
-- Add boolean props to customize behavior (use composition)
-- Create components with more than 2-3 boolean mode props
-- Couple UI components to specific state implementations
-- Use render props when children would work
-- Trap state inside components when siblings need access
+- **切勿**：
+  - 为了自定义组件行为而添加布尔型属性（应使用组合模式）
+  - 创建具有超过 2-3 个布尔型属性的组件
+  - 将 UI 组件与特定的状态实现绑定在一起
+  - 在子组件需要访问状态时使用渲染属性
+  - 将状态封闭在组件内部，而让同级组件无法访问

@@ -1,71 +1,71 @@
 ---
 name: cavos-cli
-description: Interact with the Cavos CLI for Starknet wallet operations. Use for transfers, approvals, contract calls, session management, and transaction monitoring.
+description: 与 Starknet 钱包的 Cavos CLI 进行交互。该 CLI 可用于转账、审批、合约调用、会话管理以及交易监控等操作。
 metadata: { "openclaw": { "requires": { "bins": ["npx"] } } }
 ---
 
-# Cavos CLI Skill
+# Cavos CLI 技能
 
-This skill allows you to interact with the Cavos CLI (`@cavos/cli`) to manage Starknet wallets, perform transfers, and execute contract calls.
+此技能允许您与 Cavos CLI (`@cavos/cli`) 进行交互，以管理 Starknet 钱包、执行转账以及调用合约。
 
-## Core Commands
+## 核心命令
 
-Always use the `--json` flag when possible to get structured output.
+尽可能使用 `--json` 标志来获取结构化的输出。
 
-### 1. Identity & Session
-- **Who Am I**: Check current session and wallet address.
+### 1. 身份与会话
+- **我是谁**：检查当前会话和钱包地址。
   ```bash
   npx @cavos/cli whoami --json
   ```
-- **Session Status**: Check if the session is active/expired.
+- **会话状态**：检查会话是否处于活动状态或已过期。
   ```bash
   npx @cavos/cli session-status --json
   ```
-- **Import Session**: Import a session token provisioned from the [Dashboard](https://agent.cavos.xyz/).
+- **导入会话**：从 [仪表板](https://agent.cavos.xyz/) 导入会话令牌。
   ```bash
   npx @cavos/cli session import <token>
   ```
 
-### 2. Assets & Transfers
-- **Check Balance**:
+### 2. 资产与转账
+- **检查余额**：
   ```bash
   npx @cavos/cli balance --token <STRK|ETH|address> --json
   ```
-- **Transfer Tokens**:
+- **转账代币**：
   ```bash
   npx @cavos/cli transfer --to <address> --amount <amount> --token <token> --json
   ```
 
-### 3. Contract Interactions
-- **Approve Spending**:
+### 3. 合约交互
+- **批准支出**：
   ```bash
   npx @cavos/cli approve --spender <address> --amount <amount> --token <token> --json
   ```
-- **Execute Call**:
+- **执行合约调用**：
   ```bash
   npx @cavos/cli execute --contract <address> --entrypoint <method> --calldata <comma_separated_vals> --json
   ```
-- **Read Call**:
+- **读取合约调用结果**：
   ```bash
   npx @cavos/cli call --contract <address> --entrypoint <method> --calldata <vals> --json
   ```
 
-### 4. Advanced Operations
-- **Multicall**: Batch multiple calls.
+### 4. 高级操作
+- **批量调用**：批量执行多个合约调用。
   ```bash
   npx @cavos/cli multicall --calls '<json_array>' --json
   ```
-- **Simulate/Estimate**: Check tx before sending.
+- **模拟/估算**：在发送交易前进行验证。
   ```bash
   npx @cavos/cli simulate --contract <addr> --entrypoint <method> --calldata <vals> --json
   ```
-- **Transaction Status**:
+- **交易状态**：
   ```bash
   npx @cavos/cli tx status <hash> --json
   ```
 
-## Best Practices
-1. **Verify Balance**: Always run `balance` before a `transfer`.
-2. **Check Session**: Run `whoami` or `session-status` at the start of a workflow to ensure authentication.
-3. **Use JSON**: Parsing JSON output is safer than regexing stdout.
-4. **Calldata**: Calldata for `execute` and `call` should be comma-separated strings (e.g., `0x1,100`).
+## 最佳实践
+1. **验证余额**：在执行转账前，务必先运行 `balance` 命令。
+2. **检查会话状态**：在工作流程开始时，运行 `whoami` 或 `session-status` 命令以确保身份验证正确。
+3. **使用 JSON**：解析 JSON 输出比使用正则表达式处理标准输出更安全。
+4. **Calldata**：`execute` 和 `call` 命令所需的 Calldata 应该是以逗号分隔的字符串（例如：`0x1,100`）。

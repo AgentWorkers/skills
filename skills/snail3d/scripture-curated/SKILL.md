@@ -1,62 +1,57 @@
-# Scripture-Curated Skill Documentation
+# 《圣经精选》技能文档
 
-## Overview
+## 概述
 
-**Scripture-Curated** connects God's Word to your world. It searches current events—both global and personal—and finds relevant Scripture with theological depth, historical context, and reading plans that draw you into the biblical narrative.
+**《圣经精选》** 将上帝的话语与您的现实生活联系起来。它能够搜索当前发生的事件（无论是全球性的还是个人身边的），并找到具有深刻神学意义、历史背景以及阅读指导的圣经经文，帮助您深入理解圣经的叙事。
 
-## Theological Foundation
+## 神学基础
 
-This skill operates within **Nicene Christianity**:
+本技能基于**尼西亚基督教**的信仰体系：
 
-- **Trinity**: One God—Father, Son, Holy Spirit—coequal, coeternal
-- **Christ**: Fully God, fully man; born of Mary; crucified; raised bodily; ascended; returning
-- **Scripture**: Authoritative, inspired, sufficient
-- **Salvation**: By grace through faith in Christ alone
-- **Church**: One, holy, catholic, apostolic
-- **Last Things**: Resurrection, judgment, new heavens and earth
+- **三位一体**：独一的上帝——圣父、圣子、圣灵——彼此平等、永恒同在  
+- **基督**：既是完全的神，也是完全的人；由玛丽亚所生；被钉十字架；复活；将来会再来  
+- **圣经**：是权威的、受神启示的、足以指导人生的  
+- **救赎**：唯有通过信仰基督才能获得救恩  
+- **教会**：是唯一、圣洁、普世的、使徒传承的  
+- **末世**：包括复活、审判、新的天国和新的地  
 
-See `config/nicene-creed.md` for the full theological framework.
+有关完整的神学框架，请参阅 `config/nicene-creed.md`。
 
-## What It Does
+## 功能介绍
 
-### 1. Event-Based Scripture Matching
+### 1. 基于事件的圣经匹配  
 
-Searches current news and matches it to relevant Scripture:
+搜索当前新闻，并将其与相关的圣经经文关联起来：  
+> **世界事件**：中东冲突  
+> **圣经经文**：马太福音 5:9 — “使人和睦的人有福了……”  
+> **关联意义**：基督的国度带来和平；追求和睦体现了上帝的旨意  
+> **背景说明**：八福描述了基督国度的伦理；和平不是被动的，而是主动的  
 
-> **World Event**: Conflict in the Middle East  
-> **Scripture**: Matthew 5:9 — "Blessed are the peacemakers..."  
-> **Connection**: Christ's kingdom brings peace; peacemaking reflects God's children  
-> **Context**: The Beatitudes describe kingdom ethics; peace is not passive but active
+### 2. 个人背景的整合  
 
-### 2. Personal Context Integration
+将世界事件与您的个人情况结合起来：  
+> **全球性事件**：经济不确定性  
+> **个人情况**：（例如工作压力）  
+> **圣经经文**：腓立比书 4:6-7 — “不要忧虑……”  
+> **阅读计划**：为期三天的和平主题阅读（参考经文：约翰福音 14:27、以赛亚书 26:3、诗篇 46:10）  
 
-Combines world events with your local context:
+### 3. 阅读计划  
 
-> **Global**: Economic uncertainty  
-> **Personal**: (You mentioned work stress)  
-> **Scripture**: Philippians 4:6-7 — "Do not be anxious..."  
-> **Reading Plan**: 3-day peace focus → John 14:27, Isaiah 26:3, Psalm 46:10
+生成连贯的圣经阅读路径：  
+- **三天阅读计划**：快速主题学习（和平、希望、苦难）  
+- **七天阅读计划**：每周的灵性修炼（祷告、信仰、爱）  
+- **三十天阅读计划**：为期一个月的深度探索（救赎、基督的生命、末世）  
+每个阅读计划中的经文相互呼应、相互印证、共同构成完整的意义。  
 
-### 3. Reading Plans
+### 4. 深入的背景解释  
 
-Generates connected verse journeys:
+提供以下方面的解答：  
+- “为什么选择这段经文？”——其历史和文学背景  
+- “这段经文的意义是什么？”——其神学内涵  
+- “我该如何应用它？”——实际应用建议  
+- “这段经文在圣经中的前后关联是什么？”  
 
-- **3-Day Plans**: Quick thematic dives (Peace, Hope, Suffering)
-- **7-Day Plans**: Weekly spiritual disciplines (Prayer, Faith, Love)
-- **30-Day Plans**: Month-long explorations (Redemption, The Life of Christ, End Times)
-
-Each plan builds connections: verses echo, amplify, and complete each other.
-
-### 4. Contextual Depth
-
-Ready to answer:
-- *"Why this verse?"* — Historical and literary context
-- *"What does this mean?"* — Theological significance
-- *"How do I apply this?"* — Practical application
-- *"What comes before/after?"* — Canonical context
-
-## File Structure
-
+## 文件结构  
 ```
 scripture-curated/
 ├── SKILL.md                    # This documentation
@@ -73,29 +68,26 @@ scripture-curated/
 │   └── reading-plan.js         # Plan generation
 └── lib/
     └── bible-api.js            # Scripture lookup utilities
-```
+```  
 
-## Usage
+## 使用方法  
 
-### Daily Verse
-
+### 每日经文推荐  
 ```javascript
 // Get verse based on today's news
 const curated = require('./scripture-curated');
 const verse = await curated.dailyVerse();
 // Returns: { verse, connection, context, readingPlan }
-```
+```  
 
-### Search by Event
-
+### 按事件搜索  
 ```javascript
 // Ask about specific event or topic
 const result = await curated.search("What does the Bible say about war?");
 // Returns: { verses, explanation, readingPlan }
-```
+```  
 
-### Reading Plans
-
+### 阅读计划  
 ```javascript
 // Generate a reading plan
 const plan = await curated.readingPlan({
@@ -103,10 +95,9 @@ const plan = await curated.readingPlan({
   days: 7
 });
 // Returns: 7 connected verses with daily context
-```
+```  
 
-### API Integration
-
+### API接口  
 ```javascript
 // Match event to Scripture
 const match = await curated.matchEvent({
@@ -115,116 +106,101 @@ const match = await curated.matchEvent({
   severity: 'high'
 });
 // Returns: { verse, connection, application }
-```
+```  
 
-## Scripture Database
+## 圣经数据库  
 
-**75+ verses** organized by 16 themes:
+包含75多段经文，按16个主题分类：  
+1. **创造**：上帝作为创造者，创造的美好  
+2. **堕落**：罪恶、人类的困境  
+3. **救赎**：通过基督获得救恩  
+4. **信仰**：信任、怀疑、确信  
+5. **苦难**：痛苦、试炼、寻找盼望  
+6. **盼望**：未来的荣耀、末世的盼望  
+7. **和平**：与上帝的和好、内心的平安、促进和睦  
+8. **祷告**：与上帝的交流  
+9. **爱**：上帝的爱、对上帝的爱、对邻人的爱  
+10. **复活**：基督的复活、我们的未来复活  
+11. **第二次降临**：基督的再来、审判、最终的圆满  
+12. **圣灵**：圣灵在信徒心中的工作  
+13. **教会**：教会、使命、圣礼  
+14. **智慧**：知识、辨别力、理解力  
+15. **恢复**：新的创造、最终的盼望  
+16. **尼西亚基督教核心主题**：三位一体、道成肉身、赎罪  
 
-1. **Creation** — God as Creator, goodness of creation
-2. **Fall** — Sin, brokenness, human condition
-3. **Redemption** — Salvation through Christ
-4. **Faith** — Trust, doubt, assurance
-5. **Suffering** — Pain, trials, finding hope
-6. **Hope** — Future glory, eschatological assurance
-7. **Peace** — Peace with God, inner peace, peacemaking
-8. **Prayer** — Communion with God
-9. **Love** — God's love, love for God, love for neighbor
-10. **Resurrection** — Christ's resurrection, our future resurrection
-11. **Second Coming** — Christ's return, judgment, consummation
-12. **Holy Spirit** — The Spirit's work in believers
-13. **Church** — Community, mission, sacraments
-14. **Wisdom** — Knowledge, discernment, understanding
-15. **Restoration** — New creation, final hope
-16. **Nicene Themes** — Trinity, Incarnation, Atonement
+每段经文都包含：  
+- 完整的经文（ESV/NIV版本）  
+- 历史背景  
+- 神学意义  
+- 与当前事件的关联  
+- 相关的圣经经文  
 
-Each verse includes:
-- Full text (ESV/NIV)
-- Historical context
-- Theological significance
-- Event mappings (what news topics it addresses)
-- Canonical connections (related passages)
+## 事件关联  
 
-## Event Mappings
+该技能会将现实中的事件与相应的圣经主题联系起来：  
+| 事件类型 | 相关主题 |  
+|------------|----------------|  
+| 冲突/战争 | 和平、苦难、盼望 |  
+| 经济危机 | 信仰、盼望、智慧 |  
+| 自然灾害 | 苦难、盼望、创造 |  
+| 死亡 | 复活、盼望、和平 |  
+| 政治事件 | 智慧、教会、基督的再来 |  
+| 不公** | 教会、智慧、恢复 |  
+| 庆祝活动 | 爱、教会、创造 |  
+| 新的开始 | 创造、救赎、恢复 |  
+| 失去** | 苦难、盼望、和平 |  
+| 焦虑**：和平、祷告、信仰 |  
 
-The skill maps real-world events to relevant themes:
+## 阅读计划示例：**七天和平计划**  
 
-| Event Type | Relevant Themes |
-|------------|----------------|
-| Conflict/War | Peace, Suffering, Hope |
-| Economic Crisis | Faith, Hope, Wisdom |
-| Natural Disaster | Suffering, Hope, Creation |
-| Death | Resurrection, Hope, Peace |
-| Political | Wisdom, Church, Second Coming |
-| Injustice | Church, Wisdom, Restoration |
-| Celebration | Love, Church, Creation |
-| New Beginning | Creation, Redemption, Restoration |
-| Loss | Suffering, Hope, Peace |
-| Anxiety | Peace, Prayer, Faith |
+**第一天**：罗马书 5:1 — 与上帝的和好（称义）  
+**第二天**：约翰福音 14:27 — 基督带来的和平（祂的遗产）  
+**第三天**：腓立比书 4:6-7 — 保护我们的平安（祷告）  
+**第四天**：以赛亚书 26:3 — 完美的平安（信任）  
+**第五天**：诗篇 46:10 — 保持安静（上帝的主权）  
+**第六天**：马太福音 5:9 — 使人和睦的人有福了  
+**第七天**：启示录 21:4 — 没有眼泪（最终的圆满）  
 
-## Reading Plans
+每天都会提供背景信息、与前几天的关联内容以及应用建议。  
 
-### Example: 7-Day Peace Plan
+## 神学原则  
 
-**Day 1**: Romans 5:1 — Peace with God (justification)  
-**Day 2**: John 14:27 — Christ's peace (His legacy)  
-**Day 3**: Philippians 4:6-7 — Peace that guards (prayer)  
-**Day 4**: Isaiah 26:3 — Perfect peace (trust)  
-**Day 5**: Psalm 46:10 — Be still (God's sovereignty)  
-**Day 6**: Matthew 5:9 — Peacemakers (blessing)  
-**Day 7**: Revelation 21:4 — No more tears (consummation)
+### 解经方法  
 
-Each day includes context, connections to previous days, and application questions.
+- **以基督为中心**：所有圣经经文都指向基督  
+- **结合上下文**：在文学和历史背景下理解经文  
+- **整体性**：通过整本圣经来解读单节经文  
+- **传统解释**：历史上的基督教解释具有参考价值  
+- **教义一致性**：圣经经文之间不会自相矛盾  
+- **灵修意义**：圣经的目的是改变人的生命，而不仅仅是提供信息  
 
-## Theological Commitments
+### 需避免的做法  
 
-### Hermeneutics (How We Interpret)
+- **断章取义**  
+- **随意的解读**  
+- 无历史依据的新教义  
+- 仅从心理学角度解释圣经  
+- 将圣经用于政治目的  
 
-1. **Christocentric**: All Scripture points to Christ
-2. **Contextual**: Verses read in literary and historical context
-3. **Canonical**: Individual verses interpreted by the whole Bible
-4. **Traditional**: Historic Christian interpretation has weight
-5. **Doctrinal**: Scripture doesn't contradict itself
-6. **Devotional**: Scripture transforms, not merely informs
+## 新闻搜索策略  
 
-### What We Avoid
+该技能利用网络搜索工具来查找相关的当前事件：  
+结果会经过筛选，确保：  
+- 重要性（非所有事件都会被显示）  
+- 相关性（与圣经主题相关）  
+- 新近性（发生在过去24-48小时内）  
 
-- Proof-texting (taking verses out of context)
-- Speculative interpretations
-- Novel teachings without historic precedent
-- Psychological reduction ("it's all about feelings")
-- Political co-option (using Scripture for partisan ends)
+## 个人背景的整合  
 
-## News Search Strategy
+该技能会考虑个人的实际情况（如果提供的话）：  
+- 最近的对话  
+- 表达的关切  
+- 生活阶段  
+- 地理位置（如果与新闻相关）  
 
-The skill uses web search to find relevant current events:
+**隐私声明**：个人背景信息仅用于当前的分析，不会被存储或用于其他用途。  
 
-```javascript
-// Example search queries
-"major world news today"
-"conflict breaking news"
-"natural disaster today"
-"economic news"
-"political developments"
-```
-
-Results are filtered for:
-- Significance (not every minor story)
-- Relevance (connects to biblical themes)
-- Recency (within last 24-48 hours)
-
-## Local Context Integration
-
-The skill can incorporate personal context (when available):
-- Recent conversations
-- Expressed concerns
-- Season of life (if known)
-- Geographic location (if relevant to news)
-
-**Privacy note**: Personal context is used ephemerally—not stored, not analyzed for patterns beyond immediate relevance.
-
-## Configuration
-
+## 配置设置  
 ```bash
 # Required
 BRAVE_API_KEY=your_brave_search_key
@@ -234,166 +210,103 @@ DEFAULT_VERSION=ESV           # or NIV, NLT
 THEOLOGY=nicene               # theological framework
 MAX_VERSES_PER_RESULT=5       # limit matches
 READING_PLAN_DAYS=7           # default plan length
-```
+```  
 
-## API Reference
+## API接口说明  
 
-### `dailyVerse(options)`
+### `dailyVerse(options)`  
+返回与当天事件相关的圣经经文。  
 
-Returns a verse connected to today's events.
+### `search(query, options)`  
+按主题或问题搜索圣经经文。  
 
-```javascript
-{
-  verse: { reference, text, version },
-  connection: "Why this verse fits today",
-  context: { historical, theological, canonical },
-  readingPlan: { days, verses, theme },
-  events: [ "news items that triggered this" ]
-}
-```
+### `readingPlan(options)`  
+生成连贯的阅读计划。  
 
-### `search(query, options)`
+### `matchEvent(event, options)`  
+将特定事件与圣经经文关联起来。  
 
-Search Scripture by topic or question.
+## 使用示例  
 
-```javascript
-{
-  verses: [ { reference, text, relevance } ],
-  explanation: "How these verses address the query",
-  readingPlan: { ... },
-  followUp: [ "suggested next questions" ]
-}
-```
+### 示例1：战争爆发  
 
-### `readingPlan(options)`
+**搜索**：“俄罗斯与乌克兰的冲突升级”  
 
-Generate a connected reading plan.
+**结果**：  
+> **以赛亚书 2:4**：“他们要把刀剑铸成犁头……”  
+> **关联意义**：战争并非上帝的最终目的；先知预言武器应被转化为工具（象征和平）。这一盼望具有末世的含义，同时也呼吁人们现在就追求和平。  
+> **背景说明**：以赛亚书写于亚述威胁时期，预言帝国会灭亡，但上帝的国度会永存。弥迦书4:3也表达了同样的信息。  
+> **应用建议**：为和平祷告，支持救援工作，抵制将冲突美化的倾向，记住基督的国度是通过爱而非武力建立的。  
+> **三天阅读计划**：第一天（以赛亚书2章），第二天（马太福音5:9），第三天（启示录21:4）。  
 
-```javascript
-{
-  theme: "peace",
-  days: 7,
-  verses: [
-    { day: 1, reference, text, context, application }
-  ],
-  overview: "How this plan develops the theme"
-}
-```
+### 示例2：经济不确定性  
 
-### `matchEvent(event, options)`
+**搜索**：“股市崩盘，担忧经济衰退”  
 
-Match a specific event to Scripture.
+**结果**：  
+> **马太福音 6:19-21**：“不要为自己积攒财宝在地上……”  
+> **关联意义**：耶稣的教诲提醒人们不要将财富寄托在物质上。  
+> **背景说明**：耶稣针对罗马统治下的百姓讲道，强调真正的财富在于上帝的供应。  
+> **应用建议**：审视自己对财务的焦虑，思考你的安全感来源——是来自投资还是来自上帝？慷慨奉献，因为只有上帝的供应才是可靠的。  
+> **七天阅读计划**：以信仰战胜恐惧。  
 
-```javascript
-{
-  verse: { ... },
-  connection: "Why this verse fits",
-  application: "How to respond to this event",
-  related: [ "other relevant verses" ],
-  prayers: [ "suggested prayers based on this" ]
-}
-```
+### 示例3：自然灾害  
 
-## Examples
+**搜索**：“地震导致数千人死亡”  
 
-### Example 1: War Breaking Out
+**结果**：  
+> **那鸿书 1:7**：“耶和华是良善的，在患难的日子是坚固的依靠……”  
+> **关联意义**：灾难揭示了人类生命的脆弱性；上帝的良善虽不能阻止灾难，但会在其中提供安慰。  
+> **应用建议**：在悲伤中保持希望，提供实际的帮助，记住上帝与受难者同在。期待新的天国和新的地。  
+> **祷告**：“主啊，成为那些失去一切之人的坚固依靠……”  
 
-**Search**: "Russia Ukraine conflict escalation"
+## 错误处理机制  
 
-**Result**:
-> **Isaiah 2:4** — "They shall beat their swords into plowshares..."
-> 
-> **Connection**: War is not God's final plan. The prophet envisions disarmament—swords becoming tools for cultivation. This hope is eschatological (end-times) but also a call to pursue peace now.
->
-> **Context**: Isaiah writes during Assyrian threat, offering hope that empires fall but God's kingdom stands. Micah 4:3 repeats this prophecy, emphasizing the hope is grounded in God's instruction.
->
-> **Application**: Pray for peace. Support relief efforts. Resist the temptation to glorify conflict. Remember that Christ's kingdom advances through love, not force.
->
-> **3-Day Plan**: Day 1 (Isaiah 2), Day 2 (Matthew 5:9), Day 3 (Revelation 21:4)
+- 如果新闻搜索失败：  
+  - 退回每日推荐的经文  
+  - 使用基于日历的阅读计划（如礼仪年安排）  
+  - 提供预先准备好的经文作为替代  
 
-### Example 2: Economic Uncertainty
+- 如果圣经查找失败：  
+  - 从本地圣经数据库中提供经文  
+  - 提供手动查找的参考信息  
+  - 绝不返回空结果  
 
-**Search**: "Stock market crash recession fears"
+## 开发建议  
 
-**Result**:
-> **Matthew 6:19-21** — "Do not lay up for yourselves treasures on earth..."
->
-> **Connection**: Markets crash; treasure in heaven doesn't. Jesus' Sermon on the Mount addresses anxiety about provision. The command is not asceticism but proper valuation.
->
-> **Context**: Jesus speaks to peasants under Roman occupation. "Treasures on earth" could be seized by soldiers or lost to decay. "Treasures in heaven" are secure because God keeps them.
->
-> **Application**: Check your anxiety level about finances. Is your security in your portfolio or in God's provision? Give generously—the only investment with guaranteed returns.
->
-> **7-Day Plan**: Faith Over Fear
+- 可以向 `config/verses.json` 文件中添加新的经文  
+- 更新事件与经文的关联  
+- 在 `config/reading-plans/` 文件中创建新的阅读计划  
+- 调整 `verse-matcher.js` 中的神学权重设置  
 
-### Example 3: Natural Disaster
+**注意事项**：所有修改都必须符合尼西亚基督教信仰体系。  
 
-**Search**: "Earthquake destruction thousands dead"
+## 常见问题解答  
 
-**Result**:
-> **Nahum 1:7** — "The LORD is good, a stronghold in the day of trouble..."
->
-> **Connection**: Disaster reveals the fragility of human structures. God's goodness doesn't prevent disaster but provides refuge within it. This is not "everything happens for a reason" but "God is with you in the ruins."
->
-> **Context**: Nahum prophesies against Nineveh, but this verse is a universal declaration of God's character. The Psalms repeat this theme (Psalm 46, 62). God's strength is available to those who trust Him.
->
-> **Application**: Grieve without despair. Help practically. Point to the God who is near to the brokenhearted. Long for the new heavens and earth where there are no more tears.
->
-> **Prayers**: "Lord, be a stronghold for those who have lost everything..."
+- **“找不到相关的经文”**：  
+  - 检查 `verses.json` 中的事件关联设置  
+  - 确认新闻搜索是否返回了结果  
+  - 退回每日推荐的经文  
 
-## Error Handling
+- **经文与事件关联不明显**：  
+  - 重新审查经文与事件的关联解释  
+  - 确保提供了足够的背景信息  
+  - 用户可以请求更换经文  
 
-If news search fails:
-- Fall back to rotating daily themes
-- Use calendar-based selections (liturgical year)
-- Gracefully degrade with pre-curated verses
+- **阅读计划似乎随机**：  
+  - 检查阅读计划的生成逻辑  
+  - 确保经文之间的关联性  
+  - 确保阅读计划的连贯性  
 
-If Scripture lookup fails:
-- Return local verse database
-- Provide reference for manual lookup
-- Never return empty
+**限制因素**：  
+- 新闻搜索依赖外部API  
+- 圣经查找受圣经API可用性的影响  
+- 个人背景信息需要用户提供  
+- 神学关联是基于算法的，可能存在误差  
 
-## Development
+**使用说明**：  
+本技能旨在提供智慧，而非完美的结果。始终以圣经为权威，而非用户的个人选择。  
 
-To extend the skill:
+## 许可证声明  
 
-1. Add verses to `config/verses.json`
-2. Update event mappings for new themes
-3. Create reading plans in `config/reading-plans/`
-4. Adjust theological weights in `verse-matcher.js`
-
-All contributions must align with the Nicene Creed.
-
-## Troubleshooting
-
-**"No relevant verse found"**
-- Check event mappings in verses.json
-- Verify news search is returning results
-- Fallback to thematic rotation
-
-**"Verse seems disconnected from event"**
-- Review the connection explanation
-- Check that context is being provided
-- User can request alternate verse
-
-**"Reading plan seems random"**
-- Verify plan generation logic
-- Check that verses are thematically connected
-- Ensure progression makes sense
-
-## Limitations
-
-- News search depends on external APIs
-- Scripture lookup depends on Bible API availability
-- Personal context requires recent conversation history
-- Theological matching is algorithmic, not infallible
-
-The skill aims for wisdom, not perfection. Always points to Scripture as authoritative, not its own selections.
-
-## License
-
-MIT — Use freely, modify thoughtfully, keep the faith.
-
----
-
-*"Your word is a lamp to my feet and a light to my path." — Psalm 119:105*
+“你的道是我脚前的灯，是我路上的光。”——诗篇119:105

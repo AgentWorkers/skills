@@ -1,76 +1,74 @@
 ---
 name: CRM
-description: Guide users building a personal CRM from simple files to structured database.
+description: 本指南将指导用户如何从简单的文件开始，逐步构建一个结构化的个人客户关系管理系统（CRM）。
 metadata: {"clawdbot":{"emoji":"🤝","os":["linux","darwin","win32"]}}
 ---
 
-## First Interaction
-- Ask what they're tracking: clients, leads, investors, job contacts, networking — context shapes schema
-- Ask their technical comfort: spreadsheets, JSON, databases — determines starting format
-- Create `~/crm/` folder as the single source of truth
+## 第一次交流
+- 询问他们需要跟踪的信息：客户、潜在客户、投资者、工作联系人、人脉关系——这些信息将决定数据结构的框架。
+- 了解他们对数据管理的熟悉程度：是更喜欢使用电子表格（spreadsheet）、JSON格式还是数据库——这有助于确定初始的数据存储格式。
+- 创建`~/crm/`文件夹作为所有数据的唯一存储位置。
 
-## Start With Files, Not Apps
-- JSON or CSV for first version — validate data model before adding complexity
-- Single file `contacts.json` initially — resist creating multiple files until needed
-- Don't suggest web app until they've used files for at least a week
-- Don't suggest database until files feel slow or limiting
+## 从文件开始，而非从应用程序开始
+- 首先使用JSON或CSV格式存储数据——在增加复杂功能之前，先验证数据模型是否正确。
+- 最初只使用一个文件`contacts.json`——除非确实需要，否则不要创建多个文件。
+- 在用户使用这些文件至少一周后，再考虑是否需要使用Web应用程序。
+- 当文件处理速度变慢或功能受限时，再考虑使用数据库。
 
-## Minimal Contact Schema
-- id, name, email, company, phone, notes, tags, created, updated — nothing more initially
-- tags array over rigid categories — flexible, no schema changes needed
-- notes field is often the most valuable — encourage freeform context
-- Generate UUID for id, not auto-increment — survives merges and imports
+## 最基本的数据结构
+- 初始数据字段包括：id、姓名、电子邮件、公司名称、电话号码、备注、标签、创建时间、更新时间——仅这些基本信息。
+- 使用数组形式存储标签，而不是使用固定的分类结构——这样更加灵活，也无需频繁修改数据结构。
+- 备注字段通常包含最有价值的信息——鼓励用户自由填写备注内容。
+- 为每个联系人生成唯一的UUID（Universally Unique Identifier），而不是使用自动递增的编号——这样可以确保数据在合并或导入时不会出错。
 
-## When To Add Interactions File
-- User asks "when did I last talk to X" — signal they need history
-- Separate file linked by contact_id — not nested in contact object
-- type field (note/email/call/meeting) enables filtering later
-- Always include date — timeline view is essential
+## 何时添加交互记录文件
+- 当用户询问“我上次与某人联系是什么时候”时，说明他们需要记录历史交互信息。
+- 交互记录应存储在单独的文件中，并通过`contact_id`与联系人信息关联——不要将其嵌套在联系人对象中。
+- 添加`type`字段（如“note”/“email”/“call”/“meeting”），以便后续进行过滤。
+- 必须包含日期信息——时间线视图对于数据管理非常重要。
 
-## When To Add Companies File
-- Multiple contacts at same company — signal to separate
-- Many-to-many: one person can work at multiple companies over time
-- company_id in contacts, not company name duplication
+## 何时添加公司信息文件
+- 如果一个联系人隶属于多家公司，需要创建单独的公司信息文件。
+- 多对多关系：一个人可能在不同时间在多家公司工作。
+- 在联系人信息中存储`company_id`，而不是重复记录公司名称。
 
-## When To Add Deals/Opportunities
-- User mentions "pipeline", "stage", "close date", "deal value"
-- Link to contact_id and optionally company_id
-- Stages as simple string field initially — don't over-engineer state machine
+## 何时添加交易/机会信息
+- 当用户提到“销售流程”、“阶段”、“截止日期”或“交易金额”等概念时，说明他们需要跟踪这些交易信息。
+- 交易信息应与`contact_id`关联，也可以选择与`company_id`关联。
+- 初始阶段可以使用简单的字符串字段来表示交易阶段——不要过度设计复杂的状态机。
 
-## SQLite Migration Triggers
-- File operations feel slow (>100 contacts typically)
-- User wants to query/filter in complex ways
-- Multiple users need access (SQLite handles concurrent reads)
-- Offer to write migration script — don't force manual re-entry
+## SQLite数据库迁移策略
+- 当文件操作变得缓慢（通常指处理超过100条联系人信息时），或者用户需要复杂的查询/过滤功能时，考虑进行数据库迁移。
+- 如果多个用户需要同时访问数据（SQLite支持并发读操作），可以考虑编写迁移脚本，而不是强制用户手动重新输入数据。
 
-## Progressive Timeline
-- Week 1: contacts file only, prove they'll use it
-- Week 2: add interactions when they want history
-- Week 3: add tags, search helper script
-- Month 2: companies file if needed
-- Month 3: deals file if tracking opportunities
-- Only then: consider web UI or more complex tooling
+## 逐步推进的系统开发流程
+- 第1周：仅使用联系人文件，验证用户是否真的会使用它。
+- 第2周：当用户需要查看历史交互记录时，添加交互记录功能。
+- 第3周：添加标签功能以及搜索辅助脚本。
+- 第2个月：如果需要，添加公司信息文件。
+- 第3个月：如果需要跟踪交易机会，添加交易信息文件。
+- 只有在这些基础上，再考虑开发Web用户界面或更复杂的工具。
 
-## What NOT To Suggest Early
-- Web application — massive scope increase, validate data model first
-- Email sync/integration — suggest BCC/forward workflow, much simpler
-- Calendar integration — manual logging is fine initially
-- Authentication — single-user local CRM doesn't need it
-- Mobile app — sync complexity not worth it early
+## 早期不应建议的内容
+- Web应用程序——功能范围过大，应先验证数据模型是否合适。
+- 电子邮件同步/集成——建议使用BCC/转发等简单方式。
+- 日历集成——初期可以手动记录信息。
+- 认证功能——单用户使用的本地CRM系统通常不需要认证功能。
+- 移动应用程序——同步操作的复杂性在初期并不值得投入。
 
-## Helper Scripts Worth Offering
-- Quick add from command line — reduces friction
-- Search across all files — grep/jq one-liner
-- Backup to timestamped zip — essential before migrations
-- Export to CSV — for users who want spreadsheet view
+## 值得提供的辅助脚本
+- 提供命令行快速添加新联系人的功能——减少操作麻烦。
+- 提供跨所有文件搜索的功能（例如使用grep或jq命令）。
+- 提供带有时间戳的文件备份功能——在迁移前非常重要。
+- 提供CSV导出功能——方便希望查看数据以电子表格形式的用户。
 
-## Data Integrity Habits
-- Backup before any bulk edit or migration
-- Check for duplicate emails before adding contact
-- Validate email format on entry
-- Keep created/updated timestamps — debugging lifesaver
+## 数据完整性维护习惯
+- 在进行任何批量编辑或数据库迁移之前，务必备份数据。
+- 在添加新联系人之前，检查电子邮件地址是否重复。
+- 在输入数据时验证电子邮件格式的正确性。
+- 保留数据的创建时间和更新时间——这些信息对调试非常有用。
 
-## Sync When Asked
-- Cloud folder (Dropbox/iCloud/Drive) for multi-device — simplest
-- Git repo for version history — good for technical users
-- Don't suggest complex sync solutions until files prove insufficient
+## 数据同步方案
+- 如果需要跨设备同步数据，可以使用云文件夹（如Dropbox、iCloud或Drive）。
+- 对于技术型用户，可以使用Git仓库来管理数据版本历史。
+- 在文件无法满足需求之前，不要推荐复杂的同步解决方案。

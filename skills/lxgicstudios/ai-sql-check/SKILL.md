@@ -1,26 +1,26 @@
 ---
 name: sql-check
-description: Analyze SQL queries for performance and security issues
+description: 分析 SQL 查询以检测性能问题和安全漏洞
 ---
 
-# SQL Checker
+# SQL检查工具
 
-Paste your SQL, get performance tips and security warnings. Catches N+1s and injection risks.
+只需粘贴您的SQL代码，即可获得性能优化建议和安全警告。该工具能够检测到N+1查询错误和SQL注入风险。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-sql-check "SELECT * FROM users WHERE name LIKE '%john%'"
 ```
 
-## What It Does
+## 功能介绍
 
-- Identifies performance issues
-- Flags SQL injection risks
-- Suggests missing indexes
-- Warns about N+1 queries
+- 识别性能问题
+- 标记SQL注入风险
+- 建议添加缺失的索引
+- 警告N+1查询错误
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Check a query
@@ -33,16 +33,16 @@ npx ai-sql-check --file ./queries/report.sql
 npx ai-sql-check --file query.sql --schema ./schema.sql
 ```
 
-## Issues It Catches
+## 可检测的问题
 
-- SELECT * anti-pattern
-- Missing WHERE clause
-- Unindexed columns in WHERE
-- LIKE with leading wildcard
-- Cartesian joins
-- SQL injection patterns
+- 错误的SELECT语句（反模式）
+- WHERE子句缺失
+- WHERE子句中使用了未索引的列
+- LIKE操作符前使用了通配符
+- 使用笛卡尔连接（Cartesian joins）
+- SQL注入攻击的常见模式
 
-## Output Example
+## 输出示例
 
 ```
 ⚠️ Performance Issues:
@@ -57,17 +57,18 @@ npx ai-sql-check --file query.sql --schema ./schema.sql
 - Select only needed columns
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- 必需安装Node.js 18.0及以上版本
+- 需要OPENAI_API_KEY
 
-## License
+## 许可证
 
-MIT. Free forever.
+采用MIT许可证，永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-sql-check](https://github.com/lxgicstudios/ai-sql-check)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub仓库：[github.com/lxgicstudios/ai-sql-check](https://github.com/lxgicstudios/ai-sql-check)
+- Twitter账号：[@lxgicstudios](https://x.com/lxgicstudios)

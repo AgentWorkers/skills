@@ -1,120 +1,116 @@
 ---
 name: bring-recipes
-description: Use when user wants to browse recipe inspirations from Bring! shopping app. For discovering recipes, viewing recipe details (name, author, type, images), or filtering by tags. Note - cannot import ingredients (API limitation).
+description: **使用场景：**  
+当用户希望从 Bring! 购物应用中浏览食谱灵感时使用。该功能允许用户发现新的食谱、查看食谱详情（名称、作者、类型、图片），或根据标签进行筛选。**注意：** 由于 API 的限制，用户无法导入食谱所需的食材信息。
 ---
 
-# Bring! Recipe Browser CLI
+# Bring! 食谱浏览器 CLI
 
-## Overview
+## 概述
 
-CLI for browsing Bring! recipe inspirations. **Browse-only tool** - the Bring! Inspirations API does not provide ingredient lists.
+这是一个用于浏览 Bring! 食谱灵感的命令行工具（CLI）。**仅用于浏览**——Bring! 食谱灵感 API 不提供食材列表。
 
-## When to Use
+## 使用场景
 
-**Use this skill when:**
-- User wants to discover Bring! recipes
-- Browsing recipe inspirations
-- Viewing recipe metadata (names, authors, types, images, links)
-- Filtering recipes by tags (all, mine)
-- Need JSON output of recipes for scripting
+**在以下情况下使用此工具：**
+- 用户希望发现新的 Bring! 食谱
+- 浏览食谱灵感
+- 查看食谱元数据（名称、作者、类型、图片、链接）
+- 按标签筛选食谱（全部、个人收藏的）
+- 需要将食谱数据以 JSON 格式导出用于脚本编写
 
-**Don't use when:**
-- User wants to add ingredients to shopping list (API limitation)
-- Managing shopping lists directly
-- Need full recipe details with ingredients
+**不适用的场景：**
+- 用户需要将食材添加到购物清单（受 API 限制）
+- 直接管理购物清单
+- 需要包含食材的完整食谱详情
 
-## Quick Reference
+## 快速参考
 
-| Command | Purpose |
+| 命令 | 功能 |
 |---------|---------|
-| `bring-recipes list` | Browse recipe inspirations (default) |
-| `bring-recipes filters` | Show available filter tags |
-| `bring-recipes list --filter mine` | Show your personal recipes |
-| `bring-recipes list --json` | JSON output for scripting |
+| `bring-recipes list` | 浏览食谱灵感（默认） |
+| `bring-recipes filters` | 显示可用的筛选标签 |
+| `bring-recipes list --filter mine` | 显示个人收藏的食谱 |
+| `bring-recipes list --json` | 以 JSON 格式输出食谱数据（用于脚本编写） |
 
-**Environment variables:**
+**环境变量：**
 ```bash
 export BRING_EMAIL="your@email.com"
 export BRING_PASSWORD="yourpassword"
 ```
 
-## Installation
+## 安装
 
 ```bash
 cd skills/bring-recipes
 npm install
 ```
 
-## Common Workflows
+## 常见操作流程
 
-**Browse all recipes:**
+**浏览所有食谱：**
 ```bash
 node index.js list --limit 10
 ```
 
-**Filter your recipes:**
+**筛选个人收藏的食谱：**
 ```bash
 node index.js list --filter mine
 ```
 
-**Get JSON for scripting:**
+**获取 JSON 数据用于脚本编写：**
 ```bash
 node index.js list --json | jq -r '.[] | .content.name'
 ```
 
-**Check available filters:**
+**查看可用的筛选选项：**
 ```bash
 node index.js filters
 ```
 
-## Flags Reference
+## 标志参数说明
 
-| Flag | Description |
+| 标志 | 说明 |
 |------|-------------|
-| `-f, --filter <tags>` | Filter tags: all, mine |
-| `--limit <n>` | Max recipes (default: 10) |
-| `--json` | JSON output |
-| `--no-color` | Disable colors |
-| `-q, --quiet` | Minimal output |
-| `-v, --verbose` | Debug output |
+| `-f, --filter <标签>` | 筛选标签：全部、个人收藏的 |
+| `--limit <数量>` | 最多显示的食谱数量（默认：10） |
+| `--json` | 以 JSON 格式输出 |
+| `--no-color` | 禁用颜色显示 |
+| `-q, --quiet` | 减少输出信息 |
+| `-v, --verbose` | 显示详细调试信息 |
 
-## API Limitations
+## API 限制
 
-⚠️ **Critical:** The Bring! `getInspirations()` API returns only metadata:
-- ✅ Recipe names, authors, types
-- ✅ Images, links, tags, like counts
-- ❌ **Ingredient lists** (not provided)
+⚠️ **重要提示：** Bring! 的 `getInspirations()` API 仅返回元数据：
+- ✅ 食谱名称、作者、类型
+- ✅ 图片、链接、标签、点赞数
+- ❌ **食材列表**（不提供）
 
-This is a Bring! API limitation, not a CLI bug. The CLI is designed for **browsing and discovering** recipes only.
+这是 Bring! API 的限制，并非 CLI 的错误。该 CLI 仅用于浏览和发现食谱。
 
-## Recipe Types
+## 食谱类型
 
-- **TEMPLATE** - Bring! templates (e.g., "Sunday Brunch")
-- **RECIPE** - Parsed recipes from partners
-- **POST** - Promotional content
+- **TEMPLATE**：Bring! 提供的模板（例如：“周日早午餐”）
+- **RECIPE**：来自合作伙伴的解析后的食谱
+- **POST**：促销内容
 
-## Common Mistakes
+## 常见错误
 
-**Expecting ingredients:**
-The API does not provide ingredient lists. Use the CLI for discovery, then manually add items.
+- **误以为 API 提供食材列表**：API 不提供食材列表，请使用 CLI 发现食谱后手动添加食材。
+- **误以为有季节性筛选选项**：API 不支持季节性筛选，仅提供“全部”和“个人收藏”两种筛选方式。
+- **误以为所有食谱都有名称**：POST 类型的食谱可能没有名称，这是 API 的正常行为。
 
-**Looking for seasonal filters:**
-The API has no seasonal tags. Only "all" and "mine" filters are available.
+## 实现说明
 
-**Assuming all recipes have names:**
-POST types may be "Untitled Recipe" - this is normal API behavior.
+- 该工具基于 `node-bring-api` v2.0.2+ 及其 `getInspirations()` API 开发。
+- 需要 Node.js 18.0.0+ 或更高版本。
+- 不支持季节性筛选（受 API 限制）。
+- 仅提供浏览功能。
+- 支持 JSON 格式输出，便于自动化操作。
 
-## Implementation Notes
+## 实际应用场景
 
-- Uses `node-bring-api` v2.0.2+ with `getInspirations()` API
-- Requires Node.js 18.0.0+
-- No seasonal filtering (API limitation)
-- Browse-only functionality
-- JSON mode available for automation
-
-## Real-World Use
-
-- **Recipe discovery:** Browse what's available in Bring!
-- **Inspiration browsing:** See trending recipes and templates
-- **Personal collection:** Filter your saved recipes
-- **Integration:** JSON output for external tools
+- **食谱发现**：浏览 Bring! 上可用的食谱。
+- **灵感浏览**：查看热门食谱和模板。
+- **个人收藏管理**：筛选保存的食谱。
+- **数据集成**：将食谱数据以 JSON 格式导出，供外部工具使用。

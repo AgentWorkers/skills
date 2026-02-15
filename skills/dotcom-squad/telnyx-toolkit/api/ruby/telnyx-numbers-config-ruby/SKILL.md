@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Config - Ruby
+# Telnyx 数字配置 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,9 +31,9 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists the phone number blocks jobs
+## 列出电话号码块任务
 
 `GET /phone_number_blocks/jobs`
 
@@ -43,7 +43,7 @@ page = client.phone_number_blocks.jobs.list
 puts(page)
 ```
 
-## Retrieves a phone number blocks job
+## 获取电话号码块任务
 
 `GET /phone_number_blocks/jobs/{id}`
 
@@ -53,11 +53,11 @@ job = client.phone_number_blocks.jobs.retrieve("id")
 puts(job)
 ```
 
-## Deletes all numbers associated with a phone number block
+## 删除与电话号码块关联的所有号码
 
-Creates a new background job to delete all the phone numbers associated with the given block.
+创建一个新的后台任务，以删除与给定块关联的所有电话号码。
 
-`POST /phone_number_blocks/jobs/delete_phone_number_block` — Required: `phone_number_block_id`
+`POST /phone_number_blocks/jobs/delete_phone_number_block` — 必需参数：`phone_number_block_id`
 
 ```ruby
 response = client.phone_number_blocks.jobs.delete_phone_number_block(
@@ -67,7 +67,7 @@ response = client.phone_number_blocks.jobs.delete_phone_number_block(
 puts(response)
 ```
 
-## List phone numbers
+## 列出电话号码
 
 `GET /phone_numbers`
 
@@ -77,7 +77,7 @@ page = client.phone_numbers.list
 puts(page)
 ```
 
-## Retrieve a phone number
+## 获取电话号码
 
 `GET /phone_numbers/{id}`
 
@@ -87,7 +87,7 @@ phone_number = client.phone_numbers.retrieve("1293384261075731499")
 puts(phone_number)
 ```
 
-## Update a phone number
+## 更新电话号码
 
 `PATCH /phone_numbers/{id}`
 
@@ -97,7 +97,7 @@ phone_number = client.phone_numbers.update("1293384261075731499")
 puts(phone_number)
 ```
 
-## Delete a phone number
+## 删除电话号码
 
 `DELETE /phone_numbers/{id}`
 
@@ -107,9 +107,9 @@ phone_number = client.phone_numbers.delete("1293384261075731499")
 puts(phone_number)
 ```
 
-## Change the bundle status for a phone number (set to being in a bundle or remove from a bundle)
+## 更改电话号码的捆绑状态（将其添加到捆绑中或从捆绑中移除）
 
-`PATCH /phone_numbers/{id}/actions/bundle_status_change` — Required: `bundle_id`
+`PATCH /phone_numbers/{id}/actions/bundle_status_change` — 必需参数：`bundle_id`
 
 ```ruby
 response = client.phone_numbers.actions.change_bundle_status(
@@ -120,9 +120,9 @@ response = client.phone_numbers.actions.change_bundle_status(
 puts(response)
 ```
 
-## Enable emergency for a phone number
+## 为电话号码启用紧急呼叫功能
 
-`POST /phone_numbers/{id}/actions/enable_emergency` — Required: `emergency_enabled`, `emergency_address_id`
+`POST /phone_numbers/{id}/actions/enable_emergency` — 必需参数：`emergency_enabled`, `emergency_address_id`
 
 ```ruby
 response = client.phone_numbers.actions.enable_emergency(
@@ -134,7 +134,7 @@ response = client.phone_numbers.actions.enable_emergency(
 puts(response)
 ```
 
-## Retrieve a phone number with voice settings
+## 获取带有语音设置的电话号码
 
 `GET /phone_numbers/{id}/voice`
 
@@ -144,7 +144,7 @@ voice = client.phone_numbers.voice.retrieve("1293384261075731499")
 puts(voice)
 ```
 
-## Update a phone number with voice settings
+## 更新带有语音设置的电话号码
 
 `PATCH /phone_numbers/{id}/voice`
 
@@ -154,11 +154,11 @@ voice = client.phone_numbers.voice.update("1293384261075731499")
 puts(voice)
 ```
 
-## Verify ownership of phone numbers
+## 验证电话号码的所有权
 
-Verifies ownership of the provided phone numbers and returns a mapping of numbers to their IDs, plus a list of numbers not found in the account.
+验证提供的电话号码的所有权，并返回号码与其 ID 的映射关系，以及未在账户中找到的号码列表。
 
-`POST /phone_numbers/actions/verify_ownership` — Required: `phone_numbers`
+`POST /phone_numbers/actions/verify_ownership` — 必需参数：`phone_numbers`
 
 ```ruby
 response = client.phone_numbers.actions.verify_ownership(phone_numbers: ["+15551234567"])
@@ -166,7 +166,7 @@ response = client.phone_numbers.actions.verify_ownership(phone_numbers: ["+15551
 puts(response)
 ```
 
-## List CSV downloads
+## 列出 CSV 下载内容
 
 `GET /phone_numbers/csv_downloads`
 
@@ -176,7 +176,7 @@ page = client.phone_numbers.csv_downloads.list
 puts(page)
 ```
 
-## Create a CSV download
+## 创建 CSV 下载文件
 
 `POST /phone_numbers/csv_downloads`
 
@@ -186,7 +186,7 @@ csv_download = client.phone_numbers.csv_downloads.create
 puts(csv_download)
 ```
 
-## Retrieve a CSV download
+## 获取 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads/{id}`
 
@@ -196,7 +196,7 @@ csv_download = client.phone_numbers.csv_downloads.retrieve("id")
 puts(csv_download)
 ```
 
-## Lists the phone numbers jobs
+## 列出电话号码任务
 
 `GET /phone_numbers/jobs`
 
@@ -206,7 +206,7 @@ page = client.phone_numbers.jobs.list
 puts(page)
 ```
 
-## Retrieve a phone numbers job
+## 获取电话号码任务
 
 `GET /phone_numbers/jobs/{id}`
 
@@ -216,11 +216,11 @@ job = client.phone_numbers.jobs.retrieve("id")
 puts(job)
 ```
 
-## Delete a batch of numbers
+## 删除一批电话号码
 
-Creates a new background job to delete a batch of numbers.
+创建一个新的后台任务，以删除一批电话号码。
 
-`POST /phone_numbers/jobs/delete_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/delete_phone_numbers` — 必需参数：`phone_numbers`
 
 ```ruby
 response = client.phone_numbers.jobs.delete_batch(phone_numbers: ["+19705555098", "+19715555098", "32873127836"])
@@ -228,11 +228,11 @@ response = client.phone_numbers.jobs.delete_batch(phone_numbers: ["+19705555098"
 puts(response)
 ```
 
-## Update the emergency settings from a batch of numbers
+## 更新一批电话号码的紧急呼叫设置
 
-Creates a background job to update the emergency settings of a collection of phone numbers.
+创建一个新的后台任务，以更新一组电话号码的紧急呼叫设置。
 
-`POST /phone_numbers/jobs/update_emergency_settings` — Required: `emergency_enabled`, `phone_numbers`
+`POST /phone_numbers/jobs/update_emergency_settings` — 必需参数：`emergency_enabled`, `phone_numbers`
 
 ```ruby
 response = client.phone_numbers.jobs.update_emergency_settings_batch(
@@ -243,11 +243,11 @@ response = client.phone_numbers.jobs.update_emergency_settings_batch(
 puts(response)
 ```
 
-## Update a batch of numbers
+## 更新一批电话号码
 
-Creates a new background job to update a batch of numbers.
+创建一个新的后台任务，以更新一批电话号码。
 
-`POST /phone_numbers/jobs/update_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/update_phone_numbers` — 必需参数：`phone_numbers`
 
 ```ruby
 response = client.phone_numbers.jobs.update_batch(phone_numbers: ["1583466971586889004", "+13127367254"])
@@ -255,7 +255,7 @@ response = client.phone_numbers.jobs.update_batch(phone_numbers: ["1583466971586
 puts(response)
 ```
 
-## Retrieve regulatory requirements for a list of phone numbers
+## 获取一组电话号码的监管要求信息
 
 `GET /phone_numbers/regulatory_requirements`
 
@@ -265,9 +265,9 @@ phone_numbers_regulatory_requirement = client.phone_numbers_regulatory_requireme
 puts(phone_numbers_regulatory_requirement)
 ```
 
-## Slim List phone numbers
+## 简化版电话号码列表
 
-List phone numbers, This endpoint is a lighter version of the /phone_numbers endpoint having higher performance and rate limit.
+列出电话号码。此端点是 `/phone_numbers` 端点的简化版本，具有更高的性能和速率限制。
 
 `GET /phone_numbers/slim`
 
@@ -277,7 +277,7 @@ page = client.phone_numbers.slim_list
 puts(page)
 ```
 
-## List phone numbers with voice settings
+## 列出带有语音设置的电话号码
 
 `GET /phone_numbers/voice`
 
@@ -287,7 +287,7 @@ page = client.phone_numbers.voice.list
 puts(page)
 ```
 
-## List Mobile Phone Numbers
+## 列出手机号码
 
 `GET /v2/mobile_phone_numbers`
 
@@ -297,7 +297,7 @@ page = client.mobile_phone_numbers.list
 puts(page)
 ```
 
-## Retrieve a Mobile Phone Number
+## 获取手机号码
 
 `GET /v2/mobile_phone_numbers/{id}`
 
@@ -307,7 +307,7 @@ mobile_phone_number = client.mobile_phone_numbers.retrieve("id")
 puts(mobile_phone_number)
 ```
 
-## Update a Mobile Phone Number
+## 更新手机号码
 
 `PATCH /v2/mobile_phone_numbers/{id}`
 

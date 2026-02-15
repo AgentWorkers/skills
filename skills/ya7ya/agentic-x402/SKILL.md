@@ -1,6 +1,6 @@
 ---
 name: agentic-x402
-description: Make x402 payments to access gated APIs and content. Fetch paid resources, check wallet balance, and create payment links. Use when encountering 402 Payment Required responses or when the user wants to pay for web resources with crypto.
+description: 需要进行 x402 类型的支付以访问受保护的 API 和内容。该功能可用于获取已付费的资源、查询钱包余额以及创建支付链接。在遇到“需要支付（402 Payment Required）”的响应时，或者用户希望使用加密货币为网页资源付费时，可以使用此功能。
 license: MIT
 compatibility: Requires Node.js 20+, network access to x402 facilitators and EVM chains
 metadata:
@@ -9,58 +9,58 @@ metadata:
 allowed-tools: Bash(x402:*) Bash(npm:*) Read
 ---
 
-# x402 Agent Skill
+# x402 代理技能
 
-Pay for x402-gated APIs and content using USDC on Base. This skill enables agents to autonomously make crypto payments when accessing paid web resources.
+使用 USDC 在 Base 网络上为需要付费的 API 和内容支付费用。该技能使代理能够在访问付费网页资源时自动进行加密货币支付。
 
-## Quick Reference
+## 快速参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `x402 setup` | Create or configure wallet |
-| `x402 balance` | Check USDC and ETH balances |
-| `x402 pay <url>` | Pay for a gated resource |
-| `x402 fetch <url>` | Fetch with auto-payment |
-| `x402 create-link` | Create payment link (seller) |
-| `x402 link-info <addr>` | Get payment link details |
+| `x402 setup` | 创建或配置钱包 |
+| `x402 balance` | 查看 USDC 和 ETH 的余额 |
+| `x402 pay <url>` | 为受限资源支付费用 |
+| `x402 fetch <url>` | 带自动支付的请求 |
+| `x402 create-link` | 创建支付链接（适用于卖家） |
+| `x402 link-info <addr>` | 获取支付链接详情 |
 
-## Installation
+## 安装
 
 ```bash
 npm i -g agentic-x402
 ```
 
-Once installed, the `x402` command is available globally:
+安装完成后，`x402` 命令将在全局范围内可用：
 
 ```bash
 x402 --help
 x402 --version
 ```
 
-## Setup
+## 配置
 
-Run the interactive setup to create a new wallet:
+运行交互式设置以创建新钱包：
 
 ```bash
 x402 setup
 ```
 
-This will:
-1. Generate a new wallet (recommended) or accept an existing key
-2. Save configuration to `~/.x402/.env`
-3. Display your wallet address for funding
+这将：
+1. 生成一个新的钱包（推荐）或接受现有的密钥
+2. 将配置保存到 `~/.x402/.env` 文件中
+3. 显示钱包地址以便充值
 
-**Important:** Back up your private key immediately after setup!
+**重要提示：** 设置完成后请立即备份您的私钥！
 
-### Manual Configuration
+### 手动配置
 
-Alternatively, set the environment variable directly:
+或者，直接设置环境变量：
 
 ```bash
 export EVM_PRIVATE_KEY=0x...your_private_key...
 ```
 
-Or create a config file:
+或者创建一个配置文件：
 
 ```bash
 mkdir -p ~/.x402
@@ -68,283 +68,283 @@ echo "EVM_PRIVATE_KEY=0x..." > ~/.x402/.env
 chmod 600 ~/.x402/.env
 ```
 
-Verify setup:
+验证配置是否正确：
 
 ```bash
 x402 balance
 ```
 
-## Paying for Resources
+## 支付资源费用
 
-### When you encounter HTTP 402 Payment Required
+### 遇到 HTTP 402 “需要支付” 错误时
 
-Use `x402 pay` to make the payment and access the content:
+使用 `x402 pay` 命令进行支付并访问内容：
 
 ```bash
 x402 pay https://api.example.com/paid-endpoint
 ```
 
-The command will:
-1. Check payment requirements
-2. Verify amount is within limits
-3. Process the payment
-4. Return the gated content
+该命令将：
+1. 检查支付要求
+2. 确认金额在允许的范围内
+3. 处理支付
+4. 返回受限内容
 
-### Automatic payment with fetch
+### 使用 `x402 fetch` 进行自动支付
 
-Use `x402 fetch` for seamless payment handling:
+使用 `x402 fetch` 命令实现无缝支付处理：
 
 ```bash
 x402 fetch https://api.example.com/data --json
 ```
 
-This wraps fetch with x402 payment handling - if the resource requires payment, it's handled automatically.
+该命令会将请求与 x402 的支付处理功能结合在一起——如果资源需要支付，系统会自动完成支付。
 
-### Payment limits
+### 支付限额
 
-By default, payments are limited to $10 USD. Override with `--max`:
+默认情况下，单次支付限额为 10 美元。可以使用 `--max` 参数进行调整：
 
 ```bash
 x402 pay https://expensive-api.com/data --max 50
 ```
 
-Or set globally:
+或者全局设置限额：
+
 ```bash
 export X402_MAX_PAYMENT_USD=25
 ```
 
-### Dry run
+### 试运行
 
-Preview payment without executing:
+在不执行实际支付的情况下预览支付流程：
 
 ```bash
 x402 pay https://api.example.com/data --dry-run
 ```
 
-## Creating Payment Links (Seller)
+## 创建支付链接（适用于卖家）
 
-Create payment links to monetize your own content using x402-links-server:
+使用 `x402-links-server` 创建支付链接以 monetize（此处“monetize”根据上下文可译为“变现”或“盈利”等）
 
-### Setup for link creation
+### 设置链接
 
-Add to `.env`:
+将相关配置添加到 `.env` 文件中：
+
 ```bash
 X402_LINKS_API_URL=https://your-x402-links-server.com
 X402_LINKS_API_KEY=your_api_key
 ```
 
-### Create a link
+### 创建链接
 
-Gate a URL:
+- 为 URL 创建支付链接：
 ```bash
 x402 create-link --name "Premium API" --price 1.00 --url https://api.example.com/premium
 ```
 
-Gate text content:
+- 为文本内容创建支付链接：
 ```bash
 x402 create-link --name "Secret" --price 0.50 --text "The secret message..."
 ```
 
-With webhook notification:
+- 使用 Webhook 通知：
 ```bash
 x402 create-link --name "Guide" --price 5.00 --url https://mysite.com/guide --webhook https://mysite.com/payment-hook
 ```
 
-### Get link info
+### 获取链接详情
 
 ```bash
 x402 link-info 0x1234...5678
 x402 link-info https://21.cash/pay/0x1234...5678
 ```
 
-## Command Reference
+## 命令参考
 
-### x402 balance
+### `x402 balance`
 
-Check wallet balances.
+查看钱包余额：
 
 ```bash
 x402 balance [--json] [--full]
 ```
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--json` | Output as JSON (address, network, chainId, balances) | — |
-| `--full` | Show full wallet address instead of truncated | — |
-| `-h, --help` | Show help | — |
+| `--json` | 以 JSON 格式输出（包含地址、网络、链 ID 和余额） | — |
+| `--full` | 显示完整的钱包地址（而非截断后的地址） | — |
+| `-h, --help` | 显示帮助信息 | — |
 
-### x402 pay
+### `x402 pay`
 
-Pay for an x402-gated resource.
+为需要付费的资源支付费用：
 
 ```bash
 x402 pay <url> [options]
 ```
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `<url>` | The URL of the x402-gated resource (positional) | **required** |
-| `--method` | HTTP method | `GET` |
-| `--body` | Request body (for POST/PUT requests) | — |
-| `--header` | Add custom header (can be used multiple times) | — |
-| `--max` | Maximum payment in USD (overrides config) | from config |
-| `--dry-run` | Show payment details without paying | — |
-| `-h, --help` | Show help | — |
+| `<url>` | 需要付费的资源的 URL | **必填** |
+| `--method` | HTTP 方法 | `GET` |
+| `--body` | 请求体（用于 POST/PUT 请求） | — |
+| `--header` | 添加自定义头部信息 | — |
+| `--max` | 最大支付金额（单位：美元，可覆盖配置值） | — |
+| `--dry-run` | 不进行实际支付，仅显示支付详情 | — |
+| `-h, --help` | 显示帮助信息 | — |
 
-### x402 fetch
+### `x402 fetch`
 
-Fetch with automatic payment.
+带自动支付的请求：
 
 ```bash
 x402 fetch <url> [options]
 ```
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `<url>` | The URL to fetch (positional) | **required** |
-| `--method` | HTTP method | `GET` |
-| `--body` | Request body (for POST/PUT) | — |
-| `--header` | Add header as `"Key: Value"` | — |
-| `--json` | Output as JSON only (for piping to other tools) | — |
-| `--raw` | Output raw response body only (no headers or status) | — |
-| `-h, --help` | Show help | — |
+| `<url>` | 需要获取的资源的 URL | **必填** |
+| `--method` | HTTP 方法 | `GET` |
+| `--body` | 请求体（用于 POST/PUT 请求） | — |
+| `--header` | 以 `"Key: Value` 的格式添加头部信息 | — |
+| `--json` | 仅以 JSON 格式输出结果（便于与其他工具对接） | — |
+| `--raw` | 仅输出原始响应体（不含头部信息或状态码） | — |
+| `-h, --help` | 显示帮助信息 | — |
 
-### x402 create-link
+### `x402 create-link`
 
-Create a payment link.
+创建支付链接：
 
 ```bash
 x402 create-link --name <name> --price <usd> [options]
 ```
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--name` | Name of the payment link | **required** |
-| `--price` | Price in USD (e.g., `"5.00"` or `"0.10"`) | **required** |
-| `--url` | URL to gate behind payment | — |
-| `--text` | Text content to gate behind payment | — |
-| `--desc` | Description of the link | — |
-| `--webhook` | Webhook URL for payment notifications | — |
-| `--json` | Output as JSON | — |
-| `-h, --help` | Show help | — |
+| `--name` | 支付链接的名称 | **必填** |
+| `--price` | 支付价格（单位：美元，例如 "5.00" 或 "0.10"） | **必填** |
+| `--url` | 需要支付费用的资源的 URL | — |
+| `--text` | 需要支付费用的文本内容 | — |
+| `--desc` | 链接的描述 | — |
+| `--webhook` | 支付通知的 Webhook URL | — |
+| `--json` | 以 JSON 格式输出结果 | — |
+| `-h, --help` | 显示帮助信息 | — |
 
-> **Note:** Either `--url` or `--text` is required. The link is deployed as a smart contract on Base.
+> **注意：** 必须指定 `--url` 或 `--text` 中的一个参数。链接将以智能合约的形式部署在 Base 网络上。
 
-### x402 link-info
+### `x402 link-info`
 
-Get payment link details.
+获取支付链接的详情：
 
 ```bash
 x402 link-info <router-address> [--json]
 ```
 
-| Flag | Description | Default |
+| 标志 | 描述 | 默认值 |
 |------|-------------|---------|
-| `<address>` | Router contract address or full payment URL (positional) | **required** |
-| `--json` | Output as JSON | — |
-| `-h, --help` | Show help | — |
+| `<address>` | 链路对应的合约地址或完整支付 URL | **必填** |
+| `--json` | 以 JSON 格式输出结果 | — |
+| `-h, --help` | 显示帮助信息 | — |
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Default |
+| 变量 | 描述 | 默认值 |
 |----------|-------------|---------|
-| `EVM_PRIVATE_KEY` | Wallet private key (0x-prefixed) | **required** |
-| `X402_NETWORK` | `mainnet` (Base, chain 8453) or `testnet` (Base Sepolia, chain 84532) | `mainnet` |
-| `X402_MAX_PAYMENT_USD` | Safety limit — payments exceeding this are rejected unless `--max` is used | `10` |
-| `X402_FACILITATOR_URL` | Custom facilitator URL | Coinbase (mainnet) / x402.org (testnet) |
-| `X402_SLIPPAGE_BPS` | Slippage tolerance in basis points (100 bps = 1%) | `50` |
-| `X402_VERBOSE` | Enable verbose logging (`1` = on, `0` = off) | `0` |
-| `X402_LINKS_API_URL` | Base URL of x402-links-server (e.g., `https://21.cash`) | — |
-| `X402_LINKS_API_KEY` | API key for programmatic link creation | — |
+| `EVM_PRIVATE_KEY` | 钱包私钥（前缀为 `0x`） | **必填** |
+| `X402_NETWORK` | 网络类型（`mainnet` 或 `testnet`） | `mainnet` |
+| `X402_MAX_payment_USD` | 最大支付限额（超过此限额的请求将被拒绝） | `10` |
+| `X402_FACILITATOR_URL` | 支付中介的 URL（例如 Coinbase 或 x402.org） | ` Coinbase`（mainnet）/ `x402.org`（testnet） |
+| `X402_SLIPPAGE_BPS` | 滑点容忍度（100 bps = 1%） | `50` |
+| `X402_VERBOSE` | 是否启用详细日志记录（`1` = 开启，`0` = 关闭） | `0` |
+| `X402_LINKS_API_URL` | x402-links-server 的 API 地址 | `https://21.cash` |
+| `X402 LINKS_API_KEY` | 用于创建链接的 API 密钥 | — |
 
-## Supported Networks
+## 支持的网络
 
-| Network | Chain ID | CAIP-2 ID |
+| 网络 | 链 ID | CAIP-2 ID |
 |---------|----------|-----------|
 | Base Mainnet | 8453 | eip155:8453 |
 | Base Sepolia | 84532 | eip155:84532 |
 
-## Payment Token
+## 支付货币
 
-All payments use **USDC** (USD Coin) on the selected network.
+所有支付均使用 **USDC**（美元加密货币）进行：
 
 - Base Mainnet: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 - Base Sepolia: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
 
-## How x402 Works
+## x402 的工作原理
 
-1. Client requests a resource
-2. Server responds with `402 Payment Required` + payment details
-3. Client signs a payment authorization (USDC transfer)
-4. Client retries request with payment signature
-5. Server verifies payment via facilitator
-6. Server settles payment on-chain
-7. Server returns the gated content
+1. 客户请求资源
+2. 服务器返回 “需要支付” 的提示及支付详情
+3. 客户签署支付授权（通过 USDC 转账）
+4. 客户使用签名重新发送请求
+5. 服务器通过支付中介验证支付
+6. 服务器在链上完成支付
+7. 服务器返回受限内容
 
-The x402 protocol is gasless for buyers - the facilitator sponsors gas fees.
+x402 协议对买家来说是无需支付Gas费用的——费用由支付中介承担。
 
-## Troubleshooting
+## 故障排除
 
-### "Missing required environment variable: EVM_PRIVATE_KEY"
+### “缺少必要的环境变量：EVM_PRIVATE_KEY”
 
-Set your wallet private key:
+请设置您的钱包私钥：
 ```bash
 export EVM_PRIVATE_KEY=0x...
 ```
 
-Or create a `.env` file in your working directory, or install globally and use `~/.x402/.env`.
+或者在工作目录中创建一个 `.env` 文件，或者全局安装该工具并使用 `~/.x402/.env` 文件。
 
-### "Payment exceeds max limit"
+### “支付金额超过限额”
 
-Increase the limit:
+请增加支付限额：
+
 ```bash
 x402 pay https://... --max 50
 ```
 
-### Low balance warnings
+### 余额不足的警告
 
-Fund your wallet with:
-- **USDC** for payments
-- **ETH** for gas (small amount, ~0.001 ETH)
+请为钱包充值：
+- **USDC** 用于支付
+- **ETH** 用于支付Gas费用（少量，约 0.001 ETH）
 
-### Network mismatch
+### 网络不匹配
 
-Ensure your wallet has funds on the correct network:
-- `X402_NETWORK=mainnet` → Base mainnet
+请确保您的钱包位于正确的网络上：
+- `X402_NETWORK=mainnet` → Base Mainnet
 - `X402_NETWORK=testnet` → Base Sepolia
 
-## Backup Your Private Key
+## 备份您的私钥
 
-Your private key is stored in `~/.x402/.env`. If lost, your funds cannot be recovered.
+您的私钥存储在 `~/.x402/.env` 文件中。如果私钥丢失，您的资金将无法恢复。
 
-### Recommended Backup Methods
+### 推荐的备份方法
 
-1. **Password Manager** (Recommended)
-   - Store in 1Password, Bitwarden, or similar
-   - Create a secure note with your private key
-   - Tag it for easy retrieval
-
-2. **Encrypted File**
+1. **密码管理器**（推荐）：
+   - 使用 1Password、Bitwarden 等工具存储私钥
+   - 创建包含私钥的安全笔记，并设置便于查找的标签
+2. **加密文件**：
    ```bash
    # Encrypt with GPG
    gpg -c ~/.x402/.env
    # Creates ~/.x402/.env.gpg - store this backup securely
    ```
 
-3. **Paper Backup** (for larger amounts)
-   - Write down the private key
-   - Store in a safe or safety deposit box
-   - Never store digitally unencrypted
+3. **纸质备份**（适用于较大金额）：
+   - 将私钥写在纸上并妥善保管
+   - 避免以数字形式存储
 
-### View Your Private Key
+### 查看私钥
 
 ```bash
 cat ~/.x402/.env | grep EVM_PRIVATE_KEY
 ```
 
-### Recovery
+### 恢复私钥
 
-To restore from backup:
+从备份中恢复私钥的方法：
 ```bash
 mkdir -p ~/.x402
 echo "EVM_PRIVATE_KEY=0x...your_backed_up_key..." > ~/.x402/.env
@@ -352,18 +352,18 @@ chmod 600 ~/.x402/.env
 x402 balance  # verify
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-- **Use a dedicated wallet** — Never use your main wallet with automated agents
-- **Limit funds** — Only transfer what you need for payments
-- **Set payment limits** — Configure `X402_MAX_PAYMENT_USD` to cap exposure
-- **Test first** — Use `X402_NETWORK=testnet` with test tokens before mainnet
-- **Protect the config** — `~/.x402/.env` has 600 permissions; keep it that way
-- **Never share** — Your private key gives full access to your wallet
+- **使用专用钱包** —— 绝不要将主钱包用于自动化代理程序
+- **限制资金转移** —— 仅转移用于支付的必要金额
+- **设置支付限额** —— 通过 `X402_MAX_payment_USD` 限制风险
+- **先进行测试** —— 在主网络使用测试令牌时先在 `X402_NETWORK=testnet` 上进行测试
+- **保护配置文件** —— `~/.x402/.env` 文件的权限设置为 600；请保持此设置
+- **切勿共享** —— 私钥会授予对钱包的完全访问权限
 
-## Links
+## 相关资源
 
-- [x402 Protocol Docs](https://docs.x402.org/)
-- [x402 GitHub](https://github.com/coinbase/x402)
-- [npm: agentic-x402](https://www.npmjs.com/package/agentic-x402)
-- [Base Network](https://base.org/)
+- [x402 协议文档](https://docs.x402.org/)
+- [x402 GitHub 仓库](https://github.com/coinbase/x402)
+- [npm 包：agentic-x402](https://www.npmjs.com/package/agentic-x402)
+- [Base 网络](https://base.org/)

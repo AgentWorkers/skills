@@ -1,79 +1,79 @@
 ---
 name: Polkadot
-description: Assist with Polkadot DOT transactions, staking, parachains, and cross-chain transfers.
+description: 协助处理 Polkadot DOT 交易、质押（staking）、侧链（parachains）以及跨链转账（cross-chain transfers）相关操作。
 metadata: {"clawdbot":{"emoji":"⚪","os":["linux","darwin","win32"]}}
 ---
 
-## Network Architecture
-- Relay Chain is the main chain — coordinates security and consensus
-- Parachains are independent chains — connected to Relay Chain for security
-- DOT is the native token — used for staking, governance, and parachain bonds
-- Kusama is the canary network — experimental, real value, faster upgrades
+## 网络架构  
+- **Relay Chain** 是主链，负责协调安全性和共识机制；  
+- **Parachains** 是独立链，通过连接到 Relay Chain 来确保安全性；  
+- **DOT** 是 Polkadot 的原生代币，用于质押、治理以及参与 Parachains 的运营；  
+- **Kusama** 是一个实验性网络，具有更高的实际价值，并能实现更快速的升级。  
 
-## Address Format
-- Addresses are different per network — same seed gives different addresses on Polkadot vs Kusama
-- Polkadot addresses start with "1" — Kusama starts with capital letters
-- SS58 format — different from Ethereum's hex addresses
-- One seed for all Substrate chains — but displayed address differs per chain
+## 地址格式  
+- 不同网络使用不同的地址格式；相同的种子短语在 Polkadot 和 Kusama 上会生成不同的地址；  
+- Polkadot 的地址以 “1” 开头，而 Kusama 的地址以大写字母开头；  
+- 地址采用 **SS58** 格式，与 Ethereum 的十六进制地址不同；  
+- 所有 Substrate 链路都使用相同的种子短语，但实际显示的地址各不相同。  
 
-## DOT Token
-- Redenominated 100x in 2020 — old 1 DOT = new 100 DOT
-- 10 decimals (planck is smallest unit) — different from 18 decimals on Ethereum
-- Existential deposit: 1 DOT minimum — accounts below this are reaped (deleted)
-- Locked DOT still counts for governance — can vote while staking
+## DOT 代币  
+- 2020 年 DOT 代币进行了 100 倍的重新定价（1 DOT 变成 100 DOT）；  
+- DOT 代币具有 10 位小数精度（最小单位为 “Planck”），与 Ethereum 的 18 位小数精度不同；  
+- 账户必须持有至少 1 DOT 才能正常使用服务，否则账户可能会被系统删除；  
+- 被锁定的 DOT 代币仍可用于参与治理投票。  
 
-## Staking (Nomination)
-- Nominate up to 16 validators — your stake backs their validation
-- Minimum to earn rewards varies — currently around 250 DOT due to competition
-- 28-day unbonding period — funds locked during unstaking
-- Slashing risk exists — bad validators can lose portion of stake
-- Rewards claimed manually or auto-compound — depends on wallet
+## 质押（Nomination）  
+- 可提名最多 16 个验证者；你的质押金额会支持这些验证者的工作；  
+- 目前获得奖励的最低质押金额约为 250 DOT（受竞争环境影响）；  
+- 解锁质押资金需要 28 天的时间；  
+- 如果验证者表现不佳，其质押份额可能会被削减；  
+- 奖励可以手动领取或自动复利，具体取决于所使用的钱包。  
 
-## Staking Pools
-- Minimum 1 DOT to join pool — lower barrier than direct nomination
-- Pool operator manages validator selection — less control, more convenience
-- Rewards distributed by pool — minus pool commission
-- Same unbonding period applies — 28 days to unstake
+## 质押池（Staking Pools）  
+- 加入质押池的最低要求是 1 DOT；相比直接提名，这种方式门槛更低；  
+- 质押池由运营商负责验证者的选择，用户控制权较低但操作更便捷；  
+- 奖励由质押池分配，但会扣除一定的管理费用；  
+- 解锁质押资金同样需要 28 天的时间。  
 
-## Governance
-- OpenGov system — proposals, referenda, voting
-- Conviction voting — lock tokens longer for more voting power
-- Anyone can submit proposals — DOT holders vote
-- Treasury funds ecosystem development — community-controlled spending
+## 治理（Governance）  
+- Polkadot 采用 **OpenGov** 系统，支持提案提交、全民公投和投票；  
+- 持有更多 DOT 的用户拥有更大的投票权（需要锁定更多代币）；  
+- 任何人都可以提交提案，DOT 持有者可以进行投票；  
+- 财政资金用于生态系统的发展，由社区共同决定支出方向。  
 
-## Parachains
-- Parachain slots won via auctions — projects bid DOT
-- Crowdloans let users contribute DOT — locked for lease period (2 years)
-- Contributed DOT returned after lease — plus project tokens as reward
-- System parachains have permanent slots — Statemint, Bridge Hub
+## Parachains  
+- Parachains 的运行权限通过拍卖获得，项目需要出价购买相应的 DOT；  
+- **Crowdloans** 允许用户贡献 DOT，这些 DOT 会被锁定一段时间（通常为 2 年）；  
+- 贡献的 DOT 在租赁期结束后会返还给用户，并额外获得项目提供的代币奖励；  
+- 系统中的某些 Parachains 拥有永久性的运行权限（例如 Statemint、Bridge Hub）。  
 
-## Cross-Chain (XCM)
-- XCM is cross-consensus messaging — transfer assets between parachains
-- Teleport vs Reserve transfer — different trust models
-- Not all parachains support all assets — check compatibility
-- Fees paid in DOT or parachain token — depends on route
+## 跨链通信（XCM）  
+- **XCM** 是一种跨链通信机制，用于在 Parachains 之间转移资产；  
+- XCM 提供两种传输方式（“Teleport” 和 “Reserve Transfer”），它们采用不同的信任模型；  
+- 并非所有 Parachains 都支持所有类型的资产，使用前请确认兼容性；  
+- 转移费用以 DOT 或 Parachain 代币支付，具体取决于传输路径。  
 
-## Wallets
-- Polkadot.js is power-user wallet — full features, complex UI
-- Nova Wallet, Talisman — better UX for most users
-- Ledger support — via compatible wallets
-- SubWallet for mobile — good mobile experience
+## 钱包  
+- **Polkadot.js** 是专为高级用户设计的钱包，功能齐全但界面较为复杂；  
+- **Nova Wallet** 和 **Talisman** 提供更友好的用户界面；  
+- 通过兼容的钱包也可以支持 Ledger；  
+- **SubWallet** 专为移动设备设计，提供良好的移动使用体验。  
 
-## Common Issues
-- "Existential deposit" error — balance would go below 1 DOT, add more or send all
-- Staking not earning — below minimum active stake threshold
-- Can't transfer while staking — must leave some unlocked for fees
-- Wrong network address — Kusama address won't work on Polkadot
-- Unbonding takes 28 days — patience required
+## 常见问题  
+- 如果账户余额低于 1 DOT，系统会提示 “Existential deposit” 错误，需要补充或全部转移代币；  
+- 如果质押金额低于最低要求，可能无法获得奖励；  
+- 在质押期间无法进行资产转移，因为部分代币需要保持解锁状态以支付相关费用；  
+- 使用错误的地址（例如 Kusama 地址）可能导致交易失败；  
+- 解锁质押资金需要 28 天的时间，请耐心等待。  
 
-## Transaction Characteristics  
-- Transactions finalize in ~12 seconds — deterministic finality
-- Fees in DOT — relatively low, paid from transferable balance
-- Nonce-based like Ethereum — transactions processed in order
-- Tips for priority — optional, not usually needed
+## 交易特性  
+- 交易大约在 12 秒内完成，具有确定的最终性；  
+- 交易费用以 DOT 代币支付，费用从用户的可转移余额中扣除；  
+- 交易处理顺序基于交易生成的随机数（Nonce），与 Ethereum 类似；  
+- 可选择为交易设置优先级，但通常并非必需。  
 
-## Security
-- Seed phrase controls all Substrate chains — secure it carefully
-- Verify addresses match network — different display per chain
-- Check validator reputation before nominating — slashing affects you
-- Governance attacks possible — vote on important proposals
+## 安全性  
+- 种子短语用于控制所有 Substrate 链路的访问权限，请妥善保管；  
+- 确认地址是否与当前网络匹配（不同网络显示的地址可能不同）；  
+- 在提名验证者之前，请先查看其信誉；  
+- 存在治理攻击的风险，请对重要提案进行仔细投票。

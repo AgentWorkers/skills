@@ -1,15 +1,15 @@
 ---
 name: tiktok-ai-model-generator
-description: Generate AI model videos for TikTok livestreams using Pinterest, Claude, Nano Banana Pro, and Veo or Kling. Use for creating AI-generated fashion models wearing products, animating them into videos, or building automated TikTok content production workflows. This skill provides a complete 4-step workflow covering Pinterest reference selection, Claude JSON prompt generation, Nano Banana Pro image generation, and video animation. Perfect for e-commerce sellers, content creators, and TikTok marketers who need AI models to showcase products.
+description: 使用 Pinterest、Claude、Nano Banana Pro 和 Veo 或 Kling 为 TikTok 直播生成 AI 模型视频。这些工具可用于创建穿着产品的 AI 时尚模特视频，或将模特动画化到视频中，从而构建自动化的 TikTok 内容制作工作流程。该技能提供了一个完整的四步工作流程，包括 Pinterest 参考图片的选择、Claude JSON 提示的生成、Nano Banana Pro 的图像生成以及视频动画制作。非常适合需要 AI 模型来展示产品的电商卖家、内容创作者和 TikTok 营销人员。
 ---
 
-# TikTok AI Model Video Generator
+# TikTok AI模型视频生成器
 
-Create AI-generated fashion models wearing your products and animate them into engaging TikTok livestream videos. This workflow combines multiple AI tools to produce realistic, professional product showcase content in under 5 minutes.
+该工具可以生成穿着您产品的AI模特视频，并将其制作成引人入胜的TikTok直播内容。此工作流程结合了多种AI工具，能够在5分钟内生成逼真、专业的产品展示视频。
 
-## Quick Start
+## 快速入门
 
-Complete 4-step workflow to generate AI model video:
+完成以下4个步骤即可生成AI模型视频：
 
 ```bash
 # Step 1: Select Pinterest reference
@@ -27,30 +27,30 @@ Complete 4-step workflow to generate AI model video:
 # Total time: Under 5 minutes
 ```
 
-## Workflow Steps
+## 工作流程步骤
 
-### Step 1: Pinterest Reference Selection
+### 第1步：选择Pinterest参考图片
 
-**Goal**: Find high-quality fashion poses that match your product's aesthetic.
+**目标**：找到与您的产品风格相匹配的高质量时尚姿势图片。
 
-**Action**: Browse Pinterest and save 2-3 reference images showing:
-- Desired pose (standing, walking, sitting, etc.)
-- Camera angle (full body, close-up, profile, etc.)
-- Lighting style (studio, natural, dramatic)
-- Background preference (clean, lifestyle, minimalist)
+**操作**：浏览Pinterest并保存2-3张参考图片，这些图片应包含：
+- 期望的姿势（站立、行走、坐着等）
+- 摄像角度（全身、特写、侧面等）
+- 照明风格（摄影棚、自然光、戏剧性光线）
+- 背景选择（干净、生活风格、极简风格）
 
-**Tips**:
-- Search: "fashion model pose", "product photography pose", "[your product] model"
-- Look for consistent brand aesthetic
-- Save URLs or download images for Claude reference
+**提示**：
+- 搜索：“时尚模特姿势”、“产品摄影姿势”、“[您的产品] 模特”
+- 确保图片符合品牌的整体风格
+- 保存图片链接或下载图片以供Claude参考
 
 ---
 
-### Step 2: Claude JSON Prompt Generation
+### 第2步：为Nano Banana Pro生成详细的JSON提示
 
-**Goal**: Create detailed, structured prompt for Nano Banana Pro.
+**目标**：为Nano Banana Pro创建结构化的JSON提示。
 
-**Prompt Template**:
+**提示模板**：
 
 ```
 Give me detailed JSON prompt for this Pinterest image holding [PRODUCT DESCRIPTION]:
@@ -82,73 +82,73 @@ Give me detailed JSON prompt for this Pinterest image holding [PRODUCT DESCRIPTI
 Use the Pinterest image as visual reference for pose and composition.
 ```
 
-**Claude Capabilities**:
-- Analyze Pinterest image composition
-- Extract pose, angle, lighting details
-- Integrate product naturally into scene
-- Generate JSON formatted for Nano Banana Pro
+**Claude的功能**：
+- 分析Pinterest图片的构图
+- 提取姿势、角度和照明细节
+- 自然地将产品融入场景中
+- 生成适用于Nano Banana Pro的JSON格式提示
 
-**Product Image Requirements**:
-- White or neutral background
-- High resolution (minimum 1024x1024)
-- Clear product visibility
-- Professional lighting
-- No text or watermarks
-
----
-
-### Step 3: Nano Banana Pro Image Generation
-
-**Goal**: Generate photorealistic AI model wearing your product.
-
-**Prerequisites**:
-- Nano Banana Pro access (https://higgsfield.ai)
-- Higgsfield account for tool access
-- API key or web interface access
-
-**Process**:
-1. Open Nano Banana Pro (Higgsfield)
-2. Upload your product image (white background)
-3. Paste Claude's JSON prompt
-4. Adjust parameters:
-   - Resolution: 1024x1024 (standard)
-   - Style: Photorealistic
-   - Quality: High
-   - Variation: Generate 2-3 options
-5. Click Generate
-6. Select best result
-
-**Expected Output**:
-- AI model in pose matching Pinterest reference
-- Product naturally integrated into scene
-- Photorealistic quality (professional photography)
-- Consistent lighting and shadows
-- White/neutral background (easier for video editing)
-
-**Troubleshooting**:
-- **Product not visible**: Check JSON prompt includes product description clearly
-- **Pose mismatch**: Add more specific pose instructions to JSON
-- **Unrealistic**: Lower "style strength" or adjust "model appearance" details
-- **Lighting issues**: Specify "studio lighting" in environment section
+**产品图片要求**：
+- 背景为白色或中性色
+- 分辨率至少为1024x1024像素
+- 产品清晰可见
+- 照明效果专业
+- 无文字或水印
 
 ---
 
-### Step 4: Veo/Kling Video Animation
+### 第3步：使用Nano Banana Pro生成图像
 
-**Goal**: Animate generated image into engaging TikTok video.
+**目标**：生成穿着您产品的逼真AI模特图片。
 
-**Tool Options**:
+**前提条件**：
+- 具有Nano Banana Pro的访问权限（https://higgsfield.ai）
+- 拥有Higgsfield账户以使用该工具
+- 拥有API密钥或通过Web界面访问工具
 
-#### Veo (Google's AI Video Generator)
-- Access: Via Higgsfield platform
-- Input: Generated image from Nano Banana Pro
-- Output: Animated video (3-10 seconds)
-- Features:
-  - Natural movement
-  - Product-focused animation
-  - High quality (1080p+)
+**操作步骤**：
+1. 打开Nano Banana Pro（Higgsfield）
+2. 上传您的产品图片（背景为白色）
+3. 粘贴Claude生成的JSON提示
+4. 调整参数：
+   - 分辨率：1024x1024（标准设置）
+   - 风格：逼真
+   - 质量：高质量
+   - 生成2-3个不同的版本
+5. 点击“生成”
+6. 选择最佳结果
 
-**Animation Prompts**:
+**预期输出**：
+- AI模特采用与Pinterest参考图片相同的姿势
+- 产品自然地融入场景中
+- 逼真的图像效果（专业摄影水平）
+- 照明和阴影效果一致
+- 背景为白色或中性色（便于视频编辑）
+
+**故障排除**：
+- **产品不可见**：检查JSON提示中是否明确提到了产品
+- **姿势不匹配**：在JSON提示中添加更具体的姿势描述
+- **效果不真实**：降低“风格强度”或调整“模特外观”参数
+- **照明问题**：在环境设置中指定“摄影棚照明”
+
+---
+
+### 第4步：使用Veo/Kling生成动画视频
+
+**目标**：将生成的图片制作成有趣的TikTok视频。
+
+**工具选项**：
+
+#### Veo（Google的AI视频生成器）
+- 访问方式：通过Higgsfield平台
+- 输入：来自Nano Banana Pro的生成图片
+- 输出：3-10秒的动画视频
+- 特点：
+  - 动作自然
+  - 以产品为中心的动画效果
+  - 高质量（1080p以上）
+
+**动画提示示例**：
 ```
 Prompt ideas for Veo:
 - "Subtle body sway, arms gently moving, natural breathing motion"
@@ -158,182 +158,166 @@ Prompt ideas for Veo:
 - "Walking slowly, product clearly visible"
 ```
 
-#### Kling AI Video Generator
-- Alternative to Veo
-- Similar workflow
-- May offer different animation styles
-- Check which produces better results for your use case
+#### Kling AI视频生成器
+- Veo的替代工具
+- 工作流程类似
+- 可能提供不同的动画风格
+- 根据您的需求选择合适的工具
 
-**Process**:
-1. Upload Nano Banana Pro generated image
-2. Choose animation style (subtle, dynamic, product-focused)
-3. Enter animation prompt (see above)
-4. Generate 3-5 second video
-5. Review and refine if needed
-6. Export for TikTok upload
+**操作步骤**：
+1. 上传Nano Banana Pro生成的图片
+2. 选择动画风格（柔和、动态、以产品为中心）
+3. 输入动画提示
+4. 生成3-5秒的视频
+5. 如有需要，进行审查和优化
+6. 导出视频以上传到TikTok
 
-**Video Settings**:
-- Duration: 3-5 seconds (optimal for TikTok)
-- Resolution: 1080x1920 (9:16 vertical)
-- Frame rate: 24-30 fps
-- Format: MP4 (TikTok compatible)
+**视频设置**：
+- 时长：3-5秒（适合TikTok）
+- 分辨率：1080x1920（9:16垂直比例）
+- 帧率：24-30 fps
+- 格式：MP4（TikTok兼容）
 
----
+## 使用场景
 
-## Use Cases
+### 电子商务产品展示
+- **适用场景**：服装、珠宝、配饰、化妆品
+- **工作流程**：生成多个姿势的AI模特图片
+- **输出**：以产品为中心的视频，展示产品特点
+- **时间成本**：每个视频约5分钟（相比传统拍摄方式可节省大量时间）
 
-### E-commerce Product Showcase
-- **Perfect for**: Fashion, jewelry, accessories, cosmetics
-- **Workflow**: Generate AI models in multiple poses
-- **Output**: Product-focused videos showcasing features
-- **Time**: 5 minutes per video (vs. hours of traditional shoots)
+### TikTok直播内容
+- **应用场景**：24/7的AI模特直播（如@barkmeta所推荐）
+- **工作流程**：生成多个版本，进行动画处理并循环播放
+- **优势**：可扩展性强，无需真人模特
+- **平台**：TikTok、Instagram、YouTube Shorts
 
-### TikTok Livestream Content
-- **Use case**: 24/7 AI model livestreams (as mentioned by @barkmeta)
-- **Workflow**: Generate variations, animate, loop
-- **Advantage**: Scalable, no human models needed
-- **Platforms**: TikTok, Instagram, YouTube Shorts
+### 社交媒体营销
+- **平台**：TikTok、Instagram Reels、YouTube Shorts
+- **内容类型**：
+  - 产品发布
+  - 产品特点展示
+  - 季节性系列
+  - 不同风格的A/B测试
 
-### Social Media Marketing
-- **Platforms**: TikTok, Instagram Reels, YouTube Shorts
-- **Content types**:
-  - Product launches
-  - Feature highlights
-  - Seasonal collections
-  - A/B testing different styles
+## 优化建议
 
----
+### 提高效果
 
-## Optimization Tips
+1. **Pinterest参考图片的质量**：
+   - 选择高分辨率图片
+   - 与品牌风格一致
+   - 注意照明条件
 
-### Better Results
+2. **提示的详细程度**：
+   - 在JSON提示中提供详细的信息
+   - 包括照明、拍摄角度和风格
+   - 明确引用Pinterest上的参考图片
 
-1. **Pinterest Reference Quality**:
-   - Choose high-resolution images
-   - Match your brand aesthetic
-   - Consider lighting conditions
+3. **产品准备**：
+   - 使用干净、白色的背景
+   - 保证产品拍摄质量
+   - 提供多个拍摄角度
 
-2. **Prompt Specificity**:
-   - Be detailed in JSON structure
-   - Include lighting, camera, and style
-   - Reference Pinterest image explicitly
+4. **动画效果**：
+   - 动作要自然（避免生硬）
+   - 确保产品清晰可见
+   - 视频长度控制在3-5秒以内
 
-3. **Product Preparation**:
-   - Clean, white background essential
-   - Professional photography quality
-   - Multiple angles available
+### 时间优化
 
-4. **Animation Subtlety**:
-   - Natural movements (no jerky motions)
-   - Focus on product visibility
-   - Keep videos short (3-5 seconds)
+**批量处理**：
+- 一次生成10-20张图片（使用Nano Banana Pro的批量功能）
+- 选择其中3-5张进行动画处理
+- 制定内容发布计划（每周/每月）
+- 安排TikTok发布时间
 
-### Time Optimization
+**工具使用说明**：
+- 将Claude生成的JSON提示保存为模板
+- 对于类似产品，重复使用成功的提示
+- 建立提示库以加快迭代速度
 
-**Batch Workflow**:
-1. Generate 10-20 images at once (Nano Banana Pro batch)
-2. Animate top 3-5 selections
-3. Create content calendar (week/month)
-4. Schedule TikTok posts
+## 常见问题及解决方法
 
-**Tools Access**:
-- Save Claude JSON prompts as templates
-- Reuse successful prompts for similar products
-- Build prompt library for faster iteration
-
----
-
-## Common Issues & Solutions
-
-| Issue | Cause | Solution |
+| 问题 | 原因 | 解决方法 |
 |-------|--------|----------|
-| Product not visible | JSON prompt unclear | Add explicit "product in foreground" instructions |
-| AI model looks fake | Low quality generation | Increase resolution, adjust "model appearance" details |
-| Animation unnatural | Incorrect prompt | Use subtle motion keywords (gentle, natural, breathing) |
-| Video format wrong | Resolution mismatch | Export 1080x1920 vertical format for TikTok |
-| Lighting inconsistent | Different tools used | Match lighting settings across all steps |
+| 产品不可见 | JSON提示不明确 | 在提示中明确要求“产品应在画面前景** |
+| AI模特看起来不真实 | 生成效果质量较低 | 提高分辨率或调整“模特外观”设置 |
+| 动画效果不自然 | 提示不准确 | 使用描述动作自然的关键词（如“柔和、自然”） |
+| 视频格式不正确 | 分辨率不匹配 | 将视频格式设置为1080x1920（TikTok推荐格式） |
+| 照明效果不一致 | 使用了不同的工具 | 确保所有步骤中的照明设置一致 |
 
----
+## 高级技巧
 
-## Advanced Techniques
+### 多姿势产品展示
+1. 生成3个不同的姿势（正面、侧面、细节）
+2. 分别对每个姿势进行动画处理
+3. 将它们合并成更长的TikTok视频
+4. 在不同姿势之间添加过渡效果
 
-### Multi-Pose Product Showcase
-1. Generate 3 different poses (front, side, detail)
-2. Animate each individually
-3. Combine into longer TikTok video
-4. Add transitions between poses
+### A/B测试
+1. 为同一产品创建2-3个不同的版本
+2. 测试不同的姿势和背景
+3. 比较用户的互动数据
+4. 优化效果最佳的风格
 
-### A/B Testing
-1. Create 2-3 variations of same product
-2. Test different poses/backgrounds
-3. Compare engagement metrics
-4. Optimize for best performing style
+### 季节性产品展示
+1. 根据季节调整JSON提示
+2. 更改照明效果（夏季使用暖色调，冬季使用冷色调）
+3. 调整背景风格
+4. 生成符合季节特色的视频系列
 
-### Seasonal Collections
-1. Update JSON prompts for seasonal context
-2. Change lighting (warm for summer, cool for winter)
-3. Adjust background themes
-4. Generate themed video sets
+## 所需工具
 
----
+所有工具均可通过[Higgsfield](https://higgsfield.ai)获取：
 
-## Required Tools
+1. **Claude AI**：用于生成JSON提示
+2. **Nano Banana Pro**：用于生成逼真图像
+3. **Veo 3.1**：用于视频动画制作
+4. **Kling AI**：作为Veo的替代工具
 
-All tools accessible via [Higgsfield](https://higgsfield.ai):
+**替代方案**：
+- 可以使用GPT-4替代Claude
+- 或者使用Midjourney/DALL-E替代Nano Banana Pro
+- 也可以使用Runway ML/Pika Labs替代Veo
 
-1. **Claude AI** - JSON prompt generation
-2. **Nano Banana Pro** - Photorealistic image generation
-3. **Veo 3.1** - Video animation
-4. **Kling AI** - Alternative video generator
+## 成本与时间估算
 
-**Alternative Workflows**:
-- Replace Claude with GPT-4 (if available)
-- Replace Nano Banana with Midjourney/DALL-E
-- Replace Veo with Runway ML/Pika Labs
+**每个视频的成本**：
+- 时间：3-5分钟
+- 工具：免费版本可用（请查看使用限制）
+- 商业用途：需确认工具的许可条款
 
----
+**批量生产**：
+- 10个视频：约30-60分钟
+- 50个视频：约2.5-4小时
+- 批量处理：通过API访问工具可实现无限次生成
 
-## Cost & Time Estimate
+**成本对比**：
+- 传统拍摄：每天500美元至2000美元以上
+- AI工作流程：免费至每月50美元（需订阅）
+- 时间节省：超过95%
 
-**Per Video**:
-- Time: 3-5 minutes
-- Tools: Free tier available (check limits)
-- Commercial use: Verify tool licensing terms
+## 故障排除
 
-**Batch Production**:
-- 10 videos: ~30-60 minutes
-- 50 videos: ~2.5-4 hours
-- Scale: Unlimited (with tool API access)
+### 工具使用问题
+- **Higgsfield账户**：可在https://higgsfield.ai免费注册账户
+- **API使用限制**：查看免费版本的权限限制，考虑升级
+- **登录问题**：清除浏览器缓存，尝试使用其他浏览器
 
-**Comparison**:
-- Traditional photoshoot: $500-$2,000+ per day
-- AI workflow: Free to $50/month (subscription)
-- Time savings: 95%+ reduction
+### 质量问题
+- **分辨率低**：将图片分辨率提高到2048x2048像素
+- **图像质量不佳**：使用不同的随机种子重新生成图片
+- **风格不一致**：对批量处理使用相同的JSON提示模板
 
----
+### 动画问题
+- **动画效果生硬**：简化动画提示，使用描述动作自然的关键词
+- **产品超出画面范围**：在提示中添加“保持产品位于画面内”的要求
+- **动画速度过快**：在提示中调整动作速度或延长视频时长
 
-## Troubleshooting
+## 示例
 
-### Tool Access Issues
-- **Higgsfield account**: Create free account at https://higgsfield.ai
-- **API rate limits**: Check free tier limits, consider upgrade
-- **Login problems**: Clear browser cache, try different browser
-
-### Quality Issues
-- **Low resolution**: Increase image resolution to 2048x2048
-- **Artifacts**: Regenerate with different random seed
-- **Inconsistent style**: Use same JSON prompt template for batch
-
-### Animation Problems
-- **Jerky motion**: Simplify animation prompt, use "subtle" keywords
-- **Product out of frame**: Add "keep product in frame" to prompt
-- **Too fast**: Reduce movement in prompt, extend duration
-
----
-
-## Examples
-
-### Jewelry Product
+### 珠宝产品示例
 ```
 Pinterest: Minimalist gold necklace, model looking down
 Product: Gold chain necklace on white background
@@ -342,7 +326,7 @@ Nano Banana: Photorealistic close-up
 Veo Animation: "Gentle sway, necklace catching light"
 ```
 
-### Fashion Item
+### 服装产品示例
 ```
 Pinterest: Full body fashion pose, walking stance
 Product: White t-shirt, lifestyle setting
@@ -351,7 +335,7 @@ Nano Banana: Full body photorealistic
 Veo Animation: "Natural walking motion, arms gently swinging"
 ```
 
-### Accessory
+### 配饰产品示例
 ```
 Pinterest: Hand holding phone case, focus on product
 Product: Designer phone case
@@ -362,16 +346,6 @@ Veo Animation: "Subtle hand movement, showing product angles"
 
 ---
 
-## File Structure
+## 文件结构
 
-```
-tiktok-ai-model-generator/
-├── SKILL.md (this file)
-├── scripts/
-│   └── generate_workflow.py (optional automation script)
-└── references/
-    ├── pinterest_tips.md (Pinterest selection guide)
-    └── prompt_templates.md (Reusable JSON templates)
-```
-
-See bundled scripts and references for automation tools and detailed templates.
+更多自动化工具和详细模板请参阅附带的相关脚本和参考资料。

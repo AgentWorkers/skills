@@ -1,98 +1,97 @@
 ---
 name: options-strategy-advisor
-description: Options trading strategy analysis and simulation tool. Provides theoretical pricing using Black-Scholes model, Greeks calculation, strategy P/L simulation, and risk management guidance. Use when user requests options strategy analysis, covered calls, protective puts, spreads, iron condors, earnings plays, or options risk management. Includes volatility analysis, position sizing, and earnings-based strategy recommendations. Educational focus with practical trade simulation.
+description: 期权交易策略分析与模拟工具。该工具利用Black-Scholes模型提供理论定价，支持希腊字母（Greeks）的计算，能够模拟交易策略的盈亏情况，并提供风险管理建议。适用于用户需要分析期权交易策略、执行保护性看涨期权（covered calls）、保护性看跌期权（protective puts）、期权组合（spreads）、铁秃鹫期权（iron condors）、基于公司收益的期权交易策略（earnings plays）或进行期权风险管理的情况。工具涵盖波动率分析、头寸规模调整以及基于公司收益的策略推荐，同时注重教育性内容，并提供实际的交易模拟功能。
 ---
 
-# Options Strategy Advisor
+# 期权策略顾问
 
-## Overview
+## 概述
 
-This skill provides comprehensive options strategy analysis and education using theoretical pricing models. It helps traders understand, analyze, and simulate options strategies without requiring real-time market data subscriptions.
+该技能利用理论定价模型提供全面的期权策略分析和教育服务，帮助交易者理解、分析并模拟期权策略，而无需订阅实时市场数据。
 
-**Core Capabilities:**
-- **Black-Scholes Pricing**: Theoretical option prices and Greeks calculation
-- **Strategy Simulation**: P/L analysis for major options strategies
-- **Earnings Strategies**: Pre-earnings volatility plays integrated with Earnings Calendar
-- **Risk Management**: Position sizing, Greeks exposure, max loss/profit analysis
-- **Educational Focus**: Detailed explanations of strategies and risk metrics
+**核心功能：**
+- **布莱克-斯科尔斯定价模型**：计算理论期权价格及希腊值（Greeks）
+- **策略模拟**：分析主要期权策略的盈亏情况
+- **收益策略**：结合收益日历预测收益前的波动性
+- **风险管理**：确定头寸规模、控制希腊值风险、分析最大盈亏
+- **教育重点**：详细解释策略及风险指标
 
-**Data Sources:**
-- FMP API: Stock prices, historical volatility, dividends, earnings dates
-- User Input: Implied volatility (IV), risk-free rate
-- Theoretical Models: Black-Scholes for pricing and Greeks
+**数据来源：**
+- FMP API：股票价格、历史波动性、股息、收益日期
+- 用户输入：隐含波动率（IV）、无风险利率
+- 理论模型：用于定价的布莱克-斯科尔斯模型及希腊值计算
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- User asks about options strategies ("What's a covered call?", "How does an iron condor work?")
-- User wants to simulate strategy P/L ("What's my max profit on a bull call spread?")
-- User needs Greeks analysis ("What's my delta exposure?")
-- User asks about earnings strategies ("Should I buy a straddle before earnings?")
-- User wants to compare strategies ("Covered call vs protective put?")
-- User needs position sizing guidance ("How many contracts should I trade?")
-- User asks about volatility ("Is IV high right now?")
+当用户有以下需求时，可使用该技能：
+- 询问期权策略（例如：“什么是覆盖式看涨期权？”、“铁秃鹰策略是如何运作的？”）
+- 想模拟策略的盈亏情况（例如：“我在MSFT的100美元/105美元看涨期权组合中的最大利润是多少？”）
+- 需要分析希腊值（例如：“我的Delta风险是多少？”）
+- 询问收益策略（例如：“在收益公布前应该买入跨式期权吗？”）
+- 需要头寸规模建议（例如：“我应该交易多少份合约？”）
+- 询问波动性情况（例如：“当前的隐含波动率高吗？”
 
-Example requests:
-- "Analyze a covered call on AAPL"
-- "What's the P/L on a $100/$105 bull call spread on MSFT?"
-- "Should I trade a straddle before NVDA earnings?"
-- "Calculate Greeks for my iron condor position"
-- "Compare protective put vs covered call for downside protection"
+**示例请求：**
+- “分析AAPL的覆盖式看涨期权”
+- “MSFT的100美元/105美元看涨期权组合的盈亏情况是多少？”
+- “在NVDA收益公布前应该买入跨式期权吗？”
+- “计算我的铁秃鹰策略的希腊值”
+- “比较保护性看跌期权和覆盖式看涨期权在下行风险保护方面的优势”
 
-## Supported Strategies
+## 支持的期权策略
 
-### Income Strategies
-1. **Covered Call** - Own stock, sell call (generate income, cap upside)
-2. **Cash-Secured Put** - Sell put with cash backing (collect premium, willing to buy stock)
-3. **Poor Man's Covered Call** - LEAPS call + short near-term call (capital efficient)
+### 收益策略
+1. **覆盖式看涨期权**：持有股票并卖出看涨期权（产生收入，限制上行风险）
+2. **现金担保看跌期权**：用现金购买看跌期权（收取期权费，有意愿买入股票）
+3. **低成本覆盖式看涨期权**：买入长期看涨期权（LEAPS）并卖出短期看涨期权（资本效率较高）
 
-### Protection Strategies
-4. **Protective Put** - Own stock, buy put (insurance, limited downside)
-5. **Collar** - Own stock, sell call + buy put (limited upside/downside)
+### 保护策略
+4. **保护性看跌期权**：持有股票并买入看跌期权（提供保险，限制下行风险）
+5. **领口策略**：持有股票并卖出看涨期权的同时买入看跌期权（同时限制上行和下行风险）
 
-### Directional Strategies
-6. **Bull Call Spread** - Buy lower strike call, sell higher strike call (limited risk/reward bullish)
-7. **Bull Put Spread** - Sell higher strike put, buy lower strike put (credit spread, bullish)
-8. **Bear Call Spread** - Sell lower strike call, buy higher strike call (credit spread, bearish)
-9. **Bear Put Spread** - Buy higher strike put, sell lower strike put (limited risk/reward bearish)
+### 方向性策略
+6. **看涨期权组合**：买入低执行价格的看涨期权并卖出高执行价格的看涨期权（多头策略，风险有限）
+7. **看涨期权差价**：卖出高执行价格的看跌期权并买入低执行价格的看跌期权（多头策略，获得信用收益）
+8. **看跌期权组合**：卖出低执行价格的看跌期权并买入高执行价格的看跌期权（多头策略，获得信用收益）
+9. **看跌期权差价**：买入高执行价格的看跌期权并卖出低执行价格的看跌期权（多头策略，风险有限）
 
-### Volatility Strategies
-10. **Long Straddle** - Buy ATM call + ATM put (profit from big move either direction)
-11. **Long Strangle** - Buy OTM call + OTM put (cheaper than straddle, bigger move needed)
-12. **Short Straddle** - Sell ATM call + ATM put (profit from no movement, unlimited risk)
-13. **Short Strangle** - Sell OTM call + OTM put (profit from no movement, wider range)
+### 波动性策略
+10. **长跨式期权**：买入平价看涨期权和平价看跌期权（无论价格涨跌都有收益）
+11. **长挤压期权**：买入虚值看涨期权和平价看跌期权（比长跨式期权成本更低，但需要更大的价格波动）
+12. **短跨式期权**：卖出平价看涨期权和平价看跌期权（在价格无波动时获利，但风险无限）
+13. **短挤压期权**：卖出虚值看涨期权和平价看跌期权（在价格无波动时获利，但需要更大的价格波动范围）
 
-### Range-Bound Strategies
-14. **Iron Condor** - Bull put spread + bear call spread (profit from range-bound movement)
-15. **Iron Butterfly** - Sell ATM straddle, buy OTM strangle (profit from tight range)
+### 区间限制策略
+14. **铁秃鹰策略**：卖出看涨期权差价并买入看跌期权差价（从价格区间波动中获利）
+15. **铁蝴蝶策略**：卖出平价看涨期权组合并买入虚值看涨期权组合（从价格区间紧密时获利）
 
-### Advanced Strategies
-16. **Calendar Spread** - Sell near-term option, buy longer-term option (profit from time decay)
-17. **Diagonal Spread** - Calendar spread with different strikes (directional + time decay)
-18. **Ratio Spread** - Unbalanced spread (more contracts on one leg)
+### 高级策略
+16. **日历差价**：卖出短期期权并买入长期期权（从时间衰减中获利）
+17. **对角差价**：使用不同执行价格的日历差价（结合方向性和时间衰减）
+18. **比率差价**：在某一腿上使用更多合约的不对称差价
 
-## Analysis Workflow
+## 分析流程
 
-### Step 1: Gather Input Data
+### 第一步：收集输入数据
 
-**Required from User:**
-- Ticker symbol
-- Strategy type
-- Strike prices
-- Expiration date(s)
-- Position size (number of contracts)
+**用户需要提供的信息：**
+- 股票代码
+- 策略类型
+- 执行价格
+- 到期日期
+- 头寸规模（合约数量）
 
-**Optional from User:**
-- Implied Volatility (IV) - if not provided, use Historical Volatility (HV)
-- Risk-free rate - default to current 3-month T-bill rate (~5.3% as of 2025)
+**用户可选提供的信息：**
+- 隐含波动率（IV）：如果未提供，则使用历史波动率
+- 无风险利率：默认为当前3个月国债利率（截至2025年为约5.3%）
 
-**Fetched from FMP API:**
-- Current stock price
-- Historical prices (for HV calculation)
-- Dividend yield
-- Upcoming earnings date (for earnings strategies)
+**从FMP API获取的数据：**
+- 当前股票价格
+- 历史价格（用于计算历史波动率）
+- 股息收益率
+- 即将到来的收益日期（用于收益策略分析）
 
-**Example User Input:**
+**示例用户输入：**
 ```
 Ticker: AAPL
 Strategy: Bull Call Spread
@@ -103,11 +102,11 @@ Contracts: 10
 IV: 25% (or use HV if not provided)
 ```
 
-### Step 2: Calculate Historical Volatility (if IV not provided)
+### 第二步：计算历史波动率（如果未提供隐含波动率）
 
-**Objective:** Estimate volatility from historical price movements.
+**目标：**根据历史价格走势估算波动率。
 
-**Method:**
+**方法：**
 ```python
 # Fetch 90 days of price data
 prices = get_historical_prices("AAPL", days=90)
@@ -119,19 +118,19 @@ returns = np.log(prices / prices.shift(1))
 HV = returns.std() * np.sqrt(252)  # 252 trading days
 ```
 
-**Output:**
-- Historical Volatility (annualized percentage)
-- Note to user: "HV = 24.5%, consider using current market IV for more accuracy"
+**输出结果：**
+- 历史波动率（年化百分比）
+- 提示用户：“历史波动率为24.5%，建议使用当前市场隐含波动率以获得更准确的结果”
 
-**User Can Override:**
-- Provide IV from broker platform (ThinkorSwim, TastyTrade, etc.)
-- Script accepts `--iv 28.0` parameter
+**用户可覆盖的信息：**
+- 从经纪平台（如ThinkorSwim、TastyTrade等）获取隐含波动率
+- 脚本支持`--iv 28.0`参数进行手动设置
 
-### Step 3: Price Options Using Black-Scholes
+### 第三步：使用布莱克-斯科尔斯模型定价期权
 
-**Black-Scholes Model:**
+**布莱克-斯科尔斯模型：**
 
-For European-style options:
+适用于欧式期权：
 ```
 Call Price = S * N(d1) - K * e^(-r*T) * N(d2)
 Put Price = K * e^(-r*T) * N(-d2) - S * N(-d1)
@@ -148,11 +147,11 @@ T = Time to expiration (years)
 N() = Cumulative standard normal distribution
 ```
 
-**Adjustments:**
-- Subtract present value of dividends from S for calls
-- American options: Use approximation or note "European pricing, may undervalue American options"
+**调整因素：**
+- 从股票价格中减去股息的现值（适用于看涨期权）
+- 美式期权：使用近似值或注明“此模型适用于欧式期权，可能低估美式期权的价格”
 
-**Python Implementation:**
+**Python实现代码：**
 ```python
 from scipy.stats import norm
 import numpy as np
@@ -180,15 +179,15 @@ def black_scholes_put(S, K, T, r, sigma, q=0):
     return put_price
 ```
 
-**Output for Each Option Leg:**
-- Theoretical price
-- Note: "Market price may differ due to bid-ask spread and American vs European pricing"
+**每条期权腿的输出结果：**
+- 理论价格
+- 提示：“市场价格可能因买卖价差及美式期权与欧式期权的差异而有所不同”
 
-### Step 4: Calculate Greeks
+### 第四步：计算希腊值
 
-**The Greeks** measure option price sensitivity to various factors:
+**希腊值**用于衡量期权价格对各种因素的敏感度：
 
-**Delta (Δ):** Change in option price per $1 change in stock price
+**Delta（Δ）**：股票价格每变动1美元时期权价格的变化幅度
 ```python
 def delta_call(S, K, T, r, sigma, q=0):
     d1 = (np.log(S/K) + (r - q + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
@@ -199,14 +198,14 @@ def delta_put(S, K, T, r, sigma, q=0):
     return np.exp(-q*T) * (norm.cdf(d1) - 1)
 ```
 
-**Gamma (Γ):** Change in delta per $1 change in stock price
+**Gamma（Γ）**：股票价格每变动1美元时Delta的变化幅度
 ```python
 def gamma(S, K, T, r, sigma, q=0):
     d1 = (np.log(S/K) + (r - q + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
     return np.exp(-q*T) * norm.pdf(d1) / (S * sigma * np.sqrt(T))
 ```
 
-**Theta (Θ):** Change in option price per day (time decay)
+**Theta（Θ）**：期权价格每天的变化幅度（时间衰减）
 ```python
 def theta_call(S, K, T, r, sigma, q=0):
     d1 = (np.log(S/K) + (r - q + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
@@ -219,23 +218,23 @@ def theta_call(S, K, T, r, sigma, q=0):
     return theta / 365  # Per day
 ```
 
-**Vega (ν):** Change in option price per 1% change in volatility
+**Vega（ν）**：波动率每变动1%时期权价格的变化幅度
 ```python
 def vega(S, K, T, r, sigma, q=0):
     d1 = (np.log(S/K) + (r - q + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
     return S * np.exp(-q*T) * norm.pdf(d1) * np.sqrt(T) / 100  # Per 1%
 ```
 
-**Rho (ρ):** Change in option price per 1% change in interest rate
+**Rho（ρ）**：利率每变动1%时期权价格的变化幅度
 ```python
 def rho_call(S, K, T, r, sigma, q=0):
     d2 = (np.log(S/K) + (r - q + 0.5*sigma**2)*T) / (sigma*np.sqrt(T)) - sigma*np.sqrt(T)
     return K * T * np.exp(-r*T) * norm.cdf(d2) / 100  # Per 1%
 ```
 
-**Position Greeks:**
+**组合头寸的希腊值：**
 
-For a strategy with multiple legs, sum Greeks across all legs:
+对于包含多条腿的策略，将所有腿的希腊值相加：
 ```python
 # Example: Bull Call Spread
 # Long 1x $180 call
@@ -247,29 +246,29 @@ theta_position = (1 * theta_long) + (-1 * theta_short)
 vega_position = (1 * vega_long) + (-1 * vega_short)
 ```
 
-**Greeks Interpretation:**
+**希腊值的解释：**
 
-| Greek | Meaning | Example |
+| 希腊值 | 含义 | 举例 |
 |-------|---------|---------|
-| **Delta** | Directional exposure | Δ = 0.50 → $50 profit if stock +$1 |
-| **Gamma** | Delta acceleration | Γ = 0.05 → Delta increases by 0.05 if stock +$1 |
-| **Theta** | Daily time decay | Θ = -$5 → Lose $5/day from time passing |
-| **Vega** | Volatility sensitivity | ν = $10 → Gain $10 if IV increases 1% |
-| **Rho** | Interest rate sensitivity | ρ = $2 → Gain $2 if rates increase 1% |
+| Delta | 方向性风险 | Δ = 0.50 → 股票价格上涨1美元时获利50美元 |
+| Gamma | Delta的变化率 | Γ = 0.05 → 股票价格上涨1美元时Delta增加0.05 |
+| Theta | 时间衰减 | Θ = -5 → 随时间流逝每天损失5美元 |
+| Vega | 波动率敏感度 | ν = 10 → 波动率增加1%时获利10美元 |
+| Rho | 利率敏感度 | ρ = 2 → 利率上升1%时获利2美元 |
 
-### Step 5: Simulate Strategy P/L
+### 第五步：模拟策略盈亏
 
-**Objective:** Calculate profit/loss at various stock prices at expiration.
+**目标：**计算到期时在不同股票价格下的盈亏情况。
 
-**Method:**
+**方法：**
 
-Generate stock price range (e.g., ±30% from current price):
+生成股票价格范围（例如，当前价格的±30%）：
 ```python
 current_price = 180
 price_range = np.linspace(current_price * 0.7, current_price * 1.3, 100)
 ```
 
-For each price point, calculate P/L:
+对于每个价格点，计算盈亏情况：
 ```python
 def calculate_pnl(strategy, stock_price_at_expiration):
     pnl = 0
@@ -288,13 +287,13 @@ def calculate_pnl(strategy, stock_price_at_expiration):
     return pnl * num_contracts
 ```
 
-**Key Metrics:**
-- **Max Profit**: Highest possible P/L
-- **Max Loss**: Worst possible P/L
-- **Breakeven Point(s)**: Stock price(s) where P/L = 0
-- **Profit Probability**: Percentage of price range that's profitable (simplified)
+**关键指标：**
+- **最大利润**：可能的最高盈亏
+- **最大损失**：可能的最低盈亏
+- **盈亏平衡点**：盈亏为0的股票价格
+- **盈利概率**：盈利的价格区间占比（简化计算）
 
-**Example Output:**
+**示例输出：**
 ```
 Bull Call Spread: $180/$185 on AAPL (30 DTE, 10 contracts)
 
@@ -309,9 +308,9 @@ Risk/Reward: 1:1
 Probability Profit: ~55% (if stock stays above $182.50)
 ```
 
-### Step 6: Generate P/L Diagram (ASCII Art)
+### 第六步：生成盈亏图表（ASCII艺术形式）
 
-**Visual representation of P/L across stock prices:**
+**以ASCII艺术形式展示不同股票价格下的盈亏情况：**
 
 ```python
 def generate_pnl_diagram(price_range, pnl_values, current_price, width=60, height=15):
@@ -366,7 +365,7 @@ def generate_pnl_diagram(price_range, pnl_values, current_price, width=60, heigh
     return "\n".join(lines)
 ```
 
-**Example Output:**
+**示例输出：**
 ```
 P/L Diagram: Bull Call Spread $180/$185
 ------------------------------------------------------------
@@ -385,11 +384,11 @@ P/L Diagram: Bull Call Spread $180/$185
 Legend: █ Profit  ░ Loss  ── Breakeven  │ Current Price
 ```
 
-### Step 7: Strategy-Specific Analysis
+### 第七步：针对特定策略提供指导
 
-Provide tailored guidance based on strategy type:
+根据策略类型提供定制化的建议：
 
-**Covered Call:**
+**覆盖式看涨期权：**
 ```
 Income Strategy: Generate premium while capping upside
 
@@ -418,7 +417,7 @@ Exit Plan:
 - Roll to next month if want to keep shares
 ```
 
-**Protective Put:**
+**保护性看跌期权：**
 ```
 Insurance Strategy: Limit downside while keeping upside
 
@@ -449,7 +448,7 @@ Exit Plan:
 - Sell put if stock drops but want to keep shares
 ```
 
-**Iron Condor:**
+**铁秃鹰策略：**
 ```
 Range-Bound Strategy: Profit from low volatility
 
@@ -484,11 +483,11 @@ Adjustments:
 - Close early at 50% max profit to reduce tail risk
 ```
 
-### Step 8: Earnings Strategy Analysis
+### 第八步：收益策略分析
 
-**Integration with Earnings Calendar:**
+**与收益日历集成：**
 
-When user asks about earnings strategies, fetch earnings date:
+当用户询问收益策略时，获取收益日期：
 ```python
 from earnings_calendar import get_next_earnings_date
 
@@ -496,9 +495,8 @@ earnings_date = get_next_earnings_date("AAPL")
 days_to_earnings = (earnings_date - today).days
 ```
 
-**Pre-Earnings Strategies:**
-
-**Long Straddle/Strangle:**
+**收益前的策略：**
+- **长跨式/挤压期权组合**：
 ```
 Setup (AAPL @ $180, earnings in 7 days):
 - Buy $180 call for $5.00
@@ -534,7 +532,7 @@ Alternative: Buy further OTM strikes to reduce cost
 - $175/$185 strangle cost $4.00 (need >$8 move, but cheaper)
 ```
 
-**Short Iron Condor:**
+**短铁秃鹰策略：**
 ```
 Setup (AAPL @ $180, earnings in 7 days):
 - Sell $170/$175 put spread for $2.00
@@ -567,10 +565,9 @@ Exit Plan:
 - Use stop loss if one side tested (-2x credit)
 ```
 
-### Step 9: Risk Management Guidance
+### 第九步：风险管理指导
 
-**Position Sizing:**
-
+**头寸规模确定：**
 ```
 Account Size: $50,000
 Risk Tolerance: 2% per trade = $1,000 max risk
@@ -586,8 +583,7 @@ Bull Call Spread Example:
 - Actual position: 4 spreads
 ```
 
-**Portfolio Greeks Management:**
-
+**投资组合希腊值管理：**
 ```
 Portfolio Guidelines:
 - Delta: -10 to +10 (mostly neutral)
@@ -606,8 +602,7 @@ Interpretation:
 → Reduce short premium positions if VIX rising
 ```
 
-**Adjustments and Exits:**
-
+**调整与退出策略：**
 ```
 Exit Rules by Strategy:
 
@@ -632,10 +627,9 @@ Straddle/Strangle:
 - Time: Day after earnings (if earnings play)
 ```
 
-## Output Format
+## 输出格式
 
-**Strategy Analysis Report Template:**
-
+**策略分析报告模板：**
 ```markdown
 # Options Strategy Analysis: [Strategy Name]
 
@@ -758,60 +752,43 @@ Straddle/Strangle:
 *Disclaimer: This is theoretical analysis using Black-Scholes pricing. Actual market prices may differ. Trade at your own risk. Options are complex instruments with significant loss potential.*
 ```
 
-**File Naming Convention:**
+**文件命名规则：**
 ```
 options_analysis_[TICKER]_[STRATEGY]_[DATE].md
 ```
 
-Example: `options_analysis_AAPL_BullCallSpread_2025-11-08.md`
+**示例文件名：**options_analysis_AAPL_BullCallSpread_2025-11-08.md**
 
-## Key Principles
+## 关键原则
 
-### Theoretical Pricing Limitations
+### 理论定价的局限性
 
-**What Users Should Know:**
-1. **Black-Scholes Assumptions:**
-   - European-style options (can't exercise early)
-   - Constant volatility (IV changes in reality)
-   - No transaction costs
-   - Continuous trading
+**用户应了解的内容：**
+1. **布莱克-斯科尔斯模型的假设：**
+   - 仅适用于欧式期权（不可提前行权）
+   - 假设波动率恒定（实际波动率会变化）
+   - 假设交易成本为零
+   - 假设市场持续交易
 
-2. **Real vs Theoretical:**
-   - Bid-ask spread: Actual cost higher than theoretical
-   - American options: Can be exercised early (especially ITM puts)
-   - Liquidity: Wide markets on illiquid options
-   - Dividends: Ex-dividend dates affect pricing
+**理论与实际操作的差异：**
+   - 买卖价差：实际交易成本高于理论计算
+   - 美式期权：可以提前行权（尤其是实值期权）
+   - 流动性：部分期权市场流动性较低
+   - 股息：股息支付日会影响期权价格
 
-3. **Best Practices:**
-   - Use as educational tool and comparative analysis
-   - Get real quotes from broker before trading
-   - Understand theoretical price ≈ mid-market price
-   - Account for commissions and slippage
+**最佳实践：**
+   - 将该工具作为学习工具和对比分析工具使用
+   - 在交易前获取经纪商提供的实际报价
+   - 理论价格约为中间市场价格
+   - 考虑佣金和滑点的影响
 
-### Volatility Guidance
+### 波动率管理建议
 
-**Historical vs Implied Volatility:**
+**历史波动率与隐含波动率：**
 
-```
-Historical Volatility (HV): What happened
-- Calculated from past price movements
-- Objective, based on data
-- Available for free (FMP API)
+**隐含波动率的百分位数：**
 
-Implied Volatility (IV): What market expects
-- Derived from option prices
-- Subjective, based on supply/demand
-- Requires live options data (user provides)
-
-Comparison:
-- IV > HV: Options expensive (consider selling)
-- IV < HV: Options cheap (consider buying)
-- IV = HV: Fairly priced
-```
-
-**IV Percentile:**
-
-User provides current IV, we calculate percentile:
+用户提供当前隐含波动率，我们计算其百分位数：
 ```python
 # Fetch 1-year HV data
 historical_hvs = calculate_hv_series(prices_1yr, window=30)
@@ -827,133 +804,87 @@ else:
     guidance = "Normal IV - any strategy appropriate"
 ```
 
-## Integration with Other Skills
+## 与其他技能的集成
 
-**Earnings Calendar:**
-- Fetch earnings dates automatically
-- Suggest earnings-specific strategies
-- Calculate days to earnings (DTE critical for IV)
-- Warn about IV crush risk
+**收益日历：**
+- 自动获取收益日期
+- 建议相应的收益策略
+- 计算距离收益日的天数（DTE对隐含波动率至关重要）
+- 警示隐含波动率剧烈变化的风险
 
-**Technical Analyst:**
-- Use support/resistance for strike selection
-- Trend analysis for directional strategies
-- Breakout potential for straddle/strangle timing
+**技术分析师的注意事项：**
+- 使用支撑/阻力位选择执行价格
+- 进行趋势分析以确定方向性策略的时机
+- 判断跨式/挤压期权的交易时机
 
-**US Stock Analysis:**
-- Fundamental analysis for longer-term strategies (LEAPS)
-- Dividend yield for covered call/put analysis
-- Earnings quality for earnings plays
+**美国股票分析：**
+- 对于长期策略（如LEAPS期权），进行基本面分析
+- 考虑股息收益率对覆盖式看涨/看跌期权的影响
+- 分析收益质量以制定策略
 
-**Bubble Detector:**
-- High bubble risk → focus on protective puts
-- Low risk → bullish strategies
-- Critical risk → avoid long premium (theta hurts)
+**风险提示：**
+- 高波动率风险：优先选择保护性看跌期权
+- 低波动率环境：适合采用多头策略
+- 高风险环境：避免买入高溢价期权（因为Theta值会导致损失）
 
-**Portfolio Manager:**
-- Track options positions alongside stock positions
-- Aggregate Greeks across portfolio
-- Options as hedging tool for stock positions
+**投资组合管理者：**
+- 监控期权头寸与股票头寸的表现
+- 统计整个投资组合的希腊值
+- 将期权作为股票头寸的对冲工具
 
-## Important Notes
+## 重要说明**
 
-- **All analysis in English**
-- **Educational focus**: Strategies explained clearly
-- **Theoretical pricing**: Black-Scholes approximation
-- **User IV input**: Optional, defaults to HV
-- **No real-time data required**: FMP Free tier sufficient
-- **Dependencies**: Python 3.8+, numpy, scipy, pandas
+- **所有分析结果以英文呈现**
+- **教育重点**：策略解释清晰易懂
+- **理论定价**：使用布莱克-斯科尔斯模型进行近似计算
+- **隐含波动率由用户输入**：可选，默认使用历史波动率
+- **无需实时数据**：FMP免费版本即可满足需求
+- **依赖库：** Python 3.8+、numpy、scipy、pandas
 
-## Common Use Cases
+## 常见使用场景**
 
-**Use Case 1: Learn Strategy**
-```
-User: "Explain a covered call"
+- **学习期权策略**
+- **分析特定交易**
+- **制定收益策略**
+- **检查投资组合的希腊值**
 
-Workflow:
-1. Load strategy reference (references/strategies_guide.md)
-2. Explain concept, risk/reward, when to use
-3. Simulate example on AAPL
-4. Show P/L diagram
-5. Compare to alternatives
-```
+## 故障排除**
 
-**Use Case 2: Analyze Specific Trade**
-```
-User: "Analyze $180/$185 bull call spread on AAPL, 30 days"
+**问题1：无法获取隐含波动率**
+  - 解决方案：使用历史波动率作为替代，并告知用户
+  - 请求用户从经纪平台获取隐含波动率
 
-Workflow:
-1. Fetch AAPL price from FMP
-2. Calculate HV or ask user for IV
-3. Price both options (Black-Scholes)
-4. Calculate Greeks
-5. Simulate P/L
-6. Generate analysis report
-```
+**问题2：期权价格为负数**
+  - 解决方案：检查输入数据（执行价格与股票价格是否正确）
+  - 深度实值期权可能导致计算异常
 
-**Use Case 3: Earnings Strategy**
-```
-User: "Should I trade options before NVDA earnings?"
+**问题3：希腊值计算结果不正确**
+  - 解决方案：核实输入数据（执行价格、波动率、利率等参数）
+  - 确认使用的是年化值还是日波动率
 
-Workflow:
-1. Fetch NVDA earnings date (Earnings Calendar)
-2. Calculate days to earnings
-3. Estimate IV percentile (if user provides IV)
-4. Suggest straddle/strangle vs iron condor
-5. Warn about IV crush
-6. Simulate both strategies
-```
+**问题4：策略过于复杂**
+  - 解决方案：将策略拆分为多个部分分别分析
+  - 参考相关资料了解策略细节
 
-**Use Case 4: Portfolio Greeks Check**
-```
-User: "What are my total portfolio Greeks?"
+## 参考资源**
 
-Workflow:
-1. User provides current positions
-2. Calculate Greeks for each position
-3. Sum Greeks across portfolio
-4. Assess overall exposure
-5. Suggest adjustments if needed
-```
+- `references/strategies_guide.md`：包含17种以上期权策略的详细说明
+- `references/greeks_explained.md`：深入解释希腊值的含义
+- `references/volatility_guide.md`：介绍隐含波动率与实际波动率的区别及交易时机
 
-## Troubleshooting
+**脚本：**
+- `scripts/black_scholes.py`：用于期权定价和希腊值计算
+- `scripts/strategy_analyzer.py`：用于策略模拟
+- `scripts/earnings_strategy.py`：用于特定收益情况的分析
 
-**Problem: IV not available**
-- Solution: Use HV as proxy, note to user
-- Ask user to provide IV from broker platform
-
-**Problem: Negative option price**
-- Solution: Check inputs (strike vs stock price)
-- Deep ITM options may have numerical issues
-
-**Problem: Greeks seem wrong**
-- Solution: Verify inputs (T, sigma, r)
-- Check if using annual vs daily values
-
-**Problem: Strategy too complex**
-- Solution: Break into legs, analyze separately
-- Refer to references for strategy details
-
-## Resources
-
-**References:**
-- `references/strategies_guide.md` - All 17+ strategies explained
-- `references/greeks_explained.md` - Greeks deep dive
-- `references/volatility_guide.md` - HV vs IV, when to trade
-
-**Scripts:**
-- `scripts/black_scholes.py` - Pricing engine and Greeks
-- `scripts/strategy_analyzer.py` - Strategy simulation
-- `scripts/earnings_strategy.py` - Earnings-specific analysis
-
-**External Resources:**
-- Options Playbook: https://www.optionsplaybook.com/
-- CBOE Education: https://www.cboe.com/education/
-- Black-Scholes Calculator: Various online tools for verification
+**外部资源：**
+- 期权策略手册：https://www.optionsplaybook.com/
+- CBOE教育资源：https://www.cboe.com/education/
+- 布莱克-斯科尔斯计算器：多种在线工具可用于验证计算结果
 
 ---
 
-**Version**: 1.0
-**Last Updated**: 2025-11-08
-**Dependencies**: Python 3.8+, numpy, scipy, pandas, requests
-**API**: FMP API (Free tier sufficient)
+**版本：** 1.0
+**最后更新时间：** 2025-11-08
+**依赖库：** Python 3.8+、numpy、scipy、pandas
+**使用的API：** FMP API（免费版本即可满足需求）

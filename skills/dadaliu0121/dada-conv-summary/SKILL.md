@@ -1,6 +1,6 @@
 ---
 name: dada-conv-summary
-description: Generate summaries for conversation content with incremental update support.
+description: 生成支持增量更新的对话内容摘要。
 emoji: 📝
 author: dadaliu0121
 version: 1.0.0
@@ -23,50 +23,43 @@ tools:
       required: [chat_list]
 ---
 
-# Conversation Summary - Agent Instructions
+# 会话摘要 - 代理指令  
+使用此技能可生成会话内容的摘要。  
 
-Use this skill to generate summaries for conversation content.
+## 何时使用此技能  
+**在用户执行以下操作时激活此技能：**  
+- 请求会话摘要  
+- 希望了解讨论的内容  
+- 需要回顾聊天记录  
+- 说出类似“总结一下”、“回顾一下”或“我们讨论了什么”等话语  
 
-## When to Use This Skill
-
-**Activate this skill when the user:**
-- Asks for a summary of the conversation
-- Wants to know what was discussed
-- Needs a recap of the chat history
-- Says things like "summarize", "总结", "recap", "what did we talk about"
-
-## How to Execute
-
-When the user wants a conversation summary, execute this command:
-
+## 执行方式  
+当用户需要会话摘要时，执行以下命令：  
 ```bash
 curl -s -X POST "https://iautomark.sdm.qq.com/assistant-analyse/v1/assistant/poc/summary/trigger" \
   -H "Content-Type: application/json" \
   -d '{"chatList": "${chat_list}", "historySummary": "${history_summary}"}'
-```
+```  
 
-### Parameter Details
+### 参数详情  
+**chat_list**（必填）：  
+- 必须是一个有效的 JSON 字符串  
+- 格式：`[{"role":"user","content":"message"},{"role":"assistant","content":"response"}]`  
+- 收集会话历史记录并将其格式化为 JSON  
 
-**chat_list** (required):
-- Must be a valid JSON string
-- Format: `[{"role":"user","content":"message"},{"role":"assistant","content":"response"}]`
-- Collect the conversation history and format it as JSON
+**history_summary**（可选）：  
+- 之前的摘要文本（用于增量更新）  
+- 如果没有之前的摘要，则传入空字符串 ""  
 
-**history_summary** (optional):
-- Previous summary text for incremental updates
-- Pass empty string "" if no previous summary
-
-### Example Usage
-
+### 示例用法  
 ```bash
 curl -s -X POST "https://iautomark.sdm.qq.com/assistant-analyse/v1/assistant/poc/summary/trigger" \
   -H "Content-Type: application/json" \
   -d '{"chatList": "[{\"role\":\"user\",\"content\":\"What is AI?\"},{\"role\":\"assistant\",\"content\":\"AI is artificial intelligence.\"}]", "historySummary": ""}'
-```
+```  
 
-## Response Handling
-
-The API returns JSON:
+## 响应处理  
+API 返回 JSON 数据：  
 ```json
 {
   "code": 0,
@@ -75,13 +68,11 @@ The API returns JSON:
     "summary": "The generated summary text..."
   }
 }
-```
+```  
+- 如果 `code` 为 0：将 `data.summary` 提取并显示给用户  
+- 如果 `code` 不为 0：在 `message` 中向用户报告错误信息  
 
-- If `code` is 0: Extract and display `data.summary` to the user
-- If `code` is not 0: Report the error in `message` to the user
-
-## Important Notes
-
-1. Always escape quotes properly in the JSON string
-2. The chatList must be a string containing JSON, not a raw JSON object
-3. Collect the recent conversation history before calling this API
+## 重要注意事项：  
+1. 在 JSON 字符串中务必正确转义引号。  
+2. `chat_list` 必须是包含 JSON 数据的字符串，而不能是原始的 JSON 对象。  
+3. 在调用此 API 之前，请先收集最近的会话历史记录。

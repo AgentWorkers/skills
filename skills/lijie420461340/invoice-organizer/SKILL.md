@@ -1,6 +1,6 @@
 ---
 name: Invoice Organizer
-description: Organize, categorize, and track invoices and receipts
+description: 组织、分类并跟踪发票和收据
 author: claude-office-skills
 version: "1.0"
 tags: [finance, invoices, receipts, organization, accounting, expense]
@@ -8,45 +8,45 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [computer, file_operations]
 ---
 
-# Invoice Organizer
+# 发票管理工具
 
-Organize, categorize, and track invoices and receipts for better financial management.
+用于整理、分类和追踪发票及收据，以提升财务管理效率。
 
-## Overview
+## 概述
 
-This skill helps you:
-- Extract key data from invoices
-- Categorize expenses automatically
-- Track payment status
-- Organize files consistently
-- Prepare for tax/audit
+该工具可帮助您：
+- 从发票中提取关键数据
+- 自动分类各项支出
+- 跟踪付款状态
+- 保持文件的一致性
+- 为税务/审计工作做好准备
 
-## How to Use
+## 使用方法
 
-### Process Invoice
+### 处理发票
 ```
 "Extract data from this invoice"
 "Categorize this receipt"
 "Add this invoice to my tracking"
 ```
 
-### Organize
+### 整理文件
 ```
 "Organize my invoice folder"
 "Create a filing system for receipts"
 "Sort invoices by vendor and date"
 ```
 
-### Report
+### 生成报告
 ```
 "Summarize invoices by category"
 "Show unpaid invoices"
 "Generate expense report for Q1"
 ```
 
-## Data Extraction
+## 数据提取
 
-### Invoice Data Fields
+### 发票数据字段
 ```markdown
 ## Invoice Data Extraction
 
@@ -80,9 +80,9 @@ This skill helps you:
 - **Account**: XXXX-1234
 ```
 
-## Categorization
+## 分类系统
 
-### Expense Categories
+### 支出类别
 ```markdown
 ## Expense Category System
 
@@ -116,32 +116,32 @@ This skill helps you:
 | Adobe, Microsoft | Software > Subscriptions |
 ```
 
-## Filing System
+## 文件归档系统
 
-### Folder Structure
+### 文件夹结构
 ```markdown
 ## Invoice Filing System
 
 ### By Year and Category
 ```
-📁 Invoices/
+📁 发票/
 ├── 📁 2026/
-│   ├── 📁 Office/
-│   │   └── 2026-01-15_Staples_125.50_INV001.pdf
-│   ├── 📁 Software/
-│   │   └── 2026-01-20_Adobe_54.99_INV002.pdf
-│   ├── 📁 Travel/
-│   │   └── 2026-01-22_United_450.00_INV003.pdf
-│   ├── 📁 Professional/
-│   └── 📁 Other/
+│   ├── 📁 办公费用/
+│   │   └── 2026-01-15_办公用品_125.50_INV001.pdf
+│   ├── 📁 软件费用/
+│   │   └── 2026-01-20_Adobe软件_54.99_INV002.pdf
+│   ├── 差旅费用/
+│   │   └── 2026-01-22_差旅费用_450.00_INV003.pdf
+│   ├── 专业服务/
+│   └── 其他费用/
 ├── 📁 2025/
 │   └── ...
-└── 📁 Archive/
+└── 📁 归档/
 ```
 
 ### Naming Convention
 ```
-YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
+YYYY-MM-DD_供应商名称_发票编号.pdf
 ```
 
 **Examples**:
@@ -150,9 +150,9 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 - 2026-01-22_DeltaAirlines_425.00_CONF123456.pdf
 ```
 
-## Tracking System
+## 跟踪系统
 
-### Invoice Register
+### 发票登记
 ```markdown
 ## Invoice Tracking Register
 
@@ -177,7 +177,7 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 | Paid (Jan) | 2 | $1,920 |
 ```
 
-### Payment Tracking
+### 付款状态追踪
 ```markdown
 ## Invoice Payment Tracker
 
@@ -198,9 +198,9 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 - **Confirmation**: Sent to vendor
 ```
 
-## Reports
+## 报告功能
 
-### Monthly Summary
+### 月度汇总
 ```markdown
 ## Invoice Summary: January 2026
 
@@ -238,7 +238,7 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 - New vendor added: Gamma Inc.
 ```
 
-### Tax Preparation
+### 税务准备
 ```markdown
 ## Tax-Ready Invoice Report: 2025
 
@@ -272,9 +272,9 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 | Consultant B | $450 | ❌ No |
 ```
 
-## Automation Rules
+## 自动化规则
 
-### Auto-Processing
+### 自动处理流程
 ```markdown
 ## Invoice Automation Rules
 
@@ -300,11 +300,11 @@ YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf
 | Large invoice (>$1000) | Manager approval required |
 ```
 
-## Limitations
+## 限制事项
 
-- Cannot perform actual file operations
-- OCR quality affects data extraction
-- Categories may need manual adjustment
-- Cannot integrate directly with accounting software
-- Exchange rates need external verification
-- Tax advice should come from professionals
+- 该工具无法直接执行文件操作
+- OCR（光学字符识别）的质量会影响数据提取的准确性
+- 部分分类可能需要手动调整
+- 无法直接与会计软件集成
+- 汇率数据需要外部验证
+- 税务相关建议应咨询专业人士

@@ -1,20 +1,20 @@
 ---
 slug: "pptx-construction"
 display_name: "PPTX Construction"
-description: "PowerPoint generation for construction: project updates, stakeholder presentations, progress reports, bid presentations. Automated slide creation with charts and data."
+description: "用于建筑行业的 PowerPoint 生成工具：项目更新、利益相关者演示、进度报告、投标演示等。支持自动生成包含图表和数据的幻灯片。"
 ---
 
-# PowerPoint Generation for Construction
+# 用于建筑行业的 PowerPoint 生成工具
 
-## Overview
+## 概述
 
-Create professional PowerPoint presentations for construction projects using python-pptx. Generate stakeholder updates, progress reports, and bid presentations with automated data visualization.
+使用 `python-pptx` 为建筑项目创建专业的 PowerPoint 演示文稿。该工具能够自动生成利益相关者更新报告、进度报告以及包含数据可视化的投标演示文稿。
 
-## Construction Use Cases
+## 建筑行业的应用场景
 
-### 1. Project Progress Presentation
+### 1. 项目进度报告
 
-Generate monthly progress update slides.
+生成每月的进度更新幻灯片。
 
 ```python
 from pptx import Presentation
@@ -172,9 +172,9 @@ def add_photos_slide(prs: Presentation, photos: list):
         slide.shapes.add_picture(photo['path'], left, top, width=Inches(5.5))
 ```
 
-### 2. Bid Presentation
+### 2. 投标演示文稿
 
-Create bid/proposal presentations.
+创建用于投标的演示文稿。
 
 ```python
 def create_bid_presentation(bid_data: dict, output_path: str) -> str:
@@ -260,9 +260,9 @@ def create_bid_presentation(bid_data: dict, output_path: str) -> str:
     return output_path
 ```
 
-### 3. Safety Report Presentation
+### 3. 安全报告演示文稿
 
-Generate safety meeting presentations.
+生成用于安全会议的演示文稿。
 
 ```python
 def create_safety_presentation(safety_data: dict, output_path: str) -> str:
@@ -320,9 +320,9 @@ def create_safety_presentation(safety_data: dict, output_path: str) -> str:
     return output_path
 ```
 
-### 4. Lookahead Schedule Presentation
+### 4. 三周展望计划报告
 
-Generate 3-week lookahead slides.
+生成三周内的工作进展幻灯片。
 
 ```python
 def create_lookahead_presentation(lookahead_data: dict, output_path: str) -> str:
@@ -369,7 +369,7 @@ def create_lookahead_presentation(lookahead_data: dict, output_path: str) -> str
     return output_path
 ```
 
-## Integration with DDC Pipeline
+## 与 DDC Pipeline 的集成
 
 ```python
 # Example: Generate monthly progress presentation from project data
@@ -408,13 +408,13 @@ project_data = {
 create_progress_presentation(project_data, 'reports/monthly_progress_jan2026.pptx')
 ```
 
-## Dependencies
+## 所需依赖库
 
 ```bash
 pip install python-pptx
 ```
 
-## Resources
+## 资源
 
 - **python-pptx**: https://python-pptx.readthedocs.io/
-- **Chart Types**: https://python-pptx.readthedocs.io/en/latest/user/charts.html
+- **图表类型**: https://python-pptx.readthedocs.io/en/latest/user/charts.html

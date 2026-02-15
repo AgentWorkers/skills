@@ -1,35 +1,34 @@
 ---
 name: imagerouter
-description: Generate AI images with any model using ImageRouter API (requires API key).
+description: 使用 ImageRouter API 通过任何模型生成 AI 图像（需要 API 密钥）。
 homepage: https://imagerouter.io
 metadata: {"clawdbot":{"emoji":"🎨","requires":{"bins":["curl"]}}}
 ---
 
-# ImageRouter Image Generation
+# ImageRouter 图像生成
 
-Generate images with any model available on ImageRouter using curl commands.
+可以使用 `curl` 命令，通过 ImageRouter 生成任何可用模型的图像。
 
-## Available models
-The `test/test` model is a free dummy model that is used for testing the API. It is not a real model, therefore you should use other models for image generation.
+## 可用模型
+`test/test` 模型是一个免费的测试模型，用于测试 API。它不是一个真实的模型，因此建议使用其他模型来生成图像。
 
-Get top 10 most popular models:
+获取最受欢迎的 10 个模型：
 ```bash
 curl -X POST 'https://backend.imagerouter.io/operations/get-popular-models'
 ```
 
-Search available models by name:
+按名称搜索可用模型：
 ```bash
 curl "https://api.imagerouter.io/v1/models?type=image&sort=date&name=gemini"
 ```
 
-Get all available models:
+获取所有可用模型：
 ```bash
 curl "https://api.imagerouter.io/v1/models?type=image&sort=date&limit=1000"
 ```
 
-## Quick Start - Text-to-Image
-
-Basic generation with JSON endpoint:
+## 快速入门 - 文本转图像
+使用 JSON 端点进行基本图像生成：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/generations' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
@@ -43,9 +42,9 @@ curl 'https://api.imagerouter.io/v1/openai/images/generations' \
   }'
 ```
 
-## Unified Endpoint (Text-to-Image & Image-to-Image)
+## 统一端点（文本转图像 & 图像转图像）
 
-### Text-to-Image with multipart/form-data:
+### 使用 `multipart/form-data` 进行文本转图像：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
@@ -57,7 +56,7 @@ curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -F 'output_format=webp'
 ```
 
-### Image-to-Image (with input images):
+### 图像转图像（需要输入图像）：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
@@ -70,7 +69,7 @@ curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -F 'image[]=@/path/to/your/image.webp'
 ```
 
-### Multiple images (up to 16):
+### 多张图像（最多 16 张）：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
@@ -81,7 +80,7 @@ curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -F 'image[]=@image3.webp'
 ```
 
-### With mask (some models require mask for inpainting):
+### 带有遮罩的图像（某些模型需要遮罩进行修复）：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
@@ -91,22 +90,21 @@ curl 'https://api.imagerouter.io/v1/openai/images/edits' \
   -F 'mask[]=@mask.webp'
 ```
 
-## Parameters
+## 参数
 
-- **model** (required): Image model to use (see https://imagerouter.io/models)
-- **prompt** (optional): Text description for generation. Most models require a text prompt, but not all.
-- **quality** (optional): `auto` (default), `low`, `medium`, `high`
-- **size** (optional): `auto` (default) or `WIDTHxHEIGHT` (e.g., `1024x1024`).
-- **response_format** (optional): 
-  - `url` (default) - Returns hosted URL
-  - `b64_json` - Returns base64-encoded image
-  - `b64_ephemeral` - Base64 without saving to logs
-- **output_format** (optional): `webp` (default), `jpeg`, `png`
-- **image[]** (optional): Input file for Image-to-Image (multipart only)
-- **mask[]** (optional): Editing mask for inpainting (multipart only)
+- **model**（必填）：要使用的图像模型（详见：https://imagerouter.io/models）
+- **prompt**（可选）：用于图像生成的文本描述。大多数模型需要文本提示，但并非所有模型都需要。
+- **quality**（可选）：`auto`（默认值）、`low`、`medium`、`high`
+- **size**（可选）：`auto`（默认值）或 `WIDTHxHEIGHT`（例如：`1024x1024`）
+- **response_format**（可选）：
+  - `url`（默认值）：返回托管的图像 URL
+  - `b64_json`：返回 Base64 编码的图像
+  - `b64_ephemeral`：不保存到日志中的 Base64 编码图像
+- **output_format**（可选）：`webp`（默认值）、`jpeg`、`png`
+- **image[]**（可选）：用于图像转图像的输入文件（仅限 `multipart` 格式）
+- **mask[]**（可选）：用于图像修复的遮罩图像（仅限 `multipart` 格式）
 
-## Response Format
-
+## 响应格式
 ```json
 {
   "created": 1769286389027,
@@ -120,32 +118,32 @@ curl 'https://api.imagerouter.io/v1/openai/images/edits' \
 }
 ```
 
-## Endpoint Comparison
+## 端点比较
 
-| Feature | Unified (/edits) | JSON (/generations) |
+| 功能 | 统一端点（/edits） | JSON 端点（/generations） |
 |---------|------------------|---------------------|
-| Text-to-Image | ✅ | ✅ |
-| Image-to-Image | ✅ | ❌ |
-| Encoding | multipart/form-data | application/json |
+| 文本转图像 | ✅ | ✅ |
+| 图像转图像 | ✅ | ❌ |
+| 编码方式 | `multipart/form-data` | `application/json` |
 
-## Tips
+## 提示
 
-- Both `/v1/openai/images/generations` and `/v1/openai/images/edits` are the same for the unified endpoint
-- Use JSON endpoint for simple text-to-image when you don't need file uploads
-- Use unified endpoint when you need Image-to-Image capabilities
-- Check model features at https://imagerouter.io/models (quality support, edit support, etc.)
-- Get your API key at https://imagerouter.io/api-keys
+- `/v1/openai/images/generations` 和 `/v1/openai/images/edits` 是同一个统一端点的不同路径
+- 当不需要上传文件时，使用 JSON 端点进行简单的文本转图像操作
+- 当需要图像转图像功能时，使用统一端点
+- 请访问 https://imagerouter.io/models 查看各模型的具体功能（如质量支持、编辑支持等）
+- 请在 https://imagerouter.io/api-keys 获取您的 API 密钥
 
-## Examples by Use Case
+## 按使用场景划分的示例
 
-### Quick test generation:
+### 快速测试生成：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/generations' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   --json '{"prompt":"test image","model":"test/test"}'
 ```
 
-### Download image directly:
+### 直接下载图像：
 ```bash
 curl 'https://api.imagerouter.io/v1/openai/images/generations' \
   -H 'Authorization: Bearer YOUR_API_KEY' \

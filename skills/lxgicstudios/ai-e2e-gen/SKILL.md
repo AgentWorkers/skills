@@ -1,26 +1,26 @@
 ---
 name: e2e-gen
-description: Generate Playwright/Cypress E2E tests from user flows
+description: 根据用户流程生成 Playwright/Cypress 的端到端（E2E）测试
 ---
 
-# E2E Test Generator
+# E2E 测试生成器
 
-Describe user flows, get Playwright or Cypress tests. No more writing login tests by hand.
+该工具可描述用户操作流程，并自动生成 Playwright 或 Cypress 测试用例，无需再手动编写登录测试代码。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-e2e-gen "User signs up, verifies email, completes onboarding"
 ```
 
-## What It Does
+## 功能介绍
 
-- Converts flow descriptions to E2E tests
-- Generates Playwright or Cypress code
-- Includes proper waits and assertions
-- Adds data-testid selectors
+- 将用户操作流程描述转换为 E2E 测试脚本
+- 生成相应的 Playwright 或 Cypress 代码
+- 包含必要的等待操作和断言逻辑
+- 自动添加数据测试（data-testid）选择器
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate Playwright test
@@ -33,7 +33,7 @@ npx ai-e2e-gen "Admin creates new user" --framework cypress
 npx ai-e2e-gen --url http://localhost:3000/dashboard
 ```
 
-## Output Example
+## 输出示例
 
 ```typescript
 test('user completes checkout', async ({ page }) => {
@@ -44,17 +44,18 @@ test('user completes checkout', async ({ page }) => {
 });
 ```
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- 必须安装 Node.js 18 及更高版本。
+- 需要配置 OPENAI_API_KEY。
 
-## License
+## 许可证
 
-MIT. Free forever.
+采用 MIT 许可协议，永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**开发团队：LXGIC Studios**
 
-- GitHub: [github.com/lxgicstudios/ai-e2e-gen](https://github.com/lxgicstudios/ai-e2e-gen)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub 仓库：[github.com/lxgicstudios/ai-e2e-gen](https://github.com/lxgicstudios/ai-e2e-gen)
+- Twitter 账号：[@lxgicstudios](https://x.com/lxgicstudios)

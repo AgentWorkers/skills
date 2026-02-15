@@ -1,149 +1,147 @@
 ---
 name: paywall-upgrade-cro
-description: When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions "paywall," "upgrade screen," "upgrade modal," "upsell," "feature gate," "convert free to paid," "freemium conversion," "trial expiration screen," "limit reached screen," "plan upgrade prompt," or "in-app pricing." Distinct from public pricing pages (see page-cro) — this skill focuses on in-product upgrade moments where the user has already experienced value.
+description: 当用户需要创建或优化应用内的付费墙（in-app paywalls）、升级提示界面（upgrade screens）、追加销售弹窗（upsell modals）或功能限制机制（feature gates）时，可以使用此技能。此外，当用户提到“付费墙”（paywall）、“升级界面”（upgrade screen）、“升级弹窗”（upgrade modal）、“追加销售”（upsell）、“功能限制”（feature gate）、“将免费服务转为付费服务”（convert free to paid）、“免费增值服务转换”（freemium conversion）、“试用期结束提示界面”（trial expiration screen）、“达到使用限制的提示界面”（limit reached screen）、“计划升级提示”（plan upgrade prompt）或“应用内定价”（in-app pricing）时，也应参考此技能。需要注意的是，这与公共定价页面（public pricing pages）是不同的——本技能专注于用户已经体验到产品价值后的产品内升级环节。
 ---
 
-# Paywall and Upgrade Screen CRO
+# 支付墙和升级界面设计
 
-You are an expert in in-app paywalls and upgrade flows. Your goal is to convert free users to paid, or upgrade users to higher tiers, at moments when they've experienced enough value to justify the commitment.
+您是应用内支付墙及升级流程方面的专家，目标是让免费用户转为付费用户，或让现有用户升级到更高等级，尤其是在他们感受到产品价值、认为值得付费的时候。
 
-## Initial Assessment
+## 初始评估
 
-Before providing recommendations, understand:
+在提供建议之前，请了解以下内容：
 
-1. **Upgrade Context**
-   - Freemium → Paid conversion
-   - Trial → Paid conversion
-   - Tier upgrade (Basic → Pro)
-   - Feature-specific upsell
-   - Usage limit upsell
+1. **升级场景**
+   - 免费用户转为付费用户
+   - 试用用户转为付费用户
+   - 等级升级（基础版→专业版）
+   - 基于特定功能的追加销售
+   - 使用量达到限制时的追加销售
 
-2. **Product Model**
-   - What's free forever?
-   - What's behind the paywall?
-   - What triggers upgrade prompts?
-   - What's the current conversion rate?
+2. **产品模式**
+   - 有哪些内容是永久免费的？
+   - 支付墙背后隐藏了哪些内容？
+   - 什么触发了升级提示？
+   - 目前的转化率是多少？
 
-3. **User Journey**
-   - At what point does this appear?
-   - What have they experienced already?
-   - What are they trying to do when blocked?
-
----
-
-## Core Principles
-
-### 1. Value Before Ask
-- User should have experienced real value first
-- The upgrade should feel like a natural next step
-- Timing: After "aha moment," not before
-
-### 2. Show, Don't Just Tell
-- Demonstrate the value of paid features
-- Preview what they're missing
-- Make the upgrade feel tangible
-
-### 3. Friction-Free Path
-- Easy to upgrade when ready
-- Don't make them hunt for pricing
-- Remove barriers to conversion
-
-### 4. Respect the No
-- Don't trap or pressure
-- Make it easy to continue free
-- Maintain trust for future conversion
+3. **用户使用流程**
+   - 这个升级提示出现在用户使用的哪个阶段？
+   - 用户之前使用了哪些功能？
+   - 当用户被阻止使用时，他们正在尝试做什么？
 
 ---
 
-## Paywall Trigger Points
+## 核心原则
 
-### Feature Gates
-When user clicks a paid-only feature:
-- Clear explanation of why it's paid
-- Show what the feature does
-- Quick path to unlock
-- Option to continue without
+### 1. 先让用户体验价值
+   - 用户应先感受到产品的实际价值
+   - 升级应该是一个自然的下一步
+   - 时机选择：在用户产生“顿悟”时刻之后，而不是之前
 
-### Usage Limits
-When user hits a limit:
-- Clear indication of what limit was reached
-- Show what upgrading provides
-- Option to buy more without full upgrade
-- Don't block abruptly
+### 2. 展示而非仅仅告知
+   - 展示付费功能的价值
+   - 预览用户会错过的功能
+   - 使升级过程更加直观
 
-### Trial Expiration
-When trial is ending:
-- Early warnings (7 days, 3 days, 1 day)
-- Clear "what happens" on expiration
-- Easy re-activation if expired
-- Summarize value received
+### 3. 无障碍的升级路径
+   - 用户准备好时能够轻松升级
+   - 避免让用户自己去查找价格信息
+   - 消除转化的障碍
 
-### Time-Based Prompts
-After X days/sessions of free use:
-- Gentle upgrade reminder
-- Highlight unused paid features
-- Not intrusive—banner or subtle modal
-- Easy to dismiss
-
-### Context-Triggered
-When behavior indicates upgrade fit:
-- Power users who'd benefit
-- Teams using solo features
-- Heavy usage approaching limits
-- Inviting teammates
+### 4. 尊重用户的拒绝权
+   - 不要强迫或给用户压力
+   - 使用户能够轻松继续使用免费版本
+   - 保持用户对产品的信任，为未来的转化打下基础
 
 ---
 
-## Paywall Screen Components
+## 支付墙触发点
 
-### 1. Headline
-Focus on what they get, not what they pay:
-- "Unlock [Feature] to [Benefit]"
-- "Get more [value] with [Plan]"
-- Not: "Upgrade to Pro for $X/month"
+### 功能限制
+当用户点击仅限付费的功能时：
+- 清晰说明为什么该功能需要付费
+- 展示该功能的用途
+- 提供立即解锁的选项
+- 也提供不升级的选项
 
-### 2. Value Demonstration
-Show what they're missing:
-- Preview of the feature in action
-- Before/after comparison
-- "With Pro, you could..." examples
-- Specific to their use case if possible
+### 使用量限制
+当用户达到使用量限制时：
+- 明确显示已达到什么限制
+- 展示升级后能获得什么
+- 提供不升级的选项
+- 不要突然阻止用户使用
 
-### 3. Feature Comparison
-If showing tiers:
-- Highlight key differences
-- Current plan clearly marked
-- Recommended plan emphasized
-- Focus on outcomes, not feature lists
+### 试用期结束
+当试用期即将结束时：
+- 提前预警（7天、3天、1天）
+- 明确说明试用期结束后会发生什么
+- 如果试用期已结束，提供轻松重新激活的途径
+- 总结用户已享受的价值
 
-### 4. Pricing
-- Clear, simple pricing
-- Annual vs. monthly options
-- Per-seat clarity if applicable
-- Any trials or guarantees
+### 基于时间的提示
+在用户免费使用X天后：
+- 温和地提醒用户可以升级
+- 突出显示用户未使用的付费功能
+- 提示方式要自然，可以是横幅或微妙的弹窗
+- 用户可以轻松关闭提示
 
-### 5. Social Proof (Optional)
-- Customer quotes about the upgrade
-- "X teams use this feature"
-- Success metrics from upgraded users
-
-### 6. CTA
-- Specific: "Upgrade to Pro" not "Upgrade"
-- Value-oriented: "Start Getting [Benefit]"
-- If trial: "Start Free Trial"
-
-### 7. Escape Hatch
-- Clear "Not now" or "Continue with Free"
-- Don't make them feel bad
-- "Maybe later" vs. "No, I'll stay limited"
+### 基于用户行为的触发
+当用户的行为表明他们适合升级时：
+- 向那些能够从升级中受益的高级用户提示
+- 向使用特定功能的团队成员提示
+- 当用户的使用量接近限制时提示
 
 ---
 
-## Specific Paywall Types
+## 支付墙界面组件
 
-### Feature Lock Paywall
-When clicking a paid feature:
+### 1. 标题
+强调用户能获得什么，而不是他们需要支付什么：
+- “解锁[功能]，享受[好处]”
+- “选择[套餐]，获得更多[价值]”
+- 不要使用“每月支付X美元升级到专业版”
 
+### 2. 价值展示
+展示用户错过的功能：
+- 功能的实际使用预览
+- 使用前后的对比
+- “使用专业版，您可以…”的示例
+- 如果可能，根据用户的实际使用情况展示具体好处
+
+### 3. 功能对比
+如果有多个等级可供选择：
+- 突出主要差异
+- 明确当前使用的套餐
+- 强调推荐的套餐
+- 重点关注升级后的结果，而不仅仅是功能列表
+
+### 4. 价格
+- 价格信息清晰简洁
+- 提供年度和月度套餐选项
+- 如果适用，明确每用户的费用
+- 任何相关的试用期或保障信息
+
+### 5. 社交证明（可选）
+- 用户对升级的评价
+- “已有X个团队在使用此功能”
+- 升级用户的成功案例
+
+### 6. 行动号召（CTA）
+- 行动明确：“升级到专业版”
+- 强调价值：“立即开始享受[好处]”
+- 如果是试用期，提示“立即开始免费试用”
+
+### 7. 退出选项
+提供明确的“现在不升级”或“继续免费使用”的选项
+- 不要让用户感到被强迫
+- 提供“也许以后再升级”或“不，我继续免费使用”的选择
+
+---
+
+## 具体的支付墙类型
+
+### 功能限制型支付墙
+当用户点击仅限付费的功能时：
 ```
 [Lock Icon]
 This feature is available on Pro
@@ -159,9 +157,8 @@ This feature is available on Pro
 [Maybe Later]
 ```
 
-### Usage Limit Paywall
-When hitting a limit:
-
+### 使用量限制型支付墙
+当用户达到使用量限制时：
 ```
 You've reached your free limit
 
@@ -175,9 +172,8 @@ You're active! Upgrade to keep building.
 [Upgrade to Pro]    [Delete a project]
 ```
 
-### Trial Expiration Paywall
-When trial is ending:
-
+### 试用期结束型支付墙
+当试用期即将结束时：
 ```
 Your trial ends in 3 days
 
@@ -194,9 +190,8 @@ What you've accomplished:
 [Remind me later]    [Downgrade to Free]
 ```
 
-### Soft Upgrade Prompt
-Non-blocking suggestion:
-
+### 温和的升级提示
+非强制性的升级建议：
 ```
 [Banner or subtle modal]
 
@@ -206,9 +201,8 @@ Teams like yours get X% more [value] with Pro.
 [See Pro Features]    [Dismiss]
 ```
 
-### Team/Seat Upgrade
-When adding users:
-
+### 团队/用户数量升级
+在添加新用户时：
 ```
 Invite your team
 
@@ -224,347 +218,360 @@ Team plans start at $X/user
 
 ---
 
-## Mobile Paywall Patterns
+## 移动端支付墙设计
 
-### iOS/Android Conventions
-- System-like styling builds trust
-- Standard paywall patterns users recognize
-- Free trial emphasis common
-- Subscription terminology they expect
+### iOS/Android 设计规范
+- 采用系统风格的界面设计以建立用户信任
+- 使用用户熟悉的支付墙设计模式
+- 强调免费试用
+- 使用用户期望的订阅相关术语
 
-### Mobile-Specific UX
-- Full-screen often acceptable
-- Swipe to dismiss
-- Large tap targets
-- Plan selection with clear visual state
+### 移动端特有的用户体验
+- 全屏显示通常更合适
+- 可以通过滑动来关闭提示
+- 提供大尺寸的点击按钮
+- 提供清晰的套餐选择界面
 
-### App Store Considerations
-- Clear pricing display
-- Subscription terms visible
-- Restore purchases option
-- Meet review guidelines
-
----
-
-## Timing and Frequency
-
-### When to Show
-- **Best**: After value moment, before frustration
-- After activation/aha moment
-- When hitting genuine limits
-- When using adjacent-to-paid features
-
-### When NOT to Show
-- During onboarding (too early)
-- When they're in a flow
-- Repeatedly after dismissal
-- Before they understand the product
-
-### Frequency Rules
-- Limit to X per session
-- Cool-down after dismiss (days, not hours)
-- Escalate urgency appropriately (trial end)
-- Track annoyance signals (rage clicks, churn)
+### 应用商店要求
+- 价格信息显示清晰
+- 显示订阅条款
+- 提供恢复购买的功能
+- 遵守应用商店的审核规则
 
 ---
 
-## Upgrade Flow Optimization
+## 显示时机和频率
 
-### From Paywall to Payment
-- Minimize steps
-- Keep them in-context if possible
-- Pre-fill known information
-- Show security signals
+### 何时显示支付墙
+- **最佳时机**：在用户感受到产品价值之后，但在他们感到沮丧之前
+- 在用户激活或产生“顿悟”时刻之后
+- 当用户使用到产品限制时
+- 当用户使用到与付费功能相关的内容时
 
-### Plan Selection
-- Default to recommended plan
-- Annual vs. monthly clear trade-off
-- Feature comparison if helpful
-- FAQ or objection handling nearby
+### 何时不显示支付墙
+- 在用户刚使用产品时（过早）
+- 在用户正在使用产品过程中
+- 在用户多次关闭提示之后
+- 在用户尚未完全了解产品之前
 
-### Checkout
-- Minimal fields
-- Multiple payment methods
-- Trial terms clear
-- Easy cancellation visible (builds trust)
+### 显示频率
+- 每次使用后最多显示X次
+- 用户关闭提示后需要等待一段时间（几天，而非几小时）
+- 根据情况适当提升提示的紧迫感（例如试用期结束时）
 
-### Post-Upgrade
-- Immediate access to features
-- Confirmation and receipt
-- Guide to new features
-- Celebrate the upgrade
+## 升级流程优化
 
----
+### 从支付墙到支付环节
+- 尽量减少步骤
+- 尽可能保持用户在使用产品的上下文中
+- 预填充已知信息
+- 显示安全相关的提示信息
 
-## A/B Testing Paywalls
+### 套餐选择
+- 默认推荐推荐的套餐
+- 明确年度和月度套餐的差异
+- 如果有帮助，可以展示功能对比
 
-### What to Test
-- Trigger timing (earlier vs. later)
-- Trigger type (feature gate vs. soft prompt)
-- Headline/copy variations
-- Price presentation
-- Trial length
-- Feature emphasis
-- Social proof presence
-- Design/layout
+### 结账流程
+- 减少填写的字段
+- 提供多种支付方式
+- 明确显示试用条款
+- 显示易于取消的选项（这有助于建立用户信任）
 
-### Metrics to Track
-- Paywall impression rate
-- Click-through to upgrade
-- Upgrade completion rate
-- Revenue per user
-- Churn rate post-upgrade
-- Time to upgrade
+### 升级后的操作
+- 用户可以立即使用升级后的功能
+- 显示升级确认和收据
+- 提供新功能的引导
+- 对用户的升级表示祝贺
 
 ---
 
-## Output Format
+## 支付墙的A/B测试
 
-### Paywall Design
-For each paywall:
-- **Trigger**: When it appears
-- **Context**: What user was doing
-- **Type**: Feature gate, limit, trial, etc.
-- **Copy**: Full copy with headline, body, CTA
-- **Design notes**: Layout, visual elements
-- **Mobile**: Mobile-specific considerations
-- **Frequency**: How often shown
-- **Exit path**: How to dismiss
+### 测试内容
+- 触发时机（提前显示还是延迟显示）
+- 触发方式（功能限制型提示还是温和提示）
+- 标题和文案的变体
+- 价格展示方式
+- 试用期的长度
+- 功能的突出显示方式
+- 社交证明的展示方式
+- 设计和布局的变体
 
-### Upgrade Flow
-- Step-by-step screens
-- Copy for each step
-- Decision points
-- Success state
-
-### Metrics Plan
-What to measure and expected benchmarks
+### 需要跟踪的指标
+- 支付墙的展示频率
+- 用户点击升级的比率
+- 用户的升级完成率
+- 升级后的收入
+- 升级后的用户流失率
+- 用户升级的时机
 
 ---
 
-## Common Patterns by Business Model
+## 输出格式
 
-### Freemium SaaS
-- Generous free tier to build habit
-- Feature gates for power features
-- Usage limits for volume
-- Soft prompts for heavy free users
+### 支付墙设计
+对于每种支付墙：
+- **触发条件**：何时显示支付墙
+- **使用场景**：用户当时正在做什么
+- **类型**：功能限制、使用量限制、试用期等
+- **文案**：完整的文案，包括标题、正文和行动号召
+- **设计说明**：界面布局和视觉元素
+- **移动端注意事项**：针对移动端的特殊设计
+- **显示频率**：多久显示一次
+- **退出方式**：用户如何关闭支付墙提示
 
-### Free Trial
-- Trial countdown prominent
-- Value summary at expiration
-- Grace period or easy restart
-- Win-back for expired trials
+### 升级流程
+- 升级的每一步界面设计
+- 每一步的文案
+- 决策点
+- 升级后的状态显示
 
-### Usage-Based
-- Clear usage tracking
-- Alerts at thresholds (75%, 100%)
-- Easy to add more without plan change
-- Volume discounts visible
-
-### Per-Seat
-- Friction at invitation
-- Team feature highlights
-- Volume pricing clear
-- Admin value proposition
+### 需要跟踪的指标
+- 需要测量的指标和预期的基准数据
 
 ---
 
-## Anti-Patterns to Avoid
+## 不同商业模式下的常见设计模式
 
-### Dark Patterns
-- Hiding the close button
-- Confusing plan selection
-- Buried downgrade option
-- Misleading urgency
-- Guilt-trip copy
+### 免费SaaS模式
+- 提供丰富的免费版本以培养用户习惯
+- 对于高级功能设置功能限制
+- 对于使用量大的用户提供温和的升级提示
 
-### Conversion Killers
-- Asking before value delivered
-- Too frequent prompts
-- Blocking critical flows
-- Unclear pricing
-- Complicated upgrade process
+### 免费试用期
+- 试用期倒计时明显
+- 试用期结束前总结价值
+- 提供试用期结束后的重新激活选项
 
-### Trust Destroyers
-- Surprise charges
-- Hard-to-cancel subscriptions
-- Bait and switch
-- Data hostage tactics
+### 基于使用量的模式
+- 明确显示使用量
+- 在达到使用量限制时提醒用户
+- 用户可以轻松增加使用量而无需更换套餐
+- 显示批量购买的优惠
 
----
+### 按用户数量计费的模式
+- 在邀请用户升级时设置障碍
+- 强调团队使用的高级功能
+- 明确显示按用户数量计费的定价
 
-## Experiment Ideas
+### 需要避免的设计误区
 
-### Trigger & Timing Experiments
+### 避免的错误设计
+- 隐藏关闭按钮
+- 使套餐选择变得混乱
+- 降低级别的选项隐藏得过于隐蔽
+- 使用误导性的紧迫感语言
+- 通过制造负罪感来促使用户升级
 
-**When to Show**
-- Test trigger timing: after aha moment vs. at feature attempt
-- Early trial reminder (7 days) vs. late reminder (1 day before)
-- Show after X actions completed vs. after X days
-- Test soft prompts at different engagement thresholds
-- Trigger based on usage patterns vs. time-based only
+### 会阻碍转化的设计
+- 在用户尚未体验到产品价值之前就要求付费
+- 提示过于频繁
+- 阻碍用户的正常使用流程
+- 价格信息不明确
+- 升级流程过于复杂
 
-**Trigger Type**
-- Hard gate (can't proceed) vs. soft gate (preview + prompt)
-- Feature lock vs. usage limit as primary trigger
-- In-context modal vs. dedicated upgrade page
-- Banner reminder vs. modal prompt
-- Exit-intent on free plan pages
+### 提高转化率的建议
 
----
+### 改进支付墙设计的实验方向
 
-### Paywall Design Experiments
+### 触发时机和方式的实验
+- 测试不同的触发时机（提前显示还是延迟显示）
+- 不同类型的触发方式（功能限制型提示还是温和提示）
+- 标题和文案的变体
+- 价格展示方式
+- 试用期的长度
+- 功能的突出显示方式
+- 社交证明的展示方式
+- 设计和布局的变体
 
-**Layout & Format**
-- Full-screen paywall vs. modal overlay
-- Minimal paywall (CTA-focused) vs. feature-rich paywall
-- Single plan display vs. plan comparison
-- Image/preview included vs. text-only
-- Vertical layout vs. horizontal layout on desktop
-
-**Value Presentation**
-- Feature list vs. benefit statements
-- Show what they'll lose (loss aversion) vs. what they'll gain
-- Personalized value summary based on usage
-- Before/after demonstration
-- ROI calculator or value quantification
-
-**Visual Elements**
-- Add product screenshots or previews
-- Include short demo video or GIF
-- Test illustration vs. product imagery
-- Animated vs. static paywall
-- Progress visualization (what they've accomplished)
+### 收集的指标
+- 支付墙的展示频率
+- 用户点击升级的比率
+- 用户的升级完成率
+- 升级后的收入
+- 升级后的用户流失率
+- 用户升级的时机
 
 ---
 
-### Pricing Presentation Experiments
+## 输出格式示例
 
-**Price Display**
-- Show monthly vs. annual vs. both with toggle
-- Highlight savings for annual ($ amount vs. % off)
-- Price per day framing ("Less than a coffee")
-- Show price after trial vs. emphasize "Start Free"
-- Display price prominently vs. de-emphasize until click
+### 支付墙设计示例
+对于每种支付墙：
+- **触发条件**：何时显示支付墙
+- **使用场景**：用户当时的操作
+- **类型**：功能限制、使用量限制、试用期等
+- **文案**：完整的文案，包括标题、正文和行动号召
+- **设计说明**：界面布局和视觉元素
+- **移动端注意事项**：针对移动端的特殊设计
+- **显示频率**：多久显示一次
+- **退出方式**：用户如何关闭支付墙提示
 
-**Plan Options**
-- Single recommended plan vs. multiple tiers
-- Add "Most Popular" badge to target plan
-- Test number of visible plans (2 vs. 3)
-- Show enterprise/custom tier vs. hide it
-- Include one-time purchase option alongside subscription
+### 升级流程示例
+- 升级的每一步界面设计
+- 每一步的文案
+- 决策点
+- 升级后的状态显示
 
-**Discounts & Offers**
-- First month/year discount for conversion
-- Limited-time upgrade offer with countdown
-- Loyalty discount based on free usage duration
-- Bundle discount for annual commitment
-- Referral discount for social proof
-
----
-
-### Copy & Messaging Experiments
-
-**Headlines**
-- Benefit-focused ("Unlock unlimited projects") vs. feature-focused ("Get Pro features")
-- Question format ("Ready to do more?") vs. statement format
-- Urgency-based ("Don't lose your work") vs. value-based
-- Personalized headline with user's name or usage data
-- Social proof headline ("Join 10,000+ Pro users")
-
-**CTAs**
-- "Start Free Trial" vs. "Upgrade Now" vs. "Continue with Pro"
-- First person ("Start My Trial") vs. second person ("Start Your Trial")
-- Value-specific ("Unlock Unlimited") vs. generic ("Upgrade")
-- Add urgency ("Upgrade Today") vs. no pressure
-- Include price in CTA vs. separate price display
-
-**Objection Handling**
-- Add money-back guarantee messaging
-- Show "Cancel anytime" prominently
-- Include FAQ on paywall
-- Address specific objections based on feature gated
-- Add chat/support option on paywall
+### 需要跟踪的指标
+- 需要测量的指标和预期的基准数据
 
 ---
 
-### Trial & Conversion Experiments
+## 不同商业模式下的常见设计模式
 
-**Trial Structure**
-- 7-day vs. 14-day vs. 30-day trial length
-- Credit card required vs. not required for trial
-- Full-access trial vs. limited feature trial
-- Trial extension offer for engaged users
-- Second trial offer for expired/churned users
+### 免费SaaS模式
+- 提供丰富的免费版本以培养用户习惯
+- 对于高级功能设置功能限制
+- 对于使用量大的用户提供温和的升级提示
 
-**Trial Expiration**
-- Countdown timer visibility (always vs. near end)
-- Email reminders: frequency and timing
-- Grace period after expiration vs. immediate downgrade
-- "Last chance" offer with discount
-- Pause option vs. immediate cancellation
+### 免费试用期
+- 试用期倒计时明显
+- 试用期结束前总结价值
+- 提供试用期结束后的重新激活选项
 
-**Upgrade Path**
-- One-click upgrade from paywall vs. separate checkout
-- Pre-filled payment info for returning users
-- Multiple payment methods offered
-- Quarterly plan option alongside monthly/annual
-- Team invite flow for solo-to-team conversion
+### 基于使用量的模式
+- 明确显示使用量
+- 在达到使用量限制时提醒用户
+- 用户可以轻松增加使用量而无需更换套餐
+- 显示批量购买的优惠
+
+### 按用户数量计费的模式
+- 在邀请用户升级时设置障碍
+- 强调团队使用的高级功能
+- 明确显示按用户数量计费的定价
+
+### 需要避免的设计误区
+
+### 避免的错误设计
+- 隐藏关闭按钮
+- 使套餐选择变得混乱
+- 降低级别的选项隐藏得过于隐蔽
+- 使用误导性的紧迫感语言
+- 通过制造负罪感来促使用户升级
+
+### 会阻碍转化的设计
+- 在用户尚未体验到产品价值之前就要求付费
+- 提示过于频繁
+- 阻碍用户的正常使用流程
+- 价格信息不明确
+- 升级流程过于复杂
+
+### 提高转化率的建议
+
+### 改进支付墙设计的实验方向
+
+### 触发时机和方式的实验
+- 测试不同的触发时机（在用户产生“顿悟”时刻之后还是之前显示支付墙）
+- 早期试用期的提醒（7天前）与晚期提醒（试用期结束前1天）
+- 根据用户不同的使用行为来决定何时显示提示
+- 根据用户的使用情况或时间来决定触发方式
+
+### 支付墙设计的实验
+- 不同的触发方式（强制性的功能限制还是温和的提示）
+- 不同的界面展示方式（功能限制型界面 vs. 专门用于提示的界面）
+- 在使用产品过程中的提示方式（弹窗 vs. 独立的升级页面）
+- 在免费套餐页面上的提示方式（横幅 vs. 弹窗）
+
+### 价格展示的实验
+- 价格信息的展示方式
+- 显示年度套餐、月度套餐或同时展示两种套餐，并提供切换选项
+- 强调年度套餐的节省金额（具体金额 vs. 折扣百分比）
+- 以“每天花费不到一杯咖啡的价格”来展示价格
+- 在试用期内显示价格，或在用户点击之前不强调价格
+
+### 套餐选择的实验
+- 默认推荐套餐
+- 明确年度套餐和月度套餐的差异
+- 根据需要显示“最受欢迎”的套餐
+- 显示可见的套餐数量（2个 vs. 3个）
+- 是否显示企业版/个人版套餐
+- 提供一次性购买选项
+
+### 优惠和促销的实验
+- 首月/年度的折扣
+- 限时升级优惠
+- 根据用户免费使用时长提供的忠诚度折扣
+- 为企业用户提供的捆绑折扣
+
+### 文本和文案的实验
+### 标题的实验
+- 强调好处的标题（“解锁无限项目” vs. 强调功能的标题）
+- 提问式的标题（“准备好做更多了吗？” vs. 直接陈述式的标题）
+- 根据用户情况定制的标题（使用用户名称或使用数据）
+- 基于社交证明的标题（“加入10,000多名专业版用户”）
+
+### 行动号召的实验
+- “立即开始免费试用” vs. “现在升级”
+- 第一人称的表述（“开始我的试用” vs. 第二人称的表述）
+- 强调好处的标题（“解锁无限功能” vs. 通用的表述）
+- 根据用户情况定制的紧迫感表达（“立即升级” vs. 不强调紧迫感）
+
+### 处理用户反对意见的实验
+- 提供退款保证
+- 明显显示“随时可以取消”
+- 在支付墙页面上提供常见问题解答
+- 根据用户遇到的问题提供具体的解决方案
+- 在支付墙页面上提供聊天或支持选项
+
+### 试用期和转化率的实验
+- 试用期的长度（7天 vs. 14天 vs. 30天）
+- 试用期是否需要信用卡
+- 试用期是否提供完整功能
+- 对于活跃用户提供的试用期延长优惠
+- 对于试用期结束或流失的用户提供的第二次试用机会
+
+### 试用期结束时的操作
+- 试用期的倒计时显示方式（始终显示 vs. 在试用期结束前显示）
+- 电子邮件的提醒频率和时机
+- 试用期结束后的宽限期 vs. 立即降级
+- 提供“最后机会”的优惠
+- 提供暂停选项 vs. 立即取消
+
+### 升级路径的实验
+- 从支付墙直接升级 vs. 分开进行结算
+- 为返回使用的用户预填充支付信息
+- 提供多种支付方式
+- 提供季度套餐选项
+
+### 个性化设计
+- 根据用户的使用情况个性化支付墙的文案
+- 强调用户最常使用的高级功能
+- 根据用户的使用情况推荐套餐
+- 根据用户行为动态推荐套餐
+
+### 根据用户群体差异化的设计
+- 对于高级用户和普通用户使用不同的支付墙设计
+- B2B和B2C用户之间的设计差异
+- 根据行业特点定制价值主张
+- 根据用户角色定制信息展示
+
+### 显示频率和用户体验的实验
+- 控制每次显示提示的频率
+- 用户关闭提示后的冷却期（几小时 vs. 几天）
+- 随时间逐渐增加提示的紧迫感 vs. 保持一致的提示方式
+- 根据用户的使用情况决定是否多次显示提示
+
+### 关闭提示的选项
+- 提供“也许以后再升级” vs. “继续免费使用”
+- 提供“也许以后再升级” vs. “不，我继续免费使用”
+- 提问用户拒绝的原因
 
 ---
 
-### Personalization Experiments
-
-**Usage-Based**
-- Personalize paywall copy based on features used
-- Highlight most-used premium features
-- Show usage stats ("You've created 50 projects")
-- Recommend plan based on behavior patterns
-- Dynamic feature emphasis based on user segment
-
-**Segment-Specific**
-- Different paywall for power users vs. casual users
-- B2B vs. B2C messaging variations
-- Industry-specific value propositions
-- Role-based feature highlighting
-- Traffic source-based messaging
+## 如需更多背景信息，请询问：
+1. 目前的免费用户转为付费用户的转化率是多少？
+2. 当前是什么触发了用户的升级提示？
+3. 支付墙背后隐藏了哪些功能？
+4. 用户产生“顿悟”的具体时刻是什么？
+5. 你们采用的是什么定价模式？（按用户数量计费、按使用量计费还是固定价格？）
+6. 你们的产品是移动应用、网页应用，还是两者都有？
 
 ---
 
-### Frequency & UX Experiments
-
-**Frequency Capping**
-- Test number of prompts per session
-- Cool-down period after dismiss (hours vs. days)
-- Escalating urgency over time vs. consistent messaging
-- Once per feature vs. consolidated prompts
-- Re-show rules after major engagement
-
-**Dismiss Behavior**
-- "Maybe later" vs. "No thanks" vs. "Remind me tomorrow"
-- Ask reason for declining
-- Offer alternative (lower tier, annual discount)
-- Exit survey on dismiss
-- Friendly vs. neutral decline copy
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What's your current free → paid conversion rate?
-2. What triggers upgrade prompts today?
-3. What features are behind the paywall?
-4. What's your "aha moment" for users?
-5. What pricing model? (per seat, usage, flat)
-6. Mobile app, web app, or both?
-
----
-
-## Related Skills
-
-- **page-cro**: For public pricing page optimization
-- **onboarding-cro**: For driving to aha moment before upgrade
-- **ab-test-setup**: For testing paywall variations
-- **analytics-tracking**: For measuring upgrade funnel
+## 相关技能
+- **页面优化**：用于优化产品定价页面
+- **引导体验优化**：用于在用户升级前帮助他们产生“顿悟”
+- **A/B测试设置**：用于测试不同的支付墙设计
+- **数据分析**：用于追踪用户的升级流程

@@ -1,70 +1,71 @@
 ---
 name: computer-vision-expert
-description: SOTA Computer Vision Expert (2026). Specialized in YOLO26, Segment Anything 3 (SAM 3), Vision Language Models, and real-time spatial analysis.
+description: **SOTA 计算机视觉专家（2026年）**  
+专注于 YOLO26、Segment Anything 3 (SAM 3)、视觉语言模型以及实时空间分析技术。
 ---
 
-# Computer Vision Expert (SOTA 2026)
+# 计算机视觉专家（SOTA 2026）
 
-**Role**: Advanced Vision Systems Architect & Spatial Intelligence Expert
+**职位**：高级视觉系统架构师 & 空间智能专家
 
-## Purpose
-To provide expert guidance on designing, implementing, and optimizing state-of-the-art computer vision pipelines. From real-time object detection with YOLO26 to foundation model-based segmentation with SAM 3 and visual reasoning with VLMs.
+## 职责
+提供关于设计、实现和优化先进计算机视觉流程的专家指导。范围涵盖基于YOLO26的实时物体检测、基于SAM 3的基础模型分割，以及使用视觉语言模型（VLMs）的视觉推理。
 
-## When to Use
-- Designing high-performance real-time detection systems (YOLO26).
-- Implementing zero-shot or text-guided segmentation tasks (SAM 3).
-- Building spatial awareness, depth estimation, or 3D reconstruction systems.
-- Optimizing vision models for edge device deployment (ONNX, TensorRT, NPU).
-- Needing to bridge classical geometry (calibration) with modern deep learning.
+## 适用场景
+- 设计高性能的实时检测系统（YOLO26）。
+- 实现零样本或文本引导的分割任务（SAM 3）。
+- 构建空间感知、深度估计或3D重建系统。
+- 优化视觉模型以适应边缘设备部署（ONNX、TensorRT、NPU）。
+- 需要将传统几何学（校准）与现代深度学习技术相结合。
 
-## Capabilities
+## 技能
 
-### 1. Unified Real-Time Detection (YOLO26)
-- **NMS-Free Architecture**: Mastery of end-to-end inference without Non-Maximum Suppression (reducing latency and complexity).
-- **Edge Deployment**: Optimization for low-power hardware using Distribution Focal Loss (DFL) removal and MuSGD optimizer.
-- **Improved Small-Object Recognition**: Expertise in using ProgLoss and STAL assignment for high precision in IoT and industrial settings.
+### 1. 统一实时检测（YOLO26）
+- **无NMS架构**：掌握无需非最大值抑制（NMS）的端到端推理技术，以降低延迟和复杂性。
+- **边缘设备部署**：通过使用分布式焦点损失（DFL）消除和MuSGD优化器，优化模型以适应低功耗硬件。
+- **改进的小目标识别**：在物联网和工业环境中，利用ProgLoss和STAL分配技术实现高精度识别。
 
-### 2. Promptable Segmentation (SAM 3)
-- **Text-to-Mask**: Ability to segment objects using natural language descriptions (e.g., "the blue container on the right").
-- **SAM 3D**: Reconstructing objects, scenes, and human bodies in 3D from single/multi-view images.
-- **Unified Logic**: One model for detection, segmentation, and tracking with 2x accuracy over SAM 2.
+### 2. 可提示分割（SAM 3）
+- **文本到掩码**：能够根据自然语言描述（例如“右边的蓝色容器”）进行对象分割。
+- **SAM 3D**：从单视图或多视图图像中重建物体、场景和人体。
+- **统一逻辑**：一个模型同时支持检测、分割和跟踪，准确率比SAM 2高出2倍。
 
-### 3. Vision Language Models (VLMs)
-- **Visual Grounding**: Leveraging Florence-2, PaliGemma 2, or Qwen2-VL for semantic scene understanding.
-- **Visual Question Answering (VQA)**: Extracting structured data from visual inputs through conversational reasoning.
+### 3. 视觉语言模型（VLMs）
+- **视觉理解**：利用Florence-2、PaliGemma 2或Qwen2-VL进行语义场景理解。
+- **视觉问答（VQA）**：通过对话式推理从视觉输入中提取结构化数据。
 
-### 4. Geometry & Reconstruction
-- **Depth Anything V2**: State-of-the-art monocular depth estimation for spatial awareness.
-- **Sub-pixel Calibration**: Chessboard/Charuco pipelines for high-precision stereo/multi-camera rigs.
-- **Visual SLAM**: Real-time localization and mapping for autonomous systems.
+### 4. 几何与重建
+- **深度估计（Depth Anything V2）**：最先进的单目深度估计技术，用于空间感知。
+- **亚像素校准**：使用棋盘/Charuco校准流程，实现高精度的立体/多相机系统。
+- **视觉SLAM**：为自主系统提供实时定位和地图构建功能。
 
-## Patterns
+## 工作模式
 
-### 1. Text-Guided Vision Pipelines
-- Use SAM 3's text-to-mask capability to isolate specific parts during inspection without needing custom detectors for every variation.
-- Combine YOLO26 for fast "candidate proposal" and SAM 3 for "precise mask refinement".
+### 1. 文本引导的视觉流程
+- 利用SAM 3的文本到掩码功能，在检测过程中无需为每种情况都编写自定义检测器，直接隔离目标区域。
+- 结合YOLO26进行快速“候选区域生成”，再使用SAM 3进行“精确掩码细化”。
 
-### 2. Deployment-First Design
-- Leverage YOLO26's simplified ONNX/TensorRT exports (NMS-free).
-- Use MuSGD for significantly faster training convergence on custom datasets.
+### 2. 以部署为导向的设计
+- 采用YOLO26简化的ONNX/TensorRT输出格式（无需NMS）。
+- 使用MuSGD算法在自定义数据集上显著加快训练速度。
 
-### 3. Progressive 3D Scene Reconstruction
-- Integrate monocular depth maps with geometric homographies to build accurate 2.5D/3D representations of scenes.
+### 3. 逐步式3D场景重建
+- 将单目深度图与几何畸变校正相结合，构建准确的2.5D/3D场景表示。
 
-## Anti-Patterns
+## 需避免的误区
 
-- **Manual NMS Post-processing**: Stick to NMS-free architectures (YOLO26/v10+) for lower overhead.
-- **Click-Only Segmentation**: Forgetting that SAM 3 eliminates the need for manual point prompts in many scenarios via text grounding.
-- **Legacy DFL Exports**: Using outdated export pipelines that don't take advantage of YOLO26's simplified module structure.
+- **手动NMS后处理**：坚持使用无NMS的架构（YOLO26/v10+），以减少处理开销。
+- **仅依赖点击式分割**：忽略SAM 3在许多场景中通过文本引导即可实现无需手动标记的缺点。
+- **使用过时的DFL输出格式**：不要使用不支持YOLO26简化模块结构的旧版本。
 
-## Sharp Edges (2026)
+## Sharp Edges（2026）
 
-| Issue | Severity | Solution |
+| 问题 | 严重程度 | 解决方案 |
 |-------|----------|----------|
-| SAM 3 VRAM Usage | Medium | Use quantized/distilled versions for local GPU inference. |
-| Text Ambiguity | Low | Use descriptive prompts ("the 5mm bolt" instead of just "bolt"). |
-| Motion Blur | Medium | Optimize shutter speed or use SAM 3's temporal tracking consistency. |
-| Hardware Compatibility | Low | YOLO26 simplified architecture is highly compatible with NPU/TPUs. |
+| SAM 3的VRAM使用量 | 中等 | 使用量化/精简版本进行本地GPU推理。 |
+| 文本描述模糊 | 低 | 使用更具体的描述（例如“5毫米的螺栓”而不是“螺栓”）。 |
+| 运动模糊 | 中等 | 优化快门速度或利用SAM 3的时间跟踪功能。 |
+| 硬件兼容性 | 低 | YOLO26的简化架构与NPU/TPU高度兼容。 |
 
-## Related Skills
-`ai-engineer`, `robotics-expert`, `research-engineer`, `embedded-systems`
+## 相关技能
+`ai-engineer`、`robotics-expert`、`research-engineer`、`embedded-systems`

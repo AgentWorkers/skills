@@ -1,6 +1,6 @@
-# MLX Brain - 맥북 MLX LLM 오케스트레이터
+# MLX Brain - 麦博MLX LLM编排器
 
-## 설치 (맥북)
+## 安装（适用于MacBook）
 ```bash
 # venv 이미 생성됨: $HOME/mlx-env
 # MLX 이미 설치됨
@@ -9,7 +9,7 @@
 $HOME/mlx-env/bin/python3 $WORKSPACE/misskim-skills/mlx-brain/run.py "안녕?"
 ```
 
-## 사용법 (미스 김)
+## 使用方法（Miss Kim）
 ```bash
 # 맥북에서 LLM 실행
 clawdbot nodes invoke --node "MacBook Pro" --command "system.run" \
@@ -21,6 +21,6 @@ echo '{"prompt":"안녕?","model":"qwen"}' | \
   --params '{"command":"$HOME/mlx-env/bin/python3 $WORKSPACE/misskim-skills/mlx-brain/run.py --json"}'
 ```
 
-## 모델
-- `qwen`: Qwen2.5-7B-Instruct-4bit (메인)
-- `coder`: Qwen2.5-Coder-7B-4bit (코딩)
+## 模型
+- `qwen`: Qwen2.5-7B-Instruct-4bit（主要模型）
+- `coder`: Qwen2.5-Coder-7B-4bit（编码模型）

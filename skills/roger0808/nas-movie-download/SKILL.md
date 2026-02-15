@@ -1,41 +1,41 @@
 ---
 name: nas-movie-download
-description: Search and download movies via Jackett and qBittorrent. Use when user wants to download movies or videos from torrent sources, search for specific movie titles, or manage movie downloads.
+description: 通过Jackett和qBittorrent搜索和下载电影。当用户需要从种子源下载电影或视频、搜索特定电影标题或管理电影下载时，可以使用这些工具。
 ---
 
-# NAS Movie Download
+# NAS电影下载
 
-Automated movie downloading system using Jackett for torrent search and qBittorrent for download management.
+这是一个自动化电影下载系统，使用Jackett进行种子搜索，使用qBittorrent进行下载管理。
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-Set these environment variables for the skill to function properly:
+设置以下环境变量以确保该功能正常运行：
 
-**Jackett Configuration:**
-- `JACKETT_URL`: Jackett service URL (default: http://192.168.1.246:9117)
-- `JACKETT_API_KEY`: Jackett API key (default: o5gp976vq8cm084cqkcv30av9v3e5jpy)
+**Jackett配置：**
+- `JACKETT_URL`：Jackett服务地址（默认：http://192.168.1.246:9117）
+- `JACKETT_API_KEY`：Jackett API密钥（默认：o5gp976vq8cm084cqkcv30av9v3e5jpy）
 
-**qBittorrent Configuration:**
-- `QB_URL`: qBittorrent Web UI URL (default: http://192.168.1.246:8888)
-- `QB_USERNAME`: qBittorrent username (default: admin)
-- `QB_PASSWORD`: qBittorrent password (default: adminadmin)
+**qBittorrent配置：**
+- `QB_URL`：qBittorrent网页界面地址（默认：http://192.168.1.246:8888）
+- `QB_USERNAME`：qBittorrent用户名（默认：admin）
+- `QB_PASSWORD`：qBittorrent密码（默认：adminadmin）
 
-### Indexer Setup
+### 索引器设置
 
-The skill works with Jackett indexers. Currently configured indexers:
+该系统支持Jackett的多种索引器。当前已配置的索引器包括：
 - The Pirate Bay
 - TheRARBG
 - YTS
 
-Ensure these indexers are enabled and configured in your Jackett installation for best results.
+请确保这些索引器已在Jackett中启用并正确配置，以获得最佳搜索效果。
 
-## Usage
+## 使用方法
 
-### Search Movies
+### 搜索电影
 
-Search for movies without downloading:
+仅搜索电影信息，不进行下载：
 
 ```bash
 scripts/jackett-search.sh -q "Inception"
@@ -43,131 +43,124 @@ scripts/jackett-search.sh -q "The Matrix"
 scripts/jackett-search.sh -q "死期将至"  # Chinese movie names supported
 ```
 
-### Download Highest Quality Version
+### 下载最高质量的版本
 
-Search and automatically download the highest quality version:
+搜索并自动下载最高质量的版本：
 
 ```bash
 scripts/download-movie.sh -q "Inception"
 scripts/download-movie.sh -q "The Matrix"
 ```
 
-### Manual Download Workflow
+### 手动下载流程
 
-For more control over the download process:
+如需更精细地控制下载过程：
+1. 搜索电影：`scripts/jackett-search.sh -q "电影名称"`
+2. 查看搜索结果并复制磁力链接
+3. 将磁力链接添加到qBittorrent：`scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."`
 
-1. Search: `scripts/jackett-search.sh -q "movie name"`
-2. Review results and copy magnet link
-3. Add to qBittorrent: `scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."`
+### 测试配置
 
-### Test Configuration
-
-Verify your Jackett and qBittorrent setup:
+验证Jackett和qBittorrent的配置是否正确：
 
 ```bash
 scripts/test-config.sh
 ```
 
-## Quality Selection
+## 质量优先级
 
-The skill automatically prioritizes quality in this order:
+系统按以下顺序优先选择电影质量：
+1. **4K/UHD**：包含“4K”、“2160p”、“UHD”字样的电影
+2. **1080P/全高清**：包含“1080p”、“FHD”字样的电影
+3. **720P/高清**：包含“720p”、“HD”字样的电影
+4. **其他**：其他质量级别的电影
 
-1. **4K/UHD**: Contains "4K", "2160p", "UHD"
-2. **1080P/Full HD**: Contains "1080p", "FHD"
-3. **720P/HD**: Contains "720p", "HD"
-4. **Other**: Other quality levels
+使用`download-movie.sh`命令时，系统会自动选择可用种子中的最高质量版本。
 
-When using `download-movie.sh`, the highest quality available torrent will be selected automatically.
-
-## Script Details
+## 脚本详情
 
 ### jackett-search.sh
 
-Search Jackett for torrents.
+用于在Jackett中搜索种子文件。
 
-**Parameters:**
-- `-q, --query`: Search query (required)
-- `-u, --url`: Jackett URL (optional, uses env var)
-- `-k, --api-key`: API key (optional, uses env var)
+**参数：**
+- `-q, --query`：搜索查询（必填）
+- `-u, --url`：Jackett服务地址（可选，使用环境变量）
+- `-k, --api-key`：API密钥（可选，使用环境变量）
 
-**Example:**
+**示例：**
 ```bash
 scripts/jackett-search.sh -q "Inception" -u http://192.168.1.246:9117
 ```
 
 ### qbittorrent-add.sh
 
-Add torrent to qBittorrent.
+用于将搜索到的种子文件添加到qBittorrent。
 
-**Parameters:**
-- `-m, --magnet`: Magnet link (required)
-- `-u, --url`: qBittorrent URL (optional, uses env var)
-- `-n, --username`: Username (optional, uses env var)
-- `-p, --password`: Password (optional, uses env var)
+**参数：**
+- `-m, --magnet`：磁力链接（必填）
+- `-u, --url`：qBittorrent服务地址（可选，使用环境变量）
+- `-n, --username`：用户名（可选，使用环境变量）
+- `-p, --password`：密码（可选，使用环境变量）
 
-**Example:**
+**示例：**
 ```bash
 scripts/qbittorrent-add.sh -m "magnet:?xt=urn:btih:..."
 ```
 
 ### download-movie.sh
 
-One-click search and download.
+一键完成搜索和下载。
 
-**Parameters:**
-- `-q, --query`: Movie name (required)
+**参数：**
+- `-q, --query`：电影名称（必填）
 
-**Example:**
+**示例：**
 ```bash
 scripts/download-movie.sh -q "The Matrix"
 ```
 
-## Tips and Best Practices
+## 提示与最佳实践：
+- 使用英文电影名称以获得更好的搜索结果
+- 如果搜索无结果，请检查Jackett索引器的状态
+- 监控qBittorrent的下载进度
+- 下载4K内容时请考虑存储空间
+- 定期测试配置以确保服务正常运行
 
-- **Use English movie names** for better search results
-- **Check Jackett indexer status** if searches return no results
-- **Monitor qBittorrent** to manage download progress
-- **Consider storage space** when downloading 4K content
-- **Test configuration** periodically to ensure services are running
+## 故障排除
 
-## Troubleshooting
+### 无搜索结果
+1. 确认Jackett正在运行：`curl http://192.168.1.246:9117`
+2. 检查Jackett中是否启用了相应的索引器
+- 尝试使用英文电影名称进行搜索
+- 确认API密钥是否正确
 
-### No Search Results
+### qBittorrent连接失败
+1. 确认qBittorrent正在运行
+- 检查qBittorrent设置中是否启用了网页界面
+- 核对用户名和密码
+- 确保网络连接正常
 
-1. Verify Jackett is running: `curl http://192.168.1.246:9117`
-2. Check Jackett indexers are enabled in Jackett UI
-3. Try English movie names
-4. Verify API key is correct
+### 权限问题
 
-### qBittorrent Connection Failed
-
-1. Confirm qBittorrent is running
-2. Check Web UI is enabled in qBittorrent settings
-3. Verify username and password
-4. Ensure network connectivity to qBittorrent server
-
-### Permission Issues
-
-Ensure scripts have execute permissions:
+确保脚本具有执行权限：
 
 ```bash
 chmod +x scripts/*.sh
 ```
 
-## Security Notes
+## 安全注意事项：
+- 保护API密钥，切勿将其提交到版本控制系统中
+- 尽可能使用HTTPS连接
+- 考虑为种子下载流量设置VPN
+- 定期检查qBittorrent是否存在未经授权的下载行为
 
-- Keep API keys secure and don't commit them to version control
-- Use HTTPS connections when possible
-- Consider setting up VPN for torrent traffic
-- Monitor qBittorrent for unauthorized downloads
-
-## Dependencies
-
-- `curl`: For HTTP requests
-- `jq`: For JSON parsing
+## 依赖软件
+- `curl`：用于发送HTTP请求
+- `jq`：用于解析JSON数据
 - Bash shell
 
-Install jq if missing:
+如果未安装`jq`，请先安装它：
 ```bash
 apt-get install jq
 ```

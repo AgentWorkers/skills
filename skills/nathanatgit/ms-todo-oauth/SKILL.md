@@ -18,43 +18,41 @@ metadata:
 ---
 # ms-todo-oauth
 
-A fully-tested Microsoft To Do command-line client for managing tasks and lists via Microsoft Graph API.
+这是一个经过全面测试的Microsoft To Do命令行客户端，用于通过Microsoft Graph API管理任务和列表。
 
-## ⚠️This is a oauth based script. It contains a generated Azure Client ID and Secret ID
+## ⚠️ 本脚本基于OAuth2认证。其中包含生成的Azure客户端ID和密钥
 
-IF YOU WORRIED ABOUT YOUR PRIVACY, CONSIDER REPLACING THEM TO YOUR OWN IN `scripts\ms-todo-oauth.py`.
-Just search for values below:
+如果您担心隐私问题，可以考虑在`scripts\ms-todo-oauth.py`中将它们替换为您自己的信息。只需查找以下内容：
 
-`client_id="ca6ec244……`
-
+`client_id="ca6ec244……`  
 `client_secret="TwQ8Q……`
 
-## ✨ Features
+## ✨ 主要功能
 
-- ✅ **Full Task Management**: Create, complete, delete, and search tasks
-- 🗂️ **List Organization**: Create and manage multiple task lists
-- ⏰ **Rich Task Options**: Priorities, due dates, reminders, descriptions, tags
-- 🔄 **Recurring Tasks**: Daily, weekly, monthly patterns with custom intervals
-- 📊 **Multiple Views**: Today, overdue, pending, statistics
-- 🔍 **Powerful Search**: Find tasks across all lists
-- 💾 **Data Export**: Export all tasks to JSON
-- 🧪 **Fully Tested**: 29 comprehensive automated tests
-- 🌐 **Unicode Support**: Full support for Chinese characters and emojis
+- ✅ **任务管理**：创建、完成、删除和搜索任务  
+- 🗂️ **列表管理**：创建和管理多个任务列表  
+- ⏰ **丰富的任务选项**：优先级、截止日期、提醒、描述、标签  
+- 🔄 **重复任务**：每日、每周、每月的循环模式  
+- 📊 **多种视图**：今日任务、逾期任务、待办任务、统计信息  
+- 🔍 **强大的搜索功能**：在所有列表中查找任务  
+- 💾 **数据导出**：将所有任务导出为JSON格式  
+- 🧪 **全面测试**：包含29个自动化测试  
+- 🌐 **支持Unicode**：完全支持中文字符和表情符号  
 
-## Prerequisites
+## 先决条件
 
-1. **Python >= 3.9** must be installed
-2. **Working directory**: All commands MUST be run from the root of this skill (the directory containing this SKILL.md file)
-3. **Network access**: Requires internet access to Microsoft Graph API endpoints
-4. **Microsoft Account**: Personal Microsoft account (Hotmail, Outlook.com) or work/school account
-5. **Authentication**: First-time use requires OAuth2 login via browser. See [Authentication](#authentication) section
-   - **Token cache**: `~/.mstodo_token_cache.json` (persists across sessions, auto-refreshed)
+1. 必须安装Python 3.9或更高版本  
+2. 所有命令必须从包含此SKILL.md文件的目录（即工作目录）执行  
+3. 需要互联网连接以访问Microsoft Graph API  
+4. 拥有Microsoft账户（Hotmail、Outlook.com）或工作/学校账户  
+5. 首次使用时需要通过浏览器进行OAuth2登录。详见[认证](#authentication)部分  
+   - **令牌缓存**：`~/.mstodo_token_cache.json`（在会话间持久保存，自动刷新）  
 
-## Installation & Setup
+## 安装与设置
 
-### First-Time Setup
+### 首次使用前的设置
 
-Before using this skill for the first time, dependencies must be installed:
+在首次使用此工具之前，需要安装以下依赖项：
 
 ```bash
 # Navigate to skill directory
@@ -77,15 +75,14 @@ pip install -r requirements.txt
 # pip install -r requirements.txt
 ```
 
-**Dependencies:**
+**依赖项：**  
+- `msal`（Microsoft认证库）  
+- `requests`（用于API请求的HTTP客户端）  
+- 详见`requirements.txt`文件  
 
-- `msal` (Microsoft Authentication Library) - Official Microsoft OAuth library
-- `requests` - HTTP client for API calls
-- Specified in `requirements.txt`
+### 环境验证
 
-### Environment Verification
-
-After installation, verify the setup:
+安装完成后，请验证设置是否正确：
 
 ```bash
 
@@ -95,14 +92,13 @@ python3 scripts/ms-todo-oauth.py --help
 # Expected: Command help text should be displayed
 ```
 
-**Troubleshooting:**
+## 故障排除
 
-- If `Python not found`, install Python 3.9 or higher from https://python.org
+- 如果找不到Python，请从https://python.org安装Python 3.9或更高版本  
 
+### 测试（可选但推荐）
 
-### Testing (Optional but Recommended)
-
-Verify all functionality works correctly:
+验证所有功能是否正常工作：
 
 ```bash
 # Run comprehensive automated test suite (29 tests)
@@ -111,970 +107,535 @@ python3 test_ms_todo_oauth.py
 # Expected: All tests pass (100% pass rate)
 ```
 
-See [Testing](#testing) section for details.
+详情请参阅[测试](#testing)部分。  
 
-### Security Notes
+## 安全注意事项
 
-- Uses official Microsoft Graph API via Microsoft's `msal` library
-- All code is plain Python (.py files), readable and auditable
-- Tokens stored locally in `~/.mstodo_token_cache.json`
-- All API calls go directly to Microsoft endpoints (graph.microsoft.com)
-- OAuth2 standard authentication flow
-- No third-party services involved
+- 通过Microsoft的`msal`库使用官方Microsoft Graph API  
+- 所有代码均为纯Python（.py文件），易于阅读和审计  
+- 令牌存储在本地文件`~/.mstodo_token_cache.json`中  
+- 所有API请求直接发送到graph.microsoft.com  
+- 遵循OAuth2标准认证流程  
+- 不涉及任何第三方服务  
 
-## Command Reference
+## 命令参考
 
-All commands follow this pattern:
+所有命令遵循以下格式：  
 
 ```
 python3 scripts/ms-todo-oauth.py [GLOBAL_OPTIONS] <command> [COMMAND_OPTIONS]
 ```
 
-### Global Options
+### 全局选项
 
-| Option            | Description                                                                                                                         |
+| 选项            | 描述                                                                                                                         |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `-v, --verbose` | Show detailed information (IDs, dates, notes).**Must be placed BEFORE the subcommand.**                                       |
-| `--debug`       | Enable debug mode to display API requests and responses. Useful for troubleshooting.**Must be placed BEFORE the subcommand.** |
-| `--reauth`      | Force re-authentication by clearing the token cache and starting fresh login                                                        |
+| `-v, --verbose` | 显示详细信息（包括ID、日期、备注）。**必须放在子命令之前**                                       |
+| `--debug`       | 启用调试模式，显示API请求和响应。有助于故障排除。**必须放在子命令之前** |
+| `--reauth`      | 通过清除令牌缓存并重新登录来强制重新认证                                                        |
 
-> ⚠️ **Common mistake**: Global options MUST come before the subcommand.
->
-> - ✅ `python3 scripts/ms-todo-oauth.py -v lists`
-> - ✅ `python3 scripts/ms-todo-oauth.py --debug add "Task"`
-> - ❌ `python3 scripts/ms-todo-oauth.py lists -v`
+> ⚠️ **重要提示**：全局选项必须放在子命令之前。  
+> - 示例用法：`python3 scripts/ms-todo-oauth.py -v lists`  
+> - 示例用法：`python3 scripts/ms-todo-oauth.py --debug add "Task"`  
+> - 错误用法：`python3 scripts/ms-todo-oauth.py lists -v`  
 
 ---
 
-### Authentication
+### 认证
 
-Authentication uses OAuth2 authorization code flow, designed for both interactive and automated environments.
+该工具使用OAuth2认证流程，适用于交互式和自动化环境。
 
-#### `login get` — Get OAuth2 authorization URL
+#### `login get` — 获取OAuth2授权码  
 
 ```bash
 python3 scripts/ms-todo-oauth.py login get
 ```
 
-**Output example:**
+**输出示例：**  
+（此处应显示获取授权码的URL和提示信息）  
 
-```
-======================================================================
-🔐 OAuth2 Authorization Required
-======================================================================
+**操作步骤：**  
+1. 在浏览器中打开提供的URL  
+2. 使用您的Microsoft账户登录  
+3. 根据提示授予权限  
+4. 您将被重定向到类似以下内容的URL：`http://localhost:8000/callback?code=M.R3_BAY.abc123...`  
+5. 复制`code=`后面的整个字符串（通常以`M.R3_BAY.`开头）  
 
-Please visit the following URL to authorize the application:
+**代理行为**：  
+向用户展示该URL，并告知他们需要：  
+1. 访问该URL  
+2. 完成登录  
+3. 从回调URL中复制授权码  
+4. 将授权码提供给代理  
 
-  https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?...
-
-After authorization, you will be redirected to a callback URL.
-Copy the 'code' parameter from the callback URL and run:
-
-  ms-todo-oauth.py login verify <authorization_code>
-
-======================================================================
-```
-
-**What to do:**
-
-1. Open the provided URL in your browser
-2. Sign in with your Microsoft account
-3. Grant permissions when prompted
-4. You'll be redirected to a URL like: `http://localhost:8000/callback?code=M.R3_BAY.abc123...`
-5. Copy the entire code after `code=` (usually a long string starting with `M.R3_BAY.`)
-
-**Agent behavior**: Present the URL to the user and explain they need to:
-
-1. Visit the URL
-2. Complete the login
-3. Copy the authorization code from the callback URL
-4. Provide it to you
-
-#### `login verify` — Complete login with authorization code
+#### `login verify` — 使用授权码完成登录  
 
 ```bash
 python3 scripts/ms-todo-oauth.py login verify <authorization_code>
 ```
 
-**Example:**
+**示例：**  
+（此处应显示登录界面和输入授权码的提示）  
 
-```bash
-python3 scripts/ms-todo-oauth.py login verify "M.R3_BAY.abc123def456..."
-```
+**成功输出：**  
+（此处应显示登录成功后的信息）  
 
-**Output on success:**
+**失败输出：**  
+（此处应显示登录失败的原因）  
 
-```
-✓ Authentication successful!
-✓ Login information saved, you will be logged in automatically next time.
-```
+**退出代码**：  
+成功时返回0，失败时返回1。  
 
-**Output on failure:**
+**重要提示：**  
+- 每个授权码仅可使用一次  
+- 如果验证失败，需要再次运行`login get`以获取新的授权码  
+- 成功登录后，令牌会被缓存，除非执行`logout`、`--reauth`或令牌过期，否则无需重新登录  
 
-```
-❌ Token acquisition failed
-Error: invalid_grant
-Description: AADSTS54005: OAuth2 Authorization code was already redeemed...
-```
-
-**Exit code**: 0 on success, 1 on failure.
-
-**Important notes:**
-
-- Each authorization code can only be used ONCE
-- If verification fails, you need to run `login get` again to get a new code
-- Once successfully logged in, the token is cached and you won't need to login again unless:
-  - You run `logout`
-  - You run `--reauth`
-  - The token expires and cannot be auto-refreshed
-
-#### `logout` — Clear saved login
+#### `logout` — 清除保存的登录信息  
 
 ```bash
 python3 scripts/ms-todo-oauth.py logout
 ```
 
-Output: `✓ Login information cleared`
+**输出：**  
+“✓ 登录信息已清除”  
 
-Only use when the user explicitly asks to switch accounts or clear login data. Under normal circumstances, the token is cached and login is automatic.
+仅在用户明确要求切换账户或清除登录信息时使用此命令。通常情况下，令牌会被缓存，登录是自动完成的。  
 
 ---
 
-### List Management
+### 列表管理
 
-#### `lists` — List all task lists
+#### `lists` — 列出所有任务列表  
 
 ```bash
 python3 scripts/ms-todo-oauth.py lists
 python3 scripts/ms-todo-oauth.py -v lists  # with IDs and creation dates
 ```
 
-**Output example:**
+**输出示例：**  
+（列出所有任务列表）  
 
-```
-📋 Task Lists (3 total):
-
-1. 任务
-   ID: AQMkADAwATYwMAItYTQwZC04OThhLTAwAi0wMAoALgAAA0QJKpxW32BIsIlHaM...
-   Created: 2024-12-15T08:30:00Z
-2. Work
-3. Shopping
-```
-
-#### `create-list` — Create a new list
+#### `create-list` — 创建新列表  
 
 ```bash
 python3 scripts/ms-todo-oauth.py create-list "<name>"
 ```
 
-| Argument | Required | Description                                     |
-| -------- | -------- | ----------------------------------------------- |
-| `name` | Yes      | Name of the new list (supports Unicode/Chinese) |
+| 参数          | 是否必填 | 描述                                                                                                 |
+| -------------- | -------- | ------------------------- |
+| `name`         | 是      | 新列表的名称（支持Unicode/中文）                                                                                                 |
 
-**Example:**
+**示例：**  
+`python3 scripts/ms-todo-oauth.py create-list "项目A"`  
+**输出：**  
+“✓ 列表创建：项目A”  
 
-```bash
-python3 scripts/ms-todo-oauth.py create-list "项目 A"
-```
-
-Output: `✓ List created: 项目 A`
-
-#### `delete-list` — Delete a list
+#### `delete-list` — 删除列表  
 
 ```bash
 python3 scripts/ms-todo-oauth.py delete-list "<name>" [-y]
 ```
 
-| Argument/Option | Required | Description                |
-| --------------- | -------- | -------------------------- |
-| `name`        | Yes      | Name of the list to delete |
-| `-y, --yes`   | No       | Skip confirmation prompt   |
+| 参数          | 是否必填 | 描述                                                                                                 |
+| -------------- | ------------------------- |
+| `name`         | 是      | 要删除的列表名称                                                                                                 |
+| `-y, --yes`       | 否       | 省略确认提示                                                                                                 |
 
-> ⚠️ **This is a destructive operation**. Without `-y`, the command will prompt for confirmation. All tasks in the list will be deleted. Consider asking the user before deleting important lists.
+> ⚠️ **注意**：此操作具有破坏性。如果不使用`-y`参数，系统会提示确认。删除重要列表前请务必询问用户。  
+**输出：**  
+“✓ 列表已删除：<名称>”  
 
-Output: `✓ List deleted: <name>`
-
-**Exit code**: 1 if list not found, 0 on success
+**退出代码**：  
+列表未找到时返回1，删除成功时返回0。  
 
 ---
 
-### Task Operations
+### 任务操作
 
-#### `add` — Add a new task
+#### `add` — 添加新任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py add "<title>" [options]
 ```
 
-| Option                | Required | Default        | Description                                                                                                                                                                                                                             |
-| --------------------- | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`             | Yes      | —             | Task title (positional argument, supports Unicode/Chinese/emojis)                                                                                                                                                                       |
-| `-l, --list`        | No       | (default list) | Target list name. If not specified, uses your Microsoft To Do default list.                                                                                                                                                             |
-| `-p, --priority`    | No       | `normal`     | Priority:`low`, `normal`, `high`                                                                                                                                                                                                  |
-| `-d, --due`         | No       | —             | Due date. Accepts days from now (`3` or `3d`) or date (`2026-02-15`). **Note:** Only date is supported by Microsoft To Do API, not time.                                                                                    |
-| `-r, --reminder`    | No       | —             | Reminder datetime. Formats:`3h` (hours from now), `2d` (days from now), `2026-02-15 14:30` (date+time with space, needs quotes), `2026-02-15T14:30:00` (ISO format), `2026-02-15` (date only, defaults to 09:00).             |
-| `-R, --recurrence`  | No       | —             | Recurrence pattern. Formats:`daily` (every day), `weekdays` (Mon-Fri), `weekly` (every week), `monthly` (every month). With interval: `daily:2` (every 2 days), `weekly:3` (every 3 weeks), `monthly:2` (every 2 months). |
-| `-D, --description` | No       | —             | Task description/notes (supports multiline with quotes)                                                                                                                                                                                 |
-| `-t, --tags`        | No       | —             | Comma-separated tags/categories (e.g.,`"work,urgent"`)                                                                                                                                                                                |
-| `--create-list`     | No       | False          | Create the list if it doesn't exist (deprecated, lists auto-create now)                                                                                                                                                                 |
+| 选项          | 是否必填 | 默认值        | 描述                                                                                                      |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | 是      | 任务标题（支持Unicode/中文/表情符号）                                                                                                 |
+| `-l, --list`       | 否       | 目标列表名称（如果未指定，使用默认列表）                                                                                                 |
+| `-p, --priority`    | 是否必填 | 优先级（`low`, `normal`, `high`）                                                                                                 |
+| `-d, --due`       | 是否必填 | 截止日期（例如`3`表示3天后，`2026-02-15`表示具体日期）                                                                                                 |
+| `-r, --reminder`    | 是否必填 | 提醒时间（格式示例：`3h`表示3小时后，`2d`表示2天后）                                                                                                 |
+| `-R, --recurrence`   | 是否必填 | 重复模式（例如`daily`表示每天，`weekly`表示每周）                                                                                                 |
+| `-D, --description` | 是否必填 | 任务描述/备注（支持多行内容）                                                                                                 |
+| `-t, --tags`       | 是否必填 | 逗号分隔的标签（例如`"工作,紧急"`）                                                                                                 |
+| `--create-list`     | 是否必填 | 如果列表不存在，则创建新列表（已弃用，现在会自动创建列表）                                                                                                 |
 
-**Auto-created lists**: If the specified list doesn't exist, it will be automatically created.
+**示例：**  
+`python3 scripts/ms-todo-oauth.py add "购买牛奶, 完成报告, 约见牙医"`  
+**输出：**  
+“✓ 任务已添加：购买牛奶, 完成报告, 约见牙医”  
 
-**Output example:**
+**带有重复设置的示例：**  
+（此处应显示包含重复设置的命令示例）  
 
-```
-✓ Task added: Complete report
-```
-
-**With recurrence:**
-
-```
-✓ Task added: Daily standup
-🔄 Recurring task created
-```
-
-**Examples:**
-
-```bash
-# Simple task
-python3 scripts/ms-todo-oauth.py add "Buy milk" -l "Shopping"
-
-# High priority task due in 3 days
-python3 scripts/ms-todo-oauth.py add "Submit report" -l "Work" -p high -d 3
-
-# Task with reminder in 2 hours
-python3 scripts/ms-todo-oauth.py add "Call client" -r 2h
-
-# Task with specific date and time reminder
-python3 scripts/ms-todo-oauth.py add "Meeting" -d 2026-03-15 -r "2026-03-15 14:30"
-
-# Daily recurring task
-python3 scripts/ms-todo-oauth.py add "Daily standup" -l "Work" -R daily
-
-# Weekday recurring task  
-python3 scripts/ms-todo-oauth.py add "Gym" -R weekdays -l "Personal"
-
-# Task with all options
-python3 scripts/ms-todo-oauth.py add "Project Review" \
-  -l "Work" \
-  -p high \
-  -d 7 \
-  -r "2026-02-20 14:00" \
-  -D "Review Q1 deliverables and prepare presentation" \
-  -t "work,important,meeting"
-
-# Chinese task with emoji
-python3 scripts/ms-todo-oauth.py add "🎉 完成项目" -l "任务" -p high
-```
-
-#### `complete` — Mark a task as completed
+#### `complete` — 将任务标记为已完成  
 
 ```bash
 python3 scripts/ms-todo-oauth.py complete "<title>" [-l "<list>"]
 ```
 
-| Option         | Required | Default        | Description                      |
-| -------------- | -------- | -------------- | -------------------------------- |
-| `title`      | Yes      | —             | **Exact** task title       |
-| `-l, --list` | No       | (default list) | List name where the task resides |
+| 选项          | 是否必填 | 默认值        | 描述                                                                                                      |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | 是      | 任务标题                                                                                                 |
+| `-l, --list`       | 是否必填 | 任务所属列表名称（默认使用默认列表）                                                                                                 |
 
-**Title matching**: Requires **exact match**. If unsure of exact title, use `search` first.
+**注意**：  
+- 使用`-l`参数时，必须提供任务所属列表的名称。  
+- 确保输入的标题与列表名称完全匹配。  
 
-Output: `✓ Task completed: <title>`
+**输出：**  
+“✓ 任务已完成：购买牛奶”  
 
-**Exit code**: 1 if task not found, 0 on success
+**退出代码**：  
+任务未找到时返回1，删除成功时返回0。  
 
-#### `delete` — Delete a task
+#### `delete` — 删除任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py delete "<title>" [-l "<list>"] [-y]
 ```
 
-| Option         | Required | Default        | Description                      |
-| -------------- | -------- | -------------- | -------------------------------- |
-| `title`      | Yes      | —             | **Exact** task title       |
-| `-l, --list` | No       | (default list) | List name where the task resides |
-| `-y, --yes`  | No       | —             | Skip confirmation prompt         |
+| 选项          | 是否必填 | 默认值        | 描述                                                                                                      |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | 是      | 任务标题                                                                                                 |
+| `-l, --list`       | 是否必填 | 任务所属列表名称（默认使用默认列表）                                                                                                 |
+| `-y, --yes`       | 是否必填 | 省略确认提示                                                                                                 |
 
-> ⚠️ **Destructive operation**. Without `-y`, will prompt for confirmation.
+> ⚠️ **注意**：此操作具有破坏性。如果不使用`-y`参数，系统会提示确认。  
+**输出：**  
+“✓ 任务已删除：购买牛奶”  
 
-Output: `✓ Task deleted: <title>`
-
-**Exit code**: 1 if task not found, 0 on success
+**退出代码**：  
+任务未找到时返回1，删除成功时返回0。  
 
 ---
 
-### Task Views
+### 任务查看
 
-#### `tasks` — List tasks in a specific list
+#### `tasks` — 查看特定列表中的任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py tasks "<list>" [-a]
 ```
 
-| Option        | Required | Description                                        |
-| ------------- | -------- | -------------------------------------------------- |
-| `list`      | Yes      | List name (exact match)                            |
-| `-a, --all` | No       | Include completed tasks (default: incomplete only) |
+| 选项          | 是否必填 | 描述                                                                                                 |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `list`         | 是      | 列表名称（必须完全匹配）                                                                                                 |
+| `-a, --all`       | 是否必填 | 是否包含已完成的任务（默认仅显示未完成的任务）                                                                                                 |
 
-**Output example:**
+**示例：**  
+`python3 scripts/ms-todo-oauth.py tasks lists`  
+**输出：**  
+（列出所有任务，已完成的任务会标记为已完成）  
 
-```
-📋 Tasks in list "Work" (2 total):
-
-1. [In Progress] Write documentation ⭐
-2. [In Progress] Review PR
-```
-
-**With `-a` flag:**
-
-```
-📋 Tasks in list "Work" (3 total):
-
-1. [In Progress] Write documentation ⭐
-2. [Completed] Submit report
-3. [In Progress] Review PR
-```
-
-**Exit code**: 1 if list not found, 0 on success
-
-#### `pending` — All incomplete tasks across all lists
+#### `pending` — 查看所有列表中的未完成任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py pending [-g]
 ```
 
-| Option          | Required | Description           |
-| --------------- | -------- | --------------------- |
-| `-g, --group` | No       | Group results by list |
+| 选项          | 是否必填 | 描述                                                                                                 |
+| -------------- | -------- | ------------------------- |
+| `-g, --group`     | 是否必填 | 是否按列表分组显示结果                                                                                                 |
 
-**Output example (with `-g`):**
+**示例：**  
+`python3 scripts/ms-todo-oauth.py pending`  
+**输出：**  
+（按列表分组显示未完成任务）  
 
-```
-📋 All incomplete tasks (3 total):
+**不使用`-g`参数时：**  
+（仅列出所有任务）  
 
-📂 Work:
-  [In Progress] Write documentation ⭐
-  [In Progress] Review PR
-
-📂 Shopping:
-  [In Progress] Buy groceries
-```
-
-**Without `-g`:**
-
-```
-📋 All incomplete tasks (3 total):
-
-[In Progress] Write documentation ⭐
-   List: Work
-[In Progress] Review PR
-   List: Work
-[In Progress] Buy groceries
-   List: Shopping
-```
-
-#### `today` — Tasks due today
+#### `today` — 查看今日到期的任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py today
 ```
 
-Lists incomplete tasks with due date matching today's date.
+**输出示例：**  
+（列出今日到期的任务）  
 
-**Output example:**
+**如果没有到期任务：**  
+“📅 今日没有到期任务”  
 
-```
-📅 Tasks due today (2 total):
-
-[In Progress] Submit report ⭐
-   List: Work
-[In Progress] Buy groceries
-   List: Shopping
-```
-
-If no tasks: `📅 No tasks due today`
-
-#### `overdue` — Overdue tasks
+#### `overdue` — 查看逾期任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py overdue
 ```
 
-Lists incomplete tasks past their due date, sorted by days overdue.
+**输出示例：**  
+（列出逾期未完成的任务）  
 
-**Output example:**
+**如果没有逾期任务：**  
+“✓ 无逾期任务”  
 
-```
-⚠️  Overdue tasks (1 total):
-
-[In Progress] Submit report ⭐
-   List: Work
-   Overdue: 3 days
-```
-
-If no overdue tasks: `✓ No overdue tasks`
-
-#### `detail` — View full task details
+#### `detail` — 查看任务详细信息  
 
 ```bash
 python3 scripts/ms-todo-oauth.py detail "<title>" [-l "<list>"]
 ```
 
-| Option         | Required | Default        | Description                                        |
-| -------------- | -------- | -------------- | -------------------------------------------------- |
-| `title`      | Yes      | —             | Task title (supports**partial/fuzzy match**) |
-| `-l, --list` | No       | (default list) | List name                                          |
+| 选项          | 是否必填 | 描述                                                                                                 |
+| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`         | 是否必填 | 任务标题（支持部分/模糊匹配）                                                                                                 |
+| `-l, --list`       | 是否必填 | 任务所属列表名称（默认使用默认列表）                                                                                                 |
 
-**Fuzzy matching**: Matches tasks containing the search string (case-insensitive).
+**匹配规则：**  
+- 支持部分匹配和模糊匹配  
+- 在多个匹配的任务中，优先显示未完成的任务  
+- 返回最近修改的任务  
 
-When multiple tasks match:
+**示例：**  
+（列出未完成的任务）  
 
-- Prefers **incomplete** tasks over completed
-- Returns most recently modified task
-
-**Output example:**
-
-```
-============================================================
-📌 Task Details
-============================================================
-
-📋 Title: Complete Q1 Report
-🔖 Status: [In Progress]
-⚡ Priority: ⭐ High
-📅 Created: 2026-01-15 08:30:00
-📝 Modified: 2026-02-10 14:22:00
-⏰ Due: 2026-02-20 00:00:00
-🔔 Reminder: 2026-02-20 09:00:00
-
-📝 Notes:
-- Review sales figures
-- Include charts
-- Prepare for board meeting
-
-🏷️  Categories: work, important, Q1
-
-🔄 Recurrence:
-   Every week on Monday
-   Start date: 2026-02-17
-   No end date
-
-============================================================
-```
-
-#### `search` — Search tasks by keyword
+#### `search` — 按关键词搜索任务  
 
 ```bash
 python3 scripts/ms-todo-oauth.py search "<keyword>"
 ```
 
-Searches across **all lists** in both task titles and descriptions (case-insensitive).
+**搜索范围**：  
+在所有列表中搜索任务标题和描述（不区分大小写）。  
 
-**Output example:**
+**输出示例：**  
+（列出匹配的任务）  
 
-```
-🔍 Search results for "report" (2 found):
-
-[In Progress] Complete Q1 Report ⭐
-   List: Work
-   Notes: Review sales figures...
-
-[Completed] Submit weekly report
-   List: Work
-```
-
-#### `stats` — Task statistics
+#### `stats` — 查看任务统计信息  
 
 ```bash
 python3 scripts/ms-todo-oauth.py stats
 ```
 
-Shows aggregate statistics across all lists.
+**输出示例：**  
+（显示所有任务的统计信息）  
 
-**Output example:**
-
-```
-📊 Task Statistics:
-
-  Total lists: 3
-  Total tasks: 15
-  Completed: 10
-  Pending: 5
-  High priority: 2
-  Overdue: 1
-
-  Completion rate: 66.7%
-```
-
-#### `export` — Export all tasks to JSON
+#### `export` — 将所有任务导出为JSON  
 
 ```bash
 python3 scripts/ms-todo-oauth.py export [-o "<filename>"]
 ```
 
-| Option           | Required | Default              | Description      |
-| ---------------- | -------- | -------------------- | ---------------- |
-| `-o, --output` | No       | `todo_export.json` | Output file path |
+| 选项          | 是否必填 | 默认值        | 描述                                                                                                 |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `-o, --output` | 是否必填 | 输出文件路径（默认为`todo_export.json`）                                                                                                 |
 
-Exports complete task data from all lists in JSON format.
-
-**Output:** `✓ Tasks exported to: <filename>`
-
-**JSON structure:**
-
-```json
-{
-  "Work": [
-    {
-      "id": "AQMkADAwATYwMAItYTQw...",
-      "title": "Complete report",
-      "status": "notStarted",
-      "importance": "high",
-      "createdDateTime": "2026-01-15T08:30:00Z",
-      "dueDateTime": {
-        "dateTime": "2026-02-20T00:00:00.0000000",
-        "timeZone": "UTC"
-      },
-      "body": {
-        "content": "Review Q1 numbers",
-        "contentType": "text"
-      },
-      "categories": ["work", "important"]
-    }
-  ],
-  "Shopping": [...]
-}
-```
+**输出示例：**  
+“✓ 任务已导出至：<文件路径>`  
+（输出文件内容：所有任务的JSON格式）  
 
 ---
 
-## Error Handling
+## 错误处理
+
+### 出错代码  
+
+| 代码          | 含义                                                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`         | 成功                                                                                                 |
+| `1`         | 失败（未登录、API错误、参数无效、资源未找到）                                                                                                 |
+| `2`         | 参数错误                                                                                                 |
+
+### 常见错误信息及解决方法  
 
-### Exit Codes
+| 错误信息            | 原因                                      | 解决方法                                                                                                 |
+| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `❌ 未登录`         | 令牌未缓存或已过期                                 | 先运行`login get`，然后运行`login verify <授权码>`                                                                                   |
+| `ModuleNotFoundError`     | 未安装依赖项                                 | 运行`pip install -r requirements.txt`                                                                                   |
+| `❌ 列表未找到`        | 指定的列表不存在                                 | 使用`lists`命令检查列表名称（需完全匹配）                                                                                   |
+| `❌ 任务未找到`        | 任务标题不匹配                                 | 使用`search`查找任务标题，或使用`tasks "<列表名称>"列出所有任务                                                                                   |
+| `❌ 错误：无效的ISO格式字符串`    | 时间格式解析错误                                   | 应在v1.1.0及以上版本中不会出现此问题；如有问题请报告                                                                                   |
+| `❌ 错误：不支持的HTTP方法`     | API内部错误                                   | 应在v1.1.0及以上版本中不会出现此问题；如有问题请报告                                                                                   |
+| `❌ 错误：<API错误信息>`     | Microsoft Graph API错误                                 | 重试；检查网络连接；使用`--debug`查看详细信息                                                                                   |
+| `Network error`     | 无法连接网络或API不可达                                 | 检查网络连接；确认能否访问graph.microsoft.com                                                                                   |
 
-| Code  | Meaning                                                                   |
-| ----- | ------------------------------------------------------------------------- |
-| `0` | Success                                                                   |
-| `1` | Failure (not logged in, API error, invalid arguments, resource not found) |
-| `2` | Invalid command-line arguments                                            |
+## 测试
 
-### Common Error Messages
+该工具包含一个全面的测试套件以确保可靠性。
 
-| Error                                           | Cause                             | Resolution                                                                  |
-| ----------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- |
-| `❌ Not logged in`                            | No cached token or token expired  | Run `login get` then `login verify <code>`                              |
-| `ModuleNotFoundError: No module named 'msal'` | Dependencies not installed        | Run `pip install -r requirements.txt`                      |
-| `❌ List not found: <name>`                   | Specified list does not exist     | Check list name with `lists` command. Note: exact match required.         |
-| `❌ Task not found: <name>`                   | No task with exact matching title | Use `search` to find exact title, or `tasks "<list>"` to list all tasks |
-| `❌ Error: Invalid isoformat string`          | DateTime parsing error            | This should not occur in v1.1.0+. If you see this, report as bug.           |
-| `❌ Error: Unsupported HTTP method`           | Internal API error                | This should not occur in v1.1.0+. If you see this, report as bug.           |
-| `❌ Error: <API error message>`               | Microsoft Graph API error         | Retry; check network; use `--debug` for full details                      |
-| `Network error` / `Connection timeout`      | No internet or API unreachable    | Check network connection; verify access to graph.microsoft.com              |
+### 自动化测试
 
----
+运行完整的测试套件：  
+**命令：** `python3 scripts/ms-todo-oauth.py test`  
 
-## Testing
+**前提条件：**  
+- 必须先登录  
+- 需要互联网连接  
+- 测试耗时约2-3分钟  
+
+**测试覆盖范围：**  
+- ✅ 认证（登录/登出）  
+- ✅ 列表管理（创建、删除、列出）  
+- ✅ 基本任务操作（添加、完成、删除、列出）  
+- ✅ 任务选项（优先级、截止日期、提醒、描述、标签）  
+- ✅ 重复任务（每日、每周、每周、每月）  
+- ✅ 任务视图（今日、逾期、待办、搜索、统计）  
+- ✅ 数据导出和验证  
+- ✅ 错误处理（资源不存在）  
+- ✅ Unicode支持（中文字符、表情符号）  
+
+**预期输出：**  
+（测试结果示例）  
+
+### 手动测试
+
+有关手动测试的详细步骤和预期结果，请参阅`MANUAL_TEST_CHECKLIST.txt`。  
+
+### 测试清理
 
-This skill includes a comprehensive test suite to ensure reliability.
+自动化测试套件会：  
+- 创建临时测试列表  
+- 单独运行所有测试  
+- 测试完成后删除临时列表  
+- 清理临时文件  
 
-### Automated Testing
+如果测试中断，可能需要手动删除剩余的测试列表。  
 
-Run the full test suite:
+## 代理使用指南
 
-```bash
-cd <skill-directory>
-python3 test_ms_todo_oauth.py
-```
+### 关键规则
 
-**Prerequisites:**
+1. 在运行命令之前，务必切换到包含此SKILL.md文件的目录。  
+2. 在首次使用或遇到导入错误时，确保已安装所有依赖项。  
+3. 在执行任何操作之前，先检查认证状态：  
+   如果显示“未登录”错误（退出代码1），请先进行登录。  
 
-- Must be authenticated (logged in) before running tests
-- Internet connection required
-- Approximately 2-3 minutes to complete
+**添加任务时的操作流程：**  
+- 首先运行`lists`查看可用列表  
+- 如果用户未指定列表，任务将添加到默认列表（通常为“Tasks”或“任务”）  
+- 智能地将任务分类到相应的列表中：  
+  - 工作任务 → “工作”列表  
+  - 个人事务 → “个人”列表  
+  - 购物任务 → “购物”列表  
+  - 项目相关任务 → 使用项目名称作为列表名称  
+- 如果列表不存在，系统会自动创建  
+- 支持中文列表名称和Unicode字符  
 
-**Test Coverage** (29 tests):
+**删除操作注意事项：**  
+- `delete`和`delete-list`命令默认会提示确认  
+- 仅在用户明确要求不显示确认提示时使用`-y`参数  
+- 如果删除操作明确且得到确认，否则返回退出代码1  
+- 如果操作失败，返回退出代码1（表示资源未找到）  
 
-- ✅ Authentication (login/logout)
-- ✅ List management (create, delete, list)
-- ✅ Basic task operations (add, complete, delete, list)
-- ✅ Task options (priorities, due dates, reminders, descriptions, tags)
-- ✅ Recurring tasks (daily, weekly, weekdays, monthly, custom intervals)
-- ✅ Task views (today, overdue, pending, search, stats)
-- ✅ Data export and validation
-- ✅ Error handling (non-existent resources)
-- ✅ Unicode support (Chinese characters, emojis)
+### 全局选项的使用规则  
 
-**Expected output:**
+- `-v`, `--debug`, `--reauth`必须放在子命令之前  
+- 示例用法：`python3 scripts/ms-todo-oauth.py -v lists`  
+- 错误用法：`python3 scripts/ms-todo-oauth.py lists -v`  
 
-```
-========================================================================
-TEST SUMMARY
-========================================================================
+**登录流程：**  
+- 在用户确认完成浏览器登录之前，切勿调用`login verify`  
+- 每个授权码仅可使用一次  
+- 如果验证失败，需再次运行`login get`以获取新的授权码  
 
-Total tests: 29
-Passed: 29
-Failed: 0
-Pass rate: 100.0%
-
-========================================================================
-🎉 ALL TESTS PASSED! 🎉
-========================================================================
-```
-
-### Manual Testing
-
-For manual verification, see `MANUAL_TEST_CHECKLIST.txt` which provides:
-
-- Step-by-step test procedures
-- Expected outcomes
-- 9 test categories covering all functionality
-
-### Test Cleanup
-
-The automated test suite:
-
-- Creates a temporary test list (e.g., `🧪 Test List 14:23:45`)
-- Runs all tests in isolation
-- Deletes the test list on completion
-- Cleans up any temporary files
-
-If tests are interrupted, you may need to manually delete leftover test lists.
-
----
-
-## Agent Usage Guidelines
-
-### Critical Rules
-
-1. **Working directory**: Always `cd` to the directory containing this SKILL.md before running commands.
-2. **Dependency installation**: Before first use or when encountering import errors, ensure all dependencies are installed.
-3. **Check authentication first**: Before any operation, verify authentication status:
-
-   ```bash
-   python3 scripts/ms-todo-oauth.py lists
-   ```
-
-   If this returns "Not logged in" error (exit code 1), initiate the login flow.
-4. **Task list organization**: When adding tasks:
-
-   - First, run `lists` to see available task lists
-   - If user doesn't specify a list, tasks will be added to their **default list** (usually "Tasks" or "任务")
-   - Intelligently categorize tasks into appropriate lists:
-     - Work tasks → "Work" list
-     - Personal errands → "Personal" or default list
-     - Shopping → "Shopping" list
-     - Project-specific → Use project name as list
-   - Lists will be auto-created if they don't exist
-   - Support Chinese list names and Unicode characters
-5. **Destructive operations**: For `delete` and `delete-list`:
-
-   - These commands prompt for confirmation by default (blocking behavior)
-   - Use `-y` flag ONLY when:
-     - User has explicitly requested to delete without confirmation
-     - The deletion intent is unambiguous and confirmed through conversation
-   - When in doubt, ask the user for confirmation instead of using `-y`
-   - These operations return exit code 1 on failure (resource not found)
-6. **Global option placement**: `-v`, `--debug`, and `--reauth` must come BEFORE the subcommand:
-
-   - ✅ `python3 scripts/ms-todo-oauth.py -v lists`
-   - ❌ `python3 scripts/ms-todo-oauth.py lists -v`
-7. **Login flow**:
-
-   - Do NOT call `login verify` until user confirms they've completed browser authentication
-   - Each authorization code can only be used once
-   - If verify fails, you must run `login get` again for a new code
-8. **Error handling**:
-
-   - Check exit codes: 0 = success, 1 = failure, 2 = invalid arguments
-   - Parse error messages to provide helpful guidance
-   - Use `--debug` flag when troubleshooting API issues
-
-### Recommended Workflow for Agents
-
-```
-Step 1: Setup and Authentication Check
----------------------------------------
-cd <skill_directory>
-
-python3 scripts/ms-todo-oauth.py lists          # Test auth & see available lists
-
-If exit code is 1 and output contains "Not logged in":
-  a. python3 scripts/ms-todo-oauth.py login get
-  b. Present URL to user
-  c. Explain: "Visit this URL, login, and copy the 'code' parameter from callback URL"
-  d. Wait for user to provide authorization code
-  e. python3 scripts/ms-todo-oauth.py login verify "<code>"
-  f. Verify success (exit code 0)
-
-Step 2: Task Analysis and List Selection
------------------------------------------
-When user requests to add task(s):
-  a. Analyze task context from user's description
-  b. Review available lists (from Step 1 output)
-  c. Choose appropriate list or use default:
-     - Work-related → "Work"
-     - Personal errands → "Personal" or default
-     - Shopping items → "Shopping"
-     - Project-specific → "<ProjectName>"
-  d. If list doesn't exist, it will be auto-created
-
-Step 3: Execute Operation
---------------------------
-Add task with appropriate options:
-  python3 scripts/ms-todo-oauth.py add "Task Title" \
-    -l "Work" \
-    -p high \
-    -d 3 \
-    -r 2h \
-    -D "Detailed description" \
-    -t "tag1,tag2"
-
-Step 4: Verify and Report
---------------------------
-Check exit code:
-  - 0: Success → Confirm to user
-  - 1: Failure → Parse error, provide guidance
-  - 2: Invalid args → Fix command syntax
-
-Optionally verify:
-  python3 scripts/ms-todo-oauth.py tasks "<list>"  # Show updated list
-```
-
-### Task Title Matching Rules
-
-- **Exact match required**: `complete`, `delete` commands
-- **Partial/fuzzy match supported**: `detail`, `search` commands
-- **Case-insensitive**: All search operations
-- **Best practice**: Use `search` first to find exact title, then use it in subsequent commands
-
-**Example workflow:**
-
-```bash
-# Find task with fuzzy search
-python3 scripts/ms-todo-oauth.py search "report"
-# Output shows: "Complete Q1 Report"
-
-# Use exact title from search results
-python3 scripts/ms-todo-oauth.py complete "Complete Q1 Report" -l "Work"
-```
-
-### Default List Behavior
-
-- When `-l` is not specified, operations use the Microsoft To Do default list
-- The default list is typically named "Tasks" (English) or "任务" (Chinese)
-- To target a specific list, always provide `-l "<ListName>"`
-
-### Example Task Categorization
-
-**User request:** "Add these tasks: buy milk, finish report, call dentist"
-
-**Agent approach:**
-
-```bash
-# First check available lists
-python3 scripts/ms-todo-oauth.py lists
-
-# Categorize intelligently:
-python3 scripts/ms-todo-oauth.py add "Buy milk" -l "Shopping"
-python3 scripts/ms-todo-oauth.py add "Finish report" -l "Work" -p high -d 2
-python3 scripts/ms-todo-oauth.py add "Call dentist" -l "Personal"
-# Or use default list if no specific context: add "Call dentist"
-```
-
----
-
-## Quick Reference
-
-### Common Workflows
-
-**Daily task review:**
-
-```bash
-python3 scripts/ms-todo-oauth.py today          # Check today's tasks
-python3 scripts/ms-todo-oauth.py overdue        # Check overdue tasks
-python3 scripts/ms-todo-oauth.py -v pending -g  # Review all pending, grouped
-```
-
-**Adding various task types:**
+### 错误处理建议：  
+- 检查退出代码：0表示成功，1表示失败，2表示参数无效  
+- 解析错误信息以提供帮助  
+- 使用`--debug`参数排查API问题  
 
-```bash
-# Simple task (default list)
-python3 scripts/ms-todo-oauth.py add "Buy milk"
+### 建议的工作流程  
 
-# Work task with priority and deadline
-python3 scripts/ms-todo-oauth.py add "Quarterly review" -l "Work" -p high -d 7
+- 使用`search`先查找任务标题，确保完全匹配后再执行`complete`或`delete`等操作  
 
-# Task with reminder
-python3 scripts/ms-todo-oauth.py add "Call client" -r 3h
+**示例工作流程：**  
+（描述用户任务请求和代理的执行步骤）  
 
-# Detailed task with all options
-python3 scripts/ms-todo-oauth.py add "Project meeting" \
-  -l "Work" \
-  -p high \
-  -d 2026-03-15 \
-  -r "2026-03-15 14:30" \
-  -D "Discuss Q1 goals and resource allocation" \
-  -t "meeting,important,Q1"
+## 常见工作流程  
 
-# Recurring tasks
-python3 scripts/ms-todo-oauth.py add "Daily standup" -R daily -l "Work"
-python3 scripts/ms-todo-oauth.py add "Weekly review" -R weekly -d 7
-python3 scripts/ms-todo-oauth.py add "Gym" -R weekdays -l "Personal"
-python3 scripts/ms-todo-oauth.py add "Monthly report" -R monthly -p high
-```
+- **每日任务回顾**  
+- **添加不同类型的任务**  
+- **完成任务**  
+- **数据管理**  
 
-**Task completion workflow:**
+## 更新日志  
 
-```bash
-# Search for task
-python3 scripts/ms-todo-oauth.py search "report"
+### 版本说明  
 
-# Complete using exact title from search results
-python3 scripts/ms-todo-oauth.py complete "Quarterly review" -l "Work"
-```
+### 版本1.1.0（当前版本）  
+- 修复了日期时间解析错误  
+- 修复了HTTP方法参数顺序的问题  
+- 修复了`create_task()`函数中缺少`start_date`参数的问题  
+- 修复了`complete_task()`函数的问题  
+- 修复了错误退出代码的问题  
+- 添加了全面的测试套件（29个自动化测试）  
+- 改进了错误信息和故障排除机制  
+- 改进了OAuth2认证流程的文档  
+- 改进了Unicode和表情符号的支持文档  
+- 改进了代理使用指南  
 
-**Data management:**
+### 版本1.0.2（之前的版本）  
+- 首次发布，支持OAuth2认证  
+- 基本的任务和列表管理功能  
+- 支持重复任务  
+- 提供多种任务视图  
+- 支持数据导出功能  
 
-```bash
-# Export for backup
-python3 scripts/ms-todo-oauth.py export -o "backup_$(date +%Y%m%d).json"
+## 故障排除指南  
 
-# View statistics
-python3 scripts/ms-todo-oauth.py stats
-```
+### 常见问题及解决方法  
 
----
+- **登录问题**：  
+  - 如果显示“未登录”，请运行`login get`，完成登录流程，然后运行`login verify <授权码>`  
+- 如果提示“获取令牌失败：invalid_grant”，可能是授权码已使用或过期，请重新运行`login get`获取新授权码  
+- 如果登录成功后再次显示“未登录”，可能是令牌已过期，请运行`--reauth`强制重新登录  
 
-## Changelog
+### 依赖项/导入问题  
 
-### Version 1.1.0 (Current)
+- 如果出现`ModuleNotFoundError: No module named 'msal'`，请运行`pip install -r requirements.txt`安装依赖项  
 
-- ✅ **Fixed**: DateTime parsing errors (Microsoft's 7-decimal format)
-- ✅ **Fixed**: HTTP method parameter order bugs
-- ✅ **Fixed**: Missing `start_date` parameter in `create_task()`
-- ✅ **Fixed**: Missing `complete_task()` method
-- ✅ **Fixed**: Error exit codes now correctly return 1 on failure
-- ✅ **Added**: Comprehensive test suite (29 automated tests)
-- ✅ **Added**: Better error messages and troubleshooting
-- ✅ **Improved**: OAuth2 authentication flow documentation
-- ✅ **Improved**: Unicode and emoji support documentation
-- ✅ **Improved**: Agent usage guidelines
+### API/网络问题  
 
-### Version 1.0.2 (Previous)
+- 检查网络连接是否正常  
+- 可以在浏览器中访问`https://graph.microsoft.com`吗？  
+- 使用`--debug`参数查看完整的API请求和响应  
 
-- Initial release with OAuth2 authentication
-- Basic task and list management
-- Recurring task support
-- Multiple task views
-- Data export functionality
+### 任务/列表未找到问题  
 
----
+- 如果提示“任务未找到”，请使用`search`查找任务标题  
+- `complete`和`delete`命令要求任务标题完全匹配  
+- 如果提示“列表未找到”，请使用`lists`命令查看列表名称（列表名称区分大小写）  
 
-## Troubleshooting
+### 测试失败原因  
 
-### Authentication Issues
+- 如果测试失败，请确保已应用v1.1.0版本的修复措施  
+- 确保`_parse_ms_datetime()`辅助函数存在  
 
-**Problem:** `❌ Not logged in`
+- 如果测试失败，请确保已登录：  
+  - 运行`login get`进行认证  
 
-- **Solution**: Run `login get`, complete browser flow, then `login verify <code>`
+## 其他资源  
 
-**Problem:** `❌ Token acquisition failed: invalid_grant`
+- **测试套件**：`test_ms_todo_oauth.py`（自动化测试脚本）  
+- **手动测试指南**：`MANUAL_TEST_CHECKLIST.txt`  
+- **快速参考**：`QUICK_REFERENCE.txt`  
+- **错误修复记录**：`COMPLETE_FIXPATCH.txt`（包含v1.1.0版本的修复内容）  
 
-- **Cause**: Authorization code already used or expired
-- **Solution**: Run `login get` again to get a fresh code
+## 支持与贡献  
 
-**Problem:** Login worked but now getting "Not logged in" again
+- 报告问题时，请提供错误信息和使用的命令  
+- 如适用，请附上`--debug`参数的输出结果  
+- 请注明使用的Python版本（例如`python3 --version`）和操作系统（Windows/Mac/Linux）  
 
-- **Cause**: Token expired and auto-refresh failed
-- **Solution**: Run `--reauth` to force fresh login:
-  ```bash
-  python3 scripts/ms-todo-oauth.py --reauth lists
-  ```
+**新功能测试：**  
+- 在修改代码后务必运行测试套件  
+- 为新功能添加到`test_ms_todo_oauth.py`中  
+- 更新`MANUAL_TEST_CHECKLIST.txt`中的手动测试步骤  
 
-### Import/Dependency Issues
+## 许可证  
 
-**Problem:** `ModuleNotFoundError: No module named 'msal'`
+本工具采用MIT许可证，详细信息请参阅`LICENSE`文件。  
 
-- **Solution**: Install dependencies: `pip install -r requirements.txt`
-
-### API/Network Issues
-
-**Problem:** Connection timeout or network errors
-
-- **Check**: Internet connection
-- **Check**: Can you access https://graph.microsoft.com in browser?
-- **Try**: Using `--debug` flag to see full API request/response
-
-**Problem:** Unexpected API errors
-
-- **Try**: Re-authenticate: `python3 scripts/ms-todo-oauth.py --reauth lists`
-- **Try**: Debug mode: `python3 scripts/ms-todo-oauth.py --debug <command>`
-
-### Task/List Not Found
-
-**Problem:** `❌ Task not found: <title>`
-
-- **Solution**: Use `search` to find exact title
-- **Note**: `complete` and `delete` require exact title match
-
-**Problem:** `❌ List not found: <name>`
-
-- **Solution**: Run `lists` to see exact list names
-- **Note**: List names are case-sensitive
-
-### Test Failures
-
-**Problem:** Tests failing with datetime errors
-
-- **Solution**: Ensure you've applied all v1.1.0 fixes
-- **Check**: Verify `_parse_ms_datetime()` helper function exists
-
-**Problem:** Tests failing with "Not logged in"
-
-- **Solution**: Authenticate before running tests:
-  ```bash
-  python3 scripts/ms-todo-oauth.py login get
-  # Complete browser flow
-  python3 scripts/ms-todo-oauth.py login verify <code>
-  # Then run tests
-  python3 test_ms_todo_oauth.py
-  ```
-
----
-
-## Additional Resources
-
-- **Test Suite**: `test_ms_todo_oauth.py` - Automated tests
-- **Manual Tests**: `MANUAL_TEST_CHECKLIST.txt` - Step-by-step testing guide
-- **Quick Reference**: `QUICK_REFERENCE.txt` - Command cheat sheet
-- **Bug Fixes**: `COMPLETE_FIX_PATCH.txt` - Documentation of v1.1.0 fixes
-
----
-
-## Support & Contributing
-
-**Reporting Issues:**
-
-- Provide error message and command used
-- Include output from `--debug` flag if applicable
-- Note your Python version: `python3 --version`
-- Note your OS: Windows/Mac/Linux
-
-**Testing New Features:**
-
-- Always run the test suite after code changes
-- Add new test cases to `test_ms_todo_oauth.py` for new features
-- Update `MANUAL_TEST_CHECKLIST.txt` with manual test procedures
-
----
-
-## License
-
-MIT License - See LICENSE file for details
-
----
-
-**Version**: 1.1.0
-**Last Updated**: 2026-02-13
-**Status**: ✅ Fully Tested & Production Ready
+**版本：** 1.1.0  
+**更新时间：** 2026-02-13  
+**状态：** 已通过全面测试，可投入生产使用

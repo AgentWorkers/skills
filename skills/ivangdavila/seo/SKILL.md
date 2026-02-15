@@ -1,49 +1,49 @@
 ---
 name: SEO
-description: Optimize HTML meta tags, headers, and content for search engine rankings.
+description: 优化 HTML 元标签、头部信息（headers）以及页面内容，以提高搜索引擎的排名。
 metadata: {"clawdbot":{"emoji":"🔍","requires":{"anyBins":["curl","jq"]},"os":["linux","darwin","win32"]}}
 ---
 
-# SEO Optimization Rules
+# SEO优化规则
 
-## Title Tag
-- Keep between 50–60 characters (including spaces and punctuation)
-- Place primary keyword within first 30 characters
-- Never repeat a keyword in the same title
+## 标题标签
+- 标题长度应控制在50–60个字符之间（包括空格和标点符号）
+- 将主要关键词放在前30个字符内
+- 同一个关键词不得在标题中重复出现
 
-## Meta Description
-- Limit to 150–160 characters or Google truncates it
-- Write benefit-focused copy, not feature lists
-- End with call-to-action when appropriate
+## 元描述
+- 元描述长度限制在150–160个字符以内，否则谷歌会自动截断
+- 内容应侧重于描述带来的好处，而非列出功能
+- 适当时在描述末尾添加呼吁行动的文字（如“立即购买”或“了解更多”）
 
-## Header Structure
-- Only one H1 per page — H1 contains primary keyword but differs from title
-- Follow strict hierarchy: H1 → H2 → H3 (never skip levels)
-- Use keyword variations in H2s instead of repeating exact match
+## 页面标题结构
+- 每页仅使用一个H1标签——H1标签中包含主要关键词，但内容应与标题有所不同
+- 严格遵循层次结构：H1 → H2 → H3（不得跳过任何层级）
+- 在H2标签中使用关键词的变体，而不是重复使用完全匹配的关键词
 
-## Keyword Placement
-- Primary keyword must appear in: title, H1, first 100 words
-- Keep keyword density under 3%
-- Secondary keywords go in H2 and H3 tags
+## 关键词布局
+- 主要关键词必须出现在：标题、H1标签以及页面的前100个单词中
+- 关键词密度应控制在3%以下
+- 次要关键词应放在H2和H3标签中
 
-## Image Optimization
-- Alt text on all content images with relevant keywords when natural
-- File names use hyphens: `email-tools-comparison.jpg`
-- Compress images under 100KB — larger files hurt page speed
+## 图片优化
+- 所有内容图片的alt文本中应包含相关的关键词（如果自然合适的话）
+- 文件名使用连字符进行分隔，例如：`email-tools-comparison.jpg`
+- 将图片压缩至100KB以下——过大文件会影响页面加载速度
 
-## Technical Checks
-- Include viewport meta tag for mobile: `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-- Use canonical URLs to prevent duplicate content
-- Validate structured data at schema.org/validator before publishing
-- Internal links use descriptive anchor text, never "click here"
+## 技术检查
+- 为移动设备添加viewport元标签：`<meta name="viewport" content="width=device-width, initial-scale=1.0">`
+- 使用规范的URL以避免内容重复
+- 在发布前在schema.org/validator网站上验证结构化数据
+- 内部链接应使用描述性的锚文本，切勿使用“点击这里”之类的通用文本
 
-## Schema Markup
-- Article schema for blog posts (include author + datePublished)
-- LocalBusiness schema for location-based pages
-- Validate JSON-LD before deployment
+## Schema标记
+- 博文页面使用Article Schema（包含作者和发布日期）
+- 基于位置的页面使用LocalBusiness Schema
+- 部署前验证JSON-LD数据
 
-## Mistakes That Trigger Penalties
-- Never hide text with CSS for SEO purposes
-- Never use same title tag across multiple pages
-- Don't stuff keywords in alt text unnaturally
-- Don't use H1 for navigation or logo text
+## 会引发处罚的错误行为：
+- 严禁使用CSS隐藏文本内容以优化SEO
+- 不要在多个页面中使用相同的标题标签
+- 不要人为地在alt文本中堆砌关键词
+- 不要将H1标签用于导航或Logo文本

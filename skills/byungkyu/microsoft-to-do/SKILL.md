@@ -17,9 +17,9 @@ metadata:
 
 # Microsoft To Do
 
-Access the Microsoft To Do API with managed OAuth authentication. Manage task lists, tasks, checklist items, and linked resources with full CRUD operations.
+通过托管的 OAuth 认证来访问 Microsoft To Do API。您可以执行完整的 CRUD 操作（创建、读取、更新和删除）来管理任务列表、任务、待办事项以及关联的资源。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all task lists
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/microsoft-to-do/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Microsoft Graph API endpoint path. The gateway proxies requests to `graph.microsoft.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Microsoft Graph API 端点路径。该网关会将请求代理到 `graph.microsoft.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Microsoft To Do OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 Microsoft To Do OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Microsoft To Do connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Microsoft To Do 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Task List Operations
+### 任务列表操作
 
-#### List Task Lists
+#### 列出任务列表
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -167,13 +167,13 @@ GET /microsoft-to-do/v1.0/me/todo/lists
 }
 ```
 
-#### Get Task List
+#### 获取任务列表
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
 ```
 
-#### Create Task List
+#### 创建任务列表
 
 ```bash
 POST /microsoft-to-do/v1.0/me/todo/lists
@@ -184,7 +184,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (201 Created):**
+**响应（201 Created）：**
 ```json
 {
   "id": "AAMkADIyAAAhrbPWAAA=",
@@ -195,7 +195,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Task List
+#### 更新任务列表
 
 ```bash
 PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
@@ -206,23 +206,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task List
+#### 删除任务列表
 
 ```bash
 DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Task Operations
+### 任务操作
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -244,13 +244,13 @@ GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks
 }
 ```
 
-#### Get Task
+#### 获取任务详情
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks
@@ -281,23 +281,23 @@ Content-Type: application/json
 }
 ```
 
-**Task Fields:**
+**任务字段：**
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `title` | String | Brief description of the task |
-| `body` | itemBody | Task body with content and contentType (text/html) |
-| `importance` | String | `low`, `normal`, or `high` |
-| `status` | String | `notStarted`, `inProgress`, `completed`, `waitingOnOthers`, `deferred` |
-| `categories` | String[] | Associated category names |
-| `dueDateTime` | dateTimeTimeZone | Due date and time |
-| `startDateTime` | dateTimeTimeZone | Start date and time |
-| `completedDateTime` | dateTimeTimeZone | Completion date and time |
-| `reminderDateTime` | dateTimeTimeZone | Reminder date and time |
-| `isReminderOn` | Boolean | Whether reminder is enabled |
-| `recurrence` | patternedRecurrence | Recurrence pattern |
+| `title` | String | 任务的简要描述 |
+| `body` | itemBody | 任务内容及内容类型（text/html） |
+| `importance` | String | `low`、`normal` 或 `high` |
+| `status` | String | `notStarted`、`inProgress`、`completed`、`waitingOnOthers`、`deferred` |
+| `categories` | String[] | 关联的类别名称 |
+| `dueDateTime` | dateTimeTimeZone | 截止日期和时间 |
+| `startDateTime` | dateTimeTimeZone | 开始日期和时间 |
+| `completedDateTime` | dateTimeTimeZone | 完成日期和时间 |
+| `reminderDateTime` | dateTimeTimeZone | 提醒日期和时间 |
+| `isReminderOn` | Boolean | 是否启用提醒 |
+| `recurrence` | patternedRecurrence | 重复模式 |
 
-#### Update Task
+#### 更新任务
 
 ```bash
 PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
@@ -312,25 +312,25 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Checklist Item Operations
+### 待办事项操作
 
-Checklist items are subtasks within a task.
+待办事项是任务中的子任务。
 
-#### List Checklist Items
+#### 列出待办事项
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -344,7 +344,7 @@ GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklis
 }
 ```
 
-#### Create Checklist Item
+#### 创建待办事项
 
 ```bash
 POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems
@@ -355,7 +355,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Checklist Item
+#### 更新待办事项
 
 ```bash
 PATCH /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}
@@ -366,25 +366,25 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Checklist Item
+#### 删除待办事项
 
 ```bash
 DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/checklistItems/{checklistItemId}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-### Linked Resource Operations
+### 关联资源操作
 
-Linked resources connect tasks to external items (e.g., emails, files).
+关联资源用于将任务与外部项目（例如电子邮件、文件）连接起来。
 
-#### List Linked Resources
+#### 列出关联资源
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -399,7 +399,7 @@ GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedRe
 }
 ```
 
-#### Create Linked Resource
+#### 创建关联资源
 
 ```bash
 POST /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources
@@ -413,23 +413,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Linked Resource
+#### 删除关联资源
 
 ```bash
 DELETE /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks/{taskId}/linkedResources/{linkedResourceId}
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-## Pagination
+## 分页
 
-Microsoft Graph uses OData pagination. Use `$top` to limit results and `$skip` for offset:
+Microsoft Graph 使用 OData 分页。使用 `$top` 限制结果数量，使用 `$skip` 设置偏移量：
 
 ```bash
 GET /microsoft-to-do/v1.0/me/todo/lists/{todoTaskListId}/tasks?$top=10&$skip=0
 ```
 
-Response includes `@odata.nextLink` when more results exist:
+当还有更多结果时，响应中会包含 `@odata.nextLink`：
 
 ```json
 {
@@ -438,7 +438,7 @@ Response includes `@odata.nextLink` when more results exist:
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -467,37 +467,37 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Task list IDs and task IDs are opaque strings (e.g., `AAMkADIyAAAhrbPWAAA=`)
-- Timestamps use ISO 8601 format in UTC by default
-- The `dateTimeTimeZone` type requires both `dateTime` and `timeZone` fields
-- `wellknownListName` can be `defaultList`, `flaggedEmails`, or `none`
-- Task `status` values: `notStarted`, `inProgress`, `completed`, `waitingOnOthers`, `deferred`
-- Task `importance` values: `low`, `normal`, `high`
-- Supports OData query parameters: `$select`, `$filter`, `$orderby`, `$top`, `$skip`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 任务列表 ID 和任务 ID 是不可见的字符串（例如：`AAMkADIyAAAhrbPWAAA=`）
+- 时间戳默认使用 UTC 格式的 ISO 8601 格式。
+- `dateTimeTimeZone` 类型需要同时包含 `dateTime` 和 `timeZone` 字段。
+- `wellknownListName` 可以是 `defaultList`、`flaggedEmails` 或 `none`。
+- 任务状态值：`notStarted`、`inProgress`、`completed`、`waitingOnOthers`、`deferred`。
+- 任务重要性值：`low`、`normal`、`high`。
+- 支持 OData 查询参数：`$select`、`$filter`、`$orderby`、`$top`、`$skip`。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确扩展。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Microsoft To Do connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Microsoft Graph API |
+| 400 | 未找到 Microsoft To Do 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 请求频率受限 |
+| 4xx/5xx | 来自 Microsoft Graph API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -508,19 +508,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `microsoft-to-do`. For example:
+1. 确保您的 URL 路径以 `microsoft-to-do` 开头。例如：
 
-- Correct: `https://gateway.maton.ai/microsoft-to-do/v1.0/me/todo/lists`
-- Incorrect: `https://gateway.maton.ai/v1.0/me/todo/lists`
+- 正确：`https://gateway.maton.ai/microsoft-to-do/v1.0/me/todo/lists`
+- 错误：`https://gateway.maton.ai/v1.0/me/todo/lists`
 
-## Resources
+## 资源
 
-- [Microsoft To Do API Overview](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview)
-- [todoTaskList Resource](https://learn.microsoft.com/en-us/graph/api/resources/todotasklist)
-- [todoTask Resource](https://learn.microsoft.com/en-us/graph/api/resources/todotask)
-- [checklistItem Resource](https://learn.microsoft.com/en-us/graph/api/resources/checklistitem)
-- [linkedResource Resource](https://learn.microsoft.com/en-us/graph/api/resources/linkedresource)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Microsoft To Do API 概述](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview)
+- [todoTaskList 资源](https://learn.microsoft.com/en-us/graph/api/resources/todotasklist)
+- [todoTask 资源](https://learn.microsoft.com/en-us/graph/api/resources/todotask)
+- [checklistItem 资源](https://learn.microsoft.com/en-us/graph/api/resources/checklistitem)
+- [linkedResource 资源](https://learn.microsoft.com/en-us/graph/api/resources/linkedresource)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

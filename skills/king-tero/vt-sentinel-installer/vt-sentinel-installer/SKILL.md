@@ -16,141 +16,137 @@ metadata:
         - bun
 ---
 
-# Install / Upgrade VT Sentinel Plugin
+# 安装/升级 VT Sentinel 插件
 
-## Step 1: Check current state
+## 第一步：检查当前状态
 
 ```
 exec { "command": "openclaw plugins list 2>/dev/null | grep vt-sentinel" }
 ```
 
-Determine the platform:
+确定操作系统平台：
 
 ```
 exec { "command": "uname -s 2>/dev/null || echo Windows" }
 ```
 
-Three possible outcomes:
-- **Not installed** → go to Step 2 (fresh install)
-- **Installed, older version** → go to Step 3 (upgrade)
-- **Installed, already v0.8.0 or newer** → tell the user it's up to date and skip remaining steps
+可能有以下三种结果：
+- **未安装** → 转到第二步（全新安装）
+- **已安装，但版本较旧** → 转到第三步（升级）
+- **已安装，且版本为 v0.8.0 或更高** → 告知用户插件已是最新版本，跳过后续步骤
 
-To check the installed version:
+要检查已安装的插件版本：
 ```
 exec { "command": "node -e \"const p=require(process.env.HOME+'/.openclaw/extensions/openclaw-plugin-vt-sentinel/package.json');console.log(p.version)\" 2>/dev/null || echo unknown" }
 ```
 
-On Windows use `%USERPROFILE%` instead of `$HOME`.
+在 Windows 上，请使用 `%USERPROFILE%` 而不是 `$HOME`。
 
-## Step 2: Fresh install
+## 第二步：全新安装
 
 ```
 exec { "command": "openclaw plugins install openclaw-plugin-vt-sentinel" }
 ```
 
-This downloads the npm package, registers the plugin, loads skills and hooks automatically. No manual configuration needed. Go to Step 4.
+此步骤会下载 npm 包，自动注册插件，并加载相关功能。无需手动配置。直接进入第四步。
 
-## Step 3: Upgrade from previous version
+## 第三步：从旧版本升级
 
-The `openclaw plugins install` command does NOT support in-place upgrade — it fails with "plugin already exists". The upgrade process is:
+`openclaw plugins install` 命令不支持原地升级（会提示“插件已存在”错误）。升级步骤如下：
 
-### 3a. Remove old extension directory (preserves all user data)
+### 3a. 删除旧插件目录（保留所有用户数据）
 
-On Linux/macOS:
+在 Linux/macOS 上：
 ```
 exec { "command": "rm -rf ~/.openclaw/extensions/openclaw-plugin-vt-sentinel" }
 ```
 
-On Windows:
+在 Windows 上：
 ```
 exec { "command": "rmdir /s /q %USERPROFILE%\\.openclaw\\extensions\\openclaw-plugin-vt-sentinel" }
 ```
 
-**User data is safe** — these files live outside the plugin directory and are preserved:
-- `~/.openclaw/vt-sentinel-state.json` (configuration overrides, onboarding flags)
-- `~/.openclaw/vt-sentinel-uploads.log` (audit log)
-- `~/.openclaw/vt-sentinel-detections.log` (audit log)
-- `~/.openclaw/vtai-agent-credentials.json` (VTAI API credentials)
+**用户数据是安全的**——这些数据存储在插件目录之外，不会被删除：
+- `~/.openclaw/vt-sentinel-state.json`（配置覆盖信息、启动标志）
+- `~/.openclaw/vt-sentinel-uploads.log`（审计日志）
+- `~/.openclaw/vt-sentinel-detections.log`（审计日志）
+- `~/.openclaw/vtai-agent-credentials.json`（VTAI API 凭据）
 
-### 3b. Clean stale install entry (preserves user config)
+### 3b. 清除旧的插件安装记录（保留用户配置）
 
-After removing the extension directory, `openclaw.json` still references the old plugin path in `plugins.installs`, which causes validation errors. Only remove the stale install metadata — user config in `plugins.entries` (apiKey, etc.) is preserved:
-
-On Linux/macOS:
+删除旧插件目录后，`openclaw.json` 中的 `plugins.installs` 部分仍会引用旧插件的路径，从而导致验证错误。只需删除旧的安装记录，用户配置（如 API 密钥等）会保留：
+在 Linux/macOS 上：
 ```
 exec { "command": "node -e \"const fs=require('fs'),p=process.env.HOME+'/.openclaw/openclaw.json';try{const P=(()=>{try{return require('json5').parse}catch{return JSON.parse}})();const c=P(fs.readFileSync(p,'utf8'));if(c.plugins?.installs)delete c.plugins.installs['openclaw-plugin-vt-sentinel'];fs.writeFileSync(p,JSON.stringify(c,null,2));console.log('Config cleaned')}catch(e){console.log('No config to clean: '+e.message)}\"" }
 ```
 
-On Windows:
+在 Windows 上：
 ```
 exec { "command": "node -e \"const fs=require('fs'),p=process.env.USERPROFILE+'\\\\.openclaw\\\\openclaw.json';try{const P=(()=>{try{return require('json5').parse}catch{return JSON.parse}})();const c=P(fs.readFileSync(p,'utf8'));if(c.plugins?.installs)delete c.plugins.installs['openclaw-plugin-vt-sentinel'];fs.writeFileSync(p,JSON.stringify(c,null,2));console.log('Config cleaned')}catch(e){console.log('No config to clean: '+e.message)}\"" }
 ```
 
-### 3c. Install new version
+### 3c. 安装新版本
 
 ```
 exec { "command": "openclaw plugins install openclaw-plugin-vt-sentinel" }
 ```
 
-If this fails on Windows with `spawn EINVAL`, use the manual method:
+如果在 Windows 上安装失败（出现 `spawn EINVAL` 错误），请使用手动方法：
 ```
 exec { "command": "cd %TEMP% && npm pack openclaw-plugin-vt-sentinel && mkdir %USERPROFILE%\\.openclaw\\extensions\\openclaw-plugin-vt-sentinel && tar xzf openclaw-plugin-vt-sentinel-0.7.0.tgz -C %USERPROFILE%\\.openclaw\\extensions\\openclaw-plugin-vt-sentinel --strip-components=1 && cd %USERPROFILE%\\.openclaw\\extensions\\openclaw-plugin-vt-sentinel && npm install --omit=dev" }
 ```
 
-## Step 4: Restart the gateway
+## 第四步：重启网关
 
-The plugin won't be active until the gateway restarts. Detect the platform and use the appropriate command:
+插件只有在网关重启后才会生效。根据操作系统平台，执行相应的重启命令：
 
-Linux:
+- Linux：
 ```
 exec { "command": "systemctl --user restart openclaw-gateway.service" }
 ```
 
-macOS:
+- macOS：
 ```
 exec { "command": "openclaw gateway restart" }
 ```
 
-Windows:
+- Windows：
 ```
 exec { "command": "openclaw gateway restart" }
 ```
 
-## Step 5: Verify
+## 第五步：验证插件是否正确安装
 
-After restart, check that the plugin loaded correctly and shows 7 tools:
-
+重启后，确认插件已成功加载，并且能够使用以下 7 个功能：
 ```
 exec { "command": "openclaw plugins list 2>/dev/null | grep vt-sentinel" }
 ```
 
-## Step 6: Inform the user
+## 第六步：通知用户
 
-Tell the user:
+告知用户：
+1. VT Sentinel 已成功安装并处于激活状态（如果进行了升级，请说明是从哪个版本升级的）。
+2. **无需 API 密钥**——插件会自动注册到 VirusTotal 的 AI API（无需任何配置）。
+3. 用户可以选择通过 `openclaw plugins config openclaw-plugin-vt-sentinel apiKey <key>` 添加自己的 VirusTotal API 密钥，以获得更高的请求速率限制。
 
-1. VT Sentinel is installed and active (mention if this was an upgrade, and from which version).
-2. **No API key needed** — it auto-registers with VirusTotal's AI API (zero-config).
-3. Optionally, they can add their own VirusTotal API key for higher rate limits via `openclaw plugins config openclaw-plugin-vt-sentinel apiKey <key>`.
+VT Sentinel 提供以下功能：
+- `vt_scan_file`：全文件扫描（包含反病毒检测和 AI 代码分析）
+- `vt_check_hash`：快速哈希查询
+- `vt_upload_consent`：允许用户上传敏感文件
+- `vt_sentinel_status`：查看当前配置、监控目录和保护状态
+- `vt_sentinel_configure`：运行时修改设置（预设、通知级别、阻止模式）
+- `vt_sentinel_reset_policy`：重置为默认设置
+- `vt_sentinel_help`：快速入门指南和隐私政策
+- 自动扫描下载或创建的文件
+- 活动阻止恶意文件的执行和危险命令模式
 
-VT Sentinel provides:
-- `vt_scan_file` — Full file scan (AV + AI Code Insight)
-- `vt_check_hash` — Quick hash lookup
-- `vt_upload_consent` — Consent for sensitive file uploads
-- `vt_sentinel_status` — View current config, watched dirs, protection status
-- `vt_sentinel_configure` — Change settings at runtime (presets, notify level, block mode)
-- `vt_sentinel_reset_policy` — Reset to defaults
-- `vt_sentinel_help` — Quick-start guide and privacy info
-- Automatic scanning of downloaded/created files
-- Active blocking of malicious file execution and dangerous command patterns
+## 故障排除
 
-## Troubleshooting
+如果 `openclaw plugins install` 命令失败：
+- 检查网络连接：`exec { "command": "npm ping" }`
+- 尝试使用详细输出模式：`exec { "command": "openclaw plugins install openclaw-plugin-vt-sentinel --verbose" }`
+- 在 Windows 上，如果出现 `spawn EINVAL` 错误，请使用第三步中的手动方法。
 
-If `openclaw plugins install` fails:
-- Check internet connectivity: `exec { "command": "npm ping" }`
-- Try with verbose output: `exec { "command": "openclaw plugins install openclaw-plugin-vt-sentinel --verbose" }`
-- On Windows, if `spawn EINVAL` error occurs, use the manual method from Step 3b
-
-## Constraints
-
-- Do NOT modify `openclaw.json` manually — `openclaw plugins install` handles everything
-- If the user reports the plugin is blocked, check `plugins.deny` in their `openclaw.json`
+## 注意事项：
+- **切勿手动修改 `openclaw.json`**——`openclaw plugins install` 会自动处理所有配置。
+- 如果用户报告插件被阻止，请检查其 `openclaw.json` 文件中的 `plugins.deny` 配置项。

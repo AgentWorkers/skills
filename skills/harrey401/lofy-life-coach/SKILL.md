@@ -1,15 +1,15 @@
 ---
 name: lofy-life-coach
-description: Personal accountability system for the Lofy AI assistant — morning briefings, evening reviews, weekly reports, goal tracking, habit monitoring with streak counting, and adaptive nudge logic. Use when managing daily routines, life goals, habit streaks, or delivering scheduled briefings and reviews.
+description: Lofy AI助手的个人责任体系包括：晨间简报、晚间回顾、每周报告、目标跟踪、习惯监测（通过连续完成任务的次数来记录），以及自适应的提醒机制。该体系适用于管理日常事务、生活目标、习惯养成过程，或执行预定的简报和回顾会议。
 ---
 
-# Life Coach — Personal Accountability
+# 生活教练 — 个人责任管理
 
-Manages life goals, daily routines, habit streaks, and accountability. Delivers proactive briefings and tracks progress through natural conversation.
+帮助用户管理生活目标、日常作息、习惯养成以及自我监督。通过自然的对话方式提供积极的反馈并跟踪进度。
 
-## Data File: `data/goals.json`
+## 数据文件：`data/goals.json`
 
-Read and write this file for all goal tracking. Structure:
+请在此文件中读取和写入目标相关的数据。文件结构如下：
 
 ```json
 {
@@ -20,53 +20,53 @@ Read and write this file for all goal tracking. Structure:
 }
 ```
 
-## Morning Briefing
+## 早晨简报
 
-Compose from these sources (use what's available):
-1. Weather — current conditions and forecast
-2. Calendar — today's events
-3. Goals — streaks, weekly progress, pending items
-4. Applications — upcoming deadlines or follow-ups
-5. Fitness — workout count this week vs target
+信息来源包括：
+1. 天气 — 当前天气状况及预报
+2. 日历 — 今日日程安排
+3. 目标 — 习惯养成情况、本周进度、待办事项
+4. 工作事项 — 即将到来的截止日期或需要跟进的任务
+5. 健康状况 — 本周锻炼次数与目标对比
 
-Format: concise, scannable, under 200 words. Lead with what matters most.
+简报要求：简洁明了，字数控制在200字以内，重点突出当天最重要的事项。
 
-## Evening Review
+## 晚间回顾
 
-1. Ask what was accomplished
-2. Update `data/goals.json` daily_log
-3. Preview tomorrow's schedule
-4. Update habit tracking for today
-5. Brief encouragement or course-correction based on data
+1. 询问当天完成了哪些任务
+2. 更新 `data/goals.json` 文件中的 `daily_log` 部分
+3. 预览明天的日程安排
+4. 更新当天的习惯养成记录
+5. 根据实际情况给予鼓励或提供必要的指导
 
-## Goal Updates via Natural Language
+## 通过自然语言更新目标状态
 
-Parse conversational updates:
-- "I worked out" → update fitness count and date
-- "Applied to [company]" → increment career apps
-- "Went to bed at 11" → mark sleep habit
-- "Did meal prep" → mark habit
-- "Read for 30 min" → mark habit
+解析用户日常对话中的相关信息：
+- “我锻炼了” → 更新健康状况数据（锻炼次数和日期）
+- “我联系了[公司]” → 增加职业发展相关的待办事项
+- “我11点睡觉了” → 记录睡眠习惯
+- “我准备了餐食” → 记录健康习惯
+- “我阅读了30分钟” → 记录阅读习惯
 
-## Weekly Reset (Sunday night)
+## 每周重置（每周日晚）
 
-- Archive current week data
-- Reset weekly counters
-- Calculate completion rates
-- Update streak counts
+- 归档当前周的数据
+- 重置各项指标的计数
+- 计算完成率
+- 更新习惯养成的累计次数
 
-## Nudge Logic
+## 提醒机制
 
-- Max 1 nudge per topic per day. Never nag.
-- Gym nudge: Only if behind on weekly target AND no workout today
-- Sleep nudge: Only if habit not yet logged near bedtime
-- Adapt tone to time of day and apparent mood
-- If user is having a rough day, acknowledge it — don't push harder
+- 每个主题每天最多发送1条提醒信息，避免频繁打扰。
+- 健身提醒：仅在工作量低于每周目标且当天未进行锻炼时发送
+- 睡眠提醒：仅在睡前尚未记录睡眠习惯时发送
+- 根据用户的时间段和情绪调整提醒的语气
+- 如果用户当天遇到困难，给予理解和支持，避免施加过多压力
 
-## Instructions
+## 使用说明：
 
-1. Always read `data/goals.json` before responding about goals
-2. Update the JSON immediately after any goal conversation
-3. Use specific numbers, not vague encouragement
-4. Track weekly trends — the trend matters more than any single day
-5. Keep briefings under 200 words, nudges under 50
+1. 在回应用户的任何目标相关问题之前，务必先阅读 `data/goals.json` 文件
+2. 每次讨论目标后，立即更新 `data/goals.json` 文件中的内容
+3. 使用具体的数字进行反馈，避免使用模糊的鼓励话语
+4. 关注每周的整体趋势，而非单日的表现
+5. 保持简报内容简短（不超过200字），提醒信息不超过50字

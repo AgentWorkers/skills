@@ -1,24 +1,24 @@
 ---
 name: node-red-manager
-description: Manage Node-RED instances via Admin API or CLI. Automate flow deployment, install nodes, and troubleshoot issues. Use when user wants to "build automation", "connect devices", or "fix node-red".
+description: 通过 Admin API 或 CLI 管理 Node-RED 实例。实现流程的自动化部署、节点的安装以及问题的排查与解决。适用于用户需要“构建自动化流程”、“连接设备”或“修复 Node-RED 问题”的场景。
 ---
 
 # Node-RED Manager
 
-## Setup
-1. Copy `.env.example` to `.env`.
-2. Set `NODE_RED_URL`, `NODE_RED_USERNAME`, and `NODE_RED_PASSWORD` in `.env`.
-3. The script automatically handles dependencies on first run.
+## 设置
+1. 将 `.env.example` 文件复制到 `.env` 文件中。
+2. 在 `.env` 文件中设置 `NODE_RED_URL`、`NODE_RED_USERNAME` 和 `NODE_RED_PASSWORD`。
+3. 脚本在首次运行时会自动处理依赖项的下载和安装。
 
-## Infrastructure
-- **Stack Location**: `deployments/node-red`
-- **Data Volume**: `deployments/node-red/data`
-- **Docker Service**: `mema-node-red`
-- **URL**: `https://flow.glassgallery.my.id`
+## 基础设施
+- **部署位置**：`deployments/node-red`
+- **数据卷**：`deployments/node-red/data`
+- **Docker 服务**：`mema-node-red`
+- **URL**：`https://flow.glassgallery.my.id`
 
-## Usage
+## 使用方法
 
-### Flow Management
+### 流管理
 
 ```bash
 # List all flows
@@ -43,7 +43,7 @@ scripts/nr get-flow-state
 scripts/nr set-flow-state --file state.json
 ```
 
-### Backup & Restore
+### 备份与恢复
 
 ```bash
 # Backup all flows to file
@@ -54,7 +54,7 @@ scripts/nr backup --output my-backup.json
 scripts/nr restore node-red-backup-20260210_120000.json
 ```
 
-### Node Management
+### 节点管理
 
 ```bash
 # List installed nodes
@@ -74,7 +74,7 @@ scripts/nr disable-node node-red-contrib-http-request
 scripts/nr remove-node node-red-contrib-http-request
 ```
 
-### Runtime Information
+### 运行时信息
 
 ```bash
 # Get runtime settings
@@ -84,7 +84,7 @@ scripts/nr get-settings
 scripts/nr get-diagnostics
 ```
 
-### Context Management
+### 上下文管理
 
 ```bash
 # Get context value
@@ -97,7 +97,7 @@ scripts/nr set-context global counter '42'
 scripts/nr set-context global config '{"key": "value"}'
 ```
 
-## Docker Operations
+## Docker 操作
 
 ```bash
 # Restart Node-RED
@@ -110,14 +110,12 @@ docker logs mema-node-red --tail 100
 docker logs -f mema-node-red
 ```
 
-## Environment Variables
+## 环境变量
+- `NODE_RED_URL`：Node-RED API 端点（默认值：`http://localhost:1880`）
+- `NODE_RED_USERNAME`：管理员用户名
+- `NODE_RED_PASSWORD`：管理员密码
 
-- `NODE_RED_URL`: Node-RED API endpoint (default: `http://localhost:1880`)
-- `NODE_RED_USERNAME`: Admin username
-- `NODE_RED_PASSWORD`: Admin password
+为了向后兼容，仍然支持旧的变量名称（`NR_URL`、`NR_USER`、`NR_PASS`）。
 
-Legacy variable names (`NR_URL`, `NR_USER`, `NR_PASS`) are supported for backward compatibility.
-
-## API Reference
-
-See `references/admin-api.md` for complete Admin API endpoint documentation.
+## API 参考
+有关完整的管理员 API 端点文档，请参阅 `references/admin-api.md`。

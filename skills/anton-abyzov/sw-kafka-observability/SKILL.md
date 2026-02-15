@@ -1,57 +1,57 @@
 ---
 name: kafka-observability
-description: Kafka monitoring and observability expert for Prometheus, Grafana, and JMX metrics. Use when setting up Kafka monitoring, configuring alerting rules, or building performance dashboards.
+description: Kafka监控与可观测性专家，专注于使用Prometheus、Grafana和JMX指标进行Kafka的监控工作。适用于设置Kafka监控机制、配置警报规则或构建性能仪表板等场景。
 ---
 
-# Kafka Monitoring & Observability
+# Kafka 监控与可观测性
 
-Expert guidance for implementing comprehensive monitoring and observability for Apache Kafka using Prometheus and Grafana.
+本文档提供了使用 Prometheus 和 Grafana 实现 Apache Kafka 全面监控与可观测性的专家指导。
 
-## When to Use This Skill
+## 适用场景
 
-I activate when you need help with:
-- **Monitoring setup**: "Set up Kafka monitoring", "configure Prometheus for Kafka", "Grafana dashboards for Kafka"
-- **Metrics collection**: "Kafka JMX metrics", "export Kafka metrics to Prometheus"
-- **Alerting**: "Kafka alerting rules", "alert on under-replicated partitions", "critical Kafka metrics"
-- **Troubleshooting**: "Monitor Kafka performance", "track consumer lag", "broker health monitoring"
+当您需要以下帮助时，请参考本文档：
+- **监控设置**：配置 Kafka 监控、配置 Prometheus 以收集 Kafka 数据、创建 Grafana 仪表板
+- **指标收集**：从 Kafka 收集 JMX 指标、将 Kafka 指标导出到 Prometheus
+- **警报设置**：设置 Kafka 相关的警报规则（例如，当分区复制数量不足或关键指标异常时触发警报）
+- **故障排除**：监控 Kafka 性能、跟踪消费者延迟、检查 broker 的健康状况
 
-## What I Know
+## 我所掌握的知识
 
-### Available Monitoring Components
+### 可用的监控组件
 
-This plugin provides a complete monitoring stack:
+本插件提供了完整的监控解决方案：
 
-#### 1. **Prometheus JMX Exporter Configuration**
-- **Location**: `plugins/specweave-kafka/monitoring/prometheus/kafka-jmx-exporter.yml`
-- **Purpose**: Export Kafka JMX metrics to Prometheus format
-- **Metrics Exported**:
-  - Broker topic metrics (bytes in/out, messages in, request rate)
-  - Replica manager (under-replicated partitions, ISR shrinks/expands)
-  - Controller metrics (active controller, offline partitions, leader elections)
-  - Request metrics (produce/fetch latency)
-  - Log metrics (flush rate, flush latency)
-  - JVM metrics (heap, GC, threads, file descriptors)
+#### 1. **Prometheus JMX 导出器配置**
+- **位置**：`plugins/specweave-kafka/monitoring/prometheus/kafka-jmx-exporter.yml`
+- **功能**：将 Kafka 的 JMX 指标导出为 Prometheus 可识别的格式
+- **导出的指标**：
+  - Broker 的主题相关指标（发送/接收的字节数、消息数量、请求速率）
+  - 复制管理器的相关指标（复制数量不足的分区、ISR 的变化）
+  - 控制器的相关指标（活跃的控制器、离线分区、领导者选举情况）
+  - 请求相关的指标（发送/获取操作的延迟）
+  - 日志相关的指标（日志刷新频率、刷新延迟）
+  - JVM 相关指标（堆内存使用情况、垃圾回收次数、线程数）
 
-#### 2. **Grafana Dashboards** (5 Dashboards)
-- **Location**: `plugins/specweave-kafka/monitoring/grafana/dashboards/`
-- **Dashboards**:
-  1. **kafka-cluster-overview.json** - Cluster health and throughput
-  2. **kafka-broker-metrics.json** - Per-broker performance
-  3. **kafka-consumer-lag.json** - Consumer lag monitoring
-  4. **kafka-topic-metrics.json** - Topic-level metrics
-  5. **kafka-jvm-metrics.json** - JVM health (heap, GC, threads)
+#### 2. **Grafana 仪表板**（共 5 个仪表板）
+- **位置**：`plugins/specweave-kafka/monitoring/grafana/dashboards/`
+- **仪表板内容**：
+  1. `kafka-cluster-overview.json`：集群整体健康状况和吞吐量
+  2. `kafka-broker-metrics.json`：每个 broker 的性能指标
+  3. `kafka-consumer-lag.json`：消费者延迟监控
+  4. `kafka-topic-metrics.json`：主题级别的指标
+  5. `kafka-jvm-metrics.json`：JVM 的健康状况（堆内存使用情况、垃圾回收情况）
 
-#### 3. **Grafana Provisioning**
-- **Location**: `plugins/specweave-kafka/monitoring/grafana/provisioning/`
-- **Files**:
-  - `dashboards/kafka.yml` - Dashboard provisioning config
-  - `datasources/prometheus.yml` - Prometheus datasource config
+#### 3. **Grafana 配置**  
+- **位置**：`plugins/specweave-kafka/monitoring/grafana/provisioning/`
+- **配置文件**：
+  - `dashboards/kafka.yml`：仪表板配置文件
+  - `datasources/prometheus.yml`：Prometheus 数据源配置文件
 
-## Setup Workflow 1: JMX Exporter (Self-Hosted Kafka)
+## 设置流程 1：JMX 导出器（独立运行的 Kafka）
 
-For Kafka running on VMs or bare metal (non-Kubernetes).
+适用于在虚拟机或裸机上运行的 Kafka（非 Kubernetes 环境）
 
-### Step 1: Download JMX Prometheus Agent
+### 步骤 1：下载 JMX Prometheus 代理
 
 ```bash
 # Download JMX Prometheus agent JAR
@@ -62,9 +62,9 @@ wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0
 cp plugins/specweave-kafka/monitoring/prometheus/kafka-jmx-exporter.yml /opt/kafka-jmx-exporter.yml
 ```
 
-### Step 2: Configure Kafka Broker
+### 步骤 2：配置 Kafka Broker
 
-Add JMX exporter to Kafka startup script:
+在 Kafka 的启动脚本中添加 JMX 导出器：
 
 ```bash
 # Edit Kafka startup (e.g., /etc/systemd/system/kafka.service)
@@ -72,13 +72,13 @@ Add JMX exporter to Kafka startup script:
 Environment="KAFKA_OPTS=-javaagent:/opt/jmx_prometheus_javaagent-0.20.0.jar=7071:/opt/kafka-jmx-exporter.yml"
 ```
 
-Or add to `kafka-server-start.sh`:
+或者将配置添加到 `kafka-server-start.sh` 文件中：
 
 ```bash
 export KAFKA_OPTS="-javaagent:/opt/jmx_prometheus_javaagent-0.20.0.jar=7071:/opt/kafka-jmx-exporter.yml"
 ```
 
-### Step 3: Restart Kafka and Verify
+### 步骤 3：重启 Kafka 并验证配置
 
 ```bash
 # Restart Kafka broker
@@ -90,9 +90,9 @@ curl localhost:7071/metrics | grep kafka_server
 # Expected output: kafka_server_broker_topic_metrics_bytesin_total{...} 12345
 ```
 
-### Step 4: Configure Prometheus Scraping
+### 步骤 4：配置 Prometheus 的数据采集
 
-Add Kafka brokers to Prometheus config:
+在 Prometheus 配置文件中添加 Kafka broker 的数据源：
 
 ```yaml
 # prometheus.yml
@@ -117,11 +117,11 @@ kill -HUP $(pidof prometheus)
 curl http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | select(.job=="kafka")'
 ```
 
-## Setup Workflow 2: Strimzi (Kubernetes)
+## 设置流程 2：使用 Strimzi（Kubernetes 环境）
 
-For Kafka running on Kubernetes with Strimzi Operator.
+适用于在 Kubernetes 上运行 Kafka 且使用了 Strimzi Operator 的场景
 
-### Step 1: Create JMX Exporter ConfigMap
+### 步骤 1：创建 JMX 导出器的 ConfigMap
 
 ```bash
 # Create ConfigMap from JMX exporter config
@@ -130,7 +130,7 @@ kubectl create configmap kafka-metrics \
   -n kafka
 ```
 
-### Step 2: Configure Kafka CR with Metrics
+### 步骤 2：配置 Kafka 的 ConfigMap（包含指标数据）
 
 ```yaml
 # kafka-cluster.yaml (add metricsConfig section)
@@ -154,15 +154,7 @@ spec:
           key: kafka-metrics-config.yml
 ```
 
-```bash
-# Apply updated Kafka CR
-kubectl apply -f kafka-cluster.yaml
-
-# Verify metrics endpoint (wait for rolling restart)
-kubectl exec -it kafka-my-kafka-cluster-0 -n kafka -- curl localhost:9404/metrics | grep kafka_server
-```
-
-### Step 3: Install Prometheus Operator (if not installed)
+### 步骤 3：安装 Prometheus Operator（如果尚未安装）
 
 ```bash
 # Add Prometheus Community Helm repo
@@ -177,7 +169,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
   --set prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues=false
 ```
 
-### Step 4: Create PodMonitor for Kafka
+### 步骤 4：为 Kafka 创建 PodMonitor
 
 ```yaml
 # kafka-podmonitor.yaml
@@ -207,11 +199,11 @@ kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 909
 # Should see kafka-metrics/* targets
 ```
 
-## Setup Workflow 3: Grafana Dashboards
+## 设置流程 3：配置 Grafana 仪表板
 
-### Installation (Docker Compose)
+### 使用 Docker Compose 进行安装（本地开发环境）
 
-If using Docker Compose for local development:
+如果使用 Docker Compose 进行本地开发：
 
 ```yaml
 # docker-compose.yml (add to existing Kafka setup)
@@ -256,9 +248,9 @@ docker-compose up -d prometheus grafana
 # Password: admin
 ```
 
-### Installation (Kubernetes)
+### 使用 Kubernetes 进行安装
 
-Dashboards are auto-provisioned if using kube-prometheus-stack:
+如果使用 kube-prometheus-stack，仪表板会自动配置：
 
 ```bash
 # Create ConfigMaps for each dashboard
@@ -282,9 +274,9 @@ kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
 # Password: prom-operator (default kube-prometheus-stack password)
 ```
 
-### Manual Dashboard Import
+### 手动导入仪表板
 
-If auto-provisioning doesn't work:
+如果自动配置失败，可以手动导入仪表板配置：
 
 ```bash
 # 1. Access Grafana UI
@@ -300,88 +292,87 @@ for dashboard in plugins/specweave-kafka/monitoring/grafana/dashboards/*.json; d
 done
 ```
 
-## Dashboard Overview
+## 仪表板介绍
 
-### 1. **Kafka Cluster Overview** (`kafka-cluster-overview.json`)
+### 1. **Kafka 集群概览**（`kafka-cluster-overview.json`）
 
-**Purpose**: High-level cluster health
+**功能**：展示集群的整体健康状况
 
-**Key Metrics**:
-- Active Controller Count (should be exactly 1)
-- Under-Replicated Partitions (should be 0) ⚠️  CRITICAL
-- Offline Partitions Count (should be 0) ⚠️  CRITICAL
-- Unclean Leader Elections (should be 0)
-- Cluster Throughput (bytes in/out per second)
-- Request Rate (produce, fetch requests per second)
-- ISR Changes (shrinks/expands)
-- Leader Election Rate
+**关键指标**：
+- 活跃控制器的数量（应为 1）
+- 复制数量不足的分区数量（应为 0）⚠️ 严重问题
+- 离线分区数量（应为 0）⚠️ 严重问题
+- 未完成的领导者选举次数（应为 0）
+- 集群吞吐量（每秒发送/接收的字节数）
+- 请求速率（每秒的发送/获取请求数量）
+- ISR（In-Sync Replicas）的变化情况
+- 领导者选举频率
 
-**Use When**: Checking overall cluster health
+**使用场景**：检查集群的整体健康状况
 
-### 2. **Kafka Broker Metrics** (`kafka-broker-metrics.json`)
+### 2. **Kafka Broker 指标**（`kafka-broker-metrics.json`）
 
-**Purpose**: Per-broker performance
+**功能**：展示每个 broker 的性能指标
 
-**Key Metrics**:
-- Broker CPU Usage (% utilization)
-- Broker Heap Memory Usage
-- Broker Network Throughput (bytes in/out)
-- Request Handler Idle Percentage (low = CPU saturation)
-- File Descriptors (open vs max)
-- Log Flush Latency (p50, p99)
-- JVM GC Collection Count/Time
+**关键指标**：
+- Broker 的 CPU 使用率
+- Broker 的堆内存使用情况
+- Broker 的网络吞吐量（发送/接收的字节数）
+- 请求处理器的空闲百分比（低值表示 CPU 利用率较低）
+- 文件描述符的使用情况（打开的文件描述符数与最大值对比）
+- 日志刷新延迟（50% 和 99% 分位数）
+- JVM 的垃圾回收次数和时间
 
-**Use When**: Investigating broker performance issues
+**使用场景**：排查 broker 的性能问题
 
-### 3. **Kafka Consumer Lag** (`kafka-consumer-lag.json`)
+### 3. **Kafka 消费者延迟**（`kafka-consumer-lag.json`）
 
-**Purpose**: Consumer lag monitoring
+**功能**：监控消费者的延迟情况
 
-**Key Metrics**:
-- Consumer Lag per Topic/Partition
-- Total Lag per Consumer Group
-- Offset Commit Rate
-- Current Consumer Offset
-- Log End Offset (producer offset)
-- Consumer Group Members
+**关键指标**：
+- 每个主题/分区的消费者延迟
+- 每个消费者组的总延迟
+- 偏移量提交频率
+- 当前消费者的偏移量
+- 消费者组的成员信息
 
-**Use When**: Troubleshooting slow consumers or lag spikes
+**使用场景**：排查消费者性能缓慢或延迟突然增加的问题
 
-### 4. **Kafka Topic Metrics** (`kafka-topic-metrics.json`)
+### 4. **Kafka 主题指标**（`kafka-topic-metrics.json`）
 
-**Purpose**: Topic-level metrics
+**功能**：展示主题级别的指标
 
-**Key Metrics**:
-- Messages Produced per Topic
-- Bytes per Topic (in/out)
-- Partition Count per Topic
-- Replication Factor
-- In-Sync Replicas
-- Log Size per Partition
-- Current Offset per Partition
-- Partition Leader Distribution
+**关键指标**：
+- 每个主题产生的消息数量
+- 每个主题的发送/接收字节数
+- 每个主题的分区数量
+- 复制因子
+- 同步分区的数量
+- 每个分区的日志大小
+- 当前分区的偏移量
+- 分区的领导者分布情况
 
-**Use When**: Analyzing topic throughput and hotspots
+**使用场景**：分析主题的吞吐量和热点数据
 
-### 5. **Kafka JVM Metrics** (`kafka-jvm-metrics.json`)
+### 5. **Kafka JVM 指标**（`kafka-jvm-metrics.json`）
 
-**Purpose**: JVM health monitoring
+**功能**：监控 JVM 的健康状况
 
-**Key Metrics**:
-- Heap Memory Usage (used vs max)
-- Heap Utilization Percentage
-- GC Collection Rate (collections/sec)
-- GC Collection Time (ms/sec)
-- JVM Thread Count
-- Heap Memory by Pool (young gen, old gen, survivor)
-- Off-Heap Memory Usage (metaspace, code cache)
-- GC Pause Time Percentiles (p50, p95, p99)
+**关键指标**：
+- 堆内存的使用情况（实际使用量与最大值对比）
+- 堆内存利用率
+- 垃圾回收的频率（每次回收操作的次数）
+- 垃圾回收所需的时间（毫秒）
+- JVM 的线程数量
+- 堆内存的分配情况（年轻代、老年代、存活代）
+- 堆内存之外的内存使用情况（元空间、代码缓存）
+- 垃圾回收暂停的时间百分比（50% 和 99% 分位数）
 
-**Use When**: Investigating memory leaks or GC pauses
+**使用场景**：排查内存泄漏或垃圾回收暂停的问题
 
-## Critical Alerts Configuration
+## 重要警报配置
 
-Create Prometheus alerting rules for critical Kafka metrics:
+为关键 Kafka 指标创建 Prometheus 警报规则：
 
 ```yaml
 # kafka-alerts.yml
@@ -474,13 +465,13 @@ kubectl apply -f kafka-alerts.yml
 kubectl get prometheusrules -n monitoring
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "Prometheus not scraping Kafka metrics"
+### “Prometheus 无法收集 Kafka 指标”
 
-**Symptoms**: No Kafka metrics in Prometheus
+**症状**：Prometheus 中没有 Kafka 的指标数据
 
-**Fix**:
+**解决方法**：
 ```bash
 # 1. Verify JMX exporter is running
 curl http://kafka-broker:7071/metrics
@@ -497,11 +488,11 @@ kubectl logs -n monitoring prometheus-kube-prometheus-prometheus-0
 # - Kafka broker not running
 ```
 
-### "Grafana dashboards not loading"
+### “Grafana 仪表板无法显示数据”
 
-**Symptoms**: Dashboards show "No data"
+**症状**：仪表板显示“无数据”
 
-**Fix**:
+**解决方法**：
 ```bash
 # 1. Verify Prometheus datasource
 # Grafana UI → Configuration → Data Sources → Prometheus → Test
@@ -514,12 +505,11 @@ kubectl logs -n monitoring prometheus-kube-prometheus-prometheus-0
 # If your job name is different, update dashboard JSON
 ```
 
-### "Consumer lag metrics missing"
+### “消费者延迟指标缺失”
 
-**Symptoms**: Consumer lag dashboard empty
+**症状**：消费者延迟相关的仪表板为空
 
-**Fix**:
-Consumer lag metrics require **Kafka Exporter** (separate from JMX Exporter):
+**解决方法**：消费者延迟指标需要通过单独的 Kafka 导出器来收集（与 JMX 导出器分开配置）：
 
 ```bash
 # Install Kafka Exporter (Kubernetes)
@@ -540,14 +530,14 @@ scrape_configs:
       - targets: ['kafka-exporter:9308']
 ```
 
-## Integration with Other Skills
+## 与其他工具的集成
 
-- **kafka-iac-deployment**: Set up monitoring during Terraform deployment
-- **kafka-kubernetes**: Configure monitoring for Strimzi Kafka on K8s
-- **kafka-architecture**: Use cluster sizing metrics to validate capacity planning
-- **kafka-cli-tools**: Use kcat to generate test traffic and verify metrics
+- **kafka-iac-deployment**：在 Terraform 部署过程中配置监控
+- **kafka-kubernetes**：为使用 Strimzi 的 Kafka 配置监控
+- **kafka-architecture**：利用集群规模指标进行容量规划
+- **kafka-cli-tools**：使用 kcat 生成测试流量并验证指标数据
 
-## Quick Reference Commands
+## 快速参考命令
 
 ```bash
 # Check JMX exporter metrics
@@ -568,9 +558,9 @@ curl http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | select(.
 
 ---
 
-**Next Steps After Monitoring Setup**:
-1. Review all 5 Grafana dashboards to familiarize yourself with metrics
-2. Set up alerting (Slack, PagerDuty, email)
-3. Create runbooks for critical alerts (under-replicated partitions, offline partitions, no controller)
-4. Monitor for 7 days to establish baseline metrics
-5. Tune JVM settings based on GC metrics
+**监控设置完成后，请执行以下操作**：
+1. 查看所有 5 个 Grafana 仪表板，熟悉各项指标
+2. 设置警报通知（Slack、PagerDuty、电子邮件）
+3. 为关键警报（如分区复制数量不足、 broker 离线、控制器缺失）创建自动化处理流程
+4. 监控 7 天以获取基准数据
+5. 根据 JVM 指标调整相关配置

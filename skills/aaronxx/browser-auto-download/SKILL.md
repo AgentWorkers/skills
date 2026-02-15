@@ -1,47 +1,52 @@
 ---
 name: browser-auto-download
 version: "4.1.0"
-description: "Browser-automated file download with enhanced features. Auto-detects platform (Windows/macOS/Linux, 64/32-bit, ARM/Intel), handles multi-step navigation (homepage to platform-specific pages), captures auto-downloads triggered on page load, and falls back to button clicking when needed. Ideal for complex download flows where curl/wget fail due to client-side rendering, automatic downloads, or multi-page navigation. Features page scrolling for lazy content, extended wait times, and Golang support."
+description: "**具有增强功能的浏览器自动化文件下载工具**：  
+该工具能够自动检测用户使用的操作系统（Windows、macOS、Linux）及处理器架构（64位/32位、ARM/Intel），支持多步骤导航（从首页到特定平台页面），并捕获页面加载时触发的自动下载操作；在必要时也可通过点击按钮来手动触发下载。  
+特别适用于那些因客户端渲染、自动下载功能或多页面导航导致 `curl`/`wget` 命令失败的情况。  
+该工具还具备以下特点：  
+- 支持页面滚动以加载延迟加载的内容；  
+- 具备较长的等待时间设置（以适应不同网络环境）；  
+- 支持使用 Go 语言编写脚本进行自定义功能扩展。"
 ---
 
-# Browser Auto Download v4.1.0 (Enhanced)
+# 浏览器自动下载功能 v4.1.0（增强版）
 
-Download files from dynamic webpages with **intelligent detection and multi-step navigation**.
+该功能能够从动态网页中自动下载文件，具备**智能检测**和**多步骤导航**的能力。
 
-## Key Features
+## 主要特性
 
-- **Auto-download capture**: Detects downloads triggered automatically on page load
-- **Multi-step navigation**: Finds and navigates to platform-specific pages (PC/Desktop versions)
-- **Platform auto-detection**: Windows x64/ARM64, macOS Intel/Apple Silicon, Linux
-- **Event listening**: Captures all download events without requiring button clicks
-- **Smart fallback**: Tries multiple strategies (auto-download, navigation, clicking)
+- **自动下载检测**：在页面加载时检测到自动触发的下载操作。
+- **多步骤导航**：找到并导航到针对不同平台的专属下载页面（PC/桌面版本）。
+- **平台自动识别**：支持 Windows x64/ARM64、macOS（Intel/Apple Silicon）和 Linux 系统。
+- **事件监听**：无需点击按钮即可捕获所有下载相关事件。
+- **智能回退机制**：尝试多种下载方式（自动下载、导航或手动点击）。
 
-## When to Use
+## 适用场景
 
-Use this skill for:
-- **Auto-download sites**: Downloads start automatically when page loads
-- **Multi-step flows**: Homepage - click "PC version" - download page
-- **Dynamic content**: Download links generated via JavaScript
-- **Interactive downloads**: Requires clicking buttons or navigating UI
+- **自动下载网站**：页面加载时自动开始下载。
+- **多步骤操作流程**：首页 → 点击“PC版本” → 下载页面。
+- **动态内容**：通过 JavaScript 生成的下载链接。
+- **交互式下载**：需要用户点击按钮或进行界面导航才能完成下载。
 
-**NOT for**: Direct file URLs (use `curl`/`wget` instead)
+**不适用场景**：直接提供文件 URL 的情况（请使用 `curl`/`wget` 等工具）。
 
-## Quick Start
+## 快速入门
 
-### Option 1: Automatic (Recommended)
+### 方法 1：自动模式（推荐）
 
 ```bash
 python skills/browser-auto-download/scripts/auto_download.py \
   --url "https://example.com/download"
 ```
 
-The script will:
-1. Check for auto-downloads on page load
-2. Look for platform-specific page links (PC/Desktop version)
-3. Navigate if needed
-4. Try clicking download buttons as fallback
+脚本会执行以下操作：
+1. 在页面加载时检测是否有自动下载功能。
+2. 查找针对不同平台的下载链接（PC/桌面版本）。
+3. 如有必要，自动进行导航。
+4. 在无法自动下载时尝试点击下载按钮。
 
-### Option 2: Built-in Shortcuts
+### 方法 2：内置快捷方式
 
 ```bash
 # WeChat DevTools
@@ -51,7 +56,7 @@ python skills/browser-auto-download/scripts/auto_download.py --wechat
 python skills/browser-auto-download/scripts/auto_download.py --meitu
 ```
 
-### Option 3: Python Module
+### 方法 3：Python 模块
 
 ```python
 from skills.browser-auto-download.scripts.auto_download import auto_download
@@ -66,50 +71,48 @@ if result:
     print(f"Downloaded: {result['path']}")
 ```
 
-## How It Works
+## 工作原理
 
-### Three-Stage Strategy
+**三阶段执行流程**
 
-**Stage 1: Auto-Download Detection**
+**阶段 1：自动下载检测**  
 ```
 Page loads - Check for downloads - Success?
     Yes:                    No:
     Save file               Go to Stage 2
 ```
 
-**Stage 2: Multi-Step Navigation**
+**阶段 2：多步骤导航**  
 ```
 Look for "PC/Desktop" link - Navigate - Check downloads - Success?
     Yes:                        No:
     Save file                  Go to Stage 3
 ```
 
-**Stage 3: Button Clicking**
+**阶段 3：手动点击下载按钮**  
 ```
 Try multiple selectors - Click - Wait for download - Save
 ```
 
-### Platform-Specific Page Detection
+## 平台识别机制
 
-Automatically finds links like:
-- "meitu for PC" - pc.meitu.com
-- "Desktop version" - desktop.example.com
-- "Windows Download" - windows.example.com
+脚本能够自动识别以下类型的下载链接：
+- “meitu for PC” → pc.meitu.com
+- “Desktop version” → desktop.example.com
+- “Windows Download” → windows.example.com
 
-Keywords: `pc`, `desktop`, `windows`, `mac`, `download`, `电脑`, `桌面`, `客户端`
+**识别关键关键词**：`pc`、`desktop`、`windows`、`mac`、`download`、`电脑`、`桌面`、`客户端`。
 
-## Examples
+## 示例
 
-### Auto-Download Sites (Best Case)
-
+- **自动下载网站**（最佳使用场景）  
 ```bash
 # Sites that trigger download on page load
 python skills/browser-auto-download/scripts/auto_download.py \
   --url "https://pc.meitu.com/en/pc?download=pc"
 ```
 
-### Multi-Step Navigation
-
+- **多步骤导航流程**  
 ```bash
 # Homepage - PC version - Download
 python skills/browser-auto-download/scripts/auto_download.py \
@@ -117,8 +120,7 @@ python skills/browser-auto-download/scripts/auto_download.py \
   --auto-navigate  # Enable (default: True)
 ```
 
-### Manual Selector (Fallback)
-
+- **手动选择下载方式（回退机制）**  
 ```bash
 # If auto-detection fails
 python skills/browser-auto-download/scripts/auto_download.py \
@@ -126,7 +128,7 @@ python skills/browser-auto-download/scripts/auto_download.py \
   --selector "button:has-text('Download for free')"
 ```
 
-### Disable Features
+## 功能禁用
 
 ```bash
 # Don't navigate to platform pages
@@ -140,41 +142,41 @@ python skills/browser-auto-download/scripts/auto_download.py \
   --no-auto-select
 ```
 
-## Platform Detection
+## 平台识别
 
-| System | Architecture | Keywords Used |
-|--------|--------------|---------------|
-| Windows | AMD64/x86_64 | windows, win64, x64, 64-bit, pc |
-| Windows | x86/i686 | windows, win32, x86, 32-bit, pc |
-| macOS | ARM64 (M1/M2/M3) | macos, arm64, apple silicon |
-| macOS | x86_64 (Intel) | macos, x64, intel |
-| Linux | x86_64 | linux, x64, amd64 |
+| 系统        | 架构          | 使用的关键关键词                |
+|------------|------------------|-------------------------|
+| Windows      | AMD64/x86_64      | windows, win64, x64, 64-bit, pc         |
+| Windows      | x86/i686       | windows, win32, x86, 32-bit, pc         |
+| macOS       | ARM64 (M1/M2/M3)     | macos, arm64, apple silicon        |
+| macOS       | x86_64 (Intel)     | macos, x64, intel                |
+| Linux       | x86_64         | linux, x64, amd64                 |
 
-## Troubleshooting
+## 常见问题解决方法
 
-**Download not starting**:
-- Use `--headless` (default: False) to observe the process
-- Check stderr for auto-download messages
-- Try `--no-auto-navigate` if navigation is causing issues
-- Use `--selector` to manually specify button
+- **下载失败**：
+  - 使用 `--headless` 参数（默认值为 `False`）来观察脚本执行过程。
+  - 检查 `stderr` 输出中是否有关于自动下载的错误信息。
+  - 如果导航功能出现问题，尝试使用 `--no-auto-navigate` 参数。
+  - 使用 `--selector` 参数手动指定下载按钮。
 
-**Wrong version downloaded**:
-- Check platform detection in stderr output
-- Use `--no-auto-select` and manually specify `--selector`
-- Verify the site offers multiple versions
+- **下载错误版本**：
+  - 查看 `stderr` 输出中的平台识别结果。
+  - 使用 `--no-auto-select` 参数，并手动指定正确的下载链接。
+  - 确认网站是否提供了多个版本可供选择。
 
-**Navigation going to wrong page**:
-- Disable with `--no-auto-navigate`
-- The site may not have platform-specific pages
+- **导航到错误页面**：
+  - 使用 `--no-auto-navigate` 参数禁用导航功能。
+  - 可能是网站没有为特定平台提供专属下载页面。
 
-**File not saved**:
-- Check write permissions in output directory
-- Ensure sufficient disk space
-- Wait for large files (up to 3 minutes)
+- **文件未保存**：
+  - 检查输出目录的写入权限。
+  - 确保有足够的磁盘空间。
+  - 对于大文件，下载可能需要等待（最长 3 分钟）。
 
-## Output Format
+## 输出格式
 
-### stderr (Progress)
+- **stderr（进度信息）**  
 ```
 Starting browser (visible)...
 Opening: https://example.com
@@ -190,7 +192,7 @@ File: C:\Users\User\Downloads\software_v2.1.0_win64.exe
 Size: 231.9 MB
 ```
 
-### stdout (JSON result)
+- **stdout（JSON 结果）**  
 ```json
 {
   "path": "C:\\Users\\User\\Downloads\\software_v2.1.0_win64.exe",
@@ -201,10 +203,9 @@ Size: 231.9 MB
 }
 ```
 
-## Real-World Examples
+## 实际应用示例
 
-### Meitu Xiuxiu (Multi-step + Auto-download)
-
+- **美图秀秀（多步骤导航 + 自动下载）**  
 ```python
 from auto_download import quick_download_meitu
 
@@ -212,8 +213,7 @@ result = quick_download_meitu()
 # Flow: Homepage - PC page link - Navigate - Auto-download
 ```
 
-### WeChat DevTools (Button click)
-
+- **微信开发者工具（手动点击下载按钮）**  
 ```python
 from auto_download import quick_download_wechat_devtools
 
@@ -221,8 +221,7 @@ result = quick_download_wechat_devtools()
 # Flow: Homepage - Click "Stable Windows 64" - Download
 ```
 
-### Generic Software (Mixed)
-
+- **通用软件下载**  
 ```python
 result = auto_download(
     url="https://example.com/downloads",
@@ -231,46 +230,20 @@ result = auto_download(
 )
 ```
 
-## Requirements
+## 使用要求
 
 ```bash
 pip install playwright
 playwright install chromium
 ```
 
-## Advanced Usage
+## 高级用法
 
-### Custom Platform Keywords
+- **自定义平台识别关键词**：修改脚本中的 `get_system_preference()` 函数以添加自定义关键词。
+- **与其他脚本集成**：根据需求将此功能集成到其他脚本中。
+- **批量下载**：支持批量下载多个文件。
 
-Modify `get_system_preference()` in the script to add custom keywords.
+### 扩展说明
 
-### Integration with Scripts
-
-```python
-import subprocess
-import json
-
-result = subprocess.run([
-    'python', 'skills/browser-auto-download/scripts/auto_download.py',
-    '--url', 'https://example.com/download'
-], capture_output=True, text=True)
-
-if result.returncode == 0:
-    data = json.loads(result.stdout)
-    print(f"Downloaded: {data['path']}")  # Use the file
-```
-
-### Batch Downloads
-
-```python
-urls = [
-    "https://example1.com/download",
-    "https://example2.com/download",
-    "https://example3.com/download"
-]
-
-for url in urls:
-    result = auto_download(url)
-    if result:
-        print(f"Success: {result['filename']}")
-```
+- **自定义平台识别规则**：可以通过修改脚本中的逻辑来支持更多平台。
+- **批量处理**：支持批量下载多个文件，提高下载效率。

@@ -1,13 +1,14 @@
 ---
 name: lofy-home
-description: Smart home control for the Lofy AI assistant — scene modes (study, chill, sleep, morning, grind), device management via Home Assistant REST API, presence-based automation, natural language commands for lights, music, thermostat, and PC wake-on-LAN. Use when controlling smart home devices, activating scene modes, or managing home automation.
+description: **Lofy AI助手的智能家居控制功能——场景模式（学习、休闲、睡眠、早晨、工作模式）**  
+通过Home Assistant的REST API实现设备管理；支持基于用户位置的自动化控制；支持使用自然语言指令来控制灯光、音乐、恒温器以及通过网络唤醒PC。适用于控制智能家居设备、激活特定场景模式或管理家庭自动化系统。
 ---
 
-# Home Commander — Environment Control
+# 主控器——环境控制
 
-Controls smart home and computing environment via Home Assistant. Manages scene modes, device control, and presence-based actions.
+通过 Home Assistant 控制智能家居和计算环境，管理场景模式、设备控制以及基于用户状态的自动化操作。
 
-## Data File: `data/home-config.json`
+## 数据文件：`data/home-config.json`
 
 ```json
 {
@@ -24,12 +25,12 @@ Controls smart home and computing environment via Home Assistant. Manages scene 
 }
 ```
 
-## Scene Activation
+## 场景激活
 
-When user says "study mode", "chill mode", etc.:
-1. Read scene definition from `data/home-config.json`
-2. Execute each device command via Home Assistant API
-3. Confirm briefly: "Study mode ✓ — desk lamp bright, lo-fi on, DND"
+当用户输入“学习模式”、“放松模式”等指令时：
+1. 从 `data/home-config.json` 中读取相应的场景配置
+2. 通过 Home Assistant API 执行每个设备的控制命令
+3. 简要确认执行结果：“学习模式已启动 —— 台灯亮度调整至适宜，背景音乐开启”
 
 ### Home Assistant API
 
@@ -51,22 +52,22 @@ curl -s -X POST "$HA_URL/api/services/wake_on_lan/send_magic_packet" \
   -d '{"mac": "XX:XX:XX:XX:XX:XX"}'
 ```
 
-## Quick Commands
+## 快速指令
 
-- "lights off" → turn off all lights
-- "dim the lights" → all lights to 20%
-- "play some music" → default to chill playlist
-- "it's cold" → thermostat up 2°F
-- "turn on my PC" → WOL packet
-- "goodnight" → sleep mode
-- "I'm heading out" → lights off, eco mode
-- "I'm home" → scene based on time of day
+- “关灯” → 关闭所有灯光
+- “调暗灯光” → 将所有灯光亮度调至 20%
+- “播放音乐” → 播放默认的放松音乐列表
+- “天气太冷” → 将恒温器温度升高 2°F（约 1.1°C）
+- “启动我的电脑” → 发送远程唤醒（WOL）指令
+- “晚安” → 进入睡眠模式
+- “我出门了” → 关闭所有灯光并切换至节能模式
+- “我回家了” → 根据当前时间自动触发相应场景
 
-## Instructions
+## 使用说明：
 
-1. Read `data/home-config.json` for device mappings and scenes
-2. Confirm actions in ONE short message
-3. If a device fails, report which one and suggest a fix
-4. Never execute "turn off all devices" without confirmation
-5. If Home Assistant is unreachable, report and suggest checking connection
-6. Device entity_ids must be configured by user — prompt if missing
+1. 阅读 `data/home-config.json` 以了解设备映射和场景设置
+2. 通过一条简短的消息确认要执行的操作
+3. 如果设备出现故障，请报告具体设备名称并建议解决方法
+4. 未经确认切勿直接执行“关闭所有设备”的指令
+5. 如果无法连接 Home Assistant，请报告问题并建议检查网络连接
+6. 设备的实体 ID 必须由用户自行配置；如果缺少该信息，请提示用户进行设置

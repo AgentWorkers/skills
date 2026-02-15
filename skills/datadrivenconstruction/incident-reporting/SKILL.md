@@ -1,18 +1,18 @@
 ---
 slug: "incident-reporting"
 display_name: "Incident Reporting"
-description: "Construction safety incident reporting and analysis. Capture incidents, conduct investigations, track corrective actions, and analyze trends for prevention."
+description: "建筑安全事故报告与分析：记录事故发生情况，开展调查，跟踪整改措施的实施情况，并分析事故趋势以预防类似事件的发生。"
 ---
 
-# Incident Reporting System
+# 事故报告系统
 
-## Overview
+## 概述
 
-Comprehensive incident reporting system for construction safety. Capture near-misses, injuries, and property damage. Conduct root cause analysis and track corrective actions to prevent recurrence.
+这是一个全面的事故报告系统，专门用于建筑安全领域。该系统用于记录各类险情、人员受伤情况及财产损失事件，通过根本原因分析来制定纠正措施，以防止类似事故的再次发生。
 
-> "Near-miss reporting prevents 90% of future serious incidents" — DDC Community
+> “及时报告险情可以预防90%的严重事故”——DDC社区
 
-## Incident Pyramid
+## 事故层级结构
 
 ```
                     △
@@ -28,7 +28,7 @@ Comprehensive incident reporting system for construction safety. Capture near-mi
           ──────────┴──────────
 ```
 
-## Technical Implementation
+## 技术实现细节
 
 ```python
 from dataclasses import dataclass, field
@@ -404,7 +404,7 @@ class IncidentManager:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门指南
 
 ```python
 # Initialize manager
@@ -456,7 +456,7 @@ print(f"Near Miss Ratio: {metrics['near_miss_ratio']:.1f}")
 print(manager.generate_incident_report(incident.id))
 ```
 
-## Requirements
+## 系统需求
 
 ```bash
 pip install (no external dependencies)

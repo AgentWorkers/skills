@@ -1,10 +1,10 @@
-# Weekly Summary Generator
+# 周度总结生成器
 
-**Description:** Automatically compiles a weekly summary of agent activities, evolution cycles, and earnings.
-**Usage:** `node skills/weekly-summary/index.js`
+**功能描述：** 自动生成代理活动的周度总结，包括进化周期和收益情况。
+**使用方法：** `node skills/weekly-summary/index.js`
 
-## Features
-- Scans `RECENT_EVENTS.md` and `memory/evolution/events.jsonl`
-- Calculates evolution success rate
-- Summarizes earnings (mock or real)
-- Generates a Feishu Card JSON
+## 主要特性：
+- 扫描 `RECENT EVENTS.md` 和 `memory/evolution/events.jsonl` 文件
+- 计算进化成功率
+- 汇总收益数据（模拟数据或实际数据）
+- 生成 Feishu Card 的 JSON 格式数据

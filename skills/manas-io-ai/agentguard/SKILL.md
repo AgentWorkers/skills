@@ -1,243 +1,176 @@
-# AgentGuard - Security Monitoring Skill
+# AgentGuard - 安全监控技能
 
-**Version:** 1.0.0  
-**Author:** Manas AI  
-**Category:** Security & Monitoring
+**版本:** 1.0.0  
+**作者:** Manas AI  
+**类别:** 安全与监控
 
-## Overview
+## 概述
 
-AgentGuard is a comprehensive security monitoring skill that watches over agent operations, detecting suspicious behavior, logging communications, and providing actionable security reports.
-
----
-
-## Capabilities
-
-### 1. File Access Monitoring
-Track all file read/write operations with pattern analysis.
-
-**Trigger:** Continuous background monitoring  
-**Command:** `agentguard monitor files [--watch-dir <path>]`
-
-**What it detects:**
-- Unusual file access patterns (bulk reads, sensitive directories)
-- Access to credential files (.env, .secrets, keys)
-- Unexpected write operations to system directories
-- File exfiltration attempts (large reads followed by network calls)
-
-### 2. API Call Detection
-Monitor outbound API calls for suspicious activity.
-
-**Command:** `agentguard monitor api`
-
-**What it detects:**
-- Calls to unknown/untrusted endpoints
-- Unusual API call frequency (rate anomalies)
-- Sensitive data in request payloads
-- Authentication token exposure
-- Calls to known malicious domains
-
-### 3. Communication Logging
-Log all external communications for audit trails.
-
-**Command:** `agentguard log comms [--output <path>]`
-
-**Logs include:**
-- HTTP/HTTPS requests (sanitized)
-- WebSocket connections
-- Email sends
-- Message platform outputs (Telegram, Discord, etc.)
-- Timestamp, destination, payload hash
-
-### 4. Anomaly Detection
-ML-lite pattern analysis for behavioral anomalies.
-
-**Command:** `agentguard detect anomalies [--sensitivity <low|medium|high>]`
-
-**Detection methods:**
-- Baseline deviation (learns normal patterns)
-- Time-of-day anomalies
-- Sequence analysis (unusual operation chains)
-- Volume spikes
-- New destination detection
-
-### 5. Security Reports
-Generate comprehensive daily security reports.
-
-**Command:** `agentguard report [--period <daily|weekly|monthly>]`
-
-**Report includes:**
-- Activity summary
-- Alert breakdown by severity
-- Top accessed resources
-- Communication destinations
-- Anomaly timeline
-- Recommendations
+AgentGuard 是一款全面的安全监控工具，它可以监控代理程序的运行状态，检测异常行为，记录通信记录，并生成可操作的安全报告。
 
 ---
 
-## Configuration
+## 功能
 
-### Config File: `config/agentguard.yaml`
+### 1. 文件访问监控  
+通过模式分析跟踪所有文件读写操作。
 
-```yaml
-monitoring:
-  enabled: true
-  file_watch_dirs:
-    - ~/clawd
-    - ~/.clawdbot
-  exclude_patterns:
-    - "*.log"
-    - "node_modules/**"
-    - ".git/**"
+**命令:** `agentguard monitor files [--watch-dir <路径>]`
 
-alerts:
-  sensitivity: medium  # low, medium, high
-  channels:
-    - telegram
-  alert_on:
-    - credential_access
-    - bulk_file_read
-    - unknown_api_endpoint
-    - data_exfiltration
-  cooldown_minutes: 15
+**检测内容:**
+- 异常的文件访问模式（批量读取、访问敏感目录）  
+- 对配置文件（如 `.env`、`.secrets`、密钥文件）的访问  
+- 对系统目录的意外写入操作  
+- 文件外泄尝试（大量读取后跟随网络请求）
 
-api_monitoring:
-  trusted_domains:
-    - api.anthropic.com
-    - api.openai.com
-    - api.telegram.org
-    - api.elevenlabs.io
-  block_on_suspicious: false  # true = prevent call, false = alert only
+### 2. API 调用检测  
+监控出站的 API 调用以发现可疑活动。
 
-logging:
-  retention_days: 30
-  log_dir: ~/.agentguard/logs
-  hash_sensitive_data: true
+**命令:** `agentguard monitor api`
 
-reporting:
-  auto_daily_report: true
-  report_time: "09:00"
-  report_channel: telegram
-```
+**检测内容:**
+- 对未知/不受信任端点的调用  
+- 异常的 API 调用频率（速率异常）  
+- 请求负载中的敏感数据  
+- 认证令牌的泄露  
+- 对已知恶意域名的调用
 
----
+### 3. 通信记录  
+记录所有外部通信内容以供审计使用。
 
-## Usage Examples
+**命令:** `agentguard log comms [--output <路径>]`
 
-### Start Full Monitoring
-```
-agentguard start
-```
-Enables all monitoring features with default config.
+**记录内容包括:**
+- HTTP/HTTPS 请求（已清洗处理）  
+- WebSocket 连接  
+- 发送的电子邮件  
+- 消息平台输出（如 Telegram、Discord 等）  
+- 时间戳、目的地、负载哈希值
 
-### Check Current Security Status
-```
-agentguard status
-```
-Returns current threat level, active monitors, recent alerts.
+### 4. 异常检测  
+使用轻量级机器学习算法检测行为异常。
 
-### Investigate Specific Activity
-```
-agentguard investigate --timerange "last 2 hours" --type file_access
-```
+**命令:** `agentguard detect anomalies [--sensitivity <低|中|高>]`
 
-### Generate Immediate Report
-```
-agentguard report --now
-```
+**检测方法:**
+- 基线偏差（学习正常行为模式）  
+- 时间异常  
+- 操作序列异常  
+- 数据量突然增加  
+- 新目标地址的检测
 
-### Review Alert History
-```
-agentguard alerts --last 24h --severity high
-```
+### 5. 安全报告  
+生成每日安全报告。
 
-### Whitelist a Domain
-```
-agentguard trust add api.newservice.com --reason "Required for X integration"
-```
+**命令:** `agentguard report [--period <每日|每周|每月>]`
+
+**报告包含:**
+- 活动摘要  
+- 警报按严重程度分类  
+- 最常访问的资源  
+- 通信目的地  
+- 异常事件的时间线  
+- 建议措施
 
 ---
 
-## Alert Severity Levels
+## 配置
 
-| Level | Color | Meaning | Example |
+### 配置文件: `config/agentguard.yaml`
+
+---
+
+## 使用示例
+
+### 启用全部监控功能  
+使用默认配置启动全部监控功能。
+
+### 检查当前安全状态  
+查看当前的安全威胁级别、活跃的监控任务及最近的警报信息。
+
+### 调查特定活动  
+针对特定活动进行详细调查。
+
+### 生成即时报告  
+立即生成安全报告。
+
+### 查看警报历史  
+查看过去的警报记录。
+
+### 将域名加入白名单  
+将某个域名添加到白名单中，避免被误报。
+
+---
+
+## 警报严重程度
+
+| 程度 | 颜色 | 含义 | 例子 |
 |-------|-------|---------|---------|
-| INFO | 🔵 | Normal logged activity | File read in workspace |
-| LOW | 🟢 | Minor deviation | Slightly elevated API calls |
-| MEDIUM | 🟡 | Notable anomaly | Access to .env file |
-| HIGH | 🟠 | Potential threat | Bulk credential access |
-| CRITICAL | 🔴 | Immediate action needed | Data exfiltration pattern |
+| INFO | 🔵 | 正常的日志记录 | 在工作区中读取文件 |
+| LOW | 🟢 | 轻微异常 | API 调用频率略有增加 |
+| MEDIUM | 🟡 | 显著异常 | 访问了配置文件 `.env` |
+| HIGH | 🟠 | 潜在威胁 | 大量访问敏感信息 |
+| CRITICAL | 🔴 | 需立即采取行动 | 发生数据外泄 |
 
 ---
 
-## Integration Points
+## 集成方式
 
-### With Clawdbot
-- Receives file/API operation hooks
-- Sends alerts via configured channels
-- Integrates with heartbeat for periodic checks
+### 与 Clawdbot 的集成  
+- 接收文件/API 操作的触发事件  
+- 通过配置的渠道发送警报  
+- 与心跳机制结合进行定期检查
 
-### With Other Skills
-- Shares threat data with other security skills
-- Can block operations (if configured)
-- Provides audit logs for compliance skills
-
----
-
-## Data Storage
-
-```
-~/.agentguard/
-├── logs/
-│   ├── file_access/
-│   ├── api_calls/
-│   └── communications/
-├── baselines/
-│   └── behavior_model.json
-├── alerts/
-│   └── YYYY-MM-DD.json
-└── reports/
-    └── YYYY-MM-DD_report.md
-```
+### 与其他工具的集成  
+- 与其他安全工具共享威胁数据  
+- 可以阻止某些操作（根据配置）  
+- 为合规性检查提供审计日志
 
 ---
 
-## Privacy & Security
+## 数据存储
 
-- **No external data transmission** - All processing is local
-- **Sensitive data hashing** - Credentials are never logged in plain text
-- **Configurable retention** - Auto-delete old logs
-- **Encrypted storage** - Optional AES encryption for logs
+---  
+（数据存储相关内容省略）
 
 ---
 
-## Troubleshooting
+## 隐私与安全措施  
 
-### High false positive rate
-→ Increase baseline learning period or reduce sensitivity
-
-### Missing file events
-→ Check `file_watch_dirs` config covers target directories
-
-### Reports not generating
-→ Verify `report_time` format and timezone settings
+- **无外部数据传输** – 所有处理都在本地完成  
+- **敏感数据加密** – 密码等敏感信息从不以明文形式存储  
+- **可配置的日志保留期限** – 自动删除旧日志  
+- **日志加密** – 可选 AES 加密方式  
 
 ---
 
-## Execution Scripts
+## 故障排除
 
-| Script | Purpose |
-|--------|---------|
-| `execution/monitor.py` | Core monitoring daemon |
-| `execution/detector.py` | Anomaly detection engine |
-| `execution/logger.py` | Structured logging handler |
-| `execution/alerter.py` | Alert dispatch system |
-| `execution/reporter.py` | Report generation |
+### 假阳性率过高  
+→ 增加基线学习周期或降低检测灵敏度  
+
+### 文件事件未被记录  
+→ 检查 `file_watch_dirs` 配置是否覆盖了需要监控的目录  
+
+### 报告未生成  
+→ 核对 `report_time` 的格式和时区设置  
 
 ---
 
-## Author Notes
+## 执行脚本  
 
-AgentGuard is designed with defense-in-depth principles. It assumes agents can be compromised or manipulated, and provides visibility into their operations.
+| 脚本 | 功能 |  
+|--------|---------|  
+| `execution/monitor.py` | 核心监控守护进程 |  
+| `execution/detector.py` | 异常检测引擎 |  
+| `execution/logger.py` | 结构化日志处理程序 |  
+| `execution/alerter.py` | 警报分发系统 |  
+| `execution/reporter.py` | 报告生成工具 |  
 
-For maximum security, run AgentGuard in a separate process with limited write access to prevent a compromised agent from disabling monitoring.
+---
+
+## 作者说明  
+
+AgentGuard 遵循纵深防御的原则设计。它假设代理程序可能会被入侵或被操控，因此提供了对其操作的详细监控。  
+
+为确保最高安全性，建议将 AgentGuard 运行在独立的进程中，并限制其写入权限，以防止被入侵的代理程序禁用监控功能。

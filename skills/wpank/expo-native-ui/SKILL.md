@@ -10,10 +10,9 @@ tags: [expo, react-native, ios, android, mobile, navigation, animations]
 
 # Expo Native UI
 
-Build production-quality native mobile apps with Expo Router following Apple Human Interface Guidelines and modern React Native patterns.
+使用 Expo Router 按照 Apple 人类界面指南和现代 React Native 模式构建高质量的原生移动应用。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -21,86 +20,85 @@ Build production-quality native mobile apps with Expo Router following Apple Hum
 npx clawhub@latest install expo-native-ui
 ```
 
+## 本技能的作用
 
-## WHAT This Skill Does
+本技能指导如何使用 Expo Router 实现原生移动应用，包括：
+- 基于文件的路由系统及原生导航栈
+- 原生标签页（NativeTabs）和 iOS 26 的新特性
+- 通过 `expo-symbols` 集成 SF Symbols 图标
+- 模糊效果（expo-blur）和液态玻璃效果（expo-glass-effect）
+- 重新动画化的效果和手势处理
+- 原生控件：Switch、Slider、SegmentedControl、DateTimePicker
 
-Guides implementation of native mobile apps using Expo Router with:
-- File-based routing with native navigation stacks
-- Native tab bars (NativeTabs) and iOS 26 features
-- SF Symbols integration via expo-symbols
-- Blur effects (expo-blur) and liquid glass (expo-glass-effect)
-- Reanimated animations and gesture handling
-- Native controls: Switch, Slider, SegmentedControl, DateTimePicker
+## 适用场景
 
-## WHEN To Use
+- 构建新的 Expo Router 应用
+- 添加原生标签页导航
+- 实现 iOS 风格的模糊或液态玻璃效果
+- 创建平滑的进入/退出过渡动画
+- 集成 SF Symbols 图标
+- 设置带有分组和动态路由的路由结构
 
-- Building a new Expo Router app
-- Adding native tab navigation
-- Implementing iOS-style blur or liquid glass effects
-- Creating smooth animations with entering/exiting transitions
-- Integrating SF Symbols for icons
-- Setting up route structure with groups and dynamic routes
-
-## KEYWORDS
+## 关键词
 
 expo router, react native, native tabs, sf symbols, expo blur, liquid glass, reanimated, ios, android, mobile app, navigation stack, form sheet, modal, context menu, link preview
 
-## References
+## 参考资料
 
-Consult these resources for detailed implementation:
+有关详细实现，请参阅以下资源：
 
-| Reference | Purpose |
+| 参考资料 | 用途 |
 |-----------|---------|
-| `references/route-structure.md` | Route conventions, dynamic routes, groups, query params |
-| `references/tabs.md` | NativeTabs, migration from JS tabs, iOS 26 features |
-| `references/icons.md` | SF Symbols with expo-symbols, animations, weights |
-| `references/controls.md` | Native iOS controls: Switch, Slider, DateTimePicker, Picker |
-| `references/visual-effects.md` | Blur effects and liquid glass |
-| `references/animations.md` | Reanimated: entering, exiting, layout, scroll-driven |
-| `references/search.md` | Search bar integration, useSearch hook, filtering |
-| `references/gradients.md` | CSS gradients via experimental_backgroundImage |
-| `references/media.md` | Camera, audio, video, file saving |
-| `references/storage.md` | SQLite, AsyncStorage, SecureStore |
-| `references/webgpu-three.md` | WebGPU, Three.js for 3D graphics |
-| `references/toolbar-and-headers.md` | Stack headers, toolbar customization (iOS) |
+| `references/route-structure.md` | 路由规范、动态路由、分组、查询参数 |
+| `references/tabs.md` | NativeTabs、从 JS 标签页的迁移、iOS 26 的新特性 |
+| `references/icons.md` | 使用 `expo-symbols` 的 SF Symbols 图标、动画效果 |
+| `references/controls.md` | 原生 iOS 控件：Switch、Slider、DateTimePicker、Picker |
+| `references/visual-effects.md` | 模糊效果和液态玻璃效果 |
+| `referencesAnimations.md` | 重新动画化的效果：进入、退出、布局、滚动驱动 |
+| `references/search.md` | 搜索栏集成、使用 `useSearch` 钩子、过滤功能 |
+| `references/gradients.md` | 通过 `experimental-backgroundImage` 实现 CSS 渐变 |
+| `references/media.md` | 相机、音频、视频、文件保存 |
+| `references/storage.md` | SQLite、AsyncStorage、SecureStore |
+| `references/webgpu-three.md` | 使用 WebGPU 和 Three.js 进行 3D 图形处理 |
+| `references/toolbar-and-headers.md` | 标签栏和工具栏定制（iOS） |
 
-## Core Principles
+## 核心原则
 
-### Running the App
+### 运行应用
 
-**Try Expo Go first** before creating custom builds:
+在创建自定义构建之前，**先尝试使用 Expo Go**：
 
 ```bash
 npx expo start  # Scan QR with Expo Go
 ```
 
-Custom builds (`npx expo run:ios`) only needed for:
-- Local Expo modules (custom native code in `modules/`)
-- Apple targets (widgets, app clips via `@bacons/apple-targets`)
-- Third-party native modules not in Expo Go
+只有以下情况才需要使用自定义构建（`npx expo run:ios`）：
+- 本地 Expo 模块（`modules/` 目录中的自定义原生代码）
+- 需要针对 Apple 设备的组件（通过 `@bacons/apple-targets`）
+- 未包含在 Expo Go 中的第三方原生模块
 
-### Code Style
+### 代码风格
 
-- **Kebab-case file names**: `comment-card.tsx`
-- **Path aliases in tsconfig** over relative imports
-- **Never co-locate** components/utilities in `app/` directory
-- **Always ensure** a route matches "/" (may be in a group)
-- **Escape nested backticks** carefully in strings
+- 文件名采用驼峰式命名法（例如：`comment-card.tsx`）
+- 在 `tsconfig` 中使用路径别名以替代相对导入
+- **切勿将组件/工具函数放在 `app/` 目录中**
+- **确保** 路由匹配 “/”（可能位于某个组内）
+- 在字符串中处理嵌套的反引号时要小心
 
-### Library Preferences
+### 库推荐使用
 
-| Use | Instead Of |
+| 推荐库 | 替代库 |
 |-----|------------|
 | `expo-audio` | `expo-av` |
 | `expo-video` | `expo-av` |
 | `expo-symbols` | `@expo/vector-icons` |
-| `react-native-safe-area-context` | RN SafeAreaView |
+| `react-native-safe-area-context` | `RN SafeAreaView` |
 | `process.env.EXPO_OS` | `Platform.OS` |
 | `React.use` | `React.useContext` |
-| `expo-image` | intrinsic `img` element |
-| `expo-glass-effect` | custom blur views |
+| `expo-image` | 内置的 `img` 元素 |
+| `expo-glass-effect` | 自定义的模糊效果视图 |
 
-### Responsiveness
+### 响应式设计
 
 ```tsx
 // Always wrap root in ScrollView with automatic insets
@@ -115,9 +113,9 @@ const { width, height } = useWindowDimensions();
 <View style={{ flex: 1, flexDirection: 'row', gap: 16 }} />
 ```
 
-## Navigation Patterns
+## 导航模式
 
-### Link with Preview and Context Menu
+### 带预览和上下文菜单的链接
 
 ```tsx
 import { Link } from 'expo-router';
@@ -134,7 +132,7 @@ import { Link } from 'expo-router';
 </Link>
 ```
 
-### Form Sheet Modal
+### 表单页模态框
 
 ```tsx
 // In _layout.tsx
@@ -149,7 +147,7 @@ import { Link } from 'expo-router';
 />
 ```
 
-### Native Tabs Structure
+### 原生标签页结构
 
 ```
 app/
@@ -177,15 +175,15 @@ export default function Layout() {
 }
 ```
 
-## Styling Guidelines
+## 样式指南
 
-- **Flex gap** over margin/padding where possible
-- **`borderCurve: 'continuous'`** for rounded corners (not capsules)
-- **`boxShadow`** style prop, never legacy RN shadow/elevation
-- **Stack title** instead of custom text elements for page headers
-- **Inline styles**, not `StyleSheet.create` unless reusing
-- **`fontVariant: 'tabular-nums'`** for numeric counters
-- **`selectable` prop** on Text displaying copiable data
+- 在可能的情况下，使用 `flex gap` 代替 `margin/padding`
+- 使用 `borderCurve: 'continuous'` 以实现圆角效果（而非传统的胶囊形边框）
+- 使用 `boxShadow` 样式属性，而非旧的 RN 阴影/凸起效果
+- 使用 `stack title` 代替自定义文本元素作为页面标题
+- 除非需要复用，否则不要使用 `StyleSheet.create` 来创建样式
+- 数字计数器使用 `fontVariant: 'tabular-nums`
+- 对于可复制的数据，为文本添加 `selectable` 属性
 
 ```tsx
 // Shadow example
@@ -195,21 +193,21 @@ export default function Layout() {
 <View style={{ borderRadius: 12, borderCurve: 'continuous' }} />
 ```
 
-## Behavior Patterns
+## 行为规范
 
-- **Haptics**: Use `expo-haptics` conditionally on iOS
-- **Search bar**: Prefer `headerSearchBarOptions` in Stack.Screen
-- **Selectable text**: Add `selectable` prop to important data
-- **Format large numbers**: 1.4M, 38k instead of 1,400,000
-- **Never use** intrinsic elements (`img`, `div`) outside DOM components
+- **触觉反馈**：在 iOS 上条件性地使用 `expo-haptics`
+- **搜索栏**：优先使用 `Stack.Screen` 中的 `headerSearchBarOptions`
+- **可选文本**：为重要数据添加 `selectable` 属性
+- **格式化大数字**：使用 1.4M 或 38k 而不是 1,400,000
+- **切勿在 DOM 组件之外使用** 内置元素（如 `img`、`div`）
 
-## NEVER Do
+## 绝对不要做的事情
 
-1. **NEVER use** legacy modules: Picker, WebView, SafeAreaView from react-native, AsyncStorage (old), expo-permissions
-2. **NEVER use** `Dimensions.get()` — always `useWindowDimensions`
-3. **NEVER co-locate** components in the `app/` directory
-4. **NEVER use** `Platform.OS` — use `process.env.EXPO_OS`
-5. **NEVER use** legacy shadow styles — use CSS `boxShadow`
-6. **NEVER start** with custom builds — try Expo Go first
-7. **NEVER use** StyleSheet.create for one-time styles
-8. **NEVER use** `@expo/vector-icons` — use `expo-symbols`
+1. **绝对不要使用** 旧版本的 React Native 模块：如 `Picker`、`WebView`、`SafeAreaView`、`AsyncStorage`（旧版本）、`expo-permissions`
+2. **绝对不要使用** `Dimensions.get()` — 始终使用 `useWindowDimensions`
+3. **切勿将组件放在 `app/` 目录中**
+4. **绝对不要使用** `Platform.OS` — 使用 `process.env.EXPO_OS`
+5. **切勿使用** 旧的阴影样式 — 使用 CSS 的 `boxShadow`
+6. **绝对不要** 从自定义构建开始 — 先尝试使用 Expo Go
+7. **切勿为一次性样式使用 `StyleSheet.create`
+8. **绝对不要使用** `@expo/vector-icons` — 使用 `expo-symbols`

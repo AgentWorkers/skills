@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-overhead-markup"
 display_name: "CWICR Overhead Markup"
-description: "Apply overhead, profit, and markup to CWICR estimates. Calculate indirect costs, general conditions, and contractor margins."
+description: "将管理费用、利润和加价应用于CWICR的估算中。计算间接成本、一般条件以及承包商的利润率。"
 ---
 
-# CWICR Overhead & Markup Calculator
+# CWICR 开销与加价计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Direct costs need additional markups:
-- General overhead (office, insurance)
-- Project overhead (site costs)
-- Profit margins
-- Bonds and insurance
+### 问题描述
+直接成本需要额外的加价：
+- 一般开销（办公费用、保险费用）
+- 项目开销（现场费用）
+- 利润空间
+- 债券费用和保险费用
 
-### Solution
-Systematic markup application to CWICR direct costs with configurable rates for overhead, profit, bonds, and other indirect costs.
+### 解决方案
+对 CWICR 的直接成本应用系统化的加价机制，允许用户配置开销、利润、债券费用及其他间接成本的加价率。
 
-### Business Value
-- **Complete pricing** - From cost to selling price
-- **Configurable rates** - By project/client type
-- **Transparency** - Clear markup breakdown
-- **Consistency** - Standard markup application
+### 商业价值
+- **完整的定价流程**：从成本到销售价格
+- **可配置的加价率**：根据项目或客户类型进行设置
+- **透明度**：清晰的加价结构
+- **一致性**：标准化的加价规则
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -348,7 +348,7 @@ class CWICROverheadMarkup:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize markup calculator
@@ -366,9 +366,9 @@ print(f"Bid Price: ${bid['bid_price']:,.2f}")
 print(f"Total Markup: {bid['total_markup_pct']}%")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Template-Based Pricing
+### 1. 基于模板的定价
 ```python
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
 markup = CWICROverheadMarkup(cwicr)
@@ -382,7 +382,7 @@ pricing = markup.price_estimate(items, template='commercial')
 print(f"Total Price: ${pricing.total_price:,.2f}")
 ```
 
-### 2. Compare Scenarios
+### 2. 情景对比
 ```python
 scenarios = {
     'Aggressive': {'overhead': 0.08, 'profit': 0.05},
@@ -394,7 +394,7 @@ comparison = markup.compare_markup_scenarios(1000000, scenarios)
 print(comparison)
 ```
 
-### 3. Custom Markup Schedule
+### 3. 自定义加价计划
 ```python
 schedule = markup.create_markup_schedule('Custom', {
     'overhead': 0.10,
@@ -406,6 +406,6 @@ schedule = markup.create_markup_schedule('Custom', {
 pricing = markup.apply_markups(500000, schedule)
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Cost Markup Methods
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 成本加价方法

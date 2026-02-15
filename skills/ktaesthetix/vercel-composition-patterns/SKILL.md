@@ -12,78 +12,66 @@ metadata:
   version: '1.0.0'
 ---
 
-# React Composition Patterns
+# React 组合模式
 
-Composition patterns for building flexible, maintainable React components. Avoid
-boolean prop proliferation by using compound components, lifting state, and
-composing internals. These patterns make codebases easier for both humans and AI
-agents to work with as they scale.
+这些组合模式用于构建灵活且易于维护的 React 组件。通过使用复合组件、提升状态（state-lifting）以及组合内部逻辑，可以避免布尔属性（boolean props）的过度使用。这些模式使得代码库在扩展时更易于人类和人工智能工具进行理解和处理。
 
-## When to Apply
+## 适用场景
 
-Reference these guidelines when:
+在以下情况下，请参考这些指南：
+- 重构具有大量布尔属性的组件
+- 构建可重用的组件库
+- 设计灵活的组件 API
+- 审查组件架构
+- 使用复合组件或上下文提供者（context providers）
 
-- Refactoring components with many boolean props
-- Building reusable component libraries
-- Designing flexible component APIs
-- Reviewing component architecture
-- Working with compound components or context providers
+## 规则分类（按优先级）
 
-## Rule Categories by Priority
-
-| Priority | Category                | Impact | Prefix          |
+| 优先级 | 分类                | 影响程度 | 前缀          |
 | -------- | ----------------------- | ------ | --------------- |
-| 1        | Component Architecture  | HIGH   | `architecture-` |
-| 2        | State Management        | MEDIUM | `state-`        |
-| 3        | Implementation Patterns | MEDIUM | `patterns-`     |
-| 4        | React 19 APIs           | MEDIUM | `react19-`      |
+| 1        | 组件架构              | 高      | `architecture-`     |
+| 2        | 状态管理              | 中等      | `state-`        |
+| 3        | 实现模式              | 中等      | `patterns-`     |
+| 4        | React 19 API            | 中等      | `react19-`      |
 
-## Quick Reference
+## 快速参考
 
-### 1. Component Architecture (HIGH)
+### 1. 组件架构（高优先级）
 
-- `architecture-avoid-boolean-props` - Don't add boolean props to customize
-  behavior; use composition
-- `architecture-compound-components` - Structure complex components with shared
-  context
+- `architecture-avoid-boolean-props` - 不要使用布尔属性来自定义组件行为；应使用组合模式
+- `architecture-compound-components` - 使用共享上下文（shared context）来构建复杂组件
 
-### 2. State Management (MEDIUM)
+### 2. 状态管理（中等优先级）
 
-- `state-decouple-implementation` - Provider is the only place that knows how
-  state is managed
-- `state-context-interface` - Define generic interface with state, actions, meta
-  for dependency injection
-- `state-lift-state` - Move state into provider components for sibling access
+- `state-decouple-implementation` - 只有状态提供者（state provider）知道状态是如何管理的
+- `state-context-interface` - 定义包含状态、操作（actions）和元数据（meta data）的通用接口，以便进行依赖注入
+- `state-lift-state` - 将状态移至提供者组件中，以便其他组件能够访问
 
-### 3. Implementation Patterns (MEDIUM)
+### 3. 实现模式（中等优先级）
 
-- `patterns-explicit-variants` - Create explicit variant components instead of
-  boolean modes
-- `patterns-children-over-render-props` - Use children for composition instead
-  of renderX props
+- `patterns-explicit-variants` - 创建明确的变体组件（variant components），而不是使用布尔属性来表示不同的行为模式
+- `patterns-children-over-render-props` - 使用子组件（children）进行组合，而不是使用 `renderX` 类型的属性
 
-### 4. React 19 APIs (MEDIUM)
+### 4. React 19 API（中等优先级）
 
-> **⚠️ React 19+ only.** Skip this section if using React 18 or earlier.
+> **⚠️ 仅适用于 React 19 及更高版本。** 如果使用的是 React 18 或更低版本，请跳过此部分。
+- `react19-no-forwardref` - 不要使用 `forwardRef`；请使用 `use()` 替代 `useContext()`
 
-- `react19-no-forwardref` - Don't use `forwardRef`; use `use()` instead of `useContext()`
+## 使用方法
 
-## How to Use
-
-Read individual rule files for detailed explanations and code examples:
+有关详细说明和代码示例，请阅读各个规则文件：
 
 ```
 rules/architecture-avoid-boolean-props.md
 rules/state-context-interface.md
 ```
 
-Each rule file contains:
+每个规则文件包含：
+- 该规则重要性的简要说明
+- 错误的代码示例及其解释
+- 正确的代码示例及其解释
+- 额外的背景信息和参考资料
 
-- Brief explanation of why it matters
-- Incorrect code example with explanation
-- Correct code example with explanation
-- Additional context and references
+## 完整的编译文档
 
-## Full Compiled Document
-
-For the complete guide with all rules expanded: `AGENTS.md`
+如需查看包含所有规则的完整指南，请参阅 `AGENTS.md`。

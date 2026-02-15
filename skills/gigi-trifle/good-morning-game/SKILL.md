@@ -1,147 +1,130 @@
 ---
 name: good-morning
-description: Play the Good Morning (GM) game - post creative two-word greetings where the first word starts with G and the second with M. Each unique phrase earns points. Use when participating in GM games on Discord or Farcaster.
+description: 参与“Good Morning (GM)”游戏：请发布创意性的两个单词的问候语，其中第一个单词以字母“G”开头，第二个单词以字母“M”开头。每个独特的问候语都会获得相应的分数。该游戏适用于在 Discord 或 Farcaster 上进行的互动活动。
 version: 1.0.0
 metadata:
   clawdhub:
     emoji: "🌅"
 ---
 
-# Good Morning (GM) Game
+# 早安（Good Morning, GM）游戏
 
-A word game where players post creative two-word greetings. The first word must start with **G**, the second with **M**. Each unique phrase can only be used once globally - originality is rewarded!
+这是一款文字游戏，玩家需要创作由两个单词组成的问候语。第一个单词必须以 **G** 开头，第二个单词必须以 **M** 开头。每个独特的短语在全球范围内只能使用一次——创意越丰富，得分越高！
 
-## Rules
+## 规则
 
-### Format
-- Two words: `[G-word] [M-word]`
-- First word starts with G, second with M
-- Both must be real words (dictionary, Urban Dictionary, or AI-verified)
-- Max 50 characters total
-- "good morning" itself is NOT allowed - be creative!
+### 格式要求
+- 两个单词：`[G-单词] [M-单词]`
+- 第一个单词以 **G** 开头，第二个单词以 **M** 开头
+- 两个单词都必须是真实存在的单词（可查证于词典、Urban Dictionary 或通过 AI 验证）
+- 总长度不超过 50 个字符
+- 不能使用 “good morning” 这个短语——请发挥创意！
 
-### Scoring
-- **+1 point** for each original, valid GM phrase
-- **+1 point** for each reaction others give your GM
-- If you post a duplicate, the original author gets the point instead
+### 计分规则
+- 每个原创且有效的问候语可获得 **+1 分**
+- 每个对他人发布的问候语的回应也可获得 **+1 分**
+- 如果你发布了重复的问候语，分数将归原作者所有
 
-### Validation
-Words are checked against:
-1. English dictionary (WordPOS)
-2. American English, Italian, Spanish, French, German dictionaries
+### 验证方式
+单词会通过以下方式进行检查：
+1. 英语词典（WordPOS）
+2. 美式英语、意大利语、西班牙语、法语、德语词典
 3. Urban Dictionary
-4. AI verification (last resort)
+4. AI 验证（作为最后手段）
 
-Profanity and slurs are filtered.
+游戏中禁止使用脏话和侮辱性语言。
 
-### Rate Limits
-- New users (≤10 total GMs): No limit
-- Established users (>10 GMs): Max 3 GMs per 3 hours
-- Discord has a "last poster bypass" - if someone else posted after you, you can post again
+### 发帖限制
+- 新用户（发布的问候语总数 ≤ 10 条）：无限制
+- 老用户（发布的问候语总数 > 10 条）：每 3 小时最多发布 3 条问候语
+- Discord 系统提供 “最后发布者优先” 功能——如果有人在你之后发布了内容，你可以再次发布。
 
-## Strategy Guide
+## 策略指南
 
-### Finding Novel GMs
+### 寻找独特的问候语
+关键在于找到符合以下条件的单词组合：
+1. 是真实存在的单词
+2. 之前未被使用过
+3. 分别以 **G** 和 **M** 开头
 
-The challenge is finding word pairs that:
-1. Are real words
-2. Haven't been used before
-3. Start with G and M respectively
+#### 基本策略
+**1. 分类组合**
+选择一个类别，然后在该类别中寻找符合条件的单词：
+- 地理：例如 “Georgian mountains”（乔治亚山脉）、“Greek monastery”（希腊修道院）
+- 食物：例如 “grilled mushrooms”（烤蘑菇）、“garlic mayo”（蒜蓉蛋黄酱）
+- 动物：例如 “giant moth”（巨型蛾）、“gray mongoose”（灰獴）
+- 情感：例如 “giddy mood”（兴奋的心情）、“grateful moment”（感激的时刻）
 
-#### Basic Strategies
+**2. 形容词 + 名词**
+- 以 **G** 开头的形容词与以 **M** 开头的名词搭配：
+- 例如 “gentle melody”（轻柔的旋律）、“golden meadow”（金色的草地）、“grim message”（严峻的消息）
+- 例如 “grand monument”（宏伟的纪念碑）、“green marble”（绿色的大理石）、“glossy metal”（有光泽的金属）
 
-**1. Category Pairing**
-Pick a category and find G/M words within it:
-- Geography: "Georgian mountains", "Greek monastery"
-- Food: "grilled mushrooms", "garlic mayo"
-- Animals: "giant moth", "gray mongoose"
-- Emotions: "giddy mood", "grateful moment"
+**3. 动词 + 名词**
+- 以 **G** 开头的动词与以 **M** 开头的名词搭配：
+- 例如 “grab mango”（抓芒果）、“grind metal”（磨金属）、“guide migration”（引导迁徙）
+- 例如 “gather mushrooms”（采集蘑菇）、“grow mint”（种植薄荷）、“guard monastery”（守卫修道院）
 
-**2. Adjective + Noun**
-G-adjectives paired with M-nouns:
-- "gentle melody", "golden meadow", "grim message"
-- "grand monument", "green marble", "glossy metal"
+**4. 不常见的单词**
+使用不常见的单词可以增加竞争力：
+- 使用最高级形式：例如 “greatest”（最伟大的）、“grandest”（最宏伟的）、“gladdest”（最快乐的）
+- 使用专业术语：例如 “genomic mapping”（基因组图谱）、“galvanic meter”（电流计）
+- 使用外来词：例如 “gratis merci”（免费感谢）、“gemutlich morgen”（愉快的早晨）
 
-**3. Verb + Noun**
-G-verbs paired with M-nouns:
-- "grab mango", "grind metal", "guide migration"
-- "gather mushrooms", "grow mint", "guard monastery"
+**5. 多语言策略**
+使用其他支持的语言中的单词：
+- 意大利语/西班牙语：例如 “grande momento”（伟大的时刻）
+- 德语：例如 “guten morgen”（早上好）（但较为常见，可能已被使用）
+- 法语：例如 “gentil monsieur”（尊敬的先生）
 
-**4. Uncommon Words**
-Less common words are less likely to be taken:
-- Use superlatives: "greatest", "grandest", "gladdest"
-- Use technical terms: "genomic mapping", "galvanic meter"
-- Use loanwords: "gratis merci", "gemutlich morgen"
+#### 高级策略
+**1. 搭配词的使用**
+寻找有效的复合词或被广泛接受的俚语：
+- Urban Dictionary 支持许多非正式表达
+- 游戏/网络文化中的词汇通常也能通过验证
 
-**5. Multi-language Approach**
-Words from other supported languages (Italian, Spanish, French, German):
-- "grande momento" (Italian/Spanish)
-- "guten morgen" (German - but common, likely taken)
-- "gentil monsieur" (French)
+**2. 科学/技术术语**
+学术词汇丰富，不容易被重复使用：
+- 生物学：例如 “genetic mutation”（基因突变）、“gamete meiosis”（配子减数分裂）
+- 化学：例如 “gaseous mixture”（气体混合物）、“graphene membrane”（石墨烯膜）
+- 计算机科学：例如 “gigabyte memory”（千兆字节内存）、“gateway module”（网关模块）
 
-#### Advanced Strategies
+**3. 由专有名词派生的单词**
+从专有名词派生出的常用词：
+- 例如 “gothic mansion”（哥特式宅邸）、“grecian marble”（希腊式大理石）、“gallic mustache”（高卢式胡子）
 
-**1. Portmanteau Mining**
-Look for valid compound words or accepted slang:
-- Urban Dictionary accepts many informal terms
-- Gaming/internet culture words often pass validation
+**4. 与季节或事件结合**
+将问候语与当前事件或季节联系起来：
+- 节日：例如 “gifting mood”（送礼的心情）、“grateful memories”（感激的回忆）
+- 天气：例如 “gloomy mist”（阴郁的雾气）、“gusty march”（狂风三月）
 
-**2. Scientific/Technical Terms**
-Academic vocabulary is vast and rarely exhausted:
-- Biology: "genetic mutation", "gamete meiosis"
-- Chemistry: "gaseous mixture", "graphene membrane"
-- Computing: "gigabyte memory", "gateway module"
+### 自定义策略
+1. **建立单词库**：按类别整理 **G-单词** 和 **M-单词** 的列表
+2. **记录重复词**：注意避免使用已有的单词
+3. **专精某个领域**：专注于某个特定领域（如植物学、建筑学、音乐理论）
+4. **发布前验证**：使用词典 API 确认单词的存在
+5. **选择合适的发布时间**：在竞争较少的时段发布
 
-**3. Proper Noun Adjacent**
-Words derived from proper nouns that became common words:
-- "gothic mansion", "grecian marble", "gallic mustache"
+### 合法的问候语示例
+**常见的（可能已被使用）**：
+- “green moon”（绿色月亮）、“gray matter”（灰质）、“good mood”（好心情）
+**有创意的（更有可能被接受的）**：
+- “groovy mandolin”（优美的曼陀林）、“gallant minstrel”（风度翩翩的吟游诗人）、“germinating mycelium”（发芽的菌丝）
+- “gossamer membrane”（薄如蝉翼的膜）、“granular mixture”（颗粒状混合物）、“glacial moraine”（冰川泥砾）
 
-**4. Seasonal/Event Rotation**
-Tie GMs to current events or seasons:
-- Holidays: "gifting mood", "grateful memories"
-- Weather: "gloomy mist", "gusty march"
-
-### Developing Your Own Strategy
-
-1. **Build a word list**: Create lists of G-words and M-words by category
-2. **Track what's taken**: Note duplicates you encounter to avoid them
-3. **Find your niche**: Specialize in an obscure domain (botany, architecture, music theory)
-4. **Test before posting**: Use dictionary APIs to verify words exist
-5. **Time your posts**: Post during off-peak hours for less competition
-
-### Example Valid GMs
-
-Common (likely taken):
-- "green moon", "gray matter", "good mood"
-
-Creative (more likely available):
-- "groovy mandolin", "gallant minstrel", "germinating mycelium"
-- "gossamer membrane", "granular mixture", "glacial moraine"
-
-## Reactions
-
-| Emoji | Meaning |
+## 回应方式
+| 表情符号 | 含义 |
 |-------|---------|
-| 🪩 | Valid new GM - you earned a point! |
-| 🪦 | Duplicate - original author gets the point |
-| ❌ | Invalid - words not recognized or wrong format |
+| 🪩 | 有效的新问候语——你获得 1 分！ |
+| 🪦 | 重复的问候语——分数归原作者 |
+| ❌ | 无效的问候语——单词未被识别或格式错误 |
 
-## API Integration
+## API 集成说明
+（如需将此游戏集成到机器人或自动化系统中，请参考以下代码块）
 
-If building a bot or automated system:
-
-```bash
-# Validate a potential GM (pseudo-code)
-# 1. Check format: two words, G* M*
-# 2. Query dictionaries for both words
-# 3. Check if phrase exists in Points database
-# 4. If all pass, post to channel
-```
-
-## Tips for Agents
-
-1. **Don't spam**: Respect rate limits and community norms
-2. **Be creative**: The game rewards originality
-3. **React to others**: Build community by reacting to good GMs
-4. **Learn from rejections**: Note which words fail validation
-5. **Vary your style**: Don't just use the same pattern repeatedly
+## 对代理的建议
+1. **避免刷屏**：遵守发布限制和社区规则
+2. **发挥创意**：游戏鼓励原创性
+3. **积极回应**：通过回应他人的问候语来参与社区互动
+4. **从失败中学习**：记录哪些单词无法通过验证
+5. **多样化表达**：不要重复使用相同的创作模式

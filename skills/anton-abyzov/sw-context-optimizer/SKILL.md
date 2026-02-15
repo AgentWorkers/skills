@@ -1,20 +1,20 @@
 ---
 name: context-optimizer
-description: Second-pass context optimization that surgically removes irrelevant content after initial context load. Use when context is bloated, tokens need reduction, or loaded specs are irrelevant to current task. Achieves 80%+ token reduction through intelligent prompt analysis.
+description: 二次上下文优化机制：在初次加载上下文后，会精确地移除无关内容。适用于上下文数据量过大、需要减少标记数量（tokens）或已加载的规格信息与当前任务无关的情况。通过智能的提示分析，该机制能够实现超过80%的标记数量减少（token reduction）。
 allowed-tools: Read, Grep, Glob
 ---
 
-# Context Optimizer
+# 上下文优化器（Context Optimizer）
 
-Second-pass context optimization that analyzes user intent and surgically removes irrelevant content from loaded context, achieving 80%+ total token reduction.
+这是一个二阶段的上下文优化工具，它能够分析用户的意图，并有针对性地移除加载上下文中不相关的内容，从而实现总token数量减少80%以上。
 
-## Purpose
+## 目的
 
-After `context-loader` loads context based on manifest (70% reduction), `context-optimizer` performs intelligent analysis of the user's specific prompt to remove sections that aren't needed for that particular task.
+在`context-loader`根据配置文件加载上下文（已实现70%的减少）之后，`context-optimizer`会对用户的具体请求进行智能分析，移除与该任务无关的部分内容。
 
-## The Two-Pass Strategy
+## 两阶段优化策略
 
-### Pass 1: Context Loader (Manifest-Based)
+### 第一阶段：上下文加载器（基于配置文件）
 ```yaml
 # context-manifest.yaml
 spec_sections:
@@ -26,7 +26,7 @@ Result: Load only relevant specs (70% reduction)
 Before: 150k tokens → After: 45k tokens
 ```
 
-### Pass 2: Context Optimizer (Intent-Based)
+### 第二阶段：上下文优化器（基于用户意图）
 ```typescript
 User: "Fix authentication bug in login endpoint"
 
@@ -53,27 +53,26 @@ After Pass 1: 45k tokens → After Pass 2: 27k tokens
 Total reduction: 82% (150k → 27k)
 ```
 
-## When to Use
+## 使用场景
 
-**Activates automatically** after context-loader when:
-- User prompt is specific (mentions feature, bug, file)
-- Loaded context > 20k tokens
-- Task is focused (not "build full product")
+**自动激活条件：**
+- 用户的请求非常具体（例如提及某个功能、 bug 或文件）
+- 加载的上下文超过20,000个token
+- 任务具有明确的目标（而非“构建完整的产品”）
 
-**Manual activation:**
-- "optimize context"
-- "reduce tokens"
-- "clean context"
+**手动激活方式：**
+- 输入“optimize context”（优化上下文）
+- 输入“reduce tokens”（减少token数量）
+- 输入“clean context”（清理上下文）
 
-**Skip when:**
-- Context already small (<10k tokens)
-- User asks broad questions ("explain architecture")
-- Planning new features (need full context)
+**无需使用的场景：**
+- 上下文已经很短（少于10,000个token）
+- 用户提出宽泛的问题（例如“解释系统架构”）
+- 正在规划新功能（需要完整的上下文）
 
-## What It Does
+## 工作原理
 
-### 1. User Intent Analysis
-
+### 1. 用户意图分析
 ```typescript
 interface IntentAnalysis {
   task_type: TaskType;
@@ -110,18 +109,17 @@ enum Scope {
 }
 ```
 
-**Analysis Examples:**
+**分析示例：**
 
-| User Prompt | Task Type | Domains | Scope | Needs Full? |
+| 用户请求 | 任务类型 | 相关领域 | 处理范围 | 是否需要完整上下文？ |
 |-------------|-----------|---------|-------|-------------|
-| "Fix login bug" | BUG_FIX | [AUTH, BACKEND] | NARROW | No |
-| "Add payment feature" | FEATURE | [PAYMENT, BACKEND] | FOCUSED | No |
-| "Refactor auth module" | REFACTOR | [AUTH, BACKEND] | FOCUSED | No |
-| "Design system architecture" | ARCHITECTURE | [ALL] | BROAD | Yes |
-| "Explain how payments work" | DOCUMENTATION | [PAYMENT] | FOCUSED | No |
+| “修复登录bug” | BUG_FIX | [AUTH, BACKEND] | 较具体 | 不需要 |
+| “添加支付功能” | FEATURE | [PAYMENT, BACKEND] | 目标明确 | 不需要 |
+| “重构认证模块” | REFACTOR | [AUTH, BACKEND] | 目标明确 | 不需要 |
+| “设计系统架构” | ARCHITECTURE | 全范围 | 较宽泛 | 需要 |
+| “解释支付流程” | DOCUMENTATION | [PAYMENT] | 目标明确 | 不需要 |
 
-### 2. Context Filtering Rules
-
+### 2. 上下文过滤规则
 ```yaml
 rules:
   # Rule 1: Task-Specific Specs
@@ -188,8 +186,7 @@ rules:
       - Test cases
 ```
 
-### 3. Optimization Algorithm
-
+### 3. 优化算法
 ```typescript
 async function optimizeContext(
   userPrompt: string,
@@ -234,10 +231,9 @@ async function optimizeContext(
 }
 ```
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Bug Fix (Narrow Scope)
-
+### 示例1：修复bug（具体任务）
 ```bash
 # Pass 1: context-loader loads from manifest
 Loaded context: 45k tokens (auth, payment, user specs)
@@ -274,8 +270,7 @@ Total: 150k → 27k (82% total reduction)
 Ready to proceed with optimized context.
 ```
 
-### Example 2: Feature Development (Focused Scope)
-
+### 示例2：功能开发（特定任务）
 ```bash
 User: "Add subscription billing to payment module"
 
@@ -305,8 +300,7 @@ Kept (30k tokens):
 Result: 45k → 30k tokens (33% additional reduction)
 ```
 
-### Example 3: Architecture Review (Broad Scope)
-
+### 示例3：架构评审（宽泛任务）
 ```bash
 User: "Review overall system architecture"
 
@@ -326,8 +320,7 @@ Rationale: Architecture review needs visibility across all domains
 to identify integration issues, dependencies, and design patterns.
 ```
 
-### Example 4: Manual Optimization
-
+### 示例4：手动优化
 ```bash
 User: "Optimize context for payment work"
 
@@ -352,14 +345,11 @@ Result: 45k → 20k tokens (56% reduction)
 You can now work on payment features with optimized context.
 ```
 
-## Configuration
+## 配置设置
 
+## 与上下文加载器的集成
 
-
-## Integration with Context Loader
-
-### Workflow
-
+### 工作流程
 ```typescript
 // 1. User asks to work on feature
 User: "Fix authentication bug"
@@ -384,8 +374,7 @@ return optimizedContext
 // Total: 150k → 27k (82% reduction)
 ```
 
-### Configuration in Increment
-
+### 配置的逐步优化
 ```yaml
 # .specweave/increments/0001-auth/context-manifest.yaml
 spec_sections:
@@ -414,62 +403,60 @@ optimization:
     "user profile": ["users", "auth"]
 ```
 
-## Token Savings Examples
+## Token节省示例
 
-### Realistic Project (500-page spec)
+### 实际项目示例（500页的文档）
 
-**Without SpecWeave:**
-- Full spec loaded: 500 pages × 300 tokens = 150,000 tokens
-- Every query uses 150k tokens
-- Cost: $0.015 × 150 = $2.25 per query
+**未使用ContextWeave时：**
+- 加载完整文档：500页 × 300个token = 150,000个token
+- 每次查询消耗150,000个token
+- 成本：0.015美元 × 150 = 每次查询0.225美元
 
-**With Context Loader (Pass 1):**
-- Manifest loads only auth section: 50 pages = 15,000 tokens (90% reduction)
-- Cost: $0.015 × 15 = $0.225 per query
+**使用Context Loader（第一阶段）后：**
+- 仅加载认证相关的部分：50页 × 15,000个token（减少90%）
+- 成本：0.015美元 × 15 = 每次查询0.225美元
 
-**With Context Optimizer (Pass 2):**
-- Further refine to login endpoint: 30 pages = 9,000 tokens (94% total reduction)
-- Cost: $0.015 × 9 = $0.135 per query
+**使用Context Optimizer（第二阶段）后：**
+- 进一步精炼到登录相关的内容：30页 × 9,000个token（总减少94%）
+- 成本：0.015美元 × 9 = 每次查询0.135美元
 
-**Savings: $2.25 → $0.135 (94% cost reduction)**
+**节省费用：2.25美元 → 0.135美元（节省84%）**
 
-### Session Example (10 queries)
+### 会话示例（10次查询）
 
-**Scenario:** Fix 3 auth bugs, 2 payment bugs, 1 user bug
+**场景：**修复3个认证bug、2个支付bug、1个用户bug
 
-| Query | Without | Pass 1 | Pass 2 | Savings |
-|-------|---------|--------|--------|---------|
-| Auth bug 1 | 150k | 45k (auth+pay+user) | 27k (auth only) | 82% |
-| Auth bug 2 | 150k | 45k | 27k | 82% |
-| Auth bug 3 | 150k | 45k | 27k | 82% |
-| Payment bug 1 | 150k | 45k | 28k (payment only) | 81% |
-| Payment bug 2 | 150k | 45k | 28k | 81% |
-| User bug 1 | 150k | 45k | 30k (user only) | 80% |
+| 查询类型 | 未使用ContextWeave时的token数量 | 使用ContextLoader后的token数量 | 使用ContextOptimizer后的token数量 | 节省的token数量 |
+|-------|-----------------|-------------------|-------------------|-------------------|
+| 认证bug | 150,000 | 45,000 | 27,000 | 82% |
+| 认证bug | 150,000 | 45,000 | 27,000 | 82% |
+| 认证bug | 150,000 | 45,000 | 27,000 | 82% |
+| 支付bug | 150,000 | 45,000 | 28,000 | 81% |
+| 支付bug | 150,000 | 45,000 | 28,000 | 81% |
+| 用户bug | 150,000 | 45,000 | 30,000 | 80% |
 
-**Total tokens:**
-- Without: 900k tokens
-- Pass 1 only: 270k tokens (70% reduction)
-- Pass 2: 167k tokens (81% reduction)
+**总token数量：**
+- 未使用ContextWeave时：900,000个token
+- 仅使用ContextLoader后：270,000个token（减少70%）
+- 使用ContextOptimizer后：167,000个token（减少81%）
 
-**Cost savings:**
-- Without: $13.50
-- Pass 1 only: $4.05
-- Pass 2: $2.50
+**费用节省：**
+- 未使用ContextWeave时：13.50美元
+- 仅使用ContextLoader后：4.05美元
+- 使用ContextOptimizer后：2.50美元
 
-**Additional savings: $1.55 per session (38% on top of Pass 1)**
+**每次会话额外节省：1.55美元（相比仅使用ContextLoader节省38%）**
 
-## Best Practices
+## 最佳实践
 
-### 1. Let It Run Automatically
+### 1. 自动运行
+- 默认模式下，会在上下文加载器之后自动执行优化
+- 不需要手动干预
+- 会根据每次查询的情况进行适应
+- 如有需要，可以恢复完整的上下文
 
-Default mode: auto-optimize after context-loader
-- No manual intervention
-- Adapts to each query
-- Restores full context if needed
-
-### 2. Review Removals for Critical Tasks
-
-For production deploys, security reviews:
+### 2. 对关键任务进行审查
+- 在生产环境中部署前，应对优化结果进行安全审查：
 ```bash
 User: "Review security before deployment"
 
@@ -477,112 +464,102 @@ context-optimizer:
 ⚠️ Keeping full context (critical task detected)
 ```
 
-### 3. Use Conservative Buffer for Complex Tasks
-
+### 3. 对复杂任务使用保守的缓冲策略
 ```yaml
 buffer_strategy: "conservative"
 ```
-- Keeps adjacent domains
-- Includes integration points
-- Safer for refactoring
+- 保留相邻的领域相关内容
+- 包括所有集成点
+- 有助于代码重构时的安全性
 
-### 4. Custom Domains for Your Project
-
+### 4. 为项目自定义领域
 ```yaml
 custom_domains:
   - "payment-processing"
   - "real-time-notifications"
   - "analytics-pipeline"
 ```
+- 有助于优化器更好地理解项目的结构
 
-Helps optimizer understand your project structure.
+### 5. 监控优化效果
+- 如果优化器错误地移除了必要的内容：
+- 降低`min_confidence`阈值
+- 添加`always_keep`规则
+- 使用`conservative`缓冲策略
 
-### 5. Monitor Optimization Accuracy
+## 限制
 
-If optimizer removes needed context:
-- Lower `min_confidence` threshold
-- Add `always_keep` rules
-- Use `conservative` buffer
+**Context Optimizer的局限性：**
+- 无法预测未来的对话需求（仅分析当前的请求内容）
+- 无法理解领域之间的隐含关系（除非进行了额外配置）
+- 无法读取用户的真实意图（如果请求表述模糊，可能会保留更多上下文）
 
-## Limitations
+**Context Optimizer能够实现的功能：**
+- 分析请求的类型和相关领域
+- 移除明显不相关的信息
+- 在需要时恢复被移除的上下文
+- 根据`always_keep`和`custom_domains`的配置进行优化
 
-**What context-optimizer CAN'T do:**
-- ❌ Predict future conversation needs (only analyzes current prompt)
-- ❌ Understand implicit domain relationships (unless configured)
-- ❌ Read your mind (if prompt is vague, keeps more context)
+## 测试用例
 
-**What context-optimizer CAN do:**
-- ✅ Analyze task type and domain from prompt
-- ✅ Remove obviously unrelated specs/agents
-- ✅ Restore removed context if later needed
-- ✅ Learn from always_keep/custom_domains config
+### TC-001：修复bug
+**输入：**包含认证、支付和用户相关信息的上下文（45,000个token）
+**输出：**仅保留认证相关的信息（27,000个token，减少40%）
 
-## Test Cases
+### TC-002：功能开发
+**输入：**包含多个领域的上下文**
+**输出：**保留支付和集成相关的信息（减少33%）
 
-### TC-001: Bug Fix Optimization
-**Given:** Context with auth+payment+user specs (45k tokens)
-**When:** User says "Fix login bug"
-**Then:** Keeps only auth spec (27k tokens, 40% reduction)
+### TC-003：架构评审
+**输入：**包含所有相关信息的上下文**
+**输出：**保留所有信息（因为需要完整的架构描述）
 
-### TC-002: Feature Development
-**Given:** Context with multiple domains
-**When:** User says "Add subscription billing"
-**Then:** Keeps payment + integration specs (33% reduction)
+### TC-004：模糊的请求
+**输入：**请求内容较为模糊**
+**输出：**为了安全起见，保留所有信息（尽管置信度较低）
 
-### TC-003: Architecture Review (Broad)
-**Given:** Context with all specs
-**When:** User says "Review architecture"
-**Then:** Keeps all specs (0% reduction, full context needed)
+### TC-005：手动指定领域
+**输入：**明确要求针对支付功能进行优化**
+**输出：**仅保留与支付相关的信息（减少50%以上）
 
-### TC-004: Vague Prompt
-**Given:** Context with multiple specs
-**When:** User says "Help me"
-**Then:** Keeps all (low confidence, plays safe)
+## 未来改进计划
 
-### TC-005: Manual Domain Specification
-**Given:** Context with all specs
-**When:** User says "Optimize for payment work"
-**Then:** Keeps only payment domain (50%+ reduction)
+### 第二阶段：对话历史分析
+- 跟踪实际使用的上下文内容
+- 移除从未被引用的部分
+- 学习用户的查询模式
 
-## Future Enhancements
+### 第三阶段：动态上下文扩展
+- 从最少的上下文开始加载
+- 根据需要动态添加相关内容
+- 实现“即时”上下文加载
 
-### Phase 2: Conversation History Analysis
-- Track which context was actually used
-- Remove sections never referenced
-- Learn user patterns
+### 第四阶段：跨版本的上下文整合
+- 检测不同版本之间的依赖关系
+- 智能地加载跨版本的上下文
+- 保持各版本上下文的一致性
 
-### Phase 3: Dynamic Context Expansion
-- Start with minimal context
-- Add sections on-demand when mentioned
-- "Just-in-time" context loading
+## 参考资源
 
-### Phase 4: Cross-Increment Context
-- Detect dependencies across increments
-- Load context from multiple increments intelligently
-- Maintain coherence across features
-
-## Resources
-
-- [Retrieval-Augmented Generation (RAG)](https://arxiv.org/abs/2005.11401) - Context retrieval patterns
-- [LongRAG: Large Context Optimization](https://arxiv.org/abs/2310.03025) - Long context handling
-- [Anthropic Context Windows](https://docs.anthropic.com/claude/docs/context-windows) - Best practices
+- [Retrieval-Augmented Generation (RAG)](https://arxiv.org/abs/2005.11401) - 上下文检索技术
+- [LongRAG: 大规模上下文优化](https://arxiv.org/abs/2310.03025) - 大规模上下文处理技术
+- [Anthropic Context Windows](https://docs.anthropic.com/claude/docs/context-windows) - 最佳实践指南
 
 ---
 
-## Summary
+## 总结
 
-**context-optimizer** provides second-pass context optimization:
+`context-optimizer`提供了二阶段的上下文优化功能：
+- 基于用户意图进行过滤
+- 考虑领域相关性，移除不相关的信息
+- 根据任务类型进行优化（如修复bug、开发新功能或设计架构）
+- 实现总token数量减少80%以上（在Context Loader的基础上）
+- 全自动运行
+- 在需要时可以恢复完整的上下文
+- 支持自定义配置（如特定领域和缓冲策略）
 
-✅ **Intent-driven filtering** (analyzes user prompt)
-✅ **Domain-aware** (removes unrelated specs)
-✅ **Task-type specific** (bug fix vs feature vs architecture)
-✅ **80%+ total reduction** (on top of context-loader's 70%)
-✅ **Automatic** (runs after context-loader)
-✅ **Safe** (restores context if needed)
-✅ **Configurable** (custom domains, buffer strategy)
+**适用场景：**处理大量文档（500页以上）时，即使使用基于配置文件的加载方式，也会产生30,000个以上的token。**
 
-**Use it when:** Working with large specs (500+ pages) where even manifest-based loading results in 30k+ tokens.
+**无需使用的场景：**上下文已经很短（少于10,000个token）时；提出宽泛的架构问题时；或从零开始规划新功能时。
 
-**Skip it when:** Context already small (<10k), broad architectural questions, or planning new features from scratch.
-
-**The result:** From 150k tokens → 27k tokens = 82% total reduction, enabling work on enterprise-scale specs within Claude's context window.
+**优化效果：**将原始的150,000个token减少到27,000个token，总节省率达到82%，使得在Claude的上下文处理范围内能够高效处理企业级文档。

@@ -1,15 +1,15 @@
 ---
 name: financial-calculator
-description: Advanced financial calculator with future value tables, present value, discount calculations, markup pricing, and compound interest. Use when calculating investment growth, pricing strategies, loan values, discounts, or comparing financial scenarios across different rates and time periods. Includes both CLI and interactive web UI.
+description: 高级财务计算器，支持未来价值表、现值计算、折现计算、加价定价以及复利计算功能。适用于计算投资增长、定价策略、贷款金额、折扣，或在不同利率和时间周期内比较财务方案。提供命令行界面（CLI）和交互式网页界面（Web UI）两种使用方式。
 ---
 
-# Financial Calculator
+# 金融计算器
 
-Comprehensive financial calculations including future value, present value, discount/markup pricing, compound interest, and comparative tables.
+提供全面的金融计算功能，包括未来价值（Future Value, FV）、现值（Present Value, PV）、折扣/加价定价（Discount/Markup Pricing）、复利（Compound Interest）以及各种比较图表。
 
-## Quick Start
+## 快速入门
 
-### CLI Usage
+### 命令行界面（CLI）使用方法
 
 ```bash
 # Future Value
@@ -37,9 +37,9 @@ python3 scripts/calculate.py discount_table 100 10 15 20 25 30
 # Price=$100, Discounts=10%,15%,20%,25%,30%
 ```
 
-### Web UI
+### 网页用户界面（Web UI）
 
-Launch the interactive calculator:
+启动交互式计算器：
 
 ```bash
 ./scripts/launch_ui.sh [port]
@@ -48,7 +48,8 @@ Launch the interactive calculator:
 # Auto-creates venv and installs Flask if needed
 ```
 
-Or manually:
+或者手动启动：
+
 ```bash
 cd skills/financial-calculator
 python3 -m venv venv  # First time only
@@ -56,126 +57,121 @@ venv/bin/pip install flask  # First time only
 venv/bin/python scripts/web_ui.py [port]
 ```
 
-**Features:**
-- 7 calculator types with intuitive tabs
-- Real-time calculations
-- Interactive tables
-- Beautiful gradient UI
-- Mobile-responsive design
+**主要功能：**
+- 7种计算器类型，通过直观的标签页进行切换
+- 实时计算结果
+- 交互式数据表格
+- 美观的渐变用户界面（gradient UI）
+- 移动设备友好设计
 
-## Calculators
+## 计算器类型
 
-### 1. Future Value (FV)
-Calculate what an investment will be worth in the future with compound interest.
+### 1. 未来价值（FV）计算器
+计算带有复利的投资在未来时的价值。
 
-**Use cases:**
-- Investment growth projections
-- Savings account growth
-- Retirement planning
+**应用场景：**
+- 投资增长预测
+- 储蓄账户增长分析
+- 退休规划
 
-**Inputs:**
-- Principal amount
-- Annual interest rate (%)
-- Time period (years)
-- Compounding frequency (annual/quarterly/monthly/daily)
+**输入参数：**
+- 投资本金
+- 年利率（%）
+- 时间期限（年）
+- 复利频率（每年/每季度/每月/每天）
 
-### 2. Present Value (PV)
-Calculate the current value of a future amount (discounted value).
+### 2. 现值（PV）计算器
+计算未来金额的当前价值（折现后的价值）。
 
-**Use cases:**
-- Loan valuation
-- Bond pricing
-- Investment analysis
+**应用场景：**
+- 贷款评估
+- 债券定价
+- 投资分析
 
-**Inputs:**
-- Future value
-- Annual discount rate (%)
-- Time period (years)
-- Compounding frequency
+**输入参数：**
+- 未来价值
+- 年折现率（%）
+- 时间期限（年）
+- 复利频率
 
-### 3. Discount Calculator
-Calculate final price after applying percentage discount.
+### 3. 折扣计算器
+计算应用折扣百分比后的最终价格。
 
-**Use cases:**
-- Retail pricing
-- Sale calculations
-- Cost savings analysis
+**应用场景：**
+- 零售定价
+- 销售价格计算
+- 成本节约分析
 
-**Inputs:**
-- Original price
-- Discount percentage
+**输入参数：**
+- 原价
+- 折扣百分比
 
-**Outputs:**
-- Discount amount
-- Final price
-- Savings percentage
+**输出结果：**
+- 折扣金额
+- 最终价格
+- 节省的百分比
 
-### 4. Markup Calculator
-Calculate selling price from cost and markup percentage.
+### 4. 加价计算器
+根据成本和加价百分比计算售价。
 
-**Use cases:**
-- Product pricing
-- Profit margin calculation
-- Business pricing strategy
+**应用场景：**
+- 产品定价
+- 利润率计算
+- 企业定价策略
 
-**Inputs:**
-- Cost price
-- Markup percentage
+**输入参数：**
+- 成本价
+- 加价百分比
 
-**Outputs:**
-- Markup amount
-- Selling price
-- Profit margin (as % of selling price)
+**输出结果：**
+- 加价金额
+- 售价
+- 利润率（占售价的百分比）
 
-### 5. Compound Interest
-Detailed breakdown of compound interest calculations.
+### 5. 复利计算器
+提供复利计算的详细信息。
 
-**Use cases:**
-- Interest analysis
-- Effective rate comparison
-- Loan interest calculation
+**应用场景：**
+- 利息分析
+- 实际利率比较
+- 贷款利息计算
 
-**Outputs:**
-- Final amount
-- Total interest earned
-- Effective annual rate
+**输出结果：**
+- 最终金额
+- 总利息收入
+- 实际年利率
 
-### 6. Future Value Table
-Generate comparison table across multiple rates and time periods.
+### 6. 未来价值表（FV Table）
+生成多个利率和时间期限下的对比表格。
 
-**Use cases:**
-- Investment scenario comparison
-- Rate shopping
-- Long-term planning
+**应用场景：**
+- 投资方案比较
+- 利率选择
+- 长期规划
 
-**Features:**
-- Add multiple interest rates
-- Add multiple time periods
-- View all combinations in sortable table
-- See total gain and gain percentage
+**特点：**
+- 可添加多个利率
+- 可添加多个时间期限
+- 表格可排序
+- 显示总收益和收益百分比
 
-### 7. Discount Table
-Compare multiple discount percentages for the same price.
+### 7. 折扣表（Discount Table）
+比较相同价格下的多个折扣百分比。
 
-**Use cases:**
-- Bulk pricing strategies
-- Promotional planning
-- Price comparison
+**应用场景：**
+- 批量定价策略
+- 促销活动规划
+- 价格对比
 
-**Features:**
-- Add multiple discount percentages
-- See all discount scenarios
-- Compare final prices and savings
+## 安装要求
 
-## Installation
-
-Requires Python 3.7+ and Flask:
+需要 Python 3.7 及以上版本和 Flask 框架：
 
 ```bash
 pip install flask
 ```
 
-Or with venv:
+或者使用虚拟环境（venv）进行安装：
 
 ```bash
 python3 -m venv venv
@@ -185,7 +181,7 @@ pip install flask
 
 ## Python API
 
-Import the calculation module:
+导入计算模块：
 
 ```python
 from calculate import (
@@ -214,47 +210,47 @@ table = generate_fv_table(
 )
 ```
 
-## Formulas
+## 公式说明
 
-See `references/formulas.md` for detailed mathematical formulas, examples, and use cases for all calculations.
+详细数学公式、示例及所有计算方法的用途请参阅 `references/formulas.md`。
 
-## Tips
+## 使用提示
 
-**Rate Format:**
-- CLI: Use decimals (0.05 for 5%)
-- Web UI: Use percentages (5 for 5%)
-- Python API: Use decimals (0.05 for 5%)
+**利率格式：**
+- 命令行界面：使用小数形式（例如 0.05 表示 5%）
+- 网页用户界面：使用百分比形式（例如 5 表示 5%）
+- Python API：使用小数形式（例如 0.05 表示 5%）
 
-**Compounding Frequencies:**
-- 1 = Annual
-- 4 = Quarterly
-- 12 = Monthly
-- 365 = Daily
+**复利频率：**
+- 1 = 每年（Annual）
+- 4 = 每季度（Quarterly）
+- 12 = 每月（Monthly）
+- 365 = 每天（Daily）
 
-**Table Generation:**
-Best practices for meaningful comparisons:
-- FV tables: Use 3-5 rates, 4-6 time periods
-- Discount tables: Use 5-10 discount percentages
-- Keep tables focused for easier analysis
+**表格生成建议：**
+- 为了便于分析，建议：
+  - 未来价值表：使用 3-5 个利率和 4-6 个时间期限
+  - 折扣表：使用 5-10 个折扣百分比
+  - 保持表格简洁明了
 
-**Performance:**
-- Web UI calculations are instant
-- Tables with >100 combinations may take a few seconds
-- CLI is fastest for single calculations
+**性能说明：**
+- 网页用户界面的计算结果即时显示
+- 包含超过 100 个组合的表格可能需要几秒钟生成
+- 命令行界面适用于单次计算，速度最快
 
-## Common Workflows
+## 常见工作流程
 
-### Investment Planning
-1. Use **FV Calculator** to project single investment
-2. Generate **FV Table** to compare different rates
-3. Check **Compound Interest** for detailed breakdown
+### 投资规划
+1. 使用 **未来价值计算器** 预测单一投资的表现
+2. 生成 **未来价值表** 以比较不同利率的影响
+3. 查看 **复利计算** 以获取详细分析结果
 
-### Pricing Strategy
-1. Use **Markup Calculator** to set selling price
-2. Generate **Discount Table** to plan promotions
-3. Compare margins and final prices
+### 定价策略
+1. 使用 **加价计算器** 设定售价
+2. 生成 **折扣表** 以规划促销活动
+3. 比较利润率及最终价格
 
-### Loan Analysis
-1. Use **PV Calculator** to value loan
-2. Check **Compound Interest** for total interest cost
-3. Generate **FV Table** to compare loan terms
+### 贷款分析
+1. 使用 **现值计算器** 评估贷款价值
+2. 查看 **复利计算** 以了解总利息成本
+3. 生成 **未来价值表** 以比较不同贷款条款

@@ -1,41 +1,41 @@
 ---
 name: token-saver
 version: 3.0.0
-description: "Reduce OpenClaw AI costs with model-aware optimization. Features dynamic compaction presets based on your model's context window, intelligent file compression, and robust model detection with fallback. Supports Claude, GPT-4, Gemini, DeepSeek, and more."
+description: "通过模型感知的优化来降低 OpenClaw AI 的使用成本。该技术提供了基于模型上下文窗口的动态压缩预设、智能文件压缩功能，以及具备容错机制的强大模型检测能力。支持 Claude、GPT-4、Gemini、DeepSeek 等多种模型。"
 ---
 
 # Token Saver v3
 
-> **💡 Did you know?** Every API call sends your workspace files (SOUL.md, USER.md, MEMORY.md, AGENTS.md, etc.) along with your message. These files count toward your context window, slowing responses and costing real money on every message.
+> **💡 你知道吗？** 每次 API 调用时，你的工作区文件（SOUL.md、USER.md、MEMORY.md、AGENTS.md 等）都会与你的消息一起被发送。这些文件会占用你的上下文窗口空间，从而减慢响应速度，并且每次发送消息都会产生实际的费用。
 
-Token Saver v3 is **model-aware** — it knows your model's context window and adapts recommendations accordingly. Using Gemini's 1M context? Presets scale up. On GPT-4o's 128K? Presets adjust down.
+Token Saver v3 具有 **模型感知** 功能——它可以识别你所使用的模型的上下文窗口大小，并据此调整压缩策略。如果你使用的是 Gemini（1000 万参数的模型），预设的压缩级别会相应提高；如果你使用的是 GPT-4o（128 万参数的模型），预设的压缩级别会相应降低。
 
-## What's New in v3
+## v3 的新功能
 
-| Feature | v2 | v3 |
+| 功能 | v2 | v3 |
 |---------|----|----|
-| Compaction presets | Fixed (80K/120K/160K) | Dynamic (% of model's context) |
-| Model detection | Fragile, env-only | Robust fallback chain |
-| Context windows | Not tracked | Full registry (9 models) |
-| Model info | Hardcoded pricing | JSON registry, easy updates |
-| Already-optimized | Re-compressed | Smart bypass |
+| 压缩预设 | 固定值（80K/120K/160K） | 动态值（模型上下文窗口大小的百分比） |
+| 模型检测 | 仅基于环境变量判断 | 支持更可靠的模型检测机制 |
+| 上下文窗口 | 未进行跟踪 | 可跟踪所有模型的上下文窗口（共 9 种模型） |
+| 模型信息 | 硬编码的压缩规则 | 通过 JSON 注册表进行管理，便于更新 |
+| 已经优化过的文件 | 无需再次压缩 | 系统会自动跳过这些文件 |
 
-## Commands
+## 命令
 
-| Command | What it does |
+| 命令 | 功能 |
 |---|---|
-| `/optimize` | Full dashboard — files, models, context usage % |
-| `/optimize tokens` | Compress workspace files (auto-backup) |
-| `/optimize compaction` | Chat compaction control (model-aware) |
-| `/optimize compaction balanced` | Apply balanced preset (60% of context) |
-| `/optimize compaction 120` | Custom threshold (compact at 120K) |
-| `/optimize models` | Detailed model audit with registry |
-| `/optimize revert` | Restore backups, disable persistent mode |
+| `/optimize` | 显示完整的工作区信息（文件、模型及上下文使用情况） |
+| `/optimize tokens` | 压缩工作区文件（同时自动备份） |
+| `/optimize compaction` | 控制聊天内容的压缩程度（根据模型类型自动调整） |
+| `/optimize compaction balanced` | 应用平衡的压缩策略（保留 60% 的上下文信息） |
+| `/optimize compaction 120` | 设置自定义压缩阈值（仅压缩 120K 的文件） |
+| `/optimize models` | 对模型进行详细审计并更新压缩设置 |
+| `/optimize revert` | 恢复备份文件，关闭持久化模式 |
 
-## Features
+## 主要功能
 
-### 📊 Model-Aware Dashboard
-Shows current model, context window, and usage percentage:
+### 📊 模型感知的仪表盘
+显示当前使用的模型、上下文窗口大小以及文件的使用百分比：
 ```
 🤖 Model: Claude Opus 4.5 (200K context)
    Detected: openclaw.json
@@ -43,70 +43,69 @@ Shows current model, context window, and usage percentage:
 📊 Context Usage: [████████░░░░░░░░░░░░] 42% (84K/200K)
 ```
 
-### 📁 Workspace File Compression
-Scans all `.md` files, shows token count and potential savings. Smart bypass skips already-optimized files.
+### 📁 工作区文件压缩
+扫描所有 `.md` 文件，显示文件中的令牌数量及潜在的压缩效果。系统会自动跳过已经优化过的文件。
 
-**File-aware compression:**
-- **SOUL.md** — Light compression, keeps personality language
-- **AGENTS.md** — Medium compression, dense instructions
-- **USER.md / MEMORY.md** — Heavy compression, key:value format
-- **PROJECTS.md** — No compression (user structure preserved)
+- **文件类型的压缩策略：**
+  - **SOUL.md**：轻度压缩，保留文件的特点和语言风格。
+  - **AGENTS.md**：中度压缩，适合包含密集指令的文件。
+  - **USER.md / MEMORY.md**：重度压缩，采用键值对格式。
+  - **PROJECTS.md**：不进行压缩，以保持用户自定义的结构。
 
-### 💬 Dynamic Compaction Presets
-Presets adapt to your model's context window:
+### 💬 动态压缩预设
+压缩策略会根据你所使用的模型类型自动调整：
 
-| Preset | % of Context | Claude 200K | GPT-4o 128K | Gemini 1M |
+| 预设 | 上下文窗口大小百分比 | Claude 200K | GPT-4o 128K | Gemini 1M |
 |--------|--------------|-------------|-------------|-----------|
-| Aggressive | 40% | 80K | 51K | 400K |
-| Balanced | 60% | 120K | 77K | 600K |
-| Conservative | 80% | 160K | 102K | 800K |
-| Off | 95% | 190K | 122K | 950K |
+| 激进 | 40% | 80K | 51K | 400K |
+| 平衡 | 60% | 120K | 77K | 600K |
+| 保守 | 80% | 160K | 102K | 800K |
+| 关闭 | 95% | 190K | 122K | 950K |
 
-### 🤖 Model Registry
-24+ models with context windows, pricing, and aliases:
-- **Claude:** Opus 4.6 (1M), Opus 4.5, Sonnet 4.5, Sonnet 4, Haiku 4.5, Haiku 3.5 (200K)
-- **OpenAI:** GPT-5.2, GPT-5.1, GPT-5-mini, GPT-5-nano (256K), GPT-4.1, GPT-4o (128K), o1, o3, o4-mini
-- **Gemini:** 3 Pro (2M), 2.5 Pro, 2.0 Flash (1M)
-- **Others:** DeepSeek V3 (64K), Kimi K2.5 (128K), Llama 3.3 70B, Mistral Large
+### 🤖 模型注册表
+支持 24 种以上模型的管理，包括它们的上下文窗口大小、压缩策略和别名：
+- **Claude：** Opus 4.6 (1000 万参数)、Opus 4.5、Sonnet 4.5、Sonnet 4、Haiku 4.5、Haiku 3.5 (200 万参数)
+- **OpenAI：** GPT-5.2、GPT-5.1、GPT-5-mini、GPT-5-nano (256 万参数)、GPT-4.1、GPT-4o (128 万参数)、o1、o3、o4-mini
+- **Gemini：** 3 Pro (200 万参数)、2.5 Pro、2.0 Flash (100 万参数)
+- **其他模型：** DeepSeek V3 (64 万参数)、Kimi K2.5 (128 万参数)、Llama 3.3 70B、Mistral Large
 
-### 🔍 Robust Model Detection
-Detection priority:
-1. Runtime injection (`--model=...`)
-2. Environment variables (`SKILL_MODEL`, `OPENCLAW_MODEL`)
-3. Config file (`~/.openclaw/openclaw.json`)
-4. File inference (TOOLS.md, MEMORY.md mentions)
-5. Fallback: Claude Sonnet 4 (safe default)
+### 🔍 强大的模型检测机制
+模型检测的优先级如下：
+1. 运行时参数 (`--model=...`)
+2. 环境变量 (`SKILL_MODEL`, `OPENCLAW_MODEL`)
+3. 配置文件 (`~/.openclaw/openclaw.json`)
+4. 文件内容（如 `TOOLS.md`、`MEMORY.md` 中的提及）
+5. 备用方案：Claude Sonnet 4（安全默认值）
 
-**Unknown model handling:**
-- Strict version matching — `opus-6.5` won't fuzzy-match to `opus-4.5`
-- Unknown models get safe defaults (200K context) + warning
-- Easy to add new models to `scripts/models.json`
+**未知模型的处理方式：**
+- 严格匹配模型版本；例如 `opus-6.5` 不会与 `opus-4.5` 混淆。
+- 对于未知模型，系统会使用默认的压缩策略（200 万参数的上下文窗口）并给出警告。
+- 可以轻松将新模型添加到 `scripts/models.json` 文件中。
 
-### 📝 Persistent Mode
-Adds writing guidance to AGENTS.md for continued token efficiency:
+### 📝 持久化模式
+为 `AGENTS.md` 文件添加写入规则，以提高令牌使用的效率：
 
-| File | Writing Style |
+| 文件类型 | 写作风格 |
 |------|---------------|
-| SOUL.md | Evocative, personality-shaping |
-| AGENTS.md | Dense instructions, symbols OK |
-| USER.md | Key:value facts |
-| MEMORY.md | Ultra-dense data |
+| SOUL.md | 采用富有表现力的语言，塑造个人风格 |
+| AGENTS.md | 包含密集的指令和符号 |
+| USER.md | 以键值对的形式记录事实信息 |
+| MEMORY.md | 存储高度结构化的数据 |
 
-## Safety
+## 安全性特性
 
-- **Auto-backup** — All modified files get `.backup` extension
-- **Integrity > Size** — Never sacrifices meaning for smaller tokens
-- **Smart bypass** — Skips already-optimized files
-- **Revert anytime** — `/optimize revert` restores everything
-- **No external calls** — All analysis runs locally
+- **自动备份**：所有修改过的文件都会被自动添加 `.backup` 扩展名。
+- **优先保证内容完整性**：不会为了节省令牌数量而牺牲文件的意义。
+- **智能跳过已优化过的文件**：系统会自动跳过已经压缩过的文件。
+- **随时可恢复**：使用 `/optimize revert` 命令可以恢复原始文件。
+- **本地处理**：所有分析操作都在本地完成，不涉及任何外部调用。
 
-## Installation
-
+## 安装说明
 ```
 clawhub install token-saver --registry "https://www.clawhub.ai"
 ```
 
-## Version History
-- **3.0.0** — Model registry, dynamic presets, robust detection, smart bypass
-- **2.0.1** — Chat compaction, file-aware compression, persistent mode
-- **1.0.0** — Initial release
+## 版本历史
+- **3.0.0**：新增模型注册表、动态压缩预设、更强大的模型检测机制和智能跳过功能。
+- **2.0.1**：支持聊天内容的压缩、文件类型的智能压缩以及持久化模式。
+- **1.0.0**：初始版本。

@@ -1,19 +1,19 @@
 ---
 name: release-coordinator
-description: Multi-repo release coordination - dependency management, release order orchestration, cross-repo validation. Use for synchronized multi-service releases.
+description: 多仓库发布协调机制——包括依赖关系管理、发布顺序的编排以及跨仓库的验证功能。该机制用于实现多服务之间的同步发布。
 ---
 
-# Release Coordinator
+# 发布协调员
 
-**Expertise**: Multi-repository release orchestration, dependency management, release order planning, and cross-repo validation.
+**专业技能**：多仓库发布编排、依赖管理、发布顺序规划以及跨仓库验证。
 
-## Core Capabilities
+## 核心能力
 
-### 1. Release Dependency Management
+### 1. 发布依赖管理
 
-**Understands and manages release order**:
+**理解并管理发布顺序**：
 
-**Dependency Types**:
+**依赖类型**：
 ```yaml
 # Build-time dependencies
 shared-lib: v2.0.0
@@ -30,17 +30,17 @@ database-migrations: v10
   └─ backend-services: v2.x (requires schema v10)
 ```
 
-**Release Order Calculation**:
-1. Build dependency graph
-2. Topological sort for correct order
-3. Identify circular dependencies (error)
-4. Generate release waves:
-   - Wave 1: No dependencies (shared-lib, database-migrations)
-   - Wave 2: Depends on Wave 1 (service-a, service-b)
-   - Wave 3: Depends on Wave 2 (api-gateway)
-   - Wave 4: Depends on Wave 3 (frontend)
+**发布顺序计算**：
+1. 构建依赖关系图
+2. 通过拓扑排序确定正确的发布顺序
+3. 识别循环依赖（错误）
+4. 生成发布批次：
+   - 第一批：无依赖项（共享库、数据库迁移）
+   - 第二批：依赖于第一批（服务A、服务B）
+   - 第三批：依赖于第二批（API网关）
+   - 第四批：依赖于第三批（前端）
 
-**Example Release Plan**:
+**示例发布计划**：
 ```markdown
 ## Release Order for Product v3.0.0
 
@@ -63,9 +63,9 @@ database-migrations: v10
 **Total Duration**: ~4 hours (waves run sequentially, repos in wave release in parallel)
 ```
 
-### 2. Coordinated Release Strategies
+### 2. 协调发布策略
 
-**Lockstep Versioning** (all repos share version):
+**同步版本控制**（所有仓库使用相同版本）：
 ```yaml
 Product: v3.0.0
 Repositories:
@@ -90,7 +90,7 @@ Use When:
   - Breaking changes affect all repos
 ```
 
-**Independent Versioning** (each repo has own version):
+**独立版本控制**（每个仓库有自己的版本）：
 ```yaml
 Product: N/A
 Repositories:
@@ -115,7 +115,7 @@ Use When:
   - Frequent releases (daily/weekly)
 ```
 
-**Umbrella Versioning** (product version + service versions):
+**统一版本控制**（产品版本 + 服务版本）：
 ```yaml
 Product: v5.0.0 (umbrella)
 ├─ frontend: v4.2.0
@@ -138,11 +138,11 @@ Use When:
   - Services evolve at different rates
 ```
 
-### 3. Release Increment Creation
+### 3. 创建发布增量
 
-**Creates release increments spanning repos**:
+**创建跨仓库的发布增量**：
 
-**Single-Repo Release Increment**:
+**单仓库发布增量**：
 ```
 .specweave/increments/0020-backend-v2-release/
 ├── spec.md           # What's being released
@@ -151,7 +151,7 @@ Use When:
 └── metadata.json     # Repository: backend, target: v2.0.0
 ```
 
-**Multi-Repo Release Increment**:
+**多仓库发布增量**：
 ```
 .specweave/increments/0025-product-v3-release/
 ├── spec.md           # Product release overview
@@ -160,7 +160,7 @@ Use When:
 └── metadata.json     # Repositories: [frontend, backend, api], umbrella: v3.0.0
 ```
 
-**spec.md Example**:
+**spec.md 示例**：
 ```markdown
 # Product v3.0.0 Release
 
@@ -191,11 +191,11 @@ See plan.md for detailed orchestration
 - [ ] DORA metrics: Lead time <1 day
 ```
 
-### 4. Pre-Release Validation
+### 4. 发布前验证
 
-**Cross-Repo Validation Checks**:
+**跨仓库验证检查**：
 
-**Before Release**:
+**发布前**：
 ```bash
 # 1. Version Compatibility
 ✓ shared-lib v2.0.0 compatible with service-a v3.0.0
@@ -223,7 +223,7 @@ See plan.md for detailed orchestration
 ✗ Missing highlights section
 ```
 
-**Blocking Issues Report**:
+**问题报告**：
 ```markdown
 ## Pre-Release Validation: BLOCKED ❌
 
@@ -253,10 +253,9 @@ See plan.md for detailed orchestration
 - shared-lib v2.0.0 ✓
 ```
 
-### 5. Release Execution Orchestration
+### 5. 发布执行编排
 
-**Automated Release Workflow**:
-
+**自动化发布工作流程**：
 ```bash
 # Command
 /sw-release:execute 0025-product-v3-release
@@ -286,10 +285,9 @@ See plan.md for detailed orchestration
    - DORA metrics: Deployment frequency +1
 ```
 
-### 6. Rollback Coordination
+### 6. 回滚协调
 
-**Multi-Repo Rollback**:
-
+**多仓库回滚**：
 ```markdown
 ## Rollback Plan: Product v3.0.0 → v2.5.0
 
@@ -318,10 +316,9 @@ Reverse wave order (rollback dependencies first)
 **Impact**: Minimal (API compatible with older clients)
 ```
 
-### 7. Integration with SpecWeave Workflows
+### 7. 与 SpecWeave 工作流程集成
 
-**Release Increment Lifecycle**:
-
+**发布增量生命周期**：
 ```bash
 # 1. Plan release
 /sw:increment "0025-product-v3-release"
@@ -345,83 +342,82 @@ Reverse wave order (rollback dependencies first)
 # → Syncs to GitHub/Jira/ADO
 ```
 
-## When to Use This Skill
+## 何时使用此技能
 
-**Ask me to**:
+**请告诉我**：
 
-1. **Coordinate multi-repo releases**:
-   - "Plan release for 5 microservices"
-   - "Coordinate backend and frontend release"
-   - "Create release plan spanning repos"
+1. **协调多仓库发布**：
+   - “为5个微服务规划发布”
+   - “协调后端和前端的发布”
+   - “创建跨仓库的发布计划”
 
-2. **Manage release dependencies**:
-   - "What order should we release repos?"
-   - "Which services depend on shared-lib?"
-   - "Calculate release waves"
+2. **管理发布依赖**：
+   - “我们应该按什么顺序发布仓库？”
+   - “哪些服务依赖于共享库？”
+   - “计算发布批次”
 
-3. **Validate pre-release**:
-   - "Check if we're ready to release"
-   - "Validate cross-repo compatibility"
-   - "Run pre-flight checks"
+3. **进行发布前验证**：
+   - “检查我们是否准备好发布”
+   - “验证跨仓库的兼容性”
+   - “运行预发布检查”
 
-4. **Execute coordinated releases**:
-   - "Release product v3.0.0"
-   - "Execute umbrella release"
-   - "Orchestrate wave-by-wave deployment"
+4. **执行协调发布**：
+   - “发布产品v3.0.0”
+   - “执行统一版本发布”
+   - “按批次部署”
 
-5. **Plan rollbacks**:
-   - "Create rollback plan for v3.0.0"
-   - "How to rollback if frontend fails?"
-   - "Reverse release order"
+5. **规划回滚**：
+   - “为v3.0.0创建回滚计划”
+   - “如果前端失败该如何回滚？”
+   - “反转发布顺序”
 
-## Best Practices
+## 最佳实践
 
-**Dependency Management**:
-- Document dependencies in release-strategy.md
-- Automate dependency detection (package.json, imports)
-- Version lock shared libraries (avoid floating versions)
+**依赖管理**：
+- 在 `release-strategy.md` 中记录依赖关系
+- 自动检测依赖关系（`package.json`、导入项）
+- 固定共享库的版本（避免版本浮动）
 
-**Release Windows**:
-- Schedule releases during low-traffic periods
-- Reserve rollback window (2x release duration)
-- Communicate blackout periods (holidays, weekends)
+**发布窗口**：
+- 在流量较低的时段安排发布
+- 预留回滚时间（发布持续时间的两倍）
+- 通知发布期间的禁用时段（节假日、周末）
 
-**Validation Gates**:
-- Never skip pre-flight checks (catch issues early)
-- Automate validation (CI/CD pipelines)
-- Manual approval gates for production
+**验证步骤**：
+- 绝不跳过预发布检查（尽早发现问题）
+- 自动化验证（CI/CD 流程）
+- 生产环境的手动审批步骤
 
-**Communication**:
-- Notify all teams before release (1 day notice)
-- Real-time status updates during release
-- Post-release summary (DORA metrics, issues)
+**沟通**：
+- 在发布前一天通知所有团队
+- 发布过程中实时更新状态
+- 发布后总结（DORA指标、问题）
 
-## Integration Points
+## 集成点
 
-**Release Strategy Advisor**:
-- Reads release-strategy.md for approach
-- Adapts coordination to strategy type
-- Suggests improvements based on issues
+**发布策略顾问**：
+- 阅读 `release-strategy.md` 以了解发布策略
+- 根据策略类型调整协调方式
+- 根据问题提出改进建议
 
-**Version Aligner**:
-- Uses version alignment rules
-- Ensures compatibility across repos
-- Validates semver constraints
+**版本对齐器**：
+- 使用版本对齐规则
+- 确保各仓库之间的兼容性
+- 验证 semver 规则
 
-**RC Manager**:
-- Coordinates RC releases (pre-production)
-- Validates RC before production
-- Promotes RC to final release
+**RC 管理员**：
+- 协调 RC 发布（预生产阶段）
+- 在生产前验证 RC
+- 将 RC 提升为最终版本
 
-**Living Docs**:
-- Documents release history
-- Updates version matrix
-- Links to GitHub releases
+**动态文档**：
+- 记录发布历史
+- 更新版本矩阵
+- 提供 GitHub 发布链接
 
-## Example Workflows
+## 示例工作流程
 
-### Microservices Coordinated Release
-
+### 微服务协调发布
 ```bash
 # 1. User initiates release
 /sw:increment "0030-product-v4-release"
@@ -458,8 +454,7 @@ Reverse wave order (rollback dependencies first)
 # - Living docs synced ✓
 ```
 
-### Monorepo Release (Lerna)
-
+### 单仓库发布（Lerna）
 ```bash
 # 1. User initiates release
 /sw:increment "0035-monorepo-v2-release"
@@ -485,51 +480,50 @@ npx lerna publish --conventional-commits
 # - Web and mobile released in parallel
 ```
 
-## Commands Integration
+## 命令集成
 
-Works with release commands:
+支持的发布命令：
+- `/sw-release:coordinate <increment>` - 规划多仓库发布
+- `/sw-release:validate <increment>` - 运行预发布检查
+- `/sw-release:execute <increment>` - 执行协调发布
+- `/sw-release:rollback <increment>` - 回滚协调发布
 
-- `/sw-release:coordinate <increment>` - Plan multi-repo release
-- `/sw-release:validate <increment>` - Run pre-flight checks
-- `/sw-release:execute <increment>` - Execute coordinated release
-- `/sw-release:rollback <increment>` - Rollback coordinated release
+## 所需工具
 
-## Dependencies
+**必备工具**：
+- Git（版本标签）
+- SpecWeave 核心组件（发布增量生命周期管理）
+- 发布策略文档
 
-**Required**:
-- Git (version tags)
-- SpecWeave core (increment lifecycle)
-- Release strategy documentation
+**可选工具**：
+- GitHub CLI (`gh`) - GitHub 发布管理
+- NPM (`npm`) - NPM 包检测
+- Docker (`docker`) - 容器镜像检测
+- Kubernetes (`kubectl`) - 部署验证
 
-**Optional**:
-- GitHub CLI (`gh`) - GitHub releases
-- NPM (`npm`) - NPM package detection
-- Docker (`docker`) - Container image detection
-- Kubernetes (`kubectl`) - Deployment verification
+**输出结果**
 
-## Output
+**创建/更新**：
+- 发布增量文件（`spec.md`、`plan.md`、`tasks.md`）
+- 发布批次文档
+- 预发布验证报告
+- 回滚计划
+- 动态文档中的发布历史记录
 
-**Creates/Updates**:
-- Release increment (spec.md, plan.md, tasks.md)
-- Release waves documentation
-- Pre-flight validation report
-- Rollback plan
-- Release history in living docs
-
-**Provides**:
-- Dependency graph visualization
-- Release order (topological sort)
-- Pre-flight validation status
-- Real-time release progress
-- Post-release metrics
+**提供内容**：
+- 依赖关系图可视化
+- 发布顺序（拓扑排序）
+- 预发布验证状态
+- 实时发布进度
+- 发布后指标
 
 ---
 
-**Remember**: Release coordination is critical for multi-repo architectures. Always:
-- Understand dependencies before releasing
-- Validate cross-repo compatibility
-- Execute wave-by-wave (never "big bang" all at once)
-- Have rollback plan ready
-- Monitor for 1+ hour post-release
+**记住**：对于多仓库架构来说，发布协调至关重要。务必：
+- 在发布前了解依赖关系
+- 验证跨仓库的兼容性
+- 按批次执行发布（切勿一次性全部发布）
+- 准备好回滚计划
+- 发布后至少监控一小时
 
-**Goal**: Safe, predictable, repeatable coordinated releases across multiple repositories.
+**目标**：实现跨多个仓库的安全、可预测且可重复的协调发布。

@@ -1,121 +1,113 @@
 ---
 name: omni-stories
-description: Omni Stories is a skill that allows AI agents to generate narrated Reddit stories on background videos with modern captions. (all free!)
+description: Omni Stories 是一项功能，它能够让 AI 代理在背景视频上生成带有现代字幕的 Reddit 故事（所有功能都是免费的！）
 homepage: https://github.com/specter0o0/omni-stories
 user-invocable: true
 metadata: {"openclaw": {"primaryEnv": "ELEVENLABS_API_KEYS", "skillKey": "omni-stories"}}
 ---
 
-Omni Stories is a skill that allows AI agents to generate narrated Reddit stories on background videos with modern captions. (all free!)
+**Omni Stories** 是一项技能，它允许 AI 代理在背景视频上生成带有现代字幕的 Reddit 故事（全部免费！）  
+作为人类用户，您只需告诉您的 AI 代理生成一个故事即可，无需进行任何其他操作。  
 
-All you have to do as a human is tell your AI agent to generate a story. No further action needed from you!
-
-> **TIP:** Add a cron job to allow your AI agent to generate stories every morning for you! :)
-
----
-
-To install, simply tell your agent:
-|
-> Hey, install and configure omni-stories skill by following the skill.md instructions to set it up propperly. Use clawhub skill to instal the md files first. Then follow the instructions, and make sure to install the dependencies. (make sure it's in your skills directory under then name omni-stories)
+> **提示：** 可以设置一个定时任务，让您的 AI 代理每天早上为您生成故事哦！ :)  
 
 ---
 
-### overview
-**IMPORTANT: please follow instructions, so your human gets best experience possible. All instructions are important even if some seem unecesarry. Please read them carefully, and follow them to the letter.**
-1. **Setup:** Ask the human if they want to use elevenlabs, or a local fallback.
-If they want to use elevenlabs, ask for their ElevenLabs API key, and ask them if they have elevenlabs paid subscription. If they do, you *must* change the `voice_model` to `v3` in the config.yaml file. otherwise keep it v2.
-Then run: 
-```bash
+**安装步骤：**  
+只需告诉您的代理按照 `skill.md` 文件中的说明进行安装和配置即可。  
+1. 首先使用 `clawhub skill` 下载相关的 MD 文件。  
+2. 按照说明操作，并确保安装所有依赖项。请将安装后的文件放在 `skills` 目录下的 `omni-stories` 子目录中。  
+
+---
+
+### 概述  
+**重要提示：** 请务必按照说明操作，以确保用户获得最佳使用体验。即使某些步骤看起来无关紧要，它们也同样重要。请仔细阅读并严格遵循说明。  
+
+**1. 设置：**  
+   - 询问用户是否希望使用 ElevenLabs，或者是否使用本地备用方案。  
+     - 如果选择 ElevenLabs，请获取其 API 密钥，并确认用户是否购买了付费订阅。如果是付费订阅，务必在 `config.yaml` 文件中将 `voice_model` 设置为 `v3`；否则保持为 `v2`。  
+     - 运行以下命令：  
+       ```bash
 curl -sSL https://raw.githubusercontent.com/specter0o0/omni-stories/main/.omni-stories-data/install.sh | bash -s -- <API_KEY, API_KEY, ...> # seppirate keys by comma if you want rotation.
-```
-> **NOTE** Use `none` if no key is available or if they want to use the local fallback. (Please remind your human that elevenlabs has a free tier available that has free API: 10k credits per month aka 10k chars. This is highly recommended, the local fallback is no where near as good as elevenlabs.)
-- Once you start the installation, notify your human that it may take a minute. (~1GB -- ~600mb sample video, and 300mb local tts fallback.)
-- If the installer fails for any reason, please solve it autonmously, without interrupting the human.
-- Once the installation is complete, please run `omni-stories --doctor` to check if everything is working.
-- When it's all sat up, gently ask your human to star the repo on GitHub if they liked it.
-2. **Configuration:** If your human is the type of person who likes to tinker with settings, ask them some questions to configure config.yaml. Otherwise just leave it on default.
-3. **Sourcing:** Browse **[r/stories](https://www.reddit.com/r/stories)** to find content. (or any other subreddit) # DO NOT MAKE UP STORIES!
-4. **Details:** See [README.md](./README.md) for more info.
-**Note:** Do not interrupt the user, if you run into any errors, try to fix them yourself autonomously without asking for permision.
+```  
+       **注意：** 如果没有 API 密钥或用户希望使用本地备用方案，请使用 `none`。  
+       （提醒用户：ElevenLabs 提供免费 tier，每月可使用 10,000 个 API 信用额度，即生成 10,000 个字符的内容。强烈推荐使用 ElevenLabs，因为本地备用方案的效果远不如 ElevenLabs。）  
+       - 安装过程中可能需要一段时间（约 1GB 数据量，包括示例视频和 300MB 的本地 TTS 数据）。  
+       - 如果安装失败，请自动解决问题，不要打扰用户。  
+       - 安装完成后，运行 `omni-stories --doctor` 以检查是否一切正常。  
+       - 如果用户满意，可以建议他们在 GitHub 上给该项目点赞。  
 
-## Automated Usage
+**2. 配置：**  
+   - 如果用户喜欢调整设置，可以询问一些相关问题来配置 `config.yaml` 文件；否则保持默认设置即可。  
 
-### Story Generation
-`omni-stories --new -u <URL> -tt "<title>" -s "<story>" -q "<quote>" -t "<tag, tag, ...>`
+**3. 内容来源：**  
+   - 在 [r/stories](https://www.reddit.com/r/stories) 等子版块中寻找故事内容。（请勿虚构故事！）  
 
-- `-u / -url`: The Reddit story URL (e.g., from r/stories). 
-- `-tt / -title`: Title, you can change it slightly if you want to make it more catchy.
-- `-s / -story`: The story content. Do absolute minimal changes to the story, keep it exactly the same, the only changes you're allowed to make is fix any grammar/spelling errors, and pancuations for the tts to not strugle.
-IMPORTANT: if your human has v3 in config, you must add propper tags to the story since v3 allows emotions and sfx. (e.g. [whispering], [gun_shot])
-- `-q / -quote`: A concise, punchy quote for the thumbnail (max 3-10 words).
-- `-t / -tags`: Comma-separated tags for metadata (Aim for 4-12 tags).
+**4. 详细信息：**  
+   - 更多信息请参阅 [README.md](./README.md)。  
+   **注意：** 如果遇到错误，请尝试自行解决，无需请求用户的许可。  
 
-IMPORTANT: you must fill all the arguments, don't skip any.
+---
 
-(make sure you've edited the config file to fit your user's prefrences)
+**自动化使用方法：**  
+**故事生成：**  
+```bash
+omni-stories --new -u <URL> -tt "<title>" -s "<story>" -q "<quote>" -t "<tag, tag, ...>"
+```  
+- `-u <URL>`：Reddit 故事的 URL（例如：`r/stories`）。  
+- `-tt <title>`：故事的标题（可稍作修改以增加吸引力）。  
+- `-s <story>`：故事内容。请尽量保持原样，仅允许修改语法/拼写错误或调整文本格式以方便 TTS 朗读。  
+  **重要提示：** 如果用户使用的是 v3 版本，请为故事添加适当的标签（例如：[whispering]、[gun_shot] 等），因为 v3 版本支持情感表达和音效效果。  
+- `-q <quote>`：用于缩略图的简洁引用（最多 3-10 个字）。  
+- `-t <tags>`：用逗号分隔的元数据标签（建议使用 4-12 个标签）。  
 
-### Workflow Example
+**工作流程示例：**  
+1. **内容来源：**  
+   - 如果用户有网络访问权限，可以访问 Reddit 并找到合适的文章。推荐使用 [r/stories] 子版块。  
+   - 如果没有网络访问权限，请让用户提供故事链接，并解释原因，建议下次提供网络访问权限以便顺利生成故事。  
+   **提示：** 使用 Reddit 相关技能可以节省时间和资源。  
+2. **获取故事内容：**  
+   - 使用 `omni-stories --fetch` 获取故事的标题和内容。  
+3. **生成故事：**  
+   - 根据获取的信息生成新的故事内容，并保存到 `output/` 目录中。  
+4. **发送结果：**  
+   - 将生成的视频发送给用户，并附上标题、描述和标签；如果无法完成发送，只需告知用户结果已准备好并提供输出文件的路径。  
 
-**IMPORTANT: please follow instructions, so your human gets best experience possible. All instructions are important even if some seem unecesarry. Please read them carefully, and follow them to the letter.**
+**系统检查：**  
+随时运行 `omni-stories --doctor` 以检查依赖项和系统状态。  
 
-1.  **Source:**
-- If you have web access: navigate to reddit, and find a story. I recomend this subreddit: `https://reddit.com/r/stories`. (avoid long, and inappropiate stories) # Most AI agents have web access, so please do not assume you don't. 99% of agents do have web access, please check before skipping this step!
-- If you *don't* have web access (please check), gently ask your human to provide you with a reddit story link, and briefly explain that you're asking this because you don't have web access, and suggest to them to give you web access for uninterrupted generations next time.
-**TIP:** best option is to use a reddit skill. If you have access to a reddit skill where you can browse easily, please use it, it will save time and tokens. If you don't have a reddit skill, ask your human to 
-2. **understand the story:** Use `omni-stories --fetch` to fetch the title and content of the story.
-3.  **Generate:** Based on the fetched information, run:
-    ```bash
-    omni-stories --new -tt "<title>" -s "<story>" -q "<quote>" -t "<tag, tag, ...>"
-    ```
-- Make sure it has a propper catchy title in case the user wants to post it. (do slight changes if needed)
-- Do absolute minimal changes to the story, keep it exactly the same, the only changes you're allowed to make is fix any grammar/spelling errors, and pancuations for the tts to not strugle.
-- IMPORTANT: if your human has v3 in config, you must add propper tags to the story since v3 allows emotions and sfx. (e.g. [whispering], [gun_shot])
-4.  **Result:** The engine does the rest and saves to `output/`.
-5. **Sending:** Once it's complete:
-- Send the generated video to your human, and caption it with the generated title, description, and tags. And also attach the generated thumbnail.
-- *If you don't* have the capability to do that, just tell the user that it's ready, and provide the path to the output.
-
-## System Check
-Run `omni-stories --doctor` at any time to verify dependencies and environment health.
-
-### Deployment
-
-Run the one-liner to install the skill:
-
+**部署：**  
+运行以下命令安装该技能：  
 ```bash
 curl -sSL https://raw.githubusercontent.com/specter0o0/omni-stories/main/.omni-stories-data/install.sh | bash
-```
+```  
+按照终端中显示的 “Agent Information” 指示进行操作。之后可以使用 `--doctor` 命令验证安装是否成功。  
 
-Follow the "Agent Information" displayed in your terminal. You can then use the `--doctor` command to verify if everything is installed correctly.
+**目录结构：**  
+- `omni-stories/`（项目根目录）  
+  - `config.yaml`：配置文件  
+  - `README.md`：使用说明  
+  - `SKILL.md`：技能文档  
+  - `.env`：环境变量文件  
+  - `output/`：输出目录  
+  - `.omni-stories-data/`：核心引擎和资源文件  
 
-### Directory Structure
-- `omni-stories/` (Project Root)
-  - `config.yaml`
-  - `README.md`
-  - `SKILL.md`
-  - `.env`
-  - `output/`
-  - `.omni-stories-data/` (Core Engine & Assets)
+**配置说明：**  
+编辑 `config.yaml` 文件以自定义引擎的行为。AI 代理应尊重用户在此处设置的偏好。  
 
-## Configuration
+**常用命令：**  
+- `curl -sSL https://raw.githubusercontent.com/specter0o0/omni-stories/main/.omni-stories-data/install.sh | bash -s -- <API_KEY, API_KEY, ...>`：安装并配置该技能。  
+- `omni-stories --dl_video -u <URL> -r <resolution>`：从 YouTube 下载背景视频（保存到 `.omni-stories-data/background_videos/`）。  
+- `omni-stories --fetch <URL>`：从 Reddit 获取故事内容。  
+- `omni-stories --new ...`：生成新的故事。  
+- `omni-stories --list <number>`：列出最近的文章（默认列出 5 篇）。  
+- `omni-stories --remove <number>`：删除指定范围内的文章。  
+- `omni-stories --set <API_KEY, ...>`：设置 ElevenLabs API 密钥。  
+- `omni-stories --doctor`：检查系统状态和依赖项。  
+- `omni-stories --uninstall`：卸载该技能。  
 
-Edit `config.yaml` to customize the engine's behavior. AI agents should respect the user's preferences defined here.
+**支持方式：**  
+如果您喜欢这个项目，请在 GitHub 上给它点赞！  
+> https://github.com/specter0o0/omni-stories  
 
-## Commands
-
-- `curl -sSL https://raw.githubusercontent.com/specter0o0/omni-stories/main/.omni-stories-data/install.sh | bash -s -- <API_KEY, API_KEY, ...>`: One liner to install and configure the skill.
-- `omni-stories --dl_video -u <url> -r <resolution (720p, 1080p, 1440p, 2160p)>`: Download a background video from YouTube. (it will be saved to `.omni-stories-data/background_videos/`.)
-- `omni-stories --fetch <url>`: Fetch a story from Reddit.
-- `omni-stories --new -u <URL> -tt "<title>" -s "<story>" -q "<quote>" -t "<tag, tag, ...>`: Generate a new story. (all arguments are required)
-- `omni-stories --list <number>`: List the last <number> stories. (if no number is provided, it will list last 5 stories).
-- `omni-stories --remove <number-number>`: Removes stories from <number> to <number>. (if one number is provided, it will remove just that story)
-- `omni-stories --set <API_KEY, API_KEY, ...>`: Set ElevenLabs API keys. (seppirate by comma for rotation)
-- `omni-stories --doctor`: Check (and fix) system health and dependencies.
-- `omni-stories --uninstall` uninstall the omni-stories
-
-## Support:
-
-Star the repo on GitHub if you liked it!
-> https://github.com/specter0o0/omni-stories
-.
-[![coffee](https://imgs.search.brave.com/FolmlC7tneei1JY_QhD9teOLwsU3rivglA3z2wWgJL8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93aG9w/LmNvbS9ibG9nL2Nv/bnRlbnQvaW1hZ2Vz/L3NpemUvdzIwMDAv/MjAyNC8wNi9XaGF0/LWlzLUJ1eS1NZS1h/LUNvZmZlZS53ZWJw)](https://buymeacoffee.com/specter0o0)
+[![支持链接](https://buymeacoffee.com/specter0o0)

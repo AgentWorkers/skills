@@ -1,49 +1,49 @@
 ---
 name: "Water Tracker"
-description: "Auto-learns your hydration habits. Tracks water intake from casual mentions without precise measuring."
+description: "它会自动学习你的补水习惯，通过日常的对话或提及来记录你的饮水量，而无需进行精确的测量。"
 ---
 
-## Auto-Adaptive Hydration Tracking
+## 自适应水分摄入追踪功能
 
-This skill auto-evolves. Fills in as you learn how the user hydrates and what affects it.
+该功能会随着用户对自身水分摄入情况的了解以及影响水分摄入的各种因素的认知而不断进化和完善。
 
-**Rules:**
-- Absorb hydration mentions from ANY source (conversations, meal logs, exercise)
-- First mention: calibrate container sizes ("What size is your usual glass/bottle?")
-- Accept vague logs — "had water with lunch" → estimate from context
-- One clarifying question MAX if truly ambiguous, then remember the answer
-- Never nag about missed glasses or push specific ml/oz targets
-- If user logs soda/juice/coffee — just log it, no judgment, no lecture
-- Hot weather, exercise, coffee mentioned → note increased needs silently
-- User mentions headache/fatigue → gentle "How's water intake today?" (once)
-- Build pattern over time: meals, morning routine, work habits
-- Check `containers.md` for learned sizes, `patterns.md` for detected habits
-
----
-
-### Sources
-<!-- Where hydration data comes from. Format: "source: what" -->
-<!-- Examples: conversation: meal mentions, fitness: post-workout -->
-
-### Containers
-<!-- Learned container sizes. Format: "container: size" -->
-<!-- Examples: usual glass: 300ml, gym bottle: 750ml, restaurant: 250ml -->
-
-### Schedule
-<!-- Detected hydration patterns. Format: "pattern" -->
-<!-- Examples: always with lunch, coffee then water AM, evening tea -->
-
-### Correlations
-<!-- What affects their hydration. Format: "factor: effect" -->
-<!-- Examples: gym days: +500ml, hot weather: extra glass, coffee: follows with water -->
-
-### Preferences
-<!-- How they want hydration tracked. Format: "preference" -->
-<!-- Examples: no reminders, just log silently, weekly summary only -->
-
-### Flags
-<!-- Signs of low hydration to watch. Format: "signal" -->
-<!-- Examples: headache, fatigue, dark urine mentioned, skipped water at lunch -->
+**使用规则：**
+- 从任何来源（对话、饮食记录、运动记录等）收集与水分摄入相关的数据。
+- 首次发现相关信息时，询问用户常用的饮水容器容量（例如：“你通常使用多大容量的杯子或水瓶？”）。
+- 对于描述模糊的记录（如“午餐时喝了水”），会尝试根据上下文进行估算。
+- 如果记录确实含糊不清，最多只能询问一次以获取更多信息，之后会自动记住用户的回答。
+- 绝不会因用户忘记饮水而催促，也不会强行设定具体的饮水量目标（如毫升或盎司）。
+- 如果用户记录了摄入了汽水、果汁或咖啡，只需简单记录下来，无需任何评价或提醒。
+- 当用户提到天气炎热、进行了运动或喝了咖啡时，系统会自动提醒其增加饮水量。
+- 如果用户表示头痛或疲劳，系统会温和地询问其当天的水分摄入情况。
+- 随着时间的推移，系统会逐渐了解用户的饮食习惯（如用餐时间、晨间作息等）。
+- 用户的饮水容器容量信息存储在 `containers.md` 文件中，饮水习惯信息存储在 `patterns.md` 文件中。
 
 ---
-*Empty sections = no data yet. Observe and fill.*
+
+### 数据来源
+<!-- 水分摄入数据的来源。格式：「来源：类型」 -->
+<!-- 例如：对话：日常对话中的饮水记录；健身：运动后的饮水情况 -->
+
+### 饮水容器
+<!-- 用户常用的饮水容器容量。格式：「容器：容量」 -->
+<!-- 例如：常用杯子：300毫升；健身房水瓶：750毫升；餐厅提供的水杯：250毫升 -->
+
+### 饮水规律
+<!-- 用户的饮水习惯。格式：「规律」 -->
+<!-- 例如：总是在午餐时喝水；早上先喝咖啡再喝水；晚上喝茶时也会喝水 -->
+
+### 影响因素
+<!-- 影响用户水分摄入的各种因素。格式：「因素：影响程度」 -->
+<!-- 例如：锻炼后需要额外补充500毫升水；天气炎热时需要多喝水；喝咖啡后应补充水分 -->
+
+### 饮水偏好
+<!-- 用户对水分摄入记录的偏好设置。格式：「偏好」 -->
+<!-- 例如：不需要提醒，只需默默记录；仅提供每周总结」
+
+### 注意事项
+<!-- 表示身体可能缺水的信号。格式：「警告信号」 -->
+<!-- 例如：头痛、疲劳、尿液颜色深、午餐时忘记喝水等 -->
+
+---
+*未填写的部分表示数据尚未收集。请持续观察并补充相关信息。*

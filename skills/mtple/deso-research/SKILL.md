@@ -1,6 +1,6 @@
 ---
 name: deso-research
-description: Research and analyze content across decentralized social networks (Farcaster, Lens, Nostr, Bluesky) using the deso-ag CLI tool. Use this skill when users want to research topics on decentralized social platforms, analyze trending content, extract discussion terms, browse Farcaster channels, or compare engagement across networks. Trigger on phrases like "research X on Farcaster", "what's trending on Lens", "analyze [topic] across deso networks", "search deso for [topic]", "extract trending terms", "browse Farcaster channels", "what are people saying about X on Farcaster/Lens/Nostr/Bluesky", or any query about decentralized social media content. Make sure to use this skill for any decentralized social research tasks, even if the user just says "check Farcaster" or "look up [topic] on Lens".
+description: 使用 deso-ag CLI 工具在去中心化社交网络（Farcaster、Lens、Nostr、Bluesky）中研究并分析内容。当用户希望在去中心化社交平台上研究某个主题、分析热门内容、提取讨论关键词、浏览 Farcaster 的频道或比较不同网络之间的用户参与度时，可以使用此技能。触发指令包括：“在 Farcaster 上研究 X”、“Lens 上的热门内容是什么”、“分析 [主题] 在各个去中心化网络中的情况”、“在 deso 网络中搜索 [主题]”、“提取热门关键词”、“浏览 Farcaster 的频道”、“人们在 Farcaster/Lens/Nostr/Bluesky 上对 X 有什么评价”等。无论用户只是简单地说“查看 Farcaster”或“在 Lens 上查找 [主题]”，都应使用此技能来完成相关的去中心化社交研究任务。
 metadata:
   openclaw:
     emoji: "🔍"
@@ -19,211 +19,97 @@ metadata:
 
 # deso-research
 
-Research and analyze content across decentralized social networks using [deso-ag](https://www.npmjs.com/package/deso-ag).
+使用 [deso-ag](https://www.npmjs.com/package/deso-ag) 在去中心化社交网络中研究和分析内容。
 
-deso-ag is a CLI tool that aggregates posts from Farcaster, Lens, Nostr, and Bluesky. It provides search, trending, term extraction, and channel browsing — with a `compact` output format designed specifically for AI agent consumption.
+**deso-ag** 是一个命令行工具（CLI），它可以汇总来自 Farcaster、Lens、Nostr 和 Bluesky 的帖子。该工具提供搜索、趋势分析、术语提取和频道浏览功能，并支持专为 AI 代理设计的 `compact` 输出格式。
 
-## Prerequisites
+## 先决条件
 
-### Check Installation
+### 检查安装
 
-```bash
-which deso-ag || echo "deso-ag not found — install with: npm install -g deso-ag"
-```
+如果系统中没有 `deso-ag`，请先安装它：
 
-If deso-ag is missing, install it:
+**安装命令：**  
+`npm install -g deso-ag`
 
-```bash
-npm install -g deso-ag
-```
+### API 密钥（可选）
 
-### API Keys (Optional)
+**deso-ag** 在没有 API 密钥的情况下也能正常运行**，因为 Lens、Nostr 和 Bluesky 的趋势分析功能都不需要密钥。不过，使用以下环境变量可以访问更多网络：
 
-deso-ag works without any keys — Lens, Nostr, and Bluesky trending all function keyless. For full functionality, these environment variables unlock additional networks:
+| 变量                | 可访问的网络            | 获取方式                          |
+|------------------|------------------|-------------------------------------------|
+| `NEYNAR_API_KEY`       | Farcaster 的搜索和趋势分析功能 | 在 neynar.com 上免费获取                   |
+| `BLUESKY_IDENTIFIER` | Bluesky 的搜索功能       | 使用您的用户名（例如：user.bsky.social）             |
+| `BLUESKY_APP_PASSWORD` | Bluesky 的应用密码       | 在 bsky.app/settings/app-passwords 中设置             |
 
-| Variable | Unlocks | How to Get |
-|----------|---------|------------|
-| `NEYNAR_API_KEY` | Farcaster search + trending | Free at neynar.com |
-| `BLUESKY_IDENTIFIER` | Bluesky search | Your handle (e.g. user.bsky.social) |
-| `BLUESKY_APP_PASSWORD` | Bluesky search | bsky.app/settings/app-passwords |
+如果没有相应的 API 密钥，相关网络将被自动跳过，其他功能仍可正常使用。
 
-Without a key, that network is silently skipped. Everything else works normally.
+在运行命令之前，请先确认可访问的网络有哪些。
 
-Check which networks are available before running commands:
+## 核心工作流程
 
-```bash
-echo "Neynar: ${NEYNAR_API_KEY:+set}"
-echo "Bluesky ID: ${BLUESKY_IDENTIFIER:+set}"
-echo "Bluesky PW: ${BLUESKY_APP_PASSWORD:+set}"
-```
+### 1. 搜索内容
 
-Inform the user which networks will be included based on available keys.
+使用 `search` 命令查找关于特定主题的帖子。为确保数据能被 AI 代理顺利处理，请务必使用 `--format compact` 选项。
 
-## Core Workflows
+### 2. 查看热门内容
 
-### 1. Search for Content
+使用 `trending` 命令查看当前最受欢迎的内容。
 
-Use `search` to find posts about a topic. Always use `--format compact` for agent consumption.
+### 3. 提取讨论主题
 
-```bash
-# Basic search across all available networks
-deso-ag search "ethereum" --format compact --limit 20
+使用 `terms` 命令提取讨论最多的主题（结果会按照互动次数进行排序）。
 
-# Multi-word AND search (all terms must match)
-deso-ag search "AI crypto" --format compact --limit 15
+### 4. 浏览 Farcaster 频道
 
-# Network-specific search
-deso-ag search "NFT" --sources farcaster --format compact
+### 输出处理
 
-# Channel-specific (Farcaster only)
-deso-ag search --channel dev --sources farcaster --format compact
+对于搜索和趋势分析命令，**务必使用 `--format compact`** 选项。这种格式返回的 JSON 数据结构简洁，便于 AI 代理进行分析：
 
-# Sort by recency for latest discussions
-deso-ag search "base chain" --sort recent --format compact --limit 10
-```
+`score` 字段的计算方式为：`点赞数 + 转发数 × 2 + 评论数`，可用于排序。
 
-### 2. Get Trending Content
+对于 `terms` 命令，使用 `--format json` 选项可获取结构化的术语频率数据。
 
-Use `trending` to see what's popular right now.
+## 分析指南
 
-```bash
-# Trending across all networks
-deso-ag trending --format compact --limit 20
+收集数据后，需对结果进行归纳和分析，切勿直接将原始 JSON 数据提供给用户：
 
-# Trending on specific networks
-deso-ag trending --sources farcaster,lens --format compact
+1. **总结整体情况**：共找到了多少帖子，分布在哪些网络中，时间范围是什么？
+2. **突出热门内容**：展示互动次数最高的帖子，包括作者、来源和简要概述。
+3. **识别主题**：将相关帖子归类并提取共同的主题线索。
+4. **提供互动背景**：分析哪些内容最受用户欢迎及其原因。
+5. **提供原始链接**：提供帖子的链接，方便用户直接访问。
 
-# Trending over the past week
-deso-ag trending --timeframe week --format compact
-```
+只有在用户明确要求跨网络比较时，才进行跨网络的数据分析。
 
-### 3. Extract Discussion Terms
+### 分析示例输出
 
-Use `terms` to discover the most-discussed topics, weighted by engagement.
+## 命令参考
 
-```bash
-# Top 3 terms per platform, last 24h
-deso-ag terms --format json
+| 命令            | 功能                        | 默认排序方式       | 默认输出格式       |
+|------------------|------------------|------------------|-------------------|
+| `search [查询内容]`     | 查找关于特定主题的帖子            | 相关性         | markdown          |
+| `trending`       | 查看当前热门内容                | 互动次数         | summary         |
+| `terms`         | 提取热门讨论术语                |              |                |
+| `channels`       | 浏览 Farcaster 频道                |              |                |
 
-# Top 5 terms from Farcaster this week
-deso-ag terms --top 5 --sources farcaster --timeframe week --format json
+### 常用选项
 
-# Terms across specific networks
-deso-ag terms --top 5 --sources farcaster,nostr --format json
-```
+| 选项            | 缩写            | 可选值          | 默认值           |
+|------------------|------------------|------------------|-------------------|
+| `--sources`       | `-s`            | farcaster,lens,nostr,bluesky   | all            |
+| `--timeframe`      | `-t`            | 24h, 48h, week       | 24h            |
+| `--format`       | `-f`            | json, markdown, summary, compact | json           |
+| `--limit`        | `-l`            | 任意正整数        | 25              |
+| `--sort`        | `-o`            | 互动次数, 最新, 相关性     | engagement, recent, relevance |
+| `--channel`      | `-c`            | 频道 ID（仅限 Farcaster）    | none            |
+| `--top`         | `-n`            | 任意正整数（仅限术语）     | 3              |
 
-### 4. Browse Farcaster Channels
+有关完整的命令参考、输出格式和库使用说明，请参阅 `references/command-reference.md`。
 
-```bash
-deso-ag channels --limit 20
-```
+## 错误处理
 
-## Output Handling
-
-**Always use `--format compact`** for search and trending commands. The compact format returns a single JSON object optimized for agent analysis:
-
-```json
-{
-  "meta": {
-    "query": "...",
-    "totalPosts": 42,
-    "sources": [{"name": "farcaster", "count": 15}, ...],
-    "timeframe": "24h",
-    "fetchedAt": "2025-01-01T00:00:00.000Z"
-  },
-  "posts": [
-    {
-      "id": "...",
-      "source": "farcaster",
-      "author": "username",
-      "content": "full untruncated content...",
-      "timestamp": "2025-01-01T00:00:00.000Z",
-      "url": "https://...",
-      "score": 523,
-      "engagement": {"likes": 400, "reposts": 50, "replies": 23},
-      "tags": []
-    }
-  ]
-}
-```
-
-The `score` field is pre-computed: `likes + reposts×2 + replies`. Use it for ranking.
-
-For `terms`, use `--format json` which returns structured term frequency data.
-
-## Analysis Guidelines
-
-After gathering data, synthesize findings into insights. Never just dump raw JSON to the user.
-
-1. **Summarize the landscape:** How many posts found, across which networks, what timeframe
-2. **Highlight top content:** Surface the highest-engagement posts with author, source, and brief summary
-3. **Identify themes:** Group related posts and extract common threads
-4. **Provide engagement context:** What content resonates most and why
-5. **Link to originals:** Include post URLs so the user can engage directly
-
-Only compare activity across networks if the user specifically asks for a cross-network comparison.
-
-### Example Analysis Output
-
-```
-Pulled 42 posts about "AI agents" from Farcaster (15), Lens (12), and Nostr (15) over the last 24h.
-
-**The dominant conversation** is around autonomous agents that can transact onchain
-without human approval. @dwr's post (score: 523) kicked this off by demoing an agent
-that autonomously allocated funds across DeFi protocols based on real-time yield data.
-The replies are split — builders are excited about composability (agents calling other
-agents via onchain messages), while others are raising concerns about liability when
-an agent makes a bad trade. @jessepollak responded pointing to Base's account
-abstraction work as a potential guardrail layer.
-
-**A second thread** is forming around agent-to-agent communication standards. Several
-posts reference a draft spec for a messaging protocol between onchain agents. @stani
-on Lens (score: 312) argued that without a shared standard, we'll end up with walled
-agent ecosystems that can't interoperate — drawing a parallel to early social media
-APIs. There's skepticism in the replies about whether standardization is premature
-given how fast the space is moving.
-
-**Smaller but notable:** 3-4 posts on Nostr are discussing privacy-preserving agents
-that use zk proofs to verify actions without revealing the agent's strategy or
-holdings. Early stage but worth watching.
-
-**Key voices to follow on this topic:**
-- @dwr (Farcaster) — actively building and demoing agent infra
-- @jessepollak (Farcaster) — connecting this to Base ecosystem work
-- @stani (Lens) — framing the standards/interop conversation
-
-**Source posts:**
-- [dwr's agent demo](https://...) — score: 523
-- [stani on agent standards](https://...) — score: 312
-- [jessepollak on account abstraction](https://...) — score: 287
-```
-
-## Quick Command Reference
-
-| Command | Purpose | Default Sort | Default Format |
-|---------|---------|-------------|----------------|
-| `search [query]` | Find posts about a topic | relevance | markdown |
-| `trending` | Popular content right now | engagement | summary |
-| `terms` | Top discussion terms | — | — |
-| `channels` | Browse Farcaster channels | — | — |
-
-### Common Options
-
-| Option | Short | Values | Default |
-|--------|-------|--------|---------|
-| `--sources` | `-s` | farcaster,lens,nostr,bluesky | all |
-| `--timeframe` | `-t` | 24h, 48h, week | 24h |
-| `--format` | `-f` | json, markdown, summary, compact | varies |
-| `--limit` | `-l` | any positive integer | 25 |
-| `--sort` | `-o` | engagement, recent, relevance | varies |
-| `--channel` | `-c` | channel ID (Farcaster only) | none |
-| `--top` | `-n` | any positive integer (terms only) | 3 |
-
-For the full command reference with output schemas and library usage, see `references/command-reference.md`.
-
-## Error Handling
-
-- If deso-ag is not found, install it: `npm install -g deso-ag`
-- If no results return for a network, that network's API key is likely missing — inform the user
-- Nostr can be slow or inconsistent — retry once if it times out
-- If you hit rate limit errors, let the user know and suggest they run their own infrastructure for heavy usage
+- 如果系统找不到 `deso-ag`，请安装它：`npm install -g deso-ag`
+- 如果某个网络没有返回结果，可能是缺少 API 密钥——请告知用户。
+- Nostr 的响应可能较慢或不稳定——如果超时，请尝试重新请求。
+- 如果遇到请求速率限制错误，请告知用户，并建议他们在高负载情况下自行搭建相应的基础设施。

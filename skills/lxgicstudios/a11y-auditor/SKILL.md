@@ -1,29 +1,29 @@
 ---
 name: a11y-auditor
-description: Scan HTML and JSX for accessibility issues and get fix suggestions. Use when you need to catch WCAG violations before they hit production.
+description: 扫描 HTML 和 JSX 文件中的可访问性问题，并提供修复建议。当需要在问题影响生产环境之前发现 WCAG（Web Content Accessibility Guidelines，网页内容无障碍指南）违规情况时，可以使用此工具。
 ---
 
-# Accessibility Auditor
+# 可访问性审计工具
 
-Accessibility isn't optional but checking for it manually is painful. This tool scans your HTML and JSX files for WCAG violations and tells you exactly what's wrong and how to fix it. No more guessing if your alt text is right or your heading hierarchy makes sense.
+可访问性是网站设计中不可或缺的一部分，但手动检查其合规性却非常繁琐。这款工具会扫描您的 HTML 和 JSX 文件，检测 WCAG 规范中的违规之处，并明确指出问题所在以及相应的修复方法。再也不用猜测图片的替代文本是否正确，或者标题层次结构是否合理了。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-a11y src/
 ```
 
-## What It Does
+## 功能介绍
 
-- Scans HTML and JSX files for WCAG 2.1 AA violations
-- Catches missing alt text, broken heading hierarchy, and color contrast issues
-- Generates specific fix suggestions with code examples
-- Supports glob patterns so you can target specific directories
-- Reports severity levels so you know what to fix first
+- 扫描 HTML 和 JSX 文件，检测 WCAG 2.1 AA 标准的违规情况
+- 发现缺失的替代文本、错误的标题层次结构以及颜色对比度问题
+- 生成具体的修复建议，并提供相应的代码示例
+- 支持通配符模式，以便针对特定目录进行扫描
+- 显示问题的严重程度，帮助您确定优先修复的环节
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Scan your entire src directory
@@ -36,42 +36,42 @@ npx ai-a11y src/components/Button.tsx
 npx ai-a11y "src/**/*.jsx"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Run it before every PR** - Catch a11y issues before code review, not after
-- **Start with your most visited pages** - Fix the high traffic stuff first
-- **Don't ignore warnings** - Warnings today become lawsuits tomorrow
-- **Pair with manual testing** - Automated checks catch about 30% of real a11y issues. Use a screen reader for the rest.
+- **在每次提交代码请求（PR）之前运行该工具**——在代码审核之前发现问题，而非之后
+- **从访问量最大的页面开始检查**——优先修复那些被大量用户访问的页面
+- **不要忽视警告**——今天的警告可能会成为明天的法律纠纷
+- **结合手动测试使用**——自动化检查能发现约 30% 的可访问性问题，其余问题则需借助屏幕阅读器进行手动排查
 
-## When to Use This
+## 适用场景
 
-- You're building a public facing web app and need WCAG compliance
-- Your team doesn't have a dedicated a11y reviewer
-- You inherited a codebase with zero accessibility consideration
-- You want to catch obvious violations before a manual audit
+- 当您正在开发面向公众的 Web 应用程序且需要符合 WCAG 标准时
+- 当您的团队没有专门的可访问性审核人员时
+- 当您继承了一个完全没有考虑可访问性设计的代码库时
+- 当您希望在手动审计之前发现明显的违规问题时
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发者工具之一。免费版本无付费门槛、无需注册，也不需要 API 密钥，只需使用即可。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-a11y --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool reads your HTML or JSX files and extracts the DOM structure. It checks against WCAG 2.1 guidelines for common violations like missing labels, poor contrast ratios, and incorrect ARIA usage. Then it sends the issues to an AI model that generates specific, actionable fix suggestions with code.
+该工具会读取您的 HTML 或 JSX 文件并提取其 DOM 结构，然后根据 WCAG 2.1 标准检查常见的违规情况（如缺少标签、对比度不足、ARIA 标签使用不当等）。随后，它会将这些问题发送给 AI 模型，由模型生成具体的、可操作的修复建议及相应的代码示例。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

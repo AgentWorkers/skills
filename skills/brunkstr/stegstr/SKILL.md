@@ -1,7 +1,7 @@
 ---
 name: stegstr
 summary: Embed and decode hidden messages in PNG images. Steganographic Nostr client for hiding data in images—works offline, no registration.
-description: Decode and embed Stegstr payloads in PNG images. Use when the user needs to extract hidden Nostr data from a Stegstr image, encode a payload into a cover PNG, or work with steganographic social networking (Nostr-in-images). Supports CLI (stegstr-cli decode, detect, embed, post) for scripts and AI agents.
+description: 将 Stegstr 载荷解码并嵌入到 PNG 图像中。当用户需要从 Stegstr 图像中提取隐藏的 Nostr 数据、将载荷编码到封面 PNG 图像中，或处理基于隐写技术的社交网络（Nostr-in-images）时，可以使用该功能。支持通过 CLI（stegstr-cli decode、detect、embed、post）命令进行脚本操作和 AI 代理的集成。
 license: MIT
 tags: steganography, nostr, images, crypto, integration, file-management, automation, cli
 install:
@@ -22,18 +22,18 @@ metadata:
 
 # Stegstr
 
-Stegstr hides Nostr messages and arbitrary payloads inside PNG images using steganography. Users embed their feed (posts, DMs, JSON) into images and share them; recipients use Detect to load the hidden content. No registration, works offline.
+Stegstr 使用隐写技术将 Nostr 消息和任意有效载荷隐藏在 PNG 图像中。用户可以将他们的内容（帖子、私信、JSON 数据）嵌入到图像中并分享；接收者可以使用 Detect 工具来加载这些隐藏的内容。该工具无需注册，支持离线使用。
 
-## When to use this skill
+## 适用场景
 
-- User wants to **decode** (extract) hidden data from a PNG that contains Stegstr data.
-- User wants to **embed** a payload into a cover PNG (e.g. Nostr bundle, JSON, text).
-- User mentions steganography, Nostr-in-images, Stegstr, hiding data in images, or secret messages in photos.
-- User needs programmatic access for automation, scripts, or AI agents.
+- 用户希望从包含 Stegstr 数据的 PNG 图像中解码（提取）隐藏的数据。
+- 用户希望将有效载荷嵌入到封面 PNG 图像中（例如：Nostr 数据包、JSON 数据、文本等）。
+- 用户提到隐写技术、图像中的隐藏信息或照片中的秘密消息。
+- 用户需要通过编程方式访问该工具，以实现自动化、脚本运行或与 AI 代理的集成。
 
-## CLI (headless)
+## 命令行界面（CLI）
 
-Build the CLI from the Stegstr repo:
+可以从 Stegstr 仓库构建命令行界面：
 
 ```bash
 git clone https://github.com/brunkstr/Stegstr.git
@@ -41,25 +41,25 @@ cd Stegstr/src-tauri
 cargo build --release --bin stegstr-cli
 ```
 
-Binary: `target/release/stegstr-cli` (or `stegstr-cli.exe` on Windows).
+二进制文件：`target/release/stegstr-cli`（Windows 系统下为 `stegstr-cli.exe`）。
 
-### Decode (extract payload)
+### 解码（提取有效载荷）
 
 ```bash
 stegstr-cli decode image.png
 ```
 
-Writes raw payload to stdout. Valid UTF-8 JSON is printed as text; otherwise `base64:<data>`. Exit 0 on success.
+将解码后的有效载荷输出到标准输出（stdout）。有效的 UTF-8 JSON 数据将以文本形式显示；否则将以 `base64:<data>` 的格式显示。成功时返回 0。
 
-### Detect (decode + decrypt app bundle)
+### 检测（解码并解密数据包）
 
 ```bash
 stegstr-cli detect image.png
 ```
 
-Decodes and decrypts; prints Nostr bundle JSON `{ "version": 1, "events": [...] }`.
+解码并解密数据包，然后输出 Nostr 数据包的 JSON 内容：`{"version": 1, "events": [...]}`。
 
-### Embed (hide payload in image)
+### 嵌入（将有效载荷隐藏在图像中）
 
 ```bash
 stegstr-cli embed cover.png -o out.png --payload "text or JSON"
@@ -67,18 +67,18 @@ stegstr-cli embed cover.png -o out.png --payload @bundle.json
 stegstr-cli embed cover.png -o out.png --payload @bundle.json --encrypt
 ```
 
-Use `--payload @file` to load from file. Use `--encrypt` so any Stegstr user can detect. Use `--payload-base64 <base64>` for binary payloads.
+使用 `--payload @file` 从文件中加载有效载荷。使用 `--encrypt` 选项可确保任何使用 Stegstr 的用户都能检测到该有效载荷；对于二进制有效载荷，可使用 `--payload-base64 <base64>`。
 
-### Post (create kind 1 note bundle)
+### 发布（创建 Nostr 数据包）
 
 ```bash
 stegstr-cli post "Your message here" --output bundle.json
 stegstr-cli post "Message" --privkey-hex <64-char-hex> --output bundle.json
 ```
 
-Creates a Nostr bundle; use `stegstr-cli embed` to hide it in an image.
+创建一个 Nostr 数据包，并使用 `stegstr-cli embed` 命令将其隐藏在图像中。
 
-## Example workflow
+## 示例工作流程
 
 ```bash
 # Create a post bundle
@@ -91,21 +91,21 @@ stegstr-cli embed cover.png -o stego.png --payload @bundle.json --encrypt
 stegstr-cli detect stego.png
 ```
 
-## Image format
+## 图像格式
 
-PNG only (lossless). JPEG or other lossy formats will corrupt the hidden data.
+仅支持无损的 PNG 格式。JPEG 或其他有损格式会导致隐藏数据损坏。
 
-## Payload format
+## 有效载荷格式
 
-- **Magic:** `STEGSTR` (7 bytes ASCII)
-- **Length:** 4 bytes, big-endian
-- **Payload:** UTF-8 JSON or raw bytes (desktop app encrypts; CLI can embed raw or `--encrypt`)
+- **标识符：** `STEGSTR`（7 字节的 ASCII 字符）
+- **长度：** 4 字节（大端字节序）
+- **有效载荷：** UTF-8 格式的 JSON 数据或原始字节（桌面应用程序会对其进行加密；命令行界面支持原始数据或使用 `--encrypt` 选项进行加密）
 
-Decrypted bundle: `{ "version": 1, "events": [ ... Nostr events ... ] }`. Schema: [bundle.schema.json](https://raw.githubusercontent.com/brunkstr/Stegstr/main/schema/bundle.schema.json).
+解密后的数据包结构：`{"version": 1, "events": [ ... Nostr 事件 ... ]}`。详细规范请参考：[bundle.schema.json](https://raw.githubusercontent.com/brunkstr/Stegstr/main/schema/bundle.schema.json)。
 
-## Links
+## 链接
 
-- **agents.txt:** https://www.stegstr.com/agents.txt
-- **For agents:** https://www.stegstr.com/wiki/for-agents.html
-- **CLI docs:** https://www.stegstr.com/wiki/cli.html
-- **Downloads:** https://github.com/brunkstr/Stegstr/releases/latest
+- **代理程序文档：** https://www.stegstr.com/agents.txt
+- **代理程序使用指南：** https://www.stegstr.com/wiki/for-agents.html
+- **命令行界面文档：** https://www.stegstr.com/wiki/cli.html
+- **下载地址：** https://github.com/brunkstr/Stegstr/releases/latest

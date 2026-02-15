@@ -1,6 +1,6 @@
 ---
 name: dns-lookup
-description: "Resolve hostnames to IP addresses using `dig` from bind-utils."
+description: "使用 `bind-utils` 中的 `dig` 命令将主机名解析为 IP 地址。"
 metadata:
   {
     "openclaw":
@@ -21,43 +21,43 @@ metadata:
   }
 ---
 
-# DNS Lookup Skill
+# DNS查询技巧
 
-Resolve hostnames to IP addresses using `dig`. Provided by the `bind-utils` package.
+使用`dig`命令将主机名解析为IP地址。该功能由`bind-utils`包提供。
 
-## Basic Lookup
+## 基本查询
 
-Resolve A records for a hostname:
+解析主机名的A记录：
 
 ```bash
 dig example.com A +short
 ```
 
-## IPv6 Lookup
+## IPv6查询
 
-Resolve AAAA records:
+解析AAAA记录：
 
 ```bash
 dig example.com AAAA +short
 ```
 
-## Full DNS Record
+## 完整DNS记录
 
-Get the full DNS response with authority and additional sections:
+获取包含权威信息及其他部分的完整DNS响应：
 
 ```bash
 dig example.com ANY
 ```
 
-## Reverse Lookup
+## 反向查询
 
-Find the hostname for an IP address:
+根据IP地址查找对应的主机名：
 
 ```bash
 dig -x 93.184.216.34 +short
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install bind-utils

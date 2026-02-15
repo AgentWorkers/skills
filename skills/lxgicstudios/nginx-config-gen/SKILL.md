@@ -1,28 +1,29 @@
 ---
 name: nginx-gen
-description: Generate nginx config from plain English. Use when configuring nginx.
+description: **从纯文本生成 Nginx 配置文件**  
+用于配置 Nginx 服务器时使用。
 ---
 
-# Nginx Generator
+# Nginx 生成器
 
-Stop googling nginx config snippets. Describe what you want and get a working nginx configuration.
+别再在网上搜索 Nginx 配置片段了。直接描述你的需求，就能得到一个可用的 Nginx 配置文件。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需编写任何配置代码，即可立即生效。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-nginx "reverse proxy port 3000 with SSL"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete nginx configuration
-- Handles reverse proxy, SSL, caching, rate limiting
-- Includes security headers
-- Proper server block structure
+- 生成完整的 Nginx 配置文件
+- 支持反向代理、SSL 加密、缓存功能以及速率限制
+- 自动添加安全头部信息
+- 配置符合规范的服务器块结构
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Reverse proxy with SSL
@@ -35,42 +36,42 @@ npx ai-nginx "serve static files from /var/www/html with caching"
 npx ai-nginx "load balance between 3 node servers" -o nginx.conf
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Always use SSL** - Let's Encrypt is free
-- **Set worker connections** - tune for your traffic
-- **Enable gzip** - compress text responses
-- **Add security headers** - prevent common attacks
+- **务必使用 SSL**：Let’s Encrypt 提供免费的 SSL 证书
+- **设置工作进程数量**：根据实际流量情况进行调整
+- **启用 gzip 压缩**：压缩文本响应内容
+- **添加安全头部信息**：防止常见的网络攻击
 
-## When to Use This
+## 适用场景
 
-- Setting up new nginx server
-- Adding reverse proxy to existing setup
-- Configuring SSL termination
-- Learning nginx configuration
+- 设置新的 Nginx 服务器
+- 为现有服务器添加反向代理功能
+- 配置 SSL 代理的终结点
+- 学习 Nginx 配置原理
 
-## Part of the LXGIC Dev Toolkit
+## LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多个免费开发工具之一。免费版本无付费门槛、无需注册，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+**了解更多：**
+- GitHub：https://github.com/LXGIC-Studios
+- Twitter：https://x.com/lxgicstudios
+- Substack：https://lxgicstudios.substack.com
+- 官网：https://lxgicstudios.com
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装任何软件，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行时需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-nginx --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your plain English description and generates complete nginx configuration. The AI knows nginx syntax and best practices for common patterns like reverse proxy, SSL, and caching.
+该工具会根据你提供的纯文本描述自动生成完整的 Nginx 配置文件。它内置了对 Nginx 语法及常见配置模式（如反向代理、SSL、缓存等）的最佳实践的理解。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。你可以随心所欲地使用这个工具。

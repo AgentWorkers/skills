@@ -1,37 +1,38 @@
 ---
 name: chia-walletconnect
-description: Telegram Web App for Chia wallet verification via WalletConnect and Sage. Enables cryptographic proof of wallet ownership through signature verification using MintGarden API.
+description: **Chia钱包的Telegram Web应用程序**  
+该应用程序支持通过`WalletConnect`和`Sage`进行钱包验证。用户可以利用`MintGarden` API通过签名验证来证明自己对钱包的所有权。
 metadata: {"clawdbot":{"requires":{"bins":["node"]},"install":[]}}
 ---
 
-# Chia WalletConnect Skill
+# Chia WalletConnect 技能
 
-Verify Chia wallet ownership via Telegram using WalletConnect integration with Sage Wallet.
+通过使用 Sage Wallet 与 WalletConnect 的集成，在 Telegram 中验证 Chia 钱包的所有权。
 
-## What It Does
+## 功能概述
 
-This skill provides a **Telegram Mini App** (Web App) that enables users to:
-1. Connect their Sage Wallet via WalletConnect v2
-2. Sign a challenge message cryptographically
-3. Verify wallet ownership via MintGarden's signature verification API
-4. Return verification status to your Telegram bot
+此技能提供了一个 **Telegram 迷你应用**（Web 应用），允许用户：
+1. 通过 WalletConnect v2 连接他们的 Sage Wallet
+2. 对挑战消息进行加密签名
+3. 通过 MintGarden 的签名验证 API 验证钱包所有权
+4. 将验证状态返回给您的 Telegram 机器人
 
-**Use Cases:**
-- NFT-gated Telegram groups
-- Airdrop eligibility verification
-- Web3-style authentication
-- DAO voting authentication
-- Proof of token holdings
+**使用场景：**
+- 需要 NFT 访问权限的 Telegram 群组
+- 空投资格验证
+- Web3 风格的身份验证
+- DAO 投票身份验证
+- 代币持有证明
 
-## Architecture
+## 架构
 
 ```
 /verify command → Web App button → WalletConnect → Sage signs → Verification
 ```
 
-The user never leaves Telegram. The entire flow happens in-app via the Telegram Web App API.
+用户无需离开 Telegram，整个流程都在 Telegram Web 应用程序内部通过 API 完成。
 
-## Installation
+## 安装
 
 ```bash
 # Install via ClawdHub
@@ -45,43 +46,43 @@ npm install
 chmod +x cli.js
 ```
 
-## Deployment
+## 部署
 
-### Step 1: Deploy Web App
+### 第一步：部署 Web 应用
 
-Deploy the `webapp/` folder to a public HTTPS URL:
+将 `webapp/` 文件夹部署到公共 HTTPS 地址：
 
-**Vercel (Recommended):**
+**推荐使用 Vercel：**
 ```bash
 cd skills/chia-walletconnect/webapp
 vercel
 # Copy the URL (e.g., https://chia-verify.vercel.app)
 ```
 
-**Netlify:**
+**Netlify：**
 ```bash
 cd skills/chia-walletconnect/webapp
 netlify deploy --prod
 ```
 
-**Your Server:**
+**使用自己的服务器：**
 ```bash
 # Start Express server
 npm start
 # Expose via ngrok or reverse proxy
 ```
 
-### Step 2: Register with BotFather
+### 第二步：在 BotFather 中注册
 
-1. Message [@BotFather](https://t.me/BotFather)
-2. Send `/newapp` or `/editapp`
-3. Select your bot
-4. **Web App URL:** Enter deployed URL
-5. **Short Name:** `verify`
+1. 向 [@BotFather](https://t.me/BotFather) 发送消息
+2. 发送 `/newapp` 或 `/editapp`
+3. 选择您的机器人
+4. **Web 应用 URL：** 输入已部署的 URL
+5. **简称：** `verify`
 
-### Step 3: Add to Bot
+### 第三步：将应用添加到机器人中
 
-#### Using Clawdbot Message Tool
+#### 使用 Clawdbot 消息工具
 
 ```javascript
 // Send /verify command handler
@@ -96,7 +97,7 @@ message({
 });
 ```
 
-#### Handling Verification Response
+#### 处理验证响应
 
 ```javascript
 // In your bot's web_app_data handler
@@ -128,9 +129,9 @@ bot.on('web_app_data', async (msg) => {
 });
 ```
 
-## CLI Usage
+## 命令行接口（CLI）使用
 
-The skill includes a CLI for testing:
+该技能包含一个用于测试的 CLI：
 
 ```bash
 # Generate challenge message
@@ -146,11 +147,11 @@ node cli.js validate xch1abc...
 node cli.js server
 ```
 
-## API Reference
+## API 参考
 
-### MintGarden Signature Verification
+### MintGarden 签名验证
 
-**Endpoint:** `POST https://api.mintgarden.io/address/verify_signature`
+**端点：** `POST https://api.mintgarden.io/address/verify_signature`
 
 ```json
 {
@@ -161,22 +162,22 @@ node cli.js server
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "verified": true
 }
 ```
 
-### CHIP-0002 Methods (WalletConnect)
+### CHIP-0002 方法（WalletConnect）
 
-| Method | Purpose |
+| 方法 | 功能 |
 |--------|---------|
-| `chip0002_getPublicKeys` | Fetch public keys from wallet |
-| `chip0002_signMessage` | Request message signature |
-| `chia_getCurrentAddress` | Get current receive address |
+| `chip0002_getPublicKeys` | 从钱包获取公钥 |
+| `chip0002_signMessage` | 请求消息签名 |
+| `chia_getCurrentAddress` | 获取当前接收地址 |
 
-## Verification Flow
+## 验证流程
 
 ```
 1. User sends /verify to bot
@@ -191,13 +192,13 @@ node cli.js server
 10. Bot confirms verification success/failure
 ```
 
-**Time:** ~5-10 seconds for full flow (user-dependent)
+**时间：** 完整流程大约需要 5-10 秒（具体取决于用户操作）
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-Create `.env` in skill folder:
+在技能文件夹中创建 `.env` 文件：
 
 ```env
 PORT=3000
@@ -205,45 +206,45 @@ WALLETCONNECT_PROJECT_ID=your-project-id
 MINTGARDEN_API_URL=https://api.mintgarden.io
 ```
 
-### Get WalletConnect Project ID
+### 获取 WalletConnect 项目 ID
 
-1. Visit [WalletConnect Cloud](https://cloud.walletconnect.com)
-2. Create a new project
-3. Copy your Project ID
-4. Update in `webapp/app.js`
+1. 访问 [WalletConnect Cloud](https://cloud.walletconnect.com)
+2. 创建一个新的项目
+3. 复制您的项目 ID
+4. 在 `webapp/app.js` 中更新该 ID
 
-**Default Project ID:**  
-The skill includes `6d377259062295c0f6312b4f3e7a5d9b` (Dracattus reference). For production, use your own.
+**默认项目 ID：**  
+此技能使用 `6d377259062295c0f6312b4f3e7a5d9b`（参考示例：Dracattus）。在生产环境中，请使用您自己的项目 ID。
 
-## Security
+## 安全性
 
-### What's Protected
+### 保护措施
 
-- ✅ Challenge nonces prevent replay attacks
-- ✅ Timestamps expire after 5 minutes
-- ✅ MintGarden cryptographic verification
-- ✅ No private keys ever requested
-- ✅ HTTPS enforced by Telegram
+- ✅ 挑战令牌（challenge nonce）可防止重放攻击
+- ✅ 时间戳在 5 分钟后失效
+- ✅ 使用 MintGarden 的加密验证机制
+- ✅ 从不请求用户的私钥
+- ✅ Telegram 强制使用 HTTPS 协议
 
-### Best Practices
+### 最佳实践
 
-1. **Store verifications securely** — Use encrypted database
-2. **Rate limit** — Prevent spam verification attempts
-3. **Link to Telegram user ID** — Prevent address spoofing
-4. **Implement cooldown** — 1 verification per user per day
-5. **Log attempts** — Audit trail for security
+1. **安全存储验证结果** — 使用加密数据库
+2. **设置请求速率限制** — 防止频繁的验证请求
+3. **关联 Telegram 用户 ID** — 防止地址欺骗
+4. **实施冷却机制** — 每用户每天仅允许进行一次验证
+5. **记录请求日志** — 用于安全审计
 
-### Production Checklist
+### 生产环境检查清单
 
-- [ ] Deploy to HTTPS URL (required by Telegram)
-- [ ] Use your own WalletConnect Project ID
-- [ ] Enable CORS only for your domain
-- [ ] Add rate limiting on webhook endpoints
-- [ ] Store verifications in persistent database
-- [ ] Implement retry logic for network errors
-- [ ] Set up monitoring/alerts
+- [ ] 部署到 HTTPS 地址（Telegram 的要求）
+- [ ] 使用您自己的 WalletConnect 项目 ID
+- [ ] 仅对您的域名启用 CORS
+- [ ] 为 Webhook 端点设置请求速率限制
+- [ ] 将验证结果存储在持久化数据库中
+- [ ] 实现网络错误的重试逻辑
+- [ ] 设置监控和警报机制
 
-## Files
+## 文件列表
 
 ```
 chia-walletconnect/
@@ -262,38 +263,38 @@ chia-walletconnect/
 └── README.md             # Full documentation
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Web App Doesn't Load
+### Web 应用无法加载
 
-- Verify HTTPS deployment (Telegram requires SSL)
-- Check URL is publicly accessible
-- Test URL directly in browser
-- Review browser console for errors
+- 确认 HTTPS 部署是否正确（Telegram 要求使用 SSL）
+- 检查 URL 是否可公开访问
+- 直接在浏览器中测试 URL
+- 查看浏览器控制台中的错误信息
 
-### WalletConnect Connection Fails
+### WalletConnect 连接失败
 
-- Ensure Sage Wallet is latest version
-- Try manual URI paste instead of QR
-- Check WalletConnect Project ID is valid
-- Verify Sage supports WalletConnect v2
+- 确保 Sage Wallet 是最新版本
+- 尝试手动输入 URI 而不是扫描 QR 码
+- 检查 WalletConnect 项目 ID 是否有效
+- 确认 Sage Wallet 支持 WalletConnect v2
 
-### Signature Verification Fails
+### 签名验证失败
 
-- Ensure message format matches exactly
-- Confirm public key corresponds to address
-- Check MintGarden API is operational
-- Verify signature encoding (hex)
+- 确保消息格式完全正确
+- 验证公钥是否与钱包地址匹配
+- 检查 MintGarden API 是否正常运行
+- 确认签名编码是否正确（应为十六进制）
 
-### "No Public Key" Error
+### 出现“无公钥”错误
 
-- Some wallets don't expose pubkey via WalletConnect
-- Public key is optional for verification
-- Signature verification works without it
+- 某些钱包不通过 WalletConnect 提供公钥
+- 验证时公钥是可选的
+- 即使没有公钥，签名验证也可以正常进行
 
-## Examples
+## 示例
 
-### Simple Verification Bot
+### 简单的验证机器人示例
 
 ```javascript
 // Clawdbot skill handler
@@ -338,7 +339,7 @@ bot.on('web_app_data', async (msg) => {
 });
 ```
 
-### NFT Gating
+### NFT 访问控制示例
 
 ```javascript
 // Check if user owns specific NFT collection
@@ -373,42 +374,42 @@ bot.on('web_app_data', async (msg) => {
 });
 ```
 
-## Performance
+## 性能
 
-| Stage | Time |
+| 阶段 | 所需时间 |
 |-------|------|
-| WalletConnect Init | ~1-2s |
-| Connection Approval | User action |
-| Sign Request | ~2-5s |
-| MintGarden Verify | ~0.5-1s |
-| **Total** | **~5-10s** |
+| 初始化 WalletConnect | 约 1-2 秒 |
+| 连接批准 | 用户操作时间 |
+| 签名请求 | 约 2-5 秒 |
+| MintGarden 验证 | 约 0.5-1 秒 |
+| **总计** | 约 5-10 秒 |
 
-## Dependencies
+## 依赖项
 
-- `@walletconnect/sign-client` — WalletConnect v2
-- `@walletconnect/utils` — WalletConnect helpers
-- `@walletconnect/types` — TypeScript types
-- `express` — Web server
-- `node-fetch` — HTTP client
-- `cors` — CORS middleware
-- `dotenv` — Environment config
+- `@walletconnect/sign-client` — WalletConnect v2 的客户端库
+- `@walletconnect/utils` — WalletConnect 的辅助工具
+- `@walletconnect/types` — TypeScript 类型定义
+- `express` — Web 服务器框架
+- `node-fetch` — HTTP 请求库
+- `cors` — CORS 中间件
+- `dotenv` — 环境配置文件
 
-## Version
+## 版本
 
 1.0.0
 
-## License
+## 许可证
 
 MIT — Koba42 Corp
 
-## Links
+## 链接
 
-- **MintGarden API:** https://api.mintgarden.io/docs
-- **WalletConnect:** https://docs.walletconnect.com/
-- **Telegram Web Apps:** https://core.telegram.org/bots/webapps
-- **Sage Wallet:** https://www.sagewallet.io/
-- **CHIP-0002:** https://github.com/Chia-Network/chips/blob/main/CHIPs/chip-0002.md
+- **MintGarden API：** https://api.mintgarden.io/docs
+- **WalletConnect：** https://docs.walletconnect.com/
+- **Telegram Web 应用：** https://core.telegram.org/bots/webapps
+- **Sage Wallet：** https://www.sagewallet.io/
+- **CHIP-0002：** https://github.com/Chia-Network/chips/blob/main/CHIPs/chip-0002.md
 
 ---
 
-**Built with 🌱 by Koba42 Corp**
+**由 Koba42 Corp 使用 🌱 构建**

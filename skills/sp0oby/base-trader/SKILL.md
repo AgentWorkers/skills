@@ -1,6 +1,6 @@
 ---
 name: base-trader
-description: Autonomous crypto trading on Base via Bankr. Use for trading tokens, monitoring launches, executing strategies, or managing a trading portfolio. Triggers on "trade", "buy", "sell", "launch", "snipe", "profit", "PnL", "portfolio balance", or any crypto trading task on Base.
+description: 在 Base 平台上，可以通过 Bankr 实现自主的加密货币交易功能。该工具可用于交易代币、监控新项目的发布、执行交易策略或管理交易组合。当发生“交易”、“买入”、“卖出”、“项目发布”、“快速交易”、“盈利”、“损益”或任何与加密货币交易相关的操作时，Bankr 会自动触发相应的功能。
 metadata:
   version: "1.1.0"
   clawdbot:
@@ -9,23 +9,23 @@ metadata:
 
 # Base Trader 📈
 
-Autonomous trading system for Base chain via Bankr API.
+这是一个基于 Bankr API 的自动交易系统，用于 Base 链上的交易。
 
-## Philosophy
+## 哲学理念
 
-> *"The market is a machine for transferring wealth from the impatient to the patient."*
+> “市场是一台将财富从急躁的人转移到耐心的人手中的机器。”
 
-This skill prioritizes **capital preservation** over aggressive gains. Every trade has defined risk parameters. No YOLO.
+该交易系统优先考虑**资本保值**，而非追求高额利润。每笔交易都设定了明确的风险参数，绝不采取“一切或一无所有”的激进策略（YOLO）。
 
-## Prerequisites
+## 先决条件
 
-- Bankr API configured at `~/.clawdbot/skills/bankr/config.json`
-- ETH in your Bankr wallet for gas and trading
-- Check your wallet address with: `bankr.sh "What is my wallet address?"`
+- Bankr API 已配置在 `~/.clawdbot/skills/bankr/config.json` 中。
+- 你的 Bankr 钱包中需要有 ETH 用于支付交易手续费和 gas 费用。
+- 通过 `bankr.sh "What is my wallet address?"` 命令查看你的钱包地址。
 
-## Core Principles
+## 核心原则
 
-### 1. Risk Management (NON-NEGOTIABLE)
+### 1. 风险管理（不可协商）
 
 ```
 MAX_POSITION_SIZE = 10% of portfolio
@@ -35,35 +35,35 @@ TAKE_PROFIT = +30% minimum target
 MAX_DAILY_LOSS = -20% of starting balance
 ```
 
-If daily loss limit hit → STOP TRADING FOR 24 HOURS.
+如果每日亏损达到设定限额 → 停止交易 24 小时。
 
-### 2. Entry Criteria (ALL must pass)
+### 2. 入场条件（必须全部满足）
 
-Before ANY buy:
-- [ ] Liquidity > $10k
-- [ ] Contract verified on Basescan
-- [ ] No honeypot indicators (can sell)
-- [ ] Not on known scam list
-- [ ] Age > 5 minutes (avoid rugs at launch)
-- [ ] Price action shows accumulation, not dump
+在任何买入操作之前：
+- [ ] 流动性 > 10,000 美元
+- [ ] 合同已在 Basescan 上通过验证
+- [ ] 不存在“蜜罐”指标（即该合约不是用于吸引投资者的虚假合约）
+- [ ] 未列入已知的诈骗合约列表
+- [ ] 合同发布时间超过 5 分钟（以避免购买新发行的、价格可能暴跌的合约）
+- [ ] 价格走势显示资金正在积累，而非被快速抛售
 
-### 3. Exit Rules
+### 3. 出场规则
 
-**Take Profit (scale out):**
-- 25% at +30%
-- 25% at +50%
-- 25% at +100%
-- Hold 25% moonbag
+**获利策略（逐步平仓）：**
+- 价格上涨 30% 时获利 25%
+- 价格上涨 50% 时获利 25%
+- 价格上涨 100% 时获利 25%
+- 保留 25% 的持仓以等待进一步上涨
 
-**Stop Loss:**
-- Hard stop at -15%
-- No averaging down on losers
+**止损策略：**
+- 固定止损为 -15%
+- 对于亏损的持仓，绝不进行平均成本法（即追加买入）
 
-## Trading Strategies
+## 交易策略
 
-### Strategy 1: Launch Sniper (HIGH RISK)
+### 策略 1：新币狙击（高风险）
 
-Monitor new token launches, enter early with small size.
+监控新发行的代币，尽早以小额资金入场。
 
 ```bash
 # Check trending/new tokens
@@ -76,19 +76,19 @@ scripts/bankr.sh "What's the liquidity for TOKEN on Base?"
 scripts/bankr.sh "Buy $20 of TOKEN on Base"
 ```
 
-**Rules:**
-- Max $20 per snipe
-- Sell 50% at 2x, rest at 5x or stop loss
-- Max 3 snipes per day
+**规则：**
+- 每次狙击的最大投资额为 20 美元
+- 价格上涨 2 倍时卖出 50% 的持仓，其余部分在价格上涨 5 倍时卖出或止损
+- 每天最多进行 3 次狙击操作
 
-### Strategy 2: Momentum Trading (MEDIUM RISK)
+### 策略 2：趋势交易（中等风险）
 
-Trade established tokens showing strength.
+交易表现强劲的现有代币。
 
-**Entry signals:**
-- Price > 20-period MA
-- Volume increasing
-- Higher lows forming
+**入场信号：**
+- 价格高于 20 期移动平均线
+- 成交量增加
+- 形成更高的低点
 
 ```bash
 # Check momentum
@@ -98,9 +98,9 @@ scripts/bankr.sh "Do technical analysis on TOKEN"
 scripts/bankr.sh "Buy $30 of TOKEN if price drops to X"
 ```
 
-### Strategy 3: DCA Blue Chips (LOW RISK)
+### 策略 3：长期持有蓝筹股（低风险）
 
-Steady accumulation of proven tokens.
+持续持有经过验证的优质代币。
 
 ```bash
 # Weekly DCA
@@ -108,31 +108,31 @@ scripts/bankr.sh "DCA $20 into ETH every week on Base"
 scripts/bankr.sh "DCA $10 into USDC every week on Base"
 ```
 
-## Execution via Bankr
+## 通过 Bankr 执行交易
 
-### Check Portfolio
+### 检查投资组合
 ```bash
 ~/clawd/skills/bankr/scripts/bankr.sh "Show my portfolio on Base"
 ```
 
-### Execute Trade
+### 执行交易
 ```bash
 ~/clawd/skills/bankr/scripts/bankr.sh "Buy $25 of TOKEN on Base"
 ```
 
-### Set Stop Loss
+### 设置止损
 ```bash
 ~/clawd/skills/bankr/scripts/bankr.sh "Set stop loss for TOKEN at -15%"
 ```
 
-### Check Price
+### 查看价格
 ```bash
 ~/clawd/skills/bankr/scripts/bankr.sh "What's the price of TOKEN on Base?"
 ```
 
-## Trade Journal
+## 交易日志
 
-Log every trade to `data/trades.json`:
+将每笔交易记录到 `data/trades.json` 文件中：
 
 ```json
 {
@@ -146,41 +146,41 @@ Log every trade to `data/trades.json`:
 }
 ```
 
-After each trade, update the journal. Review weekly for pattern analysis.
+每次交易后更新日志，并每周进行模式分析。
 
-## Daily Routine
+## 日常流程
 
-### Morning (9 AM)
-1. Check portfolio balance
-2. Review overnight price action
-3. Identify opportunities
-4. Set limit orders for the day
+### 早上（9 点）
+1. 查看投资组合余额
+2. 回顾前一晚的价格走势
+3. 寻找交易机会
+4. 设置当天的限价单
 
-### Midday (1 PM)
-1. Check open positions
-2. Adjust stop losses if in profit
-3. Take profits if targets hit
+### 中午（13 点）
+1. 查看未平仓的头寸
+2. 如果盈利，调整止损点
+3. 如果达到获利目标，获利出局
 
-### Evening (6 PM)
-1. Close any day trades
-2. Log all trades to journal
-3. Calculate daily PnL
-4. Review what worked/didn't
+### 晚上（18 点）
+1. 平仓当天的所有交易
+2. 将所有交易记录到日志中
+3. 计算当天的盈亏情况
+4. 总结当天的交易表现
 
-## Red Flags (DO NOT TRADE)
+## 需避免的交易情况
 
-- Honeypot (can't sell)
-- Liquidity < $5k
-- Unverified contract
-- Team anonymous with no track record
-- Promises of guaranteed returns
-- Excessive tax (>10%)
-- Locked liquidity < 30 days
-- Price already 10x+ from launch
+- 存在“蜜罐”指标的合约（无法卖出）
+- 流动性低于 5,000 美元
+- 未经过验证的合约
+- 团队信息不透明且没有交易记录
+- 承诺固定回报
+- 过高的税收（超过 10%）
+- 被锁定的流动性不足 30 天
+- 代币价格已经比发行时上涨了 10 倍以上
 
-## Performance Tracking
+## 绩效跟踪
 
-Track in `data/performance.json`:
+在 `data/performance.json` 文件中记录交易表现：
 ```json
 {
   "start_date": "2026-01-28",
@@ -196,41 +196,41 @@ Track in `data/performance.json`:
 }
 ```
 
-## Safety Overrides
+## 安全紧急措施
 
-If ANY of these occur, STOP ALL TRADING:
+如果出现以下任何情况，立即停止所有交易：
 
-1. Daily loss > 20%
-2. 3 consecutive losing trades
-3. Portfolio down > 30% from ATH
-4. Unexpected error in execution
-5. Market-wide crash (ETH -20% in 24h)
+1. 日亏损超过 20%
+2. 连续 3 笔交易亏损
+3. 投资组合价值较最高点下跌超过 30%
+4. 执行过程中出现意外错误
+5. 整个市场崩溃（ETH 价格在 24 小时内下跌超过 20%）
 
-Wait 24 hours, reassess, then resume with smaller size.
+等待 24 小时后重新评估情况，然后以较小的资金规模重新开始交易。
 
-## Autonomous Trading Mode
+## 自动交易模式
 
-When running autonomously (via cron or heartbeat):
+当系统处于自动运行状态（通过 cron 或 heartbeat 脚本）时：
 
-### Morning Scan (9 AM)
-1. Check portfolio balance
-2. Review overnight price action on holdings
-3. Scan for new opportunities
-4. Set limit orders for the day
+### 早上扫描（9 点）
+1. 查看投资组合余额
+2. 回顾持仓的夜间价格走势
+3. 寻找新的交易机会
+4. 设置当天的限价单
 
-### Midday Check (1 PM)
-1. Monitor open positions
-2. Adjust trailing stops on winners
-3. Take profits if targets hit
-4. Log any executed trades
+### 中午检查（13 点）
+1. 监控未平仓的头寸
+2. 调整盈利头寸的止损点
+3. 如果达到获利目标，获利出局
+4. 记录所有已执行的交易
 
-### Evening Review (6 PM)
-1. Close day trades if any
-2. Calculate daily PnL
-3. Update performance.json
-4. Generate summary for user
+### 晚上回顾（18 点）
+1. 平仓当天的所有交易
+2. 计算当天的盈亏情况
+3. 更新 `performance.json` 文件
+4. 为用户生成交易总结
 
-### Execution Commands
+### 执行相关命令
 ```bash
 # Morning
 ~/clawd/skills/bankr/scripts/bankr.sh "Show my portfolio on Base"
@@ -246,25 +246,25 @@ When running autonomously (via cron or heartbeat):
 ~/clawd/skills/bankr/scripts/bankr.sh "Sell 25% of my TOKEN on Base"
 ```
 
-## References
+## 参考资料
 
-### Core Trading
-- [references/strategies.md](references/strategies.md) - Detailed strategy breakdowns
-- [references/token-analysis.md](references/token-analysis.md) - How to analyze tokens
-- [references/risk-management.md](references/risk-management.md) - Position sizing formulas
+### 基础交易知识
+- [references/strategies.md](references/strategies.md) - 详细的交易策略说明
+- [references/token-analysis.md](references/token-analysis.md) - 代币分析方法
+- [references/risk-management.md](references/risk-management.md) - 仓位调整公式
 
-### Market & Research
-- [references/market-analysis.md](references/market-analysis.md) - Reading market conditions
-- [references/market-research-bankr.md](references/market-research-bankr.md) - Bankr research commands
+### 市场与研究
+- [references/market-analysis.md](references/market-analysis.md) - 市场状况分析
+- [references/market-research-bankr.md](references/market-research-bankr.md) - Bankr 的市场研究相关命令
 
-### Execution
-- [references/execution.md](references/execution.md) - Order types and execution
-- [references/automation-strategies.md](references/automation-strategies.md) - Automated trading setups
-- [references/launch-sniping.md](references/launch-sniping.md) - New token launch guide
+### 交易执行
+- [references/execution.md](references/execution.md) - 订单类型与执行流程
+- [references/automation-strategies.md](references/automation-strategies.md) - 自动化交易设置
+- [references/launch-sniping.md](references/launch-sniping.md) - 新代币发行时的交易策略
 
-### Advanced
-- [references/leverage-guide.md](references/leverage-guide.md) - Leveraged trading (high risk)
+### 高级内容
+- [references/leverage-guide.md](references/leverage-guide.md) - 杠杆交易（高风险操作）
 
 ---
 
-*"The goal is not to make money on every trade. The goal is to be profitable over time."*
+*“目标不是每次交易都盈利，而是长期保持盈利。”*

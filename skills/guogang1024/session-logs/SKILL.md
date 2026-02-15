@@ -1,36 +1,36 @@
 ---
 name: session-logs
-description: Search and analyze your own session logs (older/parent conversations) using jq.
+description: 使用 `jq` 来搜索和分析您自己的会话日志（旧的/父级对话）。
 metadata: {"openclaw":{"emoji":"📜","requires":{"bins":["jq","rg"]}}}
 ---
 
-# session-logs
+# 会话日志
 
-Search your complete conversation history stored in session JSONL files. Use this when a user references older/parent conversations or asks what was said before.
+您可以搜索存储在会话 JSONL 文件中的完整对话历史记录。当用户提及之前的对话或询问之前说了什么内容时，可以使用此功能。
 
-## Trigger
+## 触发条件
 
-Use this skill when the user asks about prior chats, parent conversations, or historical context that isn’t in memory files.
+当用户询问之前的聊天记录、父对话或系统中未保存的历史上下文时，可以使用此功能。
 
-## Location
+## 存储位置
 
-Session logs live at: `~/.clawdbot/agents/<agentId>/sessions/` (use the `agent=<id>` value from the system prompt Runtime line).
+会话日志存储在以下路径：`~/.clawdbot/agents/<agentId>/sessions/`（请使用系统提示中的 `agent=<id>` 值）：
 
-- **`sessions.json`** - Index mapping session keys to session IDs
-- **`<session-id>.jsonl`** - Full conversation transcript per session
+- **`sessions.json`**：用于将会话键映射到会话 ID 的索引文件
+- **`<session-id>.jsonl`**：每个会话的完整对话记录
 
-## Structure
+## 文件结构
 
-Each `.jsonl` file contains messages with:
-- `type`: "session" (metadata) or "message"
-- `timestamp`: ISO timestamp
-- `message.role`: "user", "assistant", or "toolResult"
-- `message.content[]`: Text, thinking, or tool calls (filter `type=="text"` for human-readable content)
-- `message.usage.cost.total`: Cost per response
+每个 `.jsonl` 文件包含以下内容：
+- `type`：`session`（元数据）或 `message`
+- `timestamp`：ISO 时间戳
+- `message.role`：`user`（用户）、`assistant`（助手）或 `toolResult`（工具结果）
+- `message.content[]`：文本、思考过程或工具调用（使用 `type=="text"` 过滤器可获取人类可读的内容）
+- `message_usage.cost.total`：每次响应所消耗的成本
 
-## Common Queries
+## 常见查询操作
 
-### List all sessions by date and size
+### 按日期和文件大小列出所有会话
 ```bash
 for f in ~/.clawdbot/agents/<agentId>/sessions/*.jsonl; do
   date=$(head -1 "$f" | jq -r '.timestamp' | cut -dT -f1)
@@ -39,29 +39,29 @@ for f in ~/.clawdbot/agents/<agentId>/sessions/*.jsonl; do
 done | sort -r
 ```
 
-### Find sessions from a specific day
+### 查找特定日期的会话
 ```bash
 for f in ~/.clawdbot/agents/<agentId>/sessions/*.jsonl; do
   head -1 "$f" | jq -r '.timestamp' | grep -q "2026-01-06" && echo "$f"
 done
 ```
 
-### Extract user messages from a session
+### 从会话中提取用户消息
 ```bash
 jq -r 'select(.message.role == "user") | .message.content[]? | select(.type == "text") | .text' <session>.jsonl
 ```
 
-### Search for keyword in assistant responses
+### 在助手的回复中搜索关键词
 ```bash
 jq -r 'select(.message.role == "assistant") | .message.content[]? | select(.type == "text") | .text' <session>.jsonl | rg -i "keyword"
 ```
 
-### Get total cost for a session
+### 获取某个会话的总成本
 ```bash
 jq -s '[.[] | .message.usage.cost.total // 0] | add' <session>.jsonl
 ```
 
-### Daily cost summary
+### 日成本汇总
 ```bash
 for f in ~/.clawdbot/agents/<agentId>/sessions/*.jsonl; do
   date=$(head -1 "$f" | jq -r '.timestamp' | cut -dT -f1)
@@ -70,7 +70,7 @@ for f in ~/.clawdbot/agents/<agentId>/sessions/*.jsonl; do
 done | awk '{a[$1]+=$2} END {for(d in a) print d, "$"a[d]}' | sort -r
 ```
 
-### Count messages and tokens in a session
+### 统计会话中的消息数量和token数量
 ```bash
 jq -s '{
   messages: length,
@@ -81,25 +81,24 @@ jq -s '{
 }' <session>.jsonl
 ```
 
-### Tool usage breakdown
+### 分析工具的使用情况
 ```bash
 jq -r '.message.content[]? | select(.type == "toolCall") | .name' <session>.jsonl | sort | uniq -c | sort -rn
 ```
 
-### Search across ALL sessions for a phrase
+### 在所有会话中搜索某个短语
 ```bash
 rg -l "phrase" ~/.clawdbot/agents/<agentId>/sessions/*.jsonl
 ```
 
-## Tips
+## 使用提示
 
-- Sessions are append-only JSONL (one JSON object per line)
-- Large sessions can be several MB - use `head`/`tail` for sampling
-- The `sessions.json` index maps chat providers (discord, whatsapp, etc.) to session IDs
-- Deleted sessions have `.deleted.<timestamp>` suffix
+- 会话数据采用只允许追加的 JSONL 格式（每行一个 JSON 对象）
+- 大型会话文件可能占用数 MB 的存储空间，可以使用 `head`/`tail` 命令进行样本查看
+- `sessions.json` 索引文件将不同的聊天平台（如 Discord、WhatsApp 等）与对应的会话 ID 关联起来
+- 被删除的会话文件会带有 `.deleted.<timestamp>` 的后缀
 
-## Fast text-only hint (low noise)
-
+## 快速获取纯文本信息（低噪音提示）
 ```bash
 jq -r 'select(.type=="message") | .message.content[]? | select(.type=="text") | .text' ~/.clawdbot/agents/<agentId>/sessions/<id>.jsonl | rg 'keyword'
 ```

@@ -1,23 +1,23 @@
 ---
 name: elevenlabs-transcribe
-description: Transcribe audio to text using ElevenLabs Scribe. Supports batch transcription, realtime streaming from URLs, microphone input, and local files.
+description: 使用 ElevenLabs Scribe 将音频转录为文本。支持批量转录、从 URL 实时流式转录、麦克风输入以及本地文件转录。
 homepage: https://elevenlabs.io/speech-to-text
 metadata: {"clawdbot":{"emoji":"🎙️","requires":{"bins":["ffmpeg","python3"],"env":["ELEVENLABS_API_KEY"]},"primaryEnv":"ELEVENLABS_API_KEY"}}
 ---
 
-# ElevenLabs Speech-to-Text
+# ElevenLabs 语音转文本服务
 
-> **Official ElevenLabs skill for speech-to-text transcription.**
+> ** ElevenLabs官方提供的语音转文本功能。**
 
-Convert audio to text with state-of-the-art accuracy. Supports 90+ languages, speaker diarization, and realtime streaming.
+该服务能够以极高的准确率将音频转换为文本，支持90多种语言、语音识别功能以及实时流处理。
 
-## Prerequisites
+## 前提条件
 
-- **ffmpeg** installed (`brew install ffmpeg` on macOS)
-- **ELEVENLABS_API_KEY** environment variable set
-- Python 3.8+ (dependencies auto-install on first run)
+- 已安装`ffmpeg`（在macOS上使用`brew install ffmpeg`命令安装）
+- 确保`ELEVENLABS_API_KEY`环境变量已设置
+- 确保使用Python 3.8或更高版本（依赖项会在首次运行时自动安装）
 
-## Usage
+## 使用方法
 
 ```bash
 {baseDir}/scripts/transcribe.sh <audio_file> [options]
@@ -25,79 +25,79 @@ Convert audio to text with state-of-the-art accuracy. Supports 90+ languages, sp
 {baseDir}/scripts/transcribe.sh --mic [options]
 ```
 
-## Examples
+## 示例
 
-### Batch Transcription
+### 批量转录
 
-Transcribe a local audio file:
+转录本地音频文件：
 
 ```bash
 {baseDir}/scripts/transcribe.sh recording.mp3
 ```
 
-With speaker identification:
+### 带有语音识别的转录
 
 ```bash
 {baseDir}/scripts/transcribe.sh meeting.mp3 --diarize
 ```
 
-Get full JSON response with timestamps:
+### 获取包含时间戳的完整JSON响应
 
 ```bash
 {baseDir}/scripts/transcribe.sh interview.wav --diarize --json
 ```
 
-### Realtime Streaming
+### 实时流处理
 
-Stream from a URL (e.g., live radio, podcast):
+从URL（例如：直播电台、播客）获取音频流并进行转录：
 
 ```bash
 {baseDir}/scripts/transcribe.sh --url https://npr-ice.streamguys1.com/live.mp3
 ```
 
-Transcribe from microphone:
+### 通过麦克风进行转录
 
 ```bash
 {baseDir}/scripts/transcribe.sh --mic
 ```
 
-Stream a local file in realtime (useful for testing):
+### 实时转录本地文件（适用于测试）
 
 ```bash
 {baseDir}/scripts/transcribe.sh audio.mp3 --realtime
 ```
 
-### Quiet Mode for Agents
+### 为代理程序启用静音模式
 
-Suppress status messages on stderr:
+抑制标准错误输出中的状态信息：
 
 ```bash
 {baseDir}/scripts/transcribe.sh --mic --quiet
 ```
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--diarize` | Identify different speakers in the audio |
-| `--lang CODE` | ISO language hint (e.g., `en`, `pt`, `es`, `fr`) |
-| `--json` | Output full JSON with timestamps and metadata |
-| `--events` | Tag audio events (laughter, music, applause) |
-| `--realtime` | Stream local file instead of batch processing |
-| `--partials` | Show interim transcripts during realtime mode |
-| `-q, --quiet` | Suppress status messages (recommended for agents) |
+| `--diarize` | 识别音频中的不同说话者 |
+| `--lang CODE` | ISO语言代码（例如：`en`、`pt`、`es`、`fr`） |
+| `--json` | 输出包含时间戳和元数据的完整JSON格式 |
+| `--events` | 标记音频中的事件（如笑声、音乐、掌声等） |
+| `--realtime` | 实时处理音频流而非批量处理 |
+| `--partials` | 在实时模式下显示中间转录结果 |
+| `-q, --quiet` | 抑制状态信息（推荐用于代理程序） |
 
-## Output Format
+## 输出格式
 
-### Text Mode (default)
+### 文本模式（默认）
 
-Plain text transcription:
+纯文本格式的转录结果：
 
 ```
 The quick brown fox jumps over the lazy dog.
 ```
 
-### JSON Mode (`--json`)
+### JSON模式（使用`--json`选项）
 
 ```json
 {
@@ -110,9 +110,9 @@ The quick brown fox jumps over the lazy dog.
 }
 ```
 
-### Realtime Mode
+### 实时模式
 
-Final transcripts print as they're committed. With `--partials`:
+转录结果会在生成后立即输出。使用`--partials`选项时，会显示中间转录结果：
 
 ```
 [partial] The quick
@@ -120,28 +120,28 @@ Final transcripts print as they're committed. With `--partials`:
 The quick brown fox jumps over the lazy dog.
 ```
 
-## Supported Formats
+## 支持的文件格式
 
-**Audio:** MP3, WAV, M4A, FLAC, OGG, WebM, AAC, AIFF, Opus
-**Video:** MP4, AVI, MKV, MOV, WMV, FLV, WebM, MPEG, 3GPP
+**音频格式：** MP3、WAV、M4A、FLAC、OGG、WebM、AAC、AIFF、Opus
+**视频格式：** MP4、AVI、MKV、MOV、WMV、FLV、WebM、MPEG、3GPP
 
-**Limits:** Up to 3GB file size, 10 hours duration
+**限制：** 文件大小不超过3GB，音频时长不超过10小时
 
-## Error Handling
+## 错误处理
 
-The script exits with non-zero status on errors:
+遇到错误时，脚本会以非零状态码退出：
 
-- **Missing API key:** Set `ELEVENLABS_API_KEY` environment variable
-- **File not found:** Check the file path exists
-- **Missing ffmpeg:** Install with your package manager
-- **API errors:** Check API key validity and rate limits
+- **API密钥缺失：** 请设置`ELEVENLABS_API_KEY`环境变量
+- **文件未找到：** 请检查文件路径是否正确
+- **未安装ffmpeg：** 请使用包管理器安装该工具
+- **API错误：** 请检查API密钥的有效性及使用频率限制
 
-## When to Use Each Mode
+## 各种模式的适用场景
 
-| Scenario | Command |
+| 场景 | 命令示例 |
 |----------|---------|
-| Transcribe a recording | `./transcribe.sh file.mp3` |
-| Meeting with multiple speakers | `./transcribe.sh meeting.mp3 --diarize` |
-| Live radio/podcast stream | `./transcribe.sh --url <url>` |
-| Voice input from user | `./transcribe.sh --mic --quiet` |
-| Need word timestamps | `./transcribe.sh file.mp3 --json` |
+| 转录录音文件 | `./transcribe.sh file.mp3` |
+| 多人参与的会议录音 | `./transcribe.sh meeting.mp3 --diarize` |
+| 直播电台/播客流 | `./transcribe.sh --url <url>` |
+| 通过麦克风输入语音 | `./transcribe.sh --mic --quiet` |
+| 需要标注单词的时间戳 | `./transcribe.sh file.mp3 --json` |

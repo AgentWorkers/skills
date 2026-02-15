@@ -1,6 +1,6 @@
 ---
 name: mineru-pdf
-description: Parse PDF documents with MinerU MCP to extract text, tables, and formulas. Supports multiple backends including MLX-accelerated inference on Apple Silicon.
+description: 使用 MinerU MCP 解析 PDF 文档，以提取文本、表格和公式。支持多种后端，包括在 Apple Silicon 上使用 MLX 加速的推理功能。
 homepage: https://github.com/TINKPA/mcp-mineru
 metadata:
   {
@@ -21,38 +21,38 @@ metadata:
   }
 ---
 
-# MinerU PDF Parser
+# MinerU PDF解析器
 
-Parse PDF documents using MinerU MCP to extract structured content including text, tables, and formulas with MLX acceleration on Apple Silicon.
+使用MinerU MCP解析PDF文档，提取结构化内容（包括文本、表格和公式），并在Apple Silicon平台上利用MLX加速技术进行解析。
 
-## Installation
+## 安装
 
-### Option 1: Install MinerU MCP (for Claude Code)
+### 选项1：安装MinerU MCP（适用于Claude代码）
 
 ```bash
 claude mcp add --transport stdio --scope user mineru -- \
   uvx --from mcp-mineru python -m mcp_mineru.server
 ```
 
-This installs and configures MinerU for all Claude projects. Models are downloaded on first use.
+此选项会安装并配置MinerU，适用于所有Claude项目。模型会在首次使用时自动下载。
 
-### Option 2: Use Direct Tool (preserves files)
+### 选项2：使用直接工具（保留文件）
 
-The skill includes a direct parsing tool that saves output to a persistent directory:
+该工具会直接解析PDF文档，并将结果保存到指定的持久化目录中：
 
 ```bash
 python /Users/lwj04/clawd/skills/mineru-pdf/parse.py <pdf_path> <output_dir> [options]
 ```
 
-**Advantages:**
-- ✅ Files are saved permanently (not auto-deleted)
-- ✅ Full control over output location
-- ✅ No MCP overhead
-- ✅ Works with any Python environment that has MinerU
+**优点：**
+- ✅ 文件会被永久保存（不会自动删除）
+- ✅ 可完全控制输出文件的保存位置
+- ✅ 无需承担MCP的开销
+- ✅ 适用于任何安装了MinerU的Python环境
 
-## Quick Start
+## 快速入门
 
-### Method 1: Using the Direct Tool (Recommended)
+### 方法1：使用直接工具（推荐）
 
 ```bash
 # Parse entire PDF
@@ -79,9 +79,9 @@ python /Users/lwj04/clawd/skills/mineru-pdf/parse.py \
   --no-table --no-formula
 ```
 
-### Method 2: Using MinerU MCP (Temporary Files)
+### 方法2：使用MinerU MCP（生成临时文件）
 
-### Parse a PDF document
+### 解析PDF文档
 
 ```bash
 uvx --from mcp-mineru python -c "
@@ -110,7 +110,7 @@ asyncio.run(parse_pdf())
 "
 ```
 
-### Check system capabilities
+### 检查系统兼容性
 
 ```bash
 uvx --from mcp-mineru python -c "
@@ -132,30 +132,30 @@ asyncio.run(list_backends())
 "
 ```
 
-## Parameters
+## 参数
 
 ### parse_pdf
 
-**Required:**
-- `file_path` - Absolute path to the PDF file
+**必填参数：**
+- `file_path` - PDF文件的绝对路径
 
-**Optional:**
-- `backend` - Processing backend (default: `pipeline`)
-  - `pipeline` - Fast, general-purpose (recommended)
-  - `vlm-mlx-engine` - Fastest on Apple Silicon (M1/M2/M3/M4)
-  - `vlm-transformers` - Slowest but most accurate
-- `formula_enable` - Enable formula recognition (default: `true`)
-- `table_enable` - Enable table recognition (default: `true`)
-- `start_page` - Starting page (0-indexed, default: `0`)
-- `end_page` - Ending page (default: `-1` for all pages)
+**可选参数：**
+- `backend` - 处理后端（默认值：`pipeline`）
+  - `pipeline` - 快速、通用型后端（推荐）
+  - `vlm-mlx-engine` - 在Apple Silicon（M1/M2/M3/M4）平台上性能最佳
+  - `vlm-transformers` - 效率较低但识别精度最高
+- `formula_enable` - 是否启用公式识别（默认值：`true`）
+- `table_enable` - 是否启用表格识别（默认值：`true`）
+- `start_page` - 开始页码（从0开始计数，默认值：`0`）
+- `end_page` - 结束页码（默认值：`-1`，表示解析所有页面）
 
 ### list_backends
 
-No parameters required. Returns system information and backend recommendations.
+无需参数。此函数会返回系统信息及后端推荐方案。
 
-## Usage Examples
+## 使用示例
 
-### Extract tables from a specific page range
+### 从指定页码范围提取表格
 
 ```bash
 uvx --from mcp-mineru python -c "
@@ -183,7 +183,7 @@ asyncio.run(parse_pdf())
 "
 ```
 
-### Parse with formula recognition only (faster)
+### 仅解析公式（速度更快）
 
 ```bash
 uvx --from mcp-mineru python -c "
@@ -210,7 +210,7 @@ asyncio.run(parse_pdf())
 "
 ```
 
-### Parse single page (fastest for testing)
+### 解析单页内容（测试用，速度最快）
 
 ```bash
 uvx --from mcp-mineru python -c "
@@ -239,68 +239,68 @@ asyncio.run(parse_pdf())
 "
 ```
 
-## Performance
+## 性能
 
-On Apple Silicon M4 (16GB RAM):
-- `pipeline`: ~32s/page, CPU-only, good quality
-- `vlm-mlx-engine`: ~38s/page, Apple Silicon optimized, excellent quality
-- `vlm-transformers`: ~148s/page, highest quality, slowest
+在Apple Silicon M4（16GB RAM）平台上：
+- `pipeline`：每页约32秒，仅使用CPU，解析质量良好
+- `vlm-mlx-engine`：每页约38秒，针对Apple Silicon进行了优化，解析质量优秀
+- `vlm-transformers`：每页约148秒，解析质量最高，但速度最慢
 
-**Note:** First run downloads models (can take 5-10 minutes). Models are cached in `~/.cache/uv/` for faster subsequent runs.
+**注意：** 首次运行时需要下载模型（可能需要5-10分钟）。模型会缓存到`~/.cache/uv/`目录中，以加快后续解析速度。
 
-## Output Format
+## 输出格式
 
-Returns structured Markdown with:
-- Document metadata (file, backend, pages, settings)
-- Extracted text with preserved structure
-- Tables formatted as Markdown tables
-- Formulas converted to LaTeX
+解析结果将以Markdown格式返回，包含以下内容：
+- 文档元数据（文件路径、使用的后端、页码、配置信息）
+- 保留结构的提取文本
+- 格式化为Markdown的表格
+- 转换为LaTeX的数学公式
 
-## Supported Formats
+## 支持的文件格式
 
-- PDF documents (`.pdf`)
-- JPEG images (`.jpg`, `.jpeg`)
-- PNG images (`.png`)
-- Other image formats (WebP, GIF, etc.)
+- PDF文档（`.pdf`）
+- JPEG图像（`.jpg`, `.jpeg`）
+- PNG图像（`.png`）
+- 其他图像格式（WebP、GIF等）
 
-## Troubleshooting
+## 故障排除
 
-### Module not found error
+### 报错“找不到'mcp_mineru'模块”
 
-If you get "No module named 'mcp_mineru'", make sure you installed it:
+如果出现“找不到'mcp_mineru'模块”的错误，请确保已正确安装该模块：
 
 ```bash
 claude mcp add --transport stdio --scope user mineru -- \
   uvx --from mcp-mineru python -m mcp_mineru.server
 ```
 
-### Slow processing on first run
+### 首次运行时处理速度较慢
 
-This is normal. MinerU downloads ML models on first use. Subsequent runs will be much faster.
+这是正常现象，因为MinerU会在首次使用时下载模型。后续运行速度会显著提升。
 
-### Timeout errors
+### 超时错误
 
-Increase timeout for large documents or use smaller page ranges for testing.
+对于大型文件或需要解析大量页面的情况，可以增加超时时间；或者尝试缩小解析范围。
 
-## Notes
+## 注意事项
 
-- Output is returned as Markdown text
-- Tables are preserved in Markdown format
-- Mathematical formulas are converted to LaTeX
-- Works with scanned documents (OCR built-in)
-- Optimized for Apple Silicon (M1/M2/M3/M4) with MLX backend
+- 输出结果为Markdown格式
+- 表格会以Markdown格式保存
+- 数学公式会转换为LaTeX格式
+- 支持扫描文档（内置OCR功能）
+- 专为Apple Silicon（M1/M2/M3/M4）平台及MLX后端进行了优化
 
-## File Persistence
+## 文件持久化
 
-### Why Files Get Deleted (MCP Method)
+### 文件为何会被删除（MCP方法）
 
-The MinerU MCP server uses Python's `tempfile.TemporaryDirectory()`, which automatically deletes files when the context exits. This is by design to prevent temporary files from accumulating.
+MinerU MCP使用Python的`tempfile.TemporaryDirectory()`函数来管理临时文件，该函数会在程序退出时自动删除临时文件。这是为了防止文件积累。
 
-### How to Preserve Files
+### 如何保留文件
 
-**Method A: Use the Direct Tool (Recommended)**
+**方法A：使用直接工具（推荐）**
 
-The skill provides `parse.py` which saves files to a persistent directory:
+该工具提供了`parse.py`脚本，可将解析结果保存到持久化目录中：
 
 ```bash
 python /Users/lwj04/clawd/skills/mineru-pdf/parse.py \
@@ -308,13 +308,13 @@ python /Users/lwj04/clawd/skills/mineru-pdf/parse.py \
   /path/to/output_dir
 ```
 
-**Advantages:**
-- ✅ Files are never auto-deleted
-- ✅ Full control over output location
-- ✅ Can be used in batch processing
-- ✅ No MCP connection needed
+**优点：**
+- ✅ 文件不会被自动删除
+- ✅ 可完全控制输出文件的保存位置
+- 支持批量处理
+- 无需依赖MCP服务
 
-**Generated Structure:**
+**生成的文件结构：**
 ```
 /path/to/output_dir/
 ├── input.pdf_name/
@@ -325,9 +325,9 @@ python /Users/lwj04/clawd/skills/mineru-pdf/parse.py \
 └── input.pdf_name_parsed.md  # Copy at root for easy access
 ```
 
-**Method B: Redirect MCP Output**
+**方法B：捕获MCP的输出结果**
 
-If using the MCP method, capture the output and save it:
+如果使用MCP方法，可以手动捕获输出结果并保存：
 
 ```bash
 # Capture to file
@@ -336,17 +336,17 @@ claude -p "Parse this PDF: /path/to/file.pdf" > /tmp/output.md
 # Or use within a script that saves the result
 ```
 
-### Comparison
+### 对比
 
-| Feature | Direct Tool | MCP Method |
-|----------|-------------|-------------|
-| Files persisted | ✅ Yes | ❌ No (auto-deleted) |
-| Custom output dir | ✅ Yes | ❌ No (temp only) |
-| Claude Code integration | ⚠️ Manual | ✅ Native |
-| Speed | ✅ Fast | ⚠️ MCP overhead |
-| Offline use | ✅ Yes | ⚠️ Needs Claude Code |
+| 功能        | 直接工具         | MCP方法       |
+|------------|--------------|-------------|
+| 文件是否持久化   | ✅             | ❌（文件会被自动删除）   |
+| 是否可自定义输出目录 | ✅             | ❌（仅使用临时文件）     |
+| 与Claude代码的集成 | ⚠️ 需手动配置     | ✅（原生集成）     |
+| 处理速度     | ✅             | ⚠️ 有MCP开销     |
+| 是否支持离线使用 | ✅             | ⚠️ 需依赖Claude代码   |
 
-### Recommendation
+### 推荐方案
 
-- **Use Direct Tool** when you need to keep the files for later use
-- **Use MCP Method** when working within Claude Code and only need the text content
+- **建议使用直接工具**，尤其是需要保留解析结果的情况下
+- **建议使用MCP方法**，仅在Claude代码环境中且仅需要文本内容时使用

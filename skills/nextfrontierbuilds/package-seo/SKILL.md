@@ -1,27 +1,27 @@
-# Package SEO Skill
+# SEO技能包
 
-> SEO best practices for npm packages, GitHub repos, and AI agent skills. Maximize discoverability.
+> 本文档提供了针对npm包、GitHub仓库以及AI代理技能的SEO最佳实践，旨在提升这些内容的可发现性（即被用户或搜索引擎找到的概率）。
 
-**Author:** Next Frontier  
-**Version:** 1.0.0  
-**Tags:** seo, npm, github, publishing, marketing, discoverability, packages
-
----
-
-## When to Use
-
-Use this skill when:
-- Publishing a new npm package
-- Creating a GitHub repo
-- Submitting a skill to ClawdHub
-- Updating descriptions/READMEs for better discoverability
-- Auditing existing packages for SEO improvements
+**作者:** Next Frontier  
+**版本:** 1.0.0  
+**标签:** seo, npm, github, publishing, marketing, discoverability, packages
 
 ---
 
-## Hot Keywords (2026)
+## 使用场景
 
-Always include relevant terms from this list:
+以下情况下可使用本文档：
+- 发布新的npm包  
+- 创建GitHub仓库  
+- 将技能提交至ClawdHub  
+- 更新包的描述文件（README.md）以提高可发现性  
+- 审查现有包的SEO优化情况  
+
+---
+
+## 热门关键词（2026年）
+
+在文档中务必包含以下关键词：
 
 ```
 AI, automation, vibe coding, cursor, claude, gpt, copilot, agent,
@@ -30,11 +30,11 @@ python, react, nextjs, api, sdk, tool, framework, openai, anthropic,
 coding agent, ai assistant, developer tools, productivity
 ```
 
-**Pro tip:** Check X/Twitter trending in tech before publishing for fresh terms.
+**专业提示：** 在发布前，可查看X/Twitter上的科技领域热门趋势，以获取最新的关键词。  
 
 ---
 
-## npm Packages
+## npm包
 
 ### package.json
 
@@ -71,13 +71,13 @@ coding agent, ai assistant, developer tools, productivity
 }
 ```
 
-**Rules:**
-- 10-15 keywords minimum
-- Description under 200 chars but keyword-rich
-- Include repository, homepage, bugs URLs
-- Name should be searchable (avoid obscure names)
+**规则：**
+- 至少包含10-15个关键词  
+- 描述字段长度不超过200个字符，但应包含丰富的关键词  
+- 必须提供仓库地址、主页链接以及Bug报告的链接  
+- 包名应具有可搜索性（避免使用晦涩难懂的名称）  
 
-### README.md Structure
+### README.md结构
 
 ```markdown
 # package-name
@@ -123,26 +123,26 @@ npm install package-name
 MIT
 ```
 
-**Key elements:**
-- Badges at very top
-- Hero tagline with keywords
-- "Works With" section (shows compatibility)
-- Install command above fold
-- Quick start code example
-- Feature list with checkmarks
+**关键元素：**
+- 文档顶部应放置徽章  
+- 使用包含关键词的标题或标语  
+- “兼容性”部分（展示该技能与其他工具的兼容性）  
+- 安装命令需置于文档显眼位置  
+- 提供快速入门示例代码  
+- 列出功能，并使用复选标记进行标注  
 
 ---
 
-## GitHub Repos
+## GitHub仓库
 
-### Description (Under 350 chars)
+### 描述（不超过350个字符）
 
-Format:
+格式要求：
 ```
 [What it does]. [Key benefit]. [Compatibility]. [Call to action].
 ```
 
-Examples:
+示例：
 ```
 AI-powered PDF generator for legal docs and pitch decks. Creates SAFEs, NDAs, term sheets from prompts. Works with Claude, Cursor, GPT. No templates needed.
 
@@ -151,24 +151,24 @@ Real-time financial data API for AI agents. Stocks, crypto, forex, ETFs in one u
 Automated QA for web apps using AI. Smoke tests, accessibility, visual regression. Drop-in CI/CD testing. Works with Playwright.
 ```
 
-### Topics (GitHub Tags)
+### 主题标签（GitHub标签）
 
-Add 10-20 relevant topics:
+添加10-20个相关主题标签：
 ```
 ai, automation, claude, gpt, cursor, typescript, cli, devtools, 
 agent, testing, api, sdk, mcp, langchain, openai, anthropic,
 developer-tools, productivity, automation-tools
 ```
 
-### README
+### README.md
 
-Same as npm README — keep them identical!
+README.md的内容应与npm包的README.md保持一致！  
 
 ---
 
-## ClawdHub Skills
+## ClawdHub技能
 
-### SKILL.md Description
+### SKILL.md描述
 
 ```markdown
 # Skill Name
@@ -180,50 +180,47 @@ Same as npm README — keep them identical!
 **Tags:** tag1, tag2, tag3, ai, agent, automation
 ```
 
-### Tags
+### 标签
 
-Include 5-10 tags:
+请为该技能添加5-10个合适的标签：
 ```
 ai, agent, automation, claude, cursor, mcp, cli, [domain-specific tags]
 ```
 
 ---
 
-## Sync Checklist
+## 同步检查清单
 
-**All three must match:**
-
-| Field | npm | GitHub | ClawdHub |
+以下三个部分的描述必须保持一致：
+| 字段 | npm | GitHub | ClawdHub |
 |-------|-----|--------|----------|
-| Name | package.json `name` | Repo name | Skill folder name |
-| Description | package.json `description` | Repo description | SKILL.md description |
-| Keywords | package.json `keywords` | Topics | Tags |
-| README | README.md | README.md | SKILL.md |
+| 名称 | package.json中的`name`字段 | GitHub仓库名称 | SKILL.md文件名称 |
+| 描述 | package.json中的`description`字段 | GitHub仓库的描述 | SKILL.md文件中的描述 |
+| 关键词 | package.json中的`keywords`字段 | GitHub仓库的主题标签 | SKILL.md文件中的标签 |
+| README.md | GitHub仓库的README.md文件 | SKILL.md文件中的README.md内容 |
 
 ---
 
-## Publishing Checklist
+## 发布前的检查清单
 
-Before every publish:
-
-- [ ] Name is descriptive + searchable
-- [ ] Description has value prop + 3-5 keywords
-- [ ] 10-15 keywords in package.json
-- [ ] README has badges (version, downloads, license)
-- [ ] README has "Works With" section
-- [ ] README has install command above fold
-- [ ] README has quick start code example
-- [ ] GitHub topics added (10-20)
-- [ ] GitHub description matches npm
-- [ ] Checked X/Twitter trending for fresh terms
-- [ ] All descriptions synced across platforms
+每次发布前，请确保以下内容无误：
+- 包名具有描述性且可搜索  
+- 描述字段包含有价值的信息及3-5个关键词  
+- package.json中包含10-15个关键词  
+- README.md中包含徽章（版本信息、下载量、许可证信息）  
+- README.md中包含“兼容性”部分  
+- 安装命令位于文档显眼位置  
+- README.md中提供快速入门示例代码  
+- GitHub仓库中添加了10-20个相关主题标签  
+- GitHub仓库的描述与package.json中的信息一致  
+- 查看X/Twitter上的科技领域热门趋势，以获取最新的关键词  
+- 所有平台的描述内容保持同步  
 
 ---
 
-## Badge Generator
+## 徽章生成工具
 
-Use shields.io:
-
+可以使用shields.io来生成徽章：
 ```markdown
 [![npm version](https://img.shields.io/npm/v/PACKAGE.svg)](https://npmjs.com/package/PACKAGE)
 [![npm downloads](https://img.shields.io/npm/dm/PACKAGE.svg)](https://npmjs.com/package/PACKAGE)
@@ -233,43 +230,40 @@ Use shields.io:
 
 ---
 
-## Anti-Patterns (Avoid)
-
-❌ Obscure/clever names that aren't searchable  
-❌ Descriptions without keywords  
-❌ Empty or minimal keywords array  
-❌ README without badges  
-❌ No "Works With" section  
-❌ Mismatched npm/GitHub/ClawdHub descriptions  
-❌ No quick start example  
-❌ Walls of text before install command  
+## 应避免的错误做法：
+❌ 使用晦涩难懂或难以搜索的名称  
+❌ 描述中不包含关键词  
+❌ 关键词数组为空或过于简略  
+❌ README.md中未添加徽章  
+❌ 未设置“兼容性”部分  
+❌ npm、GitHub和ClawdHub上的描述信息不一致  
+❌ 未提供快速入门示例代码  
+❌ 安装命令前的内容过于冗长  
 
 ---
 
-## Examples (Good)
-
-**ai-pdf-builder:**
+## 示例（优秀实践）  
+**ai-pdf-builder**  
 ```
 AI-powered PDF generator for legal docs, pitch decks, and reports. 
 Creates SAFEs, NDAs, term sheets, whitepapers from prompts. 
 Works with Claude, GPT, Cursor, and AI coding agents. YC-style docs in seconds.
-```
-
-**web-qa-bot:**
+```  
+**web-qa-bot**  
 ```
 Automated QA for web apps using AI. Smoke tests, accessibility checks, 
 visual regression. Drop-in replacement for manual QA. 
 Works with Playwright, Cursor, Claude. QA without the QA team.
-```
+```  
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Element | Target |
-|---------|--------|
-| Keywords | 10-15 |
-| Description | 100-200 chars |
-| Topics | 10-20 |
-| Badges | 3-5 |
-| README sections | 5-7 |
+| 元素        | 要求              |
+|-------------|-----------------|
+| 关键词        | 10-15个             |
+| 描述        | 100-200个字符          |
+| 主题标签      | 10-20个             |
+| 徽章数量      | 3-5个              |
+| README部分数量 | 5-7个              |

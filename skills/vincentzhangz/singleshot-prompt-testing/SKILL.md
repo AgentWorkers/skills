@@ -1,29 +1,23 @@
 # Singleshot Prompt Testing & Optimization Skill
 
-## Description
+## 描述  
+使用单次请求（single shot）进行提示（prompt）成本测试的功能。
 
-Prompt cost testing with single shot
-
-## Installation
-
+## 安装  
 ```bash
 brew tap vincentzhangz/singleshot
 brew install singleshot
-```
+```  
+或者：`cargo install singleshot`
 
-Or: `cargo install singleshot`
+## 使用场景  
+- 在实现 OpenClaw 之前测试新的提示方案  
+- 对不同提示方案进行性能和成本基准测试  
+- 比较模型性能与提示成本  
+- 在正式生产前验证提示输出的正确性  
 
-## When to Use
-
-- Testing new prompts before openclaw implementation
-- Benchmarking prompt variations for token efficiency
-- Comparing model performance and costs
-- Validating prompt outputs before production
-
-## Core Commands
-
-**Always use `-d` (detail) and `-r` (report) flags for efficiency analysis:**
-
+## 核心命令  
+**为提高分析效率，请务必使用 `-d`（详细输出）和 `-r`（生成报告）标志：**  
 ```bash
 # Basic test with full metrics
 singleshot chat -p "Your prompt" -P openai -d -r report.md
@@ -39,17 +33,15 @@ singleshot chat -p "Test" -P anthropic -m claude-sonnet-4-20250514 -d -r anthrop
 for config in *.md; do
   singleshot chat -l "$config" -d -r "report-${config%.md}.md"
 done
-```
+```  
 
-## Report Analysis Workflow
-
-### 1. Generate Baseline
+## 报告分析流程  
+### 1. 生成基准数据  
 ```bash
 singleshot chat -p "Your prompt" -P openai -d -r baseline.md
 cat baseline.md
-```
-
-### 2. Optimize & Compare
+```  
+### 2. 优化并比较结果  
 ```bash
 # Create optimized version, test, and compare
 cat > optimized.md << 'EOF'
@@ -70,11 +62,10 @@ singleshot chat -l optimized.md -d -r optimized-report.md
 # Compare metrics
 echo "Baseline:" && grep -E "(Tokens|Cost)" baseline.md
 echo "Optimized:" && grep -E "(Tokens|Cost)" optimized-report.md
-```
+```  
 
-## Report Metrics
-
-Reports contain:
+## 报告内容  
+报告包含以下信息：  
 ```markdown
 ## Token Usage
 - Input Tokens: 245
@@ -89,27 +80,23 @@ Reports contain:
 ## Timing
 - Time to First Token: 0.45s
 - Total Time: 1.23s
-```
+```  
 
-## Optimization Strategies
-
-1. **Test with cheaper models first:**
+## 优化策略  
+1. **先使用成本较低的模型进行测试：**  
    ```bash
    singleshot chat -p "Test" -P openai -m gpt-4o-mini -d -r report.md
-   ```
-
-2. **Reduce tokens:**
-   - Shorten system prompts
-   - Use `--max-tokens` to limit output
-   - Add "be concise" to system prompt
-
-3. **Test locally (free):**
+   ```  
+2. **减少生成的语料（tokens）：**  
+   - 缩短系统生成的提示内容  
+   - 使用 `--max-tokens` 参数限制输出长度  
+   - 在系统提示中添加“简洁”等要求  
+3. **在本地进行测试（免费）：**  
    ```bash
    singleshot chat -p "Test" -P ollama -m llama3.2 -d -r report.md
-   ```
+   ```  
 
-## Example: Full Optimization
-
+## 示例：完整优化流程  
 ```bash
 # Step 1: Baseline (verbose)
 singleshot chat \
@@ -131,10 +118,9 @@ singleshot chat \
 echo "=== COMPARISON ==="
 grep "Total Cost" v1.md v2.md
 grep "Total Tokens" v1.md v2.md
-```
+```  
 
-## Quick Reference
-
+## 快速参考  
 ```bash
 # Test with full details
 singleshot chat -p "prompt" -P openai -d -r report.md
@@ -153,28 +139,25 @@ singleshot models -P openai
 
 # Test connection
 singleshot ping -P openai
-```
+```  
 
-## Environment Variables
-
+## 环境变量  
 ```bash
 export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-..."
 export OPENROUTER_API_KEY="sk-or-..."
-```
+```  
 
-## Best Practices
+## 最佳实践  
+1. **务必使用 `-d` 选项以获取详细的成本统计信息**  
+2. **务必使用 `-r` 选项生成报告文件**  
+3. **使用 `cat` 命令查看报告内容以进行分析**  
+4. **测试不同方案并比较其成本**  
+5. **通过设置 `--max-tokens` 来控制生成的语料数量**  
+6. **优先使用 gpt-4o-mini 进行测试（成本更低）**  
 
-1. **Always use `-d`** for detailed token metrics
-2. **Always use `-r`** to save reports
-3. **Always `cat` reports** to analyze metrics
-4. **Test variations** and compare costs
-5. **Set `--max-tokens`** to control costs
-6. **Use gpt-4o-mini** for testing (cheaper)
-
-## Troubleshooting
-
-- **No metrics**: Ensure `-d` flag is used
-- **No report file**: Ensure `-r` flag is used
-- **High costs**: Switch to gpt-4o-mini or Ollama
-- **Connection issues**: Run `singleshot ping -P <provider>`
+## 故障排除  
+- **未生成报告？**：确认是否使用了 `-d` 和 `-r` 选项  
+- **报告文件缺失？**：确认是否使用了 `-r` 选项  
+- **成本过高？**：尝试切换到 gpt-4o-mini 或 Ollama  
+- **连接问题？**：运行 `singleshot ping -P <provider>` 命令检查连接状态

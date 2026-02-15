@@ -1,6 +1,6 @@
 ---
 name: social-lead-gen
-description: "Lead generation from social media — find high-intent buyers in live Twitter, Instagram, and Reddit conversations. Auto-researches your product, generates targeted search queries, and discovers people actively looking for solutions you offer. Social selling and prospecting powered by 1.5B+ indexed posts."
+description: "**通过社交媒体获取潜在客户：** 在实时的 Twitter、Instagram 和 Reddit 对话中寻找有明确购买意向的用户。系统会自动研究您的产品，生成针对性的搜索查询，并识别出那些正在积极寻找您所提供的解决方案的用户。这种社交销售和潜在客户挖掘功能基于超过 15 亿条已索引的帖子来实现。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -38,28 +38,28 @@ tags:
   - discovery
 ---
 
-# Social Lead Gen
+# 社交媒体潜在客户开发
 
-**Find people who need your product — from what they're actually saying on social media.**
+**从社交媒体上用户实际发表的内容中找到需要您产品的人。**
 
-Unlike traditional lead gen tools that search company databases, this skill finds **high-intent leads from live conversations**. It discovers people actively expressing the problems your product solves across Twitter, Instagram, and Reddit — powered by 1.5B+ indexed posts via Xpoz MCP.
+与传统的潜在客户开发工具不同，该技能是从实时对话中挖掘出具有高意向的潜在客户。它能够发现那些在 Twitter、Instagram 和 Reddit 上积极表达自己产品所解决问题的用户——这一切都依赖于 Xpoz MCP 提供的超过 15 亿条索引帖子。
 
 ---
 
-## ⚡ Prerequisites
+## ⚡ 先决条件
 
-1. **Xpoz MCP** must be configured and authenticated. Follow the [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) skill.
-2. **Web search and web fetch** tools must be available (included with OpenClaw).
+1. **必须配置并验证 Xpoz MCP**。请按照 [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) 的步骤进行设置。
+2. 必须具备 **网络搜索和数据获取** 工具（OpenClaw 中已包含）。
 
-Verify Xpoz is ready:
+验证 Xpoz 是否已准备好：
 ```bash
 mcporter call xpoz.checkAccessKeyStatus
 ```
-If not `hasAccessKey: true`, follow xpoz-setup first, then return here.
+如果 `hasAccessKey: false`，请先执行 xpoz-setup，然后再回到这里。
 
 ---
 
-## How It Works
+## 工作原理
 
 ```
 ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
@@ -76,40 +76,39 @@ If not `hasAccessKey: true`, follow xpoz-setup first, then return here.
 
 ---
 
-## Phase 1: Product Research (One-Time Setup)
+## 第一阶段：产品研究（一次性设置）
 
-**This phase builds deep context about the user's product. Run it once; the results are stored and reused.**
+**此阶段会深入了解用户的产品信息。只需运行一次，结果会被保存并重复使用。**
 
-### Step 1: Ask the user for a reference
+### 第一步：向用户索取参考信息
 
-Ask the user:
+询问用户：
+> “您希望为哪种产品或服务寻找潜在客户？请提供一个参考信息——网站链接、GitHub 仓库链接、产品描述，或者任何能说明您所提供服务的信息。”
 
-> "What product or service do you want to find leads for? Give me a reference — a website URL, GitHub repo, product description, or anything that describes what you offer."
+用户可能会提供：
+- 网站链接（例如：`https://example.com`）
+- GitHub 仓库链接（例如：`https://github.com/org/repo`）
+- 产品名称及描述
+- 多个参考信息
 
-The user may provide:
-- A website URL (e.g., `https://example.com`)
-- A GitHub repo (e.g., `https://github.com/org/repo`)
-- A product name + description
-- Multiple references
+### 第二步：深入研究
 
-### Step 2: Deep research
+对于每个提供的参考信息，尽可能收集更多相关信息：
 
-For each reference provided, gather as much context as possible:
+**对于网站：**
+- 使用 `web_fetch` 获取首页、价格页面、关于页面和文档
+- 使用 `web_search` 查找评论、提及、对比内容和媒体报道
 
-**For websites:**
-- Use `web_fetch` to read the homepage, pricing page, about page, docs
-- Use `web_search` to find reviews, mentions, comparisons, press coverage
+**对于 GitHub 仓库：**
+- 使用 `web_fetch` 阅读 README 文件
+- 查看星标数量、描述和讨论主题
+- 使用 `web_search` 查找相关讨论和博客文章
 
-**For GitHub repos:**
-- Use `web_fetch` to read the README
-- Check stars, description, topics
-- Use `web_search` for mentions, discussions, blog posts about it
+**对于产品名称：**
+- 使用 `web_search` 查找产品官网、评论和替代产品
+- 然后获取并分析这些信息
 
-**For product names:**
-- Use `web_search` to find the product website, reviews, alternatives
-- Then fetch and analyze the results
-
-**Extract and organize:**
+**提取并整理数据：**
 
 ```json
 {
@@ -163,89 +162,86 @@ For each reference provided, gather as much context as possible:
 }
 ```
 
-### Step 3: Validate with the user
+### 第三步：与用户确认信息
 
-Present your findings in a clear summary:
-
-> "Here's what I learned about your product:
+以清晰的总结形式向用户展示您的发现：
+> “关于您的产品，我了解到以下信息：
 >
-> **[Product Name]** — [tagline]
+> **[产品名称]** — [产品口号]
 >
-> **What it does:** [description]
+> **产品功能：** [产品描述]
 >
-> **Target audience:** [segments]
+> **目标受众：** [目标用户群体]
 >
-> **Pain points you solve:**
-> - [pain point 1]
-> - [pain point 2]
+> **您解决的问题：**
+> - [问题 1]
+> - [问题 2]
 >
-> **Competitors:** [list]
+> **竞争对手：** [竞争对手列表]
 >
-> **Key differentiators:** [list]
+> **主要优势：** [产品优势列表]
 >
-> Does this look right? Anything I should add or correct?"
+> 这些信息准确吗？还有需要补充或修改的地方吗？”
 
-**WAIT for the user to confirm or correct.** Do not proceed until they approve.
+**等待用户确认或修改。** 在得到他们的同意之前不要继续下一步。
 
-If the user corrects something, update the profile and re-validate.
+如果用户有修改，请更新用户资料并重新验证。
 
-### Step 4: Generate search queries
+### 第四步：生成搜索查询
 
-Based on the validated profile, generate targeted search queries for each platform:
+根据验证后的用户资料，为每个平台生成针对性的搜索查询：
 
-**Query categories:**
-1. **Pain point queries** — People expressing the problems the product solves
-2. **Competitor frustration queries** — People complaining about competitors
-3. **Tool/solution seeking queries** — People actively looking for what the product offers
-4. **Industry discussion queries** — People in the target audience discussing relevant topics
+**查询类别：**
+1. **问题相关查询** — 表达出产品所解决问题的用户
+2. **对竞争对手不满的查询** — 抱怨竞争对手的用户
+3. **寻找工具/解决方案的查询** — 积极寻找产品信息的用户
+4. **行业相关讨论的查询** — 目标受众正在讨论的相关话题
 
-**For each query, specify:**
-- Platform (Twitter, Instagram, Reddit)
-- Query string (using boolean operators)
-- Target subreddits (for Reddit)
-- Minimum engagement thresholds
-- Lookback period
+**对于每个查询，需要指定：**
+- 平台（Twitter、Instagram、Reddit）
+- 查询字符串（使用布尔运算符）
+- 目标子版块（针对 Reddit）
+- 最低参与度阈值
+- 数据检索时间范围
 
-Generate 4-6 queries per platform (12-18 total).
+每个平台生成 4-6 条查询（总共 12-18 条）。
 
-### Step 5: Store the profile
+### 第五步：保存用户资料
 
-Save the validated profile and generated queries:
-
+保存验证后的用户资料和生成的查询：
 ```bash
 mkdir -p data/social-lead-gen
 # Save product-profile.json and search-queries.json
 ```
 
-Present the generated queries to the user:
-
-> "I've generated [N] search queries across Twitter, Instagram, and Reddit. Here are a few examples:
+向用户展示生成的查询：
+> “我已经为 Twitter、Instagram 和 Reddit 生成了 [N] 条搜索查询。以下是一些示例：
 >
-> **Twitter (pain points):** `"[query example]"`
-> **Reddit (tool seeking):** `"[query example]"` in r/[subreddit]
+> **Twitter（问题相关查询）：** `"[查询示例]"`
+> **Reddit（寻找工具的查询）：** `"[查询示例]"` 在 r/[子版块]`
 >
-> Ready to search for leads?"
+> 准备开始寻找潜在客户了吗？**
 
 ---
 
-## Phase 2: Lead Discovery (Repeatable)
+## 第二阶段：潜在客户发现（可重复执行）
 
-**Run this phase whenever you want fresh leads. Uses the stored profile and queries.**
+**每当需要新的潜在客户时，都可以运行此阶段。** 它会使用之前保存的用户资料和查询。
 
-### Step 1: Load profile
+### 第一步：加载用户资料
 
 ```bash
 cat data/social-lead-gen/product-profile.json
 cat data/social-lead-gen/search-queries.json
 ```
 
-If these files don't exist, run Phase 1 first.
+如果这些文件不存在，请先运行第一阶段。
 
-### Step 2: Execute searches
+### 第二步：执行搜索
 
-For each generated query, call the appropriate Xpoz MCP tool:
+对于每个生成的查询，调用相应的 Xpoz MCP 工具：
 
-**Twitter:**
+**Twitter：**
 ```bash
 mcporter call xpoz.getTwitterPostsByKeywords \
   query="GENERATED_QUERY" \
@@ -254,7 +250,7 @@ mcporter call xpoz.getTwitterPostsByKeywords \
   fields='["id","text","authorUsername","likeCount","retweetCount","replyCount","impressionCount","createdAtDate"]'
 ```
 
-**Instagram:**
+**Instagram：**
 ```bash
 mcporter call xpoz.getInstagramPostsByKeywords \
   query="GENERATED_QUERY" \
@@ -262,7 +258,7 @@ mcporter call xpoz.getInstagramPostsByKeywords \
   limit=50
 ```
 
-**Reddit:**
+**Reddit：**
 ```bash
 mcporter call xpoz.getRedditPostsByKeywords \
   query="GENERATED_QUERY" \
@@ -270,16 +266,16 @@ mcporter call xpoz.getRedditPostsByKeywords \
   limit=50
 ```
 
-**Always poll for results:**
+**持续获取结果：**
 ```bash
 mcporter call xpoz.checkOperationStatus operationId="OPERATION_ID"
 ```
 
-Poll every 5 seconds until status is `completed`.
+每隔 5 秒检查一次搜索结果的状态，直到状态变为 `completed`。
 
-### Step 3: Find people (not just posts)
+### 第三步：找到相关用户（而不仅仅是帖子）
 
-For high-engagement posts, also search for the people behind them:
+对于参与度高的帖子，还要查找发布这些帖子的用户：
 
 ```bash
 mcporter call xpoz.getTwitterUsersByKeywords \
@@ -287,123 +283,120 @@ mcporter call xpoz.getTwitterUsersByKeywords \
   limit=50
 ```
 
-This finds users who frequently post about the topic — potential repeat customers or influencers.
+这样就能找到经常发布相关内容的用户——他们可能是潜在的客户或意见领袖。
 
 ---
 
-## Phase 3: Lead Scoring & Output
+## 第三阶段：潜在客户评分与输出
 
-### Scoring Framework (1-10)
+### 评分标准（1-10 分）
 
-Score each lead based on signals from the product profile:
+根据用户资料中的信息对每个潜在客户进行评分：
 
-| Signal | Points | Example |
+| 评分标准 | 分数 | 举例 |
 |--------|--------|---------|
-| **Explicitly asking for a solution** | +3 | "Can anyone recommend a [product category]?" |
-| **Complaining about a competitor** | +2 | "[Competitor] is too expensive / broken / limited" |
-| **Has a project blocked by the pain point** | +2 | "I need [capability] but can't find a good tool" |
-| **Active in target community** | +1 | Posts in relevant subreddits / uses relevant hashtags |
-| **High engagement on the post** | +1 | >10 likes or >5 comments |
-| **Recent post (< 48 hours)** | +1 | Time-sensitive opportunity |
-| **Profile matches ICP** | +1 | Developer, marketer, researcher — matches target segment |
-| **Selling a competing solution** | -3 | They're a competitor, not a lead |
-| **Irrelevant context** | -2 | Mentioned keyword but in unrelated context |
+| **明确表示需要解决方案** | +3 | “有人能推荐 [产品类别] 吗？” |
+| **抱怨竞争对手** | +2 | “[竞争对手] 的产品太贵/有问题/功能有限” |
+| **面临实际问题** | +2 | “我需要 [特定功能]，但找不到合适的工具” |
+**在目标社区活跃** | +1 | 在相关子版块发帖/使用相关标签 |
+| **帖子互动度高** | +1 | 帖子获得超过 10 个赞或 5 条评论 |
+| **帖子发布时间较短（<48 小时）** | +1 | 机会时效性强 |
+| **用户资料符合目标群体特征** | +1 | 用户是开发者、营销人员或研究人员 |
+| **销售竞争对手的产品** | -3 | 他们是竞争对手，不是潜在客户 |
+| **背景信息无关** | -2 | 提到关键词但上下文不符 |
 
-**Tiers:**
-- **Tier 1 (Score 8-10):** Hot leads — high intent, act fast
-- **Tier 2 (Score 6-7):** Warm leads — worth engaging
-- **Tier 3 (Score 5):** Watchlist — monitor for future intent
-- **Below 5:** Skip
+**评分等级：**
+- **一级（8-10 分）：** 高意向潜在客户——需立即行动
+- **二级（6-7 分）：** 温和潜在客户——值得跟进
+- **三级（5 分）：** 关注名单——未来可能成为潜在客户 |
+- **低于 5 分：** 可忽略
 
-### Deduplication
+### 去重
 
-Before reporting any lead, check against previously sent leads:
-
+在报告任何潜在客户之前，先检查是否与之前发送过的潜在客户重复：
 ```bash
 cat data/social-lead-gen/sent-leads.json
 ```
 
-Key format: `{platform}:{author}:{post_id}`
+关键格式：`{平台}:{作者}:{帖子ID}`
 
-After reporting, add to the tracking file.
+报告后，将结果添加到跟踪文件中。
 
-### Output Format
+### 输出格式
 
-For each lead, provide:
+为每个潜在客户提供以下信息：
+1. **用户信息：** 用户名、平台、资料概要
+2. **用户言论：** 来自他们帖子的直接引文
+3. **帖子链接：** 可点击的链接
+   - Twitter：`https://twitter.com/{用户名}/status/{id}`
+   - Reddit：`https://www.reddit.com/r/{子版块}/comments/{id}/`
+   - Instagram：`https://www.instagram.com/p/{shortcode}/`
+4. **评分：** X/10（附带评分理由）
+5. **适合的原因：** 他们的问题与您的产品之间的关联
+6. **建议的沟通方式：** 根据用户情况定制的回复内容
+7. **互动情况：** 获得的点赞、评论和分享数量
+8. **发布时间：** 帖子发布的时间
 
-1. **Who:** Username, platform, profile summary
-2. **What they said:** Direct quote from their post
-3. **Post URL:** Clickable link
-   - Twitter: `https://twitter.com/{username}/status/{id}`
-   - Reddit: `https://www.reddit.com/r/{subreddit}/comments/{id}/`
-   - Instagram: `https://www.instagram.com/p/{shortcode}/`
-4. **Score:** X/10 with reasoning
-5. **Why they're a fit:** Connection between their pain and your product
-6. **Suggested outreach:** Pre-written reply customized to their situation
-7. **Engagement:** Likes, comments, shares
-8. **Posted:** Date and relative time
+### 沟通指南
 
-### Outreach Guidelines
+在编写回复时：
+- 引用帖子中用户的具体情况
+- 提及产品能解决他们问题的具体功能
+- 保持对话风格，避免过于推销
+- 保持诚实——如果产品并不完全符合用户需求，也要如实说明
+- **务必披露** 用户是否与产品有合作关系
 
-When writing suggested replies:
-- Reference their **exact** situation from the post
-- Mention specific features of the product that solve their problem
-- Keep it conversational, not salesy
-- Be honest — if the product doesn't perfectly fit, say so
-- **Always include a disclosure** if the user is affiliated with the product
-
-Example:
-> "I had the same problem! Ended up using [Product] — it does [specific capability they need]. [Brief differentiator]. Worth checking out: [URL]
+示例：
+> “我也遇到过同样的问题！最终使用了 [产品]——它确实具有 [他们需要的具体功能]。[简要说明产品优势]。推荐查看：[链接]”
 >
-> (Disclosure: I work with [Product])"
+> （披露：我与 [产品] 有合作关系）”
 
 ---
 
-## Updating the Profile
+## 更新用户资料
 
-If the user's product evolves, they can re-run Phase 1:
+如果用户的产品发生了变化，可以重新运行第一阶段：
 
-> "My product has changed — we now also support [X]. Can you update the profile?"
+> “我们的产品进行了更新——现在也支持 [X] 功能。可以更新用户资料吗？”
 
-Re-run the research, validate, and regenerate queries. The stored profile is overwritten.
-
----
-
-## Example Session
-
-**User:** "Find leads for my product. Here's our website: https://example.com"
-
-**Agent:**
-1. Fetches and analyzes example.com (homepage, pricing, docs)
-2. Searches for reviews, competitors, mentions
-3. Presents findings: "Here's what I learned..."
-4. User confirms: "Yes, but we also target enterprise customers"
-5. Agent updates profile, generates 15 search queries
-6. User says "Go find leads"
-7. Agent runs queries across Twitter/Instagram/Reddit
-8. Returns: "Found 12 leads — 3 Tier 1, 5 Tier 2, 4 Tier 3"
-9. Each lead has URL, score, quote, outreach copy
-
-**Next day:** "Find more leads" → Agent loads saved profile, runs fresh queries, deduplicates against yesterday's results.
+重新进行研究、验证并生成新的查询。之前保存的用户资料会被覆盖。
 
 ---
 
-## Responsible Use
+## 示例流程
 
-- **Respect platform terms of service** for Twitter, Instagram, and Reddit
-- **Don't spam** — outreach should be genuine and helpful
-- **Disclose affiliations** in any outreach messaging
-- **Respect privacy** — only use publicly available information
-- **Quality over quantity** — 5 great leads beat 50 mediocre ones
+**用户：** “为我产品寻找潜在客户。这是我们的网站：https://example.com”
+
+**代理：**
+1. 获取并分析 example.com 的信息（首页、价格、文档）
+2. 查找相关评论、竞争对手和提及内容
+3. 向用户展示分析结果：“以下是我了解到的信息……”
+4. 用户确认：“是的，我们的目标客户还包括企业用户”
+5. 代理更新用户资料并生成 15 条搜索查询
+6. 用户同意后，代理在 Twitter/Instagram/Reddit 上执行搜索
+7. 返回结果：找到 12 个潜在客户（3 个一级潜在客户，5 个二级潜在客户，4 个三级潜在客户）
+8. 提供每个潜在客户的详细信息（链接、评分、引用内容和沟通建议）
+
+**第二天：** “再寻找更多潜在客户” → 代理加载保存的用户资料，重新生成查询，并与昨天的结果进行去重。
 
 ---
 
-## Resources
+## 负责任的使用建议
 
-- **Xpoz:** [xpoz.ai](https://xpoz.ai) — social intelligence MCP powering the searches
-- **Setup:** [xpoz-setup on ClawHub](https://clawhub.ai/skills/xpoz-setup) — one-time auth
-- **Search reference:** [xpoz-social-search on ClawHub](https://clawhub.ai/skills/xpoz-social-search) — full search patterns
+- **遵守 Twitter、Instagram 和 Reddit 的服务条款**
+- **不要发送垃圾信息** — 沟通内容必须真实且有帮助
+- **在所有沟通中披露自己的合作关系**
+- **尊重用户隐私** — 仅使用公开可获取的信息
+- **质量优先** — 5 个优质潜在客户比 50 个普通潜在客户更有价值
 
 ---
 
-**Built for ClawHub • Powered by Xpoz**
+## 资源参考
+
+- **Xpoz：** [xpoz.ai] — 提供搜索功能的社交智能平台
+- **设置指南：** [ClawHub 上的 xpoz-setup](https://clawhub.ai/skills/xpoz-setup) — 一次性身份验证
+- **搜索参考：** [ClawHub 上的 xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search) — 完整的搜索模板
+
+---
+
+**专为 ClawHub 开发 • 由 Xpoz 提供支持**

@@ -1,25 +1,25 @@
 ---
 name: service-layer-architecture
 model: standard
-description: Controller-service-query layered API architecture with data enrichment and parallel fetching. Use when building REST APIs or GraphQL resolvers with clean separation of concerns. Triggers on API architecture, service layer, controller pattern, data enrichment, REST API.
+description: 控制器-服务-查询（Controller-Service-Query, C-S-Q）分层API架构，支持数据增强（data enrichment）和并行数据获取（parallel data fetching）功能。该架构适用于构建REST API或GraphQL解析器（GraphQL resolvers），能够实现职责的清晰分离（clean separation of concerns）。该架构涵盖了API架构（API architecture）、服务层（service layer）、控制器模式（controller pattern）、数据增强机制以及REST API的相关组件。
 ---
 
-# Service Layer Architecture
+# 服务层架构
 
-Clean, performant API layers with proper separation of concerns and parallel data fetching.
-
----
-
-## When to Use
-
-- Building REST APIs with complex data aggregation
-- GraphQL resolvers needing data from multiple sources
-- Any API where responses combine data from multiple queries
-- Systems needing testable, maintainable code
+采用清晰、高效的API设计，合理划分职责，并实现并行数据获取功能。
 
 ---
 
-## Three-Layer Architecture
+## 使用场景
+
+- 构建需要处理复杂数据聚合的REST API
+- 需要从多个数据源获取数据的GraphQL解析器
+- 任何需要将多个查询的结果合并在一起的API
+- 需要可测试、易于维护的代码的系统
+
+---
+
+## 三层架构
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -33,7 +33,7 @@ Clean, performant API layers with proper separation of concerns and parallel dat
 
 ---
 
-## Layer 1: Controllers (HTTP Only)
+## 第一层：控制器（仅处理HTTP请求）
 
 ```typescript
 // controllers/Entity.ts
@@ -65,7 +65,7 @@ router.get("/entity/:entityId", async (ctx) => {
 
 ---
 
-## Layer 2: Services (Business Logic)
+## 第二层：服务层（业务逻辑）
 
 ```typescript
 // services/Entity.ts
@@ -108,7 +108,7 @@ export const getEntities = async (): Promise<EnrichedEntity[]> => {
 
 ---
 
-## Layer 3: Queries (Database Access)
+## 第三层：查询层（数据库访问）
 
 ```typescript
 // queries/Entities.ts
@@ -129,7 +129,7 @@ export const validEntities = async () => {
 
 ---
 
-## Parallel Data Fetching
+## 并行数据获取
 
 ```typescript
 // BAD: Sequential (slow)
@@ -149,31 +149,31 @@ const [metadata, score, location] = await Promise.all([
 
 ---
 
-## Layer Responsibilities
+## 各层的职责
 
-| Task | Layer |
+| 任务 | 所在层 |
 |------|-------|
-| Parse request params | Controller |
-| Validate input | Controller |
-| Set HTTP status | Controller |
-| Combine multiple queries | Service |
-| Transform data | Service |
-| Sort/filter results | Service |
-| Run database query | Query |
+| 解析请求参数 | 控制器 |
+| 验证输入数据 | 控制器 |
+| 设置HTTP状态码 | 控制器 |
+| 合并多个查询结果 | 服务层 |
+| 转换数据 | 服务层 |
+| 对结果进行排序/过滤 | 服务层 |
+| 执行数据库查询 | 查询层 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-- **Related:** [postgres-job-queue](../postgres-job-queue/) — Background job processing
-- **Related:** [realtime/websocket-hub-patterns](../../realtime/websocket-hub-patterns/) — Real-time updates from services
+- **相关技术：** [postgres-job-queue](../postgres-job-queue/) — 后台任务处理
+- **相关技术：** [realtime/websocket-hub-patterns](../../realtime/websocket-hub-patterns/) — 服务端的实时更新机制
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情
 
-- **NEVER put database queries in controllers** — Violates separation
-- **NEVER put HTTP concerns in services** — Services must be reusable
-- **NEVER fetch related data sequentially** — Use Promise.all
-- **NEVER skip .lean() on read queries** — 5-10x faster
-- **NEVER expose raw database errors** — Transform to user-friendly messages
+- **绝对不要将数据库查询放在控制器中** — 这会违反职责分离原则
+- **绝对不要将HTTP相关的逻辑放在服务层中** — 服务层应该具有通用性
+- **绝对不要顺序地获取相关数据** — 应使用`Promise.all`来实现并行处理
+- **绝对不要在读取数据时省略`.lean()`方法** — 这可以提升5到10倍的执行速度
+- **绝对不要直接展示原始的数据库错误信息** — 应将错误信息转换为用户友好的格式

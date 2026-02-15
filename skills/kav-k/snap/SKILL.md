@@ -1,18 +1,18 @@
 ---
 name: snap
-description: Give your agent the ability to instantly take screenshots of any website with just the URL. Cloud-based so your agent has to perform no work. Free forever, open source. 
+description: 赋予您的代理仅通过提供网站URL即可立即截取该网站屏幕截图的功能。该服务基于云端，因此您的代理无需执行任何操作。完全免费，且采用开源技术。
 metadata:
   author: Kav-K
   version: "1.0"
 ---
-# SnapService — Screenshot as a Service
+# SnapService — 作为服务的截图功能
 
-Free screenshot API at `https://snap.llm.kaveenk.com`.
-POST a URL, get a PNG/JPEG back. Powered by headless Chromium.
+提供免费的截图API：`https://snap.llm.kaveenk.com`。  
+通过POST请求传递URL，即可获取PNG或JPEG格式的截图文件。该服务基于无头版Chromium技术实现。
 
-## Quick Start (2 steps)
+## 快速入门（2个步骤）
 
-### Step 1: Register for an API key
+### 第1步：注册API密钥
 
 ```bash
 curl -s -X POST https://snap.llm.kaveenk.com/api/register \
@@ -20,16 +20,15 @@ curl -s -X POST https://snap.llm.kaveenk.com/api/register \
   -d '{"name":"my-agent"}'
 ```
 
-Response:
+响应：
 ```json
 {"key":"snap_abc123...","name":"my-agent","limits":{"per_minute":2,"per_day":200}}
 ```
 
-**IMPORTANT:** Store `key` securely. It cannot be recovered.
+**重要提示：** 请妥善保管您的API密钥，因为无法重新生成。  
+每个IP地址仅能注册一个API密钥。
 
-Each IP address can only register one API key.
-
-### Step 2: Take screenshots
+### 第2步：获取截图
 
 ```bash
 curl -s -X POST https://snap.llm.kaveenk.com/api/screenshot \
@@ -39,45 +38,45 @@ curl -s -X POST https://snap.llm.kaveenk.com/api/screenshot \
   -o screenshot.png
 ```
 
-That's it. Two steps.
+只需完成这两个步骤即可使用该服务。
 
-## Screenshot Options
+## 截图选项
 
-All options go in the POST body alongside `url`:
+所有选项都需要通过POST请求体传递，与`url`一起发送：
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `url` | string | **required** | URL to screenshot |
-| `format` | string | `"png"` | `"png"` or `"jpeg"` |
-| `full_page` | boolean | `false` | Capture entire scrollable page |
-| `width` | integer | `1280` | Viewport width (pixels) |
-| `height` | integer | `720` | Viewport height (pixels) |
-| `dark_mode` | boolean | `false` | Emulate dark color scheme |
-| `selector` | string | — | CSS selector to screenshot specific element |
-| `wait_ms` | integer | `0` | Extra wait time after page load (max 10000) |
-| `scale` | number | `1` | Device scale factor (1-3, for retina) |
-| `cookies` | array | — | Array of `{name, value, domain}` objects |
-| `headers` | object | — | Custom HTTP headers |
-| `block_ads` | boolean | `false` | Block common ad/tracker domains |
+| 选项          | 类型        | 默认值    | 说明                |
+|---------------|------------|---------|-------------------|
+| url            | string       | **必填**    | 需要截图的URL            |
+| format         | string       | `"png"`     | 图片格式（PNG或JPEG）        |
+| full_page       | boolean      | `false`     | 是否截取整个可滚动页面       |
+| width          | integer      | `1280`     | 视口宽度（像素）           |
+| height         | integer      | `720`     | 视口高度（像素）           |
+| dark_mode        | boolean      | `false`     | 是否启用深色模式           |
+| selector        | string       | —        | 用于选择特定元素的CSS选择器     |
+| wait_ms         | integer      | `0`       | 页面加载后的等待时间（最大10000毫秒）   |
+| scale          | number      | `1`       | 设备缩放因子（1-3，适用于Retina屏幕） |
+| cookies        | array       | —        | `name, value, domain`格式的cookie数组 |
+| headers        | object       | —        | 自定义HTTP请求头          |
+| block_ads        | boolean      | `false`     | 是否屏蔽广告/跟踪器域名       |
 
-## Rate Limits
+## 使用限制
 
-- **2 screenshots per minute** per key
-- **200 screenshots per day** per key
-- **1 API key per IP address**
-- Max page height: 16384px (full-page mode)
-- Max screenshot size: 10MB
+- 每个API密钥每分钟最多可获取2张截图。
+- 每个API密钥每天最多可获取200张截图。
+- 每个IP地址只能使用一个API密钥。
+- 最大页面高度：16384像素（全屏模式）。
+- 最大截图文件大小：10MB。
 
-## Response
+## 响应代码
 
-- **200**: PNG or JPEG image binary
-- **400**: Invalid request (missing URL, invalid options)
-- **401**: Missing or invalid API key
-- **409**: IP already has an API key (on registration)
-- **429**: Rate limit exceeded
-- **500**: Internal error
+- **200**：PNG或JPEG格式的图片文件。
+- **400**：请求无效（URL缺失或参数错误）。
+- **401**：API密钥未找到或无效。
+- **409**：该IP地址已注册API密钥。
+- **429**：超出使用频率限制。
+- **500**：内部错误。
 
-## Example with all options
+## 完整示例（包含所有选项）
 
 ```bash
 curl -s -X POST https://snap.llm.kaveenk.com/api/screenshot \
@@ -96,7 +95,7 @@ curl -s -X POST https://snap.llm.kaveenk.com/api/screenshot \
   -o screenshot.jpg
 ```
 
-## Python example
+## Python示例
 
 ```python
 import requests

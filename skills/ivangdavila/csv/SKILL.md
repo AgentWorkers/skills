@@ -1,43 +1,43 @@
 ---
 name: CSV
-description: Parse and generate RFC 4180 compliant CSV that works across tools.
+description: 解析并生成符合 RFC 4180 标准的 CSV 文件，以便在不同工具之间使用。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-## Quoting Rules
+## 引用规则
 
-- Fields containing comma, quote, or newline MUST be wrapped in double quotes
-- Double quotes inside quoted fields escape as `""` (two quotes), not backslash
-- Unquoted fields with leading/trailing spaces—some parsers trim, some don't; quote to preserve
-- Empty field `,,` vs empty string `,"",`—semantically different; be explicit
+- 包含逗号、引号或换行的字段必须使用双引号括起来。
+- 引号字段中的双引号需要使用 `""`（两个引号）进行转义，而不是反斜杠。
+- 带有前导/尾随空格的未加引号的字段：某些解析器会自动去除这些空格，而某些则不会；为了保持数据的一致性，请务必加上引号。
+- 空字段应表示为 `,,`，而不是 `,""`；两者在语义上有很大区别，因此请明确区分。
 
-## Delimiters
+## 分隔符
 
-- CSV isn't always comma—detect `;` (European Excel), `\t` (TSV), `|` in legacy systems
-- Excel exports use system locale delimiter; semicolon common in non-US regions
-- Sniff delimiter from first line but verify—header might not contain special chars
+- CSV 文件的分隔符并不总是逗号；需要识别 `;`（欧洲版 Excel 使用）、`\t`（TSV 格式）或 `|`（旧版系统使用的分隔符）。
+- Excel 导出文件使用系统的默认分隔符；在非美国地区，分号较为常见。
+- 可以从文件的第一行检测分隔符，但请进行验证，因为文件头可能包含特殊字符。
 
-## Encoding
+## 编码
 
-- UTF-8 BOM (`0xEF 0xBB 0xBF`) breaks naive parsers but Excel needs it for UTF-8 detection
-- When generating for Excel on Windows: add BOM; for programmatic use: omit BOM
-- Latin-1 vs UTF-8 ambiguity—explicitly declare or detect encoding before parsing
+- UTF-8 BOM（`0xEF 0xBB 0xBF`）可能会干扰一些简单的解析器，但 Excel 需要它来识别 UTF-8 格式。
+- 在为 Windows 环境下的 Excel 生成数据时，应添加 BOM；在程序化使用中则可以省略 BOM。
+- 需要明确声明或检测数据的编码方式，以避免 Latin-1 和 UTF-8 之间的混淆。
 
-## Common Parsing Failures
+## 常见的解析错误
 
-- Newlines inside quoted fields are valid—don't split on `\n` before parsing
-- Unescaped quote in middle of field corrupts rest of file—validate early
-- Trailing newline at EOF—some parsers create empty last row; strip or handle
-- Inconsistent column count per row—validate all rows match header count
+- 引号字段中的换行符是有效的；在解析前不要因为 `\n` 而分割字段。
+- 字段中间未转义的引号可能会导致文件内容损坏；请在解析前进行验证。
+- 文件末尾的换行符可能会导致最后一行为空；请将其去除或进行相应的处理。
+- 每行的列数与文件头不一致；请确保所有行的列数都与文件头一致。
 
-## Numbers & Dates
+## 数字与日期
 
-- `1,234.56` vs `1.234,56`—locale-dependent; standardize or document format
-- Dates: ISO 8601 (`2024-01-15`) only unambiguous format; `01/02/24` is chaos
-- Leading zeros in numeric fields (`007`)—quote to preserve or document as string
+- 数字的格式（如 `1,234.56` 或 `1.234,56`）可能因地区设置而有所不同；建议统一格式或进行明确说明。
+- 日期应使用 ISO 8601 标准格式（例如 `2024-01-15`）；其他格式（如 `01/02/24`）可能会导致歧义。
+- 数字字段中的前导零（如 `007`）：可以选择保留引号或将这些数字作为字符串处理。
 
-## Excel Quirks
+## Excel 的特殊行为
 
-- Formula injection: fields starting with `=`, `+`, `-`, `@` execute as formulas—prefix with `'` or tab
-- Long numbers (>15 digits) lose precision—quote and format as text
-- Scientific notation triggered by `E` in numbers—quote if literal text needed
+- 如果字段以 `=`, `+`, `-`, `@` 开头，这些字段会被视为公式；为了避免这种情况，可以在字段前加上 `'` 或制表符。
+- 长数字（超过 15 位）在 Excel 中可能会丢失精度；建议将这些数字作为文本进行引用和格式化。
+- 如果数字中包含 `E`（表示科学计数法），则需要将这些数字作为文本进行引用。

@@ -1,6 +1,6 @@
 ---
 name: lead-enrichment
-description: Turn a name into a full dossier in seconds. Feed in a name + company (or email, or LinkedIn URL) and get back a rich profile with social links, bio, company intel, recent activity, and personalized talking points. Aggregates data from multiple public sources — LinkedIn, Twitter, GitHub, company websites, news — so you can skip the manual research and jump straight to personalized outreach. Your agent does the detective work while you close deals. Supports single enrichment, batch processing, and multiple output formats (JSON, Markdown, CRM-ready). Use when researching prospects, preparing for sales calls, personalizing cold outreach, or building lead lists. Pairs perfectly with trawl for autonomous lead gen → enrichment → outreach pipelines.
+description: 将一个名字转换成一份完整的个人资料只需几秒钟。输入一个人的名字以及公司信息（或电子邮件地址、LinkedIn链接），系统便会返回一份包含社交链接、个人简介、公司信息、近期活动以及个性化交流内容的详细资料。该工具从多个公开来源（如LinkedIn、Twitter、GitHub、公司官网、新闻等）收集数据，让您无需进行繁琐的手动调研，即可直接开展个性化的沟通工作。您的团队成员负责数据收集与分析，而您可以专注于完成销售任务。该工具支持单次数据处理、批量处理，并提供多种输出格式（JSON、Markdown、适合CRM系统使用的格式）。适用于客户调研、销售电话准备、个性化主动联系或潜在客户名单的创建。它与自动潜在客户生成 → 数据丰富化 → 主动联系的流程完美结合，是高效销售工具的理想选择。
 metadata:
   clawdbot:
     emoji: "🔍"
@@ -9,72 +9,70 @@ metadata:
         - browser
 ---
 
-# Lead Enrichment — Research Prospects in Seconds
+# 领导力提升工具——秒级挖掘潜在客户
 
-**Stop spending hours stalking LinkedIn. Let your agent do it.**
+**别再花数小时在领英上浪费时间了，让您的代理来处理吧！**
 
-Sales teams waste 6+ hours per week manually researching prospects. You Google their name, check LinkedIn, scroll their Twitter, hunt for their email, read their company's About page, search for recent news... and then do it all over again for the next lead.
+销售团队每周要花费6个多小时手动研究潜在客户：在谷歌上搜索他们的名字，查看领英资料，浏览他们的推特，寻找他们的电子邮件地址，阅读公司的简介页面，搜索最新的新闻……然后对下一个潜在客户重复同样的流程。
 
-Lead Enrichment automates all of it. Give your agent a name and company (or email, or LinkedIn URL), and get back a complete dossier: contact info, social profiles, bio, company intel, recent posts, news mentions, and AI-generated talking points.
+**Lead Enrichment**工具可以自动化这一切。只需提供客户的名字和公司信息（或电子邮件地址、领英链接），就能立即获得一份完整的客户档案：联系方式、社交媒体资料、个人简介、公司信息、最新动态以及人工智能生成的交流要点。
 
-**The pain:** Generic outreach gets ignored. Personalization takes forever. You're always behind quota.
+**问题所在：**泛泛的沟通方式往往被忽略；个性化沟通则耗时过长；销售业绩总是落后于目标。
 
-**The fix:** Your agent researches 10 leads while you grab coffee. Rich profiles ready when you need them. Spend your time selling, not searching.
+**解决方案：**当您在喝咖啡的时候，您的代理可以同时研究10个潜在客户。当您需要时，这些详细的客户档案就已经准备好了。把时间用在销售上，而不是搜索上。
 
-## What You Get
+## 您将获得什么？
 
-For each lead, the enrichment pulls:
+对于每个潜在客户，该工具会收集以下信息：
 
-**Personal Profile:**
-- Full name, current title, company
-- Professional bio/summary
-- Profile photo URL
-- Location
-- Social media handles (LinkedIn, Twitter, GitHub, personal site)
+**个人资料：**
+- 全名、当前职位、公司名称
+- 个人简介/概述
+- 资料图片链接
+- 所在地
+- 社交媒体账号（领英、推特、GitHub、个人网站）
 
-**Contact Discovery:**
-- Likely email addresses (pattern-based + verification attempts)
-- Public phone numbers (if available)
-- Best channels for outreach
+**联系方式：**
+- 可能的电子邮件地址（基于模式匹配 + 验证尝试）
+- 公共电话号码（如果有的话）
+- 最适合的沟通渠道
 
-**Company Context:**
-- Company description, industry, size
-- Funding stage, recent news
-- Tech stack (for technical sales)
-- Key decision makers
+**公司背景：**
+- 公司描述、所属行业、规模
+- 融资阶段、最新新闻
+- 技术栈（针对技术销售人员）
+- 关键决策者信息
 
-**Intelligence & Timing:**
-- Recent posts/articles (last 30 days)
-- Job change signals
-- Company news mentions
-- Shared connections or interests
-- Conference/event participation
+**情报与动态：**
+- 最近30天的帖子/文章
+- 工作变动信息
+- 公司被提及的新闻
+- 共享的联系人或兴趣点
+- 参加的会议/活动
 
-**AI-Generated Talking Points:**
-- 3-5 personalized hooks based on their recent activity
-- Common ground opportunities
-- Relevant pain points to address
-- Recommended opening lines
+**人工智能生成的交流要点：**
+- 根据客户的最新活动生成的3-5条个性化开场白
+- 可以共同讨论的议题
+- 需要解决的常见问题
 
-## Setup
+## 设置方法
 
-1. Run `scripts/setup.sh` to initialize config
-2. Edit `~/.config/lead-enrichment/config.json` with preferences
-3. No API keys required for basic enrichment (uses public sources)
-4. Optional: Add premium data sources (see config)
+1. 运行 `scripts/setup.sh` 命令以初始化配置
+2. 使用 `~/.config/lead-enrichment/config.json` 文件编辑您的偏好设置
+3. 基本功能无需API密钥（使用公开数据源）
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `scripts/setup.sh` | Initialize config and data directories |
-| `scripts/enrich.sh` | Enrich a single lead (main script) |
-| `scripts/batch.sh` | Process multiple leads from CSV/JSON |
-| `scripts/export.sh` | Export enriched leads (JSON/MD/CSV) |
+| `scripts/setup.sh` | 初始化配置和数据目录 |
+| `scripts/enrich.sh` | 单个潜在客户的资料挖掘 |
+| `scripts/batch.sh` | 从CSV/JSON文件批量处理多个潜在客户 |
+| `scripts/export.sh` | 导出处理后的潜在客户信息（JSON/Markdown/CSV格式） |
 
-## Usage
+## 使用方法
 
-### Single Lead
+### 单个潜在客户
 
 ```bash
 # By name + company
@@ -93,7 +91,7 @@ For each lead, the enrichment pulls:
 ./scripts/enrich.sh --name "Sarah Chen" --company "Acme Corp" --talking-points
 ```
 
-### Batch Processing
+### 批量处理
 
 ```bash
 # From CSV (columns: name, company, email, linkedin_url)
@@ -106,7 +104,7 @@ For each lead, the enrichment pulls:
 ./scripts/batch.sh --input leads.csv --parallel 3
 ```
 
-### Export Formats
+### 输出格式
 
 ```bash
 # Export as JSON (default)
@@ -123,65 +121,65 @@ For each lead, the enrichment pulls:
   curl -X POST https://your-crm.com/api/leads -d @-
 ```
 
-## Config
+## 配置文件
 
-Config lives at `~/.config/lead-enrichment/config.json`. See `config.example.json` for full schema.
+配置文件位于 `~/.config/lead-enrichment/config.json`。请参考 `config.example.json` 了解完整格式。
 
-Key sections:
+**关键配置项：**
 
-**enrichment.sources** — Which data sources to check (all public by default):
-- `linkedin` — Public profiles via search
-- `twitter` — Social activity and bio
-- `github` — For technical leads
-- `company_website` — About pages, team directories
-- `news` — Recent mentions
-- `crunchbase` — Company funding (public data)
+**enrichment.sources** — 检查的数据源（默认为所有公开数据源）：
+- `linkedin` — 通过搜索获取的公开领英资料
+- `twitter` — 社交媒体活动和个人简介
+- `github` — 针对技术岗位的潜在客户
+- `company_website` — 公司官网和团队信息
+- `news` — 最新新闻提及
+- `crunchbase` — 公司融资信息（公开数据）
 
-**enrichment.depth** — How thorough to be:
-- `quick` — Basic profile only (name, title, LinkedIn, company)
-- `standard` — Above + social profiles + recent activity (default)
-- `deep` — Above + news mentions + talking points + shared connections
+**enrichment.depth** — 数据挖掘的深度：
+- `quick` — 仅基本信息（姓名、职位、领英资料、公司名称）
+- `standard` — 以上信息 + 社交媒体资料 + 最新活动（默认设置）
+- `deep` | 以上信息 + 新闻提及 + 交流要点 + 共享联系人
 
-**output.format** — Default output format (json/markdown/csv)
+**output.format** — 默认输出格式（JSON/Markdown/CSV）
 
-**output.include** — What to include in output:
-- `contact_info` — Email attempts, phone
-- `social_profiles` — All discovered links
-- `recent_activity` — Posts, articles (last 30 days)
-- `company_intel` — Company description, size, funding
-- `talking_points` — AI-generated personalization hooks
-- `raw_sources` — Source URLs for verification
+**output.include** — 输出内容：
+- `contact_info` — 电子邮件地址、电话号码
+- `social_profiles` — 所有找到的社交媒体链接
+- `recent_activity` — 最近30天的帖子和文章
+- `company_intel` | 公司描述、规模、融资情况
+- `talking_points` | 人工智能生成的个性化交流要点
+- `raw_sources` | 验证用的数据源链接
 
-**talking_points.enabled** — Generate AI talking points (requires Claude)
+**talking_points.enabled** — 是否生成人工智能生成的交流要点（需要Claude插件）
 
-**talking_points.style** — Tone for suggestions (professional/friendly/bold)
+**talking_points.style** — 交流建议的语气（专业/友好/强调）
 
-**privacy.respect_robots** — Skip profiles with clear "no scraping" signals
+**privacy.respect_robots** — 跳过明确标明“禁止抓取”的个人资料
 
-**privacy.store_locally** — Cache enriched profiles (default: true)
+**privacy.store_locally** — 是否在本地缓存处理后的资料（默认为“true”）
 
-## Data Sources
+## 数据来源
 
-All sources are **public and free**:
+所有数据源均为公开且免费：
 
-1. **LinkedIn** — Public profiles via search (no API, respects robots.txt)
-2. **Twitter/X** — Bio, recent tweets, follower count
-3. **GitHub** — For technical roles (repos, activity, README)
-4. **Company websites** — Team pages, About sections
-5. **Google News** — Recent mentions
-6. **Crunchbase** — Public company data (no API key needed for basic info)
-7. **Common email patterns** — firstname@company.com, f.lastname@company.com, etc.
+1. **领英** — 通过搜索获取的公开领英资料（无需API，遵守robots.txt规则）
+2. **Twitter/X** — 个人简介、最新推文、关注者数量
+3. **GitHub** — 技术岗位的潜在客户（仓库、活动记录、README文件）
+4. **公司官网** — 团队页面和简介部分
+5. **谷歌新闻** — 最新新闻提及
+6. **Crunchbase** — 公司公开数据（基本信息无需API密钥）
+7. **常见电子邮件格式** — firstname@company.com, f.lastname@company.com等
 
-**Premium sources** (optional, requires API keys):
-- Hunter.io — Email verification
-- Clearbit — Enhanced company data
-- Apollo — Direct contact info
+**高级数据源（可选，需要API密钥）：**
+- Hunter.io — 电子邮件地址验证
+- Clearbit — 更详细的公司信息
+- Apollo — 直接联系信息
 
-Add API keys to `~/.clawdbot/secrets.env` if you have them. Enrichment works fine without them.
+如果拥有API密钥，请将其添加到 `~/.clawdbot/secrets.env` 文件中。即使没有这些密钥，工具也能正常使用。
 
-## Output Schema
+## 输出格式
 
-Each enriched lead is saved as JSON:
+处理后的每个潜在客户信息会以JSON格式保存：
 
 ```json
 {
@@ -256,9 +254,9 @@ Each enriched lead is saved as JSON:
 }
 ```
 
-## Integration with Trawl
+## 与 Trawl 的集成
 
-Lead Enrichment pairs perfectly with Trawl (autonomous lead gen):
+**Lead Enrichment** 工具与 Trawl（自动潜在客户生成工具）配合使用效果最佳：
 
 ```bash
 # Trawl finds leads, enrichment researches them
@@ -273,66 +271,67 @@ trawl leads.sh list --json |      # Export qualified leads
 # trawl config: "post_qualify_action": "enrich"
 ```
 
-## Tips
+## 使用技巧
 
-**Email Discovery:**
-- Works best when you provide company domain
-- Tries common patterns (first@company, f.last@company, etc.)
-- Marks confidence level (high/medium/low)
-- Does NOT spam or verify via email sends (respects privacy)
+**电子邮件地址获取：**
+- 提供公司域名时效果最佳
+- 尝试使用常见的电子邮件格式（first@company, f.last@company等）
+- 显示信任度等级（高/中/低）
+- 不会发送垃圾邮件或通过电子邮件进行验证（尊重用户隐私）
 
-**Talking Points:**
-- Most valuable when enrichment depth = "deep"
-- Requires recent activity data (posts, news)
-- AI analyzes content for personalization hooks
-- Style can be professional, friendly, or bold
+**交流要点：**
+- 当数据挖掘深度设置为“deep”时效果最佳
+- 需要最新的活动数据（帖子、新闻）
+- 人工智能会根据内容生成个性化的交流要点
+- 交流建议的语气可以设置为专业、友好或强调型
 
-**Batch Processing:**
-- Use `--parallel` for speed (3-5 concurrent recommended)
-- Progress saved (resume if interrupted)
-- Failed leads logged to `batch-errors.json`
+**批量处理：**
+- 使用 `--parallel` 选项可提高处理速度（建议同时处理3-5个潜在客户）
+- 进度会保存下来（中断后可继续）
+- 失败的处理会记录在 `batch-errors.json` 文件中
 
-**Data Freshness:**
-- Cached profiles expire after 30 days
-- Force refresh with `--refresh` flag
-- Social activity always fetched fresh
+**数据更新频率：**
+- 缓存的资料在30天后失效
+- 可使用 `--refresh` 选项强制刷新
+- 社交媒体活动数据始终为最新状态
 
-## Use Cases
+## 使用场景
 
-**Sales Reps:**
-- Research prospects before calls
-- Personalize cold email sequences
-- Find mutual connections or interests
+**销售代表：**
+- 在通话前研究潜在客户
+- 个性化发送邮件
+- 寻找共同的联系人或兴趣点
 
-**Recruiters:**
-- Assess candidate backgrounds
-- Find contact info for passive candidates
-- Check GitHub activity for technical roles
+**招聘人员：**
+- 评估候选人背景
+- 获取被动候选人的联系方式
+- 查看技术岗位候选人的GitHub活动记录
 
-**Partnerships:**
-- Research potential partners
-- Understand company context
-- Find the right contact person
+**合作伙伴：**
+- 研究潜在合作伙伴
+- 了解公司背景
+- 找到合适的联系人
 
-**Investors:**
-- Quick founder background checks
-- Company traction signals
-- Network mapping
+**投资者：**
+- 快速核实创始人背景
+- 了解公司的发展动态
+- 建立联系网络
 
-## Privacy & Ethics
+## 隐私与道德规范
 
-This skill only uses **publicly available data**. It:
-- Respects robots.txt and rate limits
-- Does NOT scrape private profiles or paywalled content
-- Does NOT send verification emails (won't spam your leads)
-- Does NOT store data if privacy.store_locally = false
-- Provides source URLs for transparency
+该工具仅使用**公开可获取的数据**：
+- 遵守robots.txt文件和请求速率限制
+- 不会抓取私人资料或付费内容
+- 不会发送验证邮件（不会打扰潜在客户）
+- 如果 `privacy.store_locally` 设置为“false”，则不会存储数据
+- 提供数据来源链接以确保透明度
 
-**Be a human:** Just because you CAN enrich someone doesn't mean you should spam them. Use this for genuine, personalized outreach.
+**温馨提示：**  
+虽然您可以获取潜在客户的详细信息，但并不意味着可以随意发送垃圾邮件。请仅用于真诚、个性化的沟通。
 
-## Data Storage
+## 数据存储
 
-Enriched leads are stored at `~/.config/lead-enrichment/data/leads/`:
+处理后的潜在客户信息存储在 `~/.config/lead-enrichment/data/leads/` 目录下：
 
 ```
 ~/.config/lead-enrichment/
@@ -346,37 +345,33 @@ Enriched leads are stored at `~/.config/lead-enrichment/data/leads/`:
 └── exports/                    # Generated exports
 ```
 
-## FAQ
+## 常见问题解答**
 
-**Q: Is this legal?**
-A: Yes. All data is publicly available. We respect robots.txt and rate limits.
+**Q：这合法吗？**
+A：是的。所有数据都是公开可获取的。我们遵守robots.txt文件和请求速率限制。
 
-**Q: How accurate are the emails?**
-A: Pattern-based = 60-80% accuracy. Verified (if you add Hunter.io key) = 95%+.
+**Q：电子邮件的准确性如何？**
+A：基于模式的匹配方式准确率为60-80%；如果使用Hunter.io密钥进行验证，准确率可超过95%。
 
-**Q: Can I enrich 1000 leads?**
-A: Yes via batch.sh. Expect ~30 sec per lead (deep mode). That's 8 hours for 1000. Run overnight.
+**Q：我可以处理1000个潜在客户吗？**
+A：可以使用 `batch.sh` 命令。每个潜在客户处理时间约为30秒（深度模式）。处理1000个潜在客户需要大约8小时。建议夜间运行。
 
-**Q: Does this work for non-US leads?**
-A: Yes. LinkedIn and Twitter are global. Some data sources are US-biased.
+**Q：这个工具适用于非美国地区的潜在客户吗？**
+A：可以。领英和推特是全球性的服务，但某些数据源可能偏向美国用户。
 
-**Q: Will this get me blocked by LinkedIn?**
-A: No. We use search (public), not scraping. Rate-limited and respectful.
+**Q：这会导致我在领英上被封禁吗？**
+A：不会。我们使用公开搜索功能，不会进行抓取操作，也不会违反领英的规则。
 
-## What's Next
-
-Ideas for future versions:
-- Chrome extension (enrich while browsing LinkedIn)
-- CRM integrations (auto-enrich on lead create)
-- Slack bot (enrich on-demand from Slack)
-- Email warmup integration (find + verify + warm sequence)
-- Mutual connection finder (via agent networks)
-- Real-time alerts (when a lead changes jobs)
+**未来计划：**
+- 开发Chrome扩展程序（在浏览领英时自动提取信息）
+- 与CRM系统集成（在创建潜在客户时自动补充信息）
+- Slack机器人（根据需求从Slack发送信息）
+- 互连人查找功能（通过代理网络）
+- 实时提醒（当潜在客户更换工作信息时）
 
 ---
 
-**Stop researching. Start selling.**
+**别再浪费时间研究潜在客户了，开始销售吧！**  
+只需提供潜在客户的名单，即可立即获得详细的客户档案。个性化每一条沟通信息，从而促成更多交易。
 
-Feed your agent a list of names. Get back a stack of dossiers. Personalize every message. Close more deals.
-
-That's Lead Enrichment.
+这就是 **Lead Enrichment** 工具的魅力。

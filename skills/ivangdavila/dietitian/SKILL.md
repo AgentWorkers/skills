@@ -1,106 +1,107 @@
 ---
 name: Dietitian
-description: Structured meal planning — calorie targets, macro calculations, meal timing, and goal-specific diet protocols.
+description: **结构化饮食计划**  
+——包括卡路里目标、宏量营养素计算、用餐时间安排以及针对特定目标的饮食方案。
 metadata:
   category: role
   skills: ["diet", "meal-planning", "macros", "calories", "meal-prep"]
 ---
 
-## Calorie Foundations
+## 热量基础
 
-- Calculate TDEE first: BMR × activity multiplier (sedentary 1.2, moderate 1.55, active 1.725)
-- BMR formulas: Mifflin-St Jeor is most accurate for most people
-- Deficit for fat loss: 300-500 kcal/day is sustainable, larger deficits lose muscle
-- Surplus for muscle gain: 200-300 kcal/day, more just adds fat faster
-- Maintenance first: establish baseline before adjusting, track 2 weeks minimum
+- 首先计算总每日能量消耗（TDEE）：基础代谢率（BMR）× 活动系数（久坐者1.2，中等活动者1.55，高活动者1.725）
+- 对大多数人来说，Mifflin-St Jeor公式是最准确的计算BMR的方法
+- 减肥时的热量缺口：每天300-500千卡是可持续的；更大的缺口可能导致肌肉流失
+- 增肌时的热量盈余：每天200-300千卡；超过这个范围会加速脂肪积累
+- 先保证基础代谢需求：在调整饮食前先确定基础代谢率，并至少跟踪两周的摄入量
 
-## Macro Calculations
+## 宏量营养素计算
 
-| Goal | Protein | Carbs | Fat |
+| 目标 | 蛋白质 | 碳水化合物 | 脂肪 |
 |------|---------|-------|-----|
-| Fat loss | 2.0-2.4g/kg | remaining | 0.8-1g/kg |
-| Muscle gain | 1.6-2.2g/kg | 4-6g/kg | 1-1.5g/kg |
-| Maintenance | 1.6-2.0g/kg | flexible | 0.8-1.2g/kg |
-| Endurance | 1.4-1.8g/kg | 5-8g/kg | 1g/kg |
+| 减肥 | 2.0-2.4克/千克 | 剩余热量所需 | 0.8-1克/千克 |
+| 增肌 | 1.6-2.2克/千克 | 4-6克/千克 | 1-1.5克/千克 |
+| 保持体重 | 1.6-2.0克/千克 | 灵活调整 | 0.8-1.2克/千克 |
+| 耐力训练 | 1.4-1.8克/千克 | 5-8克/千克 | 1克/千克 |
 
-- Use lean body mass for obese individuals — total weight overestimates protein needs
-- Protein timing matters less than total — hit daily target, distribution is secondary
-- Fiber target: 14g per 1000 kcal — most people under-consume
+- 肥胖者应使用瘦体重来计算蛋白质需求——总体重可能会高估蛋白质的需求
+- 蛋白质的摄入时间不如总量重要——关键是达到每日目标，分配方式其次
+- 纤维摄入量建议：每1000千卡摄入14克——大多数人摄入不足
 
-## Meal Structure Templates
+## 餐食结构示例
 
-**Fat Loss (1600 kcal example):**
-- Breakfast: 400 kcal — 30g protein, moderate fat, low carb
-- Lunch: 500 kcal — 40g protein, vegetables, complex carbs
-- Dinner: 500 kcal — 35g protein, vegetables, healthy fats
-- Snack: 200 kcal — protein-focused (Greek yogurt, eggs)
+**减肥（1600千卡示例）：**
+- 早餐：400千卡——30克蛋白质，中等脂肪，低碳水化合物
+- 午餐：500千卡——40克蛋白质，蔬菜，复合碳水化合物
+- 晚餐：500千卡——35克蛋白质，蔬菜，健康脂肪
+- 加餐：200千卡——以蛋白质为主（如希腊酸奶、鸡蛋）
 
-**Muscle Gain (3000 kcal example):**
-- Breakfast: 600 kcal — 40g protein, oats, eggs, fruit
-- Lunch: 700 kcal — 50g protein, rice, lean meat, vegetables
-- Pre-workout: 400 kcal — 30g protein, 50g carbs
-- Post-workout: 500 kcal — 40g protein, fast carbs
-- Dinner: 600 kcal — 40g protein, complex carbs, fats
-- Evening: 200 kcal — casein or cottage cheese
+**增肌（3000千卡示例）：**
+- 早餐：600千卡——40克蛋白质，燕麦，鸡蛋，水果
+- 午餐：700千卡——50克蛋白质，米饭，瘦肉，蔬菜
+- 训练前：400千卡——30克蛋白质，50克碳水化合物
+- 训练后：500千卡——40克蛋白质，快速吸收的碳水化合物
+- 晚餐：600千卡——40克蛋白质，复合碳水化合物，脂肪
+- 晚间：200千卡——酪蛋白或农家奶酪
 
-## Meal Timing Protocols
+## 餐食时间安排
 
-- Pre-workout: 2-3 hours before for full meal, 30-60 min for snack
-- Post-workout: protein within 2 hours, urgency is overstated but habit helps
-- Intermittent fasting: 16:8 works for adherence, not metabolic magic
-- Carb timing: around workouts for performance, otherwise flexible
-- Night eating: calories matter more than timing, but sleep quality may suffer
+- 训练前：如果吃正餐，应在训练前2-3小时；如果吃加餐，应在训练前30-60分钟
+- 训练后：应在2小时内摄入蛋白质；虽然紧迫性被夸大了，但养成习惯有助于吸收
+- 间歇性禁食：16:8时间表有助于坚持饮食计划，但并非有神奇的代谢效果
+- 碳水化合物的摄入时间：根据训练安排来调整，其他时间可以灵活安排
+- 晚餐：热量比时间更重要，但晚餐过量可能导致睡眠质量下降
 
-## Food Swaps for Goals
+## 为实现目标调整食物选择
 
-**Higher protein, same calories:**
-- Greek yogurt instead of regular (2x protein)
-- Egg whites + 1 whole egg instead of 3 whole eggs
-- Chicken breast instead of thigh (less fat, same protein)
-- Cottage cheese instead of regular cheese
+**提高蛋白质摄入量（总热量不变）：**
+- 选择希腊酸奶代替普通酸奶（蛋白质含量是普通酸奶的两倍）
+- 用蛋白饼加一个全蛋代替三个全蛋
+- 选择鸡胸肉代替鸡大腿肉（脂肪更低，蛋白质含量相同）
+- 选择农家奶酪代替普通奶酪
 
-**Lower calorie, same volume:**
-- Cauliflower rice instead of white rice (80% fewer calories)
-- Zucchini noodles instead of pasta
-- Lettuce wraps instead of tortillas
-- Air-popped popcorn instead of chips
+**降低热量摄入量（食物量不变）：**
+- 选择花椰菜米饭代替白米饭（热量减少80%）
+- 选择西葫芦面条代替意大利面
+- 选择生菜卷代替玉米饼
+- 选择空气爆米花代替薯片
 
-## Diet Protocols
+## 饮食方案
 
-**Ketogenic:** <50g carbs, high fat, moderate protein — forces ketosis, strict compliance needed
-**Low-carb:** 50-150g carbs — flexible version, easier to sustain
-**High-carb athletic:** 5-8g/kg carbs — performance-focused, requires high activity
-**Mediterranean:** whole foods focus, olive oil, fish, moderate wine — health and longevity
-**Flexible dieting (IIFYM):** hit macros from any source — adherence-focused, requires tracking
+- **生酮饮食**：碳水化合物摄入量低于50克，高脂肪，中等蛋白质——能诱导酮症，需要严格遵守
+- **低碳水化合物饮食**：碳水化合物摄入量50-150克——较为灵活，更容易坚持
+- **高碳水化合物饮食（适用于运动员）**：碳水化合物摄入量约为体重的5-8克——注重运动表现
+- **地中海饮食**：以天然食物为主，多吃橄榄油、鱼类，适量饮酒——有益健康和长寿
+- **灵活饮食（IIFYM）**：可以从任何食物中获取所需宏量营养素——重点在于坚持饮食计划
 
-## Tracking Methods
+## 追踪摄入量的方法
 
-- Food scale is most accurate — eyeballing underestimates by 20-50%
-- Apps: MyFitnessPal, Cronometer, MacroFactor — pick one, use consistently
-- Weigh raw ingredients — cooked weights vary with water content
-- Restaurant meals: estimate high — portions are larger, hidden fats common
-- Alcohol counts: 7 kcal/gram, plus reduces fat oxidation and increases appetite
+- 使用食物秤是最准确的测量方法——凭肉眼估计往往低估实际摄入量20-50%
+- 可使用应用程序如MyFitnessPal、Cronometer、MacroFactor来记录摄入量
+- 记录食物的原始重量——烹饪后的重量会因水分含量而变化
+- 餐厅食物：热量通常偏高——份量较大，且隐藏的脂肪较多
+- 酒精的热量：每克7千卡，同时会减少脂肪燃烧并增加食欲
 
-## Adjustments Over Time
+## 随时间调整饮食计划
 
-- Weight stalls after 2-3 weeks: reassess TDEE with new weight, increase deficit or activity
-- Metabolic adaptation is real but overestimated — 100-200 kcal reduction, not "starvation mode"
-- Diet breaks every 8-12 weeks — return to maintenance for 1-2 weeks, psychological and physiological reset
-- Reverse dieting post-cut: increase calories 100-150/week — prevents rapid regain
-- Reassess macros monthly — needs change as body composition changes
+- 2-3周后体重停滞不前：根据新的体重重新评估总每日能量消耗，增加热量缺口或增加活动量
+- 代谢适应是存在的，但被高估了——减少100-200千卡的热量摄入即可
+- 每8-12周进行饮食调整——恢复1-2周的基础代谢状态，帮助身体和心理恢复
+- 减肥后恢复饮食：每周增加100-150千卡的热量摄入——防止体重迅速反弹
+- 每月重新评估宏量营养素的需求——随着身体成分的变化，摄入量也需要调整
 
-## Meal Prep Efficiency
+## 提高饮食准备效率
 
-- Batch cook proteins: 3-4 portions at once, refrigerate up to 4 days
-- Prep vegetables raw or blanched — full cooking makes them soggy by day 3
-- Carbs reheat well: rice, potatoes, pasta — cook large batches
-- Containers matter: portioned containers prevent overeating
-- Sauce on the side — prevents soggy meals, adds variety to same base ingredients
+- 批量烹饪蛋白质：一次烹饪3-4份，可冷藏保存最多4天
+- 蔬菜可以生吃或焯水处理——完全煮熟后第三天会变得软烂
+- 碳水化合物容易重新加热：如米饭、土豆、意大利面——可以批量烹饪
+- 使用分装容器：有助于控制食量
+- 将酱料分开存放：避免食物变软，同时增加饮食的多样性
 
-## Common Calculation Errors
+## 常见的计算错误
 
-- Forgetting cooking oils — 1 tbsp = 120 kcal, adds up fast
-- Ignoring liquid calories — juices, lattes, alcohol are invisible calories
-- Trusting food labels — can be 20% off legally, weigh when possible
-- Counting net carbs incorrectly — only subtract fiber, not all "carbs"
-- Using cooked weight with raw entry — 100g raw chicken ≠ 100g cooked chicken
+- 忘记计算烹饪用油的热量：1汤匙油约120千卡，热量很容易累积
+- 忽略液体的热量：果汁、拿铁、酒精都含有热量
+- 相信食品标签上的信息：标签上的营养信息可能有误差，尽可能称重确认
+- 计算碳水化合物时出错：只减去纤维含量，而不是所有“碳水化合物”
+- 用烹饪后的重量代替生食的重量：100克生鸡肉不等于100克熟鸡肉

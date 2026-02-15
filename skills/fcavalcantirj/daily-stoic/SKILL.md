@@ -1,13 +1,13 @@
 ---
 name: daily-stoic
-description: Send daily Stoic philosophy quotes from "The Daily Stoic" by Ryan Holiday. Use when setting up daily wisdom reminders via email or Telegram, or when a user wants stoic quotes for a specific date. Supports all 366 days with title, quote, and reflection.
+description: 每天发送来自瑞安·霍利迪（Ryan Holiday）所著《每日斯多葛哲学》（The Daily Stoic）中的斯多葛哲学名言。这些名言可用于通过电子邮件或 Telegram 设置每日智慧提醒，也可满足用户对特定日期的斯多葛哲学名言的需求。系统支持全年366天的内容，每条名言都包含标题、正文以及相关的思考内容。
 ---
 
-# Daily Stoic
+# 每日斯多葛智慧
 
-Deliver daily Stoic wisdom from "The Daily Stoic" by Ryan Holiday. Each day has a title, opening quote, and reflection.
+每天为您带来 Ryan Holiday 撰写的《The Daily Stoic》中的斯多葛哲学智慧。每篇文章都包含一个标题、开篇引语以及深刻的思考。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get today's stoic message
@@ -23,7 +23,7 @@ python3 {baseDir}/scripts/get-stoic.py --format html    # Email-ready HTML
 python3 {baseDir}/scripts/get-stoic.py --format telegram # Telegram markdown
 ```
 
-## Send via Clawdbot
+## 通过 Clawdbot 发送
 
 ### Telegram
 ```bash
@@ -32,7 +32,7 @@ MESSAGE=$(python3 {baseDir}/scripts/get-stoic.py --format telegram)
 # Then send via Clawdbot message action
 ```
 
-### Email (via gog skill)
+### 电子邮件（通过 gog skill）
 ```bash
 # Generate HTML email
 HTML=$(python3 {baseDir}/scripts/get-stoic.py --format html)
@@ -41,33 +41,33 @@ HTML=$(python3 {baseDir}/scripts/get-stoic.py --format html)
 gog gmail send --to recipient@email.com --subject "Daily Stoic - $(date +%B\ %d)" --body-html="$HTML"
 ```
 
-## Cron Setup
+## Cron 任务设置
 
-Schedule daily delivery at 7am:
+安排每天早上 7 点自动发送：
 ```
 0 7 * * * python3 /path/to/scripts/get-stoic.py --format telegram | send-to-telegram
 ```
 
-Or use Clawdbot cron with text:
+或者使用 Clawdbot 的 Cron 任务来发送文本：
 ```
 "Send today's Daily Stoic quote via Telegram and email to the configured recipients"
 ```
 
-## Data
+## 数据
 
-- **366 entries** (includes Feb 29)
-- Each entry: `date_label`, `title`, `quote`, `source`, `reflection`
-- Data file: `assets/stoic-daily.json`
+- 共有 366 条内容（包括 2 月 29 日的条目）
+- 每条内容包含：`date_label`（日期标签）、`title`（标题）、`quote`（引语）、`source`（来源）和 `reflection`（思考）
+- 数据文件：`assets/stoic-daily.json`
 
-## Example Output
+## 示例输出
 
-**February 3rd — THE SOURCE OF YOUR ANXIETY**
+**2 月 3日 —— 你焦虑的根源**
 
-_"When I see an anxious person, I ask myself, what do they want?"_
-—EPICTETUS, DISCOURSES, 2.13.1
+“当我看到一个焦虑的人时，我会问自己：他们真正想要什么？”
+— 伊壁鸠鲁，《论说集》，2.13.1
 
-The anxious father, worried about his children. What does he want? A world that is always safe...
+那位焦虑的父亲，担心着自己的孩子。他真正想要的是什么？一个永远安全的世界……
 
-## Customization
+## 自定义
 
-Edit the HTML template in `assets/email-template.html` to match your brand.
+请编辑 `assets/email-template.html` 中的 HTML 模板，以匹配您的品牌形象。

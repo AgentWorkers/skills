@@ -1,41 +1,41 @@
-# Podman Browser Skill
+# Podman 浏览器技能
 
-Headless browser automation using Podman + Playwright for scraping JavaScript-rendered pages.
+使用 Podman 和 Playwright 实现无头浏览器自动化，用于抓取由 JavaScript 渲染的页面。
 
-## Requirements
+## 前提条件
 
-- Podman 5.x+ installed and running
-- Node.js 18+ (for running the CLI)
-- Internet connection (first run pulls ~1.5GB container image)
+- 安装并运行 Podman 5.x 或更高版本
+- 安装 Node.js 18 或更高版本（用于运行命令行工具）
+- 拥有互联网连接（首次运行时会下载约 1.5GB 的容器镜像）
 
-## Installation
+## 安装
 
-Create a symlink for easy access:
+创建一个符号链接以便于使用：
 
 ```bash
 chmod +x browse.js
 ln -sf "$(pwd)/browse.js" ~/.local/bin/podman-browse
 ```
 
-First run will pull the Playwright container image (~1.5GB).
+首次运行时会下载 Playwright 容器镜像（约 1.5GB）。
 
-## Commands
+## 命令
 
-### `podman-browse` (or `./browse.js`)
+### `podman-browse`（或 `./browse.js`）
 
-Fetch a JavaScript-rendered page and return its text content.
+获取由 JavaScript 渲染的页面并返回其文本内容。
 
 ```bash
 podman-browse "https://example.com"
 ```
 
-**Options:**
-- `--html` - Return raw HTML instead of text
-- `--wait <ms>` - Wait for additional time after load (default: 2000ms)
-- `--selector <css>` - Wait for specific element before capturing
-- `-h, --help` - Show help
+**选项：**
+- `--html` - 返回原始 HTML 内容而非纯文本
+- `--wait <ms>` - 在页面加载完成后等待指定时间（默认值：2000 毫秒）
+- `--selector <css>` - 等待特定元素出现后再进行操作
+- `-h, --help` - 显示帮助信息
 
-**Examples:**
+**示例：**
 ```bash
 # Get rendered text content from Hacker News
 podman-browse "https://news.ycombinator.com"
@@ -50,26 +50,26 @@ podman-browse --selector ".itemlist" "https://news.ycombinator.com"
 podman-browse --wait 5000 "https://news.ycombinator.com/newest"
 ```
 
-## How It Works
+## 工作原理
 
-1. Runs Microsoft's official Playwright container via Podman
-2. Uses Chromium in headless mode
-3. Waits for JavaScript to render (networkidle + custom wait)
-4. Returns text or HTML content
+1. 通过 Podman 运行微软官方提供的 Playwright 容器
+2. 使用 Chromium 在无头模式下执行页面渲染
+3. 等待 JavaScript 完成页面渲染（使用 `networkidle` 指令以及自定义等待时间）
+4. 返回页面的文本内容或 HTML 内容
 
-## Container Image
+## 容器镜像
 
-Uses `mcr.microsoft.com/playwright:v1.50.0-noble` with `playwright@1.50.0` npm package (versions must match).
+使用 `mcr.microsoft.com/playwright:v1.50.0-noble`，并依赖 `playwright@1.50.0` 的 npm 包（版本必须一致）。
 
-## Files
+## 相关文件
 
-- `browse.js` - Self-contained Node.js CLI (handles args + spawns podman)
-- `SKILL.md` - This documentation
+- `browse.js`：一个独立的 Node.js 命令行工具，用于处理参数并启动 Podman 容器
+- `SKILL.md`：本文档文件
 
-## Notes
+## 注意事项
 
-- First run will pull the container image (~1.5GB)
-- Uses `--ipc=host` for Chromium stability
-- Uses `--init` to handle zombie processes
-- Sandbox disabled when running as root (fine for trusted sites)
-- Each run starts a fresh container (clean but takes ~10-15s)
+- 首次运行时会下载容器镜像（约 1.5GB）
+- 为确保 Chromium 的稳定性，使用 `--ipc=host` 选项
+- 使用 `--init` 选项来处理可能产生的僵尸进程（zombie processes）
+- 以 root 用户权限运行时禁用沙箱模式（适用于可信网站）
+- 每次运行都会创建一个新的容器（环境会被清空，但启动过程需要约 10-15 秒）

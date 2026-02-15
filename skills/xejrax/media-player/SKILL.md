@@ -1,6 +1,6 @@
 ---
 name: media-player
-description: "Play audio/video locally on the host"
+description: "在主机上本地播放音频/视频"
 metadata:
   {
     "openclaw":
@@ -21,11 +21,11 @@ metadata:
   }
 ---
 
-# Media Player
+# 媒体播放器
 
-Play audio/video locally on the host using mpv. Supports local files and remote URLs.
+使用 `mpv` 在主机上本地播放音频/视频。支持本地文件和远程 URL。
 
-## Commands
+## 命令
 
 ```bash
 # Play a local file or URL
@@ -39,7 +39,7 @@ media-player pause
 media-player stop
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install mpv

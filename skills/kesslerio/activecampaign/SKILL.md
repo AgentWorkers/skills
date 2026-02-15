@@ -1,127 +1,54 @@
 ---
 name: activecampaign
-description: ActiveCampaign CRM integration for lead management, deal tracking, and email automation. Use for syncing demo leads, managing clinic sales pipeline, and triggering follow-up sequences.
+description: ActiveCampaign CRM集成用于潜在客户管理、交易跟踪以及电子邮件自动化。该集成可用于同步演示潜在客户信息、管理诊所的销售流程，并触发后续跟进操作。
 metadata: {"openclaw":{"emoji":"📧","requires":{"bins":["activecampaign"],"env":["ACTIVECAMPAIGN_URL","ACTIVECAMPAIGN_API_KEY"]},"primaryEnv":["ACTIVECAMPAIGN_URL","ACTIVECAMPAIGN_API_KEY"]}}
 ---
 
-# ActiveCampaign Skill 📧
+# ActiveCampaign 技能 📧  
+ActiveCampaign 集成用于 CRM 自动化和销售管道管理。  
 
-ActiveCampaign integration for CRM automation and sales pipeline management.
+## 目的  
+用于管理销售相关的潜在客户、交易以及电子邮件自动化流程：  
+- **联系人**：同步演示会参与者、潜在客户和目标客户信息  
+- **交易**：跟踪销售管道的各个阶段  
+- **标签**：对潜在客户进行分类（如“请求演示”、“需要培养”、“准备成交”）  
+- **自动化流程**：根据用户操作触发相应的电子邮件序列  
+- **自定义字段**：映射订单、运输、账单和订阅数据  
 
-## Purpose
+## 设置  
 
-Manage leads, deals, and email automations for sales:
-- **Contacts**: Sync demo attendees, leads, and prospects
-- **Deals**: Track sales pipeline stages
-- **Tags**: Segment leads (demo-requested, nurture, close-ready)
-- **Automations**: Trigger email sequences based on actions
-- **Custom Fields**: Map order, shipping, billing, and subscription data
+### 1. 凭据  
+从 ActiveCampaign 获取 API 凭据：  
+- **网址**：设置 → 开发者 → API 访问  
+- **API 密钥**：设置 → 开发者 → API 访问  
 
-## Setup
+### 2. 自定义字段配置（可选）  
+该技能支持对订单、运输、账单和订阅数据的自定义字段映射。  
 
-### 1. Credentials
+（配置文件为 `gitignored`，请勿将其提交到代码仓库。）  
 
-```bash
-# Create config directory
-mkdir -p ~/.config/activecampaign
+## 使用方法  
 
-# Add credentials
-echo "https://youraccount.api-us1.com" > ~/.config/activecampaign/url
-echo "your-api-key" > ~/.config/activecampaign/api_key
+（使用方法的具体说明此处省略。）  
 
-# Or use environment variables
-export ACTIVECAMPAIGN_URL="https://youraccount.api-us1.com"
-export ACTIVECAMPAIGN_API_KEY="your-api-key"
-```
+## 自定义字段配置  
+该技能提供了全面的字段配置系统，包括以下类别：  
+| 类别 | 字段        |  
+|---------|------------|  
+| **订单** | 订单 ID、编号、日期、总价、税费、状态、小计、折扣、货币、支付详情 |  
+| **运输** | 名称、地址 1/2、城市、州、邮政编码、国家、运输方式、费用 |  
+| **账单** | 地址 1/2、城市、州、邮政编码、国家 |  
+| **订阅** | 订阅 ID、状态、订阅计划、费用、货币、订阅周期、开始时间、试用期结束时间 |  
+| **其他** | 公司名称、产品信息、潜在客户相关活动、备注、生日等 |  
 
-Get API credentials from ActiveCampaign:
-- **URL**: Settings → Developer → API Access
-- **API Key**: Settings → Developer → API Access
+### 设置字段值  
+（字段值的设置方法此处省略。）  
 
-### 2. Custom Fields Configuration (Optional)
+## 速率限制  
+- 每秒最多 5 次请求  
+- 该工具会自动处理速率限制机制。  
 
-The skill supports custom field mappings for order, shipping, billing, and subscription data.
-
-```bash
-# Initialize config from sample
-activecampaign config init
-
-# Edit with your field IDs
-nano ~/.config/activecampaign/fields.json
-```
-
-The config file is **gitignored** and should not be committed.
-
-## Usage
-
-```bash
-# Contacts
-activecampaign contacts list                    # List all contacts
-activecampaign contacts create "email@test.com" "First" "Last"
-activecampaign contacts sync "email@test.com" "First" "Last"
-activecampaign contacts get <id>
-activecampaign contacts search "clinic"
-activecampaign contacts add-tag <id> <tag_id>
-activecampaign contacts remove-tag <id> <tag_id>
-
-# Deals
-activecampaign deals list
-activecampaign deals create "Clinic Name" <stage_id> <value>
-activecampaign deals update <id> stage=<stage_id> value=<value>
-activecampaign deals get <id>
-
-# Tags
-activecampaign tags list
-activecampaign tags create "Demo Requested"
-
-# Automations
-activecampaign automations list
-activecampaign automations add-contact <contact_id> <automation_id>
-
-# Custom Fields
-activecampaign fields list                    # List configured fields
-activecampaign fields get order_fields.order_id
-activecampaign fields set-field <contact_id> <field_id> <value>
-
-# Lists
-activecampaign lists list
-activecampaign lists add-contact <list_id> <contact_id>
-
-# Configuration
-activecampaign config init                    # Create fields.json from sample
-activecampaign config path                    # Show config file path
-```
-
-## Custom Fields Configuration
-
-The skill includes a comprehensive field configuration system for:
-
-| Category | Fields |
-|----------|--------|
-| **Order** | Order ID, Number, Date, Total, Tax, Status, Subtotal, Discount, Currency, Payment details |
-| **Shipping** | Name, Address 1/2, City, State, Postal Code, Country, Method, Cost |
-| **Billing** | Address 1/2, City, State, Postal Code, Country |
-| **Subscription** | ID, Status, Plan, Amount, Currency, Interval, Start, Trial End |
-| **Additional** | Company, Product info, Lead Campaign, Notes, Birthday, etc. |
-
-### Setting Field Values
-
-```bash
-# Get field ID from config
-activecampaign fields get order_fields.order_id
-# Output: 7
-
-# Set field value on contact
-activecampaign fields set-field <contact_id> 7 "ORD-12345"
-```
-
-## Rate Limits
-
-- **5 requests per second** max
-- The wrapper handles rate limiting automatically
-
-## Related Skills
-
-- `shapescale-crm` - Attio CRM integration (source of truth)
-- `shapescale-sales` - Sales workflows and qualification
-- `campaign-orchestrator` - Multi-channel follow-up campaigns
+## 相关技能  
+- `shapescale-crm`：Attio CRM 集成  
+- `shapescale-sales`：销售工作流和客户资格评估  
+- `campaign-orchestrator`：多渠道跟进活动

@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Landing Page Design
+# 着陆页设计
 
-Design high-converting landing pages with AI-generated visuals via [inference.sh](https://inference.sh) CLI.
+使用 [inference.sh](https://inference.sh) 命令行工具，通过人工智能生成视觉元素来设计转化率高的着陆页。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -32,9 +32,9 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-## Above-the-Fold Formula
+## 首屏展示原则
 
-Everything visible before scrolling must communicate value in 5 seconds.
+在用户滚动页面之前，所有可见的内容都必须在 5 秒内传达出产品的价值。
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -52,29 +52,29 @@ Everything visible before scrolling must communicate value in 5 seconds.
 └─────────────────────────────────────────────────┘
 ```
 
-### The 5 Elements
+### 五大核心元素
 
-| Element | Rule | Example |
-|---------|------|---------|
-| **Headline** | 6-12 words, states the outcome | "Ship docs in minutes, not days" |
-| **Subheadline** | 15-25 words, expands on how | "AI-powered documentation that writes itself from your codebase. No templates needed." |
-| **Hero image** | Shows the OUTCOME, not the product | Person looking satisfied at results, not a screenshot of your UI |
-| **Primary CTA** | Action verb + value | "Start Free Trial" not "Submit" or "Learn More" |
-| **Social proof** | Logos, count, or micro-testimonial | "Trusted by 10,000+ teams at [logos]" |
+| 元素        | 规则                                      | 示例                                      |
+|-------------|-----------------------------------------|-----------------------------------------|
+| **标题**       | 6-12 个单词，明确说明产品成果                   | “几分钟内即可生成文档，无需等待数天”                   |
+| **副标题**      | 15-25 个单词，详细解释产品功能                   | “基于人工智能的文档生成工具，直接从您的代码库中生成。无需使用模板。”         |
+| **首页图片**     | 展示产品成果，而非产品界面截图                 | 展示用户对成果的满意表情，而非产品界面截图                 |
+| **主要行动号召（CTA）** | 行动动词 + 产品价值                          | “立即开始免费试用”                               |
+| **社交证明**     | 公司标志、用户数量或用户评价                     | “已获得 [logos] 上 10,000+ 个团队的信任”                     |
 
-## Headlines
+## 标题设计
 
-### Formulas That Convert
+### 有效的标题公式
 
-| Formula | Example |
-|---------|---------|
-| [Outcome] without [pain] | "Beautiful docs without the design skills" |
-| [Outcome] in [timeframe] | "Launch your site in 5 minutes" |
-| The [better way] to [common task] | "The faster way to build APIs" |
-| Stop [pain]. Start [outcome]. | "Stop guessing. Start knowing." |
-| [Number] [things] to [outcome] | "One tool to manage all your data" |
+| 公式          | 示例                                        |                                           |
+|-----------------|---------------------------------------------|-----------------------------------------|
+| “[成果] 无需 [繁琐流程]”    | “无需设计技能，即可生成精美的文档”                        |
+| “[成果] 在 [时间范围内] 完成”    | “5 分钟内即可发布您的网站”                              |
+| “[常见任务的] 更佳方式”    | “构建 API 的更快方法”                                  |
+| “停止 [麻烦]，开始 [成果]”    | “停止猜测，开始了解实际情况”                              |
+| “[数量] 个工具，实现 [成果]”    | “一个工具，管理您的所有数据”                              |
 
-### What Makes Headlines Fail
+### 标题设计常见错误
 
 ```
 ❌ "Welcome to Our Platform" (says nothing about value)
@@ -87,9 +87,9 @@ Everything visible before scrolling must communicate value in 5 seconds.
 ✅ "Find and fix bugs before your users do"
 ```
 
-## Hero Images
+## 首页图片设计
 
-### Show the Outcome, Not the Product
+### 展示产品成果，而非产品界面
 
 ```
 ❌ Screenshot of your dashboard (boring, hard to parse at a glance)
@@ -116,56 +116,55 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-## CTA Buttons
+## 行动号召（CTA）按钮设计
 
-### Text
+|          |                                            |                                           |
+| **好的 CTA          | **差的 CTA                                      |                                           |
+|-----------------|-----------------------------------------|-----------------------------------------|
+| “立即开始免费试用”     | “提交”                                      |                                           |
+| “免费开始使用”     | “点击这里”                                      |                                           |
+| “查看实际效果”     | “了解更多”（缺乏行动号召）                             |                                           |
+| “创建您的第一份报告”     | “注册”                                      |                                           |
+| “免费试用 14 天”     | “注册”                                      |                                           |
 
-| Good CTAs | Bad CTAs |
-|-----------|----------|
-| "Start Free Trial" | "Submit" |
-| "Get Started Free" | "Click Here" |
-| "See It in Action" | "Learn More" (low commitment) |
-| "Create Your First Report" | "Sign Up" (vague) |
-| "Try Free for 14 Days" | "Register" |
+**公式：** 行动动词 + 产品价值/成果 + （可选：降低风险）
 
-**Formula:** Action verb + value/outcome + (optional: reduce risk)
+## 设计要素
 
-### Design
+| 元素        | 规则                                        |                                           |
+|-------------|-----------------------------------------|-----------------------------------------|
+| **颜色**       | 与背景形成高对比度——必须是最显眼的元素                   |                                           |
+| **大小**       | 高度至少 44px（可点击区域），宽度足够显示文字和内边距                 |                                           |
+| **位置**       | 放置在页面顶部；每个主要部分后重复显示                         |                                           |
+| **空白空间**     | 按钮周围留出足够的空间，避免拥挤                         |                                           |
+| **次要 CTA**     | 如有必要，在下方添加文字链接（或“观看演示”）                         |                                           |
 
-| Element | Rule |
-|---------|------|
-| Color | High contrast with background — must be the most visible element |
-| Size | Minimum 44px height (tap target), wide enough for text + padding |
-| Position | Above the fold, repeated after each major section |
-| Whitespace | Generous padding around button, don't crowd it |
-| Secondary CTA | If needed, use text link below ("or watch a demo") |
+## 页面结构顺序
 
-## Section Order
+经过验证的着陆页结构顺序：
 
-The proven sequence for landing pages:
+| 部分        | 目的                                        | 关键元素                                      |
+|-------------|-----------------------------------------|-----------------------------------------|
+| 1. **首页图片**     | 展示核心价值与主要行动号召                         | 标题 + 图片 + 行动号召                             |
+| 2. **社交证明**     | 建立信任                                      | 公司标志、用户数量、认证标志                         |
+| 3. **问题描述**     | 引起用户共鸣                                      | 用户面临的痛点                                   |
+| 4. **解决方案/功能**     | 展示产品如何解决问题                             | 3 个关键功能及可视化示例                         |
+| 5. **使用方法**     | 降低使用难度                                   | 3 个步骤：注册、配置、获取收益                         |
+| 6. **用户评价**     | 证明产品有效性                                 | 2-3 条具体客户评价                             |
+| 7. **价格政策**     | 帮助用户做出决策                                   | 明确的价格层级，突出推荐选项                         |
+| 8. **常见问题解答** | 解答用户疑问                                   | 5-7 个常见问题                               |
+| 9. **最终行动号召** | 激发用户购买欲望                                   | 重复主要行动号召，强调紧迫性                         |
 
-| Section | Purpose | Key Element |
-|---------|---------|-------------|
-| 1. **Hero** | Core value, primary CTA | Headline + image + CTA |
-| 2. **Social Proof** | Build trust | Logos, numbers, badges |
-| 3. **Problem** | Create empathy | Pain point they recognize |
-| 4. **Solution/Features** | Show how you solve it | 3 key features with visuals |
-| 5. **How It Works** | Reduce complexity | 3 steps: sign up, configure, benefit |
-| 6. **Testimonials** | Prove it works | 2-3 specific customer quotes |
-| 7. **Pricing** | Enable decision | Clear tiers, highlight recommended |
-| 8. **FAQ** | Handle objections | 5-7 common questions |
-| 9. **Final CTA** | Capture remainders | Repeat primary CTA with urgency |
+## 社交证明类型
 
-## Social Proof Types
-
-| Type | Impact | Placement |
-|------|--------|-----------|
-| **Company logos** | Fastest to process, high trust | Below hero |
-| **User count** | Scale signal | Hero or social proof bar |
-| **Star rating** | Product quality | Near CTA |
-| **Testimonials** | Detailed credibility | Dedicated section |
-| **Case study stats** | Specific proof | Feature sections |
-| **Trust badges** | Security/compliance | Near forms, pricing, footer |
+| 类型        | 作用                                        | 显示位置                                      |
+|-------------|-----------------------------------------|-----------------------------------------|
+| **公司标志**     | 最快建立信任                                   | 放置在首页图片下方                               |
+| **用户数量**     | 体现产品规模                                   | 放置在首页图片或社交证明区域                         |
+| **星级评价**     | 体现产品质量                                   | 放置在行动号召附近                             |
+| **用户评价**     | 详细展示产品可信度                                 | 专门设置评价区                               |
+| **案例研究数据**     | 证明产品效果                                   | 放置在功能介绍区域                             |
+| **信任认证标志**     | 体现产品安全性和合规性                                 | 放置在表单附近、页面底部                         |
 
 ```bash
 # Research for social proof stats
@@ -174,30 +173,30 @@ infsh app run exa/answer --input '{
 }'
 ```
 
-## Form Design
+## 表单设计
 
-| Rule | Impact |
-|------|--------|
-| Every field reduces conversion ~11% | Minimize fields |
-| Name + Email = maximum for signups | Don't ask for phone, company, role |
-| Single-column layout | Don't use multi-column forms |
-| Inline validation | Show errors immediately, not on submit |
-| Clear error messages | "Email is required" not "Error in field 3" |
-| Submit button text = action | "Create Account" not "Submit" |
+| 规则        | 作用                                        |                                           |
+|-------------|-----------------------------------------|-----------------------------------------|
+| 减少表单字段数量 | 每增加一个字段，转化率降低约 11%                         |                                           |
+| 仅要求姓名和电子邮件地址 | 避免收集电话号码、公司名称或职位                         |                                           |
+| 单列布局       | 不要使用多列表单                               |                                           |
+| 实时验证       | 立即显示错误信息，避免用户在提交时才发现                         |                                           |
+| 清晰的错误提示   | 显示具体错误内容（如“需要填写电子邮件地址”而非“第 3 个字段有错误”）         |                                           |
+| 提交按钮文本     | 明确表示具体操作（如“创建账户”而非“提交”）                         |                                           |
 
-## Mobile Optimization
+## 移动端优化
 
-| Rule | Why |
-|------|-----|
-| CTA button full width | Easy to tap with thumbs |
-| Sticky CTA on scroll | Always accessible |
-| No horizontal scrolling | Breaks mobile layout |
-| Font minimum 16px | iOS zooms inputs below 16px |
-| Tap targets minimum 48x48px | Apple HIG, Google Material |
-| Images responsive | Don't overflow viewport |
-| Prioritize headline + CTA | Simplify above-the-fold |
+| 规则        | 原因                                        |                                           |
+|-------------|-----------------------------------------|-----------------------------------------|
+| 行动号召按钮占满屏幕宽度 | 便于用户用拇指点击                             |                                           |
+| 滚动时保持行动号召可见     | 确保用户始终能看到行动号召                             |                                           |
+| 避免水平滚动     | 避免破坏移动端页面布局                             |                                           |
+| 字体大小至少 16px     | iOS 系统会放大小于 16px 的字体                         |                                           |
+| 可点击区域大小至少 48x48px | 符合 Apple HIG 和 Google Material 设计规范                   |                                           |
+| 图片自适应显示     | 确保图片不会超出屏幕显示范围                             |                                           |
+| 优先显示标题和行动号召 | 简化首页内容                                 |                                           |
 
-## OG Image for Sharing
+## 用于分享的原始图片
 
 ```bash
 # Generate an OG image for the landing page
@@ -213,30 +212,30 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Page Speed
+## 页面加载速度
 
-| Rule | Target | Why |
-|------|--------|-----|
-| Hero image | < 200 KB | First thing to load |
-| Total page weight | < 2 MB | Mobile data, patience |
-| Lazy load below-fold | Always | Only load what's visible |
-| Minimize JavaScript | < 200 KB | Blocks rendering |
-| LCP (Largest Contentful Paint) | < 2.5s | Google Core Web Vitals |
+| 规则        | 目标                         | 原因                                        |                                           |
+|-------------|-----------------------------------------|-----------------------------------------|
+| 首页图片大小     | 小于 200 KB                                     | 首先加载的内容                         |                                           |
+| 页面总大小     | 小于 2 MB                                     | 优化移动端加载速度                         |                                           |
+| 分页加载（仅加载可见内容） | 始终加载用户可见的部分                         |                                           |
+| 减少 JavaScript 使用     | 减少代码体积，加快加载速度                         |                                           |
+| LCP（最大内容绘制时间） | 小于 2.5 秒                                   | 符合 Google Core Web Vitals 标准                         |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| No clear headline | Visitor doesn't know what you do | 6-12 words, outcome-focused |
-| CTA says "Learn More" | Too low commitment | Action verb + specific value |
-| Hero is a product screenshot | Hard to parse, boring | Show the outcome, use lifestyle imagery |
-| Multiple competing CTAs | Decision paralysis | One primary CTA, one secondary max |
-| No social proof | No trust signal | Add logos, counts, or testimonials |
-| Too many form fields | Conversion drops ~11% per field | Name + email maximum |
-| Desktop-only design | 60%+ traffic is mobile | Design mobile-first |
-| No urgency in final CTA | Visitors leave and forget | "Start your free 14-day trial" |
+| 错误类型        | 问题                                        | 修正方法                                      |
+|-------------|-----------------------------------------|-----------------------------------------|
+| 没有明确的标题    | 用户不清楚产品功能                         | 使用 6-12 个单词，突出产品成果                         |
+| 行动号召为“了解更多”   | 行动号召缺乏吸引力                             | 使用具体行动动词和成果描述                         |
+| 首页图片是产品界面截图 | 用户难以理解产品                         | 使用与产品成果相关的图片                         |
+| 多个竞争性行动号召 | 造成用户决策困难                             | 仅保留一个主要行动号召                         |
+| 没有社交证明     | 用户缺乏信任感                         | 添加公司标志、用户数量或评价                         |
+| 表单字段过多     | 每增加一个字段，转化率降低约 11%                         | 仅要求姓名和电子邮件地址                         |
+| 仅适用于桌面端的设计 | 超过 60% 的访问量来自移动端                         | 优先考虑移动端用户体验                         |
+| 最终行动号召缺乏紧迫感 | 用户可能忽略提示                         | 强调“立即开始 14 天免费试用”                         |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -244,4 +243,4 @@ npx skills add inferencesh/skills@web-search
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用程序：`infsh app list`

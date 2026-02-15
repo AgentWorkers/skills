@@ -1,6 +1,6 @@
 ---
 name: kalshi-trader
-description: Query Kalshi prediction markets - Fed rates, GDP, CPI, economics, and regulated event contracts
+description: 查询Kalshi预测市场的相关信息——包括联邦利率（Fed rates）、国内生产总值（GDP）、消费者价格指数（CPI）、经济数据，以及各类受监管的事件合约（regulated event contracts）。
 homepage: https://kalshi.com
 user-invocable: true
 metadata: {"moltbot":{"emoji":"🏛️","requires":{}}}
@@ -8,96 +8,94 @@ metadata: {"moltbot":{"emoji":"🏛️","requires":{}}}
 
 # Kalshi Trader
 
-Query Kalshi, the CFTC-regulated US prediction market for economics, politics, and event contracts.
+查询 Kalshi——这个受美国商品期货交易委员会（CFTC）监管的预测市场，提供关于经济、政治和事件的预测合约服务。
 
-## About Kalshi
+## 关于 Kalshi
 
-Kalshi is the first legal, regulated prediction market in the United States, approved by the CFTC. It offers event contracts on:
-- Federal Reserve interest rate decisions
-- GDP and economic indicators
-- Inflation (CPI) data
-- Political events
-- Weather and natural events
+Kalshi 是美国首个获得 CFTC 批准的合法、受监管的预测市场。它提供以下类型的事件合约：
+- 美联储利率决策
+- 国内生产总值（GDP）和经济指标
+- 通货膨胀（CPI）数据
+- 政治事件
+- 天气和自然灾害事件
 
-## Commands
+## 命令
 
-### Federal Reserve Markets
+### 美联储市场
 ```bash
 python3 {baseDir}/scripts/kalshi.py fed [limit]
 ```
-Get Fed interest rate prediction markets (KXFED series).
+获取美联储利率预测市场的数据（KXFED 系列）。
 
-### Economics Markets
+### 经济市场
 ```bash
 python3 {baseDir}/scripts/kalshi.py economics [limit]
 ```
-Get GDP, CPI, and other economics markets.
+获取 GDP、CPI 及其他经济指标的相关市场数据。
 
-### Trending Markets
+### 热门市场
 ```bash
 python3 {baseDir}/scripts/kalshi.py trending [limit]
 ```
-Get high-volume trending markets.
+获取交易量较大的热门市场数据。
 
-### Search Markets
+### 搜索市场
 ```bash
 python3 {baseDir}/scripts/kalshi.py search "<query>" [limit]
 ```
-Search markets by keyword.
+根据关键词搜索相关市场。
 
-### Get All Series
+### 获取所有市场系列
 ```bash
 python3 {baseDir}/scripts/kalshi.py series
 ```
-List all available market series.
+列出所有可用的市场系列。
 
-## Output Format
+## 输出格式
 
-Results include:
-- Market title/question
-- YES price (probability)
-- Trading volume
-- Market ticker
-- Status (open/closed)
+查询结果包括：
+- 市场名称/问题
+- “YES”价格（表示预测概率）
+- 交易量
+- 市场代码
+- 市场状态（开放/关闭）
 
-## Key Market Series
+## 主要市场系列
 
-| Series | Description |
+| 系列 | 描述 |
 |--------|-------------|
-| KXFED | Federal Reserve interest rate decisions |
-| KXGDP | US GDP predictions |
-| KXCPI | Consumer Price Index / Inflation |
-| KXBTC | Bitcoin price brackets |
+| KXFED | 美联储利率决策 |
+| KXGDP | 美国 GDP 预测 |
+| KXCPI | 消费者价格指数（CPI）/通货膨胀 |
+| KXBTC | 比特币价格区间 |
 
-## Example Usage
+## 使用示例
 
-**User**: "What are the Fed rate predictions?"
-
-**Assistant**: I'll fetch the Federal Reserve markets from Kalshi.
+**用户**：“美联储的利率预测是什么？”
+**助手**：我将从 Kalshi 获取美联储利率预测市场的相关数据。
 
 ```bash
 python3 {baseDir}/scripts/kalshi.py fed
 ```
 
-**User**: "Search for inflation markets"
-
-**Assistant**: Let me search Kalshi for inflation-related markets.
+**用户**：“搜索与通货膨胀相关的市场”
+**助手**：我正在 Kalshi 中搜索与通货膨胀相关的市场数据。
 
 ```bash
 python3 {baseDir}/scripts/kalshi.py search "inflation"
 ```
 
-## API Information
+## API 信息
 
-- **Base URL**: `https://api.elections.kalshi.com/trade-api/v2`
-- **Authentication**: Not required for read operations
-- **Rate Limits**: Standard API rate limits apply
-- **Documentation**: https://docs.kalshi.com
+- **基础 URL**：`https://api.elections.kalshi.com/trade-api/v2`
+- **认证**：读取操作无需认证
+- **请求限制**：遵循标准的 API 请求限制
+- **文档**：https://docs.kalshi.com
 
-## Notes
+## 注意事项
 
-- This tool is read-only (trading requires API key authentication)
-- Prices shown as decimals (0.75 = 75% probability)
-- Volume represents total contracts traded
-- Markets settle to $1.00 (YES) or $0.00 (NO)
-- US-regulated, available to US residents
+- 该工具仅支持读取数据（交易操作需要 API 密钥）
+- 价格以小数形式显示（0.75 表示 75% 的概率）
+- 交易量表示合约的总数
+- 市场最终结果为 $1.00（表示“YES”）或 $0.00（表示“NO”）
+- 该市场受美国监管，仅限美国居民使用

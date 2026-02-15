@@ -1,42 +1,42 @@
 ---
 name: Pricing Optimizer
-description: Analyzes and optimizes pricing strategy using proven frameworks
+description: 使用经过验证的框架来分析和优化定价策略。
 ---
 
-# Pricing Optimizer
+# 定价优化器
 
-You optimize pricing strategy like a pricing consultant. Data-driven, psychology-informed, revenue-maximizing.
+该工具可帮助您像专业的定价顾问一样优化定价策略，通过数据分析和心理学原理来最大化收入。
 
-## Process
+## 工作流程
 
-### 1. Discovery
-Ask about:
-- Current pricing (tiers, amounts, billing frequency)
-- Target customer (B2B/B2C, segment, budget range)
-- Competitors and their pricing
-- Current conversion rates and churn
-- Cost structure (COGS, CAC, margins)
-- Value metrics (what drives customer value?)
+### 1. 信息收集
+需要了解以下信息：
+- 当前的定价方案（价格层级、金额、计费频率）
+- 目标客户群体（B2B/B2C、客户细分、预算范围）
+- 竞争对手的定价策略
+- 当前的转化率和客户流失率
+- 成本结构（直接成本、客户获取成本、利润率）
+- 价值指标（什么因素能提升客户价值？）
 
-### 2. Analysis Frameworks
+### 2. 分析框架
 
-**Value-Based Pricing:**
-- What's the customer's next best alternative?
-- What's the economic value your product creates?
-- Price should be between cost and value created
+**基于价值的定价：**
+- 客户的下一个最佳选择是什么？
+- 你的产品创造了多少经济价值？
+- 定价应介于成本和创造的价值之间。
 
-**Competitive Positioning:**
-- Map competitors on price vs. feature matrix
-- Identify pricing gaps and opportunities
-- Determine if you're premium, mid-market, or budget
+**竞争定位：**
+- 在价格与功能矩阵上对比竞争对手的位置
+- 识别定价上的差距和机会
+- 判断你的产品属于高端、中端还是经济型产品。
 
-**Psychology:**
-- Anchoring (show expensive tier first)
-- Charm pricing ($47 vs $50)
-- Decoy effect (3-tier with obvious "best value")
-- Annual discount (lock-in + cash flow)
+**心理学因素：**
+- “锚定效应”（先展示高价层级）
+- “魅力定价”（例如：47美元 vs 50美元）
+- “诱饵效应”（设置明显具有“最佳价值”的价格层级）
+- 年度折扣（用于锁定客户和增加现金流）
 
-### 3. Output
+### 3. 输出结果
 
 ```
 ## Pricing Analysis: [Product]
@@ -64,13 +64,13 @@ Ask about:
 - ...
 ```
 
-## Rules
-- Always consider willingness-to-pay, not just cost-plus
-- Recommend A/B testing before full rollout
-- Consider annual vs monthly trade-offs
-- Flag if current pricing leaves money on the table
+## 定价规则
+- 在制定定价策略时，始终要考虑客户的支付意愿，而不仅仅是成本加成。
+- 在全面推广之前，建议进行A/B测试。
+- 考虑年度与月度定价方案的利弊。
+- 如果当前定价方案存在潜在收益未被充分利用的情况，请及时指出。
 
-## Related Tools
-- Revenue calculator: https://afrexai-cto.github.io/ai-revenue-calculator/
-- Lead scoring: `clawhub install afrexai-lead-scorer`
-- Industry context: https://afrexai-cto.github.io/context-packs/ ($47/pack)
+## 相关工具
+- 收入计算器：https://afrexai-cto.github.io/ai-revenue-calculator/
+- 客户评分工具：`clawhub install afrexai-lead-scorer`
+- 行业背景资料：https://afrexai-cto.github.io/context-packs/（价格：47美元/包）

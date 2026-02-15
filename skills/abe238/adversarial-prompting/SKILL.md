@@ -1,102 +1,98 @@
 ---
 name: adversarial-prompting
-description: Applies rigorous adversarial analysis to generate, critique, fix, and consolidate solutions for any problem (technical or non-technical). Use when facing complex problems requiring thorough analysis, multiple solution approaches, and validation of proposed fixes before implementation.
+description: 应用严格的对抗性分析方法来生成、评估、修复并优化任何问题（无论是技术问题还是非技术问题）的解决方案。在面对需要深入分析、多种解决方案以及在执行前验证修复方案复杂问题时，可以使用这种方法。
 ---
 
-# Adversarial Prompting
+# 对抗性引导（Adversarial Prompting）
 
-This skill applies a structured adversarial methodology to problem-solving by generating multiple solutions, rigorously critiquing each for weaknesses, developing fixes, validating those fixes, and consolidating into ranked recommendations. The approach forces deep analysis of failure modes, edge cases, and unintended consequences before committing to a solution.
+该技能采用结构化的对抗性方法来解决问题：首先生成多个解决方案，逐一严格评估每个方案的不足之处，然后制定改进措施，验证这些改进措施的有效性，并最终整合成有序的推荐方案。这种方法要求在确定最终解决方案之前，深入分析潜在的故障模式、边缘情况以及意外后果。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- Facing complex technical problems requiring thorough analysis (architecture decisions, debugging, performance optimization)
-- Solving strategic or business problems with multiple viable approaches
-- Needing to identify weaknesses in proposed solutions before implementation
-- Requiring validated fixes that address root causes, not symptoms
-- Working on high-stakes decisions where failure modes must be understood
-- Seeking comprehensive analysis with detailed reasoning visible throughout
+在以下情况下使用该技能：
+- 面对需要彻底分析的复杂技术问题（如架构决策、调试、性能优化）；
+- 需要通过多种可行方案解决战略或业务问题；
+- 在实施前需要识别出提案中的缺陷；
+- 需要制定能够解决根本原因而非表面问题的改进措施；
+- 在涉及高风险决策时，必须充分理解可能的故障模式；
+- 需要进行全面分析，并确保整个过程中都能看到详细的推理过程。
 
-Do not use this skill for:
-- Simple, straightforward problems with obvious solutions
-- Time-sensitive decisions requiring immediate action without analysis
-- Problems where exploration and iteration are more valuable than upfront analysis
+**不适用场景**：
+- 问题简单明了，且有显而易见的解决方案；
+- 需要立即采取行动的紧急决策，没有时间进行分析；
+- 在这些问题中，探索和迭代比预先分析更为重要。
 
-## How to Use This Skill
+## 使用方法
 
-### Primary Workflow
+### 主要工作流程
 
-When invoked, apply the following 7-phase process to the user's problem:
+当使用该技能时，按照以下7个阶段处理用户的问题：
 
-#### Phase 1: Solution Generation
-Generate 3-7 distinct solution approaches. For each solution:
-- Explain the reasoning behind the approach
-- Describe the core strategy
-- Outline the key steps or components
+#### 第1阶段：解决方案生成
+生成3-7种不同的解决方案。对于每种方案：
+- 阐述该方案背后的理由；
+- 描述核心策略；
+- 概述关键步骤或组成部分。
 
-#### Phase 2: Adversarial Critique
-For each solution, rigorously identify critical weaknesses. Show thinking while examining:
-- Edge cases and failure modes
-- Security vulnerabilities or risks
-- Performance bottlenecks
-- Scalability limitations
-- Hidden assumptions that could break
-- Resource constraints (time, money, people)
-- Unintended consequences
-- Catastrophic failure scenarios
+#### 第2阶段：对抗性评估
+对每种方案进行严格评估，找出其关键缺陷。在评估过程中需考虑：
+- 边缘情况和故障模式；
+- 安全漏洞或风险；
+- 性能瓶颈；
+- 可能导致问题的隐藏假设；
+- 资源限制（时间、资金、人力）；
+- 意外后果；
+- 灾难性故障场景。
 
-Be creative and thorough in identifying what could go wrong.
+要创造性地、全面地识别可能出现的各种问题。
 
-#### Phase 3: Fix Development
-For each identified weakness:
-- Propose a specific fix or mitigation strategy
-- Explain why this fix addresses the root cause
-- Describe how the fix integrates with the original solution
+#### 第3阶段：改进措施制定
+针对每个发现的缺陷，提出具体的改进措施或缓解策略：
+- 解释该措施为何能解决根本问题；
+- 说明该措施如何与原有方案结合使用。
 
-#### Phase 4: Validation Check
-Review each fix to verify it actually solves the weakness:
-- Confirm the fix addresses the root cause
-- Check for new problems introduced by the fix
-- Flag any remaining concerns or trade-offs
+#### 第4阶段：验证
+审查每个改进措施，确认它确实解决了缺陷：
+- 确认该措施确实解决了根本问题；
+- 检查该措施是否引入了新的问题；
+- 标记任何剩余的疑虑或权衡因素。
 
-#### Phase 5: Consolidation
-Synthesize all solutions and validated fixes into comprehensive approaches:
-- Integrate complementary elements from different solutions
-- Eliminate redundancies
-- Show how solutions can be combined for stronger approaches
-- Present the final set of viable options
+#### 第5阶段：整合
+将所有解决方案及经过验证的改进措施整合成一套完整的方案：
+- 整合不同方案中的互补元素；
+- 消除冗余部分；
+- 说明如何组合这些方案以获得更优的解决方案；
+- 提出最终的可行方案列表。
 
-#### Phase 6: Summary of Options
-Present all viable options in priority order, ranked by:
-- **Feasibility**: Can this actually be implemented with available resources?
-- **Impact**: How well does this solve the problem?
-- **Risk Level**: What could still go wrong?
-- **Resource Requirements**: Cost in time, money, and effort
+#### 第6阶段：方案排序
+按照以下标准对所有可行方案进行排序：
+- **可行性**：现有资源是否足以实施该方案？
+- **效果**：该方案解决问题的效果如何？
+- **风险等级**：仍可能存在哪些问题？
+- **资源需求**：所需的时间、成本和努力。
 
-For each option, provide a one-paragraph summary highlighting key trade-offs.
+为每个方案提供一段总结，突出主要的权衡因素。
 
-#### Phase 7: Final Recommendation
-State the top recommendation (single option or combination):
-- Clear rationale for why this is the best path
-- Concrete next steps for implementation
-- Key success metrics to track
-- Early warning signs to monitor for problems
+#### 第7阶段：最终推荐
+确定最佳方案（单个方案或组合方案）：
+- 明确说明为什么这是最佳选择；
+- 提出具体的实施步骤；
+- 列出关键的成功指标；
+- 指出需要监控的潜在问题。
 
-### Output Format
+### 输出格式
 
-Present the complete analysis in three sections:
+将分析结果分为三个部分呈现：
+1. **详细流程**：展示前5个阶段的所有内容及完整的推理过程；
+2. **方案排序**：按优先级排列的可行方案列表；
+3. **最终推荐**：包含实施指导的最佳方案。
 
-1. **Detailed Walkthrough**: Show all phases (1-5) with full reasoning visible
-2. **Summary of Options**: Ranked list of viable approaches (Phase 6)
-3. **Final Recommendation**: Top choice with implementation guidance (Phase 7)
+分析完成后，使用`scripts/export_analysis.py`脚本将结果自动导出为Markdown格式的文件。
 
-After presenting the analysis, automatically export the complete output to a markdown file using `scripts/export_analysis.py`.
-
-## Implementation Notes
-
-- Show reasoning throughout the process for transparency
-- Be thorough in adversarial critique—surface uncomfortable truths
-- Validate fixes rigorously to avoid creating new problems
-- Consolidation should create stronger solutions, not just list options
-- Final recommendation should be actionable with clear next steps
-- Export results to markdown for future reference and sharing
+## 实施注意事项：
+- 在整个过程中始终提供清晰的推理过程；
+- 在评估过程中要全面、深入地分析问题；
+- 严格验证改进措施，以避免产生新的问题；
+- 整合后的方案应更具实用性，而不仅仅是列出多个选项；
+- 最终推荐方案应具有可操作的性，并明确后续的实施步骤；
+- 将结果导出为Markdown格式，以便日后参考和分享。

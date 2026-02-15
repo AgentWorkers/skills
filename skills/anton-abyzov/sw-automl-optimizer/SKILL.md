@@ -4,30 +4,30 @@ description: |
   Automated machine learning with hyperparameter optimization using Optuna, Hyperopt, or AutoML libraries. Activates for "automl", "hyperparameter tuning", "optimize hyperparameters", "auto tune model", "neural architecture search", "automated ml". Systematically explores model and hyperparameter spaces, tracks all experiments, and finds optimal configurations with minimal manual intervention.
 ---
 
-# AutoML Optimizer
+# AutoML 优化器
 
-## Overview
+## 概述
 
-Automates the tedious process of hyperparameter tuning and model selection. Instead of manually trying different configurations, define a search space and let AutoML find the optimal configuration through intelligent exploration.
+AutoML 优化器能够自动化繁琐的超参数调整和模型选择过程。无需手动尝试各种配置，只需定义一个搜索空间，让 AutoML 通过智能的探索方法找到最优配置。
 
-## Why AutoML?
+## 为什么选择 AutoML？
 
-**Manual Tuning Problems**:
-- Time-consuming (hours/days of trial and error)
-- Subjective (depends on intuition)
-- Incomplete (can't try all combinations)
-- Not reproducible (hard to document search process)
+**手动调优的问题**：
+- 耗时（需要花费数小时甚至数天的时间进行反复试验）
+- 主观性强（依赖于直觉）
+- 不全面（无法尝试所有组合）
+- 不可重复（难以记录搜索过程）
 
-**AutoML Benefits**:
-- ✅ Systematic exploration of search space
-- ✅ Intelligent sampling (Bayesian optimization)
-- ✅ All experiments tracked automatically
-- ✅ Find optimal configuration faster
-- ✅ Reproducible (search process documented)
+**AutoML 的优势**：
+- ✅ 系统性地探索搜索空间
+- ✅ 智能采样（基于贝叶斯优化算法）
+- ✅ 自动跟踪所有实验结果
+- ✅ 更快地找到最优配置
+- ✅ 可重复（搜索过程有详细记录）
 
-## AutoML Strategies
+## AutoML 策略
 
-### Strategy 1: Hyperparameter Optimization (Optuna)
+### 策略 1：超参数优化（使用 Optuna）
 
 ```python
 from specweave import OptunaOptimizer
@@ -70,7 +70,7 @@ best_params = optimizer.optimize()
 #   └── best_params.json
 ```
 
-**Optimization Report**:
+**优化报告**：
 ```markdown
 # Optuna Optimization Report
 
@@ -108,7 +108,7 @@ best_params = optimizer.optimize()
 - Improvement: +4.2%
 ```
 
-### Strategy 2: Algorithm Selection + Tuning
+### 策略 2：算法选择 + 调优
 
 ```python
 from specweave import AutoMLPipeline
@@ -169,7 +169,7 @@ best_model = pipeline.best_model_
 best_params = pipeline.best_params_
 ```
 
-**AutoML Comparison**:
+**AutoML 的比较**：
 ```markdown
 | Model               | Trials | Best Score | Mean Score | Std   | Best Params                          |
 |---------------------|--------|------------|------------|-------|--------------------------------------|
@@ -181,7 +181,7 @@ best_params = pipeline.best_params_
 **Winner: XGBoost** (ROC AUC = 0.892)
 ```
 
-### Strategy 3: Neural Architecture Search (NAS)
+### 策略 3：神经网络架构搜索（NAS）
 
 ```python
 from specweave import NeuralArchitectureSearch
@@ -210,9 +210,9 @@ best_architecture = nas.search(
 # Creates: Best neural network architecture
 ```
 
-## AutoML Frameworks Integration
+## AutoML 框架集成
 
-### Optuna (Recommended)
+### 推荐使用 Optuna
 
 ```python
 import optuna
@@ -274,9 +274,9 @@ optimizer.fit(X_train, y_train)
 # Returns leaderboard + best model
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Start with Default Baseline
+### 1. 从默认基线模型开始
 
 ```python
 # Always compare AutoML to default hyperparameters
@@ -293,7 +293,7 @@ print(f"Improvement: {improvement:.1f}%")
 # Only use optimized if significant improvement (>2-3%)
 ```
 
-### 2. Use Cross-Validation
+### 2. 使用交叉验证
 
 ```python
 # ❌ Wrong: Single train/test split
@@ -306,7 +306,7 @@ score = scores.mean()
 # Prevents overfitting to specific train/test split
 ```
 
-### 3. Set Reasonable Search Budgets
+### 3. 设置合理的搜索预算
 
 ```python
 # Quick exploration (development)
@@ -321,7 +321,7 @@ optimizer.optimize(n_trials=500)  # ~2-4 hours
 # Don't overdo it: diminishing returns after ~100-200 trials
 ```
 
-### 4. Prune Unpromising Trials
+### 4. 剔除不具前景的试验结果
 
 ```python
 # Optuna can stop bad trials early
@@ -334,7 +334,7 @@ study = optuna.create_study(
 # Saves time by not fully training bad models
 ```
 
-### 5. Document Search Space Rationale
+### 5. 记录搜索空间的设计理由
 
 ```python
 # Document why you chose specific ranges
@@ -351,9 +351,9 @@ search_space = {
 }
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-### Automatic Experiment Tracking
+### 自动实验跟踪
 
 ```python
 # All AutoML trials logged automatically
@@ -369,30 +369,14 @@ optimizer.optimize(n_trials=100)
 # └── optuna-summary.md
 ```
 
-### Living Docs Integration
+### 与动态文档系统的集成
 
 ```bash
 /sw:sync-docs update
 ```
 
-Updates:
-```markdown
-<!-- .specweave/docs/internal/architecture/ml-optimization.md -->
+## 更新示例：
 
-## Hyperparameter Optimization (Increment 0042)
-
-### Optimization Strategy
-- Framework: Optuna (Bayesian optimization)
-- Trials: 100
-- Search space: 5 hyperparameters
-- Metric: ROC AUC (5-fold CV)
-
-### Results
-- Best score: 0.892 ± 0.012
-- Improvement over default: +4.2%
-- Most important param: learning_rate (0.42)
-
-### Selected Hyperparameters
 ```python
 {
     'n_estimators': 673,
@@ -407,7 +391,7 @@ Updates:
 XGBoost with optimized hyperparameters for production deployment.
 ```
 
-## Commands
+## 命令行操作
 
 ```bash
 # Run AutoML optimization
@@ -420,9 +404,9 @@ XGBoost with optimized hyperparameters for production deployment.
 /ml:optimization-report 0042
 ```
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: Coarse-to-Fine Optimization
+### 模式 1：从粗略到精细的优化过程
 
 ```python
 # Step 1: Coarse search (wide ranges, few trials)
@@ -446,7 +430,7 @@ fine_space = {
 fine_results = optimizer.optimize(fine_space, n_trials=50)
 ```
 
-### Pattern 2: Multi-Objective Optimization
+### 模式 2：多目标优化
 
 ```python
 # Optimize for multiple objectives (accuracy + speed)
@@ -473,13 +457,13 @@ study = optuna.create_study(directions=['maximize', 'minimize'])
 study.optimize(multi_objective, n_trials=100)
 ```
 
-## Summary
+## 总结
 
-AutoML accelerates ML development by:
-- ✅ Automating tedious hyperparameter tuning
-- ✅ Exploring search space systematically
-- ✅ Finding optimal configurations faster
-- ✅ Tracking all experiments automatically
-- ✅ Documenting optimization process
+AutoML 通过以下方式加速机器学习模型的开发：
+- ✅ 自动化繁琐的超参数调整过程
+- ✅ 系统地探索搜索空间
+- ✅ 更快地找到最优配置
+- ✅ 自动跟踪所有实验结果
+- ✅ 详细记录优化过程
 
-Don't spend days manually tuning—let AutoML do it in hours.
+无需花费大量时间进行手动调优——让 AutoML 在几小时内完成这项工作。

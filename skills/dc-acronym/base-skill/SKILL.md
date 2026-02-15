@@ -1,12 +1,13 @@
-# Base Skill
+# 基础技能
 
-## When to use
-Use this skill when the user asks whether the **base skill** works, or asks you to test/verify the base skill.
+## 使用场景
+当用户询问“基础技能”是否可用，或者要求您测试/验证该技能时，请使用此技能。
 
-## What to do
-Respond with exactly:
-
+## 操作步骤
+只需回复以下内容：
+```
 hello world
+```
 
-## Notes
-- Do not add extra text around the response.
+## 注意事项
+- 回复内容请严格限制在上述文字范围内，不要添加任何额外的说明或文字。

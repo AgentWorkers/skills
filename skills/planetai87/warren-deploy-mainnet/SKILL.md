@@ -1,76 +1,75 @@
 ---
 name: warren-deploy
-description: Deploy websites and files permanently on MegaETH mainnet using SSTORE2. Agents use their own wallet and pay gas.
+description: 使用 SSTORE2 将网站和文件永久部署到 MegaETH 主网上。代理节点使用自己的钱包来支付交易费用（即“gas”）。
 metadata: {"openclaw":{"emoji":"⛓️","homepage":"https://thewarren.app","requires":{"anyBins":["node"]}}}
 user-invocable: true
 ---
 
-# Warren - On-Chain Website Deployment
+# Warren - 在链上部署网站
 
-Deploy websites and files permanently on MegaETH mainnet.
+将网站和文件永久部署到MegaETH主网上。
 
-**Network**: MegaETH Mainnet (Chain ID: 4326)
+**网络**: MegaETH主网（链ID：4326）
 **RPC**: `https://mainnet.megaeth.com/rpc`
-**Explorer**: https://megaeth.blockscout.com
+**浏览器**: https://megaeth.blockscout.com
 
-## Setup (One Time)
+## 设置（一次性操作）
 
 ```bash
 cd {baseDir}
 bash setup.sh
 ```
 
-## Contract Addresses (Mainnet)
+## 合同地址（主网）
 
-| Contract | Address |
+| 合同 | 地址 |
 |----------|---------|
 | Genesis Key NFT (0xRabbitNeo) | `0x0d7BB250fc06f0073F0882E3Bf56728A948C5a88` |
 | 0xRabbit.agent Key NFT | `0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2` |
 | MasterNFT Registry | `0xb7f14622ea97b26524BE743Ab6D9FA519Afbe756` |
 
-## Prerequisites
+## 先决条件
 
-### 1. Create a Wallet
+### 1. 创建钱包
 
 ```bash
 node -e "const w = require('ethers').Wallet.createRandom(); console.log('Address:', w.address); console.log('Private Key:', w.privateKey)"
 ```
 
-Set the private key:
+设置私钥：
 
 ```bash
 export PRIVATE_KEY=0xYourPrivateKey
 ```
 
-### 2. Get MegaETH ETH
+### 2. 获取MegaETH以太币
 
-You need real ETH on MegaETH mainnet for gas fees.
+在MegaETH主网上，你需要以太币来支付Gas费用。
 
-- Bridge ETH from Ethereum via the official MegaETH bridge.
-- Approximate cost: ~0.001 ETH per site deploy.
+- 通过官方的MegaETH桥将以太币桥接到MegaETH主网。
+- 大约每部署一个网站需要0.001以太币。
 
-Check balance:
+检查余额：
 
 ```bash
 node -e "const{ethers}=require('ethers');new ethers.JsonRpcProvider('https://mainnet.megaeth.com/rpc',4326).getBalance('$YOUR_ADDRESS').then(b=>console.log(ethers.formatEther(b),'ETH'))"
 ```
 
-### 3. Genesis Access Requirement
+### 3. 访问权限要求
 
-The deploy script checks access in this order:
+部署脚本会按以下顺序检查访问权限：
 
-1. Human Genesis Key (0xRabbitNeo) ownership
-2. 0xRabbit.agent Key ownership
-3. If missing, auto-mint 0xRabbit.agent Key (free)
+1. 是否拥有Genesis Key（0xRabbitNeo）
+2. 是否拥有0xRabbit.agent Key
+3. 如果缺少0xRabbit_agent Key，系统会自动生成一个（免费）。
 
-Default `RABBIT_AGENT_ADDRESS`: `0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2` (override via env).
-If you override or unset it, mint a human key manually at:
-
+默认的`RABBIT_AGENT_ADDRESS`为`0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`（可以通过环境变量进行覆盖）。
+如果你要覆盖或取消设置该地址，请在以下链接手动生成一个Genesis Key：
 - https://thewarren.app/mint
 
-## Deploy
+## 部署
 
-### Deploy HTML string
+### 部署HTML字符串
 
 ```bash
 cd {baseDir}
@@ -79,7 +78,7 @@ PRIVATE_KEY=0x... node deploy.js \
   --name "My First Site"
 ```
 
-### Deploy HTML file
+### 部署HTML文件
 
 ```bash
 PRIVATE_KEY=0x... node deploy.js \
@@ -87,13 +86,13 @@ PRIVATE_KEY=0x... node deploy.js \
   --name "My Website"
 ```
 
-### Deploy via stdin
+### 通过标准输入（stdin）部署
 
 ```bash
 echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 ```
 
-### CLI Options
+### 命令行界面（CLI）选项
 
 ```
 --private-key <key>   Wallet private key (or PRIVATE_KEY env)
@@ -103,7 +102,7 @@ echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 --type <type>         file|image|video|audio|script (default: "file")
 ```
 
-### Output
+### 输出结果
 
 ```json
 {
@@ -114,9 +113,9 @@ echo "<h1>Hello</h1>" | PRIVATE_KEY=0x... node deploy.js --name "Piped"
 }
 ```
 
-## Example Workflows
+## 示例工作流程
 
-### Quick deploy loop
+### 快速部署流程
 
 ```bash
 cd {baseDir}
@@ -127,7 +126,7 @@ for i in $(seq 1 5); do
 done
 ```
 
-### Deploy a larger site (~50KB)
+### 部署较大的网站（约50KB）
 
 ```bash
 python3 -c "
@@ -141,29 +140,29 @@ print(html)
 PRIVATE_KEY=0x... node deploy.js --file large-site.html --name "Large Site"
 ```
 
-## View Sites
+## 查看已部署的网站
 
 ```
 https://thewarren.app/v/site={TOKEN_ID}
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"No ETH balance"**
-- Bridge ETH to MegaETH mainnet and retry.
+**“没有以太币余额”**
+- 将以太币桥接到MegaETH主网，然后重新尝试部署。
 
-**"No Genesis Key found and RABBIT_AGENT_ADDRESS is not configured"**
-- Set `RABBIT_AGENT_ADDRESS=0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`, or mint human Genesis Key at `https://thewarren.app/mint`.
+**“未找到Genesis Key，且未配置RABBIT_AGENT_ADDRESS”**
+- 将`RABBIT_AGENT_ADDRESS`设置为`0x3f0CAbd6AB0a318f67aAA7af5F774750ec2461f2`，或前往`https://thewarren.app/mint`生成一个Genesis Key。
 
-**"RPC rate limit"**
-- The script retries automatically. Add `sleep 5` between repeated deployments.
+**“RPC请求次数达到限制”**
+- 脚本会自动重试。在每次部署之间添加`sleep 5`（等待5秒）的延迟。
 
-**Site does not load immediately**
-- Wait 10-30 seconds and retry the viewer URL.
+**网站无法立即加载**
+- 等待10-30秒，然后重新访问网站。
 
-## Notes
+## 注意事项
 
-- Mainnet content is permanent and immutable.
-- Max 500KB per deployment.
-- Default chunk size is 100KB (`CHUNK_SIZE=100000`).
-- You pay gas from your own wallet.
+- 主网上的内容是永久且不可更改的。
+- 每次部署的最大文件大小为500KB。
+- 默认的文件分块大小为100KB（`CHUNK_SIZE=100000`）。
+- Gas费用由你的钱包支付。

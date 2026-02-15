@@ -1,39 +1,39 @@
 ---
 name: game-theory
-description: Advanced game theory analysis for crypto protocols, DeFi mechanisms, governance systems, and strategic decision-making. Use when analyzing tokenomics, evaluating protocol incentives, predicting adversarial behavior, designing mechanisms, or understanding strategic interactions in web3.
+description: 针对加密协议、去中心化金融（DeFi）机制、治理系统以及战略决策制定的高级博弈论分析方法。适用于分析代币经济模型、评估协议激励机制、预测对手行为、设计相关机制，或理解Web3环境中的战略互动。
 metadata: {"clawdbot":{"emoji":"","homepage":"https://github.com/tedkaczynski-the-bot/game-theory"}}
 ---
 
-# Game Theory for Crypto
+# 加密领域的博弈论
 
-Strategic analysis framework for understanding and designing incentive systems in web3.
+本文档提供了一个战略分析框架，用于理解和设计Web3中的激励系统。
 
-> "Every protocol is a game. Every token is an incentive. Every user is a player. Understand the rules, or become the played."
+> “每个协议都是一场游戏；每个代币都是一种激励；每个用户都是参与者。理解规则，否则你将成为被操纵的棋子。”
 
-## When to Use This Skill
+## 适用场景
 
-- Analyzing tokenomics for exploits or misaligned incentives
-- Evaluating governance proposals and voting mechanisms
-- Understanding MEV and adversarial transaction ordering
-- Designing auction mechanisms (NFT drops, token sales, liquidations)
-- Predicting how rational actors will behave in a system
-- Identifying attack vectors in DeFi protocols
-- Modeling liquidity provision strategies
-- Assessing protocol sustainability
+- 分析代币经济模型，以发现潜在的漏洞或激励机制的不平衡
+- 评估治理提案和投票机制
+- 理解“最大经济价值”（MEV）概念以及对抗性交易排序策略
+- 设计拍卖机制（如NFT发行、代币销售、清算等）
+- 预测理性行为者在系统中的行为
+- 识别DeFi协议中的攻击向量
+- 建模流动性提供策略
+- 评估协议的可持续性
 
-## Core Framework
+## 核心框架
 
-### The Five Questions
+### 五个关键问题
 
-For any protocol or mechanism, ask:
+对于任何协议或机制，都需要回答以下问题：
 
-1. **Who are the players?** (Users, LPs, validators, searchers, governance token holders)
-2. **What are their strategies?** (Actions available to each player)
-3. **What are the payoffs?** (How does each outcome affect each player?)
-4. **What information do they have?** (Complete, incomplete, asymmetric?)
-5. **What's the equilibrium?** (Where do rational actors end up?)
+1. **参与者是谁？**（用户、锁定资本（LPs）、验证者、信息搜索者、治理代币持有者）
+2. **他们的策略是什么？**（每个参与者可以采取的行动）
+3. **收益是什么？**（每种结果对每个参与者有何影响）
+4. **他们拥有哪些信息？**（信息是完整的、不完整的，还是存在信息不对称？）
+5. **均衡状态是什么？**（理性行为者最终会达到什么状态？）
 
-### Analysis Template
+### 分析模板
 
 ```markdown
 ## Protocol: [Name]
@@ -65,270 +65,259 @@ For any protocol or mechanism, ask:
 - [Design changes to improve incentive alignment]
 ```
 
-## Reference Documents
+## 参考文档
 
-| Document | Use Case |
+| 文档 | 适用场景 |
 |----------|----------|
-| [Nash Equilibrium](references/nash-equilibrium.md) | Finding stable outcomes in strategic interactions |
-| [Mechanism Design](references/mechanism-design.md) | Designing systems with desired equilibria |
-| [Auction Theory](references/auction-theory.md) | Token sales, NFT drops, liquidations |
-| [MEV Game Theory](references/mev-strategies.md) | Adversarial transaction ordering |
-| [Tokenomics Analysis](references/tokenomics-analysis.md) | Evaluating token incentive structures |
-| [Governance Attacks](references/governance-attacks.md) | Voting manipulation and capture |
-| [Liquidity Games](references/liquidity-games.md) | LP strategies and impermanent loss |
-| [Information Economics](references/information-economics.md) | Asymmetric information and signaling |
+| [纳什均衡](references/nash-equilibrium.md) | 在战略互动中寻找稳定结果 |
+| [机制设计](references/mechanism-design.md) | 设计具有理想均衡状态的系统 |
+| [拍卖理论](references/auction-theory.md) | 代币销售、NFT发行、清算等 |
+| [MEV博弈论](references/mev-strategies.md) | 对抗性交易排序策略 |
+| [代币经济分析](references/tokenomics-analysis.md) | 评估代币激励结构 |
+| [治理攻击](references/governance-attacks.md) | 投票操纵与控制机制 |
+| [流动性博弈](references/liquidity-games.md) | 锁定资本策略与临时性损失 |
+| [信息经济学](references/information-economics.md) | 信息不对称与信号传递 |
 
-## Quick Concepts
+## 基本概念
 
-### Nash Equilibrium
-A state where no player can improve their payoff by unilaterally changing strategy. The "stable" outcome of a game.
+### 纳什均衡
+一种状态，在这种状态下，没有任何参与者可以通过单方面改变策略来提高自己的收益。这是游戏的“稳定”结果。
 
-**Crypto application:** In a staking system, Nash equilibrium determines the stake distribution across validators.
+**在加密领域的应用：**在质押系统中，纳什均衡决定了验证者之间的质押分配。
 
-### Dominant Strategy
-A strategy that's optimal regardless of what others do.
+### 占优策略
+无论其他参与者如何选择，这种策略都是最优的。
 
-**Crypto application:** In a second-price auction, bidding your true value is dominant.
+**在加密领域的应用：**在二次竞价拍卖中，出价等于你的真实价值是占优策略。
 
-### Pareto Efficiency
-An outcome where no one can be made better off without making someone worse off.
+### 帕累托效率
+一种状态，在这种状态下，提高某人的收益必然会降低其他人的收益。
 
-**Crypto application:** AMM fee structures try to be Pareto efficient for traders and LPs.
+**在加密领域的应用：**自动市场机制（AMM）的费用结构旨在实现交易者和锁定资本的帕累托效率。
 
-### Mechanism Design
-"Reverse game theory" - designing rules to achieve desired outcomes.
+### 机制设计
+“逆向博弈论”——通过设计规则来实现预期的结果。
 
-**Crypto application:** Designing token vesting schedules to align long-term incentives.
+**在加密领域的应用：**设计代币归属计划，以协调长期激励。
 
-### Schelling Point
-A solution people converge on without communication.
+### 谢林点
+一种无需沟通就能被大家共同接受的解决方案。
 
-**Crypto application:** Why certain price levels act as psychological support/resistance.
+**在加密领域的应用：**某些价格水平为何会成为心理上的支撑或阻力。
 
-### Incentive Compatibility
-When truthful behavior is optimal for participants.
+### 激励相容性
+当诚实行为对参与者最有利时。
 
-**Crypto application:** Oracle designs where honest reporting is the dominant strategy.
+**在加密领域的应用：**在需要诚实报告的系统中，这种策略是占优的。
 
-### Common Knowledge
-Everyone knows X, everyone knows everyone knows X, infinitely recursive.
+### 共知
+所有人都知道X；所有人都知道其他人也知道X（这种认知是无限递归的）。
 
-**Crypto application:** Public blockchain state creates common knowledge of balances/positions.
+**在加密领域的应用：**公共区块链状态能够形成关于账户余额/持仓的共知。
 
-## Analysis Patterns
+## 分析模式
 
-### Pattern 1: The Tragedy of the Commons
+### 模式1：公地悲剧
+**结构：**共享资源，个体有过度使用的动机，导致集体利益受损。
 
-**Structure:** Shared resource, individual incentive to overuse, collective harm.
+**加密领域的例子：**
+- 在网络拥堵时竞标Gas费用
+- 治理代币投票中的冷漠态度
+- 通过MEV机制提取资源，导致用户体验下降
 
-**Crypto examples:**
-- Gas price bidding during congestion
-- Governance token voting apathy
-- MEV extraction degrading UX
+**解决策略：**
+- 哈伯格税（Harberger taxes）
+- 二次方机制（quadratic mechanisms）
+- 承诺机制（commitment schemes）
 
-**Solution approaches:**
-- Harberger taxes
-- Quadratic mechanisms
-- Commitment schemes
+### 模式2：囚徒困境
+**结构：**个体的理性行为可能导致集体非理性。
 
-### Pattern 2: The Prisoner's Dilemma
+**加密领域的例子：**
+- 流动性挖掘者（通过挖矿获取代币后迅速抛售）
+- 验证者费用竞争（不断降低费用）
+- 桥接网络的安全问题（每个网络都希望其他网络提供保障）
 
-**Structure:** Individual rationality leads to collective irrationality.
+**解决策略：**
+- 重复博弈（重复进行的决策过程）
+- 承诺机制（如质押或惩罚机制）
+- 机制重新设计
 
-**Crypto examples:**
-- Liquidity mining mercenaries (farm and dump)
-- Race-to-bottom validator fees
-- Bridge security (each chain wants others to secure)
+### 模式3：协调博弈
+**结构：**存在多个均衡状态，参与者希望协调行动，但可能失败。
 
-**Solution approaches:**
-- Repeated games (reputation)
-- Commitment mechanisms (staking/slashing)
-- Mechanism redesign
+**加密领域的例子：**
+- 应选择哪个第二层网络（L2）？
+- 代币标准的采用
+- 硬分叉的协调问题
 
-### Pattern 3: The Coordination Game
+**解决策略：**
+- 谢林点（人们自然会趋同的解决方案）
+- 顺序行动策略（先发优势）
+- 沟通机制
 
-**Structure:** Multiple equilibria, players want to coordinate but may fail.
+### 模式4：委托-代理问题
+**结构：**一方代表另一方行动，但双方的激励目标不一致。
 
-**Crypto examples:**
-- Which L2 to use?
-- Token standard adoption
-- Hard fork coordination
+**加密领域的例子：**
+- 协议团队与代币持有者之间的利益冲突
+- 治理中的代理人问题
+- 基金管理者与投资者之间的利益分歧
 
-**Solution approaches:**
-- Focal points (Schelling points)
-- Sequential moves (first mover advantage)
-- Communication mechanisms
+**解决策略：**
+- 激励对齐（如代币归属设计）
+- 监控机制（提高透明度）
+- 机制中的利益绑定（如质押机制）
 
-### Pattern 4: The Principal-Agent Problem
+### 模式5：逆向选择
+**结构：**信息不对称导致市场失灵。
 
-**Structure:** One party acts on behalf of another with misaligned incentives.
+**加密领域的例子：**
+- 代币发行时，团队比买家掌握更多信息
+- 保险协议中，高风险用户更可能购买保险
+- 借贷过程中，借款人更了解自己的风险
 
-**Crypto examples:**
-- Protocol team vs token holders
-- Delegates in governance
-- Fund managers
+**解决策略：**
+- 信号传递机制（如锁定资金、审计）
+- 筛选机制（如信用评分、历史记录）
+- 联合策略（如共同承担风险）
 
-**Solution approaches:**
-- Incentive alignment (token vesting)
-- Monitoring (transparency)
-- Bonding (skin in game)
+### 模式6：道德风险
+**结构：**达成协议后隐藏行为可能导致风险增加。
 
-### Pattern 5: Adverse Selection
+**加密领域的例子：**
+- 有保险的协议可能鼓励冒险行为
+- 救助预期可能导致过度借贷
+- 匿名团队可能突然退出项目
 
-**Structure:** Information asymmetry leads to market breakdown.
+**解决策略：**
+- 监控与透明度
+- 激励对齐机制
+- 声誉系统
 
-**Crypto examples:**
-- Token launches (team knows more than buyers)
-- Insurance protocols (risky users more likely to buy)
-- Lending (borrowers know their risk better)
+## 常见的加密领域博弈类型
 
-**Solution approaches:**
-- Signaling (lock-ups, audits)
-- Screening (credit scores, history)
-- Pooling equilibria
+### MEV博弈
+**参与者：**用户、信息搜索者、协议开发者、验证者
+**关键点：**交易顺序是一个重要的因素；用户往往是受害者
 
-### Pattern 6: Moral Hazard
+**推荐阅读：**[MEV策略](references/mev-strategies.md)
 
-**Structure:** Hidden action after agreement leads to risk-taking.
+### 流动性博弈
+**参与者：**锁定资本（LPs）、交易者、套利者
+**关键点：**面临临时性损失的风险
 
-**Crypto examples:**
-- Protocols with insurance may take more risk
-- Bailout expectations encourage leverage
-- Anonymous teams may rug
+**推荐阅读：**[流动性博弈](references/liquidity-games.md)
 
-**Solution approaches:**
-- Monitoring and transparency
-- Incentive alignment
-- Reputation systems
+### 治理博弈
+**参与者：**代币持有者、代理人、协议团队
+**关键点：**理性投资者的冷漠态度加上利益集中可能导致控制权的被夺取
 
-## Common Crypto Games
+**推荐阅读：**[治理攻击](references/governance-attacks.md)
 
-### The MEV Game
+### 抽质押博弈
+**参与者：**质押者、验证者、代理人
+**关键点：**安全预算必须超过潜在的攻击成本
 
-**Players:** Users, searchers, builders, validators
-**Key insight:** Transaction ordering is a game; users are often the losers
+**推荐阅读：**[代币经济分析](references/tokenomics-analysis.md)
 
-See: [MEV Strategies](references/mev-strategies.md)
+### 预言机博弈
+**参与者：**数据提供者、数据消费者、攻击者
+**关键点：**通过操纵数据获得的利润必须低于其成本
 
-### The Liquidity Game
+**推荐阅读：**[机制设计](references/mechanism-design.md)
 
-**Players:** LPs, traders, arbitrageurs
-**Key insight:** Impermanent loss is the cost of being adversely selected against
+## 协议设计中的警示信号
 
-See: [Liquidity Games](references/liquidity-games.md)
+### 代币经济方面的警示信号：
+- 内部人士可以提前出售代币（激励不对等）
+- 通货膨胀只会使少数人受益，而大多数人受损
+- 缺乏机制来阻止持续抛售
+- 无风险的奖励（免费收益意味着他人在买单）
 
-### The Governance Game
+### 治理方面的警示信号：
+- 低投票门槛（少数人可能控制决策）
+- 无延迟机制（可能导致快速贷款攻击）
+- 仅依赖代币投票的治理方式（可能导致寡头控制）
+- 代理人在机制中没有任何实际利益
 
-**Players:** Token holders, delegates, protocol team
-**Key insight:** Rational apathy + concentrated interests = capture
+### 机制设计方面的警示信号：
+- 先到先得的原则（可能导致机器人程序的优势）
+- 无约束的密封投标（可能导致恶意竞争）
+- 折扣或退款机制（可能导致MEV行为）
+- 复杂的算法（可能隐藏潜在漏洞）
 
-See: [Governance Attacks](references/governance-attacks.md)
+## 高级主题
 
-### The Staking Game
+### 重复博弈与声誉
+一次性博弈往往会导致不良的均衡状态。通过重复博弈，可以促进合作：
+- 触发策略（合作直到有人背叛）
+- 声誉建设（破坏声誉的成本很高）
+- 未来价值（耐心合作的参与者更有可能获得长期利益）
 
-**Players:** Stakers, validators, delegators
-**Key insight:** Security budget must exceed attack profit
+**在加密领域的应用：**为什么匿名行为者的表现往往比公开身份的团队更差。
 
-See: [Tokenomics Analysis](references/tokenomics-analysis.md)
+### 进化博弈论
+能够在竞争性选择中存活下来的策略。适用于评估：
+- 哪些协议能够长期存活
+- 不同观点之间的竞争
+- 机器人策略的演变
 
-### The Oracle Game
+### 贝叶斯博弈
+信息不完全的博弈。参与者对其他参与者的类型有所猜测。
 
-**Players:** Data providers, consumers, attackers
-**Key insight:** Profit from manipulation must be less than cost
+**在加密领域的应用：**与未知对手进行交易时，需要考虑这些因素。
 
-See: [Mechanism Design](references/mechanism-design.md)
+### 合作博弈论
+参与者能够形成具有约束力的联盟。
 
-## Red Flags in Protocol Design
+**在加密领域的应用：**例如，MEV提取的联盟、验证者卡特尔、治理集团的形成
 
-### Tokenomics Red Flags
-- Insiders can sell before others (vesting asymmetry)
-- Inflation benefits few, dilutes many
-- No sink mechanisms (perpetual selling pressure)
-- Rewards without risk (free money = someone else paying)
+### 算法博弈论
+博弈论的计算方面。
 
-### Governance Red Flags
-- Low quorum thresholds (minority capture)
-- No time delay (flash loan attacks)
-- Token voting only (plutocracy)
-- Delegates with no skin in game
+**在加密领域的应用：**链上博弈的计算限制，以及如何设计高效的游戏机制
 
-### Mechanism Red Flags
-- First-come-first-served (bot advantage)
-- Sealed bids without commitment (frontrunning)
-- Rebates/refunds (MEV extraction)
-- Complex formulas (hidden exploits)
+## 方法论
 
-## Advanced Topics
+### 第一步：建模博弈
+- 识别所有参与者（包括那些不显而易见的）
+- 映射完整的策略空间
+- 精确定义收益函数
+- 明确信息结构
 
-### Repeated Games and Reputation
-Single-shot games often have bad equilibria. Repetition enables cooperation through:
-- Trigger strategies (cooperate until defection)
-- Reputation building (costly to destroy)
-- Future value (patient players cooperate more)
+### 第二步：寻找均衡状态
+- 检查是否存在占优策略
+- 计算纳什均衡
+- 识别帕累托改进方案
+- 考虑颤抖手均衡（trembling-hand equilibrium）
 
-**Crypto application:** Why anonymous actors behave worse than doxxed teams.
+### 第三步：压力测试
+- 如果参与者勾结会怎样？
+- 如果有新参与者加入会怎样？
+- 如果信息泄露会怎样？
+- 如果参数发生变化会怎样？
 
-### Evolutionary Game Theory
-Strategies that survive competitive selection. Relevant for:
-- Which protocols survive long-term
-- Memetic competition between narratives
-- Bot strategy evolution
+### 第四步：提出改进方案
+- 修改机制以优化均衡状态
+- 建立监控机制以检测异常行为
+- 设定参数范围以保持系统稳定性
 
-### Bayesian Games
-Games with incomplete information. Players have beliefs about others' types.
+## 资源推荐
 
-**Crypto application:** Trading with unknown counterparties, evaluating anonymous teams.
+### 基础文献：
+- 《博弈论与经济行为理论》（von Neumann & Morgenstern）
+- 《美丽心灵》（纳什的传记，适合入门）
+- 《冲突策略》（Schelling）
+- 《机制设计理论》（Myerson的诺贝尔演讲）
 
-### Cooperative Game Theory
-When players can form binding coalitions.
+### 与加密领域相关的文献：
+- 《Flash Boys 2.0》（关于MEV的论文）
+- 《SoK: DeFi Attacks》（DeFi攻击的系统性分析）
+- 《Clockwork Finance》（关于MEV和机制设计的书籍）
+- Paradigm研究博客
 
-**Crypto application:** MEV extraction coalitions, validator cartels, governance blocs.
-
-### Algorithmic Game Theory
-Computational aspects of game theory.
-
-**Crypto application:** On-chain game computation limits, gas-efficient mechanism design.
-
-## Methodology
-
-### Step 1: Model the Game
-- Identify all players (including those not obvious)
-- Map complete strategy spaces
-- Define payoff functions precisely
-- Specify information structure
-
-### Step 2: Find Equilibria
-- Check for dominant strategies
-- Compute Nash equilibria
-- Identify Pareto improvements
-- Consider trembling-hand perfection
-
-### Step 3: Stress Test
-- What if players collude?
-- What if new players enter?
-- What if information leaks?
-- What if parameters change?
-
-### Step 4: Recommend
-- Mechanism changes to improve equilibrium
-- Monitoring to detect deviations
-- Parameter bounds to maintain stability
-
-## Resources
-
-### Foundational Texts
-- "Theory of Games and Economic Behavior" - von Neumann & Morgenstern
-- "A Beautiful Mind" (Nash's life, accessible intro)
-- "The Strategy of Conflict" - Schelling
-- "Mechanism Design Theory" - Myerson (Nobel lecture)
-
-### Crypto-Specific
-- "Flash Boys 2.0" - MEV paper
-- "SoK: DeFi Attacks" - Systemization of DeFi exploits
-- "Clockwork Finance" - MEV and mechanism design
-- Paradigm research blog
-
-### Tools
-- Nashpy (Python game theory library)
-- Gambit (game theory software)
-- Agent-based modeling frameworks
+### 工具推荐：
+- Nashpy（Python博弈论库）
+- Gambit（博弈论分析工具）
+- 基于代理的建模框架

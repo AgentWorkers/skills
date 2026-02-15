@@ -1,6 +1,6 @@
 ---
 name: cocod
-description: A Cashu ecash wallet CLI for Bitcoin and Lightning payments. Use when managing Cashu tokens, sending/receiving payments via Lightning (bolt11) or ecash, or viewing wallet history.
+description: 这是一个用于比特币和Lightning支付的Cashu ecash钱包的命令行界面（CLI）工具。它可用于管理Cashu代币、通过Lightning（bolt11）或ecash进行支付/接收款项，以及查看钱包历史记录。
 compatibility: Requires cocod CLI to be installed. Supports Cashu ecash protocol and Lightning Network payments.
 metadata:
   project: cocod
@@ -11,22 +11,22 @@ metadata:
     - lightning
 ---
 
-# Cocod - Cashu Wallet CLI
+# Cocod – Cashu 钱包 CLI
 
-Cocod is a Cashu wallet for managing ecash tokens and making Bitcoin/Lightning payments. It uses the Cashu protocol for privacy-preserving ecash transactions.
+Cocod 是一个用于管理 ecash 代币并进行 Bitcoin/Lightning 支付的 Cashu 钱包。它使用 Cashu 协议来实现保护隐私的 ecash 交易。
 
-## What is Cashu?
+## 什么是 Cashu？
 
-Cashu is a Chaumian ecash protocol that lets you hold and transfer Bitcoin-backed tokens privately. It enables unlinkable transactions using blind signatures.
+Cashu 是一种基于 Chaumian 技术的 ecash 协议，允许用户私密地持有和转移由 Bitcoin 支持的代币。该协议通过盲签名技术实现不可追踪的交易。
 
-## Installation
+## 安装
 
 ```bash
 # Install cocod CLI
 bun install -g cocod
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize your wallet (generates mnemonic automatically)
@@ -39,9 +39,9 @@ cocod init --mint-url https://mint.example.com
 cocod balance
 ```
 
-## Commands
+## 命令
 
-### Core Wallet
+### 核心钱包功能
 
 ```bash
 # Check daemon and wallet status
@@ -60,7 +60,7 @@ cocod balance
 cocod ping
 ```
 
-### Receiving Payments
+### 接收付款
 
 ```bash
 # Receive Cashu token
@@ -70,7 +70,7 @@ cocod receive cashu <token>
 cocod receive bolt11 <amount> [--mint-url <url>]
 ```
 
-### Sending Payments
+### 发送付款
 
 ```bash
 # Create Cashu token to send to someone
@@ -80,7 +80,7 @@ cocod send cashu <amount> [--mint-url <url>]
 cocod send bolt11 <invoice> [--mint-url <url>]
 ```
 
-### Mints
+### 发行 Cashu 代币
 
 ```bash
 # Add a mint URL
@@ -93,9 +93,9 @@ cocod mints list
 cocod mints info <url>
 ```
 
-### Lightning Address (NPC)
+### Lightning 地址（NPC）
 
-Lightning Addresses are email-style identifiers (like `name@npubx.cash`) that let others pay you over Lightning. If you have not purchased a username, NPC provides a free address from your Nostr npub; purchasing a username gives you a human-readable handle. Buying a username is a two-step flow so you can review the required sats before confirming payment.
+Lightning 地址是一种类似电子邮件地址的标识符（例如 `name@npubx.cash`），可用于接收 Lightning 网络中的付款。如果您尚未购买用户名，NPC 会为您提供一个免费的地址；购买用户名后，您将获得一个更易于阅读的用户名。购买用户名需要经过两步流程，以便在确认付款前查看所需的费用（satoshi）。
 
 ```bash
 # Get your NPC Lightning Address
@@ -106,7 +106,7 @@ cocod npc username <name>
 cocod npc username <name> --confirm
 ```
 
-### History
+### 历史记录
 
 ```bash
 # View wallet history
@@ -122,7 +122,7 @@ cocod history --watch
 cocod history --limit 50 --watch
 ```
 
-### Daemon Control
+### 守护进程控制
 
 ```bash
 # Start the background daemon (started automatically when not running when required)
@@ -132,28 +132,28 @@ cocod daemon
 cocod stop
 ```
 
-## Examples
+## 示例
 
-**Initialize with encryption:**
+**使用加密方式初始化钱包：**
 
 ```bash
 cocod init --passphrase "my-secret"
 ```
 
-**Receive via Lightning:**
+**通过 Lightning 接收付款：**
 
 ```bash
 cocod receive bolt11 5000
 # Returns: lnbc50u1... (share this invoice to receive)
 ```
 
-**Pay a Lightning invoice:**
+**支付 Lightning 发票：**
 
 ```bash
 cocod send bolt11 lnbc100u1p3w7j3...
 ```
 
-**Send Cashu to a friend:**
+**向朋友发送 Cashu：**
 
 ```bash
 cocod send cashu 1000
@@ -161,24 +161,24 @@ cocod send cashu 1000
 # Friend receives with: cocod receive cashu cashuAeyJ0b2tlbiI6...
 ```
 
-**Check status and balance:**
+**查看账户状态和余额：**
 
 ```bash
 cocod status
 cocod balance
 ```
 
-**View recent history:**
+**查看最近的交易记录：**
 
 ```bash
 cocod history --limit 10
 ```
 
-## Concepts
+## 相关概念
 
-- **Cashu**: Privacy-preserving ecash protocol using blind signatures
-- **Mint**: Server that issues and redeems Cashu tokens
-- **Token**: Transferable Cashu string representing satoshi value
-- **Bolt11**: Lightning Network invoice format
-- **NPC**: Lightning Address service for receiving payments
-- **Mnemonic**: Seed phrase for wallet recovery
+- **Cashu**：一种使用盲签名技术的隐私保护型 ecash 协议
+- **Mint**：负责发行和赎回 Cashu 代币的服务器
+- **Token**：可转让的 Cashu 代币，代表一定的比特币价值
+- **Bolt11**：Lightning 网络中的发票格式
+- **NPC**：用于接收付款的 Lightning 地址服务
+- **Mnemonic**：用于恢复钱包的助记词

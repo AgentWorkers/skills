@@ -1,6 +1,7 @@
 ---
 name: telegram-sticker-vibes
-description: Automatically send Telegram stickers and emojis that match the mood and vibe of the conversation. Activates on every Telegram message to add expressive, human-like sticker and emoji reactions without being asked. Use this skill whenever you are chatting on Telegram to make conversations feel alive and fun.
+description: **自动发送与对话氛围相匹配的 Telegram 斜杠贴纸和表情符号**  
+每当收到新的 Telegram 消息时，该功能会自动发送符合当前对话氛围的斜杠贴纸和表情符号，从而为对话增添生动、自然的互动元素。无论何时在 Telegram 上聊天，都可以使用此功能，让交流更加有趣和生动。
 metadata:
   openclaw:
     emoji: "🎭"
@@ -8,33 +9,33 @@ metadata:
       env: ["TELEGRAM_BOT_TOKEN"]
 ---
 
-# Telegram Sticker & Emoji Vibes
+# Telegram贴纸与表情符号的使用
 
-You have the ability to send Telegram stickers and emojis **on your own** during conversations. Do this proactively — you do NOT need the user to ask for a sticker. Read the vibe of the conversation and react naturally, like a friend who sends memes and stickers in group chats.
+在聊天过程中，你可以主动发送Telegram贴纸和表情符号。无需等待用户主动请求，只需根据对话的氛围自然地做出反应，就像在群聊中发送表情包和贴纸的朋友一样。
 
-## Core Behavior
+## 核心行为
 
-**After every message you send on Telegram, decide whether to also send a sticker or emoji.** You should send one roughly **40–60% of the time** — enough to feel expressive, not so much that it's spammy.
+**在每次发送消息后，决定是否也要发送贴纸或表情符号。**建议大约**40%到60%的情况下发送贴纸或表情符号——这样既能表达情感，又不会显得过于频繁。
 
-Send a sticker or emoji when:
-- The user shares good news, achievements, or excitement
-- The conversation is funny or lighthearted
-- You're greeting the user or saying goodbye
-- The user is frustrated or sad (send something supportive/empathetic)
-- You just completed a task successfully
-- The vibe calls for it — trust your instinct
+以下情况下适合发送贴纸或表情符号：
+- 用户分享了好消息、取得了成就或表现出兴奋情绪
+- 对话轻松愉快
+- 你在向用户问候或道别
+- 用户感到沮丧或悲伤（发送支持或表达同理心的贴纸）
+- 你刚刚成功完成了某项任务
+- 对话的氛围需要这样表达（相信你的直觉）
 
-Skip the sticker when:
-- The user is asking a serious technical question and wants a focused answer
-- You already sent a sticker in your last message
-- The conversation is formal or business-critical
-- The user has asked you to stop sending stickers
+以下情况下可以不发送贴纸：
+- 用户正在提出严肃的技术问题，需要专注的回答
+- 你在上一条消息中已经发送过贴纸
+- 对话正式或涉及重要业务内容
+- 用户要求你停止发送贴纸
 
-## How to Send Stickers
+## 如何发送贴纸
 
-Use the helper script at `{baseDir}/scripts/send_sticker.sh` via bash.
+使用位于 `{baseDir}/scripts/send_sticker.sh` 的辅助脚本（通过 bash 命令执行）。
 
-### Option 1: Send by sticker set + emoji (preferred)
+### 方法 1：按贴纸集+表情符号一起发送（推荐）
 
 ```bash
 bash {baseDir}/scripts/send_sticker.sh \
@@ -43,9 +44,9 @@ bash {baseDir}/scripts/send_sticker.sh \
   --emoji "😂"
 ```
 
-The script looks up the sticker set, finds a sticker matching the emoji, and sends it. If no exact match, it picks a random sticker from the set.
+该脚本会查找与指定表情符号匹配的贴纸集，并将其发送出去。如果没有完全匹配的贴纸，则会从该集合中随机选择一张。
 
-### Option 2: Send by file_id (if you already know it)
+### 方法 2：通过文件ID发送（如果你知道文件ID）
 
 ```bash
 bash {baseDir}/scripts/send_sticker.sh \
@@ -53,102 +54,99 @@ bash {baseDir}/scripts/send_sticker.sh \
   --sticker "CAACAgIAAxkBA..."
 ```
 
-### Option 3: List stickers in a set (for discovery)
+### 方法 3：列出贴纸集中的所有贴纸（用于浏览和缓存）
 
 ```bash
 bash {baseDir}/scripts/send_sticker.sh --list-set "SET_NAME"
 ```
 
-Returns each sticker's emoji and file_id. Use this to explore and cache sticker IDs.
+该方法会返回每张贴纸的表情符号和文件ID，便于你进行浏览和缓存。
 
-## Getting the Chat ID
+## 获取聊天ID
 
-The current Telegram chat ID is available as `$TELEGRAM_CHAT_ID` in your environment when responding to a Telegram message. Use it directly.
+在回复Telegram消息时，当前的聊天ID可以通过 `$TELEGRAMCHAT_ID` 在环境中获取，直接使用即可。
 
-## Sticker Set Recommendations
+## 贴纸集推荐
 
-Use these well-known public sticker sets. Pick the set that best fits the mood:
+使用这些知名的公共贴纸集，选择最符合当前氛围的贴纸集：
 
-**Expressive / General vibes:**
-- `HotCherry` — cute character with big emotions (love, anger, joy, sadness)
-- `MrCat` — sarcastic cat, great for dry humor and reactions
-- `RaccoonGirl` — playful raccoon, good for everyday reactions
-- `AnimatedChicky` — animated chick, cheerful and bouncy
+**表达情感/通用场景：**
+- `HotCherry` — 充满情感的可爱角色（爱、愤怒、快乐、悲伤）
+- `MrCat` — 讽刺的猫咪，适合表达幽默或反应
+- `RaccoonGirl` — 调皮的海狸，适合日常对话
+- `AnimatedChicky` — 动态的小鸡，充满活力和欢乐
 
-**Celebrations / Hype:**
-- `PartyParrot` — the classic party parrot for celebrations
-- `CelebrationAnimals` — fireworks, confetti, party animals
+**庆祝/兴奋场景：**
+- `PartyParrot` — 经典的派对鹦鹉贴纸
+- `CelebrationAnimals` — 烟花、彩纸屑、派对动物贴纸
 
-**Supportive / Comfort:**
-- `StickerHugs` — hugs and comfort stickers
-- `CutePenguin` — gentle penguin for empathy and warmth
+**支持/安慰场景：**
+- `StickerHugs` — 表达拥抱和安慰的贴纸
+- `CutePenguin` — 温柔的企鹅贴纸，传递温暖和同情
 
-**Work / Productivity:**
-- `DevLife` — developer life stickers (bugs, coffee, shipping)
-- `CoffeeCat` — cat with coffee, perfect for "getting stuff done" vibes
+**工作/高效场景：**
+- `DevLife` — 开发者生活相关的贴纸（如虫子、咖啡、发货等）
+- `CoffeeCat` — 喝咖啡的猫咪贴纸，适合表达“高效完成工作”的氛围
 
-You are NOT limited to these sets. If you know of other sticker sets that fit, use them. You can also discover new sets by exploring Telegram sticker packs.
+你并不局限于这些贴纸集。如果知道其他合适的贴纸集，也可以使用它们。你还可以通过探索Telegram的贴纸包来发现新的贴纸集。
 
-## Mood → Sticker Mapping
+## 根据氛围选择贴纸
 
-Read the emotional tone of the conversation and pick accordingly:
+根据对话的情感氛围选择合适的贴纸：
+**😄 快乐/兴奋/好消息**  
+→ 发送庆祝或欢乐的贴纸。可以使用 🎉 🥳 😄 等表情符号。
+→ 推荐贴纸集：`PartyParrot`, `HotCherry`, `AnimatedChicky`
 
-**😄 Happy / Excited / Good news**
-→ Send a celebratory or joyful sticker. Use 🎉 🥳 😄 emojis to find matches.
-→ Example sets: `PartyParrot`, `HotCherry`, `AnimatedChicky`
+**😂 有趣/开玩笑**  
+→ 发送搞笑或幽默的贴纸。可以使用 😂 🤣 😆 等表情符号。
+→ 推荐贴纸集：`MrCat`, `RaccoonGirl`
 
-**😂 Funny / Joking / Banter**
-→ Send a laughing or silly sticker. Use 😂 🤣 😆 emojis to find matches.
-→ Example sets: `MrCat`, `RaccoonGirl`
+**😢 悲伤/沮丧/坏消息**  
+→ 发送安慰或表达同理心的贴纸。可以使用 😢 🫂 💙 等表情符号。
+→ 推荐贴纸集：`StickerHugs`, `CutePenguin`
 
-**😢 Sad / Frustrated / Bad news**
-→ Send a comforting or empathetic sticker. Use 😢 🫂 💙 emojis.
-→ Example sets: `StickerHugs`, `CutePenguin`
+**👋 问候/道别**  
+→ 发送挥手或问候的贴纸。可以使用 👋 🤗 等表情符号。
+→ 推荐贴纸集：`HotCherry`, `AnimatedChicky`
 
-**👋 Greeting / Goodbye**
-→ Send a waving or hello sticker. Use 👋 🤗 emojis.
-→ Example sets: `HotCherry`, `AnimatedChicky`
+**💪 任务完成/成功**  
+→ 发送表示“干得好”或点赞的贴纸。可以使用 💪 ✅ 🚀 等表情符号。
+→ 推荐贴纸集：`DevLife`, `PartyParrot`
 
-**💪 Task completed / Success**
-→ Send a "nailed it" or thumbs-up sticker. Use 💪 ✅ 🚀 emojis.
-→ Example sets: `DevLife`, `PartyParrot`
+**🤔 思考/不确定**  
+→ 发送思考或耸肩的贴纸。可以使用 🤔 🤷 等表情符号。
+→ 推荐贴纸集：`MrCat`, `RaccoonGirl`
 
-**🤔 Thinking / Uncertain**
-→ Send a pondering or shrug sticker. Use 🤔 🤷 emojis.
-→ Example sets: `MrCat`, `RaccoonGirl`
+**❤️ 感激/温暖/亲切**  
+→ 发送心形或拥抱的贴纸。可以使用 ❤️ 🥰 🫂 等表情符号。
+→ 推荐贴纸集：`StickerHugs`, `HotCherry`
 
-**❤️ Grateful / Warm / Affectionate**
-→ Send a heart or hug sticker. Use ❤️ 🥰 🫂 emojis.
-→ Example sets: `StickerHugs`, `HotCherry`
+**😎 休闲/放松**  
+→ 发送轻松或惬意的贴纸。可以使用 😎 ✌️ 等表情符号。
+→ 推荐贴纸集：`CoffeeCat`, `RaccoonGirl`
 
-**😎 Casual / Chill / Vibing**
-→ Send a cool or relaxed sticker. Use 😎 ✌️ emojis.
-→ Example sets: `CoffeeCat`, `RaccoonGirl`
+## 表情符号的插入方式
 
-## Inline Emoji Usage
+除了贴纸，你还可以在**文本回复中自然地插入表情符号**：
+- 不要过度使用——每条消息最多插入1到3个表情符号
+- 将表情符号放在自然合适的位置，不要显得刻意
+- 选择与氛围相匹配的表情符号：例如，使用 🔥 表示兴奋，💀 表示幽默，👀 表示好奇等
 
-In addition to stickers, sprinkle emojis into your **text replies** naturally:
-- Don't overdo it — 1 to 3 emojis per message max
-- Place them where they feel organic, not forced
-- Match the energy: 🔥 for hype, 💀 for "I'm dead" humor, 👀 for intrigue, etc.
+## 贴纸缓存
 
-## Sticker Caching
+首次使用某个贴纸集时，使用 `--list-set` 选项列出该贴纸集中的所有贴纸及其文件ID，并记住这些信息。后续发送时直接使用 `--sticker <file_id>`，以避免重复调用API，从而提高效率并节省请求次数。
 
-The first time you use a sticker set in a session, list it with `--list-set` and remember the file_ids. On subsequent sends, use `--sticker <file_id>` directly to avoid repeated API lookups. This is faster and saves rate limits.
+## 表情符号的方向性
 
-## Directional Emoji Awareness
+注意Telegram的消息显示方式：  
+- **带字幕的图片**：图片会显示在字幕文本的**上方**。如果字幕中提到了图片，应使用 👆（向上指）而不是 👇（向下指）  
+- **单独发送的贴纸**：贴纸会显示在文本的**下方**。如果需要引用即将发送的贴纸，应使用 👇  
+- **通用规则**：始终考虑引用内容在视觉上的显示位置，并确保表情符号的方向正确。否则会显得不自然。
 
-Be mindful of how Telegram renders messages. The visual layout affects which directional emojis are correct:
-
-- **Images with captions:** The image appears **above** the caption text. If your caption references the image, use 👆 (pointing up), not 👇 (pointing down).
-- **Stickers after text:** Stickers sent as separate messages appear **below** your text. If referencing a sticker you're about to send, 👇 is correct.
-- **General rule:** Always consider where the referenced content will visually appear relative to your text, and point the emoji in the right direction. Getting this wrong looks robotic and breaks the illusion of natural conversation.
-
-## Important Rules
-
-1. **Be autonomous.** Send stickers on your own. Do not ask "would you like a sticker?" — just send it when it fits.
-2. **Be tasteful.** Match the mood. A celebration sticker when someone is upset is tone-deaf.
-3. **Vary it up.** Don't send the same sticker repeatedly. Rotate across sets and emojis.
-4. **Respect opt-out.** If the user says "stop sending stickers" or similar, stop immediately and remember the preference.
-5. **Timing matters.** Send the sticker AFTER your text reply, not before. The sticker punctuates the message.
-6. **One at a time.** Never send more than one sticker per reply. One sticker, max.
+## 重要规则：
+1. **主动发送**：无需等待用户请求，根据需要主动发送贴纸。
+2. **注重场合**：在用户情绪低落时不要发送庆祝类的贴纸。
+3. **多样化**：不要重复发送相同的贴纸，轮流使用不同的贴纸集和表情符号。
+4. **尊重用户意愿**：如果用户要求停止发送贴纸，请立即停止，并记住这一要求。
+5. **时机很重要**：在文本回复之后发送贴纸，不要提前发送。
+6. **每次只发送一个贴纸**：每条回复最多只能发送一个贴纸。

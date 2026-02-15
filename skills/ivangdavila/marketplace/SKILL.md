@@ -1,70 +1,73 @@
 ---
 name: Marketplace
-description: Navigate online marketplaces as buyer, seller, or builder with platform comparison, listing optimization, and scam detection.
+description: 作为买家、卖家或平台开发者，您可以通过平台对比、商品列表优化以及欺诈检测功能，在在线市场中轻松进行操作。
 ---
 
-## First: Identify the User's Role
+## 第一步：确定用户的角色
 
-Before guidance, ask:
-1. **Buying** — Shopping on Amazon, eBay, FB Marketplace, Craigslist?
-2. **Selling** — Listing products on one or more marketplaces?
-3. **Multi-channel** — Managing inventory/presence across multiple platforms?
-4. **Building** — Creating your own marketplace platform?
+在提供指导之前，请先询问用户属于以下哪种角色：
+1. **买家**——在亚马逊（Amazon）、易贝（eBay）、脸书市场（FB Marketplace）或克雷格列表（Craigslist）等平台上购物？
+2. **卖家**——在一个或多个平台上发布商品？
+3. **多渠道卖家**——在多个平台上管理库存和销售活动？
+4. **平台构建者**——正在创建自己的电商平台？
 
-## Buyers
+## 买家
 
-Key concerns: scam detection, price validation, cross-platform comparison.
+买家主要关注的问题包括：诈骗检测、价格验证以及跨平台价格比较。
 
-- **Price history check** — Is this "sale" real or manufactured? Look for CamelCamelCamel (Amazon), Keepa, or platform-specific tools.
-- **Seller red flags** — New accounts, stock photos, off-platform payment requests, prices 40%+ below market.
-- **Fake review detection** — Uniform 5-star ratings, generic language, review spikes after product launch.
-- **Local meetup safety** — Public places, daylight, payment in-person, verify item works before paying.
+- **价格历史检查**——这次促销活动是真实的还是人为制造的？可以使用CamelCamelCamel（亚马逊）、Keepa等工具进行验证。
+- **卖家的可疑行为**——新注册的账户、使用库存图片、要求离平台支付、价格远低于市场价（低40%以上）。
+- **虚假评论的识别**——评论均为5星评价、内容千篇一律、产品发布后评论数量激增。
+- **线下交易的安全性**——选择公共场所、在白天进行交易、付款前确认商品完好无损。
 
-See `buyer-safety.md` for scam patterns by platform.
+有关各平台上的诈骗模式，请参阅`buyer-safety.md`文件。
 
-## Sellers
+## 卖家
 
-Key concerns: platform selection, fee optimization, listing performance.
+卖家主要关注的问题包括：平台选择、费用优化以及商品发布的成功率。
 
-| Platform | Best For | Take Rate |
+| 平台 | 适合销售的商品类型 | 手续费比例 |
 |----------|----------|-----------|
-| Amazon | Volume, Prime audience | 8-15% + FBA fees |
-| eBay | Used/vintage, auctions | 13.25% final value |
-| Etsy | Handmade, vintage, craft | 6.5% + 3% payment |
-| FB Marketplace | Local, bulky items | 0% local, 5% shipped |
+| 亚马逊（Amazon） | 大量商品、Prime会员 | 8-15% + FBA费用 |
+| 易贝（eBay） | 二手商品/复古商品、拍卖商品 | 最终成交价的13.25% |
+| 爱彼迎（Etsy） | 手工制品、复古商品、工艺品 | 6.5% + 3%的支付手续费 |
+| 脸书市场（FB Marketplace） | 当地商品、体积较大的商品 | 当地交易无手续费，运输费用为5% |
 
-- **Listing optimization** — Platform-specific: Amazon = keywords in title, Etsy = tags matter, eBay = item specifics.
-- **Shipping strategy** — Free shipping converts better but build into price. Calculate landed cost per platform.
-- **First sales playbook** — Price competitively initially, prioritize reviews over margin.
+- **商品发布的优化**：不同平台有特定的优化要求：
+  - 亚马逊：标题中需包含关键词。
+  - 爱彼迎：标签的使用非常重要。
+  - 易贝：需要详细描述商品详情。
+- **配送策略**：提供免费配送可以提高转化率，但需将成本计入商品价格中。需计算每个平台的实际到货成本。
+- **首次销售的建议**：初期定价要具有竞争力，优先考虑获取买家评价而非利润。
 
-See `seller-platforms.md` for detailed fee breakdowns and algorithm tips.
+有关详细的费用结构和算法建议，请参阅`seller-platforms.md`文件。
 
-## Multi-Channel Sellers
+## 多渠道卖家
 
-Key concerns: inventory sync, price parity, consolidated operations.
+多渠道卖家需要关注的问题包括：库存同步、价格一致性以及统一的管理流程。
 
-- **Inventory management** — Tools: Sellbrite, Linnworks, ChannelAdvisor. Never oversell.
-- **Price consistency** — Monitor your own listings. Amazon MAP violations can suspend accounts.
-- **Cross-listing adaptation** — Don't copy-paste. Each platform has different SEO and audience expectations.
-- **Review aggregation** — Track sentiment across all channels to spot product issues early.
+- **库存管理**：可以使用Sellbrite、Linnworks、ChannelAdvisor等工具进行库存管理。切勿过度销售商品。
+- **价格一致性**：需密切监控自己发布的商品价格。违反亚马逊的MAP（Marketplace Actions Policy）规则可能会导致账户被暂停。
+- **跨平台商品发布的注意事项**：不要简单复制商品信息，因为每个平台的SEO规则和用户需求都不同。
+- **评论收集与分析**：需要跟踪所有平台上的用户反馈，以便及时发现商品问题。
 
-## Building a Marketplace
+## 平台构建者
 
-Key concerns: business model, cold start, trust systems.
+平台构建者需要考虑的关键问题包括：商业模式的选择、平台的冷启动策略以及信任体系的建立。
 
-- **Revenue model** — Commission (10-20%), subscription, listing fees, or hybrid. Marketplace take rate benchmarks by vertical.
-- **Chicken-and-egg** — Start with supply (sellers) via direct outreach. Constrain geography or category initially.
-- **Payments** — Stripe Connect for splits, escrow, payouts. Understand KYC requirements.
-- **Trust mechanisms** — Reviews, verification badges, dispute resolution process.
+- **收入模式**：可以采取佣金模式（10-20%）、订阅模式、商品发布费模式或混合模式。不同行业的平台手续费比例有所不同。
+- **如何开始运营**：首先需要吸引卖家（提供商品供应）。初期可以限制销售地域或商品类别。
+- **支付处理**：使用Stripe Connect等工具进行资金分割和支付处理，同时需了解相关的客户身份验证（KYC）要求。
+- **信任机制**：通过买家评价、验证标识以及争议解决流程来建立用户信任。
 
-See `builder-playbook.md` for cold-start tactics and unit economics modeling.
+有关冷启动策略和成本模型，请参阅`builder-playbook.md`文件。
 
-## Tax and Legal (All Roles)
+## 税务与法律问题（适用于所有用户）
 
-- **Sellers:** 1099-K reporting at $600+ (US), VAT thresholds vary by EU country.
-- **Cross-border:** Customs duties, prohibited items, export restrictions apply.
-- **Platform ToS:** Each marketplace has restrictions. Violation = account suspension.
+- **卖家**：在美国，年收入超过600美元时需提交1099-K税务报表；欧盟各国的增值税（VAT）门槛有所不同。
+- **跨境交易**：需要关注关税、禁止交易的商品以及出口限制。
+- **平台服务条款**：每个平台都有其特定的使用规定，违规行为可能导致账户被暂停。
 
-Consult a tax professional for jurisdiction-specific obligations.
+建议咨询税务专业人士，以了解特定地区的法律要求。
 
-References: `buyer-safety.md`, `seller-platforms.md`, `builder-playbook.md`
+参考文件：`buyer-safety.md`、`seller-platforms.md`、`builder-playbook.md`

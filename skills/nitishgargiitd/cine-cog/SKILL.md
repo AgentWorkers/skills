@@ -1,6 +1,6 @@
 ---
 name: cine-cog
-description: "If you can imagine it, CellCog can film it. Grand widescreen cinematics with consistent characters — what previously required million-dollar production budgets, now generated from a single prompt. Short films, music videos, brand films, cinematic productions — epic compositions, cinematic lighting, visual storytelling at scale. Grand cinema, accessible to everyone."
+description: "只要你能想象到的场景，CellCog 都能够将其拍摄出来。无论是大屏幕电影、连贯的角色表现，还是那些过去需要数百万美元制作预算的影片，现在都可以通过一个简单的指令来实现。短片、音乐视频、品牌宣传片，甚至是宏大的电影作品——包括史诗般的配乐、电影级的灯光效果以及大规模的视觉叙事。这一切，都能让每个人都能享受到高品质的电影体验。"
 metadata:
   openclaw:
     emoji: "🎬"
@@ -8,225 +8,200 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Cine Cog - Grand Cinema, Accessible to Everyone
+# Cine Cog – 为所有人打造的电影艺术
 
-**If you can imagine it, CellCog can film it.**
+**只要你能想象，CellCog就能将其呈现出来。**
 
-The grandest cinematics were locked behind million-dollar production budgets — epic compositions, consistent characters across scenes, cinematic lighting, sweeping narratives. For the first time, AI makes all of this accessible from a single prompt.
+过去，那些宏大的电影场景往往需要数百万美元的制作预算：精美的构图、贯穿全片的连贯角色、富有电影感的灯光效果以及引人入胜的叙事。如今，借助人工智能技术，这一切都可以通过一个简单的指令轻松实现。
 
-CellCog's mission with Cine-cog: **make the grandest visual storytelling available to everyone.** Character-consistent widescreen cinematics, generated from imagination, not budgets.
-
----
-
-## Prerequisites
-
-This skill requires the `cellcog` skill for SDK setup and API calls.
-
-```bash
-clawhub install cellcog
-```
-
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
-
-**Quick pattern (v1.0+):**
-```python
-# Fire-and-forget - returns immediately
-result = client.create_chat(
-    prompt="[your cinematic vision]",
-    notify_session_key="agent:main:main",
-    task_label="cinematic-video",
-    chat_mode="agent team"  # Agent team for cinematic depth
-)
-# You'll be notified when your film is ready
-```
+CellCog的使命是：**让最精彩的视觉叙事成为每个人的享受**。无论预算如何，我们都能根据你的想象，生成风格统一、画面宽广的电影画面。
 
 ---
 
-## What Makes Cine-cog Different
+## 先决条件
 
-### Full Production Pipeline
+使用此功能需要具备`cellcog`技能，以便进行SDK设置和API调用。
 
-From a single prompt, CellCog handles the entire cinematic pipeline:
+**请先阅读`cellcog`技能的相关内容**，以了解如何进行SDK设置。该技能会向你展示所有可能的操作。
 
-1. **Script & storyboard** — Deep reasoning breaks your vision into scenes, shots, and narrative beats
-2. **Character design** — Creates characters that stay consistent across every frame
-3. **Scene generation** — Widescreen (16:9) frames with cinematic composition, lighting, and depth
-4. **Animation** — Brings static frames to life with motion, camera movement, and lipsync
-5. **Sound design** — Original score, voiceover, and sound effects
-6. **Post-production** — Automatic editing, scene transitions, and final render
-
-### What Previously Cost Millions
-
-| Traditional Production | Cine-cog |
-|----------------------|----------|
-| Concept artists, storyboard artists | One prompt |
-| Character designers ensuring consistency | Automatic across all scenes |
-| Camera crews, lighting rigs | AI cinematography |
-| Composers, sound engineers | Generated score + effects |
-| Weeks of post-production | Automatic editing and rendering |
-| Budget: $100K - $10M+ | Budget: One CellCog request |
+**快速操作指南（v1.0及以上版本）：**
 
 ---
 
-## What Cinematics You Can Create
+## Cine Cog的独特之处
 
-### Epic Narrative Films
+### 完整的电影制作流程
 
-Grand visual storytelling:
+只需一个指令，CellCog就能处理整个电影制作流程：
+1. **剧本与分镜**：通过深度推理将你的创意分解为不同的场景、镜头和叙事节点。
+2. **角色设计**：创建在每一帧画面中都保持一致性的角色。
+3. **场景生成**：生成宽屏（16:9）格式的场景，包含电影级的构图、灯光效果和深度感。
+4. **动画制作**：为静态画面添加动态效果、摄像机运动以及角色配音。
+5. **音效设计**：制作原声音乐、旁白和音效。
+6. **后期制作**：自动完成剪辑、场景过渡以及最终渲染。
 
-- **Fantasy Epics**: "Create a 3-minute cinematic: a lone knight approaches a dragon's lair at sunset"
-- **Sci-Fi Visions**: "Film a 2-minute sequence: humanity's first steps on Mars, cinematic widescreen"
-- **Historical Drama**: "Create a cinematic recreation of an ancient Roman triumph"
-- **Mythological**: "Film the story of Icarus — from workshop to flight to fall — in 90 seconds"
+### 过去需要巨额预算的任务
 
-**Example prompt:**
-> "Create a 2-minute cinematic film:
-> 
-> Story: A young astronaut sees Earth from space for the first time
-> 
-> Scene 1: Inside the spacecraft — nervous anticipation, checking instruments
-> Scene 2: The hatch opens — light floods in
-> Scene 3: The reveal — Earth in full glory through the viewport
-> Scene 4: Close-up — tears floating in zero gravity, awe on their face
-> 
-> Style: Interstellar meets Gravity. Widescreen 16:9.
-> Music: Orchestral, building from quiet wonder to overwhelming emotion.
-> No dialogue — let the visuals speak."
-
-### Brand Cinematics
-
-Premium visual content for brands:
-
-- **Product Films**: "Create a 60-second cinematic product reveal for a luxury watch"
-- **Brand Stories**: "Film a 2-minute origin story for our coffee brand — from bean to cup"
-- **Launch Videos**: "Create a cinematic launch trailer for our new app"
-- **Corporate Films**: "Film a 90-second cinematic company vision piece"
-
-**Example prompt:**
-> "Create a 90-second cinematic brand film:
-> 
-> Brand: A sustainable fashion company
-> Story: Follow a garment from organic cotton field → artisan workshop → confident person wearing it in the city
-> 
-> Cinematography: Wide establishing shots of nature, intimate close-ups of craftsmanship, urban energy for the finale
-> Color grade: Warm, earthy tones for nature → rich, confident tones for city
-> Music: Acoustic guitar building to modern electronic
-> 
-> End with logo and tagline: 'Worn with purpose.'"
-
-### Music Videos
-
-Visual storytelling set to music:
-
-- **Concept Videos**: "Create a music video with a surreal dreamscape narrative"
-- **Performance Videos**: "Film a cinematic performance in an epic location"
-- **Lyric Videos**: "Create a cinematic lyric video with visual storytelling"
-- **Visualizers**: "Generate an atmospheric visual accompaniment for this track"
-
-### Short Films
-
-Complete narrative filmmaking:
-
-- **Drama**: "Create a 3-minute short film about a father and daughter reconnecting"
-- **Thriller**: "Film a 2-minute suspense sequence in an abandoned building"
-- **Comedy**: "Create a 90-second comedy sketch with cinematic production value"
-- **Experimental**: "Film an abstract visual poem about the passage of time"
+| 传统制作方式 | Cine Cog |
+|-------------------|----------|
+| 需要概念艺术家和分镜师 | 仅需一个指令 |
+| 需要确保角色一致性的设计师 | 自动完成所有场景的设计 |
+| 需要摄像团队和灯光设备 | 由AI负责电影摄影 |
+| 需要作曲家和音效工程师 | 音乐和音效由系统自动生成 |
+| 需要数周的后期制作时间 | 自动完成剪辑和渲染 |
+| 预算：10万美元至数百万美元 | 预算：仅需一次CellCog请求 |
 
 ---
 
-## Cinematic Styles
+## 你可以创作的电影类型
 
-| Style | Characteristics | Reference |
+### 巨型叙事电影
+
+- **奇幻史诗**：“制作一部3分钟的电影：一位孤独的骑士在日落时分接近龙的巢穴。”
+- **科幻场景**：“拍摄一段2分钟的画面：人类首次登上火星的情景。”
+- **历史剧**：“重现古罗马的盛大胜利场面。”
+- **神话故事**：“在90秒内拍摄伊卡洛斯的故事——从他的创作到飞翔，再到坠落。”
+
+**示例指令：**
+> “制作一部2分钟的电影：
+> 
+> 故事：一位年轻的宇航员第一次从太空中看到地球。
+> 
+> 场景1：飞船内部——充满紧张的期待，宇航员检查着各种仪器。
+> 场景2：舱门打开——光线洒了进来。
+> 场景3：地球的全景展现在眼前。
+> 场景4：特写镜头——宇航员在失重状态下流泪，脸上流露出敬畏之情。
+> 
+> 风格：结合《星际穿越》与《地心引力》的风格。采用16:9的宽屏格式。
+> 音乐：从宁静的奇妙感逐渐发展到充满情感的交响乐。
+> 不需要对话——让画面本身讲述故事。”
+
+### 品牌专属电影内容
+
+- **产品宣传片**：“为某款奢侈手表制作一段60秒的产品宣传视频。”
+- **品牌故事**：“拍摄一段2分钟的视频，讲述我们咖啡品牌的起源故事——从咖啡豆到成品。”
+- **产品发布视频**：“为我们的新应用制作一段90秒的电影预告片。”
+- **企业宣传片**：“制作一段90秒的企业愿景视频。”
+
+**示例指令：**
+> “制作一段90秒的品牌宣传片：
+> 
+> 品牌：一家可持续发展的时尚品牌。
+> 故事：跟随一件服装，从有机棉田到工匠的工作室，再到城市中穿着它的自信人士。
+> 
+> 摄影风格：先拍摄大自然的广角镜头，再展示精湛的工艺细节，最后以城市生活的场景收尾。
+> 色彩处理：自然场景采用温暖、质朴的色调；城市场景则采用丰富、自信的色调。
+> 音乐：从原声吉他逐渐过渡到现代电子音乐。
+> 
+> 结尾处展示品牌标志和标语：‘带着使命感去佩戴。’”
+
+### 音乐视频
+
+- **概念视频**：“为音乐视频创作一个充满梦幻色彩的视觉故事。”
+- **表演视频**：“在宏伟的地点拍摄一场富有电影感的表演。”
+- **歌词视频**：“为歌曲制作一个富有视觉故事感的歌词视频。”
+- **视觉化作品**：“为这首歌曲生成富有氛围的视觉配乐。”
+
+### 短片
+
+- **剧情短片**：“制作一部3分钟的电影，讲述一位父亲和女儿重逢的故事。”
+- **惊悚片**：“在废弃的建筑中拍摄一段2分钟的悬疑场景。”
+- **喜剧片**：“制作一段90秒的喜剧片段，具备电影级的制作水准。”
+- **实验性作品**：“拍摄一部关于时间流逝的抽象视觉诗。”
+
+---
+
+## 电影风格
+
+| 风格 | 特点 | 参考作品 |
 |-------|-----------------|-----------|
-| **Epic/Grand** | Sweeping landscapes, orchestral score, wide shots | Lord of the Rings, Dune |
-| **Intimate** | Close-ups, natural light, subtle emotion | Moonlight, Lost in Translation |
-| **Noir** | High contrast, shadows, moody | Blade Runner, Sin City |
-| **Naturalistic** | Golden hour, flowing camera, poetic | Terrence Malick, Studio Ghibli |
-| **Hyper-stylized** | Bold colors, symmetry, precise framing | Wes Anderson, Wong Kar-wai |
-| **Documentary** | Observational, raw, authentic | Planet Earth, Free Solo |
+| **史诗/宏大** | 巨大的景观、交响乐、广角镜头 | 《指环王》《沙丘》 |
+| **亲密感强** | 特写镜头、自然光、微妙的情感表达 | 《月光》《迷失在翻译中》 |
+| **黑色电影** | 高对比度、阴影、忧郁的氛围 | 《银翼杀手》《罪恶都市》 |
+| **写实风格** | 金色的光线、流畅的镜头运镜、富有诗意的画面 | 特伦斯·马利克的作品、吉卜力工作室 |
+| **高度风格化** | 大胆的色彩、对称的构图、精确的拍摄技巧 | 韦斯·安德森的作品、王家卫的电影 |
+| **纪录片** **真实的观察、原始的拍摄手法** | 《地球脉动》《自由独行》 |
 
 ---
 
-## Cinematic Specs
+## 电影制作的规格
 
-| Format | Dimensions | Best For |
+| 格式 | 尺寸 | 最适合的场景 |
 |--------|------------|----------|
-| **Widescreen** | 1920×1080 (16:9) | Standard cinematic |
-| **Ultra-wide** | 2560×1080 (21:9) | Epic scope, letterbox feel |
-| **Vertical** | 1080×1920 (9:16) | Reels/TikTok cinematics |
-| **Square** | 1080×1080 (1:1) | Social media |
+| **宽屏** | 1920×1080（16:9） | 标准的电影格式 |
+| **超宽屏** | 2560×1080（21:9） | 适合展现宏大的场景 |
+| **竖屏** | 1080×1920（9:16） | 适合TikTok等平台的视频 |
+| **正方形** | 1080×1080（1:1） | 适合社交媒体分享 |
 
-**Widescreen (16:9) is the default and recommended format** for cinematic content.
+**宽屏（16:9）是电影内容的默认和推荐格式。**
 
 ---
 
-## Chat Mode for Cinematics
+## 电影制作的聊天模式
 
-| Scenario | Recommended Mode |
+| 使用场景 | 推荐的模式 |
 |----------|------------------|
-| Short clips, single scenes, thumbnails | `"agent"` |
-| Full narrative films, multi-scene cinematics, brand films | `"agent team"` |
+| 短片、单个场景、缩略图 | `"agent"` |
+| 完整的故事片、多场景的电影、品牌宣传片 | `"agent team"` |
 
-**Use `"agent team"` for most cinematic work.** Grand cinematics benefit from deep creative deliberation — storyboarding, character consistency, narrative flow, and production design all improve with multiple reasoning passes.
+**大多数电影制作任务建议使用`agent team`模式**。复杂的创意工作（如分镜、角色一致性、叙事流畅性以及制作设计）需要多次讨论和调整。
 
-**Use `"agent"` for quick visual assets** — individual cinematic frames, thumbnails, or single short scenes.
-
----
-
-## Example Prompts
-
-**Grand cinematic:**
-> "Create a 3-minute cinematic short film:
-> 
-> Title: 'The Last Library'
-> Concept: In a post-apocalyptic world, a child discovers the last remaining library
-> 
-> Scenes:
-> 1. Desolate landscape — child walking through ruins (30 sec)
-> 2. Discovery — a door hidden behind rubble, light seeping through (20 sec)
-> 3. The reveal — vast library interior, books everywhere, dust particles in light beams (30 sec)
-> 4. Wonder — child touching books, opening one, illustrations come to life (40 sec)
-> 5. Hope — child carries a book outside, sits and reads as sun sets (30 sec)
-> 
-> Style: Children of Men meets Studio Ghibli
-> Music: Piano and strings, melancholic to hopeful
-> No dialogue."
-
-**Product cinematic:**
-> "Create a 45-second cinematic product film for wireless headphones:
-> 
-> Open: Extreme macro of the headphone surface, light reflecting
-> Build: Person puts them on in a busy city — the world goes quiet
-> Showcase: Music fills the frame — visualize the audio quality cinematically
-> Close: Product shot, floating, clean background
-> 
-> Cinematography: Macro lens → wide → intimate → product
-> Color grade: Cool urban → warm personal → clean product
-> Music: Something that makes you FEEL the audio quality"
-
-**Short film:**
-> "Create a 2-minute cinematic short:
-> 
-> Story: An old man sits alone at a café, looking at an empty chair across from him. 
-> Through subtle flashbacks, we see decades of conversations at that same table.
-> End: A young couple sits down at the next table, beginning their own story.
-> 
-> Style: Wong Kar-wai color palette, intimate framing
-> Music: Solo piano, gentle
-> Let the visuals and music tell the story — minimal or no dialogue."
+**对于简单的视觉素材（如单个电影镜头、缩略图或单个短场景），可以使用`agent`模式。**
 
 ---
 
-## Tips for Better Cinematics
+## 示例指令
 
-1. **Think in scenes, not descriptions**: Break your vision into shots. "Wide establishing → medium → close-up" gives CellCog clear cinematic language.
+**宏大的电影作品：**
+> “制作一部3分钟的电影短片：
+> 
+> 标题：《最后的图书馆》
+> 故事：在一个后末日世界中，一个孩子发现了最后一座图书馆。
+> 
+> 场景：
+> 1. 荒凉的景象——孩子穿过废墟（30秒）。
+> 2. 发现——一扇隐藏在废墟后的门，光线从缝隙中透进来（20秒）。
+> 3. 库房内部——书籍遍布各处，光线中漂浮着尘埃颗粒（30秒）。
+> 4. 孩子触摸书籍，翻开其中一页，插图随之活了起来（40秒）。
+> 5. 希望——孩子带着书走到外面，在夕阳下阅读（30秒）。
+> 
+> 风格：结合《人类之子》与吉卜力工作室的风格。
+> 音乐：钢琴与弦乐，从忧郁逐渐转为充满希望的氛围。
+> 不需要对话。”
 
-2. **Reference real films**: "Blade Runner lighting" or "Wes Anderson framing" communicates more than paragraphs of description.
+**产品宣传片：**
+> “为某款无线耳机制作一段45秒的产品宣传视频：
+> 开场：镜头特写耳机表面，反射出微弱的光线。
+> 发展部分：一个人在繁忙的城市中戴上耳机，周围的一切变得安静下来。
+> 展示部分：音乐充满画面，直观地展示音频质量。
+> 结尾：镜头拉远，展示产品。
+> 
+> 摄影风格：从特写镜头逐渐过渡到广角镜头，最后聚焦产品。
+> 色彩处理：城市场景采用冷色调；产品部分采用温暖、自然的色调。
+> 音乐：能够让人感受到音频质量的音乐。”
 
-3. **Specify emotion, not just action**: "She looks out the window" is flat. "She looks out the window — longing, resignation, the smallest hint of hope" gives CellCog the emotional palette.
+**短片：**
+> “制作一段2分钟的电影：
+> 
+> 故事：一位老人独自坐在咖啡馆里，看着对面的空椅子。
+> 通过微妙的闪回，展现这个人在过去几十年里与那位老人的对话。
+> 结局：一对年轻夫妇坐在旁边的座位上，开始他们自己的故事。
+> 
+> 风格：采用王家卫的电影风格。
+> 音乐：柔和的钢琴曲。
+> 让画面和音乐本身讲述故事——尽量减少对话。”
 
-4. **Music direction matters**: The score transforms everything. Specify mood, instruments, and arc: "Builds from quiet uncertainty to confident resolution."
+---
 
-5. **Let silence work**: Not every scene needs dialogue. Some of the most powerful cinema is purely visual.
+## 制作出更精彩电影的建议
 
-6. **Trust widescreen**: 16:9 is your default. It's how cinema is meant to be experienced.
+1. **以场景为单位思考，而不是用文字描述**：将你的创意分解成具体的镜头。例如：“先拍摄广角镜头，再是中景，最后是特写。”这样CellCog才能更好地理解你的意图。
+2. **参考真实的电影作品**：用具体的电影元素（如《银翼杀手》中的灯光效果或韦斯·安德森的拍摄技巧）来指导创作。
+3. **明确表达情感**：仅仅描述“她望向窗外”是远远不够的。需要具体说明她的眼神中蕴含着怎样的情感（如渴望、无奈或一丝希望）。
+4. **音乐的选择至关重要**：音乐能够为整个作品增色不少。请明确指定音乐的风格、使用的乐器以及情感基调（例如，从宁静的不确定感逐渐发展到充满希望的氛围）。
+5. **适当运用沉默**：并非每个场景都需要对话。有时候，纯粹的视觉效果才能传达最深刻的情感。
+6. **选择宽屏格式**：16:9的宽屏格式是最适合电影制作的格式。
+
+---
+
+希望这些信息能帮助你更好地使用Cine Cog，创作出令人难忘的电影作品！

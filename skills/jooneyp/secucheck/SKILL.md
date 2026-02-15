@@ -1,61 +1,65 @@
 ---
 name: secucheck
-description: Comprehensive security audit for OpenClaw. Scans 7 domains (runtime, channels, agents, cron, skills, sessions, network), supports 3 expertise levels, context-aware analysis, and visual dashboard. Read-only with localized reports.
+description: OpenClaw的全面安全审计功能：  
+- 扫描7个关键领域（运行时环境、通信渠道、代理程序、定时任务（cron）、技能系统、用户会话以及网络通信）；  
+- 支持3个不同的安全评估级别；  
+- 具备上下文感知的分析能力；  
+- 提供可视化的仪表盘界面；  
+- 仅提供读取权限，并支持本地化报告生成。
 tags: [security, audit, hardening, runtime, dashboard, prompt-injection]
 ---
 
-# secucheck - OpenClaw Security Audit
+# secucheck - OpenClaw 安全审计
 
-Comprehensive security audit skill for OpenClaw deployments. Analyzes configuration, permissions, exposure risks, and runtime environment with context-aware recommendations.
-
----
-
-## Summary
-
-**secucheck** performs read-only security audits of your OpenClaw setup:
-
-- **7 audit domains**: Runtime, Channels, Agents, Cron Jobs, Skills, Sessions, Network
-- **3 expertise levels**: Beginner (analogies), Intermediate (technical), Expert (attack vectors)
-- **Context-aware**: Considers VPN, single-user, self-hosted scenarios
-- **Runtime checks**: Live system state (network exposure, containers, privileges)
-- **Dashboard**: Visual HTML report with security score
-- **Localized output**: Final report matches user's language
-
-**Never modifies configuration automatically.** All fixes require explicit user confirmation.
+这是一个针对 OpenClaw 部署的全面安全审计工具，能够分析配置、权限、暴露风险以及运行时环境，并提供基于上下文的建议。
 
 ---
 
-## Quick Start
+## 概述
 
-### Installation
+**secucheck** 对您的 OpenClaw 配置执行只读安全审计：
+
+- **7 个审计领域**：运行时、通道、代理、定时任务、技能、会话、网络
+- **3 个专业水平**：初级（使用类比语言）、中级（提供技术细节）、高级（涉及攻击途径）
+- **基于上下文**：考虑 VPN、单用户和自托管场景
+- **运行时检查**：实时系统状态（网络暴露、容器、权限）
+- **仪表板**：带有安全评分的可视化 HTML 报告
+- **本地化输出**：最终报告会匹配用户的语言
+
+**切勿自动修改配置。**所有修复操作都需要用户的明确确认。
+
+---
+
+## 快速入门
+
+### 安装
 ```bash
 clawhub install secucheck
 ```
 
-### Usage
-Ask your OpenClaw agent:
-- "security audit"
-- "secucheck"
-- "run security check"
+### 使用方法
+向您的 OpenClaw 代理发送以下命令：
+- `security audit`
+- `secucheck`
+- `run security check`
 
-### Expertise Levels
-When prompted, choose your level:
-1. **Beginner** - Simple analogies, no jargon
-2. **Intermediate** - Technical details, config examples
-3. **Expert** - Attack vectors, edge cases, CVEs
+### 专业水平
+根据提示选择适合您的专业水平：
+1. **初级** - 使用简单类比语言，避免专业术语
+2. **中级** - 提供技术细节和配置示例
+3. **高级** - 涉及攻击途径、边缘案例和已知漏洞（CVE）
 
-All levels run the same checks—only explanation depth varies.
+所有级别执行的检查内容相同，只是解释的深度不同。
 
-### Dashboard
+### 仪表板
 ```
 "show dashboard" / "visual report"
 ```
-Opens an HTML report in your browser.
+在浏览器中打开 HTML 报告。
 
 ---
 
-## Example Output
-
+## 示例输出
 ```
 🔒 Security Audit Results
 
@@ -74,44 +78,43 @@ Opens an HTML report in your browser.
 
 ---
 
-## Features
+## 功能特点
 
-- 🔍 **Comprehensive**: Channels, agents, cron, skills, sessions, network, runtime
-- 👤 **3 Expertise Levels**: Beginner / Intermediate / Expert
-- 🌏 **Localized**: Final report in user's language
-- 🎯 **Attack Scenarios**: Real-world exploitation paths
-- ⚡ **Runtime Checks**: VPN, containers, privileges, network exposure
-- 🎨 **Dashboard**: Visual HTML report with security score
-
----
-
-# Agent Instructions
-
-*Everything below is for the agent executing this skill.*
+- 🔍 **全面性**：涵盖通道、代理、定时任务、技能、会话、网络和运行时状态
+- 👤 **3 个专业水平**：初级 / 中级 / 高级
+- 🌏 **本地化**：最终报告使用用户的语言
+- 🎯 **攻击场景**：基于现实世界的攻击路径
+- ⚡ **运行时检查**：检查 VPN、容器、权限和网络暴露情况
+- 🎨 **仪表板**：带有安全评分的可视化 HTML 报告
 
 ---
 
-## When to Use
+# 代理使用说明
 
-Trigger this skill when:
-- User requests security checkup/audit
-- **Auto-trigger**: Installing skills, creating/modifying agents, adding/modifying cron jobs
-- Periodic review (recommended: weekly)
+*以下内容适用于执行此功能的代理。*
 
-## Expertise Levels
+---
 
-| Level | Identifier | Style |
-|-------|------------|-------|
-| Beginner | `1`, `beginner` | Analogies, simple explanations, no jargon |
-| Intermediate | `2`, `intermediate` | Technical details, config examples |
-| Expert | `3`, `expert` | Attack vectors, edge cases, CVE references |
+## 适用场景
 
-## Execution Flow
+在以下情况下使用此功能：
+- 用户请求安全检查/审计
+- **自动触发**：在安装技能、创建/修改代理或添加/修改定时任务时
+- 定期审查（建议每周进行一次）
 
-### Step 1: Ask Level (before running anything)
+## 专业水平
 
-Present options in user's language. Example (English):
+| 专业水平 | 标识符 | 说明风格 |
+|--------|------------|---------|
+| 初级 | `1`, `beginner` | 使用类比语言，简单解释，避免专业术语 |
+| 中级 | `2`, `intermediate` | 提供技术细节和配置示例 |
+| 高级 | `3`, `expert` | 涉及攻击途径、边缘案例和已知漏洞（CVE） |
 
+## 执行流程
+
+### 第一步：询问用户的专业水平（在开始任何操作之前）
+
+用用户的语言展示可选选项。例如（英文）：
 ```
 What level of technical detail do you prefer?
 
@@ -122,23 +125,20 @@ What level of technical detail do you prefer?
 📌 All levels run the same checks—only explanation depth varies.
 ```
 
-**STOP HERE. Wait for user response.**
+**在此处暂停。等待用户回复。**
 
-### Step 2: Run Audit
-
+### 第二步：执行审计
 ```bash
 bash ~/.openclaw/skills/secucheck/scripts/full_audit.sh
 ```
 
-Returns JSON with findings categorized by severity.
+返回按严重程度分类的审计结果（以 JSON 格式）。
 
-### Step 3: Format Output
+### 第三步：格式化输出
+解析 JSON 输出，并根据用户的专业水平进行格式化。
+**最终报告必须使用用户的语言。**
 
-Parse JSON output and format based on user's expertise level.
-**Final report must be in user's language.**
-
-#### Report Structure (Organize by Category)
-
+#### 报告结构（按类别组织）
 ```
 🔒 Security Audit Results
 
@@ -167,31 +167,27 @@ Parse JSON output and format based on user's expertise level.
 - [findings related to NETWORK category]
 ```
 
-Group findings by their `category` field, not just severity.
-Within each category, show severity icon and explain.
+根据 `category` 字段对审计结果进行分组，而不仅仅是按严重程度。
+在每个类别内，显示严重程度图标并给出相应的说明。
 
-### Step 4: Auto-Open Dashboard
-
-After text report, automatically generate and serve dashboard:
-
+### 第四步：自动生成仪表板
+在文本报告生成后，自动生成并显示仪表板：
 ```bash
 bash ~/.openclaw/skills/secucheck/scripts/serve_dashboard.sh
 ```
 
-The script returns JSON with `url` (LAN IP) and `local_url` (localhost).
-**Use the `url` field** (not localhost) when telling the user — they may access from another device.
+脚本会返回包含 `url`（局域网 IP）和 `local_url`（localhost）的 JSON 数据。
+**在告知用户时使用 `url` 字段**——用户可以从其他设备访问仪表板。
 
-Example:
+**示例：**
 ```
 📊 대시보드도 열었어요: http://192.168.1.200:8766/secucheck-report.html
 ```
 
-If running in environment where browser can be opened, use browser tool to open it.
+如果在可以打开浏览器的环境中运行，请使用浏览器打开仪表板。
 
-## Cross-Platform Support
-
-Scripts run on Linux, macOS, and WSL. Check the JSON output for platform info:
-
+## 跨平台支持
+该脚本支持 Linux、macOS 和 WSL 平台。请检查 JSON 输出中的平台信息：
 ```json
 {
   "os": "linux",
@@ -202,49 +198,46 @@ Scripts run on Linux, macOS, and WSL. Check the JSON output for platform info:
 }
 ```
 
-### Platform Detection
+### 平台检测
 
-| Field | Values |
-|-------|--------|
-| `os` | `linux`, `macos`, `windows`, `unknown` |
-| `os_variant` | `ubuntu`, `arch`, `dsm`, `wsl`, version string |
-| `in_wsl` | `true` if Windows Subsystem for Linux |
-| `in_dsm` | `true` if Synology DSM |
+| 字段 | 值         |
+|--------|------------|
+| `os`    | `linux`, `macos`, `windows`, `unknown` |
+| `os_variant` | `ubuntu`, `arch`, `dsm`, `wsl`, 版本字符串 |
+| `in_wsl` | 如果是 Windows Subsystem for Linux，则显示 `true` |
+| `in_dsm` | 如果是 Synology DSM，则显示 `true` |
 
-### Handling Failed Checks
+### 处理失败的检查
+如果 `failed_checks` 数组不为空，则根据平台执行相应的备用命令：
 
-If `failed_checks` array is non-empty, run fallback commands based on platform:
+#### 网络信息备用命令
 
-#### Network Info Fallbacks
+| 平台 | 命令                |
+|---------|-------------------|
+| Linux   | `ip addr show` 或 `ifconfig`     |
+| macOS   | `ifconfig`            |
+| WSL    | `ip addr show` （或在 Windows 上使用 `cmd.exe /c ipconfig`） |
+| Windows | PowerShell: `Get-NetIPAddress`    |
+| DSM    | `ifconfig` 或 `/sbin/ip addr`     |
 
-| Platform | Command |
-|----------|---------|
-| Linux | `ip addr show` or `ifconfig` |
-| macOS | `ifconfig` |
-| WSL | `ip addr show` (or check Windows via `cmd.exe /c ipconfig`) |
-| Windows | PowerShell: `Get-NetIPAddress` |
-| DSM | `ifconfig` or `/sbin/ip addr` |
+#### 网关绑定备用命令
 
-#### Gateway Binding Fallbacks
-
-| Platform | Command |
-|----------|---------|
-| Linux | `ss -tlnp \| grep :18789` or `netstat -tlnp` |
-| macOS | `lsof -iTCP:18789 -sTCP:LISTEN` |
+| 平台 | 命令                |
+|---------|-------------------|
+| Linux   | `ss -tlnp \| grep :18789` 或 `netstat -tlnp` |
+| macOS   | `lsof -iTCP:18789 -sTCP:LISTEN` |
 | Windows | PowerShell: `Get-NetTCPConnection -LocalPort 18789` |
 
-#### File Permissions Fallbacks
+#### 文件权限备用命令
 
-| Platform | Command |
-|----------|---------|
-| Linux/macOS | `ls -la ~/.openclaw` |
+| 平台 | 命令                |
+|---------|-------------------|
+| Linux/macOS | `ls -la ~/.openclaw`       |
 | Windows | PowerShell: `Get-Acl $env:USERPROFILE\.openclaw` |
 
-### Windows Native Support
-
-If `os` is `windows` and scripts fail completely:
-
-1. Use PowerShell commands directly:
+### Windows 本机支持
+如果 `os` 为 `windows` 且脚本执行失败：
+1. 直接使用 PowerShell 命令：
 ```powershell
 # Network exposure
 Get-NetTCPConnection -LocalPort 18789 -State Listen
@@ -256,21 +249,19 @@ Get-Acl "$env:USERPROFILE\.openclaw"
 Get-Process | Where-Object {$_.Name -like "*openclaw*"}
 ```
 
-2. Report what you can check and note Windows-specific limitations.
+2. 报告可以检查的内容，并说明 Windows 的特定限制。
 
-### Minimal Environments (Docker, DSM)
+### 最小化环境（Docker、DSM）
+某些环境中可能缺少某些工具。请检查输出并补充相应的备用命令：
 
-Some environments lack tools. Check output and supplement:
+| 缺失的工具 | 备用命令                |
+|---------|-------------------|
+| `curl`    | `wget -qO-`            |
+| `ss`     | `netstat`            |
+| `ip`     | `ifconfig` 或 `/sbin/ip`       |
+| `pgrep`   | `ps aux \| grep`         |
 
-| Missing Tool | Fallback |
-|--------------|----------|
-| `curl` | `wget -qO-` |
-| `ss` | `netstat` |
-| `ip` | `ifconfig` or `/sbin/ip` |
-| `pgrep` | `ps aux \| grep` |
-
-### Agent Decision Flow
-
+### 代理决策流程
 ```
 1. Run full_audit.sh
 2. Check "failed_checks" in output
@@ -281,15 +272,13 @@ Some environments lack tools. Check output and supplement:
 4. Note any checks that couldn't complete
 ```
 
-## Dashboard Generation
-
-When user requests visual report:
-
+## 仪表板生成
+当用户请求可视化报告时：
 ```bash
 bash ~/.openclaw/skills/secucheck/scripts/serve_dashboard.sh
 ```
 
-Returns:
+返回报告的 URL：
 ```json
 {
   "status": "ok",
@@ -298,36 +287,31 @@ Returns:
 }
 ```
 
-Provide URL directly to user.
+直接将 URL 提供给用户。
 
-## Detailed Check References
+## 详细检查参考资料
+仅在需要深入解释时阅读以下文件：
+| 文件        | 领域                |
+|------------|-------------------|
+| `checks/runtime.md` | 实时系统状态           |
+| `checks/channels.md` | 通道策略             |
+| `checks/agents.md` | 代理权限             |
+| `checks/cron.md` | 定时任务             |
+| `checks/skills.md` | 安装的技能             |
+| `checks/sessions.md` | 会话隔离机制           |
+| `checks/network.md` | 网络配置             |
 
-Read these only when deep explanation needed:
+## 攻击场景模板
+这些模板适用于高级用户的详细说明：
+| 文件        | 场景描述                |
+|------------|-------------------|
+| `scenarios/prompt-injection.md` | 外部内容操控            |
+| `scenarios/session-leak.md` | 会话数据泄露            |
+| `scenarios/privilege-escalation.md` | 权限 escalation           |
+| `scenarios/credential-exposure.md` | 秘密信息泄露             |
+| `scenarios/unauthorized-access.md` | 未经授权的访问           |
 
-| File | Domain |
-|------|--------|
-| `checks/runtime.md` | Live system state |
-| `checks/channels.md` | Channel policies |
-| `checks/agents.md` | Agent permissions |
-| `checks/cron.md` | Scheduled jobs |
-| `checks/skills.md` | Installed skills |
-| `checks/sessions.md` | Session isolation |
-| `checks/network.md` | Network configuration |
-
-## Attack Scenario Templates
-
-Use these for expert-level explanations:
-
-| File | Scenario |
-|------|----------|
-| `scenarios/prompt-injection.md` | External content manipulation |
-| `scenarios/session-leak.md` | Cross-session data exposure |
-| `scenarios/privilege-escalation.md` | Tool permission abuse |
-| `scenarios/credential-exposure.md` | Secret leakage |
-| `scenarios/unauthorized-access.md` | Access control bypass |
-
-## Risk Levels
-
+## 风险等级
 ```
 🔴 Critical - Immediate action required. Active exploitation possible.
 🟠 High     - Significant risk. Should fix soon.
@@ -336,8 +320,7 @@ Use these for expert-level explanations:
 ⚪ Info     - Not a risk, but worth noting.
 ```
 
-## Risk Matrix
-
+## 风险矩阵
 ```
                 Tool Permissions
               Minimal       Full
@@ -353,28 +336,26 @@ Exposure = Who can talk to the bot (DM policy, group access, public channels)
 Tool Permissions = What the bot can do (exec, file access, messaging, browser)
 ```
 
-## Context-Aware Exceptions
+## 基于上下文的异常处理
+不要机械地匹配规则，要结合实际情况进行判断：
 
-Don't just pattern match. Consider context:
+| 上下文       | 调整措施            |
+|------------|-------------------|
+| 私有通道，2-3 个受信任成员 | 即使执行命令，风险也较低         |
+| 仅通过 VPN/Tailscale 访问 | 网络暴露风险较低           |
+| 自托管环境，单用户使用 | 会话隔离要求较低           |
+| 容器化环境     | 权限提升的影响较小           |
 
-| Context | Adjustment |
-|---------|------------|
-| Private channel, 2-3 trusted members | Lower risk even with exec |
-| VPN/Tailscale only access | Network exposure less critical |
-| Self-hosted, single user | Session isolation less important |
-| Containerized environment | Privilege escalation less severe |
+如果环境信息不明确，请务必询问相关细节。
 
-Always ask about environment if unclear.
+## 应用修复措施
 
-## Applying Fixes
+**重要规则：**
+1. **切勿自动应用修复措施。**始终先展示建议。
+2. **提醒可能产生的功能影响。**如果修复措施可能会破坏系统功能，请提前告知。
+3. **在任何配置更改之前，必须获得用户的明确确认。**
 
-**CRITICAL RULES:**
-
-1. **Never auto-apply fixes.** Always show suggestions first.
-2. **Warn about functional impact.** If a fix might break something, say so.
-3. **Get explicit user confirmation** before any config changes.
-
-Example flow:
+示例流程：
 ```
 Agent: "Changing this setting will disable exec in #dev channel.
         If you're using code execution there, it will stop working.
@@ -383,64 +364,54 @@ User: "yes"
 Agent: [apply fix via gateway config.patch]
 ```
 
-## Language Rules
+## 语言规范
+- **内部处理**：始终使用英语
+- **思考/推理过程**：始终使用英语
+- **最终用户报告**：使用用户的语言
+- **技术术语**：保留英文（如 exec、cron、gateway 等）
 
-- **Internal processing**: Always English
-- **Thinking/reasoning**: Always English
-- **Final user-facing report**: Match user's language
-- **Technical terms**: Keep in English (exec, cron, gateway, etc.)
+## 自动审查触发条件
+在以下情况下自动触发审查：
+1. **安装技能**：`clawhub install <skill>` 或手动添加技能
+2. **创建/修改代理**：新代理或工具的变更
+3. **创建/修改定时任务**：新的或修改的定时任务
 
-## Auto-Review Triggers
+### 常用命令
+| 用户请求 | 执行操作                |
+|------------|-------------------|
+| "check channels only" | 运行 channels.md 检查       |
+| "audit cron jobs" | 运行 cron.md 检查       |
+| "full audit" | 运行所有检查           |
+| "more detail" | 以详细输出重新运行检查       |
 
-Invoke automatically when:
+## 信任等级
+根据不同的实体和应用场景，设置相应的信任等级：
 
-1. **Skill installation**: `clawhub install <skill>` or manual addition
-2. **Agent creation/modification**: New agent or tool changes
-3. **Cron job creation/modification**: New or modified scheduled tasks
+| 信任等级 | 实体                | 信任模型                |
+|---------|-------------------|-------------------|
+| 1       | 所有者             | 完全信任               |
+| 2       | AI 代理             | 有限信任（沙箱环境，有日志记录）       |
+| 3       | 允许列表中的用户         | 有限信任（仅限指定用户）         |
+| 4       | 陌生人             | 默认拒绝访问             |
 
-For auto-reviews, focus only on changed component unless full audit requested.
+## 事件响应指南
+如果怀疑系统被入侵：
+### 控制措施
+1. 停止相关网关服务
+2. 将网关绑定到 loopback（127.0.0.1）地址
+3. 禁用高风险的数据传输/群组策略
 
-## Quick Commands
+### 安全策略更新
+1. 重新生成网关认证令牌
+2. 更换浏览器控制令牌
+3. 注销并更新 API 密钥
 
-| User Request | Action |
-|--------------|--------|
-| "check channels only" | Run channels.md check |
-| "audit cron jobs" | Run cron.md check |
-| "full audit" | All checks |
-| "more detail" | Re-run with verbose output |
+### 审查流程
+1. 检查网关日志和会话记录
+2. 查看最近的配置更改
+3. 重新进行全面安全审计
 
-## Trust Hierarchy
-
-Apply appropriate trust levels:
-
-| Level | Entity | Trust Model |
-|-------|--------|-------------|
-| 1 | Owner | Full trust — has all access |
-| 2 | AI Agent | Trust but verify — sandboxed, logged |
-| 3 | Allowlists | Limited trust — specified users only |
-| 4 | Strangers | No trust — blocked by default |
-
-## Incident Response Reference
-
-If compromise suspected:
-
-### Containment
-1. Stop gateway process
-2. Set gateway.bind to loopback (127.0.0.1)
-3. Disable risky DM/group policies
-
-### Rotation
-1. Regenerate gateway auth token
-2. Rotate browser control tokens
-3. Revoke and rotate API keys
-
-### Review
-1. Check gateway logs and session transcripts
-2. Review recent config changes
-3. Re-run full security audit
-
-## Files Reference
-
+## 相关文件
 ```
 ~/.openclaw/skills/secucheck/
 ├── SKILL.md              # This file
@@ -476,17 +447,15 @@ If compromise suspected:
     └── summary.md        # Quick summary template
 ```
 
-## Security Assessment Questions
-
-When auditing, consider:
-
-1. **Exposure**: What network interfaces can reach this agent?
-2. **Authentication**: What verification does each access point require?
-3. **Isolation**: What boundaries exist between agent and host?
-4. **Trust**: What content sources are considered "trusted"?
-5. **Auditability**: What evidence exists of agent's actions?
-6. **Least Privilege**: Does agent have only necessary permissions?
+## 安全评估问题
+在进行审计时，请考虑以下问题：
+1. **暴露风险**：哪些网络接口可以访问该代理？
+2. **身份验证**：每个访问点需要哪些验证步骤？
+3. **隔离措施**：代理与主机之间有哪些安全边界？
+4. **信任机制**：哪些内容来源被视为“可信”？
+5. **审计可行性**：有哪些证据可以证明代理的行为？
+6. **最小权限原则**：代理是否仅拥有必要的权限？
 
 ---
 
-**Remember:** This skill exists to make OpenClaw self-aware of its security posture. Use regularly, extend as needed, never skip the audit.
+**提醒：**此工具的目的是帮助 OpenClaw 自我感知其安全状况。请定期使用该工具，并根据需要扩展功能，切勿忽略安全审计。

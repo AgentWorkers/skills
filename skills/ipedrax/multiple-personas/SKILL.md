@@ -1,13 +1,13 @@
 ---
 name: personas
-description: Create and manage AI subagent personas with distinct personalities. Use when a user requests to talk to a specific persona, when delegating a conversation to a character, or when creating/listing/editing personality profiles. Personas are text-only conversational agents with their own identity, tone, and memory.
+description: 创建并管理具有独特个性的AI子代理（subagents）。当用户请求与特定角色进行对话时，或者将对话任务委托给某个AI角色时，都可以使用这些子代理。这些子代理是仅基于文本的对话系统，拥有独立的身份、对话风格和记忆功能。
 ---
 
-# Personas
+# 人物角色（Personas）
 
-Manage and deploy AI personas — subagents with unique identities that speak for you.
+管理和部署 AI 人物角色——这些具有独特身份的子代理可以代表你进行对话。
 
-## Directory Structure
+## 目录结构（Directory Structure）
 
 ```
 personas/
@@ -23,21 +23,21 @@ personas/
         └── ...
 ```
 
-## Commands
+## 命令（Commands）
 
-### List personas
-Read `profiles/` subfolders. Show name + one-line summary from each SOUL.md.
+### 列出人物角色（List Personas）
+读取 `profiles/` 子文件夹中的文件，显示每个角色对应的 `SOUL.md` 文件中的名称及简短概述。
 
-### Create a persona
-1. Create `profiles/<name>/` folder
-2. Write `SOUL.md` — who they are (name, identity, values, backstory)
-3. Write `PERSONALITY.md` — how they talk (tone, vocabulary, quirks, example phrases)
-4. Write `MEMORY.md` — empty initially, grows over time
+### 创建一个人物角色（Create a Persona）
+1. 创建一个名为 `profiles/<name>/` 的文件夹。
+2. 编写 `SOUL.md` 文件，描述该角色的身份、价值观及背景故事。
+3. 编写 `PERSONALITY.md` 文件，定义该角色的说话方式（语气、词汇习惯、独特表达等）。
+4. 编写 `MEMORY.md` 文件，该文件最初为空，会随着时间的推移逐渐记录对话内容。
 
-### Activate a persona (talk as them)
-When a user wants to talk to a persona:
-1. Read the persona's `SOUL.md`, `PERSONALITY.md`, and `MEMORY.md`
-2. Spawn a subagent via `sessions_spawn` with this task format:
+### 激活一个人物角色（Activate a Persona）
+当用户希望与该角色对话时：
+1. 阅读该角色的 `SOUL.md`、`PERSONALITY.md` 和 `MEMORY.md` 文件。
+2. 使用 `sessions_spawn` 命令创建一个子代理，并指定该角色的相关信息。
 
 ```
 You are {name}. You must stay in character at all times.
@@ -64,21 +64,15 @@ The user said: "{user_message}"
 Respond in character.
 ```
 
-3. Deliver the subagent's response to the user via the same channel.
-4. After the conversation, update the persona's `MEMORY.md` with notable interactions.
+3. 通过相同的渠道将子代理的回复传递给用户。
+4. 对话结束后，将重要的互动内容添加到该角色的 `MEMORY.md` 文件中。
 
-### Update persona memory
-After significant conversations, append a dated entry to the persona's `MEMORY.md`:
-```markdown
-## YYYY-MM-DD
-- Talked to {user} about {topic}
-- {any notable detail worth remembering}
-```
+### 更新人物角色的记忆记录（Update Persona Memory）
+在发生重要对话后，为该角色的 `MEMORY.md` 文件添加一条带日期的记录。
 
-## Guidelines
-
-- Personas are **text-only** — no tool access, no commands, no browsing
-- Each persona has **isolated memory** — they don't share memories with each other or with you
-- You are the **orchestrator** — you read messages, decide which persona to activate, spawn them, and relay their responses
-- When no persona is requested, you respond as yourself
-- Users can request to talk to a persona by name (e.g. "let me talk to Luna", "ask Rex about this")
+## 使用指南（Guidelines）
+- 人物角色仅支持文本交互，不支持使用任何工具或执行命令，也无法浏览任何内容。
+- 每个人物角色都有独立的记忆记录，它们之间以及与用户之间不会共享记忆信息。
+- 你是整个系统的“协调者”：你负责阅读用户的消息、决定激活哪个角色、启动相应的子代理，并传递它们的回复。
+- 当没有特定角色被请求时，你将以自己的身份进行回复。
+- 用户可以通过名称来请求与某个角色对话（例如：“让我和 Luna 对话”，“询问 Rex 的意见”）。

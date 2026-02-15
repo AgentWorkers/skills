@@ -1,34 +1,34 @@
 ---
 name: my-tesla
-description: Control Tesla vehicles from macOS via the Tesla Owner API using teslapy (auth, list cars, status, lock/unlock, climate, charging, location, and extras). Use when you want to check your car state or run safe remote commands. Designed for Parth Maniar (@officialpm) with local-only auth caching, confirmation gates for disruptive actions, and chat-friendly status output.
+description: 您可以通过 `teslapy` 工具，利用 Tesla Owner API 从 macOS 系统远程控制特斯拉汽车。该工具支持执行以下操作：身份验证、查询车辆信息、查看车辆状态、锁定/解锁车辆、调节车内温度、控制充电功能、获取车辆位置以及执行其他附加功能。当您需要查看车辆状态或执行安全的远程操作时，这个工具非常实用。该工具由 Parth Maniar (@officialpm) 开发，具有仅限本地使用的身份验证机制、对可能造成干扰的操作的确认机制，以及便于阅读的车辆状态输出界面。
 ---
 
-# My Tesla
+# 我的特斯拉
 
-**Author:** Parth Maniar — [@officialpm](https://github.com/officialpm)
+**作者：** Parth Maniar — [@officialpm](https://github.com/officialpm)
 
-A practical Tesla control skill for Clawdbot built on `teslapy`.
+这是一个基于 `teslapy` 开发的、用于 Clawdbot 的实用特斯拉控制脚本。
 
-## Setup
+## 设置
 
-### Requirements
+### 所需条件
 
-- `TESLA_EMAIL` env var set (your Tesla account email)
-- Python 3.10+
+- 确保环境变量 `TESLA_EMAIL` 已设置（你的特斯拉账户邮箱）
+- Python 3.10 或更高版本
 
-### First-time authentication
+### 首次认证
 
 ```bash
 TESLA_EMAIL="you@email.com" python3 {baseDir}/scripts/tesla.py auth
 ```
 
-This opens a Tesla login URL. Log in, then paste the callback URL back into the CLI.
+此命令会打开特斯拉的登录页面。登录后，请将返回的回调 URL 复制并粘贴到命令行工具（CLI）中。
 
-- Token cache: `~/.tesla_cache.json` (local only; best-effort chmod `0600`)
-- Optional: set `MY_TESLA_DEFAULT_CAR` to a vehicle display name to pick a default car via env var
-- Or persist a local default with: `python3 {baseDir}/scripts/tesla.py default-car "Name"` (writes `~/.my_tesla.json`; best-effort chmod `0600`)
+- 令牌缓存：`~/.tesla_cache.json`（仅限本地使用；建议设置权限为 `0600`）
+- 可选：通过环境变量 `MY_TESLA_DEFAULT_CAR` 设置默认车辆名称
+- 或者使用以下命令设置本地默认车辆：`python3 {baseDir}/scripts/tesla.py default-car "Name"`（将信息写入 `~/.my_tesla.json`；建议设置权限为 `0600`）
 
-## Commands
+## 命令
 
 ```bash
 # List vehicles
@@ -147,13 +147,13 @@ python3 {baseDir}/scripts/tesla.py honk   --yes
 python3 {baseDir}/scripts/tesla.py flash  --yes
 ```
 
-## Safety defaults
+## 安全设置
 
-Some actions require an explicit confirmation flag:
-- `unlock`, `charge start|stop|limit|amps`, `trunk`, `windows`, `sentry on|off`, `honk`, `flash`, `charge-port open|close`, and `scheduled-charging set|off` require `--yes`
-- `location` is *approximate* by default; add `--yes` for precise coordinates
+某些操作需要明确输入确认标志：
+- `unlock`、`charge start|stop|limit|amps`、`trunk`、`windows`、`sentry on|off`、`honk`、`flash`、`charge-port open|close` 和 `scheduled-charging set|off` 需要输入 `--yes` 参数
+- 默认情况下，`location` 命令返回的是近似位置信息；如需获取精确坐标，请添加 `--yes` 参数
 
-## Privacy
+## 隐私保护
 
-- Credentials are cached locally only (`~/.tesla_cache.json`).
-- Do not commit tokens, logs, VINs, or location outputs.
+- 你的特斯拉账户凭证仅会缓存在本地的 `~/.tesla_cache.json` 文件中。
+- 请勿将令牌、日志、车辆识别码（VIN）或位置信息泄露。

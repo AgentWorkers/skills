@@ -1,30 +1,30 @@
 ---
 slug: "bim-validation-report"
 display_name: "BIM Validation Report"
-description: "Generate comprehensive BIM model validation reports. Check data quality, completeness, and compliance with standards."
+description: "生成全面的BIM模型验证报告。检查数据的质量、完整性以及是否符合相关标准。"
 ---
 
-# BIM Validation Report Generator
+# BIM 验证报告生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-BIM models often have quality issues:
-- Missing required properties
-- Invalid or inconsistent data
-- Non-compliant with project standards
-- Incomplete model information
+### 问题描述
+BIM 模型经常存在质量问题：
+- 缺少必要的属性
+- 数据无效或不一致
+- 不符合项目标准
+- 模型信息不完整
 
-### Solution
-Automated BIM validation system that checks models against configurable rules and generates detailed compliance reports.
+### 解决方案
+自动化 BIM 验证系统，根据可配置的规则检查模型，并生成详细的合规性报告。
 
-### Business Value
-- **Quality assurance** - Catch issues early
-- **Standards compliance** - Meet project requirements
-- **Automation** - Reduce manual QC effort
-- **Transparency** - Clear validation results
+### 商业价值
+- **质量保证** - 及时发现问题
+- **符合标准** - 满足项目要求
+- **自动化** - 减少手动质量控制的工作量
+- **透明度** - 明确的验证结果
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -382,7 +382,7 @@ def generate_validation_report(elements_df: pd.DataFrame,
     return report
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load BIM elements
@@ -401,9 +401,9 @@ print(f"Errors: {report.summary_by_severity['error']}")
 print(f"Warnings: {report.summary_by_severity['warning']}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Custom Validation Rules
+### 1. 自定义验证规则
 ```python
 engine = BIMValidationEngine("Project", "Model")
 
@@ -418,7 +418,7 @@ engine.add_custom_rule(
 )
 ```
 
-### 2. Filter Issues
+### 2. 过滤问题
 ```python
 # Get only errors
 errors = [i for i in report.issues if i.severity == ValidationSeverity.ERROR]
@@ -427,13 +427,13 @@ errors = [i for i in report.issues if i.severity == ValidationSeverity.ERROR]
 wall_issues = [i for i in report.issues if i.element_category == "Walls"]
 ```
 
-### 3. Automated QC Pipeline
+### 3. 自动化质量控制流程
 ```python
 report = engine.validate_model(elements)
 if report.status == ValidationStatus.FAILED:
     send_notification("BIM validation failed", report.summary_by_severity)
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.3 - BIM Validation
-- **Reference**: ISO 19650, buildingSMART IDS
+## 资源
+- **DDC 手册**：第 4.3 章 - BIM 验证
+- **参考标准**：ISO 19650、buildingSMART IDS

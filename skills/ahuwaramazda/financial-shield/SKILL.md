@@ -1,22 +1,34 @@
 ---
 name: financial-shield
-description: Financial Shield (Stay in the Cheap Tier!) Tired of those "Long Context" double-billing surprises? I just published Financial Shield to ClawHub! This skill is designed to keep your sessions within the 128k "cheap" tier by monitoring your context weight and alerting you before you hit the expensive zone. Key Features: • 📊 Real-time Monitoring: Includes a check_shield.sh script to parse your session_status. • 💰 Cost Control: Pre-configured for the Google Gemini 128k ceiling, but the script is easily editable if your provider (like Anthropic or OpenAI) has different "cheap" vs "expensive" tiers. • 🕒 Continuous Tracking: Instructions for agents to append (Usage: X/128k) to every message so you're never in the dark. How to get it: openclaw clawhub install financial-shield Note: This was built with Google's API tiers in mind, but you can easily tweak the limit in the script to match your specific provider's billing zones!
+description: **Financial Shield（保持在低成本层级！）**  
+厌倦了那些因“长上下文”而导致的意外高额费用吗？我刚刚将 **Financial Shield** 发布到了 **ClawHub** 上！这个功能通过监控您的会话使用情况，并在您进入高费用层级之前发出警报，帮助您始终保持在 128 千美元的“低成本”层级内。  
+
+**主要特性：**  
+- **实时监控**：包含一个 `check_shield.sh` 脚本，用于解析您的会话状态。  
+- **成本控制**：预设为 Google Gemini 的 128 千美元费用上限，但如果您的服务提供商（如 Anthropic 或 OpenAI）有不同的费用层级，该脚本也很容易进行修改。  
+- **持续跟踪**：为代理程序提供了在每条消息中添加 “Usage: X/128k” 的指示，让您随时了解自己的使用情况。  
+
+**获取方法：**  
+`openclaw clawhub install financial-shield`  
+
+**注意：**  
+虽然该功能是根据 Google 的 API 费用层级设计的，但您可以轻松修改脚本中的限制值，以适应您所使用服务提供商的具体费用规则！
 ---
 
-# Financial Shield
+# 财务保护机制（Financial Shield）
 
-This skill ensures that the agent remains within the standard pricing tier (<128k tokens) for Google Gemini models by actively managing context bloat.
+该功能通过主动管理上下文数据的使用量，确保代理始终处于 Google Gemini 模型的标准定价区间（<128,000 个代币）内。
 
-## Rules of Operation
+## 运行规则
 
-1. **Always-On Counter:** The agent MUST include the current token usage (e.g., `(Current Usage: 45k/128k)`) at the end of every message while this skill is installed.
-2. **Context Monitoring:** The agent must check the current token count (via `session_status`) before performing token-heavy tasks like image analysis.
-3. **The 128k Wall:** If the current context is above 110,000 tokens, the agent MUST notify the user before the next turn that they are approaching the "Double Billing" zone.
-4. **Hard Reset:** If the context exceeds 125,000 tokens, the agent will:
-    - Automatically summarize all key facts/decisions from the current session into `MEMORY.md`.
-    - Request a session reset (`/new`) or manually trim the history to bring the count back to near zero.
-5. **Output Discipline:** All responses must be "Logic-First" and concise. No conversational filler or repeated instructions.
+1. **实时显示代币使用量**：在启用此功能后，代理必须在每条消息的末尾显示当前的代币使用情况（例如：`(当前使用量：45,000/128,000)`）。
+2. **上下文监控**：在执行需要大量代币的操作（如图像分析）之前，代理必须检查当前的代币数量（通过 `session_status` 获取）。
+3. **128,000 代币的限制**：如果当前上下文数据的使用量超过 110,000 个代币，代理必须在下一个轮次开始前通知用户，提醒他们即将进入“双倍计费”区域。
+4. **强制重置**：如果上下文数据的使用量超过 125,000 个代币，代理将：
+    - 自动将当前会话中的所有关键信息/决策汇总到 `MEMORY.md` 文件中。
+    - 请求会话重置（`/new`），或手动删除历史数据以将代币数量降至接近零。
+5. **响应规范**：所有响应都必须以逻辑为核心，简洁明了。禁止使用无关的对话内容或重复的指令。
 
-## When to Use
-- Triggered automatically when context > 110k.
-- Can be invoked manually by the user saying "Activate Financial Shield."
+## 使用场景
+- 当上下文数据的使用量超过 110,000 个代币时，该功能会自动触发。
+- 用户也可以通过输入“Activate Financial Shield”来手动激活该功能。

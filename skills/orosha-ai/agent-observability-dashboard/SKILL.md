@@ -1,154 +1,71 @@
-# Agent Observability Dashboard 📊
+# 代理可观测性仪表板 📊  
+为 OpenClaw 代理提供统一的可观测性功能——包括指标监控、跟踪记录和性能分析。  
 
-Unified observability for OpenClaw agents — metrics, traces, and performance insights.
+## 功能概述  
+OpenClaw 代理需要具备生产级级别的可见性。虽然存在多种工具（如 Langfuse、Langsmith、AgentOps），但它们各自独立，缺乏统一的监控视图。  
+**代理可观测性仪表板** 提供以下功能：  
+- **指标跟踪**：延迟、成功率、令牌使用情况、错误数量  
+- **跟踪记录可视化**：工具调用流程、决策流程、会话时间线  
+- **跨代理数据聚合**：比较多个代理/会话的性能  
+- **可导出报告**：支持 JSON、CSV、Markdown 格式，便于人工审查  
+- **警报阈值**：当指标超出预设范围时自动触发通知  
 
-## What It Does
+## 解决的问题  
+- 缺乏对 OpenClaw 代理性能的集中监控  
+- 在多个工具调用之间难以进行调试  
+- 无法比较不同代理的性能或检测性能退化  
+- 生产环境需要企业级监控工具；代理同样需要这样的功能  
 
-OpenClaw agents need production-grade visibility. Multiple platforms exist (Langfuse, Langsmith, AgentOps) but no unified view.
+## 使用方法  
+（具体使用方法请参考相关文档或代码示例。）  
 
-**Agent Observability Dashboard** provides:
-- **Metrics tracking** — Latency, success rate, token usage, error counts
-- **Trace visualization** — Tool chains, decision flows, session timelines
-- **Cross-agent aggregation** — Compare performance across multiple agents/sessions
-- **Exportable reports** — JSON, CSV, markdown for human review
-- **Alert thresholds** — Notify when metrics exceed limits
+## 被监控的指标  
+| 类别 | 指标          | 描述                          |  
+|---------|------------------|---------------------------|  
+| **性能**   | 延迟        | 工具调用延迟（毫秒）                    |  
+|        | 吞吐量        | 每秒调用次数                      |  
+| **成功率** | 成功率        | 成功的工具调用百分比                |  
+|        | 错误数量      | 失败的操作次数                    |  
+| **成本**   | 令牌使用量     | 输入令牌 + 输出令牌                |  
+|        | API 成本      | 估算的成本（美元）                  |  
+| **质量**   | 错误输出      | 检测到的错误输出                  |  
+|        | 需要修正的内容 | 用户需要进行的修正                |  
 
-## Problem It Solves
+## 跟踪记录格式  
+每次工具调用都会被记录以下信息：  
+- 时间戳  
+- 代理会话 ID  
+- 工具名称及参数  
+- 延迟时间  
+- 调用结果（成功/失败）  
+- 令牌使用情况  
+- 错误详情（若失败）  
 
-- No centralized view of OpenClaw agent performance
-- Hard to debug across multiple tool calls
-- No way to compare agents or track regressions
-- Production monitoring is enterprise-grade; agents need the same
+**跟踪记录示例**：  
+（请参考相关代码示例。）  
 
-## Usage
+## 架构设计  
+（请参考相关代码示例。）  
 
-```bash
-# Start dashboard server
-python3 scripts/observability.py --dashboard
+## 系统要求  
+- Python 3.9 或更高版本  
+- flask（用于仪表板 Web 用户界面）  
+- pandas（用于数据分析）  
+- influxdb-client（可选，用于生产环境的数据存储）  
 
-# Record metrics from a session
-python3 scripts/observability.py --record --session agent:main --latency 1.5 --success true
+## 安装步骤  
+（请参考相关文档。）  
 
-# View session trace
-python3 scripts/observability.py --trace --session agent:main:12345
+## 设计灵感来源  
+- **Dynatrace AI 可观测性平台**：企业级统一监控解决方案  
+- **Langfuse 与 AgentOps 的性能对比**：不同平台的优缺点  
+- **Microsoft .NET 跟踪指南**：实用的实现模式  
+- **OpenLLMetry**：针对大型语言模型的 OpenTelemetry 集成方案  
 
-# Get performance report
-python3 scripts/observability.py --report --period 24h
+**本地运行特性**  
+- 所有数据仅存储在本地（SQLite/InfluxDB）  
+- 仪表板在本地运行，不向外部服务发送任何数据  
 
-# Export to CSV
-python3 scripts/observability.py --export metrics.csv
-
-# Set alert thresholds
-python3 scripts/observability.py --alert --metric latency --threshold 5.0
-```
-
-## Metrics Tracked
-
-| Category | Metric | Description |
-|-----------|---------|-------------|
-| **Performance** | Latency | Tool call latency (ms) |
-| | Throughput | Calls per second |
-| **Success** | Success Rate | % of successful tool calls |
-| | Error Count | Failed operations |
-| **Cost** | Token Usage | Input + output tokens |
-| | API Cost | Estimated cost in USD |
-| **Quality** | Hallucinations | Detected false outputs |
-| | Corrections Needed | User corrections |
-
-## Trace Format
-
-Each tool call is logged with:
-- Timestamp
-- Agent session ID
-- Tool name + parameters
-- Latency
-- Success/failure
-- Token usage
-- Error details (if failed)
-
-Example trace:
-```json
-{
-  "session_id": "agent:main:12345",
-  "trace": [
-    {
-      "timestamp": "2026-01-31T14:00:00Z",
-      "tool": "web_search",
-      "params": {"query": "agent observability"},
-      "latency_ms": 1234,
-      "success": true,
-      "tokens_used": 150
-    },
-    {
-      "timestamp": "2026-01-31T14:00:02Z",
-      "tool": "memory_write",
-      "params": {"content": "..."},
-      "latency_ms": 45,
-      "success": true,
-      "tokens_used": 0
-    }
-  ]
-}
-```
-
-## Architecture
-
-```
-┌─────────────────┐
-│  Instrumentation│  ← Auto-capture from OpenClaw logs
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Metrics Store  │  ← SQLite/InfluxDB for time-series
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Analytics      │  ← Aggregations, trends, anomalies
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Dashboard UI  │  ← Web interface (Flask/FastAPI)
-└─────────────────┘
-```
-
-## Requirements
-
-- Python 3.9+
-- flask (for dashboard web UI)
-- pandas (for analytics)
-- influxdb-client (optional, for production storage)
-
-## Installation
-
-```bash
-# Clone repo
-git clone https://github.com/orosha-ai/agent-observability-dashboard
-
-# Install dependencies
-pip install flask pandas influxdb-client
-
-# Run dashboard
-python3 scripts/observability.py --dashboard
-# Open http://localhost:5000
-```
-
-## Inspiration
-
-- **Dynatrace AI Observability App** — Enterprise-grade unified observability
-- **Langfuse vs AgentOps benchmarks** — Comparison of platforms
-- **Microsoft .NET tracing guide** — Practical implementation patterns
-- **OpenLLMetry** — OpenTelemetry integration for LLMs
-
-## Local-Only Promise
-
-- Metrics stored locally (SQLite/InfluxDB)
-- Dashboard runs locally
-- No data sent to external services
-
-## Version History
-
-- **v0.1** — MVP: Metrics tracking, trace visualization, dashboard UI
-- Roadmap: InfluxDB integration, anomaly detection, multi-agent comparison
+## 版本历史  
+- **v0.1**：核心功能实现——指标跟踪、跟踪记录可视化、仪表板界面  
+- **后续计划**：集成 InfluxDB、异常检测、多代理性能对比

@@ -1,96 +1,96 @@
 ---
 name: Backend
-description: Build reliable backend services with proper error handling, security, and observability.
+description: 构建可靠的后端服务，确保具备适当的错误处理机制、安全防护措施以及良好的可观测性（即能够方便地监控和诊断系统的运行状态）。
 metadata: {"clawdbot":{"emoji":"⚙️","os":["linux","darwin","win32"]}}
 ---
 
-## Error Handling
+## 错误处理
 
-- Never expose stack traces to clients—log internally, return generic message
-- Structured error responses: code, message, request ID—enables debugging without leaking
-- Fail fast on bad input—validate at entry point, not deep in business logic
-- Unexpected errors: 500 + alert—expected errors: appropriate 4xx
+- **切勿向客户端暴露堆栈跟踪信息**：应在内部记录错误日志，并返回通用的错误信息。
+- **结构化的错误响应**：包含错误代码、错误消息以及请求ID，以便在不泄露敏感信息的情况下进行调试。
+- **对无效输入应立即响应错误**：在入口处进行验证，而不要等到业务逻辑执行到较深阶段才发现错误。
+- **对于意外错误，返回500状态码并触发警报**；对于可预期的错误，应返回适当的4xx状态码。
 
-## Input Validation
+## 输入验证
 
-- Validate everything from outside—query params, headers, body, path params
-- Whitelist valid input, don't blacklist bad—reject unknown fields
-- Validate early, before any processing—save resources, clearer errors
-- Size limits on all inputs—prevent memory exhaustion attacks
+- **对所有外部输入进行验证**：包括查询参数、请求头、请求体以及路径参数。
+- **仅允许有效的输入**，拒绝任何未知或无效的字段。
+- **尽早进行验证**：这样可以节省系统资源，并使错误信息更加清晰易懂。
+- **为所有输入设置大小限制**：以防止内存耗尽攻击。
 
-## Timeouts Everywhere
+## 超时机制
 
-- Database queries: set timeout, typically 5-30s
-- External HTTP calls: connect timeout + read timeout—don't wait forever
-- Overall request timeout—gateway or middleware level
-- Background jobs: max execution time—prevent zombie processes
+- **数据库查询**：设置合理的超时时间（通常为5-30秒）。
+- **外部HTTP请求**：设置连接超时和读取超时时间，避免无限期等待。
+- **整体请求超时**：在网关或中间件层设置超时机制。
+- **后台任务**：限制任务的最大执行时间，以防止进程挂起或资源浪费。
 
-## Retry Patterns
+## 重试策略
 
-- Exponential backoff: 1s, 2s, 4s, 8s...—prevents thundering herd
-- Add jitter: randomize delay—prevents synchronized retries
-- Idempotency keys for non-idempotent operations—safe to retry
-- Circuit breaker for failing dependencies—stop hammering, fail fast
+- **指数级退避算法**：每次重试的延迟时间逐渐增加（1秒、2秒、4秒、8秒……），以防止大量请求同时发起。
+- **添加随机延迟**：避免所有请求同时尝试，从而减轻系统负担。
+- **为非幂等操作提供“幂等性标识”**：确保重试是安全的。
+- **对于依赖关系异常的情况，使用“断路器”机制**：快速识别并停止失败的请求。
 
-## Database Practices
+## 数据库最佳实践
 
-- Connection pooling: reuse connections—creating is expensive
-- Transactions scoped minimal—hold locks briefly
-- Read replicas for read-heavy workloads—separate read/write traffic
-- Prepared statements always—SQL injection prevention, query plan cache
+- **使用连接池**：重复使用数据库连接，以减少资源开销。
+- **限制事务的范围**：仅在执行必要的操作时才锁定数据库资源。
+- **对于读操作密集型任务，使用读副本**：分离读写请求。
+- **始终使用预编译的SQL语句**：防止SQL注入攻击，并利用查询计划缓存。
 
-## Caching Strategy
+## 缓存策略
 
-- Cache invalidation strategy decided upfront—TTL, event-based, or both
-- Cache at right layer: query result, computed value, HTTP response
-- Cache stampede prevention—lock or probabilistic early expiration
-- Monitor hit rate—low hit rate = wasted resources
+- **提前确定缓存失效策略**：可以使用TTL（时间戳）或基于事件的机制来清除过期缓存。
+- **将缓存数据存储在合适的层级**：例如查询结果、计算结果或HTTP响应内容。
+- **防止缓存竞争**：通过锁定机制或设置随机失效时间来避免缓存冲突。
+- **监控缓存命中率**：低命中率意味着缓存资源被浪费。
 
-## Rate Limiting
+## 速率限制
 
-- Per-user/IP limits on expensive operations—login, signup, search
-- Different limits for different operations—read vs write
-- Return Retry-After header—tell clients when to retry
-- Rate limit early in request pipeline—save resources
+- **对耗时较长的操作（如登录、注册、搜索等）设置用户或IP地址的访问限制**。
+- **根据操作类型设置不同的速率限制**：读操作和写操作有不同的限制。
+- **返回“Retry-After”头部信息**：告知客户端何时可以重新尝试请求。
+- **在请求处理的早期阶段就实施速率限制**：以节省系统资源。
 
-## Health Checks
+## 系统健康检查
 
-- Liveness: is process running—restart if fails
-- Readiness: can handle traffic—remove from load balancer if fails
-- Startup probe for slow-starting services—don't kill during init
-- Health checks fast and cheap—don't hit database on every probe
+- **检查系统是否正常运行**：如果进程异常，应立即重启。
+- **评估系统是否能够处理请求流量**：如果系统无法处理请求，应将其从负载均衡器中移除。
+- **对启动缓慢的服务进行监控**：避免在初始化过程中意外终止它们。
+- **进行快速且低成本的系统健康检查**：避免每次检查都访问数据库。
 
-## Graceful Shutdown
+## 优雅关闭
 
-- Stop accepting new requests first—drain load balancer
-- Wait for in-flight requests to complete—with timeout
-- Close database connections cleanly—prevent connection leaks
-- SIGTERM handling: graceful; SIGKILL after timeout
+- **首先停止接收新请求**：以减轻系统负载。
+- **等待正在处理的请求完成**：设置超时时间以确保请求能够顺利完成。
+- **优雅地关闭数据库连接**：防止连接泄漏。
+- **处理SIGTERM信号**：在超时后使用SIGKILL信号优雅地终止进程。
 
-## Logging
+## 日志记录
 
-- Structured logs (JSON)—parseable by log aggregators
-- Request ID in every log—trace request across services
-- Log level appropriate: debug for dev, info/error for prod
-- Sensitive data never logged—passwords, tokens, PII
+- **使用结构化的日志格式（如JSON）**：便于日志聚合工具进行解析。
+- **每条日志中都包含请求ID**：以便在不同服务之间追踪请求的完整流程。
+- **根据环境设置合适的日志级别**：开发环境使用调试级别日志，生产环境使用信息或错误级别日志。
+- **敏感数据（如密码、令牌、个人身份信息）严禁记录在日志中**。
 
-## API Design
+## API设计
 
-- Versioning strategy from day one—path (/v1/) or header
-- Pagination for list endpoints—cursor or offset; include total count
-- Consistent response format—same envelope everywhere
-- Meaningful status codes—201 for create, 204 for delete, 404 for not found
+- **从项目一开始就实施版本控制**：可以通过路径（如/v1/）或请求头来区分不同版本的API。
+- **为列表接口提供分页功能**：使用游标或偏移量，并显示总记录数。
+- **保持响应格式的一致性**：确保所有API的响应格式相同。
+- **使用有意义的错误状态码**：例如201表示创建成功，204表示未找到资源，404表示请求错误。
 
-## Security Hygiene
+## 安全性措施
 
-- Secrets from environment or vault—never in code or config files
-- Dependencies updated regularly—automated with Dependabot/Renovate
-- Principle of least privilege—service accounts with minimal permissions
-- Authentication and authorization separated—who you are vs what you can do
+- **将敏感信息存储在安全的环境或密钥库中**：切勿将它们写入代码或配置文件中。
+- **定期更新依赖库**：利用Dependabot或Renovate等工具自动更新依赖项。
+- **遵循最小权限原则**：为服务账户设置必要的最小权限。
+- **分离认证和授权机制**：明确用户身份及其可执行的操作。
 
-## Observability
+## 可观测性
 
-- Metrics: request count, latency percentiles, error rate—the RED method
-- Distributed tracing for microservices—follow request across services
-- Alerting on symptoms, not causes—high error rate, not CPU usage
-- Dashboards for operational visibility—know normal to spot abnormal
+- **收集关键指标**：如请求数量、延迟分布、错误率等。
+- **为微服务提供分布式追踪功能**：跟踪请求在各个服务之间的流动情况。
+- **根据症状而非根本原因触发警报**：例如，当错误率过高或CPU使用率异常时触发警报。
+- **使用仪表盘监控系统运行状况**：了解正常运行状态，以便及时发现异常情况。

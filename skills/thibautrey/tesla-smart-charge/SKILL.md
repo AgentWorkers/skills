@@ -1,37 +1,41 @@
 ---
 name: tesla-smart-charge
-description: Smart Tesla charging scheduler with charge limit management. Runs daily to check a schedule file and charge only on configured dates. Automatically manages charge limits during sessions (default 100%) and after sessions (default 80%). Use when you need to: (1) Charge your Tesla on specific planned dates, (2) Manage charge limits for battery health, (3) Calculate optimal charging start times, (4) Set up recurring daily checking with flexible charge scheduling.
+description: 智能特斯拉充电调度器，具备充电量限制管理功能。该工具每天会运行一次以检查调度文件，并仅在预设的日期进行充电。在充电过程中（默认为100%），以及充电结束后（默认为80%），系统会自动管理充电量限制。适用于以下场景：  
+(1) 在特定计划好的日期为特斯拉充电；  
+(2) 为保护电池健康而设置充电量限制；  
+(3) 计算最佳的充电开始时间；  
+(4) 设置每日自动检查机制，并实现灵活的充电计划安排。
 ---
 
-# Tesla Smart Charge Optimizer
+# 特斯拉智能充电优化器
 
-Schedule Tesla charging to reach target battery % by a specific time. Runs daily via cron to check a schedule file and only charges on configured dates.
+该工具可帮助您安排特斯拉汽车的充电计划，以在指定时间达到目标电池电量百分比。它通过 cron 任务每日运行，检查调度文件，并仅在预设的日期进行充电。
 
-## Security & Dependencies
+## 安全性与依赖项
 
-**Required:**
-- Environment variable: `TESLA_EMAIL` (your Tesla account email)
-- Skill dependency: `tesla` skill must be installed and properly configured with Tesla API credentials
+**必备条件：**
+- 环境变量：`TESLA_EMAIL`（您的特斯拉账户邮箱）
+- 必需安装并正确配置 `tesla` 技能，该技能需包含特斯拉 API 凭据
 
-**Security improvements (v1.1.0+):**
-- ✅ No shell injection risk: Uses argument lists instead of shell=True
-- ✅ Email validation: TESLA_EMAIL is validated before use
-- ✅ Input validation: Charge limits are validated (0-100% range)
-- ✅ Secure env passing: Credentials passed via environment variables, not string interpolation
-- ✅ Explicit dependencies: Metadata declares required env vars and skill dependencies
+**安全改进（v1.1.0 及以上版本）：**
+- ✅ 无 shell 注入风险：使用参数列表而非 `shell=True`
+- ✅ 邮箱验证：在使用前会验证 `TESLA_EMAIL` 的有效性
+- ✅ 输入验证：充电百分比必须在 0-100% 的范围内
+- ✅ 安全的环境变量传递：凭据通过环境变量传递，而非字符串插值
+- ✅ 明确的依赖关系：元数据中声明了所需的环境变量和技能依赖项
 
-## Quick Start
+## 快速入门
 
-### 1. Set Up Schedule
+### 1. 设置充电计划
 
-Copy the example schedule file:
+复制示例调度文件：
 
 ```bash
 cp skills/tesla-smart-charge/references/tesla-charge-schedule-example.json \
    memory/tesla-charge-schedule.json
 ```
 
-Edit `memory/tesla-charge-schedule.json` with your planned charge dates:
+使用您的充电计划日期编辑 `memory/tesla-charge-schedule.json` 文件：
 
 ```json
 {
@@ -50,9 +54,9 @@ Edit `memory/tesla-charge-schedule.json` with your planned charge dates:
 }
 ```
 
-## Cron Setup (Recommended)
+## Cron 配置（推荐）
 
-### Option 1: Daily Check at Midnight (Simple)
+### 选项 1：每日午夜检查（简单模式）
 
 ```bash
 clawdbot cron add \
@@ -61,11 +65,10 @@ clawdbot cron add \
   --task "TESLA_EMAIL=your@email.com python3 /path/to/skills/tesla-smart-charge/scripts/tesla-smart-charge.py --check-schedule"
 ```
 
-### Option 2: Daily Check + Session Management (Recommended)
+### 选项 2：每日检查 + 会话管理（推荐）
 
-For better charge limit management, run both:
-
-**At midnight (initialize daily charge):**
+为了更好地管理充电限制，建议同时运行以下两个任务：
+- **午夜执行（初始化每日充电计划）：**
 ```bash
 clawdbot cron add \
   --name "Tesla daily charge check" \
@@ -73,7 +76,7 @@ clawdbot cron add \
   --task "TESLA_EMAIL=your@email.com python3 /path/to/skills/tesla-smart-charge/scripts/tesla-smart-charge.py --check-schedule"
 ```
 
-**Every 30 minutes during active hours (manage session limits):**
+- **在充电时段内每 30 分钟执行一次（管理充电会话限制）：**
 ```bash
 clawdbot cron add \
   --name "Tesla session management" \
@@ -81,32 +84,30 @@ clawdbot cron add \
   --task "TESLA_EMAIL=your@email.com python3 /path/to/skills/tesla-smart-charge/scripts/tesla-smart-charge.py --manage-session"
 ```
 
-The second job ensures charge limits are properly updated throughout the day:
-- ✅ During session: Maintains 100% (or user-specified) limit
-- ✅ After session: Applies 80% (or user-specified) limit for battery health
+第二个任务确保全天充电限制得到正确更新：
+- ✅ 在充电会话期间：保持电池电量在 100%（或用户指定的百分比）；
+- ✅ 会话结束后：将电池电量限制设置为 80%（或用户指定的百分比），以保护电池健康。
 
-## How It Works
+## 工作原理
 
-**Each day at midnight (or whenever cron runs):**
+**每天午夜（或 cron 任务运行时）：**
+1. 脚本会检查 `memory/tesla-charge-schedule.json` 文件。
+2. 如果当天日期在充电计划列表中，则执行充电计划：
+   - 获取当前电池电量；
+   - 计算最佳开始时间；
+   - **将充电限制设置为会话期间的限制（默认为 100%）**；
+   - 显示充电详情；
+   - 显示**下一次预定充电日期**。
+3. 如果当天没有充电计划，则将充电限制设置为 80%（默认值）；
+   - 仍然会显示**下一次预定充电日期**。
 
-1. Script checks `memory/tesla-charge-schedule.json`
-2. If today's date is in the charges array → executes charge plan
-   - Fetches current battery level
-   - Calculates optimal start time
-   - **Sets charge limit to session limit (default 100%)**
-   - Displays charge details
-   - Shows **next scheduled charge date**
-3. If today is NOT scheduled → applies post-charge limit
-   - **Sets charge limit to default 80%** (or user-specified)
-   - Still displays **next scheduled charge date**
+**会话管理：**
+- **充电会话期间**：充电限制为 `charge_limit_percent`（默认为 100%）；
+- **充电会话结束后**：充电限制为 `post_charge_limit_percent`（默认为 80%）。
 
-**Session Management:**
-- **During charge session:** Charge limit = `charge_limit_percent` (default 100%)
-- **After charge session expires:** Charge limit = `post_charge_limit_percent` (default 80%)
+**效果：** 通过一个 cron 任务同时处理充电和限制管理，无需为每个日期创建单独的任务！
 
-**Result:** One cron job that handles both charging and limit management — no need to create new jobs for each date!
-
-## Schedule File Format
+## 调度文件格式
 
 ```json
 {
@@ -129,73 +130,72 @@ The second job ensures charge limits are properly updated throughout the day:
 }
 ```
 
-**Fields:**
-- `date`: YYYY-MM-DD format (when to charge)
-- `target_battery`: Target battery % (default: 100)
-- `target_time`: HH:MM when charging should complete (default: 08:00)
-- `charge_limit_percent`: Charge limit **during session** (default: 100%, optional)
-- `post_charge_limit_percent`: Charge limit **after session ends** (default: 80%, optional)
+**字段说明：**
+- `date`：YYYY-MM-DD 格式（充电时间）；
+- `target_battery`：目标电池电量百分比（默认为 100%）；
+- `target_time`：充电应完成的小时:分钟（默认为 08:00）；
+- `charge_limit_percent`：充电会话期间的限制百分比（默认为 100%，可选）；
+- `post_charge_limit_percent`：充电会话结束后的限制百分比（默认为 80%，可选）。
 
-## Environment Setup
+## 环境变量配置
 
-### Tesla Email
+### 配置特斯拉账户邮箱
 
 ```bash
 export TESLA_EMAIL="your@email.com"
 ```
 
-### Optional: Customize Charger Power
+### 可选：自定义充电功率
 
-Default: 2.99 kW (home charger, ~13A @ 230V)
+默认值：2.99 千瓦（家用充电器，约 13 安培，230 伏特）
 
-Adjust in cron task or when calling manually:
+您可以在 cron 任务中或手动调用时进行调整：
 
 ```bash
 --charger-power 3.7      # 16A @ 230V
 --charger-power 7.4      # 32A @ 230V (dual-phase)
 ```
 
-## Commands
+## 命令
 
-### Check Schedule for Today
+### 检查今天的充电计划
 
 ```bash
 TESLA_EMAIL="your@email.com" python3 scripts/tesla-smart-charge.py --check-schedule
 ```
 
-Output:
-- ✅ If scheduled: Shows charge plan + charge limits + next date
-- ❌ If not scheduled: Shows next scheduled date + applies default 80% limit
+**输出结果：**
+- ✅ 如果有充电计划：显示充电计划、充电限制及下一次充电日期；
+- ❌ 如果没有充电计划：显示下一次预定充电日期，并将充电限制设置为 80%。
 
-### Manage Active Session (Run During or After Charge)
+### 管理当前充电会话
 
 ```bash
 TESLA_EMAIL="your@email.com" python3 scripts/tesla-smart-charge.py --manage-session
 ```
 
-This command:
-- Checks if today's charge session is active
-- **During session:** Sets charge limit to session limit (default 100%)
-- **After session:** Sets charge limit to post-charge limit (default 80%)
-- **No session:** Applies default 80% limit
+此命令用于管理当前的充电会话：
+- **在充电会话期间**：将充电限制设置为会话期间的限制；
+- **充电会话结束后**：将充电限制设置为会话结束后的限制；
+- **如果没有充电会话**：将充电限制设置为 80%。
 
-**Tip:** Run this hourly or every 30 minutes during active charging days for real-time limit management.
+**提示：** 建议在充电期间每小时或每 30 分钟运行此命令，以实现实时限制管理。
 
-### Show All Scheduled Charges
+### 显示所有预定充电计划
 
 ```bash
 python3 scripts/tesla-smart-charge.py --show-schedule
 ```
 
-### Show Last Charge Plan
+### 显示上次充电计划
 
 ```bash
 python3 scripts/tesla-smart-charge.py --show-plan
 ```
 
-## Examples
+## 示例
 
-### Daily 100% Charge (Mon-Fri)
+### 每日充电 100%（周一至周五）
 
 ```json
 {
@@ -209,7 +209,7 @@ python3 scripts/tesla-smart-charge.py --show-plan
 }
 ```
 
-### Smart 80% for Battery Health (Every 3 Days)
+### 为保护电池健康，每 3 天充电 80%
 
 ```json
 {
@@ -221,7 +221,7 @@ python3 scripts/tesla-smart-charge.py --show-plan
 }
 ```
 
-### Variable Targets
+### 可变目标电量百分比
 
 ```json
 {
@@ -233,9 +233,9 @@ python3 scripts/tesla-smart-charge.py --show-plan
 }
 ```
 
-## Charge Time Estimation
+## 充电时间估算
 
-Charge time is calculated as:
+充电时间计算公式如下：
 
 ```
 energy_needed_kwh = (battery_capacity × (target - current) / 100) / charge_efficiency
@@ -243,30 +243,27 @@ charge_time_hours = energy_needed_kwh / charger_power_kw
 start_time = target_time - charge_time_hours - margin_minutes
 ```
 
-Where:
-- `battery_capacity`: Vehicle battery size (kWh, default: 75)
-- `charger_power_kw`: Your charger's power (kW, default: 2.99)
-- `charge_efficiency`: ~0.92 (typical AC charging)
-- `margin_minutes`: Buffer before target (default: 5 min)
+其中：
+- `battery_capacity`：车辆电池容量（千瓦时，默认为 75 千瓦时）；
+- `charger_power_kw`：充电器功率（千瓦，默认为 2.99 千瓦）；
+- `charge_efficiency`：充电效率（约 0.92）；
+- `margin_minutes`：达到目标电量前的缓冲时间（默认为 5 分钟）。
 
-**Example:** 75 kWh battery at 50%, charging to 100% by 08:00 with 2.99 kW:
-- Energy needed: (75 × 50% / 100) / 0.92 = 40.8 kWh
-- Charge time: 40.8 / 2.99 ≈ 13.6 hours
-- Start time: 08:00 - 13.6h - 5min ≈ 18:25 previous day
+**示例：** 电池容量为 75 千瓦时，当前电量为 50%，使用 2.99 千瓦的充电器在 08:00 充电至 100%：
+- 所需电量：(75 × 50% / 100) / 0.92 = 40.8 千瓦时；
+- 充电时间：40.8 / 2.99 ≈ 13.6 小时；
+- 开始时间：前一天 08:00 - 13.6 小时 - 5 分钟 ≈ 前一天 18:25。
 
-## Workflow Tips
+## 工作流程提示
 
-**Add new charges:** Edit `memory/tesla-charge-schedule.json` — cron picks up changes on next run
+- **添加新的充电计划：** 修改 `memory/tesla-charge-schedule.json` 文件，cron 任务会在下次运行时自动更新；
+- **提前规划：** 可提前几周添加充电计划，脚本会自动处理日期逻辑；
+- **只需一个 cron 任务**：无需为每个日期创建单独的任务；
+- **查看下次充电计划：** 每次运行时都会显示下一次预定充电日期。
 
-**Plan ahead:** Add weeks of charges in advance, script handles date logic
+## 参数说明
 
-**One cron job:** No need to create separate jobs — one daily check does it all
-
-**See what's next:** Each run displays the next scheduled charge date
-
-## Parameters
-
-When calling manually with `--target-time`:
+**手动使用 `--target-time` 参数时：**
 
 ```bash
 python3 scripts/tesla-smart-charge.py \
@@ -277,10 +274,9 @@ python3 scripts/tesla-smart-charge.py \
   --margin-minutes 5
 ```
 
-For schedule-based operation, use `--check-schedule` (reads from JSON file).
+**使用 `--check-schedule` 参数时：** 从 JSON 文件中读取充电计划信息。
 
-## References
-
-- **CRON_SETUP.md** - Full cron integration guide
-- **API_REFERENCE.md** - Advanced parameters and formulas
-- **tesla-charge-schedule-example.json** - Schedule file template
+## 参考资料**
+- **CRON_SETUP.md**：完整的 cron 集成指南；
+- **API_REFERENCE.md**：高级参数和计算公式；
+- **tesla-charge-schedule-example.json**：调度文件模板。

@@ -1,16 +1,15 @@
 ---
 name: shadcn-ui
 model: fast
-description: Build accessible, customizable UIs with shadcn/ui, Radix UI, and Tailwind CSS. Use when setting up shadcn/ui, installing components, building forms with React Hook Form + Zod, customizing themes, or implementing component patterns.
+description: 使用 `shadcn/ui`、`Radix UI` 和 `Tailwind CSS` 构建可访问且可定制的用户界面（UI）。这些工具适用于配置 `shadcn/ui`、安装组件、使用 `React Hook Form` 和 `Zod` 构建表单、自定义主题，以及实现组件模式。
 keywords: [shadcn, shadcn/ui, radix ui, tailwind, react components, forms, react hook form, zod, dialog, sheet, button, card, toast, select, dropdown, table, accessible components]
 ---
 
-# shadcn/ui Component Patterns
+# shadcn/ui 组件模式
 
-Expert guide for building accessible, customizable UI components with shadcn/ui.
+本指南旨在帮助您使用 shadcn/ui 构建可访问且可定制的 UI 组件。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -18,22 +17,21 @@ Expert guide for building accessible, customizable UI components with shadcn/ui.
 npx clawhub@latest install shadcn-ui
 ```
 
+## 适用场景
 
-## WHEN
+- 使用 shadcn/ui 设置新项目
+- 安装或配置单个组件
+- 使用 React Hook Form 和 Zod 验证来构建表单
+- 创建可访问的 UI 组件（按钮、对话框、下拉菜单、表格等）
+- 使用 Tailwind CSS 自定义组件样式
+- 使用 shadcn/ui 实现设计系统
+- 使用 TypeScript 构建 Next.js 应用程序
 
-- Setting up a new project with shadcn/ui
-- Installing or configuring individual components
-- Building forms with React Hook Form and Zod validation
-- Creating accessible UI components (buttons, dialogs, dropdowns, sheets)
-- Customizing component styling with Tailwind CSS
-- Implementing design systems with shadcn/ui
-- Building Next.js applications with TypeScript
+## 什么是 shadcn/ui？
 
-## What is shadcn/ui?
+shadcn/ui 是一组可重用的组件，您可以直接将其复制到您的项目中——它不是一个 npm 包。您拥有这些组件的代码。它基于 **Radix UI**（可访问性框架）和 **Tailwind CSS**（样式系统）构建。
 
-A **collection of reusable components** you copy into your project — not an npm package. You own the code. Built on **Radix UI** (accessibility) and **Tailwind CSS** (styling).
-
-## Quick Start
+## 快速入门
 
 ```bash
 # New Next.js project
@@ -46,11 +44,11 @@ npx shadcn@latest add button input form card dialog select toast
 npx shadcn@latest add --all  # or install everything
 ```
 
-## Core Concepts
+## 核心概念
 
-### The `cn` Utility
+### `cn` 工具
 
-Merges Tailwind classes with conflict resolution — used in every component:
+该工具用于合并 Tailwind 类并解决冲突，所有组件都会使用这个工具：
 
 ```tsx
 import { clsx, type ClassValue } from "clsx"
@@ -61,9 +59,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-### Class Variance Authority (CVA)
+### 类型变体管理（Class Variance Authority, CVA）
 
-Manages component variants — the pattern behind every shadcn/ui component:
+该机制用于管理组件的不同变体，这是 shadcn/ui 组件背后的核心设计模式：
 
 ```tsx
 import { cva, type VariantProps } from "class-variance-authority"
@@ -92,9 +90,9 @@ const buttonVariants = cva(
 )
 ```
 
-## Essential Components
+## 核心组件
 
-### Button
+### 按钮（Button）
 
 ```tsx
 import { Button } from "@/components/ui/button"
@@ -116,9 +114,9 @@ import { Loader2 } from "lucide-react"
 </Button>
 ```
 
-### Forms with Validation
+### 带验证功能的表单（Forms with Validation）
 
-The standard pattern: Zod schema + React Hook Form + shadcn Form components.
+标准实现方式：使用 Zod 架构、React Hook Form 和 shadcn 提供的表单组件：
 
 ```bash
 npx shadcn@latest add form input select checkbox textarea
@@ -198,7 +196,7 @@ export function ProfileForm() {
 }
 ```
 
-### Dialog & Sheet
+### 对话框（Dialog）与表格（Sheet）
 
 ```tsx
 import {
@@ -232,7 +230,7 @@ import {
 </Sheet>
 ```
 
-### Card
+### 卡片（Card）
 
 ```tsx
 import {
@@ -260,7 +258,7 @@ import {
 </Card>
 ```
 
-### Toast Notifications
+### 通知弹窗（Toast Notifications）
 
 ```tsx
 // 1. Add Toaster to root layout
@@ -290,7 +288,7 @@ toast({
 })
 ```
 
-### Table
+### 表格（Table）
 
 ```tsx
 import {
@@ -326,9 +324,9 @@ const invoices = [
 </Table>
 ```
 
-## Theming
+## 主题设置（Theming）
 
-shadcn/ui uses CSS variables in HSL format. Configure in `globals.css`:
+shadcn/ui 使用 HSL 格式的 CSS 变量进行主题设置，具体配置在 `globals.css` 文件中：
 
 ```css
 @layer base {
@@ -356,11 +354,11 @@ shadcn/ui uses CSS variables in HSL format. Configure in `globals.css`:
 }
 ```
 
-Colors reference as `hsl(var(--primary))` in Tailwind config. Change the CSS variables to retheme the entire app.
+在 Tailwind 配置中，颜色可以通过 `hsl(var(--primary))` 来引用。通过修改 CSS 变量即可重新设置整个应用程序的主题。
 
-## Customizing Components
+## 自定义组件
 
-Since you own the code, modify components directly:
+由于您拥有组件的代码，因此可以直接对其进行修改：
 
 ```tsx
 // Add a custom variant to button.tsx
@@ -378,30 +376,30 @@ const buttonVariants = cva("...", {
 })
 ```
 
-## Component Reference
+## 组件参考
 
-| Component | Install | Key Props |
-|-----------|---------|-----------|
-| Button | `add button` | `variant`, `size`, `asChild` |
-| Input | `add input` | Standard HTML input props |
-| Form | `add form` | React Hook Form + Zod integration |
-| Card | `add card` | Header, Content, Footer composition |
-| Dialog | `add dialog` | Modal with trigger pattern |
-| Sheet | `add sheet` | Slide-over panel, `side` prop |
-| Select | `add select` | Accessible dropdown |
-| Toast | `add toast` | `variant: "default" \| "destructive"` |
-| Table | `add table` | Header, Body, Row, Cell composition |
-| Tabs | `add tabs` | `defaultValue`, trigger/content pairs |
-| Accordion | `add accordion` | `type: "single" \| "multiple"` |
-| Command | `add command` | Command palette / search |
-| Dropdown Menu | `add dropdown-menu` | Context menus, action menus |
-| Menubar | `add menubar` | Application menus with shortcuts |
+| 组件 | 安装方法 | 关键属性 |
+|---------|-------------|------------|
+| 按钮（Button） | `add button` | `variant`, `size`, `asChild` |
+| 输入框（Input） | `add input` | 标准的 HTML 输入属性 |
+| 表单（Form） | `add form` | 结合 React Hook Form 和 Zod 验证 |
+| 卡片（Card） | `add card` | 包含标题、内容和底部元素 |
+| 对话框（Dialog） | `add dialog` | 带有触发机制的模态框 |
+| 表格（Sheet） | `add sheet` | 可滑动的面板，支持 `side` 属性 |
+| 下拉菜单（Select） | `add select` | 可访问的下拉菜单 |
+| 通知弹窗（Toast） | `add toast` | `variant: "default" \| "destructive"` |
+| 表格（Table） | `add table` | 包含标题、行和单元格 |
+| 标签页（Tabs） | `add tabs` | 提供默认值和触发/内容对 |
+| 折叠菜单（Accordion） | `add accordion` | `type: "single" \| "multiple"` |
+| 命令面板（Command） | `add command` | 提供命令面板或搜索功能 |
+| 下拉菜单（Dropdown Menu） | `add dropdown-menu` | 提供上下文菜单或动作菜单 |
+| 侧边栏（Menubar） | `add menubar` | 包含应用程序菜单和快捷方式 |
 
-## Next.js Integration
+## 与 Next.js 的集成
 
-### App Router Setup
+### Next.js 路由器设置
 
-For Next.js 13+ with App Router, ensure interactive components use `"use client"`:
+对于 Next.js 13 及更高版本，确保交互式组件使用了 `use client`：
 
 ```tsx
 // src/components/ui/button.tsx
@@ -412,9 +410,9 @@ import { Slot } from "@radix-ui/react-slot"
 // ... rest of component
 ```
 
-### Layout Integration
+### 布局集成
 
-Add the Toaster to your root layout:
+将通知弹窗（Toaster）添加到应用程序的根布局中：
 
 ```tsx
 // app/layout.tsx
@@ -433,11 +431,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-### Server Components
+### 服务器端组件
 
-Most shadcn/ui components need `"use client"`. For Server Components, wrap them in a client component or use them in client component children.
+大多数 shadcn/ui 组件需要使用 `use client`。对于服务器端组件，需要将它们包裹在客户端组件中或在客户端组件的子元素中使用。
 
-## CLI Reference
+## 命令行工具参考
 
 ```bash
 npx shadcn@latest init              # Initialize project
@@ -446,31 +444,31 @@ npx shadcn@latest add --all         # Add all components
 npx shadcn@latest diff              # Show upstream changes
 ```
 
-## Best Practices
+## 最佳实践
 
-| Practice | Details |
-|----------|---------|
-| **Use TypeScript** | All components ship with full type definitions |
-| **Zod for validation** | Pair with React Hook Form for type-safe forms |
-| **`asChild` pattern** | Use Radix Slot to render as different elements |
-| **Server Components** | Most shadcn/ui components need `"use client"` |
-| **Consistent structure** | Follow the existing component patterns when customizing |
-| **Accessibility** | Radix primitives handle ARIA; don't override without reason |
-| **CSS variables** | Theme via variables, not by editing component classes |
-| **Tree-shaking** | Only install components you need — they're independent |
+| 实践 | 说明 |
+|---------|---------|
+| **使用 TypeScript** | 所有组件都附带完整的类型定义 |
+| **使用 Zod 进行验证** | 结合 React Hook Form 以创建类型安全的表单 |
+| **`asChild` 模式** | 使用 Radix 的 Slot 功能将组件渲染为不同的元素 |
+| **服务器端组件** | 大多数 shadcn/ui 组件需要使用 `use client` |
+| **保持一致性** | 在自定义组件时遵循现有的设计模式 |
+| **可访问性** | Radix 的基础组件已经处理了 ARIA 标签；除非必要，否则不要自行覆盖这些属性 |
+| **使用 CSS 变量** | 通过变量来设置主题，而不是直接修改组件类 |
+| **按需安装组件** | 只安装实际需要的组件，因为它们是独立的 |
 
-## NEVER Do
+## 绝对不要做的事情
 
-| Never | Why | Instead |
-|-------|-----|---------|
-| Install shadcn as npm package | It's not a package — it's source code you own | Use CLI: `npx shadcn@latest add` |
-| Override ARIA attributes | Radix handles accessibility correctly | Trust the primitives |
-| Use inline styles for theming | Defeats the design system | Modify CSS variables |
-| Copy components from docs manually | May miss dependencies | Use CLI for proper installation |
-| Mix component styles | Creates inconsistency | Follow CVA variant pattern |
+| 绝对不要 | 原因 | 替代方法 |
+|---------|---------|-----------|
+| 将 shadcn 作为 npm 包安装 | 它不是普通的包，而是您可以自由使用的源代码 | 使用命令行工具：`npx shadcn@latest add` |
+| 直接覆盖 ARIA 属性 | Radix 已经正确处理了可访问性相关的问题 | 请依赖 Radix 提供的基础组件 |
+| 使用内联样式进行主题设置 | 这会破坏设计系统的一致性 | 应该通过修改 CSS 变量来设置主题 |
+| 手动从文档中复制组件代码 | 可能会遗漏依赖关系 | 使用命令行工具进行正确的安装 |
+| 混合组件的样式 | 这会导致样式不一致 | 应遵循组件设计模式（如 CVA） |
 
-## References
+## 参考资源
 
-- [Learning Guide](references/learn.md) — progression from basics to advanced patterns
-- [Extended Components](references/extended-components.md) — Terminal, Dock, Charts, animations, custom hooks
-- [Official Docs](https://ui.shadcn.com) | [Radix UI](https://www.radix-ui.com) | [React Hook Form](https://react-hook-form.com) | [Zod](https://zod.dev)
+- [学习指南](references/learn.md) — 从基础到高级模式的逐步学习指南
+- [扩展组件](references/extended-components.md) — 包括终端界面、侧边栏、图表、动画和自定义钩子等功能
+- [官方文档](https://ui.shadcn.com) | [Radix UI](https://www.radix-ui.com) | [React Hook Form](https://react-hook-form.com) | [Zod](https://zod.dev)

@@ -1,13 +1,13 @@
-# Social Media Scheduler
+# 社交媒体调度器
 
-Optimize posting schedule for maximum engagement.
+优化发布时间表以获得最大的互动效果。
 
-## Platforms
+## 平台
 
-- **Chinese**: Douyin, Xiaohongshu, WeChat, Weibo, Kuaishou
-- **International**: Instagram, Twitter, Facebook, LinkedIn
+- **中国**：抖音、小红书、微信、微博、快手
+- **国际**：Instagram、Twitter、Facebook、LinkedIn
 
-## Usage
+## 使用方法
 
 ```bash
 npx social-scheduler

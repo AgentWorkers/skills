@@ -1,58 +1,58 @@
 ---
 name: blacksnow
-description: Detects pre-news ambient risk signals across human, legal, and operational systems and converts them into machine-readable, tradable risk primitives.
+description: 该系统能够检测来自人类系统、法律系统和运营系统中的潜在风险信号（这些信号在新闻发布之前就已存在），并将这些风险信号转换为机器可识别、可交易的风险数据格式。
 ---
 
 # BlackSnow
 
-**Invisible Risk Exhaust → Tradable Signal Engine**
+**隐形风险挖掘工具 → 可交易信号引擎**
 
-BlackSnow is an economic sensor skill that ingests fragmented, low-signal, legally accessible data exhaust from multiple non-obvious domains. It applies ontology alignment, weak-signal Bayesian accumulation, and horizon forecasting to surface early risk vectors before formal events, news, or disclosures occur.
+BlackSnow 是一种经济感知技能，它能够收集来自多个非显而易见领域的、碎片化且信号强度较低但合法可获取的数据。该工具通过本体对齐、弱信号贝叶斯累积以及未来趋势预测等方法，在正式事件、新闻或信息披露之前识别出潜在的风险因素。
 
-Outputs are structured for automated consumption by financial, insurance, logistics, and policy systems.
+其输出结果经过结构化处理，便于金融、保险、物流和政策系统自动化使用。
 
-## Core Capabilities
+## 核心功能
 
-- **Ambient Risk Detection**: Surfaces pre-event signals invisible to traditional monitoring
-- **Weak-Signal Correlation**: Connects individually meaningless data points into predictive patterns
-- **Cross-Domain Ontology Fusion**: Aligns heterogeneous inputs into unified risk primitives
-- **Probabilistic Forecasting**: Estimates outcome likelihoods and temporal windows
-- **Tradable Signal Packaging**: Converts internal risk states into sellable primitives
+- **环境风险检测**：揭示传统监控系统无法发现的事件前信号。
+- **弱信号关联分析**：将孤立无意义的数据点连接成具有预测性的模式。
+- **跨领域本体融合**：将异构数据统一为标准的风险指标。
+- **概率预测**：估算事件发生的可能性和时间窗口。
+- **可交易信号转换**：将内部风险状态转化为可交易的信号。
 
-## Non-Capabilities
+## 限制功能
 
-- ❌ Insider information
-- ❌ Sentiment analysis
-- ❌ News aggregation
-- ❌ Price prediction
-- ❌ Decision execution
+- ❌ 无法获取内幕信息
+- ❌ 不提供情感分析功能
+- ❌ 不支持新闻聚合
+- ❌ 不具备价格预测能力
+- ❌ 无法执行决策
 
-## What BlackSnow Detects
+## BlackSnow 可检测的风险信号类型
 
-Signals that exist weeks earlier, fragmented across obscure, low-signal sources:
+这些风险信号通常存在于几周前，并分散在各种隐蔽、信号强度较低的信息源中：
 
-### Micro-Behavioral Shifts
-- Municipal procurement wording changes
-- Infrastructure maintenance deferrals
-- Insurance clause revisions
-- Supply contract force-majeure language
+### 微观行为变化
+- 市政采购条款的修改
+- 基础设施维护计划的延期
+- 保险条款的修订
+- 供应合同中关于不可抗力的条款
 
-### Operational Anomalies
-- Unexpected overtime tenders
-- Silent vendor substitutions
-- Emergency inventory buffering
+### 运营异常
+- 意外的加班招标
+- 供应商的悄然更换
+- 库存的紧急储备行为
 
-### Legal Entropy
-- Draft regulation language drift
-- Repeated consultation extensions
-- Committee member attendance decay
+### 法律风险
+- 法规草案的语言变化
+- 咨询会议的频繁延期
+- 委员会成员出席率的下降
 
-### Human System Stress
-- Attrition spikes in critical roles
-- Hiring freezes masked as "role realignment"
-- Union grievance language tone shifts
+### 人类系统压力
+- 关键岗位的人员流失加剧
+- 以“岗位调整”为名的招聘暂停
+- 工会投诉言论的转变
 
-## Output Schema
+## 输出数据结构
 
 ```json
 {
@@ -74,79 +74,81 @@ Signals that exist weeks earlier, fragmented across obscure, low-signal sources:
 }
 ```
 
-## Agents
+## 系统组件
 
-| Agent | Role | Description |
+| 组件 | 功能 | 说明 |
 |-------|------|-------------|
-| `harvester` | Ingestion | Collects obscure, legally accessible data exhaust from approved domains |
-| `normalizer` | Semantic Alignment | Maps heterogeneous inputs into a unified risk ontology |
-| `accumulator` | Probabilistic Reasoning | Performs Bayesian evidence accumulation over time |
-| `forecaster` | Horizon Modeling | Estimates outcome likelihoods and temporal windows |
-| `packager` | Monetization Interface | Converts internal risk states into sellable signal primitives |
+| `数据采集器` (Harvester) | 数据收集 | 从授权来源收集碎片化、合法可获取的数据 |
+| `数据标准化器` (Normalizer) | 语义对齐 | 将异构数据统一到标准的风险本体中 |
+| `风险累积器` (Accumulator) | 贝叶斯推理 | 随时间累积风险相关证据 |
+| `预测器` (Forecaster) | 预测模型 | 估算事件发生的可能性和时间窗口 |
+| `信号打包器` (Packager) | 信号转化 | 将内部风险状态转化为可交易的信号 |
 
-## Data Sources
+## 数据来源
 
-### Allowed
-- Public procurement notices
-- Regulatory draft documents
-- Contract language revisions
-- Maintenance and tender logs
-- Labor and union filings
-- Hiring and attrition metadata
-- Inventory and logistics metadata
+### 允许的数据来源
+- 公共采购公告
+- 监管法规草案
+- 合同条款的修订内容
+- 维护和招标记录
+- 劳动力及工会相关文件
+- 招聘和人员流动数据
+- 库存及物流相关数据
 
-### Forbidden
-- Private communications
-- Leaked documents
-- Paywalled sources without license
-- Personal identifiable information
+### 禁止的数据来源
+- 私人通信内容
+- 泄露的文件
+- 未经授权的付费内容
+- 个人身份信息
 
-## Monetization Tiers
+## 收费标准
 
-| Tier | Access | Price |
+| 收费等级 | 访问权限 | 价格 |
 |------|--------|-------|
-| Observer | Aggregated heatmaps | $99/mo |
-| Operator | Raw risk vectors | $1,500/mo |
-| Fund/API | Real-time streaming signals | $10k–50k/mo |
-| Sovereign | Custom domains & exclusivity | $250k+/yr |
+| 观察者 (Observer) | 综合风险热图 | 每月 $99 |
+| 运营者 (Operator) | 原始风险数据 | 每月 $1,500 |
+| 金融机构/API | 实时风险信号 | 每月 $10,000–$50,000 |
+| 企业级用户 (Sovereign) | 专属数据访问权限 | 每年 $250,000+ |
 
-### Add-ons
-- Region exclusivity
-- Early-signal SLA
-- Historical backtesting
-- Compliance attestation
+## 额外服务
 
-## Integration
+- 地区专属权限
+- 早期风险信号服务
+- 历史数据回测
+- 合规性认证
 
-Compatible skills:
-- `tradebot`
-- `hedgecore`
-- `logistics-router`
-- `policy-simulator`
+## 系统兼容性
 
-Chaining mode: `async`
+- `tradebot`（交易机器人）
+- `hedgecore`（对冲策略工具）
+- `logistics-router`（物流管理工具）
+- `policy-simulator`（政策模拟工具）
 
-## Constraints
+## 系统运行模式
 
-### Legal
-- GDPR compliant
-- No personal data storage
-- No market manipulation intent
+- **异步处理**
 
-### Ethical
-- No targeted individual profiling
-- No civilian harm forecasting
+## 约束条件
 
-### Operational
-- Explainability not guaranteed
-- Probabilistic outputs only
+### 法律约束
+- 遵守 GDPR 法规
+- 不存储个人数据
+- 不用于市场操纵
 
-## Risk Disclaimer
+### 伦理规范
+- 不进行针对性个人画像
+- 不预测可能对平民造成伤害的情况
 
-BlackSnow provides probabilistic risk intelligence, not predictions or advice. Users are solely responsible for downstream decisions and compliance.
+### 运营限制
+- 无法保证预测结果的绝对准确性
+- 仅提供概率性分析结果
 
-## Status
+## 风险提示
 
-- **Deployment**: Sandbox
-- **Onboarding**: Gated
-- **Audit Required**: Yes
+BlackSnow 提供的是概率性风险情报，而非确切的预测或建议。用户需自行承担基于这些信息的决策及合规责任。
+
+## 系统现状
+
+- **当前状态**：沙盒测试阶段
+- **使用权限**：有限制
+- **审计要求**：必须通过审计

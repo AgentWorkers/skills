@@ -1,47 +1,47 @@
 ---
 name: beeper
-description: Search and browse local Beeper chat history (threads, messages, full-text search).
+description: 搜索并浏览本地的 Beeper 聊天记录（包括主题、消息以及支持全文搜索功能）。
 homepage: https://github.com/krausefx/beeper-cli
 metadata: {"clawdbot":{"emoji":"🛰️","os":["darwin","linux"],"requires":{"bins":["beeper-cli"]},"install":[{"id":"go","kind":"go","pkg":"github.com/krausefx/beeper-cli/cmd/beeper-cli","bins":["beeper-cli"],"label":"Install beeper-cli (go install)"}]}}
 ---
 
 # Beeper CLI
 
-[Beeper](https://www.beeper.com/) is a universal chat app that unifies messages from WhatsApp, Telegram, Signal, iMessage, Discord, and more in a single inbox.
+[Beeper](https://www.beeper.com/) 是一款通用的聊天应用，可以将来自 WhatsApp、Telegram、Signal、iMessage、Discord 等平台的消息统一显示在一个收件箱中。
 
-This skill provides **read-only access** to your local Beeper chat history. Browse threads, search messages, and extract conversation data.
+此技能提供了对您本地 Beeper 聊天记录的**只读访问**权限。您可以浏览聊天记录、搜索消息并提取对话数据。
 
-## Requirements
-- Beeper Desktop app installed (provides the SQLite database)
-- `beeper-cli` binary on PATH
+## 必备条件
+- 安装了 Beeper 桌面应用程序（该应用程序会生成 SQLite 数据库）
+- `beeper-cli` 命令行工具已在系统的 PATH 环境变量中
 
-## Database Path
-The CLI auto-detects:
-- `~/Library/Application Support/BeeperTexts/index.db` (macOS)
-- `~/Library/Application Support/Beeper/index.db` (macOS)
+## 数据库路径
+CLI 会自动检测以下路径：
+- `~/Library/Application Support/BeeperTexts/index.db`（macOS）
+- `~/Library/Application Support/Beeper/index.db`（macOS）
 
-Override with:
+您也可以通过以下参数自定义数据库路径：
 - `--db /path/to/index.db`
 - `BEEPER_DB=/path/to/index.db`
 
-## Commands
+## 命令
 
-### List Threads
+### 列出所有聊天记录
 ```bash
 beeper-cli threads list --days 7 --limit 50 --json
 ```
 
-### Show Thread Details
+### 查看聊天记录详情
 ```bash
 beeper-cli threads show --id "!abc123:beeper.local" --json
 ```
 
-### List Messages in Thread
+### 显示聊天记录中的所有消息
 ```bash
 beeper-cli messages list --thread "!abc123:beeper.local" --limit 50 --json
 ```
 
-### Search Messages (Full-Text)
+### 搜索消息（全文本）
 ```bash
 # Simple search
 beeper-cli search 'invoice' --limit 20 --json
@@ -56,25 +56,25 @@ beeper-cli search 'party NEAR/5 christmas' --limit 20 --json
 beeper-cli search 'meeting' --context 6 --window 60m --json
 ```
 
-### Database Info
+### 查看数据库信息
 ```bash
 beeper-cli db info --json
 ```
 
-## Notes
-- **Read-only**: This tool never sends messages
-- **JSON output**: Always use `--json` for structured output agents can parse
-- **FTS5 search**: Uses Beeper's built-in full-text index (FTS5) for fast search
-- **DM name resolution**: Optionally resolves DM names via bridge databases (disable with `--no-bridge`)
+## 注意事项
+- **仅限读取**：此工具不会发送任何消息。
+- **JSON 输出**：请务必使用 `--json` 选项以获得结构化输出，以便其他工具能够解析数据。
+- **FTS5 搜索**：利用 Beeper 内置的全文索引（FTS5）进行快速搜索。
+- **私信名称解析**：可以选择通过外部数据库解析私信发送者的名称（使用 `--no-bridge` 选项可禁用此功能）。
 
-## Installation
+## 安装方法
 
-### Option 1: Go Install (recommended)
+### 方法 1：使用 Go 语言进行安装（推荐）
 ```bash
 go install github.com/krausefx/beeper-cli/cmd/beeper-cli@latest
 ```
 
-### Option 2: Build from Source
+### 方法 2：从源代码编译安装
 ```bash
 git clone https://github.com/krausefx/beeper-cli.git
 cd beeper-cli
@@ -82,15 +82,15 @@ go build ./cmd/beeper-cli
 # Move beeper-cli to PATH, e.g., /usr/local/bin
 ```
 
-## Examples
+## 使用示例
 
-Search for work-related messages from last week:
+- 搜索上周与工作相关的消息：
 ```bash
 beeper-cli threads list --days 7 --json | jq '.threads[] | select(.name | contains("work"))'
 beeper-cli search 'project deadline' --limit 10 --json
 ```
 
-Find messages about invoices with context:
+- 查找包含具体上下文的发票相关消息：
 ```bash
 beeper-cli search 'invoice' --context 3 --json
 ```

@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Hosted - Python
+# Telnyx 消息托管服务 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,9 +32,9 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List messaging hosted number orders
+## 列出托管消息服务的号码订单
 
 `GET /messaging_hosted_number_orders`
 
@@ -44,7 +44,7 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a messaging hosted number order
+## 创建托管消息服务的号码订单
 
 `POST /messaging_hosted_number_orders`
 
@@ -53,7 +53,7 @@ messaging_hosted_number_order = client.messaging_hosted_number_orders.create()
 print(messaging_hosted_number_order.data)
 ```
 
-## Retrieve a messaging hosted number order
+## 获取托管消息服务的号码订单信息
 
 `GET /messaging_hosted_number_orders/{id}`
 
@@ -64,9 +64,9 @@ messaging_hosted_number_order = client.messaging_hosted_number_orders.retrieve(
 print(messaging_hosted_number_order.data)
 ```
 
-## Delete a messaging hosted number order
+## 删除托管消息服务的号码订单
 
-Delete a messaging hosted number order and all associated phone numbers.
+删除托管消息服务的号码订单及其所有关联的电话号码。
 
 `DELETE /messaging_hosted_number_orders/{id}`
 
@@ -77,7 +77,7 @@ messaging_hosted_number_order = client.messaging_hosted_number_orders.delete(
 print(messaging_hosted_number_order.data)
 ```
 
-## Upload hosted number document
+## 上传托管号码文档
 
 `POST /messaging_hosted_number_orders/{id}/actions/file_upload`
 
@@ -88,11 +88,11 @@ response = client.messaging_hosted_number_orders.actions.upload_file(
 print(response.data)
 ```
 
-## Validate hosted number codes
+## 验证托管号码的验证码
 
-Validate the verification codes sent to the numbers of the hosted order.
+验证发送到托管号码的验证码。
 
-`POST /messaging_hosted_number_orders/{id}/validation_codes` — Required: `verification_codes`
+`POST /messaging_hosted_number_orders/{id}/validation_codes` — 必需参数：`verification_codes`
 
 ```python
 response = client.messaging_hosted_number_orders.validate_codes(
@@ -105,11 +105,11 @@ response = client.messaging_hosted_number_orders.validate_codes(
 print(response.data)
 ```
 
-## Create hosted number verification codes
+## 生成托管号码的验证码
 
-Create verification codes to validate numbers of the hosted order.
+为托管号码生成验证码。
 
-`POST /messaging_hosted_number_orders/{id}/verification_codes` — Required: `phone_numbers`, `verification_method`
+`POST /messaging_hosted_number_orders/{id}/verification_codes` — 必需参数：`phone_numbers`, `verification_method`
 
 ```python
 response = client.messaging_hosted_number_orders.create_verification_codes(
@@ -120,9 +120,9 @@ response = client.messaging_hosted_number_orders.create_verification_codes(
 print(response.data)
 ```
 
-## Check hosted messaging eligibility
+## 检查托管号码的适用性
 
-`POST /messaging_hosted_number_orders/eligibility_numbers_check` — Required: `phone_numbers`
+`POST /messaging_hosted_number_orders/eligibility_numbers_check` — 必需参数：`phone_numbers`
 
 ```python
 response = client.messaging_hosted_number_orders.check_eligibility(
@@ -131,7 +131,7 @@ response = client.messaging_hosted_number_orders.check_eligibility(
 print(response.phone_numbers)
 ```
 
-## Delete a messaging hosted number
+## 删除托管消息服务的号码
 
 `DELETE /messaging_hosted_numbers/{id}`
 
@@ -142,9 +142,9 @@ messaging_hosted_number = client.messaging_hosted_numbers.delete(
 print(messaging_hosted_number.data)
 ```
 
-## Send an RCS message
+## 发送 RCS 消息
 
-`POST /messages/rcs` — Required: `agent_id`, `to`, `messaging_profile_id`, `agent_message`
+`POST /messages/rcs` — 必需参数：`agent_id`, `to`, `messaging_profile_id`, `agent_message`
 
 ```python
 response = client.messages.rcs.send(
@@ -156,7 +156,7 @@ response = client.messages.rcs.send(
 print(response.data)
 ```
 
-## List all RCS agents
+## 列出所有 RCS 代理
 
 `GET /messaging/rcs/agents`
 
@@ -166,7 +166,7 @@ page = page.data[0]
 print(page.agent_id)
 ```
 
-## Retrieve an RCS agent
+## 获取 RCS 代理信息
 
 `GET /messaging/rcs/agents/{id}`
 
@@ -177,7 +177,7 @@ rcs_agent_response = client.messaging.rcs.agents.retrieve(
 print(rcs_agent_response.data)
 ```
 
-## Modify an RCS agent
+## 修改 RCS 代理信息
 
 `PATCH /messaging/rcs/agents/{id}`
 
@@ -188,9 +188,9 @@ rcs_agent_response = client.messaging.rcs.agents.update(
 print(rcs_agent_response.data)
 ```
 
-## Check RCS capabilities (batch)
+## 检查 RCS 功能（批量）
 
-`POST /messaging/rcs/bulk_capabilities` — Required: `agent_id`, `phone_numbers`
+`POST /messaging/rcs/bulk_capabilities` — 必需参数：`agent_id`, `phone_numbers`
 
 ```python
 response = client.messaging.rcs.list_bulk_capabilities(
@@ -200,7 +200,7 @@ response = client.messaging.rcs.list_bulk_capabilities(
 print(response.data)
 ```
 
-## Check RCS capabilities
+## 检查 RCS 功能
 
 `GET /messaging/rcs/capabilities/{agent_id}/{phone_number}`
 
@@ -212,11 +212,11 @@ response = client.messaging.rcs.retrieve_capabilities(
 print(response.data)
 ```
 
-## Add RCS test number
+## 添加 RCS 测试号码
 
-Adds a test phone number to an RCS agent for testing purposes.
+为 RCS 代理添加测试电话号码以供测试使用。
 
-`PUT /messaging/rcs/test_number_invite/{id}/{phone_number}`
+`PUT /messages/rcs/test_number_invite/{id}/{phone_number}`
 
 ```python
 response = client.messaging.rcs.invite_test_number(
@@ -226,9 +226,9 @@ response = client.messaging.rcs.invite_test_number(
 print(response.data)
 ```
 
-## Generate RCS deeplink
+## 生成 RCS 深链接
 
-Generate a deeplink URL that can be used to start an RCS conversation with a specific agent.
+生成用于与特定代理发起 RCS 对话的深链接。
 
 `GET /messages/rcs_deeplinks/{agent_id}`
 
@@ -239,9 +239,9 @@ response = client.messages.rcs.generate_deeplink(
 print(response.data)
 ```
 
-## List Verification Requests
+## 列出验证请求
 
-Get a list of previously-submitted tollfree verification requests
+获取之前提交的免费电话验证请求列表
 
 `GET /messaging_tollfree/verification/requests`
 
@@ -254,11 +254,11 @@ page = page.records[0]
 print(page.id)
 ```
 
-## Submit Verification Request
+## 提交验证请求
 
-Submit a new tollfree verification request
+提交新的免费电话验证请求
 
-`POST /messaging_tollfree/verification/requests` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`POST /messaging_tollfree/verification/requests` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```python
 verification_request_egress = client.messaging_tollfree.verification.requests.create(
@@ -293,9 +293,9 @@ verification_request_egress = client.messaging_tollfree.verification.requests.cr
 print(verification_request_egress.id)
 ```
 
-## Get Verification Request
+## 获取验证请求信息
 
-Get a single verification request by its ID.
+通过 ID 获取单个验证请求的详细信息。
 
 `GET /messaging_tollfree/verification/requests/{id}`
 
@@ -306,11 +306,11 @@ verification_request_status = client.messaging_tollfree.verification.requests.re
 print(verification_request_status.id)
 ```
 
-## Update Verification Request
+## 更新验证请求
 
-Update an existing tollfree verification request.
+更新现有的免费电话验证请求。
 
-`PATCH /messaging_tollfree/verification/requests/{id}` — Required: `businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
+`PATCH /messaging_tollfree/verification/requests/{id}` — 必需参数：`businessName`, `corporateWebsite`, `businessAddr1`, `businessCity`, `businessState`, `businessZip`, `businessContactFirstName`, `businessContactLastName`, `businessContactEmail`, `businessContactPhone`, `messageVolume`, `phoneNumbers`, `useCase`, `useCaseSummary`, `productionMessageContent`, `optInWorkflow`, `optInWorkflowImageURLs`, `additionalInformation`, `isvReseller`
 
 ```python
 verification_request_egress = client.messaging_tollfree.verification.requests.update(
@@ -346,11 +346,9 @@ verification_request_egress = client.messaging_tollfree.verification.requests.up
 print(verification_request_egress.id)
 ```
 
-## Delete Verification Request
+## 删除验证请求
 
-Delete a verification request
-
-A request may only be deleted when when the request is in the "rejected" state.
+只有当验证请求处于“已拒绝”状态时，才能删除该请求。
 
 `DELETE /messaging_tollfree/verification/requests/{id}`
 

@@ -1,146 +1,143 @@
 ---
 name: Growth
-description: Design and execute growth strategies with acquisition loops, activation, and retention systems.
+description: 设计并实施增长策略，包括收购流程、用户激活机制以及用户留存体系。
 metadata: {"clawdbot":{"emoji":"📈","os":["linux","darwin","win32"]}}
 ---
 
-## North Star Metric (Define First)
+## 北极星指标（首先定义）
 
-Pick ONE metric that:
-- Reflects core value delivered to customer
-- Leads revenue (not lags)
-- Entire team can influence
+选择一个能够：
+- 反映提供给客户的核心价值
+- 促进收入增长（而非滞后于收入增长）
+- 全体团队都能影响的指标
 
-Examples by business type:
-- Marketplace: transactions completed
-- SaaS: weekly active users or actions
-- Media: time spent or content consumed
-- E-commerce: purchase frequency
+不同业务类型的示例：
+- 市场平台：完成的交易量
+- SaaS：每周活跃用户数或用户操作次数
+- 媒体：用户花费的时间或消费的内容量
+- 电子商务：购买频率
 
-All other metrics ladder up to this.
+所有其他指标都应围绕这个核心指标进行设计和优化。
 
-## AARRR Funnel (Measure Each)
+## AARRR 漏斗（逐一衡量）
 
-Define specific metrics for each stage:
-1. **Acquisition**: How users find you → visits, signups
-2. **Activation**: First value moment → completed onboarding, first action
-3. **Retention**: Coming back → DAU/MAU, return rate by cohort
-4. **Revenue**: Paying you → conversion rate, ARPU, LTV
-5. **Referral**: Bringing others → viral coefficient, referral rate
+为每个阶段定义具体的指标：
+1. **获取（Acquisition）**：用户是如何找到你的产品的 → 访问量、注册量
+2. **激活（Activation）**：用户首次体验产品价值的时间点 → 完成入职流程、首次操作
+3. **留存（Retention）**：用户是否会再次使用产品 → 日活跃用户（DAU）/月活跃用户（MAU）、用户群体留存率
+4. **收入（Revenue）**：用户是否开始付费 → 转化率、平均收入用户（ARPU）、生命周期价值（LTV）
+5. **推荐（Referral）**：用户是否推荐他人使用产品 → 病毒系数、推荐率
 
-Find the weakest stage—that's your focus.
+找出其中最薄弱的环节，并将其作为优化重点。
 
-## Growth Loops (Build These)
+## 成长循环（构建这些循环）
 
-Identify which loop fits your product:
+确定适合你产品的成长循环类型：
+**病毒式循环（Viral Loop）**：用户 → 邀请朋友 → 朋友也成为用户
+- 测量指标：病毒系数（邀请次数 × 转化率）
+- 关键要求：用户觉得产品有价值，而不仅仅是公司有价值
 
-**Viral loop**: User → invites friends → friends become users
-- Measure: viral coefficient (invites × conversion rate)
-- Needs: sharing valuable to user, not just company
+**内容循环（Content Loop）**：创建内容 → 通过SEO或社交媒体传播 → 用户 → 部分用户也会创建内容
+- 测量指标：每个用户产生的内容量、每条内容带来的流量
+- 关键要求：鼓励用户生成内容或由团队提供优质内容
 
-**Content loop**: Create content → SEO/social → users → some create content
-- Measure: content created per user, traffic per content
-- Needs: user-generated content or team-generated
+**付费循环（Paid Loop）**：收入 → 重新投资于广告 → 用户数量 → 收入增长
+- 测量指标：客户获取成本（CAC）与生命周期价值（LTV）的比率、投资回收期
+- 关键要求：确保LTV大于3倍的CAC
 
-**Paid loop**: Revenue → reinvest in ads → users → revenue
-- Measure: CAC vs LTV, payback period
-- Needs: unit economics that work (LTV > 3× CAC)
+**销售循环（Sales Loop）**：销售 → 客户数量 → 客户案例/推荐 → 新潜在客户
+- 测量指标：销售流程的效率、推荐率
+- 关键要求：拥有高效的销售团队和较高的平均客户价值（ACV）
 
-**Sales loop**: Sales → customers → case studies/referrals → leads
-- Measure: pipeline velocity, referral rate
-- Needs: sales team, high ACV
+## 激活用户检查清单
 
-## Activation Checklist
+明确用户“理解产品价值”的关键时刻：
+- [ ] 哪个具体行为表明用户已经理解了产品功能？
+- [ ] 这个过程需要多长时间？（第一次访问？第一周？）
+- [ ] 目前有多少注册用户达到了这个阶段？
+- [ ] 在用户达到这个阶段之前需要完成哪些步骤？
 
-Define the "aha moment"—when user gets value:
-- [ ] What specific action indicates user "got it"?
-- [ ] How long should it take? (First session? First week?)
-- [ ] What % of signups reach it currently?
-- [ ] What steps are required before it?
+消除注册到用户理解产品价值之间的所有障碍，并持续优化这一过程，以缩短用户价值实现的时间。
 
-Remove every obstacle between signup and aha moment.
-Measure time-to-value and optimize ruthlessly.
+## 留存分析
 
-## Retention Analysis
+用户群体留存曲线能揭示产品实际情况：
+- 如果曲线平坦，说明用户已经形成了使用习惯，产品具有价值
+- 如果曲线下降至零，说明产品存在问题，而非增长问题
+- 如果早期留存率低，说明激活流程存在问题
 
-Cohort retention curves reveal truth:
-- Flatten = habit formed, product has value
-- Decline to zero = product problem, not growth problem
-- Early drop = activation problem
+具体措施：
+- 按注册用户群体绘制每周/每月的留存率曲线
+- 分析留存下来的用户与流失用户之间的差异
+- 将这些分析结果纳入入职流程中
 
-Actions:
-- Plot weekly/monthly retention by signup cohort
-- Find what retained users did that churned didn't
-- Make that action part of onboarding
+## 渠道选择
 
-## Channel Selection
-
-Score potential channels:
-| Channel | CAC estimate | Volume potential | Speed to test |
+评估潜在渠道的潜力：
+| 渠道 | 客户获取成本（CAC）预估 | 潜在用户量 | 测试速度 |
 |---------|--------------|------------------|---------------|
 
-Prioritize: low CAC + high volume + fast to test first.
+优先选择：CAC低、用户量高且测试速度快的渠道。
 
-Channel categories:
-- Paid: Meta, Google, TikTok, influencers
-- Organic: SEO, content, social, community
-- Product: referral, virality, integrations
-- Sales: outbound, partnerships
+渠道类别：
+- 付费渠道：Meta、Google、TikTok、 influencer营销
+- 自然增长渠道：SEO、内容营销、社交媒体、社区建设
+- 产品自推广渠道：用户推荐、病毒式传播、产品集成
+- 销售渠道：主动推广、合作伙伴关系
 
-Test 2-3 max simultaneously. Kill losers fast.
+同时测试2-3个渠道，尽快淘汰效果不佳的渠道。
 
-## Experiment Framework
+## 实验框架
 
-For each experiment, document:
-- Hypothesis: "If we [change], then [metric] will [impact] because [reason]"
-- Metric: specific number you're moving
-- Sample size: how many users needed for significance
-- Duration: how long to run
+对于每个实验，记录以下内容：
+- 假设：“如果我们[做出改变]，那么[指标]将会[产生相应影响]，原因在于[……]”
+- 目标指标：具体要改变的数值
+- 样本量：达到统计显著性的用户数量
+- 实验持续时间：实验的时长
 
-Prioritize with ICE:
-- Impact (1-10): how much will it move the metric?
-- Confidence (1-10): how sure are you it will work?
-- Ease (1-10): how fast/cheap to implement?
+根据以下标准进行优先级排序：
+- 影响程度（1-10分）：该改变对指标的影响有多大？
+- 确信度（1-10分）：你对实验效果的信心程度
+- 实施难度（1-10分）：实验实施的难易程度和成本
 
-Run highest ICE scores first.
+优先实施得分最高的实验。
 
-## Quick Wins Checklist
+## 快速见效的改进措施
 
-Common high-impact, low-effort fixes:
-- [ ] Reduce signup form fields to minimum
-- [ ] Add social proof to landing page
-- [ ] Implement abandoned cart/onboarding emails
-- [ ] Add referral program if none exists
-- [ ] Fix the slowest page load
-- [ ] Add exit intent offer
-- [ ] Personalize onboarding by use case
+一些常见的高效果、低成本的改进方法：
+- [ ] 将注册表单字段减少到最少
+- 在登录页面添加社交证明（如用户评价、推荐链接）
+- 实施放弃购物车的提醒邮件
+- 如果没有推荐机制，立即建立推荐计划
+- 优化加载速度最慢的页面
+- 根据用户使用场景个性化入职流程
 
-## Referral Program Design
+## 推荐计划设计
 
-Components:
-- Incentive: what giver and receiver get
-- Mechanic: how sharing works (link, code, invite)
-- Trigger: when to prompt (after value, not before)
-- Tracking: attribution for rewards
+推荐计划的组成部分：
+- 激励措施：推荐者和被推荐者各自获得的收益
+- 推荐机制：分享方式（链接、代码、邀请链接）
+- 触发条件：在用户体验到产品价值后触发推荐
+- 跟踪机制：如何记录推荐行为并给予奖励
 
-Test: Is the incentive good enough to overcome sharing friction?
-Double-sided incentives (both get value) outperform one-sided.
+测试：激励措施是否足以激发用户的分享意愿？
 
-## Metrics Dashboard
+**双向激励机制（双方都能从中受益）通常比单向激励更有效。**
 
-Track weekly at minimum:
-- North Star metric
-- Funnel conversion by stage
-- Retention by weekly cohort
-- CAC and LTV (if spending on acquisition)
-- Active experiments and results
+## 指标仪表盘
 
-Segment by: acquisition source, user type, geography.
+至少每周跟踪以下指标：
+- 北极星指标
+- 各阶段的转化情况
+- 按用户群体划分的留存率
+- 客户获取成本（CAC）和生命周期价值（LTV）
+- 正在进行的实验及其结果
 
-## Common Traps
+数据分类依据：用户获取渠道、用户类型、地理位置。
 
-- Optimizing acquisition when retention is broken—pouring water into leaky bucket
-- Too many experiments running—can't tell what worked
-- Vanity metrics (signups, pageviews) vs value metrics (activation, revenue)
-- Copying competitor tactics without understanding their context
-- Not running experiments long enough for statistical significance
+## 常见误区：
+- 在留存率不佳的情况下仍专注于优化获取渠道——这如同“向漏水的桶里浇水”
+- 运行过多的实验导致无法判断哪些措施有效
+- 仅关注表面指标（如注册量、页面浏览量），而忽视实际用户价值
+- 未经深入了解竞争对手的策略就盲目模仿
+- 实验持续时间不足，无法获得具有统计意义的结论

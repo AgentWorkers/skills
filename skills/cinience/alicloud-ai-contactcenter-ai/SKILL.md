@@ -1,60 +1,50 @@
 ---
 name: alicloud-ai-contactcenter-ai
-description: Manage Alibaba Cloud Contact Center AI (ContactCenterAI) via OpenAPI/SDK. Use for listing resources, creating or updating configurations, querying status, and troubleshooting workflows for this product.
+description: 通过 OpenAPI/SDK 管理阿里云 Contact Center AI（ContactCenterAI）。可用于列出资源、创建或更新配置、查询状态以及排查该产品的故障。
 ---
 
-Category: service
+**类别：服务**  
+**# 联络中心AI**  
 
-# Contact Center AI
+您可以使用阿里云OpenAPI（RPC）以及官方SDK或OpenAPI Explorer来管理联络中心AI的相关资源。  
 
-Use Alibaba Cloud OpenAPI (RPC) with official SDKs or OpenAPI Explorer to manage resources for Contact Center AI.
+## 工作流程：  
+1. 确定区域、资源标识符以及所需执行的操作。  
+2. 查找可用的API列表及所需的参数（详见参考资料）。  
+3. 通过SDK或OpenAPI Explorer调用相应的API。  
+4. 使用`describe`/`list` API验证调用结果。  
 
-## Workflow
+## AccessKey的使用优先级（必须遵循）：  
+1. **环境变量**：`ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`  
+   - `ALICLOUD_REGION_ID`为可选的默认值；如果未设置，请根据任务需求选择最合适的区域；如果不确定，请咨询用户。  
+2. **共享配置文件**：`~/.alibabacloud/credentials`  
 
-1) Confirm region, resource identifiers, and desired action.
-2) Discover API list and required parameters (see references).
-3) Call API with SDK or OpenAPI Explorer.
-4) Verify results with describe/list APIs.
+## API的查找方式：  
+- **产品代码**：`ContactCenterAI`  
+- **默认API版本**：`2024-06-03`  
+- 可通过OpenAPI元数据端点来列出API及其接口规范（详见参考资料）。  
 
-## AccessKey priority (must follow)
+## 常见的操作模式：  
+1. **资源查询/列表**：建议使用`List*` / `Describe*` API来获取当前资源信息。  
+2. **资源修改/配置**：建议使用`Create*` / `Update*` / `Modify*` / `Set*` API来进行资源操作。  
+3. **状态检查/故障排除**：建议使用`Get*` / `Query*` / `Describe*Status` API来进行系统状态查询或故障诊断。  
 
-1) Environment variables: `ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`
-Region policy: `ALICLOUD_REGION_ID` is an optional default. If unset, decide the most reasonable region for the task; if unclear, ask the user.
-2) Shared config file: `~/.alibabacloud/credentials`
-
-## API discovery
-
-- Product code: `ContactCenterAI`
-- Default API version: `2024-06-03`
-- Use OpenAPI metadata endpoints to list APIs and get schemas (see references).
-
-## High-frequency operation patterns
-
-1) Inventory/list: prefer `List*` / `Describe*` APIs to get current resources.
-2) Change/configure: prefer `Create*` / `Update*` / `Modify*` / `Set*` APIs for mutations.
-3) Status/troubleshoot: prefer `Get*` / `Query*` / `Describe*Status` APIs for diagnosis.
-
-## Minimal executable quickstart
-
-Use metadata-first discovery before calling business APIs:
-
+## 最简化的快速入门步骤：  
+在调用业务API之前，请先使用元数据查询API的相关信息：  
 ```bash
 python scripts/list_openapi_meta_apis.py
-```
+```  
 
-Optional overrides:
-
+**可选的配置覆盖方式：**  
 ```bash
 python scripts/list_openapi_meta_apis.py --product-code <ProductCode> --version <Version>
-```
+```  
 
-The script writes API inventory artifacts under the skill output directory.
+该脚本会将API相关的信息（如资源列表等）保存到指定的输出目录中（例如：`output/alicloud-ai-contactcenter-ai/`）。  
 
-## Output policy
+## 输出文件存放规则：  
+如果需要保存API的响应结果或生成的文件，请将它们保存在以下目录中：  
+`output/alicloud-ai-contactcenter-ai/`  
 
-If you need to save responses or generated artifacts, write them under:
-`output/alicloud-ai-contactcenter-ai/`
-
-## References
-
-- Sources: `references/sources.md`
+**参考资料：**  
+- **来源文档**：`references/sources.md`

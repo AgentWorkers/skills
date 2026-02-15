@@ -10,15 +10,15 @@ description: |
 license: MIT
 ---
 
-# Model Alias Append Skill
+# 模型别名追加功能
 
-> Automatically appends model alias to responses with configuration change detection
- 
-![Model Alias Example](https://github.com/Ccapton/FileRepertory/blob/master/files/model_alias_snapshot.png?raw=true)
+> 在配置发生变化时，自动为响应内容添加模型别名
 
-## Key Features
-- 🔍 **Automatic Detection** - Identifies the model used for each response
-- 🏷️ **Alias Appending** - Adds model alias from openclaw config **agents.defaults.models.{yourModelDict}.alias** format like the config below
+![模型别名示例](https://github.com/Ccapton/FileRepertory/blob/master/files/model_alias_snapshot.png?raw=true)
+
+## 主要特性
+- 🔍 **自动检测** - 识别每个响应所使用的模型
+- 🏷️ **别名追加** - 从 openclaw 的配置文件 `agentsdefaults.models.{yourModelDict}.alias` 中添加模型别名（格式如下）
 ```
 "agents": {
   "defaults": {
@@ -37,25 +37,25 @@ license: MIT
   }
 }
 ```
-- 🔄 **Real-time Monitoring** - Watches for configuration changes
-- 📢 **Update Notifications** - Shows when config changes occur
-- 🛡️ **Format Preservation** - Maintains reply tags and formatting
+- 🔄 **实时监控** - 监控配置变化
+- 📢 **更新通知** - 在配置发生变化时进行提示
+- 🛡️ **格式保留** - 保持回复标签和格式的完整性
 
-## Install
+## 安装
 ```
 npx clawhub@latest install model-alias-append
 ```
 
-## How It Works
-1. Intercepts responses before sending
-2. Determines which model generated the response  
-3. Appends the appropriate model alias
-4. Shows update notices when configuration changes
+## 工作原理
+1. 在响应内容发送之前进行拦截
+2. 确定生成响应的模型
+3. 为响应内容添加相应的模型别名
+4. 在配置发生变化时显示更新提示
 
-## Setup
-> No additional configuration needed - reads from your existing openclaw.json
+## 设置
+> 无需额外配置 - 从现有的 `openclaw.json` 文件中读取配置信息
 
-## Output Example
+## 输出示例
 ```
 Your response content...
 
@@ -63,4 +63,3 @@ Your response content...
 
 gemma3:27b-local
 ```
- 

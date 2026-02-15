@@ -10,12 +10,11 @@ description: >
 tags: [personas, user-research, product, documentation, onboarding, user-journey]
 ---
 
-# Persona Docs
+# 人物文档（Persona Docs）
 
-Create user-centered documentation that defines who a product is for and how they interact with it. Persona docs establish the foundation for product-driven development — every feature decision, design choice, and prioritization call flows from understanding your users.
+创建以用户为中心的文档，明确产品的目标用户群体以及他们如何与产品交互。人物文档为产品驱动的开发奠定了基础——每一个功能决策、设计选择和优先级排序，都源于对用户需求的深入理解。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -23,140 +22,137 @@ Create user-centered documentation that defines who a product is for and how the
 npx clawhub@latest install persona-docs
 ```
 
+## 何时创建
 
-## When to Create
+对于任何产品来说，人物文档都应该是首先完善的部分。即使是最基本的关于产品使用者的信息，也能帮助指导开发和设计决策。
 
-Persona docs should be the first thing fleshed out for any product. Even minimal documentation about who uses the product helps direct development and design decisions.
+- **项目启动阶段**——在编写代码之前，明确产品的目标用户群体。
+- **目标用户群体发生变化时**——记录这些变化，以确保团队达成共识。
+- **团队对目标用户群体存在分歧时**——当大家对“产品是为谁设计的”有不同意见时。
+- **在规划重要功能之前**——验证计划中的功能是否真的能满足用户需求。
+- **新团队成员入职时**——向他们介绍产品的目标用户群体。
 
-- **Project inception** — before writing code, define who you're building for
-- **Pivoting to a new audience** — document the shift so the team aligns
-- **Team lacks clarity on target users** — when people disagree on "who is this for?"
-- **Before major feature planning** — validate that planned features serve actual users
-- **New team member onboarding** — give them context on who they're building for
+## 创建流程
 
-## Process
+1. **分析代码库**——查找现有的文档、README文件、登录页面或营销材料，以了解目标用户群体。
+2. **如果目标用户不明确，提出澄清问题**：
+   - “这个产品的主要用户是谁？”
+   - “它解决了他们的什么问题？”
+   - “他们是如何发现这个产品的？”
+   - “发现产品后，他们会首先做什么？”
+3. **从最基本的内容开始**——每个部分写几句话总比什么都不写要好。
+4. **参考模板**——查看`references/template.md`以了解完整的文档结构。
+5. **持续迭代**——随着对用户需求的了解加深，不断更新和完善文档。
 
-1. **Analyze the codebase** — look for existing documentation, README, landing pages, or marketing copy that hints at the target audience
-2. **Ask clarifying questions** if the target user isn't clear:
-   - "Who is the primary user of this product?"
-   - "What problem does this solve for them?"
-   - "How would they discover this product?"
-   - "What's the first thing they'd do after finding it?"
-3. **Start minimal** — a few sentences per section is better than nothing
-4. **Read the template** — see `references/template.md` for the full structure
-5. **Iterate** — revisit and expand as you learn more about actual users
+## 核心组件
 
-## Core Components
+### 1. 目标用户画像（Target User Profile）
 
-### 1. Target User Profile
+描述目标用户的特征，包括他们的背景和使用场景。描述要足够具体，以便具有实际参考价值。
 
-Who they are, their background, their context. Be specific enough to be useful.
+**示例**：“中型SaaS公司的后端工程师，在时间压力下调试生产问题，通常具有3-8年的工作经验，熟悉命令行工具。”
 
-**Good:** "Backend engineers at mid-size SaaS companies who debug production issues under time pressure, typically 3-8 years of experience, comfortable with command-line tools."
+**过于模糊的描述**：“开发者。”
 
-**Too vague:** "Developers."
+应包含的信息：
+- 职位、工作类型或角色
+- 技术水平及相关技能
+- 所处行业或领域
+- 使用产品的场景和时间
+- 团队规模和组织结构
 
-Include:
-- Role, job title, or archetype
-- Technical level and relevant skills
-- Industry or domain context
-- When and where they'd use this product
-- Team size and organizational context
+### 2. 用户需求和痛点（User Needs and Pain Points）
 
-### 2. User Needs and Pain Points
+产品所要解决的问题。用户当前的工作流程中存在哪些困扰或不足？
 
-The problems this product solves. What frustrations or gaps exist in their current workflow?
+结构如下：
+- **主要痛点**——产品要解决的最关键问题
+- **次要痛点**——产品要解决的次要问题
+- **当前的解决方法**——用户在没有该产品时的应对方式
+- **现有解决方案的不足**——现有的替代方案及其局限性
 
-Structure as:
-- **Primary pain point** — the single biggest problem you solve
-- **Secondary pain points** — additional problems you address
-- **Current workarounds** — what they do today without your product
-- **Why existing solutions fail** — what alternatives exist and why they're insufficient
+### 3. 发现路径（Discovery Path）
 
-### 3. Discovery Path
+用户是如何找到产品的。这有助于制定营销策略、产品定位和初始设计。
 
-How they find the product. This informs marketing, positioning, and first-impression design.
+- **搜索途径**——用户通过哪些途径找到产品？
+- **推荐途径**——口口相传、同事推荐？
+- **内容来源**——博客文章、教程、会议演讲？
+- **市场渠道**——应用商店、插件目录、包管理平台？
+- **吸引用户的因素**——是什么让用户决定“注册”或“下载”？
 
-- **Search** — what queries lead them here?
-- **Referral** — word of mouth, colleague recommendation?
-- **Content** — blog posts, tutorials, conference talks?
-- **Marketplace** — app store, plugin directory, package registry?
-- **The hook** — what makes them click "sign up" or "download"?
+### 4. 入门流程（Onboarding Flow）
 
-### 4. Onboarding Flow
+从“发现产品”到“开始使用并感受到价值”的最简单路径。
 
-The simplest possible path from "I found this" to "I'm getting value."
+明确以下环节：
+- **首次接触**——用户通过哪些渠道首次了解产品（如登录页面、应用商店页面、GitHub README文件）。
+- **注册/登录**——所需的认证方式（仅邮箱？OAuth？是否需要创建账户？）
+- **快速获得价值的时间**——用户多久能体验到产品的核心功能？
+- **首次感受到价值的时刻**——用户认为产品有用的具体操作是什么？
+- **使用障碍**——用户在使用过程中可能遇到的问题，以及如何减少这些障碍？
 
-Define:
-- **First encounter** — landing page, app store listing, GitHub README
-- **Registration/Login** — minimum viable auth (email-only? OAuth? no account?)
-- **Time to value** — how quickly can they experience the core benefit?
-- **First success moment** — the specific action that makes them think "this is useful"
-- **Friction points** — where do users drop off, and how do you minimize that?
+**示例流程**：
+> 用户访问首页 → 点击“试用” → 输入个人信息 → 在30秒内看到结果 → 决定创建账户
 
-Example flow:
-> User lands on homepage → clicks "Try it" → pastes their data → sees result in <30 seconds → decides to create account
+### 5. 用户旅程图（User Journey Map）
 
-### 5. User Journey Map
+用户在整个使用过程中的关键节点和交互行为。
 
-Key touchpoints and interactions across the user lifecycle.
+**新用户（第一天）**：
+- 通过[渠道]发现产品
+- 执行[首次操作]
+- 实现[首次成功]
 
-**New User (Day 1):**
-- Discovers product via [channel]
-- Takes [first action]
-- Achieves [first success]
+**回归用户（第一周）**：
+- 经常重复的操作
+- 探索的功能
+- 设置的集成或自定义设置
 
-**Returning User (Week 1):**
-- Key repeated action they perform
-- Features they explore
-- Integrations or customizations they set up
+**高级用户（一个月后）**：
+- 依赖的高级功能
+- 已建立的工作流程
+- 他们如何向他人推荐产品
 
-**Power User (Month 1+):**
-- Advanced features they rely on
-- Workflows they've established
-- How they'd describe the product to others
+### 6. 功能使用点（Feature Touchpoints）
 
-### 6. Feature Touchpoints
+记录用户在使用产品过程中遇到各功能的具体场景：
 
-Map where users encounter key features in their journey:
-
-| Feature | When Encountered | User Need at That Moment |
+| 功能 | 遇到的阶段 | 用户当时的需求 |
 |---------|------------------|--------------------------|
-| [Feature 1] | [Journey stage] | [What they're trying to do] |
-| [Feature 2] | [Journey stage] | [What they're trying to do] |
+| [功能1] | [使用阶段] | [用户想要完成的任务] |
+| [功能2] | [使用阶段] | [用户想要完成的任务] |
 
-## Multi-Persona Products
+## 多人物角色产品（Multi-Persona Products）
 
-If your product serves multiple distinct user types:
+如果你的产品服务于多种不同的用户类型：
 
-1. **Identify the primary persona first** — who must you serve to survive?
-2. **Document secondary personas separately** — one file per persona
-3. **Note conflicts** — where persona needs clash, document the tradeoff
-4. **Prioritize ruthlessly** — you can't optimize for everyone simultaneously
+1. **首先确定主要目标用户群体**——为了产品的成功，你必须满足哪些用户的需求？
+2. **分别为每个目标用户群体创建单独的文档**——每个用户群体一个文档。
+3. **注意冲突**——当不同用户群体的需求发生冲突时，记录相应的权衡因素。
+4. **严格进行优先级排序**——你无法同时满足所有用户的需求。
 
-## Output Location
+## 文档存放位置
 
-Place persona docs at:
-- `docs/PERSONA.md` — single file for simple products
-- `docs/personas/` — directory for multiple personas
+将人物文档存放在以下位置：
+- `docs/PERSONA.md`——适用于单一产品的文档
+- `docs/personas/`——适用于有多个目标用户群体的文档目录
 
-Keep it in the repo so it evolves with the product.
+请将文档保存在代码仓库中，以便随着产品的发展进行更新。
 
-## Quality Criteria
+## 文档质量标准
 
-A good persona doc should:
+一份优秀的人物文档应满足以下要求：
+- **具体性**——足够详细，能让两名团队成员根据文档共同开发相同的功能。
+- **基于事实**——包含数据、用户反馈或观察结果，而不仅仅是假设。
+- **具有指导性**——阅读文档后，应能指导产品的开发方向。
+- **定期维护**——过时的文档比没有文档更糟糕。
+- **真实性**——描述的是实际用户，而非理想化的用户画像。
 
-- Be **specific** enough that two team members would build the same feature from it
-- Include **evidence** — data, quotes, or observations, not just assumptions
-- Be **actionable** — reading it should change how you build
-- Be **maintained** — outdated personas are worse than none
-- Be **honest** — don't describe aspirational users; describe actual users
-
-## NEVER Do
-
-1. **NEVER skip personas for a new product** — building without knowing your user is guessing, and guessing is expensive
-2. **NEVER describe users as demographics alone** — "25-34 male" tells you nothing about what they need; describe behaviors and goals
-3. **NEVER create personas in isolation** — involve the team; one person's assumptions become the whole product's blind spots
-4. **NEVER treat personas as permanent** — users change, markets shift; review personas quarterly
-5. **NEVER create more than 3 personas initially** — if you try to serve everyone, you serve no one; start with your primary user
-6. **NEVER write aspirational personas** — document who actually uses your product, not who you wish did
+**绝对禁止的做法**：
+1. **新产品的开发过程中绝不要忽略人物文档的编写**——不了解用户需求就进行开发，这是非常冒险的。
+2. **不要仅从人口统计数据来描述用户**——“25-34岁的男性”这样的描述无法反映用户的真实需求；应描述他们的行为和目标。
+3. **不要孤立地创建人物文档**——需要团队共同参与；个人的假设可能会成为整个产品的盲点。
+4. **不要将人物文档视为固定不变的**——用户和市场需求会发生变化；每季度重新评估人物文档。
+5. **最初不要创建超过3个人物角色**——试图满足所有用户的需求反而可能无法满足任何人的需求；先从主要目标用户开始。
+6. **不要创建理想化的用户画像**——记录实际使用产品的用户，而不是你希望他们成为的用户。

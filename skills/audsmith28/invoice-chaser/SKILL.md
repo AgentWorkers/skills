@@ -1,6 +1,6 @@
 ---
 name: invoice-chaser
-description: Automated invoice follow-up sequences that escalate from friendly to firm. Track unpaid invoices, send timed reminder emails with escalating tone, log payment interactions, and generate AR aging reports. Your agent handles the awkward conversations so you don't have to — preserving cash flow and client relationships while you focus on actual work. Configure invoice tracking, email templates per stage (friendly → firm → final notice), timing rules, and let your agent chase payments 24/7. Use when adding invoices, running payment chases, checking status, or generating accounts receivable reports.
+description: 自动化发票催收流程：从友好提醒逐步升级为强硬措施。系统会跟踪未支付的发票，定期发送带有 escalating tone（语气逐渐强硬）的提醒邮件，记录付款相关的所有交互信息，并生成应收账款 aging reports（逾期报告）。这些工作由专业代理负责处理，让您无需亲自处理那些棘手的沟通，从而确保现金流的稳定以及与客户关系的维护，让您能够专注于核心业务。您可以配置发票跟踪功能、根据不同催收阶段定制邮件模板（友好提醒 → 强硬要求 → 最终通知），设定邮件发送的时间规则，并让代理全天候跟进付款事宜。该功能适用于添加新发票、发起付款催收、检查付款状态或生成应收账款报告等场景。
 metadata:
   clawdbot:
     emoji: "💸"
@@ -11,51 +11,51 @@ metadata:
         - GOG_DEFAULT_ACCOUNT
 ---
 
-# Invoice Chaser — Stop Chasing, Start Getting Paid
+# Invoice Chaser — 别再费心追款了，让这个工具来帮你吧！
 
-**You do the work. Your agent gets you paid.**
+**你完成了工作，你的代理会帮你收款。**
 
-Every freelancer, consultant, and small business owner knows the pain: you did the work, sent the invoice, and now... crickets. Following up is awkward. Waiting kills cash flow. Chasing payments wastes time you could spend on billable work.
+每个自由职业者、顾问和小型企业主都经历过这种困扰：你完成了工作，发出了发票，但接下来却没有任何回应。跟进付款过程既尴尬又浪费时间。而追讨欠款更是浪费了本可以用来处理新工作的项目时间。
 
-Invoice Chaser automates the entire follow-up sequence. It sends reminder emails on schedule, escalates tone from friendly to firm, tracks payment status, logs every interaction, and alerts you when invoices need human attention. Think of it as a persistent, diplomatic collections agent that never forgets and never feels awkward.
+Invoice Chaser 能自动完成整个追款流程。它会按照预定时间发送提醒邮件，逐步提升沟通的语气，跟踪付款进度，并在需要人工干预时及时通知你。你可以把它想象成一个高效、专业的收款助手，永远不会忘记任何细节，也不会让你感到尴尬。
 
-**What makes it different:** This isn't just "send reminder in 7 days." Invoice Chaser runs a full AR pipeline with state management, escalation logic, and tone progression. It knows when to be friendly ("just a heads up"), when to be firm ("payment is 30 days overdue"), and when to alert you for manual escalation. Multi-stage sequences handle the complexity of real-world payment cycles.
+**它的独特之处在于：** 这不仅仅是一个“7天后发送提醒”的简单工具。Invoice Chaser 拥有完整的收款管理流程，包括状态管理、自动升级机制和逐步升级的沟通策略。它知道何时该保持友好态度（“只是提醒一下”），何时该强硬一些（“付款已经逾期30天了”），以及何时需要你介入处理。这种多阶段的处理方式能够更好地应对现实世界中的复杂付款情况。
 
-## Setup
+## 设置
 
-1. Run `scripts/setup.sh` to initialize config and data directories
-2. Edit `~/.config/invoice-chaser/config.json` with email templates, timing, and escalation rules
-3. Ensure `gog` skill is installed (for Gmail sending)
-4. Set `GOG_DEFAULT_ACCOUNT` in `~/.clawdbot/secrets.env` (e.g., `your-email@gmail.com`)
-5. Test with: `scripts/add-invoice.sh --test`
+1. 运行 `scripts/setup.sh` 命令来初始化配置文件和数据目录。
+2. 修改 `~/.config/invoice-chaser/config.json` 文件，设置邮件模板、发送时间以及升级规则。
+3. 确保已经安装了 `gog` 插件（用于发送 Gmail 邮件）。
+4. 在 `~/.clawdbot/secrets.env` 文件中设置 `GOG_DEFAULT_ACCOUNT`（例如：`your-email@gmail.com`）。
+5. 通过 `scripts/add-invoice.sh --test` 命令进行测试。
 
-## Config
+## 配置
 
-Config lives at `~/.config/invoice-chaser/config.json`. See `config.example.json` for full schema.
+配置文件位于 `~/.config/invoice-chaser/config.json`。详细结构请参考 `config.example.json`。
 
-Key sections:
-- **business** — Your company name, contact info, payment terms
-- **stages** — Email templates for each escalation stage (reminder, overdue, firm, final)
-- **timing** — When to send each stage (days after invoice date or previous stage)
-- **escalation** — Auto-escalation rules, human intervention thresholds
-- **payment_methods** — Include payment links/instructions in reminders
-- **reporting** — Channel, frequency, AR aging groupings
+**关键配置项：**
+- **business**：你的公司名称、联系方式和付款条款。
+- **stages**：每个升级阶段的邮件模板（提醒、逾期、强硬、最终通知）。
+- **timing**：每个阶段发送邮件的时间（从发票日期算起的天数）。
+- **escalation**：自动升级规则和人工干预的触发条件。
+- **payment_methods**：在提醒邮件中包含付款链接或说明。
+- **reporting**：邮件发送的渠道、频率以及收款信息的分类方式。
 
-Email templates support variables: `{client_name}`, `{invoice_number}`, `{amount}`, `{due_date}`, `{days_overdue}`, `{payment_link}`.
+邮件模板支持以下变量：`{client_name}`、`{invoice_number}`、`{amount}`、`{due_date}`、`{days_overdue}`、`{payment_link}`。
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `scripts/setup.sh` | Initialize config and data directories |
-| `scripts/add-invoice.sh` | Add new invoice to tracking system |
-| `scripts/chase.sh` | Run payment chase cycle (check status, send reminders, escalate) |
-| `scripts/status.sh` | Show invoice status and AR aging summary |
-| `scripts/report.sh` | Generate detailed AR aging report |
+| `scripts/setup.sh` | 初始化配置文件和数据目录。 |
+| `scripts/add-invoice.sh` | 将新发票添加到跟踪系统中。 |
+| `scripts/chase.sh` | 运行追款流程（检查状态、发送提醒、升级处理）。 |
+| `scripts/status.sh` | 显示发票状态和收款进度报告。 |
+| `scripts/report.sh` | 生成详细的收款 aging 报告。 |
 
-All scripts support `--dry-run` for testing without sending emails.
+所有脚本都支持 `--dry-run` 参数，用于在不发送邮件的情况下进行测试。
 
-## Adding Invoices
+## 添加发票
 
 ```bash
 # Add invoice manually
@@ -75,18 +75,18 @@ scripts/add-invoice.sh --number "INV-042" --client "Acme Corp" --email "billing@
 scripts/status.sh INV-042 --paid --date "2025-02-10"
 ```
 
-## Chase Cycle
+## 追款流程
 
-Run `scripts/chase.sh` on schedule (cron daily recommended). The chase cycle:
-1. Loads all unpaid invoices from tracking database
-2. Calculates days since invoice date and days overdue (past due date)
-3. Determines current stage for each invoice based on timing rules
-4. Sends appropriate reminder emails (stage-based templates with escalating tone)
-5. Logs all sent emails and stage progressions
-6. Escalates to human when threshold reached (e.g., 60 days overdue)
-7. Generates status report
+建议每天通过 cron 任务运行 `scripts/chase.sh`。追款流程包括：
+1. 从跟踪数据库中加载所有未支付的发票。
+2. 计算发票日期至今的天数以及逾期天数。
+3. 根据配置规则确定每张发票的当前处理阶段。
+4. 发送相应的提醒邮件（使用不同阶段的模板，并逐步提升语气）。
+5. 记录所有发送的邮件和流程进展。
+6. 当达到预设条件（例如逾期60天）时，触发人工干预。
+7. 生成状态报告。
 
-## Escalation Stages
+## 升级流程
 
 ```
 SENT → REMINDER (friendly) → OVERDUE (professional) → FIRM (insistent) → FINAL (urgent) → ESCALATED
@@ -94,41 +94,41 @@ SENT → REMINDER (friendly) → OVERDUE (professional) → FIRM (insistent) →
 PAID (any time) ✅
 ```
 
-**Default timeline:**
-- **Day 3**: Friendly reminder ("Your invoice is due soon...")
-- **Day 7+**: Due date reminder ("Payment was due on [date]...")
-- **Day 30**: First overdue notice ("Your account is now 30 days past due...")
-- **Day 45**: Firm notice ("We must receive payment immediately...")
-- **Day 60**: Final notice ("Final notice before we escalate to collections...")
-- **Day 75+**: Human escalation alert
+**默认时间线：**
+- **第3天**：友好提醒（“您的发票即将到期...”）
+- **第7天及以上**：到期日提醒（“付款截止日期为 [date]...”）
+- **第30天**：首次逾期通知（“您的账户已逾期30天...”）
+- **第45天**：强硬通知（“我们必须立即收到付款...”）
+- **第60天**：最终通知（“若7天内未付款，我们将启动追讨流程...”）
+- **第75天及以上**：触发人工干预。
 
-All timing is configurable in `config.json`.
+所有时间设置都可以在 `config.json` 中进行修改。
 
-## Email Tone Progression
+## 邮件语气逐步升级
 
-**Stage 1 — Friendly Reminder (Day 3):**
-> Hi [Client],
-> 
-> Just a friendly reminder that invoice #[number] for $[amount] is due on [due date]. Let me know if you have any questions!
+**第1阶段 — 友好提醒（第3天）：**
+> 亲爱的 [客户]，
+>
+> 只是想提醒您，编号为 [number] 的发票（金额为 [amount]）的付款截止日期为 [due_date]。如果有任何问题，请随时告知！
 
-**Stage 2 — Professional Overdue (Day 14):**
-> Hi [Client],
-> 
-> I wanted to follow up on invoice #[number] for $[amount], which was due on [due date]. If you've already sent payment, please disregard this message. Otherwise, please let me know if there are any issues preventing payment.
+**第2阶段 — 专业逾期通知（第14天）：**
+> 亲爱的 [客户]，
+>
+> 我想跟进一下编号为 [number] 的发票（金额为 [amount]），付款截止日期为 [due_date]。如果您已经付款，请忽略此邮件。如果有任何付款问题，请告知我们。
 
-**Stage 3 — Firm Notice (Day 30):**
-> Dear [Client],
-> 
-> Your account is now 30 days past due. Invoice #[number] for $[amount] was due on [due date]. Immediate payment is required to avoid service interruption and late fees.
+**第3阶段 — 强硬通知（第30天）：**
+> 亲爱的 [客户]，
+>
+> 您的账户已经逾期30天。编号为 [number] 的发票（金额为 [amount]）的付款截止日期为 [due_date]。请立即付款，以避免服务中断和滞纳金。
 
-**Stage 4 — Final Notice (Day 45):**
-> Dear [Client],
-> 
-> FINAL NOTICE: Invoice #[number] for $[amount] is now 45 days overdue. If we do not receive payment within 7 days, we will be forced to escalate this matter to collections.
+**第4阶段 — 最终通知（第45天）：**
+> 亲爱的 [客户]，
+>
+> 最终通知：编号为 [number] 的发票已经逾期45天。如果7天内仍未付款，我们将不得不启动追讨流程。
 
-All templates fully customizable in config.
+所有邮件模板都可以根据需要进行自定义。
 
-## Payment Tracking
+## 付款跟踪
 
 ```bash
 # Mark invoice as paid
@@ -144,7 +144,7 @@ status.sh INV-042 --pause --until "2025-03-01"
 status.sh INV-042 --archive --reason "Bad debt write-off"
 ```
 
-## AR Aging Report
+## 收款 aging 报告
 
 ```bash
 # Show summary
@@ -167,7 +167,7 @@ scripts/report.sh --detail
 scripts/report.sh --export ar-aging-2025-01-28.csv
 ```
 
-## Data Files
+## 数据文件
 
 ```
 ~/.config/invoice-chaser/
@@ -179,9 +179,9 @@ scripts/report.sh --export ar-aging-2025-01-28.csv
     └── YYYY-MM/              # Archived paid/written-off invoices
 ```
 
-## Automation
+## 自动化设置
 
-Set up daily chase runs via cron:
+可以通过 cron 任务每天自动运行追款流程：
 
 ```bash
 # Run every morning at 9 AM
@@ -191,7 +191,7 @@ Set up daily chase runs via cron:
 0 8 * * 1 cd ~/clawd/skills/invoice-chaser && scripts/report.sh --channel telegram
 ```
 
-Or use Clawdbot's cron integration:
+或者使用 Clawdbot 的 cron 集成功能：
 ```bash
 clawdbot cron add \
   --schedule "0 9 * * *" \
@@ -199,7 +199,7 @@ clawdbot cron add \
   --label "invoice-chaser-daily"
 ```
 
-## Invoice States
+## 发票状态
 
 ```
 DRAFT → SENT → REMINDED → OVERDUE → FIRM → FINAL → ESCALATED
@@ -210,84 +210,84 @@ Any state → PAUSED ⏸ (temporary hold)
 Any state → ARCHIVED 📁 (written off or canceled)
 ```
 
-## Integration with Accounting
+## 与会计系统的集成
 
-Invoice Chaser tracks payment status. For full accounting integration:
-- Export invoices with `--export` flag
-- Import into QuickBooks, FreshBooks, etc.
-- Or build custom adapter (see `references/accounting-adapters.md`)
+Invoice Chaser 可以跟踪付款状态。如需实现与会计系统的全面集成：
+- 使用 `--export` 参数导出发票数据。
+- 将数据导入 QuickBooks、FreshBooks 等会计软件。
+- 或者自行开发自定义适配器（详见 `references/accounting-adapters.md`）。
 
-## Safety Features
+## 安全功能
 
-- **Dry-run mode**: Test templates without sending emails
-- **Pause invoices**: Stop reminders for clients with special circumstances
-- **Manual override**: Block auto-escalation for sensitive clients
-- **Email preview**: Review email before first send to new client
-- **Rate limiting**: Max emails per day to avoid spam flags
-- **Unsubscribe handling**: Respect opt-outs (manual removal from tracking)
+- **测试模式**：在不发送邮件的情况下测试邮件模板。
+- **暂停提醒**：为有特殊情况的客户暂停提醒通知。
+- **手动干预**：对敏感客户阻止自动升级。
+- **邮件预览**：在首次发送前预览邮件内容。
+- **发送频率限制**：限制每天发送邮件的数量，避免被标记为垃圾邮件。
+- **取消订阅处理**：尊重客户的退订请求（手动将客户从跟踪列表中移除）。
 
-## Best Practices
+## 最佳实践：
 
-1. **Be consistent**: Run chase cycle daily — consistency trains clients to pay on time
-2. **Personalize templates**: Use client names, reference specific work in stage 1-2 emails
-3. **Include payment links**: Make it easy to pay (Stripe, PayPal, bank details)
-4. **Escalate gradually**: Don't skip stages — tone progression maintains relationships
-5. **Know when to pause**: Client communication issues? Pause and follow up manually
-6. **Archive regularly**: Move paid invoices to archives monthly to keep DB clean
-7. **Monitor aging**: Weekly AR report reveals patterns (chronic late payers, systemic issues)
+1. **保持一致性**：每天运行追款流程，帮助客户养成按时付款的习惯。
+2. **个性化邮件内容**：在邮件中使用客户名称，并提及具体的工作内容。
+3. **提供付款链接**：提供便捷的付款方式（如 Stripe、PayPal 或银行账户信息）。
+4. **逐步升级沟通**：不要跳过任何沟通阶段，逐步提升语气以维护良好的关系。
+5. **适时暂停**：如果客户沟通有困难，暂停追款并手动跟进。
+6. **定期归档**：每月将已支付的发票移至归档文件夹，保持数据库整洁。
+7. **定期监控**：每周生成收款 aging 报告，及时发现长期逾期付款的问题。
 
-## Example Workflow
+## 示例工作流程
 
-**Initial setup:**
+**初始设置：**
 ```bash
 scripts/setup.sh
 # Edit ~/.config/invoice-chaser/config.json with your details
 ```
 
-**When you send an invoice:**
+**发送发票后：**
 ```bash
 scripts/add-invoice.sh --number "INV-042" --client "Acme Corp" --email "billing@acme.com" --amount 2500 --date "2025-01-15" --due "2025-02-14"
 ```
 
-**Daily automated chase** (via cron):
+**每日自动追款（通过 cron）：**
 ```bash
 scripts/chase.sh  # Runs every morning, sends reminders based on timing rules
 ```
 
-**When payment arrives:**
+**收到付款后：**
 ```bash
 scripts/status.sh INV-042 --paid --date "2025-02-12"
 ```
 
-**Weekly review:**
+**每周审核：**
 ```bash
 scripts/report.sh  # Check AR aging, identify problem invoices
 ```
 
-## Troubleshooting
+## 故障排除**
 
-**Emails not sending:**
-- Check `gog` skill is installed: `gog gmail whoami`
-- Verify `GOG_DEFAULT_ACCOUNT` in `~/.clawdbot/secrets.env`
-- Test with `--dry-run` flag to see email preview
+**邮件未发送：**
+- 确保已安装 `gog` 插件：运行 `gog gmail whoami` 命令检查。
+- 验证 `~/.clawdbot/secrets.env` 文件中的 `GOG_DEFAULT_ACCOUNT` 设置。
+- 使用 `--dry-run` 参数测试邮件预览功能。
 
-**Wrong escalation stage:**
-- Check `timing` section in config.json
-- Verify invoice `date` and `due_date` fields
-- Use `status.sh INV-XXX` to see current days calculation
+**升级阶段错误：**
+- 检查 `config.json` 文件中的 `timing` 配置。
+- 核对发票的 `date` 和 `due_date` 字段。
+- 使用 `status.sh INV-XXX` 命令查看当前的计算结果。
 
-**Client keeps getting emails after payment:**
-- Run `status.sh INV-XXX --paid` to mark as paid
-- Check `invoices.json` to confirm status updated
+**客户付款后仍收到提醒邮件：**
+- 运行 `status.sh INV-XXX --paid` 命令将发票状态标记为已支付。
+- 检查 `invoices.json` 文件以确认状态是否已更新。
 
-## Philosophy
+## 使用理念
 
-You did the work. You earned the money. You shouldn't have to beg for it.
+你完成了工作，理应获得报酬。你不应该为了收款而费心。
 
-Invoice Chaser handles the uncomfortable part of freelancing — following up on unpaid invoices — with persistence and escalating firmness. It preserves your professional relationships by being diplomatic in early stages, but doesn't let clients take advantage of you by being firm when necessary.
+Invoice Chaser 负责处理自由职业者最头疼的部分——跟进未支付的发票。它通过持续的努力和适当的强硬态度来处理这些烦人的事务。在早期阶段，它会保持专业的沟通方式；但在必要时，它也会坚决维护你的权益。
 
-Cash flow is the lifeblood of small businesses. Late payments kill businesses. Invoice Chaser keeps the blood flowing so you can focus on what you do best: your actual work.
+现金流是小型企业的命脉。逾期付款会危及企业的生存。Invoice Chaser 帮你确保资金流动顺畅，让你能够专注于自己的核心工作。
 
 ---
 
-**Stop chasing payments. Your agent sends the awkward emails so you don't have to.**
+**别再自己费心追款了，让 Invoice Chaser 来帮你吧！**

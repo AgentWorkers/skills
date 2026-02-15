@@ -21,13 +21,13 @@ description: |
   USE WHEN: scheduling social media posts, creating multi-platform content, managing a posting calendar, uploading media for social posts, checking post status, creating X/Twitter threads, or automating social media workflows.
 ---
 
-# Postiz Social Media Scheduler
+# Postiz 社交媒体调度器
 
-Direct API integration for social media posting. No n8n workflows needed.
+支持直接通过 API 发布社交媒体内容，无需使用 n8n 工作流程。
 
-## Setup
+## 设置
 
-### Required Environment Variables
+### 所需的环境变量
 
 ```bash
 # Core configuration
@@ -41,38 +41,38 @@ export POSTIZ_LINKEDIN_ID="your-linkedin-integration-id"
 export POSTIZ_BLUESKY_ID="your-bluesky-integration-id"
 ```
 
-To find your integration IDs:
-1. Go to your Postiz dashboard
-2. Navigate to **Integrations** or **Channels**
-3. Each connected account shows an ID (or use the API: `GET /api/integrations/list`)
+要获取您的集成 ID，请按照以下步骤操作：
+1. 登录 Postiz 控制面板
+2. 转到 **集成** 或 **渠道** 面板
+3. 每个已连接的账户都会显示一个 ID（或者使用 API：`GET /api/integrations/list`）
 
-## Platform Limits
+## 平台限制
 
-| Platform | Character Limit | Notes |
+| 平台 | 字符限制 | 说明 |
 |----------|-----------------|-------|
-| X/Twitter | **280** | Links count as 23 chars (t.co shortening) |
-| LinkedIn | **3,000** | First 140 chars show in preview |
-| Bluesky | **300** | Growing tech/developer audience |
+| X/Twitter | **280** | 链接算作 23 个字符（使用 t.co 简短链接） |
+| LinkedIn | **3,000** | 预览中仅显示前 140 个字符 |
+| Bluesky | **300** | 目标受众为技术或开发者群体 |
 
-## Platform Content Guidelines
+## 平台内容指南
 
-### X/Twitter (280 chars)
-- Short, punchy content
-- 1-2 hashtags max
-- Threads for longer content (multiple tweets)
+### X/Twitter（280 个字符）
+- 内容简短精炼
+- 最多使用 1-2 个标签
+- 长内容请分多条推文发布
 
-### LinkedIn (3,000 chars)
-- Professional tone
-- Can be longer-form
-- Hashtags at end (3-5 recommended)
-- First 140 chars show in preview — make them count!
+### LinkedIn（3,000 个字符）
+- 保持专业的语气
+- 可以使用更长的内容
+- 标签放在内容末尾（建议使用 3-5 个）
+- 预览中仅显示前 140 个字符——请确保这些字符对用户有吸引力！
 
-### Bluesky (300 chars)
-- Similar to X but slightly more room
-- No official hashtag support (use sparingly)
-- Growing tech/developer audience
+### Bluesky（300 个字符）
+- 与 X 类似，但允许稍长的内容
+- 不支持官方标签（请谨慎使用）
+- 目标受众为技术或开发者群体
 
-## Authentication
+## 认证
 
 ```bash
 # Login and save cookie (required before any API call)
@@ -82,18 +82,18 @@ curl -s -c /tmp/postiz-cookies.txt \
   -d "{\"email\":\"$POSTIZ_EMAIL\",\"password\":\"$POSTIZ_PASSWORD\",\"provider\":\"LOCAL\"}"
 ```
 
-Cookie expires periodically. Re-run login if you get 401 errors.
+Cookie 会定期过期。如果遇到 401 错误，请重新登录。
 
-## Find Next Available Slot
+## 查找下一个可用时间槽
 
 ```bash
 curl -s -b /tmp/postiz-cookies.txt \
   "$POSTIZ_URL/api/posts/find-slot/$POSTIZ_X_ID"
 ```
 
-Returns the next open time slot for a given channel. Useful for auto-scheduling without conflicts.
+该功能可返回指定渠道的下一个可用发布时间，便于自动调度以避免冲突。
 
-## Upload Media from URL
+## 从 URL 上传媒体文件
 
 ```bash
 curl -s -b /tmp/postiz-cookies.txt \
@@ -102,9 +102,9 @@ curl -s -b /tmp/postiz-cookies.txt \
   -d '{"url": "https://example.com/image.png"}'
 ```
 
-## Creating Posts
+## 创建帖子
 
-### Schedule a Post (Single Platform)
+### 单一平台发布计划
 
 ```bash
 curl -s -b /tmp/postiz-cookies.txt \
@@ -121,7 +121,7 @@ curl -s -b /tmp/postiz-cookies.txt \
   }"
 ```
 
-### Multi-Platform Post (Adapted Content)
+### 多平台发布（内容适配）
 
 ```bash
 curl -s -b /tmp/postiz-cookies.txt \
@@ -150,21 +150,23 @@ curl -s -b /tmp/postiz-cookies.txt \
   }"
 ```
 
-### Post Types
-- `schedule` — Auto-publish at specified date/time
-- `draft` — Save for review (won't auto-publish)
-- `now` — Publish immediately
+### 发布类型
+- `schedule` — 在指定日期/时间自动发布
+- `draft` — 保存以供审核（不会自动发布）
+- `now` — 立即发布
 
-## Listing & Querying Posts
+## 列出和查询帖子
 
-### Get Posts by Date Range (Required!)
+### 按日期范围获取帖子（必选！）
+
 ```bash
 curl -s -b /tmp/postiz-cookies.txt \
   "$POSTIZ_URL/api/posts?startDate=2026-02-01T00:00:00Z&endDate=2026-02-08T00:00:00Z" \
   | jq '.posts[] | {id, state, publishDate, platform: .integration.providerIdentifier, content: .content[0:60]}'
 ```
 
-### Check for Duplicates Before Posting
+### 发布前检查重复内容
+
 ```bash
 # Get recent posts and check content similarity
 curl -s -b /tmp/postiz-cookies.txt \
@@ -172,18 +174,19 @@ curl -s -b /tmp/postiz-cookies.txt \
   | jq -r '.posts[] | "\(.integration.providerIdentifier): \(.content[0:80])"'
 ```
 
-## Post States
+## 帖子状态
 
-| State | Description |
+| 状态 | 说明 |
 |-------|-------------|
-| `QUEUE` | Scheduled, waiting to publish |
-| `PUBLISHED` | Successfully posted |
-| `ERROR` | Failed to publish |
-| `DRAFT` | Saved but not scheduled |
+| `QUEUE` | 已安排，等待发布 |
+| `PUBLISHED` | 发布成功 |
+| `ERROR` | 发布失败 |
+| `DRAFT` | 保存但未安排发布 |
 
-## Media Upload
+## 媒体上传
 
-### Upload Image
+### 上传图片
+
 ```bash
 # Upload returns {id, path}
 curl -s -b /tmp/postiz-cookies.txt \
@@ -191,7 +194,8 @@ curl -s -b /tmp/postiz-cookies.txt \
   -F 'file=@/path/to/image.png'
 ```
 
-### Use in Post
+### 在帖子中使用媒体文件
+
 ```json
 "value": [{
   "content": "Post with image",
@@ -199,9 +203,9 @@ curl -s -b /tmp/postiz-cookies.txt \
 }]
 ```
 
-## Twitter/X Threads
+## Twitter/X 的多条推文
 
-For longer content on X, create a thread:
+对于较长的内容，可以在 X 上创建多条推文：
 
 ```json
 "value": [
@@ -211,15 +215,17 @@ For longer content on X, create a thread:
 ]
 ```
 
-## Managing Posts
+## 管理帖子
 
-### Delete Post
+### 删除帖子
+
 ```bash
 curl -s -b /tmp/postiz-cookies.txt -X DELETE \
   "$POSTIZ_URL/api/posts/POST_ID"
 ```
 
-### Update Schedule
+### 更新发布计划
+
 ```bash
 curl -s -b /tmp/postiz-cookies.txt -X PUT \
   "$POSTIZ_URL/api/posts/POST_ID/date" \
@@ -227,27 +233,27 @@ curl -s -b /tmp/postiz-cookies.txt -X PUT \
   -d '{"date": "2026-02-06T10:00:00Z"}'
 ```
 
-## Best Practices
+## 最佳实践
 
-### Avoid Duplicates
-1. Always query existing posts before creating new ones
-2. Use unique identifiers in content (dates, specific references)
-3. Check both QUEUE and PUBLISHED states
+### 避免重复
+- 在创建新帖子前，请务必查询现有帖子
+- 在内容中使用唯一的标识符（如日期、具体引用）
+- 检查帖子的 `QUEUE` 和 `PUBLISHED` 状态
 
-### Scheduling
-- Space posts at least 2-4 hours apart per platform
-- Best times: 9 AM, 12 PM, 5 PM (audience timezone)
-- Avoid posting same content to all platforms simultaneously
+### 发布计划
+- 每个平台之间的发布间隔至少为 2-4 小时
+- 最佳发布时间：上午 9 点、中午 12 点、下午 5 点（根据受众时区）
+- 避免同时在所有平台上发布相同的内容
 
-### Content Adaptation
-Don't just truncate! Rewrite for each platform:
-- **X**: Hook + key insight + CTA
-- **LinkedIn**: Context + value + engagement question
-- **Bluesky**: Casual tech-friendly tone
+### 内容适配
+- 不要直接截断内容！请为每个平台重新编写：
+  - **X**：包含吸引人的开头、关键信息以及行动号召（CTA）
+  - **LinkedIn**：提供背景信息、价值主张以及引导用户互动的问题
+  - **Bluesky**：使用轻松、适合技术受众的语言风格
 
-## Helper Scripts
+## 辅助脚本
 
-### Post to Multiple Platforms
+### 向多个平台发布帖子
 
 ```bash
 # Single platform
@@ -275,7 +281,7 @@ uv run scripts/post.py \
   --validate
 ```
 
-### Check for Duplicates
+### 检查重复内容
 
 ```bash
 # Check last 30 days
@@ -288,21 +294,21 @@ uv run scripts/check_duplicates.py --days 7
 uv run scripts/check_duplicates.py --content "Your proposed post content"
 ```
 
-## Troubleshooting
+## 故障排除
 
-### 401 Unauthorized
-Re-run the login curl command to refresh cookie.
+### 401 未授权错误
+重新运行登录命令以刷新 Cookie。
 
-### Post Not Publishing
-1. Check state is `QUEUE` not `DRAFT`
-2. Verify date is in the future
-3. Check integration is still connected in UI
+### 帖子无法发布
+1. 确认帖子状态为 `QUEUE` 而非 `DRAFT`
+2. 确认发布日期在未来
+3. 检查集成是否仍在 UI 中正常连接
 
-### Duplicate Posts
-Always check existing posts before creating. The API doesn't deduplicate automatically.
+### 帖子重复
+在创建新帖子前，请务必检查现有内容。API 不会自动检测重复内容。
 
-### Missing Environment Variables
-Scripts will tell you which env vars are missing. Set them in your shell or `.env` file:
+### 缺少环境变量
+脚本会提示您缺少哪些环境变量，请在 shell 或 `.env` 文件中设置它们：
 ```bash
 export POSTIZ_URL="https://your-postiz.example.com"
 export POSTIZ_EMAIL="your@email.com"

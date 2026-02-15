@@ -1,33 +1,33 @@
 ---
 name: sora
-description: Generate videos using OpenAI's Sora API. Use when the user asks to generate, create, or make videos from text prompts or reference images. Supports image-to-video generation with automatic resizing.
+description: 使用 OpenAI 的 Sora API 生成视频。当用户请求根据文本提示或参考图像生成、创建或制作视频时，可以使用该 API。该 API 支持图像到视频的转换，并能自动调整视频大小。
 ---
 
-# Sora Video Generation
+# Sora 视频生成
 
-Generate videos using OpenAI's Sora API.
+使用 OpenAI 的 Sora API 生成视频。
 
-## API Reference
+## API 参考
 
-**Endpoint:** `POST https://api.openai.com/v1/videos`
+**端点：** `POST https://api.openai.com/v1/videos`
 
-### Parameters
+### 参数
 
-| Parameter | Values | Description |
+| 参数 | 值 | 描述 |
 |-----------|--------|-------------|
-| `prompt` | string | Text description of the video (required) |
-| `input_reference` | file | Optional image that guides generation |
-| `model` | `sora-2`, `sora-2-pro` | Model to use (default: sora-2) |
-| `seconds` | `4`, `8`, `12` | Video duration (default: 4) |
-| `size` | `720x1280`, `1280x720`, `1024x1792`, `1792x1024` | Output resolution |
+| `prompt` | 字符串 | 视频的文字描述（必填） |
+| `input_reference` | 文件 | 可选的参考图像（用于指导视频生成） |
+| `model` | `sora-2`, `sora-2-pro` | 使用的模型（默认：sora-2） |
+| `seconds` | `4`, `8`, `12` | 视频时长（默认：4 秒） |
+| `size` | `720x1280`, `1280x720`, `1024x1792`, `1792x1024` | 输出分辨率 |
 
-### Important Notes
+### 重要说明
 
-- **Image dimensions must match video size exactly** - the script auto-resizes
-- Video generation takes 1-3 minutes typically
-- Videos expire after ~1 hour - download immediately
+- **图像尺寸必须与视频尺寸完全匹配** —— 脚本会自动调整图像大小 |
+- 视频生成通常需要 1-3 分钟 |
+- 视频在大约 1 小时后失效 —— 请立即下载
 
-## Usage
+## 使用方法
 
 ```bash
 # Basic text-to-video
@@ -51,62 +51,62 @@ uv run ~/.clawdbot/skills/sora/scripts/generate_video.py \
   --seconds 12
 ```
 
-## Script Parameters
+## 脚本参数
 
-| Flag | Description | Default |
+| 参数 | 描述 | 默认值 |
 |------|-------------|---------|
-| `--prompt`, `-p` | Video description (required) | - |
-| `--filename`, `-f` | Output file path (required) | - |
-| `--input-image`, `-i` | Reference image path | None |
-| `--seconds`, `-s` | Duration: 4, 8, or 12 | 8 |
-| `--size`, `-sz` | Resolution | 720x1280 |
-| `--model`, `-m` | sora-2 or sora-2-pro | sora-2 |
-| `--api-key`, `-k` | OpenAI API key | env var |
-| `--poll-interval` | Check status every N seconds | 10 |
+| `--prompt`, `-p` | 视频描述（必填） | - |
+| `--filename`, `-f` | 输出文件路径（必填） | - |
+| `--input-image`, `-i` | 参考图像路径 | 无 |
+| `--seconds`, `-s` | 视频时长（4 秒、8 秒或 12 秒） | 8 秒 |
+| `--size`, `-sz` | 分辨率 | 720x1280 |
+| `--model`, `-m` | 使用的模型（sora-2 或 sora-2-pro） | sora-2 |
+| `--api-key`, `-k` | OpenAI API 密钥 | 环境变量 |
+| `--poll-interval` | 每 N 秒检查一次状态 | 10 秒 |
 
-## API Key
+## API 密钥
 
-Set `OPENAI_API_KEY` environment variable or pass `--api-key`.
+设置 `OPENAI_API_KEY` 环境变量或通过 `--api-key` 传递 API 密钥。
 
-## Prompt Engineering for Video
+## 视频提示的编写技巧
 
-### Good prompts include:
+### 优秀的提示示例包括：
 
-1. **Camera movement**: dolly, pan, zoom, tracking shot
-2. **Motion description**: swirling, rising, falling, shifting
-3. **Lighting**: golden hour, candlelight, dramatic rim lighting
-4. **Atmosphere**: steam, particles, bokeh, haze
-5. **Mood/style**: cinematic, commercial, lifestyle, editorial
+1. **相机运动**：推拉、平移、缩放、跟踪拍摄
+2. **动作描述**：旋转、上升、下降、移动
+3. **光线效果**：黄金时刻、烛光、戏剧性的边缘光线
+4. **氛围**：蒸汽、粒子效果、散景、雾气
+5. **风格/情绪**：电影风格、商业风格、生活方式风格、编辑风格
 
-### Example prompts:
+### 示例提示：
 
-**Food commercial:**
+**食品广告：**
 ```
 Slow dolly shot of gourmet dish, soft morning sunlight streaming through window, 
 subtle steam rising, warm cozy atmosphere, premium food commercial aesthetic
 ```
 
-**Lifestyle:**
+**生活方式风格：**
 ```
 Golden hour light slowly shifting across mountains, gentle breeze rustling leaves, 
 serene morning atmosphere, premium lifestyle commercial
 ```
 
-**Product shot:**
+**产品拍摄：**
 ```
 Cinematic close-up, dramatic lighting with warm highlights, 
 slow reveal, luxury commercial style
 ```
 
-## Workflow: Image → Video
+## 工作流程：图像 → 视频
 
-1. Generate image with Nano Banana Pro (or use existing)
-2. Pass image as `--input-image` to Sora
-3. Write prompt describing desired motion/atmosphere
-4. Script auto-resizes image to match video dimensions
+1. 使用 Nano Banana Pro 生成图像（或使用现有图像）
+2. 将图像作为 `--input-image` 参数传递给 Sora API
+3. 编写描述所需动作/氛围的提示
+4. 脚本会自动调整图像大小以匹配视频尺寸
 
-## Output
+## 输出结果
 
-- Videos saved as MP4
-- Typical file size: 1.5-3MB for 8 seconds
-- Resolution matches `--size` parameter
+- 视频保存为 MP4 格式
+- 通常文件大小为 1.5-3MB（8 秒视频）
+- 分辨率与 `--size` 参数设置一致

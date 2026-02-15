@@ -1,26 +1,26 @@
 ---
 name: logseq-import
-description: Import notes from Logseq pages into the slipbox. Use when user pastes a Logseq page with properties and bulleted notes. Parses page-level properties, extracts each bullet as an individual note, handles nested bullets by adding parent context, then runs slipbot for each.
+description: 将 Logseq 页面中的笔记导入到 Slipbox 中。当用户粘贴包含属性和项目符号笔记的 Logseq 页面时，该功能会自动执行：解析页面级别的属性，将每个项目符号提取为单独的笔记；对于嵌套的项目符号，会添加相应的父级上下文；最后对每个笔记使用 Slipbot 进行处理。
 ---
 
-# Logseq Import
+# Logseq 导入
 
-Parse a Logseq page and create individual slipbox entries for each bullet point.
+解析 Logseq 页面，并为每个项目符号创建单独的便签条目。
 
-## Critical Rule: Ignore All Tags
+## 重要规则：忽略所有标签
 
-**Do not import any tags from Logseq.** This includes:
-- Page-level `tags::` property
-- Inline `#tags` in bullet content
-- `block-tags::` metadata
+**不要从 Logseq 中导入任何标签**。这包括：
+- 页面级别的 `tags::` 属性
+- 项目符号内容中的内联 `#tags`
+- `block-tags::` 元数据
 
-Slipbot generates its own tags based on content. Logseq tags would conflict with this.
+Slipbot 会根据内容自动生成标签。Logseq 的标签可能会导致冲突。
 
-## Input Format
+## 输入格式
 
-Logseq pages have two parts:
+Logseq 页面分为两部分：
 
-**1. Page Properties** (top of page, `key:: value` format):
+**1. 页面属性**（页面顶部，`key:: value` 格式）：
 ```
 type:: #literature
 source:: Book
@@ -31,7 +31,7 @@ status::
 tags::
 ```
 
-**2. Bulleted Notes** (markdown list):
+**2. 项目符号笔记**（markdown 列表）：
 ```
 - First note content here
 - Second note with [[page ref]] link
@@ -39,75 +39,75 @@ tags::
 - Third note id:: abc123-uuid
 ```
 
-## Property Mapping
+## 属性映射
 
-| Logseq Property | Slipbox Field |
+| Logseq 属性 | Slipbox 字段 |
 |-----------------|---------------|
 | `title::` | `source.title` |
-| `source::` | `source.type` (if plain text like "Book") |
-| `source:: [text](url)` | `source.title` + `source.url` (if markdown link) |
+| `source::` | `source.type`（如果是纯文本，如 "Book"） |
+| `source:: [text](url)` | `source.title` + `source.url`（如果是 markdown 链接） |
 | `author::` | `source.author` |
-| `type:: #literature` | Note type hint (maps to `note`) |
-| `alias::` | Ignore |
-| `status::` | Ignore |
-| `tags::` | **Ignore** (slipbot generates better tags) |
+| `type:: #literature` | 笔记类型提示（映射到 `note`） |
+| `alias::` | 忽略 |
+| `status::` | 忽略 |
+| `tags::` | **忽略**（Slipbot 会生成更合适的标签） |
 
-Empty properties (e.g., `author::` with no value) → `null`
+空属性（例如，没有值的 `author::`） → `null`
 
-## Parsing Rules
+## 解析规则
 
-### Properties
-1. Extract all `key:: value` lines at the top
-2. Stop when hitting first bullet (`- `)
-3. Strip `#` from values like `#literature`
-4. Parse markdown links: `[text](url)` → extract both parts
+### 属性
+1. 提取页面顶部的所有 `key:: value` 行
+2. 遇到第一个项目符号（`- `）时停止解析
+3. 从值中删除 `#`，例如 `#literature`
+4. 解析 markdown 链接：`[text](url)` → 提取链接的两部分
 
-### Bullets
-1. Each top-level bullet (`- `) becomes its own slipbox note
-2. **Nested bullets**: Add parent context to make them standalone
-   - Example parent: `- [[Fleeting Notes]]: quick notes written anywhere`
-   - Example child: `  - Can be on paper or digital`
-   - Result: "Fleeting Notes (quick notes written anywhere) can be on paper or digital"
-3. Strip Logseq metadata from bullets:
-   - `id:: uuid` → remove
-   - `block-tags:: #xxx` → remove entirely
-   - `#tag` inline tags → remove entirely (slipbot generates its own)
-   - `#{"{"` or malformed tags → remove
-4. Convert `[[page refs]]` → plain text (potential link targets)
+### 项目符号
+1. 每个顶级项目符号（`- `）都会成为一条独立的便签
+2. **嵌套项目符号**：添加父级上下文，使其独立
+   - 父级示例：`- [[Fleeting Notes]]: 随处记录的快速笔记`
+   - 子级示例：`  - 可以是纸质或数字形式`
+   - 结果：`Fleeting Notes (随时记录的快速笔记) 可以是纸质或数字形式`
+3. 从项目符号中删除 Logseq 元数据：
+   - `id:: uuid` → 删除
+   - `block-tags:: #xxx` → 完全删除
+   - 内联标签 `#tag` → 完全删除（Slipbot 会生成自己的标签）
+   - 错误的标签格式（如 `#{"{"`） → 删除
+4. 将 `[[page refs]]` 转换为纯文本（可能的链接目标）
 
-### Content Cleanup
-- Remove trailing `id:: xxx` from bullets
-- Remove `block-tags:: xxx` entirely
-- Remove all `#tag` inline tags (slipbot generates its own tags)
-- Preserve markdown formatting (bold, italic, code)
+### 内容清理
+- 从项目符号中删除末尾的 `id:: xxx`
+- 完全删除 `block-tags:: xxx`
+- 删除所有内联标签 `#tag`（Slipbot 会生成自己的标签）
+- 保留 markdown 格式（加粗、斜体、代码）
 
-## Workflow
+## 工作流程
 
-1. **Precheck (before import)**
-   - Parse the page properties and bullets (don't create notes yet)
-   - Generate a brief summary of what the page is about (1-2 sentences based on title, author, and content themes)
-   - Count total notes that will be created (including nested bullets that become standalone)
-   - Present to user: summary, note count, source info
-   - **Ask for confirmation** before proceeding with import
-   - If user declines, stop and don't create any notes
+1. **预检查（导入前）**
+   - 解析页面属性和项目符号（此时不创建笔记）
+   - 根据标题、作者和内容主题生成页面的简要概述（1-2 句）
+   - 统计将创建的笔记总数（包括独立的嵌套项目符号）
+   - 向用户展示概述、笔记数量和来源信息
+   - **请求确认**后再进行导入
+   - 如果用户拒绝，则停止操作，不创建任何笔记
 
-2. **Parse the page** (after confirmation)
-   - Extract page properties → source metadata
-   - Extract all bullets → note list
-   - Handle nesting by enriching child bullets with parent context
+2. **解析页面**（确认后）
+   - 提取页面属性 → 来源元数据
+   - 提取所有项目符号 → 笔记列表
+   - 通过添加父级上下文来处理嵌套项目符号
 
-3. **For each bullet**, invoke slipbot workflow:
-   - Use `- {content}` prefix (note type)
-   - Include source: `~ {source.type}, {source.title} by {source.author}`
-   - Let slipbot handle: filename, tags, links, graph update
+3. **对于每个项目符号**，调用 Slipbot 工作流程：
+   - 使用 `- {content}` 作为前缀（表示笔记类型）
+   - 包含来源信息：`~ {source.type}, {source.title} by {source.author}`
+   - 由 Slipbot 处理文件名、标签、链接和图表更新
 
-4. **Report results**
-   - Count of notes created
-   - Any issues encountered
+4. **报告结果**
+   - 创建的笔记数量
+   - 遇到的任何问题
 
-## Example
+## 示例
 
-**Input:**
+**输入：**
 ```
 type:: #literature
 source:: Book
@@ -120,22 +120,21 @@ title:: Digital Zettelkasten
 - Keywords should be specific to the idea id:: abc123
 ```
 
-**Processing:**
-1. Source: `Book, "Digital Zettelkasten" by David Kadavy`
-2. Bullets extracted:
-   - "Rewriting ideas helps decide their importance"
-   - "Fleeting Notes: quick notes written anywhere"
-   - "Fleeting Notes can be captured on paper or digitally" (nested, parent context added)
-   - "Keywords should be specific to the idea" (id stripped)
+**处理结果：**
+1. 来源：`Book, "Digital Zettelkasten" by David Kadavy`
+2. 提取的项目符号：
+   - "重写想法有助于判断其重要性"
+   - "Fleeting Notes: 随处记录的快速笔记"
+   - "Fleeting Notes 可以是纸质或数字形式"（包含嵌套项目符号，添加了父级上下文）
+   - "关键词应该具体针对想法"（删除了 `id`）
 
-3. Each sent to slipbot as:
-   - `- Rewriting ideas helps decide their importance ~ Book, Digital Zettelkasten by David Kadavy`
-   - etc.
+3. 每条笔记发送给 Slipbot 的格式为：
+   - `- 重写想法有助于判断其重要性 ~ Book, Digital Zettelkasten by David Kadavy`
+   - 等等
 
-## Edge Cases
-
-- **No properties**: Treat as standalone notes without source
-- **Deeply nested bullets (3+ levels)**: Flatten, accumulating context from all ancestors
-- **Citation sections** (`## Citation:`): Ignore (redundant with properties)
-- **Non-bullet content**: Ignore headers, paragraphs outside bullets
-- **Multiple `[[refs]]` in one bullet**: Keep all, convert to plain text
+## 特殊情况
+- **没有属性**：视为独立的笔记，不包含来源信息
+- **深度嵌套的项目符号（3 层以上）**：扁平化处理，累积所有祖先的上下文
+- **引用部分**（`## Citation:`）：忽略（与页面属性重复）
+- **非项目符号内容**：忽略标题和项目符号外的段落
+- **一个项目符号中有多个 `[[refs]]`：保留所有引用，并将其转换为纯文本

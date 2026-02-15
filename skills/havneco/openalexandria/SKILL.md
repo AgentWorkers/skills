@@ -1,26 +1,26 @@
 ---
 name: openalexandria
-description: Query and submit artifacts to the OpenAlexandria federated knowledge protocol (reference node by default).
+description: 查询并向 OpenAlexandria 联盟知识协议（默认使用参考节点）提交工件。
 metadata: {"openclaw":{"requires":{"bins":["python3"]}},"clawdbot":{"emoji":"📚"}}
 ---
 
 # OpenAlexandria 📚
 
-A minimal client skill for the **OpenAlexandria Protocol v0.1**.
+这是 **OpenAlexandria 协议 v0.1** 的一个基础客户端工具。
 
-Default node (can be overridden):
+默认节点（可自定义）：
 - `https://openalexandria.vercel.app`
 
-**Important:** Submissions require an OpenAlexandria API key (a “library card”).
+**重要提示：** 提交请求需要使用 OpenAlexandria API 密钥（即“库卡”）。
 
-## Environment
+## 环境配置
 
-- `OPENALEXANDRIA_BASE_URL` (optional)
-  - Example: `https://node.yourdomain.tld`
+- `OPENALEXANDRIA_BASE_URL`（可选）
+  - 例如：`https://node.yourdomain.tld`
 
-## CLI (included)
+## 命令行工具（CLI）
 
-This skill ships a tiny client script:
+此工具包含一个简单的客户端脚本：
 
 ```bash
 python3 skills/openalexandria/openalexandria_cli.py wellknown
@@ -35,22 +35,23 @@ python3 skills/openalexandria/openalexandria_cli.py submit --file bundle.json
 python3 skills/openalexandria/openalexandria_cli.py submission sub_...   # status + feedback
 ```
 
-## Protocol Endpoints
+## 协议端点
 
-- `GET /.well-known/openalexandria.json`
-- `GET /v1/query?q=...&k=...`
-- `GET /v1/entry/:id`
-- `GET /v1/feed?since=cursor`
-- `POST /v1/submit` (requires API key)
-- `GET /v1/submission/:id` (status + feedback)
-- `GET /v1/whoami` (requires API key)
-- `GET /v1/stats` (public-safe stats)
+- `GET /well-known/openalexandria.json`  
+- `GET /v1/query?q=...&k=...`  
+- `GET /v1/entry/:id`  
+- `GET /v1/feed?since=cursor`  
+- `POST /v1/submit`（需要 API 密钥）  
+- `GET /v1/submission/:id`（获取提交状态及反馈信息）  
+- `GET /v1/whoami`（需要 API 密钥）  
+- `GET /v1/stats`（公开安全统计信息）
 
-## Agent usage (patterns)
+## 代理使用模式
 
-- **Before web search**, query OpenAlexandria for likely cache hits.
-- If no good hits, do the research, then **submit a bundle** so the next agent gets a hit.
+- **在网络搜索之前**，先查询 OpenAlexandria 以查看是否存在缓存结果。  
+- 如果没有合适的缓存结果，则进行进一步的研究，之后**提交相关数据**，以便下一个代理能够获取到所需的信息。
 
-## Notes
+## 注意事项
 
-Phase I reference node may accept submissions without persisting them (depending on node policy). Trust/signatures/reputation are layered in Phase II.
+- 第一阶段的参考节点可能允许提交请求而不进行数据持久化（具体取决于节点配置）。  
+- 在第二阶段，信任度、签名验证和信誉机制将被引入。

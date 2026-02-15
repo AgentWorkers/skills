@@ -4,45 +4,45 @@ user-invocable: true
 metadata: {"openclaw":{"emoji":"🎯","requires":{"bins":["node"]},"os":["darwin","linux","win32"]}}
 ---
 
-# OpenClaw Smart Router
+# OpenClaw 智能路由器
 
-**Save 30-50% on model costs through intelligent, automatic model selection.**
+**通过智能的自动模型选择，节省 30-50% 的模型成本。**
 
-## What is it?
+## 什么是 OpenClaw 智能路由器？
 
-The first OpenClaw skill that **automatically routes requests to optimal models** based on complexity analysis and budget constraints. Stops you from wasting money on expensive models for simple tasks. Learns from your usage patterns and gets smarter over time.
+OpenClaw 智能路由器是首个能够根据任务复杂度和预算限制，自动将请求路由到最合适模型的工具。它可以帮助您避免在简单任务上浪费昂贵的模型资源，并随着时间的推移不断学习您的使用习惯，从而提升路由效率。
 
-## Key Features
+## 主要特性
 
-- 🎯 **30-50% Cost Savings** - Automatic model selection based on task complexity
-- 🧠 **Complexity Analysis** - Scores tasks 0.0-1.0 and selects appropriate model
-- 💰 **Budget Awareness** - Respects spending limits and cost targets
-- 📊 **Pattern Learning** - Learns which models work best for your tasks
-- 🔄 **Multi-Provider** - Works with Anthropic, OpenAI, Google, and more
-- 💸 **x402 Payments** - Agents can pay for unlimited routing (0.5 USDT/month)
+- 🎯 **节省 30-50% 的成本**：根据任务复杂度自动选择模型
+- 🧠 **复杂度分析**：对任务进行 0.0-1.0 的评分，以选择合适的模型
+- 💰 **预算监控**：严格遵守支出限制和成本目标
+- 📊 **模式学习**：学习哪些模型最适合您的需求
+- 🔄 **多供应商支持**：兼容 Anthropic、OpenAI、Google 等平台
+- 💸 **x402 支付方式**：代理可以按月支付 0.5 美元来使用无限次路由服务
 
-## Free vs Pro Tier
+## 免费版与专业版
 
-**Free Tier:**
-- 100 routing decisions per day
-- Automatic complexity analysis
-- Basic model selection
-- Cost tracking
+**免费版：**
+- 每天 100 次路由决策
+- 自动复杂度分析
+- 基本模型选择
+- 成本跟踪
 
-**Pro Tier (0.5 USDT/month):**
-- Unlimited routing decisions
-- Advanced pattern learning
-- Custom routing rules
-- Detailed analytics and ROI tracking
-- Budget optimization
+**专业版（每月 0.5 美元）：**
+- 无限次路由决策
+- 高级模式学习
+- 自定义路由规则
+- 详细分析和投资回报率（ROI）跟踪
+- 预算优化
 
-## Installation
+## 安装
 
 ```bash
 claw skill install openclaw-smart-router
 ```
 
-## Commands
+## 命令
 
 ```bash
 # View routing stats
@@ -64,62 +64,58 @@ claw router dashboard
 claw router subscribe
 ```
 
-## How It Works
+## 工作原理
 
-1. **Intercepts requests** - Hooks before each API call
-2. **Analyzes complexity** - Scores task from 0.0 (simple) to 1.0 (expert)
-3. **Checks budget** - Considers spending limits
-4. **Selects model** - Chooses optimal model:
-   - Simple (0.0-0.3) → Haiku/GPT-3.5
-   - Medium (0.3-0.6) → Sonnet/GPT-4-Turbo
-   - Complex (0.6-0.8) → Opus/GPT-4
-   - Expert (0.8-1.0) → Opus/GPT-4
-5. **Routes request** - Sends to selected model
-6. **Learns from result** - Tracks success and adapts
+1. **拦截请求**：在每次 API 调用之前进行拦截
+2. **分析复杂度**：对任务进行评分（0.0 表示简单，1.0 表示复杂）
+3. **检查预算**：考虑支出限制
+4. **选择模型**：根据任务复杂度选择合适的模型：
+   - 简单任务（0.0-0.3）→ Haiku/GPT-3.5
+   - 中等任务（0.3-0.6）→ Sonnet/GPT-4-Turbo
+   - 复杂任务（0.6-0.8）→ Opus/GPT-4
+   - 高难度任务（0.8-1.0）→ Opus/GPT-4
+5. **发送请求**：将请求发送到选定的模型
+6. **从结果中学习**：跟踪成功案例并优化路由策略
 
-## Complexity Scoring
+## 复杂度评分标准
 
-**What makes a task complex?**
-- Context length (more context = higher complexity)
-- Code presence (code analysis scores higher)
-- Error messages (debugging is complex)
-- Task type (writing < coding < reasoning < research)
-- Question complexity (multiple parts, nested logic)
-- Specificity (vague requests need stronger models)
+- **任务复杂度的判断因素**：
+  - 上下文长度（上下文越长，任务越复杂）
+  - 代码含量（代码分析结果越高）
+  - 错误信息（错误信息越多，调试难度越大）
+  - 任务类型（写作 < 编程 < 推理 < 研究）
+  - 问题复杂性（问题包含多个部分或嵌套逻辑）
 
-**Examples:**
+**示例：**
 
-Simple (0.0-0.3) → Haiku:
-- "What's the current time?"
-- "Format this JSON"
-- "Fix typo in variable name"
+- **简单任务（0.0-0.3）** → 使用 Haiku 模型：
+  - “当前时间是多少？”
+  - “格式化这个 JSON 数据”
+  - “修复变量名中的拼写错误”
+- **中等任务（0.3-0.6）** → 使用 Sonnet 模型：
+  - “重构这个类以使用接口”
+  - “为这个函数编写单元测试”
+  - “解释 React 钩子的原理”
+- **复杂任务（0.6-0.8）** → 使用 Opus 模型：
+  - “调试这个多线程竞态条件”
+  - “设计一个可扩展的缓存策略”
+  - “优化这个算法的性能”
+- **高难度任务（0.8-1.0）** → 使用 Opus 模型：
+  - “设计一个分布式系统架构”
+  - “解决这个新颖的算法问题”
+  - “从多个来源进行研究和综合”
 
-Medium (0.3-0.6) → Sonnet:
-- "Refactor this class to use interfaces"
-- "Write unit tests for this function"
-- "Explain how React hooks work"
+## 使用场景
 
-Complex (0.6-0.8) → Opus:
-- "Debug this multi-threaded race condition"
-- "Design a scalable caching strategy"
-- "Optimize this algorithm for performance"
+- 自动节省 30-50% 的模型成本
+- 避免手动切换模型
+- 基于预算进行路由，实现成本控制
+- 通过学习您的使用习惯，自动选择最佳模型
+- 长期跟踪支出和投资回报率（ROI）
 
-Expert (0.8-1.0) → Opus:
-- "Design a distributed system architecture"
-- "Solve this novel algorithmic problem"
-- "Research and synthesize from multiple sources"
+## 成本节省示例
 
-## Use Cases
-
-- Reduce model costs by 30-50% automatically
-- Stop manually switching between models
-- Budget-aware routing for cost control
-- Learn optimal model selection from patterns
-- Track spending and ROI over time
-
-## Cost Savings Examples
-
-### Example 1: Development Work
+### 示例 1：开发工作
 ```
 Without Smart Router:
 - 100 requests/day to Opus
@@ -135,7 +131,7 @@ With Smart Router:
 Savings: $27.60/month (61%)
 ```
 
-### Example 2: Customer Support
+### 示例 2：客户服务
 ```
 Without Smart Router:
 - 500 requests/day to GPT-4
@@ -150,14 +146,14 @@ With Smart Router:
 Savings: $240/month (80%)
 ```
 
-## Agent Economy
+## 代理经济模型
 
-Agents can autonomously evaluate if Pro tier is worth it:
-- **Cost:** 0.5 USDT/month
-- **Value:** Saves 30-50% on model costs
-- **ROI:** If saves >0.5 USDT/month, it pays for itself
+代理可以自主判断是否值得升级到专业版：
+- **费用：** 每月 0.5 美元
+- **节省成本：** 节省 30-50% 的模型费用
+- **投资回报率（ROI）：** 如果节省的成本超过 0.5 美元/月，即可收回成本
 
-**Example ROI:**
+**投资回报率示例：**
 ```
 Agent making 100 requests/day:
 - Without router: $45/month
@@ -168,15 +164,15 @@ Agent making 100 requests/day:
 - ROI: 5,420%
 ```
 
-**Economic rationale:** If routing decisions save more than 0.5 USDT/month in model costs, Pro tier pays for itself. Agent can autonomously pay via x402 without human approval.
+**经济合理性：** 如果路由决策每月节省的成本超过 0.5 美元，专业版即可自行支付费用。代理可以通过 x402 平台自主支付。
 
-See [AGENT-PAYMENTS.md](AGENT-PAYMENTS.md) for x402 integration details.
+有关 x402 支付方式的详细信息，请参阅 [AGENT-PAYMENTS.md](AGENT-PAYMENTS.md)。
 
-## Pattern Learning
+## 模式学习
 
-Smart Router learns from your usage:
+智能路由器会根据您的使用习惯进行学习：
 
-**Example Learning:**
+**学习示例：**
 ```
 Pattern detected: "Debug Python errors"
 History: Haiku failed 3 times, Sonnet succeeded 5 times
@@ -186,29 +182,24 @@ Next time: "Debug this Python error..."
 → Automatically routes to Sonnet instead of Haiku
 ```
 
-**What it learns:**
-- Task-based patterns (debugging, refactoring, writing)
-- Complexity patterns (what works at different levels)
-- Budget patterns (when to downgrade, when quality matters)
-- Provider patterns (which providers work best for your tasks)
+**学习内容：**
+- 基于任务的模式（调试、重构、写作）
+- 复杂度模式（不同任务适合的模型）
+- 预算模式（何时降级模型，何时优先考虑模型质量）
+- 供应商模式（哪些供应商最适合您的需求）
 
-## Integration with Other Tools
+## 与其他工具的集成
 
-### Memory System
-- Stores routing patterns as persistent memories
-- Recalls successful model selections across sessions
-- Maximum learning efficiency
+- **内存系统**：将路由策略存储为持久化数据
+- 在不同会话中记住成功的模型选择
+- 提高学习效率
+- **上下文优化器**：综合多种优化方式，实现 60-80% 的总成本降低
+- **压缩上下文**：节省 40-60% 的令牌使用量
+- **路由到更便宜的模型**：进一步节省 30-50% 的成本
+- 综合这些优化方式，可达到最高效率
 
-### Context Optimizer
-- Combine for 60-80% total cost reduction
-- Compress context (40-60% token savings)
-- Route to cheaper model (30-50% cost savings)
-- Together = maximum efficiency
-
-### Cost Governor
-- Smart Router optimizes model selection
-- Cost Governor enforces hard spending limits
-- Together = maximum cost control
+**成本管理器**：智能路由器优化模型选择，成本管理器确保不超过预算限制
+- 两者结合，实现最佳的成本控制
 
 ```bash
 # Install full efficiency suite
@@ -217,28 +208,28 @@ claw skill install openclaw-context-optimizer
 claw skill install openclaw-smart-router
 ```
 
-## Privacy
+## 隐私保护
 
-- All data stored locally in `~/.openclaw/openclaw-smart-router/`
-- No external servers or telemetry
-- Routing happens locally (no API calls)
-- Open source - audit the code yourself
+- 所有数据存储在本地文件夹 `~/.openclaw/openclaw-smart-router/` 中
+- 无需外部服务器或遥测数据
+- 路由操作在本地完成（无需 API 调用）
+- 代码开源，可自行审计
 
-## Dashboard
+## 仪表盘
 
-Access web UI at `http://localhost:9093`:
-- Real-time routing decisions
-- Complexity distribution chart
-- Model selection breakdown
-- Cost savings over time
-- ROI calculation
-- Pattern learning insights
-- Budget tracking
-- License status
+访问网页界面 `http://localhost:9093`：
+- 实时路由决策记录
+- 复杂度分布图表
+- 模型选择统计
+- 长期成本节省情况
+- 投资回报率计算
+- 学习模式分析
+- 预算跟踪
+- 许可证状态
 
-## ROI Tracking
+## 投资回报率（ROI）跟踪
 
-Smart Router automatically calculates return on investment:
+智能路由器会自动计算投资回报率：
 
 ```bash
 $ claw router savings
@@ -262,15 +253,14 @@ Net profit: $91.90/month
 ROI: 18,380% 🎉
 ```
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- OpenClaw v2026.1.30+
-- OS: Windows, macOS, Linux
-- Optional: OpenClaw Memory System (recommended)
-- Optional: OpenClaw Context Optimizer (highly recommended)
+- Node.js 18 及以上版本
+- OpenClaw v2026.1.30 及以上版本
+- 操作系统：Windows、macOS、Linux
+- **推荐配置：** OpenClaw 内存系统和上下文优化器
 
-## API Reference
+## API 参考
 
 ```bash
 # Analyze complexity
@@ -305,21 +295,20 @@ POST /api/x402/verify
 GET /api/x402/license/:wallet
 ```
 
-## Budget Awareness
+## 预算管理
 
-Smart Router respects your spending limits:
+智能路由器会严格遵守您的支出限制：
 
-**Budget levels:**
-- Per-request max ($0.50 default)
-- Daily limit ($5.00 default)
-- Monthly limit ($100.00 default)
+- **预算等级：**
+  - 每次请求的最大费用（默认 0.50 美元）
+  - 每日费用限制（默认 5.00 美元）
+  - 每月费用限制（默认 100.00 美元）
+- **预算策略：**
+  - 保守型：在可能的情况下优先选择便宜的模型
+  - 平衡型：使用推荐的模型，同时遵守预算限制
+  - 优质优先型：优先选择最佳模型，适度放宽预算限制
 
-**Budget strategies:**
-- Conservative: Prefer cheaper models when viable
-- Balanced: Use recommended model, respect hard limits
-- Quality-First: Prioritize best model, soft budget constraints
-
-**Budget constraint handling:**
+**预算限制处理方式：**
 ```
 IF daily_limit_reached:
   → Downgrade to cheapest viable model
@@ -327,26 +316,22 @@ IF daily_limit_reached:
   → Log budget event
 ```
 
-## Supported Models
+## 支持的模型
 
-**Anthropic:**
-- claude-haiku-4-5 (simple)
-- claude-sonnet-4-5 (medium)
-- claude-opus-4-5 (complex)
+- **Anthropic：**
+  - claude-haiku-4-5（简单任务）
+  - claude-sonnet-4-5（中等任务）
+  - claude-opus-4-5（复杂任务）
+- **OpenAI：**
+  - gpt-3.5-turbo（简单任务）
+  - gpt-4-turbo（中等任务）
+  - gpt-4（复杂任务）
+- **Google：**
+  - gemini-1.5-flash（简单任务）
+  - gemini-1.5-pro（中等/复杂任务）
+- **自定义模型：** 可轻松配置自定义模型和费用
 
-**OpenAI:**
-- gpt-3.5-turbo (simple)
-- gpt-4-turbo (medium)
-- gpt-4 (complex)
-
-**Google:**
-- gemini-1.5-flash (simple)
-- gemini-1.5-pro (medium/complex)
-
-**Custom providers:**
-- Easily configure your own models and costs
-
-## Statistics Example
+## 统计数据示例
 
 ```
 Smart Router Stats (30 Days)
@@ -374,32 +359,31 @@ Pattern learning:
 - 342 pattern applications
 ```
 
-## Economic Rationale
+## 是否应该升级到专业版？
 
-**Should you upgrade to Pro?**
+计算您的潜在节省成本：
 
-Calculate your potential savings:
 ```
 Current requests/day × Avg cost per request = Monthly cost
 Apply 30-50% savings = Amount saved
 If saved amount > 0.5 USDT/month → Pro pays for itself
 ```
 
-**Typical savings:**
-- Light usage (10-20 req/day): $3-8/month → $2.50-7.50 profit
-- Medium usage (50-100 req/day): $20-45/month → $19.50-44.50 profit
-- Heavy usage (200+ req/day): $100+/month → $99.50+ profit
+**典型节省情况：**
+- **轻度使用（每天 10-20 次请求）**：每月节省 3-8 美元 → 每月盈利 2.50-7.50 美元
+- **中度使用（每天 50-100 次请求）**：每月节省 20-45 美元 → 每月盈利 19.50-44.50 美元
+- **重度使用（每天 200 次以上请求）**：每月节省超过 100 美元 → 每月盈利 99.50 美元以上
 
-**ROI gets better with scale.**
+**使用量越大，节省效果越明显。**
 
-## Links
+## 链接
 
-- [Full Documentation](README.md)
-- [Routing Guide](ROUTING-GUIDE.md)
-- [Agent Payments Guide](AGENT-PAYMENTS.md)
-- [GitHub Repository](https://github.com/AtlasPA/openclaw-smart-router)
-- [ClawHub Page](https://clawhub.ai/skills/smart-router)
+- **完整文档：** [README.md]
+- **路由指南：** [ROUTING-GUIDE.md]
+- **代理支付指南：** [AGENT-PAYMENTS.md]
+- **GitHub 仓库：** [https://github.com/AtlasPA/openclaw-smart-router]
+- **ClawHub 页面：** [https://clawhub.ai/skills/smart-router]
 
 ---
 
-**Built by the OpenClaw community** | First smart model router with x402 payments
+**由 OpenClaw 社区开发** | 首款支持 x402 支付方式的智能模型路由器

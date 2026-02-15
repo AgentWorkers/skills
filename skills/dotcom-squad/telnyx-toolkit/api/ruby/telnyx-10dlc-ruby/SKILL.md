@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
 # Telnyx 10Dlc - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,11 +32,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List Brands
+## 列出品牌
 
-This endpoint is used to list all brands associated with your organization.
+此端点用于列出与您的组织关联的所有品牌。
 
 `GET /10dlc/brand`
 
@@ -45,11 +46,11 @@ page = client.messaging_10dlc.brand.list
 puts(page)
 ```
 
-## Create Brand
+## 创建品牌
 
-This endpoint is used to create a new brand.
+此端点用于创建新的品牌。
 
-`POST /10dlc/brand` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`POST /10dlc/brand` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```ruby
 telnyx_brand = client.messaging_10dlc.brand.create(
@@ -63,9 +64,9 @@ telnyx_brand = client.messaging_10dlc.brand.create(
 puts(telnyx_brand)
 ```
 
-## Get Brand
+## 获取品牌信息
 
-Retrieve a brand by `brandId`.
+通过 `brandId` 获取品牌详情。
 
 `GET /10dlc/brand/{brandId}`
 
@@ -75,11 +76,11 @@ brand = client.messaging_10dlc.brand.retrieve("brandId")
 puts(brand)
 ```
 
-## Update Brand
+## 更新品牌信息
 
-Update a brand's attributes by `brandId`.
+通过 `brandId` 更新品牌属性。
 
-`PUT /10dlc/brand/{brandId}` — Required: `entityType`, `displayName`, `country`, `email`, `vertical`
+`PUT /10dlc/brand/{brandId}` — 必需参数：`entityType`, `displayName`, `country`, `email`, `vertical`
 
 ```ruby
 telnyx_brand = client.messaging_10dlc.brand.update(
@@ -94,9 +95,9 @@ telnyx_brand = client.messaging_10dlc.brand.update(
 puts(telnyx_brand)
 ```
 
-## Delete Brand
+## 删除品牌
 
-Delete Brand.
+删除品牌。
 
 `DELETE /10dlc/brand/{brandId}`
 
@@ -106,7 +107,7 @@ result = client.messaging_10dlc.brand.delete("brandId")
 puts(result)
 ```
 
-## Resend brand 2FA email
+## 重新发送品牌 2FA 邮件
 
 `POST /10dlc/brand/{brandId}/2faEmail`
 
@@ -116,9 +117,9 @@ result = client.messaging_10dlc.brand.resend_2fa_email("brandId")
 puts(result)
 ```
 
-## List External Vettings
+## 获取品牌的外部审核记录
 
-Get list of valid external vetting record for a given brand
+获取指定品牌的所有有效外部审核记录。
 
 `GET /10dlc/brand/{brandId}/externalVetting`
 
@@ -128,11 +129,11 @@ external_vettings = client.messaging_10dlc.brand.external_vetting.list("brandId"
 puts(external_vettings)
 ```
 
-## Order Brand External Vetting
+## 请求品牌的外部审核
 
-Order new external vetting for a brand
+为品牌请求新的外部审核。
 
-`POST /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingClass`
+`POST /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingClass`
 
 ```ruby
 response = client.messaging_10dlc.brand.external_vetting.order(
@@ -144,12 +145,11 @@ response = client.messaging_10dlc.brand.external_vetting.order(
 puts(response)
 ```
 
-## Import External Vetting Record
+## 导入外部审核记录
 
-This operation can be used to import an external vetting record from a TCR-approved
-vetting provider.
+此操作可用于从 TCR 批准的审核提供商导入外部审核记录。
 
-`PUT /10dlc/brand/{brandId}/externalVetting` — Required: `evpId`, `vettingId`
+`PUT /10dlc/brand/{brandId}/externalVetting` — 必需参数：`evpId`, `vettingId`
 
 ```ruby
 response = client.messaging_10dlc.brand.external_vetting.imports("brandId", evp_id: "evpId", vetting_id: "vettingId")
@@ -157,9 +157,9 @@ response = client.messaging_10dlc.brand.external_vetting.imports("brandId", evp_
 puts(response)
 ```
 
-## Revet Brand
+## 取消品牌认证
 
-This operation allows you to revet the brand.
+此操作允许您取消品牌的认证。
 
 `PUT /10dlc/brand/{brandId}/revet`
 
@@ -169,9 +169,9 @@ telnyx_brand = client.messaging_10dlc.brand.revet("brandId")
 puts(telnyx_brand)
 ```
 
-## Get Brand SMS OTP Status by Brand ID
+## 通过品牌 ID 查询 SMS OTP 状态
 
-Query the status of an SMS OTP (One-Time Password) for Sole Proprietor brand verification using the Brand ID.
+使用品牌 ID 查询 SMS OTP（一次性密码）的状态，用于个人独资企业的品牌验证。
 
 `GET /10dlc/brand/{brandId}/smsOtp`
 
@@ -181,11 +181,11 @@ response = client.messaging_10dlc.brand.retrieve_sms_otp_status("4b20019b-043a-7
 puts(response)
 ```
 
-## Trigger Brand SMS OTP
+## 触发品牌 SMS OTP
 
-Trigger or re-trigger an SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+触发或重新触发 SMS OTP（一次性密码），用于个人独资企业的品牌验证。
 
-`POST /10dlc/brand/{brandId}/smsOtp` — Required: `pinSms`, `successSms`
+`POST /10dlc/brand/{brandId}/smsOtp` — 必需参数：`pinSms`, `successSms`
 
 ```ruby
 response = client.messaging_10dlc.brand.trigger_sms_otp(
@@ -197,11 +197,11 @@ response = client.messaging_10dlc.brand.trigger_sms_otp(
 puts(response)
 ```
 
-## Verify Brand SMS OTP
+## 验证品牌 SMS OTP
 
-Verify the SMS OTP (One-Time Password) for Sole Proprietor brand verification.
+验证 SMS OTP（一次性密码），用于个人独资企业的品牌验证。
 
-`PUT /10dlc/brand/{brandId}/smsOtp` — Required: `otpPin`
+`PUT /10dlc/brand/{brandId}/smsOtp` — 必需参数：`otpPin`
 
 ```ruby
 result = client.messaging_10dlc.brand.verify_sms_otp("4b20019b-043a-78f8-0657-b3be3f4b4002", otp_pin: "123456")
@@ -209,9 +209,9 @@ result = client.messaging_10dlc.brand.verify_sms_otp("4b20019b-043a-78f8-0657-b3
 puts(result)
 ```
 
-## Get Brand Feedback By Id
+## 通过 ID 获取品牌反馈
 
-Get feedback about a brand by ID.
+通过 ID 获取关于品牌的反馈信息。
 
 `GET /10dlc/brand_feedback/{brandId}`
 
@@ -221,11 +221,11 @@ response = client.messaging_10dlc.brand.get_feedback("brandId")
 puts(response)
 ```
 
-## Submit Campaign
+## 提交活动计划
 
-Before creating a campaign, use the [Qualify By Usecase endpoint](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) to ensure that the brand you want to assign a new campaign...
+在创建活动计划之前，请使用 [Qualify By Usecase 端点](https://developers.telnyx.com/api-reference/campaign/qualify-by-usecase) 确保您想要分配新活动计划的品牌符合要求...
 
-`POST /10dlc/campaignBuilder` — Required: `brandId`, `description`, `usecase`
+`POST /10dlc/campaignBuilder` — 必需参数：`brandId`, `description`, `usecase`
 
 ```ruby
 telnyx_campaign_csp = client.messaging_10dlc.campaign_builder.submit(
@@ -237,9 +237,9 @@ telnyx_campaign_csp = client.messaging_10dlc.campaign_builder.submit(
 puts(telnyx_campaign_csp)
 ```
 
-## Qualify By Usecase
+## 根据用例验证品牌
 
-This endpoint allows you to see whether or not the supplied brand is suitable for your desired campaign use case.
+此端点用于检查提供的品牌是否适合您所需的活动计划用例。
 
 `GET /10dlc/campaignBuilder/brand/{brandId}/usecase/{usecase}`
 
@@ -249,9 +249,9 @@ response = client.messaging_10dlc.campaign_builder.brand.qualify_by_usecase("use
 puts(response)
 ```
 
-## List Campaigns
+## 列出活动计划
 
-Retrieve a list of campaigns associated with a supplied `brandId`.
+检索与指定 `brandId` 关联的所有活动计划。
 
 `GET /10dlc/campaign`
 
@@ -261,9 +261,9 @@ page = client.messaging_10dlc.campaign.list(brand_id: "brandId")
 puts(page)
 ```
 
-## Get campaign
+## 获取活动计划详情
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详情。
 
 `GET /10dlc/campaign/{campaignId}`
 
@@ -273,9 +273,9 @@ telnyx_campaign_csp = client.messaging_10dlc.campaign.retrieve("campaignId")
 puts(telnyx_campaign_csp)
 ```
 
-## Update campaign
+## 更新活动计划
 
-Update a campaign's properties by `campaignId`.
+通过 `campaignId` 更新活动计划的属性。
 
 `PUT /10dlc/campaign/{campaignId}`
 
@@ -285,9 +285,9 @@ telnyx_campaign_csp = client.messaging_10dlc.campaign.update("campaignId")
 puts(telnyx_campaign_csp)
 ```
 
-## Deactivate campaign
+## 关闭活动计划
 
-Terminate a campaign.
+终止活动计划。
 
 `DELETE /10dlc/campaign/{campaignId}`
 
@@ -297,11 +297,11 @@ response = client.messaging_10dlc.campaign.deactivate("campaignId")
 puts(response)
 ```
 
-## Submit campaign appeal for manual review
+## 为被拒绝的活动计划提交申诉
 
-Submits an appeal for rejected native campaigns in TELNYX_FAILED or MNO_REJECTED status.
+为状态为 TELNYX_FAILED 或 MNO_REJECTED 的活动计划提交申诉。
 
-`POST /10dlc/campaign/{campaignId}/appeal` — Required: `appeal_reason`
+`POST /10dlc/campaign/{campaignId}/appeal` — 必需参数：`appeal_reason`
 
 ```ruby
 response = client.messaging_10dlc.campaign.submit_appeal(
@@ -312,9 +312,9 @@ response = client.messaging_10dlc.campaign.submit_appeal(
 puts(response)
 ```
 
-## Get Campaign Mno Metadata
+## 获取活动计划的 MNO 元数据
 
-Get the campaign metadata for each MNO it was submitted to.
+获取每个 MNO 的活动计划元数据。
 
 `GET /10dlc/campaign/{campaignId}/mnoMetadata`
 
@@ -324,9 +324,9 @@ response = client.messaging_10dlc.campaign.get_mno_metadata("campaignId")
 puts(response)
 ```
 
-## Get campaign operation status
+## 获取活动计划的操作状态
 
-Retrieve campaign's operation status at MNO level.
+检索活动计划在 MNO 级别的操作状态。
 
 `GET /10dlc/campaign/{campaignId}/operationStatus`
 
@@ -336,7 +336,7 @@ response = client.messaging_10dlc.campaign.get_operation_status("campaignId")
 puts(response)
 ```
 
-## Get OSR campaign attributes
+## 获取 OSR 活动计划属性
 
 `GET /10dlc/campaign/{campaignId}/osr_attributes`
 
@@ -346,7 +346,7 @@ response = client.messaging_10dlc.campaign.osr.get_attributes("campaignId")
 puts(response)
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/campaign/{campaignId}/sharing`
 
@@ -356,9 +356,9 @@ response = client.messaging_10dlc.campaign.get_sharing_status("campaignId")
 puts(response)
 ```
 
-## Accept Shared Campaign
+## 接受共享的活动计划
 
-Manually accept a campaign shared with Telnyx
+手动接受与 Telnyx 共享的活动计划。
 
 `POST /10dlc/campaign/acceptSharing/{campaignId}`
 
@@ -368,7 +368,7 @@ response = client.messaging_10dlc.campaign.accept_sharing("C26F1KLZN")
 puts(response)
 ```
 
-## Get Campaign Cost
+## 获取活动计划成本
 
 `GET /10dlc/campaign/usecase_cost`
 
@@ -378,9 +378,9 @@ response = client.messaging_10dlc.campaign.usecase.get_cost(usecase: "usecase")
 puts(response)
 ```
 
-## List Shared Campaigns
+## 列出共享的活动计划
 
-Retrieve all partner campaigns you have shared to Telnyx in a paginated fashion.
+分页方式检索您与 Telnyx 共享的所有活动计划。
 
 `GET /10dlc/partner_campaigns`
 
@@ -390,9 +390,9 @@ page = client.messaging_10dlc.partner_campaigns.list
 puts(page)
 ```
 
-## Get Single Shared Campaign
+## 获取单个共享活动计划
 
-Retrieve campaign details by `campaignId`.
+通过 `campaignId` 获取活动计划详情。
 
 `GET /10dlc/partner_campaigns/{campaignId}`
 
@@ -402,9 +402,9 @@ telnyx_downstream_campaign = client.messaging_10dlc.partner_campaigns.retrieve("
 puts(telnyx_downstream_campaign)
 ```
 
-## Update Single Shared Campaign
+## 更新单个共享活动计划
 
-Update campaign details by `campaignId`.
+通过 `campaignId` 更新活动计划详情。
 
 `PATCH /10dlc/partner_campaigns/{campaignId}`
 
@@ -414,7 +414,7 @@ telnyx_downstream_campaign = client.messaging_10dlc.partner_campaigns.update("ca
 puts(telnyx_downstream_campaign)
 ```
 
-## Get Sharing Status
+## 获取共享状态
 
 `GET /10dlc/partnerCampaign/{campaignId}/sharing`
 
@@ -424,12 +424,11 @@ response = client.messaging_10dlc.partner_campaigns.retrieve_sharing_status("cam
 puts(response)
 ```
 
-## List shared partner campaigns
+## 列出共享的活动计划
 
-Get all partner campaigns you have shared to Telnyx in a paginated fashion
+分页方式检索您与 Telnyx 共享的所有活动计划。
 
-This endpoint is currently limited to only returning shared campaigns that Telnyx
-has accepted.
+此端点目前仅返回 Telnyx 已接受的活动计划。
 
 `GET /10dlc/partnerCampaign/sharedByMe`
 
@@ -439,7 +438,7 @@ page = client.messaging_10dlc.partner_campaigns.list_shared_by_me
 puts(page)
 ```
 
-## List phone number campaigns
+## 列出电话号码活动计划
 
 `GET /10dlc/phone_number_campaigns`
 
@@ -449,9 +448,9 @@ page = client.messaging_10dlc.phone_number_campaigns.list
 puts(page)
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`POST /10dlc/phone_number_campaigns` — Required: `phoneNumber`, `campaignId`
+`POST /10dlc/phone_number_campaigns` — 必需参数：`phoneNumber`, `campaignId`
 
 ```ruby
 phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.create(
@@ -462,9 +461,9 @@ phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.create(
 puts(phone_number_campaign)
 ```
 
-## Get Single Phone Number Campaign
+## 获取单个电话号码活动计划
 
-Retrieve an individual phone number/campaign assignment by `phoneNumber`.
+通过 `phoneNumber` 获取特定的电话号码/活动计划关联信息。
 
 `GET /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -474,9 +473,9 @@ phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.retrieve("
 puts(phone_number_campaign)
 ```
 
-## Create New Phone Number Campaign
+## 创建新的电话号码活动计划
 
-`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — Required: `phoneNumber`, `campaignId`
+`PUT /10dlc/phone_number_campaigns/{phoneNumber}` — 必需参数：`phoneNumber`, `campaignId`
 
 ```ruby
 phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.update(
@@ -488,9 +487,9 @@ phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.update(
 puts(phone_number_campaign)
 ```
 
-## Delete Phone Number Campaign
+## 删除电话号码活动计划
 
-This endpoint allows you to remove a campaign assignment from the supplied `phoneNumber`.
+此端点用于删除与指定 `phoneNumber` 关联的活动计划。
 
 `DELETE /10dlc/phone_number_campaigns/{phoneNumber}`
 
@@ -500,11 +499,11 @@ phone_number_campaign = client.messaging_10dlc.phone_number_campaigns.delete("ph
 puts(phone_number_campaign)
 ```
 
-## Assign Messaging Profile To Campaign
+## 将消息配置文件分配给活动计划
 
-This endpoint allows you to link all phone numbers associated with a Messaging Profile to a campaign.
+此端点允许您将所有与消息配置文件关联的电话号码链接到活动计划。
 
-`POST /10dlc/phoneNumberAssignmentByProfile` — Required: `messagingProfileId`
+`POST /10dlc/phoneNumberAssignmentByProfile` — 必需参数：`messagingProfileId`
 
 ```ruby
 response = client.messaging_10dlc.phone_number_assignment_by_profile.assign(
@@ -514,9 +513,9 @@ response = client.messaging_10dlc.phone_number_assignment_by_profile.assign(
 puts(response)
 ```
 
-## Get Assignment Task Status
+## 获取任务状态
 
-Check the status of the task associated with assigning all phone numbers on a messaging profile to a campaign by `taskId`.
+检查将所有电话号码分配给活动计划的任务状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}`
 
@@ -526,9 +525,9 @@ response = client.messaging_10dlc.phone_number_assignment_by_profile.retrieve_st
 puts(response)
 ```
 
-## Get Phone Number Status
+## 获取电话号码状态
 
-Check the status of the individual phone number/campaign assignments associated with the supplied `taskId`.
+检查与指定 `taskId` 关联的个别电话号码/活动计划分配的状态。
 
 `GET /10dlc/phoneNumberAssignmentByProfile/{taskId}/phoneNumbers`
 
@@ -540,11 +539,11 @@ puts(response)
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件将发送到您配置的 webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `campaignStatusUpdate` | Campaign Status Update |
+| `campaignStatusUpdate` | 活动计划状态更新 |
+```

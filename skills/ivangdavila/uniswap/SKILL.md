@@ -1,68 +1,68 @@
 ---
 name: Uniswap
-description: Assist with Uniswap swaps, liquidity provision, and avoiding common DeFi losses.
+description: 协助完成Uniswap交易、提供流动性，并避免常见的去中心化金融（DeFi）损失。
 metadata: {"clawdbot":{"emoji":"🦄","os":["linux","darwin","win32"]}}
 ---
 
-## Swap Execution
-- Slippage tolerance sets max acceptable price change — 0.5% for stablecoins, 1-3% for volatile pairs, higher for low liquidity tokens
-- "Price impact" and "slippage" are different — impact is immediate effect of your trade size, slippage is protection against price movement
-- High price impact (>2%) means you're moving the market — split large trades or use limit orders on Uniswap X
-- Transaction deadline prevents stale swaps — 20-30 minutes default is usually fine, but pending tx beyond deadline will fail
+## 交换执行（Swap Execution）
+- 滑点容忍度设定了可接受的最大价格变动范围：稳定币为0.5%，波动性较大的货币对为1-3%，流动性较低的代币则需要更高的容忍度。
+- “价格影响”（Price Impact）与“滑点”（Slippage）是不同的概念——价格影响是指交易规模对市场的即时影响，而滑点则是防止价格波动的一种保护机制。
+- 如果价格影响超过2%，说明你的交易可能对市场产生较大影响；在这种情况下，建议拆分大额交易或在Uniswap X上使用限价单（Limit Orders）。
+- 交易有截止时间，以防止交易长时间未完成：默认截止时间为20-30分钟，超过这个时间限制的交易将会失败。
 
-## MEV and Frontrunning
-- Public swaps on Uniswap are visible in mempool before execution — bots can sandwich your trade
-- Use MEV protection: swap through Uniswap wallet (built-in protection), or connect via Flashbots Protect RPC
-- Signs of sandwich: execution price worse than quoted, with suspicious buy before and sell after your tx
-- Uniswap X routes through private order flow — significantly reduces MEV extraction
+## MEV与套利行为（MEV and Arbitrage）
+- 在Uniswap上进行的公开交易在执行前会显示在内存池（Mempool）中，这可能导致机器人（Bots）利用这些信息进行恶意操作（例如“夹击交易”）。
+- 可以使用MEV保护机制：通过Uniswap内置的保护功能进行交易，或者通过Flashbots Protect RPC接口进行操作。
+- “夹击交易”的迹象包括：执行价格比报价价格更差，且在你的交易前后有可疑的买卖行为。
+- Uniswap X采用私有订单流（Private Order Flow）进行交易，这显著降低了套利行为的发生概率。
 
-## Token Approval Traps
-- First swap of any token requires approval transaction — this is normal, costs gas, and happens once per token per spender
-- "Infinite approval" is the default — convenient but risky if Uniswap router is ever compromised
-- Check and revoke old approvals at revoke.cash — approvals persist forever until explicitly revoked
-- Approval transaction can succeed while swap fails — user pays gas for approval but swap reverts on slippage
+## 代币交易审批流程（Token Approval Process）
+- 对于任何代币的首次交易，都需要进行审批操作；这一过程会产生Gas费用，并且每个代币每个用户只会发生一次。
+- 默认设置为“无限次审批”（Infinite Approval），虽然方便，但如果Uniswap路由器被攻击，这种设置会带来风险。
+- 可以在revoke.cash网站上检查和撤销旧的审批记录；未经撤销的审批会永久有效。
+- 即使交易失败，审批操作本身仍然是有效的——用户需要支付Gas费用，但交易可能会因滑点而失败。
 
-## Fake Tokens
-- Anyone can create a token with any name and symbol — "USDC" on Uniswap might not be real USDC
-- Always verify token contract address on CoinGecko, CoinMarketCap, or project's official site
-- Warning signs: no liquidity, recently created, honeypot (can buy but not sell), tax on transfer
-- Uniswap shows warning for unverified tokens — don't ignore it, especially for tokens you found via links
+## 假冒代币（Fake Tokens）
+- 任何人都可以创建带有任意名称和符号的代币；Uniswap上的“USDC”代币可能并非真正的USDC。
+- 始终在CoinGecko、CoinMarketCap或项目官方网站上核实代币的合约地址。
+- 注意警告信号：例如代币没有流动性、最近创建、只能买入无法卖出、转账时收取费用等。
+- Uniswap会对未经验证的代币发出警告，请务必重视这些警告，尤其是通过链接获得的代币。
 
-## Liquidity Provision
-- Impermanent loss is real and permanent when you withdraw — LPs lose vs just holding when prices diverge
-- V3 concentrated liquidity amplifies both gains and losses — narrow range means more fees but higher IL risk
-- Out-of-range positions earn zero fees — price moves outside your range, you hold 100% of the depreciating asset
-- V2 is simpler: full range, less management, but less capital efficient — consider for volatile pairs you want to forget
+## 流动性提供（Liquidity Provision）
+- 当你提取代币时，如果价格出现波动，LP（Liquidity Providers）会遭受永久性损失；而仅仅持有代币则不会产生损失。
+- Uniswap V3版本增强了流动性的集中效应，这既可能带来更高的收益，也可能增加损失；交易范围较窄时费用更高，但流动性风险也更大。
+- 如果交易范围超出预设范围，你将承担资产贬值的全部风险。
+- Uniswap V2版本操作更简单，但资本效率较低，适合处理波动性较大的货币对。
 
-## V3 Position Management
-- Narrower range = more fees per dollar but more rebalancing — only worth it if you actively manage
-- Gas costs to adjust positions add up — each add/remove liquidity is a transaction
-- "Collect fees" is separate from "remove liquidity" — uncollected fees stay in the position
-- NFT represents your V3 position — losing the NFT means losing access to the liquidity
+## Uniswap V3版本的位置管理（V3 Position Management）
+- 交易范围较窄时，每美元的交易费用较高，但需要更频繁地进行重新平衡；只有在你主动管理交易时才值得采用这种模式。
+- 调整交易头寸需要支付Gas费用，每次增加或减少流动性都算作一次交易。
+- “收取费用”（Collect Fees）与“移除流动性”（Remove Liquidity）是两个不同的操作；未收取的费用会留在你的交易头寸中。
+- NFT（Non-Fungible Tokens）用于表示你在Uniswap V3中的交易头寸；失去NFT意味着失去对该头寸的流动性。
 
-## Gas Optimization
-- Approve + swap is two transactions on first use — budget gas for both
-- L2s (Arbitrum, Base, Optimism) have Uniswap with 10-50x lower fees — same interface, same liquidity depth
-- Swapping during low gas periods (weekends, UTC night) saves significantly on mainnet
-- Failed transactions still cost gas — simulate first if unsure about slippage or liquidity
+## Gas费用优化（Gas Optimization）
+- 首次使用Uniswap时，审批和交易需要分别进行两次交易；请为两次操作都预留足够的Gas费用。
+- L2（Layer 2）平台（如Arbitrum、Base、Optimism）提供的Uniswap服务费用较低（通常仅为原费用的10-50%），且具有相同的流动性深度。
+- 在Gas费用较低的时段（如周末、UTC夜间）进行交易可以节省费用。
+- 如果对滑点或流动性不确定，建议先进行模拟交易。
 
-## Failed Swap Causes
-- "Insufficient liquidity" — try smaller amount or different route
-- "Slippage exceeded" — price moved during pending period, increase slippage or retry
-- "Transfer failed" — token has transfer tax or restrictions, may be a scam token
-- "Deadline exceeded" — transaction was pending too long, just retry
-- "Approve first" — need to approve token before swap, this is normal
+## 交易失败的原因（Reasons for Failed Trades）
+- “流动性不足”：尝试减少交易金额或选择其他交易路径。
+- “滑点超出限制”：在交易等待期间价格发生了变动，可以增加滑点限制或重新尝试交易。
+- “转账失败”：代币可能存在转账税费或限制，或者该代币可能是虚假代币。
+- “截止时间超过”：交易等待时间过长，只需重新尝试即可。
+- “需要先审批”：在进行交易前必须先批准代币，这是正常操作流程。
 
-## Uniswap X and Limit Orders
-- Uniswap X uses off-chain orders filled by market makers — no gas if order isn't filled
-- Limit orders let you set target price — order sits until price is reached or expires
-- Partial fills possible — large orders may fill incrementally
-- Check order status in the app — pending orders can be cancelled
+## Uniswap X与限价单（Uniswap X and Limit Orders）
+- Uniswap X支持通过做市商（Market Makers）执行的离链订单；如果订单未成交，则无需支付Gas费用。
+- 限价单允许你设置目标价格，订单会一直保持有效，直到价格达到目标价格或过期。
+- 可以部分成交；大额订单可能会分批次成交。
+- 可以在应用中查看订单状态；未成交的订单可以取消。
 
-## Safety Checklist Before Large Swaps
-- Verify token contract address matches official source
-- Check price impact percentage — high impact means bad execution
-- Confirm slippage is set appropriately for the pair
-- Use MEV protection for mainnet trades
-- Consider splitting very large trades
-- Double-check recipient address if sending to different wallet
+## 进行大额交易前的安全检查（Safety Checklist for Large Trades）
+- 确认代币的合约地址与官方信息一致。
+- 检查价格影响百分比；较高的价格影响意味着交易执行效果较差。
+- 确保滑点设置符合该货币对的特性。
+- 对于主网交易，使用MEV保护机制。
+- 考虑拆分大额交易。
+- 如果将代币发送到其他钱包，请再次核对接收地址。

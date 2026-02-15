@@ -1,28 +1,28 @@
 ---
 name: job-auto-apply
-description: Automated job search and application system for Clawdbot. Use when the user wants to search for jobs and automatically apply to positions matching their criteria. Handles job searching across LinkedIn, Indeed, Glassdoor, ZipRecruiter, and Wellfound, generates tailored cover letters, fills application forms, and tracks application status. Use when user says things like "find and apply to jobs", "auto-apply for [job title]", "search for [position] jobs and apply", or "help me apply to multiple jobs automatically".
+description: Clawdbot的自动化求职与申请系统：当用户希望搜索符合自己条件的职位并自动提交申请时，可以使用该系统。该系统支持在LinkedIn、Indeed、Glassdoor、ZipRecruiter和Wellfound等招聘平台上进行职位搜索，能够自动生成个性化的求职信、填写申请表格，并实时跟踪申请进度。适用于用户提出以下需求的情况：“查找并申请职位”、“自动申请[职位名称]”、“搜索[职位类型]的职位并提交申请”，或“帮我自动申请多个职位”。
 ---
 
-# Job Auto-Apply Skill
+# 自动申请职位技能
 
-Automate job searching and application submission across multiple job platforms using Clawdbot.
+使用Clawdbot自动化在多个求职平台上搜索和提交职位申请。
 
-## Overview
+## 概述
 
-This skill enables automated job search and application workflows. It searches for jobs matching user criteria, analyzes compatibility, generates tailored cover letters, and submits applications automatically or with user confirmation.
+该技能实现了职位搜索和申请流程的自动化。它能够根据用户设定的条件搜索职位，分析职位与用户资格的匹配度，自动生成定制的求职信，并在用户确认后自动提交申请。
 
-**Supported Platforms:**
-- LinkedIn (including Easy Apply)
+**支持的平台：**
+- LinkedIn（包括Easy Apply功能）
 - Indeed
 - Glassdoor
 - ZipRecruiter
-- Wellfound (AngelList)
+- Wellfound（AngelList）
 
-## Quick Start
+## 快速入门
 
-### 1. Set Up User Profile
+### 1. 设置用户资料
 
-First, create a user profile using the template:
+首先，使用提供的模板创建用户资料：
 
 ```bash
 # Copy the profile template
@@ -32,7 +32,7 @@ cp profile_template.json ~/job_profile.json
 # Fill in: name, email, phone, resume path, skills, preferences
 ```
 
-### 2. Run Job Search and Apply
+### 2. 运行职位搜索和申请
 
 ```bash
 # Basic usage - search and apply (dry run)
@@ -58,11 +58,11 @@ python job_search_apply.py \
   --require-confirmation
 ```
 
-## Workflow Steps
+## 工作流程步骤
 
-### Step 1: Profile Configuration
+### 第1步：配置用户资料
 
-Load the user's profile from the template or create programmatically:
+从模板中加载用户资料，或通过编程方式创建用户资料：
 
 ```python
 from job_search_apply import ApplicantProfile
@@ -79,7 +79,7 @@ profile = ApplicantProfile(
 )
 ```
 
-### Step 2: Define Search Parameters
+### 第2步：定义搜索参数
 
 ```python
 from job_search_apply import JobSearchParams, JobPlatform
@@ -95,7 +95,7 @@ search_params = JobSearchParams(
 )
 ```
 
-### Step 3: Run Automated Application
+### 第3步：自动提交申请
 
 ```python
 from job_search_apply import auto_apply_workflow
@@ -110,30 +110,30 @@ results = auto_apply_workflow(
 )
 ```
 
-## Integration with Clawdbot
+## 与Clawdbot的集成
 
-### Using as a Clawdbot Tool
+### 作为Clawdbot工具使用
 
-When installed as a Clawdbot skill, invoke via natural language:
+将该技能安装到Clawdbot后，可以通过自然语言指令来使用它：
 
-**Example prompts:**
-- "Find and apply to Python developer jobs in San Francisco"
-- "Search for remote backend engineer positions and apply to the top 5 matches"
-- "Auto-apply to senior software engineer roles with 100k+ salary"
-- "Apply to jobs at tech startups on Wellfound"
+**示例指令：**
+- “在旧金山查找并申请Python开发人员的职位”
+- “搜索远程后端工程师职位，并申请排名前5的职位”
+- “自动申请薪资超过10万美元的高级软件工程师职位”
+- “申请Wellfound平台上科技初创公司的职位”
 
-The skill will:
-1. Parse the user's intent and extract search parameters
-2. Load the user's profile from saved configuration
-3. Search across specified platforms
-4. Analyze job compatibility
-5. Generate tailored cover letters
-6. Submit applications (with confirmation if enabled)
-7. Report results and track applications
+该技能将：
+1. 解析用户的指令并提取搜索参数
+2. 从已保存的配置中加载用户资料
+3. 在指定的平台上进行搜索
+4. 分析职位与用户资格的匹配度
+5. 生成定制的求职信
+6. 自动提交申请（如用户启用确认功能）
+7. 报告搜索结果并跟踪申请进度
 
-### Configuration in Clawdbot
+### 在Clawdbot中的配置
 
-Add to your Clawdbot configuration:
+将该技能添加到Clawdbot的配置文件中：
 
 ```json
 {
@@ -150,42 +150,42 @@ Add to your Clawdbot configuration:
 }
 ```
 
-## Features
+## 功能特点
 
-### 1. Multi-Platform Search
-- Searches across all major job platforms
-- Uses official APIs when available
-- Falls back to web scraping for platforms without APIs
+### 1. 多平台搜索
+- 覆盖所有主要的求职平台
+- 在支持API的平台使用官方API
+- 在没有API的平台使用网页抓取技术
 
-### 2. Smart Matching
-- Analyzes job descriptions for requirement matching
-- Calculates compatibility scores
-- Filters jobs based on minimum match threshold
+### 2. 智能匹配
+- 分析职位描述以判断用户资格是否符合要求
+- 计算职位匹配度得分
+- 根据最低匹配阈值筛选职位
 
-### 3. Application Customization
-- Generates tailored cover letters per job
-- Customizes resume emphasis based on job requirements
-- Handles platform-specific application forms
+### 3. 申请个性化
+- 为每个职位生成定制的求职信
+- 根据职位要求调整简历的重点内容
+- 处理各平台特有的申请表格
 
-### 4. Safety Features
-- **Dry Run Mode**: Test without submitting applications
-- **Manual Confirmation**: Review each application before submission
-- **Rate Limiting**: Prevents overwhelming platforms
-- **Application Logging**: Tracks all submissions for reference
+### 4. 安全功能
+- **试运行模式**：在不提交申请的情况下进行测试
+- **手动确认**：在提交前审核每个申请
+- **速率限制**：防止过度占用平台资源
+- **申请记录**：记录所有申请信息以供参考
 
-### 5. Form Automation
-Automatically fills common application fields:
-- Personal information
-- Work authorization status
-- Education and experience
-- Skills and certifications
-- Screening questions (using AI when needed)
+### 5. 表单自动化
+- 自动填写常见的申请字段：
+  - 个人信息
+  - 工作授权状态
+  - 教育背景和工作经验
+  - 技能和认证
+  - 筛选问题（必要时使用人工智能）
 
-## Advanced Usage
+## 高级用法
 
-### Custom Cover Letter Templates
+### 定制求职信模板
 
-Create a template with placeholders:
+创建包含占位符的求职信模板：
 
 ```text
 Dear Hiring Manager at {company},
@@ -201,35 +201,35 @@ Best regards,
 {name}
 ```
 
-### Application Tracking
+### 申请跟踪
 
-Results are automatically saved in JSON format with details on each application submitted, including timestamps, match scores, and status.
+搜索结果会以JSON格式自动保存，其中包含每个申请的详细信息，如提交时间、匹配度得分和申请状态。
 
-## Bundled Resources
+## 配套资源
 
-### Scripts
-- `job_search_apply.py` - Main automation script with search, matching, and application logic
+### 脚本
+- `job_search_apply.py`：包含搜索、匹配和申请逻辑的主要自动化脚本
 
-### References
-- `platform_integration.md` - Technical documentation for API integration, web scraping, form automation, and platform-specific details
+### 参考文档
+- `platform_integration.md`：关于API集成、网页抓取、表单自动化和平台特定细节的技术文档
 
-### Assets
-- `profile_template.json` - Comprehensive profile template with all required and optional fields
+### 资源文件
+- `profile_template.json`：包含所有必填和可选字段的完整用户资料模板
 
-## Safety and Ethics
+## 安全与道德规范
 
-### Important Guidelines
+### 重要提示
 
-1. **Truthfulness**: Never misrepresent qualifications or experience
-2. **Genuine Interest**: Only apply to jobs you're actually interested in
-3. **Rate Limiting**: Respect platform limits and terms of service
-4. **Manual Review**: Consider enabling confirmation mode for quality control
-5. **Privacy**: Secure storage of personal information and credentials
+1. **诚实守信**：切勿夸大自己的资格或工作经验
+2. **真诚申请**：仅申请你真正感兴趣的职位
+3. **遵守平台限制**：遵守各平台的使用条款和限制
+4. **手动审核**：为确保申请质量，可启用确认功能
+5. **保护隐私**：妥善保管个人资料和密码
 
-### Best Practices
+### 最佳实践
 
-- Start with dry-run mode to verify behavior
-- Set reasonable limits (5-10 applications per day)
-- Use high match score thresholds (0.75+)
-- Enable confirmation for important applications
-- Track results to optimize strategy
+- 先使用试运行模式验证功能
+- 设置合理的申请频率（每天5-10次）
+- 设置较高的匹配度阈值（0.75以上）
+- 对重要申请启用确认功能
+- 跟踪申请结果以优化申请策略

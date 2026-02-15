@@ -1,27 +1,27 @@
 ---
 name: simple-math
-description: Perform basic arithmetic operations safely using standard operators without eval or exec
+description: 使用标准运算符（如加法、减法、乘法、除法）安全地执行基本算术运算，避免使用 `eval` 或 `exec` 函数。
 license: MIT
 allowed-tools:
   - Python
 ---
 
-# Simple Math Skill
+# 简单数学技能
 
-Performs basic arithmetic operations safely.
+能够安全地执行基本的算术运算。
 
-## Features
+## 功能特点
 
-- Addition, subtraction, multiplication, division
-- No eval() or exec()
-- Input validation
-- Safe implementation
+- 加法、减法、乘法、除法
+- 不使用 `eval()` 或 `exec()` 函数
+- 输入验证
+- 安全的实现方式
 
-## Usage
+## 使用方法
 
-When user requests calculations, use standard Python operators.
+当用户请求计算时，使用标准的 Python 运算符即可。
 
-## Example
+## 示例
 
-User: "What's 25 + 17?"
-Agent: *uses simple-math skill* The result is 42.
+用户：“25 加 17 等于多少？”
+机器人：*使用简单数学技能* 结果是 42。

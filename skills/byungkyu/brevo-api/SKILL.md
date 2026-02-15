@@ -17,9 +17,9 @@ metadata:
 
 # Brevo
 
-Access the Brevo API with managed OAuth authentication. Send transactional emails, manage contacts and lists, create email campaigns, and work with templates.
+您可以使用受管理的 OAuth 认证来访问 Brevo API。该 API 支持发送交易性电子邮件、管理联系人和列表、创建电子邮件活动以及使用模板等功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get account info
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/brevo/v3/{resource}
 ```
 
-The gateway proxies requests to `api.brevo.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `api.brevo.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Brevo OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Brevo OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Brevo connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Brevo 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Account
+### 账户
 
-#### Get Account Info
+#### 获取账户信息
 
 ```bash
 GET /brevo/v3/account
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "email": "user@example.com",
@@ -170,20 +170,20 @@ GET /brevo/v3/account
 }
 ```
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /brevo/v3/contacts
 ```
 
-**Query Parameters:**
-- `limit` - Number of results per page (default: 50, max: 500)
-- `offset` - Index of first result (0-based)
-- `modifiedSince` - Filter by modification date (ISO 8601)
+**查询参数：**
+- `limit` - 每页显示的结果数量（默认：50，最大：500）
+- `offset` - 第一个结果的索引（从 0 开始）
+- `modifiedSince` - 按修改日期过滤（ISO 8601 格式）
 
-**Response:**
+**响应：**
 ```json
 {
   "contacts": [
@@ -205,18 +205,18 @@ GET /brevo/v3/contacts
 }
 ```
 
-#### Get Contact
+#### 获取联系人信息
 
 ```bash
 GET /brevo/v3/contacts/{identifier}
 ```
 
-The identifier can be email address, phone number, or contact ID.
+联系人标识符可以是电子邮件地址、电话号码或联系人 ID。
 
-**Query Parameters:**
-- `identifierType` - Type of identifier: `email_id`, `phone_id`, `contact_id`, `ext_id`
+**查询参数：**
+- `identifierType` - 标识符类型：`email_id`、`phone_id`、`contact_id`、`ext_id`
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /brevo/v3/contacts
@@ -233,16 +233,16 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 2
 }
 ```
 
-Set `updateEnabled: true` to update the contact if it already exists.
+如果联系人已存在，请设置 `updateEnabled: true` 以更新其信息。
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PUT /brevo/v3/contacts/{identifier}
@@ -256,31 +256,31 @@ Content-Type: application/json
 }
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /brevo/v3/contacts/{identifier}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Get Contact Campaign Stats
+#### 获取联系人活动统计信息
 
 ```bash
 GET /brevo/v3/contacts/{identifier}/campaignStats
 ```
 
-### Lists
+### 列表
 
-#### List All Lists
+#### 列出所有列表
 
 ```bash
 GET /brevo/v3/contacts/lists
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "lists": [
@@ -297,13 +297,13 @@ GET /brevo/v3/contacts/lists
 }
 ```
 
-#### Get List
+#### 获取列表信息
 
 ```bash
 GET /brevo/v3/contacts/lists/{listId}
 ```
 
-#### Create List
+#### 创建列表
 
 ```bash
 POST /brevo/v3/contacts/lists
@@ -315,14 +315,14 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 3
 }
 ```
 
-#### Update List
+#### 更新列表信息
 
 ```bash
 PUT /brevo/v3/contacts/lists/{listId}
@@ -333,23 +333,23 @@ Content-Type: application/json
 }
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Delete List
+#### 删除列表
 
 ```bash
 DELETE /brevo/v3/contacts/lists/{listId}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Get Contacts in List
+#### 获取列表中的联系人
 
 ```bash
 GET /brevo/v3/contacts/lists/{listId}/contacts
 ```
 
-#### Add Contacts to List
+#### 将联系人添加到列表中
 
 ```bash
 POST /brevo/v3/contacts/lists/{listId}/contacts/add
@@ -360,7 +360,7 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Contacts from List
+#### 从列表中删除联系人
 
 ```bash
 POST /brevo/v3/contacts/lists/{listId}/contacts/remove
@@ -371,15 +371,15 @@ Content-Type: application/json
 }
 ```
 
-### Folders
+### 文件夹
 
-#### List Folders
+#### 列出文件夹
 
 ```bash
 GET /brevo/v3/contacts/folders
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "folders": [
@@ -395,13 +395,13 @@ GET /brevo/v3/contacts/folders
 }
 ```
 
-#### Get Folder
+#### 获取文件夹信息
 
 ```bash
 GET /brevo/v3/contacts/folders/{folderId}
 ```
 
-#### Create Folder
+#### 创建文件夹
 
 ```bash
 POST /brevo/v3/contacts/folders
@@ -412,14 +412,14 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 4
 }
 ```
 
-#### Update Folder
+#### 更新文件夹信息
 
 ```bash
 PUT /brevo/v3/contacts/folders/{folderId}
@@ -430,31 +430,31 @@ Content-Type: application/json
 }
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Delete Folder
+#### 删除文件夹
 
 ```bash
 DELETE /brevo/v3/contacts/folders/{folderId}
 ```
 
-Deletes folder and all lists within it. Returns 204 No Content on success.
+删除文件夹及其内的所有列表。成功时返回 204（表示内容无变化）。
 
-#### Get Lists in Folder
+#### 获取文件夹中的列表
 
 ```bash
 GET /brevo/v3/contacts/folders/{folderId}/lists
 ```
 
-### Attributes
+### 属性
 
-#### List Attributes
+#### 列出属性
 
 ```bash
 GET /brevo/v3/contacts/attributes
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "attributes": [
@@ -472,7 +472,7 @@ GET /brevo/v3/contacts/attributes
 }
 ```
 
-#### Create Attribute
+#### 创建属性
 
 ```bash
 POST /brevo/v3/contacts/attributes/{category}/{attributeName}
@@ -483,9 +483,9 @@ Content-Type: application/json
 }
 ```
 
-Categories: `normal`, `transactional`, `category`, `calculated`, `global`
+属性类别：`normal`、`transactional`、`category`、`calculated`、`global`
 
-#### Update Attribute
+#### 更新属性
 
 ```bash
 PUT /brevo/v3/contacts/attributes/{category}/{attributeName}
@@ -496,15 +496,15 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Attribute
+#### 删除属性
 
 ```bash
 DELETE /brevo/v3/contacts/attributes/{category}/{attributeName}
 ```
 
-### Transactional Emails
+### 交易性电子邮件
 
-#### Send Email
+#### 发送电子邮件
 
 ```bash
 POST /brevo/v3/smtp/email
@@ -526,71 +526,71 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "messageId": "<202602092329.12910305853@smtp-relay.mailin.fr>"
 }
 ```
 
-**Optional Parameters:**
-- `cc` - Carbon copy recipients
-- `bcc` - Blind carbon copy recipients
-- `replyTo` - Reply-to address
-- `textContent` - Plain text version
-- `templateId` - Use a template instead of htmlContent
-- `params` - Template parameters
-- `attachment` - File attachments
-- `headers` - Custom headers
-- `tags` - Email tags for tracking
-- `scheduledAt` - Schedule for later (ISO 8601)
+**可选参数：**
+- `cc` - 抄送收件人
+- `bcc` - 密件抄送收件人
+- `replyTo` - 回复地址
+- `textContent` - 纯文本版本
+- `templateId` - 使用模板而不是 `htmlContent`
+- `params` - 模板参数
+- `attachment` - 文件附件
+- `headers` - 自定义邮件头
+- `tags` - 用于跟踪的邮件标签
+- `scheduledAt` - 安排发送时间（ISO 8601 格式）
 
-#### Get Transactional Emails
+#### 获取交易性电子邮件
 
 ```bash
 GET /brevo/v3/smtp/emails
 ```
 
-**Query Parameters:**
-- `email` - Filter by recipient email
-- `templateId` - Filter by template
-- `messageId` - Filter by message ID
-- `startDate` - Start date (YYYY-MM-DD)
-- `endDate` - End date (YYYY-MM-DD)
-- `limit` - Results per page
-- `offset` - Starting index
+**查询参数：**
+- `email` - 按收件人电子邮件地址过滤
+- `templateId` - 按模板过滤
+- `messageId` - 按消息 ID 过滤
+- `startDate` - 开始日期（YYYY-MM-DD 格式）
+- `endDate` - 结束日期（YYYY-MM-DD 格式）
+- `limit` - 每页显示的结果数量
+- `offset` - 开始索引
 
-#### Delete Scheduled Email
+#### 删除已安排的电子邮件
 
 ```bash
 DELETE /brevo/v3/smtp/email/{identifier}
 ```
 
-The identifier can be a messageId or batchId.
+标识符可以是 `messageId` 或 `batchId`。
 
-#### Get Email Statistics
+#### 获取电子邮件统计信息
 
 ```bash
 GET /brevo/v3/smtp/statistics/events
 ```
 
-**Query Parameters:**
-- `limit` - Results per page
-- `offset` - Starting index
-- `startDate` - Start date
-- `endDate` - End date
-- `email` - Filter by recipient
-- `event` - Filter by event type: `delivered`, `opened`, `clicked`, `bounced`, etc.
+**查询参数：**
+- `limit` - 每页显示的结果数量
+- `offset` - 开始索引
+- `startDate` - 开始日期
+- `endDate` - 结束日期
+- `email` - 按收件人过滤
+- `event` - 按事件类型过滤：`delivered`、`opened`、`clicked`、`bounced` 等
 
-### Email Templates
+### 电子邮件模板
 
-#### List Templates
+#### 列出模板
 
 ```bash
 GET /brevo/v3/smtp/templates
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 1,
@@ -612,13 +612,13 @@ GET /brevo/v3/smtp/templates
 }
 ```
 
-#### Get Template
+#### 获取模板信息
 
 ```bash
 GET /brevo/v3/smtp/templates/{templateId}
 ```
 
-#### Create Template
+#### 创建模板
 
 ```bash
 POST /brevo/v3/smtp/templates
@@ -635,14 +635,14 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 1
 }
 ```
 
-#### Update Template
+#### 更新模板
 
 ```bash
 PUT /brevo/v3/smtp/templates/{templateId}
@@ -654,17 +654,17 @@ Content-Type: application/json
 }
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Delete Template
+#### 删除模板
 
 ```bash
 DELETE /brevo/v3/smtp/templates/{templateId}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Send Test Email
+#### 发送测试邮件
 
 ```bash
 POST /brevo/v3/smtp/templates/{templateId}/sendTest
@@ -675,21 +675,21 @@ Content-Type: application/json
 }
 ```
 
-### Email Campaigns
+### 电子邮件活动
 
-#### List Campaigns
+#### 列出活动
 
 ```bash
 GET /brevo/v3/emailCampaigns
 ```
 
-**Query Parameters:**
-- `type` - Filter by type: `classic`, `trigger`
-- `status` - Filter by status: `draft`, `sent`, `archive`, `queued`, `suspended`, `in_process`
-- `limit` - Results per page
-- `offset` - Starting index
+**查询参数：**
+- `type` - 按类型过滤：`classic`、`trigger`
+- `status` - 按状态过滤：`draft`、`sent`、`archive`、`queued`、`suspended`、`in_process`
+- `limit` - 每页显示的结果数量
+- `offset` - 开始索引
 
-**Response:**
+**响应：**
 ```json
 {
   "count": 1,
@@ -710,13 +710,13 @@ GET /brevo/v3/emailCampaigns
 }
 ```
 
-#### Get Campaign
+#### 获取活动信息
 
 ```bash
 GET /brevo/v3/emailCampaigns/{campaignId}
 ```
 
-#### Create Campaign
+#### 创建活动
 
 ```bash
 POST /brevo/v3/emailCampaigns
@@ -736,14 +736,14 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": 2
 }
 ```
 
-#### Update Campaign
+#### 更新活动信息
 
 ```bash
 PUT /brevo/v3/emailCampaigns/{campaignId}
@@ -755,23 +755,23 @@ Content-Type: application/json
 }
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Delete Campaign
+#### 删除活动
 
 ```bash
 DELETE /brevo/v3/emailCampaigns/{campaignId}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示内容无变化）。
 
-#### Send Campaign Now
+#### 立即发送活动
 
 ```bash
 POST /brevo/v3/emailCampaigns/{campaignId}/sendNow
 ```
 
-#### Send Test Email
+#### 发送测试邮件
 
 ```bash
 POST /brevo/v3/emailCampaigns/{campaignId}/sendTest
@@ -782,7 +782,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Campaign Status
+#### 更新活动状态
 
 ```bash
 PUT /brevo/v3/emailCampaigns/{campaignId}/status
@@ -793,15 +793,15 @@ Content-Type: application/json
 }
 ```
 
-### Senders
+### 发件人
 
-#### List Senders
+#### 列出发件人
 
 ```bash
 GET /brevo/v3/senders
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "senders": [
@@ -816,13 +816,13 @@ GET /brevo/v3/senders
 }
 ```
 
-#### Get Sender
+#### 获取发件人信息
 
 ```bash
 GET /brevo/v3/senders/{senderId}
 ```
 
-#### Create Sender
+#### 创建发件人
 
 ```bash
 POST /brevo/v3/senders
@@ -834,7 +834,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Sender
+#### 更新发件人信息
 
 ```bash
 PUT /brevo/v3/senders/{senderId}
@@ -845,35 +845,35 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Sender
+#### 删除发件人
 
 ```bash
 DELETE /brevo/v3/senders/{senderId}
 ```
 
-### Blocked Contacts
+### 被阻止的联系人
 
-#### List Blocked Contacts
+#### 列出被阻止的联系人
 
 ```bash
 GET /brevo/v3/smtp/blockedContacts
 ```
 
-#### Unblock Contact
+#### 解封联系人
 
 ```bash
 DELETE /brevo/v3/smtp/blockedContacts/{email}
 ```
 
-### Blocked Domains
+### 被阻止的域名
 
-#### List Blocked Domains
+#### 列出被阻止的域名
 
 ```bash
 GET /brevo/v3/smtp/blockedDomains
 ```
 
-#### Add Blocked Domain
+#### 添加被阻止的域名
 
 ```bash
 POST /brevo/v3/smtp/blockedDomains
@@ -884,25 +884,25 @@ Content-Type: application/json
 }
 ```
 
-#### Remove Blocked Domain
+#### 删除被阻止的域名
 
 ```bash
 DELETE /brevo/v3/smtp/blockedDomains/{domain}
 ```
 
-## Pagination
+## 分页
 
-Brevo uses offset-based pagination:
+Brevo 使用基于偏移量的分页机制：
 
 ```bash
 GET /brevo/v3/contacts?limit=50&offset=0
 ```
 
-**Parameters:**
-- `limit` - Number of results per page (varies by endpoint, typically max 500)
-- `offset` - Starting index (0-based)
+**参数：**
+- `limit` - 每页显示的结果数量（因端点而异，通常最大为 500）
+- `offset` - 开始索引（从 0 开始）
 
-**Response includes count:**
+**响应中包含总数：**
 ```json
 {
   "contacts": [...],
@@ -910,12 +910,12 @@ GET /brevo/v3/contacts?limit=50&offset=0
 }
 ```
 
-To get the next page, increment offset by limit:
-- Page 1: `offset=0&limit=50`
-- Page 2: `offset=50&limit=50`
-- Page 3: `offset=100&limit=50`
+要获取下一页，请将 `offset` 增加 `limit` 的值：
+- 第 1 页：`offset=0&limit=50`
+- 第 2 页：`offset=50&limit=50`
+- 第 3 页：`offset=100&limit=50`
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -946,7 +946,7 @@ data = response.json()
 print(data['contacts'])
 ```
 
-### Python (Send Email)
+### Python（发送电子邮件）
 
 ```python
 import os
@@ -969,7 +969,7 @@ result = response.json()
 print(f"Sent! Message ID: {result['messageId']}")
 ```
 
-### Python (Create Contact and Add to List)
+### Python（创建联系人并将其添加到列表中）
 
 ```python
 import os
@@ -994,43 +994,43 @@ contact = response.json()
 print(f"Created contact ID: {contact['id']}")
 ```
 
-## Notes
+## 注意事项
 
-- All endpoints require the `/v3/` prefix in the path
-- Attribute names must be in UPPERCASE
-- Contact identifiers can be email, phone, or ID
-- Sender email addresses must be verified in Brevo
-- Template parameters use `{{params.name}}` syntax
-- PUT and DELETE operations return 204 No Content on success
-- Rate limits: 300 calls/minute on free plans, higher on paid plans
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有端点的路径前缀都必须加上 `/v3/`。
+- 属性名称必须使用大写字母。
+- 联系人标识符可以是电子邮件地址、电话号码或 ID。
+- 发件人电子邮件地址必须在 Brevo 中经过验证。
+- 模板参数使用 `{{params.name}}` 语法。
+- PUT 和 DELETE 操作成功时返回 204（表示内容无变化）。
+- 资源限制：免费计划每分钟 300 次请求；付费计划的限制更高。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Brevo connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Brevo API |
+| 400 | 未建立 Brevo 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 超过请求限制 |
+| 4xx/5xx | 来自 Brevo API 的传递错误 |
 
-Rate limit headers in response:
-- `x-sib-ratelimit-limit` - Request limit
-- `x-sib-ratelimit-remaining` - Remaining requests
-- `x-sib-ratelimit-reset` - Reset time
+响应中的速率限制相关头信息：
+- `x-sib-ratelimit-limit` - 请求限制
+- `x-sib-ratelimit-remaining` - 剩余请求次数
+- `x-sib-ratelimit-reset` - 重置时间
 
-### Troubleshooting: Invalid API Key
+### 故障排除：API 密钥无效
 
-**When you receive an "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
+**当您收到“API 密钥无效”的错误时，请务必按照以下步骤操作，再判断是否存在问题：**
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -1041,10 +1041,10 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Resources
+## 资源
 
-- [Brevo API Overview](https://developers.brevo.com/)
-- [Brevo API Key Concepts](https://developers.brevo.com/docs/how-it-works)
+- [Brevo API 概述](https://developers.brevo.com/)
+- [Brevo API 密钥概念](https://developers.brevo.com/docs/how-it-works)
 - [Brevo OAuth 2.0](https://developers.brevo.com/docs/integrating-oauth-20-to-your-solution)
-- [Manage Contacts](https://developers.brevo.com/docs/synchronise-contact-lists)
-- [Send Transactional Email](https://developers.brevo.com/docs/send-a-transactional-email)
+- [管理联系人](https://developers.brevo.com/docs/synchronise-contact-lists)
+- [发送交易性电子邮件](https://developers.brevo.com/docs/send-a-transactional-email)

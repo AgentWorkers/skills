@@ -1,31 +1,31 @@
 ---
 name: picnic
-description: Order groceries from Picnic supermarket - search products, manage cart, schedule delivery.
+description: 在 Picnic 超市订购食品杂货：搜索产品、管理购物车、安排配送。
 ---
 
-# Picnic Grocery Ordering
+# 野餐食品杂货订购
 
-Use the `picnic` CLI to search products, manage shopping cart, and order groceries from Picnic.
+使用 `picnic` 命令行工具（CLI）来搜索产品、管理购物车，并从 Picnic 网站订购食品杂货。
 
-## Setup (once)
+## 设置（仅需执行一次）
 
 ```bash
 cd {baseDir} && npm install
 ```
 
-Then login:
+然后登录：
 ```bash
 node {baseDir}/picnic-cli.mjs login <email> <password> DE
 ```
 
-If 2FA is required:
+如果需要两步验证（2FA）：
 ```bash
 node {baseDir}/picnic-cli.mjs verify-2fa <code>
 ```
 
-## Commands
+## 命令
 
-All commands output JSON. Run from any directory:
+所有命令的输出格式为 JSON。可以在任意目录下运行这些命令：
 
 ```bash
 # Check login status
@@ -63,19 +63,19 @@ node {baseDir}/picnic-cli.mjs user
 node {baseDir}/picnic-cli.mjs categories
 ```
 
-## Typical ordering flow
+## 典型的订购流程
 
-1. Search for products: `search "bananas"`
-2. Add to cart: `add s1234567 2`
-3. Check cart: `cart`
-4. Get delivery slots: `slots`
-5. Set slot: `set-slot <slotId>`
-6. Confirm with user before final checkout (checkout happens in app)
+1. 搜索产品：`search "bananas"`（搜索“香蕉”）
+2. 添加商品到购物车：`add s1234567 2`（将商品 `s1234567` 添加到购物车，数量为 2 件）
+3. 查看购物车内容：`cart`（查看购物车中的商品）
+4. 查看可用的配送时间：`slots`（查看可用的配送时间段）
+5. 选择配送时间：`set-slot <slotId>`（选择指定的配送时间）
+6. 在最终结账前请务必与用户确认（实际结账操作需要在 Picnic 应用程序中完成）
 
-## Notes
+## 注意事项
 
-- Config stored in `~/.config/picnic/config.json`
-- Country codes: `DE` (Germany) or `NL` (Netherlands)
-- Product IDs start with 's' (e.g., `s1234567`)
-- Always confirm with user before modifying cart or setting delivery slots
-- Final checkout/payment must be done in the Picnic app
+- 配置信息存储在 `~/.config/picnic/config.json` 文件中
+- 国家代码：`DE`（德国）或 `NL`（荷兰）
+- 产品编号以字母 `s` 开头（例如：`s1234567`）
+- 在修改购物车内容或选择配送时间之前，务必先与用户确认
+- 最终的结账/支付操作必须在 Picnic 应用程序中完成

@@ -1,6 +1,6 @@
 ---
 name: system-check
-description: Check system health and performance
+description: 检查系统健康状况和性能
 ---
-# System Check
-Monitors system health metrics.
+# 系统检查
+监控系统健康指标。

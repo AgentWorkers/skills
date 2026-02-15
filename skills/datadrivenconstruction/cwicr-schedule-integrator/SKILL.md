@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-schedule-integrator"
 display_name: "CWICR Schedule Integrator"
-description: "Integrate CWICR cost data with project schedules. Link work items to schedule activities, generate cost-loaded schedules, and cash flow projections."
+description: "将 CWICR 成本数据与项目进度计划集成。将工作项与进度计划中的活动关联起来，生成包含成本信息的进度计划，并生成现金流预测。"
 ---
 
-# CWICR Schedule Integrator
+# CWICR 计划集成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project planning requires:
-- Linking costs to schedule activities
-- Generating cost-loaded schedules
-- Projecting cash flow requirements
-- Tracking earned value
+### 问题描述
+项目规划需要：
+- 将成本与计划活动关联起来
+- 生成包含成本信息的计划表
+- 预测现金流需求
+- 跟踪挣值（Earned Value）
 
-### Solution
-Integrate CWICR cost data with project schedules to create cost-loaded Gantt charts, cash flow curves, and earned value tracking.
+### 解决方案
+将 CWICR 成本数据与项目计划集成，以创建包含成本信息的甘特图（Gantt charts）、现金流曲线（cash flow curves）以及挣值跟踪系统。
 
-### Business Value
-- **Cost visibility** - See when costs occur
-- **Cash flow** - Project funding requirements
-- **Earned value** - Track cost/schedule performance
-- **Integration** - Connect cost and schedule data
+### 商业价值
+- **成本透明度**：了解成本发生的具体时间
+- **现金流**：预测项目资金需求
+- **挣值**：跟踪成本与进度的表现
+- **数据集成**：实现成本与计划数据的无缝对接
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -382,8 +381,7 @@ class CWICRScheduleIntegrator:
         return activities
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 from datetime import date
 
@@ -424,15 +422,15 @@ print(f"Total Cost: ${cash_flow.total_cost:,.2f}")
 print(f"Project Duration: {(cash_flow.end_date - cash_flow.start_date).days} days")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Monthly Cash Flow
+### 1. 月度现金流分析
 ```python
 for month, cost in cash_flow.monthly_costs.items():
     print(f"{month}: ${cost:,.2f}")
 ```
 
-### 2. Earned Value Analysis
+### 2. 挣值分析
 ```python
 progress = {'A001': 100, 'A002': 60}
 actual_costs = {'A001': 45000, 'A002': 72000}
@@ -449,11 +447,11 @@ print(f"SPI: {evm.spi}")
 print(f"EAC: ${evm.eac:,.2f}")
 ```
 
-### 3. Export Cash Flow
+### 3. 现金流导出
 ```python
 integrator.export_cash_flow(cash_flow, "project_cash_flow.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.2 - Cost-Schedule Integration
+- **DDC 书籍**: 第 3.2 章 - 成本与计划的集成（Cost-Schedule Integration）

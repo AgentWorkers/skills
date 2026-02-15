@@ -1,24 +1,24 @@
 ---
 name: meshtastic
-description: Send and receive messages via Meshtastic LoRa mesh network. Use for off-grid messaging, mesh network status, reading recent mesh messages, or sending texts via LoRa radio.
+description: 通过 Meshtastic LoRa 网络发送和接收消息。适用于离网通信、监控网状网络状态、读取最近的网状网络消息，或通过 LoRa 无线电发送文本信息。
 ---
 
-# Meshtastic Skill
+# Meshtastic 技能
 
-Control a Meshtastic node via USB for off-grid LoRa mesh communication.
+通过 USB 控制 Meshtastic 节点，实现离网 LoRa 网络通信。
 
-## Prerequisites
+## 先决条件
 
-- Meshtastic-compatible hardware (RAK4631, T-Beam, Heltec, LilyGo, etc.)
-- USB connection to host machine
-- Python 3.9+ with `meshtastic` and `paho-mqtt` packages
-- See `references/SETUP.md` for full installation guide
+- 兼容 Meshtastic 的硬件（RAK4631、T-Beam、Heltec、LilyGo 等）
+- 与主机计算机之间的 USB 连接
+- 安装了 Python 3.9 及 `meshtastic` 和 `paho-mqtt` 包
+- 请参阅 `references/SETUP.md` 以获取完整的安装指南
 
-## Configuration
+## 配置
 
-Edit `CONFIG.md` with your node details, MQTT settings, and alert destinations.
+使用 `CONFIG.md` 文件编辑节点详细信息、MQTT 设置以及警报接收地址。
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -47,9 +47,9 @@ Edit `CONFIG.md` with your node details, MQTT settings, and alert destinations.
     (send commands)          (message logs)         (mesh traffic)
 ```
 
-## Quick Reference
+## 快速参考
 
-### Send Messages
+### 发送消息
 
 ```bash
 # Via socket (preferred - works while bridge running)
@@ -65,7 +65,7 @@ echo '{"cmd":"status"}' | nc -w 2 127.0.0.1 7331
 echo '{"cmd":"nodes"}' | nc -w 2 127.0.0.1 7331
 ```
 
-### Map Visibility (if configured)
+### 显示节点位置（如已配置）
 
 ```bash
 # Toggle map publishing on/off
@@ -79,7 +79,7 @@ echo '{"cmd":"map","enable":false}' | nc -w 2 127.0.0.1 7331
 echo '{"cmd":"map_now"}' | nc -w 2 127.0.0.1 7331
 ```
 
-### Read Messages
+### 读取消息
 
 ```bash
 # Recent messages (last 20)
@@ -89,14 +89,14 @@ tail -20 /tmp/mesh_messages.txt
 tail -50 /tmp/mesh_messages.txt | grep -v -E "(Hello!|hey|mqtt-test)"
 ```
 
-### Message Log Format
+### 消息日志格式
 
 ```
 TIMESTAMP|CHANNEL|SENDER|DISTANCE|TEXT
 2026-02-02T12:43:59|LongFast|!433bf114|1572km|Moin moin!
 ```
 
-## Bridge Service
+## 桥接服务
 
 ```bash
 # Status
@@ -112,9 +112,9 @@ sudo journalctl -u meshtastic-bridge -f
 sudo systemctl stop meshtastic-bridge
 ```
 
-## Monitoring & Alerts
+## 监控与警报
 
-### Option 1: Cron Job (Recommended)
+### 选项 1：Cron 作业（推荐）
 
 ```javascript
 cron.add({
@@ -131,7 +131,7 @@ cron.add({
 })
 ```
 
-### Option 2: Digest Summary
+### 选项 2：摘要信息
 
 ```javascript
 cron.add({
@@ -148,7 +148,7 @@ cron.add({
 })
 ```
 
-### Option 3: Spawned Monitor Agent
+### 选项 3：生成监控代理
 
 ```javascript
 sessions_spawn({
@@ -158,45 +158,45 @@ sessions_spawn({
 })
 ```
 
-## Distance Reference
+## 距离参考
 
-Approximate distances for country guessing (adjust for your location):
+以下为根据地理位置估算的大致距离（请根据实际情况调整）：
 
-| Distance | Typical Regions |
+| 距离 | 典型区域 |
 |----------|-----------------|
-| <500km | Neighboring countries/regions |
-| 500-1000km | Medium range |
-| 1000-1500km | Long range |
-| 1500-2000km | Very long range (likely MQTT relay) |
-| >2000km | MQTT-bridged traffic |
+| <500km | 邻近国家/地区 |
+| 500-1000km | 中距离 |
+| 1000-1500km | 远距离 |
+| 1500-2000km | 超远距离（可能需要通过 MQTT 中继） |
+| >2000km | 通过 MQTT 转发的数据 |
 
-## Privacy Notes
+## 隐私说明
 
-- Map reports can use fuzzy positioning (~2km precision)
-- Position publishing can be toggled off entirely
-- Local RF messages are logged but not shared externally by default
-- Never broadcast precise location in messages
+- 地图显示可能使用模糊定位（精度约为 2 公里）
+- 可以完全关闭位置信息的发布功能
+- 本地射频消息会被记录，但默认不会对外共享
+- 请勿在消息中广播精确位置信息
 
-## Supported Hardware
+## 支持的硬件
 
-| Device | Notes |
+| 设备 | 说明 |
 |--------|-------|
-| RAK4631 | Recommended, reliable USB |
-| T-Beam | Popular, has GPS |
-| Heltec V3 | Budget option |
-| LilyGo T-Echo | E-paper display |
+| RAK4631 | 推荐使用，具有可靠的 USB 接口 |
+| T-Beam | 广泛使用的设备，支持 GPS |
+| Heltec V3 | 经济型选择 |
+| LilyGo T-Echo | 配备电子纸显示屏 |
 
-See `references/SETUP.md` for hardware-specific setup.
+请参阅 `references/SETUP.md` 以获取针对特定硬件的详细安装说明。
 
-## Regional Frequencies
+## 区域频率
 
-| Region | Frequency | Topic Root |
+| 地区 | 频率 | 主题根路径 |
 |--------|-----------|------------|
-| Europe | 868 MHz | `msh/EU_868/2/json` |
-| Americas | 915 MHz | `msh/US/2/json` |
-| Australia/NZ | 915 MHz | `msh/ANZ/2/json` |
+| 欧洲 | 868 MHz | `msh/EU_868/2/json` |
+| 美洲 | 915 MHz | `msh/US/2/json` |
+| 澳大利亚/新西兰 | 915 MHz | `msh/ANZ/2/json` |
 
-## Files
+## 相关文件
 
 ```
 ~/.openclaw/skills/meshtastic/
@@ -208,29 +208,29 @@ See `references/SETUP.md` for hardware-specific setup.
     └── SETUP.md       # Installation guide
 ```
 
-## Troubleshooting
+## 故障排除
 
-**"Resource temporarily unavailable"**
-- Only one process can use serial port at a time
-- Stop bridge before direct CLI: `sudo systemctl stop meshtastic-bridge`
+**“资源暂时不可用”**
+- 串行端口一次只能被一个进程使用
+- 在直接使用 CLI 命令前，请先停止桥接服务：`sudo systemctl stop meshtastic-bridge`
 
-**No messages appearing**
-- Check MQTT subscription topic matches your region
-- Verify firewall allows outbound port 1883
-- Check `journalctl -u meshtastic-bridge` for errors
+**没有消息显示**
+- 确保订阅的 MQTT 主题与您的地区匹配
+- 检查防火墙是否允许端口 1883 的出站通信
+- 查看 `journalctl -u meshtastic-bridge` 以获取错误日志
 
-**Can't send messages**
-- Ensure bridge is running (socket server)
-- Check serial port path in config
-- Try: `echo '{"cmd":"status"}' | nc -w 2 127.0.0.1 7331`
+**无法发送消息**
+- 确保桥接服务正在运行（即 socket 服务器正在工作）
+- 检查配置文件中的串行端口设置
+- 可以尝试：`echo '{"cmd":"status"}' | nc -w 2 127.0.0.1 7331`
 
-**Considering BLE instead of USB?**
-- Don't. USB is far more reliable on Linux.
-- BLE on Linux (BlueZ/bleak) has notification bugs, pairing inconsistencies, and random disconnects.
-- See `references/SETUP.md` for detailed findings.
+**考虑使用 BLE 替代 USB 吗？**
+- 不建议这样做。在 Linux 系统上，USB 的可靠性更高。
+- Linux 上的 BLE（BlueZ/bleak）存在通知功能不稳定、配对问题以及随机断开连接的情况。
+- 详情请参阅 `references/SETUP.md`。
 
-## Further Reading
+## 更多资源
 
-- [Meshtastic Docs](https://meshtastic.org/docs/)
-- [MQTT Integration](https://meshtastic.org/docs/configuration/module/mqtt/)
-- [Hardware Options](https://meshtastic.org/docs/hardware/)
+- [Meshtastic 官方文档](https://meshtastic.org/docs/)
+- [MQTT 集成指南](https://meshtastic.org/docs/configuration/module/mqtt/)
+- [硬件选项](https://meshtastic.org/docs/hardware/)

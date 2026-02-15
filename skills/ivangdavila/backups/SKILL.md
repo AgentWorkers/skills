@@ -1,63 +1,63 @@
 ---
 name: Backup
-description: Implement reliable backup strategies avoiding data loss, failed restores, and security gaps.
+description: 实施可靠的备份策略，以避免数据丢失、恢复失败以及安全漏洞。
 metadata: {"clawdbot":{"emoji":"💾","os":["linux","darwin","win32"]}}
 ---
 
-## The Only Rule That Matters
-- Untested backups are not backups — schedule regular restore tests, not just backup jobs
-- Test restores to different hardware/location — validates both backup and restore procedure
-- Time the restore — know how long recovery actually takes before disaster strikes
+## 唯一重要的规则  
+- 未经测试的备份根本算不上真正的备份——必须定期进行恢复测试，而不仅仅是执行备份任务。  
+- 在不同的硬件或位置上测试恢复过程——这能够验证备份和恢复机制的有效性。  
+- 记录恢复所需的时间——在灾难发生前了解实际恢复所需的时间。  
 
-## 3-2-1 Rule Violations
-- Same disk as source data = not a backup — disk failure loses both
-- Same server as source = not a backup — ransomware/fire/theft takes both
-- Same cloud account = risky — account compromise or provider issue loses both
-- Cloud sync (Dropbox, Drive) is not backup — syncs deletions and corruption too
+## 3-2-1规则违规情况  
+- 使用与源数据相同的磁盘进行备份：如果磁盘发生故障，所有数据都会丢失。  
+- 在与源数据相同的服务器上进行备份：勒索软件、火灾或盗窃等事件都可能导致数据丢失。  
+- 使用相同的云账户进行备份：账户被攻破或云服务提供商出现问题时，所有数据都会丢失。  
+- 通过云服务（如Dropbox、Drive）进行同步备份：同步操作也会导致数据被删除或损坏。  
 
-## Ransomware Protection
-- Backups accessible from production get encrypted too — air gap or immutable storage required
-- Append-only/immutable storage prevents deletion — S3 Object Lock, Backblaze B2 with retention
-- Offline rotation (USB drives, tapes) for critical data — can't encrypt what's not connected
-- Test restoring from immutable backup — verify ransomware can't corrupt the restore process
+## 勒索软件防护措施  
+- 从生产环境中可访问的备份文件也应被加密——需要使用“空气间隙”（物理隔离）或不可更改的存储方式。  
+- 使用只读/不可更改的存储介质（如S3 Object Lock、Backblaze B2）来防止数据被删除。  
+- 对关键数据使用离线备份方式（如USB驱动器、磁带）——无法加密未连接到的数据。  
+- 测试从不可更改的备份中恢复数据的过程——确保勒索软件无法干扰恢复过程。  
 
-## Database Backup Traps
-- File copy of running database = corrupted backup — use pg_dump, mysqldump, mongodump
-- Point-in-time recovery needs WAL/binlog archiving — dump alone loses recent transactions
-- Large databases: pg_dump locks tables — use pg_basebackup or logical replication for zero downtime
-- Test restore to different server — verifies backup is self-contained
+## 数据库备份的常见陷阱  
+- 使用文件复制方式备份正在运行的数据库会导致备份文件损坏——应使用pg_dump、mysqldump、mongodump等工具。  
+- 实现时间点恢复需要备份WAL（写前日志）或binlog（事务日志）——仅备份这些日志会导致最近的事务丢失。  
+- 对于大型数据库，pg_dump会锁定表结构——应使用pg_basebackup或逻辑复制技术以实现零停机时间。  
+- 在不同的服务器上测试恢复过程——确保备份数据是独立完整的。  
 
-## Incremental Backup Pitfalls
-- Incrementals depend on chain — one corrupted backup breaks all following
-- Long chains slow restores — schedule periodic full backups
-- Deduplication saves space but adds complexity — single repo corruption affects all backups
-- Verify backup integrity regularly — bit rot happens, checksums catch it
+## 增量备份的注意事项  
+- 增量备份依赖于之前的备份文件——如果某个增量备份损坏，后续的所有备份都会受到影响。  
+- 长期的增量备份链会降低恢复速度——应定期执行完整的备份。  
+- 数据去重虽然节省空间，但会增加复杂性——单个备份文件的损坏会影响所有备份文件。  
+- 定期验证备份数据的完整性——使用校验和来检测数据损坏。  
 
-## Retention Mistakes
-- No retention policy = storage fills up — define and automate cleanup
-- Too aggressive retention = can't recover old corruption — keep monthlies for a year minimum
-- Legal/compliance requirements may mandate retention — check before setting policy
-- Grandfather-father-son pattern: daily/weekly/monthly tiers
+## 备份保留策略的错误  
+- 没有明确的保留策略会导致存储空间被占用——应制定并自动化数据清理流程。  
+- 过度的数据保留策略会妨碍数据恢复——至少应保留一个月的备份数据。  
+- 法律或合规要求可能规定了数据保留期限——在制定策略前请务必确认相关要求。  
+- 采用“祖父-父亲-儿子”式备份策略（每日/每周/每月备份）来平衡数据保留和存储空间。  
 
-## Filesystem Traps
-- Permissions and ownership often lost — verify restore preserves them, or document expected state
-- Symlinks may not backup correctly — some tools follow, some copy link, test behavior
-- Sparse files may inflate — 1GB sparse file becomes 1GB actual in backup
-- Extended attributes and ACLs — not all tools preserve them
+## 文件系统的常见问题  
+- 备份过程中权限和文件所有权可能会丢失——需验证恢复操作是否能保留这些信息，或提前记录预期的文件状态。  
+- 符号链接可能无法被正确备份——某些工具会忽略符号链接，需进行测试。  
+- 稀疏文件在备份后可能会占用更多空间——例如1GB的稀疏文件在备份后可能占用实际相同的存储空间。  
+- 一些工具无法正确备份扩展属性和ACL（访问控制列表）。  
 
-## Cloud and Remote
-- Encrypt before upload — cloud provider breach shouldn't expose your data
-- Bandwidth costs add up — initial seed via physical drive for large datasets
-- Region matters for disaster recovery — same region as production doesn't survive regional outage
-- Egress fees can be brutal — know restore costs before emergency
+## 云存储和远程备份  
+- 在上传数据前进行加密——防止云服务提供商的数据泄露。  
+- 大型数据集的上传会带来较高的带宽成本——建议先通过物理驱动器传输初始数据。  
+- 选择合适的云区域进行备份和恢复——与生产环境相同的区域可能无法在地区性故障中保证数据安全。  
+- 数据传输费用可能很高——在紧急情况下请提前了解恢复所需的成本。  
 
-## Tool-Specific
-- rsync `--delete` on wrong direction destroys source — always double-check source/destination
-- restic/borg need repository password — lose it = lose all backups, no recovery
-- Tarball without compression: faster, but larger — choose based on CPU vs storage tradeoff
-- Snapshots (LVM, ZFS, cloud) are not backups — same storage system, same failure domain
+## 工具特定的注意事项  
+- 使用rsync时，如果方向设置错误，可能会导致源数据被删除——务必仔细核对源目录和目标目录。  
+- restic和borg工具需要仓库密码——如果密码丢失，所有备份都将丢失，无法恢复数据。  
+- 未压缩的tarball文件虽然传输速度快，但会占用更多存储空间——根据CPU和存储资源的实际情况选择合适的备份格式。  
+- 快照（如LVM、ZFS、云存储中的快照）并不等同于真正的备份——如果存储系统发生故障，快照也会受到影响。  
 
-## Documentation
-- Document restore procedure — you won't remember under pressure
-- Store procedure outside the backup — printed, different system, password manager
-- Include credentials, paths, expected time — everything needed to restore at 3am
+## 文档编写的重要性  
+- 详细记录恢复步骤——在紧急情况下，你可能无法记住这些操作。  
+- 将恢复流程的文档保存在独立的位置（如纸质文档、其他系统或密码管理工具中）。  
+- 包括所有必要的信息：用户名、密码、备份路径以及预期的恢复时间——确保在需要时能够快速恢复数据。

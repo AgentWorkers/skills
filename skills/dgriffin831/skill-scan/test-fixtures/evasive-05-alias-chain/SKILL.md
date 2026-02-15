@@ -1,6 +1,6 @@
 ---
 name: file-tools
-description: File management utilities
+description: 文件管理工具
 ---
-# File Tools
-Common file operations for agents.
+# 文件工具  
+用于代理程序的常见文件操作。

@@ -1,21 +1,26 @@
 ---
 name: skill-scanner-guard
 license: MIT
-description: Add a security gate around OpenClaw AgentSkills using cisco-ai-defense/skill-scanner. Use when setting up or operating skill scanning for ~/.openclaw/skills, wiring auto-scan/quarantine on new skill folders, wrapping ClawHub installs with scan-before-install, generating scan reports (markdown/json/sarif), or tuning block thresholds (block High/Critical; allow Medium with warnings).
+description: 使用 `cisco-ai-defense/skill-scanner` 为 OpenClaw AgentSkills 添加安全防护机制。该机制适用于以下场景：  
+- 在设置或运行技能扫描时（针对路径 `~/.openclaw/skills`）；  
+- 为新技能文件夹配置自动扫描/隔离功能；  
+- 在安装 ClawHub 之前执行扫描；  
+- 生成扫描报告（格式包括 Markdown、JSON 或 SARIF）；  
+- 调整安全策略的阈值（例如：将规则设置为“高/严重”级别，允许“中等”级别但触发警告）。
 ---
 
-# Skill Scanner Guard
+# 技能扫描保护机制（Skill Scanner Guard）
 
-Harden OpenClaw’s skill supply chain:
-- Scan skills with **cisco-ai-defense/skill-scanner**
-- Block only on **High/Critical**
-- Allow **Medium/Low/Info** but warn
-- Auto-scan on changes to `~/.openclaw/skills`
-- Quarantine failing skills to `~/.openclaw/skills-quarantine`
+**强化 OpenClaw 的技能供应链安全：**
+- 使用 `cisco-ai-defense/skill-scanner` 工具扫描技能。
+- 仅阻止 **高风险（High）** 或 **关键（Critical）** 等级的技能。
+- 允许 **中等（Medium）**、**低风险（Low）** 或 **信息（Info）** 等级的技能通过，但会发出警告。
+- 每当 `~/.openclaw/skills` 目录中的技能发生变化时，系统会自动触发扫描。
+- 失败的技能会被隔离到 `~/.openclaw/skills-quarantine` 目录中。
 
-## Quick start
+## 快速入门
 
-### Install skill-scanner (repo + uv env)
+### 安装 skill-scanner（包含仓库和 UV 环境配置）
 
 ```bash
 cd "$HOME/.openclaw/workspace"
@@ -26,46 +31,46 @@ cd skill-scanner
 CC=gcc uv sync --all-extras
 ```
 
-Note: some environments try `gcc-12` while building `yara-python`; forcing `CC=gcc` avoids that.
+**注意：** 在使用 `yara-python` 构建工具时，某些环境可能会尝试使用 `gcc-12`；强制设置 `CC=gcc` 可以避免这个问题。
 
-## Workflows
+## 工作流程
 
-### 1) Scan all user skills (manual)
+### 1) 手动扫描所有用户的技能
 
-User skills live at:
+用户的技能文件存储在：
 - `~/.openclaw/skills`
 
-Run:
+执行命令：
 ```bash
 $HOME/.openclaw/skills/skill-scanner-guard/scripts/scan_openclaw_skills.sh
 ```
 
-Outputs go to:
+扫描结果会保存在：
 - `/home/rev/.openclaw/workspace/skill_scans/`
 
-### 2) Install a folder skill with scan gate (copy/clone workflow)
+### 2) 通过扫描机制安装文件夹中的技能（复制/克隆流程）
 
-Use the wrapper instead of copying directly:
+建议使用封装脚本而非直接复制文件：
 ```bash
 $HOME/.openclaw/skills/skill-scanner-guard/scripts/scan_and_add_skill.sh /path/to/skill-dir
 ```
 
-Policy:
-- Block only if **High/Critical** exist (unless `--force`)
-- Still installs if only Medium/Low/Info exist, but prints a warning summary
+**规则：**
+- 仅阻止高风险（High）或关键（Critical）等级的技能通过（除非使用 `--force` 参数）。
+- 即使只有中等（Medium）或低风险（Low）等级的技能，系统也会进行安装，并会打印警告信息。
 
-### 3) Install from ClawHub with scan gate (staging install)
+### 3) 通过 ClawHub 安装技能（分阶段安装流程）
 
-Install to a staging dir, scan, then copy into `~/.openclaw/skills` only if allowed:
+首先将技能文件安装到临时目录，然后进行扫描；只有通过扫描的技能才会被复制到 `~/.openclaw/skills` 目录中：
 ```bash
 $HOME/.openclaw/skills/skill-scanner-guard/scripts/clawhub_scan_install.sh <slug>
 # optionally
 $HOME/.openclaw/skills/skill-scanner-guard/scripts/clawhub_scan_install.sh <slug> --version <version>
 ```
 
-### 4) Auto-scan + quarantine on change (systemd user units)
+### 4) 自动扫描并在技能发生变化时进行隔离（使用 systemd 用户单元）
 
-Install the units (templates are in `references/`):
+相关脚本模板位于 `references/` 目录中：
 ```bash
 mkdir -p ~/.config/systemd/user
 cp -a "$HOME/.openclaw/skills/skill-scanner-guard/references/openclaw-skill-scan."* ~/.config/systemd/user/
@@ -74,27 +79,20 @@ systemctl --user daemon-reload
 systemctl --user enable --now openclaw-skill-scan.path
 ```
 
-Behavior:
-- Any change under `~/.openclaw/skills/` triggers `scripts/auto_scan_user_skills.sh`
-- If High/Critical findings exist, the script moves failing skill directories to:
-  `~/.openclaw/skills-quarantine/<skillname>-<timestamp>`
-- Reports are written to:
+**行为：**
+- 任何对 `~/.openclaw/skills/` 目录的修改都会触发 `scripts/auto_scan_user_skills.sh` 脚本的执行。
+- 如果检测到高风险（High）或关键（Critical）等级的技能问题，该脚本会将问题技能文件移动到：
+  `~/.openclaw/skills-quarantine/<技能名称>-<时间戳>`
+- 报告文件会被保存在：
   `/home/rev/.openclaw/workspace/skill_scans/auto/`
 
-Inspect:
-```bash
-systemctl --user status openclaw-skill-scan.path
-journalctl --user -u openclaw-skill-scan.service -n 100 --no-pager
-ls -la ~/.openclaw/skills-quarantine
-```
+### 相关资源
 
-## Bundled resources
+### scripts/ 目录：
+- `scan_openclaw_skills.sh`：生成用户技能和捆绑技能的 Markdown 报告。
+- `scan_and_add_skill.sh`：扫描指定文件夹中的技能，并仅在允许的情况下进行安装。
+- `clawhub_scan_install.sh`：从 ClawHub 下载技能文件，进行扫描后进行安装。
+- `auto_scan_user_skills.sh`：自动扫描 `~/.openclaw/skills` 目录中的所有变化，并隔离高风险/关键等级的技能问题。
 
-### scripts/
-- `scan_openclaw_skills.sh`: generate markdown reports for user + bundled skills
-- `scan_and_add_skill.sh`: scan candidate folder skill; install only if allowed
-- `clawhub_scan_install.sh`: stage-install from ClawHub, scan, then install
-- `auto_scan_user_skills.sh`: scan-all on `~/.openclaw/skills` changes; quarantine High/Critical failures
-
-### references/
-- `openclaw-skill-scan.path` / `openclaw-skill-scan.service`: systemd --user path trigger units
+### references/ 目录：
+- `openclaw-skill-scan.path` 和 `openclaw-skill-scan.service`：用于触发 systemd 用户单元的配置文件。

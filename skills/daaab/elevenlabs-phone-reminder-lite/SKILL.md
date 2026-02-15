@@ -1,33 +1,33 @@
 ---
 name: elevenlabs-phone-reminder-lite
-description: Build AI phone call reminders with ElevenLabs Conversational AI + Twilio. Free starter guide.
+description: 使用 ElevenLabs 的 Conversational AI 和 Twilio 构建 AI 电话提醒功能。免费入门指南。
 version: 1.0.0
 author: LittleLobster
 license: MIT
 ---
 
-# 📞 AI Phone Reminder (Lite)
+# 📞 AI电话提醒（Lite版）
 
-Build an AI assistant that can **call you on the phone** with natural voice conversations!
+构建一个能够通过自然语音与你通话的AI助手！
 
-## 🎯 What You'll Build
+## 🎯 你将构建的内容
 
-- AI agent that makes outbound phone calls
-- Natural conversation with voice cloning
-- Multi-language support (including Chinese, Japanese, etc.)
-- Real-time voice interaction (not pre-recorded!)
+- 一个能够发起外拨电话的AI代理
+- 具备语音克隆功能的自然对话系统
+- 多语言支持（包括中文、日语等）
+- 实时语音交互（非预录制）
 
-## 📋 Prerequisites
+## 📋 先决条件
 
-1. **ElevenLabs Account** (Creator plan or above)
-   - Sign up: https://elevenlabs.io
-   - Includes 250 minutes/month of Conversational AI
+1. **ElevenLabs账户**（Creator计划或以上）
+   - 注册：https://elevenlabs.io
+   - 包含每月250分钟的对话式AI使用时间
 
-2. **Twilio Account**
-   - Sign up: https://twilio.com
-   - Need: Account SID, Auth Token, Phone Number (~$1.15/month for US)
+2. **Twilio账户**
+   - 注册：https://twilio.com
+   - 需要：Account SID、Auth Token和电话号码（美国号码费用约为每月1.15美元）
 
-## 🏗️ Architecture
+## 🏗️ 架构
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -42,9 +42,9 @@ Build an AI assistant that can **call you on the phone** with natural voice conv
                     └─────────────┘     └─────────────┘
 ```
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Step 1: Get Your Credentials
+### 第1步：获取凭证
 
 ```bash
 # ElevenLabs
@@ -55,13 +55,13 @@ TWILIO_ACCOUNT_SID="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 TWILIO_AUTH_TOKEN="your_auth_token_here"
 ```
 
-### Step 2: Buy a Twilio Phone Number
+### 第2步：购买Twilio电话号码
 
-1. Go to Twilio Console → Phone Numbers → Buy a Number
-2. Select a US number with **Voice** capability (~$1.15/month)
-3. Enable international calling if needed (Geo Permissions)
+1. 登录Twilio控制台 → 电话号码 → 购买号码
+2. 选择一个具备**语音**功能的美国号码（费用约为每月1.15美元）
+3. 如有需要，启用国际通话功能（需要设置地理权限）
 
-### Step 3: Create ElevenLabs Agent
+### 第3步：创建ElevenLabs代理
 
 ```bash
 curl -X POST "https://api.elevenlabs.io/v1/convai/agents/create" \
@@ -86,7 +86,7 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/agents/create" \
   }'
 ```
 
-### Step 4: Connect Twilio to ElevenLabs
+### 第4步：将Twilio与ElevenLabs连接
 
 ```bash
 curl -X POST "https://api.elevenlabs.io/v1/convai/phone-numbers/create" \
@@ -101,7 +101,7 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/phone-numbers/create" \
   }'
 ```
 
-### Step 5: Make a Call!
+### 第5步：发起电话
 
 ```bash
 curl -X POST "https://api.elevenlabs.io/v1/convai/twilio/outbound-call" \
@@ -114,36 +114,36 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/twilio/outbound-call" \
   }'
 ```
 
-## 💰 Cost Estimate
+## 💰 成本估算
 
-| Item | Cost |
+| 项目 | 成本 |
 |------|------|
-| ElevenLabs Creator | $22/month (250 min included) |
-| Twilio US Number | ~$1.15/month |
-| Outbound call (US) | ~$0.013/min |
-| Outbound call (international) | ~$0.15-0.30/min |
-| **Per 1-min reminder call** | **~$0.11-0.40** |
+| ElevenLabs Creator计划 | 每月22美元（包含250分钟使用时间） |
+| Twilio美国号码 | 每月约1.15美元 |
+| 美国内拨电话 | 每分钟约0.013美元 |
+| 国际电话 | 每分钟约0.15-0.30美元 |
+| 每次1分钟的提醒电话 | 每次约0.11-0.40美元 |
 
-## ⚠️ Limitations of Lite Version
+## ⚠️ Lite版的限制
 
-- Basic setup guide only
-- No optimized voice parameters
-- No error handling examples
-- No scheduling/automation
-- Community support only
+- 仅提供基本设置指南
+- 无优化的语音参数设置
+- 无错误处理示例
+- 无调度/自动化功能
+- 仅提供社区支持
 
-## 🚀 Want More?
+## 🚀 想了解更多？
 
-**Premium Version** includes:
-- ✅ Optimized voice parameters (tested for natural sound)
-- ✅ Complete automation scripts
-- ✅ Multi-language configurations
-- ✅ Error handling & retry logic
-- ✅ Cron job integration
-- ✅ Priority support
+**高级版**包含：
+- ✅ 优化的语音参数（经过测试，音质更自然）
+- ✅ 完整的自动化脚本
+- ✅ 多语言配置
+- ✅ 错误处理与重试机制
+- ✅ Cron作业集成
+- ✅ 优先支持
 
-Get it on **Virtuals ACP**: [Coming Soon]
+可在**Virtuals ACP**平台上购买：[即将推出]
 
 ---
 
-Made with 🦞 by LittleLobster
+由LittleLobster制作 🦞

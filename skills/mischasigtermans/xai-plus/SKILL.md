@@ -14,23 +14,23 @@ metadata:
     primaryEnv: "XAI_API_KEY"
 ---
 
-# xAI Skill
+# xAI 技能
 
-Search X (Twitter), search the web, chat with Grok models (including vision), and analyze X content patterns using xAI's API.
+使用 xAI 的 API 在 X（Twitter）上搜索、浏览网页、与 Grok 模型进行聊天（包括图像分析），并分析 X 平台上的内容模式。
 
-## Features
+## 功能
 
-- **X Search**: Search posts, threads, and accounts with date/handle filters
-- **Web Search**: Search the web via Grok's web_search tool
-- **Chat**: Text and vision (image analysis) with Grok models
-- **Analysis**: Voice patterns, trend research, post safety checks
-- **Models**: List available xAI models
+- **X 搜索**：可按日期或用户名筛选帖子、话题和账号进行搜索。
+- **网页搜索**：通过 Grok 的网页搜索工具在互联网上搜索。
+- **聊天**：与 Grok 模型进行文本聊天或图像分析。
+- **内容分析**：分析语音模式、研究趋势、检查帖子的质量。
+- **模型管理**：查看可用的 xAI 模型列表。
 
-## Setup
+## 设置
 
-### API Key
+### API 密钥
 
-Get your xAI API key from [console.x.ai](https://console.x.ai).
+从 [console.x.ai](https://console.x.ai) 获取您的 xAI API 密钥。
 
 ```bash
 # Via clawdbot config (recommended)
@@ -40,15 +40,15 @@ clawdbot config set skills.entries.xai-plus.apiKey "xai-YOUR-KEY"
 export XAI_API_KEY="xai-YOUR-KEY"
 ```
 
-The scripts check these locations in order:
-1. `XAI_API_KEY` env var
-2. `~/.clawdbot/clawdbot.json` → `env.XAI_API_KEY`
-3. `~/.clawdbot/clawdbot.json` → `skills.entries.xai-plus.apiKey`
-4. `~/.clawdbot/clawdbot.json` → `skills.entries["grok-search"].apiKey` (fallback)
+脚本会按以下顺序查找 API 密钥：
+1. `XAI_API_KEY` 环境变量
+2. `~/.clawdbot/clawdbot.json` 文件中的 `env.XAI_API_KEY`
+3. `~/.clawdbot/clawdbot.json` 文件中的 `skills.entries.xai-plus.apiKey`
+4. `~/.clawdbot/clawdbot.json` 文件中的 `skills.entries["grok-search"].apiKey`（备用选项）
 
-### Default Model (Optional)
+### 默认模型（可选）
 
-Override the default model (`grok-4-1-fast`):
+您可以覆盖默认模型（`grok-4-1-fast`）：
 
 ```bash
 # Via config
@@ -58,25 +58,25 @@ clawdbot config set skills.entries.xai-plus.model "grok-3"
 export XAI_MODEL="grok-3"
 ```
 
-Model priority:
-1. Command-line `--model` flag (highest priority)
-2. `XAI_MODEL` env var
-3. `~/.clawdbot/clawdbot.json` → `env.XAI_MODEL`
-4. `~/.clawdbot/clawdbot.json` → `skills.entries.xai-plus.model`
-5. Default: `grok-4-1-fast`
+模型优先级：
+1. 命令行参数 `--model`（最高优先级）
+2. `XAI_MODEL` 环境变量
+3. `~/.clawdbot/clawdbot.json` 文件中的 `env.XAI_MODEL`
+4. `~/.clawdbot/clawdbot.json` 文件中的 `skills.entries.xai-plus.model`
+5. 默认值：`grok-4-1-fast`
 
-## Search
+## 搜索
 
-### X Search
+### X 搜索
 
-Search X posts and threads with optional filters.
+您可以使用可选的筛选条件在 X 上搜索帖子和话题。
 
-**Basic search:**
+**基本搜索：**
 ```bash
 node {baseDir}/scripts/grok_search.mjs "query" --x
 ```
 
-**With date filter:**
+**按日期筛选：**
 ```bash
 # Last 7 days
 node {baseDir}/scripts/grok_search.mjs "Claude AI" --x --days 7
@@ -85,7 +85,7 @@ node {baseDir}/scripts/grok_search.mjs "Claude AI" --x --days 7
 node {baseDir}/scripts/grok_search.mjs "AI agents" --x --from 2026-01-01 --to 2026-01-31
 ```
 
-**Filter by handles:**
+**按用户名筛选：**
 ```bash
 # Only from specific accounts
 node {baseDir}/scripts/grok_search.mjs "AI news" --x --handles @AnthropicAI,@OpenAI
@@ -94,7 +94,7 @@ node {baseDir}/scripts/grok_search.mjs "AI news" --x --handles @AnthropicAI,@Ope
 node {baseDir}/scripts/grok_search.mjs "GPT" --x --exclude @spam1,@spam2
 ```
 
-**Output formats:**
+**输出格式：**
 ```bash
 # JSON (default, agent-friendly)
 node {baseDir}/scripts/grok_search.mjs "query" --x
@@ -106,7 +106,7 @@ node {baseDir}/scripts/grok_search.mjs "query" --x --links-only
 node {baseDir}/scripts/grok_search.mjs "query" --x --text
 ```
 
-**JSON output schema:**
+**JSON 输出格式：**
 ```json
 {
   "query": "search query",
@@ -124,15 +124,15 @@ node {baseDir}/scripts/grok_search.mjs "query" --x --text
 }
 ```
 
-### Web Search
+### 网页搜索
 
-Search the web via Grok.
+通过 Grok 在互联网上搜索。
 
 ```bash
 node {baseDir}/scripts/grok_search.mjs "TypeScript best practices 2026" --web
 ```
 
-**JSON output schema:**
+**JSON 输出格式：**
 ```json
 {
   "query": "search query",
@@ -150,47 +150,47 @@ node {baseDir}/scripts/grok_search.mjs "TypeScript best practices 2026" --web
 }
 ```
 
-### Search Options
+### 搜索选项
 
-| Flag | Description | Example |
+| 标志 | 描述 | 示例 |
 |------|-------------|---------|
-| `--x` | Search X/Twitter | Required for X search |
-| `--web` | Search the web | Required for web search |
-| `--days N` | Last N days (X only) | `--days 7` |
-| `--from YYYY-MM-DD` | Start date (X only) | `--from 2026-01-01` |
-| `--to YYYY-MM-DD` | End date (X only) | `--to 2026-01-31` |
-| `--handles a,b` | Only these accounts (X only) | `--handles @user1,@user2` |
-| `--exclude a,b` | Exclude accounts (X only) | `--exclude @spam` |
-| `--max N` | Max results | `--max 20` |
-| `--model ID` | Override model | `--model grok-3` |
-| `--json` | JSON output (default) | - |
-| `--links-only` | Just URLs | - |
-| `--text` | Human-readable | - |
-| `--raw` | Include debug output | - |
+| `--x` | 在 X/Twitter 上搜索 | 必需用于 X 搜索 |
+| `--web` | 在网页上搜索 | 必需用于网页搜索 |
+| `--days N` | 过去 N 天内的内容 | `--days 7` |
+| `--from YYYY-MM-DD` | 开始日期 | `--from 2026-01-01` |
+| `--to YYYY-MM-DD` | 结束日期 | `--to 2026-01-31` |
+| `--handles a,b` | 仅搜索这些账号的帖子 | `--handles @user1,@user2` |
+| `--exclude a,b` | 排除这些账号的帖子 | `--exclude @spam` |
+| `--max N` | 最多显示 N 条结果 | `--max 20` |
+| `--model ID` | 指定使用哪个模型 | `--model grok-3` |
+| `--json` | 以 JSON 格式输出 | - |
+| `--links-only` | 仅显示链接 | - |
+| `--text` | 以人类可读格式输出 | - |
+| `--raw` | 包含调试信息 | - |
 
-See [references/search-patterns.md](references/search-patterns.md) for advanced query patterns and optimization tips.
+有关高级查询模式和优化技巧，请参阅 [references/search-patterns.md]。
 
-## Chat
+## 聊天
 
-### Text Chat
+### 文本聊天
 
-Ask Grok anything.
+您可以向 Grok 提出任何问题。
 
 ```bash
 node {baseDir}/scripts/chat.mjs "What is quantum computing?"
 ```
 
-**With model override:**
+**使用指定模型：**
 ```bash
 node {baseDir}/scripts/chat.mjs --model grok-3 "Explain transformers in ML"
 ```
 
-**JSON output:**
+**JSON 输出：**
 ```bash
 node {baseDir}/scripts/chat.mjs --json "What is TypeScript?"
 ```
 
-JSON schema:
+**JSON 格式：**
 ```json
 {
   "model": "grok-4-1-fast",
@@ -200,51 +200,46 @@ JSON schema:
 }
 ```
 
-### Vision Chat
+### 图像聊天
 
-Analyze images with Grok.
+使用 Grok 分析图片。
 
 ```bash
 node {baseDir}/scripts/chat.mjs --image ./screenshot.png "What's in this image?"
 ```
 
-**Multiple images:**
-```bash
-node {baseDir}/scripts/chat.mjs --image ./pic1.jpg --image ./pic2.jpg "Compare these"
-```
+**支持格式**：JPG、PNG、WebP、GIF
 
-**Supported formats:** JPG, PNG, WebP, GIF
+### 聊天选项
 
-### Chat Options
-
-| Flag | Description | Example |
+| 标志 | 描述 | 示例 |
 |------|-------------|---------|
-| `--model ID` | Model to use | `--model grok-2-vision-1212` |
-| `--image PATH` | Attach image (can repeat) | `--image ./pic.jpg` |
-| `--json` | JSON output | - |
-| `--raw` | Include debug output | - |
+| `--model ID` | 使用的模型 | `--model grok-2-vision-1212` |
+| `--image PATH` | 附加图片（可重复添加） | `--image ./pic.jpg` |
+| `--json` | 以 JSON 格式输出 | - |
+| `--raw` | 包含调试信息 | - |
 
-See [references/models.md](references/models.md) for model comparison and capabilities.
+有关模型比较和功能的详细信息，请参阅 [references/models.md]。
 
-## Analysis
+## 内容分析
 
-Analyze X content for voice patterns, trends, and post quality.
+分析 X 平台上的内容，包括语音模式、趋势和帖子质量。
 
-### Voice Analysis
+### 语音分析
 
-Analyze an account's voice and writing patterns.
+分析账号的语音和写作风格。
 
 ```bash
 node {baseDir}/scripts/analyze.mjs voice @username
 ```
 
-**Custom date range:**
+**自定义日期范围：**
 ```bash
 # Last 60 days
 node {baseDir}/scripts/analyze.mjs voice @username --days 60
 ```
 
-**JSON output schema:**
+**JSON 输出格式：**
 ```json
 {
   "handle": "@username",
@@ -273,15 +268,15 @@ node {baseDir}/scripts/analyze.mjs voice @username --days 60
 }
 ```
 
-### Trend Research
+### 趋势研究
 
-Research trends and discussions about a topic.
+研究某个主题的讨论趋势。
 
 ```bash
 node {baseDir}/scripts/analyze.mjs trends "AI agents"
 ```
 
-**JSON output schema:**
+**JSON 输出格式：**
 ```json
 {
   "topic": "AI agents",
@@ -310,21 +305,21 @@ node {baseDir}/scripts/analyze.mjs trends "AI agents"
 }
 ```
 
-### Post Safety Check
+### 帖子安全检查
 
-Check a draft post or existing post for AI signals and platform flag patterns.
+检查草稿或已发布的帖子中是否存在人工智能生成的信号或平台标记。
 
-**Check draft text:**
+**检查草稿：**
 ```bash
 node {baseDir}/scripts/analyze.mjs post "Your draft post text here"
 ```
 
-**Check existing post:**
+**检查已发布的帖子：**
 ```bash
 node {baseDir}/scripts/analyze.mjs post --url "https://x.com/user/status/123"
 ```
 
-**JSON output schema:**
+**JSON 输出格式：**
 ```json
 {
   "post_text": "Your post...",
@@ -346,32 +341,32 @@ node {baseDir}/scripts/analyze.mjs post --url "https://x.com/user/status/123"
 }
 ```
 
-**Scoring:**
-- **AI Detection**: 0-10 (10 = definitely AI)
-- **Platform Flag Risk**: 0-10 (10 = high spam risk)
-- **Quality**: 0-10 (10 = excellent)
+**评分标准：**
+- **人工智能检测**：0-10 分（10 分表示完全由人工智能生成）
+- **平台风险**：0-10 分（10 分表示高垃圾信息风险）
+- **质量**：0-10 分（10 分表示质量优秀）
 
-### Analysis Options
+### 分析选项
 
-| Flag | Description | Example |
+| 标志 | 描述 | 示例 |
 |------|-------------|---------|
-| `--days N` | Date range for analysis | `--days 60` |
-| `--url URL` | Analyze existing post | `--url https://x.com/...` |
-| `--model ID` | Override model | `--model grok-3` |
-| `--json` | JSON output | - |
-| `--raw` | Include debug output | - |
+| `--days N` | 分析的日期范围 | `--days 60` |
+| `--url URL` | 分析特定帖子 | `--url https://x.com/...` |
+| `--model ID` | 指定使用哪个模型 | `--model grok-3` |
+| `--json` | 以 JSON 格式输出 | - |
+| `--raw` | 包含调试信息 | - |
 
-See [references/analysis-prompts.md](references/analysis-prompts.md) for detailed prompt structures and scoring criteria.
+有关详细的提示结构和评分标准，请参阅 [references/analysis-prompts.md]。
 
-## Models
+## 模型
 
-List available xAI models.
+查看可用的 xAI 模型列表。
 
 ```bash
 node {baseDir}/scripts/models.mjs
 ```
 
-**Output:**
+**输出格式：**
 ```
 grok-2-vision-1212
 grok-3
@@ -379,31 +374,31 @@ grok-4-1-fast
 grok-4-fast
 ```
 
-**JSON output:**
+**JSON 输出：**
 ```bash
 node {baseDir}/scripts/models.mjs --json
 ```
 
-Quick model comparison:
+模型对比：
 
-| Model | Speed | Quality | Vision | Best For |
+| 模型 | 执行速度 | 分析质量 | 图像分析能力 | 适用场景 |
 |-------|-------|---------|--------|----------|
-| grok-4-1-fast | Fast | Good | No | Default (search, chat, analysis) |
-| grok-4-fast | Fast | Good | No | Alternative fast model |
-| grok-3 | Slower | Best | No | Complex reasoning, detailed analysis |
-| grok-2-vision-1212 | Medium | Good | Yes | Image analysis |
+| grok-4-1-fast | 快速 | 良好 | 无图像分析能力 | 基本搜索、聊天、内容分析 |
+| grok-4-fast | 快速 | 良好 | 无图像分析能力 | 替代快速模型 |
+| grok-3 | 较慢 | 最适合复杂分析和详细分析 | 有图像分析能力 |
+| grok-2-vision-1212 | 中等速度 | 良好 | 有图像分析能力 | 图像分析 |
 
-See [references/models.md](references/models.md) for detailed model capabilities and use cases.
+有关模型详细信息和使用场景，请参阅 [references/models.md]。
 
-## Advanced Usage
+## 高级用法
 
-### Citation Deduplication
+### 引用去重
 
-For X searches, the tool automatically deduplicates tweet URLs, preferring canonical `/@handle/status/id` over `/i/status/id` format.
+在 X 搜索中，工具会自动去除重复的 tweet URL，优先显示标准的 `/@handle/status/id` 格式。
 
-### Custom Model Selection
+### 自定义模型选择
 
-Override the default model for any operation:
+您可以为任何操作指定不同的模型：
 
 ```bash
 # Search with grok-3 for better quality
@@ -416,25 +411,25 @@ node {baseDir}/scripts/chat.mjs --model grok-2-vision-1212 --image pic.jpg "Desc
 node {baseDir}/scripts/analyze.mjs voice @username --model grok-3
 ```
 
-### Debugging
+### 调试
 
-Add `--raw` to any command to see the full API response:
+在命令后添加 `--raw` 选项可查看完整的 API 响应：
 
 ```bash
 node {baseDir}/scripts/grok_search.mjs "query" --x --raw
 ```
 
-## Reference Documentation
+## 参考文档
 
-- [API Reference](references/api-reference.md) - xAI API endpoints and parameters
-- [Search Patterns](references/search-patterns.md) - Query patterns, filters, optimization tips
-- [Models](references/models.md) - Model comparison and capabilities
-- [Analysis Prompts](references/analysis-prompts.md) - Structured prompts and scoring criteria
-- [X Algorithm](references/x-algorithm.md) - Ranking, engagement weights, spam detection
+- [API 参考](references/api-reference.md) - xAI API 的端点和参数
+- [搜索模式](references/search-patterns.md) - 查询模式、筛选条件和优化技巧
+- [模型](references/models.md) - 模型比较和功能
+- [分析提示](references/analysis-prompts.md) - 结构化的提示和评分标准
+- [X 算法](references/x-algorithm.md) - 排名算法、参与度权重、垃圾信息检测
 
-## Examples
+## 示例
 
-### Research a topic
+### 研究某个主题
 ```bash
 # Find recent discussions
 node {baseDir}/scripts/grok_search.mjs "Claude Sonnet 4.5" --x --days 3
@@ -443,7 +438,7 @@ node {baseDir}/scripts/grok_search.mjs "Claude Sonnet 4.5" --x --days 3
 node {baseDir}/scripts/analyze.mjs trends "Claude Sonnet 4.5"
 ```
 
-### Analyze voice before drafting
+### 在发布前分析语音
 ```bash
 # Study the target account
 node {baseDir}/scripts/analyze.mjs voice @target_account --days 30
@@ -452,7 +447,7 @@ node {baseDir}/scripts/analyze.mjs voice @target_account --days 30
 node {baseDir}/scripts/analyze.mjs post "Your draft here"
 ```
 
-### Multi-modal research
+### 多模态分析
 ```bash
 # Search web for context
 node {baseDir}/scripts/grok_search.mjs "TypeScript 5.7 features" --web
@@ -464,65 +459,48 @@ node {baseDir}/scripts/chat.mjs "What are the key TypeScript 5.7 improvements?"
 node {baseDir}/scripts/chat.mjs --image ./code.png "Review this code"
 ```
 
-## Error Handling
+## 错误处理
 
-Common errors and solutions:
+**常见错误及解决方法：**
 
-**Missing API key:**
-```
-Missing XAI_API_KEY
-```
-→ Set `XAI_API_KEY` environment variable or add to `~/.clawdbot/clawdbot.json`
+- **缺少 API 密钥**：
+  → 设置 `XAI_API_KEY` 环境变量或将其添加到 `~/.clawdbot/clawdbot.json` 文件中。
+- **无效的搜索模式**：
+  → 在搜索命令中添加 `--web` 或 `--x` 标志。
+- **图片格式错误**：
+  → 仅支持 JPG、PNG、WebP 或 GIF 格式的图片。
+- **API 错误**：
+  → 确保 API 密钥有效且处于激活状态。
 
-**Invalid mode:**
-```
-Must specify --web or --x
-```
-→ Add `--web` or `--x` flag to search command
+## 提示
 
-**Image format error:**
-```
-Unsupported image type
-```
-→ Use JPG, PNG, WebP, or GIF format
+- 默认模型 `grok-4-1-fast` 性能较快，适用于大多数任务。
+- 对于需要复杂分析或对质量要求较高的场景，建议使用 `grok-3`。
+- X 搜索受时间限制（由 xAI 的搜索工具决定）。
+- 网页搜索的效果取决于查询的精确性。
+- 语音分析需要足够的帖子历史数据（建议至少 30 条帖子）。
+- 帖子安全检查仅供参考，最终决策需自行判断。
+- JSON 格式适合机器人或脚本使用。
+- 文本格式更便于在终端或人类阅读。
 
-**API error:**
-```
-xAI API error: 401 Unauthorized
-```
-→ Check API key is valid and active
+## 故障排除
 
-## Tips
+- **X 搜索无结果**：
+  - 尝试使用更宽泛的查询条件或更长的时间范围。
+- 确认要搜索的账号是否存在且为公开账号。
+- 减少过于严格的筛选条件。
+- **语音分析不完整**：
+  - 增加 `--days` 参数以获取更多帖子数据。
+- 确认账号是否为公开账号且活跃。
+- 检查用户名是否正确（包括前缀 @）。
+- **API 速率限制**：
+  - xAI 对每个 API 密钥有使用频率限制。
+- 如果达到限制，请分散请求时间。
+- 如需更高频率的访问权限，可以考虑升级 xAI 订阅计划。
 
-- Default model (`grok-4-1-fast`) is fast and good for most tasks
-- Use `grok-3` for complex analysis or when quality matters more than speed
-- X searches are limited by recency (xAI x_search tool constraints)
-- Web searches work best with specific, current queries
-- Voice analysis needs sufficient post history (30+ posts recommended)
-- Post safety checks are advisory; use judgment for final decisions
-- JSON output is best for agent/script consumption
-- Text output is better for terminal/human reading
+## 内容创作流程
 
-## Troubleshooting
-
-**No results from X search:**
-- Try broader query or longer date range
-- Check if handles exist and are public
-- Remove overly restrictive filters
-
-**Voice analysis incomplete:**
-- Increase `--days` to get more post history
-- Check if account is public and active
-- Verify handle is correct (with or without @)
-
-**API rate limits:**
-- xAI enforces rate limits per API key
-- Spread requests over time if hitting limits
-- Consider upgrading xAI plan for higher limits
-
-## Content Writing Workflow
-
-Use the analysis tools to improve your X content:
+使用这些分析工具来提升您的 X 平台内容：
 
 ```bash
 # Research before writing
@@ -536,7 +514,7 @@ node {baseDir}/scripts/analyze.mjs voice @target_account
 node {baseDir}/scripts/analyze.mjs post "$(cat draft.txt)"
 ```
 
-Use the JSON output to:
-- Research current discussions and posting angles
-- Learn from successful voices in your niche
-- Catch AI signals and platform flags before publishing
+您可以使用 JSON 输出结果：
+- 研究当前的讨论热点和发布方向。
+- 学习行业内的优秀内容创作方式。
+- 在发布前检测是否存在人工智能生成的帖子或平台标记。

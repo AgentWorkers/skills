@@ -1,65 +1,66 @@
 ---
 name: ralph-mode
-description: Autonomous development loops with iteration, backpressure gates, and completion criteria. Use for sustained coding sessions that require multiple iterations, test validation, and structured progress tracking. Supports Next.js, Python, FastAPI, and GPU workloads with Ralph Wiggum methodology adapted for OpenClaw.
+description: **具有迭代、回压机制和完成标准的自主开发循环**  
+适用于需要多次迭代、测试验证以及结构化进度跟踪的持续编码工作场景。支持 Next.js、Python、FastAPI 等技术框架，并结合 Ralph Wiggum 方法论进行开发，该方法论已针对 OpenClaw 进行了优化。
 ---
 
-# Ralph Mode - Autonomous Development Loops
+# Ralph模式 - 自主开发循环
 
-Ralph Mode implements the Ralph Wiggum technique adapted for OpenClaw: autonomous task completion through continuous iteration with backpressure gates, completion criteria, and structured planning.
+Ralph模式采用了Ralph Wiggum的技术，并将其适配到OpenClaw环境中：通过连续迭代、背压机制、完成标准以及结构化规划来实现任务的自主完成。
 
-## When to Use
+## 适用场景
 
-Use Ralph Mode when:
-- Building features that require multiple iterations and refinement
-- Working on complex projects with acceptance criteria to validate
-- Need automated testing, linting, or typecheck gates
-- Want to track progress across many iterations systematically
-- Prefer autonomous loops over manual turn-by-turn guidance
+在以下情况下使用Ralph模式：
+- 开发需要多次迭代和优化的功能时；
+- 处理具有可验证验收标准的复杂项目时；
+- 需要自动化测试、代码检查或类型检查时；
+- 希望系统地跟踪多次迭代的进展时；
+- 更倾向于使用自主循环而非手动逐步指导时。
 
-## Core Principles
+## 核心原则
 
-### Three-Phase Workflow
+### 三阶段工作流程
 
-**Phase 1: Requirements Definition**
-- Document specs in `specs/` (one file per topic of concern)
-- Define acceptance criteria (observable, verifiable outcomes)
-- Create implementation plan with prioritized tasks
+**阶段1：需求定义**
+- 在`specs/`目录下为每个相关主题创建一个文档文件来记录需求规格；
+- 定义可观察、可验证的验收标准；
+- 制定包含优先级任务的实施计划。
 
-**Phase 2: Planning**
-- Gap analysis: compare specs against existing code
-- Generate `IMPLEMENTATION_PLAN.md` with prioritized tasks
-- No implementation during this phase
+**阶段2：规划**
+- 进行差距分析：将需求规格与现有代码进行对比；
+- 生成包含优先级任务的`IMPLEMENTATION_PLAN.md`文件；
+- 此阶段不进行代码实现。
 
-**Phase 3: Building (Iterative)**
-- Pick one task from plan per iteration
-- Implement, validate, update plan, commit
-- Continue until all tasks complete or criteria met
+**阶段3：构建（迭代）**
+- 每次迭代从计划中选择一个任务；
+- 实现任务，进行验证，更新计划，然后提交代码；
+- 重复此过程，直到所有任务完成或满足所有验收标准。
 
-### Backpressure Gates
+### 背压机制
 
-Reject incomplete work automatically through validation:
+通过验证机制自动拒绝未完成的工作：
 
-**Programmatic Gates (Always use these):**
-- Tests: `[test command]` - Must pass before committing
-- Typecheck: `[typecheck command]` - Catch type errors early
-- Lint: `[lint command]` - Enforce code quality
-- Build: `[build command]` - Verify integration
+**程序化检查（必须使用）：**
+- 测试：`[test command]` - 提交前必须通过测试；
+- 类型检查：`[typecheck command]` - 及时发现类型错误；
+- 代码检查：`[lint command]` - 确保代码质量；
+- 构建：`[build command]` - 验证代码集成是否正确。
 
-**Subjective Gates (Use for UX, design, quality):**
-- LLM-as-judge reviews for tone, aesthetics, usability
-- Binary pass/fail - converges through iteration
-- Only add after programmatic gates work reliably
+**主观性检查（用于用户体验、设计、质量）：**
+- 使用大语言模型（LLM）进行评审，评估代码的语气、美观性和可用性；
+- 采用二进制通过/失败的标准，通过迭代逐步完善；
+- 仅在程序化检查可靠运行后添加这些检查。
 
-### Context Efficiency
+### 上下文效率
 
-- One task per iteration = fresh context each time
-- Spawn sub-agents for exploration, not main context
-- Lean prompts = smart zone (~40-60% utilization)
-- Plans are disposable - regenerate cheap vs. salvage
+- 每次迭代只处理一个任务，以确保每次都有新的上下文；
+- 为探索任务创建子代理，而不是处理主任务；
+- 使用精简的提示信息，以提高效率（使用率约为40-60%）；
+- 计划是可重用的，可以轻松生成新的计划。
 
-## File Structure
+## 文件结构
 
-Create this structure for each Ralph Mode project:
+每个Ralph模式项目都应遵循以下文件结构：
 
 ```
 project-root/
@@ -74,7 +75,7 @@ project-root/
 
 ### IMPLEMENTATION_PLAN.md
 
-Priority task list - single source of truth. Format:
+优先级任务列表——唯一的权威信息来源。格式如下：
 
 ```markdown
 # Implementation Plan
@@ -90,15 +91,15 @@ Priority task list - single source of truth. Format:
 - [ ] Future task
 ```
 
-### Topic Scope Test
+### 主题范围测试
 
-Can you describe the topic in one sentence without "and"?
-- ✅ "User authentication with JWT and session management"
-- ❌ "Auth, profiles, and billing" → 3 topics
+能否用一句话描述这个主题（不要使用“和”）？
+- ✅ “使用JWT和会话管理进行用户认证”
+- ❌ “认证、个人资料和计费” → 这三个主题属于不同领域
 
-### AGENTS.md - Operational Guide
+### AGENTS.md - 操作指南
 
-Succinct guide for running the project. Keep under 60 lines:
+简短的项目运行指南，内容不超过60行：
 
 ```markdown
 # Project Operations
@@ -119,74 +120,75 @@ npm run e2e       # E2E tests
 - Use existing utilities from src/lib over ad-hoc copies
 ```
 
-## Hats (Personas)
+## 角色（Personas）
 
-Specialized roles for different tasks:
+不同任务需要不同的专门角色：
 
-**Hat: Architect** (`@architect`)
-- High-level design, data modeling, API contracts
-- Focus: patterns, scalability, maintainability
+**角色：架构师（@architect）**
+- 负责高级设计、数据建模和API契约；
+- 关注点：设计模式、可扩展性和可维护性。
 
-**Hat: Implementer** (`@implementer`)
-- Write code, implement features, fix bugs
-- Focus: correctness, performance, test coverage
+**角色：实现者（@implementer）**
+- 编写代码、实现功能、修复错误；
+- 关注点：代码的正确性、性能和测试覆盖率。
 
-**Hat: Tester** (`@tester`)
-- Test authoring, validation, edge cases
-- Focus: coverage, reliability, reproducibility
+**角色：测试者（@tester）**
+- 负责编写测试用例、进行验证和边缘情况测试；
+- 关注点：测试覆盖率、可靠性和可复现性。
 
-**Hat: Reviewer** (`@reviewer`)
-- Code reviews, PR feedback, quality assessment
-- Focus: style, readability, adherence to specs
+**角色：评审者（@reviewer）**
+- 负责代码评审、提供Pull Request反馈和进行质量评估；
+- 关注点：代码风格、可读性和是否符合需求规格。
 
-**Usage:**
+**使用方法：**
 ```
 "Spawn a sub-agent with @architect hat to design the data model"
 ```
 
-## Loop Mechanics
+## 循环机制
 
-### Outer Loop (You coordinate)
+### 外层循环（你负责协调）
 
-Your job as main agent: engineer setup, observe, course-correct.
+作为主要代理，你的工作是：
+- 设置环境，观察进程，并在必要时进行调整；
+- 不要将任务直接分配给主任务处理流程；
+- 让大语言模型（LLM）自主识别和调整任务；
+- 使用沙箱环境作为安全边界；
+- 计划是可以重用的，如果出现问题可以重新生成；
+- 不要过度干预，只需观察循环的进行。
 
-1. **Don't allocate work to main context** - Spawn sub-agents
-2. **Let Ralph Ralph** - LLM will self-identify, self-correct
-3. **Use protection** - Sandbox is your security boundary
-4. **Plan is disposable** - Regenerate when wrong/stale
-5. **Move outside the loop** - Sit and watch, don't micromanage
+### 内层循环（子代理执行）
 
-### Inner Loop (Sub-agent executes)
+每个子代理的迭代步骤如下：
+- 阅读计划、需求规格和相关代码；
+- 选择最重要的未完成任务；
+- 实现任务；
+- 运行测试、进行代码检查和类型检查；
+- 标记任务完成状态，记录发现的问题，并提交代码；
+- 完成后进入下一次迭代。
 
-Each sub-agent iteration:
-1. **Study** - Read plan, specs, relevant code
-2. **Select** - Pick most important uncompleted task
-3. **Implement** - Write code, one task only
-4. **Validate** - Run tests, lint, typecheck (backpressure)
-5. **Update** - Mark task done, note discoveries, commit
-6. **Exit** - Next iteration starts fresh
+### 停止条件
 
-### Stopping Conditions
+当满足以下条件时，循环结束：
+- 所有`IMPLEMENTATION_PLAN.md`中的任务都已完成；
+- 所有验收标准都已满足；
+- 所有测试都通过，且没有阻塞问题；
+- 达到最大迭代次数（可配置）；
+- 手动停止循环（使用Ctrl+C）。
 
-Loop ends when:
-- ✅ All IMPLEMENTATION_PLAN.md tasks completed
-- ✅ All acceptance criteria met
-- ✅ Tests passing, no blocking issues
-- ⚠️ Max iterations reached (configure limit)
-- 🛑 Manual stop (Ctrl+C)
+## 完成标准
 
-## Completion Criteria
+提前明确成功标准，避免“看起来完成了”这种模糊的情况。
 
-Define success upfront - avoid "seems done" ambiguity.
+### 程序化标准（可量化）
+- 所有测试都通过：`[test_command]`的返回值为0；
+- 类型检查通过：没有TypeScript错误；
+- 构建成功：生成了生产版本；
+- 测试覆盖率达到指定阈值（例如80%以上）。
 
-### Programmatic (Measurable)
-- All tests pass: `[test_command]` returns 0
-- Typecheck passes: No TypeScript errors
-- Build succeeds: Production bundle created
-- Coverage threshold: e.g., 80%+
+### 主观性标准（使用LLM进行评估）
 
-### Subjective (LLM-as-Judge)
-For quality criteria that resist automation:
+对于难以自动化的质量标准，可以使用大语言模型进行二进制通过/失败的评估：
 
 ```markdown
 ## Completion Check - UX Quality
@@ -198,11 +200,11 @@ Criteria: Visual hierarchy is clear, brand consistency maintained
 Test: Layout follows established patterns
 ```
 
-Run LLM-as-judge sub-agent for binary pass/fail.
+使用大语言模型作为评审工具，对代码进行二进制通过/失败的评估。
 
-## Technology-Specific Patterns
+## 技术特定模式
 
-### Next.js Full Stack
+### Next.js全栈开发
 
 ```
 specs/
@@ -223,7 +225,7 @@ AGENTS.md:
   Lint: npm run lint
 ```
 
-### Python (Scripts/Notebooks/FastAPI)
+### Python（脚本/Notebook/FastAPI）
 
 ```
 specs/
@@ -244,7 +246,7 @@ AGENTS.md:
   Lint: ruff check src/
 ```
 
-### GPU Workloads
+### GPU相关工作负载
 
 ```
 specs/
@@ -265,23 +267,23 @@ AGENTS.md:
   GPU Check: nvidia-smi
 ```
 
-## Quick Start Command
+## 快速启动命令
 
-Start a Ralph Mode session:
+启动Ralph模式会话的命令如下：
 
 ```
 "Start Ralph Mode for my project at ~/projects/my-app. I want to implement user authentication with JWT.
 ```
 
-I will:
-1. Create IMPLEMENTATION_PLAN.md with prioritized tasks
-2. Spawn sub-agents for iterative implementation
-3. Apply backpressure gates (test, lint, typecheck)
-4. Track progress and announce completion
+我将执行以下操作：
+1. 创建包含优先级任务的`IMPLEMENTATION_PLAN.md`文件；
+2. 创建子代理进行迭代实现；
+3. 应用背压机制（测试、代码检查、类型检查）；
+4. 跟踪进度并宣布任务完成。
 
-## Operational Learnings
+## 运营经验总结
 
-When Ralph patterns emerge, update AGENTS.md:
+当发现Ralph模式中的问题时，及时更新`AGENTS.md`文件：
 
 ```markdown
 ## Discovered Patterns
@@ -291,19 +293,17 @@ When Ralph patterns emerge, update AGENTS.md:
 - Test files must be co-located with implementation
 ```
 
-## Escape Hatches
+## 应急措施
 
-When trajectory goes wrong:
-- **Ctrl+C** - Stop loop immediately
-- **Regenerate plan** - "Discard IMPLEMENTATION_PLAN.md and re-plan"
-- **Reset** - "Git reset to last known good state"
-- **Scope down** - Create smaller scoped plan for specific work
+当开发流程出现问题时，可以采取以下措施：
+- **立即停止循环**（使用Ctrl+C）；
+- **重新生成计划**（丢弃`IMPLEMENTATION_PLAN.md并重新规划）；
+- **重置**（使用Git恢复到上次成功的状态）；
+- **缩小范围**（为特定任务创建更详细的计划）。
 
-## Advanced: LLM-as-Judge Fixture
+## 高级技巧：使用LLM作为评审工具
 
-For subjective criteria (tone, aesthetics, UX):
-
-Create `src/lib/llm-review.ts`:
+对于需要主观判断的质量标准（如代码的语气、美观性和用户体验），可以创建`src/lib/llm-review.ts`文件：
 
 ```typescript
 interface ReviewResult {
@@ -317,17 +317,17 @@ async function createReview(config: {
 }): Promise<ReviewResult>;
 ```
 
-Sub-agents discover and use this pattern for binary pass/fail checks.
+子代理可以使用这个文件来进行二进制通过/失败的评估。
 
-## Critical Operational Requirements
+## 关键运营要求
 
-Based on empirical usage, enforce these practices to avoid silent failures:
+根据实际使用经验，必须遵循以下最佳实践以避免潜在问题：
 
-### 1. Mandatory Progress Logging
+### 1. 进度记录
 
-**Ralph MUST write to PROGRESS.md after EVERY iteration.** This is non-negotiable.
+**Ralph每次迭代后都必须更新PROGRESS.md文件。**这是强制性的。
 
-Create `PROGRESS.md` in project root at start:
+在项目根目录下创建`PROGRESS.md`文件：
 
 ```markdown
 # Ralph: [Task Name]
@@ -351,20 +351,20 @@ Create `PROGRESS.md` in project root at start:
 - `path/to/file.ts` - [brief description]
 ```
 
-**Why:** External observers (parent agents, crons, humans) can tail one file instead of scanning directories or inferring state from session logs.
+**原因：**外部观察者（父代理、定时任务、人类操作者）可以通过这个文件直接了解项目进度，而无需遍历目录或从会话日志中推断状态。
 
-### 2. Session Isolation & Cleanup
+### 2. 会话隔离与清理
 
-Before spawning a new Ralph session:
-- Check for existing Ralph sub-agents via `sessions_list`
-- Kill or verify completion of previous sessions
-- Do NOT spawn overlapping Ralph sessions on same codebase
+在启动新的Ralph会话之前：
+- 检查是否存在现有的Ralph子代理；
+- 结束或验证之前的会话是否已完成；
+- 确保不会在同一代码库上同时启动多个Ralph会话。
 
-**Anti-pattern:** Spawning Ralph v2 while v1 is still running = file conflicts, race conditions, lost work.
+**反模式示例：**如果在Ralph v1仍在运行时启动Ralph v2，可能会导致文件冲突、竞态条件或数据丢失。
 
-### 3. Explicit Path Verification
+### 3. 明确的路径验证
 
-Never assume directory structure. At start of each iteration:
+每次迭代开始时，都必须验证路径的正确性：
 
 ```typescript
 // Verify current working directory
@@ -378,18 +378,16 @@ if (!fs.existsSync('./src/app')) {
 }
 ```
 
-**Why:** Ralph may be spawned from different contexts with different working directories.
+**原因：**不同的上下文可能会导致Ralph从不同的目录中启动。
 
-### 4. Completion Signal Protocol
+### 4. 完成信号机制
 
-When done, Ralph MUST:
+任务完成后，Ralph必须：
+- 编写最终的`PROGRESS.md文件，其中包含“## 状态：已完成”的提示；
+- 列出所有创建或修改的文件；
+- 清晰地结束会话（确保没有挂起的进程）。
 
-1. Write final `PROGRESS.md` with "## Status: COMPLETE"
-2. List all created/modified files
-3. Exit cleanly (no hanging processes)
-
-Example completion PROGRESS.md:
-
+**示例PROGRESS.md文件内容：**
 ```markdown
 # Ralph: Influencer Detail Page
 
@@ -412,20 +410,18 @@ Example completion PROGRESS.md:
 3. Verify: [specific checks]
 ```
 
-### 5. Error Handling Requirements
+### 5. 错误处理
 
-If Ralph encounters unrecoverable errors:
+如果Ralph遇到无法恢复的错误：
+- 在`PROGRESS.md`文件中记录错误信息，注明错误原因；
+- 列出尝试的解决方法；
+- 清晰地结束会话（避免程序无响应地挂起）。
 
-1. Log to PROGRESS.md with "## Status: BLOCKED"
-2. Describe blocker in detail
-3. List attempted solutions
-4. Exit cleanly (don't hang)
+**注意：**如果Ralph在没有任何进度记录的情况下停止迭代，那么它与仍在运行的Ralph是无法区分的。
 
-**Do not silently fail.** A Ralph that stops iterating with no progress log is indistinguishable from one still working.
+### 6. 迭代时间限制
 
-### 6. Iteration Time Limits
-
-Set explicit iteration timeouts:
+设置明确的迭代超时时间：
 
 ```markdown
 ## Operational Parameters
@@ -434,11 +430,11 @@ Set explicit iteration timeouts:
 - If iteration exceeds limit: Log blocker, exit
 ```
 
-**Why:** Prevents infinite loops on stuck tasks, allows parent agent to intervene.
+**原因：**这样可以防止任务陷入无限循环，允许父代理及时干预。
 
-## Memory Updates
+## 内存更新
 
-After each Ralph Mode session, document:
+每次Ralph模式会话结束后，都需要记录相关内存使用情况：
 
 ```markdown
 ## [Date] Ralph Mode Session
@@ -452,32 +448,32 @@ After each Ralph Mode session, document:
 - Patterns to add to AGENTS.md
 ```
 
-## Appendix: Hall of Failures
+## 附录：常见错误及解决方法
 
-Common anti-patterns observed:
+以下是一些常见的错误及其解决方法：
 
-| Anti-Pattern | Consequence | Prevention |
+| 错误类型 | 后果 | 预防措施 |
 |--------------|-------------|------------|
-| No progress logging | Parent agent cannot determine status | Mandatory PROGRESS.md |
-| Silent failure | Work lost, time wasted | Explicit error logging |
-| Overlapping sessions | File conflicts, corrupt state | Check/cleanup before spawn |
-| Path assumptions | Wrong directory, wrong files | Explicit verification |
-| No completion signal | Parent waits indefinitely | Clear COMPLETE status |
-| Infinite iteration | Resource waste, no progress | Time limits + blockers |
-| Complex initial prompts | Sub-agent never starts (empty session logs) | SIMPLIFY instructions |
+| 未记录进度 | 父代理无法判断任务状态 | 必须记录进度信息 |
+| 无声失败 | 会导致工作丢失和时间浪费 | 必须记录错误信息 |
+| 会话重叠 | 会导致文件冲突和状态混乱 | 启动新会话前必须检查并清理旧会话 |
+| 路径错误 | 可能导致使用错误的目录或文件 | 必须明确验证路径 |
+| 无完成信号 | 父代理会无限等待 | 必须设置完成状态信号 |
+| 迭代无限进行 | 资源浪费且无法取得进展 | 设置迭代超时时间 |
 
-## NEW: Session Initialization Best Practices (2025-02-07)
+## 新最佳实践（2025-02-07）
 
-### Problem: Sub-agents spawn but don't execute
-**Evidence:** Empty session logs (2 bytes), no tool calls, 0 tokens used
+### 问题：子代理被创建但无法执行
 
-### Root Causes
-1. **Instructions too complex** - Overwhelms isolated session initialization
-2. **No clear execution trigger** - Agent doesn't know to start
-3. **Branching logic** - "If X do Y, if Z do W" confuses task selection
-4. **Multiple files mentioned** - Can't decide which to start with
+**问题表现：**会话日志为空（仅2字节），没有工具调用记录，也没有使用任何令牌。
 
-### Fix: SIMPLIFIED Ralph Task Template
+**根本原因：**
+1. **指令过于复杂**：导致子代理无法正确初始化；
+2. **缺乏明确的执行触发条件**：子代理不知道何时开始执行；
+3. **分支逻辑混乱**：复杂的条件判断导致任务选择困难；
+4. **涉及多个文件**：子代理不知道从哪个文件开始执行。
+
+**解决方法：简化Ralph任务模板**
 
 ```markdown
 ## Task: [ONE specific thing]
@@ -493,7 +489,7 @@ Common anti-patterns observed:
 3. Make the change, validate, exit
 ```
 
-### BEFORE (Bad - causes stalls):
+### 问题前的情况（导致任务无法执行）：
 ```
 Fix all TypeScript errors across these files:
 - lib/db.ts has 2 errors
@@ -502,7 +498,7 @@ Fix all TypeScript errors across these files:
 Check which ones to fix first, then...
 ```
 
-### AFTER (Good - executes):
+### 问题解决后的情况（可以正常执行）：
 ```
 Fix lib/db.ts line 27:
 Change: PoolClient to pg.PoolClient
@@ -510,42 +506,33 @@ Validate: npm run typecheck
 Exit immediately after
 ```
 
-### CRITICAL: Single File Rule
-Each Ralph iteration gets ONE file. Not "all errors", not "check then decide". ONE file, ONE change, validate, exit.
+### 关键点：每次迭代只处理一个文件
 
-### CRITICAL: Update PROGRESS.md
-**MANDATORY:** After EVERY iteration, update PROGRESS.md with:
-```markdown
-## Iteration [N] - [Timestamp]
+**规则：**每次迭代只处理一个文件，完成一个修改后退出。
 
-### Status: Complete ✅ | Blocked ⛔ | Failed ❌
+### 更新PROGRESS.md文件
 
-### What Was Done
-- [Specific changes made]
+**强制要求：**每次迭代后都必须更新`PROGRESS.md文件，以确保状态信息的准确性。
 
-### Validation
-- [Test/lint/typecheck results]
+**原因：**定时任务会读取`PROGRESS.md文件来获取更新后的状态。如果文件未更新，状态信息可能会显得过时或重复。
 
-### Next Step
-- [What should happen next]
-```
+### 调试Ralph循环停滞的问题
 
-**Why this matters:** Cron job reads PROGRESS.md for status updates. If not updated, status appears stale/repetitive.
+如果Ralph循环停滞，可以按照以下步骤进行调试：
+1. 检查会话日志（应在60秒内显示工具调用记录）；
+- 如果日志为空，说明指令过于复杂；
+- 将指令简化为只处理一个文件、一个修改内容；
+- 设置更短的超时时间（例如300秒，而不是600秒）。
 
-### Debugging Ralph Stalls
-If Ralph stalls:
-1. Check session logs (should show tool calls within 60s)
-2. If empty after spawn → instructions too complex
-3. Reduce: ONE file, ONE line number, ONE change
-4. Shorter timeout forces smaller tasks (300s not 600s)
+### 解决状态信息过时的问题
 
-### Fixing Stale Status Reports
-If cron reports same status repeatedly:
-1. Check PROGRESS.md was updated by sub-agent
-2. If not updated → sub-agent skipped documentation step
-3. Update skill: Add "MANDATORY PROGRESS.md update" to prompt
-4. Manual fix: Update PROGRESS.md to reflect actual state
+如果定时任务反复报告相同的状态，可以检查以下内容：
+1. 确认`PROGRESS.md文件是否被子代理更新过；
+- 如果未更新，可能是子代理忽略了更新步骤；
+- 在提示信息中添加“必须更新PROGRESS.md文件”的要求；
+- 手动更新`PROGRESS.md文件，以反映实际的状态。
 
-## Summary
-Ralph works when: Single file focus + explicit change + validate + exit
-Ralph stalls when: Complex decisions + multiple files + conditional logic
+## 总结
+
+Ralph模式在以下情况下效果最佳：**专注于处理单个文件、明确修改内容、执行验证操作并最终退出**；
+当遇到复杂决策、多个文件或条件逻辑时，Ralph模式可能会陷入停滞。

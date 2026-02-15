@@ -1,20 +1,20 @@
 ---
 name: azure-ai-voicelive-py
-description: Build real-time voice AI applications using Azure AI Voice Live SDK (azure-ai-voicelive). Use this skill when creating Python applications that need real-time bidirectional audio communication with Azure AI, including voice assistants, voice-enabled chatbots, real-time speech-to-speech translation, voice-driven avatars, or any WebSocket-based audio streaming with AI models. Supports Server VAD (Voice Activity Detection), turn-based conversation, function calling, MCP tools, avatar integration, and transcription.
+description: 使用 Azure AI Voice Live SDK (azure-ai-voicelive) 构建实时语音 AI 应用程序。在开发需要与 Azure AI 进行实时双向音频通信的 Python 应用程序时，可运用此技能，例如语音助手、支持语音功能的聊天机器人、实时语音转语音翻译系统、由语音控制的虚拟形象（avatar），或任何基于 WebSocket 的音频流服务（这些服务都依赖于 AI 模型）。该 SDK 支持服务器端语音活动检测（Server VAD）、轮流对话模式、函数调用、虚拟形象集成以及语音转文字（transcription）功能。
 package: azure-ai-voicelive
 ---
 
 # Azure AI Voice Live SDK
 
-Build real-time voice AI applications with bidirectional WebSocket communication.
+使用双向WebSocket通信构建实时语音AI应用程序。
 
-## Installation
+## 安装
 
 ```bash
 pip install azure-ai-voicelive aiohttp azure-identity
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 AZURE_COGNITIVE_SERVICES_ENDPOINT=https://<region>.api.cognitive.microsoft.com
@@ -22,9 +22,9 @@ AZURE_COGNITIVE_SERVICES_ENDPOINT=https://<region>.api.cognitive.microsoft.com
 AZURE_COGNITIVE_SERVICES_KEY=<api-key>
 ```
 
-## Authentication
+## 认证
 
-**DefaultAzureCredential (preferred)**:
+**推荐使用：DefaultAzureCredential**：
 ```python
 from azure.ai.voicelive.aio import connect
 from azure.identity.aio import DefaultAzureCredential
@@ -38,7 +38,7 @@ async with connect(
     ...
 ```
 
-**API Key**:
+**API密钥**：
 ```python
 from azure.ai.voicelive.aio import connect
 from azure.core.credentials import AzureKeyCredential
@@ -51,7 +51,7 @@ async with connect(
     ...
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 import asyncio
@@ -84,22 +84,22 @@ async def main():
 asyncio.run(main())
 ```
 
-## Core Architecture
+## 核心架构
 
-### Connection Resources
+### 连接资源
 
-The `VoiceLiveConnection` exposes these resources:
+`VoiceLiveConnection` 提供了以下连接资源：
 
-| Resource | Purpose | Key Methods |
+| 资源 | 用途 | 主要方法 |
 |----------|---------|-------------|
-| `conn.session` | Session configuration | `update(session=...)` |
-| `conn.response` | Model responses | `create()`, `cancel()` |
-| `conn.input_audio_buffer` | Audio input | `append()`, `commit()`, `clear()` |
-| `conn.output_audio_buffer` | Audio output | `clear()` |
-| `conn.conversation` | Conversation state | `item.create()`, `item.delete()`, `item.truncate()` |
-| `conn.transcription_session` | Transcription config | `update(session=...)` |
+| `conn.session` | 会话配置 | `update(session=...)` |
+| `conn.response` | 模型响应 | `create()`, `cancel()` |
+| `conn.input_audio_buffer` | 音频输入 | `append()`, `commit()`, `clear()` |
+| `conn.output_audio_buffer` | 音频输出 | `clear()` |
+| `conn.conversation` | 对话状态 | `item.create()`, `item.delete()`, `item.truncate()` |
+| `conn.transcription_session` | 文本转语音配置 | `update(session=...)` |
 
-## Session Configuration
+## 会话配置
 
 ```python
 from azure.ai.voicelive.models import RequestSession, FunctionTool
@@ -133,9 +133,9 @@ await conn.session.update(session=RequestSession(
 ))
 ```
 
-## Audio Streaming
+## 音频流
 
-### Send Audio (Base64 PCM16)
+### 发送音频（Base64 PCM16格式）
 
 ```python
 import base64
@@ -147,7 +147,7 @@ b64_audio = base64.b64encode(audio_chunk).decode()
 await conn.input_audio_buffer.append(audio=b64_audio)
 ```
 
-### Receive Audio
+### 接收音频
 
 ```python
 async for event in conn:
@@ -158,7 +158,7 @@ async for event in conn:
         print("Audio complete")
 ```
 
-## Event Handling
+## 事件处理
 
 ```python
 async for event in conn:
@@ -206,9 +206,9 @@ async for event in conn:
             print(f"Error: {event.error.message}")
 ```
 
-## Common Patterns
+## 常见模式
 
-### Manual Turn Mode (No VAD)
+### 手动切换模式（无语音活动检测，No VAD）
 
 ```python
 await conn.session.update(session={"turn_detection": None})
@@ -219,7 +219,7 @@ await conn.input_audio_buffer.commit()  # End of user turn
 await conn.response.create()  # Trigger response
 ```
 
-### Interrupt Handling
+### 中断处理
 
 ```python
 async for event in conn:
@@ -229,7 +229,7 @@ async for event in conn:
         await conn.output_audio_buffer.clear()
 ```
 
-### Conversation History
+### 对话历史记录
 
 ```python
 # Add system message
@@ -249,32 +249,32 @@ await conn.conversation.item.create(item={
 await conn.response.create()
 ```
 
-## Voice Options
+## 语音选项
 
-| Voice | Description |
+| 语音效果 | 描述 |
 |-------|-------------|
-| `alloy` | Neutral, balanced |
-| `echo` | Warm, conversational |
-| `shimmer` | Clear, professional |
-| `sage` | Calm, authoritative |
-| `coral` | Friendly, upbeat |
-| `ash` | Deep, measured |
-| `ballad` | Expressive |
-| `verse` | Storytelling |
+| `alloy` | 中性、平衡的语音效果 |
+| `echo` | 温暖、适合对话的语音效果 |
+| `shimmer` | 清晰、专业的语音效果 |
+| `sage` | 平静、权威的语音效果 |
+| `coral` | 友善、欢快的语音效果 |
+| `ash` | 深沉、稳重的语音效果 |
+| `ballad` | 表现力丰富的语音效果 |
+| `verse` | 适合故事叙述的语音效果 |
 
-Azure voices: Use `AzureStandardVoice`, `AzureCustomVoice`, or `AzurePersonalVoice` models.
+Azure 提供的语音模型：`AzureStandardVoice`, `AzureCustomVoice`, `AzurePersonalVoice`。
 
-## Audio Formats
+## 音频格式
 
-| Format | Sample Rate | Use Case |
+| 格式 | 采样率 | 适用场景 |
 |--------|-------------|----------|
-| `pcm16` | 24kHz | Default, high quality |
-| `pcm16-8000hz` | 8kHz | Telephony |
-| `pcm16-16000hz` | 16kHz | Voice assistants |
-| `g711_ulaw` | 8kHz | Telephony (US) |
-| `g711_alaw` | 8kHz | Telephony (EU) |
+| `pcm16` | 24kHz | 默认格式，高质量 |
+| `pcm16-8000hz` | 8kHz | 适用于电话通话 |
+| `pcm16-16000hz` | 16kHz | 适用于语音助手 |
+| `g711_ulaw` | 8kHz | 适用于美国地区的电话通话 |
+| `g711_alaw` | 8kHz | 适用于欧洲地区的电话通话 |
 
-## Turn Detection Options
+## 语音活动检测（Voice Activity Detection, VAD）选项
 
 ```python
 # Server VAD (default)
@@ -286,7 +286,7 @@ Azure voices: Use `AzureStandardVoice`, `AzureCustomVoice`, or `AzurePersonalVoi
 {"type": "azure_semantic_vad_multilingual"}
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 from azure.ai.voicelive.aio import ConnectionError, ConnectionClosed
@@ -302,8 +302,8 @@ except ConnectionError as e:
     print(f"Connection error: {e}")
 ```
 
-## References
+## 参考资料
 
-- **Detailed API Reference**: See [references/api-reference.md](references/api-reference.md)
-- **Complete Examples**: See [references/examples.md](references/examples.md)
-- **All Models & Types**: See [references/models.md](references/models.md)
+- **详细API参考**：请参阅 [references/api-reference.md](references/api-reference.md)
+- **完整示例**：请参阅 [references/examples.md](references/examples.md)
+- **所有模型与类型**：请参阅 [references/models.md](references/models.md)

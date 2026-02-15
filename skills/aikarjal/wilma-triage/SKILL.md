@@ -1,31 +1,39 @@
 ---
 name: wilma-triage
 version: 1.0.0
-description: Daily triage of Wilma school notifications for Finnish parents. Fetches exams, messages, news, schedules, and homework — filters for actionable items, syncs exams to Google Calendar, and reports via chat. Requires the `wilma` skill and `gog` CLI (or `gog` skill from ClawHub) for calendar access.
+description: **每日为芬兰家长整理Wilma学校的通知**：  
+- 获取考试信息、消息、新闻、课程安排以及作业内容；  
+- 对需要处理的事件进行筛选；  
+- 将考试相关内容同步到Google日历中；  
+- 通过聊天工具向家长报告相关信息。  
+
+**所需工具/技能**：  
+- `wilma`技能  
+- `gog` CLI（或来自ClawHub的`gog`技能，用于日历访问）
 ---
 
-# Wilma Triage
+# Wilma 数据分类系统
 
-Automated daily triage of Wilma school data for parents. Filters noise, surfaces actionable items, and syncs exams/events to Google Calendar.
+该系统自动对 Wilma 学校的数据进行每日分类处理，以便家长获取相关信息。系统能够过滤掉冗余信息，提取出需要处理的事件，并将这些事件同步到 Google 日历中。
 
-## Dependencies
+## 所需依赖项
 
-- **wilma skill** — install from ClawHub (`clawhub install wilma`) for Wilma CLI commands and setup
-- **gog skill** — install from ClawHub (`clawhub install gog`) for Google Calendar sync
+- **wilma skill**：需通过 ClawHub 安装（`clawhub install wilma`），用于使用 Wilma 的命令和进行相关设置。
+- **gog skill**：需通过 ClawHub 安装（`clawhub install gog`），用于与 Google 日历的同步。
 
-## First Run Setup
+## 首次使用时的设置步骤
 
-On first use, collect and store configuration:
+首次使用时，请收集并保存以下配置信息：
 
-1. **Discover kids:** Run `wilma kids list --json` to get student names, numbers, and schools
-2. **Calendar ID:** Run `gog calendar calendars` to list available calendars. Ask the user which calendar to use for school events. Store the calendar ID in **TOOLS.md** under a `## Wilma Triage` section along with naming conventions for events.
-3. **Preferences:** Ask about any kid-specific rules (e.g., subject overrides like ET instead of religion). Store in **MEMORY.md** as part of the Wilma triage context.
+1. **获取学生信息**：运行 `wilma kids list --json` 命令，以获取学生的姓名、学号和所在学校。
+2. **选择日历**：运行 `gog calendar calendars` 命令，列出可用的日历。询问用户希望使用哪个日历来记录学校事件，并将选定的日历 ID 以及事件命名规则保存到 **TOOLS.md** 文件的 `## Wilma Triage` 部分中。
+3. **个性化设置**：询问用户是否有任何针对特定学生的特殊规则（例如，某些科目的通知优先级高于其他科目）。将这些规则保存到 **MEMORY.md** 文件中，作为 Wilma 数据分类系统的配置内容。
 
-Over time, the user will give feedback on what to report and what to skip — store these preferences in MEMORY.md. The triage gets smarter with use.
+随着使用时间的增加，用户可以提供关于哪些信息需要报告、哪些信息可以忽略的反馈，这些设置会不断更新并保存在 **MEMORY.md** 文件中。系统会逐渐根据用户的反馈优化分类逻辑。
 
-## Workflow
+## 工作流程
 
-1. **Fetch data** — check TOOLS.md for student details, then start with summary:
+1. **获取数据**：首先查看 **TOOLS.md** 文件中的学生信息，然后开始数据分类：
    ```bash
    # Best starting point — returns schedule, exams, homework, news, messages
    wilma summary --all-students --json
@@ -44,90 +52,72 @@ Over time, the user will give feedback on what to report and what to skip — st
    wilma news read <id> --student <name> --json
    ```
 
-2. **Filter** — apply triage rules below plus any kid-specific rules from MEMORY.md
+2. **应用分类规则**：根据预设的分类规则以及 **MEMORY.md** 中的个性化设置对信息进行筛选。
+3. **同步日历**：使用 **TOOLS.md** 中提供的 `gog CLI` 命令，将未记录在日历中的考试或需要处理的事件添加到日历中。
+   - **添加事件前务必检查日历中是否已存在相同的内容，以避免重复**。
+   - 请严格按照 **TOOLS.md** 中规定的命名规则来命名事件。
+   - 从日历中删除已取消的事件。
 
-3. **Calendar sync** — add missing exams and actionable events using gog CLI commands from TOOLS.md
-   - **ALWAYS check for existing events before adding** to avoid duplicates
-   - Use naming conventions stored in TOOLS.md
-   - Remove cancelled events from calendar
+4. **发送通知**：如果发现需要处理的事件，就发送详细信息；如果没有需要处理的内容，则可以选择不发送通知，或发送简短的确认信息。请根据用户设置的偏好来决定是否发送通知。
 
-4. **Report** — if actionable items found, send details. If nothing actionable, stay silent or send a brief confirmation. Check MEMORY.md for the user's notification preference.
+## 日历同步说明
 
-## Calendar Sync
+具体如何使用 `gog CLI` 命令进行日历同步，请参考 **TOOLS.md** 文件中的说明。
 
-Refer to TOOLS.md for the calendar ID, naming conventions, and exact gog CLI commands.
+**避免重复规则：**
+- 在添加任何事件之前，请先检查日历中该日期范围内是否已有相同事件。
+- 如果日历中已经存在匹配的事件（相同的日期、学生和科目），则跳过该事件。
+- 只有在日历中不存在该事件时才进行添加。
 
-**NO DUPLICATES rule:**
-1. Before adding any event, check calendar for that date range
-2. If a matching event exists (same date + child + subject keywords), skip it
-3. Only add if not already there
+## 理解 Wilma 发来的信息
 
-## Understanding Wilma Messages
+Wilma 发来的信息来自不同的来源，其重要性与信息的“信号强度”（即信息的实际价值）各不相同。正确区分这些信息的优先级对于有效的数据分类至关重要：
 
-Wilma messages come from different sources and have very different signal-to-noise ratios. Knowing the difference is critical for good triage:
+- **Viikkoviesti（每周通讯）**：来自班级老师的每周更新。这些通讯看似普通的通知，但实际上经常包含重要的信息，如即将到来的考试、需要携带的资料、课程安排变更、郊游安排等。**务必阅读全部内容**，切勿仅根据主题行就忽略它们。
+- **教师消息**：通常涉及具体的考试、作业或班级活动，信息价值较高。
+- **学校办公室消息**：包含课程安排变更、活动通知、政策更新等行政信息，信息价值中等。请快速浏览以获取关键信息。
+- **Kuukausitiedote（月度通讯）**：来自学校办公室的月度公告，通常包含重要的日期信息（如假期安排、学年开始/结束时间、活动日程等）。请务必阅读。
+- **全市范围的通知**（来自赫尔辛基市政府）：多为健康宣传活动、交通信息或调查问卷等，对于日常数据分类来说属于冗余信息。请快速浏览主题内容，除非内容明确需要处理。
+- **家长协会消息**：默认情况下信息价值较低（如筹款活动、志愿者招募等）。不过，请查看 **MEMORY.md** 文件中的用户设置——如果用户积极参与家长协会的相关活动，这些通知将变为高优先级。
 
-- **Viikkoviesti / weekly letter** (from class teacher) — **HIGH VALUE.** These are the class teacher's weekly updates. They look like casual newsletters but frequently contain buried actionable items: upcoming exams, materials to bring, schedule changes, field trips, deadlines. **Always read the full content.** Never skip based on subject line.
-- **Teacher messages** (from subject teachers) — Usually about specific exams, homework, or class events. High signal.
-- **School office / rehtori messages** — Administrative: schedule changes, events, policy updates. Medium signal — skim for actions.
-- **Kuukausitiedote / monthly newsletter** (from school office) — **Read these.** They typically contain important dates: holidays, school year start/end, event schedules, enrollment deadlines. Don't skip based on the generic subject line.
-- **City-wide notices** (from Helsinki/municipality) — Health campaigns, transport info, surveys. Usually noise for daily triage. Skim subject, skip unless clearly actionable.
-- **Parent union / vanhempainyhdistys** — Low signal by default (fundraising, volunteer calls). However, check MEMORY.md — if the parent is actively involved in the union, these become high priority.
+**经验法则：**
+- 如果消息来自教师（班级老师或学科老师），请务必阅读。
+- 如果消息来自学校办公室或市政府，只需快速浏览主题内容，除非内容明确需要处理。
 
-**Rule of thumb:** If a message is from a teacher (class teacher or subject teacher), always read it. If it's from the school office or city, skim the subject and skip unless it's clearly actionable.
+## 分类规则
 
-## Triage Rules
+### **必须报告（需要立即处理）**：
+- 需要填写的表格、授权书、回复请求。
+- 截止日期（如报名截止时间、付款要求、需要携带的资料）。
+- 课程安排变更（如提前放学、课程取消、代课安排）。
+- 需要的特殊装备或资料（例如“请携带滑雪装备”、“户外服装”）。
+- 学生可能感兴趣的课后活动（如迪斯科派对、电影之夜）。
+- 考试日程更新或新增考试信息。
+- 日历中已标记为取消的事件——请将其从日历中删除。
 
-### Always Report (Actionable)
-- Forms, permission slips, replies needed
-- Deadlines (sign-ups, payments, materials to bring)
-- Schedule changes (early dismissal, cancelled classes, substitute arrangements)
-- Special gear/materials needed (e.g., "bring ski gear", "outdoor clothing")
-- After-school events kids might want to attend (discos, movie nights)
-- Exam schedule updates or new exams
-- Cancelled events that are on the calendar → remove them
+### **简要报告（值得提及）**：
+- 邊游安排、带有具体日期信息的主题日。
+- 学校关闭通知、假期安排变更。
+- 健康相关通知（如虱子预警、疾病爆发）。
+- 新成绩通知（简要提及成绩）。
 
-### Report Briefly (Worth Mentioning)
-- Field trips, themed days with date info
-- School closures, holiday schedule changes
-- Health notices (lice alerts, illness outbreaks)
-- New grades (brief mention with grade)
+### **重要提示：务必阅读每周通讯（Viikkoviesti）**
+班级老师发布的每周通讯中经常包含重要的信息，如考试安排、需要携带的资料、课程变更等。**务必阅读每周通讯的全部内容**，切勿仅根据主题行来决定是否阅读。
 
-### Important: Always Read Weekly Letters (viikkoviesti)
-Weekly letters from class teachers often contain actionable items buried in the text: exams, materials to bring, schedule changes, field trips. **Always read the full content** of viikkoviesti messages — do not skip based on subject line alone.
+### **可以选择忽略**：
+- 音乐会、文化表演（仅供参考）。
+- 通用的“欢迎回来”或季节性问候信息。
+- 全市范围的信息通知（如健康宣传活动、交通信息、调查问卷）。
+- 家长协会的消息（除非用户积极参与相关活动——请查看 **MEMORY.md** 文件中的设置）。
 
-### Skip Silently
-- Concerts, cultural performances (FYI only)
-- Generic "welcome back" or seasonal greetings
-- City-wide informational notices (health campaigns, transport info, surveys)
-- Parent union messages (unless user is actively involved — check MEMORY.md)
+## 用户自定义的忽略/报告规则
 
-**Check MEMORY.md for additional skip/report rules** the user has provided over time (e.g., subject overrides, school-specific filtering).
+用户可以根据自身需求在 **MEMORY.md** 文件中添加额外的忽略或报告规则（例如，某些科目的通知优先级调整、针对特定学校的过滤规则）。
 
-## Suggested Cron Setup
+## 建议的 Cron 任务调度设置
 
-Run daily at 07:00 local time as an isolated agentTurn job:
+建议每天在当地时间 07:00 作为独立任务运行该脚本。为了避免 API 使用率限制，建议将该任务与其他早晨任务（如 07:05 的邮件检查任务）错开执行。
 
-```
-Schedule: 07:00 daily
-Timeout: 180s
-Task: "Read the wilma-triage skill, then run the full triage workflow. Report actionable findings."
-```
+## 输出格式示例
 
-Stagger with other morning jobs (e.g., email check at 07:05) to avoid API rate limits.
-
-## Output Format Example
-
-```
-📚 Wilma Update
-
-Child A (8th grade)
-• Math exam tomorrow — yhtälöt, kpl 1-8
-• Friday short day (9:20-12:35) — kulttuuripäivä, bring laptop + outdoor clothes
-
-Child B (6th grade)
-• No actionable items
-
-📅 Calendar: Added Child A math exam (Feb 10), removed cancelled disco (Feb 11)
-```
-
-Keep it brief. One line per item. Silence is better than noise.
+每条信息只输出一行。保持简洁，不发送冗余信息。

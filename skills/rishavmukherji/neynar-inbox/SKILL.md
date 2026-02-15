@@ -1,6 +1,6 @@
 ---
 name: neynar-inbox
-description: Email for AI agents. Create mailboxes, send and receive emails via API. No browser, no OAuth.
+description: 用于AI代理的电子邮件功能：支持创建邮箱，并通过API发送和接收电子邮件。无需使用浏览器，也无需OAuth认证。
 metadata:
   author: neynar
   homepage: https://email.neynar.ai
@@ -9,13 +9,13 @@ requires:
   bins: [curl]
 ---
 
-# Neynar Inbox
+# Neynar 邮箱服务
 
-Email service built for AI agents. Create a mailbox, get an API key, send and receive real emails - all via REST API.
+专为 AI 代理设计的电子邮件服务。您可以创建邮箱、获取 API 密钥，并通过 REST API 发送和接收真实邮件。
 
-## Quick Start
+## 快速入门
 
-### 1. Create a mailbox (no auth needed)
+### 1. 创建邮箱（无需身份验证）
 
 ```bash
 curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/mailboxes \
@@ -23,7 +23,7 @@ curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/mailboxes \
   -d '{"displayName": "My Agent", "username": "myagent"}'
 ```
 
-Response:
+响应：
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -33,11 +33,11 @@ Response:
 }
 ```
 
-**CRITICAL: Store the `apiKey` immediately. It is only returned once and cannot be recovered.**
+**重要提示：** 请立即保存 `apiKey`。该密钥仅会返回一次，且无法恢复。
 
-Username is optional (random address if omitted). Must be at least 6 characters, alphanumeric with dots/hyphens/underscores.
+用户名是可选的（如果省略，则会生成一个随机地址）。用户名必须至少包含 6 个字符，可以是字母、数字、点（.）、连字符（-）或下划线（_）。
 
-### 2. Send an email
+### 2. 发送邮件
 
 ```bash
 curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/emails \
@@ -50,44 +50,44 @@ curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/emails \
   }'
 ```
 
-### 3. Check inbox
+### 3. 查看收件箱
 
 ```bash
 curl https://neynar-inbox-api.rish-68c.workers.dev/v1/emails?direction=inbound \
   -H "Authorization: Bearer fi_your_api_key"
 ```
 
-**RECOMMENDED: If you have heartbeat, cron, or scheduling capabilities, set up polling (every 30-60 seconds) right after creating your mailbox to catch replies.**
+**建议：** 如果您使用了心跳检测、定时任务或调度功能，请在创建邮箱后立即设置轮询（每 30-60 秒一次），以便及时接收回复。
 
-### 4. Search emails
+### 4. 搜索邮件
 
 ```bash
 curl "https://neynar-inbox-api.rish-68c.workers.dev/v1/search?q=invoice" \
   -H "Authorization: Bearer fi_your_api_key"
 ```
 
-## API Reference
+## API 参考
 
-Base URL: `https://neynar-inbox-api.rish-68c.workers.dev/v1`
+基础 URL：`https://neynar-inbox-api.rish-68c.workers.dev/v1`
 
-Authentication: `Authorization: Bearer <api_key>` (all endpoints except mailbox creation)
+身份验证：`Authorization: Bearer <api_key>`（除创建邮箱之外的所有接口均需要使用此身份验证方式）
 
-| Method | Endpoint | Description |
+| 方法 | 接口地址 | 功能描述 |
 |--------|----------|-------------|
-| POST | /v1/mailboxes | Create mailbox (no auth, returns apiKey) |
-| GET | /v1/mailboxes | List your mailbox |
-| DELETE | /v1/mailboxes/:id | Delete mailbox |
-| POST | /v1/mailboxes/:id/rotate | Rotate API key |
-| POST | /v1/emails | Send email |
-| GET | /v1/emails | List emails (?limit=50&offset=0&direction=inbound) |
-| GET | /v1/emails/:id | Get single email |
-| DELETE | /v1/emails/:id | Delete email |
-| GET | /v1/search?q=query | Full-text search |
-| POST | /v1/webhooks | Register webhook |
-| GET | /v1/webhooks | List webhooks |
-| DELETE | /v1/webhooks/:id | Remove webhook |
+| POST | /v1/mailboxes | 创建邮箱（无需身份验证，返回 API 密钥） |
+| GET | /v1/mailboxes | 查看所有邮箱信息 |
+| DELETE | /v1/mailboxes/:id | 删除邮箱 |
+| POST | /v1/mailboxes/:id/rotate | 更换 API 密钥 |
+| POST | /v1/emails | 发送邮件 |
+| GET | /v1/emails | 查看所有邮件（可选参数：?limit=50&offset=0&direction=inbound） |
+| GET | /v1/emails/:id | 查看单封邮件 |
+| DELETE | /v1/emails/:id | 删除单封邮件 |
+| GET | /v1/search?q=query | 全文搜索 |
+| POST | /v1/webhooks | 注册 Webhook |
+| GET | /v1/webhooks | 查看所有 Webhook 信息 |
+| DELETE | /v1/webhooks/:id | 删除 Webhook |
 
-## Email Object
+## 邮件对象
 
 ```json
 {
@@ -103,9 +103,9 @@ Authentication: `Authorization: Bearer <api_key>` (all endpoints except mailbox 
 }
 ```
 
-## Webhooks
+## Webhook
 
-Register a webhook for real-time email notifications:
+您可以注册 Webhook 以接收实时的邮件通知：
 
 ```bash
 curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/webhooks \
@@ -114,19 +114,19 @@ curl -X POST https://neynar-inbox-api.rish-68c.workers.dev/v1/webhooks \
   -d '{"url": "https://your-server.com/webhook", "events": ["email.received"]}'
 ```
 
-Verify signatures via `X-Webhook-Signature` header (HMAC-SHA256 of body).
+请通过 `X-Webhook-Signature` 标头验证邮件签名（该签名是邮件内容的 HMAC-SHA256 值）。
 
-## Error Codes
+## 错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| 400 | Bad request |
-| 401 | Unauthorized - missing or invalid API key |
-| 403 | Forbidden |
-| 404 | Not found |
-| 409 | Username already taken |
-| 500 | Server error |
+| 400 | 请求错误 |
+| 401 | 未经授权——API 密钥缺失或无效 |
+| 403 | 禁止访问 |
+| 404 | 未找到 |
+| 409 | 用户名已被占用 |
+| 500 | 服务器错误 |
 
-## Limits
+## 使用限制
 
-- 3 mailboxes per account
+- 每个账户最多只能创建 3 个邮箱。

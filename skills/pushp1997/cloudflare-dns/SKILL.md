@@ -1,29 +1,29 @@
 ---
 name: cloudflare-dns
 version: 1.0.0
-description: Manage Cloudflare DNS records via API. Use when user asks to list, create, update, or delete DNS records, set up DDNS, manage domains on Cloudflare, or check DNS propagation. Supports A, AAAA, CNAME, TXT, MX, and other record types.
+description: 通过 API 管理 Cloudflare 的 DNS 记录。当用户需要列出、创建、更新或删除 DNS 记录、设置 DDNS、管理 Cloudflare 上的域名或检查 DNS 传播情况时，可以使用此功能。支持 A、AAAA、CNAME、TXT、MX 等类型的 DNS 记录。
 ---
 
 # Cloudflare DNS
 
-Manage DNS records via Cloudflare API using the bundled `cf-dns.sh` script.
+您可以使用随附的 `cf-dns.sh` 脚本，通过 Cloudflare API 来管理 DNS 记录。
 
-## Setup
+## 设置
 
-Store credentials in environment or pass via flags:
+将凭据存储在环境变量中，或通过命令行参数传递：
 
 ```bash
 export CF_API_TOKEN="your-api-token"
 export CF_ZONE_ID="your-zone-id"       # optional, can auto-detect from domain
 ```
 
-Get API token: Cloudflare Dashboard → My Profile → API Tokens → Create Token → "Edit zone DNS" template.
+获取 API 令牌：登录 Cloudflare 控制面板 → 我的资料 → API 令牌 → 创建令牌 → 选择 “编辑区域 DNS” 模板。
 
-Get Zone ID: Cloudflare Dashboard → select domain → Overview → right sidebar "Zone ID".
+获取区域 ID：登录 Cloudflare 控制面板 → 选择域名 → 概览 → 右侧边栏中的 “区域 ID”。
 
-## Usage
+## 使用方法
 
-The script is at `scripts/cf-dns.sh`. All commands:
+脚本位于 `scripts/cf-dns.sh` 文件中。所有可用命令如下：
 
 ```bash
 # List zones (find zone ID)
@@ -53,28 +53,28 @@ cf-dns.sh ddns <zone_id> --name home
 cf-dns.sh ddns --domain example.com --name home
 ```
 
-## Common Patterns
+## 常见操作模式
 
-**Add subdomain pointing to IP:**
+**添加指向 IP 地址的子域名：**
 ```bash
 cf-dns.sh create <zone_id> --type A --name subdomain --content 203.0.113.50 --proxied
 ```
 
-**Set up email (MX + SPF):**
+**设置电子邮件（MX + SPF）：**
 ```bash
 cf-dns.sh create <zone_id> --type MX --name @ --content mail.example.com --priority 10
 cf-dns.sh create <zone_id> --type TXT --name @ --content "v=spf1 include:_spf.google.com ~all"
 ```
 
-**Dynamic DNS for home server:**
+**为家庭服务器配置动态 DNS：**
 ```bash
 # Run periodically via cron
 cf-dns.sh ddns --domain example.com --name home
 ```
 
-## Notes
+## 注意事项：
 
-- `--proxied` enables Cloudflare proxy (orange cloud) — hides origin IP, adds CDN
-- TTL in seconds; use 1 for "Auto" when proxied
-- `@` means root domain
-- Script outputs JSON; pipe to `jq` for parsing
+- `--proxied` 选项会启用 Cloudflare 代理（显示为橙色云图标）——隐藏原始 IP 地址，并启用内容分发网络（CDN）。
+- TTL 的单位为秒；在启用代理的情况下，使用 `1` 表示 “自动设置”。
+- `@` 表示根域名。
+- 脚本会输出 JSON 格式的数据；您可以将输出结果通过 `jq` 工具进行解析。

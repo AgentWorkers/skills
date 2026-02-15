@@ -1,45 +1,46 @@
 ---
 name: todoist
-description: Integrate with Todoist task management using natural language. Use when the user wants to manage Todoist tasks or projects through conversational commands like "show my tasks for today", "add 'call dentist' to my todo list", "complete my task about the meeting", or any mention of Todoist, tasks, due dates, or project management. Requires TODOIST_API_KEY environment variable.
+description: **使用自然语言与 Todoist 任务管理工具集成**  
+当用户希望通过对话式命令（如“显示我今天的任务”、“将‘看牙医’添加到我的待办事项列表中”、“完成关于会议的任务”等）来管理 Todoist 任务或项目时，可以使用此功能。该功能需要 `TODOIST_API_KEY` 环境变量。
 ---
 
-# Todoist Skill — Natural Language Task Management
+# Todoist Skill — 自然语言任务管理
 
-Manage your Todoist tasks conversationally. No need to remember CLI syntax — just talk naturally about your tasks.
+通过自然语言与 Todoist 任务进行交互。无需记住 CLI 命令的语法，只需简单地描述您的任务即可。
 
-## Natural Language Examples
+## 自然语言示例
 
-This skill understands conversational requests:
+该技能支持以下自然语言请求：
 
-**List tasks:**
-- "What tasks do I have today?"
-- "Show me my Todoist list for this week"
-- "What do I have overdue?"
-- "Show priority 1 tasks"
+**列出任务：**
+- “我今天有哪些任务？”
+- “显示我本周的 Todoist 任务列表”
+- “哪些任务已经过期了？”
+- “显示优先级为 1 的任务”
 
-**Add tasks:**
-- "Add 'buy milk' to my todo list"
-- "Create a task to call the dentist tomorrow"
-- "I need to review the Q4 report by Friday"
-- "Add 'weekly standup' due every Monday"
+**添加任务：**
+- “在我的待办事项列表中添加‘买牛奶’”
+- “创建一个明天看牙医的任务”
+- “我需要在周五之前审阅第四季度的报告”
+- “添加一个每周一进行的‘团队会议’任务”
 
-**Complete tasks:**
-- "Complete my task about the dentist"
-- "Mark the milk task as done"
-- "I finished the report"
+**完成任务：**
+- “完成关于看牙医的任务”
+- “将‘买牛奶’的任务标记为已完成”
+- “我已经完成了报告”
 
-**Manage projects:**
-- "What projects do I have in Todoist?"
-- "Show tasks from my Work project"
+**管理项目：**
+- “我在 Todoist 中有哪些项目？”
+- “显示属于‘Work’项目的任务”
 
-## Prerequisites
+## 先决条件
 
-- `TODOIST_API_KEY` environment variable must be set with your Todoist API token
-- Get your token at: https://todoist.com/app/settings/integrations/developer
+- 必须将 `TODOIST_API_KEY` 环境变量设置为您的 Todoist API 令牌
+- 请在以下链接获取您的令牌：https://todoist.com/app/settings/integrations/developer
 
-## Technical Usage
+## 技术使用方式
 
-If you prefer CLI commands or need to script operations, use the Python script directly:
+如果您更喜欢使用 CLI 命令或需要脚本化操作，请直接使用 Python 脚本：
 
 ```bash
 # List today's tasks
@@ -55,40 +56,39 @@ python3 todoist/scripts/todoist.py complete "TASK_ID"
 python3 todoist/scripts/todoist.py projects
 ```
 
-## Filter Syntax
+## 过滤语法
 
-When filtering tasks (via natural language or CLI):
+通过自然语言或 CLI 过滤任务时，可以使用以下关键字：
+- `today` — 今日到期的任务
+- `overdue` — 过期的任务
+- `tomorrow` — 明天到期的任务
+- `p1`, `p2`, `p3`, `p4` — 优先级筛选条件
+- `7 days` — 下 7 天内到期的任务
+- `@label` — 具有特定标签的任务
+- `#project` — 属于某个项目的任务
+- 可使用 `&`（与）和 `|`（或）组合过滤条件：`today & p1`
 
-- `today` — tasks due today
-- `overdue` — overdue tasks
-- `tomorrow` — tasks due tomorrow
-- `p1`, `p2`, `p3`, `p4` — priority filters
-- `7 days` — tasks due in next 7 days
-- `@label` — tasks with specific label
-- `#project` — tasks in project
-- Combine with `&` (and) and `|` (or): `today & p1`
+## 优先级级别
 
-## Priority Levels
+- `1` — 紧急（红色）
+- `2` — 高优先级（橙色）
+- `3` — 中等优先级（蓝色）
+- `4` — 低优先级（白色/灰色，默认值）
 
-- `1` — Urgent (red)
-- `2` — High (orange)
-- `3` — Medium (blue)
-- `4` — Low (white/gray, default)
+## 功能特点
 
-## Features
+- ✅ 支持自然语言任务管理
+- ✅ 兼容时区，能够正确解析“今天”这样的时间表达
+- ✅ 智能过滤功能（排除已完成的任务）
+- ✅ 支持重复性任务
+- ✅ 完全兼容 Todoist API v1 的所有功能
 
-- ✅ Natural language task management
-- ✅ Timezone-aware "today" filtering
-- ✅ Smart filtering (excludes completed tasks)
-- ✅ Recurring task support
-- ✅ Full Todoist API v1 coverage
+## 响应格式
 
-## Response Format
+该脚本会输出 JSON 格式的数据，便于程序化使用。有关完整的 API 文档，请参阅 `references/api.md`。
 
-The script outputs JSON for programmatic use. See `references/api.md` for full API documentation.
+## 注意事项
 
-## Notes
-
-- The skill automatically filters out completed tasks
-- "Today" uses your local timezone (set `TZ` environment variable if needed)
-- Natural language dates ("tomorrow", "next Friday") use Todoist's built-in parsing
+- 该技能会自动过滤掉已完成的任务
+- “今天”的时间判断基于您的本地时区（如需调整，请设置 `TZ` 环境变量）
+- 自然语言中的日期（如“明天”、“下周五”）会使用 Todoist 的内置解析功能

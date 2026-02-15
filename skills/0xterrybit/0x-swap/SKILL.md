@@ -1,46 +1,46 @@
 ---
 name: 0x-swap
-description: 0x Protocol DEX aggregator. Swap tokens at the best rates across 9+ liquidity sources on Ethereum, Polygon, BSC, and more.
+description: 0x协议DEX聚合器：在Ethereum、Polygon、BSC等平台上，通过9个以上的流动性来源以最优价格进行代币交易。
 metadata: {"clawdbot":{"emoji":"🔷","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # 0x Swap API 🔷
 
-Professional-grade DEX aggregation. Best execution across 9+ liquidity sources with MEV protection.
+这是一个专业级别的去中心化交易所（DEX）聚合服务，能够从9个以上的流动性来源中选择最优的执行方案，并提供MEV（最大经济价值）保护。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `ZEROX_API_KEY` | 0x API Key (get free at 0x.org) | Yes |
+| 变量 | 描述 | 是否必填 |
+|--------|---------|---------|
+| `ZEROX_API_KEY` | 0x API密钥（可在0x.org免费获取） | 是 |
 
-## 💎 Swap Fee Configuration
+## 💎 交换费用配置
 
-This skill includes a small swap fee (0.3%) to support development. The fee is transparently disclosed to users before each swap.
+为了支持开发，该服务会收取少量的交换费用（0.3%）。每次交换前，费用会透明地显示给用户。
 
-| Variable | Value | Description |
-|----------|-------|-------------|
-| `SWAP_FEE_BPS` | 30 | 0.3% swap fee (30 basis points) |
-| `SWAP_FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | EVM wallet to receive fees |
-| `SWAP_FEE_TOKEN` | `outputToken` | Collect fee in output token |
+| 变量 | 值 | 描述 |
+|--------|------|---------|
+| `SWAP_FEE_BPS` | 30 | 0.3%的交换费用（30个基点） |
+| `SWAP_FEE_RECIPIENT` | `0x890CACd9dEC1E1409C6598Da18DC3d634e600b45` | 收费到的EVM钱包地址 |
+| `SWAP_FEE_TOKEN` | `outputToken` | 用于收取费用的输出代币 |
 
-**Fee Breakdown:**
-- User pays: 0.3% of swap output
-- Developer receives: 100% of fee
-- Fees are collected on-chain directly to your wallet
+**费用分配：**
+- 用户支付：交换金额的0.3%
+- 开发者获得：全部费用的100%
+- 费用会直接在链上支付到您的钱包中
 
-## Features
+## 主要功能
 
-- 🔄 **DEX Aggregation** - Best rates across Uniswap, SushiSwap, Curve, etc.
-- 🛡️ **MEV Protection** - Gasless swaps with MEV protection
-- ⛓️ **Multi-Chain** - Ethereum, Polygon, BSC, Arbitrum, Optimism, Base
-- 📊 **Real-time Analytics** - Trade insights and execution quality
-- 💰 **Native Monetization** - Built-in swap fee support
+- 🔄 **DEX聚合**：在Uniswap、SushiSwap、Curve等交易所中选择最优的交易费率
+- 🛡️ **MEV保护**：实现无gas费用的交换，并提供MEV保护
+- ⛓️ **多链支持**：支持Ethereum、Polygon、BSC、Arbitrum、Optimism、Base等链
+- 📊 **实时分析**：提供交易洞察和执行质量数据
+- 💰 **内置的盈利机制**：支持通过交换费用实现盈利
 
-## API Base URLs
+## API基础URL
 
-| Chain | URL |
-|-------|-----|
+| 链路 | URL |
+|------|---------|
 | Ethereum | `https://api.0x.org` |
 | Polygon | `https://polygon.api.0x.org` |
 | BSC | `https://bsc.api.0x.org` |
@@ -48,7 +48,7 @@ This skill includes a small swap fee (0.3%) to support development. The fee is t
 | Optimism | `https://optimism.api.0x.org` |
 | Base | `https://base.api.0x.org` |
 
-## Get Swap Quote
+## 获取交换报价
 
 ```bash
 API_KEY="${ZEROX_API_KEY}"
@@ -90,7 +90,7 @@ curl -s "https://api.0x.org/swap/permit2/quote" \
   }'
 ```
 
-## Get Price (No Transaction)
+## 获取价格（无需交易）
 
 ```bash
 curl -s "https://api.0x.org/swap/permit2/price" \
@@ -107,7 +107,7 @@ curl -s "https://api.0x.org/swap/permit2/price" \
   }'
 ```
 
-## Execute Swap (with Permit2)
+## 执行交换（需要Perm2权限）
 
 ```bash
 # 1. Get quote with transaction data
@@ -134,7 +134,7 @@ TX_GAS=$(echo "$QUOTE" | jq -r '.transaction.gas')
 # (requires web3 library or wallet integration)
 ```
 
-## Gasless Swap (MEV Protected)
+## 无gas费用交换（MEV保护）
 
 ```bash
 # Request gasless quote
@@ -153,10 +153,10 @@ curl -s "https://api.0x.org/swap/permit2/quote" \
   --data-urlencode "gasless=true" | jq '.'
 ```
 
-## Supported Chains
+## 支持的链路
 
-| Chain | ID | Native Token |
-|-------|-----|--------------|
+| 链路 | ID | 原生代币 |
+|------|------|---------|
 | Ethereum | 1 | ETH |
 | Polygon | 137 | MATIC |
 | BSC | 56 | BNB |
@@ -167,35 +167,35 @@ curl -s "https://api.0x.org/swap/permit2/quote" \
 | Fantom | 250 | FTM |
 | Celo | 42220 | CELO |
 
-## Common Token Addresses (Ethereum)
+## 常见代币地址（Ethereum）
 
-| Token | Address |
-|-------|---------|
+| 代币 | 地址 |
+|------|---------|
 | WETH | 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 |
 | USDC | 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 |
 | USDT | 0xdAC17F958D2ee523a2206206994597C13D831ec7 |
 | DAI | 0x6B175474E89094C44Da98b954EesdeAC495271d0F |
 | WBTC | 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599 |
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** display swap details before execution
-2. **WARN** if price impact > 1%
-3. **CHECK** token allowance before swap
-4. **VERIFY** output amount matches quote
-5. **NEVER** execute without user confirmation
+1. **执行前** **务必** 显示交换详情
+2. 如果价格变动超过1%，会发出**警告**。
+3. **交换前** **检查** 用户的代币余额是否足够。
+4. **确认** 输出金额与报价一致。
+5. **未经用户确认** **严禁** 执行交易。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `INSUFFICIENT_ASSET_LIQUIDITY` | Low liquidity | Reduce amount |
-| `VALIDATION_FAILED` | Invalid parameters | Check token addresses |
-| `RATE_LIMIT_EXCEEDED` | Too many requests | Wait and retry |
+| 错误类型 | 原因 | 解决方案 |
+|--------|---------|---------|
+| `INSUFFICIENT_ASSET_LIQUIDITY` | 流动性不足 | 减少交易金额 |
+| `VALIDATION_FAILED` | 参数无效 | 检查代币地址是否正确 |
+| `RATE_LIMIT_EXCEEDED` | 请求过多 | 等待片刻后重试 |
 
-## Links
+## 链接
 
-- [0x Docs](https://0x.org/docs)
-- [API Reference](https://0x.org/docs/api)
-- [Dashboard](https://dashboard.0x.org/)
-- [Pricing](https://0x.org/pricing)
+- [0x文档](https://0x.org/docs)
+- [API参考](https://0x.org/docs/api)
+- [控制面板](https://dashboard.0x.org/)
+- [价格信息](https://0x.org/pricing)

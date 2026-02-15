@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Content Repurposing
+# 内容再利用
 
-Turn one piece of content into many formats via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，可以将一篇内容转换为多种格式。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,9 +27,9 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## The Content Pyramid
+## 内容金字塔
 
-One source piece can generate 10+ derivative assets:
+一篇原始内容可以生成 10 多种衍生作品：
 
 ```
             ┌──────────┐
@@ -51,23 +51,23 @@ One source piece can generate 10+ derivative assets:
  └───┘└───┘└───┘└───┘└───┘└───┘└───┘
 ```
 
-## Conversion Recipes
+## 转换方法
 
-### Blog Post -> Twitter/X Thread
+### 博文 -> Twitter/X 线程
 
-**Extract 5-8 key insights. One per tweet. Add hook.**
+**提取 5-8 个关键观点，每个推文分享一个观点，并添加引导语。**
 
-| Element | Rule |
+| 元素 | 规则 |
 |---------|------|
-| Hook tweet | Listicle, contrarian, or promise format |
-| Body tweets | One insight per tweet, 280 chars max |
-| Visual breaks | Add image every 3-4 tweets |
-| Final tweet | CTA + "RT the first tweet if useful" |
+| 引导语推文 | 采用列表文章、反向观点或承诺的形式 |
+| 正文推文 | 每条推文分享一个观点，最多 280 个字符 |
+| 视觉元素 | 每 3-4 条推文添加一张图片 |
+| 最终推文 | 包含呼吁行动（CTA）以及“如果觉得有用，请转发第一条推文”的提示 |
 
-**Adaptation:**
-- Remove nuance and caveats (threads are punchy)
-- Add numbers and specifics (threads need skimmability)
-- Cut academic language (threads are conversational)
+**调整建议：**
+- 去除细节和注意事项（线程内容需要简洁明了）
+- 添加数字和具体信息（线程内容需要便于快速浏览）
+- 减少学术性语言的使用（线程内容应更具有对话性）
 
 ```bash
 # Generate a visual for the thread
@@ -83,18 +83,18 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-### Blog Post -> LinkedIn Carousel
+### 博文 -> LinkedIn 轮播图
 
-**1 slide per section. 8-12 slides total.**
+**每个部分对应一张幻灯片，总共 8-12 张幻灯片。**
 
-| Slide | Content |
+| 幻灯片 | 内容 |
 |-------|---------|
-| 1 (Hook) | Bold claim or question from headline |
-| 2-9 (Content) | One key point per slide, large text, supporting visual |
-| 10 (Summary) | Recap the key takeaways |
-| 11 (CTA) | "Follow for more" / "Save this" / "Comment your thoughts" |
+| 1（引导语） | 标题中的醒目陈述或问题 |
+| 2-9（正文） | 每张幻灯片展示一个关键点，并附上支持性的视觉元素 |
+| 10（总结） | 回顾关键内容 |
+| 11（呼吁行动） | “关注以获取更多内容” / “保存此内容” / “分享你的想法” |
 
-**Specs:** 1080x1080 (square) or 1080x1350 (4:5 for more space)
+**规格要求：** 1080x1080（方形）或 1080x1350（4:5 比例，以获得更多显示空间）
 
 ```bash
 # Generate carousel slides
@@ -107,9 +107,9 @@ for i in {1..10}; do
 done
 ```
 
-### Blog Post -> Newsletter Section
+### 博文 -> 通讯文章
 
-**3-line summary + "why it matters" + link.**
+**3 行的摘要 + “为什么这很重要” + 链接。**
 
 ```
 ## This Week's Feature: [Title]
@@ -121,17 +121,17 @@ done
 → [Read the full post](link)
 ```
 
-### Blog Post -> Short-Form Video Script
+### 博文 -> 简短视频脚本
 
-**Problem + key insight + CTA. Under 60 seconds.**
+**问题 + 关键观点 + 呼吁行动。时长不超过 60 秒。**
 
-| Section | Duration | Content |
+| 部分 | 时长 | 内容 |
 |---------|----------|---------|
-| Hook | 3s | "Most people get [topic] wrong." |
-| Problem | 10s | State the common mistake |
-| Insight | 25s | Your key finding/advice |
-| Proof | 10s | One stat or example |
-| CTA | 5s | "Follow for more" / "Link in bio" |
+| 引导语 | 3 秒 | “大多数人误解了 [主题]。” |
+| 问题 | 10 秒 | 说明常见的错误 |
+| 观点 | 25 秒 | 你的关键发现或建议 |
+| 证据 | 10 秒 | 一个统计数据或例子 |
+| 呼吁行动 | 5 秒 | “关注以获取更多内容” / “在个人资料中添加链接” |
 
 ```bash
 # Generate voiceover
@@ -145,9 +145,9 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Blog Post -> Audiogram
+### 博文 -> 有声书
 
-**Pull best quote. Generate audio. Add waveform visual.**
+**提取最佳引语并生成音频文件，同时添加波形图作为视觉辅助。**
 
 ```bash
 # Generate audio of the key quote
@@ -156,7 +156,7 @@ infsh app run falai/dia-tts --input '{
 }'
 ```
 
-### Podcast Episode -> Blog Post
+### 播客剧集 -> 博文
 
 ```bash
 # 1. Transcribe the episode
@@ -172,9 +172,9 @@ infsh app run <stt-app> --input '{
 # - Add links mentioned in the episode
 ```
 
-### Podcast Episode -> Quote Cards
+### 播客剧集 -> 引语卡片
 
-**3-5 best quotes with speaker attribution.**
+**展示 3-5 条最佳引语，并注明演讲者的名字。**
 
 ```bash
 # Generate quote card backgrounds
@@ -185,17 +185,17 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-### Video -> GIF
+### 视频 -> GIF 图片
 
-**Key moment, 3-5 seconds, under 5MB.**
+**选取视频中的关键片段，时长 3-5 秒，文件大小不超过 5MB。**
 
-Best moments for GIFs:
-- Reaction shots
-- Before/after reveals
-- Key demonstration steps
-- Funny or surprising moments
+适合制作 GIF 的场景包括：
+- 观众的反应瞬间
+- 事情发生前的/后的对比画面
+- 关键的操作步骤
+- 有趣或令人惊讶的瞬间
 
-### Long Video -> Short Clips
+### 长视频 -> 短片
 
 ```bash
 # Extract the best 15-60 second segments for Reels/TikTok/Shorts
@@ -206,43 +206,42 @@ Best moments for GIFs:
 # - A strong opinion or hot take
 ```
 
-## The Golden Rule
+## 重要原则
 
-**Never copy-paste across formats.** Each platform has different:
+**切勿在不同平台之间直接复制粘贴内容。**每个平台都有其独特的特性：
 
-| Platform | Attention Span | Tone | Format |
+| 平台 | 注意力持续时间 | 语言风格 | 格式要求 |
 |----------|---------------|------|--------|
-| Blog | 5-10 min | Thorough, detailed | Long paragraphs OK |
-| Twitter/X | 5-30 sec per tweet | Punchy, declarative | 280 chars, fragmented |
-| LinkedIn | 1-3 min | Professional, insightful | Short paragraphs, line breaks |
-| Newsletter | 5-7 min | Curated, personal | Sections with headers |
-| TikTok/Reels | 15-60 sec | Energetic, direct | Hook in 1 second |
-| Podcast | 20-60 min | Conversational, deep | Stories and tangents OK |
+| 博文 | 5-10 分钟 | 详细、深入 | 长段落可以接受 |
+| Twitter/X | 每条推文 5-30 秒 | 简洁、直接 | 最多 280 个字符 |
+| LinkedIn | 1-3 分钟 | 专业、有深度 | 短段落，适当使用换行 |
+| 通讯文章 | 5-7 分钟 | 精选内容，个人化表达 | 分段式结构 |
+| TikTok/Reels | 15-60 秒 | 有趣、直接 | 需要在 1 秒内吸引观众注意力 |
+| 播客 | 20-60 分钟 | 对话式、深入探讨 | 允许插入故事和旁白 |
 
-## Content Repurposing Checklist
+## 内容再利用检查清单
 
-For each piece of long-form content, create:
+对于每篇长篇内容，需要创建以下多种形式：
+- [ ] Twitter/X 线程（5-8 条推文）
+- [ ] LinkedIn 发布内容或轮播图
+- [ ] 通讯文章中的摘要部分
+- [ ] 3-5 张用于社交媒体的引语卡片
+- [ ] 短视频脚本（30-60 秒）
+- [ ] 用于邮件营销的简短内容片段
+- [ ] 用于内部演示的幻灯片
 
-- [ ] Twitter/X thread (5-8 tweets)
-- [ ] LinkedIn post or carousel
-- [ ] Newsletter section (3-line summary)
-- [ ] 2-3 quote cards for social
-- [ ] Short-form video script (30-60s)
-- [ ] Email snippet for nurture sequence
-- [ ] Slide for internal presentation
+## 常见错误
 
-## Common Mistakes
-
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Copy-pasting between platforms | Feels lazy, wrong format | Rewrite for each platform's style |
-| Repurposing weak content | Amplifies mediocrity | Only repurpose your best pieces |
-| Same day posting everywhere | Audience overlap sees duplicates | Stagger across days/weeks |
-| Losing the core message | Derivative misses the point | Identify the ONE key insight first |
-| No visual adaptation | Text-only on visual platforms | Create platform-specific graphics |
-| Forgetting attribution | Plagiarizes yourself | Link back to the original |
+| 在不同平台之间直接复制粘贴 | 显得偷懒，且格式不正确 | 为每个平台重新编写内容 |
+| 重复利用质量较差的内容 | 只会放大平庸的效果 | 仅重新利用质量最好的内容 |
+| 在同一天将内容发布到所有平台 | 重复内容可能导致受众流失 | 分散发布时间（几天或几周） |
+| 忽略核心信息 | 衍生内容会偏离原意 | 首先确定一个关键观点 |
+| 不进行视觉改编 | 在视觉平台上仅使用纯文本 | 为每个平台制作专属的视觉素材 |
+| 忘记标注来源 | 构成抄袭 | 必须注明原文链接 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-social-media-content
@@ -251,4 +250,4 @@ npx skills add inferencesh/skills@text-to-speech
 npx skills add inferencesh/skills@twitter-automation
 ```
 
-Browse all apps: `infsh app list`
+浏览所有可用工具：`infsh app list`

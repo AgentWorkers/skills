@@ -1,28 +1,28 @@
 ---
 name: x-to-kindle
-description: Send X/Twitter posts to Kindle for distraction-free reading. Use when user shares an X/Twitter link and wants to read it on Kindle, or asks to send a tweet/thread to their Kindle device.
+description: 将 X/Twitter 的帖子发送到 Kindle 上，以实现无干扰的阅读体验。适用于用户分享 X/Twitter 链接并希望在 Kindle 上阅读，或者请求将推文/帖子发送到他们的 Kindle 设备上的情况。
 ---
 
-# X to Kindle
+# 将 X/Twitter 帖子转换为 Kindle 可读文档
 
-Convert X/Twitter posts into Kindle-readable documents via email.
+通过电子邮件将 X/Twitter 帖子转换为 Kindle 可读的文档。
 
-## Requirements
+## 必备条件
 
-- Gmail account with App Password (or other SMTP setup)
-- Kindle email address (found in Amazon account settings)
+- 拥有带应用密码的 Gmail 账户（或已配置的 SMTP 账户）
+- Kindle 电子邮件地址（可在 Amazon 账户设置中找到）
 
-## Workflow
+## 工作流程
 
-When user shares an X link:
+当用户分享一个 X 链接时：
 
-1. **Extract content** via fxtwitter API:
+1. **提取内容**：使用 fxtwitter API 提取内容：
    ```
    https://api.fxtwitter.com/status/<tweet_id>
    ```
-   Extract from URL: `twitter.com/*/status/<id>` or `x.com/*/status/<id>`
+   从以下 URL 中提取内容：`twitter.com/*/status/<id>` 或 `x.com/*/status/<id>`
 
-2. **Format as HTML file** (save to /tmp):
+2. **格式化为 HTML 文件**（保存到 `/tmp` 目录）：
    ```html
    <!DOCTYPE html>
    <html>
@@ -36,7 +36,7 @@ When user shares an X link:
    </html>
    ```
 
-3. **Send via SMTP with HTML as ATTACHMENT** (Kindle requires attachment, not inline HTML):
+3. **通过 SMTP 发送邮件，并将 HTML 文件作为附件**（Kindle 需要附件，而非内联 HTML）：
    ```python
    from email.mime.multipart import MIMEMultipart
    from email.mime.text import MIMEText
@@ -60,29 +60,31 @@ When user shares an X link:
        msg.attach(attachment)
    ```
 
-## Tools
-- `send_to_kindle`: Send a local file to the configured Kindle email.
+## 工具
+- `send_to_kindle`：用于将本地文件发送到配置好的 Kindle 电子邮件地址。
 
-## Configuration
+## 配置
 
-Set the following environment variables in your Clawdbot configuration (or `.env` file):
+在 Clawdbot 的配置文件（或 `.env` 文件）中设置以下环境变量：
 
-- `SMTP_EMAIL`: Your sender email (e.g., gmail)
-- `SMTP_PASSWORD`: Your app password
-- `KINDLE_EMAIL`: Your Kindle email address
-- `SMTP_SERVER`: (Optional) Default: smtp.gmail.com
-- `SMTP_PORT`: (Optional) Default: 587
+- `SMTP_EMAIL`：发送者的电子邮件地址（例如：gmail）
+- `SMTP_PASSWORD`：应用密码
+- `KINDLE_EMAIL`：Kindle 电子邮件地址
+- `SMTP_SERVER`：（可选）默认值：smtp.gmail.com
+- `SMTP_PORT`：（可选）默认值：587
 
-## Tool Definitions
+## 工具说明
 
-### send_to_kindle
-Send a local file (PDF, HTML, TXT) to the Kindle.
-- **Run:** `python3 skills/x-to-kindle/send_to_kindle.py <file_path>`
+### `send_to_kindle`
 
+将本地文件（PDF、HTML、TXT 格式）发送到 Kindle。
 
-## Configuration
+- **使用方法**：`python3 skills/x-to-kindle/send_to_kindle.py <file_path>`
 
-Store in TOOLS.md:
+## 配置信息
+
+详细配置信息请参见 `TOOLS.md` 文件：
+
 ```markdown
 ## Kindle
 - Address: user@kindle.com
@@ -94,11 +96,11 @@ Store in TOOLS.md:
 - Port: 587
 ```
 
-## Example
+## 示例
 
-User sends: `https://x.com/elonmusk/status/1234567890`
+用户分享链接：`https://x.com/elonmusk/status/1234567890`
 
-1. Fetch `https://api.fxtwitter.com/status/1234567890`
-2. Extract author, text, timestamp
-3. Send HTML email to Kindle address
-4. Confirm: "Sent to Kindle 📚"
+1. 从 `https://api.fxtwitter.com/status/1234567890` 获取内容
+2. 提取作者、文本和时间戳
+3. 将格式化后的 HTML 文件发送到 Kindle 电子邮件地址
+4. 确认发送结果：“已发送到 Kindle 📚”

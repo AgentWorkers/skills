@@ -1,13 +1,13 @@
 ---
 name: glab-label
-description: Manage GitLab labels including create, list, update, and delete operations at project and group level. Use when organizing issues/MRs with labels, creating label taxonomies, or managing label colors/descriptions. Triggers on label, tag, issue label, create label, manage labels.
+description: 管理 GitLab 的标签，包括在项目级别和组级别执行创建、列出、更新和删除操作。适用于对带有标签的问题/任务进行分类、创建标签分类体系，或管理标签的颜色和描述。该功能会在标签、标签被添加到问题中、或标签被创建/更新时触发。
 ---
 
-# glab label
+# glab 标签
 
-Manage labels at project and group level.
+用于在项目和组级别管理标签。
 
-## Quick start
+## 快速入门
 
 ```bash
 # Create project label
@@ -26,7 +26,7 @@ glab label edit bug --color "#CC0000" --description "Software defects"
 glab label delete bug
 ```
 
-## Decision: Project vs Group Labels?
+## 选择：使用项目级标签还是组级标签？
 
 ```
 Where should this label live?
@@ -36,22 +36,22 @@ Where should this label live?
    └─ Project-level: glab label create --name <label>
 ```
 
-**Use group-level labels when:**
-- You want consistent labeling across all projects in a group
-- Managing organization-wide workflows
-- Examples: `priority::high`, `type::bug`, `status::blocked`
-- Reduces duplication and ensures consistency
+**在以下情况下使用组级标签：**
+- 当您希望在整个组内的所有项目中保持标签的一致性时
+- 在管理全组织范围内的工作流程时
+- 例如：`priority::high`（优先级：高）、`type::bug`（类型：错误）、`status::blocked`（状态：已阻止）
+- 这可以减少重复并确保标签的一致性
 
-**Use project-level labels when:**
-- Label is specific to project workflow
-- Team wants control over their own labels
-- Examples: `needs-ux-review`, `deploy-to-staging`, `legacy-code`
+**在以下情况下使用项目级标签：**
+- 当标签特定于某个项目的工作流程时
+- 当团队希望自行控制标签的设置时
+- 例如：`needs-ux-review`（需要用户体验审查）、`deploy-to-staging`（部署到测试阶段）、`legacy-code`（旧代码）
 
-## Common workflows
+## 常见工作流程
 
-### Creating a label taxonomy
+### 创建标签分类体系
 
-**Set up priority labels (group-level):**
+**设置优先级标签（组级）：**
 ```bash
 glab label create --group engineering --name "priority::critical" --color "#FF0000"
 glab label create --group engineering --name "priority::high" --color "#FF6B00"
@@ -59,49 +59,49 @@ glab label create --group engineering --name "priority::medium" --color "#FFA500
 glab label create --group engineering --name "priority::low" --color "#FFFF00"
 ```
 
-**Set up type labels (group-level):**
+**设置类型标签（组级）：**
 ```bash
 glab label create --group engineering --name "type::bug" --color "#FF0000"
 glab label create --group engineering --name "type::feature" --color "#00FF00"
 glab label create --group engineering --name "type::maintenance" --color "#0000FF"
 ```
 
-### Managing project-specific labels
+### 管理项目特定的标签
 
-**Create workflow labels:**
+**创建工作流程标签：**
 ```bash
 glab label create --name "needs-review" --color "#428BCA"
 glab label create --name "ready-to-merge" --color "#5CB85C"
 glab label create --name "blocked" --color "#D9534F"
 ```
 
-### Bulk operations
+### 批量操作
 
-**List all labels to review:**
+**列出所有标签以供审查：**
 ```bash
 glab label list --per-page 100 > labels.txt
 ```
 
-**Delete deprecated labels:**
+**删除已弃用的标签：**
 ```bash
 glab label delete old-label-1
 glab label delete old-label-2
 ```
 
-## Related Skills
+## 相关技能
 
-**Using labels:**
-- See `glab-issue` for applying labels to issues
-- See `glab-mr` for applying labels to merge requests
-- Script: `scripts/batch-label-issues.sh` for bulk labeling
+**使用标签：**
+- 请参阅 `glab-issue` 以将标签应用于问题
+- 请参阅 `glab-mr` 以将标签应用于合并请求
+- 脚本：`scripts/batch-label-issues.sh` 用于批量标记问题
 
-## Command reference
+## 命令参考
 
-For complete command documentation and all flags, see [references/commands.md](references/commands.md).
+有关完整的命令文档和所有参数，请参阅 [references/commands.md](references/commands.md)。
 
-**Available commands:**
-- `create` - Create label (project or group)
-- `list` - List labels
-- `edit` - Update label properties
-- `delete` - Delete label
-- `get` - View single label details
+**可用命令：**
+- `create` - 创建标签（项目或组）
+- `list` - 列出标签
+- `edit` - 更新标签属性
+- `delete` - 删除标签
+- `get` - 查看单个标签的详细信息

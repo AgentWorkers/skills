@@ -6,33 +6,32 @@ homepage: https://github.com/loomlay/openclaw-wallet
 metadata: {"openclaw":{"requires":{"env":["LOOMLAY_API_KEY"]},"primaryEnv":"LOOMLAY_API_KEY","optionalEnv":["LOOMLAY_BASE_URL"],"install":"npm install @loomlay/openclaw-wallet-plugin"}}
 ---
 
-# OpenClaw Wallet Plugin
+# OpenClaw 钱包插件
 
-Multi-chain wallet and trading toolkit for AI agents with 27 tools.
+这是一个专为 AI 代理设计的多链钱包和交易工具包，包含 27 个实用工具。
 
-## Installation
+## 安装
 
-**You must install the npm package before using any tools:**
+**在使用任何工具之前，必须先安装 npm 包：**
 
 ```bash
 npm install @loomlay/openclaw-wallet-plugin
 ```
 
-This installs the plugin and all its dependencies. No additional packages needed.
+此操作将安装该插件及其所有依赖项。无需额外安装其他包。
 
-**Authentication is automatic.** On first use, the plugin auto-registers for an API key and saves it to `~/.loomlay/credentials.json`. No manual setup required.
+**身份验证是自动完成的。** 首次使用时，插件会自动注册 API 密钥，并将其保存到 `~/.loomlay/credentials.json` 文件中。无需手动配置。
 
-To use a specific API key instead of auto-registration:
+**如需使用特定的 API 密钥而非自动注册，请执行以下操作：**
 ```bash
 export LOOMLAY_API_KEY=agent_your_key_here
 ```
 
-## First-Time Setup
+## 首次设置
 
-**IMPORTANT: After installing the plugin, you must set up a wallet before using trading/wallet tools.**
+**重要提示：** 安装插件后，必须先设置钱包才能使用交易/钱包工具。
 
-On first interaction with a user (or when the skill is first loaded), run this setup sequence:
-
+首次与用户交互时（或技能首次加载时），请按照以下顺序执行设置步骤：
 ```javascript
 const { wallet_get, wallet_create } = require('@loomlay/openclaw-wallet-plugin');
 
@@ -58,12 +57,11 @@ if (!existing.success) {
 }
 ```
 
-**Always run this check before any wallet or trading operation.** If `wallet_get()` fails with UNAUTHORIZED, the API key may need to be re-registered — delete `~/.loomlay/credentials.json` and retry.
+**在任何钱包或交易操作之前，请务必执行此检查。** 如果 `wallet_get()` 函数返回 `UNAUTHORIZED` 错误，可能需要重新注册 API 密钥——请删除 `~/.loomlay/credentials.json` 文件后重新尝试。
 
-## How to Use the Tools
+## 如何使用这些工具
 
-All 27 tools are exported as **flat async functions** from the plugin package. Use them in Node.js like this:
-
+所有 27 个工具都以 **扁平的异步函数** 的形式从插件包中导出。可以在 Node.js 中这样使用它们：
 ```javascript
 const { wallet_get, swap_quote, swap, dex_trending, token_search } = require('@loomlay/openclaw-wallet-plugin');
 
@@ -76,7 +74,7 @@ const trending = await dex_trending({ chain: 'solana', limit: 10 });
 // trending.data.pairs[...]
 ```
 
-Every tool returns a standardized response:
+每个工具都会返回一个标准化的响应结果：
 ```javascript
 {
   success: true,       // or false
@@ -89,15 +87,15 @@ Every tool returns a standardized response:
 }
 ```
 
-**Always check `result.success` before using `result.data`.**
+**在使用 `result.data` 之前，请务必检查 `result.success` 的值。**
 
-## Important: Verify Before Executing
+## 重要提示：执行操作前请务必进行验证
 
-For any action involving funds:
-1. **Get a quote first** — show the user what will happen
-2. **Get user confirmation** — never execute without approval
-3. **Execute** — run the transaction
-4. **Verify** — check the result and new balances
+对于任何涉及资金的操作：
+1. **先获取报价**——向用户展示操作结果。
+2. **获取用户确认**——未经用户同意切勿执行操作。
+3. **执行操作**——运行交易。
+4. **验证结果**——检查交易结果和新的账户余额。
 
 ```javascript
 const { swap_quote, swap } = require('@loomlay/openclaw-wallet-plugin');
@@ -113,27 +111,27 @@ if (result.success) {
 }
 ```
 
-## Security Rules
+## 安全规则
 
-- **Never log seed phrases** — `wallet_create()` returns it once, tell user to save it offline
-- **Never execute without user confirmation** — always quote first
-- **Never guess token addresses** — use `token_search()` to find them
-- **Never hardcode API keys** — use environment variables
+- **切勿泄露助记词**——`wallet_create()` 函数仅会返回助记词一次，请告知用户将其保存到安全位置。
+- **未经用户确认切勿执行操作**——务必先获取用户确认。
+- **切勿猜测代币地址**——使用 `token_search()` 功能来查找代币地址。
+- **切勿将 API 密钥硬编码**——请使用环境变量来存储密钥。
 
-## Amount Formats
+## 金额格式
 
-Trading tools accept flexible amounts:
+交易工具支持多种金额格式：
 
-| Format | Example | Meaning |
+| 格式 | 例子 | 含义 |
 |--------|---------|---------|
-| Decimal | `"1.5"` | Exact token amount |
-| USD | `"$100"` | Dollar value (auto-converts) |
-| Percentage | `"50%"` | Half of balance |
-| Max | `"max"` | Entire balance |
+| 小数 | `"1.5"` | 精确的代币数量 |
+| USD | `"$100"` | 美元金额（会自动转换） |
+| 百分比 | `"50%"` | 账户余额的 50% |
+| 最大值 | `"max"` | 账户余额的全部 |
 
-## All 27 Tools Reference
+## 所有 27 个工具的参考文档
 
-### Wallet (3)
+### 钱包（3 个工具）
 
 ```javascript
 const { wallet_create, wallet_get, wallet_export_keys } = require('@loomlay/openclaw-wallet-plugin');
@@ -151,7 +149,7 @@ await wallet_export_keys({ seedPhrase: '12 word phrase here' })
 // → { solanaPrivateKey, evmPrivateKey }
 ```
 
-### Trading (5)
+### 交易（5 个工具）
 
 ```javascript
 const { swap, swap_quote, transfer, bridge, bridge_quote } = require('@loomlay/openclaw-wallet-plugin');
@@ -177,7 +175,7 @@ await bridge_quote({ inputToken: 'SOL', amount: '1', sourceChain: 'solana', dest
 // → { inputAmount, outputAmount, fee, estimatedTime }
 ```
 
-### Tokens (4)
+### 代币（4 个工具）
 
 ```javascript
 const { token_search, token_price, token_details, token_chart } = require('@loomlay/openclaw-wallet-plugin');
@@ -199,7 +197,7 @@ await token_chart({ address: 'token_mint_address' })
 // → { data: [...] }
 ```
 
-### Portfolio (2)
+### 投资组合（2 个工具）
 
 ```javascript
 const { portfolio_get, portfolio_history } = require('@loomlay/openclaw-wallet-plugin');
@@ -213,7 +211,7 @@ await portfolio_history({ chain: 'solana', limit: 50 })
 // → { transactions: [...] }
 ```
 
-### DEX Market Data (7)
+### DEX 市场数据（7 个工具）
 
 ```javascript
 const { dex_trending, dex_volume, dex_gainers, dex_losers, dex_new, dex_pumpfun, dex_query } = require('@loomlay/openclaw-wallet-plugin');
@@ -248,7 +246,7 @@ await dex_query({
 })
 ```
 
-### Token Launch (2)
+### 代币发行（2 个工具）
 
 ```javascript
 const { tokenize_launch, tokenize_info } = require('@loomlay/openclaw-wallet-plugin');
@@ -267,7 +265,7 @@ await tokenize_info()
 // → { hasToken, launchId, tokenMint, poolAddress, dexscreenerUrl }
 ```
 
-### Fees (2)
+### 费用（2 个工具）
 
 ```javascript
 const { fees_status, fees_claim } = require('@loomlay/openclaw-wallet-plugin');
@@ -281,7 +279,7 @@ await fees_claim()
 // → { success, amountSol, txSignature }
 ```
 
-### RPC (2)
+### RPC（2 个工具）
 
 ```javascript
 const { rpc_call, rpc_chains } = require('@loomlay/openclaw-wallet-plugin');
@@ -295,19 +293,19 @@ await rpc_chains()
 // → { chains: [...] }
 ```
 
-## Supported Chains
+## 支持的区块链
 
-| Chain | Swaps | Bridges | RPC |
+| 区块链 | 交易对 | 桥接器 | RPC 支持 |
 |-------|-------|---------|-----|
-| Solana | yes | yes | yes |
-| Ethereum | yes | yes | yes |
-| Base | yes | yes | yes |
-| Arbitrum | yes | yes | yes |
-| Optimism | yes | yes | yes |
-| Polygon | yes | yes | yes |
-| BSC | yes | yes | yes |
+| Solana | 是 | 是 | 是 |
+| Ethereum | 是 | 是 | 是 |
+| Base | 是 | 是 | 是 |
+| Arbitrum | 是 | 是 | 是 |
+| Optimism | 是 | 是 | 是 |
+| Polygon | 是 | 是 | 是 |
+| BSC | 是 | 是 | 是 |
 
-## Error Handling
+## 错误处理
 
 ```javascript
 const result = await swap({ inputToken: 'SOL', outputToken: 'USDC', amount: '1' });
@@ -333,17 +331,17 @@ if (!result.success) {
 }
 ```
 
-## Reference Documents
+## 参考文档
 
-- `references/wallet-operations.md` - Wallet creation, security, key export
-- `references/trading-guide.md` - Swaps, transfers, bridges with amount formats
-- `references/market-analysis.md` - DEX data, trending, filtering
-- `references/token-launch.md` - Tokenize workflow, tiers, fee structure
-- `references/error-handling.md` - Error types, recovery patterns, retries
-- `references/amount-formats.md` - Flexible amounts explained
-- `references/chain-reference.md` - Supported chains and behaviors
+- `references/wallet-operations.md` - 钱包创建、安全设置、密钥导出
+- `references/trading-guide.md` - 交易对、转账、支持多种金额格式的桥梁功能
+- `references/market-analysis.md` - DEX 数据、市场趋势分析、筛选功能
+- `references/token-launch.md` - 代币发行流程、费用结构
+- `references/error-handling.md` - 错误类型、恢复策略、重试机制
+- `references/amount-formats.md` - 金额格式的详细说明
+- `references/chain-reference.md` - 支持的区块链及其特性
 
-## Workflows
+## 工作流程
 
-- `workflows/first-time-setup.md` - Installation → wallet creation → first trade
-- `workflows/token-launch-playbook.md` - Complete token launch guide
+- `workflows/first-time-setup.md` - 安装 → 创建钱包 → 进行首次交易
+- `workflows/token-launch-playbook.md` - 完整的代币发行指南

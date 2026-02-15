@@ -1,24 +1,24 @@
 ---
 slug: "pdf-report-generator"
 display_name: "PDF Report Generator"
-description: "Automatically generate PDF reports from construction data. Create formatted project reports with charts and tables."
+description: "根据施工数据自动生成PDF报告。生成包含图表和表格的格式化项目报告。"
 ---
 
-# PDF Report Generator
+# PDF报告生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Report generation challenges:
-- Manual report creation is time-consuming
-- Inconsistent formatting
-- Data aggregation from multiple sources
-- Repetitive weekly/monthly reports
+### 问题描述
+报告生成的挑战：
+- 手动创建报告耗时较长
+- 格式不一致
+- 需要从多个来源汇总数据
+- 每周/每月都需要重复生成报告
 
-### Solution
-Automated PDF report generation from project data with templates, charts, and customizable sections.
+### 解决方案
+利用模板、图表和可定制的部分，从项目数据自动生成PDF报告。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -391,7 +391,7 @@ class PDFReportGenerator:
         }
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create report generator
@@ -420,9 +420,9 @@ with open("report.html", "w") as f:
     f.write(html)
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Cost Report
+### 1. 成本报告
 ```python
 report = PDFReportGenerator("Project X", ReportType.COST)
 report.generate_cost_report({
@@ -438,7 +438,7 @@ report.generate_cost_report({
 })
 ```
 
-### 2. Safety Report
+### 2. 安全报告
 ```python
 report = PDFReportGenerator("Project X", ReportType.SAFETY)
 report.generate_safety_report({
@@ -449,7 +449,7 @@ report.generate_safety_report({
 })
 ```
 
-### 3. Custom Report
+### 3. 自定义报告
 ```python
 report = PDFReportGenerator("Project X", ReportType.WEEKLY)
 report.add_header("Weekly Status Report", "Week 15")
@@ -460,6 +460,6 @@ report.add_kpi_cards("Summary", [
 report.add_text("Notes", "Key accomplishments this week...")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - ETL and Process Automation
-- **Website**: https://datadrivenconstruction.io
+## 资源
+- **DDC手册**：第4.2章 - ETL与流程自动化
+- **官方网站**：https://datadrivenconstruction.io

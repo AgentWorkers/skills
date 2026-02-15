@@ -1,24 +1,24 @@
 ---
 slug: "weather-impact-analysis"
 display_name: "Weather Impact Analysis"
-description: "Analyze weather data impact on construction schedules. Predict weather delays, optimize work scheduling based on forecasts, and calculate weather-related risk factors for project planning."
+description: "分析天气数据对施工进度的影响；根据天气预报预测可能出现的延误，并优化施工计划；同时计算项目规划中与天气相关的风险因素。"
 ---
 
-# Weather Impact Analysis
+# 天气影响分析
 
-## Overview
+## 概述
 
-This skill implements weather data analysis for construction project management. Integrate weather forecasts, historical data, and activity sensitivity to predict delays and optimize scheduling.
+该功能用于建筑项目管理中的天气数据分析。通过整合天气预报、历史数据以及各项活动的天气敏感度信息，可以预测施工延误并优化施工计划。
 
-**Capabilities:**
-- Weather forecast integration
-- Activity weather sensitivity mapping
-- Delay prediction and quantification
-- Schedule optimization based on weather
-- Historical weather impact analysis
-- Risk factor calculation
+**主要功能：**
+- 天气预报集成
+- 活动对天气的敏感度分析
+- 延误预测与量化
+- 基于天气的施工计划优化
+- 历史天气影响分析
+- 风险因素计算
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass
@@ -109,9 +109,9 @@ result = check_work_day(today_weather, concrete_work)
 print(f"Can work: {result['can_work']}, Reasons: {result['reasons']}")
 ```
 
-## Comprehensive Weather Analysis System
+## 全面天气分析系统
 
-### Weather Data Integration
+### 天气数据集成
 
 ```python
 from dataclasses import dataclass, field
@@ -323,7 +323,7 @@ class WeatherDataService:
         return forecasts
 ```
 
-### Activity Weather Sensitivity
+### 活动对天气的敏感度分析
 
 ```python
 @dataclass
@@ -534,7 +534,7 @@ class ActivityWeatherAnalyzer:
         return optimal
 ```
 
-### Schedule Weather Integration
+### 施工计划与天气的整合
 
 ```python
 from datetime import date, timedelta
@@ -714,26 +714,26 @@ class ScheduleWeatherOptimizer:
         return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Activity Type | Min Temp | Max Precip | Max Wind | Rain Sensitive |
+| 活动类型 | 最低温度 | 最大降水量 | 最大风速 | 对降雨的敏感度 |
 |---------------|----------|------------|----------|----------------|
-| Concrete | 5°C | 2mm | 40 km/h | Yes |
-| Steel Erection | -10°C | 10mm | 35 km/h | No |
-| Roofing | 0°C | 0mm | 30 km/h | Yes |
-| Excavation | -5°C | 25mm | 50 km/h | Partial |
-| Exterior Painting | 10°C | 0mm | 25 km/h | Yes |
-| Masonry | 5°C | 5mm | 40 km/h | Yes |
-| Crane Operations | -15°C | 20mm | 30 km/h | No |
+| 混凝土施工 | 5°C | 2毫米 | 40公里/小时 | 是 |
+| 钢结构安装 | -10°C | 10毫米 | 35公里/小时 | 否 |
+| 屋顶施工 | 0°C | 0毫米 | 30公里/小时 | 是 |
+| 挖掘作业 | -5°C | 25毫米 | 50公里/小时 | 部分敏感 |
+| 外墙涂装 | 10°C | 0毫米 | 25公里/小时 | 是 |
+| 砌筑作业 | 5°C | 5毫米 | 40公里/小时 | 是 |
+| 起重机操作 | -15°C | 20毫米 | 30公里/小时 | 否 |
 
-## Resources
+## 资源
 
 - **OpenWeatherMap API**: https://openweathermap.org/api
 - **Weather Underground**: https://www.wunderground.com/weather/api
 - **DDC Website**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `4d-simulation` for schedule visualization
-- See `risk-assessment-ml` for weather risk prediction
-- See `site-logistics-optimization` for delivery scheduling
+- 查阅 `4d-simulation` 以可视化施工进度
+- 查阅 `risk-assessment-ml` 以进行天气风险预测
+- 查阅 `site-logistics-optimization` 以优化物资配送计划

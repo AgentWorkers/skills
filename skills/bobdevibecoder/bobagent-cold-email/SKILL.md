@@ -1,6 +1,6 @@
 ---
 name: cold-email
-description: Generate hyper-personalized cold email sequences using AI. Turn lead data into high-converting outreach campaigns.
+description: 使用人工智能生成高度个性化的冷邮件序列，将潜在客户数据转化为转化率高的营销活动。
 metadata:
   clawdbot:
     requires:
@@ -8,37 +8,37 @@ metadata:
         - MACHFIVE_API_KEY
 ---
 
-# MachFive - AI Cold Email Generator
+# MachFive - 人工智能冷邮件生成工具
 
-Generate personalized cold email sequences from lead data. MachFive uses AI to research prospects and craft unique, relevant outreach - not templates.
+MachFive能够根据潜在客户的数据生成个性化的冷邮件序列。它利用人工智能来研究潜在客户，并定制独特且相关的邮件内容，而非使用模板。
 
-## Setup
+## 设置
 
-1. Get your API key at https://app.machfive.io/settings (Integrations → API Keys)
-2. Set `MACHFIVE_API_KEY` in your environment
+1. 在 [https://app.machfive.io/settings](https://app.machfive.io/settings) 获取您的 API 密钥（点击 “Integrations” → “API Keys”）。
+2. 将 `MACHFIVE_API_KEY` 设置在您的环境变量中。
 
-## Campaign ID
+## 活动 ID
 
-Every generate request needs a **campaign ID** in the URL: `/api/v1/campaigns/{campaign_id}/generate` (or `/generate-batch`).
+每个生成请求都需要在 URL 中包含一个 **活动 ID**：`/api/v1/campaigns/{campaign_id}/generate`（或 `/generate-batch`）。
 
-- **If the user has not provided a campaign name or ID:** Call **GET /api/v1/campaigns** (see below) to list campaigns in their workspace, then ask them to pick one by name or ID before running generate.
-- **Where to get it manually:** https://app.machfive.io/campaigns → open a campaign → copy the ID from the URL or settings.
-- **No default:** The skill does not assume a campaign. The user (or agent config) must provide one. Agents can store a default campaign ID for the workspace if the user provides it (e.g. "use campaign X for my requests").
+- **如果用户未提供活动名称或 ID：** 先调用 `GET /api/v1/campaigns`（见下文）来查看他们工作空间中的所有活动，然后让他们通过名称或 ID 选择一个活动再执行生成操作。
+- **如何手动获取活动 ID：** 访问 [https://app.machfive.io/campaigns](https://app.machfive.io/campaigns)，打开一个活动，然后从 URL 或设置中复制 ID。
+- **无默认值：** 该工具不假设存在活动。用户（或代理）必须提供一个活动 ID。如果用户提供了活动 ID，代理可以为工作空间设置一个默认活动 ID（例如：“使用活动 X 进行我的请求”）。
 
-## Endpoints
+## 端点
 
-### List Campaigns (discover before generate)
+### 列出活动（在生成前查询）
 
-List campaigns in the workspace so the agent can ask the user which campaign to use when they haven't provided a name or ID.
+列出工作空间中的所有活动，以便在用户未提供活动名称或 ID 时询问他们使用哪个活动。
 ```
 GET https://app.machfive.io/api/v1/campaigns
 Authorization: Bearer {MACHFIVE_API_KEY}
 ```
-Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
+或者使用 `X-API-Key: {MACHFIVE_API_KEY}` 作为请求头。
 
-Optional query: `?q=search` or `?name=search` to filter by campaign name.
+可选查询参数：`?q=search` 或 `?name=search` 以按活动名称进行筛选。
 
-**Response (200):**
+**响应（200）：**
 ```json
 {
   "campaigns": [
@@ -47,18 +47,18 @@ Optional query: `?q=search` or `?name=search` to filter by campaign name.
   ]
 }
 ```
-If no campaign name or ID was given, call this first, then ask the user: "Which campaign should I use? [list names/IDs]."
+如果未提供活动名称或 ID，请先调用此接口，然后询问用户：“我应该使用哪个活动？[列出所有活动名称/ID]。”
 
-### Single Lead (Sync)
+### 单个潜在客户（同步生成）
 
-Generate an email sequence for one lead (3–5 emails per lead). Waits for completion, returns the sequence directly. **The request can take 3–5 minutes** (AI research + generation); use a client timeout of at least **300 seconds (5 min)** or **600 seconds (10 min)**. Do not use a 120s timeout or the response will be cut off.
+为单个潜在客户生成一封或多封邮件（每名潜在客户最多 3-5 封邮件）。系统会等待生成完成并直接返回邮件序列。**生成过程可能需要 3-5 分钟**（包括人工智能研究和邮件生成时间）；请设置客户端超时时间为至少 **300 秒（5 分钟）** 或 **600 秒（10 分钟）**。如果设置超时时间过短，响应可能会被中断。
 ```
 POST https://app.machfive.io/api/v1/campaigns/{campaign_id}/generate
 Authorization: Bearer {MACHFIVE_API_KEY}
 Content-Type: application/json
 ```
 
-Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
+或者使用 `X-API-Key: {MACHFIVE_API_KEY}` 作为请求头。
 ```json
 {
   "lead": {
@@ -78,7 +78,7 @@ Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
 }
 ```
 
-**Response (200):**
+**响应（200）：**
 ```json
 {
   "lead_id": "lead_xyz789",
@@ -92,18 +92,18 @@ Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
 }
 ```
 
-**Recovery:** The response includes `list_id`. If the request times out or the response is truncated, you can still get the result: call **GET /api/v1/lists/{list_id}** to confirm status, then **GET /api/v1/lists/{list_id}/export?format=json** to retrieve the sequence.
+**恢复机制：** 响应中包含 `list_id`。如果请求超时或响应被截断，您仍可以通过调用 `GET /api/v1/lists/{list_id}` 来确认状态，然后通过 `GET /api/v1/lists/{list_id}/export?format=json` 来获取邮件序列。
 
-### Batch (Async)
+### 批量处理（异步）
 
-Generate email sequences for multiple leads (one list; each lead gets a sequence). **Returns immediately** (202) with `list_id`; processing runs in the background. To get results: poll list status, then call export.
+为多个潜在客户生成邮件序列（每个潜在客户对应一个序列）。系统会立即返回处理结果（状态码 202），同时返回 `list_id`；实际处理过程在后台进行。要获取结果，请轮询活动状态，然后调用 `export` 接口。
 ```
 POST https://app.machfive.io/api/v1/campaigns/{campaign_id}/generate-batch
 Authorization: Bearer {MACHFIVE_API_KEY}
 Content-Type: application/json
 ```
 
-Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
+或者使用 `X-API-Key: {MACHFIVE_API_KEY}` 作为请求头。
 ```json
 {
   "leads": [
@@ -117,7 +117,7 @@ Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
 }
 ```
 
-**Response (202):**
+**响应（202）：**
 ```json
 {
   "list_id": "uuid",
@@ -127,97 +127,91 @@ Or use `X-API-Key: {MACHFIVE_API_KEY}` header.
 }
 ```
 
-### List lead lists
+### 列出潜在客户列表
 
-List lead lists in the workspace. Optional query: `campaign_id`, `status` (`pending` | `processing` | `completed` | `failed`), `limit` (default 50, max 100), `offset`.
+列出工作空间中的所有潜在客户列表。可选查询参数：`campaign_id`、`status`（`pending` | `processing` | `completed` | `failed`）、`limit`（默认 50，最大 100）、`offset`。
 ```
 GET https://app.machfive.io/api/v1/lists
 GET https://app.machfive.io/api/v1/lists?campaign_id={campaign_id}&status=completed&limit=20
 Authorization: Bearer {MACHFIVE_API_KEY}
 ```
 
-**Response (200):** `{ "lists": [ { "id", "campaign_id", "custom_name", "processing_status", "created_at", "completed_at" }, ... ] }`. Order is `created_at` desc.
+**响应（200）：** `{ "lists": [ { "id", "campaign_id", "custom_name", "processing_status", "created_at", "completed_at" }, ... ] }`。列表按 `created_at` 降序排列。
 
-### List status (poll)
+### 查询活动状态
 
-Poll until the list is done. Use the `list_id` from generate or generate-batch.
+持续轮询活动状态，直到所有邮件生成完成。请使用在 `generate` 或 `generate-batch` 接口中获得的 `list_id`。
 ```
 GET https://app.machfive.io/api/v1/lists/{list_id}
 Authorization: Bearer {MACHFIVE_API_KEY}
 ```
 
-**Response (200):** `id`, `campaign_id`, `custom_name`, `processing_status` (`pending` | `processing` | `completed` | `failed`), `created_at`, `updated_at`. When `processing_status === 'completed'`: `leads_count`, `emails_created`, `completed_at`. When `failed`: `failed_at`. **404** if list not found or not in workspace.
+**响应（200）：** `id`、`campaign_id`、`custom_name`、`processing_status`（`pending` | `processing` | `completed` | `failed`）、`created_at`、`updated_at`。当 `processing_status` 为 `completed` 时，还会返回 `leads_count`、`emails_created`、`completed_at`；如果失败，则返回 `failed_at`。如果列表不存在或不在工作空间中，返回 **404**。
 
-Poll every 10–30 seconds until `processing_status === 'completed'` or `failed`. If `failed`, the list cannot be exported; retry by submitting a new batch.
+每 10-30 秒轮询一次，直到 `processing_status` 变为 `completed` 或 `failed`。如果失败，请重新提交请求以尝试生成新的邮件序列。
 
-### List export (get results)
+### 导出结果
 
-After status is `completed`, fetch the processed output. **CSV** (default) or **JSON**.
-```
-GET https://app.machfive.io/api/v1/lists/{list_id}/export?format=csv
-GET https://app.machfive.io/api/v1/lists/{list_id}/export?format=json
-Authorization: Bearer {MACHFIVE_API_KEY}
-```
+在所有邮件生成完成后，可以获取处理后的结果。支持 **CSV**（默认格式）或 **JSON** 格式。
+- **format=csv**（默认）：返回处理后的 CSV 文件（与 UI 下载内容相同），格式为 `Content-Disposition: attachment; filename="MachFive-{list_id}.csv"`。
+- **format=json**：返回以下格式的数据：`{ "leads": [ { "email": "...", "sequence": [ { "step": 1, "subject": "...", "body": "..." }, ... ] }, ... ] }`。每个潜在客户的记录可能包含可选字段 `name`、`company`、`title`（例如：`{ "email": "john@acme.com", "name": "John Smith", "company": "Acme Corp", "title": "VP Marketing", "sequence": [ ... ] }`）。
+- 如果列表尚未生成完成，会返回 **409**；如果列表不存在或不在工作空间中，会返回 **404**。
 
-- **format=csv** (default): Returns the processed CSV (same as UI download), with `Content-Disposition: attachment; filename="MachFive-{list_id}.csv"`.
-- **format=json**: Returns `{ "leads": [ { "email": "...", "sequence": [ { "step": 1, "subject": "...", "body": "..." }, ... ] }, ... ] }`. Each lead may include optional `name`, `company`, `title` when present, e.g. `{ "email": "john@acme.com", "name": "John Smith", "company": "Acme Corp", "title": "VP Marketing", "sequence": [ ... ] }`.
-- **409** if list is not yet completed (poll GET /lists/:id first). **404** if list not found or not in workspace.
+**批量处理流程：** 先发送 `POST /generate-batch` 请求（状态码 202），然后获取 `list_id`，接着轮询 `GET /lists/:id` 直到 `processing_status` 变为 `completed`，最后调用 `GET /lists/:id/export?format=csv` 或 `json` 来获取结果并返回给用户。
 
-**Batch flow:** POST generate-batch → 202 + list_id → poll GET /lists/:id until `processing_status === 'completed'` → GET /lists/:id/export?format=csv or json → return result to user.
+## 潜在客户字段
 
-## Lead Fields
+每个潜在客户记录必须包含一个有效的 **`email` 字段**；该字段用于在处理过程中识别潜在客户，并在生成的邮件中将其与原始记录关联起来（与应用程序 UI 中的显示方式一致）。其他字段均为可选，但有助于提高邮件的个性化程度。
 
-Each lead must include a valid **`email`**; it is used to map the lead through processing and to match generated sequences back to the lead in exports (same as the app UI). All other fields are optional but improve personalization.
-
-| Field | Required | Description |
+| 字段 | 是否必填 | 说明 |
 |-------|----------|-------------|
-| `email` | **Yes** | Lead's email address; used to map the lead through processing and in exports |
-| `name` | No | Full name or first name (improves personalization) |
-| `company` | No | Company name (improves personalization) |
-| `title` | No | Job title (improves personalization) |
-| `company_website` | No | Company URL for research |
-| `linkedin_url` | No | LinkedIn profile for deeper personalization |
+| `email` | 是 | 潜在客户的电子邮件地址，用于处理过程和结果导出 |
+| `name` | 否 | 完整姓名或名字，有助于提高个性化程度 |
+| `company` | 否 | 公司名称，有助于提高个性化程度 |
+| `title` | 否 | 职位名称，有助于提高个性化程度 |
+| `company_website` | 否 | 公司网站地址，用于进一步研究潜在客户信息 |
+| `linkedin_url` | 否 | 潜在客户的 LinkedIn 资料，用于更精确的个性化处理 |
 
-## Options
+## 配置选项
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 说明 |
 |--------|------|---------|-------------|
-| `list_name` | string | Auto | Display name for this list in MachFive UI |
-| `email_count` | number | 3 | Emails per lead (1-5) |
-| `email_signature` | string | None | Signature appended to emails |
-| `campaign_angle` | string | None | Context for personalization |
-| `approved_ctas` | array | From campaign | CTAs to use (omit to use campaign defaults) |
+| `list_name` | string | 自动生成 | 用于在 MachFive UI 中显示该列表的名称 |
+| `email_count` | number | 3 | 每个潜在客户发送的邮件数量（1-5 封） |
+| `email_signature` | string | 无 | 附加到邮件末尾的签名 |
+| `campaign_angle` | string | 无 | 用于个性化处理的上下文信息 |
+| `approved_ctas` | array | 来自活动的营销宣传材料（可选）；省略则使用活动的默认内容 |
 
-## Limits
+## 限制
 
-- **Single lead (sync):** Request can take 5–10 minutes; use a client timeout of at least 300s (5 min) or 600s (10 min).
-- **Batch (async):** Returns 202 immediately; poll **GET /api/v1/lists/{list_id}** every 10–30s until `processing_status` is `completed` or `failed`. Workspaces have a concurrent batch limit; if you get **429**, retry later.
-- **List lists:** Query param `limit` default 50, max 100; `offset` for pagination.
+- **单个潜在客户（同步生成）：** 请求可能需要 5-10 分钟；请设置客户端超时时间为至少 300 秒（5 分钟）或 600 秒（10 分钟）。
+- **批量处理（异步）：** 系统会立即返回处理结果（状态码 202），然后每 10-30 秒轮询一次 `GET /api/v1/lists/{list_id}`，直到 `processing_status` 变为 `completed` 或 `failed`。工作空间有并发处理批次的数量限制；如果收到 **429** 错误，请稍后重试。
+- **列出潜在客户列表：** 查询参数 `limit` 的默认值为 50，最大值为 100；`offset` 用于分页。
 
-## Errors
+## 错误代码及说明
 
-| Code | Error | Description |
+| 代码 | 错误类型 | 说明 |
 |------|-------|-------------|
-| 400 | BAD_REQUEST | Invalid JSON, missing `lead`/`leads`, or missing/invalid lead `email`; or campaign has no vector store |
-| 401 | UNAUTHORIZED | Invalid or missing API key |
-| 402 | INSUFFICIENT_CREDITS | Out of credits |
-| 403 | FORBIDDEN | Campaign not in your workspace |
-| 404 | NOT_FOUND | Campaign or list doesn't exist |
-| 409 | NOT_READY | Export called before list completed (poll GET /lists/:id first) |
-| 429 | WORKSPACE_LIMIT | Too many concurrent batch jobs; try again later |
+| 400 | BAD_REQUEST | JSON 格式错误；缺少 `lead`/`leads` 字段，或潜在客户的 `email` 无效；或者活动没有相关数据存储 |
+| 401 | UNAUTHORIZED | API 密钥无效或未提供 |
+| 402 | INSUFFICIENT_CREDITS | 信用额度不足 |
+| 403 | FORBIDDEN | 该活动不在您的工作空间内 |
+| 404 | NOT_FOUND | 活动或列表不存在 |
+| 409 | NOT_READY | 在列表生成完成前尝试导出（请先调用 `GET /lists/:id` 查询状态） |
+| 429 | WORKSPACE_LIMIT | 并发处理批次数量超过限制；请稍后重试 |
 
-## Usage Examples
+## 使用示例
 
-"Generate a cold email for the VP of Sales at Stripe"
-"Create outreach sequences for these 10 leads"
-"Write a 3-email sequence targeting marketing directors at SaaS companies"
+- “为 Stripe 公司的销售副总裁生成一封冷邮件”
+- “为这 10 名潜在客户创建邮件序列”
+- “为 SaaS 公司的市场总监生成 3 封邮件的邮件序列”
 
-## Pricing
+## 定价方案
 
-- Free: 100 credits/month
-- Starter: 2,000 credits/month
-- Growth: 5,000 credits/month
-- Enterprise: Custom credits/month
-- 1 credit = 1 lead processed
+- 免费版：每月 100 个信用额度 |
+- 入门版：每月 2,000 个信用额度 |
+- 成长版：每月 5,000 个信用额度 |
+- 企业版：根据需求定制信用额度 |
+- 每个信用额度对应处理 1 名潜在客户
 
-Get started: https://machfive.io
+立即开始使用：[https://machfive.io](https://machfive.io)

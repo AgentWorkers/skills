@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Ai Assistants - Java
+# Telnyx AI 辅助工具 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +30,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List assistants
+## 列出辅助工具
 
-Retrieve a list of all AI Assistants configured by the user.
+检索用户配置的所有 AI 辅助工具。
 
 `GET /ai/assistants`
 
@@ -44,11 +45,11 @@ import com.telnyx.sdk.models.ai.assistants.AssistantsList;
 AssistantsList assistantsList = client.ai().assistants().list();
 ```
 
-## Create an assistant
+## 创建辅助工具
 
-Create a new AI Assistant.
+创建一个新的 AI 辅助工具。
 
-`POST /ai/assistants` — Required: `name`, `model`, `instructions`
+`POST /ai/assistants` — 必需参数：`name`、`model`、`instructions`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.AssistantCreateParams;
@@ -62,9 +63,9 @@ AssistantCreateParams params = AssistantCreateParams.builder()
 InferenceEmbedding assistant = client.ai().assistants().create(params);
 ```
 
-## Get an assistant
+## 获取辅助工具信息
 
-Retrieve an AI Assistant configuration by `assistant_id`.
+通过 `assistant_id` 检索 AI 辅助工具的配置信息。
 
 `GET /ai/assistants/{assistant_id}`
 
@@ -75,9 +76,9 @@ import com.telnyx.sdk.models.ai.assistants.InferenceEmbedding;
 InferenceEmbedding assistant = client.ai().assistants().retrieve("assistant_id");
 ```
 
-## Update an assistant
+## 更新辅助工具
 
-Update an AI Assistant's attributes.
+更新 AI 辅助工具的属性。
 
 `POST /ai/assistants/{assistant_id}`
 
@@ -88,9 +89,9 @@ import com.telnyx.sdk.models.ai.assistants.InferenceEmbedding;
 InferenceEmbedding assistant = client.ai().assistants().update("assistant_id");
 ```
 
-## Delete an assistant
+## 删除辅助工具
 
-Delete an AI Assistant by `assistant_id`.
+通过 `assistant_id` 删除 AI 辅助工具。
 
 `DELETE /ai/assistants/{assistant_id}`
 
@@ -101,11 +102,11 @@ import com.telnyx.sdk.models.ai.assistants.AssistantDeleteResponse;
 AssistantDeleteResponse assistant = client.ai().assistants().delete("assistant_id");
 ```
 
-## Assistant Chat (BETA)
+## 辅助工具聊天（测试版）
 
-This endpoint allows a client to send a chat message to a specific AI Assistant.
+此端点允许客户端向特定的 AI 辅助工具发送聊天消息。
 
-`POST /ai/assistants/{assistant_id}/chat` — Required: `content`, `conversation_id`
+`POST /ai/assistants/{assistant_id}/chat` — 必需参数：`content`、`conversation_id`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.AssistantChatParams;
@@ -119,11 +120,11 @@ AssistantChatParams params = AssistantChatParams.builder()
 AssistantChatResponse response = client.ai().assistants().chat(params);
 ```
 
-## Assistant Sms Chat
+## 辅助工具短信聊天
 
-Send an SMS message for an assistant.
+为辅助工具发送短信。
 
-`POST /ai/assistants/{assistant_id}/chat/sms` — Required: `from`, `to`
+`POST /ai/assistants/{assistant_id}/chat/sms` — 必需参数：`from`、`to`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.AssistantSendSmsParams;
@@ -137,9 +138,9 @@ AssistantSendSmsParams params = AssistantSendSmsParams.builder()
 AssistantSendSmsResponse response = client.ai().assistants().sendSms(params);
 ```
 
-## Clone Assistant
+## 复制辅助工具
 
-Clone an existing assistant, excluding telephony and messaging settings.
+复制现有的辅助工具（不包括电话和消息设置）。
 
 `POST /ai/assistants/{assistant_id}/clone`
 
@@ -150,11 +151,11 @@ import com.telnyx.sdk.models.ai.assistants.InferenceEmbedding;
 InferenceEmbedding assistant = client.ai().assistants().clone("assistant_id");
 ```
 
-## Import assistants from external provider
+## 从外部提供商导入辅助工具
 
-Import assistants from external providers.
+从外部提供商导入辅助工具。
 
-`POST /ai/assistants/import` — Required: `provider`, `api_key_ref`
+`POST /ai/assistants/import` — 必需参数：`provider`、`api_key_ref`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.AssistantImportsParams;
@@ -167,9 +168,9 @@ AssistantImportsParams params = AssistantImportsParams.builder()
 AssistantsList assistantsList = client.ai().assistants().imports(params);
 ```
 
-## List scheduled events
+## 列出计划事件
 
-Get scheduled events for an assistant with pagination and filtering
+获取辅助工具的计划事件（支持分页和过滤）
 
 `GET /ai/assistants/{assistant_id}/scheduled_events`
 
@@ -180,11 +181,11 @@ import com.telnyx.sdk.models.ai.assistants.scheduledevents.ScheduledEventListPar
 ScheduledEventListPage page = client.ai().assistants().scheduledEvents().list("assistant_id");
 ```
 
-## Create a scheduled event
+## 创建计划事件
 
-Create a scheduled event for an assistant
+为辅助工具创建计划事件。
 
-`POST /ai/assistants/{assistant_id}/scheduled_events` — Required: `telnyx_conversation_channel`, `telnyx_end_user_target`, `telnyx_agent_target`, `scheduled_at_fixed_datetime`
+`POST /ai/assistants/{assistant_id}/scheduled_events` — 必需参数：`telnyx_conversation_channel`、`telnyx_end_user_target`、`telnyx_agent_target`、`scheduled_at_fixed_datetime`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.scheduledevents.ConversationChannelType;
@@ -202,9 +203,9 @@ ScheduledEventCreateParams params = ScheduledEventCreateParams.builder()
 ScheduledEventResponse scheduledEventResponse = client.ai().assistants().scheduledEvents().create(params);
 ```
 
-## Get a scheduled event
+## 获取计划事件信息
 
-Retrieve a scheduled event by event ID
+通过事件 ID 检索计划事件的信息。
 
 `GET /ai/assistants/{assistant_id}/scheduled_events/{event_id}`
 
@@ -219,9 +220,9 @@ ScheduledEventRetrieveParams params = ScheduledEventRetrieveParams.builder()
 ScheduledEventResponse scheduledEventResponse = client.ai().assistants().scheduledEvents().retrieve(params);
 ```
 
-## Delete a scheduled event
+## 删除计划事件
 
-If the event is pending, this will cancel the event.
+如果事件尚未执行，此操作将取消该事件。
 
 `DELETE /ai/assistants/{assistant_id}/scheduled_events/{event_id}`
 
@@ -235,9 +236,9 @@ ScheduledEventDeleteParams params = ScheduledEventDeleteParams.builder()
 client.ai().assistants().scheduledEvents().delete(params);
 ```
 
-## List assistant tests with pagination
+## 列出辅助工具测试（支持分页）
 
-Retrieves a paginated list of assistant tests with optional filtering capabilities
+检索辅助工具测试的列表（支持可选过滤）
 
 `GET /ai/assistants/tests`
 
@@ -248,11 +249,11 @@ import com.telnyx.sdk.models.ai.assistants.tests.TestListParams;
 TestListPage page = client.ai().assistants().tests().list();
 ```
 
-## Create a new assistant test
+## 创建新的辅助工具测试
 
-Creates a comprehensive test configuration for evaluating AI assistant performance
+创建用于评估 AI 辅助工具性能的测试配置。
 
-`POST /ai/assistants/tests` — Required: `name`, `destination`, `instructions`, `rubric`
+`POST /ai/assistants/tests` — 必需参数：`name`、`destination`、`instructions`、`rubric`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.tests.AssistantTest;
@@ -274,9 +275,9 @@ TestCreateParams params = TestCreateParams.builder()
 AssistantTest assistantTest = client.ai().assistants().tests().create(params);
 ```
 
-## Get all test suite names
+## 获取所有测试套件名称
 
-Retrieves a list of all distinct test suite names available to the current user
+检索当前用户可用的所有测试套件名称。
 
 `GET /ai/assistants/tests/test-suites`
 
@@ -287,9 +288,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.testsuites.TestSuiteListRespons
 TestSuiteListResponse testSuites = client.ai().assistants().tests().testSuites().list();
 ```
 
-## Get test suite run history
+## 获取测试套件运行历史
 
-Retrieves paginated history of test runs for a specific test suite with filtering options
+检索特定测试套件的运行历史（支持分页和过滤）
 
 `GET /ai/assistants/tests/test-suites/{suite_name}/runs`
 
@@ -300,9 +301,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.testsuites.runs.RunListParams;
 RunListPage page = client.ai().assistants().tests().testSuites().runs().list("suite_name");
 ```
 
-## Trigger test suite execution
+## 触发测试套件执行
 
-Executes all tests within a specific test suite as a batch operation
+批量执行特定测试套件中的所有测试。
 
 `POST /ai/assistants/tests/test-suites/{suite_name}/runs`
 
@@ -313,9 +314,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.testsuites.runs.RunTriggerParam
 List<TestRunResponse> testRunResponses = client.ai().assistants().tests().testSuites().runs().trigger("suite_name");
 ```
 
-## Get assistant test by ID
+## 获取辅助工具测试信息
 
-Retrieves detailed information about a specific assistant test
+检索特定辅助工具测试的详细信息。
 
 `GET /ai/assistants/tests/{test_id}`
 
@@ -326,9 +327,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.TestRetrieveParams;
 AssistantTest assistantTest = client.ai().assistants().tests().retrieve("test_id");
 ```
 
-## Update an assistant test
+## 更新辅助工具测试配置
 
-Updates an existing assistant test configuration with new settings
+更新现有辅助工具测试的配置。
 
 `PUT /ai/assistants/tests/{test_id}`
 
@@ -339,9 +340,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.TestUpdateParams;
 AssistantTest assistantTest = client.ai().assistants().tests().update("test_id");
 ```
 
-## Delete an assistant test
+## 删除辅助工具测试
 
-Permanently removes an assistant test and all associated data
+永久删除辅助工具测试及其所有相关数据。
 
 `DELETE /ai/assistants/tests/{test_id}`
 
@@ -351,9 +352,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.TestDeleteParams;
 client.ai().assistants().tests().delete("test_id");
 ```
 
-## Get test run history for a specific test
+## 获取特定测试的运行历史
 
-Retrieves paginated execution history for a specific assistant test with filtering options
+检索特定辅助工具测试的运行历史（支持分页和过滤）。
 
 `GET /ai/assistants/tests/{test_id}/runs`
 
@@ -364,9 +365,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.runs.RunListParams;
 RunListPage page = client.ai().assistants().tests().runs().list("test_id");
 ```
 
-## Trigger a manual test run
+## 触发手动测试运行
 
-Initiates immediate execution of a specific assistant test
+立即执行特定的辅助工具测试。
 
 `POST /ai/assistants/tests/{test_id}/runs`
 
@@ -377,9 +378,9 @@ import com.telnyx.sdk.models.ai.assistants.tests.runs.TestRunResponse;
 TestRunResponse testRunResponse = client.ai().assistants().tests().runs().trigger("test_id");
 ```
 
-## Get specific test run details
+## 获取特定测试运行的详细信息
 
-Retrieves detailed information about a specific test run execution
+检索特定测试运行的详细信息。
 
 `GET /ai/assistants/tests/{test_id}/runs/{run_id}`
 
@@ -394,9 +395,9 @@ RunRetrieveParams params = RunRetrieveParams.builder()
 TestRunResponse testRunResponse = client.ai().assistants().tests().runs().retrieve(params);
 ```
 
-## Get all versions of an assistant
+## 获取辅助工具的所有版本
 
-Retrieves all versions of a specific assistant with complete configuration and metadata
+检索特定辅助工具的所有版本及其完整配置和元数据。
 
 `GET /ai/assistants/{assistant_id}/versions`
 
@@ -407,9 +408,9 @@ import com.telnyx.sdk.models.ai.assistants.versions.VersionListParams;
 AssistantsList assistantsList = client.ai().assistants().versions().list("assistant_id");
 ```
 
-## Get a specific assistant version
+## 获取特定辅助工具的版本
 
-Retrieves a specific version of an assistant by assistant_id and version_id
+通过 `assistant_id` 和 `version_id` 获取特定版本的辅助工具。
 
 `GET /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -424,9 +425,9 @@ VersionRetrieveParams params = VersionRetrieveParams.builder()
 InferenceEmbedding assistant = client.ai().assistants().versions().retrieve(params);
 ```
 
-## Update a specific assistant version
+## 更新特定辅助工具的版本
 
-Updates the configuration of a specific assistant version.
+更新特定辅助工具版本的配置。
 
 `POST /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -443,9 +444,9 @@ VersionUpdateParams params = VersionUpdateParams.builder()
 InferenceEmbedding assistant = client.ai().assistants().versions().update(params);
 ```
 
-## Delete a specific assistant version
+## 删除特定辅助工具的版本
 
-Permanently removes a specific version of an assistant.
+永久删除特定版本的辅助工具。
 
 `DELETE /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -459,9 +460,9 @@ VersionDeleteParams params = VersionDeleteParams.builder()
 client.ai().assistants().versions().delete(params);
 ```
 
-## Promote an assistant version to main
+## 将辅助工具版本提升为主版本
 
-Promotes a specific version to be the main/current version of the assistant.
+将特定版本提升为辅助工具的主/当前版本。
 
 `POST /ai/assistants/{assistant_id}/versions/{version_id}/promote`
 
@@ -476,9 +477,9 @@ VersionPromoteParams params = VersionPromoteParams.builder()
 InferenceEmbedding assistant = client.ai().assistants().versions().promote(params);
 ```
 
-## Get Canary Deploy
+## 获取辅助工具的 Canary 部署配置
 
-Endpoint to get a canary deploy configuration for an assistant.
+获取辅助工具的 Canary 部署配置。
 
 `GET /ai/assistants/{assistant_id}/canary-deploys`
 
@@ -489,11 +490,11 @@ import com.telnyx.sdk.models.ai.assistants.canarydeploys.CanaryDeployRetrievePar
 CanaryDeployResponse canaryDeployResponse = client.ai().assistants().canaryDeploys().retrieve("assistant_id");
 ```
 
-## Create Canary Deploy
+## 创建 Canary 部署配置
 
-Endpoint to create a canary deploy configuration for an assistant.
+为辅助工具创建 Canary 部署配置。
 
-`POST /ai/assistants/{assistant_id}/canary-deploys` — Required: `versions`
+`POST /ai/assistants/{assistant_id}/canary-deploys` — 必需参数：`versions`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.canarydeploys.CanaryDeploy;
@@ -513,11 +514,11 @@ CanaryDeployCreateParams params = CanaryDeployCreateParams.builder()
 CanaryDeployResponse canaryDeployResponse = client.ai().assistants().canaryDeploys().create(params);
 ```
 
-## Update Canary Deploy
+## 更新 Canary 部署配置
 
-Endpoint to update a canary deploy configuration for an assistant.
+更新辅助工具的 Canary 部署配置。
 
-`PUT /ai/assistants/{assistant_id}/canary-deploys` — Required: `versions`
+`PUT /ai/assistants/{assistant_id}/canary-deploys` — 必需参数：`versions`
 
 ```java
 import com.telnyx.sdk.models.ai.assistants.canarydeploys.CanaryDeploy;
@@ -537,9 +538,9 @@ CanaryDeployUpdateParams params = CanaryDeployUpdateParams.builder()
 CanaryDeployResponse canaryDeployResponse = client.ai().assistants().canaryDeploys().update(params);
 ```
 
-## Delete Canary Deploy
+## 删除 Canary 部署配置
 
-Endpoint to delete a canary deploy configuration for an assistant.
+删除辅助工具的 Canary 部署配置。
 
 `DELETE /ai/assistants/{assistant_id}/canary-deploys`
 
@@ -549,9 +550,9 @@ import com.telnyx.sdk.models.ai.assistants.canarydeploys.CanaryDeployDeleteParam
 client.ai().assistants().canaryDeploys().delete("assistant_id");
 ```
 
-## Get assistant texml
+## 获取辅助工具的 Texml 文件
 
-Get an assistant texml by `assistant_id`.
+通过 `assistant_id` 获取辅助工具的 Texml 文件。
 
 `GET /ai/assistants/{assistant_id}/texml`
 
@@ -561,9 +562,9 @@ import com.telnyx.sdk.models.ai.assistants.AssistantGetTexmlParams;
 String response = client.ai().assistants().getTexml("assistant_id");
 ```
 
-## Test Assistant Tool
+## 测试辅助工具
 
-Test a webhook tool for an assistant
+测试辅助工具的 Webhook 功能。
 
 `POST /ai/assistants/{assistant_id}/tools/{tool_id}/test`
 
@@ -578,9 +579,9 @@ ToolTestParams params = ToolTestParams.builder()
 ToolTestResponse response = client.ai().assistants().tools().test(params);
 ```
 
-## List Integrations
+## 列出集成
 
-List all available integrations.
+列出所有可用的集成。
 
 `GET /ai/integrations`
 
@@ -591,9 +592,9 @@ import com.telnyx.sdk.models.ai.integrations.IntegrationListResponse;
 IntegrationListResponse integrations = client.ai().integrations().list();
 ```
 
-## List User Integrations
+## 列出用户设置的集成
 
-List user setup integrations
+列出用户设置的集成。
 
 `GET /ai/integrations/connections`
 
@@ -604,9 +605,9 @@ import com.telnyx.sdk.models.ai.integrations.connections.ConnectionListResponse;
 ConnectionListResponse connections = client.ai().integrations().connections().list();
 ```
 
-## Get User Integration connection By Id
+## 根据 ID 获取用户集成连接信息
 
-Get user setup integrations
+获取用户设置的集成连接信息。
 
 `GET /ai/integrations/connections/{user_connection_id}`
 
@@ -617,9 +618,9 @@ import com.telnyx.sdk.models.ai.integrations.connections.ConnectionRetrieveRespo
 ConnectionRetrieveResponse connection = client.ai().integrations().connections().retrieve("user_connection_id");
 ```
 
-## Delete Integration Connection
+## 删除集成连接
 
-Delete a specific integration connection.
+删除特定的集成连接。
 
 `DELETE /ai/integrations/connections/{user_connection_id}`
 
@@ -629,9 +630,9 @@ import com.telnyx.sdk.models.ai.integrations.connections.ConnectionDeleteParams;
 client.ai().integrations().connections().delete("user_connection_id");
 ```
 
-## List Integration By Id
+## 根据 ID 获取集成信息
 
-Retrieve integration details
+检索集成的详细信息。
 
 `GET /ai/integrations/{integration_id}`
 
@@ -642,9 +643,9 @@ import com.telnyx.sdk.models.ai.integrations.IntegrationRetrieveResponse;
 IntegrationRetrieveResponse integration = client.ai().integrations().retrieve("integration_id");
 ```
 
-## List MCP Servers
+## 列出 MCP 服务器
 
-Retrieve a list of MCP servers.
+检索 MCP 服务器的列表。
 
 `GET /ai/mcp_servers`
 
@@ -655,11 +656,11 @@ import com.telnyx.sdk.models.ai.mcpservers.McpServerListParams;
 McpServerListPage page = client.ai().mcpServers().list();
 ```
 
-## Create MCP Server
+## 创建 MCP 服务器
 
-Create a new MCP server.
+创建一个新的 MCP 服务器。
 
-`POST /ai/mcp_servers` — Required: `name`, `type`, `url`
+`POST /ai/mcp_servers` — 必需参数：`name`、`type`、`url`
 
 ```java
 import com.telnyx.sdk.models.ai.mcpservers.McpServerCreateParams;
@@ -673,9 +674,9 @@ McpServerCreateParams params = McpServerCreateParams.builder()
 McpServerCreateResponse mcpServer = client.ai().mcpServers().create(params);
 ```
 
-## Get MCP Server
+## 获取 MCP 服务器信息
 
-Retrieve details for a specific MCP server.
+检索特定 MCP 服务器的详细信息。
 
 `GET /ai/mcp_servers/{mcp_server_id}`
 
@@ -686,9 +687,9 @@ import com.telnyx.sdk.models.ai.mcpservers.McpServerRetrieveResponse;
 McpServerRetrieveResponse mcpServer = client.ai().mcpServers().retrieve("mcp_server_id");
 ```
 
-## Update MCP Server
+## 更新 MCP 服务器
 
-Update an existing MCP server.
+更新现有的 MCP 服务器。
 
 `PUT /ai/mcp_servers/{mcp_server_id}`
 
@@ -699,9 +700,9 @@ import com.telnyx.sdk.models.ai.mcpservers.McpServerUpdateResponse;
 McpServerUpdateResponse mcpServer = client.ai().mcpServers().update("mcp_server_id");
 ```
 
-## Delete MCP Server
+## 删除 MCP 服务器
 
-Delete a specific MCP server.
+删除特定的 MCP 服务器。
 
 `DELETE /ai/mcp_servers/{mcp_server_id}`
 
@@ -709,4 +710,5 @@ Delete a specific MCP server.
 import com.telnyx.sdk.models.ai.mcpservers.McpServerDeleteParams;
 
 client.ai().mcpServers().delete("mcp_server_id");
+```
 ```

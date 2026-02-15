@@ -1,30 +1,30 @@
 ---
 name: task-decomposer
-description: Decomposes complex user requests into executable subtasks, identifies required capabilities, searches for existing skills at skills.sh, and creates new skills when no solution exists. This skill should be used when the user submits a complex multi-step request, wants to automate workflows, or needs help breaking down large tasks into manageable pieces.
+description: 该技能可以将复杂的用户请求分解为可执行的子任务，识别所需的技能，然后在 skills.sh 中查找现有的技能；如果找不到合适的解决方案，则会创建新的技能。当用户提交一个复杂的多步骤请求、希望自动化工作流程，或者需要帮助将大型任务分解为可管理的部分时，应使用该技能。
 ---
 
-# Task Decomposer & Skill Generator
+# 任务分解器与技能生成器
 
-This skill helps decompose complex user requests into executable subtasks, identify required capabilities for each task, search for existing skills from the open skills ecosystem, and automatically create new skills when no existing solution is available.
+该技能能够帮助将复杂的用户请求分解为可执行的子任务，识别每个任务所需的能力，从开放的技能生态系统中搜索现有的技能，并在无法找到现有解决方案时自动创建新技能。
 
-## Core Workflow
+## 核心工作流程
 
 ```
 User Request → Task Decomposition → Capability Identification → Skill Search → Gap Analysis → Skill Creation → Execution Plan
 ```
 
-## Phase 1: Task Analysis & Decomposition
+## 第1阶段：任务分析与分解
 
-When receiving a user request, follow these steps:
+收到用户请求后，请按照以下步骤操作：
 
-### Step 1: Understand User Intent
+### 第1步：理解用户意图
 
-Analyze the request to identify:
-- **Core objective**: What is the end goal?
-- **Domains involved**: What areas of expertise are needed?
-- **Trigger mechanism**: One-time, scheduled, or event-driven?
+分析请求以确定：
+- **核心目标**：最终目标是什么？
+- **涉及的领域**：需要哪些专业技能？
+- **触发机制**：是一次性操作、定期任务还是事件驱动？
 
-Example analysis:
+**示例分析：**
 ```
 User Input: "Help me get email summaries every morning and send them to Slack"
 
@@ -34,9 +34,9 @@ Analysis:
 - Trigger: Scheduled (daily morning)
 ```
 
-### Step 2: Decompose into Atomic Tasks
+### 第2步：分解为原子任务
 
-Break down the complex task into minimal executable units:
+将复杂任务分解为最小的可执行单元：
 
 ```yaml
 Task Decomposition:
@@ -76,52 +76,52 @@ Task Decomposition:
     dependencies: [4]
 ```
 
-## Phase 2: Capability Identification
+## 第2阶段：能力识别
 
-Map each subtask to a capability type from the universal capability taxonomy.
+将每个子任务映射到通用能力分类法中的相应能力类型。
 
-### Universal Capability Types
+### 通用能力类型
 
-| Capability | Description | Search Keywords |
+| 能力 | 描述 | 搜索关键词 |
 |------------|-------------|-----------------|
-| `browser_automation` | Web navigation, interaction, scraping | browser, selenium, puppeteer, playwright, scrape |
-| `web_search` | Internet search and information retrieval | search, google, bing, duckduckgo |
-| `api_integration` | Third-party API communication | api, rest, graphql, webhook, {service-name} |
-| `data_extraction` | Parse and extract structured data | parse, extract, scrape, ocr, pdf |
-| `data_transformation` | Convert, clean, transform data | transform, convert, format, clean, etl |
-| `content_generation` | Create text, images, or other content | generate, write, create, summarize, translate |
-| `file_operations` | Read, write, manipulate files | file, read, write, csv, excel, json, pdf |
-| `message_delivery` | Send notifications or messages | notify, send, email, slack, discord, telegram |
-| `scheduling` | Time-based task execution | schedule, cron, timer, daily, weekly |
-| `authentication` | Identity and access management | auth, oauth, login, token, credentials |
-| `database_operations` | Database CRUD operations | database, sql, mongodb, query, store |
-| `code_execution` | Run scripts or programs | execute, run, script, shell, python |
-| `version_control` | Git and code repository operations | git, github, gitlab, commit, pr, review |
-| `testing` | Automated testing and QA | test, jest, pytest, e2e, unit |
-| `deployment` | Application deployment and CI/CD | deploy, docker, kubernetes, ci-cd, release |
-| `monitoring` | System and application monitoring | monitor, alert, log, metrics, health |
+| `browser_automation` | 网页导航、交互、数据抓取 | browser, selenium, puppeteer, playwright, scrape |
+| `web_search` | 网页搜索和信息检索 | search, google, bing, duckduckgo |
+| `api_integration` | 与第三方API进行通信 | api, rest, graphql, webhook, {service-name} |
+| `data_extraction` | 解析和提取结构化数据 | parse, extract, scrape, ocr, pdf |
+| `data_transformation` | 转换、清洗、处理数据 | transform, convert, format, clean, etl |
+| `content_generation` | 创建文本、图像或其他内容 | generate, write, create, summarize, translate |
+| `file_operations` | 读写、操作文件 | file, read, write, csv, excel, json, pdf |
+| `message_delivery` | 发送通知或消息 | notify, send, email, slack, discord, telegram |
+| `scheduling` | 基于时间的任务执行 | schedule, cron, timer, daily, weekly |
+| `authentication` | 身份和访问管理 | auth, oauth, login, token, credentials |
+| `database_operations` | 数据库CRUD操作 | database, sql, mongodb, query, store |
+| `code_execution` | 运行脚本或程序 | execute, run, script, shell, python |
+| `version_control` | Git和代码仓库操作 | git, github, gitlab, commit, pr, review |
+| `testing` | 自动化测试和质量保证 | test, jest, pytest, e2e, unit |
+| `deployment` | 应用程序部署和持续集成/持续交付 | deploy, docker, kubernetes, ci-cd, release |
+| `monitoring` | 系统和应用程序监控 | monitor, alert, log, metrics, health |
 
-### Capability Identification Process
+### 能力识别过程
 
-For each subtask:
-1. Analyze the task description and requirements
-2. Match to one or more capability types
-3. Generate search keywords for skill discovery
+对于每个子任务：
+1. 分析任务描述和要求
+2. 与一个或多个能力类型匹配
+3. 生成用于搜索技能的关键词
 
-Example:
+**示例：**
 ```yaml
 Task: "Send message to Slack"
 Capability: message_delivery
 Search Keywords: ["slack", "notification", "message", "webhook"]
 ```
 
-## Phase 3: Skill Search
+## 第3阶段：技能搜索
 
-Use the Skills CLI to search for existing skills at https://skills.sh/
+使用Skills CLI在 https://skills.sh/ 上搜索现有的技能。
 
-### Search Process
+### 搜索过程
 
-For each capability need, search using relevant keywords:
+对于每个能力需求，使用相关的关键词进行搜索：
 
 ```bash
 # Search for skills matching the capability
@@ -134,9 +134,9 @@ npx skills find pdf extract
 npx skills find github api
 ```
 
-### Evaluate Search Results
+### 评估搜索结果
 
-When results are returned:
+当返回结果时：
 ```
 Install with npx skills add <owner/repo@skill>
 
@@ -144,12 +144,12 @@ owner/repo@skill-name
 └ https://skills.sh/owner/repo/skill-name
 ```
 
-Evaluate each result for:
-- **Relevance**: Does it match the required capability?
-- **Completeness**: Does it cover all needed functionality?
-- **Quality**: Is it well-documented and maintained?
+评估每个结果：
+- **相关性**：它是否符合所需的能力？
+- **完整性**：它是否涵盖了所有需要的功能？
+- **质量**：它的文档是否完善且维护得当？
 
-### Generate Capability Mapping
+### 生成能力映射
 
 ```yaml
 Capability Mapping:
@@ -169,36 +169,36 @@ Capability Mapping:
     recommendation: "Create new skill: slack-notification"
 ```
 
-## Phase 4: Gap Analysis
+## 第4阶段：差距分析
 
-Identify tasks without matching skills:
+识别没有匹配技能的任务：
 
-### Built-in Capabilities (No Skill Needed)
+### 内置能力（无需额外技能）
 
-These capabilities are typically handled by the agent's native abilities:
-- `content_generation` - LLM's native text generation
-- `data_transformation` - Basic data manipulation via code
-- `code_execution` - Direct script execution
-- `scheduling` - System-level cron/scheduler configuration
+这些能力通常由代理的本地功能处理：
+- `content_generation` - LLM的本地文本生成功能
+- `data_transformation` - 通过代码进行的基本数据操作
+- `code_execution` - 直接执行脚本
+- `scheduling` - 系统级别的cron/scheduler配置
 
-### Skills Required
+### 所需技能
 
-For capabilities without built-in support, determine:
-1. **Skill exists**: Install from skills.sh
-2. **Skill not found**: Create new skill
+对于没有内置支持的能力，需要确定：
+1. **技能是否存在**：从skills.sh安装该技能
+2. **技能未找到**：创建新技能
 
-## Phase 5: Skill Creation
+## 第5阶段：技能创建
 
-When no existing skill matches a required capability, create a new skill.
+当没有现有技能能够满足需求时，创建新技能。
 
-### Skill Creation Process
+### 技能创建过程
 
-1. **Define scope**: Determine what the skill should do
-2. **Design interface**: Define inputs, outputs, and usage patterns
-3. **Create SKILL.md**: Write the skill definition file
-4. **Add resources**: Include scripts, references, or assets as needed
+1. **定义范围**：确定技能的功能
+2. **设计接口**：定义输入、输出和使用方式
+3. **创建SKILL.md**：编写技能定义文件
+4. **添加资源**：根据需要包含脚本、参考资料或资产
 
-### Skill Template
+### 技能模板
 
 ```markdown
 ---
@@ -225,7 +225,7 @@ description: {Clear description of what the skill does and when to use it. Writt
 ### Basic Usage
 
 ```bash
-{Basic command or code example}
+{基本命令或代码示例}
 ```
 
 ### Advanced Usage
@@ -247,7 +247,7 @@ description: {Clear description of what the skill does and when to use it. Writt
 {Common issues and solutions.}
 ```
 
-### Initialize New Skill
+### 初始化新技能
 
 ```bash
 # Create skill using the skills CLI
@@ -261,9 +261,9 @@ npx skills init <skill-name>
 # └── assets/ (optional)
 ```
 
-## Phase 6: Generate Execution Plan
+## 第6阶段：生成执行计划
 
-Compile all information into a structured execution plan:
+将所有信息编译成结构化的执行计划：
 
 ```yaml
 Execution Plan:
@@ -299,26 +299,26 @@ Execution Plan:
     - "{How to verify step 2 succeeded}"
 ```
 
-## Task Decomposition Principles
+## 任务分解原则
 
-### Principle 1: Atomicity
-Each subtask should be the minimal executable unit with clear input and output.
+### 原则1：原子性
+每个子任务都应该是具有明确输入和输出的最小可执行单元。
 
-### Principle 2: Independence
-Minimize dependencies between tasks to allow parallel execution where possible.
+### 原则2：独立性
+尽可能减少任务之间的依赖关系，以便并行执行。
 
-### Principle 3: Verifiability
-Each task should have a clear way to verify successful completion.
+### 原则3：可验证性
+每个任务都应该有明确的方法来验证其是否成功完成。
 
-### Principle 4: Reusability
-Identify reusable patterns and prefer creating general-purpose skills.
+### 原则4：可重用性
+识别可重用的模式，并优先创建通用技能。
 
-### Principle 5: Single Responsibility
-Each task should do one thing well.
+### 原则5：单一职责
+每个任务应该专注完成一项任务。
 
-## Output Format
+## 输出格式
 
-Present the decomposition results in a structured format:
+以结构化格式呈现分解结果：
 
 ```
 ════════════════════════════════════════════════════════════════
@@ -374,16 +374,16 @@ Steps:
 ════════════════════════════════════════════════════════════════
 ```
 
-## Examples
+## 示例
 
-### Example 1: Workflow Automation
+### 示例1：工作流自动化
 
-**User Request:**
+**用户请求：**
 ```
 Create a workflow that monitors GitHub issues, summarizes new issues, and posts notifications to Discord
 ```
 
-**Decomposition:**
+**分解结果：**
 ```yaml
 Subtasks:
   1. Monitor GitHub repository for new issues
@@ -407,14 +407,14 @@ Subtasks:
      Status: Built-in (system)
 ```
 
-### Example 2: Data Pipeline
+### 示例2：数据管道
 
-**User Request:**
+**用户请求：**
 ```
 Search for AI research papers, download PDFs, extract key findings, and save to Notion
 ```
 
-**Decomposition:**
+**分解结果：**
 ```yaml
 Subtasks:
   1. Search for AI research papers
@@ -438,19 +438,19 @@ Subtasks:
      Search: "npx skills find notion"
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Start with skill search**: Always check https://skills.sh/ before creating new skills
-2. **Use specific search terms**: Combine capability keywords with domain terms
-3. **Leverage built-in capabilities**: Don't create skills for things the agent can do natively
-4. **Create reusable skills**: Design new skills to be general-purpose when possible
-5. **Document thoroughly**: New skills should have clear usage instructions
-6. **Verify before proceeding**: Confirm skill installation before executing tasks
-7. **Handle errors gracefully**: Include fallback strategies in execution plans
+1. **先进行技能搜索**：在创建新技能之前，始终查看 https://skills.sh/
+2. **使用具体的搜索词**：将能力关键词与领域术语结合使用
+3. **利用内置能力**：避免为代理可以原生完成的功能创建额外技能
+4. **创建可重用技能**：尽可能设计通用技能
+5. **详细记录文档**：新技能应提供清晰的使用说明
+6. **执行前进行验证**：在执行任务前确认技能已正确安装
+7. **优雅地处理错误**：在执行计划中包含备用策略
 
-## Integration with find-skills
+## 与`find-skills`的集成
 
-This skill works in conjunction with the `find-skills` skill for discovering existing solutions:
+该技能与`find-skills`技能协同工作，用于发现现有的解决方案：
 
 ```bash
 # Search the skills ecosystem
@@ -463,9 +463,9 @@ npx skills add <owner/repo@skill> -g -y
 # Visit: https://skills.sh/
 ```
 
-## Notes
+## 注意事项
 
-- Always search for existing skills before creating new ones
-- Built-in capabilities (LLM, basic code) don't require skills
-- Skill creation requires user confirmation before proceeding
-- Complex workflows may need multiple skills working together
+- 在创建新技能之前，始终先搜索现有的技能
+- 内置能力（如LLM、基本代码）不需要额外技能
+- 创建技能前需要用户确认
+- 复杂的工作流程可能需要多个技能协同工作

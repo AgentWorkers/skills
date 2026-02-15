@@ -1,100 +1,100 @@
 ---
 name: sector-analyst
-description: This skill should be used when analyzing sector and industry performance charts to assess market positioning and rotation patterns. Use this skill when the user provides performance chart images (1-week or 1-month timeframes) for sectors or industries and requests market cycle assessment, sector rotation analysis, or strategic positioning recommendations based on performance data. All analysis and output are conducted in English.
+description: 此技能适用于分析行业和领域的绩效图表，以评估市场定位和轮动模式。当用户提供行业或领域的绩效图表（时间范围为1周或1个月），并请求进行市场周期评估、行业轮动分析或基于绩效数据的战略定位建议时，可使用此技能。所有的分析和输出结果将以英文形式提供。
 ---
 
-# Sector Analyst
+# 行业分析师
 
-## Overview
+## 概述
 
-This skill enables comprehensive analysis of sector and industry performance charts to identify market cycle positioning and predict likely rotation scenarios. The analysis combines observed performance data with established sector rotation principles to provide objective market assessment and probabilistic scenario forecasting.
+该技能能够全面分析行业和领域的表现图表，以确定市场周期的位置，并预测可能的行业轮动情景。分析过程结合了观察到的表现数据与既定的行业轮动原则，提供客观的市场评估和概率性的情景预测。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
-- User provides sector performance charts (typically 1-week and 1-month timeframes)
-- User provides industry performance charts showing relative performance data
-- User requests analysis of current market cycle positioning
-- User asks for sector rotation assessment or predictions
-- User needs probability-weighted scenarios for market positioning
+在以下情况下使用该技能：
+- 用户提供了行业表现图表（通常为1周和1个月的时间范围）
+- 用户提供了显示相对表现数据的行业图表
+- 用户请求分析当前的市场周期位置
+- 用户要求进行行业轮动的评估或预测
+- 用户需要基于概率的市场定位方案
 
-Example user requests:
-- "Analyze these sector performance charts and tell me where we are in the market cycle"
-- "Based on these performance charts, what sectors should outperform next?"
-- "What's the probability of a defensive rotation based on this data?"
-- "Review these sector and industry charts and provide scenario analysis"
+示例用户请求：
+- “分析这些行业表现图表，告诉我我们目前处于市场周期的哪个阶段”
+- “根据这些表现图表，哪些行业接下来可能会表现优异？”
+- “根据这些数据，防御性行业轮动的概率是多少？”
+- “请审查这些行业和领域图表，并提供情景分析”
 
-## Analysis Workflow
+## 分析工作流程
 
-Follow this structured workflow when analyzing sector/industry performance charts:
+在分析行业/领域表现图表时，请遵循以下结构化的工作流程：
 
-### Step 1: Data Collection and Observation
+### 第一步：数据收集与观察
 
-First, carefully examine all provided chart images to extract:
-- **Sector-level performance**: Identify which sectors (Technology, Financials, Consumer Discretionary, etc.) are outperforming/underperforming
-- **Industry-level performance**: Note specific industries showing strength or weakness
-- **Timeframe comparison**: Compare 1-week vs 1-month performance to identify trend consistency or divergence
-- **Magnitude of moves**: Assess the size of relative performance differences
-- **Breadth of movement**: Determine if performance is concentrated or broad-based
+首先仔细检查所有提供的图表图像，提取以下信息：
+- **行业层面的表现**：识别哪些行业（如科技、金融、消费 discretionary 等）表现优异或不佳
+- **领域层面的表现**：注意哪些领域表现出强势或疲弱
+- **时间范围的比较**：比较1周与1个月的表现，以确定趋势的一致性或差异
+- **表现的幅度**：评估相对表现差异的大小
+- **表现的广度**：判断表现是集中还是分散的
 
-Think in English while analyzing the charts. Document specific numerical performance figures for key sectors and industries.
+在分析图表时，请用英语思考，并记录关键行业和领域的具体数值表现数据。
 
-### Step 2: Market Cycle Assessment
+### 第二步：市场周期评估
 
-Load the sector rotation knowledge base to inform analysis:
-- Read `references/sector_rotation.md` to access market cycle and sector rotation frameworks
-- Compare observed performance patterns against expected patterns for each cycle phase:
-  - Early Cycle Recovery
-  - Mid Cycle Expansion
-  - Late Cycle
-  - Recession
+加载行业轮动知识库以辅助分析：
+- 阅读 `references/sector_rotation.md`，以获取市场周期和行业轮动的框架
+- 将观察到的表现模式与每个周期阶段的预期模式进行对比：
+  - 周期初期复苏
+  - 周期中期扩张
+  - 周期后期
+  - 经济衰退
 
-Identify which cycle phase best matches current observations by:
-- Mapping outperforming sectors to typical cycle leaders
-- Mapping underperforming sectors to typical cycle laggards
-- Assessing consistency across multiple sectors
-- Evaluating alignment with defensive vs cyclical sector performance
+通过以下方式确定当前观察结果最符合哪个周期阶段：
+- 将表现优异的行业与典型的周期领头羊对应起来
+- 将表现不佳的行业与典型的周期落后者对应起来
+- 评估多个行业之间的一致性
+- 评估防御性行业与周期性行业表现之间的匹配程度
 
-### Step 3: Current Situation Analysis
+### 第三步：当前情况分析
 
-Synthesize observations into an objective assessment:
-- State which market cycle phase current performance most closely resembles
-- Highlight supporting evidence (which sectors/industries confirm this view)
-- Note any contradictory signals or unusual patterns
-- Assess confidence level based on consistency of signals
+将观察结果综合成客观的评估：
+- 说明当前表现最接近哪个市场周期阶段
+- 强调支持这一观点的具体证据（哪些行业/领域证实了这一观点）
+- 注意任何矛盾的信号或不寻常的模式
+- 根据信号的一致性评估置信度
 
-Use data-driven language and specific references to performance figures.
+使用数据驱动的语言，并引用具体的表现数据。
 
-### Step 4: Scenario Development
+### 第四步：情景开发
 
-Based on sector rotation principles and current positioning, develop 2-4 potential scenarios for the next phase:
+基于行业轮动原则和当前的市场位置，为下一个阶段开发2-4个潜在的情景：
 
-For each scenario:
-- Describe the market cycle transition
-- Identify which sectors would likely outperform
-- Identify which sectors would likely underperform
-- Specify the catalysts or conditions that would confirm this scenario
-- Assign a probability (see Probability Assessment Framework in sector_rotation.md)
+对于每个情景：
+- 描述市场周期的转变
+- 识别哪些行业可能会表现优异
+- 识别哪些行业可能会表现不佳
+- 指出确认这一情景的催化剂或条件
+- 为每个情景分配一个概率（参见 `sector_rotation.md` 中的概率评估框架）
 
-Scenarios should range from most likely (highest probability) to alternative/contrarian scenarios.
+情景应从最有可能的（概率最高）到替代性/反向情景进行排列。
 
-### Step 5: Output Generation
+### 第五步：输出生成
 
-Create a structured Markdown document with the following sections:
+创建一个结构化的Markdown文档，包含以下部分：
 
-**Required Sections:**
-1. **Executive Summary**: 2-3 sentence overview of key findings
-2. **Current Situation**: Detailed analysis of current performance patterns and market cycle positioning
-3. **Supporting Evidence**: Specific sector and industry performance data supporting the cycle assessment
-4. **Scenario Analysis**: 2-4 scenarios with descriptions and probability assignments
-5. **Recommended Positioning**: Strategic and tactical positioning recommendations based on scenario probabilities
-6. **Key Risks**: Notable risks or contradictory signals to monitor
+**必填部分**：
+1. **执行摘要**：2-3句话的总结性内容，概述主要发现
+2. **当前情况**：对当前表现模式和市场周期位置的详细分析
+3. **支持证据**：支持周期评估的具体行业和领域表现数据
+4. **情景分析**：2-4个情景及其描述和概率分配
+5. **推荐定位**：根据情景概率提出的战略性和战术性定位建议
+6. **主要风险**：需要关注的主要风险或矛盾信号
 
-## Output Format
+## 输出格式
 
-Save analysis results as a Markdown file with naming convention: `sector_analysis_YYYY-MM-DD.md`
+将分析结果保存为Markdown文件，文件命名格式为：`sector_analysis_YYYY-MM-DD.md`
 
-Use this structure:
+使用以下结构：
 
 ```markdown
 # Sector Performance Analysis - [Date]
@@ -160,47 +160,44 @@ Use this structure:
 *Data Period: [Timeframe of charts analyzed]*
 ```
 
-## Key Analysis Principles
+## 关键分析原则
 
-When conducting analysis:
+在进行分析时，请遵循以下原则：
+1. **客观性优先**：让数据引导结论，而非先入之见
+2. **概率性思维**：通过概率范围表达不确定性
+3. **多时间范围**：比较1周和1个月的数据以确认趋势
+4. **相对表现**：关注相对强度，而非绝对回报
+5. **广度的重要性**：广泛的表现比孤立的运动更具意义
+6. **没有绝对性**：市场很少完全遵循教科书中的模式
+7. **历史背景**：参考典型的轮动模式，但也要承认市场的独特性
 
-1. **Objectivity First**: Let the data guide conclusions, not preconceptions
-2. **Probabilistic Thinking**: Express uncertainty through probability ranges
-3. **Multiple Timeframes**: Compare 1-week and 1-month data for trend confirmation
-4. **Relative Performance**: Focus on relative strength, not absolute returns
-5. **Breadth Matters**: Broad-based moves are more significant than isolated movements
-6. **No Absolutes**: Markets rarely follow textbook patterns exactly
-7. **Historical Context**: Reference typical rotation patterns but acknowledge uniqueness
+## 概率指南
 
-## Probability Guidelines
+根据证据强度应用以下概率范围：
+- **70-85%**：具有跨行业和时间范围的多个确认信号的强有力证据
+- **50-70%**：具有部分确认信号但指标混合的中等证据
+- **30-50%**：证据薄弱，信号有限或相互矛盾
+- **15-30%**：与当前指标相反的投机性情景，但仍有可能发生
 
-Apply these probability ranges based on evidence strength:
+所有情景的总概率应约为100%。
 
-- **70-85%**: Strong evidence with multiple confirming signals across sectors and timeframes
-- **50-70%**: Moderate evidence with some confirming signals but mixed indicators
-- **30-50%**: Weak evidence with limited or conflicting signals
-- **15-30%**: Speculative scenario contrary to current indicators but possible
+## 资源
 
-Total probabilities across all scenarios should sum to approximately 100%.
+### 参考资料/
+- `sector_rotation.md` - 包含市场周期阶段、典型行业表现模式和概率评估框架的综合性知识库
 
-## Resources
+### 示例文件**
+- `sector_performance.jpeg` - 行业表现图示例（1周和1个月的时间范围）
+- `industory_performance_1.jpeg` - 表现优异的领域示例图表
+- `industory_performance_2.jpeg` - 表现不佳的领域示例图表
 
-### references/
-- `sector_rotation.md` - Comprehensive knowledge base covering market cycle phases, typical sector performance patterns, and probability assessment frameworks
+这些示例文件展示了该技能所分析的视觉数据类型。用户提供的图表格式可能有所不同，但应包含类似的相对表现信息。
 
-### assets/
-Sample charts demonstrating the expected input format:
-- `sector_performance.jpeg` - Example sector-level performance chart (1-week and 1-month)
-- `industory_performance_1.jpeg` - Example industry performance chart (outperformers)
-- `industory_performance_2.jpeg` - Example industry performance chart (underperformers)
+## 重要说明
 
-These samples illustrate the type of visual data this skill analyzes. User-provided charts may vary in format but should contain similar relative performance information.
-
-## Important Notes
-
-- All analysis thinking should be conducted in English
-- Output Markdown files must be in English
-- Reference the sector rotation knowledge base for each analysis
-- Maintain objectivity and avoid confirmation bias
-- Update probability assessments if new data becomes available
-- Charts typically show performance over 1-week and 1-month periods
+- 所有分析工作均需用英语完成
+- 输出的Markdown文件必须使用英语
+- 每次分析都应引用行业轮动知识库
+- 保持客观性，避免确认偏误
+- 如果有新的数据出现，应及时更新概率评估
+- 图表通常显示1周和1个月的时间段内的表现

@@ -1,57 +1,55 @@
 ---
 name: context-sentinel
-description: "Monitors session context and automatically manages model switching based on a cascading protocol. Use as part of a heartbeat or cron job to maintain session health and optimize token usage."
+description: "监控会话上下文，并根据级联协议自动管理模型切换。可作为心跳检测（heartbeat）或定时任务（cron job）的一部分来维护会话的稳定性并优化令牌（token）的使用。"
 version: 1.0.0
 ---
 
 # Context Sentinel
 
-This skill provides a script to automate the "Cascading Model Protocol," ensuring the agent gracefully degrades from high-cost models to high-context models as the session grows.
+该技能提供了一个脚本，用于自动化执行“Cascading Model Protocol”（级联模型协议），确保代理在会话规模增长时能够从高成本模型优雅地切换到高上下文模型。
 
-## Protocol Summary
+## 协议概述
 
-1.  **Opus 4.6:** Use until 80% context, then switch to Opus 4.5.
-2.  **Opus 4.5:** Use until 80% context, then switch to Gemini 2.5 Pro.
-3.  **Gemini Pro:** Use until 80% context, then trigger a handoff.
+1. **Opus 4.6：** 在上下文使用量达到80%之前使用该模型，之后切换到Opus 4.5。
+2. **Opus 4.5：** 在上下文使用量达到80%之前使用该模型，之后切换到Gemini 2.5 Pro。
+3. **Gemini Pro：** 在上下文使用量达到80%之前使用该模型，之后触发交接流程。
 
-This skill operationalizes the logic defined in `MEMORY.md`.
+该技能实现了`MEMORY.md`中定义的逻辑。
 
-## How to Use
+## 使用方法
 
-This skill is designed to be run periodically, either via a `cron` job or as part of the main agent's `HEARTBEAT.md` checklist.
+该技能设计为定期运行，可以通过`cron`作业执行，或者作为代理主脚本`HEARTBEAT.md`中检查流程的一部分来使用。
 
-### Workflow
+### 工作流程
 
-1.  **Execute the script:**
-    Run the `check_context.ps1` script to get the current session status and determine the required action.
+1. **执行脚本：**
+   运行`check_context.ps1`脚本以获取当前会话状态并确定所需的操作。
 
     ```powershell
     powershell -File scripts/check_context.ps1
     ```
 
-2.  **Evaluate the output:**
-    The script will return one of three possible string commands:
-    *   `SWITCH_TO:<model_id>`
-    *   `HANDOFF_NOW`
-    *   `STATUS_OK`
+2. **解析输出：**
+   脚本将返回以下三种字符串命令之一：
+   *   `SWITCH_TO:<model_id>`
+   *   `HANDOFF_now`
+   *   `STATUS_OK`
 
-3.  **Take Action:**
-    Based on the output, execute the appropriate agent command.
-
-    *   If `SWITCH_TO:<model_id>`, run `session_status` with the new model ID:
+3. **采取行动：**
+   根据输出结果执行相应的代理命令：
+   *   如果返回`SWITCH_TO:<model_id>`，则使用新的模型ID运行`session_status`脚本：
         ```
         session_status model=<model_id>
         ```
 
-    *   If `HANDOFF_NOW`, trigger the handoff process by writing to the handoff file. This is typically done by running a specific, pre-defined prompt or script.
+   *   如果返回`HANDOFF_now`，则通过写入交接文件来触发交接流程。这通常是通过运行特定的预定义提示或脚本来完成的。
+   *   如果返回`STATUS_OK`，则无需采取任何行动。
 
-    *   If `STATUS_OK`, no action is needed.
+### 在`HEARTBEAT.md`中的示例用法
 
-### Example Usage in `HEARTBEAT.md`
+您可以将`HEARTBEAT.md`中的手动检查替换为调用此技能的脚本。
 
-You can replace the manual checks in your `HEARTBEAT.md` with a call to this skill's script.
-
-**Old `HEARTBEAT.md`:**
+**旧的`HEARTBEAT.md`：**
 ```markdown
 ## Cascading Model Protocol (Check Every Heartbeat)
 1.  **Check Status:** Get current model and context %.
@@ -59,11 +57,11 @@ You can replace the manual checks in your `HEARTBEAT.md` with a call to this ski
 ...
 ```
 
-**New `HEARTBEAT.md` using this skill:**
+**使用此技能的新`HEARTBEAT.md`：**
 ```markdown
 ## Context Sentinel (Check Every Heartbeat)
 1. Run `powershell -File skills/context-sentinel/scripts/check_context.ps1`.
 2. Evaluate the output and take action (`SWITCH_TO`, `HANDOFF_NOW`, or `STATUS_OK`).
 ```
 
-This makes the logic reusable and keeps the `HEARTBEAT.md` file clean and focused on execution.
+这样可以使逻辑得到复用，并保持`HEARTBEAT.md`文件的简洁性，使其专注于执行任务。

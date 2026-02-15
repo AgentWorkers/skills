@@ -1,44 +1,50 @@
 ---
 name: x-automation
-description: Automates the process of identifying trends on X (Twitter), generating opinionated/engaging content, and posting it. Use when asked to post to X, run X automation, or check trends for content creation.
+description: 自动化识别X（Twitter）上的趋势、生成有观点且引人入胜的内容，并将其发布的流程。适用于需要向X平台发布内容、运行X平台自动化任务或检查趋势以用于内容创作的情况。
 ---
 
-# X (Twitter) Automation Skill
+# X（Twitter）自动化技能
 
-This skill provides a structured workflow for generating and posting high-engagement content on X.
+本技能提供了一种结构化的流程，用于在X平台上生成并发布高互动性的内容。
 
-## Workflow
+## 工作流程
 
-1.  **Context Gathering**:
-    -   Use `browser(profile="chrome")` to visit `https://x.com/home`.
-    -   Scroll for ~30 seconds to absorb the timeline's "vibe" and current discourse.
-2.  **Trend Identification**:
-    -   Navigate to `https://x.com/explore/`.
-    -   Identify 5 distinct trending topics from the main list.
-3.  **Trend Analysis (Deep Dive)**:
-    -   For each trend, search: `https://x.com/search?q={trend}&src=trend_click&vertical=trends`.
-    -   Read the **Top 5 tweets** per trend.
-4.  **Content Generation**:
-    -   Generate **3 candidate tweets**.
-    -   **Constraint**: Opinions are encouraged! Be bold, witty, or opinionated to drive engagement.
-    -   Include relevant hashtags but keep them minimal (1-2).
-5.  **Logging & Selection**:
-    -   Write candidates to `memory/x-daily-candidates.log`.
-    -   Select the best one based on viral potential and alignment with the current timeline vibe.
-6.  **Publication**:
-    -   Navigate to `https://x.com/compose/post`.
-    -   Type the selected text and click "Post".
-7.  **Notification**:
-    -   Notify the user via the primary channel (Telegram/Webchat) of success or failure.
-    -   Include the best draft in case of failure.
+1. **收集背景信息**：
+   - 使用 `browser(profile="chrome")` 访问 `https://x.com/home`。
+   - 滚动页面约30秒，以了解时间线的氛围和当前的热门话题。
 
-## Troubleshooting
+2. **识别趋势**：
+   - 转到 `https://x.com/explore/`。
+   - 从主列表中挑选出5个不同的热门话题。
 
--   **Browser Relay**: Ensure a tab is connected in Chrome via the OpenClaw extension.
--   **Failure Logging**: Always log errors to `memory/x-automation-logs.md`.
+3. **深入分析趋势**：
+   - 对于每个趋势，搜索：`https://x.com/search?q={trend}&src=trend_click&vertical=trends`。
+   - 阅读每个趋势下的**前5条推文**。
 
-## Content Style Guide
+4. **内容创作**：
+   - 创作3条候选推文。
+   - **要求**：鼓励表达个人观点！可以大胆、幽默或提出鲜明的见解，以引发互动。
+   - 包含相关的话题标签，但数量控制在1-2个以内。
 
--   **Concise**: Keep it punchy.
--   **Opinionated**: Don't just report facts; give a "hot take".
--   **Engaging**: Use questions or strong statements to prompt replies.
+5. **记录与选择**：
+   - 将候选推文写入 `memory/x-daily-candidates.log`。
+   - 根据内容的传播潜力以及与当前时间线氛围的契合度，选择最佳的一条。
+
+6. **发布内容**：
+   - 转到 `https://x.com/compose/post`。
+   - 输入选定的推文内容并点击“发布”。
+
+7. **通知**：
+   - 通过主要渠道（Telegram/Webchat）通知用户操作结果（成功或失败）。
+   - 如果操作失败，需将最佳草稿内容保留下来。
+
+## 故障排除
+
+- **浏览器设置**：确保在Chrome浏览器中通过OpenClaw扩展程序打开了相关标签页。
+- **错误记录**：务必将所有错误信息记录到 `memory/x-automation-logs.md` 文件中。
+
+## 内容风格指南
+
+- **简洁明了**：表达要简洁有力。
+- **有观点**：不要仅仅陈述事实，要提出自己的见解。
+- **具有互动性**：使用问题或有力的陈述来激发用户的回复。

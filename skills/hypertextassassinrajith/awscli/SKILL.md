@@ -1,77 +1,77 @@
 ---
 name: awscli
-description: "Manage AWS Lightsail and EC2 instances using AWS CLI"
+description: "使用 AWS CLI 管理 AWS Lightsail 和 EC2 实例"
 version: 1.0.0
 author: RajithSanjaya
 ---
 
-# AWS CLI Control Skill
+# AWS CLI 控制技能
 
-This skill manages AWS Lightsail instances.
+此技能用于管理 AWS Lightsail 实例。
 
-## Requirements
+## 要求
 
-- AWS CLI installed on host
-- AWS credentials configured (IAM user or role)
-- Environment variables:
+- 主机上已安装 AWS CLI
+- 配置了 AWS 凭据（IAM 用户或角色）
+- 需要以下环境变量：
 
   - AWS_REGION
   - ALLOWED_INSTANCES
 
-  ## Environment Variables
+## 环境变量
 
-This skill requires the following environment variables:
+此技能需要以下环境变量：
 
-- AWS_REGION (e.g., ap-southeast-1)
-- ALLOWED_INSTANCES (comma-separated list)
+- AWS_REGION（例如：ap-southeast-1）
+- ALLOWED_INSTANCES（以逗号分隔的实例名称列表）
 
-Example:
+示例：
 
 AWS_REGION=ap-southeast-1
 ALLOWED_INSTANCES=Ubuntu,Binami
 
-## Available Operations
+## 可用的操作
 
-### 1. List Instances
+### 1. 列出实例
 
-action: "list"
+操作：`list`
 
-Example:
+示例：
 {
-"action": "list"
+  "action": "list"
 }
 
 ---
 
-### 2. Reboot Instance
+### 2. 重启实例
 
-action: "reboot"  
-instance: "<instance-name>"
+操作：`reboot`  
+实例：`<实例名称>`
 
-Example:
+示例：
 {
-"action": "reboot",
-"instance": "Ubuntu-1"
+  "action": "reboot",
+  "instance": "Ubuntu-1"
 }
 
 ---
 
-### 3. Start Instance
+### 3. 启动实例
 
-action: "start"  
-instance: "<instance-name>"
-
----
-
-### 4. Stop Instance
-
-action: "stop"  
-instance: "<instance-name>"
+操作：`start`  
+实例：`<实例名称>`
 
 ---
 
-## Notes
+### 4. 停止实例
 
-- Only use structured JSON input.
-- Do NOT generate AWS CLI commands.
-- Instance names must exactly match existing Lightsail instances.
+操作：`stop`  
+实例：`<实例名称>`
+
+---
+
+## 注意事项
+
+- 仅使用结构化的 JSON 输入。
+- 请勿自动生成 AWS CLI 命令。
+- 实例名称必须与现有的 Lightsail 实例完全匹配。

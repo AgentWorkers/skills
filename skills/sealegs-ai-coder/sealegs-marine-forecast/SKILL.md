@@ -1,32 +1,32 @@
 ---
 name: sealegs-marine-forecast
-description: Get AI-powered marine weather forecasts for any location worldwide
+description: 获取全球任何地点的、由人工智能支持的海洋天气预报
 homepage: https://developer.sealegs.ai
 metadata: {"openclaw": {"requires": {"env": ["SEALEGS_API_KEY"], "bins": ["curl"]}, "primaryEnv": "SEALEGS_API_KEY"}, "emoji": "⛵", "tags": ["weather", "marine", "forecast", "boating", "sailing", "ocean", "waves", "wind"]}
 ---
 
-# SeaLegs AI Marine Forecast API
+# SeaLegs AI 海洋天气预报 API
 
-Get AI-powered marine weather forecasts for any location worldwide. Includes wind, waves, visibility, precipitation analysis with GO/CAUTION/NO-GO safety classifications.
+该 API 可为全球任何地点提供基于人工智能的海洋天气预报，包括风速、波高、能见度以及降水情况，并附带“安全”（GO/CAUTION/NO-GO）分类提示。
 
-## Features
+## 主要功能
 
-- **SpotCast Forecasts**: Get marine weather forecasts for any coordinates worldwide
-- **AI Safety Analysis**: GO / CAUTION / NO-GO classifications for each day
-- **Vessel-Specific**: Tailored recommendations based on boat type and size
-- **Multi-Language**: Supports English, Spanish, French, Portuguese, Italian, Japanese
+- **即时预报（SpotCast）**：为全球任意坐标位置生成海洋天气预报。
+- **人工智能安全分析**：为每一天提供“安全”/“谨慎”/“不建议”（GO/CAUTION/NO-GO）的分类提示。
+- **针对特定船只类型**：根据船只类型和大小提供定制化的建议。
+- **多语言支持**：支持英语、西班牙语、法语、葡萄牙语、意大利语和日语。
 
-## Setup
+## 设置流程
 
-### 1. Get an API Key
+### 1. 获取 API 密钥
 
-1. Sign up at https://developer.sealegs.ai — you'll get **10 free credits** to get started
-2. Generate an API key from your dashboard
-3. Need more? Add credits anytime ($10 = 200 forecast-days)
+1. 在 [https://developer.sealegs.ai](https://developer.sealegs.ai) 注册账户，您将获得 **10 个免费信用点** 用于开始使用服务。
+2. 从您的仪表板生成 API 密钥。
+3. 需要更多信用点？随时可以购买（10 美元 = 200 天的预报服务）。
 
-### 2. Configure OpenClaw
+### 2. 配置 OpenClaw
 
-Add to your OpenClaw configuration:
+将以下代码添加到您的 OpenClaw 配置中：
 
 ```json5
 {
@@ -41,19 +41,19 @@ Add to your OpenClaw configuration:
 }
 ```
 
-Or set the environment variable:
+或者设置环境变量：
 
 ```bash
 export SEALEGS_API_KEY=sk_live_your_key_here
 ```
 
-### 3. Install the Skill
+### 3. 安装该服务
 
 ```bash
 clawhub install sealegs-marine-forecast
 ```
 
-## Usage Example
+## 使用示例
 
 ```jsonc
 // Miami, FL
@@ -67,7 +67,7 @@ POST /v3/spotcast
 }
 ```
 
-**Sample response:**
+**示例响应：**
 ```json
 {
   "id": "spc_FrZdSAs6T3cxbXiPtNZvxu",
@@ -107,75 +107,75 @@ POST /v3/spotcast
 }
 ```
 
-## API Endpoints
+## API 端点
 
-| Operation | Endpoint | Cost |
-|-----------|----------|------|
-| Create forecast | POST /v3/spotcast | 1 credit/day |
-| Get forecast | GET /v3/spotcast/{id} | Free |
-| Check status | GET /v3/spotcast/{id}/status | Free |
-| Refresh forecast | POST /v3/spotcast/{id}/refresh | 1 credit/day |
-| List forecasts for SpotCast | GET /v3/spotcast/{id}/forecasts | Free |
-| Get specific forecast | GET /v3/spotcast/{id}/forecast/{forecast_id} | Free |
-| List SpotCasts | GET /v3/spotcasts | Free |
-| Get balance | GET /v3/account/balance | Free |
+| 操作          | 端点            | 费用      |
+|-----------------|-----------------|-----------|
+| 创建预报        | POST /v3/spotcast       | 1 信用点/天    |
+| 获取预报        | GET /v3/spotcast/{id}     | 免费       |
+| 检查状态        | GET /v3/spotcast/{id}/status   | 免费       |
+| 更新预报        | POST /v3/spotcast/{id}/refresh | 1 信用点/天    |
+| 列出所有预报      | GET /v3/spotcast/{id}/forecasts | 免费       |
+| 获取特定预报      | GET /v3/spotcast/{id}/forecast/{forecast_id} | 免费       |
+| 列出所有即时预报    | GET /v3/spotcasts     | 免费       |
+| 查看账户余额      | GET /v3/account/balance    | 免费       |
 
-## Weather Factors Used
+## 使用的天气数据
 
-- Wind speed, gusts, and direction
-- Wave height, period, and direction
-- Visibility and fog probability
-- Precipitation probability and intensity
-- Air and water temperature
+- 风速、阵风速度和方向
+- 波高、周期和方向
+- 能见度及雾概率
+- 降水概率和强度
+- 空气和海水温度
 
-## Authentication
+## 认证要求
 
-All requests require:
+所有请求都必须包含以下认证信息：
 ```
 Authorization: Bearer $SEALEGS_API_KEY
 Content-Type: application/json
 ```
 
-## Rate Limits
+## 速率限制
 
-- Standard tier: 60 requests per minute
-- Rate limit headers included in all responses: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+- 标准 tier：每分钟 60 次请求。
+- 所有响应中都会包含以下速率限制头部信息：`X-RateLimit-Limit`、`X-RateLimit-Remaining`、`X-RateLimit-Reset`。
 
-## Billing
+## 计费规则
 
-- 1 credit per forecast-day (3-day forecast = 3 credits)
-- GET operations are free
-- Refreshes cost 1 credit per forecast-day
+- 每天预报服务费用为 1 信用点（3 天的预报服务需 3 个信用点）。
+- 获取预报的请求是免费的。
+- 更新预报的请求费用为 1 信用点/天。
 
 ---
 
-# SpotCast Forecasts
+# 即时预报（SpotCast）
 
-SpotCast generates AI-powered marine weather forecasts for specific coordinates.
+即时预报功能可为特定坐标位置生成基于人工智能的海洋天气预报。
 
-## Create SpotCast
+## 创建即时预报
 
-**POST** `https://api.sealegs.ai/v3/spotcast`
+**POST 请求**：`https://api.sealegs.ai/v3/spotcast`
 
-Creates a new forecast request. Processing is asynchronous (typically 30-60 seconds).
+此请求用于创建新的预报。处理过程是异步的（通常需要 30-60 秒）。
 
-**Required parameters:**
-- `latitude` (number): -90 to 90
-- `longitude` (number): -180 to 180
-- `start_date` (string): ISO 8601 format (e.g., "2025-12-05T00:00:00Z")
-- `num_days` (integer): 1-5
+**必填参数：**
+- `latitude`（数字）：-90 至 90
+- `longitude`（数字）：-180 至 180
+- `start_date`（字符串）：ISO 8601 格式（例如：“2025-12-05T00:00:00Z”）
+- `num_days`（整数）：1-5
 
-**Optional parameters:**
-- `webhook_url` (string): HTTPS endpoint for completion notification
-- `metadata` (object): Custom key-value pairs for your reference
-- `trip_duration_hours` (integer): Trip duration in hours
-- `preferences.language`: en, es, fr, pt, it, ja (default: en)
-- `preferences.distance_units`: nm, mi, km (default: nm)
-- `preferences.speed_units`: kts, mph, ms (default: kts)
-- `vessel_info.type`: powerBoat, sailboat, pwc, yacht, catamaran
-- `vessel_info.length_ft`: 1-500
+**可选参数：**
+- `webhook_url`（字符串）：用于接收完成通知的 HTTPS 端点
+- `metadata`（对象）：自定义的键值对
+- `trip_duration_hours`（整数）：行程时长（以小时为单位）
+- `preferences.language`（字符串）：语言选择（en, es, fr, pt, it, ja，默认：en）
+- `preferences.distance_units`（字符串）：距离单位（nm, mi, km，默认：nm）
+- `preferences.speed_units`（字符串）：速度单位（kts, mph, ms，默认：kts）
+- `vessel_info.type`（字符串）：船只类型（powerBoat, sailboat, pwc, yacht, catamaran）
+- `vessel_info.length_ft`（整数）：船只长度（以英尺为单位）
 
-**Example request:**
+**示例请求：**
 ```bash
 curl -X POST https://api.sealegs.ai/v3/spotcast \
   -H "Authorization: Bearer $SEALEGS_API_KEY" \
@@ -189,7 +189,7 @@ curl -X POST https://api.sealegs.ai/v3/spotcast \
   }'
 ```
 
-**Response (202 Accepted):**
+**响应（202 Accepted）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -207,32 +207,32 @@ curl -X POST https://api.sealegs.ai/v3/spotcast \
 }
 ```
 
-## Check SpotCast Status
+## 检查即时预报的状态
 
-**GET** `https://api.sealegs.ai/v3/spotcast/{id}/status`
+**GET 请求**：`https://api.sealegs.ai/v3/spotcast/{id}/status`
 
-Poll this endpoint until status is "completed" or "failed". Recommended poll interval: 10-15 seconds.
+持续查询此端点，直到状态变为“completed”或“failed”。建议的查询间隔为 10-15 秒。
 
-**Status values:**
-- `pending`: Queued for processing (no `progress` field)
-- `processing`: Currently generating forecast (includes `progress`)
-- `completed`: Ready to retrieve (includes `progress` at 100%)
-- `failed`: Error occurred
+**状态值：**
+- `pending`：正在排队处理（无 `progress` 字段）
+- `processing`：正在生成预报（包含 `progress` 字段）
+- `completed`：预报已生成（`progress` 字段值为 100%）
+- `failed`：处理过程中出现错误
 
-**Progress stages** (only present when status is `processing` or `completed`):
+**处理阶段**（仅当状态为 `processing` 或 `completed` 时显示）：
 - fetching_weather
 - processing_data
 - ai_analysis
 - completing
-- completed (100%)
+- completed（100%）
 
-**Example request:**
+**示例请求：**
 ```bash
 curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/status \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (pending):**
+**响应（pending）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -242,7 +242,7 @@ curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/status \
 }
 ```
 
-**Response (processing):**
+**响应（processing）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -256,7 +256,7 @@ curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/status \
 }
 ```
 
-**Response (completed):**
+**响应（completed）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -271,19 +271,19 @@ curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/status \
 }
 ```
 
-## Get SpotCast
+## 获取即时预报
 
-**GET** `https://api.sealegs.ai/v3/spotcast/{id}`
+**GET 请求**：`https://api.sealegs.ai/v3/spotcast/{id}`
 
-Retrieves the completed forecast with AI analysis.
+获取已生成的预报及其人工智能分析结果。
 
-**Example request:**
+**示例请求：**
 ```bash
 curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -326,22 +326,22 @@ curl https://api.sealegs.ai/v3/spotcast/spc_abc123xyz \
 }
 ```
 
-## Refresh SpotCast
+## 更新即时预报
 
-**POST** `https://api.sealegs.ai/v3/spotcast/{id}/refresh`
+**POST 请求**：`https://api.sealegs.ai/v3/spotcast/{id}/refresh`
 
-Updates an existing forecast with the latest weather data. Costs 1 credit per forecast-day.
+使用最新天气数据更新现有预报。费用为 1 信用点/天。
 
-**Optional body:**
-- `webhook_url` (string): Override webhook for this refresh
+**可选请求体：**
+- `webhook_url`（字符串）：用于覆盖此更新的 webhook 地址
 
-**Example request:**
+**示例请求：**
 ```bash
 curl -X POST https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/refresh \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (202 Accepted):**
+**响应（202 Accepted）：**
 ```json
 {
   "id": "spc_abc123xyz",
@@ -355,22 +355,22 @@ curl -X POST https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/refresh \
 }
 ```
 
-## List Forecasts
+## 列出所有即时预报
 
-**GET** `https://api.sealegs.ai/v3/spotcast/{id}/forecasts`
+**GET 请求**：`https://api.sealegs.ai/v3/spotcast/{id}/forecasts`
 
-Lists all forecasts for a SpotCast, sorted by creation date (newest first). Each time you create or refresh a SpotCast, a new forecast is generated.
+列出该即时预报的所有预报，按创建时间排序（最新条目在前）。每次创建或更新即时预报时，都会生成新的预报。
 
-**Query parameters:**
-- `limit` (integer): Number of results to return (default: 10)
+**查询参数：**
+- `limit`（整数）：返回的结果数量（默认：10）
 
-**Example request:**
+**示例请求：**
 ```bash
 curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecasts?limit=5" \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "spotcast_id": "spc_abc123xyz",
@@ -392,19 +392,19 @@ curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecasts?limit=5" \
 }
 ```
 
-## Get Forecast
+## 获取特定预报
 
-**GET** `https://api.sealegs.ai/v3/spotcast/{id}/forecast/{forecast_id}`
+**GET 请求**：`https://api.sealegs.ai/v3/spotcast/{id}/forecast/{forecast_id}`
 
-Retrieves a specific forecast with full details including AI analysis. Use this to access any forecast in a SpotCast's history, not just the latest one.
+获取包含人工智能分析结果的特定预报。此接口可用于访问即时预报历史记录中的任意一条预报，而不仅仅是最新的一条。
 
-**Example request:**
+**示例请求：**
 ```bash
 curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecast/fcst_xyz789" \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (200 OK - Completed):**
+**响应（200 OK）：**
 ```json
 {
   "forecast_id": "fcst_xyz789",
@@ -434,7 +434,7 @@ curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecast/fcst_xyz789" \
 }
 ```
 
-**Response (200 OK - Processing):**
+**响应（200 OK - 处理中）：**
 ```json
 {
   "forecast_id": "fcst_xyz789",
@@ -452,7 +452,7 @@ curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecast/fcst_xyz789" \
 }
 ```
 
-**Response (200 OK - Failed):**
+**响应（200 OK - 失败）：**
 ```json
 {
   "forecast_id": "fcst_xyz789",
@@ -467,23 +467,23 @@ curl "https://api.sealegs.ai/v3/spotcast/spc_abc123xyz/forecast/fcst_xyz789" \
 }
 ```
 
-## List SpotCasts
+## 列出所有即时预报
 
-**GET** `https://api.sealegs.ai/v3/spotcasts`
+**GET 请求**：`https://api.sealegs.ai/v3/spotcasts`
 
-Retrieves all SpotCasts for your account.
+列出您账户下的所有即时预报。
 
-**Query parameters:**
-- `limit` (integer): 1-100 results (default: 20)
-- `after` (string): Cursor for pagination
+**查询参数：**
+- `limit`（整数）：返回的结果数量（默认：20）
+- `after`（字符串）：分页参数
 
-**Example request:**
+**示例请求：**
 ```bash
 curl "https://api.sealegs.ai/v3/spotcasts?limit=10" \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "data": [
@@ -510,21 +510,21 @@ curl "https://api.sealegs.ai/v3/spotcasts?limit=10" \
 
 ---
 
-# Account
+# 账户信息
 
-## Get Balance
+## 查看账户余额
 
-**GET** `https://api.sealegs.ai/v3/account/balance`
+**GET 请求**：`https://api.sealegs.ai/v3/account/balance`
 
-Returns your current credit balance and usage.
+查看您的当前信用点余额和使用情况。
 
-**Example request:**
+**示例请求：**
 ```bash
 curl https://api.sealegs.ai/v3/account/balance \
   -H "Authorization: Bearer $SEALEGS_API_KEY"
 ```
 
-**Response (200 OK):**
+**响应（200 OK）：**
 ```json
 {
   "credit_balance": 100,
@@ -536,11 +536,11 @@ curl https://api.sealegs.ai/v3/account/balance \
 
 ---
 
-# Webhooks
+# Webhook
 
-When you provide a `webhook_url` during SpotCast creation or refresh, SeaLegs sends a POST request to that URL when processing completes or fails.
+在创建或更新即时预报时，如果您提供了 `webhook_url`，SeaLegs 会在处理完成或失败时向该 URL 发送 POST 请求。
 
-## Webhook Headers
+## Webhook 头部信息
 
 ```
 Content-Type: application/json
@@ -551,11 +551,11 @@ X-SeaLegs-Timestamp: 1733045400
 User-Agent: SeaLegs-Webhooks/1.0
 ```
 
-## Verifying Signatures
+## 验证签名
 
-Every webhook includes an HMAC-SHA256 signature in the `X-SeaLegs-Signature` header. Your webhook secret is available in the Developer Dashboard. Always verify the signature before processing the payload.
+每个 Webhook 请求的 `X-SeaLegs-Signature` 头部都会包含一个 HMAC-SHA256 签名。您可以在开发者仪表板中获取 Webhook 的密钥。在处理请求数据之前，请务必验证签名。
 
-**Python:**
+**Python 示例：**
 ```python
 import hmac
 import hashlib
@@ -565,7 +565,7 @@ def verify_webhook(payload: bytes, signature: str, secret: str) -> bool:
     return hmac.compare_digest(f"sha256={expected}", signature)
 ```
 
-**JavaScript:**
+**JavaScript 示例：**
 ```javascript
 const crypto = require('crypto');
 
@@ -578,197 +578,152 @@ function verifyWebhook(payload, signature, secret) {
 }
 ```
 
-## Completed Event
+## 成功处理后的响应
 
-```json
-{
-  "event": "spotcast.forecast.completed",
-  "created_at": "2025-12-01T10:30:45Z",
-  "data": {
-    "spotcast_id": "spc_abc123xyz",
-    "forecast_id": "fcst_xyz789",
-    "status": "completed",
-    "summary": "Excellent conditions expected. Light winds 8-12kt from the NE with calm 1-2ft seas.",
-    "metadata": {
-      "trip_name": "Weekend Fishing Trip"
-    }
-  }
-}
-```
+当人工智能分析成功完成时，响应中会包含 `summary` 字段。如果您在最初的 `POST` 请求中提供了 `metadata`，则 `metadata` 对象也会被原样返回。
 
-The `summary` field is included when AI analysis completes successfully. The `metadata` object is included when you provided metadata in the original `POST /v3/spotcast` request, echoed back exactly as sent.
+## 处理失败时的响应
 
-## Failed Event
+**失败响应**：
 
-```json
-{
-  "event": "spotcast.forecast.failed",
-  "created_at": "2025-12-01T10:31:00Z",
-  "data": {
-    "spotcast_id": "spc_abc123xyz",
-    "forecast_id": "fcst_xyz789",
-    "status": "failed",
-    "error": {
-      "code": "processing_failed",
-      "message": "Unable to fetch weather data for the specified location"
-    },
-    "metadata": {
-      "trip_name": "Weekend Fishing Trip"
-    }
-  }
-}
-```
+**重试策略**
 
-## Retry Policy
-
-Failed deliveries are retried up to 4 times: after 5 minutes, 30 minutes, 2 hours, and 24 hours.
+失败请求会尝试重传最多 4 次：分别在 5 分钟、30 分钟、2 小时和 24 小时后重新尝试。
 
 ---
 
-# Understanding Results
+# 结果解读
 
-## Daily Classifications
+**每日安全分类**
 
-Each forecast day receives a safety classification:
+每天的预报都会附带一个安全分类提示：
 
-| Classification | Meaning |
-|----------------|---------|
-| **GO** | Safe conditions for the vessel type |
-| **CAUTION** | Proceed with awareness; conditions may be challenging |
-| **NO-GO** | Conditions not recommended for the vessel type |
+| 分类            | 含义                          |
+|-----------------|------------------------------|
+| **GO**           | 船只类型可安全航行                   |
+| **CAUTION**       | 需谨慎操作；环境可能具有挑战性             |
+| **NO-GO**         | 不建议该船只类型航行                   |
 
-Classifications are adjusted based on vessel type and size when `vessel_info` is provided.
+当提供了 `vessel_info` 时，分类会根据船只类型和大小进行调整。
 
-## Weather Variables Analyzed
+## 分析的天气变量
 
-- **Wind**: Speed (kts), gusts, direction (degrees)
-- **Waves**: Height (ft), period (seconds), direction, swell
-- **Visibility**: Distance (nm), fog probability
-- **Precipitation**: Probability (%), intensity
-- **Temperature**: Air and water (F/C)
+- **风**：风速（kts）、阵风速度、风向
+- **波**：波高（ft）、波周期（秒）、波方向、涌浪情况
+- **能见度**：能见距离（nm）、雾概率
+- **降水**：降水概率（%）、降水强度
+- **温度**：空气温度和海水温度
 
-## Vessel-Specific Adjustments
+## 针对特定船只类型的调整
 
-When `vessel_info` is provided:
-- **PWC/Jet Ski**: Stricter wave height limits
-- **Sailboats**: Wind optimization recommendations
-- **Large Yachts**: Higher tolerance for wave conditions
-- **Small Powerboats**: Balanced wind/wave thresholds
-
----
-
-# Error Handling
-
-## Error Response Format
-
-```json
-{
-  "error": {
-    "code": "invalid_coordinates",
-    "message": "Latitude must be between -90 and 90",
-    "param": "latitude"
-  }
-}
-```
-
-## HTTP Status Codes
-
-| Code | Meaning | Action |
-|------|---------|--------|
-| 200 | Success | Request completed |
-| 201 | Created | Resource created |
-| 202 | Accepted | Async processing started |
-| 400 | Bad Request | Check parameter values |
-| 401 | Unauthorized | Verify API key is correct |
-| 402 | Payment Required | Add credits at developer.sealegs.ai |
-| 403 | Forbidden | Account not verified or suspended |
-| 404 | Not Found | Check resource ID |
-| 429 | Rate Limited | Wait and retry (60 req/min limit) |
-| 500 | Server Error | Retry after brief delay |
-
-## Error Codes
-
-### Authentication (401)
-
-| Code | Description |
-|------|-------------|
-| `missing_api_key` | No API key provided in request |
-| `invalid_api_key` | API key is not recognized |
-| `key_revoked` | API key has been revoked |
-
-### Authorization (403)
-
-| Code | Description |
-|------|-------------|
-| `account_not_verified` | Developer account has not been verified |
-| `account_suspended` | Developer account has been suspended |
-
-### Payment (402)
-
-| Code | Description |
-|------|-------------|
-| `insufficient_balance` | Not enough credits (response includes `current_balance`, `required_credits`, `purchase_url`) |
-
-### Validation (400)
-
-| Code | Description |
-|------|-------------|
-| `invalid_coordinates` | Coordinates out of valid range |
-| `invalid_date_format` | Not ISO 8601 format |
-| `invalid_webhook_url` | Not a valid HTTPS URL |
-| `invalid_preferences` | Preferences format is invalid |
-| `invalid_language` | Language not supported (use: en, es, fr, pt, it, ja) |
-| `invalid_distance_units` | Distance units not supported (use: nm, mi, km) |
-| `invalid_speed_units` | Speed units not supported (use: kts, mph, ms) |
-| `invalid_json` | Request body is not valid JSON |
-
-### Not Found (404)
-
-| Code | Description |
-|------|-------------|
-| `spotcast_not_found` | The specified SpotCast does not exist |
-| `forecast_not_found` | The specified forecast does not exist |
-
-### Rate Limit (429)
-
-| Code | Description |
-|------|-------------|
-| `rate_limit_exceeded` | Too many requests (response includes `retry_after` seconds) |
-
-### Server (500)
-
-| Code | Description |
-|------|-------------|
-| `internal_error` | An unexpected error occurred |
-| `creation_failed` | Failed to create SpotCast |
-| `retrieval_failed` | Failed to retrieve resource |
+- **PWC/水上摩托艇**：更严格的波高限制
+- **帆船**：针对风速的优化建议
+- **大型游艇**：对波浪条件的容忍度更高
+- **小型动力艇**：更平衡的风速/波浪阈值
 
 ---
 
-# Common Workflows
+# 错误处理
 
-## Get a Marine Forecast
+## 错误响应格式
 
-1. Create a SpotCast with coordinates and dates
-2. Poll the status endpoint until "completed"
-3. Retrieve the full forecast with AI analysis
-4. Present GO/CAUTION/NO-GO classification to user
+**错误代码及其含义**
 
-## Check Conditions Before a Trip
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| 200              | 请求成功                         |
+| 201              | 资源已创建                        |
+| 202              | 异步处理已开始                     |
+| 400              | 请求参数错误                       |
+| 401              | 未提供有效的 API 密钥                   |
+| 402              | 需要购买更多信用点                     |
+| 403              | 账户未验证或已被暂停                   |
+| 404              | 资源未找到                       |
+| 429              | 请求次数超出限制                     |
+| 500              | 服务器错误                         |
 
-1. Create SpotCast with trip coordinates and date
-2. Include vessel_info for tailored recommendations
-3. Check daily_classifications for each day
-4. Review AI summary for specific concerns
+## 错误代码及其详细说明
+
+### 认证相关错误（401-403）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `missing_api_key`     | 请求中未提供 API 密钥                 |
+| `invalid_api_key`     | 提供的 API 密钥无效                 |
+| `key_revoked`     | API 密钥已被吊销                     |
+
+### 授权相关错误（403）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `account_not_verified`     | 开发者账户未验证                   |
+| `account_suspended`     | 开发者账户已被暂停                     |
+
+### 计费相关错误（402）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `insufficient_balance`     | 信用点不足                     | （响应中包含 `current_balance`、`required_credits`、`purchase_url`） |
+|                                 |
+
+### 验证相关错误（400）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `invalid_coordinates`     | 坐标超出有效范围                     |
+| `invalid_date_format`     | 日期格式不符合 ISO 8601 标准                 |
+| `invalid_webhook_url`     | 提供的 URL 不是有效的 HTTPS 地址             |
+| `invalid_preferences`     | 预设参数格式无效                     |
+| `invalid_language`     | 不支持的语言                         |
+| `invalid_distance_units`     | 距离单位无效                         |
+| `invalid_speed_units`     | 速度单位无效                         |
+| `invalid_json`     | 请求体不是有效的 JSON 格式                   |
+
+### 资源未找到（404）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `spotcast_not_found`     | 指定的即时预报未找到                   |
+| `forecast_not_found`     | 指定的预报未找到                     |
+
+### 速率限制相关错误（429）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `rate_limit_exceeded`     | 请求次数超出限制                     | （响应中包含重试间隔时间）                 |
+
+### 服务器错误（500）
+
+| 错误代码            | 描述                          |
+|-----------------|-----------------------------------------|
+| `internal_error`     | 发生内部错误                     |
+| `creation_failed`     | 创建即时预报失败                     |
+| `retrieval_failed`     | 获取资源失败                     |
 
 ---
 
-## Links
+# 常见操作流程
 
-- [Developer Portal](https://developer.sealegs.ai)
-- [API Documentation](https://developer.sealegs.ai/docs/)
-- [SeaLegs App](https://sealegs.ai)
+## 获取海洋天气预报
 
-## License
+1. 为指定坐标和日期创建即时预报。
+2. 持续查询状态端点，直到预报状态变为“completed”。
+3. 获取包含人工智能分析结果的完整预报。
+4. 向用户展示“安全”/“谨慎”/“不建议”的分类提示。
 
-MIT
+## 出行前检查天气情况
+
+1. 为出行坐标和日期创建即时预报。
+2. 提供船只信息以获取定制化的建议。
+3. 查看每天的安全分类提示。
+4. 查看人工智能分析结果，了解可能存在的风险。
+
+## 相关链接
+
+- [开发者门户](https://developer.sealegs.ai)
+- [API 文档](https://developer.sealegs.ai/docs/)
+- [SeaLegs 应用程序](https://sealegs.ai)
+
+## 许可证
+
+本服务采用 MIT 许可协议。

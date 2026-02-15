@@ -1,16 +1,16 @@
 ---
 name: council
-description: Send an idea to the Council of the Wise for multi-perspective feedback. Spawns sub-agents to analyze from multiple expert perspectives. Auto-discovers agent personas from agents/ folder.
+description: 将某个想法发送给“智者委员会”以获取多角度的反馈。系统会生成子代理来从多个专家的角度进行分析。系统会自动从代理或文件夹中识别出适合执行任务的代理角色（即代理的“人格特征”或行为模式）。
 version: 1.3.1
 author: jeffaf
 credits: Inspired by Daniel Miessler's PAI (Personal AI Infrastructure). Architect, Engineer, and Artist agents adapted from PAI patterns. Devil's Advocate is an original creation.
 ---
 
-# Council of the Wise
+# 智者委员会（Council of the Wise）
 
-Get multi-perspective feedback on your ideas from a panel of AI experts. Perfect for stress-testing business plans, project designs, content strategies, or major decisions.
+该技能可让您从一组AI专家那里获得多角度的反馈，非常适合用于测试商业计划、项目设计、内容策略或重大决策的可行性。
 
-## Usage
+## 使用方法
 
 ```
 "Send this to the council: [idea/plan/document]"
@@ -18,20 +18,20 @@ Get multi-perspective feedback on your ideas from a panel of AI experts. Perfect
 "Get the council's feedback on [thing]"
 ```
 
-## Council Members
+## 委员名单
 
-The skill **auto-discovers** agent personas from `{skill_folder}/agents/`. Any `.md` file in that folder becomes a council member.
+该技能会自动从 `{skill_folder}/agents/` 文件夹中识别出合适的专家角色。该文件夹中的所有 `.md` 文件都会被视为委员会成员。
 
-**Default members:**
-- `DevilsAdvocate.md` — Challenges assumptions, finds weaknesses, stress-tests
-- `Architect.md` — Designs systems, structure, high-level approach  
-- `Engineer.md` — Implementation details, technical feasibility
-- `Artist.md` — Voice, style, presentation, user experience
-- `Quant.md` — Risk analysis, ROI, expected value, position sizing
+**默认成员：**
+- `DevilsAdvocate.md`：质疑假设，发现潜在问题，对方案进行压力测试
+- `Architect.md`：负责系统设计、整体架构及宏观策略
+- `Engineer.md`：提供实现细节和技术可行性分析
+- `Artist.md`：关注内容的表现形式、风格及用户体验
+- `Quant.md`：进行风险分析、投资回报率（ROI）及收益预期评估
 
-### Adding New Council Members
+### 添加新成员
 
-Simply add a new `.md` file to the `agents/` folder:
+只需将新的 `.md` 文件添加到 `agents/` 文件夹中即可：
 
 ```bash
 # Add a security reviewer
@@ -41,21 +41,21 @@ echo "# Pentester\n\nYou analyze security implications..." > agents/Pentester.md
 echo "# QATester\n\nYou find edge cases..." > agents/QATester.md
 ```
 
-The skill will automatically include any agents it finds. No config file needed.
+技能会自动将新成员纳入委员会名单。无需配置文件。
 
-### Custom Agent Location (Optional)
+### 自定义专家来源（可选）
 
-If the user has custom PAI agents at `~/.claude/Agents/`, those can be used instead:
-- Check if `~/.claude/Agents/` exists and has agent files
-- If yes, prefer custom agents from that directory
-- If no, use the bundled agents in this skill's `agents/` folder
+如果用户有自己的 PAI（Personalized AI）专家模型，并将其保存在 `~/.claude/Agents/` 目录下，也可以使用这些专家：
+- 检查 `~/.claude/Agents/` 目录是否存在以及其中是否包含专家文件
+- 如果存在，则优先使用该目录中的专家模型
+- 如果不存在，则使用该技能自带的专家模型
 
-## Process
+## 工作流程
 
-1. Receive the idea/topic from the user
-2. Discover available agents (scan `agents/` folder or custom path)
-3. Send a loading message to the user: `🏛️ *The Council convenes...* (this takes 2-5 minutes)`
-4. Spawn a sub-agent with **5-minute timeout** using this task template:
+1. 用户提交想法或主题
+2. 技能会自动识别可用的专家成员
+3. 向用户发送加载提示：`🏛️ *智者委员会正在召集中...*（此过程需要2-5分钟）
+4. 使用指定的任务模板创建一个子代理，并设置5分钟的超时时间：
 
 ```
 Analyze this idea/plan from multiple expert perspectives.
@@ -80,9 +80,9 @@ End with:
 Use the voice and personality defined in each agent file. Don't just list points — embody the perspective.
 ```
 
-5. Return the consolidated feedback to the user
+5. 将整理后的反馈结果返回给用户
 
-## Output Format
+## 输出格式
 
 ```markdown
 ## 🏛️ Council of the Wise — [Topic]
@@ -109,33 +109,32 @@ Use the voice and personality defined in each agent file. Don't just list points
 [risk analysis, ROI, expected value — data-driven voice]
 ```
 
-## Configuration
+## 配置说明
 
-No config file needed. The skill auto-discovers agents and uses sensible defaults:
+无需配置文件。技能会自动识别专家成员并使用默认设置：
+- **超时时间：** 5分钟（通过子代理实现）
+- **专家来源：** `agents/` 文件夹中的所有 `.md` 文件
+- **输出格式：** Markdown 格式，包含综合分析结果及专家意见
+- **模型使用：** 使用默认的模型（可通过 Clawdbot 进行自定义）
 
-- **Timeout:** 5 minutes (enforced via sub-agent spawn)
-- **Agents:** All `.md` files in `agents/` folder
-- **Output:** Markdown with synthesis and token usage
-- **Model:** Uses session default (can override via Clawdbot)
+## 注意事项
 
-## Notes
-
-- Council review takes 2-5 minutes depending on complexity
-- **Timeout:** 5 minutes enforced; on timeout returns partial results if available
-- Use for: business ideas, content plans, project designs, major decisions
-- Don't use for: quick questions, simple tasks, time-sensitive requests
-- The sub-agent consolidates all perspectives into a single response with Synthesis first
-- Add specialized agents for domain-specific analysis (security, legal, etc.)
+- 专家评审时间取决于问题的复杂性，通常需要2-5分钟
+- 超时后（5分钟后），如果已有部分反馈，也会立即返回
+- 适用于：商业创意、内容规划、项目设计或重大决策
+- 不适用于：简单问题或时间敏感的任务
+- 子代理会首先使用 Synthesis 工具整合所有专家的意见，形成统一的反馈结果
+- 如需针对特定领域（如安全、法律等）进行专业分析，可添加相应的专家模型
 
 ---
 
-## Agent Implementation Notes
+## 专家模型使用说明
 
-**Trigger phrases:** "send this to the council", "council of the wise", "get the council's feedback on"
+**触发语句：** “将此任务发送给智者委员会” 或 “获取智者委员会的反馈”
 
-**When triggered:**
-1. Send loading message: `🏛️ *The Council convenes...* (this takes 2-5 minutes)`
-2. Spawn sub-agent with 5-minute timeout using the task template in Process section
-3. Return synthesized council report to user
+**触发流程：**
+1. 显示加载提示：`🏛️ *智者委员会正在召集中...*（2-5分钟后完成）
+2. 使用工作流程中指定的任务模板创建一个子代理，并设置5分钟的超时时间
+3. 将专家们的综合意见以 Markdown 格式返回给用户
 
-**Don't invoke for:** Quick questions, time-sensitive tasks, simple decisions.
+**不适用场景：** 快速咨询、时间紧迫的任务或简单决策

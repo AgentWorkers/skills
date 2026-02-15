@@ -1,6 +1,11 @@
 ---
 name: claw-sync
-description: Secure sync for OpenClaw memory and workspace. Use /sync to push, /restore to pull, /sync-status to check. Supports versioned snapshots and disaster recovery.
+description: OpenClaw 提供了安全的数据同步功能，用于管理内存和工作区数据。您可以使用以下命令进行操作：  
+- `/sync`：用于推送数据到远程服务器  
+- `/restore`：用于从远程服务器拉取数据  
+- `/sync-status`：用于检查数据同步的状态  
+
+该系统支持版本化的数据快照功能，以及灾难恢复机制（即在数据丢失或损坏时能够快速恢复到之前的正常状态）。
 version: 2.0.2
 author: arakichanxd
 repository: https://github.com/arakichanxd/Claw-Sync
@@ -50,78 +55,78 @@ commands:
 
 # Claw Sync
 
-Secure, versioned sync for OpenClaw memory and workspace to GitHub.
+这是一个用于将 OpenClaw 的内存数据和工作区内容安全地同步到 GitHub 的工具。
 
-**Repository:** https://github.com/arakichanxd/Claw-Sync
+**仓库地址：** https://github.com/arakichanxd/Claw-Sync
 
-## File References
+## 文件列表
 
-| File | Description | Link |
+| 文件名 | 说明 | 链接 |
 |------|-------------|------|
-| `SKILL.md` | AI agent instructions | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/SKILL.md) |
-| `README.md` | User documentation | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/README.md) |
-| `index.js` | Command router | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/index.js) |
-| `package.json` | NPM config | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/package.json) |
-| `scripts/push.js` | Sync to remote | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/push.js) |
-| `scripts/pull.js` | Restore from remote | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/pull.js) |
-| `scripts/status.js` | Show status | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/status.js) |
-| `scripts/setup-cron.js` | Auto-sync setup | [View](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/setup-cron.js) |
+| `SKILL.md` | 人工智能代理的配置说明 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/SKILL.md) |
+| `README.md` | 用户使用指南 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/README.md) |
+| `index.js` | 命令处理逻辑 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/index.js) |
+| `package.json` | NPM 配置文件 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/package.json) |
+| `scripts/push.js` | 将数据推送到远程仓库 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/push.js) |
+| `scripts/pull.js` | 从远程仓库恢复数据 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/pull.js) |
+| `scripts/status.js` | 显示同步状态 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/status.js) |
+| `scripts/setup-cron.js` | 自动同步设置 | [查看](https://github.com/arakichanxd/Claw-Sync/blob/main/scripts/setup-cron.js) |
 
 ---
 
-## Installation
+## 安装步骤
 
-### Step 1: Clone the skill
+### 第一步：克隆技能代码
 ```bash
 cd ~/.openclaw/workspace/skills
 git clone https://github.com/arakichanxd/Claw-Sync.git claw-sync
 ```
 
-### Step 2: Create a GitHub repository
-1. Go to https://github.com/new
-2. Create a **private** repository (e.g., `my-openclaw-sync`)
-3. Leave it empty (no README)
+### 第二步：创建 GitHub 仓库
+1. 访问 https://github.com/
+2. 创建一个 **私有的** 仓库（例如：`my-openclaw-sync`）
+3. 保持仓库为空（无需添加 `README.md` 文件）
 
-### Step 3: Create a GitHub token
-1. Go to https://github.com/settings/tokens?type=beta
-2. Click "Generate new token"
-3. Name: `openclaw-sync`
-4. Repository access: Select your sync repository
-5. Permissions: Contents → Read and Write
-6. Generate and copy the token
+### 第三步：生成 GitHub 访问令牌
+1. 访问 https://github.com/settings/tokens?type=beta
+2. 点击 “Generate new token”（生成新令牌）
+3. 为令牌命名：`openclaw-sync`
+4. 选择你的同步仓库
+5. 设置权限：允许读取和写入仓库内容
+6. 生成令牌并复制它
 
-### Step 4: Configure the skill
-Create file `~/.openclaw/.backup.env`:
+### 第四步：配置环境变量
+创建文件 `~/.openclaw/.backup.env`：
 ```
 BACKUP_REPO=https://github.com/YOUR_USERNAME/YOUR_REPO
 BACKUP_TOKEN=ghp_YOUR_TOKEN_HERE
 ```
 
-### Step 5: Test the setup
+### 第五步：测试配置
 ```bash
 /sync-status
 ```
 
-If configured correctly, you'll see ✅ Configured.
+如果配置正确，你会看到提示 “✅ Configured”（配置成功）。
 
-### Step 6: First sync
+### 第六步：首次同步
 ```bash
 /sync
 ```
 
 ---
 
-## Commands
+## 命令说明
 
-### /sync
-Push memory and skills to remote.
+### `/sync`
+将内存数据和技能配置推送到远程仓库。
 ```
 /sync              → Create versioned snapshot
 /sync --dry-run    → Preview what would sync (no changes)
 ```
 
-### /restore
-Restore from remote.
+### `/restore`
+从远程仓库恢复数据。
 ```
 /restore                        → Restore latest
 /restore latest                 → Same as above
@@ -129,79 +134,75 @@ Restore from remote.
 /restore --force                → Skip confirmation
 ```
 
-### /sync-status
-Show configuration and local snapshots.
+### `/sync-status`
+显示配置信息和本地数据快照。
 
-### /sync-list
-List all available versions to restore.
+### `/sync-list`
+列出所有可恢复的版本。
 
 ---
 
-## What Gets Synced
+## 同步的内容
 
-| File | Description |
+| 文件名 | 说明 |
 |------|-------------|
-| `MEMORY.md` | Long-term memory |
-| `USER.md` | User profile |
-| `SOUL.md` | Agent persona |
-| `IDENTITY.md` | Agent identity |
-| `TOOLS.md` | Tool configs |
-| `AGENTS.md` | Workspace rules |
-| `memory/*.md` | Daily logs |
-| `skills/*` | Custom skills |
+| `MEMORY.md` | 长期存储的数据 |
+| `USER.md` | 用户信息 |
+| `SOUL.md` | 代理的个性化设置 |
+| `IDENTITY.md` | 代理的身份信息 |
+| `TOOLS.md` | 工具配置 |
+| `AGENTS.md` | 工作区规则 |
+| `memory/*.md` | 每日日志 |
+| `skills/*` | 自定义技能配置 |
 
-## NOT Synced (security)
-
-- `openclaw.json` - Contains API keys
-- `.env` - Contains secrets
-
----
-
-## Troubleshooting
-
-### "Sync not configured"
-Create `~/.openclaw/.backup.env` with BACKUP_REPO and BACKUP_TOKEN.
-
-### "Invalid repository URL"
-URL must be HTTPS and from github.com, gitlab.com, or bitbucket.org.
-
-### "Token appears too short"
-Token must be at least 20 characters. Get a new one from GitHub.
-
-### Clone failed
-Check that your token has Contents read/write permission.
+## 不会同步的内容（出于安全考虑）：
+- `openclaw.json`：包含 API 密钥
+- `.env`：包含敏感信息
 
 ---
 
-## Disaster Recovery
+## 常见问题及解决方法
 
-Before every restore, a local backup is automatically saved to:
+### “同步配置未完成”
+确保创建了 `~/.openclaw/.backup.env` 文件，并设置了正确的 `BACKUP_REPO` 和 `BACKUP_TOKEN`。
+
+### “仓库地址无效”
+仓库地址必须是 HTTPS 格式，并且必须来自 github.com、gitlab.com 或 bitbucket.org。
+
+### “令牌太短”
+令牌长度必须至少为 20 个字符。请从 GitHub 重新生成令牌。
+
+### 克隆失败
+检查你的令牌是否具有读取和写入仓库内容的权限。
+
+---
+
+## 灾难恢复机制
+每次恢复数据之前，系统会自动将本地备份文件保存到指定位置：
 ```
 ~/.openclaw/.local-backup/<timestamp>/
 ```
 
-If something goes wrong, manually copy files from there.
+如果出现问题，可以手动从备份文件中恢复数据。
 
 ---
 
-## Auto-Sync Setup
-
-To sync automatically every 12 hours:
+## 自动同步设置
+设置每 12 小时自动同步一次：
 ```bash
 node skills/claw-sync/index.js setup
 ```
 
 ---
 
-## Features
+## 功能特点
 
-- 🏷️ **Versioned** - Each sync creates a restorable version (git tag)
-- 💾 **Disaster Recovery** - Local backup before every restore
-- 🔒 **Secure** - No config files synced, token sanitization
-- 🖥️ **Cross-platform** - Windows, Mac, Linux
+- 🏷️ **版本控制**：每次同步都会生成一个可恢复的版本（通过 Git 标签记录）
+- 💾 **灾难恢复**：每次恢复前都会进行本地备份
+- 🔒 **安全性**：不同步配置文件，并对令牌进行安全处理
+- 🖥️ **跨平台支持**：支持 Windows、Mac 和 Linux
 
 ---
 
-## Source Code
-
-Full source: https://github.com/arakichanxd/Claw-Sync
+## 源代码
+完整源代码：https://github.com/arakichanxd/Claw-Sync

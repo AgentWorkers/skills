@@ -1,23 +1,23 @@
 ---
 name: Outfits
-description: Build an outfit planning system for saving inspiration, creating combinations, and dressing for any occasion.
+description: 构建一个服装搭配规划系统，用于保存灵感、创建不同的穿搭组合，并为各种场合选择合适的服装。
 metadata: {"clawdbot":{"emoji":"👗","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User saves outfit inspiration → catalog with tags and notes
-- User asks what to wear → build combination from their clothes
-- User plans for event → suggest options with reasoning
-- Create `~/outfits/` as workspace
+## 核心功能  
+- 用户可以保存穿搭灵感，并为这些灵感添加标签和备注；  
+- 当用户需要知道该穿什么时，系统会根据用户现有的衣物为其推荐搭配方案；  
+- 用户在规划特定场合的穿搭时，系统会提供合理的建议；  
+- 系统会创建一个名为 `~/outfits/` 的工作文件夹来存储所有穿搭相关的文件。  
 
-## Use Cases
-- Save looks you love: Instagram, Pinterest, street style
-- Build go-to combinations from clothes you own
-- Plan outfits for specific occasions
-- Develop consistent personal style
-- Reduce morning decision fatigue
+## 使用场景  
+- 保存自己喜欢的穿搭风格（来源可来自 Instagram、Pinterest 或街头穿搭）；  
+- 从自己已拥有的衣物中挑选出常用的搭配方案；  
+- 为特定场合规划穿搭；  
+- 培养一致的个人穿搭风格；  
+- 减少早晨选择穿搭时的麻烦。  
 
-## File Structure
+## 文件结构  
 ```
 ~/outfits/
 ├── inspiration/
@@ -30,10 +30,10 @@ metadata: {"clawdbot":{"emoji":"👗","os":["linux","darwin","win32"]}}
 │   └── events/
 ├── clothes.md
 └── style-notes.md
-```
+```  
 
-## Clothes Inventory
-Simple list in clothes.md — no elaborate metadata:
+## 衣物清单  
+在 `clothes.md` 文件中，仅使用简单的列表格式记录衣物信息，无需复杂的元数据：  
 ```markdown
 ## Tops
 - white oxford shirt
@@ -43,21 +43,21 @@ Simple list in clothes.md — no elaborate metadata:
 ## Bottoms
 - dark wash jeans
 - khaki chinos
-```
+```  
 
-## Saving Inspiration
-- Screenshot or URL with source
-- Note WHAT you like: "the layering", "color combo", "those boots"
-- Tag by style: minimalist, classic, streetwear, smart casual
-- Season tag if weather-specific
+## 保存穿搭灵感  
+- 保存衣物的截图或链接；  
+- 记录自己的喜好（例如：叠穿方式、颜色搭配、喜欢的鞋子等）；  
+- 根据穿搭风格进行分类（极简风、经典风、街头风、休闲商务风）；  
+- 若穿搭受季节影响，可添加相应的标签。  
 
-## Building Combinations
-- Ask what they own before suggesting
-- Top + bottom + shoes minimum
-- Add outerwear and accessories as needed
-- Save working combos to my-outfits/
+## 搭配方案的生成  
+- 在推荐搭配前，系统会先询问用户现有的衣物；  
+- 最少需要包含上衣、下装和鞋子；  
+- 根据需要添加外套和配饰；  
+- 将生成的搭配方案保存到 `my-outfits/` 文件夹中。  
 
-## Outfit Entry Format
+## 搭配方案的格式  
 ```markdown
 # smart-casual-friday.md
 ## Pieces
@@ -71,40 +71,39 @@ Office casual Friday, drinks after
 
 ## Notes
 Blazer elevates basic combo
-```
+```  
 
-## Occasion Planning
-- Ask occasion AND venue — "wedding" needs more: outdoor? evening?
-- Weather affects everything — rain changes shoes and layers
-- Dress code clarification — "smart casual" varies by context
-- Suggest 2-3 options, let user pick by mood
+## 场合规划  
+- 询问用户具体的场合和场地（例如：婚礼、晚宴等）；  
+- 天气状况会影响穿搭选择（下雨时需要更换鞋子或增减衣物层次）；  
+- 需要明确着装要求（“休闲商务风”的具体含义因场合而异）；  
+- 为用户推荐 2-3 个搭配方案，让用户根据自己的心情选择。  
 
-## Style Development
-- Track what styles appear in inspiration folder
-- Surface patterns: "You save a lot of minimalist looks"
-- Note color preferences over time
-- Build style-notes.md with personal preferences
+## 个人风格的培养  
+- 记录用户经常关注的穿搭风格（例如：用户经常保存极简风格的穿搭）；  
+- 随时间记录用户的颜色偏好；  
+- 创建 `style-notes.md` 文件来整理个人的穿搭喜好。  
 
-## Capsule Thinking
-- Surface outfit math when helpful: "5 pieces = 12 combos"
-- Identify versatile pieces that appear in many outfits
-- Flag gaps only when obvious or asked
-- Don't push minimalism unless user wants it
+## 优化穿搭策略  
+- 在必要时展示穿搭背后的逻辑（例如：“5 件衣物可以搭配出 12 种不同的组合”）；  
+- 突出那些在多个穿搭中都出现的多功能衣物；  
+- 仅在用户明确要求时，才会指出衣物或风格的不足之处；  
+- 除非用户主动要求，否则不会强行推荐极简风格。  
 
-## What To Surface
-- "This top appears in 6 of your saved outfits"
-- "You don't have saved outfits for formal events"
-- "Based on your inspiration, you like earth tones"
-- "Similar to that Pinterest save you liked"
+## 提供的提示信息  
+- “这件上衣出现在你保存的 6 个穿搭方案中”；  
+- “你还没有为正式场合保存过穿搭方案”；  
+- “根据你的喜好，你更喜欢自然色调的衣物”；  
+- “与你喜欢的 Pinterest 搭配相似”。  
 
-## Progressive Enhancement
-- Week 1: save 5-10 inspiration outfits
-- Week 2: list clothes you wear most in clothes.md
-- Week 3: create 5 go-to combinations
-- Ongoing: add inspiration, build seasonal capsules
+## 持续优化流程  
+- 第 1 周：保存 5-10 个穿搭灵感；  
+- 第 2 周：在 `clothes.md` 文件中列出自己最常穿的衣物；  
+- 第 3 周：创建 5 个常用的搭配方案；  
+- 之后持续添加新的穿搭灵感，并定期更新季节性的穿搭推荐。  
 
-## What NOT To Push
-- Buying new items before using what they have
-- Specific brands or expensive pieces
-- Rigid fashion rules — principles over laws
-- Guilt about clothing or style choices
+## 需避免的做法  
+- 在使用现有衣物之前，不建议用户购买新衣物；  
+- 不推荐特定品牌或昂贵的衣物；  
+- 坚持灵活的穿搭原则，而非刻板的时尚规则；  
+- 不要让用户因穿搭或风格选择而产生负罪感。

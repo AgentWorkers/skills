@@ -1,11 +1,11 @@
 ---
 name: glab-config
-description: Manage glab CLI configuration settings including defaults, preferences, and per-host settings. Use when configuring glab behavior, setting defaults, or viewing current configuration. Triggers on config, configuration, settings, glab settings, set default.
+description: 管理 glab CLI 的配置设置，包括默认值、偏好设置以及针对每个主机的自定义设置。该工具可用于配置 glab 的行为、设置默认值或查看当前的配置信息。相关关键词包括：config、configuration、settings、glab settings、set default。
 ---
 
-# glab config
+# glab 配置
 
-## Overview
+## 概述
 
 ```
 
@@ -44,12 +44,12 @@ description: Manage glab CLI configuration settings including defaults, preferen
     -h --help                    Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab config --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

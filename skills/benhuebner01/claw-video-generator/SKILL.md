@@ -1,44 +1,44 @@
 ---
 name: json2video-pinterest
-description: Generate Pinterest-optimized vertical videos using JSON2Video API. Supports AI-generated or URL-based images, AI-generated or provided voiceovers, optional subtitles, and zoom effects. Use when creating video content for Pinterest affiliate marketing, creating vertical social media videos, automating video production with JSON2Video API, or generating videos with voiceovers and subtitles.
+description: 使用 JSON2Video API 生成适合 Pinterest 的竖版视频。该 API 支持使用 AI 生成的图片或 URL 提供的图片、AI 生成或用户提供的旁白、可选的字幕以及缩放效果。适用于为 Pinterest 联盟营销创建视频内容、制作竖版社交媒体视频、通过 JSON2Video API 自动化视频制作过程，或生成带有旁白和字幕的视频。
 ---
 
-# JSON2Video Pinterest Skill
+# JSON2Video Pinterest 插件
 
-Generate vertical videos (1080x1920) optimized for Pinterest using the JSON2Video API.
+使用 JSON2Video API 生成适合 Pinterest 的竖版视频（1080x1920 像素）。
 
-## Prerequisites
+## 先决条件
 
-1. **JSON2Video API Key**: Sign up at https://json2video.com/get-api-key/
-2. **Set Environment Variable**:
+1. **JSON2Video API 密钥**：请在 [https://json2video.com/get-api-key/](https://json2video.com/get-api-key/) 注册获取。
+2. **设置环境变量**：
    ```bash
    export JSON2VIDEO_API_KEY="your_api_key_here"
    ```
 
-## Quick Start
+## 快速入门
 
-Create a video using a JSON configuration file:
+使用 JSON 配置文件创建视频：
 
 ```bash
 python3 scripts/generate_video.py --config my-video.json --wait
 ```
 
-## Configuration Format
+## 配置格式
 
-The video is defined as an array of scenes. Each scene contains:
+视频由多个场景组成。每个场景包含以下属性：
 
-| Property | Type | Description |
+| 属性 | 类型 | 说明 |
 |----------|------|-------------|
-| `image` | object | Image configuration (AI-generated or URL) |
-| `voice` | object | Voice configuration (generated TTS or URL) |
-| `text_overlay` | string | Optional text displayed on scene |
-| `subtitles` | boolean | Enable/disable subtitles |
-| `zoom_effect` | boolean | Add Ken Burns zoom effect |
-| `duration` | number | Override scene duration (seconds) |
+| `image` | 对象 | 图像配置（AI 生成或 URL 提供） |
+| `voice` | 对象 | 语音配置（AI 生成的语音或 URL 提供的音频） |
+| `text-overlay` | 字符串 | 可选：在场景中显示的文本 |
+| `subtitles` | 布尔值 | 是否启用字幕 |
+| `zoom_effect` | 布尔值 | 是否应用肯·伯恩斯（Ken Burns）缩放效果 |
+| `duration` | 数字 | 场景持续时间（秒） |
 
-### Image Configuration
+### 图像配置
 
-**AI-Generated Image:**
+**AI 生成图像：**
 ```json
 {
   "image": {
@@ -49,12 +49,12 @@ The video is defined as an array of scenes. Each scene contains:
 }
 ```
 
-**Available AI Providers:**
-- `flux-pro` - Highest quality, realistic images
-- `flux-schnell` - Fast generation, good quality
-- `freepik-classic` - Digital artwork style
+**可用的 AI 提供商：**
+- `flux-pro`：最高质量、最逼真的图像
+- `flux-schnell`：生成速度快、质量不错
+- `freepik-classic`：数字艺术风格
 
-**URL-Based Image:**
+**基于 URL 的图像：**
 ```json
 {
   "image": {
@@ -63,9 +63,9 @@ The video is defined as an array of scenes. Each scene contains:
 }
 ```
 
-### Voice Configuration
+### 语音配置
 
-**AI-Generated Voice (TTS):**
+**AI 生成的语音（TTS）：**
 ```json
 {
   "voice": {
@@ -77,7 +77,7 @@ The video is defined as an array of scenes. Each scene contains:
 }
 ```
 
-**Provided Audio File:**
+**提供的音频文件：**
 ```json
 {
   "voice": {
@@ -86,9 +86,9 @@ The video is defined as an array of scenes. Each scene contains:
 }
 ```
 
-**Note on Scene Duration**: The voiceover determines scene length automatically. Each scene's duration matches its audio length. For provided audio files, ensure they match your intended scene timing.
+**关于场景持续时间**：旁白会自动确定场景的长度。每个场景的持续时间与其音频长度相匹配。如果使用提供的音频文件，请确保音频时长符合您的需求。
 
-### Complete Example
+### 完整示例**
 
 ```json
 {
@@ -115,9 +115,9 @@ The video is defined as an array of scenes. Each scene contains:
 }
 ```
 
-## Advanced: Split Long Voiceover into Scenes
+## 高级用法：将长语音分割成多个场景
 
-For long scripts, split into multiple scenes with shorter voice segments:
+对于较长的语音内容，可以将其分割成多个场景：
 
 ```json
 {
@@ -141,97 +141,94 @@ For long scripts, split into multiple scenes with shorter voice segments:
 }
 ```
 
-## Command Reference
+## 命令参考
 
-**Create video from config:**
+**根据配置创建视频：**
 ```bash
 python3 scripts/generate_video.py --config video.json --wait
 ```
 
-**Create without waiting:**
+**立即创建视频（无需等待）：**
 ```bash
 python3 scripts/generate_video.py --config video.json --no-wait
 ```
 
-**Check status of existing project:**
+**检查现有项目的状态：**
 ```bash
 python3 scripts/generate_video.py --project-id YOUR_PROJECT_ID
 ```
 
-## Resolution Options
+## 分辨率选项
 
-| Resolution | Dimensions | Use Case |
+| 分辨率 | 尺寸 | 适用场景 |
 |------------|------------|----------|
-| `instagram-story` | 1080x1920 | **Pinterest/Reels/Stories** (recommended) |
-| `instagram-feed` | 1080x1080 | Square posts |
-| `full-hd` | 1920x1080 | Landscape YouTube |
-| `hd` | 1280x720 | Standard HD |
-| `custom` | Any | Custom dimensions |
+| `instagram-story` | 1080x1920 | **Pinterest/Reels/Stories**（推荐） |
+| `instagram-feed` | 1080x1000 | 方形图片帖子 |
+| `full-hd` | 1920x1080 | 横屏 YouTube 视频 |
+| `hd` | 1280x720 | 标准高清 |
+| `custom` | 任意尺寸 | 自定义尺寸 |
 
-## Voice Models & IDs
+## 语音模型与 ID
 
-### Azure (Default - FREE, no credits consumed)
+### Azure（默认选项 - 免费，不消耗信用点）
 
-**Voice format:** `en-US-EmmaMultilingualNeural`
+**语音格式：`en-US-EmmaMultilingualNeural`
 
-Common Azure voices:
-- `en-US-EmmaMultilingualNeural` - Female, natural (recommended)
-- `en-US-GuyNeural` - Male, professional
-- `en-US-JennyNeural` - Female, friendly
-- `en-GB-SoniaNeural` - British female
-- `en-GB-RyanNeural` - British male
+常见的 Azure 语音模型：
+- `en-US-EmmaMultilingualNeural`：女性，自然音色（推荐）
+- `en-US-GuyNeural`：男性，专业音色 |
+- `en-US-JennyNeural`：女性，友好音色 |
+- `en-GB-SoniaNeural`：英国女性 |
+- `en-GB-RyanNeural`：英国男性 |
 
-See [Microsoft Azure Speech Voices](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts) for full list.
+更多语音模型请参阅 [Microsoft Azure Speech Voices](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts)。
 
-### ElevenLabs (Premium - consumes credits)
+### ElevenLabs（高级选项 - 需消耗信用点）
 
-**Voice names:** Natural names like `Bella`, `Antoni`, `Nova`, `Shimmer`
+**语音名称**：例如 `Bella`、`Antoni`、`Nova`、`Shimmer` 等。
 
-Available voices: Daniel, Serena, Antoni, Bella, Nova, Shimmer, and more.
+更多语音模型请参阅 [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-library)。
 
-See [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-library) for full list.
+## 安全性
 
-## Security
+- **API 密钥绝不会存储在插件文件中** |
+- 必须将 API 密钥设置为环境变量 `JSON2VIDEO_API_KEY` |
+- 脚本会在调用 API 之前验证密钥是否存在。
 
-- **API Key is NEVER stored in skill files**
-- API key must be set as environment variable `JSON2VIDEO_API_KEY`
-- Script validates key exists before any API calls
+## 示例文件
 
-## Example Files
+- `scripts/example-config.json`：包含一个场景的基本示例 |
+- `scripts/example-advanced.json`：包含多个场景的联盟营销视频示例 |
 
-- `scripts/example-config.json` - Basic example with one scene
-- `scripts/example-advanced.json` - Multi-scene affiliate marketing video
+## 高级用法
 
-## Advanced Usage
+请参阅 [ADVANCED.md](ADVANCED.md)，了解以下内容：
+- 多场景视频架构模式 |
+- 图像来源策略（AI 生成、URL 提供或混合使用） |
+- 旁白制作的最佳实践 |
+- 字幕样式选项 |
+- 针对 Pinterest 的内容优化建议 |
+- 批量处理工作流程 |
+- 信用点消耗优化方法
 
-See [ADVANCED.md](ADVANCED.md) for:
-- Multi-scene video architecture patterns
-- Image source strategies (AI vs URL vs hybrid)
-- Voiceover patterns and best practices
-- Subtitle styling options
-- Pinterest-specific content tips
-- Batch processing workflows
-- Credit consumption optimization
+## 故障排除
 
-## Troubleshooting
+**错误：“JSON2VIDEO_API_KEY 环境变量未设置”**  
+→ 执行命令：`export JSON2VIDEO_API_KEY="your_key"`  
 
-**Error: "JSON2VIDEO_API_KEY environment variable not set"**
-→ Run: `export JSON2VIDEO_API_KEY="your_key"`
+**错误：“渲染失败”**  
+→ 检查：图像 URL 是否可公开访问 |
+→ 检查：AI 生成的文本是否违反内容政策 |
+→ 检查：音频文件是否为有效的 MP3/WAV 格式 |
 
-**Error: "Render failed"**
-→ Check: Image URLs are publicly accessible
-→ Check: AI prompts don't violate content policies
-→ Check: Audio files are valid MP3/WAV
+**视频生成时间过长**  
+→ 在配置中启用 `cache: true` 以加速生成 |
+→ 使用 `flux-schnell` 替代 `flux-pro` 以加快生成速度 |
+→ 预先生成 AI 生成的图像并使用 URL 作为图像来源。
 
-**Video takes too long**
-→ Enable `cache: true` in config
-→ Use `flux-schnell` instead of `flux-pro` for faster generation
-→ Pre-generate AI images and use URLs instead
+## Python API 使用方法
 
-## Python API Usage
-
-For programmatic use in other scripts:
-
+如需在其他脚本中编程使用该插件，请参考以下代码示例：  
 ```python
 from scripts.generate_video import create_pinterest_video
 

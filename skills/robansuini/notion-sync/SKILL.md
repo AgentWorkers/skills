@@ -1,66 +1,67 @@
 ---
 name: notion-sync
-description: Bi-directional sync and management for Notion pages and databases. Use when working with Notion workspaces for collaborative editing, research tracking, project management, or when you need to sync markdown files to/from Notion pages or monitor Notion pages for changes.
+description: **Notion页面与数据库的双向同步与管理功能**  
+适用于需要使用Notion工作空间进行协作编辑、研究记录、项目管理的场景，或者当您需要将Markdown文件同步到/从Notion页面中，或监控Notion页面的变更时。
 homepage: https://github.com/robansuini/agent-skills
 repository: https://github.com/robansuini/agent-skills/tree/main/productivity/notion-sync
 license: MIT
 ---
 
-# Notion Sync
+# Notion 同步工具
 
-Bi-directional sync between markdown files and Notion pages, plus database management utilities for research tracking and project management.
+本工具支持 markdown 文件与 Notion 页面之间的双向同步，并提供数据库管理功能，可用于研究内容跟踪和项目管理。
 
-## Upgrading
+## 升级说明
 
-**From v2.0:** Replace `--token "ntn_..."` with `--token-file`, `--token-stdin`, or `NOTION_API_KEY` env var. Bare `--token` is no longer accepted (credentials should never appear in process listings).
+**从 v2.0 开始：**
+- 将 `--token "ntn_..."` 替换为 `--token-file`、`--token-stdin` 或环境变量 `NOTION_API_KEY`。单独使用 `--token` 的方式已不再被支持（凭证信息不应出现在进程列表中）。
+- 有关从 v1.x 升级的详细信息，请参阅 v2.0 的变更日志。
 
-**From v1.x:** See v2.0 changelog for migration details.
+## 系统要求
 
-## Requirements
+- **Node.js** v18 或更高版本
+- 需要一个 Notion 集成令牌（以 `ntn_` 或 `secret_` 开头）
 
-- **Node.js** v18 or later
-- A **Notion integration token** (starts with `ntn_` or `secret_`)
+## 设置步骤
 
-## Setup
+1. 访问 [https://www.notion.so/my-integrations](https://www.notion.so/my-integrations)。
+2. 创建一个新的集成（或使用现有的集成）。
+3. 复制“内部集成令牌”（Internal Integration Token）。
+4. 使用以下方法之一传递令牌（按安全性优先级排序）：
 
-1. Go to https://www.notion.so/my-integrations
-2. Create a new integration (or use an existing one)
-3. Copy the "Internal Integration Token"
-4. Pass the token using one of these methods (in order of security):
-
-   **Option A — Token file (recommended):**
-   ```bash
+   - **选项 A — 令牌文件（推荐）：**
+     ```bash
    echo "ntn_your_token" > ~/.notion-token && chmod 600 ~/.notion-token
    node scripts/search-notion.js "query" --token-file ~/.notion-token
    ```
 
-   **Option B — Stdin pipe:**
-   ```bash
+   - **选项 B — 标准输入（stdin）：**
+     ```bash
    echo "$NOTION_API_KEY" | node scripts/search-notion.js "query" --token-stdin
    ```
 
-   **Option C — Environment variable:**
-   ```bash
+   - **选项 C — 环境变量：**
+     ```bash
    export NOTION_API_KEY="ntn_your_token"
    node scripts/search-notion.js "query"
    ```
 
-5. Share your Notion pages/databases with the integration:
-   - Open the page/database in Notion
-   - Click "Share" → "Invite"
-   - Select your integration
+5. 将你的 Notion 页面/数据库共享给该集成：
+   - 在 Notion 中打开相应的页面/数据库。
+   - 点击“共享”（Share）→“邀请”（Invite）。
+   - 选择你的集成。
 
-## Core Operations
+## 核心功能
 
-### 1. Search Pages and Databases
+### 1. 搜索页面和数据库
 
-Search across your Notion workspace by title or content.
+可以通过标题或内容在 Notion 工作区中进行搜索。
 
 ```bash
 node scripts/search-notion.js "<query>" [--filter page|database] [--limit 10]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Search for newsletter-related pages
 node scripts/search-notion.js "newsletter"
@@ -72,7 +73,7 @@ node scripts/search-notion.js "research" --filter database
 node scripts/search-notion.js "AI" --limit 5
 ```
 
-**Output:**
+**输出结果：**
 ```json
 [
   {
@@ -85,15 +86,15 @@ node scripts/search-notion.js "AI" --limit 5
 ]
 ```
 
-### 2. Query Databases with Filters
+### 2. 带有过滤条件的数据库查询
 
-Query database contents with advanced filters and sorting.
+可以使用高级过滤条件和排序功能查询数据库内容。
 
 ```bash
 node scripts/query-database.js <database-id> [--filter <json>] [--sort <json>] [--limit 10]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Get all items
 node scripts/query-database.js xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -116,24 +117,24 @@ node scripts/query-database.js <db-id> \
   --sort '[{"property": "Date", "direction": "descending"}]'
 ```
 
-**Common filter patterns:**
-- Select equals: `{"property": "Status", "select": {"equals": "Done"}}`
-- Multi-select contains: `{"property": "Tags", "multi_select": {"contains": "AI"}}`
-- Date after: `{"property": "Date", "date": {"after": "2024-01-01"}}`
-- Checkbox is true: `{"property": "Published", "checkbox": {"equals": true}}`
-- Number greater than: `{"property": "Count", "number": {"greater_than": 100}}`
+**常见过滤模式：**
+- 等于：`{"property": "Status", "select": {"equals": "Done"}}`
+- 多选包含：`{"property": "Tags", "multi_select": {"contains": "AI"}}`
+- 日期在之后：`{"property": "Date", "date": {"after": "2024-01-01"}}`
+- 复选框为真：`{"property": "Published", "checkbox": {"equals": true}}`
+- 数字大于：`{"property": "Count", "number": {"greater_than": 100}}`
 
-### 3. Update Page Properties
+### 3. 更新页面属性
 
-Update properties for database pages (status, tags, dates, etc.).
+可以更新数据库页面的属性（如状态、标签、日期等）。
 
 ```bash
 node scripts/update-page-properties.js <page-id> <property-name> <value> [--type <type>]
 ```
 
-**Supported types:** select, multi_select, checkbox, number, url, email, date, rich_text
+**支持的属性类型：** select, multi_select, checkbox, number, url, email, date, rich_text
 
-**Examples:**
+**示例：**
 ```bash
 # Set status
 node scripts/update-page-properties.js <page-id> Status "Complete" --type select
@@ -154,9 +155,9 @@ node scripts/update-page-properties.js <page-id> "Source URL" "https://example.c
 node scripts/update-page-properties.js <page-id> "Word Count" 1200 --type number
 ```
 
-### 4. Markdown → Notion Sync
+### 4. 将 Markdown 内容同步到 Notion
 
-Push markdown content to Notion with full formatting support.
+可以将 markdown 内容推送至 Notion，并保留所有格式。
 
 ```bash
 node scripts/md-to-notion.js \
@@ -165,7 +166,7 @@ node scripts/md-to-notion.js \
   "<page-title>"
 ```
 
-**Example:**
+**示例：**
 ```bash
 node scripts/md-to-notion.js \
   "projects/newsletter-draft.md" \
@@ -173,21 +174,21 @@ node scripts/md-to-notion.js \
   "Newsletter Draft - Feb 2026"
 ```
 
-**Supported formatting:**
-- Headings (H1-H3)
-- Bold/italic text
-- Links
-- Bullet lists
-- Code blocks with syntax highlighting
-- Horizontal dividers
-- Paragraphs
+**支持的格式：**
+- 标题（H1-H3）
+- 加粗/斜体文本
+- 链接
+- 列表
+- 带有语法高亮的代码块
+- 水平分隔线
+- 段落
 
-**Features:**
-- Batched uploads (100 blocks per request)
-- Automatic rate limiting (350ms between batches)
-- Returns Notion page URL and ID
+**特性：**
+- 批量上传（每次请求最多 100 个代码块）
+- 自动限速（每次批量上传之间间隔 350 毫秒）
+- 返回 Notion 页面的 URL 和 ID
 
-**Output:**
+**输出结果：**
 ```
 Parsed 294 blocks from markdown
 ✓ Created page: https://www.notion.so/[title-and-id]
@@ -197,42 +198,42 @@ Parsed 294 blocks from markdown
 ✅ Successfully created Notion page!
 ```
 
-### 5. Notion → Markdown Sync
+### 5. 将 Notion 页面内容同步到 Markdown
 
-Pull Notion page content and convert to markdown.
+可以从 Notion 获取页面内容并将其转换为 markdown 格式。
 
 ```bash
 node scripts/notion-to-md.js <page-id> [output-file]
 ```
 
-**Example:**
+**示例：**
 ```bash
 node scripts/notion-to-md.js \
   "abc123-example-page-id-456def" \
   "newsletter-updated.md"
 ```
 
-**Features:**
-- Converts Notion blocks to markdown
-- Preserves formatting (headings, lists, code, quotes)
-- Optional file output (writes to file or stdout)
+**特性：**
+- 将 Notion 的内容转换为 markdown 格式
+- 保留格式（标题、列表、代码、引号等）
+- 可选择将结果写入文件或标准输出（stdout）
 
-### 6. Change Detection & Monitoring
+### 6. 变更检测与监控
 
-Monitor Notion pages for edits and compare with local markdown files.
+监控 Notion 页面的更改，并与本地 markdown 文件进行比较。
 
 ```bash
 node scripts/watch-notion.js --token-file ~/.notion-token "<page-id>" "<local-markdown-path>"
 ```
 
-**Example:**
+**示例：**
 ```bash
 node scripts/watch-notion.js --token-file ~/.notion-token \
   "abc123-example-page-id-456def" \
   "projects/newsletter-draft.md"
 ```
 
-**State tracking:** Maintains state in `memory/notion-watch-state.json`:
+**状态跟踪：** 变更信息存储在 `memory/notion-watch-state.json` 文件中：
 ```json
 {
   "pages": {
@@ -245,37 +246,25 @@ node scripts/watch-notion.js --token-file ~/.notion-token \
 }
 ```
 
-**Output:**
-```json
-{
-  "pageId": "<page-id>",
-  "title": "Your Page Title",
-  "lastEditedTime": "2026-01-30T08:57:00.000Z",
-  "hasChanges": false,
-  "localPath": "/path/to/your-draft.md",
-  "actions": ["✓ No changes since last check"]
-}
-```
-
-**Automated monitoring:** Schedule periodic checks using cron, CI pipelines, or any task scheduler:
+**自动监控：** 可使用 cron、CI 流程或任何任务调度器定期检查：
 ```bash
 # Example: cron job every 2 hours during work hours
 0 9-21/2 * * * cd /path/to/workspace && node scripts/watch-notion.js "<page-id>" "<local-path>"
 ```
 
-The script outputs JSON — pipe it to any notification system when `hasChanges` is `true`.
+当 `hasChanges` 为 `true` 时，脚本会将结果输出为 JSON 格式，可通过任何通知系统接收。
 
-### 7. Database Management
+### 7. 数据库管理
 
-#### Add Markdown Content to Database
+#### 向数据库添加 Markdown 内容
 
-Add a markdown file as a new page in any Notion database.
+可以将 markdown 文件作为新页面添加到 Notion 数据库中。
 
 ```bash
 node scripts/add-to-database.js <database-id> "<page-title>" <markdown-file-path>
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Add research output
 node scripts/add-to-database.js \
@@ -296,21 +285,21 @@ node scripts/add-to-database.js \
   notes/sync-2026-02-06.md
 ```
 
-**Features:**
-- Creates database page with title property
-- Converts markdown to Notion blocks (headings, paragraphs, dividers)
-- Handles large files with batched uploads
-- Returns page URL for immediate access
+**特性：**
+- 创建带有标题属性的数据库页面
+- 将 markdown 转换为 Notion 的格式（标题、段落、分隔线等）
+- 支持批量上传大文件
+- 返回页面的 URL 以便立即访问
 
-**Note:** Additional properties (Type, Tags, Status, etc.) must be set manually in Notion UI after creation.
+**注意：** 创建后需在 Notion 界面手动设置额外的属性（如类型、标签、状态等）。
 
-#### Inspect Database Schema
+#### 检查数据库架构
 
 ```bash
 node scripts/get-database-schema.js <database-id>
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 {
   "object": "database",
@@ -324,108 +313,100 @@ node scripts/get-database-schema.js <database-id>
 }
 ```
 
-**Use when:**
-- Setting up new database integrations
-- Debugging property names/types
-- Understanding database structure
+**使用场景：**
+- 设置新的数据库集成
+- 调试属性名称/类型
+- 了解数据库结构
 
-#### Archive Pages
+#### 归档页面
 
 ```bash
 node scripts/delete-notion-page.js <page-id>
 ```
 
-**Note:** This archives the page (sets `archived: true`), not permanent deletion.
+**注意：** 这只是将页面标记为已归档（设置 `archived: true`），并非永久删除。
 
-## Common Workflows
+## 常见工作流程
 
-### Collaborative Editing Workflow
+### 协作编辑流程
 
-1. **Push local draft to Notion:**
+1. 将本地草稿推送到 Notion：
    ```bash
    node scripts/md-to-notion.js draft.md <parent-id> "Draft Title"
    ```
 
-2. **User edits in Notion** (anywhere, any device)
+2. 用户在 Notion 中进行编辑（支持任何设备）。
 
-3. **Monitor for changes:**
+3. 监控更改：
    ```bash
    node scripts/watch-notion.js
    # Returns hasChanges: true when edited
    ```
 
-4. **Pull updates back:**
+4. 将更新内容拉取回来：
    ```bash
    node scripts/notion-to-md.js <page-id> draft-updated.md
    ```
 
-5. **Repeat as needed** (update same page, don't create v2/v3/etc.)
+5. 根据需要重复上述步骤（更新同一页面，避免生成重复版本）。
 
-### Research Output Tracking
+### 研究成果跟踪
 
-1. **Generate research locally** (e.g., via sub-agent)
-
-2. **Sync to Notion database:**
+1. 在本地生成研究内容（例如通过子代理）。
+2. 将内容同步到 Notion 数据库：
    ```bash
    node scripts/add-research-to-db.js
    ```
 
-3. **User adds metadata in Notion UI** (Type, Tags, Status properties)
+3. 用户在 Notion 界面添加元数据（类型、标签、状态等）。
+4. 通过 Notion 的网页或移动应用随时访问这些内容。
 
-4. **Access from anywhere** via Notion web/mobile
+### 页面 ID 提取
 
-### Page ID Extraction
+从 Notion URL `https://notion.so/Page-Title-abc123-example-page-id-456def` 中提取页面 ID：
+- 提取格式：`abc123-example-page-id-456def`（位于标题之后的部分）
+- 或使用 32 个字符的格式：`abc123examplepageid456def`（ hyphens 可选）
 
-From Notion URL: `https://notion.so/Page-Title-abc123-example-page-id-456def`
+## 限制事项
 
-Extract: `abc123-example-page-id-456def` (last part after title)
+- **属性更新：** 数据库属性（类型、标签、状态）必须在创建页面后通过 Notion 界面手动设置。对于内联数据库，API 的属性更新可能不稳定。
+- **代码块数量限制：** 非常大的 markdown 文件（超过 1000 个代码块）可能因限速机制而需要较长时间才能完成同步。
+- **格式问题：** 某些复杂的 markdown 结构（如嵌套列表超过 3 层）可能无法完美转换。
 
-Or use the 32-char format: `abc123examplepageid456def` (hyphens optional)
+## 故障排除
 
-## Limitations
+- **“找不到页面”错误：** 确保页面/数据库已共享给该集成。
+- 检查页面 ID 的格式（32 个字符，包含字母数字和 hyphens）。
+- **“模块未找到”错误：** 脚本使用内置的 Node.js 模块（无需安装 npm）。
+- 确保在脚本所在的目录中运行脚本。
 
-- **Property updates:** Database properties (Type, Tags, Status) must be added manually in Notion UI after page creation. API property updates can be temperamental with inline databases.
-- **Block limits:** Very large markdown files (>1000 blocks) may take several minutes to sync due to rate limiting.
-- **Formatting:** Some complex markdown (tables, nested lists >3 levels) may not convert perfectly.
+**限速机制：**
+- Notion API 有每秒 3 次请求的限速限制。
+- 脚本会自动在每次批量上传之间间隔 350 毫秒。
 
-## Troubleshooting
+## 资源
 
-**"Could not find page" error:**
-- Ensure page/database is shared with your integration
-- Check page ID format (32 chars, alphanumeric + hyphens)
+### 脚本文件
 
-**"Module not found" error:**
-- Scripts use built-in Node.js https module (no npm install needed)
-- Ensure running from the skill's directory (where scripts/ lives)
+- **md-to-notion.js**：将 markdown 内容同步到 Notion 并保留所有格式。
+- **notion-to-md.js**：将 Notion 内容转换为 markdown 格式。
+- **watch-notion.js**：负责变更检测和监控。
 
-**Rate limiting:**
-- Notion API has rate limits (~3 requests/second)
-- Scripts handle this automatically with 350ms delays between batches
+- **搜索与查询：**
+  - **search-notion.js**：根据查询条件搜索页面和数据库。
+  - **query-database.js**：使用过滤条件和排序功能查询数据库。
+  - **update-page-properties.js**：更新数据库页面的属性。
 
-## Resources
+- **数据库管理：**
+  - **add-to-database.js**：将 markdown 文件添加到数据库中。
+  - **get-database-schema.js**：检查数据库结构。
+  - **delete-notion-page.js**：将页面归档。
 
-### scripts/
+- **辅助工具：**
+  - **notion-utils.js**：提供通用辅助功能（错误处理、属性格式化、API 请求处理）。
 
-**Core Sync:**
-- **md-to-notion.js** - Markdown → Notion sync with full formatting
-- **notion-to-md.js** - Notion → Markdown conversion
-- **watch-notion.js** - Change detection and monitoring
+所有脚本仅使用内置的 Node.js 模块（https, fs），无需外部依赖。
 
-**Search & Query:**
-- **search-notion.js** - Search pages and databases by query
-- **query-database.js** - Query databases with filters and sorting
-- **update-page-properties.js** - Update database page properties
+### 参考资料
 
-**Database Management:**
-- **add-to-database.js** - Add markdown files as database pages
-- **get-database-schema.js** - Inspect database structure
-- **delete-notion-page.js** - Archive pages
-
-**Utilities:**
-- **notion-utils.js** - Shared utilities (error handling, property formatting, API requests)
-
-All scripts use only built-in Node.js modules (https, fs) - no external dependencies required.
-
-### references/
-
-- **database-patterns.md** - Common database schemas and property patterns
+- **database-patterns.md**：常见的数据库架构和属性模式文档。

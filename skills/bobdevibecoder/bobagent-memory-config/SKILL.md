@@ -1,35 +1,35 @@
 ---
 name: memory-config
-description: Configure memory settings for Clawdbot including memory flush before compaction and session memory search. Use when the user wants to enable or configure memory features like compaction.memoryFlush, sessionMemory search, or memorySearch sources.
+description: 配置 Clawdbot 的内存设置，包括在数据压缩前的内存刷新以及会话内存搜索功能。当用户需要启用或配置诸如 `compaction.memoryFlush`、`sessionMemorySearch` 或 `memorySearchSources` 等内存相关功能时，请使用此设置。
 ---
 
-# Memory Config Skill
+# 内存配置技巧
 
-This skill configures advanced memory settings for the agent.
+此技巧用于配置代理的高级内存设置。
 
-## Configuration Options
+## 配置选项
 
-### 1. Memory Flush Before Compaction
-Enables saving context to memory files before compaction occurs.
+### 1. 压缩前刷新内存
+在内存压缩之前，将上下文数据保存到内存文件中。
 
-**Config path:** `agents.defaults.compaction.memoryFlush.enabled`
-**Value:** `true` or `false`
+**配置路径：** `agentsdefaults.compaction.memoryFlush.enabled`
+**值：** `true` 或 `false`
 
-### 2. Session Memory Search
-Enables searching through past session transcripts (not just MEMORY.md).
+### 2. 会话内存搜索
+允许搜索过去的会话记录（而不仅仅是 `MEMORY.md` 文件）。
 
-**Config path:** `agents.defaults.memorySearch.experimental.sessionMemory`
-**Value:** `true` or `false`
+**配置路径：** `agentsdefaults.memorySearchexperimental.sessionMemory`
+**值：** `true` 或 `false`
 
-### 3. Memory Search Sources
-Defines which sources to include in memory search.
+### 3. 内存搜索源
+指定包含在内存搜索中的数据来源。
 
-**Config path:** `agents.defaults.memorySearch.sources`
-**Value:** `["memory"]` or `["memory", "sessions"]`
+**配置路径：** `agentsdefaults.memorySearch.sources`
+**值：** `["memory"]` 或 `["memory", "sessions"]`
 
-## Usage
+## 使用方法
 
-Apply configuration using gateway config.patch:
+通过 `gateway config.patch` 应用配置更改：
 
 ```json
 {
@@ -51,4 +51,4 @@ Apply configuration using gateway config.patch:
 }
 ```
 
-The gateway will restart automatically after applying config changes.
+应用配置更改后，代理将自动重启。

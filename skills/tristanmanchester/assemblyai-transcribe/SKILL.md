@@ -1,29 +1,29 @@
 ---
 name: assemblyai-transcribe
-description: Transcribe audio/video with AssemblyAI (local upload or URL), plus subtitles + paragraph/sentence exports.
+description: 使用 AssemblyAI 转录音频/视频（支持本地上传或使用 URL），同时支持生成字幕以及导出段落/句子内容。
 homepage: https://www.assemblyai.com/docs
 user-invocable: true
 metadata: {"clawdbot":{"skillKey":"assemblyai","emoji":"🎙️","requires":{"bins":["node"],"env":["ASSEMBLYAI_API_KEY"]},"primaryEnv":"ASSEMBLYAI_API_KEY"}}
 ---
 
-# AssemblyAI transcription + exports
+# AssemblyAI转录 + 导出功能
 
-Use this skill when you need to transcribe audio/video or export readable formats (subtitles, paragraphs, sentences) using AssemblyAI.
+当您需要使用AssemblyAI对音频/视频进行转录，或导出可读格式的内容（如字幕、段落、句子）时，请使用此功能。
 
-The helper script in this skill implements the basic REST flow:
+该辅助脚本实现了基本的REST接口流程：
 
-1. (Local files) Upload via `POST /v2/upload`.
-2. Create a transcript job via `POST /v2/transcript`.
-3. Poll `GET /v2/transcript/:id` until the transcript `status` is `completed` (or `error`).
+1. 通过`POST /v2/upload`上传本地文件。
+2. 通过`POST /v2/transcript`创建转录任务。
+3. 定期查询`GET /v2/transcript/:id`，直到转录任务的`status`状态变为`completed`（或`error`）。
 
-## Setup
+## 设置要求
 
-This skill requires:
+使用此功能需要满足以下条件：
 
-- `node` on PATH (Node.js 18+ recommended; script uses built-in fetch)
-- `ASSEMBLYAI_API_KEY` in the environment
+- 系统路径中包含`node`（推荐使用Node.js 18及以上版本；脚本使用了内置的`fetch`函数）。
+- 环境变量中设置`ASSEMBLYAI_API_KEY`。
 
-Recommended Clawdbot config (`~/.clawdbot/clawdbot.json`):
+推荐的Clawdbot配置文件（位于`~/.clawdbot/clawdbot.json`）：
 
 ```js
 {
@@ -47,28 +47,28 @@ Recommended Clawdbot config (`~/.clawdbot/clawdbot.json`):
 }
 ```
 
-## Usage
+## 使用方法
 
-Run these commands via the Exec tool.
+请通过Exec工具运行以下命令：
 
-### Transcribe (local file or public URL)
+### 转录（本地文件或公共URL）
 
-Print transcript text to stdout:
+将转录文本输出到标准输出（stdout）：
 
 ```bash
 node {baseDir}/assemblyai.mjs transcribe "./path/to/audio.mp3"
 node {baseDir}/assemblyai.mjs transcribe "https://example.com/audio.mp3"
 ```
 
-Write transcript to a file (recommended for long audio):
+将转录结果写入文件（适用于较长的音频文件）：
 
 ```bash
 node {baseDir}/assemblyai.mjs transcribe "./path/to/audio.mp3" --out ./transcript.txt
 ```
 
-### Pass advanced transcription options
+### 传递高级转录参数
 
-Any fields supported by `POST /v2/transcript` can be passed via `--config`:
+可以通过`--config`参数传递`POST /v2/transcript`支持的所有参数：
 
 ```bash
 node {baseDir}/assemblyai.mjs transcribe "./path/to/audio.mp3" \
@@ -77,38 +77,38 @@ node {baseDir}/assemblyai.mjs transcribe "./path/to/audio.mp3" \
   --out ./transcript.json
 ```
 
-### Export subtitles (SRT/VTT)
+### 导出字幕（SRT/VTT格式）
 
-Transcribe and immediately export subtitles:
+完成转录后立即导出字幕：
 
 ```bash
 node {baseDir}/assemblyai.mjs transcribe "./path/to/video.mp4" --export srt --out ./subtitles.srt
 node {baseDir}/assemblyai.mjs transcribe "./path/to/video.mp4" --export vtt --out ./subtitles.vtt
 ```
 
-Or export subtitles from an existing transcript ID:
+或根据现有的转录ID导出字幕：
 
 ```bash
 node {baseDir}/assemblyai.mjs subtitles <transcript_id> srt --out ./subtitles.srt
 ```
 
-### Export paragraphs / sentences
+### 导出段落/句子
 
 ```bash
 node {baseDir}/assemblyai.mjs paragraphs <transcript_id> --out ./paragraphs.txt
 node {baseDir}/assemblyai.mjs sentences <transcript_id> --out ./sentences.txt
 ```
 
-### Fetch an existing transcript
+### 获取现有转录结果
 
 ```bash
 node {baseDir}/assemblyai.mjs get <transcript_id> --format json
 node {baseDir}/assemblyai.mjs get <transcript_id> --wait --format text
 ```
 
-## Guidance
+## 使用提示：
 
-- Prefer `--out <file>` when output might be large.
-- Keep API keys out of logs and chat; rely on env injection.
-- If a user asks for EU processing/data residency, set `ASSEMBLYAI_BASE_URL` to the EU host.
-- AssemblyAI requires that uploads and the subsequent transcript request use an API key from the same AssemblyAI project (otherwise you can get a 403 / 'Cannot access uploaded file').
+- 如果输出文件较大，建议使用`--out <文件路径>`选项。
+- 请不要将API密钥记录在日志或聊天记录中，应通过环境变量进行传递。
+- 如果用户要求数据在欧盟地区进行处理或存储，请将`ASSEMBLYAI_BASE_URL`设置为欧盟地区的服务器地址。
+- AssemblyAI要求上传文件和后续的转录请求必须使用同一项目的API密钥；否则会收到403错误（“无法访问上传的文件”）。

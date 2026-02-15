@@ -1,76 +1,71 @@
 ---
 name: putio
-description: Manage a put.io account via the kaput CLI (transfers, files, search) — hoist the mainsail, add magnets/URLs, and check transfer status; best paired with the chill-institute skill.
+description: 通过 kaput CLI 管理 put.io 账户（执行文件传输、文件搜索等操作）——可以上传文件、添加磁贴（magnets）或 URL 链接，并查看文件传输的状态；该工具与 chill-institute 技能配合使用效果最佳。
 ---
 
-# put.io (kaput CLI)
+# put.io（kaput CLI）
 
-This skill uses the unofficial **kaput** CLI to operate put.io from the command line.
+该技能使用非官方的**kaput** CLI通过命令行来操作put.io服务。
 
-If you also have the **chill-institute** skill installed, you can:
-- use chill.institute to *start* a transfer (“send to put.io”), then
-- use this skill to *verify and monitor* that the cargo is actually arriving.
+如果您同时安装了**chill-institute**技能，您可以：
+- 使用**chill.institute**来*启动*数据传输（“发送到put.io”），
+- 然后使用该技能来*验证和监控*数据是否已成功传输。
 
-## Install
+## 安装
 
-- Requires Rust + Cargo.
-- Install:
+- 需要Rust和Cargo环境。
+- 安装方法：
   ```bash
   cargo install kaput-cli
   ```
-- Ensure `kaput` is on your PATH (typically `~/.cargo/bin`).
+- 确保`kaput`已添加到您的PATH环境变量中（通常位于`~/.cargo/bin`）。
 
-## Authenticate (device-code flow)
+## 认证（设备代码流程）
 
-1. Run:
+1. 运行以下命令：
    ```bash
    kaput login
    ```
-2. It prints a link + short code (e.g. `https://put.io/link` + `ABC123`).
-3. User enters the code in the browser.
-4. The CLI completes and stores a token locally.
+2. 系统会生成一个链接和一个短代码（例如：`https://put.io/link` + `ABC123`）。
+3. 用户在浏览器中输入该短代码。
+4. CLI会完成认证过程并在本地生成一个令牌。
 
-Check auth:
-```bash
-bash skills/putio/scripts/check_auth.sh
-```
+## 常用操作（脚本）
 
-## Common actions (scripts)
+所有脚本都会自动查找`kaput`的可执行文件（支持配置`KAPUT_BIN=/path/to/kaput`）。
 
-All scripts auto-locate `kaput` (supports `KAPUT_BIN=/path/to/kaput`).
-
-- List transfers:
+- 列出所有正在进行的传输任务：
   ```bash
   bash skills/putio/scripts/list_transfers.sh
   ```
 
-- Add a transfer (magnet / torrent URL / direct URL):
+- 添加新的传输任务（支持magnet、torrent或直接URL格式的文件）：
   ```bash
   bash skills/putio/scripts/add_transfer.sh "magnet:?xt=urn:btih:..."
   ```
 
-- Search files:
+- 搜索文件：
   ```bash
   bash skills/putio/scripts/search_files.sh "query"
   ```
 
-- Status (transfers; optionally account):
+- 查看传输状态（可选：也可查看账户信息）：
   ```bash
   bash skills/putio/scripts/status.sh
   SHOW_ACCOUNT=1 bash skills/putio/scripts/status.sh
   ```
 
-## Raw CLI
+## 高级操作（通过CLI直接执行）
 
-For advanced actions:
+更多高级操作可通过直接运行CLI命令来实现：
 ```bash
 kaput --help
 kaput transfers --help
 kaput files --help
 ```
 
-## Security notes
+## 安全提示
 
-- **Do not paste passwords** into chat. Use `kaput login` device-code flow.
-- kaput stores credentials locally (token file). Treat it as sensitive and avoid sharing it.
-- Avoid running `kaput debug` in shared logs/screenshots (may reveal local config details).
+- **请勿在聊天中输入密码**。请使用`kaput login`命令进行认证。
+- `kaput`会将认证凭据（即令牌文件）存储在本地，请妥善保管，避免泄露。
+- 避免在共享的日志或截图中显示`kaput debug`命令的输出，因为这可能会暴露系统的配置信息。

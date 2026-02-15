@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Music Generation
+# 人工智能音乐生成
 
-Generate music and songs via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行界面（CLI）生成音乐和歌曲。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install CLI
@@ -25,22 +25,22 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run infsh/diffrythm --input '{"prompt": "upbeat electronic dance track"}'
 ```
 
-## Available Models
+## 可用模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Diffrythm | `infsh/diffrythm` | Fast song generation |
-| Tencent Song | `infsh/tencent-song-generation` | Full songs with vocals |
+| Diffrythm | `infsh/diffrythm` | 快速生成歌曲 |
+| Tencent Song | `infsh/tencent-song-generation` | 带有人声的完整歌曲 |
 
-## Browse Audio Apps
+## 浏览音频应用
 
 ```bash
 infsh app list --category audio
 ```
 
-## Examples
+## 示例
 
-### Instrumental Track
+### 纯器乐曲
 
 ```bash
 infsh app run infsh/diffrythm --input '{
@@ -48,7 +48,7 @@ infsh app run infsh/diffrythm --input '{
 }'
 ```
 
-### Song with Vocals
+### 带有人声的歌曲
 
 ```bash
 infsh app sample infsh/tencent-song-generation --save input.json
@@ -62,7 +62,7 @@ infsh app sample infsh/tencent-song-generation --save input.json
 infsh app run infsh/tencent-song-generation --input input.json
 ```
 
-### Background Music for Video
+### 视频背景音乐
 
 ```bash
 infsh app run infsh/diffrythm --input '{
@@ -70,7 +70,7 @@ infsh app run infsh/diffrythm --input '{
 }'
 ```
 
-### Podcast Intro
+### 播客开场曲
 
 ```bash
 infsh app run infsh/diffrythm --input '{
@@ -78,7 +78,7 @@ infsh app run infsh/diffrythm --input '{
 }'
 ```
 
-### Game Soundtrack
+### 游戏原声带
 
 ```bash
 infsh app run infsh/diffrythm --input '{
@@ -86,26 +86,26 @@ infsh app run infsh/diffrythm --input '{
 }'
 ```
 
-## Prompt Tips
+## 提示建议
 
-**Genre keywords**: pop, rock, electronic, jazz, classical, hip-hop, lo-fi, ambient, orchestral
+**音乐类型关键词**：流行、摇滚、电子、爵士、古典、嘻哈、低保真、环境音乐、管弦乐
 
-**Mood keywords**: happy, sad, energetic, calm, dramatic, epic, mysterious, uplifting
+**情绪关键词**：快乐、悲伤、充满活力、平静、戏剧性、宏大、神秘、振奋人心
 
-**Instrument keywords**: piano, guitar, synth, drums, strings, brass, choir
+**乐器关键词**：钢琴、吉他、合成器、鼓、弦乐、铜管乐器、合唱团
 
-**Structure keywords**: intro, verse, chorus, bridge, outro, loop
+**音乐结构关键词**：引子、主歌、副歌、过渡段、尾声、循环
 
-## Use Cases
+## 使用场景
 
-- **Social Media**: Background music for videos
-- **Podcasts**: Intro/outro jingles
-- **Games**: Soundtracks and effects
-- **Videos**: Background scores
-- **Ads**: Commercial jingles
-- **Content Creation**: Royalty-free music
+- **社交媒体**：视频背景音乐
+- **播客**：开场/结尾音乐
+- **游戏**：原声带和音效
+- **视频**：背景音乐
+- **广告**：商业广告音乐
+- **内容创作**：免版税音乐
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -121,10 +121,10 @@ npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@speech-to-text
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Running Apps](https://inference.sh/docs/apps/running) - How to run apps via CLI
-- [Content Pipeline Example](https://inference.sh/docs/examples/content-pipeline) - Building media workflows
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
+- [运行应用](https://inference.sh/docs/apps/running) - 如何通过 CLI 运行应用
+- [内容处理流程示例](https://inference.sh/docs/examples/content-pipeline) - 构建媒体工作流程
+- [应用概览](https://inference.sh/docs/apps/overview) - 了解应用生态系统

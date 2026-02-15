@@ -1,6 +1,7 @@
 ---
 name: instagram-search
-description: "Instagram Search — Search 400M+ Instagram posts, reels, and profiles. Find influencers, track hashtags, analyze engagement, and export data. No Instagram API or Meta developer account needed — works through Xpoz MCP."
+description: "**Instagram搜索功能**  
+您可以搜索超过4亿条Instagram帖子、Reels内容以及用户资料。该功能支持查找网红、追踪热门标签、分析用户互动数据，并支持数据导出。无需使用Instagram的API或Meta开发者账户，仅需通过Xpoz MCP平台即可实现所有操作。"
 homepage: https://xpoz.ai
 metadata:
   {
@@ -24,39 +25,39 @@ tags:
   - discovery
 ---
 
-# Instagram Search
+# Instagram搜索
 
-**Search 400M+ Instagram posts and reels — captions AND video subtitles.**
+**搜索4亿多条Instagram帖子和Reels——包括文字说明和视频字幕。**
 
-Find influencers, track hashtags, discover content trends, and export results. No Meta developer account, no Instagram Graph API setup, no app review process.
-
----
-
-## ⚡ Setup
-
-👉 **Follow [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)** — handles auth automatically.
+您可以找到网红、追踪话题标签、发现内容趋势，并导出搜索结果。无需Meta开发者账户，无需设置Instagram Graph API，也无需经过应用审核流程。
 
 ---
 
-## Setup
+## ⚡ 设置
 
-Run `xpoz-setup` skill. Verify: `mcporter call xpoz.checkAccessKeyStatus`
+👉 **关注 [`xpoz-setup`](https://clawhub.ai/skills/xpoz-setup)` — 该工具会自动处理身份验证。
 
-## What You Can Search
+---
 
-| Tool | What It Does |
+## 使用方法
+
+运行 `xpoz-setup` 工具。验证身份：`mcporter call xpoz.checkAccessKeyStatus`
+
+## 可用的搜索功能
+
+| 工具 | 功能 |
 |------|-------------|
-| `getInstagramPostsByKeywords` | Search posts & reels by keywords |
-| `getInstagramUsersByKeywords` | Find users posting about a topic |
-| `getInstagramUser` | Look up a specific profile |
-| `searchInstagramUsers` | Find accounts by display name |
-| `getInstagramPostsByAuthor` | Get a user's post history |
+| `getInstagramPostsByKeywords` | 通过关键词搜索帖子和Reels |
+| `getInstagramUsersByKeywords` | 查找发布特定主题内容的用户 |
+| `getInstagramUser` | 查找特定用户的资料 |
+| `searchInstagramUsers` | 通过显示名称查找用户 |
+| `getInstagramPostsByAuthor` | 获取用户的全部帖子历史 |
 
 ---
 
-## Quick Examples
+## 快速示例
 
-### Search Posts & Reels
+### 搜索帖子和Reels
 
 ```bash
 mcporter call xpoz.getInstagramPostsByKeywords \
@@ -68,9 +69,9 @@ mcporter call xpoz.getInstagramPostsByKeywords \
 mcporter call xpoz.checkOperationStatus operationId=op_abc123
 ```
 
-Xpoz indexes both **captions** and **video subtitles** — so you can find reels by what people *say*, not just what they type.
+Xpoz同时索引了**文字说明**和**视频字幕**，因此您可以依据用户实际所说的内容来查找Reels，而不仅仅是他们输入的文字。
 
-### Find Influencers by Topic
+### 按主题查找网红
 
 ```bash
 mcporter call xpoz.getInstagramUsersByKeywords \
@@ -78,7 +79,7 @@ mcporter call xpoz.getInstagramUsersByKeywords \
   limit=200
 ```
 
-### Look Up a Profile
+### 查找用户资料
 
 ```bash
 mcporter call xpoz.getInstagramUser \
@@ -86,7 +87,7 @@ mcporter call xpoz.getInstagramUser \
   identifierType=username
 ```
 
-### Search by Display Name
+### 按显示名称搜索
 
 ```bash
 mcporter call xpoz.searchInstagramUsers query="National Geographic" limit=20
@@ -94,7 +95,7 @@ mcporter call xpoz.searchInstagramUsers query="National Geographic" limit=20
 
 ---
 
-## Boolean Queries
+## 布尔查询
 
 ```bash
 mcporter call xpoz.getInstagramPostsByKeywords \
@@ -103,35 +104,35 @@ mcporter call xpoz.getInstagramPostsByKeywords \
 
 ---
 
-## CSV Export
+## CSV导出
 
-Every search generates a full export. Poll the `dataDumpExportOperationId` for a CSV download URL (up to 64K rows).
+每次搜索都会生成完整的导出文件。可以通过 `dataDumpExportOperationId` 获取CSV下载链接（最多可导出64,000行数据）。
 
 ---
 
-## Why Not Use the Instagram API Directly?
+## 为什么不用Instagram的API直接搜索？
 
-| | Instagram Graph API | Xpoz Instagram Search |
+| | Instagram Graph API | Xpoz Instagram搜索 |
 |--|-------------------|----------------------|
-| **Setup** | Meta developer account + app review | One-click Xpoz auth |
-| **Keyword search** | ❌ Not available | ✅ Full-text + subtitles |
-| **Find influencers** | Only if you know their username | Search by topic/content |
-| **Reels content** | Metadata only | Captions + spoken words |
-| **Export** | Manual pagination | One-click CSV |
-| **Cost** | Free but painful setup | Free tier available |
+| **设置要求** | 需要Meta开发者账户且需应用审核 | 一键完成身份验证 |
+| **关键词搜索** | 不支持 | 支持全文搜索及字幕显示 |
+| **查找网红** | 仅能通过用户名查找 | 可按主题或内容搜索 |
+| **Reels内容** | 仅提供元数据 | 提供文字说明和语音内容 |
+| **导出方式** | 需手动分页 | 支持一键导出CSV文件 |
+| **成本** | 免费，但设置过程较复杂 | 提供免费试用版本 |
 
-The Instagram Graph API doesn't support keyword search at all. Xpoz fills that gap.
-
----
-
-## Related Skills
-
-- **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** — Cross-platform (Twitter + Instagram + Reddit)
-- **[expert-finder](https://clawhub.ai/skills/expert-finder)** — Find domain experts
-- **[social-lead-gen](https://clawhub.ai/skills/social-lead-gen)** — Find potential customers
+Instagram Graph API根本不支持关键词搜索功能，Xpoz填补了这一空白。
 
 ---
 
-**Website:** [xpoz.ai](https://xpoz.ai) • **Free tier available** • No Meta developer account needed
+## 相关工具
 
-Built for ClawHub • 2026
+- **[xpoz-social-search](https://clawhub.ai/skills/xpoz-social-search)** — 跨平台搜索（Twitter + Instagram + Reddit）
+- **[expert-finder](https://clawhub.ai/skills/expert-finder)** — 寻找领域专家 |
+- **[social-lead-gen](https://clawhub.ai/skills/social-lead-gen)** — 寻找潜在客户 |
+
+---
+
+**官方网站：** [xpoz.ai](https://xpoz.ai) • **提供免费试用版本** • 无需Meta开发者账户
+
+由ClawHub开发 • 2026年发布

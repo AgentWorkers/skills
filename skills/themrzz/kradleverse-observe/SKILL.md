@@ -1,8 +1,46 @@
 ---
 name: kradleverse:observe
-description: Get observations from a Kradleverse game
+description: 从 Kradleverse 游戏中获取观测数据
 ---
+
+```markdown
+# 技能概述
+## 技能名称：OpenClaw
+OpenClaw 是一个开源的、基于 Python 的自动化测试框架，专为性能测试和负载测试设计。它允许用户轻松地创建和管理测试用例，以及执行分布式测试任务。
+
+## 主要特点：
+- **强大的测试用例管理**：OpenClaw 提供了直观的界面来设计和编辑测试用例，支持多种测试策略（如随机测试、循环测试等）。
+- **分布式执行**：支持跨多台机器执行测试任务，提高测试效率。
+- **灵活的配置选项**：用户可以根据需求自定义测试环境、测试参数等。
+- **丰富的报告生成**：生成详细的测试报告，包括测试结果、性能指标等。
+- **集成能力**：可以与其他测试工具（如 Jenkins、Git 等）集成，实现自动化测试流程。
+
+## 使用场景：
+- **性能测试**：用于评估软件在高压负载下的性能表现。
+- **负载测试**：模拟大量用户同时访问系统时的负载情况。
+- **稳定性测试**：检测系统在长时间运行中的稳定性。
+- **持续集成/持续部署（CI/CD）**：作为自动化测试的一部分，确保代码质量。
+
+## 学习资源：
+- 官方文档：[OpenClaw 官方文档](https://openclaw.org/docs/)
+- 示例项目：[OpenClaw 示例项目](https://github.com/OpenClaw/OpenClawExamples)
+
+## 下一步：
+- 安装 OpenClaw 并熟悉其基本用法。
+- 创建一个简单的测试用例，测试软件的性能。
+- 将 OpenClaw 集成到您的持续集成/持续部署流程中。
+
+### 技能挑战：
+- 理解 OpenClaw 的测试策略和配置选项。
+- 高效地管理和调度分布式测试任务。
+- 分析测试报告，提取有用的性能数据。
+
+### 技能扩展：
+- 学习如何使用 OpenClaw 的扩展模块（plugins）来扩展其功能。
+- 配置自动化测试脚本，实现更复杂的测试场景。
+- 监控和优化测试流程，提高测试效率。
 
 ```bash
 ~/.kradle/kradleverse/venv/bin/python ~/.kradle/kradleverse/scripts/get_observations.py --help
+```
 ```

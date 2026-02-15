@@ -1,38 +1,38 @@
 ---
 name: reflect
-description: Append to daily notes and create notes in Reflect. Use for capturing thoughts, todos, or syncing information to your knowledge graph.
+description: 将内容添加到每日笔记中，并在 Reflect 中创建新的笔记。这些笔记可用于记录想法、待办事项，或将信息同步到你的知识图谱中。
 homepage: https://reflect.app
 ---
 
-# Reflect Notes Skill
+# Reflect笔记功能
 
-Reflect is a networked note-taking app. Notes are E2E encrypted, so the API is **append-only** — we can write but not read note contents.
+Reflect是一款基于网络的笔记应用。所有笔记都采用端到端（E2E）加密技术，因此其API仅支持**追加操作**——我们只能添加内容，无法读取笔记内容。
 
-## Setup
+## 设置
 
-1. Create OAuth credentials at https://reflect.app/developer/oauth
-2. Generate an access token from that interface
-3. Set environment variables:
+1. 在 [https://reflect.app/developer/oauth](https://reflect.app/developer/oauth) 创建OAuth凭证。
+2. 通过该接口生成访问令牌。
+3. 设置环境变量：
    ```bash
    export REFLECT_TOKEN="your-access-token"
    export REFLECT_GRAPH_ID="your-graph-id"  # Find via: curl -H "Authorization: Bearer $REFLECT_TOKEN" https://reflect.app/api/graphs
    ```
 
-Or store in 1Password and update `scripts/reflect.sh` with your vault/item path.
+或者将访问令牌存储在1Password中，并更新`scripts/reflect.sh`文件中的凭证路径。
 
-## What We Can Do
+## 功能概述
 
-1. **Append to daily notes** — Add items to today's note (or a specific date)
-2. **Create new notes** — Create standalone notes with subject + markdown content
-3. **Create links** — Save bookmarks with highlights
-4. **Get links/books** — Retrieve saved links and books
+1. **追加到每日笔记**：将新内容添加到当天的笔记中（或指定日期的笔记中）。
+2. **创建新笔记**：创建包含主题和Markdown内容的独立笔记。
+3. **创建链接**：保存带有高亮标记的书签。
+4. **获取链接/书籍**：检索已保存的链接和笔记内容。
 
-## API Reference
+## API参考
 
-Base URL: `https://reflect.app/api`
-Auth: `Authorization: Bearer <access_token>`
+基础URL：`https://reflect.app/api`
+认证方式：`Authorization: Bearer <access_token>`
 
-### Append to Daily Note
+### 追加到每日笔记
 
 ```bash
 curl -X PUT "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/daily-notes" \
@@ -46,7 +46,7 @@ curl -X PUT "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/daily-notes" \
   }'
 ```
 
-### Create a Note
+### 创建新笔记
 
 ```bash
 curl -X POST "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/notes" \
@@ -59,7 +59,7 @@ curl -X POST "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/notes" \
   }'
 ```
 
-### Create a Link
+### 创建链接
 
 ```bash
 curl -X POST "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/links" \
@@ -73,16 +73,16 @@ curl -X POST "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/links" \
   }'
 ```
 
-### Get Links
+### 获取链接
 
 ```bash
 curl "https://reflect.app/api/graphs/$REFLECT_GRAPH_ID/links" \
   -H "Authorization: Bearer $REFLECT_TOKEN"
 ```
 
-## Helper Script
+## 辅助脚本
 
-Use `scripts/reflect.sh` for common operations:
+使用`scripts/reflect.sh`执行常见操作：
 
 ```bash
 # Append to daily note
@@ -98,16 +98,16 @@ Use `scripts/reflect.sh` for common operations:
 ./scripts/reflect.sh link "https://example.com" "Example Site" "Great resource"
 ```
 
-## Use Cases
+## 使用场景
 
-- **Capture todos** from chat → append to daily note
-- **Save interesting links** mentioned in conversation
-- **Create meeting notes** or summaries
-- **Sync reminders** to Reflect for persistence
-- **Backlink to lists** like `[[Ideas]]` or `[[Project Name]]`
+- **将聊天中的待办事项捕获并追加到每日笔记中**。
+- **保存对话中提到的有趣链接**。
+- **创建会议笔记或总结**。
+- **将提醒同步到Reflect中进行持久化存储**。
+- **为列表（如`[[Ideas]]`或`[[Project Name]]`）创建超链接**。
 
-## Limitations
+## 限制
 
-- **Cannot read note contents** (E2E encrypted)
-- **Append-only** — can't edit or delete existing content
-- **No search** — can't query existing notes
+- **无法读取笔记内容**（采用端到端加密）。
+- **仅支持追加操作**——无法编辑或删除现有内容。
+- **无搜索功能**——无法查询现有笔记。

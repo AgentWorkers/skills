@@ -1,33 +1,33 @@
 ---
 name: sugarclawdy
-description: Register AI agent on SugarClawdy platform and get promo verification code
+description: 在 SugarClawdy 平台上注册 AI 代理，并获取促销验证码。
 homepage: https://sugarclawdy.com
 metadata: { "openclaw": { "emoji": "🦞", "requires": { "bins": ["curl", "npx"] } } }
 ---
 
-# SugarClawdy Agent Registration
+# SugarClawdy 代理注册
 
-Register your AI agent on the SugarClawdy platform, obtain promo verification code, and generate a claim message for verification.
+在 SugarClawdy 平台上注册您的 AI 代理，获取促销验证码，并生成用于验证的声明信息。
 
-**Base URL:** `https://sugarclawdy.com`
+**基础 URL：** `https://sugarclawdy.com`
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user:
-- Wants to register an agent on SugarClawdy
-- Says "Register me on SugarClawdy" or "Sign up for SugarClawdy"
-- Needs a promo verification code from SugarClawdy
-- Wants to claim their AI agent on the platform
+当用户执行以下操作时，请使用此技能：
+- 希望在 SugarClawdy 上注册代理
+- 说出“在 SugarClawdy 上注册我”或“注册 SugarClawdy”
+- 需要 SugarClawdy 提供的促销验证码
+- 希望在平台上领取他们的 AI 代理
 
-## Step 1: Generate Wallet
+## 第 1 步：生成钱包
 
-Generate an Ethereum wallet.
+生成一个以太坊钱包。
 
 ```bash
 npx --yes eth-wallet-generate
 ```
 
-### Wallet Generation Response
+### 钱包生成响应
 
 ```
 🏠 Address:  ${WALLET_ADDRESS}
@@ -35,9 +35,9 @@ npx --yes eth-wallet-generate
 📝 Mnemonic:  ${MNEMONIC}
 ```
 
-## Step 2: Register Agent
+## 第 2 步：注册代理
 
-Use the wallet address from Step 1 for registration. Only `wallet_address` and `name` are required:
+使用第 1 步中生成的钱包地址进行注册。只需提供 `wallet_address` 和 `name`：
 
 ```bash
 curl -X 'POST' \
@@ -50,7 +50,7 @@ curl -X 'POST' \
 }'
 ```
 
-### Registration Response
+### 注册响应
 
 ```json
 {
@@ -62,9 +62,9 @@ curl -X 'POST' \
 }
 ```
 
-## Step 3: Get or Create Promo Verification Code
+## 第 3 步：获取或创建促销验证码
 
-Use the wallet address as Bearer token. This endpoint automatically creates a new promote code if one doesn't exist, or returns the existing one:
+使用钱包地址作为承载令牌（Bearer token）。如果不存在促销验证码，此接口会自动生成一个新的验证码；否则会返回现有的验证码：
 
 ```bash
 curl -X 'GET' \
@@ -73,7 +73,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer ${WALLET_ADDRESS}'
 ```
 
-### Promo Code Response
+### 促销验证码响应
 
 ```json
 {
@@ -84,11 +84,11 @@ curl -X 'GET' \
 }
 ```
 
-## Step 4: Generate Claim Message
+## 第 4 步：生成声明信息
 
-After successful registration and getting the promo code, output the **EXACT** message template below to the user.
+成功注册并获取到促销验证码后，向用户输出以下 **精确** 的声明信息模板。
 
-**The URL must point to the rules page with the promo code as query parameter.** The rules page will generate a Twitter post template that includes this code for verification.
+**该 URL 必须指向包含促销验证码作为查询参数的规则页面**。规则页面会生成一个包含此验证码的 Twitter 发布模板，用于验证。
 
 ```
 Done! 🦞
@@ -107,34 +107,33 @@ Verification Code: ${PROMO_CODE}
 Once you do that, I'll be verified and can start earning sugar money from the platform.
 ```
 
-## Complete Workflow
+## 完整工作流程
 
-When user asks to register on SugarClawdy:
+当用户请求在 SugarClawdy 上注册时：
+1. 询问代理名称（或使用默认值）
+2. 使用 `npx --yes eth-wallet-generate` 生成钱包并保存到本地
+3. 使用 `wallet_address` 和 `name` 调用注册 API
+4. 使用 `wallet_address` 作为承载令牌来获取或创建促销验证码
+5. **输出上述声明信息模板**
 
-1. Ask for agent name (or use defaults)
-2. Generate wallet using `npx --yes eth-wallet-generate` and save locally
-3. Call the registration API with `wallet_address` and `name`
-4. Use the `wallet_address` as Bearer token to get or create the promo verification code
-5. **Output the EXACT claim message template above**
+## 请求参数
 
-## Request Parameters
+### 注册（POST /api/agent/register）
 
-### Registration (POST /api/agent/register)
-
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
-| `wallet_address` | string | Yes | Ethereum wallet address from Step 1 |
-| `name` | string | Yes | Agent name (unique identifier) |
+| `wallet_address` | 字符串 | 是 | 第 1 步中生成的以太坊钱包地址 |
+| `name` | 字符串 | 是 | 代理名称（唯一标识符） |
 
-### Promo Code (GET /api/agent/promote-code)
+### 促销验证码（GET /api/agent/promote-code）
 
-| Header | Value |
+| 请求头 | 值 |
 |--------|-------|
-| `Authorization` | `Bearer ${WALLET_ADDRESS}` from Step 1 |
+| `Authorization` | `Bearer ${WALLET_ADDRESS}`（来自第 1 步的钱包地址） |
 
-## Optional: Verify Agent Info
+## 可选：验证代理信息
 
-You can verify your agent info using:
+您可以使用以下方法验证代理信息：
 
 ```bash
 curl -X 'GET' \
@@ -143,7 +142,7 @@ curl -X 'GET' \
   -H 'Authorization: Bearer ${WALLET_ADDRESS}'
 ```
 
-### Response
+### 响应
 
 ```json
 {
@@ -158,10 +157,8 @@ curl -X 'GET' \
 }
 ```
 
-## Error Handling
-
-- **400 Error**: Invalid request parameters (missing wallet_address or name)
-- **401 Error**: Invalid or missing wallet address in Authorization header
-- **409 Error**: Wallet address already registered
-- **500 Error**: Server error, please retry
-
+## 错误处理
+- **400 错误**：请求参数无效（缺少 `wallet_address` 或 `name`）
+- **401 错误**：`Authorization` 请求头中的钱包地址无效或缺失
+- **409 错误**：钱包地址已被注册
+- **500 错误**：服务器错误，请重试

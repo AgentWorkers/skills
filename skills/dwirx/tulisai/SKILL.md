@@ -1,28 +1,29 @@
 ---
 name: bangunai-blog-manager
-description: Use when managing BangunAI Blog content, automating blog workflows, and writing MDX articles with BangunAI conventions. Supports Obsidian-like features (callouts, mermaid, LaTeX, wikilinks, backlinks, graph view).
+description: **用途：**  
+用于管理 BangunAI 博文内容、自动化博客工作流程，以及按照 BangunAI 的规范编写 MDX 文章。支持类似 Obsidian 的功能（如注释引用、Mermaid 图表生成、LaTeX 格式支持、维基链接、反向链接以及图表展示）。
 ---
 
-# BangunAI Blog Manager (Digital Garden + Content Workflow)
+# BangunAI 博客管理器（数字花园 + 内容工作流）
 
-**Homepage:** React 18 + Vite + MDX + shadcn/ui  
-**Blog Root:** `/home/hades/BangunAI-Blog`  
-**Content Root:** `/home/hades/BangunAI-Blog/src/content`  
-**Tech Stack:** TypeScript, Tailwind CSS, Mermaid 11, KaTeX, Shiki
+**首页：** React 18 + Vite + MDX + shadcn/ui  
+**博客根目录：** `/home/hades/BangunAI-Blog`  
+**内容根目录：** `/home/hades/BangunAI-Blog/src/content`  
+**技术栈：** TypeScript, Tailwind CSS, Mermaid 11, KaTeX, Shiki
 
-Skill ini menggabungkan:
-- workflow custom untuk blog content (daily, fetch style, universal writer, logging, smart read)
-- MDX authoring untuk React-based digital garden
-- Obsidian-like features (callouts, mermaid diagrams, LaTeX math, wikilinks, backlinks)
-- Auto-import system via `import.meta.glob`
+该技能整合了以下功能：
+- 定制的博客内容工作流（每日笔记、样式获取、通用写作工具、日志记录、智能阅读功能）
+- 基于 MDX 的写作系统，适用于 React 架构的数字花园  
+- 具有类似 Obsidian 的特性（注释、Mermaid 图表、LaTeX 数学公式、维基链接、回链功能）  
+- 通过 `import.meta.glob` 实现自动导入内容的功能  
 
 ---
 
-## 🌿 BangunAI Blog Fundamentals
+## 🌿 BangunAI 博客基础
 
-Blog ini adalah **Digital Garden & Knowledge Base** dengan fitur terinspirasi dari Obsidian.
+该博客是一个 **数字花园与知识库**，其设计灵感来源于 Obsidian。
 
-### Struktur Proyek
+### 项目结构
 
 ```
 /home/hades/BangunAI-Blog/
@@ -54,20 +55,20 @@ Blog ini adalah **Digital Garden & Knowledge Base** dengan fitur terinspirasi da
 └── package.json           # Dependencies
 ```
 
-### Content Types
+### 内容类型
 
-| Type | Description | Location | Features |
+| 类型 | 描述 | 位置 | 特性 |
 |------|-------------|----------|----------|
-| **Writing** | Personal notes, essays | `src/content/writing/` | Filter by type (note/essay), category, tags |
-| **Articles** | Technical tutorials, guides | `src/content/articles/` | Grouped by year |
-| **Read** | Curated readings with notes | `src/content/read/` | Source URL, snippet, tags |
-| **Daily** | Daily notes, tasks, logs | `src/content/daily/` | Rollover tasks, timestamps |
-| **About** | About page (MDX) | `src/content/about.mdx` | Single static page |
-| **Now** | Current activities | `src/content/now.mdx` | Updated regularly |
+| **写作** | 个人笔记、文章 | `src/content/writing/` | 可按类型（笔记/文章）、类别、标签筛选 |
+| **文章** | 技术教程、指南 | `src/content/articles/` | 按年份分组 |
+| **阅读** | 精选阅读内容 | `src/content/read/` | 包含原文链接、摘录、标签 |
+| **每日记录** | 每日笔记、任务、日志 | `src/content/daily/` | 支持任务滚动显示、时间戳功能 |
+| **关于我们** | 关于页面（MDX 格式） | `src/content/about.mdx` | 单页静态页面 |
+| **当前活动** | 当前活动更新 | `src/content/now.mdx` | 定期更新 |
 
-### Auto-Import System
+### 自动导入系统
 
-File `src/content/index.ts` auto-detect semua `.mdx` files via `import.meta.glob`:
+`src/content/index.ts` 文件通过 `import.meta.glob` 自动检测所有 `.mdx` 文件：
 
 ```typescript
 // NO MANUAL REGISTRATION NEEDED!
@@ -76,265 +77,190 @@ const articleModules = import.meta.glob("./articles/*.mdx", { eager: true });
 const readModules = import.meta.glob("./read/*.mdx", { eager: true });
 ```
 
-**Benefits:** Create file → Auto-detected → Available immediately
+**优势：** 创建文件后 → 立即被自动检测并可用  
 
 ---
 
-## 📝 Frontmatter Formats
+## 📝 前端内容格式
 
-### Format A: Standard Posts (writing, articles, daily)
+### 格式 A：标准文章（写作、文章、每日记录）
 
-```yaml
----
-title: "Judul Artikel Yang Menarik"
-slug: judul-artikel-yang-menarik
-summary: "Ringkasan singkat 1-2 kalimat yang compelling."
-type: note                # note | essay | article
-category: Tech            # Tech | Refleksi | Produktivitas | Linux | Coding | Life
-tags: [react, typescript, tutorial]
-date: "2026-02-11T14:30:00"
-readingTime: 5
-featured: false           # (optional) untuk featured posts
----
-```
+**必填字段：**
+- `title` — 文章标题（字符串）  
+- `slug` — 适合 URL 的slug（使用 kebab-case 格式）  
+- `summary` — 简短且吸引人的描述（1-2 句）  
+- `type` — 内容类型：  
+  - `note` — 简短笔记  
+  - `essay` — 深度文章  
+  - `article` — 结构化的教程  
+- `category` — 主要类别（可选）：  
+  - `Tech` — 技术、编程、工具  
+  - `Refleksi` — 个人反思  
+  - `Produktivitas` — 生产力相关  
+  - `Linux` — Linux 系统、终端操作  
+  - `Coding` — 编程实践、模式  
+  - `Life` — 生活方式、经历  
+- `tags` — 标签数组（小写、使用 kebab-case 格式）  
+- `date` — ISO 时间戳（格式：YYYY-MM-DDTHH:mm:ss）  
+- `readingTime` — 预计阅读时间（约 200 字/分钟）  
 
-**Required Fields:**
-- `title` — Judul artikel (string)
-- `slug` — URL-friendly slug (kebab-case)
-- `summary` — Deskripsi singkat, compelling (1-2 kalimat)
-- `type` — Jenis konten:
-  - `note` — Catatan pendek, quick takes
-  - `essay` — Tulisan mendalam, eksploratif
-  - `article` — Tutorial, panduan terstruktur
-- `category` — Kategori utama (pilih salah satu):
-  - `Tech` — Teknologi, programming, tools
-  - `Refleksi` — Personal reflection, thoughts
-  - `Produktivitas` — Productivity, workflow
-  - `Linux` — Linux, terminal, sysadmin
-  - `Coding` — Coding practices, patterns
-  - `Life` — Lifestyle, experiences
-- `tags` — Array tags (lowercase, kebab-case)
-- `date` — ISO timestamp dengan jam (`YYYY-MM-DDTHH:mm:ss`)
-- `readingTime` — Estimasi menit baca (~200 kata/menit)
+**可选字段：**  
+- `featured` — 是否作为首页的推荐文章  
 
-**Optional Fields:**
-- `featured` — Boolean, untuk featured posts di homepage
+### 格式 B：阅读内容（阅读页面）
 
-### Format B: Read Items (read/)
+**必填字段：**
+- `title` — 文章标题（字符串）  
+- `slug` — 适合 URL 的 slug（使用 kebab-case 格式）  
+- `snippet` — 文章的精彩摘录  
+- `source` — 文章来源链接（例如：`github.com`、`dev.to`）  
+- `tags` — 标签数组（小写）  
+- `date` — ISO 时间戳  
 
-```yaml
----
-title: "Judul Artikel/Bacaan"
-slug: judul-artikel-bacaan
-snippet: "Quote atau snippet menarik dari artikel (1-2 kalimat)."
-source: "nama-situs.com"
-url: "https://link-ke-artikel.com"
-tags: [programming, career]
-date: "2026-02-11T18:00:00"
----
+**正文内容：** 可选，用于个人笔记  
 
-## Catatan Personal (Optional)
+### 格式 C：特殊页面（关于我们、当前活动）
 
-Komentar atau catatan tentang bacaan ini...
-```
-
-**Required Fields:**
-- `title` — Judul artikel (string)
-- `slug` — URL-friendly slug (kebab-case)
-- `snippet` — Quote/excerpt menarik dari artikel
-- `source` — Domain sumber (e.g., `github.com`, `dev.to`)
-- `url` — Link lengkap ke artikel asli
-- `tags` — Array tags (lowercase)
-- `date` — ISO timestamp
-
-**Body Content:** Optional, untuk catatan personal
-
-### Format C: Special Pages (about, now)
-
-```yaml
----
-title: "About"  # atau "Now"
----
-
-Content langsung di sini...
-Mendukung semua fitur MDX (callouts, highlight, mermaid, dll).
-```
-
-**Minimal frontmatter:** Hanya `title`
+**最低要求的前端内容：** 仅需要 `title`  
 
 ---
 
-## 🧩 MDX Components Available
+## 🧩 可用的 MDX 组件
 
-### 1. Callouts (14 Types)
+### 1. 注释组件（14 种类型）
 
-```mdx
-<Callout type="info" title="Judul Callout">
-Isi callout di sini.
-</Callout>
-```
+**可用类型：**
+- `info` — 通用信息（蓝色）  
+- `tip` — 技巧与提示（绿色）  
+- `warning` — 警告（黄色）  
+- `danger` — 危险/错误（红色）  
+- `success` — 成功消息（亮绿色）  
+- `note` — 笔记（灰色）  
+- `example` — 示例代码（紫色）  
+- `bug` — 错误报告（红色）  
+- `question` — 问题（浅蓝色）  
+- `abstract` — 摘要/总结（靛蓝色）  
+- `important` — 重要信息（橙色）  
+- `caution` — 警告（深黄色）  
+- `quote` — 引用（米色）  
+- `cite` — 引用来源（深米色）  
 
-**Available types:**
-- `info` — Informasi umum (biru)
-- `tip` — Tips & tricks (hijau)
-- `warning` — Peringatan (kuning)
-- `danger` — Danger/error (merah)
-- `success` — Success message (hijau cerah)
-- `note` — Catatan (abu-abu)
-- `example` — Contoh (ungu)
-- `bug` — Bug report (merah)
-- `question` — Pertanyaan (biru muda)
-- `abstract` — Abstract/summary (indigo)
-- `important` — Penting (orange)
-- `caution` — Hati-hati (kuning gelap)
-- `quote` — Kutipan (krem)
-- `cite` — Sitasi (krem gelap)
-
-**Obsidian Blockquote Syntax:**
+**Obsidian 的引用格式：**  
 ```mdx
 > [!info] Judul Callout
 > Isi callout menggunakan sintaks Obsidian.
 ```
 
-### 2. Mermaid Diagrams
+### 2. Mermaid 图表  
 
-````mdx
 ```mermaid
 graph TD
-    A[Start] --> B{Decision}
-    B -->|Yes| C[Action]
-    B -->|No| D[End]
-```
-````
-
-**Supported diagrams (Mermaid v11):**
-- `graph` / `flowchart` — Flowchart
-- `sequenceDiagram` — Sequence diagram
-- `pie` — Pie chart
-- `classDiagram` — UML class diagram
-- `stateDiagram-v2` — UML state diagram
-- `erDiagram` — Entity relationship diagram
-- `gantt` — Gantt chart
-- `mindmap` — Mind map
-- `timeline` — Timeline
-
-**Features:**
-- Auto-render dengan tema terang/gelap
-- Unique ID per diagram (no conflicts)
-- Responsive container
-
-### 3. LaTeX Math (KaTeX)
-
-```mdx
-Inline: $E = mc^2$
-
-Block:
-$$
-\int_0^\infty e^{-x} dx = 1
-$$
+    A[开始] --> B[决策]
+    B -->|是| C[行动]
+    B -->|否| D[结束]
 ```
 
-**Powered by KaTeX 0.16** — Fast math rendering
+**支持的图表类型（Mermaid v11）：**
+- `graph` / `flowchart` — 流程图  
+- `sequenceDiagram` — 序列图  
+- `pie` — 饼图  
+- `classDiagram` — UML 类图  
+- `stateDiagram-v2` — UML 状态图  
+- `erDiagram` — 实体关系图  
+- `gantt` — 甘特图  
+- `mindmap` — 思维导图  
+- `timeline` — 时间轴图  
 
-### 4. WikiLinks (Internal Links)
+**特性：**  
+- 自动根据主题调整图表颜色（亮色/暗色）  
+- 每个图表都有唯一的 ID（避免冲突）  
+- 图表支持响应式布局  
 
-```mdx
-<WikiLink to="slug-artikel" label="Teks yang Ditampilkan" />
-```
+### 3. LaTeX 数学公式（KaTeX）  
 
-**Features:**
-- Link mati (slug not found) → strikethrough otomatis
-- Auto-deteksi dari semua posts
+**使用 KaTeX 0.16** 进行数学公式的渲染  
 
-### 5. Highlight
+### 4. 维基链接（内部链接）  
 
-```mdx
-<Highlight>teks yang di-highlight</Highlight>
+**特性：**  
+- 如果目标 slug 不存在，会自动显示斜线标记  
+- 自动从所有文章中检测链接  
 
-Atau gunakan HTML tag:
-<mark>teks yang di-highlight</mark>
-```
+### 5. 代码高亮显示  
 
-### 6. YouTube Embed
+### 6. YouTube 视频嵌入  
 
-```mdx
-<YouTube url="https://youtube.com/watch?v=VIDEO_ID" title="Judul Video" />
-```
+**特性：**  
+- 响应式 iframe  
+- 自动保持 16:9 的宽高比  
 
-**Features:**
-- Responsive iframe
-- Auto-aspect ratio 16:9
+### 7. 代码块（使用 Shiki 进行高亮显示）  
 
-### 7. Code Blocks (Shiki Syntax Highlighting)
-
-````mdx
 ```typescript
 function hello(name: string): string {
   return `Hello, ${name}!`;
-}
 ```
-````
 
-**Features:**
-- Powered by Shiki with `github-dark-dimmed` theme
-- Copy button included
-- Multi-language support (TypeScript, Python, Bash, dll)
+**特性：**  
+- 使用 `github-dark-dimmed` 主题进行高亮显示  
+- 提供复制按钮  
+- 支持多种编程语言（TypeScript、Python、Bash 等）  
 
-### 8. GFM (GitHub Flavored Markdown)
+### 8. GFM（GitHub 风格的 Markdown）  
 
-**Tables:**
+**表格格式：**  
 ```mdx
 | Column 1 | Column 2 |
 |----------|----------|
 | Value A  | Value B  |
-```
+```  
 
-**Task Lists:**
+**任务列表：**  
 ```mdx
 - [x] Completed task
 - [ ] Uncompleted task
-```
+```  
 
-**Strikethrough:**
+**斜线标记：**  
 ```mdx
 ~~deleted text~~
-```
+```  
 
-### 9. Backlinks
+### 9. 回链功能  
 
-Auto-generated di setiap artikel detail. Menampilkan artikel lain yang me-link ke artikel ini.
+在每篇文章的详细页面中自动生成回链，显示引用该文章的其他文章。  
 
-### 10. Graph View
+### 10. 图表视图  
 
-Interactive force-directed graph menampilkan koneksi antar konten.
+交互式有向图显示内容之间的关联关系。  
 
-### 11. Table of Contents (TOC)
+### 11. 目录页  
 
-- Sticky di desktop (right sidebar)
-- Collapsible bottom bar di mobile
-- Active heading tracking
-- Progress bar
+- 在桌面版中固定显示  
+- 在移动版中通过下拉栏显示  
+- 跟踪活跃的标题  
+- 显示进度条  
 
 ---
 
-## 🎨 Design System
+## 🎨 设计系统  
 
-### Color Tokens (HSL-based)
+### 颜色方案（基于 HSL）
 
-**Dark Mode (Default):**
-- `--background` — Navy gelap (#1A1A2E)
-- `--foreground` — Cream (#F5E6D3)
-- `--primary` — Gold/amber (aksen utama)
-- `--accent` — Warm gold (hover states)
-- `--card` — Navy lebih terang
+**默认模式（暗色）：**  
+- `--background` — 深海蓝（#1A1A2E）  
+- `--foreground` — 奶油色（#F5E6D3）  
+- `--primary` — 金色/琥珀色（主要色调）  
+- `--accent` — 温暖的金色（鼠标悬停时显示）  
+- `--card` — 更浅的海军蓝  
 
-**Light Mode:**
-- `--background` — Cream hangat
-- `--foreground` — Navy gelap
-- `--primary` — Amber gelap
-- `--card` — Cream lebih gelap
+**明亮模式：**  
+- `--background` — 温暖的奶油色  
+- `--foreground` — 深海蓝  
+- `--primary` — 深琥珀色  
+- `--card` — 更深的奶油色  
 
-**Usage:**
+**使用方式：**  
 ```tsx
 // ✅ Gunakan semantic tokens
 <div className="bg-background text-foreground">
@@ -345,338 +271,89 @@ Interactive force-directed graph menampilkan koneksi antar konten.
 
 // ❌ Jangan hardcode warna
 <div className="bg-[#1A1A2E] text-[#F5E6D3]">
-```
+```  
 
-### Font Stack
+### 字体方案  
 
-| Font | Usage |
+| 字体 | 用途 |
 |------|-------|
-| **Space Grotesk** | Headings & navigation |
-| **Source Serif 4** | Body text artikel (serif) |
-| **Inter** | UI elements & labels |
-| **JetBrains Mono** | Code blocks & inline code |
+| **Space Grotesk** | 标题和导航元素 |
+| **Source Serif 4** | 文章正文（衬线字体） |
+| **Inter** | 用户界面元素和标签  
+| **JetBrains Mono** | 代码块和内联代码  
 
-### Glass Morphism
+### 其他设计元素  
 
-```tsx
-<div className="glass glass-hover rounded-xl p-6">
-  Konten dengan efek kaca transparan
-</div>
-```
+---  
 
----
+## 🔧 工作流程  
 
-## 🔧 Workflows
+### 1) **每日笔记**  
+创建每日笔记，自动显示昨天的未完成任务。  
 
-### 1) `daily` (Smart Daily Note)
+### 2) **获取最新样式参考**  
+获取所有类别的最新文件（包括特殊页面）。  
 
-Create daily note dengan auto-rollover unchecked tasks dari kemarin.
+### 3) **编写新内容**  
+使用完整的前端内容格式编写新文章。  
 
-```bash
-BLOG_ROOT="/home/hades/BangunAI-Blog"
-DAILY_DIR="$BLOG_ROOT/src/content/daily"
-mkdir -p "$DAILY_DIR"
-
-TODAY=$(date +%Y-%m-%d)
-FILE="$DAILY_DIR/$TODAY.mdx"
-LAST_FILE=$(find "$DAILY_DIR" -name "????-??-??.mdx" ! -name "$TODAY.mdx" 2>/dev/null | sort | tail -n 1)
-
-if [ ! -f "$FILE" ]; then
-  cat > "$FILE" <<EOF
----
-title: "Daily Note: $TODAY"
-date: "$TODAY"
-type: daily
-tags: [daily]
----
-
-# Daily Note: $TODAY
-
-EOF
-
-  if [ -n "$LAST_FILE" ]; then
-    PENDING=$(grep "\- \[ \]" "$LAST_FILE" || true)
-    if [ -n "$PENDING" ]; then
-      echo "## Rollover Tasks" >> "$FILE"
-      echo "" >> "$FILE"
-      echo "$PENDING" >> "$FILE"
-      echo "" >> "$FILE"
-    fi
-  fi
-  
-  cat >> "$FILE" <<EOF
-## Tasks Today
-
-- [ ] 
-
-## Log
-
-EOF
-  echo "✅ Created: $FILE"
-else
-  echo "📂 Exists: $FILE"
-fi
-```
-
-### 2) `fetch_last` (Style Reference)
-
-Fetch latest file untuk style reference. Supports all categories including special pages.
-
-```bash
-# Input: CATEGORY (writing, articles, read, daily, about, now)
-BLOG_ROOT="/home/hades/BangunAI-Blog"
-case "$CATEGORY" in
-  "daily") DIR="$BLOG_ROOT/src/content/daily" ;;
-  "writing") DIR="$BLOG_ROOT/src/content/writing" ;;
-  "articles") DIR="$BLOG_ROOT/src/content/articles" ;;
-  "read") DIR="$BLOG_ROOT/src/content/read" ;;
-  "about") 
-    cat "$BLOG_ROOT/src/content/about.mdx"
-    exit 0
-    ;;
-  "now") 
-    cat "$BLOG_ROOT/src/content/now.mdx"
-    exit 0
-    ;;
-  *) echo "❌ Unknown category"; exit 1 ;;
-esac
-LAST_FILE=$(ls -t "$DIR"/*.mdx 2>/dev/null | head -n 1)
-if [ -f "$LAST_FILE" ]; then
-  echo "📄 REFERENSI GAYA ($LAST_FILE):"
-  head -n 50 "$LAST_FILE"
-else
-  echo "❌ Belum ada file di $CATEGORY"
-fi
-```
-
-### 3) `write` (Universal Writer + BangunAI Style)
-
-Write new content dengan frontmatter lengkap.
-
-**For Writing/Articles:**
-```bash
-CATEGORY="writing"  # atau "articles"
-FILENAME="judul-artikel.mdx"
-BLOG_ROOT="/home/hades/BangunAI-Blog"
-
-cat > "$BLOG_ROOT/src/content/$CATEGORY/$FILENAME" <<'EOF'
----
-title: "Judul Artikel Baru"
-slug: judul-artikel-baru
-summary: "Ringkasan singkat tentang artikel ini yang menarik perhatian pembaca."
-type: note
-category: Tech
-tags: [react, typescript, tutorial]
-date: "2026-02-12T15:00:00"
-readingTime: 5
----
-
-## Introduction
-
-Paragraf pembuka yang compelling dan menarik perhatian.
-
-<Callout type="tip" title="Pro Tip">
-Gunakan callouts untuk highlight informasi penting!
-</Callout>
-
-## Section 1
-
-### Subsection A
-
-Content here dengan **bold** dan *italic*.
-
+**写作/文章示例：**  
 ```typescript
-// Example code dengan syntax highlighting
 function example(): string {
   return "Hello World";
-}
 ```
-
-## Mermaid Example
-
 ```mermaid
 graph LR
-    A[Input] --> B[Process]
-    B --> C[Output]
+    A[输入] --> B[处理]
+    B --> C[输出]
 ```
 
-## Math Example
+**阅读内容示例：**  
+---  
 
-Inline math: $x^2 + y^2 = z^2$
+### 4) **记录日志**  
+将带有时间戳的日志添加到每日笔记中。  
 
-Block math:
-$$
-\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
-$$
+### 5) **智能阅读**  
+通过关键词智能搜索内容。  
 
-## Internal Link
+### 6) **更新关于我们页面**  
+使用 MDX 更新关于页面的内容。  
 
-Check out <WikiLink to="other-article" label="this related article" />.
+### 7) **更新当前活动页面**  
+更新当前活动的显示内容。  
 
-## Conclusion
-
-Kesimpulan yang solid dan actionable.
-EOF
-
-echo "✅ Created: $BLOG_ROOT/src/content/$CATEGORY/$FILENAME"
-```
-
-**For Read Items:**
-```bash
-CATEGORY="read"
-FILENAME="interesting-article.mdx"
-BLOG_ROOT="/home/hades/BangunAI-Blog"
-
-cat > "$BLOG_ROOT/src/content/$CATEGORY/$FILENAME" <<'EOF'
----
-title: "Interesting Article Title"
-slug: interesting-article
-snippet: "A compelling quote or snippet from the article that captures its essence."
-source: "website.com"
-url: "https://website.com/article"
-tags: [tech, programming, career]
-date: "2026-02-12T15:00:00"
----
-
-## Key Takeaways
-
-- Point 1: Important insight
-- Point 2: Actionable advice
-- Point 3: Thought-provoking idea
-
-## Personal Notes
-
-My thoughts and commentary about this article...
-
-<Callout type="note">
-This reminds me of a similar concept in...
-</Callout>
-EOF
-
-echo "✅ Created: $BLOG_ROOT/src/content/$CATEGORY/$FILENAME"
-```
-
-### 4) `log` (Append Log)
-
-Append timestamped log to today's daily note.
-
-```bash
-# Input: CONTENT="..."
-TODAY=$(date +%Y-%m-%d)
-FILE="/home/hades/BangunAI-Blog/src/content/daily/$TODAY.mdx"
-if [ ! -f "$FILE" ]; then 
-  echo "❌ Run 'daily' workflow first!"
-  exit 1
-fi
-echo "- $(date +%H:%M) $CONTENT" >> "$FILE"
-echo "✅ Logged to: $FILE"
-```
-
-### 5) `read` (Smart Read)
-
-Smart search content by keyword.
-
-```bash
-# Input: FILE="..."
-find "/home/hades/BangunAI-Blog/src/content" -name "*$FILE*.mdx" | head -n 1 | xargs -r cat
-```
-
-### 6) `update_about` (Update About Page)
-
-Update about.mdx with MDX content.
-
-```bash
-# Input: CONTENT="..."
-FILE="/home/hades/BangunAI-Blog/src/content/about.mdx"
-cat > "$FILE" <<EOF
----
-title: "About"
----
-
-$CONTENT
-EOF
-echo "✅ Updated: $FILE"
-```
-
-### 7) `update_now` (Update Now Page)
-
-Update now.mdx with current activities.
-
-```bash
-# Input: CONTENT="..."
-FILE="/home/hades/BangunAI-Blog/src/content/now.mdx"
-CURRENT_DATE=$(date +"%B %Y")
-cat > "$FILE" <<EOF
----
-title: "Now"
----
-
-## Apa yang Sedang Saya Kerjakan
-
-*Terakhir diperbarui: $CURRENT_DATE*
-
-Halaman ini terinspirasi dari [nownownow.com](https://nownownow.com) — tempat saya mencatat apa yang sedang saya fokuskan saat ini.
+### 8) **验证内容导入**  
+验证内容的自动导入情况。  
 
 ---
 
-$CONTENT
+## 📋 内容分类指南  
 
----
-
-> *Halaman ini adalah snapshot dari kehidupan saya saat ini. Bukan resume, bukan portofolio — hanya update jujur tentang apa yang sedang saya kerjakan.*
-EOF
-echo "✅ Updated: $FILE"
-```
-
-### 8) `verify_index` (Verify Content)
-
-Verify content auto-import statistics.
-
-```bash
-BLOG_ROOT="/home/hades/BangunAI-Blog"
-echo "📊 Content Statistics:"
-echo ""
-echo "Writing posts: $(ls -1 "$BLOG_ROOT/src/content/writing"/*.mdx 2>/dev/null | wc -l)"
-echo "Articles: $(ls -1 "$BLOG_ROOT/src/content/articles"/*.mdx 2>/dev/null | wc -l)"
-echo "Read items: $(ls -1 "$BLOG_ROOT/src/content/read"/*.mdx 2>/dev/null | wc -l)"
-echo "Daily notes: $(ls -1 "$BLOG_ROOT/src/content/daily"/*.mdx 2>/dev/null | wc -l)"
-echo ""
-echo "Special files:"
-echo "- about.mdx: $(test -f "$BLOG_ROOT/src/content/about.mdx" && echo "✅" || echo "❌")"
-echo "- now.mdx: $(test -f "$BLOG_ROOT/src/content/now.mdx" && echo "✅" || echo "❌")"
-echo "- index.ts: $(test -f "$BLOG_ROOT/src/content/index.ts" && echo "✅" || echo "❌")"
-```
-
----
-
-## 📋 Content Category Guidelines
-
-| Category | Path | Use Case | Type Options | Examples |
+| 类别 | 路径 | 使用场景 | 类型选项 | 示例 |
 |----------|------|----------|--------------|----------|
-| `writing` | `src/content/writing/` | Personal notes, essays | `note`, `essay` | Reflections, quick takes, deep thoughts |
-| `articles` | `src/content/articles/` | Technical tutorials, guides | `article` | How-to guides, technical deep dives |
-| `read` | `src/content/read/` | Reading notes, link curation | N/A (special format) | Curated articles, bookmarks |
-| `daily` | `src/content/daily/` | Daily notes, tasks, logs | `daily` | Task tracking, daily logs |
-| `about` | `src/content/about.mdx` | About page (static) | N/A | Personal bio, site info |
-| `now` | `src/content/now.mdx` | Current activities | N/A | What I'm doing now |
+| **写作** | `src/content/writing/` | 个人笔记、文章 | `note`, `essay` | 反思、简短笔记、深度思考 |
+| **文章** | `src/content/articles/` | 技术教程、指南 | `article` | 操作指南、技术深度解析 |
+| **阅读** | `src/content/read/` | 阅读笔记、精选链接 | 无（特殊格式） | 精选文章、书签 |
+| **每日记录** | `src/content/daily/` | 每日笔记、任务、日志 | `daily` | 任务跟踪、每日记录 |
+| **关于我们** | `src/content/about.mdx` | 关于页面（静态页面） | 无 | 个人简介、站点信息 |
+| **当前活动** | `src/content/now.mdx` | 当前活动更新 | 无 | 我正在做的事情 |
 
-### Category Values
-
-**Choose wisely untuk `category` field:**
-- `Tech` — Teknologi, programming, tools, frameworks
-- `Refleksi` — Personal reflection, thoughts, philosophy
-- `Produktivitas` — Productivity tips, workflow, GTD
-- `Linux` — Linux, terminal, system administration
-- `Coding` — Coding practices, patterns, best practices
-- `Life` — Lifestyle, personal experiences, stories
+### 类别选择建议：**  
+- `Tech`：技术、编程、工具、框架  
+- `Refleksi`：个人反思、思考  
+- `Produktivitas`：生产力技巧、工作流程  
+- `Linux`：Linux 系统、终端操作  
+- `Coding`：编程实践、模式  
+- `Life`：生活方式、个人经历  
 
 ---
 
-## 🎯 Best Practices
+## 🎯 最佳实践  
 
-### 1. Frontmatter Consistency
+### 1. 前端内容的一致性  
 
-**DO:**
+**建议：**  
 ```yaml
 title: "Belajar React Hooks di 2026"
 slug: belajar-react-hooks-2026
@@ -684,9 +361,9 @@ type: note
 category: Tech
 tags: [react, hooks, javascript]
 date: "2026-02-12T15:30:00"
-```
+```  
 
-**DON'T:**
+**避免：**  
 ```yaml
 title: belajar-react-hooks    # Missing quotes
 slug: Belajar React Hooks     # Not kebab-case
@@ -694,27 +371,25 @@ type: blog                     # Invalid type
 category: technology           # Typo/wrong value
 tags: React, Hooks             # Not array format
 date: "2026-02-12"            # Missing time
-```
+```  
 
-### 2. File Naming
+### 2. 文件命名规则  
 
-**DO:**
+**建议：**  
 ```
 belajar-react-hooks-2026.mdx
 setup-neovim-lua.mdx
 refleksi-tahun-2025.mdx
-```
+```  
 
-**DON'T:**
+**避免：**  
 ```
 Blog Post 1.mdx              # Spaces, not descriptive
 temp.mdx                     # Non-descriptive
 NEW_POST.mdx                 # Uppercase, underscore
-```
+```  
 
-### 3. Content Structure
-
-**Recommended structure:**
+### 3. 内容结构推荐：**  
 ```mdx
 ---
 frontmatter here
@@ -742,20 +417,20 @@ Code or examples...
 
 ## Conclusion (H2)
 Summary and takeaways.
-```
+```  
 
-### 4. Using MDX Components
+### 4. 使用 MDX 组件  
 
-**DO:**
+**建议：**  
 ```mdx
 <Callout type="tip" title="Pro Tip">
 Use semantic components for better UX.
 </Callout>
 
 <WikiLink to="related-article" label="Read more about this" />
-```
+```  
 
-**DON'T:**
+**避免：**  
 ```mdx
 <div style="background: yellow; padding: 10px;">
 Hardcoded styling instead of using Callout
@@ -763,229 +438,119 @@ Hardcoded styling instead of using Callout
 
 <a href="/artikel/related-article">Read more</a>
 <!-- Should use WikiLink instead -->
-```
+```  
 
-### 5. Date & Time Format
+### 5. 日期和时间格式**  
+使用 ISO 时间戳格式：  
+**显示方式：**  
+- 详情页面：`2026年2月11日，14:30`  
+- 卡片列表：`2月11日 · 14:30`  
 
-**ISO timestamp with time:**
-```yaml
-date: "2026-02-12T15:30:00"  # YYYY-MM-DDTHH:mm:ss
-```
+### 6. 预计阅读时间**  
+提供文章的预计阅读时间。  
 
-**Displayed as:**
-- Detail page: `11 Februari 2026, 14:30`
-- Card list: `11 Feb · 14:30`
+### 7. 标签使用建议：**  
+- 使用小写  
+- 使用 kebab-case 格式为多词标签  
+- 在不同文章中保持标签的一致性  
+- 优先使用具体而非泛化的标签  
 
-### 6. Reading Time Estimation
+**示例标签：**  
+---  
+**错误标签示例：**  
+---  
 
-```bash
-# Count words (exclude frontmatter)
-WORD_COUNT=$(tail -n +$(grep -n "^---$" file.mdx | tail -1 | cut -d: -f1) file.mdx | wc -w)
+### 8. 开发工作流程  
 
-# Calculate reading time (200 words/minute)
-READING_TIME=$(( (WORD_COUNT + 199) / 200 ))
+### 本地开发流程  
 
-# Add to frontmatter
-readingTime: $READING_TIME
-```
+1. **获取样式参考**  
+2. **创建新文件**  
+3. **验证自动导入功能**  
+4. **构建并部署**  
 
-### 7. Tags Best Practices
+### Git 工作流程  
 
-- Use **lowercase**
-- Use **kebab-case** for multi-word tags
-- Keep tags **consistent** across posts
-- Prefer **specific** over generic tags
+---  
 
-**Good tags:**
-```yaml
-tags: [react-hooks, typescript, state-management]
-```
+## 🔍 故障排除  
 
-**Bad tags:**
-```yaml
-tags: [React Hooks, programming, stuff]
-```
+### 问题：内容未显示  
 
----
+**检查：**  
+1. 前端内容是否完整？（所有必填字段是否齐全）  
+2. MDX 语法是否正确？（没有未闭合的标签）  
+3. 文件是否位于正确的目录？  
+4. 开发服务器是否已重启？  
 
-## 🚀 Development Workflow
+### 问题：Mermaid 图表无法渲染  
 
-### Local Development
+**检查：**  
+1. Mermaid 语法是否正确？  
+2. 支持的图表类型是否正确？  
+3. 查看浏览器控制台是否有错误信息？  
 
-```bash
-# Start dev server
-cd /home/hades/BangunAI-Blog
-bun run dev
-# Open http://localhost:8080
-```
+### 问题：维基链接显示斜线标记  
 
-### Create New Content
+**原因：**  
+目标 slug 不存在  
+**解决方法：**  
+1. 确认目标 slug 是否存在  
+2. 检查拼写  
+3. 确保目标文件包含有效的前端内容  
 
-1. **Fetch style reference:**
-   ```bash
-   CATEGORY="writing" bash fetch_last.sh
-   ```
+### 问题：LaTeX 公式无法渲染  
 
-2. **Create new file:**
-   ```bash
-   cat > src/content/writing/new-post.mdx <<'EOF'
-   ---
-   title: "New Post"
-   slug: new-post
-   summary: "Brief summary"
-   type: note
-   category: Tech
-   tags: [tag1, tag2]
-   date: "$(date -Iseconds)"
-   readingTime: 5
-   ---
-   
-   Content here...
-   EOF
-   ```
-
-3. **Verify auto-import:**
-   ```bash
-   # File otomatis terdeteksi via import.meta.glob
-   # Check di browser: http://localhost:8080/writing
-   ```
-
-4. **Build & deploy:**
-   ```bash
-   bun run build
-   bun run preview
-   ```
-
-### Git Workflow
-
-```bash
-# Add new content
-git add src/content/writing/new-post.mdx
-git commit -m "Add: new blog post about X"
-
-# Rename (preserve history)
-git mv src/content/writing/old.mdx src/content/writing/new.mdx
-git commit -m "Rename: old post to new name"
-
-# Delete (tracked)
-git rm src/content/writing/unwanted.mdx
-git commit -m "Remove: unwanted post"
-
-# Push
-git push origin main
-```
+**检查：**  
+1. LaTeX 语法是否正确？  
+2. 是否正确使用了转义字符？  
+3. 是否正确使用了 `$` 或 `$$` 作为分隔符？  
 
 ---
 
-## 🔍 Troubleshooting
+## 📚 快速参考  
 
-### Issue: Content not showing
+### 前端内容编写/文章格式指南  
 
-**Check:**
-1. Valid frontmatter? (all required fields present)
-2. Valid MDX syntax? (no unclosed tags)
-3. File in correct directory?
-4. Dev server restarted?
+### 阅读内容格式指南  
 
-### Issue: Mermaid not rendering
+### 特殊页面格式指南  
 
-**Check:**
-1. Valid Mermaid syntax?
-2. Diagram type supported?
-3. Check browser console for errors
+### MDX 组件使用指南  
 
-### Issue: WikiLink shows strikethrough
-
-**Reason:** Target slug not found
-
-**Fix:**
-1. Verify target slug exists
-2. Check spelling
-3. Ensure target file has valid frontmatter
-
-### Issue: LaTeX not rendering
-
-**Check:**
-1. Valid LaTeX syntax?
-2. Escaped special characters?
-3. Using `$` or `$$` delimiters correctly?
-
----
-
-## 📚 Quick Reference
-
-### Frontmatter Cheatsheet
-
-**Writing/Articles:**
-```yaml
----
-title: "Title"
-slug: slug
-summary: "Summary"
-type: note|essay|article
-category: Tech|Refleksi|Produktivitas|Linux|Coding|Life
-tags: [tag1, tag2]
-date: "YYYY-MM-DDTHH:mm:ss"
-readingTime: number
----
-```
-
-**Read:**
-```yaml
----
-title: "Title"
-slug: slug
-snippet: "Snippet"
-source: "domain.com"
-url: "https://..."
-tags: [tag1, tag2]
-date: "YYYY-MM-DDTHH:mm:ss"
----
-```
-
-**Special Pages:**
-```yaml
----
-title: "About|Now"
----
-```
-
-### MDX Components Cheatsheet
-
-| Component | Usage |
+| 组件 | 使用方法 |
 |-----------|-------|
-| Callout | `<Callout type="info" title="...">...</Callout>` |
-| Mermaid | ` ```mermaid ... ``` ` |
-| LaTeX | `$...$` or `$$...$$` |
-| WikiLink | `<WikiLink to="slug" label="..." />` |
-| Highlight | `<Highlight>...</Highlight>` |
-| YouTube | `<YouTube url="..." title="..." />` |
+| 注释 | `<Callout type="info" title="...">...</Callout>` |
+| Mermaid | ````mermaid ... ``` ` |
+| LaTeX | `$...$` 或 `$$...$$` |
+| 维基链接 | `<WikiLink to="slug" label="..." />` |
+| 代码高亮 | `<Highlight>...</Highlight>` |
+| YouTube 视频 | `<YouTube url="..." title="..." />` |
 
-### File Locations Cheatsheet
+### 文件位置指南  
 
-| Type | Location |
+| 类型 | 存储位置 |
 |------|----------|
-| Writing | `src/content/writing/*.mdx` |
-| Articles | `src/content/articles/*.mdx` |
-| Read | `src/content/read/*.mdx` |
-| Daily | `src/content/daily/*.mdx` |
-| About | `src/content/about.mdx` |
-| Now | `src/content/now.mdx` |
-| Index | `src/content/index.ts` |
+| 写作内容 | `src/content/writing/*.mdx` |
+| 文章 | `src/content/articles/*.mdx` |
+| 阅读内容 | `src/content/read/*.mdx` |
+| 每日记录 | `src/content/daily/*.mdx` |
+| 关于我们 | `src/content/about.mdx` |
+| 当前活动 | `src/content/now.mdx` |
+| 索引 | `src/content/index.ts` |
 
 ---
 
-## 🎉 Summary
+## 🎉 总结  
 
-Skill ini fully integrated dengan **BangunAI Blog**:
-- ✅ 8 workflows ready to use
-- ✅ 3 frontmatter formats supported
-- ✅ Complete MDX components reference
-- ✅ Obsidian-like features documented
-- ✅ Design system guidelines
-- ✅ Best practices & troubleshooting
-- ✅ Auto-import via `import.meta.glob`
-- ✅ Git-based operations
-- ✅ Production-ready
+该技能已与 **BangunAI 博客** 完全集成：  
+- 提供 8 种可用的工作流程  
+- 支持 3 种前端内容格式  
+- 提供完整的 MDX 组件参考  
+- 文档中详细说明了类似 Obsidian 的特性  
+- 提供设计系统指南和最佳实践  
+- 支持自动导入功能  
+- 基于 Git 的开发流程  
+- 已准备好投入生产使用  
 
-**Homepage:** https://github.com/dwirx/BangunAI-Blog
+**官网：** https://github.com/dwirx/BangunAI-Blog

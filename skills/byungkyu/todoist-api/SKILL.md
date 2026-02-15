@@ -15,9 +15,9 @@ metadata:
 
 # Todoist
 
-Access the Todoist REST API v2 with managed OAuth authentication. Manage tasks, projects, sections, labels, and comments.
+您可以使用受管理的OAuth认证来访问Todoist REST API v2，从而管理任务、项目、章节、标签和评论。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all tasks
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本URL
 
 ```
 https://gateway.maton.ai/todoist/rest/v2/{resource}
 ```
 
-The gateway proxies requests to `api.todoist.com/rest/v2` and automatically injects your OAuth token.
+该网关会将请求代理到`api.todoist.com/rest/v2`，并自动插入您的OAuth令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在`Authorization`头部包含Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的API密钥设置为`MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的API密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在[maton.ai](https://maton.ai)上登录或创建账户。
+2. 转到[maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的API密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Todoist OAuth connections at `https://ctrl.maton.ai`.
+您可以在`https://ctrl.maton.ai`上管理您的Todoist OAuth连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的`url`以完成OAuth认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Todoist connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个Todoist连接，请使用`Maton-Connection`头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,19 +138,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略，则网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API参考
 
-### Projects
+### 项目
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /todoist/rest/v2/projects
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -168,13 +168,13 @@ GET /todoist/rest/v2/projects
 ]
 ```
 
-#### Get Project
+#### 获取项目信息
 
 ```bash
 GET /todoist/rest/v2/projects/{id}
 ```
 
-#### Create Project
+#### 创建项目
 
 ```bash
 POST /todoist/rest/v2/projects
@@ -188,14 +188,14 @@ Content-Type: application/json
 }
 ```
 
-**Parameters:**
-- `name` (required) - Project name
-- `parent_id` - Parent project ID for nesting
-- `color` - Project color (e.g., "red", "blue", "green")
-- `is_favorite` - Boolean favorite status
-- `view_style` - "list" or "board" (default: list)
+**参数：**
+- `name`（必填）- 项目名称
+- `parent_id`- 父项目ID（用于嵌套）
+- `color`- 项目颜色（例如：“red”、“blue”、“green”）
+- `is_favorite`- 喜欢状态（布尔值）
+- `view_style`- “list”或“board”（默认：list）
 
-**Example:**
+**示例：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -207,7 +207,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update Project
+#### 更新项目
 
 ```bash
 POST /todoist/rest/v2/projects/{id}
@@ -219,38 +219,38 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Project
+#### 删除项目
 
 ```bash
 DELETE /todoist/rest/v2/projects/{id}
 ```
 
-Returns 204 No Content on success.
+成功时返回204（No Content）。
 
-#### Get Project Collaborators
+#### 获取项目协作者
 
 ```bash
 GET /todoist/rest/v2/projects/{id}/collaborators
 ```
 
-### Tasks
+### 任务
 
-#### List Tasks
+#### 列出任务
 
 ```bash
 GET /todoist/rest/v2/tasks
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
+**查询参数：**
+| 参数 | 类型 | 描述 |
 |-----------|------|-------------|
-| `project_id` | string | Filter by project |
-| `section_id` | string | Filter by section |
-| `label` | string | Filter by label name |
-| `filter` | string | Todoist filter expression |
-| `ids` | string | Comma-separated task IDs |
+| `project_id` | string | 按项目过滤 |
+| `section_id` | string | 按章节过滤 |
+| `label` | string | 按标签名称过滤 |
+| `filter` | string | Todoist过滤表达式 |
+| `ids` | string | 用逗号分隔的任务ID |
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -277,13 +277,13 @@ GET /todoist/rest/v2/tasks
 ]
 ```
 
-#### Get Task
+#### 获取任务信息
 
 ```bash
 GET /todoist/rest/v2/tasks/{id}
 ```
 
-#### Create Task
+#### 创建任务
 
 ```bash
 POST /todoist/rest/v2/tasks
@@ -298,24 +298,24 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `content` - Task content/title
+**必填字段：**
+- `content` - 任务内容/标题
 
-**Optional Fields:**
-- `description` - Task description
-- `project_id` - Project to add task to (defaults to Inbox)
-- `section_id` - Section within project
-- `parent_id` - Parent task ID for subtasks
-- `labels` - Array of label names
-- `priority` - 1 (normal) to 4 (urgent)
-- `due_string` - Natural language due date ("tomorrow", "next Monday 3pm")
-- `due_date` - ISO format YYYY-MM-DD
-- `due_datetime` - RFC3339 format with timezone
-- `assignee_id` - User ID to assign task
-- `duration` - Task duration (integer)
-- `duration_unit` - "minute" or "day"
+**可选字段：**
+- `description` - 任务描述
+- `project_id` - 要添加任务的项目（默认为Inbox）
+- `section_id` - 项目内的章节
+- `parent_id` - 子任务的父任务ID
+- `labels` - 标签名称数组
+- `priority` - 1（普通）到4（紧急）
+- `due_string` - 自然语言截止日期（例如：“tomorrow”、“next Monday 3pm”）
+- `due_date` - ISO格式（YYYY-MM-DD）
+- `due_datetime` - 带时区的RFC3339格式
+- `assignee_id` - 分配任务的用户ID
+- `duration` - 任务持续时间（整数）
+- `duration_unit` - “minute”或“day”
 
-**Example:**
+**示例：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -332,7 +332,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Update Task
+#### 更新任务
 
 ```bash
 POST /todoist/rest/v2/tasks/{id}
@@ -344,40 +344,40 @@ Content-Type: application/json
 }
 ```
 
-#### Close Task (Complete)
+#### 完成任务（Close Task）
 
 ```bash
 POST /todoist/rest/v2/tasks/{id}/close
 ```
 
-Returns 204 No Content. For recurring tasks, this schedules the next occurrence.
+返回204（No Content）。对于重复任务，这将安排下一次任务发生的时间。
 
-#### Reopen Task
+#### 重新打开任务（Reopen Task）
 
 ```bash
 POST /todoist/rest/v2/tasks/{id}/reopen
 ```
 
-Returns 204 No Content.
+返回204（No Content）。
 
-#### Delete Task
+#### 删除任务
 
 ```bash
 DELETE /todoist/rest/v2/tasks/{id}
 ```
 
-Returns 204 No Content.
+返回204（No Content）。
 
-### Sections
+### 章节
 
-#### List Sections
+#### 列出章节
 
 ```bash
 GET /todoist/rest/v2/sections
 GET /todoist/rest/v2/sections?project_id={project_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -389,13 +389,13 @@ GET /todoist/rest/v2/sections?project_id={project_id}
 ]
 ```
 
-#### Get Section
+#### 获取章节信息
 
 ```bash
 GET /todoist/rest/v2/sections/{id}
 ```
 
-#### Create Section
+#### 创建章节
 
 ```bash
 POST /todoist/rest/v2/sections
@@ -408,11 +408,11 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `name` - Section name
-- `project_id` - Parent project ID
+**必填字段：**
+- `name` - 章节名称
+- `project_id` - 父项目ID
 
-#### Update Section
+#### 更新章节
 
 ```bash
 POST /todoist/rest/v2/sections/{id}
@@ -423,23 +423,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Section
+#### 删除章节
 
 ```bash
 DELETE /todoist/rest/v2/sections/{id}
 ```
 
-Returns 204 No Content.
+返回204（No Content）。
 
-### Labels
+### 标签
 
-#### List Labels
+#### 列出标签
 
 ```bash
 GET /todoist/rest/v2/labels
 ```
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -452,13 +452,13 @@ GET /todoist/rest/v2/labels
 ]
 ```
 
-#### Get Label
+#### 获取标签信息
 
 ```bash
 GET /todoist/rest/v2/labels/{id}
 ```
 
-#### Create Label
+#### 创建标签
 
 ```bash
 POST /todoist/rest/v2/labels
@@ -471,13 +471,13 @@ Content-Type: application/json
 }
 ```
 
-**Parameters:**
-- `name` (required) - Label name
-- `color` - Label color
-- `order` - Sort order
-- `is_favorite` - Boolean favorite status
+**参数：**
+- `name`（必填）- 标签名称
+- `color` - 标签颜色
+- `order` - 排序顺序
+- `is_favorite` - 喜欢状态（布尔值）
 
-#### Update Label
+#### 更新标签
 
 ```bash
 POST /todoist/rest/v2/labels/{id}
@@ -489,26 +489,26 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Label
+#### 删除标签
 
 ```bash
 DELETE /todoist/rest/v2/labels/{id}
 ```
 
-Returns 204 No Content.
+返回204（No Content）。
 
-### Comments
+### 评论
 
-#### List Comments
+#### 列出评论
 
 ```bash
 GET /todoist/rest/v2/comments?task_id={task_id}
 GET /todoist/rest/v2/comments?project_id={project_id}
 ```
 
-**Note:** Either `task_id` or `project_id` is required.
+**注意：** 必须提供`task_id`或`project_id`。
 
-**Response:**
+**响应：**
 ```json
 [
   {
@@ -522,13 +522,13 @@ GET /todoist/rest/v2/comments?project_id={project_id}
 ]
 ```
 
-#### Get Comment
+#### 获取评论信息
 
 ```bash
 GET /todoist/rest/v2/comments/{id}
 ```
 
-#### Create Comment
+#### 创建评论
 
 ```bash
 POST /todoist/rest/v2/comments
@@ -540,11 +540,11 @@ Content-Type: application/json
 }
 ```
 
-**Required Fields:**
-- `content` - Comment text
-- `task_id` OR `project_id` - Where to attach the comment
+**必填字段：**
+- `content` - 评论内容
+- `task_id` 或 `project_id` - 评论要附加到的任务/项目
 
-#### Update Comment
+#### 更新评论
 
 ```bash
 POST /todoist/rest/v2/comments/{id}
@@ -555,32 +555,32 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Comment
+#### 删除评论
 
 ```bash
 DELETE /todoist/rest/v2/comments/{id}
 ```
 
-Returns 204 No Content.
+返回204（No Content）。
 
-## Priority Values
+## 优先级值
 
-| Priority | Meaning |
+| 优先级 | 含义 |
 |----------|---------|
-| 1 | Normal (default) |
-| 2 | Medium |
-| 3 | High |
-| 4 | Urgent |
+| 1 | 普通（默认） |
+| 2 | 中等 |
+| 3 | 高 |
+| 4 | 紧急 |
 
-## Due Date Formats
+## 截止日期格式
 
-Use ONE of these formats per request:
+每次请求请使用以下格式之一：
 
-- `due_string` - Natural language: "tomorrow", "next Monday at 3pm", "every week"
-- `due_date` - Date only: "2026-02-15"
-- `due_datetime` - Full datetime: "2026-02-15T14:00:00Z"
+- `due_string` - 自然语言格式：例如：“tomorrow”、“next Monday at 3pm”、“every week”
+- `due_date` - 仅日期格式：例如：“2026-02-15”
+- `due_datetime` - 完整的日期时间格式：例如：“2026-02-15T14:00:00Z”
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -620,35 +620,35 @@ response = requests.post(
 task = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Task IDs and Project IDs are strings, not integers
-- Priority 4 is the highest (urgent), priority 1 is normal
-- Use only one due date format per request (due_string, due_date, or due_datetime)
-- Closing a recurring task schedules the next occurrence
-- The Inbox project cannot be deleted
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 任务ID和项目ID是字符串，而不是整数。
+- 优先级4表示最高优先级（紧急），优先级1表示普通优先级。
+- 每次请求只能使用一种截止日期格式（`due_string`、`due_date`或`due_datetime`）。
+- 完成重复任务会安排下一次任务的发生时间。
+- 无法删除Inbox项目。
+- 重要提示：当将curl输出传递给`jq`或其他命令时，在某些shell环境中，环境变量（如`$MATON_API_KEY`）可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 204 | Success (no content) - for close, reopen, delete operations |
-| 400 | Invalid request or missing Todoist connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Todoist API |
+| 204 | 成功（无内容） - 用于完成、重新打开或删除操作 |
+| 400 | 无效请求或缺少Todoist连接 |
+| 401 | 无效或缺少Maton API密钥 |
+| 404 | 资源未找到 |
+| 429 | 请求速率限制 |
+| 4xx/5xx | 来自Todoist API的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了`MATON_API_KEY`环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证API密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -659,18 +659,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `todoist`. For example:
+1. 确保您的URL路径以`todoist`开头。例如：
+- 正确：`https://gateway.maton.ai/todoist/rest/v2/tasks`
+- 错误：`https://gateway.maton.ai/rest/v2/tasks`
 
-- Correct: `https://gateway.maton.ai/todoist/rest/v2/tasks`
-- Incorrect: `https://gateway.maton.ai/rest/v2/tasks`
+## 资源
 
-## Resources
-
-- [Todoist REST API v2 Documentation](https://developer.todoist.com/rest/v2)
-- [Todoist API v1 Documentation](https://developer.todoist.com/api/v1)
-- [Todoist Filter Syntax](https://todoist.com/help/articles/introduction-to-filters)
-- [Todoist OAuth Documentation](https://developer.todoist.com/guides/#oauth)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Todoist REST API v2文档](https://developer.todoist.com/rest/v2)
+- [Todoist API v1文档](https://developer.todoist.com/api/v1)
+- [Todoist过滤语法](https://todoist.com/help/articles/introduction-to-filters)
+- [Todoist OAuth文档](https://developer.todoist.com/guides/#oauth)
+- [Maton社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton支持](mailto:support@maton.ai)

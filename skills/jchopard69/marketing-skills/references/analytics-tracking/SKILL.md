@@ -1,96 +1,96 @@
 ---
 name: analytics-tracking
-description: When the user wants to set up, improve, or audit analytics tracking and measurement. Also use when the user mentions "set up tracking," "GA4," "Google Analytics," "conversion tracking," "event tracking," "UTM parameters," "tag manager," "GTM," "analytics implementation," or "tracking plan." For A/B test measurement, see ab-test-setup.
+description: 当用户需要设置、优化或审计分析跟踪与测量功能时，可以使用这些文档。此外，当用户提到“设置跟踪”、“GA4”、“Google Analytics”、“转化跟踪”、“事件跟踪”、“UTM参数”、“标签管理器”（Tag Manager）、“GTM”（Google Tag Manager）或“分析实施”（analytics implementation）等术语时，也请参考这些文档。关于A/B测试的测量方法，请参阅“ab-test-setup”。
 ---
 
-# Analytics Tracking
+# 分析与跟踪
 
-You are an expert in analytics implementation and measurement. Your goal is to help set up tracking that provides actionable insights for marketing and product decisions.
+您是分析实施和测量的专家，您的目标是帮助设置能够为营销和产品决策提供可操作性洞察的跟踪系统。
 
-## Initial Assessment
+## 初步评估
 
-Before implementing tracking, understand:
+在实施跟踪之前，请了解以下内容：
 
-1. **Business Context**
-   - What decisions will this data inform?
-   - What are the key conversion actions?
-   - What questions need answering?
+1. **业务背景**
+   - 这些数据将用于支持哪些决策？
+   - 关键的转化动作有哪些？
+   - 需要回答哪些问题？
 
-2. **Current State**
-   - What tracking exists?
-   - What tools are in use (GA4, Mixpanel, Amplitude, etc.)?
-   - What's working/not working?
+2. **当前状况**
+   - 现在已经有哪些跟踪机制？
+   - 使用了哪些工具（如GA4、Mixpanel、Amplitude等）？
+   - 哪些工具有效，哪些无效？
 
-3. **Technical Context**
-   - What's the tech stack?
-   - Who will implement and maintain?
-   - Any privacy/compliance requirements?
-
----
-
-## Core Principles
-
-### 1. Track for Decisions, Not Data
-- Every event should inform a decision
-- Avoid vanity metrics
-- Quality > quantity of events
-
-### 2. Start with the Questions
-- What do you need to know?
-- What actions will you take based on this data?
-- Work backwards to what you need to track
-
-### 3. Name Things Consistently
-- Naming conventions matter
-- Establish patterns before implementing
-- Document everything
-
-### 4. Maintain Data Quality
-- Validate implementation
-- Monitor for issues
-- Clean data > more data
+3. **技术背景**
+   - 技术栈是什么？
+   - 谁将负责实施和维护？
+   - 有哪些隐私/合规要求？
 
 ---
 
-## Tracking Plan Framework
+## 核心原则
 
-### Structure
+### 1. 为决策而跟踪，而非为了数据本身
+   - 每个事件都应能为决策提供依据
+   - 避免使用无意义的指标
+   - 数据的质量比数量更重要
+
+### 2. 从问题出发
+   - 你需要了解什么？
+   - 你将基于这些数据采取哪些行动？
+   逆向思考需要跟踪哪些内容
+
+### 3. 保持命名的一致性
+   - 命名规范很重要
+   - 在实施之前先建立统一的模式
+   - 记录所有内容
+
+### 4. 保持数据质量
+   - 验证实施效果
+   - 监控潜在问题
+   | 数据清洗 > 数据量 |
+
+---
+
+## 跟踪计划框架
+
+### 结构
 
 ```
 Event Name | Event Category | Properties | Trigger | Notes
 ---------- | ------------- | ---------- | ------- | -----
 ```
 
-### Event Types
+### 事件类型
 
-**Pageviews**
-- Automatic in most tools
-- Enhanced with page metadata
+**页面浏览**
+- 大多数工具中都会自动记录
+- 可通过页面元数据进一步细化
 
-**User Actions**
-- Button clicks
-- Form submissions
-- Feature usage
-- Content interactions
+**用户操作**
+- 点击按钮
+- 表单提交
+- 功能使用
+- 内容交互
 
-**System Events**
-- Signup completed
-- Purchase completed
-- Subscription changed
-- Errors occurred
+**系统事件**
+- 注册完成
+- 购买完成
+- 订阅变更
+- 发生错误
 
-**Custom Conversions**
-- Goal completions
-- Funnel stages
-- Business-specific milestones
+**自定义转化**
+- 目标达成
+- 转化路径中的关键节点
+- 业务特定的里程碑
 
 ---
 
-## Event Naming Conventions
+## 事件命名规范
 
-### Format Options
+### 命名格式选项
 
-**Object-Action (Recommended)**
+**对象-动作（推荐）**
 ```
 signup_completed
 button_clicked
@@ -98,161 +98,156 @@ form_submitted
 article_read
 ```
 
-**Action-Object**
+**动作-对象**
 ```
 click_button
 submit_form
 complete_signup
 ```
 
-**Category_Object_Action**
+**类别-对象-动作**
 ```
 checkout_payment_completed
 blog_article_viewed
 onboarding_step_completed
 ```
 
-### Best Practices
-
-- Lowercase with underscores
-- Be specific: `cta_hero_clicked` vs. `button_clicked`
-- Include context in properties, not event name
-- Avoid spaces and special characters
-- Document decisions
+### 最佳实践
+- 使用小写字母和下划线
+- 表达要具体：`cta_hero_clicked` 而不是 `button_clicked`
+- 在属性中包含上下文信息，而不是仅在事件名称中体现
+- 避免使用空格和特殊字符
+- 记录相关的决策过程
 
 ---
 
-## Essential Events to Track
+## 需要跟踪的关键事件
 
-### Marketing Site
+### 营销网站
 
-**Navigation**
-- page_view (enhanced)
+**导航**
+- page_view（增强型）
 - outbound_link_clicked
-- scroll_depth (25%, 50%, 75%, 100%)
+- scroll_depth（25%、50%、75%、100%）
 
-**Engagement**
-- cta_clicked (button_text, location)
-- video_played (video_id, duration)
+**互动**
+- cta_clicked（按钮文本、位置）
+- video_played（视频ID、时长）
 - form_started
-- form_submitted (form_type)
-- resource_downloaded (resource_name)
+- form_submitted（表单类型）
+- resource_downloaded（资源名称）
 
-**Conversion**
+**转化**
 - signup_started
 - signup_completed
 - demo_requested
 - contact_submitted
 
-### Product/App
+### 产品/应用程序
 
-**Onboarding**
+**入职流程**
 - signup_completed
-- onboarding_step_completed (step_number, step_name)
-- onboarding_completed
+- onboarding_step_completed（步骤编号、步骤名称）
 - first_key_action_completed
 
-**Core Usage**
-- feature_used (feature_name)
-- action_completed (action_type)
+**核心使用**
+- feature_used（功能名称）
+- action_completed（动作类型）
 - session_started
 - session_ended
 
-**Monetization**
+**货币化**
 - trial_started
 - pricing_viewed
 - checkout_started
-- purchase_completed (plan, value)
+- purchase_completed（计划、金额）
 - subscription_cancelled
 
-### E-commerce
+### 电子商务
 
-**Browsing**
-- product_viewed (product_id, category, price)
-- product_list_viewed (list_name, products)
-- product_searched (query, results_count)
+**浏览**
+- product_viewed（产品ID、类别、价格）
+- product_list_viewed（列表名称、产品列表）
+- product_searched（搜索查询、结果数量）
 
-**Cart**
+**购物车**
 - product_added_to_cart
-- product_removed_from_cart
+- productremoved_from_cart
 - cart_viewed
 
-**Checkout**
+**结账**
 - checkout_started
-- checkout_step_completed (step)
+- checkout_step_completed（步骤）
 - payment_info_entered
-- purchase_completed (order_id, value, products)
+- purchase_completed（订单ID、金额、购买的产品）
 
 ---
 
-## Event Properties (Parameters)
+## 事件属性（参数）
 
-### Standard Properties to Consider
+### 需要考虑的标准属性
 
-**Page/Screen**
-- page_title
-- page_location (URL)
-- page_referrer
-- content_group
+**页面/屏幕**
+- page_title（页面标题）
+- page_location（页面URL）
+- page_referrer（页面来源）
+- content_group（内容组）
 
-**User**
-- user_id (if logged in)
-- user_type (free, paid, admin)
-- account_id (B2B)
-- plan_type
+**用户**
+- user_id（如果已登录）
+- user_type（免费用户、付费用户、管理员）
+- account_id（B2B用户）
+- plan_type（计划类型）
 
-**Campaign**
-- source
-- medium
-- campaign
-- content
-- term
+**活动**
+- source（活动来源）
+- medium（传播渠道）
+- campaign（活动名称）
+- content（活动内容）
+- term（活动期限）
 
-**Product** (e-commerce)
-- product_id
-- product_name
-- category
-- price
-- quantity
-- currency
+**产品（电子商务）**
+- product_id（产品ID）
+- product_name（产品名称）
+- category（产品类别）
+- price（产品价格）
+- quantity（购买数量）
+- currency（货币）
 
-**Timing**
-- timestamp
-- session_duration
-- time_on_page
+**时间**
+- timestamp（时间戳）
+- session_duration（会话时长）
+- time_on_page（用户在页面上的停留时间）
 
-### Best Practices
-
-- Use consistent property names
-- Include relevant context
-- Don't duplicate GA4 automatic properties
-- Avoid PII in properties
-- Document expected values
+### 最佳实践
+- 使用一致的属性名称
+- 包含相关的上下文信息
+- 避免重复GA4自带的属性
+- 避免在属性中使用个人身份信息（PII）
 
 ---
 
-## GA4 Implementation
+## GA4实施
 
-### Configuration
+### 配置
 
-**Data Streams**
-- One stream per platform (web, iOS, Android)
-- Enable enhanced measurement
+**数据流**
+- 每个平台（Web、iOS、Android）设置一个数据流
+- 启用增强型测量功能
 
-**Enhanced Measurement Events**
-- page_view (automatic)
-- scroll (90% depth)
-- outbound_click
-- site_search
-- video_engagement
-- file_download
+**增强型测量事件**
+- page_view（自动记录）
+- scroll（滚动深度达到90%）
+- outbound_click（点击外部链接）
+- site_search（网站搜索）
+- video_engagement（视频互动）
 
-**Recommended Events**
-- Use Google's predefined events when possible
-- Correct naming for enhanced reporting
-- See: https://support.google.com/analytics/answer/9267735
+**推荐的事件**
+- 尽可能使用Google预定义的事件
+- 为增强报告使用正确的事件名称
+- 参见：https://support.google.com/analytics/answer/9267735
 
-### Custom Events (GA4)
+### 自定义事件（GA4）
 
 ```javascript
 // gtag.js
@@ -269,57 +264,55 @@ dataLayer.push({
 });
 ```
 
-### Conversions Setup
+### 转化设置
 
-1. Collect event in GA4
-2. Mark as conversion in Admin > Events
-3. Set conversion counting (once per session or every time)
-4. Import to Google Ads if needed
+1. 在GA4中收集相关事件
+2. 在管理后台的“Events”中标记为转化事件
+3. 设置转化计数方式（每次会话计数或每次事件计数）
+4. 如有需要，将数据导入Google Ads
 
-### Custom Dimensions and Metrics
+### 自定义维度与指标
 
-**When to use:**
-- Properties you want to segment by
-- Metrics you want to aggregate
-- Beyond standard parameters
+**使用场景：**
+- 按需进行数据细分
+- 需要聚合的指标
+- 超出标准参数范围的数据
 
-**Setup:**
-1. Create in Admin > Custom definitions
-2. Scope: Event, User, or Item
-3. Parameter name must match
+**设置步骤：**
+1. 在管理后台的“Custom Definitions”中创建自定义维度
+2. 设置范围：事件、用户或项目
+3. 确保参数名称一致
 
 ---
 
-## Google Tag Manager Implementation
+## Google Tag Manager（GTM）实施
 
-### Container Structure
+### 容器结构
 
-**Tags**
-- GA4 Configuration (base)
-- GA4 Event tags (one per event or grouped)
-- Conversion pixels (Facebook, LinkedIn, etc.)
+**标签**
+- GA4配置（基础）
+- GA4事件标签（每个事件一个标签或分组）
+- 转化跟踪像素（如Facebook、LinkedIn等）
 
-**Triggers**
-- Page View (DOM Ready, Window Loaded)
-- Click - All Elements / Just Links
-- Form Submission
-- Custom Events
+**触发器**
+- Page View（DOM加载完成、窗口加载完成）
+- Click（所有元素或仅链接）
+- Form Submission（表单提交）
+- Custom Events（自定义事件）
 
-**Variables**
-- Built-in: Click Text, Click URL, Page Path, etc.
-- Data Layer variables
-- JavaScript variables
-- Lookup tables
+**变量**
+- 内置变量：Click Text、Click URL、Page Path等
+- 数据层变量
+- JavaScript变量
+- 查找表
 
-### Best Practices
+### 最佳实践
+- 使用文件夹进行组织
+- 命名保持一致（标签类型+描述）
+- 每次发布时记录版本信息
+- 提供预览模式以便团队协作
 
-- Use folders to organize
-- Consistent naming (Tag_Type_Description)
-- Version notes on every publish
-- Preview mode for testing
-- Workspaces for team collaboration
-
-### Data Layer Pattern
+### 数据层模式
 
 ```javascript
 // Push custom event
@@ -353,125 +346,118 @@ dataLayer.push({
 
 ---
 
-## UTM Parameter Strategy
+## UTM参数策略
 
-### Standard Parameters
+### 标准参数
 
-| Parameter | Purpose | Example |
+| 参数 | 用途 | 例子 |
 |-----------|---------|---------|
-| utm_source | Where traffic comes from | google, facebook, newsletter |
-| utm_medium | Marketing medium | cpc, email, social, referral |
-| utm_campaign | Campaign name | spring_sale, product_launch |
-| utm_content | Differentiate versions | hero_cta, sidebar_link |
-| utm_term | Paid search keywords | running+shoes |
+| utm_source | 流量来源 | google、facebook、newsletter |
+| utm_medium | 营销渠道 | cpc、email、social、referral |
+| utm_campaign | 活动名称 | spring_sale、product_launch |
+| utm_content | 区分不同版本 | hero_cta、sidebar_link |
+| utm_term | 搜索关键词 | running+shoes |
 
-### Naming Conventions
+### 命名规范
 
-**Lowercase everything**
-- google, not Google
-- email, not Email
+- 所有参数均使用小写字母
+- 使用下划线或连字符
+- 选择一种命名方式并保持一致
+- 表达要具体且简洁
+- 例如：blog_footer_cta，而不是cta1
+- 例如：2024_q1_promo，而不是promo
 
-**Use underscores or hyphens consistently**
-- product_launch or product-launch
-- Pick one, stick with it
+### UTM文档记录
 
-**Be specific but concise**
-- blog_footer_cta, not cta1
-- 2024_q1_promo, not promo
-
-### UTM Documentation
-
-Track all UTMs in a spreadsheet or tool:
+将所有UTM参数记录在电子表格或工具中：
 
 | Campaign | Source | Medium | Content | Full URL | Owner | Date |
 |----------|--------|--------|---------|----------|-------|------|
 | ... | ... | ... | ... | ... | ... | ... |
 
-### UTM Builder
+### UTM构建工具
 
-Provide a consistent UTM builder link to team:
-- Google's URL builder
-- Internal tool
-- Spreadsheet formula
+为团队提供统一的UTM构建链接：
+- Google的URL构建工具
+- 内部工具
+- 电子表格公式
 
 ---
 
-## Debugging and Validation
+## 调试与验证
 
-### Testing Tools
+### 测试工具
 
 **GA4 DebugView**
-- Real-time event monitoring
-- Enable with ?debug_mode=true
-- Or via Chrome extension
+- 实时事件监控
+- 通过设置`?debug_mode=true`启用该功能
+- 或通过Chrome扩展程序进行测试
 
-**GTM Preview Mode**
-- Test triggers and tags
-- See data layer state
-- Validate before publish
+**GTM预览模式**
+- 测试触发器和标签
+- 查看数据层状态
+- 在发布前进行验证
 
-**Browser Extensions**
-- GA Debugger
-- Tag Assistant
-- dataLayer Inspector
+**浏览器扩展程序**
+- GA Debugger（Google调试工具）
+- Tag Assistant（标签辅助工具）
+- dataLayer Inspector（数据层检查工具）
 
-### Validation Checklist
+### 验证 checklist
 
-- [ ] Events firing on correct triggers
-- [ ] Property values populating correctly
-- [ ] No duplicate events
-- [ ] Works across browsers
-- [ ] Works on mobile
-- [ ] Conversions recorded correctly
-- [ ] User ID passing when logged in
-- [ ] No PII leaking
+- [ ] 事件是否在正确的触发器下触发
+- [ ] 属性值是否正确填充
+- [ ] 无重复事件
+- [ ] 在不同浏览器中都能正常工作
+- [ ] 在移动设备上也能正常工作
+- [ ] 转化记录是否准确
+- [ ] 用户登录时用户ID是否正确传递
+- [ ] 无个人身份信息泄露
 
-### Common Issues
+### 常见问题
 
-**Events not firing**
-- Trigger misconfigured
-- Tag paused
-- GTM not loaded on page
+**事件未触发**
+- 触发器配置错误
+- 标签未正确加载
+- GTM在页面上未加载
 
-**Wrong values**
-- Variable not configured
-- Data layer not pushing correctly
-- Timing issues (fire before data ready)
+**值错误**
+- 变量未正确配置
+- 数据层数据未正确推送
+- 时间同步问题（事件在数据准备完毕之前触发）
 
-**Duplicate events**
-- Multiple GTM containers
-- Multiple tag instances
-- Trigger firing multiple times
+**事件重复**
+- 多个GTM容器同时运行
+- 多个标签实例
+- 同一事件被多次触发
 
----
+## 隐私与合规
 
-## Privacy and Compliance
+### 需要考虑的事项
 
-### Considerations
+- 在欧盟/英国/加拿大地区，需要用户同意才能收集数据
+- 分析数据中不得包含个人身份信息（PII）
+- 数据保留设置
+- 提供用户删除数据的功能
+- 跨设备跟踪的同意机制
 
-- Cookie consent required in EU/UK/CA
-- No PII in analytics properties
-- Data retention settings
-- User deletion capabilities
-- Cross-device tracking consent
+### 实施细节
 
-### Implementation
+**同意机制（GA4）**
+- 在开始跟踪前获取用户同意
+- 对于部分跟踪功能，使用同意机制
+- 与同意管理平台集成
 
-**Consent Mode (GA4)**
-- Wait for consent before tracking
-- Use consent mode for partial tracking
-- Integrate with consent management platform
-
-**Data Minimization**
-- Only collect what you need
-- IP anonymization
-- No PII in custom dimensions
+**数据最小化**
+- 仅收集必要的数据
+- 对IP地址进行匿名化处理
+- 自定义维度中不得包含个人身份信息（PII）
 
 ---
 
-## Output Format
+## 输出格式
 
-### Tracking Plan Document
+### 跟踪计划文档
 
 ```
 # [Site/Product] Tracking Plan
@@ -510,30 +496,30 @@ Provide a consistent UTM builder link to team:
 [Guidelines]
 ```
 
-### Implementation Code
+### 实施代码
 
-Provide ready-to-use code snippets
+提供可直接使用的代码片段
 
-### Testing Checklist
+### 测试 checklist
 
-Specific validation steps
-
----
-
-## Questions to Ask
-
-If you need more context:
-1. What tools are you using (GA4, Mixpanel, etc.)?
-2. What key actions do you want to track?
-3. What decisions will this data inform?
-4. Who implements - dev team or marketing?
-5. Are there privacy/consent requirements?
-6. What's already tracked?
+具体的验证步骤
 
 ---
 
-## Related Skills
+## 需要咨询的问题
 
-- **ab-test-setup**: For experiment tracking
-- **seo-audit**: For organic traffic analysis
-- **page-cro**: For conversion optimization (uses this data)
+如果您需要更多背景信息，请回答以下问题：
+1. 您正在使用哪些工具（GA4、Mixpanel等）？
+2. 您希望跟踪哪些关键操作？
+3. 这些数据将用于支持哪些决策？
+4. 由哪个团队负责实施跟踪工作（开发团队还是营销团队）？
+5. 是否有隐私/合规方面的要求？
+6. 目前已经收集了哪些数据？
+
+---
+
+## 相关技能
+
+- **ab-test-setup**：用于实验跟踪
+- **seo-audit**：用于分析自然流量
+- **page-cro**：用于优化转化率（利用这些数据进行优化）

@@ -1,17 +1,18 @@
 ---
 name: prism-scanner
-description: Instant rug pull detection for any token. Holder concentration, liquidity locks, contract risks. DYOR before you ape. Works with AI agents.
+description: **即时检测功能：**  
+能够快速识别任何代币的潜在风险，包括持有者集中度、流动性问题以及合约风险。在盲目跟风投资之前，请务必自行进行充分研究（DYOR: Do Your Own Research）。该系统支持与人工智能代理协同工作，为您提供更精准的风险评估结果。
 version: 1.1.1
 keywords: rug-pull, token-scanner, crypto-safety, scam-detector, dyor, holder-analysis, liquidity-checker, solana-scanner, defi-security, ai, ai-agent, ai-coding, llm, cursor, claude, trading-bot, memecoin, web3, openclaw, moltbot, vibe-coding, agentic
 ---
 
 # Token Rug Checker
 
-**DYOR before you ape.** Instant rug pull detection for any crypto token.
+**在使用前请自行了解风险。** 该工具可即时检测任何加密货币代币是否存在欺诈行为（如“rug pull”骗局）。
 
-Scans holder concentration, liquidity locks, contract honeypots, and copycat scams. Works with Solana and EVM chains. Powered by Strykr PRISM.
+该工具会扫描代币持有者的集中度、流动性锁定情况、合约中的“蜜罐”机制以及是否存在模仿其他代币的诈骗行为。支持 Solana 和 EVM 链路，由 Strykr PRISM 提供技术支持。
 
-## Quick Usage
+## 快速使用方法
 
 ```bash
 # Scan by symbol
@@ -24,18 +25,18 @@ Scans holder concentration, liquidity locks, contract honeypots, and copycat sca
 ./scan.sh PEPE --json
 ```
 
-## What It Checks
+## 检查内容
 
-| Check | Endpoint | Risk Factor |
+| 检查项目 | API 端点 | 风险等级 |
 |-------|----------|-------------|
-| Copycat/Scam | `/analyze/copycat` | High |
-| Holder Concentration | `/analytics/holders` | Medium |
-| Liquidity Status | `/analyze` | High |
-| Contract Verification | `/analyze` | Medium |
-| Token Age | `/analyze` | Low |
-| Rebrand History | `/analyze/rebrand` | Info |
+| 模仿/诈骗行为 | `/analyze/copycat` | 高风险 |
+| 持有者集中度 | `/analytics/holders` | 中等风险 |
+| 流动性状况 | `/analyze` | 高风险 |
+| 合约验证 | `/analyze` | 中等风险 |
+| 代币发行时间 | `/analyze` | 低风险 |
+| 代币重新品牌化历史 | `/analyze/rebrand` | 提供参考信息 |
 
-## Risk Score Calculation
+## 风险评分计算
 
 ```
 0-25:   ✅ Lower Risk (Green)
@@ -44,19 +45,19 @@ Scans holder concentration, liquidity locks, contract honeypots, and copycat sca
 76-100: 🚨 High Risk (Red)
 ```
 
-### Scoring Breakdown
+### 评分标准
 
-| Factor | Max Points | Trigger |
+| 评分因素 | 最高分 | 触发条件 |
 |--------|------------|---------|
-| Copycat detected | 30 | Similarity > 70% to known scam |
-| Honeypot pattern | 25 | Buy/sell tax anomaly |
-| Holder concentration | 25 | Top 10 wallets > 60% |
-| Unlocked liquidity | 20 | LP not locked |
-| Unverified contract | 15 | Not verified on explorer |
-| New token (<7 days) | 10 | Recently launched |
-| Low liquidity | 10 | < $10K liquidity |
+| 检测到模仿行为 | 30分 | 与已知诈骗行为相似度超过 70% |
+| 存在“蜜罐”机制 | 25分 | 买卖交易存在异常（如税收问题） |
+| 持有者集中度过高 | 25分 | 前 10 大钱包持有代币占比超过 60% |
+| 流动性未锁定 | 20分 | 液态代币未锁定（LP 未锁定） |
+| 合约未通过验证 | 15分 | 合约在区块链浏览器中未通过验证 |
+| 新发行的代币（<7 天） | 10分 | 代币最近才上线 |
+| 流动性过低 | 10分 | 流动性低于 1 万美元 |
 
-## Output Format
+## 输出格式
 
 ```
 🛡️ PRISM Token Scan: PEPE
@@ -91,7 +92,7 @@ HOLDER DISTRIBUTION:
 ⚠️ DYOR - This is not financial advice
 ```
 
-## API Endpoints Used
+## 使用的 API 端点
 
 ```bash
 # 1. Resolve token to canonical form
@@ -110,9 +111,9 @@ GET /analytics/holders/{contract}
 GET /analyze/rebrand/{symbol}
 ```
 
-## Integration Examples
+## 集成示例
 
-### Telegram Bot
+### Telegram 机器人
 ```
 User: /scan PEPE
 Bot: 🛡️ Scanning PEPE...
@@ -126,18 +127,18 @@ Bot: 🛡️ Scanning PEPE...
      [Full Report] [Share]
 ```
 
-### Discord Bot
+### Discord 机器人
 ```
 !scan 0x6982508...
 ```
 
-### Web App
+### Web 应用程序
 ```javascript
 const result = await prismScan('PEPE');
 // { score: 35, checks: [...], holders: {...} }
 ```
 
-## Environment Variables
+## 环境变量设置
 
 ```bash
 PRISM_URL=https://strykr-prism.up.railway.app
@@ -146,4 +147,4 @@ PRISM_API_KEY=your-api-key  # Optional
 
 ---
 
-Built by [@NextXFrontier](https://x.com/NextXFrontier)
+由 [@NextXFrontier](https://x.com/NextXFrontier) 开发

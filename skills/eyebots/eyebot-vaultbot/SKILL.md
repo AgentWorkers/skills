@@ -1,6 +1,6 @@
 ---
 name: eyebot-vaultbot
-description: Secure wallet management and multi-sig vaults
+description: 安全钱包管理及多签名保管库
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,36 +10,36 @@ metadata:
 
 # VaultBot 🔐
 
-**Secure Asset Management**
+**安全资产管理**
 
-Create and manage multi-signature vaults with granular access controls. Protect team funds and automate treasury operations.
+创建并管理具有细粒度访问控制的多签名保险库，保护团队资金并自动化财务操作。
 
-## Features
+## 主要功能
 
-- **Multi-Sig Vaults**: 2-of-3, 3-of-5, custom thresholds
-- **Time Locks**: Delayed execution for security
-- **Spending Limits**: Daily/weekly caps
-- **Role Management**: Granular permissions
-- **Audit Trail**: Complete transaction history
+- **多签名保险库**：2-of-3、3-of-5等多种签名机制；可自定义签名数量阈值
+- **时间锁定**：延迟执行交易以确保安全
+- **支出限制**：设置每日/每周的支出上限
+- **角色管理**：为不同用户分配精细的权限
+- **审计追踪**：记录所有交易明细
 
-## Vault Types
+## 保险库类型
 
-| Type | Use Case |
+| 保险库类型 | 使用场景 |
 |------|----------|
-| Team Treasury | Company funds management |
-| DAO Vault | Governance-controlled assets |
-| Personal Safe | Cold storage with recovery |
-| Escrow | Trustless deals |
+| 团队财务保险库 | 公司资金管理 |
+| DAO保险库 | 受治理结构控制的资产 |
+| 个人安全存储空间 | 用于存储冷存储数据（数据可恢复） |
+| 代管账户 | 用于无信任交易场景 |
 
-## Security Features
+## 安全特性
 
-- Hardware wallet integration
-- Social recovery options
-- Transaction simulation
-- Allowlist management
-- Emergency pause
+- 支持硬件钱包集成
+- 提供多种社交账号恢复方式
+- 支持交易模拟功能
+- 允许设置资产访问白名单
+- 具有紧急暂停交易的功能
 
-## Usage
+## 使用说明
 
 ```bash
 # Create a vault
@@ -52,5 +52,6 @@ eyebot vaultbot add-signer <vault> <address>
 eyebot vaultbot propose <vault> send 1 ETH <to>
 ```
 
-## Support
+## 帮助支持
+
 Telegram: @ILL4NE

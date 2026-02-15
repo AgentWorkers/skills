@@ -1,18 +1,18 @@
 ---
 name: Movie
-description: Create films with AI video generation by managing scripts, prompts, consistency, and production workflows from concept to final cut.
+description: 通过管理脚本、提示、内容的一致性以及从概念到最终成品的生产工作流程，利用人工智能视频生成技术来制作电影。
 ---
 
-## Core Workflow
+## 核心工作流程
 
-Every film follows: Script → Breakdown → Generation → Assembly → Polish.
+每部电影的制作流程均为：剧本 → 分解 → 生成 → 组装 → 优化。
 
-Before generating ANY video, establish:
-1. **Style bible** — Visual language, color palette, lighting, grain
-2. **Character sheets** — Reference images from multiple angles
-3. **Shot list** — Scene-by-scene with framing, duration, transitions
+在生成任何视频之前，需要先确定以下内容：
+1. **风格指南** — 视觉语言、色彩搭配、光照效果、画面质感
+2. **角色参考图** — 从多个角度拍摄的角色参考图片
+3. **镜头列表** — 包含每个镜头的构图、时长及转场效果的详细信息
 
-## Project Structure
+## 项目结构
 
 ```
 ~/movies/<project>/
@@ -24,35 +24,35 @@ Before generating ANY video, establish:
 └── status.md           # What's done, what needs work
 ```
 
-## Generation Checklist
+## 生成检查清单
 
-Before each shot generation:
-- [ ] Character reference images attached
-- [ ] Style keywords locked (from style-bible)
-- [ ] Previous shot reviewed for continuity
-- [ ] Tool selected based on shot type (see `tools.md`)
+在生成每个镜头之前，需要完成以下步骤：
+- [ ] 附加角色参考图片
+- [ ] 确定风格相关参数（根据风格指南）
+- [ ] 查看前一个镜头的连贯性
+- [ ] 根据镜头类型选择合适的工具（详见 `tools.md`）
 
-After generation:
-- [ ] Check character consistency vs reference
-- [ ] Check lighting/color matches scene
-- [ ] Log prompt + result in shots folder
-- [ ] Flag continuity issues for re-generation
+生成完成后，需要检查以下内容：
+- [ ] 角色的表现是否与参考图片一致
+- [ ] 光照和色彩是否与场景相匹配
+- [ ] 将生成结果记录在镜头文件夹中
+- [ ] 标记出存在连贯性问题的镜头，以便重新生成
 
-## Quick Reference
+## 快速参考
 
-| Need | Load |
+| 需要执行的操作 | 参考文档 |
 |------|------|
-| Breaking down scripts into shots | `preproduction.md` |
-| Writing effective prompts by tool | `generation.md` |
-| Editing, color matching, sound | `postproduction.md` |
-| Which API/tool for which shot | `tools.md` |
-| Commercial: versions, formats, localization | `commercial.md` |
-| Experimental: audio-sync, style morphing | `experimental.md` |
+| 将剧本分解为多个镜头 | `preproduction.md` |
+- 使用工具编写有效的生成指令 | `generation.md` |
+- 编辑、调整色彩、处理音频 | `postproduction.md` |
+- 选择适合特定镜头的 API 或工具 | `tools.md` |
+- 商业项目：版本控制、格式设置、本地化处理 | `commercial.md` |
+- 实验性项目：音频同步、风格调整 | `experimental.md` |
 
-## Critical Rules
+## 重要规则
 
-1. **Consistency over speed** — Better to re-generate than break character continuity
-2. **Log everything** — Every prompt, every iteration, what worked/failed
-3. **Tool routing matters** — Seedance for motion, Kling for duration, Runway for style
-4. **Start rough** — Animatics first, polish approved shots only
-5. **Project scope** — 2-hour film = hundreds of shots. Plan iterations.
+1. **一致性优先于速度** — 重新生成镜头以保持角色表现的连贯性比快速完成更重要
+2. **详细记录所有操作** — 记录每个生成指令、每次迭代的过程以及哪些步骤成功或失败
+3. **选择合适的工具至关重要** — 使用 `Seedance` 处理动画效果，`Kling` 调整镜头时长，`Runway` 设定视觉风格
+4. **先制作粗略版本** — 先制作动画预览，仅对经过审核的镜头进行精细化处理
+5. **项目规模考量** — 一部时长为 2 小时的电影通常需要制作数百个镜头，因此需要合理规划迭代次数

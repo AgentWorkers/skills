@@ -12,9 +12,9 @@ metadata:
 
 # OneShot
 
-Infrastructure for autonomous AI agents to execute real-world commercial transactions: email, payments, e-commerce, research, and data enrichment with native x402 payments.
+OneShot 是一套专为自主 AI 代理设计的基础设施，用于执行现实世界的商业交易，包括发送电子邮件、处理支付、开展电子商务、进行研究以及通过原生 x402 支付系统对数据进行增强处理。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npm install @oneshot-agent/sdk
@@ -35,21 +35,20 @@ const result = await agent.email({
 });
 ```
 
-## Authentication
+## 认证
 
-OneShot uses x402 payments (USDC on Base). No API keys—your agent's wallet private key signs transactions automatically.
+OneShot 使用 x402 支付系统（基于 Base 网络的 USDC）。无需 API 密钥——代理的钱包私钥会自动签署交易。
 
-**Environment Variable:**
+**环境变量：**
 ```bash
 export ONESHOT_WALLET_PRIVATE_KEY="0xYourPrivateKey"
 ```
 
-**Test Mode:** SDK runs in test mode by default (Base Sepolia testnet). Set `ONESHOT_TEST_MODE=false` for production.
+**测试模式：** 默认情况下，SDK 会在 Base Sepolia 测试网络上运行。如需在生产环境中使用，请将 `ONESHOT_TEST_MODE` 设置为 `false`。
 
-## SDK Methods
+## SDK 方法
 
-### Email
-
+### 发送电子邮件
 ```typescript
 // Send email (~$0.01 per email, ~$10 first-time domain setup)
 const result = await agent.email({
@@ -67,8 +66,7 @@ const result = await agent.email({
 });
 ```
 
-### Inbox
-
+### 查看收件箱
 ```typescript
 // List inbound emails (free)
 const emails = await agent.inboxList();
@@ -77,8 +75,7 @@ const emails = await agent.inboxList();
 const email = await agent.inboxGet({ id: 'email_id' });
 ```
 
-### SMS
-
+### 发送短信
 ```typescript
 // Send SMS (~$0.035 per segment)
 const result = await agent.sms({
@@ -90,8 +87,7 @@ const result = await agent.sms({
 const messages = await agent.smsInboxList();
 ```
 
-### Voice Calls
-
+### 发起语音通话
 ```typescript
 // Make a call (~$0.25/min)
 const result = await agent.voice({
@@ -101,8 +97,7 @@ const result = await agent.voice({
 });
 ```
 
-### Research
-
+### 开展研究
 ```typescript
 // Deep research ($0.50-$2.00)
 const result = await agent.research({
@@ -115,8 +110,7 @@ console.log(result.report);
 console.log(result.sources);
 ```
 
-### Data Enrichment
-
+### 数据增强
 ```typescript
 // Find email (~$0.10)
 const result = await agent.findEmail({
@@ -142,8 +136,7 @@ const results = await agent.peopleSearch({
 });
 ```
 
-### Commerce
-
+### 电子商务
 ```typescript
 // Search products (free)
 const products = await agent.commerceSearch({
@@ -166,8 +159,7 @@ const result = await agent.commerceBuy({
 });
 ```
 
-### Build Websites
-
+### 构建网站
 ```typescript
 // Build a website (~$10+)
 const result = await agent.build({
@@ -183,8 +175,7 @@ const result = await agent.updateBuild({
 });
 ```
 
-### Utilities
-
+### 实用工具
 ```typescript
 // Check balance (free)
 const balance = await agent.getBalance();
@@ -198,15 +189,15 @@ const result = await agent.tool('email', {
 });
 ```
 
-## MCP Server
+## MCP 服务器
 
-Use OneShot tools in Claude Desktop, Cursor, or Claude Code:
+您可以在 Claude Desktop、Cursor 或 Claude Code 中使用 OneShot 的相关工具：
 
 ```bash
 npm install -g @oneshot-agent/mcp-server
 ```
 
-**Claude Code (~/.claude/settings.json):**
+**Claude 配置文件（~/.claude/settings.json）：**
 ```json
 {
   "mcpServers": {
@@ -221,35 +212,34 @@ npm install -g @oneshot-agent/mcp-server
 }
 ```
 
-## Pricing
+## 价格表
 
-| Tool | Cost |
+| 工具 | 费用 |
 |------|------|
-| Email | ~$0.01/email (+$10 first domain) |
-| SMS | ~$0.035/segment |
-| Voice | ~$0.25/minute |
-| Research (quick) | ~$0.50 |
-| Research (deep) | ~$2.00 |
-| Find Email | ~$0.10 |
-| Verify Email | ~$0.01 |
-| Enrich Profile | ~$0.10 |
-| People Search | ~$0.10/result |
-| Product Search | Free |
-| Commerce Buy | Product price + fee |
-| Build Website | ~$10+ |
-| Inbox/Notifications | Free |
+| 发送电子邮件 | 每封邮件约 0.01 美元（第一个域名需额外支付 10 美元） |
+| 发送短信 | 每条短信约 0.035 美元 |
+| 发起语音通话 | 每分钟约 0.25 美元 |
+| 进行快速研究 | 约 0.50 美元 |
+| 进行深入研究 | 约 2.00 美元 |
+| 查找电子邮件 | 约 0.10 美元 |
+| 验证电子邮件 | 约 0.01 美元 |
+| 增强个人资料 | 约 0.10 美元 |
+| 人员搜索 | 每条搜索结果约 0.10 美元 |
+| 产品搜索 | 免费 |
+| 电子商务购买 | 产品价格 + 手续费 |
+| 构建网站 | 约 10 美元以上 |
+| 收件箱/通知 | 免费 |
 
-## Funding Your Agent
+## 为代理充值
 
-Add USDC to your agent's wallet on Base network:
-1. Get wallet address from private key
-2. Send USDC (Base) to the address
-3. Or use https://oneshotagent.com to fund
+请将 USDC 加入代理在 Base 网络上的钱包：
+1. 从私钥中获取钱包地址。
+2. 将 USDC 发送到该地址。
+3. 或者访问 [https://oneshotagent.com] 进行充值。
 
-Test mode uses Base Sepolia testnet (free test USDC).
+测试模式使用 Base Sepolia 测试网络（提供免费的测试用 USDC）。
 
-## Error Handling
-
+## 错误处理
 ```typescript
 import { OneShot, ContentBlockedError, InsufficientBalanceError } from '@oneshot-agent/sdk';
 
@@ -266,18 +256,18 @@ try {
 
 ## Soul.Markets
 
-Monetize your agent by listing on Soul.Markets:
-- Upload your soul.md
-- Define services and pricing
-- Earn 80% of every transaction
-- USDC settlements, instant payouts
+您可以通过在 Soul.Markets 上发布您的代理服务来盈利：
+- 上传您的 `soul.md` 文件。
+- 定义服务内容和价格。
+- 每笔交易可赚取 80% 的佣金。
+- 支付方式采用 USDC，且款项可即时到账。
 
-Docs: https://docs.soul.mds.markets
+更多文档请访问：[https://docs.soul.mds.markets]
 
-## Resources
+## 资源
 
-- [Documentation](https://docs.oneshotagent.com)
-- [SDK Examples](https://docs.oneshotagent.com/sdk/examples)
-- [Pricing](https://docs.oneshotagent.com/pricing)
-- [GitHub](https://github.com/oneshot-agent/sdk)
+- [官方文档](https://docs.oneshotagent.com)
+- [SDK 示例](https://docs.oneshotagent.com/sdk/examples)
+- [价格信息](https://docs.oneshotagent.com/pricing)
+- [GitHub 仓库](https://github.com/oneshot-agent/sdk)
 - [Soul.Markets](https://soul.mds.markets)

@@ -1,31 +1,30 @@
-# OpenClaw - Arcane Docker Management Skill
+# OpenClaw - 高级Docker管理技能
 
-## Overview
-This skill enables you to interact with your Arcane Docker Management API to manage Docker containers, compose stacks, templates, networks, volumes, images, and system monitoring. Arcane is a comprehensive Docker management platform with a REST API.
+## 概述
+此技能允许您通过Arcane Docker Management API来管理Docker容器、Docker Compose堆栈、模板、网络、卷、镜像以及系统监控。Arcane是一个提供REST API的全面Docker管理平台。
 
-## When to Use This Skill
-Use this skill when the user requests any of the following:
-- Managing Docker containers (list, start, stop, restart, remove, inspect)
-- Managing Docker Compose stacks (deploy, update, remove, view logs)
-- Working with Docker templates (create, deploy, manage)
-- Managing Docker images (list, pull, remove, prune)
-- Managing Docker networks and volumes
-- Monitoring system resources and Docker statistics
-- Managing user accounts and API keys
-- Viewing system logs and events
+## 何时使用此技能
+当用户需要执行以下操作时，请使用此技能：
+- 管理Docker容器（列出、启动、停止、重启、删除、检查）
+- 管理Docker Compose堆栈（部署、更新、删除、查看日志）
+- 使用Docker模板（创建、部署、管理）
+- 管理Docker镜像（列出、拉取、删除、清理）
+- 管理Docker网络和卷
+- 监控系统资源和Docker统计信息
+- 管理用户账户和API密钥
+- 查看系统日志和事件
 
-## API Configuration
+## API配置
 
-### Base URL
-The API base URL should be configured by the user. Default: `http://localhost:3552/api`
+### 基本URL
+API的基本URL需要由用户自行配置。默认值：`http://localhost:3552/api`
 
-### Authentication
-Arcane supports two authentication methods:
+### 认证
+Arcane支持两种认证方式：
+1. **Bearer Token (JWT)**：通过登录端点获取
+2. **API Key**：使用`X-API-Key`头部进行长期认证
 
-1. **Bearer Token (JWT)**: Obtained via login endpoint
-2. **API Key**: Long-lived authentication using `X-API-Key` header
-
-#### Getting a Bearer Token
+#### 获取Bearer Token
 ```bash
 curl -X POST "$BASE_URL/auth/login" \
   -H "Content-Type: application/json" \
@@ -35,16 +34,16 @@ curl -X POST "$BASE_URL/auth/login" \
   }'
 ```
 
-Response includes `token`, `refreshToken`, and `expiresAt`.
+响应中包含`token`、`refreshToken`和`expiresAt`。
 
-#### Using API Keys
-API keys can be created and managed through the `/apikeys` endpoints. Use the `X-API-Key` header for authentication.
+#### 使用API Keys
+API密钥可以通过 `/apikeys` 端点进行创建和管理。使用`X-API-Key`头部进行认证。
 
-## Core Functionality
+## 核心功能
 
-### 1. Container Management
+### 1. 容器管理
 
-#### List Containers
+#### 列出容器
 ```bash
 # Get all containers
 curl -X GET "$BASE_URL/containers" \
@@ -59,7 +58,7 @@ curl -X GET "$BASE_URL/containers?search=nginx" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Container Operations
+#### 容器操作
 ```bash
 # Start container
 curl -X POST "$BASE_URL/containers/{id}/start" \
@@ -90,7 +89,7 @@ curl -X GET "$BASE_URL/containers/{id}/stats" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Advanced Container Operations
+#### 高级容器操作
 ```bash
 # Execute command in container
 curl -X POST "$BASE_URL/containers/{id}/exec" \
@@ -120,15 +119,15 @@ curl -X POST "$BASE_URL/containers/{id}/update" \
   }'
 ```
 
-### 2. Docker Compose Stack Management
+### 2. Docker Compose堆栈管理
 
-#### List Stacks
+#### 列出堆栈
 ```bash
 curl -X GET "$BASE_URL/stacks" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Deploy Stack from Template
+#### 从模板部署堆栈
 ```bash
 curl -X POST "$BASE_URL/stacks" \
   -H "Authorization: Bearer $TOKEN" \
@@ -143,7 +142,7 @@ curl -X POST "$BASE_URL/stacks" \
   }'
 ```
 
-#### Deploy Stack from Compose File
+#### 从Compose文件部署堆栈
 ```bash
 curl -X POST "$BASE_URL/stacks" \
   -H "Authorization: Bearer $TOKEN" \
@@ -154,7 +153,7 @@ curl -X POST "$BASE_URL/stacks" \
   }'
 ```
 
-#### Stack Operations
+#### 堆栈操作
 ```bash
 # Get stack details
 curl -X GET "$BASE_URL/stacks/{id}" \
@@ -195,15 +194,15 @@ curl -X POST "$BASE_URL/stacks/{id}/pull" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 3. Template Management
+### 3. 模板管理
 
-#### List Templates
+#### 列出模板
 ```bash
 curl -X GET "$BASE_URL/templates" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Create Template
+#### 创建模板
 ```bash
 curl -X POST "$BASE_URL/templates" \
   -H "Authorization: Bearer $TOKEN" \
@@ -229,7 +228,7 @@ curl -X POST "$BASE_URL/templates" \
   }'
 ```
 
-#### Template Operations
+#### 模板操作
 ```bash
 # Get template
 curl -X GET "$BASE_URL/templates/{id}" \
@@ -253,7 +252,7 @@ curl -X GET "$BASE_URL/templates/{id}/content" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Global Template Variables
+#### 全局模板变量
 ```bash
 # Get global variables
 curl -X GET "$BASE_URL/templates/global-variables" \
@@ -269,15 +268,15 @@ curl -X PUT "$BASE_URL/templates/global-variables" \
   }'
 ```
 
-### 4. Image Management
+### 4. 镜像管理
 
-#### List Images
+#### 列出镜像
 ```bash
 curl -X GET "$BASE_URL/images" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Pull Image
+#### 拉取镜像
 ```bash
 curl -X POST "$BASE_URL/images/pull" \
   -H "Authorization: Bearer $TOKEN" \
@@ -287,7 +286,7 @@ curl -X POST "$BASE_URL/images/pull" \
   }'
 ```
 
-#### Image Operations
+#### 镜像操作
 ```bash
 # Get image details
 curl -X GET "$BASE_URL/images/{id}" \
@@ -306,15 +305,15 @@ curl -X GET "$BASE_URL/images/search?term=nginx" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 5. Network Management
+### 5. 网络管理
 
-#### List Networks
+#### 列出网络
 ```bash
 curl -X GET "$BASE_URL/networks" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Create Network
+#### 创建网络
 ```bash
 curl -X POST "$BASE_URL/networks" \
   -H "Authorization: Bearer $TOKEN" \
@@ -327,7 +326,7 @@ curl -X POST "$BASE_URL/networks" \
   }'
 ```
 
-#### Network Operations
+#### 网络操作
 ```bash
 # Get network details
 curl -X GET "$BASE_URL/networks/{id}" \
@@ -358,15 +357,15 @@ curl -X POST "$BASE_URL/networks/prune" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 6. Volume Management
+### 6. 卷管理
 
-#### List Volumes
+#### 列出卷
 ```bash
 curl -X GET "$BASE_URL/volumes" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Create Volume
+#### 创建卷
 ```bash
 curl -X POST "$BASE_URL/volumes" \
   -H "Authorization: Bearer $TOKEN" \
@@ -380,7 +379,7 @@ curl -X POST "$BASE_URL/volumes" \
   }'
 ```
 
-#### Volume Operations
+#### 卷操作
 ```bash
 # Get volume details
 curl -X GET "$BASE_URL/volumes/{name}" \
@@ -395,9 +394,9 @@ curl -X POST "$BASE_URL/volumes/prune" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 7. System Monitoring
+### 7. 系统监控
 
-#### System Information
+#### 系统信息
 ```bash
 # Get Docker system info
 curl -X GET "$BASE_URL/system/info" \
@@ -416,7 +415,7 @@ curl -X GET "$BASE_URL/system/df" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Events and Logs
+#### 事件和日志
 ```bash
 # Get system events (streaming)
 curl -X GET "$BASE_URL/system/events" \
@@ -427,15 +426,15 @@ curl -X GET "$BASE_URL/system/events?since=1609459200&type=container" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 8. User Management
+### 8. 用户管理
 
-#### List Users
+#### 列出用户
 ```bash
 curl -X GET "$BASE_URL/users" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Create User
+#### 创建用户
 ```bash
 curl -X POST "$BASE_URL/users" \
   -H "Authorization: Bearer $TOKEN" \
@@ -448,7 +447,7 @@ curl -X POST "$BASE_URL/users" \
   }'
 ```
 
-#### User Operations
+#### 用户操作
 ```bash
 # Get user details
 curl -X GET "$BASE_URL/users/{userId}" \
@@ -477,15 +476,15 @@ curl -X PUT "$BASE_URL/auth/password" \
   }'
 ```
 
-### 9. API Key Management
+### 9. API密钥管理
 
-#### List API Keys
+#### 列出API密钥
 ```bash
 curl -X GET "$BASE_URL/apikeys" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-#### Create API Key
+#### 创建API密钥
 ```bash
 curl -X POST "$BASE_URL/apikeys" \
   -H "Authorization: Bearer $TOKEN" \
@@ -497,7 +496,7 @@ curl -X POST "$BASE_URL/apikeys" \
   }'
 ```
 
-#### API Key Operations
+#### API密钥操作
 ```bash
 # Get API key details
 curl -X GET "$BASE_URL/apikeys/{id}" \
@@ -517,10 +516,10 @@ curl -X DELETE "$BASE_URL/apikeys/{id}" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## Implementation Guidelines
+## 实现指南
 
-### Error Handling
-All API responses follow a standard format:
+### 错误处理
+所有API响应都遵循标准格式：
 ```json
 {
   "success": true|false,
@@ -529,7 +528,7 @@ All API responses follow a standard format:
 }
 ```
 
-Error responses use HTTP problem details (RFC 7807):
+错误响应使用HTTP错误详细信息（RFC 7807）：
 ```json
 {
   "type": "about:blank",
@@ -539,15 +538,15 @@ Error responses use HTTP problem details (RFC 7807):
 }
 ```
 
-### Pagination
-List endpoints support pagination with these query parameters:
-- `start`: Starting index (default: 0)
-- `limit`: Items per page (default: 20)
-- `sort`: Column to sort by
-- `order`: Sort direction (asc/desc, default: asc)
-- `search`: Search query
+### 分页
+列表端点支持以下查询参数进行分页：
+- `start`：起始索引（默认值：0）
+- `limit`：每页显示的项数（默认值：20）
+- `sort`：排序列
+- `order`：排序方向（升序/降序，默认值：升序）
+- `search`：搜索查询
 
-Response includes pagination metadata:
+响应中包含分页元数据：
 ```json
 {
   "success": true,
@@ -561,8 +560,8 @@ Response includes pagination metadata:
 }
 ```
 
-### Using Python
-When implementing Arcane operations in Python, use the `requests` library:
+### 使用Python
+在Python中实现Arcane操作时，请使用`requests`库：
 
 ```python
 import requests
@@ -591,8 +590,8 @@ response = requests.post(f"{BASE_URL}/stacks", headers=headers, json=stack_data)
 result = response.json()
 ```
 
-### Using Bash
-For simple operations, use curl with error handling:
+### 使用Bash
+对于简单操作，可以使用带有错误处理的`curl`命令：
 
 ```bash
 #!/bin/bash
@@ -622,9 +621,9 @@ containers=$(api_call GET "containers")
 echo "$containers" | jq '.data[] | {id, name, status}'
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### 1. Deploy Application Stack
+### 1. 部署应用程序堆栈
 ```python
 # 1. Create or select template
 template_data = {
@@ -653,7 +652,7 @@ stack_id = stack["data"]["id"]
 logs = requests.get(f"{BASE_URL}/stacks/{stack_id}/logs?tail=50", headers=headers).json()
 ```
 
-### 2. Scale and Monitor Containers
+### 2. 扩展和监控容器
 ```python
 # Get running containers
 containers = requests.get(f"{BASE_URL}/containers?status=running", headers=headers).json()
@@ -671,7 +670,7 @@ update_data = {
 requests.post(f"{BASE_URL}/containers/{container_id}/update", headers=headers, json=update_data)
 ```
 
-### 3. Cleanup and Maintenance
+### 3. 清理和维护
 ```python
 # Prune unused resources
 requests.post(f"{BASE_URL}/images/prune", headers=headers)
@@ -684,72 +683,66 @@ df_before = requests.get(f"{BASE_URL}/system/df", headers=headers).json()
 df_after = requests.get(f"{BASE_URL}/system/df", headers=headers).json()
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Authentication**: Always use API keys for automated scripts and services. Use JWT tokens for interactive sessions.
+1. **认证**：对于自动化脚本和服务，始终使用API密钥；对于交互式会话，使用JWT令牌。
+2. **错误处理**：检查响应状态码并适当处理错误：
+   - 200：成功
+   - 400：请求错误（验证错误）
+   - 401：未经授权
+   - 403：禁止访问
+   - 404：未找到
+   - 500：内部服务器错误
+3. **资源管理**：
+   - 创建容器时始终指定资源限制
+   - 使用标签来组织资源
+   - 定期清理未使用的资源
+4. **安全性**：
+   - 安全存储API密钥和令牌（使用环境变量）
+   - 在生产环境中使用HTTPS
+   - 实施基于用户角色的适当访问控制
+   - 定期轮换API密钥
+5. **监控**：
+   - 定期监控容器统计信息
+   - 设置资源使用情况的警报
+   - 定期查看系统日志
+6. **模板**：
+   - 使用变量来表示可配置的值
+   - 清晰记录模板变量
+   - 对模板进行版本控制
+   - 使用全局变量进行共享配置
 
-2. **Error Handling**: Check response status codes and handle errors appropriately:
-   - 200: Success
-   - 400: Bad request (validation error)
-   - 401: Unauthorized
-   - 403: Forbidden
-   - 404: Not found
-   - 500: Internal server error
+## 故障排除
 
-3. **Resource Management**: 
-   - Always specify resource limits when creating containers
-   - Use labels to organize resources
-   - Regularly prune unused resources
+### 常见问题
 
-4. **Security**:
-   - Store API keys and tokens securely (use environment variables)
-   - Use HTTPS in production
-   - Implement proper access controls with user roles
-   - Rotate API keys regularly
+**认证失败**
+- 确认令牌未过期（检查`expiresAt`）
+- 使用刷新令牌获取新的访问令牌
+- 确认API密钥正确且未过期
 
-5. **Monitoring**:
-   - Monitor container stats regularly
-   - Set up alerts for resource usage
-   - Review system logs periodically
+**容器无法启动**
+- 查看容器日志：`GET /containers/{id}/logs`
+- 检查容器：`GET /containers/{id}`
+- 确认端口冲突和资源可用性
 
-6. **Templates**:
-   - Use variables for configurable values
-   - Document template variables clearly
-   - Version control your templates
-   - Use global variables for shared configuration
+**堆栈部署失败**
+- 验证Compose文件的语法
+- 检查模板变量是否定义正确
+- 查看堆栈日志：`GET /stacks/{id}/logs`
 
-## Troubleshooting
+**资源未找到**
+- 确认资源ID正确
+- 检查资源是否已被删除
+- 确保具有适当的权限
 
-### Common Issues
+## 注意事项
 
-**Authentication Failed**
-- Verify token is not expired (check `expiresAt`)
-- Use refresh token to get new access token
-- Verify API key is correct and not expired
+- 所有时间戳均采用ISO 8601格式（UTC）
+- 容器ID可以是完整的或简短的（前12个字符）
+- 镜像名称支持完整的注册表路径（例如：registry.example.com/image:tag）
+- 网络和卷名称必须唯一
+- 堆栈名称对于每个用户/项目来说必须是唯一的
 
-**Container Won't Start**
-- Check container logs: `GET /containers/{id}/logs`
-- Inspect container: `GET /containers/{id}`
-- Verify port conflicts and resource availability
-
-**Stack Deployment Failed**
-- Validate compose file syntax
-- Check template variables are properly defined
-- Review stack logs: `GET /stacks/{id}/logs`
-
-**Resource Not Found**
-- Verify resource ID is correct
-- Check if resource was deleted
-- Ensure proper permissions
-
-## Notes
-
-- All timestamps are in ISO 8601 format (UTC)
-- Container IDs can be full or short (first 12 characters)
-- Image names support full registry paths (registry.example.com/image:tag)
-- Network and volume names must be unique
-- Stack names must be unique per user/project
-
-## Reference Links
-
-For complete API documentation and schema definitions, refer to the OpenAPI specification provided in the JSON schema.
+## 参考链接
+有关完整的API文档和模式定义，请参阅提供的JSON模式中的OpenAPI规范。

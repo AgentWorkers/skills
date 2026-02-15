@@ -1,23 +1,23 @@
 ---
 name: book-tree-service
-description: Book tree-service services through Lokuli MCP. Use when user needs to find and book tree-service. Triggers on requests like "book a tree-service", "find tree-service near me", or any tree-service service request.
+description: 通过 Lokuli MCP 来预订树服务。当用户需要查找或预订树服务时，可以使用该功能。该功能会在收到诸如“预订树服务”、“查找附近的树服务”或任何与树服务相关的请求时被触发。
 ---
 
-# uook tree service
+# 书籍预订服务
 
-Book tree-service services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器来预订书籍服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

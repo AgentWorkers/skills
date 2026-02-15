@@ -1,28 +1,28 @@
 ---
 name: email-template-gen
-description: Generate responsive email templates. Use when building transactional emails.
+description: 生成响应式电子邮件模板。在构建交易类电子邮件时使用这些模板。
 ---
 
-# Email Template Generator
+# 电子邮件模板生成器
 
-Email HTML is stuck in 1999. Tables, inline styles, outlook hacks. Describe what you want and get a template that actually works everywhere.
+当前的电子邮件HTML设计仍然停留在1999年的水平：使用表格、内联样式以及针对Outlook的特殊技巧。只需描述您的需求，我们就能为您生成一个在所有邮件客户端中都能正常使用的模板。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-email-template "welcome email with verify button"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates responsive email templates
-- Works in Gmail, Outlook, Apple Mail, and more
-- Supports HTML, React Email, and MJML
-- Includes dark mode support
+- 生成响应式电子邮件模板
+- 支持Gmail、Outlook、Apple Mail等邮件客户端
+- 支持HTML、React Email和MJML格式
+- 提供暗黑模式支持
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Welcome email
@@ -38,42 +38,42 @@ npx ai-email-template "password reset" -o reset.html
 npx ai-email-template "weekly newsletter with header and article cards"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Test in Litmus or Email on Acid** - every client is different
-- **Keep it simple** - complex layouts break in Outlook
-- **Use web fonts sparingly** - many clients ignore them
-- **Always include plain text** - some people prefer it
+- **在Litmus或Email on Acid中进行测试**——不同的邮件客户端可能有不同的显示效果
+- **保持布局简单**——复杂的布局在Outlook中可能会出问题
+- **谨慎使用网页字体**——许多邮件客户端不支持这些字体
+- **务必包含纯文本**——有些人更喜欢阅读纯文本邮件
 
-## When to Use This
+## 适用场景
 
-- Building transactional email system
-- Creating marketing email templates
-- Updating legacy email templates
-- Need a starting point for React Email
+- 构建事务性邮件系统
+- 创建营销邮件模板
+- 更新旧版的电子邮件模板
+- 为React Email项目提供模板起点
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发工具之一。免费版本无需支付费用、无需注册，也不需要API密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+- 官网: https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。运行时需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-email-template --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your description and generates email templates using table-based layouts that work across email clients. For React Email format, it generates proper components. For MJML, it generates the markup that compiles to email-safe HTML.
+根据您的描述，该工具会生成适用于各种邮件客户端的基于表格的电子邮件模板。对于React Email格式，它会生成相应的组件；对于MJML格式，它会生成能够安全地转换为HTML的标记语言。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。您可以随心所欲地使用该工具。

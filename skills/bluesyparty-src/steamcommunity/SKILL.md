@@ -1,34 +1,34 @@
 ---
 name: steam-community-inventory
-description: Retrieves Steam inventory data and manages trade offers on steamcommunity.com
+description: 检索 Steam 的库存数据，并管理 steamcommunity.com 上的交易报价。
 homepage: https://steamcommunity.com/dev
 metadata: {"clawdbot":{"emoji":"\u2694","requires":{"bins":["jq","curl"],"env":["STEAM_ID","STEAM_COOKIES","STEAM_API_KEY","STEAM_SESSION_ID"]}}}
 ---
 
 
-# Steam Community Inventory Skill
+# Steam社区库存技能
 
-Retrieve and browse a Steam user's inventory, and send/manage trade offers on steamcommunity.com.
+该技能允许您检索和浏览Steam用户的库存信息，并在steamcommunity.com网站上发送/管理交易请求。
 
-## Setup
+## 设置
 
-1. Find your **Steam ID (SteamID64)**:
-   - Go to your Steam profile page
-   - If your URL is `https://steamcommunity.com/profiles/76561198012345678`, your Steam ID is `76561198012345678`
-   - If your URL uses a vanity name like `https://steamcommunity.com/id/myname`, visit [steamid.io](https://steamid.io) and paste your profile URL to get your SteamID64
+1. **获取您的Steam ID (SteamID64)**：
+   - 访问您的Steam个人资料页面。
+   - 如果您的URL是`https://steamcommunity.com/profiles/76561198012345678`，那么您的Steam ID就是`76561198012345678`。
+   - 如果您的URL使用了一个昵称（如`https://steamcommunity.com/id/myname`），请访问[steamid.io](https://steamid.io)并将您的个人资料URL粘贴到这里以获取Steam ID。
 
-2. Get your **Steam Web API key**:
-   - Go to [https://steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey)
-   - Register a domain name (any value works, e.g., `localhost`)
-   - Copy the API key shown on the page
+2. **获取您的Steam Web API密钥**：
+   - 访问[https://steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey)。
+   - 注册一个域名（任何值都可以，例如`localhost`）。
+   - 复制页面上显示的API密钥。
 
-3. Get your **Steam session cookies** (required for trade offers and bypassing inventory rate limits):
-   - Log in to [steamcommunity.com](https://steamcommunity.com) in your browser
-   - Open Developer Tools (F12) > Application tab > Cookies > `https://steamcommunity.com`
-   - Copy the value of the `steamLoginSecure` cookie
-   - Copy the value of the `sessionid` cookie
+3. **获取Steam会话cookie**（用于交易请求和绕过库存请求速率限制）：
+   - 在浏览器中登录[steamcommunity.com](https://steamcommunity.com)。
+   - 打开开发者工具（F12）> 应用程序选项卡 > Cookies > `https://steamcommunity.com`。
+   - 复制`steamLoginSecure` cookie的值。
+   - 复制`sessionid` cookie的值。
 
-4. Set environment variables:
+4. **设置环境变量**：
    ```bash
    export STEAM_ID="your-steamid64"
    export STEAM_API_KEY="your-api-key"
@@ -36,103 +36,103 @@ Retrieve and browse a Steam user's inventory, and send/manage trade offers on st
    export STEAM_SESSION_ID="your-sessionid-cookie-value"
    ```
 
-## Usage
+## 使用方法
 
-All commands use curl to hit the Steam Community inventory endpoint. The context ID is `2` for all standard game inventories.
+所有命令都使用`curl`来调用Steam社区的库存接口。对于所有标准游戏库存，上下文ID（Context ID）为`2`。
 
-### Common App IDs
+### 常见应用ID
 
-| Game | App ID |
+| 游戏 | 应用ID |
 |------|--------|
 | CS2 / CS:GO | 730 |
 | Team Fortress 2 | 440 |
 | Dota 2 | 570 |
 | Rust | 252490 |
 | PUBG | 578080 |
-| Steam Community (trading cards, etc.) | 753 |
+| Steam社区（交易卡片等） | 753 |
 
-### Get inventory for a game
+### 获取游戏的库存信息
 
-Replace `$APP_ID` with the game's App ID (see table above). Context ID is `2` for all standard game inventories.
+将`$APP_ID`替换为相应的游戏应用ID（参见上表）。对于所有标准游戏库存，上下文ID为`2`。
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/$APP_ID/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-### Get CS2 inventory
+### 获取CS2游戏的库存信息
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-### Get a summary of items (names and quantities)
+### 获取物品列表（包括名称和数量）
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '[.descriptions[] | {market_hash_name, type}]'
 ```
 
-### Get item details (asset IDs mapped to descriptions)
+### 获取物品详情（将资产ID与描述关联）
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '{assets: [.assets[] | {assetid, classid, instanceid, amount}], total: .total_inventory_count}'
 ```
 
-### Paginated fetch (for inventories over 2000 items)
+### 分页获取（当库存物品超过2000件时）
 
-The API returns a `last_assetid` field when there are more items. Pass it as `start_assetid` to get the next page:
+当物品数量超过2000件时，API会返回一个`last_assetid`字段。您可以使用这个值作为`start_assetid`来获取下一页的数据：
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000&start_assetid=$LAST_ASSET_ID" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-Check for more pages by looking at the `more_items` field in the response (equals `1` if there are more).
+通过检查响应中的`more_items`字段来判断是否还有更多页面（如果值为`1`，则表示还有更多页面）。
 
-## Response Format
+## 响应格式
 
-The inventory endpoint returns JSON with these key fields:
+库存接口返回的JSON数据包含以下字段：
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `assets` | Array of items with `appid`, `contextid`, `assetid`, `classid`, `instanceid`, `amount` |
-| `descriptions` | Array of item metadata: `market_hash_name`, `name`, `type`, `icon_url`, `tradable`, `marketable`, tags, etc. |
-| `total_inventory_count` | Total number of items in the inventory |
-| `more_items` | `1` if more pages available (absent otherwise) |
-| `last_assetid` | Last asset ID returned; use as `start_assetid` for next page |
-| `success` | `1` if the request succeeded |
+| `assets` | 物品数组，包含`appid`、`contextid`、`assetid`、`classid`、`instanceid`、`amount`等信息 |
+| `descriptions` | 物品元数据数组：`market_hash_name`、`name`、`type`、`icon_url`、`tradable`、`marketable`、`tags`等 |
+| `total_inventory_count` | 库存中的物品总数 |
+| `more_items` | 如果还有更多页面，则值为`1`；否则为`0` |
+| `last_assetid` | 返回的最后一个物品的ID；用作下一页的`start_assetid` |
+| `success` | 如果请求成功，则值为`1` |
 
-Assets are linked to descriptions via `classid` + `instanceid`.
+物品与描述之间的关联通过`classid`和`instanceid`来确定。
 
-## Notes
+## 注意事项
 
-- **Rate limits**: The community endpoint is heavily rate-limited by IP. Using your own cookies bypasses this for your own inventory. Without cookies, expect IP bans after a few requests (cooldown ~6 hours).
-- **Spacing**: If fetching multiple inventories or pages, wait at least 4 seconds between requests.
-- **count parameter**: Max value is 5000, but 2000 is recommended to avoid issues.
-- **Context ID**: Use `2` for all standard game inventories. Steam Community items (appid 753) also use context ID `6` for some item types.
-- **Private profiles**: Inventory must be set to public, or you must be authenticated as the owner.
+- **速率限制**：Steam社区接口对每个IP的请求有严格的速率限制。使用自己的cookie可以绕过这一限制。如果没有cookie，多次请求后可能会被IP封禁（冷却时间约为6小时）。
+- **请求间隔**：如果同时获取多个库存或页面的数据，请在每次请求之间至少等待4秒。
+- **`count`参数**：最大值为5000，但建议设置为2000以避免问题。
+- **上下文ID**：对于所有标准游戏库存，使用`2`。Steam社区中的特殊物品（appid为753）某些类型的物品可能需要使用`context ID` `6`。
+- **私人资料**：要查看库存信息，必须将资料设置为公开状态，或者您需要以所有者身份登录。
 
 ---
 
-## Trade Offers
+## 交易请求
 
-Trade offers require an authenticated session (cookies) and a Steam Web API key. The `sessionid` cookie is sent as both a cookie and a POST body parameter.
+进行交易请求需要已认证的会话（cookie）和Steam Web API密钥。`sessionid` cookie需要以cookie的形式以及POST请求体参数的形式发送。
 
-### Partner identification
+### 交易伙伴的识别
 
-Trade partners can be identified two ways:
+可以通过两种方式识别交易伙伴：
 
-1. **By SteamID64** — e.g., `76561198012345678`. Convert to a 32-bit account ID for the `partner` field: subtract `76561197960265728` from the SteamID64.
-2. **By trade URL** — e.g., `https://steamcommunity.com/tradeoffer/new/?partner=52079950&token=YDAlR4bC`. The `partner` value is the 32-bit account ID. The `token` is needed when the partner is not on your friends list.
+1. **通过SteamID64** — 例如`76561198012345678`。将其转换为32位的账户ID，用于`partner`字段：从SteamID64中减去`76561197960265728`。
+2. **通过交易URL** — 例如`https://steamcommunity.com/tradeoffer/new/?partner=52079950&token=YDAlR4bC`。`partner`字段中的值是32位的账户ID。如果交易伙伴不在您的好友列表中，则需要`token`参数。
 
-### Send a trade offer
+### 发送交易请求
 
-This sends items from your inventory to another user (and/or requests items from theirs). Each item requires its `appid`, `contextid`, and `assetid` (obtained from the inventory endpoint above).
+此操作会将您库存中的物品发送给其他用户（或请求他们库存中的物品）。每个物品都需要提供`appid`、`contextid`和`assetid`（这些信息可以从上述库存接口获取）。
 
-The `json_tradeoffer` parameter is a JSON string describing what each side gives. The `me` object holds your items to give; the `them` object holds items you want to receive.
+`json_tradeoffer`参数是一个JSON字符串，用于描述双方交易的物品。`me`对象包含您要发送的物品；`them`对象包含您希望接收的物品。
 
 ```bash
 # Set trade parameters
@@ -178,7 +178,7 @@ curl -s "https://steamcommunity.com/tradeoffer/new/send" \
   | jq '.'
 ```
 
-To send to a **friend** (no token needed), omit the `token` from the Referer and set `trade_offer_create_params` to `{}`:
+**向好友发送交易请求**（无需`token`）：在`Referer`参数中省略`token`，并将`trade_offer_create_params`设置为`{}`：
 
 ```bash
 curl -s "https://steamcommunity.com/tradeoffer/new/send" \
@@ -196,14 +196,15 @@ curl -s "https://steamcommunity.com/tradeoffer/new/send" \
   | jq '.'
 ```
 
-The response returns a `tradeofferid` on success:
+请求成功后，系统会返回一个`tradeofferid`：
+
 ```json
 {"tradeofferid": "1234567890", "needs_mobile_confirmation": true, "needs_email_confirmation": false}
 ```
 
-#### Sending a gift (no items requested in return)
+#### 发送礼物（不请求接收物品）
 
-Set `them.assets` to an empty array `[]`:
+将`them.assets`设置为空数组`[]`：
 
 ```bash
 JSON_TRADEOFFER='{
@@ -224,9 +225,9 @@ JSON_TRADEOFFER='{
 }'
 ```
 
-### Get trade offers (sent and received)
+### 获取已发送和接收的交易请求
 
-Uses the official Steam Web API with your API key.
+使用官方的Steam Web API和您的API密钥来获取这些信息。
 
 ```bash
 # Get all active trade offers (sent and received)
@@ -246,23 +247,23 @@ curl -s "https://api.steampowered.com/IEconService/GetTradeOffers/v1/?key=$STEAM
   | jq '.response.trade_offers_sent'
 ```
 
-### Get a specific trade offer
+### 获取特定的交易请求
 
 ```bash
 curl -s "https://api.steampowered.com/IEconService/GetTradeOffer/v1/?key=$STEAM_API_KEY&tradeofferid=$TRADE_OFFER_ID&language=english&get_descriptions=1" \
   | jq '.response.offer'
 ```
 
-### Get trade offers summary (counts)
+### 获取交易请求的汇总信息
 
 ```bash
 curl -s "https://api.steampowered.com/IEconService/GetTradeOffersSummary/v1/?key=$STEAM_API_KEY&time_last_visit=0" \
   | jq '.response'
 ```
 
-### Accept a trade offer
+### 接受交易请求
 
-Accepting uses the Steam Community web endpoint (not the Web API). You need the `tradeofferid` and the partner's SteamID64.
+接受交易请求需要使用Steam社区的Web接口（而非Web API）。您需要`tradeofferid`和交易伙伴的SteamID64。
 
 ```bash
 TRADE_OFFER_ID="1234567890"
@@ -280,7 +281,7 @@ curl -s "https://steamcommunity.com/tradeoffer/$TRADE_OFFER_ID/accept" \
   | jq '.'
 ```
 
-### Cancel a sent trade offer
+### 取消已发送的交易请求
 
 ```bash
 curl -s "https://api.steampowered.com/IEconService/CancelTradeOffer/v1/" \
@@ -289,7 +290,7 @@ curl -s "https://api.steampowered.com/IEconService/CancelTradeOffer/v1/" \
   -d "tradeofferid=$TRADE_OFFER_ID"
 ```
 
-### Decline a received trade offer
+### 拒绝接收的交易请求
 
 ```bash
 curl -s "https://api.steampowered.com/IEconService/DeclineTradeOffer/v1/" \
@@ -298,33 +299,33 @@ curl -s "https://api.steampowered.com/IEconService/DeclineTradeOffer/v1/" \
   -d "tradeofferid=$TRADE_OFFER_ID"
 ```
 
-### Get trade history
+### 获取交易历史记录
 
 ```bash
 curl -s "https://api.steampowered.com/IEconService/GetTradeHistory/v1/?key=$STEAM_API_KEY&max_trades=10&get_descriptions=1&language=english&include_failed=0" \
   | jq '.response.trades'
 ```
 
-### Trade offer states reference
+### 交易请求的状态参考
 
-| Value | State | Description |
+| 值 | 状态 | 描述 |
 |-------|-------|-------------|
-| 1 | Invalid | Invalid or unknown state |
-| 2 | Active | Sent, neither party has acted yet |
-| 3 | Accepted | Items were exchanged |
-| 4 | Countered | Recipient made a counter offer |
-| 5 | Expired | Not accepted before the deadline |
-| 6 | Canceled | Sender canceled the offer |
-| 7 | Declined | Recipient declined the offer |
-| 8 | InvalidItems | Items in the offer are no longer available |
-| 9 | CreatedNeedsConfirmation | Awaiting mobile/email confirmation before sending |
-| 10 | CanceledBySecondFactor | Canceled via email/mobile confirmation |
-| 11 | InEscrow | On hold; items removed from both inventories, will deliver automatically |
+| 1 | 无效 | 无效或未知的状态 |
+| 2 | 活动中 | 请求已发送，但双方尚未操作 |
+| 3 | 已接受 | 物品已交换 |
+| 4 | 被拒绝 | 接收方提出了反交易请求 |
+| 5 | 过期 | 未在截止日期前被接受 |
+| 6 | 被取消 | 发送方取消了请求 |
+| 7 | 被拒绝 | 接收方拒绝了请求 |
+| 8 | 物品不可用 | 交易请求中的物品不再可用 |
+| 9 | 创建中（需要确认） | 需要通过手机/电子邮件确认后再发送 |
+| 10 | 通过二次验证取消 | 通过手机/电子邮件确认取消 |
+| 11 | 待处理中 | 交易暂时搁置；物品将从双方的库存中移除，随后自动交付 |
 
-### Trade offer notes
+### 交易请求的相关说明
 
-- **Mobile confirmation**: Most trade offers require Steam Mobile Authenticator confirmation. The send response will indicate `needs_mobile_confirmation: true` if so.
-- **Trade holds**: Accounts without Steam Guard Mobile Authenticator enabled for 7+ days will have a 15-day trade hold on all trades.
-- **Partner's inventory**: To see what the partner has available to trade, fetch their inventory the same way as yours (using their SteamID64 instead of `$STEAM_ID`). Their inventory must be public or you must be friends.
-- **The `partner` field**: The send endpoint expects the full SteamID64 in the `partner` POST parameter. The trade URL's `partner` query parameter is the 32-bit account ID.
-- **Cookie expiry**: The `sessionid` and `steamLoginSecure` cookies expire when your Steam session ends. Refresh them from your browser when they stop working.
+- **手机确认**：大多数交易请求需要Steam Mobile Authenticator的确认。如果需要确认，响应中会显示`needs_mobileconfirmation: true`。
+- **交易暂缓**：如果账户未启用Steam Guard Mobile Authenticator超过7天，所有交易将被暂缓15天。
+- **交易伙伴的库存**：要查看交易伙伴可交易的物品，请使用他们的SteamID64（而不是`$STEAM_ID`）来获取他们的库存信息。他们的库存必须设置为公开状态，或者您需要与他们成为好友。
+- **`partner`字段**：发送请求时，`partner`参数中需要提供完整的SteamID64。交易URL中的`partner`查询参数是32位的账户ID。
+- **Cookie过期**：`sessionid`和`steamLoginSecure` cookie会在您的Steam会话结束时失效。如果它们失效，请从浏览器中重新获取这些cookie。

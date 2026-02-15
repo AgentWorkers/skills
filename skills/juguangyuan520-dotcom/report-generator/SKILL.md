@@ -1,49 +1,49 @@
 ---
 name: "report-generator"
-description: "Generates a structured report HTML based on a specific template. Invoke when user wants to create a report, slide, or summary card from raw content."
+description: "根据特定模板生成结构化的报告HTML文件。当用户需要从原始内容创建报告、幻灯片或摘要卡片时，可调用该功能。"
 ---
 
-# Report Generator Skill
- 
- This skill generates a beautifully formatted HTML report based on a clean, minimal business template style (Light & Concise).
+# 报告生成器技能
 
-## Capabilities
+该技能能够根据简洁明了的业务模板风格（轻量级且简洁）生成格式精美的HTML报告。
 
-1. **Refine Content**: Structures raw text into a 4-quadrant format (Goal, Q1-Q4 details, Summary).
-2. **Generate HTML**: Creates a responsive HTML file.
-3. **Screenshot**: (Instruction) Guides the agent to convert the HTML to an image using the browser tool.
+## 功能
 
-## Usage
+1. **内容整理**：将原始文本整理成四部分结构（目标、第一季度至第四季度的详细内容、总结）。
+2. **生成HTML**：创建一个响应式HTML文件。
+3. **截图**：指导代理使用浏览器工具将HTML文件转换为图片。
 
-### 1. Prepare Data
+## 使用方法
 
-You need to extract the following information from the user's input:
+### 1. 准备数据
 
-- **title**: Report Title
-- **goal**: One-sentence goal (Top section)
-- **q1** to **q4**: Four main sections, each containing:
-  - `title`: Short title (e.g., "稳交付")
-  - `subtitle`: Explanatory subtitle
-  - `slogan`: Catchy slogan
-  - `items`: List of bullet points (Array of strings)
-- **summary**: Array of 4 keywords for the bottom summary
+你需要从用户输入中提取以下信息：
 
-### 2. Run Generation Script
+- **title**：报告标题
+- **goal**：一句话的目标（顶部部分）
+- **q1** 至 **q4**：四个主要部分，每个部分包含：
+  - `title`：简短标题（例如：“稳定交付”）
+  - `subtitle`：解释性副标题
+  - `slogan`：吸引人的标语
+  - `items`：项目列表（字符串数组）
+- **summary**：底部总结的四个关键词
 
-Execute the python script with the JSON data:
+### 2. 运行生成脚本
+
+使用JSON数据执行Python脚本：
 
 ```bash
 python3 scripts/generate.py --output "workspace/reports" --data '{"title": "...", ...}'
 ```
 
-### 3. Convert to Image (Agent Action)
+### 3. 转换为图片（代理操作）
 
-After the script returns the `html_path`, use the **browser** tool to screenshot it:
+脚本返回`html_path`后，使用**浏览器**工具进行截图：
 
-1. Open the file: `file://<html_path>`
-2. Take a screenshot of the full page.
+1. 打开文件：`file://<html_path>`
+2. 对整个页面进行截图。
 
-## Example Data Structure
+## 示例数据结构
 
 ```json
 {

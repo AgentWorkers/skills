@@ -1,96 +1,96 @@
 ---
 name: withings-health
-description: Fetches health data from the Withings API including weight, body composition (fat, muscle, bone, water), activity, and sleep. Use this skill when the user asks about their Withings data, weight history, body metrics, daily steps, sleep quality, or any health measurement from Withings devices.
+description: 从 Withings API 获取健康数据，包括体重、身体成分（脂肪、肌肉、骨骼、水分）、活动量以及睡眠质量等信息。当用户询问他们的 Withings 设备数据（如体重记录、身体指标、每日步数、睡眠质量或任何健康测量结果）时，可以使用此功能。
 version: 1.1.0
 homepage: https://developer.withings.com/
 metadata: {"clawdbot":{"emoji":"⚖️","requires":{"bins":["node"],"env":["WITHINGS_CLIENT_ID","WITHINGS_CLIENT_SECRET"]}}}
 ---
 
-This skill allows you to interact with the user's Withings account to retrieve comprehensive health metrics from Withings devices (smart scales, sleep analyzers, activity trackers, etc.).
+此技能允许您与用户的 Withings 账户进行交互，从而从 Withings 设备（智能体重秤、睡眠分析仪、活动追踪器等）中获取全面的健康数据。
 
-## When to Use This Skill
+## 何时使用此技能
 
-Use this skill when the user:
-- Asks about their **weight** or weight history
-- Wants to see their **body composition** (fat %, muscle mass, bone mass, hydration)
-- Requests their **daily activity** (steps, distance, calories burned)
-- Asks about their **sleep data** (duration, quality, deep sleep, REM)
-- Mentions "Withings" or any Withings device (Body+, Sleep Analyzer, ScanWatch, etc.)
-- Wants to track their health progress over time
+当用户执行以下操作时，请使用此技能：
+- 询问他们的体重或体重历史记录
+- 希望查看他们的身体成分（脂肪百分比、肌肉质量、骨密度、水分含量）
+- 请求查看他们的日常活动数据（步数、行走距离、消耗的卡路里）
+- 询问他们的睡眠数据（睡眠时长、睡眠质量、深度睡眠时间、快速眼动睡眠阶段）
+- 提到 “Withings” 或任何 Withings 设备（如 Body+、Sleep Analyzer、ScanWatch 等）
+- 希望随时间跟踪自己的健康状况
 
-## Setup: Creating a Withings Developer App
+## 设置：创建 Withings 开发者应用程序
 
-Before using this skill, you need to create a free Withings developer application to get your API credentials.
+在使用此技能之前，您需要创建一个免费的 Withings 开发者应用程序以获取 API 凭据。
 
-### Step 1: Create a Withings Developer Account
+### 第 1 步：创建 Withings 开发者账户
 
-1. Go to [Withings Developer Portal](https://developer.withings.com/)
-2. Click **Sign Up** or **Log In** if you already have a Withings account
-3. Accept the Developer Terms of Service
+1. 访问 [Withings 开发者门户](https://developer.withings.com/)
+2. 如果您已有 Withings 账户，请点击 **注册** 或 **登录**
+3. 同意开发者服务条款
 
-### Step 2: Create Your Application
+### 第 2 步：创建您的应用程序
 
-1. Navigate to **My Apps** → **Create an Application**
-2. Fill in the application details:
-   - **Application Name**: Choose a name (e.g., "My Clawdbot Health")
-   - **Description**: Brief description of your use case
-   - **Contact Email**: Your email address
-   - **Callback URL**: `http://localhost:8080` (required for OAuth)
-   - **Application Type**: Select "Personal Use" or appropriate type
-3. Submit the application
+1. 转到 **我的应用程序** → **创建应用程序**
+2. 填写应用程序详细信息：
+   - **应用程序名称**：选择一个名称（例如：“My Clawdbot Health”）
+   - **描述**：简要说明您的使用场景
+   - **联系邮箱**：您的电子邮件地址
+   **回调 URL**：`http://localhost:8080`（OAuth 所需）
+   - **应用程序类型**：选择 “个人使用” 或相应的类型
+3. 提交应用程序申请
 
-### Step 3: Get Your Credentials
+### 第 3 步：获取您的凭据
 
-Once your application is created:
-1. Go to **My Apps** and select your application
-2. You'll find:
-   - **Client ID** → Set as `WITHINGS_CLIENT_ID` environment variable
-   - **Client Secret** → Set as `WITHINGS_CLIENT_SECRET` environment variable
+应用程序创建完成后：
+1. 转到 **我的应用程序** 并选择您的应用程序
+2. 您将看到：
+   - **客户端 ID** → 设置为 `WITHINGS_CLIENT_ID` 环境变量
+   - **客户端密钥** → 设置为 `WITHINGS_CLIENT_SECRET` 环境变量
 
-### Step 4: Configure Environment Variables
+### 第 4 步：配置环境变量
 
-Add these to your Clawdbot environment:
+将这些凭据添加到您的 Clawdbot 环境中：
 ```bash
 export WITHINGS_CLIENT_ID="your_client_id_here"
 export WITHINGS_CLIENT_SECRET="your_client_secret_here"
 ```
 
-Or create a `.env` file in the skill directory (this file will be ignored by git):
+或者在该技能目录下创建一个 `.env` 文件（此文件会被 git 忽略）：
 ```
 WITHINGS_CLIENT_ID=your_client_id_here
 WITHINGS_CLIENT_SECRET=your_client_secret_here
 ```
 
-## Configuration
+## 配置
 
-The skill uses a `wrapper.js` script located in `{baseDir}`.
+该技能使用位于 `{baseDir}` 目录下的 `wrapper.js` 脚本。
 
-Before any data retrieval, check if the user is authenticated. If an error mentions "No token found", guide the user through the initial authentication process.
+在检索任何数据之前，请检查用户是否已登录。如果出现 “未找到令牌” 的错误，请引导用户完成初始认证流程。
 
-## Available Commands
+## 可用的命令
 
-### 1. Authentication
+### 1. 认证
 
-First-time setup - generates the OAuth URL:
+- 首次设置时：生成 OAuth URL：
 ```bash
 node {baseDir}/wrapper.js auth
 ```
 
-After the user visits the URL and gets the authorization code:
+用户访问该 URL 并获取授权码后：
 ```bash
 node {baseDir}/wrapper.js auth YOUR_CODE_HERE
 ```
 
-### 2. Get Weight
+### 2. 获取体重
 
-Retrieve the latest weight measurements:
+检索最新的体重测量数据：
 ```bash
 node {baseDir}/wrapper.js weight
 ```
 
-Returns the 5 most recent weight entries in JSON format.
+以 JSON 格式返回最近 5 次的体重记录。
 
-**Example output:**
+**示例输出：**
 ```json
 [
   { "date": "2026-01-17T08:30:00.000Z", "weight": "75.40 kg" },
@@ -98,16 +98,16 @@ Returns the 5 most recent weight entries in JSON format.
 ]
 ```
 
-### 3. Get Body Composition
+### 3. 获取身体成分
 
-Retrieve comprehensive body metrics (fat, muscle, bone, water, BMI):
+检索全面的身体指标（脂肪、肌肉、骨骼、水分、BMI）：
 ```bash
 node {baseDir}/wrapper.js body
 ```
 
-Returns the 5 most recent body composition measurements.
+返回最近 5 次的身体成分测量数据。
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -122,19 +122,19 @@ Returns the 5 most recent body composition measurements.
 ]
 ```
 
-### 4. Get Activity
+### 4. 获取活动数据
 
-Retrieve daily activity data (steps, distance, calories):
+检索日常活动数据（步数、行走距离、卡路里消耗）：
 ```bash
 node {baseDir}/wrapper.js activity
 ```
 
-Optionally specify the number of days (default: 7):
+可以选择要查询的天数（默认为 7 天）：
 ```bash
 node {baseDir}/wrapper.js activity 30
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -150,19 +150,19 @@ node {baseDir}/wrapper.js activity 30
 ]
 ```
 
-### 5. Get Sleep
+### 5. 获取睡眠数据
 
-Retrieve sleep data and quality:
+检索睡眠数据及睡眠质量：
 ```bash
 node {baseDir}/wrapper.js sleep
 ```
 
-Optionally specify the number of days (default: 7):
+可以选择要查询的天数（默认为 7 天）：
 ```bash
 node {baseDir}/wrapper.js sleep 14
 ```
 
-**Example output:**
+**示例输出：**
 ```json
 [
   {
@@ -179,21 +179,21 @@ node {baseDir}/wrapper.js sleep 14
 ]
 ```
 
-## Error Handling
+## 错误处理
 
-Common errors and how to resolve them:
+常见错误及解决方法：
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "No token found" | First time use, not authenticated | Run `node wrapper.js auth` and follow the OAuth flow |
-| "Failed to refresh token" | Token expired and refresh failed | Re-authenticate with `node wrapper.js auth` |
-| "API Error Status: 401" | Invalid or expired credentials | Check your CLIENT_ID and CLIENT_SECRET, re-authenticate |
-| "API Error Status: 503" | Withings API temporarily unavailable | Wait and retry later |
-| Empty data | No measurements in the requested period | User needs to sync their Withings device |
+| “未找到令牌” | 首次使用或未登录 | 运行 `node wrapper.js auth` 并按照 OAuth 流程进行认证 |
+| “无法刷新令牌” | 令牌过期且刷新失败 | 使用 `node wrapper.js auth` 重新认证 |
+| “API 错误状态：401” | 凭据无效或过期 | 检查您的 CLIENT_ID 和 CLIENT_SECRET，重新认证 |
+| “API 错误状态：503” | Withings API 暂时不可用 | 稍后等待并重试 |
+| 数据为空 | 请求期间没有测量数据 | 用户需要同步他们的 Withings 设备 |
 
-## Notes
+## 注意事项
 
-- Tokens are automatically refreshed when they expire
-- Withings API scopes used: `user.metrics`, `user.activity`
-- Data availability depends on which Withings devices the user owns
-- Some metrics (like body composition) require a compatible smart scale
+- 令牌会在过期后自动刷新
+- 使用的 Withings API 权限范围：`user.metrics`、`user.activity`
+- 数据的可用性取决于用户拥有的 Withings 设备类型
+- 某些指标（如身体成分）需要兼容的智能体重秤才能获取

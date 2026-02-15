@@ -1,6 +1,6 @@
 ---
 name: openapi2cli
-description: Generate CLI tools from OpenAPI specs. Built for AI agents who hate writing curl commands.
+description: 根据 OpenAPI 规范生成命令行工具（CLI）。专为那些讨厌编写 `curl` 命令的 AI 代理程序设计。
 homepage: https://github.com/Olafs-World/openapi2cli
 metadata:
   {
@@ -22,11 +22,11 @@ metadata:
   }
 ---
 
-# OpenAPI to CLI
+# 将 OpenAPI 规范转换为命令行工具（OpenAPI to CLI）
 
-Generate command-line tools from OpenAPI/Swagger specs. Perfect for AI agents that need to interact with APIs without writing curl commands.
+该工具能够根据 OpenAPI 或 Swagger 规范自动生成命令行工具，非常适合需要与 API 进行交互的 AI 代理，而无需手动编写 `curl` 命令。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # generate a CLI from any OpenAPI spec
@@ -38,15 +38,15 @@ python my-api.py users get --id 123
 python my-api.py posts create --title "Hello" --body "World"
 ```
 
-## Features
+## 主要特性
 
-- **Auto-generates CLI** from OpenAPI 3.x specs
-- **Supports auth**: API keys, Bearer tokens, Basic auth
-- **Rich help**: `--help` on any command shows params
-- **JSON output**: Structured responses for parsing
-- **Dry-run mode**: See the request without sending
+- **自动生成命令行工具**：支持 OpenAPI 3.x 规范
+- **支持身份验证**：支持 API 密钥、Bearer 令牌以及基本身份验证（Basic Auth）
+- **丰富的帮助信息**：在任何命令后加上 `--help` 可查看参数说明
+- **JSON 输出**：返回结构化的响应数据，便于解析
+- **试运行模式**：允许在不发送请求的情况下预览请求内容
 
-## Usage
+## 使用方法
 
 ```bash
 # from URL
@@ -59,7 +59,7 @@ uvx openapi2cli generate ./spec.yaml -o my-cli
 uvx openapi2cli generate ./spec.json -o my-cli --base-url https://api.prod.com
 ```
 
-## Generated CLI
+## 生成的命令行工具示例
 
 ```bash
 # set auth via env
@@ -75,7 +75,7 @@ python my-cli.py --help
 python my-cli.py users create --help
 ```
 
-## Example: GitHub API
+## 示例：GitHub API
 
 ```bash
 uvx openapi2cli generate https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json -o github-cli
@@ -83,15 +83,15 @@ uvx openapi2cli generate https://raw.githubusercontent.com/github/rest-api-descr
 python github-cli.py repos list --owner octocat
 ```
 
-## Why?
+## 为什么使用命令行工具（Why use CLI tools?）
 
-AI agents work better with CLIs than raw HTTP:
-- Discoverable commands via `--help`
-- Tab completion friendly
-- No need to construct JSON payloads
-- Easy to chain with pipes
+与直接使用原始 HTTP 请求相比，命令行工具对 AI 代理更有优势：
+- 可通过 `--help` 查看所有可用命令
+- 支持 Tab 键补全
+- 无需手动构造 JSON 请求体
+- 可方便地通过管道（pipelines）进行命令链式执行
 
-## Links
+## 链接
 
-- [PyPI](https://pypi.org/project/openapi2cli/)
-- [GitHub](https://github.com/Olafs-World/openapi2cli)
+- [PyPI 页面](https://pypi.org/project/openapi2cli/)
+- [GitHub 项目页面](https://github.com/Olafs-World/openapi2cli)

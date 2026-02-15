@@ -1,36 +1,35 @@
 ---
 name: stdio-skill
-description: "Stdin/stdout file inbox/outbox bridge for passing files to/from Clawdbot using an MCP stdio server. Use when you want a simple filesystem-backed dropbox: accept files into an inbox, move to tmp for processing, and emit deliverables to an outbox (or a specified path)."
+description: "这是一个用于通过 MCP stdio 服务器将文件传输到 Clawdbot 的标准输入（stdin）/标准输出（stdout）文件收件箱/发件箱桥梁（bridge）工具。当您需要一个基于文件系统的简单“Dropbox”功能时，可以使用该工具：将文件接收进收件箱，将其移动到临时文件夹（tmp）进行处理，然后将处理后的结果发送到发件箱（或指定的路径）。"
 ---
 
 # stdio-skill
 
-Implement and use a local MCP **stdio** server that provides a simple inbox/outbox workflow backed by directories on disk.
+实现并使用一个本地MCP（Message Center Protocol）服务器，该服务器提供基于磁盘目录的简单收件箱/发件箱工作流程。
 
-Paths (workspace-relative):
-- `stdio/inbox/` — user drops inputs here
-- `stdio/tmp/` — scratch area (move/copy inputs here for processing)
-- `stdio/outbox/` — put deliverables here for pickup
+路径（相对于工作区）：
+- `stdio/inbox/` — 用户将输入文件放入此处
+- `stdio/tmp/` — 临时区域（用于处理输入文件）
+- `stdio/outbox/` — 将处理后的文件放入此处以供用户取用
 
-## Start the MCP server (via mcporter)
+## 启动MCP服务器（通过mcporter）
 
-This repo config should include an MCP server named `stdio-skill`.
+此仓库的配置应包含一个名为`stdio-skill`的MCP服务器。
 
-- List tools:
+- 列出可用工具：
   - `mcporter list stdio-skill --schema --timeout 120000 --json`
 
-## Tooling model
+## 工具模型
 
-Prefer:
-1) `stdio-skill.stdio_list` to see what’s waiting.
-2) `stdio-skill.stdio_read` (base64) to pull file contents.
-3) `stdio-skill.stdio_move` to move an item to `tmp` once you’ve claimed it.
-4) Write outputs with `stdio-skill.stdio_write` (base64) into `outbox` unless the user provided an explicit destination path.
+推荐使用以下工具：
+1) `stdio-skill.stdio_list`：查看待处理的文件列表。
+2) `stdio-skill.stdio_read`（支持Base64编码）：用于读取文件内容。
+3) `stdio-skill.stdio_move`：在用户领取文件后，将其移动到`tmp`目录。
+4) `stdio-skill.stdio_write`（支持Base64编码）：将处理后的文件写入`outbox`目录；除非用户指定了其他目标路径。
 
-No deprecated aliases: use the `stdio_*` tools only.
+**注意**：请仅使用`stdio_`系列工具，避免使用已弃用的别名。
 
-## Notes
-
-- This skill is intentionally dumb/simple: it does not interpret file formats.
-- It is safe-by-default: operations are restricted to the three directories above.
-- For large files: prefer passing by path + moving files, not embedding giant base64 blobs in chat.
+## 说明：
+- 该工具设计得较为简单：它不支持文件格式的解析。
+- 默认情况下，该工具是安全的：所有操作仅限于上述三个目录范围内。
+- 对于大型文件，建议通过文件路径进行传输，而不是在聊天中嵌入庞大的Base64编码数据。

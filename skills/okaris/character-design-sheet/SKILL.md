@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Character Design Sheet
+# 字符设计文档
 
-Create consistent characters across multiple AI-generated images via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，在多张由 AI 生成的图像中保持字符的一致性。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -27,25 +27,25 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## The Consistency Problem
+## 一致性问题
 
-AI image generation produces different-looking characters every time, even with the same prompt. This is the #1 challenge in AI art for any project requiring the same character across multiple images.
+即使使用相同的提示，AI 生成的图像中的字符外观也会每次都不同。这是任何需要在多张图像中使用相同字符的 AI 艺术项目面临的首要挑战。
 
-### Solutions (Ranked by Effectiveness)
+### 解决方案（按效果排序）
 
-| Technique | Consistency | Effort | Best For |
-|-----------|-------------|--------|----------|
-| **FLUX LoRA** (trained on character) | Very high | High (requires training data) | Ongoing projects, many images |
-| **Detailed description anchor** | Medium-high | Low | Quick projects, few images |
-| **Same seed + similar prompt** | Medium | Low | Variations of single pose |
-| **Image-to-image refinement** | Medium | Medium | Refining existing images |
-| **Reference image in prompt** | Varies | Low | When model supports it |
+| 技术 | 一致性 | 需要的努力 | 适用场景 |
+|---------|-----------|-----------|---------|
+| **FLUX LoRA**（基于字符进行训练） | 非常高 | 需要训练数据 | 长期项目，大量图像 |
+| **详细描述锚点** | 中等偏高 | 较低 | 短期项目，少量图像 |
+| **相同的种子 + 类似的提示** | 中等 | 较低 | 单一姿势的变体 |
+| **图像到图像的细化** | 中等 | 中等 | 优化现有图像 |
+| **提示中包含参考图像** | 变化较大 | 当模型支持时 |
 
-## Reference Sheet Types
+## 参考文档类型
 
-### 1. Turnaround Sheet
+### 1. 人物全方位展示文档
 
-Shows the character from multiple angles:
+从多个角度展示角色：
 
 ```
 ┌────────┬────────┬────────┬────────┐
@@ -92,9 +92,9 @@ infsh app run infsh/stitch-images --input '{
 }'
 ```
 
-### 2. Expression Sheet
+### 2. 表情展示文档
 
-Shows the character's face with different emotions:
+展示角色在不同情绪下的面部表情：
 
 ```
 ┌────────┬────────┬────────┐
@@ -106,7 +106,7 @@ Shows the character's face with different emotions:
 └────────┴────────┴────────┘
 ```
 
-Minimum 6 expressions: neutral, happy, angry, sad, surprised, thinking.
+至少包含 6 种表情：中立、快乐、愤怒、悲伤、惊讶、思考。
 
 ```bash
 # Neutral
@@ -133,20 +133,20 @@ infsh app run falai/flux-dev-lora --input '{
 # (Continue for sad, surprised, thinking...)
 ```
 
-### 3. Outfit/Costume Sheet
+### 3. 服装/服饰文档
 
-Multiple outfits for the same character:
+为同一角色准备多种服装：
 
-| Outfit | Description |
-|--------|-------------|
-| Casual | Bomber jacket, t-shirt, jeans |
-| Work | Blazer, button-down, slacks |
-| Athletic | Sports bra, leggings, running shoes |
-| Formal | Evening dress, heels |
+| 服装 | 说明 |
+|------|---------|
+| 休闲装 | 运动夹克、T 恤、牛仔裤 |
+| 正装 | 西装外套、纽扣衬衫、休闲裤 |
+| 运动装 | 运动胸罩、紧身裤、跑鞋 |
+| 正式装 | 晚礼服、高跟鞋 |
 
-### 4. Color Palette Sheet
+### 4. 色彩调色板文档
 
-Document exact colors for consistency:
+记录准确的色彩信息以确保一致性：
 
 ```
 CHARACTER: Maya Chen
@@ -160,11 +160,11 @@ Jeans:   ████ #34495E (dark slate)
 Shoes:   ████ #E74C3C (bright red)
 ```
 
-## The Description Anchor Technique
+## 描述锚点技术
 
-The most practical consistency technique: write a **50+ word detailed description** and reuse it exactly in every prompt.
+最实用的一致性技术：编写一段 **50 多字的详细描述**，并在每个提示中完全重复使用这段描述。
 
-### Template
+### 模板
 
 ```
 [age] [gender] with [hair: color, length, style], [eye color] eyes,
@@ -173,7 +173,7 @@ wearing [top: specific color and style], [bottom: specific color and style],
 [shoes: specific color and style], [accessories: specific items]
 ```
 
-### Example
+### 示例
 
 ```
 young woman in her mid-twenties with short asymmetric auburn red hair
@@ -184,23 +184,23 @@ dark slate slim jeans, and bright red canvas sneakers, small silver
 stud earrings
 ```
 
-**Use this exact block in EVERY prompt** for this character, only changing the action/pose/scene.
+**在每个提示中都使用这个模板**，只需更改动作/姿势/场景即可。
 
-## Proportion Guide
+## 比例指南
 
-| Style | Head-to-Body Ratio | Best For |
-|-------|-------------------|----------|
-| Realistic | 7.5 : 1 | Film, photorealistic |
-| Heroic | 8 : 1 | Superheroes, action |
-| Anime/Manga | 5-6 : 1 | Japanese animation style |
-| Stylized | 4-5 : 1 | Western animation |
-| Chibi/Super-deformed | 2-3 : 1 | Cute, comedic, mascots |
+| 风格 | 头身比例 | 适用场景 |
+|-------|-----------|---------|
+| 现实主义 | 7.5 : 1 | 电影、写实风格 |
+| 英雄风格 | 8 : 1 | 超级英雄、动作场景 |
+| 动漫/漫画风格 | 5-6 : 1 | 日本动画风格 |
+| 可爱风格 | 4-5 : 1 | 西方动画 |
+| QUBI/超变形风格 | 2-3 : 1 | 可爱、喜剧风格、吉祥物 |
 
-Include proportion style in your prompts: "realistic proportions" vs "anime style proportions" vs "chibi proportions"
+在提示中明确说明比例风格：例如 “现实主义比例” 或 “动漫风格比例”。
 
-## Using LoRA for Consistency
+## 使用 LoRA 保持一致性
 
-For projects requiring many images of the same character, train a LoRA:
+对于需要大量相同角色图像的项目，可以训练一个 LoRA 模型：
 
 ```bash
 # Use FLUX with a character LoRA
@@ -210,26 +210,26 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-**LoRA Training Tips:**
-- Need 10-20 reference images of the character (consistent style)
-- Train on specific trigger word (e.g., "maya_chen")
-- Scale 0.7-0.9 balances consistency with prompt flexibility
-- Lower scale = more creative freedom, higher = more strict matching
+**LoRA 训练技巧：**
+- 需要 10-20 张该角色的参考图像（风格一致）
+- 使用特定的触发词进行训练（例如 “maya_chen”）
+- 比例设置为 0.7-0.9 可在保持一致性和提示灵活性之间取得平衡
+- 比例越低，创作自由度越高；比例越高，匹配要求越严格
 
-## Common Consistency Failures
+## 常见的一致性问题及解决方法
 
-| Issue | Why It Happens | Mitigation |
-|-------|---------------|------------|
-| **Hair color drift** | Model interprets "red hair" differently each time | Use specific shade: "auburn red #C0392B" |
-| **Eye color change** | Low priority in generation | Mention eye color early in prompt |
-| **Outfit inconsistency** | Model fills in details creatively | Describe every clothing item explicitly |
-| **Age shift** | Vague age description | Use "mid-twenties" not "young" |
-| **Face structure change** | Different generations = different faces | Use LoRA or same seed base |
-| **Proportion shift** | Style interpretation varies | Specify "7.5 head proportions" |
+| 问题 | 发生原因 | 解决方法 |
+|------|-----------|---------|
+| **头发颜色变化** | 模型对“红色头发”的理解不同 | 使用具体的颜色代码：#C0392B（红棕色） |
+| **眼睛颜色变化** | 生成时模型对此的重视程度较低 | 在提示中提前说明眼睛的颜色 |
+| **服装不一致** | 模型会创造性地填充细节 | 明确描述每件服装的细节 |
+| **年龄差异** | 年龄描述模糊 | 使用“二十多岁”等具体年龄 |
+| **面部结构变化** | 不同的生成结果会导致面部结构变化 | 使用 LoRA 模型或相同的种子 |
+| **比例变化** | 不同的风格会导致比例差异 | 明确指定“7.5 的头身比例” |
 
-## Character Bible Template
+## 角色设计文档模板
 
-For ongoing projects, maintain a character bible document:
+对于长期项目，应维护一个角色设计文档：
 
 ```markdown
 # Character: Maya Chen
@@ -259,18 +259,18 @@ Trigger: maya_chen
 Recommended scale: 0.8
 ```
 
-## Common Mistakes
+## 常见错误及解决方法
 
-| Mistake | Problem | Fix |
-|---------|---------|-----|
-| Vague descriptions | Different character every time | 50+ word detailed anchor |
-| Inconsistent prompt structure | Varying emphasis = varying results | Same structure, only change action/scene |
-| Generating one view only | Can't use character in different contexts | Create full turnaround reference |
-| No color documentation | Colors drift across generations | Record exact hex codes |
-| Skipping expression sheet | Character feels one-dimensional | Generate 6+ expressions |
-| Not using LoRA for big projects | Inconsistency compounds | Train LoRA for 10+ image projects |
+| 错误 | 问题 | 解决方法 |
+|------|---------|---------|
+| 描述模糊 | 每次生成的字符都不同 | 使用 50 多字的详细描述 |
+| 提示结构不一致 | 强调点不同会导致结果不同 | 保持提示结构一致，仅更改动作/场景 |
+| 仅生成一个视角 | 无法在不同场景中使用角色 | 创建完整的角色参考资料 |
+| 无色彩记录 | 不同生成的图像颜色会不一致 | 记录颜色的十六进制代码 |
+| 忽略表情文档 | 角色显得单一 | 生成 6 种以上的表情 |
+| 大型项目未使用 LoRA | 一致性问题加剧 | 对于需要大量图像的项目，训练 LoRA 模型 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -278,4 +278,4 @@ npx skills add inferencesh/skills@flux-image
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有相关应用程序：`infsh app list`

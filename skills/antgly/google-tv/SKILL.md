@@ -1,89 +1,88 @@
 ---
 name: google-tv
-description: Play YouTube/Tubi content and fallback to Google TV global search for other streaming apps via ADB
+description: 通过ADB（Android Debug Bridge）播放YouTube或Tubi上的内容；对于其他流媒体应用，则回退到Google TV的全球搜索功能。
 metadata: {"openclaw":{"os":["darwin","linux"],"requires":{"bins":["adb","uv"]},"install":[{"id":"brew-adb","kind":"brew","cask":"android-platform-tools","bins":["adb"],"label":"Install adb (android-platform-tools)"},{"id":"brew-uv","kind":"brew","formula":"uv","bins":["uv"],"label":"Install uv"}]}}
 ---
 
-# Chromecast with Google TV control
+# 通过 Google TV 控制 Chromecast
 
-Use this skill when I ask to cast YouTube or Tubi video content, play or pause Chromecast media playback, check if the Chromecast is online, or launch episodic content in another streaming app via global search fallback.
+当您需要将 YouTube 或 Tubi 视频内容投射到 Chromecast 上、播放或暂停 Chromecast 上的媒体播放、检查 Chromecast 是否在线，或通过全局搜索来在其他流媒体应用中播放剧集内容时，请使用此技能。
 
-## Setup
+## 设置
 
-This skill runs with `uv` and `adb` on PATH. No venv required.
+此技能依赖于 `uv` 和 `adb`，并确保它们已添加到系统的 `PATH` 环境变量中。无需创建虚拟环境（`venv`）。
 
-- Ensure `uv` and `adb` are available on PATH.
-- Use `./run` as a convenience wrapper around `uv run google_tv_skill.py`.
+- 确保 `uv` 和 `adb` 可以通过 `PATH` 访问。
+- 使用 `./run` 命令作为 `uv run google_tv_skill.py` 的便捷入口。
 
-## Capabilities
+## 功能
 
-This skill provides a small CLI wrapper around ADB to control a Google TV device. It exposes the following subcommands:
+此技能通过 ADB 提供了一组简单的命令行接口（CLI）来控制 Google TV 设备，支持以下功能：
 
-- status: show adb devices output
-- play <query_or_id_or_url>: play content via YouTube, Tubi, or global-search fallback.
-- pause: send media pause
-- resume: send media play
+- `status`：显示 ADB 设备的连接状态。
+- `play <query_or_id_or_url>`：通过 YouTube、Tubi 或全局搜索来播放内容。
+- `pause`：暂停媒体播放。
+- `resume`：恢复媒体播放。
 
-### Usage examples
+### 使用示例
 
-`./run status --device 192.168.4.64 --port 5555`
+```bash
+./run status --device 192.168.4.64 --port 5555
+./run play "7m714Ls29ZA" --device 192.168.4.64 --port 5555
+./run play "family guy" --app hulu --season 3 --episode 4 --device 192.168.4.64 --port 5555
+./run pause --device 192.168.4.64 --port 5555
+```
 
-`./run play "7m714Ls29ZA" --device 192.168.4.64 --port 5555`
+### 设备选择与环境变量覆盖
 
-`./run play "family guy" --app hulu --season 3 --episode 4 --device 192.168.4.64 --port 5555`
+- 您可以通过 CLI 参数 `--device` 和 `--port` 指定设备。
+- 或者，您可以通过设置环境变量 `CHROMECAST_HOST` 和 `CHROMECAST_PORT` 来覆盖默认值。
+- 如果仅提供了 `--device` 或 `--port`，脚本会使用缓存中的设备信息；否则会报错。
+- 脚本会将最后一次成功连接的设备信息（IP 和端口）保存到 `skill` 文件夹中的 `.last_device.json` 文件中。如果没有提供设备信息，脚本会尝试通过 ADB 的 mDNS 服务发现功能来自动选择设备。
+- **重要提示**：此技能不会主动扫描或探测端口，只会尝试连接到指定的端口或缓存中的端口。
 
-`./run pause --device 192.168.4.64 --port 5555`
+### YouTube 的处理方式
 
-### Device selection and env overrides
+- 如果提供了 YouTube 视频 ID 或 URL，脚本会通过 ADB 指令直接在 YouTube 应用中播放视频。
+- 脚本会使用 `yt-api`（如果已安装并添加到 `PATH`）来解析视频 ID。如果解析失败，会报告错误。
+- 您可以通过 `YOUTUBE_PACKAGE` 环境变量来指定 YouTube 应用的包名（默认为 `com.google.android.youtube.tv`）。
 
-- You can pass --device (IP) and --port on the CLI.
-- Alternatively, set CHROMECAST_HOST and CHROMECAST_PORT environment variables to override defaults.
-- If you provide only --device or only --port, the script will use the cached counterpart when available; otherwise it will error.
-- The script caches the last successful IP:PORT to `.last_device.json` in the skill folder and will use that cache if no explicit device is provided.
-- If no explicit device is provided and no cache exists, the script will attempt ADB mDNS service discovery and use the first IP:PORT it finds.
-- IMPORTANT: This skill does NOT perform any port probing or scanning. It will only attempt an adb connect to the explicit port provided or the cached port.
+### Tubi 的处理方式
 
-### YouTube handling
+- 如果提供了 Tubi 的 URL，脚本会通过 ADB 发送一个 VIEW 指令来播放该视频（仅在 Tubi 应用内生效）。
+- 如果需要使用 Tubi 的官方网址，助手可以通过网络搜索来获取该网址并传递给脚本。
+- 您可以通过 `TUBI_PACKAGE` 环境变量来指定 Tubi 应用的包名（默认为 `com.tubitv`）。
 
-- If you provide a YouTube video ID or URL, the skill will launch the YouTube app directly via an ADB intent restricted to the YouTube package.
-- The skill attempts to resolve titles/queries to a YouTube video ID using the `yt-api` CLI (on PATH). If ID resolution fails, the skill will report failure.
-- You can override the package name with `YOUTUBE_PACKAGE` (default `com.google.android.youtube.tv`).
+### 非 YouTube/Tubi 内容的全局搜索方式
 
-### Tubi handling
+- 如果 YouTube/Tubi 的方法不可用，并且您指定了其他流媒体服务（如 `hulu`、`max`、`disney+`），脚本会使用 Google TV 的全局搜索功能。
+- 使用 `--app`、`--season` 和 `--episode` 参数来指定要搜索的内容。
+- 脚本会启动 `android.search.action.GLOBAL_SEARCH` 功能，显示剧集列表，选择相应的季数和剧集，然后提示用户“在 <app> 中打开”。
 
-- If you provide a Tubi https URL, the skill will send a VIEW intent with that URL (restricted to the Tubi package).
-- If the canonical Tubi https URL is needed, the assistant can look it up via web_search and supply it to this skill.
-- You can override the package name with `TUBI_PACKAGE` (default `com.tubitv`).
+### 暂停/恢复播放
 
-### Global-search fallback for non-YouTube/Tubi
+```bash
+./run pause
+./run resume
+```
 
-- If YouTube/Tubi resolution does not apply and you pass `--app` with another provider (for example `hulu`, `max`, `disney+`), the skill uses a Google TV global-search fallback.
-- For this fallback, pass all three: `--app`, `--season`, and `--episode`.
-- The fallback starts `android.search.action.GLOBAL_SEARCH`, waits for the Series Overview UI, opens Seasons, picks season/episode, then confirms `Open in <app>` when available.
-- Hulu profile-selection logic is intentionally not handled here.
+### 依赖项
 
-### Pause / Resume
+- 该脚本仅使用 Python 标准库，无需安装额外的第三方包（如 pip）。
+- 脚本通过 `uv` 来执行操作，以符合 PEP 668 的要求。
+- 脚本要求 `adb`、`uv` 和 `yt-api` 已安装并添加到系统的 `PATH` 环境变量中。
 
-`./run pause`
-`./run resume`
+### 缓存机制
 
-### Dependencies
+- 脚本会将最后一次成功连接的设备信息（IP 和端口）保存到 `skill` 文件夹中的 `.last_device.json` 文件中。
+- 脚本不会主动扫描端口，以确保行为的稳定性并避免与 Google 的 ADB 端口策略冲突。
 
-- The script uses only the Python standard library (no pip packages required).
-- The scripts run through `uv` to avoid PEP 668/system package constraints.
-- The script expects `adb`, `uv`, and `yt-api` to be installed and available on PATH.
+### 故障排除
 
-### Caching and non-destructive defaults
+- 如果 `adb connect` 失败，可以手动运行 `adb connect IP:PORT` 来检查当前连接的端口。
+- 如果在交互式模式下运行时 `adb connect` 被拒绝，脚本会提示您输入新的端口，并在连接成功后更新 `.last_device.json` 文件。
 
-- The script stores the last successful device (ip and port) in `.last_device.json` in the skill folder.
-- It will not attempt port scanning; this keeps behavior predictable and avoids conflicts with Google's ADB port rotation.
+## 实现细节
 
-### Troubleshooting
-
-- If adb connect fails, run `adb connect IP:PORT` manually from your host to verify the current port.
-- If adb connect is refused and you're running interactively, the script will prompt you for a new port and update `.last_device.json` on success.
-
-## Implementation notes
-
-- The skill CLI code lives in `google_tv_skill.py` in this folder. It uses subprocess calls to `adb` and `yt-api`, plus an internal global-search helper for fallback playback.
-- For Tubi URL discovery, the assistant can use web_search to find canonical Tubi pages and pass the https URL to the skill.
+- 此技能的 CLI 代码位于 `google_tv_skill.py` 文件中。它通过 `subprocess` 调用 `adb` 和 `yt-api`，并使用内部的全局搜索功能来实现其他功能。
+- 对于 Tubi 的 URL，助手可以通过网络搜索来获取正确的页面地址并传递给脚本。

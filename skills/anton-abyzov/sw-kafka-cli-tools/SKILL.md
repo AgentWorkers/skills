@@ -1,17 +1,17 @@
 ---
 name: kafka-cli-tools
-description: Kafka CLI tools expert for kcat, kafkactl, and native Kafka commands. Use when producing/consuming messages from command line, listing topics, or troubleshooting Kafka with CLI tools.
+description: Kafka CLI工具专家，精通kcat、kafkactl以及原生Kafka命令。适用于通过命令行生产/消费消息、列出主题或使用CLI工具排查Kafka故障的场景。
 ---
 
-# Kafka CLI Tools Expert
+# Kafka CLI 工具专家
 
-Comprehensive knowledge of modern Kafka CLI tools for production operations, development, and troubleshooting.
+具备对现代 Kafka CLI 工具的全面了解，能够应用于生产环境、开发及故障排查场景。
 
-## Supported CLI Tools
+## 支持的 CLI 工具
 
-### 1. kcat (kafkacat) - The Swiss Army Knife
+### 1. kcat (kafkacat) – 万能工具
 
-**Installation**:
+**安装**：
 ```bash
 # macOS
 brew install kcat
@@ -25,9 +25,9 @@ cd kcat
 ./configure && make && sudo make install
 ```
 
-**Core Operations**:
+**核心功能**：
 
-**Produce Messages**:
+- **生产消息**：
 ```bash
 # Simple produce
 echo "Hello Kafka" | kcat -P -b localhost:9092 -t my-topic
@@ -48,7 +48,7 @@ echo "data" | kcat -P -b localhost:9092 -t my-topic -z gzip
 echo "critical-data" | kcat -P -b localhost:9092 -t my-topic -X acks=all
 ```
 
-**Consume Messages**:
+- **消费消息**：
 ```bash
 # Consume from beginning
 kcat -C -b localhost:9092 -t my-topic -o beginning
@@ -72,7 +72,7 @@ kcat -C -b localhost:9092 -t my-topic -f 'Topic: %t, Partition: %p, Offset: %o, 
 kcat -C -b localhost:9092 -t my-topic -J
 ```
 
-**Metadata & Admin**:
+- **元数据管理**：
 ```bash
 # List all topics
 kcat -L -b localhost:9092
@@ -87,7 +87,7 @@ kcat -Q -b localhost:9092 -t my-topic
 kcat -L -b localhost:9092 | grep "broker\|topic"
 ```
 
-**SASL/SSL Authentication**:
+- **SASL/SSL 认证**：
 ```bash
 # SASL/PLAINTEXT
 kcat -b localhost:9092 \
@@ -115,9 +115,9 @@ kcat -b localhost:9093 \
   -L
 ```
 
-### 2. kcli - Kubernetes-Native Kafka CLI
+### 2. kcli – 基于 Kubernetes 的 Kafka CLI
 
-**Installation**:
+**安装**：
 ```bash
 # Install via krew (Kubernetes plugin manager)
 kubectl krew install kcli
@@ -128,7 +128,7 @@ chmod +x kcli-linux-amd64
 sudo mv kcli-linux-amd64 /usr/local/bin/kcli
 ```
 
-**Kubernetes Integration**:
+**与 Kubernetes 的集成**：
 ```bash
 # Connect to Kafka running in k8s
 kcli --context my-cluster --namespace kafka
@@ -143,14 +143,14 @@ kcli consume --topic my-topic --brokers kafka-broker:9092 --from-beginning
 kcli topics list --brokers kafka-broker:9092
 ```
 
-**Best For**:
-- Kubernetes-native deployments
-- Helmfile/Kustomize workflows
-- GitOps with ArgoCD/Flux
+**适用场景**：
+- 基于 Kubernetes 的部署
+- 使用 Helmfile 或 Kustomize 进行配置
+- 与 ArgoCD/Flux 结合的 GitOps 流程
 
-### 3. kaf - Modern Terminal UI
+### 3. kaf – 现代化的终端用户界面 (TUI)
 
-**Installation**:
+**安装**：
 ```bash
 # macOS
 brew install kaf
@@ -162,7 +162,7 @@ snap install kaf
 go install github.com/birdayz/kaf/cmd/kaf@latest
 ```
 
-**Interactive Features**:
+**交互式功能**：
 ```bash
 # Configure cluster
 kaf config add-cluster local --brokers localhost:9092
@@ -189,15 +189,15 @@ kaf schemas
 kaf schema get my-schema
 ```
 
-**Best For**:
-- Development workflows
-- Quick topic exploration
-- Consumer group debugging
-- Schema Registry management
+**适用场景**：
+- 开发工作流程
+- 快速探索主题信息
+- 消费者组调试
+- 架构注册表管理
 
-### 4. kafkactl - Advanced Admin Tool
+### 4. kafkactl – 高级管理工具
 
-**Installation**:
+**安装**：
 ```bash
 # macOS
 brew install deviceinsight/packages/kafkactl
@@ -211,7 +211,7 @@ sudo mv kafkactl /usr/local/bin/
 docker run --rm -it deviceinsight/kafkactl:latest
 ```
 
-**Advanced Operations**:
+**高级功能**：
 ```bash
 # Configure context
 kafkactl config add-context local --brokers localhost:9092
@@ -237,32 +237,32 @@ kafkactl alter client-quota --user alice --producer-byte-rate 1048576
 kafkactl alter partition --topic my-topic --partition 0 --replicas 1,2,3
 ```
 
-**Best For**:
-- Production cluster management
-- ACL administration
-- Partition reassignment
-- Quota management
+**适用场景**：
+- 生产集群管理
+- 访问控制列表 (ACL) 管理
+- 分区重新分配
+- 配额管理
 
-## Tool Comparison Matrix
+## 工具对比表
 
-| Feature | kcat | kcli | kaf | kafkactl |
+| 功能 | kcat | kcli | kaf | kafkactl |
 |---------|------|------|-----|----------|
-| **Installation** | Easy | Medium | Easy | Easy |
-| **Produce** | ✅ Advanced | ✅ Basic | ✅ Interactive | ✅ Basic |
-| **Consume** | ✅ Advanced | ✅ Basic | ✅ Interactive | ✅ Basic |
-| **Metadata** | ✅ JSON | ✅ Basic | ✅ TUI | ✅ Detailed |
-| **TUI** | ❌ | ❌ | ✅ | ✅ Limited |
-| **Admin** | ❌ | ❌ | ⚠️  Limited | ✅ Advanced |
-| **SASL/SSL** | ✅ | ✅ | ✅ | ✅ |
-| **K8s Native** | ❌ | ✅ | ❌ | ❌ |
-| **Schema Reg** | ❌ | ❌ | ✅ | ❌ |
-| **ACLs** | ❌ | ❌ | ❌ | ✅ |
-| **Quotas** | ❌ | ❌ | ❌ | ✅ |
-| **Best For** | Scripting, ops | Kubernetes | Development | Production admin |
+| **安装难度** | 简单 | 中等 | 简单 | 简单 |
+| **消息生产** | 支持高级操作 | 支持基本操作 | 支持交互式操作 | 支持基本操作 |
+| **消息消费** | 支持高级操作 | 支持基本操作 | 支持交互式操作 | 支持基本操作 |
+| **元数据管理** | 支持 JSON 格式输出 | 支持基本操作 | 支持图形化界面 | 支持详细信息 |
+| **图形化界面** | 不支持 | 不支持 | 支持 | 支持（但功能有限） |
+| **管理功能** | 不支持 | 不支持 | 有限支持 | 支持高级管理 |
+| **SASL/SSL 认证** | 支持 | 支持 | 支持 | 支持 |
+| **Kubernetes 原生集成** | 不支持 | 支持 | 不支持 | 不支持 |
+| **架构注册表** | 不支持 | 不支持 | 支持 | 不支持 |
+| **访问控制列表 (ACLs)** | 不支持 | 不支持 | 不支持 | 支持 |
+| **配额管理** | 不支持 | 不支持 | 不支持 | 支持 |
+| **适用场景** | 适用于脚本编写和运维 | 适用于 Kubernetes 环境 | 适用于开发 | 适用于生产环境的管理 |
 
-## Common Patterns
+## 常见使用场景
 
-### 1. Topic Creation with Optimal Settings
+### 1. 使用最佳配置创建主题
 
 ```bash
 # Using kafkactl (recommended for production)
@@ -277,7 +277,7 @@ kafkactl create topic orders \
 kcat -L -b localhost:9092 -t orders -J | jq '.topics[0]'
 ```
 
-### 2. Dead Letter Queue Pattern
+### 2. 死信队列 (Dead Letter Queue) 的实现
 
 ```bash
 # Produce failed message to DLQ
@@ -290,7 +290,7 @@ echo "failed-msg" | kcat -P -b localhost:9092 -t orders-dlq \
 kcat -C -b localhost:9092 -t orders-dlq -f 'Headers: %h\nValue: %s\n\n'
 ```
 
-### 3. Consumer Group Lag Monitoring
+### 3. 监控消费者组的延迟情况
 
 ```bash
 # Using kafkactl
@@ -304,7 +304,7 @@ kaf groups
 # Then select group to see lag in TUI
 ```
 
-### 4. Multi-Cluster Replication Testing
+### 4. 多集群复制测试
 
 ```bash
 # Produce to source cluster
@@ -318,7 +318,7 @@ kcat -Q -b source-kafka:9092 -t replicated-topic
 kcat -Q -b target-kafka:9092 -t replicated-topic
 ```
 
-### 5. Performance Testing
+### 5. 性能测试
 
 ```bash
 # Produce 10,000 messages with kcat
@@ -331,9 +331,9 @@ time kcat -C -b localhost:9092 -t perf-test -c 10000 -o beginning > /dev/null
 seq 1 10000 | kcat -P -b localhost:9092 -t perf-test -z lz4
 ```
 
-## Troubleshooting
+## 故障排查
 
-### Connection Issues
+### 连接问题
 
 ```bash
 # Test broker connectivity
@@ -352,7 +352,7 @@ kcat -b localhost:9092 \
 # Should fail with authentication error
 ```
 
-### Message Not Appearing
+### 消息未显示
 
 ```bash
 # Check topic exists
@@ -371,7 +371,7 @@ for i in {0..11}; do
 done
 ```
 
-### Consumer Group Stuck
+### 消费者组卡住（无法正常工作）
 
 ```bash
 # Check consumer group state
@@ -387,10 +387,10 @@ kafkactl reset consumer-group my-app --topic my-topic --partition 0 --offset 123
 kafkactl delete consumer-group my-app
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-**Automatic CLI Tool Detection**:
-SpecWeave auto-detects installed CLI tools and recommends best tool for the operation:
+**自动检测 CLI 工具**：
+SpecWeave 可自动检测已安装的 CLI 工具，并推荐最适合当前操作的工具：
 
 ```typescript
 import { CLIToolDetector } from './lib/cli/detector';
@@ -406,28 +406,28 @@ if (available.includes('kcat')) {
 }
 ```
 
-**SpecWeave Commands**:
-- `/sw-kafka:dev-env` - Uses Docker Compose + kcat for local testing
-- `/sw-kafka:monitor-setup` - Sets up kcat-based lag monitoring
-- `/sw-kafka:mcp-configure` - Validates CLI tools are installed
+**SpecWeave 命令示例**：
+- `/sw-kafka:dev-env` – 使用 Docker Compose 和 kcat 进行本地测试
+- `/sw-kafka:monitor-setup` – 设置基于 kcat 的延迟监控
+- `/sw-kafka:mcp-configure` – 验证 CLI 工具是否已正确安装
 
-## Security Best Practices
+## 安全最佳实践
 
-1. **Never hardcode credentials** - Use environment variables or secrets management
-2. **Use SSL/TLS in production** - Configure `-X security.protocol=SASL_SSL`
-3. **Prefer SCRAM over PLAIN** - Use `-X sasl.mechanism=SCRAM-SHA-256`
-4. **Rotate credentials regularly** - Update passwords and certificates
-5. **Least privilege** - Grant only necessary ACLs to users
+1. **切勿硬编码凭证** – 使用环境变量或秘密管理工具进行配置
+2. **在生产环境中使用 SSL/TLS** – 配置 `-X security.protocol=SASL_SSL`
+3. **优先使用 SCRAM 协议** – 设置 `-X sasl.mechanism=SCRAM-SHA-256`
+4. **定期更新凭证** – 定期更换密码和证书
+5. **最小权限原则** – 仅向用户授予必要的访问权限
 
-## Related Skills
+## 相关技能
 
-- `/sw-kafka:kafka-mcp-integration` - MCP server setup and configuration
-- `/sw-kafka:kafka-architecture` - Cluster design and sizing
+- `/sw-kafka:kafka-mcp-integration` – MCP 服务器的设置与配置
+- `/sw-kafka:kafka-architecture` – 集群的设计与规模规划
 
-## External Links
+## 外部链接
 
 - [kcat GitHub](https://github.com/edenhill/kcat)
 - [kcli GitHub](https://github.com/cswank/kcli)
 - [kaf GitHub](https://github.com/birdayz/kaf)
 - [kafkactl GitHub](https://github.com/deviceinsight/kafkactl)
-- [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
+- [Apache Kafka 官方文档](https://kafka.apache.org/documentation/)

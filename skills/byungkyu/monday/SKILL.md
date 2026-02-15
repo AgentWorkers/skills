@@ -17,9 +17,9 @@ metadata:
 
 # Monday.com
 
-Access the Monday.com API with managed OAuth authentication. Manage boards, items, columns, groups, users, and workspaces using GraphQL.
+您可以使用托管的 OAuth 认证来访问 Monday.com 的 API。通过 GraphQL 可以管理看板（boards）、项目（items）、列（columns）、组（groups）、用户（users）和工作空间（workspaces）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user
@@ -33,39 +33,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/monday/v2
 ```
 
-All requests use POST to the GraphQL endpoint. The gateway proxies requests to `api.monday.com` and automatically injects your OAuth token.
+所有请求都使用 POST 方法发送到 GraphQL 端点。该网关会将请求代理到 `api.monday.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Monday.com OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Monday.com OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Monday.com connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Monday.com 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -144,13 +144,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-Monday.com uses a GraphQL API. All operations are sent as POST requests with a JSON body containing the `query` field.
+Monday.com 使用 GraphQL API。所有操作都以 POST 请求的形式发送，请求体中包含 `query` 字段。
 
-### Current User (me)
+### 当前用户（me）
 
 ```bash
 POST /monday/v2
@@ -159,7 +159,7 @@ Content-Type: application/json
 {"query": "{ me { id name email } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -172,7 +172,7 @@ Content-Type: application/json
 }
 ```
 
-### Users
+### 用户
 
 ```bash
 POST /monday/v2
@@ -181,7 +181,7 @@ Content-Type: application/json
 {"query": "{ users(limit: 20) { id name email } }"}
 ```
 
-### Workspaces
+### 工作空间
 
 ```bash
 POST /monday/v2
@@ -190,7 +190,7 @@ Content-Type: application/json
 {"query": "{ workspaces(limit: 10) { id name kind } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -201,9 +201,9 @@ Content-Type: application/json
 }
 ```
 
-### Boards
+### 看板
 
-#### List Boards
+#### 列出看板
 
 ```bash
 POST /monday/v2
@@ -212,7 +212,7 @@ Content-Type: application/json
 {"query": "{ boards(limit: 10) { id name state board_kind workspace { id name } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -229,7 +229,7 @@ Content-Type: application/json
 }
 ```
 
-#### Get Board with Columns, Groups, and Items
+#### 获取包含列、组和项目的看板信息
 
 ```bash
 POST /monday/v2
@@ -238,7 +238,7 @@ Content-Type: application/json
 {"query": "{ boards(ids: [BOARD_ID]) { id name columns { id title type } groups { id title } items_page(limit: 20) { cursor items { id name state } } } }"}
 ```
 
-#### Create Board
+#### 创建看板
 
 ```bash
 POST /monday/v2
@@ -247,7 +247,7 @@ Content-Type: application/json
 {"query": "mutation { create_board(board_name: \"New Board\", board_kind: public) { id name } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -259,7 +259,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Board
+#### 更新看板
 
 ```bash
 POST /monday/v2
@@ -268,7 +268,7 @@ Content-Type: application/json
 {"query": "mutation { update_board(board_id: BOARD_ID, board_attribute: description, new_value: \"Board description\") }"}
 ```
 
-#### Delete Board
+#### 删除看板
 
 ```bash
 POST /monday/v2
@@ -277,9 +277,9 @@ Content-Type: application/json
 {"query": "mutation { delete_board(board_id: BOARD_ID) { id } }"}
 ```
 
-### Items
+### 项目
 
-#### Get Items by ID
+#### 根据 ID 获取项目信息
 
 ```bash
 POST /monday/v2
@@ -288,7 +288,7 @@ Content-Type: application/json
 {"query": "{ items(ids: [ITEM_ID]) { id name created_at updated_at state board { id name } group { id title } column_values { id text value } } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -307,7 +307,7 @@ Content-Type: application/json
 }
 ```
 
-#### Create Item
+#### 创建项目
 
 ```bash
 POST /monday/v2
@@ -316,7 +316,7 @@ Content-Type: application/json
 {"query": "mutation { create_item(board_id: BOARD_ID, group_id: \"GROUP_ID\", item_name: \"New item\") { id name } }"}
 ```
 
-#### Create Item with Column Values
+#### 创建包含列值的项目
 
 ```bash
 POST /monday/v2
@@ -325,7 +325,7 @@ Content-Type: application/json
 {"query": "mutation { create_item(board_id: BOARD_ID, group_id: \"GROUP_ID\", item_name: \"New task\", column_values: \"{\\\"status\\\": {\\\"label\\\": \\\"Working on it\\\"}}\") { id name column_values { id text } } }"}
 ```
 
-#### Update Item Name
+#### 更新项目名称
 
 ```bash
 POST /monday/v2
@@ -334,7 +334,7 @@ Content-Type: application/json
 {"query": "mutation { change_simple_column_value(board_id: BOARD_ID, item_id: ITEM_ID, column_id: \"name\", value: \"Updated name\") { id name } }"}
 ```
 
-#### Update Column Value
+#### 更新列值
 
 ```bash
 POST /monday/v2
@@ -343,7 +343,7 @@ Content-Type: application/json
 {"query": "mutation { change_column_value(board_id: BOARD_ID, item_id: ITEM_ID, column_id: \"status\", value: \"{\\\"label\\\": \\\"Done\\\"}\") { id name } }"}
 ```
 
-#### Delete Item
+#### 删除项目
 
 ```bash
 POST /monday/v2
@@ -352,9 +352,9 @@ Content-Type: application/json
 {"query": "mutation { delete_item(item_id: ITEM_ID) { id } }"}
 ```
 
-### Columns
+### 列
 
-#### Create Column
+#### 创建列
 
 ```bash
 POST /monday/v2
@@ -363,7 +363,7 @@ Content-Type: application/json
 {"query": "mutation { create_column(board_id: BOARD_ID, title: \"Status\", column_type: status) { id title type } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -376,13 +376,13 @@ Content-Type: application/json
 }
 ```
 
-#### Column Types
+**列类型**
 
-Common column types: `status`, `text`, `numbers`, `date`, `people`, `dropdown`, `checkbox`, `email`, `phone`, `link`, `timeline`, `tags`, `rating`
+常见的列类型：`status`、`text`、`numbers`、`date`、`people`、`dropdown`、`checkbox`、`email`、`phone`、`link`、`timeline`、`tags`、`rating`
 
-### Groups
+### 组
 
-#### Create Group
+#### 创建组
 
 ```bash
 POST /monday/v2
@@ -391,7 +391,7 @@ Content-Type: application/json
 {"query": "mutation { create_group(board_id: BOARD_ID, group_name: \"New Group\") { id title } }"}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": {
@@ -403,9 +403,9 @@ Content-Type: application/json
 }
 ```
 
-## Pagination
+## 分页
 
-Monday.com uses cursor-based pagination for items with `items_page` and `next_items_page`.
+Monday.com 对项目使用基于游标的分页机制，通过 `items_page` 和 `next_items_page` 参数实现分页。
 
 ```bash
 # First page
@@ -417,7 +417,7 @@ POST /monday/v2
 {"query": "{ next_items_page(cursor: \"CURSOR_VALUE\", limit: 50) { cursor items { id name } } }"}
 ```
 
-Response includes `cursor` when more items exist (null when no more pages):
+当还有更多项目时，响应中会包含 `cursor`（如果没有更多页面，则 `cursor` 为 `null`）：
 
 ```json
 {
@@ -432,7 +432,7 @@ Response includes `cursor` when more items exist (null when no more pages):
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -469,30 +469,30 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Monday.com uses GraphQL exclusively (no REST API)
-- Board IDs, item IDs, and user IDs are numeric strings
-- Column IDs are alphanumeric strings (e.g., `color_mm09e48w`)
-- Group IDs are alphanumeric strings (e.g., `group_mm0939df`, `topics`)
-- Column values must be passed as JSON strings when creating/updating items
-- The `account` query may require additional OAuth scopes. If you receive a scope error, contact Maton support at support@maton.ai with the specific operations/APIs you need and your use-case
-- Board kinds: `public`, `private`, `share`
-- Board states: `active`, `archived`, `deleted`, `all`
-- Each cursor is valid for 60 minutes after the initial request
-- Default limit is 25, maximum is 100 for most queries
+- Monday.com 仅支持 GraphQL，不支持 REST API。
+- 看板 ID、项目 ID 和用户 ID 都是数字字符串。
+- 列 ID 是字母数字字符串（例如：`color_mm09e48w`）。
+- 组 ID 也是字母数字字符串（例如：`group_mm0939df`、`topics`）。
+- 在创建或更新项目时，列值必须以 JSON 字符串的形式传递。
+- `account` 查询可能需要额外的 OAuth 权限范围。如果您收到权限范围错误，请通过 support@maton.ai 联系 Maton 支持团队，并提供具体的操作、API 和使用场景。
+- 看板类型：`public`、`private`、`share`。
+- 看板状态：`active`、`archived`、`deleted`、`all`。
+- 每个游标在初始请求后的 60 分钟内有效。
+- 大多数查询的默认限制为 25 个结果，最大限制为 100 个结果。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing Monday.com connection or GraphQL validation error |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient OAuth scope for the operation |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Monday.com API |
+| 400 | 未建立 Monday.com 连接或 GraphQL 验证错误 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 操作所需的 OAuth 权限范围不足 |
+| 429 | 请求次数达到限制 |
+| 4xx/5xx | 来自 Monday.com API 的传递错误 |
 
-GraphQL errors are returned in the `errors` array:
+GraphQL 错误会通过 `errors` 数组返回：
 
 ```json
 {
@@ -507,15 +507,15 @@ GraphQL errors are returned in the `errors` array:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保 `MATON_API_KEY` 环境变量已设置：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -526,20 +526,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `monday`. For example:
+1. 确保您的 URL 路径以 `monday` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/monday/v2`
+- 错误的路径：`https://gateway.maton.ai/v2`
 
-- Correct: `https://gateway.maton.ai/monday/v2`
-- Incorrect: `https://gateway.maton.ai/v2`
+## 资源
 
-## Resources
-
-- [Monday.com API Basics](https://developer.monday.com/api-reference/docs/basics)
-- [GraphQL Overview](https://developer.monday.com/api-reference/docs/introduction-to-graphql)
-- [Boards Reference](https://developer.monday.com/api-reference/reference/boards)
-- [Items Reference](https://developer.monday.com/api-reference/reference/items)
-- [Columns Reference](https://developer.monday.com/api-reference/reference/columns)
-- [API Changelog](https://developer.monday.com/api-reference/changelog)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Monday.com API 基础知识](https://developer.monday.com/api-reference/docs/basics)
+- [GraphQL 概述](https://developer.monday.com/api-reference/docs/introduction-to-graphql)
+- [看板参考](https://developer.monday.com/api-reference/reference/boards)
+- [项目参考](https://developer.monday.com/api-reference/reference/items)
+- [列参考](https://developer.monday.com/api-reference/reference/columns)
+- [API 更新日志](https://developer.monday.com/api-reference/changelog)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

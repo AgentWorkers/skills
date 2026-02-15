@@ -1,44 +1,44 @@
 ---
 name: pinterest
-description: Pinterest API v5 integration. Allows creating and reading pins, managing boards, retrieving profile data and analytics. Use this skill when the user needs to automate Pinterest tasks or access account data.
+description: Pinterest API v5集成：支持创建和读取Pin（图片或视频），管理Pinterest板（boards），以及获取用户资料和数据分析。当用户需要自动化执行Pinterest相关操作或访问账户数据时，可使用此技能。
 ---
 
-# Pinterest API v5 Skill
+# Pinterest API v5 技能
 
-This skill provides tools and instructions for working with Pinterest API v5.
+本技能提供了用于操作 Pinterest API v5 的工具和说明。
 
-## Quick Start
+## 快速入门
 
-1. **Create App**: Follow the guide in [references/setup_guide.md](references/setup_guide.md) to get your `App ID` and `App Secret`.
-2. **Get Token**: Run the authorization script:
+1. **创建应用**：按照 [references/setup_guide.md](references/setup_guide.md) 中的指南获取您的 `App ID` 和 `App Secret`。
+2. **获取令牌**：运行授权脚本：
    ```bash
    python3 scripts/auth.py
    ```
-   The script will open a browser, perform OAuth authorization, and output the `Access Token`.
+   该脚本将打开浏览器，执行 OAuth 授权，并输出 `Access Token`。
 
-## Core Features
+## 核心功能
 
-### 1. Pin Management
-- **Create Pin**: `POST /v5/pins`
-- **Get Pin Info**: `GET /v5/pins/{pin_id}`
-- **Delete Pin**: `DELETE /v5/pins/{pin_id}`
+### 1. 图片钉钉（Pin）管理
+- **创建图片钉钉**：`POST /v5/pins`
+- **获取图片钉钉信息**：`GET /v5/pins/{pin_id}`
+- **删除图片钉钉**：`DELETE /v5/pins/{pin_id}`
 
-### 2. Board Management
-- **Create Board**: `POST /v5/boards`
-- **List Boards**: `GET /v5/boards`
-- **Pins on Board**: `GET /v5/boards/{board_id}/pins`
+### 2. 图板（Board）管理
+- **创建图片钉钉所在的板块**：`POST /v5/boards`
+- **列出所有板块**：`GET /v5/boards`
+- **获取板块上的图片钉钉**：`GET /v5/boards/{board_id}/pins`
 
-### 3. Analytics
-- **Account Analytics**: `GET /v5/user_account/analytics`
-- **Pin Analytics**: `GET /v5/pins/{pin_id}/analytics`
+### 3. 分析数据
+- **账户分析**：`GET /v5/user_account/analytics`
+- **图片钉钉分析**：`GET /v5/pins/{pin_id}/analytics`
 
-See [references/api_reference.md](references/api_reference.md) for a detailed list of endpoints and request examples.
+有关端点和请求示例的详细信息，请参阅 [references/api_reference.md](references/api_reference.md)。
 
-## Usage Examples
+## 使用示例
 
-### Creating a Pin (Heuristics)
-When creating a pin, you must specify `board_id` and `media_source`.
-Request body example:
+### 创建图片钉钉
+在创建图片钉钉时，必须指定 `board_id` 和 `media_source`。
+请求体示例：
 ```json
 {
   "title": "My Awesome Pin",
@@ -51,5 +51,5 @@ Request body example:
 }
 ```
 
-### Getting All Boards
-Use `GET /v5/boards` to find the required `board_id` before creating a pin.
+### 获取所有板块
+在创建图片钉钉之前，使用 `GET /v5/boards` 查找所需的 `board_id`。

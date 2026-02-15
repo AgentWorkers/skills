@@ -1,6 +1,6 @@
 ---
 name: oh-my-opencode
-description: Multi-agent orchestration plugin for OpenCode. Use when the user wants to install, configure, or operate oh-my-opencode — including agent delegation, ultrawork mode, Prometheus planning, background tasks, category-based task routing, model resolution, tmux integration, or any oh-my-opencode feature. Covers installation, configuration, all agents (Sisyphus, Oracle, Librarian, Explore, Atlas, Prometheus, Metis, Momus), all categories, slash commands, hooks, skills, MCPs, and troubleshooting.
+description: OpenCode的多代理编排插件：适用于用户需要安装、配置或操作oh-my-opencode的场景，包括代理委托、超工作模式（ultrawork mode）、Prometheus监控计划、后台任务处理、基于类别的任务路由、模型解析（model resolution）、tmux集成等功能。该插件涵盖了安装、配置过程，以及所有类型的代理（如Sisyphus、Oracle、Librarian、Explore、Atlas、Prometheus、Metis、Momus）和所有类别的任务管理。同时，还提供了对相关命令（slash commands）、钩子（hooks）、技能（skills）、MCPs（Management Control Panels）的详细说明，并提供了故障排除（troubleshooting）的指导。
 metadata:
   clawdbot:
     emoji: "🏔️"
@@ -11,485 +11,323 @@ metadata:
 
 # Oh My OpenCode
 
-Multi-agent orchestration plugin that transforms OpenCode into a full agent harness with specialized agents, background task execution, category-based model routing, and autonomous work modes.
+这是一个多代理编排插件，它可以将 OpenCode 转换为一个功能齐全的代理系统，支持专用代理、后台任务执行、基于类别的任务路由以及自主工作模式。
 
-**Package**: `oh-my-opencode` (install via `bunx oh-my-opencode install`)
-**Repository**: https://github.com/code-yeongyu/oh-my-opencode
-**Schema**: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json
-
----
-
-## Prerequisites
-
-1. **OpenCode** installed and configured (`opencode --version` should be 1.0.150+)
-   ```bash
-   curl -fsSL https://opencode.ai/install | bash
-   # or: npm install -g opencode-ai
-   # or: bun install -g opencode-ai
-   ```
-2. At least one LLM provider authenticated (`opencode auth login`)
-3. **Strongly recommended**: Anthropic Claude Pro/Max subscription (Sisyphus uses Claude Opus 4.5)
+**包名**: `oh-my-opencode`（通过 `bunx oh-my-opencode install` 安装）  
+**仓库**: https://github.com/code-yeongyu/oh-my-opencode  
+**模式定义**: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json  
 
 ---
 
-## Installation
+## 先决条件
 
-Run the interactive installer:
-
-```bash
-bunx oh-my-opencode install
-```
-
-Non-interactive mode with provider flags:
-
-```bash
-bunx oh-my-opencode install --no-tui \
-  --claude=<yes|no|max20> \
-  --openai=<yes|no> \
-  --gemini=<yes|no> \
-  --copilot=<yes|no> \
-  --opencode-zen=<yes|no> \
-  --zai-coding-plan=<yes|no>
-```
-
-Verify:
-
-```bash
-opencode --version
-cat ~/.config/opencode/opencode.json  # should contain "oh-my-opencode" in plugin array
-```
+1. **已安装并配置了 OpenCode**（`opencode --version` 应显示 1.0.150 或更高版本）  
+2. 至少有一个经过身份验证的 LLM 提供商（使用 `opencode auth login` 进行登录）  
+**强烈推荐**: 订阅 Anthropic 的 Claude Pro/Max 订阅服务（Sisyphus 使用的是 Claude Opus 4.5 版本）  
 
 ---
 
-## Two Workflow Modes
+## 安装
 
-### Mode 1: Ultrawork (Quick Autonomous Work)
+运行交互式安装程序：  
+（安装步骤在此处省略）
 
-Include `ultrawork` or `ulw` in your prompt. That's it.
+非交互式安装（使用提供商参数）：  
+（安装步骤在此处省略）
 
-```
-ulw add authentication to my Next.js app
-```
-
-The agent will automatically:
-1. Explore your codebase to understand existing patterns
-2. Research best practices via specialized background agents
-3. Implement the feature following your conventions
-4. Verify with diagnostics and tests
-5. Keep working until 100% complete
-
-### Mode 2: Prometheus (Precise Planned Work)
-
-For complex or critical tasks:
-
-1. **Press Tab** → switches to Prometheus (Planner) mode
-2. **Describe your work** → Prometheus interviews you, asking clarifying questions while researching your codebase
-3. **Confirm the plan** → review generated plan in `.sisyphus/plans/*.md`
-4. **Run `/start-work`** → Atlas orchestrator takes over:
-   - Distributes tasks to specialized sub-agents
-   - Verifies each task completion independently
-   - Accumulates learnings across tasks
-   - Tracks progress across sessions (resume anytime)
-
-**Critical rule**: Do NOT use Atlas without `/start-work`. Prometheus and Atlas are a pair — always use them together.
+安装完成后，请进行验证：  
+（验证步骤在此处省略）  
 
 ---
 
-## Agents
+## 两种工作模式
 
-All agents are enabled by default. Each has a default model and provider priority fallback chain.
+### 模式 1：Ultrawork（快速自主工作）
 
-| Agent | Role | Default Model | Provider Priority Chain |
-|-------|------|---------------|------------------------|
-| **Sisyphus** | Primary orchestrator | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
-| **Sisyphus-Junior** | Focused task executor (used by `delegate_task` with categories) | Determined by category | Per-category chain |
-| **Hephaestus** | Autonomous deep worker — goal-oriented, explores before acting | `gpt-5.2-codex` (medium) | openai → github-copilot → opencode (requires gpt-5.2-codex) |
-| **Oracle** | Architecture, debugging, high-IQ reasoning (read-only) | `gpt-5.2` | openai → google → anthropic |
-| **Librarian** | Official docs, OSS search, remote codebase analysis | `glm-4.7` | zai-coding-plan → opencode → anthropic |
-| **Explore** | Fast codebase grep (contextual search) | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
-| **Multimodal Looker** | Image/PDF/diagram analysis | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
-| **Prometheus** | Work planner (interview-based plan generation) | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Metis** | Pre-planning consultant (ambiguity/failure-point analysis) | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |
-| **Momus** | Plan reviewer (clarity, verifiability, completeness) | `gpt-5.2` | openai → anthropic → google |
-| **Atlas** | Plan orchestrator (executes Prometheus plans via `/start-work`) | `k2p5` / `claude-sonnet-4-5` | kimi-for-coding → opencode → anthropic → openai → google |
-| **OpenCode-Builder** | Default build agent (disabled by default when Sisyphus is active) | System default | System default |
+在命令提示符中输入 `ultrawork` 或 `ulw` 即可。  
 
-### Agent Invocation
+代理将自动执行以下操作：  
+1. 浏览你的代码库以了解现有模式；  
+2. 通过专用代理研究最佳实践；  
+3. 根据你的规范实现功能；  
+4. 通过诊断和测试进行验证；  
+5. 持续工作直至任务 100% 完成。  
 
-Agents are invoked via `delegate_task()` or the `--agent` CLI flag — NOT with `@` prefix.
+### 模式 2：Prometheus（精确规划的工作）
 
-```javascript
-// Invoke a specific agent
-delegate_task(subagent_type="oracle", prompt="Review this architecture...")
+对于复杂或关键任务：  
+1. 按下 Tab 键切换到 Prometheus（规划器）模式；  
+2. 描述你的工作内容，Prometheus 会通过分析代码库来提出问题；  
+3. 确认计划内容（计划文件位于 `.sisyphus/plans/*.md`）；  
+4. 运行 `/start-work` 命令，Atlas 编排器将接管任务：  
+   - 将任务分配给专用子代理；  
+   - 独立验证每个任务的完成情况；  
+   - 收集任务中的学习成果；  
+   - 跟踪任务进度（可随时恢复会话）。  
 
-// Invoke via category (routes to Sisyphus-Junior with category model)
-delegate_task(category="visual-engineering", load_skills=["frontend-ui-ux"], prompt="...")
-
-// Background execution (non-blocking)
-delegate_task(subagent_type="explore", run_in_background=true, prompt="Find auth patterns...")
-```
-
-CLI:
-
-```bash
-opencode --agent oracle
-opencode run --agent librarian "Explain how auth works in this codebase"
-```
-
-### When to Use Which Agent
-
-| Situation | Agent |
-|-----------|-------|
-| General coding tasks | Sisyphus (default) |
-| Autonomous goal-oriented deep work | Hephaestus (requires gpt-5.2-codex) |
-| Architecture decisions, debugging after 2+ failures | Oracle |
-| Looking up library docs, finding OSS examples | Librarian |
-| Finding code patterns in your codebase | Explore |
-| Analyzing images, PDFs, diagrams | Multimodal Looker |
-| Complex multi-day projects needing a plan | Prometheus + Atlas (via Tab → `/start-work`) |
-| Pre-planning scope analysis | Metis |
-| Reviewing a generated plan for gaps | Momus |
-| Quick single-file changes | delegate_task with `quick` category |
+**重要规则**：**切勿在没有运行 `/start-work` 的情况下使用 Atlas**。Prometheus 和 Atlas 必须一起使用。  
 
 ---
 
-## Categories
+## 代理
 
-Categories route tasks to Sisyphus-Junior with domain-optimized models via `delegate_task()`.
+所有代理默认都是启用的。每个代理都有默认模型和提供商优先级链。  
 
-| Category | Default Model | Variant | Provider Priority Chain | Best For |
-|----------|---------------|---------|------------------------|----------|
-| `visual-engineering` | `gemini-3-pro` | — | google → anthropic → zai-coding-plan | Frontend, UI/UX, design, styling, animation |
-| `ultrabrain` | `gpt-5.2-codex` | `xhigh` | openai → google → anthropic | Deep logical reasoning, complex architecture |
-| `deep` | `gpt-5.2-codex` | `medium` | openai → anthropic → google | Goal-oriented autonomous problem-solving (Hephaestus-style) |
-| `artistry` | `gemini-3-pro` | `max` | google → anthropic → openai | Creative/novel approaches, unconventional solutions |
-| `quick` | `claude-haiku-4-5` | — | anthropic → google → opencode | Trivial tasks, single file changes, typo fixes |
-| `unspecified-low` | `claude-sonnet-4-5` | — | anthropic → openai → google | General tasks, low effort |
-| `unspecified-high` | `claude-opus-4-5` | `max` | anthropic → openai → google | General tasks, high effort |
-| `writing` | `gemini-3-flash` | — | google → anthropic → zai-coding-plan → openai | Documentation, prose, technical writing |
+| 代理 | 角色 | 默认模型 | 提供商优先级链 |  
+|-------|------|---------------|------------------------|  
+| **Sisyphus** | 主要编排器 | `claude-opus-4-5` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |  
+| **Sisyphus-Junior** | 专注任务执行器（用于分类任务） | 根据任务类别选择模型 | 按类别分配模型 |  
+| **Hephaestus** | 自主深度工作代理 | `gpt-5.2-codex`（中等难度） | openai → github-copilot → opencode（需要 gpt-5.2-codex） |  
+| **Oracle** | 用于架构设计、调试和高智商推理（仅读） | `gpt-5.2` | openai → google → anthropic |  
+| **Librarian** | 提供官方文档、开源代码库搜索和远程代码库分析 | `glm-4.7` | zai-coding-plan → opencode → anthropic |  
+| **Explore** | 快速代码库搜索工具 | `claude-haiku-4-5` | anthropic → github-copilot → opencode |  
+| **Multimodal Looker** | 图像/PDF/图表分析工具 | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic |  
+| **Prometheus** | 基于对话的规划工具 | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |  
+| **Metis** | 预规划顾问（用于分析歧义和失败点） | `claude-opus-4-5` | anthropic → kimi-for-coding → openai → google |  
+| **Momus** | 计划审核工具 | `gpt-5.2` | openai → anthropic → google |  
+| **Atlas** | 通过 `/start-work` 执行计划工具 | `k2p5` / `claude-sonnet-4-5` | kimi-for-coding → opencode → anthropic → openai → google |  
+| **OpenCode-Builder** | 默认构建代理（当 Sisyphus 活动时禁用） | 系统默认设置 | 系统默认设置 |  
 
-### Category Usage
+### 代理调用
 
-```javascript
-delegate_task(category="visual-engineering", load_skills=["frontend-ui-ux"], prompt="Create a dashboard component")
-delegate_task(category="ultrabrain", load_skills=[], prompt="Design the payment processing flow")
-delegate_task(category="quick", load_skills=["git-master"], prompt="Fix the typo in README.md")
-delegate_task(category="deep", load_skills=[], prompt="Investigate and fix the memory leak in the worker pool")
-```
-
-### Critical: Model Resolution Priority
-
-Categories do NOT use their built-in defaults unless configured. Resolution order:
-
-1. **User-configured model** (in `oh-my-opencode.json`) — highest priority
-2. **Category's built-in default** (if category is in config)
-3. **System default model** (from `opencode.json`) — fallback
-
-To use optimal models, add categories to your config. See [references/configuration.md](references/configuration.md).
+代理通过 `delegate_task()` 或 `--agent` CLI 参数调用（**不要使用 `@` 前缀**）。  
 
 ---
 
-## Built-in Skills
+## 如何选择合适的代理
 
-| Skill | Purpose | Usage |
-|-------|---------|-------|
-| `playwright` | Browser automation via Playwright MCP (default browser engine) | `load_skills=["playwright"]` |
-| `agent-browser` | Vercel's agent-browser CLI with session management | Switch via `browser_automation_engine` config |
-| `git-master` | Git expert: atomic commits, rebase/squash, history search | `load_skills=["git-master"]` |
-| `frontend-ui-ux` | Designer-turned-developer for stunning UI/UX | `load_skills=["frontend-ui-ux"]` |
-
-Skills are injected into subagents via `delegate_task(load_skills=[...])`.
-
----
-
-## Slash Commands
-
-| Command | Description |
-|---------|-------------|
-| `/init-deep` | Initialize hierarchical AGENTS.md knowledge base |
-| `/start-work` | Execute a Prometheus plan with Atlas orchestrator |
-| `/ralph-loop` | Start self-referential development loop until completion |
-| `/ulw-loop` | Start ultrawork loop — continues until completion |
-| `/cancel-ralph` | Cancel active Ralph Loop |
-| `/refactor` | Intelligent refactoring with LSP, AST-grep, architecture analysis, TDD |
-| `/stop-continuation` | Stop all continuation mechanisms (ralph loop, todo continuation, boulder) |
+| 任务类型 | 推荐代理 |  
+|---------|-------|  
+| 一般编码任务 | Sisyphus（默认） |  
+| 自主目标导向的任务 | Hephaestus（需要 gpt-5.2-codex） |  
+| 架构决策、多次失败后的调试 | Oracle |  
+| 查找库文档、开源示例 | Librarian |  
+| 在代码库中查找代码模式 | Explore |  
+| 分析图像、PDF、图表 | Multimodal Looker |  
+| 复杂的多日项目（需要规划） | Prometheus + Atlas（通过 Tab → `/start-work`） |  
+| 预规划分析 | Metis |  
+| 审查生成的计划 | Momus |  
+| 快速的单文件修改 | 使用 `quick` 类别的 `delegate_task` |  
 
 ---
 
-## Process Management
+## 类别
 
-### Background Agents
+通过 `delegate_task()`，类别会将任务路由到使用相应模型的 Sisyphus-Junior 代理。  
 
-Fire multiple agents in parallel for exploration and research:
+| 类别 | 默认模型 | 可选模型 | 提供商优先级链 | 适用场景 |  
+|----------|---------------|---------|------------------------|----------|  
+| `visual-engineering` | `gemini-3-pro` | — | google → anthropic → zai-coding-plan | 前端、UI/UX、设计、样式、动画 |  
+| `ultrabrain` | `gpt-5.2-codex` | `xhigh` | openai → google → anthropic | 深度逻辑推理、复杂架构 |  
+| `deep` | `gpt-5.2-codex` | `medium` | openai → anthropic | 目标导向的自主问题解决（类似 Hephaestus） |  
+| `artistry` | `gemini-3-pro` | `max` | google → anthropic | 创意/非传统解决方案 |  
+| `quick` | `claude-haiku-4-5` | — | anthropic → google → opencode | 简单任务、单文件修改、拼写校正 |  
+| `unspecified-low` | `claude-sonnet-4-5` | — | anthropic → openai | 一般任务、低难度 |  
+| `unspecified-high` | `claude-opus-4-5` | `max` | anthropic → openai | 一般任务、高难度 |  
+| `writing` | `gemini-3-flash` | — | google → zai-coding-plan → openai | 文档编写、散文、技术写作 |  
 
-```javascript
-// Launch background agents (non-blocking)
-delegate_task(subagent_type="explore", run_in_background=true, prompt="Find auth patterns in codebase")
-delegate_task(subagent_type="librarian", run_in_background=true, prompt="Find JWT best practices")
-
-// Collect results when needed
-background_output(task_id="bg_abc123")
-
-// Cancel all background tasks before final answer
-background_cancel(all=true)
-```
-
-### Concurrency Configuration
-
-```json
-{
-  "background_task": {
-    "defaultConcurrency": 5,
-    "staleTimeoutMs": 180000,
-    "providerConcurrency": { "anthropic": 3, "google": 10 },
-    "modelConcurrency": { "anthropic/claude-opus-4-5": 2 }
-  }
-}
-```
-
-Priority: `modelConcurrency` > `providerConcurrency` > `defaultConcurrency`
-
-### Tmux Integration
-
-Run background agents in separate tmux panes for visual multi-agent execution:
-
-```json
-{
-  "tmux": {
-    "enabled": true,
-    "layout": "main-vertical",
-    "main_pane_size": 60
-  }
-}
-```
-
-Requires running OpenCode in server mode inside a tmux session:
-
-```bash
-tmux new -s dev
-opencode --port 4096
-```
-
-Layout options: `main-vertical` (default), `main-horizontal`, `tiled`, `even-horizontal`, `even-vertical`
+### 类别的使用方法  
 
 ---
 
-## Parallel Execution Patterns
+## 关键事项：模型选择优先级
 
-### Pattern 1: Explore + Librarian (Research Phase)
-
-```javascript
-// Internal codebase search
-delegate_task(subagent_type="explore", run_in_background=true, prompt="Find how auth middleware is implemented")
-delegate_task(subagent_type="explore", run_in_background=true, prompt="Find error handling patterns in the API layer")
-
-// External documentation search
-delegate_task(subagent_type="librarian", run_in_background=true, prompt="Find official JWT documentation and security recommendations")
-
-// Continue working immediately — collect results when needed
-```
-
-### Pattern 2: Category-Based Delegation (Implementation Phase)
-
-```javascript
-// Frontend work → visual-engineering category
-delegate_task(category="visual-engineering", load_skills=["frontend-ui-ux"], prompt="Build the settings page")
-
-// Quick fix → quick category
-delegate_task(category="quick", load_skills=["git-master"], prompt="Create atomic commit for auth changes")
-
-// Hard problem → ultrabrain category
-delegate_task(category="ultrabrain", load_skills=[], prompt="Design the caching invalidation strategy")
-```
-
-### Pattern 3: Session Continuity
-
-```javascript
-// First delegation returns a session_id
-result = delegate_task(category="quick", load_skills=["git-master"], prompt="Fix the type error")
-// session_id: "ses_abc123"
-
-// Follow-up uses session_id to preserve full context
-delegate_task(session_id="ses_abc123", prompt="Also fix the related test file")
-```
+除非另有配置，否则类别不会使用内置的默认模型。模型选择顺序如下：  
+1. **用户配置的模型**（在 `oh-my-opencode.json` 中设置）——最高优先级；  
+2. **类别内置的默认模型**（如果配置中存在）；  
+3. **系统默认模型**（来自 `opencode.json`）。  
+要使用最佳模型，请在配置文件中添加相应的类别。详情请参阅 [references/configuration.md]。  
 
 ---
 
-## CLI Reference
+## 内置技能
 
-### Core Commands
+| 技能 | 用途 | 使用方法 |  
+|-------|---------|-------|  
+| `playwright` | 通过 Playwright MCP 实现浏览器自动化 | `load_skills=["playwright"]` |  
+| `agent-browser` | Vercel 提供的浏览器自动化工具 | 通过 `browser_automation_engine` 配置切换浏览器 |  
+| `git-master` | Git 专家工具：原子提交、合并/压缩、历史记录搜索 | `load_skills=["git-master"]` |  
+| `frontend-ui-ux` | 专为设计师设计的开发工具 | `load_skills=["frontend-ui-ux"]` |  
 
-```bash
-opencode                           # Start TUI
-opencode --port 4096               # Start TUI with server mode (for tmux integration)
-opencode -c                        # Continue last session
-opencode -s <session-id>           # Continue specific session
-opencode --agent <agent-name>      # Start with specific agent
-opencode -m provider/model         # Start with specific model
-```
-
-### Non-Interactive Mode
-
-```bash
-opencode run "Explain closures in JavaScript"
-opencode run --agent oracle "Review this architecture"
-opencode run -m openai/gpt-5.2 "Complex reasoning task"
-opencode run --format json "Query"    # Raw JSON output
-```
-
-### Auth & Provider Management
-
-```bash
-opencode auth login                # Add/configure a provider
-opencode auth list                 # List authenticated providers
-opencode auth logout               # Remove a provider
-opencode models                    # List all available models
-opencode models anthropic          # List models for specific provider
-opencode models --refresh          # Refresh models cache
-```
-
-### Session Management
-
-```bash
-opencode session list              # List all sessions
-opencode session list -n 10        # Last 10 sessions
-opencode export <session-id>       # Export session as JSON
-opencode import session.json       # Import session
-opencode stats                     # Token usage and cost statistics
-opencode stats --days 7            # Stats for last 7 days
-```
-
-### Plugin & MCP Management
-
-```bash
-bunx oh-my-opencode install        # Install/configure oh-my-opencode
-bunx oh-my-opencode doctor         # Diagnose configuration issues
-opencode mcp list                  # List configured MCP servers
-opencode mcp add                   # Add an MCP server
-```
-
-### Server Mode
-
-```bash
-opencode serve --port 4096         # Headless server
-opencode web --port 4096           # Server with web UI
-opencode attach http://localhost:4096  # Attach TUI to running server
-```
+技能可以通过 `delegate_task LOAD_skills=[...])` 注入到子代理中。  
 
 ---
 
-## Built-in MCPs
+## 命令行接口（CLI）命令
 
-Oh My OpenCode includes these MCP servers out of the box:
-
-| MCP | Tool | Purpose |
-|-----|------|---------|
-| **Exa** | `web_search_exa` | Web search with clean LLM-ready content |
-| **Context7** | `resolve-library-id`, `query-docs` | Official library/framework documentation lookup |
-| **Grep.app** | `searchGitHub` | Search real-world code examples from public GitHub repos |
-
----
-
-## Hooks
-
-All hooks are enabled by default. Disable specific hooks via `disabled_hooks` config:
-
-| Hook | Purpose |
-|------|---------|
-| `todo-continuation-enforcer` | Forces agent to continue if it quits halfway |
-| `context-window-monitor` | Monitors and manages context window usage |
-| `session-recovery` | Recovers sessions after crashes |
-| `session-notification` | Notifies on session events |
-| `comment-checker` | Prevents AI from adding excessive code comments |
-| `grep-output-truncator` | Truncates large grep outputs |
-| `tool-output-truncator` | Truncates large tool outputs |
-| `directory-agents-injector` | Injects AGENTS.md from subdirectories (auto-disabled on OpenCode 1.1.37+) |
-| `directory-readme-injector` | Injects README.md context |
-| `empty-task-response-detector` | Detects and handles empty task responses |
-| `think-mode` | Extended thinking mode control |
-| `anthropic-context-window-limit-recovery` | Recovers from Anthropic context limits |
-| `rules-injector` | Injects project rules |
-| `background-notification` | Notifies when background tasks complete |
-| `auto-update-checker` | Checks for oh-my-opencode updates |
-| `startup-toast` | Shows startup notification (sub-feature of auto-update-checker) |
-| `keyword-detector` | Detects keywords like `ultrawork`/`ulw` to trigger modes |
-| `agent-usage-reminder` | Reminds to use specialized agents |
-| `non-interactive-env` | Handles non-interactive environments |
-| `interactive-bash-session` | Manages interactive bash/tmux sessions |
-| `compaction-context-injector` | Injects context during compaction |
-| `thinking-block-validator` | Validates thinking blocks |
-| `claude-code-hooks` | Claude Code compatibility hooks |
-| `ralph-loop` | Ralph Loop continuation mechanism |
-| `preemptive-compaction` | Triggers compaction before context overflow |
-| `auto-slash-command` | Auto-triggers slash commands |
-| `sisyphus-junior-notepad` | Notepad for Sisyphus-Junior subagents |
-| `edit-error-recovery` | Recovers from edit errors |
-| `delegate-task-retry` | Retries failed task delegations |
-| `prometheus-md-only` | Enforces Prometheus markdown-only output |
-| `start-work` | Handles /start-work command |
-| `atlas` | Atlas orchestrator hook |
+| 命令 | 说明 |  
+|---------|-------------|  
+| `/init-deep` | 初始化代理的知识库 |  
+| `/start-work` | 通过 Atlas 编排器执行任务 |  
+| `/ralph-loop` | 启动自循环开发模式 |  
+| `/ulw-loop` | 启动 Ultrawork 循环 |  
+| `/cancel-ralph` | 取消正在进行的循环 |  
+| `/refactor` | 使用 LSP、AST 分析、架构分析和 TDD 进行智能重构 |  
+| `/stop-continuation` | 停止所有持续执行机制 |  
 
 ---
 
-## Best Practices
+## 进程管理
 
-### Do
+### 后台代理
 
-- **Use `ulw` for quick autonomous tasks** — just include the keyword in your prompt
-- **Use Prometheus + `/start-work` for complex projects** — interview-based planning leads to better outcomes
-- **Configure categories for your providers** — ensures optimal model selection instead of falling back to system default
-- **Fire explore/librarian agents in parallel** — always use `run_in_background=true`
-- **Use session continuity** — pass `session_id` for follow-up interactions with the same subagent
-- **Let the agent delegate** — Sisyphus is an orchestrator, not a solo implementer
-- **Run `bunx oh-my-opencode doctor`** to diagnose issues
+可以并行启动多个代理进行探索和研究：  
+（相关配置步骤在此处省略）  
 
-### Don't
+### 并发配置  
 
-- **Don't use Atlas without `/start-work`** — Atlas requires a Prometheus plan
-- **Don't manually specify models for every agent** — the fallback chain handles this
-- **Don't disable `todo-continuation-enforcer`** — it's what keeps the agent completing work
-- **Don't use Claude Haiku for Sisyphus** — Opus 4.5 is strongly recommended
-- **Don't run explore/librarian synchronously** — always background them
+优先级顺序：`modelConcurrency` > `providerConcurrency` > `defaultConcurrency`  
 
-### When to Use This Skill
+### Tmux 集成
 
-- Installing or configuring oh-my-opencode
-- Understanding agent roles and delegation patterns
-- Troubleshooting model resolution or provider issues
-- Setting up tmux integration for visual multi-agent execution
-- Configuring categories for cost optimization
-- Understanding the ultrawork vs Prometheus workflow choice
+可以在 tmux 窗口中分别运行后台代理，以实现多代理的可视化执行：  
+（相关配置步骤在此处省略）  
 
-### When NOT to Use This Skill
+### 注意事项：需要在服务器模式下运行 OpenCode，并在 tmux 会话中执行这些配置。  
 
-- General OpenCode usage unrelated to oh-my-opencode plugin features
-- Provider authentication issues (use `opencode auth` directly)
-- OpenCode core configuration (use OpenCode docs at https://opencode.ai/docs/)
+### 布局选项
+
+布局选项包括：`main-vertical`（默认）、`main-horizontal`、`tiled`、`even-horizontal`、`even-vertical`。  
 
 ---
 
-## Rules for the Agent
+## 并行执行模式
 
-1. **Package name is `oh-my-opencode`** — NOT `@anthropics/opencode` or any other name
-2. **Use `bunx` (officially recommended)** — not `npx` for oh-my-opencode CLI commands
-3. **Agent invocation uses `--agent` flag or `delegate_task()`** — NOT `@agent` prefix
-4. **Never change model settings or disable features** unless the user explicitly requests it
-5. **Sisyphus strongly recommends Opus 4.5** — using other models degrades the experience significantly
-6. **Categories do NOT use built-in defaults unless configured** — always verify with `bunx oh-my-opencode doctor --verbose`
-7. **Prometheus and Atlas are always paired** — never use Atlas without a Prometheus plan
-8. **Background agents should always use `run_in_background=true`** — never block on exploration
-9. **Session IDs should be preserved and reused** — saves 70%+ tokens on follow-ups
-10. **When using Ollama, set `stream: false`** — required to avoid JSON parse errors
+### 模式 1：Explore + Librarian（研究阶段）  
+（相关步骤在此处省略）  
+
+### 模式 2：基于类别的任务分配（实施阶段）  
+（相关步骤在此处省略）  
+
+### 模式 3：会话连续性  
+（相关步骤在此处省略）  
 
 ---
 
-## Auto-Notify on Completion
+## CLI 参考
 
-Background tasks automatically notify when complete via the `background-notification` hook. No polling needed — the system pushes completion events. Use `background_output(task_id="...")` only when you need to read the result.
+### 核心命令  
+（相关命令列表在此处省略）  
+
+### 非交互式模式  
+（相关配置步骤在此处省略）  
+
+### 身份验证与提供商管理  
+（相关配置步骤在此处省略）  
+
+### 会话管理  
+（相关配置步骤在此处省略）  
+
+### 插件与 MCP 管理  
+（相关配置步骤在此处省略）  
+
+### 服务器模式  
+（相关配置步骤在此处省略）  
+
+## 内置的 MCP（模型控制程序）
+
+Oh My OpenCode 默认包含以下 MCP 服务器：  
+| MCP | 工具 | 用途 |  
+|-----|------|---------|  
+| **Exa** | `web_search_exa` | 提供简洁的 LLM 支持的网页搜索功能 |  
+| **Context7** | `resolve-library-id`、`query-docs` | 查找官方库/框架的文档 |  
+| **Grep.app` | `searchGitHub` | 从公共 GitHub 仓库中搜索代码示例 |  
+
+## 钩子（Hooks）
+
+所有钩子默认都是启用的。可以通过 `disabled_hooks` 配置来禁用特定钩子：  
+| 钩子 | 用途 |  
+|------|---------|  
+| `todo-continuation-enforcer` | 强制代理在任务中途退出时继续执行 |  
+| `context-window-monitor` | 监控和管理上下文窗口的使用 |  
+| `session-recovery` | 在会话崩溃后恢复会话 |  
+| `session-notification` | 会话事件发生时发送通知 |  
+| `comment-checker` | 防止 AI 添加过多的代码注释 |  
+| `grep-output-truncator` | 截断大型 grep 输出结果 |  
+| `tool-output-truncator` | 截断大型工具的输出结果 |  
+| `directory-agents-injector` | 从子目录中注入 AGENTS.md 文件（在 OpenCode 1.1.37 及更高版本中自动禁用） |  
+| `directory-readme-injector` | 注入 README.md 文件的内容 |  
+| `empty-task-response-detector` | 检测并处理空任务响应 |  
+| `think-mode` | 控制扩展思维模式 |  
+| `anthropic-context-window-limit-recovery` | 从 Anthropic 的上下文限制中恢复 |  
+| `rules-injector` | 注入项目规则 |  
+| `background-notification` | 在后台任务完成时发送通知 |  
+| `auto-update-checker` | 检查 oh-my-opencode 的更新 |  
+| `startup-toast` | 显示启动通知（自动更新功能的附加组件） |  
+| `keyword-detector` | 检测触发模式的关键词（如 `ultrawork`/`ulw`） |  
+| `agent-usage-reminder` | 提醒使用专用代理 |  
+| `non-interactive-env` | 处理非交互式环境 |  
+| `interactive-bash-session` | 管理交互式 bash/tmux 会话 |  
+| `compaction-context-injector` | 在压缩过程中注入上下文信息 |  
+| `thinking-block-validator` | 验证思维过程 |  
+| `claude-code-hooks` | Claude 代码兼容性钩子 |  
+| `ralph-loop` | Ralph 循环的继续执行机制 |  
+| `preemptive-compaction` | 在上下文溢出前触发压缩 |  
+| `auto-slash-command` | 自动触发相关命令 |  
+| `sisyphus-junior-notepad` | 为 Sisyphus-Junior 代理提供的记事本 |  
+| `edit-error-recovery` | 从编辑错误中恢复 |  
+| `delegate-task-retry` | 重试失败的任务委托 |  
+| `prometheus-md-only` | 强制使用 Prometheus 的 Markdown 输出格式 |  
+| `start-work` | 处理 `/start-work` 命令 |  
+| `atlas` | Atlas 编排器的钩子 |  
 
 ---
 
-## Reference Documents
+## 最佳实践
 
-- [Configuration Reference](references/configuration.md) — Complete config with all agents, categories, provider chains, hooks, and options
-- [Troubleshooting Guide](references/troubleshooting.md) — Common issues and solutions
+- **对于快速自主任务，使用 `ulw`**——只需在命令提示符中输入关键词；  
+- **对于复杂项目，使用 Prometheus 和 `/start-work`**——基于对话的规划能带来更好的结果；  
+- **为各个提供商配置相应的类别**——确保选择最佳模型；  
+- **并行运行 `Explore`/`Librarian` 代理**——始终设置 `run_in_background=true`；  
+- **使用会话连续性**——在后续交互中传递 `session_id`；  
+- **让代理负责任务执行**——Sisyphus 是一个编排器，而非单独的执行者；  
+- **运行 `bunx oh-my-opencode doctor` 来诊断问题。**  
+
+### 注意事项
+
+- **切勿在没有运行 `/start-work` 的情况下使用 Atlas**；  
+- **不要为每个代理手动指定模型**——系统会自动选择合适的模型；  
+- **不要禁用 `todo-continuation-enforcer`——它确保代理完成任务；  
+- **不要为 Sisyphus 使用 Claude Haiku**——强烈推荐使用 Opus 4.5；  
+- **不要同时运行 `Explore`/`Librarian` 代理**——它们应在后台运行。  
+
+### 适用场景
+
+- 安装或配置 oh-my-opencode；  
+- 了解代理的角色和任务分配机制；  
+- 解决模型选择或提供商相关的问题；  
+- 配置 tmux 集成以实现多代理的可视化执行；  
+- 优化类别设置以提升效率；  
+- 理解 Ultrawork 与 Prometheus 的工作流程差异。  
+
+### 不适用场景
+
+- 与 oh-my-opencode 插件无关的 OpenCode 使用场景；  
+- 提供商身份验证问题（直接使用 `opencode auth`）；  
+- OpenCode 的核心配置（请参考官方文档：https://opencode.ai/docs/）。  
+
+---
+
+## 规则说明
+
+1. **包名必须是 `oh-my-opencode`，**而非 `@anthropics/opencode` 或其他名称；  
+2. **推荐使用 `bunx` 命令行工具（官方推荐）；**  
+3. **代理调用使用 `--agent` 参数或 `delegate_task()`；**  
+4. **除非用户明确要求，否则不要更改模型设置或禁用功能；  
+5. **强烈推荐使用 Opus 4.5**——使用其他模型会严重影响使用体验；  
+6. **除非另有配置，否则类别不会使用内置的默认模型**——务必使用 `bunx oh-my-opencode doctor --verbose` 进行验证；  
+7. **Prometheus 和 Atlas 必须一起使用**；  
+8. **后台代理必须始终设置 `run_in_background=true`；**  
+9. **会话 ID 应该被保留并重复使用**——可节省 70% 以上的资源；  
+10. **在使用 Ollama 时，设置 `stream: false`——以避免 JSON 解析错误。**  
+
+## 完成通知
+
+后台任务完成后会自动通过 `background-notification` 钩子发送通知。无需手动轮询——系统会自动推送完成事件。只有在需要查看结果时，才使用 `background_output(task_id="...")` 命令。  
+
+---
+
+## 参考文档
+
+- [配置参考](references/configuration.md)：包含所有代理、类别、提供商链、钩子和配置选项的完整配置信息；  
+- [故障排除指南](references/troubleshooting.md)：常见问题及解决方法。

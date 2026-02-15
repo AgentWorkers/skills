@@ -1,68 +1,68 @@
 ---
 name: VPS
-description: Provision, secure, and manage virtual private servers with practical hosting guidance.
+description: 通过实用的托管指南，来配置、保护和管理虚拟私有服务器（VPS）。
 metadata: {"clawdbot":{"emoji":"🖧","os":["linux","darwin","win32"]}}
 ---
 
-# VPS Management Rules
+# VPS管理规则
 
-## Choosing a VPS
-- Match location to users — latency matters more than raw specs for user-facing apps
-- ARM instances cost 20-40% less with equivalent performance for most workloads — check compatibility first
-- Shared vCPU is fine for most apps — dedicated CPU only for sustained compute-heavy workloads
-- Bandwidth overage fees can exceed server cost — check limits before choosing plan
+## 选择VPS
+- 选择与用户地理位置相匹配的VPS——对于面向用户的应用程序而言，延迟比硬件配置更为重要。
+- 对于大多数工作负载而言，ARM架构的实例成本较低（通常低20-40%），同时性能相当，请先确认兼容性。
+- 对于大多数应用程序来说，共享CPU已经足够；只有在进行持续的高计算负载操作时才需要专用CPU。
+- 超过带宽限制的费用可能会超过服务器本身的成本，请在选型前仔细查看带宽限制。
 
-## Initial Setup Priority
-- Update system packages immediately after first boot — fresh images are often months behind on security patches
-- Create non-root user with sudo before disabling root — locking yourself out requires provider console access
-- SSH key authentication before disabling password login — test the key works first
-- Firewall rules before exposing services — default is often all ports open
+## 初始设置优先事项
+- 首次启动后立即更新系统包——新的系统镜像往往在安全补丁方面滞后数月。
+- 在禁用root用户权限之前，先创建一个具有sudo权限的非root用户——如果无法登录，可能需要通过提供商的控制台进行操作。
+- 在禁用密码登录之前，先启用SSH密钥认证——务必先测试密钥是否正常工作。
+- 在暴露服务之前设置防火墙规则——默认情况下所有端口都是开放的，这会增加被攻击的风险。
 
-## SSH Hardening
-- Change SSH port from 22 — reduces automated scanning noise by 99%
-- Disable root login via SSH — force sudo for audit trail
-- Disable password authentication — keys only, no exceptions
-- Install fail2ban — bans IPs after failed attempts, essential for any public server
+## SSH安全加固
+- 将SSH端口从22改为其他端口——这样可以减少99%的自动化扫描干扰。
+- 禁用通过SSH登录root用户——强制使用sudo登录以保留审计记录。
+- 完全禁用密码登录，仅允许使用SSH密钥登录。
+- 安装fail2ban工具——在登录尝试失败后禁止相关IP地址的访问，这对任何公共服务器来说都是必要的。
 
-## Firewall Basics
-- Default deny incoming, allow outgoing — only open what you need
-- Allow SSH (your custom port) before enabling firewall — or you're locked out
-- HTTP/HTTPS (80/443) only if running web services
-- Keep firewall rules minimal — every open port is attack surface
+## 防火墙基础设置
+- 默认情况下，防火墙会拒绝所有入站连接，仅允许出站连接——仅开放必要的端口。
+- 在启用防火墙之前，先允许SSH连接（使用自定义的SSH端口）——否则会导致无法访问服务器。
+- 仅允许HTTP/HTTPS（80/443）端口，除非你正在运行Web服务。
+- 尽量减少防火墙规则的数量——每个开放的端口都可能成为攻击的入口。
 
-## Resource Management
-- Enable swap even with enough RAM — prevents OOM kills during traffic spikes
-- Monitor disk usage — logs and Docker images fill disks silently
-- Set up basic monitoring (uptime, disk, memory) — know when things break before users tell you
-- Reboot periodically to apply kernel updates — unattended-upgrades doesn't cover everything
+## 资源管理
+- 即使有足够的RAM，也建议启用交换空间——这可以在流量激增时防止系统因内存不足而崩溃。
+- 监控磁盘使用情况——日志文件和Docker镜像会逐渐占用大量磁盘空间。
+- 设置基本的监控指标（如系统运行时间、磁盘使用情况和内存使用情况）——在用户发现问题之前及时发现潜在问题。
+- 定期重启服务器以应用内核更新——无人值守的升级可能无法覆盖所有系统更新。
 
-## Backups and Snapshots
-- Provider snapshots are not backups — they're tied to the provider, not portable
-- Test restore process before you need it — untested backups are wishful thinking
-- Automate backups — manual backups get forgotten
-- Keep at least one backup offsite — provider outages take everything with them
+## 备份与快照
+- 提供商提供的快照并不等同于真正的备份数据——这些快照受限于提供商，无法在其他环境中使用。
+- 在真正需要使用备份之前，先测试恢复流程——未经测试的备份毫无意义。
+- 自动化备份流程——手动备份很容易被忽略。
+- 至少在异地保存一份备份数据——如果提供商的服务中断，本地数据可能会丢失。
 
-## Networking
-- Static IP is usually default — but verify before relying on it for DNS
-- IPv6 is free and increasingly expected — enable it unless you have specific reasons not to
-- Private networking between VPS instances avoids public internet for internal traffic
-- Document your IP addresses — easy to lose track with multiple servers
+## 网络配置
+- 通常情况下，VPS会分配一个静态IP地址——但在依赖该地址进行DNS解析之前，请先确认其可用性。
+- IPv6地址是免费的，并且越来越被广泛使用——除非有特殊原因，否则建议启用IPv6。
+- 在VPS实例之间使用私有网络进行内部通信，以避免通过公共互联网传输数据。
+- 记录自己的IP地址——拥有多个服务器时很容易忘记IP地址的具体位置。
 
-## Cost Awareness
-- Stopped instances still cost money for storage — delete unused servers
-- Reserved instances save 30-50% for long-term use — commit if you're sure
-- Bandwidth is often the surprise cost — especially for media-heavy apps
-- Multiple small VPS often beats one large one — isolation and redundancy
+## 成本意识
+- 即使服务器处于关闭状态，存储费用仍然会产生——请及时删除不使用的服务器。
+- 长期使用的VPS实例可以节省30-50%的费用——如果确定需要长期使用，请提前预订相应的资源。
+- 带宽费用往往容易被忽视——尤其是对于数据传输量较大的应用程序来说，带宽成本可能会意外增加。
+- 多个小型VPS通常比一个大型VPS更经济高效——它们具有更好的隔离性和冗余性。
 
-## Provider-Specific
-- Hetzner, DigitalOcean, Linode, Vultr all work similarly — skills transfer between them
-- Provider firewalls (security groups) act before OS firewall — configure both
-- Provider console access works when SSH is broken — know how to access it
-- Some providers charge for IPv4 addresses separately — check before assuming you have one
+## 各提供商的具体要求
+- Hetzner、DigitalOcean、Linode和Vultr等提供商的配置和管理方式大致相同，这些技能可以在不同提供商之间通用。
+- 提供商的防火墙（安全组）会在操作系统防火墙之前发挥作用——请同时配置两者。
+- 如果SSH连接出现问题，可以通过提供商的控制台进行故障排查——务必知道如何访问该控制台。
+- 有些提供商会单独收取IPv4地址的费用——在确认自己是否拥有IPv4地址之前，请先核实相关费用。
 
-## Common Mistakes
-- Not updating for months — security vulnerabilities accumulate
-- Running everything as root — no audit trail, maximum blast radius
-- No firewall because "nobody knows my IP" — scanners find everything
-- Oversizing from day one — start small, scale when needed
-- Ignoring provider status pages — outages explain mysterious issues
+## 常见错误
+- 几个月不更新系统——安全漏洞会逐渐累积。
+- 将所有服务都以root用户权限运行——这样无法保留审计记录，且一旦出现问题，影响范围会非常大。
+- 因为“没人知道我的IP地址”而关闭防火墙——实际上扫描工具仍然可以找到服务器。
+- 从一开始就配置过大的服务器资源——从小规模开始使用，根据需求再进行扩展。
+- 忽视提供商的状态信息页面——服务器故障的原因往往可以在状态页面中找到。

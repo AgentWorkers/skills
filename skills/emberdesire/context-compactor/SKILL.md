@@ -1,28 +1,27 @@
 ---
 name: context-compactor
 version: 0.3.8
-description: Token-based context compaction for local models (MLX, llama.cpp, Ollama) that don't report context limits.
+description: 基于令牌的上下文压缩技术，适用于那些不报告上下文限制的本地模型（如 MLX、lama.cpp、Ollama）。
 ---
 
-# Context Compactor
+# 上下文压缩器（Context Compactor）
 
-Automatic context compaction for OpenClaw when using local models that don't properly report token limits or context overflow errors.
+当使用本地模型时，如果这些模型未能正确报告令牌限制或上下文溢出错误，OpenClaw 会自动执行上下文压缩功能。
 
-## The Problem
+## 问题所在
 
-Cloud APIs (Anthropic, OpenAI) report context overflow errors, allowing OpenClaw's built-in compaction to trigger. Local models (MLX, llama.cpp, Ollama) often:
+云 API（如 Anthropic、OpenAI）会报告上下文溢出错误，从而触发 OpenClaw 的内置压缩机制。然而，本地模型（如 MLX、llama.cpp、Ollama）通常会：
+- 在上下文超出限制时默默地截断数据；
+- 返回无效或错误的信息；
+- 无法提供准确的令牌计数。
 
-- Silently truncate context
-- Return garbage when context is exceeded
-- Don't report accurate token counts
+这会导致在对话内容过长时出现通信异常。
 
-This leaves you with broken conversations when context gets too long.
+## 解决方案
 
-## The Solution
+上下文压缩器会在客户端预估令牌数量，并在达到模型限制之前主动对旧消息进行总结。
 
-Context Compactor estimates tokens client-side and proactively summarizes older messages before hitting the model's limit.
-
-## How It Works
+## 工作原理
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -37,7 +36,7 @@ Context Compactor estimates tokens client-side and proactively summarizes older 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Installation
+## 安装
 
 ```bash
 # One command setup (recommended)
@@ -47,13 +46,13 @@ npx jasper-context-compactor setup
 openclaw gateway restart
 ```
 
-The setup command automatically:
-- Copies plugin files to `~/.openclaw/extensions/context-compactor/`
-- Adds plugin config to `openclaw.json` with sensible defaults
+安装命令会自动完成以下操作：
+- 将插件文件复制到 `~/.openclaw/extensions/context-compactor/` 目录；
+- 将插件配置添加到 `openclaw.json` 文件中，并设置合理的默认值。
 
-## Configuration
+## 配置
 
-Add to `openclaw.json`:
+在 `openclaw.json` 文件中添加以下配置：
 
 ```json
 {
@@ -73,20 +72,20 @@ Add to `openclaw.json`:
 }
 ```
 
-### Options
+### 配置选项
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `enabled` | `true` | Enable/disable the plugin |
-| `maxTokens` | `8000` | Max context tokens before compaction |
-| `keepRecentTokens` | `2000` | Tokens to preserve from recent messages |
-| `summaryMaxTokens` | `1000` | Max tokens for the summary |
-| `charsPerToken` | `4` | Token estimation ratio |
-| `summaryModel` | (session model) | Model to use for summarization |
+| 选项          | 默认值       | 说明                        |
+|-----------------|------------|-----------------------------------------|
+| `enabled`     | `true`       | 是否启用该插件                     |
+| `maxTokens`     | `8000`      | 压缩前的最大上下文令牌数                 |
+| `keepRecentTokens` | `2000`      | 从最近的消息中保留的令牌数量                |
+| `summaryMaxTokens` | `1000`      | 摘要中使用的最大令牌数量                 |
+| `charsPerToken`   | `4`        | 每个令牌对应的字符数                   |
+| `summaryModel`    | （会话模型）    | 用于生成摘要的模型                    |
 
-### Tuning for Your Model
+### 针对不同模型的配置调整
 
-**MLX (8K context models):**
+**针对 MLX（8K 上下文模型）的配置：**
 ```json
 {
   "maxTokens": 6000,
@@ -95,7 +94,7 @@ Add to `openclaw.json`:
 }
 ```
 
-**Larger context (32K models):**
+**针对更大上下文（32K 模型）的配置：**
 ```json
 {
   "maxTokens": 28000,
@@ -104,7 +103,7 @@ Add to `openclaw.json`:
 }
 ```
 
-**Small context (4K models):**
+**针对较小上下文（4K 模型）的配置：**
 ```json
 {
   "maxTokens": 3000,
@@ -113,11 +112,11 @@ Add to `openclaw.json`:
 }
 ```
 
-## Commands
+## 命令
 
 ### `/compact-now`
 
-Force clear the summary cache and trigger fresh compaction on next message.
+强制清除摘要缓存，并在接收新消息时立即执行压缩操作。
 
 ```
 /compact-now
@@ -125,74 +124,57 @@ Force clear the summary cache and trigger fresh compaction on next message.
 
 ### `/context-stats`
 
-Show current context token usage and whether compaction would trigger.
+显示当前的上下文令牌使用情况以及是否需要压缩。
 
 ```
 /context-stats
 ```
 
-Output:
-```
-📊 Context Stats
+## 摘要生成流程
 
-Messages: 47 total
-- User: 23
-- Assistant: 24
-- System: 0
+当压缩机制被触发时：
+1. 将消息分为“旧消息”（需要压缩）和“最近消息”（需要保留）；
+2. 使用会话模型（或配置的 `summaryModel`）生成摘要；
+3. 将生成的摘要缓存起来，以避免重复生成相同的内容；
+4. 在发送消息时将摘要内容前置。
 
-Estimated Tokens: ~6,234
-Limit: 8,000
-Usage: 77.9%
+如果 LLM 运行时不可用（例如在启动过程中），则会使用基于截断的备用摘要生成方式。
 
-✅ Within limits
-```
+## 与内置压缩机制的差异
 
-## How Summarization Works
+| 功能                | 内置机制       | 上下文压缩器                     |
+|------------------|-------------|-----------------------------------------|
+| 触发条件            | 模型报告溢出错误     | 令牌数量达到预设阈值                 |
+| 是否适用于本地模型        | 不适用（需要溢出错误）   | 可以                         |
+| 是否保存在转录文本中       | 可以         | 仅保存在会话数据中                   |
+| 摘要生成方式          | 使用 Pi 运行时      | 通过插件调用 LLM 进行生成                 |
 
-When compaction triggers:
+上下文压缩器起到了补充作用——它能够在问题影响到模型性能之前就提前发现并处理相关问题。
 
-1. **Split messages** into "old" (to summarize) and "recent" (to keep)
-2. **Generate summary** using the session model (or configured `summaryModel`)
-3. **Cache the summary** to avoid regenerating for the same content
-4. **Inject context** with the summary prepended
+## 故障排除
 
-If the LLM runtime isn't available (e.g., during startup), a fallback truncation-based summary is used.
+**摘要质量较差：**
+- 尝试更换更合适的 `summaryModel`；
+- 增加 `summaryMaxTokens` 的值；
+- 如果 LLM 运行时不可用，系统会使用基于截断的备用摘要生成方式。
 
-## Differences from Built-in Compaction
+**压缩操作过于频繁：**
+- 增加 `maxTokens` 的值；
+- 减少 `keepRecentTokens` 的值（保留更少的旧消息，从而更早触发压缩）。
 
-| Feature | Built-in | Context Compactor |
-|---------|----------|-------------------|
-| Trigger | Model reports overflow | Token estimate threshold |
-| Works with local models | ❌ (need overflow error) | ✅ |
-| Persists to transcript | ✅ | ❌ (session-only) |
-| Summarization | Pi runtime | Plugin LLM call |
+**未按预期进行压缩：**
+- 查看 `/context-stats` 以获取当前的上下文使用情况；
+- 确认配置文件中的 `enabled` 选项是否设置为 `true`；
+- 检查日志中是否有 `[context-compactor]` 相关的错误信息。
 
-Context Compactor is **complementary** — it catches cases before they hit the model's hard limit.
+**每个令牌对应的字符数不正确：**
+- 默认值 4 适用于英文文本；
+- 对于中文和日文等语言，可以尝试使用 3；
+- 对于高度技术性的文本，可以尝试使用 5。
 
-## Troubleshooting
+## 日志记录
 
-**Summary quality is poor:**
-- Try a better `summaryModel`
-- Increase `summaryMaxTokens`
-- The fallback truncation is used if LLM runtime isn't available
-
-**Compaction triggers too often:**
-- Increase `maxTokens`
-- Decrease `keepRecentTokens` (keeps less, summarizes earlier)
-
-**Not compacting when expected:**
-- Check `/context-stats` to see current usage
-- Verify `enabled: true` in config
-- Check logs for `[context-compactor]` messages
-
-**Characters per token wrong:**
-- Default of 4 works for English
-- Try 3 for CJK languages
-- Try 5 for highly technical content
-
-## Logs
-
-Enable debug logging:
+启用调试日志记录：
 
 ```json
 {
@@ -208,11 +190,11 @@ Enable debug logging:
 }
 ```
 
-Look for:
-- `[context-compactor] Current context: ~XXXX tokens`
-- `[context-compactor] Compacted X messages → summary`
+关注以下日志信息：
+- `[context-compactor] 当前上下文：约 XXXX 个令牌`
+- `[context-compactor] 已压缩 X 条消息以生成摘要`
 
-## Links
+## 链接
 
-- **GitHub**: https://github.com/E-x-O-Entertainment-Studios-Inc/openclaw-context-compactor
-- **OpenClaw Docs**: https://docs.openclaw.ai/concepts/compaction
+- **GitHub 仓库**：https://github.com/E-x-O-Entertainment-Studios-Inc/openclaw-context-compactor
+- **OpenClaw 文档**：https://docs.openclaw.ai/concepts/compaction

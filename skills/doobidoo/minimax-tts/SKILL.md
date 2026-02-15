@@ -1,3 +1,2 @@
----
-name: minimax-tts
-description: TTS with MiniMax Speech-02 series (multilingual 40 langs, 300+ voices, emotion). Use for high-quality voice messages. Trigger when TTS requested with voice/lang preference or asVoice:true.
+名称：minimax-tts  
+描述：基于MiniMax Speech-02系列的文本转语音（TTS）工具，支持40种语言、300多种语音效果以及情感表达。适用于生成高质量的语音消息。当通过指定语言或语音偏好来请求TTS服务，或当`asVoice:true`被设置时，该工具会被触发执行。

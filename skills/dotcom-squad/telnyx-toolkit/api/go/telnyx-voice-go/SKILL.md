@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -38,11 +39,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Answer call
+## 接听来电
 
-Answer an incoming call.
+接听传入的电话。
 
 `POST /calls/{call_control_id}/actions/answer`
 
@@ -58,11 +59,11 @@ Answer an incoming call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Bridge calls
+## 桥接通话
 
-Bridge two call control calls.
+将两个通话控制请求进行桥接。
 
-`POST /calls/{call_control_id}/actions/bridge` — Required: `call_control_id`
+`POST /calls/{call_control_id}/actions/bridge` — 必需参数：`call_control_id`
 
 ```go
 	response, err := client.Calls.Actions.Bridge(
@@ -78,11 +79,11 @@ Bridge two call control calls.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Dial
+## 拨打电话
 
-Dial a number or SIP URI from a given connection.
+从指定的连接拨打一个号码或 SIP URI。
 
-`POST /calls` — Required: `connection_id`, `to`, `from`
+`POST /calls` — 必需参数：`connection_id`, `to`, `from`
 
 ```go
 	response, err := client.Calls.Dial(context.TODO(), telnyx.CallDialParams{
@@ -98,9 +99,9 @@ Dial a number or SIP URI from a given connection.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Hangup call
+## 挂断电话
 
-Hang up the call.
+挂断通话。
 
 `POST /calls/{call_control_id}/actions/hangup`
 
@@ -116,11 +117,11 @@ Hang up the call.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Transfer call
+## 转接电话
 
-Transfer a call to a new destination.
+将通话转接到新的目的地。
 
-`POST /calls/{call_control_id}/actions/transfer` — Required: `to`
+`POST /calls/{call_control_id}/actions/transfer` — 必需参数：`to`
 
 ```go
 	response, err := client.Calls.Actions.Transfer(
@@ -136,9 +137,9 @@ Transfer a call to a new destination.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all active calls for given connection
+## 列出指定连接的所有活动通话
 
-Lists all active calls for given connection.
+列出指定连接的所有活动通话。
 
 `GET /connections/{connection_id}/active_calls`
 
@@ -154,9 +155,9 @@ Lists all active calls for given connection.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List call control applications
+## 列出通话控制应用程序
 
-Return a list of call control applications.
+返回通话控制应用程序的列表。
 
 `GET /call_control_applications`
 
@@ -168,11 +169,11 @@ Return a list of call control applications.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a call control application
+## 创建通话控制应用程序
 
-Create a call control application.
+创建一个新的通话控制应用程序。
 
-`POST /call_control_applications` — Required: `application_name`, `webhook_event_url`
+`POST /call_control_applications` — 必需参数：`application_name`, `webhook_event_url`
 
 ```go
 	callControlApplication, err := client.CallControlApplications.New(context.TODO(), telnyx.CallControlApplicationNewParams{
@@ -185,9 +186,9 @@ Create a call control application.
 	fmt.Printf("%+v\n", callControlApplication.Data)
 ```
 
-## Retrieve a call control application
+## 获取通话控制应用程序的详细信息
 
-Retrieves the details of an existing call control application.
+获取现有通话控制应用程序的详细信息。
 
 `GET /call_control_applications/{id}`
 
@@ -199,11 +200,11 @@ Retrieves the details of an existing call control application.
 	fmt.Printf("%+v\n", callControlApplication.Data)
 ```
 
-## Update a call control application
+## 更新通话控制应用程序
 
-Updates settings of an existing call control application.
+更新现有通话控制应用程序的设置。
 
-`PATCH /call_control_applications/{id}` — Required: `application_name`, `webhook_event_url`
+`PATCH /call_control_applications/{id}` — 必需参数：`application_name`, `webhook_event_url`
 
 ```go
 	callControlApplication, err := client.CallControlApplications.Update(
@@ -220,9 +221,9 @@ Updates settings of an existing call control application.
 	fmt.Printf("%+v\n", callControlApplication.Data)
 ```
 
-## Delete a call control application
+## 删除通话控制应用程序
 
-Deletes a call control application.
+删除通话控制应用程序。
 
 `DELETE /call_control_applications/{id}`
 
@@ -234,9 +235,9 @@ Deletes a call control application.
 	fmt.Printf("%+v\n", callControlApplication.Data)
 ```
 
-## List call events
+## 列出通话事件
 
-Filters call events by given filter parameters.
+根据指定的过滤参数筛选通话事件。
 
 `GET /call_events`
 
@@ -250,22 +251,23 @@ Filters call events by given filter parameters.
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callAnswered` | Call Answered |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `callBridged` | Call Bridged |
-| `callInitiated` | Call Initiated |
-| `callHangup` | Call Hangup |
-| `callRecordingSaved` | Call Recording Saved |
-| `callMachineDetectionEnded` | Call Machine Detection Ended |
-| `callMachineGreetingEnded` | Call Machine Greeting Ended |
-| `callMachinePremiumDetectionEnded` | Call Machine Premium Detection Ended |
-| `callMachinePremiumGreetingEnded` | Call Machine Premium Greeting Ended |
+| `callAnswered` | 电话已接听 |
+| `callStreamingStarted` | 通话流开始 |
+| `callStreamingStopped` | 通话流停止 |
+| `callStreamingFailed` | 通话流失败 |
+| `callBridged` | 通话被桥接 |
+| `callInitiated` | 通话开始 |
+| `callHangup` | 电话挂断 |
+| `callRecordingSaved` | 通话录音保存 |
+| `callMachineDetectionEnded` | 机器检测结束 |
+| `callMachineGreetingEnded` | 机器问候结束 |
+| `callMachinePremiumDetectionEnded` | 机器高级检测结束 |
+| `callMachinePremiumGreetingEnded` | 机器高级问候结束 |
+```
+```

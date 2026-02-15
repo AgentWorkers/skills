@@ -1,6 +1,6 @@
 ---
 name: cloudflare
-description: Cloudflare CLI - manage DNS records, purge cache, and control Workers routes.
+description: Cloudflare CLI（命令行界面）：用于管理DNS记录、清除缓存以及控制Workers路由的配置。
 version: 1.0.0
 author: dbhurley
 homepage: https://cloudflare.com
@@ -16,22 +16,23 @@ metadata:
 
 # Cloudflare CLI
 
-Manage Cloudflare DNS, cache, and Workers via the API.
+通过API管理Cloudflare的DNS、缓存和Workers服务。
 
-## 🔑 Required Secrets
+## 🔑 所需的密钥
 
-| Variable | Description | How to Get |
+| 变量 | 说明 | 获取方式 |
 |----------|-------------|------------|
-| `CLOUDFLARE_API_TOKEN` | Scoped API token | Cloudflare → My Profile → API Tokens |
+| `CLOUDFLARE_API_TOKEN` | 限定的API令牌 | 登录Cloudflare → 我的个人资料 → API令牌 |
 
-**Recommended token permissions:**
-- DNS:Read, DNS:Edit
-- Cache Purge:Purge
-- Workers Routes:Edit
+**推荐的令牌权限：**
+- DNS:Read（读取DNS记录）
+- DNS:Edit（编辑DNS记录）
+- Cache Purge（清除缓存）
+- Workers Routes:Edit（编辑Workers路由）
 
-## ⚙️ Setup
+## ⚙️ 设置
 
-Configure in `~/.clawdis/clawdis.json`:
+在`~/.clawdis/clawdis.json`文件中进行配置：
 ```json
 {
   "skills": {
@@ -44,16 +45,16 @@ Configure in `~/.clawdis/clawdis.json`:
 }
 ```
 
-## 📋 Commands
+## 📋 命令
 
-### Verify Token
+### 验证令牌
 
 ```bash
 # Test that your token works
 uv run {baseDir}/scripts/cloudflare.py verify
 ```
 
-### Zones (Domains)
+### 区域（域名）
 
 ```bash
 # List all zones
@@ -63,7 +64,7 @@ uv run {baseDir}/scripts/cloudflare.py zones
 uv run {baseDir}/scripts/cloudflare.py zone <zone_id_or_domain>
 ```
 
-### DNS Records
+### DNS记录
 
 ```bash
 # List DNS records for a zone
@@ -83,7 +84,7 @@ uv run {baseDir}/scripts/cloudflare.py dns delete <domain> <record_id>
 uv run {baseDir}/scripts/cloudflare.py dns delete <domain> <record_id> --yes
 ```
 
-### Cache
+### 缓存
 
 ```bash
 # Purge everything
@@ -96,7 +97,7 @@ uv run {baseDir}/scripts/cloudflare.py cache purge <domain> --urls "https://exam
 uv run {baseDir}/scripts/cloudflare.py cache purge <domain> --prefix "/blog/"
 ```
 
-### Workers Routes
+### Workers路由
 
 ```bash
 # List routes
@@ -106,16 +107,16 @@ uv run {baseDir}/scripts/cloudflare.py routes list <domain>
 uv run {baseDir}/scripts/cloudflare.py routes add <domain> --pattern "*.example.com/*" --worker my-worker
 ```
 
-## 📤 Output Formats
+## 📤 输出格式
 
-All commands support `--json` for machine-readable output:
+所有命令都支持`--json`选项，以生成机器可读的输出格式：
 ```bash
 uv run {baseDir}/scripts/cloudflare.py dns list example.com --json
 ```
 
-## 🔗 Common Workflows
+## 🔗 常见工作流程
 
-### Point domain to Vercel
+### 将域名指向Vercel服务器
 ```bash
 # Add CNAME for apex
 cloudflare dns add example.com --type CNAME --name @ --content cname.vercel-dns.com --proxied false
@@ -124,12 +125,12 @@ cloudflare dns add example.com --type CNAME --name @ --content cname.vercel-dns.
 cloudflare dns add example.com --type CNAME --name www --content cname.vercel-dns.com --proxied false
 ```
 
-### Clear cache after deploy
+### 部署后清除缓存
 ```bash
 cloudflare cache purge example.com --all
 ```
 
-## 📦 Installation
+## 📦 安装
 
 ```bash
 clawdhub install cloudflare

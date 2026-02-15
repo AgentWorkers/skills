@@ -1,7 +1,7 @@
 ---
 name: strava-python
 version: 1.0.0
-description: Query Strava activities, stats, and workout data using Python/stravalib with interactive setup
+description: 使用 Python 和 stravalib 查询 Strava 的活动、统计数据以及锻炼数据，并提供交互式的设置指南
 homepage: https://www.strava.com
 metadata:
   openclaw:
@@ -18,66 +18,66 @@ metadata:
 
 # Strava Python
 
-Query your Strava activities, stats, and workout data through OpenClaw using Python and stravalib.
+通过 Python 和 stravalib，您可以使用 OpenClaw 查询您的 Strava 活动、统计数据以及锻炼数据。
 
-**Why this skill vs others:** Uses Python/stravalib with an interactive setup wizard (vs curl-based skills requiring manual JSON configuration).
+**为什么选择这个技能？**  
+这个技能结合了 Python 和 stravalib，并提供了一个交互式的设置向导（而非基于 curl 的技能，后者需要手动配置 JSON 数据）。
 
-## Requirements
+## 前提条件
 
-- Python 3.7+
-- `stravalib` package
-- Strava API credentials (free)
+- Python 3.7 或更高版本  
+- `stravalib` 包  
+- Strava API 凭据（免费）
 
-## Setup
+## 设置步骤
 
-1. **Install dependencies:**
+1. **安装依赖项：**  
    ```bash
    pip install stravalib
    ```
 
-2. **Run setup:**
+2. **运行设置向导：**  
    ```bash
    python3 setup.py
-   ```
+   ```  
+   此步骤将：  
+   - 指导您创建一个 Strava API 应用程序  
+   - 处理 OAuth 认证  
+   - 将凭据保存到 `~/.strava_credentials.json` 文件中  
 
-   This will:
-   - Guide you through creating a Strava API app
-   - Handle OAuth authentication
-   - Save credentials to `~/.strava_credentials.json`
+## 命令示例
 
-## Commands
-
-**Recent activities:**
-```bash
+- **查看最近的活动：**  
+   ```bash
 python3 strava_control.py recent
 ```
 
-**Weekly/monthly stats:**
-```bash
+- **查看每周/每月的统计数据：**  
+   ```bash
 python3 strava_control.py stats
 ```
 
-**Last activity:**
-```bash
+- **查看最近的一次锻炼：**  
+   ```bash
 python3 strava_control.py last
 ```
 
-## Examples
+## 示例用法
 
-Ask OpenClaw:
-- "Show my recent Strava activities"
-- "What are my Strava stats this week?"
-- "What was my last Strava workout?"
+您可以向 OpenClaw 发送以下请求：  
+- “显示我最近的 Strava 活动”  
+- “我这周的 Strava 统计数据是什么？”  
+- “我最近的一次锻炼是什么？”  
 
-## Files
+## 相关文件
 
-- `strava_control.py` - Main controller script
-- `setup.py` - Interactive setup wizard
-- `SKILL.md` - This file
-- `~/.strava_credentials.json` - Credentials (auto-generated)
+- `strava_control.py`：主要控制脚本  
+- `setup.py`：交互式设置向导  
+- `SKILL.md`：本文档文件  
+- `~/.strava_credentials.json`：凭据文件（自动生成）
 
-## Notes
+## 注意事项
 
-- Requires Strava account (free)
-- API credentials are personal and should not be shared
-- Rate limits: 100 requests per 15 minutes, 1,000 daily
+- 需要拥有 Strava 账户（免费）  
+- API 凭据属于个人隐私信息，切勿共享  
+- 使用限制：15 分钟内最多 100 次请求，每天最多 1,000 次请求

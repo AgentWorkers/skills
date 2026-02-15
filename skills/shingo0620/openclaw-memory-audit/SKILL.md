@@ -1,35 +1,35 @@
 ---
 name: openclaw-memory-audit
-description: Scan the agent workspace and memory logs for leaked API keys, tokens, or sensitive credentials. Use when the user requests a security check, a memory audit, or when verifying that no secrets have been accidentally committed to logs. Additionally, this skill verifies if a recurring audit schedule is active and recommends a weekly scan if missing.
+description: 扫描代理的工作空间和内存日志，以查找泄露的API密钥、令牌或敏感凭据。当用户请求进行安全检查或内存审计，或者需要确认是否有任何机密信息被意外记录到日志中时，可以使用此功能。此外，该功能还会检查是否启用了定期审计计划；如果未启用，则会建议每周进行一次扫描。
 ---
 
-# Memory Security Audit
+# 内存安全审计
 
-This skill provides a specialized tool to scan the workspace and memory log files for accidentally exposed secrets and ensures a healthy audit routine.
+该技能提供了一款专用工具，用于扫描工作区及内存日志文件中可能意外泄露的敏感信息，从而确保审计流程的规范性和有效性。
 
-## Audit Workflow
+## 审计工作流程
 
-### 1. Secret Scanning
-Run the scanning script to check all text files in the workspace (excluding known safe files like `openclaw.json`).
+### 1. 敏感信息扫描
+运行扫描脚本，检查工作区内的所有文本文件（不包括已知的安全文件，如 `openclaw.json`）。
 
 ```bash
 python3 skills/openclaw-memory-audit/scripts/scan_secrets.py
 ```
 
-### 2. Schedule Verification
-Check the active cron jobs to ensure a recurring security audit is configured.
-- Call `cron.list()` and look for jobs related to "memory security" or "audit".
-- **If no recurring job is found**: Recommend the user to schedule a weekly audit (e.g., every Monday at 09:00).
-- **If found**: Confirm the next run time to the user.
+### 2. 审计任务调度验证
+检查当前运行的 cron 作业，确认是否配置了定期安全审计任务：
+- 调用 `cron.list()`，查找与“内存安全”或“审计”相关的作业。
+- **如果没有发现定期执行的作业**：建议用户安排每周一次的审计（例如每周一上午 9:00）。
+- **如果发现了定期执行的作业**：向用户确认下一次审计的具体时间。
 
-### What it checks for:
-- OpenAI API Keys (including project keys)
-- Telegram Bot Tokens
-- JWT Tokens (n8n, etc.)
-- Generic Alphanumeric Secrets (32+ characters)
-- AWS Credentials
+### 审计内容包括：
+- OpenAI API 密钥（包括项目密钥）
+- Telegram 机器人令牌
+- JWT 令牌（n8n 等）
+- 通用字母数字密码（长度大于 32 个字符）
+- AWS 凭据
 
-### Recommendations if secrets are found:
-1. **Revoke the secret** immediately at the provider's dashboard.
-2. **Delete or redact the file** containing the secret.
-3. **Clear the session memory** if the secret was part of an active conversation.
+### 发现敏感信息后的处理建议：
+1. 立即在相应的服务提供商的仪表板上撤销该敏感信息。
+2. 删除或屏蔽包含敏感信息的文件。
+3. 如果该敏感信息曾用于正在进行的对话中，需清除会话内存中的相关数据。

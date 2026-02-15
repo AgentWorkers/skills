@@ -1,23 +1,24 @@
 ---
 name: linkedin-monitor
-description: Bulletproof LinkedIn inbox monitoring with progressive autonomy. Monitors messages hourly, drafts replies in your voice, and alerts you to new conversations. Supports 4 autonomy levels from monitor-only to full autonomous.
+description: **具备渐进式自主功能的LinkedIn收件箱监控工具**：  
+该工具每小时自动检查新消息，可为您用语音录制回复内容，并在有新对话时及时提醒您。支持四种自主程度设置，从仅监控到完全自主操作均可选择。
 version: 1.0.0
 author: Dylan Baker / lilAgents
 ---
 
 # LinkedIn Monitor
 
-Reliable LinkedIn inbox monitoring for Clawdbot.
+专为Clawdbot设计的可靠LinkedIn收件箱监控工具。
 
-## Features
+## 主要功能
 
-- **Hourly monitoring** — Checks inbox every hour, 24/7
-- **Deterministic state** — No duplicate notifications, ever
-- **Progressive autonomy** — Start supervised, graduate to autonomous
-- **Health checks** — Alerts when auth expires or things break
-- **Your voice** — Drafts replies using your communication style
+- **每小时监控**：全天候每小时检查一次收件箱
+- **避免重复通知**：确保用户不会收到重复的通知
+- **逐步提升自主性**：从受监督模式开始，逐步过渡到完全自主模式
+- **健康检查**：在认证过期或系统出现故障时发出警报
+- **个性化回复**：根据用户的沟通风格草拟回复内容
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Setup (interactive)
@@ -33,18 +34,18 @@ linkedin-monitor check
 linkedin-monitor enable
 ```
 
-## Autonomy Levels
+## 自主性等级
 
-| Level | Name | Behavior |
+| 等级 | 名称 | 行为 |
 |-------|------|----------|
-| 0 | Monitor Only | Alerts to new messages only |
-| 1 | Draft + Approve | Drafts replies, waits for approval |
-| 2 | Auto-Reply Simple | Auto-handles acknowledgments, scheduling |
-| 3 | Full Autonomous | Replies as you, books meetings, networks |
+| 0   | 仅监控 | 仅在新消息到达时发出警报 |
+| 1   | 草拟回复 + 审批 | 草拟回复内容，等待用户审批 |
+| 2   | 自动回复简单信息 | 自动处理简单的回复和日程安排 |
+| 3   | 完全自主 | 以用户的方式回复消息、预约会议、拓展人脉 |
 
-**Default: Level 1** — Change with `linkedin-monitor config autonomyLevel 2`
+**默认等级：1级** — 可通过 `linkedin-monitor config autonomyLevel 2` 进行更改
 
-## Commands
+## 命令
 
 ```bash
 linkedin-monitor setup      # Interactive setup wizard
@@ -58,9 +59,9 @@ linkedin-monitor logs       # View recent activity
 linkedin-monitor reset      # Clear state (start fresh)
 ```
 
-## Configuration
+## 配置文件位置
 
-Location: `~/.clawdbot/linkedin-monitor/config.json`
+`~/.clawdbot/linkedin-monitor/config.json`
 
 ```json
 {
@@ -84,9 +85,9 @@ Location: `~/.clawdbot/linkedin-monitor/config.json`
 }
 ```
 
-## How It Works
+## 工作原理
 
-### Monitoring Flow
+### 监控流程
 
 ```
 1. Health Check
@@ -108,18 +109,18 @@ Location: `~/.clawdbot/linkedin-monitor/config.json`
    └── Record message IDs (prevents duplicates)
 ```
 
-### State Management
+### 状态管理
 
-State is managed by scripts, not the LLM. This guarantees:
-- No duplicate notifications
-- Consistent behavior across sessions
-- Visible state for debugging
+状态管理由脚本负责，而非大型语言模型（LLM）。这确保了：
+- 不会出现重复通知
+- 不同会话间的行为保持一致
+- 可以通过状态文件方便地进行调试
 
-State files: `~/.clawdbot/linkedin-monitor/state/`
+状态文件位置：`~/.clawdbot/linkedin-monitor/state/`
 
-## Sending Approved Messages
+## 发送已审批的回复
 
-When at Level 1, approve drafts with:
+当处于等级1时，可以使用以下命令来审批草拟的回复：
 
 ```
 send [name]           # Send draft to [name]
@@ -128,31 +129,31 @@ edit [name] [text]    # Edit draft before sending
 skip [name]           # Discard draft
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Auth expired"
+### “认证过期”
 ```bash
 lk auth login
 linkedin-monitor health
 ```
 
-### "No messages found"
+### “未找到消息”
 ```bash
 linkedin-monitor check --debug
 ```
 
-### Duplicate notifications
+### 重复通知
 ```bash
 linkedin-monitor reset  # Clear state
 linkedin-monitor check  # Fresh start
 ```
 
-## Dependencies
+## 所需依赖库
 
-- `lk` CLI (LinkedIn CLI) — `npm install -g lk`
-- `jq` (JSON processor) — `brew install jq`
+- `lk` CLI（LinkedIn命令行工具）：`npm install -g lk`
+- `jq`（JSON处理工具）：`brew install jq`
 
-## Files
+## 相关文件
 
 ```
 ~/.clawdbot/linkedin-monitor/

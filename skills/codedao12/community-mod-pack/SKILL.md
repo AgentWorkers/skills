@@ -1,56 +1,56 @@
 ---
 name: community-mod-pack
-description: Assist community moderation with summaries, spam detection suggestions, and draft replies for Discord or Telegram. Use when a user wants moderation help, rule reminders, or daily summaries without automatic enforcement actions.
+description: 协助社区管理，提供总结内容、垃圾信息检测建议，以及为 Discord 或 Telegram 编写回复模板。当用户需要管理协助、规则提醒或每日总结时（无需自动执行任何操作），可以使用这些功能。
 ---
 
-# Community Mod Pack
+# 社区管理工具包（Community Management Toolkit）
 
-## Goal
-Summarize community activity and surface moderation signals with draft responses only.
+## 目标
+汇总社区活动，并仅以草稿形式显示需要管理的信息（如违规行为）。
 
-## Best fit
-- Use when the user needs daily or weekly channel summaries.
-- Use when the user wants spam or rule-violation signals.
-- Use when the user wants draft moderator replies or rule reminders.
+## 适用场景
+- 当用户需要每日或每周的频道活动总结时。
+- 当用户希望获取关于垃圾信息或违规行为的提示时。
+- 当用户希望收到管理员的草稿回复或规则提醒时。
 
-## Not fit
-- Avoid when the user asks to auto-ban, kick, or delete messages.
-- Avoid when the community rules are missing or unclear.
-- Avoid when privacy constraints prohibit analysis.
+## 不适用场景
+- 当用户请求自动封禁、踢出用户或删除消息时。
+- 当社区规则缺失或不明确时。
+- 当隐私限制禁止数据分析时。
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速入门指南
+- 请参阅 `references/overview.md` 以了解工作流程和质量标准。
+- 请参阅 `references/auth.md` 以了解访问权限和令牌处理方式。
+- 请参阅 `references/endpoints.md` 以了解可选的集成功能和模板。
+- 请参阅 `references/webhooks.md` 以了解异步事件处理方法。
+- 请参阅 `references/ux.md` 以了解输入问题和输出格式。
+- 请参阅 `references/troubleshooting.md` 以了解常见问题解决方法。
+- 请参阅 `references/safety.md` 以了解安全性和隐私保护措施。
 
-## Required inputs
-- Channel logs or message exports within the allowed window.
-- Community rules and enforcement preferences.
-- Languages to moderate.
-- Escalation contacts and severity thresholds.
+## 必需输入
+- 在指定时间范围内的频道日志或消息导出数据。
+- 社区规则及执行偏好设置。
+- 需要管理的频道语言。
+- 用于上报违规行为的联系人及违规行为的严重程度阈值。
 
-## Expected output
-- Activity summary with key topics and notable threads.
-- Flagged messages with reasons and confidence.
-- Draft responses or rule reminders.
-- Suggested follow-up actions for human moderators.
+## 预期输出
+- 包含关键话题和显著讨论帖子的活动总结。
+- 标记出违规消息，并说明标记原因及置信度。
+- 提供管理员的草稿回复或规则提醒。
+- 为人工管理员提供后续处理建议。
 
-## Operational notes
-- Provide confidence and cite the rule that was triggered.
-- Avoid making final enforcement decisions.
-- Keep outputs in draft form.
+## 操作注意事项
+- 提供违规行为的依据，并明确指出所触发的具体规则。
+- 请勿做出最终的处理决定。
+- 请将所有输出内容保持为草稿形式。
 
-## Security notes
-- Respect privacy and minimize data retention.
-- Avoid sharing personal data beyond the moderator context.
+## 安全注意事项
+- 尊重用户隐私，尽量减少数据保留时间。
+- 请避免在超出管理员权限范围的情况下共享个人信息。
 
-## Safe mode
-- Analyze and draft only; no enforcement actions.
-- Use read-only access to logs when possible.
+## 安全模式
+- 仅负责数据分析及草稿生成，不执行任何实际的管理操作。
+- 尽可能使用只读权限来访问日志数据。
 
-## Sensitive ops
-- Muting, banning, deleting messages, or modifying roles is out of scope.
+## 敏感操作
+- 暂不支持禁言、封禁用户、删除消息或修改用户角色等操作。

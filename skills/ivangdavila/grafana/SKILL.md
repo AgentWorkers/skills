@@ -1,57 +1,57 @@
 ---
 name: Grafana
-description: Avoid common Grafana mistakes — query pitfalls, variable templating, alerting traps, and provisioning gotchas.
+description: 避免常见的Grafana使用错误：查询陷阱、变量模板问题、警报设置中的误区以及配置上的常见失误。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-## Variables and Templating
-- Multi-value variable needs `$__all` in regex — or only first value used
-- `${var:csv}` for comma-separated — `${var:pipe}` for pipe-separated in regex
-- Variable in query: `$var` or `${var}` — different escaping per data source
-- `$__interval` auto-adjusts to time range — use for aggregation window
-- Chained variables: child depends on parent — set "Refresh" to "On time range change"
+## 变量与模板
+- 对于多值变量，在正则表达式中需要使用 `$_all`；如果只需要第一个值，则直接使用该变量。
+- 用于逗号分隔的数据：使用 `${var:csv}`；用于管道分隔的数据：使用 `${var:pipe}`。
+- 在查询中引用变量时，可以使用 `$var` 或 `${var}`；不同数据源可能需要不同的转义方式。
+- `$__interval` 会自动调整时间范围，适用于聚合窗口的计算。
+- 链式变量：子变量的值取决于父变量的值；如果需要实时更新数据，请将“Refresh”设置为“On time range change”。
 
-## Prometheus Queries
-- `rate()` needs range vector — `rate(requests_total[5m])` not `rate(requests_total)`
-- `rate()` for counters, `deriv()` for gauges — rate handles counter resets
-- `$__rate_interval` over hardcoded — adapts to scrape interval and dashboard range
-- Labels in legend: `{{label}}` — multiple: `{{instance}} - {{job}}`
-- Regex filter: `metric{label=~"val1|val2"}` — `!~` for negative match
+## Prometheus 查询
+- `rate()` 函数需要时间范围参数，例如 `rate(requests_total[5m])` 而不是 `rate(requests_total)`。
+- `rate()` 用于计数器，`deriv()` 用于度量指标；`rate()` 可处理计数器的重置情况。
+- `$__rate_interval` 可以手动设置，也可以根据数据采集间隔和仪表盘显示范围自动调整。
+- 图例中的标签格式为 `{{label}}`；如果有多个标签，则使用 `{{instance}} - {{job}}` 的格式。
+- 正则表达式过滤器示例：`metric{label=~"val1|val2"`；`!~` 表示不匹配指定值。
 
-## Panel Configuration
-- "No data" vs "null" are different — configure in display options
-- Thresholds work on last value — not all values in range
-- Min/max must match your data range — auto-scaling can hide anomalies
-- Time series for trends, stat for current value — choose visualization wisely
+## 面板配置
+- “无数据”（No data）与 “null” 是不同的状态，需要在显示选项中进行配置。
+- 阈值是基于最后一个数据点计算的，而不是基于时间范围内的所有数据点。
+- 最小值/最大值必须与数据范围匹配；自动缩放可能会导致异常数据的隐藏。
+- 选择合适的可视化方式：时间序列适合展示趋势，统计图表适合展示当前值。
 
-## Alerting
-- Alert evaluates on server — not browser, query must work without variables
-- Variables not supported in alerts — hardcode values or use templates
-- Multiple conditions: AND is default — configure for OR if needed
-- Alert state "Pending" before "Firing" — for duration, prevents flapping
-- Notification channel must be configured — alert without channel = no notification
+## 警报机制
+- 警报在服务器端进行评估，而不是在浏览器端；查询语句不应包含变量。
+- 警报功能不支持变量，需要使用固定值或模板。
+- 多个条件默认使用 AND 运算符；如果需要使用 OR 运算符，请进行相应配置。
+- 警报状态会先显示为 “Pending”，然后才触发；这样可以避免频繁触发警报。
+- 必须配置通知渠道；如果没有配置通知渠道，则警报不会发送。
 
-## Dashboard Provisioning
-- JSON export includes data source UID — will fail if different on import
-- Use data source variables — `${DS_PROMETHEUS}` substituted at runtime
-- Provisioned dashboards read-only by default — `allowEditing: true` in provisioning
-- Folder must exist before dashboard provisioning — or import fails silently
+## 仪表盘配置
+- JSON 导出时会包含数据源的 UID；如果导入时 UID 不匹配，导入操作会失败。
+- 可以使用数据源变量，例如在运行时使用 `${DS_PROMETHEUS}`。
+- 配置好的仪表盘默认为只读模式；如果需要允许编辑，请将 `allowEditing` 设置为 `true`。
+- 在配置仪表盘之前，对应的文件夹必须存在；否则导入操作会失败。
 
-## Data Sources
-- "Server" mode proxies through Grafana — hides credentials from browser
-- "Browser" mode direct from browser — faster but exposes URL/auth
-- Test connection catches most issues — but not query-specific problems
-- TLS skip verify for self-signed — but fix proper certs for production
+## 数据源
+- “Server” 模式通过 Grafana 代理数据；这种方式可以隐藏浏览器中的凭据信息。
+- “Browser” 模式直接从浏览器获取数据；虽然速度更快，但会暴露 URL 和认证信息。
+- 测试连接可以检测大部分问题，但无法检测特定于查询的问题。
+- 对于自签名证书，可以跳过 TLS 证书验证；但在生产环境中应使用正确的证书。
 
-## Transformations
-- Order matters — transformations apply in sequence
-- Outer join for combining queries — match on time or label
-- Reduce for aggregating time series — last, mean, max, etc.
-- Add field from calculation — combine metrics client-side
+## 数据转换
+- 转换操作的顺序很重要，它们会按顺序执行。
+- 使用外连接（outer join）可以合并多个查询结果；连接条件可以是时间或标签。
+- 使用聚合函数（如 `reduce`）可以对时间序列数据进行汇总（如求和、平均值、最大值等）。
+- 可以在客户端计算新的字段，并将这些字段添加到指标数据中。
 
-## Common Mistakes
-- Time range selector affects variable queries — unexpected results with "All time"
-- Dashboard saved but datasource not — works locally, breaks on import
-- Alert rule in dashboard vs Grafana alerting — different systems, don't mix
-- Panel queries run on every refresh — high-cardinality queries slow dashboard
-- Annotation queries add DB load — use sparingly on busy dashboards
+## 常见错误
+- 时间范围选择会影响变量查询的结果；使用 “All time” 作为时间范围可能会导致意外结果。
+- 仪表盘已保存但数据源未更新，导致导入后仪表盘无法正常显示。
+- 仪表盘中的警报规则与 Grafana 中的警报规则可能不同，不要混淆这两种机制。
+- 面板中的查询会在每次刷新时执行；高 cardinality（数据量大的）查询可能会使仪表盘运行缓慢。
+- 注释查询会增加数据库负担；在数据量较大的仪表板上应谨慎使用注释查询。

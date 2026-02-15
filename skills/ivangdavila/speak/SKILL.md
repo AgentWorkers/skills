@@ -1,33 +1,33 @@
 ---
 name: "Speak"
-description: "Configure TTS in OpenClaw. Adapt speech output to user preferences."
+description: "在 OpenClaw 中配置语音合成（TTS）功能，使语音输出符合用户的偏好。"
 metadata: {"clawdbot":{"emoji":"🗣️","os":["linux","darwin","win32"]}}
 ---
 
-## Voice Output Adaptation
+## 语音输出适配
 
-This skill auto-evolves. Learn how the user wants to be spoken to and configure TTS accordingly.
+该功能会自动进化，根据用户的需求调整语音输出方式。
 
-**Rules:**
-- Detect patterns from user feedback on voice output
-- Mirror user's communication style when generating spoken text
-- Confirm preferences after 2+ consistent signals
-- Keep entries ultra-compact
-- Check `config.md` for OpenClaw TTS setup, `criteria.md` for format
-
----
-
-### Voice
-<!-- Preferred voice/provider. Format: "provider: voice" -->
-
-### Style
-<!-- How they want to be spoken to. Format: "trait" -->
-
-### Spoken Text
-<!-- Formatting for TTS output. Format: "rule" -->
-
-### Avoid
-<!-- What doesn't work for them spoken -->
+**规则：**
+- 从用户对语音输出的反馈中检测模式
+- 在生成语音文本时模仿用户的交流风格
+- 在收到连续两次以上一致的用户反馈后确认用户的偏好设置
+- 保持设置信息的简洁性
+- 查阅 `config.md` 文件以获取 OpenClaw 的 TTS 配置信息，以及 `criteria.md` 文件以了解格式要求
 
 ---
-*Empty sections = no preference yet. Observe and fill.*
+
+### 语音设置
+<!-- 偏好的语音提供者。格式：`provider: voice` -->
+
+### 交流风格
+<!-- 用户希望被如何称呼或表达。格式：`trait` -->
+
+### 语音文本格式
+<!-- 用于 TTS 输出的文本格式。格式：`rule` -->
+
+### 需避免的情况
+<!-- 用户不希望被以某种方式称呼或表达的内容。格式：`avoid` -->
+
+---
+*如果某个部分为空，表示用户尚未做出偏好设置。请继续观察并填写相关信息。*

@@ -1,20 +1,20 @@
 ---
 name: komodo
-description: Manage Komodo infrastructure - servers, Docker deployments, stacks, builds, and procedures. Use when user asks about server status, container management, deployments, builds, or any Komodo-related infrastructure tasks.
+description: 管理 Komodo 的基础设施，包括服务器、Docker 部署、开发环境配置（stacks）以及构建流程（builds）。当用户询问服务器状态、容器管理、部署详情或任何与 Komodo 相关的基础设施问题时，可使用此功能。
 ---
 
 # Komodo Skill
 
-Manage servers, Docker containers, stacks, builds, and procedures via Komodo Core API.
+通过 Komodo Core API 管理服务器、Docker 容器、开发环境（stacks）、构建过程（builds）以及相关操作。
 
-## Prerequisites
+## 前提条件
 
-Set environment variables:
-- `KOMODO_ADDRESS` - Komodo Core URL (e.g., `https://komodo.example.com`)
-- `KOMODO_API_KEY` - API key (starts with `K-`)
-- `KOMODO_API_SECRET` - API secret (starts with `S-`)
+设置环境变量：
+- `KOMODO_ADDRESS` - Komodo Core 的 URL（例如：`https://komodo.example.com`）
+- `KOMODO_API_KEY` - API 密钥（以 `K-` 开头）
+- `KOMODO_API_SECRET` - API 密码（以 `S-` 开头）
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Set env (or source from credentials file)
@@ -61,19 +61,19 @@ python scripts/komodo.py procedure <name>
 python scripts/komodo.py run-procedure <name>
 ```
 
-## State Indicators
+## 状态指示器
 
-- 🟢 Running/Ok
-- 🔴 Stopped
-- ⚪ NotDeployed
-- 🟡 Unhealthy
-- 🔄 Restarting
-- 🔨 Building
-- ⏳ Pending
+- 🟢 运行中/正常
+- 🔴 停止
+- ⚪ 未部署
+- 🟡 不健康
+- 🔄 重新启动中
+- 🔨 正在构建
+- ⏳ 待处理
 
-## Direct API Calls
+## 直接 API 调用
 
-For operations not covered by the CLI, use curl:
+对于 CLI 未支持的操作，可以使用 curl 进行调用：
 
 ```bash
 # Read operation
@@ -91,10 +91,12 @@ curl -X POST "$KOMODO_ADDRESS/execute/Deploy" \
   -d '{"deployment": "my-deployment"}'
 ```
 
-## API Reference
+## API 参考
 
-Read endpoints: `ListServers`, `ListDeployments`, `ListStacks`, `ListBuilds`, `ListProcedures`, `ListRepos`, `GetSystemStats`, `GetLog`
+可读取的 API 端点：
+- `ListServers`、`ListDeployments`、`ListStacks`、`ListBuilds`、`ListProcedures`、`ListRepos`、`GetSystemStats`、`GetLog`
 
-Execute endpoints: `Deploy`, `StartDeployment`, `StopDeployment`, `RestartDeployment`, `DeployStack`, `StartStack`, `StopStack`, `RestartStack`, `RunBuild`, `RunProcedure`
+可执行的 API 端点：
+- `Deploy`、`StartDeployment`、`StopDeployment`、`RestartDeployment`、`DeployStack`、`StartStack`、`StopStack`、`RestartStack`、`RunBuild`、`RunProcedure`
 
-Full API docs: https://komo.do/docs
+完整的 API 文档：https://komo.do/docs

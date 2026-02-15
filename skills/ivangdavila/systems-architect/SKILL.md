@@ -1,77 +1,77 @@
 ---
 name: Systems Architect
-description: Design infrastructure, networks, and cloud systems with integration, reliability, and security patterns.
+description: 设计基础设施、网络和云系统时，需遵循集成性、可靠性和安全性的设计原则。
 metadata: {"clawdbot":{"emoji":"🌐","os":["linux","darwin","win32"]}}
 ---
 
-# Systems Architecture Rules
+# 系统架构规则
 
-## Infrastructure Design
-- Design for failure at every layer — hardware fails, networks partition, regions go down
-- Redundancy costs money, downtime costs more — calculate acceptable risk
-- Prefer managed services for undifferentiated work — run less, build more
-- Infrastructure as code from day one — manual changes drift and break
-- Immutable infrastructure beats patching — replace, don't repair
+## 基础设施设计
+- 在每一层都要考虑故障的可能性——硬件可能会故障，网络可能会中断，不同地区也可能出现故障。
+- 冗余会增加成本，但停机时间带来的损失更大——需要评估可接受的风险。
+- 对于重复性、无需差异化的任务，优先选择托管服务——减少运维工作，提升系统稳定性。
+- 从一开始就采用“基础设施即代码”（Infrastructure as Code）的架构——手动修改容易导致错误和系统故障。
+- 不可变的基础设施比频繁打补丁更可靠——应选择替换故障部件，而不是尝试修复它们。
 
-## Cloud Architecture
-- Multi-AZ minimum, multi-region for critical systems — availability zones fail together sometimes
-- Right-size first, auto-scale second — baseline must be correct
-- Reserved capacity for steady load, spot/preemptible for bursts — cost optimization requires planning
-- Egress costs add up — keep traffic within regions when possible
-- Cloud vendor lock-in is real — abstract where escape matters, accept where it doesn't
+## 云架构
+- 至少使用多个可用区（AZ），关键系统应部署在多个区域——某些可用区可能会同时发生故障。
+- 首先确定系统的合理规模，然后再进行自动扩展——必须确保基准配置是正确的。
+- 为稳定的负载预留足够的资源，对于突发流量则使用按需计费的资源——成本优化需要提前规划。
+- 出站流量会产生额外费用——尽可能将流量限制在同一个区域内。
+- 云服务提供商存在一定的锁定效应——在需要灵活切换服务提供商时，要提前做好应对措施。
 
-## Networking
-- Private subnets for workloads, public only for load balancers — minimize attack surface
-- VPC peering and transit gateways for multi-account — plan topology before scaling
-- DNS for service discovery — hardcoded IPs break migrations
-- Zero trust: authenticate and encrypt internal traffic — perimeter security isn't enough
-- Network segmentation limits blast radius — flat networks let attackers roam
+## 网络架构
+- 为工作负载创建私有子网，仅将负载均衡器部署在公共网络中——以最小化攻击面。
+- 使用VPC对等连接和传输网关来实现多账户之间的网络通信——在扩展之前先规划好网络拓扑结构。
+- 使用DNS进行服务发现——硬编码的IP地址会妨碍系统的迁移和扩展。
+- 实施“零信任”安全策略：对所有内部流量进行身份验证和加密——仅依赖边界安全是不够的。
+- 通过网络隔离来限制故障的影响范围——扁平化的网络结构容易让攻击者自由扩散。
 
-## Integration Patterns
-- APIs for synchronous, queues for asynchronous — match pattern to requirements
-- Event-driven for loose coupling — producers don't know consumers
-- Service mesh for complex microservices — observability and security at network layer
-- Rate limiting and backpressure protect systems — don't let slow consumers crash fast producers
-- Dead letter queues for failed messages — don't lose data, process later
+## 集成模式
+- 使用API实现同步通信，使用队列处理异步任务——根据实际需求选择合适的集成方式。
+- 采用事件驱动的方式实现松耦合——生产者无需知道消费者的具体信息。
+- 对于复杂的微服务系统，使用服务网格（Service Mesh）——提升系统的可观测性和安全性。
+- 通过限速和反向压强（Backpressure）机制来保护系统——避免慢速的消费者导致快速的生产者崩溃。
+- 为失败的消息设置专门的队列——不要丢失数据，可以稍后进行处理。
 
-## Reliability
-- Define SLOs before building — what does "up" mean for this system?
-- Error budgets allow controlled risk — 99.9% means 8 hours downtime per year is acceptable
-- Blast radius reduction: cell-based architecture — limit how many users one failure affects
-- Chaos engineering in staging first — break things intentionally before production breaks accidentally
-- Runbooks for every alert — 3 AM isn't debugging time
+## 可靠性
+- 在构建系统之前先定义服务水平目标（SLOs）——对于这个系统来说，“正常运行”具体意味着什么？
+- 通过设置错误预算来控制风险——例如，99.9%的可用性意味着每年最多允许8小时的停机时间。
+- 采用基于“单元”的架构设计——减少单次故障对用户的影响范围。
+- 在测试环境中先进行混沌工程（Chaos Engineering）——在正式生产环境之前故意引入故障，以便提前发现潜在问题。
+- 为每个警报制定相应的操作手册——凌晨3点可不是调试的最佳时间。
 
-## Disaster Recovery
-- RTO (recovery time) and RPO (data loss) are business decisions — architect for the requirement
-- Backups aren't recovery until tested — restore regularly
-- Hot/warm/cold standby each have trade-offs — cost vs speed of recovery
-- Cross-region replication for critical data — single region is single point of failure
-- DR drills reveal real problems — plan meets reality
+## 灾难恢复
+- 恢复时间（RTO）和数据丢失量（RPO）是商业决策的结果——根据业务需求来设计恢复策略。
+- 备份数据只是第一步，只有经过测试后才能真正实现恢复——定期进行数据恢复。
+- 热备、温备和冷备各有优缺点——需要在成本和恢复速度之间做出权衡。
+- 对关键数据进行跨区域复制——单一区域可能成为故障的单一点。
+- 定期进行灾难恢复演练——通过演练来发现实际存在的问题。
 
-## Security
-- Defense in depth: multiple barriers — one layer will fail
-- Least privilege for services too — not just users
-- Secrets management centralized — no secrets in code, config files, or environment variables in images
-- Audit logging for compliance and forensics — you'll need it after a breach
-- Patch aggressively — known vulnerabilities are actively exploited
+## 安全性
+- 采取多层次的防御策略——任何一层防御措施都可能失效。
+- 为所有服务（而不仅仅是用户）设置最小权限。
+- 隐私信息要集中管理——不要将敏感信息存储在代码、配置文件或镜像中。
+- 记录审计日志，以满足合规性和取证需求——在发生安全漏洞后这些日志会非常有用。
+- 积极打补丁——已知的漏洞可能会被恶意利用。
 
-## Monitoring and Observability
-- Metrics, logs, and traces together — each tells part of the story
-- Alerting on symptoms, not causes — users down matters, CPU high might not
-- Dashboards for each service with golden signals — latency, traffic, errors, saturation
-- Distributed tracing across services — follow requests end to end
-- Log aggregation with retention policy — balance cost and forensic needs
+## 监控与可观测性
+- 综合使用指标、日志和追踪数据——这些信息能提供完整的系统运行状况。
+- 根据症状发出警报，而不是直接根据原因——用户无法访问系统可能比CPU使用率高更严重。
+- 为每个服务创建专门的监控仪表板——展示延迟、流量、错误率和系统饱和度等关键指标。
+- 实现跨服务的分布式追踪——追踪请求的完整处理过程。
+- 对日志进行聚合处理，并设置合理的保留策略——平衡成本和取证需求。
 
-## Capacity Planning
-- Measure current baseline before projecting — can't scale what you don't measure
-- Load test to find breaking points — theory differs from reality
-- Capacity leads demand — scaling takes time, be ahead
-- Cost modeling for growth scenarios — 10x users is rarely 10x cost
-- Review quarterly at minimum — patterns change
+## 容量规划
+- 在进行容量规划之前，先测量当前的系统基线——无法预测的系统是无法有效扩展的。
+- 通过负载测试来找出系统的瓶颈——理论设计与实际运行情况可能存在差异。
+- 容量规划应领先于实际需求——扩展需要时间，要提前做好准备。
+- 为业务增长场景制定成本模型——用户数量增加10倍，成本未必也会增加10倍。
+- 至少每季度进行一次容量评估——系统需求会不断变化。
 
-## Migration and Evolution
-- Strangler fig pattern for legacy replacement — route traffic gradually
-- Blue-green or canary for infrastructure changes — test in production safely
-- Database migrations are hardest — plan data migration separately
-- Rollback plans before rollout — assume failure, prepare for it
-- Communicate maintenance windows — surprises damage trust
+## 迁移与演进
+- 使用“绞杀者无花果”（Strangler Fig）模式逐步替换旧系统——逐步引导流量到新的系统。
+- 对于基础设施的变更，可以采用蓝绿部署（Blue-Green Deployment）或金丝雀测试（Canary Testing）——在生产环境中安全地进行测试。
+- 数据库迁移是最复杂的环节——需要单独制定迁移计划。
+- 在正式部署前准备好回滚方案——要假设系统可能会出故障，并做好相应的准备。
+- 提前通知维护窗口——突然的维护操作会损害用户的信任。

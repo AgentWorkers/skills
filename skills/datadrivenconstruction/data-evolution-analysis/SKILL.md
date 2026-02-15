@@ -1,18 +1,18 @@
 ---
 slug: "data-evolution-analysis"
 display_name: "Data Evolution Analysis"
-description: "Analyze data evolution patterns in construction organizations. Assess digital maturity and data strategy for construction companies"
+description: "分析建筑组织中的数据演变趋势。评估建筑公司的数字化成熟度及数据管理策略。"
 ---
 
-# Data Evolution Analysis
+# 数据演化分析
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 1.1), this skill analyzes data evolution patterns in construction organizations, assessing digital maturity levels from paper-based workflows to fully data-driven operations.
+基于DDC方法论（第1.1章），该技能用于分析建筑组织中的数据演化模式，评估从基于纸质的工作流程向完全数据驱动的运营的数字化成熟度水平。
 
-**Book Reference:** "Эволюция использования данных в строительной отрасли" / "Evolution of Data Usage in Construction"
+**参考书籍**：《建筑行业中数据使用的演变》（"Эволюция использования данных в строительной отрасли"）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -610,9 +610,9 @@ class DataEvolutionTracker:
         }
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Assess Current Digital Maturity
+### 评估当前的数字化成熟度
 
 ```python
 analyzer = DataEvolutionAnalyzer()
@@ -649,7 +649,7 @@ print(f"Maturity Level: {assessment.overall_level.name}")
 print(f"Recommendations: {assessment.recommendations[:3]}")
 ```
 
-### Track Evolution Over Time
+### 跟踪数据随时间的演化
 
 ```python
 tracker = DataEvolutionTracker("Construction Co")
@@ -664,7 +664,7 @@ print(f"Progress: {summary['starting_level']} → {summary['current_level']}")
 print(f"Milestones: {len(summary['milestones'])}")
 ```
 
-### Generate Executive Report
+### 生成执行报告
 
 ```python
 report = analyzer.generate_report(assessment)
@@ -675,24 +675,24 @@ with open("maturity_report.md", "w") as f:
     f.write(report)
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
+| 组件 | 功能 |
 |-----------|---------|
-| `DataEvolutionAnalyzer` | Main assessment engine |
-| `MaturityLevel` | 6 levels from paper to predictive |
-| `DataCategory` | 8 categories (design, cost, schedule, etc.) |
-| `DataFlowAssessment` | Analyze data flows per category |
-| `MaturityAssessment` | Complete assessment results |
-| `DataEvolutionTracker` | Track progress over time |
+| `DataEvolutionAnalyzer` | 主要评估引擎 |
+| `MaturityLevel` | 从纸质化到预测性的6个成熟度等级 |
+| `DataCategory` | 8个数据类别（设计、成本、进度等） |
+| `DataFlowAssessment` | 分析每个类别的数据流 |
+| `MaturityAssessment` | 提供完整的评估结果 |
+| `DataEvolutionTracker` | 跟踪数据演化的过程 |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 1.1
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建造》（"Data-Driven Construction"），第1.1章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [data-silo-detection](../../Chapter-1.2/data-silo-detection/SKILL.md) to identify integration gaps
-- Use [erp-integration-analysis](../../Chapter-1.2/erp-integration-analysis/SKILL.md) for system integration
-- Use [digital-maturity-assessment](../../Chapter-5.1/digital-maturity-assessment/SKILL.md) for detailed assessments
+- 使用 [data-silo-detection](../../Chapter-1.2/data-silo-detection/SKILL.md) 识别系统集成中的漏洞
+- 使用 [erp-integration-analysis](../../Chapter-1.2/erp-integration-analysis/SKILL.md) 进行系统集成分析
+- 使用 [digital-maturity-assessment](../../Chapter-5.1/digital-maturity-assessment/SKILL.md) 进行详细的数据成熟度评估

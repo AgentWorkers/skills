@@ -1,6 +1,11 @@
 ---
 name: agentskills-io
-description: Create, validate, and publish Agent Skills following the official open standard from agentskills.io. Use when (1) creating new skills for AI agents, (2) validating skill structure and metadata, (3) understanding the Agent Skills specification, (4) converting existing documentation into portable skills, or (5) ensuring cross-platform compatibility with Claude Code, Cursor, GitHub Copilot, and other tools.
+description: 根据 agentskills.io 的官方开放标准，创建、验证并发布代理技能（Agent Skills）。该标准适用于以下场景：  
+1. 为 AI 代理创建新技能；  
+2. 验证技能的结构和元数据；  
+3. 了解代理技能的规范；  
+4. 将现有文档转换为可移植的技能格式；  
+5. 确保与 Claude Code、Cursor、GitHub Copilot 等工具的跨平台兼容性。
 license: Apache-2.0
 metadata:
   author: agentic-insights
@@ -9,14 +14,15 @@ metadata:
   reference-repo: https://github.com/agentskills/agentskills
 ---
 
-# Agent Skills (agentskills.io)
+# 代理技能（agentskills.io）
 
-Create portable skills for AI agents. Works with Claude Code, Cursor, GitHub Copilot, OpenAI integrations, VS Code (symlinks enable sharing across tools).
+为 AI 代理创建可移植的技能。支持与 Claude Code、Cursor、GitHub Copilot、OpenAI 的集成，以及 VS Code 的配合使用（通过符号链接实现跨工具共享）。
 
-## Resources
-- Specification: https://agentskills.io/specification | Validator: https://github.com/agentskills/agentskills
+## 资源
+- 规范文档：https://agentskills.io/specification  
+- 验证工具：https://github.com/agentskills/agentskills
 
-## Structure
+## 文件结构
 ```
 skill-name/
 ├── SKILL.md          # Required (frontmatter + instructions, <5000 tokens activation)
@@ -25,19 +31,25 @@ skill-name/
 └── assets/           # Optional: templates, static files
 ```
 
-**Rules**: Dir name = frontmatter `name:`. Only 3 subdirs. SKILL.md <500 lines. ~100 tokens for discovery (name+desc).
+**规则**：
+- 目录名称必须与 `frontmatter` 中的 `name:` 字段相匹配。
+- 该目录下只能包含 3 个子目录。
+- 每个 `SKILL.md` 文件的长度应不超过 500 行。
+- 文件中的描述性内容（包括 `name` 和 `description`）应控制在约 100 个字符以内，以便于搜索和发现。
 
-## Frontmatter
+## `frontmatter`（文件开头部分）
 
-### Required
-- `name`: 1-64 chars, lowercase alphanumeric-hyphens (`^[a-z0-9]+(-[a-z0-9]+)*$`)
-- `description`: 1-1024 chars, include "Use when..." (discovery budget: ~100 tokens)
+### 必填字段
+- `name`：长度为 1-64 个字符，由小写字母、数字和连字符组成（格式：`^[a-z0-9]+(-[a-z0-9]+)*$`）。
+- `description`：长度为 1-1024 个字符，包含使用说明（例如：“适用于……场景”）。
 
-### Optional
-- `license`: SPDX identifier (Apache-2.0, MIT) | `compatibility`: Environment reqs (<500 chars)
-- `metadata`: Key-value pairs (author, version, tags) | `allowed-tools`: Space-delimited tool list
+### 可选字段
+- `license`：许可证标识符（例如 Apache-2.0、MIT）。
+- `compatibility`：对运行环境的要求（长度不超过 500 个字符）。
+- `metadata`：键值对格式的信息（例如作者、版本、标签）。
+- `allowed-tools`：以空格分隔的工具列表。
 
-## Validation
+## 验证工具
 ```bash
 # Install permanently (vs ephemeral uvx)
 uv tool install git+https://github.com/agentskills/agentskills#subdirectory=skills-ref
@@ -45,35 +57,34 @@ uv tool install git+https://github.com/agentskills/agentskills#subdirectory=skil
 uvx --from git+https://github.com/agentskills/agentskills#subdirectory=skills-ref skills-ref validate ./skill
 ```
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `skills-ref validate <path>` | Check structure, frontmatter, token budgets |
-| `skills-ref read-properties <path>` | Extract metadata |
-| `skills-ref to-prompt <path>` | Generate prompt format |
+| `skills-ref validate <path>` | 检查文件结构、`frontmatter` 内容以及各字段的长度是否符合规范。 |
+| `skills-ref read-properties <path>` | 提取文件的元数据。 |
+| `skills-ref to-prompt <path>` | 生成用于提示用户的提示信息格式。 |
 
-## Writing Rules
-- Imperative language: "Check: `command`" not "You might want to..."
-- Concrete examples with expected output; handle common errors with solutions
-- Progressive disclosure: core in SKILL.md (<5000 tokens), details in references/
+## 编写规范
+- 使用祈使句式进行描述（例如：“请执行 `command`”），而非使用“您可能希望……”这样的表述。
+- 提供具体的使用示例及预期的输出结果；对常见错误提供解决方法。
+- 采用渐进式的信息展示方式：核心内容放在 `SKILL.md` 文件中，详细信息则放在参考文档中。
 
-## Common Errors
-
-| Error | Fix |
+## 常见错误及解决方法
+| 错误类型 | 解决方案 |
 |-------|-----|
-| Invalid name | Lowercase alphanumeric-hyphens only |
-| Missing description | Add `description:` field with "Use when..." |
-| Description too long | <1024 chars, move details to body |
-| Invalid YAML | Check indentation, quote special chars |
-| Missing SKILL.md | Filename must be exactly `SKILL.md` |
-| Dir name mismatch | Directory name must match `name:` field |
+| 名称无效 | 名称必须仅由小写字母、数字和连字符组成。 |
+| 描述缺失 | 必须添加 `description` 字段，并包含使用说明。 |
+| 描述过长 | 描述内容应控制在 1024 个字符以内，多余的细节可放在文件正文中。 |
+- YAML 格式错误 | 确保缩进正确，特殊字符需使用引号括起来。 |
+| 文件名错误 | 文件名必须严格为 `SKILL.md`。 |
+| 目录名称不匹配 | 目录名称必须与 `frontmatter` 中的 `name:` 字段一致。 |
 
-## Quick Workflow
-1. Create: `mkdir skill-name && touch skill-name/SKILL.md`
-2. Add frontmatter (name, description with "Use when...")
-3. Write instructions (bullets, not prose); validate: `skills-ref validate ./skill-name`
-4. Test with AI agent, iterate; add LICENSE, push to repository
+## 快速工作流程
+1. 创建新技能文件：`mkdir skill-name && touch skill-name/SKILL.md`
+2. 添加 `frontmatter`（包含 `name` 和使用说明）。
+3. 编写使用说明（使用项目符号列表，避免冗长的叙述性文字）；使用 `skills-ref validate ./skill-name` 进行验证。
+4. 在 AI 代理中测试技能效果，根据反馈进行修改；添加许可证信息后，将文件推送到仓库。
 
-## Plugin Structure (Claude Code)
+## 插件结构（以 Claude Code 为例）
 ```
 plugin-name/
 ├── .claude-plugin/plugin.json
@@ -83,15 +94,17 @@ plugin-name/
 └── examples/   # Optional: full demo projects
 ```
 
-**Distinctions**: Plugin `examples/` = runnable projects. Skill `assets/` = static resources only.
+**说明**：
+- `examples/` 目录下存放可运行的示例项目。
+- `assets/` 目录仅包含静态资源（如图片、脚本等）。
 
-## Batch Validation & Versioning
+## 批量验证与版本管理
 ```bash
 bash scripts/validate-skills-repo.sh     # Validate all skills in repo
 bash scripts/bump-changed-plugins.sh     # Auto-bump only changed plugins (semver)
 ```
 
-## Minimal Example
+## 最小示例文件
 ```yaml
 ---
 name: example-skill
@@ -107,11 +120,14 @@ description: Brief description. Use when doing X.
 **Error**: Message → **Fix**: Solution
 ```
 
-## Symlink Sharing
-Share skills across Claude Code, Cursor, VS Code: `ln -s /path/to/skills ~/.cursor/skills`
+## 跨工具共享技能
+要将技能文件共享到 Claude Code、Cursor 或 VS Code 中，可以使用以下命令：
+```
+ln -s /path/to/skills ~/.cursor/skills
+```
 
-## References
-- [specification.md](references/specification.md) - Full YAML schema, token budgets
-- [examples.md](references/examples.md) - Complete examples across platforms
-- [validation.md](references/validation.md) - Error troubleshooting
-- [best-practices.md](references/best-practices.md) - Advanced patterns, symlink setup
+## 参考文档
+- [specification.md](references/specification.md)：完整的 YAML 规范文档及各字段的长度限制。
+- [examples.md](references/examples.md)：跨平台的完整使用示例。
+- [validation.md](references/validation.md)：错误排查指南。
+- [best-practices.md](references/best-practices.md)：高级使用技巧及符号链接设置方法。

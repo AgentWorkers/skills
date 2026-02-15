@@ -1,15 +1,15 @@
 ---
 name: docstrange
-description: Document extraction API by Nanonets. Convert PDFs and images to markdown, JSON, or CSV with confidence scoring. Use when you need to OCR documents, extract invoice fields, parse receipts, or convert tables to structured data.
+description: Nanonets提供的文档提取API：能够将PDF文件和图像转换为Markdown、JSON或CSV格式，并附带置信度评分。适用于需要进行OCR处理、提取发票信息、解析收据内容或将表格数据转换为结构化格式的场景。
 ---
 
-# DocStrange by Nanonets
+# DocStrange 由 Nanonets 提供
 
-Document extraction API — convert PDFs, images, and documents to markdown, JSON, or CSV with per-field confidence scoring.
+**文档提取 API** — 将 PDF、图片和文档转换为 Markdown、JSON 或 CSV 格式，并为每个字段提供置信度评分。
 
-> **Get your API key:** https://docstrange.nanonets.com/app
+> **获取您的 API 密钥：** https://docstrange.nanonets.com/app
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
@@ -18,7 +18,7 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -F "output_format=markdown"
 ```
 
-Response:
+**响应：**
 ```json
 {
   "success": true,
@@ -32,23 +32,23 @@ Response:
 }
 ```
 
-## Setup
+## 设置
 
-### 1. Get Your API Key
+### 1. 获取您的 API 密钥
 
 ```bash
 # Visit the dashboard
 https://docstrange.nanonets.com/app
 ```
 
-Save your API key:
+**保存您的 API 密钥：**
 ```bash
 export DOCSTRANGE_API_KEY="your_api_key_here"
 ```
 
-### 2. OpenClaw Configuration (Optional)
+### 2. OpenClaw 配置（可选）
 
-**Recommended: Use environment variables** (most secure):
+**推荐：使用环境变量**（最安全的方式）：
 ```json5
 {
   skills: {
@@ -62,7 +62,7 @@ export DOCSTRANGE_API_KEY="your_api_key_here"
 }
 ```
 
-**Alternative: Store in config file** (use with caution):
+**替代方案：存储在配置文件中**（请谨慎使用）：
 ```json5
 {
   skills: {
@@ -78,15 +78,15 @@ export DOCSTRANGE_API_KEY="your_api_key_here"
 }
 ```
 
-**Security Note:** If storing API keys in `~/.openclaw/openclaw.json`:
-- Set file permissions: `chmod 600 ~/.openclaw/openclaw.json`
-- Never commit this file to version control
-- Prefer environment variables or your agent's secret store when possible
-- Rotate keys regularly and limit API key permissions if supported
+**安全提示：** 如果将 API 密钥存储在 `~/.openclaw/openclaw.json` 中：  
+- 设置文件权限：`chmod 600 ~/.openclaw/openclaw.json`  
+- 绝不要将此文件提交到版本控制系统中  
+- 尽可能使用环境变量或代理的秘密存储机制  
+- 定期更换 API 密钥，并在支持的情况下限制 API 密钥的权限
 
-## Common Tasks
+## 常见任务
 
-### Extract to Markdown
+### 提取到 Markdown 格式
 
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
@@ -95,11 +95,11 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -F "output_format=markdown"
 ```
 
-Access content: `response["result"]["markdown"]["content"]`
+**访问内容：`response["result"]["markdown"]["content"]`
 
-### Extract JSON Fields
+### 提取 JSON 字段**
 
-**Simple field list:**
+**简单的字段列表：**
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -H "Authorization: Bearer $DOCSTRANGE_API_KEY" \
@@ -109,7 +109,7 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -F "include_metadata=confidence_score"
 ```
 
-**With JSON schema:**
+**使用 JSON 架构：**
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -H "Authorization: Bearer $DOCSTRANGE_API_KEY" \
@@ -118,7 +118,7 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -F 'json_options={"type": "object", "properties": {"invoice_number": {"type": "string"}, "total_amount": {"type": "number"}}}'
 ```
 
-Response with confidence scores:
+**包含置信度评分的响应：**
 ```json
 {
   "result": {
@@ -138,7 +138,7 @@ Response with confidence scores:
 }
 ```
 
-### Extract Tables to CSV
+### 将表格提取到 CSV 格式
 
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
@@ -148,11 +148,11 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/sync" \
   -F "csv_options=table"
 ```
 
-### Async Extraction (Large Documents)
+### 异步提取（大型文档）**
 
-For documents >5 pages, use async and poll:
+对于超过 5 页的文档，请使用异步提取方式：
 
-**Queue the document:**
+**排队处理文档：**
 ```bash
 curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/async" \
   -H "Authorization: Bearer $DOCSTRANGE_API_KEY" \
@@ -162,7 +162,7 @@ curl -X POST "https://extraction-api.nanonets.com/api/v1/extract/async" \
 # Returns: {"record_id": "12345", "status": "processing"}
 ```
 
-**Poll for results:**
+**获取结果：**
 ```bash
 curl -X GET "https://extraction-api.nanonets.com/api/v1/extract/results/12345" \
   -H "Authorization: Bearer $DOCSTRANGE_API_KEY"
@@ -170,72 +170,70 @@ curl -X GET "https://extraction-api.nanonets.com/api/v1/extract/results/12345" \
 # Returns: {"status": "completed", "result": {...}}
 ```
 
-## Advanced Features
+## 高级功能
 
-### Bounding Boxes
-Get element coordinates for layout analysis:
+### 获取元素坐标（用于布局分析）  
 ```bash
 -F "include_metadata=bounding_boxes"
 ```
 
-### Hierarchy Output
-Extract document structure (sections, tables, key-value pairs):
+### 提取文档结构（章节、表格、键值对）  
 ```bash
 -F "json_options=hierarchy_output"
 ```
 
-### Financial Documents Mode
-Enhanced table and number formatting:
+### 金融文档模式  
+**增强表格和数字格式化：**  
 ```bash
 -F "markdown_options=financial-docs"
 ```
 
-### Custom Instructions
-Guide extraction with prompts:
+### 自定义指令  
+**通过提示指导提取过程：**  
 ```bash
 -F "custom_instructions=Focus on financial data. Ignore headers."
 -F "prompt_mode=append"
 ```
 
-### Multiple Formats
-Request multiple formats in one call:
+### 多种格式  
+**一次请求多种格式：**  
 ```bash
 -F "output_format=markdown,json"
 ```
 
-## When to Use
+## 适用场景
 
-### Use DocStrange For:
-- Invoice and receipt processing
-- Contract text extraction
-- Bank statement parsing
-- Form digitization
-- Image OCR (scanned documents)
+### 适用于以下场景：  
+- 发票和收据处理  
+- 合同文本提取  
+- 银行对账单解析  
+- 表单数字化  
+- 图像 OCR（扫描文档）  
 
-### Don't Use For:
-- Documents >5 pages with sync (use async)
-- Video/audio transcription
-- Non-document images
+### 不适用场景：  
+- 超过 5 页的文档（建议使用异步提取）  
+- 视频/音频转录  
+- 非文档类型的图片  
 
-## Best Practices
+## 最佳实践
 
-| Document Size | Endpoint | Notes |
+| 文档大小 | API 端点 | 备注 |
 |---------------|----------|-------|
-| <=5 pages | `/extract/sync` | Immediate response |
-| >5 pages | `/extract/async` | Poll for results |
+| ≤5 页 | `/extract/sync` | 即时响应 |
+| >5 页 | `/extract/async` | 异步获取结果 |
 
-**JSON Extraction:**
-- Field list: `["field1", "field2"]` — quick extractions
-- JSON schema: `{"type": "object", ...}` — strict typing, nested data
+**JSON 提取：**  
+- 字段列表：`["field1", "field2"]` — 快速提取  
+- JSON 架构：`{"type": "object", ...}` — 严格的数据类型定义和嵌套结构  
 
-**Confidence Scores:**
-- Add `include_metadata=confidence_score`
-- Scores are 0-100 per field
-- Review fields <80 manually
+**置信度评分：**  
+- 使用 `include_metadata=confidence_score` 参数  
+- 每个字段的评分范围为 0-100  
+- 对评分低于 80 分的字段需手动审核  
 
-## Schema Templates
+## 架构模板
 
-### Invoice
+### 发票  
 ```json
 {
   "type": "object",
@@ -259,7 +257,7 @@ Request multiple formats in one call:
 }
 ```
 
-### Receipt
+### 收据  
 ```json
 {
   "type": "object",
@@ -275,72 +273,71 @@ Request multiple formats in one call:
 }
 ```
 
-## Security & Privacy
+## 安全与隐私
 
-### Data Handling
+### 数据处理
 
-**Important:** Documents uploaded to DocStrange are transmitted to `https://extraction-api.nanonets.com` and processed on external servers.
+**重要提示：** 上传到 DocStrange 的文档会被传输到 `https://extraction-api.nanonets.com` 并在外部服务器上进行处理。**
 
-**Before uploading sensitive documents:**
-- Review Nanonets' privacy policy and data retention policies: https://docstrange.nanonets.com/docs
-- Verify encryption in transit (HTTPS) and at rest
-- Confirm data deletion/retention timelines
-- Test with non-sensitive sample documents first
+**在上传敏感文档之前：**  
+- 查看 Nanonets 的隐私政策和数据保留政策：https://docstrange.nanonets.com/docs  
+- 确认数据在传输过程中（使用 HTTPS）和存储时都经过加密  
+- 确认数据删除/保留的时间安排  
+- 先使用非敏感样本文档进行测试  
 
-**Best practices:**
-- Do not upload highly sensitive PII (SSNs, medical records, financial account numbers) until you've confirmed the service's security and compliance posture
-- Use API keys with limited permissions/scopes if available
-- Rotate API keys regularly (every 90 days recommended)
-- Monitor API usage logs for unauthorized access
-- Never log or commit API keys to repositories or examples
+**最佳实践：**  
+- 在确认服务的安全性和合规性之前，切勿上传高度敏感的个人信息（如 SSN、医疗记录、财务账户号码）  
+- 如果可能，使用权限和范围有限的 API 密钥  
+- 定期更换 API 密钥（建议每 90 天更换一次）  
+- 监控 API 使用日志，防止未经授权的访问  
+- 绝不要将 API 密钥记录或提交到代码库或示例文件中  
 
-### File Size Limits
+### 文件大小限制  
 
-- **Sync endpoint:** Recommended for documents ≤5 pages
-- **Async endpoint:** Use for documents >5 pages to avoid timeouts
-- **Large files:** Consider using `file_url` with publicly accessible URLs instead of uploading large files directly
+- **同步端点：** 适用于 ≤5 页的文档  
+- **异步端点：** 适用于超过 5 页的文档，以避免超时  
+- **大文件：** 考虑使用公开可访问的 URL（`file_url`）而不是直接上传大文件  
 
-### Operational Safeguards
+### 操作安全措施  
 
-- Always use environment variables or secure secret stores for API keys
-- Never include real API keys in code examples or documentation
-- Use placeholder values like `"your_api_key_here"` in examples
-- Set appropriate file permissions on configuration files (600 for JSON configs)
-- Enable API key rotation and monitor usage through the dashboard
+- 始终使用环境变量或安全的秘密存储机制来管理 API 密钥  
+- 绝不要在代码示例或文档中包含真实的 API 密钥  
+- 在示例中使用占位符值（如 `"your_api_key_here"`）  
+- 为配置文件设置适当的文件权限（JSON 配置文件权限设置为 600）  
+- 启用 API 密钥的定期更换功能，并通过仪表板监控使用情况  
 
-## Troubleshooting
+## 故障排除
 
-**400 Bad Request:**
-- Provide exactly one input: `file`, `file_url`, or `file_base64`
-- Verify API key is valid
+**400 错误：**  
+- 请提供以下其中一项输入：`file`、`file_url` 或 `file_base64`  
+- 确保 API 密钥有效  
 
-**Sync Timeout:**
-- Use async for documents >5 pages
-- Poll `/extract/results/{record_id}`
+**同步超时：**  
+- 对于超过 5 页的文档，请使用异步提取方式  
+- 使用 `/extract/results/{record_id}` 来获取结果  
 
-**Missing Confidence Scores:**
-- Requires `json_options` (field list or schema)
-- Add `include_metadata=confidence_score`
+**缺少置信度评分：**  
+- 需要设置 `json_options` 参数（字段列表或 JSON 架构）  
+- 添加 `include_metadata=confidence_score` 参数  
 
-**Authentication Errors:**
-- Verify `DOCSTRANGE_API_KEY` environment variable is set
-- Check API key hasn't expired or been revoked
-- Ensure no extra whitespace in API key value
+**认证错误：**  
+- 确保设置了 `DOCSTRANGE_API_KEY` 环境变量  
+- 检查 API 密钥是否过期或已被吊销  
+- 确保 API 密钥的值中没有多余的空白字符  
 
-## Pre-Publish Security Checklist
+## 发布前的安全检查清单
 
-Before publishing or updating this skill, verify:
+在发布或更新此技能之前，请确认以下内容：  
+- [ ] `package.json` 文件中声明了 `requiredEnv` 和 `primaryEnv`，并指定了 `DOCSTRANGE_API_KEY`  
+- [ ] `package.json` 文件中的 `endpoints` 数组中列出了所有 API 端点  
+- **所有代码示例** 都使用了占位符值（如 `"your_api_key_here"`，而非真实密钥  
+- **SKILL.md` 和 `package.json` 中没有包含任何 API 密钥或敏感信息  
+- **安全与隐私部分** 包含了数据处理的注意事项和风险说明  
+- **配置示例** 中包含了关于明文存储的安全警告  
+- **配置文件** 中提供了文件权限设置的相关指导  
 
-- [ ] `package.json` declares `requiredEnv` and `primaryEnv` for `DOCSTRANGE_API_KEY`
-- [ ] `package.json` lists API endpoints in `endpoints` array
-- [ ] All code examples use placeholder values (`"your_api_key_here"`) not real keys
-- [ ] No API keys or secrets are embedded in `SKILL.md` or `package.json`
-- [ ] Security & Privacy section documents data handling and risks
-- [ ] Configuration examples include security warnings for plaintext storage
-- [ ] File permission guidance is included for config files
+## 参考资料  
 
-## References
-
-- **API Docs:** https://docstrange.nanonets.com/docs
-- **Get API Key:** https://docstrange.nanonets.com/app
-- **Privacy Policy:** https://docstrange.nanonets.com/docs (check for privacy/data policy links)
+- **API 文档：** https://docstrange.nanonets.com/docs  
+- **获取 API 密钥：** https://docstrange.nanonets.com/app  
+- **隐私政策：** https://docstrange.nanonets.com/docs （查看隐私/数据政策链接）

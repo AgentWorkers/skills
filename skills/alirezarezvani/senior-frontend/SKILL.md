@@ -1,62 +1,62 @@
 ---
 name: senior-frontend
-description: Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications. Use when building React components, optimizing Next.js performance, analyzing bundle sizes, scaffolding frontend projects, implementing accessibility, or reviewing frontend code quality.
+description: 前端开发技能，涵盖 React、Next.js、TypeScript 和 Tailwind CSS 应用程序。这些技能可用于构建 React 组件、优化 Next.js 的性能、分析代码包的大小、搭建前端项目框架、实现可访问性功能，以及审查前端代码的质量。
 ---
 
-# Senior Frontend
+# 高级前端开发
 
-Frontend development patterns, performance optimization, and automation tools for React/Next.js applications.
+针对 React/Next.js 应用程序的前端开发模式、性能优化以及自动化工具。
 
-## Table of Contents
+## 目录
 
-- [Project Scaffolding](#project-scaffolding)
-- [Component Generation](#component-generation)
-- [Bundle Analysis](#bundle-analysis)
-- [React Patterns](#react-patterns)
-- [Next.js Optimization](#nextjs-optimization)
-- [Accessibility and Testing](#accessibility-and-testing)
+- [项目搭建](#project-scaffolding)
+- [组件生成](#component-generation)
+- [打包分析](#bundle-analysis)
+- [React 开发模式](#react-patterns)
+- [Next.js 优化](#nextjs-optimization)
+- [可访问性与测试](#accessibility-and-testing)
 
 ---
 
-## Project Scaffolding
+## 项目搭建
 
-Generate a new Next.js or React project with TypeScript, Tailwind CSS, and best practice configurations.
+使用 TypeScript、Tailwind CSS 以及最佳实践配置来创建一个新的 Next.js 或 React 项目。
 
-### Workflow: Create New Frontend Project
+### 工作流程：创建新的前端项目
 
-1. Run the scaffolder with your project name and template:
+1. 使用项目名称和模板运行项目搭建工具：
    ```bash
    python scripts/frontend_scaffolder.py my-app --template nextjs
    ```
 
-2. Add optional features (auth, api, forms, testing, storybook):
+2. 添加可选功能（身份验证、API、表单、测试、Storybook）：
    ```bash
    python scripts/frontend_scaffolder.py dashboard --template nextjs --features auth,api
    ```
 
-3. Navigate to the project and install dependencies:
+3. 进入项目并安装依赖项：
    ```bash
    cd my-app && npm install
    ```
 
-4. Start the development server:
+4. 启动开发服务器：
    ```bash
    npm run dev
    ```
 
-### Scaffolder Options
+### 项目搭建选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--template nextjs` | Next.js 14+ with App Router and Server Components |
-| `--template react` | React + Vite with TypeScript |
-| `--features auth` | Add NextAuth.js authentication |
-| `--features api` | Add React Query + API client |
-| `--features forms` | Add React Hook Form + Zod validation |
-| `--features testing` | Add Vitest + Testing Library |
-| `--dry-run` | Preview files without creating them |
+| `--template nextjs` | 使用 Next.js 14+ 版本，包含 App Router 和服务器组件 |
+| `--template react` | 使用 React 和 Vite，配合 TypeScript |
+| `--features auth` | 添加 NextAuth.js 身份验证功能 |
+| `--features api` | 添加 React Query 和 API 客户端 |
+| `--features forms` | 添加 React Hook Form 和 Zod 验证功能 |
+| `--features testing` | 添加 Vitest 和测试库 |
+| `--dry-run` | 预览文件，不实际创建文件 |
 
-### Generated Structure (Next.js)
+### 生成的项目结构（Next.js）
 
 ```
 my-app/
@@ -78,45 +78,45 @@ my-app/
 
 ---
 
-## Component Generation
+## 组件生成
 
-Generate React components with TypeScript, tests, and Storybook stories.
+使用 TypeScript 生成 React 组件，并自动生成测试用例和 Storybook 文档。
 
-### Workflow: Create a New Component
+### 工作流程：创建新组件
 
-1. Generate a client component:
+1. 生成客户端组件：
    ```bash
    python scripts/component_generator.py Button --dir src/components/ui
    ```
 
-2. Generate a server component:
+2. 生成服务器端组件：
    ```bash
    python scripts/component_generator.py ProductCard --type server
    ```
 
-3. Generate with test and story files:
+3. 生成包含测试用例和 Storybook 文档的组件：
    ```bash
    python scripts/component_generator.py UserProfile --with-test --with-story
    ```
 
-4. Generate a custom hook:
+4. 生成自定义 React 钩子：
    ```bash
    python scripts/component_generator.py FormValidation --type hook
    ```
 
-### Generator Options
+### 组件生成选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--type client` | Client component with 'use client' (default) |
-| `--type server` | Async server component |
-| `--type hook` | Custom React hook |
-| `--with-test` | Include test file |
-| `--with-story` | Include Storybook story |
-| `--flat` | Create in output dir without subdirectory |
-| `--dry-run` | Preview without creating files |
+| `--type client` | 客户端组件（默认选项） |
+| `--type server` | 异步服务器端组件 |
+| `--type hook` | 自定义 React 钩子 |
+| `--with-test` | 包含测试文件 |
+| `--with-story` | 包含 Storybook 文档 |
+| `--flat` | 将组件直接生成在输出目录中，不创建子目录 |
+| `--dry-run` | 预览组件，不实际创建文件 |
 
-### Generated Component Example
+### 生成的组件示例
 
 ```tsx
 'use client';
@@ -140,18 +140,18 @@ export function Button({ className, children }: ButtonProps) {
 
 ---
 
-## Bundle Analysis
+## 打包分析
 
-Analyze package.json and project structure for bundle optimization opportunities.
+分析 `package.json` 和项目结构，寻找打包优化的机会。
 
-### Workflow: Optimize Bundle Size
+### 工作流程：优化打包大小
 
-1. Run the analyzer on your project:
+1. 在项目中运行打包分析工具：
    ```bash
    python scripts/bundle_analyzer.py /path/to/project
    ```
 
-2. Review the health score and issues:
+2. 查看分析结果和存在的问题：
    ```
    Bundle Health Score: 75/100 (C)
 
@@ -163,44 +163,44 @@ Analyze package.json and project structure for bundle optimization opportunities
        Alternative: lodash-es with tree-shaking
    ```
 
-3. Apply the recommended fixes by replacing heavy dependencies.
+3. 根据分析结果替换占用大量空间的依赖项。
 
-4. Re-run with verbose mode to check import patterns:
+4. 以详细模式重新运行工具，检查导入模式：
    ```bash
    python scripts/bundle_analyzer.py . --verbose
    ```
 
-### Bundle Score Interpretation
+### 打包评分解读
 
-| Score | Grade | Action |
+| 评分 | 等级 | 处理建议 |
 |-------|-------|--------|
-| 90-100 | A | Bundle is well-optimized |
-| 80-89 | B | Minor optimizations available |
-| 70-79 | C | Replace heavy dependencies |
-| 60-69 | D | Multiple issues need attention |
-| 0-59 | F | Critical bundle size problems |
+| 90-100 | A | 打包效果非常好 |
+| 80-89 | B | 需要一些小优化 |
+| 70-79 | C | 需要替换占用大量空间的依赖项 |
+| 60-69 | D | 存在多个问题需要解决 |
+| 0-59 | F | 打包大小存在严重问题 |
 
-### Heavy Dependencies Detected
+### 常见的高占用空间依赖项
 
-The analyzer identifies these common heavy packages:
+分析工具会识别以下常见的占用大量空间的依赖项：
 
-| Package | Size | Alternative |
+| 依赖项 | 大小 | 替代方案 |
 |---------|------|-------------|
-| moment | 290KB | date-fns (12KB) or dayjs (2KB) |
-| lodash | 71KB | lodash-es with tree-shaking |
-| axios | 14KB | Native fetch or ky (3KB) |
-| jquery | 87KB | Native DOM APIs |
-| @mui/material | Large | shadcn/ui or Radix UI |
+| moment | 290KB | 可以使用 date-fns（12KB）或 dayjs（2KB） |
+| lodash | 71KB | 可以使用 lodash-es 并结合 tree-shaking 技术进行优化 |
+| axios | 14KB | 可以使用原生的 fetch 或 ky（3KB） |
+| jquery | 87KB | 可以使用原生的 DOM API |
+| @mui/material | 体积较大 | 可以使用 shadcn/ui 或 Radix UI 替代 |
 
 ---
 
-## React Patterns
+## React 开发模式
 
-Reference: `references/react_patterns.md`
+参考文档：`references/react_patterns.md`
 
-### Compound Components
+### 复合组件
 
-Share state between related components:
+在相关组件之间共享状态：
 
 ```tsx
 const Tabs = ({ children }) => {
@@ -226,9 +226,9 @@ Tabs.Panel = TabPanel;
 </Tabs>
 ```
 
-### Custom Hooks
+### 自定义钩子
 
-Extract reusable logic:
+提取可重用的逻辑：
 
 ```tsx
 function useDebounce<T>(value: T, delay = 500): T {
@@ -246,9 +246,9 @@ function useDebounce<T>(value: T, delay = 500): T {
 const debouncedSearch = useDebounce(searchTerm, 300);
 ```
 
-### Render Props
+### 渲染属性
 
-Share rendering logic:
+共享渲染逻辑：
 
 ```tsx
 function DataFetcher({ url, render }) {
@@ -273,17 +273,17 @@ function DataFetcher({ url, render }) {
 
 ---
 
-## Next.js Optimization
+## Next.js 优化
 
-Reference: `references/nextjs_optimization_guide.md`
+参考文档：`references/nextjs_optimization_guide.md`
 
-### Server vs Client Components
+### 服务器组件与客户端组件的使用
 
-Use Server Components by default. Add 'use client' only when you need:
-- Event handlers (onClick, onChange)
-- State (useState, useReducer)
-- Effects (useEffect)
-- Browser APIs
+默认情况下使用服务器组件。仅在以下情况下使用客户端组件：
+- 事件处理（onClick、onChange）
+- 状态管理（useState、useReducer）
+- 效果（useEffect）
+- 浏览器 API
 
 ```tsx
 // Server Component (default) - no 'use client'
@@ -306,7 +306,7 @@ function AddToCartButton({ productId }) {
 }
 ```
 
-### Image Optimization
+### 图像优化
 
 ```tsx
 import Image from 'next/image';
@@ -332,7 +332,7 @@ import Image from 'next/image';
 </div>
 ```
 
-### Data Fetching Patterns
+### 数据获取策略
 
 ```tsx
 // Parallel fetching
@@ -359,17 +359,17 @@ async function ProductPage({ params }) {
 
 ---
 
-## Accessibility and Testing
+## 可访问性与测试
 
-Reference: `references/frontend_best_practices.md`
+参考文档：`references/frontend_best_practices.md`
 
-### Accessibility Checklist
+### 可访问性检查清单
 
-1. **Semantic HTML**: Use proper elements (`<button>`, `<nav>`, `<main>`)
-2. **Keyboard Navigation**: All interactive elements focusable
-3. **ARIA Labels**: Provide labels for icons and complex widgets
-4. **Color Contrast**: Minimum 4.5:1 for normal text
-5. **Focus Indicators**: Visible focus states
+1. **语义化 HTML**：使用正确的元素（如 `<button>`、`<nav>`、`<main>`）
+2. **键盘导航**：所有交互式元素都应可聚焦
+3. **ARIA 标签**：为图标和复杂控件提供标签
+4. **颜色对比度**：正常文本的对比度至少为 4.5:1
+5. **焦点指示器**：确保焦点状态可见
 
 ```tsx
 // Accessible button
@@ -388,7 +388,7 @@ Reference: `references/frontend_best_practices.md`
 </a>
 ```
 
-### Testing Strategy
+### 测试策略
 
 ```tsx
 // Component test with React Testing Library
@@ -414,9 +414,9 @@ test('dialog is accessible', async () => {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Common Next.js Config
+### 常见的 Next.js 配置选项
 
 ```js
 // next.config.js
@@ -431,7 +431,7 @@ const nextConfig = {
 };
 ```
 
-### Tailwind CSS Utilities
+### Tailwind CSS 实用工具
 
 ```tsx
 // Conditional classes with cn()
@@ -444,7 +444,7 @@ import { cn } from '@/lib/utils';
 )} />
 ```
 
-### TypeScript Patterns
+### TypeScript 开发模式
 
 ```tsx
 // Props with children
@@ -466,8 +466,8 @@ function List<T>({ items, renderItem }: ListProps<T>) {
 
 ---
 
-## Resources
+## 资源
 
-- React Patterns: `references/react_patterns.md`
-- Next.js Optimization: `references/nextjs_optimization_guide.md`
-- Best Practices: `references/frontend_best_practices.md`
+- React 开发模式参考：`references/react_patterns.md`
+- Next.js 优化参考：`references/nextjs_optimization_guide.md`
+- 最佳实践参考：`references/frontend_best_practices.md`

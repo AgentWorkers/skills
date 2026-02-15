@@ -1,56 +1,40 @@
-# Browser Automation Stealth
+# 浏览器自动化隐蔽性工具
 
-**Version:** 1.0.0  
-**Author:** Midas Skills  
-**License:** MIT
+**版本：** 1.0.0  
+**作者：** Midas Skills  
+**许可证：** MIT  
 
-## Description
-Anti-bot evasion Playwright wrapper. Stealth mode, proxy rotation, captcha handling, fingerprint randomization.
+## 产品描述  
+这是一个用于增强浏览器自动化脚本（Playwright）隐蔽性的工具包。支持隐蔽模式、代理轮换、验证码处理以及用户指纹随机化等功能。  
 
-## Value Proposition
-Anti-bot evasion Playwright wrapper. Evade detection, manage cookies, rotate headers, handle captchas. Silent, headless, undetectable.
+## 产品优势  
+- 防止被机器人检测到的机制（包括用户指纹随机化）  
+- 管理浏览器cookies  
+- 自动切换请求头信息（支持多种用户代理）  
+- 支持SOCKS5和HTTP代理  
+- 提供cookies管理功能  
+- 兼容验证码识别系统（可集成使用）  
+- 具有速率限制检测功能  
+- 支持截图和PDF生成  
+- 支持表单自动填写  
+- 保证cookies和session数据的持久性  
 
-## Category
-browser-automation
+## 应用场景  
+- 大规模网页爬取（不被检测到）  
+- 在受保护网站上进行自动化测试  
+- 市场调研数据收集  
+- 竞争情报收集  
+- 合规的自动化表单提交  
+- 无需被检测到的截图生成  
 
-## Tags
-stealth, anti-detection, playwright, scraping, automation
-
-## Skill Type
-automation
-
-## Pricing
-- **Free:** $0
-- **Pro:** $49.99
-
-## Key Features
-- ✅ Playwright wrapper with stealth defaults
-- ✅ Anti-detection mechanisms (fingerprint randomization)
-- ✅ Header rotation (100+ user-agents)
-- ✅ Proxy support (SOCKS5, HTTP)
-- ✅ Cookie jar management
-- ✅ Captcha bypass (integration-ready)
-- ✅ Rate limiting aware
-- ✅ Screenshot/PDF generation
-- ✅ Form automation
-- ✅ Cookie/session persistence
-
-## Use Cases
-- Web scraping at scale (undetected)
-- Automated testing on protected sites
-- Data collection for market research
-- Competitive intelligence gathering
-- Automated form submission (compliant)
-- Screenshot automation without detection
-
-## Installation
+## 安装说明  
 ```bash
 npm install browser-automation-stealth
 # or
 pip install browser-automation-stealth
-```
+```  
 
-## Quick Start
+## 快速入门指南  
 ```javascript
 const { StealthBrowser } = require('browser-automation-stealth');
 
@@ -63,11 +47,11 @@ const page = await browser.newPage();
 await page.goto('https://example.com');
 await page.screenshot({ path: 'example.png' });
 await browser.close();
-```
+```  
 
-## Repository
-https://github.com/midas-skills/browser-automation-stealth
+## 项目仓库  
+https://github.com/midas-skills/browser-automation-stealth  
 
-## Support
-📧 support@midas-skills.com  
-🔗 Docs: https://docs.midas-skills.com/browser-automation-stealth
+## 技术支持  
+📧 邮箱：support@midas-skills.com  
+🔗 文档：https://docs.midas-skills.com/browser-automation-stealth

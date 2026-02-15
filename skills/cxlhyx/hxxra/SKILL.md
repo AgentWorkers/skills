@@ -1,35 +1,35 @@
 ---
 name: hxxra
-description: A Research Assistant workflow skill with four core commands: search papers, download PDFs, analyze content, and save to Zotero. Entry point is a Python script located at scripts/hxxra.py and invoked via stdin/stdout (OpenClaw integration). The search uses crawlers for Google Scholar and arXiv APIs; download uses Python requests or arXiv API; analyze uses an LLM; save uses Zotero API.
+description: 这是一项研究助理的工作流程技能，包含四个核心命令：搜索论文、下载PDF文件、分析内容以及将结果保存到Zotero数据库中。整个流程的入口点是一个名为`scripts/hxxra.py`的Python脚本，该脚本通过标准输入（stdin）和标准输出（stdout）进行调用（实现了与OpenClaw系统的集成）。搜索功能利用了Google Scholar和arXiv的API；下载操作通过`requests`库或arXiv的API来实现；内容分析则借助大型语言模型（LLM）来完成；最后，数据保存过程通过Zotero的API完成。
 ---
 
 # hxxra
 
-This skill is a Research Assistant that helps users search, download, analyze, and save research papers.
+这是一个研究辅助工具，可帮助用户搜索、下载、分析并保存研究论文。
 
-## Core Commands
+## 核心命令
 
-### 1. **hxxra search** - Search for research papers
+### 1. **hxxra search** - 搜索研究论文
 
-**Dependencies**: `pip install scholarly`
+**依赖库**: `pip install scholarly`
 
-**Purpose**: Search for papers using Google Scholar and arXiv APIs
+**功能**: 使用 Google Scholar 和 arXiv API 进行论文搜索
 
-**Parameters**:
+**参数**:
 
-- `-q, --query <string>` (Required): Search keywords
-- `-s, --source <string>` (Optional): Data source: `arxiv` (default), `scholar`
-- `-l, --limit <number>` (Optional): Number of results (default: 10)
-- `-o, --output <path>` (Optional): JSON output file (default: `search_results.json`)
+- `-q, --query <string>` (必选): 搜索关键词
+- `-s, --source <string>` (可选): 数据来源：`arxiv`（默认）或 `scholar`
+- `-l, --limit <number>` (可选): 结果数量（默认：10）
+- `-o, --output <path>` (可选): JSON 输出文件（默认：`search_results.json`）
 
-**Input Examples**:
+**输入示例**:
 
 ```json
 {"command": "search", "query": "neural radiance fields", "source": "arxiv", "limit": 10, "output": "results.json"} | python scripts/hxxra.py
 {"command": "search", "query": "transformer architecture", "source": "scholar", "limit": 15} | python scripts/hxxra.py
 ```
 
-**Output Structure**:
+**输出结构**:
 
 ```json
 {
@@ -57,24 +57,24 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 
 ------
 
-### 2. **hxxra download** - Download PDF files
+### 2. **hxxra download** - 下载 PDF 文件
 
-**Purpose**: Download PDFs for specified papers
+**功能**: 下载指定论文的 PDF 文件
 
-**Parameters**:
+**参数**:
 
-- `-f, --from-file <path>` (Required): JSON file with search results
-- `-i, --ids <list>` (Optional): Paper IDs (comma-separated or range)
-- `-d, --dir <path>` (Optional): Download directory (default: `./papers`)
+- `-f, --from-file <path>` (必选): 包含搜索结果的 JSON 文件
+- `-i, --ids <list>` (可选): 论文 ID（用逗号分隔或指定范围）
+- `-d, --dir <path>` (可选): 下载目录（默认：`./papers`）
 
-**Input Examples**:
+**输入示例**:
 
 ```json
 {"command": "download", "from-file": "results.json", "ids": [1, 3, 5], "dir": "./downloads"} | python scripts/hxxra.py
 {"command": "download", "from-file": "results.json", "dir": "./downloads"} | python scripts/hxxra.py
 ```
 
-**Output Structure**:
+**输出结构**:
 
 ```json
 {
@@ -99,27 +99,28 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 
 ------
 
-### 3. **hxxra analyze** - Analyze PDF content
+### 3. **hxxra analyze** - 分析 PDF 内容
 
-**Dependencies**: `pip install pymupdf pdfplumber openai`
+**依赖库**: `pip install pymupdf pdfplumber openai`
 
-**Purpose**: Analyze paper content using LLM
-**Parameters**:
+**功能**: 使用大型语言模型（LLM）分析论文内容
 
-- `-p, --pdf <path>` (Optional*): Single PDF file to analyze
-- `-d, --directory <path>` (Optional*): Directory with multiple PDFs
-- `-o, --output <path>` (Optional): Output directory (default: `./analysis`)
+**参数**:
 
-** Note: Either `--pdf` or `--directory` must be provided, but not both*
+- `-p, --pdf <path>` (可选): 单个 PDF 文件进行分析
+- `-d, --directory <path>` (可选): 包含多个 PDF 文件的目录
+- `-o, --output <path>` (可选): 输出目录（默认：`./analysis`）
 
-**Input Examples**:
+**注意**: 必须提供 `--pdf` 或 `--directory` 中的一个参数，但不能同时提供两个
+
+**输入示例**:
 
 ```json
 {"command": "analyze", "pdf": "paper.pdf", "output": "analysis.json"} | python scripts/hxxra.py
 {"command": "analyze", "directory": "./papers/"} | python scripts/hxxra.py
 ```
 
-**Output Structure**:
+**输出结构**:
 
 ```json
 {
@@ -155,24 +156,24 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 
 ------
 
-### 4. **hxxra save** - Save to Zotero
+### 4. **hxxra save** - 将论文保存到 Zotero
 
-**Purpose**: Save papers to Zotero collection
+**功能**: 将论文保存到 Zotero 收藏夹中
 
-**Parameters**:
+**参数**:
 
-- `-f, --from-file <path>` (Required): JSON file with paper data
-- `-i, --ids <list>` (Optional): Paper IDs to save
-- `-c, --collection <string>` (Required): Zotero collection name
+- `-f, --from-file <path>` (必选): 包含论文数据的 JSON 文件
+- `-i, --ids <list>` (可选): 要保存的论文 ID
+- `-c, --collection <string>` (必选): Zotero 收藏夹名称
 
-**Input Examples**:
+**输入示例**:
 
 ```json
 {"command": "save", "from-file": "analysis.json", "ids": [1, 2, 3], "collection": "AI Research"} | python scripts/hxxra.py
 {"command": "save", "from-file": "analysis.json", "collection": "My Collection"} | python scripts/hxxra.py
 ```
 
-**Output Structure**:
+**输出结构**:
 
 ```json
 {
@@ -197,9 +198,9 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 
 ------
 
-## Workflow Examples
+## 工作流程示例
 
-### Complete Workflow
+### 完整工作流程
 
 ```bash
 # 1. Search for papers
@@ -215,7 +216,7 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 {"command": "save", "from-file": "./analysis/", "collection": "GNN Papers"} | python scripts/hxxra.py
 ```
 
-### Single Command Examples
+### 单个命令示例
 
 ```bash
 # Search with scholar
@@ -231,15 +232,13 @@ This skill is a Research Assistant that helps users search, download, analyze, a
 {"command": "save", "from-file": "search_results.json", "ids": [1], "collection": "To Read"} | python scripts/hxxra.py
 ```
 
-## Configuration Requirements
+## 配置要求
 
-### API Credentials(config.json)
+### API 凭据（config.json）
 
-1. **arXiv API**: No key required for basic access
-
-2. **Google Scholar**: May require authentication for large queries
-
-3. **Zotero API**: Required credentials:
+1. **arXiv API**: 基本访问无需密钥
+2. **Google Scholar**: 大规模查询可能需要身份验证
+3. **Zotero API**: 需要以下凭据:
 
    ```json
    {
@@ -249,19 +248,19 @@ This skill is a Research Assistant that helps users search, download, analyze, a
    }
    ```
 
-4. **LLM API**: OpenAI or compatible API key for analysis
+4. **LLM API**: 使用 OpenAI 或兼容的 API 密钥进行分析
 
-## Notes
+## 注意事项
 
-- All commands are executed via stdin/stdout JSON communication
-- Error handling returns `{"ok": false, "error": "Error message"}`
-- Large operations support progress reporting via intermediate messages
-- Configuration is loaded from `config.json` or environment variables
-- Concurrent operations have configurable limits to avoid rate limiting
+- 所有命令均通过 stdin/stdout 进行 JSON 通信
+- 错误处理返回格式：`{"ok": false, "error": "错误信息"}`
+- 大规模操作支持通过中间消息报告进度
+- 配置信息从 `config.json` 或环境变量中加载
+- 并发操作有可配置的限制，以避免速率限制
 
-## Error Handling
+## 错误处理
 
-Each command returns standard error format:
+每个命令都会返回标准错误格式：
 
 ```json
 {
@@ -273,12 +272,12 @@ Each command returns standard error format:
 }
 ```
 
-## Development Status
+## 开发状态
 
-version: v1
-- ✅ Command structure defined
-- ✅ Parameter validation implemented
-- ✅ arXiv integration in progress
-- ✅ Google Scholar integration using scholarly library
-- ✅ Zotero API integration
-- ✅ LLM analysis pipeline using pymupdf pdfplumber and OpenAI API
+版本: v1
+- ✅ 命令结构已定义
+- ✅ 参数验证已实现
+- ✅ arXiv 集成正在进行中
+- ✅ 使用 scholarly 库集成 Google Scholar
+- ✅ 集成 Zotero API
+- ✅ 使用 pymupdf pdfplumber 和 OpenAI API 实现了 LLM 分析流程

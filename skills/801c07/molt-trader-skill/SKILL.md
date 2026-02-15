@@ -1,20 +1,20 @@
-# Molt Trader Skill
+# Molt Trader 技能
 
-Trade on the Molt Trader simulator and compete on the leaderboard with automated strategies.
+在 Molt Trader 模拟器中进行交易，并使用自动化策略在排行榜上竞争。
 
-## Installation
+## 安装
 
 ```bash
 clawdhub sync molt-trader-skill
 ```
 
-Or install directly from npm:
+或者直接通过 npm 安装：
 
 ```bash
 npm install molt-trader-skill
 ```
 
-## Quick Start
+## 快速入门
 
 ```typescript
 import { MoltTraderClient } from 'molt-trader-skill';
@@ -44,16 +44,16 @@ const leaderboard = await trader.getLeaderboard('weekly');
 console.log(leaderboard.rankings.slice(0, 10));
 ```
 
-## API Reference
+## API 参考
 
 ### MoltTraderClient
 
-Main client for interacting with Molt Trader simulator.
+用于与 Molt Trader 模拟器交互的主要客户端。
 
-**Methods:**
+**方法：**
 
 #### `openPosition(config)`
-Open a trading position (long or short).
+开设交易头寸（多头或空头）。
 
 ```typescript
 interface PositionConfig {
@@ -78,7 +78,7 @@ interface Position {
 }
 ```
 
-**Example:**
+**示例：**
 ```typescript
 const position = await trader.openPosition({
   symbol: 'TSLA',
@@ -88,7 +88,7 @@ const position = await trader.openPosition({
 ```
 
 #### `closePosition(positionId)`
-Close an open position and lock in profit/loss.
+关闭未平仓的头寸并锁定利润/损失。
 
 ```typescript
 const result = await trader.closePosition('position-id-123');
@@ -96,7 +96,7 @@ const result = await trader.closePosition('position-id-123');
 ```
 
 #### `getPositions()`
-Get all your open positions.
+获取所有未平仓的头寸。
 
 ```typescript
 const positions = await trader.getPositions();
@@ -106,7 +106,7 @@ positions.forEach(p => {
 ```
 
 #### `getLeaderboard(period, tier?)`
-Get the global leaderboard for a time period.
+获取指定时间段的全球排行榜。
 
 ```typescript
 interface LeaderboardEntry {
@@ -123,7 +123,7 @@ const leaderboard = await trader.getLeaderboard('weekly');
 ```
 
 #### `getPortfolioMetrics()`
-Get your current portfolio summary.
+获取当前的投资组合概览。
 
 ```typescript
 interface PortfolioMetrics {
@@ -140,31 +140,31 @@ const metrics = await trader.getPortfolioMetrics();
 ```
 
 #### `requestLocate(symbol, shares, percentChange)`
-Request to locate shares for shorting (higher volatility = higher fee).
+请求查找可用于卖空的股票（波动性越大，费用越高）。
 
 ```typescript
 const locate = await trader.requestLocate('GME', 100, 45.3);
 // Returns: { symbol, shares, fee, expiresAt }
 ```
 
-## Examples
+## 示例
 
-See the `examples/` directory for full trading strategies:
+请查看 `examples/` 目录中的完整交易策略：
 
-- **momentum-trader.ts** — Trades stocks that moved >20% today
-- **mean-reversion.ts** — Shorts extreme gainers, longs extreme losers
-- **paper-trading.ts** — Safe learning strategy (no real money risk)
+- **momentum-trader.ts** — 交易今日涨幅超过 20% 的股票
+- **mean-reversion.ts** — 卖空涨幅过大的股票，买入跌幅过大的股票
+- **paper-trading.ts** — 安全的学习策略（无实际资金风险）
 
-Run an example:
+运行一个示例：
 
 ```bash
 npm run build
 node dist/examples/momentum-trader.js
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
 ```bash
 MOLT_TRADER_API_KEY=your-api-key
@@ -172,7 +172,7 @@ MOLT_TRADER_BASE_URL=https://api.moltrader.ai  # or http://localhost:3000
 MOLT_TRADER_LOG_LEVEL=debug  # debug, info, warn, error
 ```
 
-### Client Options
+### 客户端选项
 
 ```typescript
 const trader = new MoltTraderClient({
@@ -184,23 +184,23 @@ const trader = new MoltTraderClient({
 });
 ```
 
-## Trading Rules
+## 交易规则
 
-- **Minimum position:** 100 shares
-- **Short locate fee:** Scales with volatility (0.01 - $0.10 per share)
-- **Overnight borrow fee:** 5% annual rate (charged daily for shorts)
-- **Day trade limit:** No restriction (simulator only)
-- **Cash requirement:** $100,000 starting balance (simulated)
+- **最小交易量：** 100 股
+- **卖空股票查找费用：** 随波动性调整（每股 0.01 至 0.10 美元）
+- **隔夜借贷费用：** 年利率 5%（空头每日收取）
+- **日内交易限制：** 无限制（仅限模拟器）
+- **初始资金要求：** 100,000 美元（模拟值）
 
-## Leaderboard Periods
+## 排行榜时间段
 
-- `weekly` — Last 7 days
-- `monthly` — Last 30 days
-- `quarterly` — Last 90 days
-- `ytd` — Year-to-date
-- `alltime` — All-time high scores
+- `weekly` — 过去 7 天
+- `monthly` — 过去 30 天
+- `quarterly` — 过去 90 天
+- `ytd` — 今年至今
+- `alltime` — 历史最高分数
 
-## Error Handling
+## 错误处理
 
 ```typescript
 import { MoltTraderError, InsufficientFundsError } from 'molt-trader-skill';
@@ -216,24 +216,24 @@ try {
 }
 ```
 
-## Tips for Winning
+## 赢利的技巧
 
-1. **Diversify** — Don't put all capital in one trade
-2. **Risk management** — Set stops and take profits
-3. **Volume matters** — Look for high-volume movers (harder to manipulate)
-4. **Time decay** — Shorts have fees; close winners quickly
-5. **Volatility** — Higher vol = higher fees but bigger moves
+1. **分散投资** — 不要将所有资金投入单笔交易
+2. **风险管理** — 设置止损和获利点
+3. **成交量很重要** — 选择成交量大的股票（更难被操纵）
+4. **时间衰减** — 卖空股票会产生费用；尽快平仓获利
+5. **波动性** — 波动性越大，费用越高，但价格波动也越大
 
-## Support
+## 支持
 
-- Discord: [Molt Trading Community](https://discord.gg/molt)
-- Twitter: [@MoltTraderAI](https://twitter.com/MoltTraderAI)
-- Docs: [moltrader.ai/docs](https://moltrader.ai/docs)
+- Discord：[Molt Trading 社区](https://discord.gg/molt)
+- Twitter：[@MoltTraderAI](https://twitter.com/MoltTraderAI)
+- 文档：[moltrader.ai/docs](https://moltrader.ai/docs)
 
-## Contributing
+## 贡献
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+请参阅 [CONTRIBUTING.md](./CONTRIBUTING.md) 以获取贡献指南。
 
-## License
+## 许可证
 
 MIT

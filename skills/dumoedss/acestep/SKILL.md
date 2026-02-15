@@ -1,27 +1,27 @@
 ---
 name: acestep
-description: Use ACE-Step API to generate music, edit songs, and remix music. Supports text-to-music, lyrics generation, audio continuation, and audio repainting. Use this skill when users mention generating music, creating songs, music production, remix, or audio continuation.
+description: 使用 ACE-Step API 生成音乐、编辑歌曲以及进行音乐混音。该 API 支持将文本转换为音乐、生成歌词、实现音频的连续播放以及修改音频内容。当用户提到“生成音乐”、“创作歌曲”、“音乐制作”、“混音”或“音频续写”等功能时，可以参考此技能。
 allowed-tools: Read, Write, Bash, Skill
 ---
 
-# ACE-Step Music Generation Skill
+# ACE-Step 音乐生成技能
 
-Use ACE-Step V1.5 API for music generation. Script: `scripts/acestep.sh` (requires curl + jq).
+使用 ACE-Step V1.5 API 进行音乐生成。脚本：`scripts/acestep.sh`（需要 curl 和 jq）。
 
-## Prerequisites - ACE-Step API Service
+## 先决条件 - ACE-Step API 服务
 
-**IMPORTANT**: This skill requires the ACE-Step API server to be running.
+**重要提示**：此技能需要 ACE-Step API 服务器处于运行状态。
 
-### Required Dependencies
+### 所需依赖项
 
-The `scripts/acestep.sh` script requires the following tools:
+`scripts/acestep.sh` 脚本需要以下工具：
 
-**1. curl** - For making HTTP requests to the API
-**2. jq** - For parsing JSON responses
+**1. curl** - 用于向 API 发送 HTTP 请求
+**2. jq** - 用于解析 JSON 响应
 
-#### Check Dependencies
+#### 检查依赖项
 
-Before using this skill, verify that the required tools are installed:
+在使用此技能之前，请确认已安装所需的工具：
 
 ```bash
 # Check curl
@@ -31,9 +31,9 @@ curl --version
 jq --version
 ```
 
-#### Installing jq
+#### 安装 jq
 
-If jq is not installed, the script will attempt to install it automatically. If automatic installation fails, install manually:
+如果未安装 jq，脚本会尝试自动安装。如果自动安装失败，请手动安装：
 
 **Windows:**
 ```bash
@@ -67,40 +67,40 @@ sudo dnf install jq
 sudo pacman -S jq
 ```
 
-**Verification:**
+**验证安装结果:**
 ```bash
 jq --version
 # Should output: jq-1.x
 ```
 
-If user reports jq installation issues, guide them through manual installation for their platform.
+如果用户遇到 jq 安装问题，请指导他们按照其操作系统进行手动安装。
 
-### Before First Use
+### 首次使用前的准备
 
-**Ask the user about their setup:**
+**询问用户的相关设置:**
 
-1. **"Do you have ACE-Step API service configured and running?"**
+1. **“您是否配置并运行了 ACE-Step API 服务？”**
 
-   If **YES**:
-   - Verify the API endpoint: `curl -s http://127.0.0.1:8001/health`
-   - If using remote service, ask for the API URL and update `scripts/config.json`
-   - Proceed with music generation
+   如果 **是**：
+   - 验证 API 端点：`curl -s http://127.0.0.1:8001/health`
+   - 如果使用远程服务，请获取 API URL 并更新 `scripts/config.json`
+   - 然后继续进行音乐生成
 
-   If **NO** or **NOT SURE**:
-   - Ask: "Do you have ACE-Step installed?"
+   如果 **否** 或 **不确定**：
+   - 询问：“您是否安装了 ACE-Step？”
 
-     **If installed but not running**:
-     - Use the acestep-docs skill to help them start the service
-     - Guide them through startup process
+     **如果已安装但未运行**：
+     - 使用 `acestep-docs` 技能帮助他们启动服务
+     - 指导他们完成启动过程
 
-     **If not installed**:
-     - Offer to help download and install ACE-Step
-     - Ask: "Would you like to use the Windows portable package or install from source?"
-     - Use acestep-docs skill to guide through installation
+     **如果未安装**：
+     - 提供帮助下载并安装 ACE-Step
+     - 询问：“您想使用 Windows 可移植包还是从源代码安装？”
+     - 使用 `acestep-docs` 技能指导安装过程
 
-### Service Configuration
+### 服务配置
 
-**Local Service (Default):**
+**本地服务（默认）:**
 ```json
 {
   "api_url": "http://127.0.0.1:8001",
@@ -108,7 +108,7 @@ If user reports jq installation issues, guide them through manual installation f
 }
 ```
 
-**Remote Service:**
+**远程服务:**
 ```json
 {
   "api_url": "http://your-server-ip:8001",
@@ -116,47 +116,47 @@ If user reports jq installation issues, guide them through manual installation f
 }
 ```
 
-To configure remote service, update `scripts/config.json` or use:
+要配置远程服务，请更新 `scripts/config.json` 或使用：
 ```bash
 cd {skill_directory}/scripts/
 ./acestep.sh config --set api_url "http://remote-server:8001"
 ./acestep.sh config --set api_key "your-key"
 ```
 
-### Using acestep-docs Skill for Setup Help
+### 使用 `acestep-docs` 技能获取安装帮助
 
-**IMPORTANT**: For installation and startup, always use the acestep-docs skill to get complete and accurate guidance.
+**重要提示**：对于安装和启动操作，请始终使用 `acestep-docs` 技能以获得完整且准确的指导。
 
-When user needs help with installation or startup, invoke the acestep-docs skill:
+当用户需要安装或启动帮助时，调用 `acestep-docs` 技能：
 
 ```
 Use the Skill tool to invoke: acestep-docs
 ```
 
-**DO NOT provide simplified startup commands** - each user's environment may be different. Always guide them to use acestep-docs for proper setup.
+**请勿提供简化的启动命令**——每个用户的环境可能不同。务必引导他们使用 `acestep-docs` 进行正确的设置。
 
-### Health Check
+### 健康检查
 
-**To verify if service is running:**
+**验证服务是否正在运行:**
 ```bash
 curl http://127.0.0.1:8001/health
 # Should return: {"status":"ok",...}
 ```
 
-If health check fails, use acestep-docs skill to help user start the service properly.
+如果健康检查失败，请使用 `acestep-docs` 技能帮助用户正确启动服务。
 
 ---
 
-**WORKFLOW**: For user requests requiring vocals, you should:
-1. Consult [Music Creation Guide](./music-creation-guide.md) for lyrics writing, caption creation, duration/BPM/key selection
-2. Write complete, well-structured lyrics yourself based on the guide
-3. Generate using Caption mode with `-c` and `-l` parameters
+**工作流程**：对于需要人声的音乐生成请求，您应该：
+1. 查阅 [音乐创作指南](./music-creation-guide.md) 以获取歌词创作、标题制作、时长/节拍/调性选择的相关信息。
+2. 根据指南自行编写完整且结构清晰的歌词。
+3. 使用 `-c` 和 `-l` 参数通过 **标题模式** 生成音乐。
 
-Only use Simple/Random mode (`-d` or `random`) for quick inspiration or instrumental exploration.
+仅在使用 **简单/随机模式**（`-d` 或 `random`）时，用于快速获取灵感或进行器乐探索。
 
-## Output Files
+## 输出文件
 
-After generation, the script automatically saves results to the `acestep_output` folder in the project root (same level as `.claude`):
+生成完成后，脚本会自动将结果保存到项目根目录下的 `acestep_output` 文件夹中（与 `.claude` 文件位于同一层级）：
 
 ```
 project_root/
@@ -170,35 +170,35 @@ project_root/
 └── ...
 ```
 
-### JSON Result Structure
+### JSON 结果结构
 
-**Important**: When LM enhancement is enabled (`use_format=true`), the final synthesized content may differ from your input. Check the JSON file for actual values:
+**重要提示**：当启用语言模型（LM）增强功能（`use_format=true`）时，最终合成的内容可能与输入有所不同。请查看 JSON 文件中的实际值：
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `prompt` | **Actual caption** used for synthesis (may be LM-enhanced) |
-| `lyrics` | **Actual lyrics** used for synthesis (may be LM-enhanced) |
-| `metas.prompt` | Original input caption |
-| `metas.lyrics` | Original input lyrics |
-| `metas.bpm` | BPM used |
-| `metas.keyscale` | Key scale used |
-| `metas.duration` | Duration in seconds |
-| `generation_info` | Detailed timing and model info |
-| `seed_value` | Seeds used (for reproducibility) |
-| `lm_model` | LM model name |
-| `dit_model` | DiT model name |
+| `prompt` | 用于合成的实际标题（可能经过语言模型增强） |
+| `lyrics` | 用于合成的实际歌词（可能经过语言模型增强） |
+| `metas.prompt` | 原始输入的标题 |
+| `metas.lyrics` | 原始输入的歌词 |
+| `metas bpm` | 使用的节拍（BPM） |
+| `metas.keyscale` | 使用的调性音阶 |
+| `metas.duration` | 时长（秒） |
+| `generation_info` | 详细的定时和模型信息 |
+| `seed_value` | 使用的种子值（用于重现性） |
+| `lm_model` | 语言模型名称 |
+| `dit_model` | DiT 模型名称 |
 
-To get the actual synthesized lyrics, parse the JSON and read the top-level `lyrics` field, not `metas.lyrics`.
+要获取实际的合成歌词，请解析 JSON 文件并读取顶层的 `lyrics` 字段，而不是 `metas.lyrics`。
 
-## Script Commands
+## 脚本命令
 
-**CRITICAL - Complete Lyrics Input**: When providing lyrics via the `-l` parameter, you MUST pass ALL lyrics content WITHOUT any omission:
-- If user provides lyrics, pass the ENTIRE text they give you
-- If you generate lyrics yourself, pass the COMPLETE lyrics you created
-- NEVER truncate, shorten, or pass only partial lyrics
-- Missing lyrics will result in incomplete or incoherent songs
+**重要提示 - 必须提供完整歌词**: 当通过 `-l` 参数提供歌词时，必须传递所有歌词内容，不得有任何遗漏：
+- 如果用户提供歌词，请传递他们提供的全部文本
+- 如果您自己生成歌词，请传递您创建的完整歌词
+- 绝不要截断、缩短或仅传递部分歌词
+- 缺失的歌词会导致歌曲不完整或逻辑混乱
 
-**Music Parameters**: Refer to [Music Creation Guide](./music-creation-guide.md) for how to calculate duration, choose BPM, key scale, and time signature.
+**音乐参数**: 请参考 [音乐创作指南](./music-creation-guide.md) 以了解如何计算时长、选择节拍、调性音阶和拍号。
 
 ```bash
 # need to cd skills path
@@ -225,15 +225,15 @@ cd {project_root}/{.claude or .codex}/skills/acestep/
 ./scripts/acestep.sh models
 ```
 
-## Configuration
+## 配置
 
-**Important**: Configuration follows this priority (high to low):
+**重要提示**: 配置的优先级如下（从高到低）：
 
-1. **Command line arguments** > **config.json defaults**
-2. User-specified parameters **temporarily override** defaults but **do not modify** config.json
-3. Only `config --set` command **permanently modifies** config.json
+1. **命令行参数** > **config.json 的默认值**
+2. 用户指定的参数 **会暂时覆盖** 默认值，但 **不得修改** `config.json`
+3. 仅 `config --set` 命令 **会永久修改** `config.json`
 
-### Default Config File (`scripts/config.json`)
+### 默认配置文件 (`scripts/config.json`)
 
 ```json
 {
@@ -251,27 +251,27 @@ cd {project_root}/{.claude or .codex}/skills/acestep/
 }
 ```
 
-| Option | Default | Description |
+| 选项 | 默认值 | 描述 |
 |--------|---------|-------------|
-| `api_url` | `http://127.0.0.1:8001` | API server address |
-| `api_key` | `""` | API authentication key (optional) |
-| `generation.thinking` | `true` | Enable 5Hz LM (higher quality, slower) |
-| `generation.audio_format` | `mp3` | Output format (mp3/wav/flac) |
-| `generation.vocal_language` | `en` | Vocal language |
+| `api_url` | `http://127.0.0.1:8001` | API 服务器地址 |
+| `api_key` | `""` | API 认证密钥（可选） |
+| `generation.thinking` | `true` | 启用 5Hz 语言模型（质量更高，但速度较慢） |
+| `generation.audio_format` | `mp3` | 输出格式（mp3/wav/flac） |
+| `generation.vocal_language` | `en` | 人声语言 |
 
-## API Reference
+## API 参考
 
-All responses wrapped: `{"data": <payload>, "code": 200, "error": null, "timestamp": ...}`
+所有响应的结构如下：`{"data": <payload>, "code": 200, "error": null, "timestamp": ...}`
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/release_task` | POST | Create generation task |
-| `/query_result` | POST | Query task status, body: `{"task_id_list": ["id"]}` |
-| `/v1/models` | GET | List available models |
-| `/v1/audio?path={path}` | GET | Download audio file |
+| `/health` | GET | 健康检查 |
+| `/release_task` | POST | 创建生成任务 |
+| `/query_result` | POST | 查询任务状态，请求体：`{"task_id_list": ["id"]` |
+| `/v1/models` | GET | 列出可用模型 |
+| `/v1/audio?path={path}` | GET | 下载音频文件 |
 
-### Query Result Response
+### 查询结果响应
 
 ```json
 {
@@ -283,63 +283,63 @@ All responses wrapped: `{"data": <payload>, "code": 200, "error": null, "timesta
 }
 ```
 
-Status codes: `0` = processing, `1` = success, `2` = failed
+状态码：`0` = 处理中，`1` = 成功，`2` = 失败
 
-## Request Parameters (`/release_task`)
+## 请求参数 (`/release_task`)
 
-Parameters can be placed in `param_obj` object.
+参数可以放在 `param_obj` 对象中。
 
-### Generation Modes
+### 生成模式
 
-| Mode | Usage | When to Use |
+| 模式 | 使用方法 | 适用场景 |
 |------|-------|-------------|
-| **Caption** (Recommended) | `generate -c "style" -l "lyrics"` | For vocal songs - write lyrics yourself first |
-| **Simple** | `generate -d "description"` | Quick exploration, LM generates everything |
-| **Random** | `random` | Random generation for inspiration |
+| **标题模式**（推荐） | `generate -c "style" -l "lyrics"` | 适用于人声歌曲——先编写歌词 |
+| **简单模式** | `generate -d "description"` | 快速探索，由语言模型生成所有内容 |
+| **随机模式** | `random` | 随机生成以获取灵感 |
 
-### Core Parameters
+### 核心参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `prompt` | string | "" | Music style description (Caption mode) |
-| `lyrics` | string | "" | **Full lyrics content** - Pass ALL lyrics without omission. Use `[inst]` for instrumental. Partial/truncated lyrics = incomplete songs |
-| `sample_mode` | bool | false | Enable Simple/Random mode |
-| `sample_query` | string | "" | Description for Simple mode |
-| `thinking` | bool | false | Enable 5Hz LM for audio code generation |
-| `use_format` | bool | false | Use LM to enhance caption/lyrics |
-| `model` | string | - | DiT model name |
-| `batch_size` | int | 1 | Number of audio files to generate |
+| `prompt` | 字符串 | "" | 音乐风格描述（标题模式） |
+| `lyrics` | 字符串 | "" | **完整歌词内容**——必须提供全部歌词，不得遗漏。使用 `[inst]` 表示器乐。部分/截断的歌词会导致歌曲不完整 |
+| `sample_mode` | 布尔值 | `false` | 启用简单/随机模式 |
+| `sample_query` | 字符串 | "" | 简单模式的描述 |
+| `thinking` | 布尔值 | `false` | 启用 5Hz 语言模型以生成音频 |
+| `use_format` | 布尔值 | `false` | 使用语言模型增强标题/歌词 |
+| `model` | 字符串 | - | DiT 模型名称 |
+| `batch_size` | 整数 | 1 | 要生成的音频文件数量 |
 
-### Music Attributes
+### 音乐属性
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `audio_duration` | float | - | Duration in seconds |
-| `bpm` | int | - | Tempo (beats per minute) |
-| `key_scale` | string | "" | Key (e.g. "C Major") |
-| `time_signature` | string | "" | Time signature (e.g. "4/4") |
-| `vocal_language` | string | "en" | Language code (en, zh, ja, etc.) |
-| `audio_format` | string | "mp3" | Output format (mp3/wav/flac) |
+| `audio_duration` | 浮点数 | - | 时长（秒） |
+| `bpm` | 整数 | - | 节拍（每分钟拍数） |
+| `key_scale` | 字符串 | "" | 调性（例如 "C 大调"） |
+| `time_signature` | 字符串 | "" | 拍号（例如 "4/4"） |
+| `vocal_language` | 字符串 | "en" | 语言代码（en, zh, ja 等） |
+| `audio_format` | 字符串 | "mp3" | 输出格式（mp3/wav/flac） |
 
-### Generation Parameters
+### 生成参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `inference_steps` | int | 8 | Diffusion steps |
-| `guidance_scale` | float | 7.0 | CFG scale |
-| `seed` | int | -1 | Random seed (-1 for random) |
-| `infer_method` | string | "ode" | Diffusion method (ode/sde) |
+| `inference_steps` | 整数 | 8 | 扩散步骤 |
+| `guidance_scale` | 浮点数 | 7.0 | CFG 音阶 |
+| `seed` | 整数 | -1 | 随机种子（-1 表示随机） |
+| `infer_method` | 字符串 | "ode" | 扩散方法（ode/sde） |
 
-### Audio Task Parameters
+### 音频任务参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `task_type` | string | "text2music" | text2music / continuation / repainting |
-| `src_audio_path` | string | - | Source audio for continuation |
-| `repainting_start` | float | 0.0 | Repainting start position (seconds) |
-| `repainting_end` | float | - | Repainting end position (seconds) |
+| `task_type` | 字符串 | "text2music" | text2music / continuation / repainting |
+| `src_audio_path` | 字符串 | - | 继续使用的源音频文件 |
+| `repainting_start` | 浮点数 | 0.0 | 继续开始的起始位置（秒） |
+| `repainting_end` | 浮点数 | - | 继续结束的位置（秒） |
 
-### Example Request (Simple Mode)
+### 示例请求（简单模式）
 
 ```json
 {

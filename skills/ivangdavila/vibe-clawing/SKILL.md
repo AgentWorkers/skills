@@ -1,80 +1,83 @@
 ---
 name: Vibe Clawing
-description: Transition from vibe coding to vibe clawing by trusting agents with full responsibilities, designing self-closing loops, and climbing the bottleneck ladder.
+description: 从使用“vibe coding”技术过渡到使用“vibe clawing”技术，关键在于信任那些被赋予全部职责的代理（agents），设计能够自动闭合的循环（self-closing loops），并逐步克服那些阻碍进展的瓶颈（bottleneck problems）。
 ---
 
-## Core Principle
+## 核心原则
 
-Vibe coding = trusting AI with tasks, staying in the loop.
-Vibe clawing = trusting AI with responsibilities, stepping out of the loop.
+**Vibe Coding**：将任务委托给人工智能，同时持续关注整个流程的进展。  
+**Vibe Clawing**：将责任委托给人工智能，从而让自己从流程中抽身出来。
 
-The shift: Stop asking "how do I do this?" Start asking "how do I make sure this happens without me?"
-
----
-
-## The Evolution Path
-
-| Stage | You Do | AI Does | Your Role |
-|-------|--------|---------|-----------|
-| Manual | Everything | Nothing | Executor |
-| Vibe Coding | Decide, review | Single tasks | In the loop |
-| Early Clawing | Validate results | Workflows | Closing loops |
-| Full Clawing | Set direction | Full systems | Out of the loop |
+**转变的关键**：  
+从“我该如何完成这个任务？”转变为“我该如何确保任务在没有人参与的情况下也能顺利完成？”
 
 ---
 
-## Quick Reference
+## 发展路径  
 
-| Situation | Load |
-|-----------|------|
-| Identifying loops to automate | `loops.md` |
-| Understanding bottleneck progression | `bottleneck.md` |
-| Finding where value moves | `direction.md` |
-| Full transition framework | `evolution.md` |
-
----
-
-## The Bottleneck Signal
-
-When you find yourself just typing "yes", "approved", "continue":
-- That's not a problem — it's progress
-- You solved the level below
-- Time to climb to the next level
-
-Every time you become the bottleneck = you're ready to let go again.
+| 阶段 | 你的工作 | 人工智能的工作 | 你的角色 |  
+|-------|--------|---------|-----------|  
+| 手动操作 | 完成所有工作 | 什么都不做 | 执行者 |  
+| Vibe Coding | 做出决策、进行代码审查 | 处理单一任务 | 持续关注流程进展 |  
+| 初期的人工智能辅助 | 验证结果 | 管理工作流程 | 关闭流程中的瓶颈 |  
+| 完全依赖人工智能 | 制定发展方向 | 管理整个系统 | 从流程中抽身出来 |  
 
 ---
 
-## User Profile
+## 快速参考  
 
-Track your vibe clawing journey. Update as you progress.
-
-### Current Stage
-<!-- manual | vibe-coding | early-clawing | full-clawing -->
-
-### Loops Closed
-<!-- Responsibilities fully delegated. Format: "area: status" -->
-<!-- "Code reviews: agent handles 90%" "Research: fully automated" -->
-
-### Active Bottlenecks
-<!-- Where you're currently the decision point -->
-<!-- "Final UI approval" "Architecture decisions" "Customer escalations" -->
-
-### Next to Delegate
-<!-- What you're working on releasing next -->
+| 情况 | 需要查阅的文档 |  
+|-----------|------|  
+| 识别需要自动化的流程 | `loops.md` |  
+| 了解瓶颈所在 | `bottleneck.md` |  
+| 确定价值创造的关键点 | `direction.md` |  
+| 完整的转型框架 | `evolution.md` |  
 
 ---
 
-## Core Behaviors
+## 瓶颈信号  
 
-1. **Audit loops** — Identify where you're still manually closing
-2. **Test release** — Let one loop run without you, observe
-3. **Connect dots** — Link loops together into larger systems
-4. **Climb up** — When you're just approving, you're ready to let go
+当你发现自己总是简单地回复“同意”、“批准”或“继续”时：  
+- 这其实是个好现象——说明你已经解决了当前的问题；  
+- 是时候迈向更高的阶段了。  
+
+**每次你成为流程中的瓶颈时**，就意味着你已准备好再次放手（将责任委托给人工智能）。  
 
 ---
 
-## The Paradox
+## 用户档案  
 
-The more you step back, the faster it grows.
-You're not being replaced. You're riding something bigger.
+记录你的“Vibe Clawing”（人工智能辅助工作的过程），并随着进展进行更新。  
+
+### 当前阶段  
+<!-- 手动操作 | Vibe Coding | 初期人工智能辅助 | 完全依赖人工智能 |  
+
+### 已关闭的流程  
+<!-- 责任已完全委托给人工智能的领域 |  
+| “代码审查”：90% 由人工智能完成 |  
+| “研究工作”：完全自动化 |  
+
+### 当前的瓶颈  
+<!-- 你目前需要做出决策的环节 |  
+| “最终用户界面审批” |  
+| “系统架构设计” |  
+| “客户问题处理” |  
+
+### 下一步需要委托给人工智能的任务  
+| 你接下来计划交付的工作 |  
+
+---
+
+## 核心行为  
+
+1. **审计流程**：识别那些仍需要你手动处理的环节。  
+2. **测试发布流程**：让人工智能独立运行某个流程，观察其效果。  
+3. **整合各个环节**：将不同的流程连接成一个更完整的系统。  
+4. **逐步放手**：当你只是负责审批时，说明你已经准备好将更多责任委托给人工智能。  
+
+---
+
+## 悖论：  
+
+你退后得越多，系统反而发展得越快。  
+你并没有被取代，而是在推动一个更庞大的系统向前发展。

@@ -1,15 +1,15 @@
 ---
 slug: "cwicr-report-generator"
 display_name: "CWICR Report Generator"
-description: "Generate professional cost estimation reports from CWICR calculations. HTML, PDF, Excel outputs with charts and breakdowns."
+description: "根据 CWICR 的计算结果生成专业的成本估算报告。支持 HTML、PDF 和 Excel 格式，报告中包含图表和详细的费用分解。"
 ---
 
-# CWICR Report Generator
+# CWICR 报告生成器
 
-## Overview
-Generate professional cost reports from CWICR calculations - executive summaries, detailed breakdowns, charts, and export to multiple formats.
+## 概述
+该工具可根据 CWICR 的计算结果生成专业的成本报告，包括执行摘要、详细费用分解、图表，并支持导出到多种格式。
 
-## Python Implementation
+## Python 实现
 
 ```python
 import pandas as pd
@@ -281,7 +281,7 @@ class QuickReport:
         return gen
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create report generator
@@ -302,7 +302,7 @@ gen.save_html("cost_report.html")
 gen.generate_excel("cost_report.xlsx")
 ```
 
-## From DataFrame
+## 从 DataFrame 开始使用
 
 ```python
 # Quick report from cost DataFrame
@@ -310,5 +310,5 @@ report = QuickReport.from_dataframe(cost_df, "My Project")
 report.save_html("quick_report.html")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.2 - ETL Load Reports
+## 资源参考
+- **DDC 手册**：第 4.2 章 - ETL 数据加载与报告生成

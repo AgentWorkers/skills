@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Sip Integrations - Python
+# Telnyx Sip 集成 - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +31,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all call recordings
+## 列出所有通话记录
 
-Returns a list of your call recordings.
+返回您的通话记录列表。
 
 `GET /recordings`
 
@@ -45,9 +45,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Retrieve a call recording
+## 获取通话记录
 
-Retrieves the details of an existing call recording.
+检索现有通话记录的详细信息。
 
 `GET /recordings/{recording_id}`
 
@@ -58,9 +58,9 @@ recording = client.recordings.retrieve(
 print(recording.data)
 ```
 
-## Delete a call recording
+## 删除通话记录
 
-Permanently deletes a call recording.
+永久删除通话记录。
 
 `DELETE /recordings/{recording_id}`
 
@@ -71,9 +71,9 @@ recording = client.recordings.delete(
 print(recording.data)
 ```
 
-## Delete a list of call recordings
+## 删除通话记录列表
 
-Permanently deletes a list of call recordings.
+永久删除通话记录列表。
 
 `POST /recordings/actions/delete`
 
@@ -83,9 +83,9 @@ client.recordings.actions.delete(
 )
 ```
 
-## List all recording transcriptions
+## 列出所有通话转录内容
 
-Returns a list of your recording transcriptions.
+返回您的通话转录内容列表。
 
 `GET /recording_transcriptions`
 
@@ -94,9 +94,9 @@ recording_transcriptions = client.recording_transcriptions.list()
 print(recording_transcriptions.data)
 ```
 
-## Retrieve a recording transcription
+## 获取通话转录内容
 
-Retrieves the details of an existing recording transcription.
+检索现有通话转录内容的详细信息。
 
 `GET /recording_transcriptions/{recording_transcription_id}`
 
@@ -107,9 +107,9 @@ recording_transcription = client.recording_transcriptions.retrieve(
 print(recording_transcription.data)
 ```
 
-## Delete a recording transcription
+## 删除通话转录内容
 
-Permanently deletes a recording transcription.
+永久删除通话转录内容。
 
 `DELETE /recording_transcriptions/{recording_transcription_id}`
 
@@ -120,9 +120,9 @@ recording_transcription = client.recording_transcriptions.delete(
 print(recording_transcription.data)
 ```
 
-## Retrieve a stored credential
+## 获取存储的凭据信息
 
-Returns the information about custom storage credentials.
+返回有关自定义存储凭据的信息。
 
 `GET /custom_storage_credentials/{connection_id}`
 
@@ -133,9 +133,9 @@ custom_storage_credential = client.custom_storage_credentials.retrieve(
 print(custom_storage_credential.connection_id)
 ```
 
-## Create a custom storage credential
+## 创建自定义存储凭据
 
-Creates a custom storage credentials configuration.
+创建自定义存储凭据配置。
 
 `POST /custom_storage_credentials/{connection_id}`
 
@@ -150,9 +150,9 @@ custom_storage_credential = client.custom_storage_credentials.create(
 print(custom_storage_credential.connection_id)
 ```
 
-## Update a stored credential
+## 更新存储的凭据
 
-Updates a stored custom credentials configuration.
+更新存储的自定义凭据配置。
 
 `PUT /custom_storage_credentials/{connection_id}`
 
@@ -167,9 +167,9 @@ custom_storage_credential = client.custom_storage_credentials.update(
 print(custom_storage_credential.connection_id)
 ```
 
-## Delete a stored credential
+## 删除存储的凭据
 
-Deletes a stored custom credentials configuration.
+删除存储的自定义凭据配置。
 
 `DELETE /custom_storage_credentials/{connection_id}`
 
@@ -179,9 +179,9 @@ client.custom_storage_credentials.delete(
 )
 ```
 
-## Retrieve stored Dialogflow Connection
+## 获取存储的 Dialogflow 连接信息
 
-Return details of the Dialogflow connection associated with the given CallControl connection.
+返回与给定 CallControl 连接关联的 Dialogflow 连接的详细信息。
 
 `GET /dialogflow_connections/{connection_id}`
 
@@ -192,9 +192,9 @@ dialogflow_connection = client.dialogflow_connections.retrieve(
 print(dialogflow_connection.data)
 ```
 
-## Create a Dialogflow Connection
+## 创建 Dialogflow 连接
 
-Save Dialogflow Credentiails to Telnyx, so it can be used with other Telnyx services.
+将 Dialogflow 凭据保存到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
 `POST /dialogflow_connections/{connection_id}`
 
@@ -217,9 +217,9 @@ dialogflow_connection = client.dialogflow_connections.create(
 print(dialogflow_connection.data)
 ```
 
-## Update stored Dialogflow Connection
+## 更新存储的 Dialogflow 连接
 
-Updates a stored Dialogflow Connection.
+更新存储的 Dialogflow 连接。
 
 `PUT /dialogflow_connections/{connection_id}`
 
@@ -242,9 +242,9 @@ dialogflow_connection = client.dialogflow_connections.update(
 print(dialogflow_connection.data)
 ```
 
-## Delete stored Dialogflow Connection
+## 删除存储的 Dialogflow 连接
 
-Deletes a stored Dialogflow Connection.
+删除存储的 Dialogflow 连接。
 
 `DELETE /dialogflow_connections/{connection_id}`
 
@@ -254,9 +254,9 @@ client.dialogflow_connections.delete(
 )
 ```
 
-## List all External Connections
+## 列出所有外部连接
 
-This endpoint returns a list of your External Connections inside the 'data' attribute of the response.
+此端点返回响应中 'data' 属性内的所有外部连接列表。
 
 `GET /external_connections`
 
@@ -266,11 +266,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Creates an External Connection
+## 创建外部连接
 
-Creates a new External Connection based on the parameters sent in the request.
+根据请求中发送的参数创建新的外部连接。
 
-`POST /external_connections` — Required: `external_sip_connection`, `outbound`
+`POST /external_connections` — 必需参数：`external_sip_connection`, `outbound`
 
 ```python
 external_connection = client.external_connections.create(
@@ -280,9 +280,9 @@ external_connection = client.external_connections.create(
 print(external_connection.data)
 ```
 
-## Retrieve an External Connection
+## 获取外部连接信息
 
-Return the details of an existing External Connection inside the 'data' attribute of the response.
+返回响应中 'data' 属性内的现有外部连接的详细信息。
 
 `GET /external_connections/{id}`
 
@@ -293,11 +293,11 @@ external_connection = client.external_connections.retrieve(
 print(external_connection.data)
 ```
 
-## Update an External Connection
+## 更新外部连接
 
-Updates settings of an existing External Connection based on the parameters of the request.
+根据请求的参数更新现有外部连接的设置。
 
-`PATCH /external_connections/{id}` — Required: `outbound`
+`PATCH /external_connections/{id}` — 必需参数：`outbound`
 
 ```python
 external_connection = client.external_connections.update(
@@ -309,9 +309,9 @@ external_connection = client.external_connections.update(
 print(external_connection.data)
 ```
 
-## Deletes an External Connection
+## 删除外部连接
 
-Permanently deletes an External Connection.
+永久删除外部连接。
 
 `DELETE /external_connections/{id}`
 
@@ -322,9 +322,9 @@ external_connection = client.external_connections.delete(
 print(external_connection.data)
 ```
 
-## List all civic addresses and locations
+## 列出所有市民地址和位置信息
 
-Returns the civic addresses and locations from Microsoft Teams.
+从 Microsoft Teams 中获取市民地址和位置信息。
 
 `GET /external_connections/{id}/civic_addresses`
 
@@ -335,9 +335,9 @@ civic_addresses = client.external_connections.civic_addresses.list(
 print(civic_addresses.data)
 ```
 
-## Retrieve a Civic Address
+## 获取市民地址信息
 
-Return the details of an existing Civic Address with its Locations inside the 'data' attribute of the response.
+返回响应中 'data' 属性内的现有市民地址及其位置的详细信息。
 
 `GET /external_connections/{id}/civic_addresses/{address_id}`
 
@@ -349,9 +349,9 @@ civic_address = client.external_connections.civic_addresses.retrieve(
 print(civic_address.data)
 ```
 
-## Update a location's static emergency address
+## 更新位置的静态紧急地址
 
-`PATCH /external_connections/{id}/locations/{location_id}` — Required: `static_emergency_address_id`
+`PATCH /external_connections/{id}/locations/{location_id}` — 必需参数：`static_emergency_address_id`
 
 ```python
 response = client.external_connections.update_location(
@@ -362,9 +362,9 @@ response = client.external_connections.update_location(
 print(response.data)
 ```
 
-## List all phone numbers
+## 列出所有电话号码
 
-Returns a list of all active phone numbers associated with the given external connection.
+返回与给定外部连接关联的所有活跃电话号码列表。
 
 `GET /external_connections/{id}/phone_numbers`
 
@@ -376,9 +376,9 @@ page = page.data[0]
 print(page.civic_address_id)
 ```
 
-## Retrieve a phone number
+## 获取电话号码信息
 
-Return the details of a phone number associated with the given external connection.
+返回与给定外部连接关联的电话号码的详细信息。
 
 `GET /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -390,9 +390,9 @@ phone_number = client.external_connections.phone_numbers.retrieve(
 print(phone_number.data)
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
-Asynchronously update settings of the phone number associated with the given external connection.
+异步更新与给定外部连接关联的电话号码设置。
 
 `PATCH /external_connections/{id}/phone_numbers/{phone_number_id}`
 
@@ -404,9 +404,9 @@ phone_number = client.external_connections.phone_numbers.update(
 print(phone_number.data)
 ```
 
-## List all Releases
+## 列出所有发布记录
 
-Returns a list of your Releases for the given external connection.
+返回与给定外部连接关联的所有发布记录列表。
 
 `GET /external_connections/{id}/releases`
 
@@ -418,9 +418,9 @@ page = page.data[0]
 print(page.tenant_id)
 ```
 
-## Retrieve a Release request
+## 获取发布请求信息
 
-Return the details of a Release request and its phone numbers.
+返回发布请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/releases/{release_id}`
 
@@ -432,9 +432,9 @@ release = client.external_connections.releases.retrieve(
 print(release.data)
 ```
 
-## List all Upload requests
+## 列出所有上传请求
 
-Returns a list of your Upload requests for the given external connection.
+返回与给定外部连接关联的所有上传请求列表。
 
 `GET /external_connections/{id}/uploads`
 
@@ -446,11 +446,11 @@ page = page.data[0]
 print(page.location_id)
 ```
 
-## Creates an Upload request
+## 创建上传请求
 
-Creates a new Upload request to Microsoft teams with the included phone numbers.
+创建一个新的上传请求，包含关联的电话号码。
 
-`POST /external_connections/{id}/uploads` — Required: `number_ids`
+`POST /external_connections/{id}/uploads` — 必需参数：`number_ids`
 
 ```python
 upload = client.external_connections.uploads.create(
@@ -460,9 +460,9 @@ upload = client.external_connections.uploads.create(
 print(upload.ticket_id)
 ```
 
-## Refresh the status of all Upload requests
+## 刷新所有上传请求的状态
 
-Forces a recheck of the status of all pending Upload requests for the given external connection in the background.
+强制在后台重新检查给定外部连接的所有待处理上传请求的状态。
 
 `POST /external_connections/{id}/uploads/refresh`
 
@@ -473,9 +473,9 @@ response = client.external_connections.uploads.refresh_status(
 print(response.success)
 ```
 
-## Get the count of pending upload requests
+## 获取待处理上传请求的数量
 
-Returns the count of all pending upload requests for the given external connection.
+返回给定外部连接的所有待处理上传请求的数量。
 
 `GET /external_connections/{id}/uploads/status`
 
@@ -486,9 +486,9 @@ response = client.external_connections.uploads.pending_count(
 print(response.data)
 ```
 
-## Retrieve an Upload request
+## 获取上传请求信息
 
-Return the details of an Upload request and its phone numbers.
+返回上传请求的详细信息及其关联的电话号码。
 
 `GET /external_connections/{id}/uploads/{ticket_id}`
 
@@ -500,9 +500,9 @@ upload = client.external_connections.uploads.retrieve(
 print(upload.data)
 ```
 
-## Retry an Upload request
+## 重试上传请求
 
-If there were any errors during the upload process, this endpoint will retry the upload request.
+如果上传过程中出现任何错误，此端点将重试上传请求。
 
 `POST /external_connections/{id}/uploads/{ticket_id}/retry`
 
@@ -514,9 +514,9 @@ response = client.external_connections.uploads.retry(
 print(response.data)
 ```
 
-## List all log messages
+## 列出所有日志消息
 
-Retrieve a list of log messages for all external connections associated with your account.
+检索与您的账户关联的所有外部连接的日志消息列表。
 
 `GET /external_connections/log_messages`
 
@@ -526,9 +526,9 @@ page = page.log_messages[0]
 print(page.code)
 ```
 
-## Retrieve a log message
+## 获取日志消息
 
-Retrieve a log message for an external connection associated with your account.
+检索与您的账户关联的外部连接的日志消息。
 
 `GET /external_connections/log_messages/{id}`
 
@@ -539,9 +539,9 @@ log_message = client.external_connections.log_messages.retrieve(
 print(log_message.log_messages)
 ```
 
-## Dismiss a log message
+## 删除日志消息
 
-Dismiss a log message for an external connection associated with your account.
+删除与您的账户关联的外部连接的日志消息。
 
 `DELETE /external_connections/log_messages/{id}`
 
@@ -552,9 +552,9 @@ response = client.external_connections.log_messages.dismiss(
 print(response.success)
 ```
 
-## Refresh Operator Connect integration
+## 刷新 Operator Connect 集成
 
-This endpoint will make an asynchronous request to refresh the Operator Connect integration with Microsoft Teams for the current user.
+此端点将异步请求以刷新当前用户与 Microsoft Teams 的 Operator Connect 集成。
 
 `POST /operator_connect/actions/refresh`
 
@@ -563,9 +563,9 @@ response = client.operator_connect.actions.refresh()
 print(response.message)
 ```
 
-## List uploaded media
+## 列出已上传的媒体文件
 
-Returns a list of stored media files.
+返回存储的媒体文件列表。
 
 `GET /media`
 
@@ -574,11 +574,11 @@ media = client.media.list()
 print(media.data)
 ```
 
-## Upload media
+## 上传媒体文件
 
-Upload media file to Telnyx so it can be used with other Telnyx services
+将媒体文件上传到 Telnyx，以便与其他 Telnyx 服务一起使用。
 
-`POST /media` — Required: `media_url`
+`POST /media` — 必需参数：`media_url`
 
 ```python
 response = client.media.upload(
@@ -587,9 +587,9 @@ response = client.media.upload(
 print(response.data)
 ```
 
-## Retrieve stored media
+## 获取存储的媒体文件信息
 
-Returns the information about a stored media file.
+返回存储的媒体文件的详细信息。
 
 `GET /media/{media_name}`
 
@@ -600,9 +600,9 @@ media = client.media.retrieve(
 print(media.data)
 ```
 
-## Update stored media
+## 更新存储的媒体文件
 
-Updates a stored media file.
+更新存储的媒体文件。
 
 `PUT /media/{media_name}`
 
@@ -613,9 +613,9 @@ media = client.media.update(
 print(media.data)
 ```
 
-## Deletes stored media
+## 删除存储的媒体文件
 
-Deletes a stored media file.
+删除存储的媒体文件。
 
 `DELETE /media/{media_name}`
 
@@ -625,9 +625,9 @@ client.media.delete(
 )
 ```
 
-## Download stored media
+## 下载存储的媒体文件
 
-Downloads a stored media file.
+下载存储的媒体文件。
 
 `GET /media/{media_name}/download`
 

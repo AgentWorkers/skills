@@ -1,144 +1,91 @@
 ---
 name: excalidraw
-description: Generate hand-drawn style diagrams, flowcharts, and architecture diagrams as PNG images from Excalidraw JSON
+description: 使用 Excalidraw JSON 格式的数据生成手绘风格的图表、流程图和架构图，并将这些图表保存为 PNG 格式的图像。
 ---
 
-# Excalidraw Diagram Generator
+# Excalidraw 图表生成器
 
-Generate beautiful hand-drawn style diagrams rendered as PNG images.
+该工具可以生成美观的手绘风格图表，并将其渲染为 PNG 图像。
 
-## Workflow
+## 工作流程
 
-1. **Generate JSON** — Write Excalidraw element array based on what the user wants
-2. **Save to file** — Write JSON to `/tmp/<name>.excalidraw`
-3. **Render** — `node ~/clawd/skills/excalidraw/scripts/render.js /tmp/<name>.excalidraw /tmp/<name>.png`
-4. **Deliver based on context:**
+1. **生成 JSON 数据**：根据用户的需求，创建 Excalidraw 图表的元素数组。
+2. **保存到文件**：将生成的 JSON 数据保存到 `/tmp/<name>.excalidraw` 文件中。
+3. **渲染图像**：执行以下命令进行渲染：`node ~/clawd/skills/excalidraw/scripts/render.js /tmp/<name>.excalidraw /tmp/<name>.png`。
+4. **根据使用场景进行交付**：
 
-### If chatting (Telegram/Discord/Slack/etc):
-Send the PNG directly in chat via message tool:
-```bash
-message(action="send", filePath="/tmp/<name>.png", caption="Description")
-```
-**NEVER create a separate .excalidraw file for the user. Always render to PNG and send inline.**
+    - **如果通过聊天工具（如 Telegram、Discord、Slack 等）交流**：直接在聊天中发送 PNG 图像。
+        **注意**：**绝对不要为用户创建单独的 `.excalidraw` 文件，应直接将其渲染为 PNG 图像并发送。**
+    - **如果需要创建 Google 文档**：将 PNG 图像上传到 Google Drive，然后使用 Google 文档的 API 将图像插入文档中。**无需创建单独的文件或链接**。
+    - **如果用户明确要求提供 `.excalidraw` 文件**：在这种情况下，才提供原始的 JSON 数据文件，以便用户在 Excalidraw 应用中进行编辑。
 
-### If creating a Google Doc:
-1. Upload PNG to Google Drive
-2. Insert image INTO the document using Docs API
-3. Do NOT create a separate file or link - embed the image directly
+## 快速参考
 
-### If user explicitly asks for the .excalidraw file:
-Only then provide the raw .excalidraw JSON file for editing in Excalidraw app.
+（此处应包含 Excalidraw 的基本使用方法和常见图表的生成步骤）
 
-## Quick Reference
+## 元素类型
 
-```bash
-node <skill_dir>/scripts/render.js input.excalidraw output.png
-```
-
-## Element Types
-
-| Type | Shape | Key Props |
+| 元素类型 | 形状 | 主要属性 |
 |------|-------|-----------|
-| `rectangle` | Box | x, y, width, height |
-| `ellipse` | Oval | x, y, width, height |
-| `diamond` | Decision | x, y, width, height |
-| `arrow` | Arrow | connects shapes (see Arrow Binding below) |
-| `line` | Line | x, y, points: [[0,0],[dx,dy]] |
-| `text` | Label | x, y, text, fontSize, fontFamily (1=hand, 2=sans, 3=code) |
+| `rectangle` | 矩形 | x, y, 宽度, 高度 |
+| `ellipse` | 椭圆 | x, y, 宽度, 高度 |
+| `diamond` | 菱形 | x, y, 宽度, 高度 |
+| `arrow` | 箭头 | 用于连接其他形状（详见“箭头绑定”部分） |
+| `line` | 直线 | x, y, 点坐标（格式：[[0,0],[dx,dy]] |
+| `text` | 文本标签 | x, y, 文本内容, 字体大小, 字体样式（1=手写风格, 2=标准字体, 3=代码风格） |
 
-### Styling (all shapes)
+## 图形样式（适用于所有形状）
 
-```json
-{
-  "strokeColor": "#1e1e1e",
-  "backgroundColor": "#a5d8ff",
-  "fillStyle": "hachure",
-  "strokeWidth": 2,
-  "roughness": 1,
-  "strokeStyle": "solid"
-}
-```
+（此处应包含图形的填充颜色、线条样式、粗糙度等设置）
 
-**fillStyle**: `hachure` (diagonal lines), `cross-hatch`, `solid`
-**roughness**: 0=clean, 1=hand-drawn (default), 2=very sketchy
+**填充样式**：`hachure`（斜线）、`cross-hatch`（交叉线）、`solid`（实线）
+**粗糙度**：0=清晰；1=手绘风格；2=非常草率的风格
 
-## Arrow Binding (IMPORTANT)
+## 箭头绑定（非常重要）
 
-**Always use `from`/`to` bindings for arrows.** The renderer auto-calculates edge intersection points — no manual coordinate math needed.
+**箭头必须使用 `from` 和 `to` 属性进行绑定**。渲染器会自动计算箭头的起始点和终点坐标，无需手动计算。
 
-### Simple arrow (straight, between two shapes)
-```json
-{"type":"arrow","id":"a1","from":"box1","to":"box2","strokeColor":"#1e1e1e","strokeWidth":2,"roughness":1}
-```
-That's it. No x, y, or points needed. The renderer computes start/end at shape edges.
+### 简单箭头（直线，连接两个形状）
+（此处应提供简单的箭头生成代码示例）
 
-### Multi-segment arrow (routed path with waypoints)
-For arrows that need to go around obstacles, use `absolutePoints` with intermediate waypoints:
-```json
-{
-  "type":"arrow","id":"a2","from":"box3","to":"box1",
-  "absolutePoints": true,
-  "points": [[375,500],[30,500],[30,127],[60,127]],
-  "strokeColor":"#1e1e1e","strokeWidth":2,"roughness":1
-}
-```
-- First point = near source shape edge (will snap to actual edge)
-- Last point = near target shape edge (will snap to actual edge)
-- Middle points = absolute waypoint coordinates for routing
+### 多段箭头（需要绕过障碍物的路径）
+对于需要绕过障碍物的箭头，使用 `absolutePoints` 和中间路径点进行绘制：
+（此处应提供多段箭头的生成代码示例）
 
-### Arrow labels
-Place a separate text element near the arrow midpoint:
-```json
-{"type":"text","id":"label","x":215,"y":98,"width":85,"height":16,"text":"sends data","fontSize":10,"fontFamily":1,"strokeColor":"#868e96"}
-```
+- **第一个点**：位于起始形状的边缘附近（会自动对齐到实际边缘）。
+- **最后一个点**：位于目标形状的边缘附近（会自动对齐到实际边缘）。
+- **中间点**：用于确定箭头的路径。
 
-### Arrow styles
-- `"strokeStyle":"dashed"` — dashed line
-- `"startArrowhead": true` — bidirectional arrow
+### 箭头标签
+在箭头的中间位置添加单独的文本标签：
+（此处应提供箭头标签的放置方法）
 
-## Template: Flowchart with Bindings
+## 箭头样式
+- `"strokeStyle":"dashed"`：虚线箭头
+- `"startArrowhead": true`：双向箭头
 
-```json
-{
-  "type": "excalidraw",
-  "version": 2,
-  "elements": [
-    {"type":"rectangle","id":"start","x":150,"y":50,"width":180,"height":60,"strokeColor":"#1e1e1e","backgroundColor":"#b2f2bb","fillStyle":"hachure","strokeWidth":2,"roughness":1},
-    {"type":"text","id":"t1","x":200,"y":65,"width":80,"height":30,"text":"Start","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e"},
+## 模板：带绑定的流程图
+（此处应提供流程图的生成代码示例）
 
-    {"type":"arrow","id":"a1","from":"start","to":"decision","strokeColor":"#1e1e1e","strokeWidth":2,"roughness":1},
+## 布局指南
 
-    {"type":"diamond","id":"decision","x":140,"y":170,"width":200,"height":120,"strokeColor":"#1e1e1e","backgroundColor":"#ffec99","fillStyle":"hachure","strokeWidth":2,"roughness":1},
-    {"type":"text","id":"t2","x":185,"y":215,"width":110,"height":30,"text":"Condition?","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center"},
+- **节点大小**：140-200 × 50-70 像素
+- **菱形**：180-200 × 100-120 像素（文本区域可适当调整高度）
+- **节点间距**：垂直间距 60-100 像素；水平间距 80-120 像素
+- **文本位置**：手动将文本放置在形状内部（通常距离形状左上角约 15-30 像素）
+- **箭头标签**：将箭头标签作为单独的文本元素放置在箭头路径的中间位置
 
-    {"type":"arrow","id":"a2","from":"decision","to":"process","strokeColor":"#1e1e1e","strokeWidth":2,"roughness":1},
+## 颜色方案
 
-    {"type":"rectangle","id":"process","x":150,"y":350,"width":180,"height":60,"strokeColor":"#1e1e1e","backgroundColor":"#a5d8ff","fillStyle":"hachure","strokeWidth":2,"roughness":1},
-    {"type":"text","id":"t3","x":190,"y":365,"width":100,"height":30,"text":"Process","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e"}
-  ]
-}
-```
+- **填充颜色**：`#a5d8ff`（蓝色）、`#b2f2bb`（绿色）、`#ffec99`（黄色）、`#ffc9c9`（红色）、`#d0bfff`（紫色）、`#f3d9fa`（粉色）、`#fff4e6`（米色）
+- **线条颜色**：`#1e1e1e`（深色）、`#1971c2`（蓝色）、`#2f9e44`（绿色）、`#e8590c`（橙色）、`#862e9c`（紫色）
+- **文本标签颜色**：`#868e96`（灰色，用于注释）
 
-## Layout Guidelines
+## 提示
 
-- **Node size**: 140-200 × 50-70 px
-- **Diamond**: 180-200 × 100-120 px (taller for text)
-- **Vertical spacing**: 60-100 px between nodes
-- **Horizontal spacing**: 80-120 px between nodes
-- **Text**: Position inside shape manually (offset ~15-30px from top-left of shape)
-- **Arrow labels**: Place as separate text elements near midpoint of arrow path
-
-## Color Palette
-
-**Fills**: `#a5d8ff` (blue), `#b2f2bb` (green), `#ffec99` (yellow), `#ffc9c9` (red), `#d0bfff` (purple), `#f3d9fa` (pink), `#fff4e6` (cream)
-**Strokes**: `#1e1e1e` (dark), `#1971c2` (blue), `#2f9e44` (green), `#e8590c` (orange), `#862e9c` (purple)
-**Labels**: `#868e96` (gray, for annotations)
-
-## Tips
-
-- Every element needs a unique `id` (required for binding!)
-- Use `from`/`to` on arrows — don't calculate coordinates manually
-- `roughness:0` for clean diagrams, `1` for sketchy feel
-- Text `fontFamily:1` for hand-drawn, `3` for code
-- Group related elements spatially, color-code by type
-- For nested layouts, use a large background rectangle as a container
+- 每个元素都需要一个唯一的 `id`（用于绑定操作）。
+- 箭头必须使用 `from` 和 `to` 属性进行连接，无需手动计算坐标。
+- 设置 `roughness=0` 可获得清晰的图表效果；`roughness=1` 可获得草率的绘图效果。
+- 文本字体样式 `fontFamily=1` 适用于手写风格；`fontFamily=3` 适用于代码风格。
+- 将相关元素进行分组，并根据类型使用不同的颜色进行区分。
+- 对于嵌套布局，可以使用一个较大的背景矩形作为容器。

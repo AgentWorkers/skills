@@ -1,46 +1,46 @@
 ---
 name: winamp
-description: Control Winamp on Windows (Native or WSL2) or Linux (via Wine).
+description: 在 Windows（无论是原生系统还是 WSL2）或 Linux（通过 Wine）上控制 Winamp。
 metadata:
   moltbot:
     requires:
       bins: ["winamp.exe"]
 ---
 
-# Winamp CLI
+# Winamp 命令行界面（CLI）
 
-Use this skill to control the Winamp media player.
+使用此技能来控制 Winamp 媒体播放器。
 
-## Executable Paths
-Depending on your environment, the path to the Winamp executable will vary:
-- **Windows (Native):** `C:\Program Files (x86)\Winamp\winamp.exe`
-- **WSL2 (Windows Host):** `/mnt/c/Program Files (x86)/Winamp/winamp.exe`
-- **Linux (via Wine):** `wine "C:\Program Files (x86)\Winamp\winamp.exe"`
+## 可执行文件路径
+根据您的环境，Winamp 可执行文件的路径可能会有所不同：
+- **Windows（原生系统）：** `C:\Program Files (x86)\Winamp\winamp.exe`
+- **WSL2（Windows 宿主环境）：** `/mnt/c/Program Files (x86)/Winamp/winamp.exe`
+- **Linux（通过 Wine 运行）：** `wine "C:\Program Files (x86)\Winamp\winamp.exe"`
 
-## Common Commands
+## 常用命令
 
-### Playback Control
-- **Play:** `winamp.exe /PLAY`
-- **Pause/Unpause:** `winamp.exe /PAUSE`
-- **Stop:** `winamp.exe /STOP`
-- **Next Track:** `winamp.exe /NEXT`
-- **Previous Track:** `winamp.exe /PREV`
+### 播放控制
+- **播放：** `winamp.exe /PLAY`
+- **暂停/恢复播放：** `winamp.exe /PAUSE`
+- **停止：** `winamp.exe /STOP`
+- **下一首曲目：** `winamp.exe /NEXT`
+- **上一首曲目：** `winamp.exe /PREV`
 
-### Managing Playlists
-- **Play File (Clear Queue):** `winamp.exe "C:\path\to\file.mp3"`
-- **Enqueue File/Folder:** `winamp.exe /ADD "C:\path\to\file.mp3"`
-- **Play Playlist:** `winamp.exe "C:\path\to\playlist.m3u"`
+### 管理播放列表
+- **播放文件（清空播放队列）：** `winamp.exe "C:\path\to\file.mp3"`
+- **将文件/文件夹添加到播放列表：** `winamp.exe /ADD "C:\path\to\file.mp3"`
+- **播放播放列表：** `winamp.exe "C:\path\to\playlist.m3u"`
 
-### Advanced Switches
-- **New Instance:** `winamp.exe /NEW` (Forces a new window)
-- **Specific Instance:** `winamp.exe /CLASS="MyClassName"` (Target a specific window)
-- **Config Dir:** `winamp.exe /INIDIR="C:\path\to\dir"` (Use specific settings)
+### 高级选项
+- **打开新窗口：** `winamp.exe /NEW`（强制打开新窗口）
+- **指定特定窗口：** `winamp.exe /CLASS="MyClassName"`（指定要操作的窗口）
+- **使用自定义配置文件：** `winamp.exe /INIDIR="C:\path\to\dir"`（使用指定的配置文件）
 
-## Execution Note (Backgrounding)
-Since Winamp is a GUI application, always run it in the background to prevent sessions from hanging. The command will execute as soon as it is sent.
+## 执行注意事项（后台运行）
+由于 Winamp 是一个图形界面应用程序，建议将其设置为在后台运行，以防止程序卡顿。命令一旦发送，就会立即执行。
 
-### Moltbot `exec` Usage:
-Set `background: true` in your tool call.
+### Moltbot `exec` 的使用方法：
+在调用工具时，需要将 `background: true` 参数添加到命令中。
 
 ```json
 {
@@ -50,9 +50,9 @@ Set `background: true` in your tool call.
 }
 ```
 
-### CLI Usage:
-Append an ampersand (`&`) to the command.
+### 命令行使用方法：
+在命令后面添加一个符号 `&`，以便在后台执行该命令。
+
 ```bash
 "/mnt/c/Program Files (x86)/Winamp/winamp.exe" /PLAY &
 ```
-

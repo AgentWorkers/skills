@@ -1,48 +1,48 @@
 ---
 name: otp-challenger
 version: 1.0.3
-description: Enable agents and skills to challenge users for fresh two-factor authentication proof (TOTP or YubiKey) before executing sensitive actions. Use this for identity verification in approval workflows - deploy commands, financial operations, data access, admin operations, and change control.
+description: 在执行敏感操作之前，启用代理（agents）和技能（skills）来要求用户提供新的双因素认证（TOTP或YubiKey）验证。这可用于审批工作流中的身份验证，包括部署命令、金融操作、数据访问、管理员操作以及变更控制等场景。
 metadata: {"openclaw": {"emoji": "🔐", "homepage": "https://github.com/ryancnelson/otp-challenger", "requires": {"bins": ["jq", "python3", "curl", "openssl", "base64"], "anyBins": ["oathtool", "node"]}, "envVars": {"required": [], "conditionallyRequired": [{"name": "OTP_SECRET", "condition": "TOTP mode", "description": "Base32 TOTP secret (16-128 chars)"}, {"name": "YUBIKEY_CLIENT_ID", "condition": "YubiKey mode", "description": "Yubico API client ID"}, {"name": "YUBIKEY_SECRET_KEY", "condition": "YubiKey mode", "description": "Yubico API secret key (base64)"}], "optional": [{"name": "OTP_INTERVAL_HOURS", "default": "24", "description": "Verification validity period"}, {"name": "OTP_MAX_FAILURES", "default": "3", "description": "Failed attempts before rate limiting"}, {"name": "OTP_FAILURE_HOOK", "description": "Script to execute on verification failures (privileged - runs arbitrary commands)"}]}, "privilegedFeatures": ["OTP_FAILURE_HOOK can execute arbitrary shell commands on failure events"], "install": [{"id": "jq", "kind": "brew", "formula": "jq", "bins": ["jq"], "label": "Install jq via Homebrew", "os": ["darwin", "linux"]}, {"id": "python3", "kind": "brew", "formula": "python3", "bins": ["python3"], "label": "Install Python 3 via Homebrew", "os": ["darwin", "linux"]}, {"id": "oathtool", "kind": "brew", "formula": "oath-toolkit", "bins": ["oathtool"], "label": "Install OATH Toolkit via Homebrew", "os": ["darwin", "linux"]}]}}
 ---
 
-# OTP Identity Challenge Skill
+# OTP 身份验证功能
 
-Challenge users for fresh two-factor authentication before sensitive actions.
+在用户执行敏感操作之前，要求他们通过两步验证（OTP）来验证身份。
 
-## When to Use
+## 使用场景
 
-Require OTP verification before:
-- Deploy commands (`kubectl apply`, `terraform apply`)
-- Financial operations (transfers, payment approvals)
-- Data access (PII exports, customer data)
-- Admin operations (user modifications, permission changes)
+在以下操作前，必须进行 OTP 验证：
+- 部署命令（`kubectl apply`、`terraform apply`）
+- 财务操作（转账、支付审批）
+- 数据访问（个人身份信息（PII）的导出、客户数据操作）
+- 管理操作（用户信息修改、权限变更）
 
-## Scripts
+## 脚本
 
 ### verify.sh
 
-Verify a user's OTP code and record verification state.
+验证用户的 OTP 代码，并记录验证状态。
 
 ```bash
 ./verify.sh <user_id> <code>
 ```
 
-**Parameters:**
-- `user_id` - Identifier for the user (e.g., email, username)
-- `code` - Either 6-digit TOTP or 44-character YubiKey OTP
+**参数：**
+- `user_id` - 用户标识符（例如：电子邮件、用户名）
+- `code` - 6位数的 TOTP 代码或44个字符的 YubiKey OTP 代码
 
-**Exit codes:**
-- `0` - Verification successful
-- `1` - Invalid code or rate limited
-- `2` - Configuration error (missing secret, invalid format)
+**退出代码：**
+- `0` - 验证成功
+- `1` - 代码无效或达到验证次数限制
+- `2` - 配置错误（缺少密钥、格式不正确）
 
-**Output on success:**
+**验证成功时的输出：**
 ```
 ✅ OTP verified for <user_id> (valid for 24 hours)
 ✅ YubiKey verified for <user_id> (valid for 24 hours)
 ```
 
-**Output on failure:**
+**验证失败时的输出：**
 ```
 ❌ Invalid OTP code
 ❌ Too many attempts. Try again in X minutes.
@@ -51,17 +51,17 @@ Verify a user's OTP code and record verification state.
 
 ### check-status.sh
 
-Check if a user's verification is still valid.
+检查用户的 OTP 验证状态是否仍然有效。
 
 ```bash
 ./check-status.sh <user_id>
 ```
 
-**Exit codes:**
-- `0` - User has valid (non-expired) verification
-- `1` - User not verified or verification expired
+**退出代码：**
+- `0` - 用户的 OTP 验证有效（未过期）
+- `1` - 用户未通过验证或 OTP 验证已过期
 
-**Output:**
+**输出：**
 ```
 ✅ Valid for 23 more hours
 ⚠️ Expired 2 hours ago
@@ -70,13 +70,13 @@ Check if a user's verification is still valid.
 
 ### generate-secret.sh
 
-Generate a new TOTP secret with QR code (requires `qrencode` to be installed).
+生成一个新的 TOTP 密钥，并附带 QR 码（需要安装 `qrencode` 工具）。
 
 ```bash
 ./generate-secret.sh <account_name>
 ```
 
-## Usage Pattern
+## 使用方式
 
 ```bash
 #!/bin/bash
@@ -90,21 +90,21 @@ fi
 # Proceed with sensitive action
 ```
 
-## Configuration
+## 配置
 
-**Required for TOTP:**
-- `OTP_SECRET` - Base32 TOTP secret
+**TOTP 需要的配置参数：**
+- `OTP_SECRET` - Base32 编码的 TOTP 密钥
 
-**Required for YubiKey:**
-- `YUBIKEY_CLIENT_ID` - Yubico API client ID
-- `YUBIKEY_SECRET_KEY` - Yubico API secret key (base64)
+**YubiKey 需要的配置参数：**
+- `YUBIKEY_CLIENT_ID` - Yubico API 客户端 ID
+- `YUBIKEY_SECRET_KEY` - Yubico API 密钥（Base64 编码）
 
-**Optional:**
-- `OTP_INTERVAL_HOURS` - Verification expiry (default: 24)
-- `OTP_MAX_FAILURES` - Failed attempts before rate limiting (default: 3)
-- `OTP_STATE_FILE` - State file path (default: `memory/otp-state.json`)
+**可选参数：**
+- `OTP_INTERVAL_HOURS` - OTP 验证的有效期（默认：24小时）
+- `OTP_MAX_FAILURES` - 验证失败次数达到限制前的尝试次数（默认：3次）
+- `OTP_STATE_FILE` - 验证状态文件的路径（默认：`memory/otp-state.json`）
 
-Configuration can be set via environment variables or in `~/.openclaw/config.yaml`:
+配置信息可以通过环境变量或 `~/.openclaw/config.yaml` 文件进行设置：
 
 ```yaml
 security:
@@ -115,23 +115,23 @@ security:
     secretKey: "base64secret"
 ```
 
-## Code Format Detection
+## 代码类型自动检测
 
-The script auto-detects code type:
-- **6 digits** (`123456`) → TOTP validation
-- **44 ModHex characters** (`cccccc...`) → YubiKey validation
+脚本会自动检测代码类型：
+- **6位数字** (`123456`) → TOTP 验证
+- **44个ModHex字符** (`cccccc...`) → YubiKey 验证
 
-ModHex alphabet: `cbdefghijklnrtuv`
+ModHex 字母表：`cbdefghijklnrtuv`
 
-## State File
+## 验证状态文件
 
-Verification state stored in `memory/otp-state.json`. Contains only timestamps, no secrets.
+验证状态存储在 `memory/otp-state.json` 文件中。该文件仅包含时间戳，不包含任何密钥信息。
 
-## Human Documentation
+## 人类可读的文档
 
-See **[README.md](./README.md)** for:
-- Installation instructions
-- Setup guides (TOTP and YubiKey)
-- Security considerations
-- Troubleshooting
-- Examples
+请参阅 **[README.md](./README.md)**，以获取以下信息：
+- 安装说明
+- 设置指南（TOTP 和 YubiKey 的使用方法）
+- 安全注意事项
+- 故障排除方法
+- 使用示例

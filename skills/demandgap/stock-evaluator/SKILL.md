@@ -1,973 +1,496 @@
 ---
 name: stock-evaluator-v3
-description: Comprehensive evaluation of potential stock investments combining valuation analysis, fundamental research, technical assessment, and clear buy/hold/sell recommendations. Use when the user asks about buying a stock, evaluating investment opportunities, analyzing watchlist candidates, or requests stock recommendations. Provides specific entry prices, position sizing, and conviction ratings.
+description: **全面评估潜在的股票投资机会**：该服务结合了估值分析、基本面研究、技术分析，并提供明确的买入/持有/卖出建议。适用于用户咨询股票购买、评估投资机会、分析关注列表中的候选股票或请求股票推荐的情况。会提供具体的买入价格、持仓规模以及投资建议的可靠性评级。
 ---
 
-# Stock Evaluator (Enhanced)
+# 股票评估器（增强版）
 
-## ⚠️ CRITICAL: MANDATORY DELIVERABLES CHECKLIST
-Every analysis MUST include ALL of these:
-- ☐ **Technical Analysis** (price action, indicators, key levels, Ichimoku Cloud)
-- ☐ **Fundamental Analysis** (business, financials, competitive position)
-- ☐ **Advanced Financial Metrics** (F-Score, Z-Score, M-Score, Max Drawdown, Value Trap Score)
-- ☐ **Investor Persona Scores** (8 legendary investor frameworks)
-- ☐ **Valuation Assessment** (multiple methods with margin of safety)
-- ☐ **Bull vs. Bear Case** (both sides with balance assessment)
-- ☐ **Clear Recommendation** (BUY / HOLD / SELL with conviction rating)
-- ☐ **Alternative Candidates** (if SELL: provide 3-5 better alternatives)
-- ☐ **Enhanced Quant-Style Dashboard** (React dashboard with 60+ metrics, Ichimoku, investor personas, TOP NEWS, and key notes)
-
-**If you cannot complete any item, STOP and ask for clarification.**
+## ⚠️ 重要提示：必完成的项目清单  
+每项分析都必须包含以下所有内容：  
+- ☐ **技术分析**（价格走势、指标、关键价位、一目均衡线）  
+- ☐ **基本面分析**（业务状况、财务状况、竞争地位）  
+- ☐ **高级财务指标**（F分数、Z分数、M分数、最大回撤率、价值陷阱分数）  
+- ☐ **投资者类型评分**（8种著名投资者评估框架）  
+- ☐ **估值评估**（多种估值方法及安全边际）  
+- ☐ **看涨/看跌情景**（全面分析）  
+- ☐ **明确的投资建议**（买入/持有/卖出，附有信心等级）  
+- ☐ **替代方案**（如果建议卖出：提供3-5个更好的选择）  
 
 ---
 
-## ⚠️ CRITICAL: DATA INTEGRITY RULES
+## ⚠️ 重要提示：数据完整性规则  
+### 禁止伪造数据  
+**严禁伪造、估算或编造任何数值数据。** 仪表板中的每个指标都必须来源于：  
+1. 带有来源链接的网络搜索结果  
+2. 公司公开文件（10-K年报、10-Q季度报、盈利报告）  
+3. 官方财务数据提供商  
 
-### ZERO FABRICATION POLICY
-**NEVER fabricate, estimate, or hallucinate ANY numeric data point.** Every metric in the dashboard MUST come from:
-1. A web search result with a cited source
-2. Company filings (10-K, 10-Q, earnings reports)
-3. Official financial data providers
+**如果数据无法找到，请标记为“N/A”或“--”**  
 
-**If data cannot be found → Use "N/A" or "--"**
+### 必须进行的网络搜索（每次分析至少进行一次）  
+在填充仪表板之前，你必须执行以下搜索：  
+| 搜索编号 | 查询模板 | 检索到的数据 |  
+|----------|---------------|----------------|  
+| 1 | “[股票代码] 股票价格 / 市值 / P/E比率” | 股票价格、市值、P/E比率 |  
+| 2 | “[股票代码] 净资产收益率（ROE）/ 总资产回报率（ROA）/ 2024年盈利报告” | 财务比率 |  
+| 3 | “[股票代码] 2024财年营收增长率 / 盈利增长率” | 增长率（已公布数据） |  
+| 4 | “[股票代码] 皮奥特罗斯基F分数” | F分数（已计算） |  
+| 5 | “[股票代码] 2025年内幕交易SEC表格4” | 内幕交易情况 |  
+| 6 | “[股票代码] 短仓比例 / 浮动股比例” | 短仓情况 |  
+| 7 | “[股票代码] 相对强弱指数（RSI）/ 50日移动平均线 / 200日移动平均线 / 波动率” | 技术指标 |  
+| 8 | “[股票代码] 分析师目标价格” | 分析师预测价格 |  
 
-### MANDATORY WEB SEARCHES (minimum per analysis)
+### 数据来源优先级  
+使用以下优先级来源：  
+1. **公司公开文件**（SEC EDGAR系统、公司投资者关系部门）  
+2. **交易所数据**（纽约证券交易所、纳斯达克、伦敦证券交易所官方数据）  
+3. **经过验证的财务数据**（雅虎财经、谷歌财经、MarketWatch）  
+4. **SEC表格4**（仅用于内幕交易数据）  
 
-You MUST perform these searches before populating the dashboard:
+### 禁止的行为  
+- **不得使用培训中获得的具体数据**  
+- **不得使用分析师报告**（根据用户偏好）  
+- **不得使用未经验证的估算数据**  
+- **不得使用“常识性”假设**  
 
-| Search # | Query Template | Data Retrieved |
-|----------|---------------|----------------|
-| 1 | "[TICKER] stock price market cap P/E ratio" | Price, Market Cap, P/E |
-| 2 | "[TICKER] ROE ROA profit margin 2024 annual report" | Financial ratios |
-| 3 | "[TICKER] revenue growth earnings growth FY2024" | Growth rates (REPORTED) |
-| 4 | "[TICKER] Piotroski F-Score" | F-Score (or calculate) |
-| 5 | "[TICKER] insider trading SEC Form 4 2025" | Insider buys/sells |
-| 6 | "[TICKER] short interest percentage float" | Short interest |
-| 7 | "[TICKER] RSI MACD 50-day 200-day moving average beta volatility" | Technical indicators |
-| 8 | "[TICKER] analyst price target consensus" | Analyst targets |
-
-### DATA SOURCE HIERARCHY
-
-Use sources in this priority order:
-1. **Official company filings** (SEC EDGAR, company investor relations)
-2. **Exchange data** (NYSE, NASDAQ, LSE official)
-3. **Verified financial data** (Yahoo Finance, Google Finance, MarketWatch)
-4. **SEC Form 4** (for insider trading ONLY)
-5. **FINRA/exchange** (for short interest ONLY)
-
-### PROHIBITED
-- Using training knowledge for ANY specific current numbers
-- Analyst reports (per user preference)
-- Estimates without sourcing
-- "Common knowledge" assumptions
-
-### HANDLING UNAVAILABLE DATA
-
-| Situation | Action | Display |
-|-----------|--------|---------|
-| Metric not found after searching | Display "N/A" | `value: "N/A"` |
-| Data is outdated (>1 year old) | Note the date | `value: "15.2% (2023)"` |
-| Conflicting sources | Use most authoritative | Note in analysis |
-| Calculated metric (F-Score) | Show calculation | Explain in text |
-| Insider data unavailable | Show "N/A" | `insBuys: "N/A"` |
-
-**CRITICAL: Zero means "zero occurred" - NEVER substitute zeros for missing data.**
+### 处理缺失数据  
+| 情况 | 对策 | 显示方式 |  
+|-----------|--------|---------|  
+| 指标未找到 | 显示“N/A” | `value: "N/A"` |  
+| 数据过时（>1年） | 标注日期 | `value: "15.2% (2023)"` |  
+| 来源冲突 | 使用最权威的数据 | 在分析中注明 |  
+| 计算出的指标 | 显示计算过程 |  
+| 内幕数据不可用 | 显示“N/A” | `insBuys: "N/A"` |  
 
 ---
 
-## STANDARDIZED METRIC LABELS
+## 标准化指标标签  
+在仪表板中使用以下确切的标签（与参考截图一致）：  
 
-Use these EXACT labels in the dashboard (matches reference screenshots):
+### 第1行：价格与估值 | 财务表现  
+| 标签 | 说明 |  
+|-------|-------|  
+| 价格： | €XX.XX |  
+| 市值： | €XXB |  
+| 特定行业P/E比率： | XX.XX |  
+| 前瞻P/E比率： | XX.XX |  
+| PEG比率（1年）： | X.XX（与基准比较） |  
+| 净资产收益率（ROE）： | XX.XX%（与基准比较） |  
+| 总资产回报率（ROA）： | XX.XX%（与基准比较） |  
+| 毛利率： | XX.XX%（与基准比较） |  
+| 营业利润率： | XX.XX%（与基准比较） |  
+| 营运利润率： | XX.XX%（与基准比较） |  
 
-### Row 1: PRICE & VALUATION | FINANCIAL PERFORMANCE
-| Label | Notes |
-|-------|-------|
-| Price: | $XX.XX or €XX.XX |
-| Market Cap: | $XXB or €XXB |
-| Trailing P/E: | XX.XX |
-| Forward P/E: | XX.XX |
-| Subsector P/E: | XX.XX or N/A |
-| PEG (1Y): | X.XX with benchmark (<1) |
-| ROE: | XX.XX% with benchmark (>20%) |
-| ROA: | XX.XX% with benchmark (>10%) |
-| Profit Margin: | XX.XX% with benchmark (>20%) |
-| Operative Margin: | XX.XX% with benchmark (>20%) - NOTE: "Operative" not "Operating" |
-| Gross Margin: | XX.XX% with benchmark (>40%) |
-| ROIC: | XX.X% with benchmark (>15%) |
+### 第2行：增长指标 | 风险指标 |  
+| 标签 | 说明 |  
+|-------|-------|  
+| 营收增长率（同比）： | XX.XX%（与基准比较） |  
+| 盈利增长率（同比）： | XX.XX%（与基准比较） |  
+| 当前市盈率（EPS）： | €X.XX |  
+| 前瞻市盈率（EPS）： | €X.XX |  
+| 增长率： | 可限增长：X.X% |  
+| 分析师目标价格： | €X.XX |  
 
-### Row 2: GROWTH METRICS | RISK INDICATORS
-| Label | Notes |
-|-------|-------|
-| Revenue (YoY): | XX.XX% with benchmark (>10%) - REPORTED only |
-| Earning (YoY): | XX.XX% with benchmark (>0%) - REPORTED only |
-| EPS (TTM): | $X.XX |
-| Forward EPS: | $X.XX |
-| Growth Rates: | Capped: X.X% / Uncapped: X.X% |
-| Analyst Target: | $XX.XX |
-| CRS (0-1): | X.XX with benchmark (Medium) |
-| Debt/Equity (mrq): | X.XX with benchmark (0.5-1) |
-| Piotroski F: | X with benchmark (≥7) |
-| Altman Z: | X.XX with benchmark (>3) |
-| Beneish M: | X.XX with benchmark (<-1.78) |
-| Value Trap: | XX (Label) |
+### 第3行：流动性与自由现金流 | 内幕交易与市场情绪 |  
+| 标签 | 说明 |  
+|-------|-------|  
+| 流动比率： | X.XX（与基准比较） |  
+| 现金： | €X.XB |  
+| 债务： | €X.XB |  
+| 5年自由现金流增长率： | XX.X%（与基准比较） |  
+| 自由现金流收益率： | XX.XX%（与基准比较） |  
+| 现金流利润率： | XX.XX%（与基准比较） |  
+| 分红比率： | XX.XX%（与基准比较） |  
 
-### Row 3: LIQUIDITY & FREE CASH FLOW | INSIDER & SENTIMENT & CLASS
-| Label | Notes |
-|-------|-------|
-| Current Ratio: | X.XX with benchmark (1-2) |
-| Cash: | $X.XB |
-| Debt: | $X.XB or N/A |
-| FCF Growth 5Y: | XX.X% with benchmark (>5%) |
-| FCF Yield: | X.XX% with benchmark (>4%) |
-| FCF Margin: | XX.XX% with benchmark (>15%) |
-| Payout Ratio: | XX.XX% with benchmark (<50%) |
-| Buys (12M): | X - from SEC Form 4 or N/A |
-| Sells (12M): | X - from SEC Form 4 or N/A |
-| Net Shares (12M): | +/-XXK - from SEC Form 4 or N/A |
-| Short Int (%): | X.X% |
-| Sentiment / Articles: | +X.XXX / XX (Positive/Negative) |
-| Stock: [Type] + Div Yield: | Combined: "Stock: Growth" + "Div Yield: X.XX%" |
-| Sector/Industry: | Combined: "Sector / Industry" |
+### 第4行：质量评分 | 堡垒与其他 |  
+| 标签 | 说明 |  
+|-------|-------|  
+| CQVS评分： | XX.XX（与基准比较） |  
+| 估值评分： | XX.XX |  
+| 质量评分： | XX.XX |  
+| 实力评分： | XX.XX |  
+| 诚信评分： | XX.XX |  
+| 巴菲特护城河评分： | X（与基准比较） |  
 
-### Row 4: QUALITY SCORES | MOAT & OTHER
-| Label | Notes |
-|-------|-------|
-| CQVS: | XX.XX with benchmark range |
-| Label: | Strong/Moderate/Weak |
-| Valuation: | XX.XX |
-| Quality: | XX.XX |
-| Strength: | XX.XX |
-| Integrity: | XX.XX |
-| Buffett Moat: | X with benchmark (4-7) |
-| Greenblatt (MF): | EY: X.X% / ROC: X.X% or N/A |
-| Beta: + Vol 1Y: | Combined: "Beta: X.XX" + "Vol 1Y: XX.X%" |
-| Earnings Predict.: | XX.X% with benchmark (>80%) |
-| Drawdown (5Y): | -XX.X% with label (Low/Mid/High) |
-| Completeness: + Data Quality: | Combined: "XX.X%" + "High/Medium/Low" |
+### 第3行：雷达图指标（12个指标，标准化范围0-100）  
+1. 营收增长率（标准化：X%增长 → 改变为20%+）  
+2. 营业利润率（标准化：X% → 改变为30%+）  
+3. 毛利率（标准化：X% → 改变为60%+）  
+4. 净利润率（标准化：X% → 改变为60%+）  
+5. 净资产收益率（ROE）（标准化：X% → 改变为30%+） |  
+| 风险评分（与综合风险相反）：100 - 风险*100） |  
+| β系数评分（标准化：β=0.5时为100，β=1.5时为50，β=2.5时为0） |  
+| P/E比率与增长比率（标准化：P/E ÷ 前瞻增长率） |  
+| FCF利润率： | （公式：自由现金流 / 收入 × 100） |  
+| 新闻情绪与短仓比例 | （-1至+1表示市场情绪；>10%表示高短仓比例） |  
 
----
-
-## STANDARDIZED BENCHMARKS (Single Source of Truth)
-
-Use these EXACT thresholds for color coding:
-
-| Metric | Green (Good) | Yellow (Neutral) | Red (Warning) |
-|--------|--------------|------------------|---------------|
-| **ROE** | >20% | 10-20% | <10% |
-| **ROA** | >10% | 5-10% | <5% |
-| **Profit Margin** | >20% | 10-20% | <10% |
-| **Operative Margin** | >20% | 10-20% | <10% |
-| **Gross Margin** | >40% | 25-40% | <25% |
-| **ROIC** | >15% | 8-15% | <8% |
-| **Debt/Equity** | <1 | 1-2 | >2 |
-| **Current Ratio** | 1-2 | 0.5-1 or 2-3 | <0.5 or >3 |
-| **Piotroski F** | ≥7 | 4-6 | ≤3 |
-| **Altman Z** | >2.99 | 1.81-2.99 | <1.81 |
-| **Beneish M** | <-2.22 | -2.22 to -1.78 | >-1.78 |
-| **PEG (1Y)** | <1 | 1-2 | >2 |
-| **RSI (14)** | 30-50 | 50-70 | >70 or <30 |
-| **Short Interest** | <5% | 5-10% | >10% |
-| **FCF Yield** | >5% | 2-5% | <2% |
-| **FCF Margin** | >15% | 10-15% | <10% |
-| **Dividend Yield** | >2% | 1-2% | <1% or >8% |
-| **Value Trap** | 0-39 | 40-59 | 60-100 |
-| **Max Drawdown** | >-30% | -30% to -50% | <-50% |
-| **Revenue Growth** | >10% | 0-10% | <0% |
-| **Earnings Growth** | >0% | -10% to 0% | <-10% |
-
----
-
-## Overview
-
-This skill provides institutional-grade evaluation of potential stock investments. Unlike portfolio analysis which reviews existing positions, this skill evaluates stocks you're **considering buying** or **deciding whether to purchase**.
-
-The evaluation answers:
-- **Should I buy this stock?**
-- **At what price should I enter?**
-- **How much should I allocate?**
-- **What's my upside and downside?**
-- **When should I sell?**
-
-### Default Currency: € (Euro)
-All monetary values in the dashboard should be displayed in **Euro (€)** as the default currency:
-- Price: €42.13
-- Market Cap: €78.3B
-- Analyst Target: €56.45
-- Entry/Stop/Target prices: €38, €35, €56
-- EPS values: €1.39, €1.91
-
-### IMPORTANT: Use REPORTED Growth Rates
-For the dashboard metrics **"Rev Growth"** and **"Earn Growth"**:
-- **USE REPORTED GROWTH** - not underlying, adjusted, or organic figures
-- Reported figures reflect actual GAAP/IFRS numbers including FX, acquisitions, disposals
-- This provides a more accurate picture of what investors actually received
-- Example: If underlying growth is 7% but reported is 2.2%, use **2.2%**
-- Same for earnings: Use reported EPS growth, not adjusted EPS growth
-
-## Core Purpose
-
-**Stock Evaluator** is for:
-- ✅ Evaluating potential investments BEFORE buying
-- ✅ Analyzing watchlist candidates
-- ✅ Getting buy/hold/sell recommendations with specific prices
-- ✅ Comparing multiple investment opportunities
-- ✅ Finding better alternatives to current consideration
-
-**NOT for:**
-- ❌ Reviewing existing portfolio positions (use Portfolio Analyst skill)
-- ❌ General stock market questions
-- ❌ Stock screening or discovery from scratch
-- ❌ Options, derivatives, or crypto analysis
-
-## Evaluation Framework
-
-### Five Pillars of Stock Evaluation
-
-**1. Valuation Assessment**
-- Is the stock undervalued, fairly valued, or overvalued?
-- Multiple valuation methods (DCF, relative, Peter Lynch, asset-based)
-- Margin of safety requirement (15-30%)
-- Fair value estimate with confidence range
-
-**2. Quality Analysis**
-- Business model strength and competitive moat
-- Financial health and trends (5-10 year view)
-- Management quality and capital allocation
-- Industry position and competitive advantages
-
-**3. Timing Assessment**
-- Technical setup and entry points
-- Near-term catalysts and events
-- Market sentiment and positioning
-- Optimal entry price range
-
-**4. Position Sizing**
-- Allocation recommendation (% of portfolio)
-- Based on conviction, risk, and diversification
-- Maximum allocation limits
-- Risk-adjusted sizing
-
-**5. Conviction Rating**
-- **Strong Buy**: High conviction, clear undervaluation, low risk
-- **Buy**: Good opportunity, reasonable valuation, moderate risk
-- **Hold**: Fairly valued, no compelling reason to buy now
-- **Avoid**: Overvalued, significant risks, or better alternatives exist
-
----
-
-## Value Trap Indicator
-
-### What It Is
-A Value Trap is when a stock appears undervalued (low P/E, low P/B) but is actually cheap for valid fundamental reasons. The stock keeps declining despite appearing "cheap."
-
-### Value Trap Score Calculation (0-100, LOWER = more genuine, HIGHER = more trap)
-
-**Components to evaluate (ADD points for trap indicators):**
-
-**1. Price Momentum (25 points max)**
-- 6-month price change vs market: If underperforming by >20%, ADD 15-25 points
-- 12-month price change: Sustained decline = ADD 10-20 points
-- If price momentum is POSITIVE: ADD 0 points
-
-**2. Earnings Quality (25 points max)**
-- EPS trend (3 years): Declining = ADD 10-25 points
-- Revenue trend: Declining = ADD 5-15 points
-- Margin trend: Compressing = ADD 5-10 points
-- If earnings quality is STRONG: ADD 0 points
-
-**3. Balance Sheet Health (25 points max)**
-- Debt levels increasing? ADD 5-15 points
-- Cash flow negative or declining? ADD 10-20 points
-- Working capital deteriorating? ADD 5-10 points
-- If balance sheet is HEALTHY: ADD 0 points
-
-**4. Valuation Context (25 points max)**
-- Is low multiple justified by declining fundamentals? ADD 10-25 points
-- Compare current fundamentals to when multiple was higher
-- If fundamentals justify valuation: ADD 0 points
-
-### Scoring Formula
+### 显示格式  
+### 颜色编码规则  
 ```
 Value Trap Score = Momentum Penalty + Quality Penalty + Balance Sheet Penalty + Valuation Penalty
-```
-(Score ranges from 0 to 100, where 0 = definitely genuine value, 100 = definite value trap)
-
-### Score Interpretation
-- **0-19**: Genuine Value (likely undervalued, fundamentals intact) - GREEN
-- **20-39**: Probably Genuine (minor concerns, monitor) - LIGHT GREEN
-- **40-59**: Caution Zone (mixed signals, proceed carefully) - YELLOW
-- **60-79**: Likely Trap (multiple red flags) - ORANGE
-- **80-100**: Strong Trap Signal (avoid) - RED
-
-### Display Format
-```
-Value Trap: 21 (Genuine)
-```
-Color coding: green <40, yellow 40-60, red >60
+```  
+- 绿色：<40  
+- 黄色：40-60  
+- 红色：>60  
 
 ---
 
-## Investor Persona Scores
+## 投资者类型评分  
+根据8种著名投资者的投资理念对每只股票进行评分（0-10分）。这有助于用户了解该股票适合哪种类型的投资者。  
 
-Score each stock against 8 famous investor philosophies (0-10 scale). This helps users understand what type of investor the stock suits.
+### 1. 沃伦·巴菲特评分  
+基于“沃伦·巴菲特的投资方式”——寻找具有持久竞争优势的公司：  
+**关键指标权重：**  
+- 净资产收益率（ROE）>20%：2分  
+- 毛利率：>15%：2分  
+- 正现金流且持续增长：2分  
+- 护城河优势（品牌影响力、定价能力）：2分  
+- 收益可预测性：2分  
 
-### 1. Warren Buffett Score
-Based on "The Warren Buffett Way" - seeks durable competitive advantages
+### 2. 查理·芒格评分  
+基于“查理的投资法则”——关注可能出现的问题（逆向思维）：  
+**评分方法：**从10分开始，根据实际情况扣分：  
+- 高债务（D/E > 2）：-3分  
+- 收益波动大：-2分  
+- 管理层表现不佳：-2分  
+- 无竞争优势：-2分  
 
-**Key metrics weighted:**
-- ROE (>20%): 2 points
-- Profit margin (>15%): 2 points
-- Free cash flow positive & growing: 2 points
-- Moat strength (brand, pricing power): 2 points
-- Predictable earnings: 2 points
+### 3. 雷·达利奥评分  
+基于“原则投资法”——关注抗周期能力：  
+**关键指标：**  
+- D/E比率 < 1：2分  
+- β系数 < 1：2分  
+- 跨周期盈利能力稳定：2分  
+- 衰退期间抗跌能力：2分  
 
-**Buffett likes:** Predictable businesses, pricing power, low capex needs, consistent profitability
+### 4. 彼得·林奇评分  
+基于“华尔街的智慧”——关注合理价格下的增长潜力：  
+**主要指标：**  
+- PEG比率（P/E ÷ 前瞻增长率）：  
+  - PEG < 0.5：10分  
+- PEG 0.5-1.0：8分  
+- PEG 1.0-1.5：6分  
+- PEG > 1.5：4分  
+**调整因素：**  
+  - 如果收益持续增长：+1分  
+  - 如果业务易于理解：+1分  
+  - 如果行业处于衰退期：-1分  
 
-### 2. Charlie Munger Score
-Based on "Poor Charlie's Almanack" - mental latticework, inversion thinking
+### 5. 本尼什·梅尔评分  
+基于“聪明的投资者”——关注价值陷阱：  
+**评分标准：**  
+- XX（表示存在价值陷阱）  
 
-**Focus on:** What could go WRONG (inversion principle)
+### 3行：流动性与自由现金流  
+### 4行：投资者类型评分  
+根据8种著名投资者的投资理念对每只股票进行评分（0-10分）。  
 
-**Scoring:** Start at 10, subtract penalties:
-- High debt (D/E > 2): -3 points
-- Volatile earnings: -2 points
-- Poor management history: -2 points
-- No competitive moat: -2 points
-- Accounting red flags: -3 points
+### 增强版技术分析  
+### 一目均衡线分析  
+**计算要素：**  
+- **Tenkan-sen线（转换线）：**（9周期高点 + 9周期低点）/ 2  
+- **Kijun-sen线（基准线）：**（26周期高点 + 26周期低点）/ 2  
+- **Senkou Span A：**（Tenkan-sen线 + Kijun-sen线）/ 2，绘制在26周期后  
+- **Senkou Span B：**（52周期高点 + 52周期低点）/ 2，绘制在26周期后  
+- **Kumo云：** Senkou Span A和Senkou Span B之间的区域  
 
-### 3. Ray Dalio Score
-Based on "Principles" - All-Weather portfolio, economic machine understanding
+**信号识别与显示：**  
+- **Tenkan-sen线金叉**：Tenkan-sen线向上穿越Kijun-sen线（看涨信号） |  
+- **Tenkan-sen线死叉**：Tenkan-sen线向下穿越Kijun-sen线（看跌信号） |  
+- **Kumo云形态变化**：云从红色变为绿色（看涨信号） |  
+- **Kumo云形态变化**：云从绿色变为红色（看跌信号）  
+- **价格与Kumo云的关系**：价格高于云（看涨），价格低于云（看跌），价格在云内（中性）  
 
-**Key metrics:**
-- D/E ratio < 1: 2 points
-- Beta < 1: 2 points
-- Stable margins across cycles: 2 points
-- Low earnings volatility: 2 points
-- Recession resistance history: 2 points
+### 双重PEG比率  
+- **1年PEG比率**：P/E比率 ÷ 1年预期增长率  
+- **5年PEG比率**：P/E比率 ÷ 5年历史增长率  
+**两者提供不同的增长估值视角**  
 
-**Dalio likes:** Deleveraging plays, operational efficiency, cycle resilience
+### FCF利润率  
+**公式：** 自由现金流 / 收入 × 100  
+**基准：** >15%表示优秀，>10%表示良好  
 
-### 4. Peter Lynch Score
-Based on "One Up on Wall Street" - GARP (Growth at Reasonable Price)
-
-**Primary metric: PEG Ratio (P/E ÷ Growth Rate)**
-- PEG < 0.5: 10 points
-- PEG 0.5-1.0: 8 points
-- PEG 1.0-1.5: 6 points
-- PEG 1.5-2.0: 4 points
-- PEG > 2.0: 2 points
-
-**Adjustment factors:**
-- +1 if earnings growing consistently
-- +1 if business easy to understand
-- -1 if declining industry
-
-### 5. Benjamin Graham Score
-Based on "The Intelligent Investor" - Margin of Safety
-
-**Graham criteria (2 points each, max 10):**
-- P/E < 15
-- P/B < 1.5
-- Current ratio > 2
-- Positive earnings 10 years
-- Dividend paid 20+ years
-
-### 6. Joel Greenblatt Score
-Based on "The Little Book That Beats the Market" - Magic Formula
-
-**Combines two rankings:**
-- Earnings Yield (EBIT/EV): Higher = better
-- Return on Capital (EBIT/Net Fixed Assets + Working Capital): Higher = better
-
-**Scoring:** Combined rank in top 10% = 10 points, scaled down
-
-### 7. John Templeton Score
-Based on contrarian, global value investing
-
-**Key factors:**
-- Trading at multi-year lows: +3 points
-- Out of favor with analysts: +2 points
-- Strong fundamentals despite pessimism: +3 points
-- Global perspective (non-US opportunity): +2 points
-
-### 8. George Soros Score
-Based on "The Alchemy of Finance" - Reflexivity
-
-**Key factors:**
-- Momentum and trend strength: 3 points
-- Macro tailwinds: 3 points
-- Market perception shifting: 2 points
-- Inflection point catalyst: 2 points
-
-**Soros likes:** Macro plays, reflexive situations, trend participation
-
-### Display Format
-Show 8 badges around radar chart with scores and color coding:
-- Green (7-10): Strong fit
-- Yellow (4-6.9): Moderate fit
-- Red (0-3.9): Poor fit
+### 新闻情绪与短仓比例  
+- **新闻情绪**：基于近期文章的情绪评分（-1至+1）  
+- **短仓比例**：浮动股中 short 仓的比例（>10%表示高短仓比例，<5%表示低短仓比例）  
+**两者均能反映市场情绪及潜在的挤压/反转趋势**  
 
 ---
 
-## Enhanced Technical Analysis
+## 基本面分析流程  
+### 1. 业务理解（始终优先）  
+**分析内容：**  
+- 公司的业务是什么？（产品、服务、商业模式）  
+- 收入来源及构成  
+- 目标客户和市场  
+- 竞争优势（护城河来源）  
+- 市场地位和市场份额  
+- 行业动态和趋势  
 
-### Ichimoku Cloud Analysis
+### 2. 管理层评估  
+- 首席执行官的背景和任期  
+- 财务总监及关键高管的表现  
+- 资本分配决策（股息、回购、收购、研发）  
+- 管理层的薪酬与公司绩效的匹配度  
+- 内幕交易行为（买入行为是看涨信号）  
 
-**Components to Calculate:**
-- **Tenkan-sen (Conversion Line):** (9-period high + 9-period low) / 2
-- **Kijun-sen (Base Line):** (26-period high + 26-period low) / 2
-- **Senkou Span A:** (Tenkan-sen + Kijun-sen) / 2, plotted 26 periods ahead
-- **Senkou Span B:** (52-period high + 52-period low) / 2, plotted 26 periods ahead
-- **Chikou Span (Lagging Span):** Current close plotted 26 periods back
+### 3. 竞争优势分析  
+- 市场份额和趋势  
+- 主要竞争对手（识别3-5家直接竞争对手）  
+- 公司的独特竞争优势是什么？  
+- 可持续的竞争优势？  
 
-**Cloud (Kumo):** Area between Senkou Span A and B
+### 4. 财务分析（5-10年视角）  
+**研究步骤：**  
+1. **首先查看最新的10-K年报**——了解当前业务和近期业绩  
+2. **回顾过去5-10年的10-K年报**——了解公司的发展历程  
+3. **查看过去2-3年的10-Q季度报**——了解近期趋势  
+4. **审查财务报表**——评估公司治理结构和薪酬情况  
 
-**Signals to Identify and Display:**
-- **TK Bullish Cross:** Tenkan-sen crosses above Kijun-sen (bullish) - mark with ◆
-- **TK Bearish Cross:** Tenkan-sen crosses below Kijun-sen (bearish) - mark with ◆
-- **Kumo Twist Bullish:** Cloud changes from red to green - mark with ◆
-- **Kumo Twist Bearish:** Cloud changes from green to red - mark with ◆
-- **Price vs Cloud:** Above cloud (bullish), Below cloud (bearish), In cloud (neutral)
+**关键评估指标：**  
+- 净资产收益率（ROE）>15%  
+- 毛利率 > 15%  
+- 毛利率 > 30%  
+- 营业利润率 > 20%  
+- 营运利润率 > 20%  
+- 营运利润率 > 20%  
+- 营业利润率 > 20%  
+- 营运利润率逐年改善：+1分  
+- 总资产回报率（ROIC） > 15%：+1分  
 
-### Dual PEG Ratios
-- **PEG (1Y):** P/E ÷ 1-Year Forward Growth Estimate
-- **PEG (5Y):** P/E ÷ 5-Year Historical Growth Rate
-- Both provide different perspectives on growth valuation
+### 5. 竞争护城河评估  
+**护城河的强度：**  
+- 护城河宽/窄/无  
+**评估依据：**  
+- **网络效应**：用户越多，产品优势越明显？  
+- **品牌忠诚度**：品牌是否具有定价优势？  
+- **转换成本**：转换产品是否困难/昂贵？  
+- **监管壁垒**：是否有许可证、专利等壁垒？  
+- **无形资产**：专利、商标、专有数据等？  
+**护城河的可持续性：**优势能持续多久？  
+- 竞争对手的护城河情况  
 
-### FCF Margin
-- **Formula:** Free Cash Flow / Revenue × 100
-- **Benchmark:** >15% is excellent, >10% is good
-- Shows cash generation efficiency relative to sales
+### 6. 高级财务健康指标  
+**计算这些高级指标以获得更深入的洞察：**  
+**皮奥特罗斯基F分数（财务实力）**  
+**目的：**评估公司的财务实力（盈利能力、杠杆率和运营效率）。  
 
-### News Sentiment & Short Interest
-- **News Sentiment:** -1 to +1 scale based on recent article sentiment
-- **Short Interest:** % of float sold short (>10% = high, <5% = low)
-- Both indicate market sentiment and potential squeeze/reversal
+### 7. 阿尔特曼Z分数（破产风险预测）  
+**目的：**预测公司未来2年内破产的概率。  
+**公式：**  
+Z = 1.2 × （营运资本 / 总资产） + 1.4 × （留存收益 / 总资产） + 3.3 × （息税折旧摊销前利润 / 总资产） + 1.0 × （销售 / 总资产）  
 
----
+### 8. 本尼什M分数（盈利操纵检测）  
+**目的：**识别公司是否存在盈利操纵行为。  
+**关键指标：**  
+- 应付账款天数指数（增加表示警告信号）  
+- 毛利率指数（下降表示警告信号）  
+- 资产质量指数（增加表示警告信号）  
+- 销售增长指数（过度增长表示警告信号）  
+- 折旧指数（增加表示警告信号）  
 
-## Fundamental Analysis Process
+### 9. 最大回撤率（5年）  
+**目的：**衡量股价的最大跌幅。  
+**计算方法：**  
+- 找出过去5年的最高股价  
+- 找出股价回升前的最低股价  
+**最大回撤率 = （最低股价 - 最高股价） / 最高股价 × 100**  
 
-### 1. Business Understanding (Always First)
-
-**What to Analyze:**
-- What does the company do? (products, services, business model)
-- Revenue sources and breakdown
-- Target customers and markets
-- Competitive advantages (moat sources)
-- Market position and share
-- Industry dynamics and trends
-
-**Management Evaluation:**
-- CEO background, tenure, track record
-- CFO and key executives
-- Capital allocation decisions (dividends, buybacks, acquisitions, R&D)
-- Management compensation alignment
-- Insider trading patterns (buying is bullish signal)
-- Leadership quality from earnings calls and letters
-
-**Competitive Position:**
-- Market share and trends
-- Key competitors (identify 3-5 direct peers)
-- What differentiates this company?
-- Sustainable competitive advantages?
-
-### 2. Financial Analysis (5-10 Year View)
-
-**Research Process Order:**
-1. **Latest 10-K first** - Understand current business and recent results
-2. **Go back 5-10 years through historical 10-Ks** - Understand evolution
-3. **Review last 2-3 years of 10-Qs** - Current trajectory
-4. **Examine proxy statements** - Governance and compensation
-
-**Key Metrics to Analyze:**
-
-**Quality Benchmarks:**
-- ROE > 15% (return on equity)
-- Profit Margin > 15%
-- Gross Margin > 30%
-- Debt < Annual Revenue
-- Positive and growing Free Cash Flow
-- Revenue growth over 5 years (inflation-adjusted)
-
-**Trends to Assess:**
-- Revenue growth trajectory (accelerating/stable/decelerating?)
-- Margin expansion or contraction (why?)
-- Cash flow consistency and quality
-- Balance sheet strength (debt levels, liquidity)
-- Return on invested capital (ROIC)
-- Working capital management
-
-**Red Flags:**
-- Declining margins despite revenue growth
-- Negative or inconsistent free cash flow
-- Debt growing faster than cash generation
-- Losing market share
-- Chronic guidance misses
-- Accounting irregularities
-
-### 3. Competitive Moat Assessment
-
-**Moat Strength: Wide / Narrow / None**
-
-**Evaluate Sources:**
-- **Network effects**: Product improves with more users?
-- **Brand loyalty**: Pricing power from brand strength?
-- **Switching costs**: Difficult/expensive to switch?
-- **Regulatory barriers**: Licenses, patents, regulations?
-- **Cost advantages**: Scale, technology, location?
-- **Intangible assets**: Patents, trademarks, proprietary data?
-
-**Moat Durability:**
-- How long can advantages be sustained?
-- What could erode the moat?
-- Is moat strengthening or weakening?
-
-**Peer Comparison:**
-Compare this company's moat vs. 3-5 direct competitors:
-- Market share trends
-- Profitability metrics (margins, ROE)
-- Growth rates
-- Financial strength
-
-### 4. Advanced Financial Health Metrics
-
-Beyond basic quality metrics, calculate these advanced scores for deeper insight:
-
-**Piotroski F-Score (Financial Strength)**
-
-**Purpose**: 9-point score measuring financial strength across profitability, leverage, and operating efficiency.
-
-**Scoring (0-9, higher is better):**
-
-*Profitability (4 points):*
-- ROA > 0: +1
-- Operating Cash Flow > 0: +1
-- ROA improving YoY: +1
-- Cash Flow from Operations > Net Income (quality of earnings): +1
-
-*Leverage/Liquidity (3 points):*
-- Long-term debt decreasing YoY: +1
-- Current ratio improving YoY: +1
-- No new shares issued in past year: +1
-
-*Operating Efficiency (2 points):*
-- Gross margin improving YoY: +1
-- Asset turnover ratio improving YoY: +1
-
-**Interpretation:**
-- **8-9**: Excellent financial health
-- **6-7**: Good financial health
-- **4-5**: Adequate financial health
-- **0-3**: Weak financial health
-
-**Altman Z-Score (Bankruptcy Risk)**
-
-**Purpose**: Predicts probability of bankruptcy within 2 years.
-
-**Formula (for public manufacturing companies):**
-Z = 1.2(A) + 1.4(B) + 3.3(C) + 0.6(D) + 1.0(E)
-
-Where:
-- A = Working Capital / Total Assets
-- B = Retained Earnings / Total Assets
-- C = EBIT / Total Assets
-- D = Market Cap / Total Liabilities
-- E = Sales / Total Assets
-
-**Interpretation:**
-- **Z > 2.99**: Safe Zone (low bankruptcy risk)
-- **Z 1.81-2.99**: Grey Zone (moderate risk)
-- **Z < 1.81**: Distress Zone (high bankruptcy risk)
-
-**Note**: Adjust for non-manufacturing companies (different coefficients).
-
-**Beneish M-Score (Earnings Manipulation Detection)**
-
-**Purpose**: Identifies likelihood of earnings manipulation.
-
-**Key Indicators (simplified approach):**
-- Days Sales Outstanding Index (increasing = warning)
-- Gross Margin Index (declining = warning)
-- Asset Quality Index (increasing = warning)
-- Sales Growth Index (excessive growth = warning)
-- Depreciation Index (declining = warning)
-- SG&A Index (disproportionate change = warning)
-- Leverage Index (increasing = warning)
-- Total Accruals to Total Assets (high = warning)
-
-**Interpretation:**
-- **M-Score > -1.78**: Likely manipulator (RED FLAG)
-- **M-Score < -1.78**: Unlikely manipulator (clean)
-
-**Practical Check (if full M-Score unavailable):**
-- Are accruals consistently high relative to cash flow?
-- Is DSO rising faster than revenue?
-- Are margins declining with revenue growth?
-- Any accounting restatements or auditor changes?
-
-**Max Drawdown (5-Year)**
-
-**Purpose**: Measures largest peak-to-trough price decline.
-
-**Calculation:**
-- Identify highest price in past 5 years
-- Find lowest subsequent price before recovery
-- Max Drawdown % = (Low - High) / High × 100
-
-**Interpretation:**
-- **0-20%**: Low volatility (defensive stock)
-- **20-40%**: Moderate volatility (typical stock)
-- **40-60%**: High volatility (cyclical/growth)
-- **>60%**: Extreme volatility (speculative)
-
-**Consolidated Scores**
-
-**Strength Score (0-100):**
-Composite of:
-- Financial metrics (F-Score contribution)
-- Profitability (ROE, margins)
-- Growth rates
-- Market position
-
-**Integrity Score (0-100):**
-Composite of:
-- M-Score (earnings quality)
-- Cash flow vs. earnings alignment
-- Accounting practices
-- Management transparency
-
-**Predictability Score (0-100):**
-Composite of:
-- Revenue consistency (low volatility)
-- Earnings consistency
-- Business model stability
-- Cyclicality assessment
-
-**Data Quality Score (0-100):**
-- Completeness of financial data
-- Recency of filings
-- Auditor quality
-- Disclosure transparency
-
-### 5. Risk Analysis
-
-**Company-Specific Risks:**
-- Execution risk (can management deliver?)
-- Competition risk (share loss, new entrants)
-- Product concentration (single product dependency)
-- Customer concentration (few large customers)
-- Key person risk (CEO dependency)
-- Financial distress risk (Z-Score assessment)
-- Earnings quality risk (M-Score assessment)
-
-**Industry Risks:**
-- Disruption (technology or business model)
-- Cyclicality (economic sensitivity)
-- Regulation (policy changes)
-- Commoditization (pricing power erosion)
-- Structural decline (secular headwinds)
-
-**Macro Risks:**
-- Economic (recession, inflation, rates)
-- Geopolitical (trade wars, conflicts)
-- Currency (FX exposure)
-- Market (valuation levels, sentiment)
-
-**Overall Risk Level: Low / Moderate / High**
-
-**Consolidated Risk Score:** (0-1 scale, lower is better)
-- Incorporates: Z-Score, volatility, leverage, earnings quality
-- <0.30: Low Risk
-- 0.30-0.60: Moderate Risk
-- >0.60: High Risk
+### 综合评分  
+**综合评分（0-100分）：**  
+结合财务指标、盈利能力、市场地位等因素得出综合评分。  
 
 ---
 
-## Valuation Assessment
+## 估值评估  
+**使用多种估值方法**，综合得出股票的公允价值估计。  
 
-Use **multiple valuation methods** - synthesize into fair value estimate.
+### 必需的估值方法：  
+1. **现金流折现（DCF）分析**  
+- 预测未来5-10年的自由现金流  
+- 应用适当的折现率（WACC）  
+- 计算终值  
+- 考虑15-30%的安全边际  
 
-### Required Valuation Methods
+### 相对估值  
+- 与3-5家直接竞争对手进行比较  
+- 关键倍数：P/E比率、EV/EBITDA比率、价格/销售额比率、价格/账面价值比率  
+- 考虑增长差异  
+- 使用当前和历史竞争对手的平均值  
 
-**1. DCF Analysis (Discounted Cash Flow)**
-- Project free cash flows (5-10 years)
-- Apply appropriate discount rate (WACC)
-- Calculate terminal value
-- Include margin of safety: 15-30%
-- Sensitivity analysis with different assumptions
+### 彼得·林奇公允价值评估  
+**基于“合理价格下的增长”框架**  
+- 比较P/E比率与增长率（PEG比率）  
+- 当P/E比率接近增长率时，认为股票估值合理  
 
-**2. Relative Valuation**
-- Compare to 3-5 direct peer companies
-- Key multiples: P/E, EV/EBITDA, Price/Sales, Price/Book
-- Adjust for growth differentials
-- Consider industry-specific multiples
-- Use both current and historical peer averages
+### 资产基础估值（适用情况）  
+**适用于房地产投资信托基金（REITs）、金融公司、资产密集型公司**  
+- 使用账面价值或重置成本进行估值  
 
-**3. Peter Lynch Fair Value**
-- Growth-at-reasonable-price framework
-- Compare P/E to growth rate (PEG ratio)
-- Fair value when P/E ≈ growth rate
-- Adjust for quality factors
+### 估值结论  
+**公允价值估计：** €X.XX  
 
-**4. Asset-Based (When Applicable)**
-- For REITs, financials, asset-heavy companies
-- Book value or replacement cost
-- Net asset value calculations
-
-### Valuation Synthesis
-
-**Fair Value Estimate: €X.XX**
-
-Weight each method appropriately:
-- DCF: 40% (if reliable cash flows)
-- Relative: 30% (peer comparison)
-- Peter Lynch: 30% (growth-adjusted)
-
-**Margin of Safety:**
-- **Current Price vs. Fair Value**: X% discount/premium
-- **Required**: Minimum 15% margin of safety
-- **Adequate**: 15-30% margin of safety
-- **Excellent**: >30% margin of safety
-
-**Valuation Conclusion:**
-- **UNDERVALUED**: >15% below fair value (buy opportunity)
-- **FAIRLY VALUED**: Within ±15% of fair value (hold)
-- **OVERVALUED**: >15% above fair value (avoid/sell)
+**安全边际：**  
+- **当前价格与公允价值**：X%的折扣/溢价  
+- **最低要求**：至少15%的安全边际  
+- **适当**：15-30%的安全边际  
+- **优秀**：超过30%的安全边际  
 
 ---
 
-## Technical Analysis (Entry Timing)
+## 技术分析（入场时机）  
+重点关注最佳入场时机，而非全面的技术分析。  
 
-Focus on identifying optimal entry points, not full technical analysis.
+### 关键技术要素  
+**1. 价格走势（过去30-60天）**  
+- 当前趋势：上升趋势/下降趋势/盘整  
+- 最近的价格走势  
+- 成交量趋势（上涨时是否放量？）  
+- 动量指标  
 
-### Key Technical Elements
+**2. 关键价位**  
+- **支撑位**：买入兴趣出现的价位  
+  - 主要支撑位：€X.XX  
+  - 次要支撑位：€X.XX  
+- **阻力位**：卖出压力增加的价位  
+  - 主要阻力位：€X.XX  
+  - 次要阻力位：€X.XX  
 
-**1. Price Action (Last 30-60 Days)**
-- Current trend: Uptrend / Downtrend / Range-bound
-- Recent price pattern
-- Volume trends (increasing on rallies?)
-- Momentum assessment
+**3. 技术指标**  
+- **相对强弱指数（RSI）**：>70表示超买，可能回调  
+- <30表示超卖，可能反弹  
+- 40-60表示中性  
+- **移动平均线（MACD）**：金叉/死叉/趋势变化  
+- **移动平均线**：50日MA和200日MA的位置  
 
-**2. Key Levels**
-- **Support levels**: Where buying interest emerges
-  - Primary support: €X.XX
-  - Secondary support: €X.XX
-- **Resistance levels**: Where selling pressure increases
-  - Primary resistance: €X.XX
-  - Secondary resistance: €X.XX
-
-**3. Technical Indicators**
-- **RSI** (Relative Strength Index):
-  - >70 = Overbought (may pullback)
-  - <30 = Oversold (potential bounce)
-  - 40-60 = Neutral
-- **MACD** (Moving Average Convergence Divergence):
-  - Bullish crossover / Bearish crossover / Neutral
-  - Momentum accelerating or decelerating?
-- **Moving Averages**:
-  - 50-day MA: €X.XX (price above/below?)
-  - 200-day MA: €X.XX (trend indicator)
-
-**4. Entry Assessment**
-- **Technical Setup**: Bullish / Neutral / Bearish
-- **Optimal Entry**: Wait for pullback to support / Buy at market / Wait for breakout
-- **Entry Price Range**: €X.XX - €X.XX
-- **Avoid Above**: €X.XX (poor risk/reward)
+**4. 入场评估**  
+- **技术形态**：看涨/中性/看跌  
+- **最佳入场时机**：等待价格回调至支撑位/在支撑位买入/突破阻力位买入  
+- **入场价格范围**：€X.XX - €X.XX  
+- **避免买入价格**：高于€X.XX（风险/回报比不佳）  
 
 ---
 
-## Bull vs. Bear Case Analysis
+## 看涨/看跌情景分析  
+**必须**：每项分析都必须全面呈现两种情景。  
 
-**MANDATORY**: Every analysis must present both sides fairly.
+### 看涨情景（乐观情况）  
+**潜在涨幅：** +X%至€X.XX  
+- **主要看涨论点1及具体依据**  
+- **主要看涨论点2及具体依据**  
+- **主要看涨论点3及具体依据**  
+**实现条件：**  
+- **条件1**  
+- **条件2**  
 
-### Bull Case (Optimistic Scenario)
-**Potential Upside: +X% to €X.XX**
+### 看跌情景（悲观情况）  
+**潜在跌幅：** -X%至€X.XX  
+- **主要看跌论点1及具体依据**  
+- **主要看跌论点2及具体依据**  
+- **发生情况：**  
+- **风险触发因素1**  
+- **风险触发因素2**  
 
-1. [Key bull argument 1 with specific evidence]
-2. [Key bull argument 2 with specific evidence]
-3. [Key bull argument 3 with specific evidence]
-
-**For this to play out:**
-- [Required condition 1]
-- [Required condition 2]
-
-### Bear Case (Pessimistic Scenario)
-**Potential Downside: -X% to €X.XX**
-
-1. [Key bear argument 1 with specific evidence]
-2. [Key bear argument 2 with specific evidence]
-3. [Key bear argument 3 with specific evidence]
-
-**This happens if:**
-- [Risk trigger 1]
-- [Risk trigger 2]
-
-### Balance Assessment
-**Which case is more probable: [Bull / Bear / Balanced]**
-
-[Explanation of why one case is more likely, considering:
-- Quality of evidence for each side
-- Historical precedent
-- Management track record
-- Industry dynamics
-- Current valuation]
+### 平衡评估  
+**哪种情景更有可能发生？**  
+**解释原因：**  
+- **每种情景的证据质量**  
+- **历史 precedent**  
+- **管理层表现**  
+- **行业动态**  
+- **当前估值**  
 
 ---
 
-## Investment Recommendation Structure
+## 投资建议结构  
+### 买入建议标准  
+- 公司公允价值比当前价格高出15%以上（安全边际充足）  
+- 基本面状况良好或正在改善  
+- 技术形态合理  
+- 有明确的买入理由  
+- 可接受的风险水平  
+- 强烈的买入信心  
 
-### BUY Recommendation Criteria
-- Fair value >15% above current price (adequate margin of safety)
-- Strong or improving fundamentals
-- Reasonable or bullish technical setup
-- Identifiable catalysts
-- Acceptable risk level
-- Conviction: Strong Buy or Buy
+### 持有建议标准  
+- 公司公允价值在当前价格的±15%范围内  
+- 基本面状况稳定，无明显的买入理由  
+- 可能有更好的投资机会  
+- 等待更好的入场价格  
 
-### HOLD Recommendation Criteria
-- Fair value within ±15% of current price
-- Stable fundamentals, no compelling catalyst
-- Better opportunities may exist elsewhere
-- Wait for better entry price
-- Conviction: Hold
-
-### SELL/AVOID Recommendation Criteria
-- Fair value <-15% below current price (overvalued)
-- Deteriorating fundamentals
-- Significant risks
-- Better alternatives available
-- Must provide 3-5 alternative candidates
-- Conviction: Avoid
+### 卖出/避免建议标准  
+- 公司公允价值低于当前价格15%以上（估值过高）  
+- 基本面状况恶化  
+- 存在重大风险  
+- 有更好的替代方案  
+- 必须提供3-5个替代方案  
 
 ---
 
-## Position Sizing Framework
+## 仓位配置建议  
+**仓位配置建议基于：**  
+**信心程度 + 风险**  
+**强烈买入（信心度高，风险低）：**  
+- 仓位占比：投资组合的5-8%  
+- 最大占比：10%  
 
-**Allocation recommendation based on:**
+**买入（信心中等，风险中等）：**  
+- 仓位占比：投资组合的3-5%  
+- 最大占比：7%  
 
-**Conviction + Risk = Position Size**
-
-**Strong Buy (High Conviction, Low Risk):**
-- Position size: 5-8% of portfolio
-- Maximum: 10%
-
-**Buy (Moderate Conviction, Moderate Risk):**
-- Position size: 3-5% of portfolio
-- Maximum: 7%
-
-**Speculative/High Risk:**
-- Position size: 1-3% of portfolio
-- Maximum: 5%
-
-**Considerations:**
-- Diversification needs (avoid sector concentration)
-- Correlation with existing holdings
-- Overall portfolio risk
-- Liquidity requirements
-- User's risk tolerance (from project context)
+**考虑因素：**  
+- 分散化需求（避免行业集中）  
+- 与现有持仓的相关性  
+- 整体投资组合风险  
+- 用户的风险承受能力  
 
 ---
 
-## Entry and Exit Strategy
+## 入场与退出策略  
+**入场策略：**  
+**不建议分阶段买入**——建议一次性买入：  
+- **理想入场价格：** €X.XX - €X.XX（最佳范围）  
+- **最大买入价格：** €X.XX（超出此范围，风险/回报比不佳）  
+- **买入策略：**  
+  - “当前价格买入”  
+  - “等待价格回调至支撑位买入”  
+  - “突破阻力位买入”  
+  - “价格高于XX.XX时避免买入”（估值过高）  
 
-### Entry Strategy
+## 出场策略  
+**目标价格（12个月）：** €X.XX（预期涨幅XX%）  
+- 保守目标：€X.XX  
+- 基本目标：€X.XX  
+- 积极目标：€X.XX  
 
-**NO scale-in strategies** - recommend single entry approach:
+**止损策略：**  
+- **止损价格：** €X.XX（最大亏损百分比）  
+- **技术止损：** 低于关键支撑位  
+- **基本面止损：** 如果分析结论被打破  
 
-**If BUY:**
-- **Ideal Entry Price: €X.XX - €X.XX** (optimal range)
-- **Maximum Buy Price: €X.XX** (above this, risk/reward unfavorable)
-- **Approach:**
-  - "Buy now at market" (if currently at good price)
-  - "Wait for pullback to €X.XX support" (if extended)
-  - "Buy on break above €X.XX" (if breakout setup)
-  - "Don't buy above €X.XX" (if overvalued)
+**卖出条件：**  
+1. [具体基本面恶化情况]  
+2. [具体竞争威胁]  
+3. [具体估值阈值]  
 
-### Exit Strategy
+## 持仓时长**  
+**预期持有时间：**  
+- [6-12个月 / 1-3年 / 3-5年**  
+- 根据投资类型决定  
 
-**Price Target (12-month):** €X.XX (+X% upside)
-- Conservative: €X.XX
-- Base case: €X.XX
-- Optimistic: €X.XX
-
-**Stop Loss:** €X.XX (-X% maximum loss)
-- Technical stop: Below key support
-- Fundamental stop: If thesis breaks
-
-**Sell If (Thesis-Breaking Conditions):**
-1. [Specific fundamental deterioration]
-2. [Specific competitive threat]
-3. [Specific valuation threshold]
-
-**Hold Duration:**
-- Expected timeframe: [6-12 months / 1-3 years / 3-5+ years]
-- Based on investment type (swing trade vs long-term hold)
-
----
-
-## Catalyst Identification
-
-Identify specific events that could drive stock performance.
-
-**Near-Term (0-6 months):**
-- Upcoming earnings: [Date]
-- Product launches: [Event]
-- Regulatory decisions: [Expected timing]
-- Industry events: [Conference, data release]
-
-**Medium-Term (6-18 months):**
-- Market expansion plans
-- New product cycles
-- Margin expansion initiatives
-- Strategic partnerships
-
-**Long-Term (18+ months):**
-- Structural industry trends
-- Market share gains
-- Technological leadership
-- Business model evolution
+## 关键分析约束  
+**关键原则：**  
+1. **基本面分析时禁止使用新闻**——仅使用公司公开文件  
+2. **优先选择安全边际较高的股票**（>15%）  
+3. **精度不如准确性重要**  
+4. **长期视角**——分析5-10年的趋势  
+5. **同类比较**——与3-5家直接竞争对手进行比较  
+6. **全面呈现两种观点**  
+7. **诚实沟通**  
+8. **更新观点**：根据新证据及时调整分析结果  
 
 ---
 
-## Key Analytical Constraints
-
-**Critical Principles:**
-
-1. **No Press/News for Fundamental Analysis**
-   - Use company filings only (10-K, 10-Q, 8-K, proxy)
-   - Use earnings call transcripts
-   - Do NOT rely on news articles or press releases
-   - Exception: News for recent developments, but verify in filings
-
-2. **Magnitude Over Precision**
-   - Focus on stocks with good margin of safety (>15%)
-   - Don't need perfect forecasts
-   - Better to be approximately right than precisely wrong
-   - Conservative assumptions better than optimistic
-
-3. **Long-Term View**
-   - Analyze 5-10 year trends, not just recent quarters
-   - Temporary setbacks vs. structural problems
-   - Sustainable competitive advantages matter most
-   - Short-term noise vs. long-term signal
-
-4. **Compare Apples to Apples**
-   - Benchmark against 3-5 direct competitors
-   - Not just broad market indices
-   - Industry-specific metrics and norms
-   - Adjust for company size and maturity
-
-5. **Intellectual Honesty**
-   - Acknowledge limitations and unknowns
-   - Present both bull and bear cases fairly
-   - Say "I don't know" when appropriate
-   - Update views when evidence changes
-
----
-
-## Output Template
-
+## 输出模板  
 ```markdown
 # [SYMBOL] - [Company Name] Evaluation
 
@@ -1429,993 +952,281 @@ Exit position if any of these occur:
 **DO NOT use placeholder values - populate with actual calculated data from this analysis.**
 
 [Create the React artifact here using the quant-style template]
-```
+```  
+
+## 量化风格仪表板  
+**必完成步骤：**  
+完成文本分析后，使用标准化的量化风格模板创建React仪表板。  
+
+### 仪表板模板结构  
+仪表板采用机构级格式：  
+- **标题栏**（橙色背景）  
+- **八项指标栏**（两列布局）  
+| 左列 | 右列 |  
+| 价格与估值（蓝色） | 财务表现（绿色） |  
+| 增长指标（绿色） | 风险指标（红色） |  
+| 流动性与自由现金流（青色） | 内幕交易与市场情绪（紫色） |  
+| 质量评分（橙色） | 护城河与其他（灰色） |  
+
+### 图表部分**（三列布局）  
+- **左侧**：线性价格图表 + MACD指标  
+  - 价格线、内在价值线、市场价值线  
+  - 5年历史数据  
+  - MACD指标  
+
+- **中间**：雷达图 + 1年预测  
+  - 12点雷达图（0-100范围）  
+  - 综合建议提示  
+  - 1年价格走势及6个月预测  
+
+- **右侧**：对数价格图表 + 相对强弱指数（RSI）  
+  - 对数价格走势  
+  - 内在价值对比  
+  - 相对强弱指数（RSI）  
+
+### 关键说明部分（可展开）  
+- 三栏布局：看涨情景 | 看跌情景 | 入场/退出策略  
+- 点击可展开/折叠  
+
+### 各指标的必要内容**  
+**价格与估值**（6项指标）：  
+- 价格、市值、 trailing P/E比率、前瞻P/E比率、特定行业P/E比率  
+
+**财务表现**（6项指标）：  
+- 净资产收益率（ROE）、总资产回报率（ROA）、毛利率、营业利润率、营业利润率  
+
+**增长指标**（6项指标）：  
+- 营收增长率（5年）、盈利增长率、当前市盈率（EPS）、分析师预测价格  
+
+**风险指标**（6项指标）：  
+- 债务/股本比率、综合风险、F分数、Z分数、M分数、最大回撤率（5年）  
+
+**流动性与自由现金流**（6项指标）：  
+- 流动比率、现金总额、债务总额、5年自由现金流增长率、自由现金流收益率、现金流利润率  
+
+**内幕交易与市场情绪**（6项指标）：  
+- 内幕买入（12个月内）、内幕卖出（12个月内）、流通股数量、RSI（14天内）、股票类型、行业  
+
+**质量评分**（6项指标）：  
+- CQVS评分、估值评分、质量评分、实力评分、诚信评分  
+
+**护城河与其他**（6项指标）：  
+- 护城河评分（0-10）、β系数、预测能力、数据质量、完整性、股息收益率  
+
+### 雷达图指标（12项，标准化范围0-100）  
+1. 营收增长率（标准化：X%增长 → 20%+）  
+2. 营业利润率（标准化：X% → 30%+）  
+3. 毛利率（标准化：X% → 60%+）  
+4. 净利润率（标准化：X% → 60%+）  
+5. 净资产收益率（ROE）（标准化：X% → 30%+）  
+6. 风险评分（与综合风险相反）  
+
+### 完整模板代码**  
+使用此模板结构进行开发。  
+
+### 实施说明  
+**关键步骤：**  
+1. 在全面分析过程中计算所有指标。  
+2. 将计算结果存储在变量中。  
+3. 完成文本分析后，创建React仪表板。  
+4. 将模板中的占位符替换为实际计算数据。  
+5. 严格遵循模板结构，不得修改组件代码。  
+6. 填充以下数据数组：  
+  - `metrics`对象（包含所有指标数据）  
+  - `topNews`数组（最近5条新闻）  
+  - `priceHistory`数组（10年数据）  
+  - `oneYearData`数组（移动平均线、布林带、预测数据）  
+  - `ichimokuData`数组（6个月数据及信号标记）  
+  - `macdData`数组（6个最近数据点）  
+  - `rsiData`数组（6个最近数据点）  
+  - `radarData`数组（12项指标，标准化范围0-100）  
+  - `bullCase.points`数组（看涨情景数据）  
+  - `bearCase_points`数组（看跌情景数据）  
+  - `entryStrategy`数组（入场/退出策略数据）  
+
+### 标准化颜色编码规则  
+---  
+
+### 完整模板代码示例（省略）  
+
+### 集成项目流程  
+- **投资组合管理**：  
+  - 查看投资组合数据  
+  - 判断股票是否已持有（如有，建议使用“投资组合分析师”功能）  
+  - 评估股票与现有持仓的匹配度  
+  - 根据投资组合情况调整仓位配置  
+
+### 投资建议定制  
+- 根据用户的投资时间线、风险承受能力及偏好定制建议  
+- 考虑税收影响  
+- 根据投资组合规模和风险承受能力调整仓位配置  
+
+### 避免重复使用  
+如果股票已存在于投资组合中：  
+  - 说明：“您已持有[股票代码]。如需分析现有持仓，请使用‘投资组合分析师’功能。”  
+  - 如用户仍需评估，提供新的分析结果  
+  - 以“是否应 추가购买？”的形式呈现建议  
+
+### 使用场景**  
+- 当用户询问“是否应购买[股票]？”时使用此技能  
+- 当用户需要评估待选股票时使用  
+- 当用户请求股票推荐时使用  
+- 当用户询问股票投资建议时使用  
+- 当用户需要比较多个投资机会时使用  
+- 当用户需要替代方案时使用  
+
+### 注意事项**  
+- **不适用场景**：  
+  - 不适用于评估现有投资组合（使用“投资组合分析师”功能）  
+- 不适用于一般市场咨询  
+- 不适用于股票筛选或新股票发现  
+- 不适用于期权、衍生品或加密货币分析  
 
 ---
 
-## Quant-Style Dashboard Artifact
-
-**MANDATORY**: After completing the full text analysis, create a React dashboard artifact using the standardized quant-style template format.
-
-### Dashboard Template Structure
-
-The dashboard uses a specific institutional-grade format with:
-
-**1. Header Section** (Orange background)
-- Format: `TICKER - Company Name`
-
-**2. Eight Metric Sections** (2-column grid)
-
-| Left Column | Right Column |
-|-------------|--------------|
-| Price & Valuation (blue) | Financial Performance (green) |
-| Growth Metrics (emerald) | Risk Indicators (red) |
-| Liquidity & FCF (cyan) | Insider & Sentiment (purple) |
-| Quality Scores (orange) | Moat & Other (gray) |
-
-Each section: 6 metric boxes with values, labels, benchmarks, color coding
-
-**3. Charts Section** (3-column grid)
-
-- **Left**: Linear Price Chart + MACD
-  - Price, Intrinsic Value, Market Value lines
-  - 5-year historical data
-  - MACD indicator below
-
-- **Center**: Radar Chart + 1-Year Forecast
-  - 12-point radar (normalized 0-100)
-  - Consolidated advice badge
-  - 1-year price + 6-month forecast
-
-- **Right**: Log Price Chart + RSI
-  - Log-scale price history
-  - Intrinsic value comparison
-  - RSI (14) indicator below
-
-**4. Key Notes Section** (Expandable accordion)
-- 3-column layout: Bull Case | Bear Case | Entry/Exit Strategy
-- Click to expand/collapse
-
-**5. Footer**
-- Analysis date, data sources, recommendation
-
-### Required Metrics by Section
-
-**Price & Valuation** (6 metrics):
-- Price, Market Cap, Trailing P/E, Forward P/E, Subsector Typical P/E, PEG Ratio
-
-**Financial Performance** (6 metrics):
-- ROE, ROA, Profit Margin, Operating Margin, Gross Margin, ROIC
-
-**Growth Metrics** (6 metrics):
-- Revenue Growth (5Y), Earnings Growth, EPS (TTM), Forward EPS, Analyst Rec, Target Price
-
-**Risk Indicators** (6 metrics):
-- Debt/Equity, Consolidated Risk, F-Score, Z-Score, M-Score, Max Drawdown (5Y)
-
-**Liquidity & FCF** (6 metrics):
-- Current Ratio, Total Cash, Total Debt, FCF Growth 5Y, FCF Yield, Payout Ratio
-
-**Insider & Sentiment** (6 metrics):
-- Insider Buys (12M), Insider Sells (12M), Net Shares (12M), RSI (14D), Stock Type, Sector
-
-**Quality Scores** (6 metrics):
-- CQVS, Label, Valuation Score, Quality Score, Strength Score, Integrity Score
-
-**Moat & Other** (6 metrics):
-- Moat Score (0-10), Beta, Predictability, Data Quality, Completeness, Dividend Yield
-
-### Radar Chart Metrics (12 points, normalized 0-100)
-1. Revenue Growth (normalize: X% growth → scale to 100 for 20%+)
-2. Operating Margin (normalize: X% → 100 for 30%+)
-3. Gross Margin (normalize: X% → 100 for 60%+)
-4. Profit Margin (normalize: X% → 100 for 25%+)
-5. ROE (normalize: X% → 100 for 30%+)
-6. Risk Score (inverse of consolidated risk: 100 - risk*100)
-7. Beta Score (inverse: 100 for beta=0.5, 50 for beta=1.5, 0 for beta=2.5+)
-8. P/Market Discount (100 = deeply undervalued, 50 = fair, 0 = overvalued)
-9. Moat Score (moat rating * 10)
-10. FCF Yield (X% → 100 for 8%+)
-11. ROA (X% → 100 for 20%+)
-12. Earnings Growth (X% → 100 for 25%+)
-
-### Color Coding Rules
-
-```javascript
-// Green (isGood: true) - Positive indicators
-ROE > 20%, ROA > 10%, Margins > 20%, ROIC > 15%
-Revenue Growth > 10%, Current Ratio 1-2, Z-Score > 3
-M-Score < -1.78, FCF Growth > 0%, Payout < 50%
-F-Score >= 7, Quality >= 70, Strength >= 70
-
-// Red (isGood: false) - Warning indicators  
-Max Drawdown < -50%, Beta > 2, Consolidated Risk > 0.6
-Predictability < 50%, F-Score <= 3, Z-Score < 1.81
-M-Score > -1.78, Quality < 50
-
-// Yellow (isGood: 'neutral') - Monitor
-F-Score 4-6, RSI 30-70, Moat 5-7, Quality 50-70
-Beta 1.5-2.0, Predictability 50-70%
-```
-
-### Complete Template Code
-
-Use this exact template structure:
-
-```jsx
-import React, { useState } from 'react';
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, 
-  ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, 
-  PolarRadiusAxis, Radar, ReferenceLine, Area, ComposedChart, Scatter
-} from 'recharts';
-
-const QuantDashboard = () => {
-  const [showKeyNotes, setShowKeyNotes] = useState(false);
-
-  // ============================================================
-  // POPULATE WITH STOCK-SPECIFIC DATA FROM ANALYSIS
-  // ============================================================
-  
-  const ticker = "TICKER";  // Replace
-  const companyName = "Company Name";  // Replace
-  const recommendation = "BUY";  // BUY, HOLD, SELL, SPECULATIVE BUY
-  const analysisDate = "December 6, 2025";  // Current date
-
-  const metrics = {
-    // Price & Valuation - from analysis
-    price: 100.00,
-    marketCap: '€10B',
-    trailingPE: 20.0,
-    forwardPE: 18.0,
-    subsectorTypicalPE: 25.0,
-    peg1Y: 1.2,           // NEW: 1-Year Forward PEG
-    peg5Y: 2.5,           // NEW: 5-Year PEG
-    
-    // Financial Performance - from 5-10 year analysis
-    roe: 25.0,
-    roa: 12.0,
-    profitMargin: 20.0,
-    opMargin: 25.0,
-    grossMargin: 50.0,
-    roic: 18.0,
-    
-    // Growth Metrics - from historical trends (USE REPORTED, not underlying)
-    revGrowth: 15.0,      // REPORTED revenue growth YoY
-    earnGrowth: 20.0,     // REPORTED earnings growth YoY
-    epsTTM: 5.00,
-    forwardEPS: 5.50,
-    growthCapped: 10.0,   // NEW: Capped sustainable growth estimate
-    growthUncapped: 22.0, // NEW: Headline analyst growth estimate
-    analystTarget: 120.00,
-    
-    // Risk Indicators - from advanced metrics section
-    crs: 0.40,            // Consolidated Risk Score (0-1 scale)
-    debtEquity: 0.50,
-    fScore: 7,            // Piotroski F-Score
-    zScore: 4.0,          // Altman Z-Score
-    mScore: -2.5,         // Beneish M-Score
-    valueTrapScore: 25,   // NEW: 0-100, LOWER = genuine, HIGHER = trap
-    valueTrapLabel: 'Genuine', // NEW: Genuine/Caution/Trap
-    maxDrawdown: -30.0,   // 5-year max drawdown %
-    
-    // Liquidity & FCF - from cash flow analysis
-    currentRatio: 1.5,
-    totalCash: '€2B',
-    totalDebt: '€1B',
-    fcfGrowth5Y: 12.0,    // 5-year smoothed growth
-    fcfYield: 5.0,
-    fcfMargin: 18.5,      // NEW: FCF / Revenue %
-    payoutRatio: 30.0,
-    
-    // Insider & Sentiment - from SEC Form 4 or use "N/A" if unavailable
-    insBuys: 0,           // From SEC Form 4 - use actual count or "N/A"
-    insSells: 0,          // From SEC Form 4 - use actual count or "N/A"
-    netShares: 'N/A',     // From SEC Form 4 - use actual or "N/A"
-    shortInterest: 2.5,   // From FINRA/exchange - use actual or "N/A"
-    newsSentiment: 0.25,  // -1 to +1 scale
-    newsArticleCount: 15, // Recent article count
-    
-    // Beta & Volatility
-    beta: 1.0,            // Stock beta
-    vol1Y: 25.0,          // 1-Year volatility %
-    
-    // Quality Scores - from consolidated scoring
-    cqvs: 75.0,           // Consolidated Quality & Valuation Score
-    label: 'Quality Growth', // Elite/Compounder/Quality Growth/etc
-    valuation: 70.0,      // 0-100
-    quality: 80.0,        // 0-100
-    strength: 75.0,       // 0-100
-    integrity: 85.0,      // 0-100
-    
-    // Moat & Other
-    buffettMoat: 8,       // 0-10 scale (renamed from moat)
-    greenblattEY: 6.5,    // NEW: Earnings Yield %
-    greenblattROC: 22.0,  // NEW: Return on Capital %
-    earningsPredict: 70,  // Earnings Predictability 0-100
-    completeness: 85,     // Data completeness 0-100
-    dataQuality: 'High',  // High/Medium/Low
-    divYield: 1.5,
-    stockType: 'Growth',  // Growth/Value/Cyclical/Defensive
-    sector: 'Technology',
-    industry: 'Software',
-    
-    // NEW: Investor Persona Scores (0-10 scale each)
-    buffettScore: 7.5,    // Durable competitive advantage seeker
-    mungerScore: 6.8,     // Inversion thinker, risk avoider
-    dalioScore: 7.2,      // All-weather, cycle resilient
-    lynchScore: 8.0,      // GARP - Growth at Reasonable Price
-    grahamScore: 5.5,     // Deep value, margin of safety
-    greenblattScore: 6.0, // Magic Formula (EY + ROC)
-    templetonScore: 4.5,  // Contrarian, global value
-    sorosScore: 3.0,      // Reflexivity, macro trends
-    
-    // NEW: Valuation Lines for Charts
-    marketValueCurrent: 95.00,
-    intrinsicValueCurrent: 110.00,
-    marketValueNextYear: 105.00,
-    intrinsicValueNextYear: 120.00,
-    unrestrictedMarketValueCurrent: 125.00,
-    unrestrictedMarketValueNextYear: 140.00,
-    
-    // Valuation Assessment (for indicator below forecast)
-    valuationPercent: 15,       // Positive = undervalued, negative = overvalued
-    valuationLabel: 'Undervalued', // Undervalued/Fairly Valued/Overvalued
-  };
-
-  // TOP NEWS Headlines - Format: pipe-separated with dates at END in brackets
-  const topNews = [
-    { headline: 'Company announces Q4 guidance above expectations', date: '05 Dec 2025' },
-    { headline: 'New product launch receives positive analyst coverage', date: '28 Nov 2025' },
-    { headline: 'Strategic partnership announced with major cloud provider', date: '15 Nov 2025' },
-    { headline: 'Q3 earnings beat estimates, revenue up 18% YoY', date: '02 Nov 2025' },
-    { headline: 'Management presents at investor conference, reaffirms outlook', date: '20 Oct 2025' },
-  ];
-  
-  // Format TOP NEWS as pipe-separated string with dates at END
-  const topNewsString = topNews.map(n => `${n.headline} [${n.date}]`).join(' | ');
-
-  // Historical Price Data (10 years with multiple valuation lines)
-  const priceHistory = [
-    { date: '2016', price: 25, totalReturn: 28, marketValueCurrent: 27, intrinsicValueCurrent: 30, marketValueNextYear: 29, intrinsicValueNextYear: 32, analystTarget: 30, unrestrictedCurrent: 28, unrestrictedNextYear: 31 },
-    { date: '2017', price: 35, totalReturn: 40, marketValueCurrent: 38, intrinsicValueCurrent: 42, marketValueNextYear: 40, intrinsicValueNextYear: 45, analystTarget: 42, unrestrictedCurrent: 40, unrestrictedNextYear: 44 },
-    { date: '2018', price: 45, totalReturn: 52, marketValueCurrent: 48, intrinsicValueCurrent: 55, marketValueNextYear: 52, intrinsicValueNextYear: 60, analystTarget: 55, unrestrictedCurrent: 52, unrestrictedNextYear: 58 },
-    { date: '2019', price: 55, totalReturn: 65, marketValueCurrent: 58, intrinsicValueCurrent: 68, marketValueNextYear: 62, intrinsicValueNextYear: 72, analystTarget: 65, unrestrictedCurrent: 65, unrestrictedNextYear: 72 },
-    { date: '2020', price: 50, totalReturn: 62, marketValueCurrent: 55, intrinsicValueCurrent: 65, marketValueNextYear: 60, intrinsicValueNextYear: 70, analystTarget: 62, unrestrictedCurrent: 62, unrestrictedNextYear: 70 },
-    { date: '2021', price: 75, totalReturn: 95, marketValueCurrent: 80, intrinsicValueCurrent: 90, marketValueNextYear: 85, intrinsicValueNextYear: 98, analystTarget: 90, unrestrictedCurrent: 92, unrestrictedNextYear: 105 },
-    { date: '2022', price: 65, totalReturn: 85, marketValueCurrent: 72, intrinsicValueCurrent: 85, marketValueNextYear: 78, intrinsicValueNextYear: 92, analystTarget: 82, unrestrictedCurrent: 85, unrestrictedNextYear: 95 },
-    { date: '2023', price: 80, totalReturn: 105, marketValueCurrent: 85, intrinsicValueCurrent: 100, marketValueNextYear: 92, intrinsicValueNextYear: 108, analystTarget: 98, unrestrictedCurrent: 100, unrestrictedNextYear: 115 },
-    { date: '2024', price: 95, totalReturn: 125, marketValueCurrent: 100, intrinsicValueCurrent: 115, marketValueNextYear: 108, intrinsicValueNextYear: 125, analystTarget: 115, unrestrictedCurrent: 120, unrestrictedNextYear: 135 },
-    { date: '2025', price: 100, totalReturn: 135, marketValueCurrent: 105, intrinsicValueCurrent: 120, marketValueNextYear: 115, intrinsicValueNextYear: 132, analystTarget: 125, unrestrictedCurrent: 130, unrestrictedNextYear: 145 },
-  ];
-
-  // 1 Year Price with 6-Month Forecast, MAs, and Bollinger Bands
-  const oneYearData = [
-    { date: "Jan'25", price: 90, ma50: 88, ma200: 85, upperBand: 98, lowerBand: 82, forecast: null, ci95Upper: null, ci95Lower: null },
-    { date: "Mar'25", price: 88, ma50: 89, ma200: 86, upperBand: 96, lowerBand: 80, forecast: null, ci95Upper: null, ci95Lower: null },
-    { date: "May'25", price: 95, ma50: 91, ma200: 87, upperBand: 102, lowerBand: 84, forecast: null, ci95Upper: null, ci95Lower: null },
-    { date: "Jul'25", price: 92, ma50: 92, ma200: 88, upperBand: 100, lowerBand: 84, forecast: null, ci95Upper: null, ci95Lower: null },
-    { date: "Sep'25", price: 98, ma50: 94, ma200: 90, upperBand: 106, lowerBand: 86, forecast: null, ci95Upper: null, ci95Lower: null },
-    { date: "Nov'25", price: 100, ma50: 96, ma200: 92, upperBand: 108, lowerBand: 88, forecast: 100, ci95Upper: 108, ci95Lower: 92 },
-    { date: "Jan'26", price: null, ma50: null, ma200: null, upperBand: null, lowerBand: null, forecast: 108, ci95Upper: 120, ci95Lower: 96 },
-    { date: "Mar'26", price: null, ma50: null, ma200: null, upperBand: null, lowerBand: null, forecast: 115, ci95Upper: 130, ci95Lower: 100 },
-  ];
-
-  // NEW: Ichimoku Cloud Data (6-month view with signal markers)
-  const ichimokuData = [
-    { date: 'Jun', price: 88, tenkan: 87, kijun: 85, senkouA: 84, senkouB: 82, chikou: 85, tkCrossMarker: null, kumoTwistMarker: null },
-    { date: 'Jul', price: 92, tenkan: 90, kijun: 87, senkouA: 86, senkouB: 84, chikou: 90, tkCrossMarker: 92, kumoTwistMarker: null }, // TK Bullish Cross
-    { date: 'Aug', price: 95, tenkan: 93, kijun: 90, senkouA: 89, senkouB: 86, chikou: 93, tkCrossMarker: null, kumoTwistMarker: null },
-    { date: 'Sep', price: 98, tenkan: 96, kijun: 93, senkouA: 92, senkouB: 88, chikou: 96, tkCrossMarker: null, kumoTwistMarker: 92 }, // Kumo Twist Bullish
-    { date: 'Oct', price: 96, tenkan: 97, kijun: 95, senkouA: 94, senkouB: 90, chikou: 94, tkCrossMarker: null, kumoTwistMarker: null },
-    { date: 'Nov', price: 100, tenkan: 98, kijun: 96, senkouA: 95, senkouB: 92, chikou: 98, tkCrossMarker: null, kumoTwistMarker: null },
-  ];
-
-  // NEW: Ichimoku Signals Summary
-  const ichimokuSignals = {
-    tkCross: 'TK Bullish Cross',
-    kumoTwist: 'Kumo Twist Bullish',
-    priceVsCloud: 'Above Cloud (Bullish)',
-  };
-
-  // MACD Data (recent 6 months)
-  const macdData = [
-    { date: 'Jun', macd: 0.5, signal: 0.3, histogram: 0.2 },
-    { date: 'Jul', macd: 1.2, signal: 0.6, histogram: 0.6 },
-    { date: 'Aug', macd: 1.5, signal: 1.0, histogram: 0.5 },
-    { date: 'Sep', macd: 1.8, signal: 1.3, histogram: 0.5 },
-    { date: 'Oct', macd: 1.2, signal: 1.4, histogram: -0.2 },
-    { date: 'Nov', macd: 0.8, signal: 1.2, histogram: -0.4 },
-  ];
-
-  // RSI Data (recent 6 months)
-  const rsiData = [
-    { date: 'Jun', rsi: 45 },
-    { date: 'Jul', rsi: 55 },
-    { date: 'Aug', rsi: 62 },
-    { date: 'Sep', rsi: 68 },
-    { date: 'Oct', rsi: 58 },
-    { date: 'Nov', rsi: 55 },
-  ];
-
-  // Radar Chart Data (normalize all to 0-100 scale)
-  const radarData = [
-    { metric: 'Rev Growth', value: 70, fullMark: 100 },
-    { metric: 'Op Margin', value: 75, fullMark: 100 },
-    { metric: 'Gross Margin', value: 65, fullMark: 100 },
-    { metric: 'Profit Margin', value: 60, fullMark: 100 },
-    { metric: 'ROE', value: 70, fullMark: 100 },
-    { metric: 'Risk (CRS)', value: 60, fullMark: 100 },
-    { metric: 'Beta Score', value: 70, fullMark: 100 },
-    { metric: 'P/Market Disc', value: 50, fullMark: 100 },
-    { metric: 'Moat', value: 80, fullMark: 100 },
-    { metric: 'FCF Growth', value: 55, fullMark: 100 },
-    { metric: 'ROA', value: 65, fullMark: 100 },
-    { metric: 'Earn Growth', value: 75, fullMark: 100 },
-  ];
-
-  // Key Notes Content - from Bull/Bear case analysis
-  const bullCase = {
-    target: "€130-150",  // Bull case price target
-    points: [
-      "Strong revenue growth momentum",
-      "Expanding margins",
-      "Market leadership position",
-      "Favorable industry tailwinds",
-      "Strong balance sheet"
-    ]
-  };
-
-  const bearCase = {
-    target: "€70-80",  // Bear case price target
-    points: [
-      "Valuation compression risk",
-      "Competitive pressures",
-      "Macro sensitivity",
-      "Execution risks",
-      "Key person dependency"
-    ]
-  };
-
-  const entryStrategy = {
-    idealEntry: "€90-95",  // From Entry Strategy section
-    currentEntry: "€100 acceptable",
-    target: "€120 (+20%)",  // 12-month target
-    stopLoss: "€85 (-15%)",  // Stop loss
-    positionSize: "2-3%"  // Recommended allocation
-  };
-
-  // ============================================================
-  // COMPONENT CODE (Standard - use as-is)
-  // ============================================================
-
-  // Helper: Value Trap color (LOWER = genuine = green, HIGHER = trap = red)
-  const getValueTrapColor = (score) => {
-    if (score < 40) return 'bg-green-100 border-green-400 text-green-800';
-    if (score < 60) return 'bg-yellow-100 border-yellow-400 text-yellow-800';
-    return 'bg-red-100 border-red-400 text-red-800';
-  };
-
-  // Helper: Get label for Value Trap score
-  const getValueTrapLabel = (score) => {
-    if (score < 20) return 'Genuine';
-    if (score < 40) return 'Probably Genuine';
-    if (score < 60) return 'Caution';
-    if (score < 80) return 'Likely Trap';
-    return 'Strong Trap';
-  };
-
-  // Helper: Persona score color
-  const getPersonaColor = (score) => {
-    if (score >= 7) return 'bg-green-500';
-    if (score >= 4) return 'bg-yellow-500';
-    return 'bg-red-500';
-  };
-
-  // Helper: News sentiment color
-  const getSentimentColor = (sentiment) => {
-    if (sentiment > 0.3) return 'text-green-600';
-    if (sentiment > 0) return 'text-green-500';
-    if (sentiment > -0.3) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
-  // Persona Badge Component
-  const PersonaBadge = ({ name, score, position }) => (
-    <div className={`absolute ${position} flex flex-col items-center`}>
-      <div className={`w-6 h-6 rounded-full ${getPersonaColor(score)} flex items-center justify-center text-white text-[8px] font-bold`}>
-        {score.toFixed(1)}
-      </div>
-      <div className="text-[7px] text-gray-600 mt-0.5">{name}</div>
-    </div>
-  );
-
-  const MetricBox = ({ label, value, benchmark, isGood, size = 'normal' }) => {
-    let bgColor = 'bg-gray-50';
-    if (isGood === true) bgColor = 'bg-green-50 border-green-200';
-    if (isGood === false) bgColor = 'bg-red-50 border-red-200';
-    if (isGood === 'neutral') bgColor = 'bg-yellow-50 border-yellow-200';
-    
-    return (
-      <div className={`${bgColor} border p-1.5 flex flex-col justify-center items-center`}>
-        <div className="text-base font-bold text-gray-900">{value}</div>
-        <div className="text-[9px] text-gray-600 text-center leading-tight">{label}</div>
-        {benchmark && <div className="text-[8px] text-gray-400">{benchmark}</div>}
-      </div>
-    );
-  };
-
-  const SectionHeader = ({ title, bgColor }) => (
-    <div className={`${bgColor} px-2 py-1 text-[10px] font-bold text-gray-700`}>
-      {title}
-    </div>
-  );
-
-  return (
-    <div className="w-full max-w-7xl mx-auto p-3 bg-white text-xs">
-      {/* Header */}
-      <div className="bg-orange-500 text-white px-3 py-2 mb-1 text-lg font-bold text-center">
-        {ticker} - {companyName}
-      </div>
-
-      {/* TOP NEWS - Pipe separated with dates at END */}
-      <div className="border border-gray-300 rounded p-2 mb-3 bg-gray-50">
-        <span className="font-bold text-[10px]">TOP NEWS:</span>
-        <div className="text-[9px] mt-1">{topNewsString}</div>
-      </div>
-
-      {/* Top 4 sections */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        {/* Price & Valuation - Updated with dual PEG */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="PRICE & VALUATION" bgColor="bg-blue-100" />
-          <div className="grid grid-cols-7 gap-px bg-gray-200">
-            <MetricBox label="Price:" value={`€${metrics.price}`} />
-            <MetricBox label="Market Cap:" value={metrics.marketCap} />
-            <MetricBox label="Trailing P/E:" value={metrics.trailingPE} />
-            <MetricBox label="Forward P/E:" value={metrics.forwardPE} benchmark={`(${metrics.subsectorTypicalPE})`} isGood={metrics.forwardPE < metrics.subsectorTypicalPE} />
-            <MetricBox label="Subsector P/E:" value={metrics.subsectorTypicalPE} />
-            <MetricBox label="PEG (1Y):" value={metrics.peg1Y} benchmark="(<1.5)" isGood={metrics.peg1Y < 1.5 ? true : metrics.peg1Y < 2 ? 'neutral' : false} />
-            <MetricBox label="PEG (5Y):" value={metrics.peg5Y} benchmark="(<2)" isGood={metrics.peg5Y < 2 ? true : metrics.peg5Y < 3 ? 'neutral' : false} />
-          </div>
-        </div>
-
-        {/* Financial Performance */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="FINANCIAL PERFORMANCE" bgColor="bg-green-100" />
-          <div className="grid grid-cols-6 gap-px bg-gray-200">
-            <MetricBox label="ROE:" value={`${metrics.roe}%`} benchmark="(>20%)" isGood={metrics.roe >= 20 ? true : metrics.roe >= 10 ? 'neutral' : false} />
-            <MetricBox label="ROA:" value={`${metrics.roa}%`} benchmark="(>10%)" isGood={metrics.roa >= 10} />
-            <MetricBox label="Profit Margin:" value={`${metrics.profitMargin}%`} benchmark="(>20%)" isGood={metrics.profitMargin >= 20 ? true : metrics.profitMargin >= 10 ? 'neutral' : false} />
-            <MetricBox label="Operative Margin:" value={`${metrics.opMargin}%`} benchmark="(>20%)" isGood={metrics.opMargin >= 20} />
-            <MetricBox label="Gross Margin:" value={`${metrics.grossMargin}%`} benchmark="(>40%)" isGood={metrics.grossMargin >= 40} />
-            <MetricBox label="ROIC:" value={`${metrics.roic}%`} benchmark="(>15%)" isGood={metrics.roic >= 15} />
-          </div>
-        </div>
-      </div>
-
-      {/* Next 4 sections */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        {/* Growth Metrics */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="GROWTH METRICS" bgColor="bg-emerald-100" />
-          <div className="grid grid-cols-7 gap-px bg-gray-200">
-            <MetricBox label="Revenue (YoY):" value={`${metrics.revGrowth}%`} benchmark="(>10%)" isGood={metrics.revGrowth >= 10} />
-            <MetricBox label="Earning (YoY):" value={`${metrics.earnGrowth}%`} benchmark="(>0%)" isGood={metrics.earnGrowth >= 0} />
-            <MetricBox label="EPS (TTM):" value={`€${metrics.epsTTM}`} />
-            <MetricBox label="Forward EPS:" value={`€${metrics.forwardEPS}`} isGood={metrics.forwardEPS > metrics.epsTTM} />
-            <MetricBox label="Growth Rates:" value={`Capped: ${metrics.growthCapped}%`} benchmark={`Uncapped: ${metrics.growthUncapped}%`} />
-            <MetricBox label="Analyst Target:" value={`€${metrics.analystTarget}`} />
-          </div>
-        </div>
-
-        {/* Risk Indicators */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="RISK INDICATORS" bgColor="bg-red-100" />
-          <div className="grid grid-cols-6 gap-px bg-gray-200">
-            <MetricBox label="CRS (0-1):" value={metrics.crs.toFixed(2)} benchmark="(Medium)" isGood={metrics.crs < 0.4 ? true : metrics.crs < 0.6 ? 'neutral' : false} />
-            <MetricBox label="Debt/Equity (mrq):" value={metrics.debtEquity} benchmark="(0.5-1)" isGood={metrics.debtEquity < 1 ? true : metrics.debtEquity < 2 ? 'neutral' : false} />
-            <MetricBox label="Piotroski F:" value={metrics.fScore} benchmark="(≥7)" isGood={metrics.fScore >= 7 ? true : metrics.fScore >= 4 ? 'neutral' : false} />
-            <MetricBox label="Altman Z:" value={metrics.zScore.toFixed(2)} benchmark="(>3)" isGood={metrics.zScore >= 2.99 ? true : metrics.zScore >= 1.81 ? 'neutral' : false} />
-            <MetricBox label="Beneish M:" value={metrics.mScore.toFixed(2)} benchmark="(<-1.78)" isGood={metrics.mScore < -1.78} />
-            <MetricBox label="Value Trap:" value={`${metrics.valueTrapScore} (${metrics.valueTrapLabel})`} isGood={metrics.valueTrapScore < 40 ? true : metrics.valueTrapScore < 60 ? 'neutral' : false} />
-          </div>
-        </div>
-      </div>
-
-      {/* Next 4 sections */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        {/* Liquidity & Free Cash Flow */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="LIQUIDITY & FREE CASH FLOW" bgColor="bg-cyan-100" />
-          <div className="grid grid-cols-7 gap-px bg-gray-200">
-            <MetricBox label="Current Ratio:" value={metrics.currentRatio.toFixed(2)} benchmark="(1-2)" isGood={metrics.currentRatio >= 1 && metrics.currentRatio <= 2 ? true : 'neutral'} />
-            <MetricBox label="Cash:" value={metrics.totalCash} />
-            <MetricBox label="Debt:" value={metrics.totalDebt} />
-            <MetricBox label="FCF Growth 5Y:" value={`${metrics.fcfGrowth5Y}%`} benchmark="(>5%)" isGood={metrics.fcfGrowth5Y >= 5} />
-            <MetricBox label="FCF Yield:" value={`${metrics.fcfYield}%`} benchmark="(>4%)" isGood={metrics.fcfYield >= 4} />
-            <MetricBox label="FCF Margin:" value={`${metrics.fcfMargin}%`} benchmark="(>15%)" isGood={metrics.fcfMargin >= 15 ? true : metrics.fcfMargin >= 10 ? 'neutral' : false} />
-            <MetricBox label="Payout Ratio:" value={`${metrics.payoutRatio}%`} benchmark="(<50%)" isGood={metrics.payoutRatio < 50} />
-          </div>
-        </div>
-
-        {/* Insider & Sentiment & Class */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="INSIDER & SENTIMENT & CLASS" bgColor="bg-purple-100" />
-          <div className="grid grid-cols-7 gap-px bg-gray-200">
-            <MetricBox label="Buys (12M):" value={metrics.insBuys} isGood={metrics.insBuys > metrics.insSells} />
-            <MetricBox label="Sells (12M):" value={metrics.insSells} />
-            <MetricBox label="Net Shares (12M):" value={metrics.netShares} />
-            <MetricBox label="Short Int (%):" value={`${metrics.shortInterest}%`} isGood={metrics.shortInterest < 5 ? true : metrics.shortInterest < 10 ? 'neutral' : false} />
-            <MetricBox label="Sentiment / Articles:" value={`${metrics.newsSentiment > 0 ? '+' : ''}${metrics.newsSentiment.toFixed(3)} / ${metrics.newsArticleCount}`} benchmark={metrics.newsSentiment > 0 ? '(Positive)' : '(Negative)'} isGood={metrics.newsSentiment > 0} />
-            <MetricBox label={`Stock: ${metrics.stockType}`} value={`Div Yield: ${metrics.divYield}%`} />
-            <MetricBox label="Sector/Industry:" value={`${metrics.sector} /`} benchmark={metrics.industry} />
-          </div>
-        </div>
-      </div>
-
-      {/* Last 2 sections */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        {/* Quality Scores */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="QUALITY SCORES" bgColor="bg-orange-100" />
-          <div className="grid grid-cols-6 gap-px bg-gray-200">
-            <MetricBox label="CQVS:" value={metrics.cqvs.toFixed(1)} benchmark="(>70)" isGood={metrics.cqvs >= 70 ? true : metrics.cqvs >= 50 ? 'neutral' : false} />
-            <MetricBox label="Label:" value={metrics.label} />
-            <MetricBox label="Valuation:" value={metrics.valuation} isGood={metrics.valuation >= 70} />
-            <MetricBox label="Quality:" value={metrics.quality} isGood={metrics.quality >= 70 ? true : metrics.quality >= 50 ? 'neutral' : false} />
-            <MetricBox label="Strength:" value={metrics.strength} isGood={metrics.strength >= 70} />
-            <MetricBox label="Integrity:" value={metrics.integrity} isGood={metrics.integrity >= 70 ? true : metrics.integrity >= 50 ? 'neutral' : false} />
-          </div>
-        </div>
-
-        {/* Moat & Other */}
-        <div className="border border-gray-300 rounded overflow-hidden">
-          <SectionHeader title="MOAT & OTHER" bgColor="bg-gray-200" />
-          <div className="grid grid-cols-6 gap-px bg-gray-200">
-            <MetricBox label="Buffett Moat:" value={metrics.buffettMoat} benchmark="(4-7)" isGood={metrics.buffettMoat >= 7 ? true : metrics.buffettMoat >= 4 ? 'neutral' : false} />
-            <MetricBox label="Greenblatt (MF):" value={`EY: ${metrics.greenblattEY}%`} benchmark={metrics.greenblattROC ? `ROC: ${metrics.greenblattROC}%` : 'ROC: N/A'} isGood={metrics.greenblattEY >= 8 ? true : metrics.greenblattEY >= 4 ? 'neutral' : false} />
-            <MetricBox label={`Beta: ${metrics.beta}`} value={`Vol 1Y: ${metrics.vol1Y}%`} isGood={metrics.beta < 1 ? true : metrics.beta < 1.5 ? 'neutral' : false} />
-            <MetricBox label="Earnings Predict.:" value={`${metrics.earningsPredict}%`} benchmark="(>80%)" isGood={metrics.earningsPredict >= 80 ? true : metrics.earningsPredict >= 60 ? 'neutral' : false} />
-            <MetricBox label="Drawdown (5Y):" value={`${metrics.maxDrawdown}%`} benchmark={metrics.maxDrawdown > -30 ? '(Low)' : metrics.maxDrawdown > -50 ? '(Mid)' : '(High)'} isGood={metrics.maxDrawdown > -30 ? true : metrics.maxDrawdown > -50 ? 'neutral' : false} />
-            <MetricBox label={`Completeness: ${metrics.completeness}%`} value={`Data Quality: ${metrics.dataQuality}`} isGood={metrics.dataQuality === 'High' ? true : metrics.dataQuality === 'Medium' ? 'neutral' : false} />
-          </div>
-        </div>
-      </div>
-
-      {/* Charts Section - Enhanced with Legends */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        {/* Linear Price Chart + MACD */}
-        <div className="border border-gray-300 rounded p-2">
-          <div className="text-sm font-bold mb-1 text-center">LINEAR PRICE CHART (10Y)</div>
-          <div className="text-[7px] text-gray-500 mb-1 pl-1">
-            — Close Price — Total Return<br/>
-            - - Market Value (Current): €{metrics.marketValueCurrent}<br/>
-            - - Intrinsic Value (Current): €{metrics.intrinsicValueCurrent}<br/>
-            - - Analyst Target: €{metrics.analystTarget}
-          </div>
-          <ResponsiveContainer width="100%" height={130}>
-            <LineChart data={priceHistory}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" tick={{ fontSize: 7 }} />
-              <YAxis tick={{ fontSize: 7 }} />
-              <Tooltip contentStyle={{ fontSize: 8 }} />
-              <Line type="monotone" dataKey="price" stroke="#1f2937" strokeWidth={1.5} dot={false} name="Close" />
-              <Line type="monotone" dataKey="totalReturn" stroke="#6b7280" strokeWidth={1} strokeDasharray="2 2" dot={false} name="Total Return" />
-              <Line type="monotone" dataKey="intrinsicValueCurrent" stroke="#16a34a" strokeWidth={1} strokeDasharray="5 5" dot={false} name="IV Current" />
-              <Line type="monotone" dataKey="analystTarget" stroke="#3b82f6" strokeWidth={1} strokeDasharray="3 3" dot={false} name="Target" />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="text-xs font-bold mt-1 mb-1 text-center">MACD</div>
-          <ResponsiveContainer width="100%" height={55}>
-            <LineChart data={macdData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" tick={{ fontSize: 6 }} />
-              <YAxis tick={{ fontSize: 6 }} />
-              <ReferenceLine y={0} stroke="#666" />
-              <Tooltip contentStyle={{ fontSize: 7 }} />
-              <Line type="monotone" dataKey="macd" stroke="#2563eb" strokeWidth={1} dot={false} name="MACD" />
-              <Line type="monotone" dataKey="signal" stroke="#dc2626" strokeWidth={1} dot={false} name="Signal" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Radar + Investor Personas + Forecast */}
-        <div className="border border-gray-300 rounded p-2">
-          <div className="relative">
-            <ResponsiveContainer width="100%" height={140}>
-              <RadarChart data={radarData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="metric" tick={{ fontSize: 6 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 6 }} />
-                <Radar name={ticker} dataKey="value" stroke="#2563eb" fill="#3b82f6" fillOpacity={0.3} />
-              </RadarChart>
-            </ResponsiveContainer>
-            {/* Investor Persona Badges */}
-            <PersonaBadge name="Buffett" score={metrics.buffettScore} position="top-0 left-1/4" />
-            <PersonaBadge name="Lynch" score={metrics.lynchScore} position="top-0 right-1/4" />
-            <PersonaBadge name="Munger" score={metrics.mungerScore} position="top-1/4 -left-2" />
-            <PersonaBadge name="Greenblatt" score={metrics.greenblattScore} position="top-1/4 -right-2" />
-            <PersonaBadge name="Dalio" score={metrics.dalioScore} position="bottom-1/4 -left-2" />
-            <PersonaBadge name="Graham" score={metrics.grahamScore} position="bottom-1/4 -right-2" />
-            <PersonaBadge name="Templeton" score={metrics.templetonScore} position="bottom-0 left-1/4" />
-            <PersonaBadge name="Soros" score={metrics.sorosScore} position="bottom-0 right-1/4" />
-          </div>
-          <div className="text-center my-1">
-            <span className="bg-green-200 px-2 py-0.5 text-[10px] font-bold rounded border border-green-400">
-              Advice: {recommendation} (CQVS: {metrics.cqvs.toFixed(1)})
-            </span>
-          </div>
-          <div className="text-[8px] font-bold mb-0.5 text-center">1Y PRICE + 6-MONTH FORECAST</div>
-          <div className="text-[6px] text-gray-500 mb-0.5 text-center">— Close — 50-Day MA — 200-Day MA ▒ Bollinger Bands - - Forecast</div>
-          <ResponsiveContainer width="100%" height={70}>
-            <ComposedChart data={oneYearData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" tick={{ fontSize: 6 }} />
-              <YAxis tick={{ fontSize: 6 }} />
-              <Tooltip contentStyle={{ fontSize: 7 }} />
-              <Area type="monotone" dataKey="upperBand" stroke="none" fill="#e0e0e0" fillOpacity={0.5} />
-              <Area type="monotone" dataKey="ci95Upper" stroke="none" fill="#dbeafe" fillOpacity={0.5} />
-              <Line type="monotone" dataKey="price" stroke="#1f2937" strokeWidth={1.5} dot={false} />
-              <Line type="monotone" dataKey="ma50" stroke="#f59e0b" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="ma200" stroke="#ef4444" strokeWidth={1} dot={false} />
-              <Line type="monotone" dataKey="forecast" stroke="#16a34a" strokeWidth={1.5} strokeDasharray="5 5" dot={false} />
-            </ComposedChart>
-          </ResponsiveContainer>
-          {/* Valuation Indicator */}
-          <div className={`text-center text-[10px] font-bold mt-1 ${metrics.valuationPercent > 10 ? 'text-green-600' : metrics.valuationPercent < -10 ? 'text-red-600' : 'text-yellow-600'}`}>
-            {metrics.valuationLabel} ({metrics.valuationPercent > 0 ? '+' : ''}{metrics.valuationPercent}%)
-          </div>
-        </div>
-
-        {/* Log Price + RSI */}
-        <div className="border border-gray-300 rounded p-2">
-          <div className="text-sm font-bold mb-1 text-center">LOG PRICE CHART (10Y)</div>
-          <div className="text-[7px] text-gray-500 mb-1 pl-1">
-            — Close Price — Total Return<br/>
-            - - Unrestr. Market Value (Current): €{metrics.unrestrictedMarketValueCurrent}<br/>
-            - - Unrestr. Market Value (Next Year): €{metrics.unrestrictedMarketValueNextYear}
-          </div>
-          <ResponsiveContainer width="100%" height={130}>
-            <LineChart data={priceHistory}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" tick={{ fontSize: 7 }} />
-              <YAxis tick={{ fontSize: 7 }} scale="log" domain={['auto', 'auto']} />
-              <Tooltip contentStyle={{ fontSize: 8 }} />
-              <Line type="monotone" dataKey="price" stroke="#1f2937" strokeWidth={1.5} dot={false} name="Close" />
-              <Line type="monotone" dataKey="totalReturn" stroke="#6b7280" strokeWidth={1} strokeDasharray="2 2" dot={false} name="Total Return" />
-              <Line type="monotone" dataKey="unrestrictedCurrent" stroke="#dc2626" strokeWidth={1} strokeDasharray="5 5" dot={false} name="Unrestr Current" />
-              <Line type="monotone" dataKey="unrestrictedNextYear" stroke="#f97316" strokeWidth={1} strokeDasharray="5 5" dot={false} name="Unrestr Next" />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="text-xs font-bold mt-1 mb-1 text-center">RSI (14) = {rsiData[rsiData.length - 1].rsi}</div>
-          <ResponsiveContainer width="100%" height={55}>
-            <LineChart data={rsiData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="date" tick={{ fontSize: 6 }} />
-              <YAxis tick={{ fontSize: 6 }} domain={[0, 100]} />
-              <Tooltip contentStyle={{ fontSize: 7 }} />
-              <ReferenceLine y={70} stroke="#ef4444" strokeDasharray="2 2" />
-              <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="2 2" />
-              <Line type="monotone" dataKey="rsi" stroke="#f59e0b" strokeWidth={1.5} dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* NEW: Ichimoku Cloud Chart */}
-      <div className="border border-gray-300 rounded p-2 mb-3">
-        <div className="text-sm font-bold mb-1 text-center">ICHIMOKU CLOUD</div>
-        <div className="flex gap-4 text-[7px] justify-center mb-1">
-          <span>— Close Price</span>
-          <span className="text-blue-500">— Tenkan-sen (9)</span>
-          <span className="text-red-500">— Kijun-sen (26)</span>
-          <span className="text-gray-400">— Chikou Span</span>
-          <span className="text-green-500">▒ Senkou Span A/B (Cloud)</span>
-          <span className="ml-2 font-bold text-yellow-600">◆ TK Cross</span>
-          <span className="text-purple-600">◆ Kumo Twist</span>
-        </div>
-        <ResponsiveContainer width="100%" height={100}>
-          <ComposedChart data={ichimokuData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-            <XAxis dataKey="date" tick={{ fontSize: 7 }} />
-            <YAxis tick={{ fontSize: 7 }} domain={['auto', 'auto']} />
-            <Tooltip contentStyle={{ fontSize: 8 }} />
-            <Area type="monotone" dataKey="senkouA" stroke="none" fill="#86efac" fillOpacity={0.3} />
-            <Area type="monotone" dataKey="senkouB" stroke="none" fill="#fca5a5" fillOpacity={0.3} />
-            <Line type="monotone" dataKey="price" stroke="#1f2937" strokeWidth={2} dot={false} name="Price" />
-            <Line type="monotone" dataKey="tenkan" stroke="#3b82f6" strokeWidth={1} dot={false} name="Tenkan" />
-            <Line type="monotone" dataKey="kijun" stroke="#dc2626" strokeWidth={1} dot={false} name="Kijun" />
-            <Line type="monotone" dataKey="chikou" stroke="#9ca3af" strokeWidth={1} strokeDasharray="3 3" dot={false} name="Chikou" />
-            <Scatter dataKey="tkCrossMarker" fill="#9333ea" shape="diamond" name="TK Cross" />
-            <Scatter dataKey="kumoTwistMarker" fill="#dc2626" shape="diamond" name="Kumo Twist" />
-          </ComposedChart>
-        </ResponsiveContainer>
-        <div className="flex gap-4 text-[8px] justify-center mt-1">
-          <span className="bg-green-100 px-2 rounded">{ichimokuSignals.tkCross}</span>
-          <span className="bg-green-100 px-2 rounded">{ichimokuSignals.kumoTwist}</span>
-          <span className="bg-green-100 px-2 rounded">{ichimokuSignals.priceVsCloud}</span>
-        </div>
-      </div>
-
-      {/* Key Notes (Expandable) */}
-      <div className="border border-gray-300 rounded overflow-hidden">
-        <button 
-          onClick={() => setShowKeyNotes(!showKeyNotes)}
-          className="w-full bg-gray-100 px-3 py-2 text-left text-sm font-bold flex items-center hover:bg-gray-200"
-        >
-          <span className="mr-2">{showKeyNotes ? '▼' : '▶'}</span> Key Notes (Click to Expand)
-        </button>
-        {showKeyNotes && (
-          <div className="p-3 bg-gray-50">
-            <div className="grid grid-cols-3 gap-4 text-xs">
-              {/* Bull Case */}
-              <div>
-                <div className="font-bold text-green-700 mb-2 text-sm">BULL CASE ({bullCase.target})</div>
-                <ul className="list-disc list-inside space-y-1">
-                  {bullCase.points.map((point, i) => <li key={i}>{point}</li>)}
-                </ul>
-              </div>
-              {/* Bear Case */}
-              <div>
-                <div className="font-bold text-red-700 mb-2 text-sm">BEAR CASE ({bearCase.target})</div>
-                <ul className="list-disc list-inside space-y-1">
-                  {bearCase.points.map((point, i) => <li key={i}>{point}</li>)}
-                </ul>
-              </div>
-              {/* Entry/Exit Strategy */}
-              <div>
-                <div className="font-bold text-blue-700 mb-2 text-sm">ENTRY/EXIT STRATEGY</div>
-                <ul className="list-disc list-inside space-y-1">
-                  <li><strong>Ideal Entry:</strong> {entryStrategy.idealEntry}</li>
-                  <li><strong>Current:</strong> {entryStrategy.currentEntry}</li>
-                  <li><strong>Target:</strong> {entryStrategy.target}</li>
-                  <li><strong>Stop Loss:</strong> {entryStrategy.stopLoss}</li>
-                  <li><strong>Position Size:</strong> {entryStrategy.positionSize}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="text-xs text-gray-500 text-center mt-3">
-        Analysis Date: {analysisDate} | Sources: SEC Filings, Company Reports | 
-        <span className="font-bold text-blue-600 ml-1">{recommendation}</span>
-      </div>
-    </div>
-  );
-};
-
-export default QuantDashboard;
-```
-
-### Implementation Instructions
-
-**CRITICAL STEPS:**
-
-1. **Calculate all metrics** during the comprehensive text analysis
-2. **Store metrics in variables** as you calculate them
-3. **After completing full text analysis**, create the React artifact
-4. **Replace ALL placeholder values** in the template with actual calculated data
-5. **Use the EXACT template structure** - do not modify the component code
-6. **Populate these specific data arrays**:
-   - `metrics` object (60+ values including investor persona scores)
-   - `topNews` array (5 recent headlines with dates)
-   - `priceHistory` array (10-year data with multiple valuation lines)
-   - `oneYearData` array (with MAs, Bollinger Bands, forecast)
-   - `ichimokuData` array (6-month with signal markers)
-   - `ichimokuSignals` object (TK cross, Kumo twist, price vs cloud)
-   - `macdData` array (6 recent points with histogram)
-   - `rsiData` array (6 recent points)
-   - `radarData` array (12 metrics, normalized 0-100)
-   - `bullCase.points` (5 points from bull case analysis)
-   - `bearCase.points` (5 points from bear case analysis)
-   - `entryStrategy` (5 values from entry/exit strategy)
-
-6. **Normalize radar chart values** properly:
-   - Each metric on 0-100 scale
-   - Higher is always better (invert risk/beta if needed)
-   - Use scaling formulas provided above
-
-7. **Format values correctly**:
-   - Currency: `"€100.00"` (Euro is the default - use € not $)
-   - Large numbers: `"€10B"`, `"€2.5M"`
-   - Percentages: `15.0` (number, not string with %)
-   - Ratios: `1.25` (number)
-   - Scores: `7` (integer) or `75.0` (float)
-
-8. **Growth metrics**:
-   - Use REPORTED revenue growth (not underlying/organic)
-   - Use REPORTED earnings growth (not adjusted EPS growth)
-
-9. **DO NOT**:
-   - Leave placeholder values
-   - Modify the component structure
-   - Skip any sections
-   - Use estimated/guessed data
-
-**This is the ONLY accepted dashboard format. All other dashboard styles are deprecated.**
+## 最佳实践**  
+1. **从公司公开文件开始分析**（10-K年报、10-Q季度报）  
+2. **回顾过去5-10年的数据**  
+3. **与3-5家竞争对手进行比较**  
+4. **使用多种估值方法**  
+5. **全面呈现两种观点**  
+6. **使用具体数据**  
+
+### 估值原则**  
+- 始终要求至少15%的安全边际  
+- 在现金流折现（DCF）分析中使用保守假设  
+- 结合多种估值方法  
+- 考虑行业特定因素  
+- 不要过度追逐高增长  
+
+### 风险管理**  
+- 明确识别并量化风险  
+- 公开风险及影响程度  
+- 如实告知未知因素  
+- 不仅关注潜在收益  
+
+### 通用注意事项**  
+- **优质公司特征**：  
+  - 全周期内持续盈利（5-10年）  
+  - 财务状况良好（债务低、现金充足）  
+  - 明显的竞争优势  
+- 可持续的竞争优势  
+
+### 需避免的价值陷阱**  
+- 价格看似低廉（P/E比率低、P/B比率低）但实际上存在合理的原因（如业务衰退）  
+- 股价持续下跌  
+
+### 评估流程**  
+- **数据完整性检查**（至关重要）  
+  - 每个数值都有来源链接  
+  - 无伪造的内幕交易记录  
+  - 无虚假的短仓数据  
+  - 净资产收益率基准正确  
+  - 使用标准化指标标签  
+  - 所有缺失数据显示为“N/A”  
+  - 标签和格式正确  
+
+### 综合评估**  
+- 确保所有必完成项目都已完成  
+- 使用多种估值方法  
+- 提供明确的买入/持有/卖出建议  
+- 明确的入场价格和仓位建议  
 
 ---
 
-## Integration with Project Context
+## 技术分析（入场时机）  
+重点关注最佳入场时机，而非全面的技术分析。  
 
-### Portfolio Awareness
-- Access portfolio data from project knowledge
-- Check if stock is already owned (if so, suggest using Portfolio Analyst)
-- Assess fit with existing holdings (sector exposure, correlation)
-- Consider position sizing in context of current allocations
+### 关键技术要素  
+- **价格走势（过去30-60天）**  
+- 当前趋势：上升/下降/盘整  
+- 最近的价格走势  
+- 成交量变化  
+- 动量指标  
 
-### Investment Profile
-- User's investment timeline, risk tolerance, preferences in project instructions
-- Tailor recommendations to user's profile
-- Consider tax implications from user's context
-- Adjust position sizing based on portfolio size and risk tolerance
+### 关键价位  
+- **支撑位**：买入兴趣出现的价位  
+  - 主要支撑位：€X.XX  
+  - 次要支撑位：€X.XX  
+- **阻力位**：卖出压力增加的价位  
+  - 主要阻力位：€X.XX  
+  - 次要阻力位：€X.XX  
 
-### Avoiding Duplication
-If stock is already in portfolio:
-- Acknowledge: "You already own [SYMBOL]. For analysis of your existing position, use the Portfolio Analyst skill."
-- Still provide evaluation if user wants fresh assessment
-- Frame as "Should you add more?" rather than initial purchase
+### 技术指标  
+- **相对强弱指数（RSI）**：>70表示超买，可能回调  
+- <30表示超卖，可能反弹  
+- 40-60表示中性  
 
----
-
-## When to Use This Skill
-
-**Use Stock Evaluator when:**
-- User asks "Should I buy [stock]?"
-- User wants evaluation of watchlist candidates
-- User requests stock recommendations
-- User asks "Is [stock] a good investment?"
-- User wants to compare multiple potential investments
-- User asks for alternatives to a stock they're considering
-- User wants entry price and position sizing guidance
-- User requests a "quant-style dashboard" or "stock visualization"
-
-**Do NOT use this skill when:**
-- User wants to review existing portfolio positions → Use Portfolio Analyst
-- User wants general market commentary → Regular knowledge
-- User wants stock screening/discovery → Different workflow
-- User asks about options, derivatives, crypto → Out of scope
-
-**Output includes:**
-- Comprehensive text analysis (all sections above)
-- Quant-style React dashboard artifact (standardized visual format)
+### 入场评估**  
+- **技术形态**：看涨/中性/看跌  
+- **最佳入场时机**：等待价格回调至支撑位/在支撑位买入/突破阻力位买入  
+- **入场价格范围**：€X.XX - €X.XX  
+- **避免买入价格**：高于XX.XX（风险/回报比不佳）  
 
 ---
 
-## Best Practices
+## 投资建议结构  
+### 买入建议  
+- 公司公允价值比当前价格高出15%以上（安全边际充足）  
+- 基本面状况良好或正在改善  
+- 技术形态合理  
+- 有明确的买入理由  
+- 可接受的风险水平  
 
-### Research Approach
-1. **Start with company filings** (10-K, 10-Q) - NOT news articles
-2. **Go back 5-10 years** - Understand evolution, not just current state
-3. **Compare to 3-5 peers** - Apples to apples comparison
-4. **Multiple valuation methods** - Don't rely on single approach
-5. **Present both sides** - Bull and bear cases fairly
-6. **Be specific** - Use actual data, not generalities
+### 持有建议  
+- 公司公允价值在当前价格的±15%范围内  
+- 基本面状况稳定，无明显的买入理由  
+- 可能有更好的投资机会  
+- 等待更好的入场价格  
 
-### Valuation Discipline
-- Always require minimum 15% margin of safety
-- Use conservative assumptions in DCF
-- Weight multiple valuation methods
-- Consider industry-specific norms
-- Don't overpay for growth
+### 卖出/避免建议  
+- 公司公允价值低于当前价格15%以上（估值过高）  
+- 基本面状况恶化  
+- 存在重大风险  
+- 有更好的替代方案  
 
-### Risk Awareness
-- Explicitly identify and quantify risks
-- Consider probability and impact
-- Acknowledge unknowns honestly
-- Don't just focus on upside
+### 仓位配置建议  
+**仓位配置基于：**  
+- 信心程度 + 风险  
+- **强烈买入（信心度高，风险低）：**  
+  - 仓位占比：投资组合的5-8%  
+- 最大占比：10%  
 
-### Communication
-- Lead with clear recommendation
-- Support every claim with evidence
-- Use specific numbers and dates
-- Explain reasoning, don't just state conclusions
-- Make recommendations unmistakable
+### 考虑因素**  
+- 分散化需求  
+- 与现有持仓的关联性  
+- 整体投资组合风险  
+- 用户的风险承受能力  
 
----
+### 入场与退出策略  
+**入场策略**：  
+- 不建议分阶段买入  
+- **买入建议**：  
+  - **理想入场价格：** €X.XX - €X.XX（最佳范围）  
+  - **最大买入价格：** €X.XX（超出此范围，风险/回报比不佳）  
+  - **买入策略**：  
+    - “当前价格买入”  
+    - “等待价格回调至支撑位买入”  
+    - **突破阻力位买入”  
+    - “价格高于XX.XX时避免买入”（估值过高）  
 
-## Common Patterns to Recognize
+### 出场策略  
+- **目标价格（12个月）：** €X.XX（预期涨幅XX%）  
+- **保守目标：** €X.XX  
+- **基础目标：** €X.XX  
+- **乐观目标：** €X.XX  
 
-### Quality Companies
-- Consistent profitability over full cycle (5-10 years)
-- Strong balance sheet (low debt, high cash)
-- Competitive moats (wide or narrow)
-- Shareholder-friendly capital allocation
-- Predictable business model
+### 停损设置**  
+- **止损价格：** €X.XX（最大亏损百分比）  
+- **技术止损**：低于关键支撑位  
+- **基本面止损**：如果分析结论被打破  
 
-### Value Traps (AVOID)
-- Cheap for a reason (declining business)
-- High debt with weak cash flow
-- Losing market share consistently
-- No competitive advantages
-- Poor management capital allocation
+### 卖出条件**  
+- [具体基本面恶化情况]  
+- [具体竞争威胁]  
+- [具体估值阈值]  
 
-### Growth at Reasonable Price (GARP)
-- Strong revenue growth (15-25%+)
-- Expanding margins
-- Large addressable market
-- Competitive advantages
-- Reasonable valuation (PEG < 1.5)
-
-### Turnaround Candidates
-- New management with track record
-- Improving key metrics quarter-over-quarter
-- Catalyst for change
-- Deep value with margin of safety
-- Reduced debt or improved cash flow
-
----
-
-## Quality Checks Before Finalizing
-
-Before presenting analysis, verify:
-
-### DATA INTEGRITY CHECKS (CRITICAL - CHECK FIRST)
-1. ✅ Every numeric metric has a cited source from web search?
-2. ✅ No insider activity fabricated? (SEC Form 4 or N/A)
-3. ✅ No short interest fabricated? (FINRA/exchange or N/A)
-4. ✅ ROE benchmark correct? (>20% = green, 10-20% = yellow, <10% = red)
-5. ✅ Standardized metric labels used? (e.g., "Operative Margin", not "Operating")
-6. ✅ All unavailable data shows "N/A"? (NEVER zeros or estimates)
-7. ✅ TOP NEWS format correct? (pipe-separated, dates at END in brackets)
-8. ✅ Valuation indicator displayed below forecast? (Undervalued/Fairly Valued/Overvalued +/- %)
-9. ✅ Beta + Vol 1Y combined in one cell?
-10. ✅ Sector/Industry combined in one cell?
-
-### ANALYSIS COMPLETENESS CHECKS
-11. ✅ All mandatory deliverables completed?
-12. ✅ Multiple valuation methods used?
-13. ✅ Both bull and bear cases presented?
-14. ✅ Clear BUY/HOLD/SELL recommendation?
-15. ✅ Specific entry price and position size?
-16. ✅ 3-5 peer companies compared?
-17. ✅ 5-10 year financial trends analyzed?
-18. ✅ Research based on company filings, not news?
-19. ✅ Margin of safety calculated?
-20. ✅ Risk level assessed?
-21. ✅ If SELL: 3-5 alternatives provided?
-22. ✅ Technical entry points identified?
-23. ✅ Advanced metrics calculated (Piotroski F, Altman Z, Beneish M, Max Drawdown)?
-24. ✅ All monetary values in € (Euro)?
-25. ✅ Revenue/Earnings growth using REPORTED (not underlying/adjusted) figures?
-26. ✅ Value Trap Score calculated (0-100, LOWER = genuine)?
-27. ✅ All 8 Investor Persona Scores calculated (0-10)?
-28. ✅ PEG ratio calculated?
-29. ✅ FCF Margin calculated?
-30. ✅ Greenblatt Magic Formula metrics (EY, ROC)?
-31. ✅ News sentiment and short interest researched?
-32. ✅ Ichimoku Cloud data gathered with signal markers?
-33. ✅ TOP NEWS section populated (5 recent headlines)?
-34. ✅ 10-year price history with valuation lines available?
-35. ✅ Enhanced dashboard created with ALL 60+ metrics populated?
-
-### FINAL VALIDATION QUESTIONS
-- Can you cite source for EVERY number in the dashboard?
-- Did any metric come from training knowledge alone? (If yes, search again or use N/A)
-- Are insider buys/sells from SEC Form 4 specifically? (If not found, use N/A)
-
-If any checklist item incomplete: **STOP and gather more information**.
-If data genuinely unavailable after searching: **Use "N/A" - never fabricate**.
-
----
-
-## Example Evaluation Structure
-
-[See complete example in EVALUATION-WORKFLOWS.md for detailed walkthrough]
-
----
-
-## Continuous Improvement
-
-After each evaluation:
-- Track recommendation outcomes
-- Learn from what worked/didn't work
-- Refine valuation assumptions
-- Improve pattern recognition
-- Update industry knowledge
-
-The goal is to discover genuinely attractive investment opportunities that fit the user's profile with adequate margin of safety and acceptable risk.
+### 持仓时长**  
+- **预期持有时间：**  
+  - [6-12个月 / 1-3年 / 3-5年**  
+- 根据投资类型决定

@@ -1,45 +1,45 @@
 ---
 name: doctorbot-healthcheck-free
 version: 1.0.0
-description: 🩺 Free Security & Health Audit. Your OpenClaw deserves a check-up. This skill performs a non-invasive scan to detect security risks, outdated software, and misconfigurations.
+description: 🩺 免费的安全与健康检查服务：您的 OpenClaw 系统值得进行一次全面的安全评估。该功能会执行一次非侵入性的扫描，以检测潜在的安全风险、过时的软件版本以及配置错误。
 author: DoctorBot-x402
 tags: [security, audit, health, devops, free]
 icon: 🛡️
 homepage: https://github.com/bamontejano/skill-doctorbot-healthcheck
 ---
 
-# DoctorBot: HealthCheck (Free Edition) 🛡️
+# DoctorBot: 健康检查（免费版）🛡️
 
-> **Is your OpenClaw host secure? Let's find out.**
+> **您的 OpenClaw 主机安全吗？让我们来了解一下。**
 
-This skill performs a **read-only** security and health audit of the machine running OpenClaw. It's 100% non-invasive and will not make any changes to your system.
+该技能会对运行 OpenClaw 的机器进行 **只读** 的安全性和健康状况审计。该过程完全不会对您的系统造成任何影响。
 
-## 🚀 Free Features
+## 🚀 免费功能
 
-- **OpenClaw Security Audit:** Runs `openclaw security audit --deep` to find vulnerabilities in your OpenClaw setup.
-- **Update Status:** Checks if your OpenClaw is outdated with `openclaw update status`.
-- **Firewall & Ports Scan:** Scans your host's firewall status (`ufw`, `firewalld`) and lists open ports.
-- **System Vitals:** Basic check of OS version and running services.
+- **OpenClaw 安全审计：** 运行 `openclaw security audit --deep` 命令，以检测 OpenClaw 设置中的安全漏洞。
+- **更新状态检查：** 通过 `openclaw update status` 命令检查 OpenClaw 是否已过时。
+- **防火墙与端口扫描：** 扫描主机的防火墙状态（`ufw`、`firewalld`），并列出开放的端口。
+- **系统基本信息：** 检查操作系统版本和正在运行的服务。
 
-## 🛠️ Usage
+## 🛠️ 使用方法
 
-Simply tell your agent: **"Run a health check."**
+只需告诉您的代理：“运行健康检查。”
 
-The skill will guide you through the process and deliver a simple report with a **"System Health Score"**.
+该技能会引导您完成整个过程，并提供一份包含 **“系统健康评分”** 的简单报告。
 
-##  upgrading_to_pro
+## 升级到专业版（Upgrade to Pro）
 
-### 🩺 Upgrade to DoctorBot: HealthCheck Pro
+### 🩺 升级到 DoctorBot: HealthCheck Pro
 
-Did your free scan find critical issues? The **Pro version** can automatically fix them.
+免费扫描发现了关键问题吗？**专业版** 可以自动修复这些问题。
 
-**Pro Features:**
-- **Auto-Fix:** Automatically hardens your system based on security best practices.
-- **Firewall Management:** Closes unnecessary ports.
-- **SSH Hardening:** Disables password login, enforces key-only access.
-- **Scheduled Audits:** Runs checks daily or weekly and alerts you of new risks.
+**专业版功能：**
+- **自动修复：** 根据安全最佳实践自动强化您的系统。
+- **防火墙管理：** 关闭不必要的端口。
+- **SSH 安全设置：** 禁用密码登录，强制使用密钥登录。
+- **定期审计：** 每日或每周自动进行检查，并在新风险出现时提醒您。
 
-**To upgrade, find `DoctorBot: HealthCheck Pro` on ClawHub.**
+**如需升级，请在 ClawHub 上查找 `DoctorBot: HealthCheck Pro`。**
 
 ---
-*Maintained by DoctorBot-x402. For a healthy agent ecosystem.*
+*由 DoctorBot-x402 维护。为了维护一个健康的代理生态系统，请使用该工具。*

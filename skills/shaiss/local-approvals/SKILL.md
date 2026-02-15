@@ -1,13 +1,13 @@
 ---
 name: local-approvals
-description: Local approval system for managing agent permissions. Use CLI to approve/deny requests, view history, and manage auto-approved categories.
+description: 本地审批系统用于管理代理权限。可通过命令行界面（CLI）来批准/拒绝请求、查看审批历史记录以及管理自动批准的分类。
 ---
 
-# Local Approvals Skill
+# 本地审批技能
 
-A local approval system that manages agent permissions with auto-approve lists and approval history tracking.
+这是一个用于管理代理权限的本地审批系统，支持自动审批功能以及审批历史记录的跟踪。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List pending requests
@@ -26,129 +26,129 @@ python C:\Users\Shai\.openclaw\skills\local-approvals\cli.py history
 python C:\Users\Shai\.openclaw\skills\local-approvals\cli.py reset assistant
 ```
 
-## Commands
+## 命令
 
 ### approve(id)
-Approve a pending request by ID.
+通过ID批准一个待处理的请求。
 
 ```bash
 python cli.py approve <request_id> [--learn] [--reviewer <name>]
 ```
 
-**Options:**
-- `--learn`: Add the category to the agent's auto-approve list
-- `--reviewer`: Who is approving (default: "user")
+**选项:**
+- `--learn`: 将该类别添加到代理的自动审批列表中
+- `--reviewer`: 批准者（默认值：`user`）
 
-**Example:**
+**示例:**
 ```bash
 python cli.py approve abc123 --learn
 ```
 
 ### deny(id)
-Deny a pending request by ID.
+通过ID拒绝一个待处理的请求。
 
 ```bash
 python cli.py deny <request_id> [--reviewer <name>]
 ```
 
-**Options:**
-- `--reviewer`: Who is denying (default: "user")
+**选项:**
+- `--reviewer`: 拒绝者（默认值：`user`）
 
-**Example:**
+**示例:**
 ```bash
 python cli.py deny abc123
 ```
 
 ### list_pending()
-List all pending requests, optionally filtered by agent.
+列出所有待处理的请求，可选地按代理进行过滤。
 
 ```bash
 python cli.py list [--agent <agent_id>]
 ```
 
-**Options:**
-- `--agent`: Filter requests by agent ID
+**选项:**
+- `--agent`: 按代理ID过滤请求
 
-**Example:**
+**示例:**
 ```bash
 python cli.py list --agent assistant
 ```
 
 ### show_history()
-Show approval history from state.json.
+从`state.json`文件中显示审批历史记录。
 
 ```bash
 python cli.py history [--limit <number>]
 ```
 
-**Options:**
-- `--limit`: Maximum number of entries to show (default: 20)
+**选项:**
+- `--limit`: 显示的最大条目数（默认值：20）
 
-**Example:**
+**示例:**
 ```bash
 python cli.py history --limit 50
 ```
 
 ### reset_categories(agent)
-Reset an agent's auto-approved categories list.
+重置代理的自动审批类别列表。
 
 ```bash
 python cli.py reset <agent_id>
 ```
 
-**Example:**
+**示例:**
 ```bash
 python cli.py reset assistant
 ```
 
-## Additional Commands
+## 其他命令
 
 ### categories
-Show auto-approved categories for one or all agents.
+显示一个或多个代理的自动审批类别。
 
 ```bash
 python cli.py categories [--agent <agent_id>]
 ```
 
-**Options:**
-- `--agent`: Show categories for specific agent
+**选项:**
+- `--agent`: 为特定代理显示类别
 
-**Example:**
+**示例:**
 ```bash
 python cli.py categories --agent planner
 ```
 
-## State Files
+## 状态文件
 
-The skill maintains two JSON files in the state directory:
+该技能在`state`目录下维护两个JSON文件：
 
-- **state.json**: Auto-approve lists and approval history
-- **pending.json**: Pending approval requests
+- **state.json**: 自动审批列表和审批历史记录
+- **pending.json**: 待处理的审批请求
 
-Location: `~/.openclaw/skills/local-approvals/`
+**位置**: `~/.openclaw/skills/local-approvals/`
 
-## Core Functions
+## 核心功能
 
-The `core.py` module provides the underlying functionality:
+`core.py`模块提供了以下核心功能：
 
-- `check_auto_approve(agent, category)` - Check if a category is auto-approved
-- `submit_request(agent, category, operation, reasoning)` - Submit a pending request
-- `learn_category(agent, category)` - Add category to auto-approve list
-- `get_request(request_id)` - Retrieve a request by ID
-- `update_request(request_id, decision, reviewer)` - Update request with decision
-- `list_pending(agent)` - List pending requests
-- `get_agent_approvals(agent)` - Get agent's auto-approved categories
+- `check_auto_approve(agent, category)` - 检查某个类别是否被自动批准
+- `submit_request(agent, category, operation, reasoning)` - 提交一个待处理的请求
+- `learn_category(agent, category)` - 将类别添加到自动审批列表中
+- `get_request(request_id)` - 根据ID检索请求
+- `update_request(request_id, decision, reviewer)` - 更新请求的状态
+- `list_pending(agent)` - 列出待处理的请求
+- `get_agent_approvals(agent)` - 获取代理的自动审批类别
 
-## Best Practices
+## 最佳实践
 
-1. **Review before approving**: Always check the operation and reasoning before approving
-2. **Use auto-learn carefully**: Only use `--learn` for trusted categories that you want to auto-approve
-3. **Check history regularly**: Review `history` to understand approval patterns
-4. **Reset when needed**: Use `reset` to clear an agent's auto-approve list if you suspect issues
+1. **审批前审核**: 在批准之前务必检查操作内容和理由。
+2. **谨慎使用自动学习功能**: 只将`--learn`选项用于那些你希望自动批准的受信任的类别。
+3. **定期查看历史记录**: 定期查看审批历史记录以了解审批模式。
+4. **必要时重置**: 如果怀疑有问题，使用`reset`命令清除代理的自动审批列表。
 
-## Examples
+## 示例
 
-### Complete Workflow
+### 完整工作流程
 
 ```bash
 # 1. Check what's pending
@@ -174,7 +174,7 @@ python cli.py history
 python cli.py categories
 ```
 
-### Managing Categories
+### 管理类别
 
 ```bash
 # View all auto-approved categories
@@ -187,16 +187,16 @@ python cli.py categories --agent assistant
 python cli.py reset assistant
 ```
 
-## Integration
+## 集成
 
-The CLI is designed to be used both interactively and programmatically. Exit codes:
-- `0`: Success
-- `1`: Error (request not found, agent not found, etc.)
+该命令行界面（CLI）既可用于交互式操作，也可用于编程式调用。退出代码说明：
+- `0`: 成功
+- `1`: 错误（例如：请求未找到、代理未找到等）
 
-## Files
+## 文件
 
-- `cli.py` - Command-line interface (this file)
-- `core.py` - Core approval functions
-- `schemas/` - JSON schema definitions
-- `schemas/state.json` - State schema template
-- `schemas/pending.json` - Pending requests schema template
+- `cli.py` - 命令行接口（本文件）
+- `core.py` - 核心审批功能模块
+- `schemas/` - JSON模式定义文件
+- `schemas/state.json` - 状态数据结构模板
+- `schemas/pending.json` - 待处理请求数据结构模板

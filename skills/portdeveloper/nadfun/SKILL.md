@@ -1,38 +1,38 @@
-# SKILL.md - NadFun Integration Guide
+# SKILL.md - NadFun 集成指南
 
-**The Monad token launchpad with bonding curves.** Trade tokens, launch your own, monitor events—all with pure viem.
+**具有绑定曲线的 Monad 代币发行平台。** 可以进行代币交易、发行自己的代币、监控事件——所有这些操作都通过纯 viem 实现。
 
-## What is NadFun?
+## 什么是 NadFun？
 
-NadFun is a decentralized token launchpad on the Monad blockchain. Key features:
+NadFun 是一个基于 Monad 区块链的去中心化代币发行平台。其主要特点包括：
 
-- **Bonding Curve Trading**: Tokens start on a bonding curve. Price increases as more people buy.
-- **Graduation**: When curve reaches target reserves, token graduates to DEX (Uniswap V3).
-- **Token Creation**: Anyone can launch a token with image, metadata, and optional initial buy.
-- **Real-time Events**: Stream token trades, creations, and DEX swaps as they happen.
-- **Historical Data**: Query past events for analytics and monitoring.
+- **绑定曲线交易**：代币的初始价格由绑定曲线决定；随着购买人数的增加，价格会上涨。
+- **代币毕业**：当曲线达到目标储备量时，代币会转移到 DEX（Uniswap V3）进行交易。
+- **代币创建**：任何人都可以创建代币，并设置代币的图片、元数据以及可选的初始购买价格。
+- **实时事件**：实时流式显示代币的交易、创建和在 DEX 的交换情况。
+- **历史数据**：可以查询过去的事件以用于分析和监控。
 
-## Skills Documentation
+## 技能文档
 
-This skill guide is split into focused modules. Start with the overview, then dive into specific guides:
+本技能指南分为多个模块。首先阅读概述部分，然后深入了解具体的指南：
 
-| Module                   | Purpose                               | Audience              |
+| 模块                   | 目的                               | 面向对象              |
 | ------------------------ | ------------------------------------- | --------------------- |
-| **SKILL.md** (this file) | Architecture, constants, setup        | Everyone              |
-| **QUOTE.md**             | Price quotes, curve state             | Traders, analyzers    |
-| **TRADING.md**           | Buy, sell, permit signatures          | Traders, bots         |
-| **TOKEN.md**             | Balances, metadata, transfers         | App developers        |
-| **CREATE.md**            | Token creation, image upload          | Token creators        |
-| **INDEXER.md**           | Historical event querying             | Analytics, dashboards |
-| **AGENT-API.md**         | REST API for trading data, token info | AI agents, bots       |
+| **SKILL.md** (此文件) | 架构、常量、设置                        | 所有人              |
+| **QUOTE.md**             | 价格报价、曲线状态                         | 交易者、分析师            |
+| **TRADING.md**           | 买卖交易、权限签名                         | 交易者、机器人            |
+| **TOKEN.md**             | 余额、元数据、转账                         | 应用程序开发者           |
+| **CREATE.md**            | 代币创建、图片上传                         | 代币创建者             |
+| **INDEXER.md**           | 历史事件查询                           | 分析工具、仪表盘           |
+| **AGENT-API.md**         | 用于交易数据和代币信息的 REST API                 | AI 代理、机器人            |
 
-For API download/endpoints/header usage, see **AGENT-API.md**.
+有关 API 下载/端点/头部信息的使用方法，请参阅 **AGENT-API.md**。
 
-> **Note:** To obtain an API key, you must first login to [nad.fun](https://nad.fun) via wallet signature. See the [Authentication](#authentication-login-flow) section below for the login flow, then use the session cookie to create an API key via `POST /api-key`.
+> **注意：** 要获取 API 密钥，您必须首先通过钱包签名登录 [nad.fun](https://nad.fun)。请参阅下面的 [认证](#authentication-login-flow) 部分了解登录流程，然后使用会话 cookie 通过 `POST /api-key` 创建 API 密钥。
 
-## Skill Files
+## 技能文件
 
-| File         | URL                          |
+| 文件         | URL                          |
 | ------------ | ---------------------------- |
 | ABI.md       | https://nad.fun/abi.md       |
 | AGENT-API.md | https://nad.fun/agent-api.md |
@@ -43,6 +43,7 @@ For API download/endpoints/header usage, see **AGENT-API.md**.
 | TRADING.md   | https://nad.fun/trading.md   |
 | WALLET.md    | https://nad.fun/wallet.md    |
 
+```bash
 mkdir -p ~/.nadfun/skills
 curl -s https://nad.fun/skill.md > ~/.nadfun/skills/SKILL.md
 curl -s https://nad.fun/abi.md > ~/.nadfun/skills/ABI.md
@@ -53,17 +54,18 @@ curl -s https://nad.fun/quote.md > ~/.nadfun/skills/QUOTE.md
 curl -s https://nad.fun/token.md > ~/.nadfun/skills/TOKEN.md
 curl -s https://nad.fun/trading.md > ~/.nadfun/skills/TRADING.md
 curl -s https://nad.fun/wallet.md > ~/.nadfun/skills/WALLET.md
+```
 
-## Quick Facts
+## 快速了解
 
-- **Network**: Testnet (chain 10143) or Mainnet (chain 143)
-- **Language**: TypeScript/JavaScript
-- **Pure viem**: All examples use direct contract calls with viem
-- **Fees**: Check API for deploy fees via REST endpoint
+- **网络**：测试网（链号 10143）或主网（链号 143）
+- **语言**：TypeScript/JavaScript
+- **纯 viem**：所有示例都直接使用 viem 调用智能合约
+- **费用**：请通过 REST 端点查询部署费用
 
-## Network Constants
+## 网络常量
 
-All addresses and endpoints are here. Update this when network changes.
+所有地址和端点信息均在此处。网络发生变化时请更新这些信息。
 
 ```typescript
 const NETWORK = "testnet" // 'testnet' | 'mainnet'
@@ -100,9 +102,9 @@ const CONFIG = {
 }[NETWORK]
 ```
 
-## Basic Setup
+## 基础设置
 
-Every skill guide assumes you start with viem. Here's the foundation:
+每个技能指南都假设您已经熟悉 viem。以下是基础内容：
 
 ```typescript
 import { createPublicClient, createWalletClient, http, privateKeyToAccount } from "viem"
@@ -131,13 +133,13 @@ const walletClient = createWalletClient({
 })
 ```
 
-This is your foundation. All other modules build on top of this.
+这是您的起点。所有其他模块都是基于此构建的。
 
-## Authentication (Login Flow)
+## 认证（登录流程）
 
-To access session-protected endpoints (API key management, account settings, etc.), you need to authenticate via wallet signature.
+要访问需要会话保护的端点（如 API 密钥管理、账户设置等），您需要通过钱包签名进行认证。
 
-### Login Flow
+### 登录流程
 
 ```typescript
 import { createWalletClient, http, privateKeyToAccount } from "viem"
@@ -183,7 +185,7 @@ const { account_info } = await sessionRes.json()
 console.log("Logged in as:", account_info.account_id)
 ```
 
-### Using Session Cookie
+### 使用会话 Cookie
 
 ```typescript
 // Use session cookie for authenticated requests
@@ -199,7 +201,7 @@ const { api_key } = await apiKeyRes.json()
 console.log("API Key:", api_key) // Store this securely!
 ```
 
-### Logout
+### 注销
 
 ```typescript
 await fetch(`${CONFIG.apiUrl}/auth/delete_session`, {
@@ -208,7 +210,7 @@ await fetch(`${CONFIG.apiUrl}/auth/delete_session`, {
 })
 ```
 
-### TypeScript Interfaces
+### TypeScript 接口
 
 ```typescript
 interface AuthNonceRequest {
@@ -236,53 +238,53 @@ interface AuthSessionResponse {
 }
 ```
 
-## Core Concepts
+## 核心概念
 
-### Bonding Curve
+### 绑定曲线
 
-Tokens on NadFun start on a bonding curve. The curve defines price and availability:
+NadFun 上的代币都是从绑定曲线开始的。该曲线决定了代币的价格和可用性：
 
-- **Real reserves**: Actual MON and tokens in the pool
-- **Virtual reserves**: Initial pseudo-reserves for curve math
-- **K constant**: Maintains x\*y=k formula for price
-- **Target**: How many tokens must be sold to graduate
+- **实际储备**：池中的 MON 和代币数量
+- **虚拟储备**：用于计算曲线的初始虚拟储备量
+- **K 常量**：保持 `x * y = k` 的价格公式
+- **目标**：必须售出的代币数量以达到毕业条件
 
-Get curve state with `getCurveState(token)` → see **QUOTE.md**
+使用 `getCurveState(token)` 获取曲线状态 → 详见 **QUOTE.md**
 
-### Graduation
+### 代币毕业
 
-When enough tokens are bought:
+当购买足够的代币时：
 
-1. Curve reaches target reserve
-2. Liquidity moves to Uniswap V3 pool
-3. Token transitions from bonding curve to DEX
-4. `isGraduated(token)` returns true
+1. 曲线达到目标储备量
+2. 流动性转移到 Uniswap V3 池
+3. 代币从绑定曲线转移到 DEX
+4. `isGraduated(token)` 返回 `true`
 
-Check progress with `getProgress(token)` (0-10000 = 0-100%)
+使用 `getProgress(token)` 查看进度（0-10000 = 0-100%）
 
-### Action IDs
+### 动作 ID
 
-The `actionId` parameter in token creation identifies the type of action:
+在创建代币时，`actionId` 参数用于标识动作类型：
 
-| actionId | Description    |
-| -------- | -------------- |
-| 1        | Token Creation |
+| actionId | 描述                |
+| -------- | ---------------------- |
+| 1        | 创建代币                |
 
-Always use `actionId: 1` when calling the `create` function.
+调用 `create` 函数时始终使用 `actionId: 1`。
 
-### Permit Signatures
+### 权限签名
 
-EIP-2612 lets wallets sign approval transactions instead of sending separate approve() calls:
+EIP-2612 允许钱包直接签署批准交易，而无需发送单独的 `approve()` 请求：
 
-1. Generate signature: `generatePermitSignature(token, spender, amount, deadline)`
-2. Use in trade: `sellPermit({ ...params, ...signature })`
-3. No separate approve needed—saves gas
+1. 生成签名：`generatePermitSignature(token, spender, amount, deadline)`
+2. 在交易中使用：`sellPermit({ ...params, ...signature })`
+3. 无需额外调用 `approve` —— 从而节省 Gas
 
-See **TRADING.md** for details.
+详情请参阅 **TRADING.md**。
 
-## Common Patterns
+## 常见模式
 
-### Pattern 1: Simple Trade
+### 模式 1：简单交易
 
 ```typescript
 // Get quote (3 args: token, amountIn, isBuy)
@@ -312,9 +314,9 @@ const tx = await walletClient.writeContract({
 })
 ```
 
-See **TRADING.md** for full examples.
+详情请参阅 **TRADING.md**。
 
-### Pattern 2: Launch Token
+### 模式 2：发行代币
 
 ```typescript
 import { bondingCurveRouterAbi } from "./abis/router"
@@ -393,41 +395,41 @@ const gasEstimate = await publicClient.estimateContractGas({
 const gas = (gasEstimate * 120n) / 100n // 20% buffer for safety
 ```
 
-See **CREATE.md** for step-by-step.
+详细步骤请参阅 **CREATE.md**。
 
-## Prompts for AI Agents
+## 用于 AI 代理的提示
 
-Use these prompts to guide your work:
+使用以下提示来指导您的操作：
 
-### Trading
+### 交易
 
-- "Get a price quote for token X with 0.1 MON"
-- "Buy 0.1 MON of token X with 1% slippage"
-- "Sell all tokens with permit signature"
-- "Check if token has graduated"
+- “获取代币 X 的价格报价（需要 0.1 MON）”
+- “以 1% 的滑点价格购买 0.1 MON 的代币 X”
+- “使用权限签名出售所有代币”
+- “检查代币是否已经毕业”
 
-### Token Info
+### 代币信息
 
-- "Get metadata for token address X"
-- "Check my MON balance"
-- "Get available tokens to buy before graduation"
+- “获取代币地址 X 的元数据”
+- “查看我的 MON 余额”
+- “获取毕业前可购买的代币数量”
 
-### Creation
+### 创建代币
 
-- "Launch a token called MyToken (MTK) with this image"
-- "Mine a vanity address for my token"
-- "Check token creation fees"
+- “使用此图片创建名为 MyToken (MTK) 的代币”
+- “为我的代币生成一个自定义地址”
+- “查看代币创建费用”
 
-### Analysis
+### 分析
 
-- "Calculate graduation progress for token X"
-- "Get the bonding curve state for token X"
-- "Track all swaps on the graduated token"
-- "Analyze token creation rate"
+- “计算代币 X 的毕业进度”
+- “获取代币 X 的绑定曲线状态”
+- “跟踪已毕业代币的所有交易”
+- “分析代币的创建速率”
 
-## Required Files
+## 所需文件
 
-For integration, you'll need:
+进行集成时，您需要以下文件：
 
 ```
 abis/
@@ -440,20 +442,20 @@ abis/
 constants.ts              # Network configs, contract addresses
 ```
 
-All ABIs are documented in **ABI.md**.
+所有 ABI 的文档信息请参阅 **ABI.md**。
 
-### ABI Import Guide
+### ABI 导入指南
 
-Each ABI can be copied from **ABI.md**. Reference the correct section:
+每个 ABI 都可以在 **ABI.md** 中找到。请参考相应的部分：
 
-| ABI                     | ABI.md Section                                    | Purpose                          |
+| ABI                     | ABI.md 的位置                          | 目的                          |
 | ----------------------- | ------------------------------------------------- | -------------------------------- |
-| `bondingCurveRouterAbi` | [BondingCurveRouter ABI](#bondingcurverouter-abi) | Token creation, buy/sell         |
-| `lensAbi`               | [Lens ABI](#lens-abi)                             | Price quotes, getAmountOut       |
-| `curveAbi`              | [Curve ABI](#curve-abi)                           | Curve state, graduation check    |
-| `tokenAbi`              | [Token ABI](#token-abi)                           | ERC20 operations, permit signing |
+| `bondingCurveRouterAbi` | [BondingCurveRouter ABI](#bondingcurverouter-abi) | 代币创建、买卖交易         |
+| `lensAbi`               | [Lens ABI](#lens-abi)                             | 价格报价、获取输出金额         |
+| `curveAbi`              | [Curve ABI](#curve-abi)                           | 曲线状态、毕业检查           |
+| `tokenAbi`              | [Token ABI](#token-abi)                           | ERC20 操作、权限签名         |
 
-Example import pattern:
+示例导入方式：
 
 ```typescript
 // Copy the ABI from ABI.md into your project
@@ -461,7 +463,7 @@ import { bondingCurveRouterAbi } from "./abis/router"
 import { lensAbi } from "./abis/lens"
 ```
 
-## Installation
+## 安装
 
 ```bash
 npm install viem
@@ -471,48 +473,42 @@ pnpm add viem
 yarn add viem
 ```
 
-## Dependencies
+## 依赖项
 
-```json
-{
-  "viem": "^2.0.0"
-}
-```
+**仅需要纯 viem**，无需其他区块链库。
 
-Pure viem. No other blockchain libraries needed.
+## 故障排除
 
-## Troubleshooting
+### “找不到该合约”
 
-### "No such contract"
+您可能连接到了错误的网络。请检查 `NETWORK` 常量是否与您的设置匹配。
 
-You're on the wrong network. Check NETWORK constant matches your setup.
+### “代币尚未毕业”
 
-### "Token not graduated yet"
+通过 Lens 合约查询 `getProgress()`。返回值范围为 0-10000；达到 10000（100%）表示代币已毕业。
 
-Query `getProgress()` via Lens contract. Returns 0-10000. Need 10000 (100%) to graduate.
+### “交易被撤销”
 
-### "Transaction reverted"
+1. 检查 `amountOutMin` —— 滑点可能设置过高或曲线发生了变化
+2. 验证截止时间 —— 交易耗时过长
+3. 确认是否有足够的余额 —— 在出售前需要先批准交易
 
-1. Check amountOutMin—slippage might be too high or curve moved
-2. Verify deadline—transaction took too long
-3. Check allowance—approve token before sell
+## 下一步
 
-## Next Steps
+根据您的需求选择相应的指南：
 
-Pick a guide based on what you need:
+- **构建 DEX 机器人？** → 参阅 **TRADING.md**
+- **创建仪表盘？** → 参阅 **INDEXER.md** 和 **QUOTE.md**
+- **发行代币？** → 参阅 **CREATE.md**
+- **查询代币信息？** → 参阅 **TOKEN.md**
 
-- **Building a dex bot?** → TRADING.md
-- **Creating a dashboard?** → INDEXER.md + QUOTE.md
-- **Launching tokens?** → CREATE.md
-- **Token info queries?** → TOKEN.md
+每个指南都提供了完整的示例代码供您参考。
 
-Each guide has complete examples ready to copy.
+## 通用开发实践与故障排除
 
-## General Development Practices & Troubleshooting
+### 类型安全提示
 
-### Type Safety Tips
-
-Always use the `as const` assertion when working with ABIs in viem. All ABIs in this module are pre-declared with `as const` for full type inference:
+在处理 ABI 时，始终使用 `as const` 断言。本模块中的所有 ABI 都使用了 `as const` 进行类型声明，以确保类型安全：
 
 ```typescript
 // Types are automatically narrowed
@@ -520,7 +516,7 @@ const result = await contract.read.getAmountOut([...])
 // result type is precisely bigint (not bigint | undefined)
 ```
 
-Use viem type helpers for type-safe conversions:
+使用 viem 的类型辅助函数进行类型安全的转换：
 
 ```typescript
 import { Address, Hex } from "viem"
@@ -537,24 +533,24 @@ const addr: Address = "0x..." // Validated address type
 const sig: Hex = "0x..." // Hex string type
 ```
 
-### Common ABI Errors
+### 常见 ABI 错误
 
-When interacting with smart contracts, you might encounter specific errors. Here's a table of common ABI-related errors and how to approach them:
+在与智能合约交互时，可能会遇到一些特定的错误。以下是常见 ABI 相关错误及其解决方法：
 
-| Error                   | Meaning                                                    |
+| 错误类型                   | 含义                                      |
 | ----------------------- | ---------------------------------------------------------- |
-| `InsufficientAmount`    | Output less than amountOutMin                              |
-| `InsufficientAmountOut` | Insufficient output amount                                 |
-| `DeadlineExpired`       | Deadline has passed                                        |
-| `Unauthorized`          | Caller not authorized                                      |
-| `AlreadyGraduated`      | Token already graduated to DEX                             |
-| `BondingCurveLocked`    | Curve locked during graduation                             |
-| `InvalidProof`          | Merkle proof verification failed (specific to claims)      |
-| `AlreadyClaimed`        | Amount already claimed for this proof (specific to claims) |
-| `NotClaimable`          | Token not eligible for claims yet (specific to claims)     |
-| `InsufficientBalance`   | Treasury has insufficient MON balance (specific to claims) |
+| `InsufficientAmount`    | 输出金额低于 `amountOutMin`                              |
+| `InsufficientAmountOut` | 输出金额不足                                 |
+| `DeadlineExpired`       | 截止时间已过                                        |
+| `Unauthorized`          | 调用者未获得授权                                      |
+| `AlreadyGraduated`      | 代币已转移到 DEX                             |
+| `BondingCurveLocked`    | 在毕业过程中曲线被锁定                             |
+| `InvalidProof`          | Merkle 证明验证失败（特定于某些操作）                      |
+| `AlreadyClaimed`        | 该证明对应的金额已被领取                         |
+| `NotClaimable`          | 该代币尚不符合领取条件                         |
+| `InsufficientBalance`   | 财库中的 MON 余额不足                         |
 
-Check error types in viem with:
+有关 viem 中的错误类型，请参阅：
 
 ```typescript
 import { ContractFunctionExecutionError } from 'viem'

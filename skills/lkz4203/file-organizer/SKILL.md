@@ -1,12 +1,12 @@
 ---
 name: file_organizer
-description: Automatically organize files in a specified directory by moving them into subfolders based on their file extensions. Use for cleaning up messy folders like Downloads or Desktop.
+description: 根据文件的扩展名，自动将文件组织到指定的目录中，并将它们移动到相应的子文件夹中。适用于清理“Downloads”或“Desktop”等杂乱无章的文件夹。
 ---
 
-# File Organizer
+# 文件管理器
 
-Keep your directories tidy.
+保持您的目录整洁。
 
-## Usage
-Run `scripts/organize.ps1` with the target path.
-Example: `powershell.exe -File scripts/organize.ps1 C:\Users\L\Downloads`
+## 使用方法
+运行 `scripts/organize.ps1` 并指定目标路径。
+示例：`powershell.exe -File scripts/organize.ps1 C:\Users\L\Downloads`

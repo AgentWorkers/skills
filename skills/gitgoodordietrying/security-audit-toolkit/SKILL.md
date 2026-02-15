@@ -1,24 +1,24 @@
 ---
 name: security-audit
-description: Audit codebases and infrastructure for security issues. Use when scanning dependencies for vulnerabilities, detecting hardcoded secrets, checking OWASP top 10 issues, verifying SSL/TLS, auditing file permissions, or reviewing code for injection and auth flaws.
+description: 审计代码库和基础设施以检测安全问题。适用于扫描依赖项中的漏洞、检测硬编码的秘密信息、检查 OWASP 十大安全风险、验证 SSL/TLS 证书的有效性、审计文件权限，以及审查代码中是否存在注入攻击和身份验证漏洞。
 metadata: {"clawdbot":{"emoji":"🔒","requires":{"anyBins":["npm","pip","git","openssl","curl"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Security Audit
+# 安全审计
 
-Scan, detect, and fix security issues in codebases and infrastructure. Covers dependency vulnerabilities, secret detection, OWASP top 10, SSL/TLS verification, file permissions, and secure coding patterns.
+扫描、检测并修复代码库和基础设施中的安全问题。涵盖依赖项漏洞、机密信息检测、OWASP十大常见漏洞、SSL/TLS配置验证、文件权限设置以及安全编码规范。
 
-## When to Use
+## 使用场景
 
-- Scanning project dependencies for known vulnerabilities
-- Detecting hardcoded secrets, API keys, or credentials in source code
-- Reviewing code for OWASP top 10 vulnerabilities (injection, XSS, CSRF, etc.)
-- Verifying SSL/TLS configuration for endpoints
-- Auditing file and directory permissions
-- Checking authentication and authorization patterns
-- Preparing for a security review or compliance audit
+- 扫描项目依赖项中的已知漏洞
+- 检测源代码中硬编码的机密信息、API密钥或凭据
+- 审查代码是否存在OWASP十大常见漏洞（如注入攻击、跨站脚本攻击、跨站请求伪造等）
+- 验证端点的SSL/TLS配置
+- 审计文件和目录的权限设置
+- 检查认证和授权机制
+- 为安全审查或合规性审计做准备
 
-## Dependency Vulnerability Scanning
+## 依赖项漏洞扫描
 
 ### Node.js
 
@@ -80,7 +80,7 @@ cargo audit
 cargo audit fix
 ```
 
-### Universal: Trivy (scans any project)
+### 通用工具：Trivy（可扫描任何项目）
 
 ```bash
 # Install: https://aquasecurity.github.io/trivy
@@ -97,9 +97,9 @@ trivy image myapp:latest
 trivy fs --format json -o results.json .
 ```
 
-## Secret Detection
+## 机密信息检测
 
-### Manual grep patterns
+### 手动grep检测方法
 
 ```bash
 # AWS keys
@@ -122,7 +122,7 @@ grep -rn -i 'mongodb://\|mysql://\|postgres://\|redis://' --include='*.{js,ts,py
 grep -rn 'eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.' --include='*.{js,ts,py,go,log,json}' .
 ```
 
-### Automated scanning with git
+### 使用git进行自动化扫描
 
 ```bash
 # Scan git history for secrets (not just current files)
@@ -133,7 +133,7 @@ git log -p --all | grep -n -i 'api.key\|password\|secret\|token' | head -50
 git diff --cached --name-only | xargs grep -l -i 'api.key\|password\|secret\|token' 2>/dev/null
 ```
 
-### Pre-commit hook for secrets
+### 为机密信息设置预提交钩子
 
 ```bash
 #!/bin/bash
@@ -170,7 +170,7 @@ fi
 exit $EXIT_CODE
 ```
 
-### .gitignore audit
+### 使用.gitignore文件进行管理
 
 ```bash
 # Check if sensitive files are tracked
@@ -191,9 +191,9 @@ else
 fi
 ```
 
-## OWASP Top 10 Code Patterns
+## OWASP十大常见漏洞代码示例
 
-### 1. Injection (SQL, Command, LDAP)
+### 1. 注入攻击（SQL注入、命令注入、LDAP注入）
 
 ```bash
 # SQL injection: string concatenation in queries
@@ -209,7 +209,7 @@ grep -rn "exec(\|spawn(\|system(\|popen(\|subprocess\|os\.system\|child_process"
 grep -rn "\\$[0-9]\|\\?\|%s\|:param\|@param\|prepared" --include='*.{py,js,ts,go,java,rb}' .
 ```
 
-### 2. Broken Authentication
+### 2. 认证机制缺陷
 
 ```bash
 # Weak password hashing (MD5, SHA1 used for passwords)
@@ -226,7 +226,7 @@ grep -rn "session\|token\|jwt" --include='*.{py,js,ts,go,java,rb}' . | grep -i "
 grep -rn -i "rate.limit\|throttle\|brute" --include='*.{py,js,ts,go,java,rb}' .
 ```
 
-### 3. Cross-Site Scripting (XSS)
+### 3. 跨站脚本攻击（XSS）
 
 ```bash
 # Unescaped output in templates
@@ -244,7 +244,7 @@ grep -rn "eval(\|new Function(\|setTimeout.*string\|setInterval.*string" \
   --include='*.{js,ts}' .
 ```
 
-### 4. Insecure Direct Object References
+### 4. 不安全的直接对象引用
 
 ```bash
 # Direct ID usage in routes without authz check
@@ -253,7 +253,7 @@ grep -rn "params\.id\|params\[.id.\]\|req\.params\.\|request\.args\.\|request\.G
   grep -i "user\|account\|profile\|order\|document"
 ```
 
-### 5. Security Misconfiguration
+### 5. 安全配置错误
 
 ```bash
 # CORS wildcard
@@ -269,9 +269,9 @@ grep -rn "stack\|traceback\|stackTrace" --include='*.{py,js,ts,go,java,rb}' . | 
   grep -i "response\|send\|return\|res\."
 ```
 
-## SSL/TLS Verification
+## SSL/TLS配置验证
 
-### Check endpoint SSL
+### 检查端点的SSL配置
 
 ```bash
 # Full SSL check
@@ -301,7 +301,7 @@ openssl s_client -connect example.com:443 -cipher 'NULL:EXPORT:DES:RC4:MD5' < /d
   grep "Cipher    :"
 ```
 
-### Verify certificate chain
+### 验证证书链
 
 ```bash
 # Download and verify full chain
@@ -315,7 +315,7 @@ openssl verify -CAfile /etc/ssl/certs/ca-certificates.crt chain.pem
 openssl x509 -in chain.pem -noout -text | grep -A2 "Subject:\|Issuer:\|Not Before\|Not After\|DNS:"
 ```
 
-### Check SSL from code
+### 从代码中直接检查SSL配置
 
 ```bash
 # Verify SSL isn't disabled in code
@@ -323,7 +323,7 @@ grep -rn "verify\s*=\s*False\|rejectUnauthorized.*false\|InsecureSkipVerify.*tru
   --include='*.{py,js,ts,go,java,rb,yml,yaml}' .
 ```
 
-## File Permission Audit
+## 文件权限审计
 
 ```bash
 # Find world-writable files
@@ -351,7 +351,7 @@ if [ -d ~/.ssh ]; then
 fi
 ```
 
-## Full Project Security Audit Script
+## 全项目安全审计脚本
 
 ```bash
 #!/bin/bash
@@ -437,57 +437,17 @@ echo "========================================="
 [ "$ISSUES" -eq 0 ] && exit 0 || exit 1
 ```
 
-## Secure Coding Quick Reference
+## 安全编码快速参考
 
-### Environment variables instead of hardcoded secrets
+- 使用环境变量代替硬编码的机密信息
+- 制定输入验证规则
+- 设置HTTP安全头部
 
-```bash
-# Bad: hardcoded in source
-API_KEY="sk-abc123..."
+## 提示
 
-# Good: from environment
-API_KEY="${API_KEY:?Error: API_KEY not set}"
-
-# Good: from .env file (loaded at startup, never committed)
-# .env
-API_KEY=sk-abc123...
-# .gitignore
-.env
-```
-
-### Input validation checklist
-
-```
-- [ ] All user input validated (type, length, format)
-- [ ] SQL queries use parameterized statements (never string concat)
-- [ ] Shell commands never include user input directly
-- [ ] File paths validated (no path traversal: ../)
-- [ ] URLs validated (no SSRF: restrict to expected domains)
-- [ ] HTML output escaped (no XSS: use framework auto-escaping)
-- [ ] JSON parsing has error handling (no crash on malformed input)
-- [ ] File uploads checked (type, size, no executable content)
-```
-
-### HTTP security headers
-
-```bash
-# Check security headers on a URL
-curl -sI https://example.com | grep -i 'strict-transport\|content-security\|x-frame\|x-content-type\|referrer-policy\|permissions-policy'
-
-# Expected headers:
-# Strict-Transport-Security: max-age=31536000; includeSubDomains
-# Content-Security-Policy: default-src 'self'
-# X-Frame-Options: DENY
-# X-Content-Type-Options: nosniff
-# Referrer-Policy: strict-origin-when-cross-origin
-# Permissions-Policy: camera=(), microphone=(), geolocation=()
-```
-
-## Tips
-
-- Run `npm audit` / `pip-audit` / `govulncheck` in CI on every pull request, not just occasionally.
-- Secret detection in git history matters: even if a secret is removed from HEAD, it exists in git history. Use `git filter-branch` or `git-filter-repo` to purge, then rotate the credential.
-- The most dangerous vulnerabilities are often the simplest: SQL injection via string concatenation, command injection via unsanitized input, XSS via `innerHTML`.
-- CORS `Access-Control-Allow-Origin: *` is safe for truly public, read-only APIs. It's dangerous for anything that uses cookies or auth tokens.
-- Always verify SSL in production. `verify=False` or `rejectUnauthorized: false` should only appear in test code, never in production paths.
-- Defense in depth: validate input, escape output, use parameterized queries, enforce least privilege, and assume every layer might be bypassed.
+- 在每次拉取请求时（而非偶尔）通过持续集成（CI）工具运行`npm audit`、`pip-audit`或`govulncheck`进行安全检查。
+- git历史记录中的机密信息同样需要被监控：即使某个机密信息已被从当前分支中删除，它仍然存在于git历史记录中。可以使用`git filter-branch`或`git-filter-repo`来清理这些信息，并定期更新凭据。
+- 最危险的漏洞往往是最简单的：例如通过字符串拼接进行SQL注入、通过未过滤的输入进行命令注入、通过`innerHTML`进行跨站脚本攻击。
+- 对于真正公开的、仅提供读取功能的API，CORS配置`Access-Control-Allow-Origin: *`是安全的；但对于需要使用cookie或认证令牌的API来说，这种配置是危险的。
+- 在生产环境中务必验证SSL连接的有效性。`verify=False`或`rejectUnauthorized: false`这样的设置只应出现在测试代码中，绝不能用于生产环境。
+- 实施纵深防御策略：验证输入数据、对输出进行转义处理、使用参数化查询、限制用户权限，并假设所有安全防护层都可能被绕过。

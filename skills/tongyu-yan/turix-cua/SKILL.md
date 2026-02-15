@@ -1,97 +1,97 @@
 ---
 name: turix-mac
-description: Computer Use Agent (CUA) for macOS automation using TuriX. Use when you need to perform visual tasks on the desktop, such as opening apps, clicking buttons, or navigating UIs that don't have a CLI or API.
+description: **Computer Use Agent (CUA)：用于 macOS 的自动化工具（基于 TuriX）**  
+当您需要在桌面上执行可视化任务（如打开应用程序、点击按钮或导航没有 CLI 或 API 的用户界面）时，可以使用 Computer Use Agent (CUA)。
 ---
 
-# TuriX-Mac Skill
+# TuriX-Mac 技能
 
-This skill allows Clawdbot to control the macOS desktop visually using the TuriX Computer Use Agent.
+该技能允许 Clawdbot 通过 TuriX 计算机使用代理（TuriX Computer Use Agent）来可视化地控制 macOS 桌面。
 
-## When to Use
+## 使用场景
 
-- When asked to perform actions on the Mac desktop (e.g., "Open Spotify and play my liked songs").
-- When navigating applications that lack command-line interfaces.
-- For multi-step visual workflows (e.g., "Find the latest invoice in my email and upload it to the company portal").
-- When you need the agent to plan, reason, and execute complex tasks autonomously.
+- 当需要让 Clawdbot 在 Mac 桌面上执行操作时（例如：“打开 Spotify 并播放我喜欢的歌曲”）。
+- 在没有命令行界面的应用程序中进行导航时。
+- 对于需要多步骤操作的可视化工作流程（例如：“在我的电子邮件中找到最新的发票并将其上传到公司门户”）。
+- 当您希望代理能够自主规划、推理并执行复杂任务时。
 
-## Key Features
+## 主要特性
 
-### 🤖 Multi-Model Architecture
-TuriX uses a sophisticated multi-model system:
-- **Brain**: Understands the task and generates step-by-step plans
-- **Actor**: Executes precise UI actions based on visual understanding
-- **Planner**: Coordinates high-level task decomposition (when `use_plan: true`)
-- **Memory**: Maintains context across task steps
+### 🤖 多模型架构
+TuriX 采用了一种复杂的多模型系统：
+- **大脑（Brain）**：理解任务并生成详细的步骤计划。
+- **执行器（Actor）**：根据视觉理解执行精确的用户界面操作。
+- **规划器（Planner）**：在 `use_plan: true` 时协调高级任务分解。
+- **内存（Memory）**：在任务步骤之间保持上下文。
 
-### 📋 Skills System
-Skills are markdown playbooks that guide the agent for specific domains:
-- `github-web-actions`: GitHub navigation, repo search, starring
-- `browser-tasks`: General web browser operations
-- Custom skills can be added to the `skills/` directory
+### 📋 技能系统
+技能是通过 markdown 编写的脚本，用于指导代理在特定领域中的行为：
+- `github-web-actions`：GitHub 导航、仓库搜索、添加星标等操作。
+- `browser-tasks`：通用网页浏览器操作。
+- 可以在 `skills/` 目录中添加自定义技能。
 
-### 🔄 Resume Capability
-The agent can resume interrupted tasks by setting a stable `agent_id`.
+### 🔄 恢复中断任务的能力
+通过设置一个稳定的 `agent_id`，代理可以恢复中断的任务。
 
-## Running TuriX
+## 运行 TuriX
 
-### Basic Task
+### 基本任务
 ```bash
 skills/local/turix-mac/scripts/run_turix.sh "Open Chrome and go to github.com"
 ```
 
-### Resume Interrupted Task
+### 恢复中断的任务
 ```bash
 skills/local/turix-mac/scripts/run_turix.sh --resume my-task-001
 ```
 
-> ✅ **Note**: `run_turix.sh` updates `examples/config.json` for you (task, resume, `use_plan`, `use_skills`). If you want to keep a hand-edited config, skip passing a task and edit `examples/config.json` directly.
+> ✅ **注意**：`run_turix.sh` 会自动更新 `examples/config.json` 文件（包括任务信息、恢复设置、`use_plan` 和 `use_skills`）。如果您希望保留手动编辑的配置文件，请跳过传递任务直接编辑 `examples/config.json`。
 
+### 有效任务的提示
 
-### Tips for Effective Tasks
+**✅ 正确的示例：**
+- “打开 Safari，访问 google.com，搜索‘TuriX AI’，然后点击第一个结果”。
+- “打开系统设置，点击‘暗黑模式’，然后再返回系统设置”。
+- “打开 Finder，导航到‘文档’文件夹，创建一个名为‘Project X’的新文件夹”。
 
-**✅ Good Examples:**
-- "Open Safari, go to google.com, search for 'TuriX AI', and click the first result"
-- "Open System Settings, click on Dark Mode, then return to System Settings"
-- "Open Finder, navigate to Documents, and create a new folder named 'Project X'"
+**❌ 应避免的指令：**
+- 含糊不清的指令（如“帮我”或“修复这个问题”）。
+- 不可执行的操作（如“删除所有文件”）。
+- 需要系统级权限的操作（且未给出相应提示）。
 
-**❌ Avoid:**
-- Vague instructions: "Help me" or "Fix this"
-- Impossible actions: "Delete all files"
-- Tasks requiring system-level permissions without warning
+**💡 最佳实践：**
+1. 明确指定目标应用程序。
+2. 将复杂任务分解为清晰的步骤，但不要提及屏幕上的具体位置。
 
-**💡 Best Practices:**
-1. Be specific about the target application
-2. Break complex tasks into clear steps, but do not mention the precise coordinates on the screen.
+## 快捷键
 
-## Hotkeys
+- **强制停止**：`Cmd+Shift+2` - 立即停止代理。
 
-- **Force Stop**: `Cmd+Shift+2` - Immediately stops the agent
+## 监控与日志
 
-## Monitoring & Logs
+日志文件保存在项目目录下的 `.turix_tmp/logging.log` 中。日志中包含：
+- 详细的执行步骤。
+- LLM（大型语言模型）的交互和推理过程。
+- 错误信息及恢复尝试。
 
-Logs are saved to `.turix_tmp/logging.log` in the project directory. Check this for:
-- Step-by-step execution details
-- LLM interactions and reasoning
-- Errors and recovery attempts
+## 重要说明
 
-## Important Notes
+### TuriX 的运行方式
+- 可以通过 `clawdbot exec` 命令以 `pty:true` 模式启动 TuriX。
+- 首次启动时需要 2-5 分钟来加载所有 AI 模型（大脑、执行器、规划器、内存）。
+- 背景输出会被缓冲——直到任务完成或停止后才会显示实时进度。
 
-### How TuriX Runs
-- TuriX can be started via clawdbot `exec` with `pty:true` mode
-- The first launch takes 2-5 minutes to load all AI models (Brain, Actor, Planner, Memory)
-- Background output is buffered - you won't see live progress until task completes or stops
-
-### Before Running
-**Always set PATH first:**
+### 运行前的准备
+**务必先设置 PATH 环境变量：**
 ```bash
 export PATH="/usr/sbin:$PATH"
 cd your_dir/TuriX-CUA
 /opt/anaconda3/envs/turix_env/bin/python examples/main.py
 ```
 
-**Why?** The `screencapture` tool is located at `/usr/sbin/screencapture`, which is not in the default PATH.
+**原因？** `screencapture` 工具位于 `/usr/sbin/screencapture`，该路径不在默认的 PATH 中。
 
-### Checking if TuriX is Running
+### 检查 TuriX 是否正在运行
 ```bash
 # Check process
 ps aux | grep "python.*main" | grep -v grep
@@ -100,28 +100,28 @@ ps aux | grep "python.*main" | grep -v grep
 # user  57425  0.0  2.4 412396704 600496 s143  Ss+  5:56PM   0:04.76 /opt/anaconda3/envs/turix_env/bin/python examples/main.py
 ```
 
-**Note:** The `.turix_tmp` directory may not be created until TuriX starts executing steps.
+**注意**：`.turix_tmp` 目录可能只有在 TuriX 开始执行任务后才会被创建。
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题及解决方法
 
-| Error | Solution |
+| 错误 | 解决方案 |
 |-------|----------|
-| `NoneType has no attribute 'save'` | Screen recording permission missing. Grant in System Settings and restart Terminal. |
-| `Screen recording access denied` | Run: `osascript -e 'tell application "Safari" to do JavaScript "alert(1)"'` and click Allow |
-| `Conda environment not found` | Ensure `turix_env` exists: `conda create -n turix_env python=3.12` |
-| Module import errors | Activate environment: `conda activate turix_env` then `pip install -r requirements.txt` |
-| Permission errors for keyboard listener | Add Terminal/IDE to **Accessibility** permissions |
+| `NoneType has no attribute 'save'` | 缺少屏幕录制权限。请在系统设置中授权后重启终端。 |
+| `Screen recording access denied` | 运行：`osascript -e 'tell application "Safari" to do JavaScript "alert(1)"'`，然后点击“允许”按钮。 |
+| 未找到 Conda 环境 | 确保 `turix_env` 存在：`conda create -n turix_env python=3.12` |
+| 模块导入错误 | 激活环境：`conda activate turix_env`，然后 `pip install -r requirements.txt` |
+| 键盘监听器的权限问题 | 将终端/IDE 添加到 **Accessibility** 权限设置中。
 
-### Debug Mode
+### 调试模式
 
-Logs include DEBUG level by default. Check:
+日志默认为 DEBUG 级别。可以通过以下方式查看详细信息：
 ```bash
 tail -f your_dir/TuriX-CUA/.turix_tmp/logging.log
 ```
 
-## Architecture
+## 架构
 
 ```
 User Request
@@ -135,9 +135,9 @@ User Request
                                          [Actor] ───→ [Controller] ───→ [macOS UI]
 ```
 
-## Skill System Details
+## 技能系统详情
 
-Skills are markdown files with YAML frontmatter in the `skills/` directory:
+技能文件是位于 `skills/` 目录中的 markdown 文件，文件开头包含 YAML 标头：
 
 ```md
 ---
@@ -148,34 +148,34 @@ description: When to use this skill
 High-level workflow like: Open Safari,then go to Google.
 ```
 
-The Planner selects relevant skills based on name/description; the Brain uses full content for step guidance.
+规划器会根据技能的名称/描述来选择合适的技能；大脑则会使用技能的完整内容来指导执行过程。
 
-## Advanced Options
+## 高级选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `use_plan: true` | Enable planning for complex tasks |
-| `use_skills: true` | Enable skill selection |
-| `resume: true` | Resume from previous interruption |
-| `max_steps: N` | Limit total steps (default: 100) |
-| `max_actions_per_step: N` | Actions per step (default: 5) |
-| `force_stop_hotkey` | Custom hotkey to stop agent |
+| `use_plan: true` | 启用复杂任务的规划功能。 |
+| `use_skills: true` | 启用技能选择功能。 |
+| `resume: true` | 从上次中断处恢复任务。 |
+| `max_steps: N` | 限制总步骤数（默认值：100）。 |
+| `max_actions_per_step: N` | 每步允许执行的操作数量（默认值：5）。 |
+| `force_stop_hotkey` | 自定义用于停止代理的快捷键。 |
 
 ---
 
-## TuriX Skills System
+## TuriX 技能系统
 
-TuriX supports **Skills**: markdown playbooks that help the agent behave more reliably in specific domains.
+TuriX 支持 **技能**：这些 markdown 脚本可以帮助代理在特定领域中更可靠地执行任务。
 
-### 1. Built-in Skills
+### 1. 内置技能
 
-| Skill | Use |
+| 技能 | 用途 |
 |-------|-----|
-| `github-web-actions` | GitHub web actions (search repos, star, etc.) |
+| `github-web-actions` | GitHub 相关操作（搜索仓库、添加星标等）。 |
 
-### 2. Create a Custom Skill
+### 2. 创建自定义技能
 
-Create a `.md` file in the TuriX project's `skills/` directory:
+在 TuriX 项目的 `skills/` 目录下创建一个 `.md` 文件：
 
 ```md
 ---
@@ -190,14 +190,14 @@ description: When performing X specific task
 - Step 3: Verify the result
 ```
 
-**Field definitions:**
-- `name`: Skill identifier (used by the Planner to select)
-- `description`: When to use this skill (Planner matches on this)
-- The body below: Full execution guide (used by the Brain)
+**字段定义：**
+- `name`：技能的标识符（规划器用于选择该技能）。
+- `description`：指定该技能的使用场景（规划器根据此描述进行匹配）。
+- 此后的内容为完整的执行指南（由大脑模块使用）。
 
-### 3. Enable Skills
+### 3. 启用技能
 
-In `examples/config.json`:
+在 `examples/config.json` 文件中进行配置：
 
 ```json
 {
@@ -210,24 +210,24 @@ In `examples/config.json`:
 }
 ```
 
-### 4. Run a Task with Skills
+### 4. 使用技能执行任务
 
 ```bash
 skills/local/turix-mac/scripts/run_turix.sh "Search for turix-cua on GitHub and star it"
 ```
 
-The agent will automatically:
-1. Planner reads the skill name and description
-2. Selects relevant skills
-3. Brain uses the full skill content to guide execution
+代理会自动执行以下操作：
+1. 规划器读取技能的名称和描述。
+2. 选择相关的技能。
+3. 大脑模块使用技能的完整内容来指导执行过程。
 
-### 5. Chinese Text Support
+### 5. 中文文本处理
 
-**Background:**
-Passing Chinese text through shell interpolation can mangle UTF-8, and interpolating untrusted text into a heredoc is unsafe.
+**背景说明：**
+通过 shell 插值传递中文文本可能会导致 UTF-8 编码问题，且将不可信的文本插入 heredoc（一种markdown 格式）中是不安全的。
 
-**Solution:**
-The `run_turix.sh` script uses Python to handle UTF-8 correctly and reads task text from environment variables:
+**解决方案：**
+`run_turix.sh` 脚本使用 Python 正确处理 UTF-8 编码，并从环境变量中读取任务文本：
 
 ```python
 import json
@@ -241,20 +241,20 @@ with open(config_path, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 ```
 
-**Key points:**
-1. Always use `encoding='utf-8'` when reading/writing files
-2. Use `ensure_ascii=False` to preserve non-ASCII text
-3. Pass task content via environment variables or stdin, and use a single-quoted heredoc to avoid shell interpolation
+**关键点：**
+1. 读写文件时始终使用 `encoding='utf-8'`。
+2. 使用 `ensure_ascii=False` 以保留非 ASCII 字符。
+3. 通过环境变量或标准输入（stdin）传递任务内容，并使用单引号括起来的 heredoc 格式来避免 shell 插值。
 
-### 6. Document Creation Best Practices
+### 6. 文档创建的最佳实践
 
-**Challenges:**
-- Asking TuriX to collect news, then create and send a document directly
-- TuriX is a GUI agent, so it can be slow and less deterministic. Prefer using TuriX only for tasks Clawdbot cannot do or where TuriX is faster.
+**挑战：**
+- 要求 TuriX 收集信息后直接创建并发送文档。
+- TuriX 是一个图形界面代理，因此执行速度可能较慢且结果不够稳定。建议仅在 Clawdbot 无法完成的任务或 TuriX 能够更快完成任务的情况下使用它。
 
-**Recommended approach:** create the document yourself and let TuriX only send it
-1. Create the Word document with python-docx
-2. Let TuriX only send the file
+**推荐方法：** 先自行创建文档，再让 TuriX 发送：
+1. 使用 `python-docx` 创建 Word 文档。
+2. 仅让 TuriX 负责发送文件。
 
 ```python
 from docx import Document
@@ -263,15 +263,15 @@ doc.add_heading('Title')
 doc.save('/path/to/file.docx')
 ```
 
-**Suggested workflow:**
-1. Use `web_fetch` to gather information
-2. Use Python to create the Word document
-3. Use TuriX to send the file. Specify the file path and say to send the file, not just the file name.
-4. If you really need TuriX to manually create a Word document and type in collected information, put the content in turix skills (for large amounts) or in the task name (for small amounts).
+**建议的工作流程：**
+1. 使用 `web_fetch` 收集信息。
+2. 使用 Python 创建 Word 文档。
+3. 使用 TuriX 发送文件。需要指定文件的路径，并明确指示发送文件的位置（而不仅仅是文件名）。
+4. 如果确实需要 TuriX 手动创建 Word 文档并输入收集到的信息，可以将内容放入技能文件中（对于大量数据），或直接在任务描述中说明（对于少量数据）。
 
-### 7. Example: Add a New Skill
+### 7. 示例：添加新技能
 
-Create `skills/browser-tasks.md`:
+创建 `skills/browser-tasks.md` 文件：
 
 ```md
 ---
@@ -295,18 +295,18 @@ description: When performing tasks in a web browser (search, navigate, fill form
 - Do not download files without user permission
 ```
 
-### 8. Skill Development Tips
+### 8. 技能开发技巧
 
-1. **Be precise in the description** - helps the Planner select correctly
-2. **Make steps clear** - the Brain needs explicit guidance
-3. **Include safety checks** - confirmations for important actions
-4. **Keep it concise** - recommended under 4000 characters
+1. **描述要准确**——有助于规划器正确选择技能。
+2. **步骤要清晰**——大脑模块需要明确的指导。
+3. **包含安全检查**——对重要操作进行确认。
+4. **保持简洁**——建议描述长度不超过 4000 个字符。
 
 ---
 
-## Monitoring and Debugging Guide
+## 监控与调试指南
 
-### 1. Run a Task
+### 1. 运行任务
 
 ```bash
 # Run in background (recommended)
@@ -317,9 +317,9 @@ cd your_dir/clawd/skills/local/turix-mac/scripts
 ./run_turix.sh "Task" &
 ```
 
-### 2. Monitor Progress
+### 2. 监控进度
 
-**Method 1: Session logs**
+**方法 1：查看会话日志**
 ```bash
 # List running sessions
 clawdbot sessions_list
@@ -328,7 +328,7 @@ clawdbot sessions_list
 clawdbot sessions_history <session_key>
 ```
 
-**Method 2: TuriX logs**
+**方法 2：查看 TuriX 日志**
 ```bash
 # Tail logs in real time
 tail -f your_dir/TuriX-CUA/.turix_tmp/logging.log
@@ -337,70 +337,70 @@ tail -f your_dir/TuriX-CUA/.turix_tmp/logging.log
 ls -lt your_dir/TuriX-CUA/examples/.turix_tmp/brain_llm_interactions.log_brain_*.txt
 ```
 
-**Method 3: Check processes**
+**方法 3：检查进程**
 ```bash
 ps aux | grep "python.*main.py" | grep -v grep
 ```
 
-**Method 4: Check generated files**
+**方法 4：检查生成的文件**
 ```bash
 # List files created by the agent
 ls -la your_dir/TuriX-CUA/examples/.turix_tmp/*.txt
 ```
 
-### 3. Log File Reference
+### 3. 日志文件说明
 
-| File | Description |
+| 文件 | 说明 |
 |------|-------------|
-| `logging.log` | Main log file |
-| `brain_llm_interactions.log_brain_N.txt` | Brain model conversations (one per step) |
-| `actor_llm_interactions.log_actor_N.txt` | Actor model conversations (one per step) |
+| `logging.log` | 主日志文件。 |
+| `brain_llm_interactions.log_brain_N.txt` | 大脑模型的交互记录（每个步骤对应一个文件）。 |
+| `actor_llm_interactions.log_actor_N.txt` | 执行器的交互记录（每个步骤对应一个文件）。 |
 
-**Key log markers:**
-- `📍 Step N` - New step started
-- `✅ Eval: Success/Failed` - Current step evaluation
-- `🎯 Goal to achieve this step` - Current goal
-- `🛠️  Action` - Executed action
-- `✅ Task completed successfully` - Task completed
+**关键日志标记：**
+- `📍 步骤 N` - 新步骤开始。
+- `✅ 评估结果：成功/失败` - 当前步骤的评估结果。
+- `🎯 本步骤的目标` - 当前需要完成的目标。
+- `🛠️ 执行的操作` - 执行的操作。
+- `✅ 任务成功完成` - 任务已完成。
 
-### 4. Common Monitoring Issues
+### 4. 常见监控问题及解决方法
 
-| Issue | Check |
+| 问题 | 检查方法 |
 |-------|-------|
-| Process unresponsive | `ps aux | grep main.py` |
-| Stuck on step 1 | Check whether `.turix_tmp/` was created |
-| Model loading is slow | First run can take 1-2 minutes to load models |
-| No log output | Check `config.json` `logging_level` |
+| 进程无响应 | 使用 `ps aux | grep main.py` 命令查看进程状态。 |
+- 卡在第一步 | 检查 `.turix_tmp/` 目录是否已创建。 |
+- 模型加载缓慢 | 首次启动时可能需要 1-2 分钟来加载模型。 |
+- 无日志输出 | 查看 `config.json` 中的 `logging_level` 设置。
 
-### 5. Force Stop
+### 5. 强制停止
 
-**Hotkey**: `Cmd+Shift+2` - stop the agent immediately
+**快捷键**：`Cmd+Shift+2` - 立即停止代理。
 
-**Command**:
+**命令：**
 ```bash
 pkill -f "python examples/main.py"
 ```
 
-### 6. View Results
+### 6. 查看结果
 
-After completion, the agent will:
-1. Create interaction logs in `.turix_tmp/`
-2. Create record files (if `record_info` is used)
-3. Keep screenshots in memory for subsequent steps
+任务完成后，代理会：
+1. 在 `.turix_tmp/` 目录中生成交互日志。
+2. 如果启用了 `record_info` 功能，还会生成记录文件。
+3. 将截图保存在内存中以供后续步骤使用。
 
-**Example: view a summary file**
+**示例：查看摘要文件**
 ```bash
 cat your_dir/TuriX-CUA/examples/.turix_tmp/latest_ai_news_summary_jan2026.txt
 ```
 
-### 7. Debugging Tips
+### 7. 调试技巧
 
-1. **Inspect Brain reasoning**: check `brain_llm_interactions.log_brain_*.txt` for `analysis` and `next_goal`
-2. **Inspect Actor actions**: check `actor_llm_interactions.log_actor_*.txt` for actions
-3. **Check screenshots**: TuriX captures a screenshot each step (kept in memory)
-4. **Read record files**: the agent uses `record_info` to save key info to `.txt` files
+1. **检查大脑模型的推理过程**：查看 `brain_llm_interactions.log_brain_*.txt` 文件中的 `analysis` 和 `next_goal` 内容。
+2. **检查执行器的操作**：查看 `actor_llm_interactions.log_actor_*.txt` 文件中的操作记录。
+3. **查看截图**：TuriX 会在每个步骤后捕获截图（保存在内存中）。
+4. **查看记录文件**：代理使用 `record_info` 将关键信息保存到 `.txt` 文件中。
 
-### 8. Example Monitoring Flow
+### 8. 监控流程示例**
 
 ```bash
 # 1. Run a task

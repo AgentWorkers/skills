@@ -1,7 +1,7 @@
 ---
 name: social-post
 version: 1.5.0
-description: Post and reply to X/Twitter and Farcaster with text and images. Features multi-account support, dynamic Twitter tier detection (Basic/Premium), auto-variation to avoid duplicate content detection, draft preview, character validation, threads, replies, and image uploads. Consumption-based pricing for X API, pay-per-cast for Farcaster.
+description: 支持在X/Twitter和Farcaster上发布文字和图片内容，并进行回复。具备多账号支持功能，能够动态检测用户的Twitter等级（基础/高级），自动调整内容格式以避免被识别为重复内容，提供草稿预览、字符验证、多线程聊天、回复功能以及图片上传功能。X API采用按使用量计费的模式，而Farcaster则采用按每次直播计费的模式。
 author: 0xdas
 license: MIT
 tags: [twitter, farcaster, social, posting, automation, threads, x-api, consumption-based, multi-account, anti-spam]
@@ -12,69 +12,67 @@ metadata:
       env: [X_CONSUMER_KEY, X_CONSUMER_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET]
 ---
 
-# Social Post
+# 社交媒体发布功能
 
-Post to Twitter and/or Farcaster with automatic character limit validation and image upload handling.
+该技能支持自动验证字符长度并处理图片上传，可发布到 Twitter 和/或 Farcaster 平台。
 
-**Repository:** [github.com/teeclaw/social-post](https://github.com/teeclaw/social-post)
+**仓库地址：** [github.com/teeclaw/social-post](https://github.com/teeclaw/social-post)
 
-## Features
+## 主要功能
 
-- ✅ **Dynamic Twitter tier detection** - auto-detects Basic vs Premium accounts (cached 24h)
-- ✅ **Multi-account support** - manage multiple Twitter accounts from one skill
-- ✅ **Auto-variation** - avoid Twitter's duplicate content detection with `--vary` flag
-- ✅ **Premium account support** - post up to 25k characters in single tweet
-- ✅ **Interactive threading choice** - Premium users can choose single post or thread
-- ✅ Post to Twitter only
-- ✅ Post to Farcaster only  
-- ✅ Post to both platforms simultaneously
-- ✅ **Reply to tweets and casts** - respond to specific posts on both platforms
-- ✅ **Draft preview** - shows exactly what will be posted before confirmation
-- ✅ Character/byte limit validation (dynamic per account tier)
-- ✅ Image upload support (for posts and replies)
-- ✅ **Thread support** - automatically split long text into numbered posts
-- ✅ **Link shortening** - compress URLs using TinyURL (saves characters)
-- ✅ Auto-truncate on overflow (optional)
+- ✅ **动态检测 Twitter 账户等级** - 自动识别基础账户（Basic）和高级账户（Premium），结果缓存 24 小时
+- ✅ **多账户支持** - 通过一个技能管理多个 Twitter 账户
+- ✅ **自动分帖** - 使用 `--vary` 标志避免 Twitter 的重复内容检测
+- ✅ **高级账户支持** - 单条推文可发布最多 25,000 个字符
+- ✅ **交互式分帖选择** - 高级用户可以选择单条推文或分帖发布
+- ✅ 仅发布到 Twitter
+- ✅ 仅发布到 Farcaster
+- ✅ 同时发布到两个平台
+- ✅ 回复推文和广播内容** - 可在两个平台上回复特定帖子
+- ✅ 草稿预览** - 发布前会显示预览内容
+- ✅ 字符/字节长度验证（根据账户等级动态调整）
+- ✅ 图片上传支持（适用于帖子和回复）
+- ✅ **分帖功能** - 自动将长文本分割成多条帖子
+- ✅ 短链接生成** - 使用 TinyURL 压缩链接以节省字符数
+- ✅ 超过限制时自动截断（可选）
 
-## Platform Limits
+## 平台限制
 
-### Dynamic Twitter Limits (Auto-Detected)
+### Twitter 的动态字符限制（自动检测）
 
-The skill automatically detects your Twitter account tier and adjusts character limits:
+该技能会自动检测您的 Twitter 账户等级并调整字符限制：
 
-- **Basic/Free accounts:** 252 characters (280 with 10% safety buffer)  
-- **Premium/Premium+ accounts:** 22,500 characters (25,000 with 10% safety buffer)
+- **基础/免费账户：** 252 个字符（实际可用 280 个字符，预留 10% 的安全缓冲空间）
+- **高级账户：** 22,500 个字符（实际可用 25,000 个字符，预留 10% 的安全缓冲空间）
 
-### Farcaster Limits
+### Farcaster 的限制
 
-- **288 bytes** (320 with 10% safety buffer)
+- **288 字节**（实际可用 320 字节，预留 10% 的安全缓冲空间）
 
-### How Tier Detection Works
+### 账户等级检测机制
 
-1. **First Use:** On your first post, the skill calls Twitter API to detect your subscription tier
-2. **Caching:** Tier is cached for 24 hours to minimize API calls
-3. **Auto-Refresh:** Cache expires after 24 hours, then re-checks on next post
-4. **Manual Refresh:** Use `--refresh-tier` flag to force immediate re-check
+1. **首次使用：** 在您首次发布时，该技能会调用 Twitter API 来检测您的订阅等级。
+2. **缓存：** 等级信息会缓存 24 小时，以减少 API 调用次数。
+3. **自动刷新：** 缓存有效期为 24 小时，下次发布时会重新检测。
+4. **手动刷新：** 使用 `--refresh-tier` 标志可强制立即重新检测。
 
-**Premium Posting Behavior:**
+**高级账户的发布规则：**
 
-When posting with a Premium account:
-- Text ≤ 280 chars → posts normally (single tweet)
-- Text > 280 but ≤ 22,500 chars → shows draft as **single long post** first
-  - Prompts: "Thread this instead? (y/n)"
-  - If YES → splits into threaded posts for review
-  - If NO → posts as single long tweet
-- Text > 22,500 chars → auto-threads (exceeds Premium limit)
+使用高级账户发布时：
+- 如果文本长度 ≤ 280 个字符 → 以单条推文的形式发布。
+- 如果文本长度 > 280 个字符且 ≤ 22,500 个字符 → 首先显示草稿，询问是否分帖发布（“是否分帖？（y/n）”）
+  - 如果选择“是” → 文本会被分割成多条帖子进行审核。
+- 如果文本长度 > 22,500 个字符 → 会自动分帖发布（超出高级账户的字符限制）。
 
-**Force Threading:**
-- Use `--thread` flag to skip prompt and force threading
-- Use `--auto-confirm` to skip all prompts (uses best format automatically)
+**强制分帖：**
+- 使用 `--thread` 标志可跳过提示并强制分帖。
+- 使用 `--auto-confirm` 标志可跳过所有提示，系统会自动选择最佳发布格式。
 
-## Setup & Credentials
+## 设置与凭据
 
-### X/Twitter Setup
+### Twitter 设置
 
-**Required credentials** (stored in `/home/phan_harry/.openclaw/.env`):
+**所需凭据**（存储在 `/home/phan_harry/.openclaw/.env` 文件中）：
 ```bash
 X_CONSUMER_KEY=your_consumer_key
 X_CONSUMER_SECRET=your_consumer_secret
@@ -84,49 +82,36 @@ X_USERNAME=your_username
 X_USER_ID=your_user_id
 ```
 
-**How to get credentials:**
+**获取凭据的方法：**
 
-1. **Apply for X Developer Account**
-   - Go to https://developer.twitter.com/en/portal/dashboard
-   - Apply for Developer Access
-   - Wait for approval (usually 1-2 days)
+1. **申请 X 开发者账户：**
+   - 访问 https://developer.twitter.com/en/portal/dashboard
+   - 申请开发者访问权限
+   - 等待审核通过（通常需要 1-2 天）。
+2. **启用按使用量计费的支付方式：**
+   - 在开发者门户中设置支付方式（信用卡）
+   - 无需订阅费用，仅按实际使用的 API 请求次数收费。
+   - 每次 API 请求都会被计费。
+3. **创建应用程序：**
+   - 在开发者门户中创建一个新的应用程序。
+   - 应用程序名称：例如“Social Post Bot”
+   - 设置权限为“读取和写入”。
+4. **生成密钥：**
+   - 在“Keys and tokens”选项卡中生成消费者密钥（Consumer Key）和秘密密钥（Secret Key）。
+   - 点击“Authentication Tokens”下的“Generate”生成访问令牌（Access Token）和秘密令牌（Secret Token）。
+   - 请妥善保管这 4 个凭据。
 
-2. **Enable Consumption-Based Billing**
-   - Set up payment method (credit card) in Developer Portal
-   - **No subscription tiers** - you pay only for actual API usage
-   - Charged per API request (posts, reads, etc.)
-   - No monthly minimums or fees
-
-3. **Create an App**
-   - In Developer Portal, create a new App
-   - Name: "Social Post Bot" (or any name)
-   - Set permissions to "Read and Write"
-
-4. **Generate Keys**
-   - Consumer Key & Secret: In "Keys and tokens" tab
-   - Access Token & Secret: Click "Generate" under "Authentication Tokens"
-   - Save all 4 credentials securely
-
-4. **Add to .env file**
-   ```bash
-   echo "X_CONSUMER_KEY=xxx" >> ~/.openclaw/.env
-   echo "X_CONSUMER_SECRET=xxx" >> ~/.openclaw/.env
-   echo "X_ACCESS_TOKEN=xxx" >> ~/.openclaw/.env
-   echo "X_ACCESS_TOKEN_SECRET=xxx" >> ~/.openclaw/.env
-   ```
-
-**Test your credentials:**
+**验证凭据：**
 ```bash
 # Dry run (won't post)
 scripts/post.sh --twitter --dry-run "Test message"
 ```
 
-### Multi-Account Setup (Optional)
+### 多账户设置（可选）
 
-You can manage multiple Twitter accounts by adding additional credentials with custom prefixes.
+您可以通过添加带有自定义前缀的额外凭据来管理多个 Twitter 账户。
 
-**Example: Adding a second account**
-
+**示例：添加第二个账户：**
 ```bash
 # Add credentials with custom prefix (e.g., MYACCOUNT_)
 echo "MYACCOUNT_API_KEY=xxx" >> ~/.openclaw/.env
@@ -135,7 +120,7 @@ echo "MYACCOUNT_ACCESS_TOKEN=xxx" >> ~/.openclaw/.env
 echo "MYACCOUNT_ACCESS_TOKEN_SECRET=xxx" >> ~/.openclaw/.env
 ```
 
-**Usage:**
+**使用方法：**
 ```bash
 # Post from default account (X_*)
 scripts/post.sh --twitter "Message from default account"
@@ -147,14 +132,14 @@ scripts/post.sh --account myaccount --twitter "Message from second account"
 scripts/reply.sh --account myaccount --twitter TWEET_ID "Reply from second account"
 ```
 
-**Naming convention:**
-- Default account: `X_CONSUMER_KEY`, `X_CONSUMER_SECRET`, etc.
-- Custom accounts: `{PREFIX}_API_KEY`, `{PREFIX}_API_KEY_SECRET`, `{PREFIX}_ACCESS_TOKEN`, `{PREFIX}_ACCESS_TOKEN_SECRET`
-- Use lowercase prefix name in `--account` flag
+**命名规则：**
+- 默认账户：`X_CONSUMER_KEY`、`X_CONSUMER_SECRET` 等。
+- 自定义账户：`{PREFIX}_API_KEY`、`{PREFIX}_API_KEY_SECRET`、`{PREFIX}_ACCESS_TOKEN`、`{PREFIX}_ACCESS_TOKEN_SECRET`
+- 在 `--account` 标志中使用小写前缀来指定账户。
 
-### Farcaster Setup
+### Farcaster 设置
 
-**Required credentials** (stored in `/home/phan_harry/.openclaw/farcaster-credentials.json`):
+**所需凭据**（存储在 `/home/phan_harry/.openclaw/farcaster-credentials.json` 文件中）：
 ```json
 {
   "fid": "your_farcaster_id",
@@ -166,9 +151,9 @@ scripts/reply.sh --account myaccount --twitter TWEET_ID "Reply from second accou
 }
 ```
 
-**How to get credentials:**
+**获取凭据的方法：**
 
-1. **Use farcaster-agent skill to create account**
+1. **使用 farcaster-agent 技能创建账户：**
    ```bash
    # This will guide you through:
    # - Creating a wallet
@@ -179,13 +164,11 @@ scripts/reply.sh --account myaccount --twitter TWEET_ID "Reply from second accou
    # See: /skills/farcaster-agent/SKILL.md
    ```
 
-2. **Or use existing credentials**
-   - If you already have a Farcaster account
-   - Export your custody wallet private key
-   - Export your signer private key
-   - Manually create the JSON file
-
-3. **Fund the custody wallet (REQUIRED)**
+2. **或使用现有凭据：**
+   - 如果您已经拥有 Farcaster 账户：
+     - 导出您的保管钱包私钥（custody wallet private key）和签名器私钥（signer private key）。
+     - 手动创建 `farcaster-credentials.json` 文件。
+3. **为保管钱包充值（必需）：**
    ```bash
    # Check current balance
    scripts/check-balance.sh
@@ -195,8 +178,8 @@ scripts/reply.sh --account myaccount --twitter TWEET_ID "Reply from second accou
    # Recommended: 1-5 USDC (1000-5000 casts)
    ```
 
-4. **Verify setup**
-   ```bash
+**验证设置：**
+```bash
    # Check credentials exist
    ls -la ~/.openclaw/farcaster-credentials.json
    
@@ -207,18 +190,17 @@ scripts/reply.sh --account myaccount --twitter TWEET_ID "Reply from second accou
    scripts/post.sh --farcaster --dry-run "Test message"
    ```
 
-**Security Notes:**
-- ⚠️ **Never share your private keys**
-- ⚠️ Credentials are stored as plain text - secure your system
-- ⚠️ `.env` file should have `600` permissions (read/write owner only)
-- ⚠️ Back up your credentials securely
+**安全注意事项：**
+- ⚠️ **切勿分享您的私钥！**
+- ⚠️ 凭据以明文形式存储，请确保系统安全。
+- ⚠️ `.env` 文件应具有 600 权限（仅允许所有者读写）。
+- ⚠️ 请妥善备份您的凭据。
 
-## Usage
+## 使用方法
 
-### Posting
+### 发布内容
 
-#### Text only
-
+#### 仅发布文本
 ```bash
 # Post to both platforms
 scripts/post.sh "Your message here"
@@ -230,8 +212,7 @@ scripts/post.sh --twitter "Your message"
 scripts/post.sh --farcaster "Your message"
 ```
 
-#### With image
-
+#### 发布带有图片的内容
 ```bash
 # Post to both platforms with image
 scripts/post.sh --image /path/to/image.jpg "Your caption"
@@ -243,10 +224,9 @@ scripts/post.sh --twitter --image /path/to/image.jpg "Caption"
 scripts/post.sh --farcaster --image /path/to/image.jpg "Caption"
 ```
 
-### Replying
+### 回复内容
 
-#### Reply to Twitter
-
+#### 回复 Twitter 的帖子
 ```bash
 # Reply to a tweet
 scripts/reply.sh --twitter TWEET_ID "Your reply"
@@ -258,8 +238,7 @@ scripts/reply.sh --twitter TWEET_ID --image /path/to/image.jpg "Reply with image
 scripts/reply.sh --twitter 1234567890123456789 "Great point!"
 ```
 
-#### Reply to Farcaster
-
+#### 回复 Farcaster 的广播内容
 ```bash
 # Reply to a cast
 scripts/reply.sh --farcaster CAST_HASH "Your reply"
@@ -271,44 +250,42 @@ scripts/reply.sh --farcaster 0xabcd1234... --image /path/to/image.jpg "Reply wit
 scripts/reply.sh --farcaster 0xa1b2c3d4e5f6... "Interesting perspective!"
 ```
 
-#### Reply to both platforms
-
+#### 同时回复两个平台的帖子
 ```bash
 # Reply to both (if you have corresponding IDs on both platforms)
 scripts/reply.sh --twitter 123456 --farcaster 0xabcd... "Great discussion!"
 ```
 
-### Options
+### 配置选项
 
-#### For `post.sh` (posting)
+#### 对于 `post.sh`（发布命令）：
 
-- `--twitter` - Post to Twitter only
-- `--farcaster` - Post to Farcaster only
-- `--account <name>` - Twitter account to use (lowercase prefix from .env)
-- `--vary` - Auto-vary text to avoid duplicate content detection
-- `--image <path>` - Attach image
-- `--thread` - Force thread mode (split into multiple posts)
-- `--refresh-tier` - Force refresh Twitter account tier cache (Basic vs Premium)
-- `--shorten-links` - Shorten URLs to save characters
-- `--truncate` - Auto-truncate if over limit
-- `--dry-run` - Preview without posting
-- `-y, --yes` - Skip ALL confirmation prompts (auto-confirm, no threading prompt)
+- `--twitter` - 仅发布到 Twitter
+- `--farcaster` - 仅发布到 Farcaster
+- `--account <account_name>` - 指定要使用的 Twitter 账户（使用 `.env` 文件中的小写前缀）
+- `--vary` - 自动调整文本内容以避免重复
+- `--image <image_path>` - 附加图片
+- `--thread` - 强制分帖
+- `--refresh-tier` - 强制刷新 Twitter 账户等级缓存
+- `--shorten-links` - 短链接压缩以节省字符数
+- `--truncate` - 超过限制时自动截断
+- `--dry-run` - 预览内容但不实际发布
+- `-y, --yes` - 跳过所有确认提示（自动确认，不显示分帖提示）
 
-#### For `reply.sh` (replying)
+#### 对于 `reply.sh`（回复命令）：
 
-- `--twitter <tweet_id>` - Reply to Twitter tweet with this ID
-- `--farcaster <cast_hash>` - Reply to Farcaster cast with this hash
-- `--account <name>` - Twitter account to use (lowercase prefix from .env)
-- `--image <path>` - Attach image to reply
-- `--shorten-links` - Shorten URLs to save characters
-- `--truncate` - Auto-truncate if over limit
-- `--dry-run` - Preview without replying
-- `-y, --yes` - Skip confirmation prompt (auto-confirm)
+- `--twitter <tweet_id>` - 回复具有指定 ID 的 Twitter 帖子
+- `--farcaster <cast_hash>` - 回复具有指定哈希值的 Farcaster 广播内容
+- `--account <account_name>` - 指定要使用的 Twitter 账户（使用 `.env` 文件中的小写前缀）
+- `--image <image_path>` - 附加回复图片
+- `--shorten-links` - 短链接压缩以节省字符数
+- `--truncate` - 超过限制时自动截断
+- `--dry-run` - 预览回复内容但不实际发送
+- `-y, --yes` - 跳过确认提示（自动确认）
 
-## Examples
+## 示例
 
-### Posting Examples
-
+### 发布示例
 ```bash
 # Quick post to both (default account)
 scripts/post.sh "gm! Building onchain 🦞"
@@ -354,8 +331,7 @@ scripts/post.sh --truncate "Very long message that might exceed limits..."
 scripts/post.sh --yes "Automated post from CI/CD"
 ```
 
-### Reply Examples
-
+### 回复示例
 ```bash
 # Reply to a Twitter thread
 scripts/reply.sh --twitter 1234567890123456789 "Totally agree with this take! 💯"
@@ -382,10 +358,9 @@ scripts/reply.sh --twitter 123456 --yes "Quick acknowledgment"
 scripts/reply.sh --twitter 123456 --dry-run "Test reply preview"
 ```
 
-## Draft Preview
+## 草稿预览
 
-The script now shows a draft preview before posting:
-
+发布前会显示草稿预览：
 ```
 === Draft Preview ===
 
@@ -401,39 +376,39 @@ Targets:
 Proceed with posting? (y/n):
 ```
 
-- Interactive mode: Prompts for confirmation
-- Non-interactive/automated: Use `--yes` flag to skip prompt
-- Dry run: Use `--dry-run` to preview without any posting
+- **交互模式：** 显示确认提示。
+- **非交互模式/自动模式：** 使用 `--yes` 标志跳过确认提示。
+- **预览模式：** 使用 `--dry-run` 预览内容而不实际发布。
 
-## Requirements
+## 所需条件
 
-- Twitter credentials in `.env` (X_CONSUMER_KEY, X_CONSUMER_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET)
-- Farcaster credentials in `/home/phan_harry/.openclaw/farcaster-credentials.json`
-- **USDC on Base chain** (custody wallet): 0.001 USDC per Farcaster cast
-- For images: `curl`, `jq`
+- `.env` 文件中包含 Twitter 凭据（X_CONSUMER_KEY、X_CONSUMER_SECRET、X_ACCESS_TOKEN、X_ACCESS_TOKEN_SECRET）。
+- `/home/phan_harry/.openclaw/farcaster-credentials.json` 文件中包含 Farcaster 凭据。
+- **基础链（Base chain）上需要持有 USDC**：每次 Farcaster 广播费用为 0.001 USDC。
+- 发布图片时需要 `curl` 和 `jq` 工具。
 
-## Costs
+## 费用
 
-### X/Twitter
-- **100% Consumption-based** - NO subscription tiers (tiers have been eliminated)
-- **Pay per API request** - charged for each call (post, read, etc.)
-- No monthly fees, no minimums, no tier upgrades to worry about
-- Automatic billing based on actual usage
-- Payment via credit card through X Developer portal
-- Uses OAuth 1.0a (no blockchain/USDC required)
-- Requires approved X Developer account + enabled billing
+### Twitter：
+- **100% 按使用量计费**：无订阅等级之分。
+- 每次 API 请求都会被计费。
+- 无月费，无需担心等级升级。
+- 费用根据实际使用情况自动计算。
+- 通过 X 开发者门户使用信用卡支付。
+- 支持 OAuth 1.0a 协议（无需区块链或 USDC）。
+- 需要经过审核的 X 开发者账户和启用的计费功能。
 
-**Official pricing:** https://developer.twitter.com/#pricing
+**官方定价：** https://developer.twitter.com/#pricing
 
-**Critical:** X API completely eliminated subscription tiers (Basic, Pro, etc.). The model is now purely pay-per-use - you are charged only for the API requests you actually make.
+**重要说明：** X API 完全取消了订阅等级划分（基础账户、高级账户等）。现在采用纯按使用量计费的模式，仅根据实际使用的 API 请求次数收费。
 
-### Farcaster
-Each Farcaster cast costs **0.001 USDC** (paid via x402 protocol):
-- Deducted from custody wallet on **Base chain**
-- Sent to Neynar Hub: `0xA6a8736f18f383f1cc2d938576933E5eA7Df01A1`
-- ~$1 USDC = 1000 casts
+### Farcaster：
+- 每次 Farcaster 广播的费用为 0.001 USDC（通过 x402 协议支付）。
+- 费用从基础链（Base chain）上的保管钱包中扣除。
+- 费用会发送到 Neynar Hub（地址：`0xA6a8736f18f383f1cc2d938576933E5eA7Df01A1`）。
+- 大约 1 USDC 可用于 1000 次广播。
 
-**Check balance:**
+**查询余额：**
 ```bash
 # Quick check
 scripts/check-balance.sh
@@ -443,17 +418,17 @@ jq -r '.custodyAddress' ~/.openclaw/farcaster-credentials.json
 # View on basescan.org
 ```
 
-**Fund wallet:**
-Send USDC to custody address on Base chain. Bridge from other chains if needed.
+**充值钱包：**
+将 USDC 发送到基础链上的保管钱包地址。如有需要，可以从其他链转移资金。
 
-## Image Hosting
+## 图片托管
 
-- **Twitter:** Direct upload via Twitter API
-- **Farcaster:** Uploads to imgur for public URL (embeds automatically)
+- **Twitter：** 通过 Twitter API 直接上传图片。
+- **Farcaster：** 将图片上传到 imgur 并生成公开链接（可自动嵌入到广播中）。
 
-## Error Handling
+## 错误处理
 
-- Shows character/byte count before posting
-- Warns if exceeding limits
-- Option to truncate or abort
-- Validates credentials before attempting post
+- 发布前会显示字符/字节数。
+- 如果超过限制会发出警告。
+- 提供截断或中止操作的选项。
+- 在尝试发布前会验证凭据的有效性。

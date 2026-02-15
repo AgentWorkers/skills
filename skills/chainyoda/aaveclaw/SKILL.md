@@ -1,94 +1,94 @@
 ---
 name: aaveclaw
-description: Aave V3 lending protocol on Base Sepolia testnet. Deposit WETH collateral, borrow USDC, repay loans, withdraw collateral, check health factor, and mint test tokens via faucet. Use when users want to interact with Aave lending, check their lending position health, or get testnet tokens.
+description: Aave V3借贷协议在Base Sepolia测试网上运行。用户可以存入WETH作为抵押品，借入USDC，偿还贷款，提取抵押品，查看自身的借贷健康状况，并通过测试网提供的工具（fountain） mint测试代币。该协议适用于希望使用Aave借贷服务、检查自身借贷状况或获取测试网代币的用户。
 ---
 
-# aaveclaw - Aave V3 Lending on Base Sepolia
+# aaveclaw - 在 Base Sepolia 上使用 Aave V3 协议进行借贷
 
-Interact with Aave V3 lending protocol on Base Sepolia testnet. Manages the full lending lifecycle using the wallet from `~/.x402-config.json`.
+该工具用于在 Base Sepolia 测试网络上与 Aave V3 借贷协议进行交互，通过 `~/.x402-config.json` 配置文件中的钱包管理整个借贷流程。
 
-## Setup
+## 设置
 
-Run `setup.sh` on first use to install dependencies (ethers v6):
+首次使用时，请运行 `setup.sh` 命令以安装所需的依赖项（ethers v6）：
 
 ```
 bash scripts/setup.sh
 ```
 
-## Commands
+## 命令
 
-### Check Health Factor
+### 检查健康因子
 
-Check the current lending position. Safe to run anytime, read-only.
+查看当前的借贷状况。该命令可随时执行，仅用于读取信息。
 
 ```
 bash scripts/health.sh [address]
 ```
 
-If no address is provided, uses the configured wallet address.
+如果未提供地址，系统将使用配置好的钱包地址。
 
-### Mint Test Tokens (Faucet)
+### 铸造测试代币（ faucet）
 
-Get testnet WETH or USDC from the Aave faucet. Run this first if the wallet has no tokens.
+从 Aave 的代币发放器（faucet）获取测试网络中的 WETH 或 USDC。如果钱包中没有任何代币，请先执行此命令。
 
 ```
 bash scripts/faucet.sh weth 1       # Mint 1 WETH
 bash scripts/faucet.sh usdc 1000    # Mint 1000 USDC
 ```
 
-### Deposit Collateral
+### 存入抵押品
 
-Deposit WETH as collateral into Aave. Auto-wraps native ETH to WETH if needed.
+将 WETH 存入 Aave 作为抵押品。如有需要，系统会自动将原生 ETH 转换为 WETH。
 
 ```
 bash scripts/deposit.sh 0.5         # Deposit 0.5 WETH
 ```
 
-### Borrow USDC
+### 借入 USDC
 
-Borrow USDC against deposited collateral. Uses variable interest rate.
+使用存入的抵押品借入 USDC，利率为浮动利率。
 
 ```
 bash scripts/borrow.sh 100          # Borrow 100 USDC
 ```
 
-### Repay Debt
+### 偿还债务
 
-Repay borrowed USDC. Use "max" to repay entire debt.
+偿还借入的 USDC。使用 `max` 参数可一次性还清全部债务。
 
 ```
 bash scripts/repay.sh 50            # Repay 50 USDC
 bash scripts/repay.sh max           # Repay all debt
 ```
 
-### Withdraw Collateral
+### 提取抵押品
 
-Withdraw WETH collateral. Use "max" to withdraw everything (only if no debt).
+提取存入的 WETH 抵押品。如果未欠债务，可以使用 `max` 参数提取全部抵押品。
 
 ```
 bash scripts/withdraw.sh 0.5        # Withdraw 0.5 WETH
 bash scripts/withdraw.sh max        # Withdraw all
 ```
 
-## Usage Guidelines
+## 使用指南
 
-- **Always run `health.sh` first** to see the current position before making changes.
-- **Ask the user for amounts** before executing deposit, borrow, repay, or withdraw.
-- **Always show the health factor** after any state-changing operation (the scripts do this automatically).
-- **Warn when health factor drops below 1.5** - the position is at risk of liquidation.
-- **Guide new users to the faucet** to get test tokens before depositing.
-- **Typical flow**: faucet (get tokens) -> deposit (add collateral) -> borrow (take loan) -> repay (pay back) -> withdraw (retrieve collateral).
+- **在进行任何操作之前，请务必先运行 `health.sh` 命令以查看当前借贷状况。**
+- **在执行存入、借款、偿还或提取操作之前，请先询问用户所需的具体金额。**
+- **任何状态变更操作后，系统会自动显示当前的健康因子。**
+- **当健康因子降至 1.5 以下时，系统会发出警告——这意味着您的借贷资产存在被清算的风险。**
+- **建议新用户先通过代币发放器获取测试代币，再开始借贷操作。**
+- **典型操作流程：** 通过代币发放器获取代币 → 存入抵押品 → 借入资金 → 偿还债务 → 提取抵押品。
 
-## Network Details
+## 网络信息
 
-- **Network**: Base Sepolia (chain ID 84532)
-- **Explorer**: https://sepolia.basescan.org
-- **RPC**: https://sepolia.base.org
-- **Tokens**: WETH (18 decimals), USDC (6 decimals)
+- **网络**: Base Sepolia（链 ID：84532）
+- **浏览器**: https://sepolia.basescan.org
+- **远程过程调用 (RPC)**: https://sepolia.base.org
+- **代币**: WETH（18 位小数），USDC（6 位小数）
 
-## Error Handling
+## 错误处理
 
-- If private key is missing: direct user to create `~/.x402-config.json` with `{"private_key": "0x..."}`
-- If insufficient balance: the scripts report exact balances and what is needed
-- If health factor would drop too low after borrow: Aave reverts the transaction automatically
-- If faucet fails: the faucet contract may have minting limits or may not be available
+- **如果缺少私钥**：系统会提示用户使用 `{"private_key": "0x..."}` 创建 `~/.x402-config.json` 文件。
+- **如果余额不足**：系统会显示实际余额及所需补充的金额。
+- **如果借款后健康因子过低**：Aave 会自动撤销相关交易。
+- **如果代币发放器出现故障**：可能是由于铸造限制或暂时不可用所致。

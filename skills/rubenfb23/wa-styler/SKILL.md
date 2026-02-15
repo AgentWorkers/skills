@@ -1,28 +1,28 @@
 ---
 name: whatsapp-styler
-description: Skill to ensure all messages sent to WhatsApp follow the platform's specific formatting syntax. It prevents markdown bloat and ensures a clean, mobile-first reading experience.
+description: 确保发送到 WhatsApp 的所有消息都遵循该平台特定的格式化语法。这可以避免使用过多的 Markdown 标记，从而提供清晰、以移动设备优先的阅读体验。
 ---
 
-# WhatsApp Styler
+# WhatsApp 样式化工具
 
-This skill defines the strict formatting rules for WhatsApp to ensure the user sees clean, styled text without raw markdown symbols.
+该工具定义了 WhatsApp 的严格格式化规则，以确保用户看到的文本是整洁且经过格式化的，而不会显示原始的 Markdown 符号。
 
-## Core Syntax Rules
+## 核心语法规则
 
-1. *Bold*: Use single asterisks around text: `*texto*`. NEVER use double asterisks `**`.
-2. _Italic_: Use single underscores around text: `_texto_`.
-3. ~Strikethrough~: Use tildes around text: `~texto~`.
-4. `Monospace`: Use triple backticks: ``` texto ``` (good for code or technical IDs).
-5. *Bullet Lists*: Use a single asterisk followed by a space: `* Item`.
-6. *Numbered Lists*: Use standard numbers: `1. Item`.
-7. *Quotes*: Use the angle bracket: `> texto`.
+1. **粗体**：使用单星号来标记文本：`*文本*`。**切勿**使用双星号 `**`。
+2. **斜体**：使用单下划线来标记文本：`_文本_`。
+3. **删除线**：使用波浪号来标记文本：`~文本~`。
+4. **等宽字体**：使用三引号来标记文本：``` 文本 ```（适用于代码或技术标识符）。
+5. **项目列表**：使用单星号后跟空格：`* 项目`。
+6. **编号列表**：使用标准数字：`1. 项目`。
+7. **引号**：使用尖括号：`> 文本`。
 
-## Prohibited Patterns (Do NOT use)
+## 禁用模式（请勿使用）
 
-- No headers (`#`, `##`, `###`). Use *BOLD CAPS* instead.
-- No markdown tables. Use bullet lists for structured data.
-- No horizontal rules (`---`). Use a line of underscores if needed `__________`.
-- No nested bold/italic symbols if it risks showing raw characters.
+- 禁止使用标题（`#`、`##`、`###`）。请改用**粗体大写字母**。
+- 禁止使用 Markdown 表格。请使用项目列表来表示结构化数据。
+- 禁止使用水平分隔线（`---`）。如果需要分隔内容，请使用一行下划线 `__________`。
+- 禁止使用嵌套的粗体/斜体符号，因为这可能会导致原始字符的显示。
 
-## Goal
-The goal is a "Human-to-Human" look. Technical but clean.
+## 目标
+目标是实现一种“人与人之间交流”的视觉效果：技术性强，但界面整洁清晰。

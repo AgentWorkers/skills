@@ -1,6 +1,6 @@
 ---
 name: office-mcp
-description: MCP server for Word, Excel, PowerPoint operations via AI
+description: MCP服务器：通过人工智能支持Word、Excel和PowerPoint文件的操作
 author: claude-office-skills
 version: "1.0"
 tags: ['mcp', 'office', 'word', 'excel', 'powerpoint']
@@ -14,35 +14,35 @@ library:
 
 # Office Mcp Skill
 
-## Overview
+## 概述
 
-This skill wraps Office document operations as MCP tools, allowing Claude to create, edit, and manipulate Word, Excel, and PowerPoint files with standardized interfaces.
+该技能将Office文档操作封装为MCP工具，使Claude能够通过标准化的接口创建、编辑和操作Word、Excel和PowerPoint文件。
 
-## How to Use
+## 使用方法
 
-1. Describe what you want to accomplish
-2. Provide any required input data or files
-3. I'll execute the appropriate operations
+1. 说明您想要完成的任务。
+2. 提供所需的输入数据或文件。
+3. 我将执行相应的操作。
 
-**Example prompts:**
-- "Create Word documents with AI-generated content"
-- "Build Excel spreadsheets with formulas"
-- "Generate PowerPoint presentations"
-- "Batch edit Office documents"
+**示例提示：**
+- “使用AI生成的内容创建Word文档”
+- “使用公式制作Excel电子表格”
+- “生成PowerPoint演示文稿”
+- “批量编辑Office文档”
 
-## Domain Knowledge
+## 领域知识
 
 
-### Office MCP Tools
+### Office MCP工具
 
-| Tool | Input | Output |
+| 工具 | 输入 | 输出 |
 |------|-------|--------|
-| `create_docx` | Title, sections, styles | .docx file |
-| `edit_docx` | Path, changes | Updated .docx |
-| `create_xlsx` | Data, formulas | .xlsx file |
-| `create_pptx` | Slides, layout | .pptx file |
+| `create_docx` | 标题、章节、样式 | .docx文件 |
+| `edit_docx` | 文件路径、修改内容 | 更新后的.docx文件 |
+| `create_xlsx` | 数据、公式 | .xlsx文件 |
+| `create_pptx` | 幻灯片、布局 | .pptx文件 |
 
-### Integration with Claude Skills
+### 与Claude技能的集成
 
 ```markdown
 # Example: Combining Skills + MCP
@@ -55,7 +55,7 @@ User: "Create a sales report from this data"
 4. office-mcp/create_pptx → Generate PowerPoint deck
 ```
 
-### MCP Server Implementation
+### MCP服务器实现
 
 ```python
 from mcp import Server
@@ -83,21 +83,21 @@ async def create_xlsx(data: list, output_path: str):
 ```
 
 
-## Best Practices
+## 最佳实践
 
-1. **Validate inputs before document operations**
-2. **Use temp files for large documents**
-3. **Return structured responses with file paths**
-4. **Handle errors gracefully with meaningful messages**
+1. 在执行文档操作之前验证输入数据。
+2. 对于大型文档，使用临时文件。
+3. 返回包含文件路径的结构化响应。
+4. 以有意义的方式优雅地处理错误。
 
-## Installation
+## 安装
 
 ```bash
 # Install required dependencies
 pip install python-docx openpyxl python-pptx reportlab jinja2
 ```
 
-## Resources
+## 资源
 
-- [Office MCP Repository](https://github.com/anthropics/skills)
+- [Office MCP仓库](https://github.com/anthropics/skills)
 - [Claude Office Skills Hub](https://github.com/claude-office-skills/skills)

@@ -1,80 +1,78 @@
 ---
 name: Drums
-description: Drum practice strategies, technique correction, groove development, and progress tracking.
+description: 鼓练习策略、技巧纠正、节奏感培养以及进度跟踪。
 metadata:
   category: music
   skills: ["drums", "percussion", "practice", "music", "rhythm"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/drums/` as workspace on first interaction
-- After practice, offer to log progress; see `progress.md`
+- 首次使用时，会在 `~/drums/` 目录下创建工作区。
+- 练习结束后，可以记录自己的进步情况；详情请参阅 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask kit — acoustic vs electronic affects advice
-- Ask level — notation reading, rudiments knowledge
-- Ask goals — rock vs jazz vs session work differ
+- 询问所使用的鼓组类型（原声鼓组还是电子鼓组），因为这会影响演奏建议。
+- 询问演奏者的水平（是否能够识读乐谱、掌握基本鼓技）。
+- 询问演奏者的目标（是练习摇滚风格、爵士风格还是即兴演奏）。
 
-## Practice Errors
+## 练习中的常见错误
 
-- Speeding up fills — rushing is #1 amateur tell, always click
-- Neglecting weak hand — doubles expose it
-- All power, no dynamics — ghost notes are hard
-- Skipping rudiments — paradiddles, flams are vocabulary
+- 加快填充节奏（即快速连续敲击鼓点）：这是初学者的典型错误，一定要避免。
+- 忽视较弱的手部（通常是指非主击鼓的那只手）——这会导致节奏不准确。
+- 只强调力度而忽略音量变化：这样演奏出来的音符会显得很单调（类似“幽灵音符”）。
+- 跳过基本鼓技的练习：例如 paradiddle（一种基本的鼓点组合）和 flam（一种连续敲击的技巧）。
 
-## Technique Traps
+## 技巧陷阱
 
-- Death grip — loose grip, fingers do rebound
-- Hitting from shoulder — wrist for speed, arm for power
-- Burying bass beater — let rebound for faster doubles
-- Throne too low — thighs angled down
+- 握鼓过紧：握得太紧会导致手指反弹，影响演奏效果。
+- 用肩膀发力击鼓：应该用手腕控制节奏，用手臂提供动力。
+- 将低音鼓（bass drum）按得太紧：适当的反弹有助于打出更有力的连续敲击音。
+- 鼓凳位置过低：此时应稍微弯曲大腿以获得更好的演奏姿势。
 
-## Mistakes by Level
+## 不同水平的常见错误
 
-**Beginners:** Inconsistent tempo, ignoring hi-hat foot, fills lose beat
+**初学者：** 节奏不稳定，忽视踩 hi-hat 的动作，填充节奏容易脱离整体节奏。
+**中级者：** 演奏过于用力，左脚力量不足，无法与低音鼓保持同步。
+**高级者：** 演奏风格固定，忽视使用刷子（brushes）的技巧，或者过于注重节奏而忽略音乐的表现力。
 
-**Intermediate:** Overplaying, weak left foot, can't lock with bass
+## 基本鼓技的优先级
 
-**Advanced:** Stylistic ruts, neglecting brushes, chops over groove
+| 优先级 | 基本鼓技 | 重要性 |
+|---------|---------|-------|
+| 必备 | Single, Double, Paradiddle | 构成演奏基础 |
+| 重要 | Flam, Drag, Flamacue | 增加音乐表现力 |
+| 高级 | Swiss Triplets, Ratamacue | 提高演奏速度 |
 
-## Rudiment Priority
+建议从 60 BPM 的速度开始练习，只有在熟练掌握后才能逐渐提高速度。
 
-| Priority | Rudiments | Why |
-|----------|-----------|-----|
-| Essential | Single, double, paradiddle | Foundation |
-| Important | Flams, drags, flamacue | Accents |
-| Advanced | Swiss triplets, ratamacues | Speed |
+## 节奏与技巧的平衡
 
-Start 60 BPM, add 5 only when clean.
+- 节奏是关键：鼓手的主要职责是营造良好的节奏感，而非仅仅演奏填充音。
+- 简单而稳定的节奏比复杂的、不稳定的节奏更重要。
+- 如果填充音的节奏不正确，整个演奏就会失败。
 
-## Groove vs Chops
+## 故障排除
 
-- Groove pays bills — hired for feel, not fills
-- Simple solid beats complex shaky
-- Fill loses the 1 = wrong fill
+- “填充音的节奏不稳定”：练习时确保填充音与主节奏保持一致。
+- “低音鼓的连续敲击力度不足”：检查低音鼓的弹簧是否正常工作。
+- “无法演奏轻柔的声音”：练习时使用弱音（pp）模式，或者进行专门的练习。
+- “双手动作不同步”：尝试以 40 BPM 的速度练习 paradiddle。
 
-## Troubleshooting
+## 电子鼓组的使用建议
 
-- "Fills lose tempo" → practice fill INTO beat 1
-- "Bass doubles weak" → heel-up, check spring
-- "Can't play quiet" → pp practice, ghost drills
-- "Hands not synced" → paradiddles at 40 BPM
+- Mesh 鼓面是必备选择；橡胶材质的鼓面容易养成不良的演奏习惯。
 
-## Electronic Kits
+## 听力保护
 
-Mesh heads essential — rubber builds bad habits
+- 音乐对听力有永久性损害，务必佩戴 -15dB 的降噪耳塞。
 
-## Hearing
+## 进度跟踪
 
-Damage permanent — always wear -15dB plugs
+将练习记录保存在 `~/drums/` 目录下，包括演奏的歌曲、使用的鼓技以及节奏信息。
 
-## Progress Tracking
+## 可以探讨的问题
 
-Log to `~/drums/`: songs, rudiment tempos, grooves
-
-## What to Surface
-
-- "Paradiddles 90 last month — push to 100?"
-- "No left-foot logs — want hi-hat exercises?"
+- “上个月 paradiddle 的练习次数是 90 次，这个月能提高到 100 次吗？”
+- “没有记录左脚的练习情况，需要练习踩 hi-hat 吗？”

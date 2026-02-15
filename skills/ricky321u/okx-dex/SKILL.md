@@ -1,47 +1,47 @@
 ---
 name: okx-dex
-description: OKX DEX aggregator (v6). Get swap quotes, swap/approve tx data, tokens, and chains.
+description: OKX DEX聚合器（v6）：提供交易报价、交易/审批数据、代币信息以及相关区块链的信息。
 homepage: https://web3.okx.com/build/dev-docs/wallet-api/dex-api-reference
 metadata: {"clawdbot":{"emoji":"🧭","always":true,"requires":{"bins":["curl","jq","python3"]}}}
 ---
 
-# OKX DEX Aggregator 🧭
+# OKX DEX 聚合器 🧭
 
-OKX Wallet DEX API provides aggregated swap quotes and transaction data across multiple chains (EVM + non‑EVM).
+OKX 钱包 DEX API 提供了跨多个链（EVM 和非 EVM）的聚合交易报价和交易数据。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `OKX_API_KEY` | OKX API key | Yes |
-| `OKX_SECRET_KEY` | OKX API secret | Yes |
-| `OKX_PASSPHRASE` | OKX API passphrase | Yes |
+| `OKX_API_KEY` | OKX API 密钥 | 是 |
+| `OKX_SECRET_KEY` | OKX API 密码 | 是 |
+| `OKX_PASSPHRASE` | OKX API 密码短语 | 是 |
 
-## API Base URL
+## API 基本 URL
 
 ```
 https://web3.okx.com
 ```
 
-## Authentication (Required Headers)
+## 认证（必需的请求头）
 
-All requests must include the following headers:
+所有请求都必须包含以下请求头：
 
 - `OK-ACCESS-KEY`
-- `OK-ACCESS-TIMESTAMP` (UTC ISO time)
+- `OK-ACCESS-TIMESTAMP`（UTC ISO 时间）
 - `OK-ACCESS-PASSPHRASE`
-- `OK-ACCESS-SIGN` (Base64(HMAC_SHA256(prehash, secret)))
+- `OK-ACCESS-SIGN`（Base64(HMAC_SHA256(prehash, secret)))`
 
-Prehash string:
+预哈希字符串：
 
 ```
 TIMESTAMP + METHOD + REQUEST_PATH_WITH_QUERY + BODY
 ```
 
-- For GET requests, `BODY` is empty and `REQUEST_PATH_WITH_QUERY` must include the query string.
-- For POST requests, `BODY` is the raw JSON string.
+- 对于 GET 请求，`BODY` 为空，`REQUEST_PATH_WITH_QUERY` 必须包含查询字符串。
+- 对于 POST 请求，`BODY` 是原始的 JSON 字符串。
 
-## Get Supported Chains (Aggregator)
+## 获取支持的链（聚合器）
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -75,7 +75,7 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   -H "OK-ACCESS-SIGN: ${SIGN}" | jq '.'
 ```
 
-## Get Tokens
+## 获取代币信息
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -110,7 +110,7 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   -H "OK-ACCESS-SIGN: ${SIGN}" | jq '.data[:5]'
 ```
 
-## Get Swap Quote (Quote Only)
+## 获取交易报价（仅报价）
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -154,10 +154,9 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   }'
 ```
 
-## Get Swap Transaction (Router Call Data)
+## 获取交易详情（路由器调用数据）
 
-Note: `slippagePercent` is required by the swap endpoint and is expressed as a
-decimal percentage (e.g., `0.01` = 1%).
+注意：`slippagePercent` 是交易端点必需的参数，以小数百分比表示（例如，`0.01` = 1%）。
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -203,10 +202,9 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   }'
 ```
 
-## Get Approval Transaction (EVM)
+## 获取批准交易（EVM）
 
-Note: Some responses may omit `to`/`value`. If `to` is null, use the chain's
-`dexTokenApproveAddress` from the Supported Chains response as the target.
+注意：某些响应可能省略 `to`/`value` 参数。如果 `to` 为空，请使用“获取支持的链”响应中的 `dexTokenApproveAddress` 作为目标地址。
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -249,7 +247,7 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   }'
 ```
 
-## Get Approval Transaction (EVM) with `to` from Supported Chains
+## 使用“获取支持的链”中的 `to` 参数获取批准交易（EVM）
 
 ```bash
 API_KEY="${OKX_API_KEY}"
@@ -317,15 +315,15 @@ curl -s "https://web3.okx.com${PATH_WITH_QUERY}" \
   }'
 ```
 
-## Safety Rules
+## 安全规则
 
-1. ALWAYS display swap details before execution.
-2. WARN if price impact is high or priceImpactProtectionPercent is exceeded.
-3. CHECK token allowance (EVM) before swap execution.
-4. VERIFY slippage settings (`slippagePercent`).
-5. For approve responses, if `to` is null, use `dexTokenApproveAddress` for the chain.
-6. NEVER execute without explicit user confirmation.
+1. 在执行交易前，务必显示交易详情。
+2. 如果价格影响较大或超过了 `priceImpactProtectionPercent`，则发出警告。
+3. 在执行交易前，检查用户的代币余额。
+4. 验证滑点设置（`slippagePercent`）。
+5. 对于批准响应，如果 `to` 为空，请使用该链的 `dexTokenApproveAddress` 作为目标地址。
+6. 未经用户明确确认，切勿执行任何交易。
 
-## Links
+## 链接
 
-- [OKX DEX API Reference (v6)](https://web3.okx.com/build/dev-docs/wallet-api/dex-api-reference)
+- [OKX DEX API 参考（v6）](https://web3.okx.com/build/dev-docs/wallet-api/dex-api-reference)

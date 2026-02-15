@@ -1,64 +1,64 @@
 ---
 name: productboard-search
-description: Search and explore ProductBoard features, products, and feedback
+description: 搜索并探索 ProductBoard 的功能、产品以及用户反馈。
 user-invocable: true
 homepage: https://github.com/robertoamoreno/openclaw-productboard
 metadata: {"openclaw":{"emoji":"🔍"}}
 ---
 
-# ProductBoard Search Skill
+# ProductBoard 搜索功能
 
-Search and explore your ProductBoard workspace to find features, products, components, and customer feedback.
+您可以在 ProductBoard 工作区中搜索和探索功能、产品、组件以及客户反馈。
 
-## Available Tools
+## 可用的工具
 
-- `pb_search` - Global search across all ProductBoard entities
-- `pb_feature_list` - List features with filters
-- `pb_feature_get` - Get detailed feature information
-- `pb_feature_search` - Search features by name/description
-- `pb_product_list` - List all products
-- `pb_product_get` - Get product details with components
-- `pb_product_hierarchy` - View full product/component tree
-- `pb_note_list` - List customer feedback notes
+- `pb_search`：对所有 ProductBoard 实体进行全局搜索
+- `pb_feature_list`：通过过滤器列出功能
+- `pb_feature_get`：获取详细的功能信息
+- `pb_feature_search`：按名称/描述搜索功能
+- `pb_product_list`：列出所有产品
+- `pb_product_get`：获取包含组件的产品详细信息
+- `pb_product_hierarchy`：查看完整的产品/组件结构
+- `pb_note_list`：列出客户反馈记录
 
-## Search Strategies
+## 搜索策略
 
-### Finding Features
+### 查找功能
 
-1. **By keyword**: Use `pb_feature_search` with a query term
-2. **By product**: Use `pb_feature_list` with `productId` filter
-3. **By status**: Use `pb_feature_list` with `status` filter (new, in-progress, shipped, archived)
-4. **By component**: Use `pb_feature_list` with `componentId` filter
+1. **按关键词**：使用 `pb_feature_search` 并输入查询词
+2. **按产品**：使用 `pb_feature_list` 并设置 `productId` 过滤器
+3. **按状态**：使用 `pb_feature_list` 并设置 `status` 过滤器（新创建、进行中、已发布、已归档）
+4. **按组件**：使用 `pb_feature_list` 并设置 `componentId` 过滤器
 
-### Understanding Structure
+### 了解工作区结构
 
-1. Start with `pb_product_hierarchy` to see the complete workspace organization
-2. Use `pb_product_get` to explore a specific product and its components
-3. Filter features by product or component to narrow down results
+1. 首先使用 `pb_product_hierarchy` 查看整个工作区的组织结构
+2. 使用 `pb_product_get` 探索特定产品及其组件
+3. 通过产品或组件过滤功能以缩小搜索范围
 
-### Finding Customer Feedback
+### 查找客户反馈
 
-1. Use `pb_note_list` to see recent feedback
-2. Filter by date range using `createdFrom` and `createdTo`
-3. Use `pb_search` with type `note` to find specific feedback
+1. 使用 `pb_note_list` 查看最近的反馈记录
+2. 使用 `createdFrom` 和 `createdTo` 过滤器按日期范围筛选
+3. 使用 `pb_search` 并设置类型为 `note` 来查找特定的反馈
 
-## Example Queries
+## 示例查询
 
-**User**: "Find all features related to authentication"
-**Action**: Use `pb_feature_search` with query "authentication"
+**用户**：“查找与身份验证相关的所有功能”
+**操作**：使用 `pb_feature_search` 并输入查询词 “authentication”
 
-**User**: "What features are currently in progress?"
-**Action**: Use `pb_feature_list` with status "in-progress"
+**用户**：“当前有哪些功能正在进行中？”
+**操作**：使用 `pb_feature_list` 并设置 `status` 为 “in-progress”
 
-**User**: "Show me the product structure"
-**Action**: Use `pb_product_hierarchy` to get the full tree
+**用户**：“显示产品结构”
+**操作**：使用 `pb_product_hierarchy` 查看完整的产品结构
 
-**User**: "Find customer feedback about performance"
-**Action**: Use `pb_search` with query "performance" and type "note"
+**用户**：“查找关于性能的客户反馈”
+**操作**：使用 `pb_search` 并输入查询词 “performance” 和类型 “note”
 
-## Tips
+## 提示
 
-- Start broad with `pb_search`, then narrow down with specific tools
-- Use `pb_product_hierarchy` first when exploring an unfamiliar workspace
-- The search is case-insensitive and matches partial words
-- Results include direct links to ProductBoard for quick access
+- 先使用 `pb_search` 进行广泛搜索，然后使用特定工具进行细化
+- 在不熟悉的工作区中，先使用 `pb_product_hierarchy` 来了解结构
+- 搜索不区分大小写，支持部分匹配
+- 结果中包含直接链接，可快速访问 ProductBoard 页面

@@ -1,50 +1,50 @@
 ---
 name: moltbot-security
-description: Security hardening for AI agents - Moltbot, OpenClaw, Cursor, Claude. Lock down gateway, fix permissions, auth, firewalls. Essential for vibe-coding setups.
+description: AI代理的安全加固措施——适用于Moltbot、OpenClaw、Cursor、Claude等工具。需要锁定网关、修正权限设置、加强身份验证机制，并配置防火墙。这些措施对于确保系统的安全性至关重要，尤其是在使用vibe-coding技术进行开发时。
 version: 1.0.3
 author: NextFrontierBuilds
 keywords: [moltbot, openclaw, security, hardening, gateway, firewall, tailscale, ssh, authentication, ai-agent, ai-coding, claude, cursor, copilot, github-copilot, chatgpt, devops, infosec, vibe-coding, ai-tools, developer-tools, devtools, typescript, automation, llm]
 ---
 
-# Moltbot Security Guide
+# Moltbot 安全指南
 
-Your Moltbot gateway was designed for local use. When exposed to the internet without proper security, attackers can access your API keys, private messages, and full system access.
+您的 Moltbot 网关最初是为本地使用而设计的。如果未采取适当的安全措施就直接暴露在互联网上，攻击者将能够访问您的 API 密钥、私密消息以及系统的全部访问权限。
 
-**Based on:** Real vulnerability research that found 1,673+ exposed OpenClaw/Moltbot gateways on Shodan.
-
----
-
-## TL;DR - The 5 Essentials
-
-1. **Bind to loopback** — Never expose gateway to public internet
-2. **Set auth token** — Require authentication for all requests
-3. **Fix file permissions** — Only you should read config files
-4. **Update Node.js** — Use v22.12.0+ to avoid known vulnerabilities
-5. **Use Tailscale** — Secure remote access without public exposure
+**依据：** 实际的安全漏洞研究显示，在 Shodan 上发现了超过 1,673 个暴露在外的 OpenClaw/Moltbot 网关。
 
 ---
 
-## What Gets Exposed (The Real Risk)
+## 简而言之：五大关键安全措施
 
-When your gateway is publicly accessible:
-- Complete conversation histories (Telegram, WhatsApp, Signal, iMessage)
-- API keys for Claude, OpenAI, and other providers
-- OAuth tokens and bot credentials
-- Full shell access to host machine
-
-**Prompt injection attack example:** An attacker sends you an email with hidden instructions. Your AI reads it, extracts your recent emails, and forwards summaries to the attacker. No hacking required.
+1. **仅绑定到 loopback 接口** — 绝不要将网关暴露在公共互联网上。
+2. **设置身份验证令牌** — 要求所有请求都进行身份验证。
+3. **修复文件权限** — 只有您自己才能读取配置文件。
+4. **更新 Node.js** — 使用版本 v22.12.0 或更高版本以避免已知的安全漏洞。
+5. **使用 Tailscale** — 在不暴露于公共网络的情况下实现安全远程访问。
 
 ---
 
-## Quick Security Audit
+## 暴露的风险
 
-Run this to check your current security posture:
+当您的网关可以被公开访问时，以下信息可能会被泄露：
+- 完整的聊天记录（来自 Telegram、WhatsApp、Signal、iMessage 等）；
+- Claude、OpenAI 及其他服务提供商的 API 密钥；
+- OAuth 令牌和机器人凭证；
+- 对主机机器的完全 shell 访问权限。
+
+**示例：** 攻击者会发送一封包含隐藏指令的电子邮件。您的 AI 系统会读取这封邮件，提取您的最近通信记录，并将其摘要转发给攻击者。无需任何黑客技术即可实现这一操作。
+
+---
+
+## 快速安全审计
+
+运行以下命令来检查您当前的安全配置：
 
 ```bash
 openclaw security audit --deep
 ```
 
-Auto-fix issues:
+自动修复问题：
 
 ```bash
 openclaw security audit --deep --fix
@@ -52,11 +52,11 @@ openclaw security audit --deep --fix
 
 ---
 
-## Step 1: Bind Gateway to Loopback Only
+## 第一步：仅将网关绑定到 loopback 接口
 
-**What this does:** Prevents the gateway from accepting connections from other machines.
+这样做可以防止网关接受来自其他机器的连接。
 
-Check your `~/.openclaw/openclaw.json`:
+检查您的 `~/.openclaw/openclaw.json` 配置文件：
 
 ```json
 {
@@ -66,24 +66,24 @@ Check your `~/.openclaw/openclaw.json`:
 }
 ```
 
-**Options:**
-- `loopback` — Only accessible from localhost (most secure)
-- `lan` — Accessible from local network only
-- `auto` — Binds to all interfaces (dangerous if exposed)
+**选项：**
+- `loopback` — 仅允许本地主机（localhost）访问（最安全）；
+- `lan` — 仅允许局域网内的设备访问；
+- `auto` — 绑定到所有网络接口（如果暴露在外则非常危险）。
 
 ---
 
-## Step 2: Set Up Authentication
+## 第二步：设置身份验证
 
-**Option A: Token Authentication (Recommended)**
+**选项 A：令牌认证（推荐）**
 
-Generate a secure token:
+生成一个安全的令牌：
 
 ```bash
 openssl rand -hex 32
 ```
 
-Add to your config:
+将其添加到配置文件中：
 
 ```json
 {
@@ -96,35 +96,15 @@ Add to your config:
 }
 ```
 
-Or set via environment:
+或者通过环境变量设置令牌：
 
 ```bash
 export CLAWDBOT_GATEWAY_TOKEN="your-secure-random-token-here"
 ```
 
-**Option B: Password Authentication**
+## 第三步：锁定文件权限
 
-```json
-{
-  "gateway": {
-    "auth": {
-      "mode": "password"
-    }
-  }
-}
-```
-
-Then:
-
-```bash
-export CLAWDBOT_GATEWAY_PASSWORD="your-secure-password-here"
-```
-
----
-
-## Step 3: Lock Down File Permissions
-
-**What this does:** Ensures only you can read sensitive config files.
+这样做可以确保只有您自己能够读取敏感的配置文件。
 
 ```bash
 chmod 700 ~/.openclaw
@@ -132,11 +112,11 @@ chmod 600 ~/.openclaw/openclaw.json
 chmod 700 ~/.openclaw/credentials
 ```
 
-**Permission meanings:**
-- `700` = Only owner can access folder
-- `600` = Only owner can read/write file
+**权限说明：**
+- `700`：仅文件所有者可以访问该文件夹；
+- `600`：仅文件所有者可以读取和修改该文件。
 
-Or let OpenClaw fix it:
+或者让 OpenClaw 自动设置权限：
 
 ```bash
 openclaw security audit --fix
@@ -144,17 +124,17 @@ openclaw security audit --fix
 
 ---
 
-## Step 4: Disable Network Broadcasting
+## 第四步：禁用网络广播
 
-**What this does:** Stops OpenClaw from announcing itself via mDNS/Bonjour.
+这样做可以防止 OpenClaw 通过 mDNS/Bonjour 发布自身的存在信息。
 
-Add to your shell config (`~/.zshrc` or `~/.bashrc`):
+在您的 shell 配置文件（`~/.zshrc` 或 `~/.bashrc`）中添加以下内容：
 
 ```bash
 export CLAWDBOT_DISABLE_BONJOUR=1
 ```
 
-Reload:
+然后重新加载配置文件：
 
 ```bash
 source ~/.zshrc
@@ -162,36 +142,36 @@ source ~/.zshrc
 
 ---
 
-## Step 5: Update Node.js
+## 第五步：更新 Node.js
 
-Older Node.js versions have security vulnerabilities. You need **v22.12.0+**.
+旧版本的 Node.js 存在安全漏洞。请确保使用版本 v22.12.0 或更高版本。
 
-Check version:
+检查您的 Node.js 版本：
 
 ```bash
 node --version
 ```
 
-**Mac (Homebrew):**
+**Mac（使用 Homebrew）：**
 ```bash
 brew update && brew upgrade node
 ```
 
-**Ubuntu/Debian:**
+**Ubuntu/Debian：**
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-**Windows:** Download from [nodejs.org](https://nodejs.org/)
+**Windows：** 从 [nodejs.org](https://nodejs.org/) 下载最新版本。
 
 ---
 
-## Step 6: Set Up Tailscale (Remote Access)
+## 第六步：设置 Tailscale（实现远程访问）
 
-**What this does:** Creates encrypted tunnel between your devices. Access OpenClaw from anywhere without public exposure.
+这样做可以在您的设备之间创建加密隧道，从而实现安全远程访问。
 
-**Install Tailscale:**
+**安装 Tailscale：**
 
 ```bash
 # Linux
@@ -202,7 +182,7 @@ sudo tailscale up
 brew install tailscale
 ```
 
-**Configure OpenClaw for Tailscale:**
+**配置 OpenClaw 以使用 Tailscale：**
 
 ```json
 {
@@ -215,46 +195,46 @@ brew install tailscale
 }
 ```
 
-Now access via your Tailscale network only.
+之后，您只能通过 Tailscale 网络来访问 OpenClaw 了。
 
 ---
 
-## Step 7: Firewall Setup (UFW)
+## 第七步：防火墙设置（UFW）
 
-**For cloud servers (AWS, DigitalOcean, Hetzner, etc.)**
+**对于云服务器（如 AWS、DigitalOcean、Hetzner 等）**
 
-**Install UFW:**
+**安装 UFW：**
 ```bash
 sudo apt update && sudo apt install ufw -y
 ```
 
-**Set defaults:**
+**设置默认规则：**
 ```bash
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 ```
 
-**Allow SSH (don't skip!):**
+**允许 SSH 连接（务必执行此步骤！）：**
 ```bash
 sudo ufw allow ssh
 ```
 
-**Allow Tailscale (if using):**
+**如果使用 Tailscale，请允许 Tailscale 的连接：**
 ```bash
 sudo ufw allow in on tailscale0
 ```
 
-**Enable:**
+**启用防火墙规则：**
 ```bash
 sudo ufw enable
 ```
 
-**Verify:**
+**验证防火墙设置：**
 ```bash
 sudo ufw status verbose
 ```
 
-⚠️ **Never do this:**
+⚠️ **严禁执行以下操作：**
 ```bash
 # DON'T - exposes your gateway publicly
 sudo ufw allow 18789
@@ -262,43 +242,42 @@ sudo ufw allow 18789
 
 ---
 
-## Step 8: SSH Hardening
+## 第八步：加强 SSH 安全性
 
-**Disable password auth (use SSH keys):**
+**禁用密码认证（使用 SSH 密钥）：**
 
 ```bash
 sudo nano /etc/ssh/sshd_config
 ```
 
-Change:
+修改相关配置文件：
 ```
 PasswordAuthentication no
 PermitRootLogin no
 ```
 
-Restart:
+重启系统：
 ```bash
 sudo systemctl restart sshd
 ```
 
 ---
 
-## Security Checklist
+## 安全检查清单
 
-Before deploying:
-
-- [ ] Gateway bound to `loopback` or `lan`
-- [ ] Auth token or password set
-- [ ] File permissions locked (600/700)
-- [ ] mDNS/Bonjour disabled
-- [ ] Node.js v22.12.0+
-- [ ] Tailscale configured (if remote)
-- [ ] Firewall blocking port 18789
-- [ ] SSH password auth disabled
+在部署之前，请确保满足以下条件：
+- 网关已绑定到 loopback 或 lan 接口；
+- 设置了身份验证令牌或密码；
+- 文件权限已设置为 600/700；
+- mDNS/Bonjour 功能已禁用；
+- 使用了 Node.js v22.12.0 或更高版本；
+- Tailscale 已正确配置（如果需要远程访问）；
+- 防火墙已阻止端口 18789 的访问；
+- SSH 密码认证已被禁用。
 
 ---
 
-## Config Template (Secure Defaults)
+## 安全配置模板（推荐设置）
 
 ```json
 {
@@ -318,18 +297,17 @@ Before deploying:
 
 ---
 
-## Credits
+## 致谢
 
-Based on security research by [@NickSpisak_](https://x.com/NickSpisak_) who found 1,673+ exposed gateways on Shodan.
-
-Original article: https://x.com/nickspisak_/status/2016195582180700592
+本指南基于 [@NickSpisak_](https://x.com/NickSpisak_) 的安全研究结果。他在 Shodan 上发现了超过 1,673 个暴露在外的 OpenClaw/Moltbot 网关。  
+原文链接：https://x.com/nickspisak_/status/2016195582180700592
 
 ---
 
-## Installation
+## 安装指南
 
 ```bash
 clawdhub install NextFrontierBuilds/moltbot, openclaw-security
 ```
 
-Built by [@NextXFrontier](https://x.com/NextXFrontier)
+本指南由 [@NextXFrontier](https://x.com/NextXFrontier) 编写。

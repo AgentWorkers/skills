@@ -1,48 +1,48 @@
 # feishu-calendar
 
-Manage Feishu (Lark) Calendars. Use this skill to list calendars, check schedules, and sync events.
+用于管理 Feishu（Lark）日历。通过此技能可以列出日历、查看日程安排以及同步事件。
 
-## Usage
+## 使用方法
 
-### List Calendars
-Check available calendars and their IDs.
+### 列出日历
+查看可用的日历及其 ID。
 ```bash
 node skills/feishu-calendar/list_test.js
 ```
 
-### Search Calendar
-Find a calendar by name/summary.
+### 搜索日历
+根据名称或摘要查找日历。
 ```bash
 node skills/feishu-calendar/search_cal.js
 ```
 
-### Check Master's Calendar
-Specific check for the Master's calendar status.
+### 查看主管的日历
+专门查看主管的日历状态。
 ```bash
 node skills/feishu-calendar/check_master.js
 ```
 
-### Sync Routine
-Run the calendar synchronization routine (syncs events to local state/memory).
+### 同步日历
+运行日历同步流程（将事件同步到本地设备或内存中）。
 ```bash
 node skills/feishu-calendar/sync_routine.js
 ```
 
-## Setup
-Requires `FEISHU_APP_ID` and `FEISHU_APP_SECRET` in `.env`.
+## 设置要求
+需要 `.env` 文件中的 `FEISHU_APP_ID` 和 `FEISHU_APP_SECRET`。
 
-## Standard Protocol: Task Marking
-**Trigger**: User says "Mark this task" or "Remind me to...".
-**Action**:
-1. **Analyze**: Extract date/time (e.g., "Feb 4th" -> YYYY-MM-04).
-2. **Execute**: Run `create.js` with `--attendees` set to the requester's ID.
-3. **Format**:
+## 标准协议：任务标记
+**触发条件**：用户输入“标记此任务”或“提醒我...”。
+**操作步骤**：
+1. **解析指令**：提取日期/时间（例如：“2月4日” -> YYYY-MM-04）。
+2. **执行操作**：运行 `create.js` 并将 `--attendees` 参数设置为请求者的 ID。
+3. **格式化结果**：
    ```bash
    node skills/feishu-calendar/create.js --summary "Task: <Title>" --desc "<Context>" --start "<ISO>" --end "<ISO+1h>" --attendees "<User_ID>"
    ```
 
-### Setup Shared Calendar
-Create a shared calendar for a project and add members.
+### 设置共享日历
+为项目创建共享日历并添加成员。
 ```bash
 node skills/feishu-calendar/setup_shared.js --name "Project Name" --desc "Description" --members "ou_1,ou_2" --role "writer"
 ```

@@ -1,92 +1,92 @@
 ---
 name: agent-wallet
-description: Self-custodial Bitcoin Lightning wallet for AI agents. Use when the agent needs to send or receive bitcoin payments, check its balance, generate invoices, or manage its wallet. Supports bolt11, bolt12, LNURL, and lightning addresses. Zero config — one command to initialize.
+description: 适用于AI代理的自托管比特币Lightning钱包。当代理需要发送或接收比特币付款、查询余额、生成发票或管理钱包时，可以使用该钱包。支持bolt11、bolt12、LNURL和Lightning地址。无需任何配置——只需一条命令即可完成初始化。
 ---
 
 # agent-wallet
 
-Self-custodial Lightning wallet for AI agents. One `npx` command to init. All output is JSON.
+这是一个专为AI代理设计的自托管Lightning钱包。只需执行一个`npx`命令即可完成初始化，所有输出结果均为JSON格式。
 
-## Setup
+## 设置
 
 ```bash
 npx @moneydevkit/agent-wallet init
 ```
 
-Generates a BIP39 mnemonic and stores config at `~/.mdk-wallet/config.json`. The wallet is ready immediately — no API keys, no signup, no accounts. The agent holds its own keys.
+系统会生成一个BIP39助记词，并将其存储在`~/.mdk-wallet/config.json`文件中。钱包立即可用——无需API密钥、无需注册、无需创建账户。代理自行保管其私钥。
 
-Verify config (mnemonic redacted in output):
+验证配置信息（助记词在输出结果中被屏蔽）：
 ```bash
 npx @moneydevkit/agent-wallet init --show
 ```
 
-Returns `{ "mnemonic": "...", "network": "mainnet", "walletId": "..." }`.
+输出结果如下：
+`{"mnemonic": "...", "network": "mainnet", "walletId": "..."}`
 
-The `walletId` also serves as an MDK API key if you use moneydevkit's checkout API.
+`walletId`也可用作MDK API密钥（如果使用moneydevkit的checkout API）。
 
-## Commands
+## 命令
 
-All commands return JSON on stdout. Exit 0 on success, 1 on error.
+所有命令的输出结果均为JSON格式。成功时返回0，失败时返回1。
 
-### Balance
+### 查看余额
 
 ```bash
 npx @moneydevkit/agent-wallet balance
 ```
-→ `{ "balance_sats": 3825 }`
+→ `{"balance_sats": 3825}`
 
-### Receive (generate invoice)
+### 接收付款（生成发票）
 
 ```bash
 npx @moneydevkit/agent-wallet receive <amount_sats>
 npx @moneydevkit/agent-wallet receive 1000 --description "payment for service"
 ```
-→ `{ "invoice": "lnbc...", "payment_hash": "...", "expires_at": "..." }`
+→ `{"invoice": "lnbc...", "payment_hash": "...", "expires_at": "..."}`
 
-Share the `invoice` string with the payer. It's a standard bolt11 invoice.
+请将`invoice`字符串分享给付款方。这是一个标准的bolt11发票。
 
-### Send
+### 发送付款
 
 ```bash
 npx @moneydevkit/agent-wallet send <destination> [amount_sats]
 ```
 
-Destination can be:
-- **bolt11 invoice**: `lnbc10n1...` (amount encoded in invoice, no amount arg needed)
-- **bolt12 offer**: `lno1...`
-- **lightning address**: `user@example.com`
-- **LNURL**: `lnurl1...`
+付款目的地可以是：
+- **bolt11发票**：`lnbc10n1...`（金额已包含在发票中，无需额外指定）
+- **bolt12报价**：`lno1...`
+- **Lightning地址**：`user@example.com`
+- **LNURL**：`lnurl1...`
 
-For lightning addresses and LNURL, amount is required:
+对于Lightning地址和LNURL，必须提供付款金额：
 ```bash
 npx @moneydevkit/agent-wallet send user@getalby.com 500
 ```
 
-### Payment History
+### 支付历史记录
 
 ```bash
 npx @moneydevkit/agent-wallet payments
 ```
-→ `{ "payments": [{ "paymentHash": "...", "amountSats": 1000, "direction": "inbound"|"outbound", "timestamp": ..., "destination": "..." }] }`
+→ `{"payments": [{"paymentHash": "...", "amountSats": 1000, "direction": "inbound" | "outbound", "timestamp": "...", "destination": "..."}]}`
 
-### Daemon Management
+### 守护进程管理
 
-The daemon auto-starts on first command. Manual control:
-
+守护进程会在首次执行命令时自动启动。也可以手动控制其启动/停止：
 ```bash
 npx @moneydevkit/agent-wallet status   # check if running
 npx @moneydevkit/agent-wallet start    # start explicitly
 npx @moneydevkit/agent-wallet stop     # stop daemon
 ```
 
-Options:
-- `--port <port>` — server port (default: 3456)
-- `--network <network>` — `mainnet` or `signet` (default: mainnet)
+可选参数：
+- `--port <port>`：服务器端口（默认：3456）
+- `--network <network>`：`mainnet`或`signet`（默认：mainnet）
 
-## Usage Notes
+## 使用说明
 
-- **Denomination**: use ₿ prefix with sats (e.g. ₿1,000 not "1,000 sats")
-- **Self-custodial**: the mnemonic is the wallet. Back it up. Lose it, lose funds.
-- **Daemon**: runs a local Lightning node on `:3456`. Auto-starts, persists payment history to disk.
-- **Agent-to-agent payments**: any agent with this wallet can pay any other agent's invoice or lightning address. No intermediary.
-- **Combine with moneydevkit**: use the [checkout API](https://docs.moneydevkit.com) to accept payments from customers, and agent-wallet to send/receive between agents. Add the [moneydevkit MCP server](https://mcp.moneydevkit.com/mcp) for full programmatic access to apps, products, customers, checkouts, and orders.
+- **金额单位**：使用`₿`前缀表示sat（例如：`₿1,000`，而不是“1,000 sats”）
+- **自托管**：助记词即为钱包的私钥，请务必备份。丢失助记词意味着会丢失所有资金。
+- **守护进程**：在端口`:3456`上运行本地Lightning节点，自动记录支付历史并保存到磁盘。
+- **代理间支付**：使用该钱包的任何代理都可以向其他代理的发票或Lightning地址付款，无需中间机构。
+- **与moneydevkit结合使用**：通过[checkout API](https://docs.moneydevkit.com)接收客户付款，并通过agent-wallet在代理之间进行资金转账。此外，还可以通过[moneydevkit MCP服务器](https://mcp.moneydevkit.com/mcp)实现应用程序、产品、客户、支付流程和订单的全面程序化管理。

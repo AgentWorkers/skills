@@ -1,52 +1,46 @@
 ---
 name: desktop-control
-description: Control desktop applications on Windows — launch, close, focus, resize, move windows, simulate keyboard/mouse input, manage processes, control VSCode, read clipboard, and capture screen info. Use when the user wants to interact with any running program, switch windows, type text, press shortcuts, open files in VSCode, manage running processes, or get system display information.
+description: 在 Windows 上控制桌面应用程序：可以启动、关闭、切换窗口的焦点、调整窗口大小、移动窗口、模拟键盘/鼠标输入、管理进程、控制 VSCode、读取剪贴板内容以及捕获屏幕信息。当用户需要与正在运行的程序交互、切换窗口、输入文本、使用快捷键、在 VSCode 中打开文件、管理正在运行的进程或获取系统显示信息时，可以使用这些功能。
 ---
 
-# Desktop Control — Full Windows Application Control
+# 桌面控制——全面的 Windows 应用程序控制功能
 
-## Publish-only note (ClawHub)
-This Publish package includes scripts as `.ps1.txt` because Publish only accepts text files.
-After download, rename each `*.ps1.txt` to `*.ps1` and place them in a `scripts/` folder to use the skill.
+## 仅限发布的说明（ClawHub）
+此发布包包含 `.ps1.txt` 格式的脚本，因为 ClawHub 仅接受文本文件。  
+下载后，请将每个 `.ps1.txt` 文件重命名为 `.ps1`，并将其放入 `scripts/` 文件夹中，以便使用该功能。
 
-Control any desktop application on this Windows machine. Launch programs, manage windows, simulate input, control VSCode, and monitor processes — all via PowerShell scripts.
+您可以通过 PowerShell 脚本来控制这台 Windows 机器上的任何桌面应用程序：启动程序、管理窗口、模拟输入、控制 VSCode 以及监控进程。
 
-## CRITICAL: Script Location
-
-All scripts are located relative to this skill folder:
-
+## 关键提示：脚本的位置  
+所有脚本都位于该功能文件夹的相对路径下：  
 ```
 SKILL_DIR = ~/.openclaw/workspace/skills/desktop-control/scripts
 ```
 
-When running scripts, always use the full path:
+运行脚本时，请始终使用完整路径：  
 ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/<script>.ps1" -Action <action> [params]
 ```
 
-## IMPORTANT: Safety Rules
-
-1. **Before closing windows** — Ask user for confirmation if the window might have unsaved work
-2. **Before killing processes** — Always confirm with user unless they explicitly asked to kill it
-3. **Before sending input** — Make sure the correct window is focused first
-4. **Clipboard** — Warn user if you are overwriting clipboard content
+## 重要安全规则：  
+1. **关闭窗口前**——询问用户是否有关未保存的数据。  
+2. **终止进程前**——除非用户明确要求，否则务必先确认。  
+3. **发送输入前**——确保目标窗口已处于焦点状态。  
+4. **剪贴板操作**——在覆盖剪贴板内容时请提醒用户。  
 
 ---
 
-## Action Reference
+## 功能参考：  
 
-### 1. Window Management (`app-control.ps1`)
-
-Manage application windows — launch, close, focus, resize, move, snap.
-
-#### List all visible windows
-```powershell
+### 1. 窗口管理 (`app-control.ps1`)  
+- 管理应用程序窗口：启动、关闭、切换焦点、调整大小、移动、固定窗口位置。  
+  - **列出所有可见窗口**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action list-windows
-```
-Returns: PID, window title, position (X,Y), size (W×H), state (Normal/Minimized/Maximized)
-
-#### Launch an application
-```powershell
+```  
+    返回信息：进程 ID (PID)、窗口标题、位置 (X, Y)、大小 (宽度 × 高度)、状态 (正常/最小化/最大化)  
+  - **启动应用程序**  
+    ```powershell
 # By name (searches PATH and common locations)
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action launch -Target "notepad"
 
@@ -55,75 +49,63 @@ powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/deskt
 
 # With arguments
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action launch -Target "code" -Arguments "C:\Users\ibach\project"
-```
-
-#### Focus (bring to foreground)
-```powershell
+```  
+  - **切换窗口焦点**  
+    ```powershell
 # By window title (partial match)
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action focus -Target "Visual Studio Code"
 
 # By PID
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action focus -ProcId 12345
-```
-
-#### Close a window gracefully
-```powershell
+```  
+  - **优雅地关闭窗口**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action close -Target "Notepad"
-```
-
-#### Minimize / Maximize / Restore
-```powershell
+```  
+  - **最小化/最大化/恢复窗口**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action minimize -Target "Visual Studio Code"
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action maximize -Target "Visual Studio Code"
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action restore -Target "Visual Studio Code"
-```
-
-#### Move a window
-```powershell
+```  
+  - **移动窗口**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action move -Target "Notepad" -X 100 -Y 200
-```
-
-#### Resize a window
-```powershell
+```  
+  - **调整窗口大小**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action resize -Target "Notepad" -Width 800 -Height 600
-```
-
-#### Snap a window (half-screen)
-```powershell
+```  
+  - **将窗口固定到屏幕一半**  
+    ```powershell
 # Options: left, right, top, bottom, topleft, topright, bottomleft, bottomright
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/app-control.ps1" -Action snap -Target "Notepad" -Position left
-```
+```  
 
 ---
 
-### 2. Input Simulation (`input-sim.ps1`)
-
-Simulate keyboard and mouse input into any application.
-
-**IMPORTANT:** Always focus the target window FIRST using `app-control.ps1 -Action focus` before sending input.
-
-#### Type text
-```powershell
+### 2. 输入模拟 (`input-sim.ps1`)  
+- 模拟键盘和鼠标输入到任何应用程序中。  
+  **重要提示**：在发送输入前，请使用 `app-control.ps1 -Action focus` 先将目标窗口切换到焦点状态。  
+  - **输入文本**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action type-text -Text "Hello, World!"
-```
-
-#### Send keyboard shortcut
-```powershell
+```  
+  - **发送键盘快捷键**  
+    ```powershell
 # Common shortcuts: Ctrl+S, Ctrl+C, Ctrl+V, Ctrl+Z, Alt+F4, Ctrl+Shift+P, Win+D
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action send-keys -Keys "Ctrl+S"
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action send-keys -Keys "Ctrl+Shift+P"
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action send-keys -Keys "Alt+Tab"
-```
-
-#### Send special keys
-```powershell
+```  
+  - **发送特殊按键**  
+    ```powershell
 # Keys: Enter, Tab, Escape, Backspace, Delete, Up, Down, Left, Right, Home, End, PageUp, PageDown, F1-F12
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action send-keys -Keys "Enter"
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action send-keys -Keys "F5"
-```
-
-#### Mouse click at coordinates
-```powershell
+```  
+  - **在指定坐标点击鼠标**  
+    ```powershell
 # Left click
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action mouse-click -X 500 -Y 300
 
@@ -132,85 +114,70 @@ powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/deskt
 
 # Double click
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action mouse-click -X 500 -Y 300 -DoubleClick
-```
-
-#### Move mouse
-```powershell
+```  
+  - **移动鼠标**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action mouse-move -X 500 -Y 300
-```
-
-#### Scroll
-```powershell
+```  
+  - **滚动屏幕**  
+    ```powershell
 # Scroll up (positive) or down (negative)
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action mouse-scroll -Clicks 3
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/input-sim.ps1" -Action mouse-scroll -Clicks -3
-```
+```  
 
 ---
 
-### 3. VSCode Control (`vscode-control.ps1`)
-
-Control Visual Studio Code through the `code` CLI and extensions.
-
-#### Open a file
-```powershell
+### 3. VSCode 控制 (`vscode-control.ps1`)  
+- 通过 `code` CLI 和扩展程序来控制 Visual Studio Code。  
+  - **打开文件**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action open-file -Path "C:\Users\ibach\project\main.py"
-```
-
-#### Open a file at a specific line
-```powershell
+```  
+  - **在指定行打开文件**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action goto -Path "C:\Users\ibach\project\main.py" -Line 42
-```
-
-#### Open a folder/workspace
-```powershell
+```  
+  - **打开文件夹/工作区**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action open-folder -Path "C:\Users\ibach\project"
-```
-
-#### Open diff view
-```powershell
+```  
+  - **打开差异视图**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action open-diff -Path "file1.py" -Path2 "file2.py"
-```
-
-#### List installed extensions
-```powershell
+```  
+  - **列出已安装的扩展程序**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action list-extensions
-```
-
-#### Install an extension
-```powershell
+```  
+  - **安装扩展程序**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action install-extension -ExtensionId "ms-python.python"
-```
-
-#### Uninstall an extension
-```powershell
+```  
+  - **卸载扩展程序**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action uninstall-extension -ExtensionId "ms-python.python"
-```
-
-#### Open a new terminal in VSCode
-```powershell
+```  
+  - **在 VSCode 中打开新终端**  
+    ```powershell
 # This focuses VSCode and sends Ctrl+` to toggle terminal
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action new-terminal
-```
-
-#### Open VSCode command palette
-```powershell
+```  
+  - **打开 VSCode 命令面板**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action command-palette
-```
-
-#### Run a VSCode command by name
-```powershell
+```  
+  - **按名称运行 VSCode 命令**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/vscode-control.ps1" -Action run-command -Command "workbench.action.toggleSidebarVisibility"
-```
+```  
 
 ---
 
-### 4. Process Management (`process-manager.ps1`)
-
-Monitor and manage running processes.
-
-#### List running processes
-```powershell
+### 4. 进程管理 (`process-manager.ps1`)  
+- 监控和管理正在运行的进程。  
+  - **列出所有进程**  
+    ```powershell
 # All processes
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action list
 
@@ -219,126 +186,82 @@ powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/deskt
 
 # Top N by memory
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action list -SortBy memory -Top 10
-```
-
-#### Get detailed process info
-```powershell
+```  
+  - **获取进程详细信息**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action info -ProcId 12345
-```
-
-#### Start a new process
-```powershell
+```  
+  - **启动新进程**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action start -Path "notepad.exe" -Arguments "C:\file.txt"
-```
-
-#### Kill a process (CONFIRM WITH USER FIRST)
-```powershell
+```  
+  - **终止进程（请先确认用户意愿）**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action kill -ProcId 12345
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action kill -Name "notepad"
-```
-
-#### Monitor process resource usage
-```powershell
+```  
+  - **监控进程资源使用情况**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/process-manager.ps1" -Action monitor -ProcId 12345 -Duration 10
-```
+```  
 
 ---
 
-### 5. Screen & System Info (`screen-info.ps1`)
-
-Get display information, window details, clipboard, and screenshots.
-
-#### List displays/monitors
-```powershell
+### 5. 屏幕与系统信息 (`screen-info.ps1`)  
+- 获取显示信息、窗口详情、剪贴板内容以及截图。  
+  - **列出所有显示器/监视器**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action displays
-```
-
-#### Get active (focused) window info
-```powershell
+```  
+  - **获取活动（焦点）窗口的信息**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action active-window
-```
-
-#### Get detailed window info
-```powershell
+```  
+  - **获取窗口详细信息**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action window-info -Target "Visual Studio Code"
-```
-
-#### Take a screenshot
-```powershell
+```  
+  - **截取屏幕截图**  
+    ```powershell
 # Full screen
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action screenshot -OutputPath "$HOME/screenshot.png"
 
 # Specific window
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action screenshot -Target "Notepad" -OutputPath "$HOME/notepad-screenshot.png"
-```
-
-#### Read clipboard
-```powershell
+```  
+  - **读取剪贴板内容**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action clipboard-get
-```
-
-#### Set clipboard text
-```powershell
+```  
+  - **设置剪贴板文本**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action clipboard-set -Text "Text to copy"
-```
-
-#### Get system info (uptime, OS, resolution)
-```powershell
+```  
+  - **获取系统信息（运行时间、操作系统、分辨率）**  
+    ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME/.openclaw/workspace/skills/desktop-control/scripts/screen-info.ps1" -Action system-info
-```
+```  
 
 ---
 
-## Common Workflows
-
-### Open a file in VSCode and navigate to a specific line
-```
-1. vscode-control.ps1 -Action goto -Path "C:\path\to\file.py" -Line 42
-```
-
-### Type something into a specific application
-```
-1. app-control.ps1 -Action focus -Target "Notepad"
-2. input-sim.ps1 -Action type-text -Text "Hello World"
-```
-
-### Save the current document in any app
-```
-1. app-control.ps1 -Action focus -Target "<app name>"
-2. input-sim.ps1 -Action send-keys -Keys "Ctrl+S"
-```
-
-### Arrange two windows side-by-side
-```
-1. app-control.ps1 -Action snap -Target "Visual Studio Code" -Position left
-2. app-control.ps1 -Action snap -Target "Chrome" -Position right
-```
-
-### Kill a frozen application
-```
-1. process-manager.ps1 -Action list -Name "frozen-app"
-   (note the PID)
-2. ASK USER FOR CONFIRMATION
-3. process-manager.ps1 -Action kill -ProcId <pid>
-```
-
-### Take a screenshot of a specific window
-```
-1. screen-info.ps1 -Action screenshot -Target "Chrome" -OutputPath "$HOME/chrome.png"
-```
+## 常见操作流程：  
+- 在 VSCode 中打开文件并跳转到指定行。  
+- 在指定应用程序中输入内容。  
+- 保存当前应用程序中的文档。  
+- 将两个窗口并排排列。  
+- 强制关闭卡住的应用程序。  
+- 截取特定窗口的截图。  
 
 ---
 
-## Error Handling
+## 错误处理：  
+- 如果脚本返回退出代码 0，则表示成功。  
+- 如果脚本返回退出代码 1，则表示出现错误（请查看 stderr 输出以获取详细信息）。  
+- 如果找不到某个窗口，请先使用 `list-windows` 命令获取其准确标题。  
+- 如果找不到 `code` CLI，可能是因为 VSCode 未添加到系统路径中；请尝试先启动 VSCode。  
 
-- If a script returns exit code 0 → success
-- If a script returns exit code 1 → error (check stderr output for details)
-- If a window is not found → try `list-windows` first to get the exact title
-- If `code` CLI is not found → VSCode may not be in PATH; try launching it first
-
-## Troubleshooting
-
-- **"Window not found"** → Use `list-windows` to see exact window titles, then match more precisely
-- **"Access denied"** → Some system processes need admin rights; inform the user
-- **Input not working** → Make sure the target window is focused AND in the foreground
-- **VSCode CLI not found** → Try `code --version` first; if missing, launch VSCode from Start Menu
+## 故障排除：  
+- **“找不到窗口”**——使用 `list-windows` 命令查看窗口的准确标题，然后进行更精确的匹配。  
+- **“访问被拒绝”**——某些系统进程需要管理员权限，请告知用户。  
+- **输入操作无效**——确保目标窗口处于焦点状态且处于前台。  
+- **VSCode CLI 未找到**——尝试先运行 `code --version` 命令；如果仍未找到，请从“开始菜单”中启动 VSCode。

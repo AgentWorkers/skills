@@ -1,19 +1,19 @@
 ---
 name: merge-resolver
-description: Resolve git merge conflicts intelligently using AI. Use when the user has merge conflicts they need help resolving.
+description: 使用人工智能智能地解决 Git 合并冲突。当用户遇到需要帮助解决的合并冲突时，请使用此功能。
 ---
 
 # Merge Resolver
 
-Resolve git merge conflicts without the headache. Reads your conflicted files and picks the right resolution based on context from both branches.
+轻松解决 Git 合并冲突，无需繁琐的操作。它会读取存在冲突的文件，并根据两个分支的上下文选择合适的解决方式。
 
-## Usage
+## 使用方法
 
 ```bash
 npx ai-merge-resolve [file]
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Resolve conflicts in a specific file
@@ -26,7 +26,7 @@ npx ai-merge-resolve
 npx ai-merge-resolve --dry-run
 ```
 
-## Notes
-- Free, open source, MIT licensed
-- Built by LXGIC Studios
-- GitHub: https://github.com/LXGIC-Studios/ai-merge-resolve
+## 注意事项：
+- 免费、开源项目，采用 MIT 许可协议
+- 由 LXGIC Studios 开发
+- GitHub 仓库：https://github.com/LXGIC-Studios/ai-merge-resolve

@@ -1,23 +1,24 @@
-# TTS через ComfyUI
+# 通过 ComfyUI 实现文本转语音（TTS）
 
-## Описание
-Навык для генерации аудио через ComfyUI с использованием узла `AILab_Qwen3TTSVoiceDesign_Advanced`.
+## 描述  
+该技能用于通过 ComfyUI 使用 `AILab_Qwen3TTSVoiceDesign_Advanced` 模块生成音频文件。
 
-## Требования
-- ComfyUI с установленным плагином `AILab_Qwen3TTSVoiceDesign_Advanced`
-- Модель Qwen3
-- Папка `E:\Ai\Comfy UI\output\` для сохранения аудио
+## 要求  
+- 确保已安装 ComfyUI 并且已启用 `AILab_Qwen3TTSVoiceDesign_Advanced` 插件  
+- 需要使用 Qwen3 模型  
+- 需要有一个名为 `E:\Ai\Comfy UI\output` 的文件夹用于保存生成的音频文件  
 
-## Запуск ComfyUI
-Если ComfyUI не запущена, использовать:
+## 启动 ComfyUI  
+如果 ComfyUI 未运行，请使用以下命令启动：  
 ```
 cmd /c start "" "C:\Users\user\Desktop\ComfyUI.lnk"
-```
+```  
 
-## Ожидание готовности
-Проверять доступность по `http://localhost:8000` каждые 10 секунд до готовности.
+## 等待音频文件生成  
+在音频文件生成完成之前，每 10 秒通过 `http://localhost:8000` 检查是否可用。  
 
-## Формат запроса
+## 请求格式  
+请求的格式如下：  
 ```json
 {
   "prompt": {
@@ -53,11 +54,11 @@ cmd /c start "" "C:\Users\user\Desktop\ComfyUI.lnk"
     }
   }
 }
-```
+```  
 
-## Обработка
-1. Отправить POST-запрос на `http://localhost:8000/prompt`
-2. Получить `prompt_id`
-3. Ждать завершения в `/history/[prompt_id]`
-4. Найти файл в `E:\Ai\Comfy UI\output\[filename_prefix]*.mp3`
-5. Отправить как голосовое сообщение через `message(asVoice=true)`
+## 处理流程  
+1. 向 `http://localhost:8000/prompt` 发送 POST 请求  
+2. 获取返回的 `prompt_id`  
+3. 在 `/history/[prompt_id]` 目录中等待处理结果  
+4. 在 `E:\Ai\Comfy UI\output` 目录中查找以 `filename_prefix` 开头的 `.mp3` 文件  
+5. 使用 `message(asVoice=true)` 将生成的音频文件作为语音消息发送出去

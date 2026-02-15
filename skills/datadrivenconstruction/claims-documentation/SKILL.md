@@ -1,16 +1,16 @@
 ---
 slug: "claims-documentation"
 display_name: "Claims Documentation"
-description: "Document construction claims for disputes and recovery. Compile evidence, calculate damages, track notice requirements, and prepare claim packages."
+description: "处理争议和索赔的文件构建工作。包括收集证据、计算赔偿金额、跟踪通知要求以及准备索赔材料。"
 ---
 
-# Claims Documentation
+# 索赔文档
 
-## Overview
+## 概述
 
-Document and manage construction claims for schedule delays, cost impacts, and scope disputes. Track contractual notice requirements, compile supporting evidence, calculate damages, and prepare comprehensive claim packages.
+本文档用于记录和管理与项目进度延误、成本影响以及范围争议相关的索赔事宜。包括跟踪合同规定的通知要求、收集支持性证据、计算赔偿金额以及准备完整的索赔文件包。
 
-## Claims Process
+## 索赔流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -26,7 +26,7 @@ Document and manage construction claims for schedule delays, cost impacts, and s
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -468,7 +468,7 @@ class ClaimsDocumentor:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import datetime, timedelta
@@ -522,7 +522,7 @@ modifications to the structural steel at Levels 5-8. This change...
 print(documentor.generate_claim_package(claim.id))
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install (no external dependencies)

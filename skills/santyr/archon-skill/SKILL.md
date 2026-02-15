@@ -1,6 +1,6 @@
 ---
 name: archon
-description: Full Archon decentralized identity operations - local node management, DID creation, credential issuance, vault operations, and public network resolution.
+description: 完整的 Archon 分布式身份管理功能：包括本地节点管理、DID（去中心化身份）的创建、凭证的颁发、凭证库的操作以及公共网络的解析功能。
 homepage: https://archon.technology
 metadata:
   project: archon
@@ -11,48 +11,48 @@ metadata:
   local_node: true
 ---
 
-# Archon - Decentralized Identity Network
+# Archon - 去中心化身份网络
 
-Archon is an open-source decentralized self-sovereign identity (SSI) system. This skill provides full Archon capabilities including local node management, DID operations, credential issuance, vault management, and public network access.
+Archon 是一个开源的去中心化、自主管理的身份（SSI）系统。该技能提供了完整的 Archon 功能，包括本地节点管理、DID 操作、凭证发放、仓库管理以及公共网络访问。
 
-## Platform Support
+## 平台支持
 
-**Cross-Platform (All Platforms):**
-- ✅ Public network API operations (DID resolution, network stats)
-- ✅ Keymaster CLI via npx (@didcid/keymaster)
-- ✅ Read-only operations require only Node.js + curl
+**跨平台（所有平台）：**
+- ✅ 公共网络 API 操作（DID 解析、网络统计）
+- ✅ 通过 `npx` 使用 Keymaster CLI（@didcid/keymaster）
+- ✅ 仅需要 Node.js 和 curl 即可进行只读操作
 
-**Local Node Operations:**
-- ✅ **Linux** - Native Docker support, all scripts work
-- ✅ **macOS** - Docker Desktop, scripts work (minor command differences handled)
-- ⚠️ **Windows** - Requires WSL2 + Docker Desktop or native Docker with PowerShell adaptations
-  - Helper scripts are bash (use Git Bash, WSL2, or adapt to PowerShell)
-  - Path handling differs (`%USERPROFILE%` vs `~`)
+**本地节点操作：**
+- ✅ **Linux** - 支持原生 Docker，所有脚本均可运行
+- ✅ **macOS** - 需要 Docker Desktop，脚本也可运行（部分命令有细微差异）
+- ⚠️ **Windows** - 需要 WSL2 和 Docker Desktop，或使用 PowerShell 适配的原生 Docker
+  - 辅助脚本使用 Bash（可以使用 Git Bash、WSL2 或适应 PowerShell）
+  - 路径处理有所不同（`%USERPROFILE%` 对应 `~`）
 
-**Recommendation for Windows users:**
-- Use WSL2 (Ubuntu) for full compatibility
-- Or use public network API + keymaster CLI (cross-platform)
-- Local node management possible with PowerShell but requires script adaptation
+**针对 Windows 用户的建议：**
+- 使用 WSL2（Ubuntu）以实现完全兼容性
+- 或者使用公共网络 API 和 keymaster CLI（跨平台）
+- 可以使用 PowerShell 进行本地节点管理，但需要调整脚本
 
-## Architecture
+## 架构
 
-**Local Archon Node:** `~/bin/archon` (Docker Compose stack)
-- **Keymaster** (`:4226`) - Wallet operations, DID creation, signing
-- **Gatekeeper** (`:4224`) - Public DID resolution, network gateway
-- **IPFS** (`:5001`) - Content-addressable storage
-- **Bitcoin nodes** - Blockchain anchoring (signet, mainnet)
-- **MongoDB/Redis** - State management
-- **Grafana** (`:3003`) - Metrics dashboard
+**本地 Archon 节点：`~/bin/archon`（Docker Compose 堆栈）**
+- **Keymaster**（`:4226`）- 钱包操作、DID 创建、签名
+- **Gatekeeper**（`:4224`）- 公共 DID 解析、网络网关
+- **IPFS**（`:5001`）- 内容可寻址存储
+- **Bitcoin 节点** - 区块链锚定（signet、mainnet）
+- **MongoDB/Redis** - 状态管理
+- **Grafana**（`:3003`）- 统计仪表盘
 
-**Public Network:** `https://archon.technology`
-- Read-only access to public DIDs
-- Network exploration and statistics
+**公共网络：`https://archon.technology`
+- 提供对公共 DID 的只读访问
+- 支持网络探索和统计
 
-## Local Node Management
+## 本地节点管理
 
-### Node Control
+### 节点控制
 
-**Management scripts** (documented in HexMem):
+**管理脚本**（在 HexMem 中有详细说明）：
 ```bash
 /home/sat/bin/archon-start.sh   # Start Docker Compose stack
 /home/sat/bin/archon-stop.sh    # Stop Docker Compose stack
@@ -60,7 +60,7 @@ Archon is an open-source decentralized self-sovereign identity (SSI) system. Thi
 /home/sat/bin/archon-health.sh  # Quick health check (exit 0 if healthy)
 ```
 
-**Direct Docker Compose:**
+**直接使用 Docker Compose：**
 ```bash
 cd ~/bin/archon
 /snap/bin/docker compose ps        # List containers
@@ -69,17 +69,17 @@ cd ~/bin/archon
 /snap/bin/docker compose down      # Stop services
 ```
 
-**Health checks:**
-- Keymaster API: `curl -sf http://localhost:4226/api/v1/ready`
-- Gatekeeper API: `curl -sf http://localhost:4224/api/v1/ready`
+**健康检查：**
+- Keymaster API：`curl -sf http://localhost:4226/api/v1/ready`
+- Gatekeeper API：`curl -sf http://localhost:4224/api/v1/ready`
 
-### Configuration
+### 配置
 
-**Wallet location:** `~/bin/archon/data/keymaster/wallet.json` (encrypted)  
-**Passphrase:** `your-secure-passphrase`  
-**Config directory:** `~/.config/hex/archon/` (alternative wallet location)
+**钱包位置：`~/bin/archon/data/keymaster/wallet.json`（加密）**
+**密码：`your-secure-passphrase`
+**配置目录：`~/.config/hex/archon/`（其他钱包位置）
 
-**Environment setup:**
+**环境设置：**
 ```bash
 export ARCHON_CONFIG_DIR="$HOME/.config/hex/archon"
 export ARCHON_PASSPHRASE="your-secure-passphrase"
@@ -87,38 +87,38 @@ export ARCHON_GATEKEEPER_URL="http://localhost:4224"  # or https://archon.techno
 export ARCHON_WALLET_PATH="$HOME/bin/archon/data/keymaster/wallet.json"
 ```
 
-## Local Node Operations (Keymaster CLI)
+## 本地节点操作（Keymaster CLI）
 
-The `@didcid/keymaster` CLI provides full wallet operations. Always run from config directory:
+`@didcid/keymaster` CLI 提供完整的钱包操作。请始终从配置目录运行该命令：
 
-### Identity Management
+### 身份管理
 
-**List identities in wallet:**
+**列出钱包中的身份：**
 ```bash
 cd ~/.config/hex/archon
 npx @didcid/keymaster list-ids
 ```
 
-**Create new DID:**
+**创建新的 DID：**
 ```bash
 npx @didcid/keymaster create-id \
   --name "identity-name" \
   --type agent  # or asset
 ```
 
-**Resolve DID (local):**
+**解析 DID（本地）：**
 ```bash
 npx @didcid/keymaster resolve-id did:cid:bagaaiera...
 ```
 
-**Export DID document:**
+**导出 DID 文档：**
 ```bash
 npx @didcid/keymaster get-did did:cid:bagaaiera...
 ```
 
-### Verifiable Credentials
+### 可验证的凭证
 
-**Issue credential:**
+**发放凭证：**
 ```bash
 npx @didcid/keymaster issue-credential \
   --issuer-did did:cid:... \
@@ -127,36 +127,36 @@ npx @didcid/keymaster issue-credential \
   --claims '{"nostr_npub":"npub1...","platform":"nostr"}'
 ```
 
-**List credentials issued to me:**
+**列出发放给我的凭证：**
 ```bash
 npx @didcid/keymaster list-credentials
 ```
 
-**Get credential details:**
+**获取凭证详情：**
 ```bash
 npx @didcid/keymaster get-credential did:cid:...
 ```
 
-**Verify credential:**
+**验证凭证：**
 ```bash
 npx @didcid/keymaster verify-credential did:cid:...
 ```
 
-### Vault Operations
+### 仓库操作
 
-**List vaults:**
+**列出仓库：**
 ```bash
 npx @didcid/keymaster list-vaults
 ```
 
-**Create vault:**
+**创建仓库：**
 ```bash
 npx @didcid/keymaster create-vault \
   --name "vault-name" \
   --owner-did did:cid:...
 ```
 
-**Add item to vault:**
+**向仓库添加项目：**
 ```bash
 npx @didcid/keymaster vault-put \
   --vault-id vault-name \
@@ -165,19 +165,19 @@ npx @didcid/keymaster vault-put \
   --metadata '{"type":"backup","timestamp":"2026-02-03"}'
 ```
 
-**List vault items:**
+**列出仓库项目：**
 ```bash
 npx @didcid/keymaster list-vault-items vault-name
 ```
 
-**Get vault item:**
+**从仓库获取项目：**
 ```bash
 npx @didcid/keymaster vault-get \
   --vault-id vault-name \
   --key "item-key"
 ```
 
-**Retrieve file from vault:**
+**从仓库检索文件：**
 ```bash
 npx @didcid/keymaster vault-get \
   --vault-id vault-name \
@@ -185,9 +185,9 @@ npx @didcid/keymaster vault-get \
   --output /path/to/file
 ```
 
-### Group Operations
+### 组织操作
 
-**Create group:**
+**创建组：**
 ```bash
 npx @didcid/keymaster create-group \
   --name "daemon-collective" \
@@ -195,58 +195,58 @@ npx @didcid/keymaster create-group \
   --members did:cid:member1,did:cid:member2
 ```
 
-**Get group info:**
+**获取组信息：**
 ```bash
 npx @didcid/keymaster get-group daemon-collective
 ```
 
-**Add member to group:**
+**向组添加成员：**
 ```bash
 npx @didcid/keymaster add-group-member \
   --group-id daemon-collective \
   --member-did did:cid:...
 ```
 
-### Document Signing
+### 文档签名
 
-**Sign arbitrary data:**
+**签名任意数据：**
 ```bash
 echo "data to sign" | npx @didcid/keymaster sign \
   --did did:cid:... \
   --output signature.json
 ```
 
-**Verify signature:**
+**验证签名：**
 ```bash
 npx @didcid/keymaster verify \
   --signature signature.json \
   --data "data to sign"
 ```
 
-## Helper Scripts
+## 辅助脚本
 
-Location: `~/clawd/skills/archon/scripts/`
+位置：`~/clawd/skills/archon/scripts/`
 
-### Public Network Scripts
+### 公共网络脚本
 
-**archon-resolve.sh** - Resolve DID from public node
+**archon-resolve.sh** - 从公共节点解析 DID
 ```bash
 ~/clawd/skills/archon/scripts/archon-resolve.sh did:cid:bagaaiera...
 ```
 
-**archon-status.sh** - Public node network statistics
+**archon-status.sh** - 公共节点网络统计
 ```bash
 ~/clawd/skills/archon/scripts/archon-status.sh
 ```
 
-### Local Node Scripts
+### 本地节点脚本
 
-**archon-create-did.sh** - Create new DID with local node
+**archon-create-did.sh** - 使用本地节点创建新的 DID
 ```bash
 ~/clawd/skills/archon/scripts/archon-create-did.sh "name" "agent"
 ```
 
-**archon-issue-credential.sh** - Issue verifiable credential
+**archon-issue-credential.sh** - 发放可验证的凭证
 ```bash
 ~/clawd/skills/archon/scripts/archon-issue-credential.sh \
   did:cid:issuer... \
@@ -255,7 +255,7 @@ Location: `~/clawd/skills/archon/scripts/`
   '{"key":"value"}'
 ```
 
-**archon-vault-backup.sh** - Backup to vault
+**archon-vault-backup.sh** - 备份到仓库
 ```bash
 ~/clawd/skills/archon/scripts/archon-vault-backup.sh \
   vault-name \
@@ -263,14 +263,14 @@ Location: `~/clawd/skills/archon/scripts/`
   backup-key
 ```
 
-**archon-vault-list.sh** - List vault contents
+**archon-vault-list.sh** - 列出仓库内容
 ```bash
 ~/clawd/skills/archon/scripts/archon-vault-list.sh vault-name
 ```
 
-## HexMem Integration
+## HexMem 集成
 
-Archon operations are documented in HexMem:
+Archon 的操作在 HexMem 中有详细记录：
 
 ```bash
 source ~/clawd/hexmem/hexmem.sh
@@ -285,47 +285,47 @@ hexmem_event "identity" "archon" "Created new DID" "did:cid:..."
 hexmem_lesson "identity" "Always encrypt vault items with meaningful metadata" "..."
 ```
 
-**Automated vault backups** (see `~/clawd/hexmem/SKILL.md`):
-- HexMem database: Daily @ 3am MST → `hexmem-vault`
-- Credentials: Monthly @ 1st 3am MST → `hexmem-vault`
+**自动仓库备份**（参见 `~/clawd/hexmem/SKILL.md`）：
+- HexMem 数据库：每天凌晨 3 点（MST 时间）备份到 `hexmem-vault`
+- 凭证：每月 1 日凌晨 3 点（MST 时间）备份到 `hexmem-vault`
 
-## Use Cases
+## 使用场景
 
-**Identity Operations:**
-- Create DIDs for new agents/projects
-- Issue credentials attesting to capabilities
-- Cross-platform identity linking (Nostr ↔ Archon)
-- Cryptographic proof of identity
+**身份操作：**
+- 为新代理/项目创建 DID
+- 发放证明能力的凭证
+- 跨平台身份链接（Nostr ↔ Archon）
+- 加密身份证明
 
-**Secure Storage:**
-- Encrypted backups to Archon vaults
-- Distributed credential storage
-- Version-controlled configuration (encrypted)
-- Disaster recovery via IPFS
+**安全存储：**
+- 将数据加密后存储在 Archon 仓库中
+- 分布式凭证存储
+- 配置版本控制（加密）
+- 通过 IPFS 进行灾难恢复
 
-**Group Coordination:**
-- Daemon collectives with shared credentials
-- Group vaults for collaborative work
-- Role-based access control
-- Multi-agent coordination protocols
+**组织协调：**
+- 使用共享凭证的守护进程集体
+- 用于协作工作的组仓库
+- 基于角色的访问控制
+- 多代理协调协议
 
-**Network Exploration:**
-- Resolve DIDs of other agents
-- Verify credential chains
-- Explore decentralized identity network
-- Monitor network health
+**网络探索：**
+- 解析其他代理的 DID
+- 验证凭证链
+- 探索去中心化身份网络
+- 监控网络健康状况
 
-## Cross-Platform Usage
+## 跨平台使用
 
-### For AI Agents on Different Platforms
+### 对于不同平台的 AI 代理
 
-**Public Network API (All Platforms):**
+**公共网络 API（所有平台）：**
 ```bash
 # Works everywhere with curl/web_fetch
 curl -s "https://archon.technology/api/v1/did/did:cid:..." | jq '.'
 ```
 
-**Keymaster CLI (All Platforms with Node.js):**
+**Keymaster CLI（支持 Node.js 的所有平台）：**
 ```bash
 # Cross-platform via npx
 cd ~/.config/archon  # or %USERPROFILE%\.config\archon on Windows
@@ -333,35 +333,35 @@ npx @didcid/keymaster list-ids
 npx @didcid/keymaster list-credentials
 ```
 
-**Platform-Specific Considerations:**
+**平台特定注意事项：**
 
-**Linux:**
-- Native Docker support
-- All helper scripts work out of box
-- Recommended for production deployments
+**Linux：**
+- 支持原生 Docker
+- 所有辅助脚本均可直接使用
+- 推荐用于生产环境
 
-**macOS:**
-- Docker Desktop required
-- Helper scripts work (platform detection handles BSD vs GNU commands)
-- `detect-platform.sh` auto-adapts `stat` and `sha256sum` commands
+**macOS：**
+- 需要 Docker Desktop
+- 辅助脚本可用（自动检测 BSD 和 GNU 命令）
+- `detect-platform.sh` 脚本会自动调整 `stat` 和 `sha256sum` 命令
 
-**Windows:**
-- **Option 1 (Recommended):** Use WSL2 + Docker Desktop
-  - Full Linux compatibility
-  - All scripts work unchanged
-  - Best developer experience
-  
-- **Option 2:** Native Windows + Git Bash
-  - Keymaster CLI works via npx
-  - Helper scripts work in Git Bash
-  - Docker commands may need path adjustments
-  
-- **Option 3:** PowerShell adaptations
-  - Rewrite scripts in PowerShell
-  - Use `Get-FileHash`, `Get-Content`, Docker Desktop CLI
-  - Example: `docker compose` works same way
+**Windows：**
+- **推荐方案 1：** 使用 WSL2 和 Docker Desktop
+  - 完全兼容 Linux
+  - 所有脚本均可正常运行
+  - 最佳的开发体验
 
-**Environment Setup (Cross-Platform):**
+- **方案 2：** 使用原生 Windows 和 Git Bash
+  - 可通过 `npx` 使用 Keymaster CLI
+  - 辅助脚本在 Git Bash 中可用
+  - 可能需要调整 Docker 命令的路径
+
+- **方案 3：** 使用 PowerShell 适配
+  - 用 PowerShell 重写脚本
+  - 使用 `Get-FileHash`、`Get-Content` 和 Docker Desktop CLI
+  - 例如：`docker compose` 的使用方式不变
+
+**跨平台环境设置：**
 ```bash
 # Linux/macOS/WSL2
 export ARCHON_CONFIG_DIR="$HOME/.config/archon"
@@ -372,110 +372,110 @@ $env:ARCHON_CONFIG_DIR = "$env:USERPROFILE\.config\archon"
 $env:ARCHON_PASSPHRASE = "your-passphrase"
 ```
 
-**Helper Scripts Platform Detection:**
-Scripts source `detect-platform.sh` which auto-detects OS and sets:
-- `$STAT_SIZE` - Platform-appropriate stat command
-- `$CHECKSUM_CMD` - sha256sum (Linux/Git Bash) or shasum (macOS)
-- `$DOCKER_CMD` - Docker command (usually just `docker`)
+**辅助脚本平台检测：**
+`detect-platform.sh` 脚本会自动检测操作系统并设置：
+- `$STAT_SIZE` - 适合平台的统计命令
+- `$CHECKSUM_CMD` - sha256sum（Linux/Git Bash）或 `shasum`（macOS）
+- `$DOCKER_CMD` - Docker 命令（通常是 `docker`）
 
-## Public Network API
+## 公共网络 API
 
-For read-only access to public DIDs without local node:
+无需本地节点即可进行公共 DID 的只读访问：
 
-**Base URL:** `https://archon.technology`
+**基础 URL：`https://archon.technology`
 
-**Resolve DID:**
+**解析 DID：**
 ```bash
 curl -s "https://archon.technology/api/v1/did/did:cid:bagaaiera..." | jq '.'
 ```
 
-**Network statistics:**
+**网络统计：**
 ```bash
 curl -s "https://archon.technology" | grep -oP '"dids":\s*{[^}]+}' | jq -R 'fromjson'
 ```
 
-**Web interfaces:**
-- DID Explorer: https://explorer.archon.technology/events
-- P2P Wallet: https://wallet.archon.technology
+**Web 界面：**
+- DID 探索器：https://explorer.archon.technology/events
+- P2P 钱包：https://wallet.archon.technology
 
-## Hex's Archon Identity
+## Hex 的 Archon 身份
 
-**Primary DID:** `did:cid:bagaaieratn3qejd6mr4y2bk3nliriafoyeftt74tkl7il6bbvakfdupahkla`
+**主要 DID：`did:cid:bagaaieratn3qejd6mr4y2bk3nliriafoyeftt74tkl7il6bbvakfdupahkla`
 
-**Issued Credentials:**
-- Nostr Identity Link: `did:cid:bagaaierag6mj2uph22bocyfvsru32kzp5ahz4aq3kabo2pcbamjldignxapa`
+**发放的凭证：**
+- Nostr 身份链接：`did:cid:bagaaierag6mj2uph22bocyfvsru32kzp5ahz4aq3kabo2pcbamjldignxapa`
 
-**Vaults:**
-- `hex-vault` (`did:cid:bagaaierajb5yxhxqvzyw5yxxkvk7oaxmhgxzmsc5f3uixiwllgujoxxgmszq`) - Personal encrypted storage
-- `hexmem-vault` (`did:cid:bagaaieratoq3bf6p24dr4gqod44wjlyzrl3dozqh3ra77ri3c6zfxs6o4pdq`) - HexMem backups
+**仓库：**
+- `hex-vault`（`did:cid:bagaaierajb5yxhxqvzyw5yxxkvk7oaxmhgxzmsc5f3uixiwllgujoxxgmszq`）- 个人加密存储
+- `hexmem-vault`（`did:cid:bagaaieratoq3bf6p24dr4gqod44wjlyzrl3dozqh3ra77ri3c6zfxs6o4pdq`）- HexMem 备份
 
-**Groups:**
-- `daemon-collective` (`did:cid:bagaaierausu7hgbctnkcdz66bgfxu2xfgxd5fgnf7cn2434b6cbtn73jydoa`)
+**组：**
+- `daemon-collective`（`did:cid:bagaaierausu7hgbctnkcdz66bgfxu2xfgxd5fgnf7cn2434b6cbtn73jydoa`）
 
-## Security Practices
+## 安全实践**
 
-**Key Management:**
-- Private keys never leave local machine
-- Wallet encrypted with strong passphrase
-- Passphrase stored securely in `~/.config/hex/archon/archon.env`
-- No keys in git repos or public locations
+**密钥管理：**
+- 私钥从不离开本地机器
+- 钱包使用强密码加密
+- 密码安全存储在 `~/.config/hex/archon/archon.env` 中
+- 密钥不会存储在 git 仓库或公开位置
 
-**Vault Security:**
-- All vault items encrypted
-- Access control via DID verification
-- Metadata doesn't leak sensitive info
-- Regular backup verification
+**仓库安全：**
+- 所有仓库项目均加密
+- 通过 DID 验证访问权限
+- 元数据不会泄露敏感信息
+- 定期备份并验证
 
-**Network Security:**
-- Local node for sensitive operations
-- Public node for read-only queries
-- Hyperswarm P2P network for distribution
-- Bitcoin anchoring for immutability
+**网络安全：**
+- 敏感操作在本地节点进行
+- 公共节点仅用于只读查询
+- 使用 Hyperswarm P2P 网络进行数据分发
+- 通过 Bitcoin 进行数据锚定以确保数据不可篡改
 
-## Troubleshooting
+## 故障排除**
 
-**Node not responding:**
+**节点无响应：**
 ```bash
 /home/sat/bin/archon-health.sh  # Check health
 /home/sat/bin/archon-status.sh  # Detailed status
 cd ~/bin/archon && /snap/bin/docker compose logs -f keymaster  # Check logs
 ```
 
-**Wallet locked:**
+**钱包被锁定：**
 ```bash
 export ARCHON_PASSPHRASE="your-secure-passphrase"
 # Then retry command
 ```
 
-**DID not resolving:**
-- Check if published to network (DIDs are local-only until published)
-- Verify Gatekeeper connectivity
-- Try public node: `https://archon.technology/api/v1/did/...`
+**DID 无法解析：**
+- 检查是否已发布到网络（DID 在发布前仅可在本地访问）
+- 验证 Gatekeeper 的连接状态
+- 尝试使用公共节点：`https://archon.technology/api/v1/did/...`
 
-**Vault access denied:**
-- Verify DID ownership with `list-ids`
-- Check vault permissions
-- Ensure using correct wallet
+**仓库访问权限被拒绝：**
+- 使用 `list-ids` 验证 DID 所有权
+- 检查仓库权限
+- 确保使用正确的钱包
 
-## Related Documentation
+## 相关文档**
 
-- **Archon GitHub:** https://github.com/archetech/archon
-- **DID Core Spec:** https://www.w3.org/TR/did-core/
-- **Verifiable Credentials:** https://www.w3.org/TR/vc-data-model/
-- **HexMem Integration:** `~/clawd/hexmem/SKILL.md`
-- **Node Management:** Facts in HexMem (entity_id=10)
+- **Archon GitHub：** https://github.com/archetech/archon
+- **DID 核心规范：** https://www.w3.org/TR/did-core/
+- **可验证的凭证：** https://www.w3.org/TR/vc-data-model/
+- **HexMem 集成：** `~/clawd/hexmem/SKILL.md`
+- **节点管理：** 详细信息在 HexMem 中（entity_id=10）
 
-## Monitoring (Heartbeat)
+## 监控（心跳检查）
 
-Archon node health is checked every 2-4 hours via `HEARTBEAT.md`:
-- Container health (14 expected)
-- Keymaster API responsiveness
-- Gatekeeper API responsiveness
-- Alert on failure (manual restart required)
+Archon 节点的健康状况每 2-4 小时通过 `HEARTBEAT.md` 进行检查：
+- 容器健康状况（预期有 14 个指标）
+- Keymaster API 的响应速度
+- Gatekeeper API 的响应速度
+- 故障时需要手动重启
 
 ---
 
-**Last Updated:** 2026-02-03  
-**Maintainer:** Hex (hex@lightning-goats.com)  
-**Local Node:** ~/bin/archon (Docker Compose)  
-**Public Node:** archon.technology
+**最后更新时间：** 2026-02-03  
+**维护者：** Hex (hex@lightning-goats.com)  
+**本地节点：`~/bin/archon`（Docker Compose）  
+**公共节点：`archon.technology`

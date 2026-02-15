@@ -1,6 +1,6 @@
 ---
 name: music-cog
-description: "Original music, fully yours. 5 seconds to 10 minutes using frontier music generation models. Instrumental and vocal tracks with perfect vocals. Cinematic scores, background tracks, podcast intros, game soundtracks, ambient soundscapes, jingles, lo-fi beats, orchestral compositions, songs with lyrics."
+description: "原创音乐，完全属于您自己。使用前沿的音乐生成模型，您可以创作时长从5秒到10分钟不等的音乐作品。这些音乐包括器乐曲、人声曲目（且人声表现完美），以及适用于电影、播客、游戏、环境音效、广告音乐、低音质节拍（lo-fi beats）、管弦乐作品和带有歌词的歌曲。"
 metadata:
   openclaw:
     emoji: "🎶"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Music Cog - Original Music, Fully Yours
+# Music Cog – 原创音乐，完全属于你
 
-**Original music, fully yours. No licensing, no attribution, no fees.** 5 seconds to 10 minutes using frontier music generation models. Instrumental and vocal tracks with perfect vocals.
+**所有原创音乐都归你所有。无需授权、无需署名，也无需支付任何费用。** 音乐时长从5秒到10分钟不等，使用前沿的音乐生成模型制作。提供器乐和人声曲目，其中的人声处理得非常完美。
 
-Every track generated is royalty-free and 100% yours to use commercially — YouTube, podcasts, apps, games, ads, films, streaming. No strings attached.
+每一首生成的歌曲都免版税，你可以完全自由地将它们用于商业用途——无论是YouTube、播客、应用程序、游戏、广告、电影还是流媒体平台，没有任何附加条件。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行SDK设置和API调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读关于 `cellcog` 的说明**，以了解如何进行SDK设置。该技能会向你展示该工具的强大功能。
 
-**Quick pattern (v1.0+):**
+**快速使用模式（v1.0及以上版本）：**
 ```python
 result = client.create_chat(
     prompt="[your music request]",
@@ -38,107 +38,107 @@ result = client.create_chat(
 
 ---
 
-## Two Ways to Create Music
+## 两种创作音乐的方法
 
-### Simple Prompt (Use This 99% of the Time)
+### 简单提示（99%的情况下都可以使用）
 
-Just describe what you want. The frontier model handles the rest — genre, arrangement, instrumentation, dynamics, and even lyrics:
+只需描述你的需求，其余工作都由音乐模型来完成——包括音乐类型、编曲、乐器搭配、动态效果，甚至歌词：
 
-> "Compose a 90-second cinematic score. Start with solo piano, layer in strings at 30 seconds, build to a full orchestral swell, then resolve softly. Mood: bittersweet turning hopeful."
+> “创作一段90秒的电影配乐。开头是钢琴独奏，30秒后加入弦乐，逐渐发展为完整的管弦乐高潮，最后柔和收尾。氛围：苦乐参半，但充满希望。”
 
-> "Create a 3-minute lo-fi hip-hop track with soft piano, vinyl crackle, and mellow drums. 75 BPM. Study vibes."
+> “制作一首3分钟的低保真嘻哈曲目，包含轻柔的钢琴声、模拟黑胶唱片播放的沙沙声以及舒缓的鼓点。节奏为75 BPM。”
 
-> "Write a 2-minute upbeat pop song with female vocals about starting fresh on a Monday morning. Catchy chorus, feel-good energy."
+> “写一首2分钟的欢快流行歌曲，加入女性人声，主题是关于周一早晨重新开始的活力。副歌部分要朗朗上口，整体风格要让人感到愉悦。”
 
-The model is exceptionally sophisticated — it handles any genre, genre fusion, songs with lyrics, complex arrangements, and mood transitions from a simple description.
+该模型非常先进，能够处理各种音乐类型、音乐风格融合、带歌词的歌曲，以及从简单描述到复杂编曲的转变。
 
-### Composition Plan (For Precise Timing Control)
+### 详细创作计划（用于精确控制时长）
 
-Only use this when you need **exact section durations** — for example, syncing music to specific video segments or presentation slides:
+仅在你需要**精确控制各部分时长**时使用此模式——例如，将音乐与特定视频片段或演示文稿幻灯片同步：
 
-> "I need music that syncs with my video:
-> - Intro: exactly 10 seconds, soft ambient
-> - Build: exactly 20 seconds, energy rising
-> - Climax: exactly 15 seconds, full orchestra
-> - Outro: exactly 10 seconds, gentle fade"
+> “我需要一段与视频同步的音乐：
+> - 开场：10秒，柔和的环境音效
+> - 发展阶段：20秒，逐渐增强氛围
+- 高潮部分：15秒，完整的管弦乐演奏
+- 结尾：10秒，柔和的渐弱效果”
 
-This mode gives precise timing control per section but should only be used when timing accuracy matters for syncing with other media.
-
----
-
-## What Music You Can Create
-
-### Instrumental
-
-| Type | Example |
-|------|---------|
-| **Cinematic scores** | Epic orchestral, tense thriller, emotional piano, sci-fi ambient |
-| **Background tracks** | Lo-fi beats, corporate background, cafe jazz, ambient soundscapes |
-| **Podcast intros/outros** | 5-10 second branded stings, transitions, bumpers |
-| **Game soundtracks** | Battle themes, exploration music, boss fights, menu themes |
-| **Jingles** | Ad jingles, notification sounds, reveal stingers |
-| **Ambient** | Meditation, nature soundscapes, focus music |
-
-### Vocal Tracks
-
-CellCog generates songs with **perfect AI vocals** — just describe the lyrical theme:
-
-| Type | Example |
-|------|---------|
-| **Pop songs** | Catchy hooks, verse-chorus structure, radio-ready |
-| **Ballads** | Emotional, piano-driven, storytelling |
-| **Hip-hop/Rap** | Rhythmic vocals, beats, flow |
-| **Rock** | Guitar-driven, powerful vocals |
-| **R&B/Soul** | Smooth, melodic, groove |
+这种模式可以精确控制每个部分的时长，但仅应在需要与其他媒体内容同步时使用。
 
 ---
 
-## Specs
+## 你可以创作的音乐类型
 
-| Parameter | Range |
+### 器乐曲目
+
+| 类型 | 示例 |
+|------|---------|
+| **电影配乐** | 历史悠久的管弦乐、紧张刺激的惊悚音乐、充满情感的钢琴曲、科幻风格的背景音乐 |
+| **背景音乐** | 低保真节奏、适合企业使用的背景音乐、咖啡馆风格的爵士乐、自然环境的音效 |
+| **播客开场/结尾曲** | 5-10秒的品牌标识音效、过渡音效 |
+| **游戏原声** | 战斗场景音乐、探索场景音乐、BOSS战音乐、菜单界面音乐 |
+| **短片音乐** | 广告短片音乐、通知音效、场景切换音效 |
+| **环境音效** | 用于冥想、自然环境的音效、有助于集中注意力的音乐 |
+
+### 人声曲目
+
+CellCog能够生成带有**完美人工智能合成的人声**的歌曲——只需描述歌词的主题即可：
+
+| 类型 | 示例 |
+|------|---------|
+| **流行歌曲** | 朗朗上口的副歌、清晰的 verse-chorus 结构，适合在广播中播放 |
+| **民谣** | 充满情感的旋律、以钢琴为主导的音乐 |
+| **嘻哈/说唱** | 有节奏的人声、强烈的节奏感 |
+| **摇滚** | 以吉他为主导的音乐、富有感染力的演唱 |
+| **R&B/灵魂乐** | 柔和的旋律、流畅的节奏 |
+
+---
+
+## 技术规格
+
+| 参数 | 范围 |
 |-----------|-------|
-| **Duration** | 5 seconds to 10 minutes |
-| **Output** | MP3 (44.1kHz, 128kbps) |
-| **Vocals** | Instrumental or with AI vocals |
-| **Licensing** | Royalty-free, fully yours, no attribution |
+| **时长** | 5秒到10分钟 |
+| **输出格式** | MP3（44.1kHz，128kbps） |
+| **人声选项** | 仅器乐或包含人工智能合成的人声 |
+| **版权信息** | 免版税，完全归你所有，无需署名 |
 
 ---
 
-## Chat Mode
+## 聊天模式
 
-**Use `chat_mode="agent"`** for music generation. Music executes well in agent mode.
-
----
-
-## Example Prompts
-
-**Cinematic score:**
-> "Compose a 2-minute cinematic score for a nature documentary finale. Begin with solo cello (melancholic), layer in strings and piano at 40 seconds, build to a hopeful orchestral swell, resolve with gentle piano. Think Planet Earth meets Interstellar."
-
-**Lo-fi background:**
-> "Create 5 minutes of lo-fi study beats. Soft piano, mellow drums, vinyl crackle, gentle bass. 75 BPM. Warm and unobtrusive — good for focus."
-
-**Podcast intro + outro:**
-> "Create a podcast intro (8 seconds) and outro (6 seconds). Show is a tech startup podcast. Intro: energetic, modern electronic with a hook. Outro: same vibe but mellower wind-down. Should feel like the same show."
-
-**Song with vocals:**
-> "Write a 3-minute upbeat indie pop song with female vocals. Theme: the excitement of moving to a new city. Catchy chorus, acoustic guitar foundation, builds with drums and synth. Feel-good, sing-along energy."
-
-**Game soundtrack:**
-> "Compose a 2-minute boss battle theme for a fantasy RPG. Intense orchestral with choir, driving percussion, escalating tension. Think Dark Souls meets Final Fantasy."
+**使用 `chat_mode="agent"` 可以启动音乐生成功能。在“代理模式”下，音乐效果更佳。**
 
 ---
 
-## Tips
+## 示例提示
 
-1. **Describe the feeling, not just the genre**: "Music that makes a startup pitch feel like the future" works better than "electronic music."
+**电影配乐：**
+> “为一段自然纪录片的结尾创作一段2分钟的电影配乐。开头是独奏的大提琴（带有忧郁氛围），40秒后加入弦乐和钢琴，逐渐发展为充满希望的管弦乐高潮，最后以柔和的钢琴声收尾。想象一下《地球脉动》与《星际穿越》的结合。”
 
-2. **Specify duration**: "45 seconds" vs "3 minutes" changes composition structure significantly.
+**低保真背景音乐：**
+> “制作一段5分钟的低保真学习背景音乐。包含轻柔的钢琴声、舒缓的鼓点、模拟黑胶唱片播放的沙沙声，节奏为75 BPM。这种音乐温暖且不会分散注意力，非常适合用于学习场景。”
 
-3. **Reference moods, not copyrighted songs**: "Hans Zimmer-style epic" and "ChilledCow lo-fi vibes" work well. Do not reference specific copyrighted songs.
+**播客开场/结尾曲：**
+> “制作一段8秒的开场曲和6秒的结尾曲。这是一个科技创业公司的播客。开场曲要充满活力，采用现代电子音乐风格并带有朗朗上口的旋律；结尾曲则要同样轻松舒缓，让人感受到整个节目的风格。”
 
-4. **For vocals**: Set the lyrical theme and mood. The model writes lyrics that fit. Or provide specific lyrics you want sung.
+**带人声的歌曲：**
+> “创作一首3分钟的欢快独立流行歌曲，加入女性人声。主题是搬家到新城市的兴奋感。副歌部分要朗朗上口，以原声吉他为主，逐渐加入鼓点和合成器音效，营造出积极向上的氛围。”
 
-5. **Energy arc matters**: "Starts quiet, builds at midpoint, resolves softly" gives clear compositional structure.
+**游戏原声：**
+> “为一款奇幻角色扮演游戏创作一段2分钟的BOSS战音乐。使用强烈的管弦乐和合唱团，营造紧张的氛围，让人联想到《黑暗之魂》与《最终幻想》的结合。”
 
-6. **For video background music**: If the music is for a CellCog video, mention it in your video prompt instead — CellCog handles music as part of video production automatically.
+---
+
+## 使用技巧
+
+1. **描述整体氛围，而不仅仅是音乐类型**：例如，“希望这段音乐能让创业公司的宣传视频充满未来感”，比简单地说“电子音乐”更有效。
+
+2. **明确指定时长**：不同的时长会显著影响音乐的最终效果（例如，“45秒”和“3分钟”会带来不同的音乐结构）。
+
+3. **参考具体的氛围，而非具体的版权歌曲**：使用像“汉斯·齐默风格的宏大音乐”或“ChilledCow风格的低保真音乐”这样的描述会更容易让模型理解你的需求。请避免提及具体的受版权保护的歌曲。
+
+4. **对于人声曲目**：只需指定歌词的主题和整体氛围，模型会自动生成合适的歌词；或者你可以提供具体的歌词。
+
+5. **注意音乐的动态变化**：例如“开头安静，中间部分逐渐增强，最后柔和收尾”，这样的描述有助于模型构建清晰的音乐结构。
+
+6. **如果是为视频背景音乐使用**：如果音乐是用于某个特定的视频，请在提示中明确说明——CellCog会自动将音乐整合到视频制作中。

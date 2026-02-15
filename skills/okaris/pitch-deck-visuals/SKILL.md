@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Pitch Deck Visuals
+# 投资者演示文稿（Pitch Deck）视觉设计
 
-Create investor-ready pitch deck visuals via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具来创建适合投资者的演示文稿视觉素材。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,68 +25,68 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## The 12-Slide Framework
+## 12 张幻灯片的框架
 
-| # | Slide | Duration | Content |
+| 序号 | 幻灯片 | 时长 | 内容 |
 |---|-------|----------|---------|
-| 1 | **Title** | 15s | Company name, tagline, your name |
-| 2 | **Problem** | 45s | Pain point with data |
-| 3 | **Solution** | 45s | Your product in one sentence |
-| 4 | **Demo/Product** | 60s | Screenshot or live demo |
-| 5 | **Market Size** | 30s | TAM → SAM → SOM |
-| 6 | **Business Model** | 30s | How you make money |
-| 7 | **Traction** | 45s | Growth metrics, customers |
-| 8 | **Competition** | 30s | Positioning, not feature list |
-| 9 | **Team** | 30s | Why you specifically will win |
-| 10 | **Financials** | 30s | Revenue projections, unit economics |
-| 11 | **The Ask** | 15s | How much, what for |
-| 12 | **Contact** | 10s | Email, next steps |
+| 1 | **标题** | 15秒 | 公司名称、标语、您的姓名 |
+| 2 | **问题** | 45秒 | 与数据相关的问题点 |
+| 3 | **解决方案** | 45秒 | 用一句话概括您的产品 |
+| 4 | **产品演示** | 60秒 | 屏幕截图或实时演示 |
+| 5 | **市场规模** | 30秒 | 总市场容量（TAM）→ 目标市场容量（SAM）→ 可服务市场容量（SOM） |
+| 6 | **商业模式** | 30秒 | 您如何盈利 |
+| 7 | **发展情况** | 45秒 | 增长指标、客户数量 |
+| 8 | **竞争分析** | 30秒 | 产品定位（而非功能列表） |
+| 9 | **团队** | 30秒 | 为什么您能胜出 |
+| 10 | **财务数据** | 30秒 | 收入预测、单位经济模型 |
+| 11 | **投资需求** | 15秒 | 需要投资多少、用于什么目的 |
+| 12 | **联系方式** | 10秒 | 电子邮件地址、下一步行动 |
 
-**Total: ~6 minutes.** Never exceed 20 slides.
+**总时长：约6分钟。** 幻灯片数量不得超过20张。
 
-## Slide Design Rules
+## 幻灯片设计规则
 
-### Typography
+### 字体排版
 
-| Element | Size (1920x1080) | Rule |
+| 元素 | 尺寸（1920x1080） | 规则 |
 |---------|-----------------|------|
-| Slide title | 48-72px | Max 6 words |
-| Key stat/number | 96-144px | One per slide, when applicable |
-| Body text | 24-32px | Max 6 bullet points |
-| Caption/source | 16-20px | Cite data sources |
-| Font | Sans-serif only | Inter, Helvetica, SF Pro, or similar |
+| 幻灯片标题 | 48-72px | 最多6个字 |
+| 关键数据/数字 | 96-144px | 每张幻灯片最多一个 |
+| 正文文本 | 24-32px | 每条要点最多6个字 |
+| 说明/数据来源 | 16-20px | 必须注明数据来源 |
+| 字体 | 仅使用无衬线字体（如 Inter, Helvetica, SF Pro 等） |
 
-### The 1-6-6 Rule
+### “1-6-6”原则
 
-- **1** idea per slide
-- **6** words max per bullet
-- **6** bullets max per slide
+- 每张幻灯片展示一个核心观点 |
+- 每条要点最多6个字 |
+- 每张幻灯片最多6个要点 |
 
-If you need more text, you need more slides.
+如果需要更多内容，就需要增加幻灯片数量。
 
-### Color
+### 颜色搭配
 
-| Element | Guideline |
+| 元素 | 颜色指南 |
 |---------|-----------|
-| Background | Dark (navy, charcoal) OR clean white — pick one, commit |
-| Accent color | ONE brand color for emphasis |
-| Text | White on dark, or dark grey (#333) on light |
-| Charts | 2-3 colors max, your brand color = "you" |
-| Avoid | Gradients on text, neon colors, more than 3 colors |
+| 背景 | 深色（如海军蓝、炭黑色）或纯白色 | 选择一种并保持一致 |
+| 强调色 | 使用品牌统一颜色 |
+| 正文文字 | 深色背景上使用白色，或浅色背景上使用深灰色（#333） |
+| 图表 | 最多使用2-3种颜色，其中一种应为品牌颜色 |
+| 避免使用：渐变色、霓虹色、超过3种颜色 |
 
-### Layout
+### 布局规则
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Consistent margins (80-100px) | Professional, clean |
-| Left-align text (never center body text) | Easier to scan |
-| One visual per slide | Focus attention |
-| Slide numbers | Helps investors reference specific slides |
-| Logo in corner | Subtle brand reinforcement |
+| 保持一致的页边距（80-100px） | 专业、整洁 |
+- 文本左对齐（不要居中显示） | 更便于阅读 |
+- 每张幻灯片只展示一个视觉元素 | 保持焦点 |
+- 添加幻灯片编号 | 帮助投资者快速查找具体内容 |
+- 在角落放置公司标志 | 强化品牌识别 |
 
-## Slide-by-Slide Visual Guide
+## 幻灯片设计示例
 
-### 1. Title Slide
+### 1. 标题幻灯片
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -94,9 +94,9 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### 2. Problem Slide
+### 2. 问题幻灯片
 
-**One big number + one sentence.**
+**用一个具体的数字加上一句话来说明问题。**
 
 ```bash
 infsh app run infsh/html-to-image --input '{
@@ -104,9 +104,9 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-### 5. Market Size (TAM/SAM/SOM)
+### 5. 市场规模（TAM/SAM/SOM）
 
-Use concentric circles, not pie charts:
+使用同心圆图来展示数据，而非饼图：
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -114,9 +114,9 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### 7. Traction Slide
+### 7. 发展情况幻灯片
 
-**Show growth, not just numbers.** Up-and-to-the-right chart.
+**展示增长趋势，而不仅仅是数字。** 使用向右上方的图表。
 
 ```bash
 infsh app run infsh/python-executor --input '{
@@ -124,9 +124,9 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### 8. Competition Slide
+### 8. 竞争分析幻灯片
 
-**Never use a feature matrix against competitors.** Use a 2x2 positioning map.
+**不要使用功能对比表来分析竞争对手。** 使用2x2的定位图来展示竞争关系。
 
 ```bash
 # See the competitor-teardown skill for positioning map generation
@@ -135,7 +135,7 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-### 9. Team Slide
+### 9. 团队幻灯片
 
 ```bash
 # Generate professional team headshots/avatars
@@ -146,65 +146,65 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-Layout: Photos in a row with name, title, and one credential each.
+布局：将团队成员的照片与姓名、职位和相关资质放在一行中展示。
 
-| Person | Format |
+| 人员 | 格式 |
 |--------|--------|
-| CEO | Name, title, "Ex-[Company], [credential]" |
-| CTO | Name, title, "Built [thing] at [Company]" |
-| Others | Name, title, one relevant credential |
+| CEO | 姓名、职位、曾在[公司]任职经历 |
+| CTO | 姓名、职位、在[公司]负责开发[项目] |
+| 其他成员 | 姓名、职位、相关资质 |
 
-**Max 4 people on the team slide.** More = unfocused.
+**每张团队幻灯片最多展示4名成员。** 超过4名成员会分散注意力。
 
-## Chart Guidelines
+## 图表制作指南
 
-| Chart Type | Use For | Never Use For |
+| 图表类型 | 适用场景 | 不适用场景 |
 |-----------|---------|--------------|
-| Line chart | Growth over time (traction) | Comparisons between categories |
-| Bar chart | Comparing amounts | Time series (use line) |
-| Concentric circles | TAM/SAM/SOM | Anything else |
-| 2x2 matrix | Competitive positioning | Feature comparison |
-| Single big number | Key metric highlight | Multiple metrics |
-| Pie chart | NEVER | Anything (hard to read, unprofessional) |
+| 折线图 | 显示随时间的变化趋势（如增长情况） | 不适用于类别间的比较 |
+| 条形图 | 比较数量 | 时间序列数据（使用折线图） |
+| 同心圆图 | 显示总市场容量（TAM）、目标市场容量（SAM）、可服务市场容量（SOM） | 其他场景 |
+| 2x2矩阵图 | 用于展示竞争定位 | 用于功能对比 |
+| 单个数字图表 | 突出关键指标 | 多个指标同时展示 |
+| 饼图 | 绝对不要使用 | 阅读困难且不够专业 |
 
-### Chart Design Rules
+### 图表设计规则
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Max 2 colors per chart | Clarity |
-| Your company = green or brand color | Positive association |
-| Label directly on chart | No separate legend needed |
-| Remove gridlines or make very subtle | Reduce clutter |
-| Start Y-axis at 0 | Don't mislead |
-| Cite data sources | Credibility |
+- 每张图表最多使用2种颜色 | 保持清晰度 |
+- 公司相关内容使用绿色或品牌指定颜色 | 产生积极印象 |
+- 直接在图表上标注数据来源 | 增强可信度 |
+- 去除网格线或使用非常细微的网格线 | 减少杂乱感 |
+- Y轴从0开始 | 避免误导观众 |
+- 必须注明数据来源 | 增加可信度 |
 
-## What Investors Look For
+## 投资者关注的重点
 
-| Slide | Investor's Real Question |
+| 幻灯片 | 投资者关心的问题 |
 |-------|------------------------|
-| Problem | "Is this a real problem people pay to solve?" |
-| Solution | "Is this 10x better than the status quo?" |
-| Market | "Is this big enough to matter?" |
-| Traction | "Is this actually working?" |
-| Team | "Can these people execute?" |
-| Ask | "Is this a reasonable deal?" |
+| 问题 | “这确实是一个值得人们付费解决的问题吗？” |
+| 解决方案 | “这个方案比现有方案好10倍吗？” |
+| 市场规模 | “市场规模是否足够大，足以产生影响？” |
+| 发展情况 | “这个方案真的有效吗？” |
+| 团队 | “这些人有能力执行项目吗？” |
+| 投资需求 | “这个投资要求合理吗？” |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 修正方法 |
 |---------|---------|-----|
-| Too many slides (20+) | Loses attention, unfocused | Max 12-15 slides |
-| Wall of text | Nobody reads it | 1-6-6 rule: 1 idea, 6 words, 6 bullets |
-| Feature comparison table vs competitors | Looks defensive | Use 2x2 positioning map |
-| Pie charts | Hard to read, unprofessional | Use bar charts or big numbers |
-| No data sources cited | Looks made up | Always cite sources |
-| Team slide with 8+ people | Unfocused | Max 4, focus on relevant experience |
-| Inconsistent design | Looks amateur | Same colors, fonts, margins on every slide |
-| No "The Ask" slide | Investor doesn't know what you want | State amount, use of funds, timeline |
-| Vanity metrics | "1M visits" means nothing without conversion | Show revenue, active users, retention |
-| Too much product demo | This is a business pitch, not a demo | Max 2 slides on product, focus on business |
+| 幻灯片太多（超过20张） | 会分散注意力 | 最多12-15张 |
+| 文字过多 | 投资者无法阅读 | 遵循“1-6-6”原则：每个要点6个字 |
+| 与竞争对手的功能对比表 | 显示出防御性 | 使用2x2的定位图 |
+| 使用饼图 | 阅读困难且不够专业 | 使用条形图或具体的数字 |
+| 不注明数据来源 | 会让方案显得不真实 | 必须注明数据来源 |
+| 团队幻灯片上展示太多成员 | 信息分散 | 最多展示4名成员，重点突出相关经验 |
+| 设计不一致 | 显得不专业 | 所有幻灯片的颜色、字体、页边距要保持一致 |
+| 没有“投资需求”幻灯片 | 投资者不知道您的投资要求 | 明确说明投资金额、资金用途和项目时间表 |
+| 过于强调表面的数据指标 | “100万访问量”没有实际意义 | 应展示收入、活跃用户数、用户留存率 |
+| 产品演示时间过长 | 这是商业演示，不是产品展示 | 产品相关内容最多展示2张幻灯片，重点讨论商业模式 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@competitor-teardown
@@ -212,4 +212,4 @@ npx skills add inferencesh/skills@data-visualization
 npx skills add inferencesh/skills@ai-image-generation
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用应用程序：`infsh app list`

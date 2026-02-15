@@ -1,7 +1,7 @@
 ---
 name: clawsec-suite
 version: 0.0.10
-description: ClawSec suite manager with embedded advisory-feed monitoring, cryptographic signature verification, approval-gated malicious-skill response, and guided setup for additional security skills.
+description: ClawSec套件管理器具备嵌入式咨询信息监控功能、加密签名验证机制、基于审批流程的恶意技能响应机制，以及针对额外安全技能的引导式设置流程。
 homepage: https://clawsec.prompt.security
 clawdis:
   emoji: "📦"
@@ -9,39 +9,39 @@ clawdis:
     bins: [curl, jq, shasum, openssl]
 ---
 
-# ClawSec Suite
+# ClawSec 套件
 
-This means `clawsec-suite` can:
-- monitor the ClawSec advisory feed,
-- track which advisories are new since last check,
-- cross-reference advisories against locally installed skills,
-- recommend removal for malicious-skill advisories and require explicit user approval first,
-- and still act as the setup/management entrypoint for other ClawSec protections.
+ClawSec 套件具备以下功能：
+- 监控 ClawSec 的安全告警信息；
+- 查看自上次检查以来新增的告警；
+- 将告警信息与本地安装的技能进行关联；
+- 对于涉及恶意技能的告警，系统会建议用户先进行确认后再进行移除操作；
+- 同时，该套件还充当其他 ClawSec 安全功能的配置和管理入口。
 
-## Included vs Optional Protections
+## 包含的保护措施与可选的保护措施
 
-### Built into clawsec-suite
-- Embedded feed seed file: `advisories/feed.json`
-- Portable heartbeat workflow in `HEARTBEAT.md`
-- Advisory polling + state tracking + affected-skill checks
-- OpenClaw advisory guardian hook package: `hooks/clawsec-advisory-guardian/`
-- Setup scripts for hook and optional cron scheduling: `scripts/`
-- Guarded installer: `scripts/guarded_skill_install.mjs`
+### ClawSec 套件内置的保护措施：
+- 嵌入式的告警信息源文件：`advisories/feed.json`
+- 用于定期检查安全状态的脚本：`HEARTBEAT.md`
+- 告警信息轮询、状态跟踪以及受影响技能的检测功能
+- OpenClaw 告警监控模块：`hooks/clawsec-advisory-guardian/`
+- 用于配置这些功能的脚本及可选的定时任务调度脚本：`scripts/`
+- 受保护的技能安装脚本：`scripts/guarded_skill_install.mjs`
 
-### installed separately
+### 可单独安装的保护措施：
 - `openclaw-audit-watchdog`
 - `soul-guardian`
-- `clawtributor` (explicit opt-in)
+- `clawtributor`（需用户主动选择启用）
 
-## Installation
+## 安装方法
 
-### Option A: Via clawhub (recommended)
+### 方法一：通过 ClawHub 安装（推荐）
 
 ```bash
 npx clawhub@latest install clawsec-suite
 ```
 
-### Option B: Manual download with signature + checksum verification
+### 方法二：手动下载并验证签名及校验和
 
 ```bash
 set -euo pipefail
@@ -143,70 +143,59 @@ echo "Installed clawsec-suite v${VERSION} to: $DEST"
 echo "Next step (OpenClaw): node \"\$DEST/scripts/setup_advisory_hook.mjs\""
 ```
 
-## OpenClaw Automation (Hook + Optional Cron)
+## OpenClaw 自动化配置（包含告警监控模块及可选的定时任务）
 
-After installing the suite, enable the advisory guardian hook:
+安装完该套件后，需要启用告警监控模块：
 
 ```bash
 SUITE_DIR="${INSTALL_ROOT:-$HOME/.openclaw/skills}/clawsec-suite"
 node "$SUITE_DIR/scripts/setup_advisory_hook.mjs"
 ```
 
-Optional: create/update a periodic cron nudge (default every `6h`) that triggers a main-session advisory scan:
+**可选操作：** 设置定期定时任务（默认每 6 小时执行一次），以触发一次全面的安全检查：
 
 ```bash
 SUITE_DIR="${INSTALL_ROOT:-$HOME/.openclaw/skills}/clawsec-suite"
 node "$SUITE_DIR/scripts/setup_advisory_cron.mjs"
 ```
 
-What this adds:
-- scan on `agent:bootstrap` and `/new` (`command:new`),
-- compare advisory `affected` entries against installed skills,
-- notify when new matches appear,
-- and ask for explicit user approval before any removal flow.
+该定时任务会执行以下操作：
+- 在 `agent:bootstrap` 和 `/new` 路径下进行扫描；
+- 将告警信息中列出的受影响技能与已安装的技能进行比对；
+- 当发现匹配项时，会通知用户；
+- 在执行任何移除操作前，会要求用户进行明确确认。
 
-Restart the OpenClaw gateway after enabling the hook. Then run `/new` once to force an immediate scan in the next session context.
+启用告警监控模块后，需要重新启动 OpenClaw 服务器，并运行 `/new` 命令以强制在当前会话中立即执行一次安全检查。
 
-## Guarded Skill Install Flow (Double Confirmation)
+## 受保护的技能安装流程（双重确认）
 
-When the user asks to install a skill, treat that as the first request and run a guarded install check:
+当用户请求安装某项技能时，系统会执行以下流程：
+- 首先检查是否存在相关告警；
+- 如果未找到匹配的告警，则继续安装流程；
+- 如果用户未指定版本号（`--version` 参数），系统会采取保守的判断方式：任何提及该技能名称的告警都会被视为匹配项；
+- 如果找到匹配的告警，系统会显示告警详情并退出（返回代码 42）；
+- 此后系统会要求用户再次确认是否真的要安装该技能。
 
-```bash
-SUITE_DIR="${INSTALL_ROOT:-$HOME/.openclaw/skills}/clawsec-suite"
-node "$SUITE_DIR/scripts/guarded_skill_install.mjs" --skill helper-plus --version 1.0.1
-```
+这一流程确保了：
+1. 首次安装前需要用户的明确请求；
+2. 安装前用户必须再次确认。
 
-Behavior:
-- If no advisory match is found, install proceeds.
-- If `--version` is omitted, matching is conservative: any advisory that references the skill name is treated as a match.
-- If advisory match is found, the script prints advisory context and exits with code `42`.
-- Then require an explicit second confirmation from the user and rerun with `--confirm-advisory`:
+## 嵌入式告警信息源的配置方式
 
-```bash
-node "$SUITE_DIR/scripts/guarded_skill_install.mjs" --skill helper-plus --version 1.0.1 --confirm-advisory
-```
+嵌入式告警信息源的默认配置如下：
+- 远程告警信息源 URL：`https://raw.githubusercontent.com/prompt-security/clawsec/main/advisories/feed.json`
+- 远程告警信息源的签名文件 URL：`${CLAWSEC_feed_URL}.sig`（可自定义为 `CLAWSEC_feed_SIG_URL`）
+- 远程校验和文件 URL：`checksums.json`（可自定义为 `CLAWSEC_FEED_CHECKSUMS_URL`）
+- 本地告警信息源的备用文件：`~/.openclaw/skills/clawsec-suite/advisories/feed.json`
+- 本地告警信息源的签名文件：`${CLAWSEC_LOCAL_feed}.sig`（可自定义为 `CLAWSEC_LOCAL_feed_SIG`）
+- 本地校验和文件：`~/.openclaw/skills/clawsec-suite/advisories/checksums.json`
+- 用于签名验证的公钥文件：`~/.openclaw/skills/clawsec-suite/advisories/feed-signing-public.pem`（可自定义为 `CLAWSEC_feed_PUBLIC_KEY`）
+- 用于存储状态的文件：`~/.openclaw/clawsec-suite-feed-state.json`
+- 开发者用于配置定时任务的环境变量：`CLAWSEC_HOOK_INTERVAL_seconds`（默认值为 300 秒）
 
-This enforces:
-1. First confirmation: user asked to install.
-2. Second confirmation: user explicitly approves install after seeing advisory details.
+**注意事项：** 默认情况下，系统会同时验证签名和校验和文件。只有在采用此版本且上游尚未提供签名验证的告警信息源时，才能临时将 `CLAWSEC_ALLOWUnsigned_FEED` 设置为 `1`。
 
-## Embedded Advisory Feed Behavior
-
-The embedded feed logic uses these defaults:
-
-- Remote feed URL: `https://raw.githubusercontent.com/prompt-security/clawsec/main/advisories/feed.json`
-- Remote feed signature URL: `${CLAWSEC_FEED_URL}.sig` (override with `CLAWSEC_FEED_SIG_URL`)
-- Remote checksums manifest URL: sibling `checksums.json` (override with `CLAWSEC_FEED_CHECKSUMS_URL`)
-- Local seed fallback: `~/.openclaw/skills/clawsec-suite/advisories/feed.json`
-- Local feed signature: `${CLAWSEC_LOCAL_FEED}.sig` (override with `CLAWSEC_LOCAL_FEED_SIG`)
-- Local checksums manifest: `~/.openclaw/skills/clawsec-suite/advisories/checksums.json`
-- Pinned feed signing key: `~/.openclaw/skills/clawsec-suite/advisories/feed-signing-public.pem` (override with `CLAWSEC_FEED_PUBLIC_KEY`)
-- State file: `~/.openclaw/clawsec-suite-feed-state.json`
-- Hook rate-limit env (OpenClaw hook): `CLAWSEC_HOOK_INTERVAL_SECONDS` (default `300`)
-
-**Fail-closed verification:** Both signature and checksum manifest verification are required by default. Set `CLAWSEC_ALLOW_UNSIGNED_FEED=1` only as a temporary migration bypass when adopting this version before signed feed artifacts are available upstream.
-
-### Quick feed check
+### 快速检查告警信息源的脚本
 
 ```bash
 FEED_URL="${CLAWSEC_FEED_URL:-https://raw.githubusercontent.com/prompt-security/clawsec/main/advisories/feed.json}"
@@ -245,35 +234,30 @@ else
 fi
 ```
 
-## Heartbeat Integration
+## 定期安全检查（使用 `HEARTBEAT.md` 脚本）
 
-Use the suite heartbeat script as the single periodic security check entrypoint:
+`HEARTBEAT.md` 脚本用于执行以下操作：
+- 检查套件是否需要更新；
+- 轮询告警信息源；
+- 发现新的告警时进行响应；
+- 将涉及恶意技能的告警与已安装的技能进行关联；
+- 对于需要移除的技能，系统会提供确认提示；
+- 更新系统的状态信息。
 
-- `skills/clawsec-suite/HEARTBEAT.md`
+## 基于确认的用户操作流程
 
-It handles:
-- suite update checks,
-- feed polling,
-- new-advisory detection,
-- affected-skill cross-referencing,
-- approval-gated response guidance for malicious/removal advisories,
-- and persistent state updates.
+如果告警提示某项技能存在安全风险或需要被移除，系统会执行以下操作：
+- 立即通知用户相关告警的详细信息及严重程度；
+- 建议用户移除或禁用该技能；
+- 将用户的初始安装请求视为初次请求；
+- 在执行删除或禁用操作前，会要求用户再次确认；
+- 只有在用户再次确认后，系统才会继续执行相关操作。
 
-## Approval-Gated Response Contract
+默认情况下，该套件的告警监控模块和定期检查功能不会对系统造成破坏性影响。
 
-If an advisory indicates a malicious or removal-recommended skill and that skill is installed:
+## 可选的额外安全保护措施
 
-1. Notify the user immediately with advisory details and severity.
-2. Recommend removing or disabling the affected skill.
-3. Treat the original install request as first intent only.
-4. Ask for explicit second confirmation before deletion/disable action (or before proceeding with risky install).
-5. Only proceed after that second confirmation.
-
-The suite hook and heartbeat guidance are intentionally non-destructive by default.
-
-## Optional Skill Installation
-
-Install additional protections as needed:
+根据实际需求，可以安装额外的安全保护组件：
 
 ```bash
 npx clawhub@latest install openclaw-audit-watchdog
@@ -282,11 +266,10 @@ npx clawhub@latest install soul-guardian
 npx clawhub@latest install clawtributor
 ```
 
-## Security Notes
-
-- Always verify `checksums.json` signature before trusting its file URLs/hashes, then verify each file checksum.
-- Verify advisory feed detached signatures; do not enable `CLAWSEC_ALLOW_UNSIGNED_FEED` outside temporary migration windows.
-- Keep advisory polling rate-limited (at least 5 minutes between checks).
-- Treat `critical` and `high` advisories affecting installed skills as immediate action items.
-- If you migrate off standalone `clawsec-feed`, keep one canonical state file to avoid duplicate notifications.
-- Pin and verify public key fingerprints out-of-band before first use.
+## 安全注意事项：
+- 在信任任何文件之前，务必先验证 `checksums.json` 文件的签名及哈希值；
+- 在临时迁移期间之外，切勿启用 `CLAWSEC_ALLOWUnsigned_FEED` 功能；
+- 保持告警信息轮询的频率（至少每 5 分钟一次）；
+- 对于影响已安装技能的“严重”或“高风险”告警，必须立即采取行动；
+- 如果从独立的 `clawsec-feed` 迁移过来，请保留一个统一的状态文件以避免重复通知；
+- 在首次使用之前，务必验证公钥的指纹信息。

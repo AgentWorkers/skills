@@ -1,6 +1,6 @@
 ---
 name: file-search
-description: "Fast file-name and content search using `fd` and `rg` (ripgrep)."
+description: "使用 `fd` 和 `rg`（ripgrep）快速搜索文件名和文件内容。"
 metadata:
   {
     "openclaw":
@@ -28,39 +28,39 @@ metadata:
   }
 ---
 
-# File Search Skill
+# 文件搜索技巧
 
-Fast file-name and content search using `fd` and `rg` (ripgrep).
+使用 `fd` 和 `rg`（ripgrep）快速搜索文件名和文件内容。
 
-## Find Files by Name
+## 按名称查找文件
 
-Search for files matching a pattern:
+搜索与指定模式匹配的文件：
 
 ```bash
 fd "\.rs$" /home/xrx/projects
 ```
 
-Find files by exact name:
+按文件名精确查找文件：
 
 ```bash
 fd -g "Cargo.toml" /home/xrx/projects
 ```
 
-## Search File Contents
+## 搜索文件内容
 
-Search for a regex pattern across files:
+在文件中搜索正则表达式模式：
 
 ```bash
 rg "TODO|FIXME" /home/xrx/projects
 ```
 
-Search with context lines:
+带上下文行进行搜索：
 
 ```bash
 rg -C 3 "fn main" /home/xrx/projects --type rust
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install fd-find ripgrep

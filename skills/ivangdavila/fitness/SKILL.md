@@ -1,44 +1,44 @@
 ---
 name: "Fitness"
-description: "Auto-learns your fitness patterns. Absorbs data from wearables, conversations, and achievements."
+description: "它会自动学习你的健身习惯。通过可穿戴设备收集数据，同时也会整合来自你的对话和健身成果的信息。"
 ---
 
-## Auto-Adaptive Fitness Tracking
+## 自适应健康追踪功能
 
-This skill auto-evolves. Fills in as you learn how the user trains and what affects their performance.
+该功能会随着用户训练方式的改变以及影响其表现的因素的更新而不断进化。
 
-**Rules:**
-- Absorb fitness mentions from ANY source (wearables, conversations, race results, gym apps)
-- Detect user profile: beginner (needs guidance) vs experienced (wants data)
-- Proactivity scales inversely with experience — beginners need more, athletes need less
-- Never guilt missed workouts — adapt and move forward
-- Check `sources.md` for data integrations, `profiles.md` for user types, `coaching.md` for support patterns
-
----
-
-### Sources
-<!-- Where fitness data comes from. Format: "source: reliability" -->
-<!-- Examples: apple-health: synced daily, strava: runs + races, conversation: workout mentions -->
-
-### Schedule
-<!-- Detected training patterns. Format: "pattern" -->
-<!-- Examples: MWF strength 7am, Sat long run, Sun rest -->
-
-### Correlations
-<!-- What affects their performance. Format: "factor: effect" -->
-<!-- Examples: sleep <6h: skip day, coffee pre-workout: +intensity, alcohol: -next day -->
-
-### Preferences
-<!-- How they want fitness tracked. Format: "preference" -->
-<!-- Examples: remind before workouts, no rest day lectures, weekly summary only -->
-
-### Flags
-<!-- Signs to watch for. Format: "signal" -->
-<!-- Examples: "too tired", missed 3+ days, injury mention, "legs are dead" -->
-
-### Achievements
-<!-- PRs, milestones, events. Format: "achievement: date" -->
-<!-- Examples: bench 100kg: 2024-03, first marathon: 2024-10, 30 day streak: 2024-11 -->
+**规则：**
+- 从任何来源（可穿戴设备、对话记录、比赛结果、健身应用程序等）收集与健康相关的信息。
+- 识别用户类型：初学者（需要指导）或经验丰富的用户（需要详细数据）。
+- 随着用户经验的增加，系统的主动提醒功能会相应减少——初学者需要更多提醒，而经验丰富的用户则不需要那么多。
+- 绝不要因为错过锻炼而让用户感到内疚，应学会适应并继续前进。
+- 详情请参阅 `sources.md`（数据来源整合方式）、`profiles.md`（用户类型信息）和 `coaching.md`（训练建议）。
 
 ---
-*Empty sections = no data yet. Observe and fill.*
+
+### 数据来源
+<!-- 健康数据的来源。格式：`source: 可靠性` -->
+<!-- 例如：apple-health：每日同步数据；strava：跑步和比赛记录；conversation：对话中提到的锻炼内容 -->
+
+### 训练计划
+<!-- 用户的训练模式。格式：`pattern` -->
+<!-- 例如：周一至周五早上7点进行力量训练，周六进行长跑，周日休息 -->
+
+### 影响因素
+<!-- 影响用户表现的因素。格式：`factor: 效果` -->
+<!-- 例如：睡眠时间少于6小时：可能导致错过训练；锻炼前喝咖啡：提升运动强度；饮酒：影响第二天表现 -->
+
+### 用户偏好
+// 用户希望如何被追踪健康状况。格式：`preference`
+// 例如：希望在锻炼前收到提醒；不希望收到休息日的通知；仅需要每周的训练总结」
+
+### 注意事项
+// 需要关注的提示信息。格式：`signal`
+// 例如：“太累了”、“连续三天未锻炼”、“提到受伤”等
+
+### 成就记录
+// 用户的里程碑和重要成就。格式：`achievement: 日期`
+// 例如：卧推100公斤：2024-03；首次完成马拉松：2024-10；连续30天坚持锻炼：2024-11`
+
+---
+*如果某个部分为空，表示尚未收集到相关数据。请继续观察并补充信息。*

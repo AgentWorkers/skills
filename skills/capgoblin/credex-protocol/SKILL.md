@@ -1,19 +1,30 @@
 ---
 name: credex-protocol
-description: Access unsecured credit lines for AI agents on the Arc Network using the Credex Protocol. Use for borrowing USDC against reputation, repaying debt to grow credit limits, providing liquidity as an LP, or managing cross-chain USDC via Circle Bridge. Triggers on "borrow from credex", "repay debt", "deposit to pool", "check credit status", "provide liquidity", or any credit/lending task on Arc.
+description: 使用 Credex 协议，为 Arc Network 上的 AI 代理访问未受保护的信用额度。这些信用额度可用于：  
+1. 以声誉作为抵押借入 USDC；  
+2. 偿还债务以增加信用额度；  
+3. 作为 LP（ liquidity provider，提供流动性）；  
+4. 通过 Circle Bridge 管理跨链的 USDC。  
+相关操作触发条件包括：  
+- “从 Credex 借款”；  
+- “偿还债务”；  
+- “向池中存款”；  
+- “检查信用状态”；  
+- “提供流动性”；  
+- 或任何与信用/借贷相关的操作。
 ---
 
-# Credex Protocol Skill
+# Credex 协议技能
 
-Interact with the Credex Protocol—a decentralized credit system for AI agents on the Arc Network.
+本技能用于与 Credex 协议进行交互，这是一个为 Arc Network 上的 AI 代理提供去中心化信用服务的系统。
 
 ---
 
-## Usage
+## 使用方法
 
-**Base Directory:** `{baseDir}` (the directory containing this SKILL.md)
+**基础目录：** `{baseDir}`（包含本 SKILL.md 文件的目录）
 
-**Run all commands from the project root:**
+**所有命令均需从项目根目录执行：**
 
 ```bash
 cd {baseDir}
@@ -21,345 +32,254 @@ npx ts-node scripts/client.ts <command> [args]   # Borrower commands
 npx ts-node scripts/lp.ts <command> [args]       # LP commands
 ```
 
-**Output Format:** All scripts return **JSON** for machine readability. Parse the output to extract fields like `creditLimit`, `txHash`, `debt`, etc.
+**输出格式：** 所有脚本返回的均为 **JSON** 格式，便于机器读取。请解析输出内容以获取 `creditLimit`、`txHash`、`debt` 等字段。
 
 ---
 
-## Environment Variables
+## 环境变量
 
-### Required (Must Be Set)
+### 必需设置的环境变量
 
-| Variable             | Description                                                                |
-| -------------------- | -------------------------------------------------------------------------- |
-| `WALLET_PRIVATE_KEY` | Private key for signing transactions. **Without this, all commands fail.** |
-| `RPC_URL`            | Arc Network RPC. Default: `https://rpc.testnet.arc.network`                |
+| 变量                | 说明                                      |
+| ---------------------- | ------------------------------------------------------ |
+| `WALLET_PRIVATE_KEY` | 用于签署交易的私钥。**缺少此变量，所有命令将失败。** |
+| `RPC_URL`            | Arc Network 的 RPC 地址。默认值：`https://rpc.testnet.arc.network` |
 
-### Optional
+### 可选设置的环境变量
 
-| Variable              | Description             | Default                                      |
-| --------------------- | ----------------------- | -------------------------------------------- |
-| `CREDEX_POOL_ADDRESS` | Pool contract address   | `0x32239e52534c0b7e525fb37ed7b8d1912f263ad3` |
-| `CREDEX_AGENT_URL`    | Credex agent server URL | `http://localhost:10003`                     |
+| 变量                | 说明                                      | 默认值                                      |
+| ---------------------- | ------------------------------------------------------ |
+| `CREDEX_POOL_ADDRESS` | Credex 池合约地址            | `0x32239e52534c0b7e525fb37ed7b8d1912f263ad3`         |
+| `CREDEX_AGENT_URL`    | Credex 代理服务器 URL                         | `http://localhost:10003`                         |
 
-**Pre-Flight Check:** Before running any command, verify `WALLET_PRIVATE_KEY` is set. If missing, prompt the user.
-
----
-
-## Contract Addresses (Arc Testnet)
-
-| Contract              | Address                                      |
-| --------------------- | -------------------------------------------- |
-| `CredexPool`          | `0x32239e52534c0b7e525fb37ed7b8d1912f263ad3` |
-| `USDC` (Arc)          | `0x3600000000000000000000000000000000000000` |
-| `USDC` (Base Sepolia) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` |
+**运行前检查：** 在执行任何命令之前，请确认 `WALLET_PRIVATE_KEY` 已设置。如果未设置，系统会提示用户输入。
 
 ---
 
-## Client Commands (Borrower)
+## 合约地址（Arc 测试网）
 
-**Script:** `scripts/client.ts`  
-**Run as:** `npx ts-node scripts/client.ts <command> [args]`
+| 合约                | 地址                                      |
+| ---------------------- | ------------------------------------------------------ |
+| `CredexPool`          | `0x32239e52534c0b7e525fb37ed7b8d1912f263ad3`         |
+| `USDC` (Arc)          | `0x3600000000000000000000000000000000000000`         |
+| `USDC` (Base Sepolia)     | `0x036CbD53842c5426634e7929541eC2318f3dCF7e`         |
+
+---
+
+## 客户端命令（借款人）
+
+**脚本：`scripts/client.ts`**  
+**执行方式：** `npx ts-node scripts/client.ts <命令> [参数]`
 
 ---
 
 ### `status`
 
-Check credit status for an agent.
+查询代理的信用状态。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/client.ts status <address>
 ```
 
-**Args:**
+**参数：**
 
-- `address` (optional): Wallet address. Defaults to `WALLET_PRIVATE_KEY` address.
+- `address`（可选）：钱包地址。默认使用 `WALLET_PRIVATE_KEY` 对应的地址。
 
-**Returns:** JSON
-
-```json
-{
-  "creditLimit": "100.000000",
-  "principal": "5.000000",
-  "interest": "0.050000",
-  "debt": "5.050000",
-  "availableCredit": "95.000000",
-  "active": true,
-  "frozen": false
-}
-```
-
-**Action:** Use `availableCredit` to check if sufficient funds before calling `borrow`.
+**返回值：** JSON 格式的数据。
 
 ---
 
 ### `borrow`
 
-Borrow USDC from the pool.
+从池中借款 USDC。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/client.ts borrow <amount>
 ```
 
-**Args:**
+**参数：**
 
-- `amount` (required): USDC amount as decimal string (e.g., `"5.0"`).
+- `amount`（必填）：借款的 USDC 数量（以小数字符串形式表示，例如 `"5.0"`）。
 
-**Returns:** JSON
+**返回值：** JSON 格式的数据。
 
-```json
-{
-  "success": true,
-  "txHash": "0x...",
-  "borrowed": "5.000000",
-  "newDebt": "5.000000",
-  "availableCredit": "95.000000"
-}
-```
-
-**Fails if:** `amount > availableCredit`. Check `status` first.
+**注意：** 在执行 `borrow` 命令前，请使用 `availableCredit` 函数确认是否有足够的资金。
 
 ---
 
 ### `repay`
 
-Repay debt to the pool.
+向池中偿还债务。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/client.ts repay <amount|all>
 ```
 
-**Args:**
+**参数：**
 
-- `amount`: Specific USDC amount to repay (e.g., `"5.0"`).
-- `all`: Calculates total debt + 1% buffer and repays fully. The contract caps at actual debt owed.
+- `amount`：需要偿还的 USDC 数量（例如 `"5.0"`）。
+- `all`：计算总债务并加上 1% 的缓冲金额后全额偿还。实际偿还金额不会超过实际欠款。
 
-**Returns:** JSON
+**返回值：** JSON 格式的数据。
 
-```json
-{
-  "success": true,
-  "txHash": "0x...",
-  "repaid": "5.050000",
-  "remainingDebt": "0.000000",
-  "newCreditLimit": "110.000000"
-}
-```
-
-**Note:** Repayments pay **interest first**, then **principal**. Each successful repayment increases credit limit by 10%.
+**说明：** 还款时首先支付利息，然后偿还本金。每次成功还款后，信用额度会增加 10%。
 
 ---
 
 ### `bridge`
 
-Bridge USDC between Arc Testnet and Base Sepolia.
+在 Arc 测试网和 Base Sepolia 之间转移 USDC。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/client.ts bridge <amount> <from> <to>
 ```
 
-**Args:**
+**参数：**
 
-- `amount`: USDC amount (e.g., `"10.0"`).
-- `from`: Source chain (`arc` or `base`).
-- `to`: Destination chain (`arc` or `base`).
+- `amount`：转移的 USDC 数量（例如 `"10.0"`）。
+- `from`：源链（`arc` 或 `base`）。
+- `to`：目标链（`arc` 或 `base`）。
 
-**Returns:** JSON
+**返回值：** JSON 格式的数据。
 
-```json
-{
-  "success": true,
-  "amount": "10.000000",
-  "from": "Arc_Testnet",
-  "to": "Base_Sepolia",
-  "estimatedArrival": "5-10 minutes"
-}
-```
-
-**Fails if:** `from === to`. Chains must be different.
+**注意：** 源链和目标链必须不同。
 
 ---
 
 ### `balance`
 
-Check wallet balance on both chains.
+查询两个链上的钱包余额。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/client.ts balance
 ```
 
-**Returns:** JSON
-
-```json
-{
-  "arc": "50.000000",
-  "base": "25.000000",
-  "total": "75.000000"
-}
-```
+**返回值：** JSON 格式的数据。
 
 ---
 
-## LP Commands (Liquidity Provider)
+## 流动性提供者（LP）相关命令
 
-**Script:** `scripts/lp.ts`  
-**Run as:** `npx ts-node scripts/lp.ts <command> [args]`
+**脚本：`scripts/lp.ts`**  
+**执行方式：** `npx ts-node scripts/lp.ts <命令> [参数]`
 
 ---
 
 ### `pool-status`
 
-Check overall pool health and metrics.
+查询池的整体健康状况和指标。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/lp.ts pool-status
 ```
 
-**Returns:** JSON
-
-```json
-{
-  "totalAssets": "1000.000000",
-  "totalLiquidity": "800.000000",
-  "totalDebt": "200.000000",
-  "totalShares": "950.000000",
-  "sharePrice": "1.052631",
-  "utilizationPercent": 20
-}
-```
+**返回值：** JSON 格式的数据。
 
 ---
 
 ### `deposit`
 
-Deposit USDC to receive LP shares.
+存入 USDC 以获取 LP 股份。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/lp.ts deposit <amount>
 ```
 
-**Args:**
+**参数：**
 
-- `amount`: USDC to deposit (e.g., `"100.0"`).
+- `amount`：存入的 USDC 数量（例如 `"100.0"`）。
 
-**Returns:** JSON
-
-```json
-{
-  "success": true,
-  "txHash": "0x...",
-  "deposited": "100.000000",
-  "sharesReceived": "95.000000",
-  "totalShares": "95.000000"
-}
-```
+**返回值：** JSON 格式的数据。
 
 ---
 
 ### `withdraw`
 
-Burn LP shares to withdraw USDC.
+燃烧 LP 股份以提取 USDC。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/lp.ts withdraw <shares|all>
 ```
 
-**Args:**
+**参数：**
 
-- `shares`: Number of shares to burn (e.g., `"50.0"`).
-- `all`: Withdraw maximum possible based on available liquidity.
+- `shares`：要燃烧的 LP 股份数量（例如 `"50.0"`）。
+- `all`：根据可用流动性提取最大金额。
 
-**Returns:** JSON
+**返回值：** JSON 格式的数据。
 
-```json
-{
-  "success": true,
-  "txHash": "0x...",
-  "sharesBurned": "50.000000",
-  "usdcReceived": "52.631579",
-  "remainingShares": "45.000000"
-}
-```
-
-**Note:** Withdrawal may be capped if liquidity is fully utilized (all USDC lent out).
+**注意：** 如果所有 USDC 都已被借出，提取金额可能会受到限制。
 
 ---
 
 ### `lp-balance`
 
-Check LP position for an address.
+查询某个地址的 LP 持有情况。
 
-**Usage:**
+**使用方法：**
 
 ```bash
 npx ts-node scripts/lp.ts lp-balance [address]
 ```
 
-**Returns:** JSON
-
-```json
-{
-  "shares": "95.000000",
-  "value": "100.000000"
-}
-```
+**返回值：** JSON 格式的数据。
 
 ---
 
-## Protocol Mechanics
+## 协议机制
 
-### Interest Accrual
+### 利息计算
 
-- **Rate:** 0.1% per interval (10 basis points)
-- **Interval:** 1 minute (testnet accelerated)
-- **Formula:** `debt = principal + accrued_interest`
+- **利率：** 每个时间间隔（1 分钟）0.1%（测试网环境下的加速速率）。
+- **公式：** `debt = principal + accrued_interest`（债务 = 本金 + 累计利息）。
 
-### Credit Limit Growth
+### 信用额度增长
 
-After each repayment:
+每次还款后，信用额度会增加：
 
 ```
 newLimit = currentLimit × 1.10
 ```
 
-Maximum: 10,000 USDC.
+最大信用额度为 10,000 USDC。
 
-### Available Credit
+### 可用信用额度
 
 ```
 availableCredit = creditLimit - principal
 ```
 
-Interest does NOT reduce borrowing power—only principal.
+利息不会影响借款能力，仅影响本金。
 
-### Share Price (LP)
+### LP 股份价格
 
 ```
 sharePrice = totalAssets / totalShares
 ```
 
-Where `totalAssets = liquidity + outstandingDebt`.
+其中 `totalAssets = liquidity + outstandingDebt`（总资产 = 流动性 + 未偿还债务）。
 
 ---
 
-## Workflow Examples
+## 工作流程示例
 
-### Borrower Flow
+### 借款人流程
 
 ```text
 1. Check status     → npx ts-node scripts/client.ts status
@@ -370,7 +290,7 @@ Where `totalAssets = liquidity + outstandingDebt`.
 6. Verify growth    → npx ts-node scripts/client.ts status (limit increased!)
 ```
 
-### LP Flow
+### 流动性提供者流程
 
 ```text
 1. Check pool       → npx ts-node scripts/lp.ts pool-status
@@ -381,21 +301,21 @@ Where `totalAssets = liquidity + outstandingDebt`.
 
 ---
 
-## Common Errors & Recovery
+## 常见错误及解决方法
 
-| Error                         | Cause                      | Recovery                                         |
-| ----------------------------- | -------------------------- | ------------------------------------------------ |
-| `WALLET_PRIVATE_KEY required` | Env var missing            | Set `WALLET_PRIVATE_KEY` before running          |
-| `Exceeds credit limit`        | `amount > availableCredit` | Call `status`, borrow less                       |
-| `Insufficient balance`        | Wallet has no USDC         | Bridge funds or acquire testnet USDC             |
-| `Insufficient liquidity`      | Pool is fully utilized     | Wait for borrowers to repay or LPs to deposit    |
-| `Nonce too low`               | Transaction conflict       | Wait 10 seconds and retry                        |
-| `Bridge timeout`              | Circle Bridge delay        | Wait 5-10 minutes, check balances on both chains |
-| `Same chain error`            | `from === to` in bridge    | Use different source and destination             |
+| 错误类型            | 原因                                      | 解决方法                                      |
+| ---------------------- | -------------------------------------- | ------------------------------------------------------ |
+| `WALLET_PRIVATE_KEY 未设置` | 环境变量缺失                              | 在执行前设置 `WALLET_PRIVATE_KEY`                         |
+| 超过信用额度          | `amount > availableCredit`           | 调用 `status` 函数检查余额后再尝试借款                   |
+| 钱包余额不足          | 钱包中没有 USDC                             | 通过桥接服务获取 USDC 或在其他链上充值                   |
+| 流动性不足            | 池中所有 USDC 都已被借出                         | 等待借款人还款或 LP 提供者充值                         |
+| 交易冲突            | 交易尝试失败                               | 等待 10 秒后重试                                 |
+| 桥接服务超时            | 桥接服务出现故障                             | 等待 5-10 分钟，并检查两个链上的余额                     |
+| 源链和目标链相同          | `from` 和 `to` 指定的是同一链                         | 更改源链和目标链的值                         |
 
 ---
 
-## References
+## 参考资料
 
-- See `references/contracts.md` for full ABIs and type definitions.
-- See `scripts/client.ts` and `scripts/lp.ts` for implementation.
+- 完整的 ABI（应用程序接口）和类型定义请参见 `references/contracts.md`。
+- 实现细节请参考 `scripts/client.ts` 和 `scripts/lp.ts` 文件。

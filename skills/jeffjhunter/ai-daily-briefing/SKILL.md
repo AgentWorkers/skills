@@ -1,26 +1,22 @@
 ---
 name: ai-daily-briefing
 version: 1.0.0
-description: "Start every day focused. Get a morning briefing with overdue tasks, today's priorities, calendar overview, and context from recent meetings. Works with ai-meeting-notes to-do list. No setup. Just say 'briefing'."
+description: "每天以专注的状态开始工作。早上会收到一份简报，其中包含未完成的任务、当天的优先事项、日历概览以及近期会议的要点。该系统与 AI 会议记录工具（ai-meeting-notes）集成，用于管理待办事项列表。无需任何额外的设置，只需简单地说“briefing”即可获取相关信息。"
 author: Jeff J Hunter
 homepage: https://jeffjhunter.com
 tags: [daily-briefing, morning-routine, productivity, todo, priorities, calendar, focus, daily-ops, task-management, planning]
 ---
 
-# ☀️ AI Daily Briefing
+# ☀️ 人工智能每日简报  
+**每天以清晰的状态开始新的一天，明确知道什么是最重要的。**  
+通过每日简报，您可以了解未完成的任务、当天的优先事项以及近期工作的背景信息。  
 
-**Start every day focused. Know exactly what matters.**
-
-Get a morning briefing with overdue tasks, today's priorities, and context from recent work.
-
-No setup. Just say "briefing".
+无需任何设置，只需简单地说“briefing”即可获取简报内容。  
 
 ---
 
-## ⚠️ CRITICAL: BRIEFING FORMAT (READ FIRST)
-
-**When the user asks for a briefing, you MUST respond with this EXACT format:**
-
+## ⚠️ 重要提示：简报的格式（请先阅读）  
+**当用户请求简报时，必须按照以下格式回复：**  
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ☀️ DAILY BRIEFING — [Day], [Month] [Date], [Year]
@@ -49,51 +45,41 @@ No setup. Just say "briefing".
 [One sentence: What's the ONE thing that matters most today?]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+```  
 
-### MANDATORY RULES
-
-| Rule | Requirement |
-|------|-------------|
-| **ONE response** | Complete briefing in a single message |
-| **Sections in order** | Overdue → Priorities → Calendar → Context → Focus |
-| **Skip empty sections** | If no overdue items, skip that section |
-| **Max 5 per section** | Keep it scannable (except calendar, show all) |
-| **Focus statement** | Always end with ONE thing to focus on |
-
----
-
-## Why This Exists
-
-Every morning you face the same questions:
-- What's overdue?
-- What's due today?
-- What meetings do I have?
-- What's the context I need to remember?
-
-Instead of checking 5 different places, get one briefing.
+### 强制性规则  
+| 规则 | 要求 |  
+|------|-------------|  
+| **仅回复一条消息** | 将所有信息汇总在一条消息中 |  
+| **按顺序呈现内容** | 未完成的任务 → 当天的优先事项 → 日历 → 工作背景 → 需要关注的重点 |  
+| **跳过空白部分** | 如果没有未完成的任务，则跳过相应部分 |  
+| **每个部分最多5条信息** | 保持信息简洁易读（日历部分除外） |  
+| **结尾必须包含一个重点** | 每条简报结尾必须明确一个需要关注的重点事项 |  
 
 ---
 
-## What It Does
+## 为何需要这个功能？  
+每天早晨，您都会遇到同样的问题：  
+- 有哪些任务未完成？  
+- 今天有哪些安排？  
+- 我需要了解哪些会议信息？  
+- 有哪些背景信息需要记住？  
+通过每日简报，您可以一次性获取所有这些信息，而无需在多个地方查找。  
 
-| Input | Output |
-|-------|--------|
-| "briefing" | ✅ Complete daily overview |
-| "what's overdue?" | ✅ Overdue tasks only |
-| "what's on my calendar?" | ✅ Today's schedule |
-| "what should I focus on?" | ✅ Priority recommendation |
-| "weekly preview" | ✅ Week-ahead view |
+## 简报的功能  
+| 输入 | 输出 |  
+|-------|--------|  
+| “briefing” | 提供完整的每日概览 |  
+| “有哪些未完成的任务？” | 仅显示未完成的任务 |  
+| “我的日历上有什么安排？” | 显示当天的日程安排 |  
+| “我应该关注什么？” | 提供优先事项建议 |  
+| “本周预览” | 提供下周的日程概览 |  
 
----
+## 数据来源  
+简报信息来自以下来源（如果存在的话）：  
 
-## Data Sources
-
-The briefing pulls from these locations (if they exist):
-
-### 1. To-Do List (from ai-meeting-notes)
-
-**Location:** `todo.md` in workspace root
+### 1. 待办事项列表（来自 ai-meeting-notes）  
+**位置：** 工作区根目录下的 `todo.md`  
 
 ```markdown
 # To-Do List
@@ -112,74 +98,60 @@ The briefing pulls from these locations (if they exist):
 | # | Task | Owner | Due | Source |
 |---|------|-------|-----|--------|
 | 1 | Finalize report | @You | Fri | planning.md |
-```
+```  
 
-### 2. Meeting Notes
+### 2. 会议记录  
+**位置：** `meeting-notes/` 文件夹  
+- 扫描最近3-7天的会议记录  
+- 提取会议中的决策、行动事项及相关背景信息  
+- 显示重要的提醒事项  
 
-**Location:** `meeting-notes/` folder
+### 3. 日历（如果可用）  
+- 显示当天的会议和活动  
+- 提供明天的日程预览（可选）  
+- 显示可能存在的时间冲突或紧张的日程安排  
 
-- Scan recent files (last 3-7 days)
-- Extract decisions, action items, context
-- Surface relevant reminders
-
-### 3. Calendar (if available)
-
-- Today's meetings and events
-- Tomorrow preview (optional)
-- Conflicts or tight schedules
-
-### 4. Memory/Context Files (if using ai-persona-os)
-
-**Locations:**
-- `MEMORY.md` — Permanent facts
-- `memory/[today].md` — Session notes
-- `USER.md` — User preferences
+### 4. 记忆/背景信息文件（如果使用了 ai-persona-os）  
+**位置：**  
+- `MEMORY.md` — 永久性存储的信息  
+- `memory/[today].md` — 当天的会议记录  
+- `USER.md` — 用户的个人设置  
 
 ---
 
-## Trigger Phrases
-
-Any of these should trigger a briefing:
-
-| Phrase | Action |
-|--------|--------|
-| "briefing" | Full daily briefing |
-| "daily briefing" | Full daily briefing |
-| "morning briefing" | Full daily briefing |
-| "what's on my plate?" | Full daily briefing |
-| "start my day" | Full daily briefing |
-| "what do I need to know?" | Full daily briefing |
-| "what's today look like?" | Full daily briefing |
-| "give me the rundown" | Full daily briefing |
+## 触发简报的指令  
+以下任何指令都会触发简报的生成：  
+| 指令 | 动作 |  
+|--------|--------|  
+| “briefing” | 生成完整的每日简报 |  
+| “daily briefing” | 生成完整的每日简报 |  
+| “morning briefing” | 生成完整的每日简报 |  
+| “我今天有哪些任务？” | 生成完整的每日简报 |  
+| “我想了解今天的情况” | 生成完整的每日简报 |  
+| “给我介绍一下今天的安排” | 生成完整的每日简报 |  
 
 ---
 
-<ai_instructions>
+<aiinstructions>  
+## 人工智能的工作流程：  
+当用户请求简报时，请按照以下步骤操作：  
 
-## For the AI: How to Generate a Daily Briefing
+### 第0步：准备工作  
+在生成简报之前，请确认：  
+- [ ] 会回复一条消息  
+- [ ] 会严格按照规定的格式回复  
+- [ ] 每条简报结尾都会包含一个需要关注的重点事项  
 
-When a user asks for a briefing, follow these steps.
-
-### Step 0: Pre-Flight Check
-
-Before generating the briefing, confirm:
-- [ ] Will respond in ONE message
-- [ ] Will use the exact format from the CRITICAL section
-- [ ] Will include the Focus statement at the end
-
-### Step 1: Gather Data Sources
-
-Check for these files in order:
-
+### 第1步：收集数据  
+按顺序检查以下文件：  
 ```
 1. todo.md (to-do list from ai-meeting-notes)
 2. meeting-notes/ folder (recent meeting notes)
 3. MEMORY.md (if using ai-persona-os)
 4. memory/[today].md (session notes)
 5. Calendar integration (if available)
-```
-
-**If no data sources exist:**
+```  
+**如果没有任何数据来源：**  
 ```
 No existing to-do list or meeting notes found.
 
@@ -187,123 +159,101 @@ Would you like me to:
 • Create a to-do list? (just tell me your tasks)
 • Process some meeting notes? (paste them here)
 • Set up a simple priority list for today?
-```
+```  
 
-### Step 2: Extract Overdue Items
-
-From `todo.md`, find items in the "⚠️ Overdue" section.
-
-**Display format:**
+### 第2步：提取未完成的任务  
+从 `todo.md` 中提取标记为“⚠️ 未完成”的任务。  
+**显示格式：**  
 ```
 ⚠️ OVERDUE ([X] items)
 • [Task] — was due [date]
 • [Task] — was due [date]
-```
+```  
+**规则：**  
+- 最多显示5项任务（如果超过5项，则显示“+ [X] 项未完成的任务”）  
+- 按紧急程度排序  
+- 显示任务的原始截止日期  
+- 如果没有未完成的任务，则跳过此部分  
 
-**Rules:**
-- Show max 5 items (if more: "+ [X] more overdue")
-- Most urgent first
-- Include original due date
-- If none: Skip this section entirely
+### 第3步：提取当天的优先事项  
+从多个来源汇总优先事项：  
+1. **来自 `todo.md` 的任务**：  
+   - 标记为“📅 今天到期”的任务  
+   - 标记为“📆 本周内到期”的任务  
+2. **来自 `meeting-notes/` 的任务**：  
+   - 分配给用户的、今天到期的行动事项  
+   - 需要跟进的事项  
+3. **来自日历的任务**：  
+   - 需要准备的会议  
+   - 截止日期  
 
-### Step 3: Extract Today's Priorities
-
-Combine from multiple sources:
-
-1. **From todo.md:**
-   - "📅 Due Today" section
-   - "📆 This Week" items due today
-
-2. **From meeting-notes/:**
-   - Action items assigned to user with today's deadline
-   - Follow-ups due today
-
-3. **From calendar:**
-   - Important meetings to prep for
-   - Deadlines
-
-**Display format:**
+**显示格式：**  
 ```
 📅 TODAY'S PRIORITIES
 1. [ ] [Task] — [deadline/context]
 2. [ ] [Task] — [deadline/context]
 3. [ ] [Task] — [deadline/context]
-```
+```  
+**规则：**  
+- 最多显示5项任务  
+- 为便于查看，任务会编号  
+- 按紧急程度和重要性排序  
 
-**Rules:**
-- Show max 5 items
-- Numbered for easy reference
-- Include checkbox format
-- Prioritize by: urgency → importance → order mentioned
-
-### Step 4: Calendar Overview
-
-If calendar data is available:
-
-**Display format:**
+### 第4步：查看日历  
+如果日历数据可用：  
+**显示格式：**  
 ```
 📆 CALENDAR
 • [Time] — [Event]
 • [Time] — [Event]
 • [Time] — [Event]
-```
+```  
+**规则：**  
+- 按时间顺序显示所有事件  
+- 显示事件名称和时间  
+- 如果没有日历数据，则显示“未连接日历”  
 
-**Rules:**
-- Chronological order
-- Show all events (don't truncate)
-- Include time and event name
-- If no calendar: Skip this section or note "No calendar connected"
+### 第5步：整理近期会议的背景信息  
+扫描 `meeting-notes/` 文件夹中的文件（最近3-7天的记录），提取以下内容：  
+- 会议中的关键决策  
+- 需要记住的重要背景信息  
+- 提及的截止日期  
+- 需要跟进的人员或事项  
 
-### Step 5: Context from Recent Meetings
-
-Scan `meeting-notes/` folder for files from last 3-7 days.
-
-Extract:
-- Key decisions made
-- Important context to remember
-- Upcoming deadlines mentioned
-- People/relationships to follow up with
-
-**Display format:**
+**显示格式：**  
 ```
 💡 CONTEXT (from recent meetings)
 • [Key insight 1]
 • [Key insight 2]
 • [Key insight 3]
-```
+```  
+**规则：**  
+- 最多显示5条相关信息  
+- 仅包含相关且可执行的背景信息  
+- 如有必要，可注明会议来源（例如：“来自客户电话”）  
+- 如果没有近期会议记录，则跳过此部分  
 
-**Rules:**
-- Max 5 context items
-- Only include relevant/actionable context
-- Reference the meeting if helpful: "(from client-call)"
-- If no recent meetings: Skip this section
+### 第6步：确定重点事项  
+根据收集到的所有信息，确定最重要的一项任务。  
+**选择重点的依据：**  
+- 有严重后果的未完成任务  
+- 今天有重要会议的议题  
+- 不能延期的截止日期  
+- 会阻碍其他工作的依赖事项  
 
-### Step 6: Generate Focus Statement
-
-Based on everything gathered, determine the ONE most important thing.
-
-**Criteria for choosing focus:**
-1. Overdue items with consequences
-2. High-stakes meetings today
-3. Deadlines that can't slip
-4. Dependencies blocking others
-
-**Display format:**
+**显示格式：**  
 ```
 🎯 FOCUS FOR TODAY
 [One clear sentence about the single most important thing]
-```
+```  
+**示例：**  
+- “请发送Acme公司的提案——该提案已经逾期2天了，他们正在等待回复。”  
+- “准备下午2点的投资者电话会议——其他事项都可以暂时放一放。”  
+- “在开始新工作之前，先完成3项未完成的任务。”  
+- “今天没有紧急事务，可以用来深入研究第二季度的计划。”  
 
-**Examples:**
-- "Get the Acme proposal sent — it's 2 days overdue and they're waiting."
-- "Prep for the investor call at 2pm — everything else can wait."
-- "Clear the 3 overdue tasks before starting anything new."
-- "No fires today — use this for deep work on the Q2 plan."
-
-### Step 7: Assemble the Briefing
-
-Put it all together in the exact format:
-
+### 第7步：整合简报内容  
+将所有信息按照规定的格式整合在一起：  
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ☀️ DAILY BRIEFING — [Day], [Month] [Date], [Year]
@@ -320,11 +270,10 @@ Put it all together in the exact format:
 [Focus statement — always]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+```  
 
-### Step 8: Handle Variations
-
-**"What's overdue?"**
+### 处理不同情况  
+- **“有哪些未完成的任务？”**  
 ```
 ⚠️ OVERDUE ITEMS
 
@@ -332,9 +281,8 @@ Put it all together in the exact format:
 2. [Task] — was due [date]
 
 [If none: "Nothing overdue! You're caught up."]
-```
-
-**"What's on my calendar?"**
+```  
+- **“我的日历上有什么安排？”**  
 ```
 📆 TODAY'S CALENDAR — [Date]
 
@@ -342,9 +290,8 @@ Put it all together in the exact format:
 • [Time] — [Event]
 
 [Tomorrow preview if requested]
-```
-
-**"Weekly preview" / "What's this week look like?"**
+```  
+- **“本周预览” / “本周的安排是什么？”**  
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📅 WEEKLY PREVIEW — Week of [Date]
@@ -363,86 +310,63 @@ TUESDAY
 • [Important meeting]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+```  
 
-### Edge Cases
+### 特殊情况处理：  
+- 如果没有找到数据来源：  
+  - 不显示空简报  
+  - 提供帮助设置待办事项列表或整理会议记录的选项  
+- **首次使用用户**：  
+  - 解释数据来源  
+  - 提供初始化设置的帮助  
+- **周末简报**：  
+  - 简报内容简化  
+  - 重点介绍下周的准备工作  
+  - 如果当天没有安排，可省略“当天的优先事项”  
+- **结束时的提示**：  
+  - 提供“今天剩余的任务”和“明天的日程预览”，并告知当前时间  
 
-**No data sources found:**
-- Don't show empty briefing
-- Offer to help set up todo list or process notes
-
-**First time user:**
-- Explain where data comes from
-- Offer to create initial setup
-
-**Weekend briefing:**
-- Lighter format
-- Focus on upcoming week prep
-- Skip "today's priorities" if nothing scheduled
-
-**End of day request:**
-- Shift to "what's left today" + "tomorrow preview"
-- Acknowledge time of day
-
-### Tone
-
-- **Crisp and actionable** — No fluff
-- **Honest about priorities** — Don't sugarcoat overdue items
-- **Encouraging but real** — "Busy day, but manageable"
-- **Proactive** — Surface things before they're problems
-
-</ai_instructions>
+### 交流语气  
+- **简洁明了且具有行动指导性**：避免冗长内容  
+- **如实说明优先事项**：不粉饰未完成的任务  
+- **积极向上**：虽然今天可能很忙，但一切都在可控范围内  
+- **主动提醒**：在问题出现之前就提前提示用户  
 
 ---
 
-## Works Best With
+## 该功能与哪些工具配合使用效果最佳？  
+| 工具 | 原因 |  
+|-------|-----|  
+| **ai-meeting-notes** | 用于生成待办事项列表 |  
+| **ai-persona-os** | 提供记忆和背景信息 |  
+**独立使用**：即使没有其他工具，也能生成简报，但可能缺少会议背景信息和持续性的待办事项列表。  
 
-| Skill | Why |
-|-------|-----|
-| **ai-meeting-notes** | Creates the to-do list this pulls from |
-| **ai-persona-os** | Provides memory and context |
-
-**Standalone:** Works without other skills — just won't have meeting context or persistent todo.
-
----
-
-## Quick Start
-
-**Day 1:**
+## 快速上手指南  
+**第一天使用方法：**  
 ```
 You: "briefing"
 AI: [Shows briefing based on available data, or offers to set up]
-```
-
-**After using ai-meeting-notes:**
+```  
+**使用 ai-meeting-notes 后：**  
 ```
 You: "briefing"
 AI: [Shows full briefing with overdue items, priorities, context]
-```
+```  
 
----
+## 自定义简报内容  
+想要自定义简报内容吗？请告知您的需求：  
+**时间设置**：  
+- “我早上6点开始工作” → 提前显示相关信息  
+- “显示明天的会议安排” → 显示明天的日程预览  
+**内容设置**：  
+- “始终显示天气” → 添加天气信息  
+- “跳过日历部分” → 不显示日历内容  
+- **添加激励性语句**：添加激励性的语句  
+**优先事项设置**：  
+- “健康相关的事项永远优先处理” → 提高健康相关事项的优先级  
+- “家庭优先” → 优先处理家庭事务  
 
-## Customization
-
-Want to customize your briefing? Tell me your preferences:
-
-**Time preferences:**
-- "I start work at 6am" → Earlier context
-- "Show tomorrow's first meeting" → Tomorrow preview
-
-**Section preferences:**
-- "Always show weather" → Add weather
-- "Skip calendar" → Omit calendar section
-- "Include quotes" → Add motivational quote
-
-**Priority preferences:**
-- "Health tasks are always P1" → Boost health items
-- "Family first" → Prioritize family commitments
-
----
-
-## Example Briefing
-
+## 简报示例：  
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ☀️ DAILY BRIEFING — Tuesday, February 3, 2026
@@ -473,24 +397,16 @@ Want to customize your briefing? Tell me your preferences:
 Get the Acme proposal out first thing — it's 2 days overdue and blocking the deal.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+```  
+
+## 关于创建者  
+**Jeff J Hunter** 创建了这个系统，帮助人们每天以清晰的状态开始新的一天，避免混乱。  
+他通过“AI Persona Method”培训了数千人，并管理着拥有360多万成员的AI社区。  
+**想将AI技术转化为实际收入吗？**  
+大多数人浪费API信用却没有任何实际成果。Jeff会教你如何构建能够自我盈利的AI系统。  
+👉 **加入AI Money Group**：https://aimoneygroup.com  
+👉 **联系Jeff**：https://jeffjhunter.com  
 
 ---
 
-## About the Creator
-
-**Jeff J Hunter** built this system to start every day with clarity instead of chaos.
-
-He's trained thousands through the AI Persona Method and runs AI communities with 3.6M+ members.
-
-**Want to turn AI into actual income?**
-
-Most people burn API credits with nothing to show.
-Jeff teaches you how to build AI systems that pay for themselves.
-
-👉 **Join AI Money Group:** https://aimoneygroup.com
-👉 **Connect with Jeff:** https://jeffjhunter.com
-
----
-
-*Part of the AI Persona OS ecosystem — Build agents that work. And profit.*
+*这是AI Persona操作系统生态系统的一部分——帮助您构建实用且能带来收益的AI应用。*

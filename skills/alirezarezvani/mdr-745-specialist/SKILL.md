@@ -1,6 +1,6 @@
 ---
 name: mdr-745-specialist
-description: EU MDR 2017/745 compliance specialist for medical device classification, technical documentation, clinical evidence, and post-market surveillance. Covers Annex VIII classification rules, Annex II/III technical files, Annex XIV clinical evaluation, and EUDAMED integration.
+description: 欧盟MDR 2017/745合规专家，专注于医疗器械的分类、技术文档编制、临床证据收集以及上市后监管工作。负责处理附件VIII中的分类规则、附件II/III中的技术文件、附件XIV中的临床评估要求，以及EUDAMED（欧洲医疗器械数据库）的整合工作。
 triggers:
   - MDR compliance
   - EU MDR
@@ -14,88 +14,87 @@ triggers:
   - notified body
 ---
 
-# MDR 2017/745 Specialist
+# MDR 2017/745 专家指南
 
-EU MDR compliance patterns for medical device classification, technical documentation, and clinical evidence.
-
----
-
-## Table of Contents
-
-- [Device Classification Workflow](#device-classification-workflow)
-- [Technical Documentation](#technical-documentation)
-- [Clinical Evidence](#clinical-evidence)
-- [Post-Market Surveillance](#post-market-surveillance)
-- [EUDAMED and UDI](#eudamed-and-udi)
-- [Reference Documentation](#reference-documentation)
-- [Tools](#tools)
+本指南提供了欧盟医疗器械法规（MDR）中关于医疗器械分类、技术文档和临床证据的相关合规要求。
 
 ---
 
-## Device Classification Workflow
+## 目录
 
-Classify device under MDR Annex VIII:
-
-1. Identify device duration (transient, short-term, long-term)
-2. Determine invasiveness level (non-invasive, body orifice, surgical)
-3. Assess body system contact (CNS, cardiac, other)
-4. Check if active device (energy dependent)
-5. Apply classification rules 1-22
-6. For software, apply MDCG 2019-11 algorithm
-7. Document classification rationale
-8. **Validation:** Classification confirmed with Notified Body
-
-### Classification Matrix
-
-| Factor | Class I | Class IIa | Class IIb | Class III |
-|--------|---------|-----------|-----------|-----------|
-| Duration | Any | Short-term | Long-term | Long-term |
-| Invasiveness | Non-invasive | Body orifice | Surgical | Implantable |
-| System | Any | Non-critical | Critical organs | CNS/cardiac |
-| Risk | Lowest | Low-medium | Medium-high | Highest |
-
-### Software Classification (MDCG 2019-11)
-
-| Information Use | Condition Severity | Class |
-|-----------------|-------------------|-------|
-| Informs decision | Non-serious | IIa |
-| Informs decision | Serious | IIb |
-| Drives/treats | Critical | III |
-
-### Classification Examples
-
-**Example 1: Absorbable Surgical Suture**
-- Rule 8 (implantable, long-term)
-- Duration: > 30 days (absorbed)
-- Contact: General tissue
-- Classification: **Class IIb**
-
-**Example 2: AI Diagnostic Software**
-- Rule 11 + MDCG 2019-11
-- Function: Diagnoses serious condition
-- Classification: **Class IIb**
-
-**Example 3: Cardiac Pacemaker**
-- Rule 8 (implantable)
-- Contact: Central circulatory system
-- Classification: **Class III**
+- [医疗器械分类流程](#device-classification-workflow)
+- [技术文档](#technical-documentation)
+- [临床证据](#clinical-evidence)
+- [上市后监督](#post-market-surveillance)
+- [EUDAMED 和 UDI](#eudamed-and-udi)
+- [参考文档](#reference-documentation)
+- [工具](#tools)
 
 ---
 
-## Technical Documentation
+## 医疗器械分类流程
 
-Prepare technical file per Annex II and III:
+根据 MDR 第 VIII 附录对医疗器械进行分类：
 
-1. Create device description (variants, accessories, intended purpose)
-2. Develop labeling (Article 13 requirements, IFU)
-3. Document design and manufacturing process
-4. Complete GSPR compliance matrix
-5. Prepare benefit-risk analysis
-6. Compile verification and validation evidence
-7. Integrate risk management file (ISO 14971)
-8. **Validation:** Technical file reviewed for completeness
+1. 确定医疗器械的使用期限（短暂使用、短期使用、长期使用）。
+2. 判断医疗器械的侵入性级别（非侵入性、通过体腔使用、需要手术）。
+3. 评估医疗器械与人体系统的接触部位（中枢神经系统、心脏系统等）。
+4. 判断医疗器械是否具有能量输出功能。
+5. 应用相应的分类规则（规则 1-22）。
+6. 对于软件产品，需使用 MDCG 2019-11 算法进行分类。
+7. 记录分类的依据。
+8. **验证：** 将分类结果提交给指定机构（Notified Body）进行确认。
 
-### Technical File Structure
+### 分类矩阵
+
+| 因素          | I 类       | IIa 类      | IIb 类      | III 类      |
+|------------------|-----------|-----------|-----------|-----------|
+| 使用期限        | 任意        | 短期使用    | 长期使用    | 长期使用    |
+| 侵入性级别      | 非侵入性     | 通过体腔使用 | 需要手术   | 可植入式   |
+| 与人体系统的接触部位    | 中枢神经系统/心脏系统 | 其他系统    |          |
+| 风险等级        | 最低        | 低至中等    | 中等到高    | 最高        |
+
+### 软件产品的分类（MDCG 2019-11）
+
+| 信息用途        | 条件严重性    | 分类等级    |
+|------------------|------------|-----------|
+| 用于决策支持     | 无严重后果    | IIa 类      |
+| 用于决策支持     | 有严重后果    | IIb 类      |
+| 用于驱动或治疗     | 关键功能     | III 类      |
+
+### 分类示例
+
+**示例 1：可吸收外科缝合线**
+- 规则 8（可植入式，长期使用）
+- 使用期限：> 30 天（可吸收）
+- 与人体组织的接触：一般组织
+- 分类：**IIb 类**
+
+**示例 2：人工智能诊断软件**
+- 规则 11 + MDCG 2019-11
+- 功能：诊断严重疾病
+- 分类：**IIb 类**
+
+**示例 3：心脏起搏器**
+- 规则 8（可植入式）
+- 与人体系统的接触：中枢循环系统
+- 分类：**III 类**
+
+---
+
+## 技术文档
+
+根据 MDR 第 II 和 III 附录准备技术文档：
+
+1. 编写医疗器械描述（包括不同型号、配件及预期用途）。
+2. 制定产品标签（符合第 13 条要求）。
+3. 记录产品的设计和制造过程。
+4. 完成 GSPR（Good Supply Practice Requirements）合规性评估。
+5. 编制风险分析报告。
+6. 整合风险管理文件（ISO 14971 标准）。
+7. **验证：** 技术文档的完整性需经过审核。
+
+### 技术文档结构
 
 ```
 ANNEX II TECHNICAL DOCUMENTATION
@@ -108,51 +107,50 @@ ANNEX II TECHNICAL DOCUMENTATION
 └── Clinical evaluation report
 ```
 
-### GSPR Compliance Checklist
+### GSPR 合规性检查清单
 
-| Requirement | Evidence | Status |
-|-------------|----------|--------|
-| Safe design (GSPR 1-3) | Risk management file | ☐ |
-| Chemical properties (GSPR 10.1) | Biocompatibility report | ☐ |
-| Infection risk (GSPR 10.2) | Sterilization validation | ☐ |
-| Software requirements (GSPR 17) | IEC 62304 documentation | ☐ |
-| Labeling (GSPR 23) | Label artwork, IFU | ☐ |
+| 要求                | 证据                | 状态        |
+|------------------|------------------|-----------|
+| 安全设计            | 风险管理文件            | ☐         |
+| 化学性质            | 生物相容性报告            | ☐         |
+| 感染风险            | 灭菌验证              | ☐         |
+| 软件要求            | IEC 62304 标准文档        | ☐         |
+| 标签                | 标签设计和使用说明书         | ☐         |
 
-### Conformity Assessment Routes
+### 合规性评估途径
 
-| Class | Route | NB Involvement |
-|-------|-------|----------------|
-| I | Annex II self-declaration | None |
-| Is/Im | Annex II + IX/XI | Sterile/measuring aspects |
-| IIa | Annex II + IX or XI | Product or QMS |
-| IIb | Annex IX + X or X + XI | Type exam + production |
-| III | Annex IX + X | Full QMS + type exam |
+| 分类等级            | 评估途径              | 指定机构参与程度 |
+|------------------|------------------|-------------|
+| I 类               | 自我声明（符合第 II 附录）       | 无需指定机构参与 |
+| IIa 类/II 类（植入式/测量设备） | 第 II 附录 + 第 IX/XI 附录     | 需指定机构参与 |
+| IIb 类               | 第 IX 附录 + 第 X 或 XI 附录     | 需指定机构参与（类型测试和生产过程） |
+| III 类               | 第 IX 附录 + 第 X 附录       | 需指定机构参与（全面质量管理体系和类型测试） |
 
 ---
 
-## Clinical Evidence
+## 临床证据
 
-Develop clinical evidence strategy per Annex XIV:
+根据 MDR 第 XIV 附录制定临床证据策略：
 
-1. Define clinical claims and endpoints
-2. Conduct systematic literature search
-3. Appraise clinical data quality
-4. Assess equivalence (technical, biological, clinical)
-5. Identify evidence gaps
-6. Determine if clinical investigation required
-7. Prepare Clinical Evaluation Report (CER)
-8. **Validation:** CER reviewed by qualified evaluator
+1. 明确临床声明和评估指标。
+2. 进行系统性文献搜索。
+3. 评估临床数据的质量。
+4. 评估临床数据的等效性（技术、生物学、临床方面）。
+5. 识别证据缺口。
+6. 判断是否需要进行临床研究。
+7. 编制临床评估报告（CER）。
+8. **验证：** CER 需由合格评估机构审核。
 
-### Evidence Requirements by Class
+### 各分类等级的临床证据要求
 
-| Class | Minimum Evidence | Investigation |
-|-------|------------------|---------------|
-| I | Risk-benefit analysis | Not typically required |
-| IIa | Literature + post-market | May be required |
-| IIb | Systematic literature review | Often required |
-| III | Comprehensive clinical data | Required (Article 61) |
+| 分类等级 | 最低证据要求 | 评估方式       |
+|---------|-------------|-------------|
+| I 类       | 风险-收益分析         | 通常不需要     |
+| IIa 类       | 文献资料 + 上市后数据     | 可能需要     |
+| IIb 类       | 系统性文献回顾       | 通常需要     |
+| III 类       | 全面的临床数据       | 必须提供     |
 
-### Clinical Evaluation Report Structure
+### 临床评估报告结构
 
 ```
 CER CONTENTS
@@ -166,130 +164,128 @@ CER CONTENTS
 └── PMCF plan summary
 ```
 
-### Qualified Evaluator Requirements
+### 合格评估机构的要求
 
-- Medical degree or equivalent healthcare qualification
-- 4+ years clinical experience in relevant field
-- Training in clinical evaluation methodology
-- Understanding of MDR requirements
-
----
-
-## Post-Market Surveillance
-
-Establish PMS system per Chapter VII:
-
-1. Develop PMS plan (Article 84)
-2. Define data collection methods
-3. Establish complaint handling procedures
-4. Create vigilance reporting process
-5. Plan Periodic Safety Update Reports (PSUR)
-6. Integrate with PMCF activities
-7. Define trend analysis and signal detection
-8. **Validation:** PMS system audited annually
-
-### PMS System Components
-
-| Component | Requirement | Frequency |
-|-----------|-------------|-----------|
-| PMS Plan | Article 84 | Maintain current |
-| PSUR | Class IIa and higher | Per class schedule |
-| PMCF Plan | Annex XIV Part B | Update with CER |
-| PMCF Report | Annex XIV Part B | Annual (Class III) |
-| Vigilance | Articles 87-92 | As events occur |
-
-### PSUR Schedule
-
-| Class | Frequency |
-|-------|-----------|
-| Class III | Annual |
-| Class IIb implantable | Annual |
-| Class IIb | Every 2 years |
-| Class IIa | When necessary |
-
-### Serious Incident Reporting
-
-| Timeline | Requirement |
-|----------|-------------|
-| 2 days | Serious public health threat |
-| 10 days | Death or serious deterioration |
-| 15 days | Other serious incidents |
+- 拥有医学学位或同等医疗资质。
+- 在相关领域具有 4 年以上的临床经验。
+- 接受过临床评估方法论的培训。
+- 熟悉 MDR 的相关要求。
 
 ---
 
-## EUDAMED and UDI
+## 上市后监督
 
-Implement UDI system per Article 27:
+根据 MDR 第 VII 附录建立上市后监督（PMS）系统：
 
-1. Obtain issuing entity code (GS1, HIBCC, ICCBBA)
-2. Assign UDI-DI to each device variant
-3. Assign UDI-PI (production identifier)
-4. Apply UDI carrier to labels (AIDC + HRI)
-5. Register actor in EUDAMED
-6. Register devices in EUDAMED
-7. Upload certificates when available
-8. **Validation:** UDI verified on sample labels
+1. 制定 PMS 计划（第 84 条）。
+2. 确定数据收集方法。
+3. 建立投诉处理程序。
+4. 建立警戒报告流程。
+5. 制定定期安全更新报告（PSUR）。
+6. 将 PMS 系统与 PMCF（Post-Market Clinical Follow-up）活动相结合。
+7. 进行趋势分析和信号检测。
+8. **验证：** PMS 系统每年接受审核。
 
-### EUDAMED Modules
+### PMS 系统组成部分
 
-| Module | Content | Actor |
-|--------|---------|-------|
-| Actor | Company registration | Manufacturer, AR |
-| UDI/Device | Device and variant data | Manufacturer |
-| Certificates | NB certificates | Notified Body |
-| Clinical Investigation | Study registration | Sponsor |
-| Vigilance | Incident reports | Manufacturer |
-| Market Surveillance | Authority actions | Competent Authority |
+| 组件            | 要求                | 频率        |
+|------------------|------------------|-------------|
+| PMS 计划          | 第 84 条           | 必须制定     |
+| PSUR            | IIa 类及以上等级         | 按类别定期提交   |
+| PMCF 计划          | 第 XIV 附录 B          | 随 CER 更新    |
+| PMCF 报告          | 第 XIV 附录 B          | III 类产品每年提交 |
+| 警戒报告          | 第 87-92 条         | 根据事件发生情况提交 |
 
-### UDI Label Requirements
+### PSUR 提交频率
 
-Required elements per Article 13:
+| 分类等级            | 提交频率        |
+|------------------|-------------|
+| III 类             | 每年            |
+| IIb 类（可植入式产品）      | 每年            |
+| IIb 类（其他产品）       | 每两年          |
+| IIa 类             | 根据需要        |
 
-- [ ] UDI-DI (device identifier)
-- [ ] UDI-PI (production identifier) for Class II+
-- [ ] AIDC format (barcode/RFID)
-- [ ] HRI format (human-readable)
-- [ ] Manufacturer name and address
-- [ ] Lot/serial number
-- [ ] Expiration date (if applicable)
+### 严重事件报告
 
----
-
-## Reference Documentation
-
-### MDR Classification Guide
-
-`references/mdr-classification-guide.md` contains:
-
-- Complete Annex VIII classification rules (Rules 1-22)
-- Software classification per MDCG 2019-11
-- Worked classification examples
-- Conformity assessment route selection
-
-### Clinical Evidence Requirements
-
-`references/clinical-evidence-requirements.md` contains:
-
-- Clinical evidence framework and hierarchy
-- Literature search methodology
-- Clinical Evaluation Report structure
-- PMCF plan and evaluation report guidance
-
-### Technical Documentation Templates
-
-`references/technical-documentation-templates.md` contains:
-
-- Annex II and III content requirements
-- Design History File structure
-- GSPR compliance matrix template
-- Declaration of Conformity template
-- Notified Body submission checklist
+- **时间线** | **报告要求** |
+|------------|-------------|
+| 2 天        | 造成严重公共卫生威胁的事件 |
+| 10 天        | 导致死亡或病情恶化的事件 |
+| 15 天        | 其他严重事件       |
 
 ---
 
-## Tools
+## EUDAMED 和 UDI
 
-### MDR Gap Analyzer
+根据第 27 条实施 UDI（Unique Device Identifier）系统：
+
+1. 获取发行机构的代码（GS1、HIBCC、ICCBBA）。
+2. 为每个医疗器械型号分配 UDI-DI（唯一设备标识符）和 UDI-PI（生产标识符）。
+3. 在标签上标注 UDI 信息。
+4. 在 EUDAMED 数据库中注册相关信息。
+5. 在设备上市后及时上传相关证书。
+8. **验证：** 标签上的 UDI 信息需经过验证。
+
+### EUDAMED 的主要模块
+
+| 模块            | 内容                | 负责注册的机构    |
+|------------------|------------------|-------------|
+| 注册机构          | 制造商或授权注册机构       |
+| UDI/设备信息        | 设备和型号详细信息      | 制造商       |
+| 证书            | 相关认证机构的证书      | 指定机构     |
+| 临床研究          | 研究注册信息        | 项目发起者     |
+| 警戒报告          | 事件报告          | 制造商       |
+| 市场监督          | 相关监管机构的行动      | 监管机构     |
+
+### UDI 标签要求
+
+根据第 13 条，标签上必须包含以下内容：
+
+- UDI-DI（唯一设备标识符）
+- UDI-PI（生产标识符，适用于 II 类及以上等级）
+- AIDC（Automatic Identification Code）格式（条形码/RFID）
+- HRI（Human-readable Information）格式（便于人类阅读）
+- 制造商名称和地址
+- 批次/序列号
+- 有效期（如适用）
+
+---
+
+## 参考文档
+
+### MDR 分类指南
+
+`references/mdr-classification-guide.md` 包含：
+
+- MDR 第 VIII 附录中的完整分类规则（规则 1-22）
+- 根据 MDCG 2019-11 的软件产品分类方法
+- 分类示例
+- 合规性评估途径的选择指南
+
+### 临床证据要求
+
+`references/clinical-evidence-requirements.md` 包含：
+
+- 临床证据框架和层级结构
+- 文献搜索方法
+- 临床评估报告的编写指南
+- PMCF（Post-Market Clinical Follow-up）计划和评估报告的编写指导
+
+### 技术文档模板
+
+`references/technical-documentation-templates.md` 包含：
+
+- MDR 第 II 和 III 附录的要求
+- 设计历史文件的结构
+- GSPR 合规性评估模板
+- 合规性声明模板
+- 向指定机构提交的文件清单
+
+---
+
+## 工具
+
+### MDR 合规性差距分析工具
 
 ```bash
 # Quick gap analysis
@@ -302,34 +298,34 @@ python scripts/mdr_gap_analyzer.py --device "Device Name" --class III --output j
 python scripts/mdr_gap_analyzer.py --interactive
 ```
 
-Analyzes device against MDR requirements, identifies compliance gaps, generates prioritized recommendations.
+该工具用于分析医疗器械是否符合 MDR 的要求，识别合规性差距，并提供优先级的改进建议。
 
-**Output includes:**
-- Requirements checklist by category
-- Gap identification with priorities
-- Critical gap highlighting
-- Compliance roadmap recommendations
+**输出内容包括：**
+- 按类别划分的要求清单
+- 危险差距的识别及优先级排序
+- 关键差距的突出显示
+- 合规性改进的行动计划建议
 
 ---
 
-## Notified Body Interface
+## 指定机构（Notified Body）的选择
 
-### Selection Criteria
+### 选择标准
 
-| Factor | Considerations |
-|--------|----------------|
-| Designation scope | Covers your device type |
-| Capacity | Timeline for initial audit |
-| Geographic reach | Markets you need to access |
-| Technical expertise | Experience with your technology |
-| Fee structure | Transparency, predictability |
+| 选择因素            | 考虑因素                |
+|------------------|------------------------|
+| 指定机构的业务范围       | 是否涵盖您的产品类型         |
+| 技术能力           | 是否具备处理您产品的技术能力     |
+| 地理覆盖范围         | 是否能覆盖您目标市场         |
+| 技术专长           | 是否有处理类似技术的经验       |
+| 费用结构           | 费用的透明度和可预测性         |
 
-### Pre-Submission Checklist
+### 提交前的检查清单
 
-- [ ] Technical documentation complete
-- [ ] GSPR matrix fully addressed
-- [ ] Risk management file current
-- [ ] Clinical evaluation report complete
-- [ ] QMS (ISO 13485) certified
-- [ ] Labeling and IFU finalized
-- [ ] **Validation:** Internal gap assessment complete
+- 技术文档是否完整             |
+- GSPR 合规性评估是否完成         |
+- 风险管理文件是否是最新的         |
+- 临床评估报告是否准备好         |
+- 质量管理体系（ISO 13485）是否通过认证     |
+- 标签和使用说明书是否最终确定       |
+- **验证：** 内部合规性评估是否完成     |

@@ -1,35 +1,35 @@
 # language-detect
 
-Detect the language of text using AI
+使用人工智能检测文本的语言
 
-## Requirements
+## 要求
 
-- Expanso Edge installed (`expanso-edge` binary in PATH)
-- Install via: `clawhub install expanso-edge`
+- 已安装 Expanso Edge（`expanso-edge` 可执行文件必须在系统的 PATH 环境变量中）
+- 安装方法：`clawhub install expanso-edge`
 
-## Usage
+## 使用方法
 
-### CLI Pipeline
+### 命令行接口（CLI）流程
 ```bash
 # Run standalone
 echo '<input>' | expanso-edge run pipeline-cli.yaml
 ```
 
-### MCP Pipeline
+### MCP（Machine Learning Platform）流程
 ```bash
 # Start as MCP server
 expanso-edge run pipeline-mcp.yaml
 ```
 
-### Deploy to Expanso Cloud
+### 部署到 Expanso Cloud
 ```bash
 expanso-cli job deploy https://skills.expanso.io/language-detect/pipeline-cli.yaml
 ```
 
-## Files
+## 文件说明
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `skill.yaml` | Skill metadata (inputs, outputs, credentials) |
-| `pipeline-cli.yaml` | Standalone CLI pipeline |
-| `pipeline-mcp.yaml` | MCP server pipeline |
+| `skill.yaml` | 技能元数据（输入参数、输出结果、认证信息） |
+| `pipeline-cli.yaml` | 独立的命令行接口（CLI）流程 |
+| `pipeline-mcp.yaml` | MCP 服务器流程 |

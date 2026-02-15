@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿修改。 -->
 
-# Telnyx Networking - Ruby
+# Telnyx 网络服务 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +31,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List all Regions
+## 列出所有区域
 
-List all regions and the interfaces that region supports
+列出所有区域及其支持的接口
 
 `GET /regions`
 
@@ -44,9 +45,9 @@ regions = client.regions.list
 puts(regions)
 ```
 
-## List all Networks
+## 列出所有网络
 
-List all Networks.
+列出所有网络。
 
 `GET /networks`
 
@@ -56,9 +57,9 @@ page = client.networks.list
 puts(page)
 ```
 
-## Create a Network
+## 创建网络
 
-Create a new Network.
+创建一个新的网络。
 
 `POST /networks`
 
@@ -68,9 +69,9 @@ network = client.networks.create(name: "test network")
 puts(network)
 ```
 
-## Retrieve a Network
+## 获取网络信息
 
-Retrieve a Network.
+获取网络信息。
 
 `GET /networks/{id}`
 
@@ -80,9 +81,9 @@ network = client.networks.retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(network)
 ```
 
-## Update a Network
+## 更新网络
 
-Update a Network.
+更新网络信息。
 
 `PATCH /networks/{id}`
 
@@ -92,9 +93,9 @@ network = client.networks.update("6a09cdc3-8948-47f0-aa62-74ac943d6c58", name: "
 puts(network)
 ```
 
-## Delete a Network
+## 删除网络
 
-Delete a Network.
+删除网络。
 
 `DELETE /networks/{id}`
 
@@ -104,7 +105,7 @@ network = client.networks.delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(network)
 ```
 
-## Get Default Gateway status.
+## 获取默认网关状态
 
 `GET /networks/{id}/default_gateway`
 
@@ -114,7 +115,7 @@ default_gateway = client.networks.default_gateway.retrieve("6a09cdc3-8948-47f0-a
 puts(default_gateway)
 ```
 
-## Create Default Gateway.
+## 创建默认网关
 
 `POST /networks/{id}/default_gateway`
 
@@ -124,7 +125,7 @@ default_gateway = client.networks.default_gateway.create("6a09cdc3-8948-47f0-aa6
 puts(default_gateway)
 ```
 
-## Delete Default Gateway.
+## 删除默认网关
 
 `DELETE /networks/{id}/default_gateway`
 
@@ -134,9 +135,9 @@ default_gateway = client.networks.default_gateway.delete("6a09cdc3-8948-47f0-aa6
 puts(default_gateway)
 ```
 
-## List all Interfaces for a Network.
+## 列出网络的所有接口
 
-`GET /networks/{id}/network_interfaces`
+`GET /networks/{id}/networkInterfaces`
 
 ```ruby
 page = client.networks.list_interfaces("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
@@ -144,11 +145,11 @@ page = client.networks.list_interfaces("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(page)
 ```
 
-## List all WireGuard Interfaces
+## 列出所有 WireGuard 接口
 
-List all WireGuard Interfaces.
+列出所有 WireGuard 接口。
 
-`GET /wireguard_interfaces`
+`GET /wireguardInterfaces`
 
 ```ruby
 page = client.wireguard_interfaces.list
@@ -156,11 +157,11 @@ page = client.wireguard_interfaces.list
 puts(page)
 ```
 
-## Create a WireGuard Interface
+## 创建 WireGuard 接口
 
-Create a new WireGuard Interface.
+创建一个新的 WireGuard 接口。
 
-`POST /wireguard_interfaces`
+`POST /wireguardInterfaces`
 
 ```ruby
 wireguard_interface = client.wireguard_interfaces.create(region_code: "ashburn-va")
@@ -168,11 +169,11 @@ wireguard_interface = client.wireguard_interfaces.create(region_code: "ashburn-v
 puts(wireguard_interface)
 ```
 
-## Retrieve a WireGuard Interfaces
+## 获取 WireGuard 接口信息
 
-Retrieve a WireGuard Interfaces.
+获取 WireGuard 接口信息。
 
-`GET /wireguard_interfaces/{id}`
+`GET /wireguardInterfaces/{id}`
 
 ```ruby
 wireguard_interface = client.wireguard_interfaces.retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
@@ -180,11 +181,11 @@ wireguard_interface = client.wireguard_interfaces.retrieve("6a09cdc3-8948-47f0-a
 puts(wireguard_interface)
 ```
 
-## Delete a WireGuard Interface
+## 删除 WireGuard 接口
 
-Delete a WireGuard Interface.
+删除 WireGuard 接口。
 
-`DELETE /wireguard_interfaces/{id}`
+`DELETE /wireguardInterfaces/{id}`
 
 ```ruby
 wireguard_interface = client.wireguard_interfaces.delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
@@ -192,9 +193,9 @@ wireguard_interface = client.wireguard_interfaces.delete("6a09cdc3-8948-47f0-aa6
 puts(wireguard_interface)
 ```
 
-## List all WireGuard Peers
+## 列出所有 WireGuard 对等体
 
-List all WireGuard peers.
+列出所有 WireGuard 对等体。
 
 `GET /wireguard_peers`
 
@@ -204,9 +205,9 @@ page = client.wireguard_peers.list
 puts(page)
 ```
 
-## Create a WireGuard Peer
+## 创建 WireGuard 对等体
 
-Create a new WireGuard Peer.
+创建一个新的 WireGuard 对等体。
 
 `POST /wireguard_peers`
 
@@ -216,9 +217,9 @@ wireguard_peer = client.wireguard_peers.create(wireguard_interface_id: "6a09cdc3
 puts(wireguard_peer)
 ```
 
-## Retrieve the WireGuard Peer
+## 获取 WireGuard 对等体信息
 
-Retrieve the WireGuard peer.
+获取 WireGuard 对等体信息。
 
 `GET /wireguard_peers/{id}`
 
@@ -228,9 +229,9 @@ wireguard_peer = client.wireguard_peers.retrieve("6a09cdc3-8948-47f0-aa62-74ac94
 puts(wireguard_peer)
 ```
 
-## Update the WireGuard Peer
+## 更新 WireGuard 对等体信息
 
-Update the WireGuard peer.
+更新 WireGuard 对等体信息。
 
 `PATCH /wireguard_peers/{id}`
 
@@ -240,9 +241,9 @@ wireguard_peer = client.wireguard_peers.update("6a09cdc3-8948-47f0-aa62-74ac943d
 puts(wireguard_peer)
 ```
 
-## Delete the WireGuard Peer
+## 删除 WireGuard 对等体
 
-Delete the WireGuard peer.
+删除 WireGuard 对等体。
 
 `DELETE /wireguard_peers/{id}`
 
@@ -252,7 +253,7 @@ wireguard_peer = client.wireguard_peers.delete("6a09cdc3-8948-47f0-aa62-74ac943d
 puts(wireguard_peer)
 ```
 
-## Retrieve Wireguard config template for Peer
+## 获取 WireGuard 对等体的配置模板
 
 `GET /wireguard_peers/{id}/config`
 
@@ -262,9 +263,9 @@ response = client.wireguard_peers.retrieve_config("6a09cdc3-8948-47f0-aa62-74ac9
 puts(response)
 ```
 
-## Get all Private Wireless Gateways
+## 获取用户所有的私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户所有的私有无线网关。
 
 `GET /private_wireless_gateways`
 
@@ -274,11 +275,11 @@ page = client.private_wireless_gateways.list
 puts(page)
 ```
 
-## Create a Private Wireless Gateway
+## 创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+为已创建的网络的 SIM 卡异步创建私有无线网关。
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`、`name`
 
 ```ruby
 private_wireless_gateway = client.private_wireless_gateways.create(
@@ -289,9 +290,9 @@ private_wireless_gateway = client.private_wireless_gateways.create(
 puts(private_wireless_gateway)
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+获取私有无线网关的信息。
 
 `GET /private_wireless_gateways/{id}`
 
@@ -301,9 +302,9 @@ private_wireless_gateway = client.private_wireless_gateways.retrieve("6a09cdc3-8
 puts(private_wireless_gateway)
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关。
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -313,9 +314,9 @@ private_wireless_gateway = client.private_wireless_gateways.delete("6a09cdc3-894
 puts(private_wireless_gateway)
 ```
 
-## List all Public Internet Gateways
+## 列出所有公共互联网网关
 
-List all Public Internet Gateways.
+列出所有公共互联网网关。
 
 `GET /public_internet_gateways`
 
@@ -325,9 +326,9 @@ page = client.public_internet_gateways.list
 puts(page)
 ```
 
-## Create a Public Internet Gateway
+## 创建公共互联网网关
 
-Create a new Public Internet Gateway.
+创建一个新的公共互联网网关。
 
 `POST /public_internet_gateways`
 
@@ -337,9 +338,9 @@ public_internet_gateway = client.public_internet_gateways.create
 puts(public_internet_gateway)
 ```
 
-## Retrieve a Public Internet Gateway
+## 获取公共互联网网关信息
 
-Retrieve a Public Internet Gateway.
+获取公共互联网网关的信息。
 
 `GET /public_internet_gateways/{id}`
 
@@ -349,9 +350,9 @@ public_internet_gateway = client.public_internet_gateways.retrieve("6a09cdc3-894
 puts(public_internet_gateway)
 ```
 
-## Delete a Public Internet Gateway
+## 删除公共互联网网关
 
-Delete a Public Internet Gateway.
+删除公共互联网网关。
 
 `DELETE /public_internet_gateways/{id}`
 
@@ -361,9 +362,9 @@ public_internet_gateway = client.public_internet_gateways.delete("6a09cdc3-8948-
 puts(public_internet_gateway)
 ```
 
-## List all Virtual Cross Connects
+## 列出所有虚拟交叉连接
 
-List all Virtual Cross Connects.
+列出所有虚拟交叉连接。
 
 `GET /virtual_cross_connects`
 
@@ -373,9 +374,9 @@ page = client.virtual_cross_connects.list
 puts(page)
 ```
 
-## Create a Virtual Cross Connect
+## 创建虚拟交叉连接
 
-Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the option of creating the primary connection first and the secondary connection later.
+创建一个新的虚拟交叉连接。<br /><br />对于 AWS 和 GCE，您可以先创建主连接，再创建次级连接。
 
 `POST /virtual_cross_connects`
 
@@ -385,9 +386,9 @@ virtual_cross_connect = client.virtual_cross_connects.create(region_code: "ashbu
 puts(virtual_cross_connect)
 ```
 
-## Retrieve a Virtual Cross Connect
+## 获取虚拟交叉连接信息
 
-Retrieve a Virtual Cross Connect.
+获取虚拟交叉连接的信息。
 
 `GET /virtual_cross_connects/{id}`
 
@@ -397,9 +398,9 @@ virtual_cross_connect = client.virtual_cross_connects.retrieve("6a09cdc3-8948-47
 puts(virtual_cross_connect)
 ```
 
-## Update the Virtual Cross Connect
+## 更新虚拟交叉连接
 
-Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched during the `created` state, as GCE will only inform you of your generated IP once the pending connection requested has bee...
+更新虚拟交叉连接。<br /><br />只有在“创建”状态下才能修改云 IP 地址；因为 GCE 会在连接请求完成之后才会通知您生成的 IP 地址...
 
 `PATCH /virtual_cross_connects/{id}`
 
@@ -409,9 +410,9 @@ virtual_cross_connect = client.virtual_cross_connects.update("6a09cdc3-8948-47f0
 puts(virtual_cross_connect)
 ```
 
-## Delete a Virtual Cross Connect
+## 删除虚拟交叉连接
 
-Delete a Virtual Cross Connect.
+删除虚拟交叉连接。
 
 `DELETE /virtual_cross_connects/{id}`
 
@@ -421,9 +422,9 @@ virtual_cross_connect = client.virtual_cross_connects.delete("6a09cdc3-8948-47f0
 puts(virtual_cross_connect)
 ```
 
-## List Virtual Cross Connect Cloud Coverage
+## 查看虚拟交叉连接的覆盖范围
 
-List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which cloud regions are available for the `location_code` your Virtual Cross Connect will be provisioned in.
+查看虚拟交叉连接的覆盖范围。<br /><br />此端点会显示虚拟交叉连接将被配置到的云区域。
 
 `GET /virtual_cross_connects/coverage`
 
@@ -433,9 +434,9 @@ page = client.virtual_cross_connects_coverage.list
 puts(page)
 ```
 
-## List all Global IPs
+## 列出所有全局 IP 地址
 
-List all Global IPs.
+列出所有全局 IP 地址。
 
 `GET /global_ips`
 
@@ -445,9 +446,9 @@ page = client.global_ips.list
 puts(page)
 ```
 
-## Create a Global IP
+## 创建全局 IP 地址
 
-Create a Global IP.
+创建一个新的全局 IP 地址。
 
 `POST /global_ips`
 
@@ -457,9 +458,9 @@ global_ip = client.global_ips.create
 puts(global_ip)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址信息
 
-Retrieve a Global IP.
+获取全局 IP 地址的信息。
 
 `GET /global_ips/{id}`
 
@@ -469,9 +470,9 @@ global_ip = client.global_ips.retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(global_ip)
 ```
 
-## Delete a Global IP
+## 删除全局 IP 地址
 
-Delete a Global IP.
+删除全局 IP 地址。
 
 `DELETE /global_ips/{id}`
 
@@ -481,7 +482,9 @@ global_ip = client.global_ips.delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
 puts(global_ip)
 ```
 
-## List all Global IP Allowed Ports
+## 列出所有允许使用的全局 IP 地址端口
+
+列出所有允许使用的全局 IP 地址端口。
 
 `GET /global_ip_allowed_ports`
 
@@ -491,7 +494,9 @@ global_ip_allowed_ports = client.global_ip_allowed_ports.list
 puts(global_ip_allowed_ports)
 ```
 
-## Global IP Assignment Health Check Metrics
+## 全局 IP 地址分配的健康检查指标
+
+获取全局 IP 地址分配的健康检查指标。
 
 `GET /global_ip_assignment_health`
 
@@ -501,9 +506,9 @@ global_ip_assignment_health = client.global_ip_assignment_health.retrieve
 puts(global_ip_assignment_health)
 ```
 
-## List all Global IP assignments
+## 列出所有全局 IP 地址分配记录
 
-List all Global IP assignments.
+列出所有全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments`
 
@@ -513,9 +518,9 @@ page = client.global_ip_assignments.list
 puts(page)
 ```
 
-## Create a Global IP assignment
+## 创建全局 IP 地址分配记录
 
-Create a Global IP assignment.
+创建一个新的全局 IP 地址分配记录。
 
 `POST /global_ip_assignments`
 
@@ -525,9 +530,9 @@ global_ip_assignment = client.global_ip_assignments.create
 puts(global_ip_assignment)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址分配记录
 
-Retrieve a Global IP assignment.
+获取全局 IP 地址的分配记录。
 
 `GET /global_ip_assignments/{id}`
 
@@ -537,9 +542,9 @@ global_ip_assignment = client.global_ip_assignments.retrieve("6a09cdc3-8948-47f0
 puts(global_ip_assignment)
 ```
 
-## Update a Global IP assignment
+## 更新全局 IP 地址分配记录
 
-Update a Global IP assignment.
+更新全局 IP 地址的分配记录。
 
 `PATCH /global_ip_assignments/{id}`
 
@@ -552,9 +557,9 @@ global_ip_assignment = client.global_ip_assignments.update(
 puts(global_ip_assignment)
 ```
 
-## Delete a Global IP assignment
+## 删除全局 IP 地址分配记录
 
-Delete a Global IP assignment.
+删除全局 IP 地址的分配记录。
 
 `DELETE /global_ip_assignments/{id}`
 
@@ -564,7 +569,9 @@ global_ip_assignment = client.global_ip_assignments.delete("6a09cdc3-8948-47f0-a
 puts(global_ip_assignment)
 ```
 
-## Global IP Assignment Usage Metrics
+## 全局 IP 地址分配的使用情况指标
+
+获取全局 IP 地址分配的使用情况指标。
 
 `GET /global_ip_assignments/usage`
 
@@ -574,9 +581,9 @@ global_ip_assignments_usage = client.global_ip_assignments_usage.retrieve
 puts(global_ip_assignments_usage)
 ```
 
-## List all Global IP Health check types
+## 列出所有全局 IP 地址的健康检查类型
 
-List all Global IP Health check types.
+列出所有全局 IP 地址的健康检查类型。
 
 `GET /global_ip_health_check_types`
 
@@ -586,9 +593,9 @@ global_ip_health_check_types = client.global_ip_health_check_types.list
 puts(global_ip_health_check_types)
 ```
 
-## List all Global IP health checks
+## 列出所有全局 IP 地址的健康检查记录
 
-List all Global IP health checks.
+列出所有全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks`
 
@@ -598,9 +605,9 @@ page = client.global_ip_health_checks.list
 puts(page)
 ```
 
-## Create a Global IP health check
+## 创建全局 IP 地址的健康检查
 
-Create a Global IP health check.
+创建一个新的全局 IP 地址健康检查。
 
 `POST /global_ip_health_checks`
 
@@ -610,9 +617,9 @@ global_ip_health_check = client.global_ip_health_checks.create
 puts(global_ip_health_check)
 ```
 
-## Retrieve a Global IP health check
+## 获取全局 IP 地址的健康检查记录
 
-Retrieve a Global IP health check.
+获取全局 IP 地址的健康检查记录。
 
 `GET /global_ip_health_checks/{id}`
 
@@ -622,9 +629,9 @@ global_ip_health_check = client.global_ip_health_checks.retrieve("6a09cdc3-8948-
 puts(global_ip_health_check)
 ```
 
-## Delete a Global IP health check
+## 删除全局 IP 地址的健康检查记录
 
-Delete a Global IP health check.
+删除全局 IP 地址的健康检查记录。
 
 `DELETE /global_ip_health_checks/{id}`
 
@@ -634,7 +641,9 @@ global_ip_health_check = client.global_ip_health_checks.delete("6a09cdc3-8948-47
 puts(global_ip_health_check)
 ```
 
-## Global IP Latency Metrics
+## 全局 IP 地址的延迟指标
+
+获取全局 IP 地址的延迟指标。
 
 `GET /global_ip_latency`
 
@@ -644,7 +653,9 @@ global_ip_latency = client.global_ip_latency.retrieve
 puts(global_ip_latency)
 ```
 
-## List all Global IP Protocols
+## 列出所有全局 IP 协议
+
+列出所有全局 IP 协议。
 
 `GET /global_ip_protocols`
 
@@ -654,7 +665,9 @@ global_ip_protocols = client.global_ip_protocols.list
 puts(global_ip_protocols)
 ```
 
-## Global IP Usage Metrics
+## 全局 IP 地址的使用情况指标
+
+获取全局 IP 地址的使用情况指标。
 
 `GET /global_ip_usage`
 
@@ -662,4 +675,5 @@ puts(global_ip_protocols)
 global_ip_usage = client.global_ip_usage.retrieve
 
 puts(global_ip_usage)
+```
 ```

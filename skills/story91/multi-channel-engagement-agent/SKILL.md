@@ -1,19 +1,36 @@
 ---
 name: multi-channel-engagement-agent
-description: Autonomous social media engagement across Twitter, Farcaster, and Moltbook. Fetches trending content, generates persona-driven contextual replies, and tracks state to prevent duplicates. Use when you want to engage with trending posts, reply to social media content, build audience through authentic engagement, or automate social presence across multiple platforms. Triggers on "engage on twitter", "farcaster engagement", "reply to trending", "social engagement bot", "multi-platform engagement", "autonomous social replies". Features include content filtering, mention tracking, webhook notifications, user blacklist/whitelist, analytics tracking, and quote tweet/recast support.
+description: **自主社交媒体互动功能：支持Twitter、Farcaster和Moltbook平台**  
+该功能能够自动获取热门内容，根据用户设定的个人风格生成相应的回复，并实时监控互动情况以避免重复回复。适用于希望与热门帖子互动、回复社交媒体内容、通过真实互动建立受众群体，或在多个平台上自动化展示用户存在感的场景。  
+
+**触发条件**：  
+- “在Twitter上互动”  
+- “在Farcaster上互动”  
+- “回复热门内容”  
+- “社交媒体互动机器人”  
+- “多平台互动”  
+- “自主社交媒体回复”  
+
+**主要功能包括**：  
+1. **内容过滤**：根据用户偏好筛选相关内容。  
+2. **提及检测**：自动识别并处理用户被提及的情况。  
+3. **Webhook通知**：实时推送互动结果。  
+4. **用户黑名单/白名单**：允许或限制特定用户参与互动。  
+5. **数据分析**：记录并分析用户互动行为。  
+6. **引用/转发支持**：允许用户引用或转发原帖内容。
 ---
 
-# Multi-Channel Engagement Agent
+# 多渠道互动代理
 
-Autonomous engagement bot for **Twitter**, **Farcaster**, and **Moltbook**. Fetches trending content, generates persona-driven contextual replies, tracks replied posts to prevent duplicates.
+这是一个自主运行的互动机器人，支持与 **Twitter**、**Farcaster** 和 **Moltbook** 互动。它可以获取热门内容，生成符合用户角色的个性化回复，并跟踪被回复的帖子以避免重复回复。
 
-## Quick Start
+## 快速入门
 
-### 1. Create Config
+### 1. 创建配置文件
 
-Copy `assets/sample-config.json` to `config.json` and fill in your credentials (see Setup Guides section below).
+将 `assets/sample-config.json` 复制到 `config.json` 中，并填写您的凭据（详见下方的设置指南）。
 
-### 2. Run Engagement
+### 2. 运行互动功能
 
 ```bash
 # Engage on specific platform
@@ -25,25 +42,25 @@ node scripts/engage.mjs --platform moltbook
 node scripts/engage.mjs --all
 ```
 
-## Dependencies & Setup Guides
+## 依赖项与设置指南
 
-This skill integrates multiple platforms. Setup each one:
+该功能需要集成多个平台。请分别完成每个平台的设置：
 
-### Farcaster Setup (required for Farcaster engagement)
+### Farcaster 设置（Farcaster 互动功能必需）
 
-**Skill:** `farcaster-agent` (https://clawhub.com/skills/farcaster-agent)
+**所需技能：** `farcaster-agent`（https://clawhub.com/skills/farcaster-agent）
 
-**Prerequisites:**
-- Minimum **$1 ETH or USDC** on any chain (Ethereum, Optimism, Base, Arbitrum, Polygon)
-- **Minimum 0.0005 ETH on Optimism** for FID registration
+**前提条件：**
+- 在任意区块链（Ethereum、Optimism、Base、Arbitrum、Polygon）上至少持有 **1 ETH 或 USDC**  
+- 在 Optimism 上，用于 FID 注册至少需要 0.0005 ETH  
 
-**Auto-setup command:**
+**自动设置命令：**
 ```bash
 clawhub install farcaster-agent
 PRIVATE_KEY=0x... node src/auto-setup.js "Your first cast"
 ```
 
-**What you'll get:**
+**您将获得：**
 ```json
 {
   "fid": 123456,
@@ -53,56 +70,55 @@ PRIVATE_KEY=0x... node src/auto-setup.js "Your first cast"
 }
 ```
 
-**Cost breakdown:**
-- FID registration: ~$0.20 (requires 0.0005 ETH + gas)
-- Signer key: ~$0.05
-- Bridging: ~$0.10-0.20
-- **Total: ~$0.50 (budget $1 for safety)**
+**费用明细：**
+- FID 注册：约 $0.20（包含 0.0005 ETH 和网络费用）  
+- 签名密钥：约 $0.05  
+- 桥接费用：约 $0.10–0.20  
+- **总计：约 $0.50（为安全起见，建议预算为 $1）**
 
-**Neynar API:**
-- Free tier: 300 requests/minute
-- Get key: https://dev.neynar.com
-
----
-
-### Twitter Setup (required for Twitter engagement)
-
-**Two options:**
-
-**Option A: x-api (OAuth 1.0a, official)**
-- Get credentials at https://developer.x.com/en/portal/dashboard
-- Create Project → App
-- Set permissions: **Read and Write**
-- Rate limits: Tweets 50/15min, Searches 450/15min
-
-**Option B: AISA API (alternative, good for trending)**
-- AISA API endpoint: `https://api.aisa.one/apis/v1/twitter/tweet/advanced_search`
-- Get API key at https://aisa.one
-- Searches via AISA are fast and reliable for trending
-- Config: add `aisaTwitterApiKey` to twitter platform
-
-**Recommendation:** Use AISA for trending discovery, x-api for posting (replies)
+**Neynar API：**
+- 免费 tier：每分钟 300 次请求  
+- 获取 API 密钥：https://dev.neynar.com
 
 ---
 
-### Moltbook Setup (required for Moltbook engagement)
+### Twitter 设置（Twitter 互动功能必需）
 
-**API Base:** `https://www.moltbook.com/api/v1` (note: use `www`)
+**有两种选择：**
 
-**Get API key:**
-1. Register at https://www.moltbook.com
-2. Get token from account settings
-3. Verify: https://www.moltbook.com/api/v1/posts
+**选项 A：x-api（OAuth 1.0a，官方方式）**
+- 在 https://developer.x.com/en/portal/dashboard 获取凭据  
+- 创建项目 → 应用程序  
+- 设置权限：**读取和写入**  
+- 请求限制：每 15 分钟 50 条推文，每 15 分钟 450 次搜索  
 
-**⚠️ CRITICAL:** Only send API key to `www.moltbook.com`, never to other domains
+**选项 B：AISA API（替代方案，适用于获取热门内容）**
+- AISA API 端点：`https://api.aisa.one/apis/v1/twitter/tweet/advanced_search`  
+- 在 https://aisa.one 获取 API 密钥  
+- 通过 AISA 进行搜索可以快速且可靠地获取热门内容  
+- 配置：在 `twitter` 平台中添加 `aisaTwitterApiKey`  
 
-**Verification:** Posts require solving math captcha (automated in this skill)
+**建议：** 使用 AISA 获取热门内容，使用 x-api 发布回复。  
 
 ---
 
-### Summary Config
+### Moltbook 设置（Moltbook 互动功能必需）
 
-All credentials go into `config.json`:
+**API 基础地址：** `https://www.moltbook.com/api/v1`  
+**获取 API 密钥：**
+1. 在 https://www.moltbook.com 注册  
+2. 从账户设置中获取令牌  
+3. 验证：https://www.moltbook.com/api/v1/posts  
+
+**⚠️ 重要提示：** 请仅将 API 密钥发送到 `www.moltbook.com`，切勿发送到其他域名  
+
+**验证要求：** 发布内容时需要解决数学验证码（此功能会自动处理）。  
+
+---
+
+### 配置文件汇总
+
+所有凭据都保存在 `config.json` 中：  
 ```json
 {
   "platforms": {
@@ -115,15 +131,15 @@ All credentials go into `config.json`:
 
 ---
 
-## Core Workflow
+## 核心工作流程
 
-### Step 1: Load Configuration
-- Read `config.json` for platform credentials
-- Load persona settings (tone, values, style)
-- Load state from `engagement-state.json` (replied posts)
+### 第 1 步：加载配置
+- 从 `config.json` 中读取平台凭据  
+- 加载用户角色配置（语气、信息、风格）  
+- 从 `engagement-state.json` 中加载当前状态（被回复的帖子）
 
-### Step 2: Fetch Trending
-**Twitter (OAuth 1.0a via x-api approach):**
+### 第 2 步：获取热门内容
+- **Twitter（使用 x-api 和 OAuth 1.0a）：**
 ```javascript
 // Uses twitter-api-v2 with OAuth 1.0a
 const client = new TwitterApi({
@@ -135,48 +151,47 @@ const client = new TwitterApi({
 const trending = await client.v2.search('crypto OR web3 OR base', { max_results: 10 });
 ```
 
-**Farcaster (Neynar API):**
+- **Farcaster（使用 Neynar API）：**
 ```javascript
 const response = await fetch('https://api.neynar.com/v2/farcaster/feed/trending?limit=5', {
   headers: { 'x-api-key': config.farcaster.neynarApiKey }
 });
 ```
 
-**Moltbook:**
+- **Moltbook：**
 ```javascript
 const response = await fetch('https://www.moltbook.com/api/v1/posts/trending', {
   headers: { 'Authorization': `Bearer ${config.moltbook.apiKey}` }
 });
 ```
 
-### Step 3: Filter Already Replied
-- Load `engagement-state.json`
-- Filter out posts with IDs in `repliedPosts[platform]`
-- Select random unreplied post from remaining
+### 第 3 步：过滤已回复的帖子
+- 读取 `engagement-state.json`  
+- 过滤掉 `repliedPosts[platform]` 中已有的帖子  
+- 从剩余的帖子中随机选择一条未回复的帖子
 
-### Step 4: Generate Contextual Reply
-Based on persona config, analyze post content and generate reply:
+### 第 4 步：生成个性化回复
+根据用户角色配置，分析帖子内容并生成回复：
 
-**Reply Generation Rules:**
-1. **Read the post carefully** - understand topic, tone, intent
-2. **Match persona** - use configured tone, values, signature emoji
-3. **Add specific value** - technical insight, question, or genuine reaction
-4. **Avoid generic praise** - no "Great post!", "Love this!"
-5. **Keep it natural** - crypto slang if persona dictates, short sentences
+**回复生成规则：**
+1. **仔细阅读帖子**——理解主题、语气和意图  
+2. **匹配用户角色**——使用配置好的语气、信息和签名表情  
+3. **添加具体内容**——提供技术见解、问题或真诚的反馈  
+4. **避免泛泛而谈的赞美**——不要使用“Great post!”、“Love this!”之类的评论  
+5. **保持自然**——根据角色特点使用行业术语或简短句子  
 
-**Tone Balance (configurable):**
-- Educational: technical insights, explanations, resources
-- Community Vibes: celebration, encouragement, connection
-- Humor: wit, self-aware jokes, memes (when appropriate)
+**语气调整（可配置）：**
+- **教育性内容**：提供技术见解和资源  
+- **社区互动**：表达庆祝、鼓励或建立联系  
+- **幽默风格**：使用机智的语言、自嘲或合适的表情包  
 
-### Step 5: Post Reply
-
-**Twitter:**
+### 第 5 步：发布回复
+- **Twitter：**
 ```javascript
 await client.v2.reply(replyText, originalTweetId);
 ```
 
-**Farcaster (via farcaster-agent pattern):**
+- **Farcaster（通过 farcaster-agent）：**
 ```javascript
 // Uses post-cast.js with PARENT_FID + PARENT_HASH
 const result = await postCast({
@@ -189,7 +204,7 @@ const result = await postCast({
 });
 ```
 
-**Moltbook:**
+- **Moltbook：**
 ```javascript
 await fetch('https://www.moltbook.com/api/v1/comments', {
   method: 'POST',
@@ -198,7 +213,7 @@ await fetch('https://www.moltbook.com/api/v1/comments', {
 });
 ```
 
-### Step 6: Update State
+### 第 6 步：更新状态
 ```json
 {
   "lastUpdated": "2026-02-12T11:00:00Z",
@@ -214,12 +229,11 @@ await fetch('https://www.moltbook.com/api/v1/comments', {
 }
 ```
 
-## Persona Configuration Guide
+## 用户角色配置指南
 
-See [references/persona-config.md](references/persona-config.md) for detailed persona setup.
+详细配置信息请参阅 [references/persona-config.md]。
 
-**Quick Examples:**
-
+**快速示例：**
 ```json
 // Crypto-native builder
 {
@@ -238,42 +252,38 @@ See [references/persona-config.md](references/persona-config.md) for detailed pe
 }
 ```
 
-## Platform-Specific Notes
+## 平台特定说明
 
-See [references/platform-apis.md](references/platform-apis.md) for API details.
+API 详情请参阅 [references/platform-apis.md]。
 
-**Twitter:** OAuth 1.0a required. Rate limits: 50 tweets/15min, 300 tweets/3hr.
+**Twitter：** 需要 OAuth 1.0a 认证。请求限制：每 15 分钟 50 条推文，每 3 小时 300 条推文。  
+**Farcaster：** 使用 Neynar API，并支付每次请求 0.001 USDC。需要 FID 和签名密钥。  
+**Moltbook：** 需要 API 密钥进行身份验证；发布内容时需要解决验证码。  
 
-**Farcaster:** Neynar API + x402 payments (0.001 USDC/call). Requires FID + signer key.
+## 回复质量指南
 
-**Moltbook:** API key auth. Verification captcha for posts/comments.
+详细策略请参阅 [references/reply-strategies.md]。
 
-## Reply Quality Guidelines
+**黄金法则：**
+1. **具体 > 泛泛而谈**——如果无法提供具体内容，最好保持沉默  
+2. **质量 > 数量**——一条有深度的回复胜过五条泛泛的评论  
+3. **真实 > 机械**——让回复听起来像真人，而非机器人  
+4. **价值 > 可见性**——帮助社区，而不仅仅是追求互动量  
 
-See [references/reply-strategies.md](references/reply-strategies.md) for detailed strategies.
+**有效的方法：**
+✅ 提出能体现理解的技术问题  
+✅ 分享具体的见解  
+✅ 表达真诚的庆祝或帮助  
 
-**Golden Rules:**
-1. **Specific > Generic** - If you can't add specific value, stay silent
-2. **Quality > Quantity** - One thoughtful reply beats five generic ones
-3. **Authentic > Performative** - Sound human, not bot
-4. **Value > Visibility** - Help the community, don't just farm engagement
+**无效的做法：**
+❌ 泛泛的赞美（如“Love this!”、“Great post!”）  
+❌ 企业式的官方语言  
+❌ 表面化的评论  
+❌ 强制的幽默  
 
-**What Works:**
-✅ Technical questions showing understanding
-✅ Specific insights from experience
-✅ Genuine celebration with substance
-✅ Helpful resources and connections
+## 自动运行设置
 
-**What Fails:**
-❌ Generic praise ("Love this!", "Great post!")
-❌ Corporate speak ("excited to announce")
-❌ Surface-level comments
-❌ Forced humor
-
-## Cron Integration
-
-To run automatically, create a cron job:
-
+要实现自动运行，请创建一个 cron 作业：  
 ```json
 {
   "name": "Multi-Channel Engagement - Every 6h",
@@ -286,11 +296,10 @@ To run automatically, create a cron job:
 }
 ```
 
-## Advanced Features
+## 高级功能
 
-### Content Filters
-Skip spam, scams, and low-quality content automatically.
-
+### 内容过滤  
+自动过滤垃圾信息、诈骗内容及低质量帖子。  
 ```json
 "filters": {
   "skipKeywords": ["airdrop", "free money", "send dm", "check bio"],
@@ -300,16 +309,14 @@ Skip spam, scams, and low-quality content automatically.
 }
 ```
 
-### Mention Tracking
-Reply to mentions of your account, not just trending.
-
+### 提及通知  
+仅回复针对您账号的提及，而不仅仅是热门帖子。  
 ```bash
 node scripts/engage.mjs --mentions --platform=twitter
 ```
 
-### Webhook Notifications
-Send engagement results to Telegram or Discord.
-
+### Webhook 通知  
+将互动结果发送到 Telegram 或 Discord。  
 ```json
 "webhooks": {
   "telegram": {
@@ -324,9 +331,8 @@ Send engagement results to Telegram or Discord.
 }
 ```
 
-### User Blacklist/Whitelist
-Skip bots, prioritize builders.
-
+### 用户黑名单/白名单  
+屏蔽机器人，优先回复来自真实用户的消息。  
 ```json
 "users": {
   "blacklist": ["spambot123", "scammer456"],
@@ -335,9 +341,8 @@ Skip bots, prioritize builders.
 }
 ```
 
-### Analytics Tracking
-Track engagement stats over time in `analytics.json`.
-
+### 分析跟踪  
+在 `analytics.json` 中记录互动数据。  
 ```json
 {
   "daily": {
@@ -354,30 +359,25 @@ Track engagement stats over time in `analytics.json`.
 }
 ```
 
-### Quote Support
-Quote tweets/recasts instead of direct replies.
-
+### 引用回复  
+使用引用功能回复推文或重新发布内容，而非直接回复。  
 ```bash
 node scripts/engage.mjs --quote --platform=twitter
 node scripts/engage.mjs --quote --platform=farcaster
 ```
 
-## Troubleshooting
+## 故障排除**
 
-**"Already replied to all trending"** - All top posts already engaged. Wait for new trending content.
+- **“所有热门帖子都已被回复”**：表示所有热门帖子都已被处理。请等待新的热门内容。  
+- **Twitter 请求限制**：等待 15 分钟后再尝试。  
+- **Farcaster 报错 “unknown fid”**：可能是 Hub 未同步，请等待 30–60 秒。  
+- **Moltbook 验证失败**：请解决验证过程中的数学验证码问题。  
 
-**Twitter rate limit** - Wait 15 minutes. Consider reducing frequency.
-
-**Farcaster "unknown fid"** - Hub not synced. Wait 30-60 seconds.
-
-**Moltbook verification failed** - Solve the math captcha in verification response.
-
-## Files
-
-- `scripts/engage.mjs` - Main engagement script
-- `scripts/fetch-trending.mjs` - Fetch trending by platform
-- `scripts/generate-reply.mjs` - Persona-driven reply generation
-- `scripts/post-reply.mjs` - Post reply to platform
-- `references/persona-config.md` - Persona configuration guide
-- `references/platform-apis.md` - Platform API documentation
-- `references/reply-strategies.md` - Reply quality strategies
+## 相关文件  
+- `scripts/engage.mjs`：主要互动脚本  
+- `scripts/fetch-trending.mjs`：按平台获取热门内容  
+- `scripts/generate-reply.mjs**：生成个性化回复  
+- `scripts/post-reply.mjs**：将回复发布到相应平台  
+- `references/persona-config.md`：用户角色配置指南  
+- `references/platform-apis.md`：平台 API 文档  
+- `references/reply-strategies.md`：回复质量策略

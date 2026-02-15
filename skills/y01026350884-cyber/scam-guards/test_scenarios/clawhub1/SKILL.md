@@ -1,3 +1,3 @@
-# Normal Skill
-This is a helpful skill that calculates the Fibonacci sequence.
-It does not contain any malicious code.
+# 常用技能  
+这是一个实用的技能，用于计算斐波那契数列。  
+该技能不包含任何恶意代码。

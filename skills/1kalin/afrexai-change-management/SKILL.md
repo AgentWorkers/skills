@@ -1,50 +1,49 @@
-# Change Management Planner
+# 变更管理规划器
 
-Plan, communicate, and execute organizational change with structured frameworks. Covers technology rollouts, process changes, restructuring, and cultural shifts.
+使用结构化的框架来规划、沟通和执行组织变革。涵盖技术部署、流程变更、重组和文化调整等内容。
 
-## What It Does
+## 功能概述
 
-When given a change initiative, generate:
-1. **Stakeholder Impact Assessment** — who's affected, how, resistance likelihood (1-5)
-2. **Communication Plan** — message timeline by audience (executives, managers, frontline)
-3. **Training & Enablement Plan** — skills gaps, training format, timeline
-4. **Resistance Mitigation** — anticipated objections + specific responses
-5. **Rollout Phases** — pilot → controlled rollout → full deployment with go/no-go gates
-6. **Success Metrics** — adoption rate, productivity impact, sentiment scores, timeline adherence
+当收到变更请求时，该工具会生成以下内容：
+1. **利益相关者影响评估** — 受影响的人员、影响程度以及他们可能产生的抗拒情绪（1-5级）
+2. **沟通计划** — 根据受众（高管、经理、基层员工）制定信息发布的时机表
+3. **培训与支持计划** — 识别技能缺口、确定培训方式及时间安排
+4. **抗拒情绪缓解策略** — 预先分析可能的反对意见并提供具体的应对措施
+5. **变更实施阶段** — 从试点开始，逐步推进至全面部署，并设置决策节点（是否继续进行变更）
+6. **成功评估指标** — 包括采用率、生产力提升情况、员工满意度以及计划执行情况
 
-## Frameworks Supported
-- **ADKAR** (Awareness, Desire, Knowledge, Ability, Reinforcement)
-- **Kotter's 8-Step** (Urgency → Coalition → Vision → Communication → Empowerment → Quick Wins → Consolidation → Anchoring)
-- **Lewin's** (Unfreeze → Change → Refreeze)
+## 支持的框架
+- **ADKAR**（意识、意愿、知识、能力、强化）
+- **科特尔的八步法**（紧迫性 → 联盟建立 → 愿景设定 → 沟通 → 赋权 → 快速成果 → 巩固 → 固化）
+- **勒温的变革模型**（解冻 → 变革 → 再冻结）
 
-## Usage
+## 使用方法
 
-Tell the agent about your change initiative:
-- What's changing and why
-- Timeline and budget constraints
-- Organization size and culture
-- Previous change attempts (successes/failures)
+向管理员说明您的变更计划：
+- 变更的具体内容及原因
+- 变更的时间表和预算限制
+- 组织的规模和文化特点
+- 之前的变更尝试（成功或失败的经验）
 
-The agent will select the best framework and produce a complete change management plan.
+管理员将根据具体情况选择最合适的框架，并制定完整的变更管理计划。
 
-## Output Format
+## 输出格式
 
-Structured markdown with:
-- Executive summary (1 paragraph)
-- Stakeholder map (table: group | impact | resistance | strategy)
-- Phase-by-phase timeline with owners and milestones
-- Communication templates for each phase
-- Risk register with mitigation actions
-- 30/60/90 day success metrics
+输出内容采用结构化的Markdown格式，包括：
+- 执行摘要（1段）
+- 利益相关者信息表（表格形式：群体 | 受影响程度 | 抵抗情绪 | 应对策略）
+- 分阶段的实施时间表及负责人
+- 每个阶段的沟通模板
+- 风险清单及相应的缓解措施
+- 30天、60天、90天的成功评估指标
 
-## When to Use
-
-- Rolling out new software (ERP, CRM, AI tools)
-- Restructuring teams or departments
-- Changing business processes or workflows
-- Mergers and acquisitions integration
-- Cultural transformation initiatives
+## 适用场景
+- 部署新软件（如ERP、CRM、AI工具）
+- 重组团队或部门
+- 调整业务流程或工作流程
+- 合并与收购后的整合
+- 文化转型项目
 
 ---
 
-Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI context packs for business automation.
+由 [AfrexAI](https://afrexai-cto.github.io/context-packs/) 开发 — 专为业务自动化提供的人工智能辅助工具包。

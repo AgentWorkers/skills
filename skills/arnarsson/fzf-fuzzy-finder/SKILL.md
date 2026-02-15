@@ -1,17 +1,17 @@
 ---
 name: fzf-fuzzy-finder
-description: Command-line fuzzy finder for interactive filtering and selection - integrates with shell, vim, and other tools.
+description: 命令行模糊查找工具，支持交互式过滤和选择功能，可与 shell、vim 等工具集成使用。
 homepage: https://github.com/junegunn/fzf
 metadata: {"clawdbot":{"emoji":"🔮","requires":{"bins":["fzf"]},"install":[{"id":"brew","kind":"brew","formula":"fzf","bins":["fzf"],"label":"Install fzf (brew)"},{"id":"apt","kind":"apt","package":"fzf","bins":["fzf"],"label":"Install fzf (apt)"}]}}
 ---
 
-# fzf - Fuzzy Finder
+# fzf - 模糊查找工具（Fuzzy Finder）
 
-Interactive command-line fuzzy finder with powerful integration capabilities.
+这是一个交互式的命令行工具，具备强大的集成能力，可用于快速查找文件和目录。
 
-## Basic Usage
+## 基本用法
 
-### Simple filtering
+### 简单过滤
 ```bash
 # Pipe list to fzf
 ls | fzf
@@ -29,7 +29,7 @@ ls | fzf --preview 'cat {}'
 ls | fzf --preview 'bat --color=always {}'
 ```
 
-### Shell integration
+### 与 Shell 的集成
 ```bash
 # After installing, add to ~/.bashrc or ~/.zshrc:
 # source /path/to/fzf/shell/completion.bash
@@ -46,9 +46,9 @@ cd **<TAB>       # Directory completion
 kill -9 **<TAB>  # Process completion
 ```
 
-## Common Patterns
+## 常见用法
 
-### File selection
+### 文件选择
 ```bash
 # Open file in vim
 vim $(fzf)
@@ -63,7 +63,7 @@ fzf | xargs -I {} cp {} /destination/
 fzf -m | xargs rm
 ```
 
-### Directory navigation
+### 目录导航
 ```bash
 # CD to selected directory
 cd $(find . -type d | fzf)
@@ -74,7 +74,7 @@ alias cdf='cd $(find . -type d | fzf)'
 # Or use Alt+C keybinding
 ```
 
-### Git integration
+### Git 集成
 ```bash
 # Checkout branch
 git branch | fzf | xargs git checkout
@@ -89,7 +89,7 @@ git status -s | fzf -m | awk '{print $2}' | xargs git add
 alias gll='git log --oneline | fzf --preview "git show {1}"'
 ```
 
-### Process management
+### 进程管理
 ```bash
 # Kill process
 ps aux | fzf | awk '{print $2}' | xargs kill
@@ -98,9 +98,9 @@ ps aux | fzf | awk '{print $2}' | xargs kill
 ps aux | fzf -m | awk '{print $2}' | xargs kill -9
 ```
 
-## Advanced Features
+## 高级功能
 
-### Preview window
+### 预览窗口
 ```bash
 # Preview on the right
 fzf --preview 'cat {}'
@@ -118,7 +118,7 @@ fzf --preview 'cat {}' --bind 'ctrl-/:toggle-preview'
 find . -type d | fzf --preview 'ls -la {}'
 ```
 
-### Custom key bindings
+### 自定义快捷键
 ```bash
 # Execute action on selection
 fzf --bind 'enter:execute(vim {})'
@@ -134,7 +134,7 @@ fzf --bind 'ctrl-r:reload(find . -type f)'
 fzf --print0 --bind 'enter:print-query'
 ```
 
-### Filtering options
+### 过滤选项
 ```bash
 # Case-insensitive (default)
 fzf -i
@@ -155,9 +155,9 @@ fzf --query='py$ | js$'  # .py or .js files
 fzf --query='test .py'  # Contains both 'test' and '.py'
 ```
 
-## Integration Examples
+## 集成示例
 
-### With ripgrep
+### 与 ripgrep 的集成
 ```bash
 # Search content and open in vim
 rg --line-number . | fzf | awk -F: '{print "+"$2, $1}' | xargs vim
@@ -168,7 +168,7 @@ rg --line-number . | fzf --delimiter : \
   --preview-window +{2}-/2
 ```
 
-### With fd
+### 与 fd 的集成
 ```bash
 # Find and preview files
 fd --type f | fzf --preview 'bat --color=always {}'
@@ -177,7 +177,7 @@ fd --type f | fzf --preview 'bat --color=always {}'
 fd --changed-within 1d | fzf --preview 'bat {}'
 ```
 
-### With docker
+### 与 docker 的集成
 ```bash
 # Select and enter container
 docker ps | fzf | awk '{print $1}' | xargs -I {} docker exec -it {} bash
@@ -189,7 +189,7 @@ docker images | fzf -m | awk '{print $3}' | xargs docker rmi
 docker ps | fzf | awk '{print $1}' | xargs docker logs -f
 ```
 
-### With kubectl
+### 与 kubectl 的集成
 ```bash
 # Select pod
 kubectl get pods | fzf | awk '{print $1}' | xargs kubectl describe pod
@@ -201,10 +201,9 @@ kubectl get pods | fzf | awk '{print $1}' | xargs kubectl logs -f
 kubectl get pods | fzf -m | awk '{print $1}' | xargs kubectl delete pod
 ```
 
-## Useful Aliases
+## 有用的别名
 
-Add to your shell config:
-
+将以下别名添加到您的 Shell 配置中：
 ```bash
 # Fuzzy file search and open in vim
 alias fv='vim $(fzf --preview "bat --color=always --style=numbers {}")'
@@ -225,9 +224,9 @@ alias fh='history | fzf | awk "{print \$2}" | xargs -I {} sh -c "{}"'
 alias fe='fd --type f | fzf --preview "bat --color=always --style=numbers {}" | xargs -r $EDITOR'
 ```
 
-## Configuration
+## 配置
 
-### Environment variables
+### 环境变量
 ```bash
 # Default options
 export FZF_DEFAULT_OPTS='
@@ -248,7 +247,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 ```
 
-### Color scheme
+### 颜色方案
 ```bash
 export FZF_DEFAULT_OPTS='
   --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8
@@ -257,9 +256,9 @@ export FZF_DEFAULT_OPTS='
 '
 ```
 
-## Advanced Workflows
+## 高级工作流程
 
-### Project file browser
+### 项目文件浏览器
 ```bash
 # Smart file browser with preview
 fzf \
@@ -270,7 +269,7 @@ fzf \
   --header 'Enter: edit | Ctrl+Y: copy path'
 ```
 
-### Multi-purpose search
+### 多用途搜索
 ```bash
 # Search in files and navigate to line
 rg --line-number --no-heading . | \
@@ -280,7 +279,7 @@ rg --line-number --no-heading . | \
       --bind 'enter:execute(vim {1} +{2})'
 ```
 
-### Docker container manager
+### Docker 容器管理器
 ```bash
 #!/bin/bash
 # docker-fzf.sh
@@ -290,21 +289,20 @@ if [ -n "$container" ]; then
 fi
 ```
 
-## Tips
+## 提示
 
-- Use `--preview` for visual context
-- Combine with `bat`, `rg`, `fd` for powerful workflows
-- Press `?` in fzf to see keybindings
-- Use `Tab` for multi-select
-- `Ctrl+/` to toggle preview (if bound)
-- `Ctrl+K` / `Ctrl+J` to navigate
-- Start query with `'` for exact match
-- Start with `!` to exclude
-- Use `|` for OR, space for AND
-- Set `FZF_DEFAULT_OPTS` for persistent config
+- 使用 `--preview` 选项可查看文件预览内容
+- 结合 `bat`、`rg`、`fd` 等工具可构建强大的工作流程
+- 在 fzf 中按 `?` 键可查看快捷键设置
+- 使用 `Tab` 键进行多选
+- 使用 `Ctrl+/` 切换预览模式（如果已启用）
+- 使用 `Ctrl+K` / `Ctrl+J` 进行导航
+- 使用 `'` 开始精确匹配查询
+- 使用 `!` 开始排除某些文件或目录
+- 使用 `|` 表示“或”关系，空格表示“与”关系
+- 通过设置 `FZF_DEFAULT_OPTS` 可保存配置
 
-## Performance
-
+## 性能优化
 ```bash
 # For large file lists, use fd or rg
 export FZF_DEFAULT_COMMAND='fd --type f'
@@ -316,8 +314,8 @@ export FZF_DEFAULT_COMMAND='fd --type f --max-depth 5'
 fzf --preview 'bat {}' --preview-window 'hidden'
 ```
 
-## Documentation
+## 文档资料
 
 GitHub: https://github.com/junegunn/fzf
 Wiki: https://github.com/junegunn/fzf/wiki
-Examples: https://github.com/junegunn/fzf/wiki/examples
+示例：https://github.com/junegunn/fzf/wiki/examples

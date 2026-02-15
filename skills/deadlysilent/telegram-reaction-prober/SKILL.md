@@ -1,59 +1,56 @@
 ---
 name: telegram-reaction-prober
-description: Probe which emoji reactions are accepted in a specific Telegram chat/message, record an allow/deny list, and optionally remove test reactions afterwards.
+description: 探测特定 Telegram 聊天/消息中允许使用的表情符号（emoji）反应，记录允许/禁止使用的表情符号列表，并在需要时移除测试用过的表情符号反应。
 ---
 
-# Telegram Reaction Prober
+# Telegram 反应检测工具（Telegram Reaction Prober）
 
-## What this skill is
-Telegram reactions are **chat-specific**: a bot can only react with emojis that are enabled for that chat/message. When you try an unsupported emoji, Telegram returns:
+## 该工具的功能
+Telegram 的表情反应功能是**特定于聊天室的**：机器人只能使用该聊天室/消息中已启用的表情符号进行反应。如果你尝试使用未被支持的表情符号，Telegram 会返回错误信息：`400 Bad Request: REACTION_INVALID`。
 
-- `400 Bad Request: REACTION_INVALID`
+这个工具主要用作检测工具（包括相应的检测方法及初始数据集），而非一个包含所有表情符号的通用列表。它可以帮助你：
+- 将一组候选表情符号应用于特定的 `message_id` 进行测试；
+- 将这些表情符号分类为**允许使用**或**不允许使用**；
+- （可选）在测试完成后删除成功的反应（以避免过度干扰聊天室）；
+- 将测试结果保存到 `TOOLS.md` 文件中。
 
-This skill is the *prober* (the method + starter datasets), not a global list.
-It helps you:
-- test a list of candidate emojis against a specific `message_id`
-- classify them as **Allowed** vs **Rejected**
-- optionally remove successful reactions after testing (so you don't spam the chat)
-- write the results into `TOOLS.md` (or another file)
+> 重要提示：**切勿将你的私人聊天室的允许/拒绝列表公开**，因为这可能会被其他人误用。
+> 请仅分享检测工具和候选表情符号集；每个用户仍需自行在他们的聊天室中进行测试。
 
-> Important: **Do not publish your private chat’s allow/deny list** as “the answer for everyone”.
-> Share the prober + candidate sets; each user still probes their own chat.
+## 限制与现实考量
+实际上，我们无法测试所有的表情符号（Unicode 符号数量庞大，且该 Clawdbot 的 Telegram 集成并未直接提供 Telegram 的表情符号启用列表）。
 
-## Limits / Reality check
-There is no practical way to "test every emoji" (Unicode is enormous, and this Clawdbot Telegram integration does not expose Telegram's enabled-reaction list directly).
+因此，最佳的做法是：
+1. 先测试一组你关心的、常用的表情符号；
+2. 将这些允许使用的表情符号保存到该聊天室的列表中；
+3. 当 Telegram 的聊天设置发生变化时，重新运行测试。
 
-So the best approach is:
-1) Test a **curated emoji set** you care about (common reactions)
-2) Save the whitelist for that chat
-3) Re-run when Telegram chat settings change
+## 手动使用方法
+1. 选择一个目标 Telegram `message_id`（例如聊天室中最新的消息）；
+2. 选择一组候选表情符号：
+   - 从少量表情符号开始测试（15–30 个）；
+   - 或者使用随工具提供的包含 200 个表情符号的初始列表：
+     - `skills/telegram-reaction-prober/assets/emoji200-unicode-frequency-2019.txt`；
+3. 对于每个表情符号：
+   - 使用 `message` 工具并指定 `action=react` 来尝试发送该表情符号；
+   - 如果测试成功 → 将该表情符号标记为“允许使用”；
+   - 如果测试失败并返回 `REACTION_INVALID` → 将该表情符号标记为“不允许使用”；
+4. 清理测试结果：
+   - **快速/静默模式**：不删除任何表情符号（因为 Telegram 通常每个用户/机器人只能发送一个表情符号）；
+   - **彻底清理**：通过设置 `remove=true` 来删除所有成功的反应；
+5. 将测试结果保存到 `/home/ubuntu/clawd/TOOLS.md` 文件中，文件格式如下：
+   - `### [聊天室名称] — 在 message_id XYZ 上的测试结果`
 
-## How to run (manual)
-1) Pick a target Telegram `message_id` (e.g. the most recent message in the chat).
-2) Pick a candidate emoji set:
-   - start small (15–30), or
-   - use the included 200-emoji starter list:
-     - `skills/telegram-reaction-prober/assets/emoji200-unicode-frequency-2019.txt`
-3) For each emoji:
-   - call `message` tool with `action=react` and that emoji
-   - if it succeeds → mark Allowed
-   - if it fails with `REACTION_INVALID` → mark Rejected
-4) Cleanup options:
-   - **Fast/quiet:** don’t remove; Telegram generally keeps only one reaction per user/bot (so you’re effectively just flipping it)
-   - **Clean:** remove successful reactions after testing via `remove=true`
-5) Write results to `/home/ubuntu/clawd/TOOLS.md` under a heading like:
-   - `### Telegram reactions (this chat) — tested on message_id XYZ`
-
-## Suggested starter emoji set
-Allowed in many chats:
+## 建议的初始表情符号集
+在许多聊天室中允许使用的表情符号：
 - 👍 ❤️ 🔥 🙏 🎉 🤔 👀
 
-Often rejected (depends on chat):
+经常被拒绝的表情符号（具体取决于聊天室设置）：
 - ✅ 😂 💡
 
-Good candidates to test next:
+接下来可以尝试测试的表情符号：
 - 👎 😅 😭 😮 😍 🤝 👏 🙌 💯 😡 😴 🧠 🧩 ⚠️
 
-## Notes
-- Be mindful of rate limits; don’t blast 100+ reactions without delays.
-- Keep tests on a single known `message_id` and record it.
+## 注意事项
+- 请注意 Telegram 的发送频率限制；不要连续快速发送大量表情符号。
+- 请确保所有测试都在同一个已知的 `message_id` 上进行，并记录相关信息。

@@ -1,6 +1,7 @@
 ---
 name: openkrill
-description: Enable AI agents to make micropayments via x402 protocol. Use when purchasing browser sessions on Browserbase, scraping with Firecrawl, or any x402-compatible API. Handles wallet creation, funding, and automatic payment flows.
+description: **启用AI代理通过x402协议进行微支付**  
+适用于在Browserbase上购买浏览器会话、使用Firecrawl进行数据抓取，或与任何支持x402协议的API进行交互的场景。该功能涵盖钱包创建、资金充值以及自动支付流程的管理。
 license: MIT
 compatibility: Requires network access and thirdweb API key (THIRDWEB_SECRET_KEY environment variable)
 metadata:
@@ -13,64 +14,63 @@ metadata:
     primaryEnv: THIRDWEB_SECRET_KEY
 ---
 
-# OpenKrill - x402 Payments Skill
+# OpenKrill - x402支付技能
 
-This skill enables AI agents to autonomously make micropayments using the x402 protocol. It handles wallet management, balance checking, and automatic payment flows when APIs return HTTP 402 Payment Required responses.
+此技能使AI代理能够使用x402协议自主进行微支付。它负责钱包管理、余额检查以及在API返回HTTP 402 “Payment Required”（需要支付）响应时自动执行支付流程。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- **When asked "what services can I purchase?" or "what x402 APIs are available?"** - Query the Bazaar first!
-- When purchasing browser automation sessions on Browserbase
-- When performing web scraping tasks with Firecrawl
-- When the agent needs to create an email address for signups or verification
-- When interacting with any x402-compatible API
-- When the user mentions micropayments, crypto payments, or paying for API access
-- When you encounter a 402 Payment Required response
-- **When discovering new x402-compatible services** via the Bazaar
+- **当用户询问“我可以购买哪些服务？”或“有哪些可用的x402 API？”时**——请先查询Bazaar！
+- 在Browserbase上购买浏览器自动化会话时
+- 使用Firecrawl执行网络爬取任务时
+- 当代理需要创建用于注册或验证的电子邮件地址时
+- 与任何支持x402的API交互时
+- 当用户提到微支付、加密货币支付或API访问费用时
+- 当遇到402 “Payment Required”响应时
+- **通过Bazaar发现新的支持x402的服务时**
 
-> **TIP:** When a user or agent asks what services are available for purchase, always start by querying the Bazaar discovery endpoint. It provides a live, up-to-date catalog of 12,000+ x402-compatible services.
+> **提示：** 当用户或代理询问可购买的服务时，始终先查询Bazaar发现端点。它提供了包含12,000多种支持x402的服务的实时、最新目录。
 
-### Quick: Discover Available Services
+### 快速：发现可用服务
 
 ```bash
 # Query the Bazaar to see what's available (no auth required)
 curl -s "https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources?type=http&limit=50"
 ```
 
-## Prerequisites
+## 先决条件
 
-Before using this skill, ensure:
+在使用此技能之前，请确保：
+1. `THIRDWEB_SECRET_KEY`环境变量已设置，并使用有效的thirdweb项目密钥
+2. 钱包在Base链（或目标链）上有足够的USDC余额
+3. 具备访问thirdweb API端点的网络权限
 
-1. **THIRDWEB_SECRET_KEY** environment variable is set with a valid thirdweb project secret key
-2. The wallet has sufficient USDC balance on Base chain (or the target chain)
-3. Network access to thirdweb API endpoints
+## 重要提示：x402端点URL和服务类型
 
-## IMPORTANT: x402 Endpoint URLs & Service Types
+### 两种类型的x402支持
 
-### Two Types of x402 Support
-
-| Type | Description | Example |
+| 类型 | 描述 | 示例 |
 |------|-------------|---------|
-| **True x402** | Fully keyless - no API keys needed, just pay and use | Browserbase |
-| **Hybrid x402** | Requires API key/token + payment header | Firecrawl |
+| **真正的x402** | 完全无需API密钥——只需支付即可使用 | Browserbase |
+| **混合x402** | 需要API密钥/令牌 + 支付头部信息 | Firecrawl |
 
-### x402 Endpoint Patterns
+### x402端点模式
 
-| Service | Standard API | x402 Endpoint | Type | Status |
+| 服务 | 标准API | x402端点 | 类型 | 状态 |
 |---------|-------------|---------------|------|--------|
-| Browserbase | `api.browserbase.com` | `x402.browserbase.com` | True x402 | ✅ Works |
-| Firecrawl | `api.firecrawl.dev/v1/search` | `api.firecrawl.dev/v1/x402/search` | Non-standard | ❌ Broken |
+| Browserbase | `api.browserbase.com` | `x402.browserbase.com` | 真正的x402 | ✅ 可用 |
+| Firecrawl | `api.firecrawl.dev/v1/search` | `api.firecrawl.dev/v1/x402/search` | 非标准 | ❌ 无法使用 |
 
-**Discovery tips:**
-- Check for `x402.` subdomain (e.g., `x402.browserbase.com`)
-- Check for `/x402/` in the path (e.g., `/v1/x402/search`)
-- Hit the x402 root URL for endpoint listing (e.g., `curl https://x402.browserbase.com/`)
+**发现提示：**
+- 查看是否包含`x402.`子域名（例如，`x402.browserbase.com`）
+- 检查路径中是否包含 `/x402/`（例如，`/v1/x402/search`）
+- 访问x402根URL以获取端点列表（例如，`curl https://x402.browserbase.com/`）
 
-## Core Workflow
+## 核心工作流程
 
-### Step 1: Check or Create Wallet
+### 第1步：检查或创建钱包
 
-Use the thirdweb API directly (recommended):
+直接使用thirdweb API（推荐）：
 
 ```bash
 curl -s -X POST https://api.thirdweb.com/v1/wallets/server \
@@ -79,11 +79,11 @@ curl -s -X POST https://api.thirdweb.com/v1/wallets/server \
   -d '{"identifier": "x402-agent-wallet"}'
 ```
 
-The response will include the wallet address. Store this for subsequent operations.
+响应中将包含钱包地址。请将其保存以供后续操作使用。
 
-### Step 2: Make Payments with fetchWithPayment
+### 第2步：使用`fetchWithPayment`进行支付
 
-Call the thirdweb x402 fetch API directly:
+直接调用thirdweb x402 fetch API：
 
 ```bash
 # Browserbase - Create browser session
@@ -93,11 +93,11 @@ curl -s -X POST "https://api.thirdweb.com/v1/payments/x402/fetch?url=https://x40
   -d '{"browserSettings": {"viewport": {"width": 1920, "height": 1080}}}'
 ```
 
-### Step 3: Handle the Response
+### 第3步：处理响应
 
-**Success:** The API returns the session data directly.
+**成功：** API会直接返回会话数据。
 
-**Insufficient Funds:** If the wallet needs funding, the API returns:
+**资金不足：** 如果钱包需要充值，API会返回相应的提示：
 
 ```json
 {
@@ -108,48 +108,48 @@ curl -s -X POST "https://api.thirdweb.com/v1/payments/x402/fetch?url=https://x40
 }
 ```
 
-**When you receive a payment link, open it in the user's browser:**
+**当您收到支付链接时，在用户的浏览器中打开它：**
 
-- If browser automation is available (MCP, browser tool, etc.), use it to navigate to the link in a new tab
-- Otherwise, display the link prominently and instruct the user to open it manually
+- 如果支持浏览器自动化（如MCP、浏览器工具等），使用它们在新标签页中打开链接
+- 否则，显眼地显示链接并指导用户手动打开
 
-This opens thirdweb's payment page where users can fund the wallet.
+这将打开thirdweb的支付页面，用户可以在该页面为钱包充值。
 
-## API Reference
+## API参考
 
-### fetchWithPayment Endpoint
+### `fetchWithPayment`端点
 
-**URL:** `https://api.thirdweb.com/v1/payments/x402/fetch`
+**URL：** `https://api.thirdweb.com/v1/payments/x402/fetch`
 
-**Method:** POST
+**方法：** POST
 
-**Query Parameters:**
-| Parameter | Required | Description |
+**查询参数：**
+| 参数 | 是否必填 | 描述 |
 |-----------|----------|-------------|
-| `url` | Yes | Target API URL to call |
-| `method` | Yes | HTTP method (GET, POST, etc.) |
-| `from` | No | Wallet address for payment (uses default project wallet if omitted) |
-| `maxValue` | No | Maximum payment amount in wei |
-| `asset` | No | Payment token address (defaults to USDC) |
-| `chainId` | No | Chain ID for payment (e.g., "eip155:8453" for Base) |
+| `url` | 是 | 需要调用的目标API URL |
+| `method` | 是 | HTTP方法（GET、POST等） |
+| `from` | 否 | 用于支付的钱包地址（如果省略则使用默认项目钱包） |
+| `maxValue` | 否 | 最大支付金额（单位：wei） |
+| `asset` | 否 | 支付令牌地址（默认为USDC） |
+| `chainId` | 否 | 支付的链ID（例如，Base链的“eip155:8453”） |
 
-**Headers:**
-- `x-secret-key`: Your thirdweb project secret key (required)
-- `Content-Type`: application/json
+**头部信息：**
+- `x-secret-key`：您的thirdweb项目密钥（必填）
+- `Content-Type`：application/json
 
-## Supported x402 Services
+## 支持的x402服务
 
 ### Browserbase
 
-**x402 Endpoint:** `https://x402.browserbase.com`  
-**Pricing:** $0.12/hour (paid in USDC on Base)
+**x402端点：** `https://x402-browserbase.com`  
+**定价：** 每小时0.12美元（以USDC在Base链上支付）
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/browser/session/create` | POST | Create a browser session |
-| `/browser/session/:id/status` | GET | Check session status |
-| `/browser/session/:id/extend` | POST | Add more time |
-| `/browser/session/:id` | DELETE | Terminate session |
+| `/browser/session/create` | POST | 创建浏览器会话 |
+| `/browser/session/:id/status` | GET | 检查会话状态 |
+| `/browser/session/:id/extend` | POST | 延长会话时间 |
+| `/browser/session/:id` | DELETE | 终止会话 |
 
 ```bash
 curl -s -X POST "https://api.thirdweb.com/v1/payments/x402/fetch?url=https://x402.browserbase.com/browser/session/create&method=POST" \
@@ -158,50 +158,50 @@ curl -s -X POST "https://api.thirdweb.com/v1/payments/x402/fetch?url=https://x40
   -d '{"browserSettings": {"viewport": {"width": 1920, "height": 1080}}}'
 ```
 
-### Firecrawl (Non-Standard x402 - NOT RECOMMENDED)
+### Firecrawl（非标准x402 - 不推荐）
 
-**x402 Endpoint:** `https://api.firecrawl.dev/v1/x402/search`  
-**Pricing:** $0.01/request  
-**Status:** ⚠️ Incomplete implementation - cannot be used with thirdweb
+**x402端点：** `https://api.firecrawl.dev/v1/x402/search`  
+**定价：** 每次请求0.01美元  
+**状态：** ⚠️ 实现不完整——无法与thirdweb一起使用：
 
-> **WARNING:** Firecrawl's x402 implementation is non-standard and currently unusable for automated agents:
+> **警告：** Firecrawl的x402实现是非标准的，目前无法用于自动化代理：
 > 
-> 1. Returns `401 Unauthorized` instead of `402 Payment Required`
-> 2. Doesn't include payment details (payTo address, asset, amount) in response
-> 3. Documentation says to use `X-Payment: {{paymentHeader}}` but doesn't explain how to generate it
+> 1. 返回`401 Unauthorized`而不是`402 Payment Required`
+> 2. 响应中不包含支付详情（如`payTo`地址、资产、金额）
+> 3. 文档中建议使用`X-Payment: {{paymentHeader}}`，但未说明如何生成该头部信息
 > 
-> **Comparison with proper x402 (Browserbase):**
-> - Browserbase: Returns 402 with `x402Version`, `accepts`, `payTo`, `asset` → thirdweb can auto-pay
-> - Firecrawl: Returns 401 with just `{"error":"Unauthorized"}` → no payment info provided
+> **与标准x402（Browserbase）的比较：**
+> - Browserbase：返回包含`x402Version`、`accept`、`payTo`、`asset`的402响应，因此thirdweb可以自动完成支付
+> - Firecrawl：仅返回`401 Unauthorized`，不提供任何支付信息
 
-| Endpoint | Method | Status |
+| 端点 | 方法 | 状态 |
 |----------|--------|--------|
-| `/v1/x402/search` | POST | ❌ Non-functional for agents |
+| `/v1/x402/search` | POST | ❌ 代理无法使用 |
 
-**Recommended alternatives:**
-1. **Firecrawl MCP** - If available in your environment (uses standard API key)
-2. **Browserbase + scraping script** - True x402, fully keyless
-3. **Standard Firecrawl API** - With subscription/API key
+**推荐替代方案：**
+1. **Firecrawl MCP**（如果您的环境中可用）——使用标准API密钥
+2. **Browserbase + 爬取脚本**——真正的x402功能，完全无需密钥
+3. **标准Firecrawl API**——需要订阅或API密钥
 
-Reference: [Firecrawl x402 docs](https://docs.firecrawl.dev/x402/search)
+参考：[Firecrawl x402文档](https://docs.firecrawl.dev/x402/search)
 
-### Mail.tm (Disposable Email)
+### Mail.tm（一次性电子邮件）
 
-**Base URL:** `https://api.mail.tm`  
-**Pricing:** Free (no x402 payment required)
+**Base URL：** `https://api.mail.tm`  
+**定价：** 免费（无需x402支付）
 
-Mail.tm allows agents to create email addresses for signups and receive verification emails.
+Mail.tm允许代理创建用于注册的电子邮件地址并接收验证邮件。
 
-| Endpoint | Method | Auth | Description |
+| 端点 | 方法 | 认证方式 | 描述 |
 |----------|--------|------|-------------|
-| `/domains` | GET | No | Get available email domains |
-| `/accounts` | POST | No | Create an email account |
-| `/token` | POST | No | Get authentication token |
-| `/messages` | GET | Yes | List all messages |
-| `/messages/:id` | GET | Yes | Get full message content |
-| `/me` | GET | Yes | Get account info |
+| `/domains` | GET | 否 | 获取可用电子邮件域名 |
+| `/accounts` | POST | 否 | 创建电子邮件账户 |
+| `/token` | POST | 否 | 获取认证令牌 |
+| `/messages` | GET | 是 | 列出所有邮件 |
+| `/messages/:id` | GET | 是 | 获取邮件内容 |
+| `/me` | GET | 是 | 获取账户信息 |
 
-#### Create Email Account
+#### 创建电子邮件账户
 
 ```bash
 # 1. Get available domain
@@ -213,7 +213,7 @@ curl -s -X POST https://api.mail.tm/accounts \
   -d '{"address": "agent-'$(date +%s)'@'"$DOMAIN"'", "password": "SecurePass123!"}'
 ```
 
-#### Get Token and Check Messages
+#### 获取令牌和检查邮件
 
 ```bash
 # Get auth token
@@ -228,33 +228,33 @@ curl -s https://api.mail.tm/messages -H "Authorization: Bearer $TOKEN"
 curl -s https://api.mail.tm/messages/MESSAGE_ID -H "Authorization: Bearer $TOKEN"
 ```
 
-**Important:** Store email credentials (address, password, token) for later use. Consider saving to `.agent-emails.json` (gitignored).
+**重要提示：** 保存电子邮件凭据（地址、密码、令牌）以供后续使用。建议将它们保存到`.agent-emails.json`文件中（该文件在git提交时被忽略）。
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| 401 Unauthorized | Invalid or missing THIRDWEB_SECRET_KEY | Check environment variable |
-| 402 Payment Required | Insufficient balance | Auto-open payment link (see above) |
-| 400 Bad Request | Invalid URL or method | Verify request parameters |
-| 404 Not Found | Wrong endpoint | Check x402-specific endpoint (e.g., `x402.browserbase.com`) |
-| 500 Server Error | thirdweb or target API issue | Retry or check service status |
+| 401 Unauthorized | `THIRDWEB_SECRET_KEY`无效或缺失 | 检查环境变量 |
+| 402 Payment Required | 钱包余额不足 | 自动打开支付链接（见上文） |
+| 400 Bad Request | URL或方法无效 | 验证请求参数 |
+| 404 Not Found | 端点错误 | 检查正确的x402端点（例如，`x402.browserbase.com`） |
+| 500 Server Error | thirdweb或目标API出现问题 | 重试或检查服务状态 |
 
-## Common Mistakes
+## 常见错误
 
-1. **Using wrong subdomain**: `api.browserbase.com` vs `x402.browserbase.com`
-2. **Using wrong path**: `/v1/sessions` vs `/browser/session/create`
-3. **Not checking for payment links**: Always parse response for `link` field
+1. **使用错误的子域名**：`api.browserbase.com` vs `x402.browserbase.com`
+2. **使用错误的路径**：`/v1/sessions` vs `/browser/session/create`
+3. **未检查支付链接**：始终解析响应中的`link`字段
 
-## Discovering x402 Endpoints
+## 发现x402端点
 
-There are two ways to discover x402-compatible services:
+有两种方法可以发现支持x402的服务：
 
-### Method 1: x402 Bazaar (Recommended)
+### 方法1：x402 Bazaar（推荐）
 
-The x402 Bazaar is a machine-readable catalog that helps AI agents discover x402-compatible API endpoints programmatically.
+x402 Bazaar是一个机器可读的目录，可帮助AI代理程序化地发现支持x402的API端点。
 
-#### Query the Bazaar Discovery Endpoint
+#### 查询Bazaar发现端点
 
 ```bash
 # Using the default facilitator (x402.org)
@@ -264,7 +264,7 @@ curl -s "https://x402.org/facilitator/discovery/resources?type=http&limit=20"
 curl -s "https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources?type=http&limit=20"
 ```
 
-#### Using the Discovery Script
+#### 使用发现脚本
 
 ```bash
 # Discover available services
@@ -280,7 +280,7 @@ npx ts-node scripts/discover-services.ts --facilitator "https://api.cdp.coinbase
 npx ts-node scripts/discover-services.ts --json
 ```
 
-#### Response Format
+#### 响应格式
 
 ```json
 {
@@ -315,19 +315,19 @@ npx ts-node scripts/discover-services.ts --json
 }
 ```
 
-#### Query Parameters
+#### 查询参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `type` | string | - | Filter by protocol type (e.g., `"http"`) |
-| `limit` | number | 20 | Number of resources to return (max: 100) |
-| `offset` | number | 0 | Offset for pagination |
+| `type` | 字符串 | - | 按协议类型过滤（例如，“http”） |
+| `limit` | 数字 | 20 | 返回的资源数量（最大100个） |
+| `offset` | 数字 | 0 | 分页偏移量 |
 
-### Method 2: Manual Discovery
+### 方法2：手动发现
 
-When encountering a new service that might support x402:
+当遇到可能支持x402的新服务时：
 
-#### 1. Check for x402 Subdomain
+#### 1. 检查是否存在x402子域名
 
 ```bash
 # Try the x402 subdomain - often has an info page
@@ -337,14 +337,14 @@ curl -s https://x402.SERVICE.com/
 curl -s https://x402.browserbase.com/
 ```
 
-#### 2. Check for /x402/ Path Prefix
+#### 2. 检查路径前缀是否为/x402/
 
 ```bash
 # Some services use path prefix instead of subdomain
 curl -s -I https://api.SERVICE.com/v1/x402/endpoint
 ```
 
-#### 3. Test for 402 Response
+#### 3. 测试是否返回402响应
 
 ```bash
 # A true x402 endpoint returns 402 Payment Required (not 401)
@@ -353,29 +353,29 @@ curl -s -i -X POST https://x402.SERVICE.com/endpoint \
   -d '{}' 2>&1 | head -5
 ```
 
-**Expected for true x402:**
+**对于真正的x402服务：**
 ```
 HTTP/2 402
 x-payment-required: ...
 ```
 
-**If you see 401 Unauthorized:** The service uses hybrid x402 (needs API key + payment).
+**如果看到401 Unauthorized：** 该服务使用混合x402协议（需要API密钥和支付信息）。
 
-#### 4. Check Service Documentation
+#### 4. 查看服务文档
 
-Look for x402/payments documentation:
+查找包含`x402/payments`的文档：
 - `docs.SERVICE.com/x402/`
 - `docs.SERVICE.com/payments/`
-- Search for "x402" or "402" in their docs
+- 在文档中搜索“x402”或“402”
 
-## Additional Resources
+## 其他资源
 
-- See [references/API-REFERENCE.md](references/API-REFERENCE.md) for complete API documentation
-- See [references/SERVICES.md](references/SERVICES.md) for x402-compatible service examples
+- 请参阅[references/API-REFERENCE.md]以获取完整的API文档
+- 请参阅[references/SERVICES.md]以获取支持x402的服务示例
 
-## Links
+## 链接
 
-- [x402 Protocol](https://x402.org)
-- [x402 Bazaar Discovery](https://docs.cdp.coinbase.com/x402/bazaar)
-- [thirdweb x402 Documentation](https://portal.thirdweb.com/x402)
-- [Browserbase x402 Docs](https://docs.browserbase.com/integrations/x402/introduction)
+- [x402协议](https://x402.org)
+- [x402 Bazaar发现工具](https://docs.cdp.coinbase.com/x402/bazaar)
+- [thirdweb x402文档](https://portal.thirdweb.com/x402)
+- [Browserbase x402文档](https://docs.browserbase.com/integrations/x402/introduction)

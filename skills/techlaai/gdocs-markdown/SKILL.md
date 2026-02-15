@@ -1,74 +1,75 @@
 ---
 name: gdocs-markdown
-description: Create Google Docs from Markdown files. Use when the user wants to create a Google Doc from Markdown content, or when working with gog CLI and need to populate Google Docs with content. This skill handles the conversion Markdown → DOCX → Google Docs via Drive upload, since gog docs CLI only supports create/export/cat/copy but NOT write/update content.
+description: **将 Markdown 文件转换为 Google 文档的技能**  
+当用户希望将 Markdown 内容转换为 Google 文档，或者在使用 `gog CLI` 时需要向 Google 文档中添加内容时，可以使用此技能。该技能通过 Drive 上传来实现 Markdown → DOCX → Google 文档的转换过程。需要注意的是，`gog CLI` 仅支持创建、导出、分类和复制文档，但不支持写入或更新文档内容。
 ---
 
-# Google Docs from Markdown
+# 从 Markdown 文件创建 Google 文档
 
-Create Google Docs from Markdown files using the workflow: Markdown → DOCX → Drive Upload → Google Docs.
+使用以下工作流程将 Markdown 文件转换为 Google 文档：Markdown → DOCX → 上传到 Google Drive → 在 Google Docs 中使用：
 
-## Why This Skill Exists
+## 为什么需要这个技能
 
-`gog docs` CLI does NOT support writing/updating content to Google Docs. It only supports:
-- `create` - Create empty doc
-- `export` - Export to file
-- `cat` - Read content
-- `copy` - Copy existing doc
+`gog docs` 命令行工具（CLI）不支持向 Google Docs 写入或更新内容。它仅支持以下操作：
+- `create`：创建空白文档
+- `export`：导出为文件
+- `cat`：读取内容
+- `copy`：复制现有文档
 
-This skill provides the missing workflow to create Google Docs WITH content from Markdown.
+这个技能提供了从 Markdown 文件创建包含内容的 Google 文档所需的工作流程。
 
-## Author
+## 作者
 
-Created by **techla**
+由 **techla** 创建
 
-## Prerequisites
+## 先决条件
 
-- `gog` CLI authenticated with Google account
-- `pandoc` binary (auto-downloaded on first use if not available)
+- 使用 Google 账户登录 `gog` CLI
+- 安装 `pandoc` 工具（如果未安装，首次使用时会自动下载）
 
-## Installation Note
+## 安装说明
 
-After installing from ClawHub, fix the script permissions:
+从 ClawHub 安装该工具后，请修复脚本的权限设置：
 ```bash
 chmod +x ~/.openclaw/workspace/skills/gdocs-markdown/scripts/gdocs-create.sh
 ```
 
-## Usage
+## 使用方法
 
-### Quick Create
+### 快速创建
 
 ```bash
 # Create Google Doc from markdown file
 gdocs-create.sh /path/to/file.md "Tiêu đề Document"
 ```
 
-### Manual Workflow
+### 手动工作流程
 
-If you need more control, follow these steps:
+如果您需要更多控制，请按照以下步骤操作：
 
-1. **Ensure pandoc is available:**
+1. **确保已安装 pandoc：**
    ```bash
    # Auto-downloaded to /tmp/pandoc-3.1.11/bin/pandoc on first use
    # Or use system pandoc if available
    ```
 
-2. **Convert Markdown to DOCX:**
+2. **将 Markdown 文件转换为 DOCX 格式：**
    ```bash
    /tmp/pandoc-3.1.11/bin/pandoc input.md -o output.docx
    ```
 
-3. **Upload to Drive (auto-converts to Google Docs):**
+3. **上传到 Google Drive（自动转换为 Google 文档）：**
    ```bash
    gog drive upload output.docx
    ```
 
-4. **Result:** Google Drive returns a link to the converted Google Doc
+4. **结果：** Google Drive 会返回转换后的 Google 文档链接
 
-## Script Reference
+## 脚本参考
 
-See `scripts/gdocs-create.sh` for the helper script that automates this workflow.
+请参阅 `scripts/gdocs-create.sh` 脚本，该脚本可自动化整个工作流程。
 
-## Example
+## 示例
 
 ```bash
 # Create a report from markdown
@@ -78,8 +79,8 @@ gdocs-create.sh /tmp/report.md "Báo Cáo Tháng 2"
 # Output: https://docs.google.com/document/d/xxxxx/edit
 ```
 
-## Notes
+## 注意事项
 
-- Google Drive automatically converts DOCX to Google Docs format on upload
-- The resulting document is fully editable in Google Docs
-- Original DOCX file remains in Drive but can be deleted if only Google Docs version is needed
+- Google Drive 会在上传时自动将 DOCX 文件转换为 Google Docs 格式
+- 转换后的文档可以在 Google Docs 中进行编辑
+- 如果只需要 Google Docs 版本，原始的 DOCX 文件仍会保留在 Google Drive 中，但也可以删除

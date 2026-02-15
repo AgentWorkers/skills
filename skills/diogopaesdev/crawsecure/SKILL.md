@@ -1,48 +1,45 @@
-Offline security scanner for ClawHub skills — detect unsafe patterns before installation.
+**ClawHub 技能的离线安全扫描器——在安装前检测不安全模式**
 
 # CrawSecure
 
-CrawSecure is an **offline security analysis skill** designed to help users evaluate potential risks in ClawHub / OpenClaw skills **before installing or trusting them**.
-
-It promotes safer usage, transparency, and awareness when working with third-party skills.
+CrawSecure 是一款 **离线安全分析工具**，旨在帮助用户在 **安装或使用** ClawHub/OpenClaw 的技能之前评估潜在风险。它有助于提升使用安全性、增强透明度，并提高用户对第三方技能的安全意识。
 
 ---
 
-## 🔍 What CrawSecure does
+## 🔍 CrawSecure 的功能
 
-- Analyzes skill-related files locally
-- Detects potentially dangerous patterns
-- Highlights security risks clearly
-- Helps users make informed decisions before installation
-
----
-
-## 🚨 Risk Signals Analyzed
-
-- Dangerous command patterns (e.g. destructive or execution-related behavior)
-- References to sensitive files or credentials
-- Indicators of unsafe or risky practices
+- 在本地分析与技能相关的文件
+- 检测潜在的危险模式
+- 清晰地标注安全风险
+- 帮助用户在安装前做出明智的决策
 
 ---
 
-## 🔒 Security Philosophy
+## 🚨 分析的风险信号
 
-- Read-only analysis
-- No network access
-- No code execution
-- No file modifications
-
-CrawSecure exists to **increase trust** inside the ClawHub ecosystem.
+- 危险的命令模式（例如具有破坏性或执行相关行为的命令）
+- 对敏感文件或凭据的引用
+- 不安全或高风险行为的迹象
 
 ---
 
-## ⚙️ Execution Model
+## 🔒 安全原则
 
-CrawSecure does **NOT** execute or install any third-party code.
+- 仅进行读取操作（只读取文件内容，不进行任何修改）
+- 不需要网络连接
+- 不会执行任何代码
+- 不会修改任何文件
 
-This skill provides a **local CLI tool** that users run manually.
+CrawSecure 的存在旨在 **增强 ClawHub 生态系统内的信任感**。
 
-### Using npx (recommended)
+---
+
+## ⚙️ 执行模型
+
+CrawSecure **不会** 执行或安装任何第三方代码。它提供了一个 **本地命令行工具**，用户可以手动运行该工具。
+
+### 推荐使用方法（使用 npx）：
 
 ```bash
 npx crawsecure ./path-to-skill
+```

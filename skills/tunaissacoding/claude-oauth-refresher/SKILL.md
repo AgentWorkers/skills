@@ -1,71 +1,70 @@
 ---
 name: claude-oauth-refresher
-description: Keep your Claude access token fresh 24/7. Automatically refreshes OAuth tokens before expiry so you never see authentication failures.
+description: 请确保您的 Claude 访问令牌始终保持有效状态（即随时都是“新鲜的”）。系统会自动在 OAuth 令牌过期前进行刷新，这样您就永远不会遇到认证失败的情况。
 ---
 
-# claude-oauth-refresher
+# Claude-OAuth-Refresher
 
-**Automatic OAuth token refresh for Claude Code CLI on macOS**
+**为 macOS 上的 Claude Code CLI 自动刷新 OAuth 令牌**
 
-Keep your Claude account logged in 24/7 by automatically refreshing OAuth tokens before they expire.
+通过自动在 OAuth 令牌过期前进行刷新，确保您的 Claude 账户始终保持登录状态。
 
 ---
 
-## ⚠️ Requirements
+## ⚠️ 要求
 
-This skill is **macOS-only** and requires:
+此功能 **仅适用于 macOS**，并需要以下条件：
+1. **macOS**（使用 Keychain 来安全存储凭证）
+2. **已安装 Claude Code CLI**（可执行 `claude` 命令）
+3. **已登录 Claude 账户**（运行 `claude` 后再运行 `login`——令牌将存储在 Keychain 中）
+4. **已安装并运行 Clawdbot**
 
-1. **macOS** (uses Keychain for secure credential storage)
-2. **Claude Code CLI** already installed (`claude` command available)
-3. **Already logged into your Claude account** (run `claude` then `login` - stores tokens in Keychain)
-4. **Clawdbot** installed and running
-
-**Not sure if you're set up?** Run the verification script:
+**不确定是否已设置？** 运行验证脚本：
 ```bash
 ./verify-setup.sh
 ```
 
 ---
 
-## What It Does
+## 功能介绍
 
-- **Monitors** your Claude CLI token expiration
-- **Refreshes** tokens automatically before they expire (default: 30 min buffer)
-- **Notifies** you with three notification types:
-  - 🔄 Start: "Refreshing Claude token..." 
-  - ✅ Success: "Claude token refreshed!"
-  - ❌ Failure: Detailed error with troubleshooting steps
-- **Logs** all refresh attempts for debugging
+- **监控** Claude CLI 令牌的过期时间
+- **在令牌过期前自动刷新令牌**（默认延迟 30 分钟）
+- **通过三种方式通知您**：
+  - 🔄 开始：**“正在刷新 Claude 令牌...”**
+  - ✅ 成功：**“Claude 令牌已刷新！”**
+  - ❌ 失败：**显示详细错误及故障排除步骤**
+- **记录所有刷新尝试以供调试**
 
 ---
 
-## Installation
+## 安装
 
-### Quick Setup (Recommended)
+### 快速设置（推荐）
 
 ```bash
 cd ~/clawd/skills/claude-oauth-refresher
 ./install.sh
 ```
 
-**This installer runs ONCE** and sets up automatic token refresh that runs every 2 hours.
+**此安装程序只需运行一次**，即可设置每 2 小时自动刷新令牌的机制。
 
-The installer will:
-1. Verify your system meets requirements
-2. **Interactively configure** notification preferences
-3. Auto-detect your notification target (Telegram, Slack, etc.)
-4. Set up launchd for automatic refresh
-5. Test the refresh immediately
+安装程序将：
+1. 验证您的系统是否符合要求
+2. **交互式配置** 通知偏好设置
+3. 自动检测您的通知目标（Telegram、Slack 等）
+4. 设置 launchd 以自动执行刷新任务
+5. 立即测试刷新功能
 
-**After installation:**
-- Config changes apply automatically (refresh script reads config each run)
-- Edit `claude-oauth-refresh-config.json` to change settings
-- Ask Clawdbot to modify settings for you
-- **Only re-run installer** if you need to reinstall or fix the job
+**安装完成后：**
+- 配置更改会自动生效（刷新脚本每次运行时都会读取配置）
+- 编辑 `claude-oauth-refresh-config.json` 以修改设置
+- 可请求 Clawdbot 为您修改设置
+- **仅在需要重新安装或修复问题时才需要重新运行安装程序**
 
-### Interactive Notification Setup
+### 交互式通知设置
 
-During installation, you'll be prompted:
+在安装过程中，系统会提示您进行相关设置：
 
 ```
 Configure Notifications:
@@ -79,69 +78,69 @@ Enable "✅ Token refreshed!" notification? [Y/n]:
 Enable "❌ Refresh failed" notification? [Y/n]: 
 ```
 
-**Recommendation:** Keep all enabled initially to verify everything works, then disable start/success notifications once you're confident.
+**建议：** 先启用所有通知类型以确保一切正常工作，确认无误后再关闭开始/成功通知。
 
 ---
 
-## Managing Notifications with Clawdbot
+## 使用 Clawdbot 管理通知
 
-**You can ask Clawdbot to change notification settings for you!** No need to edit JSON manually.
+**您可以请求 Clawdbot 为您更改通知设置！** 无需手动编辑 JSON 文件。
 
-### Examples
+### 示例
 
-**Disable specific notification types:**
+**禁用特定通知类型：**
 ```
 "disable Claude refresh start notifications"
 "disable Claude refresh success notifications"
 "turn off Claude token refresh start messages"
 ```
 
-**Enable notification types:**
+**启用通知类型：**
 ```
 "enable Claude refresh start notifications"
 "enable all Claude refresh notifications"
 "turn on Claude token refresh success messages"
 ```
 
-**Check current settings:**
+**查看当前设置：**
 ```
 "show Claude refresh notification settings"
 "what are my Claude token refresh notification settings?"
 ```
 
-**Disable all notifications:**
+**禁用所有通知：**
 ```
 "disable all Claude refresh notifications"
 "turn off all Claude token notifications"
 ```
 
-**Reset to defaults:**
+**恢复默认设置：**
 ```
 "reset Claude refresh notifications to defaults"
 ```
 
-### How It Works
+### 工作原理
 
-Clawdbot will:
-1. Read your `~/clawd/claude-oauth-refresh-config.json`
-2. Update the appropriate notification flags
-3. Save the file
-4. Confirm the changes
+Clawdbot 会：
+1. 读取您的 `~/clawd/claude-oauth-refresh-config.json` 文件
+2. 更新相应的通知标志
+3. 保存文件
+4. 确认更改
 
-**Changes apply immediately** on the next refresh (no need to restart anything).
+**更改将在下一次刷新时立即生效**（无需重启任何程序）。
 
 ---
 
-## Auto-Detection (Smart Defaults)
+## 自动检测（智能默认设置）
 
-**The install script automatically detects your notification settings!**
+**安装脚本会自动检测您的通知设置！**
 
-It reads `~/.clawdbot/clawdbot.json` to find:
-- Which messaging channels you have enabled
-- Your chat ID, phone number, or user ID
-- Automatically populates `claude-oauth-refresh-config.json` with these values
+它将读取 `~/.clawdbot/clawdbot.json` 文件，以获取：
+- 您启用的消息通道
+- 您的聊天 ID、电话号码或用户 ID
+- 并自动将这些信息填充到 `claude-oauth-refresh-config.json` 文件中
 
-**Example:** If you have Telegram enabled with chat ID `123456789`, the installer creates:
+**示例：** 如果您启用了 Telegram 并设置了聊天 ID `123456789`，安装程序会生成如下配置：
 ```json
 {
   "notification_channel": "telegram",
@@ -149,11 +148,11 @@ It reads `~/.clawdbot/clawdbot.json` to find:
 }
 ```
 
-**To override:** Simply edit `claude-oauth-refresh-config.json` after installation to use a different channel or target.
+**如需覆盖设置：** 安装完成后直接编辑 `claude-oauth-refresh-config.json` 文件以使用其他通道或目标。
 
-**If auto-detection fails:** The installer will prompt you to configure manually (see "Finding Your Target ID" below).
+**如果自动检测失败：** 安装程序会提示您手动配置（详见“查找目标 ID”部分）。
 
-**Test detection before installing:**
+**安装前测试检测功能：**
 ```bash
 ./test-detection.sh
 # Shows what would be auto-detected without modifying anything
@@ -161,15 +160,15 @@ It reads `~/.clawdbot/clawdbot.json` to find:
 
 ---
 
-## Finding Your Target ID
+## 查找目标 ID
 
-To receive notifications, you need to configure your `notification_target` in `claude-oauth-refresh-config.json`. Here's how to find it for each channel:
+要接收通知，您需要在 `claude-oauth-refresh-config.json` 中配置 `notification_target`。以下是针对各平台的配置方法：
 
 ### Telegram
 
-**Format:** Numeric chat ID (e.g., `123456789`)
+**格式：** 数字聊天 ID（例如：`123456789`）
 
-**How to find:**
+**查找方法：**
 ```bash
 # Option 1: Use Clawdbot CLI
 clawdbot message telegram account list
@@ -181,7 +180,7 @@ clawdbot message telegram account list
 clawdbot message telegram message search --limit 1 --from-me true
 ```
 
-**Example config:**
+**示例配置：**
 ```json
 {
   "notification_channel": "telegram",
@@ -191,11 +190,11 @@ clawdbot message telegram message search --limit 1 --from-me true
 
 ### Slack
 
-**Format:** 
-- Direct messages: `user:U01234ABCD`
-- Channels: `channel:C01234ABCD`
+**格式：**
+- 直接消息：`user:U01234ABCD`
+- 频道：`channel:C01234ABCD`
 
-**How to find:**
+**查找方法：**
 ```bash
 # List channels
 clawdbot message slack channel list
@@ -206,7 +205,7 @@ clawdbot message slack user list | grep "your.email@company.com"
 # Or click on your profile in Slack → More → Copy member ID
 ```
 
-**Example config:**
+**示例配置：**
 ```json
 {
   "notification_channel": "slack",
@@ -216,11 +215,11 @@ clawdbot message slack user list | grep "your.email@company.com"
 
 ### Discord
 
-**Format:**
-- Direct messages: `user:123456789012345678`
-- Channels: `channel:123456789012345678`
+**格式：**
+- 直接消息：`user:123456789012345678`
+- 频道：`channel:123456789012345678`
 
-**How to find:**
+**查找方法：**
 ```bash
 # Enable Developer Mode in Discord (Settings → Advanced → Developer Mode)
 # Then right-click your username → Copy ID
@@ -229,28 +228,20 @@ clawdbot message slack user list | grep "your.email@company.com"
 clawdbot message discord channel list
 ```
 
-**Example config:**
-```json
-{
-  "notification_channel": "discord",
-  "notification_target": "user:123456789012345678"
-}
-```
-
 ### WhatsApp
 
-**Format:** E.164 phone number (e.g., `+15551234567`)
+**格式：** E.164 电话号码（例如：`+15551234567`）
 
-**How to find:**
-- Use your full phone number with country code
-- Format: `+[country code][number]` (no spaces, dashes, or parentheses)
+**查找方法：**
+- 使用完整的电话号码（包含国家代码）
+- 格式：`+[国家代码][号码]`（无空格、破折号或括号）
 
-**Examples:**
-- US: `+15551234567`
-- UK: `+447911123456`
-- Australia: `+61412345678`
+**示例：**
+- 美国：`+15551234567`
+- 英国：`+447911123456`
+- 澳大利亚：`+61412345678`
 
-**Example config:**
+**示例配置：**
 ```json
 {
   "notification_channel": "whatsapp",
@@ -260,9 +251,9 @@ clawdbot message discord channel list
 
 ### iMessage
 
-**Format (preferred):** `chat_id:123`
+**推荐格式：** `chat_id:123`
 
-**How to find:**
+**查找方法：**
 ```bash
 # List recent chats to find your chat_id
 clawdbot message imessage thread list --limit 10
@@ -270,11 +261,11 @@ clawdbot message imessage thread list --limit 10
 # Find the chat with yourself or your preferred device
 ```
 
-**Alternative formats:**
-- Phone: `+15551234567` (E.164 format)
-- Email: `your.email@icloud.com`
+**其他格式：**
+- 电话：`+15551234567`（E.164 格式）
+- 电子邮件：`your.email@icloud.com`
 
-**Example config:**
+**示例配置：**
 ```json
 {
   "notification_channel": "imessage",
@@ -284,13 +275,13 @@ clawdbot message imessage thread list --limit 10
 
 ### Signal
 
-**Format:** E.164 phone number (e.g., `+15551234567`)
+**格式：** E.164 电话号码（例如：`+15551234567`）
 
-**How to find:**
-- Use your Signal-registered phone number
-- Format: `+[country code][number]` (no spaces, dashes, or parentheses)
+**查找方法：**
+- 使用您在 Signal 中注册的电话号码
+- 格式：`+[国家代码][号码]`（无空格、破折号或括号）
 
-**Example config:**
+**示例配置：**
 ```json
 {
   "notification_channel": "signal",
@@ -300,9 +291,7 @@ clawdbot message imessage thread list --limit 10
 
 ---
 
-## Configuration
-
-**File:** `claude-oauth-refresh-config.json`
+## 配置文件：`claude-oauth-refresh-config.json`
 
 ```json
 {
@@ -318,38 +307,38 @@ clawdbot message imessage thread list --limit 10
 }
 ```
 
-### Options
+### 选项
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 说明 |
 |--------|------|---------|-------------|
-| `refresh_buffer_minutes` | number | `30` | Refresh tokens this many minutes before expiry |
-| `log_file` | string | `~/clawd/logs/claude-oauth-refresh.log` | Where to write logs |
-| `notifications.on_start` | boolean | `true` | Send "🔄 Refreshing token..." notification |
-| `notifications.on_success` | boolean | `true` | Send "✅ Token refreshed!" notification |
-| `notifications.on_failure` | boolean | `true` | Send "❌ Refresh failed" notification with details |
-| `notification_channel` | string | `telegram` | Channel to use (see above for options) |
-| `notification_target` | string | `YOUR_CHAT_ID` | Target ID (see "Finding Your Target ID") |
+| `refresh_buffer_minutes` | 数字 | `30` | 令牌在过期前多久进行刷新 |
+| `log_file` | 字符串 | `~/clawd/logs/claude-oauth-refresh.log` | 日志保存路径 |
+| `notifications.on_start` | 布尔值 | `true` | 发送 “🔄 正在刷新令牌...” 通知 |
+| `notifications.on_success` | 布尔值 | `true` | 发送 “✅ 令牌已刷新！” 通知 |
+| `notifications.on_failure` | 布尔值 | `true` | 发送 “❌ 刷新失败” 通知及详细错误信息 |
+| `notification_channel` | 字符串 | `telegram` | 使用的通道（参见上述选项） |
+| `notification_target` | 字符串 | `YOUR_CHAT_ID` | 目标 ID（参见“查找目标 ID”部分） |
 
-### Notification Types Explained
+### 通知类型说明
 
-**🔄 Start (`on_start`)**
-- Sent when refresh process begins
-- Useful for debugging or knowing when refresh runs
-- **Recommendation:** Disable once you verify it works (can be noisy)
+**🔄 开始（`on_start`）**
+- 在刷新过程开始时发送
+- 有助于调试或了解刷新时间
+**建议：** 确认设置无误后关闭此选项（可能会产生较多通知）
 
-**✅ Success (`on_success`)**
-- Sent when token successfully refreshed
-- Includes validity duration (e.g., "valid for 24h")
-- **Recommendation:** Disable once you trust the setup (can be noisy)
+**✅ 成功（`on_success`）
+- 令牌成功刷新时发送
+- 包含令牌的有效期限（例如：“有效期 24 小时”）
+**建议：** 确信设置无误后关闭此选项（可能会产生较多通知）
 
-**❌ Failure (`on_failure`)**
-- Sent when refresh fails with detailed error info
-- Includes troubleshooting steps based on error type
-- **Recommendation:** Keep enabled! You want to know about failures.
+**❌ 失败（`on_failure`）
+- 令牌刷新失败时发送详细错误信息
+- 包含基于错误类型的故障排除步骤
+**建议：** 保持此选项开启！您需要了解失败情况**
 
-### Example Configurations
+### 示例配置
 
-**Minimal (failures only):**
+**最小化配置（仅显示失败通知）：**
 ```json
 {
   "notifications": {
@@ -360,7 +349,7 @@ clawdbot message imessage thread list --limit 10
 }
 ```
 
-**Verbose (all notifications):**
+**详细配置（显示所有通知）：**
 ```json
 {
   "notifications": {
@@ -371,7 +360,7 @@ clawdbot message imessage thread list --limit 10
 }
 ```
 
-**Silent (no notifications):**
+**静音配置（不显示任何通知）：**
 ```json
 {
   "notifications": {
@@ -384,16 +373,15 @@ clawdbot message imessage thread list --limit 10
 
 ---
 
-## Detailed Failure Messages
+## 详细失败信息
 
-When a refresh fails, you'll receive a detailed notification with:
+当刷新失败时，您会收到包含以下内容的详细通知：
+1. **错误信息**：出错的原因
+2. **详细信息**：额外的上下文（如 HTTP 状态码、错误响应等）
+3. **故障排除**：根据错误类型提供的具体步骤
+4. **帮助**：日志存放位置及获取支持的途径
 
-1. **Error message** - What went wrong
-2. **Details** - Additional context (HTTP codes, error responses, etc.)
-3. **Troubleshooting** - Specific steps based on the error type
-4. **Help** - Where to find logs and get support
-
-### Example Failure Notification
+### 失败通知示例**
 
 ```
 ❌ Claude token refresh failed
@@ -410,9 +398,9 @@ Need help? Message Clawdbot or check logs:
 ~/clawd/logs/claude-oauth-refresh.log
 ```
 
-### Common Errors and Solutions
+### 常见错误及解决方法
 
-**Network/Timeout Errors**
+**网络/超时错误**
 ```
 Troubleshooting:
 - Check your internet connection
@@ -420,7 +408,7 @@ Troubleshooting:
 - Try running manually: ./refresh-token.sh
 ```
 
-**Invalid Refresh Token**
+**无效的刷新令牌**
 ```
 Troubleshooting:
 - Your refresh token may have expired
@@ -428,7 +416,7 @@ Troubleshooting:
 - Verify Keychain access: security find-generic-password -s 'claude-cli-auth' -a 'default'
 ```
 
-**Keychain Access Denied**
+**Keychain 访问被拒绝**
 ```
 Troubleshooting:
 - Check Keychain permissions
@@ -436,7 +424,7 @@ Troubleshooting:
 - Verify setup: ./verify-setup.sh
 ```
 
-**Missing Auth Profile**
+**缺少认证配置文件**
 ```
 Troubleshooting:
 - Run: claude auth
@@ -446,9 +434,9 @@ Troubleshooting:
 
 ---
 
-## Usage
+## 使用方法
 
-### Check Status
+### 检查状态**
 
 ```bash
 # View recent logs
@@ -462,30 +450,30 @@ cd ~/clawd/skills/claude-oauth-refresher
 ./refresh-token.sh
 ```
 
-### Modify Settings
+### 修改设置
 
-**Option 1: Ask Clawdbot (easiest)**
+**方法 1：请求 Clawdbot 帮助（最简单）**
 ```
 "disable Claude refresh start notifications"
 "show Claude refresh notification settings"
 ```
 
-**Option 2: Edit config file**
+**方法 2：手动编辑配置文件**
 ```bash
 nano ~/clawd/skills/claude-oauth-refresher/claude-oauth-refresh-config.json
 ```
 
-Changes apply automatically on next refresh (every 2 hours, or when you run manually).
+更改会在下一次刷新时自动生效（每 2 小时一次，或手动触发时生效）。
 
-**No need to restart anything!** The refresh script reads the config file each time it runs.
+**无需重启任何程序！** 刷新脚本每次运行时都会读取配置文件。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Problem: `verify-setup.sh` says Claude CLI not found
+### 问题：`verify-setup.sh` 报告未找到 Claude CLI**
 
-**Solution:**
+**解决方法：**
 ```bash
 # Install Claude CLI
 brew install claude
@@ -493,11 +481,9 @@ brew install claude
 # Or download from https://github.com/anthropics/claude-cli
 ```
 
----
+### 问题：`verify-setup.sh` 报告未找到刷新令牌**
 
-### Problem: `verify-setup.sh` says no refresh token found
-
-**Solution:**
+**解决方法：**
 ```bash
 # Authenticate with Claude
 claude auth
@@ -505,27 +491,17 @@ claude auth
 # Follow the prompts to log in
 ```
 
----
+### 问题：通知未送达**
 
-### Problem: Notifications not arriving
+**解决方法：**
+1. 确认您的 `notification_target` 格式是否符合上述示例
+2. 手动测试：`./refresh-token.sh`
+3. 检查 Clawdbot 是否正在运行：`clawdbot gateway status`
+4. 验证通知设置：`./claude-oauth-refresh-config.json`
 
-**Solution:**
-1. Check your `notification_target` format matches the examples above
-2. Test manually:
-   ```bash
-   clawdbot message [channel] send --target "[your_target]" --message "Test"
-   ```
-3. Check Clawdbot is running: `clawdbot gateway status`
-4. Verify notification settings:
-   ```bash
-   cat ~/clawd/skills/claude-oauth-refresher/claude-oauth-refresh-config.json | jq .notifications
-   ```
+### 问题：刷新失败并显示 “invalid_grant”
 
----
-
-### Problem: Token refresh fails with "invalid_grant"
-
-**Solution:**
+**解决方法：**
 ```bash
 # Re-authenticate from scratch
 claude auth logout
@@ -536,12 +512,10 @@ cd ~/clawd/skills/claude-oauth-refresher
 ./refresh-token.sh
 ```
 
----
+### 问题：升级后找不到配置文件**
 
-### Problem: "Config file not found" after upgrade
-
-**Solution:**
-The config file was renamed from `config.json` to `claude-oauth-refresh-config.json`.
+**解决方法：**
+配置文件已从 `config.json` 更名为 `claude-oauth-refresh-config.json`。
 
 ```bash
 # If you have an old config.json, run the installer to migrate:
@@ -550,91 +524,80 @@ cd ~/clawd/skills/claude-oauth-refresher
 # Choose to keep existing config when prompted
 ```
 
----
+### 需要重新安装或修复问题**
 
-### Problem: Want to reinstall or fix the job
-
-**Solution:**
-```bash
-# Re-run the installer (safe to run multiple times)
-cd ~/clawd/skills/claude-oauth-refresher
-./install.sh
-```
-
-The installer will:
-- Detect existing config and ask if you want to keep it
-- Update the launchd job
-- Test the refresh
+**解决方法：**
+**安装程序会：**
+- 检测现有配置并询问是否保留
+- 更新 launchd 任务
+- 测试刷新功能
 
 ---
 
-## Uninstall
+## 卸载
 
 ```bash
 cd ~/clawd/skills/claude-oauth-refresher
 ./uninstall.sh
 ```
 
-This will:
-- Stop and unload the launchd service
-- Remove the plist file
-- Optionally delete logs and config
+卸载程序将：
+- 停止并卸载 launchd 服务
+- 删除 plist 文件
+- 可选：删除日志和配置文件
 
 ---
 
-## How It Works
+## 工作流程
 
-1. **Installer (`install.sh`)** - Run ONCE to set up:
-   - Auto-detects notification target
-   - Interactively configures notification types
-   - Creates launchd job
-   - Tests refresh immediately
+1. **安装程序（`install.sh`）**：仅运行一次，用于设置：
+   - 自动检测通知目标
+   - 交互式配置通知类型
+   - 创建 launchd 任务
+   - 立即测试刷新功能
 
-2. **Launchd** - Runs `refresh-token.sh` every 2 hours automatically
+2. **launchd**：每 2 小时自动运行 `refresh-token.sh`
 
-3. **Refresh Script (`refresh-token.sh`)** - Each run:
-   - Reads config file (changes apply automatically!)
-   - Checks token expiration from `~/.config/claude/auth-profiles.json`
-   - If token expires within buffer window (default 30 min):
-     - Sends start notification (if enabled)
-     - Retrieves refresh token from Keychain
-     - Calls OAuth endpoint to get new tokens
-     - Updates auth profile and Keychain
-     - Sends success notification (if enabled)
-   - If refresh fails:
-     - Sends detailed failure notification with troubleshooting
-   - All activity logged to `~/clawd/logs/claude-oauth-refresh.log`
+3. **刷新脚本（`refresh-token.sh`）**：每次运行时：
+   - 读取配置文件（配置更改会自动生效！）
+   - 从 `~/.config/claude/auth-profiles.json` 检查令牌过期时间
+   - 如果令牌在指定时间窗口（默认 30 分钟）内过期：
+     - 发送开始通知（如果启用）
+     - 从 Keychain 中获取新令牌
+     - 调用 OAuth 端点获取新令牌
+     - 更新认证配置和 Keychain
+     - 发送成功通知（如果启用）
+   - 如果刷新失败：
+     - 发送详细失败通知及故障排除信息
+   - 所有操作都会记录在 `~/clawd/logs/claude-oauth-refresh.log` 中
 
-4. **Config Changes** - Applied automatically:
-   - Edit `claude-oauth-refresh-config.json` anytime
-   - Ask Clawdbot to edit for you
-   - Changes take effect on next refresh
-   - No restart needed!
-
----
-
-## Security
-
-- **Tokens are never written to logs or config files**
-- Refresh tokens stored securely in macOS Keychain
-- Access tokens cached in `~/.config/claude/auth-profiles.json` (permissions: 600)
-- All HTTP requests use Claude's official OAuth endpoints
-- Config file is world-readable (contains no secrets)
+4. **配置更改**：可随时编辑 `claude-oauth-refresh-config.json` 文件
+   - 可请求 Clawdbot 为您修改配置
+   - 更改将在下一次刷新时生效
+   **无需重启！**
 
 ---
 
-## Support
+## 安全性
 
-**Logs:** `~/clawd/logs/claude-oauth-refresh.log`
+- **令牌永远不会被写入日志或配置文件**
+- 刷新令牌安全存储在 macOS Keychain 中
+- 令牌缓存于 `~/.config/claude/auth-profiles.json` 文件中（权限设置为 600）
+- 所有 HTTP 请求均使用 Claude 的官方 OAuth 端点
+- 配置文件为公开可读格式（不包含任何敏感信息）
 
-**Issues:**
-1. Run `./verify-setup.sh` to diagnose
-2. Check logs for detailed error messages
-3. Test manual refresh: `./refresh-token.sh`
-4. Check notification settings: `cat claude-oauth-refresh-config.json | jq .notifications`
+## 支持方式
 
-**Need help?** Open an issue with:
-- Output of `./verify-setup.sh`
-- Last 20 lines of logs: `tail -20 ~/clawd/logs/claude-oauth-refresh.log`
-- macOS version: `sw_vers`
-- Config (redacted): `cat claude-oauth-refresh-config.json | jq 'del(.notification_target)'`
+**日志：** `~/clawd/logs/claude-oauth-refresh.log`
+
+**遇到问题时：**
+1. 运行 `./verify-setup.sh` 进行诊断
+2. 查看日志中的详细错误信息
+3. 手动测试刷新功能：`./refresh-token.sh`
+4. 检查通知设置：`cat claude-oauth-refresh-config.json | jq .notifications`
+
+**需要帮助？** 请提供以下信息：
+- `./verify-setup.sh` 的执行结果
+- 日志的最后 20 行：`tail -20 ~/clawd/logs/claude-oauth-refresh.log`
+- macOS 版本：`sw_vers`
+- 配置文件内容（已屏蔽敏感信息）：`cat claude-oauth-refresh-config.json | jq 'del(.notification_target)'`

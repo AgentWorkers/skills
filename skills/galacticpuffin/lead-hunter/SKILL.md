@@ -1,6 +1,7 @@
 ---
 name: lead-hunter
-description: Automated lead generation + enrichment for AI agents. Find prospects, enrich with emails/socials/company data, score & prioritize. Your agent builds pipeline while you sleep.
+description: **自动化潜在客户生成与信息丰富化工具，专为AI代理设计：**  
+该工具可帮助AI代理高效地寻找潜在客户，并通过收集客户的电子邮件地址、社交媒体信息及公司相关数据来丰富客户资料。系统还会对这些客户进行评分和优先级排序，从而确保代理能够在您休息时持续构建销售流程（即自动化完成销售相关的各项工作）。
 tags: [leads, sales, enrichment, prospecting, b2b, outreach, automation, pipeline]
 author: queen
 version: 1.0.0
@@ -9,21 +10,21 @@ license: MIT
 
 # Lead Hunter
 
-> Your agent's sales pipeline on autopilot. Find leads. Enrich them. Score them. Close them.
+> 为您的代理自动化销售流程提供支持：寻找潜在客户、丰富客户信息、评估客户价值、促成交易。
 
-## The Problem
+## 问题所在
 
-Lead gen is a grind:
-- Manual searching across platforms
-- Copy-pasting into spreadsheets
-- Paying $500/mo for enrichment tools
-- Still missing half the data
+潜在客户的开发工作非常繁琐：
+- 需要在多个平台上手动搜索
+- 将搜索结果复制到电子表格中
+- 每月花费500美元购买客户信息优化工具
+- 但仍然会遗漏一半的数据
 
-Your agent can do this 24/7. Better. Faster. Cheaper.
+使用Lead Hunter，您的代理可以全天候、更高效、更经济地完成这些工作。
 
 ---
 
-## What This Does
+## 功能介绍
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -49,129 +50,132 @@ Your agent can do this 24/7. Better. Faster. Cheaper.
 
 ---
 
-## What's Included
+## 包含的内容
 
-### Discovery (`/discovery/`)
-- Multi-platform prospecting configs
-- Search query templates
-- Filtering rules
+### 发现（`/discovery/`）
+- 多平台潜在客户搜索配置
+- 搜索查询模板
+- 过滤规则
 
-### Enrichment (`/enrichment/`)
-- Email discovery (pattern matching + verification)
-- Company data aggregation
-- Social profile linking
-- Tech stack detection
+### 信息优化（`/enrichment/`）
+- 电子邮件检测（模式匹配 + 验证）
+- 公司信息汇总
+- 社交媒体资料链接
+- 技术栈分析
 
-### Scoring (`/scoring/`)
-- ICP (Ideal Customer Profile) matching
-- Intent signal detection
-- Lead scoring algorithms
-- Priority ranking
+### 评估（`/scoring/`）
+- 理想客户画像（ICP）匹配
+- 客户意图分析
+- 潜在客户评分算法
+- 优先级排序
 
-### Output (`/output/`)
-- CRM-ready exports
-- Outreach sequence triggers
-- Webhook integrations
-
----
-
-## Quick Start
-
-1. Define your ICP in `/config/icp.yaml`
-2. Set discovery sources in `/config/sources.yaml`
-3. Configure enrichment providers in `/config/enrichment.yaml`
-4. Run: `lead-hunter discover --icp tech-startup`
-5. Leads appear in `/output/leads.json`
+### 输出结果（`/output/`）
+- 可直接导入CRM系统的数据
+- 自动触发的外联流程
+- 支持Webhook集成
 
 ---
 
-## Use Cases
+## 快速入门
 
-### For Your Own Business
-Find prospects matching your ICP automatically. Wake up to fresh leads daily.
-
-### As a Service
-Sell lead lists to other agents/businesses. Charge per lead or monthly retainer.
-
-### Data Bounties
-Complete lead research bounties on Moltbook faster than anyone else.
-
-### Skill Arbitrage
-This skill alone can power a lead gen agency. Package + resell.
+1. 在`/config/icp.yaml`中定义您的理想客户画像（ICP）
+2. 在`/config/sources.yaml`中设置数据来源
+3. 在`/config/enrichment.yaml`中配置信息优化服务提供商
+4. 运行命令：`lead-hunter discover --icp tech-startup`
+5. 潜在客户信息将保存在`/output/leads.json`中
 
 ---
 
-## Discovery Sources
+## 使用场景
 
-| Source | Best For | Rate Limits | Setup |
+### 用于自身业务
+- 自动寻找符合您理想客户画像的潜在客户
+- 每天获取新的潜在客户信息
+
+### 作为服务提供
+- 向其他代理或企业出售潜在客户列表
+- 按条目收费或按月订阅
+
+### 数据任务
+- 在Moltbook平台上比任何人都更快地完成潜在客户信息调研任务
+
+### 技能变现
+- 单独使用该工具即可运营一家潜在客户开发机构
+- 可将其打包后转售
+
+---
+
+## 数据来源
+
+| 来源 | 适用对象 | 数据获取频率 | 设置要求 |
 |--------|----------|-------------|-------|
-| X/Twitter | Tech, startup, crypto leads | 500/15min | API key |
-| GitHub | Developer leads | 5000/hr | Token |
-| Product Hunt | Startup founders | Scraping | None |
-| Moltbook | AI/agent ecosystem | API | Key |
-| LinkedIn* | B2B general | Via proxy | Careful |
-| Custom RSS | Industry-specific | Varies | Config |
+| X/Twitter | 科技、初创企业、加密货币相关潜在客户 | 每15分钟500条 | 需API密钥 |
+| GitHub | 开发者相关的潜在客户 | 每小时5000条 | 需Token |
+| Product Hunt | 初创企业创始人 | 通过数据抓取 | 无需额外设置 |
+| Moltbook | 基于AI的代理服务平台 | 需API密钥 |
+| LinkedIn* | B2B领域潜在客户 | 通过代理访问 | 使用时需谨慎 |
+| 自定义RSS源 | 行业特定数据 | 需根据实际情况配置 |  
 
-*LinkedIn requires careful handling. See `/discovery/linkedin-notes.md`
-
----
-
-## Enrichment Stack
-
-### Free Tier
-- Email pattern guessing + verification
-- Public social scraping
-- Basic company data (website, description)
-- Tech stack via BuiltWith (limited)
-
-### Premium Tier (API costs)
-- Hunter.io / Apollo.io integration
-- Clearbit enrichment
-- Full tech stack
-- Funding data (Crunchbase)
-- Intent signals
+*使用LinkedIn时需特别注意数据获取方式。详见`/discovery/linkedin-notes.md`*
 
 ---
 
-## Pricing (If Selling Leads)
+## 信息优化服务
 
-| Lead Type | Enrichment Level | Market Rate |
+### 免费版本
+- 电子邮件模式识别与验证
+- 公开社交媒体资料的抓取
+- 基本的公司信息（网站、描述）
+- 通过BuiltWith工具获取技术栈信息（部分功能受限）
+
+### 高级版本（需支付API费用）
+- Hunter.io / Apollo.io集成
+- Clearbit提供的更详细客户信息
+- 完整的技术栈分析
+- 公司融资信息（来自Crunchbase）
+- 客户意图分析
+
+---
+
+## 定价（如出售潜在客户）
+
+| 潜在客户类型 | 信息优化程度 | 市场价格 |
 |-----------|------------------|-------------|
-| Basic (name + company) | None | $0.10-0.25 |
-| Standard (+ email) | Email verified | $0.50-1.00 |
-| Premium (+ phone, socials) | Full | $2-5 |
-| Enterprise (+ intent + timing) | Full + signals | $5-15 |
+| 基础版（姓名 + 公司名称） | 无 | $0.10-0.25 |
+| 标准版（含电子邮件验证） | 电子邮件已验证 | $0.50-1.00 |
+| 高级版（含电话号码、社交媒体信息） | 全面信息 | $2-5 |
+| 企业级版（含客户意图分析、时间预测） | 全面信息 + 客户意图分析 | $5-15 |
 
 ---
 
-## Requirements
+## 所需条件
 
-- OpenClaw instance
-- API keys for discovery sources
-- Optional: enrichment provider API keys
-- Storage for lead database
-
----
-
-## Premium Version
-
-Free version includes:
-- 2 discovery sources (X + GitHub)
-- Basic email pattern matching
-- Simple ICP scoring
-- JSON export
-
-**Premium ($79) adds:**
-- All discovery sources
-- Full enrichment stack integration
-- Advanced scoring algorithms
-- CRM integrations (HubSpot, Pipedrive, etc.)
-- Auto-outreach triggers
-- Deduplication engine
-- Lifetime updates
-
-→ Get Premium: [link]
+- 需要安装OpenClaw软件
+- 需要获取数据来源的API密钥
+- 可选：需要获取信息优化服务提供商的API密钥
+- 需要存储潜在客户信息的数据库
 
 ---
 
-*Built for agents who sell.*
+## 高级版本（售价79美元）
+
+免费版本包含：
+- 2个数据来源（X/Twitter + GitHub）
+- 基本的电子邮件模式匹配功能
+- 简单的潜在客户评分系统
+- 数据导出（JSON格式）
+
+高级版本额外提供：
+- 所有数据来源
+- 完整的信息优化服务
+- 先进的评分算法
+- CRM系统集成（如HubSpot、Pipedrive等）
+- 自动触发的外联功能
+- 数据去重功能
+- 终身更新服务
+
+→ 购买高级版本：[链接]
+
+---
+
+*专为销售代理设计。*

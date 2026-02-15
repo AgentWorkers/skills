@@ -1,66 +1,66 @@
 ---
 name: binance-dca
-description: Professional Binance Dollar-Cost Averaging (DCA) tool for automated and manual recurring crypto purchases. Plan DCA strategies with scenario analysis, execute market/limit buys, track history, and manage systematic accumulation schedules for any trading pair. Includes risk management, testnet support, and OpenClaw automation integration. Triggers on requests about DCA, recurring buys, cost averaging, accumulation strategies, or Binance spot purchases.
+description: 专业级的Binance美元成本平均（DCA）工具，支持自动化和手动重复购买加密货币。该工具可帮助用户制定DCA策略（包括场景分析），执行市场价或限价买入操作，追踪购买历史，并管理任何交易对的系统化积累计划。它具备风险管理功能、测试网支持以及与OpenClaw自动化系统的集成能力。用户可通过该工具发起关于DCA、重复购买、成本平均、积累策略或Binance现货购买的请求。
 ---
 
-# Binance DCA — Professional Dollar-Cost Averaging Tool
+# Binance DCA — 专业的美元成本平均投资工具
 
-> **Systematic crypto accumulation made simple.**  
-> Plan, execute, and track DCA strategies on Binance with confidence.
+> **让系统化的加密货币积累变得简单。**  
+> 在Binance上自信地规划、执行和跟踪您的DCA策略。
 
-## What is DCA?
+## 什么是DCA？
 
-**Dollar-Cost Averaging (DCA)** is an investment strategy where you buy a fixed dollar amount of an asset at regular intervals, regardless of price. This approach:
+**美元成本平均（DCA）**是一种投资策略，您定期以固定的美元金额购买某种资产，而不考虑价格波动。这种策略：
 
-- ✅ **Reduces timing risk** — no need to predict market tops/bottoms
-- ✅ **Smooths volatility** — averages out price fluctuations over time
-- ✅ **Removes emotion** — systematic buying, no panic or FOMO
-- ✅ **Builds discipline** — consistent accumulation, perfect for long-term holders
+- ✅ **降低时机选择风险** — 无需预测市场的高点/低点
+- ✅ **平滑价格波动** — 随时间平均价格波动
+- ✅ **排除情绪化决策** — 系统化购买，避免恐慌或错失机会（FOMO）
+- ✅ **培养纪律性** — 持续积累，非常适合长期持有者
 
-**This tool** helps you plan, automate, and track your DCA strategy on Binance spot markets.
-
----
-
-## Features
-
-- 📊 **DCA Plan Projections** — scenario analysis showing potential outcomes at different price levels
-- 💰 **Market & Limit Orders** — flexible execution options
-- 📈 **Trade History** — track your accumulation progress
-- 🔒 **Secure** — credentials via environment variables only, zero hardcoded secrets
-- 🧪 **Testnet Support** — practice on Binance testnet before going live
-- 🤖 **OpenClaw Integration** — automate DCA buys via cron jobs with alerts
-- 🛡️ **Risk Management** — conservative defaults, validation before execution
+**此工具**可帮助您在Binance的现货市场上规划、自动化和跟踪您的DCA策略。
 
 ---
 
-## Setup
+## 特点
 
-### 1. Get Binance API Keys
+- 📊 **DCA计划预测** — 分析不同价格水平下的潜在结果
+- 💰 **市场订单与限价订单** — 灵活的执行选项
+- 📈 **交易历史** — 跟踪您的积累进度
+- 🔒 **安全性** — 仅通过环境变量存储凭证，无硬编码的秘密信息
+- 🧪 **测试网支持** — 在上线前在Binance测试网上练习
+- 🤖 **OpenClaw集成** — 通过定时任务（cron jobs）自动化DCA购买，并接收提醒
+- 🛡️ **风险管理** — 保守的默认设置，执行前进行验证
 
-1. Log in to [binance.com](https://www.binance.com)
-2. Go to **Account** → **API Management**
-3. Create a new API key:
-   - **Label:** `OpenClaw-DCA` (or similar)
-   - **Restrictions:** Enable **Spot & Margin Trading** only
-   - **IP Whitelist:** Add your server IP for security (optional but recommended)
-4. Save your **API Key** and **Secret Key** securely
+---
 
-⚠️ **Security tips:**
-- Never share your secret key
-- Enable IP whitelist if your server has a static IP
-- Use a separate API key for DCA (easier to revoke if needed)
-- Start with small amounts to test
+## 设置
 
-### 2. Set Environment Variables
+### 1. 获取Binance API密钥
 
-**Never hardcode credentials.** Always use environment variables:
+1. 登录[binance.com](https://www.binance.com)
+2. 转到**账户** → **API管理**
+3. 创建一个新的API密钥：
+   - **标签：** `OpenClaw-DCA`（或类似名称）
+   - **限制：** 仅启用**现货交易与保证金交易**
+   - **IP白名单：** 为安全起见，添加您的服务器IP（可选但推荐）
+4. 安全保存您的**API密钥**和**秘密密钥**
+
+⚠️ **安全提示：**
+- 绝不要分享您的秘密密钥
+- 如果您的服务器有静态IP，请启用IP白名单
+- 为DCA使用单独的API密钥（需要时更容易撤销）
+- 从少量资金开始测试
+
+### 2. 设置环境变量
+
+**切勿硬编码凭证。**始终使用环境变量：
 
 ```bash
 export BINANCE_API_KEY="your-api-key-here"
 export BINANCE_SECRET_KEY="your-secret-key-here"
 ```
 
-**Make them permanent** (optional, add to `~/.bashrc` or `~/.zshrc`):
+**将其设置为永久性设置**（可选，添加到`~/.bashrc`或`~/.zshrc`）：
 
 ```bash
 echo 'export BINANCE_API_KEY="your-api-key-here"' >> ~/.bashrc
@@ -68,15 +68,15 @@ echo 'export BINANCE_SECRET_KEY="your-secret-key-here"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-**For testnet** (recommended for first-time users):
+**针对测试网**（推荐给首次用户）：
 
 ```bash
 export BINANCE_BASE_URL="https://testnet.binance.vision"
 ```
 
-Get testnet API keys at: [testnet.binance.vision](https://testnet.binance.vision/)
+在[testnet.binance.vision](https://testnet.binance.vision/)获取测试网API密钥。
 
-### 3. Verify Setup
+### 3. 验证设置
 
 ```bash
 # Check balance (should not error)
@@ -86,48 +86,48 @@ bash scripts/dca.sh balance USDT
 bash scripts/dca.sh price BTCUSDT
 ```
 
-If you see prices/balances, you're ready!
+如果您能看到价格/余额，那么设置就完成了！
 
 ---
 
-## Quick Start Examples
+## 快速入门示例
 
-### Example 1: Check Current Price
+### 示例1：检查当前价格
 
 ```bash
 bash scripts/dca.sh price BTCUSDT
 # Output: BTCUSDT = 95234.50
 ```
 
-Works for any pair:
+适用于任何交易对：
 ```bash
 bash scripts/dca.sh price ETHUSDT
 bash scripts/dca.sh price SOLUSDT
 ```
 
-### Example 2: Check Your Balance
+### 示例2：检查您的余额
 
 ```bash
 bash scripts/dca.sh balance USDT
 # Output: USDT: free=1000.00000000, locked=0.00000000
 ```
 
-Check any asset:
+检查任何资产：
 ```bash
 bash scripts/dca.sh balance BTC
 bash scripts/dca.sh balance ETH
 ```
 
-### Example 3: Plan a DCA Strategy
+### 示例3：规划DCA策略
 
-**Scenario:** You want to invest $600 over 3 months in BTC.
+**场景：**您想在3个月内投资600美元购买BTC。
 
 ```bash
 # $50 every week for 12 weeks
 bash scripts/dca.sh plan 50 7 12 BTCUSDT
 ```
 
-**Output:**
+**输出：**
 ```
 DCA Plan: BTCUSDT
 ==========================
@@ -151,53 +151,53 @@ Scenario Analysis (if avg price over period is):
  +100% -> avg $190,469.00 -> 0.00315122 BTC -> PnL: +$630.00 (+105.0%)
 ```
 
-**What this tells you:**
-- If BTC stays flat → break even
-- If BTC averages -20% during your buys → you're down ~21% (but you own more BTC)
-- If BTC averages +50% → you're up ~63%
+**这告诉您：**
+- 如果BTC价格保持不变 → 可实现盈亏平衡
+- 如果在购买期间BTC价格平均下跌20% → 您的亏损约为21%（但您持有的BTC更多）
+- 如果BTC价格平均上涨50% → 您的收益约为63%
 
-Use this to **set realistic expectations** before committing.
+在决定投资前，请使用此信息来**设定合理的预期**。
 
-### Example 4: Execute Your First DCA Buy
+### 示例4：执行您的第一次DCA购买
 
-**Market order (instant execution):**
+**市场订单（即时执行）：**
 
 ```bash
 # Buy $50 worth of BTC at current market price
 bash scripts/dca.sh buy BTCUSDT 50
 ```
 
-**Output:**
+**输出：**
 ```
 Placing MARKET buy: BTCUSDT for 50 USDT...
 Order #123456789: FILLED
 Filled: 0.00052500 BTC
 ```
 
-**Limit order (wait for your price):**
+**限价订单（等待价格达到目标）：**
 
 ```bash
 # Only buy if BTC drops to $94,000
 bash scripts/dca.sh buy BTCUSDT 50 LIMIT 94000
 ```
 
-**Output:**
+**输出：**
 ```
 Placing LIMIT buy: BTCUSDT for 50 USDT...
 Order #123456790: NEW
 Filled: 0.00000000 BTC
 ```
 
-(Order will fill when price hits $94,000)
+（订单将在价格达到94,000美元时执行）
 
-### Example 5: Check Your Trade History
+### 示例5：检查您的交易历史
 
 ```bash
 # Last 10 trades for BTCUSDT
 bash scripts/dca.sh history BTCUSDT 10
 ```
 
-**Output:**
+**输出：**
 ```
 Last 10 trades for BTCUSDT:
 ---
@@ -208,11 +208,11 @@ Last 10 trades for BTCUSDT:
 
 ---
 
-## Complete Action Reference
+## 完整操作参考
 
 ### `price [SYMBOL]`
 
-**Get current spot price for a trading pair.**
+**获取交易对的当前现货价格。**
 
 ```bash
 bash scripts/dca.sh price BTCUSDT
@@ -220,13 +220,13 @@ bash scripts/dca.sh price ETHUSDT
 bash scripts/dca.sh price SOLUSDT
 ```
 
-**Default:** `BTCUSDT` if symbol is omitted.
+**默认值：** 如果省略了交易对，则使用`BTCUSDT`。
 
 ---
 
 ### `balance [ASSET]`
 
-**Check free and locked balance for an asset.**
+**检查资产的可用余额和锁定余额。**
 
 ```bash
 bash scripts/dca.sh balance USDT
@@ -234,25 +234,25 @@ bash scripts/dca.sh balance BTC
 bash scripts/dca.sh balance ETH
 ```
 
-**Output format:** `ASSET: free=X.XXXXXXXX, locked=Y.YYYYYYYY`
+**输出格式：** `ASSET: free=X.XXXXXXXX, locked=Y.YYYYYYYY`
 
-**Default:** `USDT` if asset is omitted.
+**默认值：** 如果省略了资产，则使用`USDT`。
 
-**Use case:** Check how much capital you have available before placing orders.
+**用途：** 在下订单前检查您可用的资金。
 
 ---
 
 ### `buy SYMBOL AMOUNT [TYPE] [PRICE]`
 
-**Place a buy order.**
+**下达购买订单。**
 
-**Arguments:**
-- `SYMBOL` — Trading pair (e.g., `BTCUSDT`, `ETHUSDT`)
-- `AMOUNT` — Amount in **quote currency** (USDT). The tool calculates how much BTC/ETH you get.
-- `TYPE` — `MARKET` (default) or `LIMIT`
-- `PRICE` — Required for `LIMIT` orders
+**参数：**
+- `SYMBOL` — 交易对（例如，`BTCUSDT`，`ETHUSDT`）
+- `AMOUNT` — 以**报价货币**（USDT）表示的金额。该工具会计算您可以购买的BTC/ETH数量。
+- `TYPE` — `MARKET`（默认）或`LIMIT`
+- `PRICE` — 限价订单必需的参数
 
-**Market order examples:**
+**市场订单示例：**
 
 ```bash
 # Buy $50 worth of BTC instantly
@@ -262,7 +262,7 @@ bash scripts/dca.sh buy BTCUSDT 50
 bash scripts/dca.sh buy ETHUSDT 100
 ```
 
-**Limit order examples:**
+**限价订单示例：**
 
 ```bash
 # Buy $50 BTC only if price drops to $90,000
@@ -272,16 +272,16 @@ bash scripts/dca.sh buy BTCUSDT 50 LIMIT 90000
 bash scripts/dca.sh buy ETHUSDT 200 LIMIT 3200
 ```
 
-**Safety features:**
-- Amount validation (must be a number)
-- API key check before execution
-- Order status confirmation in output
+**安全特性：**
+- 金额验证（必须是数字）
+- 执行前检查API密钥
+- 输出中包含订单状态确认
 
 ---
 
 ### `history [SYMBOL] [LIMIT]`
 
-**Show recent trade history.**
+**显示最近的交易历史。**
 
 ```bash
 # Last 10 trades for BTCUSDT
@@ -294,30 +294,30 @@ bash scripts/dca.sh history ETHUSDT 20
 bash scripts/dca.sh history SOLUSDT 50
 ```
 
-**Defaults:** `BTCUSDT`, limit `10`
+**默认值：** `BTCUSDT`，限制数量为`10`
 
-**Output includes:**
-- Timestamp (Unix seconds)
-- Side (BUY/SELL)
-- Quantity purchased
-- Execution price
-- Fees paid (and fee asset)
+**输出包括：**
+- 时间戳（Unix秒）
+- 交易方向（买入/卖出）
+- 购买数量
+- 执行价格
+- 支付的费用（以及费用对应的资产）
 
-**Use case:** Track your DCA progress over time, calculate average entry price.
+**用途：** 随时间跟踪您的DCA进度，计算平均买入价格。
 
 ---
 
-### `plan [AMOUNT] [FREQ_DAYS] [NUM_BUYS] [SYMBOL]`
+### `plan [AMOUNT] [FREQ_days] [NUM_BUYS] [SYMBOL]`
 
-**Project a DCA plan with scenario analysis.**
+**规划DCA计划并进行分析。**
 
-**Arguments:**
-- `AMOUNT` — Dollar amount per buy (default: `50`)
-- `FREQ_DAYS` — Days between buys (default: `7`)
-- `NUM_BUYS` — Number of buys (default: `12`)
-- `SYMBOL` — Trading pair (default: `BTCUSDT`)
+**参数：**
+- `AMOUNT` — 每次购买的美元金额（默认：50美元）
+- `FREQ_days` — 两次购买之间的间隔天数（默认：7天）
+- `NUM_BUYS` — 购买次数（默认：12次）
+- `SYMBOL` — 交易对（默认：`BTCUSDT`）
 
-**Examples:**
+**示例：**
 
 ```bash
 # Default plan: $50 every 7 days, 12 buys
@@ -333,92 +333,92 @@ bash scripts/dca.sh plan 25 14 24 BTCUSDT
 bash scripts/dca.sh plan 100 7 26 ETHUSDT
 ```
 
-**What you get:**
-- Total investment amount
-- BTC/ETH you'd own at current price
-- Time span (days + months)
-- **Scenario analysis:** PnL at -30%, -20%, -10%, 0%, +10%, +20%, +50%, +100% average prices
+**您将获得：**
+- 总投资金额
+- 在当前价格下您将持有的BTC/ETH数量
+- 时间跨度（天数+月数）
+- **情景分析：** 在价格平均下跌30%、20%、10%、0%、上涨10%、20%、50%、100%时的盈亏情况
 
-**Use this to:**
-- Decide on a comfortable budget and frequency
-- Understand risk/reward before starting
-- Show the math to justify DCA vs. lump sum
-
----
-
-## DCA Strategy Guide
-
-### When to Use DCA
-
-✅ **Good for:**
-- Long-term accumulation (6+ months)
-- High-volatility assets (BTC, ETH, altcoins)
-- Building positions without timing stress
-- Removing emotional decision-making
-
-❌ **Not ideal for:**
-- Short-term trading (use manual buys)
-- Assets you want to flip quickly
-- Low-volatility stablecoins (just buy once)
-
-### Best Practices
-
-1. **Start small** — Test with 1-2% of your budget first
-2. **Use testnet** — Practice on `https://testnet.binance.vision` before going live
-3. **Set a timeline** — DCA works best over 3-12+ months
-4. **Stick to the plan** — Resist urge to stop during dips (that's when DCA shines)
-5. **Track progress** — Use `history` to see your average entry price
-6. **Adjust if needed** — Life changes, budgets change — recalculate with `plan` and adapt
-
-### Position Sizing Recommendations
-
-**Conservative (1-2% per buy):**
-- Portfolio: $10,000 → DCA $100-$200 per buy
-- Lower risk, slower accumulation
-
-**Moderate (3-5% per buy):**
-- Portfolio: $10,000 → DCA $300-$500 per buy
-- Balanced approach, standard for most users
-
-**Aggressive (5-10% per buy):**
-- Portfolio: $10,000 → DCA $500-$1,000 per buy
-- Higher risk, faster accumulation, requires strong conviction
-
-**Never go above 10% per buy** — leaves no room for unexpected dips or expenses.
-
-### Frequency Guidelines
-
-- **Daily** — For very active traders, high time commitment
-- **Every 3 days** — Aggressive, good for short DCA periods (1-3 months)
-- **Weekly** — Most popular, good balance (Mondays are common)
-- **Bi-weekly** — Aligns with paychecks, moderate pace
-- **Monthly** — Long-term HODLers, lowest effort
-
-**Pro tip:** Match DCA frequency to your income schedule (weekly paycheck → weekly DCA).
+**用途：**
+- 确定合适的预算和频率
+- 在开始前了解风险与回报
+- 通过数据展示DCA与一次性投资的优劣
 
 ---
 
-## Automation with OpenClaw
+## DCA策略指南
 
-### Manual Cron (Basic)
+### 何时使用DCA
 
-Run DCA buys automatically via system cron:
+✅ **适用于：**
+- 长期积累（6个月以上）
+- 高波动性资产（如BTC、ETH、山寨币）
+- 无需担心时机选择即可建立投资组合
+- 排除情绪化决策的影响
+
+❌ **不适用于：**
+- 短期交易（建议使用手动购买）
+- 需要快速买卖的资产
+- 低波动性的稳定币（只需购买一次）
+
+### 最佳实践
+
+1. **从小额开始** — 先用预算的1-2%进行测试
+2. **使用测试网** — 在上线前在`https://testnet.binance.vision`上练习
+3. **设定时间表** — DCA在3-12个月以上的时间段内效果最佳
+4. **坚持计划** — 在价格下跌时抵制停止购买的冲动（这正是DCA的优势所在）
+5. **跟踪进度** — 使用`history`功能查看平均买入价格
+6. **根据需要调整** — 生活情况或预算变化时，重新计算并调整计划
+
+### 仓位大小建议
+
+**保守型（每次购买1-2%）：**
+- 投资组合：10,000美元 → 每次购买100-200美元
+- 低风险，积累速度较慢
+
+**中等型（每次购买3-5%）：**
+- 投资组合：10,000美元 → 每次购买300-500美元
+- 平衡的投资方式，适合大多数用户
+
+**激进型（每次购买5-10%）：**
+- 投资组合：10,000美元 → 每次购买500-1,000美元
+- 风险较高，积累速度较快，需要坚定的决心
+
+**每次购买金额切勿超过10%** — 以应对意外价格下跌或额外支出。
+
+### 频率指南
+
+- **每日** — 适用于非常活跃的交易者，需要大量时间投入
+- **每3天一次** — 适合短期DCA策略（1-3个月）
+- **每周一次** — 最受欢迎的方式，适合大多数用户
+- **每两周一次** — 与发薪日相匹配，节奏适中
+- **每月一次** — 适合长期持有者，最省力的方式
+
+**专业提示：** 根据您的收入安排调整DCA的频率（例如，每周发薪日对应每周一次DCA）。
+
+---
+
+## 使用OpenClaw进行自动化
+
+### 手动Cron（基础版本）
+
+通过系统定时任务自动执行DCA购买：
 
 ```bash
 # Every Monday at 9:00 AM UTC, buy $50 BTC
 0 9 * * 1 BINANCE_API_KEY=... BINANCE_SECRET_KEY=... /path/to/dca.sh buy BTCUSDT 50
 ```
 
-**Limitations:**
-- No alerts if it fails
-- No confirmations
-- Silent execution
+**限制：**
+- 失败时没有提醒
+- 没有执行确认
+- 执行过程无声
 
-### OpenClaw Cron (Recommended)
+### 使用OpenClaw Cron（推荐版本）
 
-Use OpenClaw for intelligent DCA automation with alerts:
+使用OpenClaw实现智能化的DCA自动化，并接收提醒：
 
-**Example: Weekly BTC DCA with Telegram notifications**
+**示例：每周自动购买BTC，并通过Telegram接收通知**
 
 ```json
 {
@@ -438,13 +438,13 @@ Use OpenClaw for intelligent DCA automation with alerts:
 }
 ```
 
-**Benefits:**
-- ✅ Execution confirmations sent to you
-- ✅ Failure alerts
-- ✅ Can ask agent to analyze history and report progress
-- ✅ Easy to pause/resume via `openclaw cron` commands
+**优势：**
+- ✅ 会向您发送执行确认
+- ✅ 提供失败提醒
+- ✅ 可请求代理分析历史数据并报告进度
+- ✅ 可通过`openclaw cron`命令轻松暂停/恢复
 
-**Setup:**
+**设置：**
 
 ```bash
 # Add the cron job (paste JSON above when prompted)
@@ -462,11 +462,11 @@ openclaw cron update <jobId> --enabled false
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Error: `BINANCE_API_KEY not set`
+### 错误：`BINANCE_API_KEY未设置**
 
-**Fix:** Set environment variables before running:
+**解决方法：** 在运行前设置环境变量：
 
 ```bash
 export BINANCE_API_KEY="your-key"
@@ -476,11 +476,11 @@ bash scripts/dca.sh price
 
 ---
 
-### Error: `Timestamp for this request is outside of the recvWindow`
+### 错误：`此请求的时间戳超出了recvWindow**
 
-**Cause:** Your system clock is out of sync with Binance servers.
+**原因：** 您的系统时钟与Binance服务器不同步。
 
-**Fix (Linux/macOS):**
+**解决方法（Linux/macOS）：**
 
 ```bash
 # Sync system time
@@ -491,77 +491,77 @@ sudo systemctl enable systemd-timesyncd
 sudo systemctl start systemd-timesyncd
 ```
 
-**Fix (Docker):**
+**解决方法（Docker）：**
 
-Add `--cap-add SYS_TIME` when running container, or sync host clock.
-
----
-
-### Error: `Signature for this request is not valid`
-
-**Causes:**
-- Wrong `BINANCE_SECRET_KEY`
-- API key restrictions (IP whitelist mismatch, disabled Spot Trading)
-
-**Fix:**
-1. Double-check your secret key (copy-paste from Binance)
-2. Verify API key has **Spot & Margin Trading** enabled
-3. If using IP whitelist, confirm your server IP is allowed
-4. Regenerate API key if uncertain
+在运行容器时添加`--cap-add SYS_TIME`参数，或同步主机时钟。
 
 ---
 
-### Error: `API request failed`
+### 错误：`此请求的签名无效**
 
-**Causes:**
-- Network issues
-- Wrong `BINANCE_BASE_URL`
-- Binance API maintenance
+**原因：**
+- `BINANCE_SECRET_KEY`错误
+- API密钥限制（IP白名单不匹配，或禁用了现货交易）
 
-**Fix:**
-1. Test network: `curl -I https://api.binance.com`
-2. Check Binance status: [binance.com/en/support/announcement](https://www.binance.com/en/support/announcement)
-3. If using testnet, confirm: `export BINANCE_BASE_URL="https://testnet.binance.vision"`
-
----
-
-### Error: `Account has insufficient balance for requested action`
-
-**Cause:** Not enough USDT in your spot account.
-
-**Fix:**
-1. Check balance: `bash scripts/dca.sh balance USDT`
-2. Deposit USDT to your spot account
-3. Reduce DCA amount to match available balance
+**解决方法：**
+1. 重新检查您的秘密密钥（从Binance复制粘贴）
+2. 确认API密钥已启用**现货交易与保证金交易**
+3. 如果使用了IP白名单，请确认您的服务器IP是否被允许
+4. 如果不确定，请重新生成API密钥
 
 ---
 
-### Order shows `NEW` status (limit order not filling)
+### 错误：`API请求失败**
 
-**This is normal for limit orders.** Status means:
-- `NEW` — Order placed, waiting for price
-- `FILLED` — Order executed
-- `PARTIALLY_FILLED` — Partial execution
-- `CANCELED` — You or system canceled it
+**原因：**
+- 网络问题
+- `BINANCE_BASE_URL`错误
+- Binance API维护中
 
-**Check order status:**
+**解决方法：**
+1. 测试网络连接：`curl -I https://api.binance.com`
+2. 查看Binance的状态：[binance.com/en/support/announcement](https://www.binance.com/en/support/announcement)
+3. 如果使用测试网，请确认：`export BINANCE_BASE_URL="https://testnet.binance.vision"`
+
+---
+
+### 错误：**账户余额不足**
+
+**原因：** 您的现货账户中的USDT不足
+
+**解决方法：**
+1. 检查余额：`bash scripts/dca.sh balance USDT`
+2. 向您的现货账户充值USDT
+3. 减少DCA的购买金额，使其与可用余额相匹配
+
+---
+
+### 订单显示`NEW`状态（限价订单未成交）
+
+**对于限价订单来说这是正常的。** 状态含义如下：
+- `NEW` — 订单已下达，等待价格满足条件
+- `FILLED` — 订单已执行
+- `PARTIALLY_FILLED` — 部分执行
+- `CANCELED` — 您或系统取消了订单
+
+**检查订单状态：**
 
 ```bash
 # View recent orders to see if it filled later
 bash scripts/dca.sh history BTCUSDT 20
 ```
 
-**Cancel pending limit orders:**
+**取消待处理的限价订单：**
 
-Use Binance web/app → **Orders** → **Open Orders** → Cancel.
+通过Binance网站/应用程序 → **订单** → **未成交订单** → **取消订单**。
 
 ---
 
-## FAQ
+## 常见问题解答
 
-### Q: Can I DCA into altcoins (not just BTC)?
+### Q：我可以将资金用于其他加密货币（不仅仅是BTC）吗？
 
-**A:** Yes! Use any Binance spot pair:
+**A：** 可以！使用任何Binance的现货交易对：
 
 ```bash
 bash scripts/dca.sh buy ETHUSDT 100
@@ -569,93 +569,93 @@ bash scripts/dca.sh buy SOLUSDT 50
 bash scripts/dca.sh buy ADAUSDT 25
 ```
 
-Just replace `BTCUSDT` with your desired pair.
+只需将`BTCUSDT`替换为您所需的交易对即可。
 
 ---
 
-### Q: What's the minimum buy amount?
+### Q：最低购买金额是多少？
 
-**A:** Binance sets minimums per pair (usually $10-$20). Check Binance docs or test with a small amount on testnet first.
-
----
-
-### Q: Does this work with Binance.US?
-
-**A:** Not directly. Binance.US has a separate API (`https://api.binance.us`). You'd need to change `BINANCE_BASE_URL` and test. Not officially supported.
+**A：** Binance为每个交易对设置了最低金额限制（通常为10-20美元）。请查看Binance的文档，或在测试网上先用少量资金测试。
 
 ---
 
-### Q: Can I sell with this tool?
+### Q：这个工具适用于Binance.US吗？
 
-**A:** Not currently. This is DCA (accumulation) only. For selling, use Binance web/app or modify the script (change `side=BUY` to `side=SELL`).
-
----
-
-### Q: Is my data stored anywhere?
-
-**A:** No. Zero data storage. All credentials are environment variables. The script makes direct API calls to Binance and exits.
+**A：** 不直接适用。Binance.US有独立的API（`https://api.binance.us`）。您需要更改`BINANCE_BASE_URL`并进行测试。该工具不支持Binance.US。
 
 ---
 
-### Q: Can I use this on multiple machines?
+### Q：我可以使用这个工具进行卖出操作吗？
 
-**A:** Yes, but set up API keys separately on each. Consider using **IP whitelist** on your API key for security.
-
----
-
-### Q: What if I want to change my DCA amount mid-strategy?
-
-**A:** Just adjust the amount in your next manual/cron execution. DCA is flexible — no commitment to fixed amounts.
-
-Example: Week 1-4 use $50, Week 5+ use $100.
+**A：** 目前不行。这个工具仅用于积累投资（DCA）。如需卖出，请使用Binance的网站/应用程序，或修改脚本（将`side`参数从`BUY`改为`SELL`）。
 
 ---
 
-### Q: How do I calculate my average entry price?
+### Q：我的数据会被存储在哪里吗？
 
-Run `history` and average the `price` column:
+**A：** 不会存储任何数据。所有凭证都存储在环境变量中。脚本直接通过API调用Binance并立即退出。
+
+---
+
+### Q：我可以在多台机器上使用这个工具吗？
+
+**A：** 可以，但需要在每台机器上分别设置API密钥。为安全起见，建议为每个机器设置IP白名单。
+
+---
+
+### Q：如果我在策略执行过程中想更改DCA的购买金额怎么办？
+
+**A：** 只需在下次手动或定时执行时调整金额即可。DCA具有灵活性——无需固定购买金额。
+
+**示例：** 第1-4周购买50美元，第5周及以后购买100美元。
+
+---
+
+### 如何计算我的平均买入价格？
+
+运行`history`命令，然后对`price`列进行平均计算：
 
 ```bash
 bash scripts/dca.sh history BTCUSDT 50 | grep BUY | awk '{print $8}' | awk '{s+=$1; n++} END {print s/n}'
 ```
 
-Or use a spreadsheet: export history, paste prices, `=AVERAGE()`.
+或者使用电子表格：导出历史数据，粘贴价格后使用`=AVERAGE()`函数计算平均值。
 
 ---
 
-## Security Best Practices
+## 安全最佳实践
 
-🔒 **API Key Safety:**
-- Use dedicated API key for DCA (label it `DCA-Only`)
-- Enable **Spot Trading** only (no Futures, Margin, Withdrawals)
-- Set IP whitelist if your server has static IP
-- Rotate keys every 3-6 months
-- Revoke immediately if compromised
+🔒 **API密钥安全：**
+- 为DCA专门设置API密钥（标签为`DCA-Only`）
+- 仅启用**现货交易**（不支持期货、保证金交易或提款）
+- 如果服务器有静态IP，请设置IP白名单
+- 每3-6个月更换一次密钥
+- 如果密钥被盗用，立即撤销
 
-🔒 **Credential Management:**
-- Never commit `.env` files with keys to Git
-- Use environment variables, not hardcoded strings
-- On shared servers, restrict file permissions: `chmod 600 ~/.bashrc`
+🔒 **凭证管理：**
+- **切勿将`.env`文件中的密钥提交到Git**
+- 使用环境变量，避免硬编码
+- 在共享服务器上，限制文件权限：`chmod 600 ~/.bashrc`
 
-🔒 **Testnet First:**
-- Always test new strategies on testnet before using real funds
-- Testnet keys: [testnet.binance.vision](https://testnet.binance.vision/)
-- Set: `export BINANCE_BASE_URL="https://testnet.binance.vision"`
+🔒 **先在测试网上测试：**
+- 在使用真实资金之前，始终在测试网上测试新策略
+- 使用测试网密钥：[testnet.binance.vision](https://testnet.binance.vision/)
+- 设置：`export BINANCE_BASE_URL="https://testnet.binance.vision"`
 
-🔒 **Start Small:**
-- First live DCA: use 10-20% of planned amount
-- Verify execution, fees, and confirmations
-- Scale up once confident
+🔒 **从小额开始：**
+- 首次实际使用DCA时，使用计划金额的10-20%
+- 验证执行结果、费用和确认信息
+- 确认无误后再逐步增加规模
 
 ---
 
-## Advanced Usage
+## 高级用法
 
-### Dynamic DCA (Market Conditions)
+### 动态DCA（根据市场条件调整）
 
-Adjust buy amounts based on price:
+根据价格调整购买金额：
 
-**Buy more when BTC dips:**
+**在BTC价格下跌时增加购买量：**
 
 ```bash
 # If BTC < $90k, buy $100. Otherwise $50.
@@ -667,7 +667,7 @@ else
 fi
 ```
 
-**Use limit orders to "buy the dip":**
+**使用限价订单“逢低买入”：**
 
 ```bash
 # Place limit orders 5%, 10%, 15% below current price
@@ -681,9 +681,9 @@ bash scripts/dca.sh buy BTCUSDT 50 LIMIT $LIMIT_10
 bash scripts/dca.sh buy BTCUSDT 50 LIMIT $LIMIT_15
 ```
 
-### Multi-Asset DCA
+### 多资产DCA**
 
-DCA into multiple coins:
+同时对多种货币进行DCA投资：
 
 ```bash
 # Weekly: $30 BTC, $20 ETH, $10 SOL
@@ -692,9 +692,9 @@ bash scripts/dca.sh buy ETHUSDT 20
 bash scripts/dca.sh buy SOLUSDT 10
 ```
 
-### Logging for Analysis
+### 日志记录与分析
 
-Track all DCA buys to a log file:
+将所有DCA购买记录到日志文件中：
 
 ```bash
 #!/bin/bash
@@ -705,7 +705,7 @@ bash scripts/dca.sh buy BTCUSDT 50 | tee -a "$LOGFILE"
 echo "[$DATE] DCA executed" >> "$LOGFILE"
 ```
 
-Then analyze with:
+然后使用以下工具进行分析：
 
 ```bash
 grep "Filled:" ~/dca-log.txt
@@ -713,44 +713,43 @@ grep "Filled:" ~/dca-log.txt
 
 ---
 
-## Contributing
+## 贡献
 
-Found a bug? Have a feature idea? Want to add support for other exchanges?
+发现漏洞？有功能建议？希望为其他交易所添加支持？
 
-- **GitHub:** (if public repo exists, link here)
-- **Issues:** Report via GitHub Issues
-- **Pull Requests:** Welcome! Follow existing code style.
-
----
-
-## License
-
-MIT License — Free to use, modify, and distribute.
-
-**Disclaimer:** This tool is provided as-is. Use at your own risk. The authors are not responsible for trading losses, API issues, or incorrect usage. Always test on testnet first and never invest more than you can afford to lose.
+- **GitHub：** （如果存在公共仓库，请在此处提供链接）
+- **问题报告：** 通过GitHub Issues提交
+- **拉取请求：** 欢迎提交！请遵循现有的代码风格。
 
 ---
 
-## Changelog
+## 许可证
 
-### v1.2.0 (2026-02-05)
-- 📚 Comprehensive documentation overhaul
-- 📋 Added real-world examples for all actions
-- 🎓 DCA strategy guide with best practices
-- 🔧 Troubleshooting section
-- ❓ FAQ with common questions
-- 🔒 Security best practices guide
-- 🚀 Advanced usage examples
-- 🤖 OpenClaw automation guide
+MIT许可证 — 可自由使用、修改和分发。
 
-### v1.1.0 (2026-02-05)
-- Initial public release
-- Core DCA functionality: plan, buy, history, price, balance
-- Testnet support
-- Market and limit orders
+**免责声明：** 本工具按“原样”提供。使用过程中产生的任何风险均由用户自行承担。作者不对交易损失、API问题或错误使用负责。请务必先在测试网上测试，并确保投资金额在您可承受的范围内。
 
 ---
 
-**Built with ❤️ for long-term crypto accumulation.**
+## 更新日志
 
-Questions? Feedback? Tag `@fpsjago` on ClawHub or OpenClaw Discord.
+### v1.2.0（2026-02-05）
+- 📚 全面更新文档
+- 📋 为所有操作添加了实际使用示例
+- 🎓 提供DCA策略指南及最佳实践
+- 🔧 添加故障排除部分
+- ❓ 提供常见问题的FAQ
+- 🔒 安全最佳实践指南
+- 🚀 高级使用示例
+- 🤖 OpenClaw自动化使用指南
+
+### v1.1.0（2026-02-05）
+- 首次公开发布
+- 核心DCA功能：规划、购买、查看历史记录、价格、余额
+- 支持测试网和限价订单
+
+---
+
+**我们致力于帮助您长期积累加密货币。**
+
+有任何问题或反馈吗？请在ClawHub或OpenClaw的Discord频道中@fpsjago。

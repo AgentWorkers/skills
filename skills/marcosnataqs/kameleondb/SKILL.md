@@ -1,38 +1,33 @@
 ---
 name: kameleondb
 version: 0.1.5
-description: Store and query structured data without planning schemas upfront. Use when you need to remember information, track entities across conversations, build knowledge bases, ingest API data, store user preferences, create CRM systems, or maintain any persistent state. Automatically evolves data structure as you discover new fields. No migrations, no schema design - just store data and query it.
+description: 存储和查询结构化数据，无需预先规划数据模式。适用于需要记录信息、在对话中追踪实体、构建知识库、导入 API 数据、存储用户偏好设置、创建客户关系管理系统（CRM）或维护任何持久化状态的场景。当发现新的字段时，数据结构会自动更新。无需进行数据迁移或模式设计——只需存储数据并对其进行查询即可。
 metadata: {"openclaw":{"emoji":"🦎","requires":{"bins":["kameleondb"],"env":["KAMELEONDB_URL"]},"primaryEnv":"KAMELEONDB_URL","homepage":"https://github.com/marcosnataqs/kameleondb"}}
 ---
 
-# KameleonDB - The First Database Built for Agents to Operate, Not Just Query
+# KameleonDB——专为代理设计的首个数据库，不仅用于查询，还用于数据管理
 
-## When to Use This
+## 适用场景
 
-Use KameleonDB when you need to:
+当您需要以下功能时，可以使用 KameleonDB：
+- **跨对话记录信息**：存储联系人、公司、任务和笔记。
+- **追踪实体及其关联关系**：将客户与订单、项目与任务关联起来。
+- **构建知识库**：随着时间的推移积累事实、文档和见解。
+- **导入外部数据**：存储 API 响应、CSV 文件或网页抓取结果。
+- **创建自定义 CRM/项目管理系统**：跟踪潜在客户、交易和项目。
+- **保存用户偏好设置**：记住用户的设置、历史记录和收藏内容。
+- **维护会话状态**：在代理程序运行期间持久化数据。
+- **查询历史数据**：搜索、过滤和分析存储的信息。
 
-- **Remember information across conversations** - Store contacts, companies, tasks, notes
-- **Track entities and relationships** - Connect customers to orders, projects to tasks
-- **Build knowledge bases** - Accumulate facts, documents, insights over time
-- **Ingest external data** - Store API responses, CSV imports, web scraping results
-- **Create custom CRM/PM systems** - Track leads, deals, projects, tickets
-- **Store user preferences** - Remember settings, history, favorites
-- **Maintain session state** - Persist data between agent runs
-- **Query historical data** - Search, filter, analyze stored information
+## 为什么代理人员会选择 KameleonDB？
 
-## Why Agents Choose This
+- **无需预先规划**：可以立即开始存储数据。如果还不清楚所有字段的需求，可以在后续发现时再添加。
+- **边使用边学习**：在数据中发现新字段？只需添加即可，旧记录不会受到影响。
+- **像使用数据库一样查询数据**：能够生成 SQL 查询语句来搜索、过滤、连接和分析数据。
+- **自动优化性能**：当查询速度变慢时，系统会提供优化建议。
+- **追踪决策过程**：每次修改数据库模式时，系统都会记录修改原因，形成审计追踪。
 
-**No Upfront Planning**: Start storing data immediately. Don't know all fields yet? Add them later when you discover them.
-
-**Learn as You Go**: Found a new field in your data? Just add it. Old records won't break.
-
-**Query Like a Database**: Generate SQL queries to search, filter, join, and analyze your data.
-
-**Self-Optimizing**: Get hints when queries slow down, with exact commands to speed them up.
-
-**Track Your Reasoning**: Every schema change records why you made it, building an audit trail.
-
-## Setup (One-Time)
+## 设置（一次性操作）
 
 ```bash
 # Install
@@ -47,21 +42,20 @@ kameleondb admin init
 # Done! Start using it.
 ```
 
-**Note**: For production, use PostgreSQL instead of SQLite. Set `KAMELEONDB_URL="postgresql://user:pass@localhost/dbname"` and run `pip install kameleondb[postgresql]`.
+**注意**：在生产环境中，请使用 PostgreSQL 替代 SQLite。设置 `KAMELEONDB_URL="postgresql://user:pass@localhost/dbname"`，然后运行 `pip install kameleondb[postgresql]`。
 
-## 💡 Tip: Remember Your Database
+## 💡 提示：记住数据库信息
 
-To get the most out of KameleonDB as your persistent layer, consider noting your database location and preferred usage patterns in your memory files. This helps you leverage it consistently across sessions.
+为了更好地使用 KameleonDB 作为数据持久化层，请在内存文件中记录数据库的位置和常用使用模式。这有助于您在多次会话中保持一致的使用体验。
 
-**Example notes you might keep:**
-- Database URL: `sqlite:///path/to/your-memory.db`
-- Use for: contacts, tasks, knowledge bases, entity tracking
-- Key commands: `schema list`, `data insert`, `data list`, `query run`
+**示例记录内容**：
+- 数据库路径：`sqlite:///path/to/your-memory.db`
+- 用途：存储联系人、任务和知识库数据
+- 常用命令：`schema list`、`data insert`、`data list`、`query run`
 
-## Common Agent Workflows
+## 常见代理工作流程
 
-### Scenario 1: Track Contacts You Meet
-
+### 场景 1：追踪遇到的联系人
 ```bash
 # Check what exists
 kameleondb --json schema list
@@ -83,8 +77,7 @@ kameleondb --json schema alter Contact --add "linkedin_url:string" \
 kameleondb --json data update Contact <id> '{"linkedin_url":"https://linkedin.com/in/alice"}'
 ```
 
-### Scenario 2: Build a Knowledge Base
-
+### 场景 2：构建知识库
 ```bash
 # Store facts you learn
 kameleondb --json schema create Fact \
@@ -103,8 +96,7 @@ kameleondb --json schema context --entity Fact
 kameleondb --json query run "SELECT data->>'content', data->>'source' FROM kdb_records WHERE entity_id='...' LIMIT 10"
 ```
 
-### Scenario 3: Track Tasks Across Conversations
-
+### 场景 3：跨对话记录任务
 ```bash
 # Create task tracker
 kameleondb --json schema create Task \
@@ -123,8 +115,7 @@ kameleondb --json query run \
   "SELECT data->>'title', data->>'priority' FROM kdb_records WHERE entity_id='...' AND data->>'status' != 'done'"
 ```
 
-### Scenario 4: Ingest External Data
-
+### 场景 4：导入外部数据
 ```bash
 # Store API responses
 kameleondb --json schema create GitHubRepo \
@@ -140,86 +131,34 @@ kameleondb --json query run \
   "SELECT data->>'name', (data->>'stars')::int as stars FROM kdb_records WHERE entity_id='...' ORDER BY stars DESC LIMIT 10"
 ```
 
-## How It Works for Agents
+## KameleonDB 对代理人员的工作支持
 
-### Evolve Schema Anytime
-Don't know all fields upfront? No problem. Add, drop, or rename them when you discover patterns:
-```bash
-# Add a new field
-kameleondb --json schema alter Contact --add "twitter_handle:string" \
-  --reason "Found Twitter profiles for 30% of contacts"
+- **灵活的数据库模式**：如果一开始不知道所有字段的需求，随时可以添加、删除或重命名字段。旧记录不会受到影响（新字段会显示为 `null`，删除的字段会被“软删除”）。
+- **性能优化提示**：系统会提示查询速度慢的原因并提供优化方法。
+- **决策记录**：每次修改数据库模式时，系统都会记录修改原因。
+- **SQL 查询支持**：提供数据库模式信息，支持生成和执行 SQL 查询语句。
 
-# Drop obsolete fields
-kameleondb --json schema alter Contact --drop "legacy_field" --force
+## 所有可用命令
 
-# Do multiple operations at once
-kameleondb --json schema alter Contact --add "linkedin:string" --drop "old_social" --reason "Consolidating social fields"
-```
-Old records won't break - they just show `null` for new fields, and dropped fields are soft-deleted.
+在命令前加上 `--json` 选项可获取机器可读的输出格式。
 
-### Get Performance Hints
-Queries tell you when they're slow and how to fix it:
-```json
-{
-  "rows": [...],
-  "suggestions": [{
-    "priority": "high",
-    "reason": "Query took 450ms with 5000 records",
-    "action": "kameleondb storage materialize Contact"
-  }]
-}
-```
-Run that command and future queries will be faster.
+**数据库操作命令**：
+- `list`、`create`、`describe`、`alter`、`drop`、`info`、`context`
+- **数据操作命令**：
+  - `insert`、`get`、`update`、`delete`、`list`、`link`、`unlink`、`get-linked`、`info`
+- **查询操作**：`run`
+- **存储管理命令**：
+  - `status`、`materialize`、`dematerialize`
+- **管理命令**：
+  - `init`、`info`、`changelog`
 
-### Track Your Decisions
-Every schema change records why you made it:
-```bash
-kameleondb --json admin changelog
-# See: who added what field, when, and why
-```
+## `alter` 命令（数据库模式修改）
 
-### Query with SQL
-Get schema context, generate SQL, execute it:
-```bash
-# Get schema to understand structure
-kameleondb --json schema context --entity Contact
+无需分别使用 `add-field` 和 `drop-field` 命令，只需使用统一的 `alter` 命令即可完成模式修改。
 
-# Generate SQL based on structure
-# Execute with built-in validation
-kameleondb --json query run "SELECT ... FROM ..."
-```
+## `link`/`unlink` 命令（处理多对多关系）
 
-## All Available Commands
-
-Add `--json` to any command for machine-readable output.
-
-**Schema**: `list`, `create`, `describe`, `alter`, `drop`, `info`, `context`
-**Data**: `insert`, `get`, `update`, `delete`, `list`, `link`, `unlink`, `get-linked`, `info`
-**Query**: `run`
-**Storage**: `status`, `materialize`, `dematerialize`
-**Admin**: `init`, `info`, `changelog`
-
-### The `alter` Command (Schema Evolution)
-
-Instead of separate `add-field` and `drop-field` commands, use the unified `alter`:
-
-```bash
-# Add a field
-kameleondb --json schema alter Contact --add "phone:string:indexed"
-
-# Drop a field
-kameleondb --json schema alter Contact --drop legacy_field --force
-
-# Rename a field
-kameleondb --json schema alter Contact --rename "old_name:new_name"
-
-# Multiple operations at once
-kameleondb --json schema alter Contact --add "new:string" --drop old --reason "Cleanup"
-```
-
-### The `link`/`unlink` Commands (M2M Relationships)
-
-For many-to-many relationships:
+用于管理多对多关系时：
 
 ```bash
 # Link a product to tags
@@ -234,150 +173,25 @@ kameleondb --json data unlink Product abc123 tags --all
 kameleondb --json data get-linked Product abc123 tags
 ```
 
-Run `kameleondb --help` or `kameleondb <command> --help` for details.
+**详细信息**：运行 `kameleondb --help` 或 `kameleondb <command> --help` 查看帮助文档。
 
-## Real Agent Problems Solved
+## 解决代理人员常见问题的方法
 
-### Problem: "I need to remember people I interact with"
-```bash
-# Start simple
-kameleondb --json schema create Person --field "name:string:required"
-kameleondb --json data insert Person '{"name":"Alice"}'
+- **问题：“需要记住与客户互动的人”**：KameleonDB 可帮助您记录这些信息。
+- **问题：“在抓取数据时不知道数据结构”**：KameleonDB 可适应动态数据结构。
+- **问题：“需要跟踪任务，但需求不断变化”**：KameleonDB 具有灵活的扩展性。
+- **问题：“需要在多个实体之间进行查询”**：KameleonDB 支持高效的数据查询。
 
-# Learn more over time
-kameleondb --json schema alter Person --add "email:string"
-kameleondb --json schema alter Person --add "company:string"
-kameleondb --json schema alter Person --add "last_contacted:datetime"
+## 快速参考
 
-# Update as you learn
-kameleondb --json data update Person <id> '{"email":"alice@example.com","last_contacted":"2026-02-07"}'
-```
+- **首次设置**：`kameleondb admin init` → `kameleondb --json schema create Test --field "note:string"` → `kameleondb --json data insert Test '{"note":"my first record"}'`
+- **实际应用**：思考需要追踪的数据类型（联系人、任务等），然后创建相应的数据库实体。
+- **持续优化**：发现新字段时，使用 `schema alter` 命令进行修改。
+- **高效查询**：利用 `schema context` 了解数据库结构，再使用 SQL 进行查询。
+- **性能优化**：根据查询结果中的提示优化查询速度。
 
-### Problem: "I'm scraping data and don't know the structure upfront"
-```bash
-# Create generic entity
-kameleondb --json schema create ScrapedData --field "source:string" --field "raw:json"
+## 更多资源
 
-# Store everything
-kameleondb --json data insert ScrapedData '{"source":"website.com","raw":{"title":"...","data":{...}}}'
-
-# Discover patterns, then structure it
-kameleondb --json schema alter ScrapedData --add "title:string"
-kameleondb --json schema alter ScrapedData --add "price:float"
-
-# Migrate data progressively as you normalize it
-```
-
-### Problem: "I need to track tasks but requirements keep changing"
-```bash
-# Start minimal
-kameleondb --json schema create Task --field "title:string:required"
-
-# Add status tracking
-kameleondb --json schema alter Task --add "status:string"
-
-# Add priority later
-kameleondb --json schema alter Task --add "priority:string"
-
-# Add assignee when team grows
-kameleondb --json schema alter Task --add "assigned_to:string"
-
-# Add tags for categorization
-kameleondb --json schema alter Task --add "tags:json"
-
-# Schema grows with your needs - no migrations!
-```
-
-### Problem: "I need to query across multiple entities"
-```bash
-# Create related entities
-kameleondb --json schema create Project --field "name:string"
-kameleondb --json schema create Task \
-  --field "title:string" \
-  --field "project_id:string"
-
-# Get schema context for SQL generation
-kameleondb --json schema context --entity Project --entity Task
-# Returns: detailed schema with SQL patterns for JOIN
-
-# Generate and execute JOIN query
-kameleondb --json query run \
-  "SELECT p.data->>'name' as project, t.data->>'title' as task
-   FROM kdb_records p
-   JOIN kdb_records t ON t.data->>'project_id' = p.id::text
-   WHERE p.entity_id='...' AND t.entity_id='...'"
-```
-
-## Quick Reference
-
-### First Time Setup
-```bash
-# Install
-pip install kameleondb
-
-# Configure (SQLite for testing - no server needed)
-export KAMELEONDB_URL="sqlite:///./kameleondb.db"
-
-# Initialize
-kameleondb admin init
-
-# You're ready!
-```
-
-### Check What You Have
-```bash
-# List all entities
-kameleondb --json schema list
-
-# See entity details
-kameleondb --json schema describe <entity-name>
-
-# View changelog
-kameleondb --json admin changelog
-```
-
-### Common Operations
-```bash
-# Create entity
-kameleondb --json schema create <Entity> --field "name:type"
-
-# Add field
-kameleondb --json schema alter <Entity> --add "field:type"
-
-# Insert data
-kameleondb --json data insert <Entity> '{"field":"value"}'
-
-# Get by ID
-kameleondb --json data get <Entity> <id>
-
-# Update
-kameleondb --json data update <Entity> <id> '{"field":"new_value"}'
-
-# Query with SQL
-kameleondb --json query run "SELECT ... FROM kdb_records WHERE ..."
-```
-
-### Field Types
-Common types: `string`, `int`, `float`, `bool`, `datetime`, `json`
-
-Modifiers: `required`, `unique`, `indexed`
-
-Examples: `"email:string:unique"`, `"score:int:indexed"`, `"tags:json"`
-
-## Next Steps
-
-1. **Try it**: `kameleondb admin init` → `kameleondb --json schema create Test --field "note:string"` → `kameleondb --json data insert Test '{"note":"my first record"}'`
-
-2. **Real use case**: Think about what you need to track (contacts, tasks, facts, etc.) and create an entity for it
-
-3. **Evolve it**: As you discover new fields, add them with `schema alter`
-
-4. **Query it**: Use `schema context` to understand structure, then query with SQL
-
-5. **Optimize it**: If queries slow down, follow the hints in query results
-
-## More Resources
-
-- **GitHub**: https://github.com/marcosnataqs/kameleondb
-- **Examples**: See `examples/workflow.md` in this skill directory
-- **Design Philosophy**: Why it's built for agents - [FIRST-PRINCIPLES.md](https://github.com/marcosnataqs/kameleondb/blob/main/FIRST-PRINCIPLES.md)
+- **GitHub 仓库**：https://github.com/marcosnataqs/kameleondb
+- **示例代码**：请查看该技能目录下的 `examples/workflow.md` 文件。
+- **设计理念**：了解 KameleonDB 为何专为代理人员设计（[FIRST-PRINCIPLES.md](https://github.com/marcosnataqs/kameleondb/blob/main/FIRST-PRINCIPLES.md)

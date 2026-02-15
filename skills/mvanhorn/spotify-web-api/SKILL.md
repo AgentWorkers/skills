@@ -1,39 +1,39 @@
 ---
 name: spotify-web-api
-description: Spotify control via Web API - playback, history, top tracks, search. Cross-platform (no Mac required).
+description: 通过 Web API 控制 Spotify：支持播放、查看播放历史记录、查看热门歌曲以及进行搜索。支持跨平台使用（无需 Mac 设备）。
 homepage: https://spotify.com
 metadata: {"clawdbot":{"emoji":"🎵","requires":{"env":["SPOTIFY_CLIENT_ID","SPOTIFY_CLIENT_SECRET"]}}}
 ---
 
-# Spotify Web API (Cross-Platform)
+# Spotify Web API（跨平台）
 
-Control Spotify via Web API. Works from any platform — no Mac required.
+通过 Web API 控制 Spotify，支持在任何平台上使用——无需 Mac 设备。
 
-## Setup
+## 设置
 
-### 1. Create Spotify App:
+### 1. 创建 Spotify 应用程序：
 
-1. Go to https://developer.spotify.com/dashboard
-2. Create a new app
-3. Add redirect URI: `http://localhost:8888/callback`
-4. Copy **Client ID** and **Client Secret**
+1. 访问 https://developer.spotify.com/dashboard
+2. 创建一个新的应用程序
+3. 设置回调 URI：`http://localhost:8888/callback`
+4. 复制 **客户端 ID** 和 **客户端密钥**
 
-### 2. Set Environment Variables:
+### 2. 设置环境变量：
 
 ```bash
 export SPOTIFY_CLIENT_ID="your_client_id"
 export SPOTIFY_CLIENT_SECRET="your_client_secret"
 ```
 
-### 3. Authenticate:
+### 3. 验证身份：
 
 ```bash
 python3 {baseDir}/scripts/spotify.py auth
 ```
 
-Opens browser for OAuth. Token cached in `~/.spotify_cache.json`.
+系统会打开浏览器进行 OAuth 验证。生成的令牌会保存在 `~/.spotify_cache.json` 文件中。
 
-## Commands
+## 命令
 
 ```bash
 # Currently playing
@@ -60,21 +60,21 @@ python3 {baseDir}/scripts/spotify.py search "daft punk"
 python3 {baseDir}/scripts/spotify.py devices
 ```
 
-## Example Chat Usage
+## 聊天示例：
 
-- "What am I listening to?"
-- "What have I listened to lately?"
-- "What are my top tracks this month?"
-- "Play Bohemian Rhapsody"
-- "Skip this song"
-- "Pause the music"
+- “我正在听什么音乐？”
+- “我最近听了哪些歌？”
+- “我这个月的热门歌曲有哪些？”
+- “播放《波西米亚狂想曲》”
+- “跳过这首歌”
+- “暂停音乐”
 
-## Requirements
+## 使用要求：
 
-- Spotify Premium (for playback control)
-- Free accounts can still view history/top tracks
+- 需要订阅 Spotify Premium 订阅服务才能控制音乐播放功能
+- 免费账户仍可以查看播放历史和热门歌曲列表
 
-## API Reference
+## API 参考文档：
 
-Uses the Spotify Web API:
+更多关于 Spotify Web API 的信息，请参考：
 https://developer.spotify.com/documentation/web-api

@@ -1,102 +1,102 @@
 ---
 name: fieldfix
-description: Query and manage your heavy equipment fleet through FieldFix's API. Track machines, log maintenance, monitor expenses, and get AI diagnostics.
+description: 通过 FieldFix 的 API 查询和管理您的重型设备车队。您可以追踪设备信息、记录维护记录、监控开支，并获取人工智能诊断结果。
 version: 1.0.0
 author: FieldFix <support@fieldfix.ai>
 homepage: https://www.fieldfix.ai/api
 ---
 
-# FieldFix Skill
+# FieldFix 技能
 
-Query and manage your heavy equipment fleet through FieldFix's Agent API.
+通过 FieldFix 的代理 API 查询和管理您的重型设备车队。
 
-## Setup
+## 设置
 
-1. **Get your API key** from [FieldFix Settings](https://app.fieldfix.ai/settings/api)
-2. **Set environment variable:**
+1. 从 [FieldFix 设置](https://app.fieldfix.ai/settings/api) 获取您的 API 密钥。
+2. 设置环境变量：  
    ```bash
    export FIELDFIX_API_KEY=ff_sk_live_your_key_here
    ```
 
-## Pricing
+## 价格
 
-API access is included with all paid plans:
-- **$10/machine/month** (1-25 machines)
-- **$7/machine/month** (26-100 machines)  
-- **$5/machine/month** (100+ machines)
-- **2 months free trial** — no credit card required
+所有付费计划均包含 API 访问权限：
+- **每台机器每月 $10**（1-25 台机器）
+- **每台机器每月 $7**（26-100 台机器）
+- **每台机器每月 $5**（100 台以上机器）
+- **2 个月免费试用** — 无需信用卡
 
-## Capabilities
+## 功能
 
-### Read Operations
+### 读取操作
 
-**List all machines:**
+**列出所有机器：**
 ```bash
 node scripts/fieldfix.js machines
 ```
 
-**Get machine details:**
+**获取机器详情：**
 ```bash
 node scripts/fieldfix.js machine <id>
 ```
 
-**Get machine expenses:**
+**获取机器费用：**
 ```bash
 node scripts/fieldfix.js expenses <id>
 ```
 
-**Get service history:**
+**获取服务历史：**
 ```bash
 node scripts/fieldfix.js service <id>
 ```
 
-**Get fleet alerts:**
+**获取车队警报：**
 ```bash
 node scripts/fieldfix.js alerts
 ```
 
-### Write Operations
+### 写入操作
 
-**Log a service entry:**
+**记录服务条目：**
 ```bash
 node scripts/fieldfix.js log-service <id> "Oil Change" 120 "Changed oil and filter"
 ```
 
-**Log an expense:**
+**记录费用：**
 ```bash
 node scripts/fieldfix.js log-expense <id> fuel 250 "Filled tank"
 ```
 
-**Update hour meter:**
+**更新小时计：**
 ```bash
 node scripts/fieldfix.js update-hours <id> 1250
 ```
 
-## Example Prompts
+## 示例提示
 
-Once configured, try asking your agent:
+配置完成后，您可以尝试向代理询问以下问题：
 
-- "What machines do I have in FieldFix?"
-- "When is my CAT 299 due for service?"
-- "How much have I spent on fuel this month?"
-- "Log an oil change on the excavator for $120"
-- "What's the total cost per hour for my skid steer?"
+- “我在 FieldFix 中有多少台机器？”
+- “我的 CAT 299 机器什么时候需要维护？”
+- “我这个月在燃料上花了多少钱？”
+- “为挖掘机记录一次价值 $120 的换油操作。”
+- “我的滑移转向车的每小时总成本是多少？”
 
-## API Endpoints
+## API 端点
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/machines` | GET | List all machines |
-| `/machines/{id}` | GET | Get machine details |
-| `/machines/{id}/expenses` | GET | Get expense history |
-| `/machines/{id}/service` | GET | Get service history |
-| `/alerts` | GET | Get fleet alerts |
-| `/machines/{id}/service` | POST | Log service entry |
-| `/machines/{id}/expenses` | POST | Log expense |
-| `/machines/{id}/hours` | POST | Update hours |
+| `/machines` | GET | 列出所有机器 |
+| `/machines/{id}` | GET | 获取机器详情 |
+| `/machines/{id}/expenses` | GET | 获取费用历史 |
+| `/machines/{id}/service` | GET | 获取服务历史 |
+| `/alerts` | GET | 获取车队警报 |
+| `/machines/{id}/service` | POST | 记录服务条目 |
+| `/machines/{id}/expenses` | POST | 记录费用 |
+| `/machines/{id}/hours` | POST | 更新机器使用小时数 |
 
-## Links
+## 链接
 
-- [FieldFix App](https://app.fieldfix.ai)
-- [API Documentation](https://www.fieldfix.ai/api)
-- [MCP Server (Claude Desktop)](https://www.npmjs.com/package/fieldfix-mcp-server)
+- [FieldFix 应用程序](https://app.fieldfix.ai)
+- [API 文档](https://www.fieldfix.ai/api)
+- [MCP 服务器（Claude Desktop）](https://www.npmjs.com/package/fieldfix-mcp-server)

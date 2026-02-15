@@ -1,56 +1,56 @@
 ---
 name: obsidian-sync
-description: Sync files between Clawdbot workspace and Obsidian. Run the sync server to enable two-way file synchronization with the OpenClaw Obsidian plugin.
+description: 在 Clawdbot 工作空间与 Obsidian 之间同步文件。运行同步服务器，以实现与 OpenClaw Obsidian 插件的双向文件同步功能。
 ---
 
-# Obsidian Sync Server
+# Obsidian 同步服务器
 
-A secure file sync server for two-way synchronization between Clawdbot and Obsidian.
+这是一个用于在 Clawdbot 和 Obsidian 之间实现双向文件同步的安全服务器。
 
-> **📦 This skill is part of [obsidian-openclaw](https://github.com/AndyBold/obsidian-openclaw)**  
-> An Obsidian plugin that lets you chat with your Clawdbot agent and sync notes between your vault and the agent's workspace.
+> **📦 该功能属于 [obsidian-openclaw](https://github.com/AndyBold/obsidian-openclaw)**  
+> 这是一个 Obsidian 插件，允许您与 Clawdbot 代理进行聊天，并在您的笔记库（vault）与代理的工作空间之间同步笔记。
 
-## Quick Start
+## 快速入门
 
 ```bash
 SYNC_TOKEN="your-gateway-token" node scripts/sync-server.mjs
 ```
 
-## Configuration
+## 配置
 
-| Environment Variable | Default | Description |
+| 环境变量 | 默认值 | 说明 |
 |---------------------|---------|-------------|
-| `SYNC_PORT` | `18790` | Server port |
-| `SYNC_BIND` | `localhost` | Bind address |
-| `SYNC_WORKSPACE` | `/data/clawdbot` | Root workspace path |
-| `SYNC_TOKEN` | (required) | Auth token (use Gateway token) |
-| `SYNC_ALLOWED_PATHS` | `notes,memory` | Comma-separated allowed subdirectories |
+| `SYNC_PORT` | `18790` | 服务器端口 |
+| `SYNC_BIND` | `localhost` | 绑定地址 |
+| `SYNC_WORKSPACE` | `/data/clawdbot` | 根工作空间路径 |
+| `SYNC_TOKEN` | （必填） | 认证令牌（使用 Gateway 令牌） |
+| `SYNC_ALLOWED_PATHS` | `notes,memory` | 允许的子目录（以逗号分隔） |
 
-## Security
+## 安全性
 
-- Only configured subdirectories are accessible
-- Path traversal (`../`) is blocked
-- All requests require `Authorization: Bearer <token>`
-- Bind to localhost; expose via Tailscale serve for remote access
+- 只有配置的子目录才能被访问 |
+- 禁止路径遍历（如 `../`） |
+- 所有请求都需要包含 `Authorization: Bearer <token>` 标头 |
+- 通过 Tailscale 服务器提供远程访问功能 |
 
-## API Endpoints
+## API 端点
 
-| Method | Endpoint | Description |
+| 方法 | 端点 | 说明 |
 |--------|----------|-------------|
-| GET | `/sync/status` | Health check |
-| GET | `/sync/list?path=notes` | List markdown files |
-| GET | `/sync/read?path=notes/x.md` | Read file + metadata |
-| POST | `/sync/write?path=notes/x.md` | Write file (conflict detection) |
+| GET | `/sync/status` | 健康检查 |
+| GET | `/sync/list?path=notes` | 列出 Markdown 文件 |
+| GET | `/sync/read?path=notes/x.md` | 读取文件及其元数据 |
+| POST | `/sync/write?path=notes/x.md` | 写入文件（会检测冲突） |
 
-## Exposing via Tailscale
+## 通过 Tailscale 提供远程访问
 
 ```bash
 tailscale serve --bg --https=18790 http://localhost:18790
 ```
 
-## Running as a Service
+## 作为服务运行
 
-### User systemd service
+### 使用 systemd 服务运行
 
 ```bash
 mkdir -p ~/.config/systemd/user
@@ -78,17 +78,17 @@ systemctl --user enable --now openclaw-sync
 loginctl enable-linger $USER  # Start on boot
 ```
 
-## Obsidian Plugin
+## Obsidian 插件
 
-This skill provides the backend for the **OpenClaw Obsidian plugin**:
+该功能为 **OpenClaw Obsidian 插件** 提供后端支持：
 
 **[github.com/AndyBold/obsidian-openclaw](https://github.com/AndyBold/obsidian-openclaw)**
 
-The plugin provides:
-- 💬 **Chat sidebar** — Talk to your Clawdbot agent from Obsidian
-- 📁 **File actions** — Create, edit, delete notes via conversation
-- 🔄 **Two-way sync** — Keep notes synchronized between vault and agent
-- 🔒 **Secure storage** — OS keychain integration for tokens
-- 📋 **Audit logging** — Track all file operations
+该插件提供以下功能：
+- 💬 **聊天侧边栏** — 从 Obsidian 与 Clawdbot 代理进行交流 |
+- 📁 **文件操作** — 通过聊天界面创建、编辑和删除笔记 |
+- 🔄 **双向同步** — 保持笔记库与代理工作空间之间的同步 |
+- 🔒 **安全存储** — 集成操作系统密钥链来存储令牌 |
+- 📋 **审计日志** — 记录所有文件操作
 
-Install the plugin via [BRAT](https://github.com/TfTHacker/obsidian42-brat) using: `AndyBold/obsidian-openclaw`
+请通过 [BRAT](https://github.com/TfTHacker/obsidian42-brat) 安装该插件，使用命令：`AndyBold/obsidian-openclaw`

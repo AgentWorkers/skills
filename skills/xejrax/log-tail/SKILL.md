@@ -1,6 +1,6 @@
 ---
 name: log-tail
-description: "Stream recent logs from systemd journal"
+description: "从 systemd 日志中流式读取最近的日志记录"
 metadata:
   {
     "openclaw":
@@ -14,9 +14,9 @@ metadata:
 
 # Log Tail
 
-Stream recent logs from the systemd journal. View logs by service unit, control line count, and optionally follow in real time.
+从 systemd 日志中流式显示最近的日志记录。可以按服务单元、日志行数进行筛选，并可选择实时查看日志。
 
-## Commands
+## 命令
 
 ```bash
 # Show recent journal logs (default: 50 lines)
@@ -26,6 +26,6 @@ log-tail [--unit <service>] [--lines 50]
 log-tail --follow <service>
 ```
 
-## Install
+## 安装
 
-No installation needed. `journalctl` is always present on systemd-based systems like Bazzite/Fedora.
+无需安装。`journalctl` 已经存在于基于 systemd 的系统中（如 Bazzite/Fedora）。

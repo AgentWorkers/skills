@@ -1,9 +1,9 @@
 ---
 name: Follow
-description: Monitor content from people, topics, and sources across platforms with smart filtering, tiered alerts, and searchable archives.
+description: 通过智能过滤、分层警报以及可搜索的存档功能，监控来自不同平台的人、主题和来源的内容。
 ---
 
-## Workspace
+## 工作区
 
 ```
 ~/follow/
@@ -19,45 +19,45 @@ description: Monitor content from people, topics, and sources across platforms w
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
+| 任务 | 所需文件 |
 |------|------|
-| Add/configure sources | `sources.md` |
-| Set up filtering rules | `filtering.md` |
-| Configure alert tiers | `alerts.md` |
-| Query archived content | `querying.md` |
-| Platform-specific setup | `platforms.md` |
+| 添加/配置信息源 | `sources.md` |
+| 设置过滤规则 | `filtering.md` |
+| 配置警报等级 | `alerts.md` |
+| 查询存档内容 | `querying.md` |
+| 平台特定设置 | `platforms.md` |
 
 ---
 
-## Core Loop
+## 核心流程
 
-1. **Add source**: User names person/topic/feed → create tracking file
-2. **Monitor**: Check sources on schedule (cron) or on-demand
-3. **Filter**: Apply relevance rules, skip noise
-4. **Store**: Archive what matters (summaries, not full dumps)
-5. **Alert**: Notify based on tier (immediate/daily/weekly/passive)
-6. **Query**: Answer "what did X say about Y?" from archive
+1. **添加信息源**：用户名称 → 人名/主题/信息源 → 创建跟踪文件
+2. **监控**：按计划（通过 cron 任务）或按需检查信息源
+3. **过滤**：应用相关性规则，排除无关内容
+4. **存储**：仅存储重要的内容（摘要，而非完整数据）
+5. **警报**：根据警报等级（立即/每日/每周/被动）发送通知
+6. **查询**：从存档中检索“X 对 Y 说了什么？”
 
 ---
 
-## Common Patterns
+## 常见操作模式
 
-| User says | Agent does |
+| 用户操作 | 代理执行 |
 |-----------|------------|
-| "Follow @naval on Twitter" | Create `sources/people/naval.md`, configure Twitter monitoring |
-| "Track AI safety discussions" | Create topic tracker with keywords across multiple sources |
-| "What has Competitor X posted this week?" | Query archive, synthesize summary |
-| "Alert me immediately when Y happens" | Add to high-priority tier in `alerts.md` |
-| "Give me a weekly digest of everything" | Configure weekly summary in alerts |
-| "Stop following X" | Archive and mark inactive |
+| “关注 @naval 的 Twitter 账号” | 创建 `sources/people/naval.md` 文件，并配置 Twitter 监控 |
+| “跟踪关于 AI 安全的讨论” | 创建跨多个信息源的关键词跟踪器 |
+| “竞争对手 X 本周发布了什么？” | 查询存档并生成摘要 |
+| “当 Y 发生时立即通知我” | 将该事件添加到 `alerts.md` 的高优先级警报中 |
+| “每周提供一次汇总” | 在警报设置中配置每周摘要 |
+| “停止关注 X” | 将该用户的信息源存档并标记为“不活跃” |
 
 ---
 
-## Capture Principles
+## 数据捕获原则
 
-- **Summaries over full content** — save space, stay legal
-- **Links + timestamps always** — retrievable later
-- **Context for why it matters** — not just "X posted"
-- **Deduplicate across sources** — same news from 5 places = 1 entry
+- **使用摘要而非完整内容** — 节省空间，确保合规性
+- **始终添加链接和时间戳** — 便于日后检索
+- **提供内容的重要性背景** — 不仅仅是“X 发布了什么”
+- **跨信息源去重** — 来自多个来源的相同内容只记录一次

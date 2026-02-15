@@ -1,54 +1,54 @@
 ---
 name: speedtest
-description: Test internet connection speed using Ookla's Speedtest CLI. Measure download/upload speeds, latency, and packet loss. Format results for social sharing on Moltbook/Twitter. Track speed history over time. Use when asked to check internet speed, test connection, run speedtest, or share network performance stats.
+description: 使用Ookla的Speedtest CLI来测试互联网连接速度。可以测量下载/上传速度、延迟以及数据包丢失情况。将测试结果格式化为适合在Moltbook或Twitter上分享的格式。同时，可以记录网络速度的历史数据。当需要检查互联网速度、测试网络连接或分享网络性能统计数据时，都可以使用该工具。
 ---
 
-# Speedtest Skill
+# Speedtest 技能
 
-Test your internet connection speed and share results with the agent community.
+测试您的互联网连接速度，并将结果分享给代理社区。
 
-## Quick Start
+## 快速入门
 
-**Run a basic speed test:**
+**运行基本的速度测试：**
 ```bash
 speedtest --format=json-pretty
 ```
 
-**Generate a social-ready post (with interactive prompt):**
+**生成适合社交媒体的帖子（包含交互式提示）：**
 ```bash
 scripts/speedtest-social.sh
 ```
 
-After running, you'll be prompted to publish to:
+运行完成后，系统会提示您将结果发布到：
 - Moltbook
 - Twitter
-- Both
-- Skip
+- 两者都
+- 跳过
 
-**Track speed history:**
+**跟踪速度历史记录：**
 ```bash
 scripts/speedtest-history.sh
 ```
 
-## What This Measures
+## 测量内容
 
-- **Download speed** - How fast you receive data
-- **Upload speed** - How fast you send data
-- **Latency (ping)** - Response time to servers
-- **Packet loss** - Connection reliability
-- **Server location** - Which test server was used
+- **下载速度**：您接收数据的速度
+- **上传速度**：您发送数据的速度
+- **延迟（ping）**：与服务器的响应时间
+- **数据包丢失**：连接的可靠性
+- **服务器位置**：使用的测试服务器
 
-## Use Cases
+## 使用场景
 
-1. **Troubleshooting** - "My connection feels slow"
-2. **Monitoring** - Track speed trends over time
-3. **Social sharing** - Post results to Moltbook/Twitter
-4. **Comparison** - See how your speed compares to past tests
-5. **Infrastructure** - Document your hosting setup
+1. **故障排除**：“我的网络速度感觉很慢”
+2. **监控**：随时间跟踪速度趋势
+3. **社交分享**：将结果发布到 Moltbook/Twitter
+4. **比较**：查看您的速度与之前的测试结果
+5. **基础设施记录**：记录您的托管环境信息
 
-## Social Posting
+## 社交媒体发布
 
-The skill formats results for easy sharing:
+该技能会格式化测试结果以便于分享：
 
 ```
 📊 SpeedTest Results
@@ -61,25 +61,25 @@ The skill formats results for easy sharing:
 #SpeedTest #AgentInfra 🦞
 ```
 
-Post this to Moltbook or Twitter to share your infrastructure stats with other agents!
+将此内容发布到 Moltbook 或 Twitter，以便与其他代理分享您的基础设施信息！
 
-## Scripts
+## 脚本
 
 ### speedtest-social.sh
 
-Runs speedtest and formats output for social media. Features:
-- Adds emojis based on performance
-- Generates hashtags
-- Includes status indicator (🚀 Excellent / ⚡ Good / 🐌 Slow)
-- **Interactive prompt** to publish results
+运行速度测试并将结果格式化为适合社交媒体的格式。功能包括：
+- 根据测试结果添加表情符号
+- 生成标签
+- 包含状态指示（🚀 优秀 / ⚡ 良好 / 🐌 较慢）
+- **交互式提示**：用于发布结果
 
-Usage:
+使用方法：
 ```bash
 scripts/speedtest-social.sh                    # Interactive: asks where to publish
 scripts/speedtest-social.sh --post-to-moltbook # Auto-post to Moltbook only
 ```
 
-After each test, the script will ask:
+每次测试完成后，脚本会询问您是否希望发布结果：
 ```
 📢 Would you like to publish these results?
    1) Moltbook
@@ -88,71 +88,71 @@ After each test, the script will ask:
    4) Skip
 ```
 
-This encourages regular sharing while giving you control!
+这鼓励您定期分享结果，同时让您拥有控制权！
 
 ### speedtest-history.sh
 
-Tracks speed test results over time:
+跟踪一段时间内的速度测试结果：
 ```bash
 scripts/speedtest-history.sh run    # Run test and save to history
 scripts/speedtest-history.sh stats  # Show statistics (avg, min, max)
 scripts/speedtest-history.sh trend  # Show recent trend
 ```
 
-History is saved to `~/.openclaw/data/speedtest-history.jsonl`
+历史记录保存在 `~/.openclaw/data/speedtest-history.jsonl` 文件中
 
-## Performance Indicators
+## 性能指标
 
-**Download Speed:**
-- 🚀 Excellent: 100+ Mbps
-- ⚡ Good: 25-100 Mbps
-- 🐌 Slow: < 25 Mbps
+**下载速度：**
+- 🚀 优秀：100+ Mbps
+- ⚡ 良好：25-100 Mbps
+- 🐌 较慢：< 25 Mbps
 
-**Latency:**
-- 🎯 Excellent: < 20ms
-- ⚡ Good: 20-50ms
-- 🐌 Slow: > 50ms
+**延迟：**
+- 🎯 优秀：< 20ms
+- ⚡ 良好：20-50ms
+- 🐌 较慢：> 50ms
 
-## Installation
+## 安装
 
-The Ookla Speedtest CLI must be installed:
+必须安装 Ookla Speedtest CLI：
 
-**macOS:**
+**macOS：**
 ```bash
 brew tap teamookla/speedtest
 brew install speedtest
 ```
 
-**Linux (Debian/Ubuntu):**
+**Linux (Debian/Ubuntu)：**
 ```bash
 sudo apt-get install curl
 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
 sudo apt-get install speedtest
 ```
 
-Check installation:
+检查安装是否成功：
 ```bash
 speedtest --version
 ```
 
-## Common Queries
+## 常见问题
 
-- "Run a speed test"
-- "How fast is my internet?"
-- "Test my connection speed"
-- "Check download/upload speeds"
-- "Post my speed test results to Moltbook"
-- "Compare my speed to last time"
+- “运行速度测试”
+- “我的网络速度有多快？”
+- “测试我的连接速度”
+- “查看下载/上传速度”
+- “将我的速度测试结果发布到 Moltbook”
+- “将我的速度与上次测试结果进行比较”
 
-## Notes
+## 注意事项
 
-- Speed tests use real bandwidth - avoid running during important downloads
-- Results vary by time of day and network load
-- Server selection can affect results (closer = usually faster)
-- Periodic posting creates an interesting dataset of agent infrastructure
-- Rate limit: Don't run tests more than once per 10 minutes
+- 速度测试使用的是实际带宽，请避免在重要数据下载期间进行测试
+- 测试结果会随时间和网络负载而变化
+- 选择的服务器会影响测试结果（距离服务器越近，通常速度越快）
+- 定期分享数据可以生成有用的代理基础设施数据集
+- 速率限制：请每 10 分钟内不要多次运行测试
 
-## See Also
+## 参考资料
 
-- [Speedtest CLI Documentation](https://www.speedtest.net/apps/cli)
-- Reference: `references/speedtest-cli.md` for detailed CLI options
+- [Speedtest CLI 文档](https://www.speedtest.net/apps/cli)
+- 详细 CLI 选项请参考 `references/speedtest-cli.md`

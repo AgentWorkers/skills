@@ -1,57 +1,57 @@
 ---
 name: tesla-commands
-description: Control your Tesla via MyTeslaMate API. Supports multi-vehicle accounts, climate control, and charging schedules.
+description: 通过 MyTeslaMate API 控制您的特斯拉汽车。支持多车辆账户管理、气候控制系统以及充电计划设置。
 metadata: {"tags": ["tesla", "myteslamate", "ev", "car-control", "automation"]}
 ---
 
-# Tesla Commands Skill 🚗
+# 特斯拉车辆控制技能 🚗
 
-This skill allows you to monitor and control your Tesla vehicle using the MyTeslaMate API.
+此技能允许您通过 MyTeslaMate API 监控和操控您的特斯拉汽车。
 
-## Prerequisites
+## 先决条件
 
-To use this skill, you must have:
-1.  A **MyTeslaMate** account with a configured vehicle.
-2.  An **API Token** from MyTeslaMate (Get it at [app.myteslamate.com/fleet](https://app.myteslamate.com/fleet)).
-3.  The **VIN** of your vehicle.
+要使用此技能，您需要满足以下条件：
+1. 拥有一个已配置车辆的 **MyTeslaMate** 账户。
+2. 从 MyTeslaMate 获取 **API 令牌**（访问地址：[app.myteslamate.com/fleet](https://app.myteslamate.com/fleet)）。
+3. 知道您的车辆的 **VIN**（车辆识别码）。
 
-### Environment Variables
-The following environment variables must be set for the skill to work:
-- `TESLA_MATE_TOKEN`: Your MyTeslaMate API token.
-- `TESLA_VIN`: Your vehicle's VIN (optional if you specify it via command line).
+### 环境变量
+为了使该技能正常工作，必须设置以下环境变量：
+- `TESLA_MATE_TOKEN`：您的 MyTeslaMate API 令牌。
+- `TESLA_VIN`：您的车辆 VIN（如果通过命令行指定，则此参数为必填）。
 
-## Tools
+## 工具
 
 ### tesla-control
 
-Manage vehicle status, climate, charging, and schedules.
+用于管理车辆状态、空调系统、充电计划等。
 
-**Usage:**
-`public-skills/tesla-commands/bin/tesla-control.py [options]`
+**使用方法：**
+`public-skills/tesla-commands/bin/tesla-control.py [选项]`
 
-**Options:**
-- `--list`: List all vehicles on the account and their VINs.
-- `--status`: Fetch full vehicle data (battery, climate, location, locks, etc.).
-- `--wake`: Wake up the vehicle from sleep mode.
-- `--climate [on|off]`: Start or stop the climate control.
-- `--charge-limit [50-100]`: Set the battery charge limit percentage.
-- `--set-schedule [HH:MM]`: Set a scheduled charging start time.
-- `--clear-schedule`: Disable scheduled charging.
-- `--vin [VIN]`: Target a specific vehicle (overrides the default `TESLA_VIN`).
+**选项：**
+- `--list`：列出账户中的所有车辆及其 VIN。
+- `--status`：获取车辆的完整信息（电池电量、空调状态、位置、车门锁状态等）。
+- `--wake`：将车辆从睡眠模式唤醒。
+- `--climate [on|off]`：开启或关闭空调系统。
+- `--charge-limit [50-100]`：设置电池充电限制百分比。
+- `--set-schedule [HH:MM]`：设置定时充电开始时间。
+- `--clear-schedule`：取消定时充电计划。
+- `--vin [VIN]`：指定目标车辆（会覆盖默认的 `TESLA_VIN`）。
 
-## Examples
+## 示例
 
-**Wake up the car:**
+**唤醒汽车：**
 ```bash
 ./bin/tesla-control.py --wake
 ```
 
-**Set charge limit to 80%:**
+**将充电限制设置为 80%：**
 ```bash
 ./bin/tesla-control.py --charge-limit 80
 ```
 
-**Set charging to start at 02:00:**
+**设置充电计划在 02:00 开始：**
 ```bash
 ./bin/tesla-control.py --set-schedule 02:00
 ```

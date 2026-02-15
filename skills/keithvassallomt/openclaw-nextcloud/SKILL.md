@@ -1,86 +1,86 @@
 ---
 name: openclaw-nextcloud
-description: Manage Notes, Tasks, Calendar, Files, and Contacts in your Nextcloud instance via CalDAV, WebDAV, and Notes API. Use for creating notes, managing todos and calendar events, uploading/downloading files, and managing contacts.
+description: 您可以通过 CalDAV、WebDAV 和 Notes API 在 Nextcloud 实例中管理笔记、任务、日历、文件和联系人。这些功能可用于创建笔记、管理待办事项和日历事件、上传/下载文件以及管理联系人。
 license: MIT
 compatibility: Requires Node.js 20+. Needs network access to Nextcloud instance.
 allowed-tools: Bash Read
 ---
 
-# OpenClaw Nextcloud Skill
+# OpenClaw Nextcloud 技能
 
-This skill provides integration with a Nextcloud instance. It supports access to Notes, Tasks (Todos), Calendars, Files, and Contacts.
+此技能提供了与 Nextcloud 实例的集成功能，支持访问笔记、任务（待办事项）、日历、文件和联系人信息。
 
-## Configuration
+## 配置
 
-The skill requires the following environment variables:
+该技能需要以下环境变量：
 
-- `NEXTCLOUD_URL`: The base URL of your Nextcloud instance (e.g., `https://cloud.example.com`).
-- `NEXTCLOUD_USER`: Your Nextcloud username.
-- `NEXTCLOUD_TOKEN`: An App Password (recommended) or your login password.
+- `NEXTCLOUD_URL`：您的 Nextcloud 实例的基 URL（例如：`https://cloud.example.com`）。
+- `NEXTCLOUD_USER`：您的 Nextcloud 用户名。
+- `NEXTCLOUD_TOKEN`：应用密码（推荐使用）或您的登录密码。
 
-## Features
+## 功能
 
-### 1. Notes (Read/Write)
-- List, get, create, update, and delete notes.
-- API: `index.php/apps/notes/api/v1/notes`
+### 1. 笔记（读/写）
+- 列出、获取、创建、更新和删除笔记。
+- API：`index.php/apps/notes/api/v1/notes`
 
-### 2. Tasks / Todos (Read/Write)
-- List, create, update, delete, and complete tasks.
-- API: CalDAV (VTODO).
+### 2. 任务 / 待办事项（读/写）
+- 列出、创建、更新、删除和完成任务。
+- API：CalDAV（VTODO）
 
-### 3. Calendar (Read/Write)
-- List, create, update, and delete events.
-- API: CalDAV (VEVENT).
+### 3. 日历（读/写）
+- 列出、创建、更新和删除事件。
+- API：CalDAV（VEVENT）
 
-### 4. Files (Read/Write)
-- List, search, upload, download, and delete files.
-- API: WebDAV.
+### 4. 文件（读/写）
+- 列出、搜索、上传、下载和删除文件。
+- API：WebDAV
 
-### 5. Contacts (Read/Write)
-- List, get, create, update, delete, and search contacts.
-- API: CardDAV.
+### 5. 联系人（读/写）
+- 列出、获取、创建、更新、删除和搜索联系人信息。
+- API：CardDAV
 
-## Usage
+## 使用方法
 
-Run the skill via the bundled script.
+通过捆绑的脚本运行该技能。
 
 ```bash
 node scripts/nextcloud.js <command> <subcommand> [options]
 ```
 
-## Commands
+## 命令
 
-### Notes
+### 笔记
 - `notes list`
 - `notes get --id <id>`
 - `notes create --title <t> --content <c> [--category <cat>]`
 - `notes edit --id <id> [--title <t>] [--content <c>] [--category <cat>]`
 - `notes delete --id <id>`
 
-### Tasks
+### 任务
 - `tasks list [--calendar <c>]`
 - `tasks create --title <t> [--calendar <c>] [--due <d>] [--priority <p>] [--description <d>]`
 - `tasks edit --uid <u> [--calendar <c>] [--title <t>] [--due <d>] [--priority <p>] [--description <d>]`
 - `tasks delete --uid <u> [--calendar <c>]`
 - `tasks complete --uid <u> [--calendar <c>]`
 
-### Calendar Events
-- `calendar list [--from <iso>] [--to <iso>]` (Defaults to next 7 days)
+### 日历事件
+- `calendar list [--from <iso>] [--to <iso>]`（默认为接下来的 7 天）
 - `calendar create --summary <s> --start <iso> --end <iso> [--calendar <c>] [--description <d>]`
 - `calendar edit --uid <u> [--calendar <c>] [--summary <s>] [--start <iso>] [--end <iso>] [--description <d>]`
 - `calendar delete --uid <u> [--calendar <c>]`
 
-### Calendars (list available calendars)
+### 日历（列出可用日历）
 - `calendars list [--type <tasks|events>]`
 
-### Files
+### 文件
 - `files list [--path <path>]`
 - `files search --query <q>`
-- `files get --path <path>` (download file content)
+- `files get --path <path>`（下载文件内容）
 - `files upload --path <path> --content <content>`
 - `files delete --path <path>`
 
-### Contacts
+### 联系人
 - `contacts list [--addressbook <ab>]`
 - `contacts get --uid <u> [--addressbook <ab>]`
 - `contacts search --query <q> [--addressbook <ab>]`
@@ -88,14 +88,14 @@ node scripts/nextcloud.js <command> <subcommand> [options]
 - `contacts edit --uid <u> [--addressbook <ab>] [--name <n>] [--email <e>] [--phone <p>] [--organization <o>] [--title <t>] [--note <n>]`
 - `contacts delete --uid <u> [--addressbook <ab>]`
 
-### Address Books (list available address books)
+### 地址簿（列出可用地址簿）
 - `addressbooks list`
 
-## Output Format
+## 输出格式
 
-All outputs are JSON formatted.
+所有输出均为 JSON 格式。
 
-### Tasks List Output
+### 任务列表输出
 ```json
 {
   "status": "success",
@@ -111,10 +111,10 @@ All outputs are JSON formatted.
   ]
 }
 ```
-- `due`: CalDAV format date (YYYYMMDDTHHmmssZ) or null
-- `priority`: 0-9 (0 = undefined, 1 = highest, 9 = lowest) or null
+- `due`：CalDAV 格式的日期（YYYYMMDDTHHmmssZ）或空值
+- `priority`：0-9（0 = 未定义，1 = 最高优先级，9 = 最低优先级）或空值
 
-### Calendar Events List Output
+### 日历事件列表输出
 ```json
 {
   "status": "success",
@@ -130,7 +130,7 @@ All outputs are JSON formatted.
 }
 ```
 
-### Contacts List Output
+### 联系人列表输出
 ```json
 {
   "status": "success",
@@ -149,11 +149,11 @@ All outputs are JSON formatted.
   ]
 }
 ```
-- `phones`: Array of phone numbers or null
-- `emails`: Array of email addresses or null
-- `name`: Structured name in vCard format (Last;First;Middle;Prefix;Suffix)
+- `phones`：电话号码数组或空值
+- `emails`：电子邮件地址数组或空值
+- `name`：vCard 格式的结构化姓名（Last;First;Middle;Prefix;Suffix）
 
-### General Format
+### 通用格式
 ```json
 {
   "status": "success",
@@ -161,7 +161,7 @@ All outputs are JSON formatted.
 }
 ```
 
-or
+或
 
 ```json
 {
@@ -170,75 +170,69 @@ or
 }
 ```
 
-## Agent Behavior: Default Calendar Selection
+## 代理行为：默认日历选择
 
-When creating tasks or calendar events, if the user does not specify a calendar:
+在创建任务或日历事件时，如果用户未指定日历：
 
-1. **First time (no default set):**
-   - Run `calendars list --type tasks` (for tasks) or `calendars list --type events` (for events)
-   - Ask the user which calendar to use from the list
-   - Ask if they want to set it as the default for future operations
-   - Remember their choice in memory
+1. **首次使用时（未设置默认日历）：**
+   - 运行 `calendars list --type tasks`（针对任务）或 `calendars list --type events`（针对事件）
+   - 从列表中询问用户选择使用哪个日历
+   - 询问用户是否希望将其设置为未来操作的默认日历
+   - 将用户的选择存储在内存中
 
-2. **If user sets a default:**
-   - Remember `default_task_calendar` and/or `default_event_calendar`
-   - Use automatically for subsequent operations without asking
+2. **如果用户设置了默认日历：**
+   - 记录 `default_task_calendar` 和/或 `default_event_calendar`
+   - 在后续操作中自动使用该日历，无需再次询问
 
-3. **If user declines to set a default:**
-   - Ask again next time they create a task/event without specifying a calendar
+3. **如果用户拒绝设置默认日历：**
+   - 在下次创建任务/事件时再次询问
 
-4. **User can always override:**
-   - Explicitly specifying `--calendar` always takes precedence over the default
+4. **用户可以随时覆盖设置：**
+   - 显式指定 `--calendar` 的优先级始终高于默认设置
 
-### Memory Keys
-- `default_task_calendar`: Default calendar name for tasks (VTODO)
-- `default_event_calendar`: Default calendar name for events (VEVENT)
+## 内存键
+- `default_task_calendar`：任务的默认日历名称（VTODO）
+- `default_event_calendar`：事件的默认日历名称（VEVENT）
 
-## Agent Behavior: Default Address Book Selection
+## 代理行为：默认地址簿选择
 
-When creating contacts, if the user does not specify an address book:
+在创建联系人时，如果用户未指定地址簿：
 
-1. **First time (no default set):**
-   - Run `addressbooks list`
-   - Ask the user which address book to use from the list
-   - Ask if they want to set it as the default for future operations
-   - Remember their choice in memory
+1. **首次使用时（未设置默认地址簿）：**
+   - 运行 `addressbooks list`
+   - 从列表中询问用户选择使用哪个地址簿
+   - 询问用户是否希望将其设置为未来操作的默认地址簿
+   - 将用户的选择存储在内存中
 
-2. **If user sets a default:**
-   - Remember `default_addressbook`
-   - Use automatically for subsequent operations without asking
+2. **如果用户设置了默认地址簿：**
+   - 记录 `default_addressbook`
+   - 在后续操作中自动使用该地址簿，无需再次询问
 
-3. **If user declines to set a default:**
-   - Ask again next time they create a contact without specifying an address book
+3. **用户可以随时覆盖设置：**
+   - 显式指定 `--addressbook` 的优先级始终高于默认设置
 
-4. **User can always override:**
-   - Explicitly specifying `--addressbook` always takes precedence over the default
+## 代理行为：信息展示
 
-### Memory Keys
-- `default_addressbook`: Default address book name for contacts
+在向用户展示数据时，采用易于阅读的格式。输出可能发送到消息平台（如 Telegram、WhatsApp 等），这些平台可能不支持 Markdown 格式，因此请避免使用 Markdown 格式。
 
-## Agent Behavior: Presenting Information
+### 通用指南
+- 使用表情符号使输出更易于阅读
+- **禁止** 使用 Markdown 格式（如粗体、斜体、代码块、表格或带有 `-` 或 `*` 的列表）
+- 使用纯文本并添加换行符来组织内容
+- 将技术格式（如 CalDAV 日期）转换为人类可读的格式
+- 逻辑地分组相关项目
 
-When displaying data to the user, format it in a readable way. Output may be sent to messaging platforms (Telegram, WhatsApp, etc.) where markdown does not render, so avoid markdown formatting.
+### 表情符号参考
+任务：✅（已完成），⬜（待处理），🔴（高优先级），🟡（中等优先级），🟢（低优先级）
+日历：📅（事件），⏰（时间），📍（地点）
+笔记：📝（笔记），📁（类别）
+文件：📄（文件），📂（文件夹），💾（大小）
+联系人：👤（联系人），📧（电子邮件），📱（电话），🏢（组织）
+状态：✨（创建），✏️（更新），🗑️（删除），❌（错误）
 
-### General Guidelines
-- Use emojis to make output scannable and friendly
-- Do NOT use markdown formatting (no **bold**, *italic*, `code`, tables, or lists with - or *)
-- Use plain text with line breaks for structure
-- Convert technical formats (like CalDAV dates) to human-readable formats
-- Group related items logically
+### 示例展示
 
-### Emoji Reference
-Tasks: ✅ (completed), ⬜ (pending), 🔴 (high priority), 🟡 (medium), 🟢 (low)
-Calendar: 📅 (event), ⏰ (time), 📍 (location)
-Notes: 📝 (note), 📁 (category)
-Files: 📄 (file), 📂 (folder), 💾 (size)
-Contacts: 👤 (person), 📧 (email), 📱 (phone), 🏢 (organization)
-Status: ✨ (created), ✏️ (updated), 🗑️ (deleted), ❌ (error)
-
-### Example Presentations
-
-Tasks:
+任务：
 ```
 📋 Your Tasks
 
@@ -247,7 +241,7 @@ Tasks:
 ✅ Send email to client
 ```
 
-Calendar Events:
+日历事件：
 ```
 📅 Upcoming Events
 
@@ -259,7 +253,7 @@ Calendar Events:
    ⏰ Wed, Feb 5 • 2:00 PM - 3:00 PM
 ```
 
-Contacts:
+联系人：
 ```
 👤 John Doe
    📧 john@example.com
@@ -267,7 +261,7 @@ Contacts:
    🏢 ACME Inc — Developer
 ```
 
-Files:
+文件：
 ```
 📂 Documents/
    📄 report.pdf (2.3 MB)
@@ -275,7 +269,8 @@ Files:
    📂 Archive/
 ```
 
-### Date/Time Formatting
-Convert CalDAV format 20260205T100000Z to readable format like Wed, Feb 5 • 10:00 AM
-Show relative dates when helpful: "Tomorrow", "Next Monday", "In 3 days"
-Use the user's local timezone when possible
+### 日期/时间格式
+
+将 CalDAV 格式 `20260205T100000Z` 转换为可读格式，例如：Wed, Feb 5 • 10:00 AM
+在适当的情况下显示相对日期，如 “Tomorrow”（明天）、”Next Monday”（下周一）、”In 3 days”（3 天后）
+尽可能使用用户的本地时区

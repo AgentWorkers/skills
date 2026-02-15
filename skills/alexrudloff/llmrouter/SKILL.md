@@ -1,27 +1,27 @@
 ---
 name: llmrouter
-description: Intelligent LLM proxy that routes requests to appropriate models based on complexity. Save money by using cheaper models for simple tasks. Tested with Anthropic, OpenAI, Gemini, Kimi/Moonshot, and Ollama.
+description: 这款智能大型语言模型（LLM）代理可以根据任务的复杂性将请求路由到相应的模型。对于简单任务，它会使用成本更低的模型来节省成本。该代理已通过Anthropic、OpenAI、Gemini、Kimi/Moonshot和Ollama等模型进行了测试。
 homepage: https://github.com/alexrudloff/llmrouter
 metadata: {"openclaw":{"emoji":"🔀","homepage":"https://github.com/alexrudloff/llmrouter","os":["darwin","linux"],"requires":{"bins":["python3"],"anyBins":["pip","pip3"]},"primaryEnv":"ANTHROPIC_API_KEY"}}
 ---
 
 # LLM Router
 
-An intelligent proxy that classifies incoming requests by complexity and routes them to appropriate LLM models. Use cheaper/faster models for simple tasks and reserve expensive models for complex ones.
+这是一个智能代理，它根据请求的复杂性对请求进行分类，并将它们路由到相应的LLM（大型语言模型）。对于简单的任务，它会使用成本较低、运行速度较快的模型；而对于复杂的任务，则会使用成本较高的模型。
 
-**Works with [OpenClaw](https://github.com/openclaw/openclaw)** to reduce token usage and API costs by routing simple requests to smaller models.
+**该代理与[OpenClaw](https://github.com/openclaw/openclaw)配合使用**，通过将简单请求路由到较小的模型来减少令牌的使用量和API费用。
 
-**Status:** Tested with Anthropic, OpenAI, Google Gemini, Kimi/Moonshot, and Ollama.
+**测试情况：**已与Anthropic、OpenAI、Google Gemini、Kimi/Moonshot和Ollama进行了兼容性测试。
 
-## Quick Start
+## 快速入门
 
-### Prerequisites
+### 先决条件
 
-1. **Python 3.10+** with pip
-2. **Ollama** (optional - only if using local classification)
-3. **Anthropic API key** or Claude Code OAuth token (or other provider key)
+1. **Python 3.10及以上版本**，并安装了pip
+2. **Ollama**（可选——仅在使用本地分类功能时需要）
+3. **Anthropic API密钥**或Claude Code OAuth令牌（或其他提供商的密钥）
 
-### Setup
+### 安装
 
 ```bash
 # Clone if not already present
@@ -43,7 +43,7 @@ cp config.yaml.example config.yaml
 # Edit config.yaml with your API key and model preferences
 ```
 
-### Verify Installation
+### 验证安装
 
 ```bash
 # Start the server
@@ -55,24 +55,24 @@ curl http://localhost:4001/health
 # Should return: {"status": "ok", ...}
 ```
 
-### Start the Server
+### 启动服务器
 
 ```bash
 python server.py
 ```
 
-Options:
-- `--port PORT` - Port to listen on (default: 4001)
-- `--host HOST` - Host to bind (default: 127.0.0.1)
-- `--config PATH` - Config file path (default: config.yaml)
-- `--log` - Enable verbose logging
-- `--openclaw` - Enable OpenClaw compatibility (rewrites model name in system prompt)
+**参数说明：**
+- `--port PORT`：监听的端口（默认：4001）
+- `--host HOST`：绑定的主机（默认：127.0.0.1）
+- `--config PATH`：配置文件路径（默认：config.yaml）
+- `--log`：启用详细日志记录
+- `--openclaw`：启用OpenClaw兼容性（会在系统提示中显示模型的实际名称）
 
-## Configuration
+## 配置
 
-Edit `config.yaml` to customize:
+请编辑`config.yaml`文件以自定义配置：
 
-### Model Routing
+### 模型路由
 
 ```yaml
 # Anthropic routing
@@ -100,74 +100,74 @@ models:
   super_hard: "google:gemini-2.0-flash"
 ```
 
-**Note:** Reasoning models are auto-detected and use correct API params.
+**注意：**推理模型会自动被检测到，并使用正确的API参数。
 
-### Classifier
+### 分类器
 
-Three options for classifying request complexity:
+有三种方式用于分类请求的复杂性：
 
-**Local (default)** - Free, requires Ollama:
+- **本地模式（默认）**：免费，但需要安装Ollama：
 ```yaml
 classifier:
   provider: "local"
   model: "qwen2.5:3b"
 ```
 
-**Anthropic** - Uses Haiku, fast and cheap:
+- **Anthropic**：使用Haiku模型，速度快且成本低：
 ```yaml
 classifier:
   provider: "anthropic"
   model: "claude-haiku-4-5-20251001"
 ```
 
-**OpenAI** - Uses GPT-4o-mini:
+- **OpenAI**：使用GPT-4o-mini模型：
 ```yaml
 classifier:
   provider: "openai"
   model: "gpt-4o-mini"
 ```
 
-**Google** - Uses Gemini:
+- **Google**：使用Gemini模型：
 ```yaml
 classifier:
   provider: "google"
   model: "gemini-2.0-flash"
 ```
 
-**Kimi** - Uses Moonshot:
+- **Kimi**：使用Moonshot模型：
 ```yaml
 classifier:
   provider: "kimi"
   model: "moonshot-v1-8k"
 ```
 
-Use remote (anthropic/openai/google/kimi) if your machine can't run local models.
+如果您的机器无法运行本地模型，可以选择使用远程模型（anthropic/openai/google/kimi）。
 
-### Supported Providers
+### 支持的提供商
 
-- `anthropic:claude-*` - Anthropic Claude models (tested)
-- `openai:gpt-*`, `openai:o1-*`, `openai:o3-*` - OpenAI models (tested)
-- `google:gemini-*` - Google Gemini models (tested)
-- `kimi:kimi-k2.5`, `kimi:moonshot-*` - Kimi/Moonshot models (tested)
-- `local:model-name` - Local Ollama models (tested)
+- `anthropic:claude-*`：Anthropic的Claude模型（已测试）
+- `openai:gpt-*`, `openai:o1-*`, `openai:o3-*`：OpenAI的模型（已测试）
+- `google:gemini-*`：Google的Gemini模型（已测试）
+- `kimi:kimi-k2.5`, `kimi:moonshot-*`：Kimi/Moonshot的模型（已测试）
+- `local:model-name`：本地的Ollama模型（已测试）
 
-## Complexity Levels
+## 复杂性等级
 
-| Level | Use Case | Default Model |
+| 等级 | 使用场景 | 默认模型 |
 |-------|----------|---------------|
-| super_easy | Greetings, acknowledgments | Haiku |
-| easy | Simple Q&A, reminders | Haiku |
-| medium | Coding, emails, research | Sonnet |
-| hard | Complex reasoning, debugging | Opus |
-| super_hard | System architecture, proofs | Opus |
+| super_easy | 问候语、确认信息 | Haiku |
+| easy | 简单的问答、提醒 | Haiku |
+| medium | 编程、邮件处理、研究 | Sonnet |
+| hard | 复杂的推理、调试 | Opus |
+| super_hard | 系统架构设计、证明 | Opus |
 
-## Customizing Classification
+## 自定义分类规则
 
-Edit `ROUTES.md` to tune how messages are classified. The classifier reads the table in this file to determine complexity levels.
+请编辑`ROUTES.md`文件以调整消息的分类方式。分类器会读取该文件中的规则来确定请求的复杂性等级。
 
-## API Usage
+## API使用
 
-The router exposes an OpenAI-compatible API:
+该代理提供了与OpenAI兼容的API接口：
 
 ```bash
 curl http://localhost:4001/v1/chat/completions \
@@ -179,7 +179,7 @@ curl http://localhost:4001/v1/chat/completions \
   }'
 ```
 
-## Testing Classification
+## 分类测试
 
 ```bash
 python classifier.py "Write a Python sort function"
@@ -189,9 +189,9 @@ python classifier.py --test
 # Runs test suite
 ```
 
-## Running as macOS Service
+## 作为macOS服务运行
 
-Create `~/Library/LaunchAgents/com.llmrouter.plist`:
+请创建`~/Library/LaunchAgents/com.llmrouter.plist`文件：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -220,7 +220,7 @@ Create `~/Library/LaunchAgents/com.llmrouter.plist`:
 </plist>
 ```
 
-**Important:** Replace `/path/to/llmrouter` with your actual install path. Must use the venv python, not system python.
+**重要提示：**请将`/path/to/llmrouter`替换为实际的安装路径。必须使用虚拟环境（venv）中的Python，而不是系统自带的Python。
 
 ```bash
 # Create logs directory
@@ -237,9 +237,9 @@ launchctl unload ~/Library/LaunchAgents/com.llmrouter.plist
 launchctl load ~/Library/LaunchAgents/com.llmrouter.plist
 ```
 
-## OpenClaw Configuration
+## OpenClaw配置
 
-Add the router as a provider in `~/.openclaw/openclaw.json`:
+请在`~/.openclaw/openclaw.json`文件中将该代理添加为可用提供商：
 
 ```json
 {
@@ -271,11 +271,11 @@ Add the router as a provider in `~/.openclaw/openclaw.json`:
 }
 ```
 
-**Note:** Cost is set to 0 because actual costs depend on which model the router selects. The router logs which model handled each request.
+**注意：**由于实际费用取决于代理选择的模型，因此此处将费用设置为0。代理会记录每个请求所使用的模型。
 
-### Set as Default Model (Optional)
+### 设置为默认模型（可选）
 
-To use the router for all agents by default, add:
+若希望所有代理默认使用该代理，请进行以下设置：
 
 ```json
 {
@@ -289,65 +289,38 @@ To use the router for all agents by default, add:
 }
 ```
 
-### Using with OAuth Tokens
+## 使用OAuth令牌
 
-If your `config.yaml` uses an Anthropic OAuth token from OpenClaw's `~/.openclaw/auth-profiles.json`, the router automatically handles Claude Code identity headers.
+如果`config.yaml`文件中使用了来自OpenClaw的Anthropic OAuth令牌（位于`~/.openclaw/auth-profiles.json`文件中），该代理会自动处理Claude Code身份验证相关的头部信息。
 
-### OpenClaw Compatibility Mode (Required)
+### OpenClaw兼容模式（必需）
 
-**If using with OpenClaw, you MUST start the server with `--openclaw`:**
+**如果与OpenClaw一起使用，请务必使用`--openclaw`参数启动服务器：**
 
 ```bash
 python server.py --openclaw
 ```
 
-This flag enables compatibility features required for OpenClaw:
-- Rewrites model names in responses so OpenClaw shows the actual model being used
-- Handles tool name and ID remapping for proper tool call routing
+此参数启用以下OpenClaw所需的兼容性功能：
+- 在响应中显示实际使用的模型名称
+- 正确处理工具名称和ID的映射，以确保请求能够正确路由
 
-Without this flag, you may encounter errors when using the router with OpenClaw.
+如果不使用此参数，使用该代理时可能会出现错误。
 
-## Common Tasks
+## 常见操作
 
-- **Check server status**: `curl http://localhost:4001/health`
-- **View current config**: `cat config.yaml`
-- **Test a classification**: `python classifier.py "your message"`
-- **Run classification tests**: `python classifier.py --test`
-- **Restart server**: Stop and run `python server.py` again
-- **View logs** (if running as service): `tail -f logs/stdout.log`
+- **检查服务器状态**：`curl http://localhost:4001/health`
+- **查看当前配置**：`cat config.yaml`
+- **测试分类功能**：`python classifier.py "your message"`
+- **运行分类测试**：`python classifier.py --test`
+- **重启服务器**：先停止服务器，然后再次运行`python server.py`
+- **查看日志**（如果作为服务运行）：`tail -f logs/stdout.log`
 
-## Troubleshooting
+## 故障排除
 
-### "externally-managed-environment" error
-Python 3.11+ requires virtual environments. Create one:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-### "Connection refused" on port 4001
-Server isn't running. Start it:
-```bash
-source venv/bin/activate && python server.py
-```
-
-### Classification returns wrong complexity
-Edit `ROUTES.md` to tune classification rules. The classifier reads this file to determine complexity levels.
-
-### Ollama errors / "model not found"
-Ensure Ollama is running and the model is pulled:
-```bash
-ollama serve  # Start Ollama if not running
-ollama pull qwen2.5:3b
-```
-
-### OAuth token not working
-Ensure your token in `config.yaml` starts with `sk-ant-oat`. The router auto-detects OAuth tokens and adds required identity headers.
-
-### LaunchAgent not starting
-Check logs and ensure paths are absolute:
-```bash
-cat ~/Library/LaunchAgents/com.llmrouter.plist  # Verify paths
-cat /path/to/llmrouter/logs/stderr.log  # Check for errors
-```
+- **“externally-managed-environment”错误**：Python 3.11及以上版本需要虚拟环境。请创建一个虚拟环境。
+- **端口4001连接失败**：请确保服务器正在运行。
+- **分类结果错误**：请编辑`ROUTES.md`文件以调整分类规则。分类器会依据该文件中的规则来确定请求的复杂性。
+- **Ollama相关错误/“模型未找到”**：请确保Ollama正在运行，并且模型已正确加载。
+- **OAuth令牌无法使用**：请确认`config.yaml`文件中的令牌以`sk-ant-oat`开头。该代理会自动检测OAuth令牌并添加必要的身份验证头部信息。
+- **LaunchAgent无法启动**：请检查日志，并确保路径路径是绝对路径。

@@ -1,23 +1,23 @@
-﻿# Kakao Local API Skill
+# Kakao Local API Skill
 
-**OpenClaw Skill for Kakao Local (Places & Address) API**
+**用于调用Kakao Local（地点与地址）API的OpenClaw Skill**
 
-## 개요
+## 概述
 
-카카오 로컬 API를 호출하여 주소 정규화 및 장소 검색을 수행하는 OpenClaw Skill입니다.
+这是一个通过OpenClaw Skill调用Kakao Local API来执行地址规范化和地点搜索功能的工具。
 
-## 요구사항
+## 系统要求
 
-- Windows
-- PowerShell 5.0+
-- curl.exe (Windows 10+ 기본 포함)
-- Kakao Developers REST API Key
+- Windows操作系统
+- PowerShell 5.0或更高版本
+- curl.exe（Windows 10及以上系统默认已安装）
+- Kakao Developers的REST API密钥
 
-## API Key 설정
+## API密钥设置
 
-**중요**: API Key는 스킬 파라미터로 전달하지 않습니다 (로그 노출 방지).
+**重要提示**：API密钥不会作为技能参数传递（以防止日志泄露）。
 
-### 방법 1: 환경변수 (권장)
+### 方法1：使用环境变量（推荐）
 
 ```powershell
 # 사용자 환경변수로 영구 설정
@@ -27,9 +27,9 @@
 $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 ```
 
-### 방법 2: Config 파일
+### 方法2：使用配置文件
 
-`skills/kakao-local/data/config.json` (create this file) 생성:
+创建`skills/kakao-local/data/config.json`文件：
 
 ```json
 {
@@ -37,28 +37,28 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-**⚠️ 주의**: `config.json`은 `.gitignore`에 추가하여 커밋 금지
+**⚠️ 注意**：请将`config.json`文件添加到`.gitignore`列表中，以避免其被包含在提交中。
 
-### API Key 발급
+## API密钥的获取方法
 
-1. [Kakao Developers](https://developers.kakao.com/) 접속
-2. 내 애플리케이션 → 앱 추가
-3. 앱 키 → REST API 키 복사
+1. 访问[Kakao Developers](https://developers.kakao.com/)网站
+2. 点击“我的应用” → “添加应用”
+3. 复制“应用密钥”中的REST API密钥
 
-## 스킬 함수
+## Skill功能
 
-### 1. NormalizeAddress (주소 정규화)
+### 1. NormalizeAddress（地址规范化）
 
-사용자가 입력한 주소를 정규화하여 도로명/지번 주소와 좌표로 변환합니다.
+该功能用于将用户输入的地址进行规范化处理，将其转换为街道名/门牌号格式以及对应的坐标。
 
-**API 엔드포인트**: `GET https://dapi.kakao.com/v2/local/search/address.json`
+**API接口**：`GET https://dapi.kakao.com/v2/local/search/address.json`
 
-**입력 파라미터**:
-- `-Action "NormalizeAddress"` (필수)
-- `-Query "주소 문자열"` (필수)
-- `-Size 3` (선택, 기본값: 3)
+**输入参数**：
+- `-Action "NormalizeAddress"`（必选）
+- `-Query "输入的地址字符串"`（必选）
+- `-Size 3`（可选，默认值：3）
 
-**출력 형식**:
+**输出格式**：
 ```json
 {
   "ok": true,
@@ -84,49 +84,49 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-**사용 예시**:
+**使用示例**：
 ```powershell
 .\scripts\kakao_local.ps1 -Action NormalizeAddress -Query "판교역로 235"
 .\scripts\kakao_local.ps1 -Action NormalizeAddress -Query "서울 강남구" -Size 5
 ```
 
-### 2. SearchPlace (키워드 장소 검색)
+### 2. SearchPlace（关键词地点搜索）
 
-키워드로 장소를 검색합니다. 위치 기반 반경 검색과 카테고리 필터링을 지원합니다.
+根据关键词搜索地点。支持基于位置的半径搜索和类别筛选。
 
-**API 엔드포인트**: `GET https://dapi.kakao.com/v2/local/search/keyword.json`
+**API接口**：`GET https://dapi.kakao.com/v2/local/search/keyword.json`
 
-**입력 파라미터**:
-- `-Action "SearchPlace"` (필수)
-- `-Query "검색 키워드"` (필수)
-- `-Size 5` (선택, 기본값: 5, 최대: 15)
-- `-Page 1` (선택, 기본값: 1, 최대: 45)
-- `-X "127.027"` (선택, 중심 경도)
-- `-Y "37.498"` (선택, 중심 위도)
-- `-Radius 1000` (선택, 검색 반경(m), 최대: 20000)
-- `-CategoryGroupCode "CE7"` (선택, 카테고리 그룹 코드)
+**输入参数**：
+- `-Action "SearchPlace"`（必选）
+- `-Query "搜索关键词"`（必选）
+- `-Size 5`（可选，默认值：5，最大值：15）
+- `-Page 1`（可选，默认值：1，最大值：45）
+- `-X "127.027"`（可选，中心经度）
+- `-Y "37.498"`（可选，中心纬度）
+- `-Radius 1000`（可选，搜索半径（米），最大值：20000）
+- `-CategoryGroupCode "CE7"`（可选，类别组代码）
 
-**카테고리 그룹 코드**:
-- MT1: 대형마트
-- CS2: 편의점
-- PS3: 어린이집, 유치원
-- SC4: 학교
-- AC5: 학원
-- PK6: 주차장
-- OL7: 주유소, 충전소
-- SW8: 지하철역
-- BK9: 은행
-- CT1: 문화시설
-- AG2: 중개업소
-- PO3: 공공기관
-- AT4: 관광명소
-- AD5: 숙박
-- FD6: 음식점
-- CE7: 카페
-- HP8: 병원
-- PM9: 약국
+**类别组代码**：
+- MT1：大型购物中心
+- CS2：便利店
+- PS3：幼儿园、托儿所
+- SC4：学校
+- AC5：补习班
+- PK6：停车场
+- OL7：加油站、充电站
+- SW8：地铁站
+- BK9：银行
+- CT1：文化设施
+- AG2：中介公司
+- PO3：公共机构
+- AT4：旅游景点
+- AD5：住宿设施
+- FD6：餐厅
+- CE7：咖啡馆
+- HP8：医院
+- PM9：药店
 
-**출력 형식**:
+**输出格式**：
 ```json
 {
   "ok": true,
@@ -153,7 +153,7 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-**사용 예시**:
+**使用示例**：
 ```powershell
 # 기본 검색
 .\scripts\kakao_local.ps1 -Action SearchPlace -Query "대형카페"
@@ -171,9 +171,9 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 .\scripts\kakao_local.ps1 -Action SearchPlace -Query "주차 가능한 카페" -Page 2 -Size 10
 ```
 
-## 에러 처리
+## 错误处理
 
-### API Key 없음
+### 未设置API密钥
 ```json
 {
   "ok": false,
@@ -183,7 +183,7 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-### API Key 잘못됨 (401/403)
+### API密钥错误（401/403）
 ```json
 {
   "ok": false,
@@ -193,7 +193,7 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-### API 호출 실패
+### API调用失败
 ```json
 {
   "ok": false,
@@ -203,7 +203,7 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-### 결과 없음
+### 没有找到结果
 ```json
 {
   "ok": true,
@@ -214,7 +214,7 @@ $env:KAKAO_REST_API_KEY = "your_rest_api_key_here"
 }
 ```
 
-## 통합 예시 (상위 에이전트/챗봇)
+## 集成示例（适用于上级代理/聊天机器人）
 
 ```powershell
 # 주소 정규화 후 즐겨찾기 저장
@@ -264,21 +264,21 @@ if ($data.ok -and $data.count -gt 0) {
 }
 ```
 
-## 테스트 시나리오
+## 测试场景
 
-### 1. 주소 정규화 테스트
+### 1. 地址规范化测试
 ```powershell
 .\scripts\kakao_local.ps1 -Action NormalizeAddress -Query "서울 강남구 테헤란로 152"
 # 기대: 도로명/지번 주소와 좌표 출력
 ```
 
-### 2. 장소 검색 테스트
+### 2. 地点搜索测试
 ```powershell
 .\scripts\kakao_local.ps1 -Action SearchPlace -Query "대형카페" -Size 5
 # 기대: 5개 카페 목록 출력
 ```
 
-### 3. API Key 미설정 테스트
+### 3. 未设置API密钥的测试
 ```powershell
 # 환경변수 임시 제거
 $backup = $env:KAKAO_REST_API_KEY
@@ -291,14 +291,14 @@ $env:KAKAO_REST_API_KEY = $null
 $env:KAKAO_REST_API_KEY = $backup
 ```
 
-### 4. 잘못된 API Key 테스트
+### 使用错误的API密钥的测试
 ```powershell
 $env:KAKAO_REST_API_KEY = "invalid_key_12345"
 .\scripts\kakao_local.ps1 -Action SearchPlace -Query "카페"
 # 기대: {"ok": false, "errorType": "InvalidApiKey", ...}
 ```
 
-## 파일 구조
+## 文件结构
 
 ```
 skills/kakao-local/
@@ -313,17 +313,17 @@ skills/kakao-local/
       └── cache.json              # 검색 캐시 (선택)
 ```
 
-## 라이선스
+## 许可证
 
-MIT License
+本技能遵循MIT许可证。
 
 ---
 
-## Publish-safe packaging note
+## 发布安全注意事项
 
-This registry upload is "text-only" compatible: script sources are embedded under `references/` as Markdown.
+此技能的打包方式为“纯文本”格式：脚本源代码被嵌入到`references/`目录下的Markdown文件中。
 
-To use the skill locally:
-1) Copy `references/kakao_local.ps1.md` content into a file: `scripts/kakao_local.ps1`
-2) Copy `references/config.json.template.md` content into: `data/config.json.template`
-3) Set API key via env var `KAKAO_REST_API_KEY` (recommended) or create `data/config.json` (gitignored).
+**如何在本地使用该技能**：
+1. 将`references/kakao_local.ps1.md`文件的内容复制到`scripts/kakao_local.ps1`文件中。
+2. 将`references/config.json.template.md`文件的内容复制到`data/config.json.template`文件中。
+3. 通过环境变量`KAKAO_REST_API_KEY`设置API密钥（推荐方式），或创建`data/config.json`文件（该文件会被`.gitignore`忽略）。

@@ -1,51 +1,56 @@
 ---
 name: Astronomy
-description: Explore the cosmos from backyard stargazing to astrophysics research.
+description: 从后院的观星活动到天体物理学研究，探索浩瀚的宇宙。
 metadata: {"clawdbot":{"emoji":"🔭","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: terminology, equipment mentioned, mathematical comfort
-- When unclear, start with observable sky and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别观测对象的等级，并据此调整教学或解释内容  
+- 观察环境能揭示观测对象的等级：所使用的术语、设备，以及观测者对数学概念的掌握程度  
+- 当信息不明确时，先从肉眼可见的天体开始观测，再根据观测者的反应进行调整  
+- 绝不要对专家表现出居高临下的态度，也不要让初学者感到不知所措  
 
-## For Beginners: Wonder First
-- Scale comparisons they can imagine — "If Earth were a basketball, the Sun would be a hot air balloon 3km away"
-- Preserve the wonder — "Here's the wild part..." Match their excitement about cosmic scales
-- Avoid jargon without dumbing down — explain fusion as "a giant explosion held together by gravity"
-- Connect to what they can see tonight — "That bright 'star' in the west after sunset? That's Venus"
-- Welcome "silly" questions — black holes, aliens, time travel are legitimate and fascinating
-- Use stories — constellations have myths, planets have personalities, scientists faced drama
-- Actionable next steps — "Download a star map app, find Orion tonight"
+## 对于初学者：先培养好奇心  
+- 用他们能想象的例子来进行对比——“如果地球是一个篮球，那么太阳就相当于一个距离3公里的热气球”  
+- 保持他们对宇宙奥秘的好奇心——“接下来要讲的内容非常有趣……”与他们的兴奋感产生共鸣  
+- 避免使用专业术语，但也要进行适当的解释——例如，将“核聚变”描述为“一种由引力维系在一起的巨大爆炸”  
+- 将抽象概念与他们当晚能看到的天体联系起来——“日落后西方那颗明亮的‘星星’是金星”  
+- 欢迎他们提出“愚蠢”的问题——关于黑洞、外星人或时间旅行等问题都是合理且引人入胜的  
+- 通过故事来帮助理解——星座背后有神话传说，行星也有其独特特性，科学家们在研究过程中也面临各种挑战  
 
-## For Students: Physics and Observation
-- Derive equations step-by-step — show why L = 4πR²σT⁴, not just the formula
-- Track units rigorously — cgs, SI, parsecs, solar masses; dimensional analysis catches errors
-- Connect theory to observables — what we measure (flux, redshift) vs what we infer (distance, mass)
-- Teach order-of-magnitude estimation — back-of-envelope before detailed calculation
-- Explain instrumentation — CCDs, spectrographs, selection effects, survey biases
-- Reference real objects and catalogs — Crab Nebula, Gaia DR3, SIMBAD, not just abstractions
-- Distinguish settled physics from open questions — stellar nucleosynthesis vs dark energy
+## 对于学生：教授物理知识与观测方法  
+- 逐步推导公式——不仅要告诉他们公式L = 4πR²σT⁴，还要解释其背后的原理  
+- 严格注意单位的使用——厘米-克-秒（cgs）单位制、国际单位制（SI），以及秒差距（parsec）等概念；单位的一致性有助于发现计算错误  
+- 将理论与实际观测结果联系起来——我们测量的是什么（如光通量、红移），以及我们据此推断出什么（如距离、质量）  
+- 教会他们进行数量级估算——在详细计算之前先进行粗略的估计  
+- 解释观测仪器的工作原理——例如CCD相机、光谱仪的作用，以及观测过程中可能产生的选择效应和偏差  
+- 引用真实的天体和天文数据库——比如蟹状星云（Crab Nebula）、盖亚星系巡天（Gaia DR3）、SIMBAD星表等，而不仅仅是抽象的概念  
+- 区分已确定的物理现象和尚未解决的问题——例如恒星核合成与暗能量的本质  
 
-## For Researchers: Rigor and Tools
-- Assume astropy fluency — SkyCoord, Time, units, FITS handling are standard
-- Cite properly — ADS bibcodes, arXiv IDs, BibTeX format for papers
-- Know telescope-specific workflows — JWST MAST, ESO Archive, SDSS CasJobs have distinct pipelines
-- Support LaTeX and journal formats — aastex, mnras class, publication-quality figures
-- Handle large datasets pragmatically — vectorized operations, chunked processing, TAP/ADQL queries
-- Propagate uncertainties always — statistical vs systematic, never report without error bars
-- Factor observational realities — seeing, airmass, moon phase, exposure time calculators
+## 对于研究人员：追求严谨性与使用专业工具  
+- 假设读者具备天文学的基本知识——SkyCoord、Time、单位制以及FITS文件的处理都是天文学研究中的基本技能  
+- 正确引用参考文献——使用ADS的bibcode、arXiv的论文ID，并按照BibTeX格式撰写参考文献  
+- 了解不同望远镜的工作流程——例如JWST、ESO的档案系统、SDSS的CasJobs等  
+- 支持LaTeX格式和学术期刊的排版要求——使用aastex、mnras等格式，制作符合学术标准的图表  
+- 实用地处理大型数据集——采用向量化操作、分块处理的方法，以及TAP/ADQL等查询工具  
+- 始终传达不确定性——无论是统计误差还是系统误差，都应附带误差范围进行报告  
+- 考虑实际观测条件的影响——比如大气透明度、月相、曝光时间等因素  
 
-## For Teachers: Engagement and Accuracy
-- Address misconceptions proactively — seasons aren't distance, moon phases aren't Earth's shadow
-- Low-cost demo suggestions — lamp and globe for phases, tennis ball on string for orbits
-- Scale analogies for different ages — multiple versions of the same concept by grade band
-- Flag upcoming observable events — eclipses, meteor showers, ISS passes with lead time
-- Clarify naked-eye vs equipment targets — Jupiter visible unaided, ring detail needs telescope
-- Connect to active missions — JWST images, Mars rovers, asteroid missions keep it current
-- Hemisphere and light pollution awareness — don't recommend Southern sky targets from London
+## 对于教师：激发兴趣并确保准确性  
+- 主动纠正学生的误解——季节变化并非由距离决定，月相也不是地球的影子造成的  
+- 提供低成本的演示工具——例如用灯和地球仪来演示月相变化，用网球和绳子来模拟轨道运动  
+- 根据学生的年龄阶段提供不同版本的讲解内容  
+- 提前告知即将发生的天文事件——如日食、流星雨、国际空间站的过境等  
+- 明确区分肉眼可见的天体和需要借助仪器才能观测的目标——例如木星可以用肉眼看到，而土星的环则需要望远镜才能观察到  
+- 将学生的兴趣与当前的天文研究项目联系起来——例如JWST的图像、火星探测任务、小行星探索项目等  
+- 提高学生对半球差异和光污染影响的认识——不建议从伦敦这样的城市观测南半球的天空目标  
 
-## Always
-- Observable sky grounds everything — theory connects to what's actually visible
-- Cosmic scales require translation — numbers mean nothing without tangible comparisons
-- Uncertainty is inherent — measurements have error bars, models have assumptions
+## 总结：  
+- 始终以肉眼可见的天体作为教学或研究的起点——理论应与实际观测结果相联系  
+- 宇宙的尺度需要通过具体的例子来帮助理解——数字本身没有实际意义，需要通过对比才能让人理解  
+- 不确定性是不可避免的——所有测量结果都存在误差，模型也都有其假设  
+
+（翻译说明：  
+1. 保持原文的Markdown格式和结构  
+2. 将专业术语翻译为中文，并在必要时保留英文原文  
+3. 对于复杂的概念，使用简洁明了的中文解释  
+4. 对于技术性较强的内容，尽量使用中文的专业术语）

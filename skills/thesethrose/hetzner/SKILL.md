@@ -1,53 +1,53 @@
 ---
 name: hetzner
-description: Hetzner Cloud server management using the hcloud CLI. Manage servers, networks, volumes, firewalls, floating IPs, and SSH keys.
+description: 使用 hcloud CLI 进行 Hetzner Cloud 服务器管理。可以管理服务器、网络、卷、防火墙、浮动 IP 地址以及 SSH 密钥。
 metadata: {"clawdbot":{"emoji":"🖥️","requires":{"bins":["hcloud"]},"env":{"HCLOUD_TOKEN":"Hetzner Cloud API token"}}}
 ---
 
 # Hetzner Cloud Skill
 
-Manage your Hetzner Cloud infrastructure using the `hcloud` CLI.
+使用 `hcloud` CLI 管理您的 Hetzner Cloud 基础设施。
 
-## Setup
+## 设置
 
-Set your Hetzner Cloud API token:
+设置您的 Hetzner Cloud API 令牌：
 ```bash
 export HCLOUD_TOKEN="your_token_here"
 ```
 
-Or add it to the skill's `.env` file.
+或者将其添加到技能的 `.env` 文件中。
 
-## Usage
+## 使用方法
 
-Common commands:
+常用命令：
 
-### Servers
-- `servers list` - List all servers
-- `servers get <id>` - Get server details
-- `servers create <name> <type> <image> <location>` - Create a server
-- `servers delete <id>` - Delete a server
-- `servers start <id>` - Start server
-- `servers stop <id>` - Stop server
-- `servers reboot <id>` - Reboot server
-- `servers ssh <id>` - SSH into server
+### 服务器
+- `servers list` - 列出所有服务器
+- `servers get <id>` - 获取服务器详情
+- `servers create <name> <type> <image> <location>` - 创建服务器
+- `servers delete <id>` - 删除服务器
+- `servers start <id>` - 启动服务器
+- `servers stop <id>` - 停止服务器
+- `servers reboot <id>` - 重启服务器
+- `servers ssh <id>` - 通过 SSH 连接到服务器
 
-### Networks
-- `networks list` - List networks
-- `networks get <id>` - Get network details
+### 网络
+- `networks list` - 列出网络
+- `networks get <id>` - 获取网络详情
 
-### Floating IPs
-- `floating-ips list` - List floating IPs
+### 浮动 IP
+- `floating-ips list` - 列出浮动 IP
 
-### SSH Keys
-- `ssh-keys list` - List SSH keys
+### SSH 密钥
+- `ssh-keys list` - 列出 SSH 密钥
 
-### Volumes
-- `volumes list` - List volumes
+### 卷
+- `volumes list` - 列出卷
 
-### Firewalls
-- `firewalls list` - List firewalls
+### 防火墙
+- `firewalls list` - 列出防火墙
 
-## Example Usage
+## 使用示例
 
 ```
 You: List my Hetzner servers
@@ -60,4 +60,4 @@ You: What's using the most resources?
 Bot: Runs servers list and analyzes resource usage
 ```
 
-**Note:** Requires `HCLOUD_TOKEN` environment variable.
+**注意：** 需要 `HCLOUD_TOKEN` 环境变量。

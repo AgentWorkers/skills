@@ -1,89 +1,89 @@
 ---
 name: copywriter
-description: "Write compelling UX copy, marketing content, and product messaging. Use when writing button labels, error messages, landing pages, emails, CTAs, empty states, tooltips, or any user-facing text."
+description: "撰写具有吸引力的用户体验（UX）文案、营销内容和产品宣传信息。这些内容可用于编写按钮标签、错误提示、登录页面、电子邮件、呼叫-to-action（CTA）按钮、空状态提示、工具提示，以及任何面向用户的文本。"
 license: Apache-2.0
 metadata:
   author: agentic-insights
   version: "1.1"
 ---
 
-# Copywriter
+# 撰写文案专家
 
-Write clear, compelling copy for products, marketing, and UX.
+负责为产品、营销和用户体验（UX）撰写清晰、有吸引力的文案。
 
-## Scope
+## 范围
 
-| Type | Examples |
+| 类型 | 示例 |
 |------|----------|
-| **UX Writing** | Buttons, errors, empty states, tooltips, forms |
-| **Marketing** | Landing pages, CTAs, feature descriptions |
-| **Product** | Announcements, release notes, onboarding |
-| **Email** | Welcome, transactional, campaigns |
+| **用户体验文案** | 按钮、错误提示、页面空白状态、工具提示、表单 |
+| **营销文案** | 登录页面、呼叫行动（CTA）内容、功能描述 |
+| **产品文案** | 公告、版本更新说明、用户入门指南 |
+| **电子邮件文案** | 欢迎邮件、交易相关邮件、营销活动邮件 |
 
-## Core Formulas
+## 核心写作原则
 
-### Buttons
-Verb + Noun → "Save Changes", "Start Free Trial" (not "Submit", "OK")
+### 按钮
+动词 + 名词 → “保存更改”（Save Changes）、“开始免费试用”（Start Free Trial）（而非“提交”或“确定”）
 
-### Errors
-What happened → Why → How to fix
+### 错误提示
+发生了什么 → 为什么会发生 → 如何解决
 ```
 "Please enter a valid email address"
 "Password must be at least 8 characters"
 ```
 
-### Empty States
-Headline → Explanation → Action
+### 页面空白状态
+标题 → 说明 → 用户操作建议
 ```
 "No results found" → "Try adjusting filters" → [Clear Filters]
 ```
 
-### CTAs
-Verb + Benefit + Remove friction
+### 呼叫行动（CTA）
+动词 + 好处 + 减少用户操作障碍
 ```
 "Start Free Trial" (not "Sign Up")
 "Get Started Free" (not "Learn More")
 ```
 
-### Headlines
+### 标题撰写
 ```
 "How to [goal] without [pain point]"
 "[Number] ways to [benefit]"
 "Get [outcome] in [timeframe]"
 ```
 
-## Voice & Tone
+## 语言风格与语气
 
-**Voice** (consistent):
-- Professional but friendly
-- Clear and concise
-- Helpful and supportive
+**语言风格**：
+- 专业且友好
+- 清晰简洁
+- 提供帮助和支持
 
-**Tone** (varies):
-| Context | Example |
+**语气**（根据情境调整）：
+| 情境 | 例子 |
 |---------|---------|
-| Success | "All set! Your changes are live." |
-| Error | "Something went wrong, but your data is safe." |
-| Urgency | "Action required: Suspicious login detected" |
+| 成功 | “一切准备就绪！您的更改已生效。” |
+| 错误 | “出现了一些问题，但您的数据是安全的。” |
+| 紧急情况 | “需要立即采取行动：检测到可疑登录尝试。” |
 
-## Power Words
+## 关键词汇
 
-| Category | Words |
+| 词汇类别 | 例词 |
 |----------|-------|
-| Urgency | Now, Today, Limited, Fast |
-| Value | Free, Save, Bonus, Extra |
-| Trust | Guaranteed, Proven, Secure |
-| Ease | Easy, Simple, Quick, Instant |
+| 紧急性 | 立即（Now）、今天（Today）、限时优惠（Limited）、快速（Fast） |
+| 价值 | 免费（Free）、节省（Save）、额外福利（Bonus） |
+| 信任感 | 有保障的（Guaranteed）、经过验证的（Proven）、安全的（Secure） |
+| 便捷性 | 简单易懂（Easy）、快速操作（Quick）、即时生效（Instant） |
 
-## Checklist
+## 检查清单
 
-- [ ] Clear? (12-year-old test)
-- [ ] Concise? (Remove unnecessary words)
-- [ ] Specific? (Numbers, examples)
-- [ ] Actionable? (What should user do?)
-- [ ] Scannable? (Headings, bullets)
+- [ ] 文案是否清晰易懂？（适用于12岁儿童的理解水平） |
+- [ ] 文案是否简洁？（删除不必要的词汇） |
+- [ ] 描述是否具体？（使用数字、实例进行说明） |
+- [ ] 文案是否具有可操作性？（明确用户应执行的步骤） |
+- [ ] 文案是否易于阅读？（使用标题和项目符号进行结构化）
 
-## References
+## 参考资料
 
-- [UX Patterns](references/ux-patterns.md) - Buttons, errors, forms, tooltips
-- [Marketing Copy](references/marketing-copy.md) - Landing pages, CTAs, emails
+- [用户体验设计模式](references/ux-patterns.md) – 按钮设计、错误提示处理、表单填写指南、工具提示编写 |
+- [营销文案写作指南](references/marketing-copy.md) – 登录页面设计、呼叫行动内容撰写、电子邮件模板 |

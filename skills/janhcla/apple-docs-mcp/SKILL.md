@@ -1,8 +1,8 @@
-# Apple Docs MCP Skill
+# Apple Docs MCP 技能
 
-This skill wraps the Apple Developer Documentation MCP server.
+此技能用于管理 Apple 开发者文档的 MCP 服务器。
 
-## Config
+## 配置
 ```json
 {
   "mcp": {

@@ -1,30 +1,30 @@
 ---
 slug: "warranty-tracker"
 display_name: "Warranty Tracker"
-description: "Track and manage construction warranties. Monitor expiration dates, claims, and manufacturer documentation."
+description: "跟踪和管理建筑保修信息。监控保修期限、索赔情况以及制造商提供的相关文档。"
 ---
 
-# Warranty Tracker
+# 保修跟踪器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Warranty management is often neglected:
-- Missing warranty documentation
-- Expired warranties untracked
-- Difficult to file claims
-- Scattered across multiple files
+### 问题描述
+保修管理常常被忽视：
+- 保修文件缺失
+- 保修期限已过但未得到跟踪
+- 提出索赔困难
+- 保修相关信息分散在多个文件中
 
-### Solution
-Centralized warranty tracking system that monitors expiration dates, stores documentation, and manages claims.
+### 解决方案
+建立一个集中式的保修跟踪系统，用于监控保修期限、存储相关文件并管理索赔流程。
 
-### Business Value
-- **Cost savings** - File claims before expiration
-- **Organization** - Central warranty repository
-- **Compliance** - Meet handover requirements
-- **Proactive** - Automatic expiration alerts
+### 商业价值
+- **成本节约**：在保修期限到期前及时提出索赔
+- **组织效率提升**：通过集中式的保修信息库进行管理
+- **合规性保障**：满足项目交接要求
+- **主动响应**：自动发送保修期限到期提醒
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -389,7 +389,7 @@ class WarrantyTracker:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date
@@ -417,16 +417,16 @@ expiring = tracker.get_expiring_warranties(90)
 print(f"Warranties expiring in 90 days: {len(expiring)}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Monthly Review
+### 1. 每月审核
 ```python
 # Get expiration report
 report = tracker.generate_expiration_report(months_ahead=3)
 print(report[['Item', 'End Date', 'Days Remaining']])
 ```
 
-### 2. File Claim
+### 2. 提出索赔
 ```python
 claim = tracker.file_claim(
     warranty_id="WRT-0001",
@@ -436,11 +436,11 @@ claim = tracker.file_claim(
 )
 ```
 
-### 3. Export for Handover
+### 3. 导出数据以供交接
 ```python
 tracker.export_to_excel("warranty_register.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 5 - Project Closeout
-- **Reference**: AIA Document G714
+## 参考资源
+- **DDC手册**：第5章 - 项目收尾流程
+- **参考文献**：AIA文档G714

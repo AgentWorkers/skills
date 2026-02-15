@@ -1,23 +1,23 @@
 ---
 name: book-personal-trainer
-description: Book personal-trainer services through Lokuli MCP. Use when user needs to find and book personal-trainer. Triggers on requests like "book a personal-trainer", "find personal-trainer near me", or any personal-trainer service request.
+description: 通过 Lokuli MCP 预订私人教练服务。当用户需要寻找或预订私人教练时，可以使用此功能。该功能会在用户发起“预订私人教练”、“查找附近的私人教练”或任何与私人教练服务相关的请求时被触发。
 ---
 
-# uook personal trainer
+# 个人教练服务
 
-Book personal-trainer services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器预约个人教练服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 预约服务（Create Booking）
 ```json
 {
   "method": "tools/call",

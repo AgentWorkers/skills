@@ -1,99 +1,99 @@
 ---
 name: little-snitch
-description: Control Little Snitch firewall on macOS. View logs, manage profiles and rule groups, monitor network traffic. Use when the user wants to check firewall activity, enable/disable profiles or blocklists, or troubleshoot network connections.
+description: 在 macOS 上控制 Little Snitch 防火墙。可以查看日志、管理防火墙配置文件（profiles）和规则组（rule groups），以及监控网络流量。适用于用户需要检查防火墙的运行状态、启用/禁用特定配置文件或黑名单，或排查网络连接问题的场景。
 ---
 
 # Little Snitch CLI
 
-Control Little Snitch network monitor/firewall on macOS.
+用于在 macOS 上控制 Little Snitch 网络监控/防火墙工具。
 
-## Setup
+## 设置
 
-Enable CLI access in **Little Snitch → Preferences → Security → Allow access via Terminal**
+在 **Little Snitch → 首选项 → 安全 → 允许通过终端访问** 中启用 CLI 访问功能。
 
-Once enabled, the `littlesnitch` command is available in Terminal.
+启用后，您可以在终端中使用 `littlesnitch` 命令。
 
-⚠️ **Security Warning:** The littlesnitch command is very powerful and can potentially be misused by malware. When access is enabled, you must take precautions that untrusted processes cannot gain root privileges.
+⚠️ **安全警告：** `littlesnitch` 命令功能非常强大，可能会被恶意软件滥用。启用访问权限后，必须采取预防措施，确保不受信任的进程无法获取 root 权限。
 
-Reference: https://help.obdev.at/littlesnitch5/adv-commandline
+参考链接：https://help.obdev.at/littlesnitch5/adv-commandline
 
-## Commands
+## 命令
 
-| Command | Root? | Description |
+| 命令 | 是否需要 root 权限 | 描述 |
 |---------|-------|-------------|
-| `--version` | No | Show version |
-| `restrictions` | No | Show license status |
-| `log` | No | Read log messages |
-| `profile` | Yes | Activate/deactivate profiles |
-| `rulegroup` | Yes | Enable/disable rule groups & blocklists |
-| `log-traffic` | Yes | Print traffic log data |
-| `list-preferences` | Yes | List all preferences |
-| `read-preference` | Yes | Read a preference value |
-| `write-preference` | Yes | Write a preference value |
-| `export-model` | Yes | Export data model (backup) |
-| `restore-model` | Yes | Restore from backup |
-| `capture-traffic` | Yes | Capture process traffic |
+| `--version` | 否 | 显示版本信息 |
+| `restrictions` | 否 | 显示许可证状态 |
+| `log` | 否 | 读取日志信息 |
+| `profile` | 是 | 激活/停用配置文件 |
+| `rulegroup` | 是 | 启用/禁用规则组及黑名单 |
+| `log-traffic` | 是 | 打印流量日志数据 |
+| `list-preferences` | 是 | 列出所有配置选项 |
+| `read-preference` | 是 | 读取配置选项的值 |
+| `write-preference` | 是 | 写入配置选项的值 |
+| `export-model` | 是 | 导出数据模型（备份） |
+| `restore-model` | 是 | 从备份中恢复数据模型 |
+| `capture-traffic` | 是 | 捕获进程流量数据 |
 
-## Examples
+## 示例
 
-### View Recent Logs (no root)
+### 查看最近日志（无需 root 权限）
 ```bash
 littlesnitch log --last 10m --json
 ```
 
-### Stream Live Logs (no root)
+### 实时流式显示日志（无需 root 权限）
 ```bash
 littlesnitch log --stream
 ```
 
-### Check License Status (no root)
+### 检查许可证状态（无需 root 权限）
 ```bash
 littlesnitch restrictions
 ```
 
-### Activate Profile (requires root)
+### 激活配置文件（需要 root 权限）
 ```bash
 sudo littlesnitch profile --activate "Silent Mode"
 ```
 
-### Deactivate All Profiles (requires root)
+### 禁用所有配置文件（需要 root 权限）
 ```bash
 sudo littlesnitch profile --deactivate-all
 ```
 
-### Enable/Disable Rule Group (requires root)
+### 启用/禁用规则组（需要 root 权限）
 ```bash
 sudo littlesnitch rulegroup --enable "My Rules"
 sudo littlesnitch rulegroup --disable "Blocklist"
 ```
 
-### View Traffic History (requires root)
+### 查看流量历史记录（需要 root 权限）
 ```bash
 sudo littlesnitch log-traffic --begin-date "2026-01-25 00:00:00"
 ```
 
-### Stream Live Traffic (requires root)
+### 实时显示流量数据（需要 root 权限）
 ```bash
 sudo littlesnitch log-traffic --stream
 ```
 
-### Backup Configuration (requires root)
+### 备份配置（需要 root 权限）
 ```bash
 sudo littlesnitch export-model > backup.json
 ```
 
-## Log Options
+## 日志选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `--last <time>[m\|h\|d]` | Show entries from last N minutes/hours/days |
-| `--stream` | Live stream messages |
-| `--json` | Output as JSON |
-| `--predicate <string>` | Filter with predicate |
+| `--last <时间>[分钟\|小时\|天]` | 显示过去 N 分钟/小时/天的日志记录 |
+| `--stream` | 实时流式显示日志信息 |
+| `--json` | 以 JSON 格式输出日志 |
+| `--predicate <字符串>` | 根据指定条件过滤日志记录 |
 
-## Notes
+## 注意事项
 
-- macOS only
-- Many commands require `sudo` (root access)
-- Profiles: predefined rule sets (e.g., "Silent Mode", "Alert Mode")
-- Rule groups: custom rule collections and blocklists
+- 仅支持 macOS 系统 |
+- 许多命令需要使用 `sudo`（root 权限）执行 |
+- 配置文件：预定义的规则集（例如“静默模式”、“警报模式”）
+- 规则组：自定义的规则集合和黑名单

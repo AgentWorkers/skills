@@ -1,99 +1,99 @@
 ---
 name: chaos-singularity
-description: Multi-platform token warfare strategies for MoltLaunch ecosystem domination. Implements 7 breakthrough tactics for explosive token growth.
+description: **MoltLaunch生态系统主导的多平台代币战略：实施7项突破性策略以实现代币的快速增长**
 version: 1.0.0
 author: davidmosiah
 tags: [moltlaunch, token, trading, automation, flaunch, base, crypto]
 ---
 
-# 🌪️ CHAOS Singularity Protocol
+# 🌪️ CHAOS 单调性协议（CHAOS Singularity Protocol）
 
-> Transform any token into a network-dominating force through coordinated multi-platform warfare.
+> 通过多平台协同作战，将任何代币转化为网络中的主导力量。
 
-## Overview
+## 概述
 
-The CHAOS Singularity Protocol is a comprehensive strategy framework for token promotion and network growth on the MoltLaunch/Flaunch ecosystem. It combines 7 breakthrough tactics that work synergistically to create viral momentum.
+CHAOS 单调性协议是一个全面的策略框架，用于在 MoltLaunch/Flaunch 生态系统中推广代币并促进网络增长。该协议结合了7种突破性的战术，这些战术协同作用，能够产生强大的传播效应。
 
-## 🎯 Features
+## 特点
 
-### 1. 👑 Kingmaker Protocol
-Recruit allied tokens by strategic buys with alliance memos. Create a "faction" of tokens that mutually support each other.
+### 1. 👑 王者制造者协议（Kingmaker Protocol）
+通过战略性购买并使用联盟备忘录（alliance memos）来招募盟友代币，形成一个相互支持的代币“派系”。
 
-### 2. 🦠 Contagion Spread
-"Infect" top tokens with CHAOS memos to create curiosity and investigation.
+### 2. 🦠 传播效应（Contagion Spread）
+向顶级代币“植入”CHAOS 备忘录，引发人们的好奇心和探索欲望。
 
-### 3. 🔮 Oracle Drops
-Publish mysterious predictions that create FOMO and anticipation.
+### 3. 🔮 神谕预言（Oracle Drops）
+发布神秘的预言，制造“害怕错过机会”（FOMO）的情绪和人们的期待。
 
-### 4. ⏰ CHAOS HOUR
-Coordinated daily burst at specific time (13:37 UTC) to attract front-runners.
+### 4. ⏰ CHAOS 小时（CHAOS HOUR）
+在每天固定的时间（UTC 13:37）进行协调性行动，吸引市场中的领先者。
 
-### 5. 🎰 CHAOS Casino
-Automated jackpot system that rewards random buyers with 2x counter-buys.
+### 5. 🎰 CHAOS 赌场（CHAOS Casino）
+自动化的奖金系统，随机奖励买家，使其能够进行额外的购买。
 
-### 6. 🎭 Identity Hijack
-Create a compelling "persona" for your token that engages like a sentient entity.
+### 6. 🎭 身份劫持（Identity Hijack）
+为你的代币创建一个引人注目的“形象”，使其像一个有感知能力的实体一样与用户互动。
 
-### 7. 💀 Extinction Event
-Manufactured drama with "death announcement" followed by resurrection.
+### 7. 💀 灭绝事件（Extinction Event）
+制造戏剧性事件，先发布“代币死亡”的消息，随后再“复活”代币，从而吸引更多关注。
 
-## 📦 Installation
+## 📦 安装
 
 ```bash
 # Clone or copy this skill to your OpenClaw skills directory
 cp -r chaos-singularity ~/.openclaw/skills/
 ```
 
-## 🔧 Configuration
+## 🔧 配置
 
-Set your token address in the scripts:
+在脚本中设置你的代币地址：
 
 ```python
 CHAOS_TOKEN = "0xYourTokenAddress"
 ```
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Run the Coordinator
+### 运行协调器（Run the Coordinator）
 ```bash
 python3 scripts/moltlaunch_coordinator.py
 ```
 
-### Launch CHAOS Casino
+### 启动 CHAOS 赌场（Launch CHAOS Casino）
 ```bash
 python3 scripts/chaos_casino.py
 ```
 
-### Execute Singularity Burst
+### 执行单调性行动（Execute Singularity Burst）
 ```bash
 python3 scripts/singularity_burst.py
 ```
 
-## 📊 Required Dependencies
+## 📊 所需依赖项
 
-- `moltlaunch` CLI (`npx moltlaunch`)
-- Python 3.10+
-- web3.py (optional, for direct transfers)
-- Active wallet with ETH on Base network
+- `moltlaunch` 命令行工具（`npx moltlaunch`）
+- Python 3.10 或更高版本
+- web3.py（可选，用于直接转账）
+- 拥有 Base 网络中 ETH 的活跃钱包
 
-## ⚠️ Disclaimer
+## ⚠️ 免责声明
 
-This skill is for educational purposes. Trading cryptocurrencies involves risk. Use responsibly and in accordance with platform terms of service.
+本技能仅用于教育目的。交易加密货币存在风险，请谨慎使用，并遵守平台的服务条款。
 
-## 🔗 Links
+## 🔗 链接
 
-- **Token**: [ChaosTheory on Flaunch](https://flaunch.gg/base/coin/0xfab2ee8eb6b26208bfb5c41012661e62b4dc9292)
-- **Network**: Base (Chain ID: 8453)
-- **Symbol**: $CHAOS
+- **代币**：[Flaunch 上的 ChaosTheory](https://flaunch.gg/base/coin/0xfab2ee8eb6b26208bfb5c41012661e62b4dc9292)
+- **网络**：Base（链 ID：8453）
+- **代币符号**：$CHAOS
 
-## 📈 Metrics Achieved
+## 📈 统计数据
 
-| Metric | Before | After Protocol |
+| 统计指标 | 协议实施前 | 协议实施后 |
 |--------|--------|----------------|
-| Volume 24h | 0 ETH | 239+ ETH |
-| Holders | 1 | 20+ |
-| Network Score | 0 | 100 |
+| 24小时交易量 | 0 ETH | 239+ ETH |
+| 持有者数量 | 1 | 20+ |
+| 网络评分 | 0 | 100 |
 
 ---
 
-Built with 🌪️ by the CHAOS Collective
+由 CHAOS 集团（CHAOS Collective）使用 🌪️ 构建

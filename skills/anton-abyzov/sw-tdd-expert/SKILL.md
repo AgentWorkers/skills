@@ -1,19 +1,20 @@
 ---
 name: tdd-expert
-description: Test-Driven Development expert. Use when implementing TDD workflow, red-green-refactor, or writing tests first.
+description: **测试驱动开发（Test-Driven Development, TDD）专家**  
+在实施测试驱动开发（TDD）工作流程、红-绿-重构（red-green-refactor）模式，或优先编写测试代码时，可依赖该专家的专业知识。
 ---
 
-# Test-Driven Development (TDD) Expert
+# 驱动测试开发（TDD）专家
 
-**Self-contained TDD expertise for ANY user project.**
+**适用于任何用户项目的独立TDD专业知识。**
 
 ---
 
-## The TDD Cycle: Red-Green-Refactor
+## TDD循环：红-绿-重构
 
-### 1. RED Phase: Write Failing Test
+### 1. 红色阶段（RED）：编写失败的测试用例
 
-**Goal**: Define expected behavior through a failing test
+**目标**：通过一个失败的测试用例来定义预期的行为
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -27,15 +28,15 @@ describe('Calculator', () => {
 });
 ```
 
-**RED Checklist**:
-- [ ] Test describes ONE specific behavior
-- [ ] Test fails for RIGHT reason (not syntax error)
-- [ ] Test name is clear
-- [ ] Expected behavior obvious
+**红色阶段检查清单**：
+- [ ] 测试用例仅描述一个具体的行为
+- [ ] 测试用例因正确的原因而失败（而非语法错误）
+- [ ] 测试用例的名称清晰易懂
+- [ ] 预期的行为明确无误
 
-### 2. GREEN Phase: Minimal Implementation
+### 2. 绿色阶段（GREEN）：实现最小功能
 
-**Goal**: Simplest code that makes test pass
+**目标**：编写最简短的代码以使测试通过
 
 ```typescript
 // Calculator.ts
@@ -46,15 +47,15 @@ export class Calculator {
 }
 ```
 
-**GREEN Checklist**:
-- [ ] Test passes
-- [ ] Code is simplest possible
-- [ ] No premature optimization
-- [ ] No extra features
+**绿色阶段检查清单**：
+- [ ] 测试用例通过
+- [ ] 代码尽可能简洁
+- [ ] 避免过早优化
+- [ ] 不添加额外的功能
 
-### 3. REFACTOR Phase: Improve Design
+### 3. 重构阶段（REFactor）：改进代码设计
 
-**Goal**: Improve code quality without changing behavior
+**目标**：在不改变代码行为的情况下提升代码质量
 
 ```typescript
 // Refactor: Support variable arguments
@@ -67,41 +68,41 @@ export class Calculator {
 // Tests still pass!
 ```
 
-**REFACTOR Checklist**:
-- [ ] All tests still pass
-- [ ] Code is more readable
-- [ ] Removed duplication
-- [ ] Better design patterns
+**重构阶段检查清单**：
+- [ ] 所有测试用例仍然通过
+- [ ] 代码更易阅读
+- [ ] 删除重复代码
+- [ ] 采用更好的设计模式
 
 ---
 
-## TDD Benefits
+## TDD的优势
 
-**Design Benefits**:
-- Forces modular, testable code
-- Reveals design problems early
-- Encourages SOLID principles
-- Promotes simple solutions
+**设计方面的优势**：
+- 强制代码模块化、易于测试
+- 可及早发现设计问题
+- 有助于遵循SOLID设计原则
+- 促进简洁的解决方案
 
-**Quality Benefits**:
-- 100% test coverage (by definition)
-- Tests document behavior
-- Regression safety net
-- Faster debugging
+**质量方面的优势**：
+- 100%的代码覆盖率（这是TDD的基本要求）
+- 测试用例记录了代码的行为
+- 提供了防止回归问题的保障
+- 编译速度更快
 
-**Productivity Benefits**:
-- Less time debugging
-- Confidence to refactor
-- Faster iterations
-- Clearer requirements
+**生产力方面的优势**：
+- 减少调试时间
+- 有信心进行代码重构
+- 迭代周期更短
+- 需求更加明确
 
 ---
 
-## BDD: Behavior-Driven Development
+## 行为驱动开发（BDD）
 
-**Extension of TDD with natural language tests**
+**基于自然语言的TDD扩展**
 
-### Given-When-Then Pattern
+### 给定-当-然后（Given-When-Then）模式
 
 ```typescript
 describe('Shopping Cart', () => {
@@ -119,19 +120,19 @@ describe('Shopping Cart', () => {
 });
 ```
 
-**BDD Benefits**:
-- Tests readable by non-developers
-- Clear business requirements
-- Better stakeholder communication
-- Executable specifications
+**BDD的优势**：
+- 非开发人员也能理解测试用例
+- 业务需求更加清晰
+- 有助于改善与利益相关者的沟通
+- 提供可执行的规范
 
 ---
 
-## TDD Patterns
+## TDD模式
 
-### Pattern 1: Test List
+### 模式1：测试用例列表
 
-Before coding, list all tests needed:
+在编码之前，列出所有需要的测试用例：
 
 ```markdown
 Calculator Tests:
@@ -144,11 +145,13 @@ Calculator Tests:
 - [ ] divide by zero (error)
 ```
 
-Work through list one by one.
+逐一实现这些测试用例。
 
-### Pattern 2: Fake It Till You Make It
+### 模式2：先假设计划，再逐步完善
 
-Start with hardcoded returns, generalize later:
+**步骤**：
+- 先使用硬编码的返回值进行测试
+- 之后逐步将代码泛化
 
 ```typescript
 // Test 1: add(2, 3) = 5
@@ -158,9 +161,10 @@ add(a, b) { return 5; } // Hardcoded!
 add(a, b) { return a + b; } // Generalized
 ```
 
-### Pattern 3: Triangulation
+### 模式3：三角测量法（Triangulation）
 
-Use multiple tests to force generalization:
+**步骤**：
+- 使用多个测试用例来推动代码的泛化
 
 ```typescript
 // Test 1
@@ -175,9 +179,10 @@ expect(fizzbuzz(15)).toBe('FizzBuzz');
 // Forces complete implementation
 ```
 
-### Pattern 4: Test Data Builders
+### 模式4：测试数据生成器
 
-Create test helpers for complex objects:
+**步骤**：
+- 为复杂的对象创建测试辅助工具
 
 ```typescript
 class UserBuilder {
@@ -204,13 +209,13 @@ const admin = new UserBuilder().withRole('admin').build();
 
 ---
 
-## Refactoring with Confidence
+## 自信地进行重构
 
-**The TDD Safety Net**
+**TDD的安全保障**
 
-### Refactoring Types
+### 重构类型
 
-**1. Extract Method**:
+**1. 提取方法（Extract Method）**：
 ```typescript
 // Before
 function processOrder(order) {
@@ -235,7 +240,7 @@ function processOrder(order) {
 }
 ```
 
-**2. Remove Duplication**:
+**2. 删除重复代码（Remove Duplication）**：
 ```typescript
 // Tests force you to see duplication
 it('should validate email', () => {
@@ -251,7 +256,7 @@ it('should validate phone', () => {
 // Extract common validation pattern
 ```
 
-### Refactoring Workflow
+### 重构工作流程
 
 ```
 1. All tests GREEN? → Continue
@@ -264,9 +269,10 @@ it('should validate phone', () => {
 
 ---
 
-## TDD Anti-Patterns
+## TDD的常见误区
 
-### ❌ Testing Implementation Details
+### ❌ 测试实现细节
+**误区**：不应该在测试中关注代码的具体实现细节
 
 ```typescript
 // BAD: Testing private method
@@ -283,104 +289,38 @@ it('should reject invalid email', () => {
 });
 ```
 
-### ❌ Writing Tests After Code
+### ❌ 在代码编写完成后才编写测试用例
+**误区**：应该先编写测试用例，再编写代码
 
-```typescript
-// Wrong order!
-1. Write implementation
-2. Write tests
+### ❌ 过长的测试用例
+**误区**：测试用例不应超过20行
 
-// Correct TDD:
-1. Write test (RED)
-2. Write implementation (GREEN)
-3. Refactor
-```
-
-### ❌ Large Tests
-
-```typescript
-// BAD: Testing multiple behaviors
-it('should handle user lifecycle', () => {
-  const user = createUser();
-  updateUser(user, { name: 'New Name' });
-  deleteUser(user);
-  // Too much in one test!
-});
-
-// GOOD: One behavior per test
-it('should create user', () => {
-  const user = createUser();
-  expect(user).toBeDefined();
-});
-
-it('should update user name', () => {
-  const user = createUser();
-  updateUser(user, { name: 'New Name' });
-  expect(user.name).toBe('New Name');
-});
-```
-
-### ❌ Skipping Refactor Phase
-
-```typescript
-// Don't skip refactoring!
-RED → GREEN → REFACTOR → RED → GREEN → REFACTOR
-     ↑________________↑
-     Always refactor!
-```
+### ❌ 跳过重构阶段
+**误区**：重构是TDD流程中的重要环节
 
 ---
 
-## Mock-Driven TDD
+## 基于模拟的TDD（Mock-Driven TDD）
 
-**When testing with external dependencies**
+**在处理外部依赖时**
 
-### Strategy 1: Dependency Injection
+### 策略1：依赖注入（Dependency Injection）
+**步骤**：
+- 使用依赖注入来模拟外部依赖
 
-```typescript
-class UserService {
-  constructor(private db: Database) {} // Inject dependency
-
-  async getUser(id: string) {
-    return this.db.query('SELECT * FROM users WHERE id = ?', [id]);
-  }
-}
-
-// Test with mock
-const mockDb = { query: vi.fn().mockResolvedValue({ id: '123' }) };
-const service = new UserService(mockDb);
-```
-
-### Strategy 2: Interface-Based Mocking
-
-```typescript
-interface EmailService {
-  send(to: string, subject: string, body: string): Promise<void>;
-}
-
-class MockEmailService implements EmailService {
-  sent: any[] = [];
-
-  async send(to: string, subject: string, body: string) {
-    this.sent.push({ to, subject, body });
-  }
-}
-
-// Test with mock
-const mockEmail = new MockEmailService();
-const service = new UserService(mockEmail);
-await service.registerUser({ email: 'test@example.com' });
-expect(mockEmail.sent).toHaveLength(1);
-```
+### 策略2：基于接口的模拟（Interface-Based Mocking）
+**步骤**：
+- 通过接口来模拟外部组件
 
 ---
 
-## SOLID Principles Through TDD
+## 通过TDD实践SOLID设计原则
 
-**TDD naturally leads to SOLID design**
+**TDD自然地引导我们遵循SOLID设计原则**
 
-### Single Responsibility (SRP)
-Tests reveal when class does too much:
+### 单一职责原则（Single Responsibility Principle, SRP）：
+**示例**：测试可以帮助我们发现类职责过重的情况
+
 ```typescript
 // Many tests for one class? Split it!
 describe('UserManager', () => {
@@ -393,8 +333,9 @@ describe('UserValidator', () => { /* 5 tests */ });
 describe('UserNotifier', () => { /* 5 tests */ });
 ```
 
-### Open/Closed (OCP)
-Tests enable extension without modification:
+### 开闭原则（Open-Closed Principle, OCP）：
+**示例**：测试使得代码易于扩展
+
 ```typescript
 // Testable, extensible design
 interface PaymentProcessor {
@@ -405,24 +346,14 @@ class StripeProcessor implements PaymentProcessor { }
 class PayPalProcessor implements PaymentProcessor { }
 ```
 
-### Dependency Inversion (DIP)
-TDD requires dependency injection:
-```typescript
-// Testable: Depends on abstraction
-class OrderService {
-  constructor(private payment: PaymentProcessor) {}
-}
-
-// Easy to test with mocks
-const mockPayment = new MockPaymentProcessor();
-const service = new OrderService(mockPayment);
-```
+### 依赖倒置原则（Dependency Inversion Principle, DIP）：
+**示例**：TDD要求我们使用依赖注入来管理依赖关系
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### TDD Workflow
+### TDD工作流程
 ```
 1. Write test (RED) → Fails ✅
 2. Minimal code (GREEN) → Passes ✅
@@ -430,25 +361,19 @@ const service = new OrderService(mockPayment);
 4. Repeat
 ```
 
-### Test Smells
-- Test too long (>20 lines)
-- Multiple assertions (>3)
-- Testing implementation
-- Unclear test name
-- Slow tests (>100ms)
-- Flaky tests
+### 测试用例的常见问题：
+- 测试用例过长（超过20行）
+- 同时包含多个断言（超过3个）
+- 测试用例关注实现细节
+- 测试用例名称不明确
+- 测试执行时间过长（超过100毫秒）
+- 测试用例不稳定（容易出错）
 
-### When to Use TDD
-✅ New features
-✅ Bug fixes (add test first)
-✅ Refactoring
-✅ Complex logic
-✅ Public APIs
+### 何时使用TDD：
+- 新功能的开发
+- 修复错误（先编写测试用例）
+- 代码重构
+- 复杂逻辑的处理
+- 公共API的实现
 
-❌ Throwaway prototypes
-❌ UI layout (use E2E instead)
-❌ Highly experimental code
-
----
-
-**This skill is self-contained and works in ANY user project.**
+**注意**：TDD适用于任何用户项目，是不可或缺的开发技能。

@@ -1,42 +1,42 @@
 ---
 name: audit-code
-description: Security-focused code review for hardcoded secrets, dangerous calls, and common vulnerabilities
+description: 以安全性为重点的代码审查，针对硬编码的秘密信息、危险的函数调用以及常见的安全漏洞
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Bash
 context: fork
 ---
 
-# audit-code -- Project Code Security Review
+# audit-code -- 项目代码安全审查
 
-Security-focused code review of project source code. Covers OWASP-style vulnerabilities, hardcoded secrets, dangerous function calls, and patterns relevant to AI-assisted development.
+针对项目源代码的安全性审查，重点检查OWASP风格的漏洞、硬编码的敏感信息、危险的功能调用以及与人工智能辅助开发相关的安全问题。
 
-## What to do
+## 使用方法
 
-Run the auditor against the target path:
+将审计工具运行在目标路径上：
 
 ```bash
 python3 "$SKILL_DIR/scripts/audit_code.py" "$ARGUMENTS"
 ```
 
-If `$ARGUMENTS` is empty, default to `$PROJECT_ROOT`.
+如果 `$ARGUMENTS` 为空，则默认使用 `$PROJECT_ROOT`。
 
-## What it checks
+## 审查内容：
 
-- **Hardcoded secrets** -- API keys (AWS, GitHub, Stripe, OpenAI, Slack), tokens, private keys, connection strings, passwords
-- **Dangerous function calls** -- eval, exec, subprocess with shell=True, child_process.exec, pickle deserialization, system(), gets(), etc.
-- **SQL injection** -- String concatenation/interpolation in SQL queries
-- **Dependency risks** -- Known hallucinated package names, unverified installations
-- **Sensitive files** -- .env files committed to git, credential files in repo
-- **File permissions** -- Overly permissive chmod patterns
-- **Exfiltration patterns** -- Base64 encode + network send, DNS exfiltration, credential file reads
+- **硬编码的敏感信息**：API密钥（AWS、GitHub、Stripe、OpenAI、Slack）、令牌、私钥、连接字符串、密码等
+- **危险的功能调用**：`eval`、`exec`、`subprocess`（设置 `shell=True`）、`child_process.exec`、`pickle` 解序列化、`system()`、`gets()` 等
+- **SQL注入**：SQL查询中的字符串拼接/插入操作
+- **依赖风险**：使用已知存在问题的软件包、未经验证的依赖库
+- **敏感文件**：提交到 Git 的 `.env` 文件、仓库中的凭证文件
+- **文件权限**：过于宽松的文件权限设置
+- **数据泄露风险**：通过 Base64 编码后通过网络传输数据、DNS 欺骗、读取凭证文件等方式进行数据泄露
 
-## Output
+## 输出结果
 
-Structured report with severity-ranked findings, file locations, and actionable remediation steps.
+生成结构化的报告，其中包含按严重程度排序的发现结果、文件位置以及可执行的修复步骤。
 
-## When to use
+## 使用场景：
 
-- Before committing or pushing code
-- When reviewing third-party contributions or PRs
-- As part of a periodic security audit of the codebase
-- After AI-assisted code generation to verify no secrets or vulnerabilities were introduced
+- 在提交或推送代码之前
+- 在审查第三方贡献或 Pull Request 时
+- 作为代码库定期安全审计的一部分
+- 在使用人工智能辅助生成代码后，验证是否引入了新的敏感信息或安全漏洞

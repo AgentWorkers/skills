@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Newsletter Curation
+# 新闻通讯策划
 
-Create and curate high-quality newsletters via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具来创建和策划高质量的新闻通讯。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -30,11 +30,11 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Newsletter Formats
+## 新闻通讯的格式
 
-### 1. Link Roundup
+### 1. 链接汇总
 
-5-15 curated links with 1-3 sentence commentary per link.
+精选5-15个链接，并为每个链接附上1-3句话的评论。
 
 ```markdown
 ## This Week's Top Picks
@@ -48,9 +48,9 @@ Your commentary here. The value is your curation and perspective,
 not just the link.
 ```
 
-### 2. Deep Dive + Links
+### 2. 深度分析 + 链接
 
-One in-depth analysis (300-500 words) + 5-8 curated links.
+一篇300-500字的深度分析文章 + 5-8个精选链接。
 
 ```markdown
 ## The Big Story
@@ -64,9 +64,9 @@ One in-depth analysis (300-500 words) + 5-8 curated links.
 ...
 ```
 
-### 3. Original Essay
+### 3. 原创文章
 
-One focused piece (500-1,000 words) with a clear thesis.
+一篇500-1000字的专题文章，需有明确的论点。
 
 ```markdown
 ## [Essay Title]
@@ -79,17 +79,17 @@ One focused piece (500-1,000 words) with a clear thesis.
 - [Title](url) — brief note
 ```
 
-### 4. Q&A / Interview
+### 4. 问答 / 访谈
 
-Feature conversation with an expert or practitioner.
+与专家或实践者的对话。
 
-### 5. Data/Trends
+### 5. 数据/趋势
 
-Numbers, charts, and analysis of trends in your space.
+展示你所在领域的数据、图表和趋势分析。
 
-## Issue Structure
+## 通讯的结构
 
-### The Template
+### 模板
 
 ```markdown
 # [Newsletter Name] — Issue #[N]
@@ -137,9 +137,9 @@ it to a colleague who'd enjoy it.
 [Your name]
 ```
 
-## Content Sourcing
+## 内容来源
 
-### Where to Find Content
+### 从哪里获取内容
 
 ```bash
 # Industry news
@@ -163,32 +163,32 @@ infsh app run exa/search --input '{
 }'
 ```
 
-### Source Categories
+### 来源类别
 
-| Source Type | Examples | Best For |
+| 来源类型 | 示例 | 适合的内容类型 |
 |------------|---------|----------|
-| **News** | TechCrunch, The Verge, industry press | Breaking developments |
-| **Research** | Papers, reports, surveys | Data-backed insights |
-| **Blogs** | Engineering blogs, personal blogs | Practitioner perspectives |
-| **Social** | Twitter threads, LinkedIn posts | Hot takes, discussions |
-| **Tools** | Product launches, updates | Practical recommendations |
-| **Community** | Reddit, HN, forums | Ground-level sentiment |
+| **新闻** | TechCrunch、The Verge、行业媒体 | 最新的行业动态 |
+| **研究** | 论文、报告、调查 | 基于数据的见解 |
+| **博客** | 工程博客、个人博客 | 实践者的观点 |
+| **社交媒体** | Twitter帖子、LinkedIn文章 | 热门观点和讨论 |
+| **工具** | 产品发布、更新 | 实用建议 |
+| **社区** | Reddit、Hacker News、论坛 | 用户的真实反馈 |
 
-### Curation Quality Filter
+### 内容筛选标准
 
-For each piece of content, ask:
+对于每篇内容，需要考虑以下问题：
 
-| Question | If No → |
+| 问题 | 如果不符合 → |
 |---------|---------|
-| Would I send this to a colleague 1-on-1? | Don't include |
-| Does it teach something actionable? | Consider skipping |
-| Is the source credible? | Find better source |
-| Is it timely/relevant this week? | Save for later or skip |
-| Can I add commentary that adds value? | Just linking isn't enough |
+| 我会把这个内容单独发给同事吗？ | 不要包含这类内容 |
+| 这个内容能提供实际帮助吗？ | 可以考虑不收录 |
+| 来源是否可信？ | 寻找更可靠的来源 |
+| 这个内容是否及时/相关？ | 可以留到以后再发，或者直接跳过 |
+| 我能添加有价值的评论吗？ | 仅仅链接是不够的 |
 
-## Writing Commentary
+## 撰写评论
 
-### What Makes Good Commentary
+### 什么是好的评论
 
 ```
 ❌ Just describing: "This article talks about React Server Components."
@@ -205,54 +205,54 @@ For each piece of content, ask:
    month — the ecosystem is clearly converging on this pattern."
 ```
 
-### Commentary Formula
+### 评论的撰写格式
 
 ```
 [What happened] + [Why it matters to the reader] + [Your take or prediction]
 ```
 
-## Sending Cadence
+## 发送频率
 
-| Frequency | Best For | Open Rate Impact |
+| 发送频率 | 适合的内容类型 | 开启率的影响 |
 |-----------|---------|-----------------|
-| **Weekly** | Most newsletters | Highest — predictable, not overwhelming |
-| **Bi-weekly** | Deep analysis, essays | Good if content is substantial |
-| **Daily** | News-focused, short format | Requires dedicated habit, risky |
-| **Monthly** | Research roundups | OK for depth, risks being forgotten |
+| **每周** | 大多数新闻通讯 | 开启率最高——规律性强，不会让人感到压力 |
+| **每两周** | 深度分析文章、原创文章 | 如果内容足够丰富，效果较好 |
+| **每天** | 以新闻为主的简短内容 | 需要养成习惯，但风险较高 |
+| **每月** | 研究汇总 | 适合深度内容，但容易被人遗忘 |
 
-**Weekly is the sweet spot.** Same day, same time, every week. Consistency builds habit.
+**每周发送是最理想的选择。** 每周同一天、同一时间发送，有助于培养读者的阅读习惯。
 
-| Day | Performance |
+| 发送时间 | 开启率 |
 |-----|------------|
-| Tuesday | Highest open rates |
-| Thursday | Second highest |
-| Wednesday | Third |
-| Monday | Lower (inbox overload) |
-| Friday | Lower (weekend mode) |
-| Weekend | Lowest (but some niches thrive) |
+| 星期二 | 最高 |
+| 星期四 | 第二高 |
+| 星期三 | 第三高 |
+| 星期一 | 较低（收件箱可能过于拥挤） |
+| 星期五 | 较低（周末模式） |
+| 周末 | 最低（但某些小众群体可能更关注） |
 
-## Subject Lines
+## 主题行
 
-| Formula | Example |
+| 撰写公式 | 示例 |
 |---------|---------|
-| Issue number + teaser | "#47: The framework nobody's talking about" |
-| Number + topic | "5 tools that changed my workflow this month" |
-| Question | "Is TypeScript dying?" |
-| This week + category | "This week in AI: GPT-5 rumors, open source wins" |
-| Direct value | "The SQL optimization guide I wish I had earlier" |
+| 期号 + 话题简介 | “#47：没人讨论的这个框架” |
+| 期号 + 主题 | “本月改变我工作流程的5个工具” |
+| 问题式标题 | “TypeScript要消亡了吗？” |
+| 本周内容 + 类别 | “本周AI领域动态：GPT-5的传闻、开源项目的成功” |
+| 直接提供价值 | “我希望早些时候就有这份SQL优化指南” |
 
-**Keep under 50 characters.** Mobile truncates at ~35.
+**主题行长度控制在50个字符以内。** 手机端显示时通常会自动截断在35个字符左右。
 
-## Growth Strategies
+## 增长策略
 
-| Strategy | Implementation |
+| 策略 | 实施方法 |
 |----------|---------------|
-| **Cross-promotion** | Partner with complementary newsletters |
-| **Social distribution** | Post key insights on Twitter/LinkedIn with subscribe CTA |
-| **Referral program** | "Forward to 3 friends" or formal referral rewards |
-| **SEO archive** | Publish newsletter archive as blog posts |
-| **Lead magnet** | "Subscribe and get [free resource]" |
-| **Consistent quality** | The best growth strategy: be worth reading |
+| **交叉推广** | 与内容互补的新闻通讯合作 |
+| **社交媒体分享** | 在Twitter/LinkedIn上分享关键内容，并附上订阅链接 |
+| **推荐计划** | “推荐给3位朋友”或提供正式的推荐奖励 |
+| **SEO优化** | 将新闻通讯存档为博客文章 |
+| **吸引读者的内容** | “订阅即可获得[免费资源]” |
+| **保持内容质量** | 最有效的增长策略：内容本身要有价值 |
 
 ```bash
 # Create social teaser for newsletter
@@ -261,32 +261,32 @@ infsh app run x/post-create --input '{
 }'
 ```
 
-## Metrics That Matter
+## 重要的指标
 
-| Metric | Good | Great | Action If Low |
+| 指标 | 良好 | 优秀 | 指标不佳时的应对措施 |
 |--------|------|-------|--------------|
-| **Open rate** | 30-40% | 40%+ | Improve subject lines |
-| **Click rate** | 3-5% | 5%+ | Better content curation, stronger CTAs |
-| **Unsubscribe rate** | < 0.5% per issue | < 0.2% | Check content quality, frequency |
-| **Reply rate** | Any replies | Regular replies | Ask questions, invite conversation |
-| **Forward rate** | Any forwards | — | Make content share-worthy |
-| **Growth rate** | 5-10% monthly | 10%+ | Increase distribution, referral program |
+| **开启率** | 30-40% | 40%以上 | 提高主题行的吸引力 |
+| **点击率** | 3-5% | 5%以上 | 提升内容质量，优化邀请订阅的文案 |
+| **退订率** | 每期低于0.5% | 低于0.2% | 检查内容质量和发送频率 |
+| **回复率** | 有任何回复 | 定期回复读者 | 提出问题，鼓励互动 |
+| **转发率** | 有任何转发 | — | 使内容值得分享 |
+| **增长率** | 每月5-10% | 10%以上 | 增加分享渠道，推广推荐计划 |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No consistent schedule | Readers forget about you | Same day, same time, every week |
-| Links without commentary | You're a bookmark, not a newsletter | Add your take on every piece |
-| Too many links (15+) | Overwhelming, nothing stands out | 5-10 curated picks max |
-| Generic subject lines | Low open rates | Tease the best content, keep under 50 chars |
-| No personal voice | Reads like an RSS feed | Intro paragraph, opinions, personality |
-| Only promotional content | Readers unsubscribe | 90% value, 10% promotion max |
-| Inconsistent quality | Trust erodes | Skip an issue rather than send a weak one |
-| No CTA for engagement | One-way broadcast | Ask questions, invite replies, encourage forwards |
-| No archive/SEO | Missing growth channel | Publish issues as web pages |
+| 没有固定的发送时间表 | 读者会忘记你的通讯 | 每周同一天、同一时间发送 |
+| 链接没有评论 | 你的通讯就像一个书签，没有吸引力 | 为每篇文章添加你的评论 |
+| 链接太多（超过15个） | 内容过于杂乱，没有亮点 | 每期最多精选5-10个链接 |
+| 主题行过于通用 | 开启率低 | 提炼最精彩的内容，长度控制在50个字符以内 |
+| 没有个人风格 | 读起来像RSS订阅源 | 添加引言段落，表达你的观点和个性 |
+| 仅包含推广内容 | 读者会退订 | 内容中90%应具有价值，推广内容占比不超过10% |
+| 内容质量不稳定 | 会损害读者的信任 | 如果内容质量差，可以选择跳过该期 |
+| 没有鼓励互动的提示 | 单向的信息传递 | 提出问题，鼓励读者回复和分享 |
+| 没有存档或SEO优化 | 缺少增长渠道 | 将通讯内容发布为网页形式 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@email-design
@@ -294,4 +294,4 @@ npx skills add inferencesh/skills@content-repurposing
 npx skills add inferencesh/skills@seo-content-brief
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用工具：`infsh app list`

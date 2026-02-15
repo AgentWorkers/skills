@@ -1,11 +1,12 @@
 ---
 name: glab-alias
-description: Use when working with glab alias commands.
+description: **使用说明：**  
+在处理 `glab` 别名命令时，请遵循以下规则：
 ---
 
-# glab alias
+# glab 别名
 
-## Overview
+## 概述
 
 ```
 
@@ -26,12 +27,12 @@ description: Use when working with glab alias commands.
     -h --help                               Show help for this command.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab alias --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关完整的 `--help` 命令输出，请参阅 [references/commands.md](references/commands.md)。

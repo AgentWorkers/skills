@@ -1,87 +1,86 @@
 ---
 name: TikTok Ads
-description: TikTok advertising strategy, creative best practices, Spark Ads, and platform-specific optimization
+description: TikTok广告策略、创意制作的最佳实践、Spark Ads以及针对不同平台的优化方法
 metadata:
   category: marketing
   skills: ["tiktok", "ads", "social-ads", "video-ads", "short-form"]
 ---
 
-## Creative Rules
+## 创意规则
 
-- First 1-3 seconds determine everything — if viewers don't stop scrolling immediately, the rest doesn't matter
-- Native content outperforms ads — shoot vertical (9:16), use trending sounds, avoid polished brand look
-- Hook patterns that work: pattern interrupt, bold claim, direct question, unexpected visual, POV setup
-- Text overlays are mandatory — 80%+ of users watch with sound off, burned-in captions aren't optional
-- Refresh creative every 7-14 days — fatigue hits faster than any other platform, have pipeline ready
+- 开场1-3秒至关重要——如果观众没有立即停止滚动，后续内容就无关紧要了。
+- 原创内容比广告更有效：采用9:16的比例制作视频，使用热门音效，避免过于精致的品牌风格。
+- 采用有效的吸引观众的模式：中断现有内容、使用醒目的声明、提出直接的问题、使用出人意料的视觉效果、设置合适的视角。
+- 必须添加文字叠加层——超过80%的用户在关闭声音的情况下观看视频，因此字幕是必不可少的。
+- 每7-14天更新一次创意内容——用户疲劳度在这类平台上出现得更快，因此需要准备好新的内容。
 
-## Spark Ads
+## Spark广告
 
-- Spark Ads use organic posts as ads — keeps comments, likes, shares visible and accumulating
-- Organic engagement on Spark Ads compounds — viral potential unlike standard ads
-- Creator handles can be swapped — run ads from your brand handle or creator's handle
-- Require creator authorization code — valid for 7, 30, or 365 days, get longer duration upfront
-- Boosting already-performing organic posts is safer than untested creative — data before dollars
+- Spark广告使用原创帖子作为广告内容——这样评论、点赞和分享功能仍然可见并会持续累积。
+- Spark广告上的用户互动会进一步促进内容的传播——这种广告具有病毒式传播的潜力，这是传统广告所不具备的。
+- 广告可以由品牌账号或创作者账号发布。
+- 需要创作者的授权代码——授权代码的有效期为7天、30天或365天，可以根据需求选择更长的期限。
+- 提升已经表现良好的原创帖子的效果比使用未经测试的创意内容更可靠——先收集数据再投入资金。
 
-## Targeting Mistakes
+## 定位策略的常见错误
 
-- Interest targeting is less accurate than Meta — TikTok's algorithm learns faster from creative signals
-- Start broad, let algorithm optimize — overtargeting restricts the machine learning that makes TikTok work
-- Custom Audiences need 1000+ users minimum — smaller lists won't deliver
-- Lookalike percentages are different scale — 1% on TikTok is broader than 1% on Meta
-- Behavior targeting (video completion, engagement) often outperforms interest targeting
+- 兴趣定位的准确性不如Meta平台——TikTok的算法能更快地从创意内容中学习用户偏好。
+- 开始时采用广泛的定位策略，让算法进行优化；过度定位会限制算法的学习效果。
+- 定制受众列表至少需要包含1000名用户——太小的受众列表可能无法产生有效的广告效果。
+- 在TikTok上，相似用户的比例与Meta平台不同——1%的相似用户群体可能比Meta平台上的1%用户群体更广泛。
+- 行为定位（如视频完成度、用户互动）通常比兴趣定位更有效。
 
-## Bidding Strategy
+## 出价策略
 
-- Learning phase needs 50 conversions in 7 days — budget must support this or campaign never optimizes
-- Cost Cap is stabler than Bid Cap for beginners — limits volatility while algorithm learns
-- Lowest Cost burns budget fast on launch — switch to Cost Cap after gathering initial data
-- Minimum daily budget per ad group: $20-50 depending on objective — below this, delivery is inconsistent
-- Don't edit campaigns during learning phase — resets progress, wait until 50 conversions
+- 学习阶段需要7天内实现50次转化——预算必须支持这一目标，否则广告活动无法优化。
+- 对于初学者来说，设置成本上限（Cost Cap）比设置出价上限（Bid Cap）更稳定——这有助于在算法学习过程中控制预算的波动。
+- 在初期阶段，最低每日预算为每个广告组20-50美元——低于这个预算，广告效果可能会不稳定。
+- 在学习阶段不要修改广告活动设置——否则会重置已取得的进展，建议等待达到50次转化后再进行调整。
 
-## Campaign Structure
+## 广告活动结构
 
-- One campaign per objective — mixing awareness and conversion in same campaign confuses optimization
-- 3-5 ad groups per campaign is optimal — enough for testing, not so many that budget fragments
-- 3-5 creatives per ad group — algorithm needs options to test but too many dilutes learnings
-- Separate iOS and Android campaigns post-ATT — iOS tracking is limited, don't let it pollute Android data
-- Catalog ads for e-commerce — dynamic product ads outperform static for retargeting
+- 每个目标对应一个广告活动——在同一活动中同时进行提升品牌知名度和促进转化的策略会干扰算法的优化过程。
+- 每个广告活动包含3-5个广告组——数量适中，既有利于测试，又不会导致预算分配过于分散。
+- 每个广告组包含3-5个创意内容——算法需要多种选择来进行测试，但过多的创意内容反而会削弱学习效果。
+- 在获得应用内跟踪数据（ATT）后，应为iOS和Android平台分别设置不同的广告活动。
+- 为电子商务平台制作产品目录广告——动态产品广告在重新定位时效果更好。
 
-## Platform Mechanics
+## 平台机制
 
-- Content is served via For You algorithm, not follower graph — follower count matters less than Meta
-- Hashtag challenges are paid products — organic hashtags have minimal targeting value in ads
-- Comments section is public and active — negative comments kill CTR, moderate or disable if problematic
-- Video completion rate is primary signal — optimize for watch time, not just clicks
-- TikTok pixel has same iOS limitations as Meta — use Events API for server-side tracking
+- 内容的展示是通过“为你推荐”（For You）算法来决定的，而非基于粉丝关系——在TikTok上，粉丝数量的重要性低于在Meta平台上的重要性。
+- 带标签的挑战活动属于付费推广内容——在广告中使用自然生成的标签效果有限。
+- 评论区是公开的且用户活跃——负面评论会降低点击率，如有问题应及时审核或禁用评论。
+- 视频完成率是评估广告效果的主要指标——应优化视频的观看时长，而不仅仅是点击次数。
+- TikTok的像素追踪功能与Meta平台存在相同的问题（如仅支持iOS设备）——建议使用Events API进行服务器端追踪。
 
-## Creative Testing
+## 创意内容测试
 
-- Test hooks independently from body — first 3 seconds are separate variable from rest of video
-- A/B test in creative tools, not ad platform — TikTok's native split testing is limited
-- User-generated style beats studio quality — imperfect > polished on this platform
-- Test creator vs brand voice — same script performed differently converts at different rates
-- Winners emerge fast — if no signal in 3-5 days, creative likely won't work
+- 独立测试广告的开场部分和主体内容——开场3秒的内容与视频的其余部分对用户吸引力有很大影响。
+- 在创意内容制作工具中进行A/B测试，而不是在广告平台上进行——TikTok的原生分割测试功能有限。
+- 用户自创的内容往往比专业制作的内容更受欢迎——在这个平台上，不完美的内容反而可能更吸引用户。
+- 测试创作者和品牌风格对广告效果的影响——同样的脚本在不同创作者手中可能会产生不同的转化效果。
+- 成功的创意内容很快就能显现出来——如果3-5天内没有明显效果，那么这个创意很可能不适合继续使用。
 
-## Conversion Tracking
+## 转化追踪
 
-- Standard pixel misses 40%+ of iOS conversions — implement Events API for accuracy
-- View-through window defaults to 7 days — conservative window (1 day) shows truer performance
-- Lead gen forms have high drop-off — keep fields to absolute minimum (name, email, phone)
-- TikTok Shop has native tracking — if selling via Shop, conversion data is more complete
-- Attribution is last-click by default — view-through conversions are modeled, not deterministic
+- 标准的广告追踪方式会遗漏超过40%的iOS设备上的转化数据——建议使用Events API来提高追踪的准确性。
+- 视频的观看完成时间默认为7天——设置更短的观察窗口（如1天）能更准确地反映广告效果。
+- 用于收集潜在客户信息的表单字段应尽量简化（仅保留姓名、邮箱和电话号码）。
+- TikTok Shop具有内置的追踪功能——如果通过TikTok Shop销售产品，转化数据会更加完整。
+- 默认情况下，转化归因是基于最后一次点击的——实际转化情况可能受到多种因素的影响，因此归因结果可能不完全准确。
 
-## Scaling Patterns
+## 规模扩展策略
 
-- Increase budget 20-30% max per day — larger jumps reset learning phase
-- Horizontal scaling: duplicate ad groups with different targeting — avoids audience overlap issues
-- Creative is the scaling lever — same audience with new creative > same creative with forced reach
-- CPMs spike during holidays and elections — plan 2-3x budget for Q4 and avoid political seasons if possible
-- International markets have lower CPMs — test UK, Canada, Australia before saturating US
+- 每天的预算增长幅度最多为20-30%——过快的预算增长会中断算法的学习过程。
+- 横向扩展：通过使用不同的定位策略复制广告组——这样可以避免受众重叠的问题。
+- 创意内容是实现规模扩展的关键——使用新的创意内容针对相同的受众群体，比强行扩大覆盖范围更有效。
+- 假期和选举期间CPM（每千次展示的花费）通常会升高——建议在第四季度增加2-3倍的预算，并尽量避免政治敏感时期。
+- 国际市场的CPM通常较低——在进入美国市场之前，建议先在英国、加拿大和澳大利亚进行测试。
 
-## Common Failures
+## 常见的失败原因
 
-- Repurposing Instagram Reels directly — TikTok users detect non-native content instantly
-- Logo in first 3 seconds — viewers skip ads, not content. Logo at end, not beginning
-- Long intros or brand statements — no one waits, hook must be immediate
-- Ignoring comments — negative comments are social proof against you, moderate actively
-- Expecting Meta-level tracking accuracy — TikTok attribution is less mature, expect discrepancies
+- 直接将Instagram Reels的内容用于TikTok——TikTok用户能立即识别出非原生内容。
+- 在视频开头展示品牌标志——观众会直接跳过广告，而不是继续观看内容；标志应放在视频的结尾部分。
+- 过长的开场视频或冗长的品牌介绍——观众不会耐心等待，因此吸引观众的关键信息必须立即呈现。
+- 忽视用户评论——负面评论会对广告效果产生负面影响，应积极管理评论。
+- 期望TikTok的追踪效果与Meta平台相同——TikTok的追踪系统还不够成熟，因此结果可能存在差异。

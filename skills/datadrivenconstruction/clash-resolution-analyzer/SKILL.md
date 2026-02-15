@@ -1,24 +1,24 @@
 ---
 slug: "clash-resolution-analyzer"
 display_name: "Clash Resolution Analyzer"
-description: "Analyze BIM clash detection results and suggest resolutions. Prioritize clashes, identify patterns, assign responsibility, and track resolution status."
+description: "分析 BIM 冲突检测的结果，并提出相应的解决方案。对冲突进行优先级排序，识别冲突的规律，明确责任归属，并跟踪冲突的解决进度。"
 ---
 
-# Clash Resolution Analyzer for Construction
+# 建筑工程中的碰撞检测与解决分析工具
 
-## Overview
+## 概述
 
-Analyze clash detection results from BIM coordination. Prioritize clashes by impact, identify patterns, suggest resolutions, assign responsibility, and track resolution progress.
+该工具用于分析来自BIM协调过程的碰撞检测结果，根据碰撞的影响程度对它们进行优先级排序，识别碰撞模式，提出解决方案，明确责任归属，并跟踪解决方案的落实进度。
 
-## Business Case
+## 商业价值
 
-Clash resolution analysis enables:
-- **Efficient Coordination**: Focus on critical clashes first
-- **Pattern Recognition**: Fix root causes, not symptoms
-- **Clear Accountability**: Assign responsibility by trade
-- **Progress Tracking**: Monitor resolution status
+碰撞检测与解决分析功能包括：
+- **高效协调**：优先处理关键碰撞问题
+- **问题根源识别**：解决根本原因而非表面现象
+- **责任明确划分**：按专业领域分配解决责任
+- **进度监控**：实时跟踪解决方案的落实情况
 
-## Technical Implementation
+## 技术实现
 
 ```python
 from dataclasses import dataclass, field
@@ -421,7 +421,7 @@ class ClashResolutionAnalyzer:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize analyzer
@@ -468,7 +468,7 @@ analyzer.update_clash_status(
 print(analyzer.generate_report_markdown())
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install (no external dependencies)

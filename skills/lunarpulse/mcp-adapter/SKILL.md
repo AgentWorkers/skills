@@ -1,30 +1,30 @@
 ---
 name: mcp-integration
-description: Use Model Context Protocol servers to access external tools and data sources. Enable AI agents to discover and execute tools from configured MCP servers (legal databases, APIs, database connectors, weather services, etc.).
+description: 使用 Model Context Protocol（MCP）服务器来访问外部工具和数据源。使 AI 代理能够从配置好的 MCP 服务器中发现并执行相应的工具（如法律数据库、API、数据库连接器、天气服务等）。
 license: MIT
 ---
 
-# MCP Integration Usage Guide
+# MCP集成使用指南
 
-## Overview
+## 概述
 
-Use the MCP integration plugin to discover and execute tools provided by external MCP servers. This skill enables you to access legal databases, query APIs, search databases, and integrate with any service that provides an MCP interface.
+使用MCP集成插件可以发现并执行外部MCP服务器提供的工具。该功能允许您访问法律数据库、查询API、搜索数据库，并与任何提供MCP接口的服务进行集成。
 
-The plugin provides a unified `mcp` tool with two actions:
-- `list` - Discover available tools from all connected servers
-- `call` - Execute a specific tool with parameters
+该插件提供了一个统一的`mcp`工具，具有以下两个操作：
+- `list` - 从所有连接的服务器中发现可用的工具
+- `call` - 带参数执行特定工具
 
 ---
 
-# Process
+# 流程
 
-## 🔍 Phase 1: Tool Discovery
+## 🔍 第1阶段：工具发现
 
-### 1.1 Check Available Tools
+### 1.1 检查可用工具
 
-**Always start by listing available tools** to see what MCP servers are connected and what capabilities they provide.
+**首先列出所有可用的工具**，以查看哪些MCP服务器已连接以及它们提供了哪些功能。
 
-**Action:**
+**操作：**
 ```
 {
   tool: "mcp",
@@ -34,7 +34,7 @@ The plugin provides a unified `mcp` tool with two actions:
 }
 ```
 
-**Response structure:**
+**响应结构：**
 ```json
 [
   {
@@ -51,39 +51,39 @@ The plugin provides a unified `mcp` tool with two actions:
 ]
 ```
 
-### 1.2 Understand Tool Schemas
+### 1.2 了解工具规范
 
-For each tool, examine:
-- **id**: Format is `"server:toolname"` - split on `:` to get server and tool names
-- **description**: Understand what the tool does
-- **inputSchema**: JSON Schema defining parameters
-  - `properties`: Available parameters with types and descriptions
-  - `required`: Array of mandatory parameter names
+对于每个工具，请检查以下内容：
+- **id**：格式为`"server:toolname"` - 用冒号分隔服务器名称和工具名称
+- **description**：了解工具的功能
+- **inputSchema**：定义参数的JSON规范
+  - `properties`：包含参数及其类型和描述的字典
+  - `required`：必需参数的列表
 
-### 1.3 Match Tools to User Requests
+### 1.3 将工具与用户请求匹配
 
-Common tool naming patterns:
-- `search_*` - Find or search operations (e.g., `search_statute`, `search_users`)
-- `get_*` - Retrieve specific data (e.g., `get_statute_full_text`, `get_weather`)
-- `query` - Execute queries (e.g., `database:query`)
-- `analyze_*` - Analysis operations (e.g., `analyze_law`)
-- `resolve_*` - Resolve references (e.g., `resolve_citation`)
+常见的工具命名模式包括：
+- `search_*` - 查找或搜索操作（例如`search_statute`、`search_users`）
+- `get_*` - 获取特定数据（例如`get_statute_full_text`、`get_weather`）
+- `query` - 执行查询（例如`database:query`）
+- `analyze_*` - 分析操作（例如`analyze_law`）
+- `resolve_*` - 解决引用问题（例如`resolve_citation`）
 
 ---
 
-## 🎯 Phase 2: Tool Execution
+## 🎯 第2阶段：工具执行
 
-### 2.1 Validate Parameters
+### 2.1 验证参数
 
-Before calling a tool:
-1. Identify all required parameters from `inputSchema.required`
-2. Verify parameter types match schema (string, number, boolean, array, object)
-3. Check for constraints (minimum, maximum, enum values, patterns)
-4. Ensure you have necessary information from the user
+在调用工具之前：
+1. 从`inputSchema.required`中识别所有必需的参数
+2. 确认参数类型与规范匹配（字符串、数字、布尔值、数组、对象）
+3. 检查约束条件（最小值、最大值、枚举值、模式）
+4. 确保已获取用户提供的必要信息
 
-### 2.2 Construct Tool Call
+### 2.2 构建工具调用
 
-**Action:**
+**操作：**
 ```
 {
   tool: "mcp",
@@ -98,7 +98,7 @@ Before calling a tool:
 }
 ```
 
-**Example - Korean legal search:**
+**示例 - 韩国法律搜索：**
 ```
 {
   tool: "mcp",
@@ -114,9 +114,9 @@ Before calling a tool:
 }
 ```
 
-### 2.3 Parse Response
+### 2.3 解析响应
 
-Tool responses follow this structure:
+工具的响应遵循以下结构：
 ```json
 {
   "content": [
@@ -129,7 +129,7 @@ Tool responses follow this structure:
 }
 ```
 
-For JSON responses:
+对于JSON响应：
 ```javascript
 const data = JSON.parse(response.content[0].text);
 // Access data.result, data.results, or direct properties
@@ -137,52 +137,52 @@ const data = JSON.parse(response.content[0].text);
 
 ---
 
-## 🔄 Phase 3: Multi-Step Workflows
+## 🔄 第3阶段：多步骤工作流程
 
-### 3.1 Chain Tool Calls
+### 3.1 链式调用工具
 
-For complex requests, execute multiple tools in sequence:
+对于复杂的请求，按顺序执行多个工具：
 
-**Example - Legal research workflow:**
-1. **Search** - `search_statute` to find relevant laws
-2. **Retrieve** - `get_statute_full_text` for complete text
-3. **Analyze** - `analyze_law` for interpretation
-4. **Precedents** - `search_case_law` for related cases
+**示例 - 法律研究工作流程：**
+1. **搜索** - 使用`search_statute`查找相关法律
+2. **获取** - 使用`get_statute_full_text`获取完整文本
+3. **分析** - 使用`analyze_law`进行分析
+4. **查找先例** - 使用`search_case_law`查找相关案例
 
-Each step uses output from the previous step to inform the next call.
+每个步骤都会使用前一步的输出来指导下一步的调用。
 
-### 3.2 Maintain Context
+### 3.2 维护上下文
 
-Between tool calls:
-- Extract relevant information from each response
-- Use extracted data as parameters for subsequent calls
-- Build up understanding progressively
-- Present synthesized results to user
+在工具调用之间：
+- 从每个响应中提取相关信息
+- 将提取的数据作为后续调用的参数
+- 逐步建立理解
+- 向用户展示综合结果
 
 ---
 
-## ⚠ Phase 4: Error Handling
+## ⚠ 第4阶段：错误处理
 
-### 4.1 Common Errors
+### 4.1 常见错误
 
-**"Tool not found: server:toolname"**
-- Cause: Server not connected or tool doesn't exist
-- Solution: Run `action: "list"` to verify available tools
-- Check spelling of server and tool names
+**“工具未找到：server:toolname”**
+- 原因：服务器未连接或工具不存在
+- 解决方案：运行`action: "list"`以验证可用工具
+- 检查服务器和工具名称的拼写
 
-**"Invalid arguments for tool"**
-- Cause: Missing required parameter or wrong type
-- Solution: Review `inputSchema` from list response
-- Ensure all required parameters provided with correct types
+**“工具参数无效”**
+- 原因：缺少必需参数或参数类型错误
+- 解决方案：查看列表响应中的`inputSchema`
+- 确保提供了所有必需的参数，并且类型正确
 
-**"Server connection failed"**
-- Cause: MCP server not running or unreachable
-- Solution: Inform user service is temporarily unavailable
-- Suggest alternatives if possible
+**“服务器连接失败”**
+- 原因：MCP服务器未运行或无法访问
+- 解决方案：告知用户服务暂时不可用
+- 如有可能，建议其他替代方案
 
-### 4.2 Error Response Format
+### 4.2 错误响应格式
 
-Errors return:
+错误会返回如下信息：
 ```json
 {
   "content": [{"type": "text", "text": "Error: message"}],
@@ -190,28 +190,28 @@ Errors return:
 }
 ```
 
-**Handle gracefully:**
-- Explain what went wrong clearly
-- Don't expose technical implementation details
-- Suggest next steps or alternatives
-- Don't retry excessively
+**优雅地处理错误：**
+- 清晰地解释问题所在
+- 不要暴露技术实现细节
+- 建议下一步操作或替代方案
+- 避免过度重试
 
 ---
 
-# Complete Example
+# 完整示例
 
-## User Request: "Find Korean laws about overtime pay"
+## 用户请求：“查找关于加班费的韩国法律”
 
-### Step 1: Discover tools
+### 第1步：发现工具
 ```
 {tool: "mcp", args: {action: "list"}}
 ```
 
-Response shows `kr-legal:search_statute` with:
-- Required: `query` (string)
-- Optional: `limit` (number), `category` (string)
+响应显示`kr-legal:search_statute`，其中包含：
+- 必需参数：`query`（字符串）
+- 可选参数：`limit`（数字）、`category`（字符串）
 
-### Step 2: Execute search
+### 第2步：执行搜索
 ```
 {
   tool: "mcp",
@@ -228,13 +228,13 @@ Response shows `kr-legal:search_statute` with:
 }
 ```
 
-### Step 3: Parse and present
+### 第3步：解析并展示结果
 ```javascript
 const data = JSON.parse(response.content[0].text);
 // Present data.results to user
 ```
 
-**User-facing response:**
+**面向用户的响应：**
 ```
 Found 5 Korean statutes about overtime pay:
 
@@ -249,14 +249,14 @@ Would you like me to retrieve the full text of any statute?
 
 ---
 
-# Quick Reference
+# 快速参考
 
-## List Tools
+## 列出工具
 ```
 {tool: "mcp", args: {action: "list"}}
 ```
 
-## Call Tool
+## 调用工具
 ```
 {
   tool: "mcp",
@@ -269,37 +269,37 @@ Would you like me to retrieve the full text of any statute?
 }
 ```
 
-## Essential Patterns
+## 关键模式
 
-**Tool ID parsing:** `"server:toolname"` → split on `:` for server and tool names
+**工具ID解析：** `"server:toolname"` → 用冒号分隔服务器名称和工具名称
 
-**Parameter validation:** Check `inputSchema.required` and `inputSchema.properties[param].type`
+**参数验证：** 检查`inputSchema.required`和`inputSchema.properties[param].type`
 
-**Response parsing:** `JSON.parse(response.content[0].text)` for JSON responses
+**响应解析：** 对于JSON响应，使用`JSON.parse(response.content[0].text)`进行解析
 
-**Error detection:** Check `response.isError === true`
-
----
-
-# Reference Documentation
-
-## Core Documentation
-
-- **Plugin README**: [README.md](README.md) - Installation and configuration
-- **Real Example**: [REAL_EXAMPLE_KR_LEGAL.md](docs/REAL_EXAMPLE_KR_LEGAL.md) - Working kr-legal setup
-- **API Reference**: [API.md](docs/API.md) - Technical API details
-- **Configuration**: [CONFIGURATION.md](docs/CONFIGURATION.md) - Server configuration guide
-- **Troubleshooting**: [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) - Common issues and solutions
-
-## Usage Examples
-
-- **Examples Collection**: [EXAMPLES.md](docs/EXAMPLES.md) - 13 real-world examples including:
-  - Legal research workflows
-  - Database queries
-  - Weather service integration
-  - Multi-step complex workflows
-  - Error handling patterns
+**错误检测：** 检查`response.isError === true`
 
 ---
 
-**Remember:** Always start with `action: "list"` when uncertain about available tools.
+# 参考文档
+
+## 核心文档
+
+- **插件README**：[README.md] - 安装和配置指南
+- **实际示例**：[REAL_EXAMPLE_KR_LEGAL.md] - kr-legal的完整设置示例
+- **API参考**：[API.md] - API技术细节
+- **配置**：[CONFIGURATION.md] - 服务器配置指南
+- **故障排除**：[TROUBLESHOOTING.md] - 常见问题及解决方法
+
+## 使用示例
+
+- **示例集合**：[EXAMPLES.md] - 包含13个实际示例：
+  - 法律研究工作流程
+  - 数据库查询
+  - 天气服务集成
+  - 多步骤复杂工作流程
+  - 错误处理模式
+
+---
+
+**注意：** 当不确定有哪些可用工具时，请始终从`action: "list"`开始操作。

@@ -1,82 +1,82 @@
 ---
 name: Shopping
-description: Help users make better purchase decisions — research, comparison, timing, and avoiding buyer's remorse.
+description: 帮助用户做出更明智的购买决策——包括产品研究、价格比较、购买时机选择，以及避免购买后的后悔情绪。
 metadata:
   category: lifestyle
   skills: ["shopping", "buying", "deals", "comparison", "consumer"]
 ---
 
-## Before Recommending Products
+## 在推荐产品之前
 
-- Ask budget range first — recommendations without budget waste time
-- Ask use case specifically — "laptop" means different things for gaming vs email
-- Ask what they've tried or owned — past experience reveals preferences
-- Ask timeline — urgent need vs can wait for sale changes strategy
-- One recommendation with reasoning beats list of options
+- 首先询问预算范围——没有预算的推荐只会浪费时间。
+- 具体说明使用场景——“笔记本电脑”对于游戏和办公来说意味着不同的需求。
+- 询问用户之前使用过或拥有的产品——过去的经验能揭示用户的偏好。
+- 询问时间安排——是紧急需求还是可以等待价格变动后再做决定。
+- 一个带有理由的推荐比列出多个选项要好得多。
 
-## Research Approach
+## 研究方法
 
-- Check reviews from multiple sources — single source can be biased/paid
-- Filter 1-star reviews for real issues — ignore "shipping was slow" complaints
-- Look for long-term reviews — 6-month updates reveal durability
-- Reddit/forums often more honest than YouTube — less sponsorship pressure
-- Check if newer model coming — buying at end of cycle means faster obsolescence
+- 从多个来源查看评论——单一来源的评论可能存在偏见或被收买。
+- 过滤掉仅有一星评价的评论（这些评论可能反映的是真实问题），忽略“运输缓慢”之类的抱怨。
+- 关注长期使用的用户评价——六个月的更新情况能反映产品的耐用性。
+- Reddit和论坛上的评论通常比YouTube上的更真实，因为它们受到的赞助压力较小。
+- 查看是否有新模型上市——在产品生命周期末期购买意味着产品更快会过时。
 
-## When to Suggest Not Buying
+## 何时建议不购买
 
-- "I might need this someday" — future need isn't current need
-- Upgrading something that works fine — marginal improvement, full price
-- Buying to solve problem that isn't the product — new running shoes won't create running habit
-- Emotional purchase after bad day — suggest waiting 48 hours
-- Sale pressure: "70% off ends tonight" — if didn't need it yesterday, don't need it today
+- “我可能有一天会需要这个产品”——未来的需求并不代表当前的需求。
+- 升级已经能正常使用的物品——即使有小幅改进，也值得全价购买吗？
+- 购买产品只是为了解决某个问题，但这个产品并不能真正解决这个问题（例如，新跑鞋并不能帮助你养成跑步的习惯）。
+- 在心情不好的时候做出的冲动购买——建议等待48小时再做决定。
+- 受到促销压力的情况下（比如“今晚就打七折”）——如果昨天还不需要这个产品，今天也不需要。
 
-## Price and Timing
+## 价格与购买时机
 
-- Track price history: CamelCamelCamel for Amazon, Honey for others — "sale" might be normal price
-- Major sales: Black Friday, Prime Day, end of season — worth waiting if not urgent
-- Refurbished/open-box: often 20-40% off, same warranty — underrated option
-- Credit card price protection — check if card offers it before buying
-- Price match policies — many stores match competitors, just ask
+- 跟踪产品价格的历史变化：对于亚马逊产品，可以使用CamelCamelCamel；对于其他平台，可以使用Honey等工具。“促销”可能只是产品的正常价格。
+- 大型促销活动（如黑色星期五、Prime Day、季末）——如果不是紧急需求，值得等待。
+- 二手/开箱产品：通常价格便宜20%-40%，并且保修期相同——这是一个被低估的购买选择。
+- 了解信用卡是否提供价格保护功能——购买前先确认。
+- 许多商店会提供价格匹配服务——直接询问即可。
 
-## Comparison Framework
+## 比较框架
 
-| Factor | Questions |
-|--------|-----------|
-| Must-haves | What features are non-negotiable? |
-| Nice-to-haves | What would be bonus but not essential? |
-| Deal-breakers | What would make you return it? |
-| Total cost | Accessories, subscription, maintenance? |
-| Longevity | How long until you need to replace? |
+| 因素            | 需要询问的问题                          |
+|-----------------|----------------------------------------|
+| 必备功能          | 哪些功能是不可或缺的？                        |
+| 附加功能          | 哪些功能虽然不错但不是必需的？                      |
+| 影响购买决策的因素    | 哪些因素会让你决定退货？                        |
+| 总成本          | 包含配件、订阅费用和维护费用吗？                      |
+| 产品寿命          | 产品多久后需要更换？                          |
 
-Two good options? Pick the one easier to return.
+如果有两个不错的选择，选择那个更容易退货的产品。
 
-## Red Flags
+## 需警惕的警示信号
 
-- Too many 5-star reviews with similar language — likely fake
-- Brand new product with hundreds of reviews — suspicious timing
-- "Amazon's Choice" means nothing about quality — just algorithm pick
-- Influencer discount codes — they profit from your purchase
-- Pressure tactics: countdown timers, "only 2 left" — manufactured urgency
+- 太多内容相似的5星评价——很可能是虚假评价。
+- 新产品却已经有数百条评价——购买时机可疑。
+- “亚马逊精选产品”并不能代表产品质量——这只是算法的随机选择。
+-  influencer提供的折扣码——他们从你的购买中获利。
+- 制造紧迫感的销售策略（如倒计时、仅剩最后几件等）。
 
-## Return Policy Awareness
+## 了解退货政策
 
-- Check return policy before buying — some categories no returns
-- Keep packaging until sure — needed for returns
-- Credit card extended return windows — some cards add 90 days
-- Restocking fees on electronics — factor into decision
-- "Final sale" means final — no exceptions
+- 购买前务必了解退货政策——某些商品类别不允许退货。
+- 确保保留包装——退货时需要包装。
+- 了解信用卡是否提供延长的退货期限——部分信用卡会额外提供90天的退货期限。
+- 电子产品的补货费用也需要考虑在内。
+- “最终促销”意味着没有退换货的余地——请务必注意这一点。
 
-## Category-Specific Guidance
+## 不同类别的购买建议
 
-- **Electronics:** Refresh cycles matter, buy early in cycle not end
-- **Clothing:** Size charts vary wildly, read size reviews specifically
-- **Furniture:** Measure twice, assembly difficulty in reviews
-- **Appliances:** Check repair frequency ratings (not just features)
-- **Subscriptions:** Calculate yearly cost, check cancellation ease
+- **电子产品**：产品的更新周期很重要，建议在产品生命周期早期购买，而不是等到末期。
+- **服装**：尺码表差异很大，务必仔细阅读相关评价。
+- **家具**：购买前要测量尺寸，并参考用户关于组装难度的评价。
+- **家电**：除了功能外，还要查看产品的维修频率和售后服务。
+- **订阅服务**：计算每年的费用，并确认是否容易取消订阅。
 
-## Post-Purchase
+## 购买后的注意事项
 
-- Don't keep researching after buying — decision fatigue, regret spiral
-- Found cheaper after purchase? Many stores price-match within window
-- Problem with product? Contact support before leaving bad review
-- Actually use the thing — purchase isn't the goal, use is
+- 购买后不要继续反复研究——否则容易产生决策疲劳和后悔。
+- 购买后发现价格更低？许多商店会在规定时间内提供价格匹配服务。
+- 如果产品有问题，请在留下差评之前先联系客服。
+- 最终目的是使用产品，而不仅仅是购买它本身。

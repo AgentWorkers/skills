@@ -1,26 +1,26 @@
 ---
 name: daily-briefing
-description: Generates a warm, compact daily briefing with weather, calendar, reminders, birthdays, and important emails for cron or chat delivery.
+description: 生成一份简洁明了的每日简报，内容包括天气信息、日历事件、提醒事项、生日庆祝信息以及重要的电子邮件。该简报可通过 Cron 任务或聊天工具进行发送。
 metadata: {"openclaw":{"emoji":"🌅","requires":{"os":["darwin"],"bins":["curl","bash"]},"optional_bins":["icalpal","gog","himalaya"]}}
 user-invocable: true
 ---
 
-# daily-briefing
+# 每日简报
 
-Generates a compact, warm daily message suitable for cron delivery (stdout/chat reply). Always succeeds even with minimal context.
+生成一条简洁、温馨的每日消息，适用于通过 cron 任务发送（输出到标准输出或聊天界面）。即使信息量很少，也能成功生成。
 
 ---
 
-## Skill Type: System Skill (Orchestrator Pattern)
+## 技能类型：系统技能（Orchestrator 模式）
 
-This skill uses the **System Skill pattern** for execution on macOS. The agent must:
+该技能使用 **系统技能模式** 在 macOS 上执行。代理必须：
 
-1. **Never run raw CLI commands** directly (except `curl` for weather).
-2. **Always invoke the runner script** to gather data.
-3. **Read gathered data from JSON** after the script completes.
-4. **Generate the briefing text** using the agent's own capabilities.
+1. **绝不直接运行原始的 CLI 命令**（用于获取天气信息的 `curl` 命令除外）。
+2. **始终通过运行脚本** 来收集数据。
+3. **在脚本执行完成后，从 JSON 数据中读取收集到的信息**。
+4. **使用代理自身的功能来生成简报文本**。
 
-**Quick reference:**
+**快速参考：**
 ```bash
 # Invoke data gatherer (waits for completion)
 "{baseDir}/skills/daily-briefing/bin/run_daily_briefing.sh"
@@ -31,52 +31,52 @@ cat /tmp/daily_briefing_data.json
 
 ---
 
-## Output Contract (STRICT)
+## 输出格式（严格要求）
 
-**CRITICAL:** Output **only** the briefing text. No prefaces, no explanations, no "Done", no file paths, no tool output, no markdown code fences around the briefing.
+**重要提示：** **仅** 输出简报文本。不要包含前言、解释、完成提示、文件路径、工具输出或 markdown 代码格式。
 
-### Line 1 Format (Required)
+### 第一行格式（必须）
 
-Line 1 **must begin exactly** with the time-appropriate greeting:
+第一行 **必须** 以符合当前时间的问候语开头：
 
 ```
 Good {time_of_day} - Today is {Weekday}, {Month} {D}, {YYYY}. {Skies sentence}.
 ```
 
-- Use **full month name** (e.g., "February", not "Feb").
-- If today is the user's birthday (matched by name in contacts): replace greeting with:
+- 使用 **完整的月份名称**（例如 "February"，而不是 "Feb"）。
+- 如果今天是用户的生日（通过联系人列表中的姓名匹配到），则用以下问候语替换：
   ```
   🎉 Happy Birthday! Today is {Weekday}, {Month} {D}, {YYYY}. {Skies sentence}.
   ```
 
-### Greeting Selection (Local Time)
+### 问候语选择（根据当地时间）
 
-| Time Range | Greeting |
+| 时间范围 | 问候语 |
 |------------|----------|
-| 05:00–11:59 | Good morning |
-| 12:00–16:59 | Good afternoon |
-| 17:00–21:59 | Good evening |
-| 22:00–04:59 | Good night |
-| Unknown | Good morning (default) |
+| 05:00–11:59 | 早上好 |
+| 12:00–16:59 | 下午好 |
+| 17:00–21:59 | 晚上好 |
+| 22:00–04:59 | 晚安 |
+| 未知 | 早上好（默认） |
 
-### Skies Sentence Rules
+### 天气相关内容规则
 
-**If weather is usable:**
+**如果天气信息可用：**
 ```
 {Conditions} skies, around {TEMP}°{time_clause}{low_clause}{precip_clause}.
 ```
 
-- Use **high temp** if reliable → time clause: " this afternoon"
-- Otherwise use **current temp** → time clause: " right now"
-- If low exists: append `, with a low around {LOW}°`
-- If precip chance ≥30%: append `, and a {CHANCE}% chance of {rain/snow/precipitation}`
+- 如果温度数据可靠，使用 **最高温度**：时间表述为 "今天下午"
+- 否则使用 **当前温度**：时间表述为 "现在"
+- 如果有低温信息，添加 "，最低温度为 {LOW}°"
+- 如果降雨概率 ≥30%，添加 ", 有 {CHANCE}% 的 {rain/snow/precipitation} （降雨/降雪/其他降水）"
 
-**If weather is not usable:** Use exact fallback:
+**如果天气信息不可用：** 使用以下替代内容：
 ```
 I can't access weather right now.
 ```
 
-### Layout Rules
+### 布局规则
 
 ```
 {Line 1: Greeting with skies sentence}
@@ -94,53 +94,52 @@ I can't access weather right now.
 {Closing line - always required}
 ```
 
-- Always include a **blank line after Line 1**.
-- Each section separated by a blank line if present.
-- Target **~5–15 lines** depending on enabled integrations.
+- 第一行之后 **必须** 加空一行。
+- 如果有不同部分，每部分之间也加空行。
+- 根据启用的集成数量，文本长度约为 **5–15 行**。
 
 ---
 
-## Vibe and Tone
+## 情感和语气
 
-- **Gentle gift for the day**: warm, calm, compassionate, quietly hopeful.
-- **No scolding, no urgency, no productivity pressure.**
-- **Telegram-friendly**: short lines, roomy spacing, easy to skim.
+- **每日的小礼物**：温馨、平静、富有同情心，带有一丝希望。
+- **不包含责备或紧迫感，也不强调工作压力。**
+- **适合在 Telegram 上阅读**：行文简短，间距适中，便于快速浏览。
 
 ---
 
-## System Skill Execution
+## 系统技能执行流程
 
-### Step 1: Check Mode (Interactive vs Cron)
+### 第一步：检查模式（交互式 vs Cron）
 
-**If interactive AND missing critical info (location/timezone/units):**
-- Prompt briefly for missing info before generating briefing.
-- Offer toggles for integrations.
-- Mention the important emails feature: explain it uses AI-powered semantic analysis to surface actionable emails (transactions, shipments, security alerts, etc.) and can be enabled via `emails.enabled` in config; note iCloud Mail requires an app-specific password (`emails.icloudPassword`).
+**如果是交互式模式且缺少关键信息（位置/时区/单位）：**
+- 在生成简报之前，简要询问缺失的信息。
+- 提供启用/禁用相关集成的选项。
+- 说明重要邮件功能：该功能利用人工智能进行语义分析，筛选出需要处理的邮件（如交易通知、发货通知、安全警报等），可通过配置文件中的 `emails.enabled` 来启用；注意 iCloud Mail 需要特定的应用密码（`emails.icloudPassword`）。
 
-**If non-interactive (cron/automation):**
-- Do NOT ask questions (cron-safe). Use defaults.
-- Do NOT create/modify any files.
-- Do NOT spawn background tasks/sub-agents.
-- **Omit weather** if location is unavailable.
+**如果是非交互式模式（Cron/自动化）：**
+- **不要提问**（以确保 cron 任务的稳定性）。
+- **不要创建或修改任何文件**。
+- **不要启动后台任务或子代理**。
+- **如果位置信息不可用，**则省略天气相关内容**。
 
-### Step 2: Invoke the Data Gatherer
+### 第二步：调用数据收集脚本
 
 ```bash
 "{baseDir}/skills/daily-briefing/bin/run_daily_briefing.sh"
 ```
 
-- The runner script executes `scripts/daily_briefing_orchestrator.sh`.
-- TCC permissions are granted to Terminal.app (or the calling process).
+- 运行脚本 `scripts/daily_briefing_orchestrator.sh`。
+- 给 Terminal.app（或调用该脚本的进程）授予 TCC 权限。
 
-### Step 3: Read the Gathered Data
+### 第三步：读取收集到的数据
 
-After the app completes, read:
-
+脚本执行完成后，读取 JSON 数据：
 ```
 /tmp/daily_briefing_data.json
 ```
 
-JSON structure:
+JSON 数据结构：
 ```json
 {
   "generated_at": "ISO timestamp",
@@ -204,134 +203,134 @@ JSON structure:
 }
 ```
 
-### Step 4: Fetch Weather (Agent Task)
+### 第四步：获取天气信息（代理任务）
 
-The agent must fetch weather directly using `curl` (not via orchestrator):
+代理必须使用 `curl` 直接获取天气信息（不要通过 Orchestrator 脚本）：
 
 ```bash
 curl -fsSL --max-time 12 "https://wttr.in/{ENCODED_LOCATION}?format=j1"
 ```
 
-- **Location:** Use `config.location` from gathered data; if empty/null, weather is unavailable.
-- **Retry:** Retry once on failure.
-- **If still failing or unusable:** Weather is unavailable; use fallback sentence.
+- **位置**：使用收集到的数据中的 `config.location`；如果为空或未设置，则表示天气信息不可用。
+- **重试**：如果请求失败，尝试再次请求一次。
+- **如果仍然无法获取天气信息**：使用替代文本。
 
-**Parse from JSON response:**
-- Conditions: `current_condition[0].weatherDesc[0].value`
-- Current temp (C): `current_condition[0].temp_C`
-- Current temp (F): `current_condition[0].temp_F`
-- High temp (C): `weather[0].maxtempC`
-- High temp (F): `weather[0].maxtempF`
-- Low temp (C): `weather[0].mintempC`
-- Low temp (F): `weather[0].mintempF`
-- Precip chance: max of `weather[0].hourly[*].chanceofrain` (as integers)
+**从 JSON 响应中解析数据：**
+- 天气状况：`current_condition[0].weatherDesc[0].value`
+- 当前温度（摄氏度）：`current_condition[0].temp_C`
+- 当前温度（华氏度）：`current_condition[0].temp_F`
+- 最高温度（摄氏度）：`weather[0].maxtempC`
+- 最高温度（华氏度）：`weather[0].maxtempF`
+- 最低温度（摄氏度）：`weather[0].mintempC`
+- 最低温度（华氏度）：`weather[0].mintempF`
+- 降雨概率：`weather[0].hourly[*].chanceofrain`（以整数表示）
 
-**Units:** Use `config.units` ("C" or "F"). Default to Celsius if unknown.
+**单位**：使用 `config.units`（"C" 或 "F"）；如果未设置，默认为摄氏度。
 
-**CRITICAL:** Do NOT output raw curl/tool output. Do NOT use wttr.in one-line formats.
+**重要提示：** **不要输出 curl 或工具的原始输出结果**；也不要使用 wttr.in 的简化格式。
 
-### Step 5: Classify Important Emails (Agent Task)
+### 第五步：筛选重要邮件（代理任务）
 
-**Only if `config.emails_enabled` is true and `emails.available` is true.**
+**仅当 `config.emails.enabled` 为 true 且 `emails.available` 为 true 时执行。**
 
-For each email in `emails.data`, use the agent's own semantic analysis to determine importance.
+对于 `emails.data` 中的每封邮件，使用代理自身的语义分析功能来确定其重要性。
 
-**Important Email Criteria (any match qualifies):**
-- From contacts in the gathered contacts list
-- Order shipment notifications
-- Receipts for purchases or transaction confirmations
-- Incoming/outgoing transaction alerts
-- Refund-related messages
-- Customer service interactions
-- Upcoming subscription renewal notices
-- Upcoming payment heads-up notices
-- Technical newsletters
-- Job application updates
-- Messages from recruiters (exclude WITCH-like outsourcing firms)
-- Banking alerts
-- Calendar invites
-- Account security emails (e.g., "your account is locked")
-- Shared items (e.g., Google Drive shares)
-- Wishlist-related alerts
-- Starred/flagged emails (positive signal, not sole determinant)
-- Any other contextually important emails
+**重要邮件的判断标准（满足任意一项即可）：**
+- 来自联系人列表中的联系人
+- 发货通知
+- 购物或交易确认邮件
+- 收到或发出的交易提醒
+- 退款相关邮件
+- 客户服务互动邮件
+- 即将到期的订阅续费通知
+- 即将到期的付款提醒
+- 技术新闻邮件
+- 工作申请更新邮件
+- 招聘人员的邮件（排除 WITCH 类型的外包公司发送的邮件）
+- 银行提醒邮件
+- 日历邀请邮件
+- 账户安全相关邮件（例如 "您的账户被锁定")
+- 共享文件相关邮件（例如 Google Drive 共享的内容）
+- 心愿单相关提醒
+- 被标记为星号的邮件（这是一个积极的信号，但不是唯一判断标准）
+- 其他具有上下文相关性的邮件
 
-**Exclusions:** The following are **never** important, even if matching other criteria:
-- Promotional/marketing emails
-- LinkedIn Job Alert emails (LinkedIn message notifications are fine)
-- Unsolicited recruiter/job-posting emails and mass hiring notices (e.g., subjects or bodies containing keywords like "hire", "hiring", "job", "position", "onsite", "fulltime", "recruiter", "application", or obvious bulk outreach), unless the sender is in the user's contacts or the message is starred/readily identified as personally relevant.
-- Product announcement / product update emails and vendor/platform notifications (e.g., "[Product Update]", release announcements, automatic enablement notices), unless the sender is in the user's contacts or the message is explicitly starred.
-- Vendor newsletters, community announcements, and general technical mailing-list posts (e.g., blog posts, release notes, product previews, digests), unless clearly personal or from a contact.
+**排除项：** 以下邮件 **无论如何都不重要**：
+- 促销/营销邮件
+- LinkedIn 的工作通知邮件（LinkedIn 的消息通知除外）
+- 来自招聘人员的未经请求的邮件或批量招聘通知（例如邮件主题或正文包含 "hire"、"hiring"、"job"、"position"、"onsite"、"fulltime"、"recruiter"、"application" 等关键词），除非发送者位于用户的联系人列表中，或者邮件被标记为个人相关。
+- 产品公告/更新邮件以及供应商/平台的通知（例如 "[产品更新]"、发布通知、自动启用通知），除非发送者位于用户的联系人列表中，或者邮件被明确标记为个人相关。
+- 供应商的新闻通讯、社区公告和一般的技术邮件列表内容（例如博客文章、发布通知、产品预览等），除非内容明确与用户个人相关或来自用户的联系人。
 
-**Failure behavior:** If semantic analysis fails, silently **omit the entire email section**.
+**失败处理：** 如果语义分析失败，**忽略整个邮件部分**。
 
-**Apply filters and sorting:**
-1. Filter by `emails_unread_only` if true
-2. If `emails_starred_first` is true, starred emails first
-3. Sort by date per `emails_sort_newest`
-4. Limit to `emails_limit`
+**应用过滤和排序规则：**
+1. 如果 `emails_unread_only` 为 true，则仅显示未读邮件。
+2. 如果 `emails_starred_first` 为 true，则优先显示被标记为星号的邮件。
+3. 根据 `emails_sort_newest` 的设置，按日期排序邮件。
+4. 限制显示的邮件数量为 `emails_limit`。
 
-### Step 6: Generate the Briefing
+### 第六步：生成简报
 
-Using all gathered and processed data, compose the briefing text following the Output Contract.
+使用所有收集和处理后的数据，按照规定的输出格式生成简报文本。
 
-**Section Formats:**
+**部分格式说明：**
 
-**Birthdays:**
+**生日信息：**
 ```
 🎂 **Birthdays:**
 • Today: Name
 • Feb 5: Name
 ```
-- Group multiples per date
-- Today entries first
-- Up to 5 upcoming (excluding today)
+- 按日期分组显示
+- 先显示今天的条目
+- 最多显示未来 5 天内的生日信息（不包括今天）
 
-**Calendar Events:**
+**日历事件：**
 ```
 📅 **Today's schedule:**
 • All-day: Event title
 • 9:00 AM: Event title
 ```
-- Single day: "Today's schedule"
-- Multi-day: "Schedule" with "Today/Tomorrow/{Month} {D}" labels
-- All-day events first, then timed by start
-- Up to 3 events per day
+- 单日事件：显示 "今天的日程"
+- 多日事件：使用 "Today/Tomorrow/{Month} {D}" 的标签显示
+- 先显示全天事件，然后按开始时间排序
+- 每天最多显示 3 个事件
 
-**Reminders:**
+**提醒事项：**
 ```
 ✅ **Reminders:**
 • Pick up prescription
 ```
-- Due-today reminders only
-- Up to 3 reminders
+- 仅显示今日到期的提醒
+- 最多显示 3 条提醒
 
-**Important Emails:**
+**重要邮件：**
 ```
 📧 **Emails needing attention:**
 • Amazon: Your order has shipped
 • Chase: Payment received
 ```
-- Format: `• Sender: Subject (truncated if needed)`
+- 格式：`• 发件人：主题（必要时可截断）`
 
-**Anchors:**
-- Only if you can **confidently infer 1–3 real priorities** from user-provided context.
-- Plain bullets, no heading.
-- If not real/uncertain, **omit entirely** (do not invent).
+**重点内容：**
+- **仅当能根据用户提供的信息** 确定 1–3 个优先级时才显示。
+- 使用纯文本列表形式，不加标题。
+- 如果无法确定优先级，**完全忽略** 这部分内容。
 
-**Closing Line:**
-- Required. Use the `quote` field from the gathered JSON data.
-- The orchestrator provides a random motivational quote each run.
+**结束语：**
+- 必须包含。使用从 JSON 数据中获取的 `quote` 字段。
+- 每次运行时，系统会随机提供一句励志语作为结束语。
 
-### Step 7: Output the Briefing
+### 第七步：输出简报
 
-Return **only** the briefing text. Nothing else.
+**仅** 输出简报文本。不输出其他内容。
 
 ---
 
-## Configuration
+## 配置设置
 
-Configuration is read from `~/.openclaw/openclaw.json` at path `skills.entries.daily-briefing.config`:
+配置信息从 `~/.openclaw/openclaw.json` 文件中的 `skills.entries.daily-briefing.config` 配置项读取：
 
 ```json
 {
@@ -370,53 +369,53 @@ Configuration is read from `~/.openclaw/openclaw.json` at path `skills.entries.d
 }
 ```
 
-### Configuration Options
+### 配置选项
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 说明 |
 |--------|------|---------|-------------|
-| `location` | string | "" | Location for weather (e.g., "New York, NY") |
-| `timezone` | string | system | Timezone (e.g., "America/New_York") |
-| `units` | string | "C" | Temperature units: "C" or "F" |
-| `birthdays.enabled` | bool | true | Enable birthday tracking |
-| `birthdays.lookahead` | int | 14 | Days ahead to show upcoming birthdays |
-| `birthdays.sources` | array | ["contacts"] | Sources: "contacts" (iCloud), "google" |
-| `calendar.enabled` | bool | true | Enable calendar events |
-| `calendar.lookahead` | int | 0 | Days ahead (0 = today only) |
-| `calendar.sources` | array | ["google", "icloud"] | Calendar sources |
-| `reminders.enabled` | bool | true | Enable Apple Reminders |
-| `reminders.dueFilter` | string | "today" | Due date filter: "today", "week", or "all" |
-| `reminders.includePastDue` | bool | true | Include overdue/past-due reminders |
-| `emails.enabled` | bool | false | Enable important emails feature |
-| `emails.icloudPassword` | string | "" | iCloud Mail app-specific password |
-| `emails.limit` | int | 10 | Maximum emails to show |
-| `emails.sortNewest` | bool | true | Sort newest first |
-| `emails.starredFirst` | bool | true | Prioritize starred emails |
-| `emails.unreadOnly` | bool | true | Only show unread emails |
+| `location` | 字符串 | "" | 天气查询的位置（例如 "New York, NY"） |
+| `timezone` | 字符串 | "system" | 时区（例如 "America/New_York"） |
+| `units` | 字符串 | "C" | 温度单位（"C" 或 "F"） |
+| `birthdays.enabled` | 布尔值 | 是否启用生日信息显示 |
+| `birthdays.lookahead` | 整数 | 显示未来几天内的生日数量 |
+| `birthdays.sources` | 数组 | ["contacts"] | 信息来源：联系人列表（iCloud）或 Google 日历 |
+| `calendar.enabled` | 布尔值 | 是否启用日历事件显示 |
+| `calendar.lookahead` | 整数 | 显示的天数（0 = 仅显示今天） |
+| `calendar.sources` | 数组 | 日历来源（例如 "google" 或 "icloud"） |
+| `reminders.enabled` | 布尔值 | 是否启用 Apple 提醒功能 |
+| `reminders.dueFilter` | 字符串 | 到期日期筛选条件（"today"、"week" 或 "all"） |
+| `reminders.includePastDue` | 布尔值 | 是否包含过期或已过期的提醒 |
+| `emails.enabled` | 布尔值 | 是否启用重要邮件功能 |
+| `emails.icloudPassword` | 字符串 | iCloud Mail 应用的专用密码 |
+| `emails.limit` | 整数 | 显示的邮件数量上限 |
+| `emails.sortNewest` | 布尔值 | 是否按最新时间排序邮件 |
+| `emails.starredFirst` | 布尔值 | 是否优先显示被标记为星号的邮件 |
+| `emails.ununread` | 布尔值 | 是否仅显示未读邮件 |
 
 ---
 
-## Defaults
+## 默认值
 
-- **Timezone:** User's local timezone; fallback to **UTC** if unknown.
-- **Location:** User's location if present; **omit weather** if unavailable in cron mode.
-- **Units:** User's preferred units if known; otherwise **Celsius**.
-
----
-
-## Dependencies
-
-**Required:**
-- `curl` — for weather fetching
-- `bash` — for orchestrator script
-
-**Optional:**
-- `gog` — `brew install steipete/tap/gogcli` (Google Calendar, Gmail, Contacts)
-- `icalpal` — `brew install ajrosen/tap/icalpal` (iCloud Calendar)
-- `himalaya` — `brew install himalaya` (iCloud Mail via IMAP)
+- **时区**：用户的本地时区；如果未知，则使用 UTC 时区。
+- **位置**：如果用户提供了位置信息，则使用该位置；在 Cron 模式下，如果无法获取天气信息，则省略天气相关内容。
+- **温度单位**：如果用户设置了偏好单位，则使用该单位；否则默认使用摄氏度。
 
 ---
 
-## File Structure
+## 所需依赖软件
+
+- **必需依赖**：
+- `curl`：用于获取天气信息
+- `bash`：用于执行脚本
+
+**可选依赖**：
+- `gog`：通过 `brew install steipete/tap/gogcli` 安装 Google 日历、Gmail 和联系人管理功能
+- `icalpal`：通过 `brew install ajrosen/tap/icalpal` 安装 iCloud 日历同步工具
+- `himalaya`：通过 `brew install himalaya` 安装 iCloud 邮件同步工具（通过 IMAP 协议）
+
+---
+
+## 文件结构
 
 ```
 daily-briefing/
@@ -431,7 +430,7 @@ daily-briefing/
 
 ---
 
-## Example Output
+## 示例输出
 
 ```
 Good morning - Today is Saturday, February 3, 2024. Partly cloudy skies, around 45°F this afternoon, with a low around 32°F.
@@ -456,7 +455,7 @@ Take things one step at a time today—you've got this.
 
 ---
 
-## Cleanup
+## 清理操作
 
 ```bash
 "{baseDir}/skills/daily-briefing/bin/run_daily_briefing.sh" --cleanup

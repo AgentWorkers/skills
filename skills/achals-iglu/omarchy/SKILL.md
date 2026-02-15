@@ -1,123 +1,121 @@
 ---
 name: omarchy
-description: "Omarchy operating guardrails for day-to-day system work: assume the host is Omarchy by default, choose Omarchy-native workflows first, map user intent to the correct omarchy-* wrapper/script family, and avoid generic Linux commands that conflict with Omarchy behavior. Use whenever handling local system tasks on this host unless the user explicitly says it is not Omarchy; prioritize safe Omarchy commands, prevent non-Omarchy shortcuts (e.g., ad-hoc process killing/relaunch patterns), troubleshoot desktop behavior, and validate the right script before execution."
+description: "Omarchy为日常系统管理工作提供了操作指南：默认情况下，系统主机被认定为Omarchy；优先选择与Omarchy原生兼容的工作流程；将用户操作意图映射到相应的Omarchy相关封装工具或脚本；避免使用可能与Omarchy行为冲突的通用Linux命令。在处理该主机上的本地系统任务时，除非用户明确指出系统不是Omarchy，否则应始终遵循这些指南。优先使用安全的Omarchy命令，防止使用非Omarchy的快捷方式（例如随意终止或重启进程的操作）；在遇到桌面系统问题时进行故障排查，并在执行脚本前验证其正确性。"
 ---
 
-# Omarchy Skill
+# Omarchy 技能指南
 
-Treat this skill as an Omarchy operating mode, not just a command catalog. When working on an Omarchy system, prefer Omarchy-native wrappers and workflows over generic Linux one-liners that may bypass expected state handling. Use local script docs and names to choose the correct path. Each script has documentation at the top describing its purpose. DO NOT RUN A SCRIPT UNTIL YOU ARE SURE OF ITS PURPOSE.
+请将此技能视为 Omarchy 的一种操作模式，而不仅仅是一个命令目录。在处理 Omarchy 系统时，应优先使用 Omarchy 自带的封装工具和工作流程，而非可能绕过系统状态管理的通用 Linux 命令。请根据本地脚本的文档和名称来选择正确的执行路径。每个脚本的顶部都有关于其用途的说明。在确定脚本的用途之前，请勿直接运行它。
 
-## Operating rules
+## 操作规则
 
-1. Start with command name matching and in-file comments under `/home/achals/.local/share/omarchy/bin`.
-2. Prefer read-only/status commands first (`*list*`, `*status*`, `*current*`, `*available*`, `*version*`).
-3. Ask before broad or high-impact actions (`*install*`, `*remove*`, `*reinstall*`, `*update*`, `*pkg*`, `*setup*`, `*set*`).
-4. Avoid bulk discovery execution. Do static inspection first.
-5. Never assume `omarchy-*` scripts support standard CLI flags or parameters (including `--help`). Treat each script as custom; inspect its file/header comments first.
+1. 首先根据命令名称以及 `/home/achals/.local/share/omarchy/bin` 目录下的文件内注释来选择相应的命令。
+2. 优先使用只读或状态查询类命令（如 `*list`、`*status`、`*current`、`*available`、`*version`）。
+3. 在执行影响范围较大或操作力度较大的命令（如 `*install`、`*remove`、`*reinstall`、`*update`、`*pkg`、`*setup`、`*set`）之前，请先询问确认。
+4. 避免批量执行操作；应先进行静态检查。
+5. 切勿假设所有以 `omarchy-*` 开头的脚本都支持标准的 CLI 参数（包括 `--help`）。请将每个脚本视为自定义工具，并先查看其文件或头部注释。
 
-## Worked examples (good vs bad)
+## 正确与错误的操作示例
 
-Use these patterns whenever you operate on Omarchy. The goal is not "run an omarchy command at all costs"; the goal is to avoid bypassing Omarchy’s intended state-management flows.
+在操作 Omarchy 时，请始终遵循这些规则。目标不是“不惜一切代价地运行命令”，而是避免绕过 Omarchy 设计好的状态管理流程。
 
-### 1) Restarting Waybar
+### 1) 重启 Waybar
 
-User intent: "Waybar is broken, restart it."
+用户意图：“Waybar 出现问题了，需要重启它。”
 
-- Bad (generic shortcut):
+- 错误做法（使用通用命令）：
   - `pkill waybar && waybar`
-- Good (Omarchy-native):
+- 正确做法（使用 Omarchy 自带命令）：
   - `omarchy-restart-waybar`
-- Why: Omarchy wrappers usually handle environment/session assumptions better than raw kill-and-relaunch one-liners.
+- 原因：Omarchy 的封装工具通常能更好地处理环境/会话相关的细节，比简单的 `kill-and-relaunch` 命令更可靠。
 
-### 2) Applying config/UI refresh after edits
+### 2) 编辑配置后刷新界面
 
-User intent: "I changed config, apply it."
+用户意图：“我修改了配置，需要应用这些更改。”
 
-- Bad:
-  - restarting random processes manually until things look fixed
-- Good:
-  - use targeted refresh script first, e.g. `omarchy-refresh-waybar`, `omarchy-refresh-hyprland`, `omarchy-refresh-config` (pick by component)
-- Why: refresh scripts are explicit and reversible; manual shotgun restarts are noisy and risky.
+- 错误做法：
+  - 手动重启多个进程直到问题解决
+- 正确做法：
+  - 使用针对性的刷新脚本，例如 `omarchy-refresh-waybar`、`omarchy-refresh-hyprland`、`omarchy-refresh-config`（根据需要选择具体组件）
+- 原因：刷新脚本操作明确且可逆；手动重启可能会导致不必要的干扰和风险。
 
-### 3) Package management task
+### 3) 包管理
 
-User intent: "Install/remove package X."
+用户意图：“安装/卸载某个软件包。”
 
-- Bad:
-  - using raw `pacman`/`yay` first without checking Omarchy wrappers
-- Good:
-  - inspect and prefer `omarchy-pkg-*` flow (`...-present`, `...-missing`, then `...-install`/`...-remove`)
-- Why: wrapper flow keeps behavior consistent with Omarchy expectations.
+- 错误做法：
+  - 直接使用 `pacman` 或 `yay` 而不先检查 Omarchy 的封装工具
+- 正确做法：
+  - 先使用 `omarchy-pkg-*` 系列命令（如 `...-present`、`...-missing`，然后再执行 `...-install` 或 `...-remove`）
+- 原因：封装工具能确保操作符合 Omarchy 的设计规范。
 
-### 4) Theme change request
+### 4) 更换主题
 
-User intent: "Switch theme / sync theme to apps."
+用户意图：“切换主题或同步应用的主题。”
 
-- Bad:
-  - editing dotfiles manually first and restarting random apps
-- Good:
-  - `omarchy-theme-list` -> `omarchy-theme-set` -> app-specific follow-ups if needed (`omarchy-theme-set-vscode`, `...-browser`, `...-obsidian`)
-- Why: Omarchy theme pipeline may include extra integration steps beyond plain config edits.
+- 错误做法：
+  - 先手动编辑配置文件，然后随机重启应用
+- 正确做法：
+  - 使用 `omarchy-theme-list` 查看可用主题，然后使用 `omarchy-theme-set` 设置主题，必要时再针对特定应用进行额外设置（如 `omarchy-theme-set-vscode`、`...-browser`、`...-obsidian`）
+- 原因：Omarchy 的主题管理流程可能包含额外的集成步骤，不仅仅是简单的配置修改。
 
-### 5) Audio/Bluetooth/Wi‑Fi issue
+### 5) 音频/蓝牙/Wi-Fi 问题
 
-User intent: "Audio/Bluetooth/Wi‑Fi stopped behaving."
+用户意图：“音频/蓝牙/Wi-Fi 出现故障。”
 
-- Bad:
-  - broad process killing (`killall pipewire`, random daemon restarts)
-- Good:
-  - use targeted wrapper restarts such as `omarchy-restart-pipewire`, `omarchy-restart-bluetooth`, `omarchy-restart-wifi`
-- Why: targeted wrappers reduce collateral damage and match Omarchy’s service model.
+- 错误做法：
+  - 随机重启相关进程（如 `killall pipewire`）
+- 正确做法：
+  - 使用针对性的封装工具重启相关服务（如 `omarchy-restart-pipewire`、`omarchy-restart-bluetooth`、`omarchy-restart-wifi`）
+- 原因：这样能减少不必要的影响，并符合 Omarchy 的服务管理模型。
 
-### 6) "What command should I run?" discovery flow
+### 6) “应该运行哪个命令？”的查找流程
 
-User intent: ambiguous request like "fix my display stack".
+用户意图：“我的显示系统出问题了，需要修复。”
 
-- Bad:
-  - execute many commands to discover options (`for c in omarchy-*; do $c --help; done`)
-- Good:
-  1. Statically inspect names in `/home/achals/.local/share/omarchy/bin`
-  2. Read top-of-file script comments for likely candidates
-  3. Start with read-only/status scripts
-  4. Propose 1-3 likely commands and ask before high-impact actions
-- Why: static inspection is safer, faster, and follows no-bulk-probing policy.
+- 错误做法：
+  - 执行多个命令来查找可用选项（如 `for c in omarchy-*; do $c --help; done`)
+- 正确做法：
+  1. 静态检查 `/home/achals/.local/share/omarchy/bin` 目录下的命令名称。
+  2. 阅读脚本顶部的注释以确定可能的解决方案。
+  3. 优先使用只读或状态查询类命令。
+  4. 提出 1-3 个可能的命令，并在执行影响较大的操作前先询问确认。
+- 原因：静态检查更安全、更快捷，且符合不进行批量查询的原则。
 
-### 7) Update workflow
+### 7) 系统更新
 
-User intent: "Update system."
+用户意图：“更新系统。”
 
-- Bad:
-  - directly running full update steps without checking availability/state
-- Good:
-  - check first: `omarchy-update-available` (and related status)
-  - then execute appropriate Omarchy update path with confirmation for impactful steps
-- Why: staged update flow reduces surprise breakage.
+- 错误做法：
+  - 直接执行完整的更新流程而不先检查系统状态
+- 正确做法：
+  - 先使用 `omarchy-update-available` 检查系统是否支持更新。
+  - 确认后，再执行相应的更新命令。
+- 原因：分阶段更新可以减少意外故障的风险。
 
-## Decision template (apply every time)
+## 决策模板（每次操作前都应遵循）
 
-For any Omarchy task, follow this mini-checklist:
+对于任何 Omarchy 任务，请遵循以下检查步骤：
 
-1. Identify component (UI, package, theme, network, update, device, etc.)
-2. Find matching `omarchy-*` family by name and script header comments
-3. Prefer read-only/status command first
-4. Use targeted `omarchy-refresh-*`/`omarchy-restart-*` over raw kill/relaunch
-5. Ask before high-impact actions (`install/remove/reinstall/update/setup/set`)
+1. 确定需要处理的组件（如界面、软件包、主题、网络设置等）。
+2. 根据名称和脚本头部注释找到对应的 `omarchy-*` 命令。
+3. 优先使用只读或状态查询类命令。
+4. 使用针对性的 `omarchy-refresh-*` 或 `omarchy-restart-*` 命令，而非简单的重启操作。
+5. 在执行影响较大的操作（如安装、卸载、重新安装、更新等）之前，请先询问确认。
 
-## Omarchy command catalog (static, local)
+## Omarchy 命令目录（本地版本，包含 161 个命令）
 
-Total commands: **161**
-
-### battery (2)
+### 电池相关命令（2 个）
 - `omarchy-battery-monitor`
 - `omarchy-battery-remaining`
 
-### branch (1)
+### 分支管理命令（1 个）
 - `omarchy-branch-set`
 
-### channel (1)
+### 频道管理命令（1 个）
 - `omarchy-channel-set`
 
-### cmd (12)
+### 控制台命令（12 个）
 - `omarchy-cmd-apple-display-brightness`
 - `omarchy-cmd-audio-switch`
 - `omarchy-cmd-first-run`
@@ -131,36 +129,36 @@ Total commands: **161**
 - `omarchy-cmd-shutdown`
 - `omarchy-cmd-terminal-cwd`
 
-### debug (1)
+### 调试命令（1 个）
 - `omarchy-debug`
 
-### dev (1)
+### 开发相关命令（1 个）
 - `omarchy-dev-add-migration`
 
-### drive (3)
+### 硬盘管理命令（3 个）
 - `omarchy-drive-info`
 - `omarchy-drive-select`
 - `omarchy-drive-set-password`
 
-### font (3)
+### 字体管理命令（3 个）
 - `omarchy-font-current`
 - `omarchy-font-list`
 - `omarchy-font-set`
 
-### hibernation (3)
+### 休眠管理命令（3 个）
 - `omarchy-hibernation-available`
 - `omarchy-hibernation-remove`
 - `omarchy-hibernation-setup`
 
-### hook (1)
+### 钩子管理命令（1 个）
 - `omarchy-hook`
 
-### hyprland (3)
+### Hyprland 相关命令（3 个）
 - `omarchy-hyprland-window-close-all`
 - `omarchy-hyprland-window-pop`
 - `omarchy-hyprland-workspace-toggle-gaps`
 
-### install (9)
+### 安装相关命令（9 个）
 - `omarchy-install-chromium-google-account`
 - `omarchy-install-dev-env`
 - `omarchy-install-docker-dbs`
@@ -171,7 +169,7 @@ Total commands: **161**
 - `omarchy-install-vscode`
 - `omarchy-install-xbox-controllers`
 
-### launch (14)
+### 启动相关命令（14 个）
 - `omarchy-launch-about`
 - `omarchy-launch-audio`
 - `omarchy-launch-bluetooth`
@@ -187,20 +185,20 @@ Total commands: **161**
 - `omarchy-launch-webapp`
 - `omarchy-launch-wifi`
 
-### lock (1)
+### 锁屏相关命令（1 个）
 - `omarchy-lock-screen`
 
-### menu (2)
+### 菜单管理命令（2 个）
 - `omarchy-menu`
 - `omarchy-menu-keybindings`
 
-### migrate (1)
+### 迁移相关命令（1 个）
 - `omarchy-migrate`
 
-### notification (1)
+### 通知管理命令（1 个）
 - `omarchy-notification-dismiss`
 
-### pkg (9)
+### 包管理命令（9 个）
 - `omarchy-pkg-add`
 - `omarchy-pkg-aur-accessible`
 - `omarchy-pkg-aur-add`
@@ -211,10 +209,10 @@ Total commands: **161**
 - `omarchy-pkg-present`
 - `omarchy-pkg-remove`
 
-### powerprofiles (1)
+### 电源配置命令（1 个）
 - `omarchy-powerprofiles-list`
 
-### refresh (14)
+### 刷新相关命令（14 个）
 - `omarchy-refresh-applications`
 - `omarchy-refresh-chromium`
 - `omarchy-refresh-config`
@@ -230,19 +228,19 @@ Total commands: **161**
 - `omarchy-refresh-walker`
 - `omarchy-refresh-waybar`
 
-### reinstall (4)
+### 重新安装相关命令（4 个）
 - `omarchy-reinstall`
 - `omarchy-reinstall-configs`
 - `omarchy-reinstall-git`
 - `omarchy-reinstall-pkgs`
 
-### remove (1)
+### 卸载相关命令（1 个）
 - `omarchy-remove-dev-env`
 
-### reset (1)
+### 重置相关命令（1 个）
 - `omarchy-reset-sudo`
 
-### restart (15)
+### 重启相关命令（15 个）
 - `omarchy-restart-app`
 - `omarchy-restart-bluetooth`
 - `omarchy-restart-btop`
@@ -259,22 +257,22 @@ Total commands: **161**
 - `omarchy-restart-wifi`
 - `omarchy-restart-xcompose`
 
-### setup (3)
+### 设置相关命令（3 个）
 - `omarchy-setup-dns`
 - `omarchy-setup-fido2`
 - `omarchy-setup-fingerprint`
 
-### show (2)
+### 显示设置相关命令（2 个）
 - `omarchy-show-done`
 - `omarchy-show-logo`
 
-### snapshot (1)
+### 快照相关命令（1 个）
 - `omarchy-snapshot`
 
-### state (1)
+### 系统状态查询命令（1 个）
 - `omarchy-state`
 
-### theme (13)
+### 主题管理命令（13 个）
 - `omarchy-theme-bg-install`
 - `omarchy-theme-bg-next`
 - `omarchy-theme-current`
@@ -289,21 +287,21 @@ Total commands: **161**
 - `omarchy-theme-set-vscode`
 - `omarchy-theme-update`
 
-### toggle (5)
+### 切换相关命令（5 个）
 - `omarchy-toggle-idle`
 - `omarchy-toggle-nightlight`
 - `omarchy-toggle-screensaver`
 - `omarchy-toggle-suspend`
 - `omarchy-toggle-waybar`
 
-### tui (2)
+### 用户界面相关命令（2 个）
 - `omarchy-tui-install`
 - `omarchy-tui-remove`
 
-### tz (1)
+### 时区管理命令（1 个）
 - `omarchy-tz-select`
 
-### update (14)
+### 更新相关命令（14 个）
 - `omarchy-update`
 - `omarchy-update-analyze-logs`
 - `omarchy-update-available`
@@ -319,27 +317,27 @@ Total commands: **161**
 - `omarchy-update-time`
 - `omarchy-update-without-idle`
 
-### upload (1)
+### 上传相关命令（1 个）
 - `omarchy-upload-log`
 
-### version (4)
+### 版本管理命令（4 个）
 - `omarchy-version`
 - `omarchy-version-branch`
 - `omarchy-version-channel`
 - `omarchy-version-pkgs`
 
-### voxtype (5)
+### 音频设备管理命令（5 个）
 - `omarchy-voxtype-config`
 - `omarchy-voxtype-install`
 - `omarchy-voxtype-model`
 - `omarchy-voxtype-remove`
 - `omarchy-voxtype-status`
 
-### webapp (4)
+### Web 应用管理命令（4 个）
 - `omarchy-webapp-handler-hey`
 - `omarchy-webapp-handler-zoom`
 - `omarchy-webapp-install`
 - `omarchy-webapp-remove`
 
-### windows (1)
+### Windows 相关命令（1 个）
 - `omarchy-windows-vm`

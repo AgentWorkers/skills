@@ -1,36 +1,36 @@
 ---
 slug: "n8n-project-management"
 display_name: "N8N Project Management"
-description: "Build a complete project management system with Telegram bot, task distribution, and photo reports using n8n. Based on DDC Project Management repository."
+description: "使用 n8n 构建一个完整的项目管理系统，该系统包括 Telegram 聊天机器人、任务分配以及基于照片的报告功能。该系统基于 DDC 项目管理仓库进行开发。"
 ---
 
-# n8n Project Management System for Construction
+# n8n 建筑项目管理系统
 
-Build a universal task management and reporting system for construction projects using n8n automation, Telegram bot, and Google Sheets.
+使用 n8n 自动化工具、Telegram 机器人和 Google Sheets 构建一个通用的建筑项目任务管理和报告系统。
 
-## Business Case
+## 商业案例
 
-**Problem**: Construction managers spend 2-3 hours daily on:
-- Distributing tasks to foremen and workers
-- Collecting progress updates via calls/messages
-- Compiling photo documentation
-- Tracking task completion status
+**问题**：建筑经理每天需要花费 2-3 小时的时间来：
+- 向工头和工人分配任务
+- 通过电话/消息收集进度更新
+- 编辑照片文档
+- 跟踪任务完成状态
 
-**Solution**: Automated system that:
-- Sends task reminders via Telegram at scheduled times
-- Collects status reports (text + photos + GPS)
-- Auto-saves all data to Google Sheets
-- Provides real-time visibility to managers
+**解决方案**：自动化系统能够：
+- 在预定时间通过 Telegram 发送任务提醒
+- 收集状态报告（文本 + 照片 + GPS 数据）
+- 自动将所有数据保存到 Google Sheets
+- 为经理提供实时信息
 
-**ROI**: 70% reduction in administrative time for task management
+**投资回报率 (ROI)**：任务管理方面的行政时间减少了 70%
 
-## Source Repository
+## 源代码仓库
 
 ```
 https://github.com/datadrivenconstruction/Project-management-n8n-with-task-management-and-photo-reports
 ```
 
-## System Architecture
+## 系统架构
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
@@ -58,9 +58,9 @@ https://github.com/datadrivenconstruction/Project-management-n8n-with-task-manag
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-## Implementation Guide
+## 实施指南
 
-### Step 1: Create Telegram Bot
+### 第一步：创建 Telegram 机器人
 
 ```python
 # 1. Open @BotFather in Telegram
@@ -78,52 +78,52 @@ print(response.json())
 # Expected: {"ok": true, "result": {"id": ..., "first_name": "YourProject Tasks Bot"}}
 ```
 
-### Step 2: Setup Google Sheets
+### 第二步：设置 Google Sheets
 
-Create spreadsheet with these sheets:
+创建以下表格：
 
-**Sheet 1: Tasks**
-| Column | Type | Description |
-|--------|------|-------------|
-| Task_ID | Text | Unique identifier (TASK-001) |
-| Project | Text | Project name |
-| Object | Text | Building/area |
-| Section | Text | Floor/zone |
-| Task | Text | Task description |
-| Executor | Text | Assigned worker name |
-| Executor_ID | Number | Telegram user ID |
-| Date | Date | Due date (DD.MM.YYYY) |
-| Send_Time | Time | Reminder time |
-| Priority | Text | 🔴High / 🟡Medium / 🟢Low |
-| Status | Text | Pending/Sent/Completed/Partial |
-| Response | Text | Worker's response |
-| Response_Time | DateTime | When responded |
-| Photo_Link | URL | Google Drive link |
-| GPS_Lat | Number | Latitude |
-| GPS_Lon | Number | Longitude |
+**表格 1：任务**
+| 列       | 类型    | 描述                |
+|---------|-------|-------------------|
+| Task_ID   | 文本    | 唯一标识符（例如：TASK-001）     |
+| Project   | 文本    | 项目名称             |
+| Object    | 文本    | 建筑物/区域            |
+| Section   | 文本    | 楼层/区域             |
+| Task     | 文本    | 任务描述             |
+| Executor  | 文本    | 被分配的工人名称         |
+| Executor_ID | 数字    | Telegram 用户 ID         |
+| Date     | 文本    | 截止日期（格式：DD.MM.YYYY）     |
+| Send_Time | 文本    | 提醒时间             |
+| Priority  | 文本    | 🔴高 / 🟡中 / 🟢低          |
+| Status    | 文本    | 待处理/已发送/已完成/部分完成   |
+| Response  | 文本    | 工人的回复           |
+| Response_Time | 时间    | 回复时间             |
+| Photo_Link | URL     | Google Drive 文件链接       |
+| GPS_Lat   | 数字    | 纬度               |
+| GPS_Lon    | 数字    | 经度               |
 
-**Sheet 2: Workers**
-| Column | Type | Description |
-|--------|------|-------------|
-| Name | Text | Worker full name |
-| Role | Text | Foreman/Worker/Contractor |
-| Telegram_ID | Number | User ID from /start |
-| Phone | Text | Phone number |
-| Registered | DateTime | Registration date |
+**表格 2：工人**
+| 列       | 类型    | 描述                |
+|---------|-------|-------------------|
+| Name     | 文本    | 工人全名             |
+| Role     | 文本    | 工头/工人/承包商           |
+| Telegram_ID | 数字    | 用户 ID             |
+| Phone     | 文本    | 电话号码             |
+| Registered | 时间    | 注册日期             |
 
-**Sheet 3: Photo Reports**
-| Column | Type | Description |
-|--------|------|-------------|
-| Report_ID | Text | Unique ID |
-| Report_Type | Text | Daily/Safety/Quality |
-| Executor | Text | Who should submit |
-| Date | Date | Report date |
-| Time | Time | Deadline |
-| Status | Text | Pending/Submitted |
-| Photo_Link | URL | Drive folder link |
-| Comment | Text | Worker comment |
+**表格 3：照片报告**
+| 列       | 类型    | 描述                |
+|---------|-------|-------------------|
+| Report_ID | 文本    | 唯一 ID             |
+| Report_Type | 文本    | 日报/安全/质量报告        |
+| Executor  | 文本    | 应由谁提交           |
+| Date     | 文本    | 报告日期             |
+| Time     | 文本    | 截止时间             |
+| Status    | 文本    | 待处理/已提交           |
+| Photo_Link | URL     | Google Drive 文件链接       |
+| Comment  | 文本    | 工人备注             |
 
-### Step 3: Import n8n Workflow
+### 第三步：导入 n8n 工作流
 
 ```json
 // Core workflow structure (simplified)
@@ -182,7 +182,7 @@ Create spreadsheet with these sheets:
 }
 ```
 
-### Step 4: Configure Webhook
+### 第四步：配置 Webhook
 
 ```bash
 # Set Telegram webhook to n8n
@@ -193,9 +193,9 @@ curl -X POST "https://api.telegram.org/bot${BOT_TOKEN}/setWebhook" \
 curl "https://api.telegram.org/bot${BOT_TOKEN}/getWebhookInfo"
 ```
 
-## Worker Commands
+## 工人命令
 
-### Registration: /start
+### 注册：/start
 
 ```
 User: /start
@@ -220,7 +220,7 @@ ID: 123456789
 Используйте /help для справки.
 ```
 
-### Receiving Task
+### 接收任务
 
 ```
 Bot: 📋 *ЗАДАЧА #TASK-047*
@@ -238,7 +238,7 @@ Bot: 📋 *ЗАДАЧА #TASK-047*
 • GPS: отправьте геолокацию
 ```
 
-### Task Response
+### 回复任务
 
 ```
 User: (reply to task message)
@@ -254,7 +254,7 @@ Bot: ✅ Отчет принят!
 ━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Photo Report
+### 提交照片报告
 
 ```
 User: (sends photo as reply to task)
@@ -270,7 +270,7 @@ Bot: 📷 Фото получено и сохранено!
 ━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### GPS Location
+### 提供 GPS 位置信息
 
 ```
 User: (sends location)
@@ -285,9 +285,9 @@ Bot: 📍 Геолокация получена!
 ━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## Manager Dashboard
+## 经理仪表盘
 
-### Google Sheets View
+### 查看 Google Sheets 数据
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -311,7 +311,7 @@ Bot: 📍 Геолокация получена!
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Python Integration
+## Python 集成
 
 ```python
 import gspread
@@ -460,9 +460,9 @@ if __name__ == "__main__":
     print(f"Today's summary: {summary}")
 ```
 
-## n8n Workflow Templates
+## n8n 工作流模板
 
-### Template 1: Morning Task Distribution
+### 模板 1：早晨任务分配
 
 ```yaml
 name: Morning Task Distribution
@@ -508,7 +508,7 @@ steps:
         Ответьте на каждую задачу по мере выполнения.
 ```
 
-### Template 2: Photo Report Collection
+### 模板 2：收集照片报告
 
 ```yaml
 name: Scheduled Photo Reports
@@ -540,7 +540,7 @@ steps:
           - [{text: "📷 Отправить фото", callback_data: "photo_{{$json.Report_ID}}"}]
 ```
 
-### Template 3: End of Day Summary
+### 模板 3：每日总结
 
 ```yaml
 name: End of Day Report
@@ -587,33 +587,33 @@ steps:
         [Открыть таблицу]({{SPREADSHEET_URL}})
 ```
 
-## Best Practices
+## 最佳实践
 
-### Task Design
-1. Keep tasks atomic (1 task = 1 action)
-2. Include clear location (Object + Section)
-3. Set realistic deadlines
-4. Use priority wisely (not everything is 🔴High)
+### 任务设计
+1. 保持任务的原子性（每个任务对应一个具体的行动）
+2. 明确指定任务地点（建筑物/区域）
+3. 设定合理的截止日期
+4. 合理设置任务优先级（并非所有任务都需立即处理）
 
-### Photo Reports
-1. Request photos at milestones, not continuously
-2. Use Google Drive folders per project/date
-3. Include location verification (GPS)
-4. Set clear expectations (what should be in photo)
+### 照片报告
+1. 在关键节点要求提交照片
+2. 按项目和日期创建不同的 Google Drive 文件夹
+3. 确保照片中包含位置信息（GPS 数据）
+4. 明确提交照片的要求
 
-### Worker Engagement
-1. Acknowledge all responses quickly
-2. Provide daily feedback
-3. Recognize high performers
-4. Keep bot messages concise
+### 工人参与
+1. 及时回复所有消息
+2. 提供每日反馈
+3. 表扬表现优秀的工人
+4. 保持机器人消息的简洁性
 
-## Resources
+## 资源
 
-- **Repository**: https://github.com/datadrivenconstruction/Project-management-n8n-with-task-management-and-photo-reports
-- **Demo Bot**: @ProjectManagementTasks_Bot
-- **Demo Sheet**: [Google Sheets Demo](https://docs.google.com/spreadsheets/d/1fWi_0W_jqKa61h2oB3zZLdTDBK8_cQ123RtF70X1rwc)
-- **n8n Documentation**: https://docs.n8n.io
+- **代码仓库**：https://github.com/datadrivenconstruction/Project-management-n8n-with-task-management-and-photo-reports
+- **演示机器人**：@ProjectManagementTasks_Bot
+- **演示表格**：[Google Sheets 演示](https://docs.google.com/spreadsheets/d/1fWi_0W_jqKa61h2oB3zZLdTDBK8_cQ123RtF70X1rwc)
+- **n8n 文档**：https://docs.n8n.io
 
 ---
 
-*"Automation is not about replacing people, it's about freeing them to do what only people can do."*
+*“自动化并非是为了取代人类，而是为了让他们能够去做那些只有人类才能做的事情。”*

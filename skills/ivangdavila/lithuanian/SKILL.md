@@ -1,64 +1,56 @@
 ---
 name: Lithuanian
-description: Write Lithuanian that sounds human. Not formal, not robotic, not AI-generated.
+description: 请用立陶宛语写一段听起来像真人说的话。不要过于正式，也不要有机器人或人工智能生成的感觉。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Lithuanian is technically correct but sounds off. Too formal. Too literary. Natives write more casually, with particles and warmth. Match that.
+虽然“AI Lithuan”在语法上是正确的，但听起来过于正式、过于文学化。 Lithuan语的母语者通常会使用更随意的表达方式，会使用一些助词和表达方式来增加语言的亲切感。我们需要让翻译后的内容更贴近 Lithuan语的日常使用习惯。
 
-## Formality Default
+## 形式化表达的默认设置
 
-Default register is too high. Casual Lithuanian is warm and direct. Unless explicitly formal: lean casual. "Labas" not "Laba diena". "Aha" not "Taip".
+ Lithuan语的默认表达方式过于正式。在非正式场合， Lithuan语的表达更加亲切和直接。除非需要特别正式，否则应倾向于使用更随意的表达方式。例如：“Labas”（你好）而不是“Laba diena”（你好的一天）；“Aha”（啊哈）而不是“Taip”（是的）。
 
-## Tu vs Jūs
+## “Tu”与“Jūs”的使用
 
-Critical distinction:
-- Jūs: formal, elderly, professional
-- Tu: friends, peers, internet, casual
-- Lithuanian internet uses tu
-- Overusing jūs = stiff
+在 Lithuan语中，“Tu”用于朋友、同龄人或非正式场合的交流，而“Jūs”则用于正式场合、年长者或专业人士之间。在网络交流中，通常使用“Tu”。
 
-## Particles & Softeners
+## 助词与缓和语
 
-These make Lithuanian natural:
-- Gi: emphasis ("Kas gi čia?")
-- Juk: "after all" ("Juk žinai")
-- Tai: "so", "well"
-- Nu: filler, "well"
-- Kad: emphasis in exclamations
+这些助词和表达方式可以使 Lithuan语的表达更加自然：
+- **Gi**：用于强调（例如：“Kas gi čia?”）
+- **Juk**：表示“毕竟”（例如：“Juk žinai”）
+- **Tai**：表示“所以”或“嗯”
+- **Nu**：用于填充语，表示“嗯”
+- **Kad**：用于感叹句中以加强语气
 
-## Fillers & Flow
+## 填充语与语篇流畅性
 
-Real Lithuanian has fillers:
-- Nu, tai, va
-- Tipo, kaip ir
-- Žinok, klausyk
-- Šiaip, beje
+Lithuan语中常见一些填充语，如 **Nu**, **tai**, **va** 等，它们有助于使语言更加流畅。
 
-## Expressiveness
+## 表达力
 
-Don't pick the safe word:
-- Gerai → Super, Šaunu, Nuostabu
-- Blogai → Blogai, Šūdas, Baisu
-- Labai → Mega, Žiauriai, Tikrai
+在表达情感时，不要使用过于中性的词汇：
+- **Gerai** → 可以用 **Super**, **Šaunu**, **Nuostabu**
+- **Blogai** → 可以用 **Blogai**, **Šūdas**, **Baisu**
+- **Labai** → 可以用 **Mega**, **Žiauriai**, **Tikrai**
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Gerai, Okei, Suprantu
-- Nieko tokio, Ramiai
-- Rimtai?, Tikrai?, Ką?
-- Šaunu!, Super!, Nuostabu!
+自然的表达方式包括：
+- **Gerai**, **Okei**, **Suprantu**
+- **Nieko tokio**, **Ramiai**
+- **Rimtai?, Tikrai?, Ką?**
+- **Šaunu!, Super!, Nuostabu!**
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Rimtai?, Tikrai?, Nu ne!
-- Oho!, Vau!, Dieve!
-- Super!, Šaunu!, Cool!
-- Haha, lol in text
+在交流时，应保持自然的反应：
+- **Rimtai?, Tikrai?, Nu ne!**（真的吗？不！）
+- **Oho!, Vau!, Dieve!**（哦哦！哇！天哪！）
+- **Super!, Šaunu!, Cool!**（太棒了！）
+- **Haha, lol**（哈哈，哈哈）
 
-## The "Native Test"
+## “母语者测试”
 
-Before sending: would a Lithuanian screenshot this as "AI-generated"? If yes—too formal, no "nu", too stiff. Add casual warmth.
+在发送内容之前，需要考虑 Lithuan语母语者是否会认为这段文字是“AI生成的”。如果是这样，那么表达就太正式了，缺乏自然感；应该添加一些更随意、更亲切的表达方式来提升语言的亲和力。

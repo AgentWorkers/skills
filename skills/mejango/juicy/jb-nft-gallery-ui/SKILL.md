@@ -1,22 +1,22 @@
 ---
 name: jb-nft-gallery-ui
-description: Interactive gallery for browsing and managing NFTs from Juicebox 721 hooks. Displays tier information, owned NFTs, and minting interfaces.
+description: 这是一个交互式画廊，用于通过 Juicebox 721 的接口浏览和管理非同质化代币（NFTs）。它可以显示代币的层级信息、用户拥有的 NFTs 以及铸造（minting）功能。
 ---
 
-# Juicebox V5 NFT Gallery UI
+# Juicebox V5 NFT 图库 UI
 
-Interactive gallery for browsing and managing NFTs from Juicebox 721 hooks. Displays tier information, owned NFTs, and minting interfaces.
+这是一个交互式图库，用于浏览和管理来自 Juicebox 721 插件的 NFT（非同质化代币）。它可以显示 NFT 的层级信息、用户拥有的 NFT 以及 minting（铸造）接口。
 
-## Overview
+## 概述
 
-This skill generates vanilla JS/HTML interfaces for:
-- Browsing all NFT tiers for a project
-- Viewing owned NFTs by wallet
-- Minting NFTs from available tiers
-- Tier metadata and supply tracking
-- NFT transfer functionality
+该功能提供了基础的 JS/HTML 接口，支持以下操作：
+- 浏览项目的所有 NFT 层级
+- 根据钱包查看用户拥有的 NFT
+- 从可用的层级中铸造 NFT
+- 跟踪 NFT 的层级元数据和供应量
+- 实现 NFT 的转移功能
 
-## NFT Gallery UI Template
+## NFT 图库 UI 模板
 
 ```html
 <!DOCTYPE html>
@@ -597,49 +597,49 @@ This skill generates vanilla JS/HTML interfaces for:
 </html>
 ```
 
-## Key Features
+## 主要特性
 
-### Tier Browsing
-- Grid layout with tier cards
-- Supply tracking (minted/total)
-- Price display in ETH
-- Category filtering
-- Availability filtering
+### 层级浏览
+- 使用网格布局展示各层级信息
+- 显示 NFT 的供应量（已铸造/总数）
+- 以 ETH 为单位显示价格
+- 支持类别过滤
+- 支持可用性过滤
 
-### Owned NFTs View
-- Wallet connection via viem
-- Display owned NFTs with metadata
-- Transfer functionality
-- Cash out guidance
+### 拥有的 NFT 查看
+- 通过 viem 连接钱包
+- 显示带有元数据的 NFT
+- 提供转移功能
+- 提供提现指导
 
-### Collection Stats
-- Total tiers
-- Total minted
-- Max supply
-- Floor price
+### 集合统计信息
+- 总层级数量
+- 总铸造数量
+- 最大供应量
+- 最低价格
 
-### NFT Details Modal
-- Full metadata display
-- Attribute listing
-- Action buttons (mint/transfer/cash out)
+### NFT 详情弹窗
+- 全部元数据展示
+- 属性列表
+- 提供操作按钮（铸造/转移/提现）
 
-## Data Sources
+## 数据来源
 
-The gallery uses on-chain data via:
-- `JB721TiersHook` - NFT contract
-- `JB721TiersHookStore` - Tier data storage
-- Token metadata from IPFS
+该图库使用以下链上数据源：
+- `JB721TiersHook`：NFT 合同
+- `JB721TiersHookStore`：层级数据存储
+- 来自 IPFS 的代币元数据
 
-## Customization Points
+## 自定义选项
 
-1. **Image handling**: Modify `resolveUri()` for different IPFS gateways
-2. **Metadata display**: Extend attributes rendering
-3. **Minting flow**: Integrate directly with terminal
-4. **Styling**: Customize via CSS variables
+1. **图片处理**：根据不同的 IPFS 网关修改 `resolveUri()` 函数
+2. **元数据显示**：扩展属性的渲染方式
+3. **铸造流程**：直接与终端集成
+4. **样式设置**：通过 CSS 变量进行自定义
 
-## Integration Notes
+## 集成说明
 
-- Works with any V5 721 Hook deployment
-- Uses viem for all blockchain interactions
-- Shared styles from `/shared/styles.css`
-- Chain config from `/shared/wallet-utils.js`
+- 适用于任何 V5 版本的 721 插件
+- 所有区块链交互均通过 viem 实现
+- 风格来自 `/shared/styles.css`
+- 链路配置来自 `/shared/wallet-utils.js`

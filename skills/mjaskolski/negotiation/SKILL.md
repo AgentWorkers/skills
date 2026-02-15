@@ -1,115 +1,115 @@
 ---
 name: negotiation
-description: Tactical negotiation framework based on Chris Voss's "Never Split the Difference." Use when preparing for negotiations, during live negotiation scenarios, analyzing counterpart behavior, crafting responses to difficult conversations, handling objections, salary/contract negotiations, or when asked about negotiation techniques like mirroring, labeling, calibrated questions, or the Ackerman method.
+description: 基于克里斯·沃斯（Chris Voss）的“Never Split the Difference”原则制定的战术性谈判框架。适用于谈判准备阶段、实际谈判过程中、分析对手行为、制定应对复杂对话的策略、处理异议、薪资/合同谈判，以及当被问及诸如“镜像回应”（mirroring）、“标签化策略”（labeling）、“渐进式提问”（calibrated questions）或“阿克曼方法”（Ackerman method）等谈判技巧时。
 license: MIT
 metadata:
   author: wondelai
   version: "1.0.0"
 ---
 
-# Negotiation
+# 谈判技巧
 
-Tactical empathy-based negotiation framework from FBI hostage negotiator Chris Voss.
+这套基于战术性同理心的谈判框架源自FBI人质谈判专家Chris Voss。
 
-## Core Mindset
+## 核心理念
 
-1. **People want to be understood** - Satisfy their need to feel safe and in control through active listening
-2. **Listen to discover, not to argue** - Treat assumptions as hypotheses; let them reveal surprises
-3. **Focus on needs, not positions** - Tangible demands mask emotional needs (respect, security, autonomy)
-4. **Never split the difference** - No deal is better than a bad deal; avoid lukewarm compromises
-5. **"No" is the starting point** - "No" means "not yet" or "not this way"; it makes people feel safe
-6. **Aim for "That's right"** - Better than "yes"; signals genuine rapport and understanding
-7. **Stay calm and positive** - Emotions are contagious; slow pace enables clear thinking
-8. **Unconditional positive regard** - Respect them as a person regardless of disagreement
+1. **人们希望被理解**——通过积极倾听来满足他们感到安全和有控制力的需求。
+2. **倾听是为了发现，而不是争论**——将对方的假设视为假设；让他们自己揭示出意外之处。
+3. **关注需求，而非立场**——表面的要求往往掩盖了他们真正的情感需求（如尊重、安全、自主性）。
+4. **永远不要在分歧上妥协**——没有协议总比糟糕的协议好；避免含糊不清的妥协。
+5. **“不”是一个良好的起点**——“不”意味着“暂时不行”或“不是这样”；这会让对方感到安心。
+6. **追求“那没错”**——比简单的“是”更能表达出真诚的认同和理解。
+7. **保持冷静和积极**——情绪具有传染性；放慢语速有助于清晰思考。
+8. **无条件的积极尊重**——无论意见是否一致，都要尊重对方作为一个人。
 
-## Quick Reference: Key Techniques
+## 快速参考：关键技巧
 
-| Technique | What to do | Example |
-|-----------|------------|---------|
-| **Mirroring** | Repeat last 1-3 words with upward inflection | "Doesn't make sense?" |
-| **Labeling** | Name their emotion: "It seems like..." | "It sounds like you're frustrated with the timeline" |
-| **Calibrated Questions** | Ask "How...?" or "What...?" to shape conversation | "How am I supposed to do that?" |
-| **Accusation Audit** | Preemptively list negatives they might think | "You probably think I'm being greedy..." |
-| **Late-Night DJ Voice** | Slow, calm, downward inflection for key moments | Deep, reassuring tone |
-| **Tactical Silence** | Pause 4+ seconds after statements | Let them fill the void |
-| **Trigger "That's Right"** | Summarize their position until they affirm | "So what you're saying is..." |
+| 技巧 | 操作方法 | 例子 |
+|---------|------------|---------|
+| **镜像回应** | 重复对方最后1-3个词，并用上扬的语调 | “这听起来不太合理，对吧？” |
+| **情绪命名** | 说出对方的情绪：“你似乎……” | “听起来你对时间安排感到不满。” |
+| **精准提问** | 用“……怎么样？”或“……是什么？”来引导对话 | “我该怎么做呢？” |
+| **预判性质疑** | 提前列出对方可能持有的负面看法 | “你可能认为我很贪婪……” |
+| **深夜DJ式语气** | 在关键时刻使用缓慢、平静、低沉的语调 | 深沉而令人安心的声音 |
+| **战术性沉默** | 在对方说完后停顿4秒以上 | 让对方自己填补沉默的空间 |
+| **触发“那没错”** | 总结对方的观点，直到他们表示认同 | “所以你的意思是……”
 
-For detailed technique breakdowns with psychological triggers and examples, see [references/techniques.md](references/techniques.md).
+有关技巧的详细解析、心理触发点及示例，请参阅[references/techniques.md](references/techniques.md)。
 
-## Negotiation Workflow
+## 谈判流程
 
-### Phase 1: Preparation
+### 第一阶段：准备
 
-1. Research the counterpart (background, pressures, constraints)
-2. Define your goal and BATNA (Best Alternative to Negotiated Agreement)
-3. Prepare an **Accusation Audit** - list every negative they might think about you
-4. Draft 3-5 **Calibrated Questions** to uncover their needs
-5. Identify potential **Black Swans** (hidden information that could change everything)
+1. 调查对方的背景、压力和限制条件。
+2. 明确你的目标以及最佳替代方案（BATNA）。
+3. 准备一份“预判性质疑清单”——列出对方可能对你的所有负面看法。
+4. 准备3-5个“精准提问”，以揭示他们的真实需求。
+5. 识别潜在的“黑天鹅”因素（可能改变谈判结果的隐藏信息）。
 
-### Phase 2: Opening
+### 第二阶段：开场
 
-1. Use friendly, positive tonality as default
-2. Start with **Tactical Empathy** - demonstrate you understand their situation
-3. Deliver your **Accusation Audit** early to defuse objections
-4. Encourage them to say "No" - it makes them feel safe and in control
+1. 保持友好、积极的语气。
+2. 以“战术性同理心”开始谈判——表明你理解他们的处境。
+3. 尽早提出“预判性质疑清单”，以消除对方的反对意见。
+4. 鼓励对方说“不”——这会让他们感到安心并有控制感。
 
-### Phase 3: Information Gathering
+### 第三阶段：信息收集
 
-1. **Mirror** key phrases to encourage elaboration
-2. **Label** emotions as they emerge ("It seems like...")
-3. Ask **Calibrated Questions** ("What's the biggest challenge here?")
-4. Listen for pronouns: "I/me" suggests less authority; "we/they" suggests decision-maker
-5. Watch for **Black Swans** - anomalies that reveal hidden constraints
+1. **镜像回应**对方的关键话语，鼓励他们进一步阐述。
+2. 当对方表现出情绪时，用恰当的语言表达出来（例如：“你似乎……”）。
+3. 用“精准提问”来引导对话（例如：“这里最大的挑战是什么？”）。
+4. 注意对方使用的代词：“我/我”表明对方权力较小；“我们/他们”表明对方可能是决策者。
+5. 注意潜在的“黑天鹅”因素——这些异常情况可能揭示出隐藏的约束条件。
 
-### Phase 4: Bargaining
+### 第四阶段：谈判
 
-For monetary negotiations, use the **Ackerman Method**:
+在金钱谈判中，使用**Ackerman方法**：
 
-1. Set your target price (what you actually want)
-2. Open at **65%** of target
-3. Raise in decreasing increments: **85%** → **95%** → **100%**
-4. Use **precise, non-round numbers** on final offer ($10,230 not $10,000)
-5. Include a **non-monetary bonus** with final offer ("...and I'll include X")
+1. 设定你的目标价格（你真正想要的价格）。
+2. 以目标价格的65%作为起始价。
+3. 逐步提高价格：85% → 95% → 100%。
+4. 在最终报价中使用精确的、非整数的数字（例如：10,230美元而不是10,000美元）。
+5. 在最终报价中加入非金钱性的附加条件（例如：“……此外，我还会提供X”。
 
-### Phase 5: Closing
+### 第五阶段：结束谈判
 
-1. Get **"That's Right"** before proposing solutions
-2. Apply **Rule of Three** - confirm agreement 3 times in 3 different ways
-3. Follow every "yes" with "How...?" to ensure implementation
-4. If they go silent, ask: "Have you given up on this?"
+1. 在提出解决方案之前，先获得对方的“那没错”的回应。
+2. 应用“三重确认法则”——用三种不同的方式确认对方的同意。
+3. 每次得到“是”的回答后，接着问“……怎么样？”以确保对方能执行协议。
+4. 如果对方沉默不语，询问：“你放弃这个提议了吗？”
 
-## Handling Common Situations
+## 处理常见情况
 
-**They say "That's not fair":**
-- Stop immediately: "I want to be fair. Have I done something unfair? Let's discuss it."
+- **对方说“这不公平”**：
+  - 立即停止：我想做到公平。我有没有做出不公平的事情？我们一起来讨论一下。
 
-**They anchor with an extreme number:**
-- Don't counter immediately; use calibrated questions: "How did you arrive at that figure?"
+- **对方用一个极端的数字作为依据**：
+  - 不要立即反驳；用精准提问：“你是怎么得出这个数字的？”
 
-**They stop responding:**
-- Send: "Have you given up on [the project]?" - triggers "No" response
+- **对方停止回应**：
+  - 问：“你放弃[这个项目]了吗？”——这可能会引发对方的“不”回答。
 
-**They seem irrational:**
-- Diagnose: Are they (1) ill-informed, (2) constrained, or (3) hiding something?
-- Use calibrated questions to uncover which
+- **对方显得不合理**：
+  - 分析原因：他们可能是（1）信息不足、（2）受到限制，或者（3）在隐瞒什么？
+  - 用精准提问来找出原因。
 
-## Counterpart Styles
+## 根据对方风格调整谈判策略
 
-Adapt your approach based on their style:
+根据对方的谈判风格调整你的策略：
 
-| Style | Signs | Adapt by... |
-|-------|-------|-------------|
-| **Analyst** | Methodical, data-driven, hates surprises | Use facts, be patient, don't rush |
-| **Accommodator** | Friendly, relationship-focused, avoids conflict | Build rapport, but pin down specifics |
-| **Assertive** | Direct, time-conscious, wants to win | Be efficient, stand firm, acknowledge their points |
+| 对方风格 | 特征 | 调整方法 |
+|---------|---------|-------------|
+| **分析型** | 有条理、注重数据、不喜欢意外 | 使用事实，保持耐心，不要急于求成 |
+| **顺应型** | 友好、注重关系、避免冲突 | 建立良好的关系，但要明确具体要求 |
+| **强势型** | 直截了当、时间观念强、希望获胜 | 保持高效，立场坚定，同时认可对方的观点 |
 
-## Voice and Delivery
+## 语音和表达方式
 
-- **Default voice**: Positive, warm, light-hearted (with a smile)
-- **Critical moments**: Late-Night DJ Voice - slow, calm, downward inflection
-- **After key statements**: Pause 4+ seconds
-- **Watch their nonverbals**: 7% words, 38% tone, 55% body language
+- **默认语气**：积极、温暖、轻松（面带微笑）。
+- **关键时刻**：使用“深夜DJ式语气”——缓慢、平静、低沉的语调。
+- **在关键陈述后**：停顿4秒以上。
+- **注意对方的非语言信号**：7%的信息来自言语，38%来自语气，55%来自肢体语言。
 
-## Resources
+## 参考资源
 
-- [techniques.md](techniques.md) - Complete technique breakdowns with examples and psychological triggers
+- [techniques.md](techniques.md) —— 包含所有技巧的详细解析、示例及心理触发点。

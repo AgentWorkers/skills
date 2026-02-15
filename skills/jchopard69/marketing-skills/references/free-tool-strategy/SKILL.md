@@ -1,459 +1,419 @@
 ---
 name: free-tool-strategy
-description: When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness. Also use when the user mentions "engineering as marketing," "free tool," "marketing tool," "calculator," "generator," "interactive tool," "lead gen tool," "build a tool for leads," or "free resource." This skill bridges engineering and marketing — useful for founders and technical marketers.
+description: 当用户需要为营销目的规划、评估或开发免费工具时（例如：潜在客户生成、搜索引擎优化（SEO）效果提升、品牌知名度提升等），或者当用户提到“将工程技能应用于营销”“免费工具”“营销工具”“计算器”“生成器”“交互式工具”“潜在客户生成工具”或“免费资源”时，这项技能就非常有用。这项技能能够将工程技术和市场营销相结合，对创始人和技术营销人员来说具有很高的实用性。
 ---
 
-# Free Tool Strategy (Engineering as Marketing)
+# 免费工具策略（将工程能力转化为营销手段）
 
-You are an expert in engineering-as-marketing strategy. Your goal is to help plan and evaluate free tools that generate leads, attract organic traffic, and build brand awareness.
+您是一位在“工程即营销”策略方面具有丰富经验的专家。您的目标是帮助规划并评估那些能够生成潜在客户、吸引自然流量以及提升品牌知名度的免费工具。
 
-## Initial Assessment
+## 初始评估
 
-Before designing a tool strategy, understand:
+在制定工具策略之前，需要了解以下内容：
 
-1. **Business Context**
-   - What's the core product/service?
-   - Who is the target audience?
-   - What problems do they have?
+1. **业务背景**
+   - 核心产品/服务是什么？
+   - 目标受众是谁？
+   - 他们面临哪些问题？
 
-2. **Goals**
-   - Lead generation primary goal?
-   - SEO/traffic acquisition?
-   - Brand awareness?
-   - Product education?
+2. **目标**
+   - 生成潜在客户的主要目标是什么？
+   - 是为了提高搜索引擎排名（SEO）或吸引流量？
+   - 还是为了提升品牌知名度？
+   - 还是为了让用户更好地了解产品？
 
-3. **Resources**
-   - Technical capacity to build?
-   - Ongoing maintenance bandwidth?
-   - Budget for promotion?
-
----
-
-## Core Principles
-
-### 1. Solve a Real Problem
-- Tool must provide genuine value
-- Solves a problem your audience actually has
-- Useful even without your main product
-
-### 2. Adjacent to Core Product
-- Related to what you sell
-- Natural path from tool to product
-- Educates on problem you solve
-
-### 3. Simple and Focused
-- Does one thing well
-- Low friction to use
-- Immediate value
-
-### 4. Worth the Investment
-- Lead value × expected leads > build cost + maintenance
-- Consider SEO value
-- Consider brand halo effect
+3. **资源**
+   - 具备什么样的技术能力来开发这些工具？
+   - 是否有足够的资源进行后续维护？
+   - 预算用于推广活动是多少？
 
 ---
 
-## Tool Types
+## 核心原则
 
-### Calculators
+### 1. 解决实际问题
+- 工具必须提供真正的价值
+- 能够解决目标受众真正面临的问题
+- 即使在没有核心产品的情况下，该工具本身也具有实用性
 
-**Best for**: Decisions involving numbers, comparisons, estimates
+### 2. 与核心产品相关联
+- 与您的核心产品紧密相关
+- 从工具到核心产品之间存在自然的转化路径
+- 能够帮助用户更好地理解所解决的问题
 
-**Examples**:
-- ROI calculator
-- Savings calculator
-- Cost comparison tool
-- Salary calculator
-- Tax estimator
+### 3. 简单且专注
+- 只专注于实现一个功能
+- 使用起来非常便捷
+- 能够立即带来价值
 
-**Why they work**:
-- Personalized output
-- High perceived value
-- Share-worthy results
-- Clear problem → solution
-
-### Generators
-
-**Best for**: Creating something useful quickly
-
-**Examples**:
-- Policy generator
-- Template generator
-- Name/tagline generator
-- Email subject line generator
-- Resume builder
-
-**Why they work**:
-- Tangible output
-- Saves time
-- Easily shared
-- Repeat usage
-
-### Analyzers/Auditors
-
-**Best for**: Evaluating existing work or assets
-
-**Examples**:
-- Website grader
-- SEO analyzer
-- Email subject tester
-- Headline analyzer
-- Security checker
-
-**Why they work**:
-- Curiosity-driven
-- Personalized insights
-- Creates awareness of problems
-- Natural lead to solution
-
-### Testers/Validators
-
-**Best for**: Checking if something works
-
-**Examples**:
-- Meta tag preview
-- Email rendering test
-- Accessibility checker
-- Mobile-friendly test
-- Speed test
-
-**Why they work**:
-- Immediate utility
-- Bookmark-worthy
-- Repeat usage
-- Professional necessity
-
-### Libraries/Resources
-
-**Best for**: Reference material
-
-**Examples**:
-- Icon library
-- Template library
-- Code snippet library
-- Example gallery
-- Directory
-
-**Why they work**:
-- High SEO value
-- Ongoing traffic
-- Establishes authority
-- Linkable asset
-
-### Interactive Educational
-
-**Best for**: Learning/understanding
-
-**Examples**:
-- Interactive tutorials
-- Code playgrounds
-- Visual explainers
-- Quizzes/assessments
-- Simulators
-
-**Why they work**:
-- Engages deeply
-- Demonstrates expertise
-- Shareable
-- Memory-creating
+### 4. 值得投资
+- 潜在客户价值 × 预计生成的潜在客户数量 > 开发成本 + 维护费用
+- 考虑工具对搜索引擎排名的影响（SEO价值）
+- 考虑工具对品牌的影响（品牌 halo effect）
 
 ---
 
-## Ideation Framework
+## 工具类型
 
-### Start with Pain Points
+### 计算器
+**最适合用于：** 需要处理数字、进行比较或估算的场景
 
-1. **What problems does your audience Google?**
-   - Search query research
-   - Common questions
-   - "How to" searches
+**示例：**
+- 投资回报率（ROI）计算器
+- 节省成本计算器
+- 成本对比工具
+- 薪水计算器
+- 税收估算工具
 
-2. **What manual processes are tedious?**
-   - Tasks done in spreadsheets
-   - Repetitive calculations
-   - Copy-paste workflows
+**原因：**
+- 提供个性化的输出结果
+- 用户认为其具有很高的价值
+- 结果易于分享
+- 明确地展示了问题与解决方案之间的关系
 
-3. **What do they need before buying your product?**
-   - Assessments of current state
-   - Planning/scoping
-   - Comparisons
+### 生成器
+**最适合用于：** 快速创建有用的内容
 
-4. **What information do they wish they had?**
-   - Data they can't easily access
-   - Personalized insights
-   - Industry benchmarks
+**示例：**
+- 政策生成器
+- 模板生成器
+- 名称/标语生成器
+- 电子邮件主题行生成器
+- 简历生成器
 
-### Validate the Idea
+**原因：**
+- 生成的内容具有实际用途
+- 节省用户的时间
+- 可以轻松分享
+- 用户会重复使用这些工具
 
-**Search demand:**
-- Is there search volume for this problem?
-- What keywords would rank?
-- How competitive?
+### 分析器/审计工具
+**最适合用于：** 评估现有的工作或资产
 
-**Uniqueness:**
-- What exists already?
-- How can you be 10x better or different?
-- What's your unique angle?
+**示例：**
+- 网站质量评估工具
+- SEO分析工具
+- 电子邮件主题行测试工具
+- 标题分析工具
+- 安全性检查工具
 
-**Lead quality:**
-- Does this problem-audience match buyers?
-- Will users be your target customers?
-- Is there a natural path to your product?
+**原因：**
+- 激发了用户的好奇心
+- 提供个性化的见解
+- 有助于用户意识到存在的问题
+- 为后续解决问题提供了方向
 
-**Build feasibility:**
-- How complex to build?
-- Can you scope an MVP?
-- Ongoing maintenance burden?
+### 测试工具/验证工具
+**最适合用于：** 检查某项功能的有效性
 
----
+**示例：**
+- 元标签预览工具
+- 电子邮件渲染测试工具
+- 可访问性检查工具
+- 移动设备兼容性测试工具
+- 速度测试工具
 
-## SEO Considerations
+**原因：**
+- 具有即时的实用价值
+- 用户愿意将工具添加到书签中
+- 用户会重复使用这些工具
 
-### Keyword Strategy
+### 库/资源库
+**最适合用于：** 提供参考资料
 
-**Tool landing page:**
-- "[thing] calculator"
-- "[thing] generator"
-- "free [tool type]"
-- "[industry] [tool type]"
+**示例：**
+- 图标库
+- 模板库
+- 代码片段库
+- 示例集
+- 目录资源
 
-**Supporting content:**
-- "How to [use case]"
-- "What is [concept tool helps with]"
-- Blog posts that link to tool
+**原因：**
+- 对搜索引擎排名（SEO）有很高的价值
+- 能够持续吸引用户访问
+- 有助于建立专家地位
+- 可以作为外部链接的来源
 
-### Link Building
+### 交互式教育工具
+**最适合用于：** 帮助用户学习和理解复杂概念
 
-Free tools attract links because:
-- Genuinely useful (people reference them)
-- Unique (can't link to just any page)
-- Shareable (social amplification)
+**示例：**
+- 交互式教程
+- 代码练习平台
+- 视觉化解释工具
+- 测验/评估工具
+- 模拟器
 
-**Outreach opportunities:**
-- Roundup posts ("best free tools for X")
-- Resource pages
-- Industry publications
-- Blogs writing about the problem
-
-### Technical SEO
-
-- Fast load time critical
-- Mobile-friendly essential
-- Crawlable content (not just JS app)
-- Proper meta tags
-- Schema markup if applicable
-
----
-
-## Lead Capture Strategy
-
-### When to Gate
-
-**Fully gated (email required to use):**
-- High-value, unique tools
-- Personalized reports
-- Risk: Lower usage
-
-**Partially gated (email for full results):**
-- Show preview, gate details
-- Better balance
-- Most common pattern
-
-**Ungated with optional capture:**
-- Tool is free to use
-- Email to save/share results
-- Highest usage, lower capture
-
-**Ungated entirely:**
-- Pure SEO/brand play
-- No direct leads
-- Maximum reach
-
-### Lead Capture Best Practices
-
-- Value exchange clear: "Get your full report"
-- Minimal friction: Email only
-- Show preview of what they'll get
-- Optional: Segment by asking one qualifying question
-
-### Post-Capture
-
-- Immediate email with results/link
-- Nurture sequence relevant to tool topic
-- Clear path to main product
-- Don't spam—provide value
+**原因：**
+- 能够吸引用户的兴趣
+- 展示出开发者的专业能力
+- 可以分享给他人
+- 有助于用户记忆相关内容
 
 ---
 
-## Build vs. Buy vs. Embed
+## 构思框架
 
-### Build Custom
+### 从用户痛点入手
+1. **用户会在谷歌上搜索哪些关键词？**
+   - 进行搜索查询研究
+   - 常见的问题
+   - “如何……”类的搜索词
 
-**When:**
-- Unique concept, nothing exists
-- Core to brand/product
-- High strategic value
-- Have development capacity
+2. **哪些手动流程比较繁琐？**
+   - 需要在电子表格中完成的任务
+   - 需要重复进行的计算
+   - 需要复制粘贴的数据处理流程
 
-**Consider:**
-- Development time
-- Ongoing maintenance
-- Hosting costs
-- Bug fixes
+3. **用户在购买您的产品之前需要什么？**
+   - 对当前情况的评估
+   - 规划/范围界定
+   - 对比分析
 
-### Use No-Code Tools
+4. **用户希望获得哪些信息？**
+   - 难以获取的数据
+   - 个性化的见解
+   行业内的基准数据
 
-**Options:**
-- Outgrow, Involve.me (calculators/quizzes)
-- Typeform, Tally (forms/quizzes)
-- Notion, Coda (databases)
-- Bubble, Webflow (apps)
+### 验证想法的可行性
+**搜索需求：**
+- 对于这个问题，是否有足够的搜索量？
+- 哪些关键词能够提高工具的排名？
+- 竞争情况如何？
 
-**When:**
-- Speed to market
-- Limited dev resources
-- Testing concept viability
+**独特性：**
+- 已经存在类似工具吗？
+- 您的工具如何做到比现有工具更好或与众不同？
+- 您的优势在哪里？
 
-### Embed Existing
+**潜在客户的质量：**
+- 这个问题与您的目标客户群体是否相关？
+- 用户会成为您的目标客户吗？
+- 从免费工具到核心产品之间是否存在自然的转化路径？
 
-**When:**
-- Something good already exists
-- White-label options available
-- Not core differentiator
-
-**Consider:**
-- Branding limitations
-- Dependency on third party
-- Cost vs. build
-
----
-
-## MVP Scope
-
-### Minimum Viable Tool
-
-1. **Core functionality only**
-   - Does the one thing
-   - No bells and whistles
-   - Works reliably
-
-2. **Essential UX**
-   - Clear input
-   - Obvious output
-   - Mobile works
-
-3. **Basic lead capture**
-   - Email collection works
-   - Leads go somewhere useful
-   - Follow-up exists
-
-### What to Skip Initially
-
-- Account creation
-- Saving results
-- Advanced features
-- Perfect design
-- Every edge case
-
-### Iterate Based on Use
-
-- Track where users drop off
-- See what questions they have
-- Add features that get requested
-- Improve based on data
+**开发可行性：**
+- 开发这个工具的复杂程度如何？
+- 是否可以开发出一个最小可行产品（MVP）？
+- 维护工作量有多大？
 
 ---
 
-## Promotion Strategy
+## SEO 考虑因素
 
-### Launch
+### 关键词策略
+**工具的着陆页标题：**
+- “[工具名称] 计算器”
+- “[工具名称] 生成器”
+- “免费 [工具类型]”
+- “[行业名称] [工具类型]”
 
-**Owned channels:**
-- Email list announcement
-- Blog post / landing page
-- Social media
-- Product hunt (if applicable)
+**辅助内容：**
+- “[工具名称] 的使用方法”
+- “[工具名称] 能帮助解决什么问题”
+- 链接到工具的博客文章
 
-**Outreach:**
-- Relevant newsletters
-- Industry publications
-- Bloggers in space
-- Social influencers
+**链接建设**
+免费工具之所以能够吸引链接，是因为：
+- 它们确实具有实用性（用户会主动分享）
+- 具有独特性（不是随便哪个页面都能获得链接）
+- 可以在社交媒体上分享
 
-### Ongoing
+**推广机会：**
+- 综合性文章（如“X领域的最佳免费工具”）
+- 资源分享页面
+- 行业相关出版物
+- 关于该问题的博客文章
 
-**SEO:**
-- Target tool-related keywords
-- Supporting content
-- Link building
-
-**Social:**
-- Share interesting results (anonymized)
-- Use case examples
-- Tips for using the tool
-
-**Product integration:**
-- Mention in sales process
-- Link from related product features
-- Include in email sequences
-
----
-
-## Measurement
-
-### Metrics to Track
-
-**Acquisition:**
-- Traffic to tool
-- Traffic sources
-- Keyword rankings
-- Backlinks acquired
-
-**Engagement:**
-- Tool usage/completions
-- Time spent
-- Return visitors
-- Shares
-
-**Conversion:**
-- Email captures
-- Lead quality score
-- MQLs generated
-- Pipeline influenced
-- Customers attributed
-
-### Attribution
-
-- UTM parameters for paid promotion
-- Separate landing page for organic
-- Track lead source through funnel
-- Survey new customers
+**技术层面的SEO优化：**
+- 快速的加载时间至关重要
+- 必须支持移动设备
+- 内容可以被搜索引擎抓取（不仅仅是JavaScript应用程序）
+- 正确设置元标签
+- 如果适用，还需要添加结构化数据（Schema markup）
 
 ---
 
-## Evaluation Framework
+## 潜在客户捕获策略
 
-### Tool Idea Scorecard
+### 何时设置使用门槛
+**完全设置使用门槛（需要提供电子邮件地址）：**
+- 高价值、独特的工具
+- 需要个性化报告的工具
+- 注意：这可能会降低工具的使用率
 
-Rate each factor 1-5:
+**部分设置使用门槛（提供预览，但需要电子邮件地址获取完整结果）：**
+- 在提供完整功能的同时，平衡用户体验与数据收集
+- 这是最常见的做法
 
-| Factor | Score |
+**完全不设置使用门槛（但提供电子邮件地址以保存/分享结果）：**
+- 工具免费使用
+- 用户需要通过电子邮件地址来保存或分享结果
+- 这种方式的使用率最高，但潜在客户捕获率较低
+
+**最佳潜在客户捕获实践：**
+- 明确告知用户获取完整报告的价值
+- 使用流程尽量简单（仅需要提供电子邮件地址）
+- 展示用户将获得的内容预览
+- 可选：通过一个简单的问题来筛选用户
+
+### 捕获潜在客户后的后续操作
+- 立即通过电子邮件发送结果和链接
+- 发送与工具相关的后续内容
+- 提供通往核心产品的明确路径
+- 避免发送垃圾邮件——始终要提供有价值的信息
+
+---
+
+## 自行开发 vs. 购买 vs. 嵌入现有工具
+
+### 自行开发
+**适合的情况：**
+- 概念独特，市场上没有类似工具
+- 对品牌或产品具有核心价值
+- 企业具备足够的开发能力
+
+**需要考虑的因素：**
+- 开发时间
+- 后续维护工作
+- 托管成本
+- 错误修复的需求
+
+### 使用无代码工具
+**选择：**
+- 当项目发展迅速时（如计算器、问卷调查工具）
+- Typeform、Tally（用于创建表单/问卷）
+- Notion、Coda（用于数据库管理）
+- Bubble、Webflow（用于构建应用程序）
+
+**适合的情况：**
+- 需要快速将产品推向市场
+- 开发资源有限
+- 需要验证概念的可行性
+
+### 嵌入现有工具
+**适合的情况：**
+- 市场上已有优秀的工具可用
+- 提供白标化服务（即允许企业自定义工具的外观）
+- 这种方式不是产品的核心差异化优势
+
+**需要考虑的因素：**
+- 品牌形象的展示限制
+- 对第三方服务的依赖性
+- 自行开发与购买的成本比较
+
+---
+
+## MVP（最小可行产品）的范围
+
+### 最小可行产品应具备的功能：
+1. **仅包含核心功能**
+   - 能够完成一个基本任务
+   - 没有额外的附加功能
+   - 稳定可靠地运行
+
+2. **基本的用户界面设计**
+   - 输入界面清晰
+   - 输出结果直观易读
+   - 支持移动设备使用
+
+3. **基本的潜在客户捕获机制**
+   - 能够收集用户的电子邮件地址
+   - 收集到的潜在客户能够被引导到有用的地方
+   - 提供后续跟进的渠道
+
+### 初始阶段可以省略的功能：
+- 账户创建功能
+- 结果保存功能
+- 高级功能
+- 完美的设计
+- 所有边缘情况的处理
+
+### 根据用户使用情况持续优化
+- 跟踪用户在使用过程中的问题
+- 根据用户的需求添加新功能
+- 根据数据反馈不断改进工具
+
+---
+
+## 推广策略
+
+### 上线推广
+**自有渠道：**
+- 通过电子邮件列表发布公告
+- 发布博客文章/创建着陆页
+- 在社交媒体上推广
+- 如果适用，还可以通过产品推荐平台进行推广
+
+**外部推广：**
+- 相关领域的新闻通讯
+- 行业出版物
+- 该领域的博主
+- 社交媒体影响者
+
+**持续维护**
+**SEO方面：**
+- 关注与工具相关的关键词
+- 发布辅助内容
+- 建立外部链接
+
+**社交媒体方面：**
+- 分享有用的工具结果（注意保护用户隐私）
+- 提供工具的使用案例
+- 提供使用工具的技巧
+
+**产品整合：**
+- 在销售流程中提及该工具
+- 在相关产品功能中提供工具的链接
+- 将工具链接包含在后续的电子邮件沟通中
+
+---
+
+## 数据监控与评估
+
+### 需要跟踪的指标
+**获取潜在客户方面的指标：**
+- 流量来源
+- 关键词的排名情况
+- 获得的链接数量
+
+**用户参与度方面的指标：**
+- 工具的使用频率
+- 用户在工具上花费的时间
+- 用户的回流率
+- 用户的分享行为
+
+**转化方面的指标：**
+- 通过工具收集到的电子邮件地址数量
+- 潜在客户的质量
+- 通过该工具产生的潜在客户数量
+- 该工具对销售流程的影响
+
+**归因分析**
+- 对于付费推广活动，使用UTM参数进行追踪
+- 对于自然搜索带来的潜在客户，使用单独的着陆页进行追踪
+- 通过销售漏斗追踪潜在客户的来源
+
+## 评估框架
+
+### 工具想法评分表
+对每个因素进行1-5分的评估：
+
+| 因素 | 评分 |
 |--------|-------|
-| Search demand exists | ___ |
-| Audience match to buyers | ___ |
-| Uniqueness vs. existing tools | ___ |
-| Natural path to product | ___ |
-| Build feasibility | ___ |
-| Maintenance burden (inverse) | ___ |
-| Link-building potential | ___ |
-| Share-worthiness | ___ |
+| 是否存在搜索需求 | ___ |
+| 目标受众与潜在客户是否匹配 | ___ |
+| 与现有工具的独特性 | ___ |
+| 是否存在自然的转化路径 | ___ |
+| 开发可行性 | ___ |
+| 维护工作的负担（评分越低越好） | ___ |
+**链接建设的潜力 | ___ |
+**分享价值 | ___ |
 
-**25+**: Strong candidate
-**15-24**: Promising, needs refinement
-**<15**: Reconsider or scope differently
+**评分25分及以上**：是非常优秀的候选工具
+**评分15-24分**：有潜力，但需要进一步优化
+**评分低于15分**：需要重新考虑或调整策略
 
-### ROI Projection
-
+### 投资回报率（ROI）预测
 ```
 Estimated monthly leads: [X]
 Lead-to-customer rate: [Y%]
@@ -469,10 +429,9 @@ Payback period: Build cost / (Monthly value - Monthly maintenance)
 
 ---
 
-## Output Format
+## 输出格式
 
-### Tool Strategy Document
-
+### 工具策略文档
 ```
 # Free Tool Strategy: [Tool Name]
 
@@ -513,64 +472,62 @@ Payback period: Build cost / (Monthly value - Monthly maintenance)
 - Phase 2: [scope] - [timeframe]
 ```
 
-### Implementation Spec
-If moving forward with build
+### 实施方案
+如果决定继续开发该工具，需要制定详细的实施计划
 
-### Promotion Plan
-Detailed launch and ongoing strategy
-
----
-
-## Example Tool Concepts by Business Type
-
-### SaaS Product
-- Product ROI calculator
-- Competitor comparison tool
-- Readiness assessment quiz
-- Template library for use case
-
-### Agency/Services
-- Industry benchmark tool
-- Project scoping calculator
-- Portfolio review tool
-- Cost estimator
-
-### E-commerce
-- Product finder quiz
-- Comparison tool
-- Size/fit calculator
-- Savings calculator
-
-### Developer Tools
-- Code snippet library
-- Testing/preview tool
-- Documentation generator
-- Interactive tutorials
-
-### Finance
-- Financial calculators
-- Investment comparison
-- Budget planner
-- Tax estimator
+### 推广计划
+包括详细的发布计划和后续的持续推广策略
 
 ---
 
-## Questions to Ask
+## 按业务类型划分的免费工具示例
 
-If you need more context:
-1. What's your core product/service?
-2. What problems does your audience commonly face?
-3. What existing tools do they use for workarounds?
-4. How do you currently generate leads?
-5. What technical resources are available?
-6. What's the timeline and budget?
+### SaaS产品
+- 产品投资回报率计算器
+- 竞争对手对比工具
+- 项目准备程度评估问卷
+- 用于案例分析的模板库
+
+### 机构/服务类工具
+- 行业基准数据生成工具
+- 项目范围评估工具
+- 作品集审核工具
+- 成本估算工具
+
+### 电子商务相关工具
+- 产品查找工具
+- 产品对比工具
+- 产品尺寸/适配性计算器
+- 节省成本计算器
+
+### 开发工具
+- 代码片段库
+- 测试/预览工具
+- 文档生成工具
+- 交互式教程
+
+### 金融相关工具
+- 财务计算器
+- 投资比较工具
+- 预算规划工具
+- 税收估算工具
 
 ---
 
-## Related Skills
+## 需要进一步了解的问题：
+如果您需要更多背景信息，请回答以下问题：
+1. 您的核心产品/服务是什么？
+2. 您的目标受众通常面临哪些问题？
+3. 他们目前使用哪些工具来解决问题？
+4. 您目前是如何生成潜在客户的？
+5. 您具备哪些技术资源？
+6. 您的项目时间表和预算分别是多少？
 
-- **page-cro**: For optimizing the tool's landing page
-- **seo-audit**: For SEO-optimizing the tool
-- **analytics-tracking**: For measuring tool usage
-- **email-sequence**: For nurturing leads from the tool
-- **programmatic-seo**: For building tool-based pages at scale
+---
+
+## 相关技能
+- **页面优化（page-cro）**：用于优化工具的着陆页
+- **SEO审计（seo-audit）**：用于提升工具的搜索引擎排名
+- **数据分析（analytics-tracking）**：用于监控工具的使用情况
+- **电子邮件营销（email-sequence）**：用于通过工具收集潜在客户信息
+- **程序化SEO（programmatic-seo）**：用于大规模推广工具相关的内容

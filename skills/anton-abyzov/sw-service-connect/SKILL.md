@@ -1,13 +1,13 @@
 ---
 name: service-connect
-description: Smart external service connection orchestrator that automatically selects optimal connection method (MCP → REST API → SDK → CLI → Direct). Use when connecting to Supabase, Cloudflare, PostgreSQL, MongoDB, Redis, or AWS services. Follows path of least resistance to avoid connection issues.
+description: 智能外部服务连接编排器，能够自动选择最优的连接方式（MCP → REST API → SDK → CLI → 直接连接）。适用于连接 Supabase、Cloudflare、PostgreSQL、MongoDB、Redis 或 AWS 等服务。该工具遵循“阻力最小”的原则来避免连接问题。
 ---
 
-# Service Connection Orchestrator
+# 服务连接编排器
 
-## 🎯 Core Principle
+## 🎯 核心原则
 
-**NEVER fight connection issues. Use the path of least resistance:**
+**永远不要手动解决连接问题，而是选择最简单的解决方案：**
 
 ```
 MCP Server → REST API → SDK/Client → CLI → Direct Connection
@@ -17,7 +17,7 @@ MCP Server → REST API → SDK/Client → CLI → Direct Connection
 
 ---
 
-## 🔌 Service Connection Matrix
+## 🔌 服务连接矩阵
 
 ### Supabase
 
@@ -53,7 +53,7 @@ Connection Pooler (if direct needed):
   DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres"
 ```
 
-### Cloudflare (Workers, KV, D1, R2)
+### Cloudflare（Workers、KV、D1、R2）
 
 ```yaml
 Priority:
@@ -89,7 +89,7 @@ Common Operations:
   wrangler r2 object put BUCKET/key --file=./file.txt
 ```
 
-### PostgreSQL (Direct)
+### PostgreSQL（直接连接）
 
 ```yaml
 Priority:
@@ -171,7 +171,7 @@ Credential Check (presence only - never display values!):
   grep -qE "REDIS_URL|UPSTASH_" .env && echo "Redis/Upstash credentials found"
 ```
 
-### AWS Services
+### AWS 服务
 
 ```yaml
 Priority:
@@ -236,9 +236,9 @@ Common Operations:
 
 ---
 
-## 🔄 Auto-Detection Logic
+## 🔄 自动检测逻辑
 
-When starting work, Claude should check:
+在开始工作时，Claude 应该检查：
 
 ```bash
 # 1. Check which services are configured
@@ -300,27 +300,19 @@ fi
 
 ---
 
-## 🛠️ MCP Server Installation (One-Time Setup)
+## 🛠️ MCP 服务器安装（一次性设置）
 
-```bash
-# Install recommended MCP servers
-npx @anthropic-ai/claude-code-mcp add supabase
-npx @anthropic-ai/claude-code-mcp add postgres
-
-# Restart Claude Code after installation!
-```
-
-**MCP servers provide:**
-- Direct API access (no CLI gymnastics)
-- Automatic retry/error handling
-- Consistent interface across services
-- No network/firewall issues (HTTP-based)
+**MCP 服务器提供：**
+- 直接的 API 访问（无需使用 CLI）
+- 自动重试/错误处理
+- 跨服务的一致性接口
+- 无网络/防火墙问题（基于 HTTP）
 
 ---
 
-## 🚨 Common Issues & Fixes
+## 🚨 常见问题及解决方法
 
-### Supabase "failed to connect" (IPv6)
+### Supabase “连接失败”（IPv6）
 ```
 Problem: supabase db push fails with connection error
 Cause: Direct connection uses IPv6, often blocked
@@ -330,7 +322,7 @@ Fix: Use REST API or MCP instead
   # Do use: REST API or Supabase client SDK
 ```
 
-### Cloudflare "not authenticated"
+### Cloudflare “未认证”
 ```
 Problem: wrangler commands fail with auth error
 Cause: Session expired or never logged in
@@ -340,7 +332,7 @@ Fix:
   wrangler whoami # Verify
 ```
 
-### PostgreSQL SSL required
+### PostgreSQL 需要 SSL 加密
 ```
 Problem: "SSL connection required"
 Cause: Cloud DBs require SSL by default
@@ -349,7 +341,7 @@ Fix: Add ?sslmode=require to connection string
   DATABASE_URL="postgresql://...?sslmode=require"
 ```
 
-### MongoDB driver version mismatch
+### MongoDB 驱动程序版本不匹配
 ```
 Problem: Connection fails with driver errors
 Cause: Incompatible driver version
@@ -360,12 +352,11 @@ Fix: Use Atlas Data API instead (no driver needed)
 
 ---
 
-## 📋 Pre-Flight Checklist
+## 📋 飞行前检查清单
 
-Before external service operations:
-
-1. **Check credentials exist**: `grep -q SERVICE .env && echo "Found"`
-2. **Check CLI auth**: `service-cli whoami`
-3. **Prefer MCP/REST**: Avoid direct connections
-4. **Use pooler for DBs**: Port 6543 not 5432
-5. **Enable Data APIs**: For MongoDB, use Atlas Data API
+在操作外部服务之前，请执行以下步骤：
+1. **检查凭据是否存在**：`grep -q SERVICE .env && echo "Found"`
+2. **检查 CLI 认证**：`service-cli whoami`
+3. **优先使用 MCP/REST**：避免直接连接
+4. **使用数据库连接池**：使用端口 6543 而不是 5432
+5. **启用数据 API**：对于 MongoDB，使用 Atlas Data API

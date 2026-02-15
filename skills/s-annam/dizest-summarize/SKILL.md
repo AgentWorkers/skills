@@ -1,86 +1,80 @@
 ---
 name: dizest-summarize
-description: "Summarize long-form content — articles, podcasts, research papers, PDFs, notes, and more — using the Dizest API. Turn what you read into structured, searchable knowledge."
+description: "使用 Dizest API 对长篇内容（如文章、播客、研究论文、PDF 文件、笔记等）进行总结，将您阅读的内容转化为结构化、可搜索的知识。"
 metadata: {"openclaw":{"emoji":"📝","requires":{"env":["DIZEST_API_KEY"]}}}
 ---
 
-# Dizest Summarize
+# Dizest 摘要功能
 
-Summarize long-form content and turn it into structured, searchable knowledge. Powered by the API behind [Dizest: AI Summarizer](https://www.dizest.ai) — available on the [App Store](https://apps.apple.com/app/id6752311120) and [Google Play](https://play.google.com/store/apps/details?id=com.ideas116.dizest).
+Dizest 能够将长篇内容进行总结，并将其转化为结构化、可搜索的知识。该功能基于 [Dizest: AI 摘要器](https://www.dizest.ai) 提供的 API 实现，该 API 可在 [App Store](https://apps.apple.com/app/id6752311120) 和 [Google Play](https://play.google.com/store/apps/details?id=com.ideas116.dizest) 上下载。
 
-**Base URL:** `https://api.116ideas.com`
+**基础 URL:** `https://api.116ideas.com`
 
-Visit [www.dizest.ai](https://www.dizest.ai) for more information about the product.
-
----
-
-## When to Use This Skill
-
-Use this skill when the user asks to:
-
-- Summarize research papers or academic content to extract key findings
-- Summarize long podcasts, interviews, or video content from YouTube and other platforms
-- Process articles, blog posts, or web content (by URL)
-- Summarize PDFs, reports, market analysis, or business documents
-- Summarize plain text such as notes, transcripts, or pasted content
-- Summarize any of the above with a custom focus (e.g., "focus on methodology and key findings")
+如需了解有关该产品的更多信息，请访问 [www.dizest.ai](https://www.dizest.ai)。
 
 ---
 
-## Critical Agent Behavior
+## 适用场景
 
-**The agent MUST act as a thin client.** Specifically:
-
-- **Do NOT** extract, parse, or classify URLs from the user's input.
-- **Do NOT** attempt to determine whether the input is a URL, plain text, or text with an embedded URL.
-- **Do NOT** fetch, scrape, or pre-process any content before calling the API.
-- **Do NOT** handle paywalled content or attempt workarounds.
-
-All content analysis, URL detection, extraction, paywall handling, and execution logic is performed **server-side**. The agent's only job is to forward the user's input to the API exactly as provided.
+当用户需要以下操作时，可以使用此功能：
+- 摘要研究论文或学术内容以提取关键发现
+- 摘要来自 YouTube 等平台的长篇播客、访谈或视频内容
+- 处理文章、博客文章或网页内容（通过 URL）
+- 摘要 PDF 文件、报告、市场分析报告或商业文档
+- 摘要纯文本（如笔记、文字记录或粘贴的内容）
+- 根据特定要求进行摘要（例如：“重点关注方法论和关键发现”）
 
 ---
 
-## Authentication
+## 代理行为规范
 
-All requests require the `x-api-key` header. The value should come from the `DIZEST_API_KEY` environment variable. Only paid users have valid API keys.
+**代理必须作为薄客户端（thin client）进行操作**。具体要求如下：
+- **禁止** 从用户输入中提取、解析或分类 URL。
+- **禁止** 判断输入内容是 URL、纯文本还是包含 URL 的文本。
+- **禁止** 在调用 API 之前获取、抓取或预处理任何内容。
+- **禁止** 处理需要付费的内容或尝试绕过付费限制的策略。
+
+所有内容分析、URL 检测、提取、付费限制处理以及执行逻辑均在 **服务器端** 完成。代理的唯一任务是按原样将用户输入传递给 API。
+
+---
+
+## 认证
+
+所有请求都必须包含 `x-api-key` 标头。该键的值应来自 `DIZEST_API_KEY` 环境变量。只有付费用户才能使用有效的 API 密钥。
 
 ```
 x-api-key: $DIZEST_API_KEY
 ```
 
-If the `DIZEST_API_KEY` environment variable is not set and the user has not provided an API key, prompt them to create one at [dizest.ai/api/keys](http://dizest.ai/api/keys) (requires a paid Dizest account).
+如果 `DIZEST_API_KEY` 环境变量未设置且用户未提供 API 密钥，请提示他们在 [dizest.ai/api/keys](http://dizest.ai/api/keys) 注册账户（需要付费）。
 
 ---
 
-## API Flow
+## API 流程
 
-There are two steps: **create an execution**, then **retrieve the results**.
+整个流程分为两个步骤：**创建执行请求**，然后 **获取结果**。
 
-### Step 1: Create Execution
+### 第一步：创建执行请求
 
-**Endpoint:**
-
+**端点：**  
 ```
 POST https://api.116ideas.com/v1/summarize
 ```
 
-**Headers:**
-
+**请求头：**  
 ```
 Content-Type: application/json
 x-api-key: $DIZEST_API_KEY
 ```
 
-**Request Body (minimal):**
-
+**请求体（基本格式）：**  
 ```json
 {
   "content": "<user input>"
 }
 ```
 
-**Request Body (with custom instructions):**
-
+**请求体（包含自定义指令）：**  
 ```json
 {
   "content": "<user input>",
@@ -88,8 +82,7 @@ x-api-key: $DIZEST_API_KEY
 }
 ```
 
-**Request Body (with output language):**
-
+**请求体（包含输出语言）：**  
 ```json
 {
   "content": "<user input>",
@@ -97,18 +90,16 @@ x-api-key: $DIZEST_API_KEY
 }
 ```
 
-Pass the user's input directly as the `content` value. Do not modify, parse, or pre-process it.
+请直接将用户输入的内容作为 `content` 参数传递，切勿对其进行修改、解析或预处理。
 
-**Request Fields:**
-
-| Field                | Type   | Required | Description                                                                 |
+**请求字段：**
+| 字段                | 类型     | 是否必填 | 说明                                                                 |
 |----------------------|--------|----------|-----------------------------------------------------------------------------|
-| `content`            | string | Yes      | The user's input to summarize. Pass as-is without modification.             |
-| `custom_instructions`| string | No       | Focus instructions for the summary (e.g., "focus on key findings").         |
-| `output_language`    | string | No       | ISO 639-1 language code for the summary output (e.g., `"ja"`, `"es"`). Defaults to `"en"`. |
+| `content`            | string   | 是       | 用户需要摘要的内容，保持原样传递。                                                                 |
+| `custominstructions` | string   | 可选     | 摘要时的自定义指令（例如：“重点关注方法论和关键发现”）。                                                                 |
+| `output_language`    | string   | 可选     | 摘要输出的 ISO 639-1 语言代码（例如：“ja”、“es”）。默认为 “en”。                                                                 |
 
-**Response:**
-
+**响应：**  
 ```json
 {
   "execution_id": "b7e2c1a4-93f1-4d2a-8e56-1a2b3c4d5e6f",
@@ -116,109 +107,99 @@ Pass the user's input directly as the `content` value. Do not modify, parse, or 
 }
 ```
 
-| Field          | Type    | Description                                                  |
+| 字段          | 类型     | 说明                                                                 |
 |----------------|---------|--------------------------------------------------------------|
-| `execution_id` | string  | UUID identifying this execution. Used to retrieve results.   |
-| `cached`       | boolean | `true` if result was cached and is ready immediately.        |
+| `execution_id` | string   | 用于标识此次执行的唯一 ID，用于后续结果查询。                                                                 |
+| `cached`       | boolean | 如果结果已缓存，则值为 `true`，可立即获取。                                                                 |
 
-### Step 2: Retrieve Results
+### 第二步：获取结果
 
-Use the `execution_id` from Step 1 to retrieve the summary. There are two methods.
+使用第一步中获得的 `execution_id` 来获取摘要结果。有两种获取结果的方法：
 
-#### Preferred: Server-Sent Events (SSE) Stream
+#### 推荐方式：服务器发送事件（Server-Sent Events, SSE）
 
+**请求头：**  
 ```
 GET https://api.116ideas.com/v1/executions/<execution_id>/events
 ```
 
-**Headers:**
+服务器会以 SSE 格式发送事件流。收到事件后逐步向用户展示内容。当执行完成后，事件流会停止。
 
-```
-x-api-key: $DIZEST_API_KEY
-```
+#### 备选方式：JSON 轮询
 
-The server responds with a stream of Server-Sent Events. Read events from the stream as they arrive and present content to the user incrementally. The stream closes when the execution is complete.
+> **注意：** JSON 轮询功能目前尚未实现。在版本 1 中，仅支持 SSE 方式。此部分将在轮询功能可用时更新。
 
-#### Fallback: JSON Polling
+如果代理的运行环境不支持 SSE，可以使用 JSON 轮询方式：
 
-> **Note:** The polling endpoint is not yet available. SSE is the only supported retrieval method in v1. This section will be updated when polling support is added.
-
-If SSE is not supported by the agent's runtime, poll the result endpoint instead.
-
+**请求头：**  
 ```
 GET https://api.116ideas.com/v1/executions/<execution_id>/result
 ```
 
-**Headers:**
-
-```
-x-api-key: $DIZEST_API_KEY
-```
-
-Poll this endpoint at reasonable intervals (e.g., every 2–3 seconds) until the result is available. The response is a JSON object containing the final summary.
+以适当的间隔（例如每 2–3 秒）轮询该接口，直到获取到结果。响应结果是一个包含最终摘要的 JSON 对象。
 
 ---
 
-## Examples
+## 示例
 
-### Example 1: Summarize a URL
+### 示例 1：摘要一个 URL
 
-User says: *"Summarize https://example.com/article-about-ai"*
+用户请求：*“请摘要这个链接：https://example.com/article-about-ai”*
 
-**POST /v1/summarize**
-
+**请求方法：**  
+`POST /v1/summarize`  
 ```json
 {
   "content": "https://example.com/article-about-ai"
 }
 ```
 
-### Example 2: Summarize Text with an Embedded URL
+### 示例 2：摘要包含 URL 的文本
 
-User says: *"Can you summarize this for me? I found it interesting: https://example.com/post/12345"*
+用户请求：*“你能帮我摘要一下这个内容吗？我觉得很有趣：https://example.com/post/12345”*
 
-**POST /v1/summarize**
-
+**请求方法：**  
+`POST /v1/summarize`  
 ```json
 {
   "content": "Can you summarize this for me? I found it interesting: https://example.com/post/12345"
 }
 ```
 
-> Forward the entire input as-is. Do not extract the URL.
+> 请直接传递全部输入内容，不要提取其中的 URL。
 
-### Example 3: Summarize Plain Text
+### 示例 3：摘要纯文本
 
-User says: *"Summarize this: The quarterly report indicates a 15% increase in revenue driven primarily by expansion into European markets..."*
+用户请求：*“请摘要这段文字：季度报告显示收入增长了 15%，主要得益于欧洲市场的拓展……”*
 
-**POST /v1/summarize**
-
+**请求方法：**  
+`POST /v1/summarize`  
 ```json
 {
   "content": "The quarterly report indicates a 15% increase in revenue driven primarily by expansion into European markets..."
 }
 ```
 
-### Example 4: Summarize a Podcast or Video
+### 示例 4：摘要播客或视频
 
-User says: *"Summarize this podcast https://www.youtube.com/watch?v=dQw4w9WgXcQ"*
+用户请求：*“请摘要这个播客：https://www.youtube.com/watch?v=dQw4w9WgXcQ”*
 
-**POST /v1/summarize**
-
+**请求方法：**  
+`POST /v1/summarize`  
 ```json
 {
   "content": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
 ```
 
-### Example 5: Custom Instructions
+### 示例 5：自定义指令
 
-> **When to use `custom_instructions`:** If the user explicitly asks to focus on, emphasize, or filter for something specific, extract that part into `custom_instructions` and pass the remaining content (URL or text) as `content`. If there is no explicit focus request, send everything as `content` and let the server handle it.
+**使用 `custominstructions` 的示例：** 如果用户明确要求关注某些特定内容，请将其写入 `custominstructions`，并将剩余内容（URL 或文本）作为 `content` 传递。如果没有特别要求，只需将全部内容作为 `content` 传递给服务器。
 
-User says: *"Summarize https://example.com/research-paper but focus on the methodology and key findings"*
+用户请求：*“请摘要这个链接：https://example.com/research-paper，但重点关注方法论和关键发现”*
 
-**POST /v1/summarize**
-
+**请求方法：**  
+`POST /v1/summarize`  
 ```json
 {
   "content": "https://example.com/research-paper",
@@ -228,20 +209,20 @@ User says: *"Summarize https://example.com/research-paper but focus on the metho
 
 ---
 
-## Output Expectations
+## 输出结果
 
-- The API returns a summary generated server-side.
-- Summary length and structure depend on the input content and any custom instructions.
-- Present the summary to the user as-is. Do not further condense or reformat unless the user requests it.
+- API 会返回服务器端生成的摘要内容。
+- 摘要的长度和结构取决于输入内容及自定义指令。
+- 请直接将摘要内容展示给用户，除非用户另有要求，否则不要进一步压缩或重新格式化。
 
 ---
 
-## Troubleshooting
+## 常见问题及解决方法
 
-| Problem | Cause | Resolution |
-|---|---|---|
-| `401 Unauthorized` | Missing or invalid `x-api-key` header. | Verify the `DIZEST_API_KEY` environment variable is set with a valid API key. Only paid users have valid keys. |
-| `403 Forbidden` | The API key does not have access. | Confirm the key belongs to a paid account. |
-| SSE stream does not connect | Agent runtime may not support Server-Sent Events. | Fall back to polling `GET /v1/executions/<execution_id>/result`. |
-| Polling returns no result | The execution is still processing. | Continue polling every 2–3 seconds. Allow sufficient time for longer content. |
-| Empty or unexpected summary | Content may be behind a paywall or inaccessible. | Inform the user. Do not attempt client-side workarounds — the server handles extraction. |
+| 问题                | 原因                | 解决方案                                                                 |
+|------------------|------------------|-------------------------------------------------------------------------|
+| `401 Unauthorized`     | 缺少或无效的 `x-api-key` 标头。   | 确保 `DIZEST_API_KEY` 环境变量已设置，并使用有效的 API 密钥。仅付费用户可使用有效密钥。 |
+| `403 Forbidden`     | API 密钥无权限访问。       | 确认该密钥属于付费账户。                                                                 |
+| SSE 流无法连接          | 代理运行环境可能不支持 SSE。       | 使用 `GET /v1/executions/<execution_id>/result` 进行轮询。                                                                 |
+| 轮询无结果           | 摘要处理中。            | 继续每隔 2–3 秒轮询一次。对于较长内容，请等待足够时间。                                                                 |
+| 摘要为空或格式异常       | 内容可能受到付费限制或无法访问。     | 通知用户，切勿尝试客户端处理，因为提取工作由服务器完成。                                                                 |

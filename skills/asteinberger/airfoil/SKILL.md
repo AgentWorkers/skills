@@ -1,10 +1,10 @@
 ---
 name: airfoil
-description: Control AirPlay speakers via Airfoil from the command line. Connect, disconnect, set volume, and manage multi-room audio with simple CLI commands.
+description: 通过 Airfoil 在命令行控制 AirPlay 扬声器：使用简单的 CLI 命令来连接/断开设备、调节音量以及管理多房间音频播放。
 metadata: {"clawdbot":{"emoji":"🔊","os":["darwin"],"requires":{"bins":["osascript"]}}}
 ---
 
-# 🔊 Airfoil Skill
+# 🔊 Airfoil 技能
 
 ```
     ╔═══════════════════════════════════════════════════════════╗
@@ -17,34 +17,34 @@ metadata: {"clawdbot":{"emoji":"🔊","os":["darwin"],"requires":{"bins":["osasc
     ╚═══════════════════════════════════════════════════════════╝
 ```
 
-> *"Why hop to your Mac when you can croak at it?"* 🐸
+> “为什么要用鼠标去操作电脑，直接用语音命令不就好了吗？” 🐸
 
 ---
 
-## 📖 What Does This Skill Do?
+## 📖 这个技能的作用是什么？
 
-The **Airfoil Skill** gives you full control over your AirPlay speakers directly from the terminal – or through Clawd! Connect speakers, control volume, check status – all without touching the mouse.
+**Airfoil 技能** 允许你直接通过终端或 Clawd 来完全控制你的 AirPlay 扬声器——无需使用鼠标。
 
-**Features:**
-- 📡 **List** — Show all available speakers
-- 🔗 **Connect** — Connect to a speaker
-- 🔌 **Disconnect** — Disconnect from a speaker
-- 🔊 **Volume** — Control volume (0-100%)
-- 📊 **Status** — Show connected speakers with volume levels
+**功能包括：**
+- 📡 **列表** — 显示所有可用的扬声器
+- 🔗 **连接** — 连接到某个扬声器
+- 🔌 **断开** — 从某个扬声器断开连接
+- 🔊 **音量** — 调节音量（0-100%）
+- 📊 **状态** — 显示已连接的扬声器及其音量水平
 
 ---
 
-## ⚙️ Requirements
+## ⚙️ 使用要求
 
-| What | Details |
+| 需求 | 详情 |
 |------|---------|
-| **OS** | macOS (uses AppleScript) |
-| **App** | [Airfoil](https://rogueamoeba.com/airfoil/mac/) by Rogue Amoeba |
-| **Price** | $35 (free trial available) |
+| **操作系统** | macOS（需要使用 AppleScript） |
+| **应用程序** | [Airfoil](https://rogueamoeba.com/airfoil/mac/)（由 Rogue Amoeba 开发） |
+| **价格** | 35 美元（提供免费试用） |
 
-### Installation
+### 安装步骤
 
-1. **Install Airfoil:**
+1. **安装 Airfoil：**
    ```bash
    # Via Homebrew
    brew install --cask airfoil
@@ -52,56 +52,56 @@ The **Airfoil Skill** gives you full control over your AirPlay speakers directly
    # Or download from rogueamoeba.com/airfoil/mac/
    ```
 
-2. **Launch Airfoil** and grant Accessibility permissions (System Settings → Privacy & Security → Accessibility)
+2. **启动 Airfoil** 并授予其访问权限（系统设置 → 隐私与安全 → 访问辅助功能）
 
-3. **Skill is ready!** 🚀
+3. **技能即可使用！** 🚀
 
 ---
 
-## 🛠️ Commands
+## 🛠️ 命令说明
 
-### `list` — Show All Speakers
+### `list` — 显示所有扬声器
 
 ```bash
 ./airfoil.sh list
 ```
 
-**Output:**
+**输出：**
 ```
 Computer, Andy's M5 Macbook, Sonos Move, Living Room TV
 ```
 
 ---
 
-### `connect <speaker>` — Connect to Speaker
+### `connect <扬声器名称>` — 连接到指定的扬声器
 
 ```bash
 ./airfoil.sh connect "Sonos Move"
 ```
 
-**Output:**
+**输出：**
 ```
 Connected: Sonos Move
 ```
 
-> 💡 Speaker name must match exactly (case-sensitive!)
+> 注意：扬声器名称必须完全匹配（区分大小写！）
 
 ---
 
-### `disconnect <speaker>` — Disconnect Speaker
+### `disconnect <扬声器名称>` — 断开与指定扬声器的连接
 
 ```bash
 ./airfoil.sh disconnect "Sonos Move"
 ```
 
-**Output:**
+**输出：**
 ```
 Disconnected: Sonos Move
 ```
 
 ---
 
-### `volume <speaker> <0-100>` — Set Volume
+### `volume <扬声器名称> <0-100>` — 设置扬声器音量
 
 ```bash
 # Set to 40%
@@ -114,49 +114,49 @@ Disconnected: Sonos Move
 ./airfoil.sh volume "Sonos Move" 15
 ```
 
-**Output:**
+**输出：**
 ```
 Volume Sonos Move: 40%
 ```
 
 ---
 
-### `status` — Show Connected Speakers
+### `status` — 显示已连接的扬声器
 
 ```bash
 ./airfoil.sh status
 ```
 
-**Output:**
+**输出：**
 ```
 Sonos Move: 40%
 Living Room TV: 65%
 ```
 
-Or if nothing is connected:
+如果没有任何扬声器连接：
 ```
 No speakers connected
 ```
 
 ---
 
-## 🎯 Example Workflows
+## 🎯 使用示例
 
-### 🏠 "Music in the Living Room"
+### 🏠 “在客厅播放音乐”
 ```bash
 ./airfoil.sh connect "Sonos Move"
 ./airfoil.sh volume "Sonos Move" 50
 # → Now fire up Spotify/Apple Music and enjoy!
 ```
 
-### 🎬 "Movie Night Setup"
+### 🎬 “设置电影观看模式”
 ```bash
 ./airfoil.sh connect "Living Room TV"
 ./airfoil.sh volume "Living Room TV" 70
 ./airfoil.sh disconnect "Sonos Move"  # If still connected
 ```
 
-### 🌙 "All Off"
+### 🌙 “全部关闭”
 ```bash
 for speaker in "Sonos Move" "Living Room TV"; do
     ./airfoil.sh disconnect "$speaker" 2>/dev/null
@@ -166,48 +166,47 @@ echo "All speakers disconnected 🌙"
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 故障排除
 
-### ❌ "Speaker Not Found"
+### ❌ “找不到扬声器”
 
-**Problem:** `execution error: Airfoil got an error: Can't get speaker...`
+**问题：** “执行错误：Airfoil 无法找到扬声器……”
 
-**Solutions:**
-1. Check exact spelling: `./airfoil.sh list`
-2. Speaker name is **case-sensitive** ("sonos move" ≠ "Sonos Move")
-3. Speaker must be on the same network
-4. Speaker must be powered on and reachable
-
----
-
-### ❌ "Airfoil Won't Start / No Permission"
-
-**Problem:** AppleScript can't control Airfoil
-
-**Solutions:**
-1. **System Settings → Privacy & Security → Accessibility**
-2. Add Terminal (or iTerm)
-3. Add Airfoil
-4. Restart macOS (sometimes necessary 🙄)
+**解决方法：**
+1. 确认拼写正确：`./airfoil.sh list`
+2. 扬声器名称区分大小写（例如：“sonos move” 和 “Sonos Move” 是不同的）
+3. 确保扬声器处于同一网络中，并且已开启且可被访问
 
 ---
 
-### ❌ "Volume Doesn't Work"
+### ❌ “Airfoil 无法启动 / 没有权限”
 
-**Problem:** Volume command has no effect
+**问题：** AppleScript 无法控制 Airfoil
 
-**Solutions:**
-1. Speaker must be **connected** before volume can be set
-2. First `connect`, then `volume`
-3. Some speakers have hardware-side limits
+**解决方法：**
+1. 进入系统设置 → 隐私与安全 → 访问辅助功能
+2. 确保终端（或 iTerm）已添加到允许使用的应用程序列表中
+3. 确保 Airfoil 已添加到允许使用的应用程序列表中
+4. 有时需要重启 macOS （有时这会解决问题 🙄）
 
 ---
 
-### ❌ "Airfoil Not Installed"
+### ❌ “音量调节无效”
 
-**Problem:** `execution error: Application isn't running`
+**问题：** 调节音量的命令没有效果
 
-**Solution:**
+**解决方法：**
+1. 确保扬声器已连接后再尝试调节音量
+2. 先使用 `connect` 命令连接扬声器，再使用 `volume` 命令调节音量
+3. 有些扬声器可能有硬件上的音量限制
+
+---
+
+### ❌ “Airfoil 未安装”
+
+**问题：** “执行错误：应用程序未运行”
+
+**解决方法：**
 ```bash
 # Start Airfoil
 open -a Airfoil
@@ -218,11 +217,11 @@ brew install --cask airfoil
 
 ---
 
-### ❌ "bc: command not found"
+### ❌ “出现 ‘bc: command not found’ 错误”
 
-**Problem:** Volume calculation fails
+**问题：** 音量调节命令无法执行
 
-**Solution:**
+**解决方法：**
 ```bash
 # Install bc (should be standard on macOS)
 brew install bc
@@ -230,24 +229,24 @@ brew install bc
 
 ---
 
-## 📋 Known Speakers
+## 📋 已测试的扬声器
 
-These speakers have been tested:
+以下扬声器已通过测试：
 
-| Speaker | Type | Notes |
+| 扬声器 | 类型 | 备注 |
 |---------|------|-------|
-| `Computer` | Local | Always available |
-| `Andy's M5 Macbook` | Mac | When on the network |
-| `Sonos Move` | Sonos | Bluetooth or WiFi |
-| `Living Room TV` | Apple TV | Via AirPlay |
+| `Computer` | 本地扬声器 | 始终可用 |
+| `Andy’s M5 Macbook` | Mac 电脑 | 当连接到网络时可用 |
+| `Sonos Move` | Sonos 扬声器 | 支持蓝牙或 WiFi 连接 |
+| `Living Room TV` | Apple TV | 可通过 AirPlay 连接 |
 
-> 💡 Use `./airfoil.sh list` to discover your own speakers!
+> 使用 `./airfoil.sh list` 命令来查看你自己的扬声器列表！
 
 ---
 
-## 🔗 Integration with Clawd
+## 🔗 与 Clawd 的集成
 
-This skill works perfectly with Clawd! Examples:
+此技能可与 Clawd 完美配合使用！示例如下：
 
 ```
 "Hey Clawd, connect the Sonos Move"
@@ -262,17 +261,17 @@ This skill works perfectly with Clawd! Examples:
 
 ---
 
-## 📜 Changelog
+## 📜 更新日志
 
-| Version | Date | Changes |
+| 版本 | 更新日期 | 更新内容 |
 |---------|------|---------|
-| 1.0.0 | 2025-01-25 | Initial release |
-| 1.1.0 | 2025-06-10 | Documentation polished 🐸 |
-| 1.2.0 | 2025-06-26 | Translated to English, ClawdHub-ready! |
+| 1.0.0 | 2025-01-25 | 首次发布 |
+| 1.1.0 | 2025-06-10 | 文档更新 |
+| 1.2.0 | 2025-06-26 | 翻译为中文，并适配 ClawdHub 使用 |
 
 ---
 
-## 🐸 Credits
+## 🐸 致谢
 
 ```
   @..@
@@ -281,16 +280,16 @@ This skill works perfectly with Clawd! Examples:
  ^^  ^^     by a frog and his human!"
 ```
 
-**Author:** Andy Steinberger (with help from his Clawdbot Owen the Frog 🐸)  
-**Powered by:** [Airfoil](https://rogueamoeba.com/airfoil/mac/) by Rogue Amoeba  
-**Part of:** [Clawdbot](https://clawdhub.com) Skills Collection
+**作者：** Andy Steinberger（在 Clawdbot Owen 的帮助下完成）  
+**技术支持：** [Airfoil](https://rogueamoeba.com/airfoil/mac/)（由 Rogue Amoeba 开发）  
+**所属项目：** [Clawdbot](https://clawdhub.com) 技能库
 
 ---
 
 <div align="center">
 
-**Made with 💚 for the Clawdbot Community**
+**专为 Clawdbot 社区制作**
 
-*Ribbit!* 🐸
+*呱呱！* 🐸
 
 </div>

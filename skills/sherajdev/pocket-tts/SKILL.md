@@ -1,18 +1,18 @@
-# Pocket TTS Skill
+# Pocket TTS 技能
 
-Fully local, offline text-to-speech using Kyutai's Pocket TTS model. Generate high-quality audio from text without any API calls or internet connection. Features 8 built-in voices, voice cloning support, and runs entirely on CPU.
+这是一个完全基于本地的离线文本转语音（TTS）工具，使用 Kyutai 的 Pocket TTS 模型。无需任何 API 调用或网络连接即可将文本转换为高质量音频。该工具支持 8 种内置语音、语音克隆功能，并且完全在 CPU 上运行。
 
-## Features
+## 特点
 
-- 🎯 **Fully local** - No API calls, runs completely offline
-- 🚀 **CPU-only** - No GPU required, works on any computer
-- ⚡ **Fast generation** - ~2-6x real-time on CPU
-- 🎤 **8 built-in voices** - alba, marius, javert, jean, fantine, cosette, eponine, azelma
-- 🎭 **Voice cloning** - Clone any voice from a WAV sample
-- 🔊 **Low latency** - ~200ms first audio chunk
-- 📚 **Simple Python API** - Easy integration into any project
+- 🎯 **完全本地化**：无需 API 调用，完全离线运行
+- 🚀 **仅依赖 CPU**：无需 GPU，可在任何计算机上使用
+- ⚡ **快速生成**：在 CPU 上的生成速度约为实时的 2-6 倍
+- 🎤 **8 种内置语音**：alba、marius、javier、jean、fantine、cosette、eponine、azelma
+- 🎭 **语音克隆**：可以从 WAV 样本中克隆任意语音
+- 🔊 **低延迟**：首次生成音频片段的时间约为 200 毫秒
+- 📚 **简单的 Python API**：易于集成到任何项目中
 
-## Installation
+## 安装
 
 ```bash
 # 1. Accept the model license on Hugging Face
@@ -25,9 +25,9 @@ pip install pocket-tts
 uvx pocket-tts generate "Hello world"
 ```
 
-## Usage
+## 使用方法
 
-### CLI
+### 命令行界面 (CLI)
 
 ```bash
 # Basic usage
@@ -73,49 +73,49 @@ scipy.io.wavfile.write("output.wav", tts_model.sample_rate, audio.numpy())
 print(f"Sample rate: {tts_model.sample_rate} Hz")
 ```
 
-## Available Voices
+## 可用语音
 
-| Voice | Description |
+| 语音 | 描述 |
 |-------|-------------|
-| alba | Casual female voice |
-| marius | Male voice |
-| javert | Clear male voice |
-| jean | Natural male voice |
-| fantine | Female voice |
-| cosette | Female voice |
-| eponine | Female voice |
-| azelma | Female voice |
+| alba | 休闲女性语音 |
+| marius | 男性语音 |
+| javert | 清晰的男性语音 |
+| jean | 自然男性语音 |
+| fantine | 女性语音 |
+| cosette | 女性语音 |
+| eponine | 女性语音 |
+| azelma | 女性语音 |
 
-Or use `--voice-file /path/to/wav.wav` for custom voice cloning.
+或者使用 `--voice-file /path/to/wav.wav` 来克隆自定义语音。
 
-## Options
+## 选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `text` | Text to convert | Required |
-| `-o, --output` | Output WAV file | `output.wav` |
-| `-v, --voice` | Voice preset | `alba` |
-| `-s, --speed` | Speech speed (0.5-2.0) | `1.0` |
-| `--voice-file` | Custom WAV for cloning | None |
-| `--serve` | Start HTTP server | False |
-| `--list-voices` | List all voices | False |
+| `text` | 需要转换的文本 | 必填 |
+| `-o, --output` | 输出 WAV 文件 | `output.wav` |
+| `-v, --voice` | 语音预设 | `alba` |
+| `-s, --speed` | 语音速度（0.5-2.0） | `1.0` |
+| `--voice-file` | 用于克隆的自定义 WAV 文件 | 无 |
+| `--serve` | 启动 HTTP 服务器 | 否 |
+| `--list-voices` | 列出所有语音 | 否 |
 
-## Requirements
+## 系统要求
 
 - Python 3.10-3.14
-- PyTorch 2.5+ (CPU version works)
-- Works on 2 CPU cores
+- PyTorch 2.5 或更高版本（支持 CPU 版本）
+- 需要至少 2 个 CPU 核心
 
-## Notes
+## 注意事项
 
-- ⚠️ Model is gated - accept license on Hugging Face first
-- 🌍 English language only (v1)
-- 💾 First run downloads model (~100M parameters)
-- 🔊 Audio is returned as 1D torch tensor (PCM data)
+- ⚠️ 该模型受 Hugging Face 许可证限制，使用前请先获取许可证
+- 🌍 仅支持英语语言（版本 1）
+- 💾 首次运行时会下载模型数据（约 100MB 参数）
+- 🔊 音频以 1D torch 张量（PCM 数据）的形式返回
 
-## Links
+## 链接
 
-- [Demo](https://kyutai.org/tts)
-- [GitHub](https://github.com/kyutai-labs/pocket-tts)
-- [Hugging Face](https://huggingface.co/kyutai/pocket-tts)
-- [Paper](https://arxiv.org/abs/2509.06926)
+- [演示](https://kyutai.org/tts)
+- [GitHub 仓库](https://github.com/kyutai-labs/pocket-tts)
+- [Hugging Face 页面](https://huggingface.co/kyutai/pocket-tts)
+- [论文](https://arxiv.org/abs/2509.06926)

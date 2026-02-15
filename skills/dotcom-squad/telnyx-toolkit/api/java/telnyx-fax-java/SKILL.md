@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Fax - Java
+# Telnyx 传真 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化完成。
 
-## List all Fax Applications
+## 列出所有传真应用
 
-This endpoint returns a list of your Fax Applications inside the 'data' attribute of the response.
+此端点会在响应的 `data` 属性中返回您的所有传真应用列表。
 
 `GET /fax_applications`
 
@@ -44,11 +44,11 @@ import com.telnyx.sdk.models.faxapplications.FaxApplicationListParams;
 FaxApplicationListPage page = client.faxApplications().list();
 ```
 
-## Creates a Fax Application
+## 创建传真应用
 
-Creates a new Fax Application based on the parameters sent in the request.
+根据请求中发送的参数创建一个新的传真应用。
 
-`POST /fax_applications` — Required: `application_name`, `webhook_event_url`
+`POST /fax_applications` — 必需参数：`application_name`、`webhook_event_url`
 
 ```java
 import com.telnyx.sdk.models.faxapplications.FaxApplicationCreateParams;
@@ -61,9 +61,9 @@ FaxApplicationCreateParams params = FaxApplicationCreateParams.builder()
 FaxApplicationCreateResponse faxApplication = client.faxApplications().create(params);
 ```
 
-## Retrieve a Fax Application
+## 查询传真应用信息
 
-Return the details of an existing Fax Application inside the 'data' attribute of the response.
+在响应的 `data` 属性中返回现有传真应用的详细信息。
 
 `GET /fax_applications/{id}`
 
@@ -74,11 +74,11 @@ import com.telnyx.sdk.models.faxapplications.FaxApplicationRetrieveResponse;
 FaxApplicationRetrieveResponse faxApplication = client.faxApplications().retrieve("1293384261075731499");
 ```
 
-## Update a Fax Application
+## 更新传真应用
 
-Updates settings of an existing Fax Application based on the parameters of the request.
+根据请求中的参数更新现有传真应用的设置。
 
-`PATCH /fax_applications/{id}` — Required: `application_name`, `webhook_event_url`
+`PATCH /fax_applications/{id}` — 必需参数：`application_name`、`webhook_event_url`
 
 ```java
 import com.telnyx.sdk.models.faxapplications.FaxApplicationUpdateParams;
@@ -92,9 +92,9 @@ FaxApplicationUpdateParams params = FaxApplicationUpdateParams.builder()
 FaxApplicationUpdateResponse faxApplication = client.faxApplications().update(params);
 ```
 
-## Deletes a Fax Application
+## 删除传真应用
 
-Permanently deletes a Fax Application.
+永久删除一个传真应用。
 
 `DELETE /fax_applications/{id}`
 
@@ -105,7 +105,7 @@ import com.telnyx.sdk.models.faxapplications.FaxApplicationDeleteResponse;
 FaxApplicationDeleteResponse faxApplication = client.faxApplications().delete("1293384261075731499");
 ```
 
-## View a list of faxes
+## 查看传真列表
 
 `GET /faxes`
 
@@ -116,11 +116,11 @@ import com.telnyx.sdk.models.faxes.FaxListParams;
 FaxListPage page = client.faxes().list();
 ```
 
-## Send a fax
+## 发送传真
 
-Send a fax.
+发送传真。
 
-`POST /faxes` — Required: `connection_id`, `from`, `to`
+`POST /faxes` — 必需参数：`connection_id`、`from`、`to`
 
 ```java
 import com.telnyx.sdk.models.faxes.FaxCreateParams;
@@ -134,7 +134,7 @@ FaxCreateParams params = FaxCreateParams.builder()
 FaxCreateResponse fax = client.faxes().create(params);
 ```
 
-## View a fax
+## 查看传真详情
 
 `GET /faxes/{id}`
 
@@ -145,7 +145,7 @@ import com.telnyx.sdk.models.faxes.FaxRetrieveResponse;
 FaxRetrieveResponse fax = client.faxes().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete a fax
+## 删除传真
 
 `DELETE /faxes/{id}`
 
@@ -155,9 +155,9 @@ import com.telnyx.sdk.models.faxes.FaxDeleteParams;
 client.faxes().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Cancel a fax
+## 取消传真
 
-Cancel the outbound fax that is in one of the following states: `queued`, `media.processed`, `originated` or `sending`
+取消处于以下状态之一的传出传真：`queued`、`media.processed`、`originated` 或 `sending`
 
 `POST /faxes/{id}/actions/cancel`
 
@@ -168,9 +168,9 @@ import com.telnyx.sdk.models.faxes.actions.ActionCancelResponse;
 ActionCancelResponse response = client.faxes().actions().cancel("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Refresh a fax
+## 刷新传真信息
 
-Refreshes the inbound fax's media_url when it has expired
+当传入的传真信息过期时，刷新其媒体链接。
 
 `POST /faxes/{id}/actions/refresh`
 
@@ -183,15 +183,15 @@ ActionRefreshResponse response = client.faxes().actions().refresh("182bd5e5-6e1a
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL：
+所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `fax.delivered` | Fax Delivered |
-| `fax.failed` | Fax Failed |
-| `fax.media.processed` | Fax Media Processed |
-| `fax.queued` | Fax Queued |
-| `fax.sending.started` | Fax Sending Started |
+| `fax.delivered` | 传真已送达 |
+| `fax.failed` | 传真发送失败 |
+| `fax.media.processed` | 传真媒体文件已处理 |
+| `fax.queued` | 传真已排队 |
+| `fax.sendingstarted` | 传真发送开始 |

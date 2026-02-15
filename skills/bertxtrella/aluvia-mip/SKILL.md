@@ -1,6 +1,6 @@
 ---
 name: Aluvia Browser Proxy
-description: Launch a proxy-protected headless browser session using Aluvia SDK. Avoid 403 blocks, CAPTCHAs, and rate limits by routing browser traffic through residential proxies. Provides a CDP URL for integration with browser automation tools.
+description: 使用 Aluvia SDK 启动一个受代理保护的无头浏览器会话。通过将浏览器流量路由到住宅代理（residential proxies），可以避免 403 错误、验证码（CAPTCHAs）以及速率限制（rate limits）。同时，系统会提供一个 CDP（Content Delivery Protocol）URL，以便与浏览器自动化工具（browser automation tools）进行集成。
 read_when:
   - Browsing websites that block datacenter IPs
   - Avoiding CAPTCHAs and rate limits
@@ -11,13 +11,13 @@ metadata: { 'clawdbot': { 'emoji': '🛡️', 'requires': { 'bins': ['node', 'np
 allowed-tools: Bash(aluvia-sdk:*)
 ---
 
-# Aluvia Browser Proxy
+# Aluvia 浏览器代理
 
-## What it does
+## 功能简介
 
-Aluvia SDK launches a headless Chromium browser routed through residential proxies, making your browser traffic appear as a real user. It returns a CDP (Chrome DevTools Protocol) URL that any browser automation tool can connect to.
+Aluvia SDK 会启动一个无头版的 Chromium 浏览器，并通过代理服务器进行路由，使得您的浏览器流量看起来像是由真实用户发起的。该代理服务会返回一个 CDP（Chrome 开发者工具协议，Chrome DevTools Protocol）URL，任何浏览器自动化工具都可以通过这个 URL 进行连接。
 
-## Quick start
+## 快速入门
 
 ```bash
 export ALUVIA_API_KEY=your_api_key
@@ -25,57 +25,56 @@ aluvia-sdk open https://example.com        # Start proxied browser, get CDP URL
 aluvia-sdk close                            # Stop the session
 ```
 
-## Core workflow
+## 核心工作流程
 
-1. Set `ALUVIA_API_KEY` environment variable
-2. `aluvia-sdk open <url>` — launches a headless proxied browser, returns JSON with `cdpUrl`
-3. Parse the `cdpUrl` from the JSON output and pass it to browser tools (agent-browser, OpenClaw, etc.)
-4. `aluvia-sdk close` — stops the session when done
+1. 设置 `ALUVIA_API_KEY` 环境变量。
+2. 使用 `aluvia-sdk open <url>` 命令启动一个无头代理浏览器，并返回包含 `cdpUrl` 的 JSON 数据。
+3. 从 JSON 输出中解析出 `cdpUrl`，并将其传递给相应的浏览器自动化工具（如 agent-browser、OpenClaw 等）。
+4. 使用 `aluvia-sdk close` 命令结束当前会话。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @aluvia/sdk
 ```
 
-Or use directly with npx (no install needed):
+或者直接使用 `npx` 命令进行安装（无需额外安装）：
 
 ```bash
 npx aluvia-sdk help
 ```
 
-## API Key Setup
+## API 密钥设置
 
-1. Sign up at [Aluvia Dashboard](https://www.aluvia.io/)
-2. Create an API key from the dashboard
-3. Set the environment variable:
+1. 在 [Aluvia 控制台](https://www.aluvia.io/) 注册账号。
+2. 在控制台中创建一个 API 密钥。
+3. 设置 `ALUVIA_API_KEY` 环境变量。
 
 ```bash
 export ALUVIA_API_KEY=your_api_key_here
 ```
 
-The CLI reads the API key from the `ALUVIA_API_KEY` environment variable. It must be set before running any command.
+`aluvia-sdk` 的命令行工具会从 `ALUVIA_API_KEY` 环境变量中读取 API 密钥。在运行任何命令之前，必须确保该变量已设置。
 
-## Commands
+## 命令说明
 
-### Open a browser session
+### 启动浏览器会话
 
 ```bash
 aluvia-sdk open <url>
 ```
 
-Options:
+**选项：**
+- `--connection-id <id>`：使用现有的账户连接。
+- `--headed`：以有界窗口模式启动浏览器（默认为无头模式）。
 
-- `--connection-id <id>` — Use an existing account connection
-- `--headed` — Show the browser window (default is headless)
-
-Example:
+**示例：**
 
 ```bash
 aluvia-sdk open https://example.com
 ```
 
-Output (JSON):
+**输出（JSON 格式）：**
 
 ```json
 {
@@ -87,13 +86,13 @@ Output (JSON):
 }
 ```
 
-### Close the browser session
+### 结束浏览器会话
 
 ```bash
 aluvia-sdk close
 ```
 
-Output (JSON):
+**输出（JSON 格式）：**
 
 ```json
 {
@@ -106,13 +105,13 @@ Output (JSON):
 }
 ```
 
-### Help
+### 帮助文档
 
 ```bash
 aluvia-sdk help
 ```
 
-Output (plain text):
+**输出（纯文本格式）：**
 
 ```
 Usage: aluvia-sdk <command> [options]
@@ -130,42 +129,31 @@ Environment:
   ALUVIA_API_KEY         Your Aluvia API key (required)
 ```
 
-## Response Structure
+## 命令返回格式
 
-All operational commands (`open`, `close`) return a single JSON line to stdout.
+所有操作命令（`open`、`close`）都会在标准输出（stdout）中返回一条 JSON 数据：
 
-| Field          | Type              | Description                               |
-| -------------- | ----------------- | ----------------------------------------- |
-| `status`       | `"ok" \| "error"` | Whether the command succeeded             |
-| `url`          | `string \| null`  | The URL the browser was opened with       |
-| `cdpUrl`       | `string \| null`  | CDP endpoint to connect external tools    |
-| `connectionId` | `number \| null`  | Aluvia account connection ID              |
-| `pid`          | `number \| null`  | Process ID of the background daemon       |
-| `error`        | `string`          | Error message (only when status is error) |
-| `message`      | `string`          | Success message (only on close)           |
+| 字段            | 类型                | 说明                                      |
+|-----------------|-----------------|-----------------------------------------|
+| `status`       | `"ok"` \| "error"`     | 命令是否成功                          |
+| `url`          | `string \| null`       | 浏览器打开的 URL                          |
+| `cdpUrl`       | `string \| null`       | 用于连接外部工具的 CDP 端点                |
+| `connectionId`    | `number \| null`       | Aluvia 账户连接 ID                          |
+| `pid`          | `number \| null`       | 后台守护进程的进程 ID                          |
+| `error`        | `string`          | 错误信息（仅在命令失败时显示）                    |
+| `message`      | `string`          | 成功信息（仅在会话关闭时显示）                    |
 
-Parse the output:
+**解析输出数据：**
 
 ```bash
 CDP_URL=$(aluvia-sdk open https://example.com | jq -r '.cdpUrl')
 ```
 
-Only one session can run at a time. If `aluvia-sdk open` is called while a session is already running, it returns:
+同一时间只能运行一个浏览器会话。如果在会话正在进行中再次调用 `aluvia-sdk open`，系统会返回相应的错误信息。
 
-```json
-{
-  "status": "error",
-  "error": "A browser session is already running.",
-  "url": "https://example.com",
-  "cdpUrl": "http://127.0.0.1:45651",
-  "connectionId": 3449,
-  "pid": 113282
-}
-```
+## 通过 API 创建连接（推荐使用）
 
-## Create a Connection via API (recommended)
-
-Create a reusable connection to avoid creating a new one on every `open` call. Reusing a connection is recommended — it maintains the same proxy allocation and rules across sessions.
+建议使用 API 创建一个可复用的连接，以避免每次调用 `open` 命令时都重新创建连接。这样做可以确保不同会话之间使用相同的代理配置和规则。
 
 ```bash
 # Create a new connection
@@ -177,7 +165,7 @@ curl -s -X POST https://api.aluvia.io/v1/account/connections \
   }'
 ```
 
-Response:
+**API 响应示例：**
 
 ```json
 {
@@ -189,13 +177,13 @@ Response:
 }
 ```
 
-Then use the `connection_id` when opening a browser session:
+之后，在启动浏览器会话时可以使用 `connection_id` 参数：
 
 ```bash
 aluvia-sdk open https://target-site.com --connection-id 3449
 ```
 
-Other useful API calls:
+**其他有用的 API 命令：**
 
 ```bash
 # List existing connections
@@ -213,9 +201,9 @@ curl -s -X DELETE https://api.aluvia.io/v1/account/connections/3449 \
   -H "Authorization: Bearer $ALUVIA_API_KEY"
 ```
 
-## Using the CDP URL with agent-browser
+## 使用 agent-browser 工具与 CDP URL
 
-Start an Aluvia session, then pass the CDP URL to agent-browser:
+首先启动 Aluvia 会话，然后将 CDP URL 传递给 agent-browser 工具：
 
 ```bash
 # Start Aluvia proxy browser
@@ -230,18 +218,18 @@ agent-browser --cdp $CDP_URL fill @e2 "search query"
 aluvia-sdk close
 ```
 
-This routes all of agent-browser's traffic through Aluvia's residential proxies, avoiding blocks and CAPTCHAs.
+这样，agent-browser 的所有网络流量都会通过 Aluvia 的代理服务器进行路由，从而避开网络限制和验证码。
 
-## Using the CDP URL with OpenClaw Browser Tool
+## 使用 OpenClaw 浏览器工具与 CDP URL
 
-Start an Aluvia session and configure OpenClaw to use the CDP URL as a remote profile.
+启动 Aluvia 会话后，配置 OpenClaw 使用该 CDP URL 作为远程配置文件：
 
 ```bash
 # Start Aluvia proxy browser
 CDP_URL=$(aluvia-sdk open https://example.com | jq -r '.cdpUrl')
 ```
 
-Add a remote profile in `~/.openclaw/openclaw.json`:
+在 `~/.openclaw/openclaw.json` 文件中添加以下配置：
 
 ```json
 {
@@ -256,18 +244,18 @@ Add a remote profile in `~/.openclaw/openclaw.json`:
 }
 ```
 
-Replace `<port>` with the port from the `cdpUrl` output. Then use the profile:
+将 `<port>` 替换为 `cdpUrl` 中提供的端口号，然后使用该配置文件启动 OpenClaw：
 
 ```bash
 openclaw browser --browser-profile aluvia snapshot
 openclaw browser --browser-profile aluvia open https://example.com
 ```
 
-This works the same way as [Browserless hosted remote CDP](https://docs.openclaw.ai/tools/browser#browserless-hosted-remote-cdp), but routes traffic through Aluvia's residential proxies instead.
+这种方式与 [Browserless 托管的远程 CDP 服务](https://docs.openclaw.ai/tools/browser#browserless-hosted-remote-cdp) 的工作原理相同，但流量会通过 Aluvia 的代理服务器进行路由。
 
-The browser session is shared — the tool will see the same pages, cookies, and state as the `aluvia-sdk open` command created.
+需要注意的是：所有浏览器会话的数据（页面内容、cookie、localStorage 等）都是共享的。
 
-## Example: Full workflow
+## 示例：完整工作流程
 
 ```bash
 # 1. Set API key
@@ -286,41 +274,41 @@ agent-browser --cdp $CDP_URL click @e1
 aluvia-sdk close
 ```
 
-## Example: Reuse an existing connection
+## 重用现有连接
 
 ```bash
 # Open with a specific connection ID (reuses proxy allocation)
 aluvia-sdk open https://example.com --connection-id 3449
 ```
 
-## Example: Headed mode for debugging
+## 以有界窗口模式调试
 
 ```bash
 # Launch with a visible browser window
 aluvia-sdk open https://example.com --headed
 ```
 
-## Troubleshooting
+## 常见问题解决方法：
 
-- **"ALUVIA_API_KEY environment variable is required"** — Set `export ALUVIA_API_KEY=your_key` before running the command.
-- **"A browser session is already running"** — Run `aluvia-sdk close` first, then try again.
-- **"Browser session timed out"** — The browser took too long to start. Check the daemon log at `/tmp/aluvia-sdk/cli.log` for details.
-- **"Failed to load Playwright"** — Install Playwright: `npm install playwright` and then `npx playwright install chromium`.
-- **CDP connection refused** — Make sure the session is still running. Check with `cat /tmp/aluvia-sdk/cli.lock`.
-- **Cannot find `aluvia-sdk` command** — Use `npx aluvia-sdk` instead, or install globally with `npm install -g @aluvia/sdk`.
+- **“需要设置 ALUVIA_API_KEY 环境变量”**：在运行命令前，请确保设置了 `export ALUVIA_API_KEY=your_key`。
+- **“浏览器会话已运行中”**：请先使用 `aluvia-sdk close` 结束当前会话，然后再尝试。
+- **“浏览器会话超时”**：可能是浏览器启动时间过长。请查看 `/tmp/aluvia-sdk/cli.log` 日志文件以获取详细信息。
+- **“无法加载 Playwright”**：请先安装 Playwright：`npm install playwright`，然后使用 `npx playwright install chromium`。
+- **“CDP 连接被拒绝”**：请确认当前会话仍在运行中。可以使用 `cat /tmp/aluvia-sdk/cli.lock` 检查日志。
+- **找不到 `aluvia-sdk` 命令**：请尝试使用 `npx aluvia-sdk`，或全局安装 `npm install -g @aluvia/sdk`。
 
-## Notes
+## 注意事项：
 
-- Only one browser session can run at a time per machine.
-- The browser runs as a background daemon — closing the terminal does not stop it.
-- Always run `aluvia-sdk close` to cleanly shut down the session.
-- The CDP URL is a local endpoint (`http://127.0.0.1:<port>`) — it is only accessible from the same machine.
-- Session state (cookies, localStorage) persists for the lifetime of the session.
-- The `connectionId` can be reused across sessions with `--connection-id` to maintain the same proxy allocation.
+- 每台机器上同一时间只能运行一个浏览器会话。
+- 浏览器以后台守护进程的形式运行，关闭终端不会终止会话。
+- 请务必使用 `aluvia-sdk close` 命令来优雅地结束会话。
+- CDP URL 是本地地址（`http://127.0.0.1:<port>`），仅在同一台机器上可访问。
+- 会话状态（cookie、localStorage 等）会一直保留到会话结束。
+- 可以通过 `--connection-id` 参数在不同会话之间重用相同的连接 ID，以保持代理配置的一致性。
 
-## Links
+## 相关链接：
 
-- [Aluvia Website](https://www.aluvia.io/)
-- [Aluvia Documentation](https://docs.aluvia.io/)
-- [SDK on npm](https://www.npmjs.com/package/@aluvia/sdk)
-- [OpenClaw Browser Tool Docs](https://docs.openclaw.ai/tools/browser#browserless-hosted-remote-cdp)
+- [Aluvia 官网](https://www.aluvia.io/)
+- [Aluvia 文档](https://docs.aluvia.io/)
+- [Aluvia SDK 在 npm 上的下载链接](https://www.npmjs.com/package/@aluvia/sdk)
+- [OpenClaw 浏览器工具文档](https://docs.openclaw.ai/tools/browser#browserless-hosted-remote-cdp)

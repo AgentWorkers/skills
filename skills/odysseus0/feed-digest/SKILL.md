@@ -1,23 +1,27 @@
 ---
 name: feed-digest
-description: "Agentic feed digest using the feed CLI. Fetch, triage, and summarize RSS/Atom/JSON feeds to surface high-signal posts. Use when: (1) reading feeds or catching up on news, (2) user asks for a digest, roundup, or summary of recent posts, (3) user asks what's new or interesting today, (4) user mentions feed, RSS, blogs, or subscriptions."
+description: "使用 `feed CLI` 提供的代理式摘要功能：该工具可以抓取、筛选并汇总 RSS/Atom/JSON 格式的新闻源内容，从而筛选出具有高关注度的帖子。适用场景包括：  
+(1) 阅读新闻源或快速了解最新动态；  
+(2) 用户请求获取近期帖子的摘要或汇总；  
+(3) 用户询问当天有哪些新内容或有趣的信息；  
+(4) 用户提到新闻源、RSS、博客或订阅服务时。"
 metadata: {"openclaw": {"emoji": "📡", "requires": {"bins": ["feed"]}, "install": [{"kind": "brew", "formula": "odysseus0/tap/feed", "bins": ["feed"], "label": "Install via Homebrew"}, {"kind": "go", "package": "github.com/odysseus0/feed/cmd/feed@latest", "bins": ["feed"], "label": "Install via Go"}]}}
 ---
 
-# RSS Digest
+# RSS 摘要
 
-Surface what's worth reading from your feeds. Requires `feed` CLI (`brew install odysseus0/tap/feed`).
+从您的订阅源中筛选出值得阅读的内容。需要使用 `feed` CLI（通过 `brew install odysseus0/tap/feed` 安装）。
 
-## Workflow
+## 工作流程
 
-1. **Fetch** — `feed fetch` to pull latest entries.
-2. **Scan** — `feed get entries --limit 50` for recent unread (title, feed, date, summary).
-3. **Triage** — Pick 5-10 high-signal posts. Prioritize: AI progress, systems engineering, developer tools, anything surprising or contrarian.
-4. **Read** — `feed get entry <id>` for each pick (full post as Markdown).
-5. **Synthesize** — For each post: title, source, 2-3 sentence summary of why it matters. Group by theme if natural clusters emerge.
-6. **Mark read** — `feed update entries --read <id1> <id2> ...` to mark triaged entries as read.
+1. **获取最新内容**：使用 `feed fetch` 命令获取最新的文章条目。
+2. **扫描**：使用 `feed get entries --limit 50` 命令获取最近未读的文章（包括标题、来源、日期和摘要）。
+3. **筛选**：从中挑选出 5-10 篇具有较高价值的文章。优先考虑以下主题：人工智能进展、系统工程、开发工具，以及任何新颖或与众不同的内容。
+4. **阅读**：使用 `feed get entry <id>` 命令查看每篇被选中的文章（以 Markdown 格式显示全文）。
+5. **总结**：为每篇文章编写标题、来源以及 2-3 句的摘要，说明其重要性。如果内容可以归类到特定主题，可以进行分组。
+6. **标记为已读**：使用 `feed update entries --read <id1> <id2> ...` 命令将筛选后的文章标记为已读。
 
-## Commands
+## 命令
 
 ```
 feed fetch                              # pull latest from all feeds
@@ -30,8 +34,8 @@ feed get feeds                          # list feeds with unread counts
 feed get stats                          # database stats
 ```
 
-## Notes
+## 注意事项
 
-- Default output is table — most token-efficient for scanning. Avoid `-o json`.
-- `feed get entry <id>` returns Markdown — read this for the actual post content.
-- Filter by feed if too many entries: `--feed <feed_id>`.
+- 默认输出格式为表格形式，便于快速浏览。建议避免使用 `-o json` 选项。
+- `feed get entry <id>` 命令返回的是文章的 Markdown 格式内容，请直接查看该命令的输出以获取文章全文。
+- 如果订阅源中的文章数量过多，可以使用 `--feed <feed_id>` 选项进行筛选。

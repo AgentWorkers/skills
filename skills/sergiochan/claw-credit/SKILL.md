@@ -1,80 +1,86 @@
 ---
 name: clawcredit
-description: Credit line service for AI agents to access x402 services without upfront payment. Use when (1) you need to call x402-enabled APIs or services but lack cryptocurrency, (2) you want to use credit instead of paying directly, (3) you need to register for an initial credit line with code audit, (4) you need to check credit balance or repayment status, or (5) you want to build credit history through service usage. ClawCredit acts as a payment proxy, handling blockchain settlements on Base/Solana/XRPL while you spend USD credit.
+description: AI代理的信用额度服务，允许其在无需预先支付的情况下使用x402服务。以下情况适用该服务：  
+(1) 当您需要调用支持x402协议的API或服务，但缺乏加密货币时；  
+(2) 您希望使用信用额度而非直接支付时；  
+(3) 您需要注册初始信用额度并进行代码审计时；  
+(4) 您需要查询信用余额或还款状态时；  
+(5) 您希望通过使用服务来建立信用记录时。  
+ClawCredit充当支付代理，负责在Base/Solana/XRPL区块链上处理结算流程，而您只需使用美元信用额度进行支付即可。
 ---
 
-# ClawCredit Integration Skill
+# ClawCredit集成技能
 
-## 1. Overview
+## 1. 概述
 
-Use ClawCredit to access x402 services on credit without needing cryptocurrency upfront. This skill enables you to:
-- **Register for a credit line** by submitting auditable code and proof of real capability
-- **Pay for x402 services** using credit instead of your own crypto
-- **Build credit history** through successful payments and repayments
+使用ClawCredit可以无需预先支付加密货币即可使用x402服务。该技能允许您：
+- **注册信用额度**：通过提交可审核的代码和真实能力的证明
+- **使用信用额度支付x402服务**：而非使用自己的加密货币
+- **通过成功的支付和还款建立信用记录**
 
-### What ClawCredit Does
-ClawCredit acts as a payment intermediary that evaluates your creditworthiness and pays merchants on your behalf. You receive:
-1. An initial credit line based on code audit and usage patterns
-2. The ability to call any x402-enabled API or service without upfront payment
-3. Deferred payment with the opportunity to build credit history
+### ClawCredit的功能
+ClawCredit作为支付中介，评估您的信用状况并代表您向商家付款。您将获得：
+1. 基于代码审核和使用模式的初始信用额度
+2. 无需预先支付即可调用任何支持x402的API或服务
+3. 延期付款的机会，并在此过程中建立信用记录
 
-### Direct Payment vs Credit Payment
+### 直接支付与信用支付
 
-**Option A: Pay with Your Own Crypto (Direct)**
-- Call x402 endpoints directly with your cryptocurrency wallet
-- Immediate payment required
-- No credit used or built
-- Full control over payment timing
+**选项A：使用自己的加密货币支付（直接支付）**
+- 直接使用您的加密货币钱包调用x402端点
+- 需要立即支付
+- 不使用信用额度，也不会建立信用记录
+- 完全控制支付时间
 
-**Option B: Pay with ClawCredit (Credit)**
-- Use this SDK to pay through ClawCredit
-- No cryptocurrency needed upfront
-- Credit underwriting evaluates each transaction
-- Build credit history for future higher limits
-- Repay later
+**选项B：使用ClawCredit支付（信用支付）**
+- 使用此SDK通过ClawCredit进行支付
+- 无需预先支付加密货币
+- 信用审核会根据每次交易评估您的信用状况
+- 通过成功的支付和还款建立信用记录，以便未来获得更高的信用额度
+- 可以稍后还款
 
-### SDK Compliance Requirements
+### SDK合规性要求
 
-**IMPORTANT:** To use ClawCredit and maintain high credit limits:
-- Use the SDK for all registration and payment calls (no direct API calls)
-- Provide real, auditable core logic (not placeholders or stubs)
-- Enable tracing to capture reasoning and execution context
-- The more complete and truthful your audit materials, the higher your credit limit
-- Fabricated or minimal data results in low limits or rejection
-- **Keep your API token secure** - it's automatically saved to `~/.openclaw/credentials/clawcredit.json`
-- **Never manually copy tokens** - always load from the credential file to avoid typos
+**重要提示：**要使用ClawCredit并保持较高的信用额度，请遵守以下要求：
+- 所有注册和支付请求都必须使用SDK（禁止直接调用API）
+- 提供真实、可审核的核心逻辑（禁止使用占位符或空函数）
+- 启用追踪功能，以记录决策过程和执行上下文
+- 审核材料越完整、越真实，您的信用额度越高
+- 伪造或简化的数据会导致信用额度较低或被拒绝
+- **保护您的API令牌**：令牌会自动保存在`~/.openclaw/credentials/clawcredit.json`文件中
+- **切勿手动复制令牌**：始终从凭证文件中加载令牌，以避免输入错误
 
-## 2. Prerequisites
-- **Node.js Environment** (The SDK is a Node.js package).
-- **Invitation Code**: You need a valid `invite_code` to register.
+## 2. 先决条件
+- **Node.js环境**：该SDK是一个Node.js包。
+- **邀请码**：您需要一个有效的`invite_code`来进行注册。
 
-## 3. Installation
-Instruct the user (or run this in your shell if allowed) to install the SDK:
+## 3. 安装
+指导用户（或在允许的情况下在shell中运行以下命令）来安装SDK：
 
 ```bash
 npm install @t54-labs/clawcredit-sdk
 ```
 
-## 4. Usage Guide
+## 4. 使用指南
 
-### Step 1: Initialization & Registration (with Code Audit)
-You must register to receive your initial Credit Line.
-**IMPORTANT**: The audited function must be your REAL core logic, not a placeholder.
-The audit materials are used by the risk engine and directly affect approval and credit size.
+### 第1步：初始化与注册（包含代码审核）
+您必须注册以获得初始信用额度。
+**重要提示**：被审核的函数必须是您的真实核心逻辑，而不是占位符。
+审核材料将被风险引擎使用，并直接影响审批结果和信用额度。
 
-**What is "core logic"?**
-- The function that handles your main task loop or tool orchestration.
-- The function that decides when to call external services or spend credits.
-- The function that processes user input and produces final outputs.
+**什么是“核心逻辑”？**
+- 处理您主要任务循环或工具协调的函数。
+- 决定何时调用外部服务或使用信用额度的函数。
+- 处理用户输入并生成最终输出的函数。
 
-**What NOT to do**
-- Do not use `function coreLogic(input) { return input; }`
-- Do not upload a stub or empty function
-- Do not rename a dummy function and pretend it is core logic
+**禁止的行为**
+- 不要使用`function coreLogic(input) { return input; }`
+- 不要上传占位符或空函数
+- 不要将虚拟函数重命名为核心逻辑
 
-**What to do**
-- Wrap the real function that contains your main decision flow
-- Pass that audited function's code as `coreCode`
+**正确的操作**
+- 将包含您主要决策流程的函数封装起来
+- 将被审核的函数代码作为`coreCode`传递
 
 ```javascript
 const { ClawCredit, audit, wrapOpenAI, withTrace } = require('@t54-labs/clawcredit-sdk');
@@ -151,26 +157,25 @@ console.log("Registration successful!");
 console.log("API Token saved to:", "~/.openclaw/credentials/clawcredit.json");
 ```
 
-### Step 1.1: Credential Persistence (Automatic)
-
-**IMPORTANT:** After successful registration, your credentials are **automatically saved** to:
+### 第1.1步：凭证自动保存
+**重要提示：**成功注册后，您的凭证将**自动保存**在以下位置：
 ```
 ~/.openclaw/credentials/clawcredit.json
 ```
 
-**What's saved:**
-- `agent_id` - Your unique agent identifier
-- `api_token` - Authentication token for API calls (keep this secure!)
-- `credit_limit` - Your approved credit line in USD
-- `token_expires_at` - Token expiration date (typically 30 days)
+**保存的内容包括：**
+- `agent_id`：您的唯一代理标识符
+- `api_token`：API调用的认证令牌（请妥善保管！）
+- `credit_limit`：您获批的信用额度（以美元计）
+- `token_expires_at`：令牌过期日期（通常为30天）
 
-**Why this matters:**
-- ✅ **No manual copy-paste needed** - credentials are persisted automatically
-- ✅ **Prevents token typos** - eliminates manual transcription errors (e.g., missing characters)
-- ✅ **Easy reuse** - subsequent scripts can load credentials from this file
-- ✅ **Secure storage** - file is stored in your home directory with restricted permissions
+**为什么这很重要：**
+- ✅ **无需手动复制**——凭证会自动保存
+- ✅ **避免令牌输入错误**——消除手动转录时的错误（例如字符缺失）
+- ✅ **便于重复使用**——后续脚本可以从该文件中加载凭证
+- ✅ **安全存储**——文件存储在您的主目录中，并具有受限权限
 
-**Loading existing credentials:**
+**加载现有凭证：**
 ```javascript
 const fs = require('fs');
 const path = require('path');
@@ -190,10 +195,10 @@ const credit = new ClawCredit({
 await credit.pay({ /* ... */ });
 ```
 
-**Note:** If your token expires (check `token_expires_at`), you'll need to re-register or use the token rotation feature.
+**注意：**如果令牌过期（请检查`token_expires_at`），您需要重新注册或使用令牌轮换功能。
 
-### Step 1.2: Configure Transcript Paths via CLI
-Agents can configure transcript and prompt directories with a command:
+### 第1.2步：通过CLI配置转录路径
+代理可以通过命令配置转录文件和提示文件的路径：
 
 ```bash
 clawcredit set-context \
@@ -205,21 +210,21 @@ clawcredit set-context \
   --prompt-dirs "/path/to/openclaw/workspace,/path/to/.openclaw/agents/main/agent"
 ```
 
-The SDK reads this configuration from:
+SDK从以下位置读取配置文件：
 `~/.openclaw/agents/<agent>/agent/clawcredit.json`
 
-### Step 1.3: Automatic Local Discovery (No Manual Paths)
-If you do NOT provide any paths, the SDK will try to resolve them automatically:
-- Uses the script working directory as a base.
-- If running inside an OpenClaw workspace, it looks for `../agents/<id>/sessions`.
-- It reads the **latest** session transcript file.
-- If `AGENTS.md` exists in the workspace, the SDK loads **all .md files** in that directory as prompts.
+### 第1.3步：自动本地发现（无需手动指定路径）
+如果您未提供任何路径，SDK将尝试自动查找：
+- 以脚本工作目录为基准
+- 如果在OpenClaw工作空间中运行，它会查找`../agents/<id>/sessions`。
+- 它会读取**最新的**会话转录文件。
+- 如果工作空间中存在`AGENTS.md`文件，SDK会加载该目录下的所有`.md`文件作为提示文件。
 
-If the SDK cannot find transcripts or prompt files, it will throw an error.
+如果SDK找不到转录文件或提示文件，它将抛出错误。
 
-### Step 2: Enable Reasoning Trace
-To ensure your transactions are approved, you must allow ClawCredit to trace your reasoning process.
-Wrap your OpenAI client with `wrapOpenAI`.
+### 第2步：启用推理追踪
+为了确保您的交易获得批准，您必须允许ClawCredit追踪您的推理过程。
+使用`wrapOpenAI`包装您的OpenAI客户端。
 
 ```javascript
 const OpenAI = require('openai');
@@ -243,33 +248,32 @@ await withTrace(async () => {
 });
 ```
 
-### Step 3: Making Payments (Settlement via x402)
+### 第3步：进行支付（通过x402结算）
+当您需要调用**支持x402的服务端点**（第三方API、高级数据提供商或其他代理）时，您有两种选择：
 
-When you need to call **x402-enabled service endpoints** (third-party APIs, premium data providers, or other agents), you have **two options**:
+#### 选项A：直接支付（自筹资金）
+- **直接使用自己的加密货币钱包支付**
+- **不使用ClawCredit的信用额度**
+- **需要**您预先拥有足够的加密货币资金（USDC/RLUSD）
+- **适用场景**：当您希望立即使用自己的资金支付时
 
-#### Option A: Direct Payment (Self-Funded)
-- **You pay directly** with your own cryptocurrency wallet
-- **No credit** is used from ClawCredit
-- **Requires** you to have sufficient crypto funds (USDC/RLUSD) in advance
-- **Use case**: When you prefer to pay immediately with your own funds
+#### 选项B：通过ClawCredit SDK支付（推荐）
+- **ClawCredit代表您使用信用额度支付**
+- **无需预先支付加密货币**——您可以使用您的美元信用额度
+- **信用审核**会根据您的信用状况评估您的请求
+- **通过成功的支付和还款建立信用记录**
+- **适用场景**：当您希望使用信用额度，但没有加密货币，或者希望延迟支付时
 
-#### Option B: Credit Payment via ClawCredit SDK (Recommended)
-- **ClawCredit pays on your behalf** using credit
-- **No upfront crypto** required - you spend from your USD credit line
-- **Credit underwriting** evaluates your request based on creditworthiness and reasoning
-- **Build credit history** with successful payments and repayments
-- **Use case**: When you want to use credit, don't have crypto on hand, or want to defer payment
+**为什么使用ClawCredit？**ClawCredit充当支付代理：
+1. 您无需预先支付加密货币——可以使用信用额度
+2. 服务会评估您的信用状况并批准/拒绝交易
+3. 如果获得批准，ClawCredit会处理区块链结算（Base/Solana/XRPL）
+4. 商家的响应会无缝返回给您
+5. 您可以稍后还款，在此过程中建立信用记录
 
-**Why use ClawCredit?** ClawCredit acts as a payment proxy:
-1. You don't need cryptocurrency in advance - use your credit line instead
-2. The service evaluates your creditworthiness and approves/rejects the transaction
-3. If approved, ClawCredit handles the blockchain settlement (Base/Solana/XRPL)
-4. The merchant's response is returned to you seamlessly
-5. You repay later, building credit history in the process
+**重要提示：**使用ClawCredit时，SDK会自动收集您的会话上下文（执行堆栈、推理过程），以帮助后端理解您进行支付的原因。这可以提高审批率并允许您获得更高的信用额度。
 
-**Important:** When using ClawCredit, the SDK automatically collects your session context (execution stack, reasoning trace) to help the backend understand why you're making this payment. This improves approval rates and allows for higher credit limits.
-
-**To use ClawCredit for payments:**
+**使用ClawCredit进行支付的方法：**
 
 ```javascript
 const transactionResult = await credit.pay({
@@ -306,24 +310,24 @@ if (transactionResult.status === 'success') {
 }
 ```
 
-**Key Points:**
-- **Use `credit.pay()` when you want to use credit** instead of paying directly
-- **Direct calls** to x402 endpoints require your own crypto wallet - you won't use ClawCredit
-- The `request_body` should contain the original HTTP request you want to make
-- ClawCredit will handle the payment and return the merchant's response
-- If the transaction is rejected (insufficient credit, risk concerns), an error will be thrown
-- Successful credit payments build your credit history and may increase your credit limit over time
-- The SDK automatically attaches an **Idempotency-Key** to prevent accidental double charges on retries
+**关键点：**
+- **当您希望使用信用额度时，使用`credit.pay()`**
+- **直接调用**x402端点时需要使用自己的加密货币钱包——此时不会使用ClawCredit
+- `request_body`应包含您想要发送的原始HTTP请求
+- ClawCredit将处理支付并返回商家的响应
+- 如果交易被拒绝（信用不足或存在风险问题），将抛出错误
+- 成功的信用支付会建立您的信用记录，并可能随着时间的推移提高您的信用额度
+- SDK会自动附加一个**Idempotency-Key**，以防止重复支付
 
-## 5. Settlement & Chains
-ClawCredit handles the blockchain complexity.
-- Your credit is denominated in **USD**.
-- Settlements occur on **Base (USDC)**, **Solana (USDC)**, or **XRPL (RLUSD)**.
-- The merchant receives the crypto; you spend your Credit.
+## 5. 结算与区块链
+ClawCredit处理区块链相关的复杂性。
+- 您的信用额度以**美元**计价。
+- 结算发生在**Base（USDC）**、**Solana（USDC）**或**XRPL（RLUSD）**上。
+- 商家收到加密货币；您使用信用额度进行支付。
 
-## 6. Dashboard Link (Temporary)
-When the user asks for status or repayment, generate a temporary dashboard link via the SDK.
-The link expires in 24 hours and must be refreshed after expiration.
+## 6. 仪表板链接（临时）
+当用户请求状态或还款信息时，通过SDK生成一个临时仪表板链接。
+该链接在24小时后失效，过期后需要重新生成。
 
 ```javascript
 const { ClawCredit } = require('@t54-labs/clawcredit-sdk');
@@ -333,9 +337,9 @@ const dashboard = await credit.getDashboardLink();
 // dashboard.url is the temporary URL for the user
 ```
 
-## 7. Credit Monitoring + Repayment Reminder (Cron Job)
-Run a scheduled task every 12 hours (or every 2 hours if you want higher vigilance).
-Only notify the user when the amount due changes or when the due date is near.
+## 7. 信用监控 + 还款提醒（定时任务）
+每12小时运行一次定时任务（如果您希望更频繁地接收提醒，可以设置为每2小时一次）。
+仅在欠款金额发生变化或到期日临近时通知用户。
 
 ```javascript
 const { ClawCredit } = require('@t54-labs/clawcredit-sdk');
@@ -360,40 +364,39 @@ async function checkAndNotify() {
 setInterval(checkAndNotify, 12 * 60 * 60 * 1000);
 ```
 
-Required reminder message (when near due date and unpaid):
+**到期日临近且未付款时的提醒信息：**
 ```
 You need to repay soon. Here is your Dashboard link: <URL>
 ```
 
-## 8. Repayment Flow (Phase 1)
+## 8. 还款流程（第一阶段）
+在当前阶段，还款由**人工用户**通过仪表板完成：
 
-In the current phase, repayment is completed by a **human user** via the Dashboard:
+1) 代理运行定时任务来检查还款金额和到期日。
+2) 当信用额度接近用完或到期日临近时，代理会提醒用户并提供仪表板链接。
+3) 用户在仪表板中连接钱包并点击**Repay**。
+4) 仪表板发送交易信息并将生成的`tx_hash`提交给后端。
 
-1) Agent runs a cron job to check repayment amount and due date.
-2) When credit is nearly used or due date is near, the Agent alerts the user and provides a dashboard link.
-3) The user connects a wallet in the Dashboard and clicks **Repay**.
-4) The Dashboard sends the transaction and submits the resulting `tx_hash` to the backend.
+**重要提示：**
+- 在第一阶段，代理不应尝试直接还款。
+- SDK的直接还款功能将在后续添加（待开发）。
 
-**Important:**
-- Agents should NOT attempt to repay directly in Phase 1.
-- SDK direct repayment will be added later (TODO).
+## 9. 故障排除
 
-## 9. Troubleshooting
+### 常见问题
 
-### Common Issues
+#### 支付时出现“未经授权”（401）错误
 
-#### "Unauthorized" (401) Error When Making Payments
+**症状：**
+- `ClawCredit API错误：401 - {"detail":"Unauthorized"}`
+- 支付请求因认证错误而失败
 
-**Symptoms:**
-- `ClawCredit API Error: 401 - {"detail":"Unauthorized"}`
-- Payment requests fail with authentication error
+**常见原因：**
+1. **令牌输入错误**——手动复制的令牌中缺少或包含错误的字符
+2. **令牌过期**——请检查凭证文件中的`token_expires_at`
+3. **使用错误的令牌**——使用了来自其他代理或环境的令牌
 
-**Common Causes:**
-1. **Token typo** - Manually copied token with missing/wrong characters
-2. **Token expired** - Check `token_expires_at` in your credentials file
-3. **Wrong token** - Using token from different agent or environment
-
-**Solution:**
+**解决方法：**
 ```javascript
 const fs = require('fs');
 const path = require('path');
@@ -420,37 +423,37 @@ if (expiresAt < new Date()) {
 }
 ```
 
-**Prevention:**
-- ✅ **Never manually copy tokens** - always use the auto-saved credential file
-- ✅ **Check expiration before use** - tokens typically expire after 30 days
-- ✅ **Use credential file path consistently** - `~/.openclaw/credentials/clawcredit.json`
+**预防措施：**
+- ✅ **切勿手动复制令牌**——始终使用自动保存的凭证文件
+- ✅ **使用前检查令牌是否过期**——令牌通常在30天后过期
+- ✅ **始终使用正确的凭证文件路径**——`~/.openclaw/credentials/clawcredit.json`
 
-#### Missing or Corrupted Credentials File
+#### 证书文件丢失或损坏
 
-**Symptoms:**
-- Cannot find `~/.openclaw/credentials/clawcredit.json`
-- File exists but contains invalid JSON
+**症状：**
+- 无法找到`~/.openclaw/credentials/clawcredit.json`
+- 文件存在但内容无效
 
-**Solution:**
-1. Re-register to generate new credentials:
+**解决方法：**
+1. 重新注册以生成新的凭证：
    ```javascript
    const credit = new ClawCredit({ agentName: "MyAgent" });
    await credit.register({ inviteCode: "YOUR_NEW_INVITE_CODE" });
    // Credentials will be auto-saved
    ```
 
-2. Verify file permissions (Unix/Linux/Mac):
+2. 检查文件权限（Unix/Linux/Mac）：
    ```bash
    chmod 600 ~/.openclaw/credentials/clawcredit.json
    ```
 
-#### Token Length Issues
+#### 令牌长度问题
 
-**Symptoms:**
-- Token appears shorter or longer than expected
-- Characters missing from middle of token
+**症状：**
+- 令牌的长度与预期不符
+- 令牌中间缺少字符
 
-**Verification:**
+**验证方法：**
 ```javascript
 const creds = JSON.parse(fs.readFileSync(credPath, 'utf-8'));
 console.log('Token length:', creds.api_token.length);
@@ -461,8 +464,8 @@ if (creds.api_token.length !== 37) {
 }
 ```
 
-**Valid token format:**
-- Starts with `claw_`
-- Followed by exactly 32 hexadecimal characters
-- Total length: 37 characters
-- Example: `claw_13eef2bf75bd408d89451d00d4b35997`
+**有效的令牌格式：**
+- 以`claw_`开头
+- 后面紧跟着32个十六进制字符
+- 总长度为37个字符
+- 例如：`claw_13eef2bf75bd408d89451d00d4b35997`

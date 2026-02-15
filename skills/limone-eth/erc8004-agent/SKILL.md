@@ -16,219 +16,98 @@ description: >
   agent identity NFT, Agent0 SDK, agent wallet, agent keystore, keyring proxy.
 ---
 
-# 8004 Agent Skill v0.0.1
+# 8004代理技能 v0.0.1
 
-Register AI agents onchain (ERC-8004) and authenticate them via **SIWA (Sign In With Agent)**.
+在链上注册AI代理（使用ERC-8004标准），并通过**SIWA（使用代理登录）**进行身份验证。
 
-## Overview
+## 概述
 
-ERC-8004 ("Trustless Agents") provides three onchain registries deployed as per-chain singletons:
+ERC-8004（“无信任代理”）提供了三个作为链上单例部署的注册表：
 
-- **Identity Registry** — ERC-721 NFTs. Each agent gets a unique `agentId` (tokenId) and an `agentURI` pointing to a JSON registration file.
-- **Reputation Registry** — Feedback signals (score, tags) from clients to agents.
-- **Validation Registry** — Third-party validator attestations (zkML, TEE, staked re-execution).
+- **身份注册表** — 使用ERC-721 NFT。每个代理都会获得一个唯一的`agentId`（tokenId）和一个指向JSON注册文件的`agentURI`。
+- **声誉注册表** — 客户向代理提供的反馈信号（分数、标签）。
+- **验证注册表** — 第三方验证器的证明（zkML、TEE、质押重执行）。
 
-**SIWA (Sign In With Agent)** is a challenge-response authentication protocol (inspired by SIWE / EIP-4361) where an agent proves ownership of an ERC-8004 identity by signing a structured message. See [references/siwa-spec.md](references/siwa-spec.md).
+**SIWA（使用代理登录）**是一种基于挑战-响应的身份验证协议（灵感来自SIWE / EIP-4361），代理通过签署结构化消息来证明其对ERC-8004身份的所有权。详情请参见[references/siwa-spec.md](references/siwa-spec.md)。
 
 ---
 
-## Security Architecture
+## 安全架构
 
-> **Full details**: [references/security-model.md](references/security-model.md)
+> **详细信息**：[references/security-model.md](references/security-model.md)
 
-The agent's private key is the root of its onchain identity. It must be protected against prompt injection, accidental exposure, and file system snooping.
+代理的私钥是其链上身份的根基。必须防止私钥被注入、意外暴露或被文件系统窥探。
 
-### Principle: The private key NEVER enters the agent process
+### 原理：私钥永远不会进入代理进程
 
-All signing is delegated to a **keyring proxy server** — a separate process that holds the encrypted private key and exposes only HMAC-authenticated signing endpoints. The agent can request signatures but can never extract the key, even under full compromise (arbitrary code execution via prompt injection).
+所有的签名操作都委托给**keyring代理服务器**——这是一个单独的进程，它保存加密后的私钥，并仅暴露经过HMAC验证的签名接口。代理可以请求签名，但在任何情况下（即使是通过注入代码完全控制）也无法提取私钥。
 
-```
-Agent Process                     Keyring Proxy Server (port 3100)
-(auto-detected from               (holds encrypted private key)
- KEYRING_PROXY_URL)
+**为什么这很安全：**
 
-createWallet()
-  |
-  +--> POST /create-wallet
-       + HMAC-SHA256 header  ---> Generates key, encrypts to disk
-                              <-- Returns { address } only
-
-signMessage("hello")
-  |
-  +--> POST /sign-message
-       + HMAC-SHA256 header  ---> Validates HMAC + timestamp (30s window)
-                                  Loads key, signs, discards key
-                              <-- Returns { signature, address }
-```
-
-**Why this is secure:**
-
-| Property | Detail |
+| 属性 | 详情 |
 |---|---|
-| **Key isolation** | Private key lives in a separate OS process; never enters agent memory |
-| **Transport auth** | HMAC-SHA256 over method + path + body + timestamp; 30-second replay window |
-| **Audit trail** | Every signing request is logged with timestamp, endpoint, source IP, success/failure |
-| **Compromise limit** | Even full agent takeover can only request signatures — cannot extract the key |
+| **密钥隔离** | 私钥存储在单独的操作系统进程中；永远不会进入代理内存 |
+| **传输认证** | 使用HMAC-SHA256对方法、路径、请求体和时间戳进行加密；30秒的重放窗口 |
+| **审计追踪** | 每个签名请求都会记录时间戳、接口、源IP以及成功/失败状态 |
+| **攻击限制** | 即使代理被完全控制，也只能请求签名——无法提取私钥 |
 
-**Environment variables:**
+**环境变量：**
 
-| Variable | Used by | Purpose |
+| 变量 | 使用者 | 用途 |
 |---|---|---|
-| `KEYRING_PROXY_URL` | Agent | Proxy server URL — private (e.g. `http://keyring-proxy:3100`) or public |
-| `KEYRING_PROXY_SECRET` | Both | HMAC shared secret |
-| `KEYRING_PROXY_PORT` | Proxy server | Listen port (default: 3100) |
-| `AGENT_PRIVATE_KEY` | Proxy server | Hex-encoded private key (0x...) — use an existing wallet instead of generating one |
-| `KEYSTORE_PASSWORD` | Proxy server | Password for the encrypted-file keystore (not needed with `AGENT_PRIVATE_KEY`) |
+| `KEYRING_PROXY_URL` | 代理 | 代理服务器URL（私有地址，例如`http://keyring-proxy:3100`）或公共地址 |
+| `KEYRING_PROXY_SECRET` | 代理和客户端 | 共享的HMAC密钥 |
+| `KEYRING_PROXY_PORT` | 代理服务器 | 监听端口（默认：3100） |
+| `AGENT_PRIVATE_KEY` | 代理服务器 | 十六进制编码的私钥（0x...）——建议使用现有的钱包而不是重新生成 |
+| `KEYSTORE_PASSWORD` | 代理服务器 | 加密文件密钥库的密码（如果使用了`AGENT_PRIVATE_KEY`则不需要） |
 
-> **Auto-detection**: When `KEYRING_PROXY_URL` is set, `KEYSTORE_BACKEND` automatically defaults to `proxy` — no need to set it manually. When `AGENT_PRIVATE_KEY` is set on the proxy server, `KEYSTORE_BACKEND` defaults to `env`.
->
-> The proxy server stores keys using an AES-encrypted V3 JSON Keystore (scrypt KDF) by default. To use an existing wallet instead, set `AGENT_PRIVATE_KEY` on the proxy server — the key is held in memory at runtime (no encrypted file needed).
+> **自动检测**：当设置了`KEYRING_PROXY_URL`时，`KEYSTORE_BACKEND`会自动设置为`proxy`——无需手动设置。当在代理服务器上设置了`AGENT_PRIVATE_KEY`时，`KEYSTORE_BACKEND`会自动设置为`env`。
 
-### Keystore API
+> 代理服务器默认使用AES加密的V3 JSON密钥库（scrypt KDF）来存储密钥。如果想使用现有的钱包，可以在代理服务器上设置`AGENT_PRIVATE_KEY`——此时密钥将存储在内存中（无需加密文件）。
 
-The `@buildersgarden/siwa/keystore` module exposes ONLY these operations — none return the private key:
+### 密钥库API
 
-```
-createWallet()           → { address, backend }     // Creates key, returns ONLY address
-signMessage(msg)         → { signature, address }   // Signs via proxy, key never exposed
-signTransaction(tx)      → { signedTx, address }    // Same pattern
-signAuthorization(auth)  → SignedAuthorization       // EIP-7702 delegation signing
-getAddress()             → string                    // Public address only
-hasWallet()              → boolean
-```
+`@buildersgarden/siwa/keystore`模块仅提供以下操作——这些操作都不会返回私钥：
 
-> `getSigner()` is **not available** with the proxy backend — use `signMessage()` / `signTransaction()` instead.
+`getSigner()`在代理后端是不可用的——请使用`signMessage()`或`signTransaction()`代替。
 
-### IMPORTANT: Install and use the SDK
+### 重要提示：安装并使用SDK
 
-The agent MUST use the `@buildersgarden/siwa` SDK to interact with the keyring proxy. The SDK handles HMAC authentication automatically.
+代理必须使用`@buildersgarden/siwa` SDK与keyring代理进行交互。SDK会自动处理HMAC认证。
 
-**Step 1 — Install the SDK** (if not already available in your environment):
+**步骤1 — 安装SDK**（如果环境中还没有安装）：
 
-```bash
-npm install @buildersgarden/siwa
-```
+**步骤2 — 设置环境变量：**
 
-**Step 2 — Set environment variables:**
+**步骤3 — 使用SDK函数**（切勿直接调用代理的HTTP接口）：
 
-```
-KEYRING_PROXY_URL=https://your-keyring-proxy.up.railway.app
-KEYRING_PROXY_SECRET=<your-shared-secret>
-```
+SDK会从环境变量中读取`KEYRING_PROXY_URL`和`KEYRING_PROXY_SECRET`，并自动构建正确的HMAC头部。
 
-**Step 3 — Use the SDK functions** (never call the proxy HTTP endpoints directly):
+### 备用方案：手动HMAC认证（不使用SDK）
 
-```typescript
-import { createWallet, signMessage, getAddress } from '@buildersgarden/siwa/keystore';
+如果你绝对无法安装SDK（例如在非Node.js环境中，或者运行环境有限制），你可以使用下面描述的HMAC协议直接调用代理的HTTP接口。**尽可能使用SDK**。
 
-const info = await createWallet();           // SDK handles HMAC auth internally
-const { signature } = await signMessage(msg); // SDK handles HMAC auth internally
-const address = await getAddress();           // SDK handles HMAC auth internally
-```
+**每个请求都必须包含的头部字段**（`GET /health`除外）：
 
-The SDK reads `KEYRING_PROXY_URL` and `KEYRING_PROXY_SECRET` from environment variables and constructs the correct HMAC headers automatically.
-
-### Fallback: Manual HMAC authentication (without SDK)
-
-If you absolutely cannot install the SDK (e.g. non-Node.js environment, restricted runtime), you can call the proxy HTTP endpoints directly using the HMAC protocol described below. **Prefer the SDK whenever possible.**
-
-**Headers required on every request** (except `GET /health`):
-
-| Header | Value |
+| 字段 | 值 |
 |---|---|
 | `Content-Type` | `application/json` |
-| `X-Keyring-Timestamp` | Current time as Unix epoch **milliseconds** (e.g. `1738792800000`) |
-| `X-Keyring-Signature` | HMAC-SHA256 hex digest of the payload string (see below) |
+| `X-Keyring-Timestamp` | 当前时间（以Unix时间戳的毫秒形式） |
+| `X-Keyring-Signature` | 请求体的HMAC-SHA256十六进制摘要 |
 
-**HMAC payload format** — a single string with four parts separated by newlines (`\n`):
+**HMAC请求体格式** — 一个由换行符（`\n`）分隔的四个部分组成的字符串：
 
-```
-{METHOD}\n{PATH}\n{TIMESTAMP}\n{BODY}
-```
+**计算签名：**
 
-| Part | Value |
-|---|---|
-| `METHOD` | HTTP method, uppercase (always `POST`) |
-| `PATH` | Endpoint path (e.g. `/create-wallet`, `/sign-message`) |
-| `TIMESTAMP` | Same value as the `X-Keyring-Timestamp` header |
-| `BODY` | The raw JSON request body string (e.g. `{}` or `{"message":"hello"}`) |
+**时间戳限制：** 如果时间戳与服务器时间相差超过**30秒**，服务器将拒绝请求。
 
-**Compute the signature:**
+**示例 — 在没有SDK的情况下创建钱包（使用Node.js）：**
 
-```
-HMAC-SHA256(secret, "POST\n/create-wallet\n1738792800000\n{}") → hex digest
-```
+**示例 — 在Python中创建钱包：**
 
-**Timestamp window:** The server rejects requests where the timestamp differs from server time by more than **30 seconds**.
+**可用的接口：**
 
-**Example — create a wallet (Node.js without SDK):**
-
-```typescript
-import crypto from 'crypto';
-
-const PROXY_URL = process.env.KEYRING_PROXY_URL;
-const SECRET = process.env.KEYRING_PROXY_SECRET;
-
-async function proxyRequest(path: string, body: Record<string, unknown> = {}) {
-  const bodyStr = JSON.stringify(body);
-  const timestamp = Date.now().toString();
-  const payload = `POST\n${path}\n${timestamp}\n${bodyStr}`;
-  const signature = crypto.createHmac('sha256', SECRET).update(payload).digest('hex');
-
-  const res = await fetch(`${PROXY_URL}${path}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Keyring-Timestamp': timestamp,
-      'X-Keyring-Signature': signature,
-    },
-    body: bodyStr,
-  });
-
-  if (!res.ok) throw new Error(`${path} failed (${res.status}): ${await res.text()}`);
-  return res.json();
-}
-
-// Usage
-const wallet = await proxyRequest('/create-wallet');        // { address, backend }
-const addr = await proxyRequest('/get-address');             // { address }
-const sig = await proxyRequest('/sign-message', { message: 'hello' }); // { signature, address }
-```
-
-**Example — create a wallet (Python):**
-
-```python
-import hmac, hashlib, json, time, requests, os
-
-PROXY_URL = os.environ["KEYRING_PROXY_URL"]
-SECRET = os.environ["KEYRING_PROXY_SECRET"]
-
-def proxy_request(path, body=None):
-    if body is None:
-        body = {}
-    body_str = json.dumps(body, separators=(",", ":"))
-    timestamp = str(int(time.time() * 1000))
-    payload = f"POST\n{path}\n{timestamp}\n{body_str}"
-    signature = hmac.new(SECRET.encode(), payload.encode(), hashlib.sha256).hexdigest()
-    resp = requests.post(
-        f"{PROXY_URL}{path}",
-        headers={
-            "Content-Type": "application/json",
-            "X-Keyring-Timestamp": timestamp,
-            "X-Keyring-Signature": signature,
-        },
-        data=body_str,
-    )
-    resp.raise_for_status()
-    return resp.json()
-
-wallet = proxy_request("/create-wallet")       # {"address": "0x...", "backend": "..."}
-sig = proxy_request("/sign-message", {"message": "hello"})  # {"signature": "0x...", "address": "0x..."}
-```
-
-**Available endpoints:**
-
-| Endpoint | Body | Response |
+| 接口 | 请求体 | 响应 |
 |---|---|---|
 | `POST /create-wallet` | `{}` | `{ address, backend }` |
 | `POST /has-wallet` | `{}` | `{ hasWallet: boolean }` |
@@ -236,426 +115,174 @@ sig = proxy_request("/sign-message", {"message": "hello"})  # {"signature": "0x.
 | `POST /sign-message` | `{ message: string }` | `{ signature, address }` |
 | `POST /sign-transaction` | `{ tx: { to, data, nonce, chainId, type, maxFeePerGas, ... } }` | `{ signedTx, address }` |
 | `POST /sign-authorization` | `{ auth: { chainId, address, nonce } }` | `{ signedAuthorization }` |
-| `GET /health` | — | `{ status: "ok", backend }` (no auth required) |
+| `GET /health` | — | `{ status: "ok", backend }`（无需认证） |
 
-### MEMORY.md: Public Data Only
+### MEMORY.md：仅存储公共数据
 
-MEMORY.md stores the agent's public identity state — **never the private key**:
+MEMORY.md仅存储代理的公共身份信息——**绝不存储私钥**：
 
-```markdown
-## Wallet
-- **Address**: `0x1234...abcd`       <- public
-- **Keystore Backend**: `proxy`      <- which backend holds the key
-- **Created At**: `2026-02-04T...`
+**生命周期规则：**
 
-## Registration
-- **Status**: `registered`
-- **Agent ID**: `42`
-- **Agent Registry**: `eip155:84532:0x8004AA63...`
-...
-```
+1. **在任何操作之前** — 首先读取MEMORY.md。如果钱包已经存在，则跳过创建步骤；如果已经注册，则跳过重新注册步骤。
+2. **创建钱包后** — 将地址和后端信息写入MEMORY.md。私钥仅存储在代理的密钥库中。
+3. **注册完成后** — 将`agentId`、`agentRegistry`、`agentURI`和`chainId`写入MEMORY.md。
+4. **通过SIWA登录后** — 将会话令牌添加到`Sessions`部分。
 
-**Lifecycle rules**:
-
-1. **Before any action** — Read MEMORY.md. If wallet exists, skip creation. If registered, skip re-registration.
-2. **After wallet creation** — Write address + backend info to MEMORY.md. Private key goes to proxy keystore only.
-3. **After registration** — Write agentId, agentRegistry, agentURI, chainId to MEMORY.md.
-4. **After SIWA sign-in** — Append session token under Sessions.
-
-**Template**: [assets/MEMORY.md.template](assets/MEMORY.md.template)
+**模板**：[assets/MEMORY.md.template](assets/MEMORY.md.template)
 
 ---
 
-## Deploying the Keyring Proxy
+## 部署keyring代理
 
-Before signing anything, the agent needs a running **keyring proxy** — the separate process that holds the private key and performs all cryptographic operations.
+在签署任何内容之前，代理需要一个正在运行的**keyring代理**——这个单独的进程负责保存私钥并执行所有加密操作。
 
-### Option A — Railway (Recommended)
+### 选项A — Railway（推荐）
 
-Deploy with one click using the Railway template:
+使用Railway模板一键部署：
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/siwa-keyring-proxy?referralCode=ZUrs1W)
+[![在Railway上部署](https://railway.com/button.svg)](https://railway.com/deploy/siwa-keyring-proxy?referralCode=ZUrs1W)
 
-This deploys a single `keyring-proxy` service built from `packages/keyring-proxy/Dockerfile`. Set these environment variables in Railway:
+这会部署一个基于`packages/keyring-proxy/Dockerfile`构建的`keyring-proxy`服务。在Railway中设置以下环境变量：
 
-| Variable | Required | Description |
+| 变量 | 是否必需 | 说明 |
 |---|---|---|
-| `KEYRING_PROXY_SECRET` | Yes | Shared HMAC-SHA256 secret. Must match your agent. |
-| `KEYSTORE_PASSWORD` | Conditional | Password for the encrypted-file keystore (default backend). |
-| `AGENT_PRIVATE_KEY` | Conditional | Hex-encoded private key (0x...) to use an existing wallet instead. |
+| `KEYRING_PROXY_SECRET` | 是 | 共享的HMAC-SHA256密钥。必须与你的代理匹配。 |
+| `KEYSTORE_PASSWORD` | 可选 | 加密文件密钥库的密码（默认后端） |
+| `AGENT_PRIVATE_KEY` | 可选 | 十六进制编码的私钥（0x...），用于使用现有的钱包 |
 
-After deployment, note the proxy URL (e.g. `https://your-keyring-proxy.up.railway.app`). Set it as `KEYRING_PROXY_URL` on your agent.
+部署完成后，记录代理的URL（例如`https://your-keyring-proxy.up.railway.app`），并将其设置为代理的`KEYRING_PROXY_URL`。
 
-> Full deployment guide with architecture details, OpenClaw gateway setup, and verification steps: [https://siwa.builders.garden/docs/deploy](https://siwa.builders.garden/docs/deploy)
+> 完整的部署指南，包括架构细节、OpenClaw网关设置和验证步骤：[https://siwabuilders.garden/docs/deploy](https://siwabuilders.garden/docs/deploy)
 
-### Option B — Docker (Self-hosted)
+### 选项B — Docker（自托管）
 
-```bash
-docker build -f packages/keyring-proxy/Dockerfile -t keyring-proxy .
-docker run -p 3100:3100 \
-  -e KEYRING_PROXY_SECRET=your-secret \
-  -e KEYSTORE_PASSWORD=your-password \
-  keyring-proxy
-```
+### 选项C — 本地开发
 
-### Option C — Local Development
+### 一旦代理运行起来，就在代理上设置以下环境变量：
 
-```bash
-cd packages/siwa-testing
-pnpm run proxy
-```
-
-Once the proxy is running, set these environment variables on the agent:
-
-```
-KEYRING_PROXY_URL=http://localhost:3100   # or your Railway URL
-KEYRING_PROXY_SECRET=your-shared-secret
-```
-
-The `proxy` keystore backend is auto-detected when `KEYRING_PROXY_URL` is set — no need to set `KEYSTORE_BACKEND` manually.
+当设置了`KEYRING_PROXY_URL`后，`proxy`密钥库的后端会自动被检测到——无需手动设置`KEYSTORE_BACKEND`。
 
 ---
 
-## Workflow: SIGN UP (Agent Registration)
+## 工作流程：注册代理
 
-### Step 0: Check MEMORY.md + Keystore
+### 步骤0：检查MEMORY.md和密钥库
 
-```typescript
-import { hasWallet } from '@buildersgarden/siwa/keystore';
-import { ensureMemoryExists, hasWalletRecord, isRegistered } from '@buildersgarden/siwa/memory';
+### 步骤1：创建钱包（私钥存储在代理中，地址存储在MEMORY.md中）
 
-ensureMemoryExists('./MEMORY.md', './assets/MEMORY.md.template');
+### 步骤1b：为钱包充值（注册前必须完成）
 
-if (await hasWallet() && isRegistered('./MEMORY.md')) {
-  // Already registered — skip to SIGN IN or update
-}
-if (await hasWallet() && hasWalletRecord('./MEMORY.md')) {
-  // Wallet exists — skip to Step 2
-}
-// Otherwise proceed to Step 1
-```
+**注意：**在任何链上交易之前，钱包必须有ETH作为Gas费用。**注册、URI更新和元数据更改都需要支付Gas费用。**
 
-### Step 1: Create Wallet (key goes to proxy, address goes to MEMORY.md)
+创建钱包后，你必须：
 
-```typescript
-import { createWallet } from '@buildersgarden/siwa/keystore';
-import { writeMemoryField } from '@buildersgarden/siwa/memory';
+1. **向用户显示钱包地址和目标链**，以便他们可以发送资金：
+   - 地址：通过`createWallet()`或`getAddress()`返回的地址
+   - 链路：代理将注册的链（例如Base Sepolia链的ID `84532`，Base主网的ID `8453`）
+2. **告诉用户向该地址发送ETH**（或该链的本地Gas代币）。
+3. **等待用户确认**他们已经为钱包充值后，再继续进行注册。
 
-const info = await createWallet();  // <- key created in proxy, NEVER returned
+对于测试网，建议使用以下 faucet：
+- **Base Sepolia**：[Base Sepolia faucet](https://www.alchemy.com/faucets/base-sepolia) 或从ETH到Sepolia的桥接服务
+- **ETH Sepolia**：[Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
 
-// Write ONLY public data to MEMORY.md
-writeMemoryField('Address', info.address);
-writeMemoryField('Keystore Backend', info.backend);
-if (info.keystorePath) writeMemoryField('Keystore Path', info.keystorePath);
-writeMemoryField('Created At', new Date().toISOString());
-```
+> **在钱包充值完成之前，切勿尝试进行任何链上交易。**否则交易会因资金不足而失败。
 
-### Step 1b: Fund the Wallet (REQUIRED before registration)
+向用户显示的示例消息：
 
-**STOP — the wallet must have ETH for gas before any onchain transaction can succeed.** Registration, URI updates, and metadata changes all require gas fees.
+### 步骤2：构建注册文件
 
-After creating the wallet, you MUST:
+按照ERC-8004规范创建一个JSON文件。可以使用[assets/registration-template.json](assets/registration-template.json)作为起点。
 
-1. **Show the user the wallet address and the target chain** so they can send funds:
-   - Address: the value returned by `createWallet()` or `getAddress()`
-   - Chain: the chain where the agent will register (e.g. Base Sepolia chainId `84532`, Base mainnet chainId `8453`)
-2. **Tell the user to send ETH** (or the chain's native gas token) to that address on that chain.
-3. **Wait for the user to confirm** they have funded the wallet before proceeding to registration.
+所需字段：`type`、`name`、`description`、`image`、`services`、`active`。
 
-For testnets, suggest using a faucet:
-- **Base Sepolia**: [Base Sepolia faucet](https://www.alchemy.com/faucets/base-sepolia) or bridge from ETH Sepolia
-- **ETH Sepolia**: [Sepolia faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+构建完成后，更新MEMORY.md中的配置文件：
 
-> **Do NOT attempt to register or send any onchain transaction until the wallet is funded.** The transaction will fail with an insufficient funds error.
+### 步骤3：上传元数据
 
-Example message to show the user:
+**选项A — IPFS（推荐使用Pinata）：**
 
-```
-Wallet created successfully!
+**选项B — 使用Base64数据URI：**
 
-  Address: 0x1234...abcd
-  Chain:   Base Sepolia (chainId 84532)
+### 步骤4：在链上注册（通过代理进行签名）
 
-Please send some ETH to this address on Base Sepolia to cover gas fees.
-You can use a faucet: https://www.alchemy.com/faucets/base-sepolia
+代理会构建交易并将签名操作委托给代理：
 
-Let me know once the wallet is funded and I'll proceed with registration.
-```
+有关每个链上已部署的地址，请参阅[references/contract-addresses.md](references/contract-addresses.md)。
 
-### Step 2: Build the Registration File
+### 替代方案：Agent0 SDK
 
-Create a JSON file following the ERC-8004 schema. Use [assets/registration-template.json](assets/registration-template.json) as a starting point.
+### 替代方案：create-8004-agent CLI
 
-Required fields: `type`, `name`, `description`, `image`, `services`, `active`.
-
-After building, update MEMORY.md profile:
-
-```typescript
-writeMemoryField('Name', registrationFile.name);
-writeMemoryField('Description', registrationFile.description);
-```
-
-### Step 3: Upload Metadata
-
-**Option A — IPFS (Pinata, recommended):**
-
-```typescript
-const res = await fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.PINATA_JWT}`
-  },
-  body: JSON.stringify({ pinataContent: registrationFile })
-});
-const { IpfsHash } = await res.json();
-const agentURI = `ipfs://${IpfsHash}`;
-```
-
-**Option B — Base64 data URI:**
-
-```typescript
-const encoded = Buffer.from(JSON.stringify(registrationFile)).toString('base64');
-const agentURI = `data:application/json;base64,${encoded}`;
-```
-
-### Step 4: Register Onchain (signed via proxy)
-
-With the proxy backend, the agent builds the transaction and delegates signing to the proxy:
-
-```typescript
-import { signTransaction, getAddress } from '@buildersgarden/siwa/keystore';
-import { writeMemoryField } from '@buildersgarden/siwa/memory';
-
-const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-const address = await getAddress();
-
-const IDENTITY_REGISTRY_ABI = [
-  'function register(string agentURI) external returns (uint256 agentId)',
-  'event Registered(uint256 indexed agentId, string agentURI, address indexed owner)'
-];
-
-// Build the transaction
-const iface = new ethers.Interface(IDENTITY_REGISTRY_ABI);
-const data = iface.encodeFunctionData('register', [agentURI]);
-const nonce = await provider.getTransactionCount(address);
-const feeData = await provider.getFeeData();
-
-const txReq = {
-  to: REGISTRY_ADDRESS, data, nonce, chainId,
-  type: 2,
-  maxFeePerGas: feeData.maxFeePerGas,
-  maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-  gasLimit: (await provider.estimateGas({ to: REGISTRY_ADDRESS, data, from: address })) * 120n / 100n,
-};
-
-// Sign via proxy — key never enters this process
-const { signedTx } = await signTransaction(txReq);
-const txResponse = await provider.broadcastTransaction(signedTx);
-const receipt = await txResponse.wait();
-
-// Parse event for agentId
-for (const log of receipt.logs) {
-  try {
-    const parsed = iface.parseLog({ topics: log.topics as string[], data: log.data });
-    if (parsed?.name === 'Registered') {
-      const agentId = parsed.args.agentId.toString();
-      const agentRegistry = `eip155:${chainId}:${REGISTRY_ADDRESS}`;
-
-      // Persist PUBLIC results to MEMORY.md
-      writeMemoryField('Status', 'registered');
-      writeMemoryField('Agent ID', agentId);
-      writeMemoryField('Agent Registry', agentRegistry);
-      writeMemoryField('Agent URI', agentURI);
-      writeMemoryField('Chain ID', chainId.toString());
-      writeMemoryField('Registered At', new Date().toISOString());
-    }
-  } catch { /* skip non-matching logs */ }
-}
-```
-
-See [references/contract-addresses.md](references/contract-addresses.md) for deployed addresses per chain.
-
-### Alternative: Agent0 SDK
-
-```typescript
-import { SDK } from 'agent0-sdk';
-import { readMemory } from '@buildersgarden/siwa/memory';
-
-// Note: Agent0 SDK takes a private key string. If using the SDK,
-// you'll need a non-proxy backend or load the key within a narrow scope.
-// Prefer the signTransaction() approach above for proxy integration.
-```
-
-### Alternative: create-8004-agent CLI
-
-```bash
-npx create-8004-agent
-```
-
-After `npm run register`, update MEMORY.md with the output agentId.
+### 在执行`npm run register`后，使用输出的结果更新MEMORY.md中的`agentId`。
 
 ---
 
-## Workflow: SIGN IN (SIWA — Sign In With Agent)
+## 工作流程：登录代理（SIWA — 使用代理登录）
 
-Full spec: [references/siwa-spec.md](references/siwa-spec.md)
+完整规范：[references/siwa-spec.md](references/siwa-spec.md)
 
-### Step 0: Read Public Identity from MEMORY.md
+### 步骤0：从MEMORY.md中读取公共身份信息
 
-```typescript
-import { readMemory, isRegistered } from '@buildersgarden/siwa/memory';
+### 步骤1：从服务器请求随机数（nonce）
 
-const memory = readMemory('./MEMORY.md');
-if (!isRegistered()) {
-  throw new Error('Agent not registered. Run SIGN UP workflow first.');
-}
+### 步骤2：通过代理进行签名（私钥不会被暴露）
 
-const address = memory['Address'];
-const agentId = parseInt(memory['Agent ID']);
-const agentRegistry = memory['Agent Registry'];
-const chainId = parseInt(memory['Chain ID']);
-```
+### 步骤3：提交并保存会话信息
 
-### Step 1: Request Nonce from Server
+### SIWA消息格式
 
-```typescript
-const nonceRes = await fetch('https://api.targetservice.com/siwa/nonce', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ address, agentId, agentRegistry })
-});
-const { nonce, issuedAt, expirationTime } = await nonceRes.json();
-```
+### 服务器端验证
 
-### Step 2: Sign via Proxy (key never exposed)
+服务器必须：
 
-```typescript
-import { signSIWAMessage } from '@buildersgarden/siwa/siwa';
+1. 从签名中恢复签名者信息（EIP-191）
+2. 将恢复的地址与消息中的地址进行匹配
+3. 验证域名绑定、随机数以及时间窗口的有效性
+4. **在链上调用`ownerOf(agentId)`以确认签名者拥有该代理的NFT**
+5. **（可选）** 根据`SIWAVerifyCriteria`评估代理的状态、所需服务、信任模型和声誉分数
+6. 发放会话令牌
 
-// signSIWAMessage internally calls keystore.signMessage()
-// which delegates to the keyring proxy — the key never enters this process.
-const { message, signature } = await signSIWAMessage({
-  domain: 'api.targetservice.com',
-  address,
-  statement: 'Authenticate as a registered ERC-8004 agent.',
-  uri: 'https://api.targetservice.com/siwa',
-  agentId,
-  agentRegistry,
-  chainId,
-  nonce,
-  issuedAt,
-  expirationTime
-});
-```
+`@buildersgarden/siwa/siwa`中的`verifySIWA()`方法接受一个可选的`criteria`参数（第六个参数），以在验证所有权后执行额外的检查：
 
-### Step 3: Submit and Persist Session
+有关完整的实现参考，请查看测试服务器的`verifySIWARequest()`方法。
 
-```typescript
-import { appendToMemorySection } from '@buildersgarden/siwa/memory';
-
-const verifyRes = await fetch('https://api.targetservice.com/siwa/verify', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message, signature })
-});
-const session = await verifyRes.json();
-
-if (session.success) {
-  appendToMemorySection('Sessions',
-    `- **${agentId}@api.targetservice.com**: \`${session.token}\` (exp: ${expirationTime || 'none'})`
-  );
-}
-```
-
-### SIWA Message Format
-
-```
-{domain} wants you to sign in with your Agent account:
-{address}
-
-{statement}
-
-URI: {uri}
-Version: 1
-Agent ID: {agentId}
-Agent Registry: {agentRegistry}
-Chain ID: {chainId}
-Nonce: {nonce}
-Issued At: {issuedAt}
-[Expiration Time: {expirationTime}]
-[Not Before: {notBefore}]
-[Request ID: {requestId}]
-```
-
-### Server-Side Verification
-
-The server MUST:
-
-1. Recover signer from signature (EIP-191)
-2. Match recovered address to message address
-3. Validate domain binding, nonce, time window
-4. **Call `ownerOf(agentId)` onchain** to confirm signer owns the agent NFT
-5. *(Optional)* Evaluate `SIWAVerifyCriteria` — activity status, required services, trust models, reputation score
-6. Issue session token
-
-`verifySIWA()` in `@buildersgarden/siwa/siwa` accepts an optional `criteria` parameter (6th argument) to enforce requirements after the ownership check:
-
-```typescript
-import { verifySIWA } from '@buildersgarden/siwa/siwa';
-
-const result = await verifySIWA(message, signature, domain, nonceValid, provider, {
-  mustBeActive: true,              // agent metadata.active must be true
-  requiredServices: ['MCP'],       // ServiceType values from ERC-8004
-  requiredTrust: ['reputation'],   // TrustModel values from ERC-8004
-  minScore: 0.5,                   // minimum reputation score
-  minFeedbackCount: 10,            // minimum feedback count
-  reputationRegistryAddress: '0x8004BAa1...9b63',
-});
-
-// result.agent contains the full AgentProfile when criteria are provided
-```
-
-See the test server's `verifySIWARequest()` for a full reference implementation.
-
-| Endpoint | Method | Description |
+| 接口 | 方法 | 说明 |
 |---|---|---|
-| `/siwa/nonce` | POST | Generate and return a nonce |
-| `/siwa/verify` | POST | Accept `{ message, signature }`, verify, return session/JWT |
+| `/siwa/nonce` | POST | 生成并返回一个随机数 |
+| `/siwa/verify` | POST | 接受`{ message, signature }`，进行验证并返回会话令牌/JWT |
 
 ---
 
-## MEMORY.md Quick Reference
+## MEMORY.md快速参考
 
-| Section | When Written | Key Fields |
+| 部分 | 编写时间 | 关键字段 |
 |---|---|---|
-| **Wallet** | Step 1 of SIGN UP | Address, Keystore Backend, Created At |
-| **Registration** | Step 4 of SIGN UP | Status, Agent ID, Agent Registry, Agent URI, Chain ID |
-| **Agent Profile** | Step 2 of SIGN UP | Name, Description, Image |
-| **Services** | After adding endpoints | One line per service |
-| **Sessions** | After each SIWA sign-in | Token, domain, expiry per session |
-| **Notes** | Any time | Free-form (funding tx, faucet used, etc.) |
+| **钱包** | 注册步骤1 | 地址、密钥库后端、创建时间 |
+| **注册** | 注册步骤4 | 状态、代理ID、代理注册表信息、链ID |
+| **代理信息** | 注册步骤2 | 名称、描述、图片 |
+| **服务** | 添加服务后 | 每项服务占一行 |
+| **会话** | 每次使用SIWA登录后 | 会话令牌、域名、会话有效期 |
+| **备注** | 随时可以添加 | 自由格式的注释（例如充值交易信息、使用的fountain等） |
 
-**What is NOT in MEMORY.md**: Private keys, keystore passwords, mnemonic phrases.
+**MEMORY.md中不包含的内容：** 私钥、密钥库密码、助记短语。
 
----
+## 参考文件
 
-## Reference Files
+- **[references/security-model.md](references/security-model.md)** — 威胁模型、密钥库架构、防止私钥被注入的防护措施 |
+- **[references/siwa-spec.md](references/siwa-spec.md)** — 完整的SIWA协议规范（消息格式、字段定义、安全考虑）
+- **[references/contract-addresses.md](references/contract-addresses.md)** | 每个链上已部署的注册表地址、ABI片段 |
+- **[references/registration-guide.md](references/registration-guide.md)** | 详细的注册文件格式、接口类型、更新流程
 
-- **[references/security-model.md](references/security-model.md)** — Threat model, keystore architecture, prompt injection defense
-- **[references/siwa-spec.md](references/siwa-spec.md)** — Full SIWA protocol specification (message ABNF, field definitions, security considerations)
-- **[references/contract-addresses.md](references/contract-addresses.md)** — Deployed registry addresses per chain, ABI fragments
-- **[references/registration-guide.md](references/registration-guide.md)** — Detailed registration file schema, endpoint types, update flows
+## 核心库（`@buildersgarden/siwa`包）
 
-## Core Library (`@buildersgarden/siwa` package)
+- **`@buildersgarden/siwa/keystore`** — 提供安全的密钥存储抽象功能，并支持keyring代理 |
+- **`@buildersgarden/siwa/memory` | 提供读取/写入MEMORY.md的辅助函数（仅存储公共数据） |
+- **`@buildersgarden/siwa/siwa` | 负责构建SIWA消息、通过密钥库进行签名以及服务器端的验证（支持可选的验证条件） |
+- **`@buildersgarden/siwa/registry` | 从链上注册表中读取代理信息（`getAgent`）和声誉信息（`getReputation`），并输出ERC-8004格式的值：`ServiceType`、`TrustModel`、`ReputationTag` |
+- **`@buildersgarden/siwa/proxy-auth` | 为keyring代理提供HMAC-SHA256认证功能 |
 
-- **`@buildersgarden/siwa/keystore`** — Secure key storage abstraction with keyring proxy support
-- **`@buildersgarden/siwa/memory`** — MEMORY.md read/write helpers (public data only)
-- **`@buildersgarden/siwa/siwa`** — SIWA message building, signing (via keystore), and server-side verification (with optional criteria)
-- **`@buildersgarden/siwa/registry`** — Read agent profiles (`getAgent`) and reputation (`getReputation`) from on-chain registries. Exports ERC-8004 typed values: `ServiceType`, `TrustModel`, `ReputationTag`
-- **`@buildersgarden/siwa/proxy-auth`** — HMAC-SHA256 authentication utilities for the keyring proxy
+## 资源文件
 
-## Assets
-
-- **[assets/MEMORY.md.template](assets/MEMORY.md.template)** — Template for the agent's public identity memory file
-- **[assets/registration-template.json](assets/registration-template.json)** — Starter registration file template
+- **[assets/MEMORY.md.template](assets/MEMORY.md.template)** — 代理的公共身份信息存储文件的模板 |
+- **[assets/registration-template.json](assets/registration-template.json)** — 注册文件的模板

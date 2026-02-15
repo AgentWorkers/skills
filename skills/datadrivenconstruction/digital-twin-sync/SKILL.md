@@ -1,24 +1,24 @@
 ---
 slug: "digital-twin-sync"
 display_name: "Digital Twin Sync"
-description: "Synchronize construction digital twins with real-time data. Connect BIM models with IoT sensors, progress updates, and field data for live project visualization and monitoring."
+description: "将建筑数字孪生模型与实时数据同步。将BIM模型与物联网（IoT）传感器、进度更新以及现场数据连接起来，以实现项目的实时可视化和监控。"
 ---
 
-# Digital Twin Synchronization
+# 数字孪生同步
 
-## Overview
+## 概述
 
-This skill implements digital twin synchronization for construction projects. Connect BIM models with real-time sensor data, progress updates, and field information to create a living digital representation.
+本技能实现了建筑项目的数字孪生同步功能，将BIM模型与实时传感器数据、进度更新以及现场信息相结合，创建出一个动态的数字表示。
 
-**Capabilities:**
-- BIM-IoT data binding
-- Real-time status updates
-- Historical data tracking
-- Anomaly detection
-- Predictive analytics
-- Multi-source data fusion
+**主要功能：**
+- BIM与物联网（IoT）数据的绑定
+- 实时状态更新
+- 历史数据跟踪
+- 异常检测
+- 预测性分析
+- 多源数据融合
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -114,9 +114,9 @@ twin.update_sensor(SensorData("TEMP-001", 22.5, "°C", datetime.now()))
 print(twin.get_element_state("WALL-001"))
 ```
 
-## Comprehensive Digital Twin System
+## 全面数字孪生系统
 
-### Core Twin Model
+### 核心孪生模型
 
 ```python
 from dataclasses import dataclass, field
@@ -364,7 +364,7 @@ class DigitalTwinCore:
         }
 ```
 
-### Real-Time Synchronization
+### 实时同步
 
 ```python
 import asyncio
@@ -481,7 +481,7 @@ class TwinSynchronizer:
         mqtt_client.subscribe("sensors/#")
 ```
 
-### Schedule Integration
+### 进度计划集成
 
 ```python
 from datetime import date, datetime
@@ -600,7 +600,7 @@ class ScheduleTwinIntegrator:
         }
 ```
 
-### Anomaly Detection
+### 异常检测
 
 ```python
 import numpy as np
@@ -700,24 +700,24 @@ class TwinAnomalyDetector:
         return anomalies
 ```
 
-## Quick Reference
+## 快速参考
 
-| Data Source | Update Frequency | Reliability |
+| 数据来源 | 更新频率 | 可靠性 |
 |-------------|------------------|-------------|
-| BIM Model | On change | High |
-| IoT Sensors | Real-time | Variable |
-| Schedule | Daily | High |
-| Field Updates | Event-driven | Medium |
-| Drone Surveys | Periodic | High |
+| BIM模型 | 发生变更时 | 高 |
+| 物联网传感器 | 实时 | 变动 |
+| 进度计划 | 每日 | 高 |
+| 现场更新 | 基于事件触发 | 中等 |
+| 无人机勘测 | 定期 | 高 |
 
-## Resources
+## 资源
 
-- **Digital Twin Consortium**: https://www.digitaltwinconsortium.org
-- **IFC/BIM Standards**: https://www.buildingsmart.org
-- **DDC Website**: https://datadrivenconstruction.io
+- **数字孪生联盟**：https://www.digitaltwinconsortium.org
+- **IFC/BIM标准**：https://www.buildingsmart.org
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `material-tracking-iot` for IoT integration
-- See `4d-simulation` for schedule visualization
-- See `bim-validation-pipeline` for model validation
+- 有关物联网集成的详细信息，请参阅`material-tracking-iot`。
+- 有关进度计划可视化的信息，请参阅`4d-simulation`。
+- 有关模型验证的信息，请参阅`bim-validation-pipeline`。

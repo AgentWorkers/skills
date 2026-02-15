@@ -1,49 +1,49 @@
-# Glucksrad — Decision Wheel
+# Glucksrad — 决策轮
 
-Use this skill when a user is stuck choosing between multiple options and wants a fun, random way to decide. Generate a URL that opens an interactive 3D spinning wheel.
+当用户在多个选项之间难以做出选择时，可以使用此功能来通过随机方式来决定。该功能会生成一个链接，用户点击该链接后可以查看一个交互式的3D旋转轮盘。
 
-## When to use
+## 使用场景
 
-- The user can't decide between a few options (e.g. "where should we eat?", "which movie should we watch?")
-- The user explicitly asks you to pick one at random or spin a wheel
-- There are 2–20 concrete options to choose from
+- 用户在多个选项中无法做出选择（例如：“我们去哪里吃饭？”、“看哪部电影？”）
+- 用户明确要求你随机选择一个选项或旋转轮盘
+- 有2到20个具体的选项可供选择
 
-Do NOT use this when the user needs a reasoned recommendation — only when randomness is welcome.
+**注意**：仅当用户需要随机结果时使用此功能，而非需要基于逻辑的建议时。
 
-## URL format
+## URL格式
 
 ```
 https://makedecisionforme.netlify.app/?items=Option1:Weight,Option2:Weight,Option3:Weight
 ```
 
-### Rules
+### 规则
 
-- **Base URL**: `https://makedecisionforme.netlify.app/`
-- **Query parameter**: `items` — comma-separated list of entries
-- **Entry format**: `Name:Weight`
-  - `Name` — the option label. URL-encode special characters (spaces → `%20`, `&` → `%26`, etc.)
-  - `Weight` — optional integer (defaults to `1`). Higher weight = larger slice on the wheel. Use weights when the user indicates a preference or when options aren't equally likely.
-- Items are separated by commas (`,`). Do not add spaces between items.
+- **基础URL**：`https://makedecisionforme.netlify.app/`
+- **查询参数**：`items` — 以逗号分隔的选项列表
+- **选项格式**：`名称:权重`
+  - `名称`：选项的标签。需要对特殊字符进行URL编码（空格 → `%20`，`&` → `%26` 等）
+  - `权重`：可选的整数（默认值为`1`）。权重越高，在轮盘上的占比越大。当用户有偏好或选项的概率不相同时，请使用权重。
+- 选项之间用逗号（`,`）分隔。选项之间不要添加空格。
 
-### Examples
+### 示例
 
-Equal chances:
+- 所有选项的概率相同：
 ```
 ?items=Pizza,Sushi,Tacos,Burgers
 ```
 
-Weighted (Pizza is 3x more likely than Sushi):
+- 权重不同的选项（披萨的概率是寿司的3倍）：
 ```
 ?items=Pizza:3,Sushi:1,Tacos:2
 ```
 
-Names with spaces:
+- 包含空格的选项名称：
 ```
 ?items=Thai%20Food,Fish%20and%20Chips,Mac%20%26%20Cheese
 ```
 
-## How to respond
+## 使用方法
 
-1. Collect the options from the user's message.
-2. Build the URL with the `items` query parameter.
-3. Present the link to the user so they can click it and spin the wheel.
+1. 从用户的输入中收集所有选项。
+2. 使用`items`查询参数构建URL。
+3. 将生成的链接提供给用户，让他们点击链接来旋转轮盘。

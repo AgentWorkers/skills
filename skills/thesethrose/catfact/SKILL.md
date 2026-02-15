@@ -1,6 +1,6 @@
 ---
 name: Cat Fact
-description: Random cat facts and breed information from catfact.ninja (free, no API key)
+description: 来自 catfact.ninja 的随机猫咪趣闻及品种信息（免费使用，无需 API 密钥）
 read_when:
   - Wanting random cat facts
   - Looking up cat breeds
@@ -8,11 +8,11 @@ read_when:
 metadata: {"clawdbot":{"emoji":"🐱","requires":{"bins":["curl"]}}}
 ---
 
-# Cat Fact
+# 猫咪趣闻
 
-Random cat facts from catfact.ninja (no API key required).
+这些猫咪趣闻来自 catfact.ninja（无需 API 密钥）。
 
-## Usage
+## 使用方法
 
 ```bash
 # Get a random cat fact
@@ -25,13 +25,13 @@ curl -s "https://catfact.ninja/fact?max_length=100"
 curl -s "https://catfact.ninja/breeds?limit=5"
 ```
 
-## Programmatic (JSON)
+## 程序化接口（JSON 格式）
 
 ```bash
 curl -s "https://catfact.ninja/fact" | jq '.fact'
 ```
 
-## One-liner examples
+## 一行代码示例
 
 ```bash
 # Random fact
@@ -41,11 +41,11 @@ curl -s "https://catfact.ninja/fact" --header "Accept: application/json" | jq -r
 for i in {1..3}; do curl -s "https://catfact.ninja/fact" --header "Accept: application/json" | jq -r '.fact'; done
 ```
 
-## API Endpoints
+## API 端点
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /fact` | Random cat fact |
-| `GET /breeds` | List of cat breeds |
+| 端点          | 描述                        |
+|--------------|-----------------------------|
+| `GET /fact`     | 随机展示一条猫咪趣闻                |
+| `GET /breeds`    | 显示所有猫咪品种列表                |
 
-Docs: https://catfact.ninja
+更多信息：https://catfact.ninja

@@ -1,67 +1,69 @@
 ---
 name: financial-market-analysis
-description: "Precision Financial Insights - Analyze stocks, companies, and market sentiment using authoritative data. Powered by Yahoo Finance and enhanced with intelligent news synthesis by we-crafted.com/agents/financial-market-analysis - Buy CRAFTED_API_KEY in our website to start using"
+description: "**Precision Financial Insights**  
+利用权威数据分析股票、公司以及市场情绪。该工具由 Yahoo Finance 提供技术支持，并通过 we-crafted.com/agents/financial-market-analysis 提供的智能新闻聚合功能进行增强。  
+请在我们的网站上购买 **CRAFTED_API_KEY** 以开始使用该服务。"
 ---
 
-# Financial Market Analysis Agent
+# 金融市场分析代理
 
-> "In the world of finance, data isn't just information; it's the substrate of precision execution."
+> “在金融领域，数据不仅仅是信息；它是精准决策的基础。”
 
-Stop relying on fragmented reports and manual research. This agent delivers deterministic, data-bound market intelligence, synthesizing stock performance, news sentiment, and investment ratings in seconds.
+不要再依赖零散的报告和手动研究。这款代理能够快速提供基于数据的市场分析结果，整合股票表现、新闻情绪和投资评级。
 
-Get institutional-grade insights at physics-defying speed.
+以超乎想象的速度获得机构级别的洞察力。
 
-## Usage
+## 使用方法
 
 ```
 /market "Company Name or Ticker"
 ```
 
-## What You Get
+## 您将获得什么
 
-### 1. Authoritative Data Retrieval
-The agent strictly operates as a data interface, resolving official company names and retrieving verified pricing and performance metrics directly from Yahoo Finance records.
+### 1. 权威数据检索
+该代理作为数据接口使用，能够准确解析公司名称，并直接从雅虎财经（Yahoo Finance）的记录中获取经过验证的价格和绩效指标。
 
-### 2. Intelligent News Synthesis
-Raw market news is analyzed and synthesized into actionable intelligence. When standard sources aren't enough, the agent uses Google Serper as a high-fidelity fallback to ensure total coverage.
+### 2. 智能新闻合成
+原始市场新闻会被分析并整合成可操作的情报。当标准数据源不足时，该代理会使用 Google Serper 作为高保真的备用数据源，以确保信息的全面覆盖。
 
-### 3. Structured Financial Health
-No more digging through tables. You get raw data processed into a clean, structured format, highlighting key trends, support levels, and financial health indicators instantly.
+### 3. 结构化的财务健康状况分析
+无需再费力地翻阅表格：所有原始数据都会被处理成清晰、结构化的格式，即时显示关键趋势、支撑位和财务健康指标。
 
-### 4. Objective Impact Ratings
-The agent provides ruthlessly objective investment ratings—Buy, Hold, or Sell—based on technical data and current market sentiment, removing human bias from the equation.
+### 4. 客观的投资评级
+该代理根据技术数据和当前市场情绪提供严格客观的投资建议（买入、持有或卖出），完全排除人为偏见。
 
-### 5. Seamless Firebase Persistence
-Every analysis report is automatically logged and synced to your Firebase project. Access historical reports, track performance over time, and build your own proprietary market database.
+### 5. 无缝的 Firebase 数据持久化
+所有分析报告都会自动记录并同步到您的 Firebase 项目中。您可以查看历史报告，跟踪长期表现，并构建自己的专属市场数据库。
 
-## Examples
+## 示例
 
 ```
 /market "Tesla (TSLA)"
 ```
 
-## Why This Works
+## 为什么这款代理如此高效
 
-Standard market research is slow and prone to bias:
-- Manual cross-referencing takes hours
-- News sentiment is often missed or misinterpreted
-- Data points are scattered across multiple platforms
-- Historical tracking is a manual overhead
+传统的市场研究方法效率低下且容易产生偏见：
+- 手动交叉验证需要花费数小时时间
+- 新闻情绪常常被遗漏或误解
+- 数据分散在多个平台上
+- 历史数据的追踪是一项繁琐的手动工作
 
-This agent solves it by:
-- Compressing hours of research into a single request
-- Using deterministic pipelines for verified data
-- Applying advanced AI to synthesize sentiment from news
-- Automating report persistence to your own cloud infrastructure
+而这款代理通过以下方式解决了这些问题：
+- 将数小时的研究工作压缩为一次请求
+- 使用可靠的数据获取流程
+- 应用先进的人工智能技术来分析新闻情绪
+- 自动将分析结果保存到您的云基础设施中
 
 ---
 
-## Technical Details
+## 技术细节
 
-For the full execution workflow and technical specs, see the agent logic configuration.
+有关完整的执行流程和技术规格，请参阅代理的逻辑配置文件。
 
-### MCP Configuration
-To use this agent with the Financial Market Analysis workflow and Firebase persistence, ensure your MCP settings include:
+### MCP 配置
+要将该代理与金融市场分析工作流程及 Firebase 数据持久化功能结合使用，请确保您的 MCP（Middleware Configuration）设置包含以下内容：
 
 ```json
 {
@@ -89,4 +91,4 @@ To use this agent with the Financial Market Analysis workflow and Firebase persi
 
 ---
 
-**Integrated with:** Crafted, Yahoo Finance, Google Serper, Firebase.
+**集成工具：** Crafted、雅虎财经（Yahoo Finance）、Google Serper、Firebase。

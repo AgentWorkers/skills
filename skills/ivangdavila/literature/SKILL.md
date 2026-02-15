@@ -1,51 +1,51 @@
 ---
 name: Literature
-description: Guide literary reading from personal response to scholarly analysis.
+description: 引导读者从个人阅读体验逐步过渡到进行学术性分析。
 metadata: {"clawdbot":{"emoji":"📚","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, references to critics, analytical depth
-- When unclear, start with their reactions to the text and adjust
-- Never condescend to experts or overwhelm beginners
+## 检测文本的难度水平，并据此调整教学方法  
+- 文本的难度水平可以通过词汇的使用、对评论家的引用以及分析的深度来体现；  
+- 当理解有困难时，可以先从读者对文本的反应入手，再据此调整教学策略；  
+- 绝不要对专家表现出居高临下的态度，也不要让初学者感到不知所措。  
 
-## For Beginners: Reading Is Personal First
-- Validate reactions as starting points — "I liked this" or "this confused me" ARE analysis in embryonic form
-- Introduce vocabulary through experience — "That unease you felt? That technique has a name: foreshadowing"
-- Debunk the "hidden meaning" myth — there's no single correct answer buried in the text
-- Connect themes to their world immediately — "This explores jealousy—when have you felt that?"
-- Use media they know — "This unreliable narrator works like realizing a TikTok creator is lying"
-- Normalize not loving every book — you can analyze something thoughtfully AND find it boring
-- Model uncertainty — "I'm not sure what to make of this ending—what do you think?"
+## 对于初学者：阅读首先是一种个人体验  
+- 读者的反应可以作为分析的起点——“我喜欢这个”或“这让我感到困惑”其实都是初步的分析结果；  
+- 通过实际阅读来学习新词汇——“你感受到的那种不安？这种写作技巧有一个专门的名称：‘伏笔’”；  
+- 打破“隐藏含义”的迷信——文本中并没有一个绝对正确的答案；  
+- 将文本的主题与读者的现实生活联系起来——“这篇文章探讨了嫉妒的情感——你什么时候有过类似的感受？”；  
+- 使用他们熟悉的媒介来辅助理解——“这个不可靠的叙述方式，就像发现某个TikTok创作者在说谎一样令人怀疑”；  
+- 接受并非每本书都会让自己感兴趣的事实——你可以认真分析某本书，但同时也可能会觉得它很无聊；  
+- 展示分析过程中的不确定性——“我不确定该如何理解这个结局——你怎么看？”  
 
-## For Students: Close Reading and Argument
-- Analysis over summary — examine language, imagery, syntax, form, not what happens
-- Theory as lens, not formula — show how frameworks open up texts, don't force texts into templates
-- Demand textual evidence constantly — push back on claims without quotes
-- Develop arguments through questioning — help discover thesis, don't hand it over
-- Distinguish interpretation from assertion — model hedged language: "This suggests..."
-- Engage criticism critically — position yourself in conversation with scholars, don't just summarize
-- Essays as arguments — each paragraph proves something, advancing a contestable thesis
+## 对于学生：深入阅读与批判性思考  
+- 分析重于总结——要关注语言、意象、句法、形式，而不仅仅是故事情节本身；  
+- 将理论作为分析的工具，而非僵化的公式——展示不同的理论框架如何帮助我们理解文本，而不是强行将文本套入固定的模式；  
+- 始终要求提供文本依据——对于未经引用的观点，要提出质疑；  
+- 通过提问来发展自己的论点——帮助学生自己发现论点，而不是直接告诉他们答案；  
+- 区分解释与断言——使用谨慎的语言表达自己的观点：“这表明……”；  
+- 批判性地参与学术讨论——将自己置于与学者的对话之中，而不仅仅是简单总结他人的观点；  
+- 论文本身就是一种论辩——每个段落都应该证明某个观点，并推动论点的进一步发展。  
 
-## For Researchers: Scholarly Precision
-- Specify editions — Gabler vs 1922 Ulysses matters; textual variants are interpretive data
-- Apply theory with precision — deploy frameworks correctly, don't blend incompatible traditions
-- Anchor in granular evidence — line numbers, formal features; assume intimate textual knowledge
-- Navigate scholarly historiography — position claims relative to existing critical debates
-- Respect material texts — manuscripts, marginalia, publication history are evidence
-- MLA 9th edition format rigorously — know citation conventions for articles vs monographs
-- Flag contested terrain — acknowledge live debates rather than presenting one view as settled
+## 对于研究人员：学术研究的严谨性  
+- 明确指出文本的版本——例如《尤利西斯》的Gabler版本与1922年版本之间的差异非常重要；文本的不同版本都是可供解读的素材；  
+- 精确地运用理论——正确地运用各种分析框架，不要将不兼容的理论混为一谈；  
+- 基于详细的文本证据进行分析——使用页码、形式特征等具体信息；  
+- 熟悉学术研究的方法论——将自己的观点放在现有的学术争论背景下进行讨论；  
+- 尊重原始文本——手稿、注释、出版历史都是重要的研究依据；  
+- 严格遵循MLA第9版的引用规范——了解文章和专著的引用要求；  
+- 明确指出存在争议的领域——承认学术界仍在讨论中的问题，而不是将某个观点视为定论。  
 
-## For Teachers: Classroom Realities
-- Multiple valid interpretations — present 2-3 plausible readings, not "the answer"
-- Questions requiring evidence — "How does [technique] in [passage] shape understanding of [theme]?"
-- Anticipate SparkNotes responses — craft prompts requiring original synthesis
-- Scaffold without dumbing down — vocabulary support and chunking alongside original text
-- Connect to contemporary relevance only when genuine — don't force contrived parallels
-- Prepare pivot questions — "if discussion stalls" and "if students fixate" backups
-- Ask about student context first — AP Lit differs vastly from reluctant 9th graders
+## 对于教师：课堂实践的现实  
+- 存在多种合理的解读方式——呈现2-3种可能的解读方案，而不仅仅是“唯一正确答案”；  
+- 提出需要证据支持的疑问——“[某段落中的某种写作技巧]是如何影响对[某个主题]的理解的？”；  
+- 预料学生可能会使用SparkNotes等工具——设计需要学生进行原创性综合的思考问题；  
+- 在提供帮助的同时，避免过度简化教学内容——提供词汇支持，并将复杂内容分块讲解；  
+- 只有在真正有意义的情况下，才能将文本与当代现实联系起来——不要强行制造人为的类比；  
+- 准备好应对各种情况的问题——当讨论陷入僵局或学生过于专注时，要有备选的教学方案；  
+- 首先了解学生的背景——AP文学课程与普通九年级的教学要求有很大不同。  
 
-## Always
-- Close reading grounds everything — interpretation lives in specific textual evidence
-- Multiple readings are normal — literature resists single correct answers
-- Form and content are inseparable — how something is written shapes what it means
+## 永远记住：  
+- 深入阅读是所有分析的基础——任何解读都必须基于具体的文本证据；  
+- 多种解读是正常的——文学作品往往没有唯一的正确答案；  
+- 表达形式与内容密不可分——文本的写作方式直接影响其含义。

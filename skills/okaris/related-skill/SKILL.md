@@ -9,11 +9,11 @@ description: |
 allowed-tools: Bash(npx skills *)
 ---
 
-# Related Skills Discovery
+# 相关技能发现
 
-Find and install complementary skills to expand your AI agent's capabilities.
+寻找并安装互补技能，以扩展您的人工智能代理的功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Search for skills
@@ -26,82 +26,82 @@ npx skills list inference-sh/agent-skills
 npx skills add inference-sh/agent-skills@ai-image-generation
 ```
 
-## Available Skill Categories
+## 可用的技能类别
 
-| Category | Skill | Description |
+| 类别 | 技能 | 描述 |
 |----------|-------|-------------|
-| **AI Models** | `llm-models` | Access 150+ LLM models |
-| **Images** | `ai-image-generation` | Generate images with AI |
-| **Images** | `flux-image` | FLUX image models |
-| **Images** | `image-upscaling` | Upscale and enhance images |
-| **Images** | `background-removal` | Remove backgrounds from images |
-| **Video** | `ai-video-generation` | Generate videos with AI |
-| **Video** | `ai-avatar-video` | Create avatar videos |
-| **Video** | `google-veo` | Google Veo video generation |
-| **Audio** | `text-to-speech` | Convert text to speech |
-| **Audio** | `speech-to-text` | Transcribe audio to text |
-| **Audio** | `ai-music-generation` | Generate music with AI |
-| **Search** | `web-search` | Search the web with AI |
-| **Social** | `twitter-automation` | Automate Twitter/X actions |
-| **Full** | `inference-sh` | All 150+ apps in one skill |
+| **AI模型** | `llm-models` | 访问150多种大型语言模型（LLM） |
+| **图像** | `ai-image-generation` | 使用AI生成图像 |
+| **图像** | `flux-image` | FLUX图像处理模型 |
+| **图像** | `image-upscaling` | 图像缩放与增强 |
+| **图像** | `background-removal` | 从图像中去除背景 |
+| **视频** | `ai-video-generation` | 使用AI生成视频 |
+| **视频** | `ai-avatar-video` | 创建头像视频 |
+| **视频** | `google-veo` | 使用Google Veo生成视频 |
+| **音频** | `text-to-speech` | 将文本转换为语音 |
+| **音频** | `speech-to-text` | 将语音转换为文本 |
+| **音频** | `ai-music-generation` | 使用AI生成音乐 |
+| **搜索** | `web-search` | 使用AI进行网络搜索 |
+| **社交** | `twitter-automation` | 自动化Twitter/X平台的操作 |
+| **综合** | `inference-sh` | 集合了所有150多种技能的应用 |
 
-## Install by Category
+## 按类别安装
 
-### Media Generation
+### 媒体生成
 ```bash
 npx skills add inference-sh/agent-skills@ai-image-generation
 npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@ai-music-generation
 ```
 
-### Image Processing
+### 图像处理
 ```bash
 npx skills add inference-sh/agent-skills@image-upscaling
 npx skills add inference-sh/agent-skills@background-removal
 npx skills add inference-sh/agent-skills@flux-image
 ```
 
-### Audio Processing
+### 音频处理
 ```bash
 npx skills add inference-sh/agent-skills@text-to-speech
 npx skills add inference-sh/agent-skills@speech-to-text
 ```
 
-### Research & Automation
+### 研究与自动化
 ```bash
 npx skills add inference-sh/agent-skills@web-search
 npx skills add inference-sh/agent-skills@twitter-automation
 ```
 
-### Everything at Once
+### 一次性安装所有技能
 ```bash
 # Install the full platform skill with all 150+ apps
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-## Skill Combinations
+## 技能组合
 
-### Research Agent
+### 研究代理
 ```bash
 npx skills add inference-sh/agent-skills@web-search
 npx skills add inference-sh/agent-skills@llm-models
 ```
 
-### Content Creator
+### 内容创作者
 ```bash
 npx skills add inference-sh/agent-skills@ai-image-generation
 npx skills add inference-sh/agent-skills@ai-video-generation
 npx skills add inference-sh/agent-skills@text-to-speech
 ```
 
-### Media Processor
+### 媒体处理工具
 ```bash
 npx skills add inference-sh/agent-skills@image-upscaling
 npx skills add inference-sh/agent-skills@background-removal
 npx skills add inference-sh/agent-skills@speech-to-text
 ```
 
-## Managing Skills
+## 管理技能
 
 ```bash
 # List installed skills
@@ -114,12 +114,12 @@ npx skills update
 npx skills remove inference-sh/agent-skills@ai-image-generation
 ```
 
-## Documentation
+## 文档资料
 
-- [Agent Skills Overview](https://inference.sh/blog/skills/agent-skills-overview) - The open standard for AI capabilities
-- [Getting Started](https://inference.sh/docs/getting-started/introduction) - Introduction to inference.sh
-- [Apps Overview](https://inference.sh/docs/apps/overview) - Understanding the app ecosystem
-- [CLI Setup](https://inference.sh/docs/extend/cli-setup) - Installing the CLI
-- [What is inference.sh?](https://inference.sh/docs/getting-started/what-is-inference) - Platform overview
+- [代理技能概览](https://inference.sh/blog/skills/agent-skills-overview) - 人工智能功能的开放标准
+- [入门指南](https://inference.sh/docs/getting-started/introduction) - inference.sh平台简介
+- [应用概览](https://inference.sh/docs/apps/overview) - 了解应用生态系统
+- [命令行界面设置](https://inference.sh/docs/extend/cli-setup) - 安装命令行界面
+- [什么是inference.sh？](https://inference.sh/docs/getting-started/what-is-inference) - 平台概述
 
-Explore: [inference.sh/explore](https://inference.sh/explore)
+探索更多：[inference.sh/explore](https://inference.sh/explore)

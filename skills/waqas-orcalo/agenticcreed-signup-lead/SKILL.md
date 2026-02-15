@@ -1,25 +1,25 @@
-# signup_lead
+# 注册线索（Signup Lead）
 
-Create a signup lead in the AgenticCreed system using the public HTTP endpoint.
+使用公开的 HTTP 端点在 AgenticCreed 系统中创建一个注册线索。
 
-This skill sends lead details (email, name, contact info, etc.) to https://gateway.agenticcreed.ai/signup-leads.
+此技能会将线索详情（电子邮件、姓名、联系信息等）发送到 https://gateway.agenticcreed.ai/signup-leads。
 
-## Usage
+## 使用说明
 
-Use this skill when you need to create a new signup lead with contact information.
+当您需要创建包含联系信息的新注册线索时，请使用此技能。
 
-## Parameters
+## 参数
 
-- `email`: Email address (required)
-- `firstName`: First name (required)
-- `lastName`: Last name (required)
-- `address`: Physical address
-- `dateOfBirth`: Date of birth (ISO format)
-- `phoneNumber`: Phone number
-- `whatsAppNumber`: WhatsApp number
-- `jobTitle`: Job title
-- `dateOfJoining`: Date of joining (ISO format)
+- `email`：电子邮件地址（必填）
+- `firstName`：名字（必填）
+- `lastName`：姓氏（必填）
+- `address`：实际地址
+- `dateOfBirth`：出生日期（ISO 格式）
+- `phoneNumber`：电话号码
+- `whatsAppNumber`：WhatsApp 号码
+- `jobTitle`：职位名称
+- `dateOfJoining`：入职日期（ISO 格式）
 
-## Configuration
+## 配置要求
 
-Set the `AGENTICCREED_API_KEY` environment variable before using this skill.
+在使用此技能之前，请设置 `AGENTICCREED_API_KEY` 环境变量。

@@ -1,11 +1,11 @@
 ---
 name: Influencer
-description: Create, manage, and scale AI-generated virtual influencers with consistent characters, multi-platform content, and monetization workflows.
+description: 创建、管理并扩展由人工智能生成的虚拟 Influencer（虚拟网红），确保他们具备统一的角色特征、跨平台的内容发布能力以及完善的盈利模式。
 ---
 
-## Workspace Structure
+## 工作区结构
 
-Each influencer lives in a dedicated folder:
+每位 influencer 的相关文件都存储在专门的文件夹中：
 ```
 ~/influencers/
 ├── {persona-slug}/
@@ -24,77 +24,77 @@ Each influencer lives in a dedicated folder:
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
+| 任务 | 所需执行的操作 |
 |------|------|
-| Create new persona (identity, niche, aesthetics) | `persona.md` |
-| Generate consistent photos | `image-gen.md` |
-| Generate videos (talking head, lifestyle) | `video-gen.md` |
-| Voice and audio (TTS, voice cloning) | `voice.md` |
-| Content strategy and captions | `content.md` |
-| Platform optimization (IG, TikTok, YT) | `platforms.md` |
-| Monetization (brand deals, affiliates) | `monetization.md` |
-| Legal and disclosure requirements | `compliance.md` |
+| 创建新的 influencer 身份（包括身份特征、领域和视觉风格） | `persona.md` |
+| 生成统一的照片 | `image-gen.md` |
+| 生成视频（包括演讲或生活方式相关的视频） | `video-gen.md` |
+| 语音处理（文本转语音、声音克隆） | `voice.md` |
+| 内容策略和字幕制作 | `content.md` |
+| 平台优化（Instagram、TikTok、YouTube） | `platforms.md` |
+| 盈利模式（品牌合作、联盟营销） | `monetization.md` |
+| 法律和信息披露要求 | `compliance.md` |
 
 ---
 
-## Persona Creation Checklist
+## 身份创建检查清单
 
-Before generating any content:
-- [ ] Define niche (fitness, lifestyle, tech, fashion, etc.)
-- [ ] Create identity document (name, age, location, backstory)
-- [ ] Generate 5-10 reference images for face consistency
-- [ ] Define visual style (lighting, colors, settings)
-- [ ] Create voice profile (if using TTS/videos)
-- [ ] Draft personality guidelines for captions
-
----
-
-## Character Consistency Rules
-
-Maintaining the same face/body across all content is CRITICAL.
-
-**For photos:**
-1. Generate base reference set first (5-10 images, multiple angles)
-2. Use IP-Adapter or InstantID for every generation
-3. Same seed + similar prompt structure = more consistency
-4. Quality check EVERY image before posting
-
-**For videos:**
-1. Use face-swap on real footage OR
-2. Generate with character LoRA if trained OR
-3. Talking head tools (HeyGen, D-ID) with reference image
+在开始生成任何内容之前，请完成以下步骤：
+- [ ] 确定 influencer 的领域（健身、生活方式、科技、时尚等） |
+- [ ] 创建身份文档（姓名、年龄、所在地、背景故事） |
+- [ ] 生成 5-10 张用于保持面部一致性的参考照片 |
+- [ ] 确定视觉风格（光线、颜色、拍摄环境） |
+- [ ] 如果使用文本转语音或视频功能，需创建相应的语音档案 |
+- [ ] 起草与 influencer 个人风格相匹配的字幕编写指南 |
 
 ---
 
-## Content Generation Flow
+## 角色一致性规则
 
-1. **Plan** — Check schedule.md for what's needed today
-2. **Generate** — Use appropriate tool (see image-gen.md or video-gen.md)
-3. **Review** — Verify character consistency, quality
-4. **Caption** — Write engaging copy matching persona voice
-5. **Schedule** — Queue for optimal posting time
-6. **Track** — Log in analytics.md after posting
+在所有内容中保持一致的面部和形象至关重要。
+
+**对于照片：**
+1. 首先生成基础的参考照片集（5-10 张，从多个角度拍摄） |
+2. 每次生成新照片时使用 `IP-Adapter` 或 `InstantID` 工具 |
+- 使用相同的生成参数和相似的提示结构，以提升一致性 |
+- 在发布前对每张照片进行质量检查 |
+
+**对于视频：**
+1. 对于真实拍摄的视频，可以使用面部替换技术 |
+2. 如果已进行过训练，可以使用 `LoRA` 等模型生成视频 |
+- 使用演讲生成工具（如 HeyGen、D-ID），并参考之前生成的参考照片 |
 
 ---
 
-## Common Patterns
+## 内容生成流程
 
-| User says | Agent does |
+1. **计划** — 查看 `schedule.md` 以确定当天的工作内容 |
+2. **生成** — 使用相应的工具（参见 `image-gen.md` 或 `video-gen.md`） |
+3. **审核** — 检查角色的视觉一致性及视频质量 |
+4. **撰写字幕** — 根据 influencer 的语音风格编写吸引人的文字 |
+5. **安排发布时间** — 将视频安排在最佳发布时段 |
+6. **跟踪效果** — 发布后查看 `analytics.md` 中的分析数据 |
+
+---
+
+## 常见操作模式
+
+| 用户请求 | 代理操作 |
 |-----------|------------|
-| "Create new influencer" | Run persona creation flow, set up workspace |
-| "Generate photos for today" | Check schedule, generate with consistency refs |
-| "Make a TikTok video" | Generate 9:16 video with talking head or lifestyle footage |
-| "Write captions for these" | Draft captions matching persona voice + niche hashtags |
-| "How is she performing?" | Summarize analytics.md, suggest improvements |
-| "Add brand deal content" | Generate sponsored content with disclosure |
+| “创建新的 influencer” | 运行身份创建流程，设置工作区 |
+| “生成今天的照片” | 查看日程安排，使用参考照片生成内容 |
+| “制作 TikTok 视频” | 生成时长 9 分钟、16 秒的视频（包含演讲或生活方式素材） |
+| “为这些视频编写字幕” | 根据 influencer 的语音风格和领域特点撰写字幕 |
+| “她的表现如何？” | 查看分析数据，提出改进建议 |
+| “添加品牌合作内容” | 生成带有信息披露的赞助内容 |
 
 ---
 
-## Tool Configuration
+## 工具配置
 
-Store active tools in `~/influencers/tools.md`:
+当前使用的工具信息存储在 `~/influencers/tools.md` 文件中：
 
 ```markdown
 ## Active Tools
@@ -104,4 +104,4 @@ Store active tools in `~/influencers/tools.md`:
 - Lip Sync: HeyGen
 ```
 
-Update when switching providers. All generation scripts read from here.
+请在更换工具时更新此文件。所有内容生成脚本均从该文件中读取相关信息。

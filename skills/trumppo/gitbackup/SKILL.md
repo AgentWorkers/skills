@@ -1,22 +1,22 @@
 ---
 name: gitbackup
-description: Create a local Git bundle backup of the OpenClaw workspace repository. Use when running /gitbackup in Telegram or when the user asks to back up Git history/refs to a local file.
+description: 创建 OpenClaw 工作区仓库的本地 Git 包备份。当在 Telegram 中运行 `/gitbackup` 命令，或者用户要求将 Git 历史记录/引用备份到本地文件时，可以使用此备份。
 ---
 
-# Git Backup (local bundle)
+# Git 备份（本地包）
 
-## Overview
-Create a self-contained Git bundle of the workspace repo and store it in `/root/.openclaw/backups`.
+## 概述
+创建一个包含工作区仓库内容的独立 Git 包，并将其存储在 `/root/.openclaw/backups` 目录中。
 
-## Quick start
-Run the bundled script:
+## 快速开始
+运行以下脚本：
 ```bash
 bash /root/.openclaw/workspace/skills/gitbackup/scripts/git-backup.sh
 ```
 
-## Output
-Print the bundle path and size. The bundle filename includes UTC timestamp.
+## 输出
+脚本会输出备份包的路径和大小。备份包的文件名中包含 UTC 时间戳。
 
-## Notes
-- If the workspace is not a Git repo, exit with a clear error.
-- Do not delete older bundles.
+## 注意事项：
+- 如果工作区不是一个 Git 仓库，脚本会输出错误信息并终止执行。
+- 请勿删除旧的备份包。

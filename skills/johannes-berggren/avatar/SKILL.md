@@ -1,6 +1,6 @@
 ---
 name: avatar
-description: Interactive AI avatar with Simli video rendering and ElevenLabs TTS
+description: 具有 Simli 视频渲染功能及 ElevenLabs TTS 技术的交互式 AI 阿凡达
 emoji: "\U0001F9D1\u200D\U0001F4BB"
 homepage: https://github.com/Johannes-Berggren/openclaw-avatar
 metadata:
@@ -28,41 +28,41 @@ metadata:
       Requires SIMLI_API_KEY and ELEVENLABS_API_KEY environment variables.
 ---
 
-# Avatar Skill
+# 虚拟形象技能
 
-Interactive AI avatar interface for OpenClaw with real-time lip-synced video and text-to-speech.
+OpenClaw 的交互式 AI 虚拟形象功能，支持实时唇形同步视频和文本转语音功能。
 
-## Features
+## 特点
 
-- **Voice Responses**: Speaks conversational summaries using ElevenLabs TTS
-- **Visual Avatar**: Realistic lip-synced video via Simli
-- **Detail Panel**: Shows formatted markdown alongside spoken responses
-- **Multi-language**: Supports multiple languages for speech and TTS
-- **Slack/Email**: Forward responses to Slack DMs or email (when configured)
-- **Stream Deck**: Optional hardware control with Elgato Stream Deck
+- **语音响应**：使用 ElevenLabs 的文本转语音（TTS）技术，提供简洁、自然的对话式回答。
+- **视觉虚拟形象**：通过 Simli 技术生成逼真的唇形同步视频。
+- **详细信息面板**：在语音回答旁边显示格式化的 Markdown 内容。
+- **多语言支持**：支持多种语言的语音和文本转语音功能。
+- **Slack/邮件**：可配置将回答内容转发至 Slack 私信或电子邮件。
+- **Stream Deck**：可选的硬件控制设备，支持 Elgato Stream Deck。
 
-## Setup
+## 设置步骤
 
-1. Get API keys:
-   - [Simli](https://simli.com) - Avatar rendering
-   - [ElevenLabs](https://elevenlabs.io) - Text-to-speech
+1. 获取 API 密钥：
+   - [Simli](https://simli.com) - 虚拟形象渲染服务
+   - [ElevenLabs](https://elevenlabs.io) - 文本转语音服务
 
-2. Set environment variables:
+2. 设置环境变量：
    ```bash
    export SIMLI_API_KEY=your-key
    export ELEVENLABS_API_KEY=your-key
    ```
 
-3. Start the avatar:
+3. 启动虚拟形象服务：
    ```bash
    openclaw-avatar
    ```
 
-4. Open http://localhost:5173
+4. 打开浏览器，访问 http://localhost:5173
 
-## Response Format
+## 回答格式
 
-When responding to avatar queries, use this format:
+在回答虚拟形象的查询时，请使用以下格式：
 
 ```
 <spoken>
@@ -73,15 +73,15 @@ Full detailed response with markdown formatting (bullet points, headers, bold, e
 </detail>
 ```
 
-### Guidelines
+### 编写指南
 
-1. **spoken**: Brief, natural, conversational. This is read aloud.
-2. **detail**: Comprehensive information with proper markdown.
-3. Always include both sections.
+1. **语音部分**：回答应简洁、自然，符合对话风格（这部分内容会被朗读出来）。
+2. **详细信息部分**：提供包含格式化 Markdown 内容的详细解答。
+3. 必须同时包含以上两个部分。
 
-## Example
+## 示例
 
-User: "What meetings do I have today?"
+用户：“我今天有哪些会议？”
 
 ```
 <spoken>
@@ -104,6 +104,6 @@ You have three meetings today. Your first one is a team standup at 9 AM, then a 
 </detail>
 ```
 
-## Session Key
+## 会话密钥
 
-Avatar responses use session key: `agent:main:avatar`
+虚拟形象的回答会使用以下会话密钥进行识别：`agent:main:avatar`

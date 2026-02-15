@@ -1,32 +1,32 @@
 ---
 name: ui-testing
-description: UI testing expert for Cypress, Testing Library, and component tests. Use when testing UI components or implementing component tests.
+description: Cypress、Testing Library 的 UI 测试专家，擅长进行 UI 组件的测试或组件测试的实现。
 ---
 
-# UI Testing Skill
+# UI 测试技能
 
-Expert in UI testing with **Cypress** and **Testing Library**. For deep Playwright expertise, see the `e2e-playwright` skill.
+精通使用 **Cypress** 和 **Testing Library** 进行 UI 测试。如需深入了解 Playwright 的相关技能，请参阅 `e2e-playwright` 部分。
 
-## Framework Selection Guide
+## 框架选择指南
 
-| Framework | Best For | Key Strength |
+| 框架 | 适用场景 | 主要优势 |
 |-----------|----------|--------------|
-| **Playwright** | E2E, cross-browser | Auto-wait, multi-browser → Use `e2e-playwright` skill |
-| **Cypress** | E2E, developer experience | Time-travel debugging, real-time reload |
-| **Testing Library** | Component tests | User-centric queries, accessibility-first |
+| **Playwright** | 结合 E2E 测试、跨浏览器测试 | 支持自动等待、多浏览器测试 → 可使用 `e2e-playwright` 技能 |
+| **Cypress** | 适用于 E2E 测试，尤其适合开发者 | 支持时间旅行调试、实时页面重载功能 |
+| **Testing Library** | 适用于组件测试 | 以用户为中心的查询方式、注重无障碍性 |
 
 ---
 
-## 1. Cypress (E2E Testing)
+## 1. Cypress（E2E 测试）
 
-**Why Cypress?**
-- Developer-friendly API
-- Real-time reloading
-- Time-travel debugging
-- Screenshot/video recording
-- Stubbing and mocking built-in
+**为什么选择 Cypress？**
+- 对开发者非常友好的 API 接口
+- 支持实时页面重载
+- 提供时间旅行调试功能
+- 支持截图和视频录制
+- 内置了模拟（stubbing）和 mocking 功能
 
-#### Basic Test
+#### 基本测试示例
 
 ```javascript
 describe('User Authentication', () => {
@@ -55,7 +55,7 @@ describe('User Authentication', () => {
 });
 ```
 
-#### Custom Commands (Reusable Actions)
+#### 自定义命令（可复用的操作）
 
 ```javascript
 // cypress/support/commands.js
@@ -74,7 +74,7 @@ it('should display dashboard for logged-in user', () => {
 });
 ```
 
-#### API Mocking with Intercept
+#### 使用 Intercept 进行 API 模拟
 
 ```javascript
 it('should display mocked user data', () => {
@@ -94,14 +94,14 @@ it('should display mocked user data', () => {
 });
 ```
 
-### 3. React Testing Library (Component Tests)
+### 3. React 测试库（组件测试）
 
-**Why Testing Library?**
-- User-centric queries (accessibility-first)
-- Encourages best practices (testing behavior, not implementation)
-- Works with React, Vue, Svelte, Angular
+**为什么选择 Testing Library？**
+- 以用户为中心的查询方式（注重无障碍性）
+- 鼓励采用最佳实践（测试应用程序的行为，而非实现细节）
+- 支持 React、Vue、Svelte、Angular 等框架
 
-#### Component Test Example
+#### 组件测试示例
 
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -150,7 +150,7 @@ describe('LoginForm', () => {
 });
 ```
 
-#### User-Centric Queries (Preferred)
+#### 以用户为中心的查询方式（推荐使用）
 
 ```typescript
 // ✅ GOOD: Accessible queries (user-facing)
@@ -164,76 +164,66 @@ screen.getByClassName('btn-primary'); // Changes when CSS changes
 screen.getByTestId('submit-button'); // Not user-facing
 ```
 
-## Test Strategies
+## 测试策略
 
-### 1. Testing Pyramid
+### 1. 测试层次结构
 
-```
-         /\
-        /  \  E2E (10%)
-       /____\
-      /      \  Integration (30%)
-     /________\
-    /          \  Unit (60%)
-   /____________\
-```
+**单元测试**（60%）：
+- 单个组件的独立测试
+- 测试速度快、成本低、可执行大量测试
+- 可模拟外部依赖项
 
-**Unit Tests** (60%):
-- Individual components in isolation
-- Fast, cheap, many tests
-- Mock external dependencies
+**集成测试**（30%）：
+- 多个组件协同工作时的测试
+- 检查 API 集成和数据流
+- 测试速度中等、成本适中
 
-**Integration Tests** (30%):
-- Multiple components working together
-- API integration, data flow
-- Moderate speed, moderate cost
+**E2E 测试**（10%）：
+- 完整的用户流程测试（从登录到结账）
+- 测试速度最慢、成本最高
+- 仅针对关键路径进行测试
 
-**E2E Tests** (10%):
-- Full user journeys (login → checkout)
-- Slowest, most expensive
-- Critical paths only
+### 2. 测试覆盖策略
 
-### 2. Test Coverage Strategy
+**需要测试的内容**：
+- ✅ 正常使用场景（核心用户流程）
+- ✅ 错误状态（验证、API 错误）
+- ✅ 边缘情况（空状态、极限值）
+- ✅ 无障碍性（键盘导航、屏幕阅读器）
+- ✅ 回归问题（每次修复 bug 需要重新测试相关功能）
 
-**What to Test**:
-- ✅ Happy paths (core user flows)
-- ✅ Error states (validation, API failures)
-- ✅ Edge cases (empty states, max limits)
-- ✅ Accessibility (keyboard navigation, screen readers)
-- ✅ Regression bugs (add test for each bug fix)
+**不需要测试的内容**：
+- ❌ 第三方库（假设它们能正常工作）
+- ❌ 实现细节（内部状态、CSS 类）
+- ❌ 简单的代码（getter、setter）
 
-**What NOT to Test**:
-- ❌ Third-party libraries (assume they work)
-- ❌ Implementation details (internal state, CSS classes)
-- ❌ Trivial code (getters, setters)
+### 3. 避免测试结果不稳定（Flaky Tests）
 
-### 3. Flakiness Mitigation
+**导致测试结果不稳定的常见原因**：
 
-**Common Causes of Flaky Tests**:
+1. **竞态条件（Race Conditions）**
 
-1. **Race Conditions**
-
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 await page.click('button');
 const text = await page.textContent('.result'); // May fail!
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await page.click('button');
 await page.waitForSelector('.result'); // Wait for element
 const text = await page.textContent('.result');
 ```
 
-2. **Non-Deterministic Data**
+2. **数据非确定性（Non-Deterministic Data）**
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 expect(page.locator('.user')).toHaveCount(5); // Depends on database state
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 // Mock API to return deterministic data
 await page.route('**/api/users', (route) =>
@@ -245,22 +235,22 @@ await page.route('**/api/users', (route) =>
 expect(page.locator('.user')).toHaveCount(2); // Predictable
 ```
 
-3. **Timing Issues**
+3. **时间问题（Timing Issues）**
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 await page.waitForTimeout(3000); // Arbitrary wait
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await page.waitForSelector('.loaded'); // Wait for specific condition
 await page.waitForLoadState('networkidle'); // Wait for network idle
 ```
 
-4. **Test Interdependence**
+4. **测试之间的依赖关系（Test Interdependence）**
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 test('create user', async () => {
   // Creates user in DB
@@ -271,7 +261,7 @@ test('login user', async () => {
 });
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 test.beforeEach(async () => {
   // Each test creates its own user
@@ -283,9 +273,9 @@ test.afterEach(async () => {
 });
 ```
 
-## Accessibility Testing
+## 无障碍性测试
 
-### 1. Automated Accessibility Tests (axe-core)
+### 1. 自动化无障碍性测试（axe-core）
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -300,7 +290,7 @@ test('should have no accessibility violations', async ({ page }) => {
 });
 ```
 
-### 2. Keyboard Navigation
+### 2. 键盘导航测试
 
 ```typescript
 test('should navigate form with keyboard', async ({ page }) => {
@@ -322,7 +312,7 @@ test('should navigate form with keyboard', async ({ page }) => {
 });
 ```
 
-### 3. Screen Reader Testing (aria-label, roles)
+### 3. 屏幕阅读器测试（使用 aria-label、roles）
 
 ```typescript
 test('should have proper ARIA labels', async ({ page }) => {
@@ -342,9 +332,9 @@ test('should have proper ARIA labels', async ({ page }) => {
 });
 ```
 
-## CI/CD Integration
+## 持续集成/持续部署（CI/CD）集成
 
-### 1. GitHub Actions (Playwright)
+### 1. 使用 GitHub Actions 进行测试
 
 ```yaml
 name: E2E Tests
@@ -380,7 +370,7 @@ jobs:
           path: playwright-report/
 ```
 
-### 2. Parallel Execution
+### 2. 并行执行测试
 
 ```typescript
 // playwright.config.ts
@@ -392,7 +382,7 @@ export default defineConfig({
 });
 ```
 
-### 3. Sharding (Large Test Suites)
+### 3. 分割大型测试套件（Sharding Large Test Suites）
 
 ```bash
 # Split tests across 4 machines
@@ -402,9 +392,9 @@ npx playwright test --shard=3/4
 npx playwright test --shard=4/4
 ```
 
-## Best Practices
+## 最佳实践
 
-### 1. Use Data Attributes for Stable Selectors
+### 1. 使用数据属性来创建稳定的选择器
 
 ```html
 <!-- ✅ GOOD: Stable selector -->
@@ -419,21 +409,21 @@ npx playwright test --shard=4/4
 await page.click('[data-testid="submit-button"]');
 ```
 
-### 2. Test User Behavior, Not Implementation
+### 2. 测试应用程序的行为，而非实现细节
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 // Testing internal state
 expect(component.state.isLoading).toBe(true);
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 // Testing visible UI
 expect(screen.getByText('Loading...')).toBeInTheDocument();
 ```
 
-### 3. Keep Tests Independent
+### 3. 保持测试的独立性
 
 ```typescript
 // ✅ GOOD: Each test is independent
@@ -451,43 +441,43 @@ test('test 2', async ({ page }) => {
 });
 ```
 
-### 4. Use Meaningful Assertions
+### 4. 使用有意义的断言（Assertion）
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 expect(true).toBe(true); // Useless assertion
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await expect(page.locator('.success-message')).toHaveText(
   'Order placed successfully'
 );
 ```
 
-### 5. Avoid Hard-Coded Waits
+### 5. 避免使用硬编码的等待时间
 
-❌ **Bad**:
+❌ **错误做法**：
 ```typescript
 await page.waitForTimeout(5000); // Slow, brittle
 ```
 
-✅ **Good**:
+✅ **正确做法**：
 ```typescript
 await page.waitForSelector('.results'); // Wait for specific element
 await expect(page.locator('.results')).toBeVisible(); // Built-in wait
 ```
 
-## Debugging Tests
+## 调试测试
 
-### 1. Headed Mode (See Browser)
+### 1. 使用 Headed Mode 查看浏览器行为
 
 ```bash
 npx playwright test --headed
 npx playwright test --headed --debug # Pause on each step
 ```
 
-### 2. Screenshot on Failure
+### 2. 在测试失败时生成截图
 
 ```typescript
 test.afterEach(async ({ page }, testInfo) => {
@@ -497,7 +487,7 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 ```
 
-### 3. Trace Viewer (Time-Travel Debugging)
+### 3. 使用 Trace Viewer 进行时间旅行调试
 
 ```typescript
 // playwright.config.ts
@@ -513,16 +503,16 @@ export default defineConfig({
 npx playwright show-trace trace.zip
 ```
 
-### 4. Console Logs
+### 4. 查看控制台日志
 
 ```typescript
 page.on('console', (msg) => console.log('Browser log:', msg.text()));
 page.on('pageerror', (error) => console.error('Page error:', error));
 ```
 
-## Common Patterns
+## 常见测试模式
 
-### 1. Testing Forms
+### 1. 表单测试
 
 ```typescript
 test('should validate form fields', async ({ page }) => {
@@ -545,7 +535,7 @@ test('should validate form fields', async ({ page }) => {
 });
 ```
 
-### 2. Testing Modals
+### 2. 弹出框（Modal）测试
 
 ```typescript
 test('should open and close modal', async ({ page }) => {
@@ -566,7 +556,7 @@ test('should open and close modal', async ({ page }) => {
 });
 ```
 
-### 3. Testing Drag and Drop
+### 3. 拖放（Drag and Drop）功能测试
 
 ```typescript
 test('should drag and drop items', async ({ page }) => {
@@ -583,22 +573,21 @@ test('should drag and drop items', async ({ page }) => {
 });
 ```
 
-## Resources
+## 参考资源
 
-- [Playwright Documentation](https://playwright.dev/)
-- [Cypress Documentation](https://docs.cypress.io/)
-- [Testing Library](https://testing-library.com/)
-- [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/WCAG21/quickref/)
+- [Playwright 文档](https://playwright.dev/)
+- [Cypress 文档](https://docs.cypress.io/)
+- [Testing Library 文档](https://testing-library.com/)
+- [Web 内容无障碍性指南（WCAG）](https://www.w3.org/WAI/WCAG21/quickref/)
 
-## Activation Keywords
+## 常见问题解答
 
-Ask me about:
-- "How to write E2E tests with Playwright"
-- "Cypress test examples"
-- "React Testing Library best practices"
-- "Page Object Model for UI tests"
-- "Accessibility testing with axe-core"
-- "How to fix flaky tests"
-- "CI/CD integration for UI tests"
-- "Debugging Playwright tests"
-- "Test automation strategies"
+- **如何使用 Playwright 编写 E2E 测试？**
+- **Cypress 的测试示例有哪些？**
+- **React 测试库的最佳实践是什么？**
+- **UI 测试中的页面对象模型（Page Object Model）是什么？**
+- **如何使用 axe-core 进行无障碍性测试？**
+- **如何解决测试结果不稳定的问题？**
+- **如何将 UI 测试集成到持续集成/持续部署流程中？**
+- **如何调试 Playwright 测试？**
+- **有哪些有效的测试自动化策略？**

@@ -1,49 +1,49 @@
 ---
 name: us-market-bubble-detector
-description: Evaluates market bubble risk through quantitative data-driven analysis using the revised Minsky/Kindleberger framework v2.1. Prioritizes objective metrics (Put/Call, VIX, margin debt, breadth, IPO data) over subjective impressions. Features strict qualitative adjustment criteria with confirmation bias prevention. Supports practical investment decisions with mandatory data collection and mechanical scoring. Use when user asks about bubble risk, valuation concerns, or profit-taking timing.
+description: 通过使用修订版的Minsky/Kindleberger框架v2.1，利用定量数据驱动的分析方法来评估市场泡沫风险。该框架优先考虑客观指标（如看涨/看跌期权比率、VIX指数、保证金债务水平、市场交易活跃度以及IPO数据），而非主观判断。同时，该框架具备严格的定性调整标准，以防止确认偏误（即投资者倾向于相信自己先前的观点）。该工具支持实际的投资决策制定，要求用户必须收集相关数据并经过机械化的评分流程。适用于用户咨询市场泡沫风险、估值问题或获利时机等情况。
 ---
 
-# US Market Bubble Detection Skill (Revised v2.1)
+# 美国市场泡沫检测技巧（修订版 v2.1）
 
-## Key Revisions in v2.1
+## v2.1 的主要修订内容
 
-**Critical Changes from v2.0:**
-1. ✅ **Mandatory Quantitative Data Collection** - Use measured values, not impressions or speculation
-2. ✅ **Clear Threshold Settings** - Specific numerical criteria for each indicator
-3. ✅ **Two-Phase Evaluation Process** - Quantitative evaluation → Qualitative adjustment (strict order)
-4. ✅ **Stricter Qualitative Criteria** - Max +3 points (reduced from +5), requires measurable evidence
-5. ✅ **Confirmation Bias Prevention** - Explicit checklist to avoid over-scoring
-6. ✅ **Granular Risk Phases** - Added "Elevated Risk" phase (8-9 points) for nuanced risk management
+**与 v2.0 相比的关键变化：**
+1. ✅ **强制性的定量数据收集** - 使用实际测量值，而非印象或猜测
+2. ✅ **明确的阈值设置** - 每个指标都有具体的数值标准
+3. ✅ **两阶段评估流程** - 先进行定量评估，再根据结果进行定性调整（严格顺序）
+4. ✅ **更严格的定性标准** - 最高得分为 +3 分（从 +5 分降低），需要可量化的证据
+5. ✅ **防止确认偏误** - 设立明确的检查清单以避免过度评分
+6. ✅ **细化的风险等级** - 新增了“高风险”等级（8-9 分），以更细致地管理风险
 
 ---
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when:
+在以下情况下使用此技巧：
 
-**English:**
-- User asks "Is the market in a bubble?" or "Are we in a bubble?"
-- User seeks advice on profit-taking, new entry timing, or short-selling decisions
-- User reports social phenomena (non-investors entering, media frenzy, IPO flood)
-- User mentions narratives like "this time is different" or "revolutionary technology" becoming mainstream
-- User consults about risk management for existing positions
+**英文：**
+- 用户询问“市场是否处于泡沫状态？”或“我们是否处于泡沫中？”
+- 用户需要关于获利了结、新入场时机或卖空决策的建议
+- 用户报告社会现象（如非投资者进入市场、媒体炒作、IPO 激增）
+- 用户提到“这次不同”或“革命性技术”成为主流等观点
+- 用户咨询现有持仓的风险管理方法
 
-**Japanese:**
-- ユーザーが「今の相場はバブルか?」と尋ねる
+**日文：**
+- ユーザーが「今の相場はバブルか？」と尋ねる
 - 投資の利確・新規参入・空売りのタイミング判断を求める
-- 社会現象(非投資家の参入、メディア過熱、IPO氾濫)を観察し懸念を表明
+- 社会現象（非投資家の参入、メディア過熱、IPO氾濫）を観察し懸念を表明
 - 「今回は違う」「革命的技術」などの物語が主流化している状況を報告
 - 保有ポジションのリスク管理方法を相談
 
 ---
 
-## Evaluation Process (Strict Order)
+## 评估流程（严格顺序）
 
-### Phase 1: Mandatory Quantitative Data Collection
+### 第一阶段：强制性定量数据收集
 
-**CRITICAL: Always collect the following data before starting evaluation**
+**重要提示：** 在开始评估之前，必须收集以下数据：
 
-#### 1.1 Market Structure Data (Highest Priority)
+#### 1.1 市场结构数据（最高优先级）
 ```
 □ Put/Call Ratio (CBOE Equity P/C)
   - Source: CBOE DataShop or web_search "CBOE put call ratio"
@@ -58,7 +58,7 @@ Use this skill when:
   - Historical position of VIX (determine if in bottom 10th percentile)
 ```
 
-#### 1.2 Leverage & Positioning Data
+#### 1.2 杠杆率与持仓数据
 ```
 □ FINRA Margin Debt Balance
   - Source: web_search "FINRA margin debt latest"
@@ -69,22 +69,22 @@ Use this skill when:
   - Source: web_search "S&P 500 breadth 50 day moving average"
 ```
 
-#### 1.3 IPO & New Issuance Data
+#### 1.3 IPO 与新发行数据
 ```
 □ IPO Count & First-Day Performance
   - Source: Renaissance Capital IPO or web_search "IPO market 2025"
   - Collect: Quarterly count + median first-day return
 ```
 
-**⚠️ CRITICAL: Do NOT proceed with evaluation without Phase 1 data collection**
+**⚠️ 未收集到第一阶段的数据前，不得进行评估**
 
 ---
 
-### Phase 2: Quantitative Evaluation (Quantitative Scoring)
+### 第二阶段：定量评估（定量评分）
 
-Score mechanically based on collected data using the following criteria:
+根据收集到的数据，按照以下标准进行机械性评分：
 
-#### Indicator 1: Put/Call Ratio (Market Sentiment)
+#### 指标 1：看跌/看涨比率（市场情绪）
 ```
 Scoring Criteria:
 - 2 points: P/C < 0.70 (excessive optimism, call-heavy)
@@ -94,7 +94,7 @@ Scoring Criteria:
 Rationale: P/C < 0.7 is historically characteristic of bubble periods
 ```
 
-#### Indicator 2: Volatility Suppression + New Highs
+#### 指标 2：波动性抑制与新高点
 ```
 Scoring Criteria:
 - 2 points: VIX < 12 AND major index within 5% of 52-week high
@@ -104,7 +104,7 @@ Scoring Criteria:
 Rationale: Extreme low volatility + highs indicates excessive complacency
 ```
 
-#### Indicator 3: Leverage (Margin Debt Balance)
+#### 指标 3：杠杆率（保证金债务余额）
 ```
 Scoring Criteria:
 - 2 points: YoY +20% or more AND all-time high
@@ -114,7 +114,7 @@ Scoring Criteria:
 Rationale: Rapid leverage increase is a bubble precursor
 ```
 
-#### Indicator 4: IPO Market Overheating
+#### 指标 4：IPO 市场过热
 ```
 Scoring Criteria:
 - 2 points: Quarterly IPO count > 2x 5-year average AND median first-day return +20%+
@@ -124,7 +124,7 @@ Scoring Criteria:
 Rationale: Poor-quality IPO flood is characteristic of late-stage bubbles
 ```
 
-#### Indicator 5: Breadth Anomaly (Narrow Leadership)
+#### 指标 5：市场广度异常（领先股数量减少）
 ```
 Scoring Criteria:
 - 2 points: New high AND < 45% of stocks above 50DMA (narrow leadership)
@@ -134,7 +134,7 @@ Scoring Criteria:
 Rationale: Rally driven by few stocks is fragile
 ```
 
-#### Indicator 6: Price Acceleration
+#### 指标 6：价格加速
 ```
 Scoring Criteria:
 - 2 points: Past 3-month return exceeds 95th percentile of past 10 years
@@ -146,11 +146,11 @@ Rationale: Rapid price acceleration is unsustainable
 
 ---
 
-### Phase 3: Qualitative Adjustment (REVISED v2.1)
+### 第三阶段：定性调整（修订版 v2.1）
 
-**Limit: +3 points maximum (REDUCED from +5 in v2.0)**
+**最高得分：+3 分（从 v2.0 的 +5 分降低）**
 
-**⚠️ CONFIRMATION BIAS PREVENTION CHECKLIST:**
+**⚠️ 防止确认偏误检查清单：**
 ```
 Before adding ANY qualitative points:
 □ Do I have concrete, measurable data? (not impressions)
@@ -159,7 +159,7 @@ Before adding ANY qualitative points:
 □ Have I documented specific evidence with sources?
 ```
 
-#### Adjustment A: Social Penetration (0-1 points, STRICT CRITERIA)
+#### 调整 A：社会渗透率（0-1 分，严格标准）
 ```
 +1 point: ALL THREE criteria must be met:
   ✓ Direct user report of non-investor recommendations
@@ -178,7 +178,7 @@ Before adding ANY qualitative points:
 Uber driver discussed crypto (Nov 3)"
 ```
 
-#### Adjustment B: Media/Search Trends (0-1 points, REQUIRES MEASUREMENT)
+#### 调整 B：媒体/搜索趋势（0-1 分，需要量化数据）
 ```
 +1 point: BOTH criteria must be met:
   ✓ Google Trends showing 5x+ YoY increase (measured)
@@ -202,7 +202,7 @@ CNBC 'AI Investment Special' (3 episodes Oct 2025)."
 "AI/technology narrative seems elevated" (unmeasurable)
 ```
 
-#### Adjustment C: Valuation Disconnect (0-1 points, AVOID DOUBLE-COUNTING)
+#### 调整 C：估值脱节（0-1 分，避免重复计算）
 ```
 +1 point: ALL criteria must be met:
   ✓ P/E >25 (if NOT already counted in Phase 2 quantitative)
@@ -226,11 +226,11 @@ Bloomberg: 'Traditional metrics obsolete' (Nov 2025)."
 (fundamentals support = +0 points)
 ```
 
-**Phase 3 Total: Maximum +3 points**
+**第三阶段总得分：最高 +3 分**
 
 ---
 
-### Phase 4: Final Judgment (REVISED v2.1)
+### 第四阶段：最终判断（修订版 v2.1）
 
 ```
 Final Score = Phase 2 Total (0-12 points) + Phase 3 Adjustment (0 to +3 points)
@@ -244,35 +244,35 @@ Judgment Criteria (with Risk Budget):
 - 13-15 points: Critical (Risk Budget: 20-30%)
 ```
 
-**Key Change in v2.1:**
-- Added "Elevated Risk" phase (8-9 points) for more nuanced positioning
-- 9 points is no longer extreme defensive zone (was 40% risk budget)
-- Now allows 50-70% risk budget at 8-9 point level
-- More gradual transition from Caution to Euphoria phases
+**v2.1 的关键变化：**
+- 新增了“高风险”等级（8-9 分），以便更细致地评估市场状况
+- 9 分不再代表极端保守的策略（之前为 40% 的风险预算）
+- 在 8-9 分的情况下，允许承担 50-70% 的风险预算
+- 从谨慎阶段到兴奋阶段的过渡更加平滑
 
 ---
 
-## Data Sources (Required)
+## 数据来源（必备）
 
-### US Market
-- **Put/Call**: https://www.cboe.com/tradable_products/vix/
-- **VIX**: Yahoo Finance (^VIX) or https://www.cboe.com/
-- **Margin Debt**: https://www.finra.org/investors/learn-to-invest/advanced-investing/margin-statistics
-- **Breadth**: https://www.barchart.com/stocks/indices/sp/sp500?viewName=advanced
-- **IPO**: https://www.renaissancecapital.com/IPO-Center/Stats
+### 美国市场
+- **看跌/看涨比率**：https://www.cboe.com/tradable_products/vix/
+- **VIX**：Yahoo Finance (^VIX) 或 https://www.cboe.com/
+- **保证金债务**：https://www.finra.org/investors/learn-to-invest/advanced-investing/margin-statistics
+- **市场广度**：https://www.barchart.com/stocks/indices/sp/sp500?viewName=advanced
+- **IPO**：https://www.renaissancecapital.com/IPO-Center/Stats
 
-### Japanese Market
-- **Nikkei Futures P/C**: https://www.barchart.com/futures/quotes/NO*0/options
-- **JNIVE**: https://www.investing.com/indices/nikkei-volatility-historical-data
-- **Margin Debt**: JSF (Japan Securities Finance) Monthly Report
-- **Breadth**: https://en.macromicro.me/series/31841/japan-topix-index-200ma-breadth
-- **IPO**: https://www.pwc.co.uk/services/audit/insights/global-ipo-watch.html
+### 日本市场
+- **日经期货 P/C**：https://www.barchart.com/futures/quotes/NO*0/options
+- **JNIVE**：https://www.investing.com/indices/nikkei-volatility-historical-data
+- **保证金债务**：JSF（日本证券金融）月度报告
+- **市场广度**：https://en.macromicro.me/series/31841/japan-topix-index-200ma-breadth
+- **IPO**：https://www.pwc.co.uk/services/audit/insights/global-ipo-watch.html
 
 ---
 
-## Implementation Checklist
+## 实施检查清单
 
-Verify the following when using:
+使用该技巧时，请核对以下内容：
 
 ```
 □ Have you collected all Phase 1 data?
@@ -284,107 +284,104 @@ Verify the following when using:
 
 ---
 
-## Important Principles (Revised)
+## 重要原则（修订版）
 
-### 1. Data > Impressions
-Ignore "many news reports" or "experts are cautious" without quantitative data.
+### 1. 数据优先于印象
+在没有定量数据的情况下，不要仅依赖“大量新闻报道”或“专家的谨慎看法”。
 
-### 2. Strict Order: Quantitative → Qualitative
-Always evaluate in this order: Phase 1 (Data Collection) → Phase 2 (Quantitative) → Phase 3 (Qualitative Adjustment).
+### 2. 严格顺序：定量 → 定性
+始终按照以下顺序进行评估：第一阶段（数据收集）→ 第二阶段（定量评估）→ 第三阶段（定性调整）。
 
-### 3. Upper Limit on Subjective Indicators
-Qualitative adjustment has a total limit of +5 points. It cannot override quantitative evaluation.
+### 3. 主观指标的上限
+定性调整的总分上限为 +5 分，不能凌驾于定量评估之上。
 
-### 4. "Taxi Driver" is Symbolic
-Do not readily acknowledge mass penetration without direct recommendations from non-investors.
-
----
-
-## Common Failures and Solutions (Revised)
-
-### Failure 1: Evaluating Based on News Articles
-❌ "Many reports on Takaichi Trade" → Media saturation 2 points
-✅ Verify Google Trends numbers → Evaluate with measured values
-
-### Failure 2: Overreaction to Expert Comments
-❌ "Warning of overheating" → Euphoria zone
-✅ Judge with measured values of Put/Call, VIX, margin debt
-
-### Failure 3: Emotional Reaction to Price Rise
-❌ 4.5% rise in 1 day → Price acceleration 2 points
-✅ Verify position in 10-year distribution → Objective evaluation
-
-### Failure 4: Judgment Based on Valuation Alone
-❌ P/E 17 → Valuation disconnect 2 points
-✅ P/E + narrative dependence + other quantitative indicators for comprehensive judgment
+### 4. “大众观点”需谨慎对待
+在没有非投资者的直接建议之前，不要轻易接受大众观点。
 
 ---
 
-## Recommended Actions by Bubble Stage (REVISED v2.1)
+## 常见错误及解决方法（修订版）
 
-### Normal (0-4 points)
-**Risk Budget: 100%**
-- Continue normal investment strategy
-- Set ATR 2.0× trailing stop
-- Apply stair-step profit-taking rule (+20% take 25%)
+### 错误 1：仅依据新闻文章进行评估
+❌ “关于 Takaichi Trade 的报道很多” → 给出 2 分（媒体饱和度）
+✅ 核实 Google Trends 的数据 → 用实际测量值进行评估
 
-**Short-Selling: Not Allowed**
-- Composite conditions not met (0/7 items)
+### 错误 2：对专家评论反应过度
+❌ “市场过热”的警告 → 判断为兴奋阶段
+✅ 用看跌/看涨比率、VIX 和保证金债务等可量化数据来做出判断
 
-### Caution (5-7 points)
-**Risk Budget: 70-80%**
-- Begin partial profit-taking (20-30% reduction)
-- Tighten ATR to 1.8×
-- Reduce new position sizing by 50%
+### 错误 3：对价格上涨情绪化反应
+❌ 一天内价格上涨 4.5% → 给出 2 分（价格加速）
+✅ 核实过去 10 年的价格走势 → 进行客观评估
 
-**Short-Selling: Not Recommended**
-- Wait for clearer reversal signals
-
-### Elevated Risk (8-9 points) ⚠️ NEW in v2.1
-**Risk Budget: 50-70%**
-- Increase profit-taking (30-50% reduction)
-- Tighten ATR to 1.6×
-- New positions: highly selective, quality only
-- Begin building cash reserves for future opportunities
-
-**Short-Selling: Consider Cautiously**
-- Only after confirming at least 2/7 composite conditions
-- Small exploratory positions (10-15% of normal size)
-- Strict stop-loss (ATR 2.0×)
-
-**Rationale for NEW phase:**
-This zone represents heightened caution without extreme defensiveness.
-Market shows warning signs but not imminent collapse.
-Maintain exposure to quality positions while building flexibility.
-
-### Euphoria (10-12 points)
-**Risk Budget: 40-50%**
-- Accelerate stair-step profit-taking (50-60% reduction)
-- Tighten ATR to 1.5×
-- No new long positions except on major pullbacks
-
-**Short-Selling: Active Consideration**
-- After confirming at least 3/7 composite conditions
-- Small positions (20-25% of normal size)
-- Defined risk only (options, tight stops)
-
-### Critical (13-15 points)
-**Risk Budget: 20-30%**
-- Major profit-taking or full hedge implementation
-- ATR 1.2× or fixed stop-loss
-- Cash preservation mode - prepare for major dislocation
-
-**Short-Selling: Recommended**
-- After confirming at least 5/7 composite conditions
-- Scale in with small positions, pyramid on confirmation
-- Tight stop-loss (ATR 1.5× or higher)
-- Consider put options for defined risk
+### 错误 4：仅依据估值进行判断
+❌ 市盈率 17 → 给出 2 分（估值脱节）
+✅ 结合市盈率和其他定量指标进行综合判断
 
 ---
 
-## Composite Conditions for Short-Selling (7 Items)
+## 根据市场状况推荐的行动（修订版 v2.1）
 
-Only consider shorts after confirming at least 3 of the following:
+### 正常状态（0-4 分）
+**风险预算：100%**
+- 继续采用常规投资策略
+- 设置 ATR 2.0 倍的止损点
+- 采用阶梯式获利了结规则（每获利 20% 退出 25%）
+
+**不建议卖空**
+- 不满足综合条件（0/7 项）
+
+### 谨慎状态（5-7 分）
+**风险预算：70-80%**
+- 开始部分获利了结（减少 20-30% 的持仓）
+- 将 ATR 缩小至 1.8 倍
+- 新建头寸的规模减少 50%
+
+**不建议卖空**
+- 等待更明确的反转信号
+
+### 高风险状态（8-9 分）⚠️ 新增内容
+**风险预算：50-70%**
+- 加快获利了结（减少 30-50% 的持仓）
+- 将 ATR 缩小至 1.6 倍
+- 新建头寸时需高度谨慎，只选择优质资产
+- 开始为未来的机会储备现金
+
+**卖空建议：**
+- 在满足至少 2/7 项综合条件后考虑
+- 建立小规模试探性头寸（正常规模的 10-15%）
+- 设置严格的止损点（ATR 2.0 倍）
+
+**新增阶段的理由：**
+- 此阶段表示高度谨慎，但并非极端保守
+- 市场出现预警信号，但尚未出现崩溃迹象
+- 在保持对优质资产敞口的同时，增强灵活性
+
+### 兴奋状态（10-12 分）
+**风险预算：40-50%**
+- 加快阶梯式获利了结（减少 50-60% 的持仓）
+- 将 ATR 缩小至 1.5 倍
+- 除非市场出现大幅回调，否则不新建多头头寸
+
+**卖空建议：**
+- 在满足至少 3/7 项综合条件后考虑
+- 建立小规模头寸（正常规模的 20-25%）
+- 仅承担有限的风险
+
+### 危险状态（13-15 分）
+**风险预算：20-30%**
+- 进行大规模获利了结或完全对冲
+- 将 ATR 缩小至 1.2 倍或设置固定止损点
+- 进入现金保存模式，为可能的重大市场变动做好准备
+
+**卖空建议：**
+- 在满足至少 5/7 项综合条件后考虑
+- 逐步增加头寸规模
+- 设置严格的止损点（ATR 1.5 倍或更高）
+
+### 卖空的综合条件（7 项）
+
+只有在满足以下至少 3 项条件后，才考虑卖空：
 
 ```
 1. Weekly chart shows lower highs
@@ -398,9 +395,7 @@ Only consider shorts after confirming at least 3 of the following:
 
 ---
 
-## Output Format
-
-### Evaluation Report Structure (v2.1)
+## 评估报告格式（v2.1）
 
 ```markdown
 # [Market Name] Bubble Evaluation Report (Revised v2.1)
@@ -471,75 +466,74 @@ Only consider shorts after confirming at least 3 of the following:
 
 ---
 
-## Reference Documents
+## 参考文档
 
-### `references/implementation_guide.md` (English) - **RECOMMENDED FOR FIRST USE**
-- Step-by-step evaluation process with mandatory data collection
-- NG examples vs OK examples
-- Self-check quality criteria (4 levels)
-- Red flags during review
-- Best practices for objective evaluation
+### `references/implementation_guide.md`（英文） - **推荐首次使用**
+- 逐步的评估流程及强制性数据收集要求
+- 不良案例与成功案例对比
+- 自我检查质量标准（4 个等级）
+- 审查过程中的警示信号
+- 客观评估的最佳实践
 
-### `references/bubble_framework.md` (Japanese)
-- Detailed theoretical framework
-- Explanation of Minsky/Kindleberger model
-- Behavioral psychology elements
+### `references/bubble_framework.md`（日文）
+- 详细的理论框架
+- Minsky/Kindleberger 模型的解释
+- 行为心理学要素
 
-### `references/historical_cases.md` (Japanese)
-- Analysis of past bubble cases
-- Dotcom, Crypto, Pandemic bubbles
-- Common pattern extraction
+### `references/historical_cases.md`（日文）
+- 过去市场泡沫案例的分析
+- 互联网泡沫、加密货币泡沫、疫情期间的泡沫
+- 共同模式的提取
 
-### `references/quick_reference.md` (Japanese)
-### `references/quick_reference_en.md` (English)
-- Daily checklist
-- Emergency 3-question assessment
-- Quick scoring guide
-- Key data sources
+### `references/quick_reference.md`（日文）/ `references/quick_reference_en.md`（英文）
+- 日常使用检查清单
+- 紧急情况下的快速评估工具
+- 快速评分指南
+- 关键数据来源
 
-### When to Load References
-- **First use or need detailed guidance:** Load `implementation_guide.md`
-- **Need theoretical background:** Load `bubble_framework.md`
-- **Need historical context:** Load `historical_cases.md`
-- **Daily operations:** Load `quick_reference.md` (Japanese) or `quick_reference_en.md` (English)
-
----
-
-## Summary: Essence of v2.1 Revision
-
-**v2.0 Problem (Identified Nov 2025):**
-- Qualitative adjustment too loose (+5 max)
-- "AI narrative elevated" → +1 point (no data)
-- "P/E 30.8" → +1 point (double-counting with quantitative)
-- **Result: 11/16 points - overly bearish without evidence**
-
-**v2.1 Solution:**
-- Qualitative adjustment stricter (+3 max)
-- "AI narrative elevated" → 0 points (unmeasured)
-- "P/E 30.8 but AI has fundamental backing" → 0 points (fundamentals support)
-- **Result: 9/15 points - balanced, data-driven assessment**
-
-**Key Improvements:**
-1. **Confirmation Bias Prevention**: Explicit checklist before adding qualitative points
-2. **Measurable Evidence Required**: No points without concrete data (Google Trends, media coverage)
-3. **Double-Counting Prevention**: Valuation must not duplicate Phase 2 quantitative
-4. **Granular Risk Phases**: Added "Elevated Risk" (8-9 points) for nuanced positioning
-5. **Balanced Risk Budgets**: 9 points = 50-70% (not 40% extreme defensive)
-
-**Core Principle:**
-> "In God we trust; all others must bring data." - W. Edwards Deming
-
-**2025 Lesson:**
-Even data-driven frameworks can be undermined by subjective qualitative adjustments.
-v2.1 requires MEASURABLE evidence for ALL qualitative points.
-Independent observers must be able to verify each adjustment.
+### 使用参考文档的时机
+- **首次使用或需要详细指导时**：阅读 `implementation_guide.md`
+- **需要理论背景时**：阅读 `bubble_framework.md`
+- **需要历史背景时**：阅读 `historical_cases.md`
+- **日常操作时**：阅读 `quick_reference.md`（日文）或 `quick_reference_en.md`
 
 ---
 
-**Version History:**
-- **v2.0** (Oct 27, 2025): Mandatory quantitative data collection
-- **v2.1** (Nov 3, 2025): Stricter qualitative criteria, confirmation bias prevention, granular risk phases
+## v2.1 修订版的要点总结
 
-**Reason for v2.1 Revision:**
-Prevent over-scoring through unmeasured "narrative" assessments and double-counting.
-Ensure all bubble risk evaluations are independently verifiable and free from confirmation bias.
+**v2.0 的问题（2025 年 11 月发现）：**
+- 定性调整过于宽松（最高分 +5 分）
+- “人工智能相关话题”被过度重视 → 给分 +1 分（无数据支持）
+- “市盈率 30.8” → 给分 +1 分（与定量数据重复计算）
+- **结果：总分为 11/16 分，结论过于悲观且缺乏依据**
+
+**v2.1 的改进措施：**
+- 定性调整更加严格（最高分 +3 分）
+- “人工智能相关话题”无数据支持时不得得分
+- “市盈率 30.8 但有基本面支撑”时得分为 0 分
+- **结果：总分为 9/15 分，评估更加客观**
+
+**主要改进点：**
+1. **防止确认偏误**：在添加定性分数前设置明确检查清单
+2. **需要可量化证据**：没有具体数据时不得得分（如 Google Trends 数据、媒体报道）
+3. **避免重复计算**：估值不得与第二阶段的定量数据重复计算
+4. **细化的风险等级**：新增“高风险”等级，以便更精确地评估市场状况
+5. **平衡风险预算**：9 分对应 50-70% 的风险预算（而非之前的极端保守策略）
+
+**核心原则：**
+> “我们信任上帝；其他人必须提供数据。”——W. Edwards Deming
+
+**2025 年的启示：**
+即使是基于数据的框架，也可能受到主观定性评估的影响。
+v2.1 版要求所有定性评估都有可量化的证据支持。
+独立观察者必须能够验证每一项调整的合理性。
+
+---
+
+**版本历史：**
+- **v2.0**（2025 年 10 月 27 日）：强制要求收集定量数据
+- **v2.1**（2025 年 11 月 3 日）：加强定性标准，防止确认偏误，细化风险等级
+
+**修订原因：**
+- 防止因未经验证的“主观观点”和重复计算而导致过度评分
+- 确保所有市场泡沫风险评估都经过独立验证，避免确认偏误。

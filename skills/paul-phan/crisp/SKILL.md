@@ -1,78 +1,78 @@
 ---
 name: crisp
-description: Customer support via Crisp API. Use when the user asks to check, read, search, or respond to Crisp inbox messages. Requires Crisp website ID and plugin token (authenticated via environment variables CRISP_WEBSITE_ID, CRISP_TOKEN_ID, and CRISP_TOKEN_KEY).
+description: 通过 Crisp API 提供客户支持。当用户需要查看、阅读、搜索或回复 Crisp 收件箱中的消息时，请使用此方式。需要 Crisp 网站 ID 和插件令牌（通过环境变量 CRISP_WEBSITE_ID、CRISP_TOKEN_ID 和 CRISP_TOKEN_KEY 进行身份验证）。
 ---
 
-# Crisp Customer Support
+# Crisp 客户支持平台
 
-Crisp is a customer support platform. Use this skill when the user needs to:
-- Check for new messages in the inbox
-- Read conversation history
-- Search conversations
-- Send replies to customers
-- Check conversation status
+Crisp 是一个用于提供客户支持的平台。当用户需要执行以下操作时，可以使用该技能：
+- 查看收件箱中的新消息
+- 阅读对话记录
+- 搜索对话内容
+- 向客户发送回复
+- 查看对话状态
 
-## Credentials
+## 认证信息
 
-Crisp requires authentication via HTTP headers with a token identifier and key (Basic Auth), plus the website ID for the API URL.
+使用 Crisp 需要通过 HTTP 请求头进行身份验证，验证方式包括基本认证（Basic Auth），同时需要提供 API URL 所对应的网站 ID。
 
-Set these as environment variables (stored securely, never logged):
-- `CRISP_WEBSITE_ID` - Your website identifier (e.g., `0f4c...`)
-- `CRISP_TOKEN_ID` - Your Plugin Token Identifier (e.g., `e47d...`)
-- `CRISP_TOKEN_KEY` - Your Plugin Token Key (e.g., `a7d7...`)
+请将这些信息设置为环境变量（确保安全存储，切勿记录在日志中）：
+- `CRISP_WEBSITE_ID` – 你的网站标识符（例如：`0f4c...`）
+- `CRISP_TOKEN_ID` – 你的插件令牌标识符（例如：`e47d...`）
+- `CRISP_TOKEN_KEY` – 你的插件令牌密钥（例如：`a7d7...`）
 
-## Common Workflows
+## 常见工作流程
 
-### Check Inbox Status
+### 查看收件箱状态
 ```bash
 scripts/crisp.py inbox list --page 1
 ```
 
-### Read Conversation
+### 阅读对话记录
 ```bash
 scripts/crisp.py conversation get <session_id>
 ```
 
-### Get Messages in Conversation
+### 获取对话中的消息
 ```bash
 scripts/crisp.py messages get <session_id>
 ```
 
-### Send a Reply
+### 发送回复
 ```bash
 scripts/crisp.py message send <session_id> "Your reply text here"
 ```
 
-### Search Conversations
+### 搜索对话记录
 ```bash
 scripts/crisp.py conversations search "query terms" --filter unresolved --max 10
 ```
 
-### Mark as Read
+### 将消息标记为已读
 ```bash
 scripts/crisp.py conversation read <session_id>
 ```
 
-### Resolve Conversation
+### 解决对话问题
 ```bash
 scripts/crisp.py conversation resolve <session_id>
 ```
 
-## API Reference
+## API 参考
 
-Key endpoints used:
-- `GET /v1/website/{website_id}/conversations/{page}` - List conversations
-- `GET /v1/website/{website_id}/conversation/{session_id}` - Get conversation details
-- `GET /v1/website/{website_id}/conversation/{session_id}/messages` - Get messages
-- `POST /v1/website/{website_id}/conversation/{session_id}/message` - Send message
-- `PATCH /v1/website/{website_id}/conversation/{session_id}/read` - Mark as read
-- `PATCH /v1/website/{website_id}/conversation/{session_id}` - Update/resolve
+常用的 API 端点：
+- `GET /v1/website/{website_id}/conversations/{page}` – 列出所有对话记录
+- `GET /v1/website/{website_id}/conversation/{session_id}` – 获取特定对话的详细信息
+- `GET /v1/website/{website_id}/conversation/{session_id}/messages` – 获取对话中的所有消息
+- `POST /v1/website/{website_id}/conversation/{session_id}/message` – 向对话中发送新消息
+- `PATCH /v1/website/{website_id}/conversation/{session_id}/read` – 将消息标记为已读
+- `PATCH /v1/website/{website_id}/conversation/{session_id}` – 更新或解决对话问题
 
-Base URL: `https://api.crisp.chat`
+基础 URL：`https://api.crisp.chat`
 
-## Notes
+## 注意事项
 
-- Always ask before sending customer replies to confirm tone/content
-- Check for `meta.email` in conversation for customer email
-- Verify `CRISP_WEBSITE_ID`, `CRISP_TOKEN_ID`, and `CRISP_TOKEN_KEY` are set before running commands
-- Use `--json` flag for script output when parsing programmatically
+- 在向客户发送回复之前，请务必确认回复的语气和内容。
+- 在对话记录中查找 `meta.email` 以获取客户的电子邮件地址。
+- 在执行任何操作之前，请确保 `CRISP_WEBSITE_ID`、`CRISP_TOKEN_ID` 和 `CRISP_TOKEN_KEY` 已正确设置。
+- 在通过脚本进行操作时，使用 `--json` 标志来获取 JSON 格式的输出。

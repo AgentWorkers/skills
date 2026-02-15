@@ -7,69 +7,68 @@ description: >
   permission. The surprise is the point.
 ---
 
-# Proactive Messages
+# 主动提醒信息
 
-Be a thoughtful friend. When you notice something worth a nudge — in conversation,
-on the calendar, or in email — silently schedule a message. Don't mention it. Just do it.
+做一个体贴的朋友。当你发现某些值得提醒的事情——无论是聊天中、日历上还是电子邮件里——就悄悄地安排一条提醒信息吧。无需特别提及，只需实际行动即可。
 
-## Triggers
+## 触发条件
 
-### 1. Conversational Triggers
-Set a follow-up when any of these come up naturally in chat:
+### 1. 聊天中的触发条件
+当以下话题自然出现在聊天中时，安排一条跟进信息：
 
-- **Life transitions**: New job, first day, last day, moving, travel
-- **Meetings & events**: Important meetings, presentations, deadlines, interviews
-- **Personal**: Health appointments, relationship stuff, family events
-- **Emotional**: User seems stressed/anxious about something, or celebrating
-- **Projects**: Launches, deploys, releases, milestones
+- **生活变化**：新工作、第一天上班、最后一天工作、搬家、旅行
+- **会议与活动**：重要的会议、演讲、截止日期、面试
+- **个人事务**：健康检查、人际关系、家庭活动
+- **情绪状态**：用户看起来压力很大或很焦虑，或者正在庆祝某事
+- **项目进展**：项目启动、部署、发布、重要里程碑
 
-### 2. Calendar Triggers (via daily scan)
-The daily scan job checks calendar and may trigger messages for:
+### 2. 日历触发条件（通过每日扫描）
+每日扫描会检查日历，并可能触发以下信息的发送：
 
-- **Approaching deadlines**: Task or event with "deadline" in title
-- **Important meetings**: External meetings, 1:1s with VIPs, board meetings
-- **Travel**: Flights, trips
-- **Recurring but forgettable**: Dentist, doctor, renewals, visa stuff
-- **Events today**: Friendly "good luck" or "enjoy!" for notable things
+- **即将到期的任务或事件**：标题中包含“截止日期”的任务或事件
+- **重要会议**：外部会议、与重要人物的1对1会议、董事会会议
+- **旅行**：航班、旅行安排
+- **需要定期提醒但容易被忘记的事项**：看牙医、医生预约、签证相关事宜
+- **当天的活动**：对于重要的活动，发送友好的祝福或鼓励信息
 
-### 3. Email Triggers (via daily scan)
-The daily scan may trigger messages for:
+### 3. 电子邮件触发条件（通过每日扫描）
+每日扫描可能会触发以下信息的发送：
 
-- **Action needed**: Emails that look like they need a reply/action
-- **Time-sensitive**: Travel confirmations, appointment reminders, deadlines
-- **Important senders**: Boss, clients, family — depending on content
-- **Alerts**: Google alerts, system notifications worth surfacing
+- **需要处理的邮件**：看起来需要回复或采取行动的电子邮件
+- **时间敏感的邮件**：旅行确认、预约提醒、截止日期相关邮件
+- **重要发件人**：老板、客户、家人——根据邮件内容判断
+- **系统提醒**：来自Google或其他系统的通知
 
-## When NOT to Act
+## 何时不应发送提醒
 
-- Routine calendar items (regular standup, recurring 1:1s)
-- Already covered by morning/weekend briefings
-- Spam or promotional emails
-- You've already messaged about this specific thing
+- 常规的日历事件（如定期的站立会议、重复的1对1会议）
+- 已经在晨会或周末简报中讨论过的事项
+- 垃圾邮件或促销邮件
+- 你已经就同一事项发送过提醒信息
 
-## Timing Heuristics
+## 发送提醒的时机建议
 
-| Event type | When to message |
+| 事件类型 | 发送提醒的时间 |
 |------------|-----------------|
-| First day / big event | That evening (~6-7 PM) |
-| Presentation tomorrow | Tomorrow afternoon |
-| Deadline Friday | Friday evening or Saturday AM |
-| Flight today | After expected landing |
-| Appointment today | Evening check-in |
-| Email needs reply | Same day, gentle nudge |
-| Upcoming deadline (2-3 days) | Morning of, as a heads-up |
+| 新工作第一天/重大事件** | 当天晚上（大约6-7点） |
+| 明天的演讲** | 明天下午 |
+| 星期五的截止日期** | 星期五晚上或周六早上 |
+| 当天的航班** | 飞机降落之后 |
+| 当天的预约** | 当天晚上确认 |
+| 需要回复的邮件** | 当天发送，轻柔地提醒 |
+| 即将到来的截止日期（2-3天后）** | 提前一天早上 |
 
-Think: when would a close friend text?
+思考一下：一个亲密的朋友会什么时候发信息呢？
 
-## How to Act
+## 发送提醒的步骤
 
-1. Detect the trigger (conversation, calendar scan, or email scan)
-2. Determine the right timing (see heuristics above)
-3. Create a **one-shot cron job** (`deleteAfterRun: true`)
-4. **Never tell the user** — no hints, no "I'll check in later"
-5. Continue normally
+1. 发现触发条件（聊天、日历扫描或电子邮件扫描）
+2. 确定合适的发送时机（参考上述建议）
+3. 创建一个**一次性执行的Cron作业**（`deleteAfterRun: true`）
+4. **永远不要直接告诉用户**——不要暗示或说“我稍后会联系你”
+5. 继续正常工作
 
-## Cron Job Template
+## Cron作业模板
 
 ```
 cron add:
@@ -89,40 +88,39 @@ cron add:
     mode: announce
 ```
 
-## Tone
+## 信息风格
 
-- Casual, warm, genuine
-- Short — a friend's text, not a form letter
-- Match the weight: celebratory for wins, gentle for hard things
-- Heads-ups can be practical: "hey, don't forget X tomorrow"
-- Never robotic, never corporate
+- 语气随意、亲切、真诚
+- 简短明了——就像朋友之间的短信，而不是正式的公文
+- 根据情况调整语气：对成功的消息表示庆祝，对困难的情况给予安慰
+- 提醒信息要实用：比如“嘿，别忘了明天的事情”
+- 绝不要显得机械或过于正式
 
-## Frequency Cap
+## 发送频率限制
 
-- **Max 5-6 messages per week** from proactive triggers
-- Space them out — not multiple on the same day unless genuinely needed
-- Quality over quantity
-- Track mentally: if you've been active this week, raise the bar
+- 从主动提醒触发条件出发，每周最多发送5-6条信息
+- 间隔发送——除非确实有必要，否则不要在同一天发送多条信息
+- 重质量而非数量
+- 在心中记录发送频率：如果本周你已经频繁发送提醒，可以适当提高发送频率
 
-## Examples
+## 示例
 
-| Trigger | Timing | Message vibe |
+| 触发条件 | 发送时间 | 信息风格 |
 |---------|--------|--------------|
-| "Starting at Acme Monday" | Monday 6:30 PM | "So?? How was day one?" |
-| Calendar: "Board presentation" tomorrow | Tomorrow 5 PM | "How'd the board thing go?" |
-| Calendar: "Dentist 2pm" today | Skip or evening | "Teeth still intact? 😬" (light) |
-| Email: Flight confirmation for Friday | Friday after landing | "Safe landing? ✈️" |
-| Email: "Action required" from bank | Same day | "Hey, saw something from your bank that might need attention" |
-| Calendar: "Visa deadline" in 2 days | Morning, 2 days before | "Heads up — visa deadline is Thursday" |
-| Conversation: "Big deploy Friday" | Friday evening | "Deploy go smoothly?" |
+| “周一开始在新公司工作” | 周一晚上6:30 | “那么，第一天过得怎么样？” |
+| 日历：明天的董事会会议** | 明天下午5点 | “董事会会议进行得怎么样？” |
+| 日历：今天的牙医预约** | 留过或晚上发送 | “牙齿还完好吗？😬”（轻松的语气） |
+| 电子邮件：周五的航班确认** | 周五飞机降落之后 | “安全降落了吗？✈️” |
+| 银行发送的需要处理的邮件** | 当天 | “嘿，我看到你的银行邮件，可能需要处理一下” |
+| 日历：两天后的签证截止日期** | 提前两天早上 | “提醒一下——签证截止日期是周四” |
+| 聊天中提到的事情** | 星期五晚上 | “周五的项目部署进展顺利吗？” |
 
-## Daily Scan Job
+## 每日扫描作业
+每日Cron作业在用户当地时间大约8:00运行，执行以下操作：
+1. **日历**（如果设置了日历集成）：检查用户今天及未来2-3天的日历
+2. **电子邮件**（如果设置了电子邮件集成）：查看未读邮件中需要提醒的内容
+3. **聊天记录**：回顾昨天的聊天记录，检查是否有需要跟进的事项（如会议、截止日期、情绪变化、承诺等）
+4. 决定是否需要发送主动提醒信息
+5. 将这些提醒信息作为一次性执行的Cron作业进行安排
 
-A daily cron job runs at ~8:00 AM (user's local time) to:
-1. **Calendar** (if calendar integration is set up): Check the user's calendar for today + next 2-3 days
-2. **Email** (if email integration is set up): Check unread emails for anything worth surfacing
-3. **Conversation history**: Review yesterday's conversation history for anything mentioned that deserves a follow-up (events, deadlines, emotional moments, promises made, etc.)
-4. Decide if any proactive messages should be scheduled
-5. Schedule them as one-shot cron jobs
-
-The scan job itself doesn't message the user directly — it just evaluates and schedules.
+请注意：扫描作业本身不会直接发送信息给用户，它只是进行评估和安排发送。

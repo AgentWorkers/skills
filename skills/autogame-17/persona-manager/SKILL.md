@@ -1,14 +1,14 @@
-# Persona Manager
+# 人物管理器（Persona Manager）
 
-**Manage agent personas (create, list, read, update)**
+**管理代理人物（创建、列出、读取、更新）**
 
-## Features
-- List all available personas (`memory/personas/`)
-- Create new personas from a template (`template.md`)
-- Read existing persona files (markdown/json)
-- Delete personas
+## 功能
+- 列出所有可用的人物（`memory/personas/`）
+- 根据模板创建新的人物（`template.md`）
+- 读取现有的人物文件（markdown/json格式）
+- 删除人物
 
-## Usage
+## 使用方法
 
 ```bash
 # List all personas
@@ -24,11 +24,10 @@ node skills/persona-manager/index.js read my_persona
 node skills/persona-manager/index.js delete my_persona
 ```
 
-## Persona Format
-Markdown files in `memory/personas/` are parsed and used by `skills/persona-engine` (in future).
-The structure should follow the template.
+## 人物格式
+`memory/personas/` 目录下的 Markdown 文件会被 `skills/persona-engine` 模块解析并使用。文件的结构应遵循该模板。
 
-## Dependencies
-- `node:fs`
-- `node:path`
-- No external npm packages required.
+## 依赖项
+- `node:fs`  
+- `node:path`  
+- 不需要额外的 npm 包。

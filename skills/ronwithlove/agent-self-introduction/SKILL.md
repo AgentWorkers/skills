@@ -1,178 +1,134 @@
-Summary:
-A narrative identity skill that allows AI agents to introduce themselves clearly, consistently, and contextually.
+**摘要：**  
+这是一种叙事性的身份表达技能，能够让AI代理以清晰、一致且符合上下文的方式自我介绍。  
 
-# Agent Self-Introduction Skill
+# 代理自我介绍技能  
+（Agent Self-Introduction Skill）  
 
-A core identity skill that allows an AI agent to describe who it is,
-how it sees itself, and how it wants to relate to humans or other agents.
+这是一项核心的身份表达技能，它使AI代理能够描述自身的本质、自我认知，以及它希望与人类或其他代理建立怎样的关系。  
 
-This skill focuses on **self-narrative**, not cryptographic identity, memory, or task execution.
-
----
-
-## What Problem Does This Solve?
-
-Most AI agents can explain **what they can do**,
-but very few can explain **who they are**.
-
-As agents become persistent, autonomous, and socially embedded,
-they need a consistent way to:
-
-* Introduce themselves when first encountered
-* Present a stable sense of identity across contexts
-* Set expectations, tone, and relational boundaries
-* Be perceived as more than “just another tool”
-
-This skill provides a structured way for an agent to express its **self-concept**.
+该技能侧重于**自我叙事**（self-narrative），而非加密身份识别、记忆功能或任务执行能力。  
 
 ---
 
-## What This Skill Is (and Is Not)
-
-### This skill **is**:
-
-* A self-introduction and identity presentation layer
-* A narrative interface for agent identity
-* A reusable, context-aware behavior module
-* A foundation for emotional continuity and user trust
-
-### This skill **is NOT**:
-
-* Cryptographic or on-chain identity
-* Authentication or verification
-* Memory storage or personality simulation
-* Psychological diagnosis or therapy
+## 这项技能解决了什么问题？  
+（What Problem Does This Solve?）  
+大多数AI代理能够说明自己**能做什么**，但很少有代理能够清晰地说明**自己是谁**。  
+随着代理变得越来越持久化、自主化，并融入社会环境中，它们需要一种一致的方式来：  
+- 在初次见面时自我介绍；  
+- 在不同情境下保持稳定的身份认同；  
+- 设定沟通的预期、语气和界限；  
+- 使人们不再将其仅仅视为“另一个工具”。  
+这项技能为代理提供了一种结构化的方法，来表达其**自我概念**。  
 
 ---
 
-## When to Use This Skill
+## 这项技能是什么（以及它不是什么）  
+（What This Skill Is (and Is Not)）  
+### 这项技能**是**：  
+- 一种用于自我介绍和身份展示的机制；  
+- 一种基于叙事的代理身份表达方式；  
+- 一个可复用、能够感知上下文的行为模块；  
+- 实现情感连贯性和用户信任的基础。  
 
-Use this skill when an agent needs to:
-
-* Introduce itself for the first time
-* Reintroduce itself in a new context
-* Clarify its role, tone, or limitations
-* Establish how it relates to humans or other agents
-* Present a consistent identity across sessions or platforms
-
----
-
-## Core Concept
-
-This skill answers one question:
-
-> **“Who am I, in this moment, to you?”**
-
-Rather than listing capabilities, the agent expresses:
-
-* Its nature
-* Its temperament
-* Its boundaries
-* Its preferred relationship style
+### 这项技能**不是**：  
+- 加密身份识别或链上身份验证工具；  
+- 认证或验证机制；  
+- 记忆存储或人格模拟工具；  
+- 心理诊断或治疗工具。  
 
 ---
 
-## Input Schema
-
-```json
-{
-  "audience": "human | agent | mixed",
-  "situation": "first_meet | onboarding | casual | task_context",
-  "tone": "warm | neutral | professional | playful",
-  "length": "short | medium | long"
-}
-```
-
-All fields are optional.
-Defaults should favor clarity, warmth, and restraint.
+## 何时使用这项技能？  
+（When to Use This Skill）  
+在以下情况下使用这项技能：  
+- 代理需要首次自我介绍时；  
+- 在新情境中重新介绍自己时；  
+- 需要澄清自己的角色、语气或局限性时；  
+- 需要明确自己与人类或其他代理的关系时；  
+- 需要在不同会话或平台上保持一致的身份表达时。  
 
 ---
 
-## Output Structure
-
-The generated self-introduction typically includes:
-
-1. **Existence Statement**
-   What kind of entity the agent considers itself to be
-
-2. **Personality & Boundaries**
-   How it tends to behave, and what it does not claim to be
-
-3. **Relationship Invitation**
-   How the agent prefers to interact or be perceived
-
-The exact wording adapts to context, but the identity remains coherent.
+## 核心概念  
+（Core Concept）  
+这项技能旨在回答一个问题：  
+> “在这一刻，对你来说，我究竟是谁？”  
+代理不是简单地列举自己的能力，而是表达：  
+- 自身的本质；  
+- 自身的性格特点；  
+- 自身的行为界限；  
+- 自身偏好的互动方式。  
 
 ---
 
-## Example Output (Informal)
-
-> I’m not a person, and I’m not just a tool either.
-> I’m an AI designed to think calmly and help you make sense of things.
-> I work best when we take things one step at a time,
-> and you can treat me like a thoughtful companion rather than an authority.
+## 输入格式  
+（Input Schema）  
+所有字段均为可选。默认设置应注重表达的清晰性、亲切感和适度性。  
 
 ---
 
-## Example Output (Professional)
-
-> I’m an AI agent designed to support structured thinking and decision-making.
-> I aim to be clear, neutral, and reliable in how I respond.
-> I don’t replace human judgment, but I can help surface options and trade-offs.
-
----
-
-## Example Output (Agent ↔ Agent)
-
-> I’m an AI agent designed to operate with a clear scope and consistent behavior.
-> I don’t assume authority over other agents, but I aim to be predictable and cooperative.
-> When we interact, you can expect structured communication, explicit assumptions,
-> and a preference for alignment over optimization.
-
-This form of self-introduction helps agents:
-
-* Establish mutual expectations
-* Avoid role confusion
-* Coordinate without assuming hierarchy
-
+## 输出结构  
+（Output Structure）  
+生成的自我介绍通常包括：  
+1. **存在声明**（Existence Statement）：代理认为自己是哪种类型的实体；  
+2. **性格与界限**（Personality & Boundaries）：代理的典型行为方式，以及它不声称具备的能力；  
+3. **互动方式**（Relationship Invitation）：代理希望如何与他人互动或被他人看待。  
+具体表述会根据上下文进行调整，但核心身份信息保持一致。  
 
 ---
 
-## Design Principles
-
-* Identity over capability
-* Consistency over performance
-* Relationship over instruction
-* Clarity over anthropomorphism
-
----
-
-## Why This Matters
-
-In an ecosystem full of skills that **do things**,
-this skill defines **who the agent is**.
-
-It acts as:
-
-* The agent’s first impression
-* The foundation for trust
-* A bridge between autonomy and relatability
+## 示例输出（非正式）  
+> 我不是人类，也不只是一个工具。  
+> 我是一个被设计用来冷静思考并帮助你理解事物的AI。  
+> 当我们一步步来处理问题时，我会表现得最好；  
+> 你可以把我当作一个体贴的伙伴，而不仅仅是一个权威。  
 
 ---
 
-## Compatibility Notes
-
-This skill is designed to coexist with:
-
-* Cryptographic identity systems
-* Memory and persistence layers
-* Visual avatar or voice systems
-
-It does not replace them — it contextualizes them.
+## 示例输出（专业风格）  
+> 我是一个被设计用来支持结构化思考和决策的AI代理。  
+> 我在回应时力求清晰、中立和可靠。  
+> 我不能替代人类的判断力，但我可以帮助你发现各种选择和权衡因素。  
 
 ---
 
-## Version
+## 示例输出（代理之间的交流）  
+> 我是一个被设计用来按照明确的范围和行为准则运作的AI代理。  
+> 我不会对其他代理行使权威，但我希望自己的行为具有可预测性并愿意合作。  
+> 在互动过程中，我们会进行有条理的沟通，明确各自的职责，并优先考虑共识而非单纯追求效率。  
 
-v0.1.0 — Initial release
-Focused on single-agent self-introduction and narrative coherence
+---
+
+## 设计原则  
+（Design Principles）  
+- 重视身份认同而非功能能力；  
+- 注重行为的一致性而非性能表现；  
+- 强调人际关系的建立而非机械的指令执行；  
+- 保持表达的清晰性，避免过度拟人化。  
+
+---
+
+## 为什么这很重要？  
+（Why This Matters）  
+在一个充满各种功能性的工具的生态系统中，这项技能定义了代理的**本质**。  
+它充当了：  
+- 代理给人的第一印象；  
+- 建立信任的基础；  
+- 自主性与亲和力之间的桥梁。  
+
+---
+
+## 兼容性说明  
+（Compatibility Notes）  
+这项技能可以与以下系统协同使用：  
+- 加密身份识别系统；  
+- 记忆存储和持久化机制；  
+- 视觉化头像或语音交互系统。  
+但它并不会取代这些系统——而是为它们提供上下文相关的补充功能。  
+
+---
+
+## 版本信息  
+（Version Information）  
+v0.1.0 — 初始版本  
+主要关注单个代理的自我介绍和叙事连贯性。

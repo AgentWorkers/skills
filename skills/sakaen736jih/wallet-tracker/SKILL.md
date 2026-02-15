@@ -1,23 +1,23 @@
 ---
 name: wallet-tracker
-description: Track blockchain addresses in real-time - monitor whale movements, get alerts on transactions, analyze portfolio changes across Ethereum, Solana, and other chains.
+description: 实时追踪区块链地址——监控大型交易者的活动，接收交易警报，并分析以太坊（Ethereum）、Solana及其他区块链上的投资组合变化。
 metadata: {"openclaw":{"requires":{"bins":["python3"]},"install":[{"id":"python","kind":"pip","package":"requests","bins":[],"label":"Install requests (pip)"}]}}
 ---
 
-# Wallet Tracker
+# 钱包追踪器
 
-## Overview
+## 概述
 
-Monitor blockchain addresses for:
-- Large transactions (whale alerts)
-- Portfolio changes
-- Token transfers
-- NFT movements
-- DeFi interactions
+监控区块链地址，以检测以下事件：
+- 大额交易（“鲸鱼交易”警报）
+- 财产组合变化
+- 代币转账
+- NFT 转移
+- DeFi 交互
 
-## Ethereum Tracking
+## 以太坊追踪
 
-### Watch Address Transactions
+### 监控地址交易
 
 ```bash
 # Using Etherscan API
@@ -30,7 +30,7 @@ for tx in data.get('result', [])[:10]:
     print(f\"{tx['hash'][:16]}... | {val:.4f} ETH | {tx['to'][:16]}...\")"
 ```
 
-### Monitor ERC-20 Transfers
+### 监控 ERC-20 代币转账
 
 ```bash
 curl -s "https://api.etherscan.io/api?module=account&action=tokentx&address=ADDRESS&sort=desc&apikey=YourApiKey" | \
@@ -42,7 +42,7 @@ for tx in data.get('result', [])[:10]:
     print(f\"{tx['tokenSymbol']}: {val:.2f} | {tx['to'][:16]}...\")"
 ```
 
-### Real-time Monitoring Script
+### 实时监控脚本
 
 ```python
 #!/usr/bin/env python3
@@ -70,9 +70,9 @@ while True:
     time.sleep(INTERVAL)
 ```
 
-## Solana Tracking
+## Solana 追踪
 
-### Recent Transactions
+### 最近的交易
 
 ```bash
 curl -s -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/json" -d '{
@@ -87,7 +87,7 @@ for sig in data.get('result', []):
     print(f\"{sig['signature'][:32]}... | Block: {sig.get('slot')}\")"
 ```
 
-### Monitor SOL Balance Changes
+### 监控 SOL 币值变化
 
 ```bash
 python3 -c "
@@ -114,7 +114,7 @@ while True:
     time.sleep(30)"
 ```
 
-### Track SPL Token Transfers
+### 跟踪 SPL 代币转账
 
 ```bash
 curl -s -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/json" -d '{
@@ -136,7 +136,7 @@ for acc in data.get('result', {}).get('value', []):
     print(f'{mint}... | {amount:.4f}')"
 ```
 
-## Multi-Chain Portfolio Tracker
+## 多链资产组合追踪器
 
 ```python
 #!/usr/bin/env python3
@@ -171,7 +171,7 @@ for addr in wallets['sol']:
     print(f"SOL {addr[:10]}...: {bal:.4f} SOL")
 ```
 
-## Webhook Alerts (Using Alchemy)
+## 使用 Alchemy 的 Webhook 警报
 
 ```bash
 # Create webhook via Alchemy API
@@ -185,9 +185,10 @@ curl -X POST "https://dashboard.alchemy.com/api/create-webhook" \
   }'
 ```
 
-## Whale Alert Integration
+## “鲸鱼交易”警报集成
 
-Track large movements:
+用于检测大额交易：
+
 ```bash
 # Top ETH holders recent activity
 curl -s "https://api.etherscan.io/api?module=account&action=txlist&address=0x00000000219ab540356cBB839Cbe05303d7705Fa&sort=desc&apikey=YourKey" | \
@@ -200,30 +201,30 @@ for tx in data.get('result', [])[:5]:
         print(f'WHALE: {val:.2f} ETH | {tx[\"hash\"][:20]}...')"
 ```
 
-## Tracking Services (Free Tiers)
+## 跟踪服务（免费 tier）
 
-| Service | Chains | Features |
+| 服务 | 支持的链 | 功能 |
 |---------|--------|----------|
-| Etherscan | ETH, L2s | TX history, API |
-| Solscan | Solana | Full history |
-| DeBank | Multi-chain | Portfolio view |
-| Zapper | EVM chains | DeFi tracking |
-| Nansen | Multi | Whale labels |
+| Etherscan | ETH、L2s | 交易历史记录、API 接口 |
+| Solscan | Solana | 完整的交易历史记录 |
+| DeBank | 多链支持 | 资产组合视图 |
+| Zapper | EVM 链 | DeFi 交易追踪 |
+| Nansen | 多链支持 | “鲸鱼交易”标记功能 |
 
-## API Endpoints
+## API 端点
 
-| Chain | Endpoint |
+| 链 | API 端点 |
 |-------|----------|
-| Ethereum | https://api.etherscan.io/api |
+| 以太坊 | https://api.etherscan.io/api |
 | Polygon | https://api.polygonscan.com/api |
 | BSC | https://api.bscscan.com/api |
 | Arbitrum | https://api.arbiscan.io/api |
 | Solana | https://api.mainnet-beta.solana.com |
 
-## Notes
+## 注意事项
 
-- Most APIs have rate limits (5 req/sec free tier)
-- Paid APIs offer WebSocket for real-time
-- Consider using dedicated tracking services for production
-- All blockchain data is public
-- Use responsibly for research purposes
+- 大多数 API 都有速率限制（免费 tier 每秒 5 次请求）
+- 收费 API 提供 WebSocket 功能以实现实时监控
+- 在生产环境中建议使用专用追踪服务
+- 所有区块链数据都是公开的
+- 请谨慎使用这些数据，仅用于研究目的

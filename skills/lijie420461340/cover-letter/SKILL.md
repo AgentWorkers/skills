@@ -1,41 +1,41 @@
 ---
 name: cover-letter
-description: Create compelling, personalized cover letters that help you stand out in job applications
+description: 撰写引人注目、个性化的求职信，帮助你在求职过程中脱颖而出。
 version: 1.0.0
 author: Claude Office Skills Contributors
 license: MIT
 tags: [careers, job-search, writing]
 ---
 
-# Cover Letter
+# 招聘信
 
-## Overview
+## 概述
 
-This skill helps you write personalized, compelling cover letters that effectively communicate your value to potential employers and increase your chances of landing interviews.
+本技能可帮助您撰写个性化、有吸引力的招聘信，有效向潜在雇主展示您的价值，从而提高获得面试机会的概率。
 
-**Use Cases:**
-- Job applications
-- Career transitions
-- Internal transfers
-- Referral introductions
-- Speculative applications
+**适用场景：**
+- 求职申请
+- 职业转型
+- 内部调动
+- 通过推荐人介绍的求职
+- 非特定职位的泛化申请
 
-## How to Use
+## 使用方法：
 
-1. Share the job posting or describe the role
-2. Tell me about your relevant experience
-3. Mention any specific points you want to highlight
-4. I'll create a tailored cover letter
+1. 分享职位信息或描述职位要求
+2. 介绍您的相关经验
+3. 提及您希望重点突出的方面
+4. 我将为您量身定制一封招聘信
 
-**Example prompts:**
-- "Write a cover letter for this Senior PM role at Google"
-- "Create a career-change cover letter from teacher to corporate trainer"
-- "Draft a cover letter highlighting my Python and ML experience"
-- "Help me write a referral cover letter - Sarah Chen recommended me"
+**示例提示：**
+- “为谷歌的高级产品经理职位撰写一封招聘信”
+- “撰写一封从教师转为企业培训师的职业转型招聘信”
+- “起草一封突出我Python和机器学习经验的招聘信”
+- “帮我写一封推荐信——Sarah Chen推荐了我”
 
-## Cover Letter Structure
+## 招聘信结构
 
-### The Winning Formula
+### 成功撰写招聘信的要素
 
 ```
 [Header with contact info]
@@ -74,9 +74,9 @@ Sincerely,
 [Your Name]
 ```
 
-## Cover Letter Templates
+## 招聘信模板
 
-### Standard Professional
+### 标准专业风格
 
 ```markdown
 [Your Name]
@@ -104,7 +104,7 @@ Sincerely,
 [Your Name]
 ```
 
-### With Referral
+### 通过推荐人介绍的求职
 
 ```markdown
 Dear [Hiring Manager],
@@ -121,7 +121,7 @@ Best regards,
 [Your Name]
 ```
 
-### Career Change
+### 职业转型
 
 ```markdown
 Dear [Hiring Manager],
@@ -135,7 +135,7 @@ I'm making this transition because [genuine reason connecting to the new field].
 [Continue with closing...]
 ```
 
-### Entry Level / New Graduate
+### 初级职位/应届毕业生
 
 ```markdown
 Dear [Hiring Manager],
@@ -149,52 +149,52 @@ What excites me about [Company] is [specific reason]. I am particularly drawn to
 [Continue with closing...]
 ```
 
-## Writing Tips
+## 撰写技巧
 
-### Opening Lines That Work
+### 有效的开场白：
 
-**Good openings:**
-- "After leading [Company]'s biggest product launch, I'm ready to bring that energy to [Target Company]."
-- "[Referral Name] suggested I reach out – and after researching [Company]'s work on [Project], I knew I had to apply."
-- "Your job posting describes my exact background: [specific match]."
-- "I've admired [Company]'s approach to [specific thing] since [when/how you learned about them]."
+**优秀的开场白示例：**
+- “在领导[公司]最大的产品发布项目后，我渴望将这种热情带到[目标公司]。”
+- “[推荐人姓名]建议我联系您——在了解了[公司]在[项目]上的表现后，我立刻决定申请。”
+- “您的职位描述与我的背景完全匹配。”
+- “自从[了解该公司]的[具体方面]以来，我就一直很欣赏他们的理念。”
 
-**Avoid:**
-- "I am writing to apply for..." (boring)
-- "I believe I would be a great fit..." (generic)
-- "To whom it may concern" (impersonal)
-- Starting with your life story
+**应避免的开场白：**
+- “我写这封邮件是为了申请……”（过于平淡）
+- “我认为自己非常适合这个职位……”（过于泛泛而谈）
+- “致收件人：”（缺乏针对性）
+- 以个人经历开头
 
-### Quantify Your Achievements
+### 量化您的成就
 
-| Instead of | Write |
+| 应避免的表述 | 应使用的表述 |
 |------------|-------|
-| "Increased sales" | "Grew sales 45% YoY, adding $2M in revenue" |
-| "Managed a team" | "Led 12-person team across 3 time zones" |
-| "Improved efficiency" | "Reduced processing time from 5 days to 4 hours" |
-| "Handled customer issues" | "Resolved 50+ customer escalations monthly with 98% satisfaction" |
+| “销售额增长” | “销售额同比增长45%，新增收入200万美元” |
+| “管理一个团队” | “领导了一个跨三个时区的12人团队” |
+| “提高效率” | “将处理时间从5天缩短至4小时” |
+| “处理客户问题” | “每月解决50多起客户投诉，客户满意度达到98%” |
 
-### Show Company Research
+### 展示对公司了解
 
-Mention specific things like:
-- Recent news, funding, or launches
-- Company values that resonate with you
-- Specific products or services you admire
-- Industry challenges they're addressing
-- Company culture elements you appreciate
+提及以下具体内容：
+- 公司的最新动态、资金情况或新产品发布
+- 与您价值观相符的公司理念
+- 您欣赏的公司产品或服务
+- 公司正在应对的行业挑战
+- 您欣赏的公司文化特点
 
-### Common Mistakes to Avoid
+### 常见错误及避免方法：
 
-1. **Repeating your resume** - Add new insights, not summaries
-2. **Being too generic** - Customize for each application
-3. **Focusing on what you want** - Focus on what you offer
-4. **Too long** - Keep to one page, 3-4 paragraphs
-5. **Typos and errors** - Proofread multiple times
-6. **Wrong company name** - Double-check before sending
-7. **Salary discussion** - Save for interview
-8. **Negative language** - Stay positive throughout
+1. **重复简历内容** – 添加新的见解，而非简单总结
+2. **过于泛化** – 根据每次申请进行个性化定制
+3. **只关注自己的需求** – 应重点突出自己能为公司带来的价值
+4. **篇幅过长** – 保持一页，3-4段即可
+5. **拼写错误** – 多次校对
+6. **公司名称错误** – 发送前务必核实
+7. **讨论薪资** – 留到面试时再讨论
+8. **使用负面语言** – 保持积极的态度
 
-## Output Format
+## 输出格式
 
 ```markdown
 ## Cover Letter
@@ -217,48 +217,48 @@ Mention specific things like:
 - [Any suggestions for further personalization]
 ```
 
-## Customization Options
+## 定制选项
 
-Tell me your preferences:
-- **Tone:** Professional, conversational, enthusiastic, confident
-- **Length:** Concise (250 words), standard (350 words), detailed (450 words)
-- **Focus:** Skills, achievements, cultural fit, career story
-- **Industry:** Corporate, startup, nonprofit, creative, technical
+请告知您的偏好：
+- **语气**：专业、亲切、热情、自信
+- **长度**：简洁（250字）、标准（350字）、详细（450字）
+- **重点**：技能、成就、文化契合度、职业经历
+- **行业**：企业、初创公司、非营利组织、创意行业、技术行业
 
-## Limitations
+## 限制条件：
 
-- Cannot access actual job postings (provide the text)
-- Works best with context about your experience
-- Should be reviewed for accuracy of dates and details
-- May need adjustment for very specialized industries
-- Cannot guarantee interview callbacks
+- 无法访问实际的职位信息（请提供职位描述）
+- 需要您提供相关的工作经验背景
+- 需核对日期和细节的准确性
+- 对于非常专业的行业，可能需要调整内容
+- 无法保证一定能获得面试机会
 
-## Examples
+## 示例
 
-### Example: Tech Role Cover Letter
+### 技术职位招聘信示例
 
-**Input:** "Write a cover letter for a Senior Software Engineer role at Stripe. I have 6 years of Python/Go experience, built payment systems at my current company, and I'm passionate about fintech."
+**输入：**“为Stripe的高级软件工程师职位撰写一封招聘信。我有6年的Python/Go编程经验，在现任公司开发过支付系统，对金融科技领域充满热情。”
 
-**Output:**
+**输出：**
 
-Dear Hiring Manager,
+尊敬的招聘经理：
 
-Building payment infrastructure that processes $50M+ monthly has been the highlight of my engineering career – and it's exactly why I'm excited about the Senior Software Engineer role at Stripe. Your mission to increase the GDP of the internet resonates deeply with my experience making financial technology accessible and reliable.
+在[现任公司]，我负责构建每月处理5000万美元以上交易的支付基础设施，这成为我职业生涯中的亮点。正因如此，我对Stripe的高级软件工程师职位感到非常感兴趣。您致力于提升互联网经济的使命与我在金融科技领域的经验高度契合。
 
-At [Current Company], I architected our core payment processing system using Python and Go, reducing transaction failures by 40% and improving throughput from 1,000 to 10,000 transactions per second. I led the integration with multiple payment providers and implemented fraud detection systems that prevented $2M in potential losses. This work required not just technical excellence but a deep understanding of financial regulations and user trust.
+我使用Python和Go语言设计了公司的核心支付处理系统，将交易失败率降低了40%，同时将处理能力从每秒1000笔提升到10,000笔。我主导了与多家支付提供商的集成工作，并实施了欺诈检测系统，避免了200万美元的潜在损失。这项工作不仅需要技术上的卓越能力，还需要深入理解金融法规和用户需求。
 
-What draws me to Stripe specifically is your developer-first approach. I've used Stripe's APIs extensively and appreciate the thoughtfulness in your documentation and SDKs. The opportunity to build infrastructure that millions of businesses depend on, while working alongside engineers who've set the standard for API design, is exactly the challenge I'm seeking.
+特别吸引我的是Stripe以开发者为中心的发展理念。我曾广泛使用Stripe的API，并对其文档和SDK的设计感到非常满意。能够参与构建数百万企业依赖的基础设施，同时与那些在API设计方面树立了标准的工程师们共事，正是我追求的机会。
 
-I would love to discuss how my payment systems expertise and passion for fintech can contribute to Stripe's continued growth. Thank you for considering my application.
+我很期待与您讨论我的支付系统专业知识和对金融科技的热情如何为Stripe的持续发展做出贡献。感谢您考虑我的申请。
 
-Best regards,
-[Your Name]
+此致，
+[您的姓名]
 
 ---
 
-**Key Points Highlighted:**
-- Direct payment systems experience (matches domain)
-- Quantified achievements ($50M, 40% reduction, 10x throughput)
-- Go and Python expertise (matches tech stack)
-- Familiarity with Stripe products (shows research)
-- Infrastructure scale mindset (matches Stripe's challenges)
+**关键要点：**
+- 直接提及支付系统相关经验（符合职位要求）
+- 量化具体成就（销售额、效率提升等）
+- 技术栈相关技能（Python/Go）
+- 对Stripe产品的了解（体现对公司研究的重视）
+- 具备大规模基础设施建设的思维方式（符合Stripe的发展需求）

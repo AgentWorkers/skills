@@ -1,51 +1,50 @@
 ---
 name: yt-thumbnail-grabber
-description: Download YouTube video thumbnails in various resolutions. Use when you need to get video preview images, create collages, or save thumbnails for reference.
+description: 下载 YouTube 视频的缩略图，支持多种分辨率。这些缩略图可用于获取视频预览图片、制作拼贴画或保存以供参考。
 metadata: {"openclaw":{"requires":{"bins":["yt-dlp"]},"install":[{"id":"python","kind":"pip","package":"yt-dlp","bins":["yt-dlp"],"label":"Install yt-dlp (pip)"}]}}
 ---
 
-# YouTube Thumbnail Grabber
+# YouTube缩略图下载工具
 
-## Setup
+## 设置
 
-Install yt-dlp:
+安装 yt-dlp：
 ```bash
 pip install yt-dlp
 ```
 
-## Download Thumbnail
+## 下载缩略图
 
-Using yt-dlp:
+使用 yt-dlp：
 ```bash
 yt-dlp --write-thumbnail --skip-download "VIDEO_URL"
 ```
 
-Convert to JPG:
+将缩略图转换为 JPG 格式：
 ```bash
 yt-dlp --write-thumbnail --skip-download --convert-thumbnails jpg "VIDEO_URL"
 ```
 
-Custom output path:
+自定义输出路径：
 ```bash
 yt-dlp --write-thumbnail --skip-download -o "thumbnail" "VIDEO_URL"
 ```
 
-## Direct URL Method
+## 直接获取缩略图 URL 的方法
 
-Get thumbnail URL:
+获取缩略图 URL：
 ```bash
 yt-dlp --get-thumbnail "VIDEO_URL"
 ```
 
-Download with curl:
+使用 curl 下载缩略图：
 ```bash
 curl -o thumbnail.jpg "$(yt-dlp --get-thumbnail 'VIDEO_URL')"
 ```
 
-## Thumbnail URL Patterns
+## 缩略图 URL 的获取规则
 
-For video ID `VIDEO_ID`, thumbnails are available at:
-
+对于视频 ID `VIDEO_ID`，缩略图可以在以下地址获取：
 ```
 # Maximum resolution (may not exist for all videos)
 https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg
@@ -63,7 +62,7 @@ https://img.youtube.com/vi/VIDEO_ID/sddefault.jpg
 https://img.youtube.com/vi/VIDEO_ID/default.jpg
 ```
 
-## Quick Download by Video ID
+## 通过视频 ID 快速下载缩略图
 
 ```bash
 VIDEO_ID="dQw4w9WgXcQ"
@@ -75,7 +74,7 @@ curl -o "thumb_max.jpg" "https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jp
 curl -o "thumb_hq.jpg" "https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg"
 ```
 
-## Download All Resolutions
+## 下载所有分辨率的缩略图
 
 ```bash
 VIDEO_ID="dQw4w9WgXcQ"
@@ -85,7 +84,7 @@ for res in maxresdefault sddefault hqdefault mqdefault default; do
 done
 ```
 
-## Extract Video ID from URL
+## 从 URL 中提取视频 ID
 
 ```bash
 # From full URL
@@ -95,19 +94,19 @@ echo "https://www.youtube.com/watch?v=dQw4w9WgXcQ" | grep -oP '(?<=v=)[^&]+'
 yt-dlp --get-id "VIDEO_URL"
 ```
 
-## Batch Download Thumbnails
+## 批量下载缩略图
 
-From playlist:
+- 从播放列表中下载：
 ```bash
 yt-dlp --write-thumbnail --skip-download -o "%(title)s" "PLAYLIST_URL"
 ```
 
-From file with URLs:
+- 从包含视频 URL 的文件中下载：
 ```bash
 yt-dlp --write-thumbnail --skip-download -a urls.txt
 ```
 
-## Get Thumbnail with Metadata
+## 下载带有元数据的缩略图
 
 ```bash
 yt-dlp --dump-json "VIDEO_URL" | python3 -c "
@@ -119,7 +118,7 @@ for t in d.get('thumbnails', []):
     print(f\"  {t.get('width', '?')}x{t.get('height', '?')}: {t['url']}\")"
 ```
 
-## Download Best Available Thumbnail
+## 下载最佳质量的缩略图
 
 ```bash
 python3 -c "
@@ -140,20 +139,20 @@ for res in resolutions:
 " "VIDEO_ID"
 ```
 
-## Thumbnail Resolutions
+## 缩略图的分辨率
 
-| Name | Resolution | Notes |
+| 名称 | 分辨率 | 备注 |
 |------|------------|-------|
-| maxresdefault | 1280x720 | Not always available |
-| sddefault | 640x480 | Standard |
-| hqdefault | 480x360 | High quality |
-| mqdefault | 320x180 | Medium quality |
-| default | 120x90 | Always available |
-| 0, 1, 2, 3 | 120x90 | Video frame captures |
+| maxresdefault | 1280x720 | 不总是可用 |
+| sddefault | 640x480 | 标准分辨率 |
+| hqdefault | 480x360 | 高质量 |
+| mqdefault | 320x180 | 中等质量 |
+| default | 120x90 | 始终可用 |
+| 0, 1, 2, 3 | 120x90 | 视频帧截图 |
 
-## Alternative Thumbnail Frames
+## 备用的缩略图帧
 
-YouTube stores multiple frame captures:
+YouTube 会存储多个视频帧的截图：
 ```bash
 VIDEO_ID="dQw4w9WgXcQ"
 
@@ -164,11 +163,11 @@ curl -o "frame2.jpg" "https://img.youtube.com/vi/${VIDEO_ID}/2.jpg"
 curl -o "frame3.jpg" "https://img.youtube.com/vi/${VIDEO_ID}/3.jpg"
 ```
 
-## Notes
+## 注意事项：
 
-- `maxresdefault` only exists for HD videos
-- Fall back to `hqdefault` if max resolution fails
-- Thumbnails are cached by YouTube CDN
-- No authentication required for public videos
-- WebP format may be returned; use `--convert-thumbnails jpg` to convert
-- Frame captures (0-3) show different moments from the video
+- `maxresdefault` 仅适用于高清视频
+- 如果无法获取最高分辨率，系统会自动使用 `hqdefault`
+- YouTube 会缓存缩略图
+- 公共视频无需身份验证即可下载
+- 可能返回 WebP 格式的缩略图；使用 `--convert-thumbnails jpg` 命令进行转换
+- 缩略图帧（0-3）分别代表视频的不同时刻

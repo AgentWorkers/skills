@@ -1,53 +1,53 @@
 ---
 name: ogment
-description: Access business integrations (SaaS, APIs, data) securely through Ogment. Use when the user asks to query, create, update, or manage data in external systems like Salesforce, Notion, Slack, databases, or any connected service.
+description: 通过 Ogment 安全地访问业务集成（SaaS、API、数据）。当用户需要查询、创建、更新或管理外部系统（如 Salesforce、Notion、Slack、数据库或任何连接的服务器）中的数据时，请使用此功能。
 metadata: {"openclaw":{"emoji":"🦞","requires":{"bins":["ogment"]},"install":[{"id":"npm","kind":"node","package":"ogment","bins":["ogment"],"label":"Install Ogment CLI (npm)"}]}}
 ---
 
 # Ogment
 
-Ogment gives you secure access to business integrations — SaaS tools, internal APIs, and data — through a single CLI. Credentials never leave Ogment. You get scoped, revocable tokens with per-tool permissions and human approval flows.
+Ogment 通过一个统一的命令行界面（CLI）为您提供对业务集成（包括 SaaS 工具、内部 API 和数据）的安全访问。用户的凭据永远不会离开 Ogment。Ogment 会生成具有特定工具权限的可撤销令牌，并确保所有操作都经过人工审批流程。
 
-## Setup (one-time)
+## 设置（只需一次）
 
-If `ogment` is not installed or any command fails with "not logged in":
+如果 `ogment` 未安装，或者任何命令出现 “not logged in” 的错误，请按照以下步骤操作：
 
-1. Install: `npm install -g ogment`
-2. Ask the user to run `ogment login` in their terminal (opens browser for OAuth — zero arguments needed)
-3. Login is a one-time step. After authenticating, all servers and tools are available automatically.
+1. 安装：`npm install -g ogment`
+2. 要求用户在终端中运行 `ogment login`（这将打开浏览器进行 OAuth 登录，无需传递任何参数）
+3. 登录过程仅需要执行一次。认证成功后，所有服务器和工具都将自动可供使用。
 
-## Commands
+## 命令
 
-**Discover servers:**
+**发现服务器：**
 ```bash
 ogment servers --json
 ```
-Returns all available servers across all organizations.
+返回所有组织中可用的服务器列表。
 
-**Inspect a server's tools:**
+**查看服务器上的工具：**
 ```bash
 ogment servers <server-path> --json
 ```
-Returns the full list of tools with names, descriptions, and input schemas.
+返回工具的完整列表，包括工具名称、描述和输入格式。
 
-**Call a tool:**
+**调用工具：**
 ```bash
 ogment call <server-path> <tool-name> '<json-args>'
 ```
-Returns JSON. Arguments must be a single JSON string. Omit args for tools that take no parameters.
+返回 JSON 格式的结果。参数必须是一个 JSON 字符串。对于不需要参数的工具，可以省略参数。
 
-## Workflow
+## 工作流程
 
-Follow these steps in order:
+请按照以下步骤操作：
 
-1. Run `ogment servers --json` to discover available servers
-2. Pick the server relevant to the user's request
-3. Run `ogment servers <path> --json` to see that server's tools
-4. Call the appropriate tool with `ogment call <server> <tool> '<args>'`
-5. Parse the JSON response and present results to the user
-6. If the user needs a different integration, go back to step 1
+1. 运行 `ogment servers --json` 以发现可用的服务器。
+2. 选择与用户需求相关的服务器。
+3. 运行 `ogment servers <服务器路径> --json` 以查看该服务器上的工具列表。
+4. 使用 `ogment call <服务器> <工具> '<参数>'` 调用相应的工具。
+5. 解析 JSON 响应并将结果呈现给用户。
+6. 如果用户需要使用其他集成服务，请返回步骤 1。
 
-## Examples
+## 示例
 
 ```bash
 # Discover all servers
@@ -68,17 +68,17 @@ ogment call salesforce create_record '{"type":"Contact","fields":{"Name":"Jane D
 ogment call my-api get__health
 ```
 
-## Handling Errors
+## 错误处理
 
-- **"not logged in"** — ask the user to run `ogment login` in their terminal
-- **"server not found"** — run `ogment servers --json` to see available servers
-- **approval link returned** — the tool requires human approval. Show the approval URL to the user and ask them to approve. Then retry the same tool call.
-- **401 / authentication error** — the token may be expired. Ask the user to run `ogment logout` then `ogment login`
+- **“not logged in”**：要求用户在终端中运行 `ogment login`。
+- **“server not found”**：运行 `ogment servers --json` 以查看可用的服务器。
+- **返回审批链接**：该工具需要人工审批。将审批链接显示给用户并请求他们进行审批，然后重试工具调用。
+- **401/认证错误**：令牌可能已过期。请要求用户先运行 `ogment logout`，然后再运行 `ogment login`。
 
-## Important
+## 重要提示：
 
-- Always use `--json` when discovering servers and tools
-- `ogment call` returns JSON by default — no `--json` flag needed
-- Arguments to `ogment call` must be a single JSON string
-- Do not store or log tokens — Ogment handles all credentials server-side
-- Each tool call is authenticated, permission-checked, and logged by Ogment
+- 发现服务器和工具时，请务必使用 `--json` 标志。
+- `ogment call` 默认会返回 JSON 格式的结果，因此无需额外添加 `--json` 标志。
+- `ogment call` 的参数必须是一个 JSON 字符串。
+- 请勿存储或记录令牌信息——Ogment 会在服务器端处理所有凭据。
+- 每次工具调用都会经过 Ogment 的认证、权限检查并记录日志。

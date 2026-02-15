@@ -1,42 +1,42 @@
 ---
 name: audio-reply
-description: 'Generate audio replies using TTS. Trigger with "read it to me [URL]" to fetch and read content aloud, or "talk to me [topic]" to generate a spoken response. Also responds to "speak", "say it", "voice reply".'
+description: '使用 TTS（文本到语音）功能生成音频回复。输入 “read it to me [URL]” 可以获取指定 URL 的内容并朗读出来；输入 “talk to me [topic]” 可以生成与该主题相关的口语化回复。同时，系统也支持 “speak”、“say it” 和 “voice reply” 等指令。'
 homepage: https://github.com/anthropics/claude-code
 metadata: {"clawdbot":{"emoji":"🔊","requires":{"bins":["uv"]}}}
 ---
 
-# Audio Reply Skill
+# 音频回复功能
 
-Generate spoken audio responses using MLX Audio TTS (chatterbox-turbo model).
+使用 MLX Audio TTS（chatterbox-turbo 模型）生成语音回复。
 
-## Trigger Phrases
+## 触发语句
 
-- **"read it to me [URL]"** - Fetch content from URL and read it aloud
-- **"talk to me [topic/question]"** - Generate a conversational response as audio
-- **"speak"**, **"say it"**, **"voice reply"** - Convert your response to audio
+- **“read it to me [URL]”** - 从 URL 获取内容并朗读出来
+- **“talk to me [主题/问题]”** - 生成对话式的语音回复
+- **“speak”**, **“say it”**, **“voice reply”** - 将你的回复转换为语音
 
-## How to Use
+## 使用方法
 
-### Mode 1: Read URL Content
+### 模式 1：读取 URL 内容
 ```
 User: read it to me https://example.com/article
 ```
-1. Fetch the URL content using WebFetch
-2. Extract readable text (strip HTML, focus on main content)
-3. Generate audio using TTS
-4. Play the audio and delete the file afterward
+1. 使用 WebFetch 获取 URL 内容
+2. 提取可读文本（去除 HTML，仅保留主要内容）
+3. 使用 TTS 生成音频
+4. 播放音频后删除文件
 
-### Mode 2: Conversational Audio Response
+### 模式 2：对话式语音回复
 ```
 User: talk to me about the weather today
 ```
-1. Generate a natural, conversational response
-2. Keep it concise (TTS works best with shorter segments)
-3. Convert to audio, play it, then delete the file
+1. 生成自然、对话式的回复
+2. 保持回复简洁（TTS 对较短的文本效果更好）
+3. 将文本转换为音频并播放，之后删除文件
 
-## Implementation
+## 实现细节
 
-### TTS Command
+### TTS 命令
 ```bash
 uv run mlx_audio.tts.generate \
   --model mlx-community/chatterbox-turbo-fp16 \
@@ -45,31 +45,31 @@ uv run mlx_audio.tts.generate \
   --file_prefix /tmp/audio_reply
 ```
 
-### Key Parameters
-- `--model mlx-community/chatterbox-turbo-fp16` - Fast, natural voice
-- `--play` - Auto-play the generated audio
-- `--file_prefix` - Save to temp location for cleanup
-- `--exaggeration 0.3` - Optional: add expressiveness (0.0-1.0)
-- `--speed 1.0` - Adjust speech rate if needed
+### 关键参数
+- `--model mlx-community/chatterbox-turbo-fp16` - 快速、自然的语音效果
+- `--play` - 自动播放生成的语音
+- `--file_prefix` - 将文件保存到临时目录以便后续清理
+- `--exaggeration 0.3` - 可选参数：调整语音表达的夸张程度（0.0-1.0）
+- `--speed 1.0` - 根据需要调整语速
 
-### Text Preparation Guidelines
+### 文本准备指南
 
-**For "read it to me" mode:**
-1. Fetch URL with WebFetch tool
-2. Extract main content, strip navigation/ads/boilerplate
-3. Summarize if very long (>500 words) - keep key points
-4. Add natural pauses with periods and commas
+**对于“read it to me”模式：**
+1. 使用 WebFetch 工具获取 URL 内容
+2. 提取主要内容，去除导航栏、广告和重复内容
+3. 如果内容过长（超过 500 字），请总结关键点
+4. 使用句号和逗号添加自然的停顿
 
-**For "talk to me" mode:**
-1. Write conversationally, as if speaking
-2. Use contractions (I'm, you're, it's)
-3. Add filler words sparingly for naturalness ([chuckle], um, anyway)
-4. Keep responses under 200 words for best quality
-5. Avoid technical jargon unless explaining it
+**对于“talk to me”模式：**
+1. 以对话的方式编写回复
+2. 使用缩写形式（如 I’m, you’re, it’s）
+3. 适量使用填充词（如 [chuckle], um, anyway）以增强自然感
+4. 保持回复长度在 200 字以内以获得最佳音质
+5. 除非需要解释，否则避免使用专业术语
 
-### Audio Generation & Cleanup (IMPORTANT)
+### 音频生成与清理（非常重要）
 
-Always delete the audio file after playing - it's already in the chat history.
+播放完成后务必删除音频文件——该文件会保存在聊天记录中。
 
 ```bash
 # Generate with unique filename and play
@@ -84,16 +84,16 @@ uv run mlx_audio.tts.generate \
 rm -f "${OUTPUT_FILE}"*.wav 2>/dev/null
 ```
 
-### Error Handling
+### 错误处理
 
-If TTS fails:
-1. Check if model is downloaded (first run downloads ~500MB)
-2. Ensure `uv` is installed and in PATH
-3. Fall back to text response with apology
+如果 TTS 生成失败：
+1. 检查模型是否已下载（首次运行时可能需要下载约 500MB 的数据）
+2. 确保 `uv` 已安装并位于系统路径中
+3. 在无法生成音频时，切换为文本回复并给出歉意
 
-## Example Workflows
+## 示例流程
 
-### Example 1: Read URL
+### 示例 1：读取 URL 内容
 ```
 User: read it to me https://blog.example.com/new-feature
 
@@ -109,7 +109,7 @@ Assistant actions:
 5. Confirm: "Done reading the article to you."
 ```
 
-### Example 2: Talk to Me
+### 示例 2：进行对话
 ```
 User: talk to me about what you can help with
 
@@ -124,9 +124,9 @@ Assistant actions:
 4. (No text output needed - audio IS the response)
 ```
 
-## Notes
+## 注意事项
 
-- First run may take longer as the model downloads (~500MB)
-- Audio quality is best for English; other languages may vary
-- For long content, consider chunking into multiple audio segments
-- The `--play` flag uses system audio - ensure volume is up
+- 首次运行可能需要较长时间（因为模型文件较大，约 500MB）
+- 英语内容的音质最佳；其他语言的音质可能有所不同
+- 对于较长的内容，建议将其分割成多个音频文件
+- `--play` 选项会使用系统内置的音频播放器——请确保音量调高

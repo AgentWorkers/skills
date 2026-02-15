@@ -1,13 +1,13 @@
 ---
 name: aviation-weather
-description: Fetch aviation weather data (METAR, TAF, PIREPs) from aviationweather.gov. Use for flight planning, weather briefings, checking airport conditions, or any pilot-related weather queries. Triggers on "METAR", "TAF", "flight weather", "airport weather", "aviation weather", "pilot report", "PIREP", or specific ICAO codes.
+description: 从 aviationweather.gov 获取航空天气数据（METAR、TAF、PIREP）。这些数据可用于飞行计划、天气简报、检查机场状况或任何与飞行员相关的天气查询。触发条件包括 "METAR"、"TAF"、"flight weather"、"airport weather"、"aviation weather"、"pilot report" 以及特定的 ICAO 代码。
 ---
 
-# Aviation Weather
+# 航空天气
 
-Fetch real-time aviation weather from the FAA's aviationweather.gov API.
+从FAA的aviationweather.gov API获取实时航空天气数据。
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # METAR for specific airports
@@ -29,39 +29,39 @@ python3 scripts/wx.py KSMO --json
 python3 scripts/wx.py KSMO -v
 ```
 
-## Default Airports
+## 默认机场
 
-When no stations specified, defaults to Santa Monica area: `KSMO`, `KLAX`, `KVNY`
+当未指定机场时，系统将使用圣莫尼卡地区的机场：`KSMO`、`KLAX`、`KVNY`
 
-## Flight Categories
+## 飞行类别
 
-- 🟢 VFR - Ceiling >3000ft AGL and visibility >5sm
-- 🔵 MVFR - Ceiling 1000-3000ft or visibility 3-5sm
-- 🔴 IFR - Ceiling 500-1000ft or visibility 1-3sm
-- 🟣 LIFR - Ceiling <500ft or visibility <1sm
+- 🟢 VFR（视觉飞行规则）：云底高度大于3000英尺，能见度大于5海里
+- 🔵 MVFR（中等视觉飞行规则）：云底高度在1000-3000英尺之间，或能见度在3-5海里之间
+- 🔴 IFR（仪表飞行规则）：云底高度在500-1000英尺之间，或能见度在1-3海里之间
+- 🟣 LIFR（着陆目视规则）：云底高度低于500英尺，或能见度低于1海里
 
-## Common SoCal Airports
+## 南加州常见机场
 
-| Code | Name |
+| 代码 | 名称 |
 |------|------|
-| KSMO | Santa Monica |
-| KLAX | Los Angeles Intl |
-| KVNY | Van Nuys |
-| KBUR | Burbank |
-| KTOA | Torrance |
-| KSNA | John Wayne |
-| KFUL | Fullerton |
-| KCMA | Camarillo |
-| KOXR | Oxnard |
-| KPSP | Palm Springs |
+| KSMO | 圣莫尼卡 |
+| KLAX | 洛杉矶国际机场 |
+| KVNY | 范努伊斯 |
+| KBUR | 伯班克 |
+| KTOA | 托伦斯 |
+| KSNA | 约翰·韦恩机场 |
+| KFUL | 富勒顿 |
+| KCMA | 卡马里洛 |
+| KOXR | 奥克斯纳德 |
+| KPSP | 棕榈泉 |
 
-## Options
+## 命令行参数
 
-- `--metar`, `-m`: Fetch METAR (default)
-- `--taf`, `-t`: Fetch TAF forecast
-- `--pirep`, `-p`: Fetch pilot reports
-- `--hours N`: Hours of METAR history (default: 2)
-- `--lat`, `--lon`: Location for PIREP search
-- `--radius N`: PIREP search radius in nm (default: 100)
-- `--verbose`, `-v`: Show raw observation text
-- `--json`: Output raw JSON data
+- `--metar`, `-m`：获取METAR天气报告（默认）
+- `--taf`, `-t`：获取TAF（天气预报）数据
+- `--pirep`, `-p`：获取飞行员报告
+- `--hours N`：获取METAR历史记录的时长（默认：2小时）
+- `--lat`, `--lon`：指定飞行员报告的搜索位置（经纬度）
+- `--radius N`：指定飞行员报告的搜索半径（单位：海里，默认：100海里）
+- `--verbose`, `-v`：显示原始观测数据
+- `--json`：以JSON格式输出数据

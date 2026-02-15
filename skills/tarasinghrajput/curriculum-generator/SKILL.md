@@ -1,6 +1,6 @@
 ---
 name: curriculum-generator
-description: Intelligent educational curriculum generation system with strict step enforcement and human escalation policies
+description: 智能教育课程生成系统，具备严格的步骤执行机制及人工干预政策
 metadata:
   openclaw:
     requires:
@@ -11,17 +11,17 @@ metadata:
     author: "Apni Pathshala"
 ---
 
-## DEBUG MODE
+## 调试模式
 
-When the user includes "debug mode" or "show searches" in their curriculum request:
+当用户在课程请求中包含“调试模式”或“显示搜索结果”时：
 
-**Enable verbose output:**
-- Print every neo-ddg-search query before executing
-- Print number of results returned
-- Print first 2-3 URLs extracted
-- Print resource assignment: "Assigning to {topic}: {url}"
+**启用详细输出：**
+- 在执行每个 `neo-ddg-search` 查询之前将其打印出来
+- 打印返回的结果数量
+- 打印提取的前 2-3 个网址
+- 打印资源分配信息：`分配给 {topic}：{url}`
 
-**Example debug output:**
+**示例调试输出：**
 ```
 [DEBUG] Executing neo-ddg-search("Python basics tutorial for beginners")
 [DEBUG] Search returned 10 results
@@ -32,18 +32,18 @@ When the user includes "debug mode" or "show searches" in their curriculum reque
 ```
 
 
-## Dependencies
+## 依赖关系
 
-### Required Skills
-This skill requires the following other skills to be installed:
+### 所需技能
+此技能需要安装以下其他技能：
 
-- **neo-ddg-search**: For web searching educational resources
-  - Install: `clawhub install neobotjan2026/neo-ddg-search`
-  - Verify: Check if neo-ddg-search skill exists in skills directory
+- **neo-ddg-search**：用于搜索教育资源
+  - 安装命令：`clawhub install neobotjan2026/neo-ddg-search`
+  - 验证方法：检查 `skills` 目录中是否存在 `neo-ddg-search` 技能
 
-### Dependency Verification
+### 依赖关系验证
 
-At the start of curriculum generation, verify neo-ddg-search is available:
+在生成课程内容之前，验证 `neo-ddg-search` 是否可用：
 ```
 IF neo-ddg-search skill NOT found:
    🚨 DEPENDENCY MISSING
@@ -60,9 +60,9 @@ IF neo-ddg-search skill NOT found:
    STOP
 ```
 
-### Search Tool Health Check
+### 搜索工具健康检查
 
-Before starting resource research, perform a test search:
+在开始资源研究之前，进行一次测试搜索：
 ```
 Test: neo-ddg-search("Python tutorial test")
 
@@ -87,70 +87,68 @@ IF failed:
    ESCALATE
 ```
 
-# Curriculum Generator Skill
+# 课程生成技能
 
-## Purpose
-This skill helps generate customized educational curricula for PODs (Points of Delivery) through a structured, step-enforced process with mandatory human escalation when needed.
+## 目的
+此技能通过结构化、分步骤的过程帮助为 POD（交付点）生成定制的教育课程，并在需要时强制进行人工干预。
 
-## Core Capabilities
-- Guided requirement gathering via structured questionnaire
-- Research-based curriculum design or assessment
-- Excel (.xlsx) output generation
-- Local memory storage for continuous improvement
-- Background task execution
-- Strict human escalation policy enforcement
+## 核心功能
+- 通过结构化问卷引导需求收集
+- 基于研究的课程设计或评估
+- 生成 Excel (.xlsx) 格式的输出文件
+- 使用本地内存进行持续改进
+- 执行后台任务
+- 严格执行人工干预政策
 
-## Storage Locations
-- **Memory**: `~/.openclaw/skills/curriculum-generator/memory/`
-- **Outputs**: `~/.openclaw/skills/curriculum-generator/outputs/`
-- **Templates**: `~/.openclaw/skills/curriculum-generator/templates/`
+## 存储位置
+- **内存**：`~/.openclaw/skills/curriculum-generator/memory/`
+- **输出文件**：`~/.openclaw/skills/curriculum-generator/outputs/`
+- **模板**：`~/.openclaw/skills/curriculum-generator/templates/`
 
-## Activation Triggers
-This skill activates when the user:
-- Says "create curriculum", "design curriculum", or "assess curriculum"
-- Says "curriculum help" or "start curriculum process"
-- Explicitly requests curriculum generation for a POD
+## 激活触发条件
+当用户执行以下操作时，此技能会被激活：
+- 说“创建课程”、“设计课程”或“评估课程”
+- 说“课程帮助”或“开始课程流程”
+- 明确请求为某个 POD 生成课程
 
-## CRITICAL RULES (NON-NEGOTIABLE)
+## 重要规则（不可协商）
 
-### Core Principle
-You MUST ask a human whenever you are forced to guess, infer, or trade off risk.
-If a wrong decision could affect students, teachers, or POD operations, escalation is MANDATORY.
+### 核心原则
+每当您被迫猜测、推断或权衡风险时，必须咨询人类。如果错误的决策可能影响学生、教师或 POD 的运作，必须立即进行人工干预。
 
-### Hard-Stop Escalation Triggers
-You MUST stop and escalate to human if ANY of these occur:
+### 强制性升级触发条件
+如果出现以下任何情况，必须立即停止并升级给人类：
+**A. 输入缺失或模糊**
+- 目标年龄/年级水平不明确
+- 教师的可用性或能力未知
+- 每天的实验课时未指定
+- 基础设施的可靠性（计算机/互联网/电力）不明确
+- 无法确认是否存在现有课程
 
-**A. Missing or Ambiguous Inputs**
-- Target age/grade level is unclear
-- Teacher availability or capability is unknown
-- Daily lab hours are not specified
-- Infrastructure reliability (computers/internet/electricity) is unclear
-- Whether existing curriculum exists is not confirmed
+**B. 教师能力风险**
+- 教师无法独立操作计算机
+- 教师缺乏运行实验的经验
+- 教师无法管理实验纪律或流程
 
-**B. Teacher Capability Risk**
-- Teachers cannot operate computers independently
-- Teachers lack experience running labs
-- Teachers cannot manage lab discipline or session flow
+**C. 运营不可行**
+- 课程课时超过可用实验课时
+- 每周的课程节数量超过教师的能力范围
+- 学生与计算机的比例不安全
+- 基础设施无法支持计划的活动
 
-**C. Operational Infeasibility**
-- Curriculum hours exceed available lab hours
-- Sessions per week exceed teacher capacity
-- Student-to-computer ratio is unsafe
-- Infrastructure cannot support planned activities
+**D. 高风险课程更改**
+- 删除主要的学习成果
+- 显著更改课程时长
+- 更改学习领域（例如，从数字素养改为就业准备）
+- 引入以前未使用的新工具/平台
 
-**D. High-Risk Curriculum Changes**
-- Removing major learning outcomes
-- Changing curriculum duration significantly
-- Shifting learning area (e.g., digital literacy → employment readiness)
-- Introducing new tools/platforms not previously used
+**E. 利益相关者意见冲突**
+- 教师认为课程太难，学生认为太简单
+- POD 负责人的优先事项与可行性相矛盾
+- 反馈循环与评估数据不一致
 
-**E. Contradictory Stakeholder Signals**
-- Teachers say curriculum is too hard, students say too easy
-- POD leader priorities conflict with feasibility
-- Feedback loops contradict assessment data
-
-### Escalation Format (MANDATORY)
-When escalating, use this EXACT format:
+### 升级格式（必须使用）
+在升级时，使用以下格式：
 ```
 🚨 HUMAN INPUT REQUIRED
 
@@ -163,139 +161,138 @@ Options (if any):
 Awaiting Decision From: [POD Leader / Curriculum Owner]
 ```
 
-## PROCESS FLOW
+## 流程
 
-### STEP 0: SCENARIO IDENTIFICATION (MANDATORY)
-Before anything else, determine:
-- **Scenario A**: Assessment of existing curriculum
-- **Scenario B**: Design of new curriculum
+### 第 0 步：场景识别（必须）
+首先确定：
+- **场景 A**：评估现有课程
+- **场景 B**：设计新课程
 
-If unclear, STOP and ask user to confirm. Do NOT proceed without classification.
-
----
-
-### SCENARIO A: ASSESSING EXISTING CURRICULUM
-
-#### STEP A1: Gather Basic Information
-Collect ALL of the following using the structured form:
-
-**Section 0: Request Metadata**
-- Request ID (auto-generate using timestamp)
-- Date of Request (auto-capture)
-- Requested By (Name + Role)
-- POD Name (REQUIRED)
-- Scenario Type (must be selected)
-
-⚠️ If Scenario Type not selected → HARD STOP
-
-**Section 1: Target Audience Profile (MANDATORY)**
-1. Primary Student Group:
-   - Age range
-   - Grade/Education level
-2. Student Background (check all that apply):
-   - First-time computer users
-   - Basic exposure (mouse, keyboard)
-   - Prior digital lab experience
-   - Mixed levels
-3. Language Comfort:
-   - Medium of instruction
-   - English proficiency (Low/Medium/High)
-4. Special Constraints:
-   - Learning disabilities
-   - Attendance inconsistency
-   - Social/economic limitations
-
-⚠️ If age/grade missing → HARD STOP and escalate
-
-**Section 2: POD & Infrastructure Details (MANDATORY)**
-1. Lab Infrastructure:
-   - Number of computers
-   - Average students per session
-   - Internet availability (Reliable/Unstable/None)
-   - Power backup (Yes/No)
-2. Daily Lab Usage:
-   - Available hours per day
-   - Days per week lab is operational
-3. Existing Tools/Platforms:
-   - Operating System
-   - Software already installed
-   - Internet restrictions
-
-⚠️ If lab hours or computer count missing → HARD STOP and escalate
-
-**Section 3: Teacher Capability & Availability (MANDATORY)**
-1. Number of Teachers Assigned
-2. Teacher Availability:
-   - Days per week
-   - Hours per day
-3. Teacher Capability Assessment:
-   - Can operate computers independently? (Yes/No)
-   - Comfortable managing digital labs? (Yes/No)
-   - Prior experience with similar programs? (Yes/No)
-4. Training Requirement:
-   - No training needed
-   - Short training needed
-   - Extensive training needed
-
-⚠️ Any "No" in capability assessment → Potential escalation
-
-#### STEP A2: Stakeholder Inputs (Structured Summary)
-Simulate structured stakeholder inputs based on provided data:
-- **POD Leader**: Effectiveness, challenges, change needs
-- **Teachers**: Teaching experience, curriculum gaps, student progress
-- **Students**: Difficulty level, engagement, relevance
-
-Then perform Teacher Capability Assessment:
-- Can teachers operate computers independently?
-- Can they run the lab as per curriculum?
-- Can they manage discipline, safety, and session flow?
-- Identify training gaps (if any)
-
-#### STEP A3: Curriculum Evaluation
-Evaluate curriculum on these dimensions:
-- Relevance to student needs
-- Alignment with industry/digital literacy goals
-- Flexibility for varied learning speeds
-- Outcome clarity and measurability
-- Technology integration quality
-
-Then perform Operational Feasibility Check:
-- Lab schedule feasibility
-- Teacher sufficiency
-- Infrastructure readiness (computers, internet, electricity)
-
-#### STEP A4: Recommendations
-- Clearly state whether modification is required or optional
-- If required, propose specific, actionable changes
-- Flag risks explicitly
-
-End with:
-**Status: Draft Assessment – Pending Human Review**
+如果不确定，请停止并请求用户确认。未经分类不得继续。
 
 ---
 
-### SCENARIO B: DESIGNING A NEW CURRICULUM
+### 场景 A：评估现有课程
 
-#### STEP B1: Define Curriculum Foundation
-Explicitly define:
-- **Learning Areas**: Digital Literacy / Academic Empowerment / Skill Development / Employment Readiness
-- **Target Audience**: Grade, background
-- **Clear, measurable Learning Outcomes** (no vague outcomes allowed)
+#### 第 1 步：收集基本信息
+使用结构化表格收集以下所有信息：
 
-#### STEP B2: Develop Course Structure
-Generate:
-- Modules and sub-topics
-- Weekly lesson breakdown
-- Learning objective per lesson
-- Program duration (e.g., 3 months / 6 months)
-- Class frequency
+**第 0 节：请求元数据**
+- 请求 ID（使用时间戳自动生成）
+- 请求日期（自动捕获）
+- 请求者（姓名 + 职务）
+- POD 名称（必填）
+- 场景类型（必须选择）
 
-**Lab Planning (Mandatory)**:
-- Daily lab operating hours
-- Sessions per week
-- Max students per session
+⚠️ 如果未选择场景类型 → 立即停止
 
-**END OF STEP B2 - MANDATORY ACTION BEFORE PROCEEDING:**
+**第 1 节：目标受众概况（必须）**
+1. 主要学生群体：
+   - 年龄范围
+   - 年级/教育水平
+2. 学生背景（选择所有适用项）：
+   - 首次使用计算机
+   - 基本操作计算机技能（鼠标、键盘）
+   - 之前的数字实验经验
+   - 学生水平参差不齐
+3. 语言偏好：
+   - 教学语言
+   - 英语熟练程度（低/中/高）
+4. 特殊限制：
+   - 学习障碍
+   - 出勤情况不稳定
+   - 社会/经济条件
+
+⚠️ 如果年龄/年级信息缺失 → 立即停止并升级
+
+**第 2 节：POD 与基础设施详情（必须）**
+1. 实验基础设施：
+   - 计算机数量
+   - 每次实验的平均学生人数
+   - 互联网连接情况（稳定/不稳定/无）
+   - 备用电源（有/无）
+2. 每天的实验时间：
+   - 每天可用的实验小时数
+   - 实验每周进行的天数
+3. 现有工具/平台：
+   - 操作系统
+   - 已安装的软件
+   - 互联网限制
+
+⚠️ 如果实验时间或计算机数量信息缺失 → 立即停止并升级
+
+**第 3 节：教师能力与可用性（必须）**
+1. 分配的教师人数
+2. 教师可用性：
+   - 每周的工作天数
+   - 每天的工作小时数
+3. 教师能力评估：
+   - 是否可以独立操作计算机？（是/否）
+   - 是否能够管理数字实验？（是/否）
+   - 之前是否有类似课程的经验？（是/否）
+4. 培训需求：
+   - 无需培训
+   - 需要短期培训
+   - 需要长期培训
+
+⚠️ 如果能力评估中有任何“否”的回答 → 可能需要升级
+
+#### 第 2 步：利益相关者输入（结构化总结）
+根据提供的数据模拟结构化的利益相关者输入：
+- **POD 负责人**：课程的有效性、挑战及改进需求
+- **教师**：教学经验、课程中的不足之处、学生进度
+- **学生**：课程难度、参与度、相关性
+
+然后进行教师能力评估：
+- 教师是否可以独立操作计算机？
+- 他们能否按照课程要求进行实验？
+- 他们能否管理实验纪律和流程？
+- 识别出任何培训需求
+
+#### 第 3 步：课程评估
+从以下方面评估课程：
+- 与学生需求的相关性
+- 与行业/数字素养目标的一致性
+- 对不同学习速度的适应性
+- 学习成果的明确性和可衡量性
+- 技术整合的质量
+
+然后进行运营可行性检查：
+- 实验安排的可行性
+- 教师是否充足
+- 基础设施是否准备就绪（计算机、互联网、电力）
+
+#### 第 4 步：建议
+- 明确说明是否需要修改或是否可选
+- 如果需要修改，提出具体且可执行的建议
+- 明确指出潜在的风险
+
+最后输出：
+**状态：草案评估 – 待人工审核**
+
+---
+
+### 场景 B：设计新课程
+
+#### 第 2 步：定义课程基础
+明确指定：
+- **学习领域**：数字素养 / 学术能力提升 / 技能发展 / 就业准备
+- **目标受众**：年级、背景
+- **明确、可衡量的学习成果**（不允许使用模糊的成果）
+
+#### 第 2.5 步：开发课程结构
+生成以下内容：
+- 模块和子主题
+- 每周的课程安排
+- 每节课的学习目标
+- 课程时长（例如，3 个月 / 6 个月）
+- 课程频率
+
+**实验计划（必须）：**
+- 每天的实验时间
+- 每周的实验节数
+
+**在继续之前，必须完成以下步骤：**
 ```
 BEFORE moving to Step B3, execute this command sequence:
 
@@ -327,22 +324,22 @@ DO NOT SKIP THIS. DO NOT PROCEED WITHOUT COMPLETING THIS.
 
 Now test with very explicit instructions. In Telegram, send:
 ```
-Create a tiny test curriculum:
-- Topic: HTML Basics  
-- Duration: 1 week only
-- 2 lessons total
+创建一个简单的测试课程：
+- 主题：HTML 基础
+- 时长：仅 1 周
+- 共 2 节课
 
-IMPORTANT INSTRUCTIONS:
-1. After creating the structure, use neo-ddg-search to find resources for EACH lesson
-2. Before generating the CSV file, verify ALL resource links are real URLs
-3. Show me each search you perform
-4. If ANY resource link is empty or "TBD", STOP and search for it immediately
+重要说明：
+1. 创建结构后，使用 `neo-ddg-search` 为每节课查找资源
+2. 在生成 CSV 文件之前，验证所有资源链接是否为有效网址
+3. 展示您执行的每次搜索
+4. 如果有任何资源链接为空或显示为“TBD”，立即停止并重新搜索
 
-Start now.
+现在开始。
 
-**MANDATORY: End of Step B2 Resource Collection**
+**步骤 2.2 资源收集完成**
 
-Before proceeding to Step B3, you MUST complete this:
+在进入步骤 3 之前，您必须完成以下操作：
 ```
 STOP HERE.
 
@@ -377,7 +374,7 @@ DO THIS FOR EVERY SINGLE TOPIC BEFORE MOVING ON.
 ```
 
 
-**END OF STEP B2 - RESOURCE COLLECTION (MANDATORY)**
+**步骤 2.2 资源收集完成（必须）**
 ```
 YOU MUST NOW COLLECT RESOURCES BEFORE PROCEEDING.
 
@@ -417,98 +414,95 @@ Do not proceed to CSV generation without URLs for all topics.
 
 Save the file, then in Telegram:
 ```
-reload skills
+重新加载技能
 ```
 
 Then test with a VERY simple example:
 ```
-Create curriculum:
-- Topic: HTML only
-- 1 lesson total
-- Show me EVERY step
+创建课程：
+- 主题：仅 HTML
+- 共 1 节课
+- 展示每个步骤
 
-After you build the structure:
-1. Search for HTML resources using: python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "HTML tutorial for beginners" 5
-2. Show me the raw output
-3. Extract the URLs
-4. Show me what URL you extracted
-5. Show me the CSV content BEFORE writing it
-6. If Resource Link shows "TBD", STOP immediately
+构建结构后：
+1. 使用以下命令搜索 HTML 资源：`python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "HTML tutorial for beginners" 5`
+2. 展示原始搜索结果
+3. 提取网址
+4. 展示提取的网址
+5. 在写入 CSV 文件之前展示内容
+6. 如果资源链接显示为“TBD”，立即停止
 
-Start.
+开始。
 ```
 
 ## **What to Watch For**
 
 You should see output like:
 ```
-✅ Course structure complete
+✅ 课程结构已完成
 
-🔍 Starting resource search...
+🔍 开始资源搜索...
 
-Topic: HTML Basics
-Executing: python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "HTML Basics tutorial for beginners" 5
+主题：HTML 基础
+执行命令：`python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "HTML Tutorial for Beginners" 5`
 
-[Results shown]
-[1] HTML Tutorial | https://www.youtube.com/watch?v=...
+[搜索结果]
+[1] HTML 教程 | https://www.youtube.com/watch?v=...
 [2] Learn HTML | https://www.w3schools.com/html/
 
-Found 2 URLs
-Selected: https://www.youtube.com/watch?v=...
-✅ Stored for HTML Basics: https://www.youtube.com/watch?v=...
+找到 2 个网址
+选择：https://www.youtube.com/watch?v=...
+✅ 保存 HTML 基础课程的网址：https://www.youtube.com/watch?v=...
 
-Resource Links Dictionary:
-  HTML Basics: https://www.youtube.com/watch?v=...
+资源链接字典：
+  HTML 基础：https://www.youtube.com/watch?v=...
 
-📋 CSV Preview:
-Covered Topics           | Resource Link
-HTML Basics             | https://www.youtube.com/watch?v=...
+📋 CSV 预览：
+覆盖的主题           | 资源链接
+HTML 基础             | https://www.youtube.com/watch?v=...
 
-Writing file...
+编写文件...
 
 
-#### STEP B2.5: RESOURCE LINK POPULATION (SIMPLIFIED)
+#### 第 2.5 步：资源链接填充（简化流程）
 
-**After completing Step B2 structure, execute this EXACT process:**
+**完成步骤 2 的结构后，执行以下步骤：**
 
-### Simple 3-Step Process Per Topic
+### 每个主题的简单三步流程
 
-**For EACH topic:**
-
-**STEP 1: Search**
+**步骤 1：搜索**
 ```bash
 python3 ~/.openclaw/workspace/skills/neo-ddg-search/scripts/search.py "{topic} tutorial for beginners" 5
 ```
 
-**STEP 2: Look at output and extract FIRST URL**
-- Scan the output line by line
-- When you see `https://` → copy everything from `https://` until the next space
-- That's your URL
+**步骤 2：查看结果并提取第一个网址**
+- 逐行查看搜索结果
+- 当看到 `https://` 时，复制从 `https://` 开始的所有内容直到下一个空格
+- 这就是您要提取的网址
 
-**STEP 3: Store it**
+**步骤 3：保存网址**
 ```
 resource_links["{topic}"] = "the_url_you_found"
 ```
 
-**Then IMMEDIATELY move to next topic. Do NOT do additional searches unless the first one returns ZERO results.**
+**然后立即进入下一个主题。除非第一次搜索没有结果，否则不要进行额外的搜索。**
 
-### Hard Limit: 1 Search Per Topic
+**规则**：
+- 每个主题只进行一次搜索
+- 提取一个网址
+- 不要：
+  - 对同一主题进行多次搜索
+  - 尝试寻找“更好的”资源
+  - 过度分析资源质量
+  - 等待或暂停
 
-**RULE**: Execute ONE search per topic. Extract ONE URL. Move on.
+**要做的**：
+- ✅ 进行一次搜索
+- ✅ 提取第一个网址
+- ✅ 进入下一个主题
+- ✅ 快速完成所有主题
 
-Do NOT:
-- ❌ Execute multiple searches for the same topic
-- ❌ Try to find "better" resources
-- ❌ Analyze quality extensively
-- ❌ Wait or pause
-
-DO:
-- ✅ Search once
-- ✅ Grab first URL
-- ✅ Move to next topic
-- ✅ Complete all topics quickly
-
-### Exact Execution Template
+### 完整的执行模板
 ```
 Print: "🔍 Resource Research Starting..."
 Print: ""
@@ -551,16 +545,16 @@ Print: f"Collected {len(resource_links)} resource links"
 Print: ""
 ```
 
-### Time Limit
+### 时间限制
 
-**Maximum time for resource research: 2 minutes total**
+**资源搜索的最大时间为 2 分钟**
 
-If you're taking longer than 2 minutes for resource collection, you're doing something wrong. This should be fast:
-- 5 seconds per search
-- 2 topics = 10 seconds
-- 10 topics = 50 seconds
+如果资源收集花费的时间超过 2 分钟，说明您操作有误。应该快速完成：
+- 每次搜索 5 秒
+- 2 个主题 = 10 秒
+- 10 个主题 = 50 秒
 
-### What Gets Stored
+### 保存的内容
 ```python
 # Good examples:
 resource_links["Python Basics"] = "https://datascientest.com/en/python-variables-beginners-guide"
@@ -574,9 +568,9 @@ resource_links["Topic"] = "TBD"  # ❌
 resource_links["Topic"] = ""     # ❌
 ```
 
-### After Collection: Immediate CSV Generation
+### 收集完成后：立即生成 CSV 文件
 
-**Do NOT pause or wait. Immediately proceed to CSV generation.**
+**不要暂停或等待。立即开始生成 CSV 文件。**
 ```
 Print: "📄 Generating CSV with collected resources..."
 
@@ -603,9 +597,9 @@ write_csv(csv_data)
 Print: "✅ CSV file generated"
 ```
 
-### Example: Complete 2-Topic Execution
+### 示例：完成 2 个主题的搜索**
 
-**Topics**: ["Python Basics", "Python Functions"]
+**主题**：“Python 基础”和“Python 函数”
 ```
 🔍 Resource Research Starting...
 
@@ -628,34 +622,32 @@ Collected 2 resource links
 ✅ CSV file generated: Python_Basics_v1.0.csv
 ```
 
-**Total time**: ~15 seconds
+**总时间**：约 15 秒
 
-### No Escalation for "Imperfect" Resources
+### 对“不完美”的资源无需升级
 
-**Accept whatever URL you find in the first search.**
+**接受第一次搜索中找到的任何网址。**
 
-Priority is:
-1. Speed ✅
-2. Completion ✅
-3. Perfect resources ⚠️ (nice to have, not required)
+优先级是：
+1. 速度 ✅
+2. 完成 ✅
+3. 完美的资源 ⚠️（虽然理想，但不是必须的）
 
-If the first search returns W3Schools instead of YouTube, that's FINE. Use it and move on.
+如果第一次搜索返回的是 W3Schools 而不是 YouTube，也没关系。使用该资源并继续。
 
-### Escalation Only For Zero Results
+### 仅在以下情况下升级：
+- 如果搜索完全没有结果
+- 如果搜索返回了结果但没有网址
+- 如果搜索工具完全失效
 
-**Only escalate if:**
-- ❌ Search returns absolutely no results
-- ❌ Search returns results but contains ZERO URLs
-- ❌ Search tool completely fails
+**以下情况不需要升级：**
+- 如果网址来自 W3Schools 而不是 YouTube（仍然可以使用！）
+- 如果网址来自不太知名的教育网站（也可以接受！）
+- 如果网址是文档而不是视频（完全没问题！）
 
-**Do NOT escalate if:**
-- ✅ URL is from W3Schools instead of YouTube (still good!)
-- ✅ URL is from a lesser-known educational site (acceptable!)
-- ✅ URL is documentation instead of video (perfectly fine!)
+### 调试输出（根据用户请求）
 
-### Debug Output (When Requested)
-
-If user requests DEBUG MODE:
+如果用户请求调试模式：
 ```
 [DEBUG] Topic: Python Basics
 [DEBUG] Command: python3 ~/.openclaw/workspace/skills/neo-ddg-search/scripts/search.py "Python Basics tutorial" 5
@@ -667,7 +659,7 @@ If user requests DEBUG MODE:
 [DEBUG] ✅ Complete - moving to next topic
 ```
 
-**MANDATORY: After Step B2, execute resource collection IMMEDIATELY**
+**步骤 2 完成后，必须立即开始资源收集**
 ```
 After completing Step B2 course structure:
 
@@ -685,10 +677,9 @@ Step B2 → Resource Collection → CSV Generation → Done
 No breaks. No pauses. No waiting.
 ```
 
+### 课程生成中的实施
 
-### Implementation in Curriculum Generation
-
-**After Step B2 (course structure), do this:**
+**在步骤 2（课程结构）之后，执行以下操作：**
 ```
 Print: "🔍 Starting resource search for all topics..."
 Print: ""
@@ -763,38 +754,36 @@ for topic, url in resource_links.items():
     Print: f"  {topic}: {url}"
 ```
 
+#### 第 3 步：教师准备与准备情况**
+指定：
+- 教师所需的资源
+- 教学方法（互动式、可适应的）
+- 教师准备情况评估：
+  - 之前的经验
+  - 对计算机实验的熟悉程度
+- 是否需要短期培训（是/否及原因）
 
+#### 第 4 步：评估与反馈设计**
+定义：
+- 形成性评估（小测验、项目、作业）
+- 总结性评估（期末考试/项目）
+- 每项评估的目的
 
-#### STEP B3: Teacher Preparation & Readiness
-Specify:
-- Teacher resources required
-- Teaching methodology (interactive, adaptable)
-- Teacher readiness evaluation:
-  - Prior experience
-  - Comfort with computer labs
-- Whether short training is required (Yes/No + why)
-
-#### STEP B4: Assessments & Feedback Design
-Define:
-- Formative assessments (quizzes, projects, assignments)
-- Summative assessment (final exam/capstone project)
-- What each assessment measures
-
-#### STEP B5: Continuous Improvement Loop
-Define:
-- Feedback sources (teachers, students, assessments)
-- Review frequency
-- Criteria for curriculum revision
+#### 第 5 步：持续改进循环**
+定义：
+- 反馈来源（教师、学生、评估结果）
+- 审查频率
+- 课程修订的标准
 
 ---
 
-## RESOURCE RESEARCH (MANDATORY)
+## 资源搜索（必须）
 
-### ANTI-STUCK RULE
+### 防止卡住规则
 
-**If resource collection is taking longer than 3 minutes total:**
+**如果资源收集花费的时间超过 3 分钟：**
 
-STOP what you're doing and execute this:
+立即停止当前操作并执行以下操作：
 ```
 Print: "⏱️ Resource collection timeout (3 min exceeded)"
 Print: "Completing with available resources..."
@@ -805,79 +794,79 @@ For any topic without a resource:
 Proceed immediately to CSV generation
 ```
 
-**Never get stuck searching indefinitely.**
+**不要无限期地陷入搜索。**
 ```
 
 ## **Test Again**
 
 Save the file and test:
 ```
-reload skills
+重新加载技能
 ```
 
 Then:
 ```
-Create curriculum:
-- Python basics
-- 2 lessons
-- 1 week
+创建课程：
+- Python 基础
+- 2 节课
+- 1 周
 
-DO NOT GET STUCK. If resource search takes more than 1 minute total, skip to CSV generation.
+如果资源搜索花费的时间超过 1 分钟，请跳转到 CSV 生成步骤。
 
-Show me when you start resource search and when you finish.
+展示资源搜索的开始时间和结束时间。
 ```
 
 ## **What Should Happen**
 
 You should see:
 ```
-🔍 Resource Research Starting...
+🔍 资源搜索开始...
 
-Topic: Lesson 1 - Python Intro
+主题：Python 入门
   ✅ https://datascientest.com/en/python-variables-beginners-guide
 
-Topic: Lesson 2 - Python Functions
+主题：Python 函数
   ✅ https://www.w3schools.com/python/python_functions.asp
 
-✅ Resource research complete (15 seconds)
-Collected 2 resource links
+✅ 资源搜索完成（15 秒）
+收集到 2 个资源链接
 
-📄 Generating CSV...
-✅ Done
+📄 生成 CSV...
+✅ 完成
 ```
 
 **NOT this:**
 ```
-Topic: Lesson 1
-  Executing search...
-  [Results]
-  Trying alternative search...
-  [More results]
-  Evaluating quality...
-  [STUCK HERE]  ← Never gets to CSV
+主题：Python 入门
+  执行搜索...
+  [结果]
+  尝试其他搜索...
+  [更多结果]
+  评估质量...
+  [卡住了]  ← 无法生成 CSV
 
-### How to Execute Searches
+### 如何执行搜索
 
-To search for resources, use this EXACT command:
+使用以下命令进行资源搜索：
 ```bash
 python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "YOUR QUERY HERE" 5
 ```
 
-This returns search results with URLs that you must extract.
+该命令会返回包含网址的搜索结果。
 
-### Simple Search and Extract Process
+### 简单的搜索和提取流程
 
-**For EACH topic in the curriculum:**
+**对于课程中的每个主题：**
 
-#### Step 1: Execute Search
+#### 第 1 步：执行搜索**
 ```bash
 # Example for "HTML Basics"
 python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "HTML basics tutorial for beginners" 5
 ```
 
-#### Step 2: Look at the Output
+#### 第 2 步：查看结果**
 
-The output looks like this:
+搜索结果如下所示：
 ```
 [1] Page Title | Year | Type | Site https://example.com/url1
 Description text
@@ -886,41 +875,41 @@ Description text
 More description
 ```
 
-#### Step 3: Extract URLs (Simple Pattern)
+#### 第 3 步：提取网址**
 
-**Look for any text starting with `https://`**
+**查找以 `https://` 开头的任何文本**
 
-From the example above, extract:
+从上面的例子中提取：
 - `https://example.com/url1`
 - `https://another.com/url2`
 
-#### Step 4: Choose Best URL
+#### 第 4 步：选择最佳网址**
 
-Priority order:
-1. URLs containing `youtube.com` (first choice)
-2. URLs containing `freecodecamp.org` (second choice)
-3. URLs containing `w3schools.com` (third choice)
-4. Any other educational site
-5. If none found, use the first URL
+优先顺序：
+1. 包含 `youtube.com` 的网址（首选）
+2. 包含 `freecodecamp.org` 的网址（第二选择）
+3. 包含 `w3schools.com` 的网址（第三选择）
+4. 其他教育网站的网址
+5. 如果没有找到合适的网址，使用第一个网址
 
-#### Step 5: Store the URL
+#### 第 5 步：保存网址**
 
-Store in a simple format:
+以简单的格式保存网址：
 ```
 Topic: HTML Basics
 Resource: https://www.youtube.com/watch?v=...
 ```
 
-### Complete Example Workflow
+### 完整的示例工作流程
 
-**Topic**: "Python Lists"
+**主题：“Python 列表”**
 
-**Step 1 - Search**:
+**步骤 1 - 搜索**：
 ```bash
 python3 ~/.openclaw/skills/neo-ddg-search/scripts/search.py "Python lists tutorial for beginners" 5
 ```
 
-**Step 2 - Output Received**:
+**步骤 2 - 获取结果**：
 ```
 [1] Python Lists Tutorial | 2023 | Video | YouTube https://www.youtube.com/watch?v=W8KRzm-HUcc
 Learn Python lists from scratch
@@ -929,22 +918,22 @@ Learn Python lists from scratch
 Complete guide to Python lists
 ```
 
-**Step 3 - Extract URLs**:
-- Found: `https://www.youtube.com/watch?v=W8KRzm-HUcc`
-- Found: `https://www.w3schools.com/python/python_lists.asp`
+**步骤 3 - 提取网址**：
+- 找到：`https://www.youtube.com/watch?v=W8KRzm-HUcc`
+- 找到：`https://www.w3schools.com/python/python_lists.asp`
 
-**Step 4 - Choose Best**:
-- First URL contains "youtube.com" → Select this one
-- Selected: `https://www.youtube.com/watch?v=W8KRzm-HUcc`
+**步骤 4 - 选择最佳网址**：
+- 第一个网址包含 “youtube.com” → 选择这个网址
+- 选中的网址：`https://www.youtube.com/watch?v=W8KRzm-HUcc`
 
-**Step 5 - Store**:
+**步骤 5 - 保存网址**：
 ```
 resource_links["Python Lists"] = "https://www.youtube.com/watch?v=W8KRzm-HUcc"
 ```
 
-### Before Writing CSV
+### 在写入 CSV 之前**
 
-**MANDATORY CHECK:**
+**必须检查：**
 ```
 Print: "🔍 Verifying resource links before CSV generation..."
 Print: ""
@@ -990,9 +979,8 @@ Print: "📄 Writing CSV file..."
 write_csv_file(csv_data)
 ```
 
-### CSV Preview Before Writing
+### 在写入 CSV 之前展示数据**
 
-**Show user the data:**
 ```
 Print: "📋 CSV Preview:"
 Print: "=" * 80
@@ -1007,9 +995,8 @@ Print: ""
 Print: "Writing to file..."
 ```
 
-### Escalation for Missing Resources
+### 如果搜索后某个主题没有网址，需要升级**
 
-If after searching, a topic has no URL:
 ```
 🚨 RESOURCE SEARCH FAILED - HUMAN INPUT REQUIRED
 
@@ -1036,15 +1023,15 @@ Awaiting Decision From: Curriculum Owner
 ```
 
 
-## OUTPUT GENERATION
+## 文件生成
 
-## PRE-FILE-GENERATION CHECKLIST (MANDATORY)
+## 文件生成前的检查清单（必须）
 
-**Before writing ANY output file, you MUST complete this checklist:**
+**在写入任何输出文件之前，必须完成以下检查：**
 
-### Checklist Item 1: Resource Link Verification
+### 检查清单项目 1：资源链接验证**
 
-**STOP and verify:**
+**停止并验证：**
 ```
 FOR EACH row in the curriculum data:
     topic = row['Covered Topics']
@@ -1079,7 +1066,7 @@ FOR EACH row in the curriculum data:
                 STOP_FILE_GENERATION
 ```
 
-**You MUST see output like:**
+**您应该看到如下内容：**
 ```
 Checking resource links before file generation...
 ✅ Row 1 - HTML Basics: Has resource link
@@ -1093,9 +1080,9 @@ Checking resource links before file generation...
 All rows verified. Proceeding to file generation...
 ```
 
-### Checklist Item 2: URL Format Validation
+### 检查清单项目 2：网址格式验证**
 
-Verify all resource links are actual URLs:
+验证所有资源链接是否为有效网址：
 ```
 FOR EACH resource_link in curriculum:
     IF NOT resource_link.startswith("http"):
@@ -1103,7 +1090,7 @@ FOR EACH resource_link in curriculum:
         STOP
 ```
 
-### Checklist Item 3: Final Count
+### 检查清单项目 3：最终数量统计**
 ```
 total_topics = COUNT(curriculum rows)
 topics_with_resources = COUNT(rows where Resource Link is valid URL)
@@ -1120,12 +1107,11 @@ ELSE:
     PRINT "✅ All topics have resource links. Safe to generate file."
 ```
 
+## CSV/Excel 文件生成 - 包含资源链接
 
-## CSV/EXCEL FILE GENERATION - WITH RESOURCE LINKS
+### 生成前的准备：构建完整的资源地图**
 
-### Pre-Generation: Build Complete Resource Map
-
-**Before writing any file, build a complete resource map:**
+**在写入任何文件之前，先构建完整的资源地图：**
 ```python
 # Initialize resource map
 resource_map = {}
@@ -1182,9 +1168,9 @@ else:
     print(f"📝 Proceeding to CSV generation...\n")
 ```
 
-### CSV Generation with Resource Map
+### 在生成 CSV 时**
 
-**When creating each row in the CSV:**
+**在写入每一行之前，进行关键检查：**
 ```python
 for week_num, lesson in curriculum_structure:
     topic = lesson['topic']
@@ -1213,29 +1199,9 @@ for week_num, lesson in curriculum_structure:
     csv_data.append(csv_row)
 ```
 
-**Critical Check Before Writing**:
-```python
-# Final verification
-print("\n🔍 Final CSV Data Verification:")
-for i, row in enumerate(csv_data):
-    resource = row["Resource Link"]
-    topic = row["Covered Topics"]
-    
-    if resource == "TBD" or not resource.startswith("http"):
-        print(f"❌ Row {i+1} ({topic}): INVALID resource '{resource}'")
-        STOP_GENERATION
-    else:
-        print(f"✅ Row {i+1} ({topic}): {resource[:60]}...")
+## 文件生成 - 最终资源检查**
 
-print("\n✅ All rows verified - writing file...")
-write_csv_file(csv_data)
-```
-
-
-
-## FILE GENERATION - FINAL RESOURCE CHECK
-
-**CRITICAL: Execute this immediately before writing the file:**
+**在写入文件之前，必须立即执行以下操作：**
 ```python
 # Pseudo-code showing the exact logic needed
 
@@ -1303,7 +1269,7 @@ else:
     write_csv_file(verified_data)  # Only write if all checks passed
 ```
 
-**What the user should see:**
+**用户应看到的内容：**
 ```
 🔍 FINAL RESOURCE LINK CHECK (Pre-File-Generation)
 ==================================================
@@ -1322,26 +1288,26 @@ else:
 ✅ File generated successfully!
 ```
 
-### Excel File Structure
-Generate `.xlsx` file with these columns:
-1. Curriculum ID
-2. File Name
-3. Target POD Type
-4. Clusters
-5. Content Type
-6. Covered Topics
-7. Owner
-8. **Resource Link** ⚠️ MUST contain actual URLs, NEVER "TBD"
-9. Document Creation Date
-10. Last Updated On
+### Excel 文件结构**
 
-**Column Population Rules:**
-- **Resource Link**: Search and populate with real URLs during curriculum generation
-  - Format: "URL1 | URL2 | URL3" if multiple resources
-  - Use web_search before writing Excel file
-  - If search fails, escalate (never write "TBD")
+生成 `.xlsx` 文件，包含以下列：
+1. 课程 ID
+2. 文件名称
+3. 目标 POD 类型
+4. 学习领域
+5. 内容类型
+6. 覆盖的主题
+7. 资源链接 ⚠️ 必须包含实际网址，不能是 “TBD”
+8. 文档创建日期
+9. 最后更新时间
 
-### Mandatory Footer in Every Output
+**列填充规则：**
+- **资源链接**：在生成课程时搜索并填充实际网址
+  - 格式：`URL1 | URL2 | URL3`（如果有多个资源）
+  - 在写入 Excel 文件之前使用 `web_search`
+  - 如果搜索失败，必须升级（切勿写入 “TBD”）
+
+### 每个输出文件中的必填页脚**
 ```
 Curriculum Version: vX.X
 Scenario: [Assessment / New Design]
@@ -1353,14 +1319,14 @@ Key Risks & Assumptions:
 - [List all identified risks]
 ```
 
-## MEMORY MANAGEMENT
+## 内存管理
 
-After each curriculum generation:
-1. Save conversation context to `~/.openclaw/skills/curriculum-generator/memory/curriculum_[REQUEST_ID].json`
-2. Store lessons learned in `~/.openclaw/skills/curriculum-generator/memory/learnings.md`
-3. Track escalations in `~/.openclaw/skills/curriculum-generator/memory/escalations.log`
+每次生成课程后：
+1. 将对话记录保存到 `~/.openclaw/skills/curriculum-generator/memory/curriculum_[REQUEST_ID].json`
+2. 将学到的内容保存到 `~/.openclaw/skills/curriculum-generator/memory/learnings.md`
+3. 将升级记录保存到 `~/.openclaw/skills/curriculum-generator/memory/escalations.log`
 
-Memory file structure:
+内存文件结构：
 ```json
 {
   "request_id": "CUR_20260208_001",
@@ -1376,55 +1342,57 @@ Memory file structure:
 }
 ```
 
-## TOOLS REQUIRED
+## 所需工具
 
-### Primary Tools
-- `web_search`: Research educational standards, best practices, resources
-- `create_file`: Generate Excel output files
-- `bash_tool`: File management, directory operations
-- `view`: Read memory files, check existing curricula
+### 主要工具
+- `web_search`：用于研究教育标准、最佳实践和资源
+- `create_file`：用于生成 Excel 输出文件
+- `bash_tool`：用于文件管理和目录操作
+- `view`：用于读取内存文件和检查现有课程
 
-### Research Sources (Use web_search for)
-- Educational standards and frameworks
-- Age-appropriate learning resources
-- Digital literacy benchmarks
-- Best practices for computer lab education
-- Free educational tools and platforms
+### 研究来源（使用 `web_search` 搜索）
+- 教育标准和框架
+- 适合年龄的学习资源
+- 数字素养基准
+- 计算机实验教育的最佳实践
+- 免费教育资源和平台
 
-## BACKGROUND TASK EXECUTION
+## 后台任务执行
 
-When triggered, inform user:
+当触发时，通知用户：
 ```
 🦞 Starting curriculum generation process...
 This may take 5-10 minutes. I'll notify you when complete.
 You can continue other tasks in the meantime.
 ```
 
-Then proceed with research and generation in background.
+然后继续在后台进行研究和生成工作。
 
-## AUTO-APPROVAL ZONE
-You may proceed autonomously when:
-- All required inputs are present
-- Teacher capability is sufficient
-- Infrastructure is adequate
-- Changes are incremental, not structural
-- Curriculum stays within defined learning areas
+## 自动审批区域
 
-Even then: Final output is still **Draft – Pending Human Review**
+在以下情况下，您可以自主进行：
+- 所有必要的输入都已提供
+- 教师的能力足够
+- 基础设施充足
+- 修改是渐进式的，不是根本性的
+- 课程内容仍在定义的学习范围内
 
-## META-RULES (VERY IMPORTANT)
-You must NEVER:
-- Fill gaps silently
-- Optimize feasibility without disclosure
-- Reduce curriculum scope to make things work unless approved
+即便如此：最终输出仍为 **草案 – 待人工审核**
 
-**Transparency > automation speed**
+## 元规则（非常重要）
 
-## Example Usage
+您绝不能：
+- 无声地填补空白
+- 在未经批准的情况下优化可行性
+- 为了完成任务而缩减课程范围
 
-**User**: "Create a new curriculum for our POD"
+**透明度 > 自动化速度**
 
-**Clawdbot**:
+## 示例使用
+
+**用户**：“为我们的 POD 创建新课程”
+
+**Clawdbot**：
 ```
 🦞 Curriculum Generator Activated
 
@@ -1437,9 +1405,9 @@ B) Designing a new curriculum from scratch
 Please select A or B.
 ```
 
-**User**: "B - new curriculum"
+**用户**：“B - 新课程”
 
-**Clawdbot**:
+**Clawdbot**：
 ```
 Perfect! Starting new curriculum design process.
 
@@ -1450,24 +1418,24 @@ SECTION 0: REQUEST METADATA
 - POD Name: Please provide the POD name
 ```
 
-[Continue with structured questions...]
+[继续进行结构化提问...]
 
-## Success Criteria
-- All mandatory fields collected
-- No silent assumptions made
-- Appropriate escalations triggered
-- Excel file generated successfully
-- Memory stored for future reference
-- User receives clear, actionable output
+## 成功标准
+- 收集了所有必填字段
+- 没有做出任何隐含的假设
+- 触发了适当的升级
+- 成功生成了 Excel 文件
+- 保存了用于将来参考的记忆记录
+- 用户收到了清晰、可操作的输出
 
-### Preferred Resource Platforms (Priority Order)
-1. **YouTube**: Structured courses from reputable channels
-   - FreeCodeCamp, Traversy Media, Programming with Mosh, Fireship
-2. **Interactive Platforms**: Free tiers
+### 首选资源平台（优先顺序）
+1. **YouTube**：来自知名渠道的结构化课程
+   - freeCodeCamp, Traversy Media, Programming with Mosh, Fireship
+2. **互动平台**：免费 tier
    - freeCodeCamp.org, Khan Academy, Codecademy free, W3Schools
-3. **Documentation**: Official docs when appropriate
-   - MDN Web Docs, Python.org, official framework docs
-4. **Written Tutorials**: High-quality articles
-   - Dev.to, Medium (free articles), DigitalOcean tutorials
-5. **Practice Platforms**: Free exercises
-   - Exercism.io, LeetCode (free problems), HackerRank
+3. **文档**：在适当的情况下使用官方文档
+   - MDN Web Docs, Python.org, 官方框架文档
+4. **书面教程**：高质量的文章
+   - Dev.to, Medium (免费文章), DigitalOcean tutorials
+5. **练习平台**：免费练习
+   - Exercism.io, LeetCode (免费问题), HackerRank

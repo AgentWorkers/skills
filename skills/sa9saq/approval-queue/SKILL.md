@@ -1,12 +1,12 @@
 ---
-description: Manage pending actions (posts, deploys) with approve/reject workflow via REST API and CLI.
+description: 通过 REST API 和 CLI，使用“批准/拒绝”工作流来管理待处理的操作（发布、部署等）。
 ---
 
-# Approval Queue
+# 审批队列
 
-Lightweight approval queue for managing pending actions — SNS posts, deployments, content publishing. Approve or reject with a single tap.
+这是一个轻量级的审批队列系统，用于管理待处理的操作，例如 SNS 发布、部署任务和内容发布。只需轻轻一点即可完成批准或拒绝操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 cd {skill_dir}
@@ -22,18 +22,18 @@ node dist/cli.js approve <item-id>
 node dist/cli.js reject <item-id> --reason "Not appropriate"
 ```
 
-## API Endpoints
+## API 端点
 
-| Method | Path | Description |
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| `GET` | `/api/queue` | List items (filter: `?status=pending&type=sns_post`) |
-| `POST` | `/api/queue` | Add item |
-| `POST` | `/api/queue/:id/approve` | Approve |
-| `POST` | `/api/queue/:id/reject` | Reject (body: `{"reason": "..."}`) |
-| `GET` | `/api/queue/:id` | Get item details |
-| `DELETE` | `/api/queue/:id` | Delete item |
+| `GET` | `/api/queue` | 列出队列中的项目（过滤条件：`?status=pending&type=sns_post`） |
+| `POST` | `/api/queue` | 添加项目到队列 |
+| `POST` | `/api/queue/:id/approve` | 批准项目 |
+| `POST` | `/api/queue/:id/reject` | 拒绝项目（请求体：`{"reason": "..."}`） |
+| `GET` | `/api/queue/:id` | 获取项目详情 |
+| `DELETE` | `/api/queue/:id` | 删除项目 |
 
-## Queue Item Structure
+## 队列项目结构
 
 ```json
 {
@@ -47,34 +47,34 @@ node dist/cli.js reject <item-id> --reason "Not appropriate"
 }
 ```
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
 ```
 Agent creates content → Adds to queue → Sends inline approval button → User taps → Action executes
 ```
 
-## Security
+## 安全性
 
-- Validate all input payloads before queuing — reject malformed JSON
-- Sanitize `reviewer_note` to prevent injection if displayed in UI
-- Use authentication middleware in production (API key or JWT)
-- SQLite DB file should be `chmod 600`
+- 在将数据加入队列之前，验证所有输入数据；拒绝格式错误的 JSON 数据。
+- 对 `reviewer_note` 进行清理，以防止在用户界面中显示时发生注入攻击。
+- 在生产环境中使用身份验证中间件（API 密钥或 JWT）。
+- SQLite 数据库文件的权限应设置为 `chmod 600`。
 
-## Configuration
+## 配置参数
 
-| Variable | Default | Description |
+| 参数 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `PORT` | 3010 | Server port |
-| `DB_PATH` | `./data/queue.db` | SQLite path |
-| `WEBHOOK_URL` | — | Callback on approve/reject |
+| `PORT` | 3010 | 服务器端口 |
+| `DB_PATH` | `./data/queue.db` | SQLite 数据库文件路径 |
+| `WEBHOOK_URL` | — | 批准/拒绝操作的回调 URL |
 
-## Troubleshooting
+## 故障排除
 
-- **Port in use**: `lsof -i :3010` to find conflicts
-- **DB locked**: Only one server process should access the SQLite file
-- **Webhook failures**: Check URL reachability; add retry logic for production
+- **端口冲突**：使用 `lsof -i :3010` 命令检查端口是否已被占用。
+- **数据库锁定**：确保只有一个服务器进程可以访问 SQLite 文件。
+- **Webhook 失败**：检查回调 URL 是否可访问；在生产环境中添加重试逻辑。
 
-## Requirements
+## 系统要求
 
-- Node.js 18+
-- No external API keys needed
+- Node.js 18 及以上版本 |
+- 不需要外部 API 密钥

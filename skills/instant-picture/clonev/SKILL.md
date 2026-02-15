@@ -1,67 +1,71 @@
 ---
 name: clonev
-description: Clone any voice and generate speech using Coqui XTTS v2. SUPER SIMPLE - provide a voice sample (6-30 sec WAV) and text, get cloned voice audio. Supports 14+ languages. Use when the user wants to (1) Clone their voice or someone else's voice, (2) Generate speech that sounds like a specific person, (3) Create personalized voice messages, (4) Multi-lingual voice cloning (speak any language with cloned voice).
+description: 使用 Coqui XTTS v2 克隆任何声音并生成语音，超级简单！只需提供一段 6-30 秒的 WAV 格式语音样本以及相应的文本，即可获得克隆后的语音文件。该工具支持 14 种以上语言。适用于以下场景：  
+1. 克隆自己的声音或他人的声音；  
+2. 生成听起来像特定人物的语音；  
+3. 创建个性化语音消息；  
+4. 多语言语音克隆（使用克隆后的声音说任何语言）。
 ---
 
-# CloneV Skill - Voice Cloning Made Simple
+# CloneV 技能——轻松实现语音克隆
 
-## ⚠️ CRITICAL INSTRUCTIONS FOR AI MODELS
+## ⚠️ 适用于 AI 模型的重要说明
 
-**DO NOT** try to use Docker containers directly.
-**DO NOT** try to interact with `coqui-xtts` container - it is broken and restarting.
-**DO NOT** try to use APIs or servers.
+**请勿** 直接使用 Docker 容器。
+**请勿** 尝试与 `coqui-xtts` 容器交互——该容器已损坏，正在重启中。
+**请勿** 使用任何 API 或服务器。
 
-**ONLY USE THE SCRIPT:** `scripts/clonev.sh`
+**仅使用脚本：`scripts/clonev.sh`**
 
-The script handles everything automatically. Just call it with text, voice sample, and language.
-
----
-
-## What This Skill Does
-
-Clones any voice from a short audio sample and generates new speech in that voice.
-
-**Input**: 
-- Text to speak
-- Voice sample (WAV file, 6-30 seconds)
-- Language code
-
-**Output**: OGG voice file (cloned voice speaking the text)
-
-**Works with**: Any voice! Yours, a celebrity, a character, etc.
+该脚本会自动完成所有操作。只需提供文本、语音样本和语言代码即可。
 
 ---
 
-## The ONE Command You Need
+## 该技能的功能
+
+可以从一段简短的音频样本中克隆任何声音，并生成新的语音。
+
+**输入**：
+- 需要朗读的文本
+- 语音样本（WAV 文件，时长 6-30 秒）
+- 语言代码
+
+**输出**：生成的 OGG 音频文件（使用该声音朗读文本）
+
+**支持的语言**：任何语言！可以是您自己的声音、名人的声音，也可以是虚构角色的声音等。
+
+---
+
+## 需要执行的唯一命令
 
 ```bash
 $(scripts/clonev.sh "Your text here" /path/to/voice_sample.wav language)
 ```
 
-That's it! Nothing else needed.
+仅此而已，无需其他操作。
 
 ---
 
-## Step-by-Step Usage (FOR AI MODELS)
+## 分步使用方法（适用于 AI 模型）
 
-### Step 1: Get the required inputs
-- Text to speak (from user)
-- Path to voice sample WAV file (from user)
-- Language code (from user or default to `en`)
+### 第一步：获取所需输入
+- 需要朗读的文本（由用户提供）
+- 语音样本的 WAV 文件路径（由用户提供）
+- 语言代码（由用户提供，默认为 `en`）
 
-### Step 2: Run the script
+### 第二步：运行脚本
 ```bash
 VOICE_FILE=$(scripts/clonev.sh "TEXT_HERE" "/path/to/sample.wav" LANGUAGE)
 ```
 
-### Step 3: Use the output
-The variable `$VOICE_FILE` now contains the path to the generated OGG file.
+### 第三步：使用输出结果
+变量 `$VOICE_FILE` 中存储了生成的 OGG 文件的路径。
 
 ---
 
-## Complete Working Examples
+## 完整的使用示例
 
-### Example 1: Clone voice and send to Telegram
+### 示例 1：克隆声音并发送到 Telegram
 ```bash
 # Generate cloned voice
 VOICE=$(/home/bernie/clawd/skills/clonev/scripts/clonev.sh "Hello, this is my cloned voice!" "/mnt/c/TEMP/Recording 25.wav" en)
@@ -70,7 +74,7 @@ VOICE=$(/home/bernie/clawd/skills/clonev/scripts/clonev.sh "Hello, this is my cl
 message action=send channel=telegram asVoice=true filePath="$VOICE"
 ```
 
-### Example 2: Clone voice in Czech
+### 示例 2：克隆捷克语语音
 ```bash
 # Generate Czech voice
 VOICE=$(/home/bernie/clawd/skills/clonev/scripts/clonev.sh "Ahoj, tohle je můj hlas" "/mnt/c/TEMP/Recording 25.wav" cs)
@@ -79,7 +83,7 @@ VOICE=$(/home/bernie/clawd/skills/clonev/scripts/clonev.sh "Ahoj, tohle je můj 
 message action=send channel=telegram asVoice=true filePath="$VOICE"
 ```
 
-### Example 3: Full workflow with check
+### 示例 3：包含检查步骤的完整工作流程
 ```bash
 #!/bin/bash
 
@@ -97,68 +101,66 @@ fi
 
 ---
 
-## Common Language Codes
+## 常见语言代码
 
-| Code | Language | Example Usage |
+| 代码 | 语言 | 使用示例 |
 |------|----------|---------------|
-| `en` | English | `scripts/clonev.sh "Hello" sample.wav en` |
-| `cs` | Czech | `scripts/clonev.sh "Ahoj" sample.wav cs` |
-| `de` | German | `scripts/clonev.sh "Hallo" sample.wav de` |
-| `fr` | French | `scripts/clonev.sh "Bonjour" sample.wav fr` |
-| `es` | Spanish | `scripts/clonev.sh "Hola" sample.wav es` |
+| `en` | 英语 | `scripts/clonev.sh "Hello" sample.wav en` |
+| `cs` | 捷克语 | `scripts/clonev.sh "Ahoj" sample.wav cs` |
+| `de` | 德语 | `scripts/clonev.sh "Hallo" sample.wav de` |
+| `fr` | 法语 | `scripts/clonev.sh "Bonjour" sample.wav fr` |
+| `es` | 西班牙语 | `scripts/clonev.sh "Hola" sample.wav es` |
 
-Full list: en, cs, de, fr, es, it, pl, pt, tr, ru, nl, ar, zh, ja, hu, ko
-
----
-
-## Voice Sample Requirements
-
-- **Format**: WAV file
-- **Length**: 6-30 seconds (optimal: 10-15 seconds)
-- **Quality**: Clear audio, no background noise
-- **Content**: Any speech (the actual words don't matter)
-
-**Good samples**:
-- ✅ Recording of someone speaking clearly
-- ✅ No music or noise in background
-- ✅ Consistent volume
-
-**Bad samples**:
-- ❌ Music or songs
-- ❌ Heavy background noise
-- ❌ Very short (< 6 seconds)
-- ❌ Very long (> 30 seconds)
+完整语言代码列表：en, cs, de, fr, es, it, pl, pt, tr, ru, nl, ar, zh, ja, hu, ko
 
 ---
 
-## ⚠️ Important Notes
+## 语音样本要求
 
-### Model Download
-- First use downloads ~1.87GB model (one-time)
-- Model is stored at: `/mnt/c/TEMP/Docker-containers/coqui-tts/models-xtts/`
-- Status: ✅ Already downloaded
+- **格式**：WAV 文件
+- **时长**：6-30 秒（最佳时长：10-15 秒）
+- **质量**：音频清晰，无背景噪音
+- **内容**：任何语音内容均可（具体词汇无关紧要）
 
-### Processing Time
-- Takes 20-40 seconds depending on text length
-- This is normal - voice cloning is computationally intensive
+**优质样本**：
+- ✅ 说话清晰的语音录音
+- ✅ 背景中无音乐或噪音
+- ✅ 音量均匀
+
+**不合格的样本**：
+- ❌ 含有音乐或背景噪音
+- ❌ 时长过短（< 6 秒）或过长（> 30 秒）
 
 ---
 
-## Troubleshooting
+## ⚠️ 重要提示
 
-### "Command not found"
-Make sure you're in the skill directory or use full path:
+### 模型下载
+- 首次使用时会下载约 1.87GB 的模型文件（仅下载一次）
+- 模型存储位置：`/mnt/c/TEMP/Docker-containers/coqui-tts/models-xtts/`
+- 状态：✅ 已成功下载
+
+### 处理时间
+- 处理时间约为 20-40 秒，具体取决于文本长度
+- 这属于正常现象——语音克隆属于计算密集型操作
+
+---
+
+## 常见问题及解决方法
+
+### “命令未找到”
+请确保您位于技能对应的目录中，或使用完整路径：
 ```bash
 /home/bernie/clawd/skills/clonev/scripts/clonev.sh "text" sample.wav en
 ```
 
-### "Voice sample not found"
-- Check the path to the WAV file
-- Use absolute paths (starting with `/`)
-- Ensure file exists: `ls -la /path/to/sample.wav`
+### “语音样本未找到”
+- 检查 WAV 文件的路径是否正确
+- 使用绝对路径（以 `/` 开头）
+- 确保文件存在：`ls -la /path/to/sample.wav`
 
-### "Model not found"
-The model should auto-download. If not:
+### “模型未找到”
+模型应会自动下载。如果未下载，请尝试以下操作：
 ```bash
 cd /mnt/c/TEMP/Docker-containers/coqui-tts
 docker run --rm --entrypoint "" \
@@ -167,14 +169,14 @@ docker run --rm --entrypoint "" \
   python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
 ```
 
-### Poor voice quality
-- Use clearer voice sample
-- Ensure no background noise
-- Try different sample (some voices clone better)
+### 语音质量不佳
+- 使用更清晰的语音样本
+- 确保背景无噪音
+- 尝试使用其他语音样本（某些语音的克隆效果更好）
 
 ---
 
-## Quick Reference Card (FOR AI MODELS)
+## 快速参考卡（适用于 AI 模型）
 
 ```
 USER: "Clone my voice and say 'hello'"
@@ -193,27 +195,27 @@ USER: "Make me speak Czech"
 
 ---
 
-## Output Location
+## 输出文件路径
 
-Generated files are saved to:
+生成的文件保存在：
 ```
 /mnt/c/TEMP/Docker-containers/coqui-tts/output/clonev_output.ogg
 ```
 
-The script returns this path, so you can use it directly.
+脚本会返回该路径，您可以直接使用该路径。
 
 ---
 
-## Summary
+## 总结
 
-1. **ONLY use the script**: `scripts/clonev.sh`
-2. **NEVER** try to use Docker containers directly
-3. **NEVER** try to interact with the `coqui-xtts` container
-4. Script handles everything automatically
-5. Returns path to OGG file ready to send
+1. **仅使用脚本：`scripts/clonev.sh`**
+2. **切勿** 直接使用 Docker 容器
+3. **切勿** 与 `coqui-xtts` 容器交互
+4. 脚本会自动完成所有操作
+5. 返回可供发送的 OGG 文件路径
 
-**Simple. Just use the script.**
+**非常简单。只需使用脚本即可。**
 
 ---
 
-*Clone any voice. Speak any language. Just use the script.*
+*克隆任何声音，说出任何语言。只需使用这个脚本即可。*

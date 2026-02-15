@@ -1,44 +1,44 @@
 ---
 name: entr
-description: Run arbitrary commands when files change. Useful for watching files and triggering builds or tests.
+description: 当文件发生变化时，可以运行任意命令。这非常有用，可以用于监控文件的变化，并触发构建或测试过程。
 ---
 
-# entr (Event Notify Test Runner)
+# entr（事件通知测试运行器）
 
-A utility for running arbitrary commands when files change.
+这是一个在文件发生变化时执行任意命令的实用工具。
 
-## Usage
+## 使用方法
 
-`entr` takes a list of filenames from standard input and executes the utility specified as the first argument.
+`entr` 从标准输入接收文件名列表，并执行作为第一个参数指定的实用程序。
 
-### Syntax
+### 语法
 ```bash
 <file_listing_command> | entr <utility> [arguments]
 ```
 
-### Options
-- `-c`: Clear the screen before invoking the utility.
-- `-r`: Reload a persistent child process (e.g., a server).
-- `-s`: Evaluate the first argument using the interpreter specified by `SHELL`.
+### 选项
+- `-c`：在调用实用程序之前清空屏幕。
+- `-r`：重新加载一个持续运行的子进程（例如，服务器）。
+- `-s`：使用 `SHELL` 指定的解释器来执行第一个参数。
 
-## Examples
+## 示例
 
-**Rebuild project when sources change:**
+**在源代码发生变化时重新构建项目：**
 ```bash
 find src/ -name "*.c" | entr make
 ```
 
-**Run tests when JS files change:**
+**在 JS 文件发生变化时运行测试：**
 ```bash
 git ls-files | grep '\.js$' | entr npm test
 ```
 
-**Auto-reload a Node server:**
+**自动重新加载 Node 服务器：**
 ```bash
 ls *.js | entr -r node app.js
 ```
 
-## Agent Notes
-`entr` blocks the terminal. When using it as an agent:
-1. Use `process` tool to run it in the background if you need to do other things.
-2. Or use it for a quick "watch mode" session where you intend to monitor output for a while.
+## 作为代理的使用说明
+`entr` 会阻塞终端。当将其用作代理时：
+1. 如果你需要同时执行其他操作，请使用 `process` 工具在后台运行它。
+2. 或者，你可以将其用于快速“监视模式”，在该模式下你希望暂时观察输出结果。

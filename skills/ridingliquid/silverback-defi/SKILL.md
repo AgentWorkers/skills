@@ -1,6 +1,6 @@
 ---
 name: silverback-defi
-description: DeFi intelligence powered by Silverback — 19 x402 endpoints on Base chain. Market data, swap quotes, technical analysis, yield opportunities, token audits, whale tracking, and AI chat. Pay per call with USDC.
+description: 由 Silverback 提供支持的 DeFi 智能服务——在 Base 链上拥有 19 个 x402 端点。提供市场数据、交易报价、技术分析、收益机会、代币审计、大户追踪以及 AI 对话功能。使用 USDC 进行按次付费。
 homepage: https://silverbackdefi.app
 user-invocable: true
 disable-model-invocation: true
@@ -9,14 +9,14 @@ metadata: {"clawdbot":{"requires":{"bins":["curl","jq"]},"emoji":"🦍","categor
 
 # Silverback DeFi Intelligence
 
-19 x402-paid DeFi endpoints on Base chain. Pay per call with USDC — no API keys, no subscriptions. All endpoints use the x402 micropayment protocol.
+在 Base 链上提供了 19 个基于 x402 协议的 DeFi 服务端点。所有服务端点均支持通过 USDC 进行按次付费，无需 API 密钥或订阅。这些服务端点均使用 x402 微支付协议。
 
-Base URL: `https://x402.silverbackdefi.app`
+基础 URL：`https://x402.silverbackdefi.app`
 
-## Endpoints
+## 服务端点
 
-### Chat ($0.05)
-AI chat with all 19 intelligence tools. Ask any DeFi question.
+### 聊天 ($0.05)
+支持与所有 19 个智能工具进行 AI 对话，可以随时询问关于 DeFi 的任何问题。
 
 ```bash
 curl -s -X POST https://x402.silverbackdefi.app/api/v1/chat \
@@ -24,7 +24,8 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/chat \
   -d '{"message": "What are the top coins right now?"}'
 ```
 
-### Market Data ($0.001 each)
+### 市场数据 ($0.001/次)
+提供实时市场数据。
 
 ```bash
 # Top coins by market cap
@@ -52,7 +53,8 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/token-metadata \
   -H "Content-Type: application/json" -d '{"token": "ETH"}'
 ```
 
-### Trading & Analysis
+### 交易与分析
+提供详细的交易和分析功能。
 
 ```bash
 # Swap quote with routing ($0.002)
@@ -76,7 +78,8 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/correlation-matrix \
   -d '{"tokens": ["ETH", "BTC", "VIRTUAL"]}'
 ```
 
-### Yield & DeFi
+### 收益与 DeFi 产品
+帮助用户了解 DeFi 产品的收益情况。
 
 ```bash
 # Yield opportunities ($0.02)
@@ -90,7 +93,8 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/pool-analysis \
   -d '{"pool": "ETH/USDC"}'
 ```
 
-### Security & Intelligence
+### 安全性与情报分析
+提供有关 DeFi 系统安全性的分析报告。
 
 ```bash
 # Token contract audit ($0.01)
@@ -118,8 +122,8 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/agent-discover \
   -d '{"capability": "defi"}'
 ```
 
-### Non-custodial Swap ($0.05)
-Returns unsigned EIP-712 Permit2 data for client-side signing.
+### 非托管式交易（$0.05）
+提供未签名的 EIP-712 Permit2 数据，供客户端自行签名使用。
 
 ```bash
 curl -s -X POST https://x402.silverbackdefi.app/api/v1/swap \
@@ -127,13 +131,13 @@ curl -s -X POST https://x402.silverbackdefi.app/api/v1/swap \
   -d '{"fromToken": "USDC", "toToken": "ETH", "amount": "10", "walletAddress": "0xYOUR_WALLET"}'
 ```
 
-## Payment (x402 Protocol)
+## 支付（x402 协议）
+所有服务端点在响应时会返回 HTTP 402 错误码，并要求用户使用 USDC 进行支付。您可以使用 `@x402/fetch` 或任何兼容 x402 协议的客户端工具（及其自带的钱包）来完成支付。
 
-All endpoints return HTTP 402 with a USDC payment requirement. Your agent handles payment using `@x402/fetch` or any x402-compatible client with its own wallet.
+服务费用范围为每次 $0.001 至 $0.10，具体费用会在响应中明确说明。
 
-Prices range from $0.001 to $0.10 per call. The exact amount is specified in the 402 response.
-
-## Free Endpoints
+## 免费服务端点
+部分服务端点提供免费使用。
 
 ```bash
 # Health check
@@ -146,17 +150,17 @@ curl -s https://x402.silverbackdefi.app/api/v1/pricing
 curl -s https://x402.silverbackdefi.app/api/v1/endpoints
 ```
 
-## MCP Server
+## MCP 服务器
+适用于 Claude Desktop、Cursor 或 Claude Code 工具：
 
-For Claude Desktop, Cursor, or Claude Code:
 ```bash
 npm install -g silverback-x402-mcp
 ```
 https://www.npmjs.com/package/silverback-x402-mcp
 
-## Links
+## 链接
 
-- **Website**: https://silverbackdefi.app
-- **x402 Docs**: https://silverbackdefi.app/x402
-- **API**: https://x402.silverbackdefi.app
-- **Source**: https://github.com/RidingLiquid/silverback-skill
+- **官方网站**：https://silverbackdefi.app
+- **x402 文档**：https://silverbackdefi.app/x402
+- **API**：https://x402.silverbackdefi.app
+- **源代码**：https://github.com/RidingLiquid/silverback-skill

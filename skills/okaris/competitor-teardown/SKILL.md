@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Competitor Teardown
+# 竞品分析框架
 
-Structured competitive analysis with research and screenshots via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，结合研究和截图来进行结构化的竞品分析。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -31,23 +31,23 @@ infsh app run infsh/agent-browser --input '{
 }'
 ```
 
-## Teardown Framework
+## 竞品分析框架
 
-### The 7-Layer Analysis
+### 七层分析模型
 
-| Layer | What to Analyze | Data Source |
+| 分层 | 分析内容 | 数据来源 |
 |-------|----------------|-------------|
-| 1. **Product** | Features, UX, quality | Screenshots, free trial |
-| 2. **Pricing** | Plans, pricing model, hidden costs | Pricing page, sales call |
-| 3. **Positioning** | Messaging, tagline, ICP | Website, ads |
-| 4. **Traction** | Users, revenue, growth | Web search, press, funding |
-| 5. **Reviews** | Strengths, weaknesses from users | G2, Capterra, App Store |
-| 6. **Content** | Blog, social, SEO strategy | Website, social profiles |
-| 7. **Team** | Size, key hires, background | LinkedIn, About page |
+| 1. **产品** | 功能、用户体验（UX）、质量 | 截图、免费试用版 |
+| 2. **定价** | 价格方案、定价模式、隐藏费用 | 定价页面、销售电话 |
+| 3. **市场定位** | 宣传信息、口号、市场定位（ICP） | 官网、广告 |
+| 4. **用户增长** | 用户数量、收入、增长情况 | 网页搜索结果、新闻报道、融资信息 |
+| 5. **用户评价** | 用户对产品的评价（优点和缺点） | G2、Capterra、App Store |
+| 6. **内容建设** | 博客内容、社交媒体运营、SEO策略 | 官网、社交媒体账号 |
+| 7. **团队背景** | 团队规模、关键成员的背景 | LinkedIn、公司官网的“关于我们”页面 |
 
-## Research Commands
+## 研究命令
 
-### Company Overview
+### 公司概况
 
 ```bash
 # General intelligence
@@ -66,7 +66,7 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-### Product Analysis
+### 产品分析
 
 ```bash
 # Feature comparison
@@ -85,7 +85,7 @@ infsh app run tavily/search-assistant --input '{
 }'
 ```
 
-### UX Screenshots
+### 用户体验截图
 
 ```bash
 # Homepage
@@ -107,9 +107,9 @@ infsh app run infsh/agent-browser --input '{
 }'
 ```
 
-## Feature Matrix
+## 功能矩阵
 
-### Structure
+### 分析结构
 
 ```markdown
 | Feature | Your Product | Competitor A | Competitor B | Competitor C |
@@ -123,18 +123,18 @@ infsh app run infsh/agent-browser --input '{
 | Integrations | 50+ | 100+ | 30+ | 20+ |
 ```
 
-### Rules
+### 规则说明
 
-- ✅ = Full support
-- ⚠️ or "Partial" = Limited or conditional
-- ❌ = Not available
-- Note conditions: "Paid only", "Enterprise tier", "Beta"
-- Lead with features where YOU win
-- Be honest about competitor strengths — credibility matters
+- ✅ = 完全支持该功能
+- ⚠️ 或 “部分支持” = 功能有限或需满足特定条件
+- ❌ = 该功能不可用
+- 注意特殊说明：如 “仅限付费用户使用”、“企业级版本”、“测试阶段”
+- 首先列出你产品所具备的优势功能
+- 对竞品的优点要如实评估——诚信至关重要
 
-## Pricing Comparison
+## 定价比较
 
-### Structure
+### 分析结构
 
 ```markdown
 | | Your Product | Competitor A | Competitor B |
@@ -149,18 +149,18 @@ infsh app run infsh/agent-browser --input '{
 | **Hidden costs** | None | Setup fee $500 | API calls metered |
 ```
 
-### What to Look For
+### 需要关注的重点
 
-- Minimum seat requirements
-- Annual-only billing (reduces flexibility)
-- Feature gating between tiers
-- Overage charges
-- Setup/onboarding fees
-- Contract lock-in periods
+- 最低用户数量要求
+- 是否仅支持年度订阅（降低灵活性）
+- 不同等级之间的功能限制
+- 超额使用费用
+- 设置/入职费用
+- 合同锁定期
 
-## SWOT Analysis
+## SWOT 分析
 
-Create a SWOT for each competitor:
+为每个竞品制作 SWOT 分析报告：
 
 ```markdown
 ### Competitor A — SWOT
@@ -178,21 +178,21 @@ Create a SWOT for each competitor:
 | • International markets untapped | • Key engineer departures (LinkedIn) |
 ```
 
-## Positioning Map
+## 市场定位图
 
-A 2x2 matrix showing where competitors sit on two meaningful dimensions.
+使用 2x2 矩阵展示竞品在两个关键维度上的位置。
 
-### Choose Meaningful Axes
+### 选择有意义的分析维度
 
-| Good Axes | Bad Axes |
+| 有意义的维度 | 不合适的维度 |
 |-----------|----------|
-| Simple ↔ Complex | Good ↔ Bad |
-| SMB ↔ Enterprise | Cheap ↔ Expensive (too obvious) |
-| Self-serve ↔ Sales-led | Old ↔ New |
-| Specialized ↔ General | Small ↔ Large |
-| Opinionated ↔ Flexible | — |
+| 简单 ↔ 复杂 | 好 ↔ 坏 |
+| 中小企业 ↔ 企业级 | 便宜 ↔ 昂贵（过于明显） |
+| 自助服务 ↔ 人工销售 | 旧产品 ↔ 新产品 |
+| 专业领域 ↔ 广泛适用 | 小型企业 ↔ 大型企业 |
+| 观点固定 ↔ 灵活多变 | — |
 
-### Template
+### 模板
 
 ```
                     Enterprise
@@ -208,7 +208,7 @@ A 2x2 matrix showing where competitors sit on two meaningful dimensions.
                       SMB
 ```
 
-### Generating the Visual
+### 生成可视化报告
 
 ```bash
 # Create positioning map with Python
@@ -217,28 +217,28 @@ infsh app run infsh/python-executor --input '{
 }'
 ```
 
-## Review Mining
+## 用户评价收集
 
-### Where to Find Reviews
+### 评价来源
 
-| Platform | Best For | URL Pattern |
+| 平台 | 适用场景 | URL 模式 |
 |----------|----------|-------------|
-| G2 | B2B SaaS | g2.com/products/[product]/reviews |
-| Capterra | Business software | capterra.com/software/[id]/reviews |
-| App Store | iOS apps | apps.apple.com |
-| Google Play | Android apps | play.google.com |
-| Product Hunt | Launches | producthunt.com/posts/[product] |
-| Reddit | Honest opinions | reddit.com/r/[relevant-sub] |
+| G2 | B2B SaaS 产品 | g2.com/products/[产品名称]/reviews |
+| Capterra | 商业软件 | capterra.com/software/[产品ID]/reviews |
+| App Store | iOS 应用 | apps.apple.com |
+| Google Play | Android 应用 | play.google.com |
+| Product Hunt | 新产品发布 | producthunt.com/posts/[产品名称] |
+| Reddit | 用户评价 | reddit.com/r/[相关子版块] |
 
-### What to Extract
+### 需要提取的信息
 
-| Category | Look For |
+| 评价类别 | 关注点 |
 |----------|---------|
-| **Most praised** | What features do happy users mention most? |
-| **Most complained** | What do unhappy users say? (= your opportunity) |
-| **Switching reasons** | Why do users leave? What triggers switching? |
-| **Feature requests** | What's missing that users want? |
-| **Comparison mentions** | When users compare, what do they say? |
+| **最受好评的功能** | 用户最常提到的优点是什么？ |
+| **最受诟病的功能** | 用户不满的地方是什么？（这可能是你的机会） |
+| **用户更换产品的原因** | 用户为何选择更换产品？是什么促使他们做出改变？ |
+| **用户需求** | 用户还缺少哪些功能？ |
+| **用户比较内容** | 用户在比较产品时提到了什么？ |
 
 ```bash
 # Mine G2 reviews
@@ -252,9 +252,9 @@ infsh app run exa/search --input '{
 }'
 ```
 
-## Deliverable Formats
+## 报告输出格式
 
-### Executive Summary (1 page)
+### 执行摘要（1 页）
 
 ```markdown
 ## Competitive Landscape Summary
@@ -274,17 +274,17 @@ infsh app run exa/search --input '{
 | Rating (G2) | X.X | Y.Y | Z.Z | W.W |
 ```
 
-### Detailed Report (per competitor)
+### 详细报告（针对每个竞品）
 
-1. Company overview (size, funding, team)
-2. Product analysis (features, UX screenshots)
-3. Pricing breakdown
-4. SWOT analysis
-5. Review analysis (top praised, top complained)
-6. Positioning vs. you
-7. Opportunity summary
+1. 公司概况（规模、融资情况、团队构成）
+2. 产品分析（功能介绍、用户体验截图）
+3. 定价详情
+4. SWOT 分析
+5. 用户评价分析（最受好评的功能、最受诟病的功能）
+6. 竞品的市场定位与你的产品的对比
+7. 市场机会分析
 
-## Comparison Grid Visual
+## 对比图表
 
 ```bash
 # Stitch competitor screenshots into comparison
@@ -294,22 +294,22 @@ infsh app run infsh/stitch-images --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误类型 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Only looking at features | Misses positioning, pricing, traction | Use the 7-layer framework |
-| Biased analysis | Loses credibility | Be honest about competitor strengths |
-| Outdated data | Wrong conclusions | Date all research, refresh quarterly |
-| Too many competitors | Analysis paralysis | Focus on top 3-5 direct competitors |
-| No "so what" | Data without insight | End each section with implications for you |
-| Feature-only comparison | Doesn't show positioning | Include pricing, reviews, positioning map |
+| 仅关注产品功能 | 忽略了市场定位、定价和用户增长情况 | 使用七层分析模型 |
+| 偏颇的分析 | 降低可信度 | 对竞品的优点要如实评估 |
+| 数据过时 | 造成错误结论 | 所有研究数据需标注日期，并每季度更新 |
+| 研究对象过多 | 分析陷入混乱 | 重点关注前三到五个主要竞争对手 |
+| 分析缺乏深度 | 数据缺乏实际意义 | 每个分析部分都要说明对自身的影响 |
+| 仅比较功能 | 无法全面了解竞品优势 | 需要包含定价、用户评价和市场定位信息 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@web-search
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用应用程序：`infsh app list`

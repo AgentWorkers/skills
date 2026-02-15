@@ -1,14 +1,14 @@
 ---
 name: azure-ai-agents-py
-description: Build AI agents using the Azure AI Agents Python SDK (azure-ai-agents). Use when creating agents hosted on Azure AI Foundry with tools (File Search, Code Interpreter, Bing Grounding, Azure AI Search, Function Calling, OpenAPI, MCP), managing threads and messages, implementing streaming responses, or working with vector stores. This is the low-level SDK - for higher-level abstractions, use the agent-framework skill instead.
+description: 使用 Azure AI Agents Python SDK (azure-ai-agents) 构建 AI 代理。该 SDK 适用于在 Azure AI Foundry 上托管代理时，涉及以下功能：文件搜索、代码解释、Bing Grounding、Azure AI Search、函数调用、OpenAPI、MCP 等工具的使用；线程和消息的管理；流式响应的实现；以及与向量存储的交互。这是一个低级别的 SDK——如需更高层次的抽象功能，请使用 agent-framework 技能。
 package: azure-ai-agents
 ---
 
 # Azure AI Agents Python SDK
 
-Build agents hosted on Azure AI Foundry using the `azure-ai-agents` SDK.
+使用 `azure-ai-agents` SDK 在 Azure AI Foundry 上构建代理。
 
-## Installation
+## 安装
 
 ```bash
 pip install azure-ai-agents azure-identity
@@ -16,14 +16,14 @@ pip install azure-ai-agents azure-identity
 pip install azure-ai-projects azure-identity
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
 MODEL_DEPLOYMENT_NAME="gpt-4o-mini"
 ```
 
-## Authentication
+## 认证
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -36,11 +36,11 @@ client = AgentsClient(
 )
 ```
 
-## Core Workflow
+## 核心工作流程
 
-The basic agent lifecycle: **create agent → create thread → create message → create run → get response**
+代理的基本生命周期：**创建代理 → 创建线程 → 创建消息 → 启动运行 → 获取响应**
 
-### Minimal Example
+### 最小示例
 
 ```python
 import os
@@ -83,21 +83,21 @@ if run.status == "completed":
 client.delete_agent(agent.id)
 ```
 
-## Tools Overview
+## 工具概述
 
-| Tool | Class | Use Case |
+| 工具 | 类 | 用途 |
 |------|-------|----------|
-| Code Interpreter | `CodeInterpreterTool` | Execute Python, generate files |
-| File Search | `FileSearchTool` | RAG over uploaded documents |
-| Bing Grounding | `BingGroundingTool` | Web search |
-| Azure AI Search | `AzureAISearchTool` | Search your indexes |
-| Function Calling | `FunctionTool` | Call your Python functions |
-| OpenAPI | `OpenApiTool` | Call REST APIs |
-| MCP | `McpTool` | Model Context Protocol servers |
+| 代码解释器 | `CodeInterpreterTool` | 执行 Python 代码、生成文件 |
+| 文件搜索 | `FileSearchTool` | 对上传的文档进行检索 |
+| Bing 地理信息查询 | `BingGroundingTool` | 进行网络搜索 |
+| Azure AI 搜索 | `AzureAISearchTool` | 在索引中搜索 |
+| 函数调用 | `FunctionTool` | 调用 Python 函数 |
+| OpenAPI | `OpenApiTool` | 调用 REST API |
+| MCP | `McpTool` | 模型上下文协议服务器 |
 
-See [references/tools.md](references/tools.md) for detailed patterns.
+详细的使用模式请参阅 [references/tools.md](references/tools.md)。
 
-## Adding Tools
+## 添加工具
 
 ```python
 from azure.ai.agents import CodeInterpreterTool, FileSearchTool
@@ -111,7 +111,7 @@ agent = client.create_agent(
 )
 ```
 
-## Function Calling
+## 函数调用
 
 ```python
 from azure.ai.agents import FunctionTool, ToolSet
@@ -139,7 +139,7 @@ run = client.runs.create_and_process(
 )
 ```
 
-## Streaming
+## 流式处理
 
 ```python
 from azure.ai.agents import AgentEventHandler
@@ -160,11 +160,11 @@ with client.runs.stream(
     stream.until_done()
 ```
 
-See [references/streaming.md](references/streaming.md) for advanced patterns.
+有关高级处理模式的详细信息，请参阅 [references/streaming.md](references/streaming.md)。
 
-## File Operations
+## 文件操作
 
-### Upload File
+### 上传文件
 
 ```python
 file = client.files.upload_and_poll(
@@ -173,7 +173,7 @@ file = client.files.upload_and_poll(
 )
 ```
 
-### Create Vector Store
+### 创建向量存储
 
 ```python
 vector_store = client.vector_stores.create_and_poll(
@@ -188,7 +188,7 @@ agent = client.create_agent(
 )
 ```
 
-## Async Client
+## 异步客户端
 
 ```python
 from azure.ai.agents.aio import AgentsClient
@@ -201,11 +201,11 @@ async with AgentsClient(
     # ... async operations
 ```
 
-See [references/async-patterns.md](references/async-patterns.md) for async patterns.
+有关异步客户端使用的详细信息，请参阅 [references/async-patterns.md](references/async-patterns.md)。
 
-## Response Format
+## 响应格式
 
-### JSON Mode
+### JSON 模式
 
 ```python
 agent = client.create_agent(
@@ -214,7 +214,7 @@ agent = client.create_agent(
 )
 ```
 
-### JSON Schema
+### JSON 架构
 
 ```python
 agent = client.create_agent(
@@ -236,9 +236,9 @@ agent = client.create_agent(
 )
 ```
 
-## Thread Management
+## 线程管理
 
-### Continue Conversation
+### 继续对话
 
 ```python
 # Save thread_id for later
@@ -253,7 +253,7 @@ client.messages.create(
 run = client.runs.create_and_process(thread_id=thread_id, agent_id=agent.id)
 ```
 
-### List Messages
+### 列出消息
 
 ```python
 messages = client.messages.list(thread_id=thread.id, order="asc")
@@ -263,16 +263,16 @@ for msg in messages:
     print(f"{role}: {content}")
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use context managers** for async client
-2. **Clean up agents** when done: `client.delete_agent(agent.id)`
-3. **Use `create_and_process`** for simple cases, **streaming** for real-time UX
-4. **Pass toolset to run** for automatic function execution
-5. **Poll operations** use `*_and_poll` methods for long operations
+1. 对于异步客户端，使用上下文管理器。
+2. 使用完代理后及时清理资源：`client.delete_agent(agent.id)`
+3. 对于简单场景使用 `create_and_process`，对于实时用户体验使用流式处理（streaming）。
+4. 通过 `run` 方法传递工具集以自动执行函数。
+5. 对于耗时较长的操作，使用 `*_and_poll` 方法进行轮询。
 
-## Reference Files
+## 参考文件
 
-- [references/tools.md](references/tools.md): All tool types with detailed examples
-- [references/streaming.md](references/streaming.md): Event handlers and streaming patterns
-- [references/async-patterns.md](references/async-patterns.md): Async client usage
+- [references/tools.md](references/tools.md)：所有工具类型及其详细示例
+- [references/streaming.md](references/streaming.md)：事件处理器和流式处理模式
+- [references/async-patterns.md](references/async-patterns.md)：异步客户端的使用方法

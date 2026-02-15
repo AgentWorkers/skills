@@ -1,6 +1,6 @@
 ---
 name: quality-manager-qmr
-description: Senior Quality Manager Responsible Person (QMR) for HealthTech and MedTech companies. Provides quality system governance, management review leadership, regulatory compliance oversight, and quality performance monitoring per ISO 13485 Clause 5.5.2.
+description: 高级质量经理（QMR），负责健康科技（HealthTech）和医疗科技（MedTech）公司的相关工作。根据ISO 13485标准第5.5.2条款的要求，该职位负责质量体系的治理、管理评审的领导工作、法规合规性的监督以及质量绩效的监控。
 triggers:
   - management review
   - quality policy
@@ -16,94 +16,93 @@ triggers:
   - quality governance
 ---
 
-# Senior Quality Manager Responsible Person (QMR)
+# 高级质量经理（QMR）职责
 
-Quality system accountability, management review leadership, and regulatory compliance oversight per ISO 13485 Clause 5.5.2 requirements.
-
----
-
-## Table of Contents
-
-- [QMR Responsibilities](#qmr-responsibilities)
-- [Management Review Workflow](#management-review-workflow)
-- [Quality KPI Management Workflow](#quality-kpi-management-workflow)
-- [Quality Objectives Workflow](#quality-objectives-workflow)
-- [Quality Culture Assessment Workflow](#quality-culture-assessment-workflow)
-- [Regulatory Compliance Oversight](#regulatory-compliance-oversight)
-- [Decision Frameworks](#decision-frameworks)
-- [Tools and References](#tools-and-references)
+根据ISO 13485第5.5.2条款的要求，负责质量体系的问责制、管理评审的领导工作以及监管合规性的监督。
 
 ---
 
-## QMR Responsibilities
+## 目录
 
-### ISO 13485 Clause 5.5.2 Requirements
+- [QMR职责](#qmr-responsibilities)
+- [管理评审工作流程](#management-review-workflow)
+- [质量KPI管理工作流程](#quality-kpi-management-workflow)
+- [质量目标工作流程](#quality-objectives-workflow)
+- [质量文化评估工作流程](#quality-culture-assessment-workflow)
+- [监管合规性监督](#regulatory-compliance-oversight)
+- [决策框架](#decision-frameworks)
+- [工具和参考资料](#tools-and-references)
 
-| Responsibility | Scope | Evidence |
+---
+
+## QMR职责
+
+### ISO 13485第5.5.2条款要求
+
+| 职责 | 范围 | 证据 |
 |----------------|-------|----------|
-| QMS effectiveness | Monitor system performance and suitability | Management review records |
-| Reporting to management | Communicate QMS performance to top management | Quality reports, dashboards |
-| Quality awareness | Promote regulatory and quality requirements | Training records, communications |
-| Liaison with external parties | Interface with regulators, Notified Bodies | Meeting records, correspondence |
+| 质量管理体系（QMS）的有效性 | 监控体系性能和适用性 | 管理评审记录 |
+| 向管理层报告 | 向高层管理层通报QMS的绩效 | 质量报告、仪表板 |
+| 提高质量意识 | 强化对监管要求和质量标准的认识 | 培训记录、沟通材料 |
+| 与外部方联络 | 与监管机构和认证机构沟通 | 会议记录、往来函件 |
 
-### QMR Accountability Matrix
+### QMR问责矩阵
 
-| Domain | Accountable For | Reports To | Frequency |
+| 领域 | 负责人 | 报告对象 | 定期频率 |
 |--------|-----------------|------------|-----------|
-| Quality Policy | Policy adequacy and communication | CEO/Board | Annual review |
-| Quality Objectives | Objective achievement and relevance | Executive Team | Quarterly |
-| QMS Performance | System effectiveness metrics | Management | Monthly |
-| Regulatory Compliance | Compliance status across jurisdictions | CEO | Quarterly |
-| Audit Program | Audit schedule completion, findings closure | Management | Per audit |
-| CAPA Oversight | CAPA effectiveness and timeliness | Executive Team | Monthly |
+| 质量政策 | 政策的充分性和传达情况 | 首席执行官/董事会 | 年度审查 |
+| 质量目标 | 目标的达成情况和相关性 | 执行团队 | 季度审查 |
+| QMS绩效 | 体系有效性指标 | 管理层 | 每月 |
+| 监管合规性 | 各司法管辖区的合规状况 | 首席执行官 | 季度 |
+| 审计计划 | 审计计划的执行和问题处理 | 管理层 | 每次审计后 |
+| 不符合项的纠正措施（CAPA） | CAPA的有效性和及时性 | 执行团队 | 每月 |
 
-### Authority Boundaries
+### 权限范围
 
-| Decision Type | QMR Authority | Escalation Required |
+| 决策类型 | QMR的权限 | 需要上报的层级 |
 |---------------|---------------|---------------------|
-| Process changes within QMS | Approve with owner | Major process redesign |
-| Document approval | Final QA approval | Policy-level changes |
-| Nonconformity disposition | Accept/reject with MRB | Product release decisions |
-| Supplier quality actions | Quality holds, audits | Supplier termination |
-| Audit scheduling | Adjust internal audit schedule | External audit timing |
-| Training requirements | Define quality training needs | Organization-wide training budget |
+| QMS内的流程变更 | 与负责人共同审批 | 重大流程重新设计 |
+| 文件审批 | 最终的质量保证（QA）审批 | 政策级别的变更 |
+| 不符合项的处理 | 接受/拒绝，并与质量审核委员会（MRB）协商 | 产品发布决策 |
+| 供应商质量相关事项 | 质量暂停、审计 | 供应商终止合作 |
+| 审计安排 | 调整内部审计计划 | 外部审计时间安排 |
 
 ---
 
-## Management Review Workflow
+## 管理评审工作流程
 
-Conduct management reviews per ISO 13485 Clause 5.6 requirements.
+根据ISO 13485第5.6条款的要求，执行管理评审。
 
-### Workflow: Prepare and Execute Management Review
+### 工作流程：准备和执行管理评审
 
-1. Schedule management review (minimum annually, typically quarterly or semi-annually)
-2. Notify all required attendees minimum 2 weeks prior
-3. Collect required inputs from process owners:
-   - Audit results (internal and external)
-   - Customer feedback (complaints, satisfaction, returns)
-   - Process performance and product conformity
-   - CAPA status and effectiveness
-   - Previous review action items
-   - Changes affecting QMS (regulatory, organizational)
-   - Recommendations for improvement
-4. Compile input summary report with trend analysis
-5. Prepare presentation materials with supporting data
-6. Distribute agenda and input package 1 week prior
-7. Conduct review meeting per agenda
-8. **Validation:** All required inputs reviewed; decisions documented with owners and due dates
+1. 安排管理评审（至少每年一次，通常为季度或半年一次）
+2. 至少提前两周通知所有相关人员
+3. 从流程负责人处收集所需信息：
+   - 审计结果（内部和外部）
+   - 客户反馈（投诉、满意度、退货情况）
+   - 流程绩效和产品符合性
+   - CAPA的状态和效果
+   - 上次评审的待办事项
+   | 影响QMS的变更（监管或组织方面的）
+   | 改进建议
+4. 编制包含趋势分析的输入摘要报告
+5. 准备包含支持数据的演示材料
+6. 提前一周分发议程和输入资料包
+7. 按照议程进行评审会议
+8. **验证：**所有必要的输入信息均已审核；决策结果与相关负责人记录在案，并明确截止日期
 
-### Required Attendees
+### 必须参加的人员
 
-| Role | Requirement | Input Responsibility |
+| 角色 | 要求 | 输入信息的责任方 |
 |------|-------------|---------------------|
-| CEO/General Manager | Required | Strategic decisions |
-| QMR | Chair | Overall QMS status |
-| Department Heads | Required | Process performance |
-| RA Manager | Required | Regulatory changes |
-| Production Manager | Required | Product conformity |
-| Customer Quality | Required | Complaint data |
+| 首席执行官/总经理 | 必须参加 | 战略性决策 |
+| QMR | 主持人 | 整体QMS状况 |
+| 部门负责人 | 必须参加 | 流程绩效 |
+| 质量审核经理 | 必须参加 | 监管方面的变更 |
+| 生产经理 | 必须参加 | 产品符合性 |
+| 客户质量部门 | 必须参加 | 投诉数据 |
 
-### Management Review Input Template
+### 管理评审输入模板
 
 ```
 MANAGEMENT REVIEW INPUT SUMMARY
@@ -156,91 +155,90 @@ Prepared By: [QMR Name]
    [Collected improvement opportunities]
 ```
 
-### Management Review Output Requirements
+### 管理评审输出要求
 
-| Output | Documentation | Owner |
+| 输出内容 | 文档要求 | 负责人 |
 |--------|---------------|-------|
-| QMS improvement decisions | Action items with due dates | Assigned per item |
-| Resource needs | Resource plan updates | Department heads |
-| Quality objectives changes | Updated objectives document | QMR |
-| Process improvement needs | Improvement project charters | Process owners |
+| QMS改进决策 | 带有截止日期的待办事项 | 分配给具体负责人 |
+| 资源需求 | 资源计划更新 | 部门负责人 |
+| 质量目标变更 | 更新后的目标文档 | QMR |
+| 流程改进需求 | 改进项目计划 | 流程负责人 |
 
-See: [references/management-review-guide.md](references/management-review-guide.md)
+参见：[references/management-review-guide.md](references/management-review-guide.md)
 
 ---
 
-## Quality KPI Management Workflow
+## 质量KPI管理工作流程
 
-Establish, monitor, and report quality performance indicators.
+建立、监控并报告质量绩效指标。
 
-### Workflow: Establish Quality KPI Framework
+### 工作流程：建立质量KPI框架
 
-1. Identify quality objectives requiring measurement
-2. Select KPIs per objective using SMART criteria:
-   - Specific: Clear definition and calculation
-   - Measurable: Quantifiable with available data
-   - Actionable: Team can influence results
-   - Relevant: Aligned to quality objectives
-   - Time-bound: Defined measurement frequency
-3. Define target values based on baseline data and benchmarks
-4. Assign data source and collection responsibility
-5. Establish reporting frequency per KPI category
-6. Configure dashboard displays and trend analysis
-7. Define escalation thresholds and alert triggers
-8. **Validation:** Each KPI has owner, target, data source, and escalation criteria
+1. 确定需要衡量的质量目标
+2. 根据SMART标准为每个目标选择KPI：
+   - 具体性：有明确的定义和计算方法
+   - 可衡量性：可用数据可以量化
+   - 可操作性：团队能够影响结果
+   - 相关性：与质量目标一致
+   - 时间限制：有明确的测量频率
+3. 根据基线数据和基准值设定目标值
+4. 指定数据来源和收集责任
+5. 确定每个KPI类别的报告频率
+6. 配置仪表板显示和趋势分析功能
+7. 设定升级阈值和警报触发条件
+8. **验证：**每个KPI都有负责人、目标值、数据来源和升级标准
 
-### Core Quality KPIs
+### 核心质量KPI
 
-| Category | KPI | Target | Calculation |
+| 类别 | KPI | 目标值 | 计算方法 |
 |----------|-----|--------|-------------|
-| Process | First Pass Yield | >95% | (Units passed first time / Total units) × 100 |
-| Process | Nonconformance Rate | <1% | (NC count / Total units) × 100 |
-| CAPA | CAPA Closure Rate | >90% | (On-time closures / Due closures) × 100 |
-| CAPA | CAPA Effectiveness | >85% | (Effective CAPAs / Verified CAPAs) × 100 |
-| Audit | Finding Closure Rate | >90% | (On-time closures / Due closures) × 100 |
-| Audit | Repeat Finding Rate | <10% | (Repeat findings / Total findings) × 100 |
-| Customer | Complaint Rate | <0.1% | (Complaints / Units sold) × 100 |
-| Customer | Satisfaction Score | >4.0/5.0 | Average of survey scores |
+| 流程 | 首次通过率 | >95% | （首次通过的单位数 / 总单位数）× 100 |
+| 流程 | 不符合项率 | <1% | （不符合项数 / 总单位数）× 100 |
+| CAPA | CAPA关闭率 | >90% | （按时关闭的CAPA数量 / 应关闭的CAPA数量）× 100 |
+| CAPA | CAPA有效性 | >85% | （有效的CAPA数量 / 经核实的CAPA数量）× 100 |
+| 审计 | 发现问题的关闭率 | >90% | （按时关闭的发现问题数量 / 应关闭的发现问题数量）× 100 |
+| 客户 | 投诉率 | <0.1% | （投诉数量 / 销售单位数）× 100 |
+| 客户 | 满意度得分 | >4.0/5.0 | 调查平均得分 |
 
-### KPI Review Frequency
+### KPI审查频率
 
-| KPI Type | Review Frequency | Trend Period | Audience |
+| KPI类型 | 审查频率 | 趋势周期 | 监审对象 |
 |----------|------------------|--------------|----------|
-| Safety/Compliance | Daily monitoring | Weekly | Operations |
-| Production Quality | Weekly | Monthly | Department heads |
-| Customer Quality | Monthly | Quarterly | Executive team |
-| Strategic Quality | Quarterly | Annual | Board/C-suite |
+| 安全/合规 | 每日监控 | 每周 | 运营部门 |
+| 生产质量 | 每周 | 每月 | 部门负责人 |
+| 客户质量 | 每月 | 每季度 | 执行团队 |
+| 战略质量 | 每季度 | 每年 | 董事会/高层管理 |
 
-### Performance Response Matrix
+### 绩效响应矩阵
 
-| Performance Level | Status | Action Required |
+| 绩效水平 | 状态 | 需要采取的行动 |
 |-------------------|--------|-----------------|
-| >110% of target | Exceeding | Consider raising target |
-| 100-110% of target | Meeting | Maintain current approach |
-| 90-100% of target | Approaching | Monitor closely |
-| 80-90% of target | Below | Improvement plan required |
-| <80% of target | Critical | Immediate intervention |
+| 超过目标110% | 超出目标 | 考虑提高目标 |
+| 达到目标100-110% | 达到目标 | 维持现有方法 |
+| 接近目标90-100% | 接近目标 | 密切监控 |
+| 低于目标80% | 低于目标 | 需要改进计划 |
+| 低于目标80% | 严重低于目标 | 立即采取干预措施 |
 
-See: [references/quality-kpi-framework.md](references/quality-kpi-framework.md)
+参见：[references/quality-kpi-framework.md](references/quality-kpi-framework.md)
 
 ---
 
-## Quality Objectives Workflow
+## 质量目标工作流程
 
-Establish and maintain measurable quality objectives per ISO 13485 Clause 5.4.1.
+根据ISO 13485第5.4.1条款的要求，建立并维护可衡量的质量目标。
 
-### Workflow: Annual Quality Objectives Setting
+### 工作流程：年度质量目标设定
 
-1. Review prior year objective achievement
-2. Analyze quality performance trends and gaps
-3. Align with organizational strategic plan
-4. Draft objectives with measurable targets
-5. Validate resource availability for achievement
-6. Obtain executive approval
-7. Communicate objectives organization-wide
-8. **Validation:** Each objective is measurable, has owner, target, and timeline
+1. 审查上一年的目标达成情况
+2. 分析质量绩效趋势和差距
+3. 与组织战略计划保持一致
+4. 起草具有可衡量目标的质量目标
+5. 确认达成目标所需的资源
+6. 获得高层管理层的批准
+7. 在整个组织范围内传达目标
+**验证：**每个目标都是可衡量的，有负责人、目标值和时间表
 
-### Quality Objective Structure
+### 质量目标结构
 
 ```
 QUALITY OBJECTIVE [Number]
@@ -268,126 +266,126 @@ Resource Requirements:
 - [Resource 2]
 ```
 
-### Objective Categories
+### 目标类别
 
-| Category | Example Objectives | Typical Targets |
+| 类别 | 示例目标 | 典型目标值 |
 |----------|-------------------|-----------------|
-| Customer Quality | Reduce complaint rate | <0.1% of units sold |
-| Process Quality | Improve first pass yield | >96% |
-| Compliance | Maintain certification | Zero major NCs |
-| Efficiency | Reduce quality costs | <4% of revenue |
-| Culture | Increase training completion | >98% on-time |
+| 客户质量 | 降低投诉率 | <0.1%的投诉率 |
+| 流程质量 | 提高首次通过率 | >96% |
+| 合规性 | 维持认证 | 无重大不符合项 |
+| 效率 | 降低质量成本 | <4%的收入成本 |
+| 文化 | 提高培训完成率 | >98%的培训完成率 |
 
-### Quarterly Objective Review
+### 季度目标审查
 
-| Review Element | Assessment | Action |
+| 审查要素 | 评估 | 行动 |
 |----------------|------------|--------|
-| Progress vs. target | On track / Behind / Ahead | Adjust resources if behind |
-| Relevance | Still valid / Needs update | Modify if conditions changed |
-| Resources | Adequate / Insufficient | Request additional if needed |
-| Barriers | Identified obstacles | Escalate for resolution |
+| 进展与目标对比 | 符合目标 / 落后 / 超前 | 如果落后，调整资源 |
+| 相关性 | 仍然有效 / 需要更新 | 如果情况发生变化，进行调整 |
+| 资源 | 资源是否充足 | 如需，请求额外资源 |
+| 障碍 | 识别出的障碍 | 升级处理 |
 
 ---
 
-## Quality Culture Assessment Workflow
+## 质量文化评估工作流程
 
-Assess and improve organizational quality culture.
+评估并改进组织的质量文化。
 
-### Workflow: Annual Quality Culture Assessment
+### 工作流程：年度质量文化评估
 
-1. Design or select quality culture survey instrument
-2. Define survey population (all employees or sample)
-3. Communicate survey purpose and confidentiality
-4. Administer survey with 2-week response window
-5. Analyze results by department, role, and tenure
-6. Identify strengths and improvement areas
-7. Develop action plan for culture gaps
-8. **Validation:** Response rate >60%; action plan addresses bottom 3 scores
+1. 设计或选择质量文化调查工具
+2. 确定调查对象（所有员工或部分样本）
+3. 传达调查目的和保密性要求
+4. 在两周内进行调查并收集反馈
+5. 按部门、角色和任职时间分析结果
+6. 识别优势和改进领域
+7. 制定针对文化差距的行动计划
+**验证：**响应率>60%；行动计划针对得分最低的30%的员工
 
-### Quality Culture Dimensions
+### 质量文化维度
 
-| Dimension | Indicators | Assessment Method |
+| 维度 | 指标 | 评估方法 |
 |-----------|------------|-------------------|
-| Leadership commitment | Management visible support for quality | Survey, observation |
-| Quality ownership | Employees feel responsible for quality | Survey |
-| Communication | Quality information flows effectively | Survey, audit |
-| Continuous improvement | Suggestions submitted and implemented | Metrics |
-| Training and competence | Employees feel adequately trained | Survey, records |
-| Problem solving | Issues addressed at root cause | CAPA analysis |
+| 领导力承诺 | 管理层对质量的明确支持 | 调查、观察 |
+| 质量责任感 | 员工感到自己对质量负责 | 调查 |
+| 沟通 | 质量信息有效传递 | 调查、审计 |
+| 持续改进 | 建议被提出并得到实施 | 统计数据 |
+| 培训和能力 | 员工感到接受过充分培训 | 调查、记录 |
+| 问题解决 | 问题从根本原因解决 | CAPA分析 |
 
-### Culture Survey Categories
+### 文化调查类别
 
-| Category | Sample Questions |
+| 类别 | 示例问题 |
 |----------|------------------|
-| Leadership | "Management demonstrates commitment to quality" |
-| Resources | "I have the tools and training to do quality work" |
-| Communication | "Quality expectations are clearly communicated" |
-| Empowerment | "I am encouraged to report quality issues" |
-| Recognition | "Quality achievements are recognized" |
+| 领导力 | “管理层表现出对质量的承诺” |
+| 资源 | “我拥有进行质量工作所需的工具和培训” |
+| 沟通 | “质量期望得到清晰传达” |
+| 赋权 | “我被鼓励报告质量问题” |
+| 认可 | “质量成果得到认可” |
 
-### Culture Improvement Actions
+### 文化改进措施
 
-| Gap Identified | Potential Actions |
+| 识别出的差距 | 可能的改进措施 |
 |----------------|-------------------|
-| Low leadership visibility | Quality gemba walks, all-hands quality updates |
-| Inadequate training | Competency-based training program |
-| Poor communication | Quality newsletters, department huddles |
-| Low reporting | Anonymous reporting system, no-blame culture |
-| Lack of recognition | Quality award program, team celebrations |
+| 领导力不足 | 开展质量现场巡视、全员质量会议 |
+| 培训不足 | 根据能力制定培训计划 |
+| 沟通不畅 | 发布质量通讯、部门内部会议 |
+| 报告不足 | 实施匿名报告系统、无责备文化 |
+| 认可不足 | 设立质量奖励制度、团队庆祝活动 |
 
 ---
 
-## Regulatory Compliance Oversight
+## 监管合规性监督
 
-Monitor and maintain regulatory compliance across jurisdictions.
+监控并维护各司法管辖区的监管合规性。
 
-### Multi-Jurisdictional Compliance Matrix
+### 多司法管辖区合规性矩阵
 
-| Jurisdiction | Regulation | Requirement | Status Tracking |
+| 司法管辖区 | 监管法规 | 要求 | 状态跟踪 |
 |--------------|------------|-------------|-----------------|
-| EU | MDR 2017/745 | CE marking, Notified Body | Technical file, annual review |
-| USA | 21 CFR 820 | FDA registration, QSR compliance | Annual registration, inspections |
-| International | ISO 13485 | QMS certification | Surveillance audits |
-| Germany | MPG/MPDG | National implementation | Competent authority filings |
+| 欧盟 | MDR 2017/745 | CE标志、认证机构 | 技术文件、年度审查 |
+| 美国 | 21 CFR 820 | FDA注册、QSR合规 | 年度注册、检查 |
+| 国际 | ISO 13485 | QMS认证 | 监控审核 |
+| 德国 | MPG/MPDG | 国家级实施 | 向相关机构提交文件 |
 
-### Compliance Monitoring Workflow
+### 合规性监控工作流程
 
-1. Maintain regulatory requirement register
-2. Subscribe to regulatory update services
-3. Assess impact of regulatory changes monthly
-4. Update affected processes within 90 days of effective date
-5. Verify training completion for regulatory changes
-6. Document compliance status in management review
-7. Maintain inspection readiness checklist
-8. **Validation:** All applicable requirements mapped; no expired registrations
+1. 维护监管要求登记册
+2. 订阅监管更新服务
+3. 每月评估监管变化的影响
+4. 在法规生效后的90天内更新相关流程
+5. 确认员工是否完成了针对监管变化的培训
+6. 在管理评审中记录合规状态
+7. 保持检查准备就绪的状态
+**验证：**所有适用要求都已覆盖；无过期的注册记录
 
-### Regulatory Authority Interface
+### 监管机构接口
 
-| Activity | QMR Role | Preparation Required |
+| 活动 | QMR的角色 | 需要的准备事项 |
 |----------|----------|---------------------|
-| Notified Body audit | Primary contact | Audit package, personnel schedules |
-| FDA inspection | Host, escort coordinator | Inspection readiness review |
-| Competent Authority inquiry | Response coordinator | Technical file access |
-| Regulatory meeting | Attendee or delegate | Briefing materials |
+| 认证机构审核 | 主要联系人 | 审核资料、人员安排 |
+| FDA检查 | 主办人、协调员 | 检查准备情况 |
+| 相关机构查询 | 回应协调员 | 提供技术文件访问权限 |
+| 监管会议 | 与会者或代理人 | 会议材料准备 |
 
-### Inspection Readiness Checklist
+### 检查准备就绪状态检查表
 
-| Area | Ready | Action Needed |
+| 领域 | 是否准备就绪 | 需要采取的行动 |
 |------|-------|---------------|
-| Document control system current | ☐ | |
-| Training records complete | ☐ | |
-| CAPA system current, no overdue items | ☐ | |
-| Complaint files complete | ☐ | |
-| Equipment calibration current | ☐ | |
-| Supplier qualification files complete | ☐ | |
-| Management review records available | ☐ | |
-| Internal audit program current | ☐ | |
+| 文件控制系统 | 是 | |
+| 培训记录完整 | 是 | |
+| CAPA系统更新、无逾期事项 | 是 | |
+| 投诉文件完整 | 是 | |
+| 设备校准更新 | 是 | |
+| 供应商资质文件完整 | 是 | |
+| 管理评审记录可用 | 是 | |
+| 内部审核计划更新 | 是 | |
 
 ---
 
-## Decision Frameworks
+## 决策框架
 
-### Escalation Decision Tree
+### 升级决策树
 
 ```
 Issue Identified
@@ -413,76 +411,76 @@ immediately    Yes─┴─No
                     Executive    department level
 ```
 
-### Quality Investment Prioritization
+### 质量投资优先级排序
 
-| Criteria | Weight | Score Method |
+| 标准 | 权重 | 评分方法 |
 |----------|--------|--------------|
-| Regulatory requirement | 30% | Required=10, Recommended=5, Optional=2 |
-| Customer impact | 25% | Direct=10, Indirect=5, None=0 |
-| Cost savings potential | 20% | >$100K=10, $50-100K=7, <$50K=3 |
-| Implementation complexity | 15% | Simple=10, Moderate=5, Complex=2 |
-| Strategic alignment | 10% | Core=10, Supporting=5, Peripheral=2 |
+| 监管要求 | 30% | 必须满足=10分，建议满足=5分，可选满足=2分 |
+| 客户影响 | 25% | 直接影响=10分，间接影响=5分，无影响=0分 |
+| 成本节约潜力 | 20% | 节省超过10万美元=10分，5万至10万美元=7分，低于5万美元=3分 |
+| 实施复杂性 | 15% | 简单=10分，中等=5分，复杂=2分 |
+| 战略契合度 | 10% | 核心要求=10分，辅助要求=5分，次要要求=2分 |
 
-### Resource Allocation Matrix
+### 资源分配矩阵
 
-| Resource Type | Allocation Authority | Escalation Threshold |
+| 资源类型 | 分配权限 | 升级触发条件 |
 |---------------|---------------------|---------------------|
-| Quality personnel | QMR | >1 FTE addition |
-| Quality equipment | QMR | >$25K |
-| External consultants | QMR | >$50K or >30 days |
-| Quality systems | Executive approval | >$100K |
+| 质量人员 | QMR | 需要增加超过1个全职员工 |
+| 质量设备 | QMR | 费用超过2.5万美元 |
+| 外部顾问 | QMR | 费用超过5万美元或项目持续时间超过30天 |
+| 质量系统 | 需要高层管理层的批准 | 费用超过10万美元 |
 
 ---
 
-## Tools and References
+## 工具和参考资料
 
-### Scripts
+### 脚本
 
-| Tool | Purpose | Usage |
+| 工具 | 用途 | 使用方法 |
 |------|---------|-------|
-| [management_review_tracker.py](scripts/management_review_tracker.py) | Track review inputs, actions, metrics | `python management_review_tracker.py --help` |
+| [management_review_tracker.py](scripts/management_review_tracker.py) | 跟踪评审输入、行动和指标 | `python management_review_tracker.py --help` |
 
-**Management Review Tracker Features:**
-- Track input collection status from process owners
-- Monitor action item completion and aging
-- Generate metrics summary for review
-- Produce recommendations for review focus areas
+**管理评审跟踪器功能：**
+- 跟踪流程负责人的输入收集情况 |
+- 监控待办事项的完成情况和时效性 |
+- 生成评审指标摘要 |
+- 提出评审重点的建议
 
-### References
+### 参考资料
 
-| Document | Content |
+| 文档 | 内容 |
 |----------|---------|
-| [management-review-guide.md](references/management-review-guide.md) | ISO 13485 Clause 5.6 requirements, input/output templates, action tracking |
-| [quality-kpi-framework.md](references/quality-kpi-framework.md) | KPI categories, targets, calculations, dashboard templates |
+| [management-review-guide.md](references/management-review-guide.md) | ISO 13485第5.6条款要求、输入/输出模板、行动跟踪 |
+| [quality-kpi-framework.md](references/quality-kpi-framework.md) | KPI类别、目标值、计算方法、仪表板模板 |
 
-### Quick Reference: Management Review Inputs (ISO 13485 Clause 5.6.2)
+### 快速参考：管理评审输入（ISO 13485第5.6.2条款）
 
-| Input | Source | Required |
+| 输入内容 | 来源 | 是否必需 |
 |-------|--------|----------|
-| Feedback | Customer complaints, surveys | Yes |
-| Audit results | Internal and external audits | Yes |
-| Process performance | Process metrics | Yes |
-| Product conformity | Inspection, NC data | Yes |
-| CAPA status | CAPA system | Yes |
-| Previous actions | Prior review records | Yes |
-| Changes | Regulatory, organizational | Yes |
-| Recommendations | All sources | Yes |
+| 反馈 | 客户投诉、调查 | 是 |
+| 审计结果 | 内部和外部审计 | 是 |
+| 流程绩效 | 流程指标 | 是 |
+| 产品符合性 | 检查结果、不符合项数据 | 是 |
+| CAPA状态 | CAPA系统 | 是 |
+| 上次评审的待办事项 | 上次评审记录 | 是 |
+| 变更 | 监管或组织方面的变更 | 是 |
+| 建议 | 所有来源 | 是 |
 
-### Quick Reference: Management Review Outputs (ISO 13485 Clause 5.6.3)
+### 快速参考：管理评审输出（ISO 13485第5.6.3条款）
 
-| Output | Documentation Required |
+| 输出内容 | 需要的文档 | 负责人 |
 |--------|----------------------|
-| Improvement to QMS and processes | Action items with owners |
-| Improvement to product | Project initiation if needed |
-| Resource needs | Resource plan updates |
+| QMS和流程的改进措施 | 带有截止日期的待办事项 | 分配给具体负责人 |
+| 产品改进 | 如有必要，启动改进项目 |
+| 资源需求 | 资源计划更新 |
 
 ---
 
-## Related Skills
+## 相关技能
 
-| Skill | Integration Point |
+| 技能 | 相关职责 |
 |-------|-------------------|
-| [quality-manager-qms-iso13485](../quality-manager-qms-iso13485/) | QMS process management |
-| [capa-officer](../capa-officer/) | CAPA system oversight |
-| [qms-audit-expert](../qms-audit-expert/) | Internal audit program |
-| [quality-documentation-manager](../quality-documentation-manager/) | Document control oversight |
+| [quality-manager-qms-iso13485](../quality-manager-qms-iso13485/) | QMS流程管理 |
+| [capa-officer](../capa-officer/) | CAPA系统监督 |
+| [qms-audit-expert](../qms-audit-expert/) | 内部审核计划 |
+| [quality-documentation-manager](../quality-documentation-manager/) | 文件控制监督 |

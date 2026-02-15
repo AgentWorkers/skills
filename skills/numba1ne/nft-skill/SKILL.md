@@ -43,253 +43,218 @@ metadata:
         label: "Install NFT Skill dependencies"
 ---
 
-# NFT Skill for OpenClaw
+# OpenClaw 的 NFT 功能
 
-Allows an OpenClaw agent to autonomously generate art, mint NFTs, list on marketplace, monitor sales, evolve based on milestones, and post social updates.
+该功能允许 OpenClaw 代理自主生成艺术作品、铸造 NFT、在市场上进行 listing、监控销售情况，并根据预设的里程碑来调整艺术风格或发布社交更新。
 
-## When to Use This Skill
+## 使用场景
 
-- User asks to generate AI art or procedural digital art
-- User wants to mint an NFT on Base
-- User wants to list an NFT for sale on the marketplace
-- User wants to monitor on-chain NFT sales
-- User wants to evolve art style after a sales milestone
-- User wants to tweet or announce a new NFT drop on X (Twitter)
-- User mentions "NFT", "mint", "Base blockchain", "AI art", "digital art", or "marketplace listing"
+- 用户请求生成 AI 艺术作品或程序化数字艺术
+- 用户希望在 Base 区块链上铸造 NFT
+- 用户希望将 NFT 上架到市场上进行销售
+- 用户希望实时监控 NFT 的销售数据
+- 用户希望在达到销售里程碑后调整艺术风格
+- 用户希望在 X（Twitter）上发布关于新 NFT 上线的信息
+- 用户提及“NFT”、“铸造”、“Base 区块链”、“AI 艺术”或“市场 listing”等相关词汇
 
-## Setup (First Run)
+## 首次使用前的设置
 
-Before first use, ensure the project is built:
+在使用该功能之前，请确保项目已正确构建：
 
 ```bash
 cd {baseDir} && npm install && npm run build
 ```
 
-The user must populate a `.env` file with their keys:
+用户需要使用自己的密钥填充 `.env` 文件：
 
 ```bash
 cp {baseDir}/.env.example {baseDir}/.env
 ```
 
-Required variables: `BASE_RPC_URL`, `BASE_PRIVATE_KEY`, `NFT_CONTRACT_ADDRESS`,
-`MARKETPLACE_ADDRESS`, `PINATA_API_KEY`, `PINATA_SECRET`, `LLM_PROVIDER`.
+必需的变量：`BASE_RPC_URL`、`BASE_PRIVATE_KEY`、`NFT_CONTRACT_ADDRESS`、`MARKETPLACE_ADDRESS`、`PINATA_API_KEY`、`PINATA_SECRET`、`LLM_PROVIDER`。
 
-To deploy contracts (one-time setup):
+（合约的部署为一次性操作，具体步骤请参考后续说明。）
 
-```bash
-cd {baseDir} && npm run deploy:testnet   # Base Sepolia testnet
-cd {baseDir} && npm run deploy:mainnet   # Base mainnet
-```
+## 工具说明
 
-Contract addresses are automatically written to `.env` after deployment.
-
-## Tools
-
-All tools output JSON. The agent should look for the final line matching `{"status":"success",...}` or `{"status":"error",...}`.
+所有工具的输出格式均为 JSON。代理应关注输出中的最后一行，判断其状态是否为 `{"status":"success",...}` 或 `{"status":"error",...}`。
 
 ---
 
-### 1. generate — Generate Art
+### 1. generate — 生成艺术作品
 
-Generate new art and upload to IPFS.
+生成新的艺术作品并将其上传到 IPFS。
 
-```bash
-cd {baseDir} && npm run cli -- generate --generation <number> --theme "<description>"
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-g, --generation` | 数字 | 是 | 生成次数（用于控制艺术风格的演变） |
+| `-t, --theme` | 字符串 | 是 | 传递给 LLM 的艺术主题描述 |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-g, --generation` | number | yes | Generation number (determines evolution state) |
-| `-t, --theme` | string | yes | Art theme description sent to LLM |
-
-**Output:**
+**输出：**
 ```json
 {"status": "success", "result": {"imagePath": "...", "metadata": {...}, "metadataUri": "Qm..."}}
 ```
 
-**Example:**
+**示例：**
 ```bash
 cd {baseDir} && npm run cli -- generate --generation 1 --theme "neon cyberpunk city"
 ```
 
 ---
 
-### 2. mint — Mint NFT
+### 2. mint — 铸造 NFT
 
-Mint a new ERC721 token on Base with an IPFS metadata URI.
+在 Base 区块链上使用 IPFS 元数据 URI 铸造新的 ERC721 代币。
 
-```bash
-cd {baseDir} && npm run cli -- mint --metadata-uri <uri>
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-m, --metadata-uri` | 字符串 | 是 | IPFS 元数据 URI（例如：`Qm...` 或 `ipfs://Qm...`） |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-m, --metadata-uri` | string | yes | IPFS metadata URI (e.g. `Qm...` or `ipfs://Qm...`) |
-
-**Output:**
+**输出：**
 ```json
 {"status": "success", "result": {"tokenId": "1", "txHash": "0x...", "blockNumber": 12345, "gasUsed": "80000"}}
 ```
 
-**Example:**
+**示例：**
 ```bash
 cd {baseDir} && npm run cli -- mint --metadata-uri QmXyz123abc
 ```
 
 ---
 
-### 3. list — List NFT on Marketplace
+### 3. list — 在市场上 listing NFT
 
-List a minted NFT for sale on the marketplace.
+将铸造的 NFT 上架到市场上进行销售。
 
-```bash
-cd {baseDir} && npm run cli -- list --token-id <id> --price <eth>
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-i, --token-id` | 字符串 | 是 | 要 listing 的 NFT 的 ID |
+| `-p, --price` | 字符串 | 是 | 列价（以 ETH 为单位，例如：“0.05”） |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-i, --token-id` | string | yes | Token ID to list |
-| `-p, --price` | string | yes | Listing price in ETH (e.g. `"0.05"`) |
-
-**Output:**
+**输出：**
 ```json
 {"status": "success", "result": {"success": true, "price": "0.05", "txHash": "0x..."}}
 ```
 
-**Example:**
+**示例：**
 ```bash
 cd {baseDir} && npm run cli -- list --token-id 1 --price 0.05
 ```
 
 ---
 
-### 4. monitor — Monitor Sales
+### 4. monitor — 监控销售情况
 
-Watch for sales events in real-time. Streams JSON to stdout until interrupted (Ctrl+C).
+实时监控销售事件。输出结果会持续显示在标准输出（stdout）中，直到用户通过 Ctrl+C 中断。
 
-```bash
-cd {baseDir} && npm run cli -- monitor [--from-block <number>]
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-f, --from-block` | 数字 | 否 | 是否从指定区块开始回放未监控的销售记录 |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-f, --from-block` | number | no | Replay missed sales from this block before live monitoring |
-
-**Output (per sale):**
+**销售事件输出示例：**
 ```json
 {"status": "sale", "result": {"buyer": "0x...", "tokenId": "1", "price": "0.05", "txHash": "0x...", "blockNumber": 12345}}
 ```
 
-**Example:**
-```bash
-cd {baseDir} && npm run cli -- monitor --from-block 12000000
-```
-
 ---
 
-### 5. evolve — Evolve Agent
+### 5. evolve — 调整代理行为
 
-Trigger the evolution logic when sales milestones are met.
+在达到销售里程碑时触发代理行为的演变逻辑。
 
-```bash
-cd {baseDir} && npm run cli -- evolve --proceeds <eth> --generation <number> --trigger "<reason>"
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-p, --proceeds` | 字符串 | 目前累计的收入（以 ETH 计） |
+| `-g, --generation` | 数字 | 当前的生成次数 |
+| `--trigger` | 字符串 | 人类可读的演变触发原因 |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-p, --proceeds` | string | yes | Total ETH proceeds earned so far |
-| `-g, --generation` | number | yes | Current generation number |
-| `--trigger` | string | yes | Human-readable reason for evolution |
-
-**Output:**
+**输出：**
 ```json
 {"status": "success", "result": {"previousGeneration": 1, "newGeneration": 2, "improvements": [...], "newAbilities": [...]}}
 ```
 
-**Example:**
+**示例：**
 ```bash
 cd {baseDir} && npm run cli -- evolve --proceeds "0.5" --generation 1 --trigger "Sold 3 NFTs"
 ```
 
 ---
 
-### 6. tweet — Post to X
+### 6. tweet — 在 X（Twitter）上发布更新
 
-Post an update to X (Twitter).
+在 X（Twitter）上发布相关更新。
 
-```bash
-cd {baseDir} && npm run cli -- tweet --content "<text>"
-```
+**参数：**
 
-**Parameters:**
+| 参数 | 类型 | 是否必填 | 说明 |
+|------|------|---------|-----------|
+| `-c, --content` | 字符串 | 要发布的推文内容（自动截断为 280 个字符） |
 
-| Flag | Type | Required | Description |
-|------|------|----------|-------------|
-| `-c, --content` | string | yes | Tweet text (auto-truncated to 280 chars) |
-
-**Output:**
+**输出：**
 ```json
 {"status": "success", "result": "tweet_id_string"}
 ```
 
-**Example:**
+**示例：**
 ```bash
 cd {baseDir} && npm run cli -- tweet --content "New AI art drop incoming! #AIArt #Base"
 ```
 
 ---
 
-## Typical Workflow
+## 典型工作流程
 
-A full autonomous cycle the agent should follow:
+代理应遵循的完整自主工作流程如下：
 
-1. **Generate** art with a theme → receive metadata URI
-2. **Mint** the NFT with that URI → receive token ID
-3. **List** the NFT on the marketplace at a price
-4. **Tweet** about the new listing
-5. **Monitor** sales for purchase events
-6. **Evolve** when a sales milestone is reached
-7. Repeat from step 1 with the new generation number
+1. 生成具有指定主题的艺术作品 → 获取元数据 URI
+2. 使用元数据 URI 铸造 NFT → 获取 NFT 的 ID
+3. 将 NFT 上架到市场上并设置售价
+4. 在 X（Twitter）上发布新作品的 listing 信息
+5. 实时监控销售情况
+6. 达到销售里程碑后调整艺术风格
+7. 用新的生成次数重复上述步骤
 
-## Error Handling
+## 错误处理
 
-- If a command returns `{"status":"error",...}`, read the `message` field and report it to the user.
-- Common issues: missing `.env` variables, insufficient wallet balance, network RPC errors.
-- For wallet balance issues, suggest the user funds their Base wallet.
-- For missing env vars, remind the user to populate `{baseDir}/.env`.
+- 如果命令返回 `{"status":"error",...}`，请查看 `message` 字段并向用户报告错误信息。
+- 常见问题包括：`.env` 文件中的变量缺失、钱包余额不足或网络 RPC 错误。
+- 如遇钱包余额问题，建议用户为 Base 钱包充值。
+- 如果 `.env` 文件中的变量缺失，请提醒用户创建或更新 `{baseDir}/.env` 文件。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `BASE_RPC_URL` | yes | Base network RPC endpoint |
-| `BASE_PRIVATE_KEY` | yes* | Wallet private key (or use `PRIVATE_KEY_FILE`) |
-| `PRIVATE_KEY_FILE` | no | Path to file containing the private key (safer alternative to env var) |
-| `NFT_CONTRACT_ADDRESS` | yes | Deployed NFTArt contract address |
-| `MARKETPLACE_ADDRESS` | yes | Deployed NFTMarketplace contract address |
-| `PINATA_API_KEY` | yes | Pinata IPFS API key |
-| `PINATA_SECRET` | yes | Pinata IPFS secret |
-| `LLM_PROVIDER` | yes | `openrouter`, `groq`, or `ollama` |
-| `LLM_MODEL` | no | Model ID override |
-| `OPENROUTER_API_KEY` | if LLM_PROVIDER=openrouter | OpenRouter API key |
-| `GROQ_API_KEY` | if LLM_PROVIDER=groq | Groq API key |
-| `OLLAMA_BASE_URL` | if LLM_PROVIDER=ollama | Ollama base URL |
-| `IMAGE_PROVIDER` | no | `stability`, `dalle`, or `procedural` (default) |
-| `IMAGE_MODEL` | no | Image model override |
-| `STABILITY_API_KEY` | if IMAGE_PROVIDER=stability | Stability AI key |
-| `OPENAI_API_KEY` | if IMAGE_PROVIDER=dalle | OpenAI key for DALL-E |
-| `X_CONSUMER_KEY` | for tweet | X API consumer key |
-| `X_CONSUMER_SECRET` | for tweet | X API consumer secret |
-| `X_ACCESS_TOKEN` | for tweet | X access token |
-| `X_ACCESS_SECRET` | for tweet | X access token secret |
-| `BASESCAN_API_KEY` | no | For contract verification on Basescan |
+| 变量 | 是否必填 | 说明 |
+|---------|---------|-----------|
+| `BASE_RPC_URL` | 是 | Base 区块链的 RPC 端点地址 |
+| `BASE_PRIVATE_KEY` | 是* | 钱包私钥（或使用 `PRIVATE_KEY_FILE` 文件） |
+| `PRIVATE_KEY_FILE` | 否 | 存储私钥的文件路径（更安全的配置方式） |
+| `NFT_CONTRACT_ADDRESS` | 是 | 部署的 NFT 艺术作品合约地址 |
+| `MARKETPLACE_ADDRESS` | 是 | 部署的 NFT 市场合约地址 |
+| `PINATA_API_KEY` | 是 | Pinata 的 IPFS API 密钥 |
+| `PINATA_SECRET` | 是 | Pinata 的 IPFS 秘钥 |
+| `LLM_PROVIDER` | 是 | 可使用的 LLM 提供者（如 `openrouter`、`groq` 或 `ollama`） |
+| `LLM_MODEL` | 否 | 可选的 LLM 模型 ID |
+| `OPENROUTER_API_KEY` | （仅当 LLM_PROVIDER 为 `openrouter` 时使用） | OpenRouter API 密钥 |
+| `GROQ_API_KEY` | （仅当 LLM_PROVIDER 为 `groq` 时使用） | Groq API 密钥 |
+| `OLLAMA_BASE_URL` | （仅当 LLM_PROVIDER 为 `ollama` 时使用） | Ollama 的基础 URL |
+| `IMAGE_PROVIDER` | 否 | 可选的图像生成服务（默认为 `stability`、`dalle` 或 `procedural`） |
+| `IMAGE_MODEL` | 否 | 可选的图像生成模型 |
+| `STABILITY_API_KEY` | （仅当 IMAGE_PROVIDER 为 `stability` 时使用） | Stability AI 的 API 密钥 |
+| `OPENAI_API_KEY` | （仅当 IMAGE_PROVIDER 为 `dalle` 时使用） | DALL-E 的 OpenAI API 密钥 |
+| `X_CONSUMER_KEY` | （用于 Twitter 推文） | X API 的消费者密钥 |
+| `X_CONSUMER_SECRET` | （用于 Twitter 推文） | X API 的消费者密钥 |
+| `X_ACCESS_TOKEN` | （用于 Twitter 推文） | X API 的访问令牌 |
+| `X_ACCESS_SECRET` | （用于 Twitter 推文） | X API 的访问令牌密钥 |
+| `BASESCAN_API_KEY` | 否 | 用于在 Basescan 上验证合约信息 |
+
+---

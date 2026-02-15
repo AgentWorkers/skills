@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Voice Streaming - Ruby
+# Telnyx 语音流媒体服务 - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -31,11 +32,9 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Forking start
-
-Call forking allows you to stream the media from a call to a specific target in realtime.
+## 启动分叉流媒体传输
 
 `POST /calls/{call_control_id}/actions/fork_start`
 
@@ -45,9 +44,7 @@ response = client.calls.actions.start_forking("call_control_id")
 puts(response)
 ```
 
-## Forking stop
-
-Stop forking a call.
+## 停止分叉流媒体传输
 
 `POST /calls/{call_control_id}/actions/fork_stop`
 
@@ -57,11 +54,11 @@ response = client.calls.actions.stop_forking("call_control_id")
 puts(response)
 ```
 
-## Streaming start
-
-Start streaming the media from a call to a specific WebSocket address or Dialogflow connection in near-realtime.
+## 启动流媒体传输
 
 `POST /calls/{call_control_id}/actions/streaming_start`
+
+**说明：** 媒体数据将实时传输到指定的 WebSocket 地址或 Dialogflow 连接。
 
 ```ruby
 response = client.calls.actions.start_streaming("call_control_id")
@@ -69,11 +66,11 @@ response = client.calls.actions.start_streaming("call_control_id")
 puts(response)
 ```
 
-## Streaming stop
-
-Stop streaming a call to a WebSocket.
+## 停止流媒体传输
 
 `POST /calls/{call_control_id}/actions/streaming_stop`
+
+**说明：** 停止向指定的 WebSocket 地址传输媒体数据。
 
 ```ruby
 response = client.calls.actions.stop_streaming("call_control_id")
@@ -81,11 +78,11 @@ response = client.calls.actions.stop_streaming("call_control_id")
 puts(response)
 ```
 
-## Transcription start
-
-Start real-time transcription.
+## 启动实时转录
 
 `POST /calls/{call_control_id}/actions/transcription_start`
+
+**说明：** 开始对通话内容进行实时转录。
 
 ```ruby
 response = client.calls.actions.start_transcription("call_control_id")
@@ -93,11 +90,11 @@ response = client.calls.actions.start_transcription("call_control_id")
 puts(response)
 ```
 
-## Transcription stop
-
-Stop real-time transcription.
+## 停止实时转录
 
 `POST /calls/{call_control_id}/actions/transcription_stop`
+
+**说明：** 停止对通话内容进行实时转录。
 
 ```ruby
 response = client.calls.actions.stop_transcription("call_control_id")
@@ -107,16 +104,18 @@ puts(response)
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL：
+所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头，用于验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callForkStarted` | Call Fork Started |
-| `callForkStopped` | Call Fork Stopped |
-| `callStreamingStarted` | Call Streaming Started |
-| `callStreamingStopped` | Call Streaming Stopped |
-| `callStreamingFailed` | Call Streaming Failed |
-| `transcription` | Transcription |
+| `callForkStarted` | 分叉流媒体传输开始 |
+| `callForkStopped` | 分叉流媒体传输停止 |
+| `callStreamingStarted` | 流媒体传输开始 |
+| `callStreamingStopped` | 流媒体传输停止 |
+| `callStreamingFailed` | 流媒体传输失败 |
+| `transcription` | 转录开始 |
+```
+```

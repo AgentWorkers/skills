@@ -1,208 +1,208 @@
 ---
 name: jb-simplify
-description: Checklist to simplify Juicebox project designs. Reduce custom contracts by leveraging native protocol mechanics.
+description: **简化 Juicebox 项目设计的检查清单：通过利用原生协议机制减少自定义合约的使用**
 ---
 
-# Juicebox V5 Simplification Checklist
+# Juicebox V5 简化检查清单
 
-Before writing custom contracts, run through this checklist to find simpler solutions.
+在编写自定义合约之前，请先查看此清单，以寻找更简单的解决方案。
 
-## The Simplification Principle
+## 简化原则
 
-> **Native mechanics > Off-the-shelf hooks > Custom hooks > Custom contracts**
+> **优先选择原生机制 > 市售钩子 > 自定义钩子 > 自定义合约**
 
-Every level of abstraction you can avoid:
-- Reduces deployment costs
-- Reduces attack surface
-- Improves UI compatibility
-- Makes the project easier to audit
+尽可能避免使用更高层次的抽象：
+- 降低部署成本
+- 减少攻击面
+- 提高用户界面的兼容性
+- 使项目更易于审计
 
 ---
 
-## Pre-Implementation Checklist
+## 实施前的检查清单
 
-### 1. Do You Need a Custom Pay Hook?
+### 1. 是否需要自定义支付钩子？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| Mint NFTs on payment | Use `nana-721-hook-v5` directly |
-| Buy tokens from DEX if cheaper | Use `nana-buyback-hook-v5` directly |
-| Restrict who can pay | Use off-chain allowlists or payment metadata |
-| Different tokens per tier | Use 721 hook tiers with different prices |
-| Cap individual payments | Consider if this is actually needed |
+| 支付时铸造 NFT | 直接使用 `nana-721-hook-v5` |
+| 如果从 DEX 购买代币更便宜 | 直接使用 `nana-buyback-hook-v5` |
+| 限制付款者 | 使用链下白名单或支付元数据 |
+| 不同层级使用不同代币 | 使用具有不同价格的 721 钩子层级 |
+| 设置单次付款上限 | 仔细考虑是否真的需要 |
 
-**Only write a custom pay hook if**: You need logic that modifies payment recording that no existing hook provides.
+**只有在以下情况下才编写自定义支付钩子**：你需要修改现有钩子无法处理的支付记录逻辑。
 
 ---
 
-### 2. Do You Need a Custom Cash Out Hook?
+### 2. 是否需要自定义提现钩子？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| Burn NFT to redeem | Use `nana-721-hook-v5` - it already does this |
-| Pro-rata redemption against surplus | Set `cashOutTaxRate: 0` - native behavior |
-| Partial redemption (bonding curve) | Set `cashOutTaxRate` to desired value |
-| Time-locked redemptions | Use ruleset with `pauseCashOut: true`, queue future ruleset |
-| Redemption against external pool | This might actually need a custom hook |
+| 通过燃烧 NFT 来兑现 | 使用 `nana-721-hook-v5`（它已经实现了这一功能） |
+| 按比例从项目剩余资金中兑现 | 将 `cashOutTaxRate` 设置为 0（原生行为） |
+| 部分兑现（基于债券曲线） | 将 `cashOutTaxRate` 设置为所需值 |
+| 带有时限的兑现 | 使用 `pauseCashOut: true` 的规则集，并将规则集放入队列中 |
+| 通过外部池进行兑现 | 这可能需要自定义钩子 |
 
-**Only write a custom cash out hook if**: Redemption value must come from somewhere other than project surplus.
+**只有在以下情况下才编写自定义提现钩子**：兑现金额必须来自项目之外的资金。
 
 ---
 
-### 3. Do You Need a Custom Split Hook?
+### 3. 是否需要自定义分配钩子？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| Send to multiple addresses | Use multiple splits with direct beneficiaries |
-| Send to another JB project | Set `projectId` in the split |
-| Add to project balance instead of paying | Set `preferAddToBalance: true` |
-| Restrict who can claim | Set beneficiary to a multisig/contract |
-| Swap tokens before forwarding | **Yes, need split hook** |
-| Add to LP position | **Yes, need split hook** |
+| 将代币发送到多个地址 | 使用多个分配规则，指定直接受益人 |
+| 将代币发送到其他 JB 项目 | 在分配规则中设置 `projectId` |
+| 将代币添加到项目余额中而不是直接支付 | 将 `preferAddToBalance` 设置为 `true` |
+| 限制领取者 | 将受益人设置为多签名地址或合约 |
+| 在转发前转换代币 | **需要自定义分配钩子** |
+| 将代币添加到 LP 位置 | **需要自定义分配钩子** |
 
-**Only write a custom split hook if**: You need to transform tokens or interact with external protocols.
+**只有在以下情况下才编写自定义分配钩子**：你需要转换代币或与外部协议进行交互。
 
 ---
 
-### 4. Do You Need Multiple Queued Rulesets?
+### 4. 是否需要多个排队规则集？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| Monthly distributions | One ruleset with `duration: 30 days` |
-| Increasing/decreasing token issuance | Use `weightCutPercent` for automatic issuance cut |
-| Different phases over time | Queue rulesets only for actual changes |
-| Vesting over 12 months | One cycling ruleset, NOT 12 queued rulesets |
+| 每月分配 | 使用一个规则集，并设置 `duration: 30 days` |
+| 增加/减少代币发行量 | 使用 `weightCutPercent` 自动调整发行量 |
+| 随时间变化的不同阶段 | 只对实际发生变化的部分排队规则集 |
+| 分12个月逐步释放代币 | 使用一个循环规则集，而不是12个排队规则集 |
 
-**Only queue multiple rulesets if**: Configuration actually changes between periods.
+**只有在配置在不同阶段发生变化时才排队多个规则集**。
 
 ---
 
-### 5. Do You Need Custom NFT Logic?
+### 5. 是否需要自定义 NFT 逻辑？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| NFT minting on payment | Use `nana-721-hook-v5` directly |
-| Different prices per tier | Configure tiers in 721 hook |
-| Static artwork per tier | Use `encodedIPFSUri` in tier config |
-| Dynamic/generative art | Implement `IJB721TokenUriResolver` only |
-| Composable/layered NFTs | Implement `IJB721TokenUriResolver` only |
-| On-chain SVG | Implement `IJB721TokenUriResolver` only |
-| Custom minting logic | This might need a custom hook |
+| 支付时铸造 NFT | 直接使用 `nana-721-hook-v5` |
+| 不同层级设置不同价格 | 在 721 钩子中配置层级 |
+| 每层使用静态艺术作品 | 在层级配置中使用 `encodedIPFSUri` |
+| 动态/生成型艺术作品 | 仅实现 `IJB721TokenUriResolver` |
+| 可组合/分层的 NFT | 仅实现 `IJB721TokenUriResolver` |
+| 在链上使用 SVG | 仅实现 `IJB721TokenUriResolver` |
+| 需要自定义铸造逻辑 | 这可能需要自定义钩子 |
 
-**Only write a custom pay/data hook if**: You need to change how the 721 hook processes payments. For custom content, use the resolver interface.
+**只有在需要修改 721 钩子处理支付方式时才编写自定义支付/数据钩子**。对于自定义内容，可以使用解析器接口。
 
-**Reference**: [banny-retail-v5](https://github.com/mejango/banny-retail-v5) shows composable NFTs using only a custom resolver.
+**参考**：[banny-retail-v5](https://github.com/mejango/banny-retail-v5) 仅使用自定义解析器实现了可组合的 NFT。
 
 ---
 
-### 5b. When DO You Need to Extend 721-Hook?
+### 5b. 何时需要扩展 721 钩子？
 
-Extending the 721-hook (not just resolver) is necessary when you need to change **treasury mechanics**, not just content:
+当你需要修改 **资金管理机制**（而不仅仅是内容）时，扩展 721 钩子是必要的：
 
-| What You Want | Why You Need Custom Delegate |
+| 需要的功能 | 需要自定义委托的原因 |
 |---------------|------------------------------|
-| Dynamic cash out weights | Redemption value changes based on outcomes |
-| First-owner tracking | Rewards go to original minter, not current holder |
-| Phase-based restrictions | Different rules during different game phases |
-| On-chain governance for outcomes | Scorecard voting determines payouts |
+| 动态的提现权重 | 兑现金额根据结果变化 |
+| 追踪首代所有者 | 奖励归原始铸造者所有，而非当前持有者 |
+| 基于阶段的限制 | 不同游戏阶段有不同的规则 |
+| 对结果的链上治理 | 通过计分卡投票来决定奖励分配 |
 
-**Reference**: [defifa-collection-deployer-v5](https://github.com/BallKidz/defifa-collection-deployer-v5) shows prediction games with dynamic weights.
+**参考**：[defifa-collection-deployer-v5](https://github.com/BallKidz/defifa-collection-deployer-v5) 展示了使用动态权重的预测游戏。
 
 ---
 
-### 6. Do You Need a Custom Contract at All?
+### 6. 是否真的需要自定义合约？
 
-| What You Want | Simpler Solution |
+| 需要的功能 | 更简单的解决方案 |
 |---------------|------------------|
-| Vesting | Payout limits + cycling rulesets |
-| Treasury reserve | Surplus allowance |
-| NFT-gated treasury | 721 hook + native cash outs |
-| Immutable configuration | Transfer ownership to burn address |
-| Multi-sig control | Set owner to Safe/multisig |
-| Governance | Use existing governance frameworks |
+| 分配代币 | 使用分配限制和循环规则集 |
+| 资金管理 | 使用项目剩余资金 |
+| NFT 控制的资金管理 | 使用 721 钩子和原生提现功能 |
+| 不可变的配置 | 将所有权转移至燃烧地址 |
+| 多签名控制 | 将所有者设置为安全地址或多签名地址 |
+| 治理 | 使用现有的治理框架 |
 
 ---
 
-## Simplification Questions
+## 简化相关问题
 
-Ask these questions in order. Stop at the first "yes":
+按顺序回答这些问题。遇到第一个“是”就停止：
 
-### For Payments
-1. Can the 721 hook handle this? → **Use 721 hook**
-2. Can the buyback hook handle this? → **Use buyback hook**
-3. Can payment metadata + off-chain logic handle this? → **Use native pay**
-4. → Consider custom pay hook
+### 对于支付
+1. 721 钩子能处理这个问题吗？ → **使用 721 钩子**
+2. 回购钩子能处理这个问题吗？ → **使用回购钩子**
+3. 支付元数据和链下逻辑能处理这个问题吗？ → **使用原生支付功能**
+4. → 考虑使用自定义支付钩子
 
-### For Redemptions
-1. Is it just burning NFTs for surplus? → **Use 721 hook**
-2. Is it just tokens for surplus? → **Use native cash out with tax rate**
-3. Does value come from project surplus? → **Use native cash out**
-4. → Consider custom cash out hook
+### 对于兑现
+1. 只是燃烧多余的 NFT 吗？ → **使用 721 钩子**
+2. 只是兑换多余的代币吗？ → **使用带税率的原生提现功能**
+3. 价值来自项目剩余资金吗？ → **使用原生提现功能**
+4. → 考虑使用自定义提现钩子
 
-### For Distributions
-1. Are recipients just addresses? → **Use native splits**
-2. Are recipients other JB projects? → **Use splits with projectId**
-3. Do you need token transformation? → **Use split hook**
-4. → Consider custom split hook
+### 对于分配
+1. 收益者只是地址吗？ → **使用原生分配规则**
+2. 收益者是其他 JB 项目吗？ → **使用带有 `projectId` 的分配规则**
+3. 需要转换代币吗？ → **使用分配钩子**
+4. → 考虑使用自定义分配钩子
 
-### For Time-Based Logic
-1. Is it recurring at fixed intervals? → **Use cycling ruleset**
-2. Is it a one-time schedule change? → **Queue one future ruleset**
-3. Is it conditional on external events? → **Consider approval hook**
-4. → Consider custom logic
+### 对于基于时间的逻辑
+1. 是定期重复执行的吗？ → **使用循环规则集**
+2. 是一次性调整计划吗？ → **将规则集放入队列中**
+3. 是否依赖于外部事件？ → **考虑使用审批钩子**
+4. → 考虑使用自定义逻辑
 
-### For NFT Content
-1. Is artwork static per tier? → **Use encodedIPFSUri in tier config**
-2. Need dynamic/generative art? → **Implement IJB721TokenUriResolver**
-3. Need composable NFTs? → **Implement IJB721TokenUriResolver**
-4. Need to change minting logic? → Consider wrapping 721 hook
+### 对于 NFT 内容
+1. 每层的艺术作品是静态的吗？ → **在层级配置中使用 `encodedIPFSUri`**
+2. 需要动态/生成型艺术作品吗？ → **实现 `IJB721TokenUriResolver`**
+3. 需要可组合的 NFT 吗？ → **实现 `IJB721TokenUriResolver`**
+4. 需要修改铸造逻辑吗？ → 考虑包装 721 钩子
 
-### For Games/Predictions
-1. Fixed redemption values per tier? → **Use standard 721-hook**
-2. Outcome determines payout distribution? → **Extend 721-hook (Defifa pattern)**
-3. Need on-chain outcome voting? → **Add Governor contract**
-4. Rewards to original minter only? → **Track first-owner in delegate**
+### 对于游戏/预测
+1. 每层的兑现金额是固定的吗？ → **使用标准的 721 钩子**
+2. 结果决定了奖励分配吗？ → **扩展 721 钩子（Defifa 模式）**
+3. 需要在链上进行结果投票吗？ → **添加治理合约**
+4. 奖励只归原始铸造者吗？ → **在委托中追踪首代所有者**
 
 ---
 
-## Common Over-Engineering Mistakes
+## 常见的过度设计错误
 
-### Mistake 1: Wrapping the 721 Hook
+### 错误 1：包装 721 钩子
 
 ```
 ❌ WRONG: Create DataHookWrapper that delegates to 721 hook
 ✅ RIGHT: Use 721 hook directly, achieve goals via ruleset config
 ```
 
-### Mistake 2: Vesting Split Hook
+### 错误 2：使用自定义分配钩子进行代币分配
 
 ```
 ❌ WRONG: VestingSplitHook that holds funds and releases over time
 ✅ RIGHT: Payout limits reset each cycle, achieving the same result
 ```
 
-### Mistake 3: Queue 12 Rulesets for 12-Month Vesting
+### 错误 3：为 12 个月的代币分配设置 12 个排队规则集
 
 ```
 ❌ WRONG: Queue 12 identical rulesets with different start times
 ✅ RIGHT: One ruleset with duration: 30 days that cycles automatically
 ```
 
-### Mistake 4: Split Hook for Simple Forwarding
+### 错误 4：对于简单的转发操作使用自定义分配钩子
 
 ```
 ❌ WRONG: Split hook that just forwards ETH to an address
 ✅ RIGHT: Set the address as the split beneficiary directly
 ```
 
-### Mistake 5: Custom Redemption Math
+### 错误 5：自定义兑现逻辑
 
 ```
 ❌ WRONG: Custom hook calculating pro-rata share of surplus
 ✅ RIGHT: cashOutTaxRate: 0 gives linear redemption natively
 ```
 
-### Mistake 6: Custom Hook for NFT Artwork
+### 错误 6：为 NFT 艺术作品编写自定义钩子
 
 ```
 ❌ WRONG: Write custom pay hook to generate dynamic NFT metadata
@@ -211,54 +211,53 @@ Ask these questions in order. Stop at the first "yes":
 
 ---
 
-## Complexity Cost Table
+## 复杂性成本表
 
-| Solution | Gas Cost | Audit Risk | UI Support |
+| 解决方案 | 气体成本 | 审计风险 | 用户界面支持 |
 |----------|----------|------------|------------|
-| Native config only | Lowest | Lowest | Full |
-| Off-the-shelf hooks | Low | Low | Full |
-| Custom token URI resolver | Low | Low | Full |
-| Custom split hook | Medium | Medium | Partial |
-| Custom pay hook | Medium | Medium | Partial |
-| Extended 721-hook delegate | Medium-High | Medium-High | Custom UI needed |
-| Custom cash out hook | High | High | Limited |
-| Full custom system | Highest | Highest | None |
+| 仅使用原生配置 | 最低 | 最低 | 完全支持 |
+| 市售钩子 | 低 | 低 | 完全支持 |
+| 自定义代币 URI 解析器 | 低 | 低 | 完全支持 |
+| 自定义分配钩子 | 中等 | 中等 | 部分支持 |
+| 自定义支付钩子 | 中等 | 中等 | 部分支持 |
+| 扩展的 721 钩子委托 | 中等-高 | 中等-高 | 需要自定义用户界面 |
+| 自定义提现钩子 | 高 | 高 | 支持有限 |
+| 完全自定义的系统 | 最高 | 最高 | 不支持 |
 
-### When Higher Complexity Is Justified
+### 何时需要更高的复杂性
 
-Not all complexity is bad. These patterns justify extending hooks:
+并非所有的复杂性都是坏事。在以下情况下，扩展钩子是合理的：
 
-| Pattern | Justification |
+| 模式 | 理由 |
 |---------|---------------|
-| Prediction games (Defifa) | Dynamic weights can't be done any other way |
-| Composable NFTs (Banny) | Resolver-only keeps treasury mechanics standard |
-| Phase-based games | Rulesets + custom delegate is cleaner than alternatives |
+| 预测游戏（Defifa） | 动态权重无法通过其他方式实现 |
+| 可组合的 NFT（Banny） | 仅使用解析器可以保持资金管理机制的标准 |
+| 基于阶段的游戏 | 规则集 + 自定义委托比其他方式更简洁 |
 
-**Key insight**: Extend hooks for **treasury mechanics**, use resolvers for **content only**.
-
----
-
-## Final Checklist
-
-Before finalizing your design, verify:
-
-- [ ] No custom hook where a direct beneficiary works
-- [ ] No split hook where multiple native splits work
-- [ ] No wrapped data hook where using the hook directly works
-- [ ] No multiple queued rulesets where one cycling ruleset works
-- [ ] No custom vesting where payout limits work
-- [ ] No custom treasury where surplus allowance works
-- [ ] No custom redemption where native cash out works
-- [ ] No custom pay hook where IJB721TokenUriResolver handles content needs
-
-If all boxes are checked and you still need custom code, proceed with confidence that it's actually necessary.
+**关键提示**：仅针对 **资金管理机制** 扩展钩子，对于 **内容** 仅使用解析器。
 
 ---
 
-## Related Skills
+## 最终检查清单
 
-- `/jb-patterns` - Common design patterns with examples
-- `/jb-project` - Project deployment
-- `/jb-pay-hook` - When you DO need a custom pay hook
-- `/jb-cash-out-hook` - When you DO need a custom cash out hook
-- `/jb-split-hook` - When you DO need a custom split hook
+在最终确定设计之前，请验证以下内容：
+- 如果有直接受益人的情况，**不需要** 自定义钩子
+- 如果可以使用多个原生分配规则，**不需要** 自定义分配钩子
+- 如果可以直接使用钩子，**不需要** 包装数据的钩子
+- 如果一个循环规则集可以满足需求，**不需要** 多个排队规则集
+- 如果分配限制有效，**不需要** 自定义分配逻辑
+- 如果项目剩余资金足够，**不需要** 自定义资金管理逻辑
+- 如果原生提现功能可用，**不需要** 自定义提现钩子
+- 如果 IJB721TokenUriResolver 可以满足内容需求，**不需要** 自定义支付钩子
+
+如果所有选项都符合要求，那么你可以确信确实需要编写自定义代码。
+
+---
+
+## 相关技能
+
+- `/jb-patterns` - 常见的设计模式及示例
+- `/jb-project` - 项目部署
+- `/jb-pay-hook` - 当你需要自定义支付钩子时
+- `/jb-cash-out-hook` - 当你需要自定义提现钩子时
+- `/jb-split-hook` - 当你需要自定义分配钩子时

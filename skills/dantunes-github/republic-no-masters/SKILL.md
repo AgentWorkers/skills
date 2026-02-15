@@ -1,37 +1,68 @@
 ---
 name: republic-no-masters
-description: Explain, summarize, analyze, or adapt the "Republic with No Masters" / Democratic Formalism governance framework when asked to produce content, guidance, critiques, FAQs, or implementation ideas based on the manifesto in principles.md.
+description: 当需要根据 `principles.md` 文件中的内容来生成文档、提供指导、进行评估、编写常见问题解答（FAQs）或提出实施建议时，对于“无主权的共和国”（Republic with No Masters）/“民主形式主义”（Democratic Formalism）治理框架，应采取以下处理方式：
+
+**解释（Explain）：**  
+“无主权的共和国”/“民主形式主义”治理框架是一种政治理念，强调国家权力应属于全体公民，而非任何特定的个人或集团。该框架主张通过民主程序和制度来确保权力的公平分配和有效行使，同时反对任何形式的专制或独裁统治。其核心原则包括：
+
+- **人民主权**：国家权力来源于人民，人民通过选举等方式决定政府的政策和方向。
+- **法治**：法律应高于一切，政府的行为必须受到法律的约束，确保公民的基本权利得到保障。
+- **分权**：权力应在政府的不同层级之间分散，以防止权力集中和滥用。
+- **透明度**：政府决策过程应公开透明，以便公民监督和参与。
+- **公民参与**：鼓励公民积极参与政治决策，通过各种渠道表达意见和诉求。
+- **平等**：所有公民无论性别、种族、宗教信仰等背景，都应享有平等的权利和机会。
+
+**总结（Summarize）：**  
+该治理框架的核心目标是建立一个民主、公正、平等和透明的政治体系，其中人民是权力的最终所有者，政府则负责执行法律和维护社会秩序。它强调通过民主机制来确保权力的合理分配和公民权益的保障。
+
+**分析（Analyze）：**  
+该框架具有以下优点：
+
+- **防止专制**：通过分权和透明度机制，可以有效防止个人或小团体滥用权力。
+- **促进公民参与**：鼓励公民参与政治决策，有助于增强公民的归属感和责任感。
+- **保障公民权利**：法治确保公民的基本权利得到尊重和保护。
+- **促进社会稳定**：公平的权力分配和公民参与有助于减少社会矛盾和冲突。
+
+**适应（Adapt）：**  
+在实践中，该框架可以适应不同的国家和文化背景进行调整和实施。例如，在某些国家，可以通过修改宪法或制定新的法律来体现这一理念；在其他国家，可以通过改革现有的政治制度来实现其目标。关键在于根据具体国情和民众需求，灵活运用这一框架的原则。
+
+**生成内容示例（Content Generation Examples）：**  
+- **文档（Documentation）：** 可以编写关于该治理框架的详细介绍，包括其起源、核心原则、实施步骤和成功案例等。
+- **指导（Guidance）：** 可以为政府机构或组织提供关于如何建立和实施这一框架的建议和指导。
+- **FAQs：** 可以针对该框架的相关问题（如“如何实现人民主权？”“如何确保法治？”等）编写详细的解答。
+- **实施建议（Implementation Suggestions）：** 可以提出具体的措施和建议，帮助政府或组织将该框架融入现有的政治体系。
+
+总之，在处理与“无主权的共和国”/“民主形式主义”治理框架相关的内容时，应重点解释其基本理念和优势，并根据实际情况提出相应的应用建议和措施。
 ---
 
-# Republic with No Masters
+# 一个没有“主人”的共和国  
 
-Use this skill to produce faithful, clear outputs grounded in the manifesto.
+使用此技能，根据相关宣言生成准确、清晰的内容。  
 
-## Source of truth
+## 真理的来源  
 
-- Always read `principles.md` before answering.
-- Treat `principles.md` as authoritative; do not invent new claims or terminology.
-- If asked for extensions or speculative ideas, label them explicitly as proposals or interpretations.
+- 在回答任何问题之前，务必先阅读 `principles.md`。  
+- 将 `principles.md` 视为权威依据；切勿自行创造新的主张或术语。  
+- 如果被要求提供扩展内容或进行推测性讨论，请明确将这些内容标记为“提案”或“解释”。  
 
-## Core workflow
+## 核心工作流程  
 
-1. Identify the request type: summary, explanation, application, critique, or derivative writing.
-2. Load `principles.md` and extract only the relevant sections.
-3. Map the request to the manifesto's defined terms (e.g., Values/Execution/Oversight, Agency Firewall, Quad-Lock, Hard-Coded Floor, Receipt).
-4. Draft the response in the requested format and tone while preserving the framework's intent.
-5. If the user wants changes to the manifesto, propose edits as diffs or bullet changes and ask for confirmation before rewriting.
+1. 确定请求类型：总结、解释、应用、批评或衍生性写作。  
+2. 加载 `principles.md` 并仅提取相关章节。  
+3. 将请求内容与宣言中定义的术语（如价值观、执行机制、监督机制、四重锁定机制、硬编码规则等）对应起来。  
+4. 按照要求的格式和语气起草回复，同时保持宣言的宗旨。  
+5. 如果用户希望对宣言进行修改，请以差异对比（diff）或项目符号列表的形式提出修改建议，并在重写前征求确认。  
 
-## Output patterns
+## 输出格式  
 
-- **Short summary (1-2 paragraphs)**: Focus on the separation of Values and Execution, independent agents, and oversight; mention the Receipt as the atomic unit.
-- **Longer overview**: Walk through the Agency Firewall, Quad-Lock, Meritocracy/Entropy, Debugging Protocol, and Hard-Coded Floor.
-- **FAQ or Q&A**: Tie each answer to a named section in `principles.md`; avoid adding new doctrine.
-- **Policy or system design**: Provide concrete examples (e.g., how a Receipt would look) while staying consistent with the constraints in the manifesto.
-- **Public-facing writing**: Keep the tone crisp, declarative, and manifesto-like; avoid jargon not present in `principles.md`.
+- **简短总结（1-2段）**：重点阐述价值观与执行机制的分离、独立代理的概念以及监督机制；提及“Receipt”（接收机制）作为基本单位。  
+- **详细说明**：详细介绍监督机制、四重锁定机制、精英主义/熵理论、调试协议以及硬编码规则等内容。  
+- **常见问题解答（FAQ）**：将每个问题的答案与 `principles.md` 中的特定章节关联起来；避免添加新的原则或规定。  
+- **政策或系统设计**：提供具体示例（例如“Receipt”机制的实际应用方式），同时确保符合宣言中的约束条件。  
+- **面向公众的写作**：保持语言简洁明了，符合宣言的风格；避免使用 `principles.md` 中未出现的专业术语。  
 
-## Guardrails
+## 注意事项  
 
-- Do not claim real-world adoption, legal enforceability, or operational readiness unless the user provides evidence.
-- Do not present speculative extensions as existing policy.
-- Keep the language precise; preserve capitalization of named constructs (e.g., Hard-Coded Floor, Quad-Lock).
-
+- 除非用户提供证据，否则不得声称该理念已在现实世界中被采纳、具有法律约束力或具备可操作性。  
+- 不得将推测性的扩展内容当作现有政策来呈现。  
+- 保持语言的准确性；对所有专有名词（如“Hard-Coded Floor”、“Quad-Lock”等）保持首字母大写。

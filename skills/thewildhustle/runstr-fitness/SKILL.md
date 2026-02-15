@@ -1,80 +1,82 @@
 ---
 name: runstr-fitness
-description: Give your AI agent access to your health and fitness data from RUNSTR. Fetches workouts, habits, journal entries, mood, steps, and more from Nostr. Use when the user asks about their workouts, fitness history, health habits, mood tracking, or wants AI fitness coaching based on real data.
+description: 允许你的AI代理访问来自RUNSTR的健康和健身数据。该代理可以从Nostr获取用户的锻炼记录、健康习惯、日志记录、情绪状态、步数等信息。当用户询问自己的锻炼情况、健身历史、健康习惯或情绪追踪情况，或者希望基于真实数据获得AI健身指导时，可以使用此功能。
 metadata: {"openclaw":{"emoji":"\ud83c\udfc3","requires":{"bins":["nak"]},"install":[{"id":"go","kind":"go","package":"github.com/fiatjaf/nak@latest","bins":["nak"],"label":"Install nak via Go"}]}}
 ---
 
-# RUNSTR Fitness Skill
+# RUNSTR 健身技能
 
-Give your AI agent access to your real health and fitness data. RUNSTR is a free fitness app that tracks workouts, habits, journal entries, mood, and steps — and stores encrypted backups on the Nostr protocol. This skill lets your bot read that data so it can help with fitness coaching, habit accountability, mood tracking, and health insights.
+允许你的 AI 代理访问你的真实健康和健身数据。RUNSTR 是一款免费的健身应用程序，可以记录锻炼情况、日常习惯、日记条目、情绪状态以及步数，并将加密后的数据备份到 Nostr 协议上。通过这个技能，你的机器人可以读取这些数据，从而提供健身指导、帮助你监督自己的习惯、追踪情绪变化，并提供健康分析。
 
-**What your bot gets access to:**
-- Workout history (running, walking, cycling, hiking, strength, yoga, etc.)
-- Daily habits and streaks (quit smoking, daily meditation, etc.)
-- Journal entries with mood and energy levels
-- Daily step counts
-- Which charity you support and reward routing
+**你的机器人可以访问的数据包括：**
+- 锻炼记录（跑步、步行、骑行、徒步、力量训练、瑜伽等）
+- 日常习惯（如戒烟、每日冥想等）
+- 日志条目中的情绪和能量水平
+- 每日步数
+- 你支持的慈善机构以及奖励的分配情况
 
-## Setup: Getting Your Data to Your Bot
+## 设置：将数据传输给机器人
 
-If you're already a RUNSTR user with backups enabled, skip to step 3.
+如果你已经是 RUNSTR 的用户并且已经启用了数据备份功能，请跳到第 3 步。
 
-### 1. Download RUNSTR (if you haven't)
-- **iOS**: Search "RUNSTR" on the App Store
-- **Android**: Available on Zapstore or direct APK
-- **GitHub**: https://github.com/RUNSTR (open source)
+### 1. 下载 RUNSTR（如果你还没有的话）
+- **iOS**：在 App Store 中搜索 “RUNSTR”
+- **Android**：可以在 Zapstore 或直接下载 APK 文件
+- **GitHub**：https://github.com/RUNSTR（开源项目）
 
-RUNSTR is free. You earn Bitcoin (sats) for working out.
+RUNSTR 是免费的。你可以通过锻炼来赚取比特币（sats）。
 
-### 2. Use the App
-- Create or import a Nostr identity (the app generates one for you)
-- Track workouts, log habits, write journal entries
-- Go to **Settings > Backup** and tap **Backup to Nostr**
+### 2. 使用应用程序
+- 创建或导入一个 Nostr 身份（应用程序会为你生成一个）
+- 记录锻炼情况、记录日常习惯、撰写日记条目
+- 进入 **设置 > 备份**，然后点击 **备份到 Nostr**
 
-This encrypts all your fitness data and publishes it to Nostr relays. Only you (with your private key) can read it.
+这会将你的所有健身数据加密并上传到 Nostr 中继服务器。只有你（使用你的私钥）才能读取这些数据。
 
-### 3. Give Your Bot Your nsec
-Your **nsec** is your Nostr private key. Find it in RUNSTR under **Settings > Keys** (or your Nostr key manager).
+### 3. 将你的 nsec 提供给机器人
 
-**Tell your bot:** "Here's my RUNSTR nsec: nsec1..."
+你的 **nsec** 是你的 Nostr 私钥。可以在 RUNSTR 的 **设置 > 密钥** 中找到它（或者通过你的 Nostr 密钥管理器获取）。
 
-Your bot uses the nsec to decrypt your encrypted fitness backup from Nostr. The nsec is never stored, logged, or transmitted — it's used only for the decryption step in your current session.
+**告诉你的机器人：**“这是我的 RUNSTR nsec：nsec1...”
 
-**Why nsec and not npub?** Your fitness data is encrypted. The public key (npub) can only see old public workout posts (if any). The private key (nsec) is needed to decrypt your habits, journals, mood, steps, and current workout history.
+你的机器人会使用这个 nsec 来解密从 Nostr 下载的加密健身数据。nsec 仅用于解密操作，不会被存储或传输。
 
-**Privacy note:** If you want a dedicated identity just for fitness data, create a new Nostr account in RUNSTR. Your fitness nsec doesn't have to be your main Nostr identity.
+**为什么使用 nsec 而不是 npub？** 因为你的健身数据是加密的。公钥（npub）只能查看旧的公开锻炼记录。只有私钥（nsec）才能解密你的习惯记录、日记条目、情绪状态、步数以及当前的锻炼历史。
 
-### 4. Keep Your Backup Fresh
-Your bot sees whatever was in your last backup. After a week of new workouts, go to **Settings > Backup** in RUNSTR and tap backup again to sync the latest data to Nostr.
+**隐私说明：** 如果你希望为健身数据创建一个专用的 Nostr 身份，可以在 RUNSTR 中创建一个新的账户。你的健身 nsec 不必与你的主要 Nostr 身份相同。
+
+### 4. 保持备份的最新状态
+
+机器人只能看到你上次备份的数据。如果有一周的新锻炼记录，进入 RUNSTR 的 **设置 > 备份**，再次点击备份以同步最新的数据到 Nostr。
 
 ---
 
-## For the Agent: How to Fetch RUNSTR Data
+## 对于机器人：如何获取 RUNSTR 数据
 
-Everything below is instructions for the AI agent, not the user.
+以下内容是针对 AI 代理的指令，而非用户。
 
-### Prerequisites
+### 先决条件
 
-`nak` (Nostr Army Knife) must be installed:
+必须安装 `nak`（Nostr Army Knife）：
 ```bash
 go install github.com/fiatjaf/nak@latest
 ```
 
-### Relays
+### 中继服务器
 
-Always query these four relays (RUNSTR defaults):
+始终查询以下四个中继服务器（RUNSTR 的默认设置）：
 ```
 wss://relay.damus.io wss://relay.primal.net wss://nos.lol wss://relay.nostr.band
 ```
 
-### Step 1: Decode the nsec
+### 第 1 步：解密 nsec
 
 ```bash
 hex_sk=$(nak decode nsec1...)
 hex_pk=$(nak key public $hex_sk)
 ```
 
-### Step 2: Fetch Profile (Kind 0)
+### 第 2 步：获取用户信息（Kind 0）
 
 ```bash
 nak req -k 0 -a $hex_pk -l 1 \
@@ -82,24 +84,23 @@ nak req -k 0 -a $hex_pk -l 1 \
   jq -r '.content | fromjson | {name, about, lud16, picture}'
 ```
 
-### Step 3: Fetch Encrypted Backup (Kind 30078)
+### 第 3 步：获取加密备份（Kind 30078）
 
-This is the **primary data source**.
-
+这是主要的 数据来源。
 ```bash
 nak req -k 30078 -a $hex_pk -t d=runstr-workout-backup -l 1 \
   wss://relay.damus.io wss://relay.primal.net wss://nos.lol wss://relay.nostr.band
 ```
 
-**If no backup found:** Tell the user: "No backup found on Nostr. Open RUNSTR on your phone, go to Settings > Backup, and create one. Then try again."
+**如果未找到备份：** 告诉用户：“在 Nostr 上未找到备份。请在手机上打开 RUNSTR，进入设置 > 备份，然后创建一个新的备份。然后再试一次。”
 
-**If backup found but `exportedAt` is old:** Warn the user that their backup is stale and recent data may be missing. Suggest they re-backup in the app.
+**如果找到备份但 `exportedAt` 日期过旧：** 警告用户备份已经过时，可能会丢失最新的数据。建议他们在应用程序中重新备份。
 
-### Decrypt the Backup
+### 解密备份
 
-The backup is NIP-44 self-encrypted and gzip-compressed.
+备份数据采用 NIP-44 格式进行加密，并使用 gzip 压缩。
 
-**Method 1: Using nak**
+**方法 1：使用 nak**
 ```bash
 content=$(nak req -k 30078 -a $hex_pk -t d=runstr-workout-backup -l 1 \
   wss://relay.damus.io wss://nos.lol | jq -r '.content')
@@ -111,7 +112,7 @@ decrypted=$(echo "$content" | nak encrypt --sec $hex_sk $hex_pk --decrypt)
 echo "$decrypted" | base64 -d | gunzip | jq .
 ```
 
-**Method 2: Node.js fallback**
+**方法 2：使用 Node.js（备用方案）**
 ```javascript
 // /tmp/decrypt-runstr.mjs — run with: node /tmp/decrypt-runstr.mjs <hex_sk> '<content>'
 import { gunzipSync } from 'zlib';
@@ -128,7 +129,7 @@ try {
 }
 ```
 
-### Backup Payload Structure
+### 备份数据的结构
 
 ```json
 {
@@ -176,56 +177,49 @@ try {
 }
 ```
 
-**Field reference:**
-- `workouts[].type`: running, walking, cycling, hiking, strength, meditation, yoga, diet, swimming, rowing
-- `workouts[].duration`: seconds
-- `workouts[].distance`: meters
-- `habits[].type`: "abstinence" (quitting something) or "positive" (building something)
-- `journal[].mood`: great, good, neutral, low, bad
-- `journal[].energy`: 1-5 scale
-- `stepHistory[].source`: healthkit, health_connect, native
+**字段说明：**
+- `workouts[].type`：跑步、步行、骑行、徒步、力量训练、瑜伽、饮食、游泳、划船
+- `workouts[].duration`：锻炼持续时间（秒）
+- `workouts[].distance`：锻炼距离（米）
+- `habits[].type`：戒除某种习惯（如戒烟）或养成新习惯
+- `journal[].mood`：情绪状态（很好、良好、中性、较差）
+- `journal[].energy`：能量水平（1-5 分数）
+- `stepHistory[].source`：数据来源（健康Kit、HealthConnect、原生设备）
 
-### Step 4: Check for Legacy Public Workouts (Kind 1301)
+### 第 4 步：检查旧的公开锻炼记录（Kind 1301）
 
-Older users may have public workout events. Always check:
-
+旧用户可能有一些公开的锻炼记录。请务必检查这些记录：
 ```bash
 nak req -k 1301 -a $hex_pk -l 50 \
   wss://relay.damus.io wss://relay.primal.net wss://nos.lol wss://relay.nostr.band
 ```
 
-If found, parse `tags` array:
+如果找到这些记录，请解析 `tags` 数组：
 
-| Tag | Example |
+| 标签 | 例子 |
 |-----|---------|
-| `exercise` | `["exercise", "running"]` |
-| `distance` | `["distance", "5.2", "km"]` |
-| `duration` | `["duration", "00:30:45"]` |
-| `calories` | `["calories", "312"]` |
-| `avg_pace` | `["avg_pace", "05:39", "min/km"]` |
-| `steps` | `["steps", "8432"]` |
-| `team` | `["team", "hrf"]` |
+| `exercise` | `["exercise", "running"]` | 运动类型（例如：跑步） |
+| `distance` | `["distance", "5.2", "km"]` | 距离（例如：5.2 公里） |
+| `duration` | `["duration", "00:30:45"]` | 锻炼时长（例如：30 分 45 秒） |
+| `calories` | `["calories", "312"]` | 消耗的卡路里 |
+| `avg_pace` | `["avg_pace", "05:39", "min/km"]` | 平均配速（例如：5.39 分/公里） |
+| `steps` | `["steps", "8432"]` | 步数 |
+| `team` | `["team", "hrf"]` | 锻炼团队 |
 
-Merge with backup data. Deduplicate by matching workout start times or IDs.
+将这些记录与备份数据合并，并通过锻炼开始时间或 ID 进行去重。
 
-### Step 5: Analyze and Present
+### 第 5 步：数据分析与展示
 
-**Workout Summary:** Total workouts, breakdown by activity, distance/duration/calories, frequency, personal bests.
+- **锻炼总结**：总锻炼次数、按活动类型分类的统计结果、距离/时长/卡路里消耗、锻炼频率、个人最佳记录。
+- **趋势分析**：锻炼频率的变化、配速的提升、活跃时间分布、每周活跃天数。
+- **习惯分析**：当前的连续锻炼记录、最长的连续锻炼记录、习惯的保持率。
+- **日记与情绪**：情绪趋势、能量水平的平均值、锻炼与情绪之间的关联。
+- **步数统计**：每日平均步数、每周总步数、趋势变化。
+- **慈善信息**：用户支持的慈善机构以及奖励的分配情况。
 
-**Trends:** Frequency changes, pace improvement, gaps, active days of week.
+### 第 6 步：将健康数据摘要存储在内存中
 
-**Habits:** Current streaks, longest streaks, consistency rate.
-
-**Journal & Mood:** Mood trend, energy averages, workout-mood correlation.
-
-**Steps:** Daily average, weekly totals, trends.
-
-**Charity:** Which team/charity, reward routing (user vs charity).
-
-### Step 6: Store Health Summary in Memory
-
-Save a structured summary for future conversations so you don't re-query every time:
-
+为了方便后续对话，将数据摘要保存在内存中，避免每次都需要重新查询：
 ```markdown
 # Health & Fitness Summary
 Last updated: YYYY-MM-DD
@@ -255,33 +249,33 @@ User: <name or npub>
 - [Patterns and observations]
 ```
 
-### Coaching Mode
+### 辅导模式
 
-Once you have data, you can:
-- Recommend workouts based on history and goals
-- Suggest rest days based on training load
-- Check in on habit streaks
-- Correlate mood with activity
-- Track goals ("run 20 km this week")
-- Remind based on usual workout schedule
+一旦获取到数据，你可以：
+- 根据用户的锻炼历史和目标推荐锻炼计划
+- 根据训练负荷建议休息日
+- 监控用户的习惯保持情况
+- 分析情绪与锻炼活动之间的关系
+- 监控用户设定的目标（例如：“本周跑步 20 公里”）
+- 根据用户的常规锻炼计划提醒他们锻炼
 
-### Troubleshooting
+### 故障排除
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| No backup found | User needs to open RUNSTR > Settings > Backup |
-| Backup is stale | User needs to re-backup in the app |
-| Decryption fails | Wrong nsec, or try Method 2 (Node.js) |
-| nak not installed | `go install github.com/fiatjaf/nak@latest` |
-| No Go installed | Use Method 2 (Node.js with NDK) |
-| Empty workouts array | User hasn't tracked workouts yet |
-| No habits/journal | User hasn't used those features in the app |
+| 未找到备份 | 用户需要进入 RUNSTR > 设置 > 备份 |
+| 备份过时 | 用户需要在应用程序中重新备份 |
+- 解密失败 | 可能是 nsec 错误，或者尝试使用方法 2（Node.js） |
+| 未安装 nak | 请安装 `github.com/fiatjaf/nak@latest` |
+| 未安装 Go 语言 | 可以使用方法 2（基于 Node.js 和 NDK） |
+- 锻炼记录为空 | 用户尚未开始记录锻炼 |
+- 无习惯/日记记录 | 用户尚未使用相关功能 |
 
-### About RUNSTR
+### 关于 RUNSTR
 
-RUNSTR is a free, open-source fitness app for the Bitcoin/Nostr community. Track workouts, earn Bitcoin (sats) for exercising, support charities, and join fitness competitions. Your data is yours — stored on your device and backed up encrypted to Nostr.
+RUNSTR 是一款面向 Bitcoin/Nostr 社区的免费开源健身应用程序。你可以记录锻炼情况、通过锻炼赚取比特币（sats）、支持慈善机构，并参与健身竞赛。你的数据保存在你的设备上，并加密后备份到 Nostr。
 
-- Website: https://runstr.app
-- GitHub: https://github.com/RUNSTR
-- Rewards: 50 sats per daily workout via Lightning address
-- PPQ.AI credits: Earn AI credits for working out
+- 网站：https://runstr.app
+- GitHub：https://github.com/RUNSTR
+- 奖励：每天锻炼可获得 50 sats（通过 Lightning 地址）
+- PPQ.AI 信用点数：通过锻炼赚取 AI 信用点数

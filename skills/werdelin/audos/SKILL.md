@@ -1,21 +1,21 @@
 ---
 name: Audos
-description: Create AI-powered startup workspaces via Audos API. Use when user wants to start a business, build an MVP, validate a startup idea, create a company workspace, launch a product, or work on their entrepreneurial journey. Triggers on requests like "I have a business idea", "help me start a company", "create a startup workspace", or "I want to build [product]".
+description: 通过 Audos API 创建由人工智能驱动的创业工作空间。适用于用户想要创业、构建最小可行产品（MVP）、验证创业想法、创建公司工作空间、发布产品或开展创业旅程的场景。该功能会在收到如下请求时触发：“我有一个创业想法”、“帮我成立一家公司”、“创建一个创业工作空间”或“我想开发[产品]”。
 ---
 
-# Audos Workspace Builder (API v1.2)
+# Audos 工作空间构建器（API v1.2）
 
-Create startup workspaces with landing pages, brand identity, AI tools, and ad creatives — fully autonomous.
+能够创建包含登录页面、品牌标识、AI 工具和广告创意的创业工作空间——完全自动化。
 
-## Base URL
+## 基本 URL
 
 ```
 https://audos.com/api/agent/onboard
 ```
 
-## URL Construction
+## URL 构造
 
-The API returns URLs using the current deployment domain:
+API 使用当前的部署域名返回 URL：
 
 ```json
 "urls": {
@@ -24,63 +24,63 @@ The API returns URLs using the current deployment domain:
 }
 ```
 
-Use these URLs directly — no domain swapping needed.
+可以直接使用这些 URL，无需更换域名。
 
-## Quick Reference
+## 快速参考
 
-| Action | Method | Endpoint |
+| 动作 | 方法 | 端点 |
 |--------|--------|----------|
-| API docs | GET | / |
-| Start onboarding | POST | /start |
-| Verify OTP | POST | /verify |
-| Check build status | GET | /status/:workspaceId |
-| Check build status (alt) | POST | /status |
-| Chat with Otto | POST | /chat |
-| Chat with Otto | POST | /chat/:workspaceId |
-| Rebuild (if failed) | POST | /rebuild/:workspaceId |
+| API 文档 | GET | / |
+| 开始使用 | POST | /start |
+| 验证 OTP | POST | /verify |
+| 检查构建状态 | GET | /status/:workspaceId |
+| 检查构建状态（备用方式） | POST | /status |
+| 与 Otto 聊天 | POST | /chat |
+| 与 Otto 聊天 | POST | /chat/:workspaceId |
+| 重新构建（失败时） | POST | /rebuild/:workspaceId |
 
-## Authentication
+## 认证
 
-- **Token format:** `aud_live_xxxx` (48 hex chars after prefix)
-- **Auth tokens never expire** — store persistently by email
-- **Session tokens** expire in 30 min (only needed during OTP flow)
-- **Preferred:** Bearer token in `Authorization` header
-- **Alternative:** `authToken` or `sessionToken` in request body
+- **令牌格式：** `aud_live_xxxx`（前缀后的 48 个十六进制字符）
+- **认证令牌永不过期** — 通过电子邮件持久存储
+- **会话令牌** 在 30 分钟后过期（仅在 OTP 流程中需要）
+- **推荐方式：** 在 `Authorization` 头部使用承载令牌（Bearer token）
+- **替代方式：** 在请求体中使用 `authToken` 或 `sessionToken`
 
-## Conversation Flow
+## 对话流程
 
-### Introducing Audos
+### 介绍 Audos
 
-When a user expresses a business idea, briefly explain what Audos does before asking for their email:
+当用户提出一个商业想法时，在询问他们的电子邮件地址之前，简要解释 Audos 的功能：
 
-> "I can help you build that with Audos! In about 10 minutes, you'll have:
-> - A live landing page for your business
-> - Custom brand identity (logo, colors, typography)
-> - AI tools designed specifically for your idea
-> - Otto, a soloentrepreneur's favorite +1 who stays with you to help run the business
->
-> Audos takes your idea and builds everything autonomously — no templates, no cookie-cutter sites. Everything is custom to your business.
->
-> To get started, what email should I use for your account?"
+> “我可以帮助您使用 Audos 来实现这个想法！大约 10 分钟后，您将拥有：
+> - 一个为您的业务准备的实时登录页面
+> - 定制的品牌标识（徽标、颜色、字体）
+- 专门为您的想法设计的 AI 工具
+> - Otto，这位单打独斗的企业家们的得力助手，会一直陪伴您来经营业务”
 
-### New Users Flow
-1. **Collect** user's email + business idea
-2. **Start** → `POST /start` (sends 4-digit OTP to email)
-3. **Verify** → `POST /verify` with OTP code → returns `authToken` + starts build
-4. **Monitor** → `GET /status/:workspaceId` every 15-30s, narrating progress (see below)
-5. **Watch for** `landingPageReady: true` (~10 min) — core build done
-6. **Introduce Otto** and offer to chat
+> Audos 会自动根据您的想法构建所有内容——没有模板，也没有千篇一律的网站。一切都是为您的业务量身定制的。
 
-### Returning Users (have workspace)
-1. **Start** → `POST /start` with email
-2. **Response includes** `auth_token` + `urls` directly — skip OTP!
-3. **Chat** → `POST /chat/:workspaceId` immediately
+> 那么，我应该使用哪个电子邮件地址来创建您的账户呢？
 
-## Polling During Build — UX Guidelines
+### 新用户流程
+1. **收集** 用户的电子邮件地址和商业想法
+2. **开始使用** → 发送 POST 请求到 `/start`（将 4 位数的 OTP 发送到用户的电子邮件）
+3. **验证** → 使用 OTP 代码发送 POST 请求到 `/verify` → 返回 `authToken` 并开始构建
+4. **监控** → 每 15-30 秒发送一次 GET 请求到 `/status/:workspaceId`，以获取构建进度
+5. **等待 `landingPageReady: true`（约 10 分钟后）——核心构建完成
+6. **介绍 Otto** 并提供聊天服务
 
-**Critical:** The build takes ~10 minutes. Users MUST see progress updates or they'll think it's stuck.
+### 已有用户（已有工作空间）
+1. **开始使用** → 使用电子邮件地址发送 POST 请求到 `/start`
+2. **响应中会包含** `auth_token` 和工作空间的 URL — 可以直接使用，无需再次发送 OTP
+3. **聊天** → 立即发送 POST 请求到 `/chat/:workspaceId`
 
-### Polling Pattern
+## 构建过程中的轮询——用户体验指南
+
+**重要提示：** 构建过程大约需要 10 分钟。用户必须能够看到进度更新，否则他们会认为构建失败了。
+
+### 轮询模式
 
 ```
 Poll every 15-20 seconds (NOT 60s!)
@@ -88,9 +88,9 @@ After each poll, IMMEDIATELY send a message with current state
 Don't wait until done — update the user continuously
 ```
 
-### Progress Message Format
+### 进度消息格式
 
-Send a message like this after EACH poll:
+每次轮询后发送如下格式的消息：
 
 ```
 🏗️ Building "Business Name"...
@@ -109,15 +109,15 @@ Step 6/7 ⏳ Workspace Apps
 ⏱️ ~3 min remaining
 ```
 
-### Status Icons
-- ✅ Complete
-- 🔄 In progress (show sub-task if available)
-- ⏳ Waiting/pending
-- ❌ Failed (offer /rebuild)
+### 状态图标
+- ✅ 完成
+- 🔄 进行中（如果有子任务，则显示）
+- ⏳ 等待/待处理
+- ❌ 失败（提供重新构建的选项）
 
-### Parsing parallelBuildStatus
+### 解析 `parallelBuildStatus`
 
-The API returns detailed task breakdown in `parallelBuildStatus`:
+API 在 `parallelBuildStatus` 中返回详细的任务分解信息：
 
 ```javascript
 // Example parsing
@@ -133,9 +133,9 @@ for (const step of status.parallelBuildStatus) {
 }
 ```
 
-### Implementation
+### 实现建议
 
-DO THIS (good UX):
+**这样做（良好的用户体验）：**
 ```
 1. Poll status
 2. IMMEDIATELY send message to user with formatted progress
@@ -144,60 +144,61 @@ DO THIS (good UX):
 5. Send completion message with links
 ```
 
-DON'T DO THIS (bad UX):
+**不要这样做（糟糕的用户体验）：**
 ```
 sleep 60 && curl...  ← User sees NOTHING for 60 seconds!
 ```
 
-## Narration During Build
+## 构建过程中的说明
 
-The build takes ~10 minutes. Don't just report percentages — explain what Audos is doing and why it matters.
+构建过程大约需要 10 分钟。不要仅仅报告百分比进度，要解释 Audos 正在做什么以及为什么这很重要。
 
-### Steps 1-3: Research Phase
-> "Audos is now analyzing your idea... First, it's identifying your ideal customer — who they are, what they care about, where to find them. Then it maps out the key problems your business will solve. Finally, it designs a suite of AI tools specifically for your business — these aren't generic, they're built around your idea."
+### 第 1-3 步：研究阶段
+> “Audos 正在分析您的想法……首先，它会确定您的理想客户群体——他们是谁、关心什么、在哪里可以找到他们。然后它会找出您的业务需要解决的关键问题。最后，它会为您的业务专门设计一套 AI 工具——这些工具不是通用的，而是根据您的想法定制的。”
 
-### Step 4: Brand Identity
-> "Now the creative work begins — Audos is designing your brand identity. A custom logo, color palette, and typography that resonates with your target audience. No templates here, everything is generated fresh for your business."
+### 第 4 步：品牌标识
+> “现在开始创意设计阶段——Audos 正在为您设计品牌标识。一个能够吸引目标受众的定制徽标、颜色方案和字体。这里没有模板，一切都是为您的业务全新生成的。”
 
-### Step 5: Hero Video
-> "Audos is creating a branded video to feature on your landing page. This introduces your business to visitors in a compelling way."
+### 第 5 步：品牌视频
+> “Audos 正在为您制作一个品牌视频，用于登录页面。这将以引人注目的方式向访客介绍您的业务。”
 
-### Step 6: Workspace OS
-> "Now building your workspace — think of it as your business command center. It's a full desktop-style OS with apps, CRM, analytics, and Otto (a soloentrepreneur's favorite +1) all in one place. You'll manage everything from here."
+### 第 6 步：工作空间操作系统
+> “现在开始构建您的工作空间——可以将其视为您的业务指挥中心。它是一个集成了应用程序、客户关系管理（CRM）、分析工具以及 Otto（这位单打独斗的企业家们的得力助手）的完整桌面操作系统。您可以从这里管理一切。”
 
-### Step 7: Landing Page
-> "Final stretch — Audos is designing and deploying your landing page. This is what your customers will see first. It's conversion-optimized and ready to collect leads."
+### 第 7 步：登录页面
+> “最后一步——Audos 正在设计和部署您的登录页面。这将是客户首先看到的内容。该页面经过优化，能够有效吸引潜在客户。”
 
-### On Completion
-> "Your workspace is ready! 🎉
+### 完成后
+> “您的工作空间已经准备好了！🎉”
 >
-> Here's what Audos built for you:
-> - **Landing page:** [link] — live and ready for visitors
-> - **Workspace:** [link] — your business command center
+> 这是 Audos 为您构建的内容：
+> - **登录页面：** [链接] — 实时可用，随时可供访客访问
+> - **工作空间：** [链接] — 您的业务指挥中心
 >
-> Otto, a soloentrepreneur's favorite +1, is ready to help. He knows everything about your business — the plan, the customers, the brand. Want me to ask him what you should focus on first?"
+> Otto，这位单打独斗的企业家们的得力助手，已经准备好了为您提供帮助。他了解您的业务计划、客户和品牌。您想让我帮他确定您应该优先关注什么吗？”
 
-### About Otto
-Otto is a soloentrepreneur's favorite +1. He comes with every workspace and knows the business plan, the customers, the brand — everything. He helps with:
-- Strategy and planning
-- Content creation  
-- Ad campaigns
-- Lead research and outreach
-- Day-to-day operations
+### 关于 Otto
 
-Think of him as a tireless business partner who's always available.
+Otto 是单打独斗的企业家们的得力助手。每个工作空间都会配备 Otto，他了解您的业务计划、客户和品牌。他可以帮助您：
+- 制定策略和规划
+- 创建内容
+- 开展广告活动
+- 进行潜在客户的研究和联系
+- 处理日常运营
 
-### About Audos (for context)
-- **Mission:** Make entrepreneurship accessible to everyone. The biggest barrier isn't the idea — it's the execution. Audos eliminates that barrier.
-- **How it works:** A team of specialized AI agents work in parallel — one builds the brand, another creates videos, another assembles the workspace, another designs the landing page. They collaborate and deliver a cohesive product.
-- **Publishing House:** Audos's venture arm. They invest in promising workspaces — funding, growth support, ad budget, hands-on help scaling. Founders can apply from their workspace.
+可以把 Otto 看作是一位不知疲倦的商业伙伴，随时为您提供支持。
 
-## API Reference
+### 关于 Audos（补充说明）
+- **使命：** 让每个人都能轻松开展创业。最大的障碍不是想法本身，而是执行。Audos 消除了这个障碍。
+- **工作原理：** 由一组专业的 AI 代理并行工作——一个负责构建品牌，另一个负责制作视频，还有一个负责组装工作空间，还有一个负责设计登录页面。他们协同工作，为您提供一个完整的产品。
+- **Audos 的风险投资部门：** Audos 会投资有潜力的工作空间——提供资金、成长支持、广告预算和实际的帮助来帮助扩展业务。创始人可以从他们的工作空间中申请这些资源。
 
-### GET /
-Returns full API documentation including all endpoints, auth patterns, error codes.
+## API 参考
 
-### POST /start
+### GET /  
+返回完整的 API 文档，包括所有端点、认证方式和错误代码。
+
+### POST /start  
 ```json
 {
   "email": "user@example.com",
@@ -209,19 +210,19 @@ Returns full API documentation including all endpoints, auth patterns, error cod
 }
 ```
 
-**Fields:**
-- `email` (required)
-- `businessIdea` (required, min 10 chars)
-- `businessName` (optional)
-- `targetCustomer` (optional)
-- `callbackUrl` (optional) — webhook URL for progress updates with HMAC signing
-- `createNew` (optional) — force new workspace even if email has one
+**必填字段：**
+- `email`（必需）
+- `businessIdea`（必需，至少 10 个字符）
+- `businessName`（可选）
+- `targetCustomer`（可选）
+- `callbackUrl`（可选）——用于接收带有 HMAC 签名的进度更新的 Webhook URL
+- `createNew`（可选）——即使已有工作空间，也强制创建一个新的工作空间
 
-**Returns:**
-- **New user:** `sessionToken` for OTP verification
-- **Returning user:** `auth_token`, workspace `urls`, `aboutAudos` directly
+**返回值：**
+- **新用户：** 用于 OTP 验证的 `sessionToken`
+- **已有用户：** `auth_token`、工作空间的 URL 和关于 Audos 的详细信息
 
-### POST /verify
+### POST /verify  
 ```json
 {
   "sessionToken": "aos_...",
@@ -229,37 +230,32 @@ Returns full API documentation including all endpoints, auth patterns, error cod
 }
 ```
 
-**Returns:** `workspaceId`, `authToken`, `urls`, `buildInfo`, `aboutAudos`
+**返回值：** `workspaceId`、`authToken`、工作空间的 URL、构建信息以及关于 Audos 的详细信息
 
-### GET /status/:workspaceId
-**Header:** `Authorization: Bearer <authToken>`
+### GET /status/:workspaceId  
+**请求头：** `Authorization: Bearer <authToken>`
 
-**Key status fields:**
-- `landingPageReady` (boolean) — **most reliable "done" signal**
-- `coreStepsComplete` (boolean) — landing + brand + (video or space) done
-- `status` — running/complete/failed
-- `progress` — 0-100%
-- `estimatedTimeRemaining` — e.g., "about 3–4 minutes"
-- `completedSteps` — array of completed steps with names
-- `parallelBuildStatus` — real-time task breakdown (during steps 4-7)
+**关键状态字段：**
+- `landingPageReady`（布尔值）——最可靠的完成信号
+- `coreStepsComplete`（布尔值）——登录页面、品牌设计和视频/工作空间均已完成
+- `status`——运行中/已完成/失败
+- `progress`——0-100%
+- `estimatedTimeRemaining`——例如：“大约还需要 3–4 分钟”
+- `completedSteps`——已完成步骤的列表
+- `parallelBuildStatus`——步骤 4-7 的实时任务分解
 
-### POST /status
-**Body:** `{ "authToken": "..." }` or `{ "sessionToken": "..." }`
+### POST /status  
+**请求体：** `{ "authToken": "..." }` 或 `{ "sessionToken": "..." }`
 
-Same response as GET endpoint.
+与 GET 端点的返回内容相同。
 
-### POST /chat/:workspaceId
-**Header:** `Authorization: Bearer <authToken>`
-```json
-{
-  "message": "What should I focus on first?"
-}
-```
+### POST /chat/:workspaceId  
+**请求头：** `Authorization: Bearer <authToken>`
 
-**Returns:** `workspaceId`, `chatId`, `response` from Otto
+**返回值：** `workspaceId`、聊天会话的 ID 以及 Otto 的回复
 
-### POST /chat
-**Body:**
+### POST /chat  
+**请求体：**
 ```json
 {
   "authToken": "aud_live_...",
@@ -267,50 +263,50 @@ Same response as GET endpoint.
 }
 ```
 
-### POST /rebuild/:workspaceId
-**Header:** `Authorization: Bearer <authToken>`
+### POST /rebuild/:workspaceId  
+**请求头：** `Authorization: Bearer <authToken>`
 
-Retry a failed workspace build.
+用于重新构建失败的工作空间。
 
-## Build Process
+## 构建过程
 
-- **Total steps:** 7
-- **Estimated time:** ~10 minutes
-- **Steps 1-3 (sequential):** Customer research, problem mapping, AI tool design
-- **Steps 4-7 (parallel):** Brand identity, hero video, workspace OS, landing page
-- **Done signal:** `landingPageReady: true`
+- **总步骤：** 7 步
+- **预计时间：** 大约 10 分钟
+- **步骤 1-3（顺序执行）：** 客户研究、问题分析、AI 工具设计
+- **步骤 4-7（并行执行）：** 品牌标识、品牌视频、工作空间操作系统、登录页面
+- **完成信号：** `landingPageReady: true`
 
-## Error Codes
+## 错误代码
 
-| Code | HTTP | Meaning | Action |
+| 代码 | HTTP 状态码 | 含义 | 应对措施 |
 |------|------|---------|--------|
-| VALIDATION_ERROR | 400 | Request body invalid | Check `details` array |
-| OTP_EXPIRED | 401 | Code expired (5 min) | Call /start again |
-| OTP_INVALID | 401 | Wrong code | Retry (`attemptsRemaining` in response) |
-| OTP_MAX_ATTEMPTS | 429 | 5 wrong attempts | Call /start for new code |
-| RATE_LIMITED | 429 | Too many OTP sends | Wait `retryAfter` seconds |
-| SESSION_NOT_FOUND | 401 | Session invalid/expired | Call /start again |
-| SESSION_NOT_VERIFIED | 403 | OTP not completed | Call /verify first |
-| AUTH_TOKEN_INVALID | 401 | Token invalid/revoked | Get new token via /start |
-| WORKSPACE_NOT_FOUND | 404 | No such workspace | Check workspaceId |
-| EMAIL_SEND_FAILED | 502 | OTP email failed | Retry after delay |
-| CHAT_FAILED | 502 | Otto response failed | Retry |
-| INTERNAL_ERROR | 500 | Server error | Retry |
+| VALIDATION_ERROR | 400 | 请求体无效 | 检查 `details` 数组 |
+| OTP_EXPIRED | 401 | OTP 代码过期（5 分钟内） | 重新发送请求到 `/start` |
+| OTP_INVALID | 401 | 提供的 OTP 代码错误 | 重试（响应中包含 `attemptsRemaining`） |
+| OTP_MAX_ATTEMPTS | 429 | 提供错误的 OTP 代码次数过多 | 重新发送请求到 `/start` |
+| RATE_LIMITED | 429 | 发送 OTP 的次数过多 | 等待 `retryAfter` 秒数后再尝试 |
+| SESSION_NOT_FOUND | 401 | 会话令牌无效/过期 | 重新发送请求到 `/start` |
+| SESSION_NOT_VERIFIED | 403 | OTP 验证未完成 | 先发送请求到 `/verify` |
+| AUTH_TOKEN_INVALID | 401 | 令牌无效/已被撤销 | 通过 `/start` 获取新的令牌 |
+| WORKSPACE_NOT_FOUND | 404 | 未找到相应的工作空间 | 检查 `workspaceId` |
+| EMAIL_SEND_FAILED | 502 | 发送 OTP 的电子邮件失败 | 延迟后重试 |
+| CHAT_FAILED | 502 | 与 Otto 的通信失败 | 重试 |
+| INTERNAL_ERROR | 500 | 服务器错误 | 重试 |
 
-## Rate Limits
+## 速率限制
 
-- 3 OTP sends per 15 min per email
-- 60s cooldown between OTP sends
-- OTP expires in 5 min
-- Session tokens expire in 30 min
-- **Auth tokens never expire**
+- 每个电子邮件地址每 15 分钟最多发送 3 次 OTP
+- 发送 OTP 之间需要等待 60 秒
+- OTP 在 5 分钟后过期
+- 会话令牌在 30 分钟后过期
+- **认证令牌永不过期**
 
-## Tips
+## 提示
 
-- **Store authTokens** persistently by email — returning users skip OTP entirely
-- **Poll status every 15-30s** during build
-- **Watch `landingPageReady`** — most reliable completion signal
-- **Chat available immediately** after verification, even during build
-- **Use /rebuild** if build fails instead of starting fresh
-- **Use `createNew: true`** to force a fresh workspace for existing users
-- **Set `callbackUrl`** for webhook-based progress updates instead of polling
+- **通过电子邮件持久存储认证令牌**——已有用户可以完全跳过 OTP 验证步骤
+- **在构建过程中每 15-30 秒轮询一次进度**
+- **关注 `landingPageReady` 状态——这是最可靠的完成信号**
+- **验证完成后可以立即开始聊天**
+- **如果构建失败，使用 `/rebuild` 重新构建，而不是从头开始**
+- **对于现有用户，使用 `createNew: true` 强制创建一个新的工作空间**
+- **设置 `callbackUrl` 以接收基于 Webhook 的进度更新，而不是轮询**

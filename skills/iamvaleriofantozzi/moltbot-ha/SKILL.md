@@ -1,70 +1,70 @@
 ---
 name: moltbot-ha
-description: Control Home Assistant smart home devices, lights, scenes, and automations via moltbot-ha CLI with configurable safety confirmations.
+description: 通过 `moltbot-ha CLI` 控制 Home Assistant 智能家居设备、灯光、场景及自动化功能，并支持配置安全确认机制。
 homepage: https://github.com/iamvaleriofantozzi/moltbot-ha
 metadata: {"moltbot":{"emoji":"🏠","requires":{"bins":["moltbot-ha"],"env":["HA_TOKEN"]},"primaryEnv":"HA_TOKEN","install":[{"id":"uv","kind":"uv","package":"moltbot-ha","bins":["moltbot-ha"],"label":"Install moltbot-ha (uv tool)"}]}}
 ---
 
-# Home Assistant Control
+# 通过 Home Assistant 进行控制
 
-Control your smart home via Home Assistant API using the `moltbot-ha` CLI tool.
+您可以使用 `moltbot-ha` CLI 工具，通过 Home Assistant API 来控制您的智能家居。
 
-## Setup
+## 设置
 
-### 1. Install moltbot-ha
+### 1. 安装 moltbot-ha
 ```bash
 uv tool install moltbot-ha
 ```
 
-### 2. Initialize Configuration
+### 2. 初始化配置
 ```bash
 moltbot-ha config init
 ```
 
-The setup will interactively ask for:
-- Home Assistant URL (e.g., `http://192.168.1.100:8123`)
-- Token storage preference (environment variable recommended)
+设置过程中，系统会交互式地询问以下信息：
+- Home Assistant 的 URL（例如：`http://192.168.1.100:8123`）
+- 令牌存储方式（建议使用环境变量）
 
-### 3. Set Environment Variable
-Set your Home Assistant long-lived access token:
+### 3. 设置环境变量
+设置您的 Home Assistant 长期访问令牌：
 ```bash
 export HA_TOKEN="your_token_here"
 ```
 
-To create a token:
-1. Open Home Assistant → Profile (bottom left)
-2. Scroll to "Long-Lived Access Tokens"
-3. Click "Create Token"
-4. Copy the token and set as `HA_TOKEN` environment variable
+创建令牌的步骤：
+1. 打开 Home Assistant → 个人资料（左下角）
+2. 滚动到“长期访问令牌”部分
+3. 点击“创建令牌”
+4. 复制令牌，并将其设置为 `HA_TOKEN` 环境变量
 
-### 4. Test Connection
+### 4. 测试连接
 ```bash
 moltbot-ha test
 ```
 
-## Discovery Commands
+## 发现命令
 
-### List All Entities
+### 列出所有设备
 ```bash
 moltbot-ha list
 ```
 
-### List by Domain
+### 按领域列出设备
 ```bash
 moltbot-ha list light
 moltbot-ha list switch
 moltbot-ha list cover
 ```
 
-### Get Entity State
+### 获取设备状态
 ```bash
 moltbot-ha state light.kitchen
 moltbot-ha state sensor.temperature_living_room
 ```
 
-## Action Commands
+## 操作命令
 
-### Turn On/Off
+### 开/关设备
 ```bash
 # Turn on
 moltbot-ha on light.living_room
@@ -78,7 +78,7 @@ moltbot-ha off switch.fan
 moltbot-ha toggle light.hallway
 ```
 
-### Set Attributes
+### 设置设备属性
 ```bash
 # Set brightness (percentage)
 moltbot-ha set light.bedroom brightness_pct=50
@@ -90,7 +90,7 @@ moltbot-ha set light.office color_temp=300
 moltbot-ha set light.kitchen brightness_pct=80 color_temp=350
 ```
 
-### Call Services
+### 调用服务
 ```bash
 # Activate a scene
 moltbot-ha call scene.turn_on entity_id=scene.movie_time
@@ -102,7 +102,7 @@ moltbot-ha call climate.set_temperature entity_id=climate.living_room temperatur
 moltbot-ha call cover.close_cover entity_id=cover.garage
 ```
 
-### Generic Service Call
+### 通用服务调用
 ```bash
 # With parameters
 moltbot-ha call automation.trigger entity_id=automation.morning_routine
@@ -111,25 +111,25 @@ moltbot-ha call automation.trigger entity_id=automation.morning_routine
 moltbot-ha call script.turn_on --json '{"entity_id": "script.bedtime", "variables": {"brightness": 10}}'
 ```
 
-## Safety & Confirmations
+## 安全性与确认机制
 
-moltbot-ha implements a **3-level safety system** to prevent accidental actions:
+`moltbot-ha` 实现了 **三级安全系统**，以防止意外操作：
 
-### Safety Level 3 (Default - Recommended)
+### 安全级别 3（默认值 - 推荐使用）
 
-Critical operations require explicit confirmation:
-- **lock.***: Door locks
-- **alarm_control_panel.***: Security alarms
-- **cover.***: Garage doors, blinds
+需要明确确认的关键操作包括：
+- **lock.***：门锁
+- **alarm_control_panel.***：安全警报
+- **cover.***：车库门、百叶窗
 
-### How Confirmation Works
+### 确认机制的工作原理
 
-1. **Attempt critical action:**
+1. **尝试执行关键操作：**
 ```bash
 moltbot-ha on cover.garage
 ```
 
-2. **Tool returns error:**
+2. **工具返回错误：**
 ```
 ⚠️  CRITICAL ACTION REQUIRES CONFIRMATION
 
@@ -141,42 +141,41 @@ Ask the user to confirm, then retry with --force flag.
 Example: moltbot-ha on cover.garage --force
 ```
 
-3. **Agent sees this error and asks you:**
-> "Opening the garage door is a critical action. Do you want to proceed?"
+3. **代理程序会提示您：**
+> “打开车库门是一个关键操作。您是否要继续？”
 
-4. **You confirm:**
-> "Yes, open it"
+4. **您进行确认：**
+> “是的，打开它”
 
-5. **Agent retries with --force:**
+5. **代理程序会使用 `--force` 重新尝试：**
 ```bash
 moltbot-ha on cover.garage --force
 ```
 
-6. **Action executes successfully.**
+6. **操作成功执行。**
 
-### Important: Never Use --force Without User Consent
+### 重要提示：**未经用户同意，切勿使用 `--force`**
 
-**⚠️ CRITICAL RULE FOR AGENTS:**
+**⚠️ 对于代理程序的重要规则：**
 
-- **NEVER** add `--force` flag without explicit user confirmation
-- **ALWAYS** show the user which critical action is being attempted
-- **WAIT** for explicit "yes" / "confirm" / "approve" before using `--force`
-- **BE SMART** about what constitutes confirmation: "Yes", "OK", "Sure", "Do it", "Confirmed", or any affirmative response in the context of the request is sufficient. You do NOT need the user to type a specific phrase verbatim.
+- **绝对** 不要在没有用户明确确认的情况下使用 `--force` 标志
+- **始终** 向用户显示正在尝试执行的关键操作
+- **在使用 `--force` 之前，必须等待用户明确回答“是”/“确认”/“同意”
+- **确认的方式可以灵活**：例如“是的”、“可以”、“确定”、“执行”或任何与请求相关的肯定回答都有效。用户不需要逐字输入特定的短语。
 
-### Blocked Entities
+### 被屏蔽的设备
 
-Some entities can be permanently blocked in configuration:
+某些设备可以在配置中被永久屏蔽：
 ```toml
 [safety]
 blocked_entities = ["switch.main_breaker", "lock.front_door"]
 ```
 
-These **cannot** be controlled even with `--force`.
+这些设备**即使使用 `--force` 也无法被控制**。
 
-### Configuration
+### 配置
 
-Edit `~/.config/moltbot-ha/config.toml`:
-
+编辑 `~/.config/moltbot-ha/config.toml` 文件：
 ```toml
 [safety]
 level = 3  # 0=disabled, 1=log-only, 2=confirm all writes, 3=confirm critical
@@ -188,55 +187,54 @@ blocked_entities = []  # Add entities that should never be automated
 allowed_entities = []  # If set, ONLY these entities are accessible (supports wildcards)
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Morning Routine
+### 早晨例程
 ```bash
 moltbot-ha on light.bedroom brightness_pct=30
 moltbot-ha call cover.open_cover entity_id=cover.bedroom_blinds
 moltbot-ha call climate.set_temperature entity_id=climate.bedroom temperature=21
 ```
 
-### Night Mode
+### 夜间模式
 ```bash
 moltbot-ha off light.*  # Requires wildcard support in future
 moltbot-ha call scene.turn_on entity_id=scene.goodnight
 moltbot-ha call cover.close_cover entity_id=cover.all_blinds
 ```
 
-### Check Sensors
+### 检查传感器
 ```bash
 moltbot-ha state sensor.temperature_living_room
 moltbot-ha state sensor.humidity_bathroom
 moltbot-ha state binary_sensor.motion_hallway
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Connection Failed
-- Verify `HA_URL` in config matches your Home Assistant URL
-- Ensure Home Assistant is reachable from the machine running moltbot-ha
-- Check firewall settings
+### 连接失败
+- 确认配置中的 `HA_URL` 与您的 Home Assistant URL 是否一致
+- 确保运行 `moltbot-ha` 的机器能够访问 Home Assistant
+- 检查防火墙设置
 
-### 401 Unauthorized
-- Verify `HA_TOKEN` is set correctly
-- Ensure token is a **Long-Lived Access Token** (not temporary)
-- Check token hasn't been revoked in Home Assistant
+### 401 未授权错误
+- 确认 `HA_TOKEN` 是否设置正确
+- 确保令牌是**长期访问令牌**（而非临时令牌）
+- 检查令牌是否已在 Home Assistant 中被撤销
 
-### Entity Not Found
-- Use `moltbot-ha list` to discover correct entity IDs
-- Entity IDs are case-sensitive
-- Format is `domain.entity_name` (e.g., `light.kitchen`, not `Light.Kitchen`)
+### 设备未找到
+- 使用 `moltbot-ha list` 命令来查找正确的设备 ID
+- 设备 ID 是区分大小写的
+- 格式为 `domain.entity_name`（例如：`light.kitchen`，而不是 `Light.Kitchen`）
 
-### Docker Networking
-If running in Docker and can't reach Home Assistant on `homeassistant.local`:
-- Use IP address instead: `http://192.168.1.100:8123`
-- Or use Tailscale for reliable mesh networking
+### Docker 网络设置
+如果在 Docker 中运行 `moltbot-ha` 且无法通过 `homeassistant.local` 访问 Home Assistant：
+- 使用 IP 地址：`http://192.168.1.100:8123`
+- 或者使用 Tailscale 来实现可靠的网状网络连接
 
-## Configuration Reference
+## 配置参考
 
-Full config file (`~/.config/moltbot-ha/config.toml`):
-
+完整的配置文件（`~/.config/moltbot-ha/config.toml`）：
 ```toml
 [server]
 url = "http://homeassistant.local:8123"
@@ -254,23 +252,23 @@ path = "~/.config/moltbot-ha/actions.log"
 level = "INFO"
 ```
 
-## Examples for Agents
+## 代理程序示例
 
-### Discovery Pattern
+### 发现设备模式
 ```
 User: "What lights do I have?"
 Agent: moltbot-ha list light
 Agent: "You have these lights: light.living_room, light.kitchen, light.bedroom"
 ```
 
-### Safe Action Pattern
+### 安全操作模式
 ```
 User: "Turn on the living room light"
 Agent: moltbot-ha on light.living_room
 Agent: "Living room light is now on"
 ```
 
-### Critical Action Pattern
+### 关键操作模式
 ```
 User: "Open the garage"
 Agent: moltbot-ha on cover.garage
@@ -281,9 +279,9 @@ Agent: moltbot-ha on cover.garage --force
 Agent: "Garage door is opening"
 ```
 
-## Notes
+## 注意事项
 
-- All write actions are logged to `~/.config/moltbot-ha/actions.log` by default
-- Safety settings are configurable per installation
-- Wildcards (`*`) are supported in `allowed_entities` and `blocked_entities`
-- JSON output available with `--json` flag for programmatic parsing
+- 所有写入操作默认会被记录到 `~/.config/moltbot-ha/actions.log` 文件中
+- 安全设置可以根据需要进行配置
+- 在 `allowed_entities` 和 `blocked_entities` 中支持通配符（`*`）
+- 使用 `--json` 标志可以获取 JSON 格式的输出，以便进行程序化解析

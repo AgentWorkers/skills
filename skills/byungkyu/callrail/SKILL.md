@@ -17,9 +17,9 @@ metadata:
 
 # CallRail
 
-Access the CallRail API with managed OAuth authentication. Track calls, manage tracking numbers, analyze call data, and organize with tags.
+使用托管的 OAuth 认证来访问 CallRail API。您可以跟踪通话记录、管理跟踪号码、分析通话数据，并通过标签对数据进行分类。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List all calls
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/callrail/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual CallRail API endpoint path. The gateway proxies requests to `api.callrail.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 CallRail API 端点路径。该网关会将请求代理到 `api.callrail.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your CallRail OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 CallRail OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple CallRail connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 CallRail 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,31 +140,31 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### URL Pattern
+### URL 构造
 
-All CallRail API endpoints follow this pattern:
+所有 CallRail API 端点都遵循以下格式：
 
 ```
 /callrail/v3/a/{account_id}/{resource}.json
 ```
 
-Account IDs start with `ACC`, Company IDs start with `COM`, Call IDs start with `CAL`, Tracker IDs start with `TRK`, User IDs start with `USR`.
+账户 ID 以 `ACC` 开头，公司 ID 以 `COM` 开头，通话 ID 以 `CAL` 开头，跟踪器 ID 以 `TRK` 开头，用户 ID 以 `USR` 开头。
 
 ---
 
-## Accounts
+## 账户
 
-### List Accounts
+### 列出账户
 
 ```bash
 GET /callrail/v3/a.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -185,7 +185,7 @@ GET /callrail/v3/a.json
 }
 ```
 
-### Get Account
+### 获取账户信息
 
 ```bash
 GET /callrail/v3/a/{account_id}.json
@@ -193,15 +193,15 @@ GET /callrail/v3/a/{account_id}.json
 
 ---
 
-## Companies
+## 公司
 
-### List Companies
+### 列出公司
 
 ```bash
 GET /callrail/v3/a/{account_id}/companies.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -223,7 +223,7 @@ GET /callrail/v3/a/{account_id}/companies.json
 }
 ```
 
-### Get Company
+### 获取公司信息
 
 ```bash
 GET /callrail/v3/a/{account_id}/companies/{company_id}.json
@@ -231,31 +231,31 @@ GET /callrail/v3/a/{account_id}/companies/{company_id}.json
 
 ---
 
-## Calls
+## 通话记录
 
-### List Calls
+### 列出通话记录
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls.json
 ```
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `page` | Page number (default: 1) |
-| `per_page` | Results per page (default: 100, max: 250) |
-| `date_range` | Preset: `recent`, `today`, `yesterday`, `last_7_days`, `last_30_days`, `this_month`, `last_month` |
-| `start_date` | ISO 8601 date (e.g., `2026-02-01T00:00:00-08:00`) |
-| `end_date` | ISO 8601 date |
-| `company_id` | Filter by company |
-| `tracker_id` | Filter by tracker |
-| `search` | Search term |
-| `fields` | Comma-separated field names to return |
-| `sort` | Field to sort by |
-| `order` | Sort order: `asc` or `desc` |
+| `page` | 页码（默认：1） |
+| `per_page` | 每页显示的结果数量（默认：100，最大：250） |
+| `date_range` | 预设值：`recent`、`today`、`yesterday`、`last_7_days`、`last_30_days`、`this_month`、`last_month` |
+| `start_date` | ISO 8601 格式的日期（例如：`2026-02-01T00:00:00-08:00`） |
+| `end_date` | ISO 8601 格式的日期 |
+| `company_id` | 按公司过滤 |
+| `tracker_id` | 按跟踪器过滤 |
+| `search` | 搜索词 |
+| `fields` | 要返回的字段名称（用逗号分隔） |
+| `sort` | 排序字段 |
+| `order` | 排序方式：`asc` 或 `desc` |
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -280,13 +280,13 @@ GET /callrail/v3/a/{account_id}/calls.json
 }
 ```
 
-### Get Call
+### 获取通话记录详情
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls/{call_id}.json
 ```
 
-### Update Call
+### 更新通话记录
 
 ```bash
 PUT /callrail/v3/a/{account_id}/calls/{call_id}.json
@@ -300,36 +300,36 @@ Content-Type: application/json
 }
 ```
 
-**Updatable Fields:**
+**可更新的字段：**
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `customer_name` | Customer's name |
-| `note` | Call notes |
-| `lead_status` | `good_lead`, `not_a_lead`, `previously_marked_good_lead` |
-| `spam` | Mark as spam (boolean) |
-| `tag_list` | Array of tag names to apply |
-| `value` | Call value (numeric) |
-| `append_tags` | Add tags without removing existing |
+| `customer_name` | 客户名称 |
+| `note` | 通话备注 |
+| `lead_status` | `good_lead`、`not_a_lead`、`previously_marked_good_lead` |
+| `spam` | 标记为垃圾邮件（布尔值） |
+| `tag_list` | 要应用的标签名称数组 |
+| `value` | 通话价值（数值） |
+| `append_tags` | 添加标签（不会删除现有标签） |
 
-### Call Summary
+### 通话统计
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls/summary.json
 ```
 
-Get aggregated call statistics for a date range.
+获取指定日期范围内的通话统计信息。
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Description |
+| 参数 | 描述 |
 |-----------|-------------|
-| `date_range` | Preset date range |
-| `start_date` | Start date (ISO 8601) |
-| `end_date` | End date (ISO 8601) |
-| `group_by` | Group results: `company`, `tracker`, `source`, `medium`, etc. |
+| `date_range` | 预设的日期范围 |
+| `start_date` | 开始日期（ISO 8601 格式） |
+| `end_date` | 结束日期（ISO 8601 格式） |
+| `group_by` | 分组方式：`company`、`tracker`、`source` 等 |
 
-**Response:**
+**响应：**
 ```json
 {
   "start_date": "2026-02-03T00:00:00-0800",
@@ -341,15 +341,15 @@ Get aggregated call statistics for a date range.
 }
 ```
 
-### Call Timeseries
+### 通话时间序列数据
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls/timeseries.json
 ```
 
-Get call data over time for charts and graphs.
+获取用于图表显示的通话数据。
 
-**Response:**
+**响应：**
 ```json
 {
   "start_date": "2026-02-03T00:00:00-0800",
@@ -363,15 +363,15 @@ Get call data over time for charts and graphs.
 
 ---
 
-## Trackers (Tracking Numbers)
+## 跟踪器（跟踪号码）
 
-### List Trackers
+### 列出跟踪器
 
 ```bash
 GET /callrail/v3/a/{account_id}/trackers.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -402,7 +402,7 @@ GET /callrail/v3/a/{account_id}/trackers.json
 }
 ```
 
-### Get Tracker
+### 获取跟踪器信息
 
 ```bash
 GET /callrail/v3/a/{account_id}/trackers/{tracker_id}.json
@@ -410,15 +410,15 @@ GET /callrail/v3/a/{account_id}/trackers/{tracker_id}.json
 
 ---
 
-## Tags
+## 标签
 
-### List Tags
+### 列出标签
 
 ```bash
 GET /callrail/v3/a/{account_id}/tags.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -446,7 +446,7 @@ GET /callrail/v3/a/{account_id}/tags.json
 }
 ```
 
-### Create Tag
+### 创建标签
 
 ```bash
 POST /callrail/v3/a/{account_id}/tags.json
@@ -459,13 +459,13 @@ Content-Type: application/json
 }
 ```
 
-**Tag Levels:**
-- `account` - Available to all companies in the account
-- `company` - Specific to a company (requires `company_id`)
+**标签级别：**
+- `account` - 对账户内的所有公司可用 |
+- `company` - 仅针对特定公司（需要 `company_id`）
 
-**Colors:** `gray1`, `blue1`, `blue2`, `green1`, `green2`, `orange1`, `orange2`, `orange3`, `red1`, etc.
+**颜色：** `gray1`、`blue1`、`blue2`、`green1`、`green2`、`orange1`、`orange2`、`orange3`、`red1` 等。
 
-### Update Tag
+### 更新标签
 
 ```bash
 PUT /callrail/v3/a/{account_id}/tags/{tag_id}.json
@@ -477,7 +477,7 @@ Content-Type: application/json
 }
 ```
 
-### Delete Tag
+### 删除标签
 
 ```bash
 DELETE /callrail/v3/a/{account_id}/tags/{tag_id}.json
@@ -485,15 +485,15 @@ DELETE /callrail/v3/a/{account_id}/tags/{tag_id}.json
 
 ---
 
-## Users
+## 用户
 
-### List Users
+### 列出用户
 
 ```bash
 GET /callrail/v3/a/{account_id}/users.json
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "page": 1,
@@ -517,7 +517,7 @@ GET /callrail/v3/a/{account_id}/users.json
 }
 ```
 
-### Get User
+### 获取用户信息
 
 ```bash
 GET /callrail/v3/a/{account_id}/users/{user_id}.json
@@ -525,21 +525,21 @@ GET /callrail/v3/a/{account_id}/users/{user_id}.json
 
 ---
 
-## Integrations
+## 集成
 
-### List Integrations
+### 列出集成信息
 
 ```bash
 GET /callrail/v3/a/{account_id}/integrations.json?company_id={company_id}
 ```
 
-**Note:** `company_id` is required.
+**注意：** 需要提供 `company_id`。
 
 ---
 
-## Notifications
+## 通知
 
-### List Notifications
+### 列出通知信息
 
 ```bash
 GET /callrail/v3/a/{account_id}/notifications.json
@@ -547,15 +547,15 @@ GET /callrail/v3/a/{account_id}/notifications.json
 
 ---
 
-## Pagination
+## 分页
 
-CallRail uses offset-based pagination:
+CallRail 使用基于偏移量的分页机制：
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls.json?page=2&per_page=50
 ```
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "page": 2,
@@ -566,19 +566,19 @@ GET /callrail/v3/a/{account_id}/calls.json?page=2&per_page=50
 }
 ```
 
-**Parameters:**
-- `page` - Page number (default: 1)
-- `per_page` - Results per page (default: 100, max: 250)
+**参数：**
+- `page` | 页码（默认：1）
+- `per_page` | 每页显示的结果数量（默认：100，最大：250）
 
-For the calls endpoint, you can also use relative pagination:
+对于通话记录端点，您还可以使用相对分页：
 
 ```bash
 GET /callrail/v3/a/{account_id}/calls.json?relative_pagination=true
 ```
 
-This returns `next_page` URL and `has_next_page` boolean for efficient pagination of large datasets.
+这会返回 `next_page` URL 和 `has_next_page` 布尔值，以便高效地对大量数据进行分页。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -611,51 +611,51 @@ for call in data['calls']:
     print(f"{call['customer_name']}: {call['duration']}s")
 ```
 
-## Rate Limits
+## 速率限制
 
-| Endpoint Type | Hourly Limit | Daily Limit |
+| 端点类型 | 每小时限制 | 每天限制 |
 |--------------|--------------|-------------|
-| General API | 1,000 | 10,000 |
-| SMS Send | 150 | 1,000 |
-| Outbound Calls | 100 | 2,000 |
+| 通用 API | 1,000 | 10,000 |
+| 发送短信 | 150 | 1,000 |
+| 外拨电话 | 100 | 2,000 |
 
-Exceeding limits returns HTTP 429. Implement exponential backoff for retries.
+超出限制会导致 HTTP 429 错误。请实施指数退避策略进行重试。
 
-## Notes
+## 注意事项
 
-- Account IDs start with `ACC`
-- Company IDs start with `COM`
-- Call IDs start with `CAL`
-- Tracker IDs start with `TRK`
-- User IDs start with `USR`
-- All endpoints end with `.json`
-- Communication records are retained for 25 months
-- Date/time values use ISO 8601 format with timezone
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 账户 ID 以 `ACC` 开头 |
+- 公司 ID 以 `COM` 开头 |
+- 通话 ID 以 `CAL` 开头 |
+- 跟踪器 ID 以 `TRK` 开头 |
+- 用户 ID 以 `USR` 开头 |
+- 所有端点的结尾都是 `.json` |
+- 通信记录会保留 25 个月 |
+- 日期/时间值使用带有时区的 ISO 8601 格式 |
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 命令来禁用全局解析 |
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY` |
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing required parameter |
-| 401 | Invalid or missing Maton API key |
-| 403 | Forbidden - insufficient permissions |
-| 404 | Resource not found |
-| 422 | Unprocessable entity |
-| 429 | Rate limited |
-| 500 | Internal server error |
-| 503 | Service unavailable |
+| 400 | 请求错误或缺少必要参数 |
+| 401 | 无效或缺失的 Maton API 密钥 |
+| 403 | 禁止访问 - 权限不足 |
+| 404 | 资源未找到 |
+| 422 | 实体无法处理 |
+| 429 | 速率限制 |
+| 500 | 服务器内部错误 |
+| 503 | 服务不可用 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -666,17 +666,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `callrail`. For example:
+1. 确保您的 URL 路径以 `callrail` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/callrail/v3/a.json`
+- 错误的格式：`https://gateway.maton.ai/v3/a.json`
 
-- Correct: `https://gateway.maton.ai/callrail/v3/a.json`
-- Incorrect: `https://gateway.maton.ai/v3/a.json`
+## 资源
 
-## Resources
-
-- [CallRail API Documentation](https://apidocs.callrail.com/)
-- [CallRail Help Center - API](https://support.callrail.com/hc/en-us/sections/4426797289229-API)
-- [CallRail API Rate Limits](https://apidocs.callrail.com/#rate-limiting)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [CallRail API 文档](https://apidocs.callrail.com/)
+- [CallRail 帮助中心 - API](https://support.callrail.com/hc/en-us/sections/4426797289229-API)
+- [CallRail API 速率限制](https://apidocs.callrail.com/#rate-limiting)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

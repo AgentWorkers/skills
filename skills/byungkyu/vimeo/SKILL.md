@@ -18,9 +18,9 @@ metadata:
 
 # Vimeo
 
-Access the Vimeo API with managed OAuth authentication. Upload and manage videos, create showcases and folders, manage likes and watch later, and interact with the Vimeo community.
+您可以使用托管的 OAuth 认证来访问 Vimeo API。该 API 允许您上传和管理视频、创建展示集和文件夹、管理视频的点赞次数以及安排视频的观看时间，同时还能与 Vimeo 社区进行互动。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user info
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/vimeo/{resource}
 ```
 
-The gateway proxies requests to `api.vimeo.com` and automatically injects your OAuth token.
+该网关会将请求代理到 `api.vimeo.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Vimeo OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Vimeo OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Vimeo connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Vimeo 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,19 +141,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Operations
+### 用户操作
 
-#### Get Current User
+#### 获取当前用户信息
 
 ```bash
 GET /vimeo/me
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "uri": "/users/254399456",
@@ -175,27 +175,27 @@ GET /vimeo/me
 }
 ```
 
-#### Get User by ID
+#### 根据 ID 获取用户信息
 
 ```bash
 GET /vimeo/users/{user_id}
 ```
 
-#### Get User Feed
+#### 获取用户动态
 
 ```bash
 GET /vimeo/me/feed
 ```
 
-### Video Operations
+### 视频操作
 
-#### List User Videos
+#### 列出用户发布的视频
 
 ```bash
 GET /vimeo/me/videos
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total": 2,
@@ -222,26 +222,26 @@ GET /vimeo/me/videos
 }
 ```
 
-#### Get Video
+#### 获取单个视频信息
 
 ```bash
 GET /vimeo/videos/{video_id}
 ```
 
-#### Search Videos
+#### 搜索视频
 
 ```bash
 GET /vimeo/videos?query=nature&per_page=10
 ```
 
-Query parameters:
-- `query` - Search query
-- `per_page` - Results per page (max 100)
-- `page` - Page number
-- `sort` - Sort order: `relevant`, `date`, `alphabetical`, `plays`, `likes`, `comments`, `duration`
-- `direction` - Sort direction: `asc`, `desc`
+查询参数：
+- `query` - 搜索关键字
+- `per_page` - 每页显示的结果数量（最多 100 个）
+- `page` - 页码
+- `sort` - 排序方式：`relevant`（相关）、`date`（日期）、`alphabetical`（字母顺序）、`plays`（播放次数）、`likes`（点赞次数）、`comments`（评论数量）、`duration`（时长）
+- `direction` - 排序方向：`asc`（升序）、`desc`（降序）
 
-#### Update Video
+#### 更新视频信息
 
 ```bash
 PATCH /vimeo/videos/{video_id}
@@ -253,23 +253,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Video
+#### 删除视频
 
 ```bash
 DELETE /vimeo/videos/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Folder Operations (Projects)
+### 文件夹操作（项目）
 
-#### List Folders
+#### 列出文件夹
 
 ```bash
 GET /vimeo/me/folders
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total": 1,
@@ -287,7 +287,7 @@ GET /vimeo/me/folders
 }
 ```
 
-#### Create Folder
+#### 创建文件夹
 
 ```bash
 POST /vimeo/me/folders
@@ -298,7 +298,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Folder
+#### 更新文件夹信息
 
 ```bash
 PATCH /vimeo/me/projects/{project_id}
@@ -309,43 +309,43 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Folder
+#### 删除文件夹
 
 ```bash
 DELETE /vimeo/me/projects/{project_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Get Folder Videos
+#### 获取文件夹中的视频列表
 
 ```bash
 GET /vimeo/me/projects/{project_id}/videos
 ```
 
-#### Add Video to Folder
+#### 将视频添加到文件夹中
 
 ```bash
 PUT /vimeo/me/projects/{project_id}/videos/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Remove Video from Folder
+#### 从文件夹中删除视频
 
 ```bash
 DELETE /vimeo/me/projects/{project_id}/videos/{video_id}
 ```
 
-### Album Operations (Showcases)
+### 相册操作（展示集）
 
-#### List Albums
+#### 列出相册
 
 ```bash
 GET /vimeo/me/albums
 ```
 
-#### Create Album
+#### 创建相册
 
 ```bash
 POST /vimeo/me/albums
@@ -357,7 +357,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "uri": "/users/254399456/albums/12099981",
@@ -367,7 +367,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Album
+#### 更新相册信息
 
 ```bash
 PATCH /vimeo/me/albums/{album_id}
@@ -378,43 +378,43 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Album
+#### 删除相册
 
 ```bash
 DELETE /vimeo/me/albums/{album_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Get Album Videos
+#### 获取相册中的视频列表
 
 ```bash
 GET /vimeo/me/albums/{album_id}/videos
 ```
 
-#### Add Video to Album
+#### 将视频添加到相册中
 
 ```bash
 PUT /vimeo/me/albums/{album_id}/videos/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Remove Video from Album
+#### 从相册中删除视频
 
 ```bash
 DELETE /vimeo/me/albums/{album_id}/videos/{video_id}
 ```
 
-### Comments
+### 评论操作
 
-#### Get Video Comments
+#### 获取视频评论
 
 ```bash
 GET /vimeo/videos/{video_id}/comments
 ```
 
-#### Add Comment
+#### 添加评论
 
 ```bash
 POST /vimeo/videos/{video_id}/comments
@@ -425,7 +425,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "uri": "/videos/1163160198/comments/21372988",
@@ -434,109 +434,109 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Comment
+#### 删除评论
 
 ```bash
 DELETE /vimeo/videos/{video_id}/comments/{comment_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Likes
+### 点赞操作
 
-#### Get Liked Videos
+#### 获取用户点赞的视频列表
 
 ```bash
 GET /vimeo/me/likes
 ```
 
-#### Like a Video
+#### 给视频点赞
 
 ```bash
 PUT /vimeo/me/likes/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Unlike a Video
+#### 取消对视频的点赞
 
 ```bash
 DELETE /vimeo/me/likes/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Watch Later
+### 安排视频观看
 
-#### Get Watch Later List
+#### 获取待观看视频列表
 
 ```bash
 GET /vimeo/me/watchlater
 ```
 
-#### Add to Watch Later
+#### 将视频添加到待观看列表
 
 ```bash
 PUT /vimeo/me/watchlater/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Remove from Watch Later
+#### 从待观看列表中删除视频
 
 ```bash
 DELETE /vimeo/me/watchlater/{video_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Followers and Following
+### 关注者与被关注者
 
-#### Get Followers
+#### 获取用户关注者列表
 
 ```bash
 GET /vimeo/me/followers
 ```
 
-#### Get Following
+#### 获取用户关注列表
 
 ```bash
 GET /vimeo/me/following
 ```
 
-#### Follow a User
+#### 关注用户
 
 ```bash
 PUT /vimeo/me/following/{user_id}
 ```
 
-#### Unfollow a User
+#### 取消关注用户
 
 ```bash
 DELETE /vimeo/me/following/{user_id}
 ```
 
-### Channels and Categories
+### 频道与分类
 
-#### List All Channels
+#### 列出所有频道
 
 ```bash
 GET /vimeo/channels
 ```
 
-#### Get Channel
+#### 获取单个频道信息
 
 ```bash
 GET /vimeo/channels/{channel_id}
 ```
 
-#### List All Categories
+#### 列出所有分类
 
 ```bash
 GET /vimeo/categories
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total": 10,
@@ -548,21 +548,21 @@ GET /vimeo/categories
 }
 ```
 
-#### Get Category Videos
+#### 获取某个分类下的视频列表
 
 ```bash
 GET /vimeo/categories/{category}/videos
 ```
 
-## Pagination
+## 分页
 
-Vimeo uses page-based pagination:
+Vimeo 使用基于页码的分页机制：
 
 ```bash
 GET /vimeo/me/videos?page=1&per_page=25
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total": 50,
@@ -578,11 +578,11 @@ GET /vimeo/me/videos?page=1&per_page=25
 }
 ```
 
-Parameters:
-- `page` - Page number (default 1)
-- `per_page` - Results per page (default 25, max 100)
+参数：
+- `page` - 页码（默认为 1）
+- `per_page` - 每页显示的结果数量（默认为 25 个，最多 100 个）
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -611,7 +611,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Python (Create Folder)
+### Python（创建文件夹）
 
 ```python
 import os
@@ -629,7 +629,7 @@ folder = response.json()
 print(f"Created folder: {folder['uri']}")
 ```
 
-### Python (Update Video)
+### Python（更新视频信息）
 
 ```python
 import os
@@ -651,44 +651,44 @@ video = response.json()
 print(f"Updated video: {video['name']}")
 ```
 
-## Notes
+## 注意事项
 
-- Video IDs are numeric (e.g., `1163160198`)
-- User IDs are numeric (e.g., `254399456`)
-- Folders are called "projects" in the API paths
-- Albums are also known as "Showcases" in the Vimeo UI
-- DELETE and PUT operations return 204 No Content on success
-- Video uploads require the TUS protocol (not covered here)
-- Rate limits vary by account type
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 视频 ID 为数字格式（例如：`1163160198`）
+- 用户 ID 为数字格式（例如：`254399456`）
+- 在 API 路径中，文件夹被称为 “projects”
+- 在 Vimeo 用户界面中，相册也被称为 “Showcases”
+- `DELETE` 和 `PUT` 操作成功时返回 204（表示“无内容”）
+- 视频上传需要使用 TUS 协议（此处未详细说明）
+- 各账户类型的速率限制有所不同
+- 重要提示：当将 curl 命令的输出传递给 `jq` 或其他工具时，环境变量 `$MATON_API_KEY` 在某些 shell 环境中可能无法正确解析
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Vimeo connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions or scope |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Vimeo API |
+| 400 | 未建立 Vimeo 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足或权限范围不正确 |
+| 404 | 资源未找到 |
+| 429 | 超过速率限制 |
+| 4xx/5xx | 来自 Vimeo API 的传递错误 |
 
-Vimeo errors include detailed messages:
+Vimeo 的错误代码会附带详细的错误信息：
 ```json
 {
   "error": "Your access token does not have the \"create\" scope"
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出所有连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -699,18 +699,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `vimeo`. For example:
+1. 确保您的 URL 路径以 `vimeo` 开头。例如：
+- 正确格式：`https://gateway.maton.ai/vimeo/me/videos`
+- 错误格式：`https://gateway.maton.ai/me/videos`
 
-- Correct: `https://gateway.maton.ai/vimeo/me/videos`
-- Incorrect: `https://gateway.maton.ai/me/videos`
+## 资源
 
-## Resources
-
-- [Vimeo API Reference](https://developer.vimeo.com/api/reference)
-- [Vimeo Developer Portal](https://developer.vimeo.com)
-- [Vimeo API Authentication](https://developer.vimeo.com/api/authentication)
-- [Vimeo Upload API](https://developer.vimeo.com/api/upload/videos)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Vimeo API 参考文档](https://developer.vimeo.com/api/reference)
+- [Vimeo 开发者门户](https://developer.vimeo.com)
+- [Vimeo API 认证指南](https://developer.vimeo.com/api/authentication)
+- [Vimeo 上传 API](https://developer.vimeo.com/api/upload/videos)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 技术支持](mailto:support@maton.ai)

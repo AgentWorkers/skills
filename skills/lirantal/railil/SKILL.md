@@ -1,73 +1,73 @@
 ---
 name: railil
-description: Search for Israel Rail train schedules using the railil CLI. Find routes between stations with fuzzy search, filter by date/time, and output in various formats (JSON, Markdown, Table).
+description: 使用 `railil` CLI 搜索以色列铁路的列车时刻表。支持通过模糊搜索找到车站之间的路线，可根据日期/时间进行筛选，并以多种格式（JSON、Markdown、表格）输出结果。
 homepage: https://github.com/lirantal/railil
 metadata: {"clawdbot":{"emoji":"🚆","requires":{"bins":["railil"]},"install":[{"id":"node","kind":"node","package":"railil","bins":["railil"],"label":"Install railil (npm)"}]}}
 ---
 
 # Railil CLI
 
-A CLI tool for checking Israel Rail train schedules.
+这是一个用于查询以色列Rail列车时刻表的命令行工具（CLI）。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g railil
 ```
 
-## Usage
+## 使用方法
 
-The CLI supports fuzzy matching for station names.
+该CLI支持对车站名称进行模糊匹配。
 
-### Basic Search
+### 基本搜索
 
-Search for the next trains between two stations:
+查询两个车站之间的下一班列车：
 
 ```bash
 railil --from "Tel Aviv" --to "Haifa"
 ```
 
-### Date and Time
+### 日期和时间
 
-Search for a specific date and time:
+查询特定日期和时间的列车：
 
 ```bash
 railil --from "Beer Sheva" --to "Tel Aviv" --time 08:00 --date 2023-11-01
 ```
 
-### Output Formats
+### 输出格式
 
-For machine-readable output or specific formatting, use the `--output` flag.
-Supported formats: `text` (default), `json`, `table`, `markdown`.
+如需机器可读的输出或特定格式的输出，请使用`--output`标志。
+支持的格式：`text`（默认）、`json`、`table`、`markdown`。
 
-**JSON Output (Recommended for agents):**
+**JSON输出（推荐给自动化系统使用）：**
 ```bash
 railil --from "Tel Aviv" --to "Haifa" --output json
 ```
 
-**Markdown Output:**
+**Markdown输出：**
 ```bash
 railil --from "Tel Aviv" --to "Haifa" --output markdown
 ```
 
-### Options
+### 选项
 
-- `-f, --from <station>`: Origin station name (fuzzy match supported).
-- `-t, --to <station>`: Destination station name (fuzzy match supported).
-- `-d, --date <date>`: Date of travel.
-- `-h, --time <time>`: Time of travel (HH:MM).
-- `-l, --limit <number>`: Limit the number of results.
-- `-o, --output <format>`: Output format (`json`, `text`, `table`, `markdown`).
-- `--help`: Show help message.
+- `-f, --from <车站>`：出发站名称（支持模糊匹配）。
+- `-t, --to <车站>`：目的站名称（支持模糊匹配）。
+- `-d, --date <日期>`：出行日期。
+- `-h, --time <时间>`：出行时间（格式为HH:MM）。
+- `-l, --limit <数量>`：限制结果数量。
+- `-o, --output <格式>`：输出格式（`json`、`text`、`table`、`markdown`）。
+- `--help`：显示帮助信息。
 
-## Examples
+## 示例
 
-**Find next 3 trains from Ben Gurion Airport to Jerusalem:**
+**查询从本-古里安机场到耶路撒冷的下一班列车（共3班）：**
 ```bash
 railil --from "Ben Gurion" --to "Jerusalem" --limit 3
 ```
 
-**Get schedule for tomorrow morning in JSON:**
+**获取明早的列车时刻表（以JSON格式）：**
 ```bash
 railil --from "Haifa" --to "Tel Aviv" --time 07:30 --output json
 ```

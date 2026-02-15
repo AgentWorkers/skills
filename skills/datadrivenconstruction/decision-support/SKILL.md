@@ -1,24 +1,24 @@
 ---
 slug: "decision-support"
 display_name: "Decision Support"
-description: "Provide data-driven decision support for construction. Analyze multiple factors and recommend optimal project decisions."
+description: "为建筑行业提供数据驱动的决策支持。分析多种因素，推荐最佳的项目决策方案。"
 ---
 
-# Decision Support System
+# 决策支持系统
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Construction decision-making challenges:
-- Multiple conflicting criteria
-- Risk and uncertainty
-- Time pressure for decisions
-- Lack of structured analysis
+### 问题描述
+建筑项目决策面临的挑战：
+- 多个相互冲突的评估标准
+- 风险与不确定性
+- 决策时间紧迫
+- 缺乏系统的分析方法
 
-### Solution
-Multi-criteria decision support system for construction projects with weighted scoring, risk analysis, and scenario comparison.
+### 解决方案
+为建筑项目提供多标准决策支持系统，该系统具备加权评分、风险分析以及情景对比功能。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -345,7 +345,7 @@ class DecisionSupportSystem:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create decision support system
@@ -377,9 +377,9 @@ print(f"Recommended: {recommendation['recommendation']['alternative']}")
 print(f"Confidence: {recommendation['recommendation']['confidence']}%")
 ```
 
-## Common Use Cases
+## 常见应用场景
 
-### 1. Method Selection
+### 1. 方法选择
 ```python
 dss = DecisionSupportSystem("Foundation Work")
 dss.set_decision_type(DecisionType.METHOD_SELECTION)
@@ -391,18 +391,18 @@ dss.add_alternative(Alternative("M2", "Precast", "Prefabricated elements",
     scores={"cost": 250000, "duration": 30, "quality": 8, "risk": 3, "sustainability": 8}))
 ```
 
-### 2. Sensitivity Analysis
+### 2. 敏感性分析
 ```python
 sensitivity = dss.sensitivity_analysis("cost", (0.1, 0.5, 0.1))
 for result in sensitivity['analysis']:
     print(f"Weight {result['weight']}: Top choice = {result['rankings'][0]['alternative']}")
 ```
 
-### 3. Export Analysis
+### 3. 分析结果导出
 ```python
 dss.export_to_excel("decision_analysis.xlsx")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.1 - Data Analytics and Decision Making
-- **Website**: https://datadrivenconstruction.io
+## 参考资源
+- **DDC手册**：第4.1章 - 数据分析与决策制定
+- **官方网站**：https://datadrivenconstruction.io

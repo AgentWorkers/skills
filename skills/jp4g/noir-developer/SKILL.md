@@ -1,46 +1,45 @@
 ---
 name: noir-developer
-description: Develop Noir (.nr) codebases. Use when creating a project or writing code with Noir.
+description: 开发 Noir (.nr) 代码库。在创建项目或使用 Noir 编写代码时，请使用该代码库。
 ---
 
-# Noir Developer
+# Noir 开发者指南
 
-## Workflow
+## 工作流程
 
-1. Compile (`nargo compile`) Noir program into ACIR.
-2. Generate witness (`nargo execute` or NoirJS execute) based on ACIR and user inputs.
-3. Prove using ACIR and witness with the selected proving backend.
-4. Verify proof with the selected proving backend.
+1. 使用 `nargo compile` 将 Noir 程序编译为 ACIR 格式。
+2. 根据 ACIR 文件和用户输入生成见证文件（`nargo execute` 或 `NoirJS execute`）。
+3. 使用选定的证明后端（proving backend）通过 ACIR 和见证文件进行证明。
+4. 使用选定的证明后端验证证明结果。
 
-## Task Patterns
+## 任务模式
 
-### Environment
+### 环境设置
 
-If the environment is unsupported by `nargo` (e.g. native Windows), guide the user to using GitHub Codespaces (https://noir-lang.org/docs/tooling/devcontainer#using-github-codespaces) or a supported setup (WSL, Docker, or VM).
+如果当前环境不支持 `nargo`（例如原生 Windows 系统），建议用户使用 GitHub Codespaces（https://noir-lang.org/docs/tooling/devcontainer#using-github-codespaces）或其他受支持的设置方式（如 WSL、Docker 或虚拟机）。
 
-### Plan
+### 计划制定
 
-Define private inputs, public inputs (if any), and public outputs (if any) for each Noir program.
+为每个 Noir 程序明确私有输入、公共输入（如有的话）以及公共输出（如有的话）。
 
-### Project Creation
+### 项目创建
 
-When creating a Noir project, use `nargo new` or `nargo init` to scaffold it.
+创建 Noir 项目时，可以使用 `nargo new` 或 `nargo init` 命令来生成项目结构。
 
-### Compilation
+### 编译
 
-Use `nargo` (not `noir_wasm`) for compilation; it is the maintained path.
+请使用 `nargo`（而非 `noir_wasm`）进行编译，因为 `nargo` 是官方推荐的编译工具。
 
-### Validation
+### 验证
 
-Run `nargo test` to validate Noir implementations.
+运行 `nargo test` 命令来验证 Noir 程序的实现是否正确。
 
-### Proving Backend
+### 证明后端选择
 
-Confirm the proving backend choice before implementation details. If the user selects Barretenberg, read `references/barretenberg.md`.
+在具体实施之前，请确认所选的证明后端。如果用户选择 Barretenberg，请阅读相关文档 `references/barretenberg.md`。
 
-## References
+## 参考资料
 
-- Run `nargo --help` for the full list of commands.
-- Read https://noir-lang.org/docs/ for language syntax, dependencies, and tooling.
-- Proving backends:
-  - For Barretenberg specifics, read `references/barretenberg.md`.
+- 运行 `nargo --help` 命令可查看所有可用命令的列表。
+- 详细了解语言语法、依赖项及工具使用方法，请访问 https://noir-lang.org/docs/。
+- 关于证明后端的详细信息，请参阅 `references/barretenberg.md`。

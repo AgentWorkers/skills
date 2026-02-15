@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Account Reports - JavaScript
+# Telnyx 账户报告 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get all MDR detailed report requests
+## 获取所有 MDR 详细报告请求
 
-Retrieves all MDR detailed report requests for the authenticated user
+检索已认证用户的所有 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging`
 
@@ -44,11 +44,11 @@ const messagings = await client.legacy.reporting.batchDetailRecords.messaging.li
 console.log(messagings.data);
 ```
 
-## Create a new MDR detailed report request
+## 创建新的 MDR 详细报告请求
 
-Creates a new MDR detailed report request with the specified filters
+使用指定的过滤器创建新的 MDR 详细报告请求
 
-`POST /legacy_reporting/batch_detail_records/messaging` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/messaging` — 必需参数：`start_time`, `end_time`
 
 ```javascript
 const messaging = await client.legacy.reporting.batchDetailRecords.messaging.create({
@@ -59,9 +59,9 @@ const messaging = await client.legacy.reporting.batchDetailRecords.messaging.cre
 console.log(messaging.data);
 ```
 
-## Get a specific MDR detailed report request
+## 获取特定的 MDR 详细报告请求
 
-Retrieves a specific MDR detailed report request by ID
+通过 ID 获取特定的 MDR 详细报告请求
 
 `GET /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -73,9 +73,9 @@ const messaging = await client.legacy.reporting.batchDetailRecords.messaging.ret
 console.log(messaging.data);
 ```
 
-## Delete a MDR detailed report request
+## 删除 MDR 详细报告请求
 
-Deletes a specific MDR detailed report request by ID
+通过 ID 删除特定的 MDR 详细报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/messaging/{id}`
 
@@ -87,9 +87,9 @@ const messaging = await client.legacy.reporting.batchDetailRecords.messaging.del
 console.log(messaging.data);
 ```
 
-## Get all CDR report requests
+## 获取所有 CDR 报告请求
 
-Retrieves all CDR report requests for the authenticated user
+检索已认证用户的所有 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice`
 
@@ -99,11 +99,11 @@ const voices = await client.legacy.reporting.batchDetailRecords.voice.list();
 console.log(voices.data);
 ```
 
-## Create a new CDR report request
+## 创建新的 CDR 报告请求
 
-Creates a new CDR report request with the specified filters
+使用指定的过滤器创建新的 CDR 报告请求
 
-`POST /legacy_reporting/batch_detail_records/voice` — Required: `start_time`, `end_time`
+`POST /legacy_reporting/batch_detail_records/voice` — 必需参数：`start_time`, `end_time`
 
 ```javascript
 const voice = await client.legacy.reporting.batchDetailRecords.voice.create({
@@ -114,9 +114,9 @@ const voice = await client.legacy.reporting.batchDetailRecords.voice.create({
 console.log(voice.data);
 ```
 
-## Get a specific CDR report request
+## 获取特定的 CDR 报告请求
 
-Retrieves a specific CDR report request by ID
+通过 ID 获取特定的 CDR 报告请求
 
 `GET /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -128,9 +128,9 @@ const voice = await client.legacy.reporting.batchDetailRecords.voice.retrieve(
 console.log(voice.data);
 ```
 
-## Delete a CDR report request
+## 删除 CDR 报告请求
 
-Deletes a specific CDR report request by ID
+通过 ID 删除特定的 CDR 报告请求
 
 `DELETE /legacy_reporting/batch_detail_records/voice/{id}`
 
@@ -142,9 +142,9 @@ const voice = await client.legacy.reporting.batchDetailRecords.voice.delete(
 console.log(voice.data);
 ```
 
-## Get available CDR report fields
+## 获取可用的 CDR 报告字段
 
-Retrieves all available fields that can be used in CDR reports
+检索所有可用于 CDR 报告的字段
 
 `GET /legacy_reporting/batch_detail_records/voice/fields`
 
@@ -154,9 +154,9 @@ const response = await client.legacy.reporting.batchDetailRecords.voice.retrieve
 console.log(response.Billing);
 ```
 
-## List MDR usage reports
+## 列出 MDR 使用报告
 
-Fetch all previous requests for MDR usage reports.
+获取所有之前的 MDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/messaging`
 
@@ -167,9 +167,9 @@ for await (const mdrUsageReportResponseLegacy of client.legacy.reporting.usageRe
 }
 ```
 
-## Create a new legacy usage V2 MDR report request
+## 创建新的传统使用 V2 MDR 报告请求
 
-Creates a new legacy usage V2 MDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 MDR 报告请求
 
 `POST /legacy_reporting/usage_reports/messaging`
 
@@ -181,9 +181,9 @@ const messaging = await client.legacy.reporting.usageReports.messaging.create({
 console.log(messaging.data);
 ```
 
-## Get an MDR usage report
+## 获取 MDR 使用报告
 
-Fetch single MDR usage report by id.
+通过 ID 获取单个 MDR 使用报告
 
 `GET /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -195,9 +195,9 @@ const messaging = await client.legacy.reporting.usageReports.messaging.retrieve(
 console.log(messaging.data);
 ```
 
-## Delete a V2 legacy usage MDR report request
+## 删除 V2 传统使用 MDR 报告请求
 
-Deletes a specific V2 legacy usage MDR report request by ID
+通过 ID 删除特定的 V2 传统使用 MDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/messaging/{id}`
 
@@ -209,9 +209,9 @@ const messaging = await client.legacy.reporting.usageReports.messaging.delete(
 console.log(messaging.data);
 ```
 
-## List telco data usage reports
+## 列出电信数据使用报告
 
-Retrieve a paginated list of telco data usage reports
+获取分页的电信数据使用报告列表
 
 `GET /legacy_reporting/usage_reports/number_lookup`
 
@@ -221,9 +221,9 @@ const numberLookups = await client.legacy.reporting.usageReports.numberLookup.li
 console.log(numberLookups.data);
 ```
 
-## Submit telco data usage report
+## 提交电信数据使用报告
 
-Submit a new telco data usage report
+提交新的电信数据使用报告
 
 `POST /legacy_reporting/usage_reports/number_lookup`
 
@@ -233,9 +233,9 @@ const numberLookup = await client.legacy.reporting.usageReports.numberLookup.cre
 console.log(numberLookup.data);
 ```
 
-## Get telco data usage report by ID
+## 通过 ID 获取电信数据使用报告
 
-Retrieve a specific telco data usage report by its ID
+通过 ID 获取特定的电信数据使用报告
 
 `GET /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -245,9 +245,9 @@ const numberLookup = await client.legacy.reporting.usageReports.numberLookup.ret
 console.log(numberLookup.data);
 ```
 
-## Delete telco data usage report
+## 删除电信数据使用报告
 
-Delete a specific telco data usage report by its ID
+通过 ID 删除特定的电信数据使用报告
 
 `DELETE /legacy_reporting/usage_reports/number_lookup/{id}`
 
@@ -255,9 +255,9 @@ Delete a specific telco data usage report by its ID
 await client.legacy.reporting.usageReports.numberLookup.delete('id');
 ```
 
-## Get speech to text usage report
+## 获取语音转文本使用报告
 
-Generate and fetch speech to text usage report synchronously.
+生成并同步获取语音转文本使用报告
 
 `GET /legacy_reporting/usage_reports/speech_to_text`
 
@@ -267,9 +267,9 @@ const response = await client.legacy.reporting.usageReports.retrieveSpeechToText
 console.log(response.data);
 ```
 
-## List CDR usage reports
+## 列出 CDR 使用报告
 
-Fetch all previous requests for cdr usage reports.
+获取所有之前的 CDR 使用报告请求
 
 `GET /legacy_reporting/usage_reports/voice`
 
@@ -280,9 +280,9 @@ for await (const cdrUsageReportResponseLegacy of client.legacy.reporting.usageRe
 }
 ```
 
-## Create a new legacy usage V2 CDR report request
+## 创建新的传统使用 V2 CDR 报告请求
 
-Creates a new legacy usage V2 CDR report request with the specified filters
+使用指定的过滤器创建新的传统使用 V2 CDR 报告请求
 
 `POST /legacy_reporting/usage_reports/voice`
 
@@ -295,9 +295,9 @@ const voice = await client.legacy.reporting.usageReports.voice.create({
 console.log(voice.data);
 ```
 
-## Get a CDR usage report
+## 获取 CDR 使用报告
 
-Fetch single cdr usage report by id.
+通过 ID 获取单个 CDR 使用报告
 
 `GET /legacy_reporting/usage_reports/voice/{id}`
 
@@ -309,9 +309,9 @@ const voice = await client.legacy.reporting.usageReports.voice.retrieve(
 console.log(voice.data);
 ```
 
-## Delete a V2 legacy usage CDR report request
+## 删除 V2 传统使用 CDR 报告请求
 
-Deletes a specific V2 legacy usage CDR report request by ID
+通过 ID 删除特定的 V2 传统使用 CDR 报告请求
 
 `DELETE /legacy_reporting/usage_reports/voice/{id}`
 
@@ -323,9 +323,9 @@ const voice = await client.legacy.reporting.usageReports.voice.delete(
 console.log(voice.data);
 ```
 
-## Fetch all Messaging usage reports
+## 获取所有消息使用报告
 
-Fetch all messaging usage reports.
+获取所有消息使用报告
 
 `GET /reports/mdr_usage_reports`
 
@@ -336,9 +336,9 @@ for await (const mdrUsageReport of client.reports.mdrUsageReports.list()) {
 }
 ```
 
-## Create MDR Usage Report
+## 创建 MDR 使用报告
 
-Submit request for new new messaging usage report.
+提交新的消息使用报告请求
 
 `POST /reports/mdr_usage_reports`
 
@@ -352,9 +352,9 @@ const mdrUsageReport = await client.reports.mdrUsageReports.create({
 console.log(mdrUsageReport.data);
 ```
 
-## Retrieve messaging report
+## 获取消息使用报告
 
-Fetch a single messaging usage report by id
+通过 ID 获取单个消息使用报告
 
 `GET /reports/mdr_usage_reports/{id}`
 
@@ -366,9 +366,9 @@ const mdrUsageReport = await client.reports.mdrUsageReports.retrieve(
 console.log(mdrUsageReport.data);
 ```
 
-## Delete MDR Usage Report
+## 删除 MDR 使用报告
 
-Delete messaging usage report by id
+通过 ID 删除消息使用报告
 
 `DELETE /reports/mdr_usage_reports/{id}`
 
@@ -380,9 +380,9 @@ const mdrUsageReport = await client.reports.mdrUsageReports.delete(
 console.log(mdrUsageReport.data);
 ```
 
-## Generate and fetch MDR Usage Report
+## 生成并获取 MDR 使用报告
 
-Generate and fetch messaging usage report synchronously.
+同步生成并获取消息使用报告
 
 `GET /reports/mdr_usage_reports/sync`
 
@@ -392,9 +392,9 @@ const response = await client.reports.mdrUsageReports.fetchSync({ aggregation_ty
 console.log(response.data);
 ```
 
-## Generates and fetches CDR Usage Reports
+## 生成并获取 CDR 使用报告
 
-Generate and fetch voice usage report synchronously.
+同步生成并获取语音使用报告
 
 `GET /reports/cdr_usage_reports/sync`
 
@@ -407,9 +407,9 @@ const response = await client.reports.cdrUsageReports.fetchSync({
 console.log(response.data);
 ```
 
-## Get Telnyx product usage data (BETA)
+## 获取 Telnyx 产品使用数据（测试版）
 
-Get Telnyx usage data by product, broken out by the specified dimensions
+根据指定的维度获取 Telnyx 产品使用数据
 
 `GET /usage_reports`
 
@@ -424,9 +424,9 @@ for await (const usageReportListResponse of client.usageReports.list({
 }
 ```
 
-## Get Usage Reports query options (BETA)
+## 获取使用报告查询选项（测试版）
 
-Get the Usage Reports options for querying usage, including the products available and their respective metrics and dimensions
+获取用于查询使用情况的报告选项，包括可用的产品及其相应的指标和维度
 
 `GET /usage_reports/options`
 

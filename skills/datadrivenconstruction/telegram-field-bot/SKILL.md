@@ -1,29 +1,29 @@
 ---
 slug: "telegram-field-bot"
 display_name: "Telegram Field Bot"
-description: "Build Telegram bots for construction field workers. Real-time reporting, photo uploads, task assignments, progress tracking. Integrate with n8n for automated workflows."
+description: "为建筑领域的工人开发 Telegram 机器人。支持实时报告、照片上传、任务分配以及进度跟踪功能。通过与 n8n 的集成，实现自动化工作流程。"
 ---
 
-# Telegram Field Bot
+# Telegram 田间作业辅助机器人
 
-## Overview
+## 概述
 
-Field workers need simple tools. Telegram bots provide instant communication, photo sharing, and task management without training or app downloads.
+田间工作人员需要简单的工具。Telegram 机器人能够提供即时通讯、图片分享以及任务管理功能，无需额外培训或下载任何应用程序。
 
-> "Telegram for field ops: Real-time task assignment and status updates" — DDC Community
+> “适用于田间作业的 Telegram：实时任务分配和状态更新”——DDC 社区
 
-## Why Telegram?
+## 为什么选择 Telegram？
 
-| Feature | Benefit |
+| 功能 | 优势 |
 |---------|---------|
-| No training | Workers already use Telegram |
-| Works offline | Messages sync when connected |
-| Photos/videos | Easy visual documentation |
-| Groups | Team coordination |
-| Bots | Automated workflows |
-| Free | No per-user licensing |
+| 无需培训 | 工作者已经在使用 Telegram |
+| 支持离线工作 | 连接网络后消息会自动同步 |
+| 支持上传图片/视频 | 便于进行可视化记录 |
+| 支持群组聊天 | 便于团队协作 |
+| 机器人自动化处理 | 实现工作流程自动化 |
+| 免费使用 | 无需为每个用户购买许可 |
 
-## Architecture
+## 架构
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -41,9 +41,9 @@ Field workers need simple tools. Telegram bots provide instant communication, ph
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Quick Start with n8n
+## 使用 n8n 快速入门
 
-### 1. Create Telegram Bot
+### 1. 创建 Telegram 机器人
 
 ```
 1. Open Telegram, search @BotFather
@@ -53,7 +53,7 @@ Field workers need simple tools. Telegram bots provide instant communication, ph
 5. Copy the API token
 ```
 
-### 2. n8n Workflow
+### 2. n8n 工作流程
 
 ```json
 {
@@ -95,7 +95,7 @@ Field workers need simple tools. Telegram bots provide instant communication, ph
 }
 ```
 
-## Bot Commands
+## 机器人命令
 
 ```python
 # /start - Welcome and instructions
@@ -108,7 +108,7 @@ Field workers need simple tools. Telegram bots provide instant communication, ph
 # /help - Show commands
 ```
 
-## Python Bot Implementation
+## Python 机器人实现
 
 ```python
 from telegram import Update, ReplyKeyboardMarkup
@@ -239,7 +239,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## Daily Report Aggregation
+## 日报汇总
 
 ```python
 def generate_daily_report(project_id: str, date: str) -> str:
@@ -274,7 +274,7 @@ def generate_daily_report(project_id: str, date: str) -> str:
     return summary
 ```
 
-## Group Chat Features
+## 群组聊天功能
 
 ```python
 # Track messages in project groups
@@ -295,14 +295,14 @@ async def handle_group_message(update: Update, context: ContextTypes.DEFAULT_TYP
         })
 ```
 
-## Requirements
+## 需求
 
 ```bash
 pip install python-telegram-bot requests
 ```
 
-## Resources
+## 资源推荐
 
 - python-telegram-bot: https://python-telegram-bot.org
-- n8n Telegram: https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.telegram/
-- BotFather: https://t.me/BotFather
+- n8n Telegram 插件：https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-baseTelegram/
+- BotFather：https://t.me/BotFather

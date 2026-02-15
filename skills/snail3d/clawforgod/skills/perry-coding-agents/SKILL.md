@@ -1,22 +1,22 @@
 ---
 name: perry-coding-agents
-description: Dispatch coding tasks to OpenCode or Claude Code on Perry workspaces. Use for development work, PR reviews, or any coding task requiring an isolated environment.
+description: 将编码任务分配到 Perry 工作空间中的 OpenCode 或 Claude Code 平台上。适用于开发工作、代码审查（PR），或任何需要隔离环境的编码任务。
 metadata: {"clawdbot":{"emoji":"🛠️"}}
 ---
 
-# Perry Coding Agents
+# Perry 编码代理
 
-Dispatch tasks to OpenCode/Claude Code on Perry workspaces.
+将任务调度到 Perry 工作空间中的 OpenCode/Claude Code 服务。
 
-## Rules
-- **Always create dex task FIRST** — before any dispatch, no exceptions
-- **No hard timeouts** — background dispatch, let agent run
-- **Use IPs** — MagicDNS broken in containers (`tailscale status` for IPs)
-- **One task per PR** — same session continues until done
-- **Reuse sessions** — OpenCode keeps context in `~/.opencode/`
-- **Never code directly** — always dispatch to agents
+## 规则
+- **务必先创建 dex 任务** — 在任何调度操作之前，无一例外
+- **不设置强制超时** — 任务在后台运行，由代理完成
+- **使用 IP 地址** — 容器环境中的 MagicDNS 服务可能无法正常使用（请通过 `tailscale status` 命令查询 IP 地址）
+- **每个 Pull Request（PR）对应一个任务** — 相同的会话会持续执行，直到任务完成
+- **重用会话** — OpenCode 会在 `~/.opencode/` 目录中保存会话信息
+- **严禁直接编写代码** — 必须通过代理来执行所有编码任务
 
-## Commands
+## 命令
 ```bash
 # OpenCode (primary)
 ssh -o StrictHostKeyChecking=no workspace@<IP> "cd ~/<project> && /home/workspace/.opencode/bin/opencode run 'task'" &
@@ -25,7 +25,7 @@ ssh -o StrictHostKeyChecking=no workspace@<IP> "cd ~/<project> && /home/workspac
 ssh -t workspace@<IP> "cd ~/<project> && /home/workspace/.local/bin/claude 'task'"
 ```
 
-## Dispatch Pattern
+## 调度模式
 ```bash
 WAKE_IP=$(tailscale status --self --json | jq -r '.Self.TailscaleIPs[0]')
 
@@ -35,12 +35,10 @@ When done: curl -X POST http://${WAKE_IP}:18789/hooks/wake -H \"Content-Type: ap
 '" &
 ```
 
-## Task Tracking
-Create task before dispatch with: workspace IP, branch, goal, done criteria.
-Same task until CI green. Complete with result summary.
+## 任务跟踪
+在调度任务之前，需要提供以下信息：工作空间 IP、分支名称、任务目标以及完成标准。任务会一直持续执行，直到持续集成（CI）系统显示“通过”状态，并附上结果总结。
 
-## Example: Full PR Flow
-
+## 示例：完整的 Pull Request 流程
 ```bash
 # 1. Create task
 # Track: workspace feat1 (100.109.173.45), branch feat/auth, goal: add auth
@@ -65,7 +63,7 @@ When fixed: curl -X POST http://${WAKE_IP}:18789/hooks/wake ...'" &
 # 6. CI green → complete task with result
 ```
 
-## Troubleshooting
-- **Can't reach**: `tailscale status | grep <name>`
-- **Commands not found**: Use full paths (`/home/workspace/.opencode/bin/opencode`)
-- **Wake not firing**: Check IP/token, test with curl
+## 故障排除
+- **无法连接目标服务**：使用 `tailscale status | grep <名称>` 命令进行检查
+- **命令找不到**：请使用完整路径（`/home/workspace/.opencode/bin/opencode`）
+- **代理未启动**：检查 IP 地址或令牌信息，并使用 `curl` 命令进行测试

@@ -1,379 +1,218 @@
 ---
 name: GSD Claw
-description: Spec-driven development with built-in verification for substantial projects. Use when user wants to plan a project, scope a feature, build something with structure, or says "GSD mode", "let's plan", "scope out", "spec-driven". Workflow is Discuss → Plan → Execute → Verify. Based on glittercowboy's GSD system (MIT license). NOT for quick questions or simple tasks.
+description: 针对大型项目，采用基于规范的开发（Spec-driven development）模式，并内置了验证机制。适用于用户需要规划项目、明确功能范围、有条理地构建软件系统的情况。用户可以使用“GSD模式”（Spec-driven mode）来指导开发流程，具体步骤包括：讨论（Discuss）→ 规划（Plan）→ 执行（Execute）→ 验证（Verify）。该模式基于 glittercowboy 开发的 GSD 系统（采用 MIT 许可协议）。不适用于快速解答问题或处理简单任务。
 ---
 
 # GSD Claw
 
-A spec-driven development system adapted for OpenClaw. Transforms vague ideas into verified, working implementations through structured workflows.
+这是一个专为 OpenClaw 设计的规范驱动开发系统，它通过结构化的工作流程将模糊的想法转化为可验证、可执行的实现方案。
 
-**Based on:** [glittercowboy/get-shit-done](https://github.com/glittercowboy/get-shit-done)  
-**Original Author:** Lex Christopherson (@glittercowboy)  
-**License:** MIT
+**基于：** [glittercowboy/get-shit-done](https://github.com/glittercowboy/get-shit-done)  
+**原始作者：** Lex Christopherson (@glittercowboy)  
+**许可证：** MIT
 
-## When to Use
+## 使用场景
 
-Trigger this skill when user says:
-- "Let's plan [project/feature]"
-- "I want to build [something]"
-- "Scope out [project name]"
-- "GSD mode" or "spec-driven"
-- "Plan and execute [task]"
-- Any substantial project that needs structure
+当用户提出以下请求时，可以使用该系统：  
+- “让我们规划一下 [项目/功能]”  
+- “我想构建 [某个东西]”  
+- “评估一下 [项目名称] 的范围”  
+- “启用 GSD 模式” 或 “采用规范驱动的开发方式”  
+- “规划并执行 [任务]”  
+- 任何需要系统化管理的复杂项目  
 
-**NOT for:** Quick questions, simple tasks, chat conversations.
+**不适用场景：**  
+- 快速查询  
+- 简单任务  
+- 聊天交流  
 
-## Core Philosophy
+## 核心理念  
 
-From the original GSD:
-> "The complexity is in the system, not in your workflow."
+源自原始的 GSD 系统：  
+> “问题的根源在于系统本身，而非开发流程。”  
 
-**Principles:**
-1. **Plans ARE prompts** — Executable instructions, not documents to interpret
-2. **Verification built-in** — Every task has acceptance criteria
-3. **Fresh context per task** — Subagents prevent context rot
-4. **Solo developer + AI** — No enterprise theater
+**核心原则：**  
+1. **计划本身就是可执行的指令**——而不是需要解释的文档。  
+2. **内置验证机制**——每个任务都有明确的验收标准。  
+3. **每个任务都有独立的上下文**——子代理确保上下文信息不会丢失。  
+4. **单人开发者 + 人工智能**——无需复杂的团队协作流程。  
 
-## Workflow Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  1. DISCUSS     Capture decisions before planning           │
-│  2. PLAN        Research → Create verified specs            │
-│  3. EXECUTE     Work through tasks with deviation rules     │
-│  4. VERIFY      Confirm deliverables actually work          │
-└─────────────────────────────────────────────────────────────┘
-```
+## 工作流程概述  
 
 ---
 
-## Phase 1: DISCUSS
+## 第一阶段：讨论  
+**目的：** 在进行任何规划之前，明确用户的愿景。  
 
-**Purpose:** Capture user's vision BEFORE any planning.
+**流程：**  
+1. 询问项目的目标（我们要构建什么？）  
+2. 根据项目领域识别潜在的模糊或不确定之处：  
+   - 视觉界面元素 → 布局、交互方式、空态显示  
+   - API 接口 → 响应格式、错误处理方式  
+   - 内容结构 → 信息组织方式、语言风格、内容深度  
+3. 对每个问题持续追问，直到用户满意为止。  
+4. 将讨论结果记录在 `{project}/.gsd/CONTEXT.md` 文件中。  
 
-**Process:**
-1. Ask about the goal (what are we building?)
-2. Identify gray areas based on domain:
-   - Visual features → layout, interactions, empty states
-   - APIs → response format, error handling
-   - Content → structure, tone, depth
-3. For each area, ask until user is satisfied
-4. Document decisions in `{project}/.gsd/CONTEXT.md`
+**输出结构：**  
+（具体结构内容请参考原文中的 `{project}/.gsd/CONTEXT.md` 模板。）  
 
-**Output Structure:**
-```markdown
-# Context: [Project/Phase Name]
-
-## Decisions (Locked)
-- [User decision 1]
-- [User decision 2]
-
-## Agent Discretion (Freedom Areas)
-- [Area where agent can choose approach]
-
-## Deferred Ideas (Out of Scope)
-- [Not doing this now]
-```
-
-**Rule:** Never assume. Always ask.
+**规则：** 永远不要假设用户的意图，务必通过提问来确认。  
 
 ---
 
-## Phase 2: PLAN
+## 第二阶段：规划  
+**目的：** 制定具有内置验证机制的可执行任务规范。  
 
-**Purpose:** Create executable task specs with built-in verification.
+### 研究（可选但推荐）  
+启动子代理来调查：  
+- 可能的技术实现方案  
+- 需要避免的陷阱  
+- 该领域的最佳实践  
 
-### Research (Optional but Recommended)
+**保存路径：** `{project}/.gsd/RESEARCH.md`  
 
-Spawn sub-agent to investigate:
-- Technical approach options
-- Potential pitfalls
-- Best practices for the domain
+### 制定计划  
+每个计划最多包含 2-3 个任务（以保持工作效率）。  
 
-Save to: `{project}/.gsd/RESEARCH.md`
+**任务 XML 结构：**  
+（具体结构内容请参考原文中的 `{project}/.gsd/plans/{phase}-{N}-PLAN.md` 模板。）  
 
-### Create Plans
+**任务类型：**  
+- `type="auto"`：代理自动执行任务。  
+- `type="checkpoint:verify"`：用户需要验证任务结果。  
+- `type="checkpoint:decision"`：用户需要做出决策。  
 
-Each plan = 2-3 tasks maximum (context efficiency).
+### 计划验证  
+在执行任务之前，需验证以下内容：  
+- 任务是否具体且可执行。  
+- 每个任务是否都有明确的验证标准和完成标准。  
+- 任务范围是否与 `CONTEXT.md` 中的规划一致。  
+- 代码结构是否过于复杂（避免企业级开发中的冗余）。  
 
-**Task XML Structure:**
-```xml
-<task type="auto">
-  <name>Task N: Action-oriented name</name>
-  <files>src/path/file.ts, src/other/file.ts</files>
-  <action>
-    What to do, what to avoid and WHY.
-    Be specific. No guessing.
-  </action>
-  <verify>Command or check to prove completion</verify>
-  <done>Measurable acceptance criteria</done>
-</task>
-```
-
-**Task Types:**
-- `type="auto"` — Agent executes autonomously
-- `type="checkpoint:verify"` — User must verify
-- `type="checkpoint:decision"` — User must choose
-
-### Plan Verification
-
-Before execution, verify plans against:
-- [ ] Tasks are specific and actionable
-- [ ] Each task has verify + done criteria
-- [ ] Scope matches CONTEXT.md decisions
-- [ ] No enterprise bloat
-
-Save plans to: `{project}/.gsd/plans/{phase}-{N}-PLAN.md`
+**保存路径：** `{project}/.gsd/plans/{phase}-{N}-PLAN.md`  
 
 ---
 
-## Phase 3: EXECUTE
+## 第三阶段：执行  
+**目的：** 逐步执行任务，并处理可能出现的偏差。  
 
-**Purpose:** Work through tasks with deviation handling.
+### 执行规则：**  
+1. 按照计划中的指令逐个执行任务。  
+2. 在继续执行前，验证每个任务是否已完成。  
+3. 自动应用相应的偏差处理规则。  
+4. 记录所有执行过程中的细节。  
 
-### Execution Rules
+### 偏差处理规则（自动应用）：  
+| 规则 | 触发条件 | 应采取的行动 | 权限要求 |  
+|------|---------|--------|------------|  
+| **错误** | 程序异常、错误、安全问题 | 自动修复 → 验证 → 记录问题 | 自动执行 |  
+| **关键组件缺失** | 缺少必要的验证机制、授权处理、错误处理功能 | 添加缺失组件 → 验证 → 记录问题 | 自动执行 |  
+| **阻碍执行** | 缺少依赖项、类型错误等 | 修复问题 → 继续执行 | 自动执行 |  
+| **架构相关问题** | 新增数据表、数据库模式变更、API 不兼容 | 停止执行 → 询问用户意见 | 由用户决定下一步行动 |  
 
-1. Read plan as literal instructions
-2. Execute each task in order
-3. Verify done criteria before moving on
-4. Apply deviation rules automatically
-5. Document everything
+**架构相关规则的具体格式：**  
+（具体格式内容请参考原文中的 `{code_block_3}` 模板。）  
 
-### Deviation Rules
+### 保持上下文更新  
+在多任务执行过程中，为每个子代理提供最新的上下文信息（约 200K 字节）。  
+这样可以确保用户始终能获得清晰的信息，避免因上下文过时而导致的质量下降。  
 
-**Apply automatically — track for summary:**
-
-| Rule | Trigger | Action | Permission |
-|------|---------|--------|------------|
-| **Bug** | Broken behavior, errors, security issues | Fix → verify → track | Auto |
-| **Missing Critical** | Missing validation, auth, error handling | Add → verify → track | Auto |
-| **Blocking** | Prevents completion (missing deps, wrong types) | Fix blocker → track | Auto |
-| **Architectural** | New table, schema change, breaking API | STOP → ask user | Ask |
-
-**Rule 4 (Architectural) Format:**
-```
-⚠️ Architectural Decision Needed
-
-Current task: [task name]
-Discovery: [what prompted this]
-Proposed change: [modification]
-Why needed: [rationale]
-Alternatives: [other approaches]
-
-Proceed? (yes / different approach / defer)
-```
-
-### Fresh Context Pattern
-
-For multi-task execution, spawn sub-agents:
-- Each sub-agent gets fresh 200k context
-- Main context stays lean for user interaction
-- Prevents quality degradation
-
-### Task Completion
-
-After each task:
-1. Verify done criteria met
-2. Commit changes (if applicable)
-3. Record in summary
-4. Move to next task
+### 任务完成  
+完成每个任务后：  
+1. 验证任务是否已完成。  
+2. （如适用）提交代码变更。  
+3. 将执行结果记录下来。  
+4. 进入下一个任务。  
 
 ---
 
-## Phase 4: VERIFY
+## 第四阶段：验证  
+**目的：** 确认最终成果是否能够正常使用。  
 
-**Purpose:** Confirm deliverables actually work.
+### 自动化验证：**  
+- 对每个任务执行相应的验证命令。  
+- 检查相关文件是否存在。  
+- （如适用）运行测试。  
 
-### Automated Verification
-- Run verify commands from each task
-- Check files exist
-- Run tests if applicable
+### 用户验收  
+引导用户逐一查看可测试的成果：  
+1. 说明用户现在应该能够实现的功能。  
+2. 逐一展示每个功能。  
+3. 获取用户的反馈（“可以”/“不行”或问题描述）。  
+4. 如果发现问题，立即制定修复计划。  
 
-### User Acceptance
+**如果所有测试都通过，则标记该阶段完成。**  
+**如果发现问题，则不要手动调试，而是立即制定修复计划并重新执行相关任务。**  
 
-Walk user through testable deliverables:
-1. Extract what they should be able to do now
-2. Present one at a time
-3. Get yes/no or issue description
-4. If issues found → create fix plans
+## 文件结构  
+（具体文件结构请参考原文中的文件目录说明。）  
 
-**If all pass:** Mark phase complete.  
-**If issues:** Don't debug manually — create fix plan and re-execute.
+## 快速模式  
+对于不需要完整规划的小型任务：  
+**触发方式：** “快速完成：[任务描述]”  
 
----
+**流程：**  
+1. 跳过研究阶段和讨论环节。  
+2. 创建包含 1-3 个任务的简单计划。  
+3. 自动执行任务并处理可能出现的偏差。  
+4. 完成后进行验证并提交代码。  
 
-## File Structure
-
-```
-{project}/
-└── .gsd/
-    ├── PROJECT.md           # Vision, always loaded
-    ├── STATE.md             # Current position, decisions, blockers
-    ├── REQUIREMENTS.md      # Scoped v1/v2 requirements
-    ├── ROADMAP.md           # Phases and progress
-    ├── CONTEXT.md           # User decisions from discuss phase
-    ├── RESEARCH.md          # Domain research (optional)
-    └── plans/
-        ├── 01-01-PLAN.md    # Phase 1, Plan 1
-        ├── 01-01-SUMMARY.md # Execution results
-        └── ...
-```
-
-**Templates:** Copy from `assets/` directory when initializing project files.
+**适用场景：**  
+- 修复漏洞  
+- 添加小功能  
+- 修改配置设置  
+- 一次性完成的任务  
 
 ---
 
-## Quick Mode
+## 状态管理  
+**STATE.md 模板：**  
+（具体模板内容请参考原文中的 `{project}/.gsd/STATE.md` 模板。）  
+在每次重要操作后更新 `STATE.md` 文件，以便随时了解项目状态。  
 
-For small tasks that don't need full planning:
+## 应避免的错误做法（已被禁止）  
+**源自原始 GSD 的不良实践：**  
+❌ **企业级开发流程**（如故事点管理、冲刺会议、人工时间估算等）  
+❌ **表述模糊的任务**（如“让我……”、“我很乐意……”等）  
+❌ **含糊不清的表述方式**  
 
-**Trigger:** "Quick: [task description]"
+**推荐的做法：**  
+使用直接、明确、技术性强的沟通语言。  
 
-**Process:**
-1. Skip research and discussion
-2. Create single plan with 1-3 tasks
-3. Execute with deviation rules
-4. Verify and commit
+## 与 OpenClaw 的适配  
+**原始 GSD 系统** 与 **OpenClaw 的差异：**  
+| GSD | OpenClaw |  
+|-----|----------|  
+| 使用 `/gsd:command` 命令触发任务 | 使用自然语言触发任务执行 |  
+| 通过 `Claude Code Task()` 启动子代理 | 通过 `sessions_spawn` 启动子代理 |  
+| 代码存储在 `.claude/` 目录中 | 代码存储在 `{project}/.gsd/` 目录中 |  
+| 使用 Bash 脚本 | 支持 PowerShell 和跨平台执行 |  
+| 使用 git 提交协议 | 可选，取决于用户偏好 |  
 
-**When to use:**
-- Bug fixes
-- Small features
-- Config changes
-- One-off tasks
+**保留的核心功能：**  
+- 基于 XML 的任务结构及验证机制  
+- 自动化的偏差处理规则  
+- 通过子代理保持上下文更新  
+- 任务规划与验证流程  
 
----
+## 使用示例  
+**用户：** “让我们规划 ORO 网站的 SEO 改进方案。”  
 
-## State Management
+**代理（讨论阶段）：**  
+（具体对话内容请参考原文中的 `{code_block_7}` 模板。）  
 
-### STATE.md Template
-```markdown
-# Project State
+**讨论结束后，代理会生成 `CONTEXT.md` 文件。**  
 
-## Current Position
-Phase: [N]
-Plan: [N of M]
-Status: [planning | executing | verifying | blocked]
+**代理（规划阶段）：**  
+（具体规划过程请参考原文中的 `{code_block_8}` 模板。）  
 
-## Decisions Made
-- [Decision 1] — [rationale]
-- [Decision 2] — [rationale]
+## 致谢  
+该系统基于 Lex Christopherson（@glittercowboy）开发的 **Get Shit Done (GSD)** 系统进行改编。  
+- **原始仓库：** https://github.com/glittercowboy/get-shit-done  
+- **许可证：** MIT  
+- **核心理念：** 依赖单人开发者与人工智能的协作，避免企业级开发中的冗余流程。  
 
-## Blockers
-- [Blocker if any]
+感谢 Lex 创建了这个高效的任务管理工具！  
 
-## Deviations Applied
-- [Rule N] [Description] — [resolution]
-```
-
-Update STATE.md after each significant action.
-
----
-
-## Anti-Patterns (Banned)
-
-From original GSD:
-
-❌ **Enterprise theater**
-- Story points, sprint ceremonies
-- Human time estimates (days/weeks)
-- RACI matrices, stakeholder syncs
-
-❌ **Vague tasks**
-```xml
-<!-- BAD -->
-<task>
-  <name>Add authentication</name>
-  <action>Implement auth</action>
-  <verify>???</verify>
-</task>
-```
-
-❌ **Filler language**
-- "Let me...", "I'd be happy to..."
-- "Great question!", "Excellent!"
-
-✅ **Direct, imperative, technical**
-
----
-
-## OpenClaw Adaptations
-
-**Original GSD** → **OpenClaw Version**
-
-| GSD | OpenClaw |
-|-----|----------|
-| `/gsd:command` slash commands | Natural language triggers |
-| Claude Code Task() spawning | `sessions_spawn` sub-agents |
-| `.claude/` directory | `{project}/.gsd/` directory |
-| Bash scripts | PowerShell/cross-platform |
-| git commit protocol | Optional, user preference |
-
-**Preserved Core:**
-- XML task structure with verify/done
-- Deviation rules
-- Fresh context via sub-agents
-- State management
-- Plan verification loop
-
----
-
-## Example Usage
-
-**User:** "Let's plan the ORO website SEO overhaul"
-
-**Agent (DISCUSS):**
-```
-Starting GSD workflow for: ORO Website SEO Overhaul
-
-Before planning, I need to understand your vision.
-
-1. What's the primary goal?
-   a) Rank higher for specific keywords
-   b) Improve technical SEO scores
-   c) Both
-   d) Something else
-
-2. Any pages that are highest priority?
-3. Budget constraints for tools/services?
-4. Timeline expectations?
-```
-
-**After discussion → creates CONTEXT.md**
-
-**Agent (PLAN):**
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► PLANNING: ORO SEO Overhaul
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Spawning research sub-agent...
-[Research complete]
-
-Creating plans...
-- Plan 1: Technical SEO fixes (3 tasks)
-- Plan 2: Content optimization (2 tasks)
-- Plan 3: Performance improvements (3 tasks)
-
-Verifying plans against requirements...
-✓ All checks passed
-
-Ready to execute?
-```
-
----
-
-## Credits
-
-This skill is adapted from **Get Shit Done (GSD)** by **Lex Christopherson** (@glittercowboy).
-
-- **Original Repository:** https://github.com/glittercowboy/get-shit-done
-- **License:** MIT
-- **Philosophy:** Solo developer + AI, no enterprise bloat
-
-Thank you Lex for creating an incredibly effective system for building things with AI.
-
----
-
-## Version History
-
-- **1.0.0** — Initial OpenClaw adaptation
+## 版本历史  
+- **1.0.0**：首次适配 OpenClaw 的版本。

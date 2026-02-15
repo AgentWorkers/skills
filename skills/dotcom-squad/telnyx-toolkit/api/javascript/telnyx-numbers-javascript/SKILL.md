@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 |
 
-# Telnyx Numbers - JavaScript
+# Telnyx 数字服务 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -31,9 +32,9 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Get country coverage
+## 获取国家覆盖范围
 
 `GET /country_coverage`
 
@@ -43,7 +44,7 @@ const countryCoverage = await client.countryCoverage.retrieve();
 console.log(countryCoverage.data);
 ```
 
-## Get coverage for a specific country
+## 获取特定国家的覆盖范围
 
 `GET /country_coverage/countries/{country_code}`
 
@@ -53,9 +54,9 @@ const response = await client.countryCoverage.retrieveCountry('US');
 console.log(response.data);
 ```
 
-## Create an inventory coverage request
+## 创建库存覆盖请求
 
-Creates an inventory coverage request.
+创建一个库存覆盖请求。
 
 `GET /inventory_coverage`
 
@@ -65,9 +66,9 @@ const inventoryCoverages = await client.inventoryCoverage.list();
 console.log(inventoryCoverages.data);
 ```
 
-## List number reservations
+## 列出号码预订信息
 
-Gets a paginated list of phone number reservations.
+获取分页显示的号码预订信息。
 
 `GET /number_reservations`
 
@@ -78,9 +79,9 @@ for await (const numberReservation of client.numberReservations.list()) {
 }
 ```
 
-## Create a number reservation
+## 创建号码预订
 
-Creates a Phone Number Reservation for multiple numbers.
+为多个号码创建号码预订。
 
 `POST /number_reservations`
 
@@ -90,11 +91,11 @@ const numberReservation = await client.numberReservations.create();
 console.log(numberReservation.data);
 ```
 
-## Retrieve a number reservation
+## 获取号码预订信息
 
-Gets a single phone number reservation.
+获取单个号码的预订信息。
 
-`GET /number_reservations/{number_reservation_id}`
+`GET /number_reservations/{numberreservation_id}`
 
 ```javascript
 const numberReservation = await client.numberReservations.retrieve('number_reservation_id');
@@ -102,11 +103,11 @@ const numberReservation = await client.numberReservations.retrieve('number_reser
 console.log(numberReservation.data);
 ```
 
-## Extend a number reservation
+## 延长号码预订有效期
 
-Extends reservation expiry time on all phone numbers.
+延长所有号码的预订有效期。
 
-`POST /number_reservations/{number_reservation_id}/actions/extend`
+`POST /number_reservations/{numberreservation_id}/actions/extend`
 
 ```javascript
 const response = await client.numberReservations.actions.extend('number_reservation_id');
@@ -114,9 +115,9 @@ const response = await client.numberReservations.actions.extend('number_reservat
 console.log(response.data);
 ```
 
-## List number orders
+## 列出号码订单信息
 
-Get a paginated list of number orders.
+获取分页显示的号码订单信息。
 
 `GET /number_orders`
 
@@ -127,9 +128,9 @@ for await (const numberOrderListResponse of client.numberOrders.list()) {
 }
 ```
 
-## Create a number order
+## 创建号码订单
 
-Creates a phone number order.
+创建一个号码订单。
 
 `POST /number_orders`
 
@@ -139,9 +140,9 @@ const numberOrder = await client.numberOrders.create();
 console.log(numberOrder.data);
 ```
 
-## Retrieve a number order
+## 获取号码订单信息
 
-Get an existing phone number order.
+获取现有的号码订单信息。
 
 `GET /number_orders/{number_order_id}`
 
@@ -151,9 +152,9 @@ const numberOrder = await client.numberOrders.retrieve('number_order_id');
 console.log(numberOrder.data);
 ```
 
-## Update a number order
+## 更新号码订单信息
 
-Updates a phone number order.
+更新号码订单信息。
 
 `PATCH /number_orders/{number_order_id}`
 
@@ -163,9 +164,9 @@ const numberOrder = await client.numberOrders.update('number_order_id');
 console.log(numberOrder.data);
 ```
 
-## List number block orders
+## 列出号码块订单信息
 
-Get a paginated list of number block orders.
+获取分页显示的号码块订单信息。
 
 `GET /number_block_orders`
 
@@ -176,11 +177,11 @@ for await (const numberBlockOrder of client.numberBlockOrders.list()) {
 }
 ```
 
-## Create a number block order
+## 创建号码块订单
 
-Creates a phone number block order.
+创建一个号码块订单。
 
-`POST /number_block_orders` — Required: `starting_number`, `range`
+`POST /number_block_orders` — 必需参数：`starting_number`, `range`
 
 ```javascript
 const numberBlockOrder = await client.numberBlockOrders.create({
@@ -191,9 +192,9 @@ const numberBlockOrder = await client.numberBlockOrders.create({
 console.log(numberBlockOrder.data);
 ```
 
-## Retrieve a number block order
+## 获取号码块订单信息
 
-Get an existing phone number block order.
+获取现有的号码块订单信息。
 
 `GET /number_block_orders/{number_block_order_id}`
 
@@ -203,9 +204,9 @@ const numberBlockOrder = await client.numberBlockOrders.retrieve('number_block_o
 console.log(numberBlockOrder.data);
 ```
 
-## Retrieve a list of phone numbers associated to orders
+## 获取与订单关联的号码列表
 
-Get a list of phone numbers associated to orders.
+获取与订单关联的号码列表。
 
 `GET /number_order_phone_numbers`
 
@@ -215,9 +216,11 @@ const numberOrderPhoneNumbers = await client.numberOrderPhoneNumbers.list();
 console.log(numberOrderPhoneNumbers.data);
 ```
 
-## Update requirement group for a phone number order
+## 更新号码订单中的需求组
 
-`POST /number_order_phone_numbers/{id}/requirement_group` — Required: `requirement_group_id`
+更新号码订单中的需求组。
+
+`POST /number_order_phone_numbers/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```javascript
 const response = await client.numberOrderPhoneNumbers.updateRequirementGroup(
@@ -228,9 +231,9 @@ const response = await client.numberOrderPhoneNumbers.updateRequirementGroup(
 console.log(response.data);
 ```
 
-## Retrieve a single phone number within a number order.
+## 获取号码订单中的单个号码信息
 
-Get an existing phone number in number order.
+获取号码订单中的单个号码信息。
 
 `GET /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -242,9 +245,9 @@ const numberOrderPhoneNumber = await client.numberOrderPhoneNumbers.retrieve(
 console.log(numberOrderPhoneNumber.data);
 ```
 
-## Update requirements for a single phone number within a number order.
+## 更新号码订单中的单个号码需求
 
-Updates requirements for a single phone number within a number order.
+更新号码订单中的单个号码需求。
 
 `PATCH /number_order_phone_numbers/{number_order_phone_number_id}`
 
@@ -256,9 +259,9 @@ const response = await client.numberOrderPhoneNumbers.updateRequirements(
 console.log(response.data);
 ```
 
-## List sub number orders
+## 列出子号码订单信息
 
-Get a paginated list of sub number orders.
+获取分页显示的子号码订单信息。
 
 `GET /sub_number_orders`
 
@@ -268,9 +271,11 @@ const subNumberOrders = await client.subNumberOrders.list();
 console.log(subNumberOrders.data);
 ```
 
-## Update requirement group for a sub number order
+## 更新子号码订单的需求组
 
-`POST /sub_number_orders/{id}/requirement_group` — Required: `requirement_group_id`
+更新子号码订单的需求组。
+
+`POST /sub_number_orders/{id}/requirement_group` — 必需参数：`requirement_group_id`
 
 ```javascript
 const response = await client.subNumberOrders.updateRequirementGroup(
@@ -281,9 +286,9 @@ const response = await client.subNumberOrders.updateRequirementGroup(
 console.log(response.data);
 ```
 
-## Retrieve a sub number order
+## 获取子号码订单信息
 
-Get an existing sub number order.
+获取现有的子号码订单信息。
 
 `GET /sub_number_orders/{sub_number_order_id}`
 
@@ -293,9 +298,9 @@ const subNumberOrder = await client.subNumberOrders.retrieve('sub_number_order_i
 console.log(subNumberOrder.data);
 ```
 
-## Update a sub number order's requirements
+## 更新子号码订单的需求
 
-Updates a sub number order.
+更新子号码订单的需求。
 
 `PATCH /sub_number_orders/{sub_number_order_id}`
 
@@ -305,9 +310,9 @@ const subNumberOrder = await client.subNumberOrders.update('sub_number_order_id'
 console.log(subNumberOrder.data);
 ```
 
-## Cancel a sub number order
+## 取消子号码订单
 
-Allows you to cancel a sub number order in 'pending' status.
+允许取消处于“待处理”状态的子号码订单。
 
 `PATCH /sub_number_orders/{sub_number_order_id}/cancel`
 
@@ -317,9 +322,9 @@ const response = await client.subNumberOrders.cancel('sub_number_order_id');
 console.log(response.data);
 ```
 
-## Create a sub number orders report
+## 创建子号码订单报告
 
-Create a CSV report for sub number orders.
+创建子号码订单的 CSV 报告。
 
 `POST /sub_number_orders/report`
 
@@ -329,9 +334,9 @@ const subNumberOrdersReport = await client.subNumberOrdersReport.create();
 console.log(subNumberOrdersReport.data);
 ```
 
-## Retrieve a sub number orders report
+## 获取子号码订单报告
 
-Get the status and details of a sub number orders report.
+获取子号码订单的报告状态和详细信息。
 
 `GET /sub_number_orders/report/{report_id}`
 
@@ -343,9 +348,9 @@ const subNumberOrdersReport = await client.subNumberOrdersReport.retrieve(
 console.log(subNumberOrdersReport.data);
 ```
 
-## Download a sub number orders report
+## 下载子号码订单报告
 
-Download the CSV file for a completed sub number orders report.
+下载已完成的子号码订单的 CSV 文件。
 
 `GET /sub_number_orders/report/{report_id}/download`
 
@@ -357,7 +362,9 @@ const response = await client.subNumberOrdersReport.download(
 console.log(response);
 ```
 
-## List Advanced Orders
+## 列出高级订单信息
+
+获取高级订单信息。
 
 `GET /advanced_orders`
 
@@ -367,7 +374,9 @@ const advancedOrders = await client.advancedOrders.list();
 console.log(advancedOrders.data);
 ```
 
-## Create Advanced Order
+## 创建高级订单
+
+创建一个高级订单。
 
 `POST /advanced_orders`
 
@@ -377,7 +386,9 @@ const advancedOrder = await client.advancedOrders.create();
 console.log(advancedOrder.id);
 ```
 
-## Update Advanced Order
+## 更新高级订单
+
+更新高级订单的信息。
 
 `PATCH /advanced_orders/{advanced-order-id}/requirement_group`
 
@@ -389,7 +400,9 @@ const response = await client.advancedOrders.updateRequirementGroup(
 console.log(response.id);
 ```
 
-## Get Advanced Order
+## 获取高级订单信息
+
+获取高级订单的详细信息。
 
 `GET /advanced_orders/{order_id}`
 
@@ -399,9 +412,9 @@ const advancedOrder = await client.advancedOrders.retrieve('182bd5e5-6e1a-4fe4-a
 console.log(advancedOrder.id);
 ```
 
-## List inexplicit number orders
+## 获取非明确指定的号码订单信息
 
-Get a paginated list of inexplicit number orders.
+获取分页显示的非明确指定号码订单信息。
 
 `GET /inexplicit_number_orders`
 
@@ -412,11 +425,11 @@ for await (const inexplicitNumberOrderResponse of client.inexplicitNumberOrders.
 }
 ```
 
-## Create an inexplicit number order
+## 创建非明确指定的号码订单
 
-Create an inexplicit number order to programmatically purchase phone numbers without specifying exact numbers.
+创建一个非明确指定的号码订单，以便在不指定具体号码的情况下批量购买电话号码。
 
-`POST /inexplicit_number_orders` — Required: `ordering_groups`
+`POST /inexplicit_number_orders` — 必需参数：`ordering_groups`
 
 ```javascript
 const inexplicitNumberOrder = await client.inexplicitNumberOrders.create({
@@ -432,9 +445,9 @@ const inexplicitNumberOrder = await client.inexplicitNumberOrders.create({
 console.log(inexplicitNumberOrder.data);
 ```
 
-## Retrieve an inexplicit number order
+## 获取非明确指定的号码订单信息
 
-Get an existing inexplicit number order by ID.
+通过 ID 获取现有的非明确指定号码订单。
 
 `GET /inexplicit_number_orders/{id}`
 
@@ -446,7 +459,9 @@ const inexplicitNumberOrder = await client.inexplicitNumberOrders.retrieve(
 console.log(inexplicitNumberOrder.data);
 ```
 
-## Retrieve all comments
+## 获取所有评论信息
+
+获取所有评论信息。
 
 `GET /comments`
 
@@ -456,7 +471,9 @@ const comments = await client.comments.list();
 console.log(comments.data);
 ```
 
-## Create a comment
+## 创建评论
+
+创建一条评论。
 
 `POST /comments`
 
@@ -466,7 +483,9 @@ const comment = await client.comments.create();
 console.log(comment.data);
 ```
 
-## Retrieve a comment
+## 获取评论信息
+
+获取特定评论的详细信息。
 
 `GET /comments/{id}`
 
@@ -476,7 +495,9 @@ const comment = await client.comments.retrieve('id');
 console.log(comment.data);
 ```
 
-## Mark a comment as read
+## 将评论标记为已读
+
+将评论标记为已读。
 
 `PATCH /comments/{id}/read`
 
@@ -486,7 +507,9 @@ const response = await client.comments.markAsRead('id');
 console.log(response.data);
 ```
 
-## List available phone number blocks
+## 列出可用的号码块
+
+获取可用的号码块信息。
 
 `GET /available_phone_number_blocks`
 
@@ -496,7 +519,9 @@ const availablePhoneNumberBlocks = await client.availablePhoneNumberBlocks.list(
 console.log(availablePhoneNumberBlocks.data);
 ```
 
-## List available phone numbers
+## 列出可用的电话号码
+
+获取可用的电话号码信息。
 
 `GET /available_phone_numbers`
 
@@ -506,9 +531,11 @@ const availablePhoneNumbers = await client.availablePhoneNumbers.list();
 console.log(availablePhoneNumbers.data);
 ```
 
-## Retrieve the features for a list of numbers
+## 获取号码列表的相关信息
 
-`POST /numbers_features` — Required: `phone_numbers`
+获取号码列表的相关信息。
+
+`POST /numbers_features` — 必需参数：`phone_numbers`
 
 ```javascript
 const numbersFeature = await client.numbersFeatures.create({ phone_numbers: ['string'] });
@@ -518,11 +545,12 @@ console.log(numbersFeature.data);
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `numberOrderStatusUpdate` | Number Order Status Update |
+| `numberOrderStatusUpdate` | 数字订单状态更新 |
+```
+```

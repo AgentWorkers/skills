@@ -1,117 +1,117 @@
 ---
 name: Cycling
-description: Cycling training, bike fit, power zones, nutrition, safety, and maintenance essentials.
+description: 骑行训练、自行车适配、功率区间、营养补充、安全措施以及维护必备知识。
 metadata:
   category: fitness
   skills: ["cycling", "biking", "endurance", "training", "triathlon"]
 ---
 
-## Bike Fit Fundamentals
+## 自行车骑行姿势基础
 
-- Saddle height: slight bend in knee at bottom of pedal stroke — too low wastes power, too high causes injury
-- Saddle fore/aft: knee over pedal spindle when crank is horizontal — affects power transfer
-- Handlebar reach: slight bend in elbows, relaxed shoulders — locked elbows transmit road shock to neck
-- Cleat position: ball of foot over pedal axle — too far forward stresses Achilles
-- Professional fit worth the cost — prevents chronic injury, improves efficiency
+- **车座高度**：在踩踏板时膝盖应略微弯曲——过低会浪费能量，过高则可能导致受伤。
+- **车座前后位置**：当曲柄处于水平位置时，膝盖应位于踏板轴上方——这会影响动力的传递。
+- **把手长度**：骑行时肘部应略微弯曲，肩膀保持放松——如果肘部僵硬，路面的震动会传递到颈部。
+- **脚踏位置**：脚掌应位于踏板轴上方——如果位置过前，会对手踝的跟腱造成压力。
+- **专业化的骑行姿势调整**是值得投资的——它能预防慢性伤害并提高骑行效率。
 
-## Power Training Zones
+## 动力训练区间
 
-| Zone | % FTP | Feel | Purpose |
+| 区间 | FTP百分比 | 感觉 | 目的 |
 |------|-------|------|---------|
-| 1 | <55% | Very easy | Recovery |
-| 2 | 56-75% | Easy, all day | Endurance base |
-| 3 | 76-90% | Moderate, focused | Tempo |
-| 4 | 91-105% | Hard, sustainable 20-60min | Threshold |
-| 5 | 106-120% | Very hard, 3-8min | VO2max |
-| 6 | >120% | Maximum, <3min | Anaerobic |
+| 1 | <55% | 非常轻松 | 恢复期 |
+| 2 | 56-75% | 轻松，适合全天骑行 | 基础耐力训练 |
+| 3 | 76-90% | 适中，专注训练 | 有氧耐力训练 |
+| 4 | 91-105% | 高强度，可持续20-60分钟 | 阈值训练 |
+| 5 | 106-120% | 非常高强度，持续3-8分钟 | 最大摄氧量（VO2max）训练 |
+| 6 | >120% | 极高强度，持续时间少于3分钟 | 无氧训练 |
 
-- FTP (Functional Threshold Power): highest power sustainable for 1 hour
-- Test FTP: 20-minute max effort × 0.95 — retest every 6-8 weeks
+- **FTP（功能性阈值功率）**：指一个人能够持续输出的最高功率（1小时）。
+- **FTP测试方法**：进行20分钟的最大强度骑行，然后计算功率的95%，每6-8周重新测试一次。
 
-## Cadence
+## 转速
 
-- Optimal range: 80-100 RPM — lower grinds joints, higher wastes cardiovascular capacity
-- Climbing: 70-85 RPM acceptable — lower cadence when gravity resists
-- Sprinting: 100-120 RPM — higher cadence for explosive power
-- Train both: low cadence strength, high cadence efficiency — versatility wins
+- **最佳转速范围**：80-100 RPM——转速过低会磨损关节，转速过高则会消耗更多的心肺能力。
+- **爬坡时**：70-85 RPM较为合适——在重力阻碍骑行时，较低的转速更有效。
+- **冲刺时**：100-120 RPM——较高的转速能产生更大的爆发力。
+- **综合训练**：低转速有助于增强力量，高转速则能提高效率——灵活性很重要。
 
-## Endurance Training
+## 耐力训练
 
-- 80% of rides should be Zone 2 — builds aerobic engine without accumulating fatigue
-- Long rides: 2-4 hours, steady effort — weekly anchor of training
-- Weekly volume matters more than single ride — consistency compounds
-- Rest weeks every 3-4 weeks: reduce volume 40% — adaptation happens during recovery
-- Base phase: 8-12 weeks of volume before intensity — patience builds foundation
+- **80%的骑行时间应处于第二训练区间**——这样可以在不积累疲劳的情况下增强心肺功能。
+- **长时间骑行**（2-4小时）：保持稳定的骑行强度——这是每周训练的重点。
+- **每周的训练量比单次骑行更重要**——持续性的训练效果更显著。
+- **每3-4周安排一次休息周**：减少40%的训练量——身体在休息期间会进行适应性调整。
+- **基础训练阶段**：在开始高强度训练前，先进行8-12周的低强度训练——耐心是提高骑行能力的基础。
 
-## Interval Sessions
+## 间歇训练
 
-- Sweet spot: 88-93% FTP, 10-20 min intervals — sustainable training stress
-- VO2max: 3-5 min at 106-120% FTP, equal rest — painful but effective
-- Over-unders: alternate 2 min above/below threshold — teaches body to clear lactate
-- Sprints: 15-30 seconds max effort, full recovery — neuromuscular power
-- One hard day, one easy day minimum — back-to-back intensity causes overtraining
+- **最佳训练强度**：88-93% FTP，每次训练持续10-20分钟——这种强度既能保持训练效果，又不会造成过度疲劳。
+- **VO2max训练**：以106-120% FTP的强度训练3-5分钟，然后休息相同时间——虽然辛苦但效果显著。
+- **交替训练**：在训练中交替使用高于/低于FTP阈值的强度——有助于身体清除乳酸。
+- **冲刺训练**：每次冲刺持续15-30秒，之后充分休息——这种训练能提升神经肌肉系统的能力。
+- **训练安排**：每周至少安排一天高强度训练和一天轻松训练——连续的高强度训练可能导致过度训练。
 
-## Climbing
+## 爬坡技巧
 
-- Pace by power or heart rate, not speed — gradient affects speed, not effort
-- Seated climbing uses different muscles than standing — alternate to delay fatigue
-- Gear selection: spin up, don't grind — save matches for surges
-- Weight matters: 1 kg = ~3 watts saved on 7% grade — rider weight, not just bike
-- Descending: look where you want to go, weight outside pedal in turns
+- **控制速度的方式**：应根据功率或心率来调整速度，而不是单纯依靠速度——坡度会影响骑行速度，但不会影响骑行强度。
+- **爬坡时使用不同的肌肉群**：坐着爬坡比站着爬坡能减少疲劳。
+- **变速技巧**：使用低挡位爬坡，避免过度用力——为冲刺保留体力。
+- **体重对骑行效率的影响**：每增加1公斤体重，7%的坡度下可以节省约3瓦特的能量——注意骑行者的体重，而不仅仅是自行车的重量。
+- **下坡时**：注意行驶方向，并在转弯时将身体重心移向车把一侧。
 
-## Nutrition On Bike
+## 骑行中的营养补充
 
-- <60 min: water only — no fuel needed
-- 60-90 min: 30g carbs/hour — one gel or banana
-- >90 min: 60-90g carbs/hour — practiced gut training required
-- Hydration: 500-750ml/hour depending on heat — thirst lags dehydration
-- Caffeine: 3-6mg/kg 30-60 min before hard efforts — proven performance boost
+- **骑行时间小于60分钟**：只需喝水——不需要补充其他能量。
+- **骑行时间60-90分钟**：每小时补充30克碳水化合物——可以摄入一根能量胶或一根香蕉。
+- **骑行时间超过90分钟**：每小时补充60-90克碳水化合物——需要通过训练培养良好的消化能力。
+- **补水**：根据天气情况，每小时补充500-750毫升的水分——口渴感往往滞后于实际脱水程度。
+- **咖啡因摄入**：在高强度训练前30-60分钟，每公斤体重摄入3-6毫克咖啡因——已被证明能提升运动表现。
 
-## Safety Essentials
+## 安全注意事项
 
-- Helmet always, no exceptions — non-negotiable
-- Assume drivers don't see you — ride defensively
-- Hand signals before turns — communicate intentions
-- Lights in low visibility: front white, rear red — even daytime
-- ID and emergency contact on person — worst case preparation
-- Descending: hands in drops, cover brakes — reaction time matters
+- **务必佩戴头盔**：没有例外。
+- **假设司机可能看不到你**：骑行时要保持谨慎，采取防御性驾驶姿势。
+- **转弯前用手势示意**：让其他骑行者了解你的意图。
+- **在能见度低的情况下使用灯光**：前灯用白色，后灯用红色——即使在白天也要使用。
+- **随身携带身份证明和紧急联系方式**：为可能发生的紧急情况做好准备。
+- **下坡时**：双手放在把手上，同时控制刹车——反应时间至关重要。
 
-## Maintenance Schedule
+## 维护计划
 
-**Every ride:**
-- Tire pressure check — correct pressure prevents flats, improves efficiency
-- Quick brake and shifting test
+**每次骑行后**：
+- 检查轮胎气压——正确的气压可以防止爆胎并提高骑行效率。
+- 快速测试刹车和变速系统的性能。
 
-**Weekly:**
-- Chain lube — after cleaning, wipe excess
-- Tire inspection for embedded debris
+**每周**：
+- 给链条上润滑油——清洁后擦去多余的润滑油。
+- 检查轮胎上是否有嵌入的碎屑。
 
-**Monthly:**
-- Chain wear check — stretched chain destroys cassette
-- Brake pad inspection — replace before metal on metal
-- Bolt torque check — especially stem, seatpost, handlebars
+**每月**：
+- 检查链条的磨损情况——链条过度拉伸会损坏变速器。
+- 检查刹车片——在刹车片与刹车盘接触时发出金属摩擦声之前及时更换。
+- 检查所有紧固件的扭矩——特别是车把、车座杆和车把的螺栓。
 
-## Common Mistakes
+## 常见错误
 
-- All intensity, no easy rides — Zone 2 feels too slow but builds fitness
-- Ignoring bike fit — chronic knee/back pain from poor position
-- Skipping rest weeks — overtraining syndrome takes months to recover
-- Fueling too late — bonking means you didn't eat enough 30 min ago
-- New equipment on race day — test everything in training first
-- Grinding big gears — high cadence protects knees, improves efficiency
+- **只进行高强度训练，不安排轻松的骑行**：虽然第二训练区间看起来速度较慢，但它对提高骑行能力非常有效。
+- **忽视骑行姿势的调整**：不良的骑行姿势会导致长期的膝盖或背部疼痛。
+- **跳过休息周**：过度训练需要数月才能恢复。
+- **训练时补充能量不及时**：如果感到体力不足，很可能是因为30分钟前没有摄入足够的能量。
+- **比赛当天使用新装备**：在比赛中前先在训练中试用所有装备。
+- **总是使用高挡位骑行**：高转速虽然能保护膝盖，但会降低骑行效率。
 
-## Indoor Training
+## 室内训练
 
-- Smart trainer: power accurate, resistance controlled — better than dumb trainer
-- Fan essential — overheating tanks performance indoors
-- Shorter but harder: 60-90 min indoors = 2-3 hours outdoors — no coasting
-- Entertainment helps: Zwift, videos, music — mental challenge of trainer
-- Structured workouts shine indoors — no interruptions, exact targets hit
+- **智能训练器**：能够准确测量功率并控制阻力——比普通的训练器更高效。
+- **风扇必不可少**：室内骑行容易过热，风扇有助于保持骑行者的体温。
+- **训练时间虽短但强度高**：室内60-90分钟的训练相当于室外2-3小时的训练——室内训练时不要让自行车空转。
+- **娱乐性辅助工具**：Zwift、视频、音乐等可以帮助提高训练的趣味性。
+- **有结构的训练计划**：室内训练更有条理，可以更好地达到训练目标。
 
-## Racing and Events
+## 比赛与活动
 
-- Pre-ride the course if possible — know the climbs, corners, hazards
-- Warm-up: 15-20 min with high-intensity openers — body ready for start effort
-- Draft in group rides: 30% energy savings — stay safe, hold wheel
-- Positioning: front third before climbs and turns — avoid accordion effect
-- Negative split long events — start conservative, finish strong
+- **如果可能的话，提前熟悉赛道**：了解赛道的爬坡段、弯道和潜在危险。
+- **热身**：进行15-20分钟的高强度热身活动——让身体准备好迎接比赛。
+- **团队骑行时利用团队协作**：这样可以节省30%的能量——同时注意保持安全，跟随领骑者骑行。
+- **骑行中的位置调整**：在爬坡和转弯前位于车队的前三分之一位置——避免在转弯时发生碰撞。
+- **长距离比赛中的策略**：开始时保持保守的骑行节奏，最后冲刺时全力以赴。

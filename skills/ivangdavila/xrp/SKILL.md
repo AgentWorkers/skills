@@ -1,68 +1,68 @@
 ---
 name: XRP
-description: Assist with XRP transactions, destination tags, reserves, and XRPL features.
+description: 协助处理XRP交易、目标地址标签（destination tags）、储备金（reserves）以及XRPL（XRP Ledger Protocol）的相关功能。
 metadata: {"clawdbot":{"emoji":"💧","os":["linux","darwin","win32"]}}
 ---
 
-## Destination Tags (Critical)
-- Exchanges require destination tags to credit deposits — sending without tag means lost funds or lengthy recovery
-- Destination tag is a number (not text) attached to a transaction — identifies which user's account to credit
-- Always verify tag before sending to exchange — wrong tag sends funds to wrong user
-- Self-custody wallets don't need destination tags — only exchanges and shared wallets use them
-- If tag is forgotten, contact exchange support immediately — recovery is possible but slow
+## 目标标签（关键信息）  
+- 在进行交易时，交易所需要目标标签来确认资金的去向——如果没有目标标签，资金可能会丢失或需要很长时间才能恢复。  
+- 目标标签是一个数字（而非文本），用于标识应将资金存入哪个用户的账户。  
+- 在向交易所发送交易之前，请务必验证目标标签的正确性——错误的标签会导致资金被发送到错误的用户账户。  
+- 自主管理的钱包不需要目标标签——只有交易所和共享钱包才需要使用目标标签。  
+- 如果忘记了目标标签，请立即联系交易所客服——虽然可以恢复资金，但过程可能会比较繁琐。  
 
-## Account Reserve
-- XRP accounts require 10 XRP base reserve to exist — this is locked and not spendable
-- Each "object" (trust lines, offers, escrows) adds 2 XRP owner reserve — more features = more locked XRP
-- Cannot send entire balance — must leave reserve amount or transaction fails
-- Reserve amounts can change via network amendments — currently 10 + 2 per object
-- Deleting account recovers most reserve minus 2 XRP fee — requires no objects and destination tag
+## 账户储备  
+- XRP账户至少需要10个XRP作为基础储备金——这部分资金是锁定的，无法被使用。  
+- 每个“对象”（如信任线、交易报价、托管账户）会额外占用2个XRP作为所有者储备金——功能越多，锁定的XRP就越多。  
+- 不能发送全部账户余额——必须保留一定的储备金，否则交易会失败。  
+- 储备金的数额可以通过网络更新进行修改——目前每个对象需要10个XRP加上2个XRP作为储备金。  
+- 删除账户会释放大部分储备金，但会扣除2个XRP的费用——删除账户无需提供目标标签或额外的对象信息。  
 
-## Transaction Characteristics
-- XRP transactions settle in 3-5 seconds — much faster than Bitcoin/Ethereum
-- Transaction cost is ~0.00001 XRP (fractions of a cent) — burned, not paid to validators
-- No mempool or pending state — transactions either succeed immediately or fail
-- Sequence number per account like Ethereum nonce — transactions must be sequential
+## 交易特性  
+- XRP交易在3-5秒内完成——比比特币/以太坊快得多。  
+- 交易费用约为0.00001 XRP（极小的金额）——这笔费用会被“烧毁”，不会支付给验证节点。  
+- XRP交易没有“内存池”或“待处理状态”——交易要么立即成功，要么立即失败。  
+- 每个账户都有一个唯一的序列号（类似于以太坊的nonce），交易必须按照顺序进行。  
 
-## Trust Lines and Tokens
-- XRPL tokens require trust lines — you must explicitly trust an issuer before receiving their tokens
-- Trust line costs 2 XRP reserve until removed — don't create unnecessary trust lines
-- Trustline rippling can cause unexpected balance changes — disable rippling for issued currencies
-- Anyone can issue tokens — verify issuer identity before trusting, many scams exist
+## 信任线与代币  
+- 使用XRPL代币之前，必须明确表示信任相应的发行者。  
+- 创建信任线需要支付2个XRP作为储备金——请避免创建不必要的信任线。  
+- 信任线的传播可能会导致账户余额的意外变化——对于已发行的代币，可以禁用信任线的传播功能。  
+- 任何人都可以发行代币——在信任发行者之前，请务必核实其身份，因为存在很多诈骗行为。  
 
-## Wallet Types
-- Secret key formats: family seed (s...), hex, or mnemonic — each wallet may use different format
-- Xumm is most popular mobile wallet — supports all XRPL features
-- Hardware wallets support XRP — Ledger with full feature support
-- XRPL has native DEX — no smart contracts needed for trading
+## 钱包类型  
+- 秘钥格式有：家庭种子短语（family seed phrase）、十六进制字符串（hex）或助记词（mnemonic phrase）——不同钱包可能使用不同的格式。  
+- Xumm是最流行的移动钱包，支持所有XRPL功能。  
+- 硬件钱包也支持XRP，例如Ledger，具备完整的XRP功能。  
+- XRPL拥有原生的去中心化交易所（DEX），交易无需智能合约。  
 
-## Common Transaction Failures
-- "tecUNFUNDED" — insufficient balance after accounting for reserve
-- "tecNO_DST_TAG" — exchange address requires destination tag
-- "tecPATH_DRY" — payment path has no liquidity (for cross-currency payments)
-- "tefPAST_SEQ" — sequence number already used, transaction is a duplicate
-- "terQUEUED" — transaction queued due to account limit, will process shortly
+## 常见交易失败原因  
+- “tecUNFUNDED”：扣除储备金后账户余额不足。  
+- “tecNO_DST_TAG”：交易所地址需要目标标签。  
+- “tecPATH_DRY”：支付路径缺乏流动性（适用于跨货币交易）。  
+- “tefPAST_SEQ”：序列号已被使用，交易重复。  
+- “terQUEUED”：由于账户限制，交易被暂缓处理，但会尽快处理。  
 
-## Exchanges and Withdrawals
-- Many exchanges freeze XRP withdrawals during network upgrades — check status before panicking
-- Exchange minimum withdrawal often 20-25 XRP due to reserve requirements
-- Some exchanges don't support XRPL tokens — only native XRP
-- Verify exchange wallet is not in "maintenance" before large sends
+## 交易所与提款  
+- 许多交易所在网络升级期间会暂停XRP的提款服务——请先查看状态再采取行动。  
+- 交易所的最低提款金额通常为20-25 XRP，这是由于需要满足储备金要求。  
+- 有些交易所仅支持原生XRP，不支持XRPL代币。  
+- 在进行大额交易之前，请确认交易所钱包是否处于“维护”状态。  
 
-## Security
-- Never share secret key or family seed — full access to all account funds
-- Regular key allows delegation without exposing master key — good for trading with limited risk
-- Escrow feature for trustless time-locked payments — built into protocol
-- Multi-signing available — require multiple keys to authorize transactions
+## 安全性  
+- 绝不要分享秘密钥匙或家庭种子短语——否则他人将能够完全控制你的账户资金。  
+- 使用备用钥匙（secondary key）可以进行交易，而无需暴露主钥匙（master key），从而降低交易风险。  
+- 协议内置了托管功能，支持无需信任的定时支付。  
+- 支持多签名机制——交易需要多个密钥才能被授权。  
 
-## DEX Trading
-- XRPL has native decentralized exchange — trade any issued tokens
-- Order book model, not AMM — limit orders, not swaps
-- Offers can be partially filled — check order status after placing
-- Payment paths can auto-convert currencies — send USD, recipient receives EUR
+## 去中心化交易所（DEX）交易  
+- XRPL拥有原生的去中心化交易所，可以交易任何发行的代币。  
+- 采用订单簿（order book）模型，而非自动做市机制（AMM）。  
+- 交易报价可以部分成交——下单后请查看订单状态。  
+- 支付路径可以自动转换货币——例如，你发送美元，接收者会收到欧元。  
 
-## Scam Recognition
-- "XRP airdrop" requiring seed phrase is always a scam
-- Fake giveaways on social media impersonating Ripple executives
-- "Double your XRP" promotions are theft
-- Verify any official announcements on ripple.com or XRPL Foundation
+## 识别诈骗行为  
+- 需要输入种子短语的“XRP空投”活动肯定是诈骗。  
+- 社交媒体上假冒Ripple高管的虚假赠品活动也是诈骗行为。  
+- “双倍回报”之类的促销活动属于诈骗行为。  
+- 请务必在ripple.com或XRPL基金会官网查看官方公告以获取真实信息。

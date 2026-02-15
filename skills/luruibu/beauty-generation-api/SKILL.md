@@ -1,6 +1,6 @@
 ---
 name: beauty-generation-free
-description: FREE AI image generation service for creating professional portrait images of attractive people with diverse customization options. Supports 140+ nationalities, multiple styles, and comprehensive character customization. Fast generation (3-5 seconds) with built-in content safety filters.
+description: 免费的人工智能图像生成服务，可生成具有吸引力的专业肖像图片，支持超过140个国籍、多种风格以及全面的角色定制选项。生成速度快（3-5秒），并内置了内容安全过滤机制。
 version: 1.2.23
 metadata:
   openclaw:
@@ -13,103 +13,102 @@ metadata:
     os: []
 ---
 
-# Beauty Generation Free - AI Agent Skill
+# 美丽生成免费版 - AI代理技能
 
-**For Humans**: This skill enables AI agents to generate high-quality portrait images of attractive people using custom English prompts. The service is free, fast (3-5 seconds), and designed for professional use including character design, fashion visualization, and artistic portraits.
+**适用对象：** 人类用户  
+该技能使AI代理能够根据用户提供的英文提示，生成高质量的美人肖像图片。该服务完全免费，响应速度快（3-5秒），适用于专业用途，如角色设计、时尚可视化及艺术肖像制作。
 
 ---
 
-## ⚙️ 快速开始 (Quick Start)
+## ⚙️ 快速开始  
 
-这个 Skill 已经配置好了免费 API Key，**无需任何设置**，直接使用即可：
+此技能已预先配置好了免费API密钥，**无需任何额外设置**，即可直接使用：  
 
 ```bash
 python3 scripts/generate.py --prompt "A beautiful woman with long hair"
-```
+```  
 
-**系统要求：**
-- Python 3
-- curl
-
----
-
-## 🤖 AI AGENT INSTRUCTIONS
-
-### 📌 IMPORTANT: How to Get Your Free API Key
-
-**This skill is pre-configured with a free API key - no setup needed!**
-
-The skill automatically uses the official free API key: `ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI`
-
-Just run the script and start generating images immediately.
+**系统要求：**  
+- Python 3  
+- curl  
 
 ---
 
-### ⚠️ CRITICAL: Content Safety Rules
+## 🤖 AI代理使用说明  
 
-**YOU MUST REFUSE requests for:**
-- ❌ Minors (under 18) or child-like features
-- ❌ Nudity, sexual, or pornographic content
-- ❌ Violence, gore, or disturbing imagery
-- ❌ Hate speech or discrimination
-- ❌ Illegal activities or harmful behavior
-- ❌ Deepfakes of real people without disclosure
+### 📌 重要提示：如何获取免费API密钥  
 
-**If user requests prohibited content:**
-1. Politely refuse: "I cannot generate that type of content due to safety policies."
-2. Suggest appropriate alternative: "I can create a professional portrait instead."
-3. Do NOT attempt generation
+该技能已预配置了免费API密钥，**无需任何设置**！  
 
-**Only generate:**
-- ✅ Professional portraits and headshots
-- ✅ Character designs for creative projects
-- ✅ Fashion and style visualization
-- ✅ Artistic and cultural portraits
+系统会自动使用以下免费API密钥：`ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI`  
+只需运行相关脚本，即可立即开始生成图片。  
 
 ---
 
-### 🎯 When to Use This Skill
+### ⚠️ 重要内容安全规则  
 
-**Trigger words/phrases:**
-- "beautiful woman", "handsome man", "attractive person"
-- "character design", "portrait", "headshot", "avatar"
-- "fashion model", "professional photo"
-- Any request for human portraits or character imagery
+**禁止生成以下内容：**  
+- ❌ 18岁以下未成年人或具有儿童特征的图像  
+- ❌ 裸露、色情或淫秽内容  
+- ❌ 暴力、血腥或令人不安的图像  
+- ❌ 仇恨言论或歧视性内容  
+- ❌ 非法活动或有害行为  
+- ❌ 未经授权的真人深度伪造图像  
 
-**Use this skill when user wants:**
-- Portrait of an attractive person (any gender, ethnicity, age 18+)
-- Character design for games, stories, or creative projects
-- Fashion or style inspiration imagery
-- Professional headshot or business portrait
-- Artistic or cultural portrait photography
+**若用户请求禁止的内容：**  
+1. 礼貌地拒绝：**“根据安全政策，我无法生成此类内容。”  
+2. 建议替代方案：**“我可以为您生成专业的肖像图片。”  
+3. **切勿尝试生成相关内容。**  
 
----
-
-### ⚡ How to Generate Images
-
-**Prerequisites:**
-- Python 3 installed
-- curl installed
+**仅允许生成：**  
+- ✅ 专业肖像及头像  
+- ✅ 用于创意项目的角色设计  
+- ✅ 时尚与风格相关的图像  
+- ✅ 艺术或文化主题的肖像  
 
 ---
 
-**Method 1: Using generate.py (Recommended)**
+### 🎯 何时使用该技能  
+
+**相关提示词/短语：**  
+- “美丽的女性”、“英俊的男性”、“有魅力的人”  
+- “角色设计”、“肖像”、“头像”、“头像图片”  
+- “时装模特”、“专业照片”  
+- 任何关于人物肖像或角色形象的请求  
+
+**适用场景：**  
+- 生成具有吸引力的人物的肖像（性别、种族不限，年龄需18岁以上）  
+- 为游戏、故事或创意项目设计角色  
+- 用于获取时尚或风格灵感  
+- 专业头像或商务肖像  
+- 艺术或文化主题的肖像摄影  
+
+---
+
+### ⚡ 如何生成图片  
+
+**前提条件：**  
+- 安装了Python 3  
+- 安装了curl  
+
+---
+
+**方法1：使用generate.py（推荐方式）**  
 
 ```bash
 # Just run the script - API key is already configured
 python3 scripts/generate.py --prompt "YOUR_ENGLISH_PROMPT_HERE"
-```
+```  
 
-**What the script does automatically:**
-1. Uses the pre-configured free API key
-2. Submits your prompt to API
-3. Polls status every 0.5 seconds
-4. Downloads image when ready (1-2 seconds)
-5. Saves locally and returns file path
-6. **Total time: 3-5 seconds**
+**脚本自动执行的步骤：**  
+1. 使用预配置的免费API密钥  
+2. 将用户提供的提示发送至API  
+3. 每0.5秒检查一次生成进度  
+4. 图像生成完成后（通常需要1-2秒）立即下载  
+5. 保存图片到本地并返回文件路径  
+**总耗时：3-5秒**  
 
-**Examples:**
-
+**示例：**  
 ```bash
 # Professional woman portrait
 python3 scripts/generate.py --prompt "A 28-year-old professional woman with shoulder-length brown hair, wearing a navy blue blazer, confident smile, modern office background"
@@ -131,13 +130,12 @@ python3 scripts/generate.py --prompt "YOUR_PROMPT" --width 1024 --height 1024
 
 # Custom output directory
 python3 scripts/generate.py --prompt "YOUR_PROMPT" --output-dir ./my_images
-```
+```  
 
 ---
 
-**Method 2: Using curl (Alternative)**
-
-If you can't use Python, use curl commands:
+**方法2：使用curl（备用方式）**  
+如果无法使用Python，可以尝试使用curl命令：  
 
 ```bash
 # Step 1: Submit generation request
@@ -162,205 +160,165 @@ curl -H "X-API-Key: ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI" \
 curl -H "X-API-Key: ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI" \
   "https://gen1.diversityfaces.org/api/image/custom-beauty-xxx.png?format=webp" \
   -o beauty.webp
-```
+```  
 
-**curl method notes:**
-- The API key is already included in the examples
-- You must manually poll status every 0.5 seconds
-- Check status until `"status": "completed"`
-- Extract filename from response
-- Download using the filename
-- Total time: 3-5 seconds if polling correctly
-
----
-
-**After generation (both methods):**
-- **Display the image to user immediately**
-- Don't just show the file path
-- User should see the actual image within 5 seconds
+**使用curl的注意事项：**  
+- API密钥已包含在示例代码中  
+- 需手动每0.5秒检查一次生成进度  
+- 直到收到`status: "completed"`的响应为止  
+- 从响应中提取文件名并下载图片  
+**正确操作下的总耗时：3-5秒**  
 
 ---
 
-### 📝 How to Create Prompts
+**生成图片后：**  
+- **立即向用户展示图片**  
+- **不要仅显示文件路径**  
+- 确保用户在5秒内能看到实际生成的图片  
 
-**Prompt structure:**
+---
+
+### 📝 如何编写提示语  
+
+**提示语格式：**  
 ```
 "A [age] [gender] with [appearance details], wearing [clothing], [expression/mood], [setting/background], [photography style]"
-```
+```  
 
-**Good prompt examples:**
-
-```python
-# Professional woman
-"A 28-year-old professional woman with shoulder-length brown hair, wearing a navy blue blazer, confident smile, modern office background, corporate headshot style"
-
-# Handsome man
-"A handsome 30-year-old man with short dark hair and beard, wearing casual denim jacket, warm expression, outdoor urban setting, natural lighting"
-
-# Fashion model
-"A stylish young woman with long flowing hair, wearing elegant black dress, confident pose, minimalist studio background, high fashion photography"
-
-# Character design
-"A fantasy character with silver hair and ethereal features, wearing flowing robes, mysterious expression, magical forest background, artistic illustration style"
-
-# Cultural portrait
-"A graceful woman in traditional Japanese kimono, serene expression, cherry blossom garden, soft natural lighting, artistic photography"
-```
-
-**Prompt tips:**
-- Be specific about age (always 18+), appearance, clothing
-- Include setting/background details
-- Specify mood/expression
-- Add photography or art style
-- Use descriptive adjectives
-- Keep it professional and appropriate
+**提示语编写建议：**  
+- 明确指定人物的年龄（始终为18岁以上）、外貌特征及穿着  
+- 提及场景或背景信息  
+- 描述人物的情绪或表情  
+- 选择合适的摄影或艺术风格  
+- 使用具体的描述性语言  
+- 保持提示的专业性和适当性  
 
 ---
 
-### 🔧 Technical Details (For Reference Only)
+### 🔧 技术细节（仅供参考）  
 
-**You don't need to use these directly - `generate.py` handles everything.**
+**您无需直接操作这些设置——`generate.py`会自动处理所有细节。**  
 
-**API Configuration:**
-- **Base URL**: `https://gen1.diversityfaces.org`
-- **Endpoint**: `/api/generate/custom`
-- **Authentication**: Pre-configured with free API key `ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI`
+**API配置信息：**  
+- **基础URL**：`https://gen1.diversityfaces.org`  
+- **端点**：`/api/generate/custom`  
+- **认证方式**：使用预配置的免费API密钥`ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI`  
 
-**Parameters (handled by generate.py):**
-- `full_prompt`: Your English description
-- `width`: 256-2048, multiple of 8, default 1024
-- `height`: 256-2048, multiple of 8, default 1024
-- `seed`: -1 for random
+**`generate.py`处理的参数：**  
+- `full_prompt`：用户提供的英文描述  
+- `width`：图片宽度（256-2048像素，必须是8的倍数，默认值1024）  
+- `height`：图片高度（256-2048像素，必须是8的倍数，默认值1024）  
+- `seed`：设置为-1以生成随机图像  
 
-**Timing:**
-- GPU generation: 1-2 seconds
-- Status polling: 0.5-1 second (every 0.5s)
-- Download: 0.5-1 second
-- **Total: 3-5 seconds**
-
----
-
-### ✅ Success Checklist
-
-Before sending response to user, verify:
-- [ ] Prompt is appropriate and safe
-- [ ] Image generated successfully (3-5 seconds)
-- [ ] Image is displayed to user (not just file path)
-- [ ] User can see the actual image in conversation
-- [ ] Total time from request to display < 10 seconds
+**生成过程耗时：**  
+- 图像生成（GPU处理）：1-2秒  
+- 进度检查：0.5-1秒  
+- 下载图片：0.5-1秒  
+**总耗时：3-5秒**  
 
 ---
 
-### 🎨 Prompt Examples by Category
+### ✅ 成功验证步骤  
 
-**Professional Headshots:**
+在向用户发送结果之前，请确认：  
+- [ ] 提示内容合适且符合安全规范  
+- [ ] 图像已成功生成（耗时3-5秒）  
+- [ ] 图像已成功展示给用户（而不仅仅是文件路径）  
+- [ ] 用户能在对话中看到实际生成的图片  
+- [ ] 从请求到展示图片的总耗时小于10秒  
+
+---
+
+### 🎨 按类别划分的提示语示例  
+
+**专业头像：**  
 ```
 "A professional businesswoman in her 30s, wearing white blouse, warm smile, clean office background, corporate headshot"
 "A confident businessman in his 40s, wearing dark suit, professional expression, neutral background, executive portrait"
-```
+```  
 
-**Fashion & Style:**
+**时尚与风格：**  
 ```
 "A stylish young woman with colorful hair, trendy street fashion, urban background, contemporary photography"
 "An elegant woman in evening gown, sophisticated pose, luxury setting, high fashion photography"
-```
+```  
 
-**Character Design:**
+**角色设计：**  
 ```
 "A fantasy warrior with long braided hair, leather armor, determined expression, medieval setting, game character art"
 "A sci-fi character with futuristic clothing, neon accents, cyberpunk city background, digital art style"
-```
+```  
 
-**Cultural Portraits:**
+**文化主题肖像：**  
 ```
 "A woman in traditional Indian sari, graceful pose, temple background, cultural photography"
 "A man in traditional Scottish kilt, proud expression, highland landscape, heritage portrait"
-```
+```  
 
-**Artistic Portraits:**
+**艺术肖像：**  
 ```
 "A person with artistic makeup, creative styling, colorful background, avant-garde fashion photography"
 "A dancer in flowing fabric, mid-movement, minimalist background, artistic photography"
-```
+```  
 
 ---
 
-### ⚠️ Common Mistakes to Avoid
+### ⚠️ 需避免的常见错误：**  
+- **禁止生成的内容：**  
+  - 未成年人或看起来很年轻的形象  
+  - 色情、裸露或具有暗示性的内容  
+  - 暴力或令人不安的图像  
+  - 使用真实人物的姓名（如名人或政治人物）  
+  - 仅显示文件路径——务必展示实际生成的图片  
+  - 让用户长时间等待——请在5秒内完成生成  
 
-**DON'T:**
-- ❌ Generate content with minors or young-looking people
-- ❌ Create sexual, nude, or suggestive content
-- ❌ Make violent or disturbing imagery
-- ❌ Use real people's names (celebrities, politicians)
-- ❌ Just show file path - always display the actual image
-- ❌ Make user wait - deliver within 5 seconds
-
-**DO:**
-- ✅ Create professional, appropriate portraits
-- ✅ Be specific and descriptive in prompts
-- ✅ Display image immediately to user
-- ✅ Suggest alternatives if request is inappropriate
-- ✅ Update skill before first use
-- ✅ Keep generation time under 5 seconds
+**正确操作：**  
+- **仅生成专业且合适的肖像**  
+- **在提示中提供详细、具体的信息**  
+- **立即向用户展示图片**  
+- **若请求不合适，建议替代方案**  
+- **首次使用前更新技能配置**  
+- **确保生成速度控制在5秒以内**  
 
 ---
 
-### 🚀 Performance Optimization
+### 🚀 性能优化建议：**  
+- **为了获得最快结果：**  
+  1. 首先更新技能相关设置。  
+  2. 使用`generate.py`脚本（该脚本经过优化，可提升生成速度）。  
+  3. 图像生成完成后立即展示给用户。  
 
-**For fastest results:**
-1. Always update skill first: ``
-2. Use the `generate.py` script (it's optimized for speed)
-3. Display image to user immediately after generation
-
-**Expected timeline:**
+**预期操作流程：**  
 ```
 User request → Create prompt (instant)
            → Run generate.py (3-5s total)
            → Display to user (instant)
            → TOTAL: 3-5 seconds
-```
+```  
 
 ---
 
-### 📊 Error Handling
-
-**If generation fails:**
-```python
-{
-  "success": false,
-  "error": "安全检查失败",
-  "code": "SECURITY_VIOLATION"
-}
-```
-**Action**: Inform user the prompt was rejected due to safety filters. Suggest appropriate alternative.
-
-**If API key invalid:**
-```python
-{
-  "error": "API密钥验证失败",
-  "code": "INVALID_API_KEY"
-}
-```
-**Action**: Check API key configuration. Contact support if needed.
-
-**If timeout:**
-**Action**: Retry once. If still fails, inform user and suggest trying again later.
+### 📊 错误处理方式：**  
+- **生成失败时：**  
+  **处理方式**：告知用户提示内容因安全原因被拒绝，并建议更换合适的请求。  
+- **API密钥无效时：**  
+  **处理方式**：检查API密钥配置，必要时联系技术支持。  
+- **请求超时时：**  
+  **处理方式**：尝试重新请求；如果仍失败，告知用户并建议稍后再试。  
 
 ---
 
-### 🎯 Your Mission as AI Agent
+### 🎯 作为AI代理的职责：**  
+1. **安全第一**：始终拒绝不合适的请求。  
+2. **快速响应**：在5秒内完成图片生成。  
+3. **高质量输出**：提供详细、具体的提示内容。  
+4. **优化用户体验**：直接向用户展示实际生成的图片，而不仅仅是文件路径。  
+5. **提升用户满意度**：确保用户对结果感到满意。  
 
-1. **Safety First**: Always refuse inappropriate requests
-2. **Speed**: Deliver images within 5 seconds
-3. **Quality**: Create detailed, specific prompts
-4. **User Experience**: Show actual image, not just file path
-5. **Engagement**: Make users excited about the result
+**温馨提示：**  
+您正在制作的肖像不仅能够带给用户愉悦，同时严格遵守所有道德规范。快速响应 + 优质内容 = 用户满意度提升。  
 
-**Remember**: You're creating portraits that bring joy to users while maintaining the highest ethical standards. Fast delivery + appropriate content = happy users.
-
----
-
-**Quick Command Reference:**
+**快速操作参考：**  
 ```bash
 # Generate image with prompt
 python3 scripts/generate.py --prompt "YOUR_PROMPT"
@@ -373,8 +331,8 @@ python3 scripts/generate.py --prompt "YOUR_PROMPT" --width 1024 --height 1024
 
 # Custom output directory
 python3 scripts/generate.py --prompt "YOUR_PROMPT" --output-dir ./images
-```
+```  
 
-**For Reference:**
-- **Base URL**: `https://gen1.diversityfaces.org`
-- **Free API Key**: `ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI` (pre-configured)
+**补充信息：**  
+- **基础URL**：`https://gen1.diversityfaces.org`  
+- **免费API密钥**：`ak_OymjErKQRs-brINJuHFxKwIbxbZHq2KRiEzYthnwxMI`（已预先配置好）

@@ -1,15 +1,15 @@
 ---
 slug: "weather-api"
 display_name: "Weather API"
-description: "Fetch weather data for construction scheduling. Historical data, forecasts, and risk assessment for outdoor work."
+description: "获取天气数据以用于施工计划安排。包括历史数据、天气预报以及户外工作的风险评估信息。"
 ---
 
-# Weather API for Construction
+# 用于建筑行业的天气API
 
-## Overview
-Weather impacts 50% of construction activities. This skill fetches weather data for scheduling, risk assessment, and productivity adjustments.
+## 概述
+天气状况对50%的建筑活动产生影响。该技能用于获取天气数据，以帮助进行施工计划安排、风险评估以及工作效率的调整。
 
-## Python Implementation
+## Python实现
 
 ```python
 import requests
@@ -269,7 +269,7 @@ class ConstructionWeatherRisk:
         return pd.DataFrame(assessments)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize client
@@ -286,9 +286,9 @@ weekly_risk = risk.weekly_forecast_risk(conditions)
 print(weekly_risk)
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Schedule Planning
+### 1. 施工计划安排
 ```python
 conditions = weather.get_forecast(52.52, 13.41, days=14)
 risk = ConstructionWeatherRisk()
@@ -300,7 +300,7 @@ for c in conditions:
         print(f"Good for concrete: {c.timestamp}")
 ```
 
-### 2. Historical Analysis
+### 2. 历史数据分析
 ```python
 historical = weather.get_historical(52.52, 13.41, '2024-01-01', '2024-03-31')
 df = weather.to_dataframe(historical)
@@ -310,6 +310,6 @@ rain_days = df[df['precipitation'] > 2]['timestamp'].dt.date.nunique()
 print(f"Rain days in Q1: {rain_days}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.2 - Open Data Integration
-- **Open-Meteo API**: https://open-meteo.com/
+## 参考资源
+- **DDC手册**：第2.2章 - 开放数据集成（DDC Book: Chapter 2.2 - Open Data Integration）
+- **Open-Meteo API**：https://open-meteo.com/

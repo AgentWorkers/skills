@@ -1,57 +1,55 @@
 ---
 name: lp-strategy
-description: Comprehensive LP strategy comparison for a token pair — evaluates all versions, fee tiers, range widths, and rebalance approaches side-by-side with APY, IL, gas costs, and risk ratings. Use when the user wants to compare LP options or see a detailed analysis of all strategies.
+description: **代币对的全面LP策略对比**  
+该工具会同时评估各种LP（Lending Protocol）策略的多个方面，包括不同版本、费用等级、交易范围宽度以及再平衡机制，并对比分析年化收益率（APY）、利息率（IL）、交易手续费（gas costs）和风险等级。当用户需要比较不同的LP选项或深入了解各种策略的详细信息时，可使用该工具。
 model: opus
 allowed-tools: [Task(subagent_type:lp-strategist), Task(subagent_type:pool-researcher)]
 ---
 
-# LP Strategy Comparison
+# LP策略比较
 
-## Overview
+## 概述
 
-Produces a comprehensive, multi-strategy comparison for LP positions on a token pair. Unlike `optimize-lp` which gives a single recommendation, this skill presents **all viable strategies side-by-side** with detailed pros/cons, enabling the user to make an informed decision.
+该功能会针对某个代币对生成一份全面的、多策略的比较报告。与`optimize-lp`仅提供一个推荐方案不同，该功能会并列展示所有可行的策略，并详细分析各自的优缺点，帮助用户做出明智的决策。
 
-This is the "deep dive" version — use when the user wants to understand all their options, not just the top pick.
+这属于“深度分析”版本——适用于用户希望了解所有选项的情况，而不仅仅是最佳选择。
 
-## When to Use
+## 使用场景
 
-Activate when the user asks:
+当用户提出以下问题时，请激活此功能：
 
-- "Compare LP strategies for ETH/USDC"
-- "What are my options for LPing into X/Y?"
-- "Detailed LP analysis for WETH/USDC"
-- "Show me all fee tiers for this pair"
-- "V2 vs V3 vs V4 comparison for X/Y"
-- "Give me a full breakdown of LP options"
-- "I want to understand the tradeoffs before LPing"
+- “比较ETH/USDC的LP策略”
+- “我可以将X/Y代币用于LP投资有哪些选择？”
+- “WETH/USDC的LP投资详细分析”
+- “展示这个代币对的所有费用等级”
+- “X/Y的V2、V3和V4版本之间的比较”
+- “提供LP投资选项的完整分解”
+- “我想在投资LP之前了解其中的权衡”
 
-## Parameters
+## 参数
 
-| Parameter  | Required | Default    | How to Extract                                    |
-| ---------- | -------- | ---------- | ------------------------------------------------- |
-| token0     | Yes      | —          | First token                                       |
-| token1     | Yes      | —          | Second token                                      |
-| capital    | No       | —          | Amount available for LP                           |
-| chain      | No       | All chains | Specific chain or "all" for cross-chain comparison|
-| strategies | No       | All        | Specific strategies to compare (usually "all")    |
+| 参数                | 是否必需 | 默认值       | 获取方式                                      |
+| ---------------------- | -------- | ------------ | ----------------------------------------- |
+| token0              | 是       | —          | 第一个代币                                      |
+| token1              | 是       | —          | 第二个代币                                      |
+| capital             | 否        | —          | 可用于LP投资的资金总额                         |
+| chain                | 否        | 所有链       | 特定链或“所有链”（用于跨链比较）                   |
+| strategies          | 否        | 所有策略       | 需要比较的具体策略（通常为“所有策略”）                   |
 
-## Workflow
+## 工作流程
 
-1. **Extract parameters** from the user's request.
+1. 从用户请求中提取相关参数。
+2. **委托给pool-researcher**：首先通过`Task(subagent_type:pool-researcher)`获取所有费用等级和版本下的池信息（包括TVL、交易量和每个池的APY）。
+3. **委托给lp-strategist**：以“全面比较”模式调用`Task(subagent_type:lp-strategist)`。该代理会评估所有可行的策略组合：
+   - V2全范围策略（被动策略）
+   - V3特定费用等级下的策略
+   - V3中等费用等级下的策略
+   - V3宽费用等级下的策略
+   - V4版本下的策略（如果可用）
+   - 跨链投资机会（如果选择“all”链）
+4. 展示一份包含所有策略的比较表格，并标注各自的优缺点。
 
-2. **Delegate to pool-researcher**: First, get a full pool comparison across all fee tiers and versions via `Task(subagent_type:pool-researcher)`. This provides the data foundation (TVL, volume, APY per pool).
-
-3. **Delegate to lp-strategist**: Invoke `Task(subagent_type:lp-strategist)` in comprehensive comparison mode. The agent evaluates every viable combination:
-   - V2 full-range (passive)
-   - V3 narrow range per fee tier
-   - V3 medium range per fee tier
-   - V3 wide range per fee tier
-   - V4 options (if available)
-   - Cross-chain opportunities (if chain="all")
-
-4. **Present comparison table** with all strategies ranked and annotated with pros/cons.
-
-## Output Format
+## 输出格式
 
 ```text
 LP Strategy Comparison: WETH/USDC
@@ -97,19 +95,19 @@ LP Strategy Comparison: WETH/USDC
   Ready to proceed? Choose a strategy and say "Add liquidity with strategy #2"
 ```
 
-## Important Notes
+## 重要说明
 
-- This skill produces **analysis, not execution**. To act on a strategy, use `manage-liquidity`.
-- Net APY = Fee APY - Expected IL. Always show both components.
-- Gas costs for rebalancing are factored into the comparison for each chain.
-- Cross-chain comparison (when chain="all") highlights L2 gas advantages.
-- The lp-strategist internally uses `pool-researcher` for data and `risk-assessor` for risk evaluation.
+- 该功能仅提供分析结果，不执行任何操作。如需实施某个策略，请使用`manage-liquidity`。
+- 净APY = 费用APY - 预期利息损失（IL）。务必同时显示这两个数值。
+- 每个链的重新平衡所需Gas费用都会被纳入比较结果中。
+- 当选择“all”链进行跨链比较时，会突出显示L2网络的Gas优势。
+- lp-strategist内部会使用`pool-researcher`获取数据，并通过`risk-assessor`进行风险评估。
 
-## Error Handling
+## 错误处理
 
-| Error                | User-Facing Message                                       | Suggested Action                    |
-| -------------------- | --------------------------------------------------------- | ----------------------------------- |
-| Token not found      | "Could not find token X."                                 | Provide contract address            |
-| No pools exist       | "No pools found for X/Y."                                 | Try different tokens or chain       |
-| Insufficient data    | "Not enough data for a reliable comparison."              | Pool may be too new                 |
-| Agent unavailable    | "LP strategist is not available."                         | Check agent configuration           |
+| 错误类型                | 用户可见的消息                                      | 建议的操作                                      |
+| ---------------------- | --------------------------------------------------------- | ----------------------------------- |
+| 代币未找到              | “无法找到代币X。”                                      | 提供代币的合约地址                         |
+| 未找到对应的池             | “未找到X/Y的池。”                                      | 尝试其他代币或链                        |
+| 数据不足                | “数据不足，无法进行可靠比较。”                               | 可能是因为相关池太新                         |
+| 代理不可用              | “LP策略专家当前不可用。”                                  | 检查代理的配置                         |

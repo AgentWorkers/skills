@@ -1,35 +1,35 @@
 ---
 name: sage-auth
-description: Sage wallet authentication and key management. Login/logout, generate mnemonics, import/delete keys, manage wallet identities.
+description: Sage钱包的认证与密钥管理功能包括：登录/登出、生成助记词、导入/删除密钥以及管理钱包身份信息。
 ---
 
 # Sage Auth
 
-Authentication and key management for Sage wallet.
+Sage Auth 提供了钱包的认证和密钥管理功能。
 
-## Endpoints
+## 接口（Endpoints）
 
-### Session Management
+### 会话管理（Session Management）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `login` | `{"fingerprint": 1234567890}` | Login to wallet |
-| `logout` | `{}` | End session |
+| 接口 | 请求参数（Payload） | 功能描述 |
+|----------|------------------|-------------------|
+| `login` | `{"fingerprint": 1234567890}` | 登录钱包 |
+| `logout` | `{}` | 注销会话 |
 
-### Key Management
+### 密钥管理（Key Management）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_keys` | `{}` | List all wallet keys |
-| `get_key` | `{"fingerprint": 1234567890}` | Get specific key info |
-| `get_secret_key` | `{"fingerprint": 1234567890}` | Get mnemonic (sensitive!) |
-| `generate_mnemonic` | `{"use_24_words": false}` | Generate new mnemonic |
-| `import_key` | See below | Import wallet from mnemonic |
-| `delete_key` | `{"fingerprint": 1234567890}` | Delete wallet key |
-| `rename_key` | `{"fingerprint": 1234567890, "name": "My Wallet"}` | Rename wallet |
-| `set_wallet_emoji` | `{"fingerprint": 1234567890, "emoji": "🌱"}` | Set emoji |
+| 接口 | 请求参数（Payload） | 功能描述 |
+|----------|------------------|-------------------|
+| `get_keys` | `{}` | 列出所有钱包密钥 |
+| `get_key` | `{"fingerprint": 1234567890}` | 获取特定密钥的信息 |
+| `get_secret_key` | `{"fingerprint": 1234567890}` | 获取助记词（敏感信息！） |
+| `generate_mnemonic` | `{"use_24_words": false}` | 生成新的助记词 |
+| `import_key` | （详见下方） | 通过助记词导入钱包 |
+| `delete_key` | `{"fingerprint": 1234567890}` | 删除钱包密钥 |
+| `rename_key` | `{"fingerprint": 1234567890, "name": "My Wallet"}` | 重命名钱包 |
+| `set_wallet_emoji` | `{"fingerprint": 1234567890, "emoji": "🌱"}` | 设置钱包的图标 |
 
-### Import Key Payload
+### 密钥导入请求参数（Import Key Payload）
 
 ```json
 {
@@ -44,23 +44,23 @@ Authentication and key management for Sage wallet.
 }
 ```
 
-### Database Management
+### 数据库管理（Database Management）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `resync` | `{"fingerprint": 1234567890, "delete_coins": false, ...}` | Resync wallet |
-| `delete_database` | `{"fingerprint": 1234567890, "network": "mainnet"}` | Delete wallet DB |
+| 接口 | 请求参数（Payload） | 功能描述 |
+|----------|------------------|-------------------|
+| `resync` | `{"fingerprint": 1234567890, "delete_coins": false, ...}` | 同步钱包数据 |
+| `delete_database` | `{"fingerprint": 1234567890, "network": "mainnet"}` | 删除钱包数据库 |
 
-### Themes
+### 主题管理（Themes Management）
 
-| Endpoint | Payload | Description |
-|----------|---------|-------------|
-| `get_user_themes` | `{}` | List theme NFTs |
-| `get_user_theme` | `{"nft_id": "nft1..."}` | Get specific theme |
-| `save_user_theme` | `{"nft_id": "nft1..."}` | Save theme |
-| `delete_user_theme` | `{"nft_id": "nft1..."}` | Delete theme |
+| 接口 | 请求参数（Payload） | 功能描述 |
+|----------|------------------|-------------------|
+| `get_user_themes` | `{}` | 列出用户拥有的主题 NFTs |
+| `get_user_theme` | `{"nft_id": "nft1..."}` | 获取特定主题 |
+| `save_user_theme` | `{"nft_id": "nft1..."}` | 保存用户主题 |
+| `delete_user_theme` | `{"nft_id": "nft1..."}` | 删除用户主题 |
 
-## Examples
+## 示例（Examples）
 
 ```bash
 # Login
@@ -81,8 +81,8 @@ sage_rpc import_key '{
 }'
 ```
 
-## Security Notes
+## 安全提示（Security Notes）
 
-- `get_secret_key` returns the mnemonic — handle with extreme care
-- Never log or store mnemonic in plaintext
-- Use `save_secrets: false` for watch-only imports
+- `get_secret_key` 会返回助记词，请务必谨慎处理。
+- 切勿以明文形式记录或存储助记词。
+- 对于仅用于查看功能的钱包导入操作，建议将 `save_secrets` 参数设置为 `false`。

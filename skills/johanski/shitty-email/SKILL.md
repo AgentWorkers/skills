@@ -1,55 +1,46 @@
 ---
 name: shitty-email
-description: Create and manage temporary disposable email inboxes
+description: 创建和管理临时性的、一次性的电子邮件收件箱
 emoji: 📧
 bins: [curl, jq]
 os: [macos, linux, windows]
 ---
 
-# Shitty Email - Temporary Inbox Skill
+# **临时邮箱技能**  
+能够立即生成一次性使用的电子邮件地址，非常适合用于注册、测试和保护隐私。  
 
-Create disposable email addresses instantly. Perfect for signups, testing, and privacy.
+## **使用场景**  
+当用户需要以下操作时，可以使用此技能：  
+- 创建临时/一次性电子邮件地址  
+- 使用临时邮箱注册服务  
+- 测试邮件发送功能  
+- 等待验证或确认邮件  
+- 从邮件中提取验证码或链接  
 
-## When to Use This Skill
+## **重要提示：令牌管理**  
+创建临时邮箱后，系统会生成一个 **令牌**。所有后续操作均需要使用该令牌。务必妥善保存并重复使用同一令牌以维持会话的连续性。  
 
-Use this skill when the user needs to:
-- Create a temporary/disposable email address
-- Sign up for a service without using their real email
-- Test email sending functionality
-- Wait for a verification or confirmation email
-- Extract codes or links from emails
+## **API参考**  
+基础URL：`https://shitty.email`  
 
-## Important: Token Management
-
-When you create an inbox, you receive a **token**. This token is required for ALL subsequent operations. Always store and reuse the token for the same inbox session.
-
-## API Reference
-
-Base URL: `https://shitty.email`
-
-### Create a New Inbox
-
+### **创建新临时邮箱**  
 ```bash
 curl -s -X POST https://shitty.email/api/inbox | jq
-```
-
-Response:
+```  
+响应：  
 ```json
 {
   "email": "abc1234@shitty.email",
   "token": "a1b2c3d4e5f6..."
 }
-```
+```  
+**请同时保存电子邮件地址和令牌**——所有后续操作均需使用该令牌。  
 
-**Store both the email and token** - you need the token for all other operations.
-
-### Check Inbox for Emails
-
+### **检查临时邮箱中的邮件**  
 ```bash
 curl -s -H "X-Session-Token: {token}" https://shitty.email/api/inbox | jq
-```
-
-Response:
+```  
+响应：  
 ```json
 {
   "emails": [
@@ -61,99 +52,47 @@ Response:
     }
   ]
 }
-```
+```  
 
-### Get Full Email Content
+### **获取邮件完整内容**  
+使用临时邮箱响应中的 `id` 字段（例如 `msg_a1b2c3d4e5`）来获取邮件内容。该 `id` 并非电子邮件地址本身。  
+响应中包含 `html` 和 `text` 字段，分别表示邮件的HTML格式和文本内容。  
 
-Use the `id` field from the inbox response (e.g. `msg_a1b2c3d4e5`). This is NOT the email address.
-
-```bash
-curl -s -H "X-Session-Token: {token}" https://shitty.email/api/email/{email_id} | jq
-```
-
-Response includes `html` and `text` fields with the email body.
-
-### Extend Inbox Lifetime
-
-Inboxes expire after 1 hour by default. Extend by 1 hour (max 24 hours total):
-
+### **延长临时邮箱的有效期**  
+临时邮箱默认在1小时后失效。可以将其有效期延长1小时（最长总时长为24小时）：  
 ```bash
 curl -s -X POST -H "X-Session-Token: {token}" https://shitty.email/api/inbox/extend | jq
-```
+```  
 
-### Delete Inbox
+### **删除临时邮箱**  
+使用令牌调用 `DELETE /api/inbox` 来删除临时邮箱，以释放系统资源。  
 
-Clean up when done:
+## **常见工作流程**  
+- **等待验证邮件**：  
+  定时检查临时邮箱，直到收到符合条件的验证邮件。  
+- **提取验证码**：  
+  收到验证邮件后，从邮件中提取验证码。  
 
-```bash
-curl -s -X DELETE -H "X-Session-Token: {token}" https://shitty.email/api/inbox
-```
+## **最佳实践**  
+1. **重复使用令牌**：避免不必要的临时邮箱创建。  
+2. **合理控制检查频率**：每次检查之间至少等待5秒。  
+3. **及时清理**：使用完临时邮箱后及时删除，以节省系统资源。  
+4. **根据需要延长有效期**：如果需要等待邮件，请适当延长邮箱的有效期。  
 
-## Common Workflows
+## **限制条件**  
+- 临时邮箱在1小时后失效（最长可延长至24小时）。  
+- 邮件大小限制为1MB。  
+- 系统对临时邮箱的创建频率有限制，以防滥用。  
+- 该服务仅支持接收邮件，不支持发送邮件。  
 
-### Wait for a Verification Email
-
-Poll the inbox until an email matching criteria arrives:
-
-```bash
-# Create inbox
-RESPONSE=$(curl -s -X POST https://shitty.email/api/inbox)
-EMAIL=$(echo $RESPONSE | jq -r '.email')
-{token}=$(echo $RESPONSE | jq -r '.token')
-
-# Poll for emails (check every 5 seconds, max 60 seconds)
-for i in {1..12}; do
-  EMAILS=$(curl -s -H "X-Session-Token: ${token}" https://shitty.email/api/inbox)
-  COUNT=$(echo $EMAILS | jq '.emails | length')
-  if [ "$COUNT" -gt "0" ]; then
-    echo "Email received!"
-    echo $EMAILS | jq '.emails[0]'
-    break
-  fi
-  sleep 5
-done
-```
-
-### Extract Verification Code
-
-After receiving an email, extract common verification patterns:
-
-```bash
-# Get email content
-CONTENT=$(curl -s -H "X-Session-Token: ${token}" https://shitty.email/api/email/${email_id} | jq -r '.text')
-
-# Common patterns to look for:
-# - 6-digit codes: grep -oE '[0-9]{6}'
-# - Verification links: grep -oE 'https?://[^ ]+verify[^ ]*'
-```
-
-## Best Practices
-
-1. **Reuse tokens** - Don't create new inboxes unnecessarily
-2. **Poll responsibly** - Wait 5 seconds between checks
-3. **Clean up** - Delete inbox when done to free resources
-4. **Extend if needed** - If waiting for slow emails, extend the inbox
-
-## Limitations
-
-- Inboxes expire after 1 hour (extendable to 24 hours max)
-- Email size limit: 1MB
-- Rate limited: Don't spam inbox creation
-- No outbound email - receive only
-
-## Example Conversation
-
-User: "Create a temp email for me"
-→ Call POST /api/inbox, return the email address, store the token
-
-User: "Sign me up for newsletter.example.com"
-→ Use the temp email to fill the signup form, then poll for confirmation
-
-User: "Did I get the confirmation?"
-→ Check inbox using stored token, report results
-
-User: "What's the verification code?"
-→ Fetch email content, extract the code pattern, return it
-
-User: "I'm done, delete the inbox"
-→ Call DELETE /api/inbox with the token
+## **示例对话**  
+用户：“为我创建一个临时邮箱。”  
+→ 调用 `POST /api/inbox`，获取临时邮箱地址并保存令牌。  
+用户：“我用这个临时邮箱注册 newsletter.example.com。”  
+→ 使用临时邮箱填写注册表单，然后等待确认邮件。  
+用户：“我收到确认邮件了吗？”  
+→ 使用保存的令牌检查临时邮箱并获取确认信息。  
+用户：“验证码是什么？”  
+→ 从邮件中提取验证码并返回给用户。  
+用户：“使用完毕，删除这个临时邮箱。”  
+→ 使用令牌调用 `DELETE /api/inbox` 删除临时邮箱。

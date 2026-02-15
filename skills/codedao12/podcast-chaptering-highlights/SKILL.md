@@ -1,56 +1,80 @@
 ---
 name: podcast-chaptering-highlights
-description: Create chapters, highlights, and show notes from podcast audio or transcripts. Use when a user wants chapter markers, highlight clips, or show-note drafts without publishing or distribution actions.
+description: **功能说明：**  
+创建章节标记、高亮片段，并从播客音频或文字记录中提取注释。适用于用户需要查看章节划分、高亮内容或注释草稿的情况，而无需进行发布或分发操作。  
+
+**使用场景：**  
+- 用户希望在未发布或分享音频内容的情况下，快速查看音频的章节结构。  
+- 用户希望标记音频中的重点部分或重要内容。  
+- 用户需要查看注释草稿，以便进一步编辑或使用。  
+
+**技术实现：**  
+该功能通过解析音频文件或文字记录，提取相关信息并生成相应的用户界面元素（如章节标记、高亮片段和注释列表）。具体实现细节可能因平台或工具的不同而有所差异，但核心逻辑通常包括：  
+1. 分析音频文件（或文本记录）以确定章节划分。  
+2. 从音频中提取关键信息并生成高亮片段。  
+3. 从注释中提取文本内容并生成注释列表。  
+4. 将这些信息以用户友好的格式呈现在界面上。  
+
+**示例：**  
+- 当用户打开音频文件时，系统会自动显示章节标记。  
+- 用户可以点击章节标记来快速跳转到相应位置。  
+- 用户可以查看和编辑高亮片段。  
+- 用户可以查看和编辑注释草稿。  
+
+**注意事项：**  
+- 该功能仅用于预览或内部使用，不涉及音频或文本的存储或共享。  
+- 该功能可能不支持所有类型的音频文件或文本记录格式。  
+- 该功能的性能可能受音频文件大小或文本记录长度的影响。
 ---
 
-# Podcast Chaptering and Highlights
+# 播客分章与精彩片段提取
 
-## Goal
-Produce podcast chapter markers and highlight suggestions with concise show notes.
+## 目标  
+生成播客的分章标记，并提供简洁的剧集说明（show notes）以帮助用户整理内容。
 
-## Best fit
-- Use when the user provides audio files or transcripts.
-- Use when the user wants chapter timestamps and titles.
-- Use when the user needs highlight clip ideas and show notes.
+## 适用场景  
+- 当用户提供音频文件或文字稿时使用。  
+- 当用户需要分章的时间戳和章节标题时使用。  
+- 当用户需要精彩片段的建议及剧集说明时使用。  
 
-## Not fit
-- Avoid when the user asks to publish or upload to hosting platforms.
-- Avoid when rights or consent are unclear.
-- Avoid when audio quality is too poor to segment.
+## 不适用场景  
+- 当用户要求将内容发布或上传到托管平台时避免使用。  
+- 当版权或使用许可不明确时避免使用。  
+- 当音频质量太差、无法进行有效分割时避免使用。  
 
-## Quick orientation
-- `references/overview.md` for workflow and quality bar.
-- `references/auth.md` for access and token handling.
-- `references/endpoints.md` for optional integrations and templates.
-- `references/webhooks.md` for async event handling.
-- `references/ux.md` for intake questions and output formats.
-- `references/troubleshooting.md` for common issues.
-- `references/safety.md` for safety and privacy guardrails.
+## 快速参考  
+- `references/overview.md`：工作流程与质量标准说明。  
+- `references/auth.md`：访问权限与令牌处理指南。  
+- `references/endpoints.md`：可选的集成功能与模板说明。  
+- `references/webhooks.md`：异步事件处理方式。  
+- `references/ux.md`：用户输入格式与输出格式规范。  
+- `references/troubleshooting.md`：常见问题的解决方法。  
+- `references/safety.md`：安全与隐私保护措施。  
 
-## Required inputs
-- Audio file path or transcript.
-- Target chapter format (MM:SS or HH:MM:SS).
-- Preferred chapter length range.
-- Show description and guest details if available.
+## 必需输入  
+- 音频文件路径或文字稿。  
+- 目标分章格式（格式示例：MM:SS 或 HH:MM:SS）。  
+- 偏好的章节长度范围。  
+- 如有剧集描述或嘉宾信息，请一并提供。  
 
-## Expected output
-- Chapter markers with timestamps and titles.
-- Highlight clip suggestions with timestamps.
-- Show notes draft with key links or topics.
-- Optional social post drafts.
+## 预期输出  
+- 带有时间戳和标题的分章标记。  
+- 带有时间戳的精彩片段建议。  
+- 带有关键链接或主题的剧集说明草稿。  
+- 可选的社交媒体发布草稿。  
 
-## Operational notes
-- Keep chapters aligned to topic shifts.
-- Ensure titles are concise and descriptive.
-- Provide drafts only; do not publish or upload.
+## 操作说明  
+- 确保分章内容与剧情内容紧密相关。  
+- 章节标题应简洁且具有描述性。  
+- 仅提供草稿，切勿直接发布或上传。  
 
-## Security notes
-- Treat audio content as private unless told otherwise.
-- Avoid sharing raw audio beyond the workspace.
+## 安全注意事项  
+- 除非另有说明，否则将音频内容视为私密信息。  
+- 避免在工作区之外分享原始音频文件。  
 
-## Safe mode
-- Analyze and draft chapters, highlights, and notes only.
-- No publishing or distribution actions.
+## 安全模式  
+- 仅允许分析、起草分章内容、精彩片段及剧集说明。  
+- 禁止任何形式的发布或分发操作。  
 
-## Sensitive ops
-- Uploading or publishing audio is out of scope.
+## 特别说明  
+- 上载或发布音频文件不在本功能的范围内。

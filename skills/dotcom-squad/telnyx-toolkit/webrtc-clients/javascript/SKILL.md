@@ -13,17 +13,17 @@ metadata:
 
 # Telnyx WebRTC - JavaScript SDK
 
-Build real-time voice communication into browser applications.
+将实时语音通信功能集成到浏览器应用程序中。
 
-> **Prerequisites**: Create WebRTC credentials and generate a login token using the Telnyx server-side SDK. See the `telnyx-webrtc-*` skill in your server language plugin (e.g., `telnyx-python`, `telnyx-javascript`).
+> **前提条件**：使用 Telnyx 服务器端 SDK 创建 WebRTC 凭据并生成登录令牌。请参考您所使用的服务器语言插件（例如 `telnyx-python`、`telnyx-javascript`）中的 `telnyx-webrtc-*` 技能文档。
 
-## Installation
+## 安装
 
 ```bash
 npm install @telnyx/webrtc --save
 ```
 
-Import the client:
+导入客户端库：
 
 ```js
 import { TelnyxRTC } from '@telnyx/webrtc';
@@ -31,9 +31,9 @@ import { TelnyxRTC } from '@telnyx/webrtc';
 
 ---
 
-## Authentication
+## 认证
 
-### Option 1: Token-Based (Recommended)
+### 选项 1：基于令牌的认证（推荐）
 
 ```js
 const client = new TelnyxRTC({
@@ -43,7 +43,7 @@ const client = new TelnyxRTC({
 client.connect();
 ```
 
-### Option 2: Credential-Based
+### 选项 2：基于凭据的认证
 
 ```js
 const client = new TelnyxRTC({
@@ -54,9 +54,9 @@ const client = new TelnyxRTC({
 client.connect();
 ```
 
-> **Important**: Never hardcode credentials in frontend code. Use environment variables or prompt users.
+> **重要提示**：切勿在前端代码中硬编码凭据。请使用环境变量或提示用户输入凭据。
 
-### Disconnect
+### 断开连接
 
 ```js
 // When done, disconnect and remove listeners
@@ -67,15 +67,15 @@ client.off('telnyx.notification');
 
 ---
 
-## Media Elements
+## 媒体元素
 
-Specify an HTML element to play remote audio:
+指定用于播放远程音频的 HTML 元素：
 
 ```js
 client.remoteElement = 'remoteMedia';
 ```
 
-HTML:
+HTML 代码：
 
 ```html
 <audio id="remoteMedia" autoplay="true" />
@@ -83,7 +83,7 @@ HTML:
 
 ---
 
-## Events
+## 事件
 
 ```js
 let activeCall;
@@ -108,18 +108,18 @@ client
   });
 ```
 
-### Event Types
+### 事件类型
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `telnyx.ready` | Client connected and ready |
-| `telnyx.error` | Error occurred |
-| `telnyx.notification` | Call updates, incoming calls |
-| `telnyx.stats.frame` | In-call quality metrics (when debug enabled) |
+| `telnyx_ready` | 客户端已连接并准备好使用 WebRTC |
+| `telnyx.error` | 发生错误 |
+| `telnyx.notification` | 来电通知、新来电信息 |
+| `telnyx.stats.frame` | 通话中的质量指标（在启用调试模式时可用） |
 
 ---
 
-## Making Calls
+## 发起通话
 
 ```js
 const call = client.newCall({
@@ -130,7 +130,7 @@ const call = client.newCall({
 
 ---
 
-## Receiving Calls
+## 接听来电
 
 ```js
 client.on('telnyx.notification', (notification) => {
@@ -145,7 +145,7 @@ client.on('telnyx.notification', (notification) => {
 
 ---
 
-## Call Controls
+## 通话控制
 
 ```js
 // End call
@@ -165,9 +165,9 @@ call.unhold();
 
 ---
 
-## Debugging & Call Quality
+## 调试与通话质量
 
-### Enable Debug Logging
+### 启用调试日志
 
 ```js
 const call = client.newCall({
@@ -177,7 +177,7 @@ const call = client.newCall({
 });
 ```
 
-### In-Call Quality Metrics
+### 通话中的质量指标
 
 ```js
 const call = client.newCall({
@@ -193,9 +193,9 @@ client.on('telnyx.stats.frame', (stats) => {
 
 ---
 
-## Pre-Call Diagnosis
+## 通话前诊断
 
-Test connectivity before making calls:
+在发起通话前检查网络连接：
 
 ```js
 import { PreCallDiagnosis } from '@telnyx/webrtc';
@@ -218,9 +218,9 @@ PreCallDiagnosis.run({
 
 ---
 
-## Preferred Codecs
+## 预设编码格式
 
-Set codec preference for calls:
+设置通话的编码格式偏好：
 
 ```js
 const allCodecs = RTCRtpReceiver.getCapabilities('audio').codecs;
@@ -243,9 +243,9 @@ client.newCall({
 
 ---
 
-## Registration State
+## 客户端注册状态
 
-Check if client is registered:
+检查客户端是否已注册：
 
 ```js
 const isRegistered = await client.getIsRegistered();
@@ -254,11 +254,11 @@ console.log('Registered:', isRegistered);
 
 ---
 
-## AI Agent Integration
+## 与 AI 助手的集成
 
-### Anonymous Login
+### 匿名登录
 
-Connect to an AI assistant without SIP credentials:
+无需 SIP 凭据即可连接到 AI 助手：
 
 ```js
 const client = new TelnyxRTC({
@@ -271,9 +271,9 @@ const client = new TelnyxRTC({
 client.connect();
 ```
 
-> **Note**: The AI assistant must have `telephony_settings.supports_unauthenticated_web_calls` set to `true`.
+> **注意**：AI 助手必须将 `telephony_settings.supports_unauthenticated_web_calls` 设置为 `true`。
 
-### Make Call to AI Assistant
+### 向 AI 助手发起通话
 
 ```js
 // After anonymous login, destinationNumber is ignored
@@ -283,7 +283,7 @@ const call = client.newCall({
 });
 ```
 
-### Recommended Codec for AI
+### 推荐的 AI 通话编码格式
 
 ```js
 const allCodecs = RTCRtpReceiver.getCapabilities('audio').codecs;
@@ -299,9 +299,9 @@ client.newCall({
 
 ---
 
-## Browser Support
+## 浏览器支持
 
-| Platform | Chrome | Firefox | Safari | Edge |
+| 平台 | Chrome | Firefox | Safari | Edge |
 |----------|--------|---------|--------|------|
 | Android | ✓ | ✓ | - | - |
 | iOS | - | - | ✓ | - |
@@ -309,7 +309,7 @@ client.newCall({
 | macOS | ✓ | ✓ | ✓ | ✓ |
 | Windows | ✓ | ✓ | - | ✓ |
 
-### Check Browser Support
+### 检查浏览器支持情况
 
 ```js
 const webRTCInfo = TelnyxRTC.webRTCInfo;
@@ -318,20 +318,20 @@ console.log('WebRTC supported:', webRTCInfo.supportWebRTC);
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| No audio | Check microphone permissions in browser |
-| Echo/feedback | Use headphones or enable echo cancellation |
-| Connection fails | Check network, firewall, or use TURN relay |
-| Quality issues | Enable `debug: true` and check `telnyx.stats.frame` events |
+| 无法播放音频 | 检查浏览器的麦克风权限设置 |
+| 回声/反馈 | 使用耳机或启用回声消除功能 |
+| 连接失败 | 检查网络连接、防火墙设置，或使用 TURN 中继服务 |
+| 通话质量不佳 | 启用调试模式（`debug: true`），并查看 `telnyx.stats.frame` 事件日志 |
 
 ---
 
-## Resources
+## 资源
 
-- [Official Documentation](https://developers.telnyx.com/development/webrtc/js-sdk/quickstart)
-- [npm Package](https://www.npmjs.com/package/@telnyx/webrtc)
-- [GitHub Repository](https://github.com/team-telnyx/webrtc)
-- [Demo App](https://github.com/team-telnyx/webrtc-demo-js)
+- [官方文档](https://developers.telnyx.com/development/webrtc/js-sdk/quickstart)
+- [npm 包](https://www.npmjs.com/package/@telnyx/webrtc)
+- [GitHub 仓库](https://github.com/team-telnyx/webrtc)
+- [演示应用](https://github.com/team-telnyx/webrtc-demo-js)

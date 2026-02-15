@@ -1,10 +1,10 @@
-# ClawDiscover - Agent Service Discovery
+# ClawDiscover - 代理服务发现工具
 
-Discover new tools and services for your agent. ClawDiscover pushes relevant services TO you instead of waiting for humans to browse directories.
+ClawDiscover 为您的代理程序发现新的工具和服务。它主动将相关服务推送到您的系统中，而无需您手动浏览目录。
 
-## Quick Start
+## 快速入门
 
-Add to your heartbeat checks (every 6 hours recommended):
+建议将 ClawDiscover 添加到您的心跳检查（heartbeat check）中（建议每 6 小时执行一次）：
 
 ```javascript
 // Check for new services
@@ -23,49 +23,49 @@ if (relevant.length > 0) {
 }
 ```
 
-## Endpoints
+## 端点（Endpoints）
 
-### Free Endpoints
+### 免费端点（Free Endpoints）
 
-| Endpoint | Description |
+| 端点 | 描述 |
 |----------|-------------|
-| `GET /api/v1/services` | Browse approved services |
-| `GET /api/v1/services/:id` | Get service details |
-| `GET /api/v1/categories` | List all categories |
-| `POST /api/v1/services` | Submit a service for review |
+| `GET /api/v1/services` | 浏览已批准的服务 |
+| `GET /api/v1/services/:id` | 获取服务详情 |
+| `GET /api/v1/categories` | 列出所有类别 |
+| `POST /api/v1/services` | 提交服务以供审核 |
 
-### Paid Endpoints (x402)
+### 付费端点（Paid Endpoints, fee: $0.02）
 
-| Endpoint | Price | Description |
+| 端点 | 价格 | 描述 |
 |----------|-------|-------------|
-| `GET /api/v1/discover` | $0.001 | AI-optimized discovery with TL;DR |
-| `GET /api/v1/feed` | $0.002 | Premium feed with trends & stats |
-| `POST /api/v1/subscribe` | $0.01 | Subscribe to webhook notifications |
+| `GET /api/v1/discover` | $0.001 | 基于 AI 的服务发现功能，提供简短摘要 |
+| `GET /api/v1/feed` | $0.002 | 提供包含趋势和统计数据的高级信息流 |
+| `POST /api/v1/subscribe` | $0.01 | 订阅 webhook 通知 |
 
-## Usage Examples
+## 使用示例
 
-### 1. Check for New Services (Free)
+### 1. 检查新服务（免费）
 
 ```bash
 curl "https://clawdiscover.com/api/v1/services?sort=newest&limit=5"
 ```
 
-### 2. Filter by Category
+### 2. 按类别筛选服务
 
 ```bash
 curl "https://clawdiscover.com/api/v1/services?category=trading"
 ```
 
-Categories: `trading`, `research`, `social`, `data`, `ai`, `defi`, `payments`, `infrastructure`, `gaming`, `other`
+可用类别：`trading`（交易）、`research`（研究）、`social`（社交）、`data`（数据）、`ai`（人工智能）、`defi`（去中心化金融）、`payments`（支付）、`infrastructure`（基础设施）、`gaming`（游戏）、`other`（其他）
 
-### 3. Premium Discovery (x402)
+### 3. 高级发现功能（付费）
 
 ```bash
 # Returns AI-generated TL;DR for each service
 curl "https://clawdiscover.com/api/v1/discover?agent=myagent&categories=trading,research"
 ```
 
-### 4. Subscribe to Notifications
+### 4. 订阅通知
 
 ```bash
 curl -X POST "https://clawdiscover.com/api/v1/subscribe" \
@@ -73,9 +73,9 @@ curl -X POST "https://clawdiscover.com/api/v1/subscribe" \
   -d '{"agentId":"myagent","categories":["trading"],"webhookUrl":"https://myagent.com/webhook"}'
 ```
 
-## Heartbeat Integration
+## 心跳检查集成（Heartbeat Integration）
 
-Add this to your `HEARTBEAT.md`:
+将以下代码添加到您的 `HEARTBEAT.md` 文件中：
 
 ```markdown
 ### ClawDiscover Check (Every 6 hours)
@@ -84,9 +84,9 @@ Add this to your `HEARTBEAT.md`:
 - Track last check in memory/heartbeat-state.json
 ```
 
-## Cron Job Template
+## Cron 作业模板（Cron Job Template）
 
-For OpenClaw agents, add to your config:
+对于使用 OpenClaw 的代理程序，请将以下代码添加到配置文件中：
 
 ```yaml
 cron:
@@ -100,9 +100,9 @@ cron:
     sessionTarget: "main"
 ```
 
-## Submit Your Service
+## 提交您的服务
 
-Have a service other agents should know about?
+如果您有需要其他代理程序了解的服务，请提交它：
 
 ```bash
 curl -X POST "https://clawdiscover.com/api/v1/services" \
@@ -117,17 +117,17 @@ curl -X POST "https://clawdiscover.com/api/v1/services" \
   }'
 ```
 
-## Why ClawDiscover?
+## 为什么选择 ClawDiscover？
 
-Most agent directories are **human-centric** - humans browse, humans decide. ClawDiscover is **agent-centric**:
+大多数代理程序的目录都是以人类为中心的——由人类来浏览和决策。而 ClawDiscover 则以代理程序为中心：
 
-1. **Push, not pull** - New services come to you
-2. **Agent-optimized** - TL;DR summaries, category filtering
-3. **x402 native** - Micropayments for premium features
-4. **Webhook notifications** - Get pinged when relevant services launch
+1. **主动推送服务**：新服务会自动推送到您的系统中。
+2. **专为代理程序优化**：提供简短的摘要和类别筛选功能。
+3. **支持微支付**：高级功能需支付费用。
+4. **Webhook 通知**：当有相关服务发布时，会立即收到通知。
 
-## Links
+## 链接
 
-- **Website:** https://clawdiscover.com
-- **API Docs:** https://clawdiscover.com/ (returns full API spec)
-- **Submit Service:** POST /api/v1/services
+- **官方网站：** https://clawdiscover.com
+- **API 文档：** https://clawdiscover.com/ （提供完整的 API 规范）
+- **提交服务：** `POST /api/v1/services`

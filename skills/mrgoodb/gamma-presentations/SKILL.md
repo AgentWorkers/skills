@@ -1,26 +1,26 @@
 ---
 name: gamma
-description: Create presentations, documents, social posts, and websites using Gamma's AI API. Use when asked to create slides, presentations, decks, documents, or web content via Gamma.
+description: 使用 Gamma 的 AI API 创建演示文稿、文档、社交媒体帖子和网站。当需要通过 Gamma 创建幻灯片、演示文稿、文档或网页内容时，请使用该 API。
 ---
 
-# Gamma API Skill
+# Gamma API 技能
 
-Create presentations and documents programmatically via Gamma's API.
+通过 Gamma 的 API 以编程方式创建演示文稿和文档。
 
-## Setup
+## 设置
 
-1. Get API key from https://developers.gamma.app
-2. Store in environment: `export GAMMA_API_KEY=sk-gamma-xxx`
-   Or add to TOOLS.md: `Gamma API Key: sk-gamma-xxx`
+1. 从 [https://developers.gamma.app](https://developers.gamma.app) 获取 API 密钥。
+2. 将密钥存储在环境变量中：`export GAMMA_API_KEY=sk-gamma-xxx`
+   或者将其添加到 `TOOLS.md` 文件中：`Gamma API Key: sk-gamma-xxx`
 
-## Authentication
+## 认证
 
 ```
 Base URL: https://public-api.gamma.app/v1.0
 Header: X-API-KEY: <your-api-key>
 ```
 
-## Generate Content
+## 生成内容
 
 ```bash
 curl -X POST https://public-api.gamma.app/v1.0/generations \
@@ -33,30 +33,30 @@ curl -X POST https://public-api.gamma.app/v1.0/generations \
   }'
 ```
 
-**Response:** `{"generationId": "xxx"}`
+**响应：** `{"generationId": "xxx"}`
 
-## Check Status
+## 检查状态
 
 ```bash
 curl https://public-api.gamma.app/v1.0/generations/<generationId> \
   -H "X-API-KEY: $GAMMA_API_KEY"
 ```
 
-**Response (completed):** `{"status": "completed", "gammaUrl": "https://gamma.app/docs/xxx", "credits": {...}}`
+**响应（已完成）：** `{"status": "completed", "gammaUrl": "https://gamma.app/docs/xxx", "credits": {...}}`
 
-Poll every 10-20s until `status: "completed"`.
+每隔 10-20 秒检查一次状态，直到状态变为 “completed”。
 
-## Key Parameters
+## 关键参数
 
-| Parameter | Values | Notes |
+| 参数 | 值 | 说明 |
 |-----------|--------|-------|
-| `textMode` | `generate`, `condense`, `preserve` | generate=expand, condense=summarize, preserve=keep exact |
-| `format` | `presentation`, `document`, `social`, `webpage` | Output type |
-| `numCards` | 1-60 (Pro), 1-75 (Ultra) | Number of slides/cards |
-| `cardSplit` | `auto`, `inputTextBreaks` | Use `\n---\n` in inputText for manual breaks |
-| `exportAs` | `pdf`, `pptx` | Optional export format |
+| `textMode` | `generate`, `condense`, `preserve` | `generate`：展开内容；`condense`：简化内容；`preserve`：保留原始格式 |
+| `format` | `presentation`, `document`, `social`, `webpage` | 输出类型 |
+| `numCards` | 1-60（标准版），1-75（高级版） | 幻灯片/卡片数量 |
+| `cardSplit` | `auto`, `inputTextBreaks` | 在 `inputText` 中使用 `\n---\n` 来手动分隔内容 |
+| `exportAs` | `pdf`, `pptx` | 可选的导出格式 |
 
-## Optional Parameters
+## 可选参数
 
 ```json
 {
@@ -78,17 +78,17 @@ Poll every 10-20s until `status: "completed"`.
 }
 ```
 
-Note: `textOptions.tone` and `textOptions.audience` are ignored when `textMode` is `preserve`.
+注意：当 `textMode` 为 `preserve` 时，`textOptions.tone` 和 `textOptions.audience` 参数将被忽略。
 
-## Other Endpoints
+## 其他端点
 
-- `GET /themes` — List available themes (use `themeId` in generation)
-- `GET /folders` — List folders (use `folderIds` in generation)
+- `GET /themes` — 列出可用的主题（在生成内容时使用 `themeId`）
+- `GET /folders` — 列出文件夹（在生成内容时使用 `folderIds`）
 
-## Workflow
+## 工作流程
 
-1. Check for API key in environment (`$GAMMA_API_KEY`) or TOOLS.md
-2. Build `inputText` with content (can include image URLs inline)
-3. POST to `/generations` → get `generationId`
-4. Poll `/generations/{id}` until `status: "completed"`
-5. Return `gammaUrl` to user
+1. 检查环境变量或 `TOOLS.md` 中是否已设置 API 密钥（`$GAMMA_API_KEY`）。
+2. 使用内容构建 `inputText`（可以包含内联的图片链接）。
+3. 向 `/generations` 发送 POST 请求以获取 `generationId`。
+4. 不断检查 `/generations/{id}` 的状态，直到状态变为 “completed”。
+5. 将生成的文档链接（`gammaUrl`）返回给用户。

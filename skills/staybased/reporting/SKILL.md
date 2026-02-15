@@ -22,59 +22,58 @@ description: |
 version: "1.0"
 ---
 
-# Reporting — Standardized Report Templates
+# 报告——标准化报告模板
 
-All reports output to `workspace/artifacts/` with naming convention:
-`{type}-{YYYY-MM-DD}.md`
-
----
-
-## Report Types
-
-### 1. Weekly Retrospective
-
-**File:** `artifacts/weekly-retro-YYYY-MM-DD.md`
-**Cadence:** Sunday evening
-**Template:** `templates/weekly-retro.md`
-
-Covers: revenue, agent economy, what shipped, what stalled, service uptime, next week priorities.
-
-### 2. Full System Audit
-
-**File:** `artifacts/full-audit-YYYY-MM-DD.md`
-**Cadence:** Monthly or on-demand
-**Template:** `templates/full-audit.md`
-
-Covers: executive summary, revenue pipeline, workflow gaps, agent utilization, infrastructure efficiency, tool inventory, cron effectiveness, strategy assessment, content status, recommendations.
-
-### 3. Daily Progress Log
-
-**File:** `artifacts/daily-log-YYYY-MM-DD.md`
-**Cadence:** End of day
-**Template:** `templates/daily-log.md`
-
-Covers: tasks completed, decisions made, blockers, tomorrow's priorities.
-
-### 4. Revenue Snapshot
-
-**File:** `artifacts/revenue-YYYY-MM-DD.md`
-**Cadence:** Weekly or on-demand
-**Template:** `templates/revenue-snapshot.md`
-
-Covers: income by stream, expenses, net P&L, progress toward goals, trading performance.
+所有报告均输出到 `workspace/artifacts/` 目录，文件命名规则为：`{type}-{YYYY-MM-DD}.md`
 
 ---
 
-## Templates
+## 报告类型
 
-See `templates/` directory for each template file. All use `{{PLACEHOLDER}}` syntax for variable substitution.
+### 1. 周度回顾报告
+
+**文件路径：** `artifacts/weekly-retro-YYYY-MM-DD.md`
+**提交时间：** 每周日晚上
+**模板文件：** `templates/weekly-retro.md`
+
+报告内容涵盖：收入情况、代理运行状况、已完成的工作、停滞的项目、服务可用时间以及下周的优先事项。
+
+### 2. 全系统审计报告
+
+**文件路径：** `artifacts/full-audit-YYYY-MM-DD.md`
+**提交频率：** 每月一次或按需提交
+**模板文件：** `templates/full-audit.md`
+
+报告内容涵盖：执行摘要、收入流程、工作流程中的问题、代理使用效率、基础设施性能、工具库存、定时任务执行情况、战略评估、内容更新状态以及改进建议。
+
+### 3. 日志报告
+
+**文件路径：** `artifacts/daily-log-YYYY-MM-DD.md`
+**提交时间：** 每天结束时
+**模板文件：** `templates/daily-log.md`
+
+报告内容涵盖：当天完成的任务、做出的决策、遇到的阻碍以及第二天的工作重点。
+
+### 4. 收入快照报告
+
+**文件路径：** `artifacts/revenue-YYYY-MM-DD.md`
+**提交频率：** 每周一次或按需提交
+**模板文件：** `templates/revenue-snapshot.md`
+
+报告内容涵盖：各收入来源的收入情况、支出明细、净利润（P&L）、目标完成进度以及交易表现。
 
 ---
 
-## Output Standards
+## 模板说明
 
-- All reports go to `workspace/artifacts/`
-- Use ISO dates in filenames
-- Include generation timestamp and author at bottom
-- Include "Executive Summary" at top for reports >1 page
-- Link to source data where possible
+请查看 `templates/` 目录中的各个模板文件。所有模板均使用 `{{PLACEHOLDER}}` 语法来实现变量替换。
+
+---
+
+## 输出标准
+
+- 所有报告文件需保存在 `workspace/artifacts/` 目录中。
+- 文件名应使用 ISO 格式的日期格式。
+- 每份报告的末尾需包含生成时间和作者信息。
+- 对于超过一页的报告，需在顶部添加“执行摘要”部分。
+- 在可能的情况下，需提供原始数据的链接。

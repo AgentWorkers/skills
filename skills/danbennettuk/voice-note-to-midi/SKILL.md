@@ -1,25 +1,25 @@
 ---
 name: voice-note-to-midi
-description: Convert voice notes, humming, and melodic audio recordings to quantized MIDI files using ML-based pitch detection and intelligent post-processing
+description: 使用基于机器学习的音高检测技术和智能后处理算法，将语音笔记、哼唱内容以及旋律音频记录转换为量化的MIDI文件。
 author: Clawd
 tags: [audio, midi, music, transcription, machine-learning]
 ---
 
-# 🎵 Voice Note to MIDI
+# 🎵 将语音备忘录转换为MIDI文件
 
-Transform your voice memos, humming, and melodic recordings into clean, quantized MIDI files ready for your DAW.
+将您的语音备忘录、哼唱内容以及旋律录音转换为格式清晰、已量化的MIDI文件，以便在数字音频工作站（DAW）中使用。
 
-## What It Does
+## 功能介绍
 
-This skill provides a complete audio-to-MIDI conversion pipeline that:
+该工具提供了一套完整的音频转MIDI转换流程，包括：
 
-1. **Stem Separation** - Uses HPSS (Harmonic-Percussive Source Separation) to isolate melodic content from drums, noise, and background sounds
-2. **ML-Powered Pitch Detection** - Leverages Spotify's Basic Pitch model for accurate fundamental frequency extraction
-3. **Key Detection** - Automatically detects the musical key of your recording using Krumhansl-Kessler key profiles
-4. **Intelligent Quantization** - Snaps notes to a configurable timing grid with optional key-aware pitch correction
-5. **Post-Processing** - Applies octave pruning, overlap-based harmonic removal, and legato note merging for clean output
+1. **旋律与伴奏分离**：使用HPSS（Harmonic-Percussive Source Separation）技术将旋律部分从鼓声、噪音和背景声音中分离出来。
+2. **基于机器学习的音高检测**：利用Spotify的Basic Pitch模型准确提取音高信息。
+3. **调性检测**：根据Krumhansl-Kessler调性模型自动识别录音的调性。
+4. **智能量化**：将音符精确地放置到可配置的时间网格上，并提供可选的调性感知音高校正功能。
+5. **后期处理**：通过八度修剪、重叠音符合并等操作，确保输出文件的音质纯净。
 
-### Pipeline Architecture
+### 流程架构
 
 ```
 Audio Input (WAV/M4A/MP3)
@@ -58,34 +58,34 @@ Audio Input (WAV/M4A/MP3)
 MIDI Output (Standard MIDI File)
 ```
 
-## Setup
+## 安装说明
 
-### Prerequisites
+### 先决条件
 
-- Python 3.11+ (Python 3.14+ recommended)
-- FFmpeg (for audio format support)
-- pip
+- Python 3.11或更高版本（推荐使用Python 3.14及以上）
+- FFmpeg（用于支持音频格式转换）
+- pip（Python包管理工具）
 
-### Installation
+### 安装步骤
 
-**Quick Install (Recommended):**
+**快速安装（推荐方式）：**
 
 ```bash
 cd /path/to/voice-note-to-midi
 ./setup.sh
 ```
 
-This automated script will:
-- Check Python 3.11+ is installed
-- Create the `~/melody-pipeline` directory
-- Set up the virtual environment
-- Install all dependencies (basic-pitch, librosa, music21, etc.)
-- Download and configure the hum2midi script
-- Add melody-pipeline to your PATH
+此自动化脚本将完成以下操作：
+- 检查是否已安装Python 3.11或更高版本
+- 创建`~/melody-pipeline`目录
+- 设置虚拟环境
+- 安装所有依赖库（如basic-pitch、librosa、music21等）
+- 下载并配置hum2midi脚本
+- 将`melody-pipeline`添加到系统的PATH环境变量中
 
-**Manual Install:**
+**手动安装：**
 
-If you prefer manual setup:
+如果您选择手动安装，请参考相应的安装指南。
 
 ```bash
 mkdir -p ~/melody-pipeline
@@ -96,86 +96,86 @@ pip install basic-pitch librosa soundfile mido music21
 chmod +x ~/melody-pipeline/hum2midi
 ```
 
-5. **Add to your PATH (optional):**
+### 添加到PATH环境变量（可选）
 
 ```bash
 echo 'export PATH="$HOME/melody-pipeline:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### Verify Installation
+### 安装验证
 
 ```bash
 cd ~/melody-pipeline
 ./hum2midi --help
 ```
 
-## Usage
+## 使用方法
 
-### Basic Usage
+### 基本用法
 
-Convert a voice memo to MIDI:
+将语音备忘录转换为MIDI文件：
 
 ```bash
 ./hum2midi my_humming.wav
 ```
 
-This creates `my_humming.mid` with 16th-note quantization.
+该命令会生成一个名为`my_humming.mid`的文件，其音符采用16分音符的量化格式。
 
-### Specify Output File
+### 指定输出文件路径
 
 ```bash
 ./hum2midi input.wav output.mid
 ```
 
-### Command-Line Options
+### 命令行参数
 
-| Option | Description | Default |
+| 参数 | 说明 | 默认值 |
 |--------|-------------|---------|
-| `--grid <value>` | Quantization grid: `1/4`, `1/8`, `1/16`, `1/32` | `1/16` |
-| `--min-note <ms>` | Minimum note duration in milliseconds | `50` |
-| `--no-quantize` | Skip quantization (output raw Basic Pitch MIDI) | disabled |
-| `--key-aware` | Enable key-aware pitch correction | disabled |
-| `--no-analysis` | Skip pitch analysis and key detection | disabled |
+| `--grid <值>` | 量化网格：`1/4`, `1/8`, `1/16`, `1/32` | `1/16` |
+| `--min-note <毫秒>` | 最小音符时长（单位：毫秒） | `50` |
+| `--no-quantize` | 跳过量化步骤（输出原始的Basic Pitch MIDI文件） | 否 |
+| `--key-aware` | 启用调性感知音高校正 | 否 |
+| `--no-analysis` | 跳过音高分析和调性检测 | 否 |
 
-### Usage Examples
+### 使用示例
 
-#### Quantize to eighth notes
+#### 将音频量化为八分音符
 ```bash
 ./hum2midi melody.wav --grid 1/8
 ```
 
-#### Key-aware quantization (recommended for tonal music)
+#### 启用调性感知量化（适用于旋律音乐）
 ```bash
 ./hum2midi song.wav --key-aware
 ```
 
-#### Require longer minimum notes
+#### 设置更长的最小音符时长
 ```bash
 ./hum2midi humming.wav --min-note 100
 ```
 
-#### Skip analysis for faster processing
+#### 快速处理（跳过分析步骤）
 ```bash
 ./hum2midi quick.wav --no-analysis
 ```
 
-#### Combine options
+#### 同时使用多个参数
 ```bash
 ./hum2midi recording.wav output.mid --grid 1/8 --key-aware --min-note 80
 ```
 
-### Processing MIDI Input
+### 处理现有的MIDI文件
 
-You can also process existing MIDI files through the quantization pipeline:
+您也可以使用该工具对现有的MIDI文件进行量化处理：
 
 ```bash
 ./hum2midi input.mid output.mid --grid 1/16 --key-aware
 ```
 
-This skips the audio processing steps and goes directly to analysis and quantization.
+该命令会直接跳过音频处理步骤，直接进入分析和量化阶段。
 
-## Sample Output
+## 示例输出文件
 
 ```
 ═══════════════════════════════════════════════════════════════
@@ -227,75 +227,75 @@ MIDI Info: 38 notes, 7 unique pitches, 120 BPM
 Pitches: C3, E3, G3, A3, C4, D4, G4
 ```
 
-## Notes & Limitations
+## 注意事项与限制
 
-### Audio Quality Matters
+### 音频质量的影响
 
-- **Clear, loud melody** produces the best results
-- **Background noise** can cause false note detection
-- **Reverb and effects** may confuse pitch detection
-- **Close-mic'd vocals** work significantly better than room recordings
+- 清晰、音量适中的旋律效果最佳。
+- 背景噪音可能导致错误的音符检测。
+- 混音效果和效果器可能会干扰音高检测。
+- 使用近麦克风录制的人声效果更佳。
 
-### Musical Considerations
+### 音乐相关注意事项
 
-- **Monophonic sources** work best (single melody line)
-- **Polyphonic audio** (chords, multiple instruments) will produce messy results
-- **Vibrato and pitch bends** may be quantized to stepped pitches
-- **Rapid note passages** may be missed or merged
+- 单声道音频（单一旋律线）效果最佳。
+- 多声部音频（和弦、多种乐器）可能导致处理结果混乱。
+- 音符的颤音和音高变化可能会被量化为固定的音高。
+- 快速连续的音符可能会被遗漏或合并。
 
-### Technical Limitations
+### 技术限制
 
-- **Tempo is fixed** at 120 BPM in output (time positions are preserved, but tempo may need adjustment in your DAW)
-- **Note velocities** are normalized but may need manual adjustment
-- **Very short notes** (<50ms) may be filtered out by default
-- **Extreme pitch ranges** may cause octave detection issues
+- 输出文件的节奏固定为120 BPM（拍每分钟）；虽然时间位置保持不变，但您可能需要在DAW中调整节奏。
+- 音符的力度会被标准化，但可能需要手动调整。
+- 非常短的音符（<50毫秒）可能会被自动过滤掉。
+- 极端的音高范围可能导致调性检测问题。
 
-### Post-Processing Recommendations
+### 后期处理建议
 
-After generating MIDI, you may want to:
+生成MIDI文件后，您可以：
 
-1. **Import into your DAW** and adjust tempo to match your original recording
-2. **Quantize further** if stricter timing is needed
-3. **Adjust note velocities** for dynamics
-4. **Apply swing/groove** templates if the rigid grid sounds too mechanical
-5. **Edit individual notes** that were misdetected (common with fast runs)
+1. 将文件导入DAW，并根据原始录音调整节奏。
+- 如需更精确的时序控制，可进一步进行量化处理。
+- 调整音符的力度以适应音乐表现。
+- 如果固定的时间网格听起来过于机械，可以应用摇摆/律动效果。
+- 对于检测错误的音符进行手动修正（尤其是在快速演奏片段中常见这种情况）。
 
-### Supported Audio Formats
+### 支持的音频格式
 
-Input formats supported via FFmpeg:
-- WAV, AIFF, FLAC (uncompressed, best quality)
-- MP3, M4A, AAC (compressed, acceptable)
-- OGG, OPUS (open source formats)
-- Most other formats FFmpeg supports
+该工具支持以下FFmpeg支持的音频格式：
+- WAV、AIFF、FLAC（未压缩格式，音质最佳）
+- MP3、M4A、AAC（压缩格式）
+- OGG、OPUS（开源格式）
+- FFmpeg支持的大多数其他音频格式
 
-## Troubleshooting
+## 常见问题与解决方法
 
-### No notes detected
-- Check that input file isn't silent or corrupted
-- Try increasing `--min-note` threshold
-- Verify audio has clear melodic content (not just noise)
+### 未检测到音符
+- 确保输入文件不是无声的或损坏的。
+- 尝试增加`--min-note`参数的值。
+- 确保音频中包含清晰的旋律成分（而不仅仅是噪音）。
 
-### Too many notes / messy output
-- Enable octave pruning and overlap pruning (on by default)
-- Use `--key-aware` to constrain to musical scale
-- Check for background noise in source audio
+### 输出文件中音符过多或音质混乱
+- 启用八度修剪和重叠音符修剪功能（默认已启用）。
+- 使用`--key-aware`参数来确保音符符合音乐规律。
+- 检查音频中是否存在背景噪音。
 
-### Wrong key detected
-- Key detection works best with at least 8-10 measures of music
-- Chromatic passages may confuse the detector
-- Manually review and adjust in your DAW if needed
+### 检测到的调性错误
+- 至少需要8到10小节的音乐才能准确检测调性。
+- 半音阶片段可能会干扰检测结果。
+- 如有必要，可以在DAW中手动审核和调整调性。
 
-### Notes in wrong octave
-- Basic Pitch sometimes detects harmonics instead of fundamentals
-- The pipeline includes pruning, but some may slip through
-- Use your DAW's transpose function for simple octave shifts
+### 音符的八度错误
+- Basic Pitch模型有时会误将和声部分识别为基音。
+- 虽然流程包含修剪功能，但仍有可能出现错误。
+- 可以使用DAW的转调功能进行简单的八度调整。
 
-## References
+## 参考资料
 
-- [Basic Pitch](https://github.com/spotify/basic-pitch) - Spotify's polyphonic pitch detection model
-- [librosa HPSS](https://librosa.org/doc/latest/generated/librosa.decompose.hpss.html) - Harmonic-Percussive Source Separation
-- [Krumhansl-Kessler Key Profiles](https://rnhart.net/articles/key-finding/) - Key detection algorithm
+- [Basic Pitch](https://github.com/spotify/basic-pitch)：Spotify的多声部音高检测模型
+- [librosa HPSS](https://librosa.org/doc/latest/generated/librosa.decompose.hpss.html)：Harmonic-Percussive Source Separation技术
+- [Krumhansl-Kessler调性检测算法](https://rnhart.net/articles/key-finding/)：用于调性检测的算法
 
-## License
+## 许可证
 
-This skill integrates Basic Pitch by Spotify, which is licensed under Apache 2.0. The pipeline script and documentation are provided under MIT license.
+该工具使用了Spotify提供的Basic Pitch技术，该技术遵循Apache 2.0许可证。流程脚本和文档则遵循MIT许可证。

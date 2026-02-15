@@ -1,6 +1,6 @@
 ---
 name: user-cognitive-profiles
-description: "Analyze ChatGPT conversation exports to discover cognitive archetypes and optimize AI-human communication patterns. Enables personalized agent interactions based on detected user profiles."
+description: "分析从 ChatGPT 对话中导出的数据，以发现认知原型并优化人工智能与人类之间的交流模式。根据检测到的用户信息，实现个性化的代理交互（即根据用户的特征或偏好来定制交互方式）。"
 homepage: https://github.com/openclaw/user-cognitive-profiles
 metadata:
   {
@@ -13,41 +13,41 @@ metadata:
   }
 ---
 
-# User Cognitive Profiles
+# 用户认知画像
 
-🤖🤝🧠 Discover how you communicate with AI and optimize your agent interactions.
+🤖🤝🧠 了解你与人工智能的交流方式，并优化与智能代理的互动体验。
 
-This skill analyzes your ChatGPT conversation history to identify **cognitive archetypes** — recurring patterns in how you think, communicate, and collaborate. Use these insights to calibrate your OpenClaw agent for more effective, personalized interactions.
-
----
-
-## Why This Matters
-
-Human-AI communication is not one-size-fits-all. Just as you adapt your communication style between contexts (work meeting vs. casual chat), effective AI assistance requires matching your **cognitive architecture**.
-
-**The Problem:**
-- Default AI behavior assumes a generic user
-- Your communication style varies dramatically by context (professional vs. personal)
-- Misaligned AI responses feel inefficient or frustrating
-
-**The Solution:**
-- Analyze your actual conversation patterns
-- Identify your dominant cognitive archetypes
-- Configure your agent to match your communication style
+该技能通过分析你的 ChatGPT 对话历史，来识别出你的**认知原型**——即你在思考、交流和协作过程中反复出现的模式。利用这些洞察来调整你的 OpenClaw 智能代理，以实现更高效、更个性化的互动。
 
 ---
 
-## Quick Start
+## 重要性
 
-### 1. Export Your ChatGPT Data
+人机交流并非千篇一律。正如你会根据不同场景（如工作会议与闲聊）调整自己的交流方式一样，有效的 AI 辅助也需要与你的**认知风格**相匹配。
 
-1. Go to **ChatGPT → Settings → Data Controls → Export Data**
-2. Click "Export" and confirm
-3. Wait for the email (usually arrives within 24 hours)
-4. Download the ZIP file from the email link
-5. Extract it — you'll find `conversations.json`
+**问题：**
+- 默认的 AI 行为假设用户是通用的
+- 你的交流风格会因场景而大相径庭（工作场合 vs. 个人聊天）
+- 不匹配的 AI 回应会让人感到效率低下或沮丧
 
-### 2. Run the Analysis
+**解决方案：**
+- 分析你的实际对话模式
+- 确定你的主要认知原型
+- 配置你的智能代理以适应你的交流风格
+
+---
+
+## 快速入门
+
+### 1. 导出你的 ChatGPT 数据
+
+1. 进入 **ChatGPT → 设置 → 数据控制 → 导出数据**
+2. 点击“导出”并确认
+3. 等待邮件（通常会在 24 小时内收到）
+4. 从邮件链接中下载 ZIP 文件
+5. 解压文件，你会找到 `conversations.json`
+
+### 2. 运行分析
 
 ```bash
 cd /path/to/user-cognitive-profiles
@@ -57,9 +57,9 @@ python3 scripts/analyze_profile.py \
   --archetypes 3
 ```
 
-### 3. Apply to Your Agent
+### 3. 应用于你的智能代理
 
-Add to your `SOUL.md` or `AGENTS.md`:
+将分析结果添加到你的 `SOUL.md` 或 `AGENTS.md` 文件中：
 
 ```markdown
 ## User Cognitive Profile
@@ -77,50 +77,50 @@ Add to your `SOUL.md` or `AGENTS.md`:
 
 ---
 
-## Cognitive Archetypes
+## 认知原型
 
-The analysis identifies archetypes based on **four dimensions**:
+分析基于以下**四个维度**来识别原型：
 
-| Dimension | Low | High |
+| 维度 | 低 | 高 |
 |-----------|-----|------|
-| **Message Length** | Brief commands | Extended analysis |
-| **Structure** | Organic flow | Systematic breakdown |
-| **Depth** | Practical focus | Theoretical exploration |
-| **Tone** | Transactional | Collaborative |
+| **消息长度** | 简短的命令 | 详细的分析 |
+| **结构** | 自然的流程 | 系统化的分解 |
+| **深度** | 实际应用的焦点 | 理论性的探索 |
+| **语气** | 事务性的 | 协作的 |
 
-### Common Archetypes
+### 常见原型
 
-#### 🔧 Efficiency Optimizer
-- **Messages:** Short, direct, action-oriented
-- **Wants:** Quick answers, minimal explanation
-- **AI Role:** Tool to get things done
-- **Example:** "Set up email. Use pass. Go."
+#### 🔧 效率优化者
+- **消息特点：** 简短、直接、注重行动
+- **需求：** 快速的回答，最少的解释
+- **AI 的角色：** 完成任务的工具
+- **示例：** “设置邮件。使用。开始。”
 
-#### 🏗️ Systems Architect
-- **Messages:** Long, structured, comprehensive
-- **Wants:** Deep analysis, trade-offs, strategic thinking
-- **AI Role:** Collaborative partner for complex problems
-- **Example:** 300-word technical breakdown with multiple considerations
+#### 🏗️ 系统架构师
+- **消息特点：** 长篇幅、结构化、全面
+- **需求：** 深入的分析、权衡、战略性的思考
+- **AI 的角色：** 复杂问题的协作伙伴
+- **示例：** 包含多种考虑因素的 300 字技术分析
 
-#### 🧭 Philosophical Explorer
-- **Messages:** Varies widely, questions assumptions
-- **Wants:** Meaning, patterns, cross-domain connections
-- **AI Role:** Socratic partner for insight generation
-- **Example:** "How does this relate to [completely different domain]?"
+#### 🧭 哲学探索者
+- **消息特点：** 多样化，质疑假设
+- **需求：** 意义、模式、跨领域的联系
+- **AI 的角色：** 促进洞察的对话伙伴
+- **示例：** “这与[完全不同的领域]有什么关联？”
 
-#### 🎨 Creative Synthesizer
-- **Messages:** Connects disparate ideas, uses analogies
-- **Wants:** Novel combinations, pattern recognition
-- **AI Role:** Ideation partner and pattern mirror
-- **Example:** "This is like jazz improvisation..."
+#### 🎨 创意合成者
+- **消息特点：** 连接不同的想法，使用类比
+- **需求：** 新颖的组合、模式识别
+- **AI 的角色：** 想法生成的伙伴和模式反映者
+- **示例：** “这就像爵士乐即兴演奏……”
 
 ---
 
-## Customization
+## 定制
 
-### Define Your Own Archetypes
+### 定义你自己的原型
 
-Create `~/.openclaw/my-archetypes.yaml`:
+创建 `~/.openclaw/my-archetypes.yaml` 文件：
 
 ```yaml
 archetypes:
@@ -147,7 +147,7 @@ archetypes:
       - minimal_context
 ```
 
-Run with custom archetypes:
+使用自定义原型运行脚本：
 
 ```bash
 python3 scripts/analyze_profile.py \
@@ -155,9 +155,9 @@ python3 scripts/analyze_profile.py \
   --archetypes-config ~/.openclaw/my-archetypes.yaml
 ```
 
-### Adjust Cluster Count
+### 调整原型数量
 
-More archetypes = finer granularity, but harder to act on:
+原型数量越多，粒度越细，但操作起来也更复杂：
 
 ```bash
 # Simple: 2-3 archetypes
@@ -172,9 +172,9 @@ python3 scripts/analyze_profile.py --archetypes 10
 
 ---
 
-## Understanding the Output
+## 理解分析结果
 
-### Profile JSON Structure
+### 剖析 JSON 文件结构
 
 ```json
 {
@@ -223,40 +223,40 @@ python3 scripts/analyze_profile.py --archetypes 10
 }
 ```
 
-### Key Metrics Explained
+### 关键指标说明
 
-| Metric | Description | Why It Matters |
+| 指标 | 描述 | 重要性 |
 |--------|-------------|----------------|
-| `avg_message_length` | Average words per user message | Short = efficiency mode, Long = exploration mode |
-| `question_ratio` | % of turns that are questions | High = collaborative, Low = directive |
-| `code_block_ratio` | % of messages with code | Technical vs. conceptual focus |
-| `context_shifts` | Detected mode transitions | Indicates multiple archetypes at play |
-| `confidence` | Cluster cohesion score | Higher = more distinct pattern |
+| `avg_message_length` | 每条用户消息的平均字数 | 短消息 = 高效模式，长消息 = 探索模式 |
+| `question_ratio` | 提问的比例 | 高比例表示协作倾向，低比例表示指令性 |
+| `code_block_ratio` | 包含代码的消息比例 | 技术性 vs. 概念性焦点 |
+| `context_shifts` | 检测到的模式转换 | 表示同时存在多种原型 |
+| `confidence` | 原型聚类的一致性得分 | 分数越高，模式越明显 |
 
 ---
 
-## Privacy & Security
+## 隐私与安全
 
-**All processing is local.** The script:
-- ✅ Runs entirely on your machine
-- ✅ Never uploads data to external services
-- ✅ Stores results in your local OpenClaw workspace
-- ✅ You control what gets shared (if anything)
+**所有处理都在本地完成。** 该脚本：
+- ✅ 完全在您的机器上运行
+- ✅ 从不将数据上传到外部服务
+- ✅ 将结果存储在您的本地 OpenClaw 工作空间中
+- ✅ 您可以控制哪些信息被共享（如果有的话）
 
-**Recommended workflow:**
-1. Export ChatGPT data
-2. Run analysis locally
-3. Review `my-cognitive-profile.json`
-4. Manually add relevant insights to `SOUL.md`
-5. (Optional) Delete the export and raw profile
+**推荐的工作流程：**
+1. 导出 ChatGPT 数据
+2. 在本地运行分析
+3. 查看 `my-cognitive-profile.json`
+4. 手动将相关洞察添加到 `SOUL.md` 中
+5. （可选）删除导出的文件和原始的认知画像文件
 
 ---
 
-## Advanced Usage
+## 高级用法
 
-### Compare Profiles Over Time
+### 随时间跟踪认知画像的变化
 
-Track how your communication evolves:
+跟踪你的交流方式如何演变：
 
 ```bash
 # January analysis
@@ -273,9 +273,9 @@ python3 scripts/analyze_profile.py \
 python3 scripts/compare_profiles.py profile_jan.json profile_jun.json
 ```
 
-### Export for Other Agents
+### 为其他智能代理生成提示片段
 
-Generate a prompt snippet for Claude, GPT, or other agents:
+为 Claude、GPT 或其他智能代理生成提示片段：
 
 ```bash
 python3 scripts/analyze_profile.py \
@@ -284,7 +284,7 @@ python3 scripts/analyze_profile.py \
   --output agent-prompt.txt
 ```
 
-Output:
+输出：
 ```markdown
 ## User Communication Profile
 - Primary style: Systems Architect (detailed, analytical)
@@ -296,11 +296,12 @@ Output:
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "conversations.json not found"
+### “找不到 conversations.json”
 
-The export ZIP contains multiple files. Make sure you're pointing to:
+导出的 ZIP 文件中包含多个文件。请确保你指向正确的文件：
+
 ```
 chatgpt-export/
 ├── conversations.json  <-- This one
@@ -308,18 +309,19 @@ chatgpt-export/
 └── ...
 ```
 
-### "No conversations detected"
+### “未检测到对话”
 
-Your export might be empty or corrupted. Check:
+你的导出文件可能为空或损坏。请检查：
 ```bash
 head -20 conversations.json
 ```
 
-Should show: `[{"title": "...", "messages": [...]}, ...]`
+应显示的内容：`[{"title": "...", "messages": [...]}, ...]`
 
-### "All archetypes have similar confidence"
+### “所有原型的置信度相似”
 
-Try adjusting the cluster count:
+尝试调整原型数量：
+
 ```bash
 # Too granular
 python3 scripts/analyze_profile.py --archetypes 10
@@ -328,9 +330,10 @@ python3 scripts/analyze_profile.py --archetypes 10
 python3 scripts/analyze_profile.py --archetypes 3
 ```
 
-### "Analysis takes too long"
+### “分析耗时过长”
 
-For large conversation histories (10k+ messages):
+对于对话历史较长（10,000 条以上消息）的情况：
+
 ```bash
 # Sample for faster analysis
 python3 scripts/analyze_profile.py \
@@ -340,11 +343,11 @@ python3 scripts/analyze_profile.py \
 
 ---
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-### Automatic Profile Loading
+### 自动加载认知画像
 
-Add to your OpenClaw workspace `AGENTS.md`:
+将相关配置添加到你的 OpenClaw 工作空间中的 `AGENTS.md` 文件中：
 
 ```markdown
 ## On Session Start
@@ -353,9 +356,9 @@ Add to your OpenClaw workspace `AGENTS.md`:
 3. Watch for context shift indicators
 ```
 
-### Dynamic Mode Detection
+### 动态模式检测
 
-For agents that can switch modes mid-conversation:
+对于能够在对话过程中切换模式的智能代理：
 
 ```python
 # Pseudocode for agent integration
@@ -368,21 +371,21 @@ def detect_mode_shift(current_message, profile):
 
 ---
 
-## Contributing
+## 贡献
 
-Have a new archetype that works well? Submit a PR with:
-1. Archetype definition in `examples/`
-2. Sample data (anonymized)
-3. Validation that it clusters distinctly
-
----
-
-## References
-
-- `references/methodology.md` — Technical details on clustering algorithm
-- `references/archetype-taxonomy.md` — Full archetype definitions
-- `examples/` — Sample profiles and configurations
+如果你发现了一个效果良好的新原型，请提交一个 Pull Request，包括：
+1. `examples/` 目录中的原型定义
+2. 匿名化的样本数据
+3. 证明该原型能够被正确分类
 
 ---
 
-*Built for humans who want their AI to truly understand them.* 🤖🤝🧠
+## 参考资料
+
+- `references/methodology.md` — 关于聚类算法的技术细节
+- `references/archetype-taxonomy.md` — 完整的原型定义
+- `examples/` — 示例画像和配置文件
+
+---
+
+*专为希望人工智能真正理解自己的人打造。* 🤖🤝🧠

@@ -4,45 +4,55 @@ description: >
   High-quality voice synthesis with 9 personas, 11 languages, streaming, and voice cloning using Voice.ai API.
 ---
 
-# Voice.ai Voices
+# Voice.ai 语音合成服务
 
-## ✨ Features
+## ✨ 主要功能
 
-- **9 Voice Personas** - Carefully curated voices for different use cases
-- **11 Languages** - Multi-language synthesis with multilingual model
-- **Streaming Mode** - Real-time audio output as it generates
-- **Voice Cloning** - Clone voices from audio samples
-- **Voice Design** - Customize with temperature and top_p parameters
-- **OpenClaw Integration** - Works with OpenClaw's built-in TTS
+- **9种语音角色**：专为不同使用场景精心挑选的语音
+- **11种语言**：支持多语言合成，采用多语言模型
+- **流式输出模式**：在生成音频的同时实时输出
+- **语音克隆**：能够根据音频样本克隆新的语音
+- **语音定制**：可通过 `temperature` 和 `top_p` 参数调整语音特性
+- **与OpenClaw集成**：兼容OpenClaw内置的语音合成（TTS）功能
 
-## 🎙️ Available Voices
+## 🎙️ 可用语音
 
-| Voice   | Gender | Persona     | Best For                   |
-|---------|--------|-------------|----------------------------|
-| ellie   | female | youthful    | Vlogs, social content      |
-| oliver  | male   | british     | Narration, tutorials       |
-| lilith  | female | soft        | ASMR, calm content         |
-| smooth  | male   | deep        | Documentaries, audiobooks  |
-| corpse  | male   | distinctive | Gaming, entertainment      |
-| skadi   | female | anime       | Character voices           |
-| zhongli | male   | deep        | Gaming, dramatic content   |
-| flora   | female | cheerful    | Kids content, upbeat       |
-| chief   | male   | heroic      | Gaming, action content     |
+| 语音名称 | 性别 | 适用场景                |
+|---------|--------|-------------------------|
+| ellie   | 女性    | 视频博客、社交内容               |
+| oliver  | 男性    | 解说、教程                   |
+| lilith  | 女性    | 轻柔的语音（适合ASMR、舒缓内容）         |
+| smooth  | 男性    | 沉稳的语音（适合纪录片、有声书）           |
+| corpse  | 男性    | 独特的语音风格（适合游戏、娱乐内容）       |
+| skadi   | 女性    | 动漫风格的语音                |
+| zhongli | 男性    | 沉稳的语音（适合游戏、戏剧性内容）         |
+| flora   | 女性    | 愉快的语音（适合儿童内容、轻松的氛围）       |
+| chief   | 男性    | 英雄主义风格的语音（适合游戏、动作场景）       |
 
-## 🌍 Languages
+## 🌍 支持的语言
 
-Available: `en`, `es`, `fr`, `de`, `it`, `pt`, `pl`, `ru`, `nl`, `sv`, `ca`
+- 英语（en）
+- 西班牙语（es）
+- 法语（fr）
+- 德语（de）
+- 意大利语（it）
+- 葡萄牙语（pt）
+- 波兰语（pl）
+- 俄语（ru）
+- 荷兰语（nl）
+- 瑞典语（sv）
+- 加泰罗尼亚语（ca）
 
-## 🎨 Voice Design
+## 🎨 语音定制
 
-Customize voice output with these parameters:
+可通过以下参数自定义语音输出效果：
 
-- **temperature** (0-2) — Higher = more expressive, lower = more consistent
-- **top_p** (0-1) — Controls randomness in speech generation
+- **temperature**（0-2）：数值越高，语音表达越丰富；数值越低，语音越连贯
+- **top_p**（0-1）：控制语音生成的随机性
 
-## 📡 Streaming Mode
+## 📡 流式输出模式
 
-Generate audio with real-time streaming (good for long texts):
+支持实时流式输出音频（适用于较长的文本）
 
 ```bash
 # Stream audio as it generates
@@ -52,41 +62,23 @@ node scripts/tts.js --text "This is a long story..." --voice ellie --stream
 node scripts/tts.js --text "Chapter one..." --voice oliver --stream --output chapter1.mp3
 ```
 
-## 🔗 OpenClaw TTS Integration
+## 🔗 与OpenClaw的集成
 
-```yaml
-tts:
-  skill: voice-ai-tts
-  voice_id: d1bf0f33-8e0e-4fbf-acf8-45c3c6262513
-```
+Voice.ai的语音合成功能可与OpenClaw的内置TTS（Text-to-Speech）模块无缝集成。
 
-## 💬 Triggering TTS in Chat
+## 💬 在聊天中触发语音合成
 
-```
-/tts Hello, welcome to Voice.ai!
-```
+您可以在聊天应用中通过特定指令触发语音合成功能。
 
-## 💻 CLI Usage
+## 💻 命令行接口（CLI）使用方法
 
-```bash
-export VOICE_AI_API_KEY="your-api-key"
+Voice.ai提供命令行接口（CLI）以支持自动化操作。
 
-# Generate speech
-node scripts/tts.js --text "Hello world!" --voice ellie
+## 🔗 相关链接
 
-# Choose different voice
-node scripts/tts.js --text "Good morning!" --voice oliver --output morning.mp3
-
-# Show help
-node scripts/tts.js --help
-```
-
-## 🔗 Links
-
-- [Voice.ai Docs](https://voice.ai/docs)
-- [API Reference](https://voice.ai/docs/api-reference/text-to-speech/generate-speech)
-
+- [Voice.ai官方文档](https://voice.ai/docs)
+- [API参考文档](https://voice.ai/docs/api-reference/text-to-speech/generate-speech)
 
 ---
 
-Made with ❤️ by [Nick Gill](https://github.com/gizmoGremlin)
+由 [Nick Gill](https://github.com/gizmoGremlin) 用爱心制作。

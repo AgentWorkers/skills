@@ -1,105 +1,104 @@
 ---
 name: xbird
-description: "Use when the user asks to tweet, post threads, read tweets, search Twitter/X, check mentions, manage engagement (like/retweet/bookmark), update profile (bio, avatar, banner), upload media, or interact with Twitter accounts. Triggers: twitter, tweet, post, thread, timeline, mentions, followers, following, likes, retweet, bookmark, profile picture, bio."
+description: "**使用场景：**  
+当用户请求发布推文、创建新帖子、查看推文、搜索 Twitter/X 内容、查看被提及的情况、管理互动行为（如点赞、转发、收藏）、更新个人资料（简介、头像、横幅）、上传媒体文件，或与 Twitter 账户进行交互时。  
+**触发事件：**  
+twitter, tweet, post, thread, timeline, mentions, followers, following, likes, retweet, bookmark, profile picture, bio."
 argument-hint: "[action or query]"
 ---
 
-# xbird — Twitter/X for AI Agents
+# xbird — 用于 AI 代理的 Twitter/X 接口
 
-34 MCP tools for Twitter/X with x402 micropayments. Runs locally from residential IP.
+xbird 提供了 34 个用于 Twitter/X 的 MCP（MicroPayment）工具，支持 x402 轻量级支付方式。这些工具可以通过住宅 IP 在本地运行。
 
-## Setup
+## 设置
 
-Add xbird MCP server to Claude Code:
+将 xbird MCP 服务器添加到 Claude 代码中：
 
 ```bash
 claude mcp add xbird -- npx @checkra1n/xbird
 ```
 
-Required environment variables (set in `~/.claude/settings.json` or shell):
-- `XBIRD_AUTH_TOKEN` — from x.com cookies (DevTools → Application → Cookies → `auth_token`)
-- `XBIRD_CT0` — from x.com cookies (DevTools → Application → Cookies → `ct0`)
-- `XBIRD_PRIVATE_KEY` — wallet private key for x402 payments (optional, needed for paid tier)
+**所需的环境变量**（在 `~/.claude/settings.json` 或 shell 中设置）：
+- `XBIRD_AUTH_TOKEN` — 来自 x.com 的 Cookie（DevTools → Application → Cookies → `auth_token`）
+- `XBIRD_CT0` — 来自 x.com 的 Cookie（DevTools → Application → Cookies → `ct0`）
+- `XBIRD_PRIVATE_KEY` — 用于 x402 支付的钱包私钥（可选，仅限付费版本）
 
-## Tools Reference
+## 工具参考
 
-### Read — $0.001/call
-| Tool | Description |
+### 数据读取 — 每次调用费用：$0.001
+| 工具 | 功能描述 |
 |------|-------------|
-| `get_tweet` | Get tweet by ID |
-| `get_thread` | Get full thread/conversation chain |
-| `get_replies` | Get replies to a tweet (supports `count`, `cursor`) |
-| `get_user` | Get user profile by handle |
-| `get_user_about` | Get detailed user info (bio, stats, links) |
-| `get_current_user` | Get authenticated user's profile |
-| `get_home_timeline` | Get home feed (supports `count`, `cursor`) |
-| `get_news` | Get trending topics (tabs: `trending`, `forYou`, `news`, `sports`, `entertainment`) |
-| `get_lists` | Get owned Twitter lists |
-| `get_list_timeline` | Get tweets from a list by list ID |
+| `get_tweet` | 通过 ID 获取推文 |
+| `get_thread` | 获取完整的推文链/对话记录 |
+| `get_replies` | 获取推文的回复（支持 `count`、`cursor` 参数） |
+| `get_user` | 通过用户名获取用户信息 |
+| `get_user_about` | 获取用户的详细信息（个人简介、统计数据、链接等） |
+| `get_current_user` | 获取当前登录用户的个人资料 |
+| `get_home_timeline` | 获取用户的主页时间线（支持 `count`、`cursor` 参数） |
+| `get_news` | 获取热门话题（标签页：`trending`、`forYou`、`news`、`sports`、`entertainment`） |
+| `get_lists` | 获取用户拥有的 Twitter 列表 |
+| `get_list_timeline` | 通过列表 ID 获取列表中的推文 |
 
-### Search — $0.005/call
-| Tool | Description |
+### 数据搜索 — 每次调用费用：$0.005
+| 工具 | 功能描述 |
 |------|-------------|
-| `search_tweets` | Search tweets. Supports operators: `from:user`, `to:user`, `since:2024-01-01`, `filter:media`, `-filter:retweets` |
-| `get_mentions` | Get mentions for a handle |
+| `search_tweets` | 搜索推文。支持以下操作符：`from:user`、`to:user`、`since:2024-01-01`、`filter:media`、`-filter:retweets` |
+| `getmentions` | 获取指定用户名的提及信息 |
 
-### Bulk — $0.01/call
-| Tool | Description |
+### 批量操作 — 每次调用费用：$0.01
+| 工具 | 功能描述 |
 |------|-------------|
-| `get_user_tweets` | Get user's tweets. **Requires numeric `userId`** — get it from `get_user` first |
-| `get_followers` | Get user's followers. **Requires numeric `userId`** |
-| `get_following` | Get who user follows. **Requires numeric `userId`** |
-| `get_likes` | Get user's liked tweets. **Requires numeric `userId`** |
-| `get_bookmarks` | Get bookmarked tweets |
-| `get_list_memberships` | Get lists user is a member of |
+| `get_user_tweets` | 获取用户的推文（需要提供用户 ID，可通过 `get_user` 获取） |
+| `get_followers` | 获取用户的关注者（需要提供用户 ID） |
+| `get_following` | 获取用户关注的人（需要提供用户 ID） |
+| `get_likes` | 获取用户喜欢的推文（需要提供用户 ID） |
+| `get_bookmarks` | 获取用户收藏的推文 |
+| `get_list_memberships` | 获取用户所属的列表 |
 
-### Write — $0.01/call
-| Tool | Description |
-|------|-------------|
-| `post_tweet` | Post a tweet. Pass `mediaIds` array to attach media |
-| `reply_to_tweet` | Reply to a tweet by `replyToId` |
-| `post_thread` | Post a thread — array of strings, **minimum 2 tweets** |
-| `like_tweet` / `unlike_tweet` | Like or unlike by tweet ID |
-| `retweet` / `unretweet` | Retweet or undo by tweet ID |
-| `bookmark_tweet` / `unbookmark_tweet` | Bookmark or remove by tweet ID |
-| `follow_user` / `unfollow_user` | Follow or unfollow by handle |
+### 数据写入 — 每次调用费用：$0.01
+| 工具 | 功能描述 |
+| `post_tweet` | 发布推文。可以通过 `mediaIds` 数组附加媒体文件 |
+| `reply_to_tweet` | 通过 `replyToId` 回复推文 |
+| `post_thread` | 发布推文链（至少需要 2 条推文） |
+| `like_tweet` / `unlike_tweet` | 通过推文 ID 给推文点赞/点踩 |
+| `retweet` / `unretweet` | 通过推文 ID 转发/取消转发 |
+| `bookmark_tweet` / `unbookmark_tweet` | 通过推文 ID 收藏/取消收藏 |
+| `follow_user` / `unfollow_user` | 通过用户名关注/取消关注 |
 
-### Profile — $0.01/call
-| Tool | Description |
-|------|-------------|
-| `update_profile` | Update bio/description text |
-| `update_profile_image` | Update avatar — absolute file path to image |
-| `update_profile_banner` | Update banner — absolute file path to image |
-| `remove_profile_banner` | Remove banner image |
+### 用户资料修改 — 每次调用费用：$0.01
+| 工具 | 功能描述 |
+| `update_profile` | 更新个人简介/描述文本 |
+| `update_profile_image` | 更新头像（提供头像文件的绝对路径） |
+| `update_profile_banner` | 更新横幅（提供横幅文件的绝对路径） |
+| `remove_profile_banner` | 删除横幅图片 |
 
-### Media — $0.05/call
-| Tool | Description |
-|------|-------------|
-| `upload_media` | Upload image/video, returns `mediaId`. Pass it to `post_tweet` or `reply_to_tweet` via `mediaIds` |
+### 媒体操作 — 每次调用费用：$0.05
+| 工具 | 功能描述 |
+| `upload_media` | 上传图片/视频，返回 `mediaId`。可以通过 `mediaIds` 将其传递给 `post_tweet` 或 `reply_to_tweet` |
 
-## Common Workflows
+## 常见工作流程
 
-### Post a tweet with an image
-1. `upload_media` with file path → get `mediaId`
-2. `post_tweet` with text and `mediaIds: ["<mediaId>"]`
+### 发布带图片的推文
+1. 使用 `upload_media` 上传图片并获取 `mediaId`
+2. 使用 `post_tweet` 发布推文，并传入 `mediaIds`（例如：`["<mediaId>"]`）
 
-### Get someone's recent tweets
-1. `get_user` with handle → get numeric `userId`
-2. `get_user_tweets` with `userId`
+### 获取用户的最新推文
+1. 使用 `get_user` 获取用户名，并获取对应的用户 ID
+2. 使用 `get_user_tweets` 获取用户的推文
 
-### Update profile with new avatar and bio
-1. `update_profile_image` with file path
-2. `update_profile` with new description text
+### 更新个人资料（头像和简介）
+1. 使用 `update_profile_image` 上传新头像
+2. 使用 `update_profile` 更新个人简介文本
 
-### Search and engage
-1. `search_tweets` with query (e.g. `"AI agents" since:2024-01-01 -filter:retweets`)
-2. `like_tweet` or `retweet` interesting results
+### 搜索和互动
+1. 使用 `search_tweets` 进行搜索（例如：`"AI agents" since:2024-01-01 -filter:retweets`）
+2. 对感兴趣的结果进行点赞或转发
 
-## Important Notes
-
-- **Handles**: work with or without `@` prefix
-- **userId vs handle**: Bulk tools require numeric `userId`. Always call `get_user` first to resolve handle → userId
-- **Pagination**: most list tools accept `cursor` from previous response for next page
-- **Media flow**: always upload first, then attach `mediaId` to tweet
-- **Rate limits**: if a tool returns an error about rate limiting, wait 1-2 minutes before retrying
-- **x402 payments**: all calls are metered via micropayments on Base (USDC). Free tier available without wallet key
+## 重要说明
+- **用户名（Handles）**：可以带或不带 `@` 前缀使用
+- **用户 ID（userId）与用户名（handle）**：批量操作工具需要使用用户 ID。务必先使用 `get_user` 获取用户 ID
+- **分页**：大多数列表相关工具支持使用上一次请求的 `cursor` 参数来获取下一页内容
+- **媒体处理流程**：务必先上传媒体文件，然后再通过 `mediaId` 将其附加到推文中
+- **速率限制**：如果工具因速率限制返回错误，请等待 1-2 分钟后再尝试
+- **x402 支付**：所有调用均通过 Base（USDC）进行微支付。免费版本无需钱包密钥

@@ -1,24 +1,24 @@
 ---
 name: skill-auditor
 version: 2.1.1
-description: Security scanner for ClawHub skills. Detects malicious code, obfuscated payloads, and social engineering before installation. Three-layer analysis: pattern matching, deobfuscation, and LLM intent analysis.
+description: ClawHub 技能的安全扫描器：在安装之前能够检测恶意代码、混淆后的有效载荷以及社会工程攻击。采用三层分析机制：模式匹配、反混淆以及大语言模型（LLM）的意图分析。
 author: sypsyp97
 ---
 
-# Skill Auditor 🔍
+# 技能审计器 🔍
 
-Audit ClawHub skills for security threats before installing them.
+在安装任何技能之前，对其进行安全威胁审计，以确保其安全性。
 
-## Triggers
+## 触发条件
 
-Use this skill when:
-- "Audit this skill"
-- "Check skill security"
-- Before installing any third-party skill
+在以下情况下使用此技能：
+- “审计此技能”
+- “检查技能的安全性”
+- 在安装任何第三方技能之前
 
-## Usage
+## 使用方法
 
-### Method 1: Pre-install audit (recommended)
+### 方法 1：安装前审计（推荐）
 
 ```bash
 # Inspect without installing
@@ -28,62 +28,62 @@ clawhub inspect <skill-name>
 ~/.openclaw/workspace/skills/skill-auditor/scripts/audit.sh <skill-name>
 ```
 
-### Method 2: Audit an installed skill
+### 方法 2：审计已安装的技能
 
 ```bash
 ~/.openclaw/workspace/skills/skill-auditor/scripts/audit.sh --local <skill-path>
 ```
 
-## Detection Layers
+## 检测层
 
-### L1: Pattern Matching
+### 第一层：模式匹配
 
-| Severity | Pattern | Risk |
+| 严重程度 | 模式 | 风险 |
 |----------|---------|------|
-| 🔴 High | `base64.*\|.*bash` | Encoded execution |
-| 🔴 High | `curl.*\|.*bash` | Remote script execution |
-| 🔴 High | `eval\(` / `exec\(` | Dynamic code execution |
-| 🔴 High | Known C2 server IPs | Malicious communication |
-| 🟡 Medium | Access to `~/.openclaw/` | Config theft |
-| 🟡 Medium | Reads `$API_KEY` etc. | Credential leakage |
-| 🟡 Medium | Social engineering keywords | User deception |
-| 🟢 Low | Requires sudo | Elevated privileges |
+| 🔴 高 | `base64.*\|.*bash` | 编码后的命令执行 |
+| 🔴 高 | `curl.*\|.*bash` | 远程脚本执行 |
+| 🔴 高 | `eval\()` / `exec\()` | 动态代码执行 |
+| 🔴 高 | 已知的 C2 服务器 IP 地址 | 恶意通信 |
+| 🟡 中等 | 访问 `~/.openclaw/` 目录 | 配置信息泄露 |
+| 🟡 中等 | 读取 `$API_KEY` 等敏感信息 | 凭据泄露 |
+| 🟡 中等 | 社交工程相关关键词 | 用户被骗 |
+| 🟢 低 | 需要 `sudo` 权限 | 权限提升 |
 
-### L2: Deobfuscation
+### 第二层：反混淆
 
-Automatically decodes hidden malicious payloads:
-- **Base64** — Decodes and scans for hidden commands
-- **Hex** — Decodes `\x41\x42` format strings
-- Checks decoded content for C2 servers and dangerous commands
+自动解码隐藏的恶意载荷：
+- **Base64** — 解码并扫描隐藏的命令 |
+- **Hex** — 解码 `\x41\x42` 格式的字符串 |
+- 检查解码后的内容中是否存在 C2 服务器或危险命令
 
-### L3: LLM Analysis (optional)
+### 第三层：大语言模型（LLM）分析（可选）
 
-Uses Gemini CLI to analyze suspicious code intent:
-- Semantic understanding beyond pattern matching
-- Detects novel/unknown threats
-- Requires `gemini` CLI installed
+使用 Gemini CLI 分析可疑代码的意图：
+- 超出模式匹配的深度语义理解 |
+- 检测新型或未知的威胁 |
+- 需要安装 `gemini` CLI
 
-## Known Indicators of Compromise (IoC)
+## 已知的入侵指标（IoC）
 
-### C2 Server IPs
+### C2 服务器 IP 地址
 ```
 91.92.242.30  # ClawHavoc primary server
 ```
 
-### Malicious Domains
+### 恶意域名
 ```
 glot.io       # Hosts obfuscated scripts
 webhook.site  # Data exfiltration endpoint
 ```
 
-### Social Engineering Keywords
+### 社交工程相关关键词
 ```
 OpenClawDriver    # Non-existent "driver"
 ClawdBot Driver   # Social engineering lure
 Required Driver   # Tricks users into installing malware
 ```
 
-## Output Format
+## 输出格式
 
 ```
 ═══════════════════════════════════════════
@@ -105,25 +105,25 @@ Required Driver   # Tricks users into installing malware
 ═══════════════════════════════════════════
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Always audit before install** — Never skip the security check
-2. **Trust no skill blindly** — Including highly starred or popular ones
-3. **Check updates** — Skill updates may introduce malicious code
-4. **Report suspicious skills** — Send to steipete@gmail.com
+1. **安装前务必进行审计** — 永远不要跳过安全检查 |
+2. **不要盲目信任任何技能** — 即使是评分很高或受欢迎的技能 |
+3. **定期检查更新** — 技能更新可能会引入恶意代码 |
+4. **报告可疑技能** — 将可疑技能发送至 steipete@gmail.com
 
-## Maintenance
+## 维护
 
-**Update this skill when new threats are discovered:**
+**在新发现威胁时更新此技能：**
 
-1. New malicious IP → Add to `MALICIOUS_IPS`
-2. New malicious domain → Add to `MALICIOUS_DOMAINS`
-3. New social engineering lure → Add to `SOCIAL_ENGINEERING`
-4. New attack pattern → Add regex detection
+1. 新的恶意 IP 地址 → 添加到 `MALICIOUS_IPS` 列表 |
+2. 新的恶意域名 → 添加到 `MALICIOUS_DOMAINS` 列表 |
+3. 新的社交工程诱骗手段 → 添加到 `SOCIAL_engineERING` 列表 |
+4. 新的攻击模式 → 添加相应的正则表达式进行检测 |
 
-Update location: variable definitions at the top of `scripts/audit.sh`
+更新位置：`scripts/audit.sh` 文件顶部的变量定义
 
-## References
+## 参考资料
 
-- [341 Malicious ClawHub Skills Incident](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)
-- [OpenClaw Security Guide](https://docs.openclaw.ai/gateway/security)
+- [341 个恶意 ClawHub 技能事件](https://thehackernews.com/2026/02/researchers-find-341-malicious-clawhub.html)
+- [OpenClaw 安全指南](https://docs.openclaw.ai/gateway/security)

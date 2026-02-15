@@ -1,28 +1,28 @@
 ---
 name: oebb-scotty
-description: Austrian rail travel planner (ÖBB Scotty). Use when planning train journeys in Austria, checking departures/arrivals at stations, or looking for service disruptions. Covers ÖBB trains, S-Bahn, regional trains, and connections to neighboring countries.
+description: 奥地利铁路旅行规划工具（ÖBB Scotty）：适用于在奥地利规划火车行程、查询车站的出发/到达信息，或查看服务中断情况。该工具支持查询ÖBB列车、S-Bahn（城际轻轨）、区域列车，以及与邻国的交通连接信息。
 ---
 
 # ÖBB Scotty API
 
-Query Austria's public transport for trip planning, station departures, and service alerts via the HAFAS mgate API.
+通过 HAFAS mgate API 查询奥地利的公共交通信息，用于行程规划、车站出发时间查询和服务提醒。
 
-## Quick Reference
+## 快速参考
 
-| Method | Purpose |
+| 方法 | 功能 |
 |--------|---------|
-| `LocMatch` | Search for stations/stops by name |
-| `TripSearch` | Plan a journey between two locations |
-| `StationBoard` | Get departures/arrivals at a station |
-| `HimSearch` | Get service alerts and disruptions |
+| `LocMatch` | 按名称搜索车站/站点 |
+| `TripSearch` | 规划两个地点之间的行程 |
+| `StationBoard` | 获取车站的出发/到达信息 |
+| `HimSearch` | 获取服务提醒和中断信息 |
 
-**Base URL:** `https://fahrplan.oebb.at/bin/mgate.exe`
+**基础 URL:** `https://fahrplan.oebb.at/bin/mgate.exe`
 
 ---
 
-## Authentication
+## 认证
 
-All requests require these headers in the JSON body:
+所有请求的 JSON 正文中都必须包含以下头部信息：
 
 ```json
 {
@@ -38,11 +38,11 @@ All requests require these headers in the JSON body:
 
 ---
 
-## 1. Location Search (`LocMatch`)
+## 1. 地点搜索 (`LocMatch`)
 
-Search for stations, stops, addresses, or POIs by name.
+按名称搜索车站、站点、地址或兴趣点（POI）。
 
-### Request
+### 请求
 
 ```bash
 curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
@@ -59,7 +59,7 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
   }'
 ```
 
-### Response Structure
+### 响应结构
 
 ```json
 {
@@ -80,31 +80,31 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
 }
 ```
 
-### Location Types
+### 地点类型
 
-| Type | Description |
+| 类型 | 描述 |
 |------|-------------|
-| `S` | Station/Stop |
-| `A` | Address |
-| `P` | POI (Point of Interest) |
+| `S` | 车站/站点 |
+| `A` | 地址 |
+| `P` | 兴趣点（Point of Interest） |
 
-### Key Fields
+### 关键字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `lid` | Location ID string (use in TripSearch) |
-| `extId` | External station ID |
-| `name` | Station name |
-| `crd.x/y` | Coordinates (x=lon, y=lat, scaled by 10^6) |
-| `pCls` | Product class bitmask |
+| `lid` | 地点 ID 字符串（用于 `TripSearch`） |
+| `extId` | 外部车站 ID |
+| `name` | 车站名称 |
+| `crd.x/y` | 坐标（x=经度, y=纬度，比例尺为 10^6） |
+| `pCls` | 产品类别位掩码 |
 
 ---
 
-## 2. Trip Search (`TripSearch`)
+## 2. 行程搜索 (`TripSearch`)
 
-Plan a journey between two locations.
+规划两个地点之间的行程。
 
-### Request
+### 请求
 
 ```bash
 curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
@@ -131,37 +131,38 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
   }'
 ```
 
-### Parameters
+### 参数
 
-| Param | Description |
+| 参数 | 描述 |
 |-------|-------------|
-| `depLocL` | Departure location(s) - use `lid` from LocMatch |
-| `arrLocL` | Arrival location(s) |
-| `outDate` | Departure date (YYYYMMDD) |
-| `outTime` | Departure time (HHMMSS) |
-| `outFrwd` | `true` = search forward, `false` = search backward |
-| `numF` | Number of connections to return |
-| `jnyFltrL` | Product filter (see below) |
-| `getPasslist` | Include intermediate stops |
+| `depLocL` | 出发地点（使用 `LocMatch` 中的 `lid`） |
+| `arrLocL` | 到达地点 |
+| `outDate` | 出发日期（YYYYMMDD） |
+| `outTime` | 出发时间（HHMMSS） |
+| `outFrwd` | `true` = 向前搜索，`false` = 向后搜索 |
+| `numF` | 返回的连接次数 |
+| `jnyFltrL` | 产品过滤（见下文） |
+| `getPasslist` | 包含中途站点 |
 
-### Product Filter Values
+### 产品过滤值
 
-| Bit | Value | Product |
+| 位 | 值 | 产品类型 |
 |-----|-------|---------|
-| 0 | 1 | ICE/RJX (High-speed) |
-| 1 | 2 | IC/EC (InterCity) |
-| 2 | 4 | NJ (Night trains) |
-| 3 | 8 | D/EN (Express) |
-| 4 | 16 | REX/R (Regional Express) |
-| 5 | 32 | S-Bahn |
-| 6 | 64 | Bus |
-| 7 | 128 | Ferry |
-| 8 | 256 | U-Bahn |
-| 9 | 512 | Tram |
+| 0 | 1 | ICE/RJX（高速列车） |
+| 1 | 2 | IC/EC（城际列车） |
+| 2 | 4 | NJ（夜间列车） |
+| 3 | 8 | D/EN（快速列车） |
+| 4 | 16 | REX/R（区域快车） |
+| 5 | 32 | S-Bahn（轻轨） |
+| 6 | 64 | 公交 |
+| 7 | 128 | 渡轮 |
+| 8 | 256 | 地铁 |
+| 9 | 512 | 有轨电车 |
+| 1023 | 所有产品 |
 
-Use `1023` for all products, or sum specific bits.
+使用 `1023` 来查询所有产品类型，或组合特定位。
 
-### Response Structure
+### 响应结构
 
 ```json
 {
@@ -197,28 +198,28 @@ Use `1023` for all products, or sum specific bits.
 }
 ```
 
-### Key Connection Fields
+### 关键连接字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `dur` | Duration (HHMMSS) |
-| `chg` | Number of changes |
-| `dTimeS` | Scheduled departure |
-| `dTimeR` | Real-time departure (if available) |
-| `aTimeS` | Scheduled arrival |
-| `aTimeR` | Real-time arrival (if available) |
-| `dPltfS.txt` | Departure platform |
-| `aPltfS.txt` | Arrival platform |
-| `secL` | Journey sections (legs) |
-| `secL[].jny.prodX` | Index into `common.prodL[]` for train name |
+| `dur` | 行程时长（HHMMSS） |
+| `chg` | 中转次数 |
+| `dTimeS` | 预定出发时间 |
+| `dTimeR` | 实时出发时间（如可用） |
+| `aTimeS` | 预定到达时间 |
+| `aTimeR` | 实时到达时间（如可用） |
+| `dPltfS.txt` | 出发站台 |
+| `aPltfS.txt` | 到达站台 |
+| `secL` | 行程段（路段） |
+| `secL[].jny.prodX` | 在 `common.prodL[]` 中对应列车名称的索引 |
 
-### Understanding prodX (Product Index)
+### 理解 `prodX`（产品索引）
 
-**Important:** The `prodX` field in journey sections is an index into the `common.prodL[]` array, NOT the train name itself. To get the actual train name (e.g., "S7", "RJX 662"), you must look up `common.prodL[prodX].name`.
+**注意：** `prodX` 字段是 `common.prodL[]` 数组中的索引，而不是列车名称本身。要获取实际的列车名称（例如 “S7” 或 “RJX 662”），需要通过 `common.prodL[prodX].name` 来查找。
 
-### Extracting Trip Summaries with jq
+### 使用 jq 提取行程摘要
 
-The raw TripSearch response is very verbose. Use this jq filter to extract a concise summary with resolved train names:
+原始的 `TripSearch` 响应内容非常冗长。使用以下 jq 过滤器可以提取包含列车名称的简洁摘要：
 
 ```bash
 curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
@@ -244,7 +245,7 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
     }]'
 ```
 
-Example output:
+示例输出：
 ```json
 [
   {
@@ -261,11 +262,11 @@ Example output:
 
 ---
 
-## 3. Station Board (`StationBoard`)
+## 3. 车站信息查询 (`StationBoard`)
 
-Get departures or arrivals at a station.
+获取车站的出发或到达信息。
 
-### Request
+### 请求
 
 ```bash
 curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
@@ -288,17 +289,17 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
   }'
 ```
 
-### Parameters
+### 参数
 
-| Param | Description |
+| 参数 | 描述 |
 |-------|-------------|
-| `stbLoc` | Station location |
-| `date` | Date (YYYYMMDD) |
-| `time` | Time (HHMMSS) |
-| `type` | `DEP` (departures) or `ARR` (arrivals) |
-| `maxJny` | Maximum number of journeys |
+| `stbLoc` | 车站位置 |
+| `date` | 日期（YYYYMMDD） |
+| `time` | 时间（HHMMSS） |
+| `type` | `DEP`（出发）或 `ARR`（到达） |
+| `maxJny` | 最大查询条目数 |
 
-### Response Structure
+### 响应结构
 
 ```json
 {
@@ -326,11 +327,11 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
 
 ---
 
-## 4. Service Alerts (`HimSearch`)
+## 4. 服务提醒 (`HimSearch`）
 
-Get current disruptions and service information.
+获取当前的服务中断和信息。
 
-### Request
+### 请求
 
 ```bash
 curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
@@ -350,7 +351,7 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
   }'
 ```
 
-### Response Structure
+### 响应结构
 
 ```json
 {
@@ -371,34 +372,33 @@ curl -s -X POST "https://fahrplan.oebb.at/bin/mgate.exe" \
 
 ---
 
-## Common Station IDs
+## 常见车站 ID
 
-| Station | extId |
+| 车站 | 外部 ID |
 |---------|-------|
-| Wien Hbf | 8103000 |
-| Wien Meidling | 8100514 |
-| Wien Westbahnhof | 8101003 |
-| Salzburg Hbf | 8100002 |
-| Linz Hbf | 8100013 |
-| Graz Hbf | 8100173 |
-| Innsbruck Hbf | 8100108 |
-| Klagenfurt Hbf | 8100085 |
-| St. Pölten Hbf | 8100008 |
-| Wr. Neustadt Hbf | 8100516 |
+| 维也纳中央火车站 | 8103000 |
+| 维也纳梅德林火车站 | 8100514 |
+| 维也纳西火车站 | 8101003 |
+| 萨尔茨堡中央火车站 | 8100002 |
+| 林茨中央火车站 | 8100013 |
+| 格拉茨中央火车站 | 8100173 |
+| 因斯布鲁克中央火车站 | 8100108 |
+| 圣珀尔滕中央火车站 | 8100008 |
+| 弗赖恩纽施塔特中央火车站 | 8100516 |
 
 ---
 
-## Time Format
+## 时间格式
 
-- Dates: `YYYYMMDD` (e.g., `20260109`)
-- Times: `HHMMSS` (e.g., `080000` = 08:00:00)
-- Duration: `HHMMSS` (e.g., `025200` = 2h 52m)
+- 日期：`YYYYMMDD`（例如：`20260109`）
+- 时间：`HHMMSS`（例如：`080000` 表示 08:00:00）
+- 行程时长：`HHMMSS`（例如：`025200` 表示 2小时52分钟）
 
 ---
 
-## Error Handling
+## 错误处理
 
-Check `err` field in response:
+检查响应中的 `err` 字段：
 
 ```json
 {
@@ -411,19 +411,19 @@ Check `err` field in response:
 
 ---
 
-## Product Classes (cls values)
+## 产品类别（cls 值）
 
-| cls | Product |
+| cls | 产品类型 |
 |-----|---------|
 | 1 | ICE/RJX |
 | 2 | IC/EC |
-| 4 | Night trains |
+| 4 | 夜间列车 |
 | 8 | NJ/EN |
-| 16 | REX/Regional |
+| 16 | REX/区域快车 |
 | 32 | S-Bahn |
-| 64 | Bus |
-| 128 | Ferry |
-| 256 | U-Bahn |
-| 512 | Tram |
-| 1024 | On-demand |
-| 2048 | Other |
+| 64 | 公交 |
+| 128 | 渡轮 |
+| 256 | 地铁 |
+| 512 | 有轨电车 |
+| 1024 | 需求响应式服务 |
+| 2048 | 其他 |

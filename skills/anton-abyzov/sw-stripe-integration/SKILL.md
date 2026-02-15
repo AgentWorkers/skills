@@ -1,98 +1,98 @@
 ---
 name: stripe-integration
-description: Stripe payment integration for checkout, subscriptions, webhooks, and Connect marketplace patterns. Use when implementing Stripe payments, handling payment webhooks, or building subscription billing systems. Covers dual confirmation (webhook + frontend), mobile payment verification, 100% promo code handling, and idempotent payment operations.
+description: **Stripe支付集成**  
+适用于结账、订阅服务、Webhook通知以及Connect市场模式的场景。适用于实现Stripe支付功能、处理支付相关的Webhook通知，或构建订阅计费系统。内容包括：双重确认机制（Webhook + 前端验证）、移动支付验证、100%促销代码的处理方式，以及幂等性（idempotent）的支付操作。
 ---
 
-# Stripe Integration
+# Stripe集成
 
-Master Stripe payment processing integration for robust, PCI-compliant payment flows including checkout, subscriptions, webhooks, Stripe Connect marketplace payments, and mobile/web payment verification.
+掌握Stripe支付处理集成技术，以实现强大且符合PCI标准的支付流程，包括结账、订阅、Webhook、Stripe Connect市场支付以及移动/网页支付验证等功能。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Implementing payment processing in web/mobile applications
-- Setting up subscription billing systems
-- Handling one-time payments and recurring charges
-- Processing refunds and disputes
-- Managing customer payment methods
-- Implementing SCA (Strong Customer Authentication) for European payments
-- Building marketplace payment flows with Stripe Connect
-- Implementing Direct Charge or Destination Charge patterns
-- Handling promo codes and 100% discount scenarios
-- Implementing dual confirmation (webhook + frontend verification)
-- Managing inventory/slots with payment atomicity
+- 在Web/移动应用程序中实现支付处理
+- 设置订阅计费系统
+- 处理一次性支付和定期收费
+- 处理退款和争议
+- 管理客户的支付方式
+- 为欧洲地区的支付实现SCA（强客户认证）
+- 使用Stripe Connect构建市场支付流程
+- 实现直接收费（Direct Charge）或目标账户收费（Destination Charge）模式
+- 处理促销代码和100%折扣场景
+- 实现双重确认机制（Webhook + 前端验证）
+- 管理库存/预订资源，确保操作的原子性
 
-## Core Concepts
+## 核心概念
 
-### 1. Payment Flows
-**Checkout Session (Hosted)**
-- Stripe-hosted payment page
-- Minimal PCI compliance burden
-- Fastest implementation
-- Supports one-time and recurring payments
+### 1. 支付流程
+**结账会话（托管式）**
+- 由Stripe托管的支付页面
+- PCI合规要求较低
+- 实现速度最快
+- 支持一次性支付和定期支付
 
-**Payment Intents (Custom UI)**
-- Full control over payment UI
-- Requires Stripe.js for PCI compliance
-- More complex implementation
-- Better customization options
+**支付意图（自定义用户界面）**
+- 对支付用户界面有完全控制权
+- 需要Stripe.js来满足PCI合规要求
+- 实现难度较高
+- 提供更多的定制选项
 
-**Setup Intents (Save Payment Methods)**
-- Collect payment method without charging
-- Used for subscriptions and future payments
-- Requires customer confirmation
+**设置意图（保存支付方式）**
+- 收集支付方式信息，但不进行扣费
+- 用于订阅和未来的支付
+- 需要客户确认
 
-### 2. Webhooks
-**Critical Events:**
-- `payment_intent.succeeded`: Payment completed
-- `payment_intent.payment_failed`: Payment failed
-- `checkout.session.completed`: Checkout session finished (CRITICAL for Connect!)
-- `checkout.session.expired`: Checkout session timed out
-- `customer.subscription.updated`: Subscription changed
-- `customer.subscription.deleted`: Subscription canceled
-- `charge.refunded`: Refund processed
-- `invoice.payment_succeeded`: Subscription payment successful
-- `account.updated`: Connect account status changed
-- `payout.paid` / `payout.failed`: Payout status for Connect accounts
+### 2. Webhook
+**关键事件：**
+- `payment_intent.succeeded`：支付完成
+- `payment_intent.payment_failed`：支付失败
+- `checkout.session_completed`：结账会话结束（对于Stripe Connect至关重要！）
+- `checkout.session.expired`：结账会话超时
+- `customer.subscription.updated`：订阅信息更新
+- `customer.subscriptiondeleted`：订阅取消
+- `charge.refunded`：退款处理完成
+- `invoice.payment_succeeded`：订阅付款成功
+- `account.updated`：Connect账户状态更新
+- `payout.paid` / `payout_FAILED`：Connect账户的支付状态
 
-### 3. Subscriptions
-**Components:**
-- **Product**: What you're selling
-- **Price**: How much and how often
-- **Subscription**: Customer's recurring payment
-- **Invoice**: Generated for each billing cycle
+### 3. 订阅
+**组成部分：**
+- **产品**：你销售的商品或服务
+- **价格**：价格及支付频率
+- **订阅**：客户的定期付款
+- **发票**：每个计费周期生成的账单
 
-### 4. Customer Management
-- Create and manage customer records
-- Store multiple payment methods
-- Track customer metadata
-- Manage billing details
+### 4. 客户管理
+- 创建和管理客户记录
+- 存储多种支付方式
+- 跟踪客户元数据
+- 管理账单详情
 
-### 5. Stripe Connect (Marketplace/Platform Payments)
+### 5. Stripe Connect（市场/平台支付）
 
-**Charge Types:**
+**收费类型：**
 
-| Type | Who Creates | Webhook Location | Use Case |
+| 类型 | 创建方 | Webhook位置 | 使用场景 |
 |------|-------------|------------------|----------|
-| **Direct Charge** | Connected Account | Connect endpoint | Marketplace where seller owns relationship |
-| **Destination Charge** | Platform | Platform endpoint | Platform controls experience |
-| **Separate Charges & Transfers** | Platform | Platform endpoint | Maximum flexibility |
+| **直接收费（Direct Charge）** | 连接的账户（Connected Account） | Connect端点 | 卖家拥有控制权的市场平台 |
+| **目标账户收费（Destination Charge）** | 平台（Platform） | 平台端点 | 平台控制支付体验 |
+| **单独收费与转账（Separate Charges & Transfers）** | 平台 | 平台端点 | 最高的灵活性 |
 
-**⚠️ CRITICAL: Direct Charge Webhook Gap**
-
-When using Direct Charge, checkout sessions are created ON the Connected Account, NOT the platform. Webhooks go to the Connect endpoint, not the platform endpoint!
+**⚠️ 重要提示：直接收费的Webhook设置**  
+使用直接收费时，结账会话是在连接的账户上创建的，而不是在平台上。Webhook应发送到Connect端点，而不是平台端点！
 
 ```
 Platform endpoint:  /webhooks/stripe        → Has general events ✓
 Connect endpoint:   /webhooks/stripe/connect → MUST have checkout.session.completed! ✓
 ```
 
-**Connect Endpoint MUST Handle:**
-- `checkout.session.completed` (CRITICAL for Direct Charge)
+**Connect端点必须处理的事件：**
+- `checkout.session_completed`（对于直接收费至关重要）
 - `checkout.session.expired`
 - `account.updated`
-- `payout.paid` / `payout.failed`
+- `payout.paid` / `payout_FAILED`
 
-## Quick Start
+## 快速入门
 
 ```python
 import stripe
@@ -124,9 +124,9 @@ session = stripe.checkout.Session.create(
 print(session.url)
 ```
 
-## Payment Implementation Patterns
+## 支付实现模式
 
-### Pattern 1: One-Time Payment (Hosted Checkout)
+### 模式1：一次性支付（托管式结账）
 ```python
 def create_checkout_session(amount, currency='usd'):
     """Create a one-time payment checkout session."""
@@ -159,7 +159,7 @@ def create_checkout_session(amount, currency='usd'):
         raise
 ```
 
-### Pattern 2: Custom Payment Intent Flow
+### 模式2：自定义支付意图流程
 ```python
 def create_payment_intent(amount, currency='usd', customer_id=None):
     """Create a payment intent for custom checkout UI."""
@@ -203,7 +203,7 @@ if (error) {
 """
 ```
 
-### Pattern 3: Subscription Creation
+### 模式3：订阅创建
 ```python
 def create_subscription(customer_id, price_id):
     """Create a subscription for a customer."""
@@ -225,7 +225,7 @@ def create_subscription(customer_id, price_id):
         raise
 ```
 
-### Pattern 4: Customer Portal
+### 模式4：客户门户
 ```python
 def create_customer_portal_session(customer_id):
     """Create a portal session for customers to manage subscriptions."""
@@ -236,9 +236,9 @@ def create_customer_portal_session(customer_id):
     return session.url  # Redirect customer here
 ```
 
-## Webhook Handling
+## Webhook处理
 
-### Secure Webhook Endpoint
+### 安全的Webhook端点
 ```python
 from flask import Flask, request
 import stripe
@@ -302,7 +302,7 @@ def handle_subscription_canceled(subscription):
     print(f"Subscription canceled: {subscription['id']}")
 ```
 
-### Webhook Best Practices
+### Webhook最佳实践
 ```python
 import hashlib
 import hmac
@@ -333,8 +333,7 @@ def handle_webhook_idempotently(event_id, handler):
         raise
 ```
 
-## Customer Management
-
+## 客户管理
 ```python
 def create_customer(email, name, payment_method_id=None):
     """Create a Stripe customer."""
@@ -375,8 +374,7 @@ def list_customer_payment_methods(customer_id):
     return payment_methods.data
 ```
 
-## Refund Handling
-
+## 退款处理
 ```python
 def create_refund(payment_intent_id, amount=None, reason=None):
     """Create a refund."""
@@ -406,8 +404,7 @@ def handle_dispute(charge_id, evidence):
     )
 ```
 
-## Testing
-
+## 测试
 ```python
 # Use test mode keys
 stripe.api_key = "sk_test_..."
@@ -444,18 +441,18 @@ def test_payment_flow():
     assert confirmed.status == 'succeeded'
 ```
 
-## ⚠️ Critical Production Patterns
+## ⚠️ 生产环境中的关键注意事项
 
-### 1. 100% Promo Code Detection (WRONG vs CORRECT)
+### 1. 100%促销代码检测（错误与正确处理方式）
 
-**Common Mistake:**
+**常见错误：**
 ```python
 # ❌ WRONG - no_payment_required is for different scenarios!
 if session.payment_status == 'no_payment_required':
     handle_free_checkout()
 ```
 
-**Correct Detection:**
+**正确处理方式：**
 ```python
 # ✅ CORRECT - 100% promo codes have: status=complete, payment_status=paid, amount_total=0
 def is_100_percent_promo(session):
@@ -476,18 +473,18 @@ if session.status == 'complete':
         fulfill_order(session)
 ```
 
-**Key Insight:** Stripe says "paid" even when amount is $0 from a promo code. The `no_payment_required` status is for different scenarios (like $0 invoices for metered billing).
+**关键提示：** 即使使用促销代码支付金额为0，Stripe也会显示“已支付”。`no_payment_required`状态适用于其他场景（例如按使用量计费的0美元账单）。
 
 ---
 
-### 2. Dual Confirmation Pattern (Webhook + Frontend)
+### 2. 双重确认机制（Webhook + 前端）
 
-**Problem:** Frontend verification alone fails when:
-- User closes browser before redirect
-- Network error during verify call
-- Web mode where payment happens in separate tab
+**问题：** 仅依赖前端验证时可能出现的问题：**
+- 用户在跳转前关闭浏览器
+- 验证过程中发生网络错误
+- 支付发生在单独标签页中
 
-**Solution: Dual Confirmation Architecture**
+**解决方案：** 双重确认架构
 ```
 Payment Complete
       ↓
@@ -501,7 +498,7 @@ Webhook   Frontend
 First one wins (idempotent)
 ```
 
-**Backend Implementation:**
+**后端实现：**
 ```typescript
 // Idempotent order confirmation - BOTH webhook and frontend call this
 async function confirmPayment(sessionId: string): Promise<boolean> {
@@ -555,7 +552,7 @@ app.get('/api/verify-payment/:sessionId', async (req, res) => {
 });
 ```
 
-**Frontend with Exponential Backoff (React Native/Web):**
+**前端实现（React Native/Web）：**
 ```typescript
 async function verifyPaymentWithRetry(
   sessionId: string,
@@ -592,14 +589,14 @@ async function verifyPaymentWithRetry(
 
 ---
 
-### 3. Idempotency for All Payment Operations
+### 3. 所有支付操作的可重试性
 
-**Problem:** Webhook and frontend can race, causing:
-- Double inventory/slot decrements
-- Duplicate notifications
-- Inconsistent state
+**问题：** Webhook和前端操作可能同时执行，导致：**
+- 库存/预订资源被重复减少
+- 通知重复发送
+- 状态不一致
 
-**Solution: Conditional UPDATE Pattern**
+**解决方案：** 条件更新机制
 ```sql
 -- Only update if still in expected state
 UPDATE orders
@@ -610,7 +607,7 @@ WHERE id = $1 AND status = 'pending';
 -- If 0 rows affected → another process already handled it → skip side effects
 ```
 
-**TypeScript/Drizzle Implementation:**
+**TypeScript/Drizzle实现示例：**
 ```typescript
 async function processPaymentIdempotently(orderId: string) {
   const result = await db
@@ -637,18 +634,18 @@ async function processPaymentIdempotently(orderId: string) {
 
 ---
 
-### 4. Web Browser Payment Flow (React Native/Expo)
+### 4. Web浏览器支付流程（React Native/Expo）
 
-**Problem:** `WebBrowser.openBrowserAsync` behaves DIFFERENTLY on web vs native!
+**问题：** `WebBrowser.openBrowserAsync` 在Web和原生环境中的行为不同！**
 
-| Platform | Return Timing | `result.type` | User State |
+| 平台 | 返回时间 | `result.type` | 用户状态 |
 |----------|---------------|---------------|------------|
-| **iOS/Android** | After browser closed | `'dismiss'` or `'cancel'` | Back in app |
-| **Web** | Immediately | `'opened'` | **Still viewing Stripe checkout!** |
+| **iOS/Android** | 浏览器关闭后 | `'dismiss'` 或 `'cancel'` | 用户返回应用 |
+| **Web** | 立即返回 | `'opened'` | 用户仍在查看Stripe结账页面！ |
 
-**⚠️ CRITICAL: On web, you CAN'T verify payment immediately because the user is still looking at Stripe checkout in another tab!**
+**⚠️ 重要提示：** 在Web环境中，不能立即验证支付状态，因为用户可能仍在另一个标签页中查看Stripe结账页面！**
 
-**Correct Solution - Platform-Specific Handling:**
+**正确处理方式：** 根据平台进行差异化处理
 ```typescript
 import * as WebBrowser from 'expo-web-browser';
 import { Platform, Alert } from 'react-native';
@@ -704,7 +701,7 @@ async function handlePayment(checkoutUrl: string, sessionId: string) {
 }
 ```
 
-**Alternative for Web: Use Window Focus Event**
+**Web环境的替代方案：** 使用`Window Focus Event`事件
 ```typescript
 // Web-specific: Listen for when user returns to tab
 if (Platform.OS === 'web') {
@@ -718,7 +715,7 @@ if (Platform.OS === 'web') {
 }
 ```
 
-**Verification with Exponential Backoff:**
+**带有指数退避机制的验证：**
 ```typescript
 async function verifyPaymentWithRetry(
   sessionId: string,
@@ -757,11 +754,11 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 ---
 
-### 5. Inventory/Slot Management with Atomicity
+### 5. 库存/预订资源的管理与原子性
 
-**Rule:** ONLY modify inventory AFTER payment confirmed, and atomically.
+**规则：** 仅在支付确认后修改库存，并确保操作的原子性。
 
-**Problem Pattern (DON'T DO):**
+**错误做法：**
 ```typescript
 // ❌ WRONG - Decrementing before payment confirmation
 await reserveSlot(slotId);  // Slot decremented
@@ -769,7 +766,7 @@ const session = await createCheckoutSession();  // Payment might fail!
 // If user abandons → slot is stuck as reserved
 ```
 
-**Correct Pattern:**
+**正确做法：**
 ```typescript
 // ✅ CORRECT - Only decrement AFTER payment confirmed
 async function confirmBookingPayment(sessionId: string) {
@@ -819,9 +816,9 @@ async function confirmBookingPayment(sessionId: string) {
 
 ---
 
-### 6. Stripe Connect Direct Charge Webhook Setup
+### 6. Stripe Connect直接收费的Webhook设置
 
-**Complete Connect Webhook Handler:**
+**完整的Connect Webhook处理流程：**
 ```typescript
 // /webhooks/stripe/connect - For Direct Charge events
 app.post('/webhooks/stripe/connect',
@@ -884,56 +881,56 @@ async function handleConnectCheckoutComplete(session, connectedAccountId: string
 }
 ```
 
-**Stripe Dashboard Setup Required:**
-1. Go to Stripe Dashboard → Developers → Webhooks
-2. Add endpoint for Connect: `https://yourdomain.com/webhooks/stripe/connect`
-3. Select "Connected accounts" (NOT "Account")
-4. Add events: `checkout.session.completed`, `checkout.session.expired`, `account.updated`, `payout.paid`, `payout.failed`
+**Stripe控制台设置步骤：**
+1. 登录Stripe控制台 → 开发者 → Webhooks
+2. 为Connect添加端点：`https://yourdomain.com/webhooks/stripe/connect`
+3. 选择“连接的账户”（Connected Accounts），而非“账户”（Account）
+4. 添加事件监听：`checkout.session_completed`、`checkout.session.expired`、`account.updated`、`payout.paid`、`payout.failed`
 
 ---
 
-## Pre-Implementation Checklist
+## 预实施检查清单
 
-### Webhook Setup
-- [ ] Platform endpoint handles platform events
-- [ ] Connect endpoint handles `checkout.session.completed` (if using Direct Charge)
-- [ ] Stripe Dashboard has Connect webhook with correct events
-- [ ] Webhook secrets configured for BOTH endpoints (different secrets!)
+### Webhook设置
+- [ ] 平台端点能够正确处理平台相关事件
+- [ ] 如果使用直接收费，Connect端点能够处理`checkout.session_completed`事件
+- [ ] Stripe控制台的Connect Webhook设置正确
+- [ ] 两个端点的Webhook密钥均已配置（密钥不同！）
 
-### Payment Verification
-- [ ] Webhook handler implemented (primary - async, reliable)
-- [ ] Frontend verify endpoint implemented (secondary - immediate UX)
-- [ ] Both use conditional UPDATE for idempotency
-- [ ] 100% promo detected by `amount_total === 0` (NOT `no_payment_required`)
-- [ ] **Web vs Native browser handling**: Check `result.type === 'opened'` (web) vs `'dismiss'/'cancel'` (native) - do NOT verify immediately on web!
+### 支付验证
+- [ ] Webhook处理函数已实现（主要依赖异步处理，确保可靠性）
+- [ ] 前端验证功能已实现（辅助功能，提供即时用户体验）
+- [ ] 两者都使用条件更新机制来保证操作的原子性
+- [ ] 通过`amount_total === 0`来检测是否为100%折扣（而非依赖`no_payment_required`状态）
+- **Web与原生浏览器处理差异**：根据`result.type`判断（Web为`'opened'`，原生为`'dismiss'/'cancel'`），切勿在Web环境中立即验证支付状态！
 
-### Inventory/Booking
-- [ ] Inventory only modified AFTER payment confirmed
-- [ ] Atomic operations prevent double-counting
-- [ ] Proper error handling if slot becomes unavailable (refund flow)
+### 库存/预订资源管理
+- [ ] 仅在支付确认后修改库存
+- [ ] 确保操作原子性，防止重复计数
+- [ ] 如果预订资源不可用，需妥善处理退款流程
 
-### Testing
-- [ ] Test with regular payment
-- [ ] Test with 100% promo code
-- [ ] Test browser close during payment
-- [ ] Test network failure during verify
-- [ ] Verify webhook receives events from Connect accounts (if applicable)
+### 测试
+- [ ] 使用常规支付场景进行测试
+- [ ] 使用100%折扣代码进行测试
+- [ ] 测试用户在支付过程中关闭浏览器的情况
+- [ ] 测试网络故障对支付验证的影响
+- [ ] 确保Webhook能接收到来自连接账户的事件（如适用）
 
-## Best Practices
+## 最佳实践
 
-1. **Always Use Webhooks**: Don't rely solely on client-side confirmation
-2. **Idempotency**: Handle webhook events idempotently
-3. **Error Handling**: Gracefully handle all Stripe errors
-4. **Test Mode**: Thoroughly test with test keys before production
-5. **Metadata**: Use metadata to link Stripe objects to your database
-6. **Monitoring**: Track payment success rates and errors
-7. **PCI Compliance**: Never handle raw card data on your server
-8. **SCA Ready**: Implement 3D Secure for European payments
+1. **始终使用Webhook**：不要仅依赖客户端验证
+2. **确保操作的原子性**：正确处理Webhook事件
+3. **错误处理**：优雅地处理所有Stripe相关的错误
+4. **测试模式**：在生产环境前使用测试密钥进行全面测试
+5. **元数据管理**：使用元数据将Stripe数据与数据库关联
+6. **监控**：跟踪支付成功率和错误情况
+7. **PCI合规**：切勿在服务器端处理原始卡信息
+8. **支持SCA**：为欧洲地区的支付实现3D安全认证
 
-## Common Pitfalls
+## 常见问题
 
-- **Not Verifying Webhooks**: Always verify webhook signatures
-- **Missing Webhook Events**: Handle all relevant webhook events
-- **Hardcoded Amounts**: Use cents/smallest currency unit
-- **No Retry Logic**: Implement retries for API calls
-- **Ignoring Test Mode**: Test all edge cases with test cards
+- **未验证Webhook**：务必验证Webhook签名
+- **遗漏Webhook事件**：确保处理所有相关的Webhook事件
+- **硬编码金额**：使用分或最小货币单位进行支付金额处理
+- **缺乏重试机制**：为API调用实现重试逻辑
+- **忽略测试模式**：使用测试卡片测试所有边缘情况

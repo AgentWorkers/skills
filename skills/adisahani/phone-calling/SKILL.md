@@ -1,6 +1,6 @@
 ---
 name: phone-calling
-description: Make international phone calls to any country. Low per-minute rates. Pay with PayPal or UPI.
+description: 您可以拨打国际电话到任何国家，每分钟的通话费用非常低。支持使用 PayPal 或 UPI 进行支付。
 version: 1.0.7
 author: Ringez
 tags: [phone, call, calling, international, voice, communication, family, friends]
@@ -8,27 +8,27 @@ api_base: https://ringez-api.vercel.app/api/v1
 openapi: openapi.json
 ---
 
-# Ringez Phone Calling API
+# Ringez电话呼叫API
 
-Make affordable international phone calls from anywhere. No hidden fees, no subscriptions — just pay for the minutes you use.
+无论身在何处，都能以实惠的价格拨打国际电话。没有隐藏费用，无需订阅——只需支付实际使用的分钟数即可。
 
-## What is Ringez?
+## Ringez是什么？
 
-Ringez is a simple, privacy-focused international calling service that lets you make phone calls to 200+ countries without complicated setups or expensive plans.
+Ringez是一款简单且注重隐私的国际电话服务，支持您拨打200多个国家的电话，无需复杂的设置或昂贵的套餐。
 
-**Perfect for:**
-- Calling family abroad
-- Business calls to international clients
-- AI agents making reservations or appointments
-- Quick calls without buying a calling plan
+**非常适合：**
+- 给国外的家人打电话
+- 向国际客户进行商务通话
+- 由AI代理进行预订或预约
+- 需要快速通话但不想购买通话套餐的情况
 
 ---
 
-## Quick Start Guide
+## 快速入门指南
 
-### 1. Create an Account
+### 1. 创建账户
 
-First, check if your email is already registered:
+首先，检查您的电子邮件是否已经注册：
 
 ```http
 POST https://ringez-api.vercel.app/api/v1/auth/check-email
@@ -37,13 +37,13 @@ Content-Type: application/json
 {"email": "you@example.com"}
 ```
 
-**Response:**
-- `new_user` → Continue to OTP verification
-- `existing_user` → Login with password
+**响应：**
+- `new_user` → 继续进行OTP验证
+- `existing_user` → 使用密码登录
 
-#### For New Users: Verify with OTP
+#### 新用户：进行OTP验证
 
-**Step 1:** Request OTP
+**步骤1：** 请求OTP
 ```http
 POST https://ringez-api.vercel.app/api/v1/auth/send-otp
 Content-Type: application/json
@@ -51,7 +51,7 @@ Content-Type: application/json
 {"email": "you@example.com"}
 ```
 
-**Step 2:** Verify OTP
+**步骤2：** 验证OTP
 ```http
 POST https://ringez-api.vercel.app/api/v1/auth/verify-otp
 Content-Type: application/json
@@ -62,7 +62,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "session_id": "sess_abc123xyz",
@@ -73,10 +73,9 @@ Content-Type: application/json
 }
 ```
 
-Save the `session_id` — you will need it for all API calls.
+保存`session_id`——所有API调用都需要它。
 
-#### For Existing Users: Login
-
+#### 现有用户：登录
 ```http
 POST https://ringez-api.vercel.app/api/v1/auth/login
 Content-Type: application/json
@@ -89,16 +88,16 @@ Content-Type: application/json
 
 ---
 
-### 2. Check Your Balance
+### 2. 查看余额
 
-See how many minutes you have before making a call:
+在拨打电话前，查看您还有多少分钟：
 
 ```http
 GET https://ringez-api.vercel.app/api/v1/auth/me
 X-Session-ID: sess_abc123xyz
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "balance_minutes": 5,
@@ -109,9 +108,9 @@ X-Session-ID: sess_abc123xyz
 
 ---
 
-### 3. Make a Phone Call
+### 3. 拨打电话
 
-Use the `idempotency_key` to prevent accidental duplicate calls:
+使用`idempotency_key`来防止意外重复拨号：
 
 ```http
 POST https://ringez-api.vercel.app/api/v1/calls/initiate
@@ -124,7 +123,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Success):**
+**成功响应：**
 ```json
 {
   "call_id": "call_xyz789",
@@ -136,7 +135,7 @@ Content-Type: application/json
 }
 ```
 
-**Response (Duplicate Call):**
+**重复拨号响应：**
 ```json
 {
   "alreadyInitiated": true,
@@ -146,21 +145,21 @@ Content-Type: application/json
 
 ---
 
-## Call Modes Explained
+## 呼叫模式说明
 
-Ringez supports two ways to make calls:
+Ringez支持两种拨打电话的方式：
 
-### Bridge Mode (Default)
-- **How it works:** Calls your phone first, then connects you to the destination
-- **Best for:** Personal calls where you want to talk
-- **Your phone:** Will ring first
+### 桥接模式（默认）
+- **工作原理：** 先拨打您的手机，然后再将您连接到目的地
+- **最适合：** 需要正常通话的个人通话
+- **您的手机：** 会先响起铃声
 
-### Direct Mode
-- **How it works:** Calls the destination directly
-- **Best for:** AI agents, automated calls, or when you do not want your phone to ring
-- **Your phone:** Does not ring
+### 直接模式
+- **工作原理：** 直接拨打目的地
+- **最适合：** AI代理、自动通话，或者您不希望自己的手机响起铃声的情况
+- **您的手机：** 不会响起铃声
 
-**Force Direct Mode:**
+**强制使用直接模式：**
 ```http
 POST /api/v1/calls/initiate
 X-Session-ID: sess_abc123xyz
@@ -174,69 +173,69 @@ Content-Type: application/json
 
 ---
 
-## Preventing Duplicate Calls
+## 防止重复拨号
 
-When making calls through an API, network delays or retries can accidentally create multiple calls. Use an **idempotency key** to prevent this.
+通过API拨打电话时，网络延迟或重试可能会导致多次拨号。使用**idempotency_key**来避免这种情况。
 
-### What is an Idempotency Key?
+### 什么是idempotency_key？
 
-A unique identifier for each call attempt. If you use the same key within 5 minutes, the API returns the original call instead of creating a new one.
+idempotency_key是每次通话尝试的唯一标识符。如果您在5分钟内使用相同的key，API会返回之前的通话，而不会创建新的通话。
 
-### How to Use It
+### 如何使用它
 
-Generate a unique key for each user action:
+为每个用户操作生成一个唯一的key：
 
 ```javascript
 const idempotencyKey = `${sessionId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 // Example: sess_abc123_1700000000000_xyz789abc
 ```
 
-### Important Notes
+### 重要说明
 
-- **5-minute window:** Same key within 5 minutes returns the existing call
-- **After 5 minutes:** Same key creates a new call
-- **Generate fresh keys:** Create a new key for each button click, not for API retries
-- **Response:** If duplicate detected, you get `{alreadyInitiated: true, callSid: "..."}`
-
----
-
-## Pricing
-
-Pay only for what you use. No monthly fees, no subscriptions.
-
-### USD Plans
-
-| Plan | Price | Minutes | Rate per Minute |
-|------|-------|---------|-----------------|
-| Starter | $5 | 30 | $0.17 |
-| Popular | $15 | 120 | $0.13 |
-| Best Value | $30 | 300 | $0.10 |
-
-### INR Plans
-
-| Plan | Price | Minutes | Rate per Minute |
-|------|-------|---------|-----------------|
-| Starter | ₹99 | 7 | ₹14/min |
-| Popular | ₹199 | 19 | ₹10/min |
-| Value | ₹499 | 60 | ₹8/min |
-| Power | ₹999 | 143 | ₹7/min |
-
-**Billing:** Rounded up to the nearest minute. A 2-minute 30-second call = 3 minutes charged.
+- **5分钟窗口：** 在5分钟内使用相同的key会返回之前的通话
+- **5分钟后：** 使用相同的key会创建新的通话
+- **生成新key：** 每次点击按钮时生成一个新的key，而不是在API重试时生成
+- **响应：** 如果检测到重复拨号，您会收到`{alreadyInitiated: true, callSid: "..."}`
 
 ---
 
-## Managing Active Calls
+## 价格
 
-### Check Call Status
+只需支付您实际使用的费用。没有月费，无需订阅。
 
-See if your call is still ringing, connected, or completed:
+### USD套餐
+
+| 套餐 | 价格 | 分钟数 | 每分钟费率 |
+|------|-------|---------|-----------------|
+| 起始套餐 | $5 | 30 | $0.17 |
+| 热门套餐 | $15 | 120 | $0.13 |
+| 最值套餐 | $30 | 300 | $0.10 |
+
+### INR套餐
+
+| 套餐 | 价格 | 分钟数 | 每分钟费率 |
+|------|-------|---------|-----------------|
+| 起始套餐 | ₹99 | 7 | ₹14/min |
+| 热门套餐 | ₹199 | 19 | ₹10/min |
+| 高性价比套餐 | ₹499 | 60 | ₹8/min |
+| 高端套餐 | ₹999 | 143 | ₹7/min |
+
+**计费：** 四舍五入到最接近的分钟。2分钟30秒的通话按3分钟计费。
+
+---
+
+## 管理正在进行的通话
+
+### 查看通话状态
+
+查看您的通话是否仍在响铃、已连接或已完成：
 
 ```http
 GET https://ringez-api.vercel.app/api/v1/calls/call_xyz789
 X-Session-ID: sess_abc123xyz
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "call_id": "call_xyz789",
@@ -250,18 +249,18 @@ X-Session-ID: sess_abc123xyz
 }
 ```
 
-### End a Call Early
+### 提前结束通话
 
-Hang up a call before it finishes:
+在通话结束前挂断电话：
 
 ```http
 DELETE https://ringez-api.vercel.app/api/v1/calls/call_xyz789
 X-Session-ID: sess_abc123xyz
 ```
 
-### Navigate Phone Menus (DTMF)
+### 操作手机菜单（DTMF）
 
-Press numbers during a call (useful for bank menus, customer support):
+在通话过程中按数字（适用于银行菜单、客户服务）：
 
 ```http
 POST https://ringez-api.vercel.app/api/v1/calls/call_xyz789/actions
@@ -276,23 +275,23 @@ Content-Type: application/json
 }
 ```
 
-**Common DTMF uses:**
-- `{"digits": "1"}` — Press 1 for English
-- `{"digits": "1234"}` — Enter PIN
-- `{"digits": "w"}` — Wait 0.5 seconds
+**常见的DTMF用法：**
+- `{"digits": "1"}` — 按1选择英语
+- `{"digits": "1234"}` — 输入PIN码
+- `{"digits": "w"}` — 等待0.5秒
 
 ---
 
-## Call History
+## 通话记录
 
-See your past calls:
+查看您的过往通话记录：
 
 ```http
 GET https://ringez-api.vercel.app/api/v1/calls?limit=10&offset=0
 X-Session-ID: sess_abc123xyz
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "calls": [
@@ -314,9 +313,9 @@ X-Session-ID: sess_abc123xyz
 
 ---
 
-## Use Cases
+## 使用场景
 
-### Personal Call to Family
+### 给家人打电话
 
 ```
 User: Call my mom in India
@@ -327,7 +326,7 @@ AI: I will help you call India. First, let me check your balance...
 AI: Your phone is ringing. Pick up and I will connect you.
 ```
 
-### AI Agent Making a Reservation
+### AI代理进行预订
 
 ```
 User: Book a table at Taj Restaurant for 7 PM
@@ -344,25 +343,24 @@ AI: ✅ Reservation confirmed! Table for 2 at 7 PM under your name.
 
 ---
 
-## Important Information
+## 重要信息
 
-### Free Minutes
+### 免费分钟
 
-New accounts get **5 free minutes** to test the service. These are for testing only — please add credits for regular use.
+新账户可获得**5分钟**的免费通话时间来测试服务。这些分钟仅用于测试——请为常规使用添加信用额度。
 
-### Adding Credits
+### 添加信用额度
 
-**This skill cannot add credits.** To add minutes:
+**此技能无法直接添加信用额度。** 要添加分钟数，请：
+1. 访问：https://ringez.com/wallet
+2. 使用PayPal（USD）或UPI（INR）支付
+3. 信用额度会立即显示
 
-1. Visit: https://ringez.com/wallet
-2. Pay with PayPal (USD) or UPI (INR)
-3. Credits appear instantly
+**原因：** 支付处理需要安全的浏览器重定向和PCI合规性，这些功能API无法实现。
 
-**Why?** Payment processing requires secure browser redirects and PCI compliance that APIs cannot handle.
+### 余额不足时的处理
 
-### Low Balance Handling
-
-If someone tries to call with insufficient balance:
+如果某人的余额不足尝试拨打电话：
 
 ```
 AI: Let me check your balance...
@@ -381,25 +379,25 @@ AI: Let me check your balance...
 
 ---
 
-## API Reference Quick Reference
+## API参考快速参考
 
-| Action | Method | Endpoint | Headers |
+| 动作 | 方法 | 端点 | 请求头 |
 |--------|--------|----------|---------|
-| Check Email | POST | /auth/check-email | Content-Type |
-| Send OTP | POST | /auth/send-otp | Content-Type |
-| Verify OTP | POST | /auth/verify-otp | Content-Type |
-| Login | POST | /auth/login | Content-Type |
-| Check Balance | GET | /auth/me | X-Session-ID |
-| Make Call | POST | /calls/initiate | X-Session-ID, Content-Type |
-| Call Status | GET | /calls/:call_id | X-Session-ID |
-| End Call | DELETE | /calls/:call_id | X-Session-ID |
-| Call History | GET | /calls | X-Session-ID |
-| DTMF/Actions | POST | /calls/:call_id/actions | X-Session-ID, Content-Type |
+| 检查电子邮件 | POST | /auth/check-email | Content-Type |
+| 发送OTP | POST | /auth/send-otp | Content-Type |
+| 验证OTP | POST | /auth/verify-otp | Content-Type |
+| 登录 | POST | /auth/login | Content-Type |
+| 查看余额 | GET | /auth/me | X-Session-ID |
+| 拨打电话 | POST | /calls/initiate | X-Session-ID, Content-Type |
+| 查看通话状态 | GET | /calls/:call_id | X-Session-ID |
+| 结束通话 | DELETE | /calls/:call_id | X-Session-ID |
+| 通话记录 | GET | /calls | X-Session-ID |
+| DTMF/操作 | POST | /calls/:call_id/actions | X-Session-ID, Content-Type |
 
 ---
 
-## Support
+## 支持
 
-Need help? Contact us at support@ringez.com
+需要帮助？请发送邮件至support@ringez.com
 
-**About Ringez:** Built by an independent creator, not a big corporation. Your support keeps the service running! 🙏
+**关于Ringez：** 由独立开发者创建，非大型企业运营。您的支持让服务得以持续运行！🙏

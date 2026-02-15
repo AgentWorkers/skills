@@ -1,6 +1,6 @@
 ---
 name: discord-voice
-description: Real-time voice conversations in Discord voice channels with Claude AI
+description: 在 Discord 的语音频道中，使用 Claude AI 进行实时语音对话
 metadata:
   clawdbot:
     config:
@@ -34,33 +34,33 @@ metadata:
         }
 ---
 
-# Discord Voice Plugin for Clawdbot
+# Clawdbot的Discord语音插件
 
-Real-time voice conversations in Discord voice channels. Join a voice channel, speak, and have your words transcribed, processed by Claude, and spoken back.
+该插件支持在Discord语音频道中进行实时语音对话。用户可以加入语音频道，说话后，自己的语音会被Claude系统转录并处理，然后通过语音重新播放出来。
 
-## Features
+## 主要功能
 
-- **Join/Leave Voice Channels**: Via slash commands, CLI, or agent tool
-- **Voice Activity Detection (VAD)**: Automatically detects when users are speaking
-- **Speech-to-Text**: Whisper API (OpenAI) or Deepgram
-- **Streaming STT**: Real-time transcription with Deepgram WebSocket (~1s latency reduction)
-- **Agent Integration**: Transcribed speech is routed through the Clawdbot agent
-- **Text-to-Speech**: OpenAI TTS or ElevenLabs
-- **Audio Playback**: Responses are spoken back in the voice channel
-- **Barge-in Support**: Stops speaking immediately when user starts talking
-- **Auto-reconnect**: Automatic heartbeat monitoring and reconnection on disconnect
+- **加入/离开语音频道**：通过斜杠命令（slash commands）、命令行界面（CLI）或代理工具（agent tool）实现
+- **语音活动检测（VAD）**：自动检测用户是否在说话
+- **语音转文本（Speech-to-Text）**：使用OpenAI的Whisper API或Deepgram服务
+- **流式语音转文本（Streaming STT）**：通过Deepgram的WebSocket接口实现实时转录（延迟约1秒）
+- **集成到Clawdbot代理**：转录后的文本会通过Clawdbot代理进行处理
+- **文本转语音（Text-to-Speech）**：使用OpenAI的TTS或ElevenLabs服务
+- **音频播放**：处理后的文本会通过语音频道播放出来
+- **插话支持**：当用户开始说话时，插件会立即停止播放
+- **自动重连**：在连接断开时自动检测并尝试重新连接
 
-## Requirements
+## 所需条件
 
-- Discord bot with voice permissions (Connect, Speak, Use Voice Activity)
-- API keys for STT and TTS providers
-- System dependencies for voice:
-  - `ffmpeg` (audio processing)
-  - Native build tools for `@discordjs/opus` and `sodium-native`
+- 一个具有语音权限的Discord机器人（包括“Connect”、“Speak”和“Use Voice Activity”权限）
+- STT（语音转文本）和TTS（文本转语音）服务所需的API密钥
+- 系统依赖库：
+  - `ffmpeg`（用于音频处理）
+  - `@discordjs/opus`和`sodium-native`的本地构建工具
 
-## Installation
+## 安装方法
 
-### 1. Install System Dependencies
+### 1. 安装系统依赖库
 
 ```bash
 # Ubuntu/Debian
@@ -73,13 +73,13 @@ sudo dnf install ffmpeg gcc-c++ make python3
 brew install ffmpeg
 ```
 
-### 2. Install via ClawdHub
+### 2. 通过ClawdHub安装
 
 ```bash
 clawdhub install discord-voice
 ```
 
-Or manually:
+或手动安装：
 
 ```bash
 cd ~/.clawdbot/extensions
@@ -88,7 +88,7 @@ cd discord-voice
 npm install
 ```
 
-### 3. Configure in clawdbot.json
+### 3. 在`clawdbot.json`中配置插件
 
 ```json5
 {
@@ -114,35 +114,36 @@ npm install
 }
 ```
 
-### 4. Discord Bot Setup
+### 4. 配置Discord机器人
 
-Ensure your Discord bot has these permissions:
-- **Connect** - Join voice channels
-- **Speak** - Play audio
-- **Use Voice Activity** - Detect when users speak
+确保您的Discord机器人具有以下权限：
+- **Connect**：允许机器人加入语音频道
+- **Speak**：允许机器人播放音频
+- **Use Voice Activity**：允许机器人检测用户是否在说话
 
-Add these to your bot's OAuth2 URL or configure in Discord Developer Portal.
+将这些权限添加到机器人的OAuth2 URL中，或在Discord开发者门户中进行配置。
 
-## Configuration
+## 配置参数
 
-| Option | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 |--------|------|---------|-------------|
-| `enabled` | boolean | `true` | Enable/disable the plugin |
-| `sttProvider` | string | `"whisper"` | `"whisper"` or `"deepgram"` |
-| `streamingSTT` | boolean | `true` | Use streaming STT (Deepgram only, ~1s faster) |
-| `ttsProvider` | string | `"openai"` | `"openai"` or `"elevenlabs"` |
-| `ttsVoice` | string | `"nova"` | Voice ID for TTS |
-| `vadSensitivity` | string | `"medium"` | `"low"`, `"medium"`, or `"high"` |
-| `bargeIn` | boolean | `true` | Stop speaking when user talks |
-| `allowedUsers` | string[] | `[]` | User IDs allowed (empty = all) |
-| `silenceThresholdMs` | number | `1500` | Silence before processing (ms) |
-| `maxRecordingMs` | number | `30000` | Max recording length (ms) |
-| `heartbeatIntervalMs` | number | `30000` | Connection health check interval |
-| `autoJoinChannel` | string | `undefined` | Channel ID to auto-join on startup |
+| `enabled` | 布尔值 | `true` | 是否启用该插件 |
+| `sttProvider` | 字符串 | `"whisper"` | 使用Whisper API |
+| `streamingSTT` | 布尔值 | `true` | 启用流式语音转文本（仅支持Deepgram，延迟约1秒） |
+| `ttsProvider` | 字符串 | `"openai"` | 使用OpenAI TTS |
+| `ttsVoice` | 字符串 | `"nova"` | TTS服务的音频ID |
+| `vadSensitivity` | 字符串 | `"medium"` | 语音检测的灵敏度（`low`、`medium`、`high`） |
+| `bargeIn` | 布尔值 | `true` | 用户说话时立即停止播放 |
+| `allowedUsers` | 字符串数组 | 允许加入的用户名单（空表示允许所有用户） |
+| `silenceThresholdMs` | 数字 | `1500` | 检测静音的时长（毫秒） |
+| `maxRecordingMs` | 数字 | 最大录音时长（毫秒） |
+| `heartbeatIntervalMs` | 数字 | 连接健康检查间隔（毫秒） |
+| `autoJoinChannel` | 字符串 | `undefined` | 启动时自动加入的频道ID |
 
-### Provider Configuration
+## 服务提供商配置
 
-#### OpenAI (Whisper + TTS)
+#### OpenAI（Whisper + TTS）
+
 ```json5
 {
   "openai": {
@@ -153,7 +154,8 @@ Add these to your bot's OAuth2 URL or configure in Discord Developer Portal.
 }
 ```
 
-#### ElevenLabs (TTS only)
+#### ElevenLabs（仅TTS）
+
 ```json5
 {
   "elevenlabs": {
@@ -164,7 +166,8 @@ Add these to your bot's OAuth2 URL or configure in Discord Developer Portal.
 }
 ```
 
-#### Deepgram (STT only)
+#### Deepgram（仅STT）
+
 ```json5
 {
   "deepgram": {
@@ -174,16 +177,16 @@ Add these to your bot's OAuth2 URL or configure in Discord Developer Portal.
 }
 ```
 
-## Usage
+## 使用方法
 
-### Slash Commands (Discord)
+### 斜杠命令（Discord）
 
-Once registered with Discord, use these commands:
-- `/voice join <channel>` - Join a voice channel
-- `/voice leave` - Leave the current voice channel
-- `/voice status` - Show voice connection status
+注册Discord机器人后，可以使用以下命令：
+- `/voice join <channel>`：加入指定的语音频道
+- `/voice leave`：离开当前语音频道
+- `/voice status`：查看语音连接状态
 
-### CLI Commands
+### 命令行界面（CLI）命令
 
 ```bash
 # Join a voice channel
@@ -196,125 +199,92 @@ clawdbot voice leave --guild <guildId>
 clawdbot voice status
 ```
 
-### Agent Tool
+### 代理工具（Agent Tool）
 
-The agent can use the `discord_voice` tool:
+代理工具可以使用`discord_voice`命令：
 ```
 Join voice channel 1234567890
 ```
 
-The tool supports actions:
-- `join` - Join a voice channel (requires channelId)
-- `leave` - Leave voice channel
-- `speak` - Speak text in the voice channel
-- `status` - Get current voice status
+该工具支持以下操作：
+- `join`：加入语音频道（需要提供频道ID）
+- `leave`：离开语音频道
+- `speak`：在语音频道中说话
+- `status`：获取当前语音状态
 
-## How It Works
+## 工作原理
 
-1. **Join**: Bot joins the specified voice channel
-2. **Listen**: VAD detects when users start/stop speaking
-3. **Record**: Audio is buffered while user speaks
-4. **Transcribe**: On silence, audio is sent to STT provider
-5. **Process**: Transcribed text is sent to Clawdbot agent
-6. **Synthesize**: Agent response is converted to audio via TTS
-7. **Play**: Audio is played back in the voice channel
+1. **加入频道**：机器人加入指定的语音频道。
+2. **监听语音**：通过VAD检测用户是否开始/停止说话。
+3. **录音**：用户说话时，音频会被缓冲。
+4. **转录**：检测到静音时，音频会被发送到语音转文本服务。
+5. **处理**：转录后的文本会被发送到Clawdbot代理。
+6. **合成语音**：代理将文本转换为音频并通过TTS服务播放。
+7. **播放**：处理后的音频会在语音频道中播放。
 
-## Streaming STT (Deepgram)
+## 流式语音转文本（Deepgram）
 
-When using Deepgram as your STT provider, streaming mode is enabled by default. This provides:
+当使用Deepgram作为语音转文本服务时，系统默认启用流式转录模式。该模式具有以下优势：
+- **延迟约1秒**：端到端延迟更短。
+- **实时反馈**：提供中间转录结果。
+- **自动保持连接**：防止连接超时。
+- **故障切换**：如果流式转录失败，系统会切换到批量转录模式。
 
-- **~1 second faster** end-to-end latency
-- **Real-time feedback** with interim transcription results
-- **Automatic keep-alive** to prevent connection timeouts
-- **Fallback** to batch transcription if streaming fails
+### 插话支持
 
-To use streaming STT:
-```json5
-{
-  "sttProvider": "deepgram",
-  "streamingSTT": true,  // default
-  "deepgram": {
-    "apiKey": "...",
-    "model": "nova-2"
-  }
-}
-```
+如果启用（默认设置），当用户开始说话时，机器人会立即停止播放，从而实现更自然的对话体验。
 
-## Barge-in Support
+### 自动重连
 
-When enabled (default), the bot will immediately stop speaking if a user starts talking. This creates a more natural conversational flow where you can interrupt the bot.
-
-To disable (let the bot finish speaking):
-```json5
-{
-  "bargeIn": false
-}
-```
-
-## Auto-reconnect
-
-The plugin includes automatic connection health monitoring:
-
-- **Heartbeat checks** every 30 seconds (configurable)
-- **Auto-reconnect** on disconnect with exponential backoff
-- **Max 3 attempts** before giving up
-
-If the connection drops, you'll see logs like:
-```
+插件具备自动连接监控功能：
+- 每30秒进行一次连接健康检查。
+- 连接断开时会自动尝试重新连接，最多尝试3次。
+如果连接失败，系统会记录错误日志（参见```
 [discord-voice] Disconnected from voice channel
 [discord-voice] Reconnection attempt 1/3
 [discord-voice] Reconnected successfully
-```
+```）。
 
-## VAD Sensitivity
+## 语音检测灵敏度设置
 
-- **low**: Picks up quiet speech, may trigger on background noise
-- **medium**: Balanced (recommended)
-- **high**: Requires louder, clearer speech
+- **low**：对轻微的声音也能检测到，但可能容易受到背景噪音干扰。
+- **medium**：平衡性较好（推荐设置）。
+- **high**：需要用户说话声音更大、更清晰。
 
-## Troubleshooting
+## 常见问题及解决方法
 
-### "Discord client not available"
-Ensure the Discord channel is configured and the bot is connected before using voice.
-
-### Opus/Sodium build errors
-Install build tools:
-```bash
+- **“Discord客户端不可用”**：确保语音频道已配置且机器人已连接。
+- **Opus/Sodium构建错误**：请安装相应的构建工具（参见```bash
 npm install -g node-gyp
 npm rebuild @discordjs/opus sodium-native
-```
-
-### No audio heard
-1. Check bot has Connect + Speak permissions
-2. Check bot isn't server muted
-3. Verify TTS API key is valid
-
-### Transcription not working
-1. Check STT API key is valid
-2. Check audio is being recorded (see debug logs)
-3. Try adjusting VAD sensitivity
-
-### Enable debug logging
-```bash
+```）。
+- **听不到音频**：
+  1. 确保机器人具有播放音频的权限。
+  2. 检查机器人是否被服务器静音。
+  3. 验证TTS API密钥是否有效。
+- **转录失败**：
+  1. 确认TTS API密钥有效。
+  2. 检查是否正在录制音频（查看日志）。
+  3. 调整语音检测的灵敏度设置（参见```bash
 DEBUG=discord-voice clawdbot gateway start
-```
+```）。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description |
+| 变量 | 说明 |
 |----------|-------------|
-| `DISCORD_TOKEN` | Discord bot token (required) |
-| `OPENAI_API_KEY` | OpenAI API key (Whisper + TTS) |
-| `ELEVENLABS_API_KEY` | ElevenLabs API key |
-| `DEEPGRAM_API_KEY` | Deepgram API key |
+| `DISCORD_TOKEN` | Discord机器人令牌（必需） |
+| `OPENAI_API_KEY` | OpenAI API密钥（用于Whisper和TTS） |
+| `ELEVENLABS_API_KEY` | ElevenLabs API密钥 |
+| `DEEPGRAM_API_KEY` | Deepgram API密钥 |
 
-## Limitations
+## 限制
 
-- Only one voice channel per guild at a time
-- Maximum recording length: 30 seconds (configurable)
-- Requires stable network for real-time audio
-- TTS output may have slight delay due to synthesis
+- 每个公会最多只能使用一个语音频道。
+- 最大录音时长为30秒（可配置）。
+- 需要稳定的网络环境以支持实时音频传输。
+- TTS输出可能存在轻微延迟。
 
-## License
+## 许可证
 
-MIT
+本插件采用MIT许可证。

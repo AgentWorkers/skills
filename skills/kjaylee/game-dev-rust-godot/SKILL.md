@@ -1,24 +1,24 @@
 ---
 name: game-dev-rust-godot
-description: Game development workflow using Rust+WASM or Godot 4.x for HTML5 games. Use when creating new games, implementing game mechanics, or porting existing games. Follows TDD-based production pipeline v3.1 with asset-first approach. Covers Rust(Macroquad/Bevy), Godot HTML5 Export, asset acquisition, test case writing, and QA automation. Master directive (2026-02-06) - ONLY Rust+WASM or Godot allowed, JS/TS frameworks prohibited.
+description: 使用 Rust+WASM 或 Godot 4.x 开发 HTML5 游戏的工作流程。适用于新游戏的创建、游戏机制的实现以及现有游戏的移植。遵循基于 TDD（测试驱动开发）的生产流程 v3.1，采用“资产优先”（asset-first）的开发策略。内容包括 Rust（Macroquad/Bevy）的开发、Godot 的 HTML5 导出功能、资源的获取、测试用例的编写以及质量保证（QA）自动化流程。最后更新日期：2026-02-06；仅允许使用 Rust+WASM 或 Godot，禁止使用 JS/TS 框架。
 ---
 
-# Game Development: Rust + WASM / Godot 4.x
+# 游戏开发：Rust + WASM / Godot 4.x
 
-HTML5 게임 제작을 위한 전용 워크플로우. **주인님 직접 지시 (2026-02-06)**: Rust + WASM 또는 Godot만 사용.
+这是一个专门用于开发 HTML5 游戏的工作流程。**根据项目负责人的指示（2026-02-06）**：必须仅使用 Rust + WASM 或 Godot。
 
-## 🚀 기술 스택 (필수 준수)
+## 🚀 技术栈（必须遵守）
 
-### ✅ 허용된 기술
-- **Rust + WASM**: Macroquad (권장), Bevy
-- **Godot 4.x**: HTML5 Export
+### ✅ 允许使用的技术
+- **Rust + WASM**：推荐使用 Macroquad，也可以使用 Bevy
+- **Godot 4.x**：支持 HTML5 导出功能
 
-### ❌ 금지된 기술
-- JavaScript/TypeScript (Phaser, PixiJS, Three.js 등 모든 JS 프레임워크)
+### ❌ 禁止使用的技术
+- JavaScript/TypeScript（包括 Phaser、PixiJS、Three.js 等所有 JavaScript 框架）
 - Unity WebGL
-- 기타 웹 게임 엔진
+- 其他网页游戏引擎
 
-## 📋 워크플로우 개요
+## 📋 工作流程概述
 
 ```
 1. 에셋 확보 (코딩 전 필수!)
@@ -38,18 +38,18 @@ HTML5 게임 제작을 위한 전용 워크플로우. **주인님 직접 지시 
 8. 보고 (스크린샷 4장 + DoD 체크리스트)
 ```
 
-## 🎨 에셋 확보 (Phase 1 - 필수!)
+## 🎨 资产获取（第 1 阶段 - 必须完成！）
 
-**⛔ 에셋 없이 코딩 시작 절대 금지**
+**⛔ 严禁在未获取资产的情况下开始编码**
 
-### 에셋 소스 우선순위
-1. NAS 게임마당 (`/Volumes/workspace/Asset Store-5.x/`, 265 packages)
-2. MiniPC Gemini AI 생성 (`browser.proxy`, node=MiniPC)
-3. 무료 에셋 (kenney.nl CC0, opengameart.org, freesound.org)
-4. 맥북 MLX Z-Image-Turbo (`nodes.run`, node=MacBook Pro)
-5. Blender 3D→2D 렌더링 (MiniPC)
+### 资产来源的优先级：
+1. NAS 上的游戏资源库（`/Volumes/workspace/Asset Store-5.x/`，包含 265 个包）
+2. 使用 MiniPC 和 Gemini AI 生成资源（`browser.proxy`，节点设置为 MiniPC）
+3. 免费资源（来自 kenney.nl（CC0 许可）、opengameart.org、freesound.org）
+4. 使用 MacBook MLX 进行 Z-Image-Turbo 图像处理（`nodes.run`，节点设置为 MacBook Pro）
+5. 使用 Blender 将 3D 效果转换为 2D 格式（在 MiniPC 上完成）
 
-### 필수 에셋 체크리스트
+### 必须获取的资产清单
 ```
 □ 캐릭터/오브젝트 스프라이트
 □ 배경 이미지/타일맵
@@ -59,21 +59,21 @@ HTML5 게임 제작을 위한 전용 워크플로우. **주인님 직접 지시 
 □ 에셋 라이선스 확인 (CC0/MIT/상용 허용)
 ```
 
-**라이선스 정책 (공개 게임)**:
-- ✅ Kenney.nl CC0, AI 생성, 직접 제작
-- ❌ Unity Asset Store (무료 포함), 재배포 불허 에셋
+**关于许可证的政策（针对公开发布的游戏）**：
+- ✅ 可以使用来自 kenney.nl 的资源（CC0 许可），以及使用 AI 生成的资源
+- ❌ 禁止使用 Unity Asset Store 中的资源（即使资源是免费的），也不允许重新分发
 
-## 🦀 Rust + WASM 구현
+## 🦀 Rust + WASM 的实现
 
-### Macroquad (권장)
+### Macroquad（推荐使用）
 
-**프로젝트 생성** (MiniPC):
+**创建项目**（在 MiniPC 上完成）：
 ```bash
 cd $HOME/spritz/dynamic/games/<game-name>
 cargo init
 ```
 
-**Cargo.toml**:
+**Cargo.toml 文件配置**：
 ```toml
 [package]
 name = "game-name"
@@ -88,7 +88,7 @@ opt-level = "z"
 lto = true
 ```
 
-**기본 구조** (`src/main.rs`):
+**项目的基本结构**（`src/main.rs` 文件）：
 ```rust
 use macroquad::prelude::*;
 
@@ -104,7 +104,7 @@ async fn main() {
 }
 ```
 
-**빌드 & 배포**:
+**构建与部署**：
 ```bash
 # MiniPC에서
 cargo build --release --target wasm32-unknown-unknown
@@ -115,17 +115,17 @@ cp target/wasm32-unknown-unknown/release/<game-name>.wasm .
 # index.html 생성 (Macroquad 자동 제공)
 ```
 
-**자세한 가이드**: `references/rust-macroquad.md` 참조
+**详细指南**：请参考 `references/rust-macroquad.md`
 
-### Bevy (고급)
+### Bevy（高级选项）
 
-복잡한 ECS 구조가 필요할 때만 사용. 빌드 시간 길고 (7분+) WASM 용량 큼 (3.6MB+).
+仅在需要复杂的 ECS（Entity-System-Component）架构时使用。构建时间较长（超过 7 分钟），且生成的 WASM 文件体积较大（超过 3.6MB）。
 
-**자세한 가이드**: `references/rust-bevy.md` 참조
+**详细指南**：请参考 `references/rust-bevy.md`
 
-## 🎮 Godot 4.x 구현
+## 🎮 Godot 4.x 的实现
 
-### 프로젝트 생성 (MiniPC)
+### 创建项目（在 MiniPC 上完成）
 
 ```bash
 cd $HOME/godot4/projects
@@ -136,17 +136,17 @@ cd <game-name>
 godot4 --headless --path . --quit
 ```
 
-### HTML5 Export 설정
+### HTML5 导出设置
 
-1. **Export Preset 추가**:
-   - Project → Export → Add... → Web
-   - Export Path: `build/web/index.html`
+1. **添加导出预设**：
+   - 选择 “Project” → “Export” → “Add...” → “Web”
+   - 设置导出路径为 `build/web/index.html`
 
-2. **설정 최적화**:
-   - Texture Format: VRAM Compressed
-   - Head Include: Custom HTML template (필요 시)
+2. **优化设置**：
+   - 选择 “Texture Format” 为 “VRAM Compressed”
+   - 如有需要，可以自定义 HTML 模板
 
-### 빌드 & 배포
+### 构建与部署
 
 ```bash
 # MiniPC에서
@@ -155,15 +155,15 @@ godot4 --headless --path . --export-release "Web"
 # 결과물: build/web/ (index.html, *.wasm, *.pck)
 ```
 
-**자세한 가이드**: `references/godot-html5.md` 참조
+**详细指南**：请参考 `references/godot-html5.md`
 
-## ✅ 테스트케이스 작성 (Phase 4 - TDD)
+## ✅ 编写测试用例（第 4 阶段 - TDD）
 
-**구현 전에 TC 먼저 작성**
+**在实现代码之前，先编写测试用例（Test Cases）**
 
-### TC 카테고리
+### 测试用例的分类
 
-#### 기능 TC
+#### 功能测试用例
 ```
 TC-F001: 게임 시작 시 타이틀 화면 표시
 TC-F002: 시작 버튼 클릭 시 게임 플레이 진입
@@ -172,7 +172,7 @@ TC-F004: 점수/진행도 업데이트
 TC-F005: 게임 오버 조건 충족 시 결과 화면 표시
 ```
 
-#### UI/UX TC
+#### 用户界面/用户体验测试用例
 ```
 TC-U001: 모바일 뷰포트 (390x844) 정상 표시
 TC-U002: 가로 스크롤 없음
@@ -180,18 +180,18 @@ TC-U003: 터치 영역 최소 44x44px
 TC-U004: safe-area 적용
 ```
 
-#### 성능 TC
+#### 性能测试用例
 ```
 TC-P001: 페이지 로드 5초 이내
 TC-P002: JS 콘솔 에러 0개
 TC-P003: 60fps 유지 (게임플레이 중)
 ```
 
-**TC 문서 위치**: `specs/games/<game>/test-cases.md`
+**测试用例的存放位置**：`specs/games/<game>/test-cases.md`
 
-## 🔄 구현 ↔ 기획 보완 루프 (Phase 5)
+## 🔄 实现与规划的迭代循环（第 5 阶段）
 
-**TC 100% PASS까지 반복**:
+**重复执行测试用例，直到所有用例都通过（100% PASS）**：
 
 ```
 구현 (TC 기반)
@@ -207,7 +207,7 @@ TC 재실행
 ALL PASS → Phase 6으로
 ```
 
-**탈출 조건**:
+**项目终止的条件**：
 ```
 □ 모든 기능 TC PASS
 □ 모든 UI/UX TC PASS
@@ -215,9 +215,9 @@ ALL PASS → Phase 6으로
 □ DoD 체크리스트 전항목 충족
 ```
 
-## 🧪 QA (Phase 6)
+## 🧪 质量保证（QA，第 6 阶段）
 
-### 자동 테스트 (MiniPC Playwright)
+### 自动化测试（使用 Playwright）
 
 ```bash
 # MiniPC에서
@@ -225,7 +225,7 @@ cd $HOME/qa-automation
 playwright test games/<game-name>.spec.ts
 ```
 
-**필수 검증 항목**:
+**必须验证的内容**：
 ```
 □ 페이지 로드 성공 (5초 내)
 □ JS 콘솔 에러 0개
@@ -234,7 +234,7 @@ playwright test games/<game-name>.spec.ts
 □ 모바일 뷰포트 (390x844) 정상 표시
 ```
 
-### 수동 체크리스트
+### 手动检查清单
 ```
 □ 전체 게임 루프 1회 완주
 □ 에지 케이스 테스트
@@ -242,7 +242,7 @@ playwright test games/<game-name>.spec.ts
 □ 반응형 확인 (데스크톱 + 모바일)
 ```
 
-### 스크린샷 캡처 (최소 4장)
+### 拍摄至少 4 张截图
 ```
 □ 타이틀 화면
 □ 게임플레이 (진행 중)
@@ -250,9 +250,9 @@ playwright test games/<game-name>.spec.ts
 □ 결과 화면 (게임오버/클리어)
 ```
 
-## 📦 배포
+## 📦 部署
 
-### Rust + WASM
+### Rust + WASM 的部署方式
 ```bash
 # eastsea.monster/games/<game>/ 에 배포
 - index.html
@@ -261,7 +261,7 @@ playwright test games/<game-name>.spec.ts
 - assets/ (에셋 폴더)
 ```
 
-### Godot
+### Godot 的部署方式
 ```bash
 # build/web/ 내용을 eastsea.monster/games/<game>/ 에 배포
 - index.html
@@ -270,10 +270,9 @@ playwright test games/<game-name>.spec.ts
 - assets/ (에셋 폴더, 필요 시)
 ```
 
-## ✅ Definition of Done
+## ✅ 完成标准的定义
 
-**전부 충족해야 완료**:
-
+**只有满足所有要求后，才能视为项目完成**：
 ```
 □ 실제 이미지 에셋 적용 (CSS 도형/emoji 금지)
 □ 실제 오디오 에셋 적용 (oscillator 금지)
@@ -286,39 +285,39 @@ playwright test games/<game-name>.spec.ts
 □ 런칭 테스트 통과 (실제 URL)
 ```
 
-## 🎯 게임 등급 기준
+## 🎯 游戏评级标准
 
-| 등급 | 기준 | 조치 |
+| 评级 | 标准 | 处理方式 |
 |------|------|------|
-| **A** | DoD 전항목 충족, TC 100% PASS | 유지 & 마케팅 |
-| **B** | 게임 작동, 일부 에셋 부족 또는 TC 미통과 | 에셋 교체 + TC 보완 |
-| **C** | 코드만 존재, 에셋 전무, TC 미작성 | Phase 1부터 재시작 |
-| **F** | index.html 없음, 빈 디렉토리, 크래시 | 삭제 또는 재제작 |
+| **A** | 满足所有 DoD（Design Do’s）要求，所有测试用例都通过 | 继续维护并进行市场推广 |
+| **B** | 游戏可以运行，但缺少部分资源或部分测试用例未通过 | 更换资源并完善测试用例 |
+| **C** | 仅有代码，没有资源，且没有编写测试用例 | 从头开始重新进行项目开发 |
+| **F** | 不存在 `index.html` 文件，目录为空，或者游戏出现崩溃 | 删除项目或重新制作 |
 
-## 📚 상세 가이드
+## 📚 详细参考资料
 
-- **Rust Macroquad**: `references/rust-macroquad.md`
-- **Rust Bevy**: `references/rust-bevy.md`
-- **Godot HTML5**: `references/godot-html5.md`
-- **에셋 라이선스**: `references/asset-licensing.md`
-- **성능 최적화**: `references/optimization.md`
+- **Rust Macroquad**：`references/rust-macroquad.md`
+- **Rust Bevy**：`references/rust-bevy.md`
+- **Godot HTML5**：`references/godot-html5.md`
+- **资源许可证**：`references/asset-licensing.md`
+- **性能优化**：`references/optimization.md`
 
-## ⚠️ 중요 제약사항
+## ⚠️ 重要限制
 
-1. **기술 스택**: Rust + WASM 또는 Godot만 허용
-2. **에셋 우선**: 코딩 전 에셋 전부 확보
-3. **TDD 필수**: TC 작성 후 구현
-4. **모바일 퍼스트**: 반응형 동시 구현
-5. **라이선스 준수**: 재배포 가능한 에셋만 사용
+1. **技术栈限制**：只能使用 Rust + WASM 或 Godot
+2. **资源获取要求**：在开始编码之前必须获取所有所需的资源
+3. **TDD 强制要求**：必须先编写测试用例，然后再进行代码实现
+4. **优先考虑移动端适配**：游戏需要同时支持移动设备的响应式显示
+5. **许可证要求**：只能使用可以重新分发的资源
 
-## 🚀 빠른 시작 예시
+## 🚀 快速入门示例
 
-### Snake 게임 (Rust + Macroquad)
+### 蛇形游戏（使用 Rust + Macroquad）
 
-1. **에셋 확보**: NAS에서 뱀/먹이 스프라이트, kenney.nl에서 BGM/SFX
-2. **TC 작성**: 6개 기능 TC, 5개 UI TC, 4개 성능 TC
-3. **구현**: Macroquad로 뱀 이동/충돌/점수 로직
-4. **QA**: Playwright 자동 테스트 + 모바일 수동 테스트
-5. **배포**: eastsea.monster/games/snake/
+1. **获取资源**：从 NAS 上获取蛇和食物的精灵图像，从 kenney.nl 获取背景音乐和音效
+2. **编写测试用例**：编写 6 个功能测试用例、5 个用户界面测试用例和 4 个性能测试用例
+3. **实现游戏逻辑**：使用 Macroquad 实现蛇的移动、碰撞和得分功能
+4. **质量保证**：使用 Playwright 进行自动化测试，并进行移动设备的手动测试
+5. **部署**：将游戏文件上传到 `eastsea.monster/games/snake/`
 
-**소요 시간**: 에셋 확보 1시간 + 구현 2시간 + QA 30분 = 약 3.5시간
+**预计开发时间**：获取资源 1 小时 + 实现代码 2 小时 + 质量保证 30 分钟 = 约 3.5 小时

@@ -1,71 +1,71 @@
 ---
 name: Hosting
-description: Choose and manage web hosting services for websites and apps without server administration.
+description: 无需进行服务器管理，即可选择和管理用于网站和应用程序的网络托管服务。
 metadata: {"clawdbot":{"emoji":"🌍","os":["linux","darwin","win32"]}}
 ---
 
-# Web Hosting Guidance
+# 网站托管指南
 
-## Choosing the Right Type
-- Static sites (HTML, CSS, JS only): Use Vercel, Netlify, Cloudflare Pages, GitHub Pages — free tier often enough, no server management
-- Dynamic sites with backend: Platform hosting (Railway, Render, Fly.io) handles servers without manual management
-- WordPress or PHP: Managed WordPress hosts (WP Engine, Kinsta) or traditional shared hosting
-- E-commerce: Shopify or platform-specific hosting — payment security is not worth DIY risk
-- Don't recommend VPS to someone uncomfortable with terminal — managed hosting exists for a reason
+## 选择合适的托管类型
+- **静态网站（仅包含HTML、CSS和JS）**：可以使用Vercel、Netlify、Cloudflare Pages或GitHub Pages（免费 tier通常足够使用，无需管理服务器）。
+- **带有后端的动态网站**：选择平台托管服务（如Railway、Render、Fly.io），这些服务会自动处理服务器相关事务，无需手动管理。
+- **WordPress或PHP网站**：可以选择托管型WordPress服务（如WP Engine、Kinsta）或传统的共享托管方案。
+- **电子商务网站**：建议使用Shopify或特定于该平台的托管服务，因为自行处理支付安全问题风险较高。
+- **不建议不熟悉终端操作的用户使用VPS**——托管服务正是为了解决这类问题而存在的。
 
-## Shared Hosting Reality
-- "Unlimited" bandwidth and storage always have fair use limits — read the terms
-- Performance depends on neighbors — bad neighbors slow your site
-- SSH access may be limited or unavailable — verify before assuming
-- Cron jobs and background processes often restricted
-- Fine for small sites and blogs — not for growing businesses
+## 共享托管的实际情况
+- 所谓的“无限”带宽和存储空间实际上都有使用限制，请务必阅读服务条款。
+- 网站性能会受到其他用户的影响——如果周围有性能不佳的网站，你的网站也会变慢。
+- SSH访问权限可能受到限制或不可用，请在使用前进行确认。
+- Cron作业和后台进程通常会受到限制。
+- 共享托管适合小型网站和博客，但不适合规模较大的业务。
 
-## Platform Hosting (Vercel, Netlify, Railway, etc.)
-- Free tiers have limits — check build minutes, bandwidth, function invocations
-- Serverless functions have cold start latency — first request after idle is slow
-- Vendor lock-in varies — static files portable, platform-specific features less so
-- Preview deployments per branch are invaluable for review workflows
-- Environment variables configured in dashboard — never commit secrets to repo
+## 平台托管服务（如Vercel、Netlify、Railway等）
+- 免费 tier存在使用限制（如构建时间、带宽和函数调用次数）。
+- 无服务器函数（serverless functions）在长时间未使用时首次请求会有延迟。
+- 不同平台的兼容性存在差异——静态文件通常可以轻松迁移，但特定于平台的特性可能无法直接移植。
+- 按分支预览部署内容对开发流程非常有帮助。
+- 环境变量可以在控制面板中进行配置——切勿将敏感信息提交到代码仓库中。
 
-## Database Considerations
-- Most platform hosts don't include databases — need separate provider (PlanetScale, Supabase, Neon)
-- Database location should match app location — cross-region latency hurts performance
-- Connection pooling often required for serverless — direct connections exhaust limits
-- Backups may or may not be included — verify and test restore process
+## 数据库相关注意事项
+- 大多数托管服务不提供数据库支持，需要单独购买数据库服务（如PlanetScale、Supabase、Neon）。
+- 数据库的位置应与网站所在的地区一致，否则跨区域传输数据会导致性能下降。
+- 无服务器架构通常需要使用连接池技术，直接连接可能会超出带宽限制。
+- 备份功能可能由托管服务提供，也可能需要自行配置——请务必验证备份流程并测试恢复机制。
 
-## Domain and DNS
-- Hosting provider often offers DNS — but separating them gives flexibility
-- Point nameservers to host: simpler setup, less control
-- Point A/CNAME records: more control, slightly more complex
-- SSL certificates usually automatic with modern hosts — verify HTTPS works after setup
+## 域名和DNS设置
+- 托管服务通常会提供DNS服务，但分开使用可以提供更多灵活性。
+- 将域名解析到托管服务器可以简化设置过程，但会减少一些控制权限。
+- 使用A记录或CNAME记录可以提供更多的控制权限，但设置过程稍显复杂。
+- 现代托管服务通常会自动处理SSL证书的配置——请确保HTTPS连接正常工作。
 
-## Email Separation
-- Web hosting and email hosting are different services — can use different providers
-- Don't rely on free email with web hosting — often limited and unreliable
-- Google Workspace, Zoho, or dedicated email providers are more reliable
-- MX records for email don't affect web hosting
+## 邮箱服务
+- 网站托管和电子邮件托管是不同的服务，建议使用不同的提供商。
+- 不要依赖网站托管服务提供的免费邮箱服务——这些服务通常功能有限且不稳定。
+- Google Workspace、Zoho或专门的电子邮件服务更为可靠。
+- 邮箱的MX记录设置不会影响网站托管。
 
-## Backups
-- Managed hosts usually include backups — verify frequency and retention
-- Download periodic backups locally — host backups don't help if host goes away
-- Know the restore process before you need it
-- Database backups separate from file backups — need both
+## 备份
+- 托管服务通常会提供备份功能，请确认备份的频率和保留策略。
+- 请定期将备份文件下载到本地——如果托管服务中断，本地备份可以确保数据安全。
+- 在需要恢复数据之前，务必了解相应的恢复流程。
+- 数据库备份和文件备份都需要定期进行。
 
-## Cost Awareness
-- Monthly vs yearly billing — annual often 20-40% cheaper but commits you
-- Traffic spikes can trigger overage fees — understand the billing model
-- Free tiers often enough for side projects — don't overpay for unused capacity
-- Compare total cost including add-ons — base price rarely tells the whole story
+## 成本考量
+- 请注意月度计费和年度计费的区别——年度计费通常便宜20-40%，但可能会绑定长期合同。
+- 流量激增可能会导致额外费用，请了解详细的计费规则。
+- 免费 tier通常适合小型项目——避免为未使用的资源支付额外费用。
+- 请比较包括附加功能在内的总成本——仅看基础价格可能无法全面了解实际费用。
 
-## Migration Readiness
-- Keep content in portable formats — avoid excessive platform-specific features
-- Document how the current setup works — needed when moving
-- Export data regularly — don't assume you can always access it
-- DNS propagation takes up to 48 hours — plan migrations with overlap
+## 迁移准备
+- 请将网站内容保存为通用格式（如JSON或CSV），避免过度依赖特定平台的特性。
+- 记录当前网站的运行方式，以便迁移时参考。
+- 定期导出数据——不要假设数据始终可访问。
+- DNS解析需要48小时才能生效，请为迁移计划留出足够的时间。
 
-## Common Mistakes
-- Choosing by price alone — support quality matters when things break
-- Not testing staging before production — preview environments prevent disasters
-- Ignoring geographic location — hosting in US for European users adds latency
-- Assuming backups exist — verify and test before you need them
-- Overcomplicating for small sites — a blog doesn't need Kubernetes
+## 常见错误
+- 仅根据价格选择托管服务——遇到问题时，良好的技术支持至关重要。
+- 在上线前不测试预发布环境可能会导致严重问题。
+- 忽视地理位置对网站性能的影响——为欧洲用户选择美国托管服务会增加延迟。
+- 误以为托管服务会自动提供备份——请务必进行验证和测试。
+- 对于小型网站来说，过度复杂化的解决方案（如Kubernetes）并不是必需的。

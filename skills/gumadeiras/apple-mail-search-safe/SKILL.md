@@ -1,22 +1,22 @@
 ---
 name: apple-mail-search
-description: Fast & safe Apple Mail search with body content support.
+description: 快速且安全的 Apple Mail 搜索功能，支持查看邮件正文内容。
 homepage: https://clawdhub.com/gumadeiras/apple-mail-search-safe
 repository: https://github.com/gumadeiras/apple-mail-search-cli
 metadata: {"clawdbot":{"emoji":"📧","requires":{"bins":["fruitmail"]},"install":[{"id":"node","kind":"node","package":"apple-mail-search-cli","bins":["fruitmail"],"label":"Install fruitmail CLI (npm)"}]}}
 ---
 
-# Fruitmail (Fast & Safe)
+# Fruitmail（快速且安全）
 
-Fast SQLite-based search for Apple Mail.app with full body content support.
+这是一个基于SQLite的苹果邮件应用程序（Apple Mail.app）搜索工具，支持查看邮件的完整内容。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g apple-mail-search-cli
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 # Complex search
@@ -38,18 +38,18 @@ fruitmail open 94695
 fruitmail stats
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `search` | Complex search with filters |
-| `sender <query>` | Search by sender email |
-| `unread` | List unread emails |
-| `body <id>` | Read full email body (AppleScript) |
-| `open <id>` | Open email in Mail.app |
-| `stats` | Database statistics |
+| `search` | 使用过滤器进行复杂搜索 |
+| `sender <查询>` | 按发送者邮箱地址搜索 |
+| `unread` | 列出未读邮件 |
+| `body <id>` | 阅读邮件的完整内容（通过AppleScript） |
+| `open <id>` | 在Mail.app中打开邮件 |
+| `stats` | 查看数据库统计信息 |
 
-## Search Options
+## 搜索选项
 
 ```
 --subject <text>   Search subject lines
@@ -60,7 +60,7 @@ fruitmail stats
 --copy             Copy DB before query (safest mode)
 ```
 
-## Examples
+## 示例
 
 ```bash
 # Find bank statements from last month
@@ -73,25 +73,25 @@ fruitmail unread --json | jq '.[] | .subject'
 fruitmail sender "@amazon.com" --limit 50
 ```
 
-## Performance
+## 性能
 
-| Method | Time for 130k emails |
+| 方法 | 搜索13万封邮件所需时间 |
 |--------|---------------------|
-| AppleScript (full iteration) | 8+ minutes |
-| SQLite (this tool) | **~50ms** |
+| AppleScript（全遍历） | 8分钟以上 |
+| SQLite（本工具） | **约50毫秒** |
 
-## Technical Details
+## 技术细节
 
-- **Database:** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index`
-- **Query method:** SQLite (read-only) + AppleScript (body content)
-- **Safety:** Read-only mode prevents modification; optional `--copy` mode available
+- **数据库位置：** `~/Library/Mail/V{9,10,11}/MailData/Envelope Index` |
+- **查询方式：** 使用SQLite（只读）结合AppleScript来获取邮件内容 |
+- **安全性：** 仅支持只读操作，防止数据被修改；支持可选的`--copy`模式用于复制数据 |
 
-## Notes
+## 注意事项
 
-- **macOS only** — queries Apple Mail.app's local database
-- **Read-only** — can search/read but cannot compose/send
-- **To send emails:** Use the `himalaya` skill (IMAP/SMTP)
+- **仅适用于macOS** — 该工具会查询Apple Mail.app的本地数据库 |
+- **仅支持读取操作** — 无法发送或新建邮件 |
+- **如需发送邮件，请使用`himalaya`工具（支持IMAP/SMTP协议） |
 
-## Source
+## 来源
 
 https://github.com/gumadeiras/apple-mail-search-cli

@@ -1,20 +1,20 @@
 ---
 name: intercom
-description: Manage customer conversations, contacts, and help articles via Intercom API. Send messages and manage support inbox.
+description: 通过 Intercom API 管理客户对话、联系信息以及帮助文档。发送消息并管理支持工单（即客户咨询的收件箱）。
 metadata: {"clawdbot":{"emoji":"💬","requires":{"env":["INTERCOM_ACCESS_TOKEN"]}}}
 ---
 
 # Intercom
 
-Customer messaging platform.
+这是一个客户消息传递平台。
 
-## Environment
+## 环境配置
 
 ```bash
 export INTERCOM_ACCESS_TOKEN="dG9rOxxxxxxxxxx"
 ```
 
-## List Contacts
+## 列出联系人
 
 ```bash
 curl "https://api.intercom.io/contacts" \
@@ -22,7 +22,7 @@ curl "https://api.intercom.io/contacts" \
   -H "Accept: application/json"
 ```
 
-## Search Contacts
+## 搜索联系人
 
 ```bash
 curl -X POST "https://api.intercom.io/contacts/search" \
@@ -31,7 +31,7 @@ curl -X POST "https://api.intercom.io/contacts/search" \
   -d '{"query": {"field": "email", "operator": "=", "value": "user@example.com"}}'
 ```
 
-## Create Contact
+## 创建联系人
 
 ```bash
 curl -X POST "https://api.intercom.io/contacts" \
@@ -40,7 +40,7 @@ curl -X POST "https://api.intercom.io/contacts" \
   -d '{"role": "user", "email": "user@example.com", "name": "John Doe"}'
 ```
 
-## Send Message
+## 发送消息
 
 ```bash
 curl -X POST "https://api.intercom.io/messages" \
@@ -54,14 +54,14 @@ curl -X POST "https://api.intercom.io/messages" \
   }'
 ```
 
-## List Conversations
+## 查看对话记录
 
 ```bash
 curl "https://api.intercom.io/conversations" \
   -H "Authorization: Bearer $INTERCOM_ACCESS_TOKEN"
 ```
 
-## Reply to Conversation
+## 回复对话
 
 ```bash
 curl -X POST "https://api.intercom.io/conversations/{id}/reply" \
@@ -70,6 +70,6 @@ curl -X POST "https://api.intercom.io/conversations/{id}/reply" \
   -d '{"message_type": "comment", "type": "admin", "admin_id": "ADMIN_ID", "body": "Thanks for reaching out!"}'
 ```
 
-## Links
-- Dashboard: https://app.intercom.com
-- Docs: https://developers.intercom.com
+## 链接：
+- 仪表板：https://app.intercom.com
+- 文档：https://developers.intercom.com

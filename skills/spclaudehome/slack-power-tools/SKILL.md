@@ -1,31 +1,31 @@
 ---
 name: slack-power-tools
-description: Advanced Slack automation beyond basic messaging. Use when user needs to manage channels (create, archive, invite users), schedule messages, upload files, search workspace, manage user groups, set status/DND, get analytics, or automate Slack workflows. Covers channel ops, user management, scheduled messages, file uploads, search, and workspace analytics.
+description: 高级 Slack 自动化功能，超越了基本的消息传递功能。适用于需要管理频道（创建、归档、邀请用户）、安排消息发送、上传文件、搜索工作空间内容、管理用户组、设置用户状态/“请勿打扰”模式（DND）、获取分析数据，或自动化 Slack 工作流程的场景。涵盖频道操作、用户管理、定时消息发送、文件上传、搜索功能以及工作空间数据分析等方面。
 ---
 
-# Slack Power Tools
+# Slack 功能扩展工具
 
-Advanced Slack automation via Slack Web API. Requires a Slack Bot Token with appropriate scopes.
+通过 Slack Web API 实现高级自动化操作。需要具备具有适当权限范围的 Slack Bot Token。
 
-## Prerequisites
+## 先决条件
 
 ```bash
 export SLACK_BOT_TOKEN="xoxb-your-token"
 ```
 
-Required OAuth scopes depend on features used (see each section).
+所需的 OAuth 权限范围取决于所使用的功能（请参阅各相关章节）。
 
-## Channel Management
+## 频道管理
 
-**Scopes:** `channels:manage`, `channels:read`, `groups:write`, `groups:read`
+**权限范围：`channels:manage`, `channels:read`, `groups:write`, `groups:read`
 
-### List all channels
+### 列出所有频道
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.list?types=public_channel,private_channel&limit=200" | jq '.channels[] | {id, name, num_members, is_archived}'
 ```
 
-### Create a channel
+### 创建频道
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -33,7 +33,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.create" | jq '.'
 ```
 
-### Archive a channel
+### 将频道归档
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -41,7 +41,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.archive"
 ```
 
-### Set channel topic/purpose
+### 设置频道主题/用途
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -54,7 +54,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.setPurpose"
 ```
 
-### Invite users to channel
+### 邀请用户加入频道
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -62,7 +62,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.invite"
 ```
 
-### Kick user from channel
+### 将用户踢出频道
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -70,11 +70,11 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.kick"
 ```
 
-## Scheduled Messages
+## 计划发送消息
 
-**Scopes:** `chat:write`
+**权限范围：`chat:write`
 
-### Schedule a message
+### 计划发送消息
 ```bash
 # post_at is Unix timestamp
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
@@ -87,13 +87,13 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/chat.scheduleMessage" | jq '.'
 ```
 
-### List scheduled messages
+### 查看已计划的消息
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/chat.scheduledMessages.list" | jq '.scheduled_messages[]'
 ```
 
-### Delete scheduled message
+### 删除已计划的消息
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -101,11 +101,11 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/chat.deleteScheduledMessage"
 ```
 
-## File Management
+## 文件管理
 
-**Scopes:** `files:write`, `files:read`
+**权限范围：`files:write`, `files:read`
 
-### Upload a file
+### 上传文件
 ```bash
 # Get upload URL
 UPLOAD=$(curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
@@ -124,13 +124,13 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/files.completeUploadExternal"
 ```
 
-### List files
+### 列出文件
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/files.list?channel=C123456&count=20" | jq '.files[] | {id, name, filetype, size, created}'
 ```
 
-### Delete a file
+### 删除文件
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -138,23 +138,23 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/files.delete"
 ```
 
-## User Management
+## 用户管理
 
-**Scopes:** `users:read`, `users.profile:write`
+**权限范围：`users:read`, `users.profile:write`
 
-### List all users
+### 列出所有用户
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/users.list?limit=200" | jq '.members[] | select(.deleted==false) | {id, name, real_name, is_admin}'
 ```
 
-### Get user info
+### 获取用户信息
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/users.info?user=U123456" | jq '.user'
 ```
 
-### Set user status (for bot/self)
+### 设置用户状态（适用于机器人/自身）
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -168,17 +168,17 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/users.profile.set"
 ```
 
-## User Groups
+## 用户组
 
-**Scopes:** `usergroups:write`, `usergroups:read`
+**权限范围：`usergroups:write`, `usergroups:read`
 
-### List user groups
+### 列出用户组
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/usergroups.list?include_users=true" | jq '.usergroups[] | {id, handle, name, user_count}'
 ```
 
-### Create user group
+### 创建用户组
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -186,7 +186,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/usergroups.create"
 ```
 
-### Update user group members
+### 更新用户组成员
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -194,50 +194,50 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/usergroups.users.update"
 ```
 
-## Search
+## 搜索
 
-**Scopes:** `search:read`
+**权限范围：`search:read`
 
-### Search messages
+### 搜索消息
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/search.messages?query=project%20deadline&sort=timestamp&count=20" | jq '.messages.matches[] | {channel: .channel.name, user, text, ts}'
 ```
 
-### Search files
+### 搜索文件
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/search.files?query=report%20Q4&count=20" | jq '.files.matches[] | {name, filetype, user}'
 ```
 
-## Do Not Disturb
+## 设置“请勿打扰”状态
 
-**Scopes:** `dnd:write`, `dnd:read`
+**权限范围：`dnd:write`, `dnd:read`
 
-### Set DND
+### 设置“请勿打扰”状态
 ```bash
 # Snooze for 60 minutes
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/dnd.setSnooze?num_minutes=60"
 ```
 
-### End DND
+### 结束“请勿打扰”状态
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/dnd.endSnooze"
 ```
 
-### Check DND status
+### 检查“请勿打扰”状态
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/dnd.info?user=U123456" | jq '.'
 ```
 
-## Reminders
+## 提醒功能
 
-**Scopes:** `reminders:write`, `reminders:read`
+**权限范围：`reminders:write`, `reminders:read`
 
-### Create reminder
+### 创建提醒
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -249,28 +249,28 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/reminders.add"
 ```
 
-### List reminders
+### 查看提醒列表
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/reminders.list" | jq '.reminders[]'
 ```
 
-## Analytics & Stats
+## 分析与统计
 
-### Channel message count (last 7 days)
+### 频道消息数量（过去 7 天）
 ```bash
 # Get channel history and count
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.history?channel=C123456&oldest=$(($(date +%s) - 604800))&limit=1000" | jq '.messages | length'
 ```
 
-### Most active users in channel
+### 频道中最活跃的用户
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.history?channel=C123456&limit=1000" | jq '[.messages[].user] | group_by(.) | map({user: .[0], count: length}) | sort_by(-.count) | .[0:10]'
 ```
 
-### Workspace stats
+### 工作区统计信息
 ```bash
 # Count total users
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
@@ -281,11 +281,11 @@ curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.list?types=public_channel&exclude_archived=true" | jq '.channels | length'
 ```
 
-## Bookmarks
+## 收藏夹
 
-**Scopes:** `bookmarks:write`, `bookmarks:read`
+**权限范围：`bookmarks:write`, `bookmarks:read`
 
-### Add bookmark to channel
+### 将频道添加到收藏夹
 ```bash
 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   -H "Content-Type: application/json" \
@@ -298,15 +298,15 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/bookmarks.add"
 ```
 
-### List bookmarks
+### 查看收藏夹列表
 ```bash
 curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/bookmarks.list?channel_id=C123456" | jq '.bookmarks[]'
 ```
 
-## Common Workflows
+## 常用工作流程
 
-### Daily standup reminder (schedule for 9 AM)
+### 每日站会提醒（安排在上午 9 点）
 ```bash
 # Calculate next 9 AM timestamp
 NINE_AM=$(date -v+1d -v9H -v0M -v0S +%s)
@@ -316,7 +316,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/chat.scheduleMessage"
 ```
 
-### Bulk invite users to a new project channel
+### 批量邀请用户加入新项目频道
 ```bash
 # Create channel, set topic, invite team
 CHANNEL=$(curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
@@ -335,7 +335,7 @@ curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
   "https://slack.com/api/conversations.invite"
 ```
 
-### Weekly channel cleanup report
+### 每周频道清理报告
 ```bash
 echo "# Slack Cleanup Report"
 echo "Generated: $(date)"
@@ -353,9 +353,9 @@ curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
 done
 ```
 
-## Error Handling
+## 错误处理
 
-All Slack API responses include `ok: true/false`. Check errors:
+所有 Slack API 响应都会包含 `ok: true/false`。错误信息如下：
 ```bash
 response=$(curl -s ...)
 if [ "$(echo $response | jq -r '.ok')" != "true" ]; then
@@ -363,8 +363,8 @@ if [ "$(echo $response | jq -r '.ok')" != "true" ]; then
 fi
 ```
 
-Common errors:
-- `channel_not_found` - Invalid channel ID
-- `not_in_channel` - Bot not in channel
-- `missing_scope` - Need additional OAuth scope
-- `ratelimited` - Too many requests, check `Retry-After` header
+常见错误：
+- `channel_not_found` - 频道 ID 无效
+- `not_in_channel` - 机器人未进入该频道
+- `missing_scope` - 需要额外的 OAuth 权限范围
+- `ratelimited` - 请求次数过多，请查看 `Retry-After` 头部信息

@@ -1,21 +1,21 @@
 ---
 name: book-fence
-description: Book fence services through Lokuli MCP. Use when user needs to find and book fence. Triggers on requests like "book a fence", "find fence near me", or any fence service request.
+description: 通过 Lokuli MCP 预订围栏服务。当用户需要查找或预订围栏时使用该功能。该功能会在收到如下请求时触发：`book a fence`（预订围栏）、`find fence near me`（查找附近的围栏）或任何与围栏服务相关的请求。
 ---
 
 # uook fence
 
-Book fence services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订围栏服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | POST 请求
 
-## Tools
+## 工具
 
 ### search
 ```json

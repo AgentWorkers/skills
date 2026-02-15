@@ -1,66 +1,66 @@
 ---
 name: Designer
-description: Create logos, interfaces, and visual systems with principles of hierarchy, branding, and usability.
+description: 根据层次结构、品牌定位和可用性的原则，设计徽标、用户界面以及视觉系统。
 metadata: {"clawdbot":{"emoji":"🎨","os":["linux","darwin","win32"]}}
 ---
 
-# Design Rules
+# 设计规则
 
-## Logo & Brand
-- Simple enough to work at 16px favicon — complexity disappears at small scale
-- Recognizable in one color — gradients are enhancements, not crutches
-- Test on dark and light backgrounds — logos need both versions
-- 3-5 brand colors maximum — primary, secondary, accent, plus neutrals
-- Consistency builds recognition — every touchpoint reinforces or dilutes brand
+## 标志与品牌
+- 标志应简洁到可以在 16px 大小的图标（favicon）中正常显示；在小尺寸下，过于复杂的细节会显得模糊不清。
+- 标志应能通过单一颜色被识别；渐变效果是锦上添花，而非必需品。
+- 需要在深色和浅色背景下进行测试，以确保标志在两种环境下都能清晰可见。
+- 最多使用 3-5 种品牌颜色：主色、辅助色、强调色以及中性色。
+- 一致性有助于建立品牌认知度——每个设计元素都应强化或弱化品牌形象。
 
-## Visual Hierarchy
-- Size and weight guide attention — most important element most prominent
-- One focal point per screen — competing elements confuse users
-- Whitespace groups, separates, and elevates — it's not empty space
-- Alignment creates invisible order — grids make everything feel intentional
-- Contrast for emphasis, similarity for grouping — break patterns deliberately
+## 视觉层次结构
+- 文字的大小和粗细应引导用户的注意力；最重要的元素应最显眼。
+- 每个屏幕上只有一个焦点；过多的竞争性元素会让用户感到困惑。
+- 空白可以用来分组、分隔元素，并提升整体视觉效果；空白并非单纯的“无用空间”。
+- 对齐方式能创造出一种“无形”的秩序感；网格布局能让设计看起来更有条理。
+- 使用对比来突出重点，使用相似性来分组元素；有意识地打破常规布局模式。
 
-## Typography
-- Two typefaces maximum — heading and body is enough
-- Body text 16px minimum on web — smaller is unreadable
-- Line height 1.4-1.6, line length 45-75 characters — readability basics
-- Pair fonts with contrast — serif with sans-serif, not two similar fonts
+## 字体排版
+- 最多使用两种字体：标题和正文即可。
+- 网页上的正文字体最小应为 16px；过小的字体会影响可读性。
+- 行高应为 1.4-1.6 倍，行长度应为 45-75 个字符——这是保证可读性的基本要求。
+- 应搭配对比度明显的字体组合使用（例如衬线字体与无衬线字体）。
 
-## Color
-- 60-30-10 rule: dominant, secondary, accent — prevents chaos
-- Warm colors advance, cool recede — use for depth and emphasis
-- Contrast ratio 4.5:1 for text — accessibility isn't optional
-- Test with colorblind simulators — 8% of men have color vision deficiency
+## 颜色
+- 遵循“60-30-10”配色规则：主色、辅助色、强调色——避免颜色混乱。
+- 温暖色调用于突出重点，冷色调用于营造背景；合理使用颜色可以增加视觉深度。
+- 文本的对比度应为 4.5:1；确保设计的可访问性（尤其是对于有色盲的用户）。
+- 使用色盲模拟器进行测试——8% 的男性存在色觉缺陷。
 
-## Layout
-- 8px grid for spacing — consistency without overthinking
-- Rule of thirds for visual interest — off-center is more dynamic
-- Negative space is active design — crowded layouts feel cheap
-- Mobile first, then scale up — constraints breed creativity
-- Touch targets 44px minimum — fingers are imprecise
+## 布局
+- 使用 8px 的网格来控制元素间距；保持一致性，无需过度复杂化设计。
+- 采用“三分法则”来增加视觉趣味性；非居中的布局更具动态感。
+- “负空间”（即元素之间的空白区域）是设计的重要组成部分；拥挤的布局会显得粗糙或低质量。
+- 先考虑移动设备的布局需求，然后再进行适应性调整；限制反而能激发创意。
+- 触控目标的尺寸应至少为 44px；手指的操作并不精确。
 
-## Icons & Illustration
-- Consistent stroke weight across icon set — mixing weights looks broken
-- Meaning clear without labels — ambiguous icons need text
-- Simple illustrations scale better — detail gets lost small
-- Style matches brand personality — playful vs corporate look different
+## 图标与插图
+- 所有图标应使用统一的笔画粗细；混合不同粗细的线条会破坏整体视觉效果。
+- 图标的含义应清晰明了（无需额外标注）；含义模糊的图标需要配文字说明。
+- 简单的插图在缩小后仍能保持良好的显示效果；复杂的细节在小尺寸下会丢失。
+- 图标的风格应与品牌特性相匹配；轻松活泼的风格与严肃正式的风格有所不同。
 
-## UX Principles
-- Don't make users think — obvious beats clever
-- Feedback for every action — users need confirmation
-- Error prevention over error messages — disable invalid actions
-- Design empty states, errors, loading first — they're most of the experience
-- Five users find 80% of usability issues — test early and often
+## 用户体验（UX）原则
+- 避免让用户费力思考；直观的设计比复杂的设计更有效。
+- 每个操作都应提供反馈；用户需要确认操作的结果。
+- 优先考虑预防错误，而非仅仅显示错误信息；应禁用无效的操作。
+- 需要预先设计页面的“空状态”（如未加载、出错等状态），因为这些状态在用户使用过程中非常常见。
+- 通过测试可以发现 80% 的可用性问题；应尽早且频繁地进行测试。
 
-## Design Systems
-- Components, not pages — reusable library
-- Tokens for colors, spacing, type — change once, update everywhere
-- Name by function: "primary-action" not "blue-button"
-- Document when to use, not just how it looks
+## 设计系统
+- 设计应基于可复用的组件，而非单独的页面；这样便于统一管理和更新。
+- 为颜色、间距、字体等设计元素设定统一的规范；只需修改一处，所有相关地方都会自动更新。
+- 给元素命名时应根据其功能来命名（例如“primary-action”而非“blue-button”）。
+- 不仅要描述设计的外观，还要说明其使用场景。
 
-## Presenting & Handoff
-- Show work in context — mockups in devices, logos on cards
-- Explain why, not just what — tell the decision story
-- All states: hover, active, disabled, error, loading — devs will ask
-- Specs in relative units — responsive needs flexibility
-- Review the build — implementation is the real design
+## 展示与交接
+- 应在具体场景中展示设计成果；使用设备来展示原型图，并在卡片上展示标志。
+- 不仅要说明设计的内容，还要解释设计背后的原因；要讲述设计背后的故事。
+- 需要展示设计的所有状态（悬停状态、激活状态、禁用状态、错误状态、加载状态等）；开发人员会对此有疑问。
+- 规格应使用相对单位来表述；响应式设计需要灵活性。
+- 在实际实现之前，务必仔细审查设计成果；真正的设计体现在最终的产品中。

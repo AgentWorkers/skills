@@ -1,6 +1,6 @@
 ---
 name: wagmi
-description: Use wagmi React hooks for Celo dApps. Includes wallet connection, transaction hooks, and React integration patterns.
+description: 使用 Wagmi React Hooks 开发 Celo dApps。涵盖钱包连接、交易处理相关的钩子函数（hooks），以及 React 组件的集成方式。
 license: Apache-2.0
 metadata:
   author: celo-org
@@ -9,26 +9,26 @@ metadata:
 
 # Wagmi for Celo
 
-Wagmi is a React library for building Ethereum applications with hooks. It uses viem under the hood.
+Wagmi 是一个基于 React 的库，用于使用 Hooks 构建以太坊应用程序。它内部使用了 viem（一个用于与以太坊区块链交互的库）。
 
-Source: https://wagmi.sh
+来源：https://wagmi.sh
 
-## When to Use
+## 使用场景
 
-- Building React dApps on Celo
-- Implementing wallet connection flows
-- Managing blockchain state in React components
-- Using React hooks for contract interactions
+- 在 Celo 上构建 React dApps（去中心化应用）
+- 实现钱包连接流程
+- 在 React 组件中管理区块链状态
+- 使用 React Hooks 进行合约交互
 
-## Installation
+## 安装
 
 ```bash
 npm install wagmi viem@2.x @tanstack/react-query
 ```
 
-## Configuration
+## 配置
 
-### Basic Setup
+### 基本设置
 
 ```typescript
 // config.ts
@@ -44,7 +44,7 @@ export const config = createConfig({
 });
 ```
 
-### With Connectors
+### 使用连接器（Connectors）
 
 ```typescript
 import { http, createConfig } from "wagmi";
@@ -67,9 +67,9 @@ export const config = createConfig({
 });
 ```
 
-Source: https://wagmi.sh/react/guides/connect-wallet
+来源：https://wagmi.sh/react/guides/connect-wallet
 
-## Provider Setup
+## 提供者（Provider）设置
 
 ```tsx
 // app.tsx
@@ -90,9 +90,9 @@ function App({ children }: { children: React.ReactNode }) {
 }
 ```
 
-## Wallet Connection
+## 钱包连接
 
-### Display Wallet Options
+### 显示钱包选项
 
 ```tsx
 import { useConnect, useConnectors } from "wagmi";
@@ -116,7 +116,7 @@ function WalletOptions() {
 }
 ```
 
-### Display Connected Account
+### 显示已连接的账户
 
 ```tsx
 import { useAccount, useDisconnect } from "wagmi";
@@ -137,7 +137,7 @@ function Account() {
 }
 ```
 
-## Reading Contract Data
+## 读取合约数据
 
 ```tsx
 import { useReadContract } from "wagmi";
@@ -166,7 +166,7 @@ function TokenBalance({ address }: { address: `0x${string}` }) {
 }
 ```
 
-## Writing to Contracts
+## 向合约写入数据
 
 ```tsx
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
@@ -200,7 +200,7 @@ function TransferToken() {
 }
 ```
 
-## Sending Transactions
+## 发送交易
 
 ```tsx
 import { useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
@@ -227,7 +227,7 @@ function SendCelo() {
 }
 ```
 
-## Chain Switching
+## 切换链（Chain Switching）
 
 ```tsx
 import { useSwitchChain } from "wagmi";
@@ -255,29 +255,29 @@ function NetworkSwitcher() {
 }
 ```
 
-## Common Hooks
+## 常用 Hooks
 
-| Hook | Purpose |
+| Hooks | 用途 |
 |------|---------|
-| useAccount | Get connected account info |
-| useConnect | Connect wallet |
-| useDisconnect | Disconnect wallet |
-| useReadContract | Read contract state |
-| useWriteContract | Write to contract |
-| useSendTransaction | Send native currency |
-| useWaitForTransactionReceipt | Wait for tx confirmation |
-| useSwitchChain | Switch networks |
-| useBalance | Get account balance |
-| useChainId | Get current chain ID |
+| useAccount | 获取已连接账户的信息 |
+| useConnect | 连接钱包 |
+| useDisconnect | 断开钱包连接 |
+| useReadContract | 读取合约状态 |
+| useWriteContract | 向合约写入数据 |
+| useSendTransaction | 发送原生货币 |
+| useWaitForTransactionReceipt | 等待交易确认 |
+| useSwitchChain | 切换区块链网络 |
+| useBalance | 获取账户余额 |
+| useChainId | 获取当前链的 ID |
 
-## Celo Chain IDs
+## Celo 链的 ID
 
-| Network | Chain ID |
+| 链络 | 链 ID |
 |---------|----------|
-| Celo Mainnet | 42220 |
+| Celo 主网 | 42220 |
 | Celo Sepolia | 11142220 |
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -289,6 +289,6 @@ function NetworkSwitcher() {
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [hooks-reference.md](references/hooks-reference.md) - Complete hooks reference
+- [hooks-reference.md](references/hooks-reference.md) - 完整的 Hooks 参考文档

@@ -1,62 +1,61 @@
 ---
 name: phoenix-api-gen
-description: Generate a full Phoenix JSON API from an OpenAPI spec or natural language description. Creates contexts, Ecto schemas, migrations, controllers, JSON views/renderers, router entries, ExUnit tests with factories, auth plugs, and tenant scoping. Use when building a new Phoenix REST API, adding CRUD endpoints, scaffolding resources, or converting an OpenAPI YAML into a Phoenix project.
+description: 根据 OpenAPI 规范或自然语言描述，生成完整的 Phoenix JSON API。该工具能够创建相关的数据模型（Ecto 模式）、数据库迁移脚本、控制器、JSON 视图/渲染器、路由规则、ExUnit 测试用例（包含测试工厂）、身份验证插件（auth plugs）以及租户权限管理功能。适用于构建新的 Phoenix REST API、添加 CRUD 端点、快速搭建项目结构，或将 OpenAPI YAML 文件转换为 Phoenix 项目。
 ---
 
-# Phoenix API Generator
+# Phoenix API生成器
 
-## Workflow
+## 工作流程
 
-### From OpenAPI YAML
+### 从OpenAPI YAML生成API
 
-1. Parse the OpenAPI spec — extract paths, schemas, request/response bodies.
-2. Map each schema to an Ecto schema + migration.
-3. Map each path to a controller action; group by resource context.
-4. Generate auth plugs from `securitySchemes`.
-5. Generate ExUnit tests covering happy path + validation errors.
+1. 解析OpenAPI规范，提取路径、数据结构（schemas）以及请求/响应体。
+2. 将每个数据结构映射到Ecto数据结构，并生成相应的数据库迁移脚本。
+3. 将每个路径映射到相应的控制器方法；按资源类型进行分组。
+4. 根据`securitySchemes`生成认证插件（auth plugs）。
+5. 生成ExUnit测试，覆盖正常处理情况和验证错误的情况。
 
-### From Natural Language
+### 从自然语言描述生成API
 
-1. Extract resources, fields, types, and relationships from the description.
-2. Infer context boundaries (group related resources).
-3. Generate schemas, migrations, controllers, views, router, and tests.
-4. Ask the user to confirm before writing files.
+1. 从描述中提取资源、字段、类型和关系信息。
+2. 确定资源之间的上下文关系（将相关资源分组）。
+3. 生成数据结构、迁移脚本、控制器、视图（views）以及路由（router）。
+4. 在编写代码之前请用户确认所有信息。
 
-## File Generation Order
+## 文件生成顺序
 
-1. Migrations (timestamps prefix: `YYYYMMDDHHMMSS`)
-2. Ecto schemas + changesets
-3. Context modules (CRUD functions)
-4. Controllers + FallbackController
-5. JSON renderers (Phoenix 1.7+ `*JSON` modules, or `*View` for older)
-6. Router scope + pipelines
-7. Auth plugs
-8. Tests + factories
+1. 数据库迁移脚本（文件前缀为`YYYYMMDDHHMMSS`）
+2. Ecto数据结构及相应的变更集（changesets）
+3. 控制器及相关功能模块（CRUD操作）
+4. JSON渲染器（Phoenix 1.7及以上版本使用`*JSON`模块；旧版本使用`*View`模块）
+5. 路由逻辑及处理流程（router scope + pipelines）
+6. 认证插件（auth plugs）
+7. 测试代码及测试工厂（tests + factories）
 
-## Phoenix Conventions
+## Phoenix项目规范
 
-See [references/phoenix-conventions.md](references/phoenix-conventions.md) for project structure, naming, context patterns.
+有关项目结构、命名规范和上下文模式的详细信息，请参阅[references/phoenix-conventions.md]。
 
-Key rules:
-- One context per bounded domain (e.g., `Accounts`, `Billing`, `Notifications`).
-- Context is the public API — controllers never call Repo directly.
-- Schemas live under contexts: `MyApp.Accounts.User`.
-- Controllers delegate to contexts; return `{:ok, resource}` or `{:error, changeset}`.
-- Use `FallbackController` with `action_fallback/1` to handle error tuples.
+**关键规则：**
+- 每个有明确边界的功能模块对应一个独立的上下文（例如：`Accounts`、`Billing`、`Notifications`）。
+- 控制器不应直接调用数据库存储层（Repo）。
+- 数据结构应归属于相应的上下文（例如：`MyApp.Accounts.User`）。
+- 控制器应通过上下文处理请求，并返回`{:ok, resource}`或`{:error, changeset}`。
+- 使用`FallbackController`和`action_fallback/1`来处理错误情况。
 
-## Ecto Patterns
+## Ecto模式
 
-See [references/ecto-patterns.md](references/ecto-patterns.md) for schema, changeset, migration details.
+有关数据结构、变更集（changesets）和迁移脚本（migrations）的详细信息，请参阅[references/ecto-patterns.md]。
 
-Key rules:
-- Always use `timestamps(type: :utc_datetime_usec)`.
-- Binary IDs: `@primary_key {:id, :binary_id, autogenerate: true}` + `@foreign_key_type :binary_id`.
-- Separate `create_changeset/2` and `update_changeset/2` when create/update fields differ.
-- Validate required fields, formats, and constraints in changesets — not in controllers.
+**关键规则：**
+- 始终使用`timestamps(type: :utc_datetime_usec)`作为时间戳字段。
+- 对于二进制ID，使用`@primary_key{:id, :binary_id, autogenerate: true}`和`@foreign_key_type :binary_id`进行定义。
+- 当创建或更新字段不同时，分别生成`create_changeset/2`和`update_changeset/2`迁移脚本。
+- 在变更集中验证必填字段、格式和约束条件；不要在控制器中验证这些内容。
 
-## Multi-Tenancy
+## 多租户支持
 
-Add `tenant_id :binary_id` to every tenant-scoped table. Pattern:
+在每个租户相关的表中添加`tenant_id :binary_id`字段。示例代码如下：
 
 ```elixir
 # In context
@@ -77,11 +76,12 @@ defmodule MyAppWeb.Plugs.SetTenant do
 end
 ```
 
-Always add a composite index on `[:tenant_id, <resource_id or lookup field>]`.
+**注意事项：**  
+始终为`[:tenant_id, <resource_id 或查找字段>]`创建复合索引。
 
-## Auth Plugs
+## 认证插件（Auth Plugs）
 
-### API Key
+### API密钥（API Key）
 
 ```elixir
 defmodule MyAppWeb.Plugs.ApiKeyAuth do
@@ -98,7 +98,7 @@ defmodule MyAppWeb.Plugs.ApiKeyAuth do
 end
 ```
 
-### Bearer Token
+### 承载令牌（Bearer Token）
 
 ```elixir
 defmodule MyAppWeb.Plugs.BearerAuth do
@@ -115,7 +115,7 @@ defmodule MyAppWeb.Plugs.BearerAuth do
 end
 ```
 
-## Router Structure
+## 路由结构（Router Structure）
 
 ```elixir
 scope "/api/v1", MyAppWeb do
@@ -128,19 +128,19 @@ scope "/api/v1", MyAppWeb do
 end
 ```
 
-## Test Generation
+## 测试生成
 
-See [references/test-patterns.md](references/test-patterns.md) for ExUnit, Mox, factory patterns.
+有关ExUnit测试、Mox模拟框架和测试工厂的详细信息，请参阅[references/test-patterns.md]。
 
-Key rules:
-- Use `async: true` on all tests that don't share state.
-- Use `Ecto.Adapters.SQL.Sandbox` for DB isolation.
-- Factory module using `ex_machina` or hand-rolled `build/1`, `insert/1`.
-- Test contexts and controllers separately.
-- For controllers: test status codes, response body shape, and error cases.
-- Mock external services with `Mox` — define behaviours, set expectations in test.
+**关键规则：**
+- 对于不共享状态的测试，使用`async: true`。
+- 使用`Ecto.Adapters.SQL.Sandbox`进行数据库隔离。
+- 使用`ex_machina`或自定义的`build/1`、`insert/1`函数来创建测试用例。
+- 分别测试不同的上下文和控制器。
+- 对控制器进行测试时，需验证状态码、响应体格式以及错误处理情况。
+- 使用`Mox`模拟外部服务，并在测试中定义其行为和预期结果。
 
-### Controller Test Template
+### 控制器测试模板（Controller Test Template）
 
 ```elixir
 defmodule MyAppWeb.UserControllerTest do
@@ -177,7 +177,7 @@ defmodule MyAppWeb.UserControllerTest do
 end
 ```
 
-## JSON Renderer (Phoenix 1.7+)
+## JSON渲染器（Phoenix 1.7及以上版本）
 
 ```elixir
 defmodule MyAppWeb.UserJSON do
@@ -194,12 +194,12 @@ defmodule MyAppWeb.UserJSON do
 end
 ```
 
-## Checklist Before Writing
+## 编写代码前的检查清单
 
-- [ ] Migrations use `timestamps(type: :utc_datetime_usec)`
-- [ ] Binary IDs configured if project uses UUIDs
-- [ ] Tenant scoping applied where needed
-- [ ] Auth plug wired in router pipeline
-- [ ] FallbackController handles `{:error, changeset}` and `{:error, :not_found}`
-- [ ] Tests cover 200, 201, 404, 422 status codes
-- [ ] Factory defined for each schema
+- 确保迁移脚本使用了`timestamps(type: :utc_datetime_usec)`。
+- 如果项目使用UUID作为唯一标识符，请确保配置了二进制ID。
+- 在需要的地方实现了租户隔离（tenant scoping）。
+- 确保认证插件已正确集成到路由处理流程中。
+- `FallbackController`能够处理`{:error, changeset}`和`{:error, :not_found}`错误情况。
+- 测试应覆盖200、201、404、422等状态码。
+- 为每个数据结构都定义了相应的测试工厂（test factories）。

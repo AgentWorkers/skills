@@ -1,490 +1,198 @@
 ---
 name: jb-permit2-metadata
-description: Encode metadata for Juicebox V5 terminal payments using JBMetadataResolver. Covers Permit2 gasless ERC20 payments, 721 hook tier selection, and combining multiple metadata types. Use when seeing AllowanceExpired errors, metadata extraction returns zeros, specifying NFT tiers to mint, or Tenderly shows exists false at getDataFor call.
+description: 使用 JBMetadataResolver 为 Juicebox V5 终端支付编码元数据。该方案支持 Permit2 类型的无 gas ERC20 支付、721 层级的选择功能，以及多种元数据类型的组合。适用于以下情况：出现 “AllowanceExpired” 错误、元数据提取结果为零、需要指定用于 mint 的 NFT 层级，或者在调用 getDataFor 时 Tenderly 返回 “exists false” 的情况。
 ---
 
-# JBMetadataResolver: Pay Metadata Encoding
+# JBMetadataResolver：支付元数据编码
 
-## Overview
+## 概述
 
-Juicebox V5 uses `JBMetadataResolver` to pass structured data through the `metadata` parameter of `pay()`, `addToBalance()`, and other terminal functions. Multiple extensions (Permit2, 721 hook, buyback hook, etc.) can read their specific data from a single metadata blob using a lookup table format.
+Juicebox V5 使用 `JBMetadataResolver` 通过 `pay()`, `addToBalance()` 等终端函数的 `metadata` 参数传递结构化数据。多个扩展程序（如 Permit2、721 Hook、回购 Hook 等）可以通过查找表格式从同一个元数据块中读取它们所需的数据。
 
-**Key concept**: Each extension has a unique 4-byte ID. The metadata contains a lookup table mapping IDs to data offsets, allowing each extension to find its data without knowing about other extensions.
+**关键概念**：每个扩展程序都有一个唯一的 4 字节 ID。元数据中包含一个查找表，将 ID 映射到数据偏移量，使得每个扩展程序无需了解其他扩展程序的存在即可找到自己的数据。
 
-## When to Use This Skill
+## 何时使用此功能
 
-- Implementing gasless ERC20 payments via Permit2 (single-transaction UX)
-- Specifying which NFT tiers to mint when paying a 721 hook project
-- Seeing "AllowanceExpired" error from Permit2 contract
-- Tenderly shows `exists: false` or all-zeros at `getDataFor` call
-- Combining multiple metadata types in one payment (e.g., Permit2 + tier selection)
+- 通过 Permit2 实现无 gas 的 ERC20 支付（单次交易用户体验）
+- 在支付 721 Hook 项目时指定要铸造的 NFT 等级
+- 当从 Permit2 合同收到 “AllowanceExpired” 错误时
+- 在调用 `getDataFor` 时返回 `exists: false` 或全零的结果
+- 在一次支付中结合多种元数据类型（例如，Permit2 + 等级选择）
 
-## Critical Rule: Use the Official Library
+## 重要规则：使用官方库
 
-**ALWAYS use `juicebox-metadata-helper` for metadata construction.** Manual construction has subtle bugs:
-
-```bash
-npm install juicebox-metadata-helper
-```
-
-The library handles:
-- Correct offset calculation (in words, not bytes)
-- Proper padding to 32-byte boundaries
-- Lookup table format matching JBMetadataResolver exactly
+**始终使用 `juicebox-metadata-helper` 来构建元数据。** 手动构建元数据可能存在细微的错误：
 
 ---
 
-## Metadata Type 1: Permit2 (Gasless ERC20 Payments)
+## 元数据类型 1：Permit2（无 gas 的 ERC20 支付）
 
-Permit2 allows single-transaction ERC20 payments without separate approve transactions.
+Permit2 允许进行单次交易的 ERC20 支付，无需额外的批准交易。
 
-### Swap Terminal Registries
+### 交换终端注册表
 
-Two swap terminal registries exist, deployed at the same address on all chains:
+有两个交换终端注册表，它们部署在所有链路的相同地址上：
 
-| Registry | Address | TOKEN_OUT | Purpose |
+| 注册表 | 地址 | TOKEN_OUT | 用途 |
 |----------|---------|-----------|---------|
-| **JBSwapTerminalRegistry** | `0x60b4f5595ee509c4c22921c7b7999f1616e6a4f6` | NATIVE_TOKEN (ETH) | Swaps incoming tokens → ETH |
-| **JBSwapTerminalUSDCRegistry** | `0x1ce40d201cdec791de05810d17aaf501be167422` | USDC | Swaps incoming tokens → USDC |
+| **JBSwapTerminalRegistry** | `0x60b4f5595ee509c4c22921c7b7999f1616e6a4f6` | NATIVE_TOKEN (ETH) | 将传入的代币兑换为 ETH |
+| **JBSwapTerminalUSDCRegistry** | `0x1ce40d201cdec791de05810d17aaf501be167422` | USDC | 将传入的代币兑换为 USDC |
 
-**Choose based on what the project should RECEIVE** after the swap, not what the user pays with.
+**选择注册表时，请根据项目交换后应接收的货币类型来决定，而不是用户支付的货币类型。**
 
-### Step 1: Compute the Permit2 Metadata ID
+### 第 1 步：计算 Permit2 元数据 ID
 
-**CRITICAL**: Use ethers.js for ID computation. Viem's byte handling can have subtle issues with the XOR operation.
-
-```typescript
-import { ethers } from 'ethers'
-import type { Address } from 'viem'
-
-function computePermit2MetadataId(terminalAddress: Address): string {
-  // Use ethers to match Solidity's bytes20 XOR exactly
-  const purposeHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('permit2'))
-
-  // Get first 20 bytes of hash (40 hex chars after 0x)
-  const purposeBytes20 = purposeHash.slice(0, 42)
-
-  // Terminal address is already 20 bytes
-  const terminalBytes20 = terminalAddress.toLowerCase()
-
-  // XOR as BigNumbers - matches Solidity's bytes20 ^ bytes20
-  const purposeBN = ethers.BigNumber.from(purposeBytes20)
-  const terminalBN = ethers.BigNumber.from(terminalBytes20)
-  const xorResult = purposeBN.xor(terminalBN)
-
-  // Get first 4 bytes (8 hex chars) - matches Solidity's bytes4(...)
-  return xorResult.toHexString().slice(0, 10)
-}
-```
-
-### Step 2: Encode JBSingleAllowance Struct
-
-**CRITICAL: Must encode as a TUPLE, not individual parameters!**
-
-```typescript
-import { encodeAbiParameters, type Hex } from 'viem'
-
-function encodeJBSingleAllowance(
-  sigDeadline: bigint,
-  amount: bigint,
-  expiration: number,
-  nonce: number,
-  signature: Hex
-): Hex {
-  // MUST use tuple encoding to match abi.encode(struct) in Solidity
-  return encodeAbiParameters(
-    [{
-      type: 'tuple',
-      components: [
-        { name: 'sigDeadline', type: 'uint256' },
-        { name: 'amount', type: 'uint160' },
-        { name: 'expiration', type: 'uint48' },
-        { name: 'nonce', type: 'uint48' },
-        { name: 'signature', type: 'bytes' },
-      ]
-    }],
-    [{
-      sigDeadline,
-      amount,
-      expiration: BigInt(expiration),
-      nonce: BigInt(nonce),
-      signature,
-    }]
-  )
-}
-```
-
-### Step 3: Build Permit2 Metadata
-
-```typescript
-import createMetadata from 'juicebox-metadata-helper'
-import type { Hex, Address } from 'viem'
-
-function buildPermit2Metadata(allowanceData: Hex, terminalAddress: Address): Hex {
-  const permit2Id = computePermit2MetadataId(terminalAddress)
-
-  // Pad allowance data to 32-byte boundary (required by the library)
-  const dataLen = (allowanceData.length - 2) / 2
-  const paddedLen = Math.ceil(dataLen / 32) * 32
-  const paddedData = ('0x' + allowanceData.slice(2).padEnd(paddedLen * 2, '0')) as Hex
-
-  // Use the official library
-  return createMetadata([permit2Id], [paddedData]) as Hex
-}
-```
-
-### Step 4: Sign the Permit2 Message
-
-```typescript
-const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
-
-const PERMIT2_TYPES = {
-  PermitSingle: [
-    { name: 'details', type: 'PermitDetails' },
-    { name: 'spender', type: 'address' },
-    { name: 'sigDeadline', type: 'uint256' },
-  ],
-  PermitDetails: [
-    { name: 'token', type: 'address' },
-    { name: 'amount', type: 'uint160' },
-    { name: 'expiration', type: 'uint48' },
-    { name: 'nonce', type: 'uint48' },
-  ],
-}
-
-// Get current nonce from Permit2
-const [, , currentNonce] = await publicClient.readContract({
-  address: PERMIT2_ADDRESS,
-  abi: permit2AllowanceAbi,
-  functionName: 'allowance',
-  args: [userAddress, tokenAddress, terminalAddress],
-})
-
-const nowSeconds = Math.floor(Date.now() / 1000)
-const expiration = nowSeconds + 30 * 24 * 60 * 60  // 30 days
-const sigDeadline = BigInt(nowSeconds + 30 * 60)   // 30 minutes
-
-const signature = await walletClient.signTypedData({
-  domain: {
-    name: 'Permit2',
-    chainId: chainId,
-    verifyingContract: PERMIT2_ADDRESS,
-  },
-  types: PERMIT2_TYPES,
-  primaryType: 'PermitSingle',
-  message: {
-    details: {
-      token: tokenAddress,
-      amount: paymentAmount,
-      expiration: expiration,
-      nonce: Number(currentNonce),
-    },
-    spender: terminalAddress,  // The terminal that will call permit2
-    sigDeadline: sigDeadline,
-  },
-})
-```
-
-### Complete Permit2 Payment Flow
-
-```typescript
-// 1. Ensure token is approved to Permit2 (one-time)
-const tokenToPermit2Allowance = await publicClient.readContract({
-  address: tokenAddress,
-  abi: erc20Abi,
-  functionName: 'allowance',
-  args: [userAddress, PERMIT2_ADDRESS],
-})
-
-if (tokenToPermit2Allowance < amount) {
-  // Approve max to Permit2 (one-time unlimited approval)
-  await walletClient.writeContract({
-    address: tokenAddress,
-    abi: erc20Abi,
-    functionName: 'approve',
-    args: [PERMIT2_ADDRESS, maxUint256],
-  })
-}
-
-// 2. Get terminal address
-const terminalAddress = await publicClient.readContract({
-  address: JB_DIRECTORY,
-  abi: directoryAbi,
-  functionName: 'primaryTerminalOf',
-  args: [projectId, tokenAddress],
-})
-
-// 3. Sign permit and build metadata
-const signature = await walletClient.signTypedData(...)
-const allowanceData = encodeJBSingleAllowance(sigDeadline, amount, expiration, nonce, signature)
-const metadata = buildPermit2Metadata(allowanceData, terminalAddress)
-
-// 4. Call pay with metadata - single transaction!
-await walletClient.writeContract({
-  address: terminalAddress,
-  abi: terminalAbi,
-  functionName: 'pay',
-  args: [projectId, tokenAddress, amount, beneficiary, 0n, memo, metadata],
-})
-```
+**重要提示**：使用 ethers.js 来计算 ID。Viem 的字节处理方式在 XOR 操作中可能存在细微问题。
 
 ---
 
-## Metadata Type 2: 721 Hook (NFT Tier Selection)
+### 第 2 步：编码 JBSingleAllowance 结构
 
-When paying a project with a 721 hook, you can specify which NFT tiers to mint.
+**重要提示**：必须以元组（TUPLE）的形式进行编码，而不能作为单独的参数！
 
-### The 721 Hook Metadata ID
+---
 
-Unlike Permit2, the 721 hook ID is NOT XOR'd with the contract address. It's a static ID:
+### 第 3 步：构建 Permit2 元数据
 
-```typescript
-import { ethers } from 'ethers'
+---
 
-// Static ID - same for all 721 hooks
-const JB721_HOOK_ID = '0x' + ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('JB721TiersHook')
-).slice(2, 10) // First 4 bytes
-```
+### 第 4 步：签署 Permit2 消息
 
-### 721 Hook Data Format
+---
 
-The data payload is:
-1. `allowOverspending` (bool) - If true, excess payment beyond tier prices goes to token minting
-2. `tierIds` (uint16[]) - Array of tier IDs to mint
+### 完整的 Permit2 支付流程
 
-```typescript
-import { encodeAbiParameters, type Hex } from 'viem'
+---
 
-function encode721HookData(
-  allowOverspending: boolean,
-  tierIds: number[]
-): Hex {
-  return encodeAbiParameters(
-    [
-      { type: 'bool' },
-      { type: 'uint16[]' }
-    ],
-    [
-      allowOverspending,
-      tierIds.map(id => id)  // uint16[] of tier IDs
-    ]
-  )
-}
-```
+## 元数据类型 2：721 Hook（NFT 等级选择）
 
-### Build 721 Hook Metadata
+在支付使用 721 Hook 的项目时，您可以指定要铸造的 NFT 等级。
 
-```typescript
-import createMetadata from 'juicebox-metadata-helper'
-import { ethers } from 'ethers'
+### 721 Hook 元数据 ID
 
-function build721HookMetadata(allowOverspending: boolean, tierIds: number[]): Hex {
-  // Compute the static 721 hook ID
-  const hookId = '0x' + ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes('JB721TiersHook')
-  ).slice(2, 10)
+与 Permit2 不同，721 Hook 的 ID 不是与合约地址进行 XOR 运算得到的，而是一个静态 ID：
 
-  // Encode the data
-  const data = encode721HookData(allowOverspending, tierIds)
+---
 
-  // Pad to 32-byte boundary
-  const dataLen = (data.length - 2) / 2
-  const paddedLen = Math.ceil(dataLen / 32) * 32
-  const paddedData = ('0x' + data.slice(2).padEnd(paddedLen * 2, '0')) as Hex
+### 721 Hook 数据格式
 
-  return createMetadata([hookId], [paddedData]) as Hex
-}
-```
+数据负载包括：
+1. `allowOverspending`（布尔值）- 如果为 true，超出等级价格的支付金额将用于铸造 NFT
+2. `tierIds`（uint16[]）- 需要铸造的等级 ID 数组
 
-### Example: Mint Specific NFT Tiers
+---
 
-```typescript
-import { parseEther } from 'viem'
+### 构建 721 Hook 元数据
 
-// Mint tier 1 and tier 3, allow overspending
-const metadata = build721HookMetadata(true, [1, 3])
+---
 
-await walletClient.writeContract({
-  address: terminalAddress,
-  abi: terminalAbi,
-  functionName: 'pay',
-  args: [
-    projectId,
-    '0x0000000000000000000000000000000000000000',  // ETH (native token)
-    parseEther('0.5'),              // Amount
-    beneficiary,
-    0n,                             // minReturnedTokens
-    'Minting tiers 1 and 3',
-    metadata
-  ],
-  value: parseEther('0.5'),
-})
-```
+### 示例：铸造特定 NFT 等级
 
-### allowOverspending Explained
+---
 
-| `allowOverspending` | Behavior |
+### `allowOverspending` 的解释
+
+| `allowOverspending` | 行为 |
 |---------------------|----------|
-| `true` | Payment exceeding tier prices mints project tokens |
-| `false` | Reverts if payment doesn't exactly match tier prices |
+| `true` | 如果支付金额超过等级价格，则铸造项目 NFT |
+| `false` | 如果支付金额与等级价格完全匹配，则不进行任何操作 |
 
-Example: If tier 1 costs 0.1 ETH and you pay 0.5 ETH with `allowOverspending: true`:
-- You receive 1 NFT from tier 1
-- Remaining 0.4 ETH mints project tokens
-
----
-
-## Combining Multiple Metadata Types
-
-You can include both Permit2 AND 721 hook data in a single payment!
-
-```typescript
-import createMetadata from 'juicebox-metadata-helper'
-
-function buildCombinedMetadata(
-  terminalAddress: Address,
-  permit2AllowanceData: Hex,
-  tierIds: number[],
-  allowOverspending: boolean
-): Hex {
-  // Permit2 ID (XOR'd with terminal)
-  const permit2Id = computePermit2MetadataId(terminalAddress)
-
-  // 721 Hook ID (static)
-  const hookId = '0x' + ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes('JB721TiersHook')
-  ).slice(2, 10)
-
-  // Encode both data payloads
-  const permit2Data = padTo32Bytes(permit2AllowanceData)
-  const hookData = padTo32Bytes(encode721HookData(allowOverspending, tierIds))
-
-  // Combine with library - handles lookup table automatically
-  return createMetadata(
-    [permit2Id, hookId],
-    [permit2Data, hookData]
-  ) as Hex
-}
-
-// Helper
-function padTo32Bytes(data: Hex): Hex {
-  const dataLen = (data.length - 2) / 2
-  const paddedLen = Math.ceil(dataLen / 32) * 32
-  return ('0x' + data.slice(2).padEnd(paddedLen * 2, '0')) as Hex
-}
-```
-
-### Example: Pay with USDC + Mint NFT Tier
-
-```typescript
-// Pay with USDC via Permit2 AND mint tier 2
-const permit2Data = encodeJBSingleAllowance(sigDeadline, amount, expiration, nonce, signature)
-const metadata = buildCombinedMetadata(
-  terminalAddress,
-  permit2Data,
-  [2],      // Mint tier 2
-  true      // Allow overspending
-)
-
-await walletClient.writeContract({
-  address: terminalAddress,
-  abi: terminalAbi,
-  functionName: 'pay',
-  args: [projectId, usdcAddress, amount, beneficiary, 0n, memo, metadata],
-})
-```
+**示例**：如果等级 1 的价格为 0.1 ETH，且您设置了 `allowOverspending: true` 并支付了 0.5 ETH：
+- 您将获得 1 个等级 1 的 NFT
+- 剩余的 0.4 ETH 将用于铸造项目 NFT
 
 ---
 
-## Debugging Guide
+## 结合多种元数据类型
 
-### `exists: false` in Tenderly trace
-
-**Problem**: The metadata ID is not being found in the lookup table.
-
-**For Permit2**:
-1. Verify you're using ethers.js for ID computation (not viem byte arrays)
-2. Verify the terminal address matches what `primaryTerminalOf` returns
-3. Log both the computed ID and compare with what the contract expects
-
-**For 721 Hook**:
-1. Verify you're using `keccak256("JB721TiersHook")` not something else
-2. Check that the hook is actually deployed for this project
-
-### `exists: true` but decoded values are zeros or shifted
-
-**Problem**: The metadata format is incorrect - data is in the wrong position.
-
-**Solution**:
-1. Use `juicebox-metadata-helper` library instead of manual construction
-2. Ensure data is padded to 32-byte boundaries before passing to library
-3. Check that offset is in WORDS (not bytes)
-
-### Decoded sigDeadline shows wrong value (e.g., 288)
-
-**Problem**: The contract is reading the data length instead of the actual data.
-
-**Solution**: This indicates the offset or format is wrong. Use the library.
-
-### Error: "Called function does not exist in the contract" on abi.decode
-
-**Problem**: JBSingleAllowance is encoded as individual parameters instead of as a tuple.
-
-**Solution**: Use explicit tuple encoding:
-```typescript
-encodeAbiParameters(
-  [{ type: 'tuple', components: [...] }],  // NOT individual types
-  [{ sigDeadline, amount, ... }]           // Pass as object
-)
-```
-
-### 721 Hook: No NFTs minted despite correct metadata
-
-**Check**:
-1. Payment amount covers tier price(s)
-2. Tier has remaining supply (`remainingSupply > 0`)
-3. Tier is not paused
-4. Project has 721 hook configured as data hook
+您可以在一次支付中同时包含 Permit2 和 721 Hook 的数据！
 
 ---
 
-## Common Mistakes
+## 调试指南
+
+### 在 Tenderly 日志中看到 `exists: false`
+
+**问题**：元数据 ID 未在查找表中找到。
+
+**对于 Permit2**：
+1. 确保使用 ethers.js 来计算 ID（而不是 viem 的字节数组）
+2. 确认终端地址与 `primaryTerminalOf` 返回的地址一致
+3. 记录计算出的 ID 并与合约期望的 ID 进行比较
+
+**对于 721 Hook**：
+1. 确保使用 `keccak256("JB721TiersHook")` 而不是其他函数
+2. 检查该 Hook 是否已为该项目正确部署
+
+### `exists: true` 但解码后的值为零或数据位置错误
+
+**问题**：元数据格式不正确——数据位置错误。
+
+**解决方案**：
+1. 使用 `juicebox-metadata-helper` 库而不是手动构建元数据
+2. 在将数据传递给库之前确保其长度为 32 字节
+3. 确保偏移量是以“字”（WORD）为单位，而不是字节（byte）
+
+### 解码后的 `sigDeadline` 值错误（例如显示为 288）
+
+**问题**：合约读取的是数据长度而不是实际的数据。
+
+**解决方案**：这表明偏移量或格式有误。请使用官方库。
+
+### 错误：“Called function does not exist in the contract” 在 abi.decode 时出现
+
+**问题**：JBSingleAllowance 被编码为单独的参数，而不是元组。
+
+**解决方案**：请使用正确的元组编码方式：
+
+---
+
+### 721 Hook：尽管元数据正确，但未铸造 NFT
+
+**检查**：
+1. 支付金额是否覆盖了等级价格
+2. 相应等级的剩余供应量是否大于 0
+3. 该等级是否未暂停铸造
+4. 项目是否配置了 721 Hook 作为数据钩子
+
+---
+
+## 常见错误
 
 ### Permit2
-1. **Individual parameters instead of tuple**: MUST encode JBSingleAllowance as a tuple type
-2. **Manual metadata construction**: Has subtle bugs. ALWAYS use `juicebox-metadata-helper`
-3. **Viem for ID computation**: Use ethers.js BigNumber.xor() instead
-4. **Wrong terminal address**: Must use the terminal from `primaryTerminalOf`
-5. **Offset in bytes instead of words**: The offset is in 32-byte words
-6. **Missing padding**: Data must be padded to 32-byte boundaries
-7. **Wrong spender**: Permit2 spender must be the terminal address
+1. **使用单独的参数而不是元组**：必须将 JBSingleAllowance 编码为元组类型
+2. **手动构建元数据**：可能存在细微错误。始终使用 `juicebox-metadata-helper`
+3. **使用 viem 计算 ID**：请使用 ethers.js 的 `BigInteger.xor()` 方法
+4. **使用错误的终端地址**：必须使用 `primaryTerminalOf` 返回的终端地址
+5. **偏移量单位错误**：偏移量应以“字”（WORD）为单位，而不是字节（byte）
+6. **缺少填充**：数据必须填充到 32 字节的边界
+7. **支付方错误**：Permit2 的支付方必须是终端地址
 
 ### 721 Hook
-1. **Using XOR for hook ID**: 721 hook uses a static ID, not XOR'd with address
-2. **Wrong tier ID type**: Must be uint16[], not uint256[]
-3. **Missing allowOverspending field**: Both fields are required
-4. **Insufficient payment**: Must cover total tier prices unless allowOverspending is true
+1. **使用 XOR 计算 Hook ID**：721 Hook 使用的是静态 ID，而不是与地址进行 XOR 运算
+2. **等级 ID 类型错误**：必须使用 uint16[]，而不是 uint256[]
+3. **缺少 `allowOverspending` 字段**：这两个字段都是必需的
+4. **支付金额不足**：除非设置了 `allowOverspending`，否则支付金额必须覆盖所有等级的价格
 
 ---
 
-## Verification
+## 验证
 
-### Check metadata ID matches
+### 检查元数据 ID 是否匹配
 
-**Permit2**: Terminal uses `JBMetadataResolver.getId("permit2")` which XORs with `address(this)`
+**Permit2**：终端使用 `JBMetadataResolver.getId("permit2")`，该函数会将 ID 与合约地址进行 XOR 运算
 
-**721 Hook**: Uses `bytes4(keccak256("JB721TiersHook"))` - static, no XOR
+**721 Hook**：使用 `bytes4(keccak256("JB721TiersHook"))`——这是一个静态 ID，不需要进行 XOR 运算
 
-### In Tenderly trace
+### 在 Tenderly 日志中
 
-- `getDataFor()` should return `(true, <non-zero-data>)`
-- If `exists: false`, ID computation is wrong
-- If `exists: true` but data is wrong, format is wrong (use the library!)
+- `getDataFor()` 应返回 `(true, <非零数据>)`
+- 如果 `exists: false`，则说明 ID 计算有误
+- 如果 `exists: true` 但数据错误，说明格式不正确（请使用官方库！）
 
 ---
 
-## References
+## 参考资料
 
 - [JBMetadataResolver.sol](https://github.com/Bananapus/nana-core-v5/blob/main/src/libraries/JBMetadataResolver.sol)
 - [JBSingleAllowance.sol](https://github.com/Bananapus/nana-core-v5/blob/main/src/structs/JBSingleAllowance.sol)

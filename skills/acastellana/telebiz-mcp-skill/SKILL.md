@@ -1,20 +1,20 @@
 ---
 name: telebiz-mcp
-description: Access Telegram data via MCP using the telebiz-tt browser client. Lists chats, reads messages, searches, manages folders, and sends messages through an authenticated Telegram session.
+description: 通过使用 telebiz-tt 浏览器客户端，可以利用 MCP 访问 Telegram 数据。该客户端支持列出聊天记录、读取消息、进行搜索、管理文件夹以及通过已认证的 Telegram 会话发送消息。
 metadata: {"clawdbot":{"emoji":"📱"}}
 ---
 
 # telebiz-mcp
 
-MCP integration for Telegram via telebiz-tt browser client.
+这是一个用于通过 `telebiz-tt` 浏览器客户端与 Telegram 进行集成的工具（MCP，即 Message Center Protocol）。
 
-## Quick Rules (read this first)
-- **Rate limits are strict**: max 20 calls/request, 30 calls/min, 500ms between calls, heavy ops 1s.
-- For adding many chats to folders: **do NOT use `batchAddToFolder` with multiple chatIds** (known bug). Loop `addChatToFolder` sequentially.
-- For CRM linking: `linkEntityToChat` is **unstable** in our tests. We observed `company` failing with Validation error, and at one point `organization` succeeding — but later `organization` also failed. Treat `linkEntityToChat` as unreliable until upstream clarifies schema/feature flags.
-- Prefer reversible operations and clean up test artifacts (folders, groups) immediately.
+## 快速使用指南（请先阅读此部分）
+- **速率限制非常严格**：每次请求最多允许 20 次调用，每分钟最多 30 次调用，每次调用之间至少需要 500 毫秒的延迟；执行复杂操作时延迟时间会增加至 1 秒。
+- **在将多个聊天添加到文件夹时**：**请勿使用 `batchAddToFolder` 并传入多个 `chatIds`（已知存在问题）**，应依次调用 `addChatToFolder`。
+- **关于 CRM 链接**：在我们的测试中，`linkEntityToChat` 的稳定性不佳。我们发现使用 `company` 时会出现验证错误，而使用 `organization` 时有时能成功，但后来也会失败。在上游明确说明数据结构或功能标志之前，请将 `linkEntityToChat` 视为不可靠的。
+- 建议使用可逆的操作，并立即清理测试过程中产生的临时文件（如文件夹、群组等）。
 
-## Architecture
+## 架构
 
 ```
 ┌──────────────┐     ┌──────────────────┐     ┌─────────────────┐
@@ -30,41 +30,39 @@ MCP integration for Telegram via telebiz-tt browser client.
                                               └─────────────────┘
 ```
 
-## Quick Setup
+## 快速设置
 
-### Prerequisites
-- Node.js 18+
-- Telegram account
+### 先决条件
+- Node.js 18 及以上版本
+- 拥有 Telegram 账户
 
-### 1. Install telebiz-mcp
+### 1. 安装 telebiz-mcp
 
 ```bash
 npm install -g @telebiz/telebiz-mcp
 ```
 
-### 2. Open Telebiz in browser
+### 2. 在浏览器中打开 Telebiz
 
-Go to **https://telebiz.io** and login with your Telegram account.
+访问 **https://telebiz.io** 并使用您的 Telegram 账户登录。
 
-### 3. Start the HTTP server
+### 3. 启动 HTTP 服务器
 
 ```bash
 cd ~/clawd/skills/telebiz-mcp
 ./start-http.sh
 ```
 
-This starts a persistent server that:
-- Runs telebiz-mcp internally
-- Keeps browser connection alive  
-- Exposes HTTP API on port 9718
+该服务器会：
+- 在内部运行 `telebiz-mcp`
+- 保持与浏览器的连接
+- 在端口 9718 上提供 HTTP API
 
-### 4. Enable MCP in Telebiz
+### 4. 在 Telebiz 中启用 MCP
 
-In telebiz.io: **Settings → Agent → Local MCP**
+在 telebiz.io 的 **设置 → 代理 → 本地 MCP** 中进行配置。服务器启动后，状态应显示为“已连接”。
 
-The status should show "Connected" once the server is running.
-
-### 4. Verify connection
+### 5. 验证连接
 
 ```bash
 # Quick health check
@@ -79,16 +77,16 @@ npm run health
 # Tools: 31 available
 ```
 
-### 5. Test via mcporter
+### 6. 通过 mcporter 进行测试
 
 ```bash
 cd ~/clawd
 mcporter call telebiz.listChats limit:5
 ```
 
-## Health Monitoring
+## 健康状况监控
 
-### Manual Check
+### 手动检查
 
 ```bash
 # Check status
@@ -98,9 +96,9 @@ npm run health
 node dist/health.js --json
 ```
 
-### Monitor Script
+### 监控脚本
 
-The monitor tracks state changes and can be used with cron:
+可以使用定时任务（cron）来监控系统的运行状态：
 
 ```bash
 # Check and alert on changes
@@ -113,24 +111,24 @@ node dist/monitor.js --quiet
 node dist/monitor.js --json
 ```
 
-Exit codes:
-- `0` = Healthy (relay up, executor connected)
-- `1` = Degraded (relay up, executor disconnected)
-- `2` = Down (relay not running)
-- `3` = State changed (for alerting)
+### 错误代码说明：
+- `0` = 系统正常运行（中继正常，执行器已连接）
+- `1` = 系统性能下降（中继正常，但执行器断开连接）
+- `2` = 系统关闭（中继未运行）
+- `3` = 系统状态发生变化（用于触发警报）
 
-### Cron Integration
+### 定时任务集成
 
-Add to crontab for periodic monitoring:
+将以下脚本添加到 crontab 中以实现定期监控：
 
 ```bash
 # Check every 5 minutes, alert on changes
 */5 * * * * cd ~/clawd/skills/telebiz-mcp && node dist/monitor.js --quiet >> /var/log/telebiz-monitor.log 2>&1
 ```
 
-### Heartbeat Integration
+### 心跳监控集成
 
-Add to `HEARTBEAT.md` for Clawdbot monitoring:
+请参考 `HEARTBEAT.md` 文件中的内容，了解如何使用 Clawdbot 进行监控：
 
 ```markdown
 ### Telebiz MCP (every 2h)
@@ -138,96 +136,96 @@ Add to `HEARTBEAT.md` for Clawdbot monitoring:
 - [ ] If degraded/down: Alert Albert via Telegram
 ```
 
-## Available Tools
+## 可用工具
 
-### Chat Tools
-| Tool | Description |
+### 聊天工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `listChats` | List chats with filters (type, unread, archived, etc.) |
-| `getChatInfo` | Get detailed chat information |
-| `getCurrentChat` | Get currently open chat |
-| `openChat` | Navigate to a chat |
-| `archiveChat` | Archive a chat |
-| `unarchiveChat` | Unarchive a chat |
-| `pinChat` | Pin a chat |
-| `unpinChat` | Unpin a chat |
-| `muteChat` | Mute notifications |
-| `unmuteChat` | Unmute notifications |
-| `deleteChat` | Delete/leave chat ⚠️ |
+| `listChats` | 根据类型、未读状态、是否已归档等条件列出聊天记录 |
+| `getChatInfo` | 获取聊天详情 |
+| `getCurrentChat` | 获取当前打开的聊天记录 |
+| `openChat` | 导航到指定聊天记录 |
+| `archiveChat` | 将聊天记录归档 |
+| `unarchiveChat` | 取消聊天记录的归档状态 |
+| `pinChat` | 将聊天记录固定到屏幕顶部 |
+| `unpinChat` | 取消聊天记录的固定状态 |
+| `muteChat` | 静音聊天通知 |
+| `unmuteChat` | 恢复聊天通知的静音状态 |
+| `deleteChat` | 删除聊天记录 ⚠️ |
 
-### Message Tools
-| Tool | Description |
+### 消息工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `sendMessage` | Send text message (markdown supported) |
-| `forwardMessages` | Forward messages between chats |
-| `deleteMessages` | Delete messages ⚠️ |
-| `searchMessages` | Search globally or in a chat |
-| `getRecentMessages` | Get message history |
-| `markChatAsRead` | Mark all messages as read |
+| `sendMessage` | 发送文本消息（支持 Markdown 格式） |
+| `forwardMessages` | 在聊天记录之间转发消息 |
+| `deleteMessages` | 删除消息 ⚠️ |
+| `searchMessages` | 全局搜索或在指定聊天记录中搜索 |
+| `getRecentMessages` | 查看聊天记录的历史记录 |
+| `markChatAsRead` | 将所有消息标记为已读 |
 
-### Folder Tools
-| Tool | Description |
+### 文件夹工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `listFolders` | List all chat folders |
-| `createFolder` | Create a new folder |
-| `addChatToFolder` | Add chat to folders |
-| `removeChatFromFolder` | Remove chat from folders |
-| `deleteFolder` | Delete a folder ⚠️ |
+| `listFolders` | 列出所有聊天文件夹 |
+| `createFolder` | 创建新文件夹 |
+| `addChatToFolder` | 将聊天记录添加到文件夹 |
+| `removeChatFromFolder` | 从文件夹中删除聊天记录 |
+| `deleteFolder` | 删除文件夹 ⚠️ |
 
-### Member Tools
-| Tool | Description |
+### 成员工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `getChatMembers` | List group/channel members |
-| `addChatMembers` | Add users to group |
-| `removeChatMember` | Remove user from group |
-| `createGroup` | Create a new group |
+| `getChatMembers` | 列出群组/频道的成员 |
+| `addChatMembers` | 将用户添加到群组 |
+| `removeChatMember` | 从群组中删除用户 |
+| `createGroup` | 创建新群组 |
 
-### User Tools
-| Tool | Description |
+### 用户工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `searchUsers` | Search by name/username |
-| `getUserInfo` | Get user details |
+| `searchUsers` | 按名称/用户名搜索用户 |
+| `getUserInfo` | 查看用户详情 |
 
-### Batch Tools
-| Tool | Description |
+### 批量工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `batchSendMessage` | Send to multiple chats |
-| `batchAddToFolder` | Add multiple chats to folder |
-| `batchArchive` | Archive multiple chats |
+| `batchSendMessage` | 向多个聊天记录发送消息 |
+| `batchAddToFolder` | 将多个聊天记录添加到文件夹 |
+| `batchArchive` | 将多个聊天记录归档 |
 
-## Usage Examples
+## 使用示例
 
-### Find chats waiting for my reply
+### 查找需要回复的聊天记录
 ```bash
 mcporter call telebiz.listChats iAmLastSender=false hasUnread=true limit:20
 ```
 
-### Find stale conversations I started
+### 查找我发起的未回复对话
 ```bash
 mcporter call telebiz.listChats iAmLastSender=true lastMessageOlderThanDays:7 limit:20
 ```
 
-### Search all messages
+### 全局搜索消息
 ```bash
 mcporter call telebiz.searchMessages query="invoice" limit:20
 ```
 
-### Search in specific chat
+### 在特定聊天记录中搜索
 ```bash
 mcporter call telebiz.searchMessages query="meeting" chatId=-1001234567890 limit:10
 ```
 
-### Send message
+### 发送消息
 ```bash
 mcporter call telebiz.sendMessage chatId=-1001234567890 text="Hello from Clawdbot!"
 ```
 
-### Get recent messages
+### 查看最近的消息
 ```bash
 mcporter call telebiz.getRecentMessages chatId=-1001234567890 limit:50
 ```
 
-### Paginate through history
+### 分页查看聊天记录历史
 ```bash
 # Page 1 (newest 50)
 mcporter call telebiz.getRecentMessages chatId=-1001234567890 limit:50 offset:0
@@ -236,7 +234,7 @@ mcporter call telebiz.getRecentMessages chatId=-1001234567890 limit:50 offset:0
 mcporter call telebiz.getRecentMessages chatId=-1001234567890 limit:50 offset:50
 ```
 
-### Organize chats
+### 整理聊天记录
 ```bash
 # List folders
 mcporter call telebiz.listFolders
@@ -245,45 +243,32 @@ mcporter call telebiz.listFolders
 mcporter call telebiz.batchAddToFolder chatIds='["-1001234","-1001235"]' folderId:5
 ```
 
-## Rate Limiting
+## 速率限制
 
-The browser enforces rate limits to prevent Telegram flood protection:
-- **Max calls per request**: 20
-- **Max calls per minute**: 30
-- **Min delay between calls**: 500ms
-- **Delay for heavy operations** (send/forward/delete): 1s
+浏览器会实施速率限制，以防止 Telegram 的流量过载：
+- **每次请求的最大调用次数**：20 次
+- **每分钟的最大调用次数**：30 次
+- **每次调用之间的最小延迟**：500 毫秒
+- **执行复杂操作（发送、转发、删除）时的延迟**：1 秒
 
-(These values come from the Telebiz UI and are the effective limits we observed in practice.)
+（这些限制值来自 Telebiz 的用户界面，是我们实际测试中观察到的有效限制。）
 
-## Known Issues / Workarounds (Feb 2026)
+## 已知问题及解决方法（2026 年 2 月）
 
-### `batchAddToFolder` fails for multiple chatIds
-Observed behavior:
-- `batchAddToFolder(folderId, chatIds=[one])` works (or reports `alreadyIncluded`)
-- `batchAddToFolder(folderId, chatIds=[two or more])` fails with: **"Error: Failed to update folder"**
-- Repro confirmed for both:
-  - Auto + another **group**
-  - Auto + a **private** chat
+### `batchAddToFolder` 在处理多个 `chatIds` 时失败
+- **已知问题**：`batchAddToFolder(folderId, chatIds=[one])` 可以正常工作，或返回“已包含”错误；而 `batchAddToFolder(folderId, chatIds=[two or more])` 会返回“错误：无法更新文件夹”。
+- **解决方法**：需要依次调用 `addChatToFolder`，例如：`addChatToFolder(chatId=A, folderIds=[folderId])` 和 `addChatToFolder(chatId=B, folderIds=[folderId])`。
 
-**Workaround:** loop sequentially:
-- `addChatToFolder(chatId=A, folderIds=[folderId])`
-- `addChatToFolder(chatId=B, folderIds=[folderId])`
+### `linkEntityToChat` 的稳定性问题/数据结构不匹配
+- **问题现象**（2026 年 2 月）：当 `entityType` 为 `deal`、`contact` 或 `company` 时，`linkEntityToChat` 会返回“验证错误”。
+- **解决方法**：
+  - 建议使用 `createContact`、`createDeal` 或 `createCompany` 等接口来创建关联关系。
+  - 使用 `associateEntities` 方法来连接 `deal` 和 `company`/`contact`。
+- 在上游提供稳定的数据结构或错误信息之前，不要依赖 `linkEntityToChat`。
 
-### `linkEntityToChat` is unstable / schema mismatch
-Observed behavior (Feb 2026):
-- `linkEntityToChat` returns **"Validation error"** for `entityType=deal`, `contact`, and `company`.
-- In one run, using `entityType="organization"` successfully linked a HubSpot company to a chat — but later `organization` also returned **"Validation error"**.
+## 故障排除
 
-**Implication:** this tool is either behind a feature flag, has changing server-side validation, or the published schema/enums don’t match what the backend expects.
-
-**Workaround:**
-- Prefer linking via `createContact/createDeal/createCompany` (these link to the chat at creation time).
-- Use `associateEntities` to connect deal↔company/contact.
-- Don’t depend on `linkEntityToChat` until upstream provides a stable contract + better error messages.
-
-## Troubleshooting
-
-### Relay not starting
+### 中继未启动
 ```bash
 # Check if port is in use
 ss -tlnp | grep 9716
@@ -295,42 +280,38 @@ pkill -f "relay.js"
 ./start-relay.sh
 ```
 
-### Browser not connecting
-1. Verify relay is running: `npm run health`
-2. Check browser console (F12) for WebSocket errors
-3. Ensure MCP is enabled in Settings → Agent → Enable MCP
-4. Try refreshing the telebiz-tt page
+### 浏览器无法连接
+1. 检查 `npm run health` 命令，确认中继是否正在运行。
+2. 查看浏览器控制台（F12）中的 WebSocket 错误信息。
+3. 确保在设置 → 代理 → 启用 MCP 中启用了 MCP 功能。
+4. 尝试刷新 `telebiz-tt` 页面。
 
-### "Executor not connected" error
-The browser tab with telebiz-tt must be:
-- Open and visible (not suspended)
-- Logged into Telegram
-- MCP enabled in settings
+### 出现“执行器未连接”的错误
+- 使用 `telebiz-tt` 的浏览器标签页必须处于打开且可见状态（未暂停）。
+- 确保已登录 Telegram 并且在中继设置中启用了 MCP 功能。
 
-### Rate limit errors
-- Reduce batch sizes
-- Add delays between operations
-- Be more specific in filters to reduce API calls
+### 速率限制相关问题
+- 减少批量操作的数量。
+- 在执行操作之间增加延迟时间。
+- 使用更精确的过滤条件以减少 API 调用次数。
 
-### Session expired
-If Telegram session expires:
-1. Refresh the telebiz-tt browser page
-2. Re-login if prompted
-3. Re-enable MCP in settings
+### 会话过期
+- 如果 Telegram 会话过期，请刷新 `telebiz-tt` 页面。
+- 如果系统提示，请重新登录。
+- 在设置中重新启用 MCP 功能。
 
-## Configuration
+## 配置
 
-### Environment Variables
-
-| Variable | Default | Description |
+### 环境变量
+| 变量 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `TELEBIZ_PORT` | `9716` | Relay WebSocket port |
-| `TELEBIZ_RELAY_URL` | `ws://localhost:9716` | Relay URL for MCP server |
-| `TELEBIZ_STATE_FILE` | `~/.telebiz-mcp-state.json` | Monitor state file |
+| `TELEBIZ_PORT` | `9716` | 中继 WebSocket 端口 |
+| `TELEBIZ_RELAY_URL` | `ws://localhost:9716` | MCP 服务器的 WebSocket 连接地址 |
+| `TELEBIZ_STATE_FILE` | `~/.telebiz-mcp-state.json` | 系统状态文件 |
 
-### mcporter Config
+### mcporter 配置
 
-Located at `~/clawd/config/mcporter.json`:
+配置文件位于 `~/clawd/config/mcporter.json`：
 
 ```json
 {
@@ -342,11 +323,10 @@ Located at `~/clawd/config/mcporter.json`:
 }
 ```
 
-**Note**: Use the HTTP URL (not stdio) to avoid spawning conflicts.
+**注意**：请使用 HTTP URL（而非标准输入/输出接口），以避免冲突。
 
-## Security Notes
-
-- The browser holds your Telegram session - keep it secure
-- Don't expose the relay port (9716) to the internet
-- Review tool calls before executing destructive operations
-- Rate limits help prevent accidental spam
+## 安全注意事项
+- 浏览器会保存您的 Telegram 会话信息，请确保其安全性。
+- 不要将中继端口（9716）暴露在互联网上。
+- 在执行破坏性操作之前，请仔细检查工具的调用逻辑。
+- 速率限制有助于防止意外发送大量消息（垃圾信息）。

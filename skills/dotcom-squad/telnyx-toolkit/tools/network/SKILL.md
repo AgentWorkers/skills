@@ -1,27 +1,27 @@
 ---
 name: telnyx-network
-description: Private mesh networking and public IP exposure via Telnyx WireGuard infrastructure. Connect nodes securely or expose services to the internet.
+description: 通过 Telnyx 和 WireGuard 基础设施实现私有网络连接以及公网 IP 的暴露。可以安全地连接节点，或将服务暴露到互联网上。
 metadata: {"openclaw":{"emoji":"🌐","requires":{"bins":["wg"],"env":["TELNYX_API_KEY"]},"primaryEnv":"TELNYX_API_KEY"}}
 ---
 
-# Telnyx Network
+# Telnyx 网络
 
-Private mesh networking and public IP exposure via Telnyx WireGuard infrastructure.
+通过 Telnyx WireGuard 基础设施实现私有网络连接及公共 IP 的暴露。
 
-## Requirements
+## 必需条件
 
-- **Telnyx API Key** — [Get one free](https://portal.telnyx.com/#/app/api-keys)
-- **WireGuard** installed on your machine
+- **Telnyx API 密钥** — [免费获取](https://portal.telnyx.com/#/app/api-keys)
+- 你的机器上已安装了 WireGuard
 
-## Agent Use (OpenClaw)
+## 代理使用（OpenClaw）
 
-WireGuard requires elevated permissions to create network interfaces. For OpenClaw to manage your mesh autonomously, run this **once**:
+WireGuard 需要提升权限才能创建网络接口。为了让 OpenClaw 自动管理你的网络，请运行以下命令 **一次**：
 
 ```bash
 sudo ./setup-sudoers.sh
 ```
 
-This adds a sudoers rule allowing WireGuard commands without password prompts. After setup, your agent can:
+这会添加一条 `sudoers` 规则，允许在无需输入密码的情况下执行 WireGuard 命令。设置完成后，你的代理可以：
 
 ```bash
 # Agent can now do all of this without password prompts:
@@ -31,17 +31,17 @@ This adds a sudoers rule allowing WireGuard commands without password prompts. A
 ./teardown.sh
 ```
 
-**What it does:**
-- Adds `/etc/sudoers.d/wireguard-<username>`
-- Only allows `wg` and `wg-quick` commands (not blanket sudo)
-- Can be removed anytime: `sudo rm /etc/sudoers.d/wireguard-*`
+**功能说明：**
+- 在 `/etc/sudoers.d/wireguard-<username>` 文件中添加相应的条目
+- 仅允许执行 `wg` 和 `wg-quick` 命令（而非全面的 sudo 权限）
+- 可以随时通过 `sudo rm /etc/sudoers.d/wireguard-*` 删除该规则
 
-**Without this setup**, the agent can still create networks and generate configs, but you'll need to manually run `sudo wg-quick up <config>` to connect.
+**如果不进行此设置**，代理仍然可以创建网络并生成配置文件，但你需要手动运行 `sudo wg-quick up <config>` 来建立连接。
 
-## Two Modes
+## 两种模式
 
-### Mesh Mode (Private)
-Connect multiple machines in a private network. Like Tailscale, but on Telnyx infrastructure.
+### 网络模式（私有）
+将多台机器连接到一个私有网络中。类似于 Tailscale，但基于 Telnyx 的基础设施。
 
 ```bash
 ./setup.sh --region ashburn-va
@@ -50,10 +50,10 @@ Connect multiple machines in a private network. Like Tailscale, but on Telnyx in
 # Now laptop and server can talk via 172.27.0.x
 ```
 
-**Cost: $10/month** (WireGuard Gateway)
+**费用：$10/月**（WireGuard 网关）
 
-### Expose Mode (Public)
-Get a public IP and expose services to the internet.
+### 公开模式
+获取一个公共 IP 并将服务暴露到互联网上。
 
 ```bash
 ./setup.sh --region ashburn-va
@@ -63,40 +63,40 @@ Get a public IP and expose services to the internet.
 # Now https://64.16.x.x:443 reaches your server
 ```
 
-**Cost: $60/month** (WireGuard Gateway + Internet Gateway)
+**费用：$60/月**（WireGuard 网关 + 互联网网关）
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 说明 |
 |---------|-------------|
-| `sudo ./setup-sudoers.sh` | Enable passwordless sudo for WireGuard (one-time, for agent use) |
-| `./setup.sh --region <code>` | Create network + WireGuard gateway |
-| `./join.sh --name <name>` | Add this machine to the mesh |
-| `./peers.sh` | List all connected peers |
-| `./add-public-ip.sh` | Add internet gateway (public IP) |
-| `./expose.sh <port>` | Open a port |
-| `./unexpose.sh <port>` | Close a port |
-| `./status.sh` | Show full status |
-| `./teardown.sh` | Delete everything |
-| `./register.sh --name <name>` | Register node in mesh registry |
-| `./discover.sh` | Discover other nodes on mesh |
-| `./unregister.sh --name <name>` | Remove node from registry |
+| `sudo ./setup-sudoers.sh` | 为 WireGuard 启用免密码 sudo 访问（仅限代理使用，一次性设置） |
+| `./setup.sh --region <code>` | 创建网络并配置 WireGuard 网关 |
+| `./join.sh --name <name>` | 将该机器添加到网络中 |
+| `./peers.sh` | 列出所有已连接的节点 |
+| `./add-public-ip.sh` | 添加互联网网关（公共 IP） |
+| `./expose.sh <port>` | 打开指定端口 |
+| `./unexpose.sh <port>` | 关闭指定端口 |
+| `./status.sh` | 显示完整状态 |
+| `./teardown.sh` | 删除所有配置 |
+| `./register.sh --name <name>` | 在网络注册表中注册节点 |
+| `./discover.sh` | 发现网络中的其他节点 |
+| `./unregister.sh --name <name>` | 从注册表中删除节点 |
 
-## Node Discovery
+## 节点发现
 
-Nodes on the mesh can find each other using a registry stored in Telnyx Storage. This enables OpenClaw instances to automatically discover and communicate with each other.
+网络中的节点可以通过存储在 Telnyx 存储系统中的注册表来找到彼此。这使得 OpenClaw 实例能够自动发现并相互通信。
 
-### Register This Node
+### 注册节点
 
-After joining the mesh, register your node so others can find it:
+加入网络后，请注册你的节点，以便其他节点能够找到你：
 
 ```bash
 ./register.sh --name "home-server"
 ```
 
-### Discover Other Nodes
+### 发现其他节点
 
-Find all registered nodes on the mesh:
+列出网络中所有已注册的节点：
 
 ```bash
 ./discover.sh
@@ -110,15 +110,15 @@ Find all registered nodes on the mesh:
 ./discover.sh --json
 ```
 
-### Unregister
+### 从注册表中删除节点
 
-Remove a node from the registry:
+从注册表中删除某个节点：
 
 ```bash
 ./unregister.sh --name "old-server"
 ```
 
-### Use Case: Multi-OpenClaw Communication
+### 使用场景：多 OpenClaw 之间的通信
 
 ```bash
 # On OpenClaw A
@@ -137,38 +137,38 @@ Remove a node from the registry:
 curl http://172.27.0.2:18789/health  # OpenClaw B's gateway
 ```
 
-This completes the "host-to-local node sessions" and "direct comms between OpenClaws" use cases.
+以上内容涵盖了“主机与本地节点之间的会话”以及“OpenClaw 实例之间的直接通信”等使用场景。
 
-## Regions
+## 地区设置
 
-| Region | Code | Location |
+| 地区 | 代码 | 所在地 |
 |--------|------|----------|
-| US East | `ashburn-va` | Ashburn, VA |
-| US Central | `chicago-il` | Chicago, IL |
-| EU | `frankfurt-de` | Frankfurt, DE |
-| EU | `amsterdam-nl` | Amsterdam, NL |
+| 美国东部 | `ashburn-va` | 弗吉尼亚州阿什伯恩 |
+| 美国中部 | `chicago-il` | 伊利诺伊州芝加哥 |
+| 欧洲 | `frankfurt-de` | 德国法兰克福 |
+| 欧洲 | `amsterdam-nl` | 荷兰阿姆斯特丹 |
 
-Get full list:
+查看完整地区列表：
 ```bash
 ./setup.sh --region help
 ```
 
-## Safety
+## 安全性
 
-### Blocked Ports (need --force)
-- 22 (SSH)
-- 23 (Telnet)
-- 3306 (MySQL)
-- 5432 (PostgreSQL)
-- 6379 (Redis)
-- 27017 (MongoDB)
+### 被阻止的端口（需使用 `--force` 参数）
+- 22（SSH）
+- 23（Telnet）
+- 3306（MySQL）
+- 5432（PostgreSQL）
+- 6379（Redis）
+- 27017（MongoDB）
 
-### Firewall
-Only explicitly exposed ports accept traffic on the WireGuard interface. All other ports are blocked by default.
+### 防火墙
+只有明确暴露的端口才会允许通过 WireGuard 接口接收流量。其他端口默认被阻断。
 
-## Configuration
+## 配置
 
-All state is stored in `config.json`:
+所有配置信息存储在 `config.json` 文件中：
 
 ```json
 {
@@ -188,9 +188,9 @@ All state is stored in `config.json`:
 }
 ```
 
-## Use Cases
+## 使用场景
 
-### 1. Connect OpenClaw Instances
+### 1. 连接 OpenClaw 实例
 ```bash
 # On main server
 ./setup.sh --region ashburn-va
@@ -202,14 +202,14 @@ All state is stored in `config.json`:
 # Now they can communicate securely
 ```
 
-### 2. Expose Webhook Endpoint
+### 2. 暴露 Webhook 端点
 ```bash
 ./add-public-ip.sh
 ./expose.sh 443
 # Configure your webhook URL as https://64.16.x.x/webhook
 ```
 
-### 3. Multi-Region Mesh
+### 3. 多地区网络
 ```bash
 ./setup.sh --region ashburn-va
 ./join.sh --name "us-east-server"
@@ -219,28 +219,28 @@ All state is stored in `config.json`:
 ./join.sh --name "eu-server"
 ```
 
-## Pricing
+## 价格
 
-| Component | Monthly Cost |
+| 组件 | 每月费用 |
 |-----------|--------------|
-| WireGuard Gateway | $10 |
-| Internet Gateway | $50 |
-| Peers | Free |
-| Traffic | Free (beta) |
+| WireGuard 网关 | $10 |
+| 互联网网关 | $50 |
+| 节点连接 | 免费 |
+| 流量传输 | 免费（测试阶段） |
 
-## Troubleshooting
+## 故障排除
 
-### "Gateway still provisioning"
-Wait 5-10 minutes after setup for the gateway to be ready.
+### “网关尚未配置完成”
+设置完成后请等待 5-10 分钟，网关才会准备好。
 
-### "Connection refused"
-- Check WireGuard is running: `sudo wg show`
-- Check port is exposed: `./status.sh`
-- Check firewall: `sudo iptables -L -n`
+### “连接被拒绝”
+- 检查 WireGuard 是否正在运行：`sudo wg show`
+- 检查端口是否已暴露：`./status.sh`
+- 检查防火墙设置：`sudo iptables -L -n`
 
-### "Permission denied"
-WireGuard requires root. Run with `sudo` or use `--apply` flag.
+### “权限被拒绝”
+WireGuard 需要 root 权限。请使用 `sudo` 运行相关命令，或使用 `--apply` 标志。
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

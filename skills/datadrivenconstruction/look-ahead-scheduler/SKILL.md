@@ -1,18 +1,18 @@
 ---
 slug: "look-ahead-scheduler"
 display_name: "Look Ahead Scheduler"
-description: "Generate rolling look-ahead schedules for construction. Create 2-week, 3-week, or 6-week look-aheads with constraint analysis and crew coordination."
+description: "生成施工项目的滚动式前瞻性计划（look-ahead schedules）。可以制定为期2周、3周或6周的计划，并包含约束条件分析（constraint analysis）和人员协调（crew coordination）的相关内容。"
 ---
 
-# Look-Ahead Scheduler
+# 预测性调度器（Look-Ahead Scheduler）
 
-## Overview
+## 概述
 
-Generate rolling look-ahead schedules from the master schedule. Create actionable short-term plans with constraint analysis, crew assignments, and daily coordination.
+该工具从主调度计划（master schedule）生成滚动式的预测性调度表，制定包含约束分析、人员分配及日常协调内容的可执行短期计划。
 
-> "Look-ahead planning catches 80% of schedule problems before they occur" — DDC Community
+> “预测性规划能够在80%的调度问题发生之前就将其发现。” — DDC社区（“Predictive planning can identify 80% of scheduling issues before they occur.” — DDC Community）
 
-## Look-Ahead Hierarchy
+## 预测性调度的层次结构（Look-Ahead Hierarchy）
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -34,7 +34,7 @@ Generate rolling look-ahead schedules from the master schedule. Create actionabl
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Technical Implementation
+## 技术实现（Technical Implementation）
 
 ```python
 from dataclasses import dataclass, field
@@ -405,7 +405,7 @@ class LookAheadScheduler:
         return "\n".join(lines)
 ```
 
-## Quick Start
+## 快速入门（Quick Start）
 
 ```python
 from datetime import datetime, timedelta
@@ -469,7 +469,7 @@ daily = scheduler.generate_daily_plan(datetime.now())
 print(f"Today's safety focus: {daily.safety_focus}")
 ```
 
-## Requirements
+## 需求（Requirements）
 
 ```bash
 pip install (no external dependencies)

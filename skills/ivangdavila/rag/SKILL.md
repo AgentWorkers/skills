@@ -1,56 +1,56 @@
 ---
 name: RAG
 slug: rag
-description: Build, optimize, and debug RAG pipelines with chunking strategies, retrieval tuning, evaluation metrics, and production monitoring.
+description: 使用分块策略（chunking strategies）、检索调优（retrieval tuning）、评估指标（evaluation metrics）以及生产监控（production monitoring）来构建、优化和调试 RAG（Retrieval-Augmented Grammar）管道。
 ---
 
-## When to Use
+## 使用场景
 
-User wants to implement, improve, or troubleshoot Retrieval-Augmented Generation systems.
+用户需要实现、改进或排查与“检索增强型生成”（Retrieval-Augmented Generation）相关的系统。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Pipeline components & architecture | `architecture.md` |
-| Implementation patterns & code | `implementation.md` |
-| Evaluation metrics & debugging | `evaluation.md` |
-| Security & compliance | `security.md` |
+| 管道组件与架构 | `architecture.md` |
+| 实现模式与代码 | `implementation.md` |
+| 评估指标与调试 | `evaluation.md` |
+| 安全性与合规性 | `security.md` |
 
-## Core Capabilities
+## 核心功能
 
-1. **Architecture design** — Select embedding models, vector DBs, and chunking strategies based on requirements
-2. **Implementation** — Write ingestion pipelines, query handlers, and update logic
-3. **Retrieval optimization** — Tune top-k, reranking, hybrid search parameters
-4. **Evaluation** — Build test datasets, measure recall/precision, diagnose failures
-5. **Production ops** — Monitor quality drift, set up alerts, debug degradation
-6. **Security** — PII detection, access control, compliance requirements
+1. **架构设计** — 根据需求选择嵌入模型、向量数据库（vector DB）和数据分块策略。
+2. **实现** — 编写数据导入管道（ingestion pipelines）、查询处理程序（query handlers）以及更新逻辑。
+3. **检索优化** — 调整查询结果的前 k 项（top-k）、重新排序（reranking）以及混合搜索（hybrid search）参数。
+4. **评估** — 构建测试数据集，测量召回率/精确度（recall/precision），诊断系统故障。
+5. **生产运维** — 监控系统质量的波动，设置警报机制，排查性能下降问题。
+6. **安全性** — 检测个人身份信息（PII），实施访问控制，确保符合合规性要求。
 
-## Decision Checklist
+## 决策检查清单
 
-Before recommending architecture, ask:
-- [ ] What document types and volume?
-- [ ] Latency requirements (real-time chat vs batch)?
-- [ ] Update frequency (how often do docs change)?
-- [ ] Access control needs (who can see what)?
-- [ ] Compliance constraints (GDPR, HIPAA, SOC2)?
-- [ ] Budget (managed vs self-hosted, embedding costs)?
+在推荐系统架构之前，请先询问以下问题：
+- 需要处理的文档类型和数量是什么？
+- 对延迟有什么要求（实时聊天还是批量处理）？
+- 文档更新的频率是多少？
+- 有哪些访问控制需求（谁可以查看哪些内容）？
+- 是否有合规性要求（如 GDPR、HIPAA、SOC2）？
+- 预算如何（托管服务还是自建系统，嵌入模型的成本是多少）？
 
-## Critical Rules
+## 重要规则
 
-- **Never skip access control** — Filter at retrieval time, not after
-- **Always overlap chunks** — 10-20% prevents context loss at boundaries
-- **Evaluate before optimizing** — Build eval dataset first, then tune
-- **Same embedding model** — Query and documents must use identical model
-- **Monitor similarity scores** — Dropping averages signal drift or issues
-- **Plan for deletion** — GDPR erasure requires re-embedding capability
+- **绝不要忽略访问控制** — 必须在检索阶段进行过滤，而非之后。
+- **确保数据块之间有重叠** — 数据块之间保留 10-20% 的重叠部分，以避免边界处的信息丢失。
+- **先评估再优化** — 先构建评估数据集，再进行参数调整。
+- **使用相同的嵌入模型** — 查询和文档处理必须使用相同的嵌入模型。
+- **监控相似度分数** — 相似度分数的变化可能表明系统存在问题。
+- **规划数据删除策略** — 遵循 GDPR 等法规时，需要具备数据重新嵌入的功能。
 
-## Common Failure Patterns
+## 常见故障模式及解决方法
 
-| Symptom | Likely Cause | Fix |
+| 故障现象 | 可能原因 | 解决方案 |
 |---------|--------------|-----|
-| Wrong docs retrieved | Query too vague, poor chunks | Query expansion, smaller chunks |
-| Relevant doc missed | Not indexed, low similarity | Check ingestion, hybrid search |
-| Hallucinated answers | Context too short | Increase top-k, better reranking |
-| Slow responses | Large chunks, no caching | Optimize chunk size, cache embeddings |
-| Inconsistent results | Non-deterministic reranking | Set seeds, use stable sorting |
+| 检索到错误的文档 | 查询条件过于模糊或数据块划分不当 | 扩展查询条件，减小数据块的大小。 |
+| 相关文档未被检索到 | 文档未被索引或相似度较低 | 检查数据导入过程，优化混合搜索算法。 |
+| 回答内容不准确 | 文本上下文不足 | 增加查询结果的前 k 项数量，改进重新排序算法。 |
+| 响应速度慢 | 数据块过大或未使用缓存 | 优化数据块大小，缓存嵌入结果。 |
+| 结果不一致 | 重新排序算法不可预测 | 设置固定的排序规则，使用稳定的排序算法。

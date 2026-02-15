@@ -1,23 +1,23 @@
 ---
 name: book-haircut
-description: Book haircut services through Lokuli MCP. Use when user needs to find and book haircut. Triggers on requests like "book a haircut", "find haircut near me", or any haircut service request.
+description: 通过 Lokuli MCP 预订理发服务。当用户需要寻找或预订理发服务时，可以使用该功能。该功能会在用户输入类似“预订理发”、“查找附近的理发店”或任何与理发服务相关的请求时被触发。
 ---
 
-# uook haircut
+# uook理发服务
 
-Book haircut services through Lokuli's MCP server.
+通过Lokuli的MCP服务器预订理发服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用POST请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Compliance - Java
+# Telnyx 数字合规性 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -29,11 +29,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Retrieve Bundles
+## 获取套餐信息
 
-Get all allowed bundles.
+获取所有允许使用的套餐信息。
 
 `GET /bundle_pricing/billing_bundles`
 
@@ -44,9 +44,9 @@ import com.telnyx.sdk.models.bundlepricing.billingbundles.BillingBundleListParam
 BillingBundleListPage page = client.bundlePricing().billingBundles().list();
 ```
 
-## Get Bundle By Id
+## 根据 ID 获取套餐
 
-Get a single bundle by ID.
+根据 ID 获取单个套餐。
 
 `GET /bundle_pricing/billing_bundles/{bundle_id}`
 
@@ -57,9 +57,9 @@ import com.telnyx.sdk.models.bundlepricing.billingbundles.BillingBundleRetrieveR
 BillingBundleRetrieveResponse billingBundle = client.bundlePricing().billingBundles().retrieve("8661948c-a386-4385-837f-af00f40f111a");
 ```
 
-## Get User Bundles
+## 获取用户套餐
 
-Get a paginated list of user bundles.
+获取用户套餐的分页列表。
 
 `GET /bundle_pricing/user_bundles`
 
@@ -70,9 +70,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleListParams;
 UserBundleListPage page = client.bundlePricing().userBundles().list();
 ```
 
-## Create User Bundles
+## 创建用户套餐
 
-Creates multiple user bundles for the user.
+为用户创建多个套餐。
 
 `POST /bundle_pricing/user_bundles/bulk`
 
@@ -83,9 +83,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleCreateResponse;
 UserBundleCreateResponse userBundle = client.bundlePricing().userBundles().create();
 ```
 
-## Get Unused User Bundles
+## 获取未使用的用户套餐
 
-Returns all user bundles that aren't in use.
+返回所有未使用的用户套餐。
 
 `GET /bundle_pricing/user_bundles/unused`
 
@@ -96,9 +96,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleListUnusedRespo
 UserBundleListUnusedResponse response = client.bundlePricing().userBundles().listUnused();
 ```
 
-## Get User Bundle by Id
+## 根据 ID 获取用户套餐
 
-Retrieves a user bundle by its ID.
+根据 ID 获取用户套餐。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -109,9 +109,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleRetrieveRespons
 UserBundleRetrieveResponse userBundle = client.bundlePricing().userBundles().retrieve("ca1d2263-d1f1-43ac-ba53-248e7a4bb26a");
 ```
 
-## Deactivate User Bundle
+## 取消激活用户套餐
 
-Deactivates a user bundle by its ID.
+根据 ID 取消激活用户套餐。
 
 `DELETE /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -122,9 +122,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleDeactivateRespo
 UserBundleDeactivateResponse response = client.bundlePricing().userBundles().deactivate("ca1d2263-d1f1-43ac-ba53-248e7a4bb26a");
 ```
 
-## Get User Bundle Resources
+## 获取用户套餐资源
 
-Retrieves the resources of a user bundle by its ID.
+根据 ID 获取用户套餐的资源信息。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}/resources`
 
@@ -135,9 +135,9 @@ import com.telnyx.sdk.models.bundlepricing.userbundles.UserBundleListResourcesRe
 UserBundleListResourcesResponse response = client.bundlePricing().userBundles().listResources("ca1d2263-d1f1-43ac-ba53-248e7a4bb26a");
 ```
 
-## List all document links
+## 列出所有文档链接
 
-List all documents links ordered by created_at descending.
+按创建时间降序列出所有文档链接。
 
 `GET /document_links`
 
@@ -148,9 +148,9 @@ import com.telnyx.sdk.models.documentlinks.DocumentLinkListParams;
 DocumentLinkListPage page = client.documentLinks().list();
 ```
 
-## List all documents
+## 列出所有文档
 
-List all documents ordered by created_at descending.
+按创建时间降序列出所有文档。
 
 `GET /documents`
 
@@ -161,9 +161,9 @@ import com.telnyx.sdk.models.documents.DocumentListParams;
 DocumentListPage page = client.documents().list();
 ```
 
-## Upload a document
+## 上传文档
 
-Upload a document.<br /><br />Uploaded files must be linked to a service within 30 minutes or they will be automatically deleted.
+上传文档。<br /><br />上传的文件必须在 30 分钟内关联到某个服务，否则将被自动删除。
 
 `POST /documents`
 
@@ -174,9 +174,9 @@ import com.telnyx.sdk.models.documents.DocumentUploadJsonResponse;
 DocumentUploadJsonResponse response = client.documents().uploadJson();
 ```
 
-## Retrieve a document
+## 获取文档
 
-Retrieve a document.
+获取文档信息。
 
 `GET /documents/{id}`
 
@@ -187,9 +187,9 @@ import com.telnyx.sdk.models.documents.DocumentRetrieveResponse;
 DocumentRetrieveResponse document = client.documents().retrieve("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Update a document
+## 更新文档
 
-Update a document.
+更新文档内容。
 
 `PATCH /documents/{id}`
 
@@ -205,9 +205,9 @@ DocumentUpdateParams params = DocumentUpdateParams.builder()
 DocumentUpdateResponse document = client.documents().update(params);
 ```
 
-## Delete a document
+## 删除文档
 
-Delete a document.<br /><br />A document can only be deleted if it's not linked to a service.
+删除文档。<br /><br />只有未关联到任何服务的文档才能被删除。
 
 `DELETE /documents/{id}`
 
@@ -218,9 +218,9 @@ import com.telnyx.sdk.models.documents.DocumentDeleteResponse;
 DocumentDeleteResponse document = client.documents().delete("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Download a document
+## 下载文档
 
-Download a document.
+下载文档。
 
 `GET /documents/{id}/download`
 
@@ -231,9 +231,9 @@ import com.telnyx.sdk.models.documents.DocumentDownloadParams;
 HttpResponse response = client.documents().download("6a09cdc3-8948-47f0-aa62-74ac943d6c58");
 ```
 
-## Generate a temporary download link for a document
+## 生成文档的临时下载链接
 
-Generates a temporary pre-signed URL that can be used to download the document directly from the storage backend without authentication.
+生成一个临时预签名 URL，可以直接从存储后端下载文档，无需身份验证。
 
 `GET /documents/{id}/download_link`
 
@@ -244,9 +244,9 @@ import com.telnyx.sdk.models.documents.DocumentGenerateDownloadLinkResponse;
 DocumentGenerateDownloadLinkResponse response = client.documents().generateDownloadLink("550e8400-e29b-41d4-a716-446655440000");
 ```
 
-## List all requirements
+## 列出所有需求
 
-List all requirements with filtering, sorting, and pagination
+支持过滤、排序和分页功能，列出所有需求。
 
 `GET /requirements`
 
@@ -257,9 +257,9 @@ import com.telnyx.sdk.models.requirements.RequirementListParams;
 RequirementListPage page = client.requirements().list();
 ```
 
-## Retrieve a document requirement
+## 获取文档需求信息
 
-Retrieve a document requirement record
+获取单个文档需求记录。
 
 `GET /requirements/{id}`
 
@@ -270,9 +270,9 @@ import com.telnyx.sdk.models.requirements.RequirementRetrieveResponse;
 RequirementRetrieveResponse requirement = client.requirements().retrieve("a9dad8d5-fdbd-49d7-aa23-39bb08a5ebaa");
 ```
 
-## List all requirement types
+## 列出所有需求类型
 
-List all requirement types ordered by created_at descending
+按创建时间降序列出所有需求类型。
 
 `GET /requirement_types`
 
@@ -283,9 +283,9 @@ import com.telnyx.sdk.models.requirementtypes.RequirementTypeListResponse;
 RequirementTypeListResponse requirementTypes = client.requirementTypes().list();
 ```
 
-## Retrieve a requirement types
+## 根据 ID 获取需求类型
 
-Retrieve a requirement type by id
+根据 ID 获取特定需求类型。
 
 `GET /requirement_types/{id}`
 
@@ -296,7 +296,9 @@ import com.telnyx.sdk.models.requirementtypes.RequirementTypeRetrieveResponse;
 RequirementTypeRetrieveResponse requirementType = client.requirementTypes().retrieve("a38c217a-8019-48f8-bff6-0fdd9939075b");
 ```
 
-## Retrieve regulatory requirements
+## 获取监管要求
+
+获取所有监管要求信息。
 
 `GET /regulatory_requirements`
 
@@ -307,7 +309,9 @@ import com.telnyx.sdk.models.regulatoryrequirements.RegulatoryRequirementRetriev
 RegulatoryRequirementRetrieveResponse regulatoryRequirement = client.regulatoryRequirements().retrieve();
 ```
 
-## List requirement groups
+## 列出需求组
+
+列出所有需求组。
 
 `GET /requirement_groups`
 
@@ -318,9 +322,9 @@ import com.telnyx.sdk.models.requirementgroups.RequirementGroupListParams;
 List<RequirementGroup> requirementGroups = client.requirementGroups().list();
 ```
 
-## Create a new requirement group
+## 创建新的需求组
 
-`POST /requirement_groups` — Required: `country_code`, `phone_number_type`, `action`
+创建新的需求组。<br />必需参数：`country_code`、`phone_number_type`、`action`
 
 ```java
 import com.telnyx.sdk.models.requirementgroups.RequirementGroup;
@@ -334,7 +338,9 @@ RequirementGroupCreateParams params = RequirementGroupCreateParams.builder()
 RequirementGroup requirementGroup = client.requirementGroups().create(params);
 ```
 
-## Get a single requirement group by ID
+## 根据 ID 获取单个需求组
+
+根据 ID 获取特定需求组。
 
 `GET /requirement_groups/{id}`
 
@@ -345,7 +351,9 @@ import com.telnyx.sdk.models.requirementgroups.RequirementGroupRetrieveParams;
 RequirementGroup requirementGroup = client.requirementGroups().retrieve("id");
 ```
 
-## Update requirement values in requirement group
+## 更新需求组中的需求信息
+
+更新需求组中的需求信息。
 
 `PATCH /requirement_groups/{id}`
 
@@ -356,7 +364,9 @@ import com.telnyx.sdk.models.requirementgroups.RequirementGroupUpdateParams;
 RequirementGroup requirementGroup = client.requirementGroups().update("id");
 ```
 
-## Delete a requirement group by ID
+## 根据 ID 删除需求组
+
+根据 ID 删除需求组。
 
 `DELETE /requirement_groups/{id}`
 
@@ -367,7 +377,9 @@ import com.telnyx.sdk.models.requirementgroups.RequirementGroupDeleteParams;
 RequirementGroup requirementGroup = client.requirementGroups().delete("id");
 ```
 
-## Submit a Requirement Group for Approval
+## 提交需求组以供审批
+
+提交需求组以供审批。
 
 `POST /requirement_groups/{id}/submit_for_approval`
 
@@ -378,9 +390,9 @@ import com.telnyx.sdk.models.requirementgroups.RequirementGroupSubmitForApproval
 RequirementGroup requirementGroup = client.requirementGroups().submitForApproval("id");
 ```
 
-## List all Verified Numbers
+## 列出所有已验证的号码
 
-Gets a paginated list of Verified Numbers.
+获取已验证号码的分页列表。
 
 `GET /verified_numbers`
 
@@ -391,11 +403,11 @@ import com.telnyx.sdk.models.verifiednumbers.VerifiedNumberListParams;
 VerifiedNumberListPage page = client.verifiedNumbers().list();
 ```
 
-## Request phone number verification
+## 请求电话号码验证
 
-Initiates phone number verification procedure.
+启动电话号码验证流程。
 
-`POST /verified_numbers` — Required: `phone_number`, `verification_method`
+`POST /verified_numbers` — 必需参数：`phone_number`、`verification_method`
 
 ```java
 import com.telnyx.sdk.models.verifiednumbers.VerifiedNumberCreateParams;
@@ -408,7 +420,9 @@ VerifiedNumberCreateParams params = VerifiedNumberCreateParams.builder()
 VerifiedNumberCreateResponse verifiedNumber = client.verifiedNumbers().create(params);
 ```
 
-## Retrieve a verified number
+## 获取已验证的号码
+
+获取已验证的号码信息。
 
 `GET /verified_numbers/{phone_number}`
 
@@ -419,7 +433,9 @@ import com.telnyx.sdk.models.verifiednumbers.VerifiedNumberRetrieveParams;
 VerifiedNumberDataWrapper verifiedNumberDataWrapper = client.verifiedNumbers().retrieve("+15551234567");
 ```
 
-## Delete a verified number
+## 删除已验证的号码
+
+删除已验证的号码。
 
 `DELETE /verified_numbers/{phone_number}`
 
@@ -430,9 +446,11 @@ import com.telnyx.sdk.models.verifiednumbers.VerifiedNumberDeleteParams;
 VerifiedNumberDataWrapper verifiedNumberDataWrapper = client.verifiedNumbers().delete("+15551234567");
 ```
 
-## Submit verification code
+## 提交验证码
 
-`POST /verified_numbers/{phone_number}/actions/verify` — Required: `verification_code`
+提交验证码。
+
+`POST /verified_numbers/{phone_number}/actions/verify` — 必需参数：`verification_code`
 
 ```java
 import com.telnyx.sdk.models.verifiednumbers.VerifiedNumberDataWrapper;

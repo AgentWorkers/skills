@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-equipment-planner"
 display_name: "CWICR Equipment Planner"
-description: "Plan equipment requirements using CWICR norms. Calculate equipment hours, scheduling, utilization rates, and rental vs purchase analysis."
+description: "根据 CWICR 标准规划设备需求。计算设备使用时间、调度安排、利用率，并进行租赁与购买的成本分析。"
 ---
 
-# CWICR Equipment Planner
+# CWICR 设备规划工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Equipment is a major cost driver:
-- What equipment is needed?
-- For how long?
-- Rent or buy?
-- How to optimize utilization?
+### 问题描述
+设备是主要的成本因素：
+- 需要哪些设备？
+- 需要使用这些设备多长时间？
+- 是选择租赁还是购买？
+- 如何优化设备的利用率？
 
-### Solution
-Equipment planning using CWICR equipment norms to calculate requirements, schedule usage, and analyze rental vs purchase decisions.
+### 解决方案
+使用 CWICR 设备规划工具来计算设备需求、安排使用计划，并分析租赁与购买的决策。
 
-### Business Value
-- **Accurate requirements** - Based on validated norms
-- **Optimized utilization** - Reduce idle time
-- **Cost analysis** - Rent vs buy decisions
-- **Scheduling** - Equipment availability planning
+### 商业价值
+- **准确的需求分析**：基于经过验证的设备规范
+- **优化设备利用率**：减少设备闲置时间
+- **成本分析**：帮助决策者选择租赁还是购买设备
+- **计划安排**：确保设备能够按需投入使用
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -426,8 +425,7 @@ class CWICREquipmentPlanner:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门指南
 ```python
 from datetime import datetime
 
@@ -451,27 +449,27 @@ print(f"Operator Cost: ${plan.total_operator_cost:,.2f}")
 print(f"Total: ${plan.total_cost:,.2f}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Rent vs Buy Analysis
+### 1. 租赁与购买决策分析
 ```python
 for equip in plan.equipment_items:
     analysis = planner.rent_vs_buy_analysis(equip, purchase_price=50000)
     print(f"{equip.description}: {analysis['recommendation']}")
 ```
 
-### 2. Utilization Optimization
+### 2. 设备利用率优化
 ```python
 optimization = planner.optimize_utilization(plan.equipment_items)
 for rec in optimization['recommendations']:
     print(rec)
 ```
 
-### 3. Export Plan
+### 3. 计划导出
 ```python
 planner.export_to_excel(plan, "equipment_plan.xlsx")
 ```
 
-## Resources
+## 资源链接
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Equipment Resource Planning
+- **DDC 书籍**: 第 3.1 章 - 设备资源规划

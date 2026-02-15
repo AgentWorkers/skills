@@ -1,13 +1,13 @@
 ---
 name: trending-skills
-description: Fetches skills.sh trending rankings. Use when asking about skill rankings or popular tools.
+description: 用于获取 `skills.sh` 文件中的技能排名信息。在查询技能排名或热门工具时可以使用该功能。
 ---
 
-# Trending Skills
+# 热门技能
 
-Fetch skills.sh trending rankings and skill details.
+`FetchSkills.sh` 可用于获取技能的热门排名及详细信息。
 
-## Quick Start
+## 快速入门
 
 ```
 # View rankings
@@ -16,14 +16,14 @@ Top 10 skills
 技能榜单
 ```
 
-## Query Types
+## 查询类型
 
-| Type | Examples | Description |
+| 类型 | 例子 | 说明 |
 |------|----------|-------------|
-| Rankings | `今天技能排行榜` `Top 10` | Current rankings |
-| Detail | `xxx是什么` `xxx介绍` | Skill details (requires extra packages) |
+| 排名 | `今天技能排行榜` `Top 10` | 显示当前的热门技能排名 |
+| 详情 | `xxx是什么` `xxx介绍` | 查看技能的详细信息（需要额外依赖包） |
 
-## Workflow
+## 工作流程
 
 ```
 - [ ] Step 1: Parse query type
@@ -33,41 +33,41 @@ Top 10 skills
 
 ---
 
-## Step 1: Parse Query Type
+## 第一步：解析查询类型
 
-| User Input | Query Type | Action |
+| 用户输入 | 查询类型 | 执行操作 |
 |------------|------------|--------|
-| `今天技能排行榜` | rankings | Show top N skills |
-| `Top 10 skills` | rankings | Show top N skills |
-| `xxx是什么` | detail | Show skill details |
+| `今天技能排行榜` | rankings | 显示排名前 N 的技能 |
+| `Top 10 技能` | rankings | 显示排名前 N 的技能 |
+| `xxx是什么` | detail | 查看技能的详细信息 |
 
 ---
 
-## Step 2: Fetch Data
+## 第二步：获取数据
 
-### Fetch Rankings
+### 获取排名信息
 
 ```bash
 cd skills/trending-skills
 python src/skills_fetcher.py
 ```
 
-**Requirements**:
+**要求**：
 
-For basic rankings:
+- 对于基本排名信息：
 ```bash
 pip install playwright
 playwright install chromium --with-deps
 ```
 
-For skill details (optional):
+- 对于技能详细信息（可选）：
 ```bash
 pip install beautifulsoup4 lxml requests
 ```
 
-**Note**: `--with-deps` automatically installs required system libraries.
+**注意**：`--with-deps` 选项会自动安装所需的系统库。
 
-### Fetch Skill Details (Optional)
+### 获取技能详细信息（可选）
 
 ```bash
 python src/detail_fetcher.py <skill-name>
@@ -75,9 +75,9 @@ python src/detail_fetcher.py <skill-name>
 
 ---
 
-## Step 3: Format Results
+## 第三步：格式化结果
 
-### Rankings Output
+### 排名结果输出
 
 ```markdown
 # Skills Trending
@@ -89,7 +89,7 @@ python src/detail_fetcher.py <skill-name>
 | 3 | web-design-guidelines | vercel-labs | 4.0K |
 ```
 
-### Detail Output (Optional)
+### 详情输出（可选）
 
 ```markdown
 # remotion-best-practices
@@ -109,23 +109,23 @@ python src/detail_fetcher.py <skill-name>
 
 ---
 
-## Configuration
+## 配置
 
-No configuration required.
+无需进行任何配置。
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Playwright error | Run `playwright install chromium` |
-| Network timeout | Check internet connection |
-| Skill not found | Verify skill name on skills.sh |
+| Playwright 错误 | 运行 `playwright install chromium` |
+| 网络超时 | 检查网络连接 |
+| 技能未找到 | 在 `skills.sh` 中验证技能名称是否正确 |
 
 ---
 
-## CLI Reference
+## 命令行接口（CLI）参考
 
 ```bash
 # Fetch rankings

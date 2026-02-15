@@ -1,67 +1,67 @@
 ---
 name: birdnet
 version: 1.0.0
-description: Query BirdNET-Go bird detections. View recent birds, search by species, get detection details.
+description: 查询 BirdNET-Go 系统中的鸟类检测记录。可以查看最近的鸟类检测数据，按物种进行搜索，并获取详细的检测信息。
 metadata: {"openclaw":{"emoji":"🐦","requires":{"bins":["curl","jq"]}}}
 ---
 
 # BirdNET-Go
 
-Query your BirdNET-Go bird sound identification system.
+这是一个用于查询 BirdNET-Go 鸟类声音识别系统的工具。
 
-## Setup
+## 设置
 
-Create `~/.clawdbot/credentials/birdnet/config.json`:
+创建文件 `~/.clawdbot/credentials/birdnet/config.json`：
 ```json
 {
   "url": "http://192.168.1.50:783"
 }
 ```
 
-No API key needed for local access.
+本地访问无需 API 密钥。
 
-## Commands
+## 命令
 
-### List recent detections
+### 列出最近的检测结果
 ```bash
 bash scripts/birdnet.sh recent [limit]
 ```
-Shows the most recent bird detections with confidence scores.
+显示最近检测到的鸟类及其置信度分数。
 
-### Search detections by species
+### 按物种搜索检测结果
 ```bash
 bash scripts/birdnet.sh search "Common Raven"
 ```
-Search for detections of a specific bird species.
+根据特定鸟类物种搜索检测结果。
 
-### Get detection details
+### 获取检测详情
 ```bash
 bash scripts/birdnet.sh detection <id>
 ```
-Get full details about a specific detection including weather data.
+获取特定检测结果的详细信息，包括天气数据。
 
-### Get species info
+### 获取物种信息
 ```bash
 bash scripts/birdnet.sh species "Corvus corax"
 ```
-Get information about a species including rarity score and taxonomy.
+获取物种的相关信息，包括稀有度评分和分类学信息。
 
-### Today's summary
+### 今日检测总结
 ```bash
 bash scripts/birdnet.sh today
 ```
-Summary of today's bird detections.
+今日检测到的鸟类总结。
 
-## Output Format
+## 输出格式
 
-Recent detections show:
-- Common name (Scientific name)
-- Confidence score (0.0-1.0)
-- Date and time
-- Verification status
+最近的检测结果包括：
+- 常见名称（学名）
+- 置信度分数（0.0-1.0）
+- 日期和时间
+- 验证状态
 
-## API Endpoints Used
+## 使用的 API 端点
 
-- `GET /api/v2/detections` - List detections
-- `GET /api/v2/detections/:id` - Get detection details
-- `GET /api/v2/species` - Get species information
+- `GET /api/v2/detections` - 列出所有检测结果
+- `GET /api/v2/detections/:id` - 获取特定检测结果的详细信息
+- `GET /api/v2/species` - 获取物种信息

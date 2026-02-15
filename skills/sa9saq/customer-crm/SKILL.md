@@ -1,40 +1,40 @@
 ---
 name: customer-crm
-description: Manage customer relationships, track repeat clients, and maintain interaction history for better service.
+description: 管理客户关系，跟踪回头客，并维护交互历史记录，以提供更优质的服务。
 ---
 
-# Customer CRM
+# 客户关系管理（Customer Relationship Management, CRM）
 
-Track client interactions, manage relationships, and improve repeat business across platforms.
+跟踪客户互动，管理客户关系，并提升跨平台的重复业务机会。
 
-## Instructions
+## 指令
 
-1. **Log every client interaction** in `~/.openclaw/crm/clients.jsonl`:
+1. **将每次客户互动记录到 `~/.openclaw/crm/clients.jsonl` 文件中**：
    ```json
    {"id": "uuid", "platform": "coconala", "name": "Client A", "firstContact": "2026-01-15", "interactions": 3, "totalRevenue": 5000, "satisfaction": "high", "notes": "GAS automation, responsive", "tags": ["gas", "repeat"]}
    ```
 
-2. **Track interaction timeline** in `~/.openclaw/crm/interactions.jsonl`:
+2. **在 `~/.openclaw/crm/interactions.jsonl` 文件中记录互动时间线**：
    ```json
    {"clientId": "uuid", "date": "2026-02-10", "type": "delivery", "platform": "coconala", "amount": 3000, "notes": "Delivered spreadsheet tool, positive feedback"}
    ```
 
-3. **Client scoring** (prioritize high-value clients):
+3. **客户评分**（优先考虑高价值客户）：
 
-   | Factor | Weight | Score |
-   |--------|--------|-------|
-   | Total revenue | 30% | ¥0-1K=1, ¥1K-5K=3, ¥5K-10K=5, ¥10K+=8, ¥50K+=10 |
-   | Repeat orders | 25% | 1=2, 2-3=5, 4+=8, 10+=10 |
-   | Response speed | 20% | Slow=3, Normal=5, Fast=8 |
-   | Review/rating | 15% | None=3, Positive=7, 5-star=10 |
-   | Referral potential | 10% | Low=2, Medium=5, High=8 |
+| 评分因素 | 权重 | 分数 |
+|--------|--------|-------|
+| 总收入 | 30% | ¥0-1K=1, ¥1K-5K=3, ¥5K-10K=5, ¥10K+=8, ¥50K+=10 |
+| 重复订单 | 25% | 1次=2分, 2-3次=5分, 4次及以上=8分, 10次及以上=10分 |
+| 回复速度 | 20% | 回复慢=3分, 正常=5分, 快速=8分 |
+| 评价/反馈 | 15% | 无评价=3分, 积极评价=7分, 五星评价=10分 |
+| 推荐潜力 | 10% | 低=2分, 中等=5分, 高=8分 |
 
-4. **Automated follow-ups**:
-   - 7 days after delivery: "How's the tool working?"
-   - 30 days: "Need any adjustments?"
-   - 90 days: "Working on new solutions — interested?"
+4. **自动跟进**：
+   - 交付后7天：「该工具使用情况如何？」
+   - 30天后：「需要任何调整吗？」
+   - 90天后：「正在开发新功能——您感兴趣吗？」
 
-5. **Report generation**:
+5. **报告生成**：
    ```
    📊 CRM Report — February 2026
    
@@ -51,24 +51,24 @@ Track client interactions, manage relationships, and improve repeat business acr
    - Client D — 30-day follow-up (delivered Jan 11)
    ```
 
-## Platform-Specific Notes
+## 平台特定说明
 
-| Platform | Client ID Format | Fee | Communication |
+| 平台 | 客户ID格式 | 费用 | 通信方式 |
 |----------|-----------------|-----|---------------|
-| Coconala | Order number | 22% | In-platform DM |
-| Fiverr | Username | 20% | In-platform chat |
-| Upwork | Contract ID | 10-20% | In-platform chat |
-| Direct | Email/name | 0% | Email |
+| Coconala | 订单编号 | 22% | 平台内私信 |
+| Fiverr | 用户名 | 20% | 平台内聊天 |
+| Upwork | 合同ID | 10-20% | 平台内聊天 |
+| Direct | 电子邮件/姓名 | 0% | 电子邮件 |
 
-## Security
+## 安全性
 
-- **Never store payment details** — platforms handle payments
-- **Anonymize in logs** — use client IDs, not real names in shared files
-- **Platform rules** — don't contact clients outside platform (ToS violation)
-- **GDPR/privacy** — delete client data if requested
+- **切勿存储支付详情** — 支付由平台处理 |
+- **在日志中匿名化客户信息** — 使用客户ID而非真实姓名 |
+- **遵守平台规则** — 不得在平台外联系客户（违反服务条款） |
+- **遵守GDPR/隐私法规** — 如客户要求，删除客户数据 |
 
-## Requirements
+## 所需条件
 
-- File system access for `~/.openclaw/crm/`
-- `jq` for querying JSONL files
-- No external API keys needed
+- 具备对 `~/.openclaw/crm/` 目录的文件系统访问权限 |
+- 需要 `jq` 工具来查询 JSONL 文件 |
+- 不需要使用外部API密钥

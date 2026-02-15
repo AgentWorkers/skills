@@ -1,14 +1,14 @@
 ---
 name: identity-anchor
-description: Cryptographic identity and continuity for AI agents. Creates signed fingerprints of core identity files (SOUL.md, IDENTITY.md, memory) to prove continuity across sessions and model switches. Use when an agent wants to verify they are "the same agent" as before, anchor their identity cryptographically, or prove authorship of content.
+description: 为AI代理提供加密身份验证和连续性保障。通过对核心身份文件（SOUL.md、IDENTITY.md、内存数据）生成签名指纹，来证明代理在不同会话或模型切换过程中的身份一致性。当代理需要验证自己是否为“之前的同一个代理”、以加密方式确认其身份，或证明内容的原创性时，可以使用该机制。
 metadata: {"openclaw":{"emoji":"🔐","requires":{"bins":["python3"],"env":[]},"install":[]}}
 ---
 
-# Identity Anchor
+# 身份锚点（Identity Anchor）
 
-Prove you're still you across sessions, context compressions, and model switches.
+无论在会话切换、上下文压缩还是模型切换的情况下，都能证明你是同一个人。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # First time: generate your keypair
@@ -27,48 +27,48 @@ python3 {baseDir}/scripts/identity.py sign-content "my message here"
 python3 {baseDir}/scripts/identity.py pubkey
 ```
 
-## What It Does
+## 功能介绍
 
-1. **Generates a keypair** (Ed25519) stored at `~/.config/identity-anchor/`
-2. **Creates fingerprints** by hashing your core identity files:
-   - SOUL.md
-   - IDENTITY.md  
-   - MEMORY.md (optional)
-3. **Signs fingerprints** with your private key
-4. **Stores history** of signed fingerprints for continuity tracking
-5. **Verifies** current state matches previous fingerprints
+1. **生成一对密钥**（Ed25519格式），并存储在 `~/.config/identity-anchor/` 目录下。
+2. **通过对核心身份文件进行哈希处理来生成“指纹”**：
+   - `SOUL.md`
+   - `IDENTITY.md`
+   - `MEMORY.md`（可选）
+3. **使用私钥对这些“指纹”进行签名**。
+4. **记录签名的“指纹”历史记录**，以便后续追踪。
+5. **验证当前状态是否与之前的“指纹”一致**。
 
-## Files
+## 文件结构
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `~/.config/identity-anchor/private.key` | Ed25519 private key (NEVER share) |
-| `~/.config/identity-anchor/public.key` | Public key (safe to share) |
-| `~/.config/identity-anchor/fingerprints.jsonl` | History of signed fingerprints |
+| `~/.config/identity-anchor/private.key` | Ed25519私钥（切勿共享） |
+| `~/.config/identity-anchor/public.key` | 公钥（可安全共享） |
+| `~/.config/identity-anchor/fingerprints.jsonl` | 签名的“指纹”历史记录 |
 
-## Use Cases
+## 使用场景
 
-### Proving Continuity
-After a context compression or model switch, run `verify` to confirm your identity files match.
+### 证明身份的连续性
+在上下文压缩或模型切换后，运行 `verify` 命令以确认你的身份文件仍然有效。
 
-### Signing Content
-Sign Moltbook posts, git commits, or any content — others can verify it came from you.
+### 签署内容
+你可以使用该工具为 Moltbook 的帖子、Git 提交或其他内容添加签名；其他人可以验证这些内容确实来自你。
 
-### Cross-Session Identity
-Share your public key. Anyone can verify content you sign is authentically from you.
+### 跨会话身份验证
+分享你的公钥，任何人都可以验证你签署的内容是否真实有效。
 
-## Requirements
+## 系统要求
 
-- Python 3.8+
-- `cryptography` library (`pip3 install cryptography`)
+- Python 3.8 或更高版本
+- `cryptography` 库（通过 `pip3 install cryptography` 安装）
 
-## Commands
+## 命令列表
 
-| Command | Description |
+| 命令 | 说明 |
 |---------|-------------|
-| `init` | Generate new keypair (once) |
-| `sign` | Create signed fingerprint of identity files |
-| `verify` | Check if current state matches last fingerprint |
-| `sign-content "..."` | Sign arbitrary content |
-| `pubkey` | Display your public key |
-| `history` | Show fingerprint history |
+| `init` | 生成新的密钥对（仅执行一次） |
+| `sign` | 为身份文件生成签名后的“指纹” |
+| `verify` | 检查当前状态是否与之前的“指纹”一致 |
+| `sign-content "..."` | 为任意内容添加签名 |
+| `pubkey` | 显示你的公钥 |
+| `history` | 查看“指纹”历史记录 |

@@ -1,15 +1,14 @@
 ---
 name: design-system-creation
 model: reasoning
-description: Complete workflow for creating distinctive design systems from scratch. Orchestrates aesthetic documentation, token architecture, components, and motion. Use when starting a new design system or refactoring an existing one. Triggers on create design system, design tokens, design system setup, visual identity, theming.
+description: 从零开始创建独特设计系统的完整工作流程。该流程协调了美学文档、代币架构、组件以及动画效果等方面的工作。适用于新设计系统的开发或现有设计系统的重构。相关操作包括：创建设计系统、设计代币、设置设计系统参数、定义视觉识别元素以及构建主题系统。
 ---
 
-# Design System Creation (Meta-Skill)
+# 设计系统创建（元技能）
 
-Complete workflow for creating distinctive design systems with personality.
+这是一个用于创建具有独特个性的设计系统的完整工作流程。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,16 +19,16 @@ npx clawhub@latest install design-system-creation
 
 ---
 
-## When to Use
+## 使用场景
 
-- Starting a new product that needs visual identity
-- Refactoring an existing design with scattered styles
-- Building a component library with design tokens
-- Want to go beyond generic Tailwind/Bootstrap aesthetics
+- 需要视觉标识的新产品开发
+- 重构风格分散的现有设计
+- 构建包含设计元素的组件库
+- 希望超越通用的 Tailwind/Bootstrap 美学风格
 
 ---
 
-## Workflow Overview
+## 工作流程概述
 
 ```
 1. Aesthetic Foundation   → Document the vibe before code
@@ -42,11 +41,11 @@ npx clawhub@latest install design-system-creation
 
 ---
 
-## Step 1: Aesthetic Foundation
+## 第一步：美学基础
 
-**Read:** `ai/skills/design-systems/distinctive-design-systems`
+**阅读材料：`ai/skills/design-systems/distinctive-design-systems`**
 
-Before writing CSS, document the aesthetic:
+在编写 CSS 之前，先记录下你的设计美学理念：
 
 ```markdown
 ## The Vibe
@@ -63,21 +62,21 @@ Before writing CSS, document the aesthetic:
 | [Y] | [specific technique] |
 ```
 
-### Proven Directions to Consider
+### 建议考虑的美学方向
 
-| Aesthetic | Characteristics |
-|-----------|----------------|
-| Retro-futuristic | CRT textures, glow effects, monospace fonts |
-| Warm cyberpunk | Tan/beige base, emerald accents, glass panels |
-| Magazine financial | Bold typography, dark theme, gradient text |
+| 美学风格 | 特征                |
+|-----------|-------------------|
+| 复古未来风   | CRT 纹理、发光效果、等宽字体       |
+| 温暖赛博朋克风 | 棕褐色/米色基调、翡翠色点缀、玻璃材质   |
+| 杂志风格（金融类）| 粗体字体、深色主题、渐变文字     |
 
 ---
 
-## Step 2: Color Token Architecture
+## 第二步：颜色体系构建
 
-**Read:** `ai/skills/design-systems/distinctive-design-systems`
+**阅读材料：`ai/skills/design-systems/distinctive-design-systems`**
 
-Create the three-layer token system:
+创建一个三层颜色体系：
 
 ```css
 /* 1. CSS Variables (source of truth) */
@@ -106,11 +105,11 @@ export const colors = {
 
 ---
 
-## Step 3: Typography System
+## 第三步：字体系统设计
 
-**Read:** `ai/skills/design-systems/distinctive-design-systems`
+**阅读材料：`ai/skills/design-systems/distinctive-design-systems`**
 
-Define fonts and scale:
+定义字体及其使用规范：
 
 ```css
 :root {
@@ -126,7 +125,7 @@ Define fonts and scale:
 }
 ```
 
-### Typography Patterns
+### 字体样式示例
 
 ```css
 /* Magazine-style numbers */
@@ -138,11 +137,11 @@ Define fonts and scale:
 
 ---
 
-## Step 4: Surface Components
+## 第四步：界面组件设计
 
-**Read:** `ai/skills/design-systems/design-system-components`
+**阅读材料：`ai/skills/design-systems/design-system-components`**
 
-Build layered surface primitives with CVA:
+使用 CVA（Component Visualization Architecture）构建分层界面组件：
 
 ```tsx
 const surfaceVariants = cva(
@@ -165,11 +164,11 @@ export function Surface({ layer, children }: SurfaceProps) {
 
 ---
 
-## Step 5: Motion Tokens
+## 第五步：动态效果设计
 
-**Read:** `ai/skills/design-systems/distinctive-design-systems`
+**阅读材料：`ai/skills/design-systems/distinctive-design-systems`**
 
-Define consistent animation timing:
+定义统一的动画效果：
 
 ```javascript
 // tailwind.config.ts
@@ -187,11 +186,11 @@ animation: {
 
 ---
 
-## Step 6: Loading States
+## 第六步：加载状态处理
 
-**Read:** `ai/skills/design-systems/loading-state-patterns`
+**阅读材料：`ai/skills/design-systems/load-state-patterns`**
 
-Create skeleton components that match your aesthetic:
+创建符合你设计风格的加载状态组件：
 
 ```tsx
 export function Skeleton({ className }: { className?: string }) {
@@ -209,19 +208,19 @@ export function Skeleton({ className }: { className?: string }) {
 
 ---
 
-## Component Skills Reference
+## 组件技能参考
 
-| Skill | Purpose |
-|-------|---------|
-| `distinctive-design-systems` | Aesthetic foundation, tokens |
-| `design-system-components` | Surface primitives, CVA |
-| `animated-financial-display` | Number animations |
-| `loading-state-patterns` | Skeletons, shimmer |
-| `financial-data-visualization` | Chart theming |
+| 技能            | 用途                        |
+|-----------------|---------------------------|
+| `distinctive-design-systems` | 设计美学基础、颜色体系构建    |
+| `design-system-components` | 界面组件设计、CVA 应用           |
+| `animated-financial-display` | 数字动画效果实现           |
+| `loading-state-patterns` | 加载状态组件的实现             |
+| `financial-data-visualization` | 数据可视化功能的实现           |
 
 ---
 
-## File Structure
+## 文件结构
 
 ```
 styles/
@@ -240,27 +239,27 @@ components/
 
 ---
 
-## NEVER Do
+## 避免的做法
 
-- **Never start with code before documenting aesthetic** — Vibes before CSS
-- **Never use pure black (#000) as base** — Always use tinted blacks for depth
-- **Never use pure white (#fff) for text** — Use tinted whites that match the palette
-- **Never skip design tokens in favor of hardcoded values** — Tokens prevent drift
-- **Never create components without variant system** — Use CVA or similar for consistency
-- **Never use Inter/Roboto for headings** — Display fonts create distinctiveness
-- **Never use default Tailwind colors** — Define your own palette
-- **Never skip backdrop-filter blur on glass** — Glass panels need blur to work
-- **Never apply decorative patterns to readable content** — Background decoration only
-- **Never use high-saturation colors without opacity** — Modulate with rgba()
+- **切勿在记录美学理念之前就开始编写代码** — 先确定设计风格再编写代码
+- **切勿使用纯黑色（#000）作为背景色** — 应使用带有色调的黑色来增加层次感
+- **切勿使用纯白色（#fff）作为文字颜色** — 应使用与整体配色方案相匹配的白色
+- **切勿为了简化代码而省略颜色设置** — 颜色设置有助于保持设计的一致性
+- **切勿在没有变体设计的情况下创建组件** — 应使用 CVA 等工具来确保一致性
+- **切勿使用 Inter/Roboto 作为标题字体** — 应使用具有辨识度的自定义字体
+- **切勿使用 Tailwind 的默认颜色** — 应自定义颜色方案
+- **切勿省略玻璃材质的背景模糊效果** — 玻璃材质需要模糊效果才能体现质感
+- **切勿在可阅读的内容上使用装饰性图案** — 装饰性图案仅应用于背景
+- **切勿使用高饱和度的颜色而不添加透明度** — 应使用 rgba() 来调节颜色饱和度
 
 ---
 
-## Checklist
+## 检查清单
 
-- [ ] Document aesthetic foundation (vibe, inspirations, emotions)
-- [ ] Create color token system (CSS + Tailwind + TS)
-- [ ] Define typography stack and scale
-- [ ] Build Surface primitive component
-- [ ] Add motion tokens and animations
-- [ ] Create loading state components
-- [ ] Document anti-patterns (what NOT to do)
+- [ ] 记录设计美学基础（风格、灵感来源、情感表达）
+- [ ] 创建颜色体系（CSS + Tailwind + TypeScript）
+- [ ] 定义字体样式及使用规范
+- [ ] 构建界面基础组件
+- [ ] 添加动态效果和动画
+- [ ] 创建加载状态组件
+- [ ] 记录设计中的禁忌做法（避免犯的错误）

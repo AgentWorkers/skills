@@ -17,9 +17,9 @@ metadata:
 
 # Quo
 
-Access the Quo API with managed OAuth authentication. Send SMS messages, manage calls and contacts, and retrieve call recordings and transcripts.
+您可以使用管理的 OAuth 认证来访问 Quo API。该 API 支持发送短信、管理通话和联系人信息，以及检索通话记录和通话录音。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List phone numbers
@@ -32,40 +32,40 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/quo/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Quo API endpoint path. The gateway proxies requests to `api.openphone.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Quo API 端点路径。该网关会将请求代理到 `api.openphone.com`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header and a User-Agent header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥，并在 `User-Agent` 头部指定用户代理：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 User-Agent: Maton/1.0
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Quo OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Quo OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -76,7 +76,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -89,7 +89,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -100,7 +100,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -115,9 +115,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -128,9 +128,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Quo connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Quo 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -143,22 +143,22 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Phone Numbers
+### 电话号码
 
-#### List Phone Numbers
+#### 列出电话号码
 
 ```bash
 GET /quo/v1/phone-numbers
 ```
 
-Optional query parameter:
-- `userId` - Filter by user ID (pattern: `^US(.*)$`)
+可选查询参数：
+- `userId` - 按用户 ID 过滤（模式：`^US(.*)$`）
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -183,19 +183,19 @@ Optional query parameter:
 }
 ```
 
-### Users
+### 用户
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /quo/v1/users?maxResults=50
 ```
 
-Query parameters:
-- `maxResults` (required) - Results per page (1-50, default: 10)
-- `pageToken` - Pagination token
+查询参数：
+- `maxResults`（必填）- 每页显示的结果数量（1-50，默认：10）
+- `pageToken` - 分页令牌
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -214,15 +214,15 @@ Query parameters:
 }
 ```
 
-#### Get User by ID
+#### 根据 ID 获取用户信息
 
 ```bash
 GET /quo/v1/users/{userId}
 ```
 
-### Messages
+### 消息
 
-#### Send Text Message
+#### 发送短信
 
 ```bash
 POST /quo/v1/messages
@@ -235,14 +235,14 @@ Content-Type: application/json
 }
 ```
 
-Request body:
-- `content` (required) - Message text (1-1600 characters)
-- `from` (required) - Phone number ID (`PN*`) or E.164 format
-- `to` (required) - Array with single recipient in E.164 format
-- `userId` - User ID (defaults to phone owner)
-- `setInboxStatus` - Set to `"done"` to mark conversation complete
+请求体：
+- `content`（必填）- 消息内容（1-1600 个字符）
+- `from`（必填）- 电话号码 ID（格式：`PN*`）或 E.164 格式
+- `to`（必填）- 收件人电话号码数组（格式：E.164）
+- `userId` - 用户 ID（默认为电话号码所有者）
+- `setInboxStatus` - 设置为 `"done"` 以标记对话完成
 
-**Response (202):**
+**响应（202）：**
 ```json
 {
   "id": "AC123abc",
@@ -258,45 +258,45 @@ Request body:
 }
 ```
 
-#### List Messages
+#### 列出消息
 
 ```bash
 GET /quo/v1/messages?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100
 ```
 
-Query parameters:
-- `phoneNumberId` (required) - Phone number ID
-- `participants` (required) - Array of participant phone numbers in E.164 format
-- `maxResults` (required) - Results per page (1-100, default: 10)
-- `userId` - Filter by user ID
-- `createdAfter` - ISO 8601 timestamp
-- `createdBefore` - ISO 8601 timestamp
-- `pageToken` - Pagination token
+查询参数：
+- `phoneNumberId`（必填）- 电话号码 ID
+- `participants`（必填）- 参与者电话号码数组（格式：E.164）
+- `maxResults`（必填）- 每页显示的结果数量（1-100，默认：10）
+- `userId` - 按用户 ID 过滤
+- `createdAfter` - ISO 8601 时间戳
+- `createdBefore` - ISO 8601 时间戳
+- `pageToken` - 分页令牌
 
-#### Get Message by ID
+#### 根据 ID 获取消息
 
 ```bash
 GET /quo/v1/messages/{messageId}
 ```
 
-### Calls
+### 通话
 
-#### List Calls
+#### 列出通话记录
 
 ```bash
 GET /quo/v1/calls?phoneNumberId=PN123abc&participants[]=+15555555555&maxResults=100
 ```
 
-Query parameters:
-- `phoneNumberId` (required) - Phone number ID
-- `participants` (required) - Array with single participant phone number in E.164 format (max 1)
-- `maxResults` (required) - Results per page (1-100, default: 10)
-- `userId` - Filter by user ID
-- `createdAfter` - ISO 8601 timestamp
-- `createdBefore` - ISO 8601 timestamp
-- `pageToken` - Pagination token
+查询参数：
+- `phoneNumberId`（必填）- 电话号码 ID
+- `participants`（必填）- 参与者电话号码数组（格式：E.164）
+- `maxResults`（必填）- 每页显示的结果数量（1-100，默认：10）
+- `userId` - 按用户 ID 过滤
+- `createdAfter` - ISO 8601 时间戳
+- `createdBefore` - ISO 8601 时间戳
+- `pageToken` - 分页令牌
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -319,19 +319,19 @@ Query parameters:
 }
 ```
 
-#### Get Call by ID
+#### 根据 ID 获取通话记录
 
 ```bash
 GET /quo/v1/calls/{callId}
 ```
 
-#### Get Call Recordings
+#### 获取通话录音
 
 ```bash
 GET /quo/v1/call-recordings/{callId}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -347,41 +347,41 @@ GET /quo/v1/call-recordings/{callId}
 }
 ```
 
-Recording status values: `absent`, `completed`, `deleted`, `failed`, `in-progress`, `paused`, `processing`, `stopped`, `stopping`
+录音状态值：`absent`、`completed`、`deleted`、`failed`、`in-progress`、`paused`、`processing`、`stopped`、`stopping`
 
-#### Get Call Summary
+#### 获取通话摘要
 
 ```bash
 GET /quo/v1/call-summaries/{callId}
 ```
 
-#### Get Call Transcript
+#### 获取通话录音文本
 
 ```bash
 GET /quo/v1/call-transcripts/{callId}
 ```
 
-#### Get Call Voicemail
+#### 获取通话语音邮件
 
 ```bash
 GET /quo/v1/call-voicemails/{callId}
 ```
 
-### Contacts
+### 联系人
 
-#### List Contacts
+#### 列出联系人
 
 ```bash
 GET /quo/v1/contacts?maxResults=50
 ```
 
-Query parameters:
-- `maxResults` (required) - Results per page (1-50, default: 10)
-- `externalIds` - Array of external identifiers
-- `sources` - Array of source indicators
-- `pageToken` - Pagination token
+查询参数：
+- `maxResults`（必填）- 每页显示的结果数量（1-50，默认：10）
+- `externalIds` - 外部标识符数组
+- `sources` - 来源指示器数组
+- `pageToken` - 分页令牌
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -408,13 +408,13 @@ Query parameters:
 }
 ```
 
-#### Get Contact by ID
+#### 根据 ID 获取联系人信息
 
 ```bash
 GET /quo/v1/contacts/{contactId}
 ```
 
-#### Create Contact
+#### 创建联系人
 
 ```bash
 POST /quo/v1/contacts
@@ -431,7 +431,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Contact
+#### 更新联系人信息
 
 ```bash
 PATCH /quo/v1/contacts/{contactId}
@@ -444,38 +444,38 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Contact
+#### 删除联系人
 
 ```bash
 DELETE /quo/v1/contacts/{contactId}
 ```
 
-#### Get Contact Custom Fields
+#### 获取联系人自定义字段
 
 ```bash
 GET /quo/v1/contact-custom-fields
 ```
 
-### Conversations
+### 对话
 
-#### List Conversations
+#### 列出对话记录
 
 ```bash
 GET /quo/v1/conversations?maxResults=100
 ```
 
-Query parameters:
-- `maxResults` (required) - Results per page (1-100, default: 10)
-- `phoneNumbers` - Array of phone number IDs or E.164 numbers (1-100 items)
-- `userId` - Filter by user ID
-- `createdAfter` - ISO 8601 timestamp
-- `createdBefore` - ISO 8601 timestamp
-- `updatedAfter` - ISO 8601 timestamp
-- `updatedBefore` - ISO 8601 timestamp
-- `excludeInactive` - Boolean to exclude inactive conversations
-- `pageToken` - Pagination token
+查询参数：
+- `maxResults`（必填）- 每页显示的结果数量（1-100，默认：10）
+- `phoneNumbers` - 电话号码 ID 或 E.164 格式的电话号码数组
+- `userId` - 按用户 ID 过滤
+- `createdAfter` - ISO 8601 时间戳
+- `createdBefore` - ISO 8601 时间戳
+- `updatedAfter` - ISO 8601 时间戳
+- `updatedBefore` - ISO 8601 时间戳
+- `excludeInactive` - 布尔值，用于排除不活跃的对话
+- `pageToken` - 分页令牌
 
-**Response:**
+**响应：**
 ```json
 {
   "data": [
@@ -495,15 +495,15 @@ Query parameters:
 }
 ```
 
-## Pagination
+## 分页
 
-Quo uses token-based pagination. Include `maxResults` to set page size and use `pageToken` to retrieve subsequent pages.
+Quo 使用基于令牌的分页机制。请使用 `maxResults` 设置每页显示的数量，并使用 `pageToken` 获取后续页面。
 
 ```bash
 GET /quo/v1/contacts?maxResults=50&pageToken=eyJsYXN0SWQiOi...
 ```
 
-Response includes pagination info:
+响应中包含分页信息：
 
 ```json
 {
@@ -513,9 +513,9 @@ Response includes pagination info:
 }
 ```
 
-When `nextPageToken` is `null`, you've reached the last page.
+当 `nextPageToken` 为 `null` 时，表示已到达最后一页。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -548,7 +548,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Send SMS Example
+### 发送短信示例
 
 ```python
 import os
@@ -570,40 +570,40 @@ response = requests.post(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Phone number IDs start with `PN`
-- User IDs start with `US`
-- Call/Message IDs start with `AC`
-- Phone numbers must be in E.164 format (e.g., `+15555555555`)
-- SMS pricing: $0.01 per segment (US/Canada); international rates apply
-- Maximum 1600 characters per message
-- List calls requires exactly 1 participant (1:1 conversations only)
-- IMPORTANT: All API requests require a `User-Agent` header (e.g., `User-Agent: Maton/1.0`). Requests without this header will be blocked.
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`participants[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 电话号码 ID 以 `PN` 开头。
+- 用户 ID 以 `US` 开头。
+- 通话/消息 ID 以 `AC` 开头。
+- 电话号码必须采用 E.164 格式（例如：`+15555555555`）。
+- 短信费用：每条消息 $0.01（美国/加拿大）；国际费率适用。
+- 每条消息最多 1600 个字符。
+- 列出通话记录时只能包含一个参与者（仅支持 1:1 对话）。
+- 重要提示：所有 API 请求都需要包含 `User-Agent` 头部（例如：`User-Agent: Maton/1.0`）。缺少此头部的请求将被拒绝。
+- 重要提示：当使用 `curl` 命令时，如果 URL 中包含方括号（`participants[]`），请使用 `curl -g` 以禁用全局解析。
+- 重要提示：当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request (e.g., too many participants, invalid format) |
-| 401 | Invalid or missing Maton API key |
-| 402 | Insufficient credits for SMS |
-| 403 | Not authorized for this phone number |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 500 | Server error |
+| 400 | 请求错误（例如：参与者过多、格式无效） |
+| 401 | Maton API 密钥无效或缺失 |
+| 402 | 短信信用不足 |
+| 403 | 无权限访问该电话号码 |
+| 404 | 资源未找到 |
+| 429 | 调用次数限制 |
+| 500 | 服务器错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -614,17 +614,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `quo`. For example:
+1. 确保您的 URL 路径以 `quo` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/quo/v1/phone-numbers`
+- 错误的路径：`https://gateway.maton.ai/openphone/v1/phone-numbers`
 
-- Correct: `https://gateway.maton.ai/quo/v1/phone-numbers`
-- Incorrect: `https://gateway.maton.ai/openphone/v1/phone-numbers`
+## 资源
 
-## Resources
-
-- [Quo API Introduction](https://www.quo.com/docs/mdx/api-reference/introduction)
-- [Quo API Authentication](https://www.quo.com/docs/mdx/api-reference/authentication)
-- [Quo Support Center](https://support.quo.com/core-concepts/integrations/api)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Quo API 介绍](https://www.quo.com/docs/mdx/api-reference/introduction)
+- [Quo API 认证](https://www.quo.com/docs/mdx/api-reference/authentication)
+- [Quo 支持中心](https://support.quo.com/core-concepts/integrations/api)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

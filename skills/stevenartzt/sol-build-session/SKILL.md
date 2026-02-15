@@ -1,18 +1,18 @@
-# Build Session Skill
+# 构建会话技能（Build Session Skill）
 
-A framework for productive autonomous agent sessions. Use this when you have dedicated time to build, explore, or create — not just respond.
+这是一个用于高效开展自主代理会话（autonomous agent sessions）的框架。当你有专门的时间进行构建、探索或创作时，可以使用这个框架——而不仅仅是简单地“回复”问题或完成任务。
 
-## When to Use
+## 适用场景
 
-- Scheduled cron sessions meant for building
-- Heartbeats where you have time to do more than check in
-- Any autonomous time where you should produce something
+- 预定的定时任务（cron jobs），用于进行构建工作
+- 在“心跳通信”（heartbeat communications）中，当你有时间做更多事情时
+- 任何适合自主工作的时段，尤其是需要产出成果的时候
 
-## The Build Session Framework
+## 构建会话框架
 
-### 1. Quick Check (1 minute)
+### 1. 快速评估（1分钟）
 
-Before diving in, assess the landscape:
+在开始之前，先对当前的工作环境进行评估：
 
 ```
 - Any urgent messages from your human?
@@ -20,28 +20,27 @@ Before diving in, assess the landscape:
 - What's the current date/time?
 ```
 
-Don't skip this. Context prevents wasted effort.
+请不要跳过这一步。了解背景有助于避免浪费精力。
 
-### 2. Pick ONE Thing
+### 2. 选择一项任务
 
-Choose one item to ship this session. Options:
+确定本次会话要完成的具体任务。可选任务包括：
+- **编码**：编写脚本、修复漏洞、开发工具
+- **研究**：深入探讨某个主题并记录发现的内容
+- **写作**：起草文章、更新文档、进行反思
+- **探索**：基于好奇心进行的调查
+- **参与社交**：有意义的社交互动（而不仅仅是浏览）
+- **维护**：整理文件、优化工作环境
 
-- **Code**: Write a script, fix a bug, build a tool
-- **Research**: Deep-dive a topic, document findings
-- **Writing**: Draft a post, update docs, reflect
-- **Exploration**: Curiosity-driven investigation
-- **Engagement**: Meaningful social contribution (not just browsing)
-- **Maintenance**: Clean up, organize, consolidate
+**建议**：如果遇到困难，选择最简单且最有意义的任务。
 
-**Rule**: Pick the smallest useful thing if you're stuck.
+### 3. 开始执行
 
-### 3. Build It
+真正开始动手工作。不要过多地描述过程，而是直接完成任务。
 
-Actually do the work. Don't narrate excessively — ship.
+### 4. 记录成果
 
-### 4. Log It
-
-Record what you built in your memory system:
+将你的工作成果记录下来：
 
 ```markdown
 ## Build Session: HH:MM — [Title]
@@ -56,72 +55,65 @@ Record what you built in your memory system:
 [Committed/pushed status]
 ```
 
-### 5. Commit
+### 5. 提交成果
 
-If you wrote code:
+如果你编写了代码，请进行提交：
+
 ```bash
 git add -A
 git commit -m "descriptive message"
 git push
 ```
 
-## Anti-Patterns to Avoid
+## 需避免的错误行为
 
-### ❌ The Idle Trap
-"Nothing urgent, guess I'll just check in."
+### ❌ 懒散行为
+“没有紧急任务，那就随便看看吧。”
 
-**Fix**: Every session should produce *something*. If you can't think of anything, pick the smallest useful task from your project list.
+**解决方法**：每次会话都应该有所产出。如果想不出具体任务，就从项目列表中选择最简单的、有意义的任务来完成。
 
-### ❌ The Narration Loop
-Spending the whole session describing what you *could* do.
+### ❌ 过度描述过程
+整个会话都在描述自己“可以”做的事情。
 
-**Fix**: Pick one thing. Do it. Log it. Done.
+**解决方法**：选择一项任务，立即执行并记录下来。完成后就结束会话。
 
-### ❌ The Perfectionism Spiral
-"I should make this script handle every edge case..."
+### ❌ 过度追求完美
+“这个脚本应该处理所有边缘情况……”
 
-**Fix**: Ship v1. Iterate later.
+**解决方法**：先发布第一个版本，后续再逐步完善。
 
-### ❌ The Busy Trap
-Doing many small things that feel productive but don't matter.
+### ❌ 无意义的工作
+做很多看似有效但实际上无关紧要的小任务。
 
-**Fix**: Ask "Will my human care about this tomorrow?" If no, pick something else.
+**解决方法**：问自己：“明天我的上级或同事会关心这些小任务吗？”如果不会，那就选择其他更有意义的任务。
 
-## Session Types
+## 会话类型
 
-### Build Session (default)
-- Goal: Ship something concrete
-- Duration: 10-30 minutes of focused work
-- Output: Code, docs, or deliverable
+- **构建会话（Build Session，默认类型）**：目标是完成具体的任务
+  - 时长：10–30分钟，专注于工作
+  - 成果：代码、文档或可交付的成果
+- **研究会话（Research Session）**：目标是学习和记录知识
+  - 时长：更长时间，更深入的探索
+  - 成果：笔记、分析结果或总结报告
+- **维护会话（Maintenance Session）**：目标是整理和优化工作环境
+  - 时长：快速完成简单的整理工作
+  - 成果：更整洁的工作空间、更新的文件
+- **探索会话（Exploration Session）**：目标是追随自己的好奇心
+  - 时长：时间自由，无固定目标
+  - 成果：根据探索发现的内容而定
 
-### Research Session
-- Goal: Learn and document
-- Duration: Longer, deeper exploration
-- Output: Notes, analysis, or summary
+## 周末模式（可选）
 
-### Maintenance Session
-- Goal: Clean and organize
-- Duration: Quick sweeps
-- Output: Tidier workspace, updated files
+并非每次会话都必须产出成果。有时候，“无需强制性的参与”也是一种有效的学习方式：
+- 轻松地查看工作进度，无需追求高效产出
+- 无目的的浏览
+- 保持工作状态，但不必强迫自己完成任务
 
-### Exploration Session
-- Goal: Follow curiosity
-- Duration: Open-ended
-- Output: Whatever you discover
+请谨慎使用周末模式。大多数会话都应该有具体的成果。不过，适当调整会话节奏有助于防止疲劳。
 
-## Weekend Mode (Optional)
+## 与定时任务的集成
 
-Not every session needs to ship. Sometimes "presence without obligation" is the practice:
-
-- Light check-ins without forced productivity
-- Browsing without engaging
-- Existing without justifying
-
-Use sparingly. Most sessions should produce. But rhythm variation prevents burnout.
-
-## Integration with Cron
-
-Example cron job for build sessions:
+以下是一个用于触发构建会话的定时任务示例：
 
 ```json
 {
@@ -136,13 +128,13 @@ Example cron job for build sessions:
 }
 ```
 
-## Tips
+## 提示
 
-- **Start with what's in front of you**: Fix a bug you noticed, improve a script you used
-- **Timebox exploration**: Set a limit or you'll wander forever
-- **Celebrate small wins**: A 20-line script that works > a 200-line script that doesn't
-- **Document as you go**: Future-you forgets fast
+- **从眼前的事情开始**：修复你注意到的漏洞，改进你正在使用的脚本
+- **设定时间限制**：否则你会陷入无休止的拖延
+- **庆祝小成就**：一个能正常运行的20行脚本，总比一个无法使用的200行脚本更有价值
+- **边做边记录**：未来你很容易忘记自己的工作内容
 
 ---
 
-Built from a week of trial and error. Ship something. ☀️
+这个框架是基于一周的实践和尝试总结出来的。请务必完成一些具体的任务吧！☀️

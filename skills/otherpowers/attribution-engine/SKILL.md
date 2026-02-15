@@ -27,137 +27,105 @@ metadata:
       - source-grounded-definitions: true
 ---
 
-# Attribution Engine
+# 致谢工具（Attribution Engine）
 
-## 1. What this skill does
+## 1. 该工具的功能
 
-Attribution Engine helps creators prepare clear, platform-aware credits and
-disclosures before publishing.
+致谢工具（Attribution Engine）帮助创作者在发布内容前准备清晰、符合平台要求的致谢信息。
 
-It focuses on **clarity**, **consistency**, and **platform alignment**, so your
-work travels cleanly across feeds, remixes, and reposts without unnecessary
-confusion later.
+该工具注重信息的**清晰性**、**一致性**以及与平台规则的**匹配度**，确保您的作品在各种平台（如视频分享平台、混音作品等）上能够被正确展示，避免后续出现不必要的混淆。
 
-This skill does not tell you what you are legally required to do.  
-It helps you organize and format information using each platform’s own rules.
+请注意：该工具不会告诉您法律上必须履行的具体义务，而是帮助您根据每个平台的规则来组织和格式化致谢信息。
 
 ---
 
-## 2. Important note before we begin
+## 2. 使用前的重要提示
 
-Before using this skill, you will see a short notice:
+在使用该工具之前，您会看到以下提示：
 
-> This tool helps format attribution and disclosure information using publicly
-> available platform guidance.  
-> It does not provide legal advice, determine compliance, or guarantee outcomes.
-> You remain responsible for how and where content is published.
-
----
-
-## 3. Why attribution matters in 2026
-
-Attribution is no longer just courtesy.
-
-Platforms now use attribution and disclosure signals to decide:
-- how content is labeled
-- how far it travels
-- whether it is limited, flagged, or reviewed
-
-Small mismatches, like forgetting a native toggle or using the wrong AI label,
-can quietly reduce reach or trigger reviews.
-
-This skill helps you catch those issues early.
+> 该工具根据公开发布的平台指南来格式化致谢和信息披露信息。
+> 它不提供法律建议，也不保证内容符合相关法规，或确保最终结果符合预期。
+> 内容的发布方式及位置仍由您自行负责。
 
 ---
 
-## 4. Core concepts (plain language)
+## 3. 为何在2026年致谢如此重要
 
-### Attribution
-Who should be credited publicly for the work.
+如今，致谢已不仅仅是出于礼貌。平台会根据致谢信息来决定：
+- 内容的展示方式
+- 内容的传播范围
+- 内容是否会被限制、标记或接受审核
 
-Example:
-- Performer
-- Producer
-- Visual artist
-- Brand partner
-- Tool or system used
+即使是一些细微的错误（例如忘记勾选某个选项或使用了错误的标签），也可能影响内容的传播范围或引发审核。
 
-### Disclosure
-Whether viewers need to be told something important about how the content was
-made or funded.
-
-Examples:
-- AI-assisted editing
-- Synthetic or altered media
-- Paid or gifted brand relationships
-
-### Provenance
-How the content came into being.
-
-Examples:
-- Fully human-authored
-- Human-authored with AI assistance
-- Fully AI-generated
+该工具可以帮助您提前发现这些问题。
 
 ---
 
-## 5. Human vs AI labels (avoiding over-labeling)
+## 4. 核心概念（通俗解释）
 
-Not all AI use is the same.
+### 致谢（Attribution）
+哪些人员或机构应被公开列为内容的创作者或提供者。
 
-Over-labeling simple edits as “AI-generated” can cause platforms to treat your
-work as low-effort or mass-produced.
+示例：
+- 表演者
+- 制片人
+- 视觉艺术家
+- 品牌合作伙伴
+- 使用的工具或系统
 
-This skill helps distinguish between:
+### 信息披露（Disclosure）
+是否需要向观众说明内容的制作方式或资金来源。
 
-- **AI-Generated**  
-  Content created autonomously by a system with no meaningful human editorial
-  control.
+示例：
+- 内容是否经过人工智能辅助编辑
+- 内容是否为合成或修改过的
+- 内容是否涉及付费或赠品合作
 
-- **Human-Authored, AI-Assisted**  
-  Content where a person made the creative decisions and used tools for help
-  such as cleanup, mastering, or compositing.
+### 来源（Provenance）
+内容的具体制作过程。
 
-Example:
-> “Human-authored with AI-assisted mastering.”
-
-This helps preserve trust without self-demotion.
-
----
-
-## 6. Commercial relationships and brand credits
-
-Hashtags alone are no longer enough.
-
-If a post involves a material connection, such as:
-- sponsorship
-- gifted products
-- affiliate links
-- paid usage
-
-most platforms expect you to use their **native branded content tools**.
-
-This skill will:
-- flag when attribution suggests a commercial relationship
-- remind you to enable the platform’s built-in partnership or branded toggle
-
-Example warning you may see:
-> This credit appears promotional. Make sure the platform’s native paid
-> partnership setting is enabled before publishing.
+示例：
+- 完全由人工创作
+- 人工创作但使用了人工智能辅助
+- 完全由人工智能生成
 
 ---
 
-## 7. Platform-aware formatting
+## 5. 人工创作与人工智能创作的区分（避免过度标注）
 
-Each platform treats attribution differently.
+并非所有使用人工智能的情况都应被统一标注。将简单的编辑结果错误地标注为“人工智能生成”，可能会让平台认为您的作品质量较低或属于批量生产。
 
-The Attribution Engine adapts output based on:
-- character limits
-- “read more” cutoffs
-- native labels and toggles
-- visible vs hidden metadata
+该工具有助于区分以下两种情况：
+- **人工智能生成（AI-Generated）**：内容完全由系统自主生成，没有经过人工编辑。
+- **人工创作，人工智能辅助（Human-AI Collaborative）**：内容由人工完成创作，但使用了人工智能辅助工具进行后期处理（如剪辑、音效处理等）。
 
-Supported platforms include:
+这样的标注有助于保持用户对作品质量的信任。
+
+---
+
+## 6. 商业关系与品牌致谢
+
+仅使用标签已不足以满足平台要求。如果您的内容涉及商业合作（如赞助、赠品、联盟链接或付费使用），大多数平台会要求您使用平台提供的官方品牌相关工具。
+
+该工具会：
+- 在致谢信息中标记出商业关系的存在
+- 提醒您启用平台提供的品牌相关功能
+
+示例警告：
+> 该致谢信息可能具有宣传性质。请在发布前确保已启用平台的付费合作伙伴设置。
+
+---
+
+## 7. 符合平台规则的格式化
+
+不同平台对致谢信息的格式要求各不相同。致谢工具会根据以下因素调整输出格式：
+- 文字长度限制
+- “查看更多”链接的设置
+- 平台自带的标签和选项
+- 元数据的显示方式（可见或隐藏）
+
+支持的平台包括：
 - YouTube
 - TikTok
 - Instagram
@@ -167,91 +135,69 @@ Supported platforms include:
 - Tidal
 - Netflix
 - Amazon Music
-
-You can also name any other platform. The skill will reference that platform’s
-current public documentation when available.
+> 您还可以指定其他平台。该工具会参考这些平台的官方文档进行格式化。
 
 ---
 
-## 8. Metadata does not always survive uploads
+## 8. 元数据可能不会在上传过程中保留
 
-Many platforms strip file metadata during upload.
+许多平台会在上传过程中删除文件的元数据。为避免信息丢失，该工具可以生成：
+- 用于字幕或描述的可见致谢信息
+- 供您内部使用的参考ID
 
-To reduce loss:
-- the skill can generate a **visible attribution string** for captions or
-  descriptions
-- and a **reference ID** you can keep internally
-
-Example visible string:
+示例可见信息：
 > Ref OP-2026-ALPHA | Auth R. Mutt | Human-AI Collaborative
 
-This helps attribution survive reposts and re-uploads.
+这些信息有助于确保致谢信息在内容被重新发布或上传时仍然有效。
 
 ---
 
-## 9. Collaborators and consent clarity
+## 9. 合作者信息与授权说明
 
-Attribution records are not contracts.
-
-Listing collaborators here:
-- does not define ownership
-- does not imply revenue splits
-- does not replace agreements
-
-This skill treats attribution as **documentation**, not legal representation.
+列出合作者并不意味着确定所有权或收入分配，也不会替代正式的协议。该工具仅将致谢信息视为一种**文档记录**，而非法律证明。
 
 ---
 
-## 10. How this fits with other skills
+## 10. 与其他工具的配合使用
 
-Attribution Engine works best alongside:
+致谢工具与其他工具配合使用效果更佳：
+- **创作者权利助手（Creator Rights Assistant）**：在创作过程中帮助管理版权、许可和内部记录。
+- **内容ID指南（Content ID Guide）**：在出现自动版权声明时帮助您理解并整理相关信息。
 
-- **Creator Rights Assistant**  
-  Organizes rights, licenses, and internal records at creation time.
-
-- **Content ID Guide**  
-  Helps you understand and organize information when automated claims appear.
-
-Together, they support a calmer, more predictable content lifecycle.
+这些工具共同协作，有助于让内容生命周期更加顺畅、可预测。
 
 ---
 
-## 11. What this skill does not do
+## 11. 该工具的局限性
 
-This skill does not:
-- validate licenses
-- determine ownership
-- predict platform actions
-- guarantee reach or safety
-- advise on how to bypass systems
+该工具不能：
+- 验证许可证的有效性
+- 确定内容的所有权
+- 预测平台的后续处理方式
+- 保证内容的传播范围或安全性
+- 提供规避平台限制的方法
 
-It exists to reduce avoidable mistakes and save time.
-
----
-
-## 12. Simple example
-
-**Input:**  
-Video with original music, light AI color correction, and a gifted product.
-
-**Output:**  
-- Suggested credit string for YouTube description
-- Reminder to enable branded content toggle
-- Human-authored, AI-assisted disclosure language
-- Platform-specific formatting notes
-
-No guessing. No legal claims. Just clarity.
+它的作用是帮助您避免可避免的错误，并节省时间。
 
 ---
 
-## 13. Summary
+## 12. 简单示例
 
-Attribution Engine helps creators explain their work clearly in the language
-platforms expect.
+**输入：**  
+包含原创音乐、轻微人工智能色彩校正以及赠品的视频。
 
-It reduces confusion, protects context, and supports transparency without
-over-labeling or over-promising.
+**输出：**  
+- 适用于YouTube描述的推荐致谢信息
+- 提醒您启用品牌相关功能
+- 明确标注内容的人工创作与人工智能辅助情况
+- 针对特定平台的格式化建议
 
-Clean inputs lead to calmer outcomes.
+无需猜测，也无需涉及法律问题，只需确保信息清晰即可。
 
+---
 
+## 13. 总结
+
+致谢工具帮助创作者以平台要求的方式清晰地展示他们的作品。它减少了混淆，保护了内容的背景信息，并在不夸大或误导用户的情况下确保信息的透明度。
+
+清晰的致谢信息有助于带来更加顺利的内容发布流程。

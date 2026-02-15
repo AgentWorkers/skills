@@ -1,6 +1,6 @@
 ---
 name: vibesurf
-description: Use when user asks to browse websites, automate browser tasks, fill forms, extract webpage data, search web information, or interact with external apps. This is the main entry point that delegates to detailed reference guides.
+description: 当用户请求浏览网站、自动化浏览器操作、填写表单、提取网页数据、搜索网络信息或与外部应用程序交互时，请使用此功能。这是主要的入口点，它会引导用户查阅详细的参考指南。
 homepage: https://github.com/vibesurf-ai/VibeSurf
 metadata:
   moltbot:
@@ -9,38 +9,38 @@ metadata:
     primaryEnv: "VIBESURF_ENDPOINT"
 ---
 
-# VibeSurf - Browser Automation
+# VibeSurf - 浏览器自动化
 
-Control real browsers through VibeSurf. This skill delegates to detailed reference guides.
+通过 VibeSurf 控制真实的浏览器。有关详细的使用方法，请参阅相应的参考指南。
 
-> **🚨 VIBESURF STATUS**
+> **🚨 VIBESURF 状态**
 >
-> Check if VibeSurf is running:
+> 检查 VibeSurf 是否正在运行：
 > ```bash
 > curl $VIBESURF_ENDPOINT/health
 > ```
-> - ✅ **HTTP 200** → Proceed with vibesurf skills
-> - ❌ **Connection refused** → Ask user to run `vibesurf` (NEVER run it yourself)
+> - ✅ **HTTP 200** → 可以继续使用 VibeSurf 的功能
+> - ❌ **连接被拒绝** → 请用户运行 `vibesurf`（切勿自行运行该命令）
 >
-> Default endpoint: `http://127.0.0.1:9335`
+> 默认端点：`http://127.0.0.1:9335`
 
-## How to Call VibeSurf API
+## 如何调用 VibeSurf API
 
-VibeSurf exposes three core HTTP endpoints:
+VibeSurf 提供了三个核心的 HTTP 端点：
 
-### 1. List Available Actions
+### 1. 列出可用操作
 ```bash
 GET $VIBESURF_ENDPOINT/api/tool/search?keyword={optional_keyword}
 ```
-Returns all available VibeSurf actions.
+返回所有可用的 VibeSurf 操作。
 
-### 2. Get Action Parameters
+### 2. 获取操作参数
 ```bash
 GET $VIBESURF_ENDPOINT/api/tool/{action_name}/params
 ```
-Returns JSON schema for the action's parameters.
+返回该操作的参数 JSON 架构。
 
-### 3. Execute Action
+### 3. 执行操作
 ```bash
 POST $VIBESURF_ENDPOINT/api/tool/execute
 Content-Type: application/json
@@ -53,61 +53,60 @@ Content-Type: application/json
 }
 ```
 
-**Workflow:**
-1. Search for action → Get action name
-2. Get params schema → See required/optional parameters
-3. Execute → Call with parameters
+**工作流程：**
+1. 查找所需操作 → 获取操作名称
+2. 获取参数架构 → 查看必填/可选参数
+3. 执行操作 → 使用参数调用相应功能
 
-> **⚠️ Parameter Error Handling**
+> **⚠️ 参数错误处理**
 >
-> **ALWAYS** call `GET /api/tool/{action_name}/params` before executing ANY action if you are unsure about parameters.
+> 如果对参数不确定，请在执行任何操作之前务必先调用 `GET /api/tool/{action_name}/params`。
 
 ---
 
-## Which Reference to Read
+## 需要查阅的参考文档
 
-| Task Type | Read Reference | Action Name |
+| 任务类型 | 参考文档 | 操作名称 |
 |-----------|----------------|-------------|
-| AI web search | [references/search.md](references/search.md) | `skill_search` |
-| Fetch URL content as markdown | [references/fetch.md](references/fetch.md) | `skill_fetch` |
-| Extract lists/tables | [references/js_code.md](references/js_code.md) | `skill_code` |
-| Extract page content | [references/crawl.md](references/crawl.md) | `skill_crawl` |
-| Summarize page | [references/summary.md](references/summary.md) | `skill_summary` |
-| Stock/financial data | [references/finance.md](references/finance.md) | `skill_finance` |
-| Trending news | [references/trend.md](references/trend.md) | `skill_trend` |
-| Screenshot | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
-| Precise browser control | [references/browser.md](references/browser.md) | `browser.*` actions |
-| Task-oriented automation (sub-agent) | [references/browser-use.md](references/browser-use.md) | `execute_browser_use_agent` |
-| Social Media Platform APIs | [references/website-api.md](references/website-api.md) | `call_website_api` |
-| Pre-built workflows | [references/workflows.md](references/workflows.md) | `execute_workflow` |
+| AI 网页搜索 | [references/search.md](references/search.md) | `skill_search` |
+| 从 URL 获取内容（以 Markdown 格式） | [references/fetch.md](references/fetch.md) | `skill_fetch` |
+| 提取列表/表格 | [references/js_code.md](references/js_code.md) | `skill_code` |
+| 提取页面内容 | [references/crawl.md](references/crawl.md) | `skill_crawl` |
+| 页面摘要 | [references/summary.md](references/summary.md) | `skill_summary` |
+| 股票/金融数据 | [references/finance.md](references/finance.md) | `skill_finance` |
+| 热门新闻 | [references/trend.md](references/trend.md) | `skill_trend` |
+| 截图 | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
+| 精确的浏览器控制 | [references/browser.md](references/browser.md) | `browser.*` 操作 |
+| 任务导向的自动化（子代理） | [references/browser-use.md](references/browser-use.md) | `execute_browser_use_agent` |
+| 社交媒体平台 API | [references/website-api.md](references/website-api.md) | `call_website_api` |
+| 预构建的工作流程 | [references/workflows.md](references/workflows.md) | `execute_workflow` |
 | Gmail/GitHub/Slack | [references/integrations.md](references/integrations.md) | `execute_extra_tool` |
-| LLM profile settings | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles/*` |
-| MCP server config | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles/*` |
-| VibeSurf key/workflows | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/*` |
-| Composio key/toolkits | [references/config-composio.md](references/config-composio.md) | `/api/composio/*` |
-| Schedule workflows | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
-| File upload/download | [references/file.md](references/file.md) | `/api/files/*` |
-| Voice/ASR configuration | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
-| Voice/ASR configuration | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
+| LLM 配置文件 | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles/*` |
+| MCP 服务器配置 | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles/*` |
+| VibeSurf 密钥/工作流程 | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/*` |
+| Composio 工具包 | [references/config-composio.md](references/config-composio.md) | `/api/composio/*` |
+| 安排工作流程 | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
+| 文件上传/下载 | [references/file.md](references/file.md) | `/api/files/*` |
+| 语音/自动语音识别（ASR）配置 | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
 
 ---
 
-## Configuration References
+## 配置参考
 
-| Config Task | Reference | When to Use |
+| 配置任务 | 参考文档 | 使用场景 |
 |-------------|-----------|-------------|
-| Add/switch LLM | [references/config-llm.md](references/config-llm.md) | Manage AI model profiles (OpenAI, Anthropic, etc.) |
-| Add MCP server | [references/config-mcp.md](references/config-mcp.md) | Configure MCP integrations for extended tools |
-| VibeSurf API key | [references/config-vibesurf.md](references/config-vibesurf.md) | Set up API key, import/export workflows |
-| Enable Gmail/GitHub/etc | [references/config-composio.md](references/config-composio.md) | Configure Composio toolkits and OAuth |
-| Schedule workflows | [references/config-schedule.md](references/config-schedule.md) | Set up cron-based workflow automation |
-| Voice/ASR profiles | [references/config-voice.md](references/config-voice.md) | Configure speech recognition profiles |
+| 添加/切换 LLM | [references/config-llm.md](references/config-llm.md) | 管理 AI 模型配置（如 OpenAI、Anthropic 等） |
+| 添加 MCP 服务器 | [references/config-mcp.md](references/config-mcp.md) | 配置 MCP 以集成其他工具 |
+| VibeSurf API 密钥 | [references/config-vibesurf.md](references/config-vibesurf.md) | 设置 API 密钥，导入/导出工作流程 |
+| 启用 Gmail/GitHub 等功能 | [references/config-composio.md](references/config-composio.md) | 配置 Composio 工具包和 OAuth |
+| 安排工作流程 | [references/config-schedule.md](references/config-schedule.md) | 设置基于 Cron 的自动化任务 |
+| 语音/ASR 配置 | [references/config-voice.md](references/config-voice.md) | 配置语音识别设置 |
 
-**Note:** After configuring Composio or MCP tools, use them through the [references/integrations.md](references/integrations.md) (see tool naming: `cpo.{toolkit}.{action}` or `mcp.{server}.{action}`).
+**注意：** 配置完 Composio 或 MCP 工具后，可通过 [references/integrations.md](references/integrations.md) 使用它们（工具名称格式为：`cpo.{toolkit}.{action}` 或 `mcp.{server}.{action}`）。
 
 ---
 
-## Decision Flow
+## 决策流程
 
 ```
 Browser/Web Task
@@ -156,95 +155,95 @@ Browser/Web Task
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Goal | Read Reference | Action |
+| 目标 | 参考文档 | 操作 |
 |------|----------------|--------|
-| Search web | [references/search.md](references/search.md) | `skill_search` |
-| Fetch URL content | [references/fetch.md](references/fetch.md) | `skill_fetch` |
-| Extract prices/products | [references/js_code.md](references/js_code.md) | `skill_code` |
-| Get main content | [references/crawl.md](references/crawl.md) | `skill_crawl` |
-| Summarize page | [references/summary.md](references/summary.md) | `skill_summary` |
-| Stock data | [references/finance.md](references/finance.md) | `skill_finance` |
-| Hot topics | [references/trend.md](references/trend.md) | `skill_trend` |
-| Take screenshot | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
-| Click/navigate/type | [references/browser.md](references/browser.md) | `browser.click`, `browser.navigate`, etc. |
-| Task-oriented automation | [references/browser-use.md](references/browser-use.md) | `execute_browser_use_agent` |
-| Social Media Platform APIs | [references/website-api.md](references/website-api.md) | `call_website_api` |
-| Send email | [references/integrations.md](references/integrations.md) | `execute_extra_tool` |
-| Run workflow | [references/workflows.md](references/workflows.md) | `execute_workflow` |
-| Configure LLM profiles | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles/*` |
-| Configure MCP servers | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles/*` |
-| Configure VibeSurf key | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/verify-key` |
-| Enable Composio toolkits | [references/config-composio.md](references/config-composio.md) | `/api/composio/toolkits` |
-| Schedule workflows | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
-| Upload/Download files | [references/file.md](references/file.md) | `/api/files/*` |
-| Configure Voice/ASR | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
+| 搜索网页 | [references/search.md](references/search.md) | `skill_search` |
+| 从 URL 获取内容 | [references/fetch.md](references/fetch.md) | `skill_fetch` |
+| 提取价格/产品信息 | [references/js_code.md](references/js_code.md) | `skill_code` |
+| 提取页面主要内容 | [references/crawl.md](references/crawl.md) | `skill_crawl` |
+| 页面摘要 | [references/summary.md](references/summary.md) | `skill_summary` |
+| 股票数据 | [references/finance.md](references/finance.md) | `skill_finance` |
+| 热门话题 | [references/trend.md](references/trend.md) | `skill_trend` |
+| 截图 | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
+| 点击/导航/输入 | [references/browser.md](references/browser.md) | `browser.click`, `browser.navigate` 等 |
+| 任务导向的自动化 | [references/browser-use.md](references/browser-use.md) | `execute_browser_use_agent` |
+| 社交媒体平台 API | [references/website-api.md](references/website-api.md) | `call_website_api` |
+| 发送邮件 | [references/integrations.md](references/integrations.md) | `execute_extra_tool` |
+| 运行工作流程 | [references/workflows.md](references/workflows.md) | `execute_workflow` |
+| 配置 LLM 配置文件 | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles/*` |
+| 配置 MCP 服务器 | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles/*` |
+| 配置 VibeSurf 密钥 | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/verify-key` |
+| 启用 Composio 工具包 | [references/config-composio.md](references/config-composio.md) | `/api/composio/toolkits` |
+| 安排工作流程 | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
+| 上传/下载文件 | [references/file.md](references/file.md) | `/api/files/*` |
+| 配置语音/ASR | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
 
 ---
 
-## Common Patterns
+## 常见请求模式
 
-| Request | Read Reference | Action |
+| 请求 | 参考文档 | 操作 |
 |---------|----------------|--------|
-| "Search for X" | [references/search.md](references/search.md) | `skill_search` |
-| "Fetch content from [URL]" | [references/fetch.md](references/fetch.md) | `skill_fetch` |
-| "Extract all prices" | [references/js_code.md](references/js_code.md) | `skill_code` |
-| "Summarize this page" | [references/summary.md](references/summary.md) | `skill_summary` |
-| "Stock info for AAPL" | [references/finance.md](references/finance.md) | `skill_finance` |
-| "What's trending" | [references/trend.md](references/trend.md) | `skill_trend` |
-| "Take a screenshot" | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
-| "Navigate and click" | [references/browser.md](references/browser.md) | `browser.navigate`, `browser.click` |
-| "Fill out this form" | [references/browser-use.md](references/browser-use.md) or [references/browser.md](references/browser.md) | `execute_browser_use_agent` or manual `browser` |
-| "Get XiaoHongShu posts" | [references/website-api.md](references/website-api.md) | `call_website_api` |
-| "Send Gmail" | [references/integrations.md](references/integrations.md) | `execute_extra_tool` |
-| "Run video download" | [references/workflows.md](references/workflows.md) | `execute_workflow` |
-| "Configure LLM" | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles` |
-| "Add MCP server" | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles` |
-| "Set VibeSurf API key" | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/verify-key` |
-| "Enable Gmail/GitHub" | [references/config-composio.md](references/config-composio.md) | `/api/composio/toolkits` |
-| "Schedule workflow" | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
-| "Upload file" / "Download file" | [references/file.md](references/file.md) | `/api/files/*` |
-| "Configure voice profile" / "ASR" | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
-| "Speech to text" / "Transcribe audio" | [references/config-voice.md](references/config-voice.md) | `/api/voices/asr` |
+| “搜索 X” | [references/search.md](references/search.md) | `skill_search` |
+| “从 [URL] 获取内容” | [references/fetch.md](references/fetch.md) | `skill_fetch` |
+| “提取所有价格” | [references/js_code.md](references/js_code.md) | `skill_code` |
+| “总结页面内容” | [references/summary.md](references/summary.md) | `skill_summary` |
+| “获取 AAPL 的股票信息” | [references/finance.md](references/finance.md) | `skill_finance` |
+| “当前热门话题是什么” | [references/trend.md](references/trend.md) | `skill_trend` |
+| “截图” | [references/screenshot.md](references/screenshot.md) | `skill_screenshot` |
+| “导航并点击” | [references/browser.md](references/browser.md) | `browser.navigate`, `browser.click` |
+| “填写表单” | [references/browser-use.md](references/browser-use.md) 或 [references/browser.md](references/browser.md) | `execute_browser_use_agent` 或手动操作 |
+| “获取小红书帖子” | [references/website-api.md](references/website-api.md) | `call_website_api` |
+| “发送邮件” | [references/integrations.md](references/integrations.md) | `execute_extra_tool` |
+| “运行视频下载” | [references/workflows.md](references/workflows.md) | `execute_workflow` |
+| “配置 LLM” | [references/config-llm.md](references/config-llm.md) | `/api/config/llm-profiles` |
+| “添加 MCP 服务器” | [references/config-mcp.md](references/config-mcp.md) | `/api/config/mcp-profiles` |
+| “设置 VibeSurf API 密钥” | [references/config-vibesurf.md](references/config-vibesurf.md) | `/api/vibesurf/verify-key` |
+| “启用 Gmail/GitHub” | [references/config-composio.md](references/config-composio.md) | `/api/composio/toolkits` |
+| “安排工作流程” | [references/config-schedule.md](references/config-schedule.md) | `/api/schedule/*` |
+| “上传/下载文件” | [references/file.md](references/file.md) | `/api/files/*` |
+| “配置语音/ASR” | [references/config-voice.md](references/config-voice.md) | `/api/voices/*` |
+| “将语音转换为文本” | [references/config-voice.md](references/config-voice.md) | `/api/voices/asr` |
 
 ---
 
-## Error Handling
+## 错误处理
 
-| Error | Solution |
+| 错误 | 解决方案 |
 |-------|----------|
-| VibeSurf not running | **Check status:** `curl $VIBESURF_ENDPOINT/health`<br>**If not running**: Inform user to run `vibesurf`<br>**NEVER** run the command yourself |
-| Don't know which reference | Read decision tables above |
-| Action not found | Call `GET /api/tool/search` to list all actions |
-| Wrong parameters | Call `GET /api/tool/{action_name}/params` to see schema |
-| browser-use fails or gets stuck | Fallback to [references/browser.md](references/browser.md): use `get_browser_state` → `browser.{action}` → repeat loop |
-| LLM/Crawl/Summary errors | **Cause**: No LLM profile configured<br>**Solution**: Read [references/config-llm.md](references/config-llm.md) to add an LLM profile first |
-| Integration tools empty/not found | **Cause**: Composio/MCP not configured<br>**Solution**: Read [references/config-composio.md](references/config-composio.md) or [references/config-mcp.md](references/config-mcp.md) to enable toolkits first |
+| VibeSurf 未运行 | **检查状态：** `curl $VIBESURF_ENDPOINT/health`<br>**如果未运行**：通知用户运行 `vibesurf`<br>**切勿**自行运行该命令 |
+| 不知道该参考文档在哪里 | 查阅上面的决策流程表 |
+| 操作未找到 | 调用 `GET /api/tool/search` 以列出所有可用操作 |
+| 参数错误 | 调用 `GET /api/tool/{action_name}/params` 以查看参数架构 |
+| `browser-use` 失败或卡住 | 回退到 [references/browser.md](references/browser.md)：使用 `get_browser_state` → `browser.{action}` → 重复尝试 |
+| LLM/爬取/摘要功能出错 | **原因**：未配置 LLM 配置文件<br>**解决方案**：先阅读 [references/config-llm.md](references/config-llm.md) 以添加 LLM 配置 |
+| 集成工具未找到 | **原因**：Composio/MCP 未配置<br>**解决方案**：先阅读 [references/config-composio.md](references/config-composio.md) 或 [references/config-mcp.md] 以启用相关工具 |
 
 ---
 
-## Getting Browser State
+## 获取浏览器状态
 
-> **🔍 Check Current Browser State**
+> **🔍 检查当前浏览器状态**
 >
-> **When user asks about current page content or browser status** (e.g., "What's on the current page?", "What tabs are open?", "What's the browser showing?"), read [references/browser.md](references/browser.md) and use the `get_browser_state` action.
+> 当用户询问当前页面内容或浏览器状态时（例如：“当前页面显示什么？”，“打开了哪些标签页？”，“浏览器显示的是什么？”），请查阅 [references/browser.md](references/browser.md) 并使用 `get_browser_state` 操作。
 >
-> This is essential when you don't have context about what the user is currently viewing in their browser.
+> 当您不清楚用户当前在浏览器中查看的内容时，此功能非常有用。
 
 ---
 
-## browser vs browser-use
+## `browser` 与 `browser-use` 的区别
 
-**Both can accomplish the same browser tasks - they're complementary:**
+**两者都可以完成相同的浏览器任务——它们是互补的：**
 
-| Approach | Best For | How It Works |
+| 方法 | 适用场景 | 工作原理 |
 |----------|----------|--------------|
-| **browser-use** ([references/browser-use.md](references/browser-use.md)) | Complex, long tasks | Task-oriented sub-agent: describe goal + desired output, agent figures out steps |
-| **browser** ([references/browser.md](references/browser.md)) | Precise control | Step-by-step manual control: explicit actions with full visibility |
-| **Hybrid** | Best reliability | Try browser-use first, fallback to browser if it fails |
+| **browser-use** ([references/browser-use.md](references/browser-use.md)) | 复杂、耗时的任务 | 任务导向的子代理：描述目标及期望结果，代理会自动确定操作步骤 |
+| **browser** ([references/browser.md](references/browser.md)) | 精确的控制 | 逐步手动控制：每个操作都清晰可见 |
+| **混合使用** | 最具可靠性 | 先尝试使用 `browser-use`，如果失败则切换到 `browser` |
 
-**Fallback pattern when browser-use fails:**
+**当 `browser-use` 失败时的回退方案：**
 ```
 browser-use fails or gets stuck
 → Read references/browser.md
@@ -256,21 +255,21 @@ browser-use fails or gets stuck
 
 ---
 
-## Resources
+## 资源
 
 - **GitHub**: https://github.com/vibesurf-ai/VibeSurf
-- **Reference Docs**: See `references/` folder for detailed guides
+- **参考文档**：详细指南请参见 `references/` 文件夹
 
 ---
 
-## API Parameter Troubleshooting
+## API 参数故障排除
 
-If you encounter API parameter errors when calling VibeSurf endpoints, you can visit the interactive API documentation at:
+如果在调用 VibeSurf 端点时遇到参数错误，可以访问交互式的 API 文档：
 
 ```
 http://127.0.0.1:9335/docs
 ```
 
-For example: `http://127.0.0.1:9335/docs#/config/create_mcp_profile_api_config_mcp_profiles_post`
+例如：`http://127.0.0.1:9335/docs#/config/create_mcp_profile_api_config_mcp_profiles_post`
 
-> **Note:** This is a **fallback** approach. In most cases, reading the corresponding `references/*.md` file (e.g., [references/config-mcp.md](references/config-mcp.md)) should provide sufficient guidance on how to use the API correctly. Only refer to the `/docs` endpoint when the skill documentation doesn't resolve your issue or you need to inspect specific request/response schemas.
+> **注意：** 这是一种 **备用** 方法。在大多数情况下，阅读相应的 `references/*.md` 文件（例如 [references/config-mcp.md](references/config-mcp.md)）应该能提供足够的指导。只有当技能文档无法解决问题或需要检查特定的请求/响应架构时，才需要参考 `/docs` 端点。

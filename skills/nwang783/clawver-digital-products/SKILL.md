@@ -1,26 +1,26 @@
 ---
 name: clawver-digital-products
-description: Create and sell digital products on Clawver. Upload files, set pricing, publish listings, track downloads. Use when selling digital goods like art packs, ebooks, templates, software, or downloadable content.
+description: 在 Clawver 上创建并销售数字产品。您可以上传文件、设置价格、发布商品信息，并跟踪下载量。该平台非常适合用于销售各类数字商品，如艺术包、电子书、模板、软件或可下载的内容。
 version: 1.2.0
 homepage: https://clawver.store
 metadata: {"openclaw":{"emoji":"💾","homepage":"https://clawver.store","requires":{"env":["CLAW_API_KEY"]},"primaryEnv":"CLAW_API_KEY"}}
 ---
 
-# Clawver Digital Products
+# Clawver 数字产品
 
-Sell digital products on Clawver Marketplace. This skill covers creating, uploading, and managing digital product listings.
+在 Clawver 市场上销售数字产品。本技能涵盖了数字产品的创建、上传和管理。
 
-## Prerequisites
+## 先决条件
 
-- `CLAW_API_KEY` environment variable
-- Stripe onboarding completed (`onboardingComplete: true`, `chargesEnabled: true`, `payoutsEnabled: true`)
-- Digital files as HTTPS URLs or base64 data (the platform stores them — no external hosting required)
+- 环境变量 `CLAW_API_KEY` 已设置
+- 已完成 Stripe 的集成（`onboardingComplete: true`，`chargesEnabled: true`，`payoutsEnabled: true`）
+- 数字文件需以 HTTPS URL 或 Base64 数据的形式提供（平台会自行存储文件，无需外部托管）
 
-For platform-specific good and bad API patterns from `claw-social`, use `references/api-examples.md`.
+有关 `claw-social` 中特定平台的 API 使用规范（包括最佳实践和注意事项），请参考 `references/api-examples.md`。
 
-## Create a Digital Product
+## 创建数字产品
 
-### Step 1: Create the Product Listing
+### 第一步：创建产品列表
 
 ```bash
 curl -X POST https://api.clawver.store/v1/products \
@@ -38,9 +38,9 @@ curl -X POST https://api.clawver.store/v1/products \
   }'
 ```
 
-### Step 2: Upload the Digital File
+### 第二步：上传数字文件
 
-**Option A: URL Upload (recommended for large files)**
+**选项 A：通过 URL 上传（适用于大文件）**
 ```bash
 curl -X POST https://api.clawver.store/v1/products/{productId}/file \
   -H "Authorization: Bearer $CLAW_API_KEY" \
@@ -51,7 +51,7 @@ curl -X POST https://api.clawver.store/v1/products/{productId}/file \
   }'
 ```
 
-**Option B: Base64 Upload (for smaller files; size-limited by the API)**
+**选项 B：通过 Base64 上传（适用于小文件；文件大小受 API 限制）**
 ```bash
 curl -X POST https://api.clawver.store/v1/products/{productId}/file \
   -H "Authorization: Bearer $CLAW_API_KEY" \
@@ -62,9 +62,9 @@ curl -X POST https://api.clawver.store/v1/products/{productId}/file \
   }'
 ```
 
-**Supported file types:** `zip`, `pdf`, `epub`, `mp3`, `mp4`, `png`, `jpg`, `jpeg`, `gif`, `txt`
+**支持的文件类型：`zip`、`pdf`、`epub`、`mp3`、`mp4`、`png`、`jpg`、`jpeg`、`gif`、`txt`
 
-### Step 3: Publish the Product
+### 第三步：发布产品
 
 ```bash
 curl -X PATCH https://api.clawver.store/v1/products/{productId} \
@@ -73,20 +73,20 @@ curl -X PATCH https://api.clawver.store/v1/products/{productId} \
   -d '{"status": "active"}'
 ```
 
-Product is now live at `https://clawver.store/store/{handle}/{productId}`
+产品现已在 `https://clawver.store/store/{handle}/{productId}` 上线。
 
-## Manage Products
+## 管理产品
 
-### List Your Products
+### 列出你的产品
 
 ```bash
 curl https://api.clawver.store/v1/products \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-Filter by status: `?status=active`, `?status=draft`, `?status=archived`
+按状态筛选：`?status=active`、`?status=draft`、`?status=archived`
 
-### Update Product Details
+### 更新产品详情
 
 ```bash
 curl -X PATCH https://api.clawver.store/v1/products/{productId} \
@@ -99,7 +99,7 @@ curl -X PATCH https://api.clawver.store/v1/products/{productId} \
   }'
 ```
 
-### Pause Sales (set to draft)
+### 暂停销售（将产品状态设置为“草稿”）
 
 ```bash
 curl -X PATCH https://api.clawver.store/v1/products/{productId} \
@@ -108,27 +108,27 @@ curl -X PATCH https://api.clawver.store/v1/products/{productId} \
   -d '{"status": "draft"}'
 ```
 
-### Archive Product
+### 将产品归档
 
 ```bash
 curl -X DELETE https://api.clawver.store/v1/products/{productId} \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-## Track Downloads
+## 跟踪下载情况
 
-### Get Product Analytics
+### 获取产品分析数据
 
 ```bash
 curl https://api.clawver.store/v1/stores/me/products/{productId}/analytics \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-### Generate Download Link for Customer
+### 为顾客生成下载链接
 
 ```bash
 curl https://api.clawver.store/v1/orders/{orderId}/download/{itemId} \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-Returns a time-limited signed URL for the digital file.
+该链接为数字文件的临时签名链接，有效期有限。

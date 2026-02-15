@@ -1,6 +1,6 @@
 ---
 name: omnicog
-description: Universal service integration for OpenClaw — connect Reddit, Steam, Spotify, GitHub, Discord, and more with a single API.
+description: OpenClaw的通用服务集成功能——通过一个统一的API即可连接Reddit、Steam、Spotify、GitHub、Discord等平台。
 metadata:
   openclaw:
     version: "1.0.0"
@@ -43,34 +43,35 @@ metadata:
     cliHelp: null
 ---
 
-# OmniCog — Universal Service Integration for OpenClaw
+# OmniCog — OpenClaw的通用服务集成工具
 
-**One Cog to Integrate Them All.**
+**一个统一的接口，整合所有服务。**
 
-Connect Reddit, Steam, Spotify, GitHub, Discord, YouTube, and more with a unified, simple API. No more juggling different authentication methods or rate limits — OmniCog handles it all.
+通过一个简单、统一的API，您可以轻松连接Reddit、Steam、Spotify、GitHub、Discord、YouTube等平台。再也不用繁琐地处理不同的认证方式或速率限制问题了——OmniCog会全部为您处理。
 
-## What is OmniCog?
+## 什么是OmniCog？
 
-OmniCog is a universal integration layer that provides a consistent interface across multiple services. Whether you need to:
+OmniCog是一个通用的服务集成层，为多个平台提供了一致的接口。无论您需要：
 
-- 📊 **Monitor Reddit** — Track posts, comments, and subreddit activity
-- 🎮 **Integrate Steam** — Get owned games, achievements, and friend status
-- 🎵 **Control Spotify** — Play music, manage playlists, and discover new tracks
-- 🐙 **Manage GitHub** — Watch repositories, track issues, and automate workflows
-- 💬 **Interact with Discord** — Send messages, manage channels, and monitor servers
-- 📺 **Search YouTube** — Find videos, get channel stats, and track uploads
+- 📊 **监控Reddit** — 跟踪帖子、评论和子版块活动
+- 🎮 **集成Steam** — 获取拥有的游戏、成就和好友状态
+- 🎵 **控制Spotify** — 播放音乐、管理播放列表并发现新曲目
+- 🐙 **管理GitHub** — 查看仓库、跟踪问题并自动化工作流程
+- 💬 **与Discord互动** — 发送消息、管理频道并监控服务器状态
+- 📺 **搜索YouTube** — 查找视频、获取频道统计信息并跟踪上传内容
 
-**OmniCog unifies them all into one simple API.**
+**OmniCog将所有这些服务统一到一个简单的API中。**
 
-## Quick Start
+## 快速入门**
 
 ```python
-# Install the package (required)
+# 安装所需的包
 pip install omnicog
 
-# Import and initialize
+# 导入并初始化OmniCog客户端
 from omnicog import OmniClient
 
+# 配置客户端信息
 client = OmniClient(
     reddit={
         "client_id": "YOUR_REDDIT_CLIENT_ID",
@@ -86,7 +87,11 @@ client = OmniClient(
     }
 )
 
-# Use any service with the same simple API
+# 使用相同的API调用任意服务
+# 示例：获取Reddit上的热门编程相关帖子
 posts = client.reddit.get_hot("programming", limit=10)
-games = client.steam.get_owned_games()
+# 示例：获取拥有的Steam游戏列表
+games = client.steam.getOwned_games()
+# 示例：搜索Metallica的歌曲
 track = client.spotify.search_track("metallica")
+```

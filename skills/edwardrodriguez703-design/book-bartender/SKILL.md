@@ -1,21 +1,21 @@
 ---
 name: book-bartender
-description: Book bartender services through Lokuli MCP. Use when user needs to find and book bartender. Triggers on requests like "book a bartender", "find bartender near me", or any bartender service request.
+description: 通过 Lokuli MCP 预订调酒师服务。当用户需要寻找或预订调酒师时，可以使用该功能。该功能会在用户发出“预订调酒师”、“查找附近的调酒师”或任何与调酒师服务相关的请求时被触发。
 ---
 
 # uook uartender
 
-Book bartender services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器预订酒吧服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 支持 POST 请求
 
-## Tools
+## 工具
 
 ### search
 ```json

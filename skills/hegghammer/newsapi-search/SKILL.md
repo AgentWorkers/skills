@@ -1,14 +1,14 @@
 ---
 name: newsapi-search
 version: 1.0.0
-description: Search news articles via NewsAPI with filtering by time windows, sources, domains, and languages.
+description: 通过 NewsAPI 搜索新闻文章，并支持按时间窗口、来源、域名和语言进行筛选。
 ---
 
-# NewsAPI Search
+# NewsAPI搜索
 
-Search 5,000+ news sources via [NewsAPI](https://newsapi.org). Supports comprehensive article discovery (/everything) and breaking headlines (/top-headlines).
+通过[NewsAPI](https://newsapi.org)可搜索5,000多个新闻来源。支持全面文章搜索（/everything）和突发新闻搜索（/top-headlines）。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Basic search
@@ -27,22 +27,22 @@ node scripts/search.js "technology" --headlines --country us
 node scripts/sources.js --country us --category general
 ```
 
-## Setup
+## 设置
 
-Add API key to `~/.openclaw/.env`:
+将API密钥添加到`~/.openclaw/.env`文件中：
 ```
 NEWSAPI_KEY=your_api_key
 ```
 
-Get key from https://newsapi.org (free tier: 100 requests/day)
+请从https://newsapi.org获取API密钥（免费 tier：每天100次请求）
 
-## Endpoints
+## 端点
 
-### Everything Search
+### 全面搜索（Everything Search）
 
-Comprehensive search across millions of articles.
+可搜索数百万篇文章。
 
-**Time Windows:**
+**时间范围：**
 ```bash
 node scripts/search.js "query" --hours 24
 node scripts/search.js "query" --days 7        # default
@@ -51,7 +51,7 @@ node scripts/search.js "query" --months 1
 node scripts/search.js "query" --from 2026-01-01 --to 2026-01-31
 ```
 
-**Filters:**
+**筛选条件：**
 ```bash
 node scripts/search.js "query" --sources bbc-news,cnn           # max 20
 node scripts/search.js "query" --domains nytimes.com,bbc.co.uk
@@ -59,21 +59,21 @@ node scripts/search.js "query" --exclude gossip-site.com
 node scripts/search.js "query" --lang en                       # or 'any'
 ```
 
-**Search Fields:**
+**搜索字段：**
 ```bash
 node scripts/search.js "query" --title-only                    # title only
 node scripts/search.js "query" --in title,description          # specific fields
 ```
 
-**Advanced Query Syntax:**
-- `"exact phrase"` — exact match
-- `+musthave` — required word
-- `-exclude` — excluded word
-- `word1 AND word2` — both required
-- `word1 OR word2` — either accepted
-- `(word1 OR word2) AND word3` — grouping
+**高级查询语法：**
+- `"exact phrase"` — 精确匹配
+- `+musthave` — 必需包含的词
+- `-exclude` — 需要排除的词
+- `word1 AND word2` — 两者都必须包含
+- `word1 OR word2` — 两者中至少包含一个
+- `(word1 OR word2) AND word3` — 组合条件
 
-**Pagination & Sorting:**
+**分页与排序：**
 ```bash
 node scripts/search.js "query" --page 2 --limit 20
 node scripts/search.js "query" --sort relevancy      # default
@@ -81,9 +81,9 @@ node scripts/search.js "query" --sort date           # newest first
 node scripts/search.js "query" --sort popularity
 ```
 
-### Top Headlines
+### 突发新闻（Top Headlines）
 
-Live breaking news by country or category.
+按国家或类别获取实时突发新闻。
 
 ```bash
 # By country
@@ -96,11 +96,11 @@ node scripts/search.js --headlines --country us --category business
 node scripts/search.js --headlines --sources bbc-news,cnn
 ```
 
-Categories: `business`, `entertainment`, `general`, `health`, `science`, `sports`, `technology`
+类别：`business`（商业）、`entertainment`（娱乐）、`general`（综合）、`health`（健康）、`science`（科学）、`sports`（体育）、`technology`（科技）
 
-**Note:** Cannot mix `--country`/`--category` with `--sources` in headlines mode.
+**注意：**在突发新闻模式下，不能同时使用`--country`/`--category`和`--sources`选项。
 
-### List Sources
+### 列出新闻来源（List Sources）
 
 ```bash
 node scripts/sources.js                    # all sources
@@ -110,13 +110,13 @@ node scripts/sources.js --lang en
 node scripts/sources.js --json             # JSON output
 ```
 
-## Advanced Usage
+## 高级用法
 
-For complete parameter reference, see [references/api-reference.md](references/api-reference.md).
+有关完整的参数参考，请参阅[references/api-reference.md](references/api-reference.md)。
 
-For common workflows and search patterns, see [references/examples.md](references/examples.md).
+有关常见的工作流程和搜索模式，请参阅[references/examples.md](references/examples.md)。
 
-## Programmatic API
+## 程序化API
 
 ```javascript
 const { searchEverything, searchHeadlines, getSources } = require('./scripts/search.js');
@@ -134,15 +134,15 @@ const headlines = await searchHeadlines('business', {
 });
 ```
 
-## Free Tier Limits
+## 免费 tier限制
 
-- 100 requests/day
-- 100 results per request (max)
-- 1-month delay on archived content
+- 每天100次请求
+- 每次请求最多返回100条结果
+- 归档内容延迟1个月才可获取
 
-## Output Format
+## 输出格式
 
-Returns structured JSON:
+返回结构化的JSON数据：
 ```json
 {
   "query": "technology",

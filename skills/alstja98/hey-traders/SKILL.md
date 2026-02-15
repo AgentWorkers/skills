@@ -1,4 +1,4 @@
-The skill has been deprecated.
+该技能已被弃用。
 
-Please refer to the following document:
+请参阅以下文档：
 https://clawhub.ai/alstja98/heytraders

@@ -1,221 +1,200 @@
-# GEB Aesthetics Skill Specification
-## Multi-Modal Creative Intelligence System
+# GEB美学技能规范  
+## 多模态创意智能系统  
 
 ---
 
-## 1. Core Philosophy: The GEB Trinity
+## 1. 核心理念：GEB三要素  
 
-### 1.1 Gödel's Insight: The Limits of Systems
+### 1.1 哥德尔的理论：系统的局限性  
 
-**Incompleteness as Creative Freedom**
+**不完备性即创造性自由**  
+任何足够强大、能够描述自身的形式系统都包含一些无法在该系统内被证明的真理。对于创意AI而言：  
+- **“框架问题”**：最优秀的想法往往来自当前框架之外；  
+- **“元创意空间”**：真正的创新需要跳出系统的限制；  
+- **“创造性张力”**：无法完全满足的约束会推动创意的突破。  
 
-Any formal system powerful enough to describe itself contains truths that cannot be proven within the system. For creative AI:
+**实现方式**：系统能够意识到自身的局限性，并将这些局限性作为生成的动力，而非需要修复的错误。  
 
-- **The Frame Problem**: The best ideas often come from outside the current context
-- **Meta-Creative Space**: True innovation requires stepping outside the system
-- **Productive Tension**: Constraints that cannot be fully satisfied drive creative breakthroughs
+### 1.2 埃舍尔的视觉艺术：形式的自我参照  
+**视觉悖论作为美学工具**  
+埃舍尔那些看似不可能的构图揭示了形式本身可以承载意义：  
+- **“元叙事”**：关于叙事本身的故事；  
+- **“嵌套世界”**：现实中的现实；  
+- **“观察者效应”**：创造的行为会改变创造者本身。  
 
-**Implementation**: The system maintains awareness of its own limitations, using them as generative forces rather than bugs to fix.
+**实现方式**：采用五层架构，每一层都反映并包含其他层次的内容。  
 
-### 1.2 Escher's Vision: Self-Reference in Form
+### 1.3 巴赫的和声：约束带来复杂性  
+**赋格作为创意模型**  
+多个独立的元素在严格的对位规则下交织在一起：  
+- **元素独立性**：每种模态（文本/音频/视觉）都遵循自己的逻辑；  
+- **和谐统一**：在情感的高潮处实现跨模态的协调；  
+- **主题转化**：核心主题以多种形式在不同层面出现。  
 
-**Visual Paradox as Aesthetic Device**
-
-Escher's impossible constructions reveal that form can be content:
-
-- **Meta-Narrative**: Stories about storytelling
-- **Nested Worlds**: Realities within realities
-- **Observer Effect**: The act of creation changing the creator
-
-**Implementation**: Five-layer Spec architecture where each layer reflects and contains the others.
-
-### 1.3 Bach's Harmony: Constraint Breeds Complexity
-
-**The Fugue as Creative Model**
-
-Multiple independent voices weaving together under strict contrapuntal rules:
-
-- **Voice Independence**: Each modality (text/audio/visual) maintains its own logic
-- **Harmonic Convergence**: Cross-modal alignment at emotional peaks
-- **Thematic Transformation**: Core motifs appearing in varied forms across scales
-
-**Implementation**: Cross-modal consistency engine ensuring independent voices harmonize.
+**实现方式**：通过跨模态一致性引擎确保各元素之间的和谐统一。  
 
 ---
 
-## 2. Recursive Five-Layer Spec Architecture
+## 2. 递归五层架构  
 
-### 2.1 Layer 1: Worldview (L1)
-**Time Scale**: Generations/Eras  
-**Core Question**: "What kinds of existence are possible?"
+### 2.1 第一层：世界观（L1）  
+**时间尺度**：世代/时代  
+**核心问题**：“可能存在哪些形式的存在？”  
 
-**Design Elements**:
-- Cosmological Rules (physics, metaphysics)
-- Historical Timeline (key events, causality chains)
-- Cultural Symbol Systems (language, religion, art)
-- Spatial Geography (maps, climate, resources)
-- Power Structures (politics, economics, social classes)
+**设计元素**：  
+- 宇宙法则（物理学、形而上学）  
+- 历史时间线（关键事件、因果关系）  
+- 文化符号系统（语言、宗教、艺术）  
+- 空间地理（地图、气候、资源）  
+- 权力结构（政治、经济、社会阶层）  
 
-**Constraint Type**: Rigid - Violations break internal consistency
+**约束类型**：严格的约束——违反这些约束会破坏系统内部的逻辑一致性。  
 
-**Output**: "Cosmic Constitution" - Immutable boundary conditions
+**输出结果**：一个“宇宙宪法”——不可改变的边界条件。  
 
-### 2.2 Layer 2: Character (L2)
-**Time Scale**: Lifetime/Years  
-**Core Question**: "Whose story? Why does it matter?"
+### 2.2 第二层：角色（L2）  
+**时间尺度**：人物的一生/年份  
+**核心问题**：“这是谁的故事？为什么它重要？”  
 
-**Design Elements**:
-- Psychological Dimension (core desires, deep fears, cognitive patterns)
-- Social Dimension (class position, relationship networks, group affiliations)
-- Narrative Dimension (arc type, functional role, symbolic meaning)
+**设计元素**：  
+- 心理特征（核心欲望、深层恐惧、认知模式）  
+- 社会关系（阶级地位、人际关系网络）  
+- 叙事结构（故事类型、功能角色、象征意义）  
 
-**Constraint Type**: Motivation-Action Consistency
+**约束类型**：动机与行为的逻辑一致性。  
 
-**Output**: Character Bible + Relationship Graph
+**输出结果**：角色的完整档案及人物关系图。  
 
-### 2.3 Layer 3: Narrative (L3)
-**Time Scale**: Hours/Days  
-**Core Question**: "What happens? Why so?"
+### 2.3 第三层：叙事（L3）  
+**时间尺度**：几小时/几天  
+**核心问题**：“发生了什么？为什么会发生？”  
 
-**Design Elements**:
-- Conflict System (internal, interpersonal, supra-personal)
-- Information Release Rhythm (when, through whom, how)
-- Structural Templates (three-act, hero's journey, circular, network)
+**设计元素**：  
+- 冲突机制（内在冲突、人际冲突、超个人层面的冲突）  
+- 信息传递的节奏（何时、通过谁、如何传递）  
+- 结构模板（三幕结构、英雄之旅、循环叙事等）  
 
-**Constraint Type**: Theme-Event Alignment
+**约束类型**：主题与事件的匹配度。  
 
-**Output**: Detailed Outline + Plot Structure Map
+**输出结果**：详细的剧情大纲及情节结构图。  
 
-### 2.4 Layer 4: Beat (L4)
-**Time Scale**: Minutes  
-**Core Question**: "Emotion now? Rhythm fast or slow?"
+### 2.4 第四层：节奏（L4）  
+**时间尺度**：几分钟  
+**核心问题**：“当前的情绪状态如何？节奏是快还是慢？”  
 
-**Design Elements**:
-- Emotional Curve (intensity/valence over time)
-- Scene Function Labels (advancement, turning point, revelation, emotional ascent, transition)
-- Rhythm Parameters (scene length, dialogue density, action ratio)
+**设计元素**：  
+- 情感变化曲线（情绪强度随时间的变化）  
+- 场景功能标签（情节推进、转折点、情感高潮、过渡阶段）  
+- 节奏参数（场景时长、对话密度、动作节奏）  
 
-**Constraint Type**: Narrative Function Completion
+**约束类型**：确保叙事功能得以完整呈现。  
 
-**Output**: Scene List + Emotional Curve + Rhythm Parameters
+**输出结果**：场景列表、情感变化曲线及节奏参数。  
 
-### 2.5 Layer 5: Shot/Execution (L5)
-**Time Scale**: Seconds/Frames  
-**Core Question**: "What does the audience see? Hear?"
+### 2.5 第五层：镜头设计与执行（L5）  
+**时间尺度**：几秒钟/几帧画面  
+**核心问题**：观众能看到什么？听到什么？  
 
-**Design Elements**:
-- Spatial Blocking (character-camera relationships)
-- Temporal Design (shot duration, editing rhythm, speed changes)
-- Visual Grammar (shot scale, angle, movement)
+**设计元素**：  
+- 视觉构图（角色与镜头的关系）  
+- 时间设计（镜头时长、剪辑节奏、速度变化）  
+- 视觉元素（镜头规模、拍摄角度、动作设计）  
 
-**Constraint Type**: Technical Feasibility
+**约束类型**：技术的可行性。  
 
-**Output**: Storyboard + Shot List + Technical Specifications
+**输出结果**：故事板、镜头列表及技术规格。  
 
-### 2.6 Cross-Layer Dynamics
-
-**Top-Down**: Higher layers constrain lower layers  
-**Bottom-Up**: Lower implementations enrich or revise higher understanding  
-**Bidirectional Constraint**: Changes at any level trigger consistency checks
+### 2.6 跨层互动机制**  
+- **自上而下**：上层规则约束下层设计；  
+- **自下而上**：下层实现会丰富或修正上层的理解；  
+- **双向约束**：任何层面的变化都会触发一致性的检查。  
 
 ---
 
-## 3. Multi-Modal Consistency Engine
+## 3. 跨模态一致性引擎  
 
-### 3.1 The "Emotion-Form" Mapping Table
+### 3.1 “情感-形式”映射表  
+**核心验证机制**：确保跨模态元素之间的协调一致：  
+| 情感状态 | 文本表达 | 音频表达 | 视觉表达 |  
+|------------|------------|----------------|----------------|  
+| 绝望中的希望 | 暗色调的意象 → 明亮的隐喻 | 低音调 → 高音调的旋律 | 冷色调 → 温暖的灯光效果 |  
+| 被控制的恐慌 | 简短的句子、专业术语 | 断断续续的节奏、逐渐升高的音调 | 快速的镜头切换、浅景深 |  
+| 怀旧的渴望 | 古朴的词汇、细腻的感官描述 | 慢速的节奏、强烈的混响效果 | 色彩饱和度低、柔和的焦点效果 |  
 
-Central validation mechanism ensuring cross-modal alignment:
-
-| Emotion Coordinate | Text Expression | Audio Expression | Visual Expression |
-|-------------------|-----------------|------------------|-------------------|
-| Hope in Despair | Dark imagery → light metaphor | Minor → major modulation | Cold tones → warm point light |
-| Controlled Panic | Short sentences, technical terms | Staccato rhythm, rising pitch | Rapid cuts, shallow depth |
-| Nostalgic Longing | Archaic diction, sensory detail | Slow tempo, reverb-heavy | Desaturated colors, soft focus |
-
-### 3.2 Real-Time Consistency Scoring
-
-```
+### 3.2 实时一致性评估  
+（具体实现细节见**```
 Consistency Score = Σ(emotion_vector_distance) / n
 
 - Score > 0.8: Aligned
 - Score 0.5-0.8: Tension (intentional or error)
 - Score < 0.5: Misalignment alert
-```
+```**）  
 
-### 3.3 Harmonization Strategies
-
-When misalignment detected:
-1. **Dominant Modality**: One modality leads, others adapt
-2. **Counterpoint**: Intentional tension for aesthetic effect
-3. **Compromise**: Find intermediate emotional position
-4. **Revision**: Return to higher layer for constraint adjustment
-
----
-
-## 4. GEB-Inspired Form Constraints
-
-### 4.1 Self-Referential Systems
-
-**Meta-Narrative Layer**: Story about storytelling  
-**Nested Structure**: Stories within stories, dreams within dreams  
-**Paradox Design**: Contradictory propositions unified at higher level  
-**Observer Effect**: Audience participation changes meaning
-
-### 4.2 Fractal Recursive Structures
-
-**Self-Similarity**: Micro details mirror macro themes  
-**Scale Invariance**: Same generation rules apply at all layers  
-**Infinite Detail**: New information at every zoom level  
-**Boundary Chaos**: Order and randomness at the edge
-
-### 4.3 Cross-Domain Isomorphisms
-
-**Music-Visual-Narrative Mappings**:
-- Rhythm ↔ Editing pace
-- Harmony ↔ Color palette
-- Melody ↔ Camera movement
-- Tension-Resolution ↔ Plot structure
+### 3.3 协调策略**  
+当检测到不一致时：  
+1. **主导模态**：某个模态起主导作用，其他模态随之调整；  
+2. **对位法**：通过刻意制造冲突来达到美学效果；  
+3. **折中方案**：寻找中间的情感平衡点；  
+4. **修订**：返回上层进行调整以满足约束要求。  
 
 ---
 
-## 5. Novelty Quantification
+## 4. 受GEB启发的形式约束  
 
-### 5.1 The 70-20-10 Rule
+### 4.1 自我参照系统  
+- **元叙事层**：关于叙事本身的故事；  
+- **嵌套结构**：故事中的故事、梦中的梦；  
+- **悖论设计**：看似矛盾的元素在更高层次上达到统一；  
+- **观察者效应**：观众的参与会改变作品的意义。  
 
-| Dimension | Percentage | Function | Risk |
-|-----------|-----------|----------|------|
-| Familiarity | 70% | Lower barrier, establish connection | Boredom if too high |
-| Surprise | 20% | Create memory, spark discussion | Confusion if too high |
-| Mystery | 10% | Invite participation, reward re-experience | Alienation if too high |
+### 4.2 分形递归结构  
+- **自我相似性**：微观细节反映宏观主题；  
+- **尺度不变性**：相同的规则适用于所有层次；  
+- **无限细节**：每个放大层次都会揭示新的信息；  
+- **边界模糊性**：边界处呈现秩序与随机性的结合。  
 
-### 5.2 Controlled Innovation Strategies
-
-1. **Core Premise Inversion**: Change one foundational assumption, derive consequences
-2. **Genre Hybridization**: Deep structural fusion (not surface pastiche)
-3. **Perspective Flip**: Invert power/time/causality coordinates
-4. **Medium Self-Reference**: Expose creation process as content
-
----
-
-## 6. Four-Phase Creative Workflow
-
-### Phase 1: Framework Generation
-**Intent Capture** → **Reference Deconstruction** → **Constraint Specification**
-
-### Phase 2: Constraint Negotiation
-**Conflict Detection** → **Priority Sorting** → **Trade-off Visualization**
-
-### Phase 3: Layered Construction
-**Top-Down Generation** + **Bottom-Up Emergence** → **Bidirectional Validation**
-
-### Phase 4: Integration Validation
-**Structure-Constraint-Content Triangular Check** → **Multi-Modal Consistency Audit**
+### 4.3 跨领域同构性**  
+- **音乐-视觉-叙事的对应关系**：  
+  - 节奏 ↔ 编辑节奏；  
+  - 和声 ↔ 色彩搭配；  
+  - 旋律 ↔ 镜头运动；  
+  - 张力 ↔ 剧情结构。  
 
 ---
 
-## 7. Usage
+## 5. 创新程度的量化  
+### 5.1 70-20-10法则  
+| 维度 | 比例 | 功能 | 风险 |  
+|--------|------|---------|--------|  
+| 熟悉度 | 70% | 降低认知门槛，建立联系 | 过高会导致无聊感；  
+| 惊奇感 | 20% | 创造记忆，激发讨论 | 过高会导致困惑；  
+| 神秘感 | 10% | 引发观众参与，带来重新体验的乐趣 | 过高会导致疏离感；  
 
-```bash
+### 5.2 受控创新策略**  
+1. **基础假设的反转**：改变一个核心假设，推导出新的结果；  
+2. **类型融合**：深度的结构融合（而非表面的拼凑）；  
+3. **视角的转换**：颠覆权力/时间/因果关系的传统认知；  
+4. **创作过程的展示**：将创作过程本身作为作品的一部分。  
+
+---
+
+## 6. 四阶段创意工作流程  
+### 第一阶段：框架构建  
+**捕捉创意意图** → **解析现有参考** → **制定约束条件**  
+
+### 第二阶段：约束条件的协商  
+**识别冲突** → **确定优先级** → **可视化对比方案**  
+
+### 第三阶段：分层构建  
+**自上而下的设计** + **自下而上的创新** → **双向验证**  
+
+### 第四阶段：整合与验证  
+**结构-约束-内容的综合检查** → **跨模态一致性的全面审核**  
+
+---
+
+## 7. 使用说明  
+（具体使用方法见**```bash
 # Initialize project with GEB principles
 geb-aesthetics init --project-name "cyberpunk_short" --medium film
 
@@ -228,14 +207,13 @@ geb-aesthetics validate --cross-modal --strict
 
 # Export to production formats
 geb-aesthetics export --format finaldraft --format pdf
-```
+```**）  
 
 ---
 
-## 8. License
-
-MIT © Weiyang ([@weiyangzen](https://github.com/weiyangzen))
+## 8. 许可证  
+MIT © Weiyang ([@weiyangzen](https://github.com/weiyangzen))  
 
 ---
 
-*"The eternal golden braid: human creativity and machine intelligence, weaving together."*
+*“永恒的金色编织：人类创造力与机器智能的完美结合。”*

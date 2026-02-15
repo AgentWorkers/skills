@@ -1,44 +1,44 @@
 ---
 name: functions
-description: Guide Claude through deploying serverless browser automation using the official bb CLI
+description: **使用官方的bb CLI指导Claude部署无服务器浏览器自动化**
 ---
 
-# Browserbase Functions Skill
+# Browserbase函数技能
 
-Guide Claude through deploying serverless browser automation using the official `bb` CLI.
+本技能将指导您如何使用官方的`bb` CLI来部署无服务器的浏览器自动化脚本。
 
-## When to Use
+## 使用场景
 
-Use this skill when:
-- User wants to deploy automation to run on a schedule
-- User needs a webhook endpoint for browser automation
-- User wants to run automation in the cloud (not locally)
-- User asks about Browserbase Functions
+当以下情况发生时，请使用此技能：
+- 用户希望按计划部署自动化脚本；
+- 用户需要为浏览器自动化脚本设置Webhook端点；
+- 用户希望在云端运行自动化脚本（而非本地）；
+- 用户对Browserbase函数有疑问。
 
-## Prerequisites
+## 先决条件
 
-### 1. Get Credentials
+### 1. 获取凭证
 
-Get API key and Project ID from: https://browserbase.com/settings
+从以下链接获取API密钥和项目ID：https://browserbase.com/settings
 
-### 2. Set Environment Variables
+### 2. 设置环境变量
 
-Set directly:
+直接设置环境变量：
 ```bash
 export BROWSERBASE_API_KEY="your_api_key"
 export BROWSERBASE_PROJECT_ID="your_project_id"
 ```
 
-## Creating a Function Project
+## 创建函数项目
 
-### 1. Initialize with Official CLI
+### 1. 使用官方CLI进行初始化
 
 ```bash
 pnpm dlx @browserbasehq/sdk-functions init my-function
 cd my-function
 ```
 
-This creates:
+初始化后，会创建以下内容：
 ```
 my-function/
 ├── package.json
@@ -46,7 +46,7 @@ my-function/
 └── .env            # Add credentials here
 ```
 
-### 2. Add Credentials to .env
+### 2. 将凭证添加到`.env`文件中
 
 ```bash
 # Copy from stored credentials
@@ -54,19 +54,19 @@ echo "BROWSERBASE_API_KEY=$BROWSERBASE_API_KEY" >> .env
 echo "BROWSERBASE_PROJECT_ID=$BROWSERBASE_PROJECT_ID" >> .env
 ```
 
-Or manually edit `.env`:
+或者手动编辑`.env`文件：
 ```
 BROWSERBASE_API_KEY=your_api_key
 BROWSERBASE_PROJECT_ID=your_project_id
 ```
 
-### 3. Install Dependencies
+### 3. 安装依赖项
 
 ```bash
 pnpm install
 ```
 
-## Function Structure
+## 函数结构
 
 ```typescript
 import { defineFn } from "@browserbasehq/sdk-functions";
@@ -88,21 +88,21 @@ defineFn("my-function", async (context) => {
 });
 ```
 
-**Key objects:**
-- `context.session.connectUrl` - CDP endpoint to connect Playwright
-- `context.params` - Input parameters from invocation
+**关键对象：**
+- `context.session.connectUrl`：用于连接Playwright的CDP端点；
+- `context.params`：来自调用方的输入参数。
 
-## Development Workflow
+## 开发工作流程
 
-### 1. Start Dev Server
+### 1. 启动开发服务器
 
 ```bash
 pnpm bb dev index.ts
 ```
 
-Server runs at `http://127.0.0.1:14113`
+开发服务器的运行地址为`http://127.0.0.1:14113`。
 
-### 2. Test Locally
+### 2. 本地测试
 
 ```bash
 curl -X POST http://127.0.0.1:14113/v1/functions/my-function/invoke \
@@ -110,30 +110,30 @@ curl -X POST http://127.0.0.1:14113/v1/functions/my-function/invoke \
   -d '{"params": {"url": "https://news.ycombinator.com"}}'
 ```
 
-### 3. Iterate
+### 3. 迭代开发
 
-The dev server auto-reloads on file changes. Use `console.log()` for debugging - output appears in the terminal.
+开发服务器会在文件更改时自动重新加载。可以使用`console.log()`进行调试，输出结果会显示在终端中。
 
-## Deploying
+## 部署
 
-### Publish to Browserbase
+### 将脚本发布到Browserbase
 
 ```bash
 pnpm bb publish index.ts
 ```
 
-Output:
+部署完成后，会得到如下输出：
 ```
 Function published successfully
 Build ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 Function ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
-**Save the Function ID** - you need it to invoke.
+**请保存函数ID**——您需要它来调用已部署的函数。
 
-## Invoking Deployed Functions
+## 调用已部署的函数
 
-### Via curl
+### 通过curl调用
 
 ```bash
 # Start invocation
@@ -149,7 +149,7 @@ curl "https://api.browserbase.com/v1/functions/invocations/INVOCATION_ID" \
   -H "x-bb-api-key: $BROWSERBASE_API_KEY"
 ```
 
-### Via Code
+### 通过代码调用
 
 ```typescript
 async function invokeFunction(functionId: string, params: object) {
@@ -183,9 +183,9 @@ async function invokeFunction(functionId: string, params: object) {
 }
 ```
 
-## Common Patterns
+## 常见用法
 
-### Parameterized Scraping
+### 参数化抓取
 
 ```typescript
 defineFn("scrape", async ({ session, params }) => {
@@ -203,7 +203,7 @@ defineFn("scrape", async ({ session, params }) => {
 });
 ```
 
-### With Authentication
+### 带有身份验证的脚本
 
 ```typescript
 defineFn("authenticated-action", async ({ session, params }) => {
@@ -223,7 +223,7 @@ defineFn("authenticated-action", async ({ session, params }) => {
 });
 ```
 
-### Error Handling
+### 错误处理
 
 ```typescript
 defineFn("safe-scrape", async ({ session, params }) => {
@@ -245,17 +245,17 @@ defineFn("safe-scrape", async ({ session, params }) => {
 });
 ```
 
-## CLI Reference
+## CLI参考
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `pnpm dlx @browserbasehq/sdk-functions init <name>` | Create new project |
-| `pnpm bb dev <file>` | Start local dev server |
-| `pnpm bb publish <file>` | Deploy to Browserbase |
+| `pnpm dlx @browserbasehq/sdk-functions init <名称>` | 创建新项目 |
+| `pnpm bb dev <文件>` | 启动本地开发服务器 |
+| `pnpm bb publish <文件>` | 将脚本部署到Browserbase |
 
-## Troubleshooting
+## 故障排除
 
-### "Missing API key"
+### “缺少API密钥”
 ```bash
 # Check .env file has credentials
 cat .env
@@ -265,7 +265,7 @@ export BROWSERBASE_API_KEY="your_key"
 export BROWSERBASE_PROJECT_ID="your_project"
 ```
 
-### Dev server won't start
+### 开发服务器无法启动
 ```bash
 # Make sure SDK is installed
 pnpm add @browserbasehq/sdk-functions
@@ -274,11 +274,11 @@ pnpm add @browserbasehq/sdk-functions
 npx @browserbasehq/sdk-functions dev index.ts
 ```
 
-### Function times out
-- Max execution time is 15 minutes
-- Add specific timeouts to page operations
-- Use `waitForSelector` instead of sleep
+### 函数超时
+- 最大执行时间为15分钟；
+- 可为特定页面操作设置超时时间；
+- 使用`waitForSelector`代替`sleep`函数。
 
-### Can't connect to browser
-- Check `session.connectUrl` is being used correctly
-- Ensure you're using `chromium.connectOverCDP()` not `chromium.launch()`
+### 无法连接到浏览器
+- 确保`session.connectUrl`设置正确；
+- 使用`chromium.connectOverCDP()`而不是`chromium.launch()`。

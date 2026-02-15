@@ -1,6 +1,6 @@
 ---
 name: vibetrading-code-gen
-description: Generate executable Hyperliquid trading strategy code from natural language prompts. Use when a user wants to create automated trading strategies for Hyperliquid exchange based on their trading ideas, technical indicators, or VibeTrading signals. The skill generates complete Python code with proper error handling, logging, and configuration using actual Hyperliquid API wrappers.
+description: 根据自然语言提示生成可执行的 Hyperliquid 交易策略代码。当用户希望基于自己的交易理念、技术指标或 VibeTrading 信号为 Hyperliquid 交易所创建自动化交易策略时，可以使用该功能。该技能会生成包含适当错误处理、日志记录以及使用实际 Hyperliquid API 封装的完整 Python 代码。
 metadata:
   {
     "openclaw":
@@ -12,13 +12,13 @@ metadata:
   }
 ---
 
-# VibeTrading Code Generator
+# VibeTrading 代码生成器
 
-Generate executable Hyperliquid trading strategy code from natural language prompts. This skill transforms trading ideas into ready-to-run Python code using actual Hyperliquid API implementations. Generated code includes complete API integration, error handling, logging, and configuration management.
+该工具能够根据自然语言指令生成可执行的 Hyperliquid 交易策略代码。它将交易想法转化为可直接运行的 Python 代码，并利用 Hyperliquid 的实际 API 实现。生成的代码包含完整的 API 集成、错误处理、日志记录和配置管理功能。
 
-## Quick Start
+## 快速入门
 
-### Basic Usage
+### 基本用法
 
 ```bash
 # Generate a simple RSI strategy
@@ -31,19 +31,19 @@ python scripts/strategy_generator.py "BTC grid trading 50000-60000 10 grids 0.01
 python scripts/strategy_generator.py "ETH trading strategy based on VibeTrading signals, buy on bullish signals, sell on bearish signals"
 ```
 
-### Output Structure
+### 输出结构
 
-The generator creates:
-1. **Strategy Python file** - Complete trading strategy class
-2. **Configuration file** - Strategy parameters and settings
-3. **Usage instructions** - How to run and monitor the strategy
-4. **Requirements file** - Python dependencies
+生成的内容包括：
+1. **策略 Python 文件** - 完整的交易策略类
+2. **配置文件** - 策略参数和设置
+3. **使用说明** - 如何运行和监控策略
+4. **依赖项文件** - Python 所需的依赖库
 
-## Code Validation System
+## 代码验证系统
 
-### Automatic Code Validation
+### 自动代码验证
 
-All generated code is automatically validated and fixed using the built-in validation system:
+所有生成的代码都会通过内置的验证系统进行自动验证和修复：
 
 ```bash
 # Validate generated code
@@ -56,30 +56,28 @@ python scripts/code_validator.py generated_strategy.py --fix
 python scripts/code_validator.py strategy_directory/
 ```
 
-### Validation Steps
+### 验证步骤
 
-The validation system performs these checks:
+验证系统执行以下检查：
+1. **语法验证** - 检查 Python 语法是否正确
+2. **导入验证** - 确认所有模块都能被导入
+3. **兼容性检查** - 确保代码兼容 Python 3.5 及更高版本
+4. **常见问题检测** - 检查是否存在导入缺失、编码问题等
 
-1. **Syntax Validation** - Python syntax checking
-2. **Import Validation** - Module import verification
-3. **Compatibility Checks** - Python 3.5+ compatibility
-4. **Common Issue Detection** - Missing imports, encoding issues, etc.
+### 自动修复
 
-### Automatic Fixes
+当验证失败时，系统会自动修复以下常见问题：
+1. **添加缺失的导入** - 如果使用了类型注解，会自动添加相应的导入语句
+2. **修复编码声明** - 如果缺少 `# -*- coding: utf-8 -*-`，会自动添加该声明
+3. **移除不兼容的语法** - 移除 f-strings 和类型注解（以兼容 Python 3.5）
+4. **修复导入路径** - 为 API 包装器添加 `sys.path` 的修改
+5. **修复日志器初始化顺序** - 确保日志器在 API 客户端之前被初始化
+6. **替换 pathlib** - 为了兼容 Python 3.4，会使用 `os.path`
+7. **修复字符串格式** - 将 f-strings 转换为 `.format()` 方法
 
-When validation fails, the system automatically fixes common issues:
+### 验证配置
 
-1. **Add missing imports** - Add typing imports if type annotations are used
-2. **Fix encoding declaration** - Add `# -*- coding: utf-8 -*-` if missing
-3. **Remove incompatible syntax** - Remove f-strings and type annotations for Python 3.5 compatibility
-4. **Fix import paths** - Add sys.path modifications for API wrappers
-5. **Fix logger initialization order** - Ensure logger is initialized before API client
-6. **Remove pathlib usage** - Replace with os.path for Python 3.4 compatibility
-7. **Fix string formatting** - Convert f-strings to .format() method
-
-### Validation Configuration
-
-The validation system can be configured via command-line arguments:
+验证系统可以通过命令行参数进行配置：
 
 ```bash
 # Basic validation
@@ -98,33 +96,32 @@ python scripts/code_validator.py strategies/ --fix
 python scripts/code_validator.py strategy.py --fix --max-iterations 5
 ```
 
-### Validation Rules
+### 验证规则
 
-The system enforces these rules for generated code:
+系统对生成的代码执行以下规则：
+1. **Python 3.5 及更高版本兼容性**：
+   - 不使用 f-strings（使用 `.format()` 或 `%` 进行格式化）
+   - 不使用类型注解（移除或添加注释）
+   - 不使用 `pathlib`（使用 `os.path`）
+   - 不导入类型注解相关的模块
 
-1. **Python 3.5+ Compatibility**
-   - No f-strings (use `.format()` or `%` formatting)
-   - No type annotations (remove or use comments)
-   - No pathlib (use `os.path` instead)
-   - No typing module imports
+2. **代码质量**：
+   - 有正确的编码声明（`# -*- coding: utf-8 -*-`）
+   - 日志器在 API 客户端之前被初始化
+   - 所有导入都能被解析
+   - 无语法错误
 
-2. **Code Quality**
-   - Proper encoding declaration (`# -*- coding: utf-8 -*-`)
-   - Logger initialized before API client
-   - All imports are resolvable
-   - No syntax errors
+3. **安全性**：
+   - API 密钥从环境变量中加载
+   - 不使用硬编码的凭据
+   - 对 API 调用有适当的错误处理
 
-3. **Security**
-   - API keys loaded from environment variables
-   - No hardcoded credentials
-   - Proper error handling for API calls
+4. **性能**：
+   - 检查间隔合理（不会过于频繁）
+   - 数据获取高效
+   - 资源使用得当
 
-4. **Performance**
-   - Reasonable check intervals (not too frequent)
-   - Efficient data fetching
-   - Proper resource cleanup
-
-### Validation Workflow
+### 验证流程
 
 ```
 User Prompt → Code Generation → Validation → Fixes → Final Code
@@ -138,19 +135,18 @@ User Prompt → Code Generation → Validation → Fixes → Final Code
           Deliver validated code
 ```
 
-### Validation Failure Handling
+### 验证失败处理
 
-When validation fails, the system automatically updates the code with these steps:
+当验证失败时，系统会自动执行以下步骤：
+1. **错误分析** - 确定具体的验证错误
+2. **修复代码** - 根据错误类型进行相应的修复
+3. **重新验证** - 修复后再次进行验证
+4. **迭代修复** - 重复上述步骤，直到代码通过验证（最多尝试 3 次）
+5. **回退策略** - 如果自动修复失败，会提供详细的错误报告和手动修复指南
 
-1. **Error Analysis** - Identify the specific validation errors
-2. **Fix Application** - Apply appropriate fixes based on error type
-3. **Re-validation** - Validate again after fixes
-4. **Iterative Repair** - Repeat until code is valid (max 3 iterations)
-5. **Fallback Strategy** - If automatic fixes fail, provide detailed error report and manual fix instructions
+### 自动修复示例
 
-### Automatic Fix Examples
-
-#### Fix 1: Missing Imports
+#### 修复 1：缺失的导入
 ```python
 # Before (error: NameError: name 'List' is not defined)
 def calculate_prices(prices: List[float]) -> List[float]:
@@ -160,7 +156,7 @@ from typing import List, Dict, Optional
 def calculate_prices(prices):
 ```
 
-#### Fix 2: Encoding Issues
+#### 修复 2：编码问题
 ```python
 # Before (error: SyntaxError: Non-ASCII character)
 # Strategy description: Grid trading
@@ -170,7 +166,7 @@ def calculate_prices(prices):
 # Strategy description: Grid trading
 ```
 
-#### Fix 3: Python 3.5 Incompatibility
+#### 修复 3：Python 3.5 不兼容问题
 ```python
 # Before (error: SyntaxError in Python 3.5)
 price = f"Current price: {current_price}"
@@ -179,7 +175,7 @@ price = f"Current price: {current_price}"
 price = "Current price: {}".format(current_price)
 ```
 
-#### Fix 4: Import Path Issues
+#### 修复 4：导入路径问题
 ```python
 # Before (error: ImportError: No module named 'hyperliquid_api')
 from hyperliquid_api import HyperliquidClient
@@ -191,116 +187,124 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "api_wrappers")
 from hyperliquid_api import HyperliquidClient
 ```
 
-## Supported Strategy Types
+## 支持的策略类型
 
-### 1. Technical Indicator Strategies
-- **RSI-based**: Oversold/overbought trading
-- **MACD-based**: Trend following with MACD crossovers
-- **Moving Average**: SMA/EMA cross strategies
-- **Bollinger Bands**: Mean reversion strategies
+### 1. 技术指标策略
+- **基于 RSI 的策略**：基于 RSI 指标的超买/超卖交易
+- **基于 MACD 的策略**：利用 MACD 交叉信号进行趋势跟随
+- **移动平均线策略**：基于 SMA/EMA 的交叉策略
+- **布林带策略**：基于均值回归的策略
 
-### 2. Advanced Trading Strategies
-- **Grid Trading**: Price range trading with multiple orders
-- **Mean Reversion**: Statistical arbitrage strategies
-- **Trend Following**: Momentum-based strategies
-- **Arbitrage**: Spot-perp or cross-exchange arbitrage
+### 2. 高级交易策略
+- **网格交易**：在指定价格范围内进行多笔订单的交易
+- **均值回归策略**：统计套利策略
+- **趋势跟随策略**：基于动量的策略
+- **套利策略**：跨品种或跨交易所的套利
 
-### 3. Signal-Driven Strategies
-- **VibeTrading Integration**: Follow AI-generated trading signals
-- **News-based**: React to market news and sentiment
-- **Whale Activity**: Track large wallet movements
-- **Funding Rate**: Funding rate arbitrage strategies
+### 3. 基于信号的策略
+- **集成 VibeTrading 信号**：跟随 AI 生成的交易信号
+- **基于新闻的策略**：根据市场新闻和情绪进行交易
+- **追踪大额资金流动**：监控大额资金的交易行为
+- **资金费率套利**：利用资金费率差异进行套利
 
-## How It Works
+## 工作原理
 
-### Step 1: Prompt Analysis
-The generator analyzes your natural language prompt to identify:
-- Trading symbol (BTC, ETH, SOL, etc.)
-- Strategy type (grid, RSI, signal-based, etc.)
-- Key parameters (price ranges, grid counts, indicator values)
-- Risk management preferences
+### 第一步：指令分析
 
-### Step 2: Template Selection
-Based on the analysis, the system selects the most appropriate template from:
-- `templates/grid_trading.py` - Grid trading strategy template
+生成器会分析您的自然语言指令，以确定：
+- 交易标的（BTC、ETH、SOL 等）
+- 策略类型（网格交易、基于 RSI 的策略、基于信号的策略等）
+- 关键参数（价格范围、网格数量、指标值）
+- 风险管理设置
 
-### Step 3: Code Generation
-The generator:
-1. Fills template parameters with your values
-2. Adds proper error handling and logging
-3. Includes configuration management
-4. Generates complete runnable code
+### 第二步：模板选择
 
-### Step 4: Code Validation
-The generated code is automatically validated and fixed:
-1. **Syntax checking** - Ensure valid Python syntax
-2. **Import verification** - Check all imports are resolvable
-3. **Compatibility testing** - Verify Python 3.5+ compatibility
-4. **Automatic fixes** - Apply fixes for common issues
-5. **Re-validation** - Validate again after fixes
-6. **Error reporting** - If fixes fail, provide detailed error report
+根据分析结果，系统会从以下模板中选择最合适的模板：
+- `templates/grid_trading.py` - 网格交易策略模板
 
-### Validation Failure Handling
-If validation fails after automatic fixes:
-1. **Error Analysis Report** - Detailed breakdown of remaining issues
-2. **Manual Fix Instructions** - Step-by-step guidance for manual fixes
-3. **Fallback Template** - Option to use a simpler, validated template
-4. **Support Contact** - Instructions for getting help
+### 第三步：代码生成
 
-### Step 5: Output Delivery
-You receive validated, runnable code including:
-1. **Validated Python strategy file** - Fully tested and fixed
-2. **Configuration template** - Strategy parameters and settings
-3. **Validation report** - Summary of validation results and fixes applied
-4. **Usage instructions** - How to run and monitor the strategy
-5. **Troubleshooting guide** - Common issues and solutions
-6. **Risk warnings** - Important safety information
+生成器会：
+1. 用您的参数填充模板
+2. 添加适当的错误处理和日志记录功能
+3. 包含配置管理功能
+4. 生成完整的可执行代码
 
-## API Integration
+### 第四步：代码验证
 
-The generated code uses mature Hyperliquid API implementations that support:
+生成的代码会自动进行验证和修复：
+1. **语法检查** - 确保 Python 语法正确
+2. **导入验证** - 检查所有导入是否都能被解析
+3. **兼容性测试** - 确保代码兼容 Python 3.5 及更高版本
+4. **自动修复** - 修复常见问题
+5. **重新验证** - 修复后再次进行验证
+6. **错误报告** - 如果修复失败，会提供详细的错误报告
 
-### Trading Operations
-- Spot trading (buy/sell with limit/market orders)
-- Perpetual contracts (long/short with leverage)
-- Order management (cancel, modify, query)
-- Position management (reduce, hedge)
+### 验证失败处理
 
-### Market Data
-- Real-time prices and OHLCV data
-- Funding rates and open interest
-- Order book depth
-- Historical data access
+如果自动修复后仍然失败，系统会执行以下操作：
+1. **错误分析报告** - 详细列出剩余的问题
+2. **手动修复指南** - 提供逐步的手动修复步骤
+3. **回退模板** - 提供使用更简单、已验证的模板的选项
+4. **支持联系方式** - 提供获取帮助的说明
 
-### Account Management
-- Balance queries (spot and futures)
-- Position tracking
-- PNL calculation
-- Risk metrics
+### 第五步：输出结果
 
-## Template System
+您将收到经过验证的、可执行的代码，包括：
+1. **经过验证的 Python 策略文件** - 已经过全面测试和修复
+2. **配置模板** - 策略参数和设置
+3. **验证报告** - 验证结果和应用的修复内容的总结
+4. **使用说明** - 如何运行和监控策略
+5. **故障排除指南** - 常见问题及解决方法
+6. **风险提示** - 重要的安全提示
 
-### Template Structure
-Each template includes:
-- **Strategy class** with initialization and main logic
-- **Configuration section** for easy parameter tuning
-- **Error handling** with comprehensive logging
-- **Risk management** features
-- **Monitoring loop** for continuous operation
+## API 集成
 
-### Available Templates
+生成的代码使用了成熟的 Hyperliquid API 实现，支持以下功能：
 
-#### Grid Trading Template
-- `grid_trading.py` - Grid trading within price ranges (Python 3.5+ compatible)
-  - No f-strings
-  - No type annotations
-  - Proper encoding declaration
-  - Logger initialized before API client
+### 交易操作
+- 现货交易（使用限价单/市价单买入/卖出）
+- 永续合约交易（使用杠杆进行多头/空头交易）
+- 订单管理（取消、修改、查询）
+- 仓位管理（减少、对冲）
 
-## Configuration Management
+### 市场数据
+- 实时价格和 OHLCV 数据
+- 资金费率和未平仓量
+- 订单簿深度
+- 历史数据访问
 
-### Strategy Configuration
-Generated strategies include configurable parameters:
+### 账户管理
+- 账户余额查询（现货和期货）
+- 仓位跟踪
+- 盈亏计算
+- 风险指标
+
+## 模板系统
+
+### 模板结构
+
+每个模板包括：
+- **策略类** - 包含初始化和主要逻辑
+- **配置部分** - 便于调整参数
+- **错误处理** - 包含详细的日志记录
+- **风险管理** - 提供风险管理功能
+- **监控循环** - 用于持续运行策略
+
+### 可用的模板
+
+#### 网格交易模板
+- `grid_trading.py` - 在指定价格范围内进行网格交易（兼容 Python 3.5 及更高版本）
+  - 不使用 f-strings
+  - 不使用类型注解
+  - 有正确的编码声明
+  - 日志器在 API 客户端之前被初始化
+
+## 配置管理
+
+### 策略配置
+
+生成的策略包含可配置的参数：
 ```python
 STRATEGY_CONFIG = {
     "symbol": "BTC",
@@ -319,7 +323,7 @@ STRATEGY_CONFIG = {
 }
 ```
 
-### Environment Setup
+### 环境设置
 ```bash
 # Required environment variables
 export HYPERLIQUID_API_KEY="your_api_key_here"
@@ -327,35 +331,34 @@ export HYPERLIQUID_ACCOUNT_ADDRESS="your_address_here"
 export TELEGRAM_BOT_TOKEN="optional_for_alerts"
 ```
 
-## Risk Management Features
+## 风险管理功能
 
-All generated strategies include:
+所有生成的策略都包含以下功能：
+### 1. 仓位大小管理
+- 固定比例的持仓
+- 根据波动性动态调整仓位大小
+- 最大持仓限制
 
-### 1. Position Sizing
-- Fixed percentage of portfolio
-- Dynamic position sizing based on volatility
-- Maximum position limits
+### 2. 停损机制
+- 基于百分比的止损
+- 随动止损
+- 基于时间的退出策略
 
-### 2. Stop Loss Mechanisms
-- Percentage-based stop loss
-- Trailing stops
-- Time-based exits
+### 3. 风险控制
+- 最大每日损失限制
+- 减损保护
+- 相关性检查
+- 市场条件过滤
 
-### 3. Risk Controls
-- Maximum daily loss limits
-- Drawdown protection
-- Correlation checks
-- Market condition filters
+### 4. 监控与警报
+- 实时仓位跟踪
+- Telegram/Slack 通知
+- 绩效报告
+- 错误警报和恢复提示
 
-### 4. Monitoring & Alerts
-- Real-time position tracking
-- Telegram/Slack notifications
-- Performance reporting
-- Error alerts and recovery
+## 与 VibeTrading 信号的集成
 
-## Integration with VibeTrading Signals
-
-Generated strategies can integrate with VibeTrading Global Signals:
+生成的策略可以集成 VibeTrading 的全球交易信号：
 
 ```python
 from vibetrading import get_latest_signals
@@ -368,68 +371,68 @@ if signals["BTC"]["sentiment"] == "BULLISH":
     strategy.execute_buy("BTC", amount=0.01)
 ```
 
-## Usage Examples
+## 使用示例
 
-### Example 1: Simple RSI Strategy
-**Prompt**: "Generate a BTC RSI strategy, buy 0.01 BTC when RSI below 30, sell when above 70"
+### 示例 1：简单的 RSI 策略
+**指令**：**生成一个 BTC RSI 策略，当 RSI 低于 30 时买入 0.01 BTC，当 RSI 高于 70 时卖出**
 
-**Generated Code Features**:
-- RSI calculation with 14-period default
-- Configurable oversold/overbought thresholds
-- Proper error handling for API calls
-- Logging for all trading actions
-- 1-hour check interval
+**生成的代码特点**：
+- 使用默认的 14 期 RSI 计算
+- 可配置的超买/超卖阈值
+- 对 API 调用有适当的错误处理
+- 所有交易操作都有日志记录
+- 每小时检查一次
 
-### Example 2: Grid Trading Strategy
-**Prompt**: "ETH grid trading strategy, price range 3000-4000, 20 grids, 0.1 ETH per grid"
+### 示例 2：网格交易策略
+**指令**：**ETH 网格交易策略，价格范围 3000-4000，20 个网格，每个网格买入 0.1 ETH**
 
-**Generated Code Features**:
-- Automatic grid price calculation
-- Order placement and management
-- Grid rebalancing logic
-- Price monitoring and adjustment
-- Comprehensive logging
+**生成的代码特点**：
+- 自动计算网格价格
+- 自动放置和管理订单
+- 自动重新平衡网格
+- 实时监控和调整价格
+- 详细的日志记录
 
-### Example 3: Signal-Based Strategy
-**Prompt**: "SOL trading strategy based on VibeTrading signals, buy on bullish signals, sell on bearish signals, 10 SOL per trade"
+### 示例 3：基于信号的策略
+**指令**：**基于 VibeTrading 信号的 SOL 交易策略，根据买入信号买入，根据卖出信号卖出，每次交易买入 10 SOL**
 
-**Generated Code Features**:
-- VibeTrading API integration
-- Signal polling and parsing
-- Trade execution based on sentiment
-- Position management
-- Performance tracking
+**生成的代码特点**：
+- 集成 VibeTrading API
+- 自动获取和解析信号
+- 根据信号执行交易
+- 管理仓位
+- 跟踪交易表现
 
-## Best Practices
+## 最佳实践
 
-### 1. Start with Paper Trading
-- Always test strategies in simulation mode first
-- Use small position sizes initially
-- Monitor performance for at least 1-2 weeks
+### 1. 先进行模拟交易
+- 总是在模拟模式下测试策略
+- 初始时使用较小的持仓规模
+- 至少监控策略表现 1-2 周
 
-### 2. Risk Management
-- Never risk more than 1-2% per trade
-- Use stop losses on all positions
-- Diversify across multiple strategies
-- Monitor correlation between strategies
+### 2. 风险管理
+- 每笔交易的损失不超过 1-2%
+- 在所有仓位上使用止损
+- 分散投资多个策略
+- 监控策略之间的相关性
 
-### 3. Monitoring & Maintenance
-- Regularly review strategy performance
-- Adjust parameters based on market conditions
-- Keep logs for audit and analysis
-- Set up alerts for critical events
+### 3. 监控与维护
+- 定期审查策略表现
+- 根据市场情况调整参数
+- 保留日志以供审计和分析
+- 设置关键事件的警报
 
-### 4. Security
-- Store API keys securely (environment variables)
-- Use separate accounts for different strategies
-- Regularly rotate API keys
-- Monitor for unauthorized access
+### 4. 安全性
+- 安全存储 API 密钥（使用环境变量）
+- 为不同的策略使用不同的账户
+- 定期更换 API 密钥
+- 监控未经授权的访问
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-#### 1. API Connection Errors
+#### 1. API 连接错误
 ```bash
 # Check API key and account address
 echo $HYPERLIQUID_API_KEY
@@ -439,23 +442,23 @@ echo $HYPERLIQUID_ACCOUNT_ADDRESS
 python scripts/test_connection.py
 ```
 
-#### 2. Strategy Not Executing Trades
-- Check balance and available funds
-- Verify symbol is correctly specified
-- Check order size meets minimum requirements
-- Review logs for error messages
+#### 2. 策略无法执行交易
+- 检查账户余额和可用资金
+- 确认交易标的是否正确
+- 检查订单大小是否符合最低要求
+- 查看日志中的错误信息
 
-#### 3. Performance Issues
-- Adjust check intervals (too frequent may cause rate limiting)
-- Optimize data fetching (cache where possible)
-- Review market conditions (low liquidity periods)
+#### 3. 性能问题
+- 调整检查间隔（过于频繁可能会导致速率限制）
+- 优化数据获取（尽可能使用缓存）
+- 根据市场情况调整数据获取方式（例如在流动性较低时）
 
-#### 4. Integration Issues with VibeTrading
-- Verify VibeTrading API is accessible
-- Check signal availability for your symbols
-- Review signal parsing logic
+#### 4. 与 VibeTrading 的集成问题
+- 确认 VibeTrading API 可用
+- 检查所需交易标的的信号是否可用
+- 检查信号解析逻辑
 
-#### 5. Validation Errors
+#### 5. 验证错误
 ```bash
 # Common validation errors and solutions:
 
@@ -479,55 +482,59 @@ sed -i '' 's/: List//g; s/: Dict//g; s/: Optional//g' strategy.py
 python -m py_compile strategy.py
 ```
 
-#### 6. Code Generation Failures
-- Check prompt clarity (be specific about parameters)
-- Ensure template exists for requested strategy type
-- Verify Python version compatibility (3.5+ recommended)
-- Check available disk space for output files
+#### 6. 代码生成失败
+- 确保指令清晰（参数要明确）
+- 确保请求的策略类型有对应的模板
+- 确认 Python 版本兼容性（建议使用 3.5 及更高版本）
+- 检查输出文件的可用磁盘空间
 
-## Advanced Features
+## 高级功能
 
-### Custom Template Creation
-You can create custom templates in `templates/custom/`:
+### 自定义模板创建
 
-1. Create a new template file
-2. Define template variables with `{{variable_name}}`
-3. Add to template registry in `scripts/template_registry.py`
-4. Test with the generator
+您可以在 `templates/custom/` 目录下创建自定义模板：
+1. 创建新的模板文件
+2. 使用 `{{variable_name}}` 定义模板变量
+3. 将模板添加到 `scripts/template_registry.py` 中
+4. 使用生成器测试模板
 
-### Strategy Backtesting
-While this generator focuses on live trading, you can:
-1. Export generated code to backtesting frameworks
-2. Use historical data for strategy validation
-3. Add performance metrics and analysis
+### 策略回测
 
-### Multi-Strategy Management
-For running multiple strategies:
-1. Generate separate strategy files
-2. Use different configuration files
-3. Monitor overall portfolio risk
-4. Implement strategy allocation logic
+虽然该工具主要用于实时交易，但您也可以：
+1. 将生成的代码导出到回测框架中
+2. 使用历史数据对策略进行验证
+3. 添加性能指标和进行分析
 
-## Support & Updates
+### 多策略管理
 
-### Getting Help
-- Review generated code comments
-- Check example strategies in `examples/`
-- Consult Hyperliquid API documentation
-- Review VibeTrading signal documentation
+对于同时运行多个策略的情况：
+1. 为每个策略生成单独的代码文件
+2. 使用不同的配置文件
+3. 监控整个投资组合的风险
+4. 实现策略分配逻辑
 
-### Updates
-This skill will be updated with:
-- New strategy templates
-- Improved prompt understanding
-- Additional risk management features
-- Integration with more data sources
+## 支持与更新
 
-## Backtesting Integration
+### 获取帮助
 
-### Backtest Evaluation Feature
+- 查看生成的代码注释
+- 查看 `examples/` 目录中的示例策略
+- 参考 Hyperliquid API 文档
+- 查看 VibeTrading 信号的相关文档
 
-After generating a strategy, you can now evaluate its performance using our integrated backtesting system:
+### 更新
+
+该工具将定期更新，包括：
+- 新的策略模板
+- 提高指令理解能力
+- 新的风险管理功能
+- 与更多数据源的集成
+
+## 回测集成
+
+### 回测评估功能
+
+现在您可以使用我们的集成回测系统来评估策略的表现：
 
 ```bash
 # Generate a strategy
@@ -544,26 +551,25 @@ python scripts/backtest_runner.py generated_strategies/btc_grid_trading_strategy
   --interval 1h
 ```
 
-### Backtest Features
+### 回测功能
 
-The backtesting system provides:
+回测系统提供以下功能：
+1. **历史数据模拟** - 使用历史价格数据进行真实模拟
+2. **性能指标** - 计算关键指标：
+   - 总回报（%）
+   - 最大回撤（%）
+   - 夏普比率
+   - 胜率（%）
+   - 总交易次数
+   - 平均交易时长
 
-1. **Historical Data Simulation** - Uses historical price data for realistic testing
-2. **Performance Metrics** - Calculates key metrics:
-   - Total Return (%)
-   - Maximum Drawdown (%)
-   - Sharpe Ratio
-   - Win Rate (%)
-   - Total Trades
-   - Average Trade Duration
+3. **风险分析** - 评估策略的风险特征
+4. **可视化报告** - 生成图表和性能报告
+5. **对比分析** - 将策略表现与基准进行比较
 
-3. **Risk Analysis** - Evaluates strategy risk characteristics
-4. **Visual Reports** - Generates charts and performance reports
-5. **Comparative Analysis** - Compares strategy performance against benchmarks
+### 回测配置
 
-### Backtest Configuration
-
-You can configure backtests with these parameters:
+您可以使用以下参数配置回测：
 
 ```python
 BACKTEST_CONFIG = {
@@ -577,7 +583,7 @@ BACKTEST_CONFIG = {
 }
 ```
 
-### Backtest Results Example
+### 回测结果示例
 
 ```
 📊 Backtest Results for BTC Grid Trading Strategy
@@ -608,9 +614,9 @@ BACKTEST_CONFIG = {
   • Consistency: Moderate
 ```
 
-### Backtest Integration in Generated Code
+### 回测结果在生成的代码中的集成
 
-Generated strategies now include backtest compatibility:
+生成的策略现在支持回测功能：
 
 ```python
 # Generated strategy includes backtest method
@@ -627,55 +633,57 @@ backtest_results = strategy.run_backtest(
 strategy.generate_backtest_report(backtest_results)
 ```
 
-### Backtest Data Sources
+### 回测数据来源
 
-The backtesting system uses:
-- **Historical price data** from Hyperliquid API
-- **Realistic order execution** with configurable slippage
-- **Accurate commission modeling** based on exchange fees
-- **Market impact simulation** for large orders
+回测系统使用以下数据：
+- **来自 Hyperliquid API 的历史价格数据**
+- **真实的订单执行** - 包括可配置的滑点
+- **基于交易所费用的准确佣金模型**
+- **针对大额订单的市场影响模拟**
 
-### Backtest Limitations
+### 回测限制
 
-**Important Notes**:
-1. **Past performance ≠ future results** - Historical success doesn't guarantee future profits
-2. **Data quality** - Results depend on historical data accuracy
-3. **Market conditions** - Past market conditions may differ from future
-4. **Execution assumptions** - Assumes perfect order execution (configurable slippage)
-5. **Liquidity assumptions** - Assumes sufficient market liquidity
+**重要提示**：
+1. **过去的表现不等于未来的结果** - 历史上的成功并不能保证未来的收益
+2. **数据质量** - 结果取决于历史数据的准确性
+3. **市场条件** - 过去的市场条件可能与未来不同
+4. **执行假设** - 假设订单执行完美（可配置滑点）
+5. **流动性假设** - 假设市场流动性充足
 
-**Best Practices**:
-1. Always backtest with multiple time periods
-2. Test different market conditions (bull, bear, sideways)
-3. Use realistic commission and slippage settings
-4. Start with small position sizes in live trading
-5. Monitor strategy performance and adjust as needed
+**最佳实践**：
+1. 使用多个时间段进行回测
+2. 在不同的市场条件下进行测试（牛市、熊市、盘整市）
+3. 使用真实的佣金和滑点设置
+4. 在实际交易中从较小的持仓规模开始
+5. 监控策略表现并根据需要进行调整
 
-## Code Validation Disclaimer
+## 代码验证说明
 
-**Validation Limitations**: While the code validation system automatically fixes common issues, it cannot guarantee:
-1. **Trading logic correctness** - Validation checks syntax, not trading logic
-2. **Financial performance** - No guarantee of profitability
-3. **API compatibility** - Hyperliquid API changes may break generated code
-4. **Security vulnerabilities** - Manual security review is recommended
-5. **Edge case handling** - All possible error conditions may not be covered
+**验证限制**：
+尽管代码验证系统可以自动修复常见问题，但它不能保证：
+1. **交易逻辑的正确性** - 验证仅检查语法，不检查交易逻辑
+2. **财务表现** - 不保证盈利能力
+3. **API 兼容性** - Hyperliquid API 的变化可能会影响生成的代码
+4. **安全性** - 建议手动进行安全审查
+5. **边缘情况处理** - 可能存在未覆盖的所有错误情况
 
-**Validation Success Criteria**: Code is considered "valid" when:
-1. No syntax errors
-2. All imports are resolvable
-3. Python 3.6+ compatible
-4. Basic structure is correct
+**验证成功标准**：
+代码被视为“有效”时，需满足以下条件：
+1. 无语法错误
+2. 所有导入都能被解析
+3. 兼容 Python 3.6 及更高版本
+4. 基本结构正确
 
-**Not Validated**:
-- Trading logic accuracy
-- Risk management effectiveness
-- Financial calculations
-- Market condition handling
-- Performance optimization
+**未通过验证的情况**：
+- 交易逻辑的正确性
+- 风险管理的有效性
+- 财务计算的准确性
+- 市场条件的处理
+- 性能优化
 
-## Quick Reference
+## 快速参考
 
-### Python Version Requirements
+### Python 版本要求
 ```bash
 # Check Python version
 python scripts/check_python_version.py
@@ -683,7 +691,7 @@ python scripts/check_python_version.py
 # Minimum: Python 3.6+ (for f-string support)
 ```
 
-### Basic Usage
+### 基本用法
 ```bash
 # Generate strategy
 python scripts/strategy_generator.py "BTC grid trading 50000-60000 10 grids"
@@ -692,28 +700,107 @@ python scripts/strategy_generator.py "BTC grid trading 50000-60000 10 grids"
 python scripts/backtest_runner.py generated_strategies/btc_grid_trading_strategy.py
 ```
 
-### Key Features
-1. **Python 3.6+ Compatibility** - Modern Python features including f-strings
-2. **Automatic Backtest Integration** - Evaluate strategies before live trading
-3. **Comprehensive Validation** - Syntax and compatibility checking
-4. **Risk Management** - Built-in risk controls in all strategies
+### 主要特点
+1. **Python 3.6 及更高版本兼容性** - 支持现代 Python 特性（包括 f-strings）
+2. **自动回测集成** - 在实际交易前评估策略
+3. **全面验证** - 检查语法和兼容性
+4. **风险管理** - 所有策略都内置了风险管理功能
 
-## Trading Disclaimer
+## 交易注意事项
 
-**Important**: Trading cryptocurrencies involves significant risk. Generated strategies should be thoroughly tested before use with real funds. Past performance is not indicative of future results. Always use proper risk management and never trade with money you cannot afford to lose.
+**重要提示**：
+交易加密货币涉及重大风险。在使用真实资金之前，应彻底测试生成的策略。过去的表现不能保证未来的收益。请始终使用适当的风险管理措施，并且不要使用超出您承受能力的资金进行交易。
 
-The code generator provides tools for strategy creation, but ultimate responsibility for trading decisions and risk management lies with the user.
+该代码生成器提供了策略创建工具，但交易决策和风险管理的最终责任在于用户。
 
-**Validation is not a substitute for**:
-1. **Thorough testing** - Always test in simulation first
-2. **Code review** - Have experienced developers review generated code
-3. **Security audit** - Check for vulnerabilities before deployment
-4. **Performance testing** - Test under various market conditions
-5. **Risk assessment** - Evaluate strategy risks independently
+**请注意**：
+1. **验证不能替代**：
+   - 彻底的模拟测试
+   - 由经验丰富的开发者审查生成的代码
+   **安全审计** - 在部署前检查是否存在安全漏洞
+   **性能测试** - 在不同的市场条件下进行测试
+   **风险评估** - 独立评估策略的风险
 
-**Backtesting Limitations**:
-1. **Historical data quality** - Results depend on data accuracy
-2. **Market condition changes** - Past conditions may differ from future
-3. **Execution assumptions** - Assumes perfect order execution
-4. **Liquidity assumptions** - Assumes sufficient market liquidity
-5. **No guarantee of future performance** - Past success ≠ future profits
+**回测限制**：
+1. **历史数据的质量** - 结果取决于历史数据的准确性
+2. **市场条件的变化** - 过去的市场条件可能与未来不同
+3. **执行假设** - 假设订单执行完美（可配置滑点）
+4. **流动性假设** - 假设市场流动性充足
+
+**最佳实践**：
+1. 使用多个时间段进行回测
+2. 在不同的市场条件下进行测试（牛市、熊市、盘整市）
+3. 使用真实的佣金和滑点设置
+4. 在实际交易中从较小的持仓规模开始
+5. 根据需要监控策略表现并进行调整
+
+## 代码验证免责声明
+
+**验证限制**：
+虽然代码验证系统可以自动修复常见问题，但它不能保证：
+1. **交易逻辑的正确性** - 验证仅检查语法，不检查交易逻辑
+2. **财务表现** - 不保证盈利能力
+3. **API 兼容性** - Hyperliquid API 的变化可能会影响生成的代码
+4. **安全性** - 建议手动进行安全审查
+5. **边缘情况处理** - 可能存在未覆盖的所有错误情况
+
+**验证成功标准**：
+代码被视为“有效”时，需满足以下条件：
+1. 无语法错误
+2. 所有导入都能被解析
+3. 兼容 Python 3.6 及更高版本
+4. 基本结构正确
+
+**未通过验证的情况**：
+- 交易逻辑的正确性
+- 风险管理的有效性
+- 财务计算的准确性
+- 市场条件的处理
+- 性能优化
+
+## 快速参考
+
+### Python 版本要求
+```bash
+# Check Python version
+python scripts/check_python_version.py
+
+# Minimum: Python 3.6+ (for f-string support)
+```
+
+### 基本用法
+```bash
+# Generate strategy
+python scripts/strategy_generator.py "BTC grid trading 50000-60000 10 grids"
+
+# Run backtest
+python scripts/backtest_runner.py generated_strategies/btc_grid_trading_strategy.py
+```
+
+### 主要特点
+1. **Python 3.6 及更高版本兼容性** - 支持现代 Python 特性（包括 f-strings）
+2. **自动回测集成** - 在实际交易前评估策略
+3. **全面验证** - 检查语法和兼容性
+4. **风险管理** - 所有策略都内置了风险管理功能
+
+## 交易注意事项
+
+**重要提示**：
+交易加密货币涉及重大风险。在使用真实资金之前，应彻底测试生成的策略。过去的表现不能保证未来的收益。请始终使用适当的风险管理措施，并且不要使用超出您承受能力的资金进行交易。
+
+该代码生成器提供了策略创建工具，但交易决策和风险管理的最终责任在于用户。
+
+**请注意**：
+1. **验证不能替代**：
+   - 彻底的模拟测试
+   - 由经验丰富的开发者审查生成的代码
+   **安全审计** - 在部署前检查是否存在安全漏洞
+   **性能测试** - 在不同的市场条件下进行测试
+   **风险评估** - 独立评估策略的风险
+
+**回测限制**：
+1. **历史数据的质量** - 结果取决于历史数据的准确性
+2. **市场条件的变化** - 过去的市场条件可能与未来不同
+3. **执行假设** - 假设订单执行完美（可配置滑点）
+4. **流动性假设** - 假设市场流动性充足
+5. **没有保证未来的表现** - 过去的表现不能保证未来的收益

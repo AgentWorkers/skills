@@ -1,28 +1,28 @@
 ---
 name: backup-script-gen
-description: Generate database backup scripts with AI. Use when you need automated backups to S3, GCS, or local storage.
+description: 使用 AI 生成数据库备份脚本。当您需要将数据库自动备份到 S3、GCS 或本地存储时，可以使用这些脚本。
 ---
 
-# Backup Script Generator
+# 备份脚本生成器
 
-Setting up database backups involves shell scripts, cron jobs, cloud CLI tools, and retention policies. This tool generates complete backup scripts for any database to any destination.
+设置数据库备份通常需要使用 shell 脚本、cron 作业、云平台提供的 CLI 工具以及相应的保留策略。这款工具可以为任何数据库生成完整的备份脚本，并将其备份到任意目标位置。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-backup-script "PostgreSQL daily to S3"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates complete backup scripts with error handling
-- Supports all major databases (Postgres, MySQL, MongoDB, Redis)
-- Handles cloud destinations (S3, GCS, Azure Blob)
-- Includes retention and rotation logic
+- 生成包含错误处理机制的完整备份脚本
+- 支持所有主流数据库（Postgres、MySQL、MongoDB、Redis）
+- 支持云存储目标（如 S3、GCS、Azure Blob）
+- 具备数据保留和自动轮换机制
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # PostgreSQL to S3
@@ -38,42 +38,42 @@ npx ai-backup-script "MySQL weekly to /backups with 4 week rotation"
 npx ai-backup-script "Redis snapshot to S3 compressed"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Test your restores** - a backup you can't restore is useless
-- **Monitor failures** - add alerting to your backup jobs
-- **Encrypt at rest** - especially for cloud storage
-- **Document the restore process** - future you will thank present you
+- **测试恢复功能**：如果无法恢复备份数据，那么备份就毫无意义。
+- **监控备份过程中的异常情况**：为备份任务添加警报机制。
+- **对备份数据进行加密**：尤其是对于云存储环境。
+- **详细记录恢复过程**：未来的你一定会感谢现在的自己。
 
-## When to Use This
+## 适用场景
 
-- Setting up backups for a new database
-- Migrating from manual backups to automated
-- Need a quick backup script for a side project
-- Want a starting point to customize
+- 为新数据库设置备份方案
+- 将手动备份流程转换为自动化备份
+- 为副项目快速生成备份脚本
+- 作为自定义备份脚本的起点
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发工具之一。无需付费、无需注册，免费版本也不需要 API 密钥，只需使用即可。
 
-**Find more:**
+**了解更多信息：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 npx ai-backup-script --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your description of database type, schedule, and destination. Generates a shell script using the appropriate dump tool (pg_dump, mysqldump, mongodump, etc.) with proper flags, compression, upload commands, and cleanup logic.
+根据用户提供的数据库类型、备份计划和目标位置信息，该工具会使用相应的数据库备份工具（如 `pg_dump`、`mysqldump`、`mongodump` 等），结合适当的参数、压缩选项、上传命令以及清理逻辑来生成备份脚本。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。你可以自由使用该工具。

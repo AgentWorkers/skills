@@ -1,24 +1,24 @@
 ---
 slug: "n8n-daily-report"
 display_name: "N8N Daily Report"
-description: "Automate daily construction report generation using n8n workflow automation."
+description: "使用 n8n 工作流自动化工具来自动化每日施工报告的生成。"
 ---
 
-# n8n Daily Report Automation
+# n8n 日报自动化
 
-## Business Case
+## 商业案例
 
-Daily reports are critical but time-consuming. This n8n workflow automates collection of site data from multiple sources and generates formatted daily reports.
+日报虽然至关重要，但制作过程却非常耗时。此 n8n 工作流程能够自动从多个来源收集站点数据，并生成格式化的日报。
 
-## Workflow Overview
+## 工作流程概述
 
 ```
 [Site Data Sources] → [n8n Webhook] → [Data Processing] → [Report Generation] → [Distribution]
 ```
 
-## n8n Workflow Configuration
+## n8n 工作流程配置
 
-### 1. Trigger Node: Schedule + Webhook
+### 1. 触发节点：调度器 + Webhook
 
 ```json
 {
@@ -44,7 +44,7 @@ Daily reports are critical but time-consuming. This n8n workflow automates colle
 }
 ```
 
-### 2. Data Collection Nodes
+### 2. 数据收集节点
 
 ```json
 {
@@ -81,7 +81,7 @@ Daily reports are critical but time-consuming. This n8n workflow automates colle
 }
 ```
 
-### 3. Data Processing
+### 3. 数据处理
 
 ```json
 {
@@ -93,7 +93,7 @@ Daily reports are critical but time-consuming. This n8n workflow automates colle
 }
 ```
 
-### 4. Report Generation
+### 4. 报告生成
 
 ```json
 {
@@ -110,7 +110,7 @@ Daily reports are critical but time-consuming. This n8n workflow automates colle
 }
 ```
 
-### 5. Distribution
+### 5. 报告分发
 
 ```json
 {
@@ -137,7 +137,7 @@ Daily reports are critical but time-consuming. This n8n workflow automates colle
 }
 ```
 
-## Python Helper Functions
+## Python 辅助函数
 
 ```python
 import requests
@@ -171,17 +171,17 @@ def format_labor_data(labor_entries: list) -> list:
     return formatted
 ```
 
-## Quick Start
+## 快速入门
 
-1. Import workflow to n8n
-2. Configure environment variables:
+1. 将工作流程导入 n8n；
+2. 配置环境变量：
    - `WEATHER_API_KEY`
    - `PROCORE_API`
    - `PDF_SERVICE_URL`
    - `SHAREPOINT_SITE`
-3. Set schedule trigger for desired time
-4. Configure email distribution list
+3. 设置所需的调度时间；
+4. 配置电子邮件分发列表。
 
-## Resources
-- **n8n Documentation**: https://docs.n8n.io
-- **DDC Book**: Chapter 4.2 - Workflow Automation
+## 资源
+- **n8n 文档**：https://docs.n8n.io
+- **DDC 手册**：第 4.2 章 - 工作流程自动化

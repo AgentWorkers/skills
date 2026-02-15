@@ -1,17 +1,17 @@
 ---
 name: show-ip
-description: Show the current public IP address of the server. Use when asked about IP, public IP, or network identity.
+description: 显示服务器当前的公共 IP 地址。当被询问 IP 地址、公共 IP 或网络身份时，可以使用此信息。
 ---
 
-# Public IP
+# 公共 IP 地址
 
-Shows the server's current public IP address.
+显示服务器当前的公共 IP 地址。
 
-## Usage
+## 使用方法
 
-Run the script:
+运行脚本：
 ```bash
 bash scripts/get-ip.sh
 ```
 
-Returns the public IPv4 address. If IPv6 is also available, it shows both.
+脚本将返回服务器的公共 IPv4 地址。如果服务器同时支持 IPv6，也会显示 IPv6 地址。

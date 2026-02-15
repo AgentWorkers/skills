@@ -1,85 +1,85 @@
 ---
 name: eachlabs-voice-audio
-description: Text-to-speech, speech-to-text, voice conversion, and audio processing using EachLabs AI models. Supports ElevenLabs TTS, Whisper transcription with diarization, and RVC voice conversion. Use when the user needs TTS, transcription, or voice conversion.
+description: 使用EachLabs AI模型实现文本转语音（Text-to-Speech, TTS）、语音转文本（Speech-to-Text, STT）、语音转换（Voice Conversion, VC）以及音频处理功能。支持 ElevenLabs 的 TTS 服务，以及带有时间戳记录的 Whisper 转录功能（Whisper transcription with diarization）。当用户需要文本转语音、语音转文本或语音转换服务时，可以使用该工具。
 metadata:
   author: eachlabs
   version: "1.0"
 ---
 
-# EachLabs Voice & Audio
+# EachLabs 语音与音频服务
 
-Text-to-speech, speech-to-text transcription, voice conversion, and audio utilities via the EachLabs Predictions API.
+通过 EachLabs 的 Predictions API，提供文本转语音（TTS）、语音转文本（STT）、语音转换以及音频处理功能。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Available Models
+## 可用模型
 
-### Text-to-Speech
+### 文本转语音（Text-to-Speech）
 
-| Model | Slug | Best For |
-|-------|------|----------|
-| ElevenLabs TTS | `elevenlabs-text-to-speech` | High quality TTS |
-| ElevenLabs TTS w/ Timestamps | `elevenlabs-text-to-speech-with-timestamp` | TTS with word timing |
-| ElevenLabs Text to Dialogue | `elevenlabs-text-to-dialogue` | Multi-speaker dialogue |
-| ElevenLabs Sound Effects | `elevenlabs-sound-effects` | Sound effect generation |
-| ElevenLabs Voice Design v2 | `elevenlabs-voice-design-v2` | Custom voice design |
-| Kling V1 TTS | `kling-v1-tts` | Kling text-to-speech |
-| Kokoro 82M | `kokoro-82m` | Lightweight TTS |
-| Play AI Dialog | `play-ai-text-to-speech-dialog` | Dialog TTS |
-| Stable Audio 2.5 | `stable-audio-2-5-text-to-audio` | Text to audio |
+| 模型            | Slug           | 适用场景                |
+|-----------------|-----------------|----------------------|
+| ElevenLabs TTS       | `elevenlabs-text-to-speech` | 高质量的文本转语音服务       |
+| ElevenLabs TTS with Timestamps | `elevenlabs-text-to-speech-with-timestamp` | 带时间戳的文本转语音服务       |
+| ElevenLabs Text to Dialogue | `elevenlabs-text-to-dialogue` | 多语音角色的对话生成服务       |
+| ElevenLabs Sound Effects | `elevenlabs-sound-effects` | 音效生成服务             |
+| ElevenLabs Voice Design v2    | `elevenlabs-voice-design-v2` | 个性化语音设计服务         |
+| Kling V1 TTS       | `kling-v1-tts`         | Kling 提供的文本转语音服务       |
+| Kokoro 82M         | `kokoro-82m`         | 轻量级的文本转语音服务         |
+| Play AI Dialog      | `play-ai-text-to-speech-dialog` | 用于对话场景的文本转语音服务     |
+| Stable Audio 2.5       | `stable-audio-2-5-text-to-audio` | 文本转音频服务           |
 
-### Speech-to-Text
+### 语音转文本（Speech-to-Text）
 
-| Model | Slug | Best For |
-|-------|------|----------|
-| ElevenLabs Scribe v2 | `elevenlabs-speech-to-text-scribe-v2` | Best quality transcription |
-| ElevenLabs STT | `elevenlabs-speech-to-text` | Standard transcription |
-| Wizper with Timestamp | `wizper-with-timestamp` | Timestamped transcription |
-| Wizper | `wizper` | Basic transcription |
-| Whisper | `whisper` | Open-source transcription |
-| Whisper Diarization | `whisper-diarization` | Speaker identification |
-| Incredibly Fast Whisper | `incredibly-fast-whisper` | Fastest transcription |
+| 模型            | Slug           | 适用场景                |
+|-----------------|-----------------|----------------------|
+| ElevenLabs Scribe v2     | `elevenlabs-speech-to-text-scribe-v2` | 高质量的语音转文本服务         |
+| ElevenLabs STT        | `elevenlabs-speech-to-text` | 标准的语音转文本服务         |
+| Wizper with Timestamp    | `wizper-with-timestamp` | 带时间戳的语音转文本服务         |
+| Wizper           | `wizper`           | 基础的语音转文本服务         |
+| Whisper          | `whisper`           | 开源的语音转文本服务         |
+| Whisper Diarization | `whisper-diarization` | 语音识别及转录服务         |
+| Incredibly Fast Whisper | `incredibly-fast-whisper` | 高速的语音转文本服务         |
 
-### Voice Conversion & Cloning
+### 语音转换与克隆（Voice Conversion & Cloning）
 
-| Model | Slug | Best For |
-|-------|------|----------|
-| RVC v2 | `rvc-v2` | Voice conversion |
-| Train RVC | `train-rvc` | Train custom voice model |
-| ElevenLabs Voice Clone | `elevenlabs-voice-clone` | Voice cloning |
-| ElevenLabs Voice Changer | `elevenlabs-voice-changer` | Voice transformation |
-| ElevenLabs Voice Design v3 | `elevenlabs-voice-design-v3` | Advanced voice design |
-| ElevenLabs Dubbing | `elevenlabs-dubbing` | Video dubbing |
-| Chatterbox S2S | `chatterbox-speech-to-speech` | Speech to speech |
-| Open Voice | `openvoice` | Open-source voice clone |
-| XTTS v2 | `xtts-v2` | Multi-language voice clone |
-| Stable Audio 2.5 Inpaint | `stable-audio-2-5-inpaint` | Audio inpainting |
-| Stable Audio 2.5 A2A | `stable-audio-2-5-audio-to-audio` | Audio transformation |
-| Audio Trimmer | `audio-trimmer-with-fade` | Audio trimming with fade |
+| 模型            | Slug           | 适用场景                |
+|-----------------|-----------------|----------------------|
+| RVC v2           | `rvc-v2`           | 语音转换服务             |
+| Train RVC         | `train-rvc`         | 自定义语音模型的训练服务         |
+| ElevenLabs Voice Clone    | `elevenlabs-voice-clone` | 语音克隆服务             |
+| ElevenLabs Voice Changer | `elevenlabs-voice-changer` | 语音变换服务             |
+| ElevenLabs Voice Design v3    | `elevenlabs-voice-design-v3` | 高级语音设计服务           |
+| ElevenLabs Dubbing     | `elevenlabs-dubbing`     | 视频配音服务             |
+| Chatterbox S2S       | `chatterbox-speech-to-speech` | 语音对语音的转换服务         |
+| Open Voice        | `openvoice`         | 开源的语音克隆服务         |
+| XTTS v2           | `xtts-v2`           | 多语言语音克隆服务           |
+| Stable Audio 2.5 Inpaint   | `stable-audio-2-5-inpaint` | 音频修复服务             |
+| Stable Audio 2.5 A2A     | `stable-audio-2-5-audio-to-audio` | 音频转换服务             |
+| Audio Trimmer       | `audio-trimmer-with-fade` | 带淡入效果的音频剪辑服务         |
 
-### Audio Utilities
+### 音频处理工具（Audio Utilities）
 
-| Model | Slug | Best For |
-|-------|------|----------|
-| FFmpeg Merge Audio Video | `ffmpeg-api-merge-audio-video` | Merge audio with video |
-| Toolkit Video Convert | `toolkit` | Video/audio conversion |
+| 模型            | Slug           | 适用场景                |
+|-----------------|-----------------|----------------------|
+| FFmpeg Merge Audio Video | `ffmpeg-api-merge-audio-video` | 音频与视频的合并服务         |
+| Toolkit Video Convert | `toolkit`         | 视频/音频转换工具包           |
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** the output from the response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 确认模型存在，并获取包含完整输入参数的 `request_schema`。在创建预测请求前务必执行此操作，以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，传入模型 slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **查询结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取输出**：从响应中提取预测结果。
 
-## Examples
+## 示例
 
-### Text-to-Speech with ElevenLabs
+### 使用 ElevenLabs 进行文本转语音
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -98,7 +98,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Transcription with ElevenLabs Scribe
+### 使用 ElevenLabs Scribe 进行语音转文本
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -115,7 +115,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Transcription with Wizper (Whisper)
+### 使用 Wizper（Whisper）进行语音转文本
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -133,7 +133,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Speaker Diarization with Whisper
+### 使用 Whisper 进行语音识别（Speaker Diarization）
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -151,7 +151,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Voice Conversion with RVC v2
+### 使用 RVC v2 进行语音转换
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -170,7 +170,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Merge Audio with Video
+### 将音频与视频合并
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -187,23 +187,23 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## ElevenLabs Voice IDs
+## ElevenLabs 语音 ID
 
-The `elevenlabs-text-to-speech` model supports these voice IDs. Pass the raw ID string:
+`elevenlabs-text-to-speech` 模型支持以下语音 ID。请传递相应的原始 ID 字符串：
 
-| Voice ID | Notes |
-|----------|-------|
-| `EXAVITQu4vr4xnSDxMaL` | Default voice |
-| `9BWtsMINqrJLrRacOk9x` | — |
-| `CwhRBWXzGAHq8TQ4Fs17` | — |
-| `FGY2WhTYpPnrIDTdsKH5` | — |
-| `JBFqnCBsd6RMkjVDRZzb` | — |
-| `N2lVS1w4EtoT3dr4eOWO` | — |
-| `TX3LPaxmHKxFdv7VOQHJ` | — |
-| `XB0fDUnXU5powFXDhCwa` | — |
-| `onwK4e9ZLuTAKqWW03F9` | — |
-| `pFZP5JQG7iQjIQuC4Bku` | — |
+| 语音 ID          | 说明                        |
+|-----------------|---------------------------|
+| `EXAVITQu4vr4xnSDxMaL`   | 默认语音                         |
+| `9BWtsMINqrJLrRacOk9x`   |                           |
+| `CwhRBWXzGAHq8TQ4Fs17`   |                           |
+| `FGY2WhTYpPnrIDTdsKH5`   |                           |
+| `JBFqnCBsd6RMkjVDRZzb`   |                           |
+| `N2lVS1w4EtoT3dr4eOWO`   |                           |
+| `TX3LPaxmHKxFdv7VOQHJ`   |                           |
+| `XB0fDUnXU5powFXDhCwa`   |                           |
+| `onwK4e9ZLuTAKqWW03F9`   |                           |
+| `pFZP5JQG7iQjIQuC4Bku`   |                           |
 
-## Parameter Reference
+## 参数参考
 
-See [references/MODELS.md](references/MODELS.md) for complete parameter details for each model.
+有关每个模型的详细参数信息，请参阅 [references/MODELS.md](references/MODELS.md)。

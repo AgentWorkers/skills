@@ -14,25 +14,25 @@ metadata:
     primaryEnv: UNIONE_API_KEY
 ---
 
-# UniOne Email API
+# UniOne 邮件 API
 
-UniOne is a transactional email service with Web API for sending transactional and marketing emails at scale (up to 3,000 emails/sec). This skill lets you send emails, manage templates, validate addresses, track delivery, and more.
+UniOne 是一个提供事务性邮件服务的平台，通过 Web API 可以大规模发送事务性邮件和营销邮件（每秒最多 3,000 封邮件）。该 API 允许您发送邮件、管理模板、验证地址、跟踪邮件送达情况等。
 
-## Authentication
+## 认证
 
-All requests require the `UNIONE_API_KEY` environment variable. Pass it as the `X-API-KEY` header.
+所有请求都需要 `UNIONE_API_KEY` 环境变量。请将其作为 `X-API-KEY` 标头传递。
 
-**Base URL:** `https://api.unione.io/en/transactional/api/v1/{method}.json?platform=openclaw`
+**基础 URL:** `https://api.unione.io/en/transactional/api/v1/{method}.json?platform=openclaw`
 
-All methods use `POST` with JSON body.
+所有方法均使用 `POST` 请求，并且请求体为 JSON 格式。
 
 ---
 
-## CRITICAL: Domain Setup (Required Before Sending)
+## 重要提示：域名设置（发送邮件前必须完成）
 
-**Emails will not be delivered until the sender's domain is verified.** Before attempting to send any email, ensure the domain is set up:
+**在发送邮件之前，必须先验证发送者的域名。** 在尝试发送任何邮件之前，请确保域名已经设置完成：
 
-### Step 1: Get DNS Record Values — `domain/get-dns-records.json`
+### 第一步：获取 DNS 记录信息 — `domain/get-dns-records.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/get-dns-records.json?platform=openclaw" \
@@ -41,7 +41,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/get-dns-recor
   -d '{"domain": "yourdomain.com"}'
 ```
 
-**API response** returns raw values (not ready-to-paste DNS records):
+**API 响应** 返回原始的 DNS 记录信息（不可直接使用）：
 
 ```json
 {
@@ -52,19 +52,19 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/get-dns-recor
 }
 ```
 
-**The user must create 3 DNS TXT records from these values:**
+**用户需要根据这些信息创建 3 个 DNS TXT 记录：**
 
-| Record Host | Record Type | Value |
+| 记录主机 | 记录类型 | 值 |
 |-------------|-------------|-------|
-| `@` | TXT | `unione-validate-hash=<verification-record from response>` |
-| `us._domainkey` | TXT | `k=rsa; p=<dkim from response>` |
+| `@` | TXT | `unione-validate-hash=<响应中的验证信息>` |
+| `us._domainkey` | TXT | `k=rsa; p=<响应中的 DKIM 信息>` |
 | `@` | TXT | `v=spf1 include:spf.unione.io ~all` |
 
-Present these 3 records clearly to the user and instruct them to add them at their DNS provider (Cloudflare, Route53, GoDaddy, etc.). The SPF record is always the same — it is not returned by the API.
+请将这些记录清晰地展示给用户，并指导他们在他们的 DNS 提供商（如 Cloudflare、Route53、GoDaddy 等）处添加这些记录。SPF 记录的内容是固定的，不会通过 API 返回。
 
-### Step 2: Verify Domain Ownership — `domain/validate-verification.json`
+### 第二步：验证域名所有权 — `domain/validate-verification.json`
 
-After the user has added DNS records:
+用户添加 DNS 记录后，请执行此步骤：
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/validate-verification.json?platform=openclaw" \
@@ -73,7 +73,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/validate-veri
   -d '{"domain": "yourdomain.com"}'
 ```
 
-### Step 3: Validate DKIM — `domain/validate-dkim.json`
+### 第三步：验证 DKIM — `domain/validate-dkim.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/validate-dkim.json?platform=openclaw" \
@@ -82,7 +82,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/validate-dkim
   -d '{"domain": "yourdomain.com"}'
 ```
 
-### Step 4: List All Domains — `domain/list.json`
+### 第四步：列出所有域名 — `domain/list.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/list.json?platform=openclaw" \
@@ -91,60 +91,60 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/domain/list.json?pla
   -d '{}'
 ```
 
-**If domain verification fails:** DNS propagation can take up to 48 hours. Suggest the user waits and retries, or checks their DNS records for typos.
+**如果域名验证失败：** DNS 记录的传播可能需要最多 48 小时。建议用户等待或检查 DNS 记录中是否有拼写错误。
 
 ---
 
-## Error Handling & Retry Policy
+## 错误处理与重试策略
 
-### Retry Logic
+### 重试逻辑
 
-When making API requests, implement exponential backoff for retryable errors:
+在发送 API 请求时，对于可重试的错误，请采用指数级退避策略进行重试：
 
-**Retryable errors (DO retry with exponential backoff):**
+**可重试的错误（需要采用指数级退避重试）：**
 
-| HTTP Code | Meaning | Retry Strategy |
+| HTTP 状态码 | 含义 | 重试策略 |
 |-----------|---------|----------------|
-| 429 | Rate limited | Wait, then retry. Respect `Retry-After` header if present |
-| 500 | Internal server error | Retry up to 3 times |
-| 502 | Bad gateway | Retry up to 3 times |
-| 503 | Service unavailable | Retry up to 3 times |
-| 504 | Gateway timeout | Retry up to 3 times |
+| 429 | 超时限制 | 等待一段时间后重试。如果存在 `Retry-After` 标头，请遵循其指示 |
+| 500 | 服务器内部错误 | 重试最多 3 次 |
+| 502 | 网关错误 | 重试最多 3 次 |
+| 503 | 服务不可用 | 重试最多 3 次 |
+| 504 | 网关超时 | 重试最多 3 次 |
 
-**Recommended retry schedule:**
+**推荐的重试时间表：**
 
-| Attempt | Delay |
+| 重试次数 | 重试延迟 |
 |---------|-------|
-| 1 | Immediate |
-| 2 | 1 second |
-| 3 | 5 seconds |
-| 4 | 30 seconds |
+| 1       | 立即     |
+| 2       | 1 秒     |
+| 3       | 5 秒     |
+| 4       | 30 秒     |
 
-**Non-retryable errors (do NOT retry):**
+**不可重试的错误（不要重试）：**
 
-| HTTP Code | Meaning | Action |
+| HTTP 状态码 | 含义 | 处理方式 |
 |-----------|---------|--------|
-| 400 | Bad request | Fix the request parameters |
-| 401 | Unauthorized | Check API key |
-| 403 | Forbidden | Check permissions / domain verification |
-| 404 | Endpoint not found | Check the method path |
-| 413 | Payload too large | Reduce request size |
+| 400 | 请求错误 | 修复请求参数 |
+| 401 | 未经授权 | 检查 API 密钥 |
+| 403 | 禁止访问 | 检查权限/域名验证 |
+| 404 | 未找到端点 | 检查请求路径 |
+| 413 | 请求数据过大 | 减少请求大小 |
 
-### Idempotency
+### 原子性
 
-For `email/send.json`, always include an `idempotency_key` to prevent duplicate sends during retries. This is critical for production systems.
+对于 `email/send.json` 请求，务必包含 `idempotency_key` 以防止重复发送。这对于生产环境至关重要。
 
-The `idempotency_key` is a unique string (UUID recommended) passed in the request body. If UniOne receives two requests with the same key, the second request returns the result of the first without sending another email.
+`idempotency_key` 是一个唯一的字符串（建议使用 UUID），需要在请求体中传递。如果 UniOne 收到两个带有相同键的请求，它会返回第一次请求的结果，而不会再次发送邮件。
 
-**Always generate a unique idempotency key per logical send operation, and reuse the same key when retrying the same send.**
+**对于每次发送操作，都必须生成一个唯一的 `idempotency_key`，并在重试时使用相同的键。**
 
 ---
 
-## 1. Send Email — `email/send.json`
+## 1. 发送邮件 — `email/send.json`
 
-Send a transactional or marketing email to one or more recipients. Supports personalization via substitutions, templates, attachments, tracking, and metadata.
+向一个或多个收件人发送事务性或营销邮件。支持通过替换变量、模板、附件、跟踪信息和元数据进行个性化设置。
 
-### curl
+### 使用 curl 发送邮件
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?platform=openclaw" \
@@ -172,7 +172,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?plat
   }'
 ```
 
-### Node.js
+### 使用 Node.js 发送邮件
 
 ```javascript
 const response = await fetch("https://api.unione.io/en/transactional/api/v1/email/send.json?platform=openclaw", {
@@ -199,7 +199,7 @@ const data = await response.json();
 // data.status === "success" → data.job_id, data.emails
 ```
 
-### Python
+### 使用 Python 发送邮件
 
 ```python
 import requests, uuid, os
@@ -227,7 +227,7 @@ response = requests.post(
 data = response.json()  # data["status"] == "success" → data["job_id"], data["emails"]
 ```
 
-### Go
+### 使用 Go 发送邮件
 
 ```go
 package main
@@ -275,7 +275,7 @@ func sendEmail() error {
 }
 ```
 
-### PHP
+### 使用 PHP 发送邮件
 
 ```php
 $ch = curl_init("https://api.unione.io/en/transactional/api/v1/email/send.json?platform=openclaw");
@@ -304,7 +304,7 @@ $response = curl_exec($ch);
 $data = json_decode($response, true); // $data["status"] === "success"
 ```
 
-**Success response:**
+**成功响应：**
 ```json
 {
   "status": "success",
@@ -313,37 +313,35 @@ $data = json_decode($response, true); // $data["status"] === "success"
 }
 ```
 
-**Full parameters for `message` object:**
+**`message` 对象的完整参数：**
 
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-----------|------|----------|-------------|
-| `recipients` | array | Yes | Array of recipient objects. Each has `email` (required), `substitutions` (object), `metadata` (object) |
-| `body.html` | string | Yes* | HTML content. Use `{{variable}}` for substitutions |
-| `body.plaintext` | string | No | Plain text version |
-| `subject` | string | Yes* | Email subject line. Supports `{{substitutions}}` |
-| `from_email` | string | Yes* | Sender email (must be from a verified domain) |
-| `from_name` | string | No | Sender display name |
-| `reply_to` | string | No | Reply-to email address |
-| `template_id` | string | No | Use a stored template instead of body/subject |
-| `tags` | array | No | Tags for categorizing and filtering |
-| `track_links` | 0/1 | No | Enable click tracking (default: 0) |
-| `track_read` | 0/1 | No | Enable open tracking (default: 0) |
-| `global_language` | string | No | Language for unsubscribe footer: en, de, fr, es, it, pl, pt, ru, ua, be |
-| `template_engine` | string | No | `"simple"` (default) or `"velocity"` or `"liquid"` |
-| `global_substitutions` | object | No | Variables available to all recipients |
-| `attachments` | array | No | Array of `{type, name, content}` where content is base64 |
-| `skip_unsubscribe` | 0/1 | No | Skip unsubscribe footer (use 1 only for transactional) |
-| `headers` | object | No | Custom email headers |
+| `recipients` | 数组 | 是 | 收件人对象数组。每个对象包含 `email`（必填）、`substitutions`（对象）、`metadata`（对象） |
+| `body.html` | 字符串 | 是* | HTML 内容。可以使用 `{{variable}}` 进行替换 |
+| `body.plaintext` | 字符串 | 否 | 纯文本版本 |
+| `subject` | 字符串 | 是* | 邮件主题行。支持使用 `{{substitutions}}` 进行替换 |
+| `from_email` | 字符串 | 是* | 发件人邮箱（必须来自已验证的域名） |
+| `from_name` | 字符串 | 否 | 发件人显示名称 |
+| `reply_to` | 字符串 | 否 | 回复邮箱地址 |
+| `template_id` | 字符串 | 否 | 使用存储的模板代替 HTML 内容/主题 |
+| `tags` | 数组 | 否 | 用于分类和过滤的标签 |
+| `track_links` | 0/1 | 否 | 启用点击跟踪（默认值：0） |
+| `track_read` | 0/1 | 启用打开链接跟踪（默认值：0） |
+| `global_language` | 字符串 | 否 | 用于取消订阅页的语言（en, de, fr, es, it, pl, pt, ru, ua, be） |
+| `template_engine` | 字符串 | 否 | 使用的模板引擎（默认值：`simple`、`velocity` 或 `liquid`） |
+| `global_substitutions` | 对象 | 否 | 所有收件人都可以使用的变量 |
+| `attachments` | 数组 | 否 | 包含 `{type, name, content}` 的数组，其中 `content` 为 Base64 编码的文件 |
+| `skip_unsubscribe` | 0/1 | 否 | 是否跳过取消订阅页（仅适用于事务性邮件） |
+| `headers` | 对象 | 否 | 自定义邮件头部 |
 
-*Not required if `template_id` is used.
+**顶级参数：**
 
-**Top-level parameter:**
-
-| Parameter | Type | Required | Description |
+| 参数 | 类型 | 是否必填 | 说明 |
 |-----------|------|----------|-------------|
-| `idempotency_key` | string | Recommended | Unique key (UUID) to prevent duplicate sends on retry. Max 36 chars. |
+| `idempotency_key` | 字符串 | 建议使用 | 唯一的键（UUID），用于防止重复发送。最多 36 个字符。 |
 
-**Send with template:**
+**使用模板发送邮件：**
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?platform=openclaw" \
   -H "Content-Type: application/json" \
@@ -368,7 +366,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?plat
   }'
 ```
 
-**Send to multiple recipients with personalization:**
+**向多个收件人发送个性化邮件：**
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?platform=openclaw" \
   -H "Content-Type: application/json" \
@@ -396,9 +394,9 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/email/send.json?plat
 
 ---
 
-## 2. Email Validation — `email-validation/single.json`
+## 2. 邮件地址验证 — `email-validation/single.json`
 
-Validate an email address to check if it exists and is deliverable.
+验证电子邮件地址是否有效且可送达。
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/email-validation/single.json?platform=openclaw" \
@@ -407,7 +405,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/email-validation/sin
   -d '{"email": "user@example.com"}'
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "status": "success",
@@ -420,13 +418,13 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/email-validation/sin
 }
 ```
 
-Possible `result` values: `"valid"`, `"invalid"`, `"unresolvable"`, `"unknown"`.
+可能的返回值：`"valid"`、`"invalid"`、`"unresolvable"`、`"unknown"`。
 
 ---
 
-## 3. Template Management
+## 3. 模板管理
 
-### 3.1 Create/Update Template — `template/set.json`
+### 3.1 创建/更新模板 — `template/set.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/template/set.json?platform=openclaw" \
@@ -447,11 +445,11 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/template/set.json?pl
   }'
 ```
 
-**Response:** `{"status": "success", "template": {"id": "generated-template-id"}}`
+**响应：`{"status": "success", "template": {"id": "生成的模板 ID"}}`
 
-To **update** an existing template, include the `"id"` field in the template object.
+**更新**现有模板时，请在模板对象中包含 `id` 字段。
 
-### 3.2 Get Template — `template/get.json`
+### 3.2 获取模板 — `template/get.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/template/get.json?platform=openclaw" \
@@ -460,7 +458,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/template/get.json?pl
   -d '{"id": "template-id-here"}'
 ```
 
-### 3.3 List Templates — `template/list.json`
+### 3.3 列出模板 — `template/list.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/template/list.json?platform=openclaw" \
@@ -469,7 +467,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/template/list.json?p
   -d '{"limit": 50, "offset": 0}'
 ```
 
-### 3.4 Delete Template — `template/delete.json`
+### 3.4 删除模板 — `template/delete.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/template/delete.json?platform=openclaw" \
@@ -480,11 +478,11 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/template/delete.json
 
 ---
 
-## 4. Webhook Management
+## 4. Webhook 管理
 
-Webhooks send real-time notifications about email events to your URL.
+Webhook 可以将邮件事件的实时通知发送到您的 URL。
 
-### 4.1 Set Webhook — `webhook/set.json`
+### 4.1 设置 Webhook — `webhook/set.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/webhook/set.json?platform=openclaw" \
@@ -501,7 +499,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/webhook/set.json?pla
   }'
 ```
 
-### 4.2 List Webhooks — `webhook/list.json`
+### 4.2 列出 Webhook — `webhook/list.json`
 
 ```bash
 curl -X POST "https://api.unione.io/en/transactional/api/v1/webhook/list.json?platform=openclaw" \
@@ -510,7 +508,7 @@ curl -X POST "https://api.unione.io/en/transactional/api/v1/webhook/list.json?pl
   -d '{}'
 ```
 
-### 4.3 Get / Delete Webhook — `webhook/get.json` / `webhook/delete.json`
+### 4.3 获取/删除 Webhook — `webhook/get.json` / `webhook/delete.json`
 
 ```bash
 # Get
@@ -524,34 +522,27 @@ curl -X POST ".../webhook/delete.json?platform=openclaw" -H "X-API-KEY: $UNIONE_
 
 ---
 
-## 5. Suppression List Management
+## 5. 邮件抑制列表管理
 
-### 5.1 Add — `suppression/set.json`
+### 5.1 添加抑制规则 — `suppression/set.json`
 
-```bash
-curl -X POST "https://api.unione.io/en/transactional/api/v1/suppression/set.json?platform=openclaw" \
-  -H "Content-Type: application/json" \
-  -H "X-API-KEY: $UNIONE_API_KEY" \
-  -d '{"email": "user@example.com", "cause": "unsubscribed", "created": "2026-01-15 12:00:00"}'
-```
+**原因值：`"unsubscribed"`、`temporary_unavailable`、`permanent_unavailable`、`complained`**
 
-Cause values: `"unsubscribed"`, `"temporary_unavailable"`, `"permanent_unavailable"`, `"complained"`.
-
-### 5.2 Check — `suppression/get.json`
+### 5.2 检查抑制规则 — `suppression/get.json`
 
 ```bash
 curl -X POST ".../suppression/get.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
   -H "Content-Type: application/json" -d '{"email": "user@example.com"}'
 ```
 
-### 5.3 List — `suppression/list.json`
+### 5.3 列出抑制规则 — `suppression/list.json`
 
 ```bash
 curl -X POST ".../suppression/list.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
   -H "Content-Type: application/json" -d '{"cause": "hard_bounced", "limit": 50, "offset": 0}'
 ```
 
-### 5.4 Delete — `suppression/delete.json`
+### 5.4 删除抑制规则 — `suppression/delete.json`
 
 ```bash
 curl -X POST ".../suppression/delete.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
@@ -560,9 +551,9 @@ curl -X POST ".../suppression/delete.json?platform=openclaw" -H "X-API-KEY: $UNI
 
 ---
 
-## 6. Event Dumps
+## 6. 事件日志记录
 
-### 6.1 Create — `event-dump/create.json`
+### 6.1 创建事件日志 — `event-dump/create.json`
 
 ```bash
 curl -X POST ".../event-dump/create.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
@@ -570,25 +561,11 @@ curl -X POST ".../event-dump/create.json?platform=openclaw" -H "X-API-KEY: $UNIO
   -d '{"start_time": "2026-01-01 00:00:00", "end_time": "2026-01-31 23:59:59", "limit": 50000, "all_events": true}'
 ```
 
-### 6.2 Get / List / Delete
-
-```bash
-# Get dump status and download URL
-curl -X POST ".../event-dump/get.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
-  -H "Content-Type: application/json" -d '{"dump_id": "dump-id"}'
-
-# List all dumps
-curl -X POST ".../event-dump/list.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
-  -H "Content-Type: application/json" -d '{}'
-
-# Delete a dump
-curl -X POST ".../event-dump/delete.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
-  -H "Content-Type: application/json" -d '{"dump_id": "dump-id"}'
-```
+### 6.2 获取/列出/删除事件日志 — `event-dump/get.json` / `event-dump/delete.json`
 
 ---
 
-## 7. Tags — `tag/list.json` / `tag/delete.json`
+## 7. 标签管理 — `tag/list.json` / `tag/delete.json`
 
 ```bash
 # List tags
@@ -602,7 +579,7 @@ curl -X POST ".../tag/delete.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_
 
 ---
 
-## 8. Projects — `project/create.json` / `project/list.json`
+## 8. 项目管理 — `project/create.json` / `project/list.json`
 
 ```bash
 # Create project
@@ -617,7 +594,7 @@ curl -X POST ".../project/list.json?platform=openclaw" -H "X-API-KEY: $UNIONE_AP
 
 ---
 
-## 9. System Info — `system/info.json`
+## 9. 系统信息 — `system/info.json`
 
 ```bash
 curl -X POST ".../system/info.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
@@ -626,7 +603,7 @@ curl -X POST ".../system/info.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API
 
 ---
 
-## 10. Subscribe (Double Opt-In) — `email/subscribe.json`
+## 10. 订阅（双确认） — `email/subscribe.json`
 
 ```bash
 curl -X POST ".../email/subscribe.json?platform=openclaw" -H "X-API-KEY: $UNIONE_API_KEY" \
@@ -636,53 +613,53 @@ curl -X POST ".../email/subscribe.json?platform=openclaw" -H "X-API-KEY: $UNIONE
 
 ---
 
-## Instructions for the Agent
+## 代理操作指南
 
-1. **Domain setup is mandatory.** Before the first send, always check if the user's domain is verified. Run `domain/list.json` to check. If not verified, guide them through the domain setup process (Section: Domain Setup).
-2. **Always use `api.unione.io`** as the API host for all requests.
-3. **Never send an email without explicit user confirmation.** Always show the recipient, subject, and body summary before executing `email/send.json`.
-4. **Always include `idempotency_key`** in `email/send.json` requests. Generate a UUID for each unique send. Reuse the same key when retrying.
-5. **Implement retry logic** for 429 and 5xx errors with exponential backoff (see Error Handling section). Never retry 400, 401, 403, 404, 413 errors.
-6. **For template operations**, list available templates first before asking which one to use.
-7. **For validation**, report the result clearly and suggest action.
-8. **Handle errors gracefully.** If a request returns an error, explain what went wrong and suggest a fix.
-9. **Remind users** that the `from_email` domain must be verified in their UniOne account.
-10. **Substitution syntax** uses double curly braces: `{{variable_name}}`.
-11. **Attachments** must be base64-encoded. Help the user encode files if needed.
-12. **Security**: Never log or display the full API key. Remind users to keep their API key secret.
-13. **Code language**: When the user's project uses a specific language (Node.js, Python, Go, PHP, etc.), provide code examples in that language. The examples in this skill can be adapted to any language that can make HTTP POST requests with JSON.
+1. **必须完成域名设置。** 在首次发送邮件之前，请务必检查用户的域名是否已验证。运行 `domain/list.json` 进行验证。如果未验证，请指导用户完成域名设置流程（参见“域名设置”部分）。
+2. **所有请求的 API 主机必须使用 `api.unione.io`。**
+3. **未经用户明确确认，切勿发送邮件。** 在执行 `email/send.json` 之前，务必向用户显示邮件内容、主题和邮件摘要。
+4. **在 `email/send.json` 请求中务必包含 `idempotency_key`。** 为每次发送生成一个唯一的 UUID，并在重试时使用相同的键。
+5. **对于 429 和 5xx 状态码的错误，采用指数级退避策略进行重试（参见错误处理部分）。不要重试 400、401、403、404、413 状态码的错误。**
+6. **进行模板操作** 时，先列出可用的模板，然后再选择使用哪个模板。
+7. **进行验证** 时，要清晰地显示结果并给出相应的处理建议。
+8. **优雅地处理错误。** 如果请求返回错误，请说明问题所在并提供解决方法。
+9. **提醒用户** 发件人邮箱必须在他们的 UniOne 账户中经过验证。
+10. **替换变量的语法** 使用双大括号：`{{variable_name}}`。
+11. **附件必须进行 Base64 编码。** 如有需要，可帮助用户进行文件编码。
+12. **安全注意事项**：切勿记录或显示完整的 API 密钥。提醒用户保密 API 密钥。
+13. **代码语言**：如果用户的项目使用特定的编程语言（如 Node.js、Python、Go、PHP 等），请提供相应的代码示例。本文档中的示例可以适配任何能够发送 JSON 格式请求的语言。
 
-## Common Workflows
+## 常见工作流程
 
-### "Send a test email"
-1. Check domain verification (`domain/list.json`)
-2. If domain not verified, guide through domain setup
-3. Ask for recipient email address
-4. Compose a simple test message
-5. Confirm with user before sending
-6. Execute `email/send.json` with `idempotency_key`
-7. Report the job_id on success
+### “发送测试邮件”
+1. 检查域名是否已验证（`domain/list.json`）
+2. 如果域名未验证，指导用户完成域名设置
+3. 获取收件人的电子邮件地址
+4. 撰写简单的测试邮件内容
+5. 在发送前确认用户同意
+6. 使用 `idempotency_key` 执行 `email/send.json`
+7. 成功后报告作业 ID
 
-### "Check my deliverability setup"
-1. Run `system/info.json` to get account status
-2. Run `domain/list.json` to check domain verification
-3. For each unverified domain, run `domain/get-dns-records.json` and show required records
-4. Run `domain/validate-dkim.json` to check DKIM
-5. Suggest fixes if domains are not fully verified
+### “检查我的邮件送达设置”
+1. 运行 `system/info.json` 获取账户状态
+2. 运行 `domain/list.json` 检查域名验证情况
+3. 对于每个未验证的域名，运行 `domain/get-dns-records.json` 并显示所需的 DNS 记录
+4. 运行 `domain/validate-dkim.json` 检查 DKIM 信息
+5. 如果域名未完全验证，提供相应的修复建议
 
-### "Validate a list of emails"
-1. For each email, call `email-validation/single.json`
-2. Categorize results: valid, invalid, unknown
-3. Report summary
+### “验证邮件列表”
+1. 对每个邮件地址调用 `email-validation/single.json`
+2. 对结果进行分类（有效、无效、未知）
+3. 提供汇总报告
 
-### "Set up delivery tracking"
-1. Ask for webhook URL and events to track
-2. Execute `webhook/set.json`
-3. Confirm setup
+### “设置邮件送达跟踪”
+1. 获取用于跟踪的 Webhook URL 和相关事件
+2. 执行 `webhook/set.json`
+3. 确认设置完成
 
-## Resources
+## 资源
 
-- Full API Reference: https://docs.unione.io/en/web-api-ref
-- Getting Started: https://docs.unione.io/en/
-- Template Engines: https://docs.unione.io/en/web-api#section-template-engines
-- Sign Up: https://cp.unione.io/en/user/registration/
+- 完整的 API 参考文档：https://docs.unione.io/en/web-api-ref
+- 入门指南：https://docs.unione.io/en/
+- 模板引擎：https://docs.unione.io/en/web-api#section-template-engines
+- 注册：https://cp.unione.io/en/user/registration/

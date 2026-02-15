@@ -1,6 +1,6 @@
 ---
 name: ralph-opencode-free-loop
-description: Run an autonomous Open Ralph Wiggum coding loop using OpenCode Zen with free models and automatic fallback.
+description: 使用 OpenCode Zen 运行一个自主的 Open Ralph Wiggum 编码循环，该循环支持免费模型和自动回退机制。
 metadata:
   {
     "openclaw":
@@ -13,162 +13,189 @@ metadata:
 user-invocable: true
 ---
 
-## What this skill does
+## 该技能的功能
 
-This skill runs an autonomous **Ralph Wiggum** coding loop using the `ralph` CLI with OpenCode as the agent provider.
+该技能使用 `ralph` CLI 和 OpenCode 作为代理提供者，来运行一个自动化的编码循环。它会不断重复执行相同的编码指令，直到满足以下条件之一：
 
-It repeatedly executes the same coding prompt until:
+- 达到成功标准；
+- 输出完成提示；
+- 达到最大迭代次数。
 
-- The success criteria are met, OR
-- The completion promise is printed, OR
-- Max iterations are reached
-
-The loop is optimized for **free OpenCode Zen models** and includes a fallback chain in case models are rate-limited, disabled, or removed.
+该循环针对 **免费的 OpenCode Zen 模型** 进行了优化，并且包含了一个回退机制，以应对模型被限制使用、禁用或移除的情况。
 
 ---
 
-## When to use
+## 适用场景
 
-Use this skill when you want autonomous coding execution such as:
+当你需要自动执行编码任务时，可以使用该技能，例如：
 
-- Fixing failing tests
-- Implementing scoped features
-- Refactoring codebases
-- Resolving lint/type errors
-- Running build-fix loops
-- Multi-iteration debugging
+- 修复失败的测试；
+- 实现新的功能；
+- 重构代码库；
+- 解决代码中的 lint 或类型错误；
+- 运行构建和修复循环；
+- 进行多轮迭代调试。
 
-You MUST be inside a git repository before running Ralph.
+在运行 Ralph 之前，你必须确保自己处于一个 Git 仓库中。
 
 ---
 
-## Free model fallback order
+## 免费模型的使用顺序
 
-Always attempt models in this order:
+请始终按照以下顺序尝试使用免费模型：
 
-1. `opencode/kimi-k2.5-free` ← Best coding performance (limited time free)
+1. `opencode/kimi-k2.5-free` ← 最佳的编码性能（限时免费）
 2. `opencode/minimax-m2.1-free`
 3. `opencode/glm-4.7-free`
-4. `opencode/big-pickle` ← Free stealth model fallback
+4. `opencode/big-pickle` ← 免费的备用模型
 
-If a model fails due to availability or quota, immediately retry using the next model without changing the prompt or loop parameters.
+如果某个模型因可用性或配额问题而无法使用，请立即尝试下一个模型，无需更改指令或循环参数。
 
-### Failure triggers for fallback
+### 回退触发条件
 
-Fallback if you encounter errors like:
+在遇到以下错误时，系统会自动回退：
 
-- model disabled
-- model not found
-- insufficient quota
-- quota exceeded
-- payment required
-- rate limit
-- provider unavailable
-
----
-
-## How to run the loop
-
-### Attempt #1 (primary model)
-
-Run:
-
-ralph "<TASK PROMPT>
-
-Success criteria:
-
-- <list verifiable checks>
-- Build passes
-- Tests pass
-
-Completion promise:
-<promise>COMPLETE</promise>" \
- --agent opencode \
- --model opencode/kimi-k2.5-free \
- --completion-promise "COMPLETE" \
- --max-iterations 20
+- 模型被禁用；
+- 模型找不到；
+- 配额不足；
+- 配额超出；
+- 需要付费；
+- 模型使用受到限制；
+- 代理服务不可用。
 
 ---
 
-### Attempt #2 (fallback)
+## 运行循环的方法
 
-If attempt #1 fails due to model issues, rerun with:
+### 第一次尝试（主要模型）
 
+运行命令：
+
+```bash
+ralph "<任务指令>"
+```
+
+成功标准：
+
+- 所有可验证的检查都通过；
+- 构建成功；
+- 测试通过。
+
+完成提示：
+
+```bash
+<promise>已完成</promise>
+```
+
+```bash
+--agent opencode \
+--model opencode/kimi-k2.5-free \
+--completion-promise "已完成" \
+--max-iterations 20
+```
+
+---
+
+### 第二次尝试（回退）
+
+如果第一次尝试因模型问题失败，则尝试使用：
+
+```bash
 --model opencode/minimax-m2.1-free
+```
 
 ---
 
-### Attempt #3 (fallback)
+### 第三次尝试（回退）
 
-If attempt #2 fails:
+如果第二次尝试仍然失败，则尝试使用：
 
+```bash
 --model opencode/glm-4.7-free
+```
 
 ---
 
-### Attempt #4 (final fallback)
+### 第四次尝试（最终回退）
 
-If attempt #3 fails:
+如果第三次尝试仍然失败，则尝试使用：
 
+```bash
 --model opencode/big-pickle
+```
 
 ---
 
-## Tasks mode (for large projects)
+## 多步骤任务（适用于大型项目）
 
-For multi-step execution:
+对于需要多个步骤的任务，运行命令：
 
-ralph "<BIG TASK PROMPT>" \
- --agent opencode \
- --model opencode/kimi-k2.5-free \
- --tasks \
- --max-iterations 50
+```bash
+ralph "<大型任务指令>"
+```
 
-Fallback model order still applies.
+```bash
+--agent opencode \
+--model opencode/kimi-k2.5-free \
+--tasks \
+--max-iterations 50
+```
+
+在这种情况下，免费模型的使用顺序仍然适用。
 
 ---
 
-## Plugin troubleshooting
+## 插件问题排查
 
-If OpenCode plugins interfere with loop execution, rerun with:
+如果 OpenCode 的插件干扰了循环的执行，可以尝试运行命令：
 
+```bash
 --no-plugins
+```
 
 ---
 
-## Sanity check available Zen models
+## 检查可用 Zen 模型
 
-If free model availability changes, check:
+如果免费模型的可用性发生变化，请访问：
 
 https://opencode.ai/zen/v1/models
 
-Update fallback order if needed.
+并根据需要更新回退模型顺序。
 
 ---
 
-## Safety notes
+## 安全注意事项
 
-- Always run inside a git repo
-- Set iteration limits to avoid runaway loops
-- Ensure prompts contain verifiable success criteria
-- Review diffs before merging autonomous changes
+- 请务必在 Git 仓库中运行该技能；
+- 设置迭代次数上限，以防止循环无限运行；
+- 确保指令中包含可验证的成功标准；
+- 在合并自动生成的代码更改之前，请先审查差异。
 
 ---
 
-## Example usage
+## 使用示例
 
-Fix failing TypeScript errors:
+修复 TypeScript 中的错误：
 
-ralph "Fix all TypeScript errors in the repo.
+```bash
+ralph "修复仓库中的所有 TypeScript 错误。"
+```
 
-Success criteria:
+成功标准：
 
-- tsc passes
-- Build succeeds
+- `tsc` 命令执行成功；
+- 构建过程成功。
 
-Completion promise:
-<promise>COMPLETE</promise>" \
- --agent opencode \
- --model opencode/kimi-k2.5-free \
- --completion-promise "COMPLETE" \
- --max-iterations 20
+完成提示：
+
+```bash
+<promise>已完成</promise>
+```
+
+```bash
+--agent opencode \
+--model opencode/kimi-k2.5-free \
+--completion-promise "已完成" \
+--max-iterations 20
+```

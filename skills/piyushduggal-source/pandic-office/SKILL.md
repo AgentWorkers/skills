@@ -1,52 +1,52 @@
 ---
 name: local-pandoc
-description: Converts Markdown files to PDF files using the pandoc command-line utility. Use when a user asks to convert a .md or markdown file to a .pdf file.
+description: 使用 pandoc 命令行工具将 Markdown 文件转换为 PDF 文件。当用户需要将 `.md` 或 Markdown 格式的文件转换为 `.pdf` 文件时，可以使用此方法。
 ---
 
-# Local Pandoc Conversion Skill
+# 本地 Pandoc 转换技巧
 
-This skill uses the `pandoc` command-line utility to convert documents between numerous markup formats.
+本技巧使用 `pandoc` 命令行工具在多种标记格式之间转换文档。
 
-## Basic Usage
+## 基本用法
 
-The fundamental structure of a `pandoc` command is:
+`pandoc` 命令的基本结构如下：
 
 ```bash
 pandoc [options] [input-file]…
 ```
 
-### Simple Conversion
+### 简单转换
 
-To convert a Markdown file to HTML:
+要将 Markdown 文件转换为 HTML 文件，可以使用以下命令：
 
 ```bash
 pandoc -o output.html input.md
 ```
 
-### Specifying Formats
+### 指定格式
 
-While `pandoc` can infer formats from file extensions, you can be explicit with the `-f` (from) and `-t` (to) flags.
+虽然 `pandoc` 可以根据文件扩展名自动识别格式，但也可以通过 `-f`（源格式）和 `-t`（目标格式）选项明确指定转换格式：
 
 ```bash
 # Convert HTML to Markdown
 pandoc -f html -t markdown input.html
 ```
 
-### Standalone Documents
+### 独立文档
 
-To create a complete document with a proper header and footer (e.g., a full HTML file), use the `-s` or `--standalone` flag.
+要创建包含完整页眉和页脚的文档（例如，一个完整的 HTML 文件），可以使用 `-s` 或 `--standalone` 选项：
 
 ```bash
 pandoc -s -o output.html input.md
 ```
 
-## Advanced Examples
+## 高级示例
 
-The following examples are extracted from the official Pandoc User's Guide.
+以下示例摘自 Pandoc 官方用户指南：
 
-### PDF Output
+### PDF 输出
 
-To create a PDF, `pandoc` typically uses a LaTeX engine. Ensure one is installed.
+要生成 PDF 文件，`pandoc` 通常会使用 LaTeX 引擎。请确保已安装 LaTeX。
 
 ```bash
 # Basic PDF creation
@@ -56,9 +56,9 @@ pandoc input.md -o output.pdf
 pandoc input.md -o output.pdf --pdf-engine=xelatex -V geometry:margin=1in -V fontsize=12pt
 ```
 
-### Document Structure & Metadata
+### 文档结构与元数据
 
-Pandoc can automatically generate a table of contents and use document metadata.
+Pandoc 可以自动生成目录并使用文档元数据。
 
 ```bash
 # Create a document with a Table of Contents (up to level 3 headings)
@@ -68,9 +68,9 @@ pandoc --toc --toc-depth=3 -o output.docx input.md
 pandoc -M title:"My Report" -M author:"Galactus" -o output.pdf input.md
 ```
 
-### Templates and Styling
+### 模板与样式
 
-You can control the final output's structure and style with templates and other options.
+您可以使用模板和其他选项来控制最终输出的结构和样式：
 
 ```bash
 # Use a custom template for HTML output
@@ -83,15 +83,15 @@ pandoc -s --css=styles.css -o output.html input.md
 pandoc --reference-doc=reference.docx -o output.docx input.md
 ```
 
-### Reading from the Web
+### 从网页读取内容
 
-Pandoc can directly fetch and convert content from a URL.
+Pandoc 可以直接从 URL 获取内容并进行转换：
 
 ```bash
 pandoc -f html -t markdown https://www.fsf.org
 ```
 
-### Other Useful Options
+### 其他有用选项
 
 ```bash
 # Preserve tabs instead of converting them to spaces
@@ -103,4 +103,5 @@ pandoc --wrap=none ...
 # Shift heading levels (e.g., make all H1s into H2s, H2s into H3s)
 pandoc --shift-heading-level-by=1 ...
 ```
-This enhanced documentation provides a more robust foundation for using `pandoc`.
+
+这份详细的文档为使用 `pandoc` 提供了更坚实的基础。

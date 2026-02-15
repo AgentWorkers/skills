@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# LLM Models via OpenRouter
+# 通过 OpenRouter 访问 LLM 模型
 
-Access 100+ language models via [inference.sh](https://inference.sh) CLI.
+您可以通过 [inference.sh](https://inference.sh) 命令行界面（CLI）访问 100 多种语言模型。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -24,29 +24,29 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run openrouter/claude-sonnet-45 --input '{"prompt": "Explain quantum computing"}'
 ```
 
-## Available Models
+## 可用模型
 
-| Model | App ID | Best For |
+| 模型 | 应用 ID | 适用场景 |
 |-------|--------|----------|
-| Claude Opus 4.5 | `openrouter/claude-opus-45` | Complex reasoning, coding |
-| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | Balanced performance |
-| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | Fast, economical |
-| Gemini 3 Pro | `openrouter/gemini-3-pro-preview` | Google's latest |
-| Kimi K2 Thinking | `openrouter/kimi-k2-thinking` | Multi-step reasoning |
-| GLM-4.6 | `openrouter/glm-46` | Open-source, coding |
-| Intellect 3 | `openrouter/intellect-3` | General purpose |
-| Any Model | `openrouter/any-model` | Auto-selects best option |
+| Claude Opus 4.5 | `openrouter/claude-opus-45` | 复杂推理、编程 |
+| Claude Sonnet 4.5 | `openrouter/claude-sonnet-45` | 平衡的性能 |
+| Claude Haiku 4.5 | `openrouter/claude-haiku-45` | 快速、经济实惠 |
+| Gemini 3 Pro | `openrouter/gemini-3-pro-preview` | Google 的最新模型 |
+| Kimi K2 Thinking | `openrouter/kimi-k2-thinking` | 多步推理 |
+| GLM-4.6 | `openrouter/glm-46` | 开源模型，适用于编程 |
+| Intellect 3 | `openrouter/intellect-3` | 通用型模型 |
+| 任意模型 | `openrouter/any-model` | 自动选择最佳模型 |
 
-## Search LLM Apps
+## 搜索 LLM 应用
 
 ```bash
 infsh app list --search "openrouter"
 infsh app list --search "claude"
 ```
 
-## Examples
+## 示例
 
-### Claude Opus (Best Quality)
+### Claude Opus（高质量模型）
 
 ```bash
 infsh app run openrouter/claude-opus-45 --input '{
@@ -54,7 +54,7 @@ infsh app run openrouter/claude-opus-45 --input '{
 }'
 ```
 
-### Claude Sonnet (Balanced)
+### Claude Sonnet（性能均衡的模型）
 
 ```bash
 infsh app run openrouter/claude-sonnet-45 --input '{
@@ -62,7 +62,7 @@ infsh app run openrouter/claude-sonnet-45 --input '{
 }'
 ```
 
-### Claude Haiku (Fast & Cheap)
+### Claude Haiku（快速且经济实惠的模型）
 
 ```bash
 infsh app run openrouter/claude-haiku-45 --input '{
@@ -70,7 +70,7 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-### Kimi K2 (Thinking Agent)
+### Kimi K2（具有推理能力的模型）
 
 ```bash
 infsh app run openrouter/kimi-k2-thinking --input '{
@@ -78,7 +78,7 @@ infsh app run openrouter/kimi-k2-thinking --input '{
 }'
 ```
 
-### Any Model (Auto-Select)
+### 任意模型（自动选择模型）
 
 ```bash
 # Automatically picks the most cost-effective model
@@ -87,7 +87,7 @@ infsh app run openrouter/any-model --input '{
 }'
 ```
 
-### With System Prompt
+### 使用系统提示进行交互
 
 ```bash
 infsh app sample openrouter/claude-sonnet-45 --save input.json
@@ -101,15 +101,15 @@ infsh app sample openrouter/claude-sonnet-45 --save input.json
 infsh app run openrouter/claude-sonnet-45 --input input.json
 ```
 
-## Use Cases
+## 使用场景
 
-- **Coding**: Generate, review, debug code
-- **Writing**: Content, summaries, translations
-- **Analysis**: Data interpretation, research
-- **Agents**: Build AI-powered workflows
-- **Chat**: Conversational interfaces
+- **编程**：生成、审查、调试代码
+- **写作**：创作内容、撰写摘要、进行翻译
+- **分析**：数据解读、科学研究
+- **智能代理**：构建基于 AI 的工作流程
+- **聊天**：实现对话式交互界面
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Full platform skill (all 150+ apps)
@@ -125,10 +125,10 @@ npx skills add inference-sh/agent-skills@ai-image-generation
 npx skills add inference-sh/agent-skills@ai-video-generation
 ```
 
-Browse all apps: `infsh app list`
+浏览所有应用：`infsh app list`
 
-## Documentation
+## 文档资料
 
-- [Agents Overview](https://inference.sh/docs/concepts/agents) - Building AI agents
-- [Agent SDK](https://inference.sh/docs/api/agent/overview) - Programmatic agent control
-- [Building a Research Agent](https://inference.sh/blog/guides/research-agent) - LLM + search integration guide
+- [智能代理概述](https://inference.sh/docs/concepts/agents) - 构建 AI 代理
+- [代理 SDK](https://inference.sh/docs/api/agent/overview) - 程序化代理控制
+- [构建研究代理](https://inference.sh/blog/guides/research-agent) - LLM 与搜索功能的集成指南

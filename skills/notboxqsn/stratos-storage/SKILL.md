@@ -13,37 +13,36 @@ metadata:
     primaryEnv: STRATOS_SPFS_GATEWAY
 ---
 
-# Stratos Decentralized Storage
+# Stratos去中心化存储
 
-## When to use
-- User wants to upload a file to Stratos SDS network
-- User wants to download a file from Stratos SDS using file hash or share link
-- User mentions "Stratos", "SDS", "SPFS", or "decentralized storage upload/download"
+## 使用场景
+- 用户希望将文件上传到Stratos SDS网络
+- 用户希望通过文件哈希或共享链接从Stratos SDS下载文件
+- 用户提及“Stratos”、“SDS”、“SPFS”或“去中心化存储上传/下载”
 
-## Steps
+## 操作步骤
 
-### Upload a file
-1. Verify ppd or SPFS gateway is available
-2. Run the upload script: `bash $SKILL_DIR/scripts/upload.sh <file_path>`
-3. Return the file hash (CID) to the user
+### 上传文件
+1. 确认ppd或SPFS网关是否可用
+2. 运行上传脚本：`bash $SKILL_DIR/scripts/upload.sh <file_path>`
+3. 将文件哈希（CID）返回给用户
 
-### Download a file
-1. Verify ppd or SPFS gateway is available
-2. Run the download script: `bash $SKILL_DIR/scripts/download.sh <file_hash_or_cid> <output_path>`
-3. Confirm download success
+### 下载文件
+1. 确认ppd或SPFS网关是否可用
+2. 运行下载脚本：`bash $SKILL_DIR/scripts/download.sh <file_hash_or_cid> <output_path>`
+3. 确认下载成功
 
-## Examples
+## 示例
+上传文件：
+→ 命令：`bash scripts/upload.sh /tmp/report.pdf`
+→ 输出：文件已上传。CID：Qm...xxx
 
-Upload: "Upload /tmp/report.pdf to Stratos"
-→ Run: bash scripts/upload.sh /tmp/report.pdf
-→ Output: File uploaded. CID: Qm...xxx
+下载文件：
+→ 命令：`bash scripts/download.sh Qm...xxx ~/Downloads/report.pdf`
+→ 输出：文件已下载到~/Downloads/report.pdf
 
-Download: "Download file Qm...xxx from Stratos to ~/Downloads/"
-→ Run: bash scripts/download.sh Qm...xxx ~/Downloads/report.pdf
-→ Output: File downloaded to ~/Downloads/report.pdf
-
-## Constraints
-- Always confirm file path with user before uploading
-- Never overwrite existing files without user confirmation
-- Verify SDS node is running before operations
-- Large files may take significant time; inform user of progress
+## 限制条件
+- 上传前务必与用户确认文件路径
+- 未经用户确认，切勿覆盖现有文件
+- 操作前请确认SDS节点正在运行
+- 大文件可能需要较长时间完成下载；请向用户反馈下载进度

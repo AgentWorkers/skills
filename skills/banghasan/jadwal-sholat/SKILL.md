@@ -1,65 +1,58 @@
 ---
 name: jadwal-sholat
-description: Ambil jadwal sholat (imsak, subuh, dzuhur, ashar, maghrib, isya) untuk kota/kabupaten di Indonesia dari API Muslim api.myquran.com (sumber Kemenag Bimas Islam). Gunakan saat user minta jadwal sholat hari ini / tanggal tertentu / 1 bulan untuk lokasi tertentu, atau butuh mencari ID kab/kota.
+description: 从 MuslimApi.myquran.com（该数据来源于印度尼西亚宗教事务部（Kemenag Bimas Islam））的 API 中获取印度尼西亚各城市/县的礼拜时间（晨礼、晌礼、正午礼、晡礼、昏礼、宵礼）。当用户需要查询特定日期或地点的当天的礼拜时间，或者需要查找某个城市/县的 ID 时，可以使用该功能。
 ---
 
-# Jadwal Sholat (api.myquran.com)
+# 礼拜时间表 (api.myquran.com)
 
-API base: `https://api.myquran.com/v3`
+API 基址：`https://api.myquran.com/v3`
 
-Script helper (rekomendasi): `scripts/myquran_sholat.py`
+推荐使用的脚本辅助工具：`scripts/myquran_sholat.py`
 
-## Quick start
+## 快速入门
 
-Cari lokasi (kab/kota):
-
-```bash
+1. **查找地点（县/市）：**
+   ```bash
 python3 scripts/myquran_sholat.py cari "tangerang"
 ```
 
-Jadwal sholat hari ini (Asia/Jakarta) untuk lokasi berdasarkan keyword:
-
-```bash
+2. **根据关键词查询当天的礼拜时间表（亚洲/雅加达地区）：**
+   ```bash
 python3 scripts/myquran_sholat.py hari-ini "kota tangerang"
 ```
 
-Jadwal sholat tanggal tertentu (format `YYYY-MM-DD`):
-
-```bash
+3. **查询特定日期的礼拜时间表（格式：YYYY-MM-DD）：**
+   ```bash
 python3 scripts/myquran_sholat.py tanggal "kota tangerang" 2026-02-03
 ```
 
-Jadwal sholat 1 bulan (format `YYYY-MM`):
-
-```bash
+4. **查询某个月的礼拜时间表（格式：YYYY-MM）：**
+   ```bash
 python3 scripts/myquran_sholat.py bulan "kota tangerang" 2026-02
 ```
 
-## Catatan pemilihan lokasi
+## 关于地点选择的说明：
 
-Endpoint pencarian mengembalikan beberapa kandidat. Script akan:
-- mencoba match exact (case-insensitive) ke kolom `lokasi` bila memungkinkan
-- kalau tidak, pakai hasil pertama
+- 查找端点会返回多个候选地点。脚本会：
+  - 尽量与 `lokasi` 列进行精确匹配（不区分大小写）；
+  - 如果无法匹配，则使用第一个搜索结果。
 
-Kalau hasilnya kurang tepat, gunakan keyword yang lebih spesifik (mis. `KOTA TANGERANG` vs `TANGERANG`), atau ambil `id` lokasi lalu panggil mode `id`.
+- 如果搜索结果不够准确，请使用更具体的关键词（例如：`KOTA TANGERANG` 而不是 `TANGERANG`），或者获取地点的 `id`，然后使用该 `id` 来调用相关功能。
 
-## Pemanggilan langsung via curl (tanpa script)
+## 直接通过 curl 调用 API（无需脚本）
 
-Cari kab/kota:
-
-```bash
+1. **查找县/市：**
+   ```bash
 curl -s "https://api.myquran.com/v3/sholat/kabkota/cari/tangerang"
 ```
 
-Ambil jadwal hari ini:
-
-```bash
+2. **获取当天的礼拜时间表：**
+   ```bash
 curl -s "https://api.myquran.com/v3/sholat/jadwal/<ID>/today?tz=Asia/Jakarta"
 ```
 
-Ambil jadwal periode (bulanan / harian):
-
-```bash
+3. **获取指定时间段的礼拜时间表（按月/按日）：**
+   ```bash
 # bulanan
 curl -s "https://api.myquran.com/v3/sholat/jadwal/<ID>/2026-02?tz=Asia/Jakarta"
 

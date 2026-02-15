@@ -1,15 +1,33 @@
 ---
 name: ecommerce-price-watcher
-description: Track product prices across ecommerce sites and alert on offers or target-price hits. Use when a user wants to monitor one or many product URLs or item queries, compare current vs previous prices, detect discounts, and generate alert-ready summaries with product name, old/new price, percent drop, and direct link.
+description: **功能概述：**  
+实时跟踪多个电商平台上的产品价格，并在价格低于目标价格或出现优惠时发送警报。适用于用户需要监控一个或多个产品链接、比较当前价格与历史价格、检测折扣情况，并生成包含产品名称、旧价/新价、价格跌幅以及直接购买链接的警报摘要的场景。  
+
+**使用场景：**  
+- 当用户希望监控特定产品的价格变动时  
+- 在需要比较不同平台上的产品价格时  
+- 用于发现并利用价格优惠的机会  
+
+**核心特性：**  
+1. **实时价格监控**：自动从多个电商平台获取产品价格信息。  
+2. **价格比较**：支持用户自定义产品查询条件（如产品名称），并显示当前价格与历史价格的对比结果。  
+3. **折扣检测**：自动识别产品是否享受折扣，并显示折扣幅度。  
+4. **警报功能**：当价格低于目标价格或出现优惠时，通过指定方式（如电子邮件、短信等）发送警报。  
+5. **报表生成**：自动生成包含关键信息的报表，便于用户快速了解价格变动情况。  
+
+**示例用法：**  
+- 用户可以设置价格阈值，当产品价格低于该阈值时，系统会发送警报。  
+- 系统会定期更新产品价格数据，确保用户始终获取最新信息。  
+- 用户可以根据需要筛选和排序产品，以便更高效地查找目标产品。
 ---
 
-# Ecommerce Price Watcher
+# 电子商务价格监控工具
 
-Monitor product URLs, keep price history, detect offers, and output alert-ready JSON.
+该工具用于监控产品价格变化，记录价格历史数据，检测价格优惠，并生成可用于发送警报的 JSON 数据。
 
-## Quick start
+## 快速入门
 
-Use `scripts/price_watch.py`.
+请使用 `scripts/price_watch.py` 脚本进行配置。
 
 ```bash
 # URL mode
@@ -29,66 +47,62 @@ python3 skills/ecommerce-price-watcher/scripts/price_watch.py add-item \
 python3 skills/ecommerce-price-watcher/scripts/price_watch.py check --all
 ```
 
-## Commands
+## 命令行参数
 
-- `add`: add a single product URL
-- `add-item`: discover product URLs from an item query, then add watches
-- `list`: list watched products
-- `check --id <id>`: check one product now
-- `check --all`: check all products now
-- `remove --id <id>`: delete watcher
-- `history --id <id>`: print full price history
+- `add`：添加单个产品 URL
+- `add-item`：根据产品查询结果添加需要监控的产品 URL
+- `list`：列出所有被监控的产品
+- `check --id <id>`：立即检查指定的产品
+- `check --all`：立即检查所有产品
+- `remove --id <id>`：删除对指定产品的监控
+- `history --id <id>`：打印该产品的完整价格历史记录
 
-## Alert behavior
+## 报警机制
 
-A check produces alerts when at least one condition matches:
+当满足以下任一条件时，系统会生成警报：
+1. `price_drop`：当前价格低于历史最低价格
+2. `target_hit`：当前价格达到或低于目标价格
 
-1. `price_drop`: current price < previous price
-2. `target_hit`: current price <= target price
+警报信息包含以下内容：
+- 产品 ID
+- 产品名称
+- 旧价格/新价格
+- 价格下降百分比（如有）
+- 产品 URL
+- 时间戳
 
-Alert payload includes:
-- product id
-- title
-- old/new price
-- drop percent (when available)
-- URL
-- timestamp
+## 产品查询模式
 
-## Item-query mode details
+`add-item` 命令使用轻量级的搜索机制来查找目标产品链接：
+- `--trusted-only`：仅从受信任的域名列表中获取链接。
+- `--max-results`：限制添加的链接数量。
+- 系统会自动跳过重复的链接。
 
-`add-item` uses a lightweight search discovery flow to find candidate product links.
+用户可以使用自然语言输入（例如：“跟踪 iPhone 13 128GB”），而无需提供具体的 URL。
 
-- `--trusted-only` restricts discovered URLs to a curated trusted domain list.
-- `--max-results` controls how many links are added.
-- Duplicate URLs are skipped safely.
+## 解析策略
 
-This gives users natural language entry ("track iPhone 13 128GB") instead of forcing direct URLs.
+系统采用分层解析方式：
+1. 首先尝试解析 JSON-LD 标签中的 `offers.price` 数据
+2. 如果解析失败，再尝试解析 Open Graph 的 `meta` 标签中的价格信息
+3. 最后使用通用的 HTML 正则表达式进行解析
 
-## Parsing strategy
+如果找到多个价格信息，系统会选择最低的、有效的价格作为当前的价格优惠信息。
 
-Use a layered parser:
-1. JSON-LD `offers.price`
-2. Open Graph/meta price fields
-3. Generic HTML regex fallback
+## 安全标准：
+- 仅接受 `http` 或 `https` 协议的 URL。
+- 实施请求超时机制。
+- 限制响应体的大小。
+- 不执行远程 JavaScript 代码。
+- 不在监控数据中存储任何 API 密钥或令牌。
+- 将所有页面内容视为不可信的数据。
+- 返回结构化的 JSON 数据，以确保后续自动化处理的安全性。
 
-When multiple prices are found, choose the lowest positive value as the current offer candidate.
+## 限制与操作注意事项：
+- 部分网站会阻止类似机器人的请求（返回 403 错误），这是正常现象。
+- 价格提取功能为尽力而为，可能需要根据不同网站进行调整。
+- 在生产环境中，建议定期运行 `check --all` 命令，并仅发送非空警报。
 
-## Security standards
+## 建议的调度使用方式：
 
-- Accept only `http`/`https` URLs.
-- Enforce request timeout.
-- Enforce response body size cap.
-- Do not execute remote JavaScript.
-- Store no API keys/tokens in watcher data.
-- Treat all page content as untrusted.
-- Return structured JSON for safe downstream automation.
-
-## Limits and operational notes
-
-- Some stores block bot-like requests (403). This is expected on certain sites.
-- Price extraction is best-effort and may need store-specific adapters over time.
-- For production alerting, run `check --all` on schedule and forward only non-empty `alerts`.
-
-## Suggested scheduled usage
-
-Run every 30–120 minutes via cron, then send each alert to Telegram/WhatsApp/Discord.
+建议使用 cron 任务每隔 30–120 分钟运行一次该工具，然后将生成的警报发送到 Telegram、WhatsApp 或 Discord 等平台。

@@ -1,6 +1,6 @@
 ---
 name: cv-builder
-description: Generate professional CVs/resumes from YAML using rendercv - multiple templates, PDF output
+description: 使用 `rendercv` 从 YAML 文件生成专业的简历（CV），支持多种模板格式，并输出为 PDF 文件。
 author: claude-office-skills
 version: "1.0"
 tags: [resume, cv, rendercv, yaml, pdf]
@@ -12,27 +12,27 @@ library:
   stars: 15.4k
 ---
 
-# CV Builder Skill
+# CV Builder 技能
 
-## Overview
+## 概述
 
-This skill enables creation of professional CVs/resumes from structured YAML using **rendercv**. Define your experience once, generate beautiful PDFs in multiple themes.
+该技能允许您使用 **rendercv** 从结构化的 YAML 文件生成专业的简历（CV）。只需定义一次您的工作经验、教育背景和技能信息，即可生成多种主题的精美 PDF 简历。
 
-## How to Use
+## 使用方法
 
-1. Provide your CV information (experience, education, skills)
-2. Choose a template/theme
-3. I'll generate YAML and render to PDF
+1. 提供您的简历信息（工作经验、教育背景、技能）
+2. 选择一个模板/主题
+3. 我会将您提供的信息转换为 YAML 格式，并生成对应的 PDF 文件
 
-**Example prompts:**
-- "Create a CV from my experience"
-- "Generate a resume in the classic theme"
-- "Update my CV with new job experience"
-- "Build a technical resume highlighting projects"
+**示例提示：**
+- “根据我的工作经验生成一份简历”
+- “以经典主题生成一份简历”
+- “用新的工作经历更新我的简历”
+- “制作一份突出项目经验的技术简历”
 
-## Domain Knowledge
+## 相关知识
 
-### YAML Structure
+### YAML 结构
 
 ```yaml
 cv:
@@ -75,9 +75,9 @@ cv:
         details: React, Django, FastAPI
 ```
 
-### Themes
+### 可用主题
 
-Available themes: `classic`, `sb2nov`, `moderncv`, `engineeringresumes`
+可用主题：`classic`、`sb2nov`、`moderncv`、`engineeringresumes`
 
 ```yaml
 design:
@@ -88,7 +88,7 @@ design:
   color: '#004f90'
 ```
 
-### CLI Usage
+### 命令行工具（CLI）使用方法
 
 ```bash
 # Install
@@ -103,7 +103,7 @@ rendercv render cv.yaml
 # Output: rendercv_output/John_Doe_CV.pdf
 ```
 
-## Example
+## 示例
 
 ```yaml
 cv:
@@ -162,8 +162,8 @@ design:
   font_size: 10pt
 ```
 
-## Resources
+## 资源
 
-- [rendercv Documentation](https://docs.rendercv.com/)
-- [GitHub Repository](https://github.com/sinaatalay/rendercv)
-- [Theme Gallery](https://docs.rendercv.com/user_guide/themes/)
+- [rendercv 文档](https://docs.rendercv.com/)
+- [GitHub 仓库](https://github.com/sinaatalay/rendercv)
+- [主题库](https://docs.rendercv.com/user_guide/themes/)

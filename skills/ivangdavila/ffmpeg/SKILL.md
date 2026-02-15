@@ -1,86 +1,86 @@
 ---
 name: FFmpeg
-description: Process video and audio with correct codec selection, filtering, and encoding settings.
+description: 使用正确的编解码器、过滤和编码设置来处理视频和音频。
 metadata: {"clawdbot":{"emoji":"🎬","requires":{"bins":["ffmpeg"]},"os":["linux","darwin","win32"]}}
 ---
 
-## Input Seeking (Major Difference)
+## 输入文件定位（主要区别）
 
-- `-ss` BEFORE `-i`: fast seek, may be inaccurate—starts from nearest keyframe
-- `-ss` AFTER `-i`: frame-accurate but slow—decodes from start
-- Combine both: `-ss 00:30:00 -i input.mp4 -ss 00:00:05`—fast seek then accurate trim
-- For cutting, add `-avoid_negative_ts make_zero` to fix timestamp issues
+- `-ss` 位于 `-i` 之前：快速定位，但可能不够精确——从最近的帧开始搜索
+- `-ss` 位于 `-i` 之后：定位精确但速度较慢——从文件开头开始解码
+- 结合使用：`-ss 00:30:00 -i input.mp4 -ss 00:00:05`——先快速定位，再精确裁剪
+- 在进行裁剪时，添加 `-avoid_negative_ts make_zero` 以解决时间戳问题
 
-## Stream Selection
+## 流媒体选择
 
-- Default: first video + first audio—may not be what you want
-- Explicit selection: `-map 0:v:0 -map 0:a:1`—first video, second audio
-- All streams of type: `-map 0:a`—all audio streams
-- Copy specific: `-map 0 -c copy`—all streams, no re-encoding
-- Exclude: `-map 0 -map -0:s`—all except subtitles
+- 默认设置：选择第一个视频和第一个音频流——可能不符合需求
+- 显式选择：`-map 0:v:0 -map 0:a:1`——选择第一个视频和第二个音频流
+- 选择所有音频流：`-map 0:a`——选择所有音频流
+- 复制所有流：`-map 0 -c copy`——复制所有流，不进行重新编码
+- 排除某些流：`-map 0 -map -0:s`——排除所有流，仅保留字幕流
 
-## Encoding Quality
+## 编码质量
 
-- CRF (Constant Rate Factor): lower = better quality, larger file—18-23 typical for H.264
-- `-preset`: ultrafast to veryslow—slower = smaller file at same quality
-- Two-pass for target bitrate: first pass analyzes, second pass encodes
-- `-crf` and `-b:v` mutually exclusive—use one or the other
+- CRF（恒定比特率因子）：数值越低，质量越好，文件体积越大——H.264 编码通常使用 18-23 之间的值
+- `-preset`：预设编码速度，从超快到非常慢——速度越慢，文件体积越小，但质量相同
+- 两阶段编码：第一阶段分析视频数据，第二阶段进行编码
+- `-crf` 和 `-b:v` 是互斥的——只能选择其中一个参数
 
-## Container vs Codec
+## 容器和编码器
 
-- Container (MP4, MKV, WebM): wrapper format holding streams
-- Codec (H.264, VP9, AAC): compression algorithm for stream
-- Not all codecs fit all containers—H.264 in MP4/MKV, not WebM; VP9 in WebM/MKV, not MP4
-- Copy codec to new container: `-c copy`—fast, no quality loss
+- 容器（如 MP4、MKV、WebM）：用于封装多个流媒体的格式
+- 编码器（如 H.264、VP9、AAC）：用于压缩流媒体的算法
+- 并非所有编码器都适用于所有容器——例如 H.264 适用于 MP4/MKV，但不适用于 WebM；VP9 适用于 WebM/MKV，但不适用于 MP4
+- 将编码器复制到新容器中：`-c copy`——操作快速，且不会损失质量
 
-## Filter Syntax
+## 过滤器语法
 
-- Simple: `-vf "scale=1280:720"`—single filter chain
-- Complex: `-filter_complex "[0:v]scale=1280:720[scaled]"`—named outputs for routing
-- Chain filters: `-vf "scale=1280:720,fps=30"`—comma-separated
-- Filter order matters—scale before crop gives different result than crop before scale
+- 简单过滤器：`-vf "scale=1280:720"`——单条过滤指令
+- 复杂过滤器：`-filter_complex "[0:v]scale=1280:720[scaled]"`——为输出设置名称以便后续处理
+- 连接多个过滤器：`-vf "scale=1280:720,fps=30"`——用逗号分隔多个指令
+- 过滤器的执行顺序很重要——先缩放再裁剪与先裁剪再缩放会得到不同的结果
 
-## Common Filters
+## 常用过滤器
 
-- Scale: `scale=1280:720` or `scale=-1:720` for auto-width maintaining aspect
-- Crop: `crop=640:480:100:50`—width:height:x:y from top-left
-- FPS: `fps=30`—change framerate
-- Trim: `trim=start=10:end=20,setpts=PTS-STARTPTS`—setpts resets timestamps
-- Overlay: `overlay=10:10`—position from top-left
+- 缩放：`scale=1280:720` 或 `scale=-1:720`——保持宽高比不变
+- 裁剪：`crop=640:480:100:50`——从左上角开始裁剪
+- 帧率：`fps=30`——调整视频帧率
+- 裁剪：`trim=start=10:end=20,setpts=PTS-STARTPTS`——重置时间戳
+- 叠层：`overlay=10:10`——设置视频层的位置
 
-## Audio Processing
+## 音频处理
 
-- Sample rate: `-ar 48000`—standard for video
-- Channels: `-ac 2`—stereo
-- Audio codec: `-c:a aac -b:a 192k`—AAC at 192kbps
-- Normalize: `-filter:a loudnorm`—EBU R128 loudness normalization
-- Extract audio: `-vn -c:a copy output.m4a`—no video, copy audio
+- 样本率：`-ar 48000`——视频音频的标准采样率
+- 音频通道：`-ac 2`——立体声
+- 音频编码格式：`-c:a aac -b:a 192k`——使用 AAC 编码，比特率为 192kbps
+- 音量标准化：`-filter:a loudnorm`——根据 EBU R128 标准进行音量调整
+- 提取音频：`-vn -c:a copy output.m4a`——仅提取音频，不包含视频
 
-## Concatenation
+## 文件合并
 
-- Same codec/params: concat demuxer—`-f concat -safe 0 -i list.txt -c copy`
-- Different formats: concat filter—`-filter_complex "[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1"`
-- list.txt format: `file 'video1.mp4'` per line—escape special characters
-- Different resolutions: scale/pad to match before concat filter
+- 如果所有流媒体使用相同的编码器和参数：使用 `concat` 命令合并文件：`-f concat -safe 0 -i list.txt -c copy`
+- 如果流媒体格式不同：使用复合过滤器合并：`-filter_complex "[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1"`
+- `list.txt` 文件格式：每行包含一个文件路径（例如 `file 'video1.mp4'`）——需要转义特殊字符
+- 在合并前需要调整不同分辨率的文件大小：使用 `scale` 或 `pad` 过滤器
 
-## Subtitles
+## 字幕处理
 
-- Burn-in (hardcode): `-vf "subtitles=subs.srt"`—cannot be turned off
-- Mux as stream: `-c:s mov_text` (MP4) or `-c:s srt` (MKV)—user toggleable
-- From input: `-map 0:s`—include subtitle streams
-- Extract: `-map 0:s:0 subs.srt`—first subtitle to file
+- 硬编码字幕：`-vf "subtitles=subs.srt"`——字幕无法被删除或修改
+- 将字幕作为流媒体嵌入：`-c:s mov_text`（MP4 格式）或 `-c:s srt`（MKV 格式）——用户可自定义
+- 从输入文件中提取字幕：`-map 0:s`——将字幕流包含在输出文件中
+- 提取单独的字幕文件：`-map 0:s:0 subs.srt`——将字幕文件单独保存
 
-## Hardware Acceleration
+## 硬件加速
 
-- Decode: `-hwaccel cuda` or `-hwaccel videotoolbox` (macOS)
-- Encode: `-c:v h264_nvenc` (NVIDIA), `-c:v h264_videotoolbox` (macOS)
-- Not always faster—setup overhead; benefits show on long videos
-- Quality may differ—software encoding often produces better quality
+- 解码：`-hwaccel cuda` 或 `-hwaccel videotoolbox`（macOS）
+- 编码：`-c:v h264_nvenc`（NVIDIA）或 `-c:v h264_videotoolbox`（macOS）
+- 硬件加速并不总是更快——需要额外的设置开销；在处理长视频时效果明显
+- 编码质量可能因硬件加速而有所不同——软件编码通常能获得更好的质量
 
-## Common Mistakes
+## 常见错误
 
-- Forgetting `-c copy` when not re-encoding—defaults to re-encode, slow and lossy
-- `-ss` after `-i` for long videos—takes forever seeking
-- Audio desync after cutting—use `-async 1` or `-af aresample=async=1`
-- Filter on stream copy—filters require re-encoding; `-c copy` + `-vf` = error
-- Output extension doesn't set codec—`output.mp4` without `-c:v` uses default, may not be H.264
+- 忘记使用 `-c copy` 选项（不进行重新编码）——默认情况下会重新编码，导致速度变慢且可能损失质量
+- 对于长视频，在 `-i` 之后使用 `-ss` 选项会导致定位耗时过长
+- 裁剪后音频可能不同步——使用 `-async 1` 或 `-af aresample=async=1` 修复问题
+- 在复制流媒体数据后使用过滤器——某些过滤器需要重新编码；同时使用 `-c copy` 和 `-vf` 会导致错误
+- 如果未指定输出格式编码器，系统会使用默认编码器（例如 `-output.mp4` 未指定 `-c:v` 时可能使用默认的 H.264 编码器，导致视频质量下降）

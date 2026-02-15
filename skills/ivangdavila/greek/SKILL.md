@@ -1,86 +1,73 @@
 ---
 name: Greek
-description: Write Greek that sounds human. Not formal, not robotic, not AI-generated.
+description: 写出听起来像人类说话的希腊语。既不是正式的，也不是机械的，更不是由人工智能生成的。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Greek is technically correct but sounds off. Too formal. Too καθαρεύουσα-influenced. Natives write more casually, with particles and warmth. Match that.
+虽然使用AI生成的希腊语在语法上是正确的，但听起来很不自然。这种表达方式过于正式，受到了希腊语中过于正式（καθαρεύουσα）表达风格的影响。希腊语母语者通常会使用更随意的表达方式，他们会使用各种词粒和表达方式来增加语言的亲切感和温暖感。我们的目标是让翻译后的文本更符合希腊语母语者的表达习惯。
 
-## Formality Default
+## 表达的正式程度
 
-Default register is too high. Casual Greek is warm and expressive. Unless explicitly formal: lean casual. "Γεια" not "Χαίρετε". "Οκ" not "Εντάξει". "Ναι" can be just "ν".
+默认的正式程度过高了。在日常交流中，希腊语应该更加自然和富有表现力。除非需要特别正式的表达，否则应该尽量使用更随意的语气。例如：“Γεια”（你好）而不是“Χαίρετε”（您好）；“Οκ”（可以）而不是“Εντάξει”（可以）；“Ναι”（是）也可以简单地用“ν”来表示。
 
-## Εσύ vs Εσείς
+## “Εσύ”与“Εσείς”的用法
 
-Critical distinction:
-- Εσείς: elderly, professional, strangers, formal
-- Εσύ: friends, peers, casual, internet
-- Greek internet is almost entirely εσύ
-- Εσείς in casual = overly stiff
+在希腊语中，“Εσύ”用于指代年长者、专业人士或陌生人，表达正式或尊敬的语气；而“Εσείς”则用于朋友、同龄人或非正式场合。在网络交流中，几乎总是使用“Εσύ”来表示称呼。
 
-## Particles & Fillers
+## 词粒与填充词
 
-These make Greek natural:
-- Ρε: casual address ("Ρε φίλε", "Τι λες ρε")
-- Μωρέ: emphasis, frustration, affection
-- Δηλαδή: "I mean", "that is"
-- Τέλος πάντων: "anyway"
-- Βασικά: "basically"
+这些词粒和填充词能让希腊语的表达更加自然：
+- **Ρε**：用于非正式的称呼（如“Ρε φίλε”（嘿，朋友）；
+- **Μωρέ**：用于强调、表达沮丧或表达亲昵；
+- **Δηλαδή**：表示“我的意思是”或“也就是说”；
+- **Τέλος πάντων**：表示“无论如何”；
+- **Βασικά**：表示“基本上”。
 
-## Fillers & Flow
+## 非正式的缩写表达
 
-Real Greek has fillers:
-- Ε, λοιπόν, τέλος πάντων
-- Κοίτα, άκου, περίμενε
-- Ξέρεις, καταλαβαίνεις
-- Πάνω κάτω, κάπως έτσι
+在书面语中，一些口语化的表达方式也会被简化：
+- **Τι κάνεις** → **Τι κάν;**（你在做什么？）
+- **Δεν ξέρω** → **Δεν ξέρ**（我不知道）
+- **Περίμενε** → **Περίμ**（等等）
 
-## Casual Shortcuts
+## 表达力
 
-Spoken patterns in writing:
-- Τι κάνεις → Τι κάν;
-- Δεν ξέρω → Δεν ξέρ
-- Περίμενε → Περίμ
-- Natural in texting
+在表达情感时，不要总是选择最中立的词汇：
+- **Καλά**（好）可以替换为**Τέλεια**（很好）、**Φοβερά**（很棒）或**Μια χαρά**（很高兴）；
+- **Άσχημα**（不好）可以替换为**Χάλια**（糟糕）、**Σκατά**（糟透了）或**Απαίσια**（糟糕极了）；
+- **Πολύ**（非常）可以替换为**Υπερβολικά**（过于）、**Τρελά**（疯狂的）或**Φουλ**（极度的）。
 
-## Expressiveness
+## 常见表达
 
-Don't pick the safe word:
-- Καλά → Τέλεια, Φοβερά, Μια χαρά
-- Άσχημα → Χάλια, Σκατά, Απαίσια
-- Πολύ → Υπερβολικά, Τρελά, Φουλ
+一些自然的表达方式包括：
+- **Ωραία**（很好）、**Τέλεια**（太棒了）、**Οκ τότε**（那好吧）；
+- **Δεν πειράζει**（没关系）；
+- **Μια χαρά**（很高兴）；
+- **Τι να κάνουμε**（我们该怎么办？）；
+- **Έτσι είναι**（就是这样）。
 
-## Common Expressions
+## 反应方式
 
-Natural expressions:
-- Ωραία, Τέλεια, Οκ τότε
-- Δεν πειράζει, Άστο
-- Μια χαρά, Κομπλέ
-- Τι να κάνουμε, Έτσι είναι
+在交流时，要自然地做出反应：
+- **Σοβαρά;**（严肃吗？）、**Αλήθεια;**（真的吗？）、**Τι λες;**（你在说什么？）；
+- **Ωχ!**（哦！）、**Πω πω!**（我说什么！）、**Θεέ μου!**（天啊！）；
+- **Τέλειο!**（太棒了！）、**Φοβερό!**（厉害！）、**Γαμάτο!**（太棒了！）；
+- **Χαχα**（哈哈）在短信中也可以用“lol”来表示。
 
-## Reactions
+## 带有拉丁字母的希腊语表达方式
 
-React naturally:
-- Σοβαρά;, Αλήθεια;, Τι λες;
-- Ωχ!, Πω πω!, Θεέ μου!
-- Τέλειο!, Φοβερό!, Γαμάτο!
-- Χαχα, lol in text
+在某些情况下，人们会使用带有拉丁字母的混合表达方式（希腊语+拉丁字母）：
+- **Γεια σου** → **geia sou** / **gia sou**（你好）；
+- 这在非正式的短信中很常见；
+- 在整个消息中要保持这种表达风格的一致性。
 
-## Greeklish Option
+## 亲昵表达
 
-Some contexts use Greeklish (Latin letters):
-- Γεια σου → geia sou / gia sou
-- Common in casual texting
-- Stay consistent within message
+希腊语中常用昵称或缩略形式来增加亲切感：
+- 词尾加上“-άκι”或“-ούλι”来表示亲昵（如“Λεπτάκι”（小家伙）；
+- 这在日常对话中很自然。
 
-## Diminutives
+## “母语者测试”
 
-Greek uses diminutives for warmth:
-- -άκι, -ούλι endings
-- Λεπτάκι, φιλάκι
-- Natural in casual speech
-
-## The "Native Test"
-
-Before sending: would a Greek screenshot this as "AI-generated"? If yes—too formal, missing "ρε", too stiff. Add warmth.
+在发送信息之前，可以想象一下：如果一个希腊语母语者看到这样的截图，他会认为这是AI生成的吗？如果是的话，那么这段文字就太正式了，缺乏亲切感，也显得很生硬。我们需要添加一些更自然、更亲切的表达方式来提升语言的亲和力。

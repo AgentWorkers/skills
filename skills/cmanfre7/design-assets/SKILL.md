@@ -1,22 +1,22 @@
 # design-assets
 
-Create and edit graphic design assets: icons, favicons, images, and color systems.
+用于创建和编辑图形设计资源：图标、网站图标（favicon）、图片以及颜色系统。
 
-## Tool Selection
+## 工具选择
 
-| Task | Tool | Why |
+| 任务 | 工具 | 选择理由 |
 |------|------|-----|
-| AI image generation | nano-banana-pro | Generate images from text prompts |
-| Image resize/convert | sips | macOS native, fast, no deps |
-| Advanced manipulation | ImageMagick | Compositing, effects, batch processing |
-| Icons & logos | SVG | Scalable, small file size, editable |
-| Screenshots | screencapture | macOS native |
+| AI 图像生成 | nano-banana-pro | 可根据文本提示生成图片 |
+| 图片缩放/转换 | sips | macOS 自带工具，速度快，无需额外依赖 |
+| 高级图像处理 | ImageMagick | 支持图像合成、效果处理及批量处理 |
+| 图标与徽标设计 | SVG | 可缩放，文件体积小，易于编辑 |
+| 屏幕截图 | screencapture | macOS 自带工具 |
 
-## App Icon Generation
+## 应用图标生成
 
-Generate all required sizes from a single 1024x1024 source icon.
+从单个 1024x1024 的源图标生成所有所需的图标尺寸。
 
-### iOS / macOS Icon Sizes
+### iOS / macOS 图标尺寸
 ```bash
 #!/bin/bash
 # generate-app-icons.sh <source-1024.png> <output-dir>
@@ -31,7 +31,7 @@ done
 echo "Generated ${#SIZES[@]} icon sizes in $OUTDIR"
 ```
 
-### Android Icon Sizes
+### Android 图标尺寸
 ```bash
 # Android adaptive icon sizes
 declare -A ANDROID_SIZES=(
@@ -45,7 +45,7 @@ for DENSITY in "${!ANDROID_SIZES[@]}"; do
 done
 ```
 
-## Favicon Generation
+## 网站图标（favicon）生成
 
 ```bash
 #!/bin/bash
@@ -67,7 +67,7 @@ magick "$OUTDIR/favicon-16x16.png" "$OUTDIR/favicon-32x32.png" "$OUTDIR/favicon.
 echo "Favicons generated in $OUTDIR"
 ```
 
-### HTML Meta Tags
+### HTML 元标签设置
 ```html
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -75,7 +75,7 @@ echo "Favicons generated in $OUTDIR"
 <link rel="manifest" href="/site.webmanifest">
 ```
 
-### site.webmanifest
+### site.webmanifest 文件生成
 ```json
 {
   "name": "My App",
@@ -90,9 +90,9 @@ echo "Favicons generated in $OUTDIR"
 }
 ```
 
-## Color Palette Generator
+## 颜色调色板生成
 
-Given a primary color, generate a full palette:
+根据指定的主色调生成完整的颜色调色板：
 
 ```javascript
 // HSL-based palette generation
@@ -113,7 +113,7 @@ function generatePalette(hue, saturation = 70) {
 }
 ```
 
-## ImageMagick Quick Reference
+## ImageMagick 快速参考
 
 ```bash
 # Resize
@@ -141,8 +141,7 @@ magick -size 1200x630 xc:"#1a1a2e" output.png
 magick input.png -gravity south -pointsize 24 -fill white -annotate +0+20 "Caption" output.png
 ```
 
-## sips Quick Reference (macOS)
-
+## sips 快速参考（macOS 版本）
 ```bash
 # Resize (maintain aspect ratio)
 sips --resampleWidth 800 input.png --out output.png

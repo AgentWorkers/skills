@@ -1,80 +1,80 @@
 ---
 name: Litecoin
-description: Assist with Litecoin LTC transactions, address formats, fees, and MWEB privacy features.
+description: 协助处理 Litecoin (LTC) 交易，包括地址格式、交易费用以及 MWEB（Multi-Web）隐私功能的相关内容。
 metadata: {"clawdbot":{"emoji":"Ł","os":["linux","darwin","win32"]}}
 ---
 
-## Network Basics
-- Bitcoin fork with faster blocks — 2.5 minute block time vs Bitcoin's 10
-- Scrypt proof of work — different mining algorithm than Bitcoin
-- 84 million max supply — 4x Bitcoin's 21 million cap
-- Often called "silver to Bitcoin's gold" — similar but lighter for payments
+## 网络基础  
+- Litecoin 是比特币的一个分支，其区块生成速度更快（区块间隔为 2.5 分钟，而比特币为 10 分钟）；  
+- 使用 Scrypt 算法进行工作量证明（Proof of Work），与比特币的算法不同；  
+- 最大供应量为 8400 万枚，是比特币 2100 万枚上限的 4 倍；  
+- 常被称为“比特币的‘银’”，在支付场景中具有类似但更轻量级的特性。  
 
-## Address Formats
-- Legacy addresses start with "L" — oldest format, widely supported
-- SegWit addresses start with "M" or "3" — lower fees, better efficiency
-- Native SegWit (bech32) starts with "ltc1" — lowest fees, recommended
-- MWEB addresses for privacy — special addresses for confidential transactions
-- Verify address format before sending — wrong format may not work on all exchanges
+## 地址格式  
+- **传统地址** 以 “L” 开头，是最古老的地址格式，得到广泛支持；  
+- **SegWit 地址** 以 “M” 或 “3” 开头，交易费用更低，效率更高；  
+- **原生 SegWit（bech32）地址** 以 “ltc1” 开头，费用最低，推荐使用；  
+- **MWEB 地址** 用于保护交易隐私，是专门用于保密交易的地址类型；  
+- 在发送交易前请务必验证地址格式，错误的格式可能导致交易在某些交易所无法正常处理。  
 
-## Transaction Characteristics
-- Confirmations faster than Bitcoin — 2.5 minutes per block
-- 6 confirmations for high value — ~15 minutes vs Bitcoin's ~1 hour
-- Fees very low — typically under $0.01
-- RBF (Replace-By-Fee) supported — can speed up stuck transactions
-- SegWit reduces transaction size — use SegWit addresses for lower fees
+## 交易特性  
+- 交易确认速度比比特币快（每个区块确认时间为 2.5 分钟）；  
+- 高价值交易需要 6 次确认（约 15 分钟），而比特币需要约 1 小时；  
+- 交易费用非常低（通常低于 0.01 美元）；  
+- 支持 RBF（Replace-By-Fee）机制，可以加速卡住的交易；  
+- SegWit 技术可以减小交易数据大小，使用 SegWit 地址可降低交易费用。  
 
-## MWEB (MimbleWimble)
-- Optional privacy extension — confidential transactions
-- MWEB addresses start with different prefix — separate from regular addresses
-- Peg-in to MWEB, peg-out to main chain — move funds between layers
-- Some exchanges don't support MWEB — check before using
-- Privacy not default — must explicitly use MWEB
+## MWEB（MimbleWimble）  
+- MWEB 是一个可选的隐私扩展功能，用于实现保密交易；  
+- MWEB 地址的前缀与普通地址不同；  
+- 资金可以在 MWEB 层与主链之间进行转移；  
+- 部分交易所不支持 MWEB，使用前请先确认；  
+- 隐私功能不是默认开启的，需要用户手动启用。  
 
-## Wallet Options
-- Litecoin Core full node — most secure, downloads full blockchain
-- Electrum-LTC light wallet — faster setup, SPV security
-- Ledger and Trezor support — hardware wallet integration
-- Trust Wallet, Exodus — multi-coin with LTC support
-- Litewallet mobile — official mobile wallet
+## 钱包选项  
+- **Litecoin Core**：全节点钱包，安全性最高，会下载完整的区块链数据；  
+- **Electrum-LTC**：轻量级钱包，设置快速，采用 SPV（Single-Public-Key）安全机制；  
+- **Ledger** 和 **Trezor**：支持硬件钱包；  
+- **Trust Wallet**、**Exodus**：支持多种货币，包括 Litecoin；  
+- **Litewallet**：官方移动钱包。  
 
-## Fees and Speed
-- Fees based on transaction size — not amount sent
-- SegWit transactions smaller — lower fees
-- Priority fees for faster inclusion — rarely needed given fast blocks
-- Mempool usually not congested — transactions confirm quickly
-- Consolidating UTXOs costs fees — plan during low activity
+## 费用与交易速度  
+- 费用根据交易数据大小计算，而非发送金额；  
+- 使用 SegWit 的交易费用更低；  
+- 高优先级的交易会获得更快确认（但实际需求较低，因为区块生成速度很快）；  
+- Mempool（待处理交易池）通常不会拥堵，交易可以快速确认；  
+- 合并未花费的交易输出（UTXO）可能需要支付额外费用，建议在交易量较低时进行操作。  
 
-## Exchange Considerations
-- Nearly universal exchange support — high liquidity
-- Fast deposits/withdrawals — 6 confirmations typical
-- No memo/tag required — simple address only
-- Some exchanges group LTC with Bitcoin — similar handling
-- MWEB deposits may not be supported — verify exchange compatibility
+## 交易所相关注意事项  
+- 几乎所有交易所都支持 Litecoin；  
+- 存款/取款速度较快，通常需要 6 次确认；  
+- 交易时无需附加备注或标签，只需提供正确的地址即可；  
+- 部分交易所将 Litecoin 与比特币合并处理；  
+- 部分交易所可能不支持 MWEB 地址，使用前请确认交易所的兼容性。  
 
-## Common Issues
-- Transaction unconfirmed — check fee, use RBF if enabled
-- Balance not showing — wallet not synced, wait or use light wallet
-- Sent to wrong address type — some services only support certain formats
-- MWEB funds not recognized — exchange doesn't support MWEB, peg-out first
-- Dust outputs — small UTXOs may not be economical to spend
+## 常见问题  
+- 交易未确认？检查费用，如果启用了 RBF 机制可尝试重新发送；  
+- 账户余额未显示？可能是钱包未同步，请等待或使用轻量级钱包；  
+- 交易发送到错误类型的地址？某些服务仅支持特定格式的地址；  
+- MWEB 地址的交易未被识别？可能是交易所不支持 MWEB，需先进行资金转移（peg-out）；  
+- 小额未花费的交易输出（Dust Outputs）可能不值得花费。  
 
-## Merged Mining
-- Merged mined with Dogecoin — shares Scrypt hashpower
-- Increases security for both networks — shared mining work
-- No action required from users — happens at protocol level
-- Benefits from Dogecoin's popularity — more miners securing Litecoin
+## 合并挖矿（Merged Mining）  
+- Litecoin 与 Dogecoin 实现了合并挖矿，共享 Scrypt 算法的计算能力；  
+- 这种机制提高了两个网络的安全性；  
+- 用户无需采取任何操作，整个过程由协议自动完成；  
+- 利用 Dogecoin 的高知名度，更多矿工参与 Litecoin 的挖矿工作。  
 
-## Use Cases
-- Faster payments than Bitcoin — practical for transactions
-- Lower fees for transfers — cheaper to move between exchanges
-- Testing ground for Bitcoin features — SegWit activated first on Litecoin
-- Privacy with MWEB — optional confidential transactions
-- Established history — one of oldest cryptocurrencies, since 2011
+## 使用场景  
+- 交易速度比比特币更快，适用于日常支付；  
+- 转账费用更低，便于在不同交易所之间转账；  
+- Litecoin 是比特币相关技术的试验场，许多新功能首先在 Litecoin 上得到应用；  
+- MWEB 提供了隐私保护功能，支持保密交易；  
+- Litecoin 历史悠久，是最早的加密货币之一（自 2011 年以来就开始运行）。  
 
-## Security
-- Same UTXO model as Bitcoin — similar security considerations
-- Seed phrase is everything — 12 or 24 words depending on wallet
-- Verify addresses character by character — clipboard malware exists
-- Use SegWit addresses — better security and efficiency
-- Cold storage for large amounts — hardware wallet or paper backup
+## 安全性  
+- Litecoin 采用与比特币相同的未花费交易输出（UTXO）模型，安全性相似；  
+- 种子短语（Seed Phrase）至关重要，具体长度取决于所使用的钱包；  
+- 请逐个字符验证地址，以防恶意软件通过剪贴板传播；  
+- 使用 SegWit 地址可提高安全性和交易效率；  
+- 对于大额资金，建议使用硬件钱包或纸质备份等冷存储方式。

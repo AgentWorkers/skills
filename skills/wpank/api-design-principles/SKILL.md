@@ -3,38 +3,38 @@ name: api-design-principles
 model: reasoning
 ---
 
-# API Design Principles
+# API 设计原则
 
-## WHAT
-Design intuitive, scalable REST and GraphQL APIs that developers love. Covers resource modeling, HTTP semantics, pagination, error handling, versioning, and GraphQL schema patterns.
+## 目标
+设计直观、可扩展的 REST 和 GraphQL API，让开发人员满意。涵盖资源建模、HTTP 半义、分页、错误处理、版本控制以及 GraphQL 模式设计。
 
-## WHEN
-- Designing new REST or GraphQL APIs
-- Reviewing API specifications before implementation
-- Establishing API design standards for teams
-- Refactoring APIs for better usability
-- Migrating between API paradigms
+## 适用场景
+- 设计新的 REST 或 GraphQL API
+- 在实现前审查 API 规范
+- 为团队建立统一的 API 设计标准
+- 重构 API 以提高可用性
+- 在不同的 API 架构之间进行迁移
 
-## KEYWORDS
-REST, GraphQL, API design, HTTP methods, pagination, error handling, versioning, OpenAPI, HATEOAS, schema design
-
----
-
-## Decision Framework: REST vs GraphQL
-
-| Choose REST when... | Choose GraphQL when... |
-|---------------------|------------------------|
-| Simple CRUD operations | Complex nested data requirements |
-| Public APIs with broad audience | Mobile apps needing bandwidth optimization |
-| Heavy caching requirements | Clients need to specify exact data shape |
-| Team is unfamiliar with GraphQL | Aggregating multiple data sources |
-| Simple response structures | Rapidly evolving frontend requirements |
+## 关键词
+REST、GraphQL、API 设计、HTTP 方法、分页、错误处理、版本控制、OpenAPI、HATEOAS、模式设计
 
 ---
 
-## REST API Design
+## REST 与 GraphQL 的选择框架
 
-### Resource Naming Rules
+| 选择 REST 的情况 | 选择 GraphQL 的情况 |
+|-------------------|------------------------|
+| 简单的 CRUD 操作 | 需要处理复杂嵌套数据的情况 |
+| 面向广大用户的公共 API | 需要优化带宽使用的移动应用 |
+| 需要大量缓存的情况 | 客户端需要指定数据的具体结构 |
+| 团队不熟悉 GraphQL | 需要聚合多个数据源的情况 |
+| 响应结构简单的情况 | 前端需求变化迅速的情况 |
+
+---
+
+## REST API 设计
+
+### 资源命名规则
 
 ```
 ✓ Plural nouns for collections
@@ -54,17 +54,17 @@ REST, GraphQL, API design, HTTP methods, pagination, error handling, versioning,
   GET /api/order-items/{id}/reviews                            ← Better
 ```
 
-### HTTP Methods and Status Codes
+### HTTP 方法与状态码
 
-| Method | Purpose | Success | Common Errors |
+| 方法 | 功能 | 成功 | 常见错误 |
 |--------|---------|---------|---------------|
-| GET | Retrieve | 200 OK | 404 Not Found |
-| POST | Create | 201 Created | 400/422 Validation |
-| PUT | Replace | 200 OK | 404 Not Found |
-| PATCH | Partial update | 200 OK | 404 Not Found |
-| DELETE | Remove | 204 No Content | 404/409 Conflict |
+| GET | 获取资源 | 200 OK | 404 未找到 |
+| POST | 创建资源 | 201 创建成功 | 400/422 验证失败 |
+| PUT | 更新资源 | 200 更新成功 | 404 未找到 |
+| PATCH | 部分更新资源 | 200 部分更新成功 | 404 未找到 |
+| DELETE | 删除资源 | 204 无内容 | 404/409 冲突 |
 
-### Complete Status Code Reference
+### 完整的状态码参考
 
 ```python
 SUCCESS = {
@@ -89,9 +89,9 @@ SERVER_ERROR = {
 }
 ```
 
-### Pagination
+### 分页
 
-#### Offset-Based (Simple)
+#### 基于偏移量的分页（简单情况）
 
 ```python
 GET /api/users?page=2&page_size=20
@@ -105,7 +105,7 @@ GET /api/users?page=2&page_size=20
 }
 ```
 
-#### Cursor-Based (For Large Datasets)
+#### 基于游标的分页（适用于大数据集）
 
 ```python
 GET /api/users?limit=20&cursor=eyJpZCI6MTIzfQ
@@ -117,7 +117,7 @@ GET /api/users?limit=20&cursor=eyJpZCI6MTIzfQ
 }
 ```
 
-### Filtering and Sorting
+### 过滤与排序
 
 ```
 # Filtering
@@ -133,9 +133,8 @@ GET /api/users?search=john
 GET /api/users?fields=id,name,email
 ```
 
-### Error Response Format
-
-Always use consistent structure:
+### 错误响应格式
+始终使用一致的结构进行错误响应：
 
 ```json
 {
@@ -150,7 +149,7 @@ Always use consistent structure:
 }
 ```
 
-### FastAPI Implementation
+### FastAPI 实现
 
 ```python
 from fastapi import FastAPI, Query, Path, HTTPException, status
@@ -227,9 +226,9 @@ async def delete_user(user_id: str):
 
 ---
 
-## GraphQL API Design
+## GraphQL API 设计
 
-### Schema Structure
+### 模式设计
 
 ```graphql
 # Types
@@ -289,7 +288,7 @@ type Mutation {
 }
 ```
 
-### DataLoader (Prevent N+1)
+### 数据加载器（防止 N+1 问题）
 
 ```python
 from aiodataloader import DataLoader
@@ -308,7 +307,7 @@ async def resolve_orders(user: dict, info):
     return await loader.load(user["id"])
 ```
 
-### Query Protection
+### 查询保护机制
 
 ```python
 # Depth limiting
@@ -323,40 +322,39 @@ QUERY_TIMEOUT_SECONDS = 10
 
 ---
 
-## Versioning Strategies
+## 版本控制策略
 
-### URL Versioning (Recommended)
+### URL 版本控制（推荐方案）
 
 ```
 /api/v1/users
 /api/v2/users
 ```
 
-**Pros**: Clear, easy to route, cacheable
-**Cons**: Multiple URLs for same resource
+**优点**：清晰易懂、易于路由、支持缓存
+**缺点**：同一资源可能有多个 URL
 
-### Header Versioning
+### 标头版本控制
 
 ```
 GET /api/users
 Accept: application/vnd.api+json; version=2
 ```
 
-**Pros**: Clean URLs
-**Cons**: Less visible, harder to test
+**优点**：URL 更简洁
+**缺点**：不太直观、测试难度较大
 
-### Deprecation Strategy
-
-1. Add deprecation headers: `Deprecation: true`
-2. Document migration path
-3. Give 6-12 months notice
-4. Monitor usage before removal
+### 废弃策略
+1. 添加废弃标记：`Deprecation: true`
+2. 文档化迁移路径
+3. 提前 6-12 个月通知
+4. 在删除前监控使用情况
 
 ---
 
-## Rate Limiting
+## 速率限制
 
-### Headers
+### 使用的头部信息
 
 ```
 X-RateLimit-Limit: 1000
@@ -368,7 +366,7 @@ X-RateLimit-Reset: 1640000000
 Retry-After: 3600
 ```
 
-### Implementation
+### 实现方式
 
 ```python
 from datetime import datetime, timedelta
@@ -399,43 +397,42 @@ class RateLimiter:
 
 ---
 
-## Pre-Implementation Checklist
+## 实施前的检查清单
 
-### Resources
-- [ ] Nouns, not verbs
-- [ ] Plural for collections
-- [ ] Max 2 levels nesting
+### 资源相关
+- 使用名词而非动词作为接口名称
+- 集合类使用复数形式
+- 最多允许两层嵌套
 
-### HTTP
-- [ ] Correct method for each action
-- [ ] Correct status codes
-- [ ] Idempotent operations are idempotent
+### HTTP 相关
+- 每个操作使用正确的 HTTP 方法
+- 使用正确的状态码
+- 幂等操作必须保持幂等性
 
-### Data
-- [ ] All collections paginated
-- [ ] Filtering/sorting supported
-- [ ] Error format consistent
+### 数据相关
+- 所有集合数据都支持分页
+- 支持过滤和排序
+- 错误格式统一
 
-### Security
-- [ ] Authentication defined
-- [ ] Rate limiting configured
-- [ ] Input validation on all fields
-- [ ] HTTPS enforced
+### 安全相关
+- 定义了身份验证机制
+- 配置了速率限制
+- 对所有输入字段进行验证
+- 强制使用 HTTPS 协议
 
-### Documentation
-- [ ] OpenAPI spec generated
-- [ ] All endpoints documented
-- [ ] Examples provided
+### 文档相关
+- 生成 OpenAPI 规范
+- 所有接口点都有文档说明
+- 提供示例代码
 
 ---
 
-## NEVER
-
-- **Verbs in URLs**: `/api/getUser` → use `/api/users/{id}` with GET
-- **POST for Retrieval**: Use GET for safe, idempotent reads
-- **Inconsistent Errors**: Always same error format
-- **Unbounded Lists**: Always paginate collections
-- **Secrets in URLs**: Query params are logged
-- **Breaking Changes Without Versioning**: Plan for evolution from day 1
-- **Database Schema as API**: API should be stable even when schema changes
-- **Ignoring HTTP Semantics**: Status codes and methods have meaning
+## 绝对禁止的做法
+- **在 URL 中使用动词**：例如 `/api/getUser` 应改为 `/api/users/{id}` 并使用 GET 方法
+- **使用 POST 方法进行获取操作**：对于安全的、幂等性的读取操作，应使用 GET 方法
+- **错误信息不一致**：错误信息格式必须统一
+- **列表没有上限**：所有集合数据都应支持分页
+- **在 URL 中包含敏感信息**：查询参数会被记录下来
+- **在没有版本控制的情况下进行重大更改**：从项目开始就应规划好系统的演进方向
+- **将数据库模式直接作为 API 的结构**：即使数据库模式发生变化，API 也应保持稳定
+- **忽略 HTTP 半义**：HTTP 状态码和方法都有其特定的含义

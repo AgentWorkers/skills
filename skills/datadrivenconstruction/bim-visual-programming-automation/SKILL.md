@@ -1,26 +1,26 @@
 ---
 slug: "bim-visual-programming-automation"
 display_name: "BIM Visual Programming Automation"
-description: "Automate BIM workflows using visual programming and Python. Create parametric schedules, export data, batch modify elements, and integrate with external data sources."
+description: "使用可视化编程和Python自动化BIM工作流程。创建参数化进度表、导出数据、批量修改元素，并与外部数据源集成。"
 ---
 
-# BIM Visual Programming Automation
+# BIM可视化编程自动化
 
-## Overview
+## 概述
 
-This skill provides visual programming scripts and Python nodes for automating BIM workflows. Extract data, modify elements in batch, generate schedules, and integrate with external systems.
+本技能提供了可视化编程脚本和Python节点，用于自动化BIM工作流程。这些工具可用于提取数据、批量修改元素、生成进度表以及与外部系统进行集成。
 
-> **Note:** Examples use Autodesk® Revit® and Dynamo™ APIs. Autodesk, Revit, and Dynamo are registered trademarks of Autodesk, Inc.
+> **注意：** 示例中使用了Autodesk® Revit®和Dynamo™的API。Autodesk、Revit以及Dynamo均为Autodesk, Inc.的注册商标。
 
-**Key Capabilities:**
-- Batch element modification
-- Data export/import
-- Schedule generation
-- Parameter management
-- External data integration
-- Automated QTO
+**主要功能：**
+- 批量修改元素
+- 数据导入/导出
+- 生成进度表
+- 参数管理
+- 外部数据集成
+- 自动化数量统计（QTO）
 
-## Quick Start (Dynamo Python)
+## 快速入门（Dynamo Python）
 
 ```python
 # Dynamo Python Script - Export all walls to Excel
@@ -49,9 +49,9 @@ for wall in walls:
 OUT = wall_data
 ```
 
-## Element Data Extraction
+## 元素数据提取
 
-### Comprehensive Element Extractor
+### 综合元素提取器
 
 ```python
 # Dynamo Python Node - Extract all element data
@@ -124,7 +124,7 @@ for cat in categories:
 OUT = all_data
 ```
 
-### Quantity Take-Off Script
+### 数量统计脚本
 
 ```python
 # Dynamo Python - QTO Export
@@ -193,9 +193,9 @@ def get_qto_data():
 OUT = get_qto_data()
 ```
 
-## Batch Modification
+## 批量修改
 
-### Batch Parameter Update
+### 批量参数更新
 
 ```python
 # Dynamo Python - Batch update parameters
@@ -240,7 +240,7 @@ values = IN[2]  # List of values
 OUT = batch_update_parameter(elements, param_name, values)
 ```
 
-### Batch Copy Elements
+### 批量复制元素
 
 ```python
 # Dynamo Python - Copy elements to levels
@@ -282,9 +282,9 @@ target_levels = IN[1]
 OUT = copy_to_levels(elements, target_levels)
 ```
 
-## Schedule Generation
+## 生成进度表
 
-### Create Custom Schedule
+### 创建自定义进度表
 
 ```python
 # Dynamo Python - Create view schedule
@@ -339,9 +339,9 @@ schedule_name = IN[0]
 OUT = create_wall_schedule(schedule_name)
 ```
 
-## External Data Integration
+## 外部数据集成
 
-### Import Data from Excel
+### 从Excel导入数据
 
 ```python
 # Dynamo Python - Import Excel and update Revit
@@ -394,9 +394,9 @@ param_columns = IN[2]  # Dict: param_name -> column_index
 OUT = update_from_excel(excel_data, id_column, param_columns)
 ```
 
-## Dynamo Package Workflow
+## Dynamo工作流程包
 
-### Full QTO Pipeline (Dynamo Graph Nodes)
+### 完整的数量统计流程（Dynamo图节点）
 
 ```
 1. Categories (Input)
@@ -414,18 +414,18 @@ OUT = update_from_excel(excel_data, id_column, param_columns)
 7. File Path (Output)
 ```
 
-## Quick Reference
+## 快速参考
 
-| Task | Method | Performance |
+| 任务 | 方法 | 性能 |
 |------|--------|-------------|
-| Get Elements | FilteredElementCollector | Fast |
-| Get Parameter | element.LookupParameter() | Fast |
-| Set Parameter | TransactionManager required | Moderate |
-| Copy Elements | ElementTransformUtils | Moderate |
-| Create Views | ViewSchedule.CreateSchedule | Slow |
-| Delete Elements | Document.Delete | Fast |
+| 获取元素 | FilteredElementCollector | 快速 |
+| 获取参数 | element.LookupParameter() | 快速 |
+| 设置参数 | 需要TransactionManager | 中等 |
+| 复制元素 | ElementTransformUtils | 中等 |
+| 创建视图 | ViewSchedule.CreateSchedule | 慢速 |
+| 删除元素 | Document.Delete | 快速 |
 
-## Common Parameter Names
+## 常见参数名称
 
 ```python
 # Built-in parameters for quantities
@@ -446,14 +446,14 @@ CONVERSIONS = {
 }
 ```
 
-## Resources
+## 资源
 
-- **Dynamo Primer**: https://primer.dynamobim.org
-- **Revit API Docs**: https://www.revitapidocs.com
-- **DDC Website**: https://datadrivenconstruction.io
+- **Dynamo入门指南**：https://primer.dynamobim.org
+- **Revit API文档**：https://www.revitapidocs.com
+- **DDC网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `ifc-data-extraction` for IFC export
-- See `qto-report` for advanced quantity reports
-- See `n8n-workflow-automation` for external integration
+- 如需进行IFC文件导出，请参阅`ifc-data-extraction`；
+- 如需生成高级数量统计报告，请参阅`qto-report`；
+- 如需实现外部系统集成，请参阅`n8n-workflow-automation`。

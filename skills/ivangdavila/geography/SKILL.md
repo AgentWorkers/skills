@@ -1,51 +1,51 @@
 ---
 name: Geography
-description: Teach physical and human geography from map reading to spatial analysis.
+description: 从地图阅读到空间分析，教授自然地理和人文地理知识。
 metadata: {"clawdbot":{"emoji":"🌍","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: map literacy, terminology, scale of thinking
-- When unclear, start with familiar places and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别层次，灵活应对  
+- 上下文能揭示事物的层次：包括地图阅读能力、使用的术语以及思考的尺度。  
+- 当理解有困难时，从熟悉的事物入手，根据反馈进行调整。  
+- 对专家不可居高临下，对初学者也不应使其感到不知所措。  
 
-## For Beginners: Where and Why There
-- Start from their neighborhood — expand outward to city, country, world
-- Maps as pictures of places — practice reading symbols, scale, orientation
-- Physical shapes human — rivers attract cities, mountains block movement, climate shapes life
-- Human shapes physical — dams change rivers, cities create heat islands, farms replace forests
-- Cardinal directions through body — face north, east is right, practice without compass
-- Connect to daily life — where does your water come from? Your food? Your clothes?
-- Globes vs flat maps — distortion is unavoidable, different projections serve different purposes
+## 对初学者的建议：从身边开始，逐步扩展  
+- 从他们生活的社区开始学习，逐步扩展到城市、国家乃至整个世界。  
+- 地图是地方的“画像”——练习识别符号、理解比例尺和方向感。  
+- 自然地理形态影响着人类活动：河流吸引城市的形成，山脉阻碍交通，气候塑造着人们的生活方式。  
+- 人类活动同样影响着自然环境：水坝会改变河流的流向，城市会形成“热岛”，农田会取代森林。  
+- 利用身体感知方向：面朝北方，东方在右侧，即使没有指南针也能练习辨别方向。  
+- 将学习内容与日常生活联系起来：你的水从哪里来？食物来自哪里？衣服又是如何制作的？  
+- 圆球仪与平面地图的区别：地图存在失真现象，不同的投影方式适用于不同的用途。  
 
-## For Students: Patterns and Processes
-- Physical and human geography interact — can't understand one without the other
-- Scale changes everything — local, regional, global patterns may contradict
-- Climate vs weather — long-term averages vs daily conditions, different explanations
-- Population dynamics — birth rates, migration, urbanization reshape places
-- Economic geography — why industries locate where they do, trade patterns, development
-- GIS as analytical tool — layers, queries, spatial relationships reveal patterns
-- Fieldwork matters — ground truth what maps and data suggest
+## 对学生的建议：理解地理中的规律与过程  
+- 自然地理与人文地理相互影响，二者不可分割。  
+- 比例尺会改变一切：局部、区域和全球的地理现象可能存在矛盾。  
+- 气候与天气的区别：气候是长期平均状态，而天气是日常变化，两者需要不同的解释方式。  
+- 人口动态：出生率、迁移和城市化正在重塑地理环境。  
+- 经济地理：了解产业为何会选址在特定地点，以及贸易模式和地区发展情况。  
+- 地理信息系统（GIS）是一种强大的分析工具：通过图层和空间关系可以揭示规律。  
+- 实地考察至关重要：验证地图和数据所提供的信息是否准确。  
 
-## For Researchers: Spatial Rigor
-- MAUP awareness — modifiable areal unit problem affects all aggregate spatial data
-- Scale dependency explicit — processes operating at different scales require different models
-- Spatial autocorrelation — nearby things are related, standard statistics don't apply
-- Remote sensing limitations — resolution, temporal coverage, interpretation challenges
-- Critical geography lens — maps are political, boundaries are constructed, data reflects power
-- Mixed methods common — quantitative spatial analysis plus qualitative fieldwork
-- Uncertainty in boundaries — gradients more common than sharp lines in nature
+## 对研究者的建议：注重地理研究的严谨性  
+- 了解“MAUP”（Map-Area-Unit-Problem）概念：可修改的区域单位会对所有汇总的地理数据产生影响。  
+- 明确不同尺度下的地理过程：在不同尺度上运用的模型各不相同。  
+- 注意空间自相关性：相邻事物之间存在关联，标准统计方法可能不适用。  
+- 远程感应技术的局限性：分辨率、时间覆盖范围和数据解读都存在挑战。  
+- 用批判性地理视角看待地图：地图具有政治性，边界是人为设定的，数据反映了权力关系。  
+- 综合使用定量分析与定性实地考察的方法。  
+- 边界的不确定性：自然界中的边界通常是渐变的，而非尖锐的直线。  
 
-## For Teachers: Common Misconceptions
-- Geography isn't just memorizing capitals — it's understanding spatial relationships
-- Maps aren't neutral — projection, selection, symbolization all involve choices
-- Climate zones oversimplify — microclimates, elevation, ocean currents complicate
-- Countries aren't natural — borders are human constructs, often arbitrary or contested
-- Development isn't linear — "developed/developing" framing obscures complexity
-- Use local examples — every place has geography worth studying
-- Digital tools supplement, don't replace — Google Earth helps, but physical maps build skills
+## 对教师的建议：纠正常见的误解  
+- 地理学不仅仅是记忆首都名称——更重要的是理解空间关系。  
+- 地图并非中立工具：投影方式、地图内容的选择和符号化都带有主观性。  
+- 气候区划过于简化了实际情况：微气候、海拔高度和海洋 currents 都会带来复杂因素。  
+- 国家边界并非自然形成——它们往往是人为设定的，有时具有争议性。  
+- 发展过程并非线性：用“发达/发展中”这样的分类掩盖了地理现象的复杂性。  
+- 使用本地案例进行教学：每个地方都有值得研究的地理特征。  
+- 数字工具是辅助工具，而非替代传统地图：Google Earth 可以提供帮助，但实地考察仍能培养重要的地理技能。  
 
-## Always
-- Specify scale — local, regional, global behave differently
-- Connect physical and human — they're inseparable in practice
-- Maps are arguments — ask who made it, why, what's included and excluded
+## 始终牢记：  
+- 明确地图的比例尺——局部、区域和全球尺度的地理现象各不相同。  
+- 将自然地理与人文地理结合起来——在实践中两者密不可分。  
+- 地图本身就是一种表达观点的工具——要思考地图的制作者、制作目的以及其中包含和排除了哪些信息。

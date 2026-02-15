@@ -1,56 +1,56 @@
 ---
 name: bnbchain-mcp
 version: 1.0.0
-description: Interact with the BNB Chain Model Context Protocol (MCP) server. Use to query DeFi data, get token prices, search documentation, fetch git diffs, and retrieve smart contract source code on BNB Chain.
+description: 与 BNB Chain Model Context Protocol (MCP) 服务器进行交互。该协议可用于查询去中心化金融 (DeFi) 数据、获取代币价格、搜索文档、获取 Git 差异文件，以及检索 BNB Chain 上的智能合约源代码。
 ---
 
-# BNB Chain MCP Skill
+# BNB Chain MCP 技能
 
-This skill allows you to interact with the BNB Chain MCP server to retrieve data about BNB Chain.
+此技能允许您与 BNB Chain MCP 服务器交互，以获取有关 BNB Chain 的数据。
 
-## How to Use
+## 使用方法
 
-The BNB Chain MCP server runs locally. You interact with it using the `mcp-client` script bundled with this skill.
+BNB Chain MCP 服务器在本地运行。您可以使用随此技能提供的 `mcp-client` 脚本与之进行交互。
 
-### Commands
+### 命令
 
-Run the client script to execute tools:
+运行客户端脚本以执行相应操作：
 
 ```bash
 python3 skills/bnbchain-mcp/scripts/mcp-client.py <tool_name> [arguments]
 ```
 
-To list available tools:
+**列出可用工具：**
 
 ```bash
 python3 skills/bnbchain-mcp/scripts/mcp-client.py list_tools
 ```
 
-### Available Tools
+### 可用工具
 
-Currently supported tools in `bnbchain-mcp`:
+`bnbchain-mcp` 中目前支持的工具包括：
 
-- **get_token_price**: Get token price in USD. `args: {"symbol": "BNB"}`
-- **get_defi_rates**: Get lending/borrowing rates for protocol. `args: {"protocol": "venus"}`
-- **search_documentation**: Search official docs. `args: {"query": "validators"}`
-- **get_recent_git_diffs**: Get recent git diffs for a repo. `args: {"repo_name": "bnb-chain/bsc"}`
-- **get_smart_contract_source**: Get source code for a contract. `args: {"contract_address": "0x..."}`
+- **get_token_price**：获取代币的价格（单位：USD）。`args: {"symbol": "BNB"}`
+- **get_defi_rates**：获取协议的借贷利率。`args: {"protocol": "venus"}`
+- **search_documentation**：搜索官方文档。`args: {"query": "validators"}`
+- **get_recent-git_diffs**：获取仓库的最新 Git 提交差异。`args: {"repo_name": "bnb-chain/bsc"}`
+- **get_smart_contract_source**：获取合约的源代码。`args: {"contract_address": "0x..."}`
 
-## Setup
+## 设置
 
-The MCP server must be running for this skill to work.
+要使用此技能，必须确保 MCP 服务器正在运行。
 
-If the server is not running, start it (this is usually handled by the MCP/OpenClaw infrastructure, but good to know):
-`uv run bnbchain-mcp` (requires `uv` and `bnbchain-mcp` package installed).
+如果服务器未运行，请启动它（通常由 MCP/OpenClaw 基础设施负责处理，但了解这一点还是有必要的）：
+`uv run bnbchain-mcp`（需要安装 `uv` 和 `bnbchain-mcp` 包）。
 
-## Examples
+## 示例
 
-**Get the price of BNB:**
+**获取 BNB 的价格：**
 ```bash
 python3 skills/bnbchain-mcp/scripts/mcp-client.py get_token_price --args '{"symbol": "BNB"}'
 ```
 
-**Search documentation:**
+**搜索文档：**
 ```bash
 python3 skills/bnbchain-mcp/scripts/mcp-client.py search_documentation --args '{"query": "staking"}'
 ```

@@ -1,29 +1,29 @@
 ---
 name: branch-namer
-description: Generate descriptive git branch names from plain English. Use when you need a branch name that follows conventions.
+description: 从普通的英文字符串生成符合规范的 Git 分支名称。当您需要一个符合 Git 常规的分支名称时，可以使用这种方法。
 ---
 
-# Branch Namer
+# 分支命名
 
-Naming branches is harder than it should be. Is it feature/user-auth or feat/add-user-authentication? This tool generates consistent, conventional branch names from plain English descriptions.
+为分支命名其实比想象中要复杂得多。是应该命名为“feature/user-auth”还是“feat/add-user-authentication”呢？这个工具可以根据简单的英文描述自动生成一致且符合常规的分支名称。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-branch "add user authentication with OAuth"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates branch names following common conventions (feature/, bugfix/, hotfix/)
-- Keeps names short but descriptive
-- Uses kebab-case consistently
-- Can create the branch for you with --create flag
-- Supports custom prefixes and formats
+- 生成符合常见命名规则的分支名称（如：feature/、bugfix/、hotfix/）
+- 名称简洁但具有描述性
+- 始终使用驼峰式命名法（kebab-case）
+- 可通过`--create`选项帮你创建分支
+- 支持自定义前缀和命名格式
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Get a branch name suggestion
@@ -39,43 +39,43 @@ npx ai-branch "update dependencies" --prefix chore
 npx ai-branch "user profile page crashes on load" --ticket PROJ-123
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Be specific in your description** - "fix bug" gives worse results than "fix crash when user has no profile photo"
-- **Include context** - Mention the feature area: "checkout flow: add shipping address validation"
-- **Use --create sparingly** - Review the suggestion first, especially on shared repos
-- **Match team conventions** - If your team uses different prefixes, use --prefix
+- **描述要具体**：例如，“fix bug”这样的描述不如“fix crash when user has no profile photo”准确。
+- **包含上下文**：提及功能所属的领域，例如：“checkout flow: add shipping address validation”。
+- **谨慎使用`--create`选项**：尤其是在共享仓库中，使用前请先确认建议的名称是否合适。
+- **遵循团队规范**：如果团队有特定的前缀要求，请使用`--prefix`选项。
 
-## When to Use This
+## 适用场景
 
-- Starting a new feature and blanking on a good branch name
-- Want consistent naming across your team
-- Working on multiple tasks and need to track what each branch does
-- Onboarding and not sure what naming conventions the team uses
+- 当你需要为新的功能命名但一时想不出合适的名称时。
+- 当希望团队内所有分支的命名保持一致时。
+- 当同时处理多个任务，需要明确每个分支的用途时。
+- 对新成员来说，当不清楚团队使用何种命名规范时。
 
-## Part of the LXGIC Dev Toolkit
+## 作为LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发者工具之一。免费版本无付费门槛、无需注册，也不需要API密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Requires OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。运行该工具需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 export OPENAI_API_KEY=sk-...
 npx ai-branch --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your description and determines the appropriate branch type (feature, fix, chore, etc.). Extracts key terms and creates a concise, readable branch name following conventional naming patterns. Can optionally run git checkout -b for you.
+该工具会分析你的描述，确定分支的类型（如功能开发、问题修复、杂务等），提取关键信息，并根据常规的命名规则生成简洁易读的分支名称。你也可以选择通过`git checkout -b`命令来创建分支。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具。

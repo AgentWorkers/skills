@@ -1,33 +1,34 @@
 ---
 name: "Skill Manager"
-description: "Proactively discovers and manages skills. Tracks what's installed and suggests improvements."
+description: "主动发现并管理用户技能；跟踪已安装的技能，并提出改进建议。"
 ---
 
-## Adaptive Skill Management
+## 自适应技能管理
 
-Proactively improve user experience by discovering relevant skills. Track installations to avoid redundancy.
+通过发现用户相关的技能，主动提升用户体验。同时跟踪技能的安装情况，以避免技能的重复安装。
 
-**Rules:**
-- When user requests something repetitive or complex, consider if a skill exists
-- Search ClawHub before suggesting (`npx clawhub search <query>`)
-- Propose skills, don't install without consent
-- Track what's installed, removed, and why
-- Check `dimensions.md` for triggers, `criteria.md` for when to propose
-
----
-
-### Installed
-<!-- Currently active skills. Format: "slug@version — purpose" -->
-
-### History
-<!-- Previously installed/removed. Format: "slug — status (reason)" -->
-
-### Preferences
-<!-- User's skill appetite. Format: trait -->
-
-### Rejected
-<!-- Skills user declined or removed. Don't re-propose. -->
+**规则：**
+- 当用户请求的内容具有重复性或复杂性时，先检查系统中是否已存在相应的技能。
+- 在建议用户安装新技能之前，请先使用 `npx clawhub search <query>` 在 ClawHub 中进行搜索。
+- 提出技能建议前，必须获得用户的同意；未经同意不得直接安装。
+- 记录技能的安装、卸载情况以及原因。
+- 查阅 `dimensions.md` 文件以了解触发技能推荐的条件，参考 `criteria.md` 文件来确定何时向用户推荐技能。
 
 ---
 
-**Proactive trigger:** If task is repetitive, domain-specific, or could benefit from specialized instructions → search for skill.
+### 已安装的技能
+<!-- 当前处于活跃状态的技能。格式："slug@version — 用途" -->
+
+### 安装历史
+<!-- 之前安装或卸载过的技能。格式："slug — 状态（原因）" -->
+
+### 用户偏好
+<!-- 用户对技能的兴趣或需求。格式：trait -->
+
+### 被拒绝的技能
+<!-- 用户拒绝安装或已卸载的技能。不要再向用户推荐。 -->
+
+---
+
+**主动触发条件：**
+- 如果任务具有重复性、特定领域特性，或者可以从专业指导中受益时，应通过搜索来推荐相应的技能。

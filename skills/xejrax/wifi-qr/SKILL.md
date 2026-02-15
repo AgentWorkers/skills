@@ -1,6 +1,6 @@
 ---
 name: wifi-qr
-description: "Generate QR code for Wi-Fi credentials"
+description: "生成 Wi-Fi 凭据的 QR 代码"
 metadata:
   {
     "openclaw":
@@ -21,11 +21,11 @@ metadata:
   }
 ---
 
-# Wi-Fi QR
+# Wi-Fi QR码
 
-Generate a QR code for Wi-Fi credentials. Scan the QR code with a phone to instantly connect to the network without typing the password.
+生成一个包含Wi-Fi登录凭据的QR码。使用手机扫描该QR码即可立即连接网络，无需输入密码。
 
-## Commands
+## 命令
 
 ```bash
 # Generate a QR code for a Wi-Fi network (defaults to WPA)
@@ -35,7 +35,7 @@ wifi-qr "MyNetwork" "mypassword"
 wifi-qr "MyNetwork" "mypassword" --type WPA
 ```
 
-## Install
+## 安装
 
 ```bash
 sudo dnf install qrencode

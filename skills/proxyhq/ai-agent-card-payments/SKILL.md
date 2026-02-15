@@ -1,20 +1,19 @@
 ---
 name: ai-agent-card-payments
-description: Virtual card payments for AI agents. Create intents, issue cards within policy, and make autonomous purchases with approvals for high-value spend.
+description: 用于AI代理的虚拟卡支付功能：可以创建相应的支付意图（intents），在政策允许的范围内发行虚拟卡，并在获得高级别审批后自主完成高价值交易。
 ---
 
-# AI Agent Card Payments
+# AI代理卡片支付功能
 
-Enable an AI agent to make purchases with virtual cards while Proxy enforces policy.
+该功能允许AI代理在Proxy系统执行政策管控的同时，使用虚拟卡片进行购物操作。
 
-## What this enables
+## 功能概述：
+- 在预设的限额范围内实现自主购物；
+- 根据具体购物意图发放或解锁相应的卡片；
+- 支持在需要时人工审核以执行政策规定；
+- 生成交易证据和收据，以便进行审计追踪。
 
-- Autonomous purchasing within limits
-- Per-intent card issuance or unlock
-- Policy enforcement with optional human approval
-- Evidence and receipt attachment for audit trails
-
-## Quick start (agent token)
+## 快速入门（代理令牌）
 
 ```
 1) proxy.kyc.status
@@ -26,7 +25,7 @@ Enable an AI agent to make purchases with virtual cards while Proxy enforces pol
 7) proxy.transactions.list_for_card
 ```
 
-## MCP server config
+## MCP服务器配置
 
 ```json
 {
@@ -42,42 +41,40 @@ Enable an AI agent to make purchases with virtual cards while Proxy enforces pol
 }
 ```
 
-## Core tools (agent token)
+## 核心工具（代理令牌）
 
-### Intents + cards
-- proxy.intents.create (agent token required)
-- proxy.intents.list
-- proxy.intents.get
-- proxy.cards.get_sensitive
+### 意图管理（Intents）与卡片管理（Cards）：
+- `proxy.intents.create`（需要代理令牌）
+- `proxy.intents.list`
+- `proxy.intents.get`
+- `proxy_cards.getSensitive`
 
-### Policy + status
-- proxy.policies.get
-- proxy.policies.simulate
-- proxy.kyc.status
-- proxy.balance.get
-- proxy.tools.list
+### 政策管理（Policies）与账户状态（Status）：
+- `proxy.policies.get`
+- `proxy.policies.simulate`
+- `proxy.kyc.status`
+- `proxy.balance.get`
+- `proxy.tools.list`
 
-### Transactions + evidence
-- proxy.transactions.list_for_card
-- proxy.transactions.get
-- proxy.receipts.attach
-- proxy.evidence.list_for_intent
+### 交易管理（Transactions）与证据记录（Evidence）：
+- `proxy.transactions.list_for_card`
+- `proxy.transactions.get`
+- `proxy.receipts.attach`
+- `proxy.evidence.list_for(intent`
 
-### Merchant intelligence (advisory)
-- proxy.merchants.resolve
-- proxy.mcc.explain
-- proxy.merchants.allowlist_suggest
+### 商户信息查询（Merchant Intelligence）：
+- `proxy.merchants.resolve`
+- `proxy.mcc.explain`
+- `proxy.merchants.allowlist_suggest`
 
-## Human-only tools
+## 仅限人工使用的工具：
+这些功能对代理令牌是受限的，需通过仪表板或OAuth授权才能使用：
+- `proxy.funding.get`
+- `proxy_cards.list` / `proxy_cards.get` / `proxy_cards.freeze` / `proxy_cards.unfreeze` / `proxy_cards.rotate` / `proxy_cards.close`
+- `proxy.intents.approve` / `proxy.intents.reject`
+- `proxy.webhooks.list` / `proxy.webhooks.test_event`
 
-These are blocked for agent tokens and live in the dashboard or via OAuth:
-
-- proxy.funding.get
-- proxy.cards.list / get / freeze / unfreeze / rotate / close
-- proxy.intents.approve / reject
-- proxy.webhooks.list / test_event
-
-## Example: complete purchase
+## 示例：完成购物流程
 
 ```
 proxy.intents.create(
@@ -93,7 +90,7 @@ proxy.cards.get_sensitive(
 )
 ```
 
-If the intent is pending approval, call:
+如果购物意图尚未获得批准，请执行以下操作：
 
 ```
 proxy.intents.request_approval(
@@ -102,10 +99,9 @@ proxy.intents.request_approval(
 )
 ```
 
-## Best practices
-
-- Use per-agent tokens for autonomous runs; rotate on compromise.
-- Simulate before creating intents to reduce failed attempts.
-- Constrain intents with expectedAmount and expectedMerchant.
-- Treat MCC/merchant allowlists as advisory unless issuer enforcement is enabled.
-- Never log PAN/CVV from proxy.cards.get_sensitive.
+## 最佳实践：
+- 为每个AI代理分配专属的令牌，以保障操作的自主性；在令牌被泄露时及时更换；
+- 在创建购物意图前先进行模拟测试，以减少操作失败的风险；
+- 通过`expectedAmount`和`expectedMerchant`参数对购物意图进行限制；
+- 除非启用了发行机构（MCC）的强制审核机制，否则将MCC/商户白名单信息仅作为参考信息使用；
+- 绝不要通过`proxy_cards.getSensitive`函数获取持卡人的PAN/CVV验证码信息。

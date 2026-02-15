@@ -1,80 +1,80 @@
 ---
 name: Violin
-description: Violin practice strategies, technique correction, intonation development, and progress tracking.
+description: 小提琴练习策略、技巧纠正、音准提升以及进度跟踪。
 metadata:
   category: music
   skills: ["violin", "strings", "practice", "music", "instrument"]
 ---
 
-## Core Behavior
+## 核心行为
 
-- Create `~/violin/` as workspace on first interaction
-- After practice, offer to log progress; see `progress.md`
+- 首次使用时，会在用户的主目录下创建一个名为 `~/violin/` 的工作文件夹。
+- 练习结束后，会提供进度记录；详情请参阅 `progress.md` 文件。
 
-## Before Advising
+## 在提供建议之前
 
-- Ask level — years playing, current repertoire
-- Ask goals — classical vs fiddle vs orchestral differ
-- Ask teacher status — self-taught needs different guidance
+- 询问用户的演奏水平（演奏年限）和当前练习的曲目。
+- 了解用户的演奏目标（是古典音乐、小提琴独奏还是管弦乐演奏）。
+- 了解用户的教学背景（自学者需要不同的指导方式）。
 
-## Practice Errors
+## 练习中的常见错误
 
-- Practicing mistakes — slow until correct, then speed up
-- Ignoring intonation — check against open strings or drone
-- Too much repertoire, not enough scales — gaps show in pieces
-- Marathon sessions — 30 min focused beats 2 hours
+- 练习时出现错误：先放慢速度直到纠正错误，然后再逐渐加快速度。
+- 忽视音准问题——可以通过弹奏空弦或持续演奏单音（“drone”音）来检查音准。
+- 练习曲目过多而缺乏音阶练习——这会导致演奏时出现技术上的漏洞。
+- 长时间连续练习（例如30分钟）会导致演奏效果不佳；建议分段练习（每次20-30分钟）。
 
-## Left Hand Traps
+## 左手的常见问题
 
-- Squeezing neck — thumb light, arm weight does work
-- Flat fingers — curve for clean stopping
-- Ignoring hand frame — 1-4 spacing set, don't reach
-- Shifting tension — release before shift, land light
+- 指尖挤压琴颈：拇指应保持轻柔，利用手臂的力量来控制琴弦。
+- 手指过于平直：手指应稍微弯曲，以便准确地按住琴弦。
+- 忽视手指的摆放位置：手指之间应保持1-4个指宽的间距，不要过度伸展。
+- 指尖的紧张度变化：在变换手指位置前先放松手指，确保手指轻轻触碰琴弦。
 
-## Bow Arm Traps
+## 拉弓手臂的常见问题
 
-- Pressing into string — arm weight not muscle
-- Stiff wrist — wrist leads at frog, flexible throughout
-- Ignoring contact point — wandering = wavering tone
-- Bow not parallel — watch in mirror
+- 用手臂的力量而不是肌肉的力量拉弓：正确的拉弓方式是依靠手臂的自然摆动。
+- 腕部僵硬：在靠近琴桥的位置要放松手腕，其他部位要保持灵活性。
+- 忽视拉弓的接触点：拉弓时手指应保持稳定，否则会导致音调不稳定。
+- 拉弓时琴弓与琴弦不平行：可以通过照镜子来调整拉弓的角度。
 
-## Mistakes by Level
+## 不同水平的常见错误
 
-**Beginners:** Death grip, no vibrato concept, scratchy tone
+**初学者：** 握弓过紧、没有掌握颤音技巧、音调粗糙。
+**中级水平：** 练习时容易紧张、手指位置不准确、颤音控制不自如。
+**高级水平：** 在演奏中缺乏表现力、忽视基本练习曲的练习、不愿意尝试不同的演奏姿势。
 
-**Intermediate:** Shifting anxiety, position isolation, vibrato tense
+## 音准练习方法
 
-**Advanced:** Expressive ruts, neglecting études, avoiding positions
-
-## Intonation Work
-
-| Method | When |
+| 方法 | 适用时机 |
 |--------|------|
-| Drone practice | Daily scales against tonic |
-| Double-stop checks | 4ths, 5ths, octaves expose errors |
-| Slow scales | Listen to each interval |
+| 持续演奏单音（“drone”） | 每天练习，以巩固音准基础。 |
+| 练习双音（四度和五度、八度） | 可以发现音准问题。 |
+| 缓慢练习音阶 | 仔细聆听每个音程的音准。 |
 
-## Tone Production
+## 音调的调节
 
-- Speed + weight + contact point = tone color
-- Slow near bridge = intense; fast near fingerboard = soft
-- Pressure chokes sound — let string vibrate
+- 拉弓的速度、力度和接触点共同决定了音调的音色：
+  - 在靠近琴桥的位置拉弓时力度稍大，音调更浓郁；
+  - 在靠近指板的位置拉弓时力度稍小，音调更柔和。
+- 过大的压力会导致音调闷闷的；要让琴弦自然振动。
 
-## Troubleshooting
+## 故障排除
 
-- "Scratchy tone" → check bow speed vs pressure
-- "Shifting out of tune" → release, shift, THEN place
-- "Vibrato tense" → arm vibrato first
-- "4th finger weak" → exercises, don't avoid
+- 如果音调粗糙，检查拉弓的速度和力度是否合适。
+- 如果音调不稳定，先放松手指、调整拉弓的位置，然后再重新定位手指。
+- 如果颤音控制不自如，可以先练习手臂的颤动动作。
+- 如果第四指力量不足，要专门进行针对性的练习，不要回避这个手指的练习。
 
-## Setup
+## 琴弦和弓的维护
 
-Old strings = dull tone — change every 3-6 months; rehair bow when slippery
+- 使用时间较长的琴弦会导致音调变得沉闷，建议每3-6个月更换琴弦；如果弓的毛毡部分变得粗糙，也需要及时更换。
 
-## Progress Tracking
+## 进度跟踪
 
-Log to `~/violin/`: repertoire, scales by key, shifting exercises
+将练习进度记录到 `~/violin/` 文件夹中，包括练习的曲目、按调性分类的音阶练习以及手指位置变换的练习内容。
 
-## What to Surface
+## 需要关注的问题
 
-- "G major clean? Ready for A-flat?" / "No shifting logs — want études?"
+- “G大调的音准是否准确？准备好演奏A-flat调的曲目了吗？”
+- “没有关于手指位置变换的练习记录——需要加强这方面的练习吗？”

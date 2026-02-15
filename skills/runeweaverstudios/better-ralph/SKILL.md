@@ -1,69 +1,83 @@
 ---
 name: better-ralph
-description: "Run one Better Ralph iteration: PRD-driven autonomous coding. Read prd.json, pick next story, implement it, run checks, commit, mark story passed, append progress. Uses only standard OpenClaw tools (read, write, exec, git). Triggers on: run better ralph, better ralph iteration, do one ralph story, next prd story, ralph loop."
+description: "执行一次“Better Ralph”迭代：采用基于产品需求文档（PRD）的自动化编码流程。具体步骤如下：  
+1. 读取 `prd.json` 文件；  
+2. 选择下一个需要实现的功能或任务；  
+3. 实现该功能或任务；  
+4. 运行相关检查；  
+5. 提交代码更改；  
+6. 标记该功能或任务为“已完成”；  
+7. 记录实施进度。  
+
+整个过程仅使用标准的 OpenClaw 工具（如 `read`、`write`、`exec`、`git`）。  
+触发条件包括：  
+- 执行 `run better ralph` 命令；  
+- 开始新的 “Better Ralph” 迭代；  
+- 选择下一个需要处理的功能或任务；  
+- 进入 “Ralph 循环”（持续执行编码和检查流程）。"
 user-invocable: true
 ---
 
-# Better Ralph – One Iteration (OpenClaw)
+# Better Ralph – 单次迭代（OpenClaw）
 
-Execute **one iteration** of the Better Ralph workflow: pick the next PRD story, implement it, run quality checks, commit, update the PRD, and append progress. Uses only standard tools (read_file, write_file, edit, exec, git). No external runner or Aether-Claw required.
-
----
-
-## When to Use
-
-- User says: "run better ralph", "do one better ralph iteration", "next prd story", "ralph loop", "implement next story from prd".
-- Project has a `prd.json` in the workspace root (see Output Format below for schema).
+执行 **一次** Better Ralph 工作流程：选择下一个 PRD 任务，实现它，运行质量检查，提交代码，更新 PRD 文件，并记录进度。仅使用标准工具（`read_file`、`write_file`、`edit`、`exec`、`git`），无需外部运行器或 Aether-Claw。
 
 ---
 
-## One-Iteration Workflow
+## 使用场景
 
-Do these steps in order. Use **only** your standard file, exec, and git tools.
+- 用户请求：“运行 Better Ralph”、“执行一次 Better Ralph 迭代”、“选择下一个 PRD 任务”、“继续处理 PRD 中的任务”。
+- 项目的工作空间根目录下存在一个 `prd.json` 文件（具体格式见下文）。
 
-### 1. Read state
+---
 
-- **Read** `prd.json` (workspace root). Parse the JSON.
-- **Read** `progress.txt` if it exists. If it has a section `## Codebase Patterns` near the top (up to the next `##` or end of file), use that as context for implementation patterns. Otherwise proceed without it.
+## 单次迭代工作流程
 
-### 2. Pick the next story
+按以下步骤依次操作，**仅** 使用标准的文件处理工具（`read_file`、`exec`、`git`）：
 
-- From `prd.json.userStories`, find all with `passes === false`.
-- Sort by `priority` ascending (lower number = higher priority).
-- Take the **first** (highest priority incomplete story).
-- If **every** story has `passes === true`, reply: "All PRD stories are complete. Nothing left to do." and stop.
+### 1. 读取当前状态
 
-### 3. Ensure git branch
+- **读取** `prd.json` 文件（位于工作空间根目录）并解析其内容。
+- 如果存在 `progress.txt` 文件，也请读取它。如果文件开头（直到下一个 `##` 标签或文件末尾）有 `## Codebase Patterns` 部分，将其作为实现代码时的参考；否则忽略该部分。
 
-- Check current git branch (e.g. run `git branch --show-current` or use your git tool).
-- If `prd.json` has a `branchName` and it differs from the current branch, checkout or create that branch (e.g. `git checkout -b <branchName>` or `git checkout <branchName>`).
+### 2. 选择下一个任务
 
-### 4. Implement the story
+- 从 `prd.json.userStories` 中找到所有 `passes` 为 `false` 的任务。
+- 按优先级升序排序（数字越小，优先级越高）。
+- 选择 **第一个** 未完成的任务。
+- 如果所有任务的 `passes` 都为 `true`，则回复：“所有 PRD 任务都已完成，无需继续处理。” 并结束流程。
 
-- **Story** = the one you picked. It has: `id`, `title`, `description`, `acceptanceCriteria`, `priority`, `passes`.
-- Implement the story: write or edit code so that every item in `acceptanceCriteria` is satisfied.
-- Work on **this story only**. Do not start the next story.
+### 3. 确认当前 Git 分支
 
-### 5. Run quality checks
+- 查看当前 Git 分支（例如使用 `git branch --show-current` 命令）。
+- 如果 `prd.json` 中指定了 `branchName` 且与当前分支不同，切换到该分支（例如 `git checkout -b <branchName>`）。
 
-- Run the project’s quality commands (e.g. `npm test`, `npm run lint`, `npm run typecheck`, or whatever the project uses).
-- If **any check fails**, do **not** commit. Tell the user what failed and stop. Do not update `prd.json` or `progress.txt` for a failed story.
+### 4. 实现任务
 
-### 6. Commit (only if checks passed)
+- 选择的任务包含以下信息：`id`、`title`、`description`、`acceptanceCriteria`、`priority`、`passes`。
+- 根据 `acceptanceCriteria` 中的要求编写或修改代码。
+- **仅** 处理当前任务，不要开始下一个任务。
 
-- Stage all changes (e.g. `git add -A` or your git tool’s equivalent).
-- Commit with message exactly: `feat: [Story ID] - [Story Title]`  
-  Example: `feat: US-002 - Display priority on task cards`
+### 5. 运行质量检查
 
-### 7. Mark story passed in prd.json
+- 运行项目的质量检查命令（例如 `npm test`、`npm run lint`、`npm run typecheck` 等）。
+- 如果有任何检查失败，请 **不要** 提交代码。告知用户具体是哪个检查失败，并停止当前流程。对于失败的任务，不要更新 `prd.json` 或 `progress.txt`。
 
-- **Read** `prd.json` again (in case it changed).
-- Find the user story with the same `id` you just completed. Set its `passes` to `true`.
-- **Write** the full updated `prd.json` back (preserve structure and other fields; only change that story’s `passes`).
+### 6. 提交代码（仅当检查通过时）
 
-### 8. Append progress to progress.txt
+- 将所有更改添加到暂存区（例如 `git add -A`）。
+- 提交代码时，提交信息应为：`feat: [任务 ID] - [任务标题]`  
+  例如：`feat: US-002 - 在任务卡片上显示优先级`。
 
-- **Append** (do not overwrite) a new block to `progress.txt` with this format:
+### 7. 在 `prd.json` 中标记任务完成
+
+- 重新读取 `prd.json` 文件（以防文件有更新）。
+- 找到刚刚完成的任务，并将其 `passes` 属性设置为 `true`。
+- 将更新后的 `prd.json` 文件写回原位置（保持文件结构和其他字段不变，仅修改 `passes` 属性）。
+
+### 8. 记录进度到 `progress.txt`
+
+- 在 `progress.txt` 文件中添加新的进度记录（不要覆盖原有内容），格式如下：
 
 ```
 ## [Current date/time] - [Story ID]
@@ -74,18 +88,18 @@ Do these steps in order. Use **only** your standard file, exec, and git tools.
 ---
 ```
 
-- If `progress.txt` does not exist, create it with a first line like `# Better Ralph Progress` then the block above.
+- 如果 `progress.txt` 文件不存在，先创建一个文件，第一行写 `# Better Ralph Progress`，然后再添加上述进度记录。
 
-### 9. Report to user
+### 9. 向用户报告
 
-- Say which story you completed (ID and title) and that you updated the PRD and progress.
-- If there are still stories with `passes === false`, say: "Run another iteration to do the next story." If all are complete, say: "All PRD stories are complete."
+- 告知用户已完成的任务（包括 ID 和标题），以及已更新的 PRD 文件和进度情况。
+- 如果仍有任务的 `passes` 为 `false`，则提示用户：“请再次运行流程以处理下一个任务”；如果所有任务都已完成，则说明：“所有 PRD 任务均已完成。”
 
 ---
 
-## prd.json format
+## prd.json 文件格式
 
-If the user wants to **create** a new `prd.json` (no file yet), create it with this shape:
+如果用户需要 **创建**一个新的 `prd.json` 文件（文件尚不存在），请按照以下格式编写：
 
 ```json
 {
@@ -110,15 +124,15 @@ If the user wants to **create** a new `prd.json` (no file yet), create it with t
 }
 ```
 
-- **priority**: Lower number = higher priority. Order by dependency (e.g. schema before UI).
-- **passes**: Start as `false`; set to `true` only after the story is implemented and committed.
-- **acceptanceCriteria**: Each item must be checkable (e.g. "Typecheck passes", "Tests pass").
+- **priority**：数字越小，优先级越高。任务按依赖关系排序（例如，先处理基础功能相关的任务）。
+- **passes**：初始值为 `false`；只有在任务实现并提交后才能设置为 `true`。
+- **acceptanceCriteria**：每个检查项都必须可验证（例如：“类型检查通过”、“测试通过”）。
 
 ---
 
-## Codebase Patterns (progress.txt)
+## Codebase Patterns（progress.txt）
 
-Optionally keep a **Codebase Patterns** section at the **top** of `progress.txt` so future iterations (or you in the next run) see it first:
+可选地在 `progress.txt` 文件的开头添加一个 **Codebase Patterns** 部分，以便后续迭代或下次运行时参考：
 
 ```
 # Better Ralph Progress
@@ -131,27 +145,27 @@ Optionally keep a **Codebase Patterns** section at the **top** of `progress.txt`
 ---
 ```
 
-When you read `progress.txt` at the start of an iteration, use this section as context. When you discover a **reusable** pattern, add it here (edit the top of the file and keep the rest intact). Do not put story-specific details in Codebase Patterns.
+在每次迭代开始时，请阅读 `progress.txt` 中的这一部分。如果发现可复用的代码模式，请将其添加到这里（只需修改文件开头部分，其他内容保持不变）。不要将特定于任务的详细信息放入 `Codebase Patterns` 中。
 
 ---
 
-## Rules
+## 规则
 
-- **One story per invocation.** Do not implement multiple stories in one go.
-- **Do not commit failing code.** Only commit after quality checks pass.
-- **Do not mark a story as passed** if you did not commit (e.g. checks failed).
-- **Append** to progress.txt; never replace the whole file (except when creating it for the first time).
-- Keep changes **minimal and focused** on the current story’s acceptance criteria.
+- **每次迭代只处理一个任务**，不要同时处理多个任务。
+- **未通过质量检查的代码不得提交**。
+- 如果未提交代码（例如检查失败），请不要将任务标记为完成。
+- **仅在进度更新时追加记录到 `progress.txt`，切勿替换整个文件**（除非是首次创建文件）。
+- 更改内容应 **最小化**，且仅针对当前任务的验收标准进行。
 
 ---
 
-## Checklist (one iteration)
+## 检查清单（单次迭代）
 
-- [ ] Read prd.json and progress.txt (and Codebase Patterns if present)
-- [ ] Picked next story (passes=false, lowest priority number)
-- [ ] Git branch matches prd.json.branchName
-- [ ] Implemented story and satisfied all acceptance criteria
-- [ ] Quality checks passed (test/lint/typecheck)
-- [ ] Committed with message `feat: [ID] - [Title]`
-- [ ] Set that story’s passes to true in prd.json
-- [ ] Appended progress block to progress.txt
+- [ ] 已读取 `prd.json`、`progress.txt`（以及 `Codebase Patterns` 文件，如果有的话）
+- [ ] 选择了下一个 `passes` 为 `false`、优先级最低的任务
+- [ ] 当前 Git 分支与 `prd.json` 中指定的 `branchName` 一致
+- [ ] 任务已实现且所有验收标准均满足
+- [ ] 质量检查通过（测试/代码检查/类型检查）
+- [ ] 使用 `feat: [任务 ID] - [任务标题]` 作为提交信息
+- [ ] 已将任务的 `passes` 属性设置为 `true` 在 `prd.json` 中
+- [ ] 已将进度记录添加到 `progress.txt` 文件中

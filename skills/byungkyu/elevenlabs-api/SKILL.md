@@ -18,9 +18,9 @@ metadata:
 
 # ElevenLabs
 
-Access the ElevenLabs API with managed authentication. Generate lifelike speech from text, clone voices, create sound effects, and process audio.
+您可以使用受管理的身份验证方式访问 ElevenLabs API。该 API 支持将文本转换为逼真的语音、克隆声音、创建音效以及处理音频文件。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List available voices
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/elevenlabs/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual ElevenLabs API endpoint path. The gateway proxies requests to `api.elevenlabs.io` and automatically injects your API key.
+请将 `{native-api-path}` 替换为实际的 ElevenLabs API 端点路径。该网关会将请求代理到 `api.elevenlabs.io`，并自动插入您的 API 密钥。
 
-## Authentication
+## 身份验证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your ElevenLabs connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 ElevenLabs 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete authorization.
+在浏览器中打开返回的 `url` 以完成身份验证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple ElevenLabs connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 ElevenLabs 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,13 +141,13 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头部，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Text-to-Speech
+### 文本转语音
 
-#### Convert Text to Speech
+#### 将文本转换为语音
 
 ```bash
 POST /elevenlabs/v1/text-to-speech/{voice_id}
@@ -163,12 +163,12 @@ Content-Type: application/json
 }
 ```
 
-Returns audio data (mp3 by default).
+返回音频数据（默认为 mp3 格式）。
 
-Query parameters:
-- `output_format` - Audio format (e.g., `mp3_44100_128`, `pcm_16000`, `pcm_22050`)
+查询参数：
+- `output_format` - 音频格式（例如：`mp3_44100_128`、`pcm_16000`、`pcm_22050`）
 
-#### Stream Text to Speech
+#### 流式文本转语音
 
 ```bash
 POST /elevenlabs/v1/text-to-speech/{voice_id}/stream
@@ -180,9 +180,9 @@ Content-Type: application/json
 }
 ```
 
-Returns streaming audio data.
+返回流式音频数据。
 
-#### Text to Speech with Timestamps
+#### 带时间戳的文本转语音
 
 ```bash
 POST /elevenlabs/v1/text-to-speech/{voice_id}/with-timestamps
@@ -194,39 +194,39 @@ Content-Type: application/json
 }
 ```
 
-Returns audio with word-level timestamps.
+返回带有单词级时间戳的音频数据。
 
-### Voices
+### 声音
 
-#### List Voices
+#### 列出可用声音
 
 ```bash
 GET /elevenlabs/v1/voices
 ```
 
-Returns all available voices including premade and cloned voices.
+列出所有可用的声音，包括预制作的声音和克隆的声音。
 
-#### Get Voice
+#### 获取特定声音的信息
 
 ```bash
 GET /elevenlabs/v1/voices/{voice_id}
 ```
 
-Returns metadata about a specific voice.
+返回关于特定声音的元数据。
 
-#### Get Default Voice Settings
+#### 获取默认声音设置
 
 ```bash
 GET /elevenlabs/v1/voices/settings/default
 ```
 
-#### Get Voice Settings
+#### 获取声音设置
 
 ```bash
 GET /elevenlabs/v1/voices/{voice_id}/settings
 ```
 
-#### Create Voice Clone
+#### 创建声音克隆
 
 ```bash
 POST /elevenlabs/v1/voices/add
@@ -238,7 +238,7 @@ description: A custom voice clone
 remove_background_noise: false
 ```
 
-#### Edit Voice
+#### 编辑声音
 
 ```bash
 PATCH /elevenlabs/v1/voices/{voice_id}/edit
@@ -248,75 +248,75 @@ name: Updated Voice Name
 description: Updated description
 ```
 
-#### Delete Voice
+#### 删除声音
 
 ```bash
 DELETE /elevenlabs/v1/voices/{voice_id}
 ```
 
-### Models
+### 模型
 
-#### List Models
+#### 列出模型
 
 ```bash
 GET /elevenlabs/v1/models
 ```
 
-Returns available models:
-- `eleven_multilingual_v2` - Latest multilingual model
-- `eleven_turbo_v2_5` - Low-latency model
-- `eleven_monolingual_v1` - Legacy English model (deprecated)
+列出可用的模型：
+- `eleven_multilingual_v2` - 最新的多语言模型
+- `eleven_turbo_v2_5` - 低延迟模型
+- `eleven_monolingual_v1` - 旧版英语模型（已弃用）
 
-### User
+### 用户
 
-#### Get User Info
+#### 获取用户信息
 
 ```bash
 GET /elevenlabs/v1/user
 ```
 
-#### Get Subscription Info
+#### 获取订阅信息
 
 ```bash
 GET /elevenlabs/v1/user/subscription
 ```
 
-Returns subscription details including character limits and usage.
+返回订阅详情，包括字符限制和使用情况。
 
-### History
+### 历史记录
 
-#### List History Items
+#### 列出历史记录项
 
 ```bash
 GET /elevenlabs/v1/history?page_size=100
 ```
 
-Query parameters:
-- `page_size` - Number of items per page (default: 100, max: 1000)
-- `start_after_history_item_id` - Cursor for pagination
-- `voice_id` - Filter by voice
+查询参数：
+- `page_size` - 每页显示的项数（默认：100，最大：1000）
+- `start_after_history_item_id` - 分页的起始项 ID
+- `voice_id` - 按声音过滤
 
-#### Get History Item
+#### 获取历史记录项
 
 ```bash
 GET /elevenlabs/v1/history/{history_item_id}
 ```
 
-#### Get Audio from History
+#### 从历史记录中获取音频文件
 
 ```bash
 GET /elevenlabs/v1/history/{history_item_id}/audio
 ```
 
-Returns the audio file for a history item.
+返回历史记录项对应的音频文件。
 
-#### Delete History Item
+#### 删除历史记录项
 
 ```bash
 DELETE /elevenlabs/v1/history/{history_item_id}
 ```
 
-#### Download History Items
+#### 下载历史记录项
 
 ```bash
 POST /elevenlabs/v1/history/download
@@ -327,11 +327,11 @@ Content-Type: application/json
 }
 ```
 
-Returns a zip file with the requested audio files.
+返回包含请求音频文件的 zip 文件。
 
-### Sound Effects
+### 音效
 
-#### Generate Sound Effect
+#### 创建音效
 
 ```bash
 POST /elevenlabs/v1/sound-generation
@@ -343,12 +343,12 @@ Content-Type: application/json
 }
 ```
 
-Query parameters:
-- `output_format` - Audio format (e.g., `mp3_44100_128`)
+查询参数：
+- `output_format` - 音频格式（例如：`mp3_44100_128`）
 
-### Audio Isolation
+### 音频处理
 
-#### Remove Background Noise
+#### 去除背景噪音
 
 ```bash
 POST /elevenlabs/v1/audio-isolation
@@ -357,9 +357,9 @@ Content-Type: multipart/form-data
 audio: [audio_file.mp3]
 ```
 
-Returns cleaned audio with background noise removed.
+返回去除背景噪音的音频文件。
 
-#### Stream Audio Isolation
+#### 流式音频处理
 
 ```bash
 POST /elevenlabs/v1/audio-isolation/stream
@@ -368,9 +368,9 @@ Content-Type: multipart/form-data
 audio: [audio_file.mp3]
 ```
 
-### Speech-to-Text
+### 语音转文本
 
-#### Transcribe Audio
+#### 将音频转录为文本
 
 ```bash
 POST /elevenlabs/v1/speech-to-text
@@ -380,11 +380,11 @@ audio: [audio_file.mp3]
 model_id: scribe_v1
 ```
 
-Returns transcription with optional word-level timestamps.
+返回转录结果，可选包含单词级时间戳。
 
-### Speech-to-Speech (Voice Changer)
+### 语音转语音（声音转换）
 
-#### Convert Voice
+#### 转换声音
 
 ```bash
 POST /elevenlabs/v1/speech-to-speech/{voice_id}
@@ -394,23 +394,23 @@ audio: [source_audio.mp3]
 model_id: eleven_multilingual_sts_v2
 ```
 
-Transforms audio to use a different voice while preserving intonation.
+在保持语调的情况下，将音频转换为另一种声音。
 
-### Projects
+### 项目
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /elevenlabs/v1/projects
 ```
 
-#### Get Project
+#### 获取项目信息
 
 ```bash
 GET /elevenlabs/v1/projects/{project_id}
 ```
 
-#### Create Project
+#### 创建项目
 
 ```bash
 POST /elevenlabs/v1/projects
@@ -423,15 +423,15 @@ Content-Type: application/json
 }
 ```
 
-### Pronunciation Dictionaries
+### 发音词典
 
-#### List Pronunciation Dictionaries
+#### 列出发音词典
 
 ```bash
 GET /elevenlabs/v1/pronunciation-dictionaries
 ```
 
-#### Create Pronunciation Dictionary
+#### 创建发音词典
 
 ```bash
 POST /elevenlabs/v1/pronunciation-dictionaries/add-from-file
@@ -441,23 +441,23 @@ name: My Dictionary
 file: [lexicon.pls]
 ```
 
-## Response Headers
+## 响应头
 
-ElevenLabs API responses include useful headers:
-- `x-character-count` - Characters used in the request
-- `request-id` - Unique request identifier
+ElevenLabs API 的响应包含以下有用头信息：
+- `x-character-count` - 请求中使用的字符数
+- `request-id` - 唯一的请求标识符
 
-## Pagination
+## 分页
 
-History and other list endpoints use cursor-based pagination:
+历史记录和其他列表端点使用基于游标的分页方式：
 
 ```bash
 GET /elevenlabs/v1/history?page_size=100&start_after_history_item_id=last_item_id
 ```
 
-## Code Examples
+## 代码示例
 
-### JavaScript - Text to Speech
+### JavaScript - 文本转语音
 
 ```javascript
 const response = await fetch(
@@ -477,7 +477,7 @@ const response = await fetch(
 const audioBuffer = await response.arrayBuffer();
 ```
 
-### Python - Text to Speech
+### Python - 文本转语音
 
 ```python
 import os
@@ -496,7 +496,7 @@ with open('output.mp3', 'wb') as f:
     f.write(audio_data)
 ```
 
-### Python - List Voices
+### Python - 列出声音
 
 ```python
 import os
@@ -511,38 +511,38 @@ for voice in voices['voices']:
     print(f"{voice['name']}: {voice['voice_id']}")
 ```
 
-## Notes
+## 注意事项
 
-- Text-to-Speech is billed per character
-- Sound Effects are billed per generation
-- Speech-to-Text is billed per audio minute
-- Audio output format can be specified as `codec_sample_rate_bitrate` (e.g., `mp3_44100_128`)
-- Models available: `eleven_multilingual_v2` (recommended), `eleven_turbo_v2_5` (low latency)
-- Voice IDs can be found using the List Voices endpoint
-- Maximum text length varies by model
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq`, environment variables may not expand correctly. Use Python examples instead.
+- 文本转语音按字符计费
+- 音效按生成次数计费
+- 语音转文本按音频分钟计费
+- 音频输出格式可以通过 `codec_sample_rate_bitrate` 指定（例如：`mp3_44100_128`）
+- 可用的模型：`eleven_multilingual_v2`（推荐）、`eleven_turbo_v2_5`（低延迟）
+- 可以通过 `List Voices` 端点获取声音 ID
+- 不同模型的最大文本长度不同
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以避免全局解析问题
+- 重要提示：将 curl 输出传递给 `jq` 时，环境变量可能无法正确解析。建议使用 Python 示例。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Missing ElevenLabs connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions or quota exceeded |
-| 422 | Invalid parameters |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from ElevenLabs API |
+| 400 | 未建立 ElevenLabs 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 权限不足或超出配额 |
+| 422 | 参数无效 |
+| 429 | 超过使用限制 |
+| 4xx/5xx | 来自 ElevenLabs API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -553,17 +553,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `elevenlabs`. For example:
+1. 确保您的 URL 路径以 `elevenlabs` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/elevenlabs/v1/voices`
+- 错误的路径：`https://gateway.maton.ai/v1/voices`
 
-- Correct: `https://gateway.maton.ai/elevenlabs/v1/voices`
-- Incorrect: `https://gateway.maton.ai/v1/voices`
+## 资源
 
-## Resources
-
-- [ElevenLabs API Documentation](https://elevenlabs.io/docs/api-reference)
-- [ElevenLabs Developer Portal](https://elevenlabs.io/developers)
-- [ElevenLabs Models Overview](https://elevenlabs.io/docs/overview/models)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [ElevenLabs API 文档](https://elevenlabs.io/docs/api-reference)
+- [ElevenLabs 开发者门户](https://elevenlabs.io/developers)
+- [ElevenLabs 模型概述](https://elevenlabs.io/docs/overview/models)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

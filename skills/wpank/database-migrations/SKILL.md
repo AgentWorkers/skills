@@ -1,75 +1,74 @@
 ---
 name: database-migrations
 model: standard
-description: Safe, zero-downtime database migration strategies — schema evolution, rollback planning, data migration, tooling, and anti-pattern avoidance for production systems. Use when planning schema changes, writing migrations, or reviewing migration safety.
+description: 安全、无中断的数据库迁移策略——适用于生产系统的模式演进、回滚计划、数据迁移、工具支持以及避免常见迁移错误的方法。在规划模式变更、编写迁移脚本或评估迁移安全性时，请参考这些策略。
 ---
 
-# Database Migration Patterns
+# 数据库迁移模式
 
-## Schema Evolution Strategies
+## 架构演进策略
 
-| Strategy | Risk | Downtime | Best For |
+| 策略 | 风险 | 停机时间 | 适用场景 |
 |----------|------|----------|----------|
-| **Additive-Only** | Very Low | None | APIs with backward-compatibility guarantees |
-| **Expand-Contract** | Low | None | Renaming, restructuring, type changes |
-| **Parallel Change** | Low | None | High-risk changes on critical tables |
-| **Lazy Migration** | Medium | None | Large tables where bulk migration is too slow |
-| **Big Bang** | High | Yes | Dev/staging or small datasets only |
+| **仅添加新字段** | 风险极低 | 无 | 具有向后兼容性保证的API |
+| **扩展/收缩字段** | 风险较低 | 无 | 适用于字段重命名、结构调整或类型变更 |
+| **并行修改** | 风险较低 | 无 | 适用于对关键表进行高风险修改 |
+| **延迟迁移** | 风险中等 | 无 | 适用于数据量较大的表，批量迁移速度较慢的情况 |
+| **一次性迁移** | 风险较高 | 有 | 仅适用于开发环境或数据量较小的场景 |
 
-**Default to Additive-Only.** Escalate to Expand-Contract only when you must modify or remove existing structures.
+**默认策略为“仅添加新字段”。**只有在必须修改或删除现有结构时，才采用“扩展/收缩字段”策略。
 
 ---
 
-## Zero-Downtime Patterns
+## 零停机时间迁移策略
 
-Every production migration must avoid locking tables or breaking running application code.
+所有生产环境中的迁移操作都必须避免锁定表或破坏正在运行的应用程序代码。
 
-| Operation | Pattern | Key Constraint |
+| 操作 | 迁移策略 | 关键约束 |
 |-----------|---------|----------------|
-| **Add column** | Nullable first | Never add `NOT NULL` without default on large tables |
-| **Rename column** | Expand-contract | Add new → dual-write → backfill → switch reads → drop old |
-| **Drop column** | Deprecate first | Stop reading → stop writing → deploy → drop |
-| **Change type** | Parallel column | Add new type → dual-write + cast → switch → drop old |
-| **Add index** | Concurrent | `CREATE INDEX CONCURRENTLY` — don't wrap in transaction |
-| **Split table** | Extract + FK | Create new → backfill → add FK → update queries → drop old columns |
-| **Change constraint** | Two-phase | Add `NOT VALID` → `VALIDATE CONSTRAINT` separately |
-| **Add enum value** | Append only | Never remove or rename existing values |
+| **添加列** | 允许字段为空 | 在大型表上，切勿在没有默认值的情况下直接设置`NOT NULL` |
+| **重命名列** | 使用“扩展-收缩”策略 | 先创建新列，同时写入旧列和新列的数据，然后回填数据，最后切换读取路径并删除旧列 |
+| **删除列** | 先将列标记为过时 | 停止读取数据，停止写入数据，部署新结构后删除旧列 |
+| **修改列类型** | 并行操作 | 先创建新类型的列，然后同时写入新旧列的数据，之后切换读取路径并删除旧列 |
+| **添加索引** | 并发操作 | 使用`CREATE INDEX CONCURRENTLY`语句，避免使用事务 |
+| **拆分表** | 提取数据并创建外键 | 创建新表，回填数据，添加外键，更新查询语句，最后删除旧表 |
+| **修改约束** | 分两阶段进行 | 先添加`NOT VALID`约束，之后使用`VALIDATE CONSTRAINT`语句 |
 
 ---
 
-## Migration Tools
+## 迁移工具
 
-| Tool | Ecosystem | Style | Key Strength |
+| 工具 | 开发语言/框架 | 代码风格 | 主要优势 |
 |------|-----------|-------|-------------|
-| **Prisma Migrate** | TypeScript/Node | Declarative (schema diff) | ORM integration, shadow DB |
-| **Knex** | JavaScript/Node | Imperative (up/down) | Lightweight, flexible |
-| **Drizzle Kit** | TypeScript/Node | Declarative (schema diff) | Type-safe, SQL-like |
-| **Alembic** | Python | Imperative (upgrade/downgrade) | Granular control, autogenerate |
-| **Django Migrations** | Python/Django | Declarative (model diff) | Auto-detection |
-| **Flyway** | JVM / CLI | SQL file versioning | Simple, wide DB support |
-| **golang-migrate** | Go / CLI | SQL (up/down files) | Minimal, embeddable |
-| **Atlas** | Go / CLI | Declarative (HCL/SQL diff) | Schema-as-code, linting, CI |
+| **Prisma Migrate** | TypeScript/Node.js | 声明式（基于架构差异的迁移） | 支持ORM集成，提供影子数据库功能 |
+| **Knex** | JavaScript/Node.js | 命令式（用于升级/降级数据库结构） | 体积轻量，灵活性高 |
+| **Drizzle Kit** | TypeScript/Node.js | 声明式（基于架构差异的迁移） | 类型安全，语法类似SQL |
+| **Alembic** | Python | 命令式（用于数据库结构的升级/降级） | 提供细粒度控制，支持自动生成迁移脚本 |
+| **Django Migrations** | Python/Django | 声明式（基于模型差异的迁移） | 具有自动检测功能 |
+| **Flyway** | Java/JVM / 命令行工具 | 支持SQL文件版本控制 | 使用简单，支持多种数据库类型 |
+| **golang-migrate** | Go语言 / 命令行工具 | 通过SQL文件进行迁移操作 | 代码简洁，易于集成 |
+| **Atlas** | Go语言 / 命令行工具 | 声明式（基于HCL/SQL差异的迁移） | 支持将架构差异转换为代码，提供代码检查功能 |
 
-Match the tool to your ORM and deployment pipeline. Prefer declarative for simple schemas, imperative for fine-grained data manipulation.
+根据你的ORM和部署流程选择合适的迁移工具。对于简单的架构，建议使用声明式迁移工具；对于需要精细控制数据操作的场景，可以使用命令式迁移工具。
 
 ---
 
-## Rollback Strategies
+## 回滚策略
 
-| Approach | When to Use |
+| 回滚方法 | 适用场景 |
 |----------|-------------|
-| **Reversible (up + down)** | Schema-only changes, early-stage products |
-| **Forward-only (corrective migration)** | Data-destructive changes, production at scale |
-| **Hybrid** | Reversible for schema, forward-only for data |
+| **可逆迁移** | 仅涉及架构变更的早期阶段产品 |
+| **单向迁移** | 会对数据造成破坏的变更，适用于生产环境 |
+| **混合策略** | 架构变更采用可逆方式，数据变更采用单向迁移 |
 
-### Data Preservation
+### 数据保护措施
 
-1. **Soft-delete columns** — rename with `_deprecated` suffix instead of dropping
-2. **Snapshot tables** — `CREATE TABLE _backup_<table>_<date> AS SELECT * FROM <table>`
-3. **Point-in-time recovery** — ensure WAL archiving covers migration windows
-4. **Logical backups** — `pg_dump` of affected tables before migration
+1. **软删除列**：使用`_deprecated`后缀重命名列，而不是直接删除 |
+2. **创建备份表**：使用`CREATE TABLE _backup_<table>_<date> AS SELECT * FROM <table>`创建备份表 |
+3. **确保数据备份**：确保WAL（Write-Ahead Log）备份机制覆盖迁移期间产生的数据 |
+4. **进行逻辑备份**：在迁移前对受影响的表进行`pg_dump`备份 |
 
-### Blue-Green Database
+### 蓝绿部署（Blue-Green Deployment）技术
 
 ```
 1. Replicate primary → secondary (green)
@@ -82,18 +81,18 @@ Match the tool to your ORM and deployment pipeline. Prefer declarative for simpl
 
 ---
 
-## Data Migration Patterns
+## 数据迁移策略
 
-### Backfill Strategies
+### 数据回填策略
 
-| Strategy | Best For |
+| 策略 | 适用场景 |
 |----------|----------|
-| **Inline backfill** | Small tables (< 100K rows) |
-| **Batched backfill** | Medium tables (100K–10M rows) |
-| **Background job** | Large tables (10M+ rows) |
-| **Lazy backfill** | When immediate consistency not required |
+| **内联回填** | 数据量较小的表（少于10万行） |
+| **批量回填** | 数据量中等的表（10万至1000万行） |
+| **后台作业** | 数据量较大的表（超过1000万行） |
+| **延迟回填** | 当不需要立即保持数据一致性时 |
 
-### Batch Processing
+### 批量处理
 
 ```sql
 DO $$
@@ -118,81 +117,70 @@ BEGIN
 END $$;
 ```
 
-### Dual-Write Period
+### 双写机制（Dual-Write Mechanism）
 
-For expand-contract and parallel change:
+在采用“扩展/收缩字段”或“并行修改”策略时，需要执行以下步骤：
 
-1. **Dual-write** — application writes to both old and new columns/tables
-2. **Backfill** — fill new structure with historical data
-3. **Verify** — assert consistency (row counts, checksums)
-4. **Cut over** — switch reads to new, stop writing to old
-5. **Cleanup** — drop old structure after cool-down period
-
----
-
-## Testing Migrations
-
-### Test Against Production-Like Data
-
-- Never test against empty or synthetic data only
-- Use anonymized production snapshots
-- Match data volume — a migration working on 1K rows may lock on 10M
-- Reproduce edge cases: NULLs, empty strings, max-length, unicode
-
-### Migration CI Pipeline
-
-```yaml
-- name: Test migrations
-  steps:
-    - run: docker compose up -d db
-    - run: npm run migrate:up        # apply all
-    - run: npm run migrate:down      # rollback all
-    - run: npm run migrate:up        # re-apply (idempotency)
-    - run: npm run test:integration  # validate app
-    - run: npm run migrate:status    # no pending
-```
-
-Every migration PR must pass: up → down → up → tests.
+1. **同时写入**：应用程序同时向旧表和新表写入数据 |
+2. **回填数据**：将历史数据填充到新表中 |
+3. **验证数据一致性**：检查数据行数和校验和是否正确 |
+4. **切换读取路径**：将读取操作切换到新表，停止写入旧表 |
+5. **清理旧表**：在迁移完成后删除旧表结构 |
 
 ---
 
-## Migration Checklist
+## 迁移测试
 
-### Pre-Migration
+### 使用真实生产环境的数据进行测试
 
-- [ ] Tested against production-like data volume
-- [ ] Rollback written and tested
-- [ ] Backup of affected tables created
-- [ ] App code compatible with both old and new schema
-- [ ] Execution time benchmarked on staging
-- [ ] Lock impact analyzed
-- [ ] Replication lag monitoring in place
+- **切勿仅使用空数据或合成数据进行测试** |
+- **使用匿名化的生产环境数据副本** |
+- **确保测试数据量与实际生产环境一致**：在1000行数据上成功的迁移操作可能在1000万行数据上出现问题 |
+- **重现边界情况**：测试包含NULL值、空字符串、最大长度限制以及Unicode字符等情况的数据 |
 
-### During Migration
+### 迁移的持续集成（CI）流程
 
-- [ ] Monitor lock waits and active queries
-- [ ] Monitor replication lag
-- [ ] Watch for error rate spikes
-- [ ] Keep rollback command ready
-
-### Post-Migration
-
-- [ ] Schema matches expected state
-- [ ] Integration tests pass against migrated DB
-- [ ] Data integrity validated (row counts, checksums)
-- [ ] ORM schema / type definitions updated
-- [ ] Deprecated structures cleaned up after cool-down
-- [ ] Migration documented in team runbook
+每个迁移相关的代码提交（PR）都必须经过以下测试步骤：先进行“升级”操作，然后进行“降级”操作，最后再次进行“升级”操作，最后进行测试。
 
 ---
 
-## NEVER Do
+## 迁移检查清单
 
-1. **NEVER** run untested migrations directly in production
-2. **NEVER** drop a column without first removing all application references and deploying
-3. **NEVER** add `NOT NULL` to a large table without a default value in a single statement
-4. **NEVER** mix schema DDL and data mutations in the same migration file
-5. **NEVER** skip the dual-write phase when renaming columns in a live system
-6. **NEVER** assume migrations are instantaneous — always benchmark on production-scale data
-7. **NEVER** disable foreign key checks to "speed up" migrations in production
-8. **NEVER** deploy application code that depends on a schema change before the migration has completed
+### 迁移前的准备
+
+- [ ] 使用真实生产环境的数据量进行了测试 |
+- [ ] 回滚方案已编写并经过测试 |
+- [ ] 已创建受影响表的备份 |
+- [ ] 应用程序代码与旧架构和新架构兼容 |
+- [ ] 在测试环境中测试了迁移的执行时间 |
+- [ ] 分析了迁移操作对系统锁定的影响 |
+- [ ] 已设置好复制延迟的监控机制 |
+
+### 迁移过程中的监控
+
+- [ ] 监控迁移过程中的锁定等待时间和活跃查询数量 |
+- [ ] 监控数据复制延迟 |
+- [ ] 注意错误率的突然上升 |
+- [ ] 准备好回滚命令 |
+
+### 迁移后的验证
+
+- [ ] 确认架构符合预期状态 |
+- [ ] 集成测试通过 |
+- [ ] 验证数据完整性（包括数据行数和校验和） |
+- [ ] 更新ORM中的架构定义和类型信息 |
+- [ ] 在迁移完成后清理过时的数据结构 |
+- [ ] 将迁移过程记录在团队运行手册中 |
+
+---
+
+## 绝对禁止的操作
+
+1. **绝对禁止** 在生产环境中直接运行未经测试的迁移脚本 |
+2. **绝对禁止** 在不先删除所有应用程序引用并完成部署的情况下直接删除列 |
+3. **绝对禁止** 在单条SQL语句中向大型表添加`NOT NULL`约束且不设置默认值 |
+4. **绝对禁止** 在同一个迁移文件中同时包含架构修改和数据更新操作 |
+5. **绝对禁止** 在实时系统中重命名列时跳过“同时写入”步骤 |
+6. **绝对禁止** 假设迁移操作可以瞬间完成——务必在实际生产环境的数据上进行测试 |
+7. **绝对禁止** 为“加速”迁移过程而禁用外键检查 |
+8. **绝对禁止** 在迁移完成之前部署依赖于架构变更的应用程序代码

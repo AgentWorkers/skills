@@ -1,36 +1,36 @@
 ---
 name: meta-tags-optimizer
-description: Creates and optimizes meta tags including title tags, meta descriptions, Open Graph tags, and Twitter cards for maximum click-through rates and social sharing engagement.
+description: 生成并优化元标签（包括标题标签、元描述、Open Graph标签和Twitter卡片），以提升点击率和社交分享的参与度。
 geo-relevance: "low"
 ---
 
-# Meta Tags Optimizer
+# 元标签优化器
 
-This skill creates compelling, optimized meta tags that improve click-through rates from search results and enhance social media sharing. It covers title tags, meta descriptions, and social meta tags.
+该技能能够生成引人注目且经过优化的元标签，从而提高搜索结果中的点击率（CTR），并提升社交媒体分享效果。它涵盖标题标签、元描述以及社交媒体相关的元标签。
 
-## When to Use This Skill
+## 适用场景
 
-- Creating meta tags for new pages
-- Optimizing existing meta tags for better CTR
-- Preparing pages for social media sharing
-- Fixing duplicate or missing meta tags
-- A/B testing title and description variations
-- Optimizing for specific SERP features
-- Creating meta tags for different page types
+- 为新页面创建元标签
+- 优化现有元标签以提高点击率
+- 为社交媒体分享准备页面
+- 修复重复或缺失的元标签
+- 对标题和描述进行A/B测试
+- 针对特定的搜索引擎结果页面（SERP）特征进行优化
+- 为不同类型的页面生成元标签
 
-## What This Skill Does
+## 功能概述
 
-1. **Title Tag Creation**: Writes compelling, keyword-optimized titles
-2. **Meta Description Writing**: Creates click-worthy descriptions
-3. **Open Graph Optimization**: Prepares pages for social sharing
-4. **Twitter Card Setup**: Optimizes Twitter-specific meta tags
-5. **CTR Analysis**: Suggests improvements for better click rates
-6. **Character Counting**: Ensures proper length for SERP display
-7. **A/B Test Suggestions**: Provides variations for testing
+1. **标题标签生成**：编写包含关键词的吸引人标题
+2. **元描述编写**：创建具有吸引力的描述
+3. **Open Graph优化**：为社交媒体分享准备页面
+4. **Twitter卡片设置**：优化Twitter特定的元标签
+5. **CTR分析**：提供改进建议以提升点击率
+6. **字符计数**：确保标题长度符合搜索引擎结果页面（SERP）的显示要求
+7. **A/B测试建议**：提供多种版本以供测试
 
-## How to Use
+## 使用方法
 
-### Create Meta Tags
+### 创建元标签
 
 ```
 Create meta tags for a page about [topic] targeting [keyword]
@@ -40,39 +40,38 @@ Create meta tags for a page about [topic] targeting [keyword]
 Write title and meta description for this content: [content/URL]
 ```
 
-### Optimize Existing Tags
+### 优化现有标签
 
 ```
 Improve these meta tags for better CTR: [current tags]
 ```
 
-### Social Media Tags
+### 社交媒体标签
 
 ```
 Create Open Graph and Twitter card tags for [page/URL]
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的占位符，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~search console + ~~SEO tool connected:**
-Automatically pull current meta tags, CTR data by query, competitor title/description patterns, SERP preview data, and impression/click metrics to identify optimization opportunities.
+**当连接了 ~~搜索控制台 + ~~SEO工具时：**
+- 自动获取当前的元标签、按查询统计的CTR数据、竞争对手的标题/描述模式、SERP预览数据以及展示次数/点击量指标，以识别优化机会。
+**仅使用手动数据时：**
+- 要求用户提供：
+  - 当前页面的标题和元描述（如果需要优化现有元标签）
+  - 目标主关键词及2-3个次要关键词
+  - 页面URL和主要内容/价值主张
+  - 竞争对手的URL或在SERP中表现良好的标题示例
 
-**With manual data only:**
-Ask the user to provide:
-1. Current title and meta description (if optimizing existing)
-2. Target primary keyword and 2-3 secondary keywords
-3. Page URL and main content/value proposition
-4. Competitor URLs or examples of well-performing titles in the SERP
+使用提供的数据完成整个工作流程。在输出中注明哪些指标来自自动化收集，哪些来自用户提供的数据。
 
-Proceed with the full workflow using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+## 操作步骤
 
-## Instructions
+当用户请求元标签优化时：
 
-When a user requests meta tag optimization:
-
-1. **Gather Page Information**
+1. **收集页面信息**
 
    ```markdown
    ### Page Analysis
@@ -86,7 +85,7 @@ When a user requests meta tag optimization:
    **Unique Value Prop**: [what makes this page special]
    ```
 
-2. **Create Optimized Title Tag**
+2. **创建优化后的标题标签**
 
    ```markdown
    ### Title Tag Optimization
@@ -128,11 +127,11 @@ When a user requests meta tag optimization:
    
    **Title Tag Code**:
    ```html
-   <title>[Selected Title]</title>
+   <title>[选定的标题]</title>
    ```
    ```
 
-3. **Write Meta Description**
+3. **编写元描述**
 
    ```markdown
    ### Meta Description Optimization
@@ -169,11 +168,11 @@ When a user requests meta tag optimization:
    
    **Meta Description Code**:
    ```html
-   <meta name="description" content="[Selected Description]">
+   <meta name="description" content="[选定的描述]">
    ```
    ```
 
-4. **Create Open Graph Tags**
+4. **创建Open Graph标签**
 
    ```markdown
    ### Open Graph Tags (Facebook, LinkedIn, etc.)
@@ -181,15 +180,15 @@ When a user requests meta tag optimization:
    **Required OG Tags**:
    
    ```html
-   <!-- Primary Open Graph Tags -->
-   <meta property="og:type" content="[article/website/product]">
-   <meta property="og:url" content="[Full canonical URL]">
-   <meta property="og:title" content="[OG-optimized title - up to 60 chars]">
-   <meta property="og:description" content="[OG description - up to 200 chars]">
-   <meta property="og:image" content="[Image URL - 1200x630px recommended]">
+   <!-- 主要Open Graph标签 -->
+   <meta property="og:type" content="[文章/网站/产品]">
+   <meta property="og:url" content="[完整的规范URL]">
+   <meta property="og:title" content="[优化后的标题 - 最长60个字符]">
+   <meta property="og:description" content="[优化后的描述 - 最长200个字符]">
+   <meta property="og:image" content="[图片URL - 建议使用1200x630像素的图片]">
    
-   <!-- Optional but Recommended -->
-   <meta property="og:site_name" content="[Website Name]">
+   <!-- 可选但推荐 -->
+   <meta property="og:site_name" content="[网站名称]">
    <meta property="og:locale" content="en_US">
    ```
    
@@ -222,7 +221,7 @@ When a user requests meta tag optimization:
    - Include branding subtly
    ```
 
-5. **Create Twitter Card Tags**
+5. **创建Twitter卡片标签**
 
    ```markdown
    ### Twitter Card Tags
@@ -239,14 +238,14 @@ When a user requests meta tag optimization:
    **Twitter Card Code**:
    
    ```html
-   <!-- Twitter Card Tags -->
-   <meta name="twitter:card" content="[summary_large_image/summary]">
-   <meta name="twitter:site" content="@[YourTwitterHandle]">
-   <meta name="twitter:creator" content="@[AuthorTwitterHandle]">
-   <meta name="twitter:title" content="[Title - 70 chars max]">
-   <meta name="twitter:description" content="[Description - 200 chars max]">
-   <meta name="twitter:image" content="[Image URL]">
-   <meta name="twitter:image:alt" content="[Image description for accessibility]">
+   <!-- Twitter卡片标签 -->
+   <meta name="twitter:card" content="[摘要图片/摘要]">
+   <meta name="twitter:site" content="@[你的Twitter账号]">
+   <meta name="twitter:creator" content="@[作者的Twitter账号]">
+   <meta name="twitter:title" content="[标题 - 最长70个字符]">
+   <meta name="twitter:description" content="[描述 - 最长200个字符]">
+   <meta name="twitter:image" content="[图片URL]">
+   <meta name="twitter:image:alt" content="图片的描述（用于辅助访问）">
    ```
    
    **Twitter-Specific Considerations**:
@@ -256,14 +255,14 @@ When a user requests meta tag optimization:
    - Test with Twitter Card Validator
    ```
 
-6. **Additional Meta Tags**
+6. **其他元标签**
 
    ```markdown
    ### Additional Recommended Meta Tags
    
    **Canonical URL** (Prevent duplicates):
    ```html
-   <link rel="canonical" href="[Preferred URL]">
+   <link rel="canonical" href="[首选URL]">
    ```
    
    **Robots Tag** (Indexing control):
@@ -278,7 +277,7 @@ When a user requests meta tag optimization:
    
    **Author** (For articles):
    ```html
-   <meta name="author" content="[Author Name]">
+   <meta name="author" content="[作者名称]">
    ```
    
    **Language**:
@@ -288,15 +287,15 @@ When a user requests meta tag optimization:
    
    **Article-Specific** (For blog posts):
    ```html
-   <meta property="article:published_time" content="[ISO 8601 date]">
-   <meta property="article:modified_time" content="[ISO 8601 date]">
-   <meta property="article:author" content="[Author URL]">
-   <meta property="article:section" content="[Category]">
-   <meta property="article:tag" content="[Tag 1]">
+   <meta property="article:published_time" content="[ISO 8601格式的日期]">
+   <meta property="article:modified_time" content="[ISO 8601格式的日期]">
+   <meta property="article:author" content="[作者URL]">
+   <meta property="article:section" content="[类别]">
+   <meta property="article:tag" content="[标签1]">
    ```
    ```
 
-7. **Generate Complete Meta Tag Block**
+7. **生成完整的元标签块**
 
    ```markdown
    ## Complete Meta Tags
@@ -304,36 +303,33 @@ When a user requests meta tag optimization:
    Copy and paste this complete meta tag block:
    
    ```html
-   <!-- Primary Meta Tags -->
-   <title>[Optimized Title]</title>
-   <meta name="title" content="[Optimized Title]">
-   <meta name="description" content="[Optimized Description]">
-   <link rel="canonical" href="[Canonical URL]">
+   <!-- 主要元标签 -->
+   <title>[优化后的标题]</title>
+   <meta name="title" content="[优化后的标题]">
+   <meta name="description" content="[优化后的描述]">
+   <link rel="canonical" href="[规范URL]">
    
    <!-- Open Graph / Facebook -->
-   <meta property="og:type" content="[type]">
+   <meta property="og:type" content="[类型]">
    <meta property="og:url" content="[URL]">
-   <meta property="og:title" content="[OG Title]">
-   <meta property="og:description" content="[OG Description]">
-   <meta property="og:image" content="[Image URL]">
-   <meta property="og:site_name" content="[Site Name]">
+   <meta property="og:title" content="[OG标题]">
+   <meta property="og:description" content="[OG描述]">
+   <meta property="og:image" content="[图片URL]">
+   <meta property="og:site_name" content="[网站名称]">
    
    <!-- Twitter -->
-   <meta name="twitter:card" content="summary_large_image">
+   <meta name="twitter:card" content="摘要图片">
    <meta name="twitter:url" content="[URL]">
-   <meta name="twitter:title" content="[Twitter Title]">
-   <meta name="twitter:description" content="[Twitter Description]">
-   <meta name="twitter:image" content="[Image URL]">
-   
-   <!-- Additional -->
-   <meta name="robots" content="index, follow">
-   <meta name="author" content="[Author]">
+   <meta name="twitter:title" content="[Twitter标题]">
+   <meta name="twitter:description" content="[Twitter描述]">
+   <meta name="twitter:image" content="[图片URL]">
+   <meta name="twitter:image:alt" content="图片的描述（用于辅助访问）">
    ```
    ```
 
-8. **CORE-EEAT Alignment Check**
+8. **CORE-EEAT一致性检查**
 
-   Verify meta tags align with content quality standards. Reference: [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md)
+   验证元标签是否符合内容质量标准。参考：[CORE-EEAT基准](../../references/core-eeat-benchmark.md)
 
    ```markdown
    ### CORE-EEAT Meta Tag Alignment
@@ -347,7 +343,7 @@ When a user requests meta tag optimization:
    **If C02 fails**: Content may need restructuring to front-load the answer, or description should better reflect available content.
    ```
 
-9. **Provide CTR Optimization Tips**
+9. **提供CTR优化建议**
 
    ```markdown
    ## CTR Optimization Analysis
@@ -380,34 +376,34 @@ When a user requests meta tag optimization:
    - Hypothesis: [Why this might perform better]
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Primary keyword confirmed and matches page content
-- [ ] Page type identified (blog/product/landing/service/homepage)
-- [ ] Target audience and search intent clearly defined
-- [ ] Unique value proposition articulated
+### 输入验证
+- [ ] 确认了目标关键词，并且与页面内容一致
+- [ ] 确定了页面类型（博客/产品/ landing页面/首页）
+- [ ] 明确了目标受众和搜索意图
+- [ ] 阐明了独特的价值主张
 
-### Output Validation
-- [ ] Title length 50-60 characters (displays fully in SERP)
-- [ ] Meta description length 150-160 characters
-- [ ] Primary keyword appears in both title and description
-- [ ] Open Graph image specified (1200x630px recommended)
-- [ ] All HTML syntax valid (no unclosed quotes or tags)
-- [ ] Source of each data point clearly stated (~~search console CTR data, ~~SEO tool competitor data, user-provided, or estimated)
+### 输出验证
+- [ ] 标题长度为50-60个字符（在SERP中能完整显示）
+- [ ] 元描述长度为150-160个字符
+- [ ] 主关键词同时出现在标题和描述中
+- [ ] 指定了Open Graph图片（建议使用1200x630像素）
+- [ ] 所有HTML语法均正确（无未闭合的引号或标签）
+- [ ] 明确说明了每个数据点的来源（~~搜索控制台的CTR数据、~~SEO工具的竞争对手数据、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Create meta tags for a blog post about 'how to start a podcast in [current year]'"
+**用户**：“为一篇关于‘如何在[当前年份]开始播客’的博客文章创建元标签”
 
-**Output**:
+**输出**：
 
 ```markdown
 ## Meta Tags: How to Start a Podcast ([current year])
 
 ### Title Tag
 ```html
-<title>How to Start a Podcast in [current year]: Complete Beginner's Guide</title>
+<title>如何在[当前年份]开始播客：完整的初学者指南</title>
 ```
 **Length**: ~55 characters ✅
 **Keyword**: "how to start a podcast" at front ✅
@@ -415,7 +411,7 @@ When a user requests meta tag optimization:
 
 ### Meta Description
 ```html
-<meta name="description" content="Learn how to start a podcast in [current year] with our step-by-step guide. Covers equipment, hosting, recording, and launching your first episode. Start podcasting today!">
+<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始你的播客吧！">
 ```
 **Length**: ~163 characters ✅
 **Keyword**: Included naturally ✅
@@ -424,32 +420,32 @@ When a user requests meta tag optimization:
 ### Complete Meta Tag Block
 
 ```html
-<!-- Primary Meta Tags -->
-<title>How to Start a Podcast in [current year]: Complete Beginner's Guide</title>
-<meta name="description" content="Learn how to start a podcast in [current year] with our step-by-step guide. Covers equipment, hosting, recording, and launching your first episode. Start podcasting today!">
+<!-- 主要元标签 -->
+<title>如何在[当前年份]开始播客：完整的初学者指南</title>
+<meta name="description" content="通过我们的分步指南学习如何在[当前年份]开始播客。涵盖设备、托管、录制以及发布第一集的内容。今天就开始你的播客吧！">
 <link rel="canonical" href="https://yoursite.com/how-to-start-a-podcast/">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://yoursite.com/how-to-start-a-podcast/">
-<meta property="og:title" content="How to Start a Podcast in [current year] (Complete Guide)">
-<meta property="og:description" content="Everything you need to launch your podcast: equipment recommendations, hosting platforms, recording tips, and step-by-step launch checklist. No experience required.">
+<meta property="og:title" content="如何在[当前年份]开始播客（完整指南）">
+<meta property="og:description" content="启动播客所需的一切：设备推荐、托管平台、录制技巧和分步启动清单。无需任何经验。」>
 <meta property="og:image" content="https://yoursite.com/images/podcast-guide.jpg">
-<meta property="og:site_name" content="Your Site Name">
+<meta property="og:site_name" content="你的网站名称">
 
 <!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How to Start a Podcast in [current year]">
-<meta name="twitter:description" content="Complete beginner's guide to launching your podcast. Equipment, hosting, recording, and more.">
+<meta name="twitter:card" content="摘要图片">
+<meta name="twitter:title" content="如何在[当前年份]开始播客">
+<meta name="twitter:description" content="完整的初学者指南，涵盖播客的启动方法：设备、托管、录制等。」>
 <meta name="twitter:image" content="https://yoursite.com/images/podcast-guide.jpg">
-<meta name="twitter:site" content="@YourHandle">
+<meta name="twitter:site" content="@你的Twitter账号">
 
-<!-- Article Tags -->
+<!-- 文章标签 -->
 <meta property="article:published_time" content="[YYYY-MM-DD]T08:00:00+00:00">
 <meta property="article:author" content="https://yoursite.com/author/name">
-<meta property="article:section" content="Podcasting">
-<meta property="article:tag" content="podcasting">
-<meta property="article:tag" content="content creation">
+<meta property="article:section" content="播客">
+<meta property="article:tag" content="播客">
+<meta property="article:tag" content="内容创作">
 ```
 
 ### A/B Test Variations
@@ -464,161 +460,149 @@ When a user requests meta tag optimization:
 "Want to start a podcast in [current year]? This guide covers everything: equipment ($100 budget option), best hosting platforms, recording tips, and how to get your first 1,000 listeners."
 ```
 
-## Page-Type Templates
+## 页面类型模板
 
-### Homepage
+### 首页
 
 ```html
 <title>[Brand Name] - [Primary Value Proposition]</title>
 <meta name="description" content="[Brand] helps [audience] [achieve goal]. [Key feature/benefit]. [CTA]">
 ```
 
-### Product Page
+### 产品页面
 
 ```html
 <title>[Product Name] - [Key Benefit] | [Brand]</title>
 <meta name="description" content="[Product] [key features]. [Price/offer if applicable]. [Social proof]. [CTA]">
 ```
 
-### Blog Post
+### 博客文章
 
 ```html
 <title>[How to/What is/Number] [Keyword] [Benefit/Year]</title>
 <meta name="description" content="[What they'll learn]. [Key points covered]. [CTA]">
 ```
 
-### Service Page
+### 服务页面
 
 ```html
 <title>[Service] in [Location] - [Brand] | [Differentiator]</title>
 <meta name="description" content="[Service description]. [Experience/credentials]. [Key benefit]. [CTA]">
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Front-load keywords** - Put important terms at the beginning
-2. **Match intent** - Description should preview what page delivers
-3. **Be specific** - Vague descriptions get ignored
-4. **Test variations** - Small changes can significantly impact CTR
-5. **Update regularly** - Add current year, refresh messaging
-6. **Check competitors** - See what's working in your SERP
+1. **前置关键词** - 将重要词汇放在标题的开头
+2. **匹配搜索意图** - 描述应准确反映页面内容
+3. **具体明确** - 模糊的描述会被忽略
+4. **测试不同版本** - 微小的改动可能会显著影响点击率
+5. **定期更新** - 添加当前年份信息，更新内容
+6. **查看竞争对手** - 了解在SERP中哪些方法有效
 
-## Title Tag Formula Patterns
+## 标题标签公式模板
 
-### Proven Title Formulas
+### 经验证的标题公式
 
-| Formula | Template | Example | Best For |
+| 公式 | 模板 | 示例 | 适用场景 |
 |---------|----------|---------|---------|
-| How-To | How to [Achieve Result] ([Year]) | How to Improve SEO Rankings (2026) | Informational guides |
-| Number List | [Number] [Adjective] [Topic] for [Audience] | 15 Proven SEO Strategies for E-commerce | Listicles |
-| Question | [Question]? Here's [Answer Preview] | What Is Technical SEO? Complete Guide | Definition content |
-| Comparison | [Option A] vs [Option B]: [Differentiator] | Ahrefs vs SEMrush: Which SEO Tool Wins? | Comparison pages |
-| Year-Based | Best [Topic] in [Year] ([Tested/Ranked]) | Best SEO Tools in 2026 (Expert Tested) | Evergreen + fresh |
-| Benefit-Driven | [Benefit]: [How to Achieve It] | Rank #1 on Google: 10-Step SEO Checklist | High-CTR pages |
-| Parenthetical | [Topic] ([Modifier]) | Link Building Guide (With Templates) | Adding value signal |
-| Negative | [Number] [Topic] Mistakes [Consequence] | 7 SEO Mistakes That Kill Your Rankings | Problem-awareness content |
+| 操作指南 | 如何[实现目标]（[年份]） | 如何提高SEO排名（2026年） | 信息类指南 |
+| 数字列表 | [数字] [形容词] [目标受众] | 15种经过验证的电子商务SEO策略 | 列表文章 |
+| 问题式 | [问题]？[答案预览] | 什么是技术SEO？完整指南 | 定义类内容 |
+| 对比式 | [选项A] vs [选项B]：[区别点] | Ahrefs vs SEMrush：哪个SEO工具更胜一筹？ | 对比页面 |
+| 基于年份 | [年份]的最佳[主题]（[测试/排名]） | 2026年最佳SEO工具（专家测试） | 永恒且新鲜的内容 |
+| 价值驱动 | [价值]：[如何实现] | 在Google上排名第一的10步SEO检查清单 | 高点击率页面 |
+| 括号用法 | [主题]（[修饰词]） | 链接构建指南（含模板） | 体现价值 |
+| 负面强调 | [数字] [主题] 错误 [后果] | 7个会毁掉你排名的SEO错误 | 问题意识类内容 |
 
-### Title Tag Power Words
+## 标题标签中的关键词
 
-| Category | Power Words | Use Sparingly |
+| 关键词类型 | 常用关键词 | 使用建议 |
 |----------|-----------|---------------|
-| Urgency | Now, Today, Quick, Fast, Instant, 2026 | Don't overuse; pair with substance |
-| Value | Free, Proven, Complete, Essential, Ultimate | Avoid hyperbole without backing |
-| Specificity | [Exact number], Step-by-Step, Checklist, Template | More specific = more clicks |
-| Curiosity | Secret, Little-Known, Surprising, Actually | Must deliver on the promise |
-| Authority | Expert, Research-Backed, Data-Driven, Tested | Only use when genuinely expert content |
-| Emotional | Best, Worst, Mistakes, Warning, Powerful | Balance emotion with credibility |
+| 紧急性 | 现在、今天、快速、立即、2026 | 不要过度使用；需结合实质内容 |
+| 价值性 | 免费、经过验证、完整、必备、终极 | 避免无根据的夸张表述 |
+| 具体性 | [具体数字]、分步指南、检查清单 | 更具体的内容 = 更高的点击率 |
+| 好奇心 | 秘密、鲜为人知、令人惊讶 | 必须兑现承诺 |
+| 权威性 | 专家、有研究支持、数据驱动 | 仅用于真正专业的内容 |
+| 情感诉求 | 最佳、最差、错误、警告、有力 | 在表达情感时需保持可信度 |
 
-### Title Tag Length Optimization
+## 标题标签长度优化
 
-| Length Range | SERP Behavior | Recommendation |
+| 长度范围 | 在SERP中的显示效果 | 建议 |
 |-------------|--------------|----------------|
-| <30 characters | May appear thin | Expand with modifier or brand |
-| 30-50 characters | Fully displayed on all devices | Ideal for mobile-first |
-| 50-60 characters | Full display on desktop, may truncate mobile | Sweet spot for desktop |
-| 60-65 characters | Truncated on some devices | Front-load keywords |
-| >65 characters | Truncated everywhere | Avoid — key info gets cut |
+| <30个字符 | 可能显示不完整 | 通过添加修饰词或品牌名称来扩展 |
+| 30-50个字符 | 在所有设备上都能完整显示 | 非常适合移动设备优先的页面 |
+| 50-60个字符 | 在桌面设备上能完整显示，但在移动设备上可能会被截断 | 对桌面设备来说是最佳长度 |
+| 60-65个字符 | 在某些设备上会被截断 | 前置关键词效果更好 |
+| >65个字符 | 在所有设备上都会被截断 | 应避免使用，因为关键信息会被省略 |
 
-## Meta Description Copywriting Frameworks
+## 元描述写作框架
 
-### AIDA Framework
+### AIDA框架
 
-| Element | What It Does | Example |
+| 元素 | 功能 | 示例 |
 |---------|-------------|---------|
-| **A**ttention | Hook with a bold claim or question | "Want to double your organic traffic?" |
-| **I**nterest | Build relevance | "This guide covers 15 proven strategies..." |
-| **D**esire | Show benefit | "...used by top-ranking sites to increase traffic by 200%." |
-| **A**ction | CTA | "Read the full guide now." |
+| **注意力** | 用引人注目的声明或问题吸引读者 | “想要将自然流量翻倍吗？” |
+| **兴趣** | 建立相关性 | “本指南涵盖了15种经过验证的策略...” |
+| **欲望** | 展示内容带来的好处 | “...被顶级网站用来提高200%的流量。” |
+| **行动** | 提供行动号召 | “现在就阅读完整指南。” |
 
-**Full Example**: "Want to double your organic traffic? This guide covers 15 proven SEO strategies used by top-ranking sites to increase traffic by 200%. Read the full guide now." (158 chars)
+**完整示例**：“想要将自然流量翻倍吗？本指南涵盖了顶级网站使用的15种经过验证的SEO策略，这些策略能帮助你提高200%的流量。现在就阅读完整指南。”（158个字符）
 
-### PAS Framework
+### PAS框架
 
-| Element | What It Does | Example |
+| 元素 | 功能 | 示例 |
 |---------|-------------|---------|
-| **P**roblem | Identify pain point | "Struggling to rank on Google?" |
-| **A**gitate | Amplify the problem | "Most SEO guides are outdated and miss key ranking factors." |
-| **S**olution | Offer the solution | "Our 2026 guide covers what actually works. Read now." |
+| **问题** | 识别痛点 | “在Google上难以排名吗？” |
+| **放大问题** | 强化问题 | “大多数SEO指南已经过时，忽略了关键的排名因素。” |
+| **解决方案** | 提供解决方案 | “我们的2026年指南涵盖了真正有效的方法。立即阅读。” |
 
-### Benefit-Proof-CTA Framework
+## CTR优化数据
 
-| Element | Example |
-|---------|---------|
-| Benefit | "Learn the exact SEO process that grew our traffic 5x" |
-| Proof | "— with real data from 200+ audits." |
-| CTA | "Get the free checklist." |
+### 提高自然点击率（CTR）的因素
 
-## CTR Optimization Data
-
-### Factors That Increase Organic CTR
-
-| Factor | CTR Impact | Implementation |
+| 因素 | 对CTR的影响 | 实施方法 |
 |--------|-----------|----------------|
-| Number in title | +20-30% | "7 Ways", "15 Tips", "2026" |
-| Question in title | +14% | Start with How, What, Why |
-| Emotional words | +7% | "Proven", "Essential", "Mistake" |
-| Brackets/parentheses | +38% | "[Guide]", "(With Examples)" |
-| Current year | +10-15% | "Best SEO Tools 2026" |
-| Power words | +12% | See Power Words table above |
-| Match search intent | +15-25% | Align title with SERP expectations |
-| Rich results (schema) | +30% | FAQ, HowTo, Review stars |
+| 标题中的数字 | +20-30% | 如“7种方法”、“15个技巧”、“2026年” |
+| 标题中的问题 | +14% | 以“How”、“What”、“Why”开头 |
+| 情感词汇 | +7% | 如“经过验证”、“必备”、“错误” |
+| 括号/括号 | +38% | 如“[指南]”、“（附示例）” |
+| 当前年份 | +10-15% | 如“2026年最佳SEO工具” |
+| 关键词的使用 | +12% | 参见上面的关键词使用建议 |
+| 与搜索意图匹配 | +15-25% | 使标题与SERP的预期一致 |
+| 丰富的内容结构（schema） | +30% | 常见问题解答、操作指南、评论星级 |
 
-## Open Graph Best Practices by Platform
+## 各平台的Open Graph最佳实践
 
-### Platform-Specific OG Optimization
-
-| Platform | Image Size | Title Length | Description Length | Special Tags |
+| 平台 | 图片尺寸 | 标题长度 | 描述长度 | 特殊标签 |
 |----------|-----------|-------------|-------------------|-------------|
-| Facebook | 1200x630px | 40-60 chars | 125-155 chars | og:type, og:locale |
-| Twitter/X | 1200x600px | 70 chars max | 200 chars | twitter:card, twitter:site |
-| LinkedIn | 1200x627px | 70 chars | 150 chars | Standard OG tags |
-| Pinterest | 1000x1500px (2:3) | 100 chars | 500 chars | og:type=article preferred |
-| Slack | 500x500px min | Full title | First ~300 chars | Standard OG tags |
+| Facebook | 1200x630像素 | 40-60个字符 | 125-155个字符 | og:type、og:locale |
+| Twitter/X | 1200x600像素 | 最多70个字符 | 200个字符 | twitter:card、twitter:site |
+| LinkedIn | 1200x627像素 | 70个字符 | 150个字符 | 标准OG标签 |
+| Pinterest | 1000x1500像素（2:3比例） | 100个字符 | 500个字符 | 建议使用og:type=article |
+| Slack | 最小500x500像素 | 完整的标题 | 前300个字符 | 标准OG标签 |
 
-### OG Tag Checklist
+## OG标签检查清单
 
-| Tag | Required? | Notes |
+| 标签 | 是否必需 | 备注 |
 |-----|----------|-------|
-| og:title | Yes | Can differ from HTML title; optimize for social sharing |
-| og:description | Yes | Social-optimized; can differ from meta description |
-| og:image | Yes | Must be absolute URL; minimum 200x200px, ideal 1200x630px |
-| og:url | Yes | Canonical URL |
-| og:type | Yes | "website" for homepage, "article" for blog posts |
-| og:site_name | Recommended | Your brand name |
-| og:locale | Recommended | e.g., "en_US" |
-| twitter:card | Recommended | "summary_large_image" for articles |
-| twitter:site | Recommended | @yourbrand |
+| og:title | 是 | 可能与HTML标题不同；需优化以适应社交媒体分享 |
+| og:description | 是 | 需要针对社交媒体进行优化；可能与元描述不同 |
+| og:image | 是 | 必须是绝对路径；建议使用1200x200像素的图片 |
+| og:url | 是 | 必须是规范URL |
+| og:type | 是 | 首页使用“website”，博客文章使用“article” |
+| og:site_name | 建议使用 | 例如“en_US” |
+| twitter:card | 建议使用 | 文章使用“summary_large_image” |
+| twitter:site | 建议使用 | @你的品牌名称 |
 
-## Reference Materials
+## 参考资料
 
-- [Meta Tag Formulas](./references/meta-tag-formulas.md) — Proven title and description formulas with templates, power words, and CTR data
+- [元标签公式](./references/meta-tag-formulas.md) — 包含经过验证的标题和描述公式、模板、关键词建议以及CTR数据
 
-## Related Skills
+## 相关技能
 
-- [seo-content-writer](../seo-content-writer/) — Create content for meta tags
-- [schema-markup-generator](../schema-markup-generator/) — Add structured data
-- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — Audit all meta tags
-- [serp-analysis](../../research/serp-analysis/) — Analyze competitor meta tags
-- [geo-content-optimizer](../geo-content-optimizer/) — GEO optimization complements meta tag improvements
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full CORE-EEAT audit includes C01/C02 items that meta tags address
-
+- [seo-content-writer](../seo-content-writer/) — 为元标签创建内容
+- [schema-markup-generator](../schema-markup-generator/) — 添加结构化数据 |
+- [on-page-seo-auditor](../../optimize/on-page-seo-auditor/) — 审查所有元标签 |
+- [serp-analysis](../../research/serp-analysis/) — 分析竞争对手的元标签 |
+- [geo-content-optimizer](../geo-content-optimizer/) — 地理位置优化，补充元标签优化 |
+- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 全面的CORE-EEAT审计，包括元标签涉及的C01/C02项目

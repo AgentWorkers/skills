@@ -1,6 +1,6 @@
 ---
 name: process-watch
-description: Monitor system processes - CPU, memory, disk I/O, network, open files, ports. Find resource hogs, kill runaway processes, track what's consuming your machine.
+description: 监控系统进程：CPU使用情况、内存使用情况、磁盘I/O操作、网络活动、打开的文件以及使用的端口。识别占用大量系统资源的进程，终止那些失控运行的进程，并追踪到底是什么在消耗系统的性能。
 metadata:
   clawdhub:
     emoji: "📊"
@@ -10,68 +10,68 @@ metadata:
 
 # Process Watch
 
-Comprehensive system process monitoring. Goes beyond basic `top` to show:
-- CPU & memory usage
-- Disk I/O per process
-- Network connections
-- Open files & handles
-- Port bindings
-- Process trees
+这是一个全面的系统进程监控工具，其功能远超基本的 `top` 命令：
+- 显示每个进程的 CPU 和内存使用情况
+- 显示每个进程的磁盘 I/O 操作
+- 显示每个进程的网络连接信息
+- 显示每个进程打开的文件及文件描述符
+- 显示每个进程绑定的端口
+- 显示进程树结构
 
-## Commands
+## 命令
 
-### List processes
+### 列出所有进程
 ```bash
 process-watch list [--sort cpu|mem|disk|name] [--limit 20]
 ```
 
-### Top resource consumers
+### 显示资源消耗最大的进程
 ```bash
 process-watch top [--type cpu|mem|disk|net] [--limit 10]
 ```
 
-### Process details
+### 查看进程详细信息
 ```bash
 process-watch info <pid>
 # Shows: CPU, memory, open files, network connections, children, environment
 ```
 
-### Find by name
+### 按名称查找进程
 ```bash
 process-watch find <name>
 # e.g., process-watch find chrome
 ```
 
-### Port bindings
+### 查看进程绑定的端口
 ```bash
 process-watch ports [--port 3000]
 # What's listening on which port?
 ```
 
-### Network connections
+### 查看进程的网络连接信息
 ```bash
 process-watch net [--pid <pid>] [--established]
 ```
 
-### Kill process
+### 强制终止进程
 ```bash
 process-watch kill <pid> [--force]
 process-watch kill --name "chrome" [--force]
 ```
 
-### Watch mode
+### 启动监控模式
 ```bash
 process-watch watch [--interval 2] [--alert-cpu 80] [--alert-mem 90]
 # Continuous monitoring with threshold alerts
 ```
 
-### System summary
+### 查看系统概览
 ```bash
 process-watch summary
 # Quick overview: load, memory, disk, top processes
 ```
 
-## Examples
+## 使用示例
 
 ```bash
 # What's eating my CPU?
@@ -90,8 +90,8 @@ process-watch kill --name chrome
 process-watch watch --alert-cpu 90 --alert-mem 85
 ```
 
-## Platform Support
+## 平台支持
 
-- **macOS**: Full support
-- **Linux**: Full support  
-- **Windows**: Partial (basic process list, no lsof equivalent)
+- **macOS**：完全支持
+- **Linux**：完全支持
+- **Windows**：部分支持（仅提供基本进程列表，没有 `lsof` 命令的功能）

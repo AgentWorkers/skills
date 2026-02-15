@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Verify - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,11 +32,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Lookup phone number data
+## 查找电话号码信息
 
-Returns information about the provided phone number.
+返回有关提供的电话号码的信息。
 
 `GET /number_lookup/{phone_number}`
 
@@ -47,9 +47,9 @@ number_lookup = client.number_lookup.retrieve(
 print(number_lookup.data)
 ```
 
-## Trigger Call verification
+## 触发电话验证
 
-`POST /verifications/call` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/call` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```python
 create_verification_response = client.verifications.trigger_call(
@@ -59,9 +59,9 @@ create_verification_response = client.verifications.trigger_call(
 print(create_verification_response.data)
 ```
 
-## Trigger Flash call verification
+## 触发闪现式电话验证
 
-`POST /verifications/flashcall` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/flashcall` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```python
 create_verification_response = client.verifications.trigger_flashcall(
@@ -71,9 +71,9 @@ create_verification_response = client.verifications.trigger_flashcall(
 print(create_verification_response.data)
 ```
 
-## Trigger SMS verification
+## 触发短信验证
 
-`POST /verifications/sms` — Required: `phone_number`, `verify_profile_id`
+`POST /verifications/sms` — 必需参数：`phone_number`、`verify_profile_id`
 
 ```python
 create_verification_response = client.verifications.trigger_sms(
@@ -83,7 +83,7 @@ create_verification_response = client.verifications.trigger_sms(
 print(create_verification_response.data)
 ```
 
-## Retrieve verification
+## 获取验证结果
 
 `GET /verifications/{verification_id}`
 
@@ -94,7 +94,7 @@ verification = client.verifications.retrieve(
 print(verification.data)
 ```
 
-## Verify verification code by ID
+## 通过 ID 验证验证码
 
 `POST /verifications/{verification_id}/actions/verify`
 
@@ -105,7 +105,7 @@ verify_verification_code_response = client.verifications.actions.verify(
 print(verify_verification_code_response.data)
 ```
 
-## List verifications by phone number
+## 按电话号码列出验证记录
 
 `GET /verifications/by_phone_number/{phone_number}`
 
@@ -116,9 +116,9 @@ by_phone_numbers = client.verifications.by_phone_number.list(
 print(by_phone_numbers.data)
 ```
 
-## Verify verification code by phone number
+## 通过电话号码验证验证码
 
-`POST /verifications/by_phone_number/{phone_number}/actions/verify` — Required: `code`, `verify_profile_id`
+`POST /verifications/by_phone_number/{phone_number}/actions/verify` — 必需参数：`code`、`verify_profile_id`
 
 ```python
 verify_verification_code_response = client.verifications.by_phone_number.actions.verify(
@@ -129,9 +129,9 @@ verify_verification_code_response = client.verifications.by_phone_number.actions
 print(verify_verification_code_response.data)
 ```
 
-## List all Verify profiles
+## 列出所有验证配置文件
 
-Gets a paginated list of Verify profiles.
+获取分页显示的验证配置文件列表。
 
 `GET /verify_profiles`
 
@@ -141,11 +141,11 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a Verify profile
+## 创建验证配置文件
 
-Creates a new Verify profile to associate verifications with.
+创建一个新的验证配置文件以关联验证操作。
 
-`POST /verify_profiles` — Required: `name`
+`POST /verify_profiles` — 必需参数：`name`
 
 ```python
 verify_profile_data = client.verify_profiles.create(
@@ -154,9 +154,9 @@ verify_profile_data = client.verify_profiles.create(
 print(verify_profile_data.data)
 ```
 
-## Retrieve Verify profile
+## 获取验证配置文件信息
 
-Gets a single Verify profile.
+获取单个验证配置文件的信息。
 
 `GET /verify_profiles/{verify_profile_id}`
 
@@ -167,7 +167,7 @@ verify_profile_data = client.verify_profiles.retrieve(
 print(verify_profile_data.data)
 ```
 
-## Update Verify profile
+## 更新验证配置文件
 
 `PATCH /verify_profiles/{verify_profile_id}`
 
@@ -178,7 +178,7 @@ verify_profile_data = client.verify_profiles.update(
 print(verify_profile_data.data)
 ```
 
-## Delete Verify profile
+## 删除验证配置文件
 
 `DELETE /verify_profiles/{verify_profile_id}`
 
@@ -189,9 +189,9 @@ verify_profile_data = client.verify_profiles.delete(
 print(verify_profile_data.data)
 ```
 
-## Retrieve Verify profile message templates
+## 获取验证配置文件的消息模板
 
-List all Verify profile message templates.
+列出所有验证配置文件的消息模板。
 
 `GET /verify_profiles/templates`
 
@@ -200,11 +200,11 @@ response = client.verify_profiles.retrieve_templates()
 print(response.data)
 ```
 
-## Create message template
+## 创建消息模板
 
-Create a new Verify profile message template.
+创建一个新的验证配置文件消息模板。
 
-`POST /verify_profiles/templates` — Required: `text`
+`POST /verify_profiles/templates` — 必需参数：`text`
 
 ```python
 message_template = client.verify_profiles.create_template(
@@ -213,11 +213,11 @@ message_template = client.verify_profiles.create_template(
 print(message_template.data)
 ```
 
-## Update message template
+## 更新消息模板
 
-Update an existing Verify profile message template.
+更新现有的验证配置文件消息模板。
 
-`PATCH /verify_profiles/templates/{template_id}` — Required: `text`
+`PATCH /verify_profiles/templates/{template_id}` — 必需参数：`text`
 
 ```python
 message_template = client.verify_profiles.update_template(

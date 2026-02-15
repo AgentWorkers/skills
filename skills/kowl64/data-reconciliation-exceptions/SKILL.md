@@ -1,78 +1,80 @@
 ---
 name: data-reconciliation-exceptions
-description: Reconciles data sources using stable identifiers (Pay Number, driving licence, driver card, and driver qualification card numbers), producing exception reports and “no silent failure” checks. Use when you need weekly matching with explicit reasons for non-joins and mismatches.
+description: 使用稳定的标识符（付款编号、驾驶执照编号、驾驶员卡编号以及驾驶员资格证编号）来协调数据源，生成异常报告，并进行“无隐性故障”检查。适用于需要每周进行数据匹配的情况，同时明确记录数据未匹配或不一致的原因。
 ---
 
-# Data quality & reconciliation with exception reporting and no silent failure
+# 数据质量与对账：异常报告机制及“零容忍错误”原则
 
-## PURPOSE
-Reconciles data sources using stable identifiers (Pay Number, driving licence, driver card, and driver qualification card numbers), producing exception reports and “no silent failure” checks.
+## 目的  
+通过使用稳定的标识符（如付款编号、驾驶执照编号、驾驶员卡编号和驾驶员资格证编号）来对齐数据源，并生成异常报告，确保不存在“零容忍错误”的情况。
 
-## WHEN TO USE
-- TRIGGERS:
-  - Reconcile these two data sources and produce an exceptions report with reasons.
-  - Match names and payroll numbers across files and flag anything that does not join.
-  - Build a ‘no silent failure’ check that stops the pipeline if counts do not match.
-  - Create a weekly variance report for missing records, duplicates, and date gaps.
-  - Design a data quality scorecard with thresholds and red flags.
-- DO NOT USE WHEN…
-  - You need open-ended fuzzy matching without acceptance criteria.
-  - There are no stable identifiers in any source.
+## 使用场景  
+- **触发条件**：  
+  - 对齐这两个数据源并生成包含原因的异常报告。  
+  - 检查文件中的姓名和工资编号是否一致，标记所有不匹配的记录。  
+  - 实施“零容忍错误”检查：如果数据统计结果不一致，则停止整个处理流程。  
+  - 每周生成缺失记录、重复记录及日期差异的差异报告。  
+  - 设计包含阈值和警示标志的数据质量评分卡。  
 
-## INPUTS
-- REQUIRED:
-  - At least two datasets (CSV/XLSX) with Pay Number and/or driver document numbers.
-  - Which fields must match (e.g., Name, expiry date).
-- OPTIONAL:
-  - Normalization rules (case, spaces, punctuation).
-  - Thresholds for gates/scorecard (max % missing, etc.).
-- EXAMPLES:
-  - Payroll export + compliance register
-  - Two weekly exports from different systems
+## 不适用场景  
+- **不适用情况**：  
+  - 需要使用开放式模糊匹配（无明确匹配标准时）。  
+  - 任何数据源中都不存在稳定的标识符。  
 
-## OUTPUTS
-- Reconciliation plan (matching rules, normalization, join strategy).
-- Exceptions report spec (CSV columns + reason codes) and variance checks.
-- Optional artifacts: `assets/exceptions-report-template.csv` + `references/matching-rules.md`.
-Success = every record is categorized (matched/missing/duplicate/mismatch/invalid) with an explicit reason; pipelines stop on anomalies.
+## 输入要求  
+- **必填项**：  
+  - 至少两个包含付款编号和/或驾驶员证件编号的数据集（格式为 CSV/XLSX）。  
+  - 需要匹配的字段（例如姓名、有效期）。  
 
+- **可选项**：  
+  - 数据规范化规则（大小写转换、删除空格、去除标点符号）。  
+  - 评分卡的阈值（例如缺失数据的最大百分比）。  
 
-## WORKFLOW
-1. Confirm sources and key priority (Pay Number → Driver Card → Driving Licence → DQC).
-2. Normalize columns:
-   - trim spaces; standardize case; strip common punctuation for document numbers.
-3. Validate keys:
-   - flag blanks/invalid formats; identify duplicates per source.
-4. Join:
-   - exact join on Pay Number; then attempt secondary joins only for remaining unmatched items.
-5. Produce exception categories with reasons:
-   - Missing in A/B, Duplicate key, Field mismatch, Invalid key.
-6. “No silent failure” gates:
-   - counts within tolerance; unmatched rate below threshold; duplicate spikes flagged.
-7. STOP AND ASK THE USER if:
-   - columns are not mapped,
-   - multiple competing IDs exist with no priority,
-   - expected tolerances are unspecified.
+**示例**：  
+  - 工资数据导出文件与合规性登记文件。  
+  - 来自不同系统的每周数据导出文件。  
 
+## 输出结果  
+- 对账方案（包括匹配规则、数据规范化方法及合并策略）。  
+- 异常报告（包含CSV列及原因代码）。  
+- 可选输出文件：`assets/exceptions-report-template.csv` 和 `references/matching-rules.md`。  
 
-## OUTPUT FORMAT
+**成功标准**：  
+  - 所有记录都被分类为“匹配”、“缺失”、“重复”、“不匹配”或“无效”，并附有明确的原因；遇到异常时流程会停止。  
+
+## 工作流程  
+1. 确认数据源及其优先级（付款编号 → 驾驶员卡 → 驾驶执照 → 数据质量检查）。  
+2. 规范化数据列：  
+  - 删除空格；统一字段大小写；去除证件编号中的常见标点符号。  
+3. 验证数据格式：  
+  - 标记空白或格式无效的记录；识别每个数据源中的重复项。  
+4. 数据合并：  
+  - 首先根据付款编号进行精确匹配；对于未匹配的记录，再尝试其他匹配方式。  
+5. 分类异常类型并说明原因：  
+  - A 数据源中缺失、B 数据源中缺失、字段不匹配、键值无效。  
+6. “零容忍错误”检查：  
+  - 检查数据统计结果是否在允许的范围内；未匹配的比例是否低于预设阈值；标记重复出现的异常情况。  
+7. 在遇到以下情况时停止流程并请求用户确认：  
+  - 数据列未正确映射；  
+  - 存在多个竞争性的标识符且无法确定优先级；  
+  - 缺少预期的容差设置。  
+
+## 输出格式  
 ```csv
 exception_type,reason,source_a_id,source_b_id,pay_number,name,field,source_a_value,source_b_value
-```
+```  
 
-Reason codes: `MISSING_IN_A`, `MISSING_IN_B`, `MISMATCH`, `DUPLICATE_KEY`, `INVALID_KEY`.
+**原因代码**：`MISSING_IN_A`、`MISSING_IN_B`、`MISMATCH`、`DUPLICATE_KEY`、`INVALID_KEY`。  
 
+## 安全性与特殊处理  
+- 默认情况下，数据仅支持读取，禁止自动编辑源数据。  
+- 首先使用确定性匹配规则；除非特别要求，否则避免使用模糊匹配。  
+- 必须生成异常报告；不得遗漏任何未匹配的记录。  
 
-## SAFETY & EDGE CASES
-- Read-only by default; don’t auto-edit source data. Route exceptions to review.
-- Deterministic matching rules first; avoid fuzzy matching unless explicitly requested.
-- Always produce an exceptions report; never drop unmatched rows.
-
-
-## EXAMPLES
-- Input: “Payroll vs compliance; match by Pay Number; flag name mismatch.”  
-  Output: join plan + mismatch reasons + exceptions report schema.
-
-- Input: “Some rows have blank Pay Number.”  
-  Output: secondary key matching + invalid-key exceptions for truly unmatchable rows.
-
+## 示例**：  
+- **输入示例**：  
+  - “工资数据与合规性数据按付款编号进行匹配；标记姓名不匹配的情况。”  
+  - **输出结果**：对账方案、不匹配原因及异常报告格式。  
+- **输入示例**：  
+  - “部分记录的付款编号为空。”  
+  - **输出结果**：针对这些记录，使用备用键进行匹配；对确实无法匹配的记录标记为“键值无效”。

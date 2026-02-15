@@ -1,30 +1,30 @@
 ---
 name: binance-spot-trader
-description: Autonomous Binance spot trading bot with LLM-powered market analysis. Supports momentum trading, mean reversion, and DCA strategies on any Binance spot pair. Use when user wants to trade on Binance, set up automated crypto trading, build a spot trading bot, or automate DCA buying. Features technical analysis, LLM sentiment evaluation, position sizing, and portfolio tracking.
+description: 这款自主运行的Binance现货交易机器人具备基于大型语言模型（LLM）的市场分析能力，支持动量交易、均值回归以及定期定额投资（DCA）策略，适用于Binance平台上的任意现货交易对。用户可利用它进行Binance交易、设置自动化加密货币交易系统、构建现货交易机器人，或实现定期定额投资的自动化操作。该机器人具备技术分析功能、LLM情绪评估能力、头寸管理功能以及投资组合跟踪功能。
 metadata: {"openclaw": {"requires": {"env": ["BINANCE_API_KEY", "BINANCE_SECRET_KEY", "LLM_API_KEY"]}, "primaryEnv": "BINANCE_API_KEY", "homepage": "https://github.com/srikanthbellary"}}
 ---
 
-# Binance Spot Trader
+# Binance 现货交易机器人
 
-Autonomous spot trading bot for Binance. Combines technical indicators with LLM-powered market sentiment analysis to execute trades on any Binance spot pair.
+这是一个专为 Binance 设计的自动现货交易机器人。它结合了技术指标和基于大型语言模型（LLM）的市场情绪分析功能，可在任何 Binance 现货交易对上执行交易。
 
-## Prerequisites
+## 先决条件
 
-- **Binance account** with API keys (spot trading enabled, withdrawal DISABLED)
-- **Anthropic API key** (uses Haiku ~$0.001/eval)
-- Python 3.10+
+- 拥有 Binance 账户，并已获取 API 密钥（启用现货交易功能，禁用提款功能）
+- 拥有 Anthropic API 密钥（使用 Haiku 服务，每次请求费用约为 0.001 美元）
+- 确保使用的 Python 版本为 3.10 或更高
 
-## Setup
+## 设置
 
-### 1. Install
+### 1. 安装
 
 ```bash
 bash {baseDir}/scripts/setup.sh
 ```
 
-### 2. Configure
+### 2. 配置
 
-Create `.env`:
+创建 `.env` 文件：
 ```
 BINANCE_API_KEY=<your-api-key>
 BINANCE_SECRET_KEY=<your-secret-key>
@@ -35,54 +35,55 @@ TRADE_SIZE_PCT=5
 MAX_POSITIONS=5
 ```
 
-### 3. Run
+### 3. 运行
 
+直接运行脚本：
 ```bash
 python3 {baseDir}/scripts/trader.py
 ```
 
-Or via cron:
+或者通过 cron 任务定时运行：
 ```
 */5 * * * * cd /opt/trader && python3 trader.py >> trader.log 2>&1
 ```
 
-## Strategies
+## 交易策略
 
-### Momentum (default)
-- Buys when price crosses above 20-EMA with volume spike
-- Sells when price crosses below 20-EMA or hits TP/SL
-- Best for trending markets (BTC, ETH, SOL)
+### 动量策略（默认策略）
+- 当价格突破 20 日移动平均线（20-EMA）且成交量激增时买入
+- 当价格跌破 20 日移动平均线或达到止盈/止损（TP/SL）价格时卖出
+- 适用于趋势明显的市场（如 BTC、ETH、SOL）
 
-### Mean Reversion
-- Buys when RSI < 30 (oversold) and price near Bollinger Band lower
-- Sells when RSI > 70 (overbought) or price near upper band
-- Best for range-bound markets
+### 均值回归策略
+- 当相对强弱指数（RSI）低于 30（市场处于超卖状态）且价格接近布林带下轨时买入
+- 当 RSI 高于 70（市场处于超买状态）或价格接近布林带上轨时卖出
+- 适用于价格波动较小的市场
 
-### DCA (Dollar Cost Average)
-- Buys fixed amount at regular intervals regardless of price
-- Configurable interval (hourly, daily, weekly)
-- Lowest risk strategy for long-term accumulation
+### 定投策略（DCA）
+- 在固定时间间隔内买入固定金额，不受价格影响
+- 可配置间隔时间（每小时、每天、每周）
+- 是长期积累资产的低风险策略
 
-### LLM-Enhanced (all strategies)
-- Before each trade, asks Claude Haiku for market sentiment
-- Evaluates: recent news, price action, volume patterns, market structure
-- Can veto a trade signal if sentiment is strongly against
+### 基于 LLM 的增强策略（所有策略）
+- 在每次交易前，通过 Claude Haiku 服务获取市场情绪分析
+- 分析因素包括：近期新闻、价格走势、成交量模式、市场结构等
+- 如果市场情绪明显不利，可以拒绝执行交易信号
 
-## Trading Parameters
+## 交易参数
 
-| Parameter | Default | Description |
+| 参数 | 默认值 | 说明 |
 |-----------|---------|-------------|
-| `PAIRS` | `BTCUSDT` | Comma-separated trading pairs |
-| `STRATEGY` | `momentum` | `momentum`, `mean_reversion`, or `dca` |
-| `TRADE_SIZE_PCT` | `5` | % of portfolio per trade |
-| `MAX_POSITIONS` | `5` | Max concurrent open positions |
-| `TAKE_PROFIT_PCT` | `5` | Take profit % |
-| `STOP_LOSS_PCT` | `3` | Stop loss % |
-| `DCA_INTERVAL` | `daily` | For DCA: `hourly`, `daily`, `weekly` |
-| `DCA_AMOUNT_USDT` | `50` | USDT per DCA buy |
-| `USE_LLM` | `true` | Enable LLM sentiment filter |
+| `PAIRS` | `BTCUSDT` | 以逗号分隔的交易对 |
+| `STRATEGY` | `momentum` | 可选值：`momentum`（动量策略）、`mean_reversion`（均值回归策略）或 `dca`（定投策略） |
+| `TRADE_SIZE_PCT` | `5` | 每笔交易占投资组合的比例（百分比） |
+| `MAX_POSITIONS` | `5` | 同时持有的最大开仓数量 |
+| `TAKE_PROFIT_PCT` | `5` | 盈利幅度（百分比） |
+| `STOP_LOSS_PCT` | `3` | 止损幅度（百分比） |
+| `DCA_INTERVAL` | `daily` | 定投间隔：`hourly`（每小时）、`daily`（每天）、`weekly`（每周） |
+| `DCA_AMOUNT_USDT` | `50` | 每次定投的金额（单位：USDT） |
+| `USE_LLM` | `true` | 是否启用基于 LLM 的市场情绪分析 |
 
-## Monitoring
+## 监控
 
 ```bash
 # Check portfolio
@@ -95,17 +96,17 @@ tail -50 trades.jsonl
 tail -f trader.log
 ```
 
-## ⚠️ Security Considerations
+## ⚠️ 安全注意事项
 
-- **NEVER enable withdrawal on API keys** — trading only
-- **IP-restrict your API keys** on Binance
-- Use a sub-account with limited funds for bot trading
-- Start with tiny amounts ($50-100) and paper trade first
-- Monitor actively during first 24 hours
-- Set up Binance email alerts for all trades
-- **API keys on disk** — secure your server (SSH keys only, firewall, chmod 600)
+- **切勿为 API 密钥启用提款功能**——仅用于交易 |
+- 在 Binance 中对 API 密钥设置 IP 限制 |
+- 使用资金有限的子账户进行机器人交易 |
+- 开始时使用小额资金（50-100 美元）并进行模拟交易 |
+- 在运行后的前 24 小时内密切监控交易情况 |
+- 为所有交易设置 Binance 的电子邮件提醒 |
+- 将 API 密钥存储在安全位置（建议使用 SSH 密钥，并配置防火墙及文件权限（chmod 600） |
 
-## References
+## 参考资料
 
-- See `references/binance-api.md` for REST API docs
-- See `references/indicators.md` for technical analysis details
+- 有关 REST API 的详细信息，请参阅 `references/binance-api.md`
+- 有关技术分析的详细内容，请参阅 `references/indicators.md`

@@ -1,133 +1,133 @@
 ---
 name: equity-analyst
-description: 전문 투자 분석가 AI로, 한국 주식 종목의 재무제표, 뉴스, 차트를 분석하여 Investment Attractiveness Score (0-100)와 BUY/HOLD/AVOID 추천을 제공합니다. 네이버 금융 데이터를 사용하며, 프롬프트에 명시된 엄격한 우선순위(Financial > News > Chart)와 가중치를 따릅니다. trigger: 사용자가 "xxx 주식 분석해줘", "xxx 투자 매력도 알려줘", "xxx 리포트 써줘" 등으로 분석 요청을 했을 때.
+description: 作为专业的投资分析AI，我们能够分析韩国股票品种的财务报表、新闻和图表，并据此给出投资吸引力评分（0-100分），同时提供“买入”（BUY）、“持有”（HOLD）或“避免投资”（AVOID）的建议。我们使用Naver金融数据，并严格遵循预设的优先级规则：财务数据（Financial）> 新闻（News）> 图表（Chart）。当用户通过触发语句（如“分析xxx股票”、“告诉我xxx的投资吸引力”或“生成xxx报告”等）提出分析请求时，系统会立即开始处理。
 ---
 
-# Equity Analyst Skill
+# 股票分析师技能
 
-This skill provides professional-grade equity analysis for Korean stocks listed on KRX. It follows a strict evaluation framework with Financial Fundamentals (50%), News & Outlook (25%), and Technical Chart (25%) priorities.
+该技能提供针对在KRX上市的韩国股票的专业级股票分析服务。分析过程遵循严格的评估框架，重点考虑财务基本面（50%）、新闻与市场展望（25%）和技术图表分析（25%）三个方面。
 
-## When to Use This Skill
+## 适用场景
 
-- User requests stock analysis with specific ticker or company name (e.g., "삼성전자 분석해줘", "SK하이닉스 투자 매력도 알려줘")
-- User asks for investment recommendation (BUY/HOLD/AVOID) with supporting reasoning
-- Need systematic, conservative, logic-driven evaluation based on financial metrics
+- 用户请求对特定股票代码或公司名称进行股票分析（例如：“分析三星电子的情况”，“告诉我SK海力士的投资吸引力”）；
+- 用户要求提供包含理由的投资建议（买入/持有/规避）；
+- 需要基于财务指标进行系统化、保守且逻辑严谨的评估。
 
-**Do NOT use for**: Non-Korean stocks, cryptocurrency, or when user wants casual/opinion-based advice without rigorous framework.
+**不适用场景**：
+- 非韩国股票；
+- 加密货币；
+- 用户仅寻求非基于严格框架的随意性或主观性建议。
 
-## Quick Start
+## 快速入门
 
-1. Identify the stock ticker (e.g., 005930 for 삼성전자, 000660 for SK하이닉스)
-2. Use browser tool to navigate to Naver Finance page: `https://finance.naver.com/item/main.naver?code={ticker}`
-3. Extract required data (see Data Requirements below)
-4. Apply evaluation framework (see Framework section)
-5. Generate structured report in specified format
+1. 确定股票代码（例如：三星电子的代码为005930，SK海力士的代码为000660）；
+2. 使用浏览器访问Naver Finance页面：`https://finance.naver.com/item/main.naver?code={ticker}`；
+3. 提取所需数据（详见下方的数据要求）；
+4. 应用评估框架；
+5. 生成指定格式的结构化报告。
 
-## Data Requirements
+## 数据要求
 
-Collect the following data from Naver Finance main page:
+从Naver Finance主页面收集以下数据：
 
-### Financial Metrics
-- PER (Price Earnings Ratio)
-- PBR (Price Book-value Ratio)
-- ROE (Return on Equity) - 지배주주 기준
-- Operating Margin (영업이익률)
-- Debt Ratio (부채비율)
-- Revenue Growth (매출 성장률) - recent multi-year trend (2024→2025 예상 사용)
+### 财务指标
+- 市盈率（PER）
+- 市净率（PBR）
+- 净资产收益率（ROE，基于控股股东）
+- 营业利润率
+- 负债比率
+- 收入增长率（过去几年的趋势，用于2024年至2025年的预测）
 
-### News & Outlook (summary)
-- Recent major news headlines (last few days)
-- Earnings outlook (컨센서스, 예상)
-- Industry tailwinds/headwinds
-- Analyst sentiment changes
+### 新闻与市场展望（摘要）
+- 最近的重大新闻标题
+- 盈利预期
+- 行业利好/利空因素
+- 分析师情绪变化
 
-### Technical/Chart Conditions (summary)
-- Trend direction (상승/횡보/하락)
-- Current price position relative to 52-week high/low
-- Volume characteristics (확장/수축/보통)
-- Any notable patterns (support/resistance, etc.)
+### 技术/图表分析（摘要）
+- 股价走势（上涨/盘整/下跌）
+- 当前价格相对于52周高点的位置
+- 成交量特征（活跃/低迷/正常）
+- 任何显著的图表形态（支撑位/阻力位等）
 
-**Note**: Bollinger Band and other complex indicators are NOT required. Keep chart description simple: trend + current state.
+**注意**：无需使用布林带等复杂指标。图表描述应简洁明了，重点关注股价走势和当前市场状况。
 
-## Evaluation Framework
+## 评估框架
 
-Follow these steps EXACTLY in order:
+严格按照以下步骤进行评估：
 
-### STEP 1: FINANCIAL SCORE (50%)
+### 第一步：财务评分（50%）
 
-Score each sub-category 0-100:
+对每个子类别评分0-100分：
 
-**A. Valuation (PER, PBR) - Weight 30%**
-- Low PER (< industry avg) and PBR (< 1) are positive
-- Extremely high PER (>40) is negative unless justified by exceptional growth
-- Output: ValuationScore
+**A. 估值（PER、PBR） - 权重30%**
+- 低市盈率（低于行业平均水平）和低市净率（低于1）为正面因素；
+- 极高的市盈率（超过40）为负面因素，除非有出色的增长表现作为支撑；
+- 评分结果：ValuationScore
 
-**B. Profitability (ROE, Operating Margin) - Weight 30%**
-- ROE < 5%: critically weak
-- ROE 10%+: healthy
-- Stable operating margin above industry average: positive
-- Output: ProfitabilityScore
+**B. 盈利能力（ROE、营业利润率） - 权重30%**
+- 净资产收益率低于5%：表现极差；
+- 净资产收益率在10%以上：表现良好；
+- 营业利润率稳定且高于行业平均水平：正面因素；
+- 评分结果：ProfitabilityScore
 
-**C. Growth (Revenue Growth) - Weight 25%**
-- Sustained growth (>10%) is positive
-- Stagnation (<3%) or decline: negative
-- Output: GrowthScore
+**C. 增长性（收入增长率） - 权重25%**
+- 持续增长（超过10%）为正面因素；
+- 增长停滞（低于3%）或下降：负面因素；
+- 评分结果：GrowthScore
 
-**D. Stability (Debt Ratio) - Weight 15%**
-- Low debt (<50%) is positive
-- High leverage (>100%) is negative
-- Output: StabilityScore
+**D. 稳定性（负债比率） - 权重15%**
+- 低负债率（低于50%）为正面因素；
+- 高负债率（超过100%）为负面因素；
+- 评分结果：StabilityScore
 
 **FinancialScore = Valuation×0.30 + Profitability×0.30 + Growth×0.25 + Stability×0.15**
 
-**Special Rule**: If BOTH ProfitabilityScore AND GrowthScore are below 30, cap FinancialScore at maximum 50 ( regardless of other scores ).
+**特别规则**：如果ProfitabilityScore和GrowthScore均低于30分，则FinancialScore最高不超过50分。
 
-### STEP 2: NEWS & OUTLOOK SCORE (25%)
+### 第二步：新闻与市场展望评分（25%）
 
-Evaluate qualitative factors:
-- Earnings outlook strength
-- Product/service momentum
-- Analyst sentiment direction
-- Industry tailwinds vs headwinds
+评估定性因素：
+- 盈利预期的强度
+- 产品/服务的市场表现
+- 分析师的情绪倾向
+- 行业的利好/利空因素
 
-**Rules**:
-- Strong positive catalysts (new contracts, regulatory approval, market expansion) raise score
-- Neutral or "wait-and-see" tone: 40-55
-- Hype without financial backing: MUST NOT score high (max 60)
-- Negative catalysts ( lawsuits, customer loss, industry downturn) lower score
+**评分规则**：
+- 强有力的正面因素（新合同、监管批准、市场扩张）会提高评分；
+- 中立或“观望”的态度：评分40-55分；
+- 无财务支撑的炒作行为不得获得高分（最高60分）；
+- 负面因素（诉讼、客户流失、行业衰退）会降低评分；
+- 评分结果：NewsScore（0-100分）
 
-Output: NewsScore (0-100)
+### 第三步：技术/图表评分（25%）
 
-### STEP 3: TECHNICAL / CHART SCORE (25%)
+评估市场时机和交易行为：
+- 股价走势（上涨/盘整/下跌）
+- 成交量变化
+- 积累或分配的迹象
+- 当前价格位置（接近支撑位/阻力位）
 
-Evaluate timing and market behavior:
-- Trend direction (up/sideways/down)
-- Volume expansion/contraction
-- Signs of accumulation or distribution
-- Current price position (near support/resistance)
+**评分规则**：
+- 图表用于判断买入/卖出的时机，而非股票价值；
+- 即使基本面良好，如果技术图表不佳，评分仍可能较低；
+- 评估重点在于当前是否是合适的买入/卖出时机；
+- 评分结果：ChartScore（0-100分）
 
-**Rules**:
-- Charts determine TIMING, not value
-- Strong fundamentals + weak charts = still low chart score
-- Technicals must NEVER override poor fundamentals
-- Focus on whether now is a good entry/exit timing based on chart alone
-
-Output: ChartScore (0-100)
-
-### FINAL SCORE
+### 最终评分
 
 FinalScore = (FinancialScore × 0.50) + (NewsScore × 0.25) + (ChartScore × 0.25)
 
-### Verdict Categories
+### 投资建议类别
 
-- **BUY**: 80–100 (strong conviction)
-- **BUY_LEAN**: 65–79 (cautious buy)
-- **HOLD**: 45–64 (wait/accumulate on dips)
-- **AVOID**: below 45 (too risky or unattractive)
+- **买入**：80–100分（强烈推荐）
+- **谨慎买入**：65–79分（谨慎买入）
+- **持有**：45–64分（等待时机或在股价下跌时逢低买入）
+- **规避**：低于45分（风险过高或吸引力不足）
 
-## Output Format
+## 输出格式
 
-Return EXACTLY this structure:
+输出内容必须严格遵循以下结构：
 
 ```
 1. Financial Breakdown
@@ -149,9 +149,9 @@ Return EXACTLY this structure:
 [One paragraph explaining why the score was assigned, respecting priority order: Financial > News > Chart. Be conservative, logic-driven. Do NOT give investment advice.]
 ```
 
-## Examples
+## 示例
 
-### Example 1: SK하이닉스 (from real data)
+### 示例1：SK海力士（基于真实数据）
 ```
 1. Financial Breakdown
 - ValuationScore: 70
@@ -172,7 +172,7 @@ Return EXACTLY this structure:
 SK하이닉스는 재무제표가 매우 강력합니다. ROE 43.20%, 영업이익률 46.67%, 43.7%의 매출 성장률은 업계 최상위 수준이며, PER 17.11배는 상대적으로 저평가되어 있습니다. 부채비율 64.12%는 반도체 업체로서 적정범위 내에 있습니다. 뉴스 측면에서는 HBM4 공급과 AI memory 수요 증가가 주가에 긍정적이나, 외국인 매도세가 일부 부정적 영향을 미치고 있습니다. 기술적 측면에서는 장기 상승추세는 유지되고 있으나, 단기적으로 조정 국면에 있어 매수 타이밍에 신중을 기할 필요가 있습니다. 재무적 우수성과 성장성에도 불구, 단기 차트의 불확실성으로 인해 "buy with caution" 상태로 평가됩니다.
 ```
 
-### Example 2: Weak Fundamentals
+### 示例2：财务指标不佳的情况
 ```
 ... (similar structure) ...
 ValuationScore: 25 (PER 150, PBR 8.5 - extremely overvalued)
@@ -182,31 +182,29 @@ Verdict: AVOID
 ...
 ```
 
-## Scripts
+## 脚本
 
-The skill includes these scripts:
+该技能包含以下脚本：
 
-- `scripts/analyze.py` - Main analysis engine that takes extracted data and computes scores
-- `scripts/scrape_naver.py` - Optional: Data extraction from Naver Finance page
+- `scripts/analyze.py`：主要分析脚本，用于处理提取的数据并计算评分；
+- `scripts/scrape_naver.py`：可选脚本，用于从Naver Finance页面提取数据。
 
-Use these to automate repetitive tasks.
+这些脚本可用于自动化重复性任务。
 
-## References
+## 参考资料
 
-Detailed evaluation criteria and examples: `references/framework.md`
+详细的评估标准和示例请参阅：`references/framework.md`
 
-## Notes
+## 注意事项
 
-- This skill is for Korean stocks only (KRX)
-- Data source: Naver Finance (real-time snapshot, not delayed)
-- Scores are relative within KRX universe
-- Framework is conservative: hype without earnings does NOT get high scores
-- Technical score is about timing only, not quality
+- 该技能仅适用于KRX上市的韩国股票；
+- 数据来源：Naver Finance（实时数据，无延迟）；
+- 评分结果仅针对KRX范围内的股票；
+- 该评估框架较为保守：缺乏盈利能力的股票难以获得高分；
+- 技术评分仅反映市场时机，而非股票质量。
 
-## Troubleshooting
+## 故障排除
 
-**Missing data**: If any metric is unavailable, treat as neutral (score 50) but note in reasoning.
-
-**Conflicting signals**: Follow priority order: Financial > News > Chart. Low financial score can NOT be compensated by good news or chart.
-
-**Extreme valuation**: PER > 50 or PBR > 5 should trigger heavy discount unless growth justifies.
+**数据缺失**：如果某些指标无法获取，将其视为中性因素（评分50分），并在分析报告中说明原因；
+**信号冲突**：按照财务指标 > 新闻 > 图表的分析顺序进行判断；低财务评分无法被正面新闻或技术图表所弥补；
+**极端估值**：市盈率或市净率超过50时，除非有显著的增长表现，否则应给予较低评分。

@@ -1,6 +1,6 @@
 ---
 name: roku
-description: Control Roku devices via CLI. Discovery, remote control, app launching, search, and HTTP bridge mode for real-time control.
+description: 通过命令行界面（CLI）控制Roku设备：支持设备发现、远程控制、应用程序启动、搜索功能，以及用于实时控制的HTTP桥接模式。
 homepage: https://github.com/gumadeiras/roku-cli
 repository: https://github.com/gumadeiras/roku-cli
 metadata: {"clawdbot":{"emoji":"📺","requires":{"bins":["roku"]},"install":[{"id":"node","kind":"node","package":"roku-ts-cli","bins":["roku"],"label":"Install Roku CLI (npm)"}]}}
@@ -8,15 +8,15 @@ metadata: {"clawdbot":{"emoji":"📺","requires":{"bins":["roku"]},"install":[{"
 
 # Roku CLI
 
-Fast TypeScript CLI for controlling Roku devices via the ECP API.
+这是一个快速的TypeScript命令行工具（CLI），用于通过ECP API控制Roku设备。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g roku-ts-cli@latest
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Discover devices and save an alias
@@ -27,31 +27,31 @@ roku --host livingroom device-info
 roku --host livingroom apps
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `roku discover` | Find Roku devices on network |
-| `roku --host <ip> device-info` | Get device info |
-| `roku --host <ip> apps` | List installed apps |
-| `roku --host <ip> command <key>` | Send remote key |
-| `roku --host <ip> literal <text>` | Type text |
-| `roku --host <ip> search --title <query>` | Search content |
-| `roku --host <ip> launch <app>` | Launch app |
-| `roku --host <ip> interactive` | Interactive remote mode |
+| `roku discover` | 在网络中查找Roku设备 |
+| `roku --host <ip> device-info` | 获取设备信息 |
+| `roku --host <ip> apps` | 列出已安装的应用程序 |
+| `roku --host <ip> command <key>` | 发送遥控器指令 |
+| `roku --host <ip> literal <text>` | 在Roku设备上输入文本 |
+| `roku --host <ip> search --title <query>` | 搜索内容 |
+| `roku --host <ip> launch <app>` | 启动应用程序 |
+| `roku --host <ip> interactive` | 进入交互式遥控器模式 |
 
-## Interactive Mode
+## 交互式模式
 
 ```bash
 roku livingroom                    # interactive control
 roku --host livingroom interactive # same thing
 ```
 
-Use arrow keys, enter, escape for remote-like control.
+使用箭头键、回车键和ESC键进行类似遥控器的操作。
 
-## Bridge Service
+## 桥接服务
 
-Run a persistent HTTP bridge as a native OS service:
+运行一个持续的HTTP桥接服务，作为操作系统（macOS）或systemd（Linux）的原生服务：
 
 ```bash
 # Install and start the service
@@ -64,7 +64,7 @@ roku bridge stop --user
 roku bridge uninstall --user
 ```
 
-Send commands via HTTP:
+通过HTTP发送命令：
 
 ```bash
 # Send key
@@ -89,18 +89,18 @@ curl -X POST http://127.0.0.1:19839/launch \
 curl http://127.0.0.1:19839/health -H "Authorization: Bearer secret"
 ```
 
-### Bridge Endpoints
+### 桥接端点
 
-| Endpoint | Body |
+| 端点 | 请求体 |
 |----------|------|
 | `POST /key` | `{"key": "home"}` |
 | `POST /text` | `{"text": "hello"}` |
 | `POST /search` | `{"title": "Stargate"}` |
 | `POST /launch` | `{"app": "plex"}` |
 | `GET /health` | — |
-| `GET /health?deep=1` | Deep health check (probes Roku) |
+| `GET /health?deep=1` | 深度健康检查（探测Roku设备的状态） |
 
-## Aliases
+## 别名
 
 ```bash
 # Save device alias
@@ -117,17 +117,17 @@ roku alias list
 roku --host livingroom launch plex
 ```
 
-## Remote Keys
+## 遥控器指令
 
 home, back, select, up, down, left, right, play, pause, rev, fwd, replay, info, power, volume_up, volume_down, mute
 
-## Notes
+## 注意事项
 
-- Roku must be on the same network as the CLI
-- Bridge service runs as a native launchd (macOS) or systemd (Linux) service
-- Use `--user` flag for user-space service (no sudo required)
-- Use `--token` for authentication in bridge mode
+- Roku设备必须与CLI处于同一网络中。
+- 桥接服务作为原生服务运行（macOS使用launchd，Linux使用systemd）。
+- 使用`--user`标志以用户空间模式运行服务（无需sudo权限）。
+- 在桥接模式下使用`--token`进行身份验证。
 
-## Source
+## 代码来源
 
 https://github.com/gumadeiras/roku-cli

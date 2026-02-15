@@ -1,27 +1,27 @@
 ---
 name: ticktick
-description: TickTick task manager integration. List projects and tasks, create new tasks, complete tasks, delete tasks. Use when the user wants to manage their to-do list, add reminders, check pending tasks, or mark tasks as done. Requires OAuth setup via `ticktick-setup`.
+description: TickTick任务管理器集成：支持查看项目与任务列表、创建新任务、完成任务以及删除任务。适用于用户需要管理待办事项、添加提醒、检查未完成的任务或将任务标记为已完成的情况。使用前需通过`ticktick-setup`进行OAuth设置。
 ---
 
-# TickTick Integration
+# TickTick 集成
 
-Manage tasks via TickTick's Open API.
+通过 TickTick 的开放 API（Open API）来管理任务。
 
-## Setup
+## 设置
 
-First time only:
+仅首次使用时需要执行以下步骤：
 
-1. Go to https://developer.ticktick.com and create an app
-2. Add redirect URI: `http://127.0.0.1:8765/callback`
-3. Run setup:
+1. 访问 https://developer.ticktick.com 并创建一个应用程序。
+2. 添加回调 URI：`http://127.0.0.1:8765/callback`
+3. 运行设置脚本：
 
 ```bash
 ticktick-setup <client_id> <client_secret>
 ```
 
-4. Open the auth URL in browser, authorize, paste the callback URL
+4. 在浏览器中打开授权页面，完成授权操作，然后粘贴回调 URL。
 
-## Usage
+## 使用方法
 
 ```bash
 # List projects
@@ -46,20 +46,20 @@ ticktick complete <project_id> <task_id>
 ticktick delete <project_id> <task_id>
 ```
 
-## API Reference
+## API 参考
 
-Base URL: `https://api.ticktick.com/open/v1`
+基础 URL：`https://api.ticktick.com/open/v1`
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| /project | GET | List all projects |
-| /project/{id}/data | GET | Get project with tasks |
-| /task | POST | Create task |
-| /task/{id} | POST | Update task |
-| /project/{pid}/task/{tid}/complete | POST | Complete task |
-| /task/{pid}/{tid} | DELETE | Delete task |
+| 端点（Endpoint） | 方法（Method） | 描述（Description） |
+|------------|-------------|---------------------------|
+| /project     | GET          | 列出所有项目            |
+| /project/{id}/data | GET          | 获取包含任务的项目信息        |
+| /task       | POST          | 创建新任务              |
+| /task/{id}     | POST          | 更新任务信息              |
+| /project/{pid}/task/{tid}/complete | POST          | 完成任务              |
+| /task/{pid}/{tid}   | DELETE          | 删除任务              |
 
-## Task Object
+## 任务对象（Task Object）
 
 ```json
 {
@@ -72,4 +72,5 @@ Base URL: `https://api.ticktick.com/open/v1`
 }
 ```
 
-Priority: 0=none, 1=low, 3=medium, 5=high
+优先级（Priority）：
+0 = 无；1 = 低；3 = 中；5 = 高

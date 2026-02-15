@@ -1,6 +1,7 @@
 ---
 name: planetscale-cli-skills
-description: Comprehensive PlanetScale CLI (pscale) command reference and workflows for database management via terminal. Use when user mentions PlanetScale CLI, pscale commands, database branches, deploy requests, schema migrations, or any PlanetScale terminal operations. Routes to specialized sub-skills for auth, branches, deploy requests, databases, backups, and 10+ other pscale commands. Triggers on pscale, PlanetScale CLI, database branch, deploy request, schema migration, PlanetScale automation.
+description: **Comprehensive PlanetScale CLI (pscale) 命令参考及终端数据库管理工作流程**  
+当用户提及 PlanetScale CLI、pscale 命令、数据库分支、部署请求、模式迁移或任何与 PlanetScale 相关的终端操作时，请参考本文档。本文档提供了关于这些功能的详细说明，并链接到了与身份验证、数据库管理、部署请求、备份等相关的子功能。相关触发事件包括 pscale 命令的执行、PlanetScale CLI 的使用、数据库分支的创建/修改、部署请求的提交以及模式迁移的操作。
 requirements:
   binaries:
     - pscale
@@ -15,30 +16,30 @@ requirements:
     Scripts require PCRE-enabled grep (grep -oP) - may need adjustment on BSD/macOS systems.
 ---
 
-# PlanetScale CLI Skills
+# PlanetScale CLI 技能
 
-Comprehensive `pscale` command reference and workflows for managing PlanetScale databases via terminal.
+本文档提供了关于 `pscale` 命令的全面参考信息，以及通过终端管理 PlanetScale 数据库的工作流程。
 
-## Overview
+## 概述
 
-The PlanetScale CLI brings database branches, deploy requests, and schema migrations to your fingertips. This skill provides command references, automation scripts, and decision trees for all `pscale` operations.
+PlanetScale CLI 可让您轻松地创建数据库分支、提交部署请求以及执行数据库模式迁移操作。本文档包含了所有 `pscale` 命令的参考信息、自动化脚本以及决策树（用于指导您选择合适的操作方式）。
 
-## Sub-Skills
+## 子技能
 
-| Command | Skill | Use When |
-|---------|-------|----------|
-| **auth** | `pscale-auth` | Login, logout, service tokens, authentication management |
-| **branch** | `pscale-branch` | Create, delete, promote, diff, list database branches |
-| **deploy-request** | `pscale-deploy-request` | Create, review, deploy, revert schema changes |
-| **database** | `pscale-database` | Create, list, show, delete databases |
-| **backup** | `pscale-backup` | Create, list, show, delete branch backups |
-| **password** | `pscale-password` | Create, list, delete connection passwords |
-| **org** | `pscale-org` | List, show, switch organizations |
-| **service-token** | `pscale-service-token` | Create, manage CI/CD service tokens |
+| 命令                | 技能                        | 使用场景                          |
+|-------------------|-----------------------------|-----------------------------------------|
+| **auth**             | `pscale-auth`                    | 登录、登出、管理服务令牌                   |
+| **branch**             | `pscale-branch`                    | 创建、删除、升级数据库分支                   |
+| **deploy-request**         | `pscale-deploy-request`                | 创建、审核、部署数据库模式变更                 |
+| **database**           | `pscale-database`                   | 创建、列出、显示、删除数据库                   |
+| **backup**            | `pscale-backup`                    | 创建、列出、显示、删除数据库备份                   |
+| **password**           | `pscale-password`                    | 创建、列出、删除数据库连接密码                   |
+| **org**             | `pscale-org`                    | 列出、切换组织                         |
+| **service-token**        | `pscale-service-token`                | 创建和管理 CI/CD 服务令牌                   |
 
-## Decision Trees
+## 决策树
 
-### Should I use a branch or deploy request?
+### 应该使用“分支”还是“部署请求”？
 
 ```
 What's your goal?
@@ -48,7 +49,7 @@ What's your goal?
 └─ Reviewing schema changes before production → Review deploy request (pscale-deploy-request)
 ```
 
-### Service token vs password?
+### 服务令牌与密码，哪个更安全？
 
 ```
 What's your use case?
@@ -58,7 +59,7 @@ What's your use case?
 └─ One-off admin task → Password (temporary)
 ```
 
-### Direct promotion vs deploy request?
+### 直接升级数据库模式还是通过部署请求？
 
 ```
 Production readiness?
@@ -67,11 +68,11 @@ Production readiness?
 └─ Safe production deployment → Always use deploy requests
 ```
 
-## Common Workflows
+## 常见工作流程
 
-### Schema Migration Workflow
+### 数据库模式迁移流程
 
-Complete workflow from branch creation to production deployment:
+从创建分支到生产环境部署的完整流程：
 
 ```bash
 # 1. Create development branch
@@ -93,81 +94,16 @@ pscale deploy-request deploy <database> <deploy-request-number>
 pscale deploy-request show <database> <deploy-request-number>
 ```
 
-See `scripts/` directory for automation.
+自动化脚本请参见 `scripts/` 目录：
 
-### Branch Development Workflow
+- `create-branch-for-mr.sh`：根据 MR/PR 分支名称创建对应的 PlanetScale 分支
+- `deploy-schema-change.sh`：完成数据库模式迁移流程
+- `sync-branch-with-main.sh`：将开发分支与主分支同步
 
-```bash
-# Create branch from main
-pscale branch create <database> <feature-branch> --from main
+这些脚本在运行时无需加载额外环境信息（可节省约 90% 的令牌使用量）。
 
-# Work on schema changes
-pscale shell <database> <feature-branch>
+## 资源
 
-# Check diff before deploying
-pscale branch diff <database> <feature-branch>
-
-# Create deploy request when ready
-pscale deploy-request create <database> <feature-branch>
-```
-
-### CI/CD Integration
-
-```bash
-# Create service token for CI/CD
-pscale service-token create --org <org>
-
-# Use in CI/CD pipelines (GitHub Actions, GitLab CI, etc.)
-export PLANETSCALE_SERVICE_TOKEN_ID=<token-id>
-export PLANETSCALE_SERVICE_TOKEN=<token>
-
-# Deploy via CI/CD
-pscale deploy-request create <database> <branch> --auto-approve
-```
-
-## Quick Reference
-
-### Most Common Commands
-
-```bash
-# Authentication
-pscale auth login
-pscale auth logout
-
-# Branch management
-pscale branch create <database> <branch> [--from <source-branch>]
-pscale branch list <database>
-pscale branch delete <database> <branch>
-
-# Deploy requests
-pscale deploy-request create <database> <branch>
-pscale deploy-request list <database>
-pscale deploy-request deploy <database> <number>
-
-# Database operations
-pscale database create <database> --org <org>
-pscale database list
-pscale shell <database> <branch>
-```
-
-## Related Skills
-
-- **drizzle-kit** - ORM schema management and migrations
-- **gitlab-cli-skills** - GitLab MR workflow integration
-- **github** - GitHub PR and CI/CD integration
-
-## Automation Scripts
-
-See `scripts/` directory for token-efficient automation:
-
-- `create-branch-for-mr.sh` - Create PlanetScale branch matching your MR/PR branch name
-- `deploy-schema-change.sh` - Complete schema migration workflow
-- `sync-branch-with-main.sh` - Sync development branch with main
-
-Scripts execute without loading into context (~90% token savings).
-
-## Resources
-
-- Official docs: https://planetscale.com/docs/reference/planetscale-cli
-- GitHub: https://github.com/planetscale/cli
-- Community: https://github.com/planetscale/discussion
+- 官方文档：https://planetscale.com/docs/reference/planetscale-cli
+- GitHub 仓库：https://github.com/planetscale/cli
+- 社区论坛：https://github.com/planetscale/discussion

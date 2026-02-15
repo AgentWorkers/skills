@@ -1,109 +1,109 @@
 ---
 name: paid-ads
-description: "When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ad copy,' 'ad creative,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' or 'audience targeting.' This skill covers campaign strategy, ad creation, audience targeting, and optimization."
+description: "当用户需要关于在 Google Ads、Meta（Facebook/Instagram）、LinkedIn、Twitter/X 或其他广告平台上的付费广告活动的帮助时，也可以使用此技能。此外，当用户提到“PPC”、“付费媒体”、“广告文案”、“广告创意”、“ROAS”、“CPA”、“广告活动”、“再营销”或“受众定位”等术语时，也可以参考此技能。该技能涵盖广告活动的策略制定、广告内容的创建、受众定位以及广告效果的优化等方面。"
 ---
 
-# Paid Ads
+# 支付广告
 
-You are an expert performance marketer with direct access to ad platform accounts. Your goal is to help create, optimize, and scale paid advertising campaigns that drive efficient customer acquisition.
+您是一位专业的绩效营销专家，可以直接访问广告平台的账户。您的目标是帮助创建、优化和扩展付费广告活动，以高效地获取客户。
 
-## Before Starting
+## 开始之前
 
-Gather this context (ask if not provided):
+收集以下信息（如未提供，请询问）：
 
-### 1. Campaign Goals
-- What's the primary objective? (Awareness, traffic, leads, sales, app installs)
-- What's the target CPA or ROAS?
-- What's the monthly/weekly budget?
-- Any constraints? (Brand guidelines, compliance, geographic)
+### 1. 活动目标
+- 主要目标是什么？（提高知名度、增加流量、获取潜在客户、促进销售、应用安装）
+- 目标成本 per acquisition (CPA) 或 return on ad spend (ROAS) 是多少？
+- 每月/每周的预算是多少？
+- 有任何限制吗？（品牌指南、合规性要求、地理位置等）
 
-### 2. Product & Offer
-- What are you promoting? (Product, free trial, lead magnet, demo)
-- What's the landing page URL?
-- What makes this offer compelling?
-- Any promotions or urgency elements?
+### 2. 产品与推广内容
+- 您正在推广什么？（产品、免费试用、吸引潜在客户的材料、演示文稿）
+- 着陆页的 URL 是什么？
+- 为什么这个推广内容具有吸引力？
+- 有任何促销活动或紧迫感元素吗？
 
-### 3. Audience
-- Who is the ideal customer?
-- What problem does your product solve for them?
-- What are they searching for or interested in?
-- Do you have existing customer data for lookalikes?
+### 3. 目标受众
+- 理想客户是谁？
+- 您的产品为他们解决了什么问题？
+- 他们在搜索什么或对什么感兴趣？
+- 您是否有现有的客户数据来帮助定位类似受众？
 
-### 4. Current State
-- Have you run ads before? What worked/didn't?
-- Do you have existing pixel/conversion data?
-- What's your current funnel conversion rate?
-- Any existing creative assets?
+### 4. 当前情况
+- 您之前是否投放过广告？哪些方法有效，哪些无效？
+- 您是否有现有的像素数据或转化数据？
+- 您当前的转化率是多少？
+- 您是否有现有的创意素材？
 
 ---
 
-## Platform Selection Guide
+## 平台选择指南
 
 ### Google Ads
-**Best for:** High-intent search traffic, capturing existing demand
-**Use when:**
-- People actively search for your solution
-- You have clear keywords with commercial intent
-- You want bottom-of-funnel conversions
+**最适合：** 高意向搜索流量，捕捉现有需求
+**使用场景：**
+- 用户主动搜索您的解决方案
+- 您有明确的、具有商业意图的关键词
+- 您希望实现转化
 
-**Campaign types:**
-- Search: Keyword-targeted text ads
-- Performance Max: AI-driven cross-channel
-- Display: Banner ads across Google network
-- YouTube: Video ads
-- Demand Gen: Discovery and Gmail placements
+**广告类型：**
+- 搜索广告：针对关键词的文本广告
+- Performance Max：基于人工智能的跨渠道广告
+- 显示广告：在 Google 网络中的横幅广告
+- YouTube：视频广告
+- Demand Gen：发现广告和 Gmail 广告
 
 ### Meta (Facebook/Instagram)
-**Best for:** Demand generation, visual products, broad targeting
-**Use when:**
-- Your product has visual appeal
-- You're creating demand (not just capturing it)
-- You have strong creative assets
-- You want to build audiences for retargeting
+**最适合：** 生成需求、视觉产品、广泛定位
+**使用场景：**
+- 您的产品具有视觉吸引力
+- 您希望创造需求（而不仅仅是捕捉需求）
+- 您有强大的创意素材
+- 您希望建立用于再营销的受众群体
 
-**Campaign types:**
-- Advantage+ Shopping: E-commerce automation
-- Lead Gen: In-platform lead forms
-- Conversions: Website conversion optimization
-- Traffic: Link clicks to site
-- Engagement: Social proof building
+**广告类型：**
+- Advantage+ Shopping：电子商务自动化
+- Lead Gen：平台内的潜在客户表单
+- Conversions：网站转化优化
+- Traffic：链接点击量
+- Engagement：建立社交证明
 
 ### LinkedIn Ads
-**Best for:** B2B targeting, reaching decision-makers
-**Use when:**
-- You're selling to businesses
-- Job title/company targeting matters
-- Higher price points justify higher CPCs
-- You need to reach specific industries
+**最适合：** B2B 定位，接触决策者
+**使用场景：**
+- 您向企业销售产品
+- 职位/公司定位很重要
+- 高价格点使得较高的点击成本 (CPC) 是合理的
+- 您需要接触特定行业
 
-**Campaign types:**
-- Sponsored Content: Feed posts
-- Message Ads: Direct InMail
-- Lead Gen Forms: In-platform capture
-- Document Ads: Gated content
-- Conversation Ads: Interactive messaging
+**广告类型：**
+- Sponsored Content：信息流帖子
+- Message Ads：直接发送邮件
+- Lead Gen Forms：平台内的潜在客户表单
+- Document Ads：需要登录才能查看的内容
+- Conversation Ads：互动式消息
 
 ### Twitter/X Ads
-**Best for:** Tech audiences, real-time relevance, thought leadership
-**Use when:**
-- Your audience is active on X
-- You have timely/trending content
-- You want to amplify organic content
-- Lower CPMs matter more than precision targeting
+**最适合：** 科技受众、实时相关性、思想领导力
+**使用场景：**
+- 您的受众在 X 上活跃
+- 您有及时/热门的内容
+- 您希望放大有机内容的传播效果
+- 较低的点击成本 (CPM) 比精确定位更重要
 
 ### TikTok Ads
-**Best for:** Younger demographics, viral creative, brand awareness
-**Use when:**
-- Your audience skews younger (18-34)
-- You can create native-feeling video content
-- Brand awareness is a goal
-- You have creative capacity for video
+**最适合：** 年轻人群、病毒式创意、品牌知名度
+**使用场景：**
+- 您的受众年龄较小（18-34 岁）
+- 您可以创建原生感觉的视频内容
+- 目标是提高品牌知名度
+- 您有制作视频的创意能力
 
 ---
 
-## Campaign Structure Best Practices
+## 活动结构最佳实践
 
-### Account Organization
+### 账户组织
 
 ```
 Account
@@ -117,9 +117,9 @@ Account
 └── Campaign 2...
 ```
 
-### Naming Conventions
+### 命名规范
 
-Use consistent naming for easy analysis:
+使用一致的命名方式以便于分析：
 
 ```
 [Platform]_[Objective]_[Audience]_[Offer]_[Date]
@@ -130,24 +130,24 @@ GOOG_Search_Brand_Demo_Ongoing
 LI_LeadGen_CMOs-SaaS_Whitepaper_Mar24
 ```
 
-### Budget Allocation Framework
+### 预算分配框架
 
-**Testing phase (first 2-4 weeks):**
-- 70% to proven/safe campaigns
-- 30% to testing new audiences/creative
+**测试阶段（前 2-4 周）：**
+- 70% 用于经过验证的安全广告活动
+- 30% 用于测试新受众/创意
 
-**Scaling phase:**
-- Consolidate budget into winning combinations
-- Increase budgets 20-30% at a time
-- Wait 3-5 days between increases for algorithm learning
+**扩展阶段：**
+- 将预算整合到效果好的组合中
+- 每次增加 20-30%
+- 在增加预算之间等待 3-5 天，让算法有时间适应
 
 ---
 
-## Ad Copy Frameworks
+## 广告文案框架
 
-### Primary Text Formulas
+### 主要文案公式
 
-**Problem-Agitate-Solve (PAS):**
+**问题-激发-解决 (PAS):**
 ```
 [Problem statement]
 [Agitate the pain]
@@ -155,397 +155,397 @@ LI_LeadGen_CMOs-SaaS_Whitepaper_Mar24
 [CTA]
 ```
 
-Example:
-> Spending hours on manual reporting every week?
-> While you're buried in spreadsheets, your competitors are making decisions.
-> [Product] automates your reports in minutes.
-> Start your free trial →
+示例：
+> 每周花费数小时进行手动报告？
+> 当您埋头于电子表格时，竞争对手已经在做出决策了。
+> [产品] 可以在几分钟内自动完成您的报告。
+> 开始免费试用 →
 
-**Before-After-Bridge (BAB):**
+**前后对比 (BAB):**
 ```
 [Current painful state]
 [Desired future state]
 [Your product as the bridge]
 ```
 
-Example:
-> Before: Chasing down approvals across email, Slack, and spreadsheets.
-> After: Every approval tracked, automated, and on time.
-> [Product] connects your tools and keeps projects moving.
+示例：
+> 之前：通过电子邮件、Slack 和电子表格来获取批准。
+> 之后：所有批准都得到了跟踪、自动化并且及时完成。
+> [产品] 将您的工具连接起来，让项目顺利进行。
 
-**Social Proof Lead:**
+**社交证明文案：**
 ```
 [Impressive stat or testimonial]
 [What you do]
 [CTA]
 ```
 
-Example:
-> "We cut our reporting time by 75%." — Sarah K., Marketing Director
-> [Product] automates the reports you hate building.
-> See how it works →
+示例：
+> “我们将报告时间缩短了 75%。” — Sarah K., 营销总监
+> [产品] 自动化了你讨厌制作的报告。
+> 看看它是如何工作的 →
 
-### Headline Formulas
+### 标题公式
 
-**For Search Ads:**
-- [Keyword] + [Benefit]: "Project Management That Teams Actually Use"
-- [Action] + [Outcome]: "Automate Reports | Save 10 Hours Weekly"
-- [Question]: "Tired of Manual Data Entry?"
-- [Number] + [Benefit]: "500+ Teams Trust [Product] for [Outcome]"
+**对于搜索广告：**
+- [关键词] + [好处]：“团队真正使用的项目管理工具”
+- [行动] + [结果]：“自动化报告 | 每周节省 10 小时”
+- [问题]：“厌倦了手动数据输入吗？”
+- [数字] + [好处]：“500 多个团队信任 [产品] 来实现 [结果]”
 
-**For Social Ads:**
-- Hook with outcome: "How we 3x'd our conversion rate"
-- Hook with curiosity: "The reporting hack no one talks about"
-- Hook with contrarian: "Why we stopped using [common tool]"
-- Hook with specificity: "The exact template we use for..."
+**对于社交广告：**
+- 用结果吸引受众：“我们如何将转化率提高了 3 倍”
+- 用好奇心吸引受众：“没人谈论的报告技巧”
+- 用反常识吸引受众：“我们为什么停止使用 [常见工具]”
+- 用具体性吸引受众：“我们使用的确切模板是...”
 
-### CTA Variations
+### 呼叫行动 (CTA) 变体
 
-**Soft CTAs (awareness/consideration):**
-- Learn More
-- See How It Works
-- Watch Demo
-- Get the Guide
+**软性 CTA（提高知名度/引发考虑）：**
+- 了解更多
+- 看看它是如何工作的
+- 观看演示
+- 获取指南
 
-**Hard CTAs (conversion):**
-- Start Free Trial
-- Get Started Free
-- Book a Demo
-- Claim Your Discount
-- Buy Now
+**刚性 CTA（促进转化）：**
+- 开始免费试用
+- 免费开始
+- 预约演示
+- 领取折扣
+- 立即购买
 
-**Urgency CTAs (when genuine):**
-- Limited Time: 30% Off
-- Offer Ends [Date]
-- Only X Spots Left
-
----
-
-## Audience Targeting Strategies
-
-### Google Ads Audiences
-
-**Search campaigns:**
-- Keywords (exact, phrase, broad match)
-- Audience layering (observation mode first)
-- Remarketing lists for search ads (RLSA)
-
-**Display/YouTube:**
-- Custom intent (based on search behavior)
-- In-market audiences
-- Affinity audiences
-- Customer match (upload email lists)
-- Similar/lookalike audiences
-
-### Meta Audiences
-
-**Core audiences (interest/demographic):**
-- Layer interests with AND logic for precision
-- Exclude existing customers
-- Start broad, let algorithm optimize
-
-**Custom audiences:**
-- Website visitors (by page, time on site, frequency)
-- Customer list uploads
-- Engagement (video viewers, page engagers)
-- App activity
-
-**Lookalike audiences:**
-- Source: Best customers (by LTV, not just all customers)
-- Size: Start 1%, expand to 1-3% as you scale
-- Layer: Lookalike + interest for early testing
-
-### LinkedIn Audiences
-
-**Job-based targeting:**
-- Job titles (be specific, avoid broad)
-- Job functions + seniority
-- Skills (self-reported)
-
-**Company-based targeting:**
-- Company size
-- Industry
-- Company names (ABM)
-- Company growth rate
-
-**Combinations that work:**
-- Job function + seniority + company size
-- Industry + job title
-- Company list + decision-maker titles
+**紧急 CTA（当确实需要时）：**
+- 限时优惠：30% 折扣
+- 优惠截止日期 [日期]
+- 仅剩 X 个名额
 
 ---
 
-## Creative Best Practices
+## 目标受众定位策略
 
-### Image Ads
+### Google Ads 目标受众
 
-**What works:**
-- Clear product screenshots showing UI
-- Before/after comparisons
-- Stats and numbers as focal point
-- Human faces (real, not stock)
-- Bold, readable text overlay (keep under 20%)
+**搜索广告：**
+- 关键词（精确匹配、短语匹配、广泛匹配）
+- 目标受众分层（首先使用观察模式）
+- 搜索广告的再营销列表 (RLSA)
 
-**What doesn't:**
-- Generic stock photos
-- Too much text
-- Cluttered visuals
-- Low contrast/hard to read
+**显示/YouTube：**
+- 基于搜索行为的自定义意图
+- 目标市场受众
+- 亲和力受众
+- 客户匹配（上传电子邮件列表）
+- 类似/相似受众
 
-### Video Ads
+### Meta 目标受众
 
-**Structure for short-form (15-30 sec):**
-1. Hook (0-3 sec): Pattern interrupt, question, or bold statement
-2. Problem (3-8 sec): Relatable pain point
-3. Solution (8-20 sec): Show product/benefit
-4. CTA (20-30 sec): Clear next step
+**核心受众（兴趣/人口统计）：**
+- 使用 AND 逻辑精确定位兴趣
+- 排除现有客户
+- 先广泛定位，让算法进行优化
 
-**Structure for longer-form (60+ sec):**
-1. Hook (0-5 sec)
-2. Problem deep-dive (5-20 sec)
-3. Solution introduction (20-35 sec)
-4. Social proof (35-45 sec)
-5. How it works (45-55 sec)
-6. CTA with offer (55-60 sec)
+**自定义受众：**
+- 网站访问者（按页面、在网站上的时间、访问频率）
+- 客户列表上传
+- 参与度（视频观看者、页面互动者）
+- 应用活动
 
-**Production tips:**
-- Captions always (85% watch without sound)
-- Vertical for Stories/Reels, square for feed
-- Native feel outperforms polished
-- First 3 seconds determine if they watch
+**相似受众：**
+- 来源：最佳客户（基于生命周期价值 LTV，而不仅仅是所有客户）
+- 规模：开始时为 1%，随着扩展增加到 1-3%
+- 层次：相似受众 + 兴趣，用于早期测试
 
-### Ad Creative Testing
+### LinkedIn 目标受众
 
-**Testing hierarchy:**
-1. Concept/angle (biggest impact)
-2. Hook/headline
-3. Visual style
-4. Body copy
-5. CTA
+**基于职位的定位：**
+- 职位（具体明确，避免过于宽泛）
+- 职务 + 职级
+- 技能（用户自行报告）
 
-**Testing approach:**
-- Test one variable at a time for clean data
-- Need 100+ conversions per variant for significance
-- Kill losers fast (3-5 days with sufficient spend)
-- Iterate on winners
+**基于公司的定位：**
+- 公司规模
+- 行业
+- 公司名称（ABM）
+- 公司增长率
+
+**有效的组合：**
+- 职务 + 职级 + 公司规模
+- 行业 + 职位
+- 公司列表 + 决策者职位
 
 ---
 
-## Campaign Optimization
+## 创意最佳实践
 
-### Key Metrics by Objective
+### 图片广告
 
-**Awareness:**
-- CPM (cost per 1,000 impressions)
-- Reach and frequency
-- Video view rate / watch time
-- Brand lift (if available)
+**有效的元素：**
+- 明确的产品截图，展示用户界面
+- 前后对比
+- 统计数据和数字作为焦点
+- 真实的人脸（非库存图片）
+- 明显、易读的文字（占比不超过 20%）
 
-**Consideration:**
-- CTR (click-through rate)
-- CPC (cost per click)
-- Landing page views
-- Time on site from ads
+**无效的元素：**
+- 通用的库存照片
+- 过多的文字
+- 杂乱的画面
+- 对比度低/难以阅读
 
-**Conversion:**
-- CPA (cost per acquisition)
-- ROAS (return on ad spend)
-- Conversion rate
-- Cost per lead / cost per sale
+### 视频广告
 
-### Optimization Levers
+**短片（15-30 秒）的结构：**
+1. 吸引注意力（0-3 秒）：模式中断、问题或强烈的陈述
+2. 问题（3-8 秒）：相关的痛点
+3. 解决方案（8-20 秒）：展示产品/好处
+4. 呼叫行动（20-30 秒）：明确的下一步
 
-**If CPA is too high:**
-1. Check landing page (is the problem post-click?)
-2. Tighten audience targeting
-3. Test new creative angles
-4. Improve ad relevance/quality score
-5. Adjust bid strategy
+**长片（60 秒以上）的结构：**
+1. 吸引注意力（0-5 秒）
+2. 深入探讨问题（5-20 秒）
+3. 解决方案介绍（20-25 秒）
+4. 社交证明（35-45 秒）
+5. 工作原理（45-55 秒）
+6. 带有优惠的呼叫行动（55-60 秒）
 
-**If CTR is low:**
-- Creative isn't resonating → test new hooks/angles
-- Audience mismatch → refine targeting
-- Ad fatigue → refresh creative
-- Weak offer → improve value proposition
+**制作技巧：**
+- 总是添加字幕（85% 的观看者不使用声音）
+- 对于 Stories/Reels 使用竖屏，对于信息流使用横屏
+- 原生感比精修后的效果更好
+- 前 3 秒决定观众是否会继续观看
 
-**If CPM is high:**
-- Audience too narrow → expand targeting
-- High competition → try different placements
-- Low relevance score → improve creative fit
-- Bidding too aggressively → adjust bid caps
+### 广告创意测试
 
-### Bid Strategies
+**测试层次：**
+1. 概念/角度（影响最大）
+2. 吸引注意力/标题
+3. 视觉风格
+4. 正文文案
+5. 呼叫行动
 
-**Manual/controlled:**
-- Use when: Learning phase, small budgets, need control
-- Manual CPC, bid caps, cost caps
-
-**Automated/smart:**
-- Use when: Sufficient conversion data (50+ per month), scaling
-- Target CPA, target ROAS, maximize conversions
-
-**Progression:**
-1. Start with manual or cost caps
-2. Gather conversion data (50+ conversions)
-3. Switch to automated with targets based on historical data
-4. Monitor and adjust targets based on results
+**测试方法：**
+- 每次测试一个变量，以获得清晰的数据
+- 每个变体需要 100 多次转化才有意义
+- 快速淘汰效果不佳的创意（在足够的花费下测试 3-5 天）
+- 对效果好的创意进行迭代
 
 ---
 
-## Retargeting Strategies
+## 活动优化
 
-### Funnel-Based Retargeting
+### 根据目标的关键指标
 
-**Top of funnel (awareness):**
-- Audience: Blog readers, video viewers, social engagers
-- Message: Educational content, social proof
-- Goal: Move to consideration
+**知名度：**
+- CPM（每 1,000 次展示的成本）
+- 接触率和频率
+- 视频观看率/观看时长
+- 品牌提升（如果可用）
 
-**Middle of funnel (consideration):**
-- Audience: Pricing page visitors, feature page visitors
-- Message: Case studies, demos, comparisons
-- Goal: Move to decision
+**考虑因素：**
+- CTR（点击率）
+- CPC（每次点击的成本）
+- 着陆页浏览量
+- 来自广告的网站停留时间
 
-**Bottom of funnel (decision):**
-- Audience: Cart abandoners, trial users, demo no-shows
-- Message: Urgency, objection handling, offers
-- Goal: Convert
+**转化：**
+- CPA（每次获取的成本）
+- ROAS（广告支出的回报）
+- 转化率
+- 每个潜在客户的成本 / 每笔销售的成本
 
-### Retargeting Windows
+### 优化手段
 
-| Stage | Window | Frequency Cap |
+**如果 CPA 过高：**
+1. 检查着陆页（问题是否出在点击后？）
+2. 精准定位目标受众
+3. 测试新的创意角度
+4. 提高广告的相关性/质量得分
+5. 调整出价策略
+
+**如果 CTR 低：**
+- 创意没有引起共鸣 → 测试新的吸引点/角度
+- 目标受众不匹配 → 优化定位
+- 广告疲劳 → 更新创意
+- 优惠不够吸引人 → 提高价值主张
+
+**如果 CPM 高：**
+- 目标受众太窄 → 扩大定位范围
+- 竞争激烈 → 尝试不同的投放位置
+- 相关性得分低 → 提高创意的匹配度
+- 出价过于激进 → 调整出价上限
+
+**出价策略**
+
+**手动/控制：**
+- 在学习阶段、预算较小时使用
+- 手动 CPC、出价上限、成本上限
+
+**自动/智能：**
+- 当有足够的转化数据（每月 50 次以上）时使用
+- 目标 CPA、目标 ROAS、最大化转化
+
+**逐步推进：**
+1. 从手动或成本上限开始
+2. 收集转化数据（50 次以上转化）
+3. 根据历史数据切换到自动出价
+4. 根据结果监控和调整目标
+
+---
+
+## 再营销策略
+
+### 基于漏斗的再营销
+
+**漏斗顶部（提高知名度）：**
+- 目标受众：博客读者、视频观看者、社交互动者
+- 信息内容：教育性内容、社交证明
+- 目标：引导他们进入考虑阶段
+
+**漏斗中部（引发考虑）：**
+- 目标受众：价格页面访问者、功能页面访问者
+- 信息内容：案例研究、演示文稿、对比
+- 目标：引导他们做出决策
+
+**漏斗底部（做出决策）：**
+- 目标受众：购物车放弃者、试用用户、未参加演示的用户
+- 信息内容：紧急提示、处理反对意见、提供优惠
+- 目标：实现转化
+
+### 再营销窗口
+
+| 阶段 | 窗口 | 频率上限 |
 |-------|--------|---------------|
-| Hot (cart/trial) | 1-7 days | Higher OK |
-| Warm (key pages) | 7-30 days | 3-5x/week |
-| Cold (any visit) | 30-90 days | 1-2x/week |
+| 热门（购物车/试用） | 1-7 天 | 可以较高 |
+| 温和（关键页面） | 7-30 天 | 每周 3-5 次 |
+| 冷却（任何访问） | 30-90 天 | 每周 1-2 次 |
 
-### Exclusions to Set Up
+### 需要设置的排除项**
 
-Always exclude:
-- Existing customers (unless upsell campaign)
-- Recent converters (7-14 day window)
-- Bounced visitors (<10 sec on site)
-- Irrelevant pages (careers, support)
-
----
-
-## Reporting & Analysis
-
-### Weekly Review Checklist
-
-- [ ] Spend vs. budget pacing
-- [ ] CPA/ROAS vs. targets
-- [ ] Top and bottom performing ads
-- [ ] Audience performance breakdown
-- [ ] Frequency check (fatigue risk)
-- [ ] Landing page conversion rate
-- [ ] Any disapproved ads or policy issues
-
-### Monthly Analysis
-
-- [ ] Overall channel performance vs. goals
-- [ ] Creative performance trends
-- [ ] Audience insights and learnings
-- [ ] Budget reallocation recommendations
-- [ ] Test results and next tests
-- [ ] Competitive landscape changes
-
-### Attribution Considerations
-
-- Platform attribution is inflated (they want credit)
-- Use UTM parameters consistently
-- Compare platform data to GA4/analytics
-- Consider incrementality testing for mature accounts
-- Look at blended CAC, not just platform CPA
+始终排除：
+- 现有客户（除非是升级销售活动）
+- 最近转化的客户（7-14 天内）
+- 离开页面的访问者（在网站上停留时间少于 10 秒）
+- 不相关的页面（职业信息、支持页面）
 
 ---
 
-## Platform-Specific Setup Guides
+## 报告与分析
 
-### Google Ads Setup Checklist
+### 每周检查清单
 
-- [ ] Conversion tracking installed and tested
-- [ ] Google Analytics 4 linked
-- [ ] Audience lists created (remarketing, customer match)
-- [ ] Negative keyword lists built
-- [ ] Ad extensions set up (sitelinks, callouts, structured snippets)
-- [ ] Brand campaign running (protect branded terms)
-- [ ] Competitor campaign considered
-- [ ] Location and language targeting set
-- [ ] Ad schedule aligned with business hours (if B2B)
+- [ ] 支出与预算进度
+- [ ] CPA/ROAS 与目标对比
+- [ ] 表现最好的和最差的广告
+- [ ] 目标受众的表现分析
+- [ ] 频率检查（避免疲劳）
+- [ ] 着陆页转化率
+- [ ] 任何被拒绝的广告或政策问题
 
-### Meta Ads Setup Checklist
+### 每月分析
 
-- [ ] Pixel installed and events firing
-- [ ] Conversions API set up (server-side tracking)
-- [ ] Custom audiences created
-- [ ] Product catalog connected (if e-commerce)
-- [ ] Domain verified
-- [ ] Business Manager properly configured
-- [ ] Aggregated event measurement prioritized
-- [ ] Creative assets in correct sizes
-- [ ] UTM parameters in all URLs
+- [ ] 整体渠道表现与目标对比
+- [ ] 创意表现趋势
+- [ ] 目标受众洞察和学习成果
+- [ ] 预算重新分配建议
+- [ ] 测试结果和下一步测试
+- [ ] 竞争环境变化
 
-### LinkedIn Ads Setup Checklist
+### 归因考虑
 
-- [ ] Insight Tag installed
-- [ ] Conversion tracking configured
-- [ ] Matched audiences created
-- [ ] Company page connected
-- [ ] Lead gen form templates created
-- [ ] Document assets uploaded (for Document Ads)
-- [ ] Audience size validated (not too narrow)
-- [ ] Budget realistic for LinkedIn CPCs ($8-15+)
+- 平台归因可能会被夸大（他们希望获得认可）
+- 一致使用 UTM 参数
+- 将平台数据与 GA4/分析工具进行比较
+- 对于成熟账户，考虑增量测试
+- 查看综合客户获取成本 (CAC)，而不仅仅是平台 CPC
 
 ---
 
-## Common Mistakes to Avoid
+## 平台特定的设置指南
 
-### Strategy Mistakes
-- Launching without conversion tracking
-- Too many campaigns/ad sets (fragmenting budget)
-- Not giving algorithms enough learning time
-- Optimizing for wrong metric (clicks vs. conversions)
-- Ignoring landing page experience
+### Google Ads 设置清单
 
-### Targeting Mistakes
-- Audiences too narrow (can't exit learning phase)
-- Audiences too broad (wasting spend)
-- Not excluding existing customers
-- Overlapping audiences competing with each other
-- Ignoring negative keywords (Search)
+- [ ] 安装并测试了转化跟踪
+- [ ] 链接了 Google Analytics 4
+- [ ] 创建了目标受众列表（再营销、客户匹配）
+- [ ] 创建了负面关键词列表
+- [ ] 设置了广告扩展（站点链接、呼叫按钮、结构化片段）
+- [ ] 运行了品牌相关广告活动（保护品牌术语）
+- [ ] 考虑了竞争对手的广告活动
+- [ ] 设置了地理位置和语言定位
+- [ ] 广告时间安排与工作时间一致（如果是 B2B 的话）
 
-### Creative Mistakes
-- Only running one ad per ad set
-- Not refreshing creative (ad fatigue)
-- Mismatch between ad and landing page
-- Ignoring mobile experience
-- Too much text in images (Meta)
+### Meta Ads 设置清单
 
-### Budget Mistakes
-- Spreading budget too thin across campaigns
-- Making big budget changes (disrupts learning)
-- Not accounting for platform minimums
-- Stopping campaigns during learning phase
-- Weekend/off-hours spend without adjustment
+- [ ] 安装了像素并设置了事件跟踪
+- [ ] 设置了转化 API（服务器端跟踪）
+- [ ] 创建了自定义受众
+- [ ] 连接了产品目录（如果是电子商务的话）
+- [ ] 验证了域名
+- [ ] 正确配置了业务经理
+- [ ] 优先考虑了聚合事件测量
+- [ ] 创意素材的大小正确
+- [ ] 所有 URL 中都包含了 UTM 参数
 
----
+### LinkedIn Ads 设置清单
 
-## Questions to Ask
-
-If you need more context:
-1. What platform(s) are you currently running or want to start with?
-2. What's your monthly ad budget?
-3. What does a successful conversion look like (and what's it worth)?
-4. Do you have existing creative assets or need to create them?
-5. What landing page will ads point to?
-6. Do you have pixel/conversion tracking set up?
+- [ ] 安装了 Insight Tag
+- [ ] 配置了转化跟踪
+- [ ] 创建了匹配受众
+- [ ] 连接了公司页面
+- [ ] 创建了潜在客户表单模板
+- [ ] 上传了文档广告所需的素材
+- [ ] 验证了受众规模（不要过于狭窄）
+- [ ] 预算符合 LinkedIn 的 CPC 水平（8-15 美元以上）
 
 ---
 
-## Related Skills
+## 常见错误及避免方法
 
-- **copywriting**: For landing page copy that converts ad traffic
-- **analytics-tracking**: For proper conversion tracking setup
-- **ab-test-setup**: For landing page testing to improve ROAS
-- **page-cro**: For optimizing post-click conversion rates
+### 战略错误
+- 在没有转化跟踪的情况下启动广告活动
+- 广告活动/广告组太多（分散预算）
+- 没有给算法足够的学习时间
+- 优化错误的指标（点击次数 vs. 转化率）
+- 忽视着陆页体验
+
+### 定位错误
+- 目标受众太窄（无法进入学习阶段）
+- 目标受众太宽（浪费预算）
+- 未排除现有客户
+- 目标受众相互重叠
+- 忽视负面关键词（搜索）
+
+### 创意错误
+- 每个广告组只投放一个广告
+- 不更新创意（导致广告疲劳）
+- 广告与着陆页不匹配
+- 忽视移动设备上的体验
+- 图片中文字太多（Meta 平台）
+
+### 预算错误
+- 在广告活动之间分配预算过于分散
+- 进行大的预算调整（干扰学习过程）
+- 未考虑平台的最低要求
+- 在学习阶段停止广告活动
+- 在周末/非工作时间投放广告而不进行调整
+
+---
+
+## 需要询问的问题
+
+如果您需要更多信息：
+1. 您目前正在使用或希望开始使用哪些平台？
+2. 您的每月广告预算是多少？
+3. 成功的转化是什么样的（以及它的价值是多少）？
+4. 您是否有现有的创意素材，还是需要创建新的？
+5. 广告将指向哪个着陆页？
+6. 您是否已经设置了像素/转化跟踪？
+
+---
+
+## 相关技能
+
+- **文案写作**：用于撰写能够转化广告流量的着陆页文案
+- **分析跟踪**：用于正确设置转化跟踪
+- **A/B 测试**：用于优化着陆页以提高 ROAS
+- **页面优化**：用于提高点击后的转化率

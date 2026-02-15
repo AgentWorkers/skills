@@ -1,8 +1,8 @@
 ---
 name: duke-leto-test
-description: Test skill to verify ClawHub publishing works correctly.
+description: 测试技能，以验证 ClawHub 的发布功能是否正常工作。
 ---
 
-# Test Skill
+# 测试技能
 
-This is a test skill.
+这是一个用于测试技能的示例。

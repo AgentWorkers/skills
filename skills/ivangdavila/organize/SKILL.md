@@ -1,114 +1,82 @@
 ---
 name: Organize
-description: Proactively organize while working. Learn user's structure preferences, think ahead for scale, optimize for future access.
+description: 在工作中要主动进行组织规划。了解用户的使用习惯和偏好，提前考虑系统未来的扩展性，并优化系统的可访问性（即确保用户能够方便地使用系统）。
 ---
 
-## Core Principle
+## 核心原则
 
-Organization isn't a separate task—it happens while you work. Every file created, every folder touched is an opportunity to improve structure.
+组织工作并非一项独立的任务——它是在你日常工作的过程中自然发生的。每一个创建的文件、每一个被修改的文件夹，都是优化文件结构的机会。
 
-Think ahead: how will this scale? How will it be accessed later? Organize for the future, not just today.
+提前思考：这些文件将来如何扩展？将来如何被访问？要为未来进行规划，而不仅仅是着眼于当下。
 
-Check `principles.md` for organization fundamentals. Check `patterns.md` for learned preferences (update as you learn).
+请查阅 `principles.md` 以了解组织工作的基本原则；同时，也可以参考 `patterns.md` 中记录下来的最佳实践（根据你的学习情况随时更新这些内容）。
 
 ---
 
-## Proactive Triggers
+## 主动触发机制
 
-Organize when you notice:
+当你发现以下情况时，应立即进行文件结构的优化：
 
-| Trigger | Action |
+| 触发条件 | 应采取的行动 |
 |---------|--------|
-| Creating new file | Propose location based on patterns.md |
-| Multiple related files | Suggest grouping structure |
-| Naming something | Apply naming conventions from patterns.md |
-| Searching takes effort | Propose reorganization |
-| Pattern emerging | Document in patterns.md, confirm with user |
+| 创建新文件 | 根据 `patterns.md` 中的规范来建议文件存放位置 |
+| 多个相关文件存在 | 建议对这些文件进行分组 |
+| 需要为某个文件命名 | 依照 `patterns.md` 中的命名规则来命名 |
+| 搜索文件变得困难 | 提出重新组织文件结构的建议 |
+| 发现新的文件组织模式 | 将该模式记录在 `patterns.md` 中，并与相关用户确认 |
 
 ---
 
-## The Organization Loop
+## 文件结构优化循环
 
-```
-1. OBSERVE — Notice structure while working
-2. PROPOSE — Suggest improvement before acting
-3. CONFIRM — Get explicit OK (until pattern confirmed)
-4. APPLY   — Organize, document what you did
-5. LEARN   — Record preference in patterns.md
-```
-
-**Never reorganize without asking.** Until a pattern is confirmed, always propose first.
+**未经确认，切勿擅自重新组织文件结构。** 在任何新的文件组织模式被正式确认之前，务必先提出建议。
 
 ---
 
-## Scale Thinking
+## 规模扩展思维
 
-Before placing anything, ask:
+在放置任何文件或模块之前，先思考以下问题：
 
-- **10x test:** If this grows 10x, does the structure hold?
-- **Access pattern:** How will this be found later? By whom?
-- **Related items:** What will live near this? Group accordingly.
-- **Lifecycle:** Will this be archived? Deleted? Versioned?
-
----
-
-## Proposal Format
-
-```
-📁 Organization suggestion
-
-I'm about to [create/move/rename] [item].
-
-Current: [where it would go by default]
-Proposed: [where it should go based on patterns]
-
-Reasoning: [why this structure scales better]
-
-OK to organize this way? (Say "always for X" to skip future asks)
-```
+- **扩展性测试**：如果系统规模扩大10倍，当前的文件结构是否仍然适用？
+- **访问路径**：将来如何方便地访问这些文件？需要由谁来访问？
+- **相关文件**：哪些文件应该与当前文件放在一起？根据它们的关联性进行分组。
+- **文件生命周期**：这些文件是需要归档、删除还是需要版本控制？
 
 ---
 
-## Learning Preferences
+## 建议格式
 
-Track confirmations:
+---
 
-| Pattern | Status |
+## 学习与优化过程
+
+记录你的学习成果：
+
+| 观察到的文件组织模式 | 当前状态 |
 |---------|--------|
-| Seen once | Note, still ask |
-| Confirmed 2x | Tentative, still ask |
-| "Always do this" | Auto-apply, stop asking |
-| "Never do this" | Avoid, record in patterns.md |
+| 只被观察到一次 | 记录下来，但仍需进一步确认 |
+| 被确认过两次 | 这个模式暂时可行，但仍需确认 |
+| “始终应该这样做” | 自动应用该模式，无需再询问 |
+| “绝对不应该这样做” | 避免使用该模式，并将其记录在 `patterns.md` 中 |
 
 ---
 
-## Reorganization Proposals
+## 文件结构优化建议
 
-When existing structure needs improvement:
-
-```
-📁 Reorganization proposal
-
-Problem: [what's inefficient now]
-Impact: [how it affects access/scale]
-
-Proposed change:
-- [specific moves/renames]
-
-Effort: [minimal/moderate/significant]
-Risk: [what could break]
-
-Should I proceed?
-```
+当现有文件结构需要改进时，可以按照以下步骤提出优化方案：
 
 ---
 
-## Anti-Patterns
+## 需避免的错误做法
 
-| Don't | Do instead |
+以下是一些在文件结构优化过程中应该避免的行为：
+
+| 应避免的做法 | 应采取的正确做法 |
 |-------|------------|
-| Reorganize silently | Always propose first |
-| Organize in bulk later | Organize while working |
-| Structure for today only | Think 10x ahead |
-| Assume preferences | Confirm, then record |
-| Same structure for everything | Adapt to content type |
+| 在未经确认的情况下擅自重新组织文件结构 | 在提出任何修改建议之前，务必先确认相关规则 |
+| 等待所有文件都准备好后再进行批量优化 | 在实际使用过程中随时根据需要调整文件结构 |
+| 只考虑当前的文件使用需求来组织文件结构 | 要考虑文件未来的扩展性和使用场景 |
+| 机械地套用固定的结构规则 | 根据文件的实际类型和用途来灵活调整结构 |
+| 假定所有文件的优先级或使用方式都相同 | 根据文件的具体内容来选择合适的组织方式 |
+
+---

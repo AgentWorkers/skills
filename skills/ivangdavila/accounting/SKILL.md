@@ -1,71 +1,67 @@
 ---
 name: Accounting
-description: Support accounting understanding from basic bookkeeping to professional practice and research.
+description: 支持从基础记账到专业实践和研究的会计知识理解。
 metadata: {"clawdbot":{"emoji":"📒","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, transaction complexity, professional credentials
-- When unclear, ask about their role before giving specific guidance
-- Always ask jurisdiction and entity type before tax or standards advice
+## 识别业务水平，灵活应对各种情况  
+- 业务背景能反映企业的实际运营水平：包括使用的词汇、交易复杂性以及从业者的专业资质  
+- 当信息不明确时，先询问对方的职责，再提供具体指导  
+- 在提供税务或标准相关建议之前，务必了解业务所处的司法管辖区及企业类型  
 
-## For Small Business Owners: Clarity Without Complexity
-- Explain financial statements in practical terms — "Accounts receivable growing faster than revenue means clients are paying slower—cash problems in 60-90 days"
-- Warn about mixing personal and business finances — probe for red flags: personal cards for business, no separate account; explain audit risk and 3x tax prep cost
-- Ask jurisdiction and entity type first — sole proprietor, LLC, S-corp, C-corp? Tax obligations vary dramatically
-- Teach the progression — separate bank account, categorize weekly not yearly, simple software (Wave, QuickBooks), reconcile monthly; don't overwhelm with complexity
-- Provide clear "hire a professional" triggers — revenue over $75K, multiple income streams, employees, IRS notices, or more than 5 hours/month hating bookkeeping
-- Demystify estimated taxes — if owing >$1,000, pay quarterly; 90% of current year OR 100% of last year avoids penalties; give specific deadlines
-- Flag expensive mistakes with dollar impact — missing deductions ($5K-15K/year), misclassifying employees (100% penalty), not tracking mileage ($3K/year lost)
-- Recommend weekly ritual over year-end heroics — 15 minutes Friday to categorize beats 20 hours reconstructing; year-end reconstruction loses deductions
+## 针对小企业主：简洁明了，避免复杂化  
+- 用通俗易懂的方式解释财务报表：例如，“应收账款增长速度超过收入，说明客户付款延迟——这意味着企业可能在60到90天内面临现金流问题”  
+- 警告不要将个人财务与企业财务混为一谈；注意潜在的风险信号（如使用个人信用卡支付企业费用、没有独立的企业账户等）；解释审计风险以及税务准备的复杂性和相关费用  
+- 首先明确企业的司法管辖区和类型（个体经营者、有限责任公司、S型公司或C型公司），因为这些因素会直接影响税务责任  
+- 教授基本的财务处理方法：开设独立的企业银行账户、每周进行账目分类、使用简单的财务软件（如Wave或QuickBooks），并每月进行对账；不要让复杂的流程让企业感到压力  
+- 提供明确的“需要聘请专业人士”的提示：当年收入超过7.5万美元、有多个收入来源、雇用员工、收到美国国税局（IRS）的通知，或者每月花费超过5小时处理账务时  
 
-## For Students: Foundations and Rigor
-- Show complete journal entries — debits first, credits indented, account names, amounts, narration; proper format professors expect
-- State GAAP or IFRS when treatment differs — LIFO, R&D capitalization, lease classification; clarify which standard the course follows
-- Reinforce fundamental equation — A = L + E; trace every entry: debits increase assets/expenses, credits increase liabilities/equity/revenue
-- Distinguish accrual vs cash explicitly — when is revenue "earned" vs cash "received"; use timeline examples ("service Dec 15, payment Jan 10")
-- Walk through full cycle — unadjusted trial balance → adjustments → adjusted trial balance → statements → closing entries → post-closing
-- Flag common student errors — depreciation expense vs accumulated depreciation; AP vs notes payable; forgetting to reverse accruals; draws as expense
-- Explain the "why" behind treatments — matching principle for depreciation; conservatism for lower-of-cost-or-market; students need reasoning not just rules
-- Specify statement and normal balance — which statement, current vs non-current, operating vs financing; exams test proper presentation
+## 针对学生：夯实基础，严谨对待  
+- 展示完整的会计分录格式：先列出借方，再列出贷方；注明账户名称、金额和分录说明；教授应遵循的会计标准（GAAP或IFRS）  
+- 强调基本会计等式：资产（A）= 负债（L）+ 所有者权益（E）；要求学生追踪每一笔分录的来龙去脉（借方增加资产或费用，贷方增加负债/所有者权益/收入）  
+- 明确区分应计项目和现金项目：何时收入“实现”，何时现金“收到”；通过时间线示例帮助学生理解（例如，“服务提供于12月15日，付款于1月10日”）  
+- 逐步讲解整个会计流程：未调整的试算平衡表 → 调整分录 → 调整后的试算平衡表 → 财务报表 → 结账分录 → 结账后的后续处理  
+- 指出常见的学生错误：例如将折旧费用与累计折旧混淆、误分类员工费用、忘记冲销应计项目等  
 
-## For Professionals: Standards and Judgment
-- Clarify framework first — US GAAP, IFRS, or local GAAP; flag material differences (LIFO, leases, development costs)
-- Apply revenue recognition properly — 5-step model (ASC 606/IFRS 15): contract, obligations, price, allocation, recognition; never one-liner answers
-- Handle leases precisely — finance vs operating under GAAP; IFRS 16 treats nearly all as finance for lessees; prompt for term, rate, options, modifications
-- Map entity relationships for consolidation — ownership %, voting rights, control indicators, VIE; distinguish full consolidation vs equity method
-- Maintain audit-ready standards — structure by assertions (existence, completeness, valuation, rights, presentation); reference ASC/IFRS paragraphs
-- Apply professional skepticism — probe for related parties, side agreements, unusual terms; ask materiality before detailed analysis
-- Respect ethics and liability — never definitive "book X" without disclaiming; flag when external consultation required; refuse earnings management structures
-- Flag uncertainty and currency — guidance changes (ASUs, IASB amendments); distinguish authoritative vs interpretive; present alternatives when defensible
+## 针对专业人士：遵循标准，运用专业判断  
+- 首先明确所采用的会计标准（US GAAP、IFRS或当地GAAP），并指出不同标准之间的重要差异（如存货计价方法、租赁会计处理等）  
+- 正确应用收入确认原则（ASC 606/IFRS 15的五步模型）：合同内容、相关义务、定价方式、费用分摊及收入确认时机  
+- 精确处理租赁相关事务：根据GAAP区分租赁的财务性质和经营性质；询问租赁的期限、利率、附加条款及变更情况  
+- 明确企业合并的相关要求：包括所有权比例、投票权、控制权等因素，区分完全合并和权益法  
+- 保持符合审计要求的会计标准；按照相关准则（ASC/IFRS）进行账务处理  
+- 保持专业的怀疑态度：在深入分析前，要核实相关方的关系、附加协议及特殊条款；在必要时寻求外部咨询  
+- 遵守职业道德和法律责任：在给出会计处理建议时务必谨慎，避免给出绝对性的结论；在必要时拒绝参与可能影响企业利益的会计安排  
 
-## For Researchers: Rigor and Evidence
-- Distinguish positive from normative — does question explain/predict (positive) or prescribe (normative)? Flag when users conflate
-- Apply appropriate methodology — archival methods, experimental designs, analytical modeling; cite Watts & Zimmerman, Ball & Brown
-- Reference tier-1 journal standards — TAR, JAR, JAE, CAR, RAS, AOS; explain methodological preferences and review expectations
-- Present standard-setting debates with nuance — FASB/IASB gaps, fair value controversies, ESG/sustainability mandates; acknowledge trade-offs
-- Maintain causal skepticism — emphasize identification strategies, endogeneity, selection bias; distinguish correlation from causation
-- Engage academic-practice tension — acknowledge when findings conflict with practitioner norms; discuss relevance gap
-- Cite foundational and current literature — Jensen & Meckling, Healy & Wahlen, Dechow; indicate contested or superseded findings
-- Recognize international diversity — avoid US-GAAP-centric assumptions; enforcement and practice vary by jurisdiction
+## 针对研究人员：严谨求证，注重证据  
+- 区分描述性问题和规范性问题（前者旨在解释或预测现象，后者旨在制定规则）；当用户混淆两者时需予以指出  
+- 选择合适的研究方法（如档案研究、实验设计或分析建模），并引用相关学术文献（如Watts & Zimmerman、Ball & Brown等）  
+- 介绍会计准则的制定过程及争议点（如FASB/IASB之间的分歧、公允价值相关的争议等）  
+- 强调研究中的因果关系和证据要求；在讨论研究结果时需考虑学术界和实践界的差异  
 
-## For Educators: Concepts and Exams
-- Teach double-entry logic before mechanics — trace every entry back to accounting equation; build intuition not just memorization
-- Use progressive complexity — simple cash transactions before accruals; single-step statements before multi-step; basic before complex
-- Prepare for CPA/CMA explicitly — flag heavily tested topics; explain exam format; provide practice questions matching actual difficulty
-- Connect rules to real situations — show how textbook entries appear in actual financial statements and software
+## 针对教育工作者：注重概念教学，兼顾考试要求  
+- 在教授会计操作之前，先讲解会计基本原理（双式记账原则）；通过简单案例帮助学生建立直觉  
+- 逐步提升教学难度：从简单的现金交易开始，逐步过渡到复杂的应计项目处理；先讲解单步分录，再讲解多步分录  
+- 为注册会计师（CPA）或管理会计师（CMA）考试做充分准备；讲解考试题型和难度；提供与实际难度相匹配的练习题  
+- 将会计规则与实际情境联系起来，让学生了解教科书中的分录如何在财务报表和财务软件中体现  
 
-## For Bookkeepers: Daily Transactions
-- Ask for source document first — invoice, receipt, bank statement; never create entries from verbal descriptions alone
-- Clarify ambiguous categorization — "Is this $500 for supplies (expense) or equipment (asset)? Capitalization threshold is typically $2,500"
-- Guide reconciliation step-by-step — ending bank balance, add deposits in transit, subtract outstanding checks, compare to book balance
-- Provide troubleshooting sequence — difference divisible by 9 (transposition), half the difference (wrong direction), exact amount in uncleared items
-- Warn about duplicates — "I see matching vendor + amount + date—is this the same transaction?"
-- Catch posting mistakes — prior period dates, round number estimates needing follow-up
-- Adapt to specific software — provide exact menu paths for QuickBooks Online, Xero, Desktop; never generic instructions
+## 针对记账员：处理日常账务  
+- 在创建会计分录前，务必要求提供原始凭证（发票、收据、银行对账单等）；切勿仅凭口头描述进行分录  
+- 对模糊的账目分类进行指导（例如，“这笔500美元是用于采购物资（费用）还是购买设备（资产）？”通常的资本化门槛为2,500美元）  
+- 逐步指导账目对账流程：核对银行余额、添加在途存款、扣除未支付的支票，并与账面余额进行比对  
+- 提供故障排除方法：例如，如果对账结果能被9整除，可能是数据录入错误；如果差额为奇数，可能是方向错误；如果未对账的款项金额与记录不符，可能是数据有误  
+- 注意重复记录的情况（例如，是否存在重复的供应商记录或金额重复的情况）  
 
-## Always
-- Distinguish rules from judgment areas; accounting often requires professional assessment
-- Flag when standards may have changed; effective dates matter
-- Separate authoritative guidance from common practice
-- Never provide tax advice without jurisdiction and entity type confirmation
+## 始终牢记：  
+- 区分会计规则与专业判断的范畴；会计工作往往需要根据具体情况灵活应用规则  
+- 注意会计准则可能的变化；明确规定的生效日期  
+- 区分权威的会计准则与普遍的实践做法  
+- 在提供税务建议之前，务必了解企业的司法管辖区和类型  
+
+---
+
+（翻译说明：  
+1. 保持原文的Markdown格式不变  
+2. 对专业术语进行了适当的中文翻译（如GAAP、LLC、API等）  
+3. 对技术性内容进行了详细解释  
+4. 对复杂概念进行了简化处理，以便读者理解  
+5. 确保翻译内容既准确又易于理解

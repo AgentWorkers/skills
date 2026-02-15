@@ -1,153 +1,160 @@
 ---
 name: valyu-search
-description: "Use Valyu (valyu.ai) to search the web, extract content from web pages, answer with sources, and do deepresearch."
+description: "使用 Valyu (valyu.ai) 进行网页搜索，从网页中提取内容，并提供来源信息；同时还能进行深入的研究。"
 metadata: {"openclaw":{"emoji":"🔎","requires":{"bins":["node"],"env":["VALYU_API_KEY"]},"primaryEnv":"VALYU_API_KEY","homepage":"https://docs.valyu.ai"}}
 ---
 
-# Valyu Search
+# Valyu 搜索
 
-Search across the world's knowledge.
+在全球范围内进行信息搜索。
 
-## When to Use
+## 使用场景
 
-Trigger this skill when the user asks for:
-- "search the web", "web search", "look up", "find online", "find papers on..."
-- "current news about...", "latest updates on..."
-- "research [topic]", "what's happening with...", "deep research on..."
-- "extract content from [URL]", "scrape this page", "get the text from..."
-- "answer this with sources", "what does the research say about..."
-- Fact-checking with citations needed
-- Academic, medical, financial, or patent research
-- Structured data extraction from web pages
+当用户提出以下请求时，可以使用此功能：
+- “在网页上搜索”、“进行网络搜索”、“查找信息”、“在线查找资料”、“找到关于……的论文”；
+- “获取关于……的最新新闻”、“了解……的最新动态”；
+- “研究[主题]”、“探究……的现状”、“深入研究……”；
+- “从[URL]中提取内容”、“抓取该页面的数据”、“获取该页面的文本”；
+- “提供带有来源的答案”、“研究对此有何说法”；
+- 需要引用来源的事实核查；
+- 学术研究、医学研究、金融研究或专利研究；
+- 从网页中提取结构化数据。
 
-## Prerequisites
+## 先决条件
 
-- Get an API key at [valyu.ai](https://www.valyu.ai)
-- Set `VALYU_API_KEY` in the Gateway environment (recommended) or in `~/.openclaw/.env`.
+- 在 [valyu.ai](https://www.valyu.ai) 获取 API 密钥；
+- 将 `VALYU_API_KEY` 设置在 Gateway 环境中（推荐）或 `~/.openclaw/.env` 文件中。
+
 ---
 
-## Commands
+## 命令
 
-Run a search across the web:
-
-```bash
+- 在网页上执行搜索：
+  ```bash
+  ```bash
 node {baseDir}/scripts/valyu.mjs search web "<query>"
 ```
+  ```
 
-Search across news, academic papers, financial data, patents and more
-
-```bash
+- 在新闻、学术论文、金融数据、专利等资源中进行搜索：
+  ```bash
+  ```bash
 node {baseDir}/scripts/valyu.mjs search news "<query>"
 ```
+  ```
 
-### Parameters
+### 参数
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `query` | string | Search query (required) |
-| `searchType` | string | `"web"`, `"proprietary"`, `"news"`, or `"all"` (default: `"all"`) |
-| `maxNumResults` | number | 1-20 (default: 10) |
-| `includedSources` | string[] | Limit to specific sources (e.g., `["valyu/valyu-arxiv"]`) |
-| `excludedSources` | string[] | Exclude specific sources |
-| `startDate` | string | Filter from date (YYYY-MM-DD) |
-| `endDate` | string | Filter to date (YYYY-MM-DD) |
-| `countryCode` | string | ISO 3166-1 alpha-2 (e.g., `"US"`, `"GB"`) |
-| `responseLength` | string | `"short"`, `"medium"`, `"large"`, `"max"` |
-| `fastMode` | boolean | Reduced latency mode |
-| `category` | string | Natural language category (e.g., `"academic research"`) |
-| `relevanceThreshold` | number | 0.0-1.0 (default: 0.5) |
+| 参数 | 类型 | 说明 |
+|---------|------|-----------|
+| `query` | 字符串 | 搜索查询（必填） |
+| `searchType` | 字符串 | `"web"`、`"proprietary"`、`"news"` 或 `"all"`（默认值：`"all"` |
+| `maxNumResults` | 数字 | 每页显示的结果数量（1-20，默认值：10） |
+| `includedSources` | 字符串数组 | 限制搜索来源（例如：`["valyu/valyu-arxiv"]`） |
+| `excludedSources` | 字符串数组 | 排除特定来源 |
+| `startDate` | 字符串 | 过滤日期（格式：YYYY-MM-DD） |
+| `endDate` | 字符串 | 过滤日期（格式：YYYY-MM-DD） |
+| `countryCode` | 字符串 | ISO 3166-1 国家代码（例如：`"US"`、`"GB"`） |
+| `responseLength` | 字符串 | 输出长度：`"short"`、`"medium"`、`"large"`、`"max"` |
+| `fastMode` | 布尔值 | 降低延迟的模式 |
+| `category` | 字符串 | 自然语言类别（例如：`"academic research"` |
+| `relevanceThreshold` | 数字 | 相关性阈值（0.0-1.0，默认值：0.5） |
 
-### Available Proprietary Sources
+### 可用的专有数据源
 
-| Source | Description |
-|--------|-------------|
-| `valyu/valyu-arxiv` | Academic papers from arXiv |
-| `valyu/valyu-pubmed` | Medical and life science literature |
-| `valyu/valyu-stocks` | Global stock market data |
+| 数据源 | 说明 |
+|---------|-----------|
+| `valyu/valyu-arxiv` | arXiv 上的学术论文 |
+| `valyu/valyu-pubmed` | 医学和生命科学文献 |
+| `valyu/valyu-stocks` | 全球股市数据 |
 
-Additional sources: BioRxiv, MedRxiv, clinical trials, FDA drug labels, WHO health data, SEC filings, USPTO patents, Wikipedia, UK Parliament, UK National Rail, maritime vessel tracking, and more.
+其他可用数据源：BioRxiv、MedRxiv、临床试验数据、FDA 药物标签、WHO 卫生数据、SEC 文件、USPTO 专利、Wikipedia、英国议会资料、英国国家铁路信息、船舶跟踪数据等。
 
 ## 2. Contents API
 
-Extract clean, structured content from any URL. Converts web pages to markdown or structured data.
+从任意 URL 中提取干净、结构化的内容，并将其转换为 Markdown 或结构化数据。
 
-### Usage
+### 使用方法
 
+```bash
 ```bash
 node {baseDir}/scripts/valyu.mjs contents "https://example.com" --summary
 ```
+```
 
-### Parameters
+### 参数
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `urls` | string[] | Array of URLs to extract (required) |
-| `responseLength` | string | Output length: `"short"`, `"medium"`, `"large"`, `"max"` |
-| `extractEffort` | string | `"auto"`, `"lightweight"`, `"moderate"`, `"heavy"` |
-| `jsonSchema` | object | JSON Schema for structured extraction |
-
+| 参数 | 类型 | 说明 |
+|---------|------|-----------|
+| `urls` | 字符串数组 | 需要提取内容的 URL 列表（必填） |
+| `responseLength` | 字符串 | 输出长度：`"short"`、`"medium"`、`"large"`、`"max"` |
+| `extractEffort` | 字符串 | 提取难度：`"auto"`、`"lightweight"`、`"moderate"`、`"heavy"` |
+| `jsonSchema` | 对象 | 结构化提取的 JSON 方案 |
 
 ## 3. Answer API
 
-Get AI-generated answers grounded in real-time search results with citations.
+基于实时搜索结果生成带有引用的人工智能回答。
 
-### Usage
+### 使用方法
 
+```bash
 ```bash
 node {baseDir}/scripts/valyu.mjs answer "What is quantum computing?" --fast
 ```
+```
 
-### Parameters
+### 参数
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `query` | string | Question or query (required) |
-| `searchType` | string | Search scope: `"web"`, `"proprietary"`, `"news"`, `"all"` |
-| `outputSchema` | object | JSON Schema for structured responses |
-
+| 参数 | 类型 | 说明 |
+|---------|------|-----------|
+| `query` | 字符串 | 需要回答的问题或查询内容（必填） |
+| `searchType` | 字符串 | 搜索范围：`"web"`、`"proprietary"`、`"news"`、`"all"` |
+| `outputSchema` | 对象 | 结构化回答的 JSON 方案 |
 
 ## 4. DeepResearch API
 
-Launch async, multi-step research tasks that produce detailed reports with citations.
+启动异步的多步骤研究任务，生成包含引用的详细报告。
 
-### Modes
+### 模式
 
-| Mode | Duration | Use Case |
-|------|----------|----------|
-| `fast` | ~5 min | Quick answers, lightweight research |
-| `standard` | ~10-20 min | Balanced research with deeper insights |
-| `heavy` | ~90 min | In-depth, complex analysis |
+| 模式 | 所需时间 | 适用场景 |
+|---------|--------|-----------|
+| `fast` | 约 5 分钟 | 快速回答，简单研究 |
+| `standard` | 约 10-20 分钟 | 平衡性研究，提供更深入的见解 |
+| `heavy` | 约 90 分钟 | 深入分析 |
 
-### Usage
+### 使用方法
 
+```bash
 ```bash
 node {baseDir}/scripts/valyu.mjs deepresearch create "AI market trends" --mode heavy --pdf
 ```
+```
 
-### Parameters
+### 参数
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `query` | string | Research query (required) |
-| `mode` | string | `"fast"`, `"standard"`, `"heavy"` |
-| `outputFormats` | array | `["markdown"]`, `["pdf"]`, or JSON Schema object |
-| `files` | array | File attachments (base64 encoded, max 10) |
-| `urls` | string[] | URLs to analyze (max 10) |
-| `webhookUrl` | string | HTTPS URL for completion notification |
+| 参数 | 类型 | 说明 |
+|---------|------|-----------|
+| `query` | 字符串 | 研究查询内容（必填） |
+| `mode` | 字符串 | 模式：`"fast"`、`"standard"`、`"heavy"` |
+| `outputFormats` | 数组 | 输出格式：`["markdown"]`、`["pdf"]` 或 JSON 方案 |
+| `files` | 数组 | 文件附件（Base64 编码，最多 10 个） |
+| `urls` | 字符串数组 | 需要分析的 URL 列表（最多 10 个） |
+| `webhookUrl` | 字符串 | 完成通知的 HTTPS URL |
 
-## Choosing the Right API
+## 选择合适的 API
 
-| Need | API |
-|------|-----|
-| Quick facts, current events, citations | **Search** |
-| Read/parse a specific URL | **Contents** |
-| AI-synthesized answer with sources | **Answer** |
-| In-depth analysis or report | **DeepResearch** |
+| 需求 | 对应 API |
+|---------|---------|
+| 快速获取事实、最新事件、引用信息 | **Search** |
+| 读取/解析特定 URL | **Contents** |
+| 生成带有来源的人工智能回答 | **Answer** |
+| 深入分析或报告 | **DeepResearch** |
 
-## References
+## 参考资料
 
-- [Valyu Docs](https://docs.valyu.ai)
-- [Search API Reference](https://docs.valyu.ai/api-reference/endpoint/search)
-- [Contents API Reference](https://docs.valyu.ai/api-reference/endpoint/contents)
-- [Answer API Reference](https://docs.valyu.ai/api-reference/endpoint/answer)
-- [DeepResearch Guide](https://docs.valyu.ai/guides/deepresearch)
+- [Valyu 文档](https://docs.valyu.ai) |
+- [Search API 参考文档](https://docs.valyu.ai/api-reference/endpoint/search) |
+- [Contents API 参考文档](https://docs.valyu.ai/api-reference/endpoint/contents) |
+- [Answer API 参考文档](https://docs.valyu.ai/api-reference/endpoint/answer) |
+- [DeepResearch 使用指南](https://docs.valyu.ai/guides/deepresearch)

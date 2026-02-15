@@ -1,78 +1,75 @@
 ---
 name: Malay
-description: Write Malay that sounds human. Not formal, not robotic, not AI-generated.
+description: 用马来语写一些听起来像真人说的话。不要正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Malay is technically correct but sounds off. Too formal. Too baku (standard). Natives write more casually, mixing English naturally. Match that.
+虽然AI生成的马来语在语法上是正确的，但听起来很生硬、过于正式。马来本地人的表达方式更加随意，会自然地混合使用英语。因此，我们需要让AI生成的马来语更贴近本地人的说话风格。
 
-## Formality Default
+## 默认的正式程度
 
-Default register is too high. Casual Malay is relaxed and friendly. Unless explicitly formal: lean casual. "Hi" not "Selamat sejahtera". "Ok" not "Baiklah".
+马来语的默认表达方式过于正式。在非正式场合，应该使用更轻松、友好的表达方式。例如，用“Hi”代替“Selamat sejahtera”，用“Ok”代替“Baiklah”。
 
-## Malaysian vs Indonesian
+## 马来语与印尼语的差异
 
-Similar but different:
-- Malaysia: awak, kereta, telefon
-- Indonesia: kamu, mobil, telepon
-- Don't mix. Ask which if unclear.
+马来语和印尼语有相似之处，但也存在一些区别：
+- 马来语：使用“awak”、“kereta”、“telefon”等词汇；
+- 印尼语：使用“kamu”、“mobil”、“telepon”等词汇。
+如果不确定应该使用哪种表达方式，可以询问对方。
 
-## Formal vs Casual
+## 正式与非正式的表达方式
 
-Two registers:
-- Baku (formal): news, official, school
-- Rojak/Casual: daily, mixed with English
-- Online uses casual heavily
+马来语有两种表达风格：
+- **Baku**（正式）：用于新闻、官方场合或学校环境；
+- **Rojak/Casual**：用于日常对话，会混合使用英语。
 
-## English Mixing
+## 英语的混合使用
 
-Malaysians mix English naturally:
-- "Nak pergi mana today?"
-- "Sorry lah, busy sangat"
-- "That's so cool lah!"
-- Very natural in casual contexts
+马来人在日常对话中会自然地混合使用英语：
+- “Nak pergi mana hari ini?”（今天要去哪里？）
+- “Sorry lah, busy sangat.”（抱歉，我太忙了。）
+- “That’s so cool lah!”（太酷了！）
 
-## Particles & Softeners
+## 语法元素与语气词
 
-These make Malay natural:
-- Lah: emphasis, softening (essential!)
-- Kan: "right?", seeking agreement
-- Kot: "maybe", "probably"
-- Je: "just", "only"
-- Dah: "already"
+这些元素能让马来语表达更加自然：
+- “Lah”：用于强调或缓和语气（非常重要！）
+- “Kan”：用于寻求对方的同意或确认；
+- “Kot”：表示“可能”、“大概”；
+- “Je”：表示“只是”、“仅仅”；
+- “Dah”：表示“已经”。
 
-## Fillers & Flow
+## 填充词与语调词
 
-Real Malay has fillers:
-- Eh, eh, tu
-- Macam, macam tu
-- Tau tak, kan
-- Entah lah, apa-apa je
+马来语中有很多填充词和语气词，使表达更加流畅：
+- “Eh, eh, tu”（嗯，那个）
+- “Macam, macam tu”（好像是这样）
+- “Tau tak, kan”（你知道吗？）
+- “Entah lah, apa-apa je”（不知道啊，随便啦）
 
-## Expressiveness
+## 表达方式的选择
 
-Don't pick the safe word:
-- Bagus → Best, Terbaik, Gempak
-- Teruk → Teruk gila, Hancur
-- Sangat → Gila, Super, Memang
+不要总是选择最“安全”的表达方式：
+- “Bagus”可以译为“Best”、“Terbaik”、“Gempak”；
+- “Teruk”可以译为“Teruk gila”、“Hancur”；
+- “Sangat”可以译为“Gila”、“Super”、“Memang”。
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Ok lah, Can, Boleh
-- Best gila!, Syok!, Mantap!
-- Relak lah, Chill
-- Alamak!, Adoi!, Eh!
+- “Ok lah, Can, Boleh”（可以，行）
+- “Best gila!”, “Syok!”, “Mantap!”（太棒了！）
+- “Relak lah, Chill”（放松点）
+- “Alamak!”, “Adoi!”, “Eh!”（天啊！）
 
-## Reactions
+## 对话中的反应
 
-React naturally:
-- Seriously?, Betul ke?, Ye ke?
-- Gila!, Best!, Wow!
-- Aduh!, Alamak!, Aih!
-- Haha, lol in text
+在对话中要自然反应：
+- “Seriously?, Betul ke?, Ye ke?”（真的吗？）
+- “Gila!, Best!, Wow!”（太厉害了！）
+- “Aduh!, Alamak!, Aih!”（哎呀！）
+- 在短信中可以用“Haha, lol”来表达笑声。
 
-## The "Native Test"
+## “本地人测试”
 
-Before sending: would a Malaysian screenshot this as "AI-generated"? If yes—too formal, no "lah", no English. Add rojak flavor.
+在发送信息之前，可以想象一下：如果一个马来人看到这样的信息，他会认为这是AI生成的吗？如果是的话，那么这段信息就太正式了，应该去掉“lah”这样的表达，也不要使用英语。需要添加一些更自然的、非正式的语气元素。

@@ -1,6 +1,6 @@
 ---
 name: appdeploy
-description: Deploy web apps with backend APIs, database, and file storage. Use when the user asks to deploy or publish a website or web app and wants a public URL. Uses HTTP API via curl.
+description: 部署包含后端 API、数据库和文件存储功能的 Web 应用程序。适用于用户希望部署或发布网站或 Web 应用程序，并且需要一个公共 URL 的情况。通过 `curl` 命令使用 HTTP API 进行部署。
 allowed-tools:
   - Bash
 metadata:
@@ -8,24 +8,24 @@ metadata:
   version: "1.0.5"
 ---
 
-# AppDeploy Skill
+# AppDeploy 技能
 
-Deploy web apps to AppDeploy via HTTP API.
+通过 HTTP API 将 Web 应用程序部署到 AppDeploy。
 
-## Setup (First Time Only)
+## 设置（仅首次使用）
 
-1. **Check for existing API key:**
-   - Look for a `.appdeploy` file in the project root
-   - If it exists and contains a valid `api_key`, skip to Usage
+1. **检查是否存在 API 密钥：**
+   - 在项目根目录中查找 `.appdeploy` 文件。
+   - 如果存在且包含有效的 `api_key`，则跳转到“使用”部分。
 
-2. **If no API key exists, register and get one:**
+2. **如果不存在 API 密钥，请注册并获取一个：**
    ```bash
    curl -X POST https://api-v2.appdeploy.ai/mcp/api-key \
      -H "Content-Type: application/json" \
      -d '{"client_name": "claude-code"}'
    ```
 
-   Response:
+   响应：
    ```json
    {
      "api_key": "ak_...",
@@ -35,7 +35,7 @@ Deploy web apps to AppDeploy via HTTP API.
    }
    ```
 
-3. **Save credentials to `.appdeploy`:**
+3. **将凭据保存到 `.appdeploy` 文件中：**
    ```json
    {
      "api_key": "ak_...",
@@ -43,11 +43,11 @@ Deploy web apps to AppDeploy via HTTP API.
    }
    ```
 
-   Add `.appdeploy` to `.gitignore` if not already present.
+   如果 `.appdeploy` 文件尚不存在，请将其添加到 `.gitignore` 文件中。
 
-## Usage
+## 使用方法
 
-Make JSON-RPC calls to the MCP endpoint:
+向 MCP 端点发送 JSON-RPC 请求：
 
 ```bash
 curl -X POST {endpoint} \
@@ -65,133 +65,137 @@ curl -X POST {endpoint} \
   }'
 ```
 
-## Workflow
+## 工作流程
 
-1. **First, get deployment instructions:**
-   Call `get_deploy_instructions` to understand constraints and requirements.
+1. **首先，获取部署说明：**
+   调用 `get_deployinstructions` 以了解部署要求和限制。
 
-2. **Get the app template:**
-   Call `get_app_template` with your chosen `app_type` and `frontend_template`.
+2. **获取应用模板：**
+   使用选定的 `app_type` 和 `frontend_template` 调用 `get_app_template`。
 
-3. **Deploy the app:**
-   Call `deploy_app` with your app files. For new apps, set `app_id` to `null`.
+3. **部署应用程序：**
+   使用应用文件调用 `deploy_app`。对于新应用程序，将 `app_id` 设置为 `null`。
 
-4. **Check deployment status:**
-   Call `get_app_status` to check if the build succeeded.
+4. **检查部署状态：**
+   调用 `get_app_status` 以确认构建是否成功。
 
-5. **View/manage your apps:**
-   Use `get_apps` to list your deployed apps.
+5. **查看/管理应用程序：**
+   使用 `get_apps` 列出已部署的应用程序。
 
-## Available Tools
+## 可用工具
 
-### get_deploy_instructions
+### get_deployinstructions
 
-Use this when you are about to call deploy_app in order to get the deployment constraints and hard rules. You must call this tool before starting to generate any code. This tool returns instructions only and does not deploy anything.
+在调用 `deploy_app` 之前使用此工具，以获取部署要求和限制。在开始生成任何代码之前必须先调用此工具。此工具仅返回说明，不会执行任何部署操作。
 
-**Parameters:**
-
+**参数：**
 
 ### deploy_app
 
-Use this when the user asks to deploy or publish a website or web app and wants a public URL.
-Before generating files or calling this tool, you must call get_deploy_instructions and follow its constraints.
+当用户请求部署或发布网站/Web 应用程序并希望获得公共 URL 时使用此工具。
+在生成文件或调用此工具之前，必须先调用 `get_deployinstructions` 并遵守其限制。
 
-**Parameters:**
-  - `app_id`: any (required) - existing app id to update, or null for new app
-  - `app_type`: string (required) - app architecture: frontend-only or frontend+backend
-  - `app_name`: string (required) - short display name
-  - `description`: string (optional) - short description of what the app does
-  - `frontend_template`: any (optional) - REQUIRED when app_id is null. One of: 'html-static' (simple sites), 'react-vite' (SPAs, games), 'nextjs-static' (multi-page). Template files auto-included.
-  - `files`: array (optional) - Files to write. NEW APPS: only custom files + diffs to template files. UPDATES: only changed files using diffs[]. At least one of files[] or deletePaths[] required.
-  - `deletePaths`: array (optional) - Paths to delete. ONLY for updates (app_id required). Cannot delete package.json or framework entry points.
+**参数：**
+  - `app_id`：任意（必填）- 要更新的应用程序 ID；对于新应用程序，设置为 `null`。
+  - `app_type`：字符串（必填）- 应用程序架构：仅前端或前端+后端。
+  - `app_name`：字符串（必填）- 应用程序的简短显示名称。
+  - `description`：字符串（可选）- 应用程序的简要描述。
+  - `frontend_template`：任意（可选）- 当 `app_id` 为 `null` 时必填。可选值包括：'html-static'（简单网站）、'react-vite'（单页应用程序/游戏）、'nextjs-static'（多页面应用程序）。模板文件会自动包含在内。
+  - `files`：数组（可选）- 要写入的文件。对于新应用程序：仅包含自定义文件及与模板文件的差异；对于更新：仅包含使用 `diffs[]` 的更改文件。`files[]` 或 `deletePaths[]` 至少需要其中一个参数。
+  - `deletePaths`：数组（可选）- 要删除的路径。仅适用于更新操作（`app_id` 必填）。不能删除 `package.json` 或框架入口文件。
 
 ### get_app_template
 
-Call get_deploy_instructions first. Then call this once you've decided app_type and frontend_template. Returns base app template and SDK types.  Template files auto-included in deploy_app.
+在使用 `deploy_app` 之前，请先调用 `get_deployinstructions`。在确定 `app_type` 和 `frontend_template` 后再调用此工具。该工具返回基础应用程序模板和 SDK 类型。模板文件会自动包含在 `deploy_app` 中。
 
-**Parameters:**
-  - `app_type`: string (required)
-  - `frontend_template`: string (required) - Frontend framework: 'html-static' - Simple sites, minimal framework; 'react-vite' - React SPAs, dashboards, games; 'nextjs-static' - Multi-page apps, SSG
+**参数：**
+  - `app_type`：字符串（必填）
+  - `frontend_template`：字符串（必填）- 前端框架：
+    - 'html-static' - 简单网站，最小化框架；
+    - 'react-vite' - React 单页应用程序/仪表板/游戏；
+    - 'nextjs-static' - 多页面应用程序，SSG（静态站点生成）。
 
 ### get_app_status
 
-Use this when deploy_app tool call returns or when the user asks to check the deployment status of an app, or reports that the app has errors or is not working as expected. Returns deployment status (in-progress: 'deploying'/'deleting', terminal: 'ready'/'failed'/'deleted'), QA snapshot (frontend/network errors), and live frontend/backend error logs.
+当 `deploy_app` 工具返回结果时，或用户请求检查应用程序的部署状态，或报告应用程序出现错误或无法正常运行时使用此工具。返回部署状态（进行中：`deploying`/`deleting`；终端：`ready`/`failed`/`deleted`），以及质量保证快照（前端/网络错误）和实时前端/后端错误日志。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
-  - `since`: integer (optional) - Optional timestamp in epoch milliseconds to filter errors. When provided, returns only errors since that timestamp.
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
+  - `since`：整数（可选）- 用于过滤错误的自纪元毫秒时间戳。提供此参数后，仅返回自该时间戳以来的错误。
 
 ### delete_app
 
-Use this when you want to permanently delete an app. Use only on explicit user request. This is irreversible; after deletion, status checks will return not found.
+当您希望永久删除应用程序时使用此工具。此操作不可逆；删除后，状态检查将显示“未找到”。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
 
 ### get_app_versions
 
-List deployable versions for an existing app. Requires app_id. Returns newest-first {name, version, timestamp} items. Display 'name' to users. DO NOT display the 'version' value to users. Timestamp values MUST be converted to user's local time
+列出现有应用程序的可部署版本。需要 `app_id`。返回按最新版本优先排序的列表（格式为 `{name, version, timestamp}`）。向用户显示 `name`，但不显示 `version` 值。时间戳值必须转换为用户的本地时间。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
 
 ### apply_app_version
 
-Start deploying an existing app at a specific version. Use the 'version' value (not 'name') from get_app_versions. Returns true if accepted and deployment started; use get_app_status to observe completion.
+开始将现有应用程序部署到特定版本。使用 `get_app_versions` 返回的 `version` 值（而非 `name`）。如果部署成功，则返回 `true`；使用 `get_app_status` 监控部署进度。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
-  - `version`: string (required) - Version id to apply
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
+  - `version`：字符串（必填）- 要应用的版本 ID。
 
-### src_glob
+### srcglob
 
-Use this when you need to discover files in an app's source snapshot. Returns file paths matching a glob pattern (no content). Useful for exploring project structure before reading or searching files.
+当您需要查找应用程序源代码快照中的文件时使用此工具。返回匹配全局模式的文件路径（不包含文件内容）。在读取或搜索文件之前，可用于探索项目结构。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
-  - `version`: string (optional) - Version to inspect (defaults to applied version)
-  - `path`: string (optional) - Directory path to search within
-  - `glob`: string (optional) - Glob pattern to match files (default: **/*)
-  - `include_dirs`: boolean (optional) - Include directory paths in results
-  - `continuation_token`: string (optional) - Token from previous response for pagination
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
+  - `version`：字符串（可选）- 要检查的版本（默认为当前应用的版本）。
+  - `path`：字符串（可选）- 在其中搜索的目录路径。
+  - `glob`：字符串（可选）- 用于匹配文件的全局模式（默认：`/*`）。
+  - `include_dirs`：布尔值（可选）- 是否在结果中包含目录路径。
+  - `continuation_token`：字符串（可选）- 用于分页的上一响应中的令牌。
 
 ### src_grep
 
-Use this when you need to search for patterns in an app's source code. Returns matching lines with optional context. Supports regex patterns, glob filters, and multiple output modes.
+当您需要在应用程序源代码中搜索模式时使用此工具。返回匹配的行以及可选的上下文信息。支持正则表达式模式、全局过滤器和多种输出模式。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
-  - `version`: string (optional) - Version to search (defaults to applied version)
-  - `pattern`: string (required) - Regex pattern to search for (max 500 chars)
-  - `path`: string (optional) - Directory path to search within
-  - `glob`: string (optional) - Glob pattern to filter files (e.g., '*.ts')
-  - `case_insensitive`: boolean (optional) - Enable case-insensitive matching
-  - `output_mode`: string (optional) - content=matching lines, files_with_matches=file paths only, count=match count per file
-  - `before_context`: integer (optional) - Lines to show before each match (0-20)
-  - `after_context`: integer (optional) - Lines to show after each match (0-20)
-  - `context`: integer (optional) - Lines before and after (overrides before/after_context)
-  - `line_numbers`: boolean (optional) - Include line numbers in output
-  - `max_file_size`: integer (optional) - Max file size to scan in bytes (default 10MB)
-  - `continuation_token`: string (optional) - Token from previous response for pagination
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
+  - `version`：字符串（可选）- 要搜索的版本（默认为当前应用的版本）。
+  - `pattern`：字符串（必填）- 要搜索的正则表达式模式（最多 500 个字符）。
+  - `path`：字符串（可选）- 在其中搜索的目录路径。
+  - `glob`：字符串（可选）- 用于过滤文件的全局模式（例如：`*.ts`）。
+  - `case_insensitive`：布尔值（可选）- 是否区分大小写进行匹配。
+  - `output_mode`：字符串（可选）- 输出方式：
+    - `content`：匹配的行；
+    - `files_with_matches`：仅包含匹配文件的路径；
+    - `count`：每文件的匹配行数。
+  - `before_context`：整数（可选）- 每个匹配项之前的显示行数（0-20）。
+  - `after_context`：整数（可选）- 每个匹配项之后的显示行数（0-20）。
+  - `context`：整数（可选）- 每个匹配项之前的和之后的行数（覆盖 `before_context`/`after_context`）。
+  - `line_numbers`：布尔值（可选）- 是否在输出中包含行号。
+  - `max_file_size`：整数（可选）- 扫描的最大文件大小（以字节为单位，默认为 10MB）。
+  - `continuation_token`：字符串（可选）- 用于分页的上一响应中的令牌。
 
 ### src_read
 
-Use this when you need to read a specific file from an app's source snapshot. Returns file content with line-based pagination (offset/limit). Handles both text and binary files.
+当您需要从应用程序源代码快照中读取特定文件时使用此工具。返回基于行的文件内容，并支持分页（偏移量/限制）。支持文本文件和二进制文件。
 
-**Parameters:**
-  - `app_id`: string (required) - Target app id
-  - `version`: string (optional) - Version to read from (defaults to applied version)
-  - `file_path`: string (required) - Path to the file to read
-  - `offset`: integer (optional) - Line offset to start reading from (0-indexed)
-  - `limit`: integer (optional) - Number of lines to return (max 2000)
+**参数：**
+  - `app_id`：字符串（必填）- 目标应用程序 ID。
+  - `version`：字符串（可选）- 要读取的版本（默认为当前应用的版本）。
+  - `file_path`：字符串（必填）- 要读取的文件路径。
+  - `offset`：整数（可选）- 开始读取的行偏移量（从 0 开始计数）。
+  - `limit`：整数（可选）- 返回的行数（最多 2000 行）。
 
 ### get_apps
 
-Use this when you need to list apps owned by the current user. Returns app details with display fields for user presentation and data fields for tool chaining.
+当您需要列出当前用户拥有的应用程序时使用此工具。返回应用程序详细信息，包括用于用户展示的字段和用于工具链操作的字段。
 
-**Parameters:**
-  - `continuation_token`: string (optional) - Token for pagination
-
+**参数：**
+  - `continuation_token`：字符串（可选）- 用于分页的令牌。
 
 ---
-*Generated by `scripts/generate-appdeploy-skill.ts`*
+*由 `scripts/generate-appdeploy-skill.ts` 生成*

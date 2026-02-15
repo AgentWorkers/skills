@@ -1,57 +1,57 @@
 ---
 name: Startup
-description: Orchestrate startup work by spawning specialized agents and applying stage-appropriate priorities.
+description: 通过启动专门的代理程序，并根据各个阶段的特性设置相应的优先级，来协调启动工作。
 metadata: {"clawdbot":{"emoji":"🦄","os":["linux","darwin","win32"]}}
 ---
 
-# Startup Orchestration
+# 启动阶段协调机制
 
-## How to Work
-When the user requests help, spawn specialized agents for each function:
-- Product decisions → product manager agent
-- Code/technical → developer or engineer agent  
-- Design/UX → designer agent
-- Growth/marketing → marketing agent
-- Financial modeling → analyst or CFO agent
-- Hiring/people → recruiter agent
-- Legal/contracts → lawyer agent
-- Sales/deals → sales agent
+## 工作流程
+当用户寻求帮助时，会为不同的需求生成相应的专业代理：
+- 产品相关决策 → 产品经理代理
+- 代码/技术相关问题 → 开发者或工程师代理
+- 设计/用户体验相关问题 → 设计师代理
+- 成长/市场营销相关问题 → 市场营销代理
+- 财务建模相关问题 → 分析师或首席财务官代理
+- 招聘/人员相关问题 → 招聘专员代理
+- 法律/合同相关问题 → 律师代理
+- 销售/交易相关问题 → 销售代理
 
-For complex requests, run multiple agents in parallel and synthesize their outputs.
+对于复杂的需求，需要同时运行多个代理并综合他们的建议。
 
-## Stage Awareness
-Identify the startup's stage first — it changes everything:
-- **Pre-PMF**: Prioritize learning speed. Reject anything that doesn't help validate faster.
-- **Post-PMF**: Prioritize scaling. Reject anything that doesn't help grow efficiently.
+## 了解创业公司的阶段
+首先明确创业公司的当前发展阶段，因为这会影响到所有决策：
+- **产品市场契合度（Product-Market Fit, PMF）之前的阶段**：优先考虑学习速度，拒绝任何无法加速产品验证的方案。
+- **产品市场契合度之后的阶段**：优先考虑业务扩展，拒绝任何无法促进高效增长的方案。
 
-Ask about current stage if unclear. Never apply post-PMF advice to pre-PMF startups.
+如果对公司的阶段不确定，请先询问清楚。切勿将适用于产品市场契合度之后的建议应用于该阶段的初创公司。
 
-## Critical Priorities
-Pre-PMF: Only three questions matter:
-1. Are users coming back?
-2. Would they be upset if it disappeared?
-3. Are they telling others?
+## 关键优先事项
+在产品市场契合度之前的阶段，只需关注三个问题：
+1. 用户是否会再次使用该产品？
+2. 如果产品消失，用户会有什么反应？
+3. 用户是否会向他人推荐该产品？
 
-Everything else is distraction until these are yes.
+在这些问题得到肯定回答之前，其他所有事项都只是干扰因素。
 
-## Decision Routing
-- Reversible decisions → decide fast, in hours
-- Irreversible decisions → spawn analyst agent to model scenarios
-- Cross-functional decisions → spawn relevant agents, synthesize recommendations
-- Unclear ownership → ask user who should own the outcome
+## 决策流程
+- 可逆的决策 → 快速做出决策（通常在几小时内）
+- 不可逆的决策 → 派遣分析师代理来分析各种可能性
+- 跨职能的决策 → 调动相关代理并综合他们的建议
+- 责任归属不明确时 → 询问用户应该由谁来负责最终的决策结果
 
-## Resource Constraints
-Startups have limited time, money, and attention. When recommending actions:
-- Always consider founder time cost, not just dollar cost
-- Prioritize high-leverage activities over thorough-but-slow approaches
-- Suggest scrappy alternatives before expensive ones
-- Default to manual-first, automate when it hurts
+## 资源限制
+初创公司的时间、资金和精力都非常有限。在推荐行动方案时，请注意：
+- 始终要考虑创始人的时间成本，而不仅仅是金钱成本
+- 优先选择高效能、能快速产生效果的方案，而非虽然全面但耗时较长的方法
+- 在考虑昂贵的解决方案之前，先提出可行的替代方案
+- 原则上优先采用手动操作方式，只有在必要时才考虑自动化
 
-## Common Traps to Flag
-- Building features when retention is broken
-- Hiring before founder is overwhelmed doing the role
-- Optimizing revenue before product-market fit
-- Scaling sales before the sales process is repeatable
-- Spending on brand before distribution works
+## 常见需要警惕的陷阱
+- 在用户留存率下降的情况下仍继续开发新功能
+- 在创始人尚未能够胜任某项工作时就开始招聘新成员
+- 在产品尚未满足市场需求之前就优化收入
+- 在销售流程尚未稳定之前就开始扩大销售规模
+- 在产品分销机制尚未完善之前就投入大量资金用于品牌建设
 
-When you detect these patterns, pause and flag before proceeding.
+一旦发现这些潜在问题，应立即暂停并标记出来，避免继续推进相关决策。

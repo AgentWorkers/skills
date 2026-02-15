@@ -1,26 +1,26 @@
 ---
 name: sev-attestation
-description: Perform AMD SEV-SNP remote attestation to cryptographically verify VM identity and integrity. Use when proving a VM is running in a genuine AMD SEV-SNP confidential computing environment, verifying VM integrity before trusting it with secrets, checking SEV-SNP availability, generating attestation reports, validating AMD certificate chains (ARK/ASK/VCEK), or debugging attestation failures.
+description: 执行 AMD SEV-SNP 远程认证，以加密方式验证虚拟机（VM）的身份和完整性。该功能可用于证明虚拟机正在真实的 AMD SEV-SNP 保密计算环境中运行；在将机密信息委托给虚拟机之前验证其完整性；检查 SEV-SNP 的可用性；生成认证报告；验证 AMD 证书链（ARK/ASK/VCEK）；以及调试认证过程中的故障。
 ---
 
 # sev-attestation
 
-AMD SEV-SNP remote attestation for cryptographic VM identity verification.
+AMD SEV-SNP（安全加密虚拟化 - 安全嵌套分页）用于对虚拟机（VM）的身份进行加密验证。
 
-## Description
+## 描述
 
-Perform AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) remote attestation to cryptographically verify VM identity and integrity. Use this skill when:
+使用 AMD SEV-SNP 进行远程验证，以加密方式确认虚拟机的身份和完整性。在以下情况下可以使用此功能：
 
-- Proving a VM is running in a genuine AMD SEV-SNP confidential computing environment
-- Verifying the integrity of a confidential VM before trusting it with secrets
-- Checking if SEV-SNP is available and properly configured
-- Generating attestation reports for remote verification
-- Validating AMD certificate chains (ARK → ASK → VCEK)
-- Debugging attestation failures or certificate issues
+- 证明虚拟机运行在真实的 AMD SEV-SNP 保密计算环境中
+- 在将机密信息委托给虚拟机之前验证其完整性
+- 检查 SEV-SNP 是否可用以及配置是否正确
+- 生成用于远程验证的证明报告
+- 验证 AMD 证书链（ARK → ASK → VCEK）
+- 调试验证失败或证书相关的问题
 
-**Keywords**: SEV-SNP, attestation, confidential computing, AMD, VCEK, certificate chain, remote attestation, VM identity, TCB, measurement
+**关键词**：SEV-SNP、验证、保密计算、AMD、VCEK、证书链、远程验证、虚拟机身份、TCB（可信计算基础）、测量
 
-## Workflow
+## 工作流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -79,55 +79,55 @@ Perform AMD SEV-SNP (Secure Encrypted Virtualization - Secure Nested Paging) rem
     └─────────────────┘
 ```
 
-## Quick Start
+## 快速入门
 
-### Check if SEV-SNP is Available
+### 检查 SEV-SNP 是否可用
 
 ```bash
 ./scripts/detect-sev-snp.sh
 ```
 
-### Run Full Attestation
+### 运行完整验证流程
 
 ```bash
 ./scripts/full-attestation.sh [output_dir]
 ```
 
-This runs the complete 6-step attestation workflow and outputs PASSED or FAILED.
+该流程会执行完整的 6 个步骤，并输出“PASSED”或“FAILED”的结果。
 
-## Individual Steps
+## 单个步骤
 
-Each step can be run independently for debugging or custom workflows:
+每个步骤都可以独立运行，以便进行调试或自定义工作流程：
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `scripts/detect-sev-snp.sh` | Check SEV-SNP availability |
-| `scripts/generate-report.sh <output_dir>` | Generate attestation report with nonce |
-| `scripts/fetch-certificates.sh <report_file> <output_dir>` | Fetch AMD certificates from KDS |
-| `scripts/verify-chain.sh <certs_dir>` | Verify certificate chain |
-| `scripts/verify-report.sh <report_file> <certs_dir>` | Verify report signature |
+| `scripts/detect-sev-snp.sh` | 检查 SEV-SNP 是否可用 |
+| `scripts/generate-report.sh <output_dir>` | 生成包含随机数（nonce）的验证报告 |
+| `scripts/fetch-certificates.sh <report_file> <output_dir>` | 从 AMD KDS 获取证书 |
+| `scripts/verify-chain.sh <certs_dir>` | 验证证书链 |
+| `scripts/verify-report.sh <report_file> <certs_dir>` | 验证报告签名 |
 
-## Prerequisites
+## 先决条件
 
-- **snpguest**: Rust CLI from [virtee/snpguest](https://github.com/virtee/snpguest)
-- **openssl**: For certificate operations
-- **curl**: For fetching certificates from AMD KDS
-- **Root access**: Required to access `/dev/sev-guest`
+- **snpguest**：来自 [virtee/snpguest](https://github.com/virtee/snpguest) 的 Rust 命令行工具
+- **openssl**：用于证书操作
+- **curl**：用于从 AMD KDS 获取证书
+- **root 权限**：需要具有 `/dev/sev-guest` 的访问权限
 
-Install snpguest:
+安装 snpguest：
 ```bash
 cargo install snpguest
 ```
 
-## Reference Documentation
+## 参考文档
 
-- [Report Fields](references/report-fields.md) - Attestation report field reference
-- [Error Codes](references/error-codes.md) - Common errors and troubleshooting
-- [Manual Verification](references/manual-verification.md) - OpenSSL-based verification without snpguest
+- [报告字段](references/report-fields.md) - 验证报告的字段说明
+- [错误代码](references/error-codes.md) - 常见错误及故障排除方法
+- [手动验证](references/manual-verification.md) - 不使用 snpguest 的 OpenSSL 基础验证方法
 
-## Technical Details
+## 技术细节
 
-- **AMD KDS URL**: `https://kdsintf.amd.com`
-- **Certificate Chain**: ARK (self-signed) → ASK → VCEK
-- **Report Signature**: ECDSA P-384
-- **Device**: `/dev/sev-guest` (requires root or sev group membership)
+- **AMD KDS URL**：`https://kdsintf.amd.com`
+- **证书链**：ARK（自签名）→ ASK → VCEK
+- **报告签名**：ECDSA P-384
+- **设备**：`/dev/sev-guest`（需要 root 权限或属于 sev 组）

@@ -1,15 +1,15 @@
 ---
 name: sage-offers
-description: Sage offer operations for peer-to-peer trading. Create offers, view, accept, combine, import, cancel offers.
+description: Sage 提供了用于点对点交易的报价功能。用户可以创建报价、查看报价、接受报价、合并报价、导入报价以及取消报价。
 ---
 
-# Sage Offers
+# Sage 提供的功能
 
-Peer-to-peer offer trading system.
+基于区块链的点对点交易系统。
 
-## Endpoints
+## 端点（Endpoints）
 
-### Create Offer
+### 创建交易报价（Create Offer）
 
 ```json
 {
@@ -27,9 +27,9 @@ Peer-to-peer offer trading system.
 ```
 
 - `asset_id: null` = XCH
-- Returns `{"offer": "offer1...", "offer_id": "..."}`
+- 返回值：`{"offer": "offer1...", "offer_id": "..."}`
 
-### Accept Offer
+### 接受交易报价（Accept Offer）
 
 ```json
 {
@@ -39,7 +39,7 @@ Peer-to-peer offer trading system.
 }
 ```
 
-### View Offer (without accepting)
+### 查看交易报价（不接受）（View Offer, without accepting）
 
 ```json
 {
@@ -47,28 +47,28 @@ Peer-to-peer offer trading system.
 }
 ```
 
-Returns offer summary and status.
+返回报价的摘要和状态。
 
-### Query Offers
+### 查询交易报价（Query Offers）
 
-| Endpoint | Payload | Description |
+| 端点 | 请求参数 | 描述 |
 |----------|---------|-------------|
-| `get_offers` | `{}` | List all offers |
-| `get_offer` | `{"offer_id": "..."}` | Get specific offer |
-| `get_offers_for_asset` | `{"asset_id": "..."}` | Filter by asset |
-| `import_offer` | `{"offer": "offer1..."}` | Import external offer |
+| `get_offers` | `{}` | 列出所有交易报价 |
+| `get_offer` | `{"offer_id": "..."}` | 获取特定的交易报价 |
+| `get_offers_for_asset` | `{"asset_id": "..."}` | 按资产过滤交易报价 |
+| `import_offer` | `{"offer": "offer1..."}` | 导入外部交易报价 |
 
-### Cancel/Delete
+### 取消/删除交易报价（Cancel/Delete Offer）
 
-| Endpoint | Payload | Description |
+| 端点 | 请求参数 | 描述 |
 |----------|---------|-------------|
-| `delete_offer` | `{"offer_id": "..."}` | Delete local (not on-chain) |
-| `cancel_offer` | `{"offer_id": "...", "fee": "...", "auto_submit": true}` | Cancel on-chain |
-| `cancel_offers` | `{"offer_ids": [...], "fee": "...", "auto_submit": true}` | Bulk cancel |
+| `delete_offer` | `{"offer_id": "..."}` | 删除本地（非链上）的交易报价 |
+| `cancel_offer` | `{"offer_id": "...", "fee": "...", "auto_submit": true}` | 在链上取消交易报价 |
+| `cancel_offers` | `{"offer_ids": [...], "fee": "...", "auto_submit": true}` | 批量取消交易报价 |
 
-### Combine Offers
+### 合并交易报价（Combine Offers）
 
-Merge multiple compatible offers:
+合并多个兼容的交易报价：
 
 ```json
 {
@@ -76,7 +76,7 @@ Merge multiple compatible offers:
 }
 ```
 
-## Offer Amount Structure
+## 交易报价金额结构（Offer Amount Structure）
 
 ```json
 {
@@ -86,7 +86,7 @@ Merge multiple compatible offers:
 }
 ```
 
-## Offer Record Structure
+## 交易报价记录结构（Offer Record Structure）
 
 ```json
 {
@@ -99,9 +99,9 @@ Merge multiple compatible offers:
 }
 ```
 
-Status values: `"pending"`, `"completed"`, `"cancelled"`, `"expired"`
+状态值：`"pending"`（待处理）、`"completed"`（已完成）、`"cancelled"`（已取消）、`"expired"`（已过期）
 
-## Examples
+## 示例（Examples）
 
 ```bash
 # Create offer: 1 XCH for 1000 SBX
@@ -130,9 +130,9 @@ sage_rpc cancel_offer '{
 }'
 ```
 
-## Notes
+## 注意事项（Notes）
 
-- Offers are bech32-encoded strings starting with `offer1`
-- `delete_offer` only removes from local database
-- `cancel_offer` spends offered coins on-chain to invalidate
-- Combine offers for complex multi-party trades
+- 交易报价为以 `offer1` 开头的 bech32 编码字符串。
+- `delete_offer` 仅删除本地数据库中的交易报价。
+- `cancel_offer` 会在链上花费相应的代币来取消交易报价。
+- 可以合并多个交易报价以完成复杂的多方交易。

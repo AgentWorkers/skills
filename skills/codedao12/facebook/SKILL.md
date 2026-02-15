@@ -1,44 +1,44 @@
 ---
 name: facebook
-description: OpenClaw skill for Facebook Graph API workflows focused on Pages posting, comments, and Page management using direct HTTPS requests.
+description: OpenClaw技能：用于Facebook Graph API工作流程，专注于通过直接HTTPS请求进行页面发布、评论操作以及页面管理。
 ---
 
-# Facebook Graph API Skill (Advanced)
+# Facebook Graph API 技能（高级）
 
-## Purpose
-Provide a production-oriented guide for building Facebook Graph API workflows for Pages: publishing posts, managing comments, and operating Page content safely using direct HTTPS calls.
+## 目的
+提供一份面向生产环境的指南，用于使用 Facebook Graph API 构建页面（Pages）的相关工作流程：发布帖子、管理评论以及通过直接的 HTTPS 请求安全地操作页面内容。
 
-## Best fit
-- You need Page posting and comment workflows.
-- You want a professional command design and safe operational guidance.
-- You prefer direct HTTP requests rather than SDKs.
+## 适用场景
+- 需要实现页面发布和评论管理功能。
+- 希望获得专业的命令设计及安全的操作指导。
+- 更倾向于使用直接的 HTTP 请求而非 SDK。
 
-## Not a fit
-- You need advanced ads or marketing APIs.
-- You must use complex browser-based OAuth flows.
+## 不适用场景
+- 需要使用高级广告或营销 API。
+- 必须使用复杂的基于浏览器的 OAuth 流程。
 
-## Quick orientation
-- Read `references/graph-api-overview.md` for base URLs, versions, and request patterns.
-- Read `references/page-posting.md` for Page publishing workflows and fields.
-- Read `references/comments-moderation.md` for comment actions and moderation flows.
-- Read `references/permissions-and-tokens.md` for access types and scope guidance.
-- Read `references/webhooks.md` for subscriptions and verification steps.
-- Read `references/http-request-templates.md` for concrete HTTP request payloads.
+## 快速入门
+- 阅读 `references/graph-api-overview.md` 以了解基础 URL、版本和请求模式。
+- 阅读 `references/page-posting.md` 以了解页面发布的工作流程及相关字段。
+- 阅读 `references/comments-moderation.md` 以了解评论操作和审核流程。
+- 阅读 `references/permissions-and-tokens.md` 以了解访问类型和权限范围。
+- 阅读 `references/webhooks.md` 以了解订阅和验证步骤。
+- 阅读 `references/http-request-templates.md` 以了解具体的 HTTP 请求格式。
 
-## Required inputs
-- Facebook App ID and App Secret.
-- Target Page ID(s).
-- Token strategy: user token → Page access token.
-- Required permissions and review status.
+## 必需输入
+- Facebook 应用程序 ID 和应用程序密钥（App ID and App Secret）。
+- 目标页面 ID（Target Page ID）。
+- 令牌策略：用户令牌 → 页面访问令牌（Token strategy: user token → Page access token）。
+- 所需的权限及审核状态（Required permissions and review status）。
 
-## Expected output
-- A clear Page workflow plan, permissions checklist, and operational guardrails.
+## 预期输出
+- 明确的页面工作流程计划、权限检查清单以及操作规范。
 
-## Operational notes
-- Use least-privilege permissions.
-- Handle rate limits and retries.
-- Log minimal identifiers only.
+## 操作注意事项
+- 仅使用最低权限级别的权限（Use least-privilege permissions）。
+- 处理请求速率限制和重试机制（Handle rate limits and retries）。
+- 仅记录必要的标识符（Log minimal identifiers）。
 
-## Security notes
-- Never log tokens or app secrets.
-- Validate webhook signatures.
+## 安全注意事项
+- 绝不要记录令牌或应用程序密钥（Never log tokens or app secrets）。
+- 验证 Webhook 签名（Validate webhook signatures）。

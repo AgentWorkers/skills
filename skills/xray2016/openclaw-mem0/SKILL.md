@@ -1,20 +1,20 @@
-# OpenClaw Mem0 Plugin
+# OpenClaw Mem0 插件
 
-Mem0 integration for OpenClaw. Adds intelligent long-term memory to your agents, allowing them to remember user preferences, facts, and past conversations automatically.
+OpenClaw 的 Mem0 集成模块为代理程序添加了智能的长期记忆功能，使它们能够自动记住用户偏好、信息以及之前的对话内容。
 
-## When to use
+## 使用场景
 
-- You want your agent to remember user details (name, job, preferences) across sessions
-- You need "infinite context" by retrieving relevant past interactions
-- You want to build a personalized assistant that learns over time
-- You need both cloud (managed) and self-hosted (local) memory options
+- 当您希望代理程序在不同会话中记住用户信息（姓名、职位、偏好设置）时。
+- 当您需要通过检索之前的交互记录来提供“无限上下文”时。
+- 当您希望构建一个能够随时间学习的个性化助手时。
+- 当您需要同时支持云托管（由第三方服务管理）和本地自托管（在本地服务器上运行）的记忆存储方案时。
 
-## Setup
+## 设置
 
-### Platform Mode (Recommended)
+### 平台模式（推荐）
 
-1. Get a free API key at [mem0.ai](https://mem0.ai)
-2. Add to your OpenClaw config:
+1. 在 [mem0.ai](https://mem0.ai) 获取免费的 API 密钥。
+2. 将该插件添加到您的 OpenClaw 配置文件中：
 
 ```json
 {
@@ -33,9 +33,9 @@ Mem0 integration for OpenClaw. Adds intelligent long-term memory to your agents,
 }
 ```
 
-### Open-Source Mode (Self-Hosted)
+### 开源模式（本地自托管）
 
-Connect to your own Mem0 instance (requires `mem0ai` package installed):
+您需要安装 `mem0ai` 包，并连接到自己的 Mem0 服务器：
 
 ```json
 {
@@ -61,37 +61,37 @@ Connect to your own Mem0 instance (requires `mem0ai` package installed):
 }
 ```
 
-## Usage
+## 使用方法
 
-This plugin works automatically (Zero-Shot) but also provides manual tools.
+该插件可自动运行（无需额外配置），同时也提供了手动操作工具。
 
-### Automatic Features
+### 自动功能
 
-- **Auto-Recall**: Before every agent turn, it searches memory for relevant context and injects it into the system prompt.
-- **Auto-Capture**: After every agent turn, it analyzes the conversation and stores key facts into memory.
+- **自动回忆**：在每个代理轮次开始前，它会从内存中检索相关内容并显示在系统提示中。
+- **自动捕获**：在每个代理轮次结束后，它会分析对话内容并将关键信息存储到内存中。
 
-### Manual Tools
+### 手动工具
 
-The agent can proactively call these tools:
+代理程序可以主动使用以下工具：
 
-| Tool | Description | Parameters |
+| 工具 | 描述 | 参数 |
 |------|-------------|------------|
-| `memory_store` | Explicitly save a fact | `text` (string), `longTerm` (bool) |
-| `memory_search` | Search memories | `query` (string), `scope` ("session"\|"long-term") |
-| `memory_get` | Get memory by ID | `memoryId` (string) |
-| `memory_list` | List all memories | `userId` (string) |
-| `memory_forget` | Delete a memory | `memoryId` (string) or `query` (string) |
+| `memory_store` | 显式保存信息 | `text`（字符串），`longTerm`（布尔值） |
+| `memory_search` | 搜索内存中的内容 | `query`（字符串），`scope`（“session”或“long-term”） |
+| `memory_get` | 通过 ID 获取内存中的信息 | `memoryId`（字符串） |
+| `memory_list` | 列出所有内存中的信息 | `userId`（字符串） |
+| `memory_forget` | 删除内存中的信息 | `memoryId`（字符串）或 `query`（字符串） |
 
-### Example
+### 示例
 
-**User**: "I'm moving to Tokyo next month."
-*Agent automatically captures this fact.*
+**用户**：“我下个月要搬到东京。”
+*代理程序会自动记录这一信息。*
 
-**(Two weeks later)**
-**User**: "What's a good restaurant for my farewell dinner?"
-*Agent automatically recalls "User is moving to Tokyo" and suggests a restaurant in their current city.*
+**两周后**
+**用户**：“哪里有适合我告别晚餐的好餐厅？”
+*代理程序会自动回忆起“用户即将搬到东京”的信息，并推荐当地的一家餐厅。*
 
-## Plugin structure
+## 插件结构
 
 ```
 openclaw-mem0/
@@ -102,6 +102,6 @@ openclaw-mem0/
   README.md               # Detailed documentation
 ```
 
-## Author
+## 开发者
 
-Maintained by @xRay2016. Modified from the original Mem0 OpenClaw integration.
+该插件由 @xRay2016 维护，基于原始的 Mem0 OpenClaw 集成版本进行了修改。

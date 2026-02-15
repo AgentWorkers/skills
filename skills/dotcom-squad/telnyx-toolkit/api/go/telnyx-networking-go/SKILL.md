@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Networking - Go
+# Telnyx 网络服务 - Go 语言接口
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List all Regions
+## 列出所有区域
 
-List all regions and the interfaces that region supports
+列出所有区域及其支持的接口：
 
 `GET /regions`
 
@@ -53,9 +53,9 @@ List all regions and the interfaces that region supports
 	fmt.Printf("%+v\n", regions.Data)
 ```
 
-## List all Networks
+## 列出所有网络
 
-List all Networks.
+列出所有网络：
 
 `GET /networks`
 
@@ -67,9 +67,9 @@ List all Networks.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Network
+## 创建网络
 
-Create a new Network.
+创建一个新的网络：
 
 `POST /networks`
 
@@ -86,9 +86,9 @@ Create a new Network.
 	fmt.Printf("%+v\n", network.Data)
 ```
 
-## Retrieve a Network
+## 查取网络信息
 
-Retrieve a Network.
+获取网络信息：
 
 `GET /networks/{id}`
 
@@ -100,9 +100,9 @@ Retrieve a Network.
 	fmt.Printf("%+v\n", network.Data)
 ```
 
-## Update a Network
+## 更新网络信息
 
-Update a Network.
+更新网络信息：
 
 `PATCH /networks/{id}`
 
@@ -123,9 +123,9 @@ Update a Network.
 	fmt.Printf("%+v\n", network.Data)
 ```
 
-## Delete a Network
+## 删除网络
 
-Delete a Network.
+删除网络：
 
 `DELETE /networks/{id}`
 
@@ -137,7 +137,7 @@ Delete a Network.
 	fmt.Printf("%+v\n", network.Data)
 ```
 
-## Get Default Gateway status.
+## 获取默认网关状态
 
 `GET /networks/{id}/default_gateway`
 
@@ -149,7 +149,9 @@ Delete a Network.
 	fmt.Printf("%+v\n", defaultGateway.Data)
 ```
 
-## Create Default Gateway.
+## 创建默认网关
+
+创建默认网关：
 
 `POST /networks/{id}/default_gateway`
 
@@ -165,7 +167,9 @@ Delete a Network.
 	fmt.Printf("%+v\n", defaultGateway.Data)
 ```
 
-## Delete Default Gateway.
+## 删除默认网关
+
+删除默认网关：
 
 `DELETE /networks/{id}/default_gateway`
 
@@ -177,9 +181,9 @@ Delete a Network.
 	fmt.Printf("%+v\n", defaultGateway.Data)
 ```
 
-## List all Interfaces for a Network.
+## 列出网络的所有接口
 
-`GET /networks/{id}/network_interfaces`
+`GET /networks/{id}/networkInterfaces`
 
 ```go
 	page, err := client.Networks.ListInterfaces(
@@ -193,9 +197,9 @@ Delete a Network.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List all WireGuard Interfaces
+## 列出所有 WireGuard 接口
 
-List all WireGuard Interfaces.
+列出所有 WireGuard 接口：
 
 `GET /wireguard_interfaces`
 
@@ -207,11 +211,11 @@ List all WireGuard Interfaces.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a WireGuard Interface
+## 创建新的 WireGuard 接口
 
-Create a new WireGuard Interface.
+创建一个新的 WireGuard 接口：
 
-`POST /wireguard_interfaces`
+`POST /wireguardInterfaces`
 
 ```go
 	wireguardInterface, err := client.WireguardInterfaces.New(context.TODO(), telnyx.WireguardInterfaceNewParams{
@@ -223,11 +227,11 @@ Create a new WireGuard Interface.
 	fmt.Printf("%+v\n", wireguardInterface.Data)
 ```
 
-## Retrieve a WireGuard Interfaces
+## 查取 WireGuard 接口信息
 
-Retrieve a WireGuard Interfaces.
+获取 WireGuard 接口信息：
 
-`GET /wireguard_interfaces/{id}`
+`GET /wireguardinterfaces/{id}`
 
 ```go
 	wireguardInterface, err := client.WireguardInterfaces.Get(context.TODO(), "6a09cdc3-8948-47f0-aa62-74ac943d6c58")
@@ -237,11 +241,11 @@ Retrieve a WireGuard Interfaces.
 	fmt.Printf("%+v\n", wireguardInterface.Data)
 ```
 
-## Delete a WireGuard Interface
+## 删除 WireGuard 接口
 
-Delete a WireGuard Interface.
+删除 WireGuard 接口：
 
-`DELETE /wireguard_interfaces/{id}`
+`DELETE /wireguardinterfaces/{id}`
 
 ```go
 	wireguardInterface, err := client.WireguardInterfaces.Delete(context.TODO(), "6a09cdc3-8948-47f0-aa62-74ac943d6c58")
@@ -251,9 +255,9 @@ Delete a WireGuard Interface.
 	fmt.Printf("%+v\n", wireguardInterface.Data)
 ```
 
-## List all WireGuard Peers
+## 列出所有 WireGuard 对等体
 
-List all WireGuard peers.
+列出所有 WireGuard 对等体：
 
 `GET /wireguard_peers`
 
@@ -265,9 +269,9 @@ List all WireGuard peers.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a WireGuard Peer
+## 创建新的 WireGuard 对等体
 
-Create a new WireGuard Peer.
+创建一个新的 WireGuard 对等体：
 
 `POST /wireguard_peers`
 
@@ -281,9 +285,9 @@ Create a new WireGuard Peer.
 	fmt.Printf("%+v\n", wireguardPeer.Data)
 ```
 
-## Retrieve the WireGuard Peer
+## 查取 WireGuard 对等体信息
 
-Retrieve the WireGuard peer.
+获取 WireGuard 对等体信息：
 
 `GET /wireguard_peers/{id}`
 
@@ -295,9 +299,9 @@ Retrieve the WireGuard peer.
 	fmt.Printf("%+v\n", wireguardPeer.Data)
 ```
 
-## Update the WireGuard Peer
+## 更新 WireGuard 对等体信息
 
-Update the WireGuard peer.
+更新 WireGuard 对等体信息：
 
 `PATCH /wireguard_peers/{id}`
 
@@ -315,9 +319,9 @@ Update the WireGuard peer.
 	fmt.Printf("%+v\n", wireguardPeer.Data)
 ```
 
-## Delete the WireGuard Peer
+## 删除 WireGuard 对等体
 
-Delete the WireGuard peer.
+删除 WireGuard 对等体：
 
 `DELETE /wireguard_peers/{id}`
 
@@ -329,7 +333,7 @@ Delete the WireGuard peer.
 	fmt.Printf("%+v\n", wireguardPeer.Data)
 ```
 
-## Retrieve Wireguard config template for Peer
+## 获取 WireGuard 对等体的配置模板
 
 `GET /wireguard_peers/{id}/config`
 
@@ -341,9 +345,9 @@ Delete the WireGuard peer.
 	fmt.Printf("%+v\n", response)
 ```
 
-## Get all Private Wireless Gateways
+## 获取用户所有的私有无线网关
 
-Get all Private Wireless Gateways belonging to the user.
+获取用户所有的私有无线网关：
 
 `GET /private_wireless_gateways`
 
@@ -355,11 +359,11 @@ Get all Private Wireless Gateways belonging to the user.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Private Wireless Gateway
+## 为已创建的网络创建私有无线网关
 
-Asynchronously create a Private Wireless Gateway for SIM cards for a previously created network.
+异步地为已创建的网络创建私有无线网关：
 
-`POST /private_wireless_gateways` — Required: `network_id`, `name`
+`POST /private_wireless_gateways` — 必需参数：`network_id`、`name`
 
 ```go
 	privateWirelessGateway, err := client.PrivateWirelessGateways.New(context.TODO(), telnyx.PrivateWirelessGatewayNewParams{
@@ -372,9 +376,9 @@ Asynchronously create a Private Wireless Gateway for SIM cards for a previously 
 	fmt.Printf("%+v\n", privateWirelessGateway.Data)
 ```
 
-## Get a Private Wireless Gateway
+## 获取私有无线网关信息
 
-Retrieve information about a Private Wireless Gateway.
+获取私有无线网关的信息：
 
 `GET /private_wireless_gateways/{id}`
 
@@ -386,9 +390,9 @@ Retrieve information about a Private Wireless Gateway.
 	fmt.Printf("%+v\n", privateWirelessGateway.Data)
 ```
 
-## Delete a Private Wireless Gateway
+## 删除私有无线网关
 
-Deletes the Private Wireless Gateway.
+删除私有无线网关：
 
 `DELETE /private_wireless_gateways/{id}`
 
@@ -400,9 +404,9 @@ Deletes the Private Wireless Gateway.
 	fmt.Printf("%+v\n", privateWirelessGateway.Data)
 ```
 
-## List all Public Internet Gateways
+## 列出所有公共互联网网关
 
-List all Public Internet Gateways.
+列出所有公共互联网网关：
 
 `GET /public_internet_gateways`
 
@@ -414,9 +418,9 @@ List all Public Internet Gateways.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Public Internet Gateway
+## 创建公共互联网网关
 
-Create a new Public Internet Gateway.
+创建一个新的公共互联网网关：
 
 `POST /public_internet_gateways`
 
@@ -428,9 +432,9 @@ Create a new Public Internet Gateway.
 	fmt.Printf("%+v\n", publicInternetGateway.Data)
 ```
 
-## Retrieve a Public Internet Gateway
+## 查取公共互联网网关信息
 
-Retrieve a Public Internet Gateway.
+获取公共互联网网关的信息：
 
 `GET /public_internet_gateways/{id}`
 
@@ -442,9 +446,9 @@ Retrieve a Public Internet Gateway.
 	fmt.Printf("%+v\n", publicInternetGateway.Data)
 ```
 
-## Delete a Public Internet Gateway
+## 删除公共互联网网关
 
-Delete a Public Internet Gateway.
+删除公共互联网网关：
 
 `DELETE /public_internet_gateways/{id}`
 
@@ -456,9 +460,9 @@ Delete a Public Internet Gateway.
 	fmt.Printf("%+v\n", publicInternetGateway.Data)
 ```
 
-## List all Virtual Cross Connects
+## 列出所有虚拟跨连接
 
-List all Virtual Cross Connects.
+列出所有虚拟跨连接：
 
 `GET /virtual_cross_connects`
 
@@ -470,9 +474,9 @@ List all Virtual Cross Connects.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Virtual Cross Connect
+## 创建虚拟跨连接
 
-Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the option of creating the primary connection first and the secondary connection later.
+创建一个新的虚拟跨连接。<br /><br />对于 AWS 和 GCE，您可以先创建主连接，再创建次级连接：
 
 `POST /virtual_cross_connects`
 
@@ -486,9 +490,9 @@ Create a new Virtual Cross Connect.<br /><br />For AWS and GCE, you have the opt
 	fmt.Printf("%+v\n", virtualCrossConnect.Data)
 ```
 
-## Retrieve a Virtual Cross Connect
+## 查取虚拟跨连接信息
 
-Retrieve a Virtual Cross Connect.
+获取虚拟跨连接的信息：
 
 `GET /virtual_cross_connects/{id}`
 
@@ -500,9 +504,9 @@ Retrieve a Virtual Cross Connect.
 	fmt.Printf("%+v\n", virtualCrossConnect.Data)
 ```
 
-## Update the Virtual Cross Connect
+## 更新虚拟跨连接信息
 
-Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched during the `created` state, as GCE will only inform you of your generated IP once the pending connection requested has bee...
+更新虚拟跨连接的信息。<br /><br />云 IP 只能在“创建”状态时进行修改，因为 GCE 会在待处理的连接请求完成之后才会通知您生成的 IP 地址...
 
 `PATCH /virtual_cross_connects/{id}`
 
@@ -518,9 +522,9 @@ Update the Virtual Cross Connect.<br /><br />Cloud IPs can only be patched durin
 	fmt.Printf("%+v\n", virtualCrossConnect.Data)
 ```
 
-## Delete a Virtual Cross Connect
+## 删除虚拟跨连接
 
-Delete a Virtual Cross Connect.
+删除虚拟跨连接：
 
 `DELETE /virtual_cross_connects/{id}`
 
@@ -532,9 +536,9 @@ Delete a Virtual Cross Connect.
 	fmt.Printf("%+v\n", virtualCrossConnect.Data)
 ```
 
-## List Virtual Cross Connect Cloud Coverage
+## 查看虚拟跨连接的覆盖范围
 
-List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which cloud regions are available for the `location_code` your Virtual Cross Connect will be provisioned in.
+查看虚拟跨连接的覆盖范围。<br /><br />此接口显示虚拟跨连接将被配置到的云区域：
 
 `GET /virtual_cross_connects/coverage`
 
@@ -546,9 +550,9 @@ List Virtual Cross Connects Cloud Coverage.<br /><br />This endpoint shows which
 	fmt.Printf("%+v\n", page)
 ```
 
-## List all Global IPs
+## 列出所有全局 IP 地址
 
-List all Global IPs.
+列出所有全局 IP 地址：
 
 `GET /global_ips`
 
@@ -560,9 +564,9 @@ List all Global IPs.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Global IP
+## 创建全局 IP 地址
 
-Create a Global IP.
+创建一个新的全局 IP 地址：
 
 `POST /global_ips`
 
@@ -574,9 +578,9 @@ Create a Global IP.
 	fmt.Printf("%+v\n", globalIP.Data)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址信息
 
-Retrieve a Global IP.
+获取全局 IP 地址的信息：
 
 `GET /global_ips/{id}`
 
@@ -588,9 +592,9 @@ Retrieve a Global IP.
 	fmt.Printf("%+v\n", globalIP.Data)
 ```
 
-## Delete a Global IP
+## 删除全局 IP 地址
 
-Delete a Global IP.
+删除全局 IP 地址：
 
 `DELETE /global_ips/{id}`
 
@@ -602,7 +606,9 @@ Delete a Global IP.
 	fmt.Printf("%+v\n", globalIP.Data)
 ```
 
-## List all Global IP Allowed Ports
+## 列出所有允许使用的全局 IP 地址端口
+
+列出所有允许使用的全局 IP 地址端口：
 
 `GET /global_ip_allowed_ports`
 
@@ -614,7 +620,9 @@ Delete a Global IP.
 	fmt.Printf("%+v\n", globalIPAllowedPorts.Data)
 ```
 
-## Global IP Assignment Health Check Metrics
+## 全局 IP 地址分配的健康检查指标
+
+获取全局 IP 地址分配的健康检查指标：
 
 `GET /global_ip_assignment_health`
 
@@ -626,9 +634,9 @@ Delete a Global IP.
 	fmt.Printf("%+v\n", globalIPAssignmentHealth.Data)
 ```
 
-## List all Global IP assignments
+## 列出所有全局 IP 地址分配记录
 
-List all Global IP assignments.
+列出所有全局 IP 地址的分配记录：
 
 `GET /global_ip_assignments`
 
@@ -640,9 +648,9 @@ List all Global IP assignments.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Global IP assignment
+## 创建全局 IP 地址分配记录
 
-Create a Global IP assignment.
+创建一个新的全局 IP 地址分配记录：
 
 `POST /global_ip_assignments`
 
@@ -656,9 +664,9 @@ Create a Global IP assignment.
 	fmt.Printf("%+v\n", globalIPAssignment.Data)
 ```
 
-## Retrieve a Global IP
+## 获取全局 IP 地址分配记录
 
-Retrieve a Global IP assignment.
+获取全局 IP 地址的分配记录：
 
 `GET /global_ip_assignments/{id}`
 
@@ -670,9 +678,9 @@ Retrieve a Global IP assignment.
 	fmt.Printf("%+v\n", globalIPAssignment.Data)
 ```
 
-## Update a Global IP assignment
+## 更新全局 IP 地址分配记录
 
-Update a Global IP assignment.
+更新全局 IP 地址的分配记录：
 
 `PATCH /global_ip_assignments/{id}`
 
@@ -692,9 +700,9 @@ Update a Global IP assignment.
 	fmt.Printf("%+v\n", globalIPAssignment.Data)
 ```
 
-## Delete a Global IP assignment
+## 删除全局 IP 地址分配记录
 
-Delete a Global IP assignment.
+删除全局 IP 地址的分配记录：
 
 `DELETE /global_ip_assignments/{id}`
 
@@ -706,7 +714,9 @@ Delete a Global IP assignment.
 	fmt.Printf("%+v\n", globalIPAssignment.Data)
 ```
 
-## Global IP Assignment Usage Metrics
+## 全局 IP 地址分配的使用情况指标
+
+获取全局 IP 地址分配的使用情况指标：
 
 `GET /global_ip_assignments/usage`
 
@@ -718,9 +728,9 @@ Delete a Global IP assignment.
 	fmt.Printf("%+v\n", globalIPAssignmentsUsage.Data)
 ```
 
-## List all Global IP Health check types
+## 列出所有全局 IP 地址的健康检查类型
 
-List all Global IP Health check types.
+列出所有全局 IP 地址的健康检查类型：
 
 `GET /global_ip_health_check_types`
 
@@ -732,9 +742,9 @@ List all Global IP Health check types.
 	fmt.Printf("%+v\n", globalIPHealthCheckTypes.Data)
 ```
 
-## List all Global IP health checks
+## 列出所有全局 IP 地址的健康检查记录
 
-List all Global IP health checks.
+列出所有全局 IP 地址的健康检查记录：
 
 `GET /global_ip_health_checks`
 
@@ -746,9 +756,9 @@ List all Global IP health checks.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create a Global IP health check
+## 创建全局 IP 地址的健康检查记录
 
-Create a Global IP health check.
+创建一个新的全局 IP 地址的健康检查记录：
 
 `POST /global_ip_health_checks`
 
@@ -760,9 +770,9 @@ Create a Global IP health check.
 	fmt.Printf("%+v\n", globalIPHealthCheck.Data)
 ```
 
-## Retrieve a Global IP health check
+## 获取全局 IP 地址的健康检查记录
 
-Retrieve a Global IP health check.
+获取全局 IP 地址的健康检查记录：
 
 `GET /global_ip_health_checks/{id}`
 
@@ -774,9 +784,9 @@ Retrieve a Global IP health check.
 	fmt.Printf("%+v\n", globalIPHealthCheck.Data)
 ```
 
-## Delete a Global IP health check
+## 删除全局 IP 地址的健康检查记录
 
-Delete a Global IP health check.
+删除全局 IP 地址的健康检查记录：
 
 `DELETE /global_ip_health_checks/{id}`
 
@@ -788,7 +798,9 @@ Delete a Global IP health check.
 	fmt.Printf("%+v\n", globalIPHealthCheck.Data)
 ```
 
-## Global IP Latency Metrics
+## 全局 IP 地址的延迟指标
+
+获取全局 IP 地址的延迟指标：
 
 `GET /global_ip_latency`
 
@@ -800,7 +812,9 @@ Delete a Global IP health check.
 	fmt.Printf("%+v\n", globalIPLatency.Data)
 ```
 
-## List all Global IP Protocols
+## 列出所有全局 IP 协议
+
+列出所有全局 IP 协议：
 
 `GET /global_ip_protocols`
 
@@ -812,7 +826,9 @@ Delete a Global IP health check.
 	fmt.Printf("%+v\n", globalIPProtocols.Data)
 ```
 
-## Global IP Usage Metrics
+## 全局 IP 地址的使用情况指标
+
+获取全局 IP 地址的使用情况指标：
 
 `GET /global_ip_usage`
 

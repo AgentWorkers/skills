@@ -1,37 +1,41 @@
 ---
 name: apple-mail
-description: Read and interact with Apple Mail via osascript on macOS. Use when you need to: (1) List mail accounts, (2) List mailboxes/folders for an account, (3) Get messages from a specific mailbox, (4) Read message content. Works with Apple Mail app on macOS only.
+description: 在 macOS 上，可以通过 `osascript` 脚本来读取和操作 Apple Mail 的内容。以下是该脚本的一些主要用途：  
+1. 列出所有邮件账户；  
+2. 查看某个账户下的所有邮箱/文件夹；  
+3. 从指定的邮箱中获取邮件内容；  
+4. 阅读邮件的具体内容。  
+该脚本仅适用于 macOS 上的 Apple Mail 应用程序。
 metadata: {"moltbot":{"emoji":"📧","os":["darwin"],"requires":{"bins":["osascript"]}}}
 ---
 
-# Apple Mail Skill
+# Apple Mail 技能
 
-## Overview
+## 概述
 
-This skill enables interaction with Apple Mail on macOS through AppleScript (osascript). It provides capabilities to list accounts, browse mailboxes, retrieve message lists, and read full message content.
+该技能允许通过 AppleScript (osascript) 与 macOS 上的 Apple Mail 进行交互。它提供了列出账户、浏览邮箱、检索邮件列表以及阅读完整邮件内容的功能。
 
-## Prerequisites
+## 先决条件
 
-- macOS system
-- Apple Mail app installed and configured
-- At least one mail account set up in Apple Mail
-- Apple Mail must be running when using this skill
+- 安装并配置了 macOS 系统和 Apple Mail 应用程序。
+- 在 Apple Mail 中至少设置了一个邮件账户。
+- 使用该技能时，Apple Mail 必须处于运行状态。
 
-## Quick Start
+## 快速入门
 
-### List Available Accounts
+### 列出可用账户
 
 ```bash
 python3 {baseDir}/scripts/list_accounts.py
 ```
 
-### List Mailboxes for an Account
+### 列出某个账户的邮箱
 
 ```bash
 python3 {baseDir}/scripts/list_mailboxes.py "Account Name"
 ```
 
-### Get Messages from a Mailbox
+### 从邮箱中获取邮件
 
 ```bash
 # Get 10 most recent messages (default)
@@ -41,35 +45,35 @@ python3 {baseDir}/scripts/get_messages.py "Account Name" "INBOX"
 python3 {baseDir}/scripts/get_messages.py "Account Name" "INBOX" --limit 20
 ```
 
-### Read Full Message Content
+### 阅读完整邮件内容
 
 ```bash
 python3 {baseDir}/scripts/get_message_content.py "MESSAGE_ID"
 ```
 
-## Typical Workflows
+## 常见工作流程
 
-### Workflow 1: Browse Mail
+### 工作流程 1：浏览邮件
 
-1. List accounts to see what's available
-2. Choose an account and list its mailboxes
-3. Get messages from desired mailbox
-4. Read full content of specific messages
+1. 列出所有可用的账户。
+2. 选择一个账户并查看其邮箱。
+3. 从指定的邮箱中获取邮件。
+4. 阅读特定邮件的完整内容。
 
-### Workflow 2: Search for Specific Messages
+### 工作流程 2：搜索特定邮件
 
-1. Get messages from target mailbox with appropriate limit
-2. Review subjects and senders from the list
-3. Identify message IDs of interest
-4. Read full content of relevant messages
+1. 从目标邮箱中获取指定数量的邮件。
+2. 查看邮件的主题和发件人。
+3. 找到感兴趣的邮件 ID。
+4. 阅读相关邮件的完整内容。
 
-## Script Reference
+## 脚本参考
 
 ### `list_accounts.py`
 
-Lists all configured mail accounts in Apple Mail.
+列出 Apple Mail 中所有已配置的邮件账户。
 
-**Output format:** JSON array of account names
+**输出格式：** 账户名称的 JSON 数组
 ```json
 {
   "accounts": ["iCloud", "Gmail", "Work"],
@@ -79,12 +83,12 @@ Lists all configured mail accounts in Apple Mail.
 
 ### `list_mailboxes.py <account_name>`
 
-Lists all mailboxes (folders) for a specific account.
+列出特定账户的所有邮箱（文件夹）。
 
-**Arguments:**
-- `account_name`: Name of the mail account (from list_accounts.py)
+**参数：**
+- `account_name`：邮件账户的名称（来自 list_accounts.py）
 
-**Output format:** JSON array of mailbox names
+**输出格式：** 邮箱名称的 JSON 数组
 ```json
 {
   "account": "iCloud",
@@ -95,14 +99,14 @@ Lists all mailboxes (folders) for a specific account.
 
 ### `get_messages.py <account_name> <mailbox_name> [--limit N]`
 
-Retrieves message list from a specific mailbox.
+从指定的邮箱中检索邮件列表。
 
-**Arguments:**
-- `account_name`: Name of the mail account
-- `mailbox_name`: Name of the mailbox (e.g., "INBOX", "Sent")
-- `--limit N`: Optional, max number of messages to retrieve (default: 10)
+**参数：**
+- `account_name`：邮件账户的名称。
+- `mailbox_name`：邮箱的名称（例如：“INBOX”、“Sent”）。
+- `--limit N`：可选参数，指定要检索的邮件数量上限（默认值：10）。
 
-**Output format:** JSON array with message metadata
+**输出格式：** 包含邮件元数据的 JSON 数组
 ```json
 {
   "account": "iCloud",
@@ -124,45 +128,37 @@ Retrieves message list from a specific mailbox.
 
 ### `get_message_content.py <message_id>`
 
-Retrieves full content of a specific message.
+检索特定邮件的完整内容。
 
-**Arguments:**
-- `message_id`: Message ID from get_messages.py output
+**参数：**
+- `message_id`：来自 get_messages.py 的邮件 ID。
 
-**Output format:** JSON with full message details
-```json
-{
-  "subject": "Meeting Tomorrow",
-  "sender": "colleague@example.com",
-  "content": "Hi, let's meet tomorrow at 2 PM...",
-  "date_sent": "Monday, January 27, 2026 at 10:30:00 AM"
-}
-```
+**输出格式：** 包含邮件详细信息的 JSON 对象
 
-## Common Patterns
+## 常见使用模式
 
-### Pattern: Find Unread Messages
+### 模式 1：查找未读邮件
 
-1. Get messages from INBOX
-2. Filter results where `read_status` is `false`
-3. Read content of unread messages
+1. 从 INBOX 中获取邮件。
+2. 筛选 `read_status` 为 `false` 的邮件。
+3. 阅读未读邮件的内容。
 
-### Pattern: Check Sent Messages
+### 模式 2：查看已发送的邮件
 
-1. List mailboxes to find "Sent" or "Sent Messages"
-2. Get messages from sent mailbox
-3. Review what was sent recently
+1. 列出所有标记为 “Sent” 的邮箱。
+2. 从已发送的邮箱中获取邮件。
+3. 查看最近发送的邮件。
 
-### Pattern: Search Multiple Mailboxes
+### 模式 3：搜索多个邮箱
 
-1. List all mailboxes for account
-2. Iterate through mailboxes of interest
-3. Get messages from each
-4. Aggregate and present results
+1. 列出该账户的所有邮箱。
+2. 遍历感兴趣的邮箱。
+3. 从每个邮箱中获取邮件。
+4. 整合并展示结果。
 
-## Error Handling
+## 错误处理
 
-All scripts output errors in a consistent format:
+所有脚本都会以统一的格式输出错误信息：
 
 ```json
 {
@@ -171,24 +167,24 @@ All scripts output errors in a consistent format:
 }
 ```
 
-Common errors:
-- **Apple Mail not running**: Start the Mail app
-- **Invalid account name**: Check spelling, account names are case-sensitive
-- **Invalid mailbox name**: Use exact name from list_mailboxes.py
-- **Message not found**: Message may have been deleted or moved
+常见错误：
+- **Apple Mail 未运行**：请启动 Mail 应用程序。
+- **账户名称无效**：请检查拼写，账户名称区分大小写。
+- **邮箱名称无效**：请使用 `list_mailboxes.py` 中提供的准确名称。
+- **邮件未找到**：邮件可能已被删除或移动。
 
-## Important Notes
+## 重要说明
 
-- **Case sensitivity**: Account and mailbox names are case-sensitive
-- **Mail app must be running**: All scripts require Apple Mail to be open
-- **Permissions**: First use may prompt for automation permissions in System Preferences
-- **Performance**: Large mailboxes may take longer to query; use --limit to constrain results
-- **Message IDs**: Message IDs are persistent unless the message is deleted
+- **区分大小写**：账户名称和邮箱名称均区分大小写。
+- **必须运行 Mail 应用程序**：所有脚本都需要 Apple Mail 处于打开状态。
+- **权限**：首次使用时，系统可能会在系统偏好设置中请求自动化权限。
+- **性能**：大型邮箱的查询可能需要更多时间；使用 `--limit` 参数来限制查询结果的数量。
+- **邮件 ID**：邮件 ID 是永久性的，除非邮件被删除。
 
-## Limitations
+## 限制
 
-- Only works on macOS
-- Requires Apple Mail (doesn't work with other mail clients)
-- Cannot send or delete messages (read-only operations)
-- Cannot modify message properties (flags, folders, etc.)
-- Limited to mailboxes directly under accounts (nested folders may not be accessible)
+- 仅适用于 macOS。
+- 仅支持 Apple Mail，不支持其他邮件客户端。
+- 仅支持读取操作，无法发送或删除邮件。
+- 无法修改邮件属性（如标记、文件夹等）。
+- 仅能访问直接隶属于账户的邮箱，嵌套文件夹可能无法访问。

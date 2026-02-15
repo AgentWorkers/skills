@@ -1,26 +1,26 @@
 ---
 name: csp-gen
-description: Generate Content Security Policy headers from your codebase
+description: 从您的代码库中生成内容安全策略（Content Security Policy, CSP）头部信息。
 ---
 
-# CSP Generator
+# CSP 生成器
 
-Scan your app and generate a proper Content Security Policy. Stop breaking your site with overly strict rules.
+扫描您的应用程序，并生成合适的 Content Security Policy（内容安全策略）。避免因过于严格的规则而导致网站出现问题。
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-csp ./src
 ```
 
-## What It Does
+## 功能介绍
 
-- Scans for external resources (scripts, styles, images)
-- Identifies inline scripts that need hashes
-- Generates a working CSP header
-- Explains each directive
+- 扫描外部资源（脚本、样式文件、图片）
+- 识别需要哈希处理的内联脚本
+- 生成有效的 CSP 头部信息
+- 解释每一条安全策略指令
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Scan and generate CSP
@@ -33,24 +33,25 @@ npx ai-csp ./src --strict
 npx ai-csp ./src --format meta
 ```
 
-## Output Formats
+## 输出格式
 
-- HTTP header format
-- HTML meta tag
-- Next.js config
-- Nginx config snippet
+- HTTP 头部格式
+- HTML meta 标签
+- Next.js 配置文件
+- Nginx 配置片段
 
-## Requirements
+## 系统要求
 
-Node.js 18+. OPENAI_API_KEY required.
+- Node.js 18.0 或更高版本
+- 需要 OPENAI_API_KEY
 
-## License
+## 许可证
 
-MIT. Free forever.
+MIT 许可证。永久免费使用。
 
 ---
 
-**Built by LXGIC Studios**
+**由 LXGIC Studios 开发**
 
 - GitHub: [github.com/lxgicstudios/ai-csp](https://github.com/lxgicstudios/ai-csp)
 - Twitter: [@lxgicstudios](https://x.com/lxgicstudios)

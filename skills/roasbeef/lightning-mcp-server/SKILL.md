@@ -1,20 +1,15 @@
 ---
 name: lightning-mcp-server
-description: Build and configure the MCP server for Lightning Node Connect (LNC). Connects AI assistants to lnd nodes via encrypted WebSocket tunnels using pairing phrases — no direct network access or TLS certs needed. Read-only by default (18 tools for querying node state, channels, payments, invoices, peers, on-chain data).
+description: 构建并配置用于 Lightning Node Connect (LNC) 的 MCP 服务器。该服务器通过加密的 WebSocket 隧道将 AI 助手连接到 lnd 节点，无需直接的网络访问或 TLS 证书。默认情况下，MCP 服务器仅提供读取权限（支持 18 种工具，用于查询节点状态、通道信息、支付记录、发票数据以及链上信息）。
 ---
 
-# MCP LNC Server
+# MCP LNC 服务器
 
-Build and configure the MCP server that connects AI assistants to Lightning
-nodes via **Lightning Node Connect (LNC)**. LNC uses encrypted WebSocket tunnels
-through a mailbox relay, so the agent never needs direct gRPC access, TLS
-certificates, or macaroons — just a 10-word pairing phrase from Lightning
-Terminal.
+构建并配置 MCP 服务器，该服务器通过 **Lightning Node Connect (LNC)** 将 AI 助手连接到 Lightning 节点。LNC 使用加密的 WebSocket 隧道，因此代理程序无需直接访问 gRPC、TLS 证书或 macaroons——只需提供来自 Lightning Terminal 的 10 个单词组成的配对短语即可。
 
-The MCP server is **read-only by default** — it exposes 18 tools for querying
-node state but cannot send payments or modify channels.
+MCP 服务器默认为 **只读** 模式——它提供了 18 个工具用于查询节点状态，但无法发送支付或修改通道。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Build the MCP server binary
@@ -27,26 +22,23 @@ skills/lightning-mcp-server/scripts/configure.sh
 skills/lightning-mcp-server/scripts/setup-claude-config.sh
 ```
 
-Then restart Claude Code. The `lnc_connect` tool will be available to connect
-to any lnd node using a pairing phrase.
+然后重启 Claude Code。此时 `lnc_connect` 工具将可用，可以使用配对短语连接到任何 lnd 节点。
 
-## How It Works
+## 工作原理
 
 ```
 Claude Code  <--stdio-->  lightning-mcp-server  <--LNC WebSocket-->  Mailbox  <-->  lnd
 ```
 
-1. Claude Code launches `lightning-mcp-server` as a subprocess (stdio transport)
-2. Agent calls `lnc_connect` with a pairing phrase and password
-3. Server generates an ephemeral ECDSA keypair and opens an encrypted WebSocket
-   tunnel through the mailbox relay
-4. Once connected, the agent can call any of the 18 read-only tools
-5. `lnc_disconnect` closes the tunnel
+1. Claude Code 以子进程的形式启动 `lightning-mcp-server`（使用 stdio 传输方式）。
+2. 代理程序使用配对短语和密码调用 `lnc_connect`。
+3. 服务器生成一个临时的 ECDSA 密钥对，并通过 mailbox 中继打开一个加密的 WebSocket 隧道。
+4. 连接成功后，代理程序可以调用这 18 个只读工具中的任意一个。
+5. `lncdisconnect` 用于关闭隧道。
 
-No keys, certs, or macaroons are stored on disk — the pairing phrase is the
-only credential, and it's handled in-memory only.
+所有密钥、证书或 macaroons 都不会存储在磁盘上——配对短语是唯一的凭证，并且仅在内存中处理。
 
-## Installation
+## 安装
 
 ```bash
 # Build from source (requires Go 1.24+)
@@ -56,9 +48,9 @@ skills/lightning-mcp-server/scripts/install.sh
 lightning-mcp-server -version
 ```
 
-The install script builds from the `lightning-mcp-server/` directory in this repo.
+安装脚本从本仓库的 `lightning-mcp-server/` 目录构建。
 
-## Configuration
+## 配置
 
 ```bash
 # Generate .env with defaults
@@ -71,20 +63,20 @@ skills/lightning-mcp-server/scripts/configure.sh --production
 skills/lightning-mcp-server/scripts/configure.sh --dev --mailbox aperture:11110
 ```
 
-Configuration is stored in `lightning-mcp-server/.env`. Key settings:
+配置信息存储在 `lightning-mcp-server/.env` 文件中。关键配置参数如下：
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 说明 |
 |----------|---------|-------------|
-| `LNC_MAILBOX_SERVER` | `mailbox.terminal.lightning.today:443` | Mailbox relay server |
-| `LNC_DEV_MODE` | `false` | Enable development mode |
-| `LNC_INSECURE` | `false` | Skip TLS verification (dev only) |
-| `LNC_CONNECT_TIMEOUT` | `30` | Connection timeout in seconds |
+| `LNC_MAILBOX_SERVER` | `mailbox.terminal.lightning.today:443` | Mailbox 中继服务器地址 |
+| `LNC_DEV_MODE` | `false` | 启用开发模式 |
+| `LNC_INSECURE` | `false` | 跳过 TLS 验证（仅限开发环境） |
+| `LNC_CONNECT_TIMEOUT` | `30` | 连接超时时间（以秒为单位） |
 
-## Claude Code Integration
+## Claude Code 集成
 
-### Option 1: `claude mcp add` (recommended)
+### 方式 1：`claude mcp add`（推荐）
 
-Register the MCP server with a single command — no build step required:
+通过一条命令注册 MCP 服务器——无需构建步骤：
 
 ```bash
 # Zero-install via npx (downloads pre-built binary)
@@ -103,10 +95,9 @@ claude mcp add --transport stdio \
   lnc -- npx -y @lightninglabs/lightning-mcp-server
 ```
 
-Scope options: `--scope local` (default, just you), `--scope project` (shared
-via `.mcp.json`), `--scope user` (all your projects).
+可选范围：`--scope local`（默认，仅限当前用户），`--scope project`（通过 `.mcp.json` 共享），`--scope user`（所有项目）。
 
-### Option 2: Setup script (from source)
+### 方式 2：使用设置脚本（从源代码安装）
 
 ```bash
 # Add lightning-mcp-server to Claude Code's MCP config
@@ -119,13 +110,11 @@ skills/lightning-mcp-server/scripts/setup-claude-config.sh --scope project
 skills/lightning-mcp-server/scripts/setup-claude-config.sh --scope global
 ```
 
-This adds the server to Claude Code's `.mcp.json` (project) or
-`~/.claude.json` (global) configuration. After restarting Claude Code, the
-LNC tools will be available.
+此方法会将服务器添加到 Claude Code 的 `.mcp.json`（项目配置文件）或 `~/.claude.json`（全局配置文件）中。重启 Claude Code 后，LNC 工具即可使用。
 
-### Option 3: Manual configuration
+### 方式 3：手动配置
 
-Add to `.mcp.json` in your project root:
+在项目根目录下的 `.mcp.json` 文件中进行配置：
 
 ```json
 {
@@ -141,7 +130,7 @@ Add to `.mcp.json` in your project root:
 }
 ```
 
-Or with a locally built binary:
+或者使用本地构建的二进制文件进行配置：
 
 ```json
 {
@@ -156,7 +145,7 @@ Or with a locally built binary:
 }
 ```
 
-Or run via Docker:
+也可以通过 Docker 运行服务器：
 
 ```json
 {
@@ -175,106 +164,101 @@ Or run via Docker:
 }
 ```
 
-## Available Tools (18)
+## 可用的工具（共 18 个）
 
-### Connection
+### 连接相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_connect` | Connect to lnd via LNC pairing phrase |
-| `lnc_disconnect` | Close active LNC connection |
+| `lnc_connect` | 通过 LNC 配对短语连接到 lnd 节点 |
+| `lncdisconnect` | 关闭当前的 LNC 连接 |
 
-### Node
+### 节点相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_get_info` | Node alias, version, sync status, block height |
-| `lnc_get_balance` | Wallet balance (on-chain) and channel balance |
+| `lnc_get_info` | 节点别名、版本、同步状态、区块高度 |
+| `lnc_get_balance` | 钱包余额（链上余额）和通道余额 |
 
-### Channels
+### 通道相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_list_channels` | Active/inactive channels with capacity, balances |
-| `lnc_pending_channels` | Channels being opened or closed |
+| `lnc_list_channels` | 活动/非活动通道及其容量、余额 |
+| `lnc_pending_channels` | 正在打开或关闭的通道 |
 
-### Invoices
+### 发票相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_decode_invoice` | Decode a BOLT11 invoice |
-| `lnc_list_invoices` | List invoices with pagination |
-| `lnc_lookup_invoice` | Look up invoice by payment hash |
+| `lnc_decodeinvoice` | 解码 BOLT11 发票 |
+| `lnc_list_invoices` | 分页显示发票列表 |
+| `lnc_lookupinvoice` | 根据支付哈希查找发票 |
 
-### Payments
+### 支付相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_list_payments` | Payment history with pagination |
-| `lnc_track_payment` | Track specific payment by hash |
+| `lnc_list_payments` | 分页显示支付历史记录 |
+| `lnc_track_payment` | 根据哈希追踪特定支付记录 |
 
-### Peers & Network
+### 对等节点及网络相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_list_peers` | Connected peers with stats |
-| `lnc_describe_graph` | Lightning Network topology sample |
-| `lnc_get_node_info` | Detailed info about a specific node |
+| `lnc_list_peers` | 连接的对等节点及其统计信息 |
+| `lnc_describe_graph` | Lightning Network 的拓扑结构示例 |
+| `lnc_get_node_info` | 特定节点的详细信息 |
 
-### On-Chain
+### 链上相关工具
 
-| Tool | Description |
+| 工具 | 说明 |
 |------|-------------|
-| `lnc_list_unspent` | UTXOs with confirmations |
-| `lnc_get_transactions` | On-chain transaction history |
-| `lnc_estimate_fee` | Fee estimates for confirmation targets |
+| `lnc_list_unspent` | 未花费的交易输出（UTXOs）及其确认状态 |
+| `lnc_get_transactions` | 链上交易历史记录 |
+| `lnc_estimate_fee` | 预计的确认费用 |
 
-## Security Model
+## 安全模型
 
-- **No stored credentials:** Pairing phrase is handled in-memory only. Ephemeral
-  ECDSA keypairs are generated per session.
-- **Read-only:** No payment, channel, or state-changing operations are exposed.
-  The agent can observe but not modify.
-- **Encrypted tunnels:** All traffic is encrypted end-to-end through the mailbox
-  relay. The mailbox cannot read the traffic.
-- **No direct access:** The agent machine never connects directly to the lnd
-  node's gRPC port — all traffic goes through the mailbox.
+- **无需存储凭证：** 配对短语仅在内存中处理。每次会话都会生成临时的 ECDSA 密钥对。
+- **只读权限：** 不支持任何支付、通道或状态修改操作。代理程序只能查看数据，无法进行修改。
+- **加密隧道：** 所有流量都通过 mailbox 中继进行端到端加密。mailbox 无法读取传输的数据。
+- **无直接访问：** 代理程序不会直接连接到 lnd 节点的 gRPC 端口——所有流量都通过 mailbox 中继传输。
 
-### Comparison with Direct gRPC Access
+### 与直接使用 gRPC 的比较
 
-| | MCP LNC Server | Direct lncli/gRPC |
+| | MCP LNC 服务器 | 直接使用 lncli/gRPC |
 |---|---|---|
-| **Credential** | Pairing phrase (in-memory) | TLS cert + macaroon (on disk) |
-| **Network** | WebSocket via mailbox relay | Direct TCP to gRPC port |
-| **Firewall** | No inbound ports needed | Port 10009 must be reachable |
-| **Permissions** | Read-only (hardcoded) | Depends on macaroon scope |
-| **Setup** | Pairing phrase from Lightning Terminal | Export cert + macaroon files |
+| **凭证要求：** 配对短语（仅存储在内存中） | TLS 证书 + macaroons（存储在磁盘上） |
+| **网络连接：** 通过 mailbox 中继的 WebSocket | 直接通过 TCP 连接到 gRPC 端口 |
+| **防火墙要求：** 无需开放额外的端口 | 必须能访问端口 10009 |
+| **权限控制：** 仅限读取（硬编码） | 权限取决于 macaroons 的使用范围 |
+| **配置方式：** 通过 Lightning Terminal 提供配对短语 | 需要导出证书和 macaroons 文件 |
 
-## Prerequisites
+## 先决条件
 
-- **Go 1.24+** for building from source
-- **Lightning Terminal (litd)** on the target node for generating pairing phrases
-- **Claude Code** for MCP integration
+- 需要 Go 1.24 或更高版本的编程语言来从源代码构建服务器。
+- 目标节点上需要安装 Lightning Terminal (litd) 以生成配对短语。
+- 需要安装 Claude Code 以便集成 MCP 服务器。
 
-## Troubleshooting
+## 故障排除
 
-### "pairing phrase must be exactly 10 words"
-The pairing phrase is generated by Lightning Terminal. It must be exactly 10
-space-separated words.
+### “配对短语必须由 10 个单词组成”
+配对短语由 Lightning Terminal 生成，必须由 10 个单词组成，单词之间用空格分隔。
 
-### "connection timeout"
-Check that the mailbox server is reachable. For production, ensure
-`mailbox.terminal.lightning.today:443` is not blocked by a firewall.
+### “连接超时”
+请检查 mailbox 中继服务器是否可访问。在生产环境中，请确保 `mailbox.terminal.lightning.today:443` 端口未被防火墙阻止。
 
-### "TLS handshake failure"
-If using a local regtest setup, enable dev mode and insecure mode:
+### “TLS 握手失败”
+如果使用本地测试环境（regtest），请启用开发模式（`LNC_DEV_MODE`）和不安全模式（`LNC_INSECURE`）：
+
 ```bash
 skills/lightning-mcp-server/scripts/configure.sh --dev --insecure
 ```
 
-### Tools not appearing in Claude Code
-Restart Claude Code after running `setup-claude-config.sh`. Check that
-`lightning-mcp-server` is on your `$PATH`:
+### 工具在 Claude Code 中未显示
+运行 `setup-claude-config.sh` 后重启 Claude Code。确认 `lightning-mcp-server` 是否已添加到 `$PATH` 环境变量中：
+
 ```bash
 which lightning-mcp-server
 ```

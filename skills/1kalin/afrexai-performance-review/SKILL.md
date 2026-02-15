@@ -1,22 +1,22 @@
-# Performance Review Engine
+# 绩效评估引擎
 
-> Your AI-powered performance management system. Write reviews that develop people, not just evaluate them. From self-assessments to 360° feedback to calibration — complete frameworks for every review cycle.
-
----
-
-## Quick Start
-
-Tell your agent:
-- "Write a performance review for [name] — they exceeded on delivery but need to improve communication"
-- "Help me write my self-assessment for H2 2025"
-- "Run a 360° feedback collection for my team of 6"
-- "Prepare calibration notes for my 4 direct reports"
+> 这是一个由人工智能驱动的性能管理系统，旨在帮助员工成长，而不仅仅是进行评估。从自我评估到360度反馈，我们提供了完整的评估周期框架。
 
 ---
 
-## 1. Review Cycle Setup
+## 快速入门
 
-### Cycle Configuration Template
+您可以这样使用该系统：
+- 对您的代理说：“为[姓名]撰写绩效评估——他们的交付工作表现优异，但需要提升沟通能力”
+- “帮我撰写2025年上半年的自我评估”
+- “为我的6名团队成员收集360度反馈”
+- “为我的4名直接下属准备评估意见”
+
+---
+
+## 1. 评估周期设置
+
+### 周期配置模板
 
 ```yaml
 cycle:
@@ -56,25 +56,25 @@ cycle:
       weight: 10
 ```
 
-### Rating Distribution Guidelines
+### 评分分布指南
 
-| Rating | Target % | Description |
+| 评分 | 目标比例 | 说明 |
 |--------|----------|-------------|
-| 5 - Significantly Exceeds | 5-10% | Transformational impact, raises the bar for everyone |
-| 4 - Exceeds | 20-25% | Consistently above expectations, visible impact |
-| 3 - Meets | 50-60% | Solid, reliable performer at level |
-| 2 - Partially Meets | 10-15% | Gaps in key areas, needs focused improvement |
-| 1 - Does Not Meet | 0-5% | Serious performance concerns, PIP candidate |
+| 5 - 显著超出预期 | 5-10% | 对团队有变革性影响，提升了整体标准 |
+| 4 - 超出预期 | 20-25% | 持续表现超出预期，有明显影响 |
+| 3 - 达到预期 | 50-60% | 表现稳定，可靠 |
+| 2 - 部分达到预期 | 10-15% | 在关键领域存在不足，需要重点改进 |
+| 1 - 未达到预期 | 0-5% | 表现严重不佳，可能需要绩效改进计划 |
 
-**Forced distribution warning:** These are guidelines, not quotas. If a team genuinely has 80% high performers, the distribution should reflect reality. Forcing bell curves creates distrust.
+**注意：** 这些是评分指南，而非强制分配比例。如果团队中80%的员工表现优异，评分应真实反映实际情况。强行遵循固定比例可能会引发不信任。
 
 ---
 
-## 2. Self-Assessment Framework
+## 2. 自我评估框架
 
-### STAR-I Method (Situation → Task → Action → Result → Impact)
+### STAR-I 方法（情境 → 任务 → 行动 → 结果 → 影响）
 
-Guide employees to write self-assessments that actually demonstrate value:
+指导员工撰写能够体现其价值的自我评估：
 
 ```markdown
 ### Achievement: [Title]
@@ -89,93 +89,93 @@ Guide employees to write self-assessments that actually demonstrate value:
 **Evidence:** [Links, metrics, Slack messages, PRs, customer feedback]
 ```
 
-### Self-Assessment Prompts by Competency
+### 按能力划分的自我评估提示
 
-**Delivery & Execution:**
-- What were your top 3-5 deliverables this period?
-- Which projects were on time/budget? Which weren't, and why?
-- How did you handle blockers or scope changes?
-- What did you ship that you're most proud of?
+**交付与执行：**
+- 本季度您完成的最重要的3-5项成果是什么？
+- 哪些项目按时按预算完成了？哪些没有，原因是什么？
+- 您是如何处理阻碍因素或范围变更的？
+- 您最自豪交付了哪些成果？
 
-**Technical/Functional Expertise:**
-- What new skills or knowledge did you develop?
-- Where did you serve as the go-to expert?
-- What technical decisions did you make and what was the outcome?
-- How did you stay current in your field?
+**技术/职能专长：**
+- 您掌握了哪些新技能或知识？
+- 在哪些方面您成为了团队的专家？
+- 您做出了哪些技术决策，结果如何？
+- 您是如何保持行业知识的更新的？
 
-**Communication & Collaboration:**
-- How did you contribute to team effectiveness?
-- Give an example of resolving a disagreement productively
-- How did you share knowledge with others?
-- What cross-functional work did you do?
+**沟通与协作：**
+- 您如何促进团队效率？
+- 请举一个有效解决冲突的例子？
+- 您是如何与他人分享知识的？
+- 您参与了哪些跨部门的工作？
 
-**Leadership & Influence:**
-- How did you influence outcomes beyond your direct responsibilities?
-- Did you mentor or develop others? How?
-- What initiatives did you drive or champion?
-- How did you contribute to team culture?
+**领导力与影响力：**
+- 您如何影响超出直接职责范围的结果？
+- 您是否指导或培养过他人？是如何做的？
+- 您推动了哪些项目或倡议？
+- 您如何为团队文化做出贡献？
 
-**Growth & Development:**
-- What feedback did you receive and act on?
-- What's your biggest area of growth this period?
-- Where do you still want to improve?
-- What are your goals for next period?
+**成长与发展：**
+- 您收到了哪些反馈，并采取了哪些行动？
+- 本季度您在哪些方面取得了最大进步？
+- 您还有哪些方面需要改进？
+- 下一个季度的目标是什么？
 
-### Self-Assessment Quality Checklist
+### 自我评估质量检查清单
 
-- [ ] Includes 5-8 concrete achievements with metrics
-- [ ] Uses STAR-I format (not just "I did X")
-- [ ] Covers all competency areas, not just delivery
-- [ ] Acknowledges at least 1-2 growth areas honestly
-- [ ] References specific feedback received and actions taken
-- [ ] Includes forward-looking goals
-- [ ] Avoids vague language ("helped with," "was involved in")
-- [ ] Links to evidence where possible
-- [ ] Appropriate length (1-2 pages, not 10)
-- [ ] Written in first person, professional but human tone
+- [ ] 包含5-8项具体的成果，并附有数据支持
+- [ ] 使用STAR-I格式（而不仅仅是“我做了X”）
+- [ ] 覆盖所有能力领域，而不仅仅是交付成果
+- [ ] 如实承认至少1-2个需要改进的方面
+- [ ] 提及收到的具体反馈及采取的行动
+- [ ] 包含未来目标
+- [ ] 避免使用模糊的语言（如“提供了帮助”、“参与了某项工作”）
+- [ ] 尽可能提供证据支持
+- [ ] 页数适中（1-2页）
+- [ ] 用第一人称书写，语气专业且亲切
 
 ---
 
-## 3. Manager Review Writing
+## 3. 经理评估撰写
 
-### The OBSERVE Framework
+### OBSERVE 框架
 
-Structure every review around:
+每个评估都应围绕以下方面进行：
 
-**O — Outcomes delivered:** What did they ship/achieve? Metrics and evidence.
-**B — Behaviors demonstrated:** HOW they worked, not just what they produced.
-**S — Strengths to leverage:** Their superpower — what should they do MORE of?
-**E — Edges to develop:** Growth areas framed as opportunities, not failures.
-**R — Relationships & impact:** How they affected team dynamics and culture.
-**V — Vision forward:** Clear expectations and development plan for next period.
-**E — Evidence cited:** Every claim backed by specific examples.
+**O — 交付成果：** 他们完成了什么？提供具体数据和证据。
+**B — 表现行为：** 他们是如何工作的，而不仅仅是完成了什么。
+**S — 强项：** 他们的优势——哪些方面应该更加突出？
+**E — 发展空间：** 将需要改进的方面视为机会，而非失败。
+**R — 关系与影响：** 他们对团队动态和文化产生了怎样的影响。
+**V — 前瞻性规划：** 明确的下一个季度目标和发展计划。
+**E — 证据支持：** 每一项陈述都应有具体例证支持。
 
-### Writing Rules
+### 编写规则
 
-1. **Specific > Vague**
-   - ❌ "Great job this quarter"
-   - ✅ "Led the API migration affecting 12 services, completing 2 weeks ahead of schedule with zero customer-facing incidents"
+1. **具体 > 模糊**
+   - ❌ “本季度表现很好”
+   - ✅ “领导了影响12个服务的API迁移工作，提前两周完成，且没有出现任何客户投诉”
 
-2. **Behavior > Trait**
-   - ❌ "Is a natural leader"
-   - ✅ "Organized weekly knowledge-sharing sessions that improved team velocity by 15% and reduced onboarding time for 3 new hires"
+2. **行为 > 特质**
+   - ❌ “天生就是领导者”
+   - ✅ “组织了每周的知识分享会议，使团队效率提高了15%，新员工的入职时间缩短了”
 
-3. **Pattern > Incident**
-   - ❌ "Missed the Q3 deadline"
-   - ✅ "Delivery timelines were missed on 3 of 5 projects, consistently by 1-2 weeks, suggesting estimation needs improvement"
+3. **模式 > 事件**
+   - ❌ “错过了第三季度的截止日期”
+   - ✅ “5个项目中有3个错过了交付期限，每次都滞后1-2周，表明估算能力需要提高”
 
-4. **Forward > Backward**
-   - ❌ "Failed to communicate effectively"
-   - ✅ "Strengthening stakeholder communication — specifically proactive status updates — would multiply the impact of their strong technical work"
+4. **关注未来 > 回顾过去**
+   - ❌ “沟通效果不佳”
+   - ✅ “加强与利益相关者的沟通——特别是主动提供进度更新——这将提升他们的技术工作的影响力”
 
-5. **Balanced always**
-   - Even top performers need development feedback
-   - Even struggling performers have strengths to acknowledge
-   - Target ratio: 60% strengths / 40% development (adjust by rating)
+5. **始终保持平衡**
+   - 即使是表现最好的员工也需要发展反馈
+   - 即使是表现不佳的员工也有值得肯定的优点
+   - 评分比例建议为：60% 强项 / 40% 发展空间（根据评分进行调整）
 
-### Review Templates by Rating
+### 不同评分的评估模板
 
-#### Rating 5 — Significantly Exceeds
+#### 评分5 — 显著超出预期
 
 ```markdown
 ## Performance Review: [Name] — H2 2025
@@ -211,7 +211,7 @@ Even at this exceptional level, continued growth in [area] would unlock [next-le
 [Name] is ready for [promotion/expanded scope/leadership opportunity]. Recommended next steps: [specific action].
 ```
 
-#### Rating 3 — Meets Expectations
+#### 评分3 — 达到预期
 
 ```markdown
 ## Performance Review: [Name] — H2 2025
@@ -244,7 +244,7 @@ Goals for next period:
 3. [Continuation goal building on strengths]
 ```
 
-#### Rating 1-2 — Below Expectations
+#### 评分1-2 — 未达到预期
 
 ```markdown
 ## Performance Review: [Name] — H2 2025
@@ -283,9 +283,9 @@ If improvement to [specific measurable standard] is not demonstrated by [date]:
 
 ---
 
-## 4. 360° Feedback System
+## 4. 360度反馈系统
 
-### Peer Feedback Request Template
+### 同事反馈请求模板
 
 ```markdown
 Hi [Peer Name],
@@ -305,16 +305,16 @@ Your feedback will be anonymized and synthesized — [Name] will not see your in
 Due by: [Date]
 ```
 
-### Feedback Synthesis Method
+### 反馈整合方法
 
-When combining multiple peer reviews:
+在整合多份同事反馈时：
 
-1. **Identify themes** — What do 2+ people mention? Those are patterns, not noise.
-2. **Weight by proximity** — Feedback from close collaborators > occasional contacts.
-3. **Separate fact from feeling** — "Missed 3 deadlines" is fact. "Seems disengaged" is perception (still valuable, but frame differently).
-4. **Preserve outlier insights** — If one person noticed something unique, it may still be valuable. Include as "additionally noted."
+1. **识别共同点** — 多人提到的问题是什么？这些是值得关注的模式，而非偶然现象。
+2. **根据亲密程度加权** — 来自密切合作者的反馈比偶尔接触者的反馈更重要。
+3. **区分事实与感受** — “错过了3个截止日期”是事实，“显得不投入”是一种主观感受（仍然有参考价值，但需以不同方式呈现）。
+4. **保留独特见解** — 如果有人发现了独特的问题，也应予以记录。
 
-### Synthesis Template
+### 反馈整合模板
 
 ```markdown
 ### 360° Feedback Summary for [Name]
@@ -338,11 +338,11 @@ When combining multiple peer reviews:
 
 ---
 
-## 5. Calibration Session
+## 5. 校准会议
 
-### Pre-Calibration Prep
+### 校准前的准备工作
 
-For each direct report, prepare:
+为每位直接下属准备：
 
 ```yaml
 calibration_card:
@@ -359,87 +359,85 @@ calibration_card:
   key_question: "" # What you want the calibration group to weigh in on
 ```
 
-### Calibration Discussion Framework
+### 校准讨论框架
 
-**Round 1 — Present (2 min per person)**
-- Manager presents: proposed rating, top achievement, biggest gap
-- No debate yet — just laying out the landscape
+**第一轮 — 展示（每人2分钟）**
+- 经理介绍：提出的评分、主要成就、最大的不足
+- 此时不进行讨论——只是介绍整体情况
 
-**Round 2 — Calibrate (5 min per person where needed)**
-- Focus on: rating 4s and 5s (are they truly exceptional?), rating 1s and 2s (is this fair?), any rating that changed from last cycle
-- Ask: "Would this person get the same rating on another team?"
-- Ask: "Is this rating consistent with [comparable person]?"
+**第二轮 — 校准（需要时每人5分钟）**
+- 关注：评分为4或5的员工（他们真的表现突出吗？）、评分为1或2的员工（评分是否合理？）、与上一周期相比是否有变化
+- 询问：“这个人在其他团队中会得到相同的评分吗？”
+- 询问：“这个评分与[类似的人]相比是否合理？”
 
-**Round 3 — Decide**
-- Finalize ratings
-- Flag anyone who needs skip-level review
-- Identify promotion candidates
-- Identify flight risks needing retention action
+**第三轮 — 最终决定**
+- 确定最终评分
+- 标出需要跳级评估的员工
+- 确定需要保留或晋升的员工
 
-### Calibration Bias Checklist
+### 校准偏差检查清单
 
-Before finalizing, check for:
-- [ ] **Recency bias** — Are you over-weighting the last month vs. the full period?
-- [ ] **Halo/horns effect** — Is one great/bad thing coloring the entire review?
-- [ ] **Similarity bias** — Are you rating people like you higher?
-- [ ] **Central tendency** — Are you avoiding extreme ratings when they're warranted?
-- [ ] **Leniency/strictness** — Is your distribution shifted vs. the org?
-- [ ] **Attribution error** — Are you blaming the person for systemic issues?
-- [ ] **Contrast effect** — Are you comparing to the previous person reviewed rather than the standard?
+在最终确定评分前，请检查以下问题：
+- [ ] **近期偏差** — 你是否过分强调了最近一个月的表现？
+- [ ] **光环效应** — 一个员工的出色/糟糕表现是否影响了整个评估结果？
+- [ ] **相似性偏差** — 你是否对与自己相似的人给予了更高的评分？
+- [ ] **中心趋势偏差** — 你是否避开了合理的极端评分？
+- [ ] **归因偏差** — 你是否将问题归咎于个人？
+- [ ] **对比效应** — 你是否在比较时参考了之前的评估结果？
 
 ---
 
-## 6. Review Delivery Conversation
+## 6. 评估沟通
 
-### Conversation Structure (45-60 min)
+### 沟通结构（45-60分钟）
 
-**Opening (5 min)**
-- Set the tone: "This is a two-way conversation, not a verdict"
-- Share the rating upfront — don't make them wait
+**开场（5分钟）**
+- 设定基调：“这是一个双向的沟通，不是定论”
+- 提前告知评分结果——不要让他们等待
 
-**Achievements (10 min)**
-- Walk through top 3-5 achievements
-- Let them add context or achievements you missed
-- Be genuinely appreciative — this isn't just preamble to criticism
+**成就（10分钟）**
+- 介绍他们最突出的3-5项成就
+- 让他们补充相关背景或你未提及的成就
+- 表达真诚的赞赏——这不仅仅是批评的前奏
 
-**Development (15 min)**
-- Present 1-2 development areas (not 10)
-- Use the pattern: "I've observed [specific behavior] in [specific situations]. The impact was [what happened]. What I'd love to see is [desired behavior]."
-- Ask: "Does this resonate? What's your perspective?"
-- Listen. Actually listen.
+**发展（15分钟）**
+- 提出1-2个需要改进的方面（而不是10个）
+- 使用STAR-I格式：“我观察到[具体行为]在[具体情境]中发生，结果是[具体结果]。我希望看到[你希望看到的行为]。”
+- 询问：“你有什么看法？”
+- 倾听他们的意见。
 
-**360° Themes (5 min)**
-- Share synthesized peer feedback
-- Highlight: "Your colleagues really value [X]"
-- Development: "A theme that came up was [Y] — thoughts?"
+**360度反馈（5分钟）**
+- 分享整合后的同事反馈
+- 强调：“同事们非常重视[某方面]”
+- 讨论发展方面：“大家提到的一个共同点是[某方面]——你的看法是什么？”
 
-**Goals & Development Plan (15 min)**
-- Co-create 3-5 goals for next period
-- At least 1 development goal, not just delivery goals
-- Identify specific actions, resources, support needed
-- Agree on check-in cadence
+**目标与发展计划（15分钟）**
+- 共同制定3-5个下一个季度的目标
+- 至少包括1个发展目标，而不仅仅是交付目标
+- 确定具体的行动、所需资源和支持
+- 确定后续沟通的频率
 
-**Close (5 min)**
-- Summarize key takeaways
-- Ask: "What do you need from me to be successful?"
-- End on forward-looking, supportive note
+**结束（5分钟）**
+- 总结关键要点
+- 询问：“你需要我提供什么帮助才能取得成功？”
+- 以积极和支持的态度结束对话
 
-### Difficult Conversation Scripts
+### 不同情况的沟通策略
 
-**For underperformers:**
-"I want to be direct with you because I respect you and your potential here. Your performance this period was below what we need in [specific area]. Here's what I've observed... I want to work with you on a plan to get back on track. Are you willing to commit to that?"
+**对于表现不佳的员工：**
+“我想直接与你沟通，因为我尊重你的能力和潜力。本季度你的表现没有达到我们的要求。以下是我观察到的情况……我希望与你一起制定一个改进计划。你愿意参与吗？”
 
-**For strong performers who didn't get promoted:**
-"Your work this period was excellent — [specific examples]. The reason you're rated [X] rather than promoted is [specific gap]. Here's what I think it would take: [concrete steps]. I'm committed to supporting you in getting there."
+**对于表现优异但未获得晋升的员工：**
+“你本季度的工作非常出色——[具体例子]。你被评为[某个等级]而不是获得晋升的原因是[具体原因]。以下是我认为需要的改进措施：[具体步骤]。我承诺支持你实现这些目标。”
 
-**For someone who disagrees with their rating:**
-"I hear you, and I want to understand your perspective. Can you walk me through the specific areas where you see it differently? ... I appreciate you sharing that. Here's how I weighed [factors]. [Either: Let me take this back and reconsider / I understand the disagreement, but here's why the rating stands]."
+**对于对评分有异议的员工：**
+“我理解你的观点，希望你能详细说明你的不同看法。……感谢你的分享。以下是我考虑的各种因素。……”
 
 ---
 
-## 7. Development Planning
+## 7. 发展计划
 
-### Development Plan Template
+### 发展计划模板
 
 ```yaml
 development_plan:
@@ -480,21 +478,21 @@ development_plan:
     budget_required: ""
 ```
 
-### The 70-20-10 Development Mix
+### 70-20-10 发展组合
 
-| Type | % | Examples |
+| 类型 | 比例 | 例子 |
 |------|---|----------|
-| On-the-job | 70% | Stretch assignments, new projects, leading initiatives, cross-functional work, shadowing |
-| Social learning | 20% | Mentoring, coaching, peer feedback, communities of practice, teaching others |
-| Formal learning | 10% | Courses, certifications, conferences, books, structured programs |
+| 在职学习 | 70% | 担任领导任务、新项目、推动倡议、参与跨部门工作、跟随资深员工学习 |
+| 社交学习 | 20% | 导师制、辅导、同事反馈、参与专业社区、教学他人 |
+| 正规学习 | 10% | 参加课程、认证培训、会议、阅读书籍、参加结构化培训项目 |
 
-**Common mistake:** Over-indexing on formal learning (sending someone to a course) when on-the-job stretch would be 5x more effective.
+**常见错误：** 过度依赖正规学习（如送员工参加课程），而实际上在职学习可能更有效。
 
 ---
 
-## 8. Continuous Feedback (Between Reviews)
+## 8. 持续反馈（评估周期之间）
 
-### 1:1 Performance Check-in Template (Monthly)
+### 1:1 绩效沟通模板（每月一次）
 
 ```markdown
 ## Monthly Check-in: [Name] — [Month Year]
@@ -520,19 +518,19 @@ development_plan:
 ### Overall Pulse: 😊 Great / 😐 Fine / 😟 Struggling
 ```
 
-### Real-Time Feedback Formula (SBI)
+### 实时反馈公式（SBI）
 
-**Situation:** "In yesterday's client presentation..."
-**Behavior:** "...you handled the pricing objection by reframing around ROI rather than discounting..."
-**Impact:** "...which kept us at full price and the client visibly shifted from skeptical to interested."
+**情境：** “在昨天的客户会议上……”
+**行为：** “……你通过重新解释ROI来处理价格异议……”
+**结果：** “……这使我们保持了原价，客户的态度也从怀疑转为感兴趣。”
 
-Deliver within 48 hours. Positive feedback publicly (if they're comfortable). Constructive feedback privately. Always.
+**反馈应在48小时内给出。正面反馈可以公开表达，建设性反馈应私下进行。**
 
 ---
 
-## 9. Scoring & Analytics
+## 9. 评分与分析
 
-### Individual Performance Score (0-100)
+### 个人绩效评分（0-100分）
 
 ```
 Score = Σ (competency_rating × competency_weight) × 20
@@ -543,9 +541,9 @@ Delivery (4/5 × 30%) + Technical (3/5 × 25%) + Communication (4/5 × 20%)
 = (1.20 + 0.75 + 0.80 + 0.45 + 0.40) = 3.60 / 5 = 72/100
 ```
 
-### Team Health Dashboard
+### 团队健康状况仪表盘
 
-Track quarterly:
+**季度跟踪：**
 
 ```markdown
 ## Team Performance Dashboard — Q4 2025
@@ -572,71 +570,70 @@ Track quarterly:
 
 ---
 
-## 10. Edge Cases & Advanced Scenarios
+## 10. 特殊情况与高级场景
 
-### New Hire (< 6 months)
-- Evaluate against onboarding milestones, not full role expectations
-- Weight learning speed and cultural integration higher
-- Compare to "expected ramp" not to tenured peers
-- Rating floor of 3 unless genuine performance issues (distinguish slow ramp from bad fit)
+### 新员工（入职不到6个月）**
+- 根据入职里程碑进行评估，而非全面职责要求
+- 更重视学习速度和文化融入情况
+- 与资深员工相比时，评分下限为3分（除非存在真正的绩效问题）
 
-### Role Change Mid-Cycle
-- Split the review: first half in old role, second half in new
-- Weight the new role performance more heavily (it's the forward-looking signal)
-- Acknowledge the transition tax — expect a temporary dip
+### 职位变更中**
+- 将评估分为两部分：前半部分针对旧职位，后半部分针对新职位
+- 新职位的表现应占更大比重（因为这是对未来的预测）
+- 注意过渡期的表现波动
 
-### Remote/Hybrid Considerations
-- Evaluate output and impact, not visibility or hours
-- Seek feedback from async collaborators, not just people in the office
-- Watch for proximity bias — don't rate in-office people higher by default
+### 远程/混合办公员工**
+- 评估工作成果和影响，而不仅仅是出勤时间
+- 寻求非办公室同事的反馈
+- 避免默认给予在办公室工作的人更高评分
 
-### High Performer Wanting to Leave
-- Have the conversation: "I value you and want to understand what would make you want to stay"
-- Don't inflate the rating as retention — it sets a precedent
-- Document the conversation and retention actions taken
+### 表现优异但希望离职的员工**
+- 与他们进行沟通：“我很重视你，希望了解你希望留下的原因”
+- 不要为了留住员工而抬高评分——这会树立不良榜样
+- 记录沟通内容和采取的保留措施
 
-### Inherited Team Member
-- Get context from previous manager (ask for their calibration card)
-- Be transparent: "I'm still building my understanding of your work"
-- Lean more on peer feedback and objective metrics
-- Don't default to "meets" because you don't know — do the research
+### 接任前任员工的经理**
+- 从前任经理那里获取相关信息（请求查看前任的评估记录）
+- 保持透明：“我还在了解你的工作表现”
+- 更多参考同事反馈和客观数据
+- 不要因为不了解情况就默认给予“达到预期”的评分
 
-### Manager Reviewing Someone They Don't Like
-- Stick to observable behaviors and measurable outcomes
-- Have a peer manager gut-check your review for bias
-- Ask yourself: "If my favorite team member did exactly this, what would I rate them?"
-
----
-
-## 11. Legal & Compliance Notes
-
-**Documentation rules:**
-- Keep all review documents for minimum 3 years (7 in regulated industries)
-- Feedback must reference specific, observable behaviors — not personality traits
-- Never reference protected characteristics (age, gender, disability, etc.)
-- PIP documentation should be reviewed by HR/legal before delivery
-- Employee should sign acknowledging receipt (not agreement)
-
-**Phrases to avoid:**
-- "Cultural fit" (can mask bias) → Use "collaboration effectiveness"
-- "Aggressive" (gendered connotation) → Use "assertive" or "direct"
-- "Young/energetic" → Use specific behaviors
-- "Not a team player" → Cite specific collaboration gaps with examples
+### 经理评估不喜欢的人**
+- 仅关注可观察的行为和可衡量的成果
+- 让同事经理帮忙检查评估的公正性
+- 自问：“如果是我最喜欢的团队成员做了同样的事，我会给他们什么评分？”
 
 ---
 
-## Commands Reference
+## 11. 法律与合规注意事项
 
-| Command | What it does |
+**文档规则：**
+- 所有评估文件至少保存3年（在受监管行业中保存7年）
+- 反馈必须针对具体、可观察的行为——不得涉及个人特质
+- 严禁提及受保护的信息（如年龄、性别、残疾等）
+- 绩效改进计划文件在发布前需经过人力资源部门或法律部门的审核
+- 员工需签署确认收到文件的声明（而非同意评估结果的声明）
+
+**避免使用的表述：**
+- “文化契合度”（可能掩盖偏见）→ 使用“协作效率”
+- “激进”（带有性别歧视的意味）→ 使用“果断”或“直接”
+- “年轻/精力充沛”→ 使用具体的行为描述
+- “不善于团队合作”→ 举例说明具体的协作问题
+
+---
+
+## 命令参考
+
+| 命令 | 功能 |
 |---------|-------------|
-| "Start review cycle for [team]" | Creates cycle config with timeline |
-| "Write self-assessment for [achievements]" | Generates STAR-I formatted self-review |
-| "Write review for [name] — rating [X]" | Full manager review using OBSERVE framework |
-| "Collect 360 feedback for [name]" | Generates peer feedback requests |
-| "Synthesize feedback from [sources]" | Combines multiple inputs into themes |
-| "Prepare calibration for [team]" | Creates calibration cards for all reports |
-| "Create development plan for [name]" | Builds 70-20-10 development plan |
-| "Monthly check-in for [name]" | Generates 1:1 template with goal tracking |
-| "Give feedback on [situation]" | Formats using SBI framework |
-| "Score [name] across competencies" | Calculates weighted performance score |
-| "Team health dashboard" | Generates full team analytics view |
+| “为[团队]启动评估周期” | 创建包含时间表的周期配置 |
+| “为[具体成就]生成自我评估” | 生成STAR-I格式的自我评估文档 |
+| “为[姓名]撰写评估——评分[X]” | 使用OBSERVE框架撰写完整经理评估 |
+| “为[姓名]收集360度反馈” | 生成同事反馈请求 |
+| “整合[来源]的反馈” | 将多份反馈整合成统一意见 |
+| “为[团队]准备评估意见” | 为所有员工生成评估卡片 |
+| “为[姓名]制定发展计划” | 制定70-20-10的发展计划 |
+| “为[姓名]进行每月沟通” | 生成包含目标跟踪的1:1沟通模板 |
+| “对[具体情境]提供反馈” | 使用SBI格式进行反馈 |
+| “全面评估[姓名]的各项能力” | 计算综合绩效评分 |
+| “团队健康状况仪表盘” | 生成团队整体分析报告 |

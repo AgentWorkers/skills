@@ -1,6 +1,6 @@
 ---
 name: beaconchain
-description: Monitor Ethereum validator dashboard health on beaconcha.in via V2 API, focused on one-check-per-day status and BeaconScore-first triage. Use when the user asks to check validator health, BeaconScore, missed duties, or set up low-anxiety daily monitoring/alerts for a beaconcha.in dashboard.
+description: 通过 V2 API 在 beaconcha.in 上监控以太坊验证器的运行状态，重点关注每日一次的检查结果以及基于 BeaconScore 的故障排查机制。当用户需要查询验证器的运行状况、BeaconScore、未完成的任务，或设置针对 beaconcha.in 仪表盘的每日监控/警报时，可以使用此功能。
 metadata:
   {
     "openclaw":
@@ -17,70 +17,70 @@ metadata:
 
 # Beaconchain
 
-Use this skill to reduce validator-check anxiety: do one concise daily health check, then only surface issues.
+使用此技能可以减少对验证器检查的焦虑：每天进行一次简洁的健康检查，仅在发现问题时才进行详细处理。
 
-## Quick Start
+## 快速入门
 
-1. Set credentials as env vars:
+1. 将凭据设置为环境变量：
    - `BEACONCHAIN_API_KEY`
    - `BEACONCHAIN_DASHBOARD_ID`
-2. Run:
+2. 运行以下命令：
 
 ```bash
 python3 skills/beaconchain/scripts/check_dashboard.py --json
 ```
 
-3. Interpret exit code:
-   - `0` = good
-   - `2` = bad (needs attention)
-   - `1` = error (auth/rate-limit/endpoint failure)
+3. 解释退出代码：
+   - `0` = 一切正常
+   - `2` = 存在问题（需要关注）
+   - `1` = 出现错误（认证问题/速率限制/端点故障）
 
-## Monitoring Workflow
+## 监控工作流程
 
-1. Run `scripts/check_dashboard.py` once per day.
-2. If `status=good`, respond with a short reassurance and avoid extra detail.
-3. If `status=bad`, report:
-   - BeaconScore (if available)
-   - Which signal tripped (missed/penalty fallback)
-   - Next action: inspect dashboard details and validator logs.
-4. If `status=error`, report key checks:
-   - API key validity
-   - dashboard ID
-   - plan/rate-limit permissions.
+1. 每天运行一次 `scripts/check_dashboard.py` 脚本。
+2. 如果 `status` 为“正常”，只需发送简短的确认信息，无需提供额外细节。
+3. 如果 `status` 为“有问题”，则报告以下内容：
+   - BeaconScore（如果可用）
+   - 触发问题的具体信号（未检测到信号/受到惩罚）
+   - 下一步操作：查看仪表板详细信息和验证器日志。
+4. 如果 `status` 为“错误”，则报告以下关键检查结果：
+   - API 密钥的有效性
+   - 仪表板 ID
+   - 计划/速率限制权限
 
-## Command Patterns
+## 命令模式
 
-### Basic check
+### 基本检查
 
 ```bash
 python3 skills/beaconchain/scripts/check_dashboard.py
 ```
 
-### JSON output (for cron/parsing)
+### JSON 输出（用于定时任务/解析）
 
 ```bash
 python3 skills/beaconchain/scripts/check_dashboard.py --json
 ```
 
-### Custom threshold
+### 自定义阈值
 
 ```bash
 python3 skills/beaconchain/scripts/check_dashboard.py --warn-threshold 75
 ```
 
-## Notes
+## 注意事项
 
-- Script uses `POST /api/v2/ethereum/validators/performance-aggregate` with dashboard selector and reads `data.beaconscore.total` directly.
-- Default window is `24h`; supported windows: `24h`, `7d`, `30d`, `90d`, `all_time`.
-- Keep responses intentionally terse when healthy to support low-anxiety operations.
+- 脚本使用 `POST /api/v2/ethereum/validators/performance-aggregate` 请求，并直接读取 `data.beaconscore.total` 数据。
+- 默认时间窗口为 24 小时；支持的时间窗口：`24h`、`7d`、`30d`、`90d`、`all_time`。
+- 当系统运行正常时，响应信息会尽量简洁，以降低操作者的焦虑。
 
-## Security & Transparency
+## 安全性与透明度
 
-- Runtime: `python3` only, using Python standard library (`argparse`, `json`, `urllib`, `datetime`).
-- Credentials: reads `BEACONCHAIN_API_KEY` and `BEACONCHAIN_DASHBOARD_ID` (or equivalent CLI flags).
-- Network egress: only `https://beaconcha.in/api/v2/ethereum/validators/performance-aggregate`.
-- Local filesystem: no writes, no shell execution, no subprocess spawning.
+- 运行环境：仅使用 Python 3，并使用 Python 标准库（`argparse`、`json`、`urllib`、`datetime`）。
+- 凭据：读取 `BEACONCHAIN_API_KEY` 和 `BEACONCHAIN_DASHBOARD_ID`（或相应的 CLI 参数）。
+- 网络请求目标：仅限于 `https://beaconcha.in/api/v2/ethereum/validators/performance-aggregate`。
+- 本地文件系统：无写入操作，不执行 shell 命令，也不启动子进程。
 
-## References
+## 参考资料
 
-- API overview: `references/api-notes.md`
+- API 说明：`references/api-notes.md`

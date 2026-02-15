@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-waste-calculator"
 display_name: "CWICR Waste Calculator"
-description: "Calculate material waste factors and losses using CWICR norms. Apply waste percentages, cutting losses, and spillage factors to material quantities."
+description: "使用 CWICR 标准计算材料浪费系数和损耗。将浪费百分比、切割损耗以及溢出系数应用于材料数量中。"
 ---
 
-# CWICR Waste Calculator
+# CWICR 废料计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Material estimates need waste factors:
-- Cutting/trimming losses
-- Spillage and breakage
-- Overordering requirements
-- Different waste by material type
+### 问题描述
+在材料估算过程中，需要考虑以下因素导致的浪费：
+- 切割/修整过程中的损耗
+- 材料溢出和破损
+- 订购量超过实际需求
+- 不同材料类型的浪费情况各不相同
 
-### Solution
-Systematic waste calculation using CWICR material data with industry-standard waste factors by material category.
+### 解决方案
+利用 CWICR 提供的材料数据，结合行业标准的材料类别浪费系数，进行系统的浪费计算。
 
-### Business Value
-- **Accurate ordering** - Include realistic waste
-- **Cost control** - Budget for actual usage
-- **Sustainability** - Track and reduce waste
-- **Benchmarking** - Compare waste across projects
+### 商业价值
+- **精准订购**：确保订购量符合实际需求，减少浪费
+- **成本控制**：根据实际使用量制定预算
+- **可持续性**：跟踪并减少浪费
+- **基准测试**：跨项目比较浪费情况
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -337,8 +336,7 @@ class CWICRWasteCalculator:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -359,9 +357,9 @@ print(f"Waste: {waste.total_waste_pct}%")
 print(f"Waste Cost: ${waste.waste_cost:,.2f}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Project-Wide Waste
+### 1. 全项目范围的浪费分析
 ```python
 materials = [
     {'code': 'CONC-001', 'quantity': 200, 'unit_cost': 150},
@@ -373,7 +371,7 @@ project = waste_calc.calculate_project_waste(materials)
 print(f"Total Waste Cost: ${project['total_waste_cost']:,.2f}")
 ```
 
-### 2. Cutting Optimization
+### 2. 切割工艺优化
 ```python
 cutting = waste_calc.optimize_cutting(
     material_code="REBAR-001",
@@ -383,12 +381,12 @@ cutting = waste_calc.optimize_cutting(
 print(f"Efficiency: {cutting['cutting_efficiency']}%")
 ```
 
-### 3. Custom Waste Factors
+### 3. 自定义浪费系数
 ```python
 custom_factors = {'cutting': 0.15, 'spillage': 0, 'breakage': 0.05, 'overrun': 0.05}
 waste = waste_calc.calculate_waste("TILE-001", 500, 25, custom_factors)
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Material Waste Management
+- **DDC 书籍**：第 3.1 章 – 材料浪费管理

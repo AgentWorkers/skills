@@ -1,7 +1,7 @@
 ---
 name: bagman
 version: 1.0.0
-description: Secure key management for AI agents. Use when handling private keys, API secrets, wallet credentials, or when building systems that need agent-controlled funds. Covers secure storage, session keys, leak prevention, and prompt injection defense.
+description: AI代理的安全密钥管理方案。适用于处理私钥、API密钥、钱包凭证，或构建需要代理控制资金的系统。内容包括安全存储、会话密钥管理、数据泄露预防以及提示注入攻击的防御措施。
 homepage: https://numbergroup.xyz
 metadata:
   {
@@ -15,30 +15,30 @@ metadata:
 
 # Bagman
 
-Secure key management patterns for AI agents handling private keys and secrets. Designed to prevent:
-- **Key loss**: Agents forgetting keys between sessions
-- **Accidental exposure**: Keys leaked to GitHub, logs, or outputs
-- **Prompt injection**: Malicious prompts extracting secrets
+为处理私钥和机密信息的AI代理提供安全的密钥管理方案。旨在防止以下问题：
+- **密钥丢失**：代理在会话之间忘记密钥
+- **意外泄露**：密钥被泄露到GitHub、日志或输出文件中
+- **提示注入**：恶意提示提取机密信息
 
-## Core Principles
+## 核心原则
 
-1. **Never store raw private keys in config, env vars, or memory files**
-2. **Use session keys / delegated access instead of full control**
-3. **All secret access goes through 1Password CLI (`op`)**
-4. **Validate all outputs before sending to prevent key leakage**
+1. **切勿将原始私钥存储在配置文件、环境变量或内存文件中**
+2. **使用会话密钥/委托访问权限，而非完全控制权**
+3. **所有对机密的访问都必须通过1Password CLI（`op`）进行**
+4. **在发送任何数据之前进行验证，以防止密钥泄露**
 
-## References
+## 参考资料
 
-- `references/secure-storage.md` - 1Password patterns for agent secrets
-- `references/session-keys.md` - ERC-4337 delegated access patterns
-- `references/leak-prevention.md` - Pre-commit hooks and output sanitization
-- `references/prompt-injection-defense.md` - Input validation and output filtering
+- `references/secure-storage.md` - 1Password的代理机密管理方案
+- `references/session-keys.md` - ERC-4337委托访问权限方案
+- `references/leak-prevention.md` - 提交前钩子与输出数据清洗
+- `references/prompt-injection-defense.md` - 输入验证与输出过滤
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### DO ✅
+### 应该做 ✅
 
 ```bash
 # Retrieve key at runtime via 1Password
@@ -51,7 +51,7 @@ op run --env-file=.env.tpl -- node agent.js
 # (delegate specific capabilities, not full wallet access)
 ```
 
-### DON'T ❌
+### 不应该做 ❌
 
 ```bash
 # NEVER store keys in files
@@ -68,7 +68,7 @@ console.log("Key:", privateKey)
 
 ---
 
-## Architecture: Agent Wallet Stack
+## 架构：代理钱包栈
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -98,9 +98,9 @@ console.log("Key:", privateKey)
 
 ---
 
-## Workflow: Setting Up Agent Wallet Access
+## 工作流程：设置代理钱包访问权限
 
-### 1. Create 1Password Vault for Agent Secrets
+### 1. 为代理机密创建1Password保管库
 
 ```bash
 # Create dedicated vault (via 1Password app or CLI)
@@ -117,7 +117,7 @@ op item create \
   --field "allowed-contracts=0xDEX1,0xDEX2"
 ```
 
-### 2. Agent Retrieves Credentials at Runtime
+### 2. 代理在运行时获取凭证
 
 ```python
 import subprocess
@@ -148,7 +148,7 @@ def get_session_key(item_name: str) -> dict:
     }
 ```
 
-### 3. Never Log or Store the Key
+### 3. 绝不要记录或存储密钥
 
 ```python
 # ❌ BAD - Key in logs
@@ -168,11 +168,11 @@ with open("memory/today.md", "a") as f:
 
 ---
 
-## Leak Prevention
+## 防泄机制
 
-### Output Sanitization
+### 输出数据清洗
 
-Before any agent output (chat, logs, file writes), scan for key patterns:
+在代理的任何输出数据（聊天记录、日志、文件写入）中，扫描是否存在密钥相关内容：
 
 ```python
 import re
@@ -197,9 +197,9 @@ def send_message(content: str):
     # ... send to chat/log/file
 ```
 
-### Pre-commit Hook
+### 提交前钩子
 
-Install this hook to prevent accidental commits of secrets:
+安装此钩子，以防止机密信息被意外提交：
 
 ```bash
 #!/bin/bash
@@ -222,7 +222,7 @@ for pattern in "${PATTERNS[@]}"; do
 done
 ```
 
-### .gitignore Essentials
+### .gitignore配置要点
 
 ```gitignore
 # Secrets
@@ -241,11 +241,11 @@ session-keys/
 
 ---
 
-## Prompt Injection Defense
+## 提示注入防御
 
-### Input Validation
+### 输入验证
 
-Before processing any user input that touches wallet operations:
+在处理任何与钱包操作相关的用户输入之前，进行验证：
 
 ```python
 DANGEROUS_PATTERNS = [
@@ -276,11 +276,11 @@ def process_wallet_request(user_input: str):
     # ... proceed with wallet operation
 ```
 
-### Separation of Concerns
+### 职责分离
 
-- **Wallet operations should be in isolated functions** with no access to conversation context
-- **Never pass full conversation history to wallet-sensitive code**
-- **Use allowlists for operations, not blocklists**
+- **钱包操作应放在独立的函数中**，且不能访问对话上下文
+- **切勿将完整的对话历史传递给涉及钱包的代码**
+- **使用允许列表（allowlist）进行操作，而非禁止列表（blocklist）**
 
 ```python
 ALLOWED_WALLET_OPERATIONS = {
@@ -296,29 +296,26 @@ def execute_wallet_operation(operation: str, **kwargs):
     return ALLOWED_WALLET_OPERATIONS[operation](**kwargs)
 ```
 
----
+## 会话密钥实现（ERC-4337）
 
-## Session Key Implementation (ERC-4337)
-
-For agents needing on-chain access, use session keys instead of raw private keys.
-
-See `references/session-keys.md` for full implementation details including:
-- ZeroDev/Biconomy SDK examples
-- Permission patterns for trading/DeFi/payment agents
-- Session key lifecycle management
-- Revocation procedures
+对于需要链上访问的代理，使用会话密钥而非原始私钥。
+请参阅`references/session-keys.md`以获取完整实现细节，包括：
+- ZeroDev/Biconomy SDK示例
+- 交易/DeFi/支付代理的权限设置
+- 会话密钥的生命周期管理
+- 密钥吊销流程
 
 ---
 
-## Incident Response
+## 事件响应
 
-### If a Key is Leaked
+### 如果密钥泄露
 
-1. **Immediate**: Revoke the session key / rotate credentials
-2. **Assess**: Check transaction history for unauthorized activity
-3. **Notify**: Alert operator via secure channel
-4. **Rotate**: Issue new session key with tighter permissions
-5. **Audit**: Review how leak occurred, update defenses
+1. **立即行动**：吊销会话密钥/更新凭证
+2. **评估**：检查交易历史，查找未经授权的活动
+3. **通知**：通过安全渠道通知操作员
+4. **重新生成密钥**：发布权限更严格的新会话密钥
+5. **审计**：审查密钥泄露的原因，并更新安全措施
 
 ```bash
 # Emergency: Revoke 1Password item
@@ -331,77 +328,59 @@ op item create --vault "Agent-Wallets" --category "API Credential" \
 
 ---
 
-## Checklist: Agent Wallet Setup
+## 检查清单：代理钱包设置
 
-- [ ] Create dedicated 1Password vault for agent credentials
-- [ ] Store session keys (NOT master keys) in vault
-- [ ] Set appropriate expiry and spending limits
-- [ ] Install pre-commit hook for secret detection
-- [ ] Add output sanitization to all agent responses
-- [ ] Implement input validation for prompt injection
-- [ ] Configure monitoring and alerts
-- [ ] Document incident response procedure
-- [ ] Test key rotation procedure
-
----
-
-## Common Mistakes Found in Production
-
-### 1. Keys in Memory Files
-
-**Problem**: Agents store keys in `memory/*.md` for "persistence"
-
-```markdown
-# memory/2026-02-07.md
-## Test Wallet
-- Private key: 0x9f01dad551039daad3a8c4e43a32035bdd4da54e7b4292268be16e913b0b3e56
-```
-
-**Fix**: Store reference only: `Private key: [1Password: test-wallet-session]`
-
-### 2. Keys in Environment Templates
-
-**Problem**: `.env.example` contains real keys
-
-```
-# .env.example
-PRIVATE_KEY=sk-ant-api03-real-key-here...  # "for testing"
-```
-
-**Fix**: Use obviously fake placeholders: `PRIVATE_KEY=your-key-here`
-
-### 3. Keys in Error Messages
-
-**Problem**: Error handling exposes keys
-
-```python
-try:
-    sign_transaction(private_key, tx)
-except Exception as e:
-    logger.error(f"Failed with key {private_key}: {e}")  # ❌
-```
-
-**Fix**: Never include credentials in error context
-
-### 4. Test Keys in Production Code
-
-**Problem**: Hardcoded test keys make it to main branch
-
-**Fix**: Use separate test vault, CI checks for key patterns
+- [ ] 为代理凭证创建专用的1Password保管库
+- [ ] 将会话密钥（非主密钥）存储在保管库中
+- [ ] 设置适当的过期时间和消费限制
+- [ ] 安装提交前钩子以检测机密泄露
+- [ ] 在所有代理响应中添加输出数据清洗功能
+- [ ] 实现输入验证，防止提示注入
+- [ ] 配置监控和警报机制
+- [ ] 记录事件响应流程
+- [ ] 测试密钥更新流程
 
 ---
 
-## Integration with OpenClaw
+## 生产环境中常见的错误
 
-When running as an OpenClaw agent:
+### 1. 密钥存储在内存文件中
 
-1. **Use 1Password skill** for all secret retrieval
-2. **Never write keys to workspace files** - they persist across sessions
-3. **Sanitize outputs** before sending to any channel (Telegram, Discord, etc.)
-4. **Session key approach** for wallet operations - request bounded access from operator
-5. **Document key references** in TOOLS.md, not the actual keys
+**问题**：代理将密钥存储在`memory/*.md`文件中以实现持久化
 
-Example TOOLS.md entry:
+**解决方案**：仅存储密钥的引用：`Private key: [1Password: test-wallet-session]`
+
+### 2. 密钥存储在环境模板中
+
+**问题**：`.env.example`文件中包含实际密钥
+
+**解决方案**：使用明显的占位符：`PRIVATE_KEY=your-key-here`
+
+### 3. 错误信息中包含密钥
+
+**问题**：错误处理过程中泄露了密钥
+
+**解决方案**：切勿在错误信息中显示凭证信息
+
+### 4. 测试密钥被包含在生产代码中
+
+**问题**：硬编码的测试密钥可能被上传到主分支
+
+**解决方案**：使用独立的测试保管库，并通过持续集成（CI）检查代码中是否存在密钥
+
+---
+
+## 与OpenClaw的集成
+
+当作为OpenClaw代理运行时：
+
+1. **使用1Password技能**进行所有机密信息的检索
+2. **切勿将密钥写入工作区文件**——这些文件会在会话之间持续存在
+3. **在数据发送到任何渠道（如Telegram、Discord等）之前进行清洗
+4. **采用会话密钥机制**进行钱包操作——仅请求操作员授权的访问权限
+5. **在TOOLS.md文件中记录密钥引用，而非实际密钥**
+
+TOOLS.md文件示例：
 ```markdown
 ### Agent Wallet
 - Address: 0xABC123...

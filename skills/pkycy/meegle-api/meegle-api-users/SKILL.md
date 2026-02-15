@@ -7,40 +7,40 @@ metadata:
   { "openclaw": {} }
 ---
 
-# Meegle API — Users (and shared prerequisites)
+# Meegle API — 用户（及共享的先决条件）
 
-Shared prerequisites for all Meegle OpenAPI calls. Other Meegle API skills (Space, Work Items, Setting, Comments, Views & Measurement) assume you have followed this skill for token and headers.
+所有 Meegle OpenAPI 调用的共享先决条件。其他 Meegle API 功能（如空间管理、工作项、设置、评论、视图和测量）均假定您已经掌握了本技能中关于令牌（token）和请求头（headers）的相关内容。
 
-## Domain (API base host)
+## 域名（API 基础主机）
 
-Replace `{domain}` in requests with the actual Meegle API host for your region:
+在请求中，将 `{domain}` 替换为您所在地区的实际 Meegle API 主机地址：
 
-| Region | domain |
+| 地区 | domain |
 |--------|--------|
-| **International** | `project.larksuite.com` — base URL: `https://project.larksuite.com` |
-| **China (Feishu Project)** | `project.feishu.cn` — base URL: `https://project.feishu.cn` |
+| **国际** | `project.larksuite.com` — 基础 URL: `https://project.larksuite.com` |
+| **中国（Feishu 项目）** | `project.feishu.cn` — 基础 URL: `https://project.feishu.cn` |
 
-Example: plugin token URL is `https://{domain}/open_api/authen/plugin_token` — use `https://project.larksuite.com/open_api/authen/plugin_token` (international) or `https://project.feishu.cn/open_api/authen/plugin_token` (China).
+示例：插件令牌（plugin token）的 URL 为 `https://{domain}/open_api/authen/plugin_token` — 国际地区使用 `https://project.larksuite.com/open_api/authen/plugin_token`，中国地区使用 `https://project.feishu.cn/open_api/authen/plugin_token`。
 
 ---
 
-## Obtain Access Token
+## 获取访问令牌（Obtain Access Token）
 
-Generate Meegle access credentials for OpenClaw to call OpenAPI.
+为 OpenClaw 生成 Meegle 访问凭据，以便调用 OpenAPI。
 
-### When to Use
+### 使用场景
 
-- Before calling any Meegle OpenAPI
-- When plugin_access_token has expired (valid for 2 hours)
-- When an operation must be performed on behalf of a specific user
+- 在调用任何 Meegle OpenAPI 之前
+- 当插件访问令牌（plugin_access_token）过期时（有效期为 2 小时）
+- 当需要代表特定用户执行操作时
 
-### Capabilities
+### 功能
 
-- `generate_plugin_token` — obtain plugin_access_token or virtual_plugin_token
-- `exchange_user_access_token` — exchange authorization code for user_access_token
-- `refresh_user_access_token` — refresh an expired user_access_token
+- `generate_plugin_token` — 获取插件访问令牌（plugin_access_token）或虚拟插件令牌（virtual_plugin_token）
+- `exchange_user_access_token` — 将授权码（authorization code）兑换为用户访问令牌（user_access_token）
+- `refresh_user_access_token` — 刷新过期的用户访问令牌（user_access_token）
 
-### API Spec: obtain_access_token
+### API 规范：`obtain_access_token`
 
 ```yaml
 name: meegle.obtain_access_token
@@ -179,24 +179,30 @@ recommended_openclaw_strategy:
   - Choose token type per API based on permission requirements
 ```
 
-### How to use tokens (when calling other OpenAPIs)
+### 如何使用令牌（调用其他 OpenAPI）
 
-- **plugin_access_token**: Add header `X-Plugin-Token: {{plugin_access_token}}`; optionally `X-User-Key: {{user_key}}`.
-- **user_access_token**: Add header `X-Plugin-Token: {{user_access_token}}` (use the user token here, not the plugin token).
+- **plugin_access_token**：在请求头中添加 `X-Plugin-Token: {{plugin_access_token}}`；可选地添加 `X-User-Key: {{user_key}}`。
+- **user_access_token**：在请求头中添加 `X-Plugin-Token: {{user_access_token}}`（此处使用用户令牌，而非插件令牌）。
 
-### Constraints and recommendations
+### 限制与建议
 
-- user_access_token must be obtained server-side via authorization code; front-end plugins cannot call OpenAPI directly.
-- Permissions depend on plugin scope, space installation, and user role.
-- Recommended: cache plugin_access_token globally; bind user_access_token to conversation/session; refresh user_access_token when expired; choose token type per API based on permission requirements.
+- 用户访问令牌（user_access_token）必须通过服务器端授权流程获取；前端插件不能直接调用 OpenAPI。
+- 权限取决于插件权限范围、空间安装情况以及用户角色。
+- 建议：全局缓存插件访问令牌（plugin_access_token）；将用户访问令牌（user_access_token）绑定到会话（conversation/session）中；令牌过期时及时刷新；根据权限要求为不同 API 选择合适的令牌类型。
 
 ---
 
-## Skill Pack (implementation details)
+## 用户相关功能（Users）
 
-Auth, context, request headers, and global constraints for OpenClaw implementation and integration.
+与用户相关的 Meegle OpenAPI 功能（如用户信息、成员列表等）将在此处进行说明。使用前提：需具备上述章节中提到的域名（domain）和令牌（token）。
 
-### Auth Layer
+---
+
+## 技能包（实现细节）（Skill Pack – Implementation Details）
+
+OpenClaw 的实现与集成所需的认证（Auth）、上下文管理（Context）、请求头（Request Headers）及全局限制（Global Constraints）。
+
+### 认证层（Auth Layer）
 
 ```yaml
 name: meegle.auth.get_plugin_token
@@ -308,7 +314,7 @@ outputs:
     type: number
 ```
 
-### Context Layer
+### 上下文管理层（Context Layer）
 
 ```yaml
 name: meegle.context.resolve_project
@@ -351,7 +357,7 @@ outputs:
     type: string
 ```
 
-### Header Decision Rule
+### 请求头规则（Header Decision Rule）
 
 ```yaml
 name: meegle.http.prepare_headers
@@ -381,15 +387,15 @@ rules:
       X-User-Key: "{{user_key}}"
 ```
 
-### Global Constraints
+### 全局限制（Global Constraints）
 
-- plugin_access_token is valid for 7200 seconds; cache and reuse.
-- user_access_token must be used server-side only.
-- Prefer user_access_token for write operations.
-- All OpenAPI calls must respect 15 QPS per token.
+- 插件访问令牌（plugin_access_token）的有效期为 7200 秒，可缓存并重复使用。
+- 用户访问令牌（user_access_token）必须仅在服务器端使用。
+- 对于写操作，建议优先使用用户访问令牌（user_access_token）。
+- 所有 OpenAPI 调用都应遵守每令牌 15 次请求/秒（QPS）的速率限制。
 
 ---
 
-## Users (OpenAPIs)
+## 用户相关 API（Users-related APIs）
 
-User-related Meegle OpenAPIs (e.g. user info, list members) to be documented here. Prerequisites: domain and token from sections above.
+与用户相关的 Meegle OpenAPI 功能（如用户信息、成员列表等）的详细说明。使用前提：需具备上述章节中提到的域名（domain）和令牌（token）。

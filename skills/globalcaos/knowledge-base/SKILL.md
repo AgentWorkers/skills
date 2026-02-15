@@ -1,25 +1,25 @@
 ---
 name: knowledge-base
 version: 1.0.0
-description: Personal knowledge base with SQLite + FTS5. Index contacts, documents, ChatGPT exports, and WhatsApp data. Query everything instantly with full-text search. Use for contact lookups, conversation history search, document retrieval, and building persistent memory systems.
+description: 这是一个基于 SQLite 和 FTS5 的个人知识库。它可以索引联系人信息、文档内容、从 ChatGPT 获取的数据以及 WhatsApp 的聊天记录。通过全文搜索功能，可以即时查询所有信息。该知识库可用于查找联系人、检索聊天记录、获取文档内容，同时还能用于构建持久化的数据存储系统。
 homepage: https://github.com/openclaw/openclaw
 repository: https://github.com/openclaw/openclaw
 ---
 
-# Knowledge Base
+# 知识库
 
-A local SQLite database for indexing and querying personal data with full-text search.
+这是一个本地的 SQLite 数据库，用于索引和查询个人数据，并支持全文搜索。
 
-## What It Indexes
+## 索引的内容
 
-| Source | Data |
+| 数据来源 | 数据类型 |
 |--------|------|
-| **WhatsApp** | Contacts, groups, memberships (from `whatsapp-contacts-full.json`) |
-| **Documents** | All markdown files in `memory/` |
-| **ChatGPT** | Conversation exports (from `chatgpt-export/`) |
-| **Contacts** | VCF exports from phone |
+| **WhatsApp** | 联系人、群组、成员信息（来自 `whatsapp-contacts-full.json`） |
+| **文档** | `memory/` 目录下的所有 Markdown 文件 |
+| **ChatGPT** | 对话记录（来自 `chatgpt-export/`） |
+| **联系人** | 从手机导出的 VCF 文件 |
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Initialize database (first time)
@@ -31,70 +31,60 @@ python3 skills/knowledge-base/scripts/query.py contact "+34659..."
 python3 skills/knowledge-base/scripts/query.py stats
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `search <term>` | Full-text search across all content |
-| `contact <phone\|name>` | Look up contact + their groups |
-| `groups <phone>` | List groups a phone is in |
-| `members <group>` | List members of a group |
-| `chatgpt <term>` | Search ChatGPT message history |
-| `doc <term>` | Search documents only |
-| `stats` | Database statistics |
-| `sql <query>` | Run raw SQL |
+| `search <关键词>` | 在所有内容中进行全文搜索 |
+| `contact <电话号码\|姓名>` | 查找联系人及其所属的群组 |
+| `groups <电话号码>` | 列出该电话号码所属的群组 |
+| `members <群组名称>` | 列出群组的成员 |
+| `chatgpt <关键词>` | 在 ChatGPT 中搜索消息记录 |
+| `doc <关键词>` | 仅在文档中搜索 |
+| `stats` | 查看数据库统计信息 |
+| `sql <查询语句>` | 运行原始 SQL 语句 |
 
-## Data Sources
+## 数据来源
 
-### WhatsApp Contacts
-Export via the WhatsApp skill's contact extraction (produces `bank/whatsapp-contacts-full.json`).
+### WhatsApp 联系人信息
+通过 WhatsApp 的联系人提取功能导出（生成 `bank/whatsapp-contacts-full.json` 文件）。
 
-### ChatGPT Export
-Use the chatgpt-exporter skill or manual export. Place JSON in `chatgpt-export/` directory.
+### ChatGPT 数据
+使用 `chatgpt-exporter` 工具或手动导出聊天记录。将导出的 JSON 文件保存到 `chatgpt-export/` 目录中。
+支持的格式：
+- `{ "conversations": [...] }` — 包含 `id`、`title`、`created`、`messages` 的自定义格式
+- ChatGPT 的原生导出格式（包含 `mapping` 结构）
 
-Supported formats:
-- `{ "conversations": [...] }` — custom format with `id`, `title`, `created`, `messages`
-- Native ChatGPT export format with `mapping` structure
+### VCF 联系人信息
+从手机中导出联系人信息（Android 设备：设置 → 导出）。
 
-### VCF Contacts
-Export from phone (Android: Contacts → Settings → Export). Run:
-```bash
-python3 skills/knowledge-base/scripts/import_vcf.py path/to/contacts.vcf
-```
+### 文档
+自动索引 `memory/` 目录下的所有 `.md` 文件。
 
-### Documents
-Automatically indexes all `*.md` files in `memory/` directory.
+## 数据库位置
+数据库文件位于工作区根目录下的 `db/jarvis.db`。
 
-## Database Location
-
-`db/jarvis.db` in workspace root.
-
-## Re-indexing
-
-To refresh the database with new data:
-```bash
+## 重新索引
+- 要用新数据刷新数据库：```bash
 rm db/jarvis.db
 python3 skills/knowledge-base/scripts/init_db.py
 ```
-
-Or for incremental updates:
-```bash
+- 要进行增量更新：```bash
 python3 skills/knowledge-base/scripts/sync.py  # (if available)
 ```
 
-## Schema
+## 数据库架构
+请参阅 `references/schema.md` 以获取完整的表格定义。
 
-See `references/schema.md` for full table definitions.
+**关键表格：**
+- `contacts`：电话号码、姓名、数据来源
+- `wa_groups`：WhatsApp 群组元数据
+- `wa_memberships`：成员所属的群组
+- `documents`：包含全文搜索功能的 Markdown 文件
+- `chatgpt_conversations`：对话记录元数据
+- `chatgpt_messages`：单条消息记录（包含全文搜索功能）
 
-Key tables:
-- `contacts` — phone, name, source
-- `wa_groups` — WhatsApp group metadata
-- `wa_memberships` — who is in which group
-- `documents` — markdown files with FTS
-- `chatgpt_conversations` — conversation metadata
-- `chatgpt_messages` — individual messages with FTS
-
-## Example Queries
+## 示例查询
 
 ```sql
 -- Find all groups someone is in
@@ -115,17 +105,16 @@ JOIN wa_groups g ON g.jid = m.group_jid
 WHERE g.name LIKE '%Family%';
 ```
 
-## WhatsApp Group Allowlist Management
+## WhatsApp 群组允许列表管理
+该数据库支持轻松管理 WhatsApp 群组的允许列表，以提高安全性。
 
-The database enables easy management of WhatsApp group allowlists for security.
-
-### Find a group's JID
+### 查找群组的 JID
 ```bash
 python3 skills/knowledge-base/scripts/query.py sql \
   "SELECT jid, name, participant_count FROM wa_groups WHERE name LIKE '%Family%'"
 ```
 
-### List all allowed groups (cross-reference with config)
+### 列出所有允许的群组（与配置文件关联）
 ```bash
 python3 skills/knowledge-base/scripts/query.py sql \
   "SELECT name, participant_count FROM wa_groups WHERE jid IN (
@@ -135,18 +124,17 @@ python3 skills/knowledge-base/scripts/query.py sql \
   )"
 ```
 
-### Add a group to allowlist
-1. Find the JID: `query.py sql "SELECT jid, name FROM wa_groups WHERE name LIKE '%GroupName%'"`
-2. Add to config: `channels.whatsapp.groupAllowFrom`
-3. Restart gateway
+### 将群组添加到允许列表
+1. 查找群组的 JID：`query.py sql "SELECT jid, name FROM wa_groups WHERE name LIKE '%GroupName%'"`
+2. 将 JID 添加到配置文件：`channels.whatsapp.groupAllowFrom`
+3. 重启服务
 
-### Security rationale
-- `groupPolicy: "open"` = any group can trigger the bot (risky with large public groups)
-- `groupPolicy: "allowlist"` = only specified groups can interact (recommended)
-- Reduces prompt injection attack surface by ~95%
+### 安全性说明：
+- `groupPolicy: "open"`：任何群组都可以触发该机器人（对于大型公开群组来说存在风险）
+- `groupPolicy: "allowlist"`：仅允许指定的群组与机器人交互（推荐设置）
+- 这种设置可将提示注入攻击的风险降低约 95%
 
-## Tips
-
-1. **No contact names?** WhatsApp only provides phone numbers. Import your phone's VCF to add names.
-2. **Search not finding?** FTS5 uses word boundaries. Use `*` for prefix matching: `Bas*` matches "Bashar".
-3. **Large exports?** ChatGPT exports can be 50MB+. First import may take 30-60 seconds.
+## 提示：
+1. **没有联系人姓名？** WhatsApp 仅提供电话号码。请将手机中的 VCF 文件导入以获取姓名信息。
+2. **搜索结果为空？** FTS5 使用单词边界进行匹配。可以使用通配符 `*` 进行前缀匹配，例如 `Bas*` 可匹配 “Bashar”。
+3. **导出的数据量很大？** ChatGPT 的导出文件可能超过 50MB。首次导入可能需要 30-60 秒。

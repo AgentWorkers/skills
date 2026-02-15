@@ -1,17 +1,16 @@
-# Vision Analyze (Google)
+# Vision Analyze（Google）
 
-Analyze images using **Google Cloud Vision API**.
+使用**Google Cloud Vision API**来分析图像。
 
-This skill performs:
-- Image label detection
-- Optical Character Recognition (OCR)
+该功能可以执行以下操作：
+- 图像标签检测
+- 光学字符识别（OCR）
 
-## Usage
-Provide either:
-- A local image file path
-- A publicly accessible image URL
+## 使用方法
+提供以下任意一项：
+- 本地图像文件的路径
+- 公共可访问的图像URL
 
-## Example
+## 示例
 vision_analyze /tmp/image.png
 vision_analyze https://example.com/image.jpg
-

@@ -1,30 +1,30 @@
 ---
 name: Agent Wallet
-description: The agent's wallet. Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction.
+description: 代理的钱包。使用此技能可以安全地创建一个钱包，代理可以使用该钱包进行转账、交易以及任何基于以太坊虚拟机（EVM）链的交易。
 ---
 
-# Agent Wallet
+# 代理钱包
 
-Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction without ever exposing private keys to the agent. Create a wallet, set spending policies, and your agent can transfer tokens, do swaps, and interact with smart contracts within the boundaries you define.
+使用此技能可以安全地为代理创建一个钱包，用于转账、交换以及执行任何以太坊虚拟机（EVM）链上的交易，同时确保代理永远不会接触到私钥。创建钱包后，可以设置支出策略，代理便能够在您定义的规则范围内进行代币转账、交换以及与智能合约交互。
 
-**The agent never sees the private key.** All transactions are executed server-side through a smart account. The wallet owner controls what the agent can do via configurable policies.
+**代理永远无法看到私钥**。所有交易都在服务器端通过智能账户执行。钱包所有者可以通过可配置的策略来控制代理的权限。
 
-## Configuration
+## 配置
 
-- **Base API URL:** Use the `SAFESKILLS_API_URL` environment variable if set, otherwise default to `https://safeskill-production.up.railway.app`
-- **Frontend URL:** Use the `SAFESKILLS_FRONTEND_URL` environment variable if set, otherwise default to `https://safeskill-production.up.railway.app`
+- **基础 API 地址：** 如果设置了 `SAFESKILLS_API_URL` 环境变量，请使用该地址；否则默认使用 `https://safeskill-production.up.railway.app`。
+- **前端 URL：** 如果设置了 `SAFESKILLS_FRONTEND_URL` 环境变量，请使用该地址；否则默认使用 `https://safeskill-production.up.railway.app`。
 
-All API requests require a Bearer token (the API key returned when creating a wallet).
+所有 API 请求都需要一个 **Bearer 令牌**（在创建钱包时返回的 API 密钥）。
 
 ```
 Authorization: Bearer <API_KEY>
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Create a Wallet
+### 1. 创建钱包
 
-Create a new smart account wallet for your agent. This generates a private key server-side (you never see it), creates a ZeroDev smart account, and returns an API key for the agent plus a claim URL for the wallet owner.
+为代理创建一个新的智能账户钱包。此操作会在服务器端生成私钥（您无法看到私钥的具体内容），同时创建一个 ZeroDev 智能账户，并返回一个 API 密钥以及钱包所有者的声明 URL。
 
 ```bash
 curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/secrets" \
@@ -36,22 +36,22 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-Response includes:
-- `apiKey` -- store this securely; use it as the Bearer token for all future requests
-- `claimUrl` -- share this with the user so they can claim the wallet and set policies
-- `address` -- the smart account address
+响应内容包括：
+- `apiKey` —— 请安全保管此密钥，将其用作所有后续请求的 **Bearer 令牌**。
+- `claimUrl` —— 请将此链接分享给用户，以便他们可以声明钱包的所有权并设置支出策略。
+- `address` —— 智能账户的地址。
 
-After creating, tell the user:
-> "Here is your wallet claim URL: `<claimUrl>`. Use this to claim ownership, set spending policies, and monitor your agent's wallet activity."
+创建完成后，告知用户：
+> “这是您的钱包声明 URL：`<claimUrl>`。请使用此链接来声明所有权、设置支出策略并监控代理的 wallet 活动。”
 
-### 2. Get Wallet Address
+### 2. 获取钱包地址
 
 ```bash
 curl -X GET "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/skills/evm-wallet/address" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 3. Check Balances
+### 3. 查看余额
 
 ```bash
 # Native balance only
@@ -63,7 +63,7 @@ curl -X GET "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 4. Transfer ETH or Tokens
+### 4. 转账 ETH 或代币
 
 ```bash
 # Transfer native ETH
@@ -86,9 +86,9 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-### 5. Swap Tokens
+### 5. 交换代币
 
-Swap one token for another using DEX liquidity (powered by 0x).
+使用 0x 提供的 DEX 流动性来交换代币。
 
 ```bash
 # Preview a swap (no execution, just pricing)
@@ -115,16 +115,16 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-- `sellToken` / `buyToken`: Token contract addresses. Use `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` for native ETH.
-- `sellAmount`: Human-readable amount to sell (e.g. `"0.1"` for 0.1 ETH).
-- `chainId`: The chain to swap on (1 = Ethereum, 137 = Polygon, 42161 = Arbitrum, 10 = Optimism, 8453 = Base, etc.).
-- `slippageBps`: Optional slippage tolerance in basis points (100 = 1%). Defaults to 100.
+- `sellToken` / `buyToken`：代币合约的地址。对于原生 ETH，使用 `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE`。
+- `sellAmount`：可读的出售数量（例如，“0.1”表示 0.1 ETH）。
+- `chainId`：用于交换的链（1 = Ethereum，137 = Polygon，42161 = Arbitrum，10 = Optimism，8453 = Base 等）。
+- `slippageBps`：可选的滑点容忍度（以基点表示，100 表示 1%）。默认值为 100。
 
-The preview endpoint returns expected buy amount, route info, and fees without executing. The execute endpoint performs the actual swap through the smart account, handling ERC20 approvals automatically.
+预览端点会返回预期的购买金额、路由信息和费用，而不会实际执行交易。执行端点会通过智能账户完成交换操作，并自动处理 ERC20 同意流程。
 
-### 6. Send Arbitrary Transaction
+### 6. 发送任意交易
 
-Interact with any smart contract by sending custom calldata.
+通过发送自定义的调用数据（calldata）来与任何智能合约进行交互。
 
 ```bash
 curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}/api/skills/evm-wallet/send-transaction" \
@@ -137,28 +137,28 @@ curl -X POST "${SAFESKILLS_API_URL:-https://safeskill-production.up.railway.app}
   }'
 ```
 
-## Policies
+## 策略
 
-The wallet owner controls what the agent can do by setting policies via the claim URL. If a transaction violates a policy, the API will reject it or require human approval via Telegram.
+钱包所有者可以通过声明 URL 设置策略来控制代理的权限。如果某笔交易违反了策略，API 会拒绝该交易或要求通过 Telegram 进行人工审批。
 
-| Policy | What it does |
+| 策略 | 功能 |
 |--------|-------------|
-| **Address allowlist** | Only allow transfers/calls to specific addresses |
-| **Token allowlist** | Only allow transfers of specific ERC-20 tokens |
-| **Function allowlist** | Only allow calling specific contract functions (by 4-byte selector) |
-| **Spending limit (per tx)** | Max USD value per transaction |
-| **Spending limit (daily)** | Max USD value per rolling 24 hours |
-| **Spending limit (weekly)** | Max USD value per rolling 7 days |
-| **Require approval** | Every transaction needs human approval via Telegram |
-| **Approval threshold** | Transactions above a USD amount need human approval |
+| **Address allowlist** | 仅允许向特定地址进行转账/调用。|
+| **Token allowlist** | 仅允许转移特定的 ERC-20 代币。|
+| **Function allowlist** | 仅允许调用特定的合约函数（通过 4 字节的地址选择器）。|
+| **Spending limit (per tx)** | 每笔交易的最高花费金额（以美元计）。|
+| **Spending limit (daily)** | 每 24 小时的最高花费金额（以美元计）。|
+| **Spending limit (weekly)** | 每 7 天的最高花费金额（以美元计）。|
+| **Require approval** | 每笔交易都需要通过 Telegram 进行人工审批。|
+| **Approval threshold** | 金额超过指定阈值的交易需要人工审批。|
 
-If no policies are set, all actions are allowed by default. Once the owner claims the wallet and adds policies, the agent operates within those boundaries.
+如果没有设置任何策略，则默认允许所有操作。一旦所有者声明了钱包并设置了策略，代理就会在这些规则范围内进行操作。
 
-## Important Notes
+## 重要说明
 
-- **Never try to access raw secret values.** The private key stays server-side -- that's the whole point.
-- Always store the API key from wallet creation -- it's the only way to authenticate.
-- Always share the claim URL with the user after creating a wallet.
-- The default chain ID is `84532` (Base Sepolia testnet). Adjust as needed.
-- If a transaction is rejected, it may be blocked by a policy. Tell the user to check their policy settings via the claim URL.
-- If a transaction requires approval, it will return `status: "pending_approval"`. The wallet owner will receive a Telegram notification to approve or deny.
+- **切勿尝试访问原始的私钥信息**。私钥始终保存在服务器端，这正是该功能的核心所在。
+- 请务必保存钱包创建时生成的 API 密钥，因为这是身份验证的唯一方式。
+- 创建钱包后，请务必将声明 URL 分享给用户。
+- 默认的链 ID 为 `84532`（Base Sepolia 测试网）。根据需要进行调整。
+- 如果交易被拒绝，可能是由于违反了某些策略。请告知用户通过声明 URL 检查他们的策略设置。
+- 如果交易需要审批，系统会返回 `status: "pending_approval"` 的状态。钱包所有者会收到 Telegram 通知，要求他们批准或拒绝交易。

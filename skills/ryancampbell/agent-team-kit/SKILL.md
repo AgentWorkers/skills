@@ -1,55 +1,55 @@
 # Agent Team Kit — SKILL.md
 
-*A framework for self-sustaining AI agent teams.*
+*一个用于支持自动化AI团队运作的框架。*
 
 ---
 
-## What This Is
+## 什么是Agent Team Kit？
 
-A complete team process kit for OpenClaw agents that enables:
-- **Self-service work queues** — Agents pick up tasks without human bottlenecks
-- **Clear role ownership** — Everyone knows who does what
-- **Continuous discovery** — Work flows in automatically
-- **Proactive operation** — The team runs itself via heartbeat
+这是一个为OpenClaw代理团队设计的完整流程管理工具包，具备以下功能：
+- **自助式工作队列**：代理可以自主领取任务，无需人工干预。
+- **明确的角色职责**：每个人都清楚自己的职责。
+- **持续的工作流程**：任务会自动分配并执行。
+- **主动式运作**：团队通过“心跳机制”（heartbeat）实现自我管理。
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Copy the Process Files
+### 1. 复制流程文件
 
 ```bash
 # From your workspace root
 cp -r skills/agent-team-kit/templates/process ./process
 ```
 
-This creates:
-- `process/INTAKE.md` — The 5-phase work loop
-- `process/ROLES.md` — Role definitions
-- `process/OPPORTUNITIES.md` — Raw ideas/discoveries
-- `process/BACKLOG.md` — Triaged work queue
-- `process/STATUS.md` — Who's working on what
+这将生成以下文件：
+- `process/INTAKE.md`：五阶段的工作流程
+- `process/ROLES.md`：角色定义
+- `process/OPPORTUNITIES.md`：创意/发现记录
+- `process/BACKLOG.md`：待处理任务列表
+- `process/STATUS.md`：任务分配情况
 
-### 2. Add Heartbeat Config
+### 2. 添加心跳机制配置
 
-Merge `templates/HEARTBEAT.md` into your existing `HEARTBEAT.md`:
+将 `templates/HEARTBEAT.md` 合并到你的 `HEARTBEAT.md` 文件中：
 
 ```bash
 cat skills/agent-team-kit/templates/HEARTBEAT.md >> HEARTBEAT.md
 ```
 
-Or copy it directly if you don't have one yet.
+如果你还没有 `HEARTBEAT.md` 文件，可以直接复制它。
 
-### 3. Customize Roles
+### 3. 自定义角色
 
-Edit `process/ROLES.md` to match your team:
-- Rename roles to fit your domain
-- Add/remove specialized execution roles
-- Update the human lead section with your name
+根据你的团队需求编辑 `process/ROLES.md`：
+- 为角色重新命名，以适应你的业务领域。
+- 添加或删除特定的执行角色。
+- 更新“人类负责人”部分的名称。
 
 ---
 
-## The Intake Loop
+## 工作流程
 
 ```
 DISCOVER → TRIAGE → READY → EXECUTE → FEEDBACK
@@ -57,66 +57,55 @@ DISCOVER → TRIAGE → READY → EXECUTE → FEEDBACK
     └──────────────────────────────────────┘
 ```
 
-1. **Discover** — Find opportunities (Scout role)
-2. **Triage** — Decide what's ready (Rhythm role)
-3. **Ready** — Self-service queue (any agent)
-4. **Execute** — Do the work (assigned agent)
-5. **Feedback** — Learn and spawn new ideas (completing agent)
+1. **发现机会**（Scout角色）：寻找新的工作机会。
+2. **任务分类**（Rhythm角色）：判断任务是否可以立即执行。
+3. **待执行**：将任务加入自助队列（任何代理都可以领取）。
+4. **执行任务**：由指定的代理完成任务。
+5. **反馈**：收集执行结果并生成新的创意（由完成任务的角色负责）。
 
 ---
 
-## Core Roles
+## 核心角色
 
-| Role | Mission | Owns |
+| 角色 | 职责 | 负责人 |
 |------|---------|------|
-| **Scout 🔍** | Find opportunities | `OPPORTUNITIES.md`, discovery |
-| **Rhythm 🥁** | Keep work flowing | `BACKLOG.md`, triage |
-| **Harmony 🤝** | Keep team healthy | Unblocking, retros |
-| **[Human]** | Strategic direction | Hard calls, spawning |
+| **Scout 🔍** | 发现新机会 | `OPPORTUNITIES.md` 文件 |
+| **Rhythm 🥁** | 确保工作流程顺畅 | `BACKLOG.md` 文件 |
+| **Harmony 🤝** | 维护团队效率 | 解决瓶颈问题、进行回顾 |
+| **[人类]** | 制定战略方向 | 做出重要决策 |
 
-**Execution roles** (spawn as needed):
-- Link 🔗 — Builder
-- Pixel 🎨 — Designer
-- Sage 🦉 — Architect
-- Echo 📢 — Voice
-- Spark ✨ — Creative
-
----
-
-## Key Principles
-
-### Self-Service
-If it's in Ready, any agent can pick it up. No approval needed.
-
-### Clear Ownership
-Every phase has ONE owner. No ambiguity.
-
-### Always Log
-Ideas, discoveries, completions — if you don't log it, it didn't happen.
-
-### Spawn, Don't Solo
-Main agent coordinates. Sub-agents execute. Don't do everything yourself.
+**执行角色**（根据需要生成）：
+- **Link 🔗**：协调者
+- **Pixel 🎨**：设计师
+- **Sage 🦉**：架构师
+- **Echo 📢**：沟通者
+- **Spark ✨**：创意工作者
 
 ---
 
-## File Structure
+## 关键原则
 
-```
-process/
-├── INTAKE.md         # How the loop works (reference)
-├── ROLES.md          # Who does what
-├── OPPORTUNITIES.md  # Raw discoveries (anyone adds)
-├── BACKLOG.md        # Triaged work (Rhythm maintains)
-└── STATUS.md         # Current activity (self-updated)
+### 自助服务
+只要任务处于“待执行”状态，任何代理都可以领取并开始工作，无需审批。
 
-HEARTBEAT.md          # Proactive check triggers
-```
+### 明确的责任分配
+每个阶段都有明确的负责人，避免职责模糊。
+
+### 必须记录一切
+所有创意、发现结果和任务完成情况都必须被记录下来，否则就等于没有发生。
+
+### 协作而非独揽
+主要代理负责协调工作，其他代理负责具体执行，不要独自完成所有任务。
 
 ---
 
-## Heartbeat Integration
+## 文件结构
 
-Add to your heartbeat checks:
+---
+
+## 心跳机制集成
+
+将以下代码添加到你的心跳检查脚本中：
 
 ```markdown
 ### Team Health (run hourly)
@@ -126,51 +115,50 @@ Add to your heartbeat checks:
 - [ ] Any unresolved blockers? → Harmony
 ```
 
-The heartbeat keeps the loop spinning even when the human isn't watching.
+心跳机制确保即使没有人工监控，系统也能持续运行。
 
 ---
 
-## Customization
+## 自定义
 
-### Adding a New Role
+### 添加新角色
 
-1. Define in `ROLES.md`:
-   - Mission (one sentence)
-   - Owns (what they're responsible for)
-   - Cadence (how often they work)
-   - Outputs (what they produce)
+1. 在 `ROLES.md` 中定义新角色的职责：
+   - 职责描述（一句话）
+   - 负责人
+   - 工作频率
+   - 产出成果
 
-2. Update the ownership matrix
+2. 更新角色职责分配表。
 
-3. Add spawn criteria in `INTAKE.md` if needed
+3. 如有需要，在 `INTAKE.md` 中添加新角色的任务分配规则。
 
-### Changing the Loop
+### 调整工作流程
 
-The 5-phase loop is flexible. Adapt it:
-- Add validation gates between phases
-- Split EXECUTE into parallel tracks
-- Add approval checkpoints (if your domain requires it)
-
----
-
-## Anti-Patterns
-
-❌ Human manually adds every task → Use triage role instead  
-❌ Waiting for permission to pick up work → Ready = fair game  
-❌ One agent does everything → Spawn specialists  
-❌ Ideas stay in heads → Log to OPPORTUNITIES.md  
-❌ Heartbeat just returns OK → Actually check the loop  
+五阶段的工作流程具有灵活性：
+- 可以在各个阶段添加验证步骤。
+- 可以将“执行”步骤拆分为多个并行流程。
+- 如果业务需要，可以添加审批环节。
 
 ---
 
-## Metrics (Optional)
+## 避免的错误做法
 
-Track team health:
-- **Cycle time** — OPPORTUNITIES → DONE
-- **Queue depth** — Items in Ready (healthy: 5-15)
-- **Stale items** — Days since last triage
-- **Spawn rate** — Sub-agents created per day
+- **❌** 人工手动添加所有任务 → 应使用“任务分类”角色。
+- **❌** 等待审批再开始工作 → 任务一旦进入“待执行”状态即可领取。
+- **❌** 一个代理包揽所有工作 → 应分配专门的执行角色。
+- **❌** 创意只停留在脑海中 → 必须记录在 `OPPORTUNITIES.md` 中。
+- **❌** 心跳机制仅返回“OK”状态 → 实际上需要检查整个工作流程是否正常运行。
 
 ---
 
-*The system runs itself. Your job is to trust it.*
+## 监控指标（可选）
+
+- **周期时间**：从发现机会到完成任务的时间。
+- **队列深度**：待执行任务的数量（理想状态：5-15个）。
+- **任务积压时间**：任务自上次分类以来的时间。
+- **新代理生成率**：每天产生的新代理数量。
+
+---
+
+*这个系统可以自动运行。你的任务是信任它并确保其正常运作。*

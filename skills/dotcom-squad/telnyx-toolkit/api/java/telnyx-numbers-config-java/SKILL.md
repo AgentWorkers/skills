@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Config - Java
+# Telnyx 数字配置 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,9 +30,9 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Lists the phone number blocks jobs
+## 列出电话号码块任务
 
 `GET /phone_number_blocks/jobs`
 
@@ -43,7 +43,7 @@ import com.telnyx.sdk.models.phonenumberblocks.jobs.JobListParams;
 JobListPage page = client.phoneNumberBlocks().jobs().list();
 ```
 
-## Retrieves a phone number blocks job
+## 获取电话号码块任务信息
 
 `GET /phone_number_blocks/jobs/{id}`
 
@@ -54,11 +54,11 @@ import com.telnyx.sdk.models.phonenumberblocks.jobs.JobRetrieveResponse;
 JobRetrieveResponse job = client.phoneNumberBlocks().jobs().retrieve("id");
 ```
 
-## Deletes all numbers associated with a phone number block
+## 删除与电话号码块关联的所有号码
 
-Creates a new background job to delete all the phone numbers associated with the given block.
+创建一个新的后台任务，以删除与指定块关联的所有号码。
 
-`POST /phone_number_blocks/jobs/delete_phone_number_block` — Required: `phone_number_block_id`
+`POST /phone_number_blocks/jobs/delete_phone_number_block` — 必需参数：`phone_number_block_id`
 
 ```java
 import com.telnyx.sdk.models.phonenumberblocks.jobs.JobDeletePhoneNumberBlockParams;
@@ -70,7 +70,7 @@ JobDeletePhoneNumberBlockParams params = JobDeletePhoneNumberBlockParams.builder
 JobDeletePhoneNumberBlockResponse response = client.phoneNumberBlocks().jobs().deletePhoneNumberBlock(params);
 ```
 
-## List phone numbers
+## 列出电话号码
 
 `GET /phone_numbers`
 
@@ -81,7 +81,7 @@ import com.telnyx.sdk.models.phonenumbers.PhoneNumberListParams;
 PhoneNumberListPage page = client.phoneNumbers().list();
 ```
 
-## Retrieve a phone number
+## 获取电话号码信息
 
 `GET /phone_numbers/{id}`
 
@@ -92,7 +92,7 @@ import com.telnyx.sdk.models.phonenumbers.PhoneNumberRetrieveResponse;
 PhoneNumberRetrieveResponse phoneNumber = client.phoneNumbers().retrieve("1293384261075731499");
 ```
 
-## Update a phone number
+## 更新电话号码信息
 
 `PATCH /phone_numbers/{id}`
 
@@ -103,7 +103,7 @@ import com.telnyx.sdk.models.phonenumbers.PhoneNumberUpdateResponse;
 PhoneNumberUpdateResponse phoneNumber = client.phoneNumbers().update("1293384261075731499");
 ```
 
-## Delete a phone number
+## 删除电话号码
 
 `DELETE /phone_numbers/{id}`
 
@@ -114,9 +114,9 @@ import com.telnyx.sdk.models.phonenumbers.PhoneNumberDeleteResponse;
 PhoneNumberDeleteResponse phoneNumber = client.phoneNumbers().delete("1293384261075731499");
 ```
 
-## Change the bundle status for a phone number (set to being in a bundle or remove from a bundle)
+## 更改电话号码的捆绑状态（将其添加到捆绑包中或从捆绑包中移除）
 
-`PATCH /phone_numbers/{id}/actions/bundle_status_change` — Required: `bundle_id`
+`PATCH /phone_numbers/{id}/actions/bundle_status_change` — 必需参数：`bundle_id`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.actions.ActionChangeBundleStatusParams;
@@ -129,9 +129,9 @@ ActionChangeBundleStatusParams params = ActionChangeBundleStatusParams.builder()
 ActionChangeBundleStatusResponse response = client.phoneNumbers().actions().changeBundleStatus(params);
 ```
 
-## Enable emergency for a phone number
+## 为电话号码启用紧急呼叫功能
 
-`POST /phone_numbers/{id}/actions/enable_emergency` — Required: `emergency_enabled`, `emergency_address_id`
+`POST /phone_numbers/{id}/actions/enable_emergency` — 必需参数：`emergency_enabled`, `emergency_address_id`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.actions.ActionEnableEmergencyParams;
@@ -145,7 +145,7 @@ ActionEnableEmergencyParams params = ActionEnableEmergencyParams.builder()
 ActionEnableEmergencyResponse response = client.phoneNumbers().actions().enableEmergency(params);
 ```
 
-## Retrieve a phone number with voice settings
+## 获取带有语音设置的电话号码信息
 
 `GET /phone_numbers/{id}/voice`
 
@@ -156,7 +156,7 @@ import com.telnyx.sdk.models.phonenumbers.voice.VoiceRetrieveResponse;
 VoiceRetrieveResponse voice = client.phoneNumbers().voice().retrieve("1293384261075731499");
 ```
 
-## Update a phone number with voice settings
+## 更新电话号码的语音设置
 
 `PATCH /phone_numbers/{id}/voice`
 
@@ -172,11 +172,11 @@ VoiceUpdateParams params = VoiceUpdateParams.builder()
 VoiceUpdateResponse voice = client.phoneNumbers().voice().update(params);
 ```
 
-## Verify ownership of phone numbers
+## 验证电话号码的所有权
 
-Verifies ownership of the provided phone numbers and returns a mapping of numbers to their IDs, plus a list of numbers not found in the account.
+验证提供的电话号码的所有权，并返回号码与其 ID 的映射关系，以及未在账户中找到的号码列表。
 
-`POST /phone_numbers/actions/verify_ownership` — Required: `phone_numbers`
+`POST /phone_numbers/actions/verify_ownership` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.actions.ActionVerifyOwnershipParams;
@@ -188,7 +188,7 @@ ActionVerifyOwnershipParams params = ActionVerifyOwnershipParams.builder()
 ActionVerifyOwnershipResponse response = client.phoneNumbers().actions().verifyOwnership(params);
 ```
 
-## List CSV downloads
+## 列出 CSV 下载内容
 
 `GET /phone_numbers/csv_downloads`
 
@@ -199,7 +199,7 @@ import com.telnyx.sdk.models.phonenumbers.csvdownloads.CsvDownloadListParams;
 CsvDownloadListPage page = client.phoneNumbers().csvDownloads().list();
 ```
 
-## Create a CSV download
+## 创建 CSV 下载文件
 
 `POST /phone_numbers/csv_downloads`
 
@@ -210,7 +210,7 @@ import com.telnyx.sdk.models.phonenumbers.csvdownloads.CsvDownloadCreateResponse
 CsvDownloadCreateResponse csvDownload = client.phoneNumbers().csvDownloads().create();
 ```
 
-## Retrieve a CSV download
+## 获取 CSV 下载文件
 
 `GET /phone_numbers/csv_downloads/{id}`
 
@@ -221,7 +221,7 @@ import com.telnyx.sdk.models.phonenumbers.csvdownloads.CsvDownloadRetrieveRespon
 CsvDownloadRetrieveResponse csvDownload = client.phoneNumbers().csvDownloads().retrieve("id");
 ```
 
-## Lists the phone numbers jobs
+## 列出电话号码任务
 
 `GET /phone_numbers/jobs`
 
@@ -232,7 +232,7 @@ import com.telnyx.sdk.models.phonenumbers.jobs.JobListParams;
 JobListPage page = client.phoneNumbers().jobs().list();
 ```
 
-## Retrieve a phone numbers job
+## 获取电话号码任务信息
 
 `GET /phone_numbers/jobs/{id}`
 
@@ -243,11 +243,11 @@ import com.telnyx.sdk.models.phonenumbers.jobs.JobRetrieveResponse;
 JobRetrieveResponse job = client.phoneNumbers().jobs().retrieve("id");
 ```
 
-## Delete a batch of numbers
+## 删除一批号码
 
-Creates a new background job to delete a batch of numbers.
+创建一个新的后台任务，以删除一批号码。
 
-`POST /phone_numbers/jobs/delete_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/delete_phone_numbers` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.jobs.JobDeleteBatchParams;
@@ -264,11 +264,11 @@ JobDeleteBatchParams params = JobDeleteBatchParams.builder()
 JobDeleteBatchResponse response = client.phoneNumbers().jobs().deleteBatch(params);
 ```
 
-## Update the emergency settings from a batch of numbers
+## 更新一批号码的紧急呼叫设置
 
-Creates a background job to update the emergency settings of a collection of phone numbers.
+创建一个新的后台任务，以更新一批号码的紧急呼叫设置。
 
-`POST /phone_numbers/jobs/update_emergency_settings` — Required: `emergency_enabled`, `phone_numbers`
+`POST /phone_numbers/jobs/update_emergency_settings` — 必需参数：`emergency_enabled`, `phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.jobs.JobUpdateEmergencySettingsBatchParams;
@@ -286,11 +286,11 @@ JobUpdateEmergencySettingsBatchParams params = JobUpdateEmergencySettingsBatchPa
 JobUpdateEmergencySettingsBatchResponse response = client.phoneNumbers().jobs().updateEmergencySettingsBatch(params);
 ```
 
-## Update a batch of numbers
+## 更新一批号码的信息
 
-Creates a new background job to update a batch of numbers.
+创建一个新的后台任务，以更新一批号码的信息。
 
-`POST /phone_numbers/jobs/update_phone_numbers` — Required: `phone_numbers`
+`POST /phone_numbers/jobs/update_phone_numbers` — 必需参数：`phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.phonenumbers.jobs.JobUpdateBatchParams;
@@ -303,7 +303,7 @@ JobUpdateBatchParams params = JobUpdateBatchParams.builder()
 JobUpdateBatchResponse response = client.phoneNumbers().jobs().updateBatch(params);
 ```
 
-## Retrieve regulatory requirements for a list of phone numbers
+## 获取一批电话号码的监管要求信息
 
 `GET /phone_numbers/regulatory_requirements`
 
@@ -314,9 +314,9 @@ import com.telnyx.sdk.models.phonenumbersregulatoryrequirements.PhoneNumbersRegu
 PhoneNumbersRegulatoryRequirementRetrieveResponse phoneNumbersRegulatoryRequirement = client.phoneNumbersRegulatoryRequirements().retrieve();
 ```
 
-## Slim List phone numbers
+## 简化版电话号码列表
 
-List phone numbers, This endpoint is a lighter version of the /phone_numbers endpoint having higher performance and rate limit.
+列出电话号码，此端点的性能更高，且具有更低的请求速率限制。
 
 `GET /phone_numbers/slim`
 
@@ -327,7 +327,7 @@ import com.telnyx.sdk.models.phonenumbers.PhoneNumberSlimListParams;
 PhoneNumberSlimListPage page = client.phoneNumbers().slimList();
 ```
 
-## List phone numbers with voice settings
+## 列出带有语音设置的电话号码
 
 `GET /phone_numbers/voice`
 
@@ -338,7 +338,7 @@ import com.telnyx.sdk.models.phonenumbers.voice.VoiceListParams;
 VoiceListPage page = client.phoneNumbers().voice().list();
 ```
 
-## List Mobile Phone Numbers
+## 列出手机号码
 
 `GET /v2/mobile_phone_numbers`
 
@@ -349,7 +349,7 @@ import com.telnyx.sdk.models.mobilephonenumbers.MobilePhoneNumberListParams;
 MobilePhoneNumberListPage page = client.mobilePhoneNumbers().list();
 ```
 
-## Retrieve a Mobile Phone Number
+## 获取手机号码信息
 
 `GET /v2/mobile_phone_numbers/{id}`
 
@@ -360,7 +360,7 @@ import com.telnyx.sdk.models.mobilephonenumbers.MobilePhoneNumberRetrieveRespons
 MobilePhoneNumberRetrieveResponse mobilePhoneNumber = client.mobilePhoneNumbers().retrieve("id");
 ```
 
-## Update a Mobile Phone Number
+## 更新手机号码信息
 
 `PATCH /v2/mobile_phone_numbers/{id}`
 

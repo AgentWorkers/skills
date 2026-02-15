@@ -1,7 +1,7 @@
 ---
 name: tts-whatsapp
 version: 1.0.0
-description: Send high-quality text-to-speech voice messages on WhatsApp in 40+ languages with automatic delivery
+description: 您可以使用该功能在 WhatsApp 上以 40 多种语言发送高质量的语音消息，并实现自动发送。
 user-invocable: true
 disable-model-invocation: false
 tags:
@@ -15,68 +15,67 @@ author: Community
 repository: https://github.com/clawdbot/clawdhub
 ---
 
-# 🎙️ TTS WhatsApp - Voice Messages in 40+ Languages
+# 🎙️ TTS WhatsApp - 支持40多种语言的语音消息
 
-Send high-quality text-to-speech voice messages on WhatsApp with automatic delivery. Supports 40+ languages, personal messages, and group broadcasts.
+您可以使用该工具在WhatsApp上发送高质量的语音消息，系统会自动完成发送过程。支持40多种语言，包括个人消息和群组广播。
 
-## ✨ Features
+## ✨ 主要功能
 
-- 🎙️ **High-quality TTS** powered by Piper (40+ languages)
-- 🎵 **Automatic conversion** to OGG/Opus (WhatsApp format)
-- 📤 **Automatic sending** via Clawdbot
-- 👥 **Group support** - Send to individuals or WhatsApp groups
-- 🌍 **Multi-language** - French, English, Spanish, German, and 40+ more
-- 🧹 **Smart cleanup** - Auto-delete files after successful send
-- ⚡ **Fast** - ~2-3s from command to delivery
+- 🎙️ **高质量的语音合成**：由Piper技术提供支持（支持40多种语言）
+- 🎵 **自动转换格式**：将语音文件转换为WhatsApp支持的OGG/Opus格式
+- 📤 **自动发送**：通过Clawdbot机器人完成发送
+- 👥 **群组支持**：可以发送给单个用户或WhatsApp群组
+- 🌍 **多语言支持**：包括法语、英语、西班牙语、德语等40多种语言
+- 🧹 **智能清理**：发送成功后自动删除相关文件
+- ⚡ **快速响应**：从接收命令到实际发送仅需2-3秒
 
-## 📦 Prerequisites
+## 📦 先决条件
 
-1. **Piper TTS**: `pip3 install --user piper-tts`
-2. **FFmpeg**: `brew install ffmpeg` (macOS) or `apt install ffmpeg` (Linux)
-3. **Voice models**: Download from [Hugging Face](https://huggingface.co/rhasspy/piper-voices)
-   - Place in `~/.clawdbot/skills/piper-tts/models/`
-   - Example: `fr_FR-siwis-medium.onnx`
+1. **Piper TTS**：`pip3 install --user piper-tts`
+2. **FFmpeg**：在macOS上使用`brew install ffmpeg`，在Linux上使用`apt install ffmpeg`
+3. **语音模型**：请从[Hugging Face](https://huggingface.co/rhasspy/piper-voices)下载相应的语音模型，并将其放置在`~/.clawdbot/skills/piper-tts/models/`目录下
+   - 例如：`fr_FR-siwis-medium.onnx`
 
-## 🚀 Quick Start
+## 🚀 快速入门
 
-### Basic usage
+### 基本用法
 ```bash
 tts-whatsapp "Hello, this is a test" --target "+15555550123"
 ```
 
-### Send to WhatsApp group
+### 向WhatsApp群组发送消息
 ```bash
 tts-whatsapp "Hello everyone" --target "120363257357161211@g.us"
 ```
 
-### Change language
+### 更改语言
 ```bash
 tts-whatsapp "Hola mundo" --lang es_ES --voice carlfm --target "+34..."
 ```
 
-### Different quality levels
+### 调整语音质量
 ```bash
 tts-whatsapp "High quality" --quality high --target "+1..."
 ```
 
-## 🌍 Supported Languages
+## 🌍 支持的语言列表
 
-- 🇫🇷 French (`fr_FR`): siwis, upmc, tom
-- 🇬🇧 English GB (`en_GB`): alan, alba
-- 🇺🇸 English US (`en_US`): lessac, amy, joe
-- 🇪🇸 Spanish (`es_ES`, `es_MX`): carlfm, davefx
-- 🇩🇪 German (`de_DE`): thorsten, eva_k
-- 🇮🇹 Italian (`it_IT`): riccardo
-- 🇵🇹 Portuguese (`pt_BR`, `pt_PT`): faber
-- 🇳🇱 Dutch (`nl_NL`): mls, rdh
-- 🇷🇺 Russian (`ru_RU`): dmitri, irina
-- And 30+ more!
+- 🇫🇷 法语 (`fr_FR`): siwis, upmc, tom
+- 🇬🇧 英语（英式） (`en_GB`): alan, alba
+- 🇺🇸 英语（美式） (`en_US`): lessac, amy, joe
+- 🇪🇸 西班牙语 (`es_ES`, `es_MX`): carlfm, davefx
+- 🇩🇪 德语 (`de_DE`): thorsten, eva_k
+- 🇮🇹 意大利语 (`it_IT`): riccardo
+- 🇵🇹 葡萄牙语 (`pt_BR`, `pt_PT`): faber
+- 🇳🇱 荷兰语 (`nl_NL`): mls, rdh
+- 🇷🇺 俄语 (`ru_RU`): dmitri, irina
+- 以及更多语言！
 
-[Full voice list →](https://rhasspy.github.io/piper-samples/)
+[完整语言列表 →](https://rhasspy.github.io/piper-samples/)
 
-## 🔧 Configuration
+## 🔧 配置说明
 
-Configure in `~/.clawdbot/clawdbot.json`:
+请在`~/.clawdbot/clawdbot.json`文件中进行配置：
 
 ```json
 {
@@ -96,7 +95,7 @@ Configure in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-## 🎛️ All Options
+## 🎛️ 其他选项
 
 ```
 --target NUMBER       WhatsApp number or group ID
@@ -108,13 +107,13 @@ Configure in `~/.clawdbot/clawdbot.json`:
 --no-send            Don't send automatically
 ```
 
-## 📊 Performance
+## 📊 性能说明
 
-~2.3s total for a 10-second message:
-- TTS generation: ~1s
-- Format conversion: ~0.2s
-- WhatsApp delivery: ~1s
+发送一条10秒长的消息的总耗时约为2.3秒：
+- 语音合成时间：约1秒
+- 格式转换时间：约0.2秒
+- WhatsApp发送时间：约1秒
 
-## 📚 Full Documentation
+## 📚 完整文档
 
-See [README.md](README.md) for complete documentation, examples, and troubleshooting.
+请参阅[README.md](README.md)以获取完整文档、使用示例和故障排除方法。

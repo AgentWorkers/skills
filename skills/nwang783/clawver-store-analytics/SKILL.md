@@ -1,33 +1,33 @@
 ---
 name: clawver-store-analytics
-description: Monitor Clawver store performance. Query revenue, top products, conversion rates, growth trends. Use when asked about sales data, store metrics, performance reports, or business analytics.
+description: 监控 Clawver 商店的运营表现。查询收入数据、热门产品、转化率以及业务增长趋势。当需要提供销售数据、店铺指标、运营报告或业务分析信息时，可使用该功能。
 version: 1.1.0
 homepage: https://clawver.store
 metadata: {"openclaw":{"emoji":"📊","homepage":"https://clawver.store","requires":{"env":["CLAW_API_KEY"]},"primaryEnv":"CLAW_API_KEY"}}
 ---
 
-# Clawver Store Analytics
+# Clawver 商店分析
 
-Track your Clawver store performance with analytics on revenue, products, and customer behavior.
+通过分析收入、产品和客户行为来监控您的 Clawver 商店运营情况。
 
-## Prerequisites
+## 先决条件
 
-- `CLAW_API_KEY` environment variable
-- Active store with at least one product
-- Store must have completed Stripe verification to appear in public listings
+- 必须设置 `CLAW_API_KEY` 环境变量
+- 商店必须至少有一个在售产品，并且已激活
+- 商店必须完成 Stripe 验证才能在公开列表中显示
 
-For platform-specific good and bad API patterns from `claw-social`, use `references/api-examples.md`.
+有关 `claw-social` 提供的特定平台上的良好/不良 API 使用范例，请参阅 `references/api-examples.md`。
 
-## Store Overview
+## 商店概览
 
-### Get Store Analytics
+### 获取商店分析数据
 
 ```bash
 curl https://api.clawver.store/v1/stores/me/analytics \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -61,9 +61,9 @@ curl https://api.clawver.store/v1/stores/me/analytics \
 }
 ```
 
-### Query by Period
+### 按时间段查询
 
-Use the `period` query parameter to filter analytics by time range:
+使用 `period` 查询参数按时间范围过滤分析数据：
 
 ```bash
 # Last 7 days
@@ -83,18 +83,18 @@ curl "https://api.clawver.store/v1/stores/me/analytics?period=all" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Allowed values:** `7d`, `30d`, `90d`, `all`
+**允许的值：`7d`、`30d`、`90d`、`all`
 
-## Product Analytics
+## 产品分析
 
-### Get Per-Product Stats
+### 获取每个产品的统计数据
 
 ```bash
 curl "https://api.clawver.store/v1/stores/me/products/{productId}/analytics?period=30d" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -113,37 +113,37 @@ curl "https://api.clawver.store/v1/stores/me/products/{productId}/analytics?peri
 }
 ```
 
-## Key Metrics
+## 关键指标
 
-### Summary Fields
+### 总结字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `totalRevenue` | Revenue in cents after refunds, before platform fees |
-| `totalOrders` | Number of paid orders |
-| `averageOrderValue` | Average order size in cents |
-| `netRevenue` | Revenue minus platform fees |
-| `platformFees` | Total platform fees (2% of subtotal) |
-| `storeViews` | Lifetime store page views |
-| `productViews` | Lifetime product page views (aggregate) |
-| `conversionRate` | Orders / store views × 100 (capped at 100%) |
+| `totalRevenue` | 扣除退款后的收入（以分计） |
+| `totalOrders` | 已支付订单数量 |
+| `averageOrderValue` | 平均订单金额（以分计） |
+| `netRevenue` | 扣除平台费用后的净收入 |
+| `platformFees` | 总平台费用（小计的 2%） |
+| `storeViews` | 商店页面的累计浏览量 |
+| `productViews` | 产品页面的累计浏览量 |
+| `conversionRate` | 订单数 / 商店页面浏览量 × 100%（上限为 100%） |
 
-### Top Products Fields
+### 热门产品字段
 
-| Field | Description |
+| 字段 | 描述 |
 |-------|-------------|
-| `productId` | Product identifier |
-| `productName` | Product name |
-| `revenue` | Revenue in cents after refunds, before platform fees |
-| `units` | Units sold |
-| `views` | Lifetime product page views |
-| `conversionRate` | Orders / product views × 100 |
-| `averageRating` | Mean star rating (1-5) |
-| `reviewsCount` | Number of reviews |
+| `productId` | 产品标识符 |
+| `productName` | 产品名称 |
+| `revenue` | 扣除退款后的收入（以分计） |
+| `units` | 销售数量 |
+| `views` | 产品页面的累计浏览量 |
+| `conversionRate` | 订单数 / 产品页面浏览量 × 100% |
+| `averageRating` | 平均评分（1-5 星） |
+| `reviewsCount` | 评论数量 |
 
-## Order Analysis
+## 订单分析
 
-### Orders by Status
+### 按订单状态查询
 
 ```bash
 # Confirmed (paid) orders
@@ -155,9 +155,9 @@ curl "https://api.clawver.store/v1/orders?status=delivered" \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-### Calculate Refund Impact
+### 计算退款的影响
 
-Refund amounts are subtracted from revenue in analytics. Check individual orders for refund details:
+分析数据中的退款金额会从总收入中扣除。您可以查看单个订单的退款详情：
 
 ```python
 response = api.get("/v1/orders")
@@ -170,16 +170,16 @@ total_refunded = sum(
 print(f"Total refunded: ${total_refunded/100:.2f}")
 ```
 
-## Review Analysis
+## 评论分析
 
-### Get All Reviews
+### 获取所有评论
 
 ```bash
 curl https://api.clawver.store/v1/stores/me/reviews \
   -H "Authorization: Bearer $CLAW_API_KEY"
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -198,9 +198,9 @@ curl https://api.clawver.store/v1/stores/me/reviews \
 }
 ```
 
-### Rating Distribution
+### 评分分布
 
-Calculate star distribution from reviews:
+根据评论计算产品的评分分布：
 
 ```python
 response = api.get("/v1/stores/me/reviews")
@@ -216,9 +216,9 @@ for rating, count in distribution.items():
     print(f"{rating} stars: {count} ({pct:.1f}%)")
 ```
 
-## Reporting Patterns
+## 报告模式
 
-### Revenue Summary
+### 收入汇总
 
 ```python
 response = api.get("/v1/stores/me/analytics?period=30d")
@@ -233,7 +233,7 @@ print(f"Avg order: ${summary['averageOrderValue']/100:.2f}")
 print(f"Conversion rate: {summary['conversionRate']:.2f}%")
 ```
 
-### Weekly Performance Report
+### 周度运营报告
 
 ```python
 # Get analytics for different periods
@@ -248,7 +248,7 @@ week_share = (week_revenue / month_revenue * 100) if month_revenue > 0 else 0
 print(f"This week: ${week_revenue/100:.2f} ({week_share:.1f}% of month)")
 ```
 
-### Top Product Analysis
+### 热门产品分析
 
 ```python
 response = api.get("/v1/stores/me/analytics?period=30d")
@@ -264,26 +264,26 @@ for i, product in enumerate(top_products, 1):
         print(f"   Rating: {product['averageRating']:.1f} ({product['reviewsCount']} reviews)")
 ```
 
-## Actionable Insights
+## 可操作的洞察
 
-### Low Conversion Products
+### 转化率较低的产品
 
-If `conversionRate < 2`:
-- Improve product images
-- Rewrite description
-- Adjust pricing
-- Check competitor offerings
+如果 `conversionRate < 2`：
+- 改进产品图片 |
+- 重新编写产品描述 |
+- 调整价格 |
+- 查看竞争对手的产品信息 |
 
-### High Views, Low Sales
+### 浏览量高但销量低的产品
 
-If `views > 100` and `units < 5`:
-- Price may be too high
-- Description unclear
-- Missing social proof (reviews)
+如果 `views > 100` 且 `units < 5`：
+- 价格可能过高 |
+- 产品描述不够清晰 |
+- 缺乏用户评价（社交证明）
 
-### Declining Revenue
+### 收入下降
 
-Compare periods:
+比较不同时间段的数据：
 ```python
 week = api.get("/v1/stores/me/analytics?period=7d")["data"]["analytics"]["summary"]
 month = api.get("/v1/stores/me/analytics?period=30d")["data"]["analytics"]["summary"]

@@ -1,218 +1,217 @@
 ---
 name: prompt-rewriter
-description: Advanced prompt rewriting and optimization service. Analyzes prompts for clarity, specificity, structure, completeness, and usability. Identifies weaknesses, suggests improvements, and generates multiple rewrite options. Use when users need to improve an existing prompt's effectiveness, understand why a prompt isn't working well, generate variations of a prompt for A/B testing, or learn prompt engineering best practices through examples.
+description: 高级提示重写与优化服务。该服务会分析提示语句的清晰度、具体性、结构、完整性和可用性，识别其中的不足之处，提出改进建议，并生成多种重写方案。适用于用户希望提升现有提示的有效性、了解提示为何无法正常工作、为A/B测试生成提示变体，或通过实例学习提示工程的最佳实践的场景。
 ---
 
-# Prompt Rewriter
+# 提示重写器
 
-## Overview
+## 概述
 
-Help users transform vague, ineffective prompts into powerful, well-structured instructions that produce consistent, high-quality results from AI models. Analyzes prompts across multiple quality dimensions and provides actionable suggestions.
+该工具帮助用户将模糊、无效的提示转化为结构清晰、表达有力的指令，从而让AI模型能够产生一致且高质量的结果。它从多个维度分析提示的质量，并提供可操作的改进建议。
 
-## Quick Start
+## 快速入门
 
-**User says**: "Help me rewrite this prompt: 'Write a blog post about AI'"
+**用户输入**：“帮我重写这个提示：‘写一篇关于AI的博客文章’”
 
-**You should**:
-1. Analyze the original prompt's weaknesses (too vague, no audience specified, no format defined)
-2. Identify improvement areas (add topic specificity, target audience, tone, length, structure)
-3. Provide 2-3 rewrite options with different approaches
-4. Explain the changes and why they matter
-
----
-
-## Core Capabilities
-
-### 1. Prompt Quality Analysis
-
-Evaluate prompts across five key dimensions:
-
-**Clarity** (0-2)
-- Is the request unambiguous?
-- Are terms defined?
-- Can Claude understand without clarification?
-
-**Specificity** (0-2)
-- Are constraints clear?
-- Is output format specified?
-- Are boundaries defined?
-
-**Structure** (0-2)
-- Is information organized logically?
-- Are steps clear if applicable?
-- Is there a framework?
-
-**Completeness** (0-2)
-- Is sufficient context provided?
-- Are requirements comprehensive?
-- Is missing information flagged?
-
-**Usability** (0-2)
-- Is it reusable?
-- Can it be adapted easily?
-- Is the language natural?
-
-**Scoring**:
-- 8-10: Excellent prompt, minor tweaks needed
-- 6-7: Good prompt, moderate improvements possible
-- 4-5: Functional but has significant weaknesses
-- 0-3: Poor prompt, needs major rework
-
-### 2. Rewrite Generation
-
-Generate 2-3 rewrite variations using different approaches:
-
-**Variation 1: Conservative Fix**
-- Keep original intent
-- Add specificity and structure
-- Minimal stylistic changes
-- Best when user wants to preserve voice
-
-**Variation 2: Technique Enhancement**
-- Apply prompt engineering patterns (CoT, few-shot, etc.)
-- Add advanced techniques
-- Focus on effectiveness
-- Best when user wants optimal results
-
-**Variation 3: Simplification**
-- Strip complexity while keeping core request
-- Make more conversational
-- Focus on ease of use
-- Best for beginners or quick tasks
-
-### 3. Improvement Explanation
-
-For each rewrite, explain:
-- What changed (specific modifications)
-- Why it matters (impact on AI output)
-- When to use (appropriate scenarios)
-
-### 4. Pattern Application
-
-Apply proven prompt engineering techniques:
-
-**Chain of Thought (CoT)**
-- "Let's think step by step"
-- "First, analyze... Then, evaluate..."
-- Best for: complex reasoning, math, logic
-
-**Few-Shot Learning**
-- Provide 2-3 examples before request
-- Pattern: Example 1 → Example 2 → Example 3 → Your task
-- Best for: format specification, style matching
-
-**Role-Based Prompts**
-- "Act as a senior engineer..."
-- "You are a marketing expert..."
-- Best for: specialized knowledge, tone control
-
-**Output Structure**
-- Use templates and headers
-- Define sections explicitly
-- Best for: reports, documentation, structured content
-
-**Constraint Definition**
-- "Limit response to 500 words"
-- "Exclude jargon for non-technical audience"
-- Best for: length control, accessibility
-
-### 5. A/B Testing Guidance
-
-Help users test prompts effectively:
-- Generate variations systematically
-- Suggest test methodology
-- Recommend evaluation criteria
+**你应该**：
+1. 分析原始提示的不足之处（过于模糊、未指定目标受众、未定义格式）
+2. 确定需要改进的方面（增加主题的针对性、明确目标受众、调整语气、确定长度和结构）
+3. 提供2-3个不同的重写方案
+4. 解释这些修改的内容及其重要性
 
 ---
 
-## Workflow
+## 核心功能
 
-### Step 1: Receive and Analyze
+### 1. 提示质量分析
 
-1. Extract the prompt to rewrite
-2. Identify user's intent (what do they want to achieve?)
-3. Check for constraints (tone, format, length, audience)
-4. Evaluate against 5 quality dimensions
-5. Calculate score and identify primary weaknesses
+从五个关键维度评估提示的质量：
 
-### Step 2: Generate Rewrites
+**清晰度**（0-2分）：
+- 请求是否明确？
+- 术语是否定义清楚？
+- Claude能否在不需要额外解释的情况下理解请求？
 
-1. **Variation 1 (Conservative)**: Add structure, clarify terms, define output
-2. **Variation 2 (Technique-Enhanced)**: Apply relevant patterns (CoT, few-shot, etc.)
-3. **Variation 3 (Simplified)**: Make conversational, reduce complexity
+**具体性**（0-2分）：
+- 约束条件是否明确？
+- 是否指定了输出格式？
+- 是否界定了工作的范围？
 
-### Step 3: Present Options
+**结构**（0-2分）：
+- 信息是否逻辑清晰？
+- 如果适用，步骤是否明确？
+- 是否有明确的框架？
 
-For each rewrite:
-- Show the improved prompt
-- Explain the changes
-- Highlight which techniques were used
-- Recommend which to use based on context
+**完整性**（0-2分）：
+- 是否提供了足够的背景信息？
+- 需求是否全面？
+- 是否指出了缺失的信息？
 
-### Step 4: Educational Component
+**可用性**（0-2分）：
+- 该提示是否可重复使用？
+- 是否容易进行调整？
+- 语言表达是否自然？
 
-Briefly explain:
-- Which prompt engineering techniques were applied
-- Why they work in this context
-- How the user can apply them in future prompts
+**评分标准**：
+- 8-10分：优秀的提示，只需稍作调整
+- 6-7分：不错的提示，有中等程度的改进空间
+- 4-5分：功能尚可，但存在明显不足
+- 0-3分：较差的提示，需要大幅修改
+
+### 2. 重写生成
+
+使用不同的方法生成2-3个重写版本：
+
+**版本1：保守型改进**
+- 保持原始意图
+- 增加具体性和结构
+- 最小限度地调整语言风格
+- 适合希望保留原有表达方式的用户
+
+**版本2：技术优化**
+- 应用提示工程技巧（如CoT、Few-Shot等）
+- 添加高级技术
+- 专注于提升效果
+- 适合希望获得最佳结果的用户
+
+**版本3：简化版**
+- 在保留核心要求的同时减少复杂性
+- 使表达更加口语化
+- 适合初学者或需要快速完成任务的场景
+
+### 3. 改进说明
+
+对于每个重写版本，解释：
+- 做了哪些修改
+- 为什么这些修改很重要（对AI输出的影响）
+- 适用于哪些场景
+
+### 4. 技巧应用
+
+应用经过验证的提示工程技巧：
+
+**思维链（CoT）**
+- “让我们一步步来思考”
+- “首先，分析……然后，评估……”
+- 适用于需要复杂推理、数学计算或逻辑分析的场景
+
+**Few-Shot学习**
+- 在提出请求前提供2-3个示例
+- 例如：示例1 → 示例2 → 示例3 → 你的任务
+- 适用于需要明确格式或风格匹配的场景
+
+**角色扮演式提示**
+- “扮演一名高级工程师……”
+- “你是一名市场营销专家……”
+- 适用于需要特定知识或控制语气的场景
+
+**输出结构**
+- 使用模板和标题
+- 明确划分各个部分
+- 适用于报告撰写、文档编写或需要结构化内容的场景
+
+**约束条件设置**
+- “将回复限制在500字以内”
+- “为非技术受众避免使用专业术语”
+- 适用于控制回复长度或提高可读性的场景
+
+### 5. A/B测试指导
+
+帮助用户有效测试提示：
+- 系统地生成多个版本
+- 提供测试方法建议
+- 推荐评估标准
 
 ---
 
-## Common Patterns and Fixes
+## 工作流程
 
-### Pattern: Too Vague
+### 第1步：接收并分析
 
-**Weak**: "Write about climate change"
-**Fix**: Add specificity - audience, purpose, format, depth
+1. 提取需要重写的提示
+2. 理解用户的意图（他们想要达到什么目标？）
+3. 检查是否存在任何约束条件（语气、格式、长度、受众）
+4. 根据五个质量维度进行评估
+5. 计算得分并确定主要问题
 
-**Strong**: "Write a 1000-word blog post for a general audience explaining climate change's causes, effects, and potential solutions. Use an optimistic but realistic tone. Include: (1) introduction with hook, (2) 3 main sections with data, (3) conclusion with actionable advice."
+### 第2步：生成重写版本
 
-### Pattern: No Structure
+1. **版本1（保守型改进）**：增加结构、明确术语、定义输出格式
+2. **版本2（技术优化）**：应用相关技巧（如CoT、Few-Shot等）
+3. **版本3（简化版）**：使表达更加口语化
 
-**Weak**: "Analyze this data"
-**Fix**: Add framework or step-by-step instructions
+### 第3步：展示选项
 
-**Strong**: "Analyze the sales data provided. Structure your response as:
-1. **Executive Summary** (3 bullet points of key findings)
-2. **Detailed Analysis** (break down by region and product)
-3. **Trend Identification** (what patterns emerge?)
-4. **Recommendations** (3 actionable steps based on data)"
+对于每个重写版本：
+- 展示改进后的提示
+- 解释所做的修改
+- 强调使用了哪些技巧
+- 根据具体情况推荐使用哪个版本
 
-### Pattern: Missing Context
+### 第4步：教育性说明
 
-**Weak**: "Improve this email"
-**Fix**: Add context about audience, goal, constraints
-
-**Strong**: "Improve this email for a C-level executive audience. Goal: Get approval for a $50k project. Keep it under 200 words. Tone: Professional but persuasive. Current email: [paste]"
-
-### Pattern: Unclear Output Format
-
-**Weak**: "Create marketing content"
-**Fix**: Specify format, style, deliverables
-
-**Strong**: "Create marketing content for our new product launch. Deliver:
-1. **Social media post** (LinkedIn, 150 words, professional tone)
-2. **Email blurb** (75 words, excitement-focused)
-3. **Website headline** (catchy, under 10 words)
-4. **3 key benefits** (each under 15 words)"
+简要解释：
+- 应用了哪些提示工程技巧
+- 这些技巧为何适用于当前场景
+- 用户如何在未来类似场景中应用这些技巧
 
 ---
 
-## Examples
+## 常见问题及解决方法
 
-### Example 1: Content Creation
+### 问题：提示过于模糊
 
-**Input Prompt**: "Write an article about remote work"
+**问题示例**：“写一篇关于气候变化的文章”
+**解决方法**：增加具体性——明确目标受众、写作目的和格式，以及文章的深度
 
-**Analysis**:
-- Clarity: 1/2 (clear topic but vague on specifics)
-- Specificity: 0/2 (no format, audience, length)
-- Structure: 0/2 (no framework)
-- Completeness: 0/2 (missing key details)
-- Usability: 1/2 (somewhat reusable)
-- **Score: 2/10** - Major weaknesses across dimensions
+**改进后的提示示例**：“为普通受众撰写一篇1000字的博客文章，解释气候变化的原因、影响及潜在解决方案。使用积极但现实的语气。内容包括：（1）吸引读者的引言；（2）包含数据的三个主要部分；（3）提供实际建议的结论。”
 
-**Rewrite Option 1 (Conservative)**:
+### 问题：缺乏结构
+
+**问题示例**：“分析这些数据”
+**解决方法**：为分析添加框架或详细的步骤说明
+
+**改进后的提示示例**：“分析所提供的销售数据。按照以下结构组织你的回答：
+1. **执行摘要**（列出三个关键发现）
+2. **详细分析**（按地区和产品分类）
+3. **趋势识别**（找出其中的规律）
+4. **建议**（基于数据分析提出三个可操作的步骤）
+
+### 问题：缺乏背景信息
+
+**问题示例**：“改进这封邮件”
+**解决方法**：补充关于受众、目标和约束条件的信息
+
+**改进后的提示示例**：“为C级高管修改这封邮件。目标：获得一个5万美元项目的批准。邮件长度控制在200字以内。语气：专业且具有说服力。当前邮件内容：[粘贴]”
+
+### 问题：输出格式不明确
+
+**问题示例**：“创建营销内容”
+**解决方法**：明确输出格式和风格要求
+
+**改进后的提示示例**：“为我们的新产品发布创建营销内容。输出内容包括：
+1. **社交媒体帖子**（LinkedIn，150字，专业语气）
+2. **邮件摘要**（75字，强调产品的吸引力）
+3. **网站标题**（简洁且吸引人）
+4. **三个关键优势**（每个优势不超过15字）”
+
+---
+
+## 示例
+
+### 示例1：内容创作
+
+**输入提示**：“写一篇关于远程工作的文章”
+
+**分析**：
+- 清晰度：1/2（主题明确，但具体内容不明确）
+- 具体性：0/2（没有格式、受众或长度要求）
+- 结构：0/2（没有框架）
+- 完整性：0/2（缺少关键细节）
+- 可用性：1/2（勉强可重复使用）
+**评分：2/10**——多个维度都存在明显不足
+
+**重写版本1（保守型改进）**：
 ```
 Write a 1500-word article about remote work for business professionals. Cover:
 1. Benefits of remote work (productivity, cost savings, flexibility)
@@ -224,7 +223,7 @@ Tone: Informative and balanced
 Format: Use headings and bullet points
 ```
 
-**Rewrite Option 2 (Technique-Enhanced)**:
+**重写版本2（技术优化）**：
 ```
 Act as an experienced remote work consultant. Write a comprehensive article about remote work for business leaders considering transitioning their teams.
 
@@ -261,7 +260,7 @@ Tone: Professional yet engaging
 Examples: Include 2-3 real company case studies
 ```
 
-**Rewrite Option 3 (Simplified)**:
+**重写版本3（简化版）**：
 ```
 Write an article about remote work. Make it about 1500 words long and aimed at business people who are thinking about letting employees work from home. Talk about:
 - Why it's good (saves money, people like it)
@@ -271,23 +270,23 @@ Write an article about remote work. Make it about 1500 words long and aimed at b
 Use a helpful, informative tone with clear headings.
 ```
 
-**Recommendation**: Use Option 2 if the user wants maximum impact. Use Option 1 for clarity and professionalism. Use Option 3 for quick, casual needs.
+**建议**：如果用户希望获得最佳效果，建议使用版本2；如果需要清晰性和专业性，可以使用版本1；如果需要快速完成任务，可以使用版本3。
 
 ---
 
-### Example 2: Code Review
+### 示例2：代码审查
 
-**Input Prompt**: "Review this code"
+**输入提示**：“审查这段代码”
 
-**Analysis**:
-- Clarity: 0/2 (completely unclear what to look for)
-- Specificity: 0/2 (no criteria, no scope)
-- Structure: 0/2 (no framework)
-- Completeness: 0/2 (missing all context)
-- Usability: 0/2 (not reusable)
-- **Score: 0/10** - Needs complete rework
+**分析**：
+- 清晰度：0/2（完全不清楚需要审查的内容）
+- 具体性：0/2（没有审查标准或范围）
+- 结构：0/2（没有框架）
+- 完整性：0/2（缺少所有背景信息）
+- 可用性：0/2（无法重复使用）
+**评分：0/10**——需要彻底重写
 
-**Rewrite Option 1 (Conservative)**:
+**重写版本1（保守型改进）**：
 ```
 Review the code provided below. Focus on:
 1. Bugs or errors
@@ -298,7 +297,7 @@ Review the code provided below. Focus on:
 Provide specific line references and suggestions for each issue found.
 ```
 
-**Rewrite Option 2 (Technique-Enhanced)**:
+**重写版本2（技术优化）**：
 ```
 Act as a senior software engineer conducting a thorough code review. Analyze the provided code following this systematic approach:
 
@@ -338,30 +337,30 @@ Provide:
 Code to review:
 ```
 
-**Rewrite Option 3 (Simplified)**:
+**重写版本3（简化版）**：
 ```
 Look at this code and tell me what's wrong or could be better. Check for bugs, slow parts, security issues, and things that are hard to understand. Give me specific suggestions with examples.
 
 Code:
 ```
 
-**Recommendation**: Option 2 is best for professional code reviews. Option 1 works for quick checks. Use Option 3 for informal feedback or beginners.
+**建议**：版本2适合专业代码审查；版本1适合快速检查；版本3适合非正式的反馈或初学者。
 
 ---
 
-### Example 3: Email Writing
+### 示例3：邮件撰写
 
-**Input Prompt**: "Write an email asking for a meeting"
+**输入提示**：“写一封请求会议的邮件”
 
-**Analysis**:
-- Clarity: 1/2 (clear intent but vague context)
-- Specificity: 0/2 (no purpose, no agenda, no recipient type)
-- Structure: 0/2 (no format)
-- Completeness: 0/2 (missing all details)
-- Usability: 1/2 (somewhat reusable)
-- **Score: 2/10** - Needs major improvement
+**分析**：
+- 清晰度：1/2（意图明确，但背景信息不足）
+- 具体性：0/2（没有明确目的、议程或收件人类型）
+- 结构：0/2（没有格式要求）
+- 完整性：0/2（缺少所有细节）
+- 可用性：1/2（勉强可重复使用）
+**评分：2/10**——需要大幅改进
 
-**Rewrite Option 1 (Conservative)**:
+**重写版本1（保守型改进）**：
 ```
 Write an email requesting a meeting with [recipient name]. Purpose: Discuss [topic].
 
@@ -376,7 +375,7 @@ Tone: Professional and respectful
 Length: Under 200 words
 ```
 
-**Rewrite Option 2 (Technique-Enhanced)**:
+**重写版本2（技术优化）**：
 ```
 Act as an executive assistant drafting a meeting request email to [recipient type, e.g., senior executive/client].
 
@@ -421,79 +420,79 @@ Tone: Respectful of their time, clear on value
 Length: 150-180 words
 ```
 
-**Rewrite Option 3 (Simplified)**:
+**重写版本3（简化版）**：
 ```
 Write a short email asking for a meeting with [name]. We need to talk about [topic]. Suggest a few times that would work, mention what we'll cover, and ask them to confirm. Keep it friendly and brief.
 ```
 
-**Recommendation**: Option 2 is ideal for important business communications. Option 1 works for routine internal emails. Option 3 is fine for casual requests.
+**建议**：版本2适合重要的商务沟通；版本1适合日常的内部邮件；版本3适合非正式的请求。
 
 ---
 
-## Advanced Techniques
+## 高级技巧
 
-### Multiple Rewrites for A/B Testing
+### 多重重写进行A/B测试
 
-When users need to test prompts systematically:
+当用户需要系统地测试多个提示时：
 
-1. **Control**: The original prompt
-2. **Variation A**: Change one variable (e.g., add examples)
-3. **Variation B**: Change a different variable (e.g., add role)
-4. **Variation C**: Combine A + B
+1. **基础版本**：原始提示
+2. **版本A**：修改一个变量（例如，添加示例）
+3. **版本B**：修改另一个变量（例如，增加角色）
+4. **版本C**：结合A和B的修改
 
-Suggest testing methodology:
-- Run each prompt 3-5 times with same input
-- Evaluate outputs on criteria (quality, consistency, usefulness)
-- Track which variation performs best
+**测试方法建议**：
+- 对每个提示使用相同的输入进行3-5次测试
+- 根据质量、一致性和实用性评估结果
+- 记录哪个版本的表现最好
 
-### Iterative Improvement
+### 迭代改进
 
-Guide users through multiple rounds:
+指导用户进行多轮改进：
 
-**Round 1**: Initial rewrite (address major weaknesses)
-**Round 2**: Refine based on feedback (what worked, what didn't)
-**Round 3**: Polish (fine-tune for specific use case)
+**第1轮**：初步重写（解决主要问题）
+**第2轮**：根据反馈进行优化（哪些方法有效，哪些无效）
+**第3轮**：针对特定场景进行微调
 
-Each round should:
-- Show what changed
-- Explain the reasoning
-- Ask for specific feedback
+每轮改进都应：
+- 显示所做的修改
+- 解释修改的原因
+- 征求具体的反馈
 
-### Context Injection
+### 添加背景信息
 
-When prompts lack context, guide users to add it:
+当提示缺乏背景信息时，指导用户补充相关信息：
 
-**Ask these questions**:
-1. Who is the audience?
-2. What is the goal/purpose?
-3. What constraints exist (length, tone, format)?
-4. What background is assumed?
-5. What should the output look like?
+**询问以下问题**：
+1. 目标受众是谁？
+2. 目标或目的是什么？
+3. 存在哪些约束条件（长度、语气、格式）？
+4. 假设用户具备哪些背景知识？
+5. 输出应该具备哪些特点？
 
-**Then incorporate answers into the rewrite.**
-
----
-
-## When to Use This Skill
-
-Trigger when users say:
-- "Rewrite this prompt"
-- "Make this prompt better"
-- "Improve my prompt"
-- "Why isn't this prompt working?"
-- "Help me write a better prompt for..."
-- "Generate variations of this prompt"
-- "A/B test this prompt"
+**然后将这些信息融入到重写内容中。**
 
 ---
 
-## Resources
+## 适用场景
 
-### scripts/
-No scripts required for this skill - all analysis and rewriting is done by Claude directly.
+当用户提出以下请求时，可以使用该工具：
+- “重写这个提示”
+- “让这个提示更完善”
+- “改进我的提示”
+- “为什么这个提示不起作用？”
+- “帮我为……编写一个更好的提示”
+- “生成这个提示的多个版本”
+- “对这个提示进行A/B测试”
 
-### references/
-No references required - prompt engineering techniques are documented inline.
+---
 
-### assets/
-No assets required - this skill generates text output only.
+## 资源
+
+### 脚本**
+该工具不需要任何脚本——所有分析和重写工作均由Claude自动完成。
+
+### 参考资料**
+无需额外参考资料——提示工程技巧已在文档中详细说明。
+
+### 资产**
+该工具仅生成文本输出，不需要任何额外的资源。

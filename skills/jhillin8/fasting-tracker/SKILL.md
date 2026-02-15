@@ -1,6 +1,6 @@
 ---
 name: fasting-tracker
-description: Track intermittent fasting windows, extended fasts, and autophagy milestones
+description: 跟踪间歇性禁食的时间段、长时间禁食的情况以及自噬过程中的关键节点。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,73 +11,58 @@ triggers:
   - "how long fasting"
 ---
 
-# Fasting Tracker
+# 禁食追踪器
 
-Monitor intermittent and extended fasting with precision—track eating windows, metabolic phases, and autophagy milestones in real-time.
+精准监控间歇性及长时间禁食情况——实时记录进食时间、代谢阶段和自噬过程。
 
-## What it does
+## 功能介绍
 
-- **Fast Timer**: Start a fast and get real-time elapsed tracking with countdown to key metabolic milestones
-- **Eating Window Tracking**: Log when you break your fast and automatically calculate your eating window duration
-- **Metabolic Milestones**: Receive alerts at ketosis (12h), fat adaptation (16h), autophagy (24h), and deeper cellular renewal thresholds
-- **Smart History**: Review past fasts with duration, eating windows, and consistency metrics
+- **禁食计时器**：开始禁食，并实时显示剩余时间，以及关键代谢阶段的倒计时。
+- **进食时间追踪**：记录进食时间，自动计算进食窗口的持续时间。
+- **代谢阶段提醒**：在达到酮症（12小时）、脂肪适应（16小时）、自噬（24小时）等关键阶段时发送提醒。
+- **智能历史记录**：查看过去的禁食记录，包括持续时间、进食窗口及坚持度指标。
 
-## Usage
+## 使用方法
 
-### Start Fast
-"Start a fast" or "begin fasting"
-- Logs the fast start time
-- Displays current time and target milestones
-- Sets background tracking (runs even when you close the app)
+### 开始禁食
+- 选择“开始禁食”，系统会记录禁食开始时间，显示当前时间和目标代谢阶段，并设置后台追踪（即使关闭应用也会继续运行）。
 
-### Break Fast
-"Break my fast" or "I'm eating now"
-- Records the end time
-- Calculates total fast duration
-- Shows eating window recommendation and next fast opportunity
+### 结束禁食
+- 选择“结束禁食”，系统会记录禁食结束时间，计算总禁食时长，并提供下一个进食窗口的建议及下一次禁食的时间。
 
-### Check Timer
-"How long have I been fasting?" or "fasting status"
-- Displays elapsed time
-- Shows next metabolic milestone and time remaining
-- Displays current autophagy phase if applicable
+### 检查禁食状态
+- 询问“我已经禁食多久了？”或“禁食状态如何？”，系统会显示禁食时长、下一个代谢阶段以及剩余时间（如适用）。
 
-### Fast History
-"My fasting stats" or "fasting progress"
-- Lists recent fasts with duration
-- Shows weekly consistency
-- Displays longest streak and average fast length
+### 查看禁食历史
+- 选择“我的禁食数据”或“禁食进度”，系统会列出最近的禁食记录，包括持续时间、每周的坚持度以及最长的禁食连续天数和平均禁食时长。
 
-### Set Schedule
-"Schedule my fasts" or "fasting protocol"
-- Configure preferred fasting protocol (16:8, OMAD, etc.)
-- Set daily reminders for fast start/end times
-- Customize notifications for key milestones
+### 设置禁食计划
+- 选择“安排我的禁食计划”，可以配置喜欢的禁食模式（如16:8、OMAD等），设置每日禁食开始/结束时间的提醒，并自定义关键阶段的提醒通知。
 
-## Metabolic Timeline
+## 代谢时间线
 
-| Duration | Milestone | Status |
-|----------|-----------|--------|
-| 12 hours | **Ketosis Begins** | Glycogen depletes; body shifts to fat burning |
-| 16 hours | **Fat Adaptation** | Insulin drops further; metabolic efficiency improves |
-| 24 hours | **Autophagy Activation** | Cellular cleanup intensifies; damaged proteins recycled |
-| 36 hours | **Deep Autophagy** | Mitochondrial renewal accelerates; immune reset begins |
-| 48 hours | **Cellular Regeneration** | Growth hormone peaks; stem cell activation (rodent studies) |
-| 72+ hours | **Extended Benefits** | Sustained autophagy; metabolic recalibration; requires medical oversight |
+| 禁食时长 | 代谢阶段 | 状态          |
+|----------|-----------|--------------|
+| 12小时    | **酮症开始**   | 糖原耗尽；身体转向脂肪燃烧 |
+| 16小时    | **脂肪适应**   | 胰岛素水平进一步下降；代谢效率提升 |
+| 24小时    | **自噬激活**   | 细胞清理加剧；受损蛋白质被回收 |
+| 36小时    | **深度自噬**   | 线粒体更新加速；免疫系统重启 |
+| 48小时    | **细胞再生**   | 生长激素峰值；干细胞激活（基于啮齿动物研究） |
+| 72小时以上 | **长期益处**   | 持续性自噬；代谢重新调整；需医疗监督 |
 
-## Fasting Protocols
+## 禁食模式推荐
 
-- **16:8 Intermittent**: 16-hour fast, 8-hour eating window (most beginner-friendly)
-- **18:6 Intermediate**: 18-hour fast, 6-hour eating window (moderate difficulty)
-- **20:4 Warrior**: 20-hour fast, 4-hour eating window (lean gains focus)
-- **OMAD** (One Meal A Day): 23-hour fast, 1-hour eating window (advanced)
-- **24-Hour Fast**: Full day fast (once or twice weekly)
-- **Extended Fast**: 36–72+ hours (consult healthcare provider; requires electrolyte management)
+- **16:8间歇性禁食**：16小时禁食，8小时进食（适合初学者）  
+- **18:6中等强度禁食**：18小时禁食，6小时进食  
+- **20:4战士式禁食**：20小时禁食，4小时进食（侧重减脂）  
+- **OMAD（一天一餐）**：23小时禁食，1小时进食（适合进阶者）  
+- **24小时禁食**：全天禁食（每周一次或两次）  
+- **长时间禁食**：36–72小时以上（需咨询医疗专业人士；需注意电解质补充）
 
-## Tips
+## 使用提示
 
-- **Electrolytes Matter**: Extended fasts deplete sodium, potassium, and magnesium. Supplement or drink bone broth to prevent cramping and fatigue.
-- **Hydration is Essential**: Water, herbal tea, black coffee, and green tea are fasting-friendly; any calorie breaks the fast.
-- **Listen to Your Body**: Fatigue, dizziness, or intense hunger warrants eating—fasting should enhance, not impair, daily function.
-- **Consistency Beats Intensity**: A sustainable 16:8 protocol done for months outpaces sporadic 72-hour fasts; build the habit first.
-- **All data stays local on your machine**: Your fasting logs, schedules, and metrics never leave your device—complete privacy, no cloud sync required.
+- **电解质补充很重要**：长时间禁食会导致钠、钾和镁的流失。可通过补充剂或饮用骨汤来预防抽筋和疲劳。  
+- **保持水分平衡**：水、花草茶、黑咖啡和绿茶适合禁食期间饮用；任何含热量的饮品都会中断禁食状态。  
+- **倾听身体信号**：如果感到疲劳、头晕或极度饥饿，应适当进食——禁食应提升而非影响日常功能。  
+- **坚持比强度更重要**：持续坚持16:8禁食模式比偶尔进行72小时禁食更有效；先养成习惯再追求高强度禁食。  
+- **所有数据均存储在本地**：您的禁食记录、计划和指标数据仅保存在设备上，无需云同步，确保隐私安全。

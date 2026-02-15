@@ -1,69 +1,62 @@
 ---
 name: github-sync
-description: Two-way synchronization between SpecWeave specs and GitHub Projects (push & pull by default). Use when asking about GitHub integration setup, troubleshooting sync issues, or configuring sync settings. For actual syncing, use /sw-github:sync-spec command.
+description: SpecWeave 规范与 GitHub 项目之间的双向同步（默认支持推送和拉取操作）。当需要了解 GitHub 集成设置、排查同步问题或配置同步选项时，请参考本文档。如需实际执行同步操作，请使用 `/sw-github:sync-spec` 命令。
 ---
 
-# GitHub Sync - Two-way Spec ↔ Project Synchronization
+# GitHub同步 - 双向规范 ↔ 项目同步
 
-**Purpose**: Seamlessly synchronize SpecWeave specs with GitHub Projects for team visibility and project management.
+**目的**：实现SpecWeave规范与GitHub项目的无缝同步，以便团队成员能够清晰地了解项目进展并进行项目管理。
 
-**Default Behavior**: **Two-way sync** (push & pull) - Changes in either system are automatically synchronized
+**默认行为**：**双向同步**（推送与拉取）——任一系统中的更改都会被自动同步。
 
-**⚠️ IMPORTANT**: This skill provides HELP and GUIDANCE about GitHub sync. For actual syncing, users should use the `/sw-github:sync-spec` command directly. This skill should NOT auto-activate when the command is being invoked.
+**⚠️ 重要提示**：本文档仅提供关于GitHub同步的说明和指导。实际进行同步操作时，用户应直接使用`/sw-github:sync-spec`命令。该功能不应在用户调用该命令时自动激活。
 
-## When to Activate
+## 何时激活该功能
 
-✅ **Do activate when**:
-- User asks: "How do I set up GitHub sync?"
-- User asks: "What GitHub credentials do I need?"
-- User asks: "How does the GitHub integration work?"
-- User needs help configuring GitHub integration
+✅ **在以下情况下激活**：
+- 用户询问：“如何设置GitHub同步？”
+- 用户询问：“需要哪些GitHub凭据？”
+- 用户询问：“GitHub集成是如何工作的？”
+- 用户需要帮助配置GitHub集成
 
-❌ **Do NOT activate when**:
-- User invokes `/sw-github:sync-spec` command (command handles it)
-- Command is already running (avoid duplicate invocation)
-- Task completion hook is syncing (automatic process)
+❌ **在以下情况下不要激活**：
+- 用户已经调用了`/sw-github:sync-spec`命令（该命令会自动处理同步）
+- 命令正在运行中（避免重复调用）
+- 任务完成钩子正在执行同步操作（属于自动流程）
 
-**Integration**: Works with `/sw-github:sync-spec` command
-
----
-
-## CORRECT Architecture
-
-**CRITICAL**: SpecWeave syncs **SPECS** to GitHub, NOT increments!
-
-```
-✅ CORRECT:
-.specweave/docs/internal/specs/spec-001.md  ↔  GitHub Project
-├─ User Story US-001                        ↔  GitHub Issue #1
-├─ User Story US-002                        ↔  GitHub Issue #2
-└─ User Story US-003                        ↔  GitHub Issue #3
-
-❌ WRONG (OLD, REMOVED!):
-.specweave/increments/0001-feature  ↔  GitHub Issue (DEPRECATED!)
-```
-
-**Why Specs, Not Increments?**
-- ✅ **Specs = Permanent** (living docs, feature-level knowledge base)
-- ❌ **Increments = Temporary** (implementation snapshots, can be deleted after done)
-- ✅ **GitHub should mirror PERMANENT work**, not temporary iterations
+**集成方式**：通过`/sw-github:sync-spec`命令实现同步。
 
 ---
 
-## How GitHub Sync Works
+## 正确的架构
 
-### 1. Spec → GitHub Project (Export)
+**关键点**：SpecWeave将**规范（Specs）**同步到GitHub，而不是代码的增量更新！
 
-**Trigger**: When spec is created or updated
+---
 
-**Actions**:
-1. Create GitHub Project with:
-   - Title: `[SPEC-001] Core Framework & Architecture`
-   - Description: Spec overview + progress
-   - Columns: Backlog, In Progress, Done
-   - Linked to repository
 
-2. Store project ID in spec metadata:
+**为什么选择同步规范而非代码增量？**
+- ✅ **规范是永久性的文档**（用于记录功能相关的信息）
+- ❌ **代码增量只是临时性的快照**（完成开发后可以删除）
+- ✅ **GitHub应反映的是永久性的工作成果**，而非临时的开发阶段
+
+
+---
+
+## GitHub同步的工作原理
+
+### 1. 从规范同步到GitHub项目（导出）
+
+**触发条件**：规范创建或更新时
+
+**操作步骤**：
+1. 创建一个GitHub项目，内容如下：
+   - 标题：`[SPEC-001] 核心框架与架构`
+   - 描述：规范的概述及进度
+   - 列表：待办事项（Backlog）、进行中（In Progress）、已完成（Done）
+   - 将项目链接到相应的仓库
+
+2. 将项目ID存储在规范的元数据中：
    ```yaml
    # .specweave/docs/internal/specs/spec-001.md (frontmatter)
    ---
@@ -75,13 +68,13 @@ description: Two-way synchronization between SpecWeave specs and GitHub Projects
    ---
    ```
 
-3. Create GitHub Issues for each user story:
-   - Title: `[US-001] As a developer, I want to install SpecWeave via NPM`
-   - Body: Acceptance criteria as checkboxes
-   - Labels: `user-story`, `spec:spec-001`, `priority:P1`
-   - Linked to project
+3. 为每个用户故事创建GitHub问题（Issue）：
+   - 标题：`[US-001] 作为开发者，我希望通过NPM安装SpecWeave`
+   - 问题描述中包含验收标准（以复选框的形式）
+   - 添加标签：`user-story`、`spec:spec-001`、`priority:P1`
+   - 将问题链接到相应的项目
 
-**Example GitHub Project**:
+**示例GitHub项目**：
 ```markdown
 # [SPEC-001] Core Framework & Architecture
 
@@ -110,23 +103,23 @@ The core framework and architecture spec covers SpecWeave's foundational capabil
 🤖 Auto-synced by SpecWeave GitHub Plugin
 ```
 
-### 2. User Story Progress Updates (Spec → GitHub)
+### 2. 用户故事进度更新（从规范同步到GitHub）
 
-**Trigger**: After each task completion (via post-task-completion hook)
+**触发条件**：每个任务完成后（通过任务完成后的钩子）
 
-**Actions**:
-1. **Update GitHub Issue** (for user story):
-   - Updates acceptance criteria checkboxes
-   - Marks completed ACs with `[x]`
-   - Updates issue description
-   - Updates labels (`in-progress`, `testing`, `ready-for-review`)
+**操作步骤**：
+1. **更新GitHub问题**：
+   - 更新验收标准对应的复选框状态
+   - 用`[x]`标记已完成的验收标准
+   - 更新问题描述
+   - 更新问题标签（如`in-progress`、`testing`、`ready-for-review`）
 
-2. **Update GitHub Project**:
-   - Moves cards between columns (Backlog → In Progress → Done)
-   - Updates project progress percentage
-   - Posts progress comment
+2. **更新GitHub项目**：
+   - 将问题卡片在列表中移动（待办事项 → 进行中 → 已完成）
+   - 更新项目进度百分比
+   - 发布进度评论
 
-**Example Issue Update**:
+**示例问题更新**：
 ```markdown
 **User Story**: US-001
 
@@ -145,14 +138,14 @@ As a developer, I want to install SpecWeave via NPM so that I can use it in my p
 🤖 Auto-updated by SpecWeave (2025-11-11)
 ```
 
-### 3. Spec Completion (Close Project)
+### 3. 规范完成（关闭项目）
 
-**Trigger**: All user stories in spec are complete
+**触发条件**：所有用户故事都已完成
 
-**Actions**:
-1. Close all GitHub Issues (user stories)
-2. Archive GitHub Project
-3. Post final comment:
+**操作步骤**：
+1. 关闭所有相关的GitHub问题
+2. 将GitHub项目归档
+3. 发布最终评论：
    ```markdown
    ✅ **Spec Completed**
 
@@ -172,28 +165,27 @@ As a developer, I want to install SpecWeave via NPM so that I can use it in my p
    🤖 Auto-closed by SpecWeave
    ```
 
-### 4. GitHub Project → Spec (Import)
+### 4. 从GitHub项目同步到规范（导入）
 
-**Use Case**: Import existing GitHub Projects as SpecWeave specs
+**使用场景**：将现有的GitHub项目导入到SpecWeave规范中
 
-**Command**: `/sw-github:import-project <project-number>`
+**命令**：`/sw-github:import-project <项目编号>`
 
-**Actions**:
-1. Fetch project via GitHub GraphQL API
-2. Create spec structure:
-   - Parse project title → spec title
-   - Parse project body → spec overview
-   - Map issues → user stories
-   - Map labels → priority
-
-3. Generate spec.md with user stories and acceptance criteria
-4. Link project to spec in metadata
+**操作步骤**：
+1. 通过GitHub GraphQL API获取项目信息
+2. 构建规范结构：
+   - 将项目标题解析为规范标题
+   - 将项目描述解析为规范概述
+   - 将问题映射到用户故事
+   - 将标签映射到相应的优先级
+3. 生成包含用户故事和验收标准的spec.md文件
+4. 将项目链接到规范的元数据中
 
 ---
 
-## Configuration
+## 配置
 
-Configure GitHub sync in `.specweave/config.json`:
+在`.specweave/config.json`文件中配置GitHub同步设置：
 
 ```json
 {
@@ -214,9 +206,9 @@ Configure GitHub sync in `.specweave/config.json`:
 
 ---
 
-## GitHub CLI Requirements
+## GitHub CLI要求
 
-This skill requires GitHub CLI (`gh`) to be installed and authenticated:
+使用此功能需要安装并登录GitHub CLI（`gh`）：
 
 ```bash
 # Install GitHub CLI
@@ -233,45 +225,46 @@ gh auth status
 
 ---
 
-## Manual Sync Operations
+## 手动同步操作
 
-### Sync Spec to GitHub
+### 将规范同步到GitHub
 
 ```bash
 /sw-github:sync-spec spec-001
 ```
 
-Creates or updates GitHub Project for spec-001.
+**操作步骤**：
+- 为spec-001创建或更新相应的GitHub项目。
 
-### Sync All Specs
+### 同步所有规范
 
 ```bash
 /sw-github:sync-spec --all
 ```
 
-Syncs all specs to GitHub Projects.
+**操作步骤**：
+- 将所有规范同步到GitHub项目中。
 
-### Import Project
+### 导入GitHub项目
 
 ```bash
 /sw-github:import-project 123
 ```
 
-Imports GitHub Project #123 as a SpecWeave spec.
+**操作步骤**：
+- 将GitHub项目#123导入到SpecWeave规范中。
 
-### Check Status
+### 检查同步状态
 
-```bash
-/sw-github:status spec-001
-```
+**操作步骤**：
+- 查看同步状态（项目编号、上次同步时间、进度百分比）
 
-Shows sync status (project ID, last sync time, progress %).
 
 ---
 
-## Workflow Integration
+## 工作流程集成
 
-### Full Automated Workflow
+### 完全自动化的流程
 
 ```bash
 # 1. Create spec (PM agent)
@@ -298,103 +291,99 @@ PM: Creates .specweave/docs/internal/specs/spec-005-user-auth.md
 → GitHub Project archived automatically
 ```
 
-### Team Collaboration
+### 团队协作
 
-**For Developers**:
-- Work in SpecWeave specs locally
-- Automatic GitHub Project updates keep team informed
-- No manual project management needed
+**对于开发者**：
+- 在本地使用SpecWeave规范进行开发
+- GitHub项目会自动更新，确保团队成员随时掌握最新信息
+- 无需手动管理项目
 
-**For Project Managers**:
-- View all specs as GitHub Projects
-- Track progress in GitHub Projects UI
-- Comment on issues to communicate with developers
+**对于项目经理**：
+- 通过GitHub项目查看所有规范
+- 在GitHub项目中跟踪项目进度
+- 通过问题评论与开发者沟通
 
-**For Stakeholders**:
-- See progress in familiar GitHub interface
-- No need to understand SpecWeave structure
-- Clear visibility into feature development status
+**对于利益相关者**：
+- 通过熟悉的GitHub界面查看项目进度
+- 无需了解SpecWeave的具体结构
+- 清晰地了解功能开发的现状
 
----
 
-## Conflict Resolution
+## 冲突解决
 
-**What if project and spec diverge?**
+**如果项目与规范之间存在差异怎么办？**
 
-The spec is always the source of truth. GitHub Projects are a mirror for visibility.
+规范始终是信息的来源。GitHub项目只是为了提供透明度的镜像。
 
-**Sync conflicts** (rare):
-1. Spec status conflicts with project state
-2. Manual edits to project/issue body/title
+**同步冲突**（较为罕见）：
+1. 规范的状态与项目状态不一致
+2. 对项目/问题内容或标题进行了手动修改
 
-**Resolution**:
-- Run `/sw-github:sync-spec spec-001 --force` to overwrite project from spec
-- Or manually update spec metadata to match project
+**解决方法**：
+- 运行`/sw-github:sync-spec spec-001 --force`命令，用规范中的信息覆盖项目中的数据
+- 或者手动更新规范的元数据以匹配项目状态
 
----
 
-## Privacy & Security
+## 隐私与安全
 
-**What gets synced?**
-- ✅ Spec title, overview, progress
-- ✅ User stories and acceptance criteria
-- ✅ User story completion status
-- ❌ Code diffs, file contents (never synced)
-- ❌ Internal notes, sensitive data
+**同步的内容包括**：
+- ✅ 规范的标题、概述、进度
+- ✅ 用户故事及验收标准
+- ✅ 用户故事的完成状态
+- ❌ 代码差异或文件内容（不会被同步）
+- ❌ 内部笔记或敏感数据
 
-**Security**:
-- Uses GitHub token from environment (GITHUB_TOKEN or GH_TOKEN)
-- Respects repository permissions (read/write)
-- No data sent to third parties
+**安全措施**：
+- 使用环境中的GitHub令牌（`GITHUB_TOKEN`或`GH_TOKEN`）
+- 遵守仓库的读写权限设置
+- 不会向第三方发送任何数据
 
----
 
-## Benefits
+## 好处
 
-**For SpecWeave Users**:
-- ✅ No manual GitHub project management
-- ✅ Automatic team visibility
-- ✅ Single source of truth (spec docs)
-- ✅ GitHub integration without leaving IDE
+**对于SpecWeave用户**：
+- 无需手动管理GitHub项目
+- 自动同步团队信息
+- 规范文档是信息的唯一来源
+- 可在IDE之外直接使用GitHub集成功能
 
-**For Teams**:
-- ✅ Track SpecWeave work in GitHub Projects
-- ✅ Use milestones, labels, assignees as usual
-- ✅ Comment on issues to communicate with developers
-- ✅ View progress in real-time
+**对于团队**：
+- 可在GitHub项目中跟踪SpecWeave的工作进展
+- 如常使用里程碑、标签和分配者
+- 通过问题评论与开发者沟通
+- 实时查看项目进度
 
-**For Organizations**:
-- ✅ Unified project tracking across repos
-- ✅ GitHub-native workflow (familiar to all)
-- ✅ Audit trail (all syncs timestamped)
-- ✅ Integration with GitHub Actions, webhooks
+**对于组织**：
+- 跨仓库统一项目跟踪
+- 使用熟悉的GitHub工作流程
+- 所有同步操作都有时间戳记录
+- 支持与GitHub Actions和Webhooks的集成
 
----
 
-## Troubleshooting
+## 故障排除
 
-**Project not created?**
-- Check GitHub CLI: `gh auth status`
-- Verify repo permissions (write access)
-- Check config: `.specweave/config.json`
+**项目未创建？**
+- 检查GitHub CLI的登录状态：`gh auth status`
+- 确认仓库的写权限
+- 检查`.specweave/config.json`配置文件
 
-**Sync failing?**
-- Check network connectivity
-- Verify project still exists (not deleted)
-- Check rate limits: `gh api rate_limit`
+**同步失败？**
+- 检查网络连接是否正常
+- 确认项目是否存在（未被删除）
+- 检查GitHub的API调用频率限制：`gh api rate_limit`
 
-**Progress not updating?**
-- Check `autoSyncSpecs: true` in config
-- Verify hook execution: `.specweave/logs/hooks-debug.log`
-- Manually sync: `/sw-github:sync-spec spec-001`
+**进度更新失败？**
+- 检查配置文件中的`autoSyncSpecs`设置是否为`true`
+- 查看日志文件`.specweave/logs/hooks-debug.log`
+- 手动执行同步操作：`/sw-github:sync-spec spec-001`
 
 ---
 
-## Advanced Usage
+## 高级用法
 
-### Custom Project Templates
+### 自定义项目模板
 
-Create `.specweave/github/project-template.md`:
+创建`.specweave/github/project-template.md`文件：
 
 ```markdown
 # [{{spec.id.toUpperCase()}}] {{spec.title}}
@@ -412,60 +401,28 @@ Create `.specweave/github/project-template.md`:
 {{spec.userStories.map(us => `- ${us.id}: ${us.title}`).join('\n')}}
 ```
 
-### Selective Sync
+### 选择性同步
 
-Sync only specific specs:
+**操作步骤**：
+- 仅同步特定的规范
 
-```json
-{
-  "plugins": {
-    "settings": {
-      "specweave-github": {
-        "syncSpecs": [
-          "spec-001-core-framework",
-          "spec-005-user-authentication"
-        ]
-      }
-    }
-  }
-}
-```
 
-### Multi-Repo Sync
+### 多仓库同步
 
-For monorepos with multiple GitHub repositories:
+**操作步骤**：
+- 对于包含多个GitHub仓库的单个项目库，执行相应的同步操作
 
-```json
-{
-  "plugins": {
-    "settings": {
-      "specweave-github": {
-        "repos": {
-          "frontend": {
-            "repo": "myorg/frontend",
-            "specs": ["spec-001-*", "spec-002-*"]
-          },
-          "backend": {
-            "repo": "myorg/backend",
-            "specs": ["spec-003-*", "spec-004-*"]
-          }
-        }
-      }
-    }
-  }
-}
-```
 
 ---
 
-## Related
+**相关功能**
 
-- **github-issue-tracker**: Track individual tasks as issue comments (DEPRECATED - use spec sync instead)
-- **github-manager agent**: AI agent for GitHub operations
-- **Commands**: `/sw-github:sync-spec`, `/sw-github:import-project`, `/sw-github:status`
+- **github-issue-tracker**：通过问题评论来跟踪具体任务（已弃用，建议使用规范同步）
+- **github-manager agent**：用于自动化GitHub操作的AI代理
+- **命令**：`/sw-github:sync-spec`、`/sw-github:import-project`、`/sw-github:status`
 
 ---
 
-**Version**: 2.0.0 (Spec-based architecture)
-**Plugin**: specweave-github
-**Last Updated**: 2025-11-11
+**版本**：2.0.0（基于规范的架构）
+**插件**：`specweave-github`
+**最后更新时间**：2025-11-11

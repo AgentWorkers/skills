@@ -1,29 +1,28 @@
 ---
 name: balance-management
-description: Manage Routstr balance by checking balance, creating Lightning invoices for top-up, and checking invoice payment status
+description: 管理 Routstr 的余额：可以通过查看余额、创建用于充值的 Lightning 发票以及检查发票的支付状态来实现。
 license: MIT
 compatibility: opencode
 ---
 
-## What I do
-- Check current Routstr API balance (in sats and BTC)
-- Display usage statistics (total spent, total requests)
-- Create Lightning invoices for top-up payments
-- Check payment status of existing invoices
-- Top up balance using Cashu tokens
+## 我的功能  
+- 检查当前Routstr API的余额（以satoshis和BTC为单位）  
+- 显示使用统计信息（总花费、总请求次数）  
+- 生成用于充值支付的Lightning发票  
+- 查看现有发票的支付状态  
+- 使用Cashu代币为账户充值  
 
-## When to use me
-Use this when you need to:
-- Check your current Routstr account balance
-- Top up your Routstr account by creating a Lightning invoice
-- Verify if a previously created invoice has been paid
+## 何时使用我  
+当你需要以下操作时，请使用我：  
+- 查看当前Routstr账户的余额  
+- 通过生成Lightning发票为账户充值  
+- 验证之前创建的发票是否已支付  
 
-## How to use me
-The shell scripts read API configuration from `~/.openclaw/openclaw.json`:
+## 如何使用我  
+这些shell脚本从`~/.openclaw/openclaw.json`文件中读取API配置：  
+- `check_balance.sh`：不带参数运行时，会显示当前余额和使用情况  
+- `createinvoice.sh <amount_sats>`：为指定金额（以satoshis为单位）生成发票  
+- `invoice_status.sh <invoice_id>`：查看发票的支付状态  
+- `topup_cashu.sh <cashu_token>`：使用Cashu代币为账户充值  
 
-- `check_balance.sh` - Run with no arguments to display current balance and usage
-- `create_invoice.sh <amount_sats>` - Create invoice for specified amount in satoshis
-- `invoice_status.sh <invoice_id>` - Check payment status of an invoice
-- `topup_cashu.sh <cashu_token>` - Top up balance using a Cashu token
-
-All amounts are displayed in both satoshis and BTC for convenience.
+为方便查看，所有金额都会同时以satoshis和BTC的形式显示。

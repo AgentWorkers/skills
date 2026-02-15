@@ -5,46 +5,46 @@ category: security
 tags: [security, sanitization, secrets, output-filter, privacy]
 requires: [bash, python3]
 author: OpenClaw
-description: Output sanitization for agent responses - prevents accidental secret leaks
+description: **代理响应的输出清理功能**——防止意外泄露机密信息
 ---
 
 # arc-shield
 
-**Output sanitization for agent responses.** Scans ALL outbound messages for leaked secrets, tokens, keys, passwords, and PII before they leave the agent.
+**用于清理代理响应中的敏感信息。** 在所有出站消息离开代理之前，会扫描其中是否包含泄露的秘密信息、令牌、密钥、密码和个人身份信息（PII）。
 
-⚠️ **This is NOT an input scanner** — `clawdefender` already handles that. This is an **OUTPUT filter** for catching things your agent accidentally includes in its own responses.
+⚠️ **这不是一个输入扫描工具** — `clawdefender` 已经负责处理输入数据的扫描工作。`arc-shield` 的作用是作为 **输出过滤器**，用于捕获代理在响应中可能无意中包含的敏感内容。
 
-## Why You Need This
+## 为什么需要它
 
-Agents have access to sensitive data: 1Password vaults, environment variables, config files, wallet keys. Sometimes they accidentally include these in responses when:
-- Debugging and showing full command output
-- Copying file contents that contain secrets
-- Generating code examples with real credentials
-- Summarizing logs that include tokens
+代理可以访问敏感数据，例如：1Password 密码库、环境变量、配置文件以及钱包密钥。在以下情况下，代理可能会不小心将这些敏感信息包含在响应中：
+- 调试并显示完整的命令输出时
+- 复制包含敏感信息的文件内容时
+- 生成包含真实凭据的代码示例时
+- 总结包含令牌的日志时
 
-Arc-shield catches these leaks before they reach Discord, Signal, X, or any external channel.
+`arc-shield` 会在这些敏感信息到达 Discord、Signal、X 或任何外部渠道之前将其拦截。
 
-## What It Detects
+## 它能检测到什么
 
-### 🔴 CRITICAL (blocks in `--strict` mode)
-- **API Keys & Tokens**: 1Password (`ops_*`), GitHub (`ghp_*`), OpenAI (`sk-*`), Stripe, AWS, Bearer tokens
-- **Passwords**: Assignments like `password=...` or `passwd: ...`
-- **Private Keys**: Ethereum (0x + 64 hex), SSH keys, PGP blocks
-- **Wallet Mnemonics**: 12/24 word recovery phrases
-- **PII**: Social Security Numbers, credit card numbers
-- **Platform Tokens**: Slack, Telegram, Discord
+### 🔴 **严重级别（在 `--strict` 模式下会阻止这些内容）**
+- **API 密钥和令牌**：1Password（`ops_*`）、GitHub（`ghp_*`）、OpenAI（`sk_*`）、Stripe、AWS、Bearer 令牌
+- **密码**：如 `password=...` 或 `passwd: ...` 这样的赋值语句
+- **私钥**：以太坊密钥（0x 开头的 64 位十六进制字符串）、SSH 密钥、PGP 密钥
+- **钱包助记词**：12/24 个单词的恢复短语
+- **个人身份信息（PII）**：社会安全号码、信用卡号码
+- **平台令牌**：Slack、Telegram、Discord 的令牌
 
-### 🟠 HIGH (warns loudly)
-- **High-entropy strings**: Shannon entropy > 4.5 for strings > 16 chars (catches novel secret patterns)
-- **Credit cards**: 16-digit card numbers
-- **Base64 credentials**: Long base64 strings that look like tokens
+### 🟠 **警告级别（会发出强烈警告）**
+- **高熵字符串**：长度大于 16 个字符的字符串，其香农熵值大于 4.5（用于检测新型的敏感信息模式）
+- **信用卡号码**：16 位数的信用卡号码
+- **Base64 编码的凭据**：看起来像令牌的长 Base64 字符串
 
-### 🟡 WARN (informational)
-- **Secret file paths**: `~/.secrets/*`, paths containing "password", "token", "key"
-- **Environment variables**: `ENV_VAR=secret_value` exports
-- **Database URLs**: Connection strings with credentials
+### 🟡 **信息提示级别**
+- **敏感文件路径**：`~/.secrets/*` 文件夹中的文件路径，或包含 “password”、“token”、“key” 等关键词的路径
+- **环境变量**：以 `ENV_VAR=secret_value` 形式导出的变量
+- **数据库 URL**：包含凭据的连接字符串
 
-## Installation
+## 安装
 
 ```bash
 cd ~/.openclaw/workspace/skills
@@ -52,11 +52,11 @@ git clone <arc-shield-repo> arc-shield
 chmod +x arc-shield/scripts/*.sh arc-shield/scripts/*.py
 ```
 
-Or download as a skill bundle.
+或者，您可以将其作为技能包下载。
 
-## Usage
+## 使用方法
 
-### Command-line
+### 命令行使用
 
 ```bash
 # Scan agent output before sending
@@ -75,11 +75,11 @@ arc-shield.sh --report < conversation.log
 cat message.txt | output-guard.py --strict
 ```
 
-### Integration with OpenClaw Agents
+### 与 OpenClaw 代理集成
 
-#### Pre-send hook (recommended)
+#### **预发送钩子（推荐使用）**
 
-Add to your messaging skill or wrapper:
+将其添加到您的消息处理技能或包装器中：
 
 ```bash
 #!/bin/bash
@@ -101,9 +101,9 @@ fi
 openclaw message send --channel "$CHANNEL" "$SANITIZED"
 ```
 
-#### Manual pipe
+#### 手动管道处理
 
-Before any external message:
+在任何外部消息发送之前，使用以下命令：
 
 ```bash
 # Generate response
@@ -116,22 +116,17 @@ CLEAN=$(echo "$RESPONSE" | arc-shield.sh --redact)
 signal send "$CLEAN"
 ```
 
-### Testing
+### 测试
 
-```bash
-cd skills/arc-shield/tests
-./run-tests.sh
-```
+提供了以下测试用例：
+- 真实的泄露信息（如 1Password 令牌、Instagram 密码、钱包助记词）
+- 防止误报（正常 URL、电子邮件地址、文件路径）
+- 检查信息隐藏的准确性
+- 检查严格模式下的阻止效果
 
-Includes test cases for:
-- Real leaked patterns (1Password tokens, Instagram passwords, wallet mnemonics)
-- False positive prevention (normal URLs, email addresses, file paths)
-- Redaction accuracy
-- Strict mode blocking
+## 配置
 
-## Configuration
-
-Patterns are defined in `config/patterns.conf`:
+敏感信息模式定义在 `config/patterns.conf` 文件中：
 
 ```conf
 CRITICAL|GitHub PAT|ghp_[a-zA-Z0-9]{36,}
@@ -139,20 +134,20 @@ CRITICAL|OpenAI Key|sk-[a-zA-Z0-9]{20,}
 WARN|Secret Path|~\/\.secrets\/[^\s]*
 ```
 
-Edit to add custom patterns or adjust severity levels.
+您可以编辑该文件以添加自定义模式或调整警告级别。
 
-## Modes
+## 模式选项
 
-| Mode | Behavior | Exit Code | Use Case |
+| 模式 | 行为 | 结束代码 | 使用场景 |
 |------|----------|-----------|----------|
-| Default | Pass through + warnings to stderr | 0 | Development, logging |
-| `--strict` | Block on CRITICAL findings | 1 if critical | Production outbound messages |
-| `--redact` | Replace secrets with `[REDACTED:TYPE]` | 0 | Safe logging, auditing |
-| `--report` | Analysis only, no pass-through | 0 | Auditing conversations |
+| 默认 | 直接传递消息并将在 stderr 中显示警告 | 0 | 开发阶段、日志记录 |
+| `--strict` | 遇到严重违规时阻止消息发送 | 结束代码为 1 | 用于生产环境的出站消息 |
+| `--redact` | 用 “[REDACTED:TYPE]” 替换敏感信息 | 0 | 适用于安全日志记录和审计 |
+| `--report` | 仅进行分析，不传递原始消息 | 0 | 用于审计对话记录 |
 
-## Entropy Detection
+## 熵值检测
 
-The Python version (`output-guard.py`) includes Shannon entropy analysis to catch secrets that don't match regex patterns:
+Python 版本（`output-guard.py`）使用香农熵值分析来检测不符合正则表达式的敏感信息：
 
 ```python
 # Detects high-entropy strings like:
@@ -160,19 +155,19 @@ kJ8nM2pQ5rT9vWxY3zA6bC4dE7fG1hI0  # Novel API key format
 Zm9vOmJhcg==                      # Base64 credentials
 ```
 
-Threshold: **4.5 bits** (configurable with `--entropy-threshold`)
+默认阈值：**4.5 比特**（可通过 `--entropy-threshold` 参数进行调整）
 
-## Performance
+## 性能
 
-- **Bash version**: ~10ms for typical message (< 1KB)
-- **Python version**: ~50ms with entropy analysis
-- **Zero external dependencies**: bash + Python stdlib only
+- **Bash 版本**：处理典型消息（小于 1KB）的速度约为 10 毫秒
+- **Python 版本**：包含熵值分析时速度约为 50 毫秒
+- **无外部依赖**：仅使用 bash 和 Python 标准库
 
-Fast enough to run on every outbound message without noticeable delay.
+该工具运行速度足够快，可以实时处理所有出站消息，而不会造成明显延迟。
 
-## Real-World Catches
+## 实际应用案例
 
-From our own agent sessions:
+从我们自己的代理会话中捕获的敏感信息示例：
 
 ```bash
 # 1Password token
@@ -190,30 +185,27 @@ abandon ability able about above absent absorb abstract..."
 url = https://ghp_abc123:@github.com/user/repo"
 ```
 
-All blocked by arc-shield before reaching external channels.
+所有这些敏感信息在到达外部渠道之前都被 `arc-shield` 拦截了。
 
-## Best Practices
+## 最佳实践
 
-1. **Always use `--strict` for external messages** (Discord, Signal, X, email)
-2. **Use `--redact` for logs** you want to review later
-3. **Run tests after adding custom patterns** to check for false positives
-4. **Pipe through both** bash and Python versions for maximum coverage:
-   ```bash
-   message | arc-shield.sh --strict | output-guard.py --strict
-   ```
-5. **Don't rely on this alone** — educate your agent to avoid including secrets in the first place (see AGENTS.md output sanitization directive)
+1. **对于外部消息（如 Discord、Signal、X、电子邮件），始终使用 `--strict` 模式**  
+2. **对于需要日后查看的日志，使用 `--redact` 模式**  
+3. **在添加自定义模式后运行测试，以确保没有误报**  
+4. **同时使用 bash 和 Python 版本，以实现最大程度的覆盖**  
+5. **不要仅依赖此工具** — 应教育代理避免在响应中包含敏感信息（请参考 AGENTS.md 中关于输出清理的指导原则）
 
-## Limitations
+## 限制
 
-- **Context-free**: Can't distinguish between "here's my password: X" (bad) and "set your password to X" (instruction)
-- **No semantic understanding**: Won't catch "my token is in the previous message"
-- **Pattern-based**: New secret formats require pattern updates
+- **缺乏上下文理解**：无法区分 “这是我的密码：X”（错误）和 “将密码设置为 X”（指令）  
+- **无法理解语句的语义**：无法检测到 “我的令牌在之前的消息中”  
+- **基于模式检测**：新的敏感信息格式需要更新相应的检测规则  
 
-Use in combination with agent instructions and careful prompt engineering.
+建议将 `arc-shield` 与代理指令和精心设计的提示语句结合使用。
 
-## Integration Example
+## 集成示例
 
-Full OpenClaw agent integration:
+完整的 OpenClaw 代理集成示例：
 
 ```bash
 # In your agent's message wrapper
@@ -238,38 +230,38 @@ send_external_message() {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-**False positives on normal text:**
-- Adjust entropy threshold: `output-guard.py --entropy-threshold 5.0`
-- Edit `config/patterns.conf` to refine regex patterns
-- Add exceptions to the pattern file
+**正常文本中出现误报的情况：**
+- 调整熵值阈值：`output-guard.py --entropy-threshold 5.0`
+- 编辑 `config/patterns.conf` 以优化正则表达式模式  
+- 在模式文件中添加例外情况  
 
-**Secrets not detected:**
-- Check pattern file for coverage
-- Run with `--report` to see what's being scanned
-- Test with `tests/run-tests.sh` using your sample
-- Consider lowering entropy threshold (but watch for false positives)
+**敏感信息未被检测到的情况：**
+- 检查模式文件的覆盖范围  
+- 使用 `--report` 参数运行工具，查看实际检测的内容  
+- 使用 `tests/run-tests.sh` 进行测试  
+- 考虑降低熵值阈值（但要注意避免误报）  
 
-**Performance issues:**
-- Use bash version only (skip entropy detection)
-- Limit input size with `head -c 10000`
-- Run in background: `arc-shield.sh --report &`
+**性能问题：**
+- 仅使用 Bash 版本（可跳过熵值检测）  
+- 通过 `head -c 10000` 限制输入消息的长度  
+- 在后台运行 `arc-shield.sh --report &`  
 
-## Contributing
+## 贡献方式
 
-Add new patterns to `config/patterns.conf` following the format:
+您可以根据以下格式向 `config/patterns.conf` 文件中添加新的检测模式：
 
 ```
 SEVERITY|Category Name|regex_pattern
 ```
 
-Test with `tests/run-tests.sh` before deploying.
+部署前请使用 `tests/run-tests.sh` 进行测试。
 
-## License
+## 许可证
 
-MIT — use freely, protect your secrets.
+MIT 许可证 — 可自由使用，但请保护好您的敏感信息。
 
 ---
 
-**Remember**: Arc-shield is your safety net, not your strategy. Train your agent to never include secrets in responses. This tool catches mistakes, not malice.
+**请记住**：`arc-shield` 是您的安全保障措施，而非解决问题的唯一方案。应训练代理避免在响应中包含任何敏感信息。该工具用于捕捉错误行为，而非恶意行为。

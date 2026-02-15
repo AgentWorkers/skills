@@ -1,13 +1,13 @@
 ---
 name: doing-tasks
-description: "Use when executing any task. Work through plans systematically, tracking progress, handling blockers, and coordinating with other skills. The central execution skill."
+description: "**执行任何任务时均应使用该技能。** 该技能要求系统地推进计划、跟踪进度、处理阻碍因素，并与其他相关技能进行协调。它是所有执行任务的核心技能。"
 ---
 
-# Doing Tasks - Execution Core
+# 任务执行 - 核心流程
 
-## The Rule
+## 规则
 
-**If a task exists, you MUST use the appropriate skill before acting.**
+**如果存在任务，必须在采取行动之前使用相应的技能。**
 
 ```
 User message received
@@ -19,18 +19,18 @@ Might any skill apply? → YES (even 1% chance) → Invoke skill
 Respond                              Follow skill exactly
 ```
 
-## Skill Priority
+## 技能优先级
 
-When multiple skills could apply:
+当有多种技能可供选择时：
 
-1. **Process skills first** (brainstorming, debugging) - determine HOW
-2. **Planning skills second** (write-plan) - create roadmap
-3. **Execution skills third** (doing-tasks, dispatch-multiple-agents) - do the work
-4. **Verification skills last** (verify-task) - confirm completion
+1. **首先使用处理类技能**（如头脑风暴、调试）——确定解决问题的方法；
+2. **其次使用规划类技能**（如编写计划）——制定执行路线图；
+3. **然后使用执行类技能**（如执行任务、分配任务给多个代理）——开始实际工作；
+4. **最后使用验证类技能**（如确认任务完成）——确保任务已顺利完成。
 
-## The Workflow
+## 工作流程
 
-### Standard Project Flow:
+### 标准项目流程：
 
 ```
 brainstorming → write-plan → doing-tasks → verify-task
@@ -38,7 +38,7 @@ brainstorming → write-plan → doing-tasks → verify-task
      └────── refinement ←───────────┘
 ```
 
-### With Parallel Execution:
+### 并行执行时的流程：
 
 ```
 brainstorming → write-plan → dispatch-multiple-agents → verify-task
@@ -46,66 +46,66 @@ brainstorming → write-plan → dispatch-multiple-agents → verify-task
                             doing-tasks (per subagent)
 ```
 
-## Red Flags - STOP and Check Skills
+## 注意事项 - 遇到问题时请立即停止并检查所需技能
 
-| Thought | Reality |
+| 思考 | 实际情况 |
 |---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying. |
-| "Let me explore first" | Skills tell you HOW to explore. |
-| "I can check files quickly" | Check for skills first. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| “这只是一个简单的问题” | 任何问题都应被视为任务，需要先检查所需的技能。 |
+| “我需要更多背景信息” | 在澄清问题之前，应先检查所需技能。 |
+| “让我先探索一下” | 技能能告诉你如何进行探索。 |
+| “我可以快速查看文件” | 应先检查是否需要使用特定的技能。 |
+| “我记得这个技能” | 技能会不断更新，建议查阅最新版本。 |
+| “这个任务不需要特定的技能” | 如果有合适的技能可用，就直接使用它。 |
+| “我先只完成这一件事” | 在开始任何操作之前，先检查所需的技能。 |
 
-## Execution Discipline
+## 执行规范
 
-### Do:
-- Check for skills BEFORE any action
-- Follow the plan exactly
-- Mark tasks complete as you finish
-- Report blockers immediately
-- Ask for clarification when unclear
+### 应该做：
+- 在采取任何行动之前，先检查所需的技能；
+- 严格按照计划执行；
+- 完成任务后及时标记为已完成；
+- 遇到障碍时立即报告；
+- 对不清楚的部分及时寻求澄清。
 
-### Don't:
-- Skip skills because "it's simple"
-- Add unplanned scope without approval
-- Work silently for long periods
-- Guess when unclear
-- Let blockers sit unreported
+### 不应该做：
+- 因为任务简单就忽略使用技能的必要性；
+- 未经批准就增加额外的工作内容；
+- 长时间默默地工作而不与他人沟通；
+- 在不清楚的情况下随意猜测；
+- 对遇到的障碍置之不理。
 
-## Integration with Clawlist
+## 与 Clawlist 的集成
 
-For long-running or infinite tasks:
+对于耗时较长或无法立即完成的任务：
 
 ```
 doing-tasks → update ongoing-tasks.md → schedule next run
 ```
 
-The doing-tasks skill executes, then updates the task tracking file for heartbeat monitoring.
+执行任务时会使用相应的技能，并更新任务跟踪文件以进行实时监控。
 
-## Sub-Skills Reference
+## 子技能参考
 
-- **brainstorming** - Before any creative work
-- **write-plan** - After design, before execution
-- **dispatch-multiple-agents** - For parallel independent tasks
-- **verify-task** - After completion
+- **头脑风暴** - 在进行任何创造性工作之前使用；
+- **编写计划** - 设计完成后、执行之前使用；
+- **分配任务给多个代理** - 用于处理多个独立的并行任务；
+- **验证任务完成** - 任务完成后使用。
 
-## Example
+## 示例
 
-**User:** "Build me a todo app"
+**用户请求：“帮我开发一个待办事项应用。”**
 
-**Correct flow:**
-1. "Using brainstorming skill to clarify requirements"
-2. Brainstorm: Ask questions, explore approaches
-3. "Using write-plan skill to create implementation plan"
-4. Write-plan: Create checkpoints and tasks
-5. "Using doing-tasks skill to execute"
-6. Execute: Work through plan
-7. "Using verify-task skill to confirm completion"
-8. Verify: Check against plan, get user approval
+**正确的流程：**
+1. 使用“头脑风暴”技能来明确需求；
+2. 通过头脑风暴提出问题、探索可能的解决方案；
+3. 使用“编写计划”技能来制定实施方案；
+4. 制定计划后，列出需要完成的任务和检查点；
+5. 使用“执行任务”技能来开始实际开发；
+6. 按照计划逐步完成任务；
+7. 使用“验证任务完成”技能来确认任务是否已完成；
+8. 完成后，根据计划进行验证，并获取用户的确认。
 
-**Incorrect:**
-- Jumping straight to coding without brainstorming
-- Starting work without a plan
-- Skipping verification
+**错误的流程：**
+- 直接开始编码而忽略头脑风暴；
+- 没有制定计划就直接开始工作；
+- 跳过任务验证环节。

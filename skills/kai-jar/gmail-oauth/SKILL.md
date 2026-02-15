@@ -1,35 +1,35 @@
 ---
 name: gmail-oauth
-description: Set up Gmail API access via gog CLI with manual OAuth flow. Use when setting up Gmail integration, renewing expired OAuth tokens, or troubleshooting Gmail authentication on headless servers.
+description: 通过 `gog CLI` 和手动 OAuth 流程来设置 Gmail API 访问权限。此方法适用于设置 Gmail 集成、续期过期的 OAuth 令牌，或在无头服务器上解决 Gmail 认证问题。
 ---
 
-# Gmail OAuth Setup
+# Gmail OAuth 设置
 
-Headless-friendly OAuth flow for Gmail API access using `gog` CLI.
+使用 `gog` CLI 实现的无头（headless）方式访问 Gmail API 的 OAuth 流程。
 
-## Prerequisites
+## 先决条件
 
-- `gog` CLI installed (`brew install steipete/tap/gogcli`)
-- Google Cloud project with OAuth credentials (Desktop app type)
-- Gmail API enabled in the project
+- 已安装 `gog` CLI（通过 `brew install steipete/tap/gogcli` 安装）
+- 拥有包含 OAuth 凭据的 Google Cloud 项目（桌面应用类型）
+- 项目中已启用 Gmail API
 
-## Quick Setup
+## 快速设置
 
-### 1. Create Google Cloud Project & Credentials
+### 1. 创建 Google Cloud 项目及凭证
 
-1. Go to https://console.cloud.google.com
-2. Create a new project (or select existing)
-3. **Enable Gmail API**: APIs & Services → Library → search "Gmail API" → Enable
-4. **Configure OAuth consent screen**: APIs & Services → OAuth consent screen
-   - Choose "External" user type
-   - Fill in app name, user support email
-   - Add scopes: `gmail.modify` (or others as needed)
-   - **Important**: Click "PUBLISH APP" for permanent tokens (see Troubleshooting)
-5. **Create credentials**: APIs & Services → Credentials → Create Credentials → OAuth client ID
-   - Application type: **Desktop app**
-   - Download the JSON file
+1. 访问 https://console.cloud.google.com
+2. 创建一个新的项目（或选择现有项目）
+3. **启用 Gmail API**：点击 “APIs & Services” → “Library”，搜索 “Gmail API” 并启用它
+4. **配置 OAuth 同意页面**：点击 “APIs & Services” → “OAuth consent screen”：
+   - 选择 “External” 用户类型
+   - 填写应用名称和用户支持邮箱
+   - 添加权限范围：`gmail.modify`（根据需要添加其他权限）
+   - **重要**：点击 “PUBLISH APP” 以获取永久性访问令牌（详见故障排除部分）
+5. **创建凭证**：点击 “APIs & Services” → “Credentials” → “Create Credentials” → “OAuth client ID”：
+   - 应用类型：**Desktop app**
+   - 下载 JSON 凭证文件
 
-### 2. Configure gog
+### 2. 配置 `gog`
 
 ```bash
 gog auth credentials /path/to/client_secret.json
@@ -37,9 +37,9 @@ gog auth keyring file  # Use file-based keyring for headless
 export GOG_KEYRING_PASSWORD="your-password"  # Add to .bashrc
 ```
 
-### 3. Run Auth Flow
+### 3. 运行授权流程
 
-Run `scripts/gmail-auth.sh` interactively, or:
+交互式运行 `scripts/gmail-auth.sh` 脚本，或：
 
 ```bash
 # Generate URL
@@ -50,105 +50,104 @@ scripts/gmail-auth.sh --url
 scripts/gmail-auth.sh --exchange CODE EMAIL
 ```
 
-### 4. Verify
+### 4. 验证授权结果
 
 ```bash
 gog gmail search 'is:unread' --max 5 --account you@gmail.com
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "Access blocked: [app] has not completed the Google verification process"
+### “访问被阻止：[应用] 未完成 Google 验证流程”
 
-**Cause**: App is in "Testing" mode and the Gmail account isn't a test user.
+**原因**：应用处于 “测试” 模式，且使用的 Gmail 账户不是测试用户。
 
-**Solutions** (choose one):
-1. **Publish the app** (recommended):
-   - Google Cloud Console → APIs & Services → OAuth consent screen
-   - Click **"PUBLISH APP"** → Confirm
-   - No Google review needed for personal use
-   - Tokens become permanent
+**解决方案**（选择一种）：
+1. **发布应用**（推荐）：
+   - 进入 Google Cloud 控制台 → “APIs & Services” → “OAuth consent screen”
+   - 点击 “PUBLISH APP” 并确认
+   - 个人使用无需经过 Google 审核
+   - 令牌将变为永久性访问令牌
 
-2. **Add test user**:
-   - OAuth consent screen → Test users → + ADD USERS
-   - Add the Gmail address you're authorizing
-   - Tokens still expire in 7 days
+2. **添加测试用户**：
+   - 在 OAuth 同意页面中选择 “Test users” → 添加需要授权的 Gmail 账户
+   - 注意：这些令牌仍然会在 7 天后过期
 
-### "Google hasn't verified this app" warning screen
+### “Google 未验证此应用” 的警告
 
-**This is normal for personal apps.** Click:
-1. **Advanced** (bottom left)
-2. **Go to [app name] (unsafe)**
+**对于个人应用来说这是正常的。** 点击：
+1. 选择 “Advanced”（左下角）
+2. 点击 “Go to [应用名称]”（虽然提示不安全，但可以继续操作）
 
-Safe to proceed since you own the app.
+由于你是应用的所有者，因此可以安全地继续使用。
 
-### Token expires in 7 days
+### 令牌在 7 天后过期
 
-**Cause**: App is in "Testing" mode.
+**原因**：应用仍处于 “测试” 模式。
 
-**Fix**: Publish the app (see above). Published apps get permanent refresh tokens.
+**解决方法**：发布应用（参见上述步骤）。发布后的应用将获得永久性访问令牌。
 
-### "invalid_request" or "invalid_grant" errors
+### 出现 “invalid_request” 或 “invalid_grant” 错误
 
-**Causes**:
-- Authorization code expired (they only last a few minutes)
-- Code was already used
-- Redirect URI mismatch
+**原因**：
+- 授权代码已过期（有效期通常只有几分钟）
+- 代码已被使用
+- 重定向 URI 不匹配
 
-**Fix**: Generate a fresh auth URL and complete the flow quickly. Paste the code immediately after getting it.
+**解决方法**：生成新的授权 URL 并尽快完成授权流程。获取代码后立即使用它。
 
-### "redirect_uri_mismatch" error
+### 出现 “redirect_uri_mismatch” 错误
 
-**Cause**: The redirect URI in the token exchange doesn't match what was used in the auth URL.
+**原因**：令牌交换过程中使用的重定向 URI 与授权 URL 中指定的 URI 不匹配。
 
-**Fix**: This script uses `http://localhost`. Make sure both the auth URL and exchange use the same redirect URI.
+**解决方法**：此脚本使用的是 `http://localhost` 作为重定向 URI。请确保授权 URL 和令牌交换过程中使用的重定向 URI 一致。
 
-### Page hangs after approving permissions (mobile)
+### 批准权限后页面卡住（在移动设备上）
 
-**Cause**: Browser trying to connect to localhost which doesn't exist on phone.
+**原因**：移动设备上的浏览器无法连接到本地主机（localhost）。
 
-**Fix**: 
-- Use a desktop browser instead
-- Or tap the address bar while it's "hanging" - the URL contains the code
-- The URL will look like: `http://localhost/?code=4/0ABC...`
+**解决方法**：
+- 使用桌面浏览器
+- 或者在页面卡住时点击地址栏（URL 中包含授权代码）
+- URL 的格式应为：`http://localhost/?code=4/0ABC...`
 
-### Multiple permission checkboxes causing hangs
+### 同时勾选多个权限选项导致页面卡住
 
-**Cause**: Too many OAuth scopes requested.
+**原因**：请求的 OAuth 权限范围过多。
 
-**Fix**: Use minimal scopes. `gmail.modify` alone is usually sufficient and shows just one permission.
+**解决方法**：仅请求必要的权限范围。通常 `gmail.modify` 即可满足大部分需求，且只会显示一个权限选项。
 
-### Can't find project in Google Cloud Console
+### 在 Google Cloud 控制台中找不到项目
 
-**Cause**: Signed into wrong Google account.
+**原因**：登录了错误的 Google 账户。
 
-**Fix**: Check which account owns the project:
-- Click profile icon (top right)
-- Switch accounts
-- Check project dropdown for each account
+**解决方法**：
+- 点击右上角的个人资料图标
+- 切换账户
+- 检查每个账户对应的项目列表
 
-### "invalid_request" with oob redirect (new projects)
+### 新项目中出现 “invalid_request” 错误（与 oob 重定向相关）
 
-**Cause**: Google deprecated `urn:ietf:wg:oauth:2.0:oob` for OAuth clients created after 2022.
+**原因**：对于 2022 年之后创建的 OAuth 客户端，Google 已弃用了 `urn:ietf:wg:oauth:2.0:oob` 协议。
 
-**Fix**: Use `http://localhost` redirect instead (this script's default). After approval, browser redirects to localhost with code in URL.
+**解决方法**：使用 `http://localhost` 作为重定向 URI（此脚本的默认设置）。授权成功后，浏览器会自动跳转到 `http://localhost` 并在 URL 中显示授权代码。
 
-## Scopes Reference
+## 权限范围参考
 
-| Scope | Access |
+| 权限范围 | 访问权限 |
 |-------|--------|
-| `gmail.modify` | Read, send, delete, manage labels (recommended) |
-| `gmail.readonly` | Read only |
-| `gmail.send` | Send only |
-| `gmail.compose` | Create drafts, send |
+| `gmail.modify` | 读取、发送、删除邮件、管理标签（推荐） |
+| `gmail.readonly` | 仅限读取 |
+| `gmail.send` | 仅限发送邮件 |
+| `gmailCompose` | 创建邮件草稿并发送 |
 
-## Files
+## 相关文件
 
-- `scripts/gmail-auth.sh` — Interactive auth helper
+- `scripts/gmail-auth.sh` — 交互式授权辅助脚本
 
-## Tips
+## 提示
 
-- **Publish your app** — Avoids test user limits and 7-day token expiry
-- **Exchange codes quickly** — They expire in minutes
-- **Use desktop browser** — Mobile browsers can be finicky with localhost redirects
-- **One scope is enough** — `gmail.modify` covers most use cases
+- **发布你的应用**：避免受到测试用户的使用限制和 7 天令牌有效期的限制
+- **尽快交换授权代码**：代码的有效期很短
+- **使用桌面浏览器**：移动浏览器可能无法正确处理本地主机（localhost）的请求
+- **只需一个权限范围**：`gmail.modify` 通常足以满足大部分使用需求

@@ -1,61 +1,61 @@
-# vnsh Skill
+# vnsh 技能
 
-Securely share files via encrypted, expiring links using the `vnsh` CLI.
+使用 `vnsh` CLI 通过加密的、有时效性的链接安全地共享文件。
 
-This skill allows you to:
-1.  Upload a local file to get a secure `vnsh.dev` URL.
-2.  Read a `vnsh.dev` URL to decrypt and access its content.
+此技能允许您：
+1. 上传本地文件以获取一个安全的 `vnsh.dev` 链接。
+2. 读取 `vnsh.dev` 链接以解密并访问其内容。
 
-## Usage
+## 使用方法
 
-The `vnsh` tool has two main modes: uploading and reading.
+`vnsh` 工具有两种主要模式：上传和读取。
 
-### 1. Upload a file
+### 1. 上传文件
 
-To share a file, use the `vnsh` command followed by the file path. The tool will encrypt the file, upload it, and return a secure URL.
+要共享文件，请使用 `vnsh` 命令后跟文件路径。该工具会加密文件，上传文件，并返回一个安全的链接。
 
-**Command:**
+**命令：**
 ```bash
 vnsh [options] <file_path>
 ```
 
-**Example:**
+**示例：**
 ```bash
 vnsh /path/to/my/document.pdf
 ```
 
-**Output:**
+**输出：**
 ```
 https://vnsh.dev/s/xxxxxxxxxxxxxxxx
 ```
 
-#### Options
+#### 选项
 
-- `-t, --ttl <hours>`: Set the Time-To-Live (expiry time) for the link in hours. Default is 24 hours, max is 168 (7 days).
+- `-t, --ttl <小时>`：设置链接的有效期（生存时间）以小时为单位。默认值为 24 小时，最大值为 168 小时（7 天）。
 
-**Example with TTL:**
+**带 TTL 的示例：**
 ```bash
 # Link will expire in 1 hour
 vnsh -t 1 /path/to/my/secret.txt
 ```
 
-### 2. Read (Decrypt) a URL
+### 2. 读取（解密）链接
 
-To access the content of a `vnsh` link, use the `read` command.
+要访问 `vnsh` 链接的内容，请使用 `read` 命令。
 
-**Command:**
+**命令：**
 ```bash
 vnsh read <url>
 ```
 
-**Example:**
+**示例：**
 ```bash
 vnsh read https://vnsh.dev/s/xxxxxxxxxxxxxxxx
 ```
 
-The tool will download, decrypt, and print the content to standard output. For binary files, you may want to redirect the output to a file.
+该工具会下载文件，解密文件内容，并将其打印到标准输出。对于二进制文件，您可能需要将输出重定向到文件中。
 
-**Example for a binary file:**
+**二进制文件的示例：**
 ```bash
 vnsh read https://vnsh.dev/s/yyyyyyyyyyyyyyyy > received_image.png
 ```

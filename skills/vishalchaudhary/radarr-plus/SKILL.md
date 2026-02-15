@@ -1,161 +1,149 @@
 ---
 name: radarr
-description: Add and manage movies in a Radarr instance via its HTTP API (search/lookup movies, list quality profiles and root folders, add a movie by title/year or TMDB id, and trigger a search). Use when the user asks to add/request/download a movie via Radarr/Plex, or when automating Radarr-based media workflows.
+description: 通过 Radarr 的 HTTP API 添加和管理电影：支持搜索/查找电影、列出电影的质量信息及存储文件夹信息、根据电影标题/年份或 TMDB ID 添加新电影，以及触发搜索操作。该功能适用于用户通过 Radarr/Plex 添加/请求/下载电影的场景，也可用于自动化基于 Radarr 的媒体处理流程。
 ---
 
 # Radarr+
 
-Request movies from chat and have them added to **Radarr** (with progress updates back in the same chat).
+您可以通过聊天请求电影，并将这些电影添加到 **Radarr** 中（同时会在同一聊天窗口中显示进度更新）。
 
-## What it looks like (example)
+## 功能演示（示例）
 
-Here’s an example of the **single-message** poster card + caption users will receive when requesting a movie (poster attachment + trailer + rating):
+以下是用户请求电影时收到的信息示例（包含电影海报、预告片和评分）：
 
-![Example movie poster](https://image.tmdb.org/t/p/w185/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg)
+![示例电影海报](https://image.tmdb.org/t/p/w185/nrmXQ0zcZUL8jFLrakWc90IR8z9.jpg)
 
-Example message caption:
+示例信息内容：
 
-> **Shutter Island (2010)**
+> **《肖申克的救赎》（2010年）**
 >
-> ⭐ IMDb: 8.2/10
+> ⭐ IMDb评分：8.2/10
 >
-> 🎬 Trailer: https://www.youtube.com/watch?v=qdPw9x9h5CY
+> 🎬 预告片：https://www.youtube.com/watch?v=qdPw9x9h5CY
 >
-> Added to Radarr ✅ (Ultra-HD, /movies). I’ll post progress + “imported ✅” here.
+> 已添加到 Radarr ✅（格式：Ultra-HD，分类：/movies）。我会在这里更新进度并显示“已导入 ✅”。
 
-## Setup (one-time)
+## 设置（只需执行一次）
 
-1) Set secrets in `~/.openclaw/.env` (never commit these):
-
+1) 在 `~/.openclaw/.env` 文件中设置以下环境变量（请勿将这些变量提交到代码仓库）：
 - `RADARR_URL=http://<host>:7878`
 - `RADARR_API_KEY=...`
 
-Optional (recommended for fewer questions later):
+**推荐设置（可减少后续问题）：**
 - `RADARR_DEFAULT_PROFILE=HD-1080p`
 - `RADARR_DEFAULT_ROOT=/data/media/movies`
 
-Optional (for the “rich” experience we’ll add next):
-- `TMDB_API_KEY=...` (poster + trailer)
-- `OMDB_API_KEY=...` (IMDb rating)
+**进阶设置（用于更丰富的功能）：**
+- `TMDB_API_KEY=...`（用于获取电影海报和预告片）
+- `OMDB_API_KEY=...`（用于获取 IMDb 评分）
 - `PLEX_URL=http://<plex-host>:32400`
 - `PLEX_TOKEN=...`
 
-2) Verify env + connectivity:
+2) 验证环境变量和连接是否正常：
 
 ```bash
 ./skills/radarr/scripts/check_env.py
 ./skills/radarr/scripts/radarr.sh ping
 ```
 
-If it fails, check:
-- Radarr is reachable from the OpenClaw host
-- API key is correct
-- URL is correct (http vs https)
+如果出现错误，请检查：
+- 是否可以从 OpenClaw 主机访问 Radarr
+- API 密钥是否正确
+- 网址（http 或 https）是否正确
 
-## Common tasks
+## 常见操作
 
-### List available quality profiles
+### 列出可用的电影质量设置
 
 ```bash
 ./skills/radarr/scripts/radarr.sh profiles
 ```
 
-### List configured root folders
+### 查看已配置的文件存储目录
 
 ```bash
 ./skills/radarr/scripts/radarr.sh roots
 ```
 
-### Lookup/search a movie
+### 查找/搜索电影
 
 ```bash
 ./skills/radarr/scripts/radarr.sh lookup --compact "inception"
 ./skills/radarr/scripts/radarr.sh lookup --compact "tmdb:603"
 ```
 
-### Add a movie (preferred: TMDB id)
+### 添加电影（推荐使用 TMDB ID）
 
 ```bash
 ./skills/radarr/scripts/radarr.sh add --tmdb 603 --profile "HD-1080p" --root "/data/media/movies" --monitor --search
 ```
 
-### Add a movie (by title; optionally prefer a year)
+### 添加电影（按标题；可选：按年份筛选）
 
 ```bash
 ./skills/radarr/scripts/radarr.sh add --term "Dune" --year 2021 --profile "HD-1080p" --root "/data/media/movies" --monitor --search
 ```
 
-## Chat workflow (recommended)
+## 聊天操作流程（推荐）
 
-When the user says “request/add <movie>” (DM or group):
+当用户发送“请求/添加 <电影名>”（无论是私信还是群组消息）时，按照以下步骤操作：
 
-### 1) Lookup
-Run:
-- `./skills/radarr/scripts/radarr.sh lookup --compact "<movie>"`
+### 1) 查找电影信息
+运行以下命令：
+- `./skills/radarr/scripts/radarr.sh lookup --compact "<电影名>"`
 
-If there are multiple plausible matches, ask the user to choose (year or TMDB id).
+如果找到多个匹配结果，请让用户选择具体的电影（可以通过年份或 TMDB ID 来确定）。
 
-### 2) Resolve missing config by prompting
-Resolve defaults from env (and fetch prompt options when missing):
-
-```bash
-./skills/radarr/scripts/resolve_defaults.py
-```
-
-If defaults are missing, prompt the user to pick one of the returned options:
+### 2) 从环境变量中获取缺失的配置信息
+如果某些配置信息缺失，系统会从环境变量中读取默认值，并提示用户进行选择：
 - `options.profiles[]`
 - `options.roots[]`
 
-(If defaults exist, use them silently.)
+（如果默认值存在，系统会直接使用这些值。）
 
-### 3) Optional rich “movie card” (add-ins)
-If `TMDB_API_KEY` is set, build a movie card:
-
+### 3) 可选的高级功能：生成电影卡片
+如果设置了 `TMDB_API_KEY`，系统会生成电影卡片：
 ```bash
 ./skills/radarr/scripts/movie_card.py --tmdb <id>
 ```
 
-- If the output includes `posterUrl`, you can download it and attach it:
+- 如果输出中包含 `posterUrl`，您可以下载该海报并将其附加到消息中：
 
 ```bash
 ./skills/radarr/scripts/fetch_asset.py --url "<posterUrl>" --out "./outbound/radarr/<tmdbId>.jpg"
 ```
 
-If `OMDB_API_KEY` is set and an IMDb id is known, the card will include IMDb rating.
+如果设置了 `OMDB_API_KEY` 并且已知电影的 IMDb ID，卡片上还会显示 IMDb 评分。
 
-### 4) Add to Radarr
-Use TMDB when possible:
+### 4) 将电影添加到 Radarr
+尽可能使用 TMDB 的数据来添加电影：
 
 ```bash
 ./skills/radarr/scripts/radarr.sh add --tmdb <id> --profile "<profile>" --root "<root>" --monitor --search
 ```
 
-### 5) Track progress + notify in the same chat (Radarr-only, polling)
-This skill provides a file-based tracker queue:
-
-1) Enqueue tracking for the **same chat** where the request came from (DM or group):
+### 5) 在同一聊天窗口中跟踪进度并通知用户
+该功能会为请求来源的聊天窗口（私信或群组）创建一个进度跟踪队列：
 
 ```bash
 ./skills/radarr/scripts/enqueue_track.py --channel telegram --target "<chatId>" --movie-id <id> --title "<title>" --year <year>
 ```
 
-2) A periodic dispatcher should run:
-
+### 6) 定期更新进度
+系统会定期执行进度更新：
 ```bash
 ./skills/radarr/scripts/poll_and_queue.py
 ```
 
-This will create outbox items under `./state/radarr/outbox/` that your OpenClaw cron runner can send.
+更新后的进度信息会保存在 `./state/radarr/outbox/` 目录下，OpenClaw 的定时任务脚本可以自动发送这些信息。
 
-### 6) Plex link (optional add-in)
-If Plex is configured, try to produce a Plex web URL:
-
+### 7) 提供 Plex 链接（可选功能）
+如果配置了 Plex，系统会尝试生成对应的 Plex 链接：
 ```bash
 ./skills/radarr/scripts/plex_link.py --title "<title>" --year <year>
 ```
 
-## References
-
-- Onboarding: `references/onboarding.md`
-- Setup: `references/setup.md`
-- API notes: `references/radarr-api-notes.md`
+## 参考资料
+- 入门指南：`references/onboarding.md`
+- 设置指南：`references/setup.md`
+- API 使用说明：`references/radarr-api-notes.md`

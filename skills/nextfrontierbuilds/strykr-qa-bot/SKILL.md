@@ -1,6 +1,6 @@
 ---
 name: strykr-qa-bot
-description: AI-powered QA for Strykr trading platform. Pre-built tests for crypto, stocks, news, AI chat. CI/CD ready. Works with Cursor, Claude, ChatGPT, Copilot. Vibe-coding enabled.
+description: 基于人工智能的Strykr交易平台质量保证（QA）系统。为加密货币、股票、新闻以及AI聊天功能提供了预先构建的测试用例。该系统支持持续集成（CI）和持续部署（CD）流程，可与Cursor、Claude、ChatGPT、Copilot等工具协同使用，并支持Vibe-coding编码规范。
 version: 0.1.2
 author: NextFrontierBuilds
 keywords: [strykr, prism, qa, testing, automation, web-qa-bot, clawdbot, moltbot, ai, ai-agent, vibe-coding, cursor, claude, chatgpt, copilot, github-copilot, crypto, trading, fintech, openclaw, ai-tools, developer-tools, devtools, typescript, llm]
@@ -8,33 +8,33 @@ keywords: [strykr, prism, qa, testing, automation, web-qa-bot, clawdbot, moltbot
 
 # strykr-qa-bot
 
-QA automation skill for testing Strykr (https://app.strykr.ai).
+这是一个用于测试 Strykr（https://app.strykr.ai）的自动化问答（QA）工具。
 
-## What It Does
+## 功能概述
 
-Automated testing for the Strykr AI finance dashboard:
-- Pre-built test suites for all pages
-- Signal card validation
-- AI response quality checks
-- PRISM API health monitoring
-- Known issue tracking
+该工具主要负责对 Strykr 的 AI 金融仪表盘进行自动化测试，具体包括：
+- 为所有页面提供预先构建的测试套件
+- 验证信号卡（signal cards）的内容
+- 检查 AI 回答的质量
+- 监控 PRISM API 的运行状态
+- 跟踪已知的系统问题（known issues）
 
-## When To Use
+## 使用场景
 
-- Testing Strykr after deployments
-- Regression testing
-- Monitoring site health
-- Validating new features
+- 在 Strykr 部署完成后进行测试
+- 进行回归测试（regression testing）
+- 监控网站的健康状况
+- 验证新功能的正确性
 
-## Usage
+## 使用方法
 
-### Run All Tests
+### 运行所有测试
 ```bash
 cd /path/to/strykr-qa-bot
 npm test
 ```
 
-### Run Specific Suite
+### 运行特定测试套件
 ```bash
 npm run test:homepage
 npm run test:crypto
@@ -44,12 +44,12 @@ npm run test:events
 npm run test:ai-chat
 ```
 
-### Quick Smoke Test
+### 快速测试（Quick Smoke Test）
 ```bash
 npm run smoke
 ```
 
-### Programmatic Usage
+### 程序化使用（Programmatic Usage）
 ```typescript
 import { StrykrQABot } from 'strykr-qa-bot';
 
@@ -71,27 +71,27 @@ const health = await qa.checkPrismEndpoints();
 const report = qa.generateReport();
 ```
 
-## Test Suites
+## 测试套件详情
 
-| Suite | Tests | Notes |
+| 测试套件 | 测试内容 | 备注 |
 |-------|-------|-------|
-| homepage | Navigation, widgets, status | Entry point |
-| crypto-signals | Filters, cards, actions | Has known modal issue |
-| stock-signals | Asset filters, actions | Stocks/ETFs/Forex |
-| news | Routing, categories | Known direct URL issue |
-| events | Impact filters, times | Known direct URL issue |
-| ai-chat | Input, responses | Quality validation |
+| 主页（Homepage） | 导航功能、小部件（widgets）、状态显示 | 测试入口点 |
+| 加密信号（Crypto-Signals） | 过滤器（filters）、信号卡（signal cards）、操作功能（actions） | 存在模态窗口（modal window）相关问题 |
+| 股票信号（Stock-Signals） | 资产过滤器（asset filters）、操作功能 | 支持股票/ETF/外汇交易 |
+| 新闻（News） | 路由（routing）、分类（categories） | 存在直接访问 URL 的问题 |
+| 事件（Events） | 事件筛选器（impact filters）、时间显示 | 存在直接访问 URL 的问题 |
+| AI 聊天（AI-Chat） | 用户输入、AI 回答 | 回答质量验证 |
 
-## Known Issues Tracked
+## 已知的系统问题
 
-1. **details-modal-empty** (High) - Modal opens but content empty
-2. **direct-url-blank-news** (Medium) - /news blank on direct nav
-3. **direct-url-blank-events** (Medium) - /economic-events blank
-4. **events-widget-race-condition** (Low) - Intermittent widget load
+1. **details-modal-empty**（严重级别）：模态窗口打开但内容为空
+2. **direct-url-blank-news**（中等级别）：通过直接导航访问新闻页面时，页面内容为空
+3. **direct-url-blank-events**（中等级别）：通过直接导航访问事件页面时，页面内容为空
+4. **events-widget-race-condition**（轻微级别）：事件相关的小部件加载存在间歇性问题
 
-## Configuration
+## 配置方法
 
-Edit `strykr-qa.yaml`:
+请编辑 `strykr-qa.yaml` 文件以配置测试参数：
 ```yaml
 baseUrl: https://app.strykr.ai
 browser:
@@ -99,24 +99,24 @@ browser:
   timeout: 30000
 ```
 
-## Dependencies
+## 依赖项
 
-- [web-qa-bot](https://github.com/NextFrontierBuilds/web-qa-bot) (peer dependency)
+- [web-qa-bot](https://github.com/NextFrontierBuilds/web-qa-bot)（依赖库）
 
-## Output
+## 测试输出
 
-Test results with:
-- Pass/Fail/Known-issue status
-- Screenshots at each step
-- Console error capture
-- Timing metrics
-- Markdown report
+测试结果包括：
+- 通过/失败（Pass/Fail）/已知问题（Known Issues）的状态
+- 每个测试步骤的截图
+- 控制台错误日志
+- 测试用时统计
+- 以 Markdown 格式生成的测试报告
 
-## Author
+## 开发者
 
 Next Frontier (@NextXFrontier)
 
-## Links
+## 链接
 
-- [GitHub](https://github.com/NextFrontierBuilds/strykr-qa-bot)
-- [Strykr](https://app.strykr.ai)
+- [GitHub 仓库](https://github.com/NextFrontierBuilds/strykr-qa-bot)
+- [Strykr 官网](https://app.strykr.ai)

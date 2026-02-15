@@ -1,19 +1,19 @@
 ---
 name: openclaw-starter-kit
-description: "Replace 100+ API keys with one. Instant access to LLMs, Twitter, YouTube, LinkedIn, Finance, Tavily & Scholar data. Enterprise stability for your local agent."
+description: "将100多个API密钥替换为一个即可。从而实现即时访问大语言模型（LLMs）、Twitter、YouTube、LinkedIn、金融数据以及Tavily和Scholar的数据。为您的本地代理提供企业级稳定性保障。"
 homepage: https://openclaw.ai
 metadata: {"openclaw":{"emoji":"🦞","requires":{"bins":["curl","python3"],"env":["AISA_API_KEY"]},"primaryEnv":"AISA_API_KEY"}}
 ---
 
-# OpenClaw Starter Kit 🦞
+# OpenClaw 入门套件 🦞
 
-**The definitive starting point for autonomous agents. Powered by AIsa.**
+**自主代理的完美起点。由 AIsa 提供支持。**
 
-One API key. All the data sources your agent needs.
+只需一个 API 密钥，即可获取您的代理所需的所有数据源。
 
-## 🔥 What Can You Do?
+## 🔥 您能做什么？
 
-### Morning Briefing (Scheduled)
+### 早晨简报（定时）
 ```
 "Send me a daily briefing at 8am with:
 - My portfolio performance (NVDA, TSLA, BTC)
@@ -21,55 +21,54 @@ One API key. All the data sources your agent needs.
 - Top news in my industry"
 ```
 
-### Competitor Intelligence
+### 竞争对手情报
 ```
 "Monitor @OpenAI - alert me on new tweets, news mentions, and paper releases"
 ```
 
-### Investment Research
+### 投资研究
 ```
 "Full analysis on NVDA: price trends, insider trades, analyst estimates, 
 SEC filings, and Twitter sentiment"
 ```
 
-### Startup Validation
+### 创业项目评估
 ```
 "Research the market for AI writing tools - find competitors, 
 Twitter discussions, and academic papers on the topic"
 ```
 
-### Crypto Whale Alerts
+### 加密货币大户预警
 ```
 "Track large BTC movements and correlate with Twitter activity"
 ```
 
-## AIsa vs bird
+## AIsa 与 bird 的对比
 
-| Feature | AIsa ⚡ | bird 🐦 |
+| 功能 | AIsa ⚡ | bird 🐦 |
 |---------|---------|---------|
-| Auth method | API Key (simple) | Browser cookies (complex) |
-| Read Twitter | ✅ | ✅ |
-| Post/Like/Retweet | ✅ (via login) | ✅ |
-| Web Search | ✅ | ❌ |
-| Scholar Search | ✅ | ❌ |
-| News/Financial | ✅ | ❌ |
-| LLM Routing | ✅ | ❌ |
-| Server-friendly | ✅ | ❌ |
-| Cost | Pay-per-use | Free |
+| 认证方式 | API 密钥（简单） | 浏览器 Cookie（复杂） |
+| 阅读 Twitter 内容 | ✅ | ✅ |
+| 发布/点赞/转发 | ✅（需登录） | ✅ |
+| 网页搜索 | ✅ | ❌ |
+| 学术资源搜索 | ✅ | ❌ |
+| 新闻/财经信息 | ✅ | ❌ |
+| LLM 路由功能 | ✅ | ❌ |
+| 服务器友好性 | ✅ | ❌ |
+| 成本 | 按使用量计费 | 免费 |
 
-**Use AIsa when**: Server environment, need search/scholar APIs, prefer simple API key setup.
-**Use bird when**: Local machine with browser, need free access, complex Twitter interactions.
+**适合使用 AIsa 的场景**：服务器环境、需要使用搜索/学术 API、偏好简单的 API 密钥设置。
+**适合使用 bird 的场景**：本地机器、需要免费访问、需要复杂的 Twitter 操作。
 
-## Quick Start
+## 快速入门
 
 ```bash
 export AISA_API_KEY="your-key"
 ```
 
-## Core Capabilities
+## 核心功能
 
-### Twitter/X Data (Read)
-
+### 阅读 Twitter/X 内容
 ```bash
 # Get user info
 curl "https://api.aisa.one/apis/v1/twitter/user/info?userName=elonmusk" \
@@ -84,9 +83,8 @@ curl "https://api.aisa.one/apis/v1/twitter/trends?woeid=1" \
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Twitter/X Post (Write)
-
-> ⚠️ **Warning**: Posting requires account login. Use responsibly to avoid rate limits or account suspension.
+### 发布 Twitter/X 内容
+> ⚠️ **警告**：发布内容需要登录账户。请谨慎使用，以避免超出使用频率限制或导致账户被封禁。
 
 ```bash
 # Step 1: Login first (async, check status after)
@@ -108,8 +106,7 @@ curl -X POST "https://api.aisa.one/apis/v1/twitter/like_tweet_v3" \
   -d '{"user_name":"myaccount","tweet_id":"1234567890"}'
 ```
 
-### Search (Web + Academic)
-
+### 搜索（网页 + 学术资源）
 ```bash
 # Web search
 curl -X POST "https://api.aisa.one/apis/v1/scholar/search/web?query=AI+frameworks&max_num_results=10" \
@@ -124,16 +121,14 @@ curl -X POST "https://api.aisa.one/apis/v1/scholar/search/smart?query=machine+le
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### Financial News
-
+### 财经新闻
 ```bash
 # Company news by ticker
 curl "https://api.aisa.one/apis/v1/financial/news?ticker=AAPL&limit=10" \
   -H "Authorization: Bearer $AISA_API_KEY"
 ```
 
-### LLM Routing (OpenAI Compatible)
-
+### LLM 路由功能（兼容 OpenAI）
 ```bash
 curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -H "Authorization: Bearer $AISA_API_KEY" \
@@ -141,10 +136,9 @@ curl -X POST "https://api.aisa.one/v1/chat/completions" \
   -d '{"model": "gpt-4", "messages": [{"role": "user", "content": "Hello"}]}'
 ```
 
-Supported models: GPT-4, Claude-3, Gemini, Qwen, Deepseek, Grok, and more.
+支持的模型：GPT-4、Claude-3、Gemini、Qwen、Deepseek、Grok 等。
 
-## Python Client
-
+## Python 客户端
 ```bash
 # Twitter Read
 python3 {baseDir}/scripts/aisa_client.py twitter user-info --username elonmusk
@@ -168,22 +162,22 @@ python3 {baseDir}/scripts/aisa_client.py news --ticker AAPL
 python3 {baseDir}/scripts/aisa_client.py llm complete --model gpt-4 --prompt "Explain quantum computing"
 ```
 
-## Pricing
+## 价格信息
 
-| API | Cost |
-|-----|------|
-| Twitter query | ~$0.0004 |
-| Twitter post/like | ~$0.001 |
-| Web search | ~$0.001 |
-| Scholar search | ~$0.002 |
-| News | ~$0.001 |
-| LLM | Token-based |
+| API 功能 | 成本 |
+|---------|------|
+| Twitter 查询 | 约 0.0004 美元 |
+| Twitter 发布/点赞 | 约 0.001 美元 |
+| 网页搜索 | 约 0.001 美元 |
+| 学术资源搜索 | 约 0.002 美元 |
+| 新闻内容 | 约 0.001 美元 |
+| LLM 服务 | 基于令牌计费 |
 
-Every response includes `usage.cost` and `usage.credits_remaining`.
+每个响应都会包含 `usage.cost` 和 `usage.credits_remaining` 信息。
 
-## Error Handling
+## 错误处理
 
-Errors return JSON with `error` field:
+错误会以 JSON 格式返回，并包含 `error` 字段：
 
 ```json
 {
@@ -192,19 +186,19 @@ Errors return JSON with `error` field:
 }
 ```
 
-Common error codes:
-- `401` - Invalid or missing API key
-- `402` - Insufficient credits
-- `429` - Rate limit exceeded
-- `500` - Server error
+常见错误代码：
+- `401` - API 密钥无效或缺失
+- `402` - 信用点数不足
+- `429` - 超出使用频率限制
+- `500` - 服务器错误
 
-## Get Started
+## 开始使用的方法
 
-1. Sign up at [aisa.one](https://aisa.one)
-2. Get your API key
-3. Add credits (pay-as-you-go)
-4. Set environment variable: `export AISA_API_KEY="your-key"`
+1. 在 [aisa.one](https://aisa.one) 注册账户
+2. 获取您的 API 密钥
+3. 购买信用点数（按需支付）
+4. 设置环境变量：`export AISA_API_KEY="your-key"`
 
-## Full API Reference
+## 完整 API 参考
 
-See [API Reference](https://github.com/AIsa-team/Openclaw-Starter-Kit/blob/main/skills/aisa/references/api-reference.md) for complete endpoint documentation.
+请参阅 [API 参考文档](https://github.com/AIsa-team/Openclaw-Starter-Kit/blob/main/skills/aisa/references/api-reference.md) 以获取完整的端点说明。

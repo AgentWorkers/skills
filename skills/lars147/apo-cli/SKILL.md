@@ -1,53 +1,53 @@
 ---
 name: apo-cli
-description: Search and order pharmacy products from apohealth.de via apo-cli. Use for medication search (by name or PZN), product details, category browsing, and cart management. Trigger when the user mentions Apotheke, pharmacy, Medikament, medication, PZN, apohealth, or health products.
+description: 通过 `apo-cli` 从 `apohealth.de` 网站搜索和排序药品。该工具支持按药品名称或 PZN（药品唯一编号）进行搜索、查看产品详情、浏览产品分类以及管理购物车。当用户提及 “Apotheke”（药店）、”pharmacy”（药房）、”Medikament”（药品）、”PZN”（药品唯一编号）、”apohealth” 或 “health products”（健康产品）等关键词时，相关功能会被触发。
 ---
 
-# apohealth.de / apo-cli Skill
+# apohealth.de / apo-cli 技能
 
-Search pharmacy products and manage cart on apohealth.de using `apo-cli` — a pure-Python CLI bundled in this skill at `{baseDir}/apo_cli.py`.
+使用 `apo-cli` 在 apohealth.de 上搜索药品并管理购物车。`apo-cli` 是一个纯 Python 的命令行工具（CLI），其源代码位于 `{baseDir}/apo_cli.py` 文件中。
 
-## Setup
+## 设置要求
 
-1. **Python 3.9+** required (no external dependencies)
-2. No login needed — apohealth.de works without authentication
+1. 需要 Python 3.9 及更高版本（无需额外依赖）。
+2. 无需登录——apohealth.de 支持无需身份验证的访问。
 
-## Critical Rules
+## 重要规则
 
-1. **NEVER complete a purchase** — Only build cart. User must checkout themselves.
-2. **Always provide the cart URL** when interacting via chat: `https://www.apohealth.de/cart/<variant_id>:<qty>,<variant_id>:<qty>,...` — the user cannot open a browser from the agent, so they need a clickable link.
-3. **Confirm before destructive actions** (cart clear).
-4. **Show prices** when adding to cart so the user stays informed.
-5. **PZN search** — Users may provide a PZN (Pharmazentralnummer) directly; pass it as the search query.
+1. **严禁完成购买**——仅允许构建购物车，用户必须自行完成结账操作。
+2. 通过聊天界面进行交互时，务必提供购物车链接：`https://www.apohealth.de/cart/<variant_id>:<qty>,<variant_id>:<qty>,...`。由于代理端无法打开浏览器，因此用户需要一个可点击的链接。
+3. 在执行任何可能删除数据的操作（如清空购物车）之前，请务必先确认。
+4. 添加商品到购物车时，务必显示商品价格，以便用户随时了解购物情况。
+5. 支持通过药品的 PZN（Pharmazentralnummer）进行搜索——用户可以直接提供 PZN 作为搜索条件。
 
-## CLI Usage
+## 命令行工具使用方法
 
 ```
 python3 {baseDir}/apo_cli.py <resource> <action> [options]
 ```
 
-## Core Workflows
+## 核心工作流程
 
-### Search Products
+### 搜索产品
 ```bash
 python3 {baseDir}/apo_cli.py search "Ibuprofen 400"       # by name
 python3 {baseDir}/apo_cli.py search "04114918"             # by PZN
 python3 {baseDir}/apo_cli.py search "Nasenspray" -n 20     # more results
 ```
 
-### Product Details
+### 查看产品详情
 ```bash
 python3 {baseDir}/apo_cli.py product <handle>   # prices, variants, description
 ```
 
-### Browse Categories
+### 浏览商品类别
 ```bash
 python3 {baseDir}/apo_cli.py categories                        # list all
 python3 {baseDir}/apo_cli.py list --category bestseller         # browse category
 python3 {baseDir}/apo_cli.py list --category schmerzen -n 10    # with limit
 ```
 
-### Cart
+### 查看购物车
 ```bash
 python3 {baseDir}/apo_cli.py cart                    # show cart
 python3 {baseDir}/apo_cli.py cart add <variant_id>   # add product
@@ -56,11 +56,11 @@ python3 {baseDir}/apo_cli.py cart clear              # clear cart ⚠️
 python3 {baseDir}/apo_cli.py cart checkout           # open browser for checkout
 ```
 
-### Status
+### 查看购物车状态
 ```bash
 python3 {baseDir}/apo_cli.py status                  # CLI status info
 ```
 
-## Full Command Reference
+## 完整命令参考
 
-For all commands, options, and flags see `{baseDir}/references/commands.md`.
+有关所有命令、选项和参数的详细信息，请参阅 `{baseDir}/references/commands.md`。

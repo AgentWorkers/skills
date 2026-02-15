@@ -1,29 +1,32 @@
 ---
 name: table-image
-description: Generate images from tables for better readability in messaging apps like Telegram. Use when displaying tabular data.
+description: **将表格转换为图像以提高在 Telegram 等消息应用中的可读性**  
+当需要在消息应用中展示表格数据时，可以使用此方法将表格转换为图像。
 metadata: {"clawdis":{"emoji":"📊"}}
 ---
 
-# Table Image Skill
+# 表格图像生成工具
 
-Render markdown tables as PNG images for messaging platforms that don't support markdown tables.
+该工具可将 Markdown 格式的表格渲染为 PNG 图像，适用于不支持 Markdown 表格的聊天平台。
 
-## Prerequisites
+## 前提条件
 
-Install tablesnap:
+请安装 `tablesnap`：
 
 ```bash
 go install github.com/joargp/tablesnap/cmd/tablesnap@latest
 ```
 
-Or build from source:
+或者从源代码编译安装：
 ```bash
 git clone https://github.com/joargp/tablesnap.git
 cd tablesnap
 go build -o tablesnap ./cmd/tablesnap
 ```
 
-## Usage
+## 使用方法
+
+执行以下命令后，输出文件将保存在 `/tmp/table.png`：
 
 ```bash
 echo "| Header 1 | Header 2 |
@@ -31,30 +34,30 @@ echo "| Header 1 | Header 2 |
 | Data 1   | Data 2   |" | tablesnap -o /tmp/table.png
 ```
 
-Then send with `MEDIA:/tmp/table.png`
+然后通过 `MEDIA:/tmp/table.png` 的方式将图片发送到聊天平台。
 
-## Options
+## 选项
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `-i` | stdin | Input file |
-| `-o` | stdout | Output file |
-| `--theme` | dark | Theme: `dark` or `light` |
-| `--font-size` | 14 | Font size in pixels |
-| `--padding` | 10 | Cell padding in pixels |
+| 选项          | 默认值       | 说明                                      |
+|---------------|------------|-----------------------------------------|
+| `-i`          | stdin       | 输入文件                                      |
+| `-o`          | stdout       | 输出文件                                      |
+| `--theme`       | dark        | 主题：`dark` 或 `light`                          |
+| `--font-size`     | 14          | 字体大小（像素）                                      |
+| `--padding`     | 10          | 单元格内边距（像素）                                      |
 
-## Emoji Support
+## 表情符号支持
 
-**Bundled** (work out of the box): ✅ ❌ 🔴 🟢 🟡 ⭕ ⚠️
+**内置支持**：✅ ❌ 🔴 🟢 🟡 ⭕ ⚠️
 
-**Full emoji** (one-time download):
+**完整表情符号集**（需单独下载）：
 ```bash
 tablesnap emojis install
 ```
 
-Unsupported emoji render as □ until full set is installed.
+未安装完整表情符号集时，相关表情符号会显示为 □。
 
-## Example Workflow
+## 示例工作流程
 
 ```bash
 # Create table image
@@ -67,13 +70,13 @@ echo "| Task | Status |
 MEDIA:/tmp/table.png
 ```
 
-## Notes
+## 注意事项
 
-- Dark theme by default (matches Telegram/Discord dark mode)
-- Auto-sizes to fit content
-- Output ~10-20KB (messaging-friendly)
-- Cross-platform (Inter font embedded)
+- 默认采用深色主题（与 Telegram/Discord 的深色模式一致）
+- 图表会自动调整大小以适应内容显示
+- 输出文件大小约为 10–20KB（适合聊天平台传输）
+- 支持跨平台使用（不同平台的字体可自动嵌入）
 
-## Links
+## 链接
 
-- [tablesnap repo](https://github.com/joargp/tablesnap)
+- [tablesnap 仓库](https://github.com/joargp/tablesnap)

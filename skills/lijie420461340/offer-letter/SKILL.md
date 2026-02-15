@@ -1,6 +1,6 @@
 ---
 name: Offer Letter Generator
-description: Create formal employment offer letters with compensation and terms
+description: 创建包含薪酬和条款的正式雇佣邀请函
 author: claude-office-skills
 version: "1.0"
 tags: [hr, recruitment, hiring, employment, legal]
@@ -8,38 +8,38 @@ models: [claude-sonnet-4, claude-opus-4]
 tools: [text_editor]
 ---
 
-# Offer Letter Generator
+# 招聘offer生成器
 
-Generate professional employment offer letters that clearly communicate job terms and compensation.
+该工具能够生成专业的就业offer信，清晰地说明工作条款和薪酬信息。
 
-## Overview
+## 概述
 
-This skill creates formal offer letters that:
-- Clearly state position and compensation
-- Outline key employment terms
-- Maintain legal compliance awareness
-- Create positive candidate experience
+此功能可生成正式的offer信，具备以下特点：
+- 明确说明职位名称和薪酬待遇
+- 列出主要的雇佣条款
+- 确保符合法律法规要求
+- 为候选人提供良好的体验
 
-## How to Use
+## 使用方法
 
-Provide the following information:
+请提供以下信息：
 
-### Required
-1. **Candidate Name**: Full legal name
-2. **Job Title**: Position being offered
-3. **Start Date**: Proposed start date
-4. **Compensation**: Base salary and frequency
-5. **Employment Type**: Full-time, Part-time, Contract
-6. **Reporting To**: Manager's name and title
+### 必填项
+1. **候选人姓名**：完整的法定姓名
+2. **职位名称**：提供的职位
+3. **入职日期**：建议的入职时间
+4. **薪酬**：基本工资及支付频率
+5. **雇佣类型**：全职、兼职或合同制
+6. **上级**：经理的姓名和职位
 
-### Optional
-7. **Equity/Bonus**: Stock options, signing bonus, annual bonus
-8. **Benefits**: Health, 401k, PTO summary
-9. **Work Location**: Office address or Remote
-10. **Response Deadline**: When offer expires
-11. **Contingencies**: Background check, references, etc.
+### 可选项
+7. **股权/奖金**：股票期权、签约奖金、年度奖金
+8. **福利**：健康保险、401(k)退休计划、带薪休假政策
+9. **工作地点**：办公室地址或远程办公
+10. **回复截止日期**：offer的有效期限
+11. **附加条件**：背景调查、推荐信等
 
-## Output Structure
+## 输出格式
 
 ```
 [Company Letterhead]
@@ -81,16 +81,16 @@ Print Name: ______________________
 Date: ___________________________
 ```
 
-## Template Sections
+## 模板结构
 
-### Opening
+### 开头部分
 ```
 We are pleased to extend this offer of employment for the position of 
 [Job Title] at [Company Name]. After our interview process, we believe 
 your skills and experience make you an excellent addition to our team.
 ```
 
-### Position Details
+### 职位详情
 ```
 Position: [Job Title]
 Department: [Department]
@@ -100,7 +100,7 @@ Work Location: [Location/Remote]
 Employment Type: [Full-time/Part-time/Contract]
 ```
 
-### Compensation
+### 薪酬信息
 ```
 Base Salary: $[Amount] per [year/month/hour]
 Payment Schedule: [Bi-weekly/Monthly]
@@ -111,7 +111,7 @@ Annual Bonus: Up to [X]% of base salary, based on performance
 Equity: [X] stock options, vesting over [Y] years with [Z]-year cliff
 ```
 
-### Benefits Summary
+### 福利概述
 ```
 You will be eligible for our comprehensive benefits package, including:
 - Medical, dental, and vision insurance
@@ -122,7 +122,7 @@ You will be eligible for our comprehensive benefits package, including:
 Full benefits details will be provided during onboarding.
 ```
 
-### Contingencies
+### 附加条件
 ```
 This offer is contingent upon:
 - Successful completion of a background check
@@ -130,7 +130,7 @@ This offer is contingent upon:
 - [Other contingencies]
 ```
 
-### Acceptance Terms
+### 接受条款
 ```
 Please indicate your acceptance by signing and returning this letter 
 by [Date]. This offer will expire if not accepted by this date.
@@ -140,9 +140,9 @@ If you have any questions, please contact [Name] at [Email/Phone].
 We look forward to welcoming you to the team!
 ```
 
-## Examples
+## 示例
 
-### Example Request
+### 示例请求
 ```
 Create an offer letter:
 - Candidate: Sarah Johnson
@@ -156,8 +156,7 @@ Create an offer letter:
 - Deadline: January 31, 2026
 ```
 
-### Example Output
-
+### 示例输出
 ```
 ACME CORPORATION
 123 Innovation Way, New York, NY 10001
@@ -225,32 +224,30 @@ Print Name: ______________________
 Date: ___________________________
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
-- Use clear, straightforward language
-- Include all material terms
-- Specify deadlines clearly
-- Provide contact for questions
-- Include signature block
+### 应遵循的原则
+- 使用清晰、直接的语言
+- 包括所有重要条款
+- 明确指定截止日期
+- 提供咨询联系方式
+- 包含签名栏
 
-### Don'ts
-- Don't make promises outside standard terms
-- Don't include discriminatory language
-- Don't forget contingencies
-- Don't omit important details
-- Don't use overly complex legal jargon
+### 应避免的行为
+- 不要做出超出标准条款的承诺
+- 不要使用歧视性语言
+- 不要遗漏任何重要细节
+- 不要使用过于复杂的法律术语
 
-### Legal Considerations
-- Offer letters are generally not contracts (add disclaimer if needed)
-- At-will employment should be stated clearly (US)
-- Equity terms should reference full agreement
-- Have legal/HR review before sending
+### 法律注意事项
+- Offer信通常不属于正式合同（必要时需添加免责声明）
+- 在美国，应明确说明雇佣类型为“at-will”（随时可解除的雇佣关系）
+- 股权相关条款应参照完整协议
+- 发送前需经过法律或人力资源部门的审核
 
-## Limitations
-
-- This is a template guide, not legal advice
-- Employment laws vary by jurisdiction
-- Company-specific policies must be incorporated
-- Complex equity arrangements need legal review
-- International offers have additional requirements
+## 限制事项
+- 本文档仅为模板指南，不构成法律建议
+- 各地区的雇佣法律可能有所不同
+- 必须纳入公司的具体政策
+- 复杂的股权安排需进行法律审查
+- 国际offer信件有额外的要求

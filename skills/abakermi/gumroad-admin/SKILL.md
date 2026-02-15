@@ -1,7 +1,7 @@
 ---
 name: gumroad-admin
 version: 1.0.0
-description: Gumroad Admin CLI. Check sales, products, and manage discounts.
+description: Gumroad Admin CLI：用于查看销售数据、管理产品以及调整折扣设置。
 author: abakermi
 metadata:
   openclaw:
@@ -10,29 +10,29 @@ metadata:
       env: ["GUMROAD_ACCESS_TOKEN"]
 ---
 
-# Gumroad Admin
+# Gumroad 管理
 
-Manage your Gumroad store from OpenClaw.
+通过 OpenClaw 管理您的 Gumroad 商店。
 
-## Setup
+## 设置
 
-1. Get your Access Token from Gumroad (Settings > Advanced > Applications).
-2. Set it: `export GUMROAD_ACCESS_TOKEN="your_token"`
+1. 从 Gumroad 获取访问令牌（设置 > 高级 > 应用程序）。
+2. 将其设置为：`export GUMROAD_ACCESS_TOKEN="your_token"`
 
-## Commands
+## 命令
 
-### Sales
+### 销售
 ```bash
 gumroad-admin sales --day today
 gumroad-admin sales --last 30
 ```
 
-### Products
+### 产品
 ```bash
 gumroad-admin products
 ```
 
-### Discounts
+### 折扣
 ```bash
 gumroad-admin discounts create --product <id> --code "TWITTER20" --amount 20 --type percent
 ```

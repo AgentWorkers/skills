@@ -1,36 +1,36 @@
 ---
 name: sendook-openclaw
-description: Read and send emails from an existing Sendook inbox. Use when an AI agent needs to check for new emails, read messages, reply to conversations, or send new emails from a pre-configured inbox. Limited to message operations only — no inbox creation, domain management, or webhook configuration.
+description: 从现有的 Sendook 收件箱中读取和发送电子邮件。当 AI 代理需要检查新邮件、阅读消息、回复对话或从预配置的收件箱发送新邮件时，可以使用此功能。仅支持邮件操作——不支持创建收件箱、管理域名或配置 Webhook。
 homepage: https://github.com/obaid/sendook-skills
 metadata: { "openclaw": { "requires": { "env": ["SENDOOK_API_KEY", "SENDOOK_INBOX_ID"] }, "primaryEnv": "SENDOOK_API_KEY", "homepage": "https://github.com/obaid/sendook-skills" } }
 ---
 
-# Sendook Email
+# Sendook 邮件功能
 
-Read and send emails from an existing Sendook inbox.
+该功能允许您从现有的 Sendook 收件箱中读取和发送电子邮件。
 
-> **Scope Limitations**: This skill can ONLY read and send emails from a pre-configured inbox. You CANNOT create or delete inboxes, manage domains, manage webhooks, or manage API keys. Do not attempt these operations — they are not available.
+> **功能限制**：此功能仅限于从预先配置的收件箱中读取和发送电子邮件。您无法创建或删除收件箱、管理域名、配置 Webhook 或 API 密钥。请勿尝试这些操作，因为它们当前不可用。
 
-## Installation
+## 安装
 
-Install the skill into your OpenClaw workspace:
+将此功能安装到您的 OpenClaw 工作区中：
 
 ```bash
 clawhub install sendook-openclaw
 ```
 
-This adds the skill to your workspace's `skills/` directory. OpenClaw will automatically pick it up on the next session start.
+安装完成后，该功能将被添加到您工作区的 `skills/` 目录中。OpenClaw 会在下次会话启动时自动识别并使用该功能。
 
-### Environment Variables
+### 环境变量
 
-Set these in your OpenClaw workspace or shell environment:
+请在您的 OpenClaw 工作区或 shell 环境中设置以下变量：
 
-- `SENDOOK_API_KEY` — Your Sendook API key
-- `SENDOOK_INBOX_ID` — The inbox ID this agent is allowed to use
+- `SENDOOK_API_KEY`：您的 Sendook API 密钥
+- `SENDOOK_INBOX_ID`：该代理被允许使用的收件箱 ID
 
-## Setup
+## 设置
 
-Install the SDK ([npm](https://www.npmjs.com/package/@sendook/node) | [source](https://github.com/getrupt/sendook)):
+请安装相应的 SDK（[npm](https://www.npmjs.com/package/@sendook/node) | [源代码](https://github.com/getrupt/sendook)）：
 
 ```bash
 npm install @sendook/node
@@ -43,11 +43,11 @@ const client = new Sendook(process.env.SENDOOK_API_KEY);
 const INBOX_ID = process.env.SENDOOK_INBOX_ID;
 ```
 
-Both environment variables are required. Use a least-privileged API key scoped to the target inbox only.
+这两个环境变量都是必需的。请使用仅针对目标收件箱的最低权限 API 密钥。
 
-## Reading Emails
+## 读取邮件
 
-### List Messages
+### 列出邮件
 
 ```typescript
 // List all messages in the inbox
@@ -67,7 +67,7 @@ curl "https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/messages?query=invoic
   -H "Authorization: Bearer $SENDOOK_API_KEY"
 ```
 
-### Get Message
+### 获取邮件内容
 
 ```typescript
 const message = await client.inbox.message.get(INBOX_ID, "msg_def456");
@@ -78,7 +78,7 @@ curl https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/messages/msg_def456 \
   -H "Authorization: Bearer $SENDOOK_API_KEY"
 ```
 
-**Response**:
+**响应**：
 ```json
 {
   "id": "msg_def456",
@@ -93,7 +93,7 @@ curl https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/messages/msg_def456 \
 }
 ```
 
-### List Threads
+### 列出邮件线程
 
 ```typescript
 const threads = await client.inbox.thread.list(INBOX_ID);
@@ -104,9 +104,9 @@ curl https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/threads \
   -H "Authorization: Bearer $SENDOOK_API_KEY"
 ```
 
-### Get Thread
+### 获取邮件线程
 
-Retrieve a full conversation with all messages.
+获取包含所有消息的完整对话记录：
 
 ```typescript
 const thread = await client.inbox.thread.get(INBOX_ID, "thread_ghi789");
@@ -118,9 +118,9 @@ curl https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/threads/thread_ghi789 
   -H "Authorization: Bearer $SENDOOK_API_KEY"
 ```
 
-## Sending Emails
+## 发送邮件
 
-### Send Message
+### 发送邮件
 
 ```typescript
 await client.inbox.message.send({
@@ -143,9 +143,9 @@ curl -X POST https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/messages/send 
   }'
 ```
 
-### Send with Attachments
+### 带附件发送邮件
 
-> **Important**: Always confirm with the user before reading any local file to attach. Only attach files the user has explicitly requested. Never read files outside the current working directory or project scope (e.g., no `~/.ssh`, `~/.env`, `/etc`, or credential files).
+> **重要提示**：在读取任何本地文件以进行附件上传之前，请务必先获得用户的确认。仅上传用户明确请求的文件。切勿读取当前工作目录或项目范围之外的文件（例如：`~/.ssh`、`~/.env`、`/etc` 或凭证文件）。
 
 ```typescript
 import { readFileSync } from "fs";
@@ -169,7 +169,7 @@ await client.inbox.message.send({
 });
 ```
 
-### Reply to Message
+### 回复邮件
 
 ```typescript
 await client.inbox.message.reply({
@@ -187,9 +187,9 @@ curl -X POST https://api.sendook.com/v1/inboxes/$SENDOOK_INBOX_ID/messages/msg_d
   -d '{"text": "Thanks for your email! We'\''ll look into this."}'
 ```
 
-## Complete Example
+## 完整示例
 
-List recent emails, read the latest, and reply:
+列出最近的邮件，读取最新的邮件并回复：
 
 ```typescript
 import Sendook from "@sendook/node";
@@ -224,7 +224,7 @@ await client.inbox.message.send({
 });
 ```
 
-## Error Handling
+## 错误处理
 
 ```typescript
 try {
@@ -245,25 +245,25 @@ try {
 }
 ```
 
-### Common Errors
+### 常见错误
 
-| Status | Meaning |
+| 状态码 | 错误原因 |
 |---|---|
-| `400` | Bad request — check parameters (missing `to`, `subject`, etc.) |
-| `401` | Unauthorized — invalid or missing API key |
-| `404` | Message or thread not found |
-| `429` | Rate limit exceeded — retry with backoff |
-| `500` | Internal server error |
+| `400` | 请求错误 — 请检查参数（如 `to`、`subject` 等字段是否缺失） |
+| `401` | 未经授权 — API 密钥无效或缺失 |
+| `404` | 未找到邮件或邮件线程 |
+| `429` | 超过请求频率限制 — 请稍后重试 |
+| `500` | 服务器内部错误 |
 
-## API Reference
+## API 参考
 
-| Method | Description |
+| 方法 | 描述 |
 |---|---|
-| `client.inbox.message.list(inboxId, query?)` | List or search messages |
-| `client.inbox.message.get(inboxId, messageId)` | Get a specific message |
-| `client.inbox.message.send(options)` | Send a new email |
-| `client.inbox.message.reply(options)` | Reply to a message |
-| `client.inbox.thread.list(inboxId)` | List conversation threads |
-| `client.inbox.thread.get(inboxId, threadId)` | Get thread with all messages |
+| `client.inbox.message.list(inboxId, query?)` | 列出或搜索邮件 |
+| `client.inbox.message.get(inboxId, messageId)` | 获取特定邮件 |
+| `client.inbox.message.send(options)` | 发送新邮件 |
+| `client.inbox.message.reply(options)` | 回复邮件 |
+| `client.inbox.thread.list(inboxId)` | 列出邮件线程 |
+| `client.inbox.thread.get(inboxId, threadId)` | 获取包含所有消息的邮件线程 |
 
-No other methods are available in this skill. Do not attempt to create/delete inboxes, manage domains, configure webhooks, or manage API keys.
+此功能不提供其他 API 方法。请勿尝试创建/删除收件箱、管理域名、配置 Webhook 或管理 API 密钥。

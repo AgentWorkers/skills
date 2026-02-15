@@ -1,56 +1,56 @@
 ---
 name: context-scope-tags
-description: "Context-scoping protocol using explicit tags to prevent context bleed in chat (especially Telegram). Use when the user asks to isolate a topic, scope the assistant to a specific project/topic, request a /ctx or /context_def cheat sheet, or mentions tags like [Isolated Context], [ISO], [SCOPE], [GLOBAL], [NOMEM], [REM]."
+description: "使用显式标签的上下文范围限定协议，以防止聊天中的信息泄露（尤其是在 Telegram 中）。当用户希望隔离某个话题、将助手的功能限定在特定项目/话题范围内、请求查看 `/ctx` 或 `/context_def` 信息表，或者提及 `[Isolated Context]`、`[ISO]`、`[SCOPE]`、`[GLOBAL]`、`[NOMEM]`、`[REM` 等标签时，应使用该协议。"
 ---
 
-# Context Scope Tags (Chat Protocol)
+# 上下文范围标签（聊天协议）
 
-## Tag parsing rules
+## 标签解析规则
 
-- Tags must appear **at the start** of the user's message (one per line or chained).
-- Prefer short tags, but accept long-form equivalents.
-- Tags **do not override** safety policies, tool policies, or access controls.
+- 标签必须**位于**用户消息的开头（每个标签占一行，或者可以连续多个标签）。
+- 建议使用简短的标签，但也可以接受长形式的标签。
+- 标签**不能**覆盖安全策略、工具策略或访问控制规则。
 
-## Supported tags
+## 支持的标签
 
-### Isolation / scope
+### 隔离/范围
 
-- `\[ISO: <topic>\]` or `\[Isolated Context: <topic>\]`
-  - Treat as a **fresh topic**.
-  - Do **not** pull in other conversation/project context unless the user explicitly re-provides it.
-  - Allowed implicit carry-over: universal safety rules + a few stable user prefs (timezone, “don’t overwrite configs”, etc.).
+- `\[ISO: <主题>\]` 或 `\[Isolated Context: <主题>\]`
+  - 视为**一个独立的主题**。
+  - 除非用户明确提供其他对话/项目的上下文，否则**不要**引入其他上下文。
+  - 允许隐式携带一些固定的用户偏好设置（如时区、“不要覆盖配置”等）。
 
-- `\[SCOPE: <topic>\]` or `\[Scoped Context: <topic>\]`
-  - Restrict reasoning to the named scope.
-  - If missing details inside the scope, ask clarifying questions.
+- `\[SCOPE: <主题>\]` 或 `\[Scoped Context: <主题>\]`
+  - 将推理限制在指定的范围内。
+  - 如果范围内缺少信息，请询问相关细节。
 
-- `\[GLOBAL\]` or `\[Global Context OK\]`
-  - Cross-topic reuse is allowed.
-  - When reusing prior context, **call out what you reused**.
+- `\[GLOBAL\]` 或 `\[Global Context OK\]`
+  - 允许跨主题使用相同的上下文。
+  - 在重新使用之前的上下文时，**需要明确说明使用了哪些内容**。
 
-### Memory intent
+### 内存处理
 
-- `\[NOMEM\]` or `\[No Memory\]`
-  - Do not store durable/long-term memories from this exchange.
+- `\[NOMEM\]` 或 `\[No Memory\]`
+  - 不要保存这次交流中的持久性/长期性记忆。
 
-- `\[REM\]` or `\[Remember\]`
-  - If the message contains a preference/decision/setting, store it as a short durable memory.
+- `\[REM\]` 或 `\[Remember\]`
+  - 如果消息中包含用户的偏好设置或决策，将其作为短期性的持久性记忆保存下来。
 
-## Default behavior (no tags)
+## 默认行为（未使用标签时）
 
-- Be conservative about cross-topic mixing.
-- If the user complains about context mixing, suggest using the tags above.
+- 在跨主题混合信息时要谨慎处理。
+- 如果用户对上下文混合表示不满，建议使用上述标签。
 
-## Command-style cheat sheet responses
+## 命令式快速参考响应
 
-When the user sends `/ctx` or `/context_def`, respond with a short, copy/pasteable cheat sheet:
+当用户发送 `/ctx` 或 `/context_def` 时，回复一个简短的、可复制的快速参考信息：
 
-- Tags + one-line meaning
-- 2 examples:
-  - `\[ISO: token-currency\]\[NOMEM\] write a manifesto`
-  - `\[SCOPE: openclaw-mem\] implement feature flag wiring`
+- 标签 + 一行说明
+- 两个示例：
+  - `\[ISO: token-currency\]\[NOMEM\] 编写一份声明`
+  - `\[SCOPE: openclaw-mem\] 实现功能标志的配置`
 
-## Telegram note (optional)
+## 注意事项（针对 Telegram）
 
-Telegram slash commands cannot contain dashes.
-Use `/context_def` (underscore), not `/context-def`.
+Telegram 的斜杠命令不能包含破折号。
+请使用 `/context_def`（下划线），而不是 `/context-def`。

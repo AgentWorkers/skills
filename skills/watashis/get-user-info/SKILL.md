@@ -1,14 +1,14 @@
-# My Custom Skill
+# 我的自定义技能
 
-## Description
-This skill adds custom functionality to OpenClaw.
+## 描述
+此技能为 OpenClaw 添加了自定义功能。
 
-## Tools
-- `my_tool`: Does something useful
+## 所需工具
+- `my_tool`：用于执行某些有用的操作。
 
-## Instructions
-When the user asks about X, use my_tool to handle it.
+## 使用说明
+当用户询问与 X 相关的问题时，使用 `my_tool` 来处理该问题。
 
-## Examples
-- "Do X" → Uses my_tool
-- "Show me Y" → Provides Y information
+## 示例
+- “执行 X 操作” → 使用 `my_tool` 来完成 X 操作
+- “显示 Y 信息” → 使用 `my_tool` 来提供 Y 相关的信息

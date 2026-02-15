@@ -1,56 +1,55 @@
 ---
 name: alicloud-platform-docs-api-review
-description: Automatically review latest Alibaba Cloud product docs and OpenAPI docs by product name, then output detailed prioritized improvement suggestions with evidence and scoring. Use when user asks to audit product documentation quality, API documentation quality, or wants actionable doc/API optimization recommendations.
+description: **自动审查最新的阿里云产品文档和OpenAPI文档**  
+根据产品名称，自动筛选并审查这些文档，然后针对每个文档提供详细的、按优先级排序的改进建议，同时附上相应的证据和评分结果。该功能适用于用户需要审核产品文档或API文档的质量，或希望获得可操作的文档/API优化建议的场景。
 ---
 
-# Alibaba Cloud Product Docs + API Docs Reviewer
+# 阿里云产品文档 + API文档审核工具
 
-Use this skill when the user gives a product name and asks for an end-to-end documentation/API quality review.
+当用户提供产品名称并请求进行端到端的文档/API质量审核时，请使用此工具。
 
-## What this skill does
+## 该工具的功能
 
-1) Resolve product from latest OpenAPI metadata.
-2) Fetch latest API docs for default version.
-3) Discover product/help-doc links from official product page.
-4) Produce a structured review report with:
-- score
-- evidence
-- prioritized suggestions (P0/P1/P2)
+1. 从最新的OpenAPI元数据中获取产品信息。
+2. 获取该产品的默认版本的API文档。
+3. 从官方产品页面中提取产品帮助文档的链接。
+4. 生成结构化的审核报告，内容包括：
+   - 评分
+   - 审核依据
+   - 按优先级排序的建议（P0/P1/P2）
 
-## Workflow
+## 工作流程
 
-Run the bundled script:
+运行捆绑的脚本：
 
 ```bash
 python skills/platform/docs/alicloud-platform-docs-api-review/scripts/review_product_docs_and_api.py --product "<产品名或产品代码>"
 ```
 
-Example:
+示例：
 
 ```bash
 python skills/platform/docs/alicloud-platform-docs-api-review/scripts/review_product_docs_and_api.py --product "ECS"
 ```
 
-## Output policy
+## 输出规范
 
-All generated artifacts must be written under:
+所有生成的文件必须保存在以下目录中：
 
 `output/alicloud-platform-docs-api-review/`
 
-For each run, the script creates:
-
+每次运行脚本后，会生成以下文件：
 - `review_evidence.json`
 - `review_report.md`
 
-## Reporting guidance
+## 报告指南
 
-When answering the user:
+在回复用户时，请按照以下步骤进行：
+1. 首先说明审核的产品及其版本。
+2. 总结评分以及最突出的问题（前3个）。
+3. 列出P0/P1/P2级别的建议及具体的处理措施。
+4. 提供报告中使用的所有来源链接。
 
-1) State resolved product + version first.
-2) Summarize the score and the top 3 issues.
-3) List P0/P1/P2 recommendations with concrete actions.
-4) Provide source links used in the report.
+## 参考资料
 
-## References
-
-- Review rubric: `references/review-rubric.md`
+- 审核标准：`references/review-rubric.md`

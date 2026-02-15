@@ -1,154 +1,141 @@
 ---
 name: competitive-analysis
-description: Perform a deep competitive analysis for a solopreneur business. Use when mapping competitors in detail, finding exploitable gaps, understanding competitor strategy, benchmarking your own offering, or deciding how to position against the field. Goes deeper than the broad landscape mapping in market-research — this is focused dissection of specific competitors. Trigger on "analyze my competitors", "competitive analysis", "who are my competitors", "competitor deep-dive", "how do I beat the competition", "competitive landscape", "benchmark against competitors".
+description: 为个人创业企业（solopreneur business）进行深入的竞争分析。这种分析可用于详细研究竞争对手、发现可利用的差距、了解竞争对手的策略、对比自身的产品或服务，或决定如何在市场中定位。它比市场调研中的初步竞争分析更为深入，专注于对特定竞争对手的详细剖析。相关指令包括：“analyze my competitors”（分析我的竞争对手）、“competitive analysis”（竞争分析）、“who are my competitors”（我的竞争对手是谁）、“competitor deep-dive”（深入研究竞争对手）、“how do I beat the competition”（如何击败竞争对手）、“competitive landscape”（竞争格局）以及“benchmark against competitors”（与竞争对手进行对比）。
 ---
 
-# Competitive Analysis
+# 竞争分析
 
-## Overview
-Shallow competitive research (checking a few websites) is not enough. This playbook gives you a systematic way to dissect competitors across strategy, product, pricing, marketing, operations, and reviews — then synthesise findings into exploitable gaps and a positioning wedge.
-
----
-
-## Step 1: Identify and Tier Your Competitors
-
-Not all competitors are equal. Categorize them before diving in.
-
-**Direct competitors:** Solve the exact same problem for the exact same customer. These are your primary benchmarks.
-
-**Indirect competitors:** Solve a related problem or serve the same customer with a different solution. These matter because your customer is choosing between ALL of them (including doing nothing).
-
-**Aspirational competitors:** Not in your niche yet, but could be. Larger or more established players who might expand into your space. Monitor these — they reveal what "winning at scale" looks like.
-
-**Identify 3-5 direct, 2-3 indirect, and 1-2 aspirational.** You don't need to deep-dive all of them — focus your deepest analysis on your top 3 direct competitors.
+## 概述
+仅仅进行浅层次的竞争研究（查看几个网站）是不够的。本指南为您提供了一种系统的方法，用于从战略、产品、定价、营销、运营和用户评价等多个方面全面分析竞争对手，然后将分析结果转化为可利用的竞争优势和独特的市场定位。
 
 ---
 
-## Step 2: Intelligence Gathering Framework
+## 第一步：识别并划分竞争对手
+并非所有竞争对手都同等重要。在深入分析之前，先对它们进行分类：
 
-For each competitor you're deep-diving, collect data across these six layers:
+**直接竞争对手**：为完全相同的客户群体解决完全相同的问题。这些是您的主要参考对象。
 
-### Layer 1: Strategy & Positioning
-- What is their stated mission or tagline?
-- Who do they say they're for? (Check homepage, about page, marketing copy)
-- What problem do they claim to solve?
-- What is their core differentiator? (The one thing they lean hardest on)
-- Who do they NOT serve? (The gaps in their positioning = your opportunity)
+**间接竞争对手**：解决相关问题或使用不同的解决方案来服务相同的客户群体。这些竞争对手也很重要，因为您的客户会在它们之间做出选择（甚至可能选择不使用任何产品）。
 
-### Layer 2: Product & Features
-- What does their product actually do? (Use their product page, feature list, docs)
-- What is their product's complexity level? (Simple tool vs. full platform)
-- What are their key technical strengths?
-- What's missing from their product that users would want? (See Layer 5 — Reviews)
-- What's their integration ecosystem like?
+**潜在竞争对手**：虽然目前尚未进入您的细分市场，但未来有可能。这些可能是规模更大或更成熟的竞争对手，他们可能会扩展到您的领域。密切关注这些竞争对手，因为它们能帮助您了解“如何实现大规模成功”。
 
-### Layer 3: Pricing & Business Model
-- What pricing tiers do they offer?
-- What's included at each tier?
-- Do they offer a free tier or free trial? What's the conversion funnel?
-- What's their pricing psychology? (Per-user, per-usage, flat-rate, freemium?)
-- Where are the pricing gaps? (Too expensive for small users? No mid-tier option?)
-
-### Layer 4: Marketing & Distribution
-- How do they acquire customers? (Check: SEO — use Ahrefs/Ubersuggest free; Paid ads — use Google Ads Transparency Center or Facebook Ad Library; Content — check their blog, YouTube, social)
-- What channels are they strongest on?
-- What channels are they ignoring? (Your opening)
-- What is their content strategy? (Blog topics reveal what they think customers care about)
-- Do they have a referral or partner program?
-
-### Layer 5: Customer Reviews (Critical Layer)
-This is where you find gold. Read 20+ reviews per competitor across:
-- G2, Capterra, Trustpilot
-- App Store / Google Play (if applicable)
-- Reddit threads mentioning the product
-- Twitter/X mentions
-
-**Categorize every complaint you find:**
-- Feature gaps (things users want but don't have)
-- UX/experience frustrations (things that are clunky or confusing)
-- Pricing complaints (things users think are overpriced or unfair)
-- Support complaints (things the company handles poorly)
-- Onboarding complaints (things that are hard to get started with)
-
-**Also note what users praise most** — these are the table stakes you must match.
-
-### Layer 6: Company Health & Trajectory
-- When was the company founded? How old is it?
-- Is it funded? How much? By whom? (Crunchbase)
-- Headcount trend on LinkedIn — growing, stable, or shrinking?
-- Recent news, blog posts, or product announcements — what direction are they moving?
-- Are they expanding into new markets or doubling down?
+**识别3-5个直接竞争对手、2-3个间接竞争对手以及1-2个潜在竞争对手**。您不需要对所有竞争对手都进行深入分析，只需将重点放在前三名的直接竞争对手上。
 
 ---
 
-## Step 3: Build a Comparison Matrix
+## 第二步：情报收集框架
+对于每个需要深入分析的竞争对手，从以下六个层面收集数据：
 
-After gathering data, create a side-by-side matrix. Columns = competitors (+ your planned offering). Rows = the dimensions that matter most to your target customer.
+### 第一层：战略与定位
+- 他们的使命宣言或标语是什么？
+- 他们声称的目标客户群体是谁？（查看首页、关于页面和营销内容）
+- 他们声称要解决什么问题？
+- 他们的核心竞争优势是什么？
+- 他们不服务的客户群体是谁？（这些未服务的客户群体就是您的机会所在）
 
-Pick 8-12 rows that are decision-relevant. Examples:
-- Price (monthly, annual)
-- Ease of setup (1-5 scale based on reviews)
-- Key feature A
-- Key feature B
-- Integration with [popular tool]
-- Free tier available?
-- Customer support quality
-- Speed / performance
-- Customization depth
+### 第二层：产品与功能
+- 他们的产品实际能做什么？（参考产品页面、功能列表和文档）
+- 产品的复杂程度如何？（是简单的工具还是完整的平台？）
+- 他们的主要技术优势是什么？
+- 他们的产品缺少哪些用户需要的功能？（参见第五层：用户评价）
+- 他们的产品集成生态系统是怎样的？
 
-**Fill in each cell with what you know.** Leave gaps where you genuinely don't know — gaps in your knowledge are research tasks, not guesses.
+### 第三层：定价与商业模式
+- 他们提供哪些定价等级？
+- 每个定价等级包含哪些内容？
+- 他们是否提供免费等级或免费试用？转化流程是怎样的？
+- 他们的定价策略是什么？（按用户计费、按使用量计费、固定费率、免费增值服务？）
+- 定价方面存在哪些问题？（对小用户来说太贵了吗？没有中等价位的选项吗？）
 
----
+### 第四层：营销与分销
+- 他们如何获取客户？（参考SEO数据：可以使用Ahrefs或Ubersuggest；付费广告：可以使用Google Ads Transparency Center或Facebook Ad Library；内容：查看他们的博客、YouTube视频和社交媒体内容）
+- 他们在哪些渠道表现最强？
+- 他们忽略了哪些渠道？（这些渠道可能是您的机会）
+- 他们的内容策略是什么？（博客主题可以反映他们认为客户关心的内容）
+- 他们是否有推荐或合作伙伴计划？
 
-## Step 4: Synthesize Into Exploitable Gaps
+### 第五层：客户评价（关键层面）
+这是获取宝贵信息的地方。每个竞争对手在以下平台上至少阅读20条评价：
+- G2、Capterra、Trustpilot
+- 应用商店/Google Play（如适用）
+- 提及该产品的Reddit帖子
+- Twitter/X上的提及
 
-From your matrix and review analysis, identify your top 3 exploitable gaps. A gap is exploitable when ALL of these are true:
+**对每条评价进行分类**：
+- 功能缺失（用户想要但未提供的功能）
+- 用户体验方面的问题（操作繁琐或令人困惑的地方）
+- 定价方面的问题（用户认为价格过高或不公平）
+- 客户服务方面的问题（公司处理不当）
+- 入门难度方面的问题
 
-1. **Multiple competitors share the weakness** — it's not just one player being sloppy; it's a structural blind spot in the market.
-2. **Customers actually complain about it** — you have review evidence that real people care.
-3. **You can solve it** — given your skills, budget, and timeline as a solopreneur.
-4. **It's not table stakes** — if everyone does it, you can't win by doing it too. The gap must be something competitors skip or do poorly.
+**同时注意用户最常表扬的地方**——这些正是您需要努力超越的地方。
 
-**For each exploitable gap, write:**
-- What the gap is
-- Evidence (specific complaints or data)
-- How you would solve it
-- Why competitors likely aren't solving it (too niche for them? Requires a different business model? Conflicts with their strategy?)
-
----
-
-## Step 5: Define Your Competitive Wedge
-
-Your "wedge" is the single, sharp angle you enter the market on. It's not "we're better at everything." It's "we are the only option that does [specific thing] for [specific person]."
-
-**Wedge formula:**
-```
-"The only [product category] that [does specific thing] for [specific customer type]."
-```
-
-Examples:
-- "The only project management tool built specifically for solo consultants managing client work."
-- "The only email marketing platform with AI-generated subject line A/B testing built into the free tier."
-
-**Test your wedge:**
-- Would a target customer immediately understand why this is different?
-- Is this wedge defensible for at least 6-12 months before a competitor copies it?
-- Can you build and deliver on this wedge solo?
-
----
-
-## Step 6: Ongoing Competitive Monitoring
-
-Competition doesn't stop once you launch. Set up a lightweight monitoring routine:
-
-- **Weekly (5 min):** Check Google Alerts for top 2-3 competitor names. Scan for new features, pricing changes, funding news.
-- **Monthly (30 min):** Re-read 5-10 new reviews on G2/Capterra for your competitors. Are new complaints emerging?
-- **Quarterly (2 hours):** Re-run the comparison matrix. Have gaps closed? Have new gaps opened? Has a new competitor appeared?
+### 第六层：公司状况与发展趋势
+- 公司成立的时间是什么时候？公司规模如何？
+- 公司是否有资金支持？资金来源是什么？（可以通过Crunchbase查询）
+- LinkedIn上的员工人数趋势：是在增长、稳定还是减少？
+- 最近的新闻、博客文章或产品公告：公司的发展方向是什么？
+- 他们是否正在扩展到新的市场，还是继续专注于现有市场？
 
 ---
 
-## Pitfalls
-- Copying a competitor's strategy instead of finding gaps. Copying loses on price and polish against incumbents.
-- Obsessing over one well-funded competitor and ignoring the small players who actually serve your niche.
-- Reading only positive reviews. Negative reviews are 10x more valuable for finding gaps.
-- Forgetting that "doing nothing" is always a competitor. Some customers will stick with their manual workaround rather than switch.
+## 第三步：构建对比矩阵
+收集完数据后，创建一个并排的对比矩阵。列代表竞争对手（以及您计划提供的产品/服务），行代表对目标客户最重要的维度。
+
+选择8-12个与决策相关的维度。例如：
+- 定价（每月费用、年费用）
+- 设置难度（根据用户评价打分1-5分）
+- 关键功能A
+- 关键功能B
+- 与[热门工具]的集成情况
+- 是否提供免费等级？
+- 客户服务质量
+- 速度/性能
+- 定制化程度
+
+**根据已知信息填写每个单元格**。对于确实不知道的内容，留空——知识上的空白需要通过进一步研究来填补。
+
+---
+
+## 第四步：总结可利用的竞争优势
+通过对比矩阵和用户评价分析，找出前三项可利用的竞争优势。一个竞争优势具备以下条件时才具有可利用性：
+1. **多个竞争对手都存在这一弱点**——这不是个别公司的疏忽，而是市场中的结构性问题。
+2. **客户确实对此有抱怨**——有用户评价作为证据，表明这个问题确实存在。
+3. **您有能力解决这个问题**——考虑到您的技能、预算和时间安排。
+4. **这不是所有竞争对手都会做的事情**——如果所有竞争对手都在做同样的事情，那么您也无法通过提供这个优势来脱颖而出。这个优势必须是竞争对手忽略或处理不佳的。
+
+**对于每个可利用的竞争优势，记录以下内容**：
+- 该竞争优势的具体内容
+- 证据（具体的用户投诉或数据）
+- 您将如何解决这个问题
+- 为什么竞争对手可能不会解决这个问题（是因为这个优势过于小众？需要不同的商业模式？与他们的战略冲突？）
+
+---
+
+## 第五步：定义您的竞争优势
+您的“竞争优势”是您进入市场的独特卖点。它不是“我们在所有方面都更优秀”，而是“我们是唯一能为[特定客户群体]提供[特定功能]的选项”。
+
+**竞争优势的表述示例**：
+- “唯一专为管理客户工作的独立顾问设计的项目管理工具。”
+- “唯一在免费等级中就内置了AI生成邮件主题行A/B测试功能的电子邮件营销平台。”
+
+**测试您的竞争优势**：
+- 目标客户能否立即理解这一优势的独特性？
+- 在竞争对手复制这一优势之前，这一优势能否保持至少6-12个月的竞争力？
+- 您能否独自开发并实现这一竞争优势？
+
+---
+
+## 第六步：持续监控竞争情况
+产品发布后，竞争并不会停止。建立一套简单的监控机制：
+- **每周（5分钟）**：查看Google Alerts，关注前2-3个竞争对手的动态，留意新功能、价格变动和融资信息。
+- **每月（30分钟）**：重新阅读G2/Capterra上关于这些竞争对手的5-10条新评价，是否有新的投诉出现？
+- **每季度（2小时）**：重新分析对比矩阵，检查竞争优势是否发生变化，是否有新的竞争者出现？
+
+---
+
+## 需避免的误区
+- 仅仅复制竞争对手的策略，而不去发现自身的竞争优势。复制他人的策略会导致在价格和品质上处于劣势。
+- 过度关注资金雄厚的竞争对手，而忽视那些真正服务于您细分市场的中小型企业。
+- 只阅读正面评价。实际上，负面评价对于发现竞争优势更为重要。
+- 忘记“不采取任何行动”也是一种竞争策略。有些客户会继续使用他们熟悉的手动方法，而不会更换产品。

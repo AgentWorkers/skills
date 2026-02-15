@@ -1,6 +1,6 @@
 ---
 name: defiYield
-description: Professional guidance for defiYield.
+description: defiYield的专业指导。
 version: 1.0.0
 tags: [finance,lifestyle,education]
 author: OpenWork
@@ -13,16 +13,16 @@ metadata:
 
 # udefiYield
 
-Training and guidance for defiYield.
+为 defiYield 提供的培训与指导。
 
-## Capabilities
+## 功能
 
-- Skill improvement techniques
-- Best practices
-- Tips and strategies
-- Practice exercises
+- 技能提升技巧
+- 最佳实践
+- 提示与策略
+- 练习题
 
-## Usage
-Help me with defiYield
-Tips for defiYield
-Best practices for defiYield
+## 使用方法
+- 帮助我学习 defiYield
+- defiYield 的使用技巧
+- defiYield 的最佳实践

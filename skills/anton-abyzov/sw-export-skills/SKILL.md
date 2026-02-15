@@ -1,39 +1,39 @@
 ---
 name: export-skills
-description: Export SpecWeave skills to Agent Skills open standard format (agentskills.io) for cross-platform portability. Use when converting skills to GitHub Copilot, VS Code, Gemini CLI, or Cursor format. Creates portable SKILL.md files compatible with any Agent Skills-supported tool.
+description: 将 SpecWeave 中的技能导出为 Agent Skills 的开放标准格式（agentskills.io），以实现跨平台移植。此操作适用于将技能转换为 GitHub Copilot、VS Code、Gemini CLI 或 Cursor 格式时。生成的 SKILL.md 文件可与任何支持 Agent Skills 的工具兼容。
 visibility: public
 allowed-tools: Read, Write, Glob, Bash
 ---
 
-# Export Skills to Agent Skills Standard
+# 将 SpecWeave 技能导出为 Agent Skills 标准格式
 
-## Overview
+## 概述
 
-Export SpecWeave skills to the [Agent Skills](https://agentskills.io) open standard format. This enables skill portability across:
+本工具用于将 SpecWeave 中定义的技能导出为 [Agent Skills](https://agentskills.io) 开放标准格式。这有助于实现技能在以下工具间的移植：
 
-- **GitHub Copilot** (VS Code integration)
+- **GitHub Copilot**（VS Code 插件）
 - **Gemini CLI**
 - **Cursor**
 - **Claude Code**
-- Other Agent Skills-compatible tools
+- 其他支持 Agent Skills 的工具
 
-## Usage
+## 使用方法
 
 ```
 /sw:export-skills [options]
 ```
 
-### Options
+### 参数说明
 
-| Option | Description |
+| 参数 | 说明 |
 |--------|-------------|
-| `--output <dir>` | Output directory (default: `.agent-skills/`) |
-| `--plugin <name>` | Export specific plugin (default: all) |
-| `--skill <name>` | Export specific skill (default: all) |
-| `--dry-run` | Preview without writing files |
-| `--validate` | Validate output against Agent Skills spec |
+| `--output <dir>` | 输出目录（默认值：`.agent-skills/`） |
+| `--plugin <name>` | 导出特定的插件（默认值：所有插件） |
+| `--skill <name>` | 导出特定的技能（默认值：所有技能） |
+| `--dry-run` | 预览导出结果（不生成文件） |
+| `--validate` | 根据 Agent Skills 标准验证导出内容 |
 
-## Output Structure
+## 输出结构
 
 ```
 .agent-skills/
@@ -47,56 +47,55 @@ Export SpecWeave skills to the [Agent Skills](https://agentskills.io) open stand
     └── SKILL.md
 ```
 
-## Field Mapping
+## 字段映射
 
-| SpecWeave Field | Agent Skills Field | Notes |
+| SpecWeave 字段 | Agent Skills 字段 | 备注 |
 |-----------------|-------------------|-------|
-| `name` | `name` | Direct mapping |
-| `description` | `description` | Direct mapping (max 1024 chars) |
-| `allowed-tools` | `allowed-tools` | Convert comma to space-delimited |
-| N/A | `license` | Add `Apache-2.0` by default |
-| N/A | `compatibility` | Add `"Designed for Claude Code"` |
-| N/A | `metadata.author` | Use plugin manifest author |
-| N/A | `metadata.source` | Add `"SpecWeave"` |
-| `visibility` | (not mapped) | Agent Skills uses file placement |
-| `invocableBy` | (not mapped) | Agent Skills discovery is implicit |
+| `name` | `name` | 直接映射 |
+| `description` | `description` | 直接映射（长度限制为 1024 个字符） |
+| `allowed-tools` | `allowed-tools` | 将逗号分隔的列表转换为空格分隔的列表 |
+| N/A | `license` | 默认添加 `Apache-2.0` 许可证信息 |
+| N/A | `compatibility` | 添加 `"Designed for Claude Code"` 说明 |
+| N/A | `metadata.author` | 使用插件 manifest 的作者信息 |
+| N/A | `metadata.source` | 添加 `"SpecWeave"` 说明 |
+| `visibility` | （未映射） | Agent Skills 通过文件路径来识别技能 |
+| `invocableBy` | （未映射） | Agent Skills 会自动识别技能的调用者 |
 
-## Execution Steps
+## 执行步骤
 
-### Step 1: Discover Skills
+### 第一步：识别所有技能
 
 ```bash
 # Find all SKILL.md files in plugins
 find plugins -name "SKILL.md" -type f
 ```
 
-### Step 2: Convert Each Skill
+### 第二步：转换每个技能
 
-For each SKILL.md:
+对于每个 `SKILL.md` 文件：
+1. 解析 YAML 标头信息
+2. 提取技能描述（如有需要，截断至 1024 个字符）
+3. 将 `allowed-tools` 中的逗号分隔列表转换为空格分隔的列表
+4. 生成符合 Agent Skills 格式的标头信息
+5. 保留 Markdown 正文内容
 
-1. Parse YAML frontmatter
-2. Extract description (truncate to 1024 chars if needed)
-3. Convert `allowed-tools` from comma to space-delimited
-4. Generate Agent Skills-compliant frontmatter
-5. Preserve markdown body content
+### 第三步：验证导出结果
 
-### Step 3: Validate Output
+每个导出的技能必须满足以下条件：
+- `name` 与输出目录的名称相同
+- `description` 的长度在 1 到 1024 个字符之间
+- `name` 仅包含字母（`a-z`）和连字符（`-`）
+- `name` 中不能包含 `--` 字符
+- `name` 不能以 `-` 开头或结尾
 
-Each exported skill must:
-- Have `name` matching directory name
-- Have `description` between 1-1024 characters
-- Have `name` using only `a-z` and `-`
-- Not have `--` in name
-- Not start/end with `-`
+### 第四步：生成输出文件
 
-### Step 4: Write Files
-
-Write to output directory with structure:
+将转换后的文件写入指定的输出目录，文件结构如下：
 ```
 {output}/{skill-name}/SKILL.md
 ```
 
-## Conversion Script
+## 转换脚本
 
 ```typescript
 interface SpecWeaveSkill {
@@ -134,9 +133,9 @@ function convertSkill(specweave: SpecWeaveSkill, pluginName: string): AgentSkill
 }
 ```
 
-## Example Output
+## 示例输出
 
-Input (`plugins/specweave/skills/architect/SKILL.md`):
+输入文件（`plugins/specweave/skills/architect/SKILL.md`）：
 ```yaml
 ---
 name: architect
@@ -147,7 +146,7 @@ model: opus
 ---
 ```
 
-Output (`.agent-skills/architect/SKILL.md`):
+输出文件（`.agent-skills/architect/SKILL.md`）：
 ```yaml
 ---
 name: architect
@@ -162,16 +161,14 @@ allowed-tools: Read Write Edit
 ---
 ```
 
-## Post-Export Actions
+## 导出后的操作
 
-After exporting:
+导出完成后：
+1. **提交到仓库**：此时可以从任意子目录中访问这些技能。
+2. **推送到 GitHub**：启用 GitHub Copilot 的技能识别功能。
+3. **发布**：可以考虑将这些技能发布到技能注册平台。
 
-1. **Commit to repo**: Skills can be discovered from any subdirectory
-2. **Push to GitHub**: Enable Copilot skill discovery
-3. **Publish**: Consider publishing to skill registries
-
-## Limitations
-
-- SpecWeave-specific fields (`context`, `model`, `invocableBy`) are not exported
-- Progressive disclosure phases (sub-files) are not included
-- Skill memory files are not exported (they're runtime state)
+## 限制事项
+- SpecWeave 特有的字段（`context`、`model`、`invocableBy`）不会被导出。
+- 分阶段的技能信息（子文件）不会被包含在内。
+- 技能的运行时状态数据（内存文件）不会被导出。

@@ -1,117 +1,112 @@
 ---
 name: amped-defi
 version: 1.0.0
-description: DeFi operations plugin for OpenClaw enabling cross-chain swaps, bridging, and money market operations via SODAX. Use when building trading bots, DeFi agents, or portfolio management tools that need cross-chain execution.
+description: OpenClaw的DeFi操作插件支持通过SODAX进行跨链交易、桥接以及货币市场操作。在构建需要跨链执行的交易机器人、DeFi代理或投资组合管理工具时，可使用该插件。
 ---
 
-# Amped DeFi Plugin
+# Amped DeFi 插件
 
-DeFi operations plugin for [OpenClaw](https://openclaw.ai) enabling cross-chain swaps, bridging, and money market operations via the [SODAX SDK](https://docs.sodax.com).
+这是一个专为 [OpenClaw](https://openclaw.ai) 设计的 DeFi 操作插件，通过 [SODAX SDK](https://docs.sodax.com) 支持跨链交易、资产桥接以及货币市场操作。
 
-## Features
+## 主要功能
 
-- 🔁 **Cross-Chain Swaps** — Execute token swaps across Ethereum, Arbitrum, Base, Optimism, Avalanche, BSC, Sonic
-- 🌉 **Token Bridging** — Bridge assets between spoke chains and the Sonic hub chain
-- 🏦 **Cross-Chain Money Market** — Supply on Chain A, borrow to Chain B (your collateral stays put!)
-- 📊 **Unified Portfolio View** — Cross-chain position aggregator with health metrics, risk analysis & recommendations
-- 📜 **Intent History** — Query complete swap/bridge history via SODAX API
-- 🔐 **Security First** — Policy engine with spend limits, slippage caps, allowlists
+- 🔁 **跨链交易** — 在 Ethereum、Arbitrum、Base、Optimism、Avalanche、BSC、Sonic 之间执行代币交换。
+- 🌉 **资产桥接** — 在子链（spoke chains）与 Sonic 主链之间进行资产转移。
+- 🏦 **跨链货币市场** — 在链 A 上供应代币，在链 B 上借款（你的抵押品保持不变！）
+- 📊 **统一投资组合视图** — 提供跨链头寸的汇总信息，包括健康状况指标、风险分析和建议。
+- 📜 **操作历史记录** — 通过 SODAX API 查询完整的交易/桥接历史记录。
+- 🔐 **安全优先** — 具有交易限额、滑点上限和白名单等安全机制。
 
-## Installation
+## 安装
 
 ```bash
 openclaw plugins install amped-defi
 ```
 
-Verify with:
+安装完成后，请使用以下命令进行验证：
 ```bash
 openclaw plugins list
 openclaw tools list | grep amped_oc
 ```
 
-## Wallet Setup
+## 钱包设置
 
-The plugin works **without a wallet** for read-only operations (quotes, balances, discovery). To execute transactions, install [evm-wallet-skill](https://github.com/amped-finance/evm-wallet-skill):
-
+该插件支持 **无钱包** 的只读操作（如查询报价、余额和链信息）。如需执行交易，请安装 [evm-wallet-skill](https://github.com/amped-finance/evm-wallet-skill)：
 ```bash
 git clone https://github.com/amped-finance/evm-wallet-skill.git ~/.openclaw/skills/evm-wallet-skill
 cd ~/.openclaw/skills/evm-wallet-skill && npm install
 node src/setup.js  # Generate a new wallet
 ```
 
-Or use [Bankr](https://bankr.bot) for managed key infrastructure:
+或者使用 [Bankr](https://bankr.bot) 来管理你的密钥：
+
 ```bash
 export BANKR_API_KEY=your-bankr-api-key
 ```
 
-## Available Tools (24 Total)
+## 可用工具（共 24 个）
 
-### Discovery
-| Tool | Description |
+### 信息查询工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `amped_supported_chains` | List all supported spoke chains |
-| `amped_supported_tokens` | Get supported tokens by module and chain |
-| `amped_cross_chain_positions` | ⭐ Unified portfolio view across ALL chains |
-| `amped_money_market_positions` | Single-chain position details |
-| `amped_money_market_reserves` | Market reserves, APYs, liquidity |
-| `amped_user_intents` | Query intent history via SODAX API |
-| `amped_portfolio_summary` | Wallet balances + MM positions combined |
+| `amped_supported_chains` | 列出所有支持的子链 |
+| `amped_supported_tokens` | 查看特定模块和链支持的代币 |
+| `amped_cross_chain_positions` | 提供所有链上的统一投资组合视图 |
+| `amped_money_market_positions` | 查看单链的头寸详情 |
+| `amped_money_market_reserves` | 查看市场储备、年化收益率（APY）和流动性 |
+| `amped_user_intents` | 通过 SODAX API 查询操作历史记录 |
+| `amped_portfolio_summary` | 结合钱包余额和货币市场头寸的汇总信息 |
 
-### Swap & Bridge
-| Tool | Description |
+### 交易与桥接工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `amped_swap_quote` | Get exact-in/exact-out swap quote |
-| `amped_swap_execute` | Execute swap with policy enforcement |
-| `amped_swap_status` | Check swap/intent status |
-| `amped_swap_cancel` | Cancel pending swap |
-| `amped_bridge_discover` | Discover bridge routes |
-| `amped_bridge_quote` | Check bridgeability and max amount |
-| `amped_bridge_execute` | Execute bridge operation |
+| `amped_swap_quote` | 获取准确的交易报价 |
+| `amped_swap_execute` | 执行交易并执行相关策略 |
+| `amped_swap_status` | 检查交易/桥接的状态 |
+| `amped_swap_cancel` | 取消待定的交易 |
+| `amped_bridge_discover` | 查找可用的桥接路径 |
+| `amped_bridge_quote` | 检查桥接的可行性及最大可转移金额 |
+| `amped_bridge_execute` | 执行资产桥接操作 |
 
-### Money Market
-| Tool | Description |
+### 货币市场工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `amped_mm_supply` | Supply tokens as collateral |
-| `amped_mm_withdraw` | Withdraw supplied tokens |
-| `amped_mm_borrow` | Borrow tokens (cross-chain capable!) |
-| `amped_mm_repay` | Repay borrowed tokens |
+| `amped_mm_supply` | 以代币作为抵押品进行供应 |
+| `amped_mm_withdraw` | 提取已供应的代币 |
+| `amped_mm_borrow` | 借入代币（支持跨链操作） |
+| `amped_mm_repay` | 偿还借入的代币 |
 
-### Wallet Management
-| Tool | Description |
+### 钱包管理工具
+| 工具 | 功能描述 |
 |------|-------------|
-| `amped_list_wallets` | List all configured wallets |
-| `amped_add_wallet` | Add a new wallet with nickname |
-| `amped_rename_wallet` | Rename existing wallet |
-| `amped_remove_wallet` | Remove wallet from config |
-| `amped_set_default_wallet` | Set default wallet |
-| `amped_wallet_address` | Get wallet address by nickname |
+| `amped_list_wallets` | 列出所有配置的钱包 |
+| `amped_add_wallet` | 添加新的钱包并设置昵称 |
+| `amped_rename_wallet` | 重命名现有钱包 |
+| `amped_remove_wallet` | 从配置中删除钱包 |
+| `amped_set_default_wallet` | 设置默认钱包 |
+| `amped_wallet_address` | 根据昵称获取钱包地址 |
 
 ---
 
-## ⚠️ Critical: Money Market Architecture
+## ⚠️ 重要提示：货币市场架构
 
-### Hub-Spoke Model
-SODAX uses a **hub-spoke architecture**:
-- **Hub chain**: Sonic (chain ID: 146) — where reserves live
-- **Spoke chains**: Base, Arbitrum, Ethereum, Optimism, etc. — user interaction points
+### 中心-子链模型
 
-**Rule**: Money market operations (supply, borrow, withdraw, repay) must be initiated from **spoke chains**, NOT the hub chain (Sonic).
+SODAX 采用 **中心-子链架构**：
+- **中心链**：Sonic（链 ID：146）—— 存储所有市场储备。
+- **子链**：Base、Arbitrum、Ethereum、Optimism 等—— 用户交互的节点。
 
-### Per-Chain Health Factors
+**规则**：货币市场操作（供应、借款、提取、偿还）必须从 **子链** 发起，**不能** 从中心链（Sonic）发起。
 
-🚨 **Each spoke chain maintains its OWN independent health factor.**
+### 各链的健康状况
 
-- Collateral on Base does **NOT** protect positions on Arbitrum
-- Each chain's positions are **isolated** for liquidation purposes
-- You MUST display health factor **per chain**, not aggregated
+🚨 **每个子链都维护自己的独立健康状况指标。**
+- 在 Base 上的抵押品 **不能** 保护在 Arbitrum 上的头寸。
+- 每个链的头寸在清算时是 **独立处理的**。
+- 必须 **按链** 显示健康状况指标，不能进行汇总。
 
-**Example of dangerous misinterpretation:**
-```
-❌ WRONG: "Combined health factor: 2.65" 
-✅ RIGHT: "Base HF: 4.11 ✅ | Arbitrum HF: 1.2 ⚠️ (at risk!)"
-```
-
-When using `amped_cross_chain_positions`, always check the `chainBreakdown` array:
+**示例说明：**
+在使用 `amped_cross_chain_positions` 时，请务必检查 `chainBreakdown` 数组：
 ```json
 {
   "chainBreakdown": [
@@ -121,17 +116,17 @@ When using `amped_cross_chain_positions`, always check the `chainBreakdown` arra
 }
 ```
 
-**Never show an aggregated health factor** — it could mislead users into thinking they're safe when one chain is at liquidation risk.
+**切勿** 显示汇总的健康状况指标—— 这可能会让用户误以为所有链都是安全的（即使其中某个链处于清算风险中）。
 
 ---
 
-## Example: Cross-Chain Swap
+## 示例：跨链交易
 
 ```
 "Swap 1000 USDC on Ethereum to USDT on Arbitrum"
 ```
 
-Or via tools:
+或者通过以下工具进行操作：
 ```typescript
 // Get quote
 const quote = await agent.call('amped_swap_quote', {
@@ -152,9 +147,9 @@ const result = await agent.call('amped_swap_execute', {
 });
 ```
 
-## Example: Cross-Chain Money Market
+## 示例：跨链货币市场
 
-Supply on Base, borrow on Arbitrum:
+在 Base 上供应代币，在 Arbitrum 上借款：
 
 ```typescript
 // Supply on Base
@@ -176,13 +171,12 @@ await agent.call('amped_mm_borrow', {
 });
 ```
 
-## Example: Portfolio Display
+## 投资组合显示规则
 
-When displaying portfolio data, always:
-
-1. **Show balances per chain** (not totaled)
-2. **Show health factor per chain** (not aggregated)
-3. **Flag at-risk positions** (HF < 1.5)
+在显示投资组合数据时，请务必：
+1. **按链** 显示余额。
+2. **按链** 显示健康状况指标。
+3. **标记风险较高的头寸**（健康状况指标 < 1.5）。
 
 ```typescript
 const positions = await agent.call('amped_cross_chain_positions', {
@@ -195,36 +189,36 @@ positions.chainBreakdown.forEach(chain => {
 });
 ```
 
-## Supported Chains
+## 支持的链
 
-Ethereum, Arbitrum, Base, Optimism, Avalanche, BSC, Polygon, Sonic (hub), LightLink, HyperEVM, Kaia
+Ethereum、Arbitrum、Base、Optimism、Avalanche、BSC、Polygon、Sonic（中心链）、LightLink、HyperEVM、Kaia
 
-## Resources
+## 资源链接
 
-- **npm:** https://www.npmjs.com/package/amped-defi
-- **GitHub:** https://github.com/amped-finance/amped-defi
-- **SODAX Docs:** https://docs.sodax.com
-- **Discord:** https://discord.gg/amped
+- **npm**：https://www.npmjs.com/package/amped-defi
+- **GitHub**：https://github.com/amped-finance/amped-defi
+- **SODAX 文档**：https://docs.sodax.com
+- **Discord**：https://discord.gg/amped
 
 ---
 
-## 🧠 Agent Gotchas
+## 🧠 注意事项
 
-### Bankr Wallet Limitations
+### Bankr 钱包的限制
 
-**Bankr wallets have restricted chain support:**
+**Bankr 钱包的链支持情况如下：**
 
-| Chain | As Source | As Destination |
+| 链 | 作为来源链 | 作为目标链 |
 |-------|-----------|----------------|
 | Ethereum | ✅ | ✅ |
 | Base | ✅ | ✅ |
 | Polygon | ✅ | ✅ |
-| Solana | ❌ | ✅ (receive only) |
+| Solana | ❌ | ✅（仅支持接收） |
 | Arbitrum | ❌ | ❌ |
 | Optimism | ❌ | ❌ |
-| Other chains | ❌ | ❌ |
+| 其他链 | ❌ | ❌ |
 
-**Example:** Cross-chain swap from Base to Solana works with Bankr:
+**示例**：可以使用 Bankr 在 Base 和 Solana 之间进行跨链交易：
 ```typescript
 await agent.call('amped_swap_execute', {
   walletId: 'bankr',
@@ -235,32 +229,32 @@ await agent.call('amped_swap_execute', {
 });
 ```
 
-**Will fail:** Trying to swap FROM Arbitrum using Bankr wallet.
+**注意**：不能使用 Bankr 在 Arbitrum 上发起跨链交易。
 
-### Intent-Based Settlement
+### 基于操作的结算方式
 
-Swaps and bridges use **intent-based execution**:
-- Transactions are NOT instant
-- Settlement typically takes **30-60 seconds**
-- Use `amped_swap_status` to check completion
-- The `sodaxScanUrl` in responses shows full intent lifecycle
+所有交易和桥接操作都是 **基于操作意图** 来执行的：
+- 交易不是即时完成的。
+- 结算通常需要 **30-60 秒**。
+- 使用 `amped_swap_status` 来确认交易是否完成。
+- 响应中的 `sodaxScanUrl` 可以查看完整的操作流程。
 
-**Don't assume completion** just because the tool returned success — that means the intent was submitted, not settled.
+**注意**：即使工具显示操作成功，也不代表交易已经完成—— 只表示操作已被提交，尚未实际结算。
 
-### Solana Address Format
+### Solana 地址格式
 
-Solana addresses use **base58 encoding**, not hex:
-- ✅ Correct: `8qguBqM4UHQNHgBm18NLPeonSSFEB3RWBdbih6FXhwZu`
-- ❌ Wrong: `0x8qguBqM4UHQ...`
+Solana 地址使用 **base58 编码**，而非十六进制格式：
+- ✅ 正确格式：`8qguBqM4UHQNHgBm18NLPeonSSFEB3RWBdbih6FXhwZu`
+- ❌ 错误格式：`0x8qguBqM4UHQ...`
 
-When specifying a Solana recipient for cross-chain swaps, use the base58 format.
+在指定 Solana 收件人地址时，请使用 base58 格式。
 
-### Slippage in Volatile Markets
+### 高波动市场中的滑点问题
 
-Default slippage (50 bps / 0.5%) may cause reverts during high volatility:
-- Normal conditions: 50 bps is fine
-- Volatile markets: Consider 100-200 bps
-- Very volatile: Up to 300 bps
+在波动较大的市场中，默认的滑点（50 bps / 0.5%）可能导致交易失败：
+- 在正常情况下，50 bps 是可接受的。
+- 在高波动市场中，建议使用 100-200 bps。
+- 在极端波动市场中，滑点可能高达 300 bps。
 
 ```typescript
 await agent.call('amped_swap_quote', {
@@ -269,22 +263,22 @@ await agent.call('amped_swap_quote', {
 });
 ```
 
-### Token Decimals
+### 代币的小数位数
 
-The plugin handles decimals automatically, but be aware:
-- **USDC, USDT**: 6 decimals
-- **Most ERC20s**: 18 decimals
-- **Native tokens (ETH, MATIC)**: 18 decimals
+该插件会自动处理代币的小数位数，但请注意：
+- **USDC、USDT**：6 位小数。
+- **大多数 ERC20 标准代币**：18 位小数。
+- **原生代币（如 ETH、MATIC）**：18 位小数。
 
-When displaying amounts, the plugin returns human-readable values (e.g., "100.5" not "100500000").
+在显示金额时，插件会以人类可读的形式呈现（例如：“100.5” 而不是 “100500000”）。
 
 ---
 
-## 🎨 Chain Display Emoji
+## 🎨 链路标识表情符号
 
-Use these emoji for consistent chain identification in portfolio displays:
+在投资组合界面中使用以下表情符号来区分不同的链：
 
-| Chain | Emoji | Hex Code |
+| 链路 | 表情符号 | 十六进制代码 |
 |-------|-------|----------|
 | LightLink | ⚡ | U+26A1 |
 | Base | 🟦 | U+1F7E6 |
@@ -298,7 +292,7 @@ Use these emoji for consistent chain identification in portfolio displays:
 | HyperEVM | 🌀 | U+1F300 |
 | Kaia | 🟢 | U+1F7E2 |
 
-**Usage Example:**
+**使用示例：**
 ```
 ⚡ LightLink    │ 0.002 ETH + 5.49 USDC       │   $9.78
 🟦 Base         │ 0.002 ETH + 0.39 USDC       │   $4.55

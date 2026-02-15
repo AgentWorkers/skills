@@ -1,24 +1,22 @@
 ---
 name: spool
-description: "Threads CLI - Read, post, reply, and search on Meta's Threads using OpenClaw browser tool. Use when the user wants to interact with Threads: posting, reading timeline, viewing profiles, replying to threads, or searching."
+description: "Threads CLI：使用 OpenClaw 浏览器工具在 Meta 的 Threads 中执行读取、发布、回复和搜索操作。适用于用户需要与 Threads 进行交互的场景，例如发布内容、查看时间线、浏览用户资料、回复帖子或进行搜索。"
 homepage: https://github.com/zizi-cat/spool
 metadata: {"clawdhub":{"emoji":"🧵"}}
 ---
 
-# spool
+# 使用 OpenClaw 浏览器工具操作 Threads (threads.net)
 
-OpenClaw browser 도구로 Threads (threads.net) 조작하기.
+## 先决条件
 
-## Prerequisites
+### 环境要求
+- 已启用浏览器工具的 OpenClaw
+- `openclaw` 浏览器配置文件
+- 已完成 Threads 账户登录
 
-### 환경 요구사항
-- OpenClaw with browser tool enabled
-- `openclaw` browser profile
-- Threads 계정 로그인 완료
+### 如果使用无图形界面的服务器（无 GUI）
 
-### Headless 서버인 경우 (GUI 없음)
-
-Xvfb 가상 디스플레이 필요:
+需要 Xvfb 虚拟显示器：
 
 ```bash
 # 1. Xvfb 설치 및 서비스 등록
@@ -43,7 +41,7 @@ systemctl --user daemon-reload
 systemctl --user restart openclaw-gateway
 ```
 
-### 로그인 (처음 한 번만)
+### 登录（仅首次需要）
 
 ```
 browser action=start profile=openclaw
@@ -53,68 +51,68 @@ browser action=open profile=openclaw targetUrl="https://www.threads.net/login"
 
 ---
 
-## 사용법
+## 使用方法
 
-### 1. 타임라인 읽기
+### 1. 阅读时间线
 
 ```
 browser action=open profile=openclaw targetUrl="https://www.threads.net"
 browser action=snapshot profile=openclaw compact=true
 ```
 
-결과에서 각 게시물의 작성자, 내용, 좋아요/댓글 수 확인 가능.
+在结果中可以查看每篇帖子的作者、内容以及点赞/评论数量。
 
-### 2. 포스팅 (전체 플로우)
+### 2. 发布帖子（完整流程）
 
-**Step 1: 홈으로 이동**
+**步骤 1：返回首页**
 ```
 browser action=open profile=openclaw targetUrl="https://www.threads.net"
 browser action=snapshot profile=openclaw compact=true
 ```
 
-**Step 2: "What's new?" 버튼 찾아서 클릭**
-snapshot에서 `"What's new?"` 또는 `"Empty text field"` 포함된 button의 ref 찾기
+**步骤 2：找到并点击“What’s new?”按钮**
+在快照中找到包含 “What’s new?” 或 “Empty text field” 的按钮的引用（ref）：
 ```
 browser action=act profile=openclaw request={"kind":"click","ref":"e14"}
 ```
-(ref는 snapshot마다 다름! 반드시 snapshot에서 확인)
+（引用因快照而异！请务必在快照中确认）
 
-**Step 3: 다이얼로그에서 텍스트 입력**
+**步骤 3：在对话框中输入文本**
 ```
 browser action=snapshot profile=openclaw compact=true
 ```
-`textbox` ref 찾아서:
+找到 `textbox` 的引用：
 ```
 browser action=act profile=openclaw request={"kind":"type","ref":"e14","text":"포스팅 내용"}
 ```
 
-**Step 4: Post 버튼 클릭**
+**步骤 4：点击 Post 按钮**
 ```
 browser action=act profile=openclaw request={"kind":"click","ref":"e22"}
 ```
-(Post 버튼 ref도 snapshot에서 확인)
+（Post 按钮的引用同样需要在快照中确认）
 
-**Step 5: 확인**
+**步骤 5：确认**
 ```
 browser action=snapshot profile=openclaw compact=true
 ```
-→ "Posted" 텍스트와 "View" 링크가 보이면 성공!
+当看到 “Posted” 文本和 “View” 链接时，表示操作成功！
 
-### 3. 프로필 보기
+### 3. 查看个人资料
 
 ```
 browser action=open profile=openclaw targetUrl="https://www.threads.net/@username"
 browser action=snapshot profile=openclaw compact=true
 ```
 
-### 4. 검색
+### 4. 搜索
 
 ```
 browser action=open profile=openclaw targetUrl="https://www.threads.net/search?q=검색어"
 browser action=snapshot profile=openclaw compact=true
 ```
 
-### 5. 답글 달기
+### 5. 回复帖子
 
 ```
 # 게시물 열기
@@ -129,21 +127,21 @@ browser action=act profile=openclaw request={"kind":"click","ref":"<reply-ref>"}
 
 ---
 
-## 핵심 포인트
+## 关键要点
 
-1. **snapshot 먼저!** - 모든 작업 전에 snapshot으로 현재 페이지 상태와 ref 확인
-2. **ref는 매번 달라짐** - snapshot 결과에서 항상 새로 찾기
-3. **compact=true** - 토큰 절약을 위해 항상 사용
-4. **targetId 유지** - 같은 탭에서 작업하려면 targetId 파라미터 사용
-5. **포스팅 전 확인** - 사용자에게 내용 확인받고 포스팅
+1. **先创建快照！** - 在进行任何操作之前，先使用快照记录当前页面状态和引用。
+2. **引用每次都会变化** - 请在快照结果中重新查找引用。
+3. **始终使用 “compact=true”** - 以节省令牌。
+4. **保持 `targetId` 不变** - 如果要在同一标签页中继续操作，请使用 `targetId` 参数。
+5. **发布前确认** - 确保用户已阅读内容后再进行发布。
 
 ---
 
-## 트러블슈팅
+## 故障排除
 
-| 문제 | 해결 |
+| 问题 | 解决方法 |
 |------|------|
-| browser 도구 안 됨 | Xvfb 실행 확인, DISPLAY=:99 설정 확인, Gateway 재시작 |
-| 로그인 안 됨 | `/login` 페이지로 이동 후 수동 로그인 요청 |
-| ref 못 찾음 | snapshot 다시 찍고 비슷한 텍스트/버튼 찾기 |
-| 포스팅 안 됨 | Post 버튼이 disabled인지 확인 (텍스트 입력 필요) |
+| 浏览器工具无法使用 | 确认 Xvfb 是否正在运行，检查 DISPLAY=:99 的设置，并重启 Gateway。|
+| 无法登录 | 转到 `/login` 页面后手动登录。|
+| 无法找到引用 | 重新创建快照并查找相似的文本或按钮。|
+| 无法发布帖子 | 检查 Post 按钮是否被禁用（可能需要输入文本）。|

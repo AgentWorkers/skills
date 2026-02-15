@@ -12,21 +12,21 @@ metadata: {"clawdbot":{"emoji":"🔎","requires":{"env":["TAVILY_API_KEY"]},"pri
 allowed-tools: [exec]
 ---
 
-# Tavily Search 🔎
+# Tavily 搜索 🔎
 
-AI-powered web search platform with 5 modes: Search, Extract, Crawl, Map, and Research.
+这是一个基于人工智能的网页搜索平台，提供五种搜索模式：搜索（Search）、提取内容（Extract）、爬取网站（Crawl）、生成站点地图（Map）以及深入研究（Research）。
 
-## Requirements
+## 必需条件
 
-- `TAVILY_API_KEY` environment variable
+- 环境变量 `TAVILY_API_KEY` 必须设置。
 
-## Configuration
+## 配置
 
-| Env Variable | Default | Description |
-|---|---|---|
-| `TAVILY_API_KEY` | — | **Required.** Tavily API key |
+| 环境变量 | 默认值 | 说明 |
+| --- | --- | --- |
+| `TAVILY_API_KEY` | 未设置 | **必需**。Tavily 的 API 密钥。 |
 
-Set in OpenClaw config:
+请在 OpenClaw 的配置文件中设置该密钥：
 ```json
 {
   "env": {
@@ -35,7 +35,7 @@ Set in OpenClaw config:
 }
 ```
 
-## Script Location
+## 脚本位置
 
 ```bash
 python3 skills/tavily/lib/tavily_search.py <command> "query" [options]
@@ -43,17 +43,17 @@ python3 skills/tavily/lib/tavily_search.py <command> "query" [options]
 
 ---
 
-## Commands
+## 命令
 
-### search — Web Search (Default)
+### search — 基本网页搜索（默认模式）
 
-General-purpose web search with optional LLM-synthesized answer.
+提供通用网页搜索功能，支持选择是否包含由大型语言模型（LLM）生成的答案。
 
 ```bash
 python3 lib/tavily_search.py search "query" [options]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 # Basic search
 python3 lib/tavily_search.py search "latest AI news"
@@ -80,7 +80,7 @@ python3 lib/tavily_search.py search "solar energy" --raw --images -n 10
 python3 lib/tavily_search.py search "bitcoin price" --json
 ```
 
-**Output format (text):**
+**输出格式（文本）：**
 ```
 Answer: <LLM-synthesized answer if --answer>
 
@@ -96,15 +96,15 @@ Results:
 
 ---
 
-### news — News Search
+### news — 新闻搜索
 
-Search optimized for news articles. Sets `topic=news`.
+专为新闻文章优化的高效搜索模式。需设置 `topic=news`。
 
 ```bash
 python3 lib/tavily_search.py news "query" [options]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 python3 lib/tavily_search.py news "AI regulation"
 python3 lib/tavily_search.py news "Israel tech" --time day --answer
@@ -113,15 +113,15 @@ python3 lib/tavily_search.py news "stock market" --time week -n 10
 
 ---
 
-### finance — Finance Search
+### finance — 金融搜索
 
-Search optimized for financial data and news. Sets `topic=finance`.
+专为金融数据和新闻内容优化的高效搜索模式。需设置 `topic=finance`。
 
 ```bash
 python3 lib/tavily_search.py finance "query" [options]
 ```
 
-**Examples:**
+**示例：**
 ```bash
 python3 lib/tavily_search.py finance "NVIDIA stock analysis"
 python3 lib/tavily_search.py finance "cryptocurrency market trends" --time month
@@ -130,21 +130,17 @@ python3 lib/tavily_search.py finance "S&P 500 forecast 2026" --answer
 
 ---
 
-### extract — Extract Content from URLs
+### extract — 从 URL 中提取内容
 
-Extract readable content from one or more URLs.
+从一个或多个 URL 中提取可读内容。
 
-```bash
-python3 lib/tavily_search.py extract URL [URL...] [options]
-```
+**参数：**
+- `urls`：需要提取内容的 URL（位置参数）
+- `--depth basic|advanced`：提取深度
+- `--format markdown|text`：输出格式（默认：markdown）
+- `--query "text"`：根据查询内容对提取结果进行重新排序
 
-**Parameters:**
-- `urls`: One or more URLs to extract (positional args)
-- `--depth basic|advanced`: Extraction depth
-- `--format markdown|text`: Output format (default: markdown)
-- `--query "text"`: Rerank extracted chunks by relevance to query
-
-**Examples:**
+**示例：**
 ```bash
 # Extract single URL
 python3 lib/tavily_search.py extract "https://example.com/article"
@@ -159,7 +155,7 @@ python3 lib/tavily_search.py extract "https://arxiv.org/paper" --depth advanced 
 python3 lib/tavily_search.py extract "https://example.com" --format text
 ```
 
-**Output format:**
+**输出格式：**
 ```
 URL: https://example.com/article
 ─────────────────────────────────
@@ -172,26 +168,22 @@ URL: https://another.com/page
 
 ---
 
-### crawl — Crawl a Website
+### crawl — 爬取网站
 
-Crawl a website starting from a root URL, following links.
+从指定根 URL 开始爬取整个网站，并跟随其中的链接。
 
-```bash
-python3 lib/tavily_search.py crawl URL [options]
-```
+**参数：**
+- `url`：开始爬取的根 URL
+- `--depth basic|advanced`：爬取深度
+- `--max-depth N`：最大链接深度（默认：2）
+- `--max-breadth N`：每层的最大页面数（默认：10）
+- `--limit N`：总页面数上限（默认：10）
+- `--instructions "text"`：爬取时的自然语言指令
+- `--select-paths p1,p2`：仅爬取指定的路径模式
+- `--exclude-paths p1,p2`：跳过指定的路径模式
+- `--format markdown|text`：输出格式
 
-**Parameters:**
-- `url`: Root URL to start crawling
-- `--depth basic|advanced`: Crawl depth
-- `--max-depth N`: Maximum link depth to follow (default: 2)
-- `--max-breadth N`: Maximum pages per depth level (default: 10)
-- `--limit N`: Maximum total pages (default: 10)
-- `--instructions "text"`: Natural language crawl instructions
-- `--select-paths p1,p2`: Only crawl these path patterns
-- `--exclude-paths p1,p2`: Skip these path patterns
-- `--format markdown|text`: Output format
-
-**Examples:**
+**示例：**
 ```bash
 # Basic crawl
 python3 lib/tavily_search.py crawl "https://docs.example.com"
@@ -203,7 +195,7 @@ python3 lib/tavily_search.py crawl "https://docs.python.org" --instructions "Fin
 python3 lib/tavily_search.py crawl "https://example.com" --select-paths "/blog,/docs" --max-depth 3
 ```
 
-**Output format:**
+**输出格式：**
 ```
 Crawled 5 pages from https://docs.example.com
 
@@ -218,21 +210,17 @@ Page 2: https://docs.example.com/guide
 
 ---
 
-### map — Sitemap Discovery
+### map — 生成站点地图
 
-Discover all URLs on a website (sitemap).
+发现网站上的所有 URL 并生成站点地图。
 
-```bash
-python3 lib/tavily_search.py map URL [options]
-```
+**参数：**
+- `url`：需要生成地图的根 URL
+- `--max-depth N`：爬取深度（默认：2）
+- `--max-breadth N`：每层的最大页面数（默认：20）
+- `--limit N`：生成的 URL 总数上限（默认：50）
 
-**Parameters:**
-- `url`: Root URL to map
-- `--max-depth N`: Depth to follow (default: 2)
-- `--max-breadth N`: Breadth per level (default: 20)
-- `--limit N`: Maximum URLs (default: 50)
-
-**Examples:**
+**示例：**
 ```bash
 # Map a site
 python3 lib/tavily_search.py map "https://example.com"
@@ -241,7 +229,7 @@ python3 lib/tavily_search.py map "https://example.com"
 python3 lib/tavily_search.py map "https://docs.python.org" --max-depth 3 --limit 100
 ```
 
-**Output format:**
+**输出格式：**
 ```
 Sitemap for https://example.com (42 URLs found):
 
@@ -253,23 +241,19 @@ Sitemap for https://example.com (42 URLs found):
 
 ---
 
-### research — Deep Research
+### research — 深度研究
 
-Comprehensive AI-powered research on a topic with citations.
+针对特定主题进行全面的 AI 研究，并提供引用信息。
 
-```bash
-python3 lib/tavily_search.py research "query" [options]
-```
+**参数：**
+- `query`：研究主题
+- `--model mini|pro|auto`：研究模型（默认：auto）
+  - `mini`：速度更快，成本更低
+  - `pro`：研究更全面
+  - `auto`：让 Tavily 自动选择模型
+- `--json`：输出格式为 JSON（支持结构化数据）
 
-**Parameters:**
-- `query`: Research question
-- `--model mini|pro|auto`: Research model (default: auto)
-  - `mini`: Faster, cheaper
-  - `pro`: More thorough
-  - `auto`: Let Tavily decide
-- `--json`: JSON output (supports structured output schema)
-
-**Examples:**
+**示例：**
 ```bash
 # Basic research
 python3 lib/tavily_search.py research "Impact of AI on healthcare in 2026"
@@ -281,7 +265,7 @@ python3 lib/tavily_search.py research "Comparison of quantum computing approache
 python3 lib/tavily_search.py research "Electric vehicle market analysis" --json
 ```
 
-**Output format:**
+**输出格式：**
 ```
 Research: Impact of AI on healthcare in 2026
 
@@ -295,56 +279,56 @@ Sources:
 
 ---
 
-## Options Reference
+## 选项参考
 
-| Option | Applies To | Description | Default |
-|---|---|---|---|
-| `--depth basic\|advanced` | search, news, finance, extract | Search/extraction depth | basic |
-| `--time day\|week\|month\|year` | search, news, finance | Time range filter | none |
-| `-n NUM` | search, news, finance | Max results (0-20) | 5 |
-| `--answer` | search, news, finance | Include LLM answer | off |
-| `--raw` | search, news, finance | Include raw page content | off |
-| `--images` | search, news, finance | Include image URLs | off |
-| `--include-domains d1,d2` | search, news, finance | Only these domains | none |
-| `--exclude-domains d1,d2` | search, news, finance | Exclude these domains | none |
-| `--country XX` | search, news, finance | Boost country results | none |
-| `--json` | all | Structured JSON output | off |
-| `--format markdown\|text` | extract, crawl | Content format | markdown |
-| `--query "text"` | extract | Relevance reranking query | none |
-| `--model mini\|pro\|auto` | research | Research model | auto |
-| `--max-depth N` | crawl, map | Max link depth | 2 |
-| `--max-breadth N` | crawl, map | Max pages per level | 10/20 |
-| `--limit N` | crawl, map | Max total pages/URLs | 10/50 |
-| `--instructions "text"` | crawl | Natural language instructions | none |
-| `--select-paths p1,p2` | crawl | Include path patterns | none |
-| `--exclude-paths p1,p2` | crawl | Exclude path patterns | none |
-
----
-
-## Error Handling
-
-- **Missing API key:** Clear error message with setup instructions.
-- **401 Unauthorized:** Invalid API key.
-- **429 Rate Limit:** Rate limit exceeded, try again later.
-- **Network errors:** Descriptive error with cause.
-- **No results:** Clean "No results found." message.
-- **Timeout:** 30-second timeout on all HTTP requests.
+| 选项 | 适用范围 | 说明 | 默认值 |
+| --- | --- | --- |
+| `--depth basic\|advanced` | search, news, extract | 搜索/提取的深度 | basic |
+| `--time day\|week\|month\|year` | search, news, finance | 时间范围过滤 | 无 |
+| `-n NUM` | search, news, finance | 最大显示结果数量（0-20） | 5 |
+| `--answer` | search, news, finance | 是否包含 LLM 生成的答案 | 否 |
+| `--raw` | search, news, finance | 是否包含原始页面内容 | 否 |
+| `--images` | search, news, finance | 是否包含图片链接 | 否 |
+| `--include-domains d1,d2` | search, news, finance | 仅包含这些域名内的内容 | 无 |
+| `--exclude-domains d1,d2` | search, news, finance | 排除这些域名内的内容 | 无 |
+| `--country XX` | search, news, finance | 加权显示指定国家的结果 | 无 |
+| `--json` | all | 输出格式为 JSON | 否 |
+| `--format markdown\|text` | extract, crawl | 内容输出格式 | markdown |
+| `--query "text"` | extract | 根据查询内容重新排序结果 | 否 |
+| `--model mini\|pro\|auto` | research | 研究模型 | auto |
+| `--max-depth N` | crawl, map | 最大爬取深度 | 2 |
+| `--max-breadth N` | crawl, map | 每层的最大页面数 | 10/20 |
+| `--limit N` | crawl, map | 总页面数/URL 数量上限 | 10/50 |
+| `--instructions "text"` | crawl | 爬取时的指令 | 无 |
+| `--select-paths p1,p2` | crawl | 仅爬取指定的路径模式 | 无 |
+| `--exclude-paths p1,p2` | crawl | 排除指定的路径模式 | 无 |
 
 ---
 
-## Credits & Pricing
+## 错误处理
 
-| API | Basic | Advanced |
-|---|---|---|
-| Search | 1 credit | 2 credits |
-| Extract | 1 credit/URL | 2 credits/URL |
-| Crawl | 1 credit/page | 2 credits/page |
-| Map | 1 credit | 1 credit |
-| Research | Varies by model | - |
+- **缺少 API 密钥**：显示包含设置说明的错误信息。
+- **401 Unauthorized**：API 密钥无效。
+- **429 Rate Limit**：达到请求速率限制，请稍后再试。
+- **网络错误**：显示详细的错误原因。
+- **未找到结果**：显示“未找到结果”的提示信息。
+- **超时**：所有 HTTP 请求的默认超时时间为 30 秒。
 
 ---
 
-## Install
+## 服务费用与定价
+
+| 功能 | 基础版 | 高级版 |
+| --- | --- | --- |
+| 搜索 | 1 个信用点 | 2 个信用点 |
+| 提取内容 | 每个 URL 1 个信用点 | 每个 URL 2 个信用点 |
+| 爬取网站 | 每页 1 个信用点 | 每页 2 个信用点 |
+| 生成站点地图 | 1 个信用点 | 1 个信用点 |
+| 深度研究 | 根据模型不同而异 | - |
+
+---
+
+## 安装说明
 
 ```bash
 bash skills/tavily/install.sh

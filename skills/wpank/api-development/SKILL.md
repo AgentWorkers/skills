@@ -1,188 +1,188 @@
 ---
 name: api-development
 model: reasoning
-description: Meta-skill that orchestrates the full API development lifecycle — from design through documentation — by coordinating specialized skills, agents, and commands into a seamless build workflow.
+description: 这是一项元技能（meta-skill），它负责协调整个API开发生命周期——从设计到文档编制——通过将各种专业技能、代理（agents）和命令（commands）整合到一个无缝的构建工作流程（build workflow）中来实现。
 ---
 
-# API Development
+# API开发
 
-Orchestrate the full API development lifecycle by coordinating design, implementation, testing, and documentation into a single workflow.
+通过协调设计、实现、测试和文档编制，来统筹整个API开发的生命周期。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building a new API from scratch
-- Adding endpoints to an existing API
-- Redesigning or refactoring an API
-- Planning API versioning and migration
-- Running a complete API development cycle (design → build → test → document → deploy)
-
----
-
-## Orchestration Flow
-
-Follow these steps in order. Each step routes to the appropriate skill or tool.
-
-### 1. Design the API
-
-Load the `api-design` skill to establish resource models, URL structure, HTTP method semantics, error formats, and pagination strategy.
-
-**Deliverables:** Resource list, endpoint map, request/response schemas, error format
-
-### 2. Generate OpenAPI Spec
-
-Produce a machine-readable OpenAPI 3.x specification from the design. Use the OpenAPI template in `api-design/assets/openapi-template.yaml` as a starting point.
-
-**Deliverables:** `openapi.yaml` with all endpoints, schemas, auth schemes, and examples
-
-### 3. Scaffold Endpoints
-
-Generate route files, request/response types, and validation schemas for each endpoint. Group routes by resource.
-
-**Deliverables:** Route files, type definitions, validation schemas per resource
-
-### 4. Implement Business Logic
-
-Write service-layer logic with input validation, authorization checks, database queries, and proper error propagation. Keep controllers thin — business logic lives in the service layer.
-
-**Deliverables:** Service modules, repository layer, middleware (auth, rate limiting, CORS)
-
-### 5. Test
-
-Write tests at three levels:
-- **Unit tests** — service logic, validation, error handling
-- **Integration tests** — endpoint behavior with real DB
-- **Contract tests** — response shapes match OpenAPI spec
-
-**Deliverables:** Test suite with coverage for happy paths, error cases, edge cases, and auth
-
-### 6. Document
-
-Generate human-readable API documentation with usage examples and SDK snippets. Ensure every endpoint has description, parameters, request/response examples, and error codes.
-
-**Deliverables:** API docs, changelog, authentication guide
-
-### 7. Version and Deploy
-
-Apply a versioning strategy, tag the release, update changelogs, and deploy through the pipeline. Follow the `api-versioning` skill for deprecation and migration guidance.
-
-**Deliverables:** Version tag, changelog entry, deployment confirmation
+- 从零开始构建新的API
+- 为现有API添加新的端点
+- 重新设计或重构API
+- 规划API的版本控制和迁移
+- 执行完整的API开发周期（设计 → 构建 → 测试 → 文档 → 部署）
 
 ---
 
-## API Design Decision Table
+## 组织流程
 
-Choose the right paradigm for your use case.
+请按以下步骤进行操作。每个步骤都会引导您使用相应的技能或工具。
 
-| Criteria | REST | GraphQL | gRPC |
+### 1. 设计API
+
+使用`api-design`技能来定义资源模型、URL结构、HTTP方法的语义、错误格式和分页策略。
+
+**交付成果：** 资源列表、端点映射、请求/响应模式、错误格式
+
+### 2. 生成OpenAPI规范
+
+根据设计生成机器可读的OpenAPI 3.x规范。以`api-design/assets/openapi-template.yaml`中的OpenAPI模板作为起点。
+
+**交付成果：** 包含所有端点、模式、认证方案和示例的`openapi.yaml`文件
+
+### 3. 构建端点框架
+
+为每个端点生成路由文件、请求/响应类型和验证模式。按资源对路由进行分组。
+
+**交付成果：** 路由文件、每种资源的类型定义和验证模式
+
+### 4. 实现业务逻辑
+
+编写服务层逻辑，包括输入验证、授权检查、数据库查询以及适当的错误处理。保持控制器代码简洁——业务逻辑应位于服务层中。
+
+**交付成果：** 服务模块、仓库层、中间件（认证、限流、CORS）
+
+### 5. 测试
+
+在三个层面编写测试：
+- **单元测试**：服务逻辑、验证、错误处理
+- **集成测试**：端点与真实数据库的交互
+- **契约测试**：响应格式是否符合OpenAPI规范
+
+**交付成果：** 包含正常路径、错误情况、边缘情况的测试套件
+
+### 6. 文档编制
+
+生成易于阅读的API文档，并附上使用示例和SDK代码片段。确保每个端点都有描述、参数、请求/响应示例以及错误代码。
+
+**交付成果：** API文档、变更日志、认证指南
+
+### 7. 版本控制和部署
+
+应用版本控制策略，为版本添加标签，更新变更日志，并通过管道进行部署。参考`api-versioning`技能以获取关于弃用和迁移的指导。
+
+**交付成果：** 版本标签、变更日志条目、部署确认
+
+---
+
+## API设计决策表
+
+根据您的使用场景选择合适的架构：
+
+| 标准 | REST | GraphQL | gRPC |
 |----------|------|---------|------|
-| **Best for** | CRUD-heavy public APIs | Complex relational data, client-driven queries | Internal microservices, high-throughput |
-| **Data fetching** | Fixed response shape per endpoint | Client specifies exact fields | Strongly typed protobuf messages |
-| **Over/under-fetching** | Common problem | Solved by design | Minimal — schema is explicit |
-| **Caching** | Native HTTP caching (ETags, Cache-Control) | Requires custom caching | No built-in HTTP caching |
-| **Real-time** | Polling or WebSockets | Subscriptions (built-in) | Bidirectional streaming |
-| **Tooling** | Mature — OpenAPI, Postman, curl | Growing — Apollo, Relay, GraphiQL | Mature — protoc, grpcurl, Buf |
-| **Learning curve** | Low | Medium | Medium-High |
-| **Versioning** | URL or header versioning | Schema evolution with `@deprecated` | Package versioning in `.proto` |
+| **最适合** | 以CRUD操作为主的公共API | 复杂的关系型数据、客户端驱动的查询 | 内部微服务、高吞吐量场景 |
+| **数据获取** | 每个端点的响应格式固定 | 客户端指定所需字段 | 强类型化的protobuf消息 |
+| **数据获取量控制** | 常见问题 | 通过设计解决 | 架构明确，数据获取量可控 |
+| **缓存** | 基于HTTP的缓存（ETags、Cache-Control） | 需要自定义缓存机制 | 无内置的HTTP缓存功能 |
+| **实时性** | 轮询或WebSocket | 支持订阅（内置） | 双向数据流 |
+| **工具支持** | 成熟的工具（OpenAPI、Postman、curl） | 发展中的工具（Apollo、Relay、GraphiQL） | 成熟的工具（protoc、grpcurl、Buf） |
+| **学习曲线** | 较低 | 中等 | 中等偏高 |
+| **版本控制** | 通过URL或请求头进行版本管理 | 通过`@deprecated`标记进行模式演进 | 通过`.proto`文件管理版本 |
 
-**Rule of thumb:** Default to REST for public APIs. Use GraphQL when clients need flexible queries across related data. Use gRPC for internal service-to-service communication.
+**经验法则：** 对于公共API，默认使用REST。当客户端需要对相关数据进行灵活查询时，使用GraphQL。对于内部服务间的通信，使用gRPC。
 
 ---
 
-## API Checklist
+## API检查清单
 
-Run through this checklist before marking any API work as complete.
+在标记API工作完成之前，请完成以下检查：
 
-### Authentication & Authorization
+### 认证与授权
 
-- [ ] Authentication mechanism chosen (JWT, OAuth2, API key)
-- [ ] Authorization rules enforced at every endpoint
-- [ ] Tokens validated and scoped correctly
-- [ ] Secrets stored securely (never in code or logs)
+- [ ] 选择了正确的认证机制（JWT、OAuth2、API密钥）
+- [ ] 每个端点都实施了授权规则
+- [ ] 令牌经过正确验证并限制了使用范围
+- [ ] 秘密信息存储安全（切勿存储在代码或日志中）
 
-### Rate Limiting
+### 限流
 
-- [ ] Rate limits configured per endpoint or consumer tier
-- [ ] `RateLimit-*` headers included in responses
-- [ ] `429 Too Many Requests` returned with `Retry-After` header
-- [ ] Rate limit strategy documented for consumers
+- [ ] 为每个端点或消费者层级配置了限流策略
+- [ ] 响应中包含了`RateLimit-*`头部
+- [ ] 当请求超过限流限制时返回`429 Too Many Requests`状态码，并附带`Retry-After`头部
+- [ ] 为消费者提供了限流策略的文档说明
 
-### Pagination
+### 分页
 
-- [ ] All collection endpoints paginated
-- [ ] Pagination style chosen (cursor-based or offset-based)
-- [ ] `page_size` bounded with a sensible maximum
-- [ ] Total count or `hasNextPage` indicator included
+- [ ] 所有集合端点都支持分页
+- [ ] 选择了分页方式（基于游标或偏移量）
+- [ ] `page_size`有合理的最大值限制
+- [ ] 提供了总记录数或`hasNextPage`指示器
 
-### Filtering & Sorting
+### 过滤与排序
 
-- [ ] Filter parameters validated and sanitized
-- [ ] Sort fields allow-listed (no arbitrary column sorting)
-- [ ] Default sort order defined and documented
+- [ ] 过滤参数经过验证和清理
+- [ ] 只允许预定义的字段进行排序
+- [ ] 定义了默认的排序顺序并进行了文档说明
 
-### Error Handling
+### 错误处理
 
-- [ ] Consistent error response schema across all endpoints
-- [ ] Correct HTTP status codes (4xx for client, 5xx for server)
-- [ ] Validation errors return field-level detail
-- [ ] Internal errors never leak stack traces or sensitive data
+- [ ] 所有端点的错误响应格式一致
+- [ ] 使用正确的HTTP状态码（4xx表示客户端错误，5xx表示服务器错误）
+- [ ] 验证错误时返回详细的字段信息
+- [ ] 内部错误不会泄露堆栈跟踪或敏感数据
 
-### Versioning
+### 版本控制
 
-- [ ] Versioning strategy selected and applied uniformly
-- [ ] Breaking vs non-breaking change policy documented
-- [ ] Deprecation timeline communicated via `Sunset` header
+- [ ] 选择了统一的版本控制策略
+- [ ] 明确了破坏性变更与非破坏性变更的处理方式
+- [ ] 通过`Sunset`头部通知了弃用时间
 
 ### CORS
 
-- [ ] Allowed origins configured (no wildcard `*` in production with credentials)
-- [ ] Allowed methods and headers explicitly listed
-- [ ] Preflight (`OPTIONS`) requests handled correctly
+- [ ] 配置了允许的来源（生产环境中禁止使用通配符`*`）
+- [ ] 明确列出了允许的方法和头部
+- [ ] 正确处理了预检（OPTIONS）请求
 
-### Documentation
+### 文档编制
 
-- [ ] OpenAPI / Swagger spec generated and up to date
-- [ ] Every endpoint has description, parameters, and example responses
-- [ ] Authentication requirements documented
-- [ ] Error codes and meanings listed
-- [ ] Changelog maintained for each version
+- [ ] 生成了最新的OpenAPI / Swagger规范
+- [ ] 每个端点都有描述、参数和示例响应
+- [ ] 文档中说明了认证要求
+- [ ] 列出了错误代码及其含义
+- [ ] 为每个版本维护了变更日志
 
-### Security
+### 安全性
 
-- [ ] Input validation on all fields
-- [ ] SQL injection prevention
-- [ ] HTTPS enforced
-- [ ] Sensitive data never in URLs or logs
-- [ ] CORS configured correctly
+- [ ] 所有字段都进行了输入验证
+- [ ] 防止SQL注入
+- [ ] 强制使用HTTPS
+- [ ] 敏感数据不会出现在URL或日志中
+- [ ] 正确配置了CORS
 
-### Monitoring
+### 监控
 
-- [ ] Structured logging with request IDs
-- [ ] Error tracking configured (Sentry, Datadog, etc.)
-- [ ] Performance metrics collected (latency, error rate)
-- [ ] Health check endpoint available (`/health`)
-- [ ] Alerts configured for error rate spikes
+- [ ] 使用请求ID进行结构化日志记录
+- [ ] 配置了错误跟踪机制（如Sentry、Datadog等）
+- [ ] 收集了性能指标（延迟、错误率）
+- [ ] 提供了健康检查端点（`/health`）
+- [ ] 配置了错误率异常的警报机制
 
 ---
 
-## Skill Routing Table
+## 技能对应表
 
-| Need | Skill | Purpose |
+| 需求 | 技能 | 用途 |
 |------|-------|---------|
-| API design principles | `api-design` | Resource modeling, HTTP semantics, pagination, error formats |
-| Versioning strategy | `api-versioning` | Version lifecycle, deprecation, migration patterns |
-| Authentication | `auth-patterns` | JWT, OAuth2, sessions, RBAC, MFA |
-| Error handling | `error-handling` | Error types, retry patterns, circuit breakers, HTTP errors |
-| Rate limiting | `rate-limiting` | Algorithms, HTTP headers, tiered limits, distributed limiting |
-| Caching | `caching` | Cache strategies, HTTP caching, invalidation, Redis patterns |
-| Database migrations | `database-migrations` | Schema evolution, zero-downtime patterns, rollback strategies |
+| API设计原则 | `api-design` | 资源建模、HTTP语义、分页、错误格式 |
+| 版本控制策略 | `api-versioning` | 版本生命周期管理、弃用策略、迁移方案 |
+| 认证 | `auth-patterns` | JWT、OAuth2、会话管理、RBAC、多因素认证 |
+| 错误处理 | `error-handling` | 错误类型、重试机制、断路器、HTTP错误处理 |
+| 限流 | `rate-limiting` | 限流算法、HTTP头部、分层限流策略 |
+| 缓存 | `caching` | 缓存策略、HTTP缓存、缓存失效处理、Redis相关配置 |
+| 数据库迁移 | `database-migrations` | 数据库模式演进、零停机时间方案、回滚策略 |
 
 ---
 
-## NEVER Do
+## 绝对不要做的事情
 
-1. **NEVER skip the design phase** — jumping straight to code produces inconsistent APIs that are expensive to fix
-2. **NEVER expose database schema directly** — API resources are not database tables; design around consumer use cases
-3. **NEVER ship without authentication** — every production endpoint must have an auth strategy
-4. **NEVER return inconsistent error formats** — every error response must follow the same schema
-5. **NEVER break a published API without a versioning plan** — breaking changes require a new version, migration guide, and deprecation timeline
-6. **NEVER deploy without tests and documentation** — untested APIs ship bugs, undocumented APIs frustrate developers
+1. **绝不要跳过设计阶段**——直接进入编码阶段会导致API不一致，后续修改成本高昂。
+2. **绝不要直接暴露数据库模式**——API资源不是数据库表；应根据客户端的使用场景进行设计。
+3. **绝不要在没有认证机制的情况下发布API**——所有生产环境中的端点都必须具备认证功能。
+4. **绝不要返回不一致的错误格式**——所有错误响应必须遵循统一的格式。
+5. **绝不要在没有版本控制计划的情况下发布API**——破坏性变更需要新的版本、迁移指南和弃用时间表。
+6. **绝不要在没有测试和文档的情况下部署API**——未经测试的API会包含漏洞，未文档化的API会让开发人员感到困惑。

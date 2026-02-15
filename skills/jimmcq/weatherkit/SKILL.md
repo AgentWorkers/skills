@@ -1,6 +1,6 @@
 ---
 name: weatherkit
-description: Access Apple WeatherKit REST API for detailed weather forecasts using JWT authentication.
+description: 使用 JWT 身份验证来访问 Apple WeatherKit REST API，以获取详细的天气预报。
 homepage: https://developer.apple.com/documentation/weatherkitrestapi/
 metadata:
   {
@@ -12,45 +12,45 @@ metadata:
   }
 ---
 
-# Apple WeatherKit Skill
+# Apple WeatherKit 技能
 
-## Why WeatherKit?
+## 为什么选择 WeatherKit？
 
-While simpler weather tools can provide quick forecasts, the `weatherkit` skill leverages Apple's robust WeatherKit REST API to deliver:
+虽然简单的天气工具可以提供快速的天气预报，但 `weatherkit` 技能利用了 Apple 强大的 WeatherKit REST API，能够提供以下优势：
 
--   **Highly Detailed Data:** Access to granular data points like UV Index, humidity, wind gusts, sunrise/sunset times, and more.
--   **Longer Forecast Horizons:** Provides forecasts for up to 10 days, exceeding many free command-line tools.
--   **Reliable Data Source:** Powered by Apple Weather, offering timely and hyperlocal information.
--   **Programmatic Access:** Ideal for integrating detailed weather data into automated workflows and decision-making processes.
+- **高度详细的数据**：可以获取紫外线指数、湿度、风速、日出/日落时间等详细数据。
+- **更长的预报时间范围**：提供长达 10 天的天气预报，远超许多免费命令行工具的预报时长。
+- **可靠的数据来源**：基于 Apple Weather 提供的数据，确保信息的及时性和本地化。
+- **编程访问**：非常适合将详细的天气数据集成到自动化工作流程和决策制定过程中。
 
-This skill allows you to fetch current weather and detailed weather forecasts using Apple's WeatherKit REST API. It authenticates using JSON Web Tokens (JWT) based on your Apple Developer Team ID, Key ID, Service ID, and a private key file.
+该技能允许您使用 Apple 的 WeatherKit REST API 获取当前天气和详细的天气预报。它通过 JSON Web Tokens (JWT) 进行身份验证，这些 Tokens 需要您的 Apple 开发者团队 ID、API 密钥 ID、服务 ID 以及私钥文件。
 
-## Configuration
+## 配置
 
-This skill requires the following environment variables to be set:
+使用该技能之前，需要设置以下环境变量：
 
--   `APPLE_TEAM_ID`: Your Apple Developer Team ID.
--   `APPLE_KEY_ID`: Your WeatherKit API Key ID.
--   `APPLE_WEATHERKIT_KEY_PATH`: The absolute path to your WeatherKit private key file (`.p8`).
--   `APPLE_SERVICE_ID`: The Bundle ID / Service ID associated with your WeatherKit access (e.g., `net.free-sky.weatherkit`).
+- `APPLE_TEAM_ID`：您的 Apple 开发者团队 ID。
+- `APPLE_KEY_ID`：您的 WeatherKit API 密钥 ID。
+- `APPLE_WEATHERKIT_KEY_PATH`：您的 WeatherKit 私钥文件（`.p8`）的绝对路径。
+- `APPLE_SERVICE_ID`：与您的 WeatherKit 访问权限关联的 Bundle ID/服务 ID（例如 `net.free-sky.weatherkit`）。
 
-## Actions
+## 功能
 
 ### `weatherkit.get_forecast`
 
-Retrieves a detailed weather forecast for a specified location and date range.
+用于获取指定地点和日期范围的详细天气预报。
 
-**Parameters:**
+**参数：**
 
--   `latitude`: (Required, float) The latitude of the location.
--   `longitude`: (Required, float) The longitude of the location.
--   `start_date`: (Optional, YYYY-MM-DD string) The start date for the forecast. Defaults to today.
--   `end_date`: (Optional, YYYY-MM-DD string) The end date for the forecast. Defaults to `start_date` + 5 days.
--   `timezone`: (Optional, string) The IANA timezone name (e.g., "America/Los_Angeles"). Defaults to "auto".
--   `data_sets`: (Optional, list of strings) Which data sets to return (e.g., ["forecastDaily", "forecastHourly"]). Defaults to ["forecastDaily", "currentWeather"].
--   `country_code`: (Optional, string) The ISO 3166-1 alpha-2 country code (e.g., "US", "GB"). Defaults to "US".
+- `latitude`：（必填，浮点数）地点的纬度。
+- `longitude`：（必填，浮点数）地点的经度。
+- `start_date`：（可选，YYYY-MM-DD 格式）预报的开始日期。默认为当前日期。
+- `end_date`：（可选，YYYY-MM-DD 格式）预报的结束日期。默认为 `start_date` 加上 5 天。
+- `timezone`：（可选，字符串）IANA 时区名称（例如 "America/Los_Angeles"）。默认为 "auto"。
+- `data_sets`：（可选，字符串列表）要返回的数据集（例如 ["forecastDaily", "forecastHourly"]）。默认为 ["forecastDaily", "currentWeather"]。
+- `country_code`：（可选，字符串）ISO 3166-1 alpha-2 国家代码（例如 "US", "GB"）。默认为 "US"。
 
-**Example Usage:**
+**示例用法：**
 
 ```tool_code
 exec {

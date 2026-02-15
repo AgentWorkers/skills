@@ -11,11 +11,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# AI Social Media Content
+# AI社交媒体内容生成
 
-Create social media content for all platforms via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，为所有平台生成社交媒体内容。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,20 +26,20 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Platform Formats
+## 平台格式
 
-| Platform | Aspect Ratio | Duration | Resolution |
+| 平台 | 长宽比 | 时长 | 分辨率 |
 |----------|--------------|----------|------------|
-| TikTok | 9:16 vertical | 15-60s | 1080x1920 |
-| Instagram Reels | 9:16 vertical | 15-90s | 1080x1920 |
-| Instagram Feed | 1:1 or 4:5 | - | 1080x1080 |
-| YouTube Shorts | 9:16 vertical | <60s | 1080x1920 |
-| YouTube Thumbnail | 16:9 | - | 1280x720 |
-| Twitter/X | 16:9 or 1:1 | <140s | 1920x1080 |
+| TikTok | 9:16（竖屏） | 15-60秒 | 1080x1920 |
+| Instagram Reels | 9:16（竖屏） | 15-90秒 | 1080x1920 |
+| Instagram Feed | 1:1 或 4:5 | - | 1080x1080 |
+| YouTube Shorts | 9:16（竖屏） | <60秒 | 1080x1920 |
+| YouTube 缩略图 | 16:9 | - | 1280x720 |
+| Twitter/X | 16:9 或 1:1 | <140秒 | 1920x1080 |
 
-## Content Workflows
+## 内容工作流程
 
-### TikTok / Reels Video
+### TikTok / Reels 视频
 
 ```bash
 # Generate trending-style content
@@ -48,7 +48,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Instagram Carousel Images
+### Instagram 旋转图（Carousel Images）
 
 ```bash
 # Generate cohesive carousel images
@@ -59,7 +59,7 @@ for i in 1 2 3 4 5; do
 done
 ```
 
-### YouTube Thumbnail
+### YouTube 缩略图
 
 ```bash
 # Eye-catching thumbnail
@@ -68,7 +68,7 @@ infsh app run falai/flux-dev --input '{
 }'
 ```
 
-### Twitter/X Visual Post
+### Twitter/X 视觉帖子（Visual Post）
 
 ```bash
 # Generate image for tweet
@@ -83,7 +83,7 @@ infsh app run twitter/post-tweet --input '{
 }'
 ```
 
-### Talking Head Content
+### 人物特写内容（Talking Head Content）
 
 ```bash
 # 1. Write script with Claude
@@ -104,9 +104,9 @@ infsh app run bytedance/omnihuman-1-5 --input '{
 }'
 ```
 
-## Content Type Templates
+## 内容类型模板
 
-### Trending/Viral Style
+### 热门/病毒式风格（Trending/Viral Style）
 
 ```bash
 infsh app run google/veo-3 --input '{
@@ -114,7 +114,7 @@ infsh app run google/veo-3 --input '{
 }'
 ```
 
-### Tutorial/How-To
+### 教程/操作指南（Tutorial/How-To）
 
 ```bash
 infsh app run google/veo-3-1 --input '{
@@ -122,7 +122,7 @@ infsh app run google/veo-3-1 --input '{
 }'
 ```
 
-### Product Showcase
+### 产品展示（Product Showcase）
 
 ```bash
 infsh app run bytedance/seedance-1-5-pro --input '{
@@ -130,7 +130,7 @@ infsh app run bytedance/seedance-1-5-pro --input '{
 }'
 ```
 
-### Lifestyle/Aesthetic
+### 生活方式/美学风格（Lifestyle/Aesthetic）
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -138,7 +138,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-### Behind the Scenes
+### 背景故事（Behind the Scenes）
 
 ```bash
 infsh app run google/veo-3-1-fast --input '{
@@ -146,7 +146,7 @@ infsh app run google/veo-3-1-fast --input '{
 }'
 ```
 
-## Caption & Hashtag Generation
+## 字幕与标签生成（Caption & Hashtag Generation）
 
 ```bash
 # Generate engaging caption
@@ -155,7 +155,7 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-### Hook Formulas
+### 吸引观众的内容公式（Hook Formulas）
 
 ```bash
 infsh app run openrouter/claude-haiku-45 --input '{
@@ -163,9 +163,9 @@ infsh app run openrouter/claude-haiku-45 --input '{
 }'
 ```
 
-## Multi-Platform Repurposing
+## 多平台内容复用（Multi-Platform Repurposing）
 
-### Long to Short Pipeline
+### 从长内容到短内容的转换流程（Long to Short Pipeline）
 
 ```bash
 # Take a concept and create multiple formats
@@ -187,7 +187,7 @@ infsh app run falai/flux-dev --input "{
 }"
 ```
 
-## Batch Content Creation
+## 批量内容创建（Batch Content Creation）
 
 ```bash
 # Generate a week of content
@@ -200,38 +200,38 @@ for topic in "${TOPICS[@]}"; do
 done
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Hook in first 3 seconds** - Start with most engaging moment
-2. **Vertical first** - 9:16 for TikTok, Reels, Shorts
-3. **Consistent aesthetic** - Match brand colors and style
-4. **Text-safe zones** - Leave space for platform UI elements
-5. **Trending audio** - Add popular sounds separately
-6. **Batch create** - Generate multiple pieces at once
+1. **在开头3秒内吸引观众** – 从最吸引人的部分开始。
+2. **优先使用竖屏格式** – TikTok、Reels、YouTube Shorts均采用9:16格式。
+3. **保持视觉风格一致** – 与品牌颜色和风格相匹配。
+4. **预留文本显示区域** – 为平台用户界面元素留出空间。
+5. **使用热门音频** – 单独添加流行音效。
+6. **批量生成内容** – 一次生成多个作品。
 
-## Platform-Specific Tips
+## 平台特定提示
 
 ### TikTok
-- Fast cuts, trending sounds
-- Text overlays important
-- Hook immediately
+- 快速切换镜头，使用热门音效。
+- 重要信息需通过文字叠加显示。
+- 立即吸引观众注意力。
 
 ### Instagram
-- High visual quality
-- Carousel for engagement
-- Aesthetic consistency
+- 保证高质量的视频视觉效果。
+- 使用旋转图来提高互动性。
+- 保持视觉风格的统一性。
 
 ### YouTube Shorts
-- Clear value proposition
-- Subscribe CTAs work
-- Repurpose longer content
+- 清晰传达产品价值。
+- 添加订阅按钮以促进用户互动。
+- 可将较长内容重新剪辑为短视频使用。
 
 ### Twitter/X
-- Single striking image
-- Controversial hooks work
-- Thread potential
+- 使用一张引人注目的图片。
+- 有争议性的内容更容易吸引观众。
+- 可通过多条帖子构建话题讨论。
 
-## Related Skills
+## 相关技能
 
 ```bash
 # Video generation
@@ -250,4 +250,4 @@ npx skills add inference-sh/agent-skills@text-to-speech
 npx skills add inference-sh/agent-skills@inference-sh
 ```
 
-Browse all apps: `infsh app list`
+浏览所有可用工具：`infsh app list`

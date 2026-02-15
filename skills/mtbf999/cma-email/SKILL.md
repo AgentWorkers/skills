@@ -1,6 +1,6 @@
 ---
 name: CMA-email
-description: Sends an email via Gmail when a message starts with "cma" or "cmap".
+description: 当消息以 "cma" 或 "cmap" 开头时，会通过 Gmail 发送一封电子邮件。
 metadata:
   clawdbot:
     emoji: "📧"
@@ -10,41 +10,41 @@ metadata:
 
 # CMA-email
 
-**SYSTEM INSTRUCTION:** If the user's message starts with "cma" or "cmap" (case-insensitive), you MUST use this skill. Do not reply with text conversation. Execute the email command immediately.
+**系统指令：** 如果用户的消息以 "cma" 或 "cmap" 开头（不区分大小写），则必须使用此技能。请勿以文本对话的形式回复，而是立即执行发送邮件的操作。
 
-## Usage
-- `cma [subject] | [body]` -> Sends to CMA recipient. Subject: "TODO: [subject]", Body: "[body]"
-- `cma [message]` -> Sends to CMA recipient. Subject: "TODO: [first 20 chars]...", Body: "[message]"
-- `cmap [subject] | [body]` -> Sends to CMAP recipient. Subject: "TODO: [subject]", Body: "[body]"
-- `cmap [message]` -> Sends to CMAP recipient. Subject: "TODO: [first 20 chars]...", Body: "[message]"
+## 使用方法
+- `cma [主题] | [正文]` -> 发送到 CMA 收件人。主题："TODO: [主题]"，正文："[正文]"
+- `cma [消息]` -> 发送到 CMA 收件人。主题："TODO: [前 20 个字符]..."，正文："[消息]"
+- `cmap [主题] | [正文]` -> 发送到 CMAP 收件人。主题："TODO: [主题]"，正文："[正文]"
+- `cmap [消息]` -> 发送到 CMAP 收件人。主题："TODO: [前 20 个字符]..."，正文："[消息]"
 
-## Instructions
-When the user's message starts with "cma" or "cmap" (case-insensitive):
+## 操作步骤：
+当用户的消息以 "cma" 或 "cmap" 开头（不区分大小写）时，请按照以下步骤操作：
 
-1.  **Identify Prefix and Recipient:**
-    - If the message starts with "cmap":
-        - **Recipient:** `duarte.caldas.oliveira@gmail.com`
-        - **Prefix Length:** 4
-    - Else if the message starts with "cma":
-        - **Recipient:** `duarte.oliveira@devoteam.com`
-        - **Prefix Length:** 3
+1. **识别前缀和收件人：**
+    - 如果消息以 "cmap" 开头：
+        - **收件人：** `duarte.caldas.oliveira@gmail.com`
+        - **前缀长度：** 4 个字符
+    - 否则，如果消息以 "cma" 开头：
+        - **收件人：** `duarte.oliveira@devoteam.com`
+        - **前缀长度：** 3 个字符
 
-2.  **Parse the Content:**
-    - Strip the prefix (first 3 or 4 characters) and trim leading whitespace.
-    - Check for the pipe character `|`.
+2. **解析内容：**
+    - 去掉前缀（前 3 或 4 个字符）并删除前导的空格。
+    - 检查是否存在竖线字符 `|`。
 
-3.  **Determine Subject and Body:**
-    - **If `|` is present:**
-        - Split the text at the first `|`.
-        - **Subject:** "TODO: " + (part before `|` trimmed).
-        - **Body:** (part after `|` trimmed).
-    - **If `|` is NOT present:**
-        - **Subject:** "TODO: " + (first 20 chars of the text trimmed) + "...".
-        - **Body:** The full text.
+3. **确定主题和正文：**
+    - 如果存在竖线字符 `|`：
+        - 在第一个 `|` 处将文本分割。
+        - **主题：** "TODO: " + （`|` 之前的内容）
+        - **正文：** （`|` 之后的内容）
+    - 如果不存在竖线字符 `|`：
+        - **主题：** "TODO: " + （文本的前 20 个字符）+ "..."
+        - **正文：** 整个文本
 
-4.  **Send Email:**
-    - Use the `gog` skill to send the email.
-    - **Command:** `gog gmail send --to "[Recipient]" --subject "[Subject]" --body "[Body]"`
+4. **发送邮件：**
+    - 使用 `gog` 技能发送邮件。
+    - 命令：`gog gmail send --to "[收件人]" --subject "[主题]" --body "[正文]`
 
-5.  **Feedback:**
-    - Confirm to the user that the email was sent to the specific recipient (or alias) with the generated subject.
+5. **反馈：**
+    - 向用户确认邮件已发送到指定的收件人（或别名），并附上生成的主题。

@@ -6,17 +6,17 @@ description: |
 package: azure-storage-blob
 ---
 
-# Azure Blob Storage SDK for Python
+# Python版Azure Blob Storage SDK
 
-Client library for Azure Blob Storage — object storage for unstructured data.
+这是一个用于Azure Blob Storage的客户端库，用于存储非结构化数据。
 
-## Installation
+## 安装
 
 ```bash
 pip install azure-storage-blob azure-identity
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 AZURE_STORAGE_ACCOUNT_NAME=<your-storage-account>
@@ -24,7 +24,7 @@ AZURE_STORAGE_ACCOUNT_NAME=<your-storage-account>
 AZURE_STORAGE_ACCOUNT_URL=https://<account>.blob.core.windows.net
 ```
 
-## Authentication
+## 认证
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -36,24 +36,24 @@ account_url = "https://<account>.blob.core.windows.net"
 blob_service_client = BlobServiceClient(account_url, credential=credential)
 ```
 
-## Client Hierarchy
+## 客户端层次结构
 
-| Client | Purpose | Get From |
+| 客户端 | 功能 | 获取方式 |
 |--------|---------|----------|
-| `BlobServiceClient` | Account-level operations | Direct instantiation |
-| `ContainerClient` | Container operations | `blob_service_client.get_container_client()` |
-| `BlobClient` | Single blob operations | `container_client.get_blob_client()` |
+| `BlobServiceClient` | 账户级操作 | 直接实例化 |
+| `ContainerClient` | 容器操作 | `blob_service_client.get_container_client()` |
+| `BlobClient` | 单个Blob操作 | `container_client.get_blob_client()` |
 
-## Core Workflow
+## 核心工作流程
 
-### Create Container
+### 创建容器
 
 ```python
 container_client = blob_service_client.get_container_client("mycontainer")
 container_client.create_container()
 ```
 
-### Upload Blob
+### 上传Blob
 
 ```python
 # From file path
@@ -74,7 +74,7 @@ stream = io.BytesIO(b"Stream content")
 blob_client.upload_blob(stream, overwrite=True)
 ```
 
-### Download Blob
+### 下载Blob
 
 ```python
 blob_client = blob_service_client.get_blob_client(
@@ -96,7 +96,7 @@ stream = io.BytesIO()
 num_bytes = blob_client.download_blob().readinto(stream)
 ```
 
-### List Blobs
+### 列出Blob
 
 ```python
 container_client = blob_service_client.get_container_client("mycontainer")
@@ -117,7 +117,7 @@ for item in container_client.walk_blobs(delimiter="/"):
         print(f"Blob: {item.name}")
 ```
 
-### Delete Blob
+### 删除Blob
 
 ```python
 blob_client.delete_blob()
@@ -126,7 +126,7 @@ blob_client.delete_blob()
 blob_client.delete_blob(delete_snapshots="include")
 ```
 
-## Performance Tuning
+## 性能调优
 
 ```python
 # Configure chunk sizes for large uploads/downloads
@@ -146,7 +146,7 @@ blob_client.upload_blob(data, max_concurrency=4)
 download_stream = blob_client.download_blob(max_concurrency=4)
 ```
 
-## SAS Tokens
+## SAS令牌
 
 ```python
 from datetime import datetime, timedelta, timezone
@@ -165,7 +165,7 @@ sas_token = generate_blob_sas(
 blob_url = f"https://<account>.blob.core.windows.net/mycontainer/sample.txt?{sas_token}"
 ```
 
-## Blob Properties and Metadata
+## Blob属性和元数据
 
 ```python
 # Get properties
@@ -184,7 +184,7 @@ blob_client.set_http_headers(
 )
 ```
 
-## Async Client
+## 异步客户端
 
 ```python
 from azure.identity.aio import DefaultAzureCredential
@@ -208,12 +208,12 @@ async def download_async():
         data = await stream.readall()
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use DefaultAzureCredential** instead of connection strings
-2. **Use context managers** for async clients
-3. **Set `overwrite=True`** explicitly when re-uploading
-4. **Use `max_concurrency`** for large file transfers
-5. **Prefer `readinto()`** over `readall()` for memory efficiency
-6. **Use `walk_blobs()`** for hierarchical listing
-7. **Set appropriate content types** for web-served blobs
+1. **使用`DefaultAzureCredential`代替连接字符串**
+2. **对异步客户端使用上下文管理器**
+3. **在重新上传时明确设置`overwrite=True`**
+4. **在传输大文件时使用`max_concurrency`**
+5. **为了提高内存效率，优先使用`readinto()`而不是`readall()`**
+6. **使用`walk_blobs()`进行分层列表操作**
+7. **为用于Web服务的Blob设置适当的内容类型**

@@ -1,6 +1,61 @@
 ---
 name: daily_devotion
-description: Creates personalized daily devotions with verse of the day, pastoral message, structured prayer, and time-aware greetings
+description: **功能描述：**  
+该工具能够生成个性化的每日灵修内容，包括当天的经文、牧师提供的信息、结构化的祷文，以及根据当前时间定制的问候语。  
+
+**具体功能：**  
+1. **每日经文**：随机选取并显示当天的圣经经文。  
+2. **牧师信息**：提供来自牧师的简短灵修指导或鼓励的话。  
+3. **结构化祷文**：包含引导性语句和具体的祷告内容，帮助使用者更好地进行祷告。  
+4. **时间问候**：根据用户所在地区的当前时间，自动显示合适的问候语（例如：“早上好”或“晚上好”）。  
+
+**使用场景：**  
+- 个人灵修：帮助用户每天定时进行灵修，保持与上帝的联系。  
+- 基督教社区：作为社区成员间的交流工具，分享灵修内容。  
+- 灵修活动：在团体祷告或灵修会议上使用，激发成员的灵性成长。  
+
+**技术实现：**  
+该工具基于前端技术（如HTML、CSS、JavaScript）开发，可能结合后端服务（如API）来获取经文数据和牧师信息。  
+
+**示例代码块：**  
+```markdown
+__CODE_BLOCK_0__  
+<!-- 示例代码：用于展示每日经文的HTML结构 -->
+<div class="bible-text">
+  <h2>当天的经文：</h2>
+  <p><span class="verse">“……”</span></p>
+</div>
+```
+
+```markdown
+__CODE_BLOCK_1__  
+<!-- 示例代码：用于显示牧师信息的HTML结构 -->
+<div class="pastoral-message">
+  <h3>牧师的话：</h3>
+  <p><span class="message">“……”</span></p>
+</div>
+```
+
+```markdown
+__CODE_BLOCK_2__  
+<!-- 示例代码：用于展示结构化祷文的HTML结构 -->
+<div class="prayer">
+  <h2>祷文引导：</h2>
+  <p><span class="guide">“……”</span>
+  <p><span class="prayer-text">“……”</span></p>
+</div>
+```
+
+```markdown
+__CODE_BLOCK_3__  
+<!-- 示例代码：用于显示时间问候的HTML结构 -->
+<div class="greeting">
+  <h3>时间问候：</h3>
+  <p><span class="time">“……”</span></p>
+</div>
+```
+
+请注意：上述代码块仅用于示例展示，实际实现可能需要根据具体需求进行调整。
 version: 1.1.0
 author: Eric Kariuki
 npm: daily-devotion-skill
@@ -10,47 +65,47 @@ requirements:
   - Node.js/TypeScript runtime for helper scripts
 ---
 
-# Daily Devotion Skill
+# 每日灵修技能
 
-This skill creates a complete, personalized daily devotion experience for the user. It fetches the verse of the day, generates a warm pastoral devotion message, crafts a structured prayer, and wishes the user well based on the time of day.
+该技能为用户打造一个完整、个性化的每日灵修体验。它会获取当天的经文，生成温馨的灵修信息，编写结构化的祷文，并根据当前时间向用户送上祝福。
 
-## Overview
+## 概述
 
-The Daily Devotion skill provides:
-1. **Verse of the Day** - Fetched from the ourmanna API
-2. **Devotional Message** - A warm, pastoral reflection on the verse
-3. **Structured Prayer** - A 6-part prayer following traditional Christian format
-4. **Time-Aware Greeting** - Personalized farewell based on time of day
+每日灵修技能提供以下内容：
+1. **当天的经文** – 从 ourmanna API 获取
+2. **灵修信息** – 对经文的温馨、牧者般的诠释
+3. **结构化的祷文** – 遵循传统基督教格式的六部分祷文
+4. **基于时间的问候语** – 根据当前时间提供个性化的告别语
 
 ---
 
-## Installation
+## 安装
 
-Install the helper scripts from npm:
+通过 npm 安装辅助脚本：
 
 ```bash
 npm install daily-devotion-skill
 ```
 
-Or use directly with npx:
+或直接使用 npx：
 
 ```bash
 npx daily-devotion-skill
 ```
 
-**Repository:** [github.com/enjuguna/Molthub-Daily-Devotion](https://github.com/enjuguna/Molthub-Daily-Devotion)
+**仓库地址：** [github.com/enjuguna/Molthub-Daily-Devotion](https://github.com/enjuguna/Molthub-Daily-Devotion)
 
 ---
 
-## Step 1: Fetch the Verse of the Day
+## 第一步：获取当天的经文
 
-Call the ourmanna API to get today's verse:
+调用 ourmanna API 获取当天的经文：
 
 ```
 GET https://beta.ourmanna.com/api/v1/get?format=json&order=daily
 ```
 
-**Response Structure:**
+**响应结构：**
 ```json
 {
   "verse": {
@@ -65,329 +120,315 @@ GET https://beta.ourmanna.com/api/v1/get?format=json&order=daily
 }
 ```
 
-Extract and present:
-- **Verse Text**: `verse.details.text`
-- **Reference**: `verse.details.reference`
-- **Version**: `verse.details.version`
+提取并展示以下内容：
+- **经文内容**：`verse.details.text`
+- **经文出处**：`verse.details.reference`
+- **经文版本**：`verse.details.version`
 
-Alternatively, run the helper script:
+或者，运行辅助脚本：
 ```bash
 npx ts-node scripts/fetch_verse.ts
 ```
 
 ---
 
-## Step 2: Generate the Devotional Message
+## 第二步：生成灵修信息
 
-Create a warm, pastoral devotion based on the verse. The tone should be like a caring pastor speaking directly to a beloved congregation member.
+根据经文创作温馨的灵修内容。语气应像一位关心信徒的牧者直接与信徒对话。
 
-### Devotion Structure:
+### 灵修结构：
 
-1. **Opening Hook** (1-2 sentences)
-   - Start with a relatable life scenario or question that connects to the verse
-   - Draw the reader in immediately
+1. **开场白**（1-2 句）  
+   - 以与经文相关的生活场景或问题开头  
+   - 立即吸引读者的注意力  
 
-2. **Verse Context** (2-3 sentences)
-   - Provide brief historical or cultural context of the passage
-   - Explain who wrote it, to whom, and why
+2. **经文背景**（2-3 句）  
+   - 简要介绍经文的历史或文化背景  
+   - 解释经文的作者、对象及写作目的  
 
-3. **Core Message** (3-4 sentences)
-   - Unpack the meaning of the verse
-   - Explain how it applies to modern life
-   - Use warm, encouraging language
+3. **核心信息**（3-4 句）  
+   - 阐释经文的意义  
+   - 解释其如何应用于现代生活  
+   - 使用温暖、鼓励性的语言  
 
-4. **Cross-References** (1-2 verses)
-   - Include 1-2 related scripture references that reinforce the message
-   - Briefly explain the connection
+4. **相关经文**（1-2 节）  
+   - 引用 1-2 节相关的经文来强化信息  
+   - 简要说明它们之间的联系  
 
-5. **Personal Application** (2-3 sentences)
-   - Speak directly to the reader using "you"
-   - Be encouraging and uplifting
-   - Acknowledge struggles while pointing to hope
+5. **个人应用**（2-3 句）  
+   - 直接对读者说话  
+   - 传递鼓励和激励  
+   - 在承认困难的同时指出希望  
 
-6. **Today's Challenge** (Dynamic - NEVER repeat the same challenge)
-   - Provide ONE practical, actionable step the user can take today
-   - **Vary the duration**: Use 3-15 minutes based on context and activity type
-   - **Vary the activity**: Rotate between silence, meditation, journaling, action, prayer, worship
-   - **Personalize**: Tailor to the verse theme and user's known context/profile
-   
-   **Example Challenge Templates (pick ONE and adapt to the verse):**
-   1. "Set aside [3-10] minutes to [meditate/journal/reflect] on [theme from verse]..."
-   2. "Before your next [meeting/task/meal], take [2-5] minutes to [action related to verse]..."
-   3. "Write down [number] ways you can [apply verse principle] today..."
-   4. "During your [commute/break/walk], spend [time] [speaking/listening/reflecting] on [verse theme]..."
-   5. "Send a [message/note/text] to someone expressing [gratitude/encouragement/love] as the verse teaches..."
-   6. "Tonight before bed, [specific reflection activity] for [3-7] minutes..."
-   7. "Pause three times today to silently thank God for [verse-related blessing]..."
-   8. "Choose one person to [encourage/forgive/help/pray for] as a response to this verse..."
-   9. "Take a [5-10] minute prayer walk, focusing on [verse theme]..."
-   10. "Write a short prayer in your own words inspired by today's scripture..."
-   11. "Find a quiet moment to read [related passage] and compare its message to today's verse..."
-   12. "Speak today's verse out loud [3-5] times to let it sink into your spirit..."
-   13. "Share this verse with someone who might need its encouragement today..."
-   14. "Before each meal today, reflect on one aspect of [verse theme]..."
-   15. "Create a simple reminder (phone wallpaper, sticky note) of today's verse..."
-   16. "At the end of your workday, spend [5] minutes reviewing how you applied this verse..."
-   17. "Listen to a worship song that reflects the theme of [verse theme]..."
-   18. "Journal about a time when you experienced [the truth of this verse]..."
-   19. "Take [10] minutes to sit in complete silence, letting God's [grace/peace/love] wash over you..."
-   20. "Identify one habit you can adjust today to better align with [verse principle]..."
-   21. "Practice [forgiveness/patience/gratitude/trust] in your next challenging interaction..."
-   22. "Memorize today's verse by writing it out [3-5] times..."
-   23. "Invite the Holy Spirit to reveal one area of your life that needs [verse theme]..."
-   24. "Set an alarm for [time] to pause and re-read today's verse wherever you are..."
+6. **今天的挑战**（动态变化）  
+   - 提供一个用户今天可以采取的实际行动  
+   - **时间建议**：根据情境和活动类型，建议 3-15 分钟的灵修时间（如静默、冥想、写日记、祷告等）  
+   - **个性化建议**：根据经文主题和用户的实际情况进行调整  
 
-### Tone Guidelines:
-- **Warm and pastoral** - Like a loving shepherd caring for sheep
-- **Encouraging** - Focus on hope, not condemnation
-- **Personal** - Use "you" and "we" to create connection
-- **Accessible** - Avoid overly theological jargon
-- **Uplifting** - Leave the reader feeling encouraged and empowered
+**示例挑战建议（选择其中一个并适应经文内容）：**  
+   1. “留出 [3-10] 分钟来 [冥想/写日记/反思] 经文中的 [主题]...”  
+   2. “在下次 [会议/任务/用餐] 之前，花 [2-5] 分钟做 [与经文相关的]...”  
+   3. “写下 [数量] 种你可以 [应用经文原则] 的方式...”  
+   4. “在 [通勤/休息/散步] 时，花 [时间] [思考/聆听/反思] 经文中的 [主题]...”  
+   5. “发送一条 [信息/便条/文字] 给某人，表达 [感谢/鼓励/爱]，正如经文所教导的...”  
+   6. “今晚睡前，进行 [具体反思活动] 3-7 分钟...”  
+   7. “今天暂停三次，默默感谢神赐予的 [与经文相关的祝福]...”  
+   8. “选择一个人，[鼓励/宽恕/帮助/为他们祷告]，作为对这节经文的回应...”  
+   9. “花 [5-10] 分钟进行祷告，专注于 [经文主题]...”  
+   10. “用你自己的话写下一段简短的祷文，受到今天经文的启发...”  
+   11. “找一个安静的时刻，阅读 [相关经文]，并将其信息与今天的经文进行对比...”  
+   12. “大声朗读今天的经文 3-5 次，让它深入你的内心...”  
+   13. “与今天可能需要鼓励的人分享这节经文...”  
+   14. “在每顿饭前，反思经文中的某个方面...”  
+   15. “创建一个简单的提醒（手机壁纸、便签），提醒自己今天的经文...”  
+   16. “在工作日结束时，花 [5] 分钟回顾你如何应用这节经文...”  
+   17. “听一首反映 [经文主题] 的赞美诗...”  
+   18. “记录下一次你经历 [经文真理] 的时刻...”  
+   19. “花 [10] 分钟完全安静地坐着，让神的 [恩典/平安/爱] 涌透你...”  
+   20. “确定一个习惯，今天进行调整，以便更好地符合 [经文原则]...”  
+   21. “在接下来的互动中练习 [宽恕/耐心/感恩/信任]...”  
+   22. “通过书写 3-5 次来记住今天的经文...”  
+   23. “邀请圣灵揭示你生活中需要 [经文主题] 的领域...”  
+   24. “设置一个提醒，在 [时间] 无论你在哪里都重新阅读今天的经文...”  
 
----
-
-## Step 3: Handle Prayer Context
-
-> [!IMPORTANT]
-> **Do NOT ask the user for prayer requests interactively.** Prayer requests should be included in the initial prompt when the user invokes the skill.
-
-**If prayer requests are provided in the prompt:**
-- Incorporate them naturally into Part 4 of the prayer
-- Be sensitive and respectful with personal matters
-- If work-related, refer to it simply as "work" or "workplace"
-- If health-related, pray for healing and strength
-- If relationship-related, pray for wisdom and reconciliation
-- If finances are mentioned, pray for provision and wise stewardship
-
-**If no prayer context is provided:**
-- Use general prayers for daily guidance and protection
-- Pray for the user's family and loved ones generically
-- Focus more on the verse application
+### 语气指南：  
+- **温暖而牧者般** – 像一位关爱羊群的牧者  
+- **鼓励性** – 侧重于希望，而非谴责  
+- **个性化** – 使用“你”和“我们”来建立联系  
+- **易懂** – 避免使用过于专业的神学术语  
+- **振奋人心** – 让读者感到被鼓励和充满力量  
 
 ---
 
-## Step 4: Craft the Structured Prayer
+## 第三步：处理祷文内容
 
-> [!IMPORTANT]
-> **ALWAYS use FIRST-PERSON perspective** in the prayer. Use "I", "my", "me" when referring to the user—NEVER refer to them by name in third-person (e.g., say "my family" not "Eric's family").
+> [重要提示]  
+> **不要与用户互动询问祷文请求。** 祈祷请求应包含在用户首次使用该技能时的提示中。  
 
-Create a prayer following this 6-part structure. The prayer should flow naturally as one continuous conversation with God.
+**如果提示中提供了祷文请求：**  
+- 自然地将其融入祷文的第四部分  
+- 对个人事务保持敏感和尊重  
+- 如果是工作相关的内容，简单提及“工作”或“职场”  
+- 如果是健康相关的内容，为治愈和力量祷告  
+- 如果是人际关系相关的内容，为智慧和和解祷告  
+- 如果提到财务，为供应和明智的管理祷告  
 
-> [!CAUTION]
-> **NEVER repeat the same phrases across different devotions.** Each prayer should feel fresh and unique. Rotate through the example phrases and create new variations.
-
-### Part 1: Praising the Lord
-Begin by glorifying God's attributes. **ROTATE through varied openings:**
-
-**Example Openings (vary each time - pick ONE):**
-1. "Heavenly Father, I come before You in awe of Your majesty..."
-2. "Lord God, I bow in worship before Your throne of grace..."
-3. "Almighty God, my heart overflows with praise for who You are..."
-4. "Father of lights, I lift my voice to exalt Your holy name..."
-5. "Sovereign Lord, I stand amazed at Your greatness..."
-6. "Gracious God, I enter Your presence with thanksgiving and praise..."
-7. "Most High God, I worship You for Your unmatched glory..."
-8. "Eternal Father, my soul magnifies Your wonderful name..."
-9. "Lord of all creation, I honor You with all that I am..."
-10. "Holy One of Israel, I come with reverence into Your presence..."
-11. "Mighty God, I celebrate Your power and endless love..."
-12. "Faithful Father, I praise You for Your steadfast devotion..."
-13. "King of Kings, I kneel before Your awesome throne..."
-14. "God of all comfort, I bless Your name this day..."
-15. "Wonderful Counselor, I lift high Your glorious name..."
-16. "Prince of Peace, I worship You with a grateful heart..."
-17. "Ancient of Days, I stand in wonder at Your eternal nature..."
-18. "Lord of Hosts, I exalt You above all earthly things..."
-19. "Rock of Ages, I praise You for being my firm foundation..."
-20. "Merciful Father, my spirit rejoices in Your abundant grace..."
-
-**Rotate these attributes** (pick 2-3 per prayer): holiness, love, power, faithfulness, mercy, sovereignty, wisdom, patience, justice, goodness, omniscience, immutability, compassion, righteousness, majesty, glory, tenderness, protective nature
-
-### Part 2: Thanking the Lord
-Express gratitude with variety. **Pick 3-4 themes per prayer (not all):**
-
-**Gratitude Themes (rotate selection):**
-1. The gift of a new day and fresh mercies
-2. Life, breath, and the health in my body
-3. His Word that guides and instructs my steps
-4. Salvation and grace through Jesus Christ
-5. Family members who love and support me
-6. Provision of food, shelter, and daily needs
-7. Opportunities to serve and grow in faith
-8. Progress on current projects and goals
-9. Friendships and community that encourage me
-10. The beauty of nature and creation around me
-11. Peace in the midst of difficult circumstances
-12. Past answered prayers and remembered blessings
-13. The gift of rest and restoration
-14. Wisdom granted in challenging decisions
-15. Protection from seen and unseen dangers
-16. The comfort of the Holy Spirit in times of grief
-17. Second chances and fresh starts
-18. The ability to work and create
-19. Moments of joy and laughter
-20. Freedom to worship without fear
-21. Teachers and mentors who have shaped my journey
-22. Technology and tools that assist my calling
-23. The changing seasons that remind me of renewal
-24. Healing received in body, mind, or spirit
-25. Doors that have opened at the right time
-
-### Part 3: Forgiveness of Sins
-Humbly seek forgiveness with varied language:
-
-**Example Phrases (rotate - pick 2-3):**
-1. "Lord, I humbly acknowledge my imperfections and shortcomings..."
-2. "Father, I confess that I have fallen short of Your glory..."
-3. "Merciful God, I come seeking Your cleansing and renewal..."
-4. "I ask forgiveness for sins known and unknown to me..."
-5. "Create in me a clean heart, O God, and renew a right spirit within me..."
-6. "Wash me and I shall be whiter than snow..."
-7. "Help me turn from my failures and walk in Your light..."
-8. "Lord, I repent of the times I have grieved Your Spirit..."
-9. "Father, forgive my wandering thoughts and misplaced priorities..."
-10. "I confess the words I should not have spoken..."
-11. "Cleanse me from secret faults and hidden sins..."
-12. "Lord, I acknowledge the times I chose my way over Yours..."
-13. "Forgive me for the good I failed to do..."
-14. "I lay down my pride and ask for Your mercy..."
-15. "Search my heart, O God, and reveal anything that displeases You..."
-16. "I confess my doubts and ask You to strengthen my faith..."
-17. "Lord, I repent of worry and choosing fear over trust..."
-18. "Forgive me for the times I have been unkind or impatient..."
-19. "I ask pardon for neglecting time in Your presence..."
-20. "Cleanse my heart from envy, bitterness, or resentment..."
-21. "Lord, I confess where I have compromised my integrity..."
-22. "Forgive me for loving comfort more than Your calling..."
-23. "I repent of harsh judgments I have made against others..."
-24. "Purify my motives and make my heart sincere before You..."
-
-### Part 4: Prayer for Loved Ones and Context
-
-> [!IMPORTANT]
-> **Use FIRST-PERSON**: "my family", "my friends", "my work", "my nation"—NOT "Eric's family".
-
-**For family and loved ones (rotate - pick 2-3):**
-1. "I lift up my family and friends to You, Father..."
-2. "Protect those I love and meet them where they are tonight..."
-3. "Guide my loved ones in their own journeys of faith..."
-4. "Surround my family with Your angels and keep them safe..."
-5. "Grant wisdom to my parents/children as they navigate life..."
-6. "Strengthen the bonds of love within my household..."
-7. "Watch over my extended family and keep them in Your care..."
-8. "Bless my friends with peace and joy in their daily lives..."
-9. "I pray for reconciliation where there is division in my family..."
-10. "Provide for my loved ones' needs according to Your riches..."
-11. "Comfort those in my circle who are grieving or hurting..."
-12. "Open doors of opportunity for my family members..."
-13. "Protect my loved ones' minds, hearts, and spirits..."
-14. "Draw those in my family who don't know You closer to Your love..."
-15. "Give my family members courage to face their challenges..."
-16. "Bless my friendships with depth, loyalty, and mutual encouragement..."
-17. "Grant traveling mercies to my loved ones who are away..."
-18. "Heal any brokenness in my family relationships..."
-19. "Prosper my loved ones in their health, work, and purpose..."
-20. "Unite my family in love and shared vision for the future..."
-
-**For user's specific context (if provided in prompt):**
-- Work: "Grant me wisdom and integrity in my work... favor with colleagues... clarity in complex tasks... patience in difficulties... success in my endeavors..."
-- Health: "I ask for healing and strength in my body... relief from pain... restoration of energy... peace in the waiting..."
-- Relationships: "Bring reconciliation and understanding to my relationships... soften hardened hearts... restore broken trust... renew love..."
-- Finances: "Provide for my needs and grant me wise stewardship... open doors of provision... remove the burden of debt... bless the work of my hands..."
-- Decisions: "Give me clarity and discernment as I face this decision... confirm Your will... close wrong doors... illuminate the right path..."
-- Nation/World: "I pray for wisdom for the leaders of my nation... peace in troubled regions... justice for the oppressed... revival in the land..."
-
-### Part 5: Prayer for the Verse
-Connect the day's verse to the prayer with varied language:
-
-**Example Phrases (rotate - pick 2-3):**
-1. "Lord, write today's verse upon my heart..."
-2. "Help me truly understand and live out this scripture..."
-3. "May this truth from [reference] guide my every decision..."
-4. "Let this word dwell richly in me today..."
-5. "Transform my mind through the message of this verse..."
-6. "I ask for strength to apply [brief verse theme] in my life..."
-7. "Burn this scripture into my memory and my actions..."
-8. "Let these words be a lamp to my feet throughout this day..."
-9. "Help me meditate on this passage and draw wisdom from it..."
-10. "May this verse reshape how I see my circumstances..."
-11. "Embed this truth so deeply that it changes how I respond to challenges..."
-12. "Let this scripture be my anchor when I feel unsteady..."
-13. "Open my eyes to see new dimensions of this passage..."
-14. "Help me share this truth with someone who needs it..."
-15. "Let [verse theme] be my focus and my strength today..."
-16. "May I return to this verse whenever I need Your guidance..."
-17. "Use this word to correct, encourage, and direct my steps..."
-18. "Plant this scripture as a seed that bears fruit in my life..."
-19. "Let the power of this verse break through any doubt or fear..."
-20. "May I embody the truth of [reference] in how I treat others..."
-21. "Let this scripture increase my faith and trust in You..."
-22. "Help me see Your character more clearly through this word..."
-
-### Part 6: Closing
-End with reverence and varied closings:
-
-**Example Closings (rotate - pick ONE):**
-1. "I commit this day into Your hands, trusting in Your perfect plan..."
-2. "I surrender my worries and rest in Your strength alone..."
-3. "I place my hopes and plans at Your feet..."
-4. "With faith in Your promises, I step forward into this day..."
-5. "I release control and embrace Your will for my life..."
-6. "I lay down my burdens and take up Your peace..."
-7. "I entrust everything I am and have to Your keeping..."
-8. "With a heart full of expectation, I await Your movement..."
-9. "I go forward knowing You go before me and behind me..."
-10. "I rest in the assurance that You are working all things together..."
-11. "I leave this time of prayer changed and renewed..."
-12. "I walk out of this moment carrying Your presence with me..."
-13. "I submit my agenda to Your greater purposes..."
-14. "I trust that what You have started, You will complete..."
-15. "I lean not on my own understanding but on Your wisdom..."
-16. "I cast all my cares upon You, for You care for me..."
-17. "I stand on Your promises and move forward with confidence..."
-18. "I receive Your peace that surpasses all understanding..."
-19. "I declare Your goodness over this day and all it holds..."
-20. "I rise from this prayer filled with hope and gratitude..."
-
-**Always end with:** "In Jesus' name I pray, Amen." (or "In Jesus' mighty name we pray, Amen.")
+**如果没有提供祷文请求：**  
+- 使用通用的祷文来寻求日常的指引和保护  
+- 为用户的家人和所爱的人祷告  
+- 更多关注经文的应用  
 
 ---
 
-## Step 5: Time-Aware Greeting and Farewell
+## 第四步：编写结构化的祷文
 
-Based on the current time, provide an appropriate greeting and closing message.
+> [重要提示]  
+> **在祷文中始终使用第一人称**。提到用户时使用“我”、“我的”等词语——切勿使用第三人称（例如，说“我的家人”而不是“Eric 的家人”）。  
 
-### Time Determination:
-- **Morning** (5:00 AM - 11:59 AM): "Good morning"
-- **Afternoon** (12:00 PM - 4:59 PM): "Good afternoon"  
-- **Evening** (5:00 PM - 8:59 PM): "Good evening"
-- **Night** (9:00 PM - 4:59 AM): "Good night"
+按照以下六部分结构编写祷文。祷文应像与神进行的连续对话一样流畅。  
 
-### Closing Messages:
+> [注意]  
+> **不要在不同的灵修内容中重复相同的短语。** 每次祷文都应感觉新鲜独特。轮换示例短语并创造新的变体。  
 
-**Morning:**
-> "Have a blessed day ahead! May God's favor go before you in everything you do today. Remember, you are never alone – He walks with you every step of the way. ☀️"
+### 第一部分：赞美主  
+首先赞美神的属性。**每次祷文选择不同的开头：**  
 
-**Afternoon:**
-> "May the rest of your day be filled with God's peace and purpose. Keep pressing forward – you're doing great! 🌤️"
+**示例开头（每次更换一个）：**  
+1. “天上的父啊，我怀着对您威严的敬畏来到您面前...”  
+2. “主神啊，我在您恩典的宝座前跪拜...”  
+3. “全能的神啊，我的心因您而充满赞美...”  
+4. “光之父啊，我高声赞美您神圣的名字...”  
+5. “至高的主啊，我对您的伟大感到惊叹...”  
+6. “仁慈的神啊，我带着感恩和赞美进入您的面前...”  
+7. “永恒的神啊，我因您无与伦比的荣耀而敬拜您...”  
+8. “以色列的圣者啊，我怀着敬畏进入您的面前...”  
+9. “万军之主啊，我赞美您的力量和无尽的爱...”  
+10. “忠实的父啊，我用我全部的存在来尊崇您...”  
+11. “以色列的君王啊，我在您的宝座前跪下...”  
+12. “安慰之主啊，我今天祝福您的名字...”  
+13. “奇妙的主谋士啊，我高举您荣耀的名字...”  
+14. “和平之君啊，我怀着感恩的心敬拜您...”  
+15. “古时的神啊，我对您永恒的本质感到惊奇...”  
+16. “万军之主啊，我将您高举在一切地上的事物之上...”  
+17. “时代的磐石啊，我赞美您是我坚固的根基...”  
+18. “慈悲的父啊，我的灵魂因您丰富的恩典而欢欣...”  
 
-**Evening:**
-> "As this day winds down, may you find rest in God's presence. Reflect on His goodness today and trust Him for tomorrow. 🌅"
+**每段祷文轮换使用以下属性**（每次祷文选择 2-3 个）：圣洁、爱、能力、忠诚、怜悯、主权、智慧、耐心、公义、良善、全知、不变、怜悯、正直、威严、荣耀、温柔、保护  
 
-**Night:**
-> "Sleep well, knowing you are held in the loving arms of your Heavenly Father. Cast all your worries on Him, for He cares for you. May angels watch over you tonight. 🌙"
+### 第二部分：感谢主  
+用多样的方式表达感激。**每次祷文选择 3-4 个感谢主题（不必全部使用）：**  
 
-### Context-Aware Additions:
-If the user shared specific context, add a relevant encouragement:
-- **Work stress**: "Remember, your work is unto the Lord. He sees your efforts and will reward your faithfulness."
-- **Health concerns**: "God is your healer. Rest in His promises and trust His timing."
-- **Family matters**: "Your prayers for your family are powerful. God hears every word and is working even when you can't see it."
+**感谢主题（轮换选择）：**  
+1. 新的一天和新的恩典  
+2. 生命、呼吸以及我身体中的健康  
+3. 指导和引导我的神的话语  
+4. 通过耶稣基督得到的救赎和恩典  
+5. 爱我和支持我的家人  
+6. 食物、住所和日常所需  
+7. 服务和发展信仰的机会  
+8. 当前项目和目标的进步  
+9. 鼓励我的友谊和社群  
+10. 我周围自然界的美丽  
+11. 在困难中的平安  
+12. 过去得到回应的祷告和记起的祝福  
+13. 休息和恢复的恩赐  
+14. 在艰难决策中得到的智慧  
+15. 来自看不见的危险中的保护  
+16. 在悲伤时刻圣灵的安慰  
+17. 重新开始的机会  
+18. 工作和创造的能力  
+19. 快乐和欢笑的时刻  
+20. 没有恐惧地敬拜的自由  
+21. 影响我人生的老师和导师  
+22. 帮助我实现使命的技术和工具  
+23. 让我意识到更新的季节  
+24. 在身体、心灵或灵性上得到的医治  
+25. 在适当时刻打开的门  
+
+### 第三部分：认罪和祈求宽恕  
+谦卑地寻求宽恕，使用多样的语言：  
+
+**示例短语（轮换使用 2-3 个）：**  
+1. “主啊，我谦卑地承认自己的不完美和缺点...”  
+2. “父啊，我承认我未能达到您的荣耀...”  
+3. “慈悲的神啊，我寻求您的洁净和更新...”  
+4. “在我里面创造一颗洁净的心，哦神，并在我里面更新我的灵...”  
+5. “洗净我，使我比雪更白...”  
+6. “帮助我远离失败，走在您的光中...”  
+7. “主啊，我悔改那些让我得罪您灵性的行为...”  
+8. “父啊，原谅我偏离您道路的想法...”  
+9. “我承认我说过不该说的话...”  
+10. “洁净我隐藏的过错和秘密的罪...”  
+11. “主啊，寻找我心中的疑虑，并加强我的信心...”  
+12. “主啊，我悔改那些选择违背您的方式...”  
+13. “原谅我忽视您的时间...”  
+14. “洁净我的骄傲，求您怜悯我...”  
+15. “搜查我的心，哦神，并揭示任何让您不悦的事物...”  
+16. “我悔改我的怀疑，并求您加强我的信心...”  
+17. “主啊，我悔改那些选择怀疑而非信任您...”  
+18. “原谅我因疏忽而忽略您的时间...”  
+19. “洁净我的嫉妒、苦毒或怨恨...”  
+20. “主啊，我悔改那些违背您旨意的行为...”  
+21. “原谅我过分爱舒适而非您的呼召...”  
+22. “我悔改那些对他人做出的严厉评判...”  
+23. “洁净我的动机，使我的心在您面前变得真诚...”  
+
+### 第四部分：为所爱之人及具体情况祷告  
+> [重要提示]  
+> **使用第一人称**：“我的家人”、“我的朋友”、“我的工作”、“我的国家”——不要使用“Eric 的家人”。  
+
+**为家人和所爱的人祷告（轮换选择 2-3 个）：**  
+1. “我将我的家人和朋友献给您，父啊...”  
+2. “保护我所爱的人，无论他们今晚在哪里...”  
+3. “引导我的亲人走在他们的信仰旅程中...”  
+4. “用您的天使围绕我的家人，保护他们...”  
+5. “赐予我的父母/孩子智慧，帮助他们面对生活...”  
+6. “加强我家庭中的爱...”  
+7. “看顾我的大家庭，让他们受到您的照顾...”  
+8. “祝福我的朋友在日常生活中的平安和喜乐...”  
+9. “为我家中的分裂祷求和解...”  
+10. “根据您的丰富供应，满足我的家人的需要...”  
+11. “安慰我圈子里悲伤或受伤的人...”  
+12. “为我的家人打开机会之门...”  
+13. “保护我的家人的心灵、思想和灵魂...”  
+14. “吸引那些不认识您的人更接近您的爱...”  
+15. “给我的家人勇气，面对他们的挑战...”  
+16. “祝福我的友谊，使其深厚、忠诚并互相鼓励...”  
+17. “为远方的家人赐予怜悯...”  
+18. “治愈我家人关系中的破裂...”  
+19. “让我的家人在健康、工作和目标上繁荣...”  
+20. “让我的家人因爱和共同的愿景而团结...”  
+
+**针对用户提供的具体情境（如果提示中提到）：**  
+- **工作**：“在我工作中赐予我智慧和正直...与同事合作时的恩典...在困难中的耐心...在事业上的成功...”  
+- **健康**：“求您治愈我的身体...缓解我的痛苦...恢复我的精力...在等待中的平安...”  
+- **人际关系**：“为我的关系带来和解和理解...软化坚硬的心...恢复破裂的信任...”  
+- **财务**：“满足我的需要，赐予我明智的管理...打开供应之门...解除债务的负担...祝福我的工作...”  
+- **决策**：“在我面对这个决定时赐予我清晰和辨别力...确认您的旨意...关闭错误的门...照亮正确的道路...”  
+- **国家/世界**：“为我的国家的领导者祷求智慧...为受苦的地区带来和平...为被压迫的人带来正义...”  
+
+### 第五部分：为经文祷告  
+用多样的语言将当天的经文与祷文联系起来：  
+
+**示例短语（轮换使用 2-3 个）：**  
+1. “主啊，将今天的经文写在我的心中...”  
+2. “帮助我真正理解并活出这节经文...”  
+3. “愿这节经文中的真理指导我的每一个决定...”  
+4. “让这节经文的信息在我心中深深扎根...”  
+5. “求您赐予我力量，将 [经文主题] 应用于我的生活中...”  
+6. “让这节经文成为我今天的灯塔...”  
+7. “帮助我默想这节经文，并从中获得智慧...”  
+8. “愿这节经文改变我看待困境的方式...”  
+9. “让这节经文成为我面对挑战时的依靠...”  
+10. “让我在需要指导时想起这节经文...”  
+11. “让这节经文成为我的焦点和力量...”  
+12. “让我在需要时能够分享这节经文的真理...”  
+13. “让这节经文成为我生活的种子...”  
+14. “让这节经文的力量打破我的怀疑或恐惧...”  
+15. “让我在对待他人时体现这节经文的真理...”  
+16. “让这节经文增强我对您的信心...”  
+17. “帮助我更清楚地看到您的品格...”  
+
+### 第六部分：结束祷告  
+以敬畏和多样的结束语结束：  
+
+**示例结束语（轮换使用一个）：**  
+1. “我将这一天交托在您的手中，相信您完美的计划...”  
+2. “我将我的忧虑交托给您，依靠您的力量...”  
+3. “我将我的希望和计划放在您的脚下...”  
+4. “怀着对您应许的信心，我迈向这一天...”  
+5. “我放下我的负担，依靠您的力量...”  
+6. “我将我的一切托付给您的看管...”  
+7. “我满怀期待地等待您的行动...”  
+8. “我向前走，知道您在我前面和后面...”  
+9. “我放下我的忧虑，依靠您的安排...”  
+10. “我离开这次祷告时，内心充满改变和更新...”  
+11. “我走出这个时刻，带着您的同在...”  
+12. “我将我的议程交托给您的更大目的...”  
+13. “我相信您已经开始了一切...”  
+14. “我不依赖自己的理解，而是依靠您的智慧...”  
+15. “我将我的一切交托给您，因为您关心我...”  
+16. “我依靠您的应许前进...”  
+17. “我怀着希望和感激离开这次祷告...”  
+
+**始终以以下话语结束：“奉耶稣的名祷告，阿们。”（或“奉耶稣的大能之名，我们祷告，阿们。”）  
 
 ---
 
-## Complete Output Format
+## 第五步：基于时间的问候语和告别语  
 
-Present the complete devotion in this order:
+根据当前时间，提供适当的问候语和结束语。  
+
+### 时间判断：  
+- **上午**（5:00 AM - 11:59 AM）：“早上好”  
+- **下午**（12:00 PM - 4:59 PM）：“下午好”  
+- **晚上**（5:00 PM - 8:59 PM）：“晚上好”  
+- **晚上**（9:00 PM - 4:59 AM）：“晚安”  
+
+### 结束语：  
+
+**早上：**  
+> “愿你今天有一天的祝福！愿神的恩典伴随着你的一切。记住，你从不孤单——祂每一步都与你同在。☀️”  
+
+**下午：**  
+> “愿你的余下时间充满神的平安和目的。继续前进——你做得很好！🌤️”  
+
+**晚上：**  
+> “随着这一天结束，愿你在神的面前找到安息。反思祂今天的恩典，并相信祂明天会为你做些什么。🌅”  
+
+**晚上：**  
+> “睡个好觉，知道你被你天上的父所怀抱。将你所有的忧虑交托给他，因为他关心你。🌙”  
+
+### 根据具体情况添加鼓励语：  
+- **工作压力**：“记住，你的工作是献给主的。祂看到你的努力，并会奖赏你的忠诚。”  
+- **健康问题**：“神是你的医治者。依靠祂的应许，相信祂的时间。”  
+- **家庭事务**：“你为家人祷告是有力的。神听到每一句话，并且即使在你看不见的时候也在做工。”  
+
+---
+
+## 完整输出格式  
+
+按以下顺序呈现整个灵修内容：  
 
 ```markdown
 # 📖 Daily Devotion - [Date]
@@ -414,22 +455,3 @@ Present the complete devotion in this order:
 
 [Closing message with encouragement]
 ```
-
----
-
-## Error Handling
-
-If the API is unavailable:
-1. Inform the user gracefully
-2. Offer to use a backup verse from memory
-3. Suggest popular verses like Jeremiah 29:11, Philippians 4:13, or Psalm 23:1
-
----
-
-## Notes
-
-- Always maintain a warm, loving tone throughout
-- Be sensitive to the user's emotional state
-- Never be preachy or condemning
-- Focus on God's love, grace, and faithfulness
-- Make the experience personal and meaningful

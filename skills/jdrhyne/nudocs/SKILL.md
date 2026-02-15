@@ -1,6 +1,6 @@
 ---
 name: nudocs
-description: Upload, edit, and export documents via Nudocs.ai. Use when creating shareable document links for collaborative editing, uploading markdown/docs to Nudocs for rich editing, or pulling back edited content. Triggers on "send to nudocs", "upload to nudocs", "edit in nudocs", "pull from nudocs", "get the nudocs link", "show my nudocs documents".
+description: 通过 Nudocs.ai 上传、编辑和导出文档。该工具适用于创建可共享的文档链接以支持协作编辑，将 Markdown 格式的文档上传到 Nudocs 进行高级编辑，或检索已编辑的内容。相关操作包括：“发送到 Nudocs”、“上传到 Nudocs”、“在 Nudocs 中编辑”、“从 Nudocs 中获取内容”、“获取 Nudocs 文档链接”以及“显示我的 Nudocs 文档”。
 homepage: https://nudocs.ai
 metadata:
   {
@@ -30,18 +30,18 @@ metadata:
 
 # Nudocs
 
-Upload documents to Nudocs.ai for rich editing, get shareable links, and pull back the results.
+将文档上传到 Nudocs.ai 进行丰富的编辑，获取可分享的链接，并下载编辑后的结果。
 
-## Setup
+## 设置
 
-1. Install the CLI:
+1. 安装命令行工具（CLI）：
 ```bash
 npm install -g @nutrient-sdk/nudocs-cli
 ```
 
-2. Get your API key from https://nudocs.ai (click "Integration" after signing in)
+2. 从 https://nudocs.ai 获取您的 API 密钥（登录后点击“Integration”）
 
-3. Configure the key:
+3. 配置 API 密钥：
 ```bash
 # Option 1: Environment variable
 export NUDOCS_API_KEY="nudocs_your_key_here"
@@ -51,7 +51,7 @@ mkdir -p ~/.config/nudocs
 echo "nudocs_your_key_here" > ~/.config/nudocs/api_key
 ```
 
-## Commands
+## 命令
 
 ```bash
 nudocs upload <file>              # Upload and get edit link
@@ -62,74 +62,72 @@ nudocs delete <ulid>              # Delete a document
 nudocs config                     # Show configuration
 ```
 
-## Workflow
+## 工作流程
 
-### Upload Flow
-1. Create/write document content
-2. Save as markdown (or other supported format)
-3. Run: `nudocs upload <file>`
-4. Share the returned edit link with user
+### 上传流程
+1. 创建/编写文档内容
+2. 保存为 Markdown（或其他支持的格式）
+3. 运行：`nudocs upload <文件路径>`
+4. 将返回的编辑链接分享给用户
 
-### Pull Flow
-1. User requests document back
-2. Run: `nudocs pull [ulid] --format <fmt>`
-3. Read and present the downloaded file
+### 下载流程
+1. 用户请求下载文档
+2. 运行：`nudocs pull [ULID] --format <格式>`
+3. 读取并展示下载的文件
 
-### Format Selection
+### 格式选择
 
-| Scenario | Recommended Format |
+| 场景 | 推荐格式 |
 |----------|-------------------|
-| User edited with rich formatting | `docx` (default) |
-| Simple text/code content | `md` |
-| Final delivery/sharing | `pdf` |
+| 用户使用富格式编辑文档 | `docx`（默认） |
+| 简单文本/代码内容 | `md` |
+| 最终交付/分享 | `pdf` |
 
-See `references/formats.md` for full format support.
+有关完整的格式支持，请参阅 `references/formats.md`。
 
-## Natural Language Triggers
+## 自然语言指令
 
-Recognize these user intents:
+识别以下用户指令：
 
-**Upload/Send:**
-- "send to nudocs"
-- "upload to nudocs"  
-- "open in nudocs"
-- "edit this in nudocs"
-- "let me edit this in nudocs"
-- "put this in nudocs"
+**上传/发送：**
+- “发送到 Nudocs”
+- “上传到 Nudocs”
+- “在 Nudocs 中打开”
+- “在 Nudocs 中编辑这个文件”
+- “让我在 Nudocs 中编辑这个文件”
+- “将这个文件放入 Nudocs”
 
-**Pull/Fetch:**
-- "pull it back"
-- "pull from nudocs"
-- "get that doc"
-- "fetch from nudocs"
-- "download from nudocs"
-- "grab the updated version"
-- "what did I change"
-- "get my edits"
+**下载/获取：**
+- “下载文档”
+- “从 Nudocs 下载文档”
+- “获取那个文档”
+- “从 Nudocs 获取更新版本”
+- “我修改了什么”
+- “获取我的编辑内容”
 
-**Link:**
-- "get the nudocs link"
-- "share link"
-- "where's that doc"
-- "nudocs url"
+**链接：**
+- “获取 Nudocs 的链接”
+- “分享链接”
+- “那个文档在哪里”
+- “Nudocs 的网址”
 
-**List:**
-- "show my nudocs"
-- "list my documents"
-- "what docs do I have"
-- "my nudocs documents"
+**列表：**
+- “显示我的文档”
+- “列出我的文档”
+- “我有哪些文档”
+- “我的 Nudocs 文档”
 
-## Document Best Practices
+## 文档最佳实践
 
-Before uploading, ensure good structure:
-- Clear heading hierarchy (H1 → H2 → H3)
-- Consistent spacing
-- Appropriate list formatting
-- Concise paragraphs (3-5 sentences)
+上传前请确保文档结构良好：
+- 使用清晰的标题层级（H1 → H2 → H3）
+- 保持一致的间距
+- 使用适当的列表格式
+- 段落简洁（3-5 句）
 
-See `references/document-design.md` for templates and guidelines.
+有关模板和指南，请参阅 `references/document-design.md`。
 
-## Example Session
+## 示例会话
 
 ```
 User: Write me a blog post about remote work and send it to Nudocs
@@ -148,17 +146,17 @@ Agent:
 3. Returns: "Got your updated document! Here's what changed..."
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| "No API key found" | Missing credentials | Set NUDOCS_API_KEY or create config file |
-| "DOCUMENT_LIMIT_REACHED" | Free tier limit (10 docs) | Delete old docs or upgrade to Pro |
-| "Unauthorized" | Invalid API key | Regenerate key in Nudocs settings |
-| "No ULID provided" | Missing document ID | Specify ULID or upload a doc first |
+| “未找到 API 密钥” | 未提供凭据 | 设置 NUDOCS_API_KEY 或创建配置文件 |
+| “达到文档数量限制” | 免费 tier 的文档数量限制（10 个） | 删除旧文档或升级到 Pro 版本 |
+| “未经授权” | API 密钥无效 | 在 Nudocs 设置中重新生成密钥 |
+| “未提供 ULID” | 未提供文档 ID | 指定 ULID 或先上传文档 |
 
-## Links
+## 链接
 
-- CLI: https://github.com/PSPDFKit/nudocs-cli (`@nutrient-sdk/nudocs-cli` on npm)
-- MCP Server: https://github.com/PSPDFKit/nudocs-mcp-server
-- Nudocs: https://nudocs.ai
+- 命令行工具：https://github.com/PSPDFKit/nudocs-cli（在 npm 上的别名为 `@nutrient-sdk/nudocs-cli`）
+- MCP 服务器：https://github.com/PSPDFKit/nudocs-mcp-server
+- Nudocs：https://nudocs.ai

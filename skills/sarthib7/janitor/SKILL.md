@@ -1,29 +1,29 @@
-# Janitor - AI Agent Cleanup & Session Management Skill
+# Janitor - 人工智能代理的清理与会话管理技能
 
-## Overview
+## 概述
 
-**Janitor** is an intelligent cleanup and session management skill for OpenClaw AI agents. It automatically manages cache, optimizes memory usage, and **prevents context overflow** by monitoring token usage and intelligently pruning old sessions.
+**Janitor** 是一款专为 OpenClaw 人工智能代理设计的智能清理和会话管理工具。它能够自动管理缓存、优化内存使用，并通过监控令牌使用情况来**防止上下文溢出**，同时智能地清理旧会话。
 
-Think of Janitor as your **AI Agent's Intelligent Maintenance Crew** that:
-- 🧹 Cleans cache files to optimize token usage
-- 🗑️ Frees up unused memory and RAM
-- 🔍 **Monitors context usage in real-time (NEW!)**
-- 🤖 **Automatically prunes old sessions (NEW!)**
-- 📦 **Archives sessions before deletion (NEW!)**
-- 🚨 **Emergency recovery at 95% context usage (NEW!)**
-- 📊 Reports cleanup statistics back to the agent
-- 🔔 **Multi-channel notifications (NEW!)**
+可以将 Janitor 视为你的**人工智能代理的智能维护团队**，它能够：
+- 🧹 清理缓存文件以优化令牌使用
+- 🗑️ 释放未使用的内存和 RAM
+- 🔍 **实时监控上下文使用情况（新功能！）**
+- 🤖 **自动清理旧会话（新功能！）**
+- 📦 **在删除前归档会话（新功能！）**
+- 🚨 **在上下文使用率达到 95% 时进行紧急恢复（新功能！）**
+- 📊 将清理统计信息报告给代理
+- 🔔 **提供多渠道通知（新功能！）**
 
-## Quick Start
+## 快速入门
 
-### Installation
+### 安装
 
 ```bash
 cd /Users/sarthiborkar/Desktop/butler-main/janitor
 npm install  # No dependencies needed!
 ```
 
-### Basic Usage
+### 基本使用
 
 ```javascript
 const Janitor = require('./src/Janitor');
@@ -45,31 +45,24 @@ console.log(result);
 const report = await janitor.report();
 ```
 
-## Features
+## 功能
 
-### 1. Cache Cleanup
+### 1. 缓存清理
 
-Automatically cleans cache files that consume disk space and slow down operations:
+自动清理占用磁盘空间并导致操作变慢的缓存文件：
 
-```javascript
-const janitor = new Janitor();
+**被清理的文件包括：**
+- `node_modules/.cache/**` - Node 模块缓存
+- `**/*.cache` - 通用缓存文件
+- `.DS_Store` - macOS 元数据文件
+- `dist/**/*.map` - 源代码映射文件
+- `coverage/**` - 测试覆盖率报告文件
+- `tmp/**` - 临时文件
+- `**/*.log` - 老日志文件（超过 7 天的）
 
-// Clean cache files
-await janitor.cleanup();
-```
+### 2. 内存优化
 
-**Cleaned Items:**
-- `node_modules/.cache/**` - Node module caches
-- `**/*.cache` - Generic cache files
-- `.DS_Store` - macOS metadata files
-- `dist/**/*.map` - Source map files
-- `coverage/**` - Test coverage reports
-- `tmp/**` - Temporary files
-- `**/*.log` - Old log files (>7 days)
-
-### 2. Memory Optimization
-
-Frees up unused memory to optimize token usage:
+释放未使用的内存以优化令牌使用：
 
 ```javascript
 const janitor = new Janitor();
@@ -88,14 +81,14 @@ console.log(memoryStats);
 // }
 ```
 
-**Memory Operations:**
-- Triggers garbage collection (if enabled)
-- Clears Node.js require cache
-- Reports memory usage statistics
+**内存操作：**
+- 触发垃圾回收（如果已启用）
+- 清理 Node.js 的 require 缓存
+- 报告内存使用统计信息
 
-### 3. Unused File Cleanup
+### 3. 未使用文件的清理
 
-Removes files not accessed for a configurable period:
+删除在指定时间范围内未被访问的文件：
 
 ```javascript
 const janitor = new Janitor({
@@ -105,30 +98,21 @@ const janitor = new Janitor({
 await janitor.cleanup();
 ```
 
-**Safety Features:**
-- Never deletes important files (package.json, README.md, src/, .git/, etc.)
-- Configurable age threshold
-- Reports files before deletion
+**安全特性：**
+- 绝不删除重要文件（如 package.json、README.md、src/、.git/ 等）
+- 支持配置文件删除阈值
+- 在删除前会先报告文件列表
 
-### 4. Post-Push Cleanup
+### 4. 推送代码后的清理
 
-Automatically clean up after GitHub push:
+在将代码推送到 GitHub 后自动进行清理：
 
-```javascript
-const janitor = new Janitor({
-  autoCleanAfterPush: true
-});
+**使用场景：**
+推送代码到 GitHub 后，本地不再需要临时构建文件、缓存文件和覆盖率报告。
 
-// After git push
-await janitor.cleanupAfterPush();
-```
+### 5. 统计与报告
 
-**Use Case:**
-After pushing code to GitHub, temporary build artifacts, cache files, and coverage reports are no longer needed locally.
-
-### 5. Reporting & Statistics
-
-Get detailed cleanup statistics:
+获取详细的清理统计信息：
 
 ```javascript
 const janitor = new Janitor();
@@ -160,9 +144,9 @@ console.log(report);
 // }
 ```
 
-## Configuration
+## 配置
 
-### Default Configuration
+### 默认配置
 
 ```javascript
 {
@@ -181,7 +165,7 @@ console.log(report);
 }
 ```
 
-### Custom Configuration
+### 自定义配置
 
 ```javascript
 const janitor = new Janitor({
@@ -195,9 +179,9 @@ const janitor = new Janitor({
 });
 ```
 
-## Integration with Butler
+## 与 Butler 的集成
 
-### Method 1: Direct Integration
+### 方法 1：直接集成
 
 ```javascript
 const Butler = require('../src/Butler');
@@ -224,7 +208,7 @@ async function runTaskWithCleanup() {
 runTaskWithCleanup();
 ```
 
-### Method 2: Auto-Cleanup Hook
+### 方法 2：自动清理钩子
 
 ```javascript
 const Butler = require('../src/Butler');
@@ -249,9 +233,9 @@ class ButlerWithJanitor extends Butler {
 const butler = new ButlerWithJanitor();
 ```
 
-## Examples
+## 示例
 
-### Example 1: Basic Cleanup
+### 示例 1：基本清理
 
 ```javascript
 const Janitor = require('./src/Janitor');
@@ -269,7 +253,7 @@ async function basicCleanup() {
 basicCleanup();
 ```
 
-### Example 2: Scheduled Cleanup
+### 示例 2：定时清理
 
 ```javascript
 const Janitor = require('./src/Janitor');
@@ -284,16 +268,16 @@ setInterval(async () => {
 }, 60 * 60 * 1000); // 1 hour
 ```
 
-### Example 3: Git Hook Integration
+### 示例 3：Git 钩子集成
 
-Create `.git/hooks/post-commit`:
+创建 `.git/hooks/post-commit` 文件：
 
 ```bash
 #!/bin/sh
 node janitor/src/index.js cleanup --after-push
 ```
 
-### Example 4: Monitoring & Alerts
+### 示例 4：监控与警报
 
 ```javascript
 const Janitor = require('./src/Janitor');
@@ -315,9 +299,9 @@ async function monitor() {
 setInterval(monitor, 5 * 60 * 1000); // Every 5 minutes
 ```
 
-## CLI Usage
+## 命令行接口（CLI）使用
 
-Create `src/index.js`:
+创建 `src/index.js` 文件：
 
 ```javascript
 #!/usr/bin/env node
@@ -351,7 +335,7 @@ const command = args[0];
 })();
 ```
 
-Then use:
+然后使用以下命令：
 
 ```bash
 node janitor/src/index.js cleanup
@@ -359,21 +343,21 @@ node janitor/src/index.js report
 node janitor/src/index.js stats
 ```
 
-## API Reference
+## API 参考
 
-### Constructor
+### 构造函数
 
 ```javascript
 new Janitor(config?: object)
 ```
 
-### Methods
+### 方法
 
 #### `cleanup(workingDir?: string): Promise<CleanupResult>`
 
-Run full cleanup operation.
+执行完整的清理操作。
 
-**Returns:**
+**返回值：**
 ```javascript
 {
   filesDeleted: number,
@@ -385,38 +369,38 @@ Run full cleanup operation.
 
 #### `cleanupAfterPush(): Promise<CleanupResult | null>`
 
-Auto-cleanup after git push (if enabled).
+在推送代码后自动执行清理（如果已启用）。
 
 #### `freeMemory(): void`
 
-Free up memory by triggering garbage collection and clearing caches.
+通过触发垃圾回收和清理缓存来释放内存。
 
 #### `getStats(): object`
 
-Get cleanup statistics.
+获取清理统计信息。
 
 #### `report(): Promise<Report>`
 
-Generate comprehensive report with recommendations.
+生成包含建议的详细报告。
 
 #### `getMemoryUsage(): object`
 
-Get current memory usage statistics.
+获取当前的内存使用情况。
 
-## Best Practices
+## 最佳实践
 
-### 1. Regular Cleanup
+### 1. 定期清理
 
-Run cleanup regularly to prevent cache buildup:
+定期执行清理操作以防止缓存堆积：
 
 ```javascript
 // Every hour
 setInterval(() => janitor.cleanup(), 60 * 60 * 1000);
 ```
 
-### 2. Post-Task Cleanup
+### 2. 任务完成后清理
 
-Always cleanup after completing tasks:
+任务完成后务必进行清理：
 
 ```javascript
 async function runTask() {
@@ -428,18 +412,18 @@ async function runTask() {
 }
 ```
 
-### 3. Monitor Memory
+### 3. 监控内存使用情况
 
-Track memory usage to detect leaks:
+跟踪内存使用情况以检测内存泄漏：
 
 ```javascript
 const memUsage = janitor.getMemoryUsage();
 console.log('Heap used:', memUsage.heapUsed);
 ```
 
-### 4. Safe Deletion
+### 4. 安全删除
 
-Janitor automatically protects important files, but you can add custom protection:
+Janitor 会自动保护重要文件，但你也可以添加自定义的保护机制：
 
 ```javascript
 // Override isImportant method if needed
@@ -449,49 +433,49 @@ janitor.isImportant = (filePath) => {
 };
 ```
 
-## Performance
+## 性能
 
-- Cleanup duration: 50-500ms (depends on file count)
-- Memory overhead: <5MB
-- No external dependencies
-- Safe for concurrent operations
+- 清理时间：50-500 毫秒（取决于文件数量）
+- 内存开销：<5MB
+- 无外部依赖
+- 支持并发操作
 
-## Troubleshooting
+## 故障排除
 
-### Issue: High Memory Usage
+### 问题：内存使用过高
 
-**Solution:** Run `janitor.freeMemory()` to trigger garbage collection.
+**解决方案：** 运行 `janitor.freeMemory()` 来触发垃圾回收。
 
-### Issue: Files Not Being Deleted
+### 问题：文件未被删除
 
-**Solution:** Check if files are in protected directories (node_modules, .git, src).
+**解决方案：** 检查文件是否位于受保护的目录中（如 node_modules、.git、src）。
 
-### Issue: Cleanup Too Aggressive
+### 问题：清理过于激进
 
-**Solution:** Increase `unusedFileAgeDays` in config:
+**解决方案：** 增加配置文件中的 `unusedFileAgeDays` 值：
 
 ```javascript
 const janitor = new Janitor({ unusedFileAgeDays: 30 });
 ```
 
-## Roadmap
+## 待开发功能
 
-- [ ] Custom cleanup patterns via config file
-- [ ] Integration with Butler dashboard
-- [ ] Real-time cleanup monitoring
-- [ ] Cloud storage cleanup (S3, GCS)
-- [ ] Docker container cleanup
-- [ ] Database cache cleanup
+- [ ] 通过配置文件自定义清理规则
+- [ ] 与 Butler 仪表板集成
+- [ ] 实时清理监控
+- [ ] 云存储清理（S3、GCS）
+- [ ] Docker 容器清理
+- [ ] 数据库缓存清理
 
-## License
+## 许可证
 
 MIT
 
-## Support
+## 支持
 
-- Issues: [GitHub Issues](https://github.com/zoro-jiro-san/butler/issues)
-- Docs: This file
+- 问题反馈：[GitHub 问题](https://github.com/zoro-jiro-san/butler/issues)
+- 文档：本文件
 
 ---
 
-**Janitor v1.0.0** - Keeping your AI agents clean and efficient!
+**Janitor v1.0.0** - 保持你的人工智能代理的整洁和高效运行！

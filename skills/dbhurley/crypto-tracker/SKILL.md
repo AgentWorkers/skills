@@ -1,17 +1,17 @@
 ---
 name: crypto-tracker
-description: Track crypto prices, set alerts, and search coins via CoinGecko API.
+description: 通过 CoinGecko API 追踪加密货币价格、设置警报以及搜索各种加密货币。
 homepage: https://www.coingecko.com/api
 metadata: {"clawdis":{"emoji":"📈","requires":{"bins":["uv"]}}}
 ---
 
-# Crypto Tracker
+# 加密货币追踪器
 
-Track cryptocurrency prices, set price/percentage alerts, and search coins using the free CoinGecko API (no API key required).
+使用免费的 CoinGecko API（无需 API 密钥）来追踪加密货币价格、设置价格/百分比警报以及搜索加密货币。
 
-## Quick Commands
+## 快速命令
 
-### Check Prices
+### 查看价格
 ```bash
 # Single coin
 uv run {baseDir}/scripts/crypto.py price bitcoin
@@ -23,15 +23,14 @@ uv run {baseDir}/scripts/crypto.py price bitcoin ethereum solana
 uv run {baseDir}/scripts/crypto.py price bitcoin --detailed
 ```
 
-### Search Coins
+### 搜索加密货币
 ```bash
 # Find coin ID by name/symbol
 uv run {baseDir}/scripts/crypto.py search doge
 uv run {baseDir}/scripts/crypto.py search cardano
 ```
 
-### Manage Alerts
-
+### 管理警报
 ```bash
 # Set price threshold alert
 uv run {baseDir}/scripts/crypto.py alert <user_id> bitcoin above 100000
@@ -52,49 +51,49 @@ uv run {baseDir}/scripts/crypto.py alert-rm <alert_id>
 uv run {baseDir}/scripts/crypto.py check-alerts
 ```
 
-## Coin Aliases
+## 加密货币别名
 
-Common symbols are automatically resolved:
-- `btc` → bitcoin
-- `eth` → ethereum  
-- `sol` → solana
-- `doge` → dogecoin
-- `ada` → cardano
-- `xrp` → ripple
-- `dot` → polkadot
-- `matic` → polygon
-- `link` → chainlink
-- `avax` → avalanche-2
-- `ltc` → litecoin
+常见的货币别名会自动被识别：
+- `btc` → 比特币
+- `eth` → 以太坊
+- `sol` → Solana
+- `doge` → Dogecoin
+- `ada` → Cardano
+- `xrp` → Ripple
+- `dot` → Polkadot
+- `matic` → Polygon
+- `link` → Chainlink
+- `avax` → Avalanche-2
+- `ltc` → Litecoin
 
-## Alert Types
+## 警报类型
 
-| Type | Example | Triggers When |
+| 类型 | 例子 | 触发条件 |
 |------|---------|---------------|
-| `above` | `alert user btc above 100000` | Price >= $100,000 |
-| `below` | `alert user eth below 3000` | Price <= $3,000 |
-| `change` | `alert user btc change 5` | 24h change >= ±5% |
-| `drop` | `alert user sol drop 10` | 24h change <= -10% |
-| `rise` | `alert user eth rise 15` | 24h change >= +15% |
+| `above` | `当比特币价格超过 100,000 美元时提醒用户` | 价格 >= $100,000 |
+| `below` | `当以太坊价格低于 3,000 美元时提醒用户` | 价格 <= $3,000 |
+| `change` | `当比特币价格变化超过 5% 时提醒用户` | 24 小时内的价格变化幅度 >= ±5% |
+| `drop` | `当 Solana 价格下跌超过 10% 时提醒用户` | 24 小时内的价格变化幅度 <= -10% |
+| `rise` | `当以太坊价格上涨超过 15% 时提醒用户` | 24 小时内的价格变化幅度 >= +15% |
 
-## Cron Integration
+## Cron 任务集成
 
-Check alerts periodically (e.g., every 15 minutes):
+可以定期（例如每 15 分钟）检查警报：
 ```bash
 uv run {baseDir}/scripts/crypto.py check-alerts --json-output
 ```
 
-Returns triggered alerts with user IDs for notification.
+系统会返回被触发的警报以及对应的用户 ID 以供通知。
 
-## Data Storage
+## 数据存储
 
-Alerts stored in `{baseDir}/data/alerts.json` with:
-- Per-user alert tracking
-- Cooldown between repeat notifications (default: 1 hour)
-- Last triggered timestamp
+警报信息存储在 `{baseDir}/data/alerts.json` 文件中，包含：
+- 每个用户的警报记录
+- 重复通知之间的冷却时间（默认：1 小时）
+- 最后一次触发警报的时间戳
 
-## Notes
+## 注意事项
 
-- CoinGecko free tier: ~10-30 requests/minute (no API key needed)
-- 15,000+ coins supported
-- Use `--json-output` flag for machine-readable output
+- CoinGecko 的免费 tier 每分钟允许约 10-30 次请求（无需 API 密钥）
+- 支持超过 15,000 种加密货币
+- 可使用 `--json-output` 标志生成机器可读的输出格式

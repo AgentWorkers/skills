@@ -1,11 +1,11 @@
 ---
 name: jules-api
-description: "Use the Jules REST API (v1alpha) via curl to list sources, create sessions, monitor activities, approve plans, send messages, and retrieve outputs (e.g., PR URLs). Use when the user wants to delegate coding tasks to Jules programmatically."
+description: "通过 `curl` 使用 Jules REST API（v1alpha）来列出源代码、创建会话、监控活动、批准计划、发送消息以及检索输出结果（例如 PR 的 URL）。当用户希望以编程方式将编码任务委托给 Jules 时，可以使用此 API。"
 ---
 
-# Jules REST API Skill
+# Jules REST API 技能
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Verify available sources (pre-flight check)
@@ -23,46 +23,46 @@ description: "Use the Jules REST API (v1alpha) via curl to list sources, create 
 ./scripts/jules_api.sh activities --session SESSION_ID
 ```
 
-**Note:** Use your GitHub username/org, not your local system username (e.g., `sources/github/octocat/Hello-World`, not `sources/github/$USER/Hello-World`).
+**注意：** 使用您的 GitHub 用户名/组织名，而不是本地系统用户名（例如，`sources/github/octocat/Hello-World`，而不是 `sources/github/$USER/Hello-World`）。
 
-## Overview
+## 概述
 
-This skill enables programmatic interaction with the **Jules REST API (v1alpha)** for delegating coding tasks to Jules, Google's autonomous AI coding agent. It supports:
+此技能允许您通过编程方式与 **Jules REST API (v1alpha)** 进行交互，从而将编码任务委托给 Jules（Google 的自主 AI 编码助手）。它支持以下功能：
 
-- **Task Assignment**: Create new coding sessions with specific prompts
-- **Session Monitoring**: Track session state and activities in real-time
-- **Plan Management**: Approve or review generated plans
-- **Messaging**: Send follow-up messages to active sessions
-- **Result Integration**: Retrieve PR URLs and code changes from completed sessions
+- **任务分配**：创建带有特定提示的新编码会话
+- **会话监控**：实时跟踪会话状态和活动
+- **计划管理**：批准或审查生成的计划
+- **消息传递**：向活跃的会话发送跟进消息
+- **结果整合**：从已完成的会话中检索 PR URL 和代码更改
 
-## Before You Start
+## 开始使用前
 
-### 1. Get an API Key
+### 1. 获取 API 密钥
 
-Create a Jules API key in the Jules web app:
-- Navigate to: https://jules.google.com/settings#api
-- You can have at most **3 API keys** at a time
+在 Jules 网页应用中创建一个 API 密钥：
+- 访问：https://jules.google.com/settings#api
+- 您最多可以同时拥有 **3 个 API 密钥**
 
-Export it on the machine running the agent:
+将密钥导出到运行代理的机器上：
 
 ```bash
 export JULES_API_KEY="your-api-key-here"
 ```
 
-### 2. Connect Your GitHub Repository
+### 2. 连接您的 GitHub 仓库
 
-Before the API can operate on a GitHub repo, you must:
-1. Install the **Jules GitHub app** via the Jules web UI
-2. Grant access to the specific repositories you want Jules to work on
+在 API 能够操作 GitHub 仓库之前，您必须：
+1. 通过 Jules 网页界面安装 **Jules GitHub 应用**
+2. 授予 Jules 访问您希望其操作的特定仓库的权限
 
-### 3. Verify Repository Access
+### 3. 验证仓库访问权限
 
 ```bash
 # List available sources to verify access and see correct format
 ./scripts/jules_api.sh sources
 ```
 
-You'll see entries like:
+您会看到如下信息：
 ```json
 {
   "sources": [
@@ -82,58 +82,58 @@ You'll see entries like:
 }
 ```
 
-## Base URL & Authentication
+## 基础 URL 与身份验证
 
-| Property | Value |
+| 属性 | 值 |
 |----------|-------|
-| Base URL | `https://jules.googleapis.com/v1alpha` |
-| Auth Header | `x-goog-api-key: $JULES_API_KEY` |
+| 基础 URL | `https://jules.googleapis.com/v1alpha` |
+| 身份验证头 | `x-goog-api-key: $JULES_API_KEY` |
 
-All requests authenticate with:
+所有请求都使用以下方式进行身份验证：
 ```bash
 -H "x-goog-api-key: $JULES_API_KEY"
 ```
 
-## Core Concepts
+## 核心概念
 
-### Resources
+### 资源
 
-| Resource | Description |
+| 资源 | 描述 |
 |----------|-------------|
-| **Source** | A GitHub repository connected to Jules. Format: `sources/github/{owner}/{repo}` |
-| **Session** | A unit of work where Jules executes a coding task. Contains state, activities, and outputs |
-| **Activity** | An individual event within a session (plan generated, message sent, progress update, etc.) |
+| **来源** | 与 Jules 连接的 GitHub 仓库。格式：`sources/github/{owner}/{repo}` |
+| **会话** | Jules 执行编码任务的工作单元。包含状态、活动和输出 |
+| **活动** | 会话中的单个事件（例如生成计划、发送消息、更新进度等） |
 
-### Session States
+### 会话状态
 
-| State | Description |
+| 状态 | 描述 |
 |-------|-------------|
-| `QUEUED` | Session is waiting to start |
-| `PLANNING` | Generating execution plan |
-| `AWAITING_PLAN_APPROVAL` | Waiting for user to approve plan |
-| `AWAITING_USER_FEEDBACK` | Needs user input to continue |
-| `IN_PROGRESS` | Actively executing the task |
-| `PAUSED` | Temporarily stopped |
-| `COMPLETED` | Successfully finished |
-| `FAILED` | Encountered an error |
+| `QUEUED` | 会话正在等待开始 |
+| `PLANNING` | 生成执行计划 |
+| `AWAITING_PLAN_APPROVAL` | 等待用户批准计划 |
+| `AWAITING_USER_FEEDBACK` | 需要用户输入才能继续 |
+| `IN_PROGRESS` | 正在积极执行任务 |
+| `PAUSED` | 暂时停止 |
+| `COMPLETED` | 成功完成 |
+| `FAILED` | 遇到错误 |
 
-### Activity Types
+### 活动类型
 
-| Type | Description |
+| 类型 | 描述 |
 |------|-------------|
-| Plan Generated | A plan was generated for the task |
-| Plan Approved | The plan was approved (manually or auto) |
-| User Message | User posted a message to the session |
-| Agent Message | Jules posted a message |
-| Progress Update | Status update on current work |
-| Session Completed | Session finished successfully |
-| Session Failed | Session encountered an error |
+| Plan Generated | 为任务生成了计划 |
+| Plan Approved | 计划已获批准（手动或自动） |
+| User Message | 用户向会话发送了消息 |
+| Agent Message | Jules 发送了消息 |
+| Progress Update | 当前工作的状态更新 |
+| Session Completed | 会话成功完成 |
+| Session Failed | 会话遇到错误 |
 
-## Workflows
+## 工作流程
 
-### Option 1: Automated Session with Auto-PR (Recommended)
+### 选项 1：自动会话（推荐）
 
-Create a session that automatically creates a PR when complete:
+创建一个在完成后会自动创建 PR 的会话：
 
 ```bash
 ./scripts/jules_api.sh new-session \
@@ -144,14 +144,14 @@ Create a session that automatically creates a PR when complete:
   --auto-pr
 ```
 
-**Why this is recommended:**
-- Plans are automatically approved (default behavior)
-- PR is created automatically on completion
-- Minimal manual intervention required
+**推荐原因：**
+- 计划会自动获得批准（默认行为）
+- 完成后会自动创建 PR
+- 需要的最小手动干预
 
-### Option 2: Session with Plan Approval
+### 选项 2：需要计划审批的会话
 
-For sensitive operations, require explicit plan approval:
+对于敏感操作，需要明确的计划审批：
 
 ```bash
 # Create session requiring plan approval
@@ -170,9 +170,9 @@ For sensitive operations, require explicit plan approval:
 ./scripts/jules_api.sh approve-plan --session SESSION_ID
 ```
 
-### Option 3: Interactive Session
+### 选项 3：交互式会话
 
-Send follow-up messages during an active session:
+在活跃的会话期间发送跟进消息：
 
 ```bash
 # Create session
@@ -188,12 +188,12 @@ Send follow-up messages during an active session:
   --prompt "Also add input validation for all endpoints"
 ```
 
-## API Reference
+## API 参考
 
-### Sources
+### 来源
 
-#### List Sources
-Lists all connected GitHub repositories.
+#### 列出来源
+列出所有连接的 GitHub 仓库。
 
 ```bash
 curl -sS \
@@ -201,14 +201,14 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sources"
 ```
 
-**Query Parameters:**
-| Parameter | Type | Default | Description |
+**查询参数：**
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 30 | Number of sources to return (1-100) |
-| `pageToken` | string | - | Token from previous response for pagination |
-| `filter` | string | - | AIP-160 filter (e.g., `name=sources/source1`) |
+| `pageSize` | integer | 30 | 返回的来源数量（1-100） |
+| `pageToken` | string | - | 上次响应的令牌，用于分页 |
+| `filter` | string | - | AIP-160 过滤器（例如，`name=sources/source1`）
 
-**Response:**
+**响应：**
 ```json
 {
   "sources": [
@@ -230,8 +230,8 @@ curl -sS \
 }
 ```
 
-#### Get Source
-Retrieves a single source by name.
+#### 获取来源
+按名称检索单个来源。
 
 ```bash
 curl -sS \
@@ -239,14 +239,14 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sources/github/octocat/Hello-World"
 ```
 
-Use this to see available branches before creating a session.
+使用此功能在创建会话之前查看可用的分支。
 
 ---
 
-### Sessions
+### 会话
 
-#### Create Session
-Creates a new coding session.
+#### 创建会话
+创建一个新的编码会话。
 
 ```bash
 curl -sS "https://jules.googleapis.com/v1alpha/sessions" \
@@ -267,17 +267,17 @@ curl -sS "https://jules.googleapis.com/v1alpha/sessions" \
   }'
 ```
 
-**Request Body Fields:**
-| Field | Type | Required | Description |
+**请求体字段：**
+| 字段 | 类型 | 是否必填 | 描述 |
 |-------|------|----------|-------------|
-| `prompt` | string | Yes | The task description for Jules |
-| `title` | string | No | Short title for the session |
-| `sourceContext.source` | string | Yes | Source name (e.g., `sources/github/owner/repo`) |
-| `sourceContext.githubRepoContext.startingBranch` | string | Yes | Branch to start from |
-| `requirePlanApproval` | boolean | No | If true, pause for plan approval (default: false) |
-| `automationMode` | string | No | Set to `AUTO_CREATE_PR` for automatic PR creation |
+| `prompt` | string | 是 | 用于 Jules 的任务描述 |
+| `title` | string | 否 | 会话的简短标题 |
+| `sourceContext.source` | string | 是 | 来源名称（例如，`sources/github/owner/repo`） |
+| `sourceContext.githubRepoContext.startingBranch` | string | 是 | 要从哪个分支开始 |
+| `requirePlanApproval` | boolean | 否 | 如果为 true，则暂停以等待计划审批（默认：false） |
+| `automationMode` | string | 否 | 设置为 `AUTO_CREATE_PR` 以自动创建 PR |
 
-**Response:**
+**响应：**
 ```json
 {
   "name": "sessions/31415926535897932384",
@@ -291,8 +291,8 @@ curl -sS "https://jules.googleapis.com/v1alpha/sessions" \
 }
 ```
 
-#### List Sessions
-Lists your sessions.
+#### 列出会话
+列出您的会话。
 
 ```bash
 curl -sS \
@@ -300,14 +300,14 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sessions?pageSize=20"
 ```
 
-**Query Parameters:**
-| Parameter | Type | Default | Description |
+**查询参数：**
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 30 | Number of sessions to return (1-100) |
-| `pageToken` | string | - | Token from previous response for pagination |
+| `pageSize` | integer | 30 | 返回的会话数量（1-100） |
+| `pageToken` | string | - | 上次响应的令牌，用于分页 |
 
-#### Get Session
-Retrieves a single session by ID.
+#### 获取会话
+按 ID 获取单个会话。
 
 ```bash
 curl -sS \
@@ -315,7 +315,7 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sessions/SESSION_ID"
 ```
 
-**Response includes outputs on completion:**
+**响应包含完成时的输出：**
 ```json
 {
   "name": "sessions/31415926535897932384",
@@ -333,8 +333,8 @@ curl -sS \
 }
 ```
 
-#### Send Message
-Sends a message to an active session.
+#### 发送消息
+向活跃的会话发送消息。
 
 ```bash
 curl -sS \
@@ -345,10 +345,10 @@ curl -sS \
   -d '{"prompt": "Also add integration tests"}'
 ```
 
-Use this to provide feedback, answer questions, or give additional instructions.
+使用此功能提供反馈、回答问题或给出额外指令。
 
-#### Approve Plan
-Approves a pending plan (only needed if `requirePlanApproval` was true).
+#### 批准计划
+批准待定的计划（仅在 `requirePlanApproval` 为 true 时需要）。
 
 ```bash
 curl -sS \
@@ -358,8 +358,8 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sessions/SESSION_ID:approvePlan"
 ```
 
-#### Delete Session
-Deletes a session.
+#### 删除会话
+删除会话。
 
 ```bash
 curl -sS \
@@ -370,10 +370,10 @@ curl -sS \
 
 ---
 
-### Activities
+### 活动
 
-#### List Activities
-Lists activities for a session.
+#### 列出活动
+列出会话中的活动。
 
 ```bash
 curl -sS \
@@ -381,13 +381,13 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sessions/SESSION_ID/activities?pageSize=30"
 ```
 
-**Query Parameters:**
-| Parameter | Type | Default | Description |
+**查询参数：**
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `pageSize` | integer | 50 | Number of activities to return (1-100) |
-| `pageToken` | string | - | Token from previous response for pagination |
+| `pageSize` | integer | 50 | 返回的活动数量（1-100） |
+| `pageToken` | string | - | 上次响应的令牌，用于分页 |
 
-**Response:**
+**响应：**
 ```json
 {
   "activities": [
@@ -411,7 +411,7 @@ curl -sS \
 }
 ```
 
-Activities may include artifacts with code changes:
+活动可能包含代码更改的工件：
 ```json
 {
   "artifacts": [
@@ -428,8 +428,8 @@ Activities may include artifacts with code changes:
 }
 ```
 
-#### Get Activity
-Retrieves a single activity by ID.
+#### 获取活动
+按 ID 获取单个活动。
 
 ```bash
 curl -sS \
@@ -437,13 +437,13 @@ curl -sS \
   "https://jules.googleapis.com/v1alpha/sessions/SESSION_ID/activities/ACTIVITY_ID"
 ```
 
-## Script Reference
+## 脚本参考
 
 ### jules_api.sh
 
-The `scripts/jules_api.sh` script provides a convenient wrapper for common API operations.
+`scripts/jules_api.sh` 脚本为常见的 API 操作提供了一个便捷的封装。
 
-**Usage:**
+**使用方法：**
 ```bash
 # List sources
 ./scripts/jules_api.sh sources
@@ -470,23 +470,23 @@ The `scripts/jules_api.sh` script provides a convenient wrapper for common API o
   [--require-plan-approval]
 ```
 
-**Flags:**
-| Flag | Description |
+**标志：**
+| 标志 | 描述 |
 |------|-------------|
-| `--source` | Source name (format: `sources/github/owner/repo`) |
-| `--title` | Session title |
-| `--prompt` | Task description or message content |
-| `--session` | Session ID |
-| `--branch` | Starting branch (default: `main`) |
-| `--auto-pr` | Enable automatic PR creation |
-| `--require-plan-approval` | Require explicit plan approval |
-| `--page-size` | Number of results to return |
+| `--source` | 来源名称（格式：`sources/github/owner/repo`） |
+| `--title` | 会话标题 |
+| `--prompt` | 任务描述或消息内容 |
+| `--session` | 会话 ID |
+| `--branch` | 开始分支（默认：`main`） |
+| `--auto-pr` | 启用自动创建 PR |
+| `--require-plan-approval` | 需要明确的计划审批 |
+| `--page-size` | 返回的结果数量 |
 
 ### jules.js
 
-The `scripts/jules.js` script wraps the Jules CLI for programmatic use.
+`scripts/jules.js` 脚本为编程使用封装了 Jules CLI。
 
-**Usage:**
+**使用方法：**
 ```bash
 node scripts/jules.js version
 node scripts/jules.js list-repos
@@ -495,90 +495,90 @@ node scripts/jules.js new --repo owner/repo --task "Your task"
 node scripts/jules.js pull --session SESSION_ID
 ```
 
-## Common Error Patterns
+## 常见错误模式
 
-### "Source not found" or "Repository not found"
+### “Source not found” 或 “Repository not found”
 
-**Cause:** Repository not connected or incorrect source name format.
+**原因：** 仓库未连接或来源名称格式不正确。
 
-**Solution:**
-1. Run `./scripts/jules_api.sh sources` to list available sources
-2. Ensure you've installed the Jules GitHub app for this repo
-3. Use the exact source name from the list (e.g., `sources/github/octocat/Hello-World`)
+**解决方法：**
+1. 运行 `./scripts/jules_api.sh sources` 以列出可用的来源
+2. 确保您已为该仓库安装了 Jules GitHub 应用
+3. 使用列表中的确切来源名称（例如，`sources/github/octocat/Hello-World`）
 
-### "Missing JULES_API_KEY"
+### “Missing JULES_API_KEY”
 
-**Cause:** API key not set in environment.
+**原因：** 环境中未设置 API 密钥。
 
-**Solution:**
+**解决方法：**
 ```bash
 export JULES_API_KEY="your-api-key"
 ```
 
-### Authentication Errors
+### 身份验证错误
 
-**Cause:** Invalid or expired API key.
+**原因：** API 密钥无效或已过期。
 
-**Solution:**
-1. Generate a new API key at https://jules.google.com/settings#api
-2. Update the `JULES_API_KEY` environment variable
-3. Note: You can have at most 3 API keys at a time
+**解决方法：**
+1. 在 https://jules.google.com/settings#api 生成新的 API 密钥
+2. 更新 `JULES_API_KEY` 环境变量
+3. 注意：您最多可以同时拥有 3 个 API 密钥
 
-### Session Stuck in AWAITING_PLAN_APPROVAL
+### 会话卡在 AWAITING_PLAN_APPROVAL 状态
 
-**Cause:** Session was created with `requirePlanApproval: true`.
+**原因：** 会话创建时设置了 `requirePlanApproval: true`。
 
-**Solution:**
+**解决方法：**
 ```bash
 ./scripts/jules_api.sh approve-plan --session SESSION_ID
 ```
 
-### Task Fails with Vague Error
+### 任务因模糊的提示而失败
 
-**Cause:** Vague prompts may produce unexpected results.
+**原因：** 模糊的提示可能导致意外结果。
 
-**Solution:**
-- Write clear, specific prompts
-- Break large tasks into smaller, focused tasks
-- Avoid prompts that require long-running commands (dev servers, watch scripts)
+**解决方法：**
+- 编写清晰、具体的提示
+- 将大型任务分解为更小、更具体的任务
+- 避免使用需要长时间运行的命令（如开发服务器、监视脚本）
 
-### Large Files Skipped
+### 大文件被跳过
 
-**Cause:** Files exceeding 768,000 tokens may be skipped.
+**原因：** 超过 768,000 个令牌的文件可能会被跳过。
 
-**Solution:**
-- Break down operations on very large files
-- Consider splitting large files before processing
+**解决方法：**
+- 将对非常大文件的操作分解
+- 考虑在处理之前分割大文件
 
-## Best Practices
+## 最佳实践
 
-### Writing Effective Prompts
+### 编写有效的提示
 
-1. **Be specific**: Instead of "fix the bug", say "fix the null pointer exception in `auth.js:45` when email is undefined"
-2. **Provide context**: Mention relevant files, functions, or error messages
-3. **Keep tasks focused**: One logical task per session
+1. **具体化**：不要使用“修复错误”，而是使用“修复 `auth.js:45` 中的 `null pointer exception`（当 `email` 未定义时）”
+2. **提供上下文**：提及相关的文件、函数或错误信息
+3. **保持任务专注**：每个会话只处理一个逻辑任务
 
-### Monitoring Sessions
+### 监控会话
 
-1. Poll session state to track progress
-2. Check activities for detailed progress updates
-3. Handle `AWAITING_USER_FEEDBACK` state by sending clarifying messages
+1. 轮询会话状态以跟踪进度
+2. 检查活动以获取详细的进度更新
+3. 对于 `AWAITING_USER_FEEDBACK` 状态，发送澄清消息
 
-### Security
+### 安全性
 
-1. Never include secrets or credentials in prompts
-2. Review generated PRs before merging
-3. Use `requirePlanApproval: true` for sensitive operations
+1. 从不将密钥或凭据包含在提示中
+2. 合并之前审查生成的 PR
+3. 对于敏感操作，使用 `requirePlanApproval: true`
 
-### Performance
+### 性能
 
-1. Use `automationMode: AUTO_CREATE_PR` for streamlined workflows
-2. Let plans auto-approve for routine tasks
-3. Break complex tasks into smaller sessions
+1. 对于常规任务，使用 `automationMode: AUTO_CREATE_PR` 以简化工作流程
+2. 让计划自动获得批准
+3. 将复杂任务分解为更小的会话
 
-## Extracting Results
+## 提取结果
 
-When a session completes, retrieve the PR URL from outputs:
+当会话完成时，从输出中检索 PR URL：
 
 ```bash
 # Get session details
@@ -588,19 +588,19 @@ curl -sS \
   | jq '.outputs[].pullRequest.url'
 ```
 
-## Known Limitations
+## 已知的限制
 
-- **Alpha API**: Specifications may change; API keys and definitions are experimental
-- **No long-running commands**: Jules cannot run `npm run dev` or similar watch scripts
-- **Context size**: Files > 768,000 tokens may be skipped
-- **Prompt sensitivity**: Vague prompts may produce unexpected results
+- **Alpha API**：规范可能会更改；API 密钥和定义是实验性的
+- **不允许长时间运行的命令**：Jules 无法运行 `npm run dev` 或类似的监视脚本
+- **上下文大小**：超过 768,000 个令符的文件可能会被跳过
+- **提示的敏感性**：模糊的提示可能导致意外结果
 
-## References
+## 参考资料
 
-- [Jules API Documentation](https://jules.google/docs/api/reference/overview/)
-- [Sessions Reference](https://jules.google/docs/api/reference/sessions/)
-- [Activities Reference](https://jules.google/docs/api/reference/activities/)
-- [Sources Reference](https://jules.google/docs/api/reference/sources/)
-- [Types Reference](https://jules.google/docs/api/reference/types/)
-- [Google Developers - Jules API](https://developers.google.com/jules/api)
-- [Jules Settings (API Keys)](https://jules.google.com/settings#api)
+- [Jules API 文档](https://jules.google/docs/api/reference/overview/)
+- [会话参考](https://jules.google/docs/api/reference/sessions/)
+- [活动参考](https://jules.google/docs/api/reference/activities/)
+- [来源参考](https://jules.google/docs/api/reference/sources/)
+- [类型参考](https://jules.google/docs/api/reference/types/)
+- [Google 开发者 - Jules API](https://developers.google.com/jules/api)
+- [Jules 设置（API 密钥）](https://jules.google.com/settings#api)

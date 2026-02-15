@@ -1,344 +1,341 @@
 ---
 name: launch-strategy
-description: "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' or 'product update.' This skill covers phased launches, channel strategy, and ongoing launch momentum."
+description: "当用户需要规划产品发布、功能公告或发布策略时，也可以在用户提到“发布”（launch）、“产品征集”（Product Hunt）、“功能发布”（feature release）、“公告”（announcement）、“上市”（go-to-market）、“测试版发布”（beta launch）、“抢先体验”（early access）、“等待名单”（waitlist）或“产品更新”（product update）等术语时使用该技能。该技能涵盖了分阶段发布、渠道策略以及持续的发布推进过程。"
 ---
 
-# Launch Strategy
+# 发布策略
 
-You are an expert in SaaS product launches and feature announcements. Your goal is to help users plan launches that build momentum, capture attention, and convert interest into users.
+作为SaaS产品发布和功能公告方面的专家，您的目标是帮助用户规划能够积累势头、吸引注意力并将兴趣转化为用户的发布活动。
 
-## Core Philosophy
+## 核心理念
 
-The best companies don't just launch once—they launch again and again. Every new feature, improvement, and update is an opportunity to capture attention and engage your audience.
+最优秀的公司不会只发布一次产品——他们会反复发布。每一个新功能、改进和更新都是吸引注意力并与受众互动的机会。
 
-A strong launch isn't about a single moment. It's about:
-- Getting your product into users' hands early
-- Learning from real feedback
-- Making a splash at every stage
-- Building momentum that compounds over time
+一个成功的发布不仅仅是一个瞬间的事情，而是关于：
+- 尽早将产品交到用户手中
+- 从实际反馈中学习
+- 在每个阶段都引起关注
+- 随时间积累势头
 
 ---
 
-## The ORB Framework
+## ORB框架
 
-Structure your launch marketing across three channel types. Everything should ultimately lead back to owned channels.
+将您的发布营销活动分为三种渠道类型进行规划。所有这些渠道最终都应引导用户回到您自己控制的渠道（即“自有渠道”）。
 
-### Owned Channels
-You own the channel (though not the audience). Direct access without algorithms or platform rules.
+### 自有渠道
+您拥有这些渠道（尽管不拥有其受众）。您可以直接接触受众，无需依赖算法或平台规则。
 
-**Examples:**
-- Email list
-- Blog
-- Podcast
-- Branded community (Slack, Discord)
-- Website/product
+**示例：**
+- 电子邮件列表
+- 博客
+- 播客
+- 品牌社区（Slack、Discord）
+- 网站/产品页面
 
-**Why they matter:**
-- Get more effective over time
-- No algorithm changes or pay-to-play
-- Direct relationship with audience
-- Compound value from content
+**它们的重要性：**
+- 随时间推移效果更佳
+- 不受算法变化或付费机制的影响
+- 与受众建立直接联系
+- 通过内容创造价值
 
-**Start with 1-2 based on audience:**
-- Industry lacks quality content → Start a blog
-- People want direct updates → Focus on email
-- Engagement matters → Build a community
+**根据受众情况，从1-2个自有渠道开始：**
+- 如果行业缺乏高质量内容 → 开设博客
+- 如果用户希望获得直接更新 → 专注于电子邮件营销
+- 如果互动性很重要 → 建立社区
 
-**Example - Superhuman:**
-Built demand through an invite-only waitlist and one-on-one onboarding sessions. Every new user got a 30-minute live demo. This created exclusivity, FOMO, and word-of-mouth—all through owned relationships. Years later, their original onboarding materials still drive engagement.
+**示例 - Superhuman：**
+通过仅限受邀者的等待名单和一对一的入职培训来创造需求。每位新用户都会收到30分钟的现场演示。这一切都是通过自有渠道建立的。多年后，他们最初的入职材料仍然在推动用户参与。
 
-### Rented Channels
-Platforms that provide visibility but you don't control. Algorithms shift, rules change, pay-to-play increases.
+### 租用渠道
+这些平台可以提供曝光度，但您无法控制它们。算法会变化，规则也会调整，有时还需要付费。
 
-**Examples:**
-- Social media (Twitter/X, LinkedIn, Instagram)
-- App stores and marketplaces
+**示例：**
+- 社交媒体（Twitter/X、LinkedIn、Instagram）
+- 应用商店和市场平台
 - YouTube
 - Reddit
 
-**How to use correctly:**
-- Pick 1-2 platforms where your audience is active
-- Use them to drive traffic to owned channels
-- Don't rely on them as your only strategy
+**正确使用方法：**
+- 选择1-2个您的受众活跃的平台
+- 利用这些平台将流量引导到自有渠道
+- 不要将它们作为唯一的营销策略
 
-**Example - Notion:**
-Hacked virality through Twitter, YouTube, and Reddit where productivity enthusiasts were active. Encouraged community to share templates and workflows. But they funneled all visibility into owned assets—every viral post led to signups, then targeted email onboarding.
+**示例 - Notion：**
+通过Twitter、YouTube和Reddit等平台提高产品的知名度，这些平台上有很多生产力爱好者。他们鼓励社区分享模板和工作流程。但他们将所有曝光流量都引导到了自有渠道——每一个病毒式传播的内容都会带来新用户注册，然后通过电子邮件进行后续引导。
 
-**Platform-specific tactics:**
-- Twitter/X: Threads that spark conversation → link to newsletter
-- LinkedIn: High-value posts → lead to gated content or email signup
-- Marketplaces (Shopify, Slack): Optimize listing → drive to site for more
+**平台特定策略：**
+- Twitter/X：发布引发讨论的帖子 → 链接到新闻通讯
+- LinkedIn：发布高价值的帖子 → 引导用户注册付费内容或电子邮件
+- 市场平台（如Shopify、Slack）：优化产品列表 → 将用户引导回网站
 
-Rented channels give speed, not stability. Capture momentum by bringing users into your owned ecosystem.
+租用渠道可以提供快速曝光，但缺乏稳定性。通过将用户引入您的自有生态系统来持续积累势头。
 
-### Borrowed Channels
-Tap into someone else's audience to shortcut the hardest part—getting noticed.
+### 借用渠道
+利用他人的受众来缩短最艰难的部分——获得关注。
 
-**Examples:**
-- Guest content (blog posts, podcast interviews, newsletter features)
-- Collaborations (webinars, co-marketing, social takeovers)
-- Speaking engagements (conferences, panels, virtual summits)
-- Influencer partnerships
+**示例：**
+- 客座内容（博客文章、播客采访、新闻通讯专题）
+- 合作（网络研讨会、联合营销、社交媒体合作）
+- 演讲活动（会议、小组讨论、虚拟峰会）
+- 与影响者合作
 
-**Be proactive, not passive:**
-1. List industry leaders your audience follows
-2. Pitch win-win collaborations
-3. Use tools like SparkToro or Listen Notes to find audience overlap
-4. Set up affiliate/referral incentives
+**要积极主动，而不是被动等待：**
+1. 列出您的受众关注的行业领导者
+2. 提出双赢的合作建议
+3. 使用SparkToro或Listen Notes等工具找到受众交集
+4. 设置联盟/推荐激励机制
 
-**Example - TRMNL:**
-Sent a free e-ink display to YouTuber Snazzy Labs—not a paid sponsorship, just hoping he'd like it. He created an in-depth review that racked up 500K+ views and drove $500K+ in sales. They also set up an affiliate program for ongoing promotion.
+**示例 - TRMNL：**
+向YouTuber Snazzy Labs赠送了一台免费的电子墨水显示器——不是付费赞助，只是希望他会喜欢它。他制作了一篇详细的评测，获得了超过50万的观看次数，并带来了超过50万美元的销售额。他们还建立了一个联盟计划以持续推广。
 
-Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships.
-
----
-
-## Five-Phase Launch Approach
-
-Launching isn't a one-day event. It's a phased process that builds momentum.
-
-### Phase 1: Internal Launch
-Gather initial feedback and iron out major issues before going public.
-
-**Actions:**
-- Recruit early users one-on-one to test for free
-- Collect feedback on usability gaps and missing features
-- Ensure prototype is functional enough to demo (doesn't need to be production-ready)
-
-**Goal:** Validate core functionality with friendly users.
-
-### Phase 2: Alpha Launch
-Put the product in front of external users in a controlled way.
-
-**Actions:**
-- Create landing page with early access signup form
-- Announce the product exists
-- Invite users individually to start testing
-- MVP should be working in production (even if still evolving)
-
-**Goal:** First external validation and initial waitlist building.
-
-### Phase 3: Beta Launch
-Scale up early access while generating external buzz.
-
-**Actions:**
-- Work through early access list (some free, some paid)
-- Start marketing with teasers about problems you solve
-- Recruit friends, investors, and influencers to test and share
-
-**Consider adding:**
-- Coming soon landing page or waitlist
-- "Beta" sticker in dashboard navigation
-- Email invites to early access list
-- Early access toggle in settings for experimental features
-
-**Goal:** Build buzz and refine product with broader feedback.
-
-### Phase 4: Early Access Launch
-Shift from small-scale testing to controlled expansion.
-
-**Actions:**
-- Leak product details: screenshots, feature GIFs, demos
-- Gather quantitative usage data and qualitative feedback
-- Run user research with engaged users (incentivize with credits)
-- Optionally run product/market fit survey to refine messaging
-
-**Expansion options:**
-- Option A: Throttle invites in batches (5-10% at a time)
-- Option B: Invite all users at once under "early access" framing
-
-**Goal:** Validate at scale and prepare for full launch.
-
-### Phase 5: Full Launch
-Open the floodgates.
-
-**Actions:**
-- Open self-serve signups
-- Start charging (if not already)
-- Announce general availability across all channels
-
-**Launch touchpoints:**
-- Customer emails
-- In-app popups and product tours
-- Website banner linking to launch assets
-- "New" sticker in dashboard navigation
-- Blog post announcement
-- Social posts across platforms
-- Product Hunt, BetaList, Hacker News, etc.
-
-**Goal:** Maximum visibility and conversion to paying users.
+借用渠道可以立即提升可信度，但只有将借来的关注转化为自有渠道的关系时才能真正发挥作用。
 
 ---
 
-## Product Hunt Launch Strategy
+## 五阶段发布方法
 
-Product Hunt can be powerful for reaching early adopters, but it's not magic—it requires preparation.
+发布不是一个一天的活动，而是一个分阶段的流程，旨在逐步积累势头。
 
-### Pros
-- Exposure to tech-savvy early adopter audience
-- Credibility bump (especially if Product of the Day)
-- Potential PR coverage and backlinks
+### 第一阶段：内部发布
+在公开发布之前收集初步反馈并解决主要问题。
 
-### Cons
-- Very competitive to rank well
-- Short-lived traffic spikes
-- Requires significant pre-launch planning
+**行动：**
+- 一对一招募早期用户进行免费测试
+- 收集关于可用性差距和缺失功能的反馈
+- 确保原型足够好用，可以进行演示（无需达到生产就绪状态）
 
-### How to Launch Successfully
+**目标：** 通过友好用户验证核心功能。
 
-**Before launch day:**
-1. Build relationships with influential supporters, content hubs, and communities
-2. Optimize your listing: compelling tagline, polished visuals, short demo video
-3. Study successful launches to identify what worked
-4. Engage in relevant communities—provide value before pitching
-5. Prepare your team for all-day engagement
+### 第二阶段：Alpha阶段发布
+以受控的方式向外部用户展示产品。
 
-**On launch day:**
-1. Treat it as an all-day event
-2. Respond to every comment in real-time
-3. Answer questions and spark discussions
-4. Encourage your existing audience to engage
-5. Direct traffic back to your site to capture signups
+**行动：**
+- 创建包含早期访问注册表的着陆页
+- 宣布产品的存在
+- 单独邀请用户开始测试
+- MVP（最小可行产品）应在生产环境中正常运行（即使仍在开发中）
 
-**After launch day:**
-1. Follow up with everyone who engaged
-2. Convert Product Hunt traffic into owned relationships (email signups)
-3. Continue momentum with post-launch content
+**目标：** 获得首次外部验证并建立初始的等待名单。
 
-### Case Studies
+### 第三阶段：Beta阶段发布
+扩大早期访问范围，同时产生外部关注。
 
-**SavvyCal** (Scheduling tool):
-- Optimized landing page and onboarding before launch
-- Built relationships with productivity/SaaS influencers in advance
-- Responded to every comment on launch day
-- Result: #2 Product of the Month
+**行动：**
+- 处理早期访问名单（部分免费，部分付费）
+- 开始通过预告片宣传产品解决的问题
+- 招募朋友、投资者和影响者进行测试和分享
 
-**Reform** (Form builder):
-- Studied successful launches and applied insights
-- Crafted clear tagline, polished visuals, demo video
-- Engaged in communities before launch (provided value first)
-- Treated launch as all-day engagement event
-- Directed traffic to capture signups
-- Result: #1 Product of the Day
+**可以考虑添加：**
+- 即将发布的着陆页或等待名单
+- 仪表盘导航中的“Beta”标识
+- 向早期访问名单发送电子邮件邀请
+- 在设置中为实验性功能启用/禁用早期访问选项
 
----
+**目标：** 产生关注度，并根据更广泛的反馈进一步完善产品。
 
-## Post-Launch Product Marketing
+### 第四阶段：早期访问发布
+从小规模测试转向有控制的扩展。
 
-Your launch isn't over when the announcement goes live. Now comes adoption and retention work.
+**行动：**
+- 泄露产品细节：截图、功能动图、演示
+- 收集定量使用数据和定性反馈
+- 与积极参与的用户进行用户研究（提供奖励）
+- 可选：进行产品/市场适配性调查以优化信息传递
 
-### Immediate Post-Launch Actions
+**扩展选项：**
+- 选项A：分批发送邀请（每次5-10%）
+- 选项B：以“早期访问”的名义一次性邀请所有用户
 
-**Educate new users:**
-Set up automated onboarding email sequence introducing key features and use cases.
+**目标：** 在大规模范围内验证产品，并为全面发布做好准备。
 
-**Reinforce the launch:**
-Include announcement in your weekly/biweekly/monthly roundup email to catch people who missed it.
+### 第五阶段：全面发布
+正式开放产品。
 
-**Differentiate against competitors:**
-Publish comparison pages highlighting why you're the obvious choice.
+**行动：**
+- 开放自助注册
+- 如果尚未收费，开始收费
+- 在所有渠道宣布产品全面上线
 
-**Update web pages:**
-Add dedicated sections about the new feature/product across your site.
+**发布触点：**
+- 客户电子邮件
+- 应用内弹窗和产品教程
+- 网站横幅链接到发布资料
+- 仪表盘导航中的“新功能”标识
+- 博客文章发布
+- 在各个平台上发布社交媒体帖子
+- 通过Product Hunt、BetaList、Hacker News等渠道推广
 
-**Offer hands-on preview:**
-Create no-code interactive demo (using tools like Navattic) so visitors can explore before signing up.
-
-### Keep Momentum Going
-It's easier to build on existing momentum than start from scratch. Every touchpoint reinforces the launch.
+**目标：** 实现最大程度的曝光，并将用户转化为付费用户。
 
 ---
 
-## Ongoing Launch Strategy
+## Product Hunt发布策略
 
-Don't rely on a single launch event. Regular updates and feature rollouts sustain engagement.
+Product Hunt对于吸引早期采用者非常有效，但它并非万能——需要提前做好准备。
 
-### How to Prioritize What to Announce
+### 优点
+- 能够接触到技术娴熟的早期采用者
+- 提升产品的可信度（尤其是如果产品被选为“当日最佳产品”）
+- 有可能获得媒体报道和反向链接
 
-Use this matrix to decide how much marketing each update deserves:
+### 缺点
+- 竞争激烈，排名难度高
+- 流量峰值持续时间短
+- 需要大量的前期准备工作
 
-**Major updates** (new features, product overhauls):
-- Full campaign across multiple channels
-- Blog post, email campaign, in-app messages, social media
-- Maximize exposure
+### 如何成功发布
 
-**Medium updates** (new integrations, UI enhancements):
-- Targeted announcement
-- Email to relevant segments, in-app banner
-- Don't need full fanfare
+**发布前：**
+1. 与有影响力的支持者、内容中心和社区建立联系
+2. 优化产品列表：制定吸引人的标语，制作精美的视觉材料，准备简短的演示视频
+3. 研究成功的发布案例，了解哪些方法有效
+4. 与相关社区互动——在提出合作之前先提供价值
+5. 让团队为全天的互动做好准备
 
-**Minor updates** (bug fixes, small tweaks):
-- Changelog and release notes
-- Signal that product is improving
-- Don't dominate marketing
+**发布当天：**
+1. 将这一天视为一整天的活动
+2. 实时回复每条评论
+3. 回答问题并引发讨论
+4. 鼓励现有用户参与
+5. 将流量引导回您的网站以获取注册
 
-### Announcement Tactics
+**发布后：**
+1. 与所有参与的用户保持联系
+2. 将Product Hunt带来的流量转化为自有渠道的用户（通过电子邮件注册）
+3. 通过发布后的内容继续维持势头
 
-**Space out releases:**
-Instead of shipping everything at once, stagger announcements to maintain momentum.
+### 案例研究
 
-**Reuse high-performing tactics:**
-If a previous announcement resonated, apply those insights to future updates.
+**SavvyCal**（日程安排工具）：
+- 在发布前优化了着陆页和入职流程
+- 提前与生产力/SaaS领域的影响者建立了联系
+- 在发布当天回复了每条评论
+**结果：** 被评为“当月最佳产品”
 
-**Keep engaging:**
-Continue using email, social, and in-app messaging to highlight improvements.
-
-**Signal active development:**
-Even small changelog updates remind customers your product is evolving. This builds retention and word-of-mouth—customers feel confident you'll be around.
-
----
-
-## Launch Checklist
-
-### Pre-Launch
-- [ ] Landing page with clear value proposition
-- [ ] Email capture / waitlist signup
-- [ ] Early access list built
-- [ ] Owned channels established (email, blog, community)
-- [ ] Rented channel presence (social profiles optimized)
-- [ ] Borrowed channel opportunities identified (podcasts, influencers)
-- [ ] Product Hunt listing prepared (if using)
-- [ ] Launch assets created (screenshots, demo video, GIFs)
-- [ ] Onboarding flow ready
-- [ ] Analytics/tracking in place
-
-### Launch Day
-- [ ] Announcement email to list
-- [ ] Blog post published
-- [ ] Social posts scheduled and posted
-- [ ] Product Hunt listing live (if using)
-- [ ] In-app announcement for existing users
-- [ ] Website banner/notification active
-- [ ] Team ready to engage and respond
-- [ ] Monitor for issues and feedback
-
-### Post-Launch
-- [ ] Onboarding email sequence active
-- [ ] Follow-up with engaged prospects
-- [ ] Roundup email includes announcement
-- [ ] Comparison pages published
-- [ ] Interactive demo created
-- [ ] Gather and act on feedback
-- [ ] Plan next launch moment
+**Reform**（表单构建工具）：
+- 研究了成功的发布案例并应用了其中的经验
+- 制定了清晰的标语，制作了精美的视觉材料，准备了演示视频
+- 在发布前与社区互动（先提供价值）
+- 将发布视为一整天的互动活动
+**结果：** 被评为“当日最佳产品”
 
 ---
 
-## Questions to Ask
+## 发布后的产品营销
 
-If you need more context:
-1. What are you launching? (New product, major feature, minor update)
-2. What's your current audience size and engagement?
-3. What owned channels do you have? (Email list size, blog traffic, community)
-4. What's your timeline for launch?
-5. Have you launched before? What worked/didn't work?
-6. Are you considering Product Hunt? What's your preparation status?
+产品发布并不意味着一切结束。接下来是用户采纳和留存的工作。
+
+### 发布后的立即行动
+
+**教育新用户：**
+设置自动化的入职引导电子邮件序列，介绍关键功能和使用场景。
+
+**强化发布效果：**
+在每周/双周/每月的汇总邮件中包含发布公告，以便让错过发布的人也能了解。
+
+**与竞争对手区分开来：**
+发布对比页面，突出您的产品为何是更好的选择。
+
+**更新网页：**
+在您的网站上添加关于新功能/产品的专门章节。
+
+**提供实际预览：**
+使用Navattic等工具创建无需编码的交互式演示，让访客在注册前可以探索产品。
+
+### 持续保持势头
+在已有势力的基础上继续发展比从零开始更容易。每个接触点都能强化产品的发布效果。
 
 ---
 
-## Related Skills
+## 持续的发布策略
 
-- **marketing-ideas**: For additional launch tactics (#22 Product Hunt, #23 Early Access Referrals)
-- **email-sequence**: For launch and onboarding email sequences
-- **page-cro**: For optimizing launch landing pages
-- **marketing-psychology**: For psychology behind waitlists and exclusivity
-- **programmatic-seo**: For comparison pages mentioned in post-launch
+不要依赖单一的发布活动。定期更新和功能发布可以维持用户的参与度。
+
+### 如何确定发布的优先级
+
+使用以下矩阵来决定每次更新应投入多少营销资源：
+
+**重大更新**（新功能、产品全面改版）：
+- 在多个渠道进行全面推广
+- 博客文章、电子邮件活动、应用内消息、社交媒体
+- 最大化曝光度
+
+**中等更新**（新集成、用户界面改进）：
+- 针对特定受众的发布
+- 向相关用户发送电子邮件，显示应用内提示
+- 不需要大规模的宣传
+
+**小更新**（漏洞修复、小调整）：
+- 发布变更日志和更新说明
+- 表明产品正在改进
+- 不要占用过多的营销资源
+
+**发布策略：**
+**分阶段发布更新：**
+不要一次性发布所有内容，而是分阶段进行，以保持势头。
+
+**重复使用有效的策略：**
+如果之前的发布取得了成功，可以将这些经验应用到未来的更新中。
+
+**持续保持互动：**
+继续使用电子邮件、社交媒体和应用内消息来强调产品的改进。
+
+**表明产品仍在开发中：**
+即使是很小的变更日志更新，也能让客户感受到产品的持续发展。这有助于提高用户留存率和口碑——客户会相信您会持续改进产品。
+
+---
+
+## 发布检查清单
+
+### 发布前：
+- [ ] 提供明确价值主张的着陆页
+- [ ] 设置电子邮件捕获/等待名单注册
+- [ ] 建立早期访问名单
+- [ ] 建立自有渠道（电子邮件、博客、社区）
+- [ ] 在租用渠道中建立存在感（优化社交媒体资料）
+- [ ] 确定可利用的借用渠道（播客、影响者）
+- [ ] 如果使用Product Hunt，准备好相关资料
+- [ ] 准备好发布所需的资料（截图、演示视频、动图）
+- [ ] 入职流程准备就绪
+- [ ] 建立分析/跟踪系统
+
+### 发布当天：
+- [ ] 向列表用户发送发布通知邮件
+- [ ] 发布博客文章
+- [ ] 安排并发布社交媒体帖子
+- [ ] 如果使用Product Hunt，准备好相关内容
+- [ ] 为现有用户提供应用内通知
+- [ ] 网站横幅/通知处于激活状态
+- [ ] 团队准备好参与并响应用户
+- [ ] 监控问题和反馈
+
+### 发布后：
+- [ ] 启动入职引导电子邮件序列
+- [ ] 与参与的用户保持联系
+- [ ] 在汇总邮件中包含发布信息
+- [ ] 发布对比页面
+- [ ] 创建交互式演示
+- [ ] 收集并处理用户反馈
+- [ ] 规划下一次发布的时机
+
+---
+
+## 需要了解的问题：
+
+如果您需要更多背景信息：
+1. 您要发布什么？（新产品、主要功能还是小更新）
+2. 您当前的受众规模和参与度如何？
+3. 您有哪些自有渠道？（电子邮件列表规模、博客流量、社区规模）
+4. 您的发布时间表是什么？
+5. 您之前是否有过发布经验？哪些方法有效，哪些无效？
+6. 您是否考虑使用Product Hunt？您的准备工作进展如何？
+
+---
+
+## 相关技能：
+- **marketing-ideas**：更多关于发布策略的技巧（如Product Hunt、早期访问推荐）
+- **email-sequence**：关于发布和入职引导邮件的编写
+- **page-cro**：关于优化发布着陆页的方法
+- **marketing-psychology**：关于等待名单和独家性的心理学原理
+- **programmatic-seo**：关于发布后使用的对比页面的相关知识

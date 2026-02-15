@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Voice Advanced - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -32,13 +32,13 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Update client state
+## 更新客户端状态
 
-Updates client state
+用于更新客户端状态：
 
-`PUT /calls/{call_control_id}/actions/client_state_update` — Required: `client_state`
+`PUT /calls/{call_control_id}/actions/client_state_update` — 必需参数：`client_state`
 
 ```python
 response = client.calls.actions.update_client_state(
@@ -48,11 +48,11 @@ response = client.calls.actions.update_client_state(
 print(response.data)
 ```
 
-## SIP Refer a call
+## SIP 转接呼叫
 
-Initiate a SIP Refer on a Call Control call.
+用于发起 SIP 转接操作：
 
-`POST /calls/{call_control_id}/actions/refer` — Required: `sip_address`
+`POST /calls/{call_control_id}/actions/refer` — 必需参数：`sip_address`
 
 ```python
 response = client.calls.actions.refer(
@@ -62,11 +62,11 @@ response = client.calls.actions.refer(
 print(response.data)
 ```
 
-## Send DTMF
+## 发送 DTMF 音频
 
-Sends DTMF tones from this leg.
+用于从当前通话链路发送 DTMF 音频：
 
-`POST /calls/{call_control_id}/actions/send_dtmf` — Required: `digits`
+`POST /calls/{call_control_id}/actions/send_dtmf` — 必需参数：`digits`
 
 ```python
 response = client.calls.actions.send_dtmf(
@@ -76,9 +76,9 @@ response = client.calls.actions.send_dtmf(
 print(response.data)
 ```
 
-## SIPREC start
+## 启动 SIPREC 会话
 
-Start siprec session to configured in SIPREC connector SRS.
+用于启动在 SIPREC 连接器中配置的 SIPREC 会话：
 
 `POST /calls/{call_control_id}/actions/siprec_start`
 
@@ -89,9 +89,9 @@ response = client.calls.actions.start_siprec(
 print(response.data)
 ```
 
-## SIPREC stop
+## 停止 SIPREC 会话
 
-Stop SIPREC session.
+用于停止 SIPREC 会话：
 
 `POST /calls/{call_control_id}/actions/siprec_stop`
 
@@ -102,7 +102,9 @@ response = client.calls.actions.stop_siprec(
 print(response.data)
 ```
 
-## Noise Suppression Start (BETA)
+## 启用噪声抑制（测试版）
+
+用于启用噪声抑制功能：
 
 `POST /calls/{call_control_id}/actions/suppression_start`
 
@@ -113,7 +115,9 @@ response = client.calls.actions.start_noise_suppression(
 print(response.data)
 ```
 
-## Noise Suppression Stop (BETA)
+## 停用噪声抑制（测试版）
+
+用于停止噪声抑制功能：
 
 `POST /calls/{call_control_id}/actions/suppression_stop`
 
@@ -124,32 +128,23 @@ response = client.calls.actions.stop_noise_suppression(
 print(response.data)
 ```
 
-## Switch supervisor role
+## 切换监督者角色
 
-Switch the supervisor role for a bridged call.
+用于切换桥接呼叫的监督者角色：
 
-`POST /calls/{call_control_id}/actions/switch_supervisor_role` — Required: `role`
-
-```python
-response = client.calls.actions.switch_supervisor_role(
-    call_control_id="call_control_id",
-    role="barge",
-)
-print(response.data)
-```
+`POST /calls/{call_control_id}/actions/switch_supervisor_role` — 必需参数：`role`
 
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL。所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `callReferStarted` | Call Refer Started |
-| `callReferCompleted` | Call Refer Completed |
-| `callReferFailed` | Call Refer Failed |
-| `callSiprecStarted` | Call Siprec Started |
-| `callSiprecStopped` | Call Siprec Stopped |
-| `callSiprecFailed` | Call Siprec Failed |
+| `callReferStarted` | 转接呼叫开始 |
+| `callReferCompleted` | 转接呼叫完成 |
+| `callReferFailed` | 转接呼叫失败 |
+| `callSiprecStarted` | SIPREC 会话开始 |
+| `callSiprecStopped` | SIPREC 会话停止 |
+| `callSiprecFailed` | SIPREC 会话失败 |

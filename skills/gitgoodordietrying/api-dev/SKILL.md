@@ -1,25 +1,25 @@
 ---
 name: api-dev
-description: Scaffold, test, document, and debug REST and GraphQL APIs. Use when the user needs to create API endpoints, write integration tests, generate OpenAPI specs, test with curl, mock APIs, or troubleshoot HTTP issues.
+description: 用于搭建、测试、文档编写和调试 REST 以及 GraphQL API 的工具。当用户需要创建 API 端点、编写集成测试、生成 OpenAPI 规范、使用 curl 进行测试、模拟 API 行为或排查 HTTP 相关问题时，可以使用该工具。
 metadata: {"clawdbot":{"emoji":"🔌","requires":{"anyBins":["curl","node","python3"]},"os":["linux","darwin","win32"]}}
 ---
 
-# API Development
+# API开发
 
-Build, test, document, and debug HTTP APIs from the command line. Covers the full API lifecycle: scaffolding endpoints, testing with curl, generating OpenAPI docs, mocking services, and debugging.
+通过命令行构建、测试、文档编写和调试HTTP API。涵盖了API的整个生命周期：搭建端点、使用curl进行测试、生成OpenAPI文档、模拟服务以及调试问题。
 
-## When to Use
+## 使用场景
 
-- Scaffolding new REST or GraphQL endpoints
-- Testing APIs with curl or scripts
-- Generating or validating OpenAPI/Swagger specs
-- Mocking external APIs for development
-- Debugging HTTP request/response issues
-- Load testing endpoints
+- 搭建新的REST或GraphQL端点
+- 使用curl或脚本测试API
+- 生成或验证OpenAPI/Swagger规范
+- 为开发目的模拟外部API
+- 调试HTTP请求/响应问题
+- 对端点进行负载测试
 
-## Testing APIs with curl
+## 使用curl测试API
 
-### GET requests
+### GET请求
 
 ```bash
 # Basic GET
@@ -65,7 +65,7 @@ curl -s -X POST https://api.example.com/upload \
   -F "description=My document"
 ```
 
-### Debug requests
+### 调试请求
 
 ```bash
 # Verbose output (see full request/response)
@@ -84,9 +84,9 @@ curl -sL https://api.example.com/old-endpoint
 curl -s -o response.json https://api.example.com/data
 ```
 
-## API Test Scripts
+## API测试脚本
 
-### Bash test runner
+### Bash测试运行器
 
 ```bash
 #!/bin/bash
@@ -143,7 +143,7 @@ echo "Results: $PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ] && exit 0 || exit 1
 ```
 
-### Python test runner
+### Python测试运行器
 
 ```python
 #!/usr/bin/env python3
@@ -205,9 +205,9 @@ print(f"\nResults: {PASS} passed, {FAIL} failed")
 sys.exit(0 if FAIL == 0 else 1)
 ```
 
-## OpenAPI Spec Generation
+## OpenAPI规范生成
 
-### Generate from existing endpoints
+### 从现有端点生成规范
 
 ```bash
 # Scaffold an OpenAPI 3.0 spec from curl responses
@@ -328,7 +328,7 @@ components:
 EOF
 ```
 
-### Validate OpenAPI spec
+### 验证OpenAPI规范
 
 ```bash
 # Using npx (no install needed)
@@ -338,9 +338,9 @@ npx @redocly/cli lint openapi.yaml
 python3 -c "import yaml; yaml.safe_load(open('openapi.yaml'))" && echo "Valid YAML"
 ```
 
-## Mock Server
+## 模拟服务器
 
-### Quick mock with Python
+### 使用Python快速创建模拟服务器
 
 ```python
 #!/usr/bin/env python3
@@ -387,11 +387,11 @@ print(f"Mock server on http://localhost:{PORT}")
 http.server.HTTPServer(("", PORT), MockHandler).serve_forever()
 ```
 
-Run: `python3 mock_server.py 8080`
+运行命令：`python3 mock_server.py 8080`
 
-## Node.js Express Scaffolding
+## Node.js Express框架
 
-### Minimal REST API
+### 最简单的REST API搭建
 
 ```javascript
 // server.js - Minimal Express REST API
@@ -449,7 +449,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
 ```
 
-### Setup
+### 设置环境
 
 ```bash
 mkdir my-api && cd my-api
@@ -458,9 +458,9 @@ npm install express
 node server.js
 ```
 
-## Debugging Patterns
+## 调试技巧
 
-### Check if port is in use
+### 检查端口是否被占用
 
 ```bash
 # Linux/macOS
@@ -472,7 +472,7 @@ ss -tlnp | grep 3000
 kill $(lsof -t -i :3000)
 ```
 
-### Test CORS
+### 测试CORS（跨源资源共享）
 
 ```bash
 # Preflight request
@@ -483,7 +483,7 @@ curl -s -X OPTIONS https://api.example.com/users \
   -I
 ```
 
-### Watch for response time regressions
+### 监控响应时间的变化
 
 ```bash
 # Quick benchmark (10 requests)
@@ -492,18 +492,18 @@ for i in $(seq 1 10); do
 done | awk '{sum+=$1; if($1>max)max=$1} END {printf "Avg: %.3fs, Max: %.3fs\n", sum/NR, max}'
 ```
 
-### Inspect JWT tokens
+### 检查JWT令牌
 
 ```bash
 # Decode JWT payload (no verification)
 echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 ```
 
-## Tips
+## 提示
 
-- Use `jq` for JSON response processing: `curl -s url | jq '.items[] | {id, name}'`
-- Set `Content-Type` header on every request with a body - missing it causes silent 400s
-- Use `-w '\n'` with curl to ensure output ends with a newline
-- For large response bodies, pipe to `jq -C . | less -R` for colored paging
-- Test error paths: invalid JSON, missing fields, wrong types, unauthorized, not found
-- For WebSocket testing: `npx wscat -c ws://localhost:3000/ws`
+- 使用`jq`处理JSON响应：`curl -s url | jq '.items[] | {id, name}'`
+- 在每个带有请求体的请求中设置`Content-Type`头——缺少该头会导致隐式的400错误
+- 使用`-w '\n'`选项让curl的输出以换行符结尾
+- 对于较大的响应体，可以将输出通过`jq -C . | less -R`命令分页显示（并带有颜色提示）
+- 测试错误情况：无效的JSON、字段缺失、类型错误、权限问题、请求未找到等
+- 对于WebSocket测试：`npx wscat -c ws://localhost:3000/ws`

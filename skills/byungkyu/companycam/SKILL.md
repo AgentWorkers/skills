@@ -18,9 +18,9 @@ metadata:
 
 # CompanyCam
 
-Access the CompanyCam API with managed OAuth authentication. Manage projects, photos, users, tags, groups, documents, and webhooks for contractor photo documentation.
+您可以使用受管理的 OAuth 认证来访问 CompanyCam API。该 API 允许您管理项目、照片、用户、标签、组、文档以及用于承包商照片记录的 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List projects
@@ -32,39 +32,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/companycam/v2/{resource}
 ```
 
-Replace `{resource}` with the actual CompanyCam API endpoint path. The gateway proxies requests to `api.companycam.com/v2` and automatically injects your OAuth token.
+请将 `{resource}` 替换为实际的 CompanyCam API 端点路径。该网关会将请求代理到 `api.companycam.com/v2` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your CompanyCam OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 管理您的 CompanyCam OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -75,7 +75,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -88,7 +88,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -99,7 +99,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -114,9 +114,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -127,9 +127,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple CompanyCam connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 CompanyCam 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -141,40 +141,40 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最新的）活动连接。
 
-## API Reference
+## API 参考
 
-### Company
+### 公司信息
 
-#### Get Company
+#### 获取公司信息
 
 ```bash
 GET /companycam/v2/company
 ```
 
-Returns the current company information.
+返回当前公司的信息。
 
-### Users
+### 用户信息
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /companycam/v2/users/current
 ```
 
-#### List Users
+#### 列出用户
 
 ```bash
 GET /companycam/v2/users
 ```
 
-Query parameters:
-- `page` - Page number
-- `per_page` - Results per page (default: 25)
-- `status` - Filter by status (active, inactive)
+查询参数：
+- `page` - 页码
+- `per_page` - 每页显示的结果数量（默认：25）
+- `status` - 按状态过滤（活动/非活动）
 
-#### Create User
+#### 创建用户
 
 ```bash
 POST /companycam/v2/users
@@ -188,15 +188,15 @@ Content-Type: application/json
 }
 ```
 
-User roles: `admin`, `standard`, `limited`
+用户角色：`admin`、`standard`、`limited`
 
-#### Get User
+#### 获取用户信息
 
 ```bash
 GET /companycam/v2/users/{id}
 ```
 
-#### Update User
+#### 更新用户信息
 
 ```bash
 PUT /companycam/v2/users/{id}
@@ -208,28 +208,28 @@ Content-Type: application/json
 }
 ```
 
-#### Delete User
+#### 删除用户
 
 ```bash
 DELETE /companycam/v2/users/{id}
 ```
 
-### Projects
+### 项目信息
 
-#### List Projects
+#### 列出项目
 
 ```bash
 GET /companycam/v2/projects
 ```
 
-Query parameters:
-- `page` - Page number
-- `per_page` - Results per page (default: 25)
-- `query` - Search query
-- `status` - Filter by status
-- `modified_since` - Unix timestamp for filtering
+查询参数：
+- `page` - 页码
+- `per_page` - 每页显示的结果数量（默认：25）
+- `query` - 搜索查询
+- `status` - 按状态过滤
+- `modified_since` - 用于过滤的 Unix 时间戳
 
-#### Create Project
+#### 创建项目
 
 ```bash
 POST /companycam/v2/projects
@@ -247,13 +247,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Project
+#### 获取项目信息
 
 ```bash
 GET /companycam/v2/projects/{id}
 ```
 
-#### Update Project
+#### 更新项目信息
 
 ```bash
 PUT /companycam/v2/projects/{id}
@@ -264,42 +264,42 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Project
+#### 删除项目
 
 ```bash
 DELETE /companycam/v2/projects/{id}
 ```
 
-#### Archive Project
+#### 归档项目
 
 ```bash
 PATCH /companycam/v2/projects/{id}/archive
 ```
 
-#### Restore Project
+#### 恢复项目
 
 ```bash
 PUT /companycam/v2/projects/{id}/restore
 ```
 
-### Project Photos
+### 项目照片
 
-#### List Project Photos
+#### 列出项目照片
 
 ```bash
 GET /companycam/v2/projects/{project_id}/photos
 ```
 
-Query parameters:
-- `page` - Page number
-- `per_page` - Results per page
-- `start_date` - Filter by start date (Unix timestamp)
-- `end_date` - Filter by end date (Unix timestamp)
-- `user_ids` - Filter by user IDs
-- `group_ids` - Filter by group IDs
-- `tag_ids` - Filter by tag IDs
+查询参数：
+- `page` - 页码
+- `per_page` - 每页显示的结果数量
+- `start_date` - 按开始日期过滤（Unix 时间戳）
+- `end_date` - 按结束日期过滤（Unix 时间戳）
+- `user_ids` - 按用户 ID 过滤
+- `group_ids` - 按组 ID 过滤
+- `tag_ids` - 按标签 ID 过滤
 
-#### Add Photo to Project
+#### 向项目添加照片
 
 ```bash
 POST /companycam/v2/projects/{project_id}/photos
@@ -316,15 +316,15 @@ Content-Type: application/json
 }
 ```
 
-### Project Comments
+### 项目评论
 
-#### List Project Comments
+#### 列出项目评论
 
 ```bash
 GET /companycam/v2/projects/{project_id}/comments
 ```
 
-#### Add Project Comment
+#### 添加项目评论
 
 ```bash
 POST /companycam/v2/projects/{project_id}/comments
@@ -337,15 +337,15 @@ Content-Type: application/json
 }
 ```
 
-### Project Labels
+### 项目标签
 
-#### List Project Labels
+#### 列出项目标签
 
 ```bash
 GET /companycam/v2/projects/{project_id}/labels
 ```
 
-#### Add Labels to Project
+#### 向项目添加标签
 
 ```bash
 POST /companycam/v2/projects/{project_id}/labels
@@ -356,21 +356,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Project Label
+#### 删除项目标签
 
 ```bash
 DELETE /companycam/v2/projects/{project_id}/labels/{label_id}
 ```
 
-### Project Documents
+### 项目文档
 
-#### List Project Documents
+#### 列出项目文档
 
 ```bash
 GET /companycam/v2/projects/{project_id}/documents
 ```
 
-#### Upload Document
+#### 上传文档
 
 ```bash
 POST /companycam/v2/projects/{project_id}/documents
@@ -382,15 +382,15 @@ Content-Type: application/json
 }
 ```
 
-### Project Checklists
+### 项目检查表
 
-#### List Project Checklists
+#### 列出项目检查表
 
 ```bash
 GET /companycam/v2/projects/{project_id}/checklists
 ```
 
-#### Create Checklist from Template
+#### 根据模板创建检查表
 
 ```bash
 POST /companycam/v2/projects/{project_id}/checklists
@@ -401,53 +401,53 @@ Content-Type: application/json
 }
 ```
 
-#### Get Project Checklist
+#### 获取项目检查表信息
 
 ```bash
 GET /companycam/v2/projects/{project_id}/checklists/{checklist_id}
 ```
 
-### Project Users
+### 项目用户
 
-#### List Assigned Users
+#### 列出分配给项目的用户
 
 ```bash
 GET /companycam/v2/projects/{project_id}/assigned_users
 ```
 
-#### Assign User to Project
+#### 将用户分配给项目
 
 ```bash
 PUT /companycam/v2/projects/{project_id}/assigned_users/{user_id}
 ```
 
-### Project Collaborators
+### 项目协作者
 
-#### List Collaborators
+#### 列出项目协作者
 
 ```bash
 GET /companycam/v2/projects/{project_id}/collaborators
 ```
 
-### Photos
+### 照片
 
-#### List All Photos
+#### 列出所有照片
 
 ```bash
 GET /companycam/v2/photos
 ```
 
-Query parameters:
-- `page` - Page number
-- `per_page` - Results per page
+查询参数：
+- `page` - 页码
+- `per_page` - 每页显示的结果数量
 
-#### Get Photo
+#### 获取照片信息
 
 ```bash
 GET /companycam/v2/photos/{id}
 ```
 
-#### Update Photo
+#### 更新照片信息
 
 ```bash
 PUT /companycam/v2/photos/{id}
@@ -460,19 +460,19 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Photo
+#### 删除照片
 
 ```bash
 DELETE /companycam/v2/photos/{id}
 ```
 
-#### List Photo Tags
+#### 列出照片标签
 
 ```bash
 GET /companycam/v2/photos/{id}/tags
 ```
 
-#### Add Tags to Photo
+#### 向照片添加标签
 
 ```bash
 POST /companycam/v2/photos/{id}/tags
@@ -483,13 +483,13 @@ Content-Type: application/json
 }
 ```
 
-#### List Photo Comments
+#### 列出照片评论
 
 ```bash
 GET /companycam/v2/photos/{id}/comments
 ```
 
-#### Add Photo Comment
+#### 添加照片评论
 
 ```bash
 POST /companycam/v2/photos/{id}/comments
@@ -502,15 +502,15 @@ Content-Type: application/json
 }
 ```
 
-### Tags
+### 标签
 
-#### List Tags
+#### 列出所有标签
 
 ```bash
 GET /companycam/v2/tags
 ```
 
-#### Create Tag
+#### 创建标签
 
 ```bash
 POST /companycam/v2/tags
@@ -522,13 +522,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Tag
+#### 获取标签信息
 
 ```bash
 GET /companycam/v2/tags/{id}
 ```
 
-#### Update Tag
+#### 更新标签信息
 
 ```bash
 PUT /companycam/v2/tags/{id}
@@ -540,21 +540,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Tag
+#### 删除标签
 
 ```bash
 DELETE /companycam/v2/tags/{id}
 ```
 
-### Groups
+### 组信息
 
-#### List Groups
+#### 列出所有组
 
 ```bash
 GET /companycam/v2/groups
 ```
 
-#### Create Group
+#### 创建组
 
 ```bash
 POST /companycam/v2/groups
@@ -565,13 +565,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Group
+#### 获取组信息
 
 ```bash
 GET /companycam/v2/groups/{id}
 ```
 
-#### Update Group
+#### 更新组信息
 
 ```bash
 PUT /companycam/v2/groups/{id}
@@ -582,34 +582,34 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Group
+#### 删除组
 
 ```bash
 DELETE /companycam/v2/groups/{id}
 ```
 
-### Checklists
+### 检查表
 
-#### List All Checklists
+#### 列出所有检查表
 
 ```bash
 GET /companycam/v2/checklists
 ```
 
-Query parameters:
-- `page` - Page number
-- `per_page` - Results per page
-- `completed` - Filter by completion status (true/false)
+查询参数：
+- `page` - 页码
+- `per_page` - 每页显示的结果数量
+- `completed` - 按完成状态过滤（true/false）
 
-### Webhooks
+### Webhook
 
-#### List Webhooks
+#### 列出所有 Webhook
 
 ```bash
 GET /companycam/v2/webhooks
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /companycam/v2/webhooks
@@ -621,24 +621,24 @@ Content-Type: application/json
 }
 ```
 
-Available scopes:
-- `project.created`
+可用的作用域：
+- `project-created`
 - `project.updated`
-- `project.deleted`
-- `photo.created`
+- `project_deleted`
+- `photo-created`
 - `photo.updated`
-- `photo.deleted`
-- `document.created`
-- `label.created`
-- `label.deleted`
+- `photo_deleted`
+- `document-created`
+- `label-created`
+- `label_deleted`
 
-#### Get Webhook
+#### 获取 Webhook 信息
 
 ```bash
 GET /companycam/v2/webhooks/{id}
 ```
 
-#### Update Webhook
+#### 更新 Webhook
 
 ```bash
 PUT /companycam/v2/webhooks/{id}
@@ -650,27 +650,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /companycam/v2/webhooks/{id}
 ```
 
-## Pagination
+## 分页
 
-CompanyCam uses page-based pagination:
+CompanyCam 使用基于页码的分页机制：
 
 ```bash
 GET /companycam/v2/projects?page=2&per_page=25
 ```
 
-Query parameters:
-- `page` - Page number (default: 1)
-- `per_page` - Results per page (default: 25)
+查询参数：
+- `page` - 页码（默认：1）
+- `per_page` - 每页显示的结果数量（默认：25）
 
-## Code Examples
+## 代码示例
 
-### JavaScript - List Projects
+### JavaScript - 列出项目
 
 ```javascript
 const response = await fetch(
@@ -685,7 +685,7 @@ const projects = await response.json();
 console.log(projects);
 ```
 
-### Python - List Projects
+### Python - 列出项目
 
 ```python
 import os
@@ -701,7 +701,7 @@ for project in projects:
     print(f"{project['name']}: {project['id']}")
 ```
 
-### Python - Create Project with Photo
+### Python - 创建包含照片的项目
 
 ```python
 import os
@@ -741,46 +741,46 @@ photo = photo_response.json()
 print(f"Added photo: {photo['id']}")
 ```
 
-## Notes
+## 注意事项
 
-- Project IDs and other IDs are returned as strings
-- Timestamps are Unix timestamps (seconds since epoch)
-- Photos can be added via URL (uri parameter)
-- Comments must be wrapped in a `comment` object
-- Webhooks use `scopes` parameter (not `events`)
-- User roles: `admin`, `standard`, `limited`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq`, environment variables may not expand correctly. Use Python examples instead.
+- 项目 ID 和其他 ID 以字符串形式返回。
+- 时间戳为 Unix 时间戳（自纪元以来的秒数）。
+- 可以通过 URL（uri 参数）添加照片。
+- 评论必须封装在 `comment` 对象中。
+- Webhook 使用 `scopes` 参数（而不是 `events`）。
+- 用户角色：`admin`、`standard`、`limited`。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以避免全局解析。
+- 重要提示：将 curl 输出传递给 `jq` 时，环境变量可能无法正确解析。建议使用 Python 示例。
 
-## Rate Limits
+## 速率限制
 
-| Operation | Limit |
+| 操作 | 限制 |
 |-----------|-------|
-| GET requests | 240 per minute |
-| POST/PUT/DELETE | 100 per minute |
+| GET 请求 | 每分钟 240 次 |
+| POST/PUT/DELETE | 每分钟 100 次 |
 
-When rate limited, the API returns a 429 status code. Implement exponential backoff for retries.
+当达到速率限制时，API 会返回 429 状态码。请实施指数退避策略进行重试。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing CompanyCam connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 422 | Validation error (check error messages) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from CompanyCam API |
+| 400 | 请求错误或缺少 CompanyCam 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 422 | 验证错误（请检查错误消息） |
+| 429 | 达到速率限制 |
+| 4xx/5xx | 来自 CompanyCam API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -791,17 +791,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `companycam`. For example:
+1. 确保您的 URL 路径以 `companycam` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/companycam/v2/projects`
+- 错误的路径：`https://gateway.maton.ai/v2/projects`
 
-- Correct: `https://gateway.maton.ai/companycam/v2/projects`
-- Incorrect: `https://gateway.maton.ai/v2/projects`
+## 资源
 
-## Resources
-
-- [CompanyCam API Documentation](https://docs.companycam.com)
-- [CompanyCam API Reference](https://docs.companycam.com/reference)
-- [CompanyCam Getting Started](https://docs.companycam.com/docs/getting-started)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [CompanyCam API 文档](https://docs.companycam.com)
+- [CompanyCam API 参考](https://docs.companycam.com/reference)
+- [CompanyCam 快速入门](https://docs.companycam.com/docs/getting-started)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

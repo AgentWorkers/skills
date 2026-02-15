@@ -1,18 +1,18 @@
 ---
 name: zapper-api
-description: Query DeFi portfolios, token holdings, NFTs, transactions, and prices via Zapper API. Supports 50+ chains. Use when user asks about wallet balances, DeFi positions, NFT collections, token prices, or transaction history.
+description: 通过 Zapper API 查询 DeFi 投资组合、代币持有情况、NFT、交易记录及价格。支持 50 多个区块链平台。适用于用户查询钱包余额、DeFi 交易情况、NFT 收藏、代币价格或交易历史等场景。
 homepage: https://zapper.xyz
 metadata: {"openclaw":{"emoji":"🟪","requires":{"bins":["python3"]},"primaryEnv":"ZAPPER_API_KEY"}}
 ---
 
 # Zapper API
 
-Query DeFi portfolios, NFTs, and transactions across 50+ chains using Zapper's GraphQL API.
+使用 Zapper 的 GraphQL API 可以查询 50 多个区块链上的 DeFi 投资组合、NFT 以及交易记录。
 
-## Setup
+## 设置
 
-1. Get API key from [Zapper Dashboard](https://zapper.xyz/developers) (free tier available)
-2. Configure in `~/.config/zapper/addresses.json`:
+1. 从 [Zapper 控制台](https://zapper.xyz/developers) 获取 API 密钥（提供免费 tier）。
+2. 在 `~/.config/zapper/addresses.json` 文件中配置地址信息：
    ```json
    {
      "apiKey": "your-api-key",
@@ -23,32 +23,32 @@ Query DeFi portfolios, NFTs, and transactions across 50+ chains using Zapper's G
    }
    ```
 
-Or set environment variable: `export ZAPPER_API_KEY="your-api-key"`
+或者设置环境变量：`export ZAPPER_API_KEY="your-api-key"`
 
-## Commands
+## 命令
 
-| Command | Description | Example |
+| 命令 | 描述 | 示例 |
 |---------|-------------|---------|
-| `portfolio <address>` | Token + DeFi totals | `zapper.py portfolio 0x123...` |
-| `tokens <address>` | Detailed token holdings | `zapper.py tokens 0x123...` |
-| `apps <address>` | DeFi positions (LPs, lending, staking) | `zapper.py apps 0x123...` |
-| `nfts <address>` | NFT holdings by value | `zapper.py nfts 0x123...` |
-| `tx <address>` | Recent transactions (30 days) | `zapper.py tx 0x123...` |
-| `price <symbol>` | Token price lookup | `zapper.py price ETH` |
-| `claimables <address>` | Unclaimed rewards | `zapper.py claimables 0x123...` |
-| `config` | Show configuration | `zapper.py config` |
+| `portfolio <地址>` | 显示代币及 DeFi 投资总额 | `zapper.py portfolio 0x123...` |
+| `tokens <地址>` | 查看详细的代币持有情况 | `zapper.py tokens 0x123...` |
+| `apps <地址>` | 查看 DeFi 交易情况（如锁定资产、借贷、质押等） | `zapper.py apps 0x123...` |
+| `nfts <地址>` | 按价值排序的 NFT 持有情况 | `zapper.py nfts 0x123...` |
+| `tx <地址>` | 查看最近 30 天的交易记录 | `zapper.py tx 0x123...` |
+| `price <符号>` | 查询代币价格 | `zapper.py price ETH` |
+| `claimables <地址>` | 查看未领取的奖励 | `zapper.py claimables 0x123...` |
+| `config` | 显示配置信息 | `zapper.py config` |
 
-## Options
+## 选项
 
-| Flag | Commands | Description |
+| 标志 | 命令 | 描述 |
 |------|----------|-------------|
-| `--24h` | portfolio, tokens | Show 24h price changes |
-| `--short` | portfolio | Output only total value |
-| `--per-wallet` | portfolio | Show each configured wallet separately |
-| `--json` | all | Output raw JSON |
-| `--limit N` | most | Max items to display |
+| `--24h` | `portfolio`, `tokens` | 显示 24 小时的价格变化 |
+| `--short` | `portfolio` | 仅输出总价值 |
+| `--per-wallet` | `portfolio` | 分别显示每个配置的钱包的信息 |
+| `--json` | `all` | 以原始 JSON 格式输出结果 |
+| `--limit N` | `most` | 最多显示 N 个项目 |
 
-## Usage
+## 使用方法
 
 ```bash
 # Portfolio summary
@@ -85,31 +85,31 @@ python3 scripts/zapper.py claimables 0xADDRESS
 python3 scripts/zapper.py portfolio 0xADDRESS --json
 ```
 
-## Wallet Labels
+## 钱包标签
 
-Use configured wallet labels instead of addresses:
+建议使用配置好的钱包标签代替具体的钱包地址：
 
 ```bash
 python3 scripts/zapper.py portfolio "Main"
 python3 scripts/zapper.py tokens "DeFi"
 ```
 
-## Supported Tokens (price command)
+## 支持的代币（`price` 命令）
 
 ETH, WETH, USDC, USDT, DAI, WBTC, LINK, UNI, AAVE, MKR
 
-## Supported Chains
+## 支持的区块链
 
-Ethereum, Base, Arbitrum, Optimism, Polygon, Solana, BNB Chain, Avalanche, zkSync, Linea, Scroll, Blast, and 40+ more.
+Ethereum, Base, Arbitrum, Optimism, Polygon, Solana, BNB Chain, Avalanche, zkSync, Linea, Scroll, Blast 以及更多区块链。
 
-## Notes
+## 注意事项
 
-- Free tier API key available at [zapper.xyz/developers](https://zapper.xyz/developers)
-- Rate limits apply - avoid rapid repeated requests
-- NFT valuations based on floor prices
-- Transaction history limited to 30 days
+- 免费 tier 的 API 密钥可在 [zapper.xyz/developers](https://zapper.xyz/developers) 获取。
+- 请避免频繁发送请求，以免超出 API 的速率限制。
+- NFT 的估值基于最低价格。
+- 交易历史记录仅保留最近 30 天的数据。
 
-## References
+## 参考资料
 
-- [API.md](references/API.md) - GraphQL query examples
-- [Zapper Docs](https://build.zapper.xyz/docs/api/) - Official API documentation
+- [API.md](references/API.md) - GraphQL 查询示例
+- [Zapper 文档](https://build.zapper.xyz/docs/api/) - 官方 API 文档

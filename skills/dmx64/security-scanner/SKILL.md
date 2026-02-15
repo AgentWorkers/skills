@@ -1,67 +1,67 @@
 ---
 name: security-scanner
-description: Automated security scanning and vulnerability detection for web applications, APIs, and infrastructure. Use when you need to scan targets for vulnerabilities, check SSL certificates, find open ports, detect misconfigurations, or perform security audits. Integrates with nmap, nuclei, and other security tools.
+description: 针对Web应用程序、API和基础设施的自动化安全扫描及漏洞检测工具。适用于需要扫描目标系统以发现漏洞、检查SSL证书、查找开放端口、检测配置错误或执行安全审计的场景。该工具可与nmap、nuclei等安全工具集成使用。
 ---
 
-# Security Scanner
+# 安全扫描器
 
-Automated security scanning toolkit for penetration testing and vulnerability assessment.
+这是一个用于渗透测试和漏洞评估的自动化安全扫描工具包。
 
-## Quick Start
+## 快速入门
 
-### Port Scan
+### 端口扫描
 ```bash
 nmap -sV -sC -oN scan.txt TARGET
 ```
 
-### Vulnerability Scan
+### 漏洞扫描
 ```bash
 nuclei -u TARGET -o results.txt
 ```
 
-### SSL Check
+### SSL 检查
 ```bash
 sslscan TARGET
 ```
 
-## Scan Types
+## 扫描类型
 
-### 1. Quick Recon
-Fast initial scan for live hosts and open ports:
+### 1. 快速侦察
+对活跃的主机和开放端口进行快速初步扫描：
 ```bash
 nmap -sn -T4 SUBNET  # Host discovery
 nmap -F TARGET       # Fast port scan (top 100)
 ```
 
-### 2. Full Port Scan
-Comprehensive port and service detection:
+### 2. 全面端口扫描
+对所有端口和服务进行详细检测：
 ```bash
 nmap -p- -sV -sC -A TARGET -oN full_scan.txt
 ```
 
-### 3. Web Application Scan
+### 3. Web 应用程序扫描
 ```bash
 nuclei -u https://TARGET -t cves/ -t vulnerabilities/ -o web_vulns.txt
 nikto -h TARGET -o nikto_report.txt
 ```
 
-### 4. SSL/TLS Analysis
+### 4. SSL/TLS 分析
 ```bash
 sslscan TARGET
 testssl.sh TARGET
 ```
 
-## Output
+## 输出结果
 
-Save reports to `reports/security-scan-YYYY-MM-DD.md` with:
-- Target information
-- Open ports and services
-- Vulnerabilities found (severity rated)
-- Recommendations
+将报告保存到 `reports/security-scan-YYYY-MM-DD.md` 文件中，其中包含：
+- 目标信息
+- 开放的端口和服务
+- 发现的漏洞（按严重程度分类）
+- 建议措施
 
-## Ethics
+## 道德规范
 
-- Only scan authorized targets
-- Get written permission before testing
-- Report vulnerabilities responsibly
-- Never exploit without authorization
+- 仅扫描授权的目标
+- 在进行测试前获得书面许可
+- 负责任地报告漏洞
+- 严禁未经授权擅自利用漏洞

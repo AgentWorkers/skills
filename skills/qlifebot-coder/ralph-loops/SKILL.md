@@ -1,99 +1,99 @@
-# Ralph Loops Skill
+# Ralph Loops 技能
 
-> **First time?** Read [SETUP.md](./SETUP.md) first to install dependencies and verify your setup.
+> **第一次使用？** 请先阅读 [SETUP.md](./SETUP.md) 以安装依赖项并验证您的设置。
 
-Autonomous AI agent loops for iterative development. Based on Geoffrey Huntley's Ralph Wiggum technique, as documented by Clayton Farr.
+Ralph Loops 是一个用于迭代开发的自主 AI 代理。该技术基于 Geoffrey Huntley 的 Ralph Wiggum 技术，并由 Clayton Farr 进行了详细记录。
 
-**Script:** `skills/ralph-loops/scripts/ralph-loop.mjs`
-**Dashboard:** `skills/ralph-loops/dashboard/` (run with `node server.mjs`)
-**Templates:** `skills/ralph-loops/templates/`
-**Archive:** `~/clawd/logs/ralph-archive/`
+**脚本：** `skills/ralph-loops/scripts/ralph-loop.mjs`
+**仪表板：** `skills/ralph-loops/dashboard/`（使用 `node server.mjs` 运行）
+**模板：** `skills/ralph-loops/templates/`
+**归档：** `~/clawd/logs/ralph-archive/`
 
 ---
 
-## ⚠️ Known Issues
+## ⚠️ 已知问题
 
-### Claude Code Version Compatibility
+### Claude 代码版本兼容性
 
-**Claude Code 2.1.29 has a critical bug** that spawns orphaned sub-agents consuming 99% CPU. Iterations fail with "exit code null" on first run.
+**Claude 代码 2.1.29 存在一个严重漏洞**，该漏洞会导致生成消耗 99% CPU 资源的孤立子代理。首次运行时，迭代会因“退出代码为 null”而失败。
 
-**Fix:** Downgrade to 2.1.25:
+**解决方法：** 回退到 2.1.25 版本：
 ```bash
 npm install -g @anthropic-ai/claude-code@2.1.25
 ```
 
-**Verify:**
+**验证方法：**
 ```bash
 claude --version  # Should show 2.1.25
 ```
 
-This was discovered 2026-02-01. Check if newer versions fix the issue before upgrading.
+这个问题发现于 2026-02-01。在升级之前，请检查新版本是否修复了该问题。
 
 ---
 
-## ⚠️ Don't Block the Conversation!
+## ⚠️ 不要阻塞对话！
 
-When running a Ralph loop, **don't monitor it synchronously**. The loop runs as a separate Claude CLI process — you can keep chatting.
+运行 Ralph 循环时，请**不要同步监控**。循环作为独立的 Claude CLI 进程运行——您可以继续与人类用户进行对话。
 
-**❌ Wrong (blocks conversation):**
+**❌ 错误做法（会阻塞对话）：**
 ```
 Start loop → sleep 60 → poll → sleep 60 → poll → ... (6 minutes of silence)
 ```
 
-**✅ Right (stays responsive):**
+**✅ 正确做法（保持响应性）：**
 ```
 Start loop → "It's running, I'll check periodically" → keep chatting → check on heartbeats
 ```
 
-**How to monitor without blocking:**
-1. Start the loop with `node ralph-loop.mjs ...` (runs in background)
-2. Tell human: "Loop running. I'll check progress periodically or you can ask."
-3. Check via `process poll <sessionId>` when asked or during heartbeats
-4. Use the dashboard at http://localhost:3939 for real-time visibility
+**如何在不阻塞对话的情况下进行监控：**
+1. 使用 `node ralph-loop.mjs` 启动循环（在后台运行）
+2. 告诉人类用户：“循环正在运行。我会定期检查进度，或者您可以随时询问。”
+3. 根据需要或通过心跳信号，使用 `process poll <sessionId>` 来检查循环状态
+4. 通过 http://localhost:3939 访问仪表板以获取实时信息
 
-**The loop is autonomous** — that's the whole point. Don't babysit it at the cost of ignoring your human.
+**循环是自主运行的**——这就是其核心特点。不要为了监控循环而忽略与人类的交流。
 
 ---
 
-## Trigger Phrases
+## 触发语句
 
-When human says:
+当人类用户说：
 
-| Phrase | Action |
+| 语句 | 操作 |
 |--------|--------|
-| **"Interview me about system X"** | Start Phase 1 requirements interview |
-| **"Start planning system X"** | Run `./loop.sh plan` (needs specs first) |
-| **"Start building system X"** | Run `./loop.sh build` (needs plan first) |
-| **"Ralph loop over X"** | **ASK which phase** (see below) |
+| **“关于系统 X 进行访谈”** | 启动第 1 阶段的需求访谈 |
+| **“开始规划系统 X”** | 运行 `./loop.sh plan`（需要先制定计划） |
+| **“开始构建系统 X”** | 运行 `./loop.sh build`（需要先制定计划） |
+| **“对 X 进行 Ralph 循环”** | **询问当前处于哪个阶段**（见下文） |
 
-### When Human Says "Ralph Loop" — Clarify the Phase!
+### 当人类用户说“Ralph Loop”时——明确当前阶段！
 
-Don't assume which phase. Ask:
+不要默认判断当前处于哪个阶段。请询问：
 
-> "Which type of Ralph loop are we doing?
+> “我们正在进行哪种类型的 Ralph 循环？
 > 
-> 1️⃣ **Interview** — I'll ask you questions to build specs (Phase 1)
-> 2️⃣ **Planning** — I'll iterate on an implementation plan (Phase 2)  
-> 3️⃣ **Building** — I'll implement from a plan, one task per iteration (Phase 3)
-> 4️⃣ **Generic** — Simple iterative refinement on a single topic"
+> 1️⃣ **访谈** —— 我会向您提问以制定需求规格（第 1 阶段）
+> 2️⃣ **规划** —— 我会针对实施计划进行迭代（第 2 阶段）  
+> 3️⃣ **构建** —— 我会根据计划逐项执行任务（第 3 阶段）
+> 4️⃣ **通用** —— 对单一主题进行简单的迭代优化”
 
-**Then proceed based on their answer:**
+**然后根据用户的回答采取相应操作：**
 
-| Choice | Action |
+| 选择 | 操作 |
 |--------|--------|
-| Interview | Use `templates/requirements-interview.md` protocol |
-| Planning | Need specs first → run planning loop with `PROMPT_plan.md` |
-| Building | Need plan first → run build loop with `PROMPT_build.md` |
-| Generic | Create prompt file, run `ralph-loop.mjs` directly |
+| 访谈 | 使用 `templates/requirements-interview.md` 协议 |
+| 规划 | 需要先制定计划 → 使用 `PROMPT_plan.md` 启动规划循环 |
+| 构建 | 需要先制定计划 → 使用 `PROMPT_build.md` 启动构建循环 |
+| 通用 | 创建提示文件，直接运行 `ralph-loop.mjs` |
 
-### Generic Ralph Loop Flow (Phase 4)
+### 通用 Ralph 循环流程（第 4 阶段）
 
-For simple iterative refinement (not full system builds):
+对于简单的迭代优化（非完整系统构建）：
 
-1. **Clarify the task** — What exactly should be improved/refined?
-2. **Create a prompt file** — Save to `/tmp/ralph-prompt-<task>.md`
-3. **Set completion criteria** — What signals "done"?
-4. **Run the loop:**
+1. **明确任务** —— 需要改进或优化的具体内容是什么？
+2. **创建提示文件** —— 保存到 `/tmp/ralph-prompt-<task>.md`
+3. **设定完成标准** —— 什么情况表示任务完成？
+4. **运行循环：**
    ```bash
    node skills/ralph-loops/scripts/ralph-loop.mjs \
      --prompt "/tmp/ralph-prompt-<task>.md" \
@@ -101,24 +101,24 @@ For simple iterative refinement (not full system builds):
      --max 10 \
      --done "RALPH_DONE"
    ```
-5. **Or spawn as sub-agent** for long-running tasks
+5. **对于耗时较长的任务，可以生成子代理来执行**
 
 ---
 
-## Core Philosophy
+## 核心理念
 
-> "Human roles shift from 'telling the agent what to do' to 'engineering conditions where good outcomes emerge naturally through iteration."
-> — Clayton Farr
+> “人类的角色从‘告诉代理该做什么’转变为‘创造条件，让良好的结果通过迭代自然产生’。”
+> —— Clayton Farr
 
-Three principles drive everything:
+三个原则指导着整个流程：
 
-1. **Context is scarce** — With ~176K usable tokens from a 200K window, keep each iteration lean
-2. **Plans are disposable** — A drifting plan is cheaper to regenerate than salvage
-3. **Backpressure beats direction** — Engineer environments where wrong outputs get rejected automatically
+1. **上下文是有限的** —— 在 200,000 个可用令牌中，只有大约 176,000 个可用于每次迭代，因此要确保每次迭代都高效简洁
+2. **计划是可以丢弃的** —— 重新生成计划比修复错误代码更经济
+3. **反向压力机制优于方向性控制** —— 通过机制确保错误的输出会被自动拒绝
 
 ---
 
-## Three-Phase Workflow
+## 三阶段工作流程
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -133,65 +133,63 @@ Three principles drive everything:
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Phase 1: Requirements (Talk to Human)
+### 第 1 阶段：需求收集（与人类用户交流）
 
-**Goal:** Understand what to build BEFORE building it.
+**目标：** 在开始构建之前，先了解需要构建什么。
 
-This is the most important phase. Use structured conversation to:
+这是最重要的阶段。通过结构化的对话来：
 
-1. **Identify Jobs to Be Done (JTBD)**
-   - What user need or outcome are we solving?
-   - Not features — outcomes
+1. **确定待完成的任务（JTBD）**
+   - 我们要解决的用户需求或目标是什么？
+   - 不是要实现的功能，而是最终的结果
+2. **将 JTBD 分解为具体的主题**
+   - 每个主题对应一个独立的方面/组件
+   - 使用“用一句话表达，不要使用‘和’”的测试标准
+   - ✓ “颜色提取系统用于分析图像以识别主导颜色”
+   - ✗ “用户系统处理身份验证、个人资料和计费” → 这属于三个不同的主题
+3. **为每个主题制定详细规范**
+   - 每个主题对应一个 markdown 文件，保存在 `specs/` 目录下
+   - 包括需求、验收标准和边缘情况
 
-2. **Break JTBD into Topics of Concern**
-   - Each topic = one distinct aspect/component
-   - Use the "one sentence without 'and'" test
-   - ✓ "The color extraction system analyzes images to identify dominant colors"
-   - ✗ "The user system handles authentication, profiles, and billing" → 3 topics
+**模板：** `templates/requirements-interview.md`
 
-3. **Create Specs for Each Topic**
-   - One markdown file per topic in `specs/`
-   - Capture requirements, acceptance criteria, edge cases
+### 第 2 阶段：规划（差距分析）
 
-**Template:** `templates/requirements-interview.md`
+**目标：** 在不进行任何实际实现的情况下，制定一个优先级任务列表。
 
-### Phase 2: Planning (Gap Analysis)
+在循环中使用 `PROMPT_plan.md`：
+- 研究所有需求规范
+- 查看现有代码库
+- 对比需求规范和代码（进行差距分析）
+- 生成包含优先级任务的 `IMPLEMENTATION_PLAN.md`
+- **仅进行规划** —— 不涉及实际实现
 
-**Goal:** Create a prioritized task list without implementing anything.
+通常在 1-2 次迭代内完成。
 
-Uses `PROMPT_plan.md` in the loop:
-- Study all specs
-- Study existing codebase
-- Compare specs vs code (gap analysis)
-- Generate `IMPLEMENTATION_PLAN.md` with prioritized tasks
-- **NO implementation** — planning only
+### 第 3 阶段：构建（每次迭代完成一个任务）
 
-Usually completes in 1-2 iterations.
+**目标：** 每次迭代只完成一个任务，并使用新的上下文。
 
-### Phase 3: Building (One Task Per Iteration)
+在循环中使用 `PROMPT_build.md`：
+1. 读取 `IMPLEMENTATION_PLAN.md`
+2. 选择最重要的任务
+3. 查看代码库（假设代码尚未实现）
+4. 实现任务
+5. 进行验证（使用反向压力机制）
+6. 更新计划并提交代码
+7. 退出循环 → 重新开始新的迭代
 
-**Goal:** Implement tasks one at a time with fresh context.
+**关键点：** 每次迭代只完成一个任务，这样可以保持上下文的清晰性。避免代理陷入混乱。
 
-Uses `PROMPT_build.md` in the loop:
-1. Read `IMPLEMENTATION_PLAN.md`
-2. Pick the most important task
-3. Investigate codebase (don't assume not implemented)
-4. Implement
-5. Run validation (backpressure)
-6. Update plan, commit
-7. Exit → fresh context → next iteration
-
-**Key insight:** One task per iteration keeps context lean. The agent stays in the "smart zone" instead of accumulating cruft.
-
-**Why fresh context matters:**
-- **No accumulated mistakes** — Each iteration starts clean; previous errors don't compound
-- **Full context budget** — 200K tokens for THIS task, not shared with finished work
-- **Reduced hallucination** — Shorter contexts = more grounded responses
-- **Natural checkpoints** — Each commit is a save point; easy to revert single iterations
+**为什么需要新的上下文：**
+- **避免错误累积** —— 每次迭代都从零开始；之前的错误不会叠加
+- **保证上下文的完整性** —— 200,000 个令牌专门用于当前任务，不会与已完成的部分共享
+- **减少误解** —— 更短的上下文有助于产生更准确的响应
+- **设置明确的检查点** —— 每次提交都是一个保存点，便于回滚单个迭代的结果
 
 ---
 
-## File Structure
+## 文件结构
 
 ```
 project/
@@ -206,19 +204,19 @@ project/
     └── ...
 ```
 
-### File Purposes
+### 文件用途
 
-| File | Purpose | Who Creates |
+| 文件 | 用途 | 创建者 |
 |------|---------|-------------|
-| `specs/*.md` | Source of truth for requirements | Human + Phase 1 |
-| `PROMPT_plan.md` | Instructions for planning mode | Copy from template |
-| `PROMPT_build.md` | Instructions for building mode | Copy from template |
-| `AGENTS.md` | Build/test/lint commands | Human + Ralph |
-| `IMPLEMENTATION_PLAN.md` | Task list with priorities | Ralph (Phase 2) |
+| `specs/*.md` | 需求规范的权威来源 | 人类用户 + 第 1 阶段 |
+| `PROMPT_plan.md` | 规划模式的指导说明 | 从模板复制 |
+| `PROMPT_build.md` | 构建模式的指导说明 | 从模板复制 |
+| `AGENTS.md` | 构建/测试/代码检查命令 | 人类用户 + Ralph 代理 |
+| `IMPLEMENTATION_PLAN.md` | 包含优先级任务的列表 | Ralph 代理（第 2 阶段） |
 
-### Project Organization (Systems)
+### 项目组织结构（针对 Clawdbot 系统）
 
-For Clawdbot systems, each Ralph project lives in `<workspace>/systems/<name>/`:
+对于 Clawdbot 系统，每个 Ralph 项目都存储在 `<workspace>/systems/<name>/` 目录下：
 
 ```
 systems/
@@ -236,18 +234,18 @@ systems/
     └── ...
 ```
 
-### Phase Detection (Auto)
+### 自动检测当前阶段
 
-Detect current phase by checking what files exist:
+通过检查存在的文件来自动判断当前处于哪个阶段：
 
-| What Exists | Current Phase | Next Action |
+| 文件存在情况 | 当前阶段 | 下一步操作 |
 |-------------|---------------|-------------|
-| Nothing / empty `specs/` | Phase 1: Requirements | Run requirements interview |
-| `specs/*.md` but no `IMPLEMENTATION_PLAN.md` | Ready for Phase 2 | Run `./loop.sh plan` |
-| `specs/*.md` + `IMPLEMENTATION_PLAN.md` | Phase 2 or 3 | Review plan, run `./loop.sh build` |
-| Plan shows all tasks complete | Done | Archive or iterate |
+| 不存在文件或 `specs/` 目录为空 | 第 1 阶段：需求收集 | 运行需求访谈 |
+| 存在 `specs/*.md` 但不存在 `IMPLEMENTATION_PLAN.md` | 准备进入第 2 阶段 | 运行 `./loop.sh plan` |
+| 存在 `specs/*.md` 和 `IMPLEMENTATION_PLAN.md` | 处于第 2 或第 3 阶段 | 查看计划并运行 `./loop.sh build` |
+| `IMPLEMENTATION_PLAN.md` 显示所有任务已完成 | 完成 | 归档或进入下一阶段 |
 
-**Quick check:**
+**快速检查方法：**
 ```bash
 # What phase are we in?
 [ -z "$(ls specs/ 2>/dev/null)" ] && echo "Phase 1: Need specs" && exit
@@ -257,9 +255,9 @@ echo "Phase 3: Ready to build (or done)"
 
 ---
 
-## JTBD Breakdown
+## JTBD 分解
 
-The hierarchy matters:
+文件的结构非常重要：
 
 ```
 JTBD (Job to Be Done)
@@ -267,28 +265,26 @@ JTBD (Job to Be Done)
     └── Tasks (many per topic, in IMPLEMENTATION_PLAN.md)
 ```
 
-**Example:**
-- **JTBD:** "Help designers create mood boards"
-- **Topics:**
-  - Image collection → `specs/image-collection.md`
-  - Color extraction → `specs/color-extraction.md`
-  - Layout system → `specs/layout-system.md`
-  - Sharing → `specs/sharing.md`
-- **Tasks:** Each spec generates multiple implementation tasks
+**示例：**
+- **需求：** “帮助设计师创建 Mood Board”
+- **相关主题：**
+  - 图像收集 → `specs/image-collection.md`
+  - 颜色提取 → `specs/color-extraction.md`
+  - 布局系统 → `specs/layout-system.md`
+  - 共享功能 → `specs/sharing.md`
+- **任务：** 每个主题都会生成多个具体的实现任务
 
-### Topic Scope Test
+### 主题范围判断
 
-> Can you describe the topic in one sentence without "and"?
+> 你能用一句话描述这个主题吗？如果需要使用“和”或“also”，那么这个主题可能包含多个部分。
 
-If you need "and" or "also", it's probably multiple topics. Split it.
+**何时需要拆分主题：**
+- 描述中包含多个动词 → 分成多个主题
+- 涉及不同的用户角色 → 分成多个主题
+- 可能需要由不同的团队来实现 → 分成多个主题
+- 有自己独立的失败模式 → 通常需要单独处理
 
-**When to split:**
-- Multiple verbs in the description → separate topics
-- Different user personas involved → separate topics
-- Could be implemented by different teams → separate topics
-- Has its own failure modes → probably its own topic
-
-**Example split:**
+**示例：**
 ```
 ❌ "User management handles registration, authentication, profiles, and permissions"
 
@@ -299,7 +295,7 @@ If you need "and" or "also", it's probably multiple topics. Split it.
    - "Permissions control what actions users can perform"
 ```
 
-**Counter-example (don't split):**
+**反例（不需要拆分主题的情况）：**
 ```
 ✅ Keep together:
    "Color extraction analyzes images and returns dominant color palettes"
@@ -309,12 +305,12 @@ If you need "and" or "also", it's probably multiple topics. Split it.
 
 ---
 
-## Backpressure Mechanisms
+## 反向压力机制
 
-Autonomous loops converge when wrong outputs get rejected. Three layers:
+当错误的输出被拒绝时，循环会自动调整方向。反向压力机制分为三个层次：
 
-### 1. Downstream Gates (Hard)
-Tests, type-checking, linting, build validation. Deterministic.
+### 1. 下游关卡（硬性约束）
+   - 测试、类型检查、代码检查、构建验证。这些是确定性的规则。
 ```markdown
 # In AGENTS.md
 ## Validation
@@ -323,29 +319,29 @@ Tests, type-checking, linting, build validation. Deterministic.
 - Lint: `npm run lint`
 ```
 
-### 2. Upstream Steering (Soft)
-Existing code patterns guide the agent. It discovers conventions through exploration.
+### 2. 上游引导（软性约束）
+   - 现有的代码模式会引导代理的行为。代理会通过探索来发现最佳实践。
 
-### 3. LLM-as-Judge (Subjective)
-For subjective criteria (tone, UX, aesthetics), use another LLM call with binary pass/fail.
+### 3. 作为判断者的 LLM（主观判断）
+   - 对于主观性标准（如语气、用户体验、美学等），可以使用另一个 LLM 来进行二分判断（通过“通过”或“失败”来决定结果）。
 
-> Start with hard gates. Add LLM-as-judge for subjective criteria only after mechanical backpressure works.
+> 先使用硬性约束。只有在硬性约束无效时，才使用 LLM 进行主观判断。
 
 ---
 
-## Prompt Structure
+## 提示语结构
 
-Geoffrey's prompts follow a numbered pattern:
+Geoffrey 设计的提示语遵循一定的编号规则：
 
-| Section | Purpose |
+| 部分 | 用途 |
 |---------|---------|
-| 0a-0d | **Orient:** Study specs, source, current plan |
-| 1-4 | **Main instructions:** What to do this iteration |
-| 999+ | **Guardrails:** Invariants (higher number = more critical) |
+| 0a-0d | **引导**：研究需求规范、源代码和当前计划 |
+| 1-4 | **主要指令**：本次迭代的具体操作 |
+| 999+ | **安全提示**：表示重要性的提示（数字越大，提示越关键） |
 
-### The Numbered Guardrails Pattern
+### 数字提示语的优先级规则
 
-Guardrails use escalating numbers (99999, 999999, 9999999...) to signal priority:
+使用递增的数字（如 99999、999999、9999999...）来表示提示的优先级：
 
 ```markdown
 99999. Important: Capture the why in documentation.
@@ -359,32 +355,30 @@ Guardrails use escalating numbers (99999, 999999, 9999999...) to signal priority
 999999999. Keep IMPLEMENTATION_PLAN.md current.
 ```
 
-**Why this works:**
-1. **Visual prominence** — Large numbers stand out, harder to skip
-2. **Implicit priority** — More 9s = more critical (like DEFCON levels in reverse)
-3. **No collisions** — Sparse numbering lets you insert new rules without renumbering
-4. **Mnemonic** — Claude treats these as invariants, not suggestions
+**这样设计的理由：**
+1. **视觉上的突出性** —— 数字越大，越容易被注意到
+2. **隐含的优先级** —— 数字越大，提示越重要（类似于紧急程度的分级）
+3. **避免冲突** —— 稀疏的编号便于添加新的规则而不需要重新编号
+4. **便于记忆** —— Claude 会将这些提示视为不可更改的规则
 
-**The "Important:" prefix** is deliberate — it triggers Claude's attention.
+**“Important:” 前缀** 是有意设计的，用于引起 Claude 的注意。
 
-### Key Language Patterns
+### 关键语言表达方式
 
-Use Geoffrey's specific phrasing — it matters:
+使用 Geoffrey 设计的特定表达方式非常重要：
 
-- "study" (not "read" or "look at")
-- "don't assume not implemented" (critical!)
-- "using parallel subagents" / "up to N subagents"
-- "only 1 subagent for build/tests" (backpressure control)
-- "Ultrathink" (deep reasoning trigger)
-- "capture the why"
-- "keep it up to date"
-- "resolve them or document them"
+- 使用“study”（而不是“read”或“look at”）
+- 强调“不要假设代码尚未实现”（这一点非常重要！）
+- 使用“使用多个子代理”或“最多使用 N 个子代理”来控制并发
+- 使用“Ultrathink”来触发深度推理
+- 强调“记录原因”
+- 告诉代理“保持信息更新”
 
 ---
 
-## Quick Start
+## 快速入门
 
-### 1. Set Up Project Structure
+### 1. 设置项目结构
 
 ```bash
 mkdir -p myproject/specs
@@ -399,9 +393,9 @@ cp .//templates/loop.sh .
 chmod +x loop.sh
 ```
 
-### 2. Customize Templates (Required!)
+### 2. 自定义模板（必须完成！）
 
-**PROMPT_plan.md** — Replace `[PROJECT_GOAL]` with your actual goal:
+**PROMPT_plan.md** —— 将 `[PROJECT_GOAL]` 替换为你的实际目标：
 ```markdown
 # Before:
 ULTIMATE GOAL: We want to achieve [PROJECT_GOAL].
@@ -410,7 +404,7 @@ ULTIMATE GOAL: We want to achieve [PROJECT_GOAL].
 ULTIMATE GOAL: We want to achieve a fully functional mood board app with image upload and color extraction.
 ```
 
-**PROMPT_build.md** — Adjust source paths if not using `src/`:
+**PROMPT_build.md** —— 如果不使用 `src/` 目录，请调整文件路径：
 ```markdown
 # Before:
 0c. For reference, the application source code is in `src/*`.
@@ -419,23 +413,23 @@ ULTIMATE GOAL: We want to achieve a fully functional mood board app with image u
 0c. For reference, the application source code is in `lib/*`.
 ```
 
-**AGENTS.md** — Update build/test/lint commands for your stack.
+**AGENTS.md** —— 根据你的开发环境更新构建/测试/代码检查命令。
 
-### 3. Phase 1: Requirements Gathering (Don't Skip!)
+### 3. 第 1 阶段：需求收集（不要跳过！**
 
-This phase happens WITH the human. Use the interview template:
+这个阶段需要与人类用户一起完成。使用访谈模板：
 
 ```bash
 cat .//templates/requirements-interview.md
 ```
 
-**The workflow:**
-1. Discuss the JTBD (Job to Be Done) — outcomes, not features
-2. Break into Topics of Concern (each passes the "one sentence" test)
-3. Write a spec file for each topic: `specs/topic-name.md`
-4. Human reviews and approves specs
+**工作流程：**
+1. 讨论待完成的任务（JTBD）——即最终要实现的结果，而不是具体的功能
+2. 将任务分解为具体的主题
+3. 为每个主题编写一个规范文件：`specs/topic-name.md`
+4. 人类用户审核并批准这些规范文件
 
-**Example output:**
+**示例输出：**
 ```
 specs/
 ├── image-collection.md
@@ -444,25 +438,19 @@ specs/
 └── sharing.md
 ```
 
-### 4. Phase 2: Planning
+### 4. 第 2 阶段：规划
 
-```bash
-./loop.sh plan
-```
+**等待 `IMPLEMENTATION_PLAN.md` 生成（通常需要 1-2 次迭代）。审核该文件，它将作为你的任务列表。**
 
-Wait for `IMPLEMENTATION_PLAN.md` to be generated (usually 1-2 iterations). Review it — this is your task list.
+### 5. 第 3 阶段：构建**
 
-### 5. Phase 3: Building
-
-```bash
-./loop.sh build 20  # Max 20 iterations
-```
-
-Watch it work. Add backpressure (tests, lints) as patterns emerge. Check commits for progress.
+**观察循环的运行情况。在出现问题时添加反向压力机制（如测试、代码检查）。通过提交代码来跟踪进度。**
 
 ---
 
-## Loop Script Options
+## 循环脚本选项
+
+### 使用 Node.js 包装器以获得更多控制权
 
 ```bash
 ./loop.sh              # Build mode, unlimited
@@ -471,78 +459,56 @@ Watch it work. Add backpressure (tests, lints) as patterns emerge. Check commits
 ./loop.sh plan 5       # Plan mode, max 5 iterations
 ```
 
-Or use the Node.js wrapper for more control:
-
-```bash
-node skills/ralph-loops/scripts/ralph-loop.mjs \
-  --prompt "./PROMPT_build.md" \
-  --model opus \
-  --max 20 \
-  --done "RALPH_DONE"
-```
-
 ---
 
-## When to Regenerate the Plan
+## 何时需要重新生成计划
 
-Plans drift. Regenerate when:
+当计划偏离目标、计划显得过时或与当前状态不符、已完成的任务过多导致混乱、你对实际完成的内容感到困惑时，都需要重新生成计划：
 
-- Ralph is going off track (implementing wrong things)
-- Plan feels stale or doesn't match current state
-- Too much clutter from completed items
-- You've made significant spec changes
-- You're confused about what's actually done
-
-Just switch back to planning mode:
+**只需切换回规划模式即可：**
 
 ```bash
 ./loop.sh plan
 ```
 
-Regeneration cost is one Planning loop. Cheap compared to Ralph going in circles.
+重新生成计划的成本只是一个规划循环的费用。相比让循环陷入无限循环，这非常划算。
 
 ---
 
-## Safety
+## 安全性
 
-Ralph requires `--dangerously-skip-permissions` to run autonomously. This bypasses Claude's permission system entirely.
+Ralph 需要 `--dangerously-skip-permissions` 参数才能自主运行。这会完全绕过 Claude 的权限系统。
 
-**Philosophy:** "It's not if it gets popped, it's when. And what is the blast radius?"
+**安全策略：**
+- 在隔离的环境中运行（如 Docker 或虚拟机）
+- 仅使用完成任务所需的 API 密钥
+- 限制对私有数据的访问
+- 在可能的情况下限制网络连接
+- **紧急退出机制：** 使用 Ctrl+C 停止循环；使用 `git reset --hard` 恢复未提交的更改
 
-**Protections:**
-- Run in isolated environments (Docker, VM)
-- Only the API keys needed for the task
-- No access to private data beyond requirements
-- Restrict network connectivity where possible
-- **Escape hatches:** Ctrl+C stops the loop; `git reset --hard` reverts uncommitted changes
+## 成本估算
 
----
-
-## Cost Expectations
-
-| Task Type | Model | Iterations | Est. Cost |
+| 任务类型 | 使用的模型 | 需要的迭代次数 | 预计成本 |
 |-----------|-------|------------|-----------|
-| Generate plan | Opus | 1-2 | $0.50-1.00 |
-| Implement simple feature | Opus | 3-5 | $1.00-2.00 |
-| Implement complex feature | Opus | 10-20 | $3.00-8.00 |
-| Full project buildout | Opus | 50+ | $15-50+ |
+| 生成计划 | Opus | 1-2 次迭代 | 0.50-1.00 美元 |
+| 实现简单功能 | Opus | 3-5 次迭代 | 1.00-2.00 美元 |
+| 实现复杂功能 | Opus | 10-20 次迭代 | 3.00-8.00 美元 |
+| 完整项目构建 | Opus | 50 次以上迭代 | 15.00-50.00 美元 |
 
-**Tip:** Use Sonnet for simpler tasks where plan is clear. Use Opus for planning and complex reasoning.
+**提示：** 对于计划明确简单的任务，可以使用 Sonnet 模型；对于需要复杂规划的任务，使用 Opus 模型。
 
----
+## 实际应用成果
 
-## Real-World Results
-
-From Geoffrey Huntley:
-- 6 repos generated overnight at YC hackathon
-- $50k contract completed for $297 in API costs
-- Created entire programming language over 3 months
+Geoffrey Huntley 的案例：
+- 在 YC 霸客赛中，一夜之间生成了 6 个项目
+- 以 297 美元的 API 使用成本完成了价值 50,000 美元的合同
+- 在 3 个月内开发出了一门全新的编程语言
 
 ---
 
-## Advanced: Running as Sub-Agent
+## 高级用法：作为子代理运行
 
-For long loops, spawn as sub-agent so main session stays responsive:
+对于耗时较长的循环，可以将代理作为子代理来运行，以确保主会话保持响应性：
 
 ```javascript
 sessions_spawn({
@@ -554,7 +520,7 @@ Summarize what was implemented when done.`,
 })
 ```
 
-Check progress:
+**检查循环的进度：**
 ```javascript
 sessions_list({ kinds: ["spawn"] })
 sessions_history({ label: "ralph-build", limit: 5 })
@@ -562,66 +528,64 @@ sessions_history({ label: "ralph-build", limit: 5 })
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Ralph keeps implementing the same thing
-- Plan is stale → regenerate with `./loop.sh plan`
-- Backpressure missing → add tests that catch duplicates
+### Ralph 一直重复执行相同的操作
+- 如果计划过时，使用 `./loop.sh plan` 重新生成计划
+- 如果缺少反向压力机制，添加相应的测试来检测重复操作
 
-### Ralph goes in circles
-- Add more specific guardrails to prompts
-- Check if specs are ambiguous
-- Regenerate plan
+### Ralph 陷入无限循环
+- 在提示语中添加更具体的约束条件
+- 检查需求规范是否表述模糊
+- 重新生成计划
 
-### Context getting bloated
-- Ensure one task per iteration (check prompt)
-- Keep AGENTS.md under 60 lines
-- Move status/progress to IMPLEMENTATION_PLAN.md, not AGENTS.md
+### 上下文信息过于复杂
+- 确保每次迭代只完成一个任务（检查提示语）
+- 保持 `AGENTS.md` 文件的代码量在 60 行以内
+- 将状态和进度信息移到 `IMPLEMENTATION_PLAN.md` 文件中
 
-### Tests not running
-- Check AGENTS.md has correct validation commands
-- Ensure backpressure section in prompt references AGENTS.md
+### 测试无法运行
+- 检查 `AGENTS.md` 文件中是否包含正确的验证命令
+- 确保提示语中引用了正确的验证代码
 
----
+## 特殊情况处理
 
-## Edge Cases
+### 没有 Git 的项目
 
-### Projects Without Git
+循环脚本依赖于 Git 来完成提交和推送操作。对于没有版本控制的项目：
 
-The loop script expects git for commits and pushes. For projects without version control:
-
-**Option 1: Initialize git anyway** (recommended)
+**选项 1：** 尽管如此，仍然初始化 Git （推荐）**
 ```bash
 git init
 git add -A
 git commit -m "Initial commit before Ralph"
 ```
 
-**Option 2: Modify the prompts**
-- Remove git-related guardrails from PROMPT_build.md
-- Remove the git push section from loop.sh
-- Use file backups instead: add `cp -r src/ backups/iteration-$ITERATION/` to loop.sh
+**选项 2：** 修改提示语**
+- 从 `PROMPT_build.md` 中删除与 Git 相关的提示语
+- 从 `loop.sh` 文件中删除与 Git 相关的代码
+- 使用文件备份：在 `loop.sh` 中添加 `cp -r src/ backups/iteration-$ITERATION/` 命令
 
-**Option 3: Use tarball snapshots**
+**选项 3：** 使用 tarball 快照**
 ```bash
 # Add to loop.sh before each iteration:
 tar -czf "snapshots/pre-iteration-$ITERATION.tar.gz" src/
 ```
 
-### Very Large Codebases
+### 大型代码库
 
-For codebases with 100K+ lines:
+对于代码量超过 100,000 行的项目：
 
-- **Reduce subagent parallelism:** Change "up to 500 parallel Sonnet subagents" to "up to 50" in prompts
-- **Scope narrowly:** Use focused specs that target specific directories
-- **Add path restrictions:** In AGENTS.md, note which directories are in-scope
-- **Consider workspace splitting:** Treat large modules as separate Ralph projects
+- **减少子代理的并发数量**：将提示语中的“最多使用 500 个 Sonnet 子代理”修改为“最多使用 50 个”
+- **缩小关注范围**：编写针对特定目录的详细规范
+- **调整路径限制**：在 `AGENTS.md` 中明确指定哪些目录属于当前任务的范围内
+- **考虑将大型模块视为独立的项目**  
 
-### When Claude CLI Isn't Available
+### 当 Claude CLI 不可用时
 
-The methodology works with any Claude interface:
+无论使用哪种 Claude 接口，都可以采用这种方法：
 
-**Claude API directly:**
+**直接使用 Claude API：**
 ```bash
 # Replace loop.sh with API calls using curl or a script
 curl https://api.anthropic.com/v1/messages \
@@ -630,39 +594,38 @@ curl https://api.anthropic.com/v1/messages \
   -d '{"model": "claude-sonnet-4-20250514", "max_tokens": 8192, "messages": [...]}'
 ```
 
-**Alternative agents:**
-- **Aider:** `aider --opus --auto-commits`
-- **Continue.dev:** Use with Claude API key
-- **Cursor:** Composer mode with PROMPT files as context
+**其他替代方案：**
+- **辅助工具：** `aider --opus --auto-commits`
+- **Continue.dev：** 使用 Claude API 密钥
+- **Cursor：** 在 Composer 模式下使用提示语文件作为上下文
 
-The key principles (one task per iteration, fresh context, backpressure) apply regardless of tooling.
+无论使用哪种工具，三个核心原则（每次迭代只完成一个任务、保持上下文清晰、使用反向压力机制）都同样适用。
 
-### Non-Node.js Projects
+### 非 Node.js 项目的配置
 
-Adapt AGENTS.md for your stack:
+根据你的开发环境调整 `AGENTS.md` 文件中的配置：
 
-| Stack | Build | Test | Lint |
+| 开发环境 | 构建工具 | 测试工具 | 代码检查工具 |
 |-------|-------|------|------|
 | Python | `pip install -e .` | `pytest` | `ruff .` |
 | Go | `go build ./...` | `go test ./...` | `golangci-lint run` |
 | Rust | `cargo build` | `cargo test` | `cargo clippy` |
 | Ruby | `bundle install` | `rspec` | `rubocop` |
-
-Also update path references in prompts (`src/*` → your source directory).
-
----
-
-## Learn More
-
-- Geoffrey Huntley: https://ghuntley.com/ralph/
-- Clayton Farr's Playbook: https://github.com/ClaytonFarr/ralph-playbook
-- Geoffrey's Fork: https://github.com/ghuntley/how-to-ralph-wiggum
+| ... | 根据实际情况调整相应的命令 |
 
 ---
 
-## Credits
+## 更多资源
 
-Built by **Johnathan & Q** — a human-AI dyad.
+- Geoffrey Huntley 的相关资料：https://ghuntley.com/ralph/
+- Clayton Farr 的使用指南：https://github.com/ClaytonFarr/ralph-playbook
+- Geoffrey 的开源代码仓库：https://github.com/ghuntley/how-to-ralph-wiggum
 
-- Twitter: [@spacepixel](https://x.com/spacepixel)
-- ClawdHub: [clawhub.ai/skills/ralph-loops](https://www.clawhub.ai/skills/ralph-loops)
+---
+
+## 致谢
+
+该项目由 **Johnathan 和 Q** 共同开发——一个人类与 AI 的协作团队。
+
+- Twitter 账号：[@spacepixel](https://x.com/spacepixel)
+- ClawdHub 上的项目链接：[clawhub.ai/skills/ralph-loops](https://www.clawhub.ai/skills/ralph-loops)

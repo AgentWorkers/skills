@@ -1,307 +1,130 @@
 ---
 name: ecto-migrator
-description: "Generate Ecto migrations from natural language or schema descriptions. Handles tables, columns, indexes, constraints, references, enums, and partitioning. Supports reversible migrations, data migrations, and multi-tenant patterns. Use when creating or modifying database schemas, adding indexes, altering tables, creating enums, or performing data migrations in an Elixir project."
+description: "**从自然语言或数据库模式描述生成 Ecto 迁移脚本**  
+该工具能够根据用户提供的描述自动生成 Ecto 迁移脚本，支持处理表格、列、索引、约束条件、引用关系、枚举类型以及分区设置等数据库结构元素。同时支持可逆的迁移操作（即迁移前后数据可以恢复到原始状态），并支持多租户架构下的数据库管理。适用于在 Elixir 项目中创建或修改数据库模式、添加索引、调整表格结构、定义枚举类型或执行数据迁移等场景。"
 ---
 
-# Ecto Migrator
+# Ecto 迁移工具
 
-## Generating Migrations
+## 生成迁移脚本
 
-### From Natural Language
+### 从自然语言描述生成迁移脚本
 
-Parse the user's description and generate a migration file. Common patterns:
+解析用户的指令并生成相应的迁移文件。常见的指令模式如下：
 
-| User Says | Migration Action |
+| 用户指令 | 迁移操作 |
 |-----------|-----------------|
-| "Create users table with email and name" | `create table(:users)` with columns |
-| "Add phone to users" | `alter table(:users), add :phone` |
-| "Make email unique on users" | `create unique_index(:users, [:email])` |
-| "Add tenant_id to all tables" | Multiple `alter table` with index |
-| "Rename status to state on orders" | `rename table(:orders), :status, to: :state` |
-| "Remove the legacy_id column from users" | `alter table(:users), remove :legacy_id` |
-| "Add a check constraint on orders amount > 0" | `create constraint(:orders, ...)` |
+| “创建包含 email 和 name 的 users 表” | `create table(:users)` 并添加相关列 |
+| “在 users 表中添加 phone 列” | `alter table(:users), add :phone` |
+| “使 users 表中的 email 列唯一” | `create unique_index(:users, [:email])` |
+| “在所有表中添加 tenant_id 列” | 通过 `alter table` 语句添加该列并创建索引 |
+| “将 orders 表中的 status 列重命名为 state” | `rename table(:orders), :status, to: :state` |
+| “从 users 表中删除 legacy_id 列” | `alter table(:users), remove :legacy_id` |
+| “为 orders 表添加检查约束，确保 amount 大于 0” | `create constraint(:orders, ...)` |
 
-### File Naming
+### 文件命名规则
 
-```bash
-mix ecto.gen.migration <name>
-# Generates: priv/repo/migrations/YYYYMMDDHHMMSS_<name>.exs
-```
+文件名遵循以下命名规范：`create_<表名>`, `add_<列名>_to_<表名>`, `create_<表名>_<列名>_index`, `alter_<表名>._add_<列名>`。
 
-Name conventions: `create_<table>`, `add_<column>_to_<table>`, `create_<table>_<column>_index`, `alter_<table>_add_<columns>`.
+## 迁移脚本模板
 
-## Migration Template
+（此处应提供迁移脚本的模板结构，但原文未提供具体内容，可保留空白或使用占位符）
 
-```elixir
-defmodule MyApp.Repo.Migrations.CreateUsers do
-  use Ecto.Migration
+## 列类型
 
-  def change do
-    create table(:users, primary_key: false) do
-      add :id, :binary_id, primary_key: true
-      add :email, :string, null: false
-      add :name, :string, null: false
-      add :role, :string, null: false, default: "member"
-      add :metadata, :map, default: %{}
-      add :tenant_id, :binary_id, null: false
+请参考 [references/column-types.md](references/column-types.md) 以获取完整的类型映射和指导信息。
 
-      add :team_id, references(:teams, type: :binary_id, on_delete: :delete_all)
+**关键决策：**
+- **ID**：使用 `:binary_id`（UUID）类型，并设置 `primary_key: false`；需要时手动添加 `:id` 列。
+- **货币类型**：使用 `:integer`（表示分）或 `:decimal`；避免使用 `:float`。
+- **时间戳**：始终使用 `timestamps(type: :utc_datetime_usec)`。
+- **枚举类型**：使用 `:string` 与 `Ecto.Enum` 结合；避免使用 PostgreSQL 自带的枚举类型（因为难以迁移）。
+- **JSON 数据**：使用 `:map` 类型（映射到 `jsonb` 数据类型）。
+- **数组类型**：使用 `{:array, :string}` 等形式。
 
-      timestamps(type: :utc_datetime_usec)
-    end
+## 索引策略
 
-    create unique_index(:users, [:tenant_id, :email])
-    create index(:users, [:tenant_id])
-    create index(:users, [:team_id])
-  end
-end
-```
+请参考 [references/index-patterns.md](references/index-patterns.md) 以获取详细的索引创建指南。
 
-## Column Types
+### 何时创建索引？
 
-See [references/column-types.md](references/column-types.md) for complete type mapping and guidance.
+以下列应始终创建索引：
+- 外键列
+- `tenant_id` 列（复合索引中的第一个列）
+- 在 `WHERE` 子句中使用的列
+- 在 `ORDER BY` 子句中使用的列
+- 需要唯一性的列
 
-Key decisions:
-- **IDs**: Use `:binary_id` (UUID) — set `primary_key: false` on table, add `:id` manually.
-- **Money**: Use `:integer` (cents) or `:decimal` — never `:float`.
-- **Timestamps**: Always `timestamps(type: :utc_datetime_usec)`.
-- **Enums**: Use `:string` with app-level `Ecto.Enum` — avoid Postgres enums (hard to migrate).
-- **JSON**: Use `:map` (maps to `jsonb`).
-- **Arrays**: Use `{:array, :string}` etc.
+## 索引类型（此处应提供具体的索引类型列表）
 
-## Index Strategies
+## 约束条件
 
-See [references/index-patterns.md](references/index-patterns.md) for detailed index guidance.
+（此处应提供约束条件的详细说明）
 
-### When to Add Indexes
+## 外键约束
 
-Always index:
-- Foreign keys (`_id` columns)
-- `tenant_id` (first column in composite indexes)
-- Columns used in `WHERE` clauses
-- Columns used in `ORDER BY`
-- Unique constraints
+### 外键约束的类型及使用场景
 
-### Index Types
-
-```elixir
-# Standard B-tree
-create index(:users, [:tenant_id])
-
-# Unique
-create unique_index(:users, [:tenant_id, :email])
-
-# Partial (conditional)
-create index(:orders, [:status], where: "status != 'completed'", name: :orders_active_status_idx)
-
-# GIN for JSONB
-create index(:events, [:metadata], using: :gin)
-
-# GIN for array columns
-create index(:posts, [:tags], using: :gin)
-
-# Composite
-create index(:orders, [:tenant_id, :status, :inserted_at])
-
-# Concurrent (no table lock — use in separate migration)
-@disable_ddl_transaction true
-@disable_migration_lock true
-
-def change do
-  create index(:users, [:email], concurrently: true)
-end
-```
-
-## Constraints
-
-```elixir
-# Check constraint
-create constraint(:orders, :amount_must_be_positive, check: "amount > 0")
-
-# Exclusion constraint (requires btree_gist extension)
-execute "CREATE EXTENSION IF NOT EXISTS btree_gist", ""
-create constraint(:reservations, :no_overlapping_bookings,
-  exclude: ~s|gist (room_id WITH =, tstzrange(starts_at, ends_at) WITH &&)|
-)
-
-# Unique constraint (same as unique_index for most purposes)
-create unique_index(:accounts, [:slug])
-```
-
-## References (Foreign Keys)
-
-```elixir
-add :user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false
-add :team_id, references(:teams, type: :binary_id, on_delete: :nilify_all)
-add :parent_id, references(:categories, type: :binary_id, on_delete: :nothing)
-```
-
-| `on_delete` | Use When |
+| `on_delete` | 使用场景 |
 |-------------|----------|
-| `:delete_all` | Child can't exist without parent (memberships, line items) |
-| `:nilify_all` | Child should survive parent deletion (optional association) |
-| `:nothing` | Handle in application code (default) |
-| `:restrict` | Prevent parent deletion if children exist |
+| `:delete_all` | 子表不能在没有父表的情况下存在（例如成员关系、订单明细） |
+| `:nilify_all` | 子表应在父表删除后仍然存在（可选的关联关系） |
+| `:nothing` | 由应用程序代码处理（默认行为） |
+| `:restrict` | 如果存在子表，则禁止删除父表 |
 
-## Multi-Tenant Patterns
+## 多租户模式
 
-### Every Table Gets tenant_id
+- **所有表都应包含 tenant_id 列**（此处应提供实现逻辑）
+- **如何向现有表添加 tenant_id 列**（此处应提供具体操作）
 
-```elixir
-def change do
-  create table(:items, primary_key: false) do
-    add :id, :binary_id, primary_key: true
-    add :name, :string, null: false
-    add :tenant_id, :binary_id, null: false
-    timestamps(type: :utc_datetime_usec)
-  end
+## 数据迁移
 
-  # Always composite index with tenant_id first
-  create index(:items, [:tenant_id])
-  create unique_index(:items, [:tenant_id, :name])
-end
-```
+**规则：**切勿在同一迁移脚本中同时进行模式变更和数据变更。
 
-### Adding tenant_id to Existing Tables
+### 安全的数据迁移策略
 
-```elixir
-def change do
-  alter table(:items) do
-    add :tenant_id, :binary_id
-  end
+（此处应提供数据迁移的安全性建议）
 
-  # Backfill in a separate data migration, then:
-  # alter table(:items) do
-  #   modify :tenant_id, :binary_id, null: false
-  # end
-end
-```
+### 批量数据迁移（针对大型表）
 
-## Data Migrations
+（此处应提供批量迁移的实现方法）
 
-**Rule: Never mix schema changes and data changes in the same migration.**
+## 可逆迁移与不可逆迁移
 
-### Safe Data Migration Pattern
+- **可逆迁移**：使用 `change` 方法进行操作。例如：
+  - `create table` ↔ `drop table`
+  - `add column` ↔ `remove column`
+  - `create index` ↔ `drop index`
+  - `rename` ↔ `rename`
 
-```elixir
-defmodule MyApp.Repo.Migrations.BackfillUserRoles do
-  use Ecto.Migration
+- **不可逆迁移**：需要明确指定操作的方向。例如：
+  - 修改列类型时（Ecto 无法自动推断旧类型）
+  - 执行原始 SQL 语句
+  - 进行数据回填操作
+  - 删除包含数据的列
 
-  # Don't use schema modules — they may change after this migration runs
-  def up do
-    execute """
-    UPDATE users SET role = 'member' WHERE role IS NULL
-    """
-  end
+### 使用 `from:` 进行可逆操作
 
-  def down do
-    # Data migrations may not be reversible
-    :ok
-  end
-end
-```
+Phoenix 1.7 及更高版本支持使用 `from:` 语法来实现可逆的列类型修改：
 
-### Batched Data Migration (large tables)
+（此处应提供具体的使用示例）
 
-```elixir
-def up do
-  execute """
-  UPDATE users SET role = 'member'
-  WHERE id IN (
-    SELECT id FROM users WHERE role IS NULL LIMIT 10000
-  )
-  """
+## PostgreSQL 扩展功能
 
-  # For very large tables, use a Task or Oban job instead
-end
-```
+（此处应介绍如何使用 PostgreSQL 的扩展功能）
 
-## Reversible vs Irreversible
+## 枚举类型（建议使用 Ecto.Enum）
 
-### Reversible (use `change`)
+优先使用 `:string` 类型与 `Ecto.Enum` 结合。如果必须使用 PostgreSQL 自带的枚举类型，请注意：
+- 向 PostgreSQL 枚举中添加新值时，需要执行 `ALTER TYPE ... ADD VALUE` 语句，该操作不能在事务中执行。建议使用 `:string` + `Ecto.Enum` 的组合方式。
 
-These are auto-reversible:
-- `create table` ↔ `drop table`
-- `add column` ↔ `remove column`
-- `create index` ↔ `drop index`
-- `rename` ↔ `rename`
+## 检查清单：
 
-### Irreversible (use `up`/`down`)
-
-Must define both directions:
-- `modify` column type — Ecto can't infer the old type
-- `execute` raw SQL
-- Data backfills
-- Dropping columns with data
-
-```elixir
-def up do
-  alter table(:users) do
-    modify :email, :citext, from: :string  # from: helps reversibility
-  end
-end
-
-def down do
-  alter table(:users) do
-    modify :email, :string, from: :citext
-  end
-end
-```
-
-### Using `modify` with `from:`
-
-Phoenix 1.7+ supports `from:` for reversible `modify`:
-
-```elixir
-def change do
-  alter table(:users) do
-    modify :email, :citext, null: false, from: {:string, null: true}
-  end
-end
-```
-
-## PostgreSQL Extensions
-
-```elixir
-def change do
-  execute "CREATE EXTENSION IF NOT EXISTS citext", "DROP EXTENSION IF EXISTS citext"
-  execute "CREATE EXTENSION IF NOT EXISTS pgcrypto", "DROP EXTENSION IF EXISTS pgcrypto"
-  execute "CREATE EXTENSION IF NOT EXISTS pg_trgm", "DROP EXTENSION IF EXISTS pg_trgm"
-end
-```
-
-## Enum Types (PostgreSQL native — use sparingly)
-
-Prefer `Ecto.Enum` with `:string` columns. If you must use Postgres enums:
-
-```elixir
-def up do
-  execute "CREATE TYPE order_status AS ENUM ('pending', 'confirmed', 'shipped', 'delivered')"
-
-  alter table(:orders) do
-    add :status, :order_status, null: false, default: "pending"
-  end
-end
-
-def down do
-  alter table(:orders) do
-    remove :status
-  end
-
-  execute "DROP TYPE order_status"
-end
-```
-
-**Warning:** Adding values to Postgres enums requires `ALTER TYPE ... ADD VALUE` which cannot run inside a transaction. Prefer `:string` + `Ecto.Enum`.
-
-## Checklist
-
-- [ ] Primary key: `primary_key: false` + `add :id, :binary_id, primary_key: true`
-- [ ] `null: false` on required columns
-- [ ] `timestamps(type: :utc_datetime_usec)`
-- [ ] Foreign keys with appropriate `on_delete`
-- [ ] Index on every foreign key column
-- [ ] `tenant_id` indexed (composite with lookup fields)
-- [ ] Unique constraints where needed
-- [ ] Concurrent indexes in separate migration with `@disable_ddl_transaction true`
-- [ ] Data migrations in separate files from schema migrations
+- 确保主键设置正确（`primary_key: false` + `add :id, :binary_id, primary_key: true`）
+- 必需的列应设置为 `null: false`
+- 时间戳类型应设置为 `timestamps(type: :utc_datetime_usec)`
+- 外键应设置适当的 `on_delete` 约束
+- 所有外键列都应创建索引
+- 根据需求添加唯一性约束
+- 对于需要并发创建索引的情况，应在单独的迁移脚本中使用 `@disable_ddl_transaction true` 选项
+- 数据迁移脚本应与模式变更脚本分开保存

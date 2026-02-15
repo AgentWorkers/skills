@@ -1,29 +1,29 @@
 ---
 name: permission-auditor
-description: Generate RBAC permission configs from your routes. Use when you need role-based access control without building it from scratch.
+description: 根据您的路由生成 RBAC（基于角色的访问控制）权限配置。当您需要实现基于角色的访问控制功能，但又不想从头开始构建时，可以使用这种方法。
 ---
 
-# Permission Auditor
+# 权限审计器（Permission Auditor）
 
-Your API has 47 routes and no permission system. This tool scans your route handlers and generates RBAC permission configs automatically. It figures out which endpoints need which roles and outputs a config you can plug right into your middleware.
+您的 API 共有 47 条路由，但目前没有权限管理系统。该工具会扫描您的路由处理程序，并自动生成基于角色的访问控制（RBAC）配置文件。它能够判断哪些端点需要哪些角色，并输出可以直接应用于中间件的配置文件。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-permission src/routes/
 ```
 
-## What It Does
+## 功能概述
 
-- Scans route handlers and API endpoints to map out your permission surface
-- Generates role-based access control configurations
-- Detects admin-only routes, public routes, and auth-required routes
-- Outputs middleware-ready permission configs
-- Identifies routes missing auth checks
+- 扫描路由处理程序和 API 端点，以确定权限需求
+- 生成基于角色的访问控制配置
+- 识别仅限管理员访问的路由、公开路由以及需要身份验证的路由
+- 输出可直接用于中间件的权限配置文件
+- 检查是否存在缺少身份验证验证的路由
 
-## Usage Examples
+## 使用示例
 
 ```bash
 npx ai-permission src/routes/
@@ -31,36 +31,36 @@ npx ai-permission src/api/
 npx ai-permission "src/**/*.controller.ts"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Start with least privilege** - Default deny, then explicitly grant access
-- **Review generated configs** - The tool suggests roles but you know your business logic
-- **Keep permissions close to routes** - Don't scatter permission checks across your codebase
+- **遵循“最小权限原则”**：默认拒绝所有访问请求，然后仅授予必要的权限
+- **审核生成的配置文件**：虽然工具会推荐合适的角色设置，但您需要根据业务逻辑进行最终决策
+- **将权限逻辑与路由紧密关联**：避免在代码库中分散权限验证逻辑
 
-## When to Use This
+## 适用场景
 
-- Building a new API and need to plan permissions
-- Retrofitting RBAC onto an existing app
-- Auditing which routes have missing auth checks
+- 在构建新 API 时规划权限结构
+- 为现有应用程序添加基于角色的访问控制功能
+- 审查系统中是否存在缺少身份验证验证的路由
 
-## Part of the LXGIC Dev Toolkit
+## 该工具属于 LXGIC 开发工具包（LXGIC Dev Toolkit）的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发工具之一。免费版本完全无付费门槛、无需注册，也无需使用 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
-## How It Works
+## 工作原理
 
-Scans your route files to extract endpoint definitions, HTTP methods, and existing auth middleware. AI analyzes the patterns to suggest appropriate role assignments and generates a structured RBAC config.
+该工具会扫描您的路由文件，提取端点定义、HTTP 方法以及现有的身份验证中间件信息。通过人工智能分析这些数据，它会推荐合适的角色分配方式，并生成结构化的 RBAC 配置文件。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以自由使用该工具，无需遵守任何额外限制。

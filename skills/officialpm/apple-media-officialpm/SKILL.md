@@ -1,37 +1,37 @@
 ---
 name: apple-media
-description: Discover and control Apple media/AirPlay devices (HomePod, Apple TV, AirPlay speakers) from macOS. Use when you want to scan for AirPlay devices, map names→IPs/IDs, pair/connect, and control playback/volume using pyatv (atvremote) and Airfoil.
+description: 在 macOS 上发现并控制 Apple 媒体设备/AirPlay 设备（如 HomePod、Apple TV、AirPlay 扬声器）。当您需要扫描 AirPlay 设备、将设备名称映射到对应的 IP 地址/ID、进行配对连接，以及使用 pyatv (atvremote) 和 Airfoil 来控制播放或音量时，可参考本文档。
 ---
 
-# Apple Media (AirPlay + Apple TV control)
+# Apple Media（AirPlay + Apple TV 控制）
 
-**Author:** Parth Maniar — [@officialpm](https://github.com/officialpm)
+**作者：** Parth Maniar — [@officialpm](https://github.com/officialpm)
 
-This skill is a thin workflow wrapper around two tools:
+此技能是一个基于两个工具的工作流程封装：
 
-- **pyatv** (`atvremote`) for discovering Apple TVs/HomePods and (when supported/paired) remote-control style commands.
-- **Airfoil** (via the existing `airfoil` skill) for reliable **speaker connect/disconnect + volume** control across AirPlay speakers (including HomePods).
+- **pyatv**（`atvremote`）：用于发现 Apple TV 和 HomePod，并支持发送遥控器风格的命令（如果设备支持配对的话）。
+- **Airfoil**：通过现有的 `airfoil` 技能，实现对 AirPlay 扬声器（包括 HomePod）的可靠连接/断开以及音量控制。
 
-## Setup
+## 设置
 
-This skill uses `pyatv` installed via **pipx**.
+此技能依赖于通过 **pipx** 安装的 **pyatv**。
 
-Install/repair (pinned to Python 3.12 to avoid Python 3.14 asyncio issues):
+安装/修复（已固定为 Python 3.12 版本，以避免 Python 3.14 的 asyncio 相关问题）：
 
 ```bash
 pipx install pyatv || pipx upgrade pyatv
 pipx reinstall pyatv --python python3.12
 ```
 
-Verify:
+验证安装是否成功：
 
 ```bash
 atvremote --help | head
 ```
 
-## Quick start
+## 快速入门
 
-### 1) Scan the network for devices
+### 1) 扫描网络中的设备
 
 ```bash
 # Fast scan (5s)
@@ -44,14 +44,14 @@ atvremote --help | head
 node ./scripts/scan-json.js 5
 ```
 
-You’ll see devices like:
-- HomePods (e.g., "Living Room", "Bedroom")
+你将看到以下设备：
+- HomePod（例如：“Living Room”（客厅）、“Bedroom”（卧室）等）
 - Apple TV
-- AirPlay-capable TVs
+- 支持 AirPlay 的电视
 
-### 2) Control HomePod / speaker volume (recommended path)
+### 2) 控制 HomePod 或扬声器的音量（推荐方法）
 
-Use Airfoil for speaker control (reliable for HomePods):
+使用 Airfoil 来控制扬声器的音量（对 HomePod 来说更为可靠）：
 
 ```bash
 # List speakers Airfoil can see
@@ -65,9 +65,9 @@ Use Airfoil for speaker control (reliable for HomePods):
 ../airfoil/airfoil.sh disconnect "Living Room"
 ```
 
-### 3) Apple TV remote commands (pyatv)
+### 3) Apple TV 的遥控器命令（使用 pyatv）
 
-First, scan to find the Apple TV name or id, then run commands:
+首先扫描以获取 Apple TV 的名称或 ID，然后执行相应的命令：
 
 ```bash
 # Examples (device name can be Apple TV or other targets)
@@ -77,19 +77,19 @@ atvremote -n "TV" turn_on
 atvremote -n "TV" turn_off
 ```
 
-If you get auth/protocol errors, pairing/credentials are needed (device-dependent).
+如果出现认证或协议错误，可能需要输入设备配对信息（具体取决于设备类型）。
 
-## Notes / gotchas
+## 注意事项
 
-- **pyatv HomePod control often requires authentication** and may not support all remote-control commands out of the box.
-  - When pyatv fails for HomePod playback/volume, prefer **Airfoil** for volume + speaker routing.
-- `atvremote scan` is the source of truth for IP/ID discovery.
+- **使用 pyatv 控制 HomePod 时通常需要身份验证**，并且可能不支持所有的遥控器命令。
+  - 如果使用 pyatv 时在播放或调节音量方面遇到问题，建议使用 Airfoil 来进行音量控制和扬声器路由。
+- `atvremote scan` 是获取设备 IP 地址和 ID 的主要来源。
 
-## Bundled scripts
+## 配置脚本
 
 ### `scripts/scan.sh`
 
-Runs `atvremote scan` with a configurable timeout.
+该脚本会运行 `atvremote scan` 并允许用户配置超时时间。
 
 ```bash
 ./scripts/scan.sh 5
@@ -97,7 +97,7 @@ Runs `atvremote scan` with a configurable timeout.
 
 ### `scripts/scan-json.js`
 
-Parses `atvremote scan` output into a compact JSON summary (name, address, model, services).
+该脚本会将 `atvremote scan` 的输出解析为结构化的 JSON 格式（包含设备名称、地址、型号和服务信息）。
 
 ```bash
 node ./scripts/scan-json.js

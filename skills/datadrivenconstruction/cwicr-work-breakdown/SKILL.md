@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-work-breakdown"
 display_name: "CWICR Work Breakdown"
-description: "Break down CWICR work items into component resources. Decompose aggregate items, analyze resource composition, and generate detailed bills of resources."
+description: "将 CWICR 工作项分解为组件资源；对聚合项进行拆分，分析资源组成，并生成详细的资源清单。"
 ---
 
-# CWICR Work Breakdown
+# CWICR 工作分解
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Work items in CWICR contain aggregated resources:
-- What materials make up a concrete work item?
-- What labor categories are needed?
-- What equipment is involved?
-- How to generate detailed resource bills?
+### 问题描述
+CWICR 中的工作项包含各种汇总的资源：
+- 一个具体的工作项由哪些材料组成？
+- 需要哪些类型的劳动力？
+- 需要使用哪些设备？
+- 如何生成详细的资源费用清单？
 
-### Solution
-Decompose CWICR work items into their constituent resources (labor, materials, equipment) with quantities and costs.
+### 解决方案
+将 CWICR 中的工作项分解为其构成的资源（劳动力、材料、设备），并明确每种资源的数量和成本。
 
-### Business Value
-- **Transparency** - See inside aggregated items
-- **Procurement** - Generate material lists
-- **Scheduling** - Identify resource needs
-- **Cost control** - Track resource consumption
+### 商业价值
+- **透明度**：能够清晰地了解汇总项目中的各项资源构成。
+- **采购**：生成材料清单。
+- **调度**：识别资源需求。
+- **成本控制**：跟踪资源消耗情况。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -409,8 +408,7 @@ class ResourceAggregator:
         return critical
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -430,9 +428,9 @@ for comp in item_breakdown.components:
     print(f"  - {comp.resource_type.value}: {comp.description}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Bill of Resources
+### 1. 资源清单
 ```python
 items = [
     {'work_item_code': 'CONC-001', 'quantity': 150},
@@ -445,24 +443,24 @@ print(f"Total Labor: ${bill.total_labor_cost:,.2f}")
 print(f"Total Material: ${bill.total_material_cost:,.2f}")
 ```
 
-### 2. Resource Composition
+### 2. 资源构成分析
 ```python
 composition = breakdown.get_resource_composition("CONC-001")
 print(f"Labor: {composition['labor']}%")
 print(f"Material: {composition['material']}%")
 ```
 
-### 3. Labor Intensity Analysis
+### 3. 劳动力强度分析
 ```python
 analysis = breakdown.analyze_labor_intensity(['CONC-001', 'EXCV-002', 'REBAR-003'])
 print(analysis)
 ```
 
-### 4. Export Report
+### 4. 报告导出
 ```python
 breakdown.export_bill_of_resources(bill, "bill_of_resources.xlsx")
 ```
 
-## Resources
+## 相关资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Resource-Based Estimating
+- **DDC 书籍**: 第 3.1 章 - 基于资源的估算方法

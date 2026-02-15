@@ -1,18 +1,18 @@
 ---
 slug: "erp-integration-analysis"
 display_name: "Erp Integration Analysis"
-description: "Analyze ERP system integration for construction data flows. Map and optimize data flows between ERP modules"
+description: "分析ERP系统在建筑数据流方面的集成情况。梳理并优化ERP各模块之间的数据传输流程。"
 ---
 
-# ERP Integration Analysis
+# ERP集成分析
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 1.2), this skill analyzes ERP system integration patterns in construction organizations, mapping data flows between modules and identifying optimization opportunities.
+根据DDC方法论（第1.2章），本技能用于分析建筑组织中的ERP系统集成模式，映射各模块之间的数据流，并识别优化机会。
 
-**Book Reference:** "Технологии и системы управления в современном строительстве" / "Technologies and Management Systems in Modern Construction"
+**参考书籍**：《现代建筑中的技术与管理系统》（Технологии и системы управления в современном строительстве）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -633,9 +633,9 @@ Generated: {current['timestamp'].strftime('%Y-%m-%d %H:%M')}
         return report
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Analyze ERP Integration
+### 分析ERP集成情况
 
 ```python
 analyzer = ERPIntegrationAnalyzer()
@@ -691,7 +691,7 @@ print(f"Integration Score: {analysis.integration_score:.0%}")
 print(f"Bottlenecks: {len(analysis.bottlenecks)}")
 ```
 
-### Monitor Integration Health
+### 监控集成健康状况
 
 ```python
 monitor = IntegrationHealthMonitor(integration_points)
@@ -708,7 +708,7 @@ report = monitor.get_health_report()
 print(report)
 ```
 
-### Compare Integration Options
+### 比较不同的集成方案
 
 ```python
 options = [
@@ -721,24 +721,24 @@ comparison = analyzer.compare_integration_options(options)
 print(f"Recommended: {comparison['recommendation']}")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `ERPIntegrationAnalyzer` | Main analysis engine |
-| `ERPSystem` | ERP system definition |
-| `ERPModule` | Standard ERP modules |
-| `IntegrationPoint` | Integration connection |
-| `DataFlow` | Data flow mapping |
-| `IntegrationHealthMonitor` | Health monitoring |
+| 组件          | 功能                |
+|--------------|-------------------|
+| `ERPIntegrationAnalyzer` | 主要分析引擎           |
+| `ERPSystem`     | ERP系统定义             |
+| `ERPModule`     | 标准ERP模块             |
+| `IntegrationPoint` | 集成连接点             |
+| `DataFlow`      | 数据流映射             |
+| `IntegrationHealthMonitor` | 集成健康状况监控           |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 1.2
-- **Website**: https://datadrivenconstruction.io
+- **参考书籍**：Artem Boiko所著的《Data-Driven Construction》，第1.2章
+- **官方网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [data-silo-detection](../data-silo-detection/SKILL.md) to identify isolated systems
-- Use [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) for data integration
-- Use [interoperability-analyzer](../../Chapter-3.5/interoperability-analyzer/SKILL.md) for standards compliance
+- 使用 [data-silo-detection](../data-silo-detection/SKILL.md) 来识别孤立的系统
+- 使用 [etl-pipeline](../../Chapter-4.2/etl-pipeline/SKILL.md) 进行数据集成
+- 使用 [interoperability-analyzer](../../Chapter-3.5/interoperability-analyzer/SKILL.md) 确保符合标准

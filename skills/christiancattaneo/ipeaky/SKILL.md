@@ -1,6 +1,6 @@
 ---
 name: ipeaky
-description: Secure API key management for OpenClaw. Store, list, test, and delete API keys without exposing them in chat history. Keys are stored directly in openclaw.json via gateway config.patch — fully native integration. Use when a user needs to provide, manage, or test API keys (e.g., OpenAI, ElevenLabs, Anthropic, Brave, or any service). Triggers on phrases like "add API key", "store my key", "manage keys", "test my key", "set up API key", or when a skill requires an API key that isn't configured.
+description: OpenClaw的安全API密钥管理功能：允许用户存储、查看、测试和删除API密钥，同时确保这些密钥不会被记录在聊天历史中。密钥通过 `gateway config.patch` 直接存储在 `openclaw.json` 文件中，实现了与系统的完全原生集成。当用户需要提供、管理或测试API密钥（例如来自OpenAI、ElevenLabs、Anthropic、Brave等服务的密钥）时，该功能可发挥作用。系统会响应诸如“添加API密钥”、“保存我的密钥”、“管理密钥”、“测试我的密钥”或“设置API密钥”等指令；此外，当某个技能需要使用尚未配置的API密钥时，该功能也会自动触发。
 metadata:
   openclaw:
     platforms: [macos]
@@ -9,14 +9,13 @@ metadata:
     notes: "Secure input popup requires macOS (osascript). Linux/Windows users can pipe keys via stdin directly."
 ---
 
-# ipeaky — Secure API Key Management
+# ipeaky — 安全的API密钥管理
 
-Keys are stored **directly in OpenClaw's native config** (`openclaw.json`) via `gateway config.patch`.
-This means every skill that declares `primaryEnv` automatically picks up the key — zero manual wiring.
+密钥直接存储在OpenClaw的本地配置文件（`openclaw.json`）中，通过`gateway config.patch`进行更新。这意味着任何声明了`primaryEnv`的技能都会自动获取到该密钥，无需任何手动配置。
 
-## Key Map — Service to Config Path
+## 密钥映射 — 服务与配置路径的对应关系
 
-| Service | Config Path | primaryEnv |
+| 服务 | 配置路径 | primaryEnv |
 |---------|------------|------------|
 | OpenAI | `skills.entries.openai-whisper-api.apiKey` | OPENAI_API_KEY |
 | ElevenLabs | `skills.entries.sag.apiKey` | ELEVENLABS_API_KEY |
@@ -24,67 +23,66 @@ This means every skill that declares `primaryEnv` automatically picks up the key
 | Gemini | `skills.entries.nano-banana-pro.apiKey` | GEMINI_API_KEY |
 | Google Places | `skills.entries.goplaces.apiKey` | GOOGLE_PLACES_API_KEY |
 | Notion | `skills.entries.notion.apiKey` | NOTION_API_KEY |
-| ElevenLabs Talk | `talk.apiKey` | (direct) |
-| Custom skill | `skills.entries.<skill-name>.apiKey` | (per skill) |
-| Custom env | `skills.entries.<skill-name>.env.<VAR_NAME>` | (arbitrary) |
+| ElevenLabs Talk | `talk.apiKey` | （直接关联） |
+| 自定义技能 | `skills.entries.<技能名称>.apiKey` | （根据具体技能而定） |
+| 自定义环境变量 | `skills.entries.<技能名称>.env.<变量名称>` | （可自定义） |
 
-**Important:** Some keys serve multiple skills. OpenAI key is used by `openai-whisper-api`,
-`openai-image-gen`, etc. ElevenLabs key is used by `sag` and `talk`. When storing, set ALL
-relevant config paths for that key.
+**重要提示：**某些密钥被多个技能共享。例如，OpenAI密钥同时被`openai-whisper-api`和`openai-image-gen`等技能使用；ElevenLabs密钥被`sag`和`talk`技能使用。在存储密钥时，请确保设置所有相关的配置路径。
 
-## Storing a Key
+## 存储密钥
 
-**Step 1:** Launch the secure input popup. On macOS:
+**步骤1：** 打开安全输入弹窗。在macOS系统中，操作如下：
 ```bash
 bash {baseDir}/scripts/secure_input_mac.sh KEY_NAME
 ```
 
-**Step 2:** Once you have the key value (from stdout of the script), store it via gateway config.patch.
+**步骤2：** 获取密钥值后（该值会输出到脚本的stdout中），通过`gateway config.patch`将其保存到配置文件中。
 
-Example for OpenAI:
+**OpenAI的示例：**  
 ```
 gateway config.patch with raw: {"skills":{"entries":{"openai-whisper-api":{"apiKey":"THE_KEY"},"openai-image-gen":{"apiKey":"THE_KEY"}}}}
 ```
 
-Example for ElevenLabs:
+**ElevenLabs的示例：**  
 ```
 gateway config.patch with raw: {"skills":{"entries":{"sag":{"apiKey":"THE_KEY"}}},"talk":{"apiKey":"THE_KEY"}}
 ```
 
-Example for Brave Search:
+**Brave Search的示例：**  
 ```
 gateway config.patch with raw: {"tools":{"web":{"search":{"apiKey":"THE_KEY"}}}}
 ```
 
-**Critical rules:**
-- NEVER echo, print, or include any key value in chat messages or tool call arguments
-- NEVER include key values in the `reason` field of config.patch
-- If a user pastes a key directly in chat, store it immediately and tell them to delete the message
-- The secure_input_mac.sh script outputs the key to stdout — capture it in a variable, use it in config.patch, never log it
+**关键规则：**
+- **严禁**在任何聊天消息或工具调用参数中显示或传递密钥值。
+- **严禁**在`gateway config.patch`的`reason`字段中包含密钥值。
+- 如果用户直接在聊天中输入密钥，请立即将其存储起来，并提醒他们删除该消息。
+- `secure_input_mac.sh`脚本会将密钥输出到stdout中，请将其捕获并用于`gateway config.patch`，切勿将其记录到日志中。
 
-## Listing Keys
+## 查看密钥列表
 
-Read from the live config using `gateway config.get`. Show masked values only (first 4 chars + ****).
-Parse the config JSON and find all `apiKey` fields, display their config path and masked value.
+使用`gateway config.get`从配置文件中读取密钥信息，仅显示经过掩码处理的密钥值（前4个字符及后续字符被替换为“****”）。解析配置文件中的JSON数据，找到所有`apiKey`字段，并显示其配置路径和掩码后的密钥值。
 
-## Testing a Key
+## 测试密钥的有效性
 
-Test endpoints:
-- **OpenAI**: `curl -s -H "Authorization: Bearer $KEY" https://api.openai.com/v1/models | head`
-- **ElevenLabs**: `curl -s -H "xi-api-key: $KEY" https://api.elevenlabs.io/v1/user`
-- **Anthropic**: `curl -s -H "x-api-key: $KEY" -H "anthropic-version: 2023-06-01" https://api.anthropic.com/v1/messages -d '{"model":"claude-3-haiku-20240307","max_tokens":1,"messages":[{"role":"user","content":"hi"}]}'`
-- **Brave Search**: `curl -s -H "X-Subscription-Token: $KEY" "https://api.search.brave.com/res/v1/web/search?q=test&count=1"`
+**测试端点：**
+- **OpenAI**：`curl -s -H "Authorization: Bearer $KEY" https://api.openai.com/v1/models | head`
+- **ElevenLabs**：`curl -s -H "xi-api-key: $KEY" https://api.elevenlabs.io/v1/user`
+- **Anthropic**：`curl -s -H "x-api-key: $KEY" -H "anthropic-version: 2023-06-01" https://api.anthropic.com/v1/messages -d '{"model":"claude-3-haiku-20240307","max_tokens":1,"messages":[{"role":"user","content":"hi"}]}'`
+- **Brave Search**：`curl -s -H "X-Subscription-Token: $KEY" "https://api.search.brave.com/res/v1/web/search?q=test&count=1"`
 
-Source the key from the config (via gateway config.get), test it, report result. Never show the key.
+**操作流程：**
+1. 从配置文件中获取密钥值。
+2. 使用该密钥值进行测试。
+3. 严禁直接显示密钥内容。
 
-## Deleting a Key
+## 删除密钥
 
-Use `gateway config.patch` to set the key value to an empty string or remove the entry.
+使用`gateway config.patch`将密钥值设置为空字符串或删除相应的配置条目。
 
-## Security Guarantees
-
-- Keys go: secure popup → stdout pipe → config.patch → openclaw.json (never chat)
-- Keys are automatically available to all skills via OpenClaw's native env injection
-- No separate credential files to manage
-- No manual `source` commands needed
-- config.patch triggers a gateway reload so keys take effect immediately
+## 安全保障措施：
+- 密钥的传输过程为：安全输入弹窗 → stdout → `gateway config.patch` → `openclaw.json`（绝不会通过聊天渠道传输）。
+- 所有技能都能通过OpenClaw的本地环境变量自动获取到密钥。
+- 无需单独管理凭证文件。
+- 无需手动执行`source`命令。
+- `gateway config.patch`会触发配置文件的重新加载，从而使密钥配置立即生效。

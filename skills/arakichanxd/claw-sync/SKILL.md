@@ -1,6 +1,6 @@
 ---
 name: claw-sync
-description: Secure sync for OpenClaw memory and workspace. Use /sync to push, /restore to pull, /sync-status to check. Supports versioned backups and disaster recovery.
+description: OpenClaw 提供了安全的数据同步功能，用于管理内存和工作区的数据。您可以使用 `/sync` 命令进行数据推送，`/restore` 命令进行数据拉取，以及 `/sync-status` 命令来检查同步状态。该系统支持版本化的数据备份，并具备灾难恢复能力。
 commands:
   - name: sync
     description: Push memory and skills to remote repository
@@ -22,19 +22,19 @@ commands:
 
 # Claw Sync
 
-Secure, versioned sync for OpenClaw memory and workspace.
+为 OpenClaw 提供的安全、版本控制的同步功能，用于管理内存和工作区数据。
 
-## Commands
+## 命令
 
 ### /sync
-Push your memory and skills to the remote repository.
+将您的内存数据和技能信息推送到远程仓库。
 ```
 /sync              → Push and create versioned backup
 /sync --dry-run    → Preview what would be synced
 ```
 
 ### /restore
-Restore memory and skills from the remote repository.
+从远程仓库恢复内存数据和技能信息。
 ```
 /restore                        → Restore latest version
 /restore latest                 → Same as above
@@ -43,48 +43,48 @@ Restore memory and skills from the remote repository.
 ```
 
 ### /sync-status
-Show sync configuration and local backup info.
+显示同步配置和本地备份信息。
 ```
 /sync-status
 ```
 
 ### /sync-list
-List all available backup versions.
+列出所有可用的备份版本。
 ```
 /sync-list
 ```
 
 ---
 
-## What Gets Synced
+## 同步的内容
 
-| File | Description |
+| 文件 | 说明 |
 |------|-------------|
-| `MEMORY.md` | Long-term memory |
-| `USER.md` | User profile |
-| `SOUL.md` | Agent persona |
-| `IDENTITY.md` | Agent identity |
-| `TOOLS.md` | Tool configs |
-| `AGENTS.md` | Workspace rules |
-| `memory/*.md` | Daily logs |
-| `skills/*` | Custom skills |
+| `MEMORY.md` | 长期存储的内存数据 |
+| `USER.md` | 用户配置文件 |
+| `SOUL.md` | 代理角色信息 |
+| `IDENTITY.md` | 代理身份信息 |
+| `TOOLS.md` | 工具配置文件 |
+| `AGENTS.md` | 工作区规则 |
+| `memory/*.md` | 每日日志 |
+| `skills/*` | 自定义技能信息 |
 
-## NOT Synced (security)
+## 不会同步的内容（出于安全考虑）
 
-- `openclaw.json` - Contains API keys
-- `.env` - Contains secrets
+- `openclaw.json` - 包含 API 密钥 |
+- `.env` - 包含敏感信息 |
 
-## Setup Required
+## 必需的设置
 
-Create `~/.openclaw/.backup.env`:
+创建 `~/.openclaw/.backup.env` 文件：
 ```
 BACKUP_REPO=https://github.com/username/your-repo
 BACKUP_TOKEN=ghp_your_token
 ```
 
-## Features
+## 功能特点
 
-- 🏷️ **Versioned** - Each sync creates a restorable version
-- 💾 **Disaster Recovery** - Local backup before every restore
-- 🔒 **Secure** - No config files synced, token sanitization
-- 🖥️ **Cross-platform** - Windows, Mac, Linux
+- 🏷️ **版本控制**：每次同步都会生成一个可恢复的版本 |
+- 💾 **灾难恢复**：每次恢复前都会进行本地备份 |
+- 🔒 **安全性**：不会同步配置文件，并对敏感数据进行加密处理 |
+- 🖥️ **跨平台支持**：支持 Windows、Mac 和 Linux 系统

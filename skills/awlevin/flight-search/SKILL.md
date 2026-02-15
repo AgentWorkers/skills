@@ -1,6 +1,6 @@
 ---
 name: flight-search
-description: Search Google Flights for prices, times, and airlines. No API key required.
+description: 在 Google Flights 中搜索航班信息，可以查看价格、航班时间和航空公司。无需使用 API 密钥。
 homepage: https://github.com/Olafs-World/flight-search
 metadata:
   {
@@ -22,13 +22,13 @@ metadata:
   }
 ---
 
-# Flight Search
+# 航班搜索
 
-Search Google Flights from the command line. Get prices, times, and airlines - no API key needed.
+您可以通过命令行搜索 Google 航班信息，获取价格、航班时间和航空公司信息——无需使用 API 密钥。
 
-Built on [fast-flights](https://github.com/AWeirdDev/flights).
+该项目基于 [fast-flights](https://github.com/AWeirdDev/flights) 构建。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # one-off search (no install needed)
@@ -39,7 +39,7 @@ uv tool install flight-search
 flight-search JFK LHR --date 2026-06-15 --return 2026-06-22
 ```
 
-## Options
+## 选项
 
 ```
 positional arguments:
@@ -56,7 +56,7 @@ options:
   --output, -o          Output format: text or json (default: text)
 ```
 
-## Examples
+## 示例
 
 ```bash
 # One-way flight
@@ -72,7 +72,7 @@ flight-search SFO NRT --date 2026-04-01 --class business
 flight-search ORD CDG --date 2026-05-01 --output json
 ```
 
-## Example Output
+## 示例输出
 
 ```
 ✈️  DEN → LAX
@@ -94,9 +94,9 @@ flight-search ORD CDG --date 2026-05-01 --output json
    💰 $139
 ```
 
-## JSON Output
+## JSON 输出
 
-Returns structured data:
+返回结构化数据：
 
 ```json
 {
@@ -118,7 +118,7 @@ Returns structured data:
 }
 ```
 
-## Links
+## 链接
 
 - [PyPI](https://pypi.org/project/flight-search/)
 - [GitHub](https://github.com/Olafs-World/flight-search)

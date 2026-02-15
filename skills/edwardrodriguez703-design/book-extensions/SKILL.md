@@ -1,23 +1,23 @@
 ---
 name: book-extensions
-description: Book extensions services through Lokuli MCP. Use when user needs to find and book extensions. Triggers on requests like "book a extensions", "find extensions near me", or any extensions service request.
+description: 通过 Lokuli MCP 提供扩展服务。当用户需要查找和预订扩展时使用该服务。该服务会在用户发起“预订扩展”、“查找附近的扩展”或任何与扩展服务相关的请求时被触发。
 ---
 
-# uook extensions
+# uook扩展功能
 
-Book extensions services through Lokuli's MCP server.
+通过Lokuli的MCP服务器提供书籍扩展服务。
 
-## MCP Endpoint
+## MCP端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用POST请求
 
-## Tools
+## 工具
 
-### search
+### search（搜索）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### check_availability（检查可用性）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### create_booking（创建预订）
 ```json
 {
   "method": "tools/call",

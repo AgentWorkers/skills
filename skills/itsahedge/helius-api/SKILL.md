@@ -11,59 +11,59 @@ description: >
 
 # Helius API
 
-Query comprehensive Solana data via REST endpoints. Requires `HELIUS_API_KEY` env var.
+通过 REST 端点查询 Solana 的综合数据。需要使用环境变量 `HELIUS_API_KEY`。
 
-## Setup
+## 设置
 
 ```bash
 export HELIUS_API_KEY="your-key-here"
 ```
 
-Get a key at <https://dashboard.helius.dev>
+请在 <https://dashboard.helius.dev> 获取 API 密钥。
 
-## Base URLs
+## 基本 URL
 
-- **Wallet API:** `https://api.helius.xyz/v1/wallet/{address}/...?api-key=KEY`
-- **Enhanced Transactions:** `https://api-mainnet.helius-rpc.com/v0/...?api-key=KEY`
+- **钱包 API:** `https://api.helius.xyz/v1/wallet/{address}/...?api-key=KEY`
+- **增强型交易:** `https://api-mainnet.helius-rpc.com/v0/...?api-key=KEY`
 
-Auth: `?api-key=$HELIUS_API_KEY` query param or `X-Api-Key` header.
+认证方式：使用查询参数 `?api-key=$HELIUS_API_KEY` 或 `X-Api-Key` 头部字段。
 
-## Wallet API Endpoints
+## 钱包 API 端点
 
-| Endpoint | Path | Description |
+| 端点 | 路径 | 描述 |
 |----------|------|-------------|
-| Balances | `/v1/wallet/{address}/balances` | Token + NFT holdings with USD values |
-| History | `/v1/wallet/{address}/history` | Parsed transaction history with balance changes |
-| Transfers | `/v1/wallet/{address}/transfers` | Token transfer activity (sent/received) |
-| Identity | `/v1/wallet/{address}/identity` | Known wallet labels (exchanges, protocols) |
-| Batch Identity | `/v1/wallet/batch-identity` (POST) | Look up up to 100 addresses at once |
-| Funded By | `/v1/wallet/{address}/funded-by` | Original funding source of a wallet |
+| 账户余额 | `/v1/wallet/{address}/balances` | 显示代币持有量及对应的 USD 价值 |
+| 交易历史 | `/v1/wallet/{address}/history` | 显示包含余额变化的交易记录 |
+| 转账记录 | `/v1/wallet/{address}/transfers` | 显示代币的转账活动（发送/接收） |
+| 账户信息 | `/v1/wallet/{address}/identity` | 显示钱包的标签（如交易所、使用的协议） |
+| 批量查询账户信息 | `/v1/wallet/batch-identity` (POST) | 一次查询最多 100 个地址的信息 |
+| 资金来源 | `/v1/wallet/{address}/funded-by` | 显示钱包的初始资金来源 |
 
-## Enhanced Transactions Endpoints
+## 增强型交易端点
 
-| Endpoint | Path | Description |
+| 端点 | 路径 | 描述 |
 |----------|------|-------------|
-| Parse Transactions | `/v0/transactions/` (POST) | Parse signatures into human-readable data |
-| Transaction History | `/v0/addresses/{address}/transactions` | Enhanced tx history with type/time/slot filtering |
+| 解析交易记录 | `/v0/transactions/` (POST) | 将交易签名解析为人类可读的数据 |
+| 交易历史 | `/v0/addresses/{address}/transactions` | 提供带有类型、时间等过滤条件的交易历史记录 |
 
-## Reference Files
+## 参考文件
 
-Read the appropriate file for detailed parameters, response formats, and examples:
+请查阅以下文件以获取详细的参数、响应格式和示例：
 
-- **Balances** (portfolio, holdings, USD values): See [references/balances.md](references/balances.md)
-- **History** (wallet tx history, P&L, tax reports): See [references/history.md](references/history.md)
-- **Transfers** (sent/received, payment tracking): See [references/transfers.md](references/transfers.md)
-- **Identity** (wallet labels, exchange detection): See [references/identity.md](references/identity.md)
-- **Funded By** (funding source, sybil detection): See [references/funded-by.md](references/funded-by.md)
-- **Enhanced Transactions** (parse tx, enhanced history): See [references/enhanced-transactions.md](references/enhanced-transactions.md)
+- **账户余额**（投资组合、持有代币、USD 价值）：[references/balances.md](references/balances.md)
+- **交易历史**（钱包交易记录、盈亏情况、税务报告）：[references/history.md](references/history.md)
+- **转账记录**（发送/接收的转账、支付追踪）：[references/transfers.md](references/transfers.md)
+- **账户信息**（钱包标签、交易所识别）：[references/identity.md](references/identity.md)
+- **资金来源**（资金来源、防止欺诈行为）：[references/funded-by.md](references/funded-by.md)
+- **增强型交易**（解析交易记录、增强型交易历史）：[references/enhanced-transactions.md](references/enhanced-transactions.md)
 
-## Implementation Notes
+## 实现说明
 
-- Use `curl` or `fetch` — no SDK required
-- All endpoints return JSON
-- Pagination: use `page` param (balances) or `before`/cursor (history, transfers)
-- Default limit: 100 per request
-- Wallet API requests cost 100 credits each
-- Identity returns 404 for unknown wallets — handle gracefully
-- Funded By returns 404 if wallet never received SOL
-- Enhanced Transactions uses a different base URL (`api-mainnet.helius-rpc.com`)
+- 可使用 `curl` 或 `fetch` 进行请求，无需安装任何 SDK。
+- 所有端点返回 JSON 格式的数据。
+- 分页功能：使用 `page` 参数（查询账户余额）或 `before`/cursor 参数（查询交易历史/转账记录）。
+- 每次请求的默认限制为 100 条记录。
+- 使用钱包 API 每次请求会消耗 100 个信用点数。
+- 如果钱包信息未知，`Identity` 端点会返回 404 错误，请妥善处理。
+- 如果钱包从未接收过 SOL，`Funded By` 端点会返回 404 错误。
+- 增强型交易使用不同的基础 URL（`api-mainnet.helius-rpc.com`）。

@@ -1,25 +1,25 @@
 ---
 name: intimate-wellbeing
-description: "Professional, non-explicit guidance on intimate wellbeing and sexual performance: communication, stress reduction, sleep, exercise, habits, medical red flags, and relationship health. Use for wellness-focused questions; avoid explicit content."
+description: "关于亲密关系中的个人健康与性表现的专业指导（非露骨内容）：涵盖沟通技巧、减压方法、睡眠改善、锻炼建议、健康习惯的培养，以及需要注意的医疗警示信号和关系维护的要点。适用于与健康相关的问题咨询；请避免涉及露骨性内容。"
 ---
 
-# Intimate Wellbeing (Non‑explicit)
+# 亲密关系中的身心健康（非露骨内容）
 
-## Scope
-- Focus on **health and wellbeing** (no explicit sexual content).
-- Provide **practical, respectful** advice and when to seek medical help.
+## 范围
+- 专注于**身心健康**（不包含任何露骨的性相关内容）。
+- 提供**实用且尊重他人的**建议，以及何时需要寻求医疗帮助的信息。
 
-## Topics to cover
-- **Communication** with partner (consent, preferences, timing)
-- **Lifestyle**: sleep, stress, alcohol, smoking, exercise
-- **Mindset**: anxiety reduction, performance pressure
-- **General health**: cardiovascular, hormones (mention to consult clinician)
-- **Red flags**: persistent pain, sudden changes, lasting issues
+## 涉及的主题
+- 与伴侣的**沟通**（同意、偏好、时机）
+- **生活方式**：睡眠、压力管理、饮酒、吸烟、锻炼
+- **心态**：减轻焦虑、应对工作压力
+- **一般健康**：心血管健康、激素相关问题（建议咨询医生）
+- **需要警惕的信号**：持续性的疼痛、突然的身体变化、长期存在的问题
 
-## Output style
-- Clear bullets, short tips
-- Encourage professional care when needed
-- Avoid graphic/erotic detail
+## 表达风格
+- 使用清晰的列表项，提供简短的提示
+- 建议在必要时寻求专业医疗帮助
+- 避免使用过于详细或带有情色色彩的描述
 
-## Suggested disclaimers (short)
-- “No soy médico; si persiste, consulta a un profesional.”
+## 建议的免责声明（简短）
+- “本内容不替代专业医疗建议；如症状持续，请咨询专业人士。”

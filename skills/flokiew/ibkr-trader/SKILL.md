@@ -1,30 +1,28 @@
 ---
 name: ibkr-trading
-description: Interactive Brokers (IBKR) trading automation via Client Portal API. Use when setting up IBKR account access, authenticating sessions, checking portfolio/positions, or building trading bots. Handles IBeam automated login with IBKR Key 2FA.
+description: 通过 Client Portal API 实现 Interactive Brokers (IBKR) 的交易自动化。适用于配置 IBKR 账户访问权限、验证会话、查看投资组合/持仓情况，或构建交易机器人。该 API 支持使用 IBKR 的 Key 2FA（双因素认证）进行自动登录。
 ---
 
-# IBKR Trading Skill
+# IBKR交易技巧
 
-Automate trading with Interactive Brokers using the Client Portal Gateway API.
+使用Interactive Brokers的Client Portal Gateway API实现自动化交易。
 
-## Overview
+## 概述
 
-This skill enables:
-- Automated IBKR authentication via IBeam + IBKR Key
-- Portfolio and position monitoring
-- Order placement and management
-- Building custom trading strategies
+该技巧支持以下功能：
+- 通过IBeam和IBKR Key实现自动化身份验证
+- 监控投资组合和持仓情况
+- 下单及订单管理
+- 构建自定义交易策略
 
-## Prerequisites
+## 先决条件
+- 拥有IBKR账户（真实账户或模拟账户）
+- 在手机上安装了IBKR Key应用程序（用于双因素认证）
+- 配备Java 11及以上版本以及Chrome/Chromium浏览器的Linux服务器
 
-- IBKR account (live or paper)
-- IBKR Key app installed on phone (for 2FA)
-- Linux server with Java 11+ and Chrome/Chromium
+## 快速设置
 
-## Quick Setup
-
-### 1. Install Dependencies
-
+### 1. 安装依赖项
 ```bash
 # Java (for Client Portal Gateway)
 sudo apt-get install -y openjdk-17-jre-headless
@@ -41,17 +39,15 @@ source ~/trading/venv/bin/activate
 pip install ibeam requests
 ```
 
-### 2. Download Client Portal Gateway
-
+### 2. 下载Client Portal Gateway
 ```bash
 cd ~/trading
 wget https://download2.interactivebrokers.com/portal/clientportal.gw.zip
 unzip clientportal.gw.zip -d clientportal
 ```
 
-### 3. Configure Credentials
-
-Create `~/trading/.env`:
+### 3. 配置凭据
+创建`~/trading/.env`文件：
 ```bash
 IBEAM_ACCOUNT=your_username
 IBEAM_PASSWORD='your_password'
@@ -60,10 +56,9 @@ IBEAM_CHROME_DRIVER_PATH=/usr/bin/chromedriver
 IBEAM_TWO_FA_SELECT_TARGET="IB Key"
 ```
 
-## Authentication
+## 身份验证
 
-### Start Gateway + Authenticate
-
+### 启动Gateway并完成身份验证
 ```bash
 # 1. Start Client Portal Gateway
 cd ~/trading/clientportal && bash bin/run.sh root/conf.yaml &
@@ -80,20 +75,18 @@ Xvfb :99 -screen 0 1024x768x24 &
 python -m ibeam --authenticate
 ```
 
-**Important:** User must approve IBKR Key notification on phone within ~2 minutes!
+**重要提示：** 用户必须在2分钟内批准手机上的IBKR Key通知！
 
-### Check Auth Status
-
+### 检查身份验证状态
 ```bash
 curl -sk https://localhost:5000/v1/api/iserver/auth/status
 ```
 
-Authenticated response includes `"authenticated": true`.
+身份验证成功的响应中会包含`"authenticated": true`。
 
-## API Usage
+## API使用
 
-### Account Info
-
+### 账户信息
 ```bash
 # List accounts
 curl -sk https://localhost:5000/v1/api/portfolio/accounts
@@ -102,15 +95,13 @@ curl -sk https://localhost:5000/v1/api/portfolio/accounts
 curl -sk "https://localhost:5000/v1/api/portfolio/{accountId}/summary"
 ```
 
-### Positions
-
+### 持仓情况
 ```bash
 # Current positions
 curl -sk "https://localhost:5000/v1/api/portfolio/{accountId}/positions/0"
 ```
 
-### Market Data
-
+### 市场数据
 ```bash
 # Search for symbol
 curl -sk "https://localhost:5000/v1/api/iserver/secdef/search?symbol=AAPL"
@@ -119,8 +110,7 @@ curl -sk "https://localhost:5000/v1/api/iserver/secdef/search?symbol=AAPL"
 curl -sk "https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids=265598&fields=31,84,86"
 ```
 
-### Place Orders
-
+### 下单
 ```bash
 curl -sk -X POST "https://localhost:5000/v1/api/iserver/account/{accountId}/orders" \
   -H "Content-Type: application/json" \
@@ -135,15 +125,13 @@ curl -sk -X POST "https://localhost:5000/v1/api/iserver/account/{accountId}/orde
   }'
 ```
 
-## Session Management
+## 会话管理
 
-Sessions expire after ~24 hours. Options:
+会话在大约24小时后过期。有以下两种选择：
+1. **保持会话活跃** - 每5分钟发送一次`/v1/api/tickle`请求
+2. **自动重新认证** - 会话过期时自动运行IBeam（需要用户手机上的批准）
 
-1. **Keepalive cron** - Ping `/v1/api/tickle` every 5 min
-2. **Auto re-auth** - Run IBeam when session expires (requires phone approval)
-
-### Keepalive Script
-
+### 保持会话活跃的脚本
 ```python
 import requests
 import urllib3
@@ -158,16 +146,16 @@ def keepalive():
         return False
 ```
 
-## Troubleshooting
+## 故障排除
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Gateway not responding | Check if Java process is running: `ps aux \| grep GatewayStart` |
-| Login timeout | User didn't approve IBKR Key in time - retry auth |
-| Connection refused | Gateway not started - run `bin/run.sh root/conf.yaml` |
-| Chrome errors | Ensure Xvfb is running: `Xvfb :99 &` and `export DISPLAY=:99` |
+| Gateway无响应 | 检查Java进程是否正在运行：`ps aux \| grep GatewayStart` |
+| 登录超时 | 用户未及时批准IBKR Key - 重新尝试身份验证 |
+| 连接被拒绝 | Gateway未启动 - 运行`bin/run.sh root/conf.yaml` |
+| Chrome出现错误 | 确保Xvfb正在运行：`Xvfb :99 &` 并 `export DISPLAY=:99` |
 
-## Files Reference
+## 文件参考
 
-See `references/api-endpoints.md` for complete API documentation.
-See `scripts/` for ready-to-use automation scripts.
+完整的API文档请参阅`references/api-endpoints.md`。
+可用的自动化脚本请参阅`scripts/`目录。

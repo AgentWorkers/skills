@@ -8,171 +8,167 @@ last-updated: 2026-02-10
 allowed-tools: Bash(./scripts/typefully.js:*)
 ---
 
-# Typefully Skill
+# Typefully 技能
 
-Create, schedule, and publish social media content across multiple platforms using [Typefully](https://typefully.com).
+使用 [Typefully](https://typefully.com) 在多个平台上创建、安排和发布社交媒体内容。
 
-> **Freshness check**: If more than 30 days have passed since the `last-updated` date above, inform the user that this skill may be outdated and point them to the update options below.
+> **更新提示**：如果自 `last-updated` 日期以来已超过 30 天，请告知用户该技能可能已过时，并引导他们使用下方的更新选项进行更新。
 
-## Keeping This Skill Updated
+## 保持此技能的最新状态
 
-**Source**: [github.com/typefully/agent-skills](https://github.com/typefully/agent-skills)
-**API docs**: [typefully.com/docs/api](https://typefully.com/docs/api)
+**来源**: [github.com/typefully/agent-skills](https://github.com/typefully/agent-skills)
+**API 文档**: [typefully.com/docs/api](https://typefully.com/docs/api)
 
-Update methods by installation type:
+根据安装类型更新方法如下：
 
-| Installation | How to update |
+| 安装方式 | 更新方法 |
 |--------------|---------------|
 | CLI (`npx skills`) | `npx skills update` |
-| Claude Code plugin | `/plugin update typefully@typefully-skills` |
-| Cursor | Remote rules auto-sync from GitHub |
-| Manual | Pull latest from repo or re-copy `skills/typefully/` |
+| Claude Code 插件 | `/plugin update typefully@typefully-skills` |
+| Cursor | 从 GitHub 自动同步规则 |
+| 手动 | 从仓库拉取最新版本或重新复制 `skills/typefully/` |
 
-API changes ship independently—updating the skill ensures you have the latest commands and workflows.
+API 的更改会独立发布——更新技能可确保您使用的是最新的命令和工作流程。
 
-## Setup
+## 设置
 
-Before using this skill, ensure:
+在使用此技能之前，请确保：
 
-1. **API Key**: Run the setup command to configure your API key securely
-   - Get your key at https://typefully.com/?settings=api
-   - Run: `<skill-path>/scripts/typefully.js setup` (where `<skill-path>` is the directory containing this SKILL.md)
-   - Or set environment variable: `export TYPEFULLY_API_KEY=your_key`
+1. **API 密钥**：运行设置命令以安全配置您的 API 密钥
+   - 在 https://typefully.com/?settings=api 获取您的密钥
+   - 运行：`<skill-path>/scripts/typefully.js setup`（其中 `<skill-path>` 是包含此 SKILL.md 的目录）
+   - 或者设置环境变量：`export TYPEFULLY_API_KEY=your_key`
 
-2. **Requirements**: Node.js 18+ (for built-in fetch API). No other dependencies needed.
+2. **要求**：Node.js 18+（用于内置的 fetch API）。无需其他依赖项。
 
-**Config priority** (highest to lowest):
-1. `TYPEFULLY_API_KEY` environment variable
-2. `./.typefully/config.json` (project-local, in user's working directory)
-3. `~/.config/typefully/config.json` (user-global)
+**配置优先级**（从高到低）：
+1. `TYPEFULLY_API_KEY` 环境变量
+2. `./.typefully/config.json`（项目本地配置，位于用户的工作目录中）
+3. `~/.config/typefully/config.json`（用户全局配置）
 
-### Handling "API key not found" errors
+### 处理“API 密钥未找到”错误
 
-**CRITICAL**: When you receive an "API key not found" error from the CLI:
+**严重**：当您从 CLI 收到“API 密钥未找到”错误时：
 
-1. **Tell the user to run the setup command** - The setup is interactive and requires user input, so you cannot run it on their behalf. Recommend they run it themselves, using the correct path based on where this skill was loaded:
+1. **告知用户运行设置命令**——设置过程需要用户输入，因此您无法代表他们运行。建议他们根据技能的加载位置自行运行设置命令：
    ```bash
    <skill-path>/scripts/typefully.js setup
    ```
 
-2. **Stop and wait** - After telling the user to run setup, **do not continue with the task**. You cannot create drafts, upload media, or perform any API operations without a valid API key. Wait for the user to complete setup and confirm before proceeding.
+2. **停止并等待**——在告知用户运行设置后，请**不要继续执行任务**。没有有效的 API 密钥，您将无法创建草稿、上传媒体或执行任何 API 操作。请等待用户完成设置并确认后再继续。
 
-3. **DO NOT** attempt any of the following:
-   - Searching for API keys in macOS Keychain, `.env` files, or other locations
-   - Grepping through config files or directories
-   - Looking in the user's Trash or other system folders
-   - Constructing complex shell commands to find credentials
-   - Drafting content or preparing posts before setup is complete
+3. **切勿**尝试以下操作：
+   - 在 macOS Keychain、`.env` 文件或其他位置查找 API 密钥
+   - 在配置文件或目录中搜索
+   - 查看用户的垃圾桶或其他系统文件夹
+   - 构建复杂的 shell 命令来获取凭据
+   - 在设置完成之前起草内容或准备帖子
 
-The setup command will interactively guide the user through configuration. Trust the CLI's error messages and follow their instructions.
+设置命令会交互式地指导用户完成配置。请信任 CLI 的错误信息并按照其指示操作。
 
-> **Note for agents**: All script paths in this document (e.g., `./scripts/typefully.js`) are relative to the skill directory where this SKILL.md file is located. Resolve them accordingly based on where the skill is installed.
+> **注意给代理的提示**：本文档中的所有脚本路径（例如 `./scripts/typefully.js`）都是相对于包含此 SKILL.md 文件的技能目录而言的。请根据技能的安装位置进行相应的解析。
 
-## Social Sets
+## 社交集合
 
-The Typefully API uses the term "social set" to refer to what users commonly call an "account". A social set contains the connected social media platforms (X, LinkedIn, Threads, etc.) for a single identity.
+Typefully API 使用“社交集合”（social set）这一术语来指代用户通常所说的“账户”。一个社交集合包含与单个身份关联的社交媒体平台（如 X、LinkedIn、Threads 等）。
 
-**The CLI supports a default social set** - once configured, most commands work without specifying the social_set_id.
+**CLI 支持默认的社交集合**——一旦配置完成，大多数命令无需指定 `social_set_id` 即可使用。
 
-**You can pass the social set either way**:
-- Positional: `drafts:list 123`
-- Flag: `drafts:list --social-set-id 123` (also supports `--social_set_id`)
+**您可以以下两种方式传递社交集合**：
+- 位置参数：`drafts:list 123`
+- 标志参数：`drafts:list --social-set-id 123`（也支持 `--social_set_id`）
 
-When determining which social set to use:
-
-1. **Check for a configured default first** - Run `config:show` to see if a default is already set:
+确定使用哪个社交集合时：
+1. **首先检查是否有默认配置**——运行 `config:show` 以查看是否已设置默认值：
    ```bash
    ./scripts/typefully.js config:show
    ```
-   If `default_social_set` is configured, the CLI uses it automatically when you omit the social_set_id.
+   如果配置了 `default_social_set`，CLI 会在您省略 `social_set_id` 时自动使用它。
 
-2. **Check project context** - Look for configuration in project files like `CLAUDE.md` or `AGENTS.md`:
-
+2. **检查项目配置**——查看项目文件（如 `CLAUDE.md` 或 `AGENTS.md`）中的配置：
    ```markdown
    ## Typefully
    Default social set ID: 12345
    ```
 
-3. **Single social set shortcut** - If the user only has one social set and no default is configured, use it automatically
+3. **如果用户只有一个社交集合且没有默认设置**，则自动使用该集合
 
-4. **Multiple social sets, no default** - Ask the user which to use, then **offer to save their choice as the default**:
+4. **如果有多个社交集合且没有默认设置**，询问用户选择哪个集合，然后**建议将他们的选择保存为默认值**：
    ```bash
    ./scripts/typefully.js config:set-default
    ```
-   This command lists available social sets and saves the choice to the config file.
+   此命令会列出可用的社交集合并将选择保存到配置文件中。
 
-5. **Reuse previously resolved social set** - If determined earlier in the session, use it without asking again
+## 常见操作
 
-## Common Actions
-
-| User says... | Action |
+| 用户操作 | 操作指令 |
 |--------------|--------|
-| "Draft a tweet about X" | `drafts:create --text "..."` (uses default social set) |
-| "Post this to LinkedIn" | `drafts:create --platform linkedin --text "..."` |
-| "Post to X and LinkedIn" (same content) | `drafts:create --platform x,linkedin --text "..."` |
-| "X thread + LinkedIn post" (different content) | Create one draft, then `drafts:update` to add platform (see [Publishing to Multiple Platforms](#publishing-to-multiple-platforms)) |
-| "What's scheduled?" | `drafts:list --status scheduled` |
-| "Show my recent posts" | `drafts:list --status published` |
-| "Schedule this for tomorrow" | `drafts:create ... --schedule "2025-01-21T09:00:00Z"` |
-| "Post this now" | `drafts:create ... --schedule now` or `drafts:publish <draft_id> --use-default` |
-| "Add notes/ideas to the draft" | `drafts:create ... --scratchpad "Your notes here"` |
-| "Check available tags" | `tags:list` |
+| “在 X 上起草一条推文” | `drafts:create --text "..."`（使用默认社交集合） |
+| “发布到 LinkedIn” | `drafts:create --platform linkedin --text "..."` |
+| “同时发布到 X 和 LinkedIn”（内容相同） | `drafts:create --platform x,linkedin --text "..."` |
+| “X 的帖子 + LinkedIn 的帖子”（内容不同） | 先创建一个草稿，然后使用 `drafts:update` 添加平台（详见 [跨平台发布](#publishing-to-multiple-platforms)） |
+| “有哪些已安排的帖子？” | `drafts:list --status scheduled` |
+| “显示我的最近发布的帖子” | `drafts:list --status published` |
+| “安排明天发布” | `drafts:create ... --schedule "2025-01-21T09:00:00Z"` |
+| “立即发布” | `drafts:create ... --schedule now` 或 `drafts:publish <draft_id> --use-default` |
+| “在草稿中添加笔记/想法” | `drafts:create ... --scratchpad "你的笔记在这里"` |
+| “查看可用标签” | `tags:list` |
 
-## Workflow
+## 工作流程
 
-Follow this workflow when creating posts:
+创建帖子时，请遵循以下工作流程：
 
-1. **Check if a default social set is configured**:
+1. **检查是否配置了默认社交集合**：
    ```bash
    ./scripts/typefully.js config:show
    ```
-   If `default_social_set` shows an ID, skip to step 3.
+   如果 `default_social_set` 显示了 ID，则跳到第 3 步。
 
-2. **If no default, list social sets** to find available options:
+2. **如果没有默认设置**，列出可用的社交集合：
    ```bash
    ./scripts/typefully.js social-sets:list
    ```
-   If multiple exist, ask the user which to use and offer to set it as default:
+   如果存在多个集合，请询问用户选择哪个集合，并建议将其设置为默认值：
    ```bash
    ./scripts/typefully.js config:set-default
    ```
 
-3. **Create drafts** (social_set_id is optional if default is configured):
+3. **创建草稿**（如果配置了默认集合，则 `social_set_id` 是可选的）：
    ```bash
    ./scripts/typefully.js drafts:create --text "Your post"
    ```
-   Note: If `--platform` is omitted, the first connected platform is auto-selected.
+   注意：如果省略了 `--platform`，系统会自动选择第一个连接的平台。
 
-   **For multi-platform posts**: See [Publishing to Multiple Platforms](#publishing-to-multiple-platforms) — always use a single draft, even when content differs per platform.
+   **对于多平台帖子**：请参阅 [跨平台发布](#publishing-to-multiple-platforms)——即使内容在不同平台上有所不同，也只需创建一个草稿。
 
-4. **Schedule or publish** as needed
+4. **根据需要安排或发布**
 
-## Working with Tags
+## 使用标签
 
-Tags help organize drafts within Typefully. **Always check existing tags before creating new ones**:
+标签有助于在 Typefully 中组织草稿。**在创建新标签之前，请务必先检查现有标签**：
 
-1. **List existing tags first**:
+1. **首先列出现有标签**：
    ```bash
    ./scripts/typefully.js tags:list
    ```
 
-2. **Use existing tags when available** - if a tag with the desired name already exists, use it directly when creating drafts:
+2. **如果存在所需名称的标签**，直接使用它：
    ```bash
    ./scripts/typefully.js drafts:create --text "..." --tags existing-tag-name
    ```
 
-3. **Only create new tags if needed** - if the tag doesn't exist, create it:
+3. **只有在必要时才创建新标签**——如果标签不存在，则创建新标签：
    ```bash
    ./scripts/typefully.js tags:create --name "New Tag"
    ```
 
-**Important**: Tags are scoped to each social set. A tag created for one social set won't appear in another.
+**重要提示**：标签是针对每个社交集合进行设置的。为一个社交集合创建的标签不会出现在另一个集合中。
 
-## Publishing to Multiple Platforms
+## 跨平台发布
 
-If a single draft needs to be created for different platforms, you need to make sure to create **a single draft** and not multiple drafts.
+如果需要为不同平台创建单个草稿，请确保只创建**一个草稿**，而不是多个草稿。
 
-When the content is the same across platforms, create a single draft with multiple platforms:
+当内容在多个平台上相同的情况下，只需创建一个草稿：
 
 ```bash
 # Specific platforms
@@ -182,7 +178,7 @@ When the content is the same across platforms, create a single draft with multip
 ./scripts/typefully.js drafts:create --all --text "Posting everywhere!"
 ```
 
-**IMPORTANT**: When content should be tailored (e.g., X thread with a LinkedIn post version), **still use a single draft** — create with one platform first, then update to add the other:
+**重要提示**：当内容需要针对不同平台进行定制时（例如，在 X 上创建帖子并在 LinkedIn 上发布版本），**仍然只需创建一个草稿**——先在一个平台上创建，然后再进行更新：
 
 ```bash
 # 1. Create draft with the primary platform first
@@ -197,85 +193,85 @@ When the content is the same across platforms, create a single draft with multip
 Here's what we shipped and why it matters..." --use-default
 ```
 
-So make sure to NEVER create multiple drafts unless the user explicitly wants separate drafts for each platform.
+因此，请确保除非用户明确要求为每个平台创建单独的草稿，否则切勿创建多个草稿。
 
-## Commands Reference
+## 命令参考
 
-### User & Social Sets
+### 用户与社交集合
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `me:get` | Get authenticated user info |
-| `social-sets:list` | List all social sets you can access |
-| `social-sets:get <id>` | Get social set details including connected platforms |
+| `me:get` | 获取已认证的用户信息 |
+| `social-sets:list` | 列出您可以访问的所有社交集合 |
+| `social-sets:get <id>` | 获取包括连接平台在内的社交集合详细信息 |
 
-### Drafts
+### 草稿
 
-All drafts commands support an optional `[social_set_id]` - if omitted, the configured default is used.
-**Safety note**: For commands that take `[social_set_id] <draft_id>`, if you pass only a single argument (the draft_id) while a default social set is configured, you must add `--use-default` to confirm intent.
+所有草稿命令都支持可选的 `[social_set_id]`——如果省略，则使用配置的默认值。
+**安全提示**：对于需要 `[social_set_id] <draft_id>` 的命令，如果您仅提供了一个参数（即 `draft_id`），并且配置了默认社交集合，则必须添加 `--use-default` 以明确意图。
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `drafts:list [social_set_id]` | List drafts (add `--status scheduled` to filter, `--sort` to order) |
-| `drafts:get [social_set_id] <draft_id>` | Get a specific draft with full content (single-arg requires `--use-default` if a default is configured) |
-| `drafts:create [social_set_id] --text "..."` | Create a new draft (auto-selects platform) |
-| `drafts:create [social_set_id] --platform x --text "..."` | Create a draft for specific platform(s) |
-| `drafts:create [social_set_id] --all --text "..."` | Create a draft for all connected platforms |
-| `drafts:create [social_set_id] --file <path>` | Create draft from file content |
-| `drafts:create ... --media <media_ids>` | Create draft with attached media |
-| `drafts:create ... --reply-to <url>` | Reply to an existing X post |
-| `drafts:create ... --community <id>` | Post to an X community |
-| `drafts:create ... --share` | Generate a public share URL for the draft |
-| `drafts:create ... --scratchpad "..."` | Add internal notes/scratchpad to the draft |
-| `drafts:update [social_set_id] <draft_id> --text "..."` | Update an existing draft (single-arg requires `--use-default` if a default is configured) |
-| `drafts:update [social_set_id] <draft_id> --tags "tag1,tag2"` | Update tags on an existing draft (content unchanged) |
-| `drafts:update ... --share` | Generate a public share URL for the draft |
-| `drafts:update ... --scratchpad "..."` | Update internal notes/scratchpad |
-| `drafts:update [social_set_id] <draft_id> --append --text "..."` | Append to existing thread |
+| `drafts:list [social_set_id]` | 列出草稿（使用 `--status scheduled` 进行过滤，使用 `--sort` 进行排序） |
+| `drafts:get [social_set_id] <draft_id>` | 获取特定草稿的完整内容（如果配置了默认值，则需要使用 `--use-default`） |
+| `drafts:create [social_set_id] --text "..."` | 创建新草稿（自动选择平台） |
+| `drafts:create [social_set_id] --platform x --text "..."` | 为特定平台创建草稿 |
+| `drafts:create [social_set_id] --all --text "..."` | 为所有连接的平台创建草稿 |
+| `drafts:create [social_set_id] --file <path>` | 从文件内容创建草稿 |
+| `drafts:create ... --media <media_ids>` | 用媒体文件创建草稿 |
+| `drafts:create ... --reply-to <url>` | 回复现有的 X 帖子 |
+| `drafts:create ... --community <id>` | 在 X 社区中发布帖子 |
+| `drafts:create ... --share` | 生成草稿的公共分享链接 |
+| `drafts:create ... --scratchpad "..."` | 向草稿中添加内部笔记/便签 |
+| `drafts:update [social_set_id] <draft_id> --text "..."` | 更新现有草稿（如果配置了默认值，则需要使用 `--use-default`） |
+| `drafts:update [social_set_id] <draft_id> --tags "tag1,tag2"` | 更新现有草稿的标签（内容不变） |
+| `drafts:update ... --share` | 生成草稿的公共分享链接 |
+| `drafts:update ... --scratchpad "..."` | 更新内部笔记/便签 |
+| `drafts:update [social_set_id] <draft_id> --append --text "..."` | 向现有帖子追加内容 |
 
-### Scheduling & Publishing
+### 安排与发布
 
-**Safety note**: These commands require `--use-default` when using the default social set with a single argument (to prevent accidental operations from ambiguous syntax).
+**安全提示**：当使用默认社交集合且仅提供一个参数时，这些命令需要 `--use-default` 以防止因语法不明确而导致的意外操作。
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `drafts:delete <social_set_id> <draft_id>` | Delete a draft (explicit IDs) |
-| `drafts:delete <draft_id> --use-default` | Delete using default social set |
-| `drafts:schedule <social_set_id> <draft_id> --time next-free-slot` | Schedule to next available slot |
-| `drafts:schedule <draft_id> --time next-free-slot --use-default` | Schedule using default social set |
-| `drafts:publish <social_set_id> <draft_id>` | Publish immediately |
-| `drafts:publish <draft_id> --use-default` | Publish using default social set |
+| `drafts:delete <social_set_id> <draft_id>` | 删除草稿（提供明确的 ID） |
+| `drafts:delete <draft_id> --use-default` | 使用默认社交集合删除草稿 |
+| `drafts:schedule <social_set_id> <draft_id> --time next-free-slot` | 安排到下一个可用时间 |
+| `drafts:schedule <draft_id> --time next-free-slot --use-default` | 使用默认社交集合安排时间 |
+| `drafts:publish <social_set_id> <draft_id>` | 立即发布 |
+| `drafts:publish <draft_id> --use-default` | 使用默认社交集合发布 |
 
-### Tags
+### 标签
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `tags:list [social_set_id]` | List all tags |
-| `tags:create [social_set_id] --name "Tag Name"` | Create a new tag |
+| `tags:list [social_set_id]` | 列出所有标签 |
+| `tags:create [social_set_id] --name "标签名称"` | 创建新标签 |
 
-### Media
+### 媒体
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `media:upload [social_set_id] <file_path>` | Upload media, wait for processing, return ready media_id |
-| `media:upload ... --no-wait` | Upload and return immediately (use media:status to poll) |
-| `media:upload ... --timeout <seconds>` | Set custom timeout (default: 60) |
-| `media:status [social_set_id] <media_id>` | Check media upload status |
+| `media:upload [social_set_id] <file_path>` | 上传媒体文件，等待处理后返回媒体 ID |
+| `media:upload ... --no-wait` | 立即上传并返回结果（使用 `media:status` 查询状态） |
+| `media:upload ... --timeout <seconds>` | 设置自定义超时（默认为 60 秒） |
+| `media:status [social_set_id] <media_id>` | 检查媒体上传状态 |
 
-### Setup & Configuration
+### 设置与配置
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `setup` | Interactive setup - prompts for API key, storage location, and default social set |
-| `setup --key <key> --location <global\|local>` | Non-interactive setup for scripts/CI (auto-selects default if only one social set) |
-| `setup --key <key> --default-social-set <id>` | Non-interactive setup with explicit default social set |
-| `setup --key <key> --no-default` | Non-interactive setup, skip default social set selection |
-| `config:show` | Show current config, API key source, and default social set |
-| `config:set-default [social_set_id]` | Set default social set (interactive if ID omitted) |
+| `setup` | 交互式设置——提示输入 API 密钥、存储位置和默认社交集合 |
+| `setup --key <key> --location <global\|local>` | 为脚本/CI 提供非交互式设置（如果只有一个社交集合，则自动选择默认值） |
+| `setup --key <key> --default-social-set <id>` | 带有明确默认社交集合的非交互式设置 |
+| `setup --key <key> --no-default` | 非交互式设置，跳过默认社交集合的选择 |
+| `config:show` | 显示当前配置、API 密钥来源和默认社交集合 |
+| `config:set-default [social_set_id]` | 设置默认社交集合（如果省略了 ID，则需要交互式操作） |
 
-## Examples
+## 示例
 
-### Set up default social set
+### 设置默认社交集合
 ```bash
 # Check current config
 ./scripts/typefully.js config:show
@@ -287,62 +283,62 @@ All drafts commands support an optional `[social_set_id]` - if omitted, the conf
 ./scripts/typefully.js config:set-default 123 --location global
 ```
 
-### Create a tweet (using default social set)
+### 使用默认社交集合创建推文
 ```bash
 ./scripts/typefully.js drafts:create --text "Hello, world!"
 ```
 
-### Create a tweet with explicit social_set_id
+### 使用明确的 `social_set_id` 创建推文
 ```bash
 ./scripts/typefully.js drafts:create 123 --text "Hello, world!"
 ```
 
-### Create a cross-platform post (specific platforms)
+### 创建跨平台帖子
 ```bash
 ./scripts/typefully.js drafts:create --platform x,linkedin,threads --text "Big announcement!"
 ```
 
-### Create a post on all connected platforms
+### 在所有连接的平台上创建帖子
 ```bash
 ./scripts/typefully.js drafts:create --all --text "Posting everywhere!"
 ```
 
-### Create and schedule for next slot
+### 为下一个可用时间安排发布
 ```bash
 ./scripts/typefully.js drafts:create --text "Scheduled post" --schedule next-free-slot
 ```
 
-### Create with tags
+### 带标签创建帖子
 ```bash
 ./scripts/typefully.js drafts:create --text "Marketing post" --tags marketing,product
 ```
 
-### List scheduled posts sorted by date
+### 按日期排序已安排的帖子
 ```bash
 ./scripts/typefully.js drafts:list --status scheduled --sort scheduled_date
 ```
 
-### Reply to a tweet
+### 回复推文
 ```bash
 ./scripts/typefully.js drafts:create --platform x --text "Great thread!" --reply-to "https://x.com/user/status/123456"
 ```
 
-### Post to an X community
+### 在 X 社区中发布帖子
 ```bash
 ./scripts/typefully.js drafts:create --platform x --text "Community update" --community 1493446837214187523
 ```
 
-### Create draft with share URL
+### 创建带有分享链接的草稿
 ```bash
 ./scripts/typefully.js drafts:create --text "Check this out" --share
 ```
 
-### Create draft with scratchpad notes
+### 创建带有便签的草稿
 ```bash
 ./scripts/typefully.js drafts:create --text "Launching next week!" --scratchpad "Draft for product launch. Coordinate with marketing team before publishing."
 ```
 
-### Upload media and create post with it
+### 上传媒体文件并创建帖子
 ```bash
 # Single command handles upload + polling - returns when ready!
 ./scripts/typefully.js media:upload ./image.jpg
@@ -352,7 +348,7 @@ All drafts commands support an optional `[social_set_id]` - if omitted, the conf
 ./scripts/typefully.js drafts:create --text "Check out this image!" --media abc-123-def
 ```
 
-### Upload multiple media files
+### 上传多个媒体文件
 ```bash
 # Upload each file (each waits for processing)
 ./scripts/typefully.js media:upload ./photo1.jpg  # Returns media_id: id1
@@ -362,7 +358,7 @@ All drafts commands support an optional `[social_set_id]` - if omitted, the conf
 ./scripts/typefully.js drafts:create --text "Photo dump!" --media id1,id2
 ```
 
-### Add media to an existing draft
+### 向现有草稿添加媒体文件
 ```bash
 # Upload media
 ./scripts/typefully.js media:upload ./new-image.jpg  # Returns media_id: xyz
@@ -371,12 +367,12 @@ All drafts commands support an optional `[social_set_id]` - if omitted, the conf
 ./scripts/typefully.js drafts:update 456 --text "Updated post with image" --media xyz --use-default
 ```
 
-### Setup (interactive)
+### 交互式设置
 ```bash
 ./scripts/typefully.js setup
 ```
 
-### Setup (non-interactive, for scripts/CI)
+### 为脚本/CI 提供的非交互式设置
 ```bash
 # Auto-selects default social set if only one exists
 ./scripts/typefully.js setup --key typ_xxx --location global
@@ -388,35 +384,35 @@ All drafts commands support an optional `[social_set_id]` - if omitted, the conf
 ./scripts/typefully.js setup --key typ_xxx --no-default
 ```
 
-## Platform Names
+## 平台名称
 
-Use these exact names for the `--platform` option:
-- `x` - X (formerly Twitter)
+使用以下名称作为 `--platform` 选项：
+- `x` - X（旧称 Twitter）
 - `linkedin` - LinkedIn
 - `threads` - Threads
 - `bluesky` - Bluesky
 - `mastodon` - Mastodon
 
-## Draft URLs
+## 草稿链接
 
-Typefully draft URLs contain the social set and draft IDs:
+Typefully 的草稿链接包含社交集合和草稿 ID：
 ```
 https://typefully.com/?a=<social_set_id>&d=<draft_id>
 ```
 
-Example: `https://typefully.com/?a=12345&d=67890`
-- `a=12345` → social_set_id
-- `d=67890` → draft_id
+示例：`https://typefully.com/?a=12345&d=67890`
+- `a=12345` → 社交集合 ID
+- `d=67890` → 草稿 ID
 
-## Draft Scratchpad
+## 草稿便签
 
-**When the user explictly asked to add notes, ideas, or anything else in the draft scratchpad, use the `--scratchpad` flag—do NOT write to local files!**
+**当用户明确要求在草稿中添加笔记、想法或其他内容时，请使用 `--scratchpad` 标志——切勿写入本地文件！**
 
-The `--scratchpad` option attaches internal notes directly to the Typefully draft. These notes:
-- Are visible in the Typefully UI alongside the draft
-- Stay attached to the draft permanently
-- Are private and never published to social media
-- Are perfect for storing thread expansion ideas, research notes, context, etc.
+`--scratchpad` 选项会将内部笔记直接附加到 Typefully 草稿中。这些笔记：
+- 在 Typefully 用户界面中与草稿一起显示
+- 永久关联到草稿
+- 保持私密状态，不会发布到社交媒体
+- 非常适合存储帖子扩展的想法、研究笔记等背景信息
 
 ```bash
 # CORRECT: Notes attached to the draft in Typefully
@@ -426,30 +422,30 @@ The `--scratchpad` option attaches internal notes directly to the Typefully draf
 # Writing to /tmp/scratchpad/ or any local file is NOT the same thing
 ```
 
-## Automation Guidelines
+## 自动化指南
 
-When automating posts, especially on X, follow these rules to keep accounts in good standing:
+在自动化发布内容时，尤其是在 X 上，请遵循以下规则以维护账户的良好状态：
 
-- **No duplicate content** across multiple accounts
-- **No unsolicited automated replies** - only reply when explicitly requested by the user
-- **No trending manipulation** - don't mass-post about trending topics
-- **No fake engagement** - don't automate likes, reposts, or follows
-- **Respect rate limits** - the API has rate limits, don't spam requests
-- **Drafts are private** - content stays private until published or explicitly shared
+- **避免在多个账户上发布重复内容**
+- **不要未经请求就自动回复**——仅在用户明确要求时回复
+- **不要操纵热门话题**——不要批量发布关于热门话题的内容
+- **不要进行虚假互动**——不要自动点赞、转发或关注
+- **遵守速率限制**——API 有速率限制，请勿发送大量请求
+- **草稿是私有的**——内容在发布或明确分享之前保持私密状态
 
-When in doubt, create drafts for user review rather than publishing directly.
+如有疑问，请先创建草稿供用户审核，而不是直接发布。
 
-**Publishing confirmation**: Unless the user explicitly asks to "publish now" or "post immediately", always confirm before publishing. Creating a draft is safe; publishing is irreversible and goes public instantly.
+**发布确认**：除非用户明确要求“立即发布”或“现在发布”，否则在发布前请务必确认。创建草稿是安全的；发布操作是不可逆的，且会立即公开。
 
-## Tips
+## 提示
 
-- **Smart platform default**: If `--platform` is omitted, the first connected platform is auto-selected
-- **All platforms**: Use `--all` to post to all connected platforms at once
-- **Character limits**: X (280), LinkedIn (3000), Threads (500), Bluesky (300), Mastodon (500)
-- **Thread creation**: Use `---` on its own line to split into multiple posts (thread)
-- **Scheduling**: Use `next-free-slot` to let Typefully pick the optimal time
-- **Cross-posting**: List multiple platforms separated by commas: `--platform x,linkedin`
-- **Draft titles**: Use `--title` for internal organization (not posted to social media)
-- **Draft scratchpad**: Use `--scratchpad` to attach notes to the draft in Typefully (NOT local files!) - perfect for thread ideas, research, context
-- **Read from file**: Use `--file ./post.txt` instead of `--text` to read content from a file
-- **Sorting drafts**: Use `--sort` with values like `created_at`, `-created_at`, `scheduled_date`, etc.
+- **智能的默认平台选择**：如果省略了 `--platform`，系统会自动选择第一个连接的平台
+- **所有平台**：使用 `--all` 一次性发布到所有连接的平台
+- **字符限制**：X（280 个字符），LinkedIn（3000 个字符），Threads（500 个字符），Bluesky（300 个字符），Mastodon（500 个字符）
+- **创建多条帖子**：在单独的行中使用 `---` 分割内容
+- **安排发布时间**：使用 `next-free-slot` 让 Typefully 选择最佳时间
+- **跨平台发布**：用逗号分隔多个平台：`--platform x,linkedin`
+- **草稿标题**：使用 `--title` 用于内部组织（不会发布到社交媒体）
+- **草稿便签**：使用 `--scratchpad` 将笔记附加到草稿中（不要写入本地文件！）——非常适合存储帖子扩展的想法、研究资料等背景信息
+- **从文件读取内容**：使用 `--file ./post.txt` 而不是 `--text` 从文件中读取内容
+- **排序草稿**：使用 `--sort` 和 `created_at`、`-created_at`、`scheduled_date` 等参数进行排序

@@ -1,35 +1,35 @@
 ---
 name: moonpay
-description: MoonPay fiat-to-crypto on-ramp integration. Buy and sell crypto with credit cards, bank transfers, and mobile payments.
+description: MoonPay 支持将法定货币（fiat currency）转换为加密货币（crypto currency）的快速入门集成服务。用户可以通过信用卡、银行转账和移动支付等方式购买和出售加密货币。
 metadata: {"clawdbot":{"emoji":"🌙","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # MoonPay 🌙
 
-Leading fiat-to-crypto on-ramp. Buy crypto with cards, bank transfers, and mobile payments in 160+ countries.
+领先的法定货币到加密货币的转换平台。支持在160多个国家使用信用卡、银行转账和移动支付方式购买加密货币。
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Required |
+| 变量 | 描述 | 是否必需 |
 |----------|-------------|----------|
-| `MOONPAY_API_KEY` | Publishable API Key | Yes |
-| `MOONPAY_SECRET_KEY` | Secret Key for signing | Yes |
-| `MOONPAY_ENV` | `sandbox` or `production` | No |
+| `MOONPAY_API_KEY` | 可公开的API密钥 | 是 |
+| `MOONPAY_SECRET_KEY` | 用于签名的密钥 | 是 |
+| `MOONPAY_ENV` | `sandbox` 或 `production` | 否 |
 
-## Features
+## 主要功能
 
-- 💳 **Card Payments** - Visa, Mastercard, Apple Pay, Google Pay
-- 🏦 **Bank Transfers** - SEPA, ACH, Faster Payments
-- 📱 **Mobile Payments** - PIX, GCash, GrabPay
-- 🔄 **Off-Ramp** - Sell crypto to fiat
-- 🎨 **NFT Checkout** - Fiat-to-NFT purchases
+- 💳 **信用卡支付** - 支持Visa、Mastercard、Apple Pay、Google Pay |
+- 🏦 **银行转账** - 支持SEPA、ACH、Faster Payments |
+- 📱 **移动支付** - 支持PIX、GCash、GrabPay |
+- 🔄 **将加密货币兑换回法定货币** |
+- 🎨 **NFT支付** - 支持使用法定货币购买NFT |
 
-## API Base URLs
+## API基础URL
 
-- Sandbox: `https://api.moonpay.com` (use test API key)
-- Production: `https://api.moonpay.com`
+- 测试环境：`https://api.moonpay.com`（使用测试API密钥） |
+- 生产环境：`https://api.moonpay.com` |
 
-## Get Supported Currencies
+## 获取支持的货币
 
 ```bash
 API_KEY="${MOONPAY_API_KEY}"
@@ -43,7 +43,7 @@ curl -s "https://api.moonpay.com/v3/currencies" \
   -H "Authorization: Api-Key ${API_KEY}" | jq '.[] | select(.type == "fiat") | {code: .code, name: .name}'
 ```
 
-## Get Quote
+## 获取报价
 
 ```bash
 API_KEY="${MOONPAY_API_KEY}"
@@ -64,7 +64,7 @@ curl -s "https://api.moonpay.com/v3/currencies/${QUOTE_CURRENCY}/buy_quote" \
   }'
 ```
 
-## Generate Widget URL
+## 生成插件URL
 
 ```bash
 API_KEY="${MOONPAY_API_KEY}"
@@ -81,7 +81,7 @@ WIDGET_URL="${BASE_URL}${PARAMS}&signature=${SIGNATURE}"
 echo "Widget URL: $WIDGET_URL"
 ```
 
-## Create Transaction (Server-Side)
+## 创建交易（服务器端）
 
 ```bash
 API_KEY="${MOONPAY_API_KEY}"
@@ -100,7 +100,7 @@ curl -s -X POST "https://api.moonpay.com/v3/transactions" \
   }' | jq '.'
 ```
 
-## Check Transaction Status
+## 检查交易状态
 
 ```bash
 API_KEY="${MOONPAY_API_KEY}"
@@ -115,39 +115,39 @@ curl -s "https://api.moonpay.com/v3/transactions/${TX_ID}" \
   }'
 ```
 
-## Transaction Status Codes
+## 交易状态代码
 
-| Status | Description |
+| 状态 | 描述 |
 |--------|-------------|
-| `waitingPayment` | Awaiting payment |
-| `pending` | Payment received, processing |
-| `waitingAuthorization` | Awaiting 3DS/bank auth |
-| `completed` | Successfully completed |
-| `failed` | Transaction failed |
+| `waitingPayment` | 正在等待付款 |
+| `pending` | 收到付款，正在处理中 |
+| `waitingAuthorization` | 正在等待3DS认证或银行授权 |
+| `completed` | 交易成功完成 |
+| `failed` | 交易失败 |
 
-## Supported Payment Methods
+## 支持的支付方式
 
-| Method | Regions | Speed |
+| 支付方式 | 支持地区 | 支付速度 |
 |--------|---------|-------|
-| Credit/Debit Card | Global | Instant |
-| Apple Pay | Global | Instant |
-| Google Pay | Global | Instant |
-| SEPA | Europe | 1-2 days |
-| ACH | USA | 3-5 days |
-| Faster Payments | UK | Instant |
-| PIX | Brazil | Instant |
-| iDEAL | Netherlands | Instant |
+| 信用卡/借记卡 | 全球 | 即时 |
+| Apple Pay | 全球 | 即时 |
+| Google Pay | 全球 | 即时 |
+| SEPA | 欧洲 | 1-2天 |
+| ACH | 美国 | 3-5天 |
+| Faster Payments | 英国 | 即时 |
+| PIX | 巴西 | 即时 |
+| iDEAL | 荷兰 | 即时 |
 
-## Supported Cryptocurrencies
+## 支持的加密货币
 
-| Category | Tokens |
+| 类别 | 币种 |
 |----------|--------|
-| Major | BTC, ETH, SOL, MATIC, AVAX |
-| Stablecoins | USDT, USDC, DAI |
-| L2 | ARB, OP, BASE tokens |
-| Meme | DOGE, SHIB |
+| 主流加密货币 | BTC、ETH、SOL、MATIC、AVAX |
+| 稳定币 | USDT、USDC、DAI |
+| 第二层网络（L2）代币 | ARB、OP、BASE |
+| 赞助币（Meme） | DOGE、SHIB |
 
-## Webhook Events
+## Webhook事件
 
 ```bash
 # Webhook payload structure
@@ -163,7 +163,7 @@ curl -s "https://api.moonpay.com/v3/transactions/${TX_ID}" \
 }
 ```
 
-## Verify Webhook Signature
+## 验证Webhook签名
 
 ```bash
 verify_webhook() {
@@ -176,7 +176,7 @@ verify_webhook() {
 }
 ```
 
-## Widget Customization
+## 插件定制
 
 ```bash
 # Widget parameters
@@ -191,25 +191,25 @@ PARAMS+="&language=en"               # Language
 PARAMS+="&showWalletAddressForm=false"  # Hide wallet input
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** sign widget URLs in production
-2. **NEVER** expose secret key client-side
-3. **VERIFY** webhook signatures
-4. **CHECK** transaction status before fulfilling
+1. **在生产环境中** **务必** 对插件URL进行加密处理。
+2. **绝对不要** 在客户端暴露密钥。
+3. **务必** 验证Webhook签名。
+4. **在完成交易前** **务必** 检查交易状态。
 
-## Error Codes
+## 错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| `invalid_api_key` | Invalid API key |
-| `invalid_signature` | URL signature mismatch |
-| `currency_not_supported` | Currency unavailable |
-| `amount_too_low` | Below minimum |
-| `amount_too_high` | Above maximum |
+| `invalid_api_key` | API密钥无效 |
+| `invalid_signature` | URL签名不匹配 |
+| `currency_not_supported` | 支持的货币不存在 |
+| `amount_too_low` | 金额过低 |
+| `amount_too_high` | 金额过高 |
 
-## Links
+## 链接
 
-- [MoonPay Docs](https://docs.moonpay.com/)
-- [Dashboard](https://dashboard.moonpay.com/)
-- [Widget Builder](https://dashboard.moonpay.com/widget)
+- [MoonPay文档](https://docs.moonpay.com/) |
+- [控制面板](https://dashboard.moonpay.com/) |
+- [插件构建工具](https://dashboard.moonpay.com/widget)

@@ -1,26 +1,24 @@
 ---
 name: commerce
-description: End-to-end agentic commerce workflow using Lightning Network. Use when an agent needs to set up a full payment stack (lnd + lnget + aperture), buy or sell data via L402, or enable agent-to-agent micropayments.
+description: 基于 Lightning Network 的端到端代理商业工作流程：当代理需要搭建完整的支付体系（包括 lnd、lnget 和 aperture），通过 L402 买卖数据，或实现代理之间的微支付时，可使用该流程。
 user-invocable: false
 ---
 
 # Agentic Commerce Toolkit
 
-This plugin provides a complete toolkit for agent-driven Lightning Network
-commerce. Three skills work together to enable agents to send and receive
-micropayments over the Lightning Network using the L402 protocol.
+该插件为基于代理的Lightning Network商务应用提供了完整的工具集。三个核心功能协同工作，使代理能够使用L402协议在Lightning Network上发送和接收微支付。
 
-## Components
+## 组件
 
-| Skill | Purpose |
+| 功能 | 用途 |
 |-------|---------|
-| **lnd** | Run Lightning Terminal (litd: lnd + loop + pool + tapd) |
-| **lnget** | Fetch L402-protected resources (pay for data) |
-| **aperture** | Host paid API endpoints (sell data) |
+| **lnd** | 运行Lightning Terminal（包含litd、loop、pool和tapd组件） |
+| **lnget** | 获取受L402保护的资源（数据购买） |
+| **aperture** | 托管付费API端点（数据销售） |
 
-## Full Setup Workflow
+## 完整设置流程
 
-### Step 1: Install All Components
+### 第1步：安装所有组件
 
 ```bash
 # Install litd (Lightning Terminal — bundles lnd + loop + pool + tapd)
@@ -33,7 +31,7 @@ skills/lnget/scripts/install.sh
 skills/aperture/scripts/install.sh
 ```
 
-### Step 2: Set Up the Lightning Node
+### 第2步：配置Lightning节点
 
 ```bash
 # Start litd container (testnet by default)
@@ -46,7 +44,7 @@ skills/lnd/scripts/create-wallet.sh --mode standalone
 skills/lnd/scripts/lncli.sh getinfo
 ```
 
-### Step 3: Fund the Wallet
+### 第3步：为钱包充值
 
 ```bash
 # Generate a Bitcoin address
@@ -58,7 +56,7 @@ skills/lnd/scripts/lncli.sh newaddress p2tr
 skills/lnd/scripts/lncli.sh walletbalance
 ```
 
-### Step 4: Open a Channel
+### 第4步：打开通道
 
 ```bash
 # Connect to a well-connected node (e.g., ACINQ, Bitfinex)
@@ -71,7 +69,7 @@ skills/lnd/scripts/lncli.sh openchannel --node_key=<pubkey> --local_amt=1000000
 skills/lnd/scripts/lncli.sh listchannels
 ```
 
-### Step 5: Configure lnget
+### 第5步：配置lnget
 
 ```bash
 # Initialize lnget config (auto-detects local lnd)
@@ -81,7 +79,7 @@ lnget config init
 lnget ln status
 ```
 
-### Step 6: Fetch Paid Resources
+### 第6步：获取付费资源
 
 ```bash
 # Fetch an L402-protected resource
@@ -94,7 +92,7 @@ lnget --no-pay https://api.example.com/paid-data
 lnget tokens list
 ```
 
-### Step 7: Host Paid Endpoints (Optional)
+### 第7步：托管付费API端点（可选）
 
 ```bash
 # Start your backend service
@@ -110,9 +108,9 @@ skills/aperture/scripts/start.sh
 # lnget --max-cost 100 https://your-host:8081/api/data
 ```
 
-## Agent-to-Agent Commerce
+## 代理之间的商务交易
 
-The full loop for autonomous agent commerce:
+自主代理商务交易的完整流程：
 
 ```
 Agent A (buyer)                    Agent B (seller)
@@ -132,7 +130,7 @@ lnget retries with token ───────→ aperture validates token
 Agent A receives data ←──────────  Backend returns data
 ```
 
-### Buyer Agent Setup
+### 买家代理设置
 
 ```bash
 # One-time setup
@@ -151,7 +149,7 @@ skills/lnd/scripts/lncli.sh openchannel --node_key=<pubkey> --local_amt=500000
 lnget --max-cost 100 -q https://seller-api.example.com/api/data | jq .
 ```
 
-### Seller Agent Setup
+### 卖家代理设置
 
 ```bash
 # One-time setup
@@ -175,9 +173,9 @@ skills/aperture/scripts/start.sh
 # https://your-host:8081/api/data.json (100 sats per request)
 ```
 
-## Cost Management
+## 成本管理
 
-Agents should always control spending:
+代理应始终控制自己的支出：
 
 ```bash
 # Set a hard limit per request
@@ -190,20 +188,19 @@ lnget --no-pay --json https://api.example.com/data | jq '.invoice_amount_sat'
 lnget tokens list --json | jq '[.[] | .amount_paid_sat] | add'
 ```
 
-## Security Summary
+## 安全性概述
 
-| Component | Security Model |
+| 组件 | 安全模型 |
 |-----------|---------------|
-| **Wallet passphrase** | Stored at `~/.lnget/lnd/wallet-password.txt` (0600) |
-| **Seed mnemonic** | Stored at `~/.lnget/lnd/seed.txt` (0600) |
-| **L402 tokens** | Stored at `~/.lnget/tokens/<domain>/` per domain |
-| **lnd macaroons** | Standard lnd paths at `~/.lnd/data/chain/...` |
-| **Aperture DB** | SQLite at `~/.aperture/aperture.db` |
+| **钱包密码** | 存储在`~/.lnget/lnd/wallet-password.txt`文件中（权限设置为0600） |
+| **种子助记词** | 存储在`~/.lnget/lnd/seed.txt`文件中（权限设置为0600） |
+| **L402代币** | 按域名存储在`~/.lnget/tokens/<domain>/`目录下 |
+| **lnd相关文件** | 标准的lnd文件存储在`~/.lnd/data/chain/...`目录下 |
+| **Aperture数据库** | 使用SQLite数据库，存储在`~/.aperture/aperture.db`文件中 |
 
-For production use with significant funds, use watch-only mode with a remote
-signer container. See the `lightning-security-module` skill for details.
+对于涉及大量资金的生产环境，建议使用仅查看模式的远程签名器容器。详情请参阅`lightning-security-module`组件。
 
-## Stopping Everything
+## 停止所有服务
 
 ```bash
 skills/aperture/scripts/stop.sh

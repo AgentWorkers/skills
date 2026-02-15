@@ -1,21 +1,21 @@
 ---
 name: LinkedIn Content Creation Skill by Reepl
-description: Manage your LinkedIn presence with Reepl -- create drafts, publish and schedule posts, manage contacts and collections, generate AI images, and maintain your voice profile. Requires a Reepl account (reepl.io).
+description: 使用 Reepl 管理您的 LinkedIn 账户：您可以创建帖子草稿、发布和安排发布时间、管理联系人和收藏夹、生成 AI 图像以及维护您的语音资料。需要一个 Reepl 账户（网址：reepl.io）。
 homepage: https://reepl.io
 metadata: {"openclaw":{"requires":{"env":["REEPL_MCP_KEY"]},"primaryEnv":"REEPL_MCP_KEY"}}
 ---
 
-# LinkedIn Content Creation via Reepl
+# 通过Reepl创建LinkedIn内容
 
-Full LinkedIn content management through Reepl's MCP integration. Write posts in your authentic voice, schedule content, manage drafts, generate AI images, browse your saved content library, and maintain contacts -- all from your AI assistant.
+通过Reepl的MCP集成，实现全面的LinkedIn内容管理。您可以用自己的真实风格撰写帖子、安排发布时间、管理草稿、生成AI图片、浏览保存的内容库以及维护联系人信息——所有这些都可以通过您的AI助手完成。
 
-## Prerequisites
+## 先决条件
 
-1. **Reepl account** -- sign up at [reepl.io](https://reepl.io)
-2. **MCP connection** -- connect your account via OAuth (see Setup below)
-3. **Gemini API key** (optional) -- required only for AI image generation, link at [Settings > AI Models](https://app.reepl.io/settings/ai-models-api)
+1. **Reepl账户**——在[reepl.io](https://reepl.io)注册
+2. **MCP连接**——通过OAuth连接您的账户（详见下方设置指南）
+3. **Gemini API密钥**（可选）——仅用于生成AI图片，可在[设置 > AI模型](https://app.reepl.io/settings/ai-models-api)获取链接
 
-## Setup
+## 设置指南
 
 ```
 # 1. Visit the OAuth page to connect your Reepl account
@@ -29,48 +29,48 @@ https://mcp.reepl.io/oauth/authorize
 https://mcp.reepl.io/mcp?key=YOUR_API_KEY
 ```
 
-If you receive authentication errors at any point, re-authenticate at the URL above.
+如果在任何步骤中遇到认证错误，请重新在上面的URL进行认证。
 
 ---
 
-## Available Tools (18 total)
+## 可用工具（共18个）
 
-| Tool | Purpose |
+| 工具 | 功能 |
 |------|---------|
-| `create_draft` | Save a new LinkedIn post draft |
-| `get_drafts` | List and search your drafts |
-| `update_draft` | Edit an existing draft |
-| `delete_draft` | Remove a draft |
-| `publish_to_linkedin` | Publish a post to LinkedIn immediately |
-| `schedule_post` | Queue a post for future publishing |
-| `update_scheduled_post` | Change time, content, or settings of a scheduled post |
-| `get_published_posts` | View your published LinkedIn posts |
-| `get_scheduled_posts` | View your scheduled post queue |
-| `get_user_profile` | Get your Reepl account info |
-| `get_voice_profile` | Read your voice profile (writing style patterns) |
-| `update_voice_profile` | Update voice profile with learned patterns |
-| `get_contacts` | Browse saved LinkedIn contacts |
-| `get_lists` | Browse your contact lists |
-| `get_collections` | Browse your saved post collections |
-| `get_saved_posts` | Read posts from a specific collection |
-| `get_templates` | Browse your post templates and ideas |
-| `generate_image` | Generate an AI image for a post (requires Gemini API key) |
+| `create_draft` | 保存新的LinkedIn帖子草稿 |
+| `get_drafts` | 列出并搜索您的草稿 |
+| `update_draft` | 编辑现有的草稿 |
+| `delete_draft` | 删除草稿 |
+| `publish_to_linkedin` | 立即将帖子发布到LinkedIn |
+| `schedule_post` | 将帖子安排在未来发布 |
+| `update_scheduled_post` | 更改已安排帖子的时间、内容或设置 |
+| `get_published_posts` | 查看您已发布的LinkedIn帖子 |
+| `get_scheduled_posts` | 查看已安排的帖子队列 |
+| `get_user_profile` | 获取您的Reepl账户信息 |
+| `get_voice_profile` | 读取您的语音风格档案 |
+| `update_voice_profile` | 使用学习到的模式更新语音风格档案 |
+| `get_contacts` | 浏览保存的LinkedIn联系人 |
+| `get_lists` | 浏览您的联系人列表 |
+| `get_collections` | 浏览您保存的帖子集合 |
+| `get_saved_posts` | 从特定集合中读取帖子 |
+| `get_templates` | 浏览您的帖子模板和创意 |
+| `generate_image` | 为帖子生成AI图片（需要Gemini API密钥） |
 
 ---
 
-## Content Rules
+## 内容规则
 
-All LinkedIn content MUST be plain text. Never use markdown formatting like **bold**, *italic*, or # headings. LinkedIn does not render markdown -- it will appear literally in the feed, looking AI-generated. Use line breaks, spacing, and natural punctuation for structure instead.
+所有LinkedIn内容必须为纯文本。请勿使用**粗体**、*斜体*或#标题等Markdown格式。LinkedIn不支持Markdown格式——这些格式会原样显示在动态中，看起来像是AI生成的。请使用换行符、间距和自然标点符号来组织内容。
 
-LinkedIn posts have a 3,000 character limit.
+LinkedIn帖子的字符限制为3000个。
 
 ---
 
-## Tool Reference
+## 工具参考
 
-### 1. Create Draft
+### 1. 创建草稿
 
-Save a post idea for later editing or publishing.
+保存一个帖子草稿，以便稍后编辑或发布。
 
 ```json
 {
@@ -80,15 +80,15 @@ Save a post idea for later editing or publishing.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `content` | Yes | Post text (plain text only) |
-| `title` | No | Draft title for organization |
-| `mediaUrls` | No | Array of image URLs to attach |
+| `content` | 是 | 帖子文本（仅限纯文本） |
+| `title` | 否 | 草稿的标题 |
+| `mediaUrls` | 否 | 要附加的图片URL数组 |
 
-### 2. Get Drafts
+### 2. 获取草稿
 
-List and search your saved drafts.
+列出并搜索您保存的草稿。
 
 ```json
 {
@@ -97,14 +97,14 @@ List and search your saved drafts.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `limit` | No | Number of drafts to return (default: 20) |
-| `search` | No | Filter drafts by keyword |
+| `limit` | 否 | 返回的草稿数量（默认：20个） |
+| `search` | 否 | 按关键词过滤草稿 |
 
-### 3. Update Draft
+### 3. 更新草稿
 
-Edit an existing draft's content, title, or images.
+编辑现有草稿的内容、标题或图片。
 
 ```json
 {
@@ -114,14 +114,13 @@ Edit an existing draft's content, title, or images.
 }
 ```
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `draft_id` | Yes | ID of the draft to update |
-| `content` | No | Updated post text |
-| `title` | No | Updated title |
-| `mediaUrls` | No | Updated image URLs (replaces existing) |
+| 参数 | 必需 | 说明 |
+| `draft_id` | 是 | 要更新的草稿ID |
+| `content` | 否 | 更新后的帖子文本 |
+| `title` | 否 | 更新后的标题 |
+| `mediaUrls` | 否 | 更新后的图片URL（替换现有图片） |
 
-### 4. Delete Draft
+### 4. 删除草稿
 
 ```json
 {
@@ -129,15 +128,15 @@ Edit an existing draft's content, title, or images.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `draft_id` | Yes | ID of the draft to delete |
+| `draft_id` | 是 | 要删除的草稿ID |
 
 ---
 
-### 5. Publish to LinkedIn
+### 5. 发布到LinkedIn
 
-Publish a post to LinkedIn immediately. This action is irreversible -- always confirm with the user before calling.
+立即将帖子发布到LinkedIn。此操作不可撤销——在调用之前务必获得用户的确认。
 
 ```json
 {
@@ -146,15 +145,15 @@ Publish a post to LinkedIn immediately. This action is irreversible -- always co
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `content` | Yes | Post text (plain text only, max 3000 chars) |
-| `mediaUrls` | No | Array of image URLs to include |
-| `visibility` | No | `PUBLIC` (default) or `CONNECTIONS` |
+| `content` | 是 | 帖子文本（仅限纯文本，最多3000个字符） |
+| `mediaUrls` | 否 | 要包含的图片URL数组 |
+| `visibility` | 否 | `PUBLIC`（默认）或`CONNECTIONS` |
 
-### 6. Schedule Post
+### 6. 安排帖子
 
-Queue a post for future publishing. Times are rounded to 15-minute intervals.
+将帖子安排在未来发布。时间以15分钟为间隔进行四舍五入。
 
 ```json
 {
@@ -164,21 +163,21 @@ Queue a post for future publishing. Times are rounded to 15-minute intervals.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `content` | Yes | Post text (plain text only, max 3000 chars) |
-| `scheduledFor` | Yes | ISO 8601 timestamp (e.g. `2026-02-17T08:00:00Z`) |
-| `mediaUrls` | No | Array of image URLs |
-| `visibility` | No | `PUBLIC` (default) or `CONNECTIONS` |
+| `content` | 是 | 帖子文本（仅限纯文本，最多3000个字符） |
+| `scheduledFor` | 是 | ISO 8601时间戳（例如 `2026-02-17T08:00:00Z`） |
+| `mediaUrls` | 否 | 图片URL数组 |
+| `visibility` | 否 | `PUBLIC`（默认）或`CONNECTIONS` |
 
-**Scheduling tips:**
-- Ask the user for their preferred time rather than picking one yourself.
-- If they want suggestions, recommend varied slots: early morning (7-8 AM), lunch (12-1 PM), or end of day (5-6 PM) in their timezone.
-- Avoid scheduling all posts at the same time -- spread them for better engagement.
+**安排发布时间的建议：**
+- 询问用户偏好的时间，而不是自行选择。
+- 如果用户需要建议，可以推荐不同的时间段：清晨（7-8 AM）、午餐时间（12-1 PM）或下午（5-6 PM）。
+- 避免同时安排所有帖子的发布时间——分散发布时间以提高互动效果。
 
-### 7. Update Scheduled Post
+### 7. 更新已安排的帖子
 
-Change the time, content, visibility, or images on a post that's already scheduled.
+更改已安排帖子的时间、内容、可见性或图片。
 
 ```json
 {
@@ -188,19 +187,19 @@ Change the time, content, visibility, or images on a post that's already schedul
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `post_id` | Yes | ID of the scheduled post |
-| `scheduledFor` | No | New ISO 8601 timestamp |
-| `content` | No | Updated post text |
-| `visibility` | No | Updated visibility |
-| `mediaUrls` | No | Updated image URLs (replaces existing) |
+| `post_id` | 是 | 已安排帖子的ID |
+| `scheduledFor` | 否 | 新的ISO 8601时间戳 |
+| `content` | 否 | 更新后的帖子文本 |
+| `visibility` | 否 | 更新后的可见性 |
+| `mediaUrls` | 否 | 更新后的图片URL（替换现有图片） |
 
 ---
 
-### 8. Get Published Posts
+### 8. 查看已发布的帖子
 
-View the user's published LinkedIn posts.
+查看用户已发布的LinkedIn帖子。
 
 ```json
 {
@@ -208,13 +207,13 @@ View the user's published LinkedIn posts.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `limit` | No | Number of posts to return (default: 20) |
+| `limit` | 否 | 返回的帖子数量（默认：20个） |
 
-### 9. Get Scheduled Posts
+### 9. 查看已安排的帖子
 
-View posts currently queued for future publishing.
+查看当前安排在未来发布的帖子。
 
 ```json
 {
@@ -222,31 +221,31 @@ View posts currently queued for future publishing.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `limit` | No | Number of posts to return (default: 20) |
+| `limit` | 否 | 返回的帖子数量（默认：20个） |
 
 ---
 
-### 10. Get User Profile
+### 10. 获取用户信息
 
-Returns the user's name, email, and LinkedIn URL. No parameters required.
+返回用户的姓名、电子邮件和LinkedIn URL。无需参数。
 
-### 11. Get Voice Profile
+### 11. 获取语音风格档案
 
-Read the user's voice profile -- writing style patterns learned from their published posts. No parameters required.
+读取用户的语音风格档案——从他们发布的帖子中学习到的写作风格。无需参数。
 
-Returns:
-- `userInstructions` -- guidelines the user has set (topics to avoid/emphasize, brand keywords, custom rules, writing samples)
-- `generatedProfile` -- LLM-learned patterns (tone dimensions, vocabulary preferences, hook styles, structure patterns, anti-patterns)
-- `allowAutoUpdate` -- whether the generated profile can be updated automatically
-- `isActive` -- whether the voice profile is active
+返回：
+- `userInstructions`——用户设定的指导原则（应避免/强调的主题、品牌关键词、自定义规则、写作示例）
+- `generatedProfile`——通过LLM学习到的模式（语气维度、词汇偏好、结构模式、反模式）
+- `allowAutoUpdate`——是否允许自动更新语音风格档案 |
+- `isActive`——语音风格档案是否处于活动状态
 
-**Always read the voice profile before generating content.** This is the key to writing posts that sound like the user, not like an AI.
+**在生成内容之前，请务必阅读语音风格档案。**这是确保帖子听起来像用户本人而非AI的关键。
 
-### 12. Update Voice Profile
+### 12. 更新语音风格档案
 
-Update the voice profile with newly learned patterns after analyzing the user's posts.
+在分析用户的帖子后，使用新学习到的模式更新语音风格档案。
 
 ```json
 {
@@ -260,20 +259,20 @@ Update the voice profile with newly learned patterns after analyzing the user's 
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `allowAutoUpdate` | No | Only change if user explicitly requests |
-| `isActive` | No | Toggle voice profile on/off |
-| `userInstructions` | No | User-controlled guidelines -- only modify if user explicitly asks |
-| `generatedProfile` | No | LLM-learned patterns from analyzing posts |
+| `allowAutoUpdate` | 否 | 仅在用户明确要求时更改 |
+| `isActive` | 否 | 切换语音风格档案的开关 |
+| `userInstructions` | 否 | 用户控制的指导原则——仅在用户明确请求时修改 |
+| `generatedProfile` | 否 | 通过分析帖子学习到的LLM模式 |
 
-**Important:** Before updating `generatedProfile`, always check that `allowAutoUpdate` is `true`. If the user has locked their profile, do not update it.
+**重要提示：**在更新`generatedProfile`之前，请务必检查`allowAutoUpdate`是否设置为`true`。如果用户已锁定他们的风格档案，请勿进行更新。
 
 ---
 
-### 13. Get Contacts
+### 13. 查看联系人
 
-Browse saved LinkedIn contacts and profiles.
+浏览保存的LinkedIn联系人及其资料。
 
 ```json
 {
@@ -282,14 +281,14 @@ Browse saved LinkedIn contacts and profiles.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `limit` | No | Number of contacts (default: 20) |
-| `search` | No | Filter by name, headline, or keyword |
+| `limit` | 否 | 联系人数量（默认：20个） |
+| `search` | 否 | 按名称、标题或关键词过滤联系人 |
 
-### 14. Get Lists
+### 14. 查看联系人列表
 
-Browse the user's contact lists (curated groups of contacts).
+浏览用户的联系人列表（精选的联系人群组）。
 
 ```json
 {
@@ -298,16 +297,16 @@ Browse the user's contact lists (curated groups of contacts).
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `search` | No | Filter lists by name |
-| `limit` | No | Number of lists (default: 20) |
+| `search` | 否 | 按名称过滤列表 |
+| `limit` | 否 | 列表数量（默认：20个） |
 
 ---
 
-### 15. Get Collections
+### 15. 查看帖子集合
 
-Browse saved post collections (groups of bookmarked LinkedIn posts).
+浏览用户保存的帖子集合（标记的LinkedIn帖子组）。
 
 ```json
 {
@@ -316,14 +315,14 @@ Browse saved post collections (groups of bookmarked LinkedIn posts).
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `search` | No | Filter collections by name |
-| `limit` | No | Number of collections (default: 20) |
+| `search` | 否 | 按名称过滤集合 |
+| `limit` | 否 | 集合数量（默认：20个） |
 
-### 16. Get Saved Posts
+### 16. 获取保存的帖子
 
-Read posts from a specific collection. Use `get_collections` first to find the collection ID.
+从特定集合中读取帖子。首先使用`get_collections`查找集合ID。
 
 ```json
 {
@@ -333,15 +332,15 @@ Read posts from a specific collection. Use `get_collections` first to find the c
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `collectionID` | Yes | The collection to fetch from |
-| `limit` | No | Number of posts (default: 20) |
-| `search` | No | Filter posts by keyword |
+| `collectionID` | 是 | 要从中获取的集合ID |
+| `limit` | 否 | 帖子数量（默认：20个） |
+| `search` | 否 | 按关键词过滤帖子 |
 
-### 17. Get Templates
+### 17. 查看模板
 
-Browse post templates and content ideas saved in the user's library.
+浏览用户库中保存的帖子模板和创意。
 
 ```json
 {
@@ -350,17 +349,17 @@ Browse post templates and content ideas saved in the user's library.
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `limit` | No | Number of templates (default: 20) |
-| `search` | No | Filter by keyword |
-| `catalogID` | No | Filter by specific catalog |
+| `limit` | 否 | 模板数量（默认：20个） |
+| `search` | 否 | 按关键词过滤 |
+| `catalogID` | 否 | 按特定目录过滤 |
 
 ---
 
-### 18. Generate Image
+### 18. 生成图片
 
-Generate an AI image for a LinkedIn post using Google Gemini. Requires the user to have linked their Gemini API key in [Reepl settings](https://app.reepl.io/settings/ai-models-api).
+使用Google Gemini为LinkedIn帖子生成AI图片。用户需要在[Reepl设置](https://app.reepl.io/settings/ai-models-api)中链接他们的Gemini API密钥。
 
 ```json
 {
@@ -369,32 +368,32 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 }
 ```
 
-| Parameter | Required | Description |
+| 参数 | 必需 | 说明 |
 |-----------|----------|-------------|
-| `style` | Yes | Image style (see table below) |
-| `postContent` | No | Post content for context |
-| `customPrompt` | If style is `custom` | Your own image prompt |
+| `style` | 是 | 图片风格（见下表） |
+| `postContent` | 否 | 用于生成图片的帖子内容 |
+| `customPrompt` | 如果风格设置为`custom` | 用户自定义的图片提示 |
 
-**Available styles:**
+**可用风格：**
 
-| Style | Output |
+| 风格 | 输出 |
 |-------|--------|
-| `infographic` | Professional data visuals and charts |
-| `minimal-illustration` | Clean line art illustrations |
-| `bold-text` | Typography and quote cards |
-| `screenshot-social-proof` | Mockup screenshots |
-| `comic-storyboard` | Comic-style panels |
-| `realistic-portrait` | Photorealistic scenes |
-| `diagram-flowchart` | Diagrams and process flows |
-| `custom` | Your own prompt (requires `customPrompt`) |
+| `infographic` | 专业的数据可视化和图表 |
+| `minimal-illustration` | 简洁的线条艺术插图 |
+| `bold-text` | 字体设计和引用卡片 |
+| `screenshot-social-proof` | 适用于社交媒体的截图 |
+| `comic-storyboard` | 漫画风格的面板 |
+| `realistic-portrait` | 真实风格的肖像 |
+| `diagram-flowchart` | 图表和流程图 |
+| `custom` | 用户自定义的提示（需要`customPrompt`） |
 
-**Always show the generated image to the user for approval before publishing.** Pass the returned URL as `mediaUrls` when calling `publish_to_linkedin` or `schedule_post`.
+**在发布之前，请务必向用户展示生成的图片以获得批准。**在调用`publish_to_linkedin`或`schedule_post`时，将返回的URL作为`mediaUrls`传递。**
 
 ---
 
-## Common Patterns
+## 常见使用模式
 
-### Pattern 1: Write a Post in the User's Voice
+### 模式1：用用户的声音撰写帖子
 
 ```
 1. get_voice_profile          -- read their writing style
@@ -404,7 +403,7 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 5. create_draft OR publish     -- save or go live
 ```
 
-### Pattern 2: Schedule a Week of Content
+### 模式2：安排一周的内容发布计划
 
 ```
 1. get_voice_profile           -- read writing style
@@ -414,7 +413,7 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 5. schedule_post (x5)          -- spread across Mon-Fri at varied times
 ```
 
-### Pattern 3: Repurpose Saved Content
+### 模式3：重新利用已保存的内容
 
 ```
 1. get_collections             -- find the right collection
@@ -423,7 +422,7 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 4. create_draft or publish     -- save or go live
 ```
 
-### Pattern 4: Post with AI-Generated Image
+### 模式4：使用AI生成的图片发布帖子
 
 ```
 1. Write the post content first
@@ -432,7 +431,7 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 4. publish_to_linkedin         -- pass image URL in mediaUrls
 ```
 
-### Pattern 5: Analyze and Update Voice Profile
+### 模式5：分析并更新语音风格档案
 
 ```
 1. get_published_posts         -- fetch recent posts (limit: 20)
@@ -443,35 +442,35 @@ Generate an AI image for a LinkedIn post using Google Gemini. Requires the user 
 
 ---
 
-## Error Handling
+## 错误处理
 
-| Error | Cause | Solution |
+| 错误 | 原因 | 解决方案 |
 |-------|-------|----------|
-| `Session expired or invalid` | OAuth token expired | Re-authenticate at https://mcp.reepl.io/oauth/authorize |
-| `Content exceeds 3000 character limit` | Post too long | Shorten the content |
-| `draft_id is required` | Missing draft ID | Call `get_drafts` first to find the ID |
-| `collectionID is required` | Missing collection ID | Call `get_collections` first to find the ID |
-| `GEMINI_NOT_LINKED` | No Gemini API key | User must link key at https://app.reepl.io/settings/ai-models-api |
-| `Rate limit exceeded` | Too many requests | Wait a moment and retry |
-| `Resource not found` | Invalid ID | The draft/post/collection may have been deleted |
+| `Session expired or invalid` | OAuth令牌过期 | 重新在https://mcp.reepl.io/oauth/authorize进行认证 |
+| `Content exceeds 3000 character limit` | 帖子内容超过3000个字符 | 缩短内容长度 |
+| `draft_id is required` | 缺少草稿ID | 先调用`get_drafts`查找ID |
+| `collectionID is required` | 缺少集合ID | 先调用`get_collections`查找ID |
+| `GEMINI_NOT_LINKED` | 未链接Gemini API密钥 | 用户需要在https://app.reepl.io/settings/ai-models-api中链接密钥 |
+| `Rate limit exceeded` | 请求次数过多 | 稍等片刻后重试 |
+| `Resource not found` | ID无效 | 草稿/帖子/集合可能已被删除 |
 
 ---
 
-## Best Practices
+## 最佳实践
 
-1. **Always read the voice profile first.** Before writing any content, call `get_voice_profile` to understand the user's writing style. Posts should sound like them, not like an AI.
-2. **Plain text only.** Never use markdown in post content. No `**bold**`, no `*italic*`, no `# headings`. LinkedIn renders these literally.
-3. **Confirm before publishing.** Always show the final content and get explicit confirmation before calling `publish_to_linkedin` or `schedule_post`. These affect the user's real LinkedIn profile.
-4. **Vary scheduling times.** Don't default to 9 AM for every post. Ask the user, or suggest varied slots across mornings, lunch, and end of day.
-5. **Never fabricate data.** Don't invent engagement metrics, analytics, or post performance numbers. Only report what the API returns.
-6. **Respect voice profile locks.** If `allowAutoUpdate` is false, do not modify `generatedProfile`. The user has intentionally locked their voice profile.
-7. **Use the library.** Before writing from scratch, check templates and saved posts for inspiration. The user has curated these for a reason.
+1. **始终先阅读语音风格档案。**在撰写任何内容之前，先调用`get_voice_profile`以了解用户的写作风格。帖子应该像用户本人一样，而不是像AI生成的。
+2. **仅使用纯文本。**帖子内容中禁止使用Markdown格式（如**粗体**、*斜体*或#标题）。LinkedIn不会渲染Markdown格式。
+3. **发布前务必确认。**在调用`publish_to_linkedin`或`schedule_post`之前，务必展示最终内容并获得用户的明确确认。这些操作会影响用户的真实LinkedIn个人资料。
+4. **合理安排发布时间。**不要每次都选择上午9点发布。询问用户，或建议不同的时间段（如清晨、午餐时间或下午）。
+5. **切勿伪造数据。**不要捏造参与度指标、分析数据或帖子表现数据。仅报告API返回的信息。
+6. **尊重用户对语音风格档案的设置。**如果`allowAutoUpdate`设置为`false`，请勿修改`generatedProfile`。用户可能是有意锁定他们的风格档案的。
+7. **利用现有资源。**在从头开始撰写之前，先查看模板和保存的帖子以获取灵感。用户之所以保存这些内容，是有原因的。
 
 ---
 
-## See Also
+## 参考资料
 
-- [Reepl](https://reepl.io) -- AI-powered LinkedIn content management platform
-- [Reepl Help Center](https://help.reepl.io) -- Documentation and guides
-- [MCP Setup Guide](https://mcp.reepl.io) -- Connect your Reepl account to Claude
-- [Reepl Chrome Extension](https://chromewebstore.google.com/detail/reepl/geomampobbapgnflneaofdplfomdkejn) -- AI writing assistant for LinkedIn
+- [Reepl](https://reepl.io)——基于AI的LinkedIn内容管理平台
+- [Reepl帮助中心](https://help.reepl.io)——文档和指南
+- [MCP设置指南](https://mcp.reepl.io)——将您的Reepl账户连接到Claude
+- [Reepl Chrome扩展程序](https://chromewebstore.google.com/detail/reepl/geomampobbapgnflneaofdplfomdkejn)——专为LinkedIn设计的AI写作助手

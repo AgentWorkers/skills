@@ -1,99 +1,76 @@
 ---
 name: telegram-voice-to-voice-macos
-description: "Telegram voice-to-voice for macOS Apple Silicon: transcribe inbound .ogg voice notes with yap (Speech.framework) and reply with Telegram voice notes via say+ffmpeg. Not compatible with Linux/Windows."
+description: "适用于 macOS 上搭载 Apple Silicon 处理器的 Telegram 应用：使用 `yap`（Speech.framework）库将接收到的 `.ogg` 格式的语音笔记转录为文本，然后通过 `say+ffmpeg` 工具将文本转换回语音笔记并通过 Telegram 发送。该功能不支持 Linux 和 Windows 系统。"
 metadata: {"openclaw":{"os":["darwin"],"requires":{"bins":["yap","ffmpeg","say","defaults"]}}}
 ---
 
-# Telegram voice-to-voice (macOS Apple Silicon only)
+# Telegram语音转语音功能（仅支持macOS Apple Silicon系统）
 
-This is an **OpenClaw skill**.
+这是一个由OpenClaw提供的技能（skill）。
 
-## Requirements
+## 使用要求
 
-- macOS on Apple Silicon.
-- `yap` CLI available in `PATH` (Speech.framework transcription).
-  - Project: https://github.com/finnvoor/yap (by finnvoor)
-- `ffmpeg` available in `PATH`.
+- 确保使用的是搭载Apple Silicon处理器的macOS系统。
+- 确保`yap`命令行工具（用于语音转文本的转录功能）已添加到系统的`PATH`环境变量中（该工具来自Speech.framework）。
+  - 项目链接：https://github.com/finnvoor/yap（由finnvoor开发）
+- 确保`ffmpeg`命令行工具也已添加到`PATH`环境变量中。
 
-## Compatibility note (important)
+## 兼容性说明（重要）
 
-This skill is **macOS-only** (uses `say` + Speech.framework). The skill registry cannot enforce OS restrictions, so installing/running it on Linux/Windows will result in runtime failures.
+此功能仅适用于macOS系统（依赖`say`命令和Speech.framework）。由于技能注册系统无法强制用户遵守操作系统限制，因此在Linux或Windows系统上安装或运行此功能可能会导致运行时错误。
 
-## Persistent reply mode (voice vs text)
+## 持久回复模式（语音或文本）
 
-Store a small per-user preference file in the workspace:
+系统会在工作区中存储一个与用户相关联的配置文件：
 
-- State file: `voice_state/telegram.json`
-- Key: Telegram sender user id (string)
-- Values:
-  - `"voice"` (default): reply with a Telegram voice note
-  - `"text"`: reply with a single text message
+- 配置文件路径：`voice_state/telegram.json`
+- 文件内容：
+  - `"voice"`：回复时使用Telegram的语音消息。
+  - `"text"`：回复时使用纯文本消息。
 
-If the file does not exist or the sender id is missing: assume `"voice"`.
+如果该配置文件不存在或发送者的用户ID信息缺失，系统将默认使用“语音”模式进行回复。
 
-### Toggle commands
+### 切换模式命令
 
-If an inbound **text** message is exactly:
+- 当收到纯文本消息时，执行以下命令：
+  - `/audio off`：将回复模式切换为“文本”，并通过发送一条简短的文本消息进行确认。
+  - `/audio on`：将回复模式切换为“语音”，并通过发送一条简短的文本消息进行确认。
 
-- `/audio off` → set state to `"text"` and confirm with a short text reply.
-- `/audio on` → set state to `"voice"` and confirm with a short text reply.
+## 获取传入的语音文件（.ogg格式）
 
-## Getting the inbound audio (.ogg)
+Telegram的语音消息通常会以`<media:audio>`的形式嵌入在消息文本中。OpenClaw会将这些语音文件保存在以下路径：
+  - `~/.openclaw/media/inbound/`
 
-Telegram voice notes often show up as `<media:audio>` in message text.
-OpenClaw saves the attachment to disk (typically `.ogg`) under:
+推荐的处理方式：
+  1. 如果传入的消息中包含了语音文件的路径，直接使用该路径。
+  2. 如果没有提供路径，系统会自动从`~/.openclaw/media/inbound/`目录中选取最新的`.ogg`格式语音文件。
 
-- `~/.openclaw/media/inbound/`
+## 转录功能
 
-Recommended approach:
+- 转录使用的默认语言环境为macOS系统的默认语言设置。
+- 可选环境变量：`YAP_LOCALE`（用于覆盖语言设置，例如`it-IT`、`en-US`）。
+- 推荐的转录命令：`yap transcribe --locale "${YAP_LOCALE:-<system>}" <path.ogg>`
+  - 如果未设置`YAP_LOCALE`，系统会使用macOS系统的默认语言设置（通过`defaults read -g AppleLocale`获取）。
+- 如果转录失败或转录结果为空，系统会提示用户重新发送语音或输入文本。
 
-1) If the inbound message context includes an attachment path, use it.
-2) Otherwise, take the most recent `*.ogg` from `~/.openclaw/media/inbound/`.
+### 辅助脚本
 
-## Transcription
+用于处理语音文件转录的脚本：`scripts/transcribe_telegram_ogg.sh [path.ogg]`
 
-Default locale: **macOS system locale**.
+## 回复行为
 
-Optional env:
+### 回复模式：语音（默认）
 
-- `YAP_LOCALE` — override the transcription locale (e.g. `it-IT`, `en-US`).
+- 默认情况下，系统会使用macOS系统预设的语音效果进行回复。用户也可以通过传递特定的语音名称来自定义语音效果：
+  1. 生成需要回复的文本。
+  2. 使用`scripts/tts_telegram_voice.sh "<回复文本>" [SYSTEM|VoiceName]`命令将文本转换为`.ogg`格式的语音文件。
+  3. 使用`message`工具将生成的`.ogg`文件作为语音消息发送回Telegram（注意设置`asVoice: true`选项），并指定`media`参数为语音文件的路径。
+  - 可选地，可以通过设置`replyTo`参数将回复消息关联到原始对话线程中。
 
-Preferred:
+**提示：**建议始终使用系统预设的语音效果（`SYSTEM`）。
 
-- `yap transcribe --locale "${YAP_LOCALE:-<system>}" <path.ogg>`
-  - If `YAP_LOCALE` is not set, the helper script will use the macOS system locale (from `defaults read -g AppleLocale`).
+### 回复模式：文本
 
-If transcription fails or is empty: ask the user to repeat or send text.
-
-Helper script:
-
-- `scripts/transcribe_telegram_ogg.sh [path.ogg]`
-
-## Reply behavior
-
-### Mode: voice (default)
-
-Voice default: **SYSTEM** (uses the current macOS system voice). You can override by passing a specific voice name to the helper script.
-
-1) Generate the reply text.
-2) Convert reply text to an OGG/Opus voice note using:
-
-- `scripts/tts_telegram_voice.sh "<reply text>" [SYSTEM|VoiceName]`
-
-The script prints the generated `.ogg` path to stdout.
-
-3) Send the `.ogg` back to Telegram as a **voice note** (not a generic audio file):
-
-- use the `message` tool with `asVoice: true` and `media: <path.ogg>`
-- optionally set `replyTo` to thread the response
-
-Notes:
-
-- Use `SYSTEM` to rely on the current macOS system voice (recommended).
-
-### Mode: text
-
-Reply with a single text message:
-
-- `Transcription: <...>`
-- `Reply: <...>`
+- 回复时直接发送纯文本消息，格式如下：
+  - `Transcription: <...>`
+  - `Reply: <...>`

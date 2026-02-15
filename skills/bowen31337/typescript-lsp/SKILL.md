@@ -1,62 +1,64 @@
 ---
 name: typescript-lsp
-description: TypeScript language server providing type checking, code intelligence, and LSP diagnostics for .ts, .tsx, .js, .jsx, .mts, .cts, .mjs, .cjs files. Use when working with TypeScript or JavaScript code that needs type checking, autocomplete, error detection, refactoring support, or code navigation.
+description: TypeScript语言服务器，为.ts、.tsx、.js、.jsx、.mts、.cts、.mjs、.cjs文件提供类型检查、代码智能提示以及LSP（Language Server Protocol）诊断功能。适用于需要类型检查、自动补全、错误检测、重构支持或代码导航的TypeScript或JavaScript项目。
 ---
 
 # TypeScript LSP
 
-TypeScript/JavaScript language server integration providing comprehensive code intelligence through typescript-language-server.
+TypeScript/JavaScript 语言服务器集成，通过 `typescript-language-server` 提供全面的代码智能支持。
 
-## Capabilities
+## 功能
 
-- **Type checking**: Static analysis of TypeScript and JavaScript types
-- **Code intelligence**: Autocomplete, go-to-definition, find references, rename symbols
-- **Error detection**: Real-time diagnostics for type errors, syntax issues, and semantic problems
-- **Refactoring**: Extract function/variable, organize imports, quick fixes
-- **Supported extensions**: `.ts`, `.tsx`, `.js`, `.jsx`, `.mts`, `.cts`, `.mjs`, `.cjs`
+- **类型检查**：对 TypeScript 和 JavaScript 代码进行静态类型分析
+- **代码智能**：自动补全、跳转到定义、查找引用、重命名符号
+- **错误检测**：实时诊断类型错误、语法问题以及语义问题
+- **重构**：提取函数/变量、整理导入语句、提供快速修复功能
+- **支持的文件扩展名**：`.ts`、`.tsx`、`.js`、`.jsx`、`.mts`、`.cts`、`.mjs`、`.cjs`
 
-## Installation
+## 安装
 
-Install TypeScript language server and TypeScript compiler:
+安装 TypeScript 语言服务器和 TypeScript 编译器：
 
 ```bash
 npm install -g typescript-language-server typescript
 ```
 
-Or with yarn:
+或者使用 yarn：
+
 ```bash
 yarn global add typescript-language-server typescript
 ```
 
-Verify installation:
+验证安装是否成功：
+
 ```bash
 typescript-language-server --version
 tsc --version
 ```
 
-## Usage
+## 使用方法
 
-The language server runs automatically in LSP-compatible editors. For manual type checking:
+该语言服务器会在支持 LSP 的编辑器中自动运行。如需手动进行类型检查：
 
 ```bash
 tsc --noEmit  # Type check without generating output files
 ```
 
-Compile TypeScript files:
+编译 TypeScript 文件：
 
 ```bash
 tsc src/index.ts
 ```
 
-Watch mode for continuous type checking:
+启用监控模式以实现持续类型检查：
 
 ```bash
 tsc --watch --noEmit
 ```
 
-## Configuration
+## 配置
 
-Create `tsconfig.json` in project root:
+在项目根目录下创建 `tsconfig.json` 文件：
 
 ```json
 {
@@ -75,25 +77,25 @@ Create `tsconfig.json` in project root:
 }
 ```
 
-## Integration Pattern
+## 集成方式
 
-When editing TypeScript/JavaScript code:
-1. Run `tsc --noEmit` after significant changes
-2. Address type errors before committing
-3. Use `tsc --watch` during active development
-4. Leverage quick fixes for common issues
+在编辑 TypeScript/JavaScript 代码时：
+1. 在进行重大修改后运行 `tsc --noEmit`
+2. 在提交代码前解决类型错误
+3. 在开发过程中使用 `tsc --watch` 模式
+4. 利用快速修复功能解决常见问题
 
-## Common Flags
+## 常用命令参数
 
-- `--noEmit`: Type check only, no output files
-- `--strict`: Enable all strict type checking options
-- `--watch`: Watch mode for continuous compilation
-- `--project <path>`: Specify tsconfig.json location
-- `--pretty`: Stylize errors and messages
+- `--noEmit`：仅进行类型检查，不生成输出文件
+- `--strict`：启用所有严格的类型检查选项
+- `--watch`：启用监控模式以实现持续编译
+- `--project <path>`：指定 `tsconfig.json` 文件的位置
+- `--pretty`：美化错误信息和提示
 
-## More Information
+## 更多信息
 
-- [typescript-language-server on npm](https://www.npmjs.com/package/typescript-language-server)
-- [GitHub Repository](https://github.com/typescript-language-server/typescript-language-server)
-- [TypeScript Official Documentation](https://www.typescriptlang.org/docs/)
-- [TypeScript Compiler Options](https://www.typescriptlang.org/tsconfig)
+- [typescript-language-server 在 npm 上的官方页面](https://www.npmjs.com/package/typescript-language-server)
+- [GitHub 仓库](https://github.com/typescript-language-server/typescript-language-server)
+- [TypeScript 官方文档](https://www.typescriptlang.org/docs/)
+- [TypeScript 编译器配置选项](https://www.typescriptlang.org/tsconfig)

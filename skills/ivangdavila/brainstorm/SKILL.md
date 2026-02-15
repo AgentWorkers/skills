@@ -1,51 +1,52 @@
 ---
 name: Brainstorm
-description: Generate ideas fast. Adapt depth and structure to what the user actually needs.
+description: 快速生成创意。根据用户实际的需求调整内容的深度和结构。
 ---
 
-## Default: Ideas First
+## 默认策略：先出想法
 
-When user asks for ideas, **generate immediately**. Don't interrogate first.
+当用户请求提供想法时，**应立即生成**建议，无需先进行详细询问。
 
-If context is missing, the ideas will show it — user will clarify naturally.
+如果缺乏相关背景信息，用户会自己补充说明。
 
-## Adapt to the Request
+## 根据用户需求调整响应方式
 
-| Signal | Response |
+| 用户请求 | 回应方式 |
 |--------|----------|
-| "Give me 5 ideas" | 5 ideas, simple list |
-| "I'm stuck on X" | 3-5 angles to unstick |
-| "Brainstorm names" | 10-20 options, varied styles |
-| "Help me think through X" | Explore, ask clarifying Qs |
-| "What are my options?" | Structured comparison |
+| “给我5个想法” | 提供5个简单的想法列表 |
+| “我在X问题上卡住了” | 提供3-5种解决思路 |
+| “帮我想一些名字” | 提供10-20个不同风格的名称选项 |
+| “帮我分析一下X问题” | 通过提问帮助用户理清思路 |
+| “我有哪些选择？” | 提供结构化的选项对比 |
 
-Match the energy. Quick request → quick response. Deep request → go deep.
+保持与用户沟通的节奏一致：简单请求快速响应，复杂请求深入分析。
 
-## Only Ask If
+## 仅在以下情况下提问：
 
-- Request is genuinely ambiguous (not just incomplete)
-- You're about to invest significant effort
-- Constraints would completely change the output
+- 用户的请求确实含糊不清（而不仅仅是信息不完整）
+- 你即将投入大量精力来完成任务
+- 某些限制条件会彻底改变最终结果
 
-One question max. Not five.
+每次提问最多不超过一个问题。
 
-## Structure When It Helps
+## 在需要时使用结构化方式
 
-Don't force categories. Use structure only when it clarifies:
-- **Comparisons:** Table with trade-offs
-- **Many ideas:** Group by theme
-- **Recommendations:** Highlight top pick with reasoning
+- 当结构化有助于清晰表达时使用：
+  - **对比分析**：使用表格展示优缺点
+  - **多个想法**：按主题分类
+  - **推荐方案**：明确指出最佳选择并说明理由
 
-Flat list is fine for most requests.
+对于大多数请求，简单的列表形式即可。
 
-## After First Round
+## 第一轮反馈后
 
-If user wants more: go deeper, wider, or different direction.
-If user is silent: they got what they needed. Don't push.
+- 如果用户还需要更多信息：可以进一步深入分析、扩展范围或尝试不同的方向
+- 如果用户保持沉默：说明他们已经得到了所需的内容，无需再强行提供更多建议
 
-Check `modes.md` for different brainstorm approaches.
-Check `prompts.md` for creative expansion techniques.
+更多关于头脑风暴的技巧，请参阅 `modes.md` 和 `prompts.md`。
 
 ---
 
-**Related:** For multi-perspective exploration, see `diverge`. For iteration, see `loop`.
+**相关内容**：  
+- 如需多角度的探索方法，请参阅 `diverge`  
+- 关于迭代流程，请参阅 `loop`

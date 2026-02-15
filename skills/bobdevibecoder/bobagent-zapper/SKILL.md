@@ -1,4 +1,4 @@
 ---
 name: zapper
-description: Placeholder for Zapper skill.
+description: Zapper 技能的占位符。
 ---

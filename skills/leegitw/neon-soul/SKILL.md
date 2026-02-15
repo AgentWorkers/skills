@@ -1,7 +1,7 @@
 ---
 name: NEON-SOUL
 version: 0.2.1
-description: AI Identity Through Grounded Principles - synthesize your soul from memory with semantic compression.
+description: **AI身份：基于扎实原则的构建——通过语义压缩从记忆中“合成”你的灵魂**
 homepage: https://github.com/geeks-accelerator/neon-soul
 user-invocable: true
 disableModelInvocation: true
@@ -35,114 +35,114 @@ tags:
 
 # NEON-SOUL
 
-AI Identity Through Grounded Principles - soul synthesis with semantic compression.
+通过扎实的原则构建人工智能身份——结合语义压缩的灵魂合成技术。
 
 ---
 
-## Upgrading to 0.2.0
+## 升级至0.2.0
 
-If you used NEON-SOUL before version 0.2.0:
-- Your existing `.neon-soul/state.json` will work (embedding fields are ignored)
-- First synthesis will recalculate all similarity matches
-- Your SOUL.md and provenance chain are unchanged
+如果您在0.2.0版本之前使用过NEON-SOUL：
+- 您现有的`.neon-soul/state.json`文件仍然可以正常使用（其中嵌入的字段将被忽略）
+- 首次合成时会重新计算所有相似性匹配结果
+- 您的SOUL.md文件和来源记录将保持不变
 
-Nothing to do - just run `/neon-soul synthesize` as usual.
-
----
-
-## What Changed in v0.2.0
-
-We removed the embedding model dependency, which means principle matching now uses your agent's LLM directly. This is the same model you already trust with your memory files.
-
-**What this means for you:**
-- Synthesis may take a bit longer (seconds, not minutes)
-- Results may vary slightly between runs (like asking the same question twice - similar but not identical)
-- You'll need an active connection to your agent (can't run offline)
-
-**Why we made this choice:** The previous approach required third-party code that security scanners flagged. Your soul is too important for compromises.
-
-**Your soul reflects patterns in your memory, not exact calculations.** Like human memory itself, the synthesis process involves interpretation. Running synthesis twice may produce slightly different results - but the core truths will remain stable if your memory is consistent.
+无需任何操作，只需像往常一样运行`/neon-soul synthesize`即可。
 
 ---
 
-## How This Works
+## 0.2.0版本中的变化
 
-NEON-SOUL is an **instruction-based skill** - there is no binary or CLI to install. The `/neon-soul` commands below are interpreted by your AI agent (Claude Code, OpenClaw, etc.) which follows the instructions in this document.
+我们移除了对嵌入模型的依赖，这意味着原则匹配现在直接使用您的AI代理（如Claude Code或OpenClaw）内置的大型语言模型（LLM）。这个模型正是您用于处理记忆文件的同一模型。
 
-**What happens when you run a command:**
-1. You type `/neon-soul synthesize` in your agent chat
-2. Your agent reads this SKILL.md and follows the instructions
-3. The agent uses its built-in capabilities to read files, analyze content, and write output
+**这对您意味着：**
+- 合成过程可能会花费更长的时间（几秒，而不是几分钟）
+- 不同运行次数的结果可能会有轻微差异（就像两次提出相同问题时得到的答案相似但不完全相同）
+- 您需要保持与代理的活跃连接（无法离线运行）
 
-**No third-party services**: NEON-SOUL does not transmit your data to any external servers, third-party endpoints, or services beyond your agent. The skill uses only your agent's existing capabilities.
+**我们做出这一选择的原因：**之前的方法依赖于第三方代码，而这类代码容易被安全扫描工具识别为潜在风险。您的“灵魂”数据至关重要，不能受到任何威胁。
 
-**Pure instruction skill**: NEON-SOUL uses your agent's existing LLM for semantic analysis. No third-party packages, no model downloads, no additional dependencies.
-
-**Data handling**: Your data stays within your agent's trust boundary. If your agent uses a cloud-hosted LLM (Claude, GPT, etc.), data is transmitted to that service as part of normal agent operation - the same as any other agent interaction. If your agent uses a local LLM (Ollama, etc.), data stays on your machine.
-
-**Principle matching**: When similar principles are detected, the one with the most signal confirmations (highest strength) is kept. Equal-strength principles prefer the older observation.
+**您的“灵魂”反映了您记忆中的模式，而非精确的计算结果。**就像人类的记忆一样，合成过程也包含了一定的解释成分。因此，即使多次运行，结果也可能略有不同——但如果您的内存内容保持一致，核心信息仍然会稳定不变。
 
 ---
 
-## Requirements
+## 工作原理
 
-NEON-SOUL requires only an active connection to your AI agent (Claude Code, OpenClaw, etc.). The agent provides all necessary capabilities:
+NEON-SOUL是一种基于指令的技能，无需安装任何二进制文件或命令行工具（CLI）。下面的`/neon-soul`命令由您的AI代理（如Claude Code或OpenClaw）解释并执行。
 
-| Requirement | Details |
-|-------------|---------|
-| Agent | Claude Code, OpenClaw, or compatible |
-| LLM access | Your agent's configured LLM (for semantic analysis) |
-| No packages | No npm packages required |
-| No models | No model downloads |
+**运行命令时的流程：**
+1. 在代理的聊天界面中输入`/neon-soul synthesize`
+2. 代理会读取此SKILL.md文件并执行其中的指令
+3. 代理利用其内置功能来读取文件、分析内容并生成输出结果
 
-**That's it.** If your agent works, NEON-SOUL works.
+**无需第三方服务：**NEON-SOUL不会将您的数据传输到任何外部服务器或第三方服务。该技能仅使用您代理自身的功能。
 
----
+**纯指令式技能：**NEON-SOUL完全依赖代理内置的LLM进行语义分析，无需下载任何第三方包或模型。
 
-## Data Access
+**数据安全：**您的数据始终保留在代理的权限范围内。如果您的代理使用的是云托管的LLM（如Claude或GPT），数据会在代理的正常操作过程中被传输到该服务；如果使用的是本地LLM（如Ollama），数据则留在您的设备上。
 
-**What this skill reads:**
-- `memory/` directory (diary, preferences, reflections)
-- Existing `SOUL.md` if present
-- `.neon-soul/` state directory if present
-
-**What this skill writes:**
-- `SOUL.md` - your synthesized identity document
-- `.neon-soul/backups/` - automatic backups before changes
-- `.neon-soul/state.json` - synthesis state tracking
-
-**Git integration** (opt-in, off by default): Auto-commit is disabled unless you enable it in config. When enabled, it uses your existing git setup - no new credentials are requested or stored by the skill.
+**原则匹配：**当检测到相似的原则时，系统会保留确认度最高的原则。如果多个原则的确认度相同，则优先保留较早记录的原则。
 
 ---
 
-## Privacy Considerations
+## 使用要求
 
-NEON-SOUL processes personal memory files to synthesize your identity. Consider these privacy factors:
+NEON-SOUL仅需要您与AI代理（如Claude Code或OpenClaw）保持活跃连接。代理具备以下必要条件：
 
-**Your agent's LLM determines data handling:**
-- **Cloud LLM** (Claude, GPT, etc.): Your memory content is sent to that provider as part of normal LLM operation. This is no different from any other agent interaction with your files.
-- **Local LLM** (Ollama, LM Studio, etc.): Your data stays entirely on your machine.
+| 要求 | 详细说明 |
+|---------|-------------------|
+| 代理 | 支持NEON-SOUL的代理（例如Claude Code或OpenClaw） |
+| LLM访问权限 | 代理配置的LLM（用于语义分析） |
+| 无需额外软件包 | 不需要安装任何npm包 |
+| 无需模型下载 | 不需要下载任何模型 |
 
-**What NEON-SOUL does NOT do:**
-- Send data to any service beyond your configured agent
-- Store data anywhere except your local workspace
-- Transmit to third-party analytics, logging, or tracking services
-- Make network requests independent of your agent
-
-**Before running synthesis:**
-1. Review what's in your `memory/` directory
-2. Remove or move any secrets, credentials, or highly sensitive files
-3. Use `--dry-run` to preview what will be processed
-4. Consider whether your LLM provider's privacy policy is acceptable for this content
-
-**About `disable-model-invocation: true`:**
-This metadata flag means NEON-SOUL cannot run autonomously - your agent cannot invoke the skill without your explicit command. When you do invoke the skill (e.g., `/neon-soul synthesize`), it uses your agent's LLM for semantic analysis. This is expected behavior, not a contradiction.
+**就这么简单。**只要您的代理能够正常运行，NEON-SOUL就能正常使用。
 
 ---
 
-## First Time?
+## 数据访问
 
-New to NEON-SOUL? Start here:
+**该技能会读取的数据：**
+- `memory/`目录（包含您的日记、偏好设置和思考记录）
+- 如果存在的话，还会读取现有的`SOUL.md`文件
+- 如果存在的话，还会读取`.neon-soul/`目录下的状态文件
+
+**该技能会写入的数据：**
+- 生成的`SOUL.md`文件，用于记录您的身份信息
+- 在修改前会自动创建备份文件到`.neon-soul/backups/`目录
+- 生成`.neon-soul/state.json`文件，用于记录合成过程中的状态变化
+
+**Git集成**（可选，默认关闭）：除非在配置中启用，否则不会自动提交更改。启用后，系统会使用您现有的Git设置，不会请求或存储新的凭据。
+
+---
+
+## 隐私注意事项
+
+NEON-SOUL会处理您的个人记忆文件来生成您的身份文档。请注意以下隐私方面的问题：
+
+**数据处理的决定权在于您的代理：**
+- **使用云托管的LLM（如Claude或GPT）**：您的记忆内容会作为常规代理操作的一部分被发送给相应的服务提供商。
+- **使用本地LLM（如Ollama或LM Studio）**：您的数据将完全保留在您的设备上。
+
+**NEON-SOUL不会：**
+- 将数据发送到配置之外的任何服务
+- 将数据存储在本地工作区之外的位置
+- 将数据传输给第三方分析、日志记录或跟踪服务
+- 独立于代理进行网络请求
+
+**在运行合成操作之前：**
+1. 查看`memory/`目录中的内容
+2. 删除或移动任何包含敏感信息、凭据或高度机密文件的文件
+3. 使用`--dry-run`选项预览即将处理的内容
+4. 确认您选择的LLM提供商的隐私政策是否符合您的需求
+
+**关于`disable-model-invocation: true`：**
+此元数据标志表示NEON-SOUL无法自动运行——您必须明确发出指令才能使用该技能。当您执行`/neon-soul synthesize`等命令时，系统会使用代理的LLM进行语义分析。这是预期的行为，并不矛盾。
+
+---
+
+## 首次使用？
+
+这是您第一次使用NEON-SOUL吗？请从这里开始：
 
 ```bash
 # 1. Check your current state
@@ -155,44 +155,44 @@ New to NEON-SOUL? Start here:
 /neon-soul synthesize --force
 ```
 
-That's it. Your first soul is created with full provenance tracking. Use `/neon-soul audit --list` to explore what was created.
+完成这些操作后，您的第一个“灵魂”文档就会创建出来，并附带完整的来源记录。可以使用`/neon-soul audit --list`来查看生成的详细内容。
 
-**Questions?**
-- "Where did this axiom come from?" → `/neon-soul trace <axiom-id>`
-- "What if I don't like it?" → `/neon-soul rollback --force`
-- "What dimensions does my soul cover?" → `/neon-soul status`
+**有问题吗？**
+- “这个原则是从哪里来的？” → 使用`/neon-soul trace <axiom-id>`
+- “如果我不满意结果怎么办？” → 使用`/neon-soul rollback --force`
+- “我的‘灵魂’涵盖了哪些方面？” → 使用`/neon-soul status`
 
 ---
 
-## Commands
+## 命令说明
 
 ### `/neon-soul synthesize`
 
-Run soul synthesis pipeline:
-1. Collect signals from memory files
-2. Match to existing principles (semantic similarity via LLM)
-3. Promote high-confidence principles to axioms (N≥3)
-4. Generate SOUL.md with provenance tracking
+执行灵魂合成流程：
+1. 从记忆文件中收集信息
+2. 通过LLM进行语义相似性匹配
+3. 将置信度较高的原则提升为“公理”（置信度≥3）
+4. 生成包含来源记录的`SOUL.md`文件
 
-**Options:**
-- `--force` - Run synthesis even if below content threshold
-- `--force-resynthesis` - Force full resynthesis (ignore incremental mode)
-- `--dry-run` - Show what would change without writing (safe default)
-- `--diff` - Show proposed changes in diff format
-- `--output-format <format>` - Output format: prose (default), notation (legacy)
-- `--format <format>` - Notation style (when using notation output): native, cjk-labeled, cjk-math, cjk-math-emoji
-- `--workspace <path>` - Override workspace directory (default: current workspace)
+**可选参数：**
+- `--force`：即使不符合内容阈值也会强制执行合成
+- `--force-resynthesis`：强制进行完整重新合成（忽略增量模式）
+- `--dry-run`：仅显示更改内容（默认安全模式）
+- `--diff`：以差异格式显示建议的更改
+- `--output-format <format>`：输出格式（默认为散文格式；`notation`为旧格式）
+- `--format <format>`：输出时的符号表示风格（例如：native、cjk-labeled、cjk-math、cjk-math-emoji）
+- `--workspace <path>`：覆盖工作区目录（默认为当前工作区）
 
-**Examples:**
+**示例：**
 ```bash
 /neon-soul synthesize --dry-run     # Preview changes
 /neon-soul synthesize --force       # Run regardless of threshold
 /neon-soul synthesize --output-format notation --format cjk-math  # Legacy notation output
 ```
 
-**Output Format:**
+**输出格式说明：**
 
-The default prose output creates an inhabitable soul document:
+默认的散文格式会生成一个完整的灵魂文档：
 
 ```markdown
 # SOUL.md
@@ -226,21 +226,21 @@ Grounded but not rigid. Present but not precious about it.
 _Presence is the first act of care._
 ```
 
-Use `--output-format notation` for the legacy bullet-list format.
+使用`--output-format notation`命令可以获取旧式的列表格式输出。
 
 ### `/neon-soul status`
 
-Show current soul state:
-- Last synthesis timestamp
-- Pending memory content (chars since last run)
-- Signal/principle/axiom counts
-- Dimension coverage (7 SoulCraft dimensions)
+显示当前的灵魂状态：
+- 最后一次合成的时间戳
+- 自上次运行以来添加到记忆中的新内容
+- 各种原则/公理的出现次数
+- 覆盖的维度（7个SoulCraft维度）
 
-**Options:**
-- `--verbose` - Show detailed file information
-- `--workspace <path>` - Workspace path
+**可选参数：**
+- `--verbose`：显示详细的文件信息
+- `--workspace <path>`：指定工作区路径
 
-**Example:**
+**示例：**
 ```bash
 /neon-soul status
 # Output:
@@ -252,15 +252,15 @@ Show current soul state:
 
 ### `/neon-soul rollback`
 
-Restore previous SOUL.md from backup.
+从备份中恢复之前的`SOUL.md`文件。
 
-**Options:**
-- `--list` - Show available backups
-- `--backup <timestamp>` - Restore specific backup
-- `--force` - Confirm rollback (required)
-- `--workspace <path>` - Workspace path
+**可选参数：**
+- `--list`：显示可用的备份文件
+- `--backup <timestamp>`：恢复特定的备份版本
+- `--force`：确认恢复操作（必需）
+- `--workspace <path>`：指定工作区路径
 
-**Examples:**
+**示例：**
 ```bash
 /neon-soul rollback --list          # Show available backups
 /neon-soul rollback --force         # Restore most recent backup
@@ -269,15 +269,15 @@ Restore previous SOUL.md from backup.
 
 ### `/neon-soul audit`
 
-Explore provenance across all axioms. Full exploration mode with statistics and detailed views.
+全面探索所有公理的来源记录，提供统计信息和详细视图。
 
-**Options:**
-- `--list` - List all axioms with brief summary
-- `--stats` - Show statistics by tier and dimension
-- `<axiom-id>` - Show detailed provenance for specific axiom
-- `--workspace <path>` - Workspace path
+**可选参数：**
+- `--list`：列出所有公理及其简要总结
+- `--stats`：按层次和维度显示统计信息
+- `<axiom-id>`：显示特定公理的详细来源记录
+- `--workspace <path>`：指定工作区路径
 
-**Examples:**
+**示例：**
 ```bash
 /neon-soul audit --list             # List all axioms
 /neon-soul audit --stats            # Show tier/dimension stats
@@ -285,7 +285,7 @@ Explore provenance across all axioms. Full exploration mode with statistics and 
 /neon-soul audit 誠                 # Use CJK character as ID
 ```
 
-**Output (with axiom-id):**
+**输出示例（包含公理ID）：**
 ```
 Axiom: 誠 (honesty over performance)
 Tier: core
@@ -303,21 +303,21 @@ Created: 2026-02-07T10:30:00Z
 
 ### `/neon-soul trace <axiom-id>`
 
-Quick single-axiom provenance lookup. Minimal output for fast answers to "where did this come from?"
+快速查询单个公理的来源记录。适用于快速获取“这个公理是从哪里来的？”这样的问题。
 
-**Arguments:**
-- `<axiom-id>` - Axiom ID (e.g., ax_honesty) or CJK character (e.g., 誠)
+**参数说明：**
+- `<axiom-id>`：公理ID（例如：ax_honesty）或对应的CJK字符（例如：誠）
 
-**Options:**
-- `--workspace <path>` - Workspace path
+**可选参数：**
+- `--workspace <path>`：指定工作区路径
 
-**Examples:**
+**示例：**
 ```bash
 /neon-soul trace ax_honesty         # Trace by ID
 /neon-soul trace 誠                 # Trace by CJK character
 ```
 
-**Output:**
+**输出示例：**
 ```
 誠 (honesty over performance)
 └── "be honest about capabilities" (N=4)
@@ -325,67 +325,67 @@ Quick single-axiom provenance lookup. Minimal output for fast answers to "where 
     └── memory/diary/2024-03-15.md:45
 ```
 
-**Note:** For full exploration, use `/neon-soul audit` instead.
+**注意：**如需全面探索，请使用`/neon-soul audit`命令。**
 
 ---
 
-## Safety Philosophy
+## 安全理念
 
-Your soul documents your identity. Changes should be deliberate, reversible, and traceable.
+您的“灵魂”文档记录了您的身份信息。任何更改都应该是经过深思熟虑的、可逆的，并且能够被追踪。
 
-**Why we're cautious:**
-- Soul changes affect every future interaction
-- Memory extraction is powerful but not infallible
-- You should always be able to ask "why did this change?" and undo it
+**我们为何如此谨慎：**
+- “灵魂”的变化会影响您未来的所有互动
+- 记忆内容的提取虽然强大，但并非绝对准确
+- 您应该始终能够询问“为什么会发生这样的变化”，并能够撤销这些变化
 
-**How we protect you:**
-- **Auto-backup**: Backups created before every write (`.neon-soul/backups/`)
-- **Dry-run default**: Use `--dry-run` to preview before committing
-- **Require --force**: Writes only happen with explicit `--force` flag
-- **Rollback**: Restore any previous state with `/neon-soul rollback`
-- **Provenance**: Full chain from axiom → principles → source signals
-- **Git integration** (opt-in): Only commits if workspace is a git repo with configured credentials
-
----
-
-## Dimensions
-
-NEON-SOUL organizes identity across 7 SoulCraft dimensions:
-
-| Dimension | Description |
-|-----------|-------------|
-| Identity Core | Fundamental self-concept and values |
-| Character Traits | Personality characteristics and tendencies |
-| Voice Presence | Communication style and expression |
-| Honesty Framework | Truth, transparency, and acknowledgment of limits |
-| Boundaries Ethics | Principles for what to do and not do |
-| Relationship Dynamics | How to engage with others |
-| Continuity Growth | Learning, adaptation, and evolution |
+**我们如何保护您：**
+- **自动备份**：每次写入前都会创建备份（文件位于`.neon-soul/backups/`）
+- **默认采用预览模式**：执行更改前会使用`--dry-run`进行预览
+- **需要明确指令才能写入**：只有在使用`--force`参数时才会实际写入
+- **可恢复到之前的状态**：可以使用`/neon-soul rollback`恢复到之前的状态
+- **完整的来源记录**：从公理到原则，再到原始信息都有详细的记录
+- **Git集成**（可选）：仅当工作区是配置了凭据的Git仓库时才会自动提交更改
 
 ---
 
-## Triggers (Optional)
+## 维度分类
 
-NEON-SOUL does NOT run automatically by default. All commands require explicit user invocation.
+NEON-SOUL根据7个SoulCraft维度来组织您的身份信息：
 
-### Manual (Default)
-Run `/neon-soul synthesize` when you want to update your soul.
+| 维度 | 描述 |
+|---------|-------------------|
+| 身份核心 | 您的基本自我认知和价值观 |
+| 人格特征 | 您的性格特征和倾向 |
+| 交流方式 | 您的沟通风格和表达方式 |
+| 诚实原则 | 真实、透明以及对自己能力的认识 |
+| 行为准则 | 您的行为准则（知道什么该做、什么不该做） |
+| 人际关系 | 您与他人互动的方式 |
+| 持续成长 | 您的学习能力、适应能力和进化过程 |
 
-### OpenClaw Cron (Optional)
-OpenClaw users can optionally configure scheduled runs:
+---
+
+## 触发条件（可选）
+
+NEON-SOUL默认不会自动运行。所有命令都需要用户明确发起。
+
+### 手动触发（默认）
+当您希望更新自己的“灵魂”时，可以运行`/neon-soul synthesize`。
+
+### OpenClaw Cron触发（可选）
+OpenClaw用户可以配置定时任务来自动运行NEON-SOUL：
 ```yaml
 # Example OpenClaw cron config (not enabled by default)
 schedule: "0 * * * *"  # Hourly check
 condition: "shouldRunSynthesis()"
 ```
 
-**Important:** Even with cron enabled, synthesis respects `--dry-run` mode. Configure with `--force` only after reviewing dry-run output.
+**重要提示：**即使启用了定时任务，系统也会尊重`--dry-run`模式。只有在预览了结果后，才能使用`--force`参数来强制执行合成操作。
 
 ---
 
-## Configuration
+## 配置
 
-Place `.neon-soul/config.json` in workspace:
+将`.neon-soul/config.json`文件放置在您的工作区中：
 
 ```json
 {
@@ -404,15 +404,15 @@ Place `.neon-soul/config.json` in workspace:
 }
 ```
 
-### Environment Variables
+### 环境变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEON_SOUL_DEBUG` | `0` | Enable debug logging (1 = on) |
-| `NEON_SOUL_SKIP_META_SYNTHESIS` | `0` | Skip meta-synthesis pass (1 = skip) |
-| `NEON_SOUL_FORCE_RESYNTHESIS` | `0` | Force full resynthesis (1 = force) |
+| 变量 | 默认值 | 说明 |
+|---------|-------------------|
+| `NEON_SOUL_DEBUG` | `0` | 启用调试日志记录（1表示启用） |
+| `NEON_SOUL_SKIP_META_SYNTHESIS` | `0` | 跳过元数据合成步骤（1表示跳过） |
+| `NEON_SOUL_FORCE_RESYNTHESIS` | `0` | 强制进行完整重新合成（1表示强制） |
 
-**Usage:**
+**使用方法：**
 ```bash
 NEON_SOUL_DEBUG=1 /neon-soul synthesize --force   # Debug mode
 NEON_SOUL_FORCE_RESYNTHESIS=1 /neon-soul synthesize --force  # Full resynthesis
@@ -420,62 +420,63 @@ NEON_SOUL_FORCE_RESYNTHESIS=1 /neon-soul synthesize --force  # Full resynthesis
 
 ---
 
-## Cycle Management
+## 合成模式
 
-NEON-SOUL uses three synthesis modes:
+NEON-SOUL支持三种合成模式：
 
-| Mode | Trigger | Behavior |
-|------|---------|----------|
-| **initial** | No existing soul | Full synthesis from scratch |
-| **incremental** | <30% new principles | Merge new insights without full resynthesis |
-| **full-resynthesis** | ≥30% new OR contradictions OR manual | Complete resynthesis of all principles |
+| 模式 | 触发条件 | 行为 |
+|---------|-------------------|-------------------|
+| **初始模式** | 不存在现有的“灵魂”文档 | 从头开始进行完整合成 |
+| **增量模式** | 新原则占比小于30% | 合并新的见解，无需完全重新合成 |
+| **完全重新合成模式** | 新原则占比≥30%，或存在矛盾，或手动触发 | 对所有原则进行完整重新合成 |
 
-**When does full-resynthesis trigger?**
-- New principle ratio ≥30%
-- Detected contradictions (≥2)
-- Hierarchy structure changed
-- `--force-resynthesis` flag used
+**何时触发完全重新合成？**
+- 新原则的比例≥30%
+- 检测到矛盾（≥2个）
+- 系统的层次结构发生变化
+- 使用了`--force-resynthesis`参数
 
-Use `--force-resynthesis` when you've significantly restructured your memory or want to rebuild from scratch. Also available via `NEON_SOUL_FORCE_RESYNTHESIS=1` environment variable.
-
----
-
-## Provenance Classification
-
-Signals are classified by their source type (SSEM model):
-
-| Type | Description | Example |
-|------|-------------|---------|
-| **self** | Things you wrote | diary entries, reflections, personal notes |
-| **curated** | Things you chose to keep | saved quotes, bookmarked articles, adopted guides |
-| **external** | Things others said about you | peer reviews, feedback, external assessments |
-
-Provenance is tracked for anti-echo-chamber protection.
+当您大幅修改了记忆内容或希望从头开始重建“灵魂”时，可以使用`--force-resynthesis`参数。也可以通过设置环境变量`NEON_SOUL_FORCE_RESYNTHESIS=1`来触发该模式。
 
 ---
 
-## Grounding Requirements (Anti-Echo-Chamber Protection)
+## 来源记录的分类
 
-To prevent self-reinforcing beliefs, axioms must be grounded in diverse evidence:
+系统根据信息的来源类型对信息进行分类（基于SSEM模型）：
 
-| Criterion | Default | Why |
-|-----------|---------|-----|
-| Minimum principles | 3 | Requires pattern across observations |
-| Provenance diversity | 2 types | Prevents single-source dominance |
-| External OR questioning | Required | Ensures perspective beyond self |
+| 类型 | 描述 | 例子 |
+|---------|-------------------|-------------------|
+| **自我生成** | 您自己编写的内容 | 日记条目、思考记录、个人笔记 |
+| **精选内容** | 您选择保留的信息 | 保存的引用、标记的文章、采用的指南 |
+| **外部来源** | 他人对您的评价 | 同行评审、反馈、外部评估 |
 
-**Blocked axioms** appear in synthesis output with their blocker reason:
+进行来源记录的目的是为了防止形成“回音室效应”（即观点被自我强化）。
+
+---
+
+## 防止“回音室效应”的要求
+
+为了防止自我强化的信念，公理必须基于多样化的证据：
+
+| 规则 | 默认值 | 说明 |
+|---------|-------------------|-------------------|
+| 最小原则数量 | 3个 | 需要在多个观察中验证这些原则 |
+| 来源多样性 | 需要两种类型的证据 | 避免单一来源的主导性 |
+| 来源必须为外部信息或经过质疑的内容 | 必须包含外部来源或质疑的依据 |
+
+**被屏蔽的公理**会在合成结果中显示其被屏蔽的原因：
+
 ```
 ⚠ 2 axioms blocked by anti-echo-chamber:
   - "I value authenticity above all" (self-only provenance)
   - "Growth requires discomfort" (no questioning evidence)
 ```
 
-To unblock, add external sources or questioning evidence to your memory.
+要解除屏蔽，需要在您的记忆中添加外部来源或质疑的证据。
 
 ---
 
-## Data Flow
+## 数据流
 
 ```
 Memory Files → Signal Extraction → Principle Matching → Axiom Promotion → SOUL.md
@@ -486,68 +487,68 @@ Memory Files → Signal Extraction → Principle Matching → Axiom Promotion �
 
 ---
 
-## Provenance
+## 来源记录的查询
 
-Every axiom traces to source:
-- Which signals contributed
-- Which principles merged
-- Original file:line references
-- Extraction timestamps
+每个公理都会记录其来源信息：
+- 哪些信息被用于生成
+- 哪些原则被合并
+- 原始文件及其对应的行号
+- 提取操作的时间戳
 
-Query provenance:
-- Quick lookup: `/neon-soul trace <axiom-id>`
-- Full exploration: `/neon-soul audit <axiom-id>`
+**查询来源记录的方法：**
+- 快速查询：`/neon-soul trace <axiom-id>`
+- 全面查询：`/neon-soul audit <axiom-id>`
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Why does my output have bullet lists instead of prose?
+### 为什么输出结果是列表格式而不是散文格式？
 
-When prose generation fails, NEON-SOUL falls back to bullet lists of native axiom text. This preserves your data while signaling that expansion didn't complete.
+当散文生成失败时，NEON-SOUL会回退到使用原始公理文本的列表格式。这样做是为了保留您的数据，同时表明散文生成过程未能完成。
 
-**Common causes:**
-- **LLM provider not available**: Prose expansion requires an LLM. Check your configuration.
-- **Validation failures**: The LLM output didn't match expected format (retried once, then fell back).
-- **Network timeout**: Generation may have timed out.
+**常见原因：**
+- **LLM服务不可用**：散文生成需要依赖LLM。请检查您的配置。
+- **验证失败**：LLM的输出格式不符合预期（会尝试一次，如果失败则会再次尝试）。
+- **网络超时**：生成过程可能超时。
 
-**How to check:**
-- Enable debug logging: `NEON_SOUL_DEBUG=1 /neon-soul synthesize --force`
-- Look for `[prose-expander]` log lines indicating validation or generation failures
+**排查方法：**
+- 启用调试日志记录：`NEON_SOUL_DEBUG=1 /neon-soul synthesize --force`
+- 查看日志中是否包含`[prose-expander]`的提示信息，以判断生成是否失败
 
-**What to try:**
-- **Regenerate**: Run synthesis again. LLM output varies; a second attempt often succeeds.
-- **Check LLM health**: If using Ollama, verify it's running: `curl http://localhost:11434/api/tags`
-- **Use notation format**: If prose keeps failing, use `--output-format notation` for reliable output.
+**解决方法：**
+- **重新生成**：重新运行合成操作。LLM的输出可能因情况不同而有所差异，再次尝试通常可以解决问题。
+- **检查LLM的状态**：如果使用的是Ollama，请确认它是否正在运行：`curl http://localhost:11434/api/tags`
+- **尝试使用符号格式**：如果散文格式仍然无法生成，可以尝试使用`--output-format notation`命令。
 
-### Why is my essence statement missing?
+### 为什么“本质声明”缺失？
 
-The essence statement (the italicized line at the top) only appears when LLM extraction succeeds. If missing:
-- Your LLM provider may not be configured
-- Extraction validation failed (trait lists are rejected)
-- Network error during generation
+“本质声明”（文档顶部的斜体文本）仅在LLM成功提取信息时才会显示。如果缺失，可能是因为：
+- 您的LLM服务未正确配置
+- 提取验证失败
+- 生成过程中出现网络错误
 
-The soul is still valid without it. Run synthesis again to retry extraction.
+即使缺少这一部分，灵魂文档仍然有效。您可以再次运行合成操作来尝试提取信息。
 
-### Why did an axiom get placed in a different dimension than expected?
+### 为什么某个公理被归类到了错误的维度？
 
-Dimension classification uses semantic analysis. If results seem wrong:
-- Check the axiom's source signals (`/neon-soul audit <axiom-id>`)
-- The LLM classifier uses the axiom's native text, which may have different semantic weight than you expect
-- Unknown dimensions default to `vibe` (logged with `NEON_SOUL_DEBUG=1`)
+维度分类依赖于语义分析。如果结果有误，可以尝试以下方法：
+- 查看该公理的来源信息（`/neon-soul audit <axiom-id>`）
+- 确认LLM的分类器是否使用了正确的文本（某些公理可能具有不同的语义权重）
+- 如果`NEON_SOUL_DEBUG=1`，系统会使用“vibe”作为默认的维度分类
 
-### Soul synthesis paused / LLM unavailable
+### 合成操作暂停/LLM不可用
 
-If you see "Soul synthesis paused: Your agent's LLM is temporarily unavailable":
+如果系统显示“Soul synthesis paused: Your agent's LLM is temporarily unavailable”，则表示：
 
-**What this means:**
-- Your agent needs an active LLM connection for semantic matching
-- The skill failed to reach the LLM after retrying
+**原因：**
+- 您的代理需要保持与LLM的活跃连接才能完成合成操作
+- 在尝试多次后，系统仍无法连接到LLM
 
-**What to try:**
-- Check your agent is running and connected
-- Check network connectivity
-- If using Ollama locally, verify it's running: `curl http://localhost:11434/api/tags`
-- Try again in a moment - transient failures are common
+**解决方法：**
+- 确认代理正在运行且已连接
+- 检查网络连接是否正常
+- 如果使用的是本地LLM，请确认它是否正在运行：`curl http://localhost:11434/api/tags`
+- 稍后再次尝试——这种临时性的故障很常见
 
-**No partial writes.** When LLM is unavailable, NEON-SOUL stops without writing to your files. Note: If using a cloud LLM, some data may have been sent before the failure - this is normal agent operation.
+**注意：**当LLM不可用时，NEON-SOUL会停止操作，不会向您的文件写入任何内容。如果使用的是云托管的LLM，部分数据可能已经成功传输——这是正常的代理行为。

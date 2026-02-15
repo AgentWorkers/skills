@@ -1,29 +1,28 @@
+# MCP技能：求职搜索
 
-# Job Search MCP Skill
+该技能使AI代理能够使用**JobSpy MCP服务器**在多个招聘网站上搜索职位。JobSpy将来自LinkedIn、Indeed、Glassdoor、ZipRecruiter、Google Jobs、Bayt、Naukri和BDJobs的职位信息汇总到一个统一的界面中。
 
-This skill enables AI agents to search for jobs across multiple job boards using the **JobSpy MCP Server**. JobSpy aggregates job listings from LinkedIn, Indeed, Glassdoor, ZipRecruiter, Google Jobs, Bayt, Naukri, and BDJobs into a unified interface.
+## 何时使用此技能
 
-## When to Use This Skill
+当用户要求您执行以下操作时，请使用此技能：
+- 根据特定条件（职位类型、地点、公司等）查找职位信息
+- 搜索远程或现场职位
+- 比较不同平台上的职位机会
+- 获取职位的薪资信息
+- 查找最近发布的职位（在X小时内）
+- 搜索提供“简单申请”功能的职位
 
-Use this skill when the user asks you to:
-- Find job listings matching specific criteria (role, location, company, etc.)
-- Search for remote or on-site positions
-- Compare job opportunities across different platforms
-- Get salary information for job postings
-- Find recently posted jobs (within X hours)
-- Search for jobs with "Easy Apply" options
-
-## Prerequisites
+## 先决条件
 
 - **Python 3.10+**
-- **Node.js 16+** (for some server implementations)
-- The JobSpy MCP server installed and configured
+- **Node.js 16+**（用于某些服务器实现）
+- 已安装并配置了JobSpy MCP服务器
 
 ---
 
-## Installation & Setup
+## 安装与设置
 
-### Option 1: Python MCP Server (Recommended)
+### 选项1：Python MCP服务器（推荐）
 
 ```bash
 # Install with pip
@@ -33,7 +32,7 @@ pip install mcp>=1.1.0 python-jobspy>=1.1.82 pandas>=2.1.0 pydantic>=2.0.0
 uv add mcp python-jobspy pandas pydantic
 ```
 
-### Option 2: Clone a Pre-built Server
+### 选项2：克隆预构建的服务器
 
 ```bash
 # Clone the jobspy-mcp-server repository
@@ -46,9 +45,9 @@ uv sync
 pip install -e .
 ```
 
-### Claude Desktop Configuration
+### Claude桌面配置
 
-Add the following to your Claude Desktop config file (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+将以下内容添加到您的Claude桌面配置文件中（macOS上的`~/Library/Application Support/Claude/claude_desktop_config.json`）：
 
 ```json
 {
@@ -62,7 +61,7 @@ Add the following to your Claude Desktop config file (`~/Library/Application Sup
 }
 ```
 
-**Alternative configuration (Node.js server):**
+**替代配置（Node.js服务器）：**
 
 ```json
 {
@@ -80,63 +79,63 @@ Add the following to your Claude Desktop config file (`~/Library/Application Sup
 
 ---
 
-## MCP Tool Schemas
+## MCP工具规范
 
-### 1. `scrape_jobs_tool` (Primary Tool)
+### 1. `scrape_jobs_tool`（主要工具）
 
-Search for jobs across multiple job boards with comprehensive filtering.
+在多个招聘网站上搜索职位，并提供全面的筛选功能。
 
-**Parameters:**
+**参数：**
 
-| Parameter | Type | Required | Default | Description |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 |-----------|------|----------|---------|-------------|
-| `search_term` | string | ✅ Yes | - | Job keywords (e.g., "software engineer", "data scientist") |
-| `location` | string | No | - | Job location (e.g., "San Francisco, CA", "Remote") |
-| `site_name` | array | No | `["indeed", "linkedin", "zip_recruiter", "google"]` | Job boards to search |
-| `results_wanted` | integer | No | 15 | Number of results (1-1000) |
-| `job_type` | string | No | - | Employment type: `fulltime`, `parttime`, `internship`, `contract` |
-| `is_remote` | boolean | No | false | Filter for remote jobs only |
-| `hours_old` | integer | No | - | Filter by posting recency in hours |
-| `distance` | integer | No | 50 | Search radius in miles (1-100) |
-| `easy_apply` | boolean | No | false | Filter jobs with easy apply option |
-| `country_indeed` | string | No | "usa" | Country for Indeed/Glassdoor searches |
-| `linkedin_fetch_description` | boolean | No | false | Fetch full LinkedIn descriptions (slower) |
-| `offset` | integer | No | 0 | Pagination offset |
-| `verbose` | integer | No | 1 | Logging level (0=errors, 1=warnings, 2=all) |
+| `search_term` | 字符串 | ✅ 是 | - | 职位关键词（例如：“软件工程师”、“数据科学家”） |
+| `location` | 字符串 | 否 | - | 职位地点（例如：“旧金山，CA”、“远程”） |
+| `site_name` | 数组 | 否 | `["indeed", "linkedin", "zip_recruiter", "google"]` | 要搜索的招聘网站 |
+| `results_wanted` | 整数 | 否 | 15 | 结果数量（1-1000） |
+| `job_type` | 字符串 | 否 | - | 雇用类型：`fulltime`（全职）、`parttime`（兼职）、`internship`（实习）、`contract`（合同） |
+| `is_remote` | 布尔值 | 否 | false | 仅筛选远程职位 |
+| `hours_old` | 整数 | 否 | - | 按发布时间筛选（以小时为单位） |
+| `distance` | 整数 | 否 | 50 | 搜索半径（以英里为单位，1-100） |
+| `easy_apply` | 布尔值 | 否 | false | 筛选提供“简单申请”功能的职位 |
+| `country_indeed` | 字符串 | 否 | "usa" | Indeed/Glassdoor搜索的国家 |
+| `linkedin_fetch_description` | 布尔值 | 否 | false | 获取完整的LinkedIn职位描述（速度较慢） |
+| `offset` | 整数 | 否 | 0 | 分页偏移量 |
+| `verbose` | 整数 | 否 | 1 | 日志级别（0=错误，1=警告，2=全部） |
 
-**Supported Values for `site_name`:**
-- `linkedin` - Professional networking platform (rate limited)
-- `indeed` - Largest job search engine (most reliable)
-- `glassdoor` - Jobs with company reviews and salaries
-- `zip_recruiter` - Job matching for US/Canada
-- `google` - Aggregated job listings
-- `bayt` - Middle East job portal
-- `naukri` - India's leading job portal
-- `bdjobs` - Bangladesh job portal
+**`site_name`的支持值：**
+- `linkedin` - 专业社交平台（使用有频率限制） |
+- `indeed` - 最大的求职引擎（最可靠） |
+- `glassdoor` - 提供公司评价和薪资信息的职位 |
+- `zip_recruiter` | 适用于美国/加拿大的职位匹配服务 |
+- `google` | 招聘信息汇总平台 |
+- `bayt` | 中东地区的招聘门户 |
+- `naukri` | 印度的领先招聘门户 |
+- `bdjobs` | 孟加拉国的招聘门户 |
 
-**Supported Values for `job_type`:**
-- `fulltime`
-- `parttime`
-- `internship`
-- `contract`
+**`job_type`的支持值：**
+- `fulltime`（全职）
+- `parttime`（兼职）
+- `internship`（实习）
+- `contract`（合同）
 
 ### 2. `get_supported_countries`
 
-Returns the complete list of supported countries for job searches. No parameters required.
+返回支持职位搜索的所有国家列表。无需参数。
 
 ### 3. `get_supported_sites`
 
-Returns detailed information about all supported job board sites. No parameters required.
+返回关于所有支持招聘网站平台的详细信息。无需参数。
 
 ### 4. `get_job_search_tips`
 
-Returns tips and best practices for effective job searching. No parameters required.
+返回有效的求职搜索技巧和最佳实践。无需参数。
 
 ---
 
-## Job Post Response Schema
+## 职位信息响应规范
 
-When jobs are returned, each job post contains the following fields:
+当返回职位信息时，每个职位条目包含以下字段：
 
 ```typescript
 interface JobPost {
@@ -192,14 +191,14 @@ interface JobPost {
 
 ---
 
-## Example Prompts → MCP Calls → Outputs
+## 示例提示 → MCP调用 → 输出
 
-### Example 1: Basic Job Search
+### 示例1：基本职位搜索
 
-**User Prompt:**
-> "Find me 10 software engineer jobs in San Francisco"
+**用户提示：**
+> “在旧金山查找10个软件工程师的职位”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "scrape_jobs_tool",
@@ -212,7 +211,7 @@ interface JobPost {
 }
 ```
 
-**Expected Output:**
+**预期输出：**
 ```json
 {
   "jobs": [
@@ -233,12 +232,12 @@ interface JobPost {
 
 ---
 
-### Example 2: Remote Jobs Search
+### 示例2：远程职位搜索
 
-**User Prompt:**
-> "Search for remote Python developer positions from Indeed and ZipRecruiter"
+**用户提示：**
+> “在Indeed和ZipRecruiter上搜索远程Python开发人员的职位”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "scrape_jobs_tool",
@@ -254,12 +253,12 @@ interface JobPost {
 
 ---
 
-### Example 3: Recent Jobs with Filters
+### 示例3：带有筛选条件的最近职位
 
-**User Prompt:**
-> "Find data scientist jobs in Boston posted in the last 24 hours"
+**用户提示：**
+> “查找过去24小时内发布的波士顿数据科学家职位”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "scrape_jobs_tool",
@@ -275,12 +274,12 @@ interface JobPost {
 
 ---
 
-### Example 4: Entry-Level with Easy Apply
+### 示例4：提供“简单申请”功能的初级职位
 
-**User Prompt:**
-> "Look for entry-level marketing jobs in New York with easy apply options"
+**用户提示：**
+> “查找纽约提供“简单申请”功能的初级市场营销职位”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "scrape_jobs_tool",
@@ -297,12 +296,12 @@ interface JobPost {
 
 ---
 
-### Example 5: International Job Search
+### 示例5：国际职位搜索
 
-**User Prompt:**
-> "Find software jobs in Germany on Indeed"
+**用户提示：**
+> “在Indeed上查找德国的软件职位”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "scrape_jobs_tool",
@@ -318,12 +317,12 @@ interface JobPost {
 
 ---
 
-### Example 6: Getting Helper Information
+### 示例6：获取帮助信息
 
-**User Prompt:**
-> "What job sites are supported?"
+**用户提示：**
+> “支持哪些招聘网站？”
 
-**MCP Tool Call:**
+**MCP工具调用：**
 ```json
 {
   "tool": "get_supported_sites",
@@ -331,7 +330,7 @@ interface JobPost {
 }
 ```
 
-**Expected Output:**
+**预期输出：**
 ```json
 {
   "sites": [
@@ -349,13 +348,13 @@ interface JobPost {
 
 ---
 
-## Error Handling Examples
+## 错误处理示例
 
-### Error 1: Rate Limiting
+### 错误1：频率限制
 
-**Scenario:** LinkedIn returns a rate limit error.
+**场景：**LinkedIn返回频率限制错误。
 
-**Error Response:**
+**错误响应：**
 ```json
 {
   "error": "RateLimitError",
@@ -364,19 +363,19 @@ interface JobPost {
 }
 ```
 
-**How to Handle:**
-- Reduce `results_wanted` to a smaller number (10-15)
-- Remove `linkedin` from `site_name` temporarily
-- Add delays between searches
-- Use proxy configuration if available
+**处理方法：**
+- 将`results_wanted`减少到较小的数值（10-15）
+- 暂时从`site_name`中移除`linkedin`
+- 在搜索之间添加延迟
+- 如果可用，使用代理配置
 
 ---
 
-### Error 2: No Results Found
+### 错误2：未找到结果
 
-**Scenario:** Search returns empty results.
+**场景：**搜索返回空结果。
 
-**Error Response:**
+**错误响应：**
 ```json
 {
   "jobs": [],
@@ -385,20 +384,20 @@ interface JobPost {
 }
 ```
 
-**How to Handle:**
-- Broaden search terms (e.g., "engineer" instead of "senior principal software engineer")
-- Increase `distance` radius
-- Remove restrictive filters like `hours_old` or `job_type`
-- Try different `site_name` options
-- Check if location spelling is correct
+**处理方法：**
+- 扩大搜索关键词的范围（例如，使用“engineer”而不是“senior principal software engineer”）
+- 增加`distance`的搜索半径
+- 移除`hours_old`或`job_type`等限制性筛选条件
+- 尝试不同的`site_name`选项
+- 检查地点拼写是否正确
 
 ---
 
-### Error 3: Invalid Country Code
+### 错误3：无效的国家代码
 
-**Scenario:** User specifies an unsupported country for Indeed.
+**场景：**用户指定了Indeed不支持的国家。
 
-**Error Response:**
+**错误响应：**
 ```json
 {
   "error": "ValidationError",
@@ -406,179 +405,113 @@ interface JobPost {
 }
 ```
 
-**How to Handle:**
-- Call `get_supported_countries` to get valid country codes
-- Use the exact country name (e.g., "usa" not "US", "united kingdom" not "UK")
+**处理方法：**
+- 调用`get_supported_countries`获取有效的国家代码
+- 使用准确的国家名称（例如，使用“usa”而不是“US”，“united kingdom”而不是“UK”）
 
 ---
 
-### Error 4: Platform-Specific Limitation Conflict
+### 错误4：平台特定限制冲突
 
-**Scenario:** User tries to use conflicting filters.
+**场景：**用户尝试使用相互冲突的筛选条件。
 
-**Known Limitations:**
-- **Indeed:** Only ONE of these can be used: `hours_old`, `job_type & is_remote`, `easy_apply`
-- **LinkedIn:** Only ONE of these can be used: `hours_old`, `easy_apply`
+**已知限制：**
+- **Indeed**：只能使用以下选项中的一个：`hours_old`、`job_type & is_remote`、`easy_apply`
+- **LinkedIn**：只能使用以下选项中的一个：`hours_old`、`easy_apply`
 
-**How to Handle:**
-- Inform user of the limitation
-- Prioritize the most important filter
-- Run separate searches if multiple filters are needed
-
----
-
-## Anti-Patterns (What NOT to Do)
-
-### ❌ DO NOT: Request Excessive Results
-
-```json
-// BAD - Will likely timeout or get rate limited
-{
-  "search_term": "engineer",
-  "results_wanted": 1000,
-  "site_name": ["linkedin", "indeed", "glassdoor", "zip_recruiter", "google"]
-}
-```
-
-**Why:** Requesting too many results from too many sites simultaneously will trigger rate limits and cause timeouts.
-
-**✅ DO INSTEAD:**
-```json
-{
-  "search_term": "software engineer",
-  "results_wanted": 20,
-  "site_name": ["indeed", "linkedin"]
-}
-```
+**处理方法：**
+- 告知用户相关限制
+- 优先考虑最重要的筛选条件
+- 如果需要多个筛选条件，分别进行搜索
 
 ---
 
-### ❌ DO NOT: Use LinkedIn Extensively
+## 应避免的做法
 
-```json
-// BAD - LinkedIn is heavily rate limited
-{
-  "search_term": "developer",
-  "site_name": ["linkedin"],
-  "results_wanted": 100,
-  "linkedin_fetch_description": true
-}
-```
+### ❌ **不要**：请求过多的结果
 
-**Why:** LinkedIn has the strictest rate limits. Using `linkedin_fetch_description: true` multiplies requests.
+**原因：**同时从太多网站请求过多结果会触发频率限制并导致超时。
 
-**✅ DO INSTEAD:**
-- Use Indeed as primary source
-- Limit LinkedIn to 10-15 results
-- Only enable `linkedin_fetch_description` when specifically needed
+**✅ **应该**：**
 
 ---
 
-### ❌ DO NOT: Use Conflicting Filters
+### ❌ **不要**：过度使用LinkedIn
 
-```json
-// BAD - Indeed limitation: only one filter group allowed
-{
-  "search_term": "developer",
-  "site_name": ["indeed"],
-  "hours_old": 24,
-  "job_type": "fulltime",
-  "is_remote": true
-}
-```
+**原因：**LinkedIn的频率限制最为严格。使用`linkedin_fetch_description: true`会增加请求次数。
 
-**Why:** Indeed only supports one of: `hours_old`, `job_type & is_remote`, or `easy_apply`.
-
-**✅ DO INSTEAD:**
-```json
-// Either filter by recency
-{
-  "search_term": "developer",
-  "site_name": ["indeed"],
-  "hours_old": 24
-}
-
-// OR filter by job type
-{
-  "search_term": "developer",
-  "site_name": ["indeed"],
-  "job_type": "fulltime",
-  "is_remote": true
-}
-```
+**✅ **应该**：
+- 将LinkedIn作为主要信息来源
+- 将LinkedIn的结果数量限制在10-15个以内
+- 仅在必要时启用`linkedin_fetch_description`
 
 ---
 
-### ❌ DO NOT: Make Vague Searches Without Context
+### ❌ **不要**：使用相互冲突的筛选条件
 
-```json
-// BAD - Too generic, will return irrelevant results
-{
-  "search_term": "job"
-}
-```
+**原因：**Indeed只支持以下选项中的一个：`hours_old`、`job_type & is_remote`或`easy_apply`。
 
-**Why:** Vague searches return poor quality results and waste API calls.
-
-**✅ DO INSTEAD:**
-- Always include specific job titles or skills
-- Include location when known
-- Use filters to narrow results
+**✅ **应该**：
 
 ---
 
-### ❌ DO NOT: Ignore Error Responses
+### ❌ **不要**：进行模糊的搜索
 
-**Why:** Rate limits, network issues, and invalid parameters require appropriate handling.
+**原因：**模糊的搜索会导致结果质量低下，并浪费API调用。
 
-**✅ DO INSTEAD:**
-- Check for error responses before processing results
-- Implement retry logic with backoff for rate limits
-- Provide helpful messages to users when searches fail
-
----
-
-### ❌ DO NOT: Use Wrong Country Codes
-
-```json
-// BAD - Wrong country code format
-{
-  "search_term": "developer",
-  "country_indeed": "UK"  // Wrong! Use "united kingdom"
-}
-```
-
-**✅ DO INSTEAD:**
-- Use `get_supported_countries` to verify valid country codes
-- Common codes: "usa", "united kingdom", "canada", "germany", "india"
+**✅ **应该**：
+- 始终包含具体的职位名称或技能要求
+- 在知道地点的情况下包含地点信息
+- 使用筛选条件来缩小搜索范围
 
 ---
 
-## Rate Limiting & Best Practices
+### ❌ **不要**：忽略错误响应
 
-### Platform Reliability Ranking
+**原因：**频率限制、网络问题和无效参数需要适当的处理。
 
-1. **Indeed** - Most reliable, good for large searches
-2. **ZipRecruiter** - Reliable for US/Canada
-3. **Google Jobs** - Good aggregation, stable
-4. **Glassdoor** - Reliable with company insights
-5. **LinkedIn** - Most restrictive, use sparingly
-
-### Recommended Approach
-
-1. **Start Small:** Begin with 10-15 results to test filters
-2. **Use Indeed First:** Most reliable for job data
-3. **Be Specific:** Use targeted search terms
-4. **Filter Wisely:** Use one filter group at a time for Indeed/LinkedIn
-5. **Paginate:** Use `offset` for getting more results instead of high `results_wanted`
+**✅ **应该**：
+- 在处理结果之前检查错误响应
+- 实现带有重试机制的频率限制处理
+- 当搜索失败时向用户提供有用的提示
 
 ---
 
-## Supported Countries
+### ❌ **不要**：使用错误的国家代码
 
-Call `get_supported_countries` for the complete list. Common countries include:
+**原因：**使用错误的国家代码会导致问题。
 
-| Country | Code for `country_indeed` |
+**✅ **应该**：
+- 使用`get_supported_countries`验证有效的国家代码
+- 常见的国家代码包括：“usa”、“united kingdom”、“canada”、“germany”、“india”
+
+---
+
+## 频率限制与最佳实践
+
+### 平台可靠性排名
+
+1. **Indeed** - 最可靠，适合大规模搜索
+2. **ZipRecruiter** - 适用于美国/加拿大
+3. **Google Jobs** - 招聘信息汇总效果好，稳定性高
+4. **Glassdoor** - 提供公司评价和薪资信息
+5. **LinkedIn** - 限制最多，使用要谨慎
+
+### 推荐方法
+
+1. **从小规模开始**：先获取10-15个结果以测试筛选条件
+2. **优先使用Indeed**：职位数据最可靠
+3. **具体明确**：使用针对性的搜索关键词
+4. **谨慎筛选**：每次为Indeed/LinkedIn使用一个筛选条件组
+5. **分页**：使用`offset`获取更多结果，而不是设置过高的`results_wanted`
+
+---
+
+## 支持的国家
+
+调用`get_supported_countries`获取完整的国家列表。常见国家包括：
+
+| 国家 | `country_indeed`的代码 |
 |---------|---------------------------|
 | USA | `usa` |
 | United Kingdom | `united kingdom` |
@@ -593,35 +526,35 @@ Call `get_supported_countries` for the complete list. Common countries include:
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### "Browser/Chromium not installed"
+### “浏览器/Chromium未安装”
 
-Run: `playwright install chromium` (some scrapers use Playwright)
+运行：`playwright install chromium`（某些抓取工具需要Chromium）
 
-### "No module named 'jobspy'"
+### “找不到名为‘jobspy’的模块”
 
-Run: `pip install python-jobspy>=1.1.82`
+运行：`pip install python-jobspy>=1.1.82`
 
-### "Rate limit exceeded"
+### “超出频率限制”
 
-- Reduce results_wanted
-- Remove LinkedIn from site_name
-- Wait 60 seconds before retrying
-- Consider using a proxy
+- 减少`results_wanted`的数量
+- 从`site_name`中移除LinkedIn
+- 等待60秒后再尝试
+- 考虑使用代理
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| User Intent | Key Parameters |
+| 用户意图 | 关键参数 |
 |-------------|----------------|
-| Find jobs in a specific city | `search_term`, `location` |
-| Remote jobs only | `is_remote: true` |
-| Recent postings | `hours_old: 24` (or 48, 72) |
-| Full-time only | `job_type: "fulltime"` |
-| Quick apply jobs | `easy_apply: true` |
-| Search specific platform | `site_name: ["indeed"]` |
-| International search | `country_indeed: "germany"` |
-| More results | `results_wanted: 25` |
-| Paginate results | `offset: 25` (after first 25) |
+| 在特定城市查找职位 | `search_term`、`location` |
+| 仅搜索远程职位 | `is_remote: true` |
+| 最新发布的职位 | `hours_old: 24`（或48, 72） |
+| 仅限全职职位 | `job_type: "fulltime"` |
+| 搜索提供“简单申请”功能的职位 | `easy_apply: true` |
+| 搜索特定平台 | `site_name: ["indeed"]` |
+| 国际搜索 | `country_indeed: "germany"` |
+| 获取更多结果 | `results_wanted: 25` |
+| 分页显示结果 | `offset: 25`（在前25个结果之后） |

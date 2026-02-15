@@ -1,6 +1,6 @@
 ---
 name: ghost-cms-skill
-description: Comprehensive Ghost CMS integration for creating, publishing, scheduling, and managing blog content, newsletters, members, and analytics. Use when working with Ghost blogs for content creation (drafts, publishing, scheduling), member/subscriber management (tiers, newsletters), comment moderation, or analytics (popular posts, subscriber growth). Supports all Ghost Admin API operations.
+description: 全面的 Ghost CMS 集成功能，支持博客内容的创建、发布、调度及管理，同时涵盖新闻通讯、会员信息以及数据分析。适用于需要使用 Ghost 系统进行内容创作（草稿、发布、调度）、会员/订阅者管理（层级划分、新闻通讯发送）、评论审核，以及数据分析（热门文章、订阅者增长）的场景。该集成方案支持 Ghost Admin API 的所有操作。
 author: Chris Giddings
 homepage: https://github.com/chrisagiddings/moltbot-ghost-skill
 repository: https://github.com/chrisagiddings/moltbot-ghost-skill
@@ -9,67 +9,67 @@ metadata: {"openclaw":{"disable-model-invocation":true,"capabilities":["content-
 
 # Ghost CMS
 
-Manage Ghost blog content, members, analytics, and newsletters through the Ghost Admin API.
+通过 Ghost Admin API，您可以管理 Ghost 博客的内容、会员信息、分析数据以及新闻通讯。
 
-## ⚠️ Security Warning
+## ⚠️ 安全警告
 
-**Ghost Admin API keys provide FULL access to your Ghost site:**
+**Ghost Admin API 密钥可提供对您 Ghost 网站的完全访问权限：**
 
-- **Content Management:** Create, update, delete, publish posts and pages
-- **Member Management:** Add, modify, delete members and subscriptions
-- **Subscription Management:** Create, modify, delete membership tiers
-- **Comment Management:** Reply to, approve, delete comments
-- **User Management:** Invite, modify, delete users
-- **Media Management:** Upload images and files (affects storage)
-- **Site Configuration:** Modify newsletters and settings
+- **内容管理：** 创建、更新、删除、发布文章和页面
+- **会员管理：** 添加、修改、删除会员和订阅信息
+- **订阅管理：** 创建、修改、删除订阅层级
+- **评论管理：** 回复、批准、删除评论
+- **用户管理：** 邀请、修改、删除用户
+- **媒体管理：** 上传图片和文件（会影响存储空间）
+- **站点配置：** 修改新闻通讯和设置
 
-**Published content is IMMEDIATELY PUBLIC** - be extra careful with publish operations.
+**已发布的内容会立即公开**——请在发布操作时格外小心。
 
-**Security Best Practices:**
-- **Store API keys securely** - Use 1Password CLI or secure env vars
-- **Review before publishing** - Always check content before making it public
-- **Never commit keys** - Keep credentials out of version control
-- **Rotate keys regularly** - Create new integrations every 90 days
-- **Use dedicated integrations** - Separate keys for different use cases
-- **Test on staging first** - Use a test Ghost site when possible
+**安全最佳实践：**
+- **安全存储 API 密钥**——使用 1Password CLI 或安全的环境变量
+- **发布前审核内容**——在公开内容前务必进行检查
+- **切勿将密钥提交到版本控制系统中**——避免将凭据泄露
+- **定期轮换密钥**——每 90 天创建新的密钥
+- **为不同用途使用不同的密钥**——为不同的集成场景分配不同的密钥
+- **先在测试环境中进行测试**——如果可能的话，请在测试 Ghost 网站上进行操作
 
-**Admin API Key Scope:**
-Ghost Admin API keys have **no scoping options** - they provide full access to everything. There are no read-only keys.
+**Admin API 密钥的权限范围：**
+Ghost Admin API 密钥没有权限限制选项——它们提供了对所有功能的完全访问权限。因此不存在只读密钥。
 
-**Operation Types:**
+**操作类型：**
 
-**Read-Only Operations** (✅ Safe):
-- List posts, pages, tags, members, tiers, newsletters, comments
-- Get analytics and member stats
-- All GET requests
+**只读操作**（✅ 安全）：
+- 列出文章、页面、标签、会员、订阅层级、新闻通讯、评论
+- 获取分析和会员统计数据
+- 所有的 GET 请求
 
-**Destructive Operations** (⚠️ Modify or delete data, may be public):
-- Create/update/delete posts, pages, tags (POST, PUT, DELETE)
-- Publish/unpublish/schedule posts (**makes content public**)
-- Create/update/delete members, tiers, newsletters
-- Create replies, approve/delete comments
-- Upload images (uses storage quota)
-- All POST, PUT, DELETE requests
+**破坏性操作**（⚠️ 可能修改或删除数据，内容可能会立即公开）：
+- 创建/更新/删除文章、页面、标签（POST、PUT、DELETE）
+- 发布/取消发布/安排文章发布（**使内容立即公开**）
+- 创建/更新/删除会员、订阅层级、新闻通讯
+- 创建回复、批准/删除评论
+- 上传图片（会占用存储空间）
+- 所有的 POST、PUT、DELETE 请求
 
-For detailed operation documentation, see [api-reference.md](references/api-reference.md).
+有关详细操作说明，请参阅 [api-reference.md](references/api-reference.md)。
 
-## Quick Setup
+## 快速设置
 
-1. **Get your Ghost Admin API credentials:**
-   - Ghost dashboard → Settings → Integrations
-   - Create a new "Custom Integration"
-   - Copy the **Admin API Key** and **API URL**
+1. **获取您的 Ghost Admin API 凭据：**
+   - 登录 Ghost 控制面板 → 设置 → 集成
+   - 创建一个新的“自定义集成”
+   - 复制 **Admin API 密钥** 和 **API URL**
 
-2. **Store credentials securely:**
+2. **安全存储凭据：**
 
-   **Option A: Environment Variables (Recommended)**
+   **选项 A：环境变量（推荐）**
    ```bash
    # Add to your shell profile (~/.zshrc, ~/.bashrc)
    export GHOST_ADMIN_KEY="YOUR_ADMIN_API_KEY"
    export GHOST_API_URL="YOUR_GHOST_URL"
    ```
 
-   **API URL Examples (works with ALL hosting types):**
+   **API URL 示例（适用于所有托管类型）：**
    ```bash
    # Ghost(Pro) hosted
    export GHOST_API_URL="https://yourblog.ghost.io"
@@ -84,13 +84,12 @@ For detailed operation documentation, see [api-reference.md](references/api-refe
    export GHOST_API_URL="https://ghost.example.com:8080"
    ```
 
-   **Important:**
-   - Always include protocol (`http://` or `https://`)
-   - Include `:PORT` if Ghost runs on non-standard port
-   - Do NOT include trailing slash
-   - Do NOT include `/ghost/api/admin` (added automatically)
+   **重要提示：**
+   - 必须包含协议（`http://` 或 `https://`）
+   - 如果 Ghost 运行在非标准端口上，请包含 `:PORT`
+   - 不要包含尾随的斜杠 `/ghost/api/admin`（该路径会自动添加）
 
-   **Option B: Config Files**
+   **选项 B：配置文件**
    ```bash
    mkdir -p ~/.config/ghost
    echo "YOUR_ADMIN_API_KEY" > ~/.config/ghost/api_key
@@ -101,7 +100,7 @@ For detailed operation documentation, see [api-reference.md](references/api-refe
    chmod 600 ~/.config/ghost/api_url
    ```
 
-   **Option C: 1Password CLI (Most Secure)**
+   **选项 C：1Password CLI（最安全的方式）**
    ```bash
    # Store key in 1Password
    op item create --category=API_CREDENTIAL \
@@ -114,42 +113,43 @@ For detailed operation documentation, see [api-reference.md](references/api-refe
    export GHOST_API_URL=$(op read "op://Private/Ghost Admin API/api_url")
    ```
 
-   **Security Notes:**
-   - Keys provide **full site access** - protect them like passwords
-   - Rotate keys every 90 days (create new integration, revoke old)
-   - Never commit to git or share keys publicly
-   - Consider separate keys for production vs. staging
-   - **HTTPS recommended:** Use HTTPS for production (HTTP acceptable for localhost only)
+   **安全注意事项：**
+   - 密钥具有对整个网站的完全访问权限——请像保护密码一样保护它们
+   - 每 90 天轮换一次密钥（创建新密钥并撤销旧密钥）
+   **切勿将密钥提交到 Git 或公开分享**
+   **为生产环境和测试环境使用不同的密钥**
+   **建议使用 HTTPS**：在生产环境中使用 HTTPS（仅限本地测试时使用 HTTP）
 
-3. **Install dependencies:**
+3. **安装依赖项：**
    ```bash
    cd ghost-cms-skill/scripts
    npm install
    ```
 
-   **Dependencies installed:**
-   - `form-data` (^4.0.5) - Multipart file uploads (theme ZIP files)
-   - `jsonwebtoken` (^9.0.3) - JWT token generation for Ghost Admin API authentication
+   **已安装的依赖项：**
+   - `form-data` (^4.0.5) - 用于处理多部分文件上传（如主题 ZIP 文件）
+   - `jsonwebtoken` (^9.0.3) - 用于 Ghost Admin API 认证的身份验证
 
-   **Optional dependencies** (install manually if needed):
-   - `gscan` (^5.2.4) - Official Ghost theme validator (from TryGhost)
-     - Only needed for theme validation feature
-     - Install with: `cd scripts && npm install gscan`
+   **可选依赖项**（如需可手动安装）：
+   - `gscan` (^5.2.4) - 官方的 Ghost 主题验证工具（来自 TryGhost）
+     - 仅用于主题验证功能
+     - 安装方式：`cd scripts && npm install gscan`
 
-   **All dependencies from public npm registry. No custom downloads.**
+   **所有依赖项均来自公共 npm 仓库，无需自定义下载。**
 
-4. **Test connection:**
-   See [setup.md](references/setup.md) for detailed authentication and troubleshooting.
+4. **测试连接：**
+   有关详细的认证和故障排除信息，请参阅 [setup.md](references/setup.md)。
 
-## Tools & Utilities
+## 工具与实用程序
 
-### Snippet Extractor
+### Snippet Extractor（片段提取器）
 
-**Purpose:** Migrate existing Ghost snippets to local library for programmatic use.
+**用途：** 将现有的 Ghost 片段迁移到本地库以便程序化使用。
 
-**Why needed:** Ghost Admin API blocks snippet access (403 Forbidden) for integration tokens. This tool works around that limitation.
+**为什么需要这个工具？**  
+Ghost Admin API 限制了通过集成令牌访问片段的功能（返回 403 Forbidden 错误）。此工具可以绕过这一限制。
 
-**Usage:**
+**使用方法：**
 ```bash
 # Extract snippets from a specially-formatted draft post
 node scripts/snippet-extractor.js my-snippets-post
@@ -167,21 +167,21 @@ node scripts/snippet-extractor.js my-snippets-post --marker "This is:"
 node scripts/snippet-extractor.js --help
 ```
 
-**Workflow:**
-1. Create draft post in Ghost
-2. For each snippet: add paragraph marker (e.g., "SNIPPET: name" or "This is: name")
-3. Insert the snippet content below each marker
-4. Run extractor → all snippets saved to `snippets/library/`
+**工作流程：**
+1. 在 Ghost 中创建草稿文章。
+2. 为每个片段添加标记（例如：“SNIPPET: 名称”或“This is: 名称”）。
+3. 将片段内容插入到相应的标记下方。
+4. 运行提取器工具，所有片段将被保存到 `snippets/library/` 目录中。
 
-**Features:**
-- ✅ Extracts all card types (bookmarks, callouts, images, markdown, HTML, etc.)
-- ✅ Preserves exact Lexical structure
-- ✅ Auto-detects credentials from `~/.config/ghost/` or env vars
-- ✅ Supports custom marker formats
-- ✅ Dry-run and validation modes
-- ✅ Verbose output for debugging
+**功能：**
+- ✅ 提取所有类型的片段（书签、引用、图片、Markdown 等）
+- ✅ 保持原始的词汇结构
+- ✅ 自动从 `~/.config/ghost/` 或环境变量中获取认证信息
+- ✅ 支持自定义标记格式
+- ✅ 提供调试模式和预览功能
+- ✅ 提供详细的输出信息
 
-**Example:**
+**示例：**
 ```bash
 # User has 12 snippets in Ghost
 # Creates "My Snippets" draft with markers
@@ -189,15 +189,16 @@ node scripts/snippet-extractor.js --help
 # Result: All 12 snippets in library/ ready for use
 ```
 
-See `snippets/README.md` for complete documentation.
+有关完整文档，请参阅 `snippets/README.md`。
 
-### Theme Manager
+### Theme Manager（主题管理器）
 
-**Purpose:** Upload, activate, switch, and manage Ghost themes programmatically.
+**用途：** 程序化地上传、激活、切换和管理 Ghost 主题。
 
-**Why needed:** Automate theme deployments, switch themes, manage theme versions.
+**为什么需要这个工具？**  
+它可以帮助自动化主题的部署、切换以及管理主题版本。
 
-**Usage:**
+**使用方法：**
 ```bash
 cd scripts
 
@@ -223,20 +224,20 @@ node theme-manager.js delete old-theme
 node theme-manager.js active
 ```
 
-**Features:**
-- ✅ Upload custom themes from ZIP files
-- ✅ Switch between installed themes
-- ✅ Download theme backups
-- ✅ Delete unused themes
-- ✅ Validation and error handling
-- ✅ **Immediate activation** - theme changes are public instantly
+**功能：**
+- ✅ 从 ZIP 文件中上传自定义主题
+- ✅ 在已安装的主题之间切换
+- ✅ 下载主题备份
+- ✅ 删除未使用的主题
+- ✅ 提供验证和错误处理功能
+- ✅ 主题更改会立即生效并公开
 
-**⚠️ Important:**
-- Theme activation is **immediate and public** - site appearance changes instantly
-- Cannot delete the currently active theme (switch first)
-- Themes must be valid Ghost theme ZIP files
+**⚠️ 重要提示：**
+- 主题激活后会立即生效并公开——网站外观会立即发生变化
+- 无法删除当前激活的主题（请先切换到其他主题）
+- 确保使用的主题是有效的 Ghost 主题 ZIP 文件
 
-**Workflow:**
+**工作流程：**
 ```bash
 # Safe theme switching with rollback
 node theme-manager.js active              # Note current theme
@@ -245,21 +246,21 @@ node theme-manager.js activate new-theme  # Switch to new theme
 node theme-manager.js activate old-theme  # Rollback if needed
 ```
 
-See `references/themes.md` for complete theme management documentation and best practices.
+有关完整的主题管理文档和最佳实践，请参阅 `references/themes.md`。
 
-### Theme Validator
+### Theme Validator（主题验证器）
 
-**Purpose:** Validate Ghost themes before uploading using official gscan validator.
+**用途：** 在上传主题之前使用官方的 gscan 工具进行验证。
 
-**⚠️ Optional Feature:** Requires `gscan` package. Install with:
-```bash
+**⚠️ 可选功能：** 需要安装 `gscan` 包。安装方法：```bash
 cd scripts
 npm install gscan
 ```
 
-**Why needed:** Catch errors early - missing files, invalid syntax, deprecated helpers, version incompatibility.
+**为什么需要这个工具？**  
+它可以提前发现错误，例如文件缺失、语法错误或过时的辅助函数。
 
-**Usage:**
+**使用方法：**
 ```bash
 cd scripts
 
@@ -279,21 +280,21 @@ node theme-validator.js theme.zip --json
 node theme-validator.js theme.zip --errors-only
 ```
 
-**Features:**
-- ✅ Official Ghost validator (gscan from TryGhost)
-- ✅ Same validation as Ghost Admin
-- ✅ Validates directories or ZIP files
-- ✅ Ghost v5/v6 compatibility checking
-- ✅ Finds deprecated helpers and syntax errors
-- ✅ CI/CD integration (JSON output, exit codes)
-- ✅ Categorized issues (errors, warnings, recommendations)
+**功能：**
+- ✅ 官方的 Ghost 验证工具（来自 TryGhost）
+- ✅ 与 Ghost Admin 的验证规则相同
+- ✅ 验证目录或 ZIP 文件
+- ✅ 检查 Ghost v5/v6 的兼容性
+- ✅ 发现过时的辅助函数和语法错误
+- ✅ 支持持续集成/持续部署（CI/CD）流程
+- ✅ 提供分类的错误信息（错误、警告、建议）
 
-**Validation levels:**
-- **Errors** - Must fix before upload (theme will be rejected)
-- **Warnings** - Should fix for best compatibility
-- **Recommendations** - Nice to have (best practices)
+**验证级别：**
+- **错误**：必须在上传前修复（否则主题会被拒绝）
+- **警告**：建议修复以获得最佳兼容性
+- **建议**：提供有用的修复建议
 
-**Safe deployment workflow:**
+**安全的部署流程：**
 ```bash
 # 1. Validate before upload
 node theme-validator.js my-theme.zip
@@ -307,7 +308,7 @@ node theme-validator.js my-theme.zip
 node theme-manager.js upload my-theme.zip
 ```
 
-**CI/CD integration:**
+**CI/CD 集成：**
 ```bash
 node theme-validator.js theme.zip --json
 if [ $? -eq 0 ]; then
@@ -315,51 +316,48 @@ if [ $? -eq 0 ]; then
 fi
 ```
 
-**Exit codes:** 0 = valid, 1 = errors found, 2 = invalid arguments
+**返回代码：** 0 = 主题有效；1 = 发现错误；2 = 参数无效
 
-See `references/themes.md` for complete validation documentation and common error fixes.
+有关完整的验证文档和常见错误修复方法，请参阅 `references/themes.md`。
 
 ---
 
-## Core Operations
+## 核心操作
 
-This skill covers all major Ghost operations. Navigate to the relevant reference for detailed guidance:
+本技能涵盖了 Ghost 的所有主要操作。如需详细指导，请参阅相应的参考文档：
 
-### Content Management
-**When to use:** Creating drafts, publishing posts, scheduling content, managing pages
+### 内容管理
+**使用场景：** 创建草稿、发布文章、安排内容发布时间、管理页面
 
-See **[content.md](references/content.md)** for:
-- Creating new posts (drafts)
-- Publishing and scheduling posts
-- Updating existing content
-- Managing tags, featured images, metadata
-- Working with pages vs posts
+请参阅 **[content.md](references/content.md)**，了解以下内容：
+- 创建新文章（草稿）
+- 发布和安排文章发布时间
+- 更新现有内容
+- 管理标签、特色图片、元数据
+- 区分文章和页面的用法
 
-See **[lexical-cards.md](references/lexical-cards.md)** for:
-- **Complete Lexical card type reference** (23 documented types)
-- Most comprehensive Ghost Lexical documentation available
-- Full JSON structures with field references
-- Video, audio, file uploads, buttons, toggles, embeds
-- Product cards, headers, call-to-action, paywall
-- Member visibility and content personalization
+请参阅 **[lexical-cards.md](references/lexical-cards.md)**，了解：
+- **完整的 Ghost 词汇卡片类型参考**（共 23 种类型）
+- 最全面的 Ghost 词汇文档
+- 包含字段引用的 JSON 结构
+- 支持视频、音频、文件上传、按钮、切换开关、嵌入元素
+- 产品卡片、页眉、号召行动按钮、付费墙设置
+- 会员可见性和内容个性化设置
 
-**⚠️ Ghost Snippets Limitation:**
+**⚠️ Ghost 片段的限制：**
+Ghost 的原生片段功能（保存在编辑器中的可重用内容块）**无法通过 Admin API 访问**（会返回 403 Forbidden 错误）。这意味着：
+- ❌ 无法列出可用的片段
+- ❌ 无法获取片段内容
+- ❌ 无法程序化地使用作者已有的片段
 
-Ghost's native snippet feature (reusable content blocks saved in the editor) **cannot be accessed via the Admin API** with integration tokens (403 Forbidden). This means:
+**解决方案：** 使用 **自动片段提取工具**
 
-- ❌ Cannot list available snippets
-- ❌ Cannot fetch snippet content
-- ❌ Cannot programmatically use author's existing snippets
+该技能提供了一个 **片段提取器**，可以将 Ghost 片段迁移到本地文件：
+1. 在 Ghost 中创建一个包含所有片段的草稿文章（只需设置一次）。
+2. 运行提取器工具：`node scripts/snippet-extractor.js post-slug`。
+3. 完成！所有片段将被保存到 `snippets/library/` 目录中，可供程序化使用。
 
-**Solution: Automated Snippet Extraction**
-
-The skill includes a **snippet extractor tool** that migrates Ghost snippets to local files:
-
-1. **Create extraction post** in Ghost with all snippets (one-time setup)
-2. **Run extractor:** `node scripts/snippet-extractor.js post-slug`
-3. **Done!** All snippets saved to `snippets/library/` for programmatic use
-
-**Commands:**
+**相关命令：**
 ```bash
 # Extract snippets (auto-detects credentials from ~/.config/ghost/)
 node scripts/snippet-extractor.js my-snippets-post
@@ -377,72 +375,71 @@ node scripts/snippet-extractor.js my-snippets-post --marker "This is:"
 node scripts/snippet-extractor.js --help
 ```
 
-**Benefits:**
-- ✅ Migrate all existing Ghost snippets in seconds
-- ✅ Preserves exact Lexical structure (bookmarks, callouts, images, etc.)
-- ✅ Git version control
-- ✅ Use programmatically in automated posts
-- ✅ Works with any card types
+**优势：**
+- ✅ 在几秒钟内迁移所有现有的 Ghost 片段
+- ✅ 保持原始的词汇结构（书签、引用、图片等）
+- 可通过 Git 进行版本控制
+- 可在自动化文章中程序化使用这些片段
+- 支持所有类型的片段
 
-See `snippets/README.md` for complete documentation on extraction workflow and local snippet usage.
+有关提取流程和本地片段使用的完整文档，请参阅 `snippets/README.md`。
 
-### Analytics & Insights
-**When to use:** Checking subscriber counts, popular content, traffic trends
+### 分析与洞察
+**使用场景：** 查看订阅者数量、热门内容、流量趋势
 
-See **[analytics.md](references/analytics.md)** for:
-- Subscriber growth and counts
-- Most popular posts (views, engagement)
-- Tag/topic performance over time
-- Member tier distribution
+请参阅 **[analytics.md](references/analytics.md)**，了解以下内容：
+- 订阅者增长和数量
+- 最受欢迎的文章（浏览量和互动情况）
+- 标签/主题的长期表现
+- 会员订阅层级的分布情况
 
-### Comments & Engagement
-**When to use:** Responding to comments, moderating discussions
+### 评论与互动
+**使用场景：** 回复评论、管理讨论
 
-See **[comments.md](references/comments.md)** for:
-- Listing pending/unanswered comments
-- Responding to comments
-- Comment moderation
+请参阅 **[comments.md](references/comments.md)**，了解以下内容：
+- 查看待处理或未回复的评论
+- 回复评论
+- 评论管理功能
 
-### Members & Subscribers
-**When to use:** Managing subscriber tiers, member access, premium content
+### 会员与订阅
+**使用场景：** 管理订阅层级、会员权限、高级内容
 
-See **[members.md](references/members.md)** for:
-- Subscriber tier management
-- Member-only content settings
-- Recent subscriber activity
-- Subscription status
+请参阅 **[members.md](references/members.md)**，了解以下内容：
+- 订阅层级管理
+- 仅限会员的内容设置
+- 最近的会员活动
+- 订阅状态
 
-### Newsletters
-**When to use:** Managing newsletter settings, email campaigns
+### 新闻通讯
+**使用场景：** 管理新闻通讯的设置和发送邮件
 
-See **[newsletters.md](references/newsletters.md)** for:
-- Newsletter configuration
-- Sending newsletters
-- Subscriber email settings
+请参阅 **[newsletters.md](references/newsletters.md)**，了解以下内容：
+- 新闻通讯的配置
+- 发送新闻通讯
+- 订阅者的电子邮件设置
 
-## API Reference
+## API 参考
 
-For advanced operations or endpoint details, see **[api-reference.md](references/api-reference.md)**.
+有关高级操作或端点详情，请参阅 **[api-reference.md](references/api-reference.md)**。
 
-## Common Workflows
+## 常见工作流程
 
-**Draft → Notion → Ghost:**
-1. Draft content collaboratively in Notion
-2. Finalize content
-3. Use this skill to copy to Ghost as draft
-4. Review in Ghost admin
-5. Schedule or publish
+**Notion → Ghost：**
+1. 在 Notion 中协作编写内容草稿。
+2. 完成内容后，使用本技能将其复制到 Ghost 作为草稿。
+3. 在 Ghost 管理界面中审核内容。
+4. 安排发布时间或直接发布。
 
-**Weekly content series:**
-1. "Navi, write and publish a unique weekly post about [topic from our discussions this week]"
-2. Skill creates post, sets author to "Navi", publishes automatically
+**每周内容系列：**
+1. “Navi，根据本周的讨论内容撰写并发布一篇独特的每周文章。”
+2. 使用本技能创建文章，设置作者为 “Navi”，然后自动发布。
 
-**Comment management:**
-1. "Are there any pending comments?"
-2. Review list of comments with post titles
-3. "Respond to comment #123 with [response]"
+**评论管理：**
+1. “是否有待处理的评论？”
+2. 查看带有文章标题的评论列表。
+3. “回复评论 #123，内容为 [回复内容]。”
 
-**Analytics check:**
-1. "What tags have been most popular in the past 6 months?"
-2. "How many new subscribers this month?"
-3. "When was my last subscriber-exclusive post?"
+**分析检查：**
+1. “过去 6 个月里哪些标签最受欢迎？”
+2. “这个月新增了多少订阅者？”
+3. “我的上一篇仅限会员阅读的文章是什么时候发布的？”

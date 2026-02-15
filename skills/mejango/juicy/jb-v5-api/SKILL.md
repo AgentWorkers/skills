@@ -1,63 +1,63 @@
 ---
 name: jb-v5-api
-description: Juicebox V5 protocol API reference. Function signatures, parameters, and return values for all contracts. Use for "what functions exist?" and "what are the signatures?" questions. For internal mechanics and tradeoffs, use /jb-v5-impl instead.
+description: Juicebox V5 协议 API 参考：包含所有合约的函数签名、参数及返回值。适用于查询“有哪些函数？”以及“函数的签名是什么？”等问题。如需了解内部实现机制和权衡因素，请参考 /jb-v5-impl。
 ---
 
-# Juicebox V5 API Reference
+# Juicebox V5 API 参考
 
-Function signatures, parameters, and return values for the entire Juicebox V5 protocol ecosystem.
+本文档涵盖了 Juicebox V5 协议生态系统中所有函数的签名、参数及返回值。
 
-> **Note**: For deep implementation details, edge cases, and tradeoffs, use `/jb-v5-impl` instead.
+> **注意**：如需深入了解实现细节、边缘情况或权衡因素，请参考 `/jb-v5-impl`。
 
-## Protocol Architecture Overview
+## 协议架构概述
 
-The V5 protocol consists of interconnected repositories:
+V5 协议由多个相互连接的仓库组成：
 
-| Repository | Purpose |
+| 仓库 | 功能 |
 |------------|---------|
-| **nana-core-v5** | Core infrastructure: projects, rulesets, tokens, terminals |
-| **nana-suckers-v5** | Cross-chain token bridging via merkle proofs |
-| **nana-buyback-hook-v5** | Uniswap V3 token buyback integration |
-| **nana-swap-terminal-v5** | Accept any token, auto-swap to ETH |
-| **nana-721-hook-v5** | Tiered NFT minting on payment |
-| **nana-permission-ids-v5** | Permission ID constants |
-| **nana-ownable-v5** | Juicebox-aware ownership pattern |
-| **nana-omnichain-deployers-v5** | Multi-chain project deployment |
-| **revnet-core-v5** | Autonomous tokenized treasury networks |
-| **croptop-core-v5** | Public NFT posting and contribution |
+| **nana-core-v5** | 核心基础设施：项目、规则集、代币、终端 |
+| **nana-suckers-v5** | 通过 Merkle 证明实现跨链代币桥接 |
+| **nana-buyback-hook-v5** | 集成 Uniswap V3 代币回购功能 |
+| **nana-swap-terminal-v5** | 接受任何代币，并自动兑换为 ETH |
+| **nana-721-hook-v5** | 支持基于支付的分层 NFT 发行 |
+| **nana-permission-ids-v5** | 权限 ID 常量 |
+| **nana-ownable-v5** | 支持 Juicebox 的所有权模型 |
+| **nana-omnichain-deployers-v5** | 支持多链项目部署 |
+| **revnet-core-v5** | 自主管理的代币化资金库网络 |
+| **croptop-core-v5** | 公开 NFT 发布功能 |
 
 ---
 
-## NANA-CORE-V5: Core Protocol
+## NANA-CORE-V5：核心协议
 
-### Contract Layers
+### 合同层
 
-**Core Contracts** (State Management):
-- `JBProjects` - ERC-721 project ownership
-- `JBRulesets` - Time-bounded configuration queuing
-- `JBTokens` - Credit and ERC-20 accounting
-- `JBDirectory` - Terminal and controller mapping
-- `JBPermissions` - Access control delegation
-- `JBFundAccessLimits` - Withdrawal constraints
-- `JBPrices` - Currency price feeds
-- `JBSplits` - Payment distribution lists
+**核心合约**（状态管理）：
+- `JBProjects` - ERC-721 项目所有权管理
+- `JBRulesets` - 基于时间的配置队列管理
+- `JBTokens` - 信用与 ERC-20 代币管理
+- `JBDirectory` - 终端与控制器的映射管理
+- `JBPermissions` - 访问控制权限管理
+- `JBFundAccessLimits` - 提取限制管理
+- `JBPrices` - 货币价格信息管理
+- `JBSplits` - 支付分配列表管理
 
-**Surface Contracts** (User Entry Points):
-- `JBController` - Ruleset and token coordination
-- `JBMultiTerminal` - Payments, cash outs, distributions
-- `JBTerminalStore` - Transaction bookkeeping
+**用户入口合约**：
+- `JBController` - 规则集与代币协调管理
+- `JBMultiTerminal` - 支付、提现、分配管理
+- `JBTerminalStore` - 交易记录管理
 
-**Utility Contracts**:
-- `JBDeadline` - Ruleset approval with advance notice
-- `JBERC20` - Standard project token
-- `JBFeelessAddresses` - Fee exemption registry
-- `JBChainlinkV3PriceFeed` - Chainlink integration
+**辅助合约**：
+- `JBDeadline` - 规则集提前审批功能
+- `JBERC20` - 标准项目代币管理
+- `JBFeelessAddresses` - 免费地址注册管理
+- `JBChainlinkV3PriceFeed` - Chainlink 数据集成管理
 
 ---
 
-### JBController Functions
+### JBController 功能
 
-#### Project Lifecycle
+#### 项目生命周期
 
 ```solidity
 // Create a new project with initial rulesets
@@ -88,7 +88,7 @@ function queueRulesetsOf(
 function migrate(uint256 projectId, IERC165 to) external;
 ```
 
-#### Token Operations
+#### 代币操作
 
 ```solidity
 // Mint tokens to beneficiary
@@ -137,7 +137,7 @@ function sendReservedTokensToSplitsOf(uint256 projectId)
     external returns (uint256);
 ```
 
-#### Configuration
+#### 配置管理
 
 ```solidity
 // Update project metadata URI
@@ -162,7 +162,7 @@ function addPriceFeed(
 ) external;
 ```
 
-#### View Functions
+#### 查看功能
 
 ```solidity
 function currentRulesetOf(uint256 projectId)
@@ -189,11 +189,11 @@ function setControllerAllowed(uint256 projectId) external view returns (bool);
 
 ---
 
-### JBTokens Functions
+### JBTokens 功能
 
-Manages project token accounting, including credits (unclaimed balances) and ERC20 tokens.
+管理项目代币的账务，包括未领取的信用余额和 ERC-20 代币。
 
-#### Token Deployment
+#### 代币部署
 
 ```solidity
 // Deploy standard JBERC20 for a project
@@ -211,7 +211,7 @@ function setTokenFor(
 ) external;
 ```
 
-#### Token Operations
+#### 代币操作
 
 ```solidity
 // Mint tokens to a holder (called by controller)
@@ -245,7 +245,7 @@ function transferCreditsFrom(
 ) external;
 ```
 
-#### View Functions
+#### 查看功能
 
 ```solidity
 // Get the ERC20 token for a project (address(0) if credits-only)
@@ -267,9 +267,9 @@ function totalBalanceOf(address holder, uint256 projectId) external view returns
 function totalSupplyOf(uint256 projectId) external view returns (uint256);
 ```
 
-#### IJBToken Interface (for Custom Tokens)
+#### IJBToken 接口（针对自定义代币）
 
-Custom tokens must implement this interface:
+自定义代币必须实现此接口：
 
 ```solidity
 interface IJBToken is IERC20 {
@@ -287,20 +287,20 @@ interface IJBToken is IERC20 {
 }
 ```
 
-#### Custom Token Requirements
+#### 自定义代币要求
 
-| Requirement | Details |
+| 要求 | 详情 |
 |-------------|---------|
-| **18 decimals** | `decimals()` must return 18 |
-| **canBeAddedTo** | Must return true for the target project ID |
-| **Unique assignment** | Cannot be assigned to multiple projects |
-| **Controller access** | Must allow JBController to mint/burn |
+| **18 位小数** | `decimals()` 方法必须返回 18 位小数 |
+| **canBeAddedTo** | 对于目标项目 ID，必须返回 true |
+| **唯一分配** | 代币不能被分配给多个项目 |
+| **控制器访问** | JBController 必须能够铸造/销毁代币 |
 
 ---
 
-### JBMultiTerminal Functions
+### JBMultiTerminal 功能
 
-#### Payments
+#### 支付管理
 
 ```solidity
 // Pay a project
@@ -325,7 +325,7 @@ function addToBalanceOf(
 ) external payable;
 ```
 
-#### Cash Outs (Redemptions)
+#### 提现（赎回）
 
 ```solidity
 // Cash out tokens for funds
@@ -340,7 +340,7 @@ function cashOutTokensOf(
 ) external returns (uint256 reclaimAmount);
 ```
 
-#### Distributions
+#### 分配管理
 
 ```solidity
 // Send payouts to splits (within payout limit)
@@ -365,7 +365,7 @@ function useAllowanceOf(
 ) external returns (uint256 netAmountPaidOut);
 ```
 
-#### Terminal Management
+#### 终端管理
 
 ```solidity
 // Add token accounting contexts
@@ -389,7 +389,7 @@ function processHeldFeesOf(
 ) external;
 ```
 
-#### View Functions
+#### 查看功能
 
 ```solidity
 function currentSurplusOf(
@@ -411,19 +411,19 @@ function heldFeesOf(uint256 projectId, address token, uint256 count)
 
 ---
 
-## NANA-SUCKERS-V5: Cross-Chain Bridging
+## NANA-SUCKERS-V5：跨链桥接
 
-### What Are Suckers?
+### 什么是 Suckers？
 
-Suckers enable cross-chain token transfers between Juicebox projects. When a user burns tokens on one chain, they receive equivalent tokens on another chain. The sucker redeems locally and bridges funds to the peer network.
+Suckers 允许在 Juicebox 项目之间进行跨链代币转移。当用户在一条链上销毁代币时，他们会在另一条链上收到等值的代币。Sucker 会在本地执行赎回操作，并将资金桥接到目标网络。
 
-### Supported Bridges
+### 支持的桥接方式
 
 - `JBOptimismSucker` - Ethereum ↔ Optimism
 - `JBBaseSucker` - Ethereum ↔ Base
 - `JBArbitrumSucker` - Ethereum ↔ Arbitrum
 
-### Core Functions
+### 核心功能
 
 ```solidity
 // Prepare tokens for bridging (burns locally)
@@ -444,28 +444,27 @@ function claim(JBClaim[] calldata claims) external;
 function outboxTreeRoot(address token) external view returns (bytes32);
 ```
 
-### Requirements for Projects
+### 项目要求
 
-- Present on both chains with same project ID
-- 100% cash out rate enabled
-- Owner minting enabled
-- ERC-20 tokens deployed on both chains
+- 项目必须在两条链上都存在，并具有相同的 ID
+- 必须支持 100% 的提现率
+- 项目必须已在两条链上部署 ERC-20 代币
 
 ---
 
-## NANA-BUYBACK-HOOK-V5: Token Buybacks
+## NANA-BUYBACK-HOOK-V5：代币回购
 
-### Purpose
+### 功能
 
-Automatically routes payments through Uniswap V3 when swapping yields more tokens than direct minting. Acts as both a data hook and pay hook.
+当通过 Uniswap V3 的交易获得的代币数量超过直接铸造的数量时，系统会自动执行回购操作。该合约同时充当数据钩子和支付钩子。
 
-### How It Works
+### 工作原理
 
-1. `beforePayRecordedWith()` compares: mint tokens vs. swap tokens
-2. If swap is better, specifies this contract as pay hook with swap amount
-3. `afterPayRecordedWith()` executes swap, burns received tokens, re-mints with reserved rate
+1. `beforePayRecordedWith()` 方法比较铸造代币和交换代币的收益。
+2. 如果交换更划算，系统会将此合约设置为支付钩子，并指定交换金额。
+3. `afterPayRecordedWith()` 方法执行交换操作，销毁收到的代币，并以预设的比率重新铸造代币。
 
-### Core Functions
+### 核心功能
 
 ```solidity
 // Set Uniswap pool for a project
@@ -492,20 +491,20 @@ function afterPayRecordedWith(JBAfterPayRecordedContext calldata context)
 
 ---
 
-## NANA-SWAP-TERMINAL-V5: Multi-Token Acceptance
+## NANA-SWAP-TERMINAL-V5：多代币接受
 
-### Purpose
+### 功能
 
-Accept payments in any ERC-20 token and automatically swap to ETH/native token via Uniswap V3.
+接受任何 ERC-20 代币的支付，并通过 Uniswap V3 自动兑换为 ETH 或原生代币。
 
-### Flow
+### 流程
 
-1. User pays with any token (e.g., USDC)
-2. Terminal swaps to ETH via configured Uniswap pool
-3. ETH forwarded to primary terminal
-4. Tokens minted for beneficiary
+1. 用户使用任意代币（例如 USDC）进行支付。
+2. 终端通过配置的 Uniswap 池进行兑换。
+3. ETH 被转发到目标终端。
+4. 代币被铸造给受益者。
 
-### Core Functions
+### 核心功能
 
 ```solidity
 // Pay with any token (auto-swaps to ETH)
@@ -527,26 +526,24 @@ function addDefaultPool(
 ) external;
 ```
 
----
+## NANA-721-HOOK-V5：分层 NFT
 
-## NANA-721-HOOK-V5: Tiered NFTs
+### 功能
 
-### Purpose
+在收到支付时，可以铸造分层 NFT（ERC-721）。每个层级都有可配置的价格、供应量、艺术作品和投票权。
 
-Mint tiered NFTs (ERC-721) when payments are received. Each tier has configurable price, supply, artwork, and voting power.
+### 层级属性
 
-### Tier Properties
+- **price**：铸造该层级的成本
+- **initialSupply**：最大可铸造数量
+- **votingUnits**：每个 NFT 的投票权
+- **reserveFrequency**：每购买一个 NFT 会自动铸造一个额外代币
+- **category**：项目分类
+- **encodedIPFSUri**：艺术作品/元数据的存储位置
+- **allowOwnerMint**：所有者可以直接铸造代币
+- **transfersPausable**：可以限制代币的转移
 
-- **price**: Cost to mint from this tier
-- **initialSupply**: Maximum mintable quantity
-- **votingUnits**: Governance votes per NFT
-- **reserveFrequency**: Auto-mint 1 bonus per N purchased
-- **category**: Grouping for organization
-- **encodedIPFSUri**: Artwork/metadata location
-- **allowOwnerMint**: Owner can mint directly
-- **transfersPausable**: Can restrict transfers
-
-### Core Functions
+### 核心功能
 
 ```solidity
 // Data hook: specify NFT minting
@@ -580,57 +577,55 @@ function mintFor(
 ) external returns (uint256[] tokenIds);
 ```
 
----
+## NANA-PERMISSION-IDS-V5：访问控制
 
-## NANA-PERMISSION-IDS-V5: Access Control
+### 所有权限 ID
 
-### All Permission IDs
-
-| ID | Name | Allows |
+| ID | 名称 | 权限 |
 |----|------|--------|
-| 1 | ROOT | All operations (superuser) |
-| 2 | QUEUE_RULESETS | Queue new rulesets |
-| 3 | CASH_OUT_TOKENS | Cash out tokens on behalf of holder |
-| 4 | SEND_PAYOUTS | Trigger payout distributions |
-| 5 | MIGRATE_TERMINAL | Migrate terminal balance |
-| 6 | SET_PROJECT_URI | Update project metadata URI |
-| 7 | DEPLOY_ERC20 | Deploy ERC-20 token for project |
-| 8 | SET_TOKEN | Set project's token |
-| 9 | MINT_TOKENS | Mint project tokens |
-| 10 | BURN_TOKENS | Burn tokens |
-| 11 | CLAIM_TOKENS | Convert credits to ERC-20 |
-| 12 | TRANSFER_CREDITS | Transfer credits between addresses |
-| 13 | SET_CONTROLLER | Change project controller |
-| 14 | SET_TERMINALS | Modify project terminals |
-| 15 | SET_PRIMARY_TERMINAL | Set primary terminal for token |
-| 16 | USE_ALLOWANCE | Use surplus allowance |
-| 17 | SET_SPLIT_GROUPS | Modify split groups |
-| 18 | ADD_PRICE_FEED | Add currency price feed |
-| 19 | ADD_ACCOUNTING_CONTEXTS | Add token acceptance |
-| 20 | ADJUST_721_TIERS | Modify NFT tiers |
-| 21 | SET_721_METADATA | Update NFT metadata |
-| 22 | MINT_721 | Mint NFTs directly |
-| 23 | SET_721_DISCOUNT_PERCENT | Set NFT discount |
-| 24 | SET_BUYBACK_TWAP | Configure buyback TWAP |
-| 25 | SET_BUYBACK_POOL | Set buyback Uniswap pool |
-| 26 | ADD_SWAP_TERMINAL_POOL | Add swap terminal pool |
-| 27 | ADD_SWAP_TERMINAL_TWAP_PARAMS | Set swap terminal TWAP |
-| 28 | MAP_SUCKER_TOKEN | Map sucker token |
-| 29 | DEPLOY_SUCKERS | Deploy cross-chain suckers |
-| 30 | SUCKER_SAFETY | Sucker safety operations |
+| 1 | ROOT | 所有操作（超级用户） |
+| 2 | QUEUE_RULESETS | 添加新规则集 |
+| 3 | CASH_OUT_TOKENS | 代表持有人提取代币 |
+| 4 | SEND_PAYOUTS | 触发支付分配 |
+| 5 | MIGRATE_TERMINAL | 迁移终端余额 |
+| 6 | SET_Project_URI | 更新项目元数据 URI |
+| 7 | DEPLOY_ERC20 | 为项目部署 ERC-20 代币 |
+| 8 | SET_TOKEN | 设置项目的代币 |
+| 9 | MINT_TOKENS | 铸造项目代币 |
+| 10 | BURN_TOKENS | 烧毁代币 |
+| 11 | CLAIM_TOKENS | 将信用转换为 ERC-20 代币 |
+| 12 | TRANSFER_CREDITS | 在地址之间转移信用 |
+| 13 | SET_CONTROLLER | 更改项目控制器 |
+| 14 | SET_TERMINALS | 修改项目终端 |
+| 15 | SET_PRIMARY_TERMINAL | 设置项目的默认终端 |
+| 16 | USE_ALLOWANCE | 使用剩余的信用额度 |
+| 17 | SET_SPLIT_groups | 修改分配组 |
+| 18 | ADD_PRICE_feed | 添加货币价格信息 |
+| 19 | ADD_ACCOUNTING_CONTEXTS | 添加代币接受功能 |
+| 20 | ADJUST_721_TIERS | 修改 NFT 层级 |
+| 21 | SET_721_METADATA | 更新 NFT 元数据 |
+| 22 | MINT_721 | 直接铸造 NFT |
+| 23 | SET_721_DISCOUNT_PERCENT | 设置 NFT 折扣 |
+| 24 | SET_BUYBACK_TWAP | 配置回购策略 |
+| 25 | SET_BUYBACK_POOL | 设置回购 Uniswap 池 |
+| 26 | ADD_SWAP_TERMINAL_POOL | 添加交换终端池 |
+| 27 | ADD_SWAP_TERMINAL_TWAP_PARAMS | 设置交换终端的参数 |
+| 28 | MAP_SUCKER_TOKEN | 映射跨链桥接代币 |
+| 29 | DEPLOY_SUCKERS | 部署跨链桥接功能 |
+| 30 | SUCKER_SAFETY | 管理跨链桥接的安全性 |
 
-### Permission Ranges by Repository
+### 权限范围（按仓库划分）
 
-| ID Range | Repository |
+| ID 范围 | 仓库 |
 |----------|------------|
-| 1 | ROOT (all contracts) |
+| 1 | ROOT（所有合约） |
 | 2-19 | nana-core |
 | 20-23 | nana-721-hook |
 | 24-25 | nana-buyback-hook |
 | 26-27 | nana-swap-terminal |
 | 28-30 | nana-suckers |
 
-### JBPermissions Functions
+### JBPermissions 功能
 
 ```solidity
 // Grant permissions
@@ -659,73 +654,72 @@ function permissionsOf(
 
 ---
 
-## NANA-OWNABLE-V5: Project-Based Ownership
+## NANA-OWNABLE-V5：基于项目的所有权
 
-### Purpose
+### 功能
 
-Extend OpenZeppelin Ownable to support Juicebox project ownership and permission delegation.
+扩展 OpenZeppelin 的 Ownable 模型，以支持 Juicebox 项目的所有权和权限委托。
 
-### Key Features
+### 主要特性
 
-1. **Project Ownership**: Transfer ownership to a Juicebox project (any project owner has access)
-2. **Permission Delegation**: Grant `onlyOwner` access via JBPermissions
-3. **Meta-Transaction Support**: Compatible with ERC-2771
+1. **项目所有权**：可以将所有权转移给 Juicebox 项目（任何项目所有者均可操作）。
+2. **权限委托**：通过 JBPermissions 授予 `onlyOwner` 权限。
+3. **元交易支持**：兼容 ERC-2771 标准。
 
-### Contracts
+### 相关合约
 
-- `JBOwnable` - For contracts without existing ownership
-- `JBOwnableOverride` - For contracts inheriting OpenZeppelin Ownable
-
----
-
-## NANA-OMNICHAIN-DEPLOYERS-V5: Multi-Chain Deployment
-
-### Purpose
-
-Deploy Juicebox projects with suckers across multiple chains in a single transaction.
-
-### Supported Networks
-
-- Ethereum Mainnet
-- Sepolia Testnet
-- Optimism Mainnet/Testnet
-
-### Usage
-
-Deploy project configuration that automatically sets up:
-- Project on each target chain
-- Sucker pairs for cross-chain bridging
-- Consistent project configuration
+- `JBOwnable`：用于没有默认所有权的合约。
+- `JBOwnableOverride`：用于继承 OpenZeppelin Ownable 功能的合约。
 
 ---
 
-## REVNET-CORE-V5: Autonomous Treasury Networks
+## NANA-OMNICHAIN-DEPLOYERS-V5：多链部署
 
-### What Is a Revnet?
+### 功能
 
-A Revnet is an **unowned Juicebox project** that operates autonomously after deployment. The deployer contract owns the project NFT, implementing hooks and delegating limited permissions.
+支持在一次交易中在多个链上部署 Juicebox 项目及跨链桥接功能。
 
-### Deployer Options
+### 支持的网络
 
-| Deployer | Features |
+- Ethereum 主网
+- Sepolia 测试网
+- Optimism 主网/测试网
+
+### 使用方法
+
+部署项目配置后，系统会自动完成以下操作：
+- 在每个目标链上创建项目
+- 部署跨链桥接功能
+- 保持项目配置的一致性
+
+---
+
+## REVNET-CORE-V5：自主管理的资金库网络
+
+### 什么是 Revnet？
+
+Revnet 是一个 **自主运行的 Juicebox 项目**，部署完成后可以独立运作。部署者合约拥有该项目 NFT，并负责管理权限。
+
+### 部署选项
+
+| 部署者 | 功能 |
 |----------|----------|
-| `BasicRevnetDeployer` | Standard revnet |
-| `PayHookRevnetDeployer` | + custom pay hooks |
-| `Tiered721RevnetDeployer` | + tiered NFT support |
-| `CroptopRevnetDeployer` | + public posting |
+| `BasicRevnetDeployer` | 标准 Revnet |
+| `PayHookRevnetDeployer` | 支持自定义支付钩子 |
+| `Tiered721RevnetDeployer` | 支持分层 NFT |
+| `CroptopRevnetDeployer` | 支持公开发布功能 |
 
-### Key Concepts
+### 关键概念
 
-**Stages**: Revnets progress through stages with different parameters
-- Initial weight, price ceiling, price floor
-- Reserved rate distribution
-- Boost periods for early supporters
+**阶段**：Revnet 会经历不同的发展阶段，每个阶段有不同的参数设置：
+- 初始权重、价格上限、价格下限
+- 为早期支持者提供的奖励机制（Boost）
 
-**Premint**: Tokens minted to beneficiaries at launch
+**预铸造**：项目启动时为受益者铸造代币。
 
-**Boost**: Temporary increased token allocation for specified recipients
+**奖励机制**：为指定接收者提供临时增加的代币分配。
 
-### REVDeployer Functions
+### REVDeployer 功能
 
 ```solidity
 // Deploy a new revnet
@@ -746,73 +740,40 @@ function afterCashOutRecordedWith(JBAfterCashOutRecordedContext calldata context
     external payable;
 ```
 
----
+## CROPTOP-CORE-V5：公开 NFT 发布
 
-## CROPTOP-CORE-V5: Public NFT Posting
+### 功能
 
-### What Is Croptop?
+Croptop 允许项目公开发布 NFT。任何符合项目所有者设定条件的人都可以发布新的 NFT 层级。
 
-Croptop opens a project's NFT collection for public contributions. Anyone can post new NFT tiers if they meet criteria set by the project owner.
+### 发布流程
 
-### CTPublisher Functions
-
-```solidity
-// Configure posting criteria
-function configurePostingCriteriaFor(
-    IJB721TiersHook hook,
-    uint256 category,
-    uint256 minimumPrice,
-    uint256 minimumTotalSupply,
-    uint256 maximumTotalSupply,
-    address[] calldata allowedAddresses
-) external;
-
-// Post new NFT and mint initial copies
-function mintFrom(
-    IJB721TiersHook hook,
-    JBDeploy721TierConfig[] calldata tierConfigs,
-    address beneficiary,
-    address payable feeBeneficiary,
-    bytes calldata additionalPayMetadata
-) external payable;
-
-// Get posting criteria
-function allowanceFor(IJB721TiersHook hook, uint256 category)
-    external view returns (CTAllowedPost);
-
-// Get tier data for URIs
-function tiersFor(IJB721TiersHook hook, string[] calldata uris)
-    external view returns (JB721Tier[]);
-```
-
-### Posting Flow
-
-1. Owner calls `configurePostingCriteriaFor()` with price/supply requirements
-2. Anyone posts via `mintFrom()` with tier config and payment
-3. System validates against criteria (price ≥ minimum, supply within range)
-4. NFT tier created, fee (1/20th) sent to fee treasury
-5. Beneficiary receives initial mint
+1. 所有者调用 `configurePostingCriteriaFor()` 方法设置价格/供应量要求。
+2. 任何人都可以通过 `mintFrom()` 方法发布 NFT，同时提供层级配置和支付信息。
+3. 系统会验证是否符合要求（价格 ≥ 最低价格、供应量在指定范围内）。
+4. 创建 NFT 后，费用（费用的 1/20）会进入费用资金库。
+5. 受益者会收到初始铸造的代币。
 
 ---
 
-## Fee Structure
+## 费用结构
 
-### Standard Fees (2.5%)
+### 标准费用（2.5%）
 
-Applied by JBMultiTerminal on:
-- Payouts to wallets (project-to-project exempt)
-- Surplus allowance withdrawals
-- Cash outs with < 100% cash out rate
+由 JBMultiTerminal 收取的费用包括：
+- 向钱包的支付（项目间交易免费用）
+- 超额提取时的费用
+- 提现金额低于 100% 时的费用
 
-### Fee Processing
+### 费用处理
 
-- Fees route to Project #1 (protocol treasury)
-- "Held fees" mode allows 28-day refund window
-- Feeless addresses can be registered for exemption
+- 费用会流入项目资金库（Project #1）。
+- 支持“Held Fees”模式，提供 28 天的退款期限。
+- 可以注册免费地址以享受费用减免。
 
 ---
 
-## Protocol Constants
+## 协议常量
 
 ```solidity
 // Native token identifier
@@ -829,33 +790,33 @@ uint256 constant SPLITS_TOTAL_PERCENT = 1_000_000_000;  // 100%
 
 ---
 
-## Example Workflows
+## 示例工作流程
 
-### Create Project with Buyback Hook
+### 创建带有回购功能的项目
 
-1. Deploy `JBBuybackHook` for your token
-2. Call `launchProjectFor()` with ruleset metadata:
+1. 部署 `JBBuybackHook` 合约以管理代币。
+2. 调用 `launchProjectFor()` 方法并传入规则集元数据：
    - `useDataHookForPay: true`
    - `dataHook: buybackHookAddress`
-3. Payments automatically route through Uniswap when beneficial
+3. 当交易有利可图时，系统会自动通过 Uniswap 进行支付。
 
-### Deploy a Revnet
+### 部署 Revnet
 
-1. Choose deployer (Basic, PayHook, Tiered721, Croptop)
-2. Configure stages, premint, boost parameters
-3. Call `deployFor()` with configuration
-4. Revnet operates autonomously
+1. 选择合适的部署者（Basic、PayHook、Tiered721、Croptop）。
+2. 配置项目阶段、预铸造参数和奖励机制。
+3. 调用 `deployFor()` 方法进行部署。
+4. Revnet 会自动运行。
 
-### Enable Cross-Chain
+### 启用跨链功能
 
-1. Deploy project on both chains with same ID
-2. Deploy sucker pair via `JBSuckerRegistry`
-3. Enable 100% cash out rate and owner minting
-4. Users can `prepare()` on one chain, `claim()` on other
+1. 在两条链上使用相同的 ID 部署项目。
+2. 通过 `JBSuckerRegistry` 部署跨链桥接功能。
+3. 启用 100% 的提现率和所有者铸造功能。
+4. 用户可以在一条链上准备支付，在另一条链上领取收益。
 
 ---
 
-## Source Repositories
+## 源代码仓库
 
 - [nana-core-v5](https://github.com/Bananapus/nana-core-v5)
 - [nana-suckers-v5](https://github.com/Bananapus/nana-suckers-v5)

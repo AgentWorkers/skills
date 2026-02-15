@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Email Design
+# 电子邮件设计
 
-Design high-converting marketing emails with AI-generated visuals via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用 AI 生成的视觉元素来设计转化率高的营销邮件。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -25,22 +25,22 @@ infsh app run infsh/html-to-image --input '{
 }'
 ```
 
-## Email Width & Layout
+## 电子邮件宽度与布局
 
-| Constraint | Value | Why |
+| 约束条件 | 值 | 原因 |
 |-----------|-------|-----|
-| **Max width** | 600px | Gmail, Outlook rendering standard |
-| **Mobile width** | 320-414px | Responsive fallback |
-| **Single column** | Preferred | Better mobile rendering |
-| **Two column** | Use sparingly | Breaks on many clients |
-| **Image width** | 600px max, 300px for 2-col | Retina: provide 2x (1200px) |
-| **Font size (body)** | 14-16px | Below 14px is hard to read on mobile |
-| **Font size (heading)** | 22-28px | Must be scannable |
-| **Line height** | 1.5 | Readability on all devices |
+| **最大宽度** | 600px | Gmail 和 Outlook 的渲染标准 |
+| **移动设备宽度** | 320-414px | 为移动设备提供响应式布局 |
+| **单列布局** | 首选 | 更适合移动设备的显示 |
+| **双列布局** | 尽量少用 | 在许多客户端上会导致布局混乱 |
+| **图片宽度** | 最大 600px，双列布局时为 300px | 对于 Retina 屏幕，提供 1200px 的高分辨率图片 |
+| **字体大小（正文）** | 14-16px | 小于 14px 时在移动设备上难以阅读 |
+| **字体大小（标题）** | 22-28px | 必须便于扫描 |
+| **行高** | 1.5 | 保证所有设备上的可读性 |
 
-### The Inverted Pyramid Layout
+### 倒金字塔布局
 
-The most effective email layout funnels attention to a single CTA:
+最有效的电子邮件布局是将用户的注意力引导至一个明确的呼叫行动（CTA）上：
 
 ```
 ┌──────────────────────────────────┐
@@ -62,33 +62,33 @@ The most effective email layout funnels attention to a single CTA:
 └──────────────────────────────────┘
 ```
 
-## Subject Lines
+## 主题行
 
-### Formulas That Work
+### 有效的主题行格式
 
-| Formula | Example | Open Rate Impact |
+| 格式 | 示例 | 开启率影响 |
 |---------|---------|-----------------|
-| Number + benefit | "5 ways to cut your build time in half" | High |
-| Question | "Are you still deploying on Fridays?" | High |
-| How-to | "How to automate your reports in 3 steps" | Medium-High |
-| Urgency (genuine) | "Last day: 30% off annual plans" | High (if real) |
-| Personalized | "[Name], your weekly report is ready" | Very High |
-| Curiosity gap | "The one feature our users can't stop talking about" | Medium-High |
+| 数字 + 好处 | “5 种方法将构建时间缩短一半” | 高 |
+| 问题 | “您还在每周五进行部署吗？” | 高 |
+| 操作指南 | “3 步操作自动完成报告” | 中等偏高 |
+| 紧急性（真实） | “最后一天：年度计划享受 30% 折扣” | 高（如果信息真实） |
+| 个性化 | “[姓名]，您的每周报告已准备好” | 非常高 |
+| 好奇心触发 | “用户们热议的那一项功能” | 中等偏高 |
 
-### Rules
+### 规则
 
-| Rule | Value |
+| 规则 | 值 |
 |------|-------|
-| **Length** | 30-50 characters (mobile truncates at ~35) |
-| **Preview text** | First 40-100 chars after subject — design this intentionally |
-| **Emoji** | Max 1, at start or end, test with your audience |
-| **ALL CAPS** | Never — triggers spam filters |
-| **Spam trigger words** | Avoid: "free", "act now", "limited time", "click here" in subject |
-| **Personalization** | [First name] in subject lifts open rates 20%+ |
+| **长度** | 30-50 个字符（移动设备通常会截断超过 35 个字符的部分） |
+| **预览文本** | 主题行后的前 40-100 个字符——请精心设计这部分内容 |
+| **表情符号** | 最多使用 1 个，放在开头或结尾，根据目标受众进行测试 |
+| **全大写** | 绝对不要使用——会触发垃圾邮件过滤器 |
+| **垃圾邮件触发词** | 避免在主题中使用 “免费”、“立即行动”、“限时优惠”、“点击这里” 等词 |
+| **个性化** | 在主题中包含收件人的名字，可以提高开启率 20% 以上 |
 
-### Preview Text
+### 预览文本
 
-The preview text appears after the subject line in the inbox. Don't waste it.
+预览文本会显示在收件箱的主题行之后。请不要忽视这部分内容。
 
 ```
 ❌ "View this email in your browser" (default, wasted space)
@@ -101,47 +101,47 @@ The preview text appears after the subject line in the inbox. Don't waste it.
    Preview: "Revenue up 23% — here's what drove it"
 ```
 
-## Email Types
+## 电子邮件类型
 
-### Welcome Email (Automated, Day 0)
+### 欢迎邮件（自动化发送，注册当天）
 
-| Element | Content |
+| 元素 | 内容 |
 |---------|---------|
-| Subject | "Welcome to [Product] — here's what's next" |
-| Header | Brand image or product screenshot |
-| Body | 3-4 sentences: what they signed up for, what to expect, one quick win |
-| CTA | "Complete your setup" or "Try your first [action]" |
-| Timing | Immediately after signup |
+| 主题 | “欢迎使用 [产品] — 接下来会发生什么” |
+| 页眉 | 品牌图片或产品截图 |
+| 正文 | 3-4 句话：说明用户注册的目的、可以期待的内容以及一个快速操作 |
+| 呼叫行动 | “完成设置” 或 “尝试您的第一个 [操作]” |
+| 发送时间 | 注册后立即发送 |
 
-### Promotional / Campaign
+### 促销/活动邮件
 
-| Element | Content |
+| 元素 | 内容 |
 |---------|---------|
-| Subject | Benefit-focused, urgency if real |
-| Header | Hero image showing the offer/outcome |
-| Body | Problem → solution → offer → deadline |
-| CTA | "Get 30% Off" or "Start Free Trial" |
-| Urgency | Real deadline, not fake scarcity |
+| 主题 | 强调好处，必要时加入紧迫感 |
+| 页眉 | 显示优惠或结果的图片 |
+| 正文 | 问题 → 解决方案 → 优惠 → 截止时间 |
+| 呼叫行动 | “享受 30% 折扣” 或 “开始免费试用” |
+| 紧迫性 | 真实的截止时间，避免虚假的稀缺感 |
 
-### Product Update / Changelog
+### 产品更新/变更日志邮件
 
-| Element | Content |
+| 元素 | 内容 |
 |---------|---------|
-| Subject | "New: [Feature name] is here" |
-| Header | Screenshot or visual of the feature |
-| Body | What's new, why it matters, how to use it |
-| CTA | "Try [feature]" |
+| 主题 | “新功能：[功能名称] 已上线” |
+| 页眉 | 新功能的截图或视觉展示 |
+| 正文 | 新功能的内容、重要性以及使用方法 |
+| 呼叫行动 | “尝试 [新功能]”
 
-### Transactional (Receipts, Confirmations)
+### 交易邮件（收据、确认邮件）
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Clear purpose in subject | "Your order #1234 is confirmed" |
-| Minimal design | Don't confuse with marketing |
-| Key info above the fold | Order number, amount, date |
-| No promotional content (mostly) | CAN-SPAM allows some, but keep minimal |
+| 主题中明确说明目的 | “您的订单 #1234 已确认” |
+| 设计简洁 | 避免与营销邮件混淆 |
+| 重要信息放在页面顶部 | 包含订单号、金额、日期 |
+| 几乎不包含促销内容 | CAN-SPAM 规则允许少量促销信息，但要保持简洁 |
 
-## Header Image Design
+## 页眉图片设计
 
 ```bash
 # Welcome email header
@@ -162,21 +162,21 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-## CTA Buttons
+## 呼叫行动按钮
 
-| Rule | Value |
+| 规则 | 值 |
 |------|-------|
-| **Width** | 200-300px, not full width |
-| **Height** | 44-50px minimum (tap target) |
-| **Color** | High contrast with background |
-| **Text** | Action verb + outcome: "Start Free Trial" |
-| **Shape** | Rounded corners (4-8px border-radius) |
-| **Placement** | Above the fold, repeated at bottom for long emails |
-| **Quantity** | ONE primary CTA per email |
+| **宽度** | 200-300px，不要占据整个页面宽度 |
+| **高度** | 最小 44-50px（确保可点击） |
+| **颜色** | 与背景有高对比度 |
+| **文本** | 行动动词 + 结果：例如 “开始免费试用” |
+| **形状** | 圆角（边框半径 4-8px） |
+| **位置** | 放在页面顶部；长邮件在底部也会重复显示 |
+| **数量** | 每封邮件中只有一个主要的呼叫行动按钮 |
 
-### Bulletproof Buttons
+### 兼容多种浏览器的按钮设计
 
-HTML buttons render differently across email clients. Use the "bulletproof button" technique (VML for Outlook, HTML/CSS for everything else):
+HTML 按钮在不同电子邮件客户端上的显示效果可能不同。请使用 “bulletproof button” 技术（Outlook 使用 VML，其他客户端使用 HTML/CSS）：
 
 ```html
 <!-- Bulletproof button (works everywhere including Outlook) -->
@@ -194,46 +194,46 @@ HTML buttons render differently across email clients. Use the "bulletproof butto
 </table>
 ```
 
-## Mobile Optimization
+## 移动设备优化
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Single column layout | Multi-column breaks on mobile |
-| Font minimum 14px | Smaller is unreadable |
-| CTA button minimum 44px tall | Apple/Android tap target |
-| Images scale to 100% width | Prevent horizontal scroll |
-| Stack elements vertically | Side-by-side breaks on narrow screens |
-| Test on Gmail app, Apple Mail, Outlook | The big 3 email clients |
+| 单列布局 | 多列布局在移动设备上会导致显示混乱 |
+| 字体大小至少 14px | 过小的字体难以阅读 |
+| 呼叫行动按钮高度至少 44px | 保证在 Apple/Android 设备上可点击 |
+| 图片宽度调整为 100% | 避免水平滚动 |
+| 元素垂直排列 | 在窄屏幕上避免并排显示 |
+| 在 Gmail 应用、Apple Mail 和 Outlook 上进行测试 | 这三个是最主要的电子邮件客户端 |
 
-**60%+ of emails are opened on mobile.** Design mobile-first.
+**超过 60% 的电子邮件是在移动设备上打开的。** 请优先考虑移动设备的显示效果。
 
-## Deliverability Checklist
+## 邮件送达性检查清单
 
-| Factor | Rule |
+| 因素 | 规则 |
 |--------|------|
-| Image-to-text ratio | Max 40% images, 60% text (spam filters flag image-heavy emails) |
-| Alt text on images | Always — images blocked by default in many clients |
-| Unsubscribe link | Required by law (CAN-SPAM, GDPR) — make it easy to find |
-| From name | Recognizable person or brand name |
-| Reply-to | Real address, not no-reply@ (hurts deliverability) |
-| List hygiene | Remove bounces, clean inactive subscribers quarterly |
-| SPF/DKIM/DMARC | Technical authentication — set up once, critical for inbox |
+| 图片与文本的比例 | 图片占比不超过 40%，文本占比 60%（垃圾邮件过滤器会标记图片过多的邮件） |
+| 图片的替代文本 | 必须添加——许多客户端默认会屏蔽图片 |
+| 退订链接 | 根据 CAN-SPAM 和 GDPR 法规要求，必须提供方便易找的退订链接 |
+| 发件人名称 | 使用可识别的个人或品牌名称 |
+| 回复地址 | 使用真实的地址，而不是 no-reply@（会影响邮件送达率） |
+| 邮件列表管理 | 每季度清理无效订阅者 |
+| SPF/DKIM/DMARC | 技术认证措施——设置一次，对邮件送达至关重要 |
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| No preview text | Shows "View in browser" or random code | Set preview text intentionally |
-| Image-only emails | Blocked images = blank email + spam risk | 60%+ text, alt text on images |
-| Multiple CTAs | Decision paralysis, lower click rate | One primary CTA per email |
-| Tiny text | Unreadable on mobile | Minimum 14px body, 22px headings |
-| no-reply@ sender | Hurts deliverability, feels impersonal | Use real reply address |
-| No mobile testing | Broken layout for 60%+ of readers | Test on Gmail app + Apple Mail |
-| Missing unsubscribe | Illegal (CAN-SPAM) + spam complaints | Clear unsubscribe link in footer |
-| Over-designing | Email clients render CSS inconsistently | Simple layouts, inline styles |
-| Fake urgency | Erodes trust, trains users to ignore | Only use real deadlines |
+| 无预览文本 | 显示 “在浏览器中查看” 或随机代码 | 请故意设置预览文本 |
+| 仅包含图片的邮件 | 图片被屏蔽会导致邮件内容为空，增加垃圾邮件风险 | 图片占比不超过 60%，并为图片添加替代文本 |
+| 多个呼叫行动按钮 | 造成用户决策混乱，降低点击率 | 每封邮件中只有一个主要的呼叫行动按钮 |
+| 文字过小 | 在移动设备上难以阅读 | 正文字体大小至少 14px，标题字体大小至少 22px |
+| 使用 no-reply@ 作为发件人地址 | 会影响邮件送达率，显得不专业 | 使用真实的回复地址 |
+| 未进行移动设备测试 | 60% 以上的用户会在移动设备上打开邮件，因此必须进行测试 | 在 Gmail 应用和 Apple Mail 上进行测试 |
+| 未提供退订链接 | 违反 CAN-SPAM 规则，容易引发投诉 | 在页脚提供明显的退订链接 |
+| 设计过于复杂 | 不同电子邮件客户端对 CSS 的渲染效果不一致 | 采用简单的布局和内联样式 |
+| 虚假的紧迫感 | 会降低用户信任度 | 只使用真实的截止时间信息 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@landing-page-design
@@ -241,4 +241,4 @@ npx skills add inferencesh/skills@ai-image-generation
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+查看所有可用应用：`infsh app list`

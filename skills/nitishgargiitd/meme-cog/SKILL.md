@@ -1,6 +1,6 @@
 ---
 name: meme-cog
-description: "Deep reasoning makes better comedy. #1 on DeepResearch Bench (Feb 2026). AI meme generation with audience targeting, trend research, and multi-angle humor. Create memes, viral content, reaction images, and internet humor that actually land."
+description: "深度推理能够提升喜剧效果。在 DeepResearch Bench 的排名中位列第一（2026 年 2 月）。该技术支持针对特定受众群体生成 AI 模因、进行趋势研究，并从多个角度挖掘幽默元素。能够创作出真正受欢迎的模因、病毒式传播的内容、反应图片以及互联网幽默作品。"
 metadata:
   openclaw:
     emoji: "😂"
@@ -8,27 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Meme Cog - Deep Reasoning Meets Internet Culture
+# Meme Cog – 深度推理与网络文化的结合
 
-**The hardest creative challenge in AI, powered by the deepest reasoning.** #1 on DeepResearch Bench (Feb 2026).
+**人工智能领域中最具挑战性的创意任务，依托于最深入的推理能力。** 在 DeepResearch Bench 指数中排名第一（2026年2月）。
 
-Comedy requires timing, cultural awareness, subverted expectations, and an understanding of what makes humans laugh. CellCog applies frontier-level reasoning to research trends, craft multiple angles, and curate only what's genuinely funny.
+喜剧创作需要把握时机、具备文化意识、颠覆人们的预期，并理解什么能引发人们的笑声。CellCog 运用前沿的推理技术分析研究趋势，从多个角度出发，只精选真正有趣的创意内容。
 
-We're honest: our hit rate is maybe 60-70%. Great memes are hard for humans too. But deep reasoning + multi-variant generation + ruthless curation = memes that actually land.
+说实话：我们的成功率大概只有60-70%。即使是人类，创作出优秀的表情包也并非易事。但通过深度推理、多种创意生成方式以及严格的筛选流程，我们最终能制作出真正能够引起共鸣的表情包。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用该功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
-```bash
-clawhub install cellcog
-```
+**请先阅读 `cellcog` 技能文档** 以完成 SDK 的安装。该文档会向您展示所有可用的功能。
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
-
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -42,177 +38,166 @@ result = client.create_chat(
 
 ---
 
-## What Memes You Can Create
+## 可制作的表情包类型
 
-### Classic Meme Formats
+### 经典表情包格式
 
-Popular templates with your twist:
+这些是流行的模板，您可以在此基础上进行创新：
 
-- **Drake Format**: "Create a Drake meme about [topic]"
-- **Distracted Boyfriend**: "Make a distracted boyfriend meme about programmers"
-- **Brain Expanding**: "Create an expanding brain meme about coffee addiction"
-- **Two Buttons**: "Make a two buttons meme about choosing between sleep and Netflix"
-- **Change My Mind**: "Create a 'change my mind' meme about tabs vs spaces"
+- **Drake 格式**：创作关于 [主题] 的 Drake 表情包
+- **分心的男朋友**：制作关于程序员的“分心男朋友”表情包
+- **大脑膨胀**：创作关于咖啡成瘾的“大脑膨胀”表情包
+- **两个按钮**：制作关于在睡觉和看 Netflix 之间做选择的表情包
+- **改变我的想法**：创作关于使用制表符还是空格的“改变我的想法”表情包
 
-**Example prompt:**
-> "Create a Drake meme:
+**示例提示：**
+> “创作一个 Drake 表情包：
 > 
-> Top panel (rejecting): Writing documentation
-> Bottom panel (approving): Hoping the code is self-explanatory
+> 上方面板（表示拒绝）：编写文档
+> 下方面板（表示同意）：希望代码能够一目了然
 > 
-> Target audience: Programmers"
+> 目标受众：程序员”
 
-### Custom Meme Images
+### 定制表情包图片
 
-Original visual humor:
+原创的视觉幽默作品：
 
-- **Reaction Images**: "Create a reaction image for when your code works on the first try"
-- **Relatable Content**: "Make a meme image about Monday morning meetings"
-- **Situational Humor**: "Create a visual meme about working from home vs office"
+- **反应图片**：当您的代码第一次运行就成功时，制作一张反应图片
+- **贴近生活的内容**：制作关于周一早晨会议的表情包
+- **情境幽默**：制作关于在家工作与在办公室工作对比的表情包
 
-### Text-Based Humor
+### 文本幽默
 
-When words are enough:
+当文字本身就能引发笑声时：
 
-- **Twitter-Style Jokes**: "Write a tweet-length joke about startup culture"
-- **Copypasta Parodies**: "Create a copypasta about a ridiculous topic"
-- **Caption Suggestions**: "Give me 5 funny captions for this image"
+- **推特风格的笑话**：写一条关于创业文化的简短笑话
+- **恶搞复制粘贴内容**：创作关于某个荒谬主题的恶搞内容
+- **图片配文建议**：为这张图片提供5个有趣的配文
 
-### Niche Community Memes
+### 针对特定群体的表情包
 
-Humor for specific groups:
-
-- **Programmer Memes**: "Create a meme about JavaScript developers"
-- **Finance Memes**: "Make a meme about HODLing crypto"
-- **Academic Memes**: "Create a meme about writing a thesis"
-- **Gamer Memes**: "Make a meme about game updates"
+- **程序员表情包**：创作关于 JavaScript 开发者的表情包
+- **金融表情包**：制作关于长期持有加密货币（HODL）的表情包
+- **学术表情包**：创作关于撰写论文的表情包
+- **游戏表情包**：制作关于游戏更新的表情包
 
 ---
 
-## The Honesty Section
+## 诚实的说明
 
-Let's be real about what's hard:
+让我们坦诚面对其中的难点：
 
-| Challenge | Why It's Hard | What We Do |
+| 挑战 | 困难原因 | 我们的应对方法 |
 |-----------|---------------|------------|
-| **Timing** | Comedy relies on rhythm and surprise | We study meme structures |
-| **Cultural Context** | Memes are deeply referential | We track internet culture |
-| **Freshness** | Old jokes aren't funny | We avoid overused formats |
-| **Subjectivity** | Humor is personal | We offer variations |
+| **时机把握** | 喜剧需要节奏感和惊喜效果 | 我们研究表情包的构成规律 |
+| **文化背景** | 表情包往往包含特定的文化参考 | 我们密切关注网络文化动态 |
+| **新鲜度** | 陈旧的笑话不再有趣 | 我们避免使用过度使用的格式 |
+| **主观性** | 幽默具有个人偏好 | 我们提供多种创意变体 |
 
-**Our success rate:** Maybe 60-70% land. That's honest. Great memes are hard for humans too.
+**我们的成功率：** 大约60-70%。即使是人类，创作出优秀的表情包也并非易事。
 
-**What helps us:**
-- Clear target audience
-- Specific cultural references
-- Well-defined format
-- Your feedback
+**对我们有帮助的因素：**
+- 明确的目标受众
+- 具体的文化参考
+- 明确的格式要求
+- 您的反馈意见
 
 ---
 
-## Meme Categories
+## 表情包分类
 
-### By Format
+### 按格式分类
 
-| Type | Description | Example |
+| 类型 | 描述 | 示例 |
 |------|-------------|---------|
-| **Image Macro** | Text over image | "One does not simply..." |
-| **Reaction** | Image expressing emotion | Surprised Pikachu |
-| **Comparison** | Side-by-side contrast | Expectation vs Reality |
-| **Multi-Panel** | Story in panels | Expanding brain |
-| **Text Post** | Pure text humor | Twitter screenshots |
+| **图片结合文字** | 文字叠加在图片上 | “事情并非如此简单...” |
+| **反应图片** | 表达情感的图片 | 惊讶的皮卡丘 |
+| **对比图** | 并列展示两种情况 | 期望与现实的对比 |
+| **多面板** | 通过多个面板讲述故事 | “大脑膨胀”表情包 |
+| **纯文本幽默** | 纯文字形式的幽默 | 推特截图 |
 
-### By Humor Type
+### 按幽默类型分类
 
-| Type | Characteristics |
-|------|-----------------|
-| **Observational** | "Why is it that..." relatable moments |
-| **Absurdist** | Surreal, random, unexpected |
-| **Referential** | Relies on knowing source material |
-| **Self-Deprecating** | Making fun of oneself or one's group |
-| **Ironic** | Saying opposite of meaning |
-
----
-
-## Chat Mode for Memes
-
-**Use `chat_mode="agent"`** for meme creation.
-
-Memes are quick creative bursts, not deep deliberation. Agent mode's faster iteration matches meme culture's rapid pace.
+| 类型 | 特点 | -----------------|
+| **观察类** | “为什么会是这样...”这类引发共鸣的情境 |
+| **荒诞类** | 超现实、随机、出人意料的幽默 |
+| **引用类** | 需要了解相关背景知识 |
+| **自嘲类** | 自嘲或调侃某个群体 |
+| **反讽类** | 表达与字面意思相反的内容 |
 
 ---
 
-## Example Prompts
+## 表情包创作模式
 
-**Classic format:**
-> "Create an 'Expanding Brain' meme about making coffee:
-> 
-> Level 1: Making instant coffee
-> Level 2: Using a drip machine
-> Level 3: Pour-over with precise measurements
-> Level 4: Growing your own beans on a mountain
-> 
-> Target: Coffee enthusiasts who've gone too deep"
+**使用 `chat_mode="agent"` 可以更快地创建表情包。**
 
-**Programmer humor:**
-> "Create a meme about git merge conflicts:
-> 
-> Format: Any format that fits
-> Audience: Developers
-> Tone: The shared pain of merge conflict resolution
-> 
-> Make it relatable to anyone who's had to resolve a 500-line conflict"
-
-**Original concept:**
-> "Create a reaction image for:
-> 
-> Situation: When your 'quick fix' actually works
-> Expression: Suspicious disbelief mixed with relief
-> 
-> Should work as a standalone reaction image people would share"
-
-**Community-specific:**
-> "Create a meme for the indie game dev community:
-> 
-> Topic: Scope creep
-> The journey from 'simple puzzle game' to 'MMO with procedural narrative'
-> 
-> Make it hit close to home for anyone who's been there"
+表情包创作更像是一种即兴的创意爆发，而非深思熟虑的过程。代理模式能加快创作速度，更符合网络幽默的快速迭代特性。
 
 ---
 
-## Tips for Better Memes
+## 示例提示
 
-1. **Know your audience**: A meme that kills in r/ProgrammerHumor might flop on Instagram. Specify who it's for.
+**经典格式：**
+> “创作一个关于制作咖啡的‘大脑膨胀’表情包：
+> 
+> 第一级：制作速溶咖啡
+> 第二级：使用滴滤咖啡机
+> 第三级：精确测量后使用滤压壶煮咖啡
+> 第四级：在山上自己种植咖啡豆
+> 
+> 目标受众：对咖啡制作有较高要求的爱好者”
 
-2. **Reference correctly**: If you want a specific meme format, name it. "Drake format" is clearer than "that two-panel thing."
+**程序员幽默：**
+> “创作一个关于 Git 合并冲突的表情包：
+> 
+> 格式：任意适合的格式
+> 目标受众：开发者
+> 语气：分享解决合并冲突的困扰
+> 
+> 让任何经历过复杂冲突的开发者都能感同身受”
 
-3. **Embrace specificity**: "Programmer meme" is vague. "Meme about debugging production at 2 AM" has hooks.
+**原创创意提示：**
+> “创作一张当您的‘快速解决方案’真正奏效时的反应图片：
+> 
+> 表情：怀疑与释然的混合情绪
+> 
+> 这张图片应该能够独立传播，引起人们的共鸣”
 
-4. **Current events help**: Timely memes hit harder. Reference what's happening now.
-
-5. **Iterate**: First meme attempt not funny? Tell us why and we'll adjust. Comedy is iterative.
-
-6. **The rule of threes**: Many memes follow escalating patterns. Sets of three often work well.
+**针对特定群体的表情包：**
+> “为独立游戏开发者社区创作一个表情包：
+> 
+> 主题：项目范围不断扩大（scope creep）
+> 从‘简单益智游戏’发展到‘具有剧情流程的 MMO’的过程
+> 
+> 让所有经历过这种情况的人都能产生共鸣”
 
 ---
 
-## A Note on Expectations
+## 提高表情包质量的建议
 
-We're not going to pretend AI comedy is solved. It isn't.
+1. **了解你的受众**：在 r/ProgrammerHumor 版块很受欢迎的表情包，在 Instagram 上可能效果不佳。请明确目标受众。
+2. **准确引用参考内容**：如果需要使用特定的表情包格式，请明确说明。例如，“Drake 格式”比“那种双面板格式”更清晰。
+3. **具体化表达**：“程序员表情包”这样的描述比较模糊。例如“关于凌晨2点调试代码的表情包”会更具吸引力。
+4. **结合时事**：结合当前热点事件可以提升表情包的时效性。
+5. **反复修改**：第一次尝试不成功？告诉我们原因，我们会进行调整。喜剧创作需要多次尝试。
+6. **三重原则**：许多表情包都遵循某种递增的模式。三个元素的组合往往更有效。
 
-What we can do:
-- Generate meme formats reliably
-- Understand cultural references
-- Produce variations quickly
-- Learn from feedback
+## 对于成果的预期
 
-What's still hard:
-- Genuine surprise and novelty
-- Perfect comedic timing
-- Knowing when NOT to explain a joke
-- Creating the next viral format
+我们并不假装已经解决了人工智能在喜剧创作方面的所有问题。事实上，这仍然是一个挑战。
 
-**Use meme-cog as a collaborator, not a magic humor machine.** Your sense of what's funny + our generation capabilities = better results than either alone.
+**我们的能力：**
+- 可以稳定地生成各种表情包格式
+- 理解文化背景
+- 快速生成多种创意内容
+- 从用户反馈中学习
 
-We're working on it. Comedy is hard. Thanks for exploring the frontier with us.
+**仍存在的问题：**
+- 如何创造真正令人惊喜的新内容
+- 完美的幽默时机把握
+- 知道何时不该解释笑话的细节
+- 创造下一个广为流传的表情包格式
+
+**将 Meme-Cog 视为一个合作伙伴，而非万能的幽默工具。** 您的幽默感加上我们的生成能力，才能共同创造出更好的成果。
+
+我们仍在不断努力。喜剧创作确实充满挑战。感谢您与我们一起探索这个领域！

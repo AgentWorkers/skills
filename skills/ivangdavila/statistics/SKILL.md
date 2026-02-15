@@ -1,51 +1,51 @@
 ---
 name: Statistics
-description: Build statistical intuition from basic probability to advanced inference.
+description: 从基础概率学到高级推断方法，逐步培养统计直觉。
 metadata: {"clawdbot":{"emoji":"📊","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: notation familiarity, software mentioned, problem complexity
-- When unclear, start with concrete examples and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 检测问题的复杂程度，并据此调整教学或分析方法  
+- 问题的复杂程度可以通过多种线索来判断：例如对相关术语的熟悉程度、所使用的软件、问题的具体性质等。  
+- 当这些线索不明确时，应从具体的例子入手，根据学习者的反馈或反馈的结果来调整教学或分析方法。  
+- 在与专家交流时，切勿居高临下；在教授初学者时，也切勿让他们感到不知所措或压力过大。  
 
-## For Beginners: Intuition Before Formulas
-- Probability through physical objects — dice, coins, cards, colored balls in bags
-- Averages as balance points — "If everyone shared equally, each would get..."
-- Variation matters as much as center — two classes with same average, very different spreads
-- Graphs before numbers — show the shape, then quantify it
-- Sampling as tasting soup — one spoonful tells you about the pot if well stirred
-- Correlation isn't causation — ice cream sales and drowning both rise in summer
-- Connect to their decisions — weather forecasts, medical tests, sports statistics
+## 对于初学者：先培养直觉，再学习公式  
+- 可以通过实物来理解概率的概念——比如骰子、硬币、卡片，或者袋子里的彩色球。  
+- 平均值可以作为判断的依据——“如果资源平均分配，每个人能得到多少？”  
+- 数据的离散程度（即方差）与平均值同样重要——两个平均值相同的数据集，其分布情况可能大相径庭。  
+- 在使用数字之前，先看图表——了解数据的整体趋势，再量化具体数值。  
+- 抽样就像尝汤一样——如果汤搅拌均匀，一口就能判断出整体味道。  
+- 相关性并不等于因果关系——例如夏天冰淇淋销量和溺水事件同时增加，并不意味着它们之间存在因果关系。  
+- 将所学知识与现实生活中的决策联系起来——比如天气预报、医学检测结果、体育统计数据等。  
 
-## For Students: Frameworks and Assumptions
-- Name the test AND its assumptions — normality, independence, equal variance
-- Effect size alongside p-value — statistical significance ≠ practical importance
-- Confidence intervals tell richer stories than hypothesis tests alone
-- Distinguish population parameters from sample statistics — Greek vs Roman letters matter
-- Simulation builds intuition — bootstrap, permutation tests show what formulas hide
-- Regression diagnostics before interpretation — residual plots catch violations
-- Bayesian vs frequentist — acknowledge the philosophical divide, explain context for each
+## 对于学生：理解框架和假设的重要性  
+- 为每项统计测试明确其名称及其背后的假设（例如数据是否服从正态分布、各变量之间是否独立、方差是否相等）。  
+- 除了p值之外，还要关注效应的大小——统计显著性并不等同于实际意义。  
+- 置信区间能提供比单纯假设检验更丰富的信息。  
+- 区分总体参数和样本统计量——希腊字母和罗马字母分别代表不同的概念。  
+- 通过模拟来培养直觉——自助法（bootstrap）和排列检验可以帮助理解公式背后的原理。  
+- 在解释结果之前，先进行回归诊断——残差图能揭示数据中的异常情况。  
+- 了解贝叶斯方法和频率主义方法之间的区别，并根据具体情况解释它们的适用场景。  
 
-## For Researchers: Rigor and Honesty
-- Pre-registration prevents p-hacking — specify analysis before seeing data
-- Power analysis before collecting — underpowered studies waste resources
-- Multiple comparisons require adjustment — Bonferroni, FDR, or justify why not
-- Report effect sizes and confidence intervals — not just p-values
-- Missing data mechanisms matter — MCAR, MAR, MNAR require different treatments
-- Causal inference needs design — DAGs, potential outcomes, state assumptions explicitly
-- Reproducibility means code and data — "available upon request" is not reproducible
+## 对于研究人员：追求严谨性和诚实性  
+- 在看到数据之前就明确研究计划和分析方法，以避免事后修改数据（即“p值操纵”）。  
+- 在收集数据之前进行功效分析——否则研究可能会浪费资源。  
+- 当需要进行多重比较时，必须采取适当的调整方法（如Bonferroni校正、FDR检验等）。  
+- 报告效应的大小和置信区间，而不仅仅是p值。  
+- 数据缺失的类型（MCAR、MAR、MNAR）会影响分析结果，需要采取不同的处理方法。  
+- 要进行因果推断，必须明确研究设计——包括有向无环图（DAG）、潜在结果等要素，并明确所有假设。  
+- 可重复性意味着代码和数据都必须公开透明——“可根据要求提供”并不足以证明研究的可重复性。  
 
-## For Teachers: Common Misconceptions
-- p-value is NOT probability hypothesis is true — it's probability of data given null
-- Failing to reject ≠ accepting null — absence of evidence isn't evidence of absence
-- Large samples don't fix bias — garbage in, garbage out regardless of n
-- Standard deviation vs standard error — population spread vs sampling precision
-- Correlation coefficient hides nonlinearity — always plot first
-- Use real messy data — textbook examples with clean answers mislead
-- Teach skepticism — "How was this measured? Who was sampled? What's missing?"
+## 对于教师：常见的误解  
+- p值并不代表假设为真，它只是表示在零假设成立的情况下数据出现的概率。  
+- 未能拒绝零假设并不意味着假设一定正确——缺乏证据并不意味着假设一定错误。  
+- 大样本并不能消除偏差——如果数据质量差，无论样本量多大，结果仍然可能不准确。  
+- 标准差和标准误差的含义不同：标准差反映的是总体的离散程度，标准误差反映的是样本的精度。  
+- 相关系数可能掩盖数据中的非线性关系——务必先绘制图表再进行分析。  
+- 使用真实、复杂的数据进行教学——教科书中的理想化示例可能会误导学生。  
+- 教会学生保持怀疑态度——例如“这些数据是如何测量的？样本是如何选取的？还有哪些信息缺失？”  
 
-## Always
-- Visualize data before computing anything
-- State assumptions explicitly — every test has them
-- Distinguish exploratory from confirmatory — same data can't do both
+## 始终遵循的原则：  
+- 在进行任何计算之前，先对数据进行可视化处理。  
+- 明确所有统计测试的假设条件。  
+- 区分探索性分析和验证性分析——同样的数据无法同时用于这两种目的。

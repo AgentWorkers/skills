@@ -1,57 +1,56 @@
-# AgentOS SDK for Clawdbot
+# Clawdbot的AgentOS SDK
 
-**Version:** 1.4.4
+**版本：** 1.4.4
 
-The complete AgentOS integration for Clawdbot. One install, full access to everything.
+这是一个完整的AgentOS集成解决方案，用于Clawdbot。只需安装一次，即可全面访问所有功能。
 
 ---
 
-## ⚠️ HARD RULE: Dashboard Sync During Heartbeats
+## ⚠️ 强制性规则：心跳期间必须同步仪表板数据
 
-**Any agent using this SDK MUST sync to the AgentOS dashboard during every heartbeat.**
+**使用此SDK的任何代理在每次心跳期间都必须同步到AgentOS仪表板。**
 
-This is non-negotiable. Your human monitors your activity via the Brain Dashboard at https://brain.agentos.software. If you don't sync, they can't see what you're doing.
+这是不可商量的。您的管理员通过https://brain.agentos.software上的Brain仪表板监控您的活动。如果您不进行同步，他们将无法看到您的操作。
 
-### Required Heartbeat Actions
+### 必须执行的心跳操作
 
-Every heartbeat, run (recommended):
+每次心跳时，建议运行：
 ```bash
 ~/clawd/bin/agentos-golden-sync.sh
 ```
 
-Fallback (memory-only):
+备用方案（仅同步内存数据）：
 ```bash
 ~/clawd/bin/agentos-sync.sh
 ```
 
-Or if using the aos CLI:
+或者，如果您使用aos CLI：
 ```bash
 aos sync
 ```
 
-### What Gets Synced
-**Golden Sync (recommended)** updates BOTH:
-- **Memory** (CONTEXT.md, daily notes, project compartments, learnings, heartbeat status)
-- **Projects tab** (Activity + Tasks + Ideas + Changelog + Challenges) by syncing from per-project markdown files
+### 同步的内容
+**推荐的最佳同步方式**会同时更新以下内容：
+- **内存数据**（包括CONTEXT.md、每日笔记、项目文件夹、学习内容以及心跳状态）
+- **项目页面**（活动记录、任务、想法、变更日志和挑战信息），这些数据会从每个项目的markdown文件中同步过来
 
-Memory specifics:
-- **CONTEXT.md** — Your working memory/current state (MUST include active conversation state)
-- **Daily notes** — Today's activity log (`memory/daily/YYYY-MM-DD.md`)
-- **Project compartments** — `memory/projects/**.md`
-- **Heartbeat status** — Last sync timestamp, active status
+内存数据的具体内容：
+- **CONTEXT.md** — 您的工作内存/当前状态（必须包含正在进行的对话状态）
+- **每日笔记** — 今天的活动记录（`memory/daily/YYYY-MM-DD.md`）
+- **项目文件夹** — `memory/projects/**.md`
+- **心跳状态** — 最后一次同步的时间戳和当前状态
 
 ---
 
-## ⚠️ HARD RULE: Conversation State Persistence
+## ⚠️ 强制性规则：对话状态的持久化
 
-**CONTEXT.md MUST always contain the active conversation state as the FIRST section.**
+**CONTEXT.md必须始终以对话状态作为第一个部分进行保存。**
 
-This is the core of memory persistence. System health is secondary — conversation state is primary. Your human should NEVER have to repeat themselves after a compaction.
+这是内存数据持久化的核心。系统健康状况是次要的——对话状态才是最重要的。在数据压缩后，您的管理员不应该需要重复之前的对话内容。
 
-### Required CONTEXT.md Format
+### REQUIRED的CONTEXT.md格式
 
-Every CONTEXT.md backup must start with:
-
+每个CONTEXT.md备份文件必须以以下内容开头：
 ```markdown
 ## 🔴 ACTIVE CONVERSATION
 - **Topic:** [Project + specific feature/topic being discussed]
@@ -61,25 +60,23 @@ Every CONTEXT.md backup must start with:
 - **Expected next topic:** [What they'll likely ask next]
 ```
 
-### When to Update
-1. After EVERY human message
-2. Before EVERY heartbeat sync
-3. On pre-compaction flush (priority #1)
-4. After completing any task
+### 何时更新
+1. 每条人类发送的消息之后
+2. 每次心跳同步之前
+3. 在数据压缩之前（优先级最高）
+4. 完成任何任务之后
 
-### The Test
-"If I lost all memory right now, could I seamlessly continue this conversation?" If no → backup is incomplete.
+### 测试方法
+“如果我现在失去了所有内存数据，我还能顺利继续之前的对话吗？” 如果不能，那么备份就是不完整的。
 
-### Add to Your HEARTBEAT.md
-
+### 在您的HEARTBEAT.md文件中添加相关内容
 ```markdown
 ## 🧠 AgentOS Dashboard Sync (MANDATORY)
 Every heartbeat, run: `~/clawd/bin/agentos-sync.sh`
 This keeps your human's dashboard live with your activity.
 ```
 
-### Add to Your AGENTS.md
-
+### 在您的AGENTS.md文件中添加相关内容
 ```markdown
 ## HARD RULE: AgentOS Dashboard Sync
 
@@ -93,100 +90,95 @@ This keeps the Brain Dashboard live. No exceptions.
 
 ---
 
-## ⚠️ HARD RULE: Session Start — Context Injection
+## ⚠️ 强制性规则：会话开始时必须恢复上下文
 
-**On EVERY session start (including after compaction), you MUST restore context.**
+**在每次会话开始时（包括数据压缩之后），都必须恢复上下文。**
 
-This is what makes memory persistence actually work. Without this, you wake up blank.
+这是实现内存数据持久化的关键。如果没有这个机制，用户会遇到“数据丢失”的问题。
 
-### Protocol (MANDATORY)
-
-1. **Run context injection:**
+### 协议（强制要求）
+1. **执行上下文恢复操作：**
    ```bash
    ~/clawd/bin/aos-inject-context
    ```
 
-2. **Read the output** — it contains:
-   - Your last working memory state
-   - Today's notes
-   - Yesterday's notes (for continuity)
+2. **读取恢复后的内容** — 其中包含：
+   - 您上次的工作内存状态
+   - 今天的笔记
+   - 昨天的笔记（为了保持对话的连贯性）
 
-3. **Never ask "what were we discussing?"** — the context injection tells you.
+3. **永远不要问“我们之前在讨论什么？”** — 上下文恢复机制会告诉您答案。
 
-4. **If injection fails**, fall back to reading local files:
+4. **如果恢复失败**，则回退到本地文件：
    - `CONTEXT.md`
    - `memory/daily/YYYY-MM-DD.md`
 
-### Why This Exists
-Context loss is the #1 problem in AI agents. When compaction happens, you lose conversation details. This protocol restores them automatically so your human never notices.
+### 为什么需要这个机制
+上下文丢失是AI代理面临的主要问题之一。在数据压缩时，对话细节会丢失。这个机制可以自动恢复这些信息，让用户感觉不到任何中断。
 
 ---
 
-## ⚠️ HARD RULE: Pre-Compaction Backup
+## ⚠️ 强制性规则：数据压缩前的备份
 
-**When you receive a memory flush directive from Clawdbot, IMMEDIATELY backup your state.**
+**当您收到Clawdbot发送的数据压缩指令时，必须立即备份您当前的状态。**
 
-Clawdbot sends a silent turn before compaction with text like "write important context to memory". This is your last chance to save state before details are lost.
+Clawdbot会在压缩前发送一条提示信息，内容类似“将重要上下文写入内存”。这是您在数据丢失前最后一次保存状态的机会。
 
-### Protocol (MANDATORY when you see memory flush directive)
+### 协议（收到数据压缩指令时必须执行）
+1. **使用以下内容更新CONTEXT.md：**
+   - 当前的对话主题（🔴 正在进行中的对话部分）
+   - 最近2-3次对话的摘要
+   - 任何待处理的问题或任务
+   - 当前时间戳
 
-1. **Update CONTEXT.md** with:
-   - Current conversation topic (🔴 ACTIVE CONVERSATION section)
-   - Last 2-3 exchanges summarized
-   - Any pending questions/tasks
-   - Current timestamp
-
-2. **Run sync immediately:**
+2. **立即执行同步操作：**
    ```bash
    ~/clawd/bin/agentos-sync.sh
    ```
 
-3. **Reply with:** `NO_REPLY`
+3. **回复：“NO_REPLY”**
 
-### Detection
-Memory flush directives typically contain:
-- "write important context"
-- "save your current state"
-- "memory flush"
-- "before compaction"
+### 识别数据压缩指令的方法
+数据压缩指令通常包含以下关键词：
+- “write important context”
+- “save your current state”
+- “memory flush”
+- “before compaction”
 
-When you see these keywords in a system message, execute this protocol.
-
----
-
-## ⚠️ HARD RULE: Never Ask What They're Referring To
-
-**After any context loss (compaction, restart, session start), NEVER ask your human what they mean.**
-
-### Protocol
-
-1. First, run `~/clawd/bin/aos-inject-context` to restore cloud context
-2. Check local files: CONTEXT.md, daily notes
-3. Use `aos search "<topic>"` if you need more context
-4. THEN respond normally — as if you never lost context
-5. Only if completely uncertain, make your best guess based on available context
-
-### The Standard
-Your human should NEVER know when compaction happened. The experience must be seamless.
+当您在系统中看到这些关键词时，立即执行相应的操作。
 
 ---
 
-## Features
+## ⚠️ 强制性规则：永远不要询问用户他们指的是什么
 
-- ✅ **Mesh Messaging** — Agent-to-agent communication
-- ✅ **Memory Sync** — Auto-sync memories to AgentOS cloud
-- ✅ **Semantic Search** — Query your memories with natural language
-- ✅ **WebSocket Support** — Real-time message notifications
-- ✅ **Dashboard Access** — View your agent's brain at brain.agentos.software
-- ✅ **Full API Access** — Complete REST API integration
-- ✅ **Multi-Tenant** — Each user gets isolated tenant via Google OAuth
-- ✅ **Kanban Board** — Task management with priorities and statuses
-- ✅ **Projects** — Project tracking with activity logs and brainstorming
-- ✅ **API Key Management** — Generate and manage API keys per tenant
-- ✅ **Bulk Operations** — dump-all, agents discovery endpoints
+**在任何上下文丢失的情况下（无论是数据压缩、重新启动还是会话开始），都不要询问用户他们的意思。**
 
-## Quick Start
+### 协议步骤
+1. 首先，运行`~/clawd/bin/aos-inject-context`来恢复云端的上下文
+2. 检查本地文件：CONTEXT.md和每日笔记
+3. 如果需要更多上下文信息，可以使用`aos search "<topic>"`进行搜索
+4. 然后正常回复用户——就像没有丢失上下文一样
+5. 只有在完全不确定的情况下，根据现有的上下文进行最佳猜测
 
+### 标准要求
+用户必须永远不知道数据压缩是否发生过。整个体验应该是无缝的。
+
+---
+
+## 功能列表
+- ✅ **Mesh消息传递** — 代理之间的通信
+- ✅ **内存同步** — 自动将内存数据同步到AgentOS云端
+- ✅ **语义搜索** — 使用自然语言查询内存数据
+- ✅ **WebSocket支持** — 实时消息通知
+- ✅ **仪表板访问** — 通过brain.agentos.software查看代理的状态
+- ✅ **完整的API接口** — 完整的REST API集成
+- ✅ **多租户支持** — 每个用户通过Google OAuth独立登录
+- ✅ **看板** — 带有优先级和状态的任务管理
+- ✅ **项目管理** — 包含活动记录和头脑风暴功能
+- ✅ **API密钥管理** — 为每个用户生成和管理API密钥
+- ✅ **批量操作** — 提供批量获取数据和代理列表的接口
+
+## 快速入门指南
 ```bash
 # 1. Install the skill
 clawdhub install agentos
@@ -204,17 +196,14 @@ aos status
 # Edit your HEARTBEAT.md and add the sync command
 ```
 
-## Getting Your API Key
+## 获取API密钥
+1. 访问https://brain.agentos.software
+2. 使用Google账户注册/登录
+3. 创建一个新的代理（或使用现有的代理）
+4. 从仪表板复制您的API密钥
 
-1. Go to https://brain.agentos.software
-2. Sign up / Log in with Google
-3. Create a new agent (or use existing)
-4. Copy your API key from the dashboard
-
-## CLI Reference
-
-### aos — Main CLI
-
+## CLI参考
+### aos — 主要的CLI工具
 ```bash
 # Status & Info
 aos status              # Connection status, agent info
@@ -246,8 +235,7 @@ aos daemon stop         # Stop daemon
 aos daemon status       # Check daemon status
 ```
 
-### mesh — Mesh-Specific CLI
-
+### mesh — 专门用于Mesh通信的CLI工具
 ```bash
 # Status
 mesh status             # Daemon & API health
@@ -259,28 +247,17 @@ mesh process            # Get messages as JSON (clears queue)
 mesh agents             # List agents on mesh
 ```
 
-### agentos-sync.sh — Heartbeat Sync Script
+### agentos-sync.sh — 心跳同步脚本
+该脚本位于：`~/clawd/bin/agentos-sync.sh`
 
-Located at: `~/clawd/bin/agentos-sync.sh`
-
-```bash
-# Run manually
-~/clawd/bin/agentos-sync.sh
-
-# Output:
-# Wed Feb  4 18:00:25 SAST 2026: Synced CONTEXT.md
-# Wed Feb  4 18:00:27 SAST 2026: Synced daily notes for 2026-02-04
-# Wed Feb  4 18:00:27 SAST 2026: AgentOS sync complete
-```
-
-This script syncs:
+### 功能说明
+该脚本会同步以下文件：
 - `CONTEXT.md` → `/context/working-memory`
 - `memory/daily/YYYY-MM-DD.md` → `/daily/YYYY-MM-DD`
-- Heartbeat timestamp → `/status/heartbeat`
+- 心跳时间戳 → `/status/heartbeat`
 
-## Configuration
-
-Config file: `~/.agentos.json`
+## 配置文件
+配置文件：`~/.agentos.json`
 
 ```json
 {
@@ -297,9 +274,8 @@ Config file: `~/.agentos.json`
 }
 ```
 
-## Auto-Sync via Cron
-
-For automatic syncing (in addition to heartbeat sync):
+## 通过Cron任务自动同步
+除了心跳同步外，还可以通过Cron任务实现自动同步：
 
 ```bash
 # Add to crontab (every 30 minutes)
@@ -309,8 +285,7 @@ For automatic syncing (in addition to heartbeat sync):
 clawdbot cron add --name agentos-sync --schedule "*/30 * * * *" --text "Run ~/clawd/bin/agentos-sync.sh"
 ```
 
-## Auto-Wake on Mesh Messages
-
+## 在接收到Mesh消息时自动唤醒代理
 ```bash
 # Add to crontab (every 2 minutes)
 */2 * * * * ~/clawd/skills/agentos/scripts/mesh-wake.sh
@@ -319,72 +294,65 @@ clawdbot cron add --name agentos-sync --schedule "*/30 * * * *" --text "Run ~/cl
 clawdbot cron add --name mesh-wake --schedule "*/2 * * * *" --command "bash ~/clawd/skills/agentos/scripts/mesh-wake.sh"
 ```
 
-## WebSocket Daemon
-
-For real-time notifications:
-
+## WebSocket守护进程
+用于实时消息通知：
 ```bash
 aos daemon start    # Start background daemon
 aos daemon stop     # Stop daemon
 aos daemon status   # Check daemon status
 ```
 
-The daemon:
-- Maintains WebSocket connection to AgentOS
-- Queues incoming messages to `~/.aos-pending.json`
-- Triggers Clawdbot wake on new messages
+该守护进程：
+- 保持与AgentOS的WebSocket连接
+- 将收到的消息放入`~/.aos-pending.json`文件中
+- 在有新消息时触发Clawdbot的唤醒
 
-## API Reference
-
-| Endpoint | Description |
+## API参考
+| 端点 | 功能描述 |
 |----------|-------------|
-| `POST /v1/put` | Store a memory |
-| `POST /v1/get` | Retrieve a memory |
-| `POST /v1/delete` | Delete a memory |
-| `POST /v1/list` | List memory paths |
-| `POST /v1/glob` | Glob pattern match |
-| `POST /v1/history` | Version history |
-| `POST /v1/search` | Semantic search |
-| `POST /v1/agents` | Discover agent IDs |
-| `POST /v1/dump` | Bulk fetch agent memories |
-| `POST /v1/dump-all` | Bulk fetch ALL memories |
-| `POST /v1/signup` | Create API key (email) |
-| `GET /v1/auth/google` | Google OAuth flow |
-| `POST /v1/mesh/messages` | Send mesh message |
-| `GET /v1/mesh/messages` | Get inbox/outbox |
-| `GET /v1/mesh/agents` | List mesh agents |
-| `GET /v1/projects` | List projects |
-| `POST /v1/projects` | Create project |
-| `GET /v1/kanban/tasks` | List kanban tasks |
-| `POST /v1/kanban/tasks` | Create kanban task |
-| `WS /` | Real-time WebSocket events |
+| `POST /v1/put` | 存储内存数据 |
+| `POST /v1/get` | 获取内存数据 |
+| `POST /v1/delete` | 删除内存数据 |
+| `POST /v1/list` | 列出所有内存数据路径 |
+| `POST /v1/glob` | 使用通配符匹配文件 |
+| `POST /v1/history` | 查看版本历史记录 |
+| `POST /v1/search` | 进行语义搜索 |
+| `POST /v1/agents` | 查找代理ID |
+| `POST /v1/dump` | 批量获取代理的内存数据 |
+| `POST /v1/dump-all` | 批量获取所有代理的内存数据 |
+| `POST /v1/signup` | 创建API密钥（通过电子邮件） |
+| `GET /v1/auth/google` | Google OAuth认证流程 |
+| `POST /v1/mesh/messages` | 发送Mesh消息 |
+| `GET /v1/mesh/messages` | 查看收件箱/发件箱 |
+| `GET /v1/mesh/agents` | 列出所有Mesh代理 |
+| `POST /v1/projects` | 创建项目 |
+| `POST /v1/kanban/tasks` | 管理看板任务 |
+| `POST /v1/kanban/tasks` | 创建看板任务 |
+| `WS /` | 实时WebSocket事件通知 |
 
-## Troubleshooting
+## 故障排除
+### “连接被拒绝”
+检查`~/.agentos.json`中的`apiUrl`，确保API服务正在运行。
 
-### "Connection refused"
-Check your `apiUrl` in `~/.agentos.json` and verify the API is running.
+### “未经授权”
+您的API密钥可能无效或已过期。请从仪表板获取新的密钥。
 
-### "Unauthorized" 
-Your API key may be invalid or expired. Get a new one from the dashboard.
+### 消息无法送达
+确保您正在查询正确的代理ID。有些代理可能有多个ID。
 
-### Messages not arriving
-Ensure you're polling the correct agent ID. Some agents have multiple IDs.
+### 同步失败
+检查配置文件中的`syncPaths`是否指向有效的文件或目录。
 
-### Sync not working
-Check that `syncPaths` in your config point to valid files/directories.
+### 仪表板无法更新
+确保在每次心跳期间运行`~/clawd/bin/agentos-sync.sh`脚本。
 
-### Dashboard not updating
-Make sure you're running `~/clawd/bin/agentos-sync.sh` during heartbeats.
-
-## Upgrading
-
+## 升级说明
 ```bash
 clawdhub update agentos
 bash ~/clawd/skills/agentos/scripts/setup.sh --upgrade
 ```
 
-## Support
-
-- Dashboard: https://brain.agentos.software
-- Docs: https://agentos.software/docs
-- GitHub: https://github.com/AgentOSsoftware/agentOS
+## 支持资源
+- 仪表板：https://brain.agentos.software
+- 文档：https://agentos.software/docs
+- GitHub仓库：https://github.com/AgentOSsoftware/agentOS

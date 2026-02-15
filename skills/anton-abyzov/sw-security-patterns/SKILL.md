@@ -1,20 +1,20 @@
 ---
 name: security-patterns
-description: Real-time security pattern detector based on Anthropic's official security-guidance plugin. Use proactively when writing code to detect command injection, XSS, unsafe deserialization, and dynamic code execution risks. Identifies dangerous patterns BEFORE they're committed.
+description: 基于 Anthropic 官方安全指导插件的实时安全模式检测器。在编写代码时主动使用该工具，以检测命令注入、XSS（跨站脚本攻击）、不安全的反序列化操作以及动态代码执行风险。能够在这些危险行为被实际执行之前就识别出它们。
 allowed-tools: Read, Grep, Glob
 ---
 
-# Security Pattern Detector Skill
+# 安全模式检测器技能
 
-## Overview
+## 概述
 
-This skill provides real-time security pattern detection based on Anthropic's official security-guidance plugin. It identifies potentially dangerous coding patterns BEFORE they're committed.
+该技能基于Anthropic官方的安全指导插件，提供实时的安全模式检测功能。它能够在潜在危险的编码模式被提交之前就识别出来。
 
-## Detection Categories
+## 检测类别
 
-### 1. Command Injection Risks
+### 1. 命令注入风险
 
-**GitHub Actions Workflow Injection**
+**GitHub Actions工作流注入**
 ```yaml
 # DANGEROUS - User input directly in run command
 run: echo "${{ github.event.issue.title }}"
@@ -25,7 +25,7 @@ env:
 run: echo "$TITLE"
 ```
 
-**Node.js Child Process Execution**
+**Node.js子进程执行**
 ```typescript
 // DANGEROUS - Shell command with user input
 exec(`ls ${userInput}`);
@@ -36,7 +36,7 @@ execFile('ls', [sanitizedPath]);
 spawn('ls', [sanitizedPath], { shell: false });
 ```
 
-**Python OS Commands**
+**Python操作系统命令**
 ```python
 # DANGEROUS
 os.system(f"grep {user_input} file.txt")
@@ -46,9 +46,9 @@ subprocess.call(user_input, shell=True)
 subprocess.run(['grep', sanitized_input, 'file.txt'], shell=False)
 ```
 
-### 2. Dynamic Code Execution
+### 2. 动态代码执行
 
-**JavaScript eval-like Patterns**
+**类似JavaScript `eval`的代码模式**
 ```typescript
 // DANGEROUS - All of these execute arbitrary code
 eval(userInput);
@@ -60,9 +60,9 @@ setInterval(userInput, 1000); // When string passed
 const config = JSON.parse(configString);
 ```
 
-### 3. DOM-based XSS Risks
+### 3. 基于DOM的XSS风险
 
-**React dangerouslySetInnerHTML**
+**React的`dangerouslySetInnerHTML`方法**
 ```tsx
 // DANGEROUS - Renders arbitrary HTML
 <div dangerouslySetInnerHTML={{ __html: userContent }} />
@@ -72,7 +72,7 @@ import DOMPurify from 'dompurify';
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }} />
 ```
 
-**Direct DOM Manipulation**
+**直接DOM操作**
 ```typescript
 // DANGEROUS
 element.innerHTML = userInput;
@@ -83,9 +83,9 @@ element.textContent = userInput;
 element.innerText = userInput;
 ```
 
-### 4. Unsafe Deserialization
+### 4. 不安全的反序列化
 
-**Python Pickle**
+**Python的`pickle`模块**
 ```python
 # DANGEROUS - Pickle can execute arbitrary code
 import pickle
@@ -96,7 +96,7 @@ import json
 data = json.loads(user_provided_string)
 ```
 
-**JavaScript unsafe deserialization**
+**JavaScript的不安全反序列化**
 ```typescript
 // DANGEROUS with untrusted input
 const obj = eval('(' + jsonString + ')');
@@ -105,9 +105,9 @@ const obj = eval('(' + jsonString + ')');
 const obj = JSON.parse(jsonString);
 ```
 
-### 5. SQL Injection
+### 5. SQL注入
 
-**String Interpolation in Queries**
+**查询中的字符串插值**
 ```typescript
 // DANGEROUS
 const query = `SELECT * FROM users WHERE id = ${userId}`;
@@ -118,9 +118,9 @@ const query = 'SELECT * FROM users WHERE id = $1';
 db.query(query, [userId]);
 ```
 
-### 6. Path Traversal
+### 6. 路径遍历
 
-**Unsanitized File Paths**
+**未清理的文件路径**
 ```typescript
 // DANGEROUS
 const filePath = `./uploads/${userFilename}`;
@@ -131,25 +131,24 @@ const safePath = path.join('./uploads', path.basename(userFilename));
 if (!safePath.startsWith('./uploads/')) throw new Error('Invalid path');
 ```
 
-## Pattern Detection Rules
+## 模式检测规则
 
-| Pattern | Category | Severity | Action |
+| 模式 | 类别 | 严重程度 | 处理方式 |
 |---------|----------|----------|--------|
-| `eval(` | Code Execution | CRITICAL | Block |
-| `new Function(` | Code Execution | CRITICAL | Block |
-| `dangerouslySetInnerHTML` | XSS | HIGH | Warn |
-| `innerHTML =` | XSS | HIGH | Warn |
-| `document.write(` | XSS | HIGH | Warn |
-| `exec(` + string concat | Command Injection | CRITICAL | Block |
-| `spawn(` + shell:true | Command Injection | HIGH | Warn |
-| `pickle.loads(` | Deserialization | CRITICAL | Warn |
-| `${{ github.event` | GH Actions Injection | CRITICAL | Warn |
-| Template literal in SQL | SQL Injection | CRITICAL | Block |
+| `eval()` | 动态代码执行 | 严重（CRITICAL） | 阻止执行 |
+| `new Function()` | 动态代码执行 | 严重（CRITICAL） | 阻止执行 |
+| `dangerouslySetInnerHTML` | XSS攻击 | 高风险（HIGH） | 发出警告 |
+| `innerHTML =` | XSS攻击 | 高风险（HIGH） | 发出警告 |
+| `document.write()` | XSS攻击 | 高风险（HIGH） | 发出警告 |
+| `exec()` + 字符串拼接 | 命令注入 | 严重（CRITICAL） | 阻止执行 |
+| `spawn()` + `shell`: true` | 命令注入 | 高风险（HIGH） | 发出警告 |
+| `pickle.loads()` | 反序列化 | 严重（CRITICAL） | 发出警告 |
+| `${{ github.event }` | GitHub Actions注入 | 严重（CRITICAL） | 发出警告 |
+| SQL中的模板字面量 | SQL注入 | 严重（CRITICAL） | 阻止执行 |
 
-## Response Format
+## 响应格式
 
-When detecting a pattern:
-
+当检测到某种安全模式时，系统会给出如下提示：
 ```markdown
 ⚠️ **Security Warning**: [Pattern Category]
 
@@ -164,23 +163,23 @@ When detecting a pattern:
 
 **Safe Alternative**:
 ```typescript
-// Instead of eval(userInput), use:
+// 不要使用 `eval(userInput)`，而应使用：
 const data = JSON.parse(userInput);
 ```
 ```
 
-## Integration with Code Review
+## 与代码审查的集成
 
-This skill should be invoked:
-1. During PR reviews when new code is written
-2. As part of security audits
-3. When flagged by the code-reviewer skill
+该技能应在以下情况下被触发：
+1. 在编写新代码时进行代码审查
+2. 作为安全审计的一部分
+3. 当代码审查工具检测到问题时
 
-## False Positive Handling
+## 错误阳性处理
 
-Some patterns may be false positives:
-- `dangerouslySetInnerHTML` with DOMPurify is safe
-- `eval` in build tools (not user input) may be acceptable
-- `exec` with hardcoded commands is lower risk
+某些情况可能属于误报：
+- 使用`DOMPurify`处理`dangerouslySetInnerHTML`方法是安全的
+- 在构建工具中使用的`eval`（非用户输入）可能是可接受的
+- 使用硬编码命令的`exec`方法风险较低
 
-Always check the context before blocking.
+在采取阻止执行措施之前，请务必检查具体上下文。

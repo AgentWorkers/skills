@@ -1,6 +1,6 @@
 ---
 name: trading212-api
-description: 'This skill should be used when the user asks to "connect to Trading 212", "authenticate Trading 212 API", "place a trade", "buy stock", "sell shares", "place market order",, "place pending order", "place limit order", "cancel order", "check my balance", "view account summary", "get positions", "view portfolio", "check P&L", "find ticker symbol", "search instruments", "check trading hours", "view dividends", "get order history", "export transactions", "generate CSV report", or needs guidance on Trading 212 API authentication, order placement, position monitoring, account information, instrument lookup, or historical data retrieval.'
+description: '当用户请求“连接到Trading 212”、“认证Trading 212 API”、“下订单”、“买入股票”、“卖出股票”、“下达市价单”、“下达限价单”、“取消订单”、“查看我的余额”、“查看账户概要”、“获取持仓信息”、“查看投资组合”、“查看损益情况”、“查找股票代码”、“搜索交易工具”、“查看交易时间”、“查看股息信息”、“获取订单历史记录”、“导出交易数据”、“生成CSV报告”，或者需要关于Trading 212 API认证、订单下达、持仓监控、账户信息、工具查询或历史数据检索等方面的指导时，应使用此技能。'
 license: MIT License
 metadata:
   author: Trading 212
@@ -9,42 +9,41 @@ metadata:
 
 # Trading 212 API
 
-> **Note:** The Trading 212 API is currently in **beta** and under active development. Some endpoints or behaviors may change.
+> **注意：** Trading 212 API 目前处于 **测试** 阶段，仍在积极开发中。某些端点或功能可能会发生变化。
 
-## Quick Reference
+## 快速参考
 
-### Environments
+### 环境
 
-| Environment | Base URL                             | Purpose                                 |
+| 环境 | 基本 URL                             | 用途                                 |
 | ----------- | ------------------------------------ | --------------------------------------- |
-| Demo        | `https://demo.trading212.com/api/v0` | Paper trading - test without real funds |
-| Live        | `https://live.trading212.com/api/v0` | Real money trading                      |
+| 测试        | `https://demo.trading212.com/api/v0` | 不使用真实资金的模拟交易             |
+| 实时        | `https://live.trading212.com/api/v0` | 使用真实资金的交易                         |
 
-### Order Quantity Convention
+### 订单数量约定
 
-- **Positive quantity = BUY** (e.g., `10` buys 10 shares)
-- **Negative quantity = SELL** (e.g., `-10` sells 10 shares)
+- **正数数量 = 买入**（例如，`10` 表示买入 10 股）
+- **负数数量 = 卖出**（例如，`-10` 表示卖出 10 股）
 
-### Account Types
+### 账户类型
 
-Only **Invest** and **Stocks ISA** accounts are supported.
+仅支持 **Invest** 和 **Stocks ISA** 账户。
 
-### Instrument Identifiers
+### 仪器标识符
 
-Trading 212 uses custom tickers as unique identifiers for instruments.
-Always search for the Trading 212 ticker before making instrument requests.
+Trading 212 使用自定义的 ticker 作为仪器的唯一标识符。在发起仪器请求之前，请务必查找对应的 Trading 212 ticker。
 
 ---
 
-## Authentication
+## 认证
 
-HTTP Basic Auth with API Key (username) and API Secret (password).
+使用 HTTP Basic Auth 进行认证，需要 API Key（用户名）和 API Secret（密码）。
 
-### Check Existing Setup First
+### 先检查现有设置
 
-Before guiding the user through authentication setup, check if credentials are already configured:
+在指导用户进行认证设置之前，请先确认凭据是否已经配置：
 
-**Semantic rule:** Credentials are configured when **at least one complete set** is present: a complete set is key + secret for the same account (e.g. `T212_API_KEY` + `T212_API_SECRET`, or `T212_API_KEY_INVEST` + `T212_API_SECRET_INVEST`, or `T212_API_KEY_STOCKS_ISA` + `T212_API_SECRET_STOCKS_ISA`). You do not need all four account-specific vars; having only the Invest pair or only the Stocks ISA pair is enough. Check for any combination that gives at least one usable key+secret pair.
+**规则说明：** 当至少有一组完整的凭据时，才认为配置完成：一组完整的凭据包括同一账户的 API Key 和 API Secret（例如 `T212_API_KEY` + `T212_API_SECRET`，或 `T212_API_KEY_INVEST` + `T212_API_SECRET_INVEST`，或 `T212_API_KEY_stockS_ISA` + `T212_API_SECRET_stockS_ISA`）。不需要所有四种账户特定的变量；只需 Invest 或 Stocks ISA 对应的凭据即可。检查是否存在至少一组可用的 key+secret 组合。
 
 ```bash
 # Example: configured if any complete credential set exists
@@ -61,48 +60,48 @@ else
 fi
 ```
 
-If any complete set is present, skip the full setup and proceed with API calls; when making requests, use the resolution order in "Making Requests" below (pick the pair that matches the user's account context when multiple sets exist). Do not ask the user to run derivation one-liners or merge keys into a header. Only guide users through the full setup process below when no complete credential set exists.
+如果存在任何一组完整的凭据，请跳过完整的设置流程，直接进行 API 调用；在发起请求时，请按照“发起请求”部分中的说明选择合适的凭据组合。不要让用户运行额外的代码或手动合并凭据。只有在没有完整凭据组合的情况下，才需要指导用户完成完整的设置流程。
 
-> **Important:** Before making any API calls, always ask the user which environment they want to use: **LIVE** (real money) or **DEMO** (paper trading). Do not assume the environment.
+> **重要提示：** 在进行任何 API 调用之前，务必询问用户希望使用哪种环境：**实时（LIVE）** 还是 **测试**（DEMO）。不要默认使用某个环境。
 
-### API Keys Are Environment-Specific
+### API Key 是环境特定的
 
-**API keys are tied to a specific environment and cannot be used across environments.**
+**API Key 与特定环境绑定，不能在不同环境之间共享。**
 
-| API Key Created In | Works With            | Does NOT Work With    |
+| API Key 的创建环境 | 可使用的环境            | 不能使用的环境    |
 | ------------------ | --------------------- | --------------------- |
-| LIVE account       | `live.trading212.com` | `demo.trading212.com` |
-| DEMO account       | `demo.trading212.com` | `live.trading212.com` |
+| 实时账户       | `live.trading212.com` | `demo.trading212.com` |
+| 测试账户       | `demo.trading212.com` | `live.trading212.com` |
 
-If you get a 401 error, verify that:
+如果收到 401 错误，请确认：
 
-1. You're using the correct API key for the target environment
-2. The API key was generated in the same environment (LIVE or DEMO) you're trying to access
+1. 使用的 API Key 是否与目标环境匹配
+2. API Key 是否在尝试访问的环境（实时或测试）中生成
 
-### Get Credentials
+### 获取凭据
 
-1. **Decide which environment to use** - LIVE (real money) or DEMO (paper trading)
-2. Open Trading 212 app (mobile or web)
-3. **Switch to the correct account** - Make sure you're in LIVE or DEMO mode matching your target environment
-4. Navigate to **Settings** > **API**
-5. Generate a new API key pair - you'll receive:
-   - **API Key (ID)** (e.g., `35839398ZFVKUxpHzPiVsxKdOtZdaDJSrvyPF`)
-   - **API Secret** (e.g., `7MOzYJlVJgxoPjdZJCEH3fO9ee7A0NzLylFFD4-3tlo`)
-6. **Store the credentials separately** for each environment if you use both
+1. **确定使用哪种环境** - 实时（LIVE）或测试（DEMO）
+2. 打开 Trading 212 应用程序（移动端或网页版）
+3. **切换到正确的账户** - 确保处于与目标环境匹配的实时或测试模式
+4. 进入 **设置** > **API**
+5. 生成新的 API Key 对
+   - **API Key (ID)**（例如，`35839398ZFVKUxpHzPiVsxKdOtZdaDJSrvyPF`)
+   - **API Secret**（例如，`7MOzYJlVJgxoPjdZJCEH3fO9ee7A0NzLylFFD4-3tlo`)
+6. 如果同时使用两种环境，请分别为每种环境存储凭据
 
-### Building the Auth Header
+### 构建认证头部
 
-Combine your API Key (ID) and Secret with a colon, base64 encode, and prefix with `Basic ` for the Authorization header.
+将 API Key (ID) 和 Secret 用冒号连接起来，进行 Base64 编码，并在 Authorization 头部前加上 `Basic`。
 
-**Optional:** To precompute the header from key/secret, you can set:
+**可选：** 可以预先计算头部信息：
 
 ```bash
 export T212_AUTH_HEADER="Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base64)"
 ```
 
-Otherwise, the agent builds the header from `T212_API_KEY` and `T212_API_SECRET` when making requests.
+否则，代理会在发起请求时根据 `T212_API_KEY` 和 `T212_API_SECRET` 自动构建头部信息。
 
-**Manual (placeholders):**
+**手动设置（占位符示例）：**
 
 ```bash
 # Format: T212_AUTH_HEADER = "Basic " + base64(API_KEY_ID:API_SECRET)
@@ -112,17 +111,17 @@ export T212_AUTH_HEADER="Basic $(echo -n "<YOUR_API_KEY_ID>:<YOUR_API_SECRET>" |
 export T212_AUTH_HEADER="Basic $(echo -n "35839398ZFVKUxpHzPiVsxKdOtZdaDJSrvyPF:7MOzYJlVJgxoPjdZJCEH3fO9ee7A0NzLylFFD4-3tlo" | base64)"
 ```
 
-### Making Requests
+### 发起请求
 
-When making API calls, use the first option that applies (semantically: pick the credential set that matches the user's account, or the only set present):
+在发起 API 调用时，根据实际情况选择合适的凭据组合：
 
-- **If `T212_AUTH_HEADER` and `T212_BASE_URL` are set:** use them in requests.
-- **Else if `T212_API_KEY` and `T212_API_SECRET` are set:** use this pair (single account). Build header as `Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base64)` and base URL as `https://${T212_ENV:-live}.trading212.com`. Do not guide the user to derive or merge; you do it.
-- **Else if both account-specific pairs are set** (`T212_API_KEY_INVEST`/`T212_API_SECRET_INVEST` and `T212_API_KEY_STOCKS_ISA`/`T212_API_SECRET_STOCKS_ISA`): the user must clearly specify which account to target (Invest or Stocks ISA), unless they ask for information for **all accounts**. Use the Invest pair when the user refers to Invest, and the Stocks ISA pair when the user refers to ISA/Stocks ISA. **If the user wants information for all accounts, make multiple API calls—one per account** (Invest and Stocks ISA)—and present or aggregate the results for both. **If it is not clear from context which account to use (and they did not ask for all accounts), ask for confirmation before making API calls** (e.g. "Which account should I use — Invest or Stocks ISA?"). Do not assume. Build the header from the chosen key/secret and base URL as `https://${T212_ENV:-live}.trading212.com`.
-- **Else if only the Invest pair is set** (`T212_API_KEY_INVEST` and `T212_API_SECRET_INVEST`): use this pair for requests; if the user asks about Stocks ISA, only the Invest account is configured.
-- **Else if only the Stocks ISA pair is set** (`T212_API_KEY_STOCKS_ISA` and `T212_API_SECRET_STOCKS_ISA`): use this pair for requests; if the user asks about Invest, only the Stocks ISA account is configured.
+- **如果 `T212_AUTH_HEADER` 和 `T212_BASE_URL` 已设置**：直接使用它们。
+- **如果 `T212_API_KEY` 和 `T212_API_SECRET` 已设置**：使用这对凭据（适用于单个账户）。将头部信息设置为 `Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base64)`，并将基本 URL 设置为 `https://${T212_ENV:-live}.trading212.com`。不要让用户自行计算或合并凭据。
+- **如果同时设置了两种账户特定的凭据对**（`T212_API_KEY_INVEST`/`T212_API_SECRET_INVEST` 和 `T212_API_KEY_stockS_ISA`/`T212_API_SECRET_stockS_ISA`）：用户必须明确指定目标账户（Invest 或 Stocks ISA）。如果用户请求的是所有账户的信息，请分别对 Invest 和 Stocks ISA 发起请求，并汇总结果。如果从上下文中无法判断使用哪个账户，请在发起请求前确认（例如：“我应该使用哪个账户——Invest 还是 Stocks ISA？”）。根据选择的凭据和基本 URL 构建头部信息：`https://${T212_ENV:-live}.trading212.com`。
+- **如果只设置了 Invest 对**（`T212_API_KEY_INVEST` 和 `T212_API_SECRET_INVEST`）：使用这对凭据。
+- **如果只设置了 Stocks ISA 对**（`T212_API_KEY_stockS_ISA` 和 `T212_API_SECRET_stockS_ISA`）：使用这对凭据。如果用户询问关于 Invest 的信息，说明只配置了 Invest 账户；如果询问关于 Stocks ISA 的信息，说明只配置了 Stocks ISA 账户。
 
-Use the `T212_AUTH_HEADER` value in the Authorization header when it is set:
+当 `T212_AUTH_HEADER` 已设置时，请在 Authorization 头部中使用它的值：
 
 ```bash
 # When T212_AUTH_HEADER and T212_BASE_URL are set:
@@ -130,7 +129,7 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
   "${T212_BASE_URL}/api/v0/equity/account/summary"
 ```
 
-When only primary vars are set, use the inline form in the curl:
+当只设置了基本凭据时，可以使用 curl 中的内联格式：
 
 ```bash
 # When only T212_API_KEY, T212_API_SECRET, T212_ENV are set:
@@ -138,7 +137,7 @@ curl -H "Authorization: Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base6
   "https://${T212_ENV:-live}.trading212.com/api/v0/equity/account/summary"
 ```
 
-> **Warning:** `T212_AUTH_HEADER` must be the full header value including the `Basic ` prefix.
+> **警告：** `T212_AUTH_HEADER` 必须包含 `Basic` 前缀的完整头部信息。
 >
 > ```bash
 > # WRONG - raw base64 without "Basic " prefix
@@ -148,11 +147,11 @@ curl -H "Authorization: Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base6
 > curl -H "Authorization: $T212_AUTH_HEADER" ...  # This works
 > ```
 
-### Environment Variables
+### 环境变量
 
-**Single account vs all accounts:** API keys are for a **single account**. One key/secret pair (`T212_API_KEY` + `T212_API_SECRET`) = one account (Invest or Stocks ISA). To use **all accounts** (Invest and Stocks ISA), the user must set **two sets** of key/secret: `T212_API_KEY_INVEST` / `T212_API_SECRET_INVEST` and `T212_API_KEY_STOCKS_ISA` / `T212_API_SECRET_STOCKS_ISA`. When both pairs are set, the user must clearly specify which account to target; if it is not clear from context, ask for confirmation (Invest or Stocks ISA) before making API calls.
+**单个账户 vs 所有账户：** API Key 仅适用于 **单个账户**。一组凭据（`T212_API_KEY` + `T212_API_SECRET`）对应一个账户（Invest 或 Stocks ISA）。如果要使用 **所有账户**（Invest 和 Stocks ISA），用户必须设置 **两组** 凭据：`T212_API_KEY_INVEST` / `T212_API_SECRET_INVEST` 和 `T212_API_KEY_stockS_ISA` / `T212_API_SECRET_stockS_ISA`。当设置了两组凭据时，用户必须明确指定目标账户；如果从上下文中无法判断，应在发起请求前确认（Invest 或 Stocks ISA）。
 
-**Primary (single account):** Set these for consistent setup with the plugin README:
+**单个账户的设置：** 为了与插件 README 保持一致，请设置这些凭据：
 
 ```bash
 export T212_API_KEY="your-api-key"       # API Key (ID) from Trading 212
@@ -160,7 +159,7 @@ export T212_API_SECRET="your-api-secret"
 export T212_ENV="demo"                   # or "live" (defaults to "live" if unset)
 ```
 
-**Account-specific (Invest and/or Stocks ISA):** Set only the pair(s) you use. One complete set (key + secret for the same account) is enough. For example, only Invest:
+**特定账户的设置（Invest 和/或 Stocks ISA）：** 只需要设置实际使用的那组凭据。一组完整的凭据（同一账户的 Key + Secret）即可。例如，仅针对 Invest 账户：
 
 ```bash
 export T212_API_KEY_INVEST="your-invest-api-key"
@@ -168,7 +167,7 @@ export T212_API_SECRET_INVEST="your-invest-api-secret"
 export T212_ENV="demo"                   # or "live"
 ```
 
-For both accounts, set both pairs:
+如果需要同时使用两个账户的凭据，请设置两组：
 
 ```bash
 export T212_API_KEY_INVEST="your-invest-api-key"
@@ -178,7 +177,7 @@ export T212_API_SECRET_STOCKS_ISA="your-stocks-isa-api-secret"
 export T212_ENV="demo"                   # or "live" (applies to both)
 ```
 
-**Optional – precomputed (for scripts or if the user prefers):** The user can set the auth header and base URL from the primary vars, but they do not need to; when making API calls you (the agent) must build the header and base URL from primary vars if these are not set.
+**可选 – 预计算（适用于脚本或用户偏好）：** 用户可以从基本变量中设置认证头部和基本 URL，但通常不需要这样做；如果这些变量未设置，您（代理）必须根据基本变量构建头部和基本 URL。
 
 ```bash
 # Build auth header and base URL from T212_API_KEY, T212_API_SECRET, T212_ENV
@@ -186,7 +185,7 @@ export T212_AUTH_HEADER="Basic $(echo -n "$T212_API_KEY:$T212_API_SECRET" | base
 export T212_BASE_URL="https://${T212_ENV:-live}.trading212.com"
 ```
 
-**Alternative (manual):** If you prefer not to store key/secret in env, set derived vars directly. Remember: API keys only work with their matching environment.
+**替代方案（手动设置）：** 如果不希望将凭据存储在环境变量中，可以直接设置相关的变量。**注意：API Key 仅适用于其对应的环境。**
 
 ```bash
 # For DEMO (paper trading)
@@ -198,7 +197,7 @@ export T212_BASE_URL="https://demo.trading212.com"
 # export T212_BASE_URL="https://live.trading212.com"
 ```
 
-**Tip:** If you use both environments, use separate variable names:
+**提示：** 如果同时使用两种环境，请使用不同的变量名：
 
 ```bash
 # Demo credentials
@@ -208,30 +207,30 @@ export T212_DEMO_AUTH_HEADER="Basic $(echo -n "<DEMO_KEY_ID>:<DEMO_SECRET>" | ba
 export T212_LIVE_AUTH_HEADER="Basic $(echo -n "<LIVE_KEY_ID>:<LIVE_SECRET>" | base64)"
 ```
 
-### Common Auth Errors
+### 常见认证错误
 
-| Code | Cause                | Solution                                                                                      |
+| 错误代码 | 原因                | 解决方案                                                                                      |
 | ---- | -------------------- | --------------------------------------------------------------------------------------------- |
-| 401  | Invalid credentials  | Check API key/secret, ensure no extra whitespace                                              |
-| 401  | Environment mismatch | **LIVE API keys don't work with DEMO and vice versa** - verify key matches target environment |
-| 403  | Missing permissions  | Check API permissions in Trading 212 settings                                                 |
-| 408  | Request timed out    | Retry the request                                                                             |
-| 429  | Rate limit exceeded  | Wait for `x-ratelimit-reset` timestamp                                                        |
+| 401  | 凭据无效              | 检查 API Key/Secret 是否正确，确保没有多余的空白字符              |
+| 401  | 环境不匹配            | **实时 API Key 不能用于测试环境，反之亦然** - 确保 Key 与目标环境匹配 |
+| 403  | 权限不足              | 检查 Trading 212 设置中的 API 权限              |
+| 408  | 请求超时              | 重试请求                                                                                     |
+| 429  | 超过速率限制            | 等待 `x-ratelimit-reset` 时间戳                        |
 
 ---
 
-## Account
+## 账户
 
-### Get Account Summary
+### 获取账户概要
 
-`GET /api/v0/equity/account/summary` (1 req/5s)
+`GET /api/v0/equity/account/summary`（请求频率：1 次/5 秒）
 
 ```bash
 curl -H "Authorization: $T212_AUTH_HEADER" \
   "$T212_BASE_URL/api/v0/equity/account/summary"
 ```
 
-**Response Schema:**
+**响应格式：**
 
 ```json
 {
@@ -252,108 +251,88 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-### Account Fields
+### 账户字段
 
-| Field                              | Type    | Description                             |
+| 字段                              | 类型    | 描述                             |
 | ---------------------------------- | ------- | --------------------------------------- |
-| `id`                               | integer | Primary trading account number          |
-| `currency`                         | string  | Primary account currency (ISO 4217)     |
-| `totalValue`                       | number  | Total account value in primary currency |
-| `cash.availableToTrade`            | number  | Funds available for investing           |
-| `cash.reservedForOrders`           | number  | Cash reserved for pending orders        |
-| `cash.inPies`                      | number  | Uninvested cash inside pies             |
-| `investments.currentValue`         | number  | Current value of all investments        |
-| `investments.totalCost`            | number  | Cost basis of current investments       |
-| `investments.realizedProfitLoss`   | number  | All-time realized P&L                   |
-| `investments.unrealizedProfitLoss` | number  | Potential P&L if sold now               |
+| `id`                               | 整数 | 主要交易账户编号                          |
+| `currency`                         | 字符串  | 主要账户货币（ISO 4217 标准）                   |
+| `totalValue`                       | 数字    | 账户总价值（以主要货币计）                   |
+| `cash.availableToTrade`            | 数字    | 可用于交易的现金                         |
+| `cash.reservedForOrders`           | 数字    | 为待处理订单预留的现金                     |
+| `cash.inPies`                      | 数字    | 未投资的现金（以 pies 为单位）                   |
+| `investments.currentValue`         | 数字    | 所有投资的当前价值                      |
+| `investments.totalCost`            | 数字    | 当前投资的成本基础                      |
+| `investments.realizedProfitLoss`   | 数字    | 实现的利润和损失                      |
+| `investments.unrealizedProfitLoss` | 数字    | 如果现在出售可能实现的利润和损失                |
 
 ---
 
-## Orders
+## 订单
 
-### Order Types
+### 订单类型
 
-| Type      | Endpoint                           | Availability | Description                          |
+| 类型      | 端点                           | 可用性 | 描述                          |
 | --------- | ---------------------------------- | ------------ | ------------------------------------ |
-| Market    | `/api/v0/equity/orders/market`     | Demo + Live  | Execute immediately at best price    |
-| Limit     | `/api/v0/equity/orders/limit`      | Demo + Live  | Execute at limit price or better     |
-| Stop      | `/api/v0/equity/orders/stop`       | Demo + Live  | Market order when stop price reached |
-| StopLimit | `/api/v0/equity/orders/stop_limit` | Demo + Live  | Limit order when stop price reached  |
+| 市场订单    | `/api/v0/equity/orders/market`     | 测试 + 实时 | 立即以最佳价格执行                     |
+| 限价订单    | `/api/v0/equity/orders/limit`      | 测试 + 实时 | 以限价或更优价格执行                     |
+| 止损订单    | `/api/v0/equity/orders/stop`       | 测试 + 实时 | 当达到止损价格时执行                     |
+| 止损限价订单 | `/api/v0/equity/orders/stop_limit` | 测试 + 实时 | 当达到止损限价时执行                     |
 
-### Order Statuses
+### 订单状态
 
-| Status             | Description                             |
+| 状态             | 描述                             |
 | ------------------ | --------------------------------------- |
-| `LOCAL`            | Order created locally, not yet sent     |
-| `UNCONFIRMED`      | Sent to exchange, awaiting confirmation |
-| `CONFIRMED`        | Confirmed by exchange                   |
-| `NEW`              | Active and awaiting execution           |
-| `CANCELLING`       | Cancel request in progress              |
-| `CANCELLED`        | Successfully cancelled                  |
-| `PARTIALLY_FILLED` | Some shares executed                    |
-| `FILLED`           | Completely executed                     |
-| `REJECTED`         | Rejected by exchange                    |
-| `REPLACING`        | Modification in progress                |
-| `REPLACED`         | Successfully modified                   |
+| `LOCAL`            | 订单在本地创建，尚未发送                     |
+| `UNCONFIRMED`      | 已发送至交易所，等待确认                     |
+| `CONFIRMED`        | 交易所已确认                         |
+| `NEW`              | 正在等待执行                         |
+| `CANCELLING`       | 取消请求正在进行中                     |
+| `CANCELLED`        | 取消请求成功                         |
+| `PARTIALLY_FILLED`     | 部分成交                         |
+| `FILLED`           | 完全成交                         |
+| `REJECTED`         | 被交易所拒绝                         |
+| `REPLACING`        | 修改订单正在进行中                     |
+| `REPLACED`         | 订单已成功修改                         |
 
-### Time Validity
+### 订单有效期
 
-| Value              | Description                                |
+| 有效期              | 描述                                |
 | ------------------ | ------------------------------------------ |
-| `DAY`              | Expires at midnight in exchange timezone   |
-| `GOOD_TILL_CANCEL` | Active until filled or cancelled (default) |
+| `DAY`              | 在交易所时间午夜过期                         |
+| `GOOD_TILL_CANCEL` | 有效直至取消                         |
 
-### Order Strategy
+### 订单策略
 
-| Value      | Description                                     |
-| ---------- | ----------------------------------------------- |
-| `QUANTITY` | Order by number of shares (API supported)       |
-| `VALUE`    | Order by monetary value (not supported via API) |
+| 有效性              | 描述                                |
+| ------------------ | ------------------------------------------ |
+| `QUANTITY` | 按股票数量排序（API 支持）                   |
+| `VALUE`    | 按货币价值排序（API 不支持）                   |
 
-### Initiated From
+### 订单来源
 
-| Value        | Description         |
+| 来源        | 描述         | ------------------- |
 | ------------ | ------------------- |
-| `API`        | Placed via this API |
-| `IOS`        | iOS app             |
-| `ANDROID`    | Android app         |
-| `WEB`        | Web platform        |
-| `SYSTEM`     | System-generated    |
-| `AUTOINVEST` | Autoinvest feature  |
+| `API`        | 通过此 API 发起                         |
+| `IOS`        | iOS 应用                         |
+| `ANDROID`    | Android 应用                         |
+| `WEB`        | Web 平台                         |
+| `SYSTEM`     | 系统自动生成                         |
+| `AUTOINVEST` | 自动投资功能                         |
 
-### Place Market Order
+### 发起市场订单
 
-`POST /api/v0/equity/orders/market` (50 req/min)
+`POST /api/v0/equity/orders/market`（请求频率：50 次/分钟）
 
-```bash
-# Buy 5 shares
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/market" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": 5}'
+**请求字段：**
 
-# Sell 3 shares (negative quantity)
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/market" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": -3}'
+| 字段           | 类型    | 是否必填 | 描述                                                                                                            |
+| --------------- | ------- | -------- | -------------------------------------- |
+| `ticker`        | 字符串      | 是         | 仪器 ticker（例如，`AAPL_US_EQ`）                         |
+| `quantity`      | 数字      | 是         | 正数表示买入，负数表示卖出                     |
+| `extendedHours` | 布尔值    | 是否允许在盘前（4:00-9:30 ET）和盘后（16:00-20:00 ET）时段执行 | 默认值：`false` |
 
-# Buy with extended hours enabled
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/market" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": 5, "extendedHours": true}'
-```
-
-**Request Fields:**
-
-| Field           | Type    | Required | Description                                                                                                            |
-| --------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `ticker`        | string  | Yes      | Instrument ticker (e.g., `AAPL_US_EQ`)                                                                                 |
-| `quantity`      | number  | Yes      | Positive for buy, negative for sell                                                                                    |
-| `extendedHours` | boolean | No       | Set `true` to allow execution in pre-market (4:00-9:30 ET) and after-hours (16:00-20:00 ET) sessions. Default: `false` |
-
-**Response:**
+**响应：**
 
 ```json
 {
@@ -377,119 +356,87 @@ curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-### Place Limit Order
+### 发起限价订单
 
-`POST /api/v0/equity/orders/limit` (1 req/2s)
+`POST /api/v0/equity/orders/limit`（请求频率：1 次/2 秒）
 
-```bash
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/limit" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": 5, "limitPrice": 150.00, "timeValidity": "DAY"}'
-```
+**请求字段：**
 
-**Request Fields:**
-
-| Field          | Type   | Required | Description                             |
+| 字段          | 类型   | 是否必填 | 描述                             |
 | -------------- | ------ | -------- | --------------------------------------- |
-| `ticker`       | string | Yes      | Instrument ticker                       |
-| `quantity`     | number | Yes      | Positive for buy, negative for sell     |
-| `limitPrice`   | number | Yes      | Maximum price for buy, minimum for sell |
-| `timeValidity` | string | No       | `DAY` (default) or `GOOD_TILL_CANCEL`   |
+| `ticker`       | 字符串      | 是         | 仪器 ticker                         |
+| `quantity`     | 数字      | 是         | 正数表示买入，负数表示卖出                     |
+| `limitPrice`   | 数字      | 最高价；负数表示最低价                     |
+| `timeValidity` | 字符串      | 是否必填 | `DAY`（默认）或 `GOOD_TILL_CANCEL`                   |
 
-### Place Stop Order
+### 发起止损订单
 
-`POST /api/v0/equity/orders/stop` (1 req/2s)
+`POST /api/v0/equity/orders/stop`（请求频率：1 次/2 秒）
 
-```bash
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/stop" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": -5, "stopPrice": 140.00, "timeValidity": "GOOD_TILL_CANCEL"}'
-```
+**请求字段：**
 
-**Request Fields:**
+| 字段          | 类型   | 是否必填 | 描述                             |
+| -------------- | ------ | -------- | --------------------------------------- |
+| `ticker`       | 字符串      | 是         | 仪器 ticker                         |
+| `quantity`     | 数字      | 是         | 正数表示买入，负数表示卖出                     |
+| `stopPrice`    | 数字      | 触发止损的价格                     |
+| `timeValidity` | 字符串      | 是否必填 | `DAY`（默认）或 `GOOD_TILL_CANCEL`                   |
 
-| Field          | Type   | Required | Description                                |
-| -------------- | ------ | -------- | ------------------------------------------ |
-| `ticker`       | string | Yes      | Instrument ticker                          |
-| `quantity`     | number | Yes      | Positive for buy, negative for sell        |
-| `stopPrice`    | number | Yes      | Trigger price (based on Last Traded Price) |
-| `timeValidity` | string | No       | `DAY` (default) or `GOOD_TILL_CANCEL`      |
+### 发起止损限价订单
 
-### Place Stop-Limit Order
+`POST /api/v0/equity/orders/stop_limit`（请求频率：1 次/2 秒）
 
-`POST /api/v0/equity/orders/stop_limit` (1 req/2s)
+**请求字段：**
 
-```bash
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/orders/stop_limit" \
-  -d '{"ticker": "AAPL_US_EQ", "quantity": -5, "stopPrice": 145.00, "limitPrice": 140.00, "timeValidity": "DAY"}'
-```
+| 字段          | 类型   | 是否必填 | 描述                             |
+| -------------- | ------ | -------- | --------------------------------------- |
+| `ticker`       | 字符串      | 是         | 仪器 ticker                         |
+| `quantity`     | 数字      | 是         | 正数表示买入，负数表示卖出                     |
+| `stopPrice`    | 数字      | 触发止损的价格                     |
+| `limitPrice`   | 数字      | 最高价；限价订单的成交价格                     |
+| `timeValidity` | 字符串      | 是否必填 | `DAY`（默认）或 `GOOD_TILL_CANCEL`                   |
 
-**Request Fields:**
+### 获取待处理订单
 
-| Field          | Type   | Required | Description                           |
-| -------------- | ------ | -------- | ------------------------------------- |
-| `ticker`       | string | Yes      | Instrument ticker                     |
-| `quantity`     | number | Yes      | Positive for buy, negative for sell   |
-| `stopPrice`    | number | Yes      | Trigger price to activate limit order |
-| `limitPrice`   | number | Yes      | Limit price for the resulting order   |
-| `timeValidity` | string | No       | `DAY` (default) or `GOOD_TILL_CANCEL` |
+`GET /api/v0/equity/orders`（请求频率：1 次/5 秒）
 
-### Get Pending Orders
+**返回值：** 包含状态为 NEW、PARTIALLY_FILLED 等的 Order 对象数组。
 
-`GET /api/v0/equity/orders` (1 req/5s)
+### 根据 ID 获取订单
 
-```bash
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/orders"
-```
+`GET /api/v0/equity/orders/{id}`（请求频率：1 次/1 秒）
 
-Returns array of Order objects with status NEW, PARTIALLY_FILLED, etc.
+**请求频率：** 1 次/1 秒
 
-### Get Order by ID
+### 取消订单
 
-`GET /api/v0/equity/orders/{id}` (1 req/1s)
+`DELETE /api/v0/equity/orders/{id}`（请求频率：50 次/分钟）
 
-```bash
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/orders/123456789"
-```
+**返回值：** 如果取消请求成功，返回 200 OK。订单可能已经成交。
 
-### Cancel Order
+### 常见订单错误
 
-`DELETE /api/v0/equity/orders/{id}` (50 req/min)
-
-```bash
-curl -X DELETE -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/orders/123456789"
-```
-
-Returns 200 OK if cancellation request accepted. Order may already be filled.
-
-### Common Order Errors
-
-| Error                          | Cause                   | Solution                            |
+| 错误代码 | 原因                   | 解决方案                            |
 | ------------------------------ | ----------------------- | ----------------------------------- |
-| `InsufficientFreeForStocksBuy` | Not enough cash         | Check `cash.availableToTrade`       |
-| `SellingEquityNotOwned`        | Selling more than owned | Check `quantityAvailableForTrading` |
-| `MarketClosed`                 | Outside trading hours   | Check exchange schedule             |
+| `InsufficientFreeForStocksBuy` | 可用于购买的现金不足         | 检查 `cash.availableToTrade`                   |
+| `SellingEquityNotOwned` | 出售的数量超过了持有的数量         | 检查 `quantityAvailableForTrading`                   |
+| `MarketClosed`                 | 交易时间之外                         | 检查交易所的交易时间表                     |
 
 ---
 
-## Positions
+## 持仓
 
-### Get All Positions
+### 获取所有持仓
 
-`GET /api/v0/equity/positions` (1 req/1s)
+`GET /api/v0/equity/positions`（请求频率：1 次/1 秒）
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type   | Required | Description                                    |
-| --------- | ------ | -------- | ---------------------------------------------- |
-| `ticker`  | string | No       | Filter by specific ticker (e.g., `AAPL_US_EQ`) |
+| 参数          | 类型   | 是否必填 | 描述                                      |
+| -------------- | ------ | -------- | ---------------------------------------------- |
+| `ticker`       | 字符串      | 不必填写 | 按特定 ticker 过滤（例如，`AAPL_US_EQ`）               |
+
+**响应格式：**
 
 ```bash
 # All positions
@@ -501,73 +448,45 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
   "$T212_BASE_URL/api/v0/equity/positions?ticker=AAPL_US_EQ"
 ```
 
-**Response Schema:**
+### 持仓字段
 
-```json
-[
-  {
-    "instrument": {
-      "ticker": "AAPL_US_EQ",
-      "name": "Apple Inc",
-      "isin": "US0378331005",
-      "currency": "USD"
-    },
-    "quantity": 15.5,
-    "quantityAvailableForTrading": 12.5,
-    "quantityInPies": 3,
-    "currentPrice": 185.5,
-    "averagePricePaid": 170.25,
-    "createdAt": "2024-01-10T09:15:00Z",
-    "walletImpact": {
-      "currency": "GBP",
-      "totalCost": 2089.45,
-      "currentValue": 2275.1,
-      "unrealizedProfitLoss": 185.65,
-      "fxImpact": 12.3
-    }
-  }
-]
-```
-
-### Position Fields
-
-| Field                               | Type     | Description                         |
+| 字段                               | 类型     | 描述                             |
 | ----------------------------------- | -------- | ----------------------------------- |
-| `quantity`                          | number   | Total shares owned                  |
-| `quantityAvailableForTrading`       | number   | Shares available to sell            |
-| `quantityInPies`                    | number   | Shares allocated to pies            |
-| `currentPrice`                      | number   | Current price (instrument currency) |
-| `averagePricePaid`                  | number   | Average cost per share              |
-| `createdAt`                         | datetime | Position open date                  |
-| `walletImpact.currency`             | string   | Account currency                    |
-| `walletImpact.totalCost`            | number   | Total cost in account currency      |
-| `walletImpact.currentValue`         | number   | Current value in account currency   |
-| `walletImpact.unrealizedProfitLoss` | number   | P&L in account currency             |
-| `walletImpact.fxImpact`             | number   | Currency rate impact on value       |
+| `quantity`                          | 数字      | 持有的总股数                         |
+| `quantityAvailableForTrading`       | 数字      | 可用于交易的股数                         |
+| `quantityInPies`                    | 数字      | 分配给 pies 的股数                         |
+| `currentPrice`                      | 数字      | 当前价格（以货币计）                     |
+| `averagePricePaid`                  | 数字      | 每股的平均成本                         |
+| `createdAt`                         | 字符串      | 持仓创建日期                         |
+| `walletImpact(currency`             | 字符串      | 账户货币                         |
+| `walletImpact.totalCost`            | 数字      | 账户货币中的总成本                     |
+| `walletImpact.currentValue`         | 数字      | 账户货币中的当前价值                     |
+| `walletImpact.unrealizedProfitLoss` | 数字      | 账户货币中的未实现利润和损失                 |
+| `walletImpact.fxImpact`             | 数字      | 货币汇率对价值的影响                     |
 
-### Position Quantity Scenarios
+### 持仓数量示例
 
-| Scenario            | quantity | quantityAvailableForTrading | quantityInPies |
+| 持仓情况            | 可用于交易的股数 | 分配给 pies 的股数         |
 | ------------------- | -------- | --------------------------- | -------------- |
-| All direct holdings | 10       | 10                          | 0              |
-| Some in pie         | 10       | 7                           | 3              |
-| All in pie          | 10       | 0                           | 10             |
+| 全部直接持有       | 10       | 10                              | 0                              |
+| 部分在 pies 中       | 10       | 7                              | 3                              |
+| 全部在 pies 中       | 10       | 0                              | 10                              |
 
-**Important:** Always check `quantityAvailableForTrading` before placing sell orders.
+**重要提示：** 在下达卖出订单之前，务必检查 `quantityAvailableForTrading` 的值。
 
 ---
 
-## Instruments
+## 仪器
 
-### Ticker Lookup Workflow
+### 查找仪器 ticker 的工作流程
 
-When users reference instruments by common names (e.g., "SAP", "Apple", "AAPL"), you **must** look up the exact Trading 212 ticker before making any order, position, or historical data queries. Never construct ticker formats manually.
+当用户通过通用名称（如 “SAP”、“Apple”、“AAPL”）查找仪器时，**必须** 在下达任何订单、持仓或历史数据查询之前，先查找对应的 Trading 212 ticker。**切勿手动构造 ticker 格式**。
 
-> **CACHE FIRST:** Always check `/tmp/t212_instruments.json` before calling the API. The instruments endpoint has a 50-second rate limit and returns ~5MB. Only call the API if cache is missing or older than 1 hour.
+> **优先使用缓存：** 在调用 API 之前，务必检查 `/tmp/t212_instruments.json`。仪器端点的请求频率限制为 50 秒，每次请求返回的数据量约为 5MB。只有在缓存缺失或缓存时间超过 1 小时时，才需要调用 API。
 
-**Generic search:** Match the user's search term in the three meaningful fields: ticker, name, or shortName. Use one variable (e.g. `SEARCH_TERM`) with `test($q; "i")` on each field so "TSLA", "Tesla", "TL0", etc. match efficiently. For regional filtering (e.g. "US stocks", "European SAP"), use the ISIN prefix (first 2 characters) for country code or `currencyCode` after the grep.
+**通用搜索：** 在三个相关字段（ticker、name 或 shortName）中匹配用户的搜索词。使用一个变量（例如 `SEARCH_TERM`），对每个字段执行 `test($q; "i")`，以便高效匹配 “TSLA”、“Tesla”、“TL0” 等名称。对于区域过滤（如 “美国股票”、“欧洲 SAP”），可以使用 ISIN 前缀（前两个字符）来表示国家代码，或在 grep 后添加 `currencyCode`。
 
-> **IMPORTANT:** Never auto-select instruments. If multiple options exist, you are required to ask the user for their preference.
+> **重要提示：** **切勿自动选择仪器。** 如果存在多个选项，必须询问用户的偏好。
 
 ```bash
 # SEARCH_TERM = user query (e.g. TSLA, Tesla, AAPL, SAP)
@@ -582,82 +501,59 @@ else
 fi
 ```
 
-### Get All Instruments
+### 获取所有仪器信息
 
-`GET /api/v0/equity/metadata/instruments` (1 req/50s)
+`GET /api/v0/equity/metadata/instruments`（请求频率：1 次/50 秒）
+
+**响应格式：**
 
 ```bash
 curl -H "Authorization: $T212_AUTH_HEADER" \
   "$T212_BASE_URL/api/v0/equity/metadata/instruments"
 ```
 
-**Response Schema:**
+### 仪器字段
 
-```json
-[
-  {
-    "ticker": "AAPL_US_EQ",
-    "name": "Apple Inc",
-    "shortName": "AAPL",
-    "isin": "US0378331005",
-    "currencyCode": "USD",
-    "type": "STOCK",
-    "maxOpenQuantity": 10000,
-    "extendedHours": true,
-    "workingScheduleId": 123,
-    "addedOn": "2020-01-15T00:00:00Z"
-  }
-]
-```
-
-### Instrument Fields
-
-| Field               | Type     | Description                                 |
+| 字段               | 类型     | 描述                                 |
 | ------------------- | -------- | ------------------------------------------- |
-| `ticker`            | string   | Unique instrument identifier                |
-| `name`              | string   | Full instrument name                        |
-| `shortName`         | string   | Short symbol (e.g., AAPL)                   |
-| `isin`              | string   | International Securities ID                 |
-| `currencyCode`      | string   | Trading currency (ISO 4217)                 |
-| `type`              | string   | Instrument type (see below)                 |
-| `maxOpenQuantity`   | number   | Maximum position size allowed               |
-| `extendedHours`     | boolean  | Whether extended hours trading is available |
-| `workingScheduleId` | integer  | Reference to exchange schedule              |
-| `addedOn`           | datetime | When added to platform                      |
+| `ticker`            | 字符串      | 仪器的唯一标识符                         |
+| `name`              | 字符串      | 仪器的完整名称                         |
+| `shortName`         | 字符串      | 简称（例如，AAPL）                         |
+| `isin`              | 字符串      | 国际证券代码                         |
+| `currencyCode`      | 字符串      | 交易货币（ISO 4217 标准）                     |
+| `type`              | 字符串      | 仪器类型                         |
+| `maxOpenQuantity`   | 数字      | 允许的最大持仓数量                     |
+| `extendedHours`     | 布尔值    | 是否支持盘前（4:00-9:30 ET）和盘后（16:00-20:00 ET）交易         |
+| `workingScheduleId` | 整数      | 交易所时间表的引用                         |
+| `addedOn`           | 字符串      | 仪器添加到平台的日期                         |
 
-### Instrument Types
+### 仪器类型
 
-| Type             | Description            |
+| 类型             | 描述                           |
 | ---------------- | ---------------------- |
-| `STOCK`          | Common stock           |
-| `ETF`            | Exchange-traded fund   |
-| `CRYPTOCURRENCY` | Cryptocurrency         |
-| `CRYPTO`         | Crypto asset           |
-| `FOREX`          | Foreign exchange       |
-| `FUTURES`        | Futures contract       |
-| `INDEX`          | Index                  |
-| `WARRANT`        | Warrant                |
-| `CVR`            | Contingent value right |
-| `CORPACT`        | Corporate action       |
+| `STOCK`          | 普通股票                         |
+| `ETF`            | 交易型开放式指数基金                     |
+| `CRYPTOCURRENCY` | 加密货币                         |
+| `CRYPTO`         | 加密资产                         |
+| `FOREX`          | 外汇                         |
+| `FUTURES`        | 期货合约                         |
+| `INDEX`          | 指数                         |
+| `WARRANT`        | 期权                         |
+| `CVR`            | 条件价值权利                         |
+| `CORPACT`        | 公司行动                         |
 
-### Ticker Format
+### ticker 格式
 
-`{SYMBOL}_{EXCHANGE}_{TYPE}` - Examples:
+`{SYMBOL}_{EXCHANGE}_{TYPE}` - 例如：
+- `AAPL_US_EQ` - 美国交易所的 Apple
+- `VUSA_LSE_EQ` | 伦敦交易所的 Vanguard S&P 500
+- `BTC_crypto` | Bitcoin                         |
 
-- `AAPL_US_EQ` - Apple on US exchange
-- `VUSA_LSE_EQ` - Vanguard S&P 500 on London
-- `BTC_CRYPTO` - Bitcoin
+### 获取交易所元数据
 
-### Get Exchange Metadata
+`GET /api/v0/equity/metadata/exchanges`（请求频率：1 次/30 秒）
 
-`GET /api/v0/equity/metadata/exchanges` (1 req/30s)
-
-```bash
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/metadata/exchanges"
-```
-
-**Response Schema:**
+**响应格式：**
 
 ```json
 [
@@ -679,35 +575,35 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
 ]
 ```
 
-### Time Event Types
+### 时间事件类型
 
-| Type                | Description                |
+| 类型                | 描述                                 |
 | ------------------- | -------------------------- |
-| `PRE_MARKET_OPEN`   | Pre-market session starts  |
-| `OPEN`              | Regular trading starts     |
-| `BREAK_START`       | Trading break begins       |
-| `BREAK_END`         | Trading break ends         |
-| `CLOSE`             | Regular trading ends       |
-| `AFTER_HOURS_OPEN`  | After-hours session starts |
-| `AFTER_HOURS_CLOSE` | After-hours session ends   |
-| `OVERNIGHT_OPEN`    | Overnight session starts   |
+| `PRE_MARKET_OPEN`   | 盘前交易开始                         |
+| `OPEN`              | 正常交易开始                         |
+| `BREAK_START`       | 交易休息开始                         |
+| `BREAK_END`         | 交易休息结束                         |
+| `CLOSE`             | 正常交易结束                         |
+| `AFTER_HOURS_OPEN`  | 盘后交易开始                         |
+| `AFTER_HOURS_CLOSE` | 盘后交易结束                         |
+| `OVERNIGHT_OPEN`    | 隔夜交易开始                         |
 
 ---
 
-## Historical Data
+## 历史数据
 
-All historical endpoints use cursor-based pagination with `nextPagePath`.
+所有历史数据端点都支持基于游标的分页功能，使用 `nextPagePath` 进行分页。
 
-### Pagination Parameters
+### 分页参数
 
-| Parameter | Type          | Default | Max | Description                                               |
-| --------- | ------------- | ------- | --- | --------------------------------------------------------- |
-| `limit`   | integer       | 20      | 50  | Items per page                                            |
-| `cursor`  | string/number | -       | -   | Pagination cursor (used in `nextPagePath`)                |
-| `ticker`  | string        | -       | -   | Filter by ticker (orders, dividends)                      |
-| `time`    | datetime      | -       | -   | Pagination time (used in `nextPagePath` for transactions) |
+| 参数          | 类型          | 默认值 | 最大值 | 描述                                         |
+| -------------- | ------------- | ------- | --------------------------------------------------------- |
+| `limit`   | 整数       | 20      | 每页显示的项数                         |
+| `cursor`  | 字符串/数字 | -       | 分页游标（用于 `nextPagePath`）                         |
+| `ticker`  | 字符串      | -       | 根据 ticker 过滤请求                         |
+| `time`    | 字符串      | -       | 分页时间（用于 `nextPagePath` 中的交易时间过滤）                         |
 
-### Pagination Example
+### 分页示例
 
 ```bash
 #!/bin/bash
@@ -736,20 +632,11 @@ done
 echo "Done fetching all orders"
 ```
 
-### Historical Orders
+### 历史订单
 
-`GET /api/v0/equity/history/orders` (50 req/min)
+`GET /api/v0/equity/history/orders`（请求频率：50 次/分钟）
 
-```bash
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/history/orders?limit=50"
-
-# Filter by ticker
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/history/orders?ticker=AAPL_US_EQ&limit=50"
-```
-
-**Response Schema:**
+**响应格式：**
 
 ```json
 {
@@ -794,52 +681,43 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-### Fill Types
+### 填单类型
 
-| Type                        | Description               |
+| 类型                        | 描述                                 |
 | --------------------------- | ------------------------- |
-| `TRADE`                     | Regular trade execution   |
-| `STOCK_SPLIT`               | Stock split adjustment    |
-| `STOCK_DISTRIBUTION`        | Stock distribution        |
-| `FOP`                       | Free of payment transfer  |
-| `FOP_CORRECTION`            | FOP correction            |
-| `CUSTOM_STOCK_DISTRIBUTION` | Custom stock distribution |
-| `EQUITY_RIGHTS`             | Equity rights issue       |
+| `TRADE`                     | 正常交易执行                         |
+| `STOCK_SPLIT`               | 股票拆分调整                         |
+| `STOCK_DISTRIBUTION`        | 股票分配                         |
+| `FOP`                       | 免费分配                         |
+| `FOP_CORRECTION`            | FOP 更正                         |
+| `CUSTOM_stock_DISTRIBUTION` | 自定义股票分配                         |
+| `EQUITY_RIGHTS`             | 股权分配                         |
 
-### Trading Methods
+### 交易方式
 
-| Method | Description             |
-| ------ | ----------------------- |
-| `TOTV` | Traded on trading venue |
-| `OTC`  | Over-the-counter        |
+| 类型        | 描述                                 |
+| --------------------------- | ------------------------- |
+| `TOTV`         | 在交易场所交易                         |
+| `OTC`         | 场外交易                         |
 
-### Tax Types (walletImpact.taxes)
+### 税务类型（walletImpact.taxes）
 
-| Type                      | Description                |
+| 类型                | 描述                                 |
 | ------------------------- | -------------------------- |
-| `COMMISSION_TURNOVER`     | Commission on turnover     |
-| `CURRENCY_CONVERSION_FEE` | FX conversion fee          |
-| `FINRA_FEE`               | FINRA trading activity fee |
-| `FRENCH_TRANSACTION_TAX`  | French FTT                 |
-| `PTM_LEVY`                | Panel on Takeovers levy    |
-| `STAMP_DUTY`              | UK stamp duty              |
-| `STAMP_DUTY_RESERVE_TAX`  | UK SDRT                    |
-| `TRANSACTION_FEE`         | General transaction fee    |
+| `COMMISSION_TURNOVER`     | 交易佣金                         |
+| `CURRENCY_CONVERSION_FEE` | 货币兑换费                         |
+| `FINRA_FEE`               | FINRA 交易活动费                         |
+| `FRENCH_TRANSACTION_TAX` | 法国交易税                         |
+| `PTM_LEVY`                | 收购税                         |
+| `STAMP_DUTY`              | 英国印花税                         |
+| `STAMP_DUTY_RESERVE_TAX` | 英国 SDRT                         |
+| `TRANSACTION_FEE`         | 一般交易费                         |
 
-### Historical Dividends
+### 历史股息
 
-`GET /api/v0/equity/history/dividends` (50 req/min)
+`GET /api/v0/equity/history/dividends`（请求频率：50 次/分钟）
 
-```bash
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/history/dividends?limit=50"
-
-# Filter by ticker
-curl -H "Authorization: $T212_AUTH_HEADER" \
-  "$T212_BASE_URL/api/v0/equity/history/dividends?ticker=AAPL_US_EQ&limit=50"
-```
-
-**Response Schema:**
+**响应格式：**
 
 ```json
 {
@@ -867,32 +745,31 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-### Dividend Types (Common)
+### 股息类型
 
-| Type                          | Description                |
+| 类型                          | 描述                                 |
 | ----------------------------- | -------------------------- |
-| `ORDINARY`                    | Regular dividend           |
-| `BONUS`                       | Bonus dividend             |
-| `INTEREST`                    | Interest payment           |
-| `DIVIDEND`                    | Generic dividend           |
-| `CAPITAL_GAINS`               | Capital gains distribution |
-| `RETURN_OF_CAPITAL`           | Return of capital          |
-| `PROPERTY_INCOME`             | Property income (REITs)    |
-| `DEMERGER`                    | Demerger distribution      |
-| `QUALIFIED_INVESTMENT_ENTITY` | QIE distribution           |
-| `TRUST_DISTRIBUTION`          | Trust distribution         |
+| `ORDINARY`                    | 常规股息                         |
+| `BONUS`                       | 红利股息                         |
+| `INTEREST`                    | 利息支付                         |
+| `DIVIDEND`                    | 股息分配                         |
+| `CAPITAL_GAINS`               | 资本收益分配                         |
+| `RETURN_OF_CAPITAL`           | 资本返还                         |
+| `PROPERTY_INCOME`             | 财产收入                         |
+| `DEMERGER`                    | 合并分配                         |
+| `QUALIFIED_INVESTMENT-entity` | 合并分配                         |
 
-_Note: Many additional US tax-specific types exist for 1042-S reporting._
+> **注：** 对于 1042-S 报告，还存在许多特定的美国税务类型。
 
-### Account Transactions
+### 账户交易
 
-`GET /api/v0/equity/history/transactions` (50 req/min)
+`GET /api/v0/equity/history/transactions`（请求频率：50 次/分钟）
 
-**Pagination:**
+**分页说明：**
 
-- **First request:** Must use only the `limit` parameter (no cursor, no timestamp)
-- **Subsequent requests:** Use the `nextPagePath` from the previous response, which includes cursor and timestamp automatically
-- **Time filtering:** Transactions cannot be filtered by time - pagination is the only way to navigate through historical data
+- **首次请求：** 仅使用 `limit` 参数（无需使用 cursor 或 timestamp）。
+- **后续请求：** 使用上一次请求返回的 `nextPagePath`，其中包含 cursor 和 timestamp。
+- **时间过滤：** 无法按时间过滤交易记录——只能通过分页来浏览历史数据。
 
 ```bash
 # First request - use only limit
@@ -900,7 +777,7 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
   "$T212_BASE_URL/api/v0/equity/history/transactions?limit=50"
 ```
 
-**Response Schema:**
+**响应格式：**
 
 ```json
 {
@@ -917,36 +794,20 @@ curl -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-### Transaction Types
+### 交易类型
 
-| Type       | Description                  |
+| 类型       | 描述                                 |
 | ---------- | ---------------------------- |
-| `DEPOSIT`  | Funds deposited to account   |
-| `WITHDRAW` | Funds withdrawn from account |
-| `FEE`      | Fee charged                  |
-| `TRANSFER` | Internal transfer            |
+| `DEPOSIT`      | 向账户存入资金                         |
+| `WITHDRAW`      | 从账户提取资金                         |
+| `FEE`      | 收取的费用                         |
+| `TRANSFER`      | 内部转账                         |
 
-### CSV Reports
+### CSV 报告
 
-**Request report:** `POST /api/v0/equity/history/exports` (1 req/30s)
+**请求报告：** `POST /api/v0/equity/history/exports`（请求频率：1 次/30 秒）
 
-```bash
-curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
-  -H "Content-Type: application/json" \
-  "$T212_BASE_URL/api/v0/equity/history/exports" \
-  -d '{
-    "dataIncluded": {
-      "includeDividends": true,
-      "includeInterest": true,
-      "includeOrders": true,
-      "includeTransactions": true
-    },
-    "timeFrom": "2024-01-01T00:00:00Z",
-    "timeTo": "2024-12-31T23:59:59Z"
-  }'
-```
-
-**Response:**
+**响应格式：**
 
 ```json
 {
@@ -954,34 +815,18 @@ curl -X POST -H "Authorization: $T212_AUTH_HEADER" \
 }
 ```
 
-**Poll for completion:** `GET /api/v0/equity/history/exports` (1 req/min)
+**查询报告状态：**
+
+`GET /api/v0/equity/history/exports`（请求频率：1 次/分钟）
+
+**响应格式：**
 
 ```bash
 curl -H "Authorization: $T212_AUTH_HEADER" \
   "$T212_BASE_URL/api/v0/equity/history/exports"
 ```
 
-**Response:**
-
-```json
-[
-  {
-    "reportId": 12345,
-    "status": "Finished",
-    "dataIncluded": {
-      "includeDividends": true,
-      "includeInterest": true,
-      "includeOrders": true,
-      "includeTransactions": true
-    },
-    "timeFrom": "2024-01-01T00:00:00Z",
-    "timeTo": "2024-12-31T23:59:59Z",
-    "downloadLink": "https://trading212-reports.s3.amazonaws.com/..."
-  }
-]
-```
-
-**Download the report:**
+**下载报告：**
 
 ```bash
 # Get the download link from the response
@@ -992,22 +837,22 @@ DOWNLOAD_URL=$(curl -s -H "Authorization: $T212_AUTH_HEADER" \
 curl -o trading212_report.csv "$DOWNLOAD_URL"
 ```
 
-### Report Status Values
+### 报告状态
 
-| Status       | Description                       |
+| 状态       | 描述                               |
 | ------------ | --------------------------------- |
-| `Queued`     | Report request received           |
-| `Processing` | Report generation started         |
-| `Running`    | Report actively generating        |
-| `Finished`   | Complete - downloadLink available |
-| `Canceled`   | Report cancelled                  |
-| `Failed`     | Generation failed                 |
+| `Queued`     | 接收到报告请求                         |
+| `Processing` | 正在生成报告                         |
+| `Running`    | 报告正在生成                         |
+| `Finished`   | 报告生成完成 - 提供下载链接                         |
+| `Cancelled`   | 报告请求被取消                         |
+| `Failed`     | 生成报告失败                         |
 
 ---
 
-## Pre-Order Validation
+## 下单前的验证
 
-### Before BUY - Check Available Funds
+### 买入前 - 检查可用资金
 
 ```bash
 #!/bin/bash
@@ -1033,7 +878,7 @@ fi
 echo "OK: Funds available, proceeding with order"
 ```
 
-### Before SELL - Check Available Shares
+### 卖出前 - 检查可用股票数量
 
 ```bash
 #!/bin/bash
@@ -1061,30 +906,29 @@ echo "OK: Shares available, proceeding with order"
 
 ---
 
-## Rate Limit Handling
+## 速率限制处理
 
-### Understanding Rate Limits
+### 理解速率限制
 
-Rate limits are **per-account**, not per API key or IP address. If you have multiple applications using the same Trading 212 account, they share the same rate limit pool.
+速率限制是针对 **每个账户** 的，而不是针对每个 API Key 或 IP 地址。如果多个应用程序使用同一个 Trading 212 账户，它们将共享相同的速率限制配额。
 
-### Response Headers
+### 响应头部信息
 
-Every API response includes rate limit headers:
+每个 API 响应都包含速率限制相关的头部信息：
 
-| Header                  | Description                      |
+| 头部字段          | 描述                                 |
 | ----------------------- | -------------------------------- |
-| `x-ratelimit-limit`     | Total requests allowed in period |
-| `x-ratelimit-period`    | Time period in seconds           |
-| `x-ratelimit-remaining` | Requests remaining               |
-| `x-ratelimit-reset`     | Unix timestamp when limit resets |
-| `x-ratelimit-used`      | Requests already made            |
+| `x-ratelimit-limit`     | 指定时间内的总请求次数                     |
+| `x-ratelimit-period`    | 时间周期（以秒为单位）                         |
+| `x-ratelimit-remaining` | 剩余的请求次数                         |
+| `x-ratelimit-reset`     | 速率限制重置的时间戳                         |
+| `x-ratelimit-used`      | 已经发出的请求次数                         |
 
-### Avoid Burst Requests to avoid Rate Limiting
+### 避免批量请求以避免触发速率限制
 
-**Do not send requests in bursts.** Even if an endpoint allows 50 requests per minute, sending them all at once can trigger rate limiting and degrade performance.
-Pace your requests evenly, for example, by making one call every 1.2 seconds, ensuring you always stay within the limit.
+**不要一次性发送大量请求。** 即使某个端点允许每分钟发送 50 次请求，一次性发送所有请求也可能触发速率限制并影响性能。** 请均匀分配请求频率，例如每 1.2 秒发送一次请求，确保始终在限制范围内。
 
-**Bad approach (bursting):**
+**错误做法（批量发送请求）：**
 
 ```bash
 # DON'T DO THIS - sends all requests at once
@@ -1095,7 +939,7 @@ done
 wait
 ```
 
-**Good approach (paced):**
+**正确做法（均匀发送请求）：**
 
 ```bash
 # DO THIS - space requests evenly
@@ -1106,9 +950,9 @@ for ticker in AAPL_US_EQ MSFT_US_EQ GOOGL_US_EQ; do
 done
 ```
 
-### Caching Strategy
+### 缓存策略
 
-For data that doesn't change frequently, cache locally to reduce API calls:
+对于不经常变化的数据，可以在本地缓存以减少 API 请求次数：
 
 ```bash
 #!/bin/bash
@@ -1134,13 +978,13 @@ cat "$CACHE_FILE"
 
 ---
 
-## Safety Guidelines
+## 安全指南
 
-1. **Test in demo first** - Always validate workflows before live trading
-2. **Validate before ordering** - Check funds (`cash.availableToTrade`) before buy, positions (`quantityAvailableForTrading`) before sell
-3. **Confirm destructive actions** - Order placement and cancellation are irreversible
-4. **API is not idempotent** - Duplicate requests may create duplicate orders
-5. **Never log credentials** - Use environment variables
-6. **Respect rate limits** - Space requests evenly, never burst
-7. **Max 50 pending orders** - Per ticker, per account
-8. **Cache metadata** - Instruments and exchanges change rarely
+1. **先在测试环境中测试** - 在进行实际交易之前，务必验证工作流程。
+2. **下单前进行验证** - 买入前检查可用资金（`cash.availableToTrade`），卖出前检查可交易的股票数量（`quantityAvailableForTrading`）。
+3. **确认具有破坏性的操作** - 下单和取消操作是不可逆的。
+4. **API 不具备幂等性** - 重复请求可能会导致重复订单。
+5. **切勿记录凭据** - 使用环境变量来存储凭据。
+6. **遵守速率限制** - 均匀分配请求，避免批量发送。
+7. **每个 ticker 和每个账户最多 50 个待处理订单**。
+8. **缓存元数据** - 仪器和交易所的信息很少会发生变化。

@@ -1,24 +1,24 @@
 ---
 name: frinkiac
-description: Search TV show screenshots and generate memes from The Simpsons, Futurama, Rick and Morty, and 30 Rock
+description: 搜索《辛普森一家》、《飞出个未来》、《瑞克和莫蒂》以及《我为喜剧狂》这些电视剧的截图，并从中生成表情包（meme）。
 metadata:
   {"openclaw":{"emoji":"📺","requires":{"bins":["node","npx"]}}}
 ---
 
-# Frinkiac TV Screenshot & Meme Tool
+# Frinkiac TV截图与模因工具
 
-Search dialogue, browse scenes, and generate memes from popular TV shows using the Frinkiac/Morbotron APIs.
+使用Frinkiac/Morbotron API，您可以搜索电视剧中的对话、浏览剧集画面，并生成模因。
 
-## Available Shows
+## 可使用的剧集
 
-- `simpsons` - The Simpsons (via Frinkiac)
-- `futurama` - Futurama (via Morbotron)
-- `rickandmorty` - Rick and Morty
-- `30rock` - 30 Rock
+- `simpsons` - 《辛普森一家》（通过Frinkiac）
+- `futurama` - 《飞出个未来》（通过Morbotron）
+- `rickandmorty` - 《瑞克和莫蒂》
+- `30rock` - 《恶搞之家》
 
-## MCP Server Setup
+## MCP服务器设置
 
-This skill uses an MCP server. Add to your MCP config:
+此功能需要使用MCP服务器。请将其添加到您的MCP配置中：
 
 ```json
 {
@@ -31,78 +31,78 @@ This skill uses an MCP server. Add to your MCP config:
 }
 ```
 
-## Tools
+## 工具
 
 ### search
 
-Search for scenes by dialogue text.
+通过对话文本搜索剧集画面：
 
-- `show`: Which show to search (simpsons, futurama, rickandmorty, 30rock)
-- `query`: Dialogue to search for (e.g., "D'oh!", "Good news everyone")
-- `limit`: Max results (optional)
-- `include_images`: Include thumbnails (optional)
+- `show`: 要搜索的剧集（simpsons, futurama, rickandmorty, 30rock）
+- `query`: 要搜索的对话（例如：“D'oh!”, “Good news everyone”）
+- `limit`: 最大结果数量（可选）
+- `include_images`: 是否包含缩略图（可选）
 
 ### get_caption
 
-Get detailed scene info including episode metadata and nearby frames.
+获取剧集画面的详细信息，包括剧集元数据和附近的帧：
 
-- `show`: Which show
-- `episode`: Episode key in S##E## format (e.g., "S07E21")
-- `timestamp`: Frame timestamp in milliseconds
-- `include_nearby_images`: Include thumbnails for nearby frames (optional)
+- `show`: 剧集名称
+- `episode`: 剧集编号（格式为S##E##，例如：“S07E21”）
+- `timestamp`: 帧的时间戳（以毫秒为单位）
+- `include_nearby_images`: 是否包含附近帧的缩略图（可选）
 
 ### get_screenshot
 
-Get a screenshot image from a specific scene.
+从指定剧集画面中获取截图：
 
-- `show`: Which show
-- `episode`: Episode key in S##E## format
-- `timestamp`: Frame timestamp in milliseconds
-- `return_url_only`: Return URL instead of image data (optional)
+- `show`: 剧集名称
+- `episode`: 剧集编号（格式为S##E##）
+- `timestamp`: 帧的时间戳（以毫秒为单位）
+- `return_url_only`: 仅返回截图的URL（可选）
 
 ### generate_meme
 
-Create a meme with custom text overlay. Text auto-wraps at ~35 characters per line.
+创建带有自定义文本的模因。文本会自动换行（每行约35个字符）：
 
-- `show`: Which show
-- `episode`: Episode key in S##E## format
-- `timestamp`: Frame timestamp in milliseconds
-- `text`: Text to overlay on the image
+- `show`: 剧集名称
+- `episode`: 剧集编号（格式为S##E##）
+- `timestamp`: 帧的时间戳（以毫秒为单位）
+- `text`: 要显示在图片上的文本
 
 ### get_nearby_frames
 
-Browse adjacent frames to find the perfect screenshot.
+浏览相邻的帧以找到最合适的截图：
 
-- `show`: Which show
-- `episode`: Episode key in S##E## format
-- `timestamp`: Frame timestamp in milliseconds
-- `include_images`: Include thumbnails (optional)
+- `show`: 剧集名称
+- `episode`: 剧集编号（格式为S##E##）
+- `timestamp`: 帧的时间戳（以毫秒为单位）
+- `include_images`: 是否包含缩略图（可选）
 
 ### get_episode
 
-Get episode metadata and subtitles within a timestamp range.
+获取指定时间范围内的剧集元数据和字幕：
 
-- `show`: Which show
-- `episode`: Episode key in S##E## format
-- `start_timestamp`: Start of range in milliseconds
-- `end_timestamp`: End of range in milliseconds
+- `show`: 剧集名称
+- `episode`: 剧集编号（格式为S##E##）
+- `start_timestamp`: 时间范围的开始时间（以毫秒为单位）
+- `end_timestamp`: 时间范围的结束时间（以毫秒为单位）
 
-## Example Workflows
+## 示例工作流程
 
-**Find and meme a quote:**
+**查找并制作模因：**
 
-1. Search for dialogue: `search simpsons "everything's coming up Milhouse"`
-2. Get the screenshot: `get_screenshot` with episode/timestamp from results
-3. Generate meme: `generate_meme` with custom text
+1. 搜索对话：“search simpsons “everything’s coming up Milhouse””
+2. 获取截图：使用`get_screenshot`获取对应的剧集和帧的时间戳
+3. 创建模因：使用`generate_meme`并添加自定义文本
 
-**Browse a scene:**
+**浏览剧集画面：**
 
-1. Search for a quote to get episode/timestamp
-2. Use `get_nearby_frames` to find the perfect frame
-3. Use `get_caption` to see full context and subtitles
+1. 搜索对话以获取剧集和帧的时间戳
+2. 使用`get_nearby_frames`找到最合适的帧
+3. 使用`get_caption`查看完整的上下文和字幕
 
-**Get episode context:**
+**获取剧集信息：**
 
-1. Use `get_episode` with a timestamp range to see all dialogue in a scene
-2. Find the exact moment you want
-3. Generate a meme or screenshot
+1. 使用`get_episode`获取指定时间范围内的所有对话
+2. 找到您想要的画面
+3. 生成模因或截图

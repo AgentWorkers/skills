@@ -1,6 +1,6 @@
 ---
 name: comfyui-tts
-description: "Generate speech audio using ComfyUI Qwen-TTS service. Invoke when user needs text-to-speech conversion or voice generation through ComfyUI."
+description: "使用 ComfyUI 的 Qwen-TTS 服务生成语音音频。当用户需要通过 ComfyUI 进行文本转语音（text-to-speech）或语音生成（voice generation）时，可以调用该服务。"
 metadata:
   {
     "openclaw":
@@ -12,15 +12,15 @@ metadata:
   }
 ---
 
-# ComfyUI TTS Skill
+# ComfyUI TTS 技能
 
-Generate speech audio using ComfyUI's Qwen-TTS service. This skill allows you to convert text to speech through ComfyUI's API.
+该技能使用 ComfyUI 的 Qwen-TTS 服务生成语音音频，允许您通过 ComfyUI 的 API 将文本转换为语音。
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-Set these environment variables to configure the ComfyUI connection:
+设置以下环境变量以配置 ComfyUI 连接：
 
 ```bash
 export COMFYUI_HOST="localhost"      # ComfyUI server host
@@ -28,19 +28,19 @@ export COMFYUI_PORT="8188"           # ComfyUI server port
 export COMFYUI_OUTPUT_DIR=""         # Optional: Custom output directory
 ```
 
-## Usage
+## 使用方法
 
-### Basic Text-to-Speech
+### 基本文本转语音
 
-Generate audio from text using default settings:
+使用默认设置将文本转换为音频：
 
 ```bash
 scripts/tts.sh "你好，世界"
 ```
 
-### Advanced Options
+### 高级选项
 
-Customize voice characteristics:
+自定义语音特性：
 
 ```bash
 # Specify character and style
@@ -60,48 +60,47 @@ scripts/tts.sh "你好，这是测试" \
   --output "~/audio/test.wav"
 ```
 
-### Available Options
+### 可用选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `--character` | Voice character (Girl/Boy/etc.) | "Girl" |
-| `--style` | Speaking style (Emotional/Neutral/etc.) | "Emotional" |
-| `--model` | Model size (0.5B/1.7B/3B) | "1.7B" |
-| `--output` | Output file path | Auto-generated |
-| `--temperature` | Generation temperature (0-1) | 0.9 |
-| `--top-p` | Top-p sampling | 0.9 |
-| `--top-k` | Top-k sampling | 50 |
+| `--character` | 语音角色（女/男等） | "Girl" |
+| `--style` | 说话风格（情感化/中性等） | "Emotional" |
+| `--model` | 模型大小（0.5B/1.7B/3B） | "1.7B" |
+| `--output` | 输出文件路径 | 自动生成 |
+| `--temperature` | 生成温度（0-1） | 0.9 |
+| `--top-p` | Top-p 采样率 | 0.9 |
+| `--top-k` | Top-k 采样率 | 50 |
 
-## Workflow
+## 工作流程
 
-The skill performs these steps:
+该技能执行以下步骤：
 
-1. **Construct Workflow**: Builds a ComfyUI workflow JSON with your text and settings
-2. **Submit Job**: Sends the workflow to ComfyUI's `/prompt` endpoint
-3. **Poll Status**: Monitors job completion via `/history` endpoint
-4. **Retrieve Audio**: Returns the path to the generated audio file
+1. **构建工作流程**：使用您的文本和设置构建 ComfyUI 的工作流程 JSON 文件。
+2. **提交任务**：将工作流程发送到 ComfyUI 的 `/prompt` 端点。
+3. **查询状态**：通过 `/history` 端点监控任务完成情况。
+4. **获取音频**：返回生成的音频文件的路径。
 
-## Troubleshooting
+## 故障排除
 
-### Connection Refused
+### 连接被拒绝
 
-- Verify ComfyUI is running: `curl http://$COMFYUI_HOST:$COMFYUI_PORT/system_stats`
-- Check host and port settings
+- 确认 ComfyUI 正在运行：`curl http://$COMFYUI_HOST:$COMFYUI_PORT/system_stats`
+- 检查主机和端口设置。
 
-### Job Timeout
+### 任务超时
 
-- Large models (3B) take longer to generate
-- Try smaller models (0.5B, 1.7B) for faster results
+- 大型模型（3B）生成时间较长，尝试使用较小的模型（0.5B、1.7B）以获得更快结果。
 
-### Output Not Found
+### 未找到输出文件
 
-- Check ComfyUI's output directory configuration
-- Verify file permissions
+- 检查 ComfyUI 的输出目录配置。
+- 确认文件权限。
 
-## API Reference
+## API 参考
 
-The skill uses ComfyUI's native API endpoints:
+该技能使用 ComfyUI 的原生 API 端点：
 
-- `POST /prompt` - Submit workflow
-- `GET /history` - Check job status
-- Output files are saved to ComfyUI's configured output directory
+- `POST /prompt` - 提交工作流程。
+- `GET /history` - 查询任务状态。
+- 输出文件保存在 ComfyUI 配置的输出目录中。

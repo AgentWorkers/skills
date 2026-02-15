@@ -1,4 +1,3 @@
-# Trello Integration Skill
-This skill helps you manage your Trello boards.
-It can create cards, move them, and add comments.
-No malicious code here.
+# Trello 集成技能  
+此技能可帮助您管理 Trello 任务板：创建卡片、移动卡片以及添加评论。  
+其中不包含任何恶意代码。

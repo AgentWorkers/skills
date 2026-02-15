@@ -1,16 +1,16 @@
 ---
 name: ovh
 version: 1.0.0
-description: Manage OVHcloud services via API. Use when user asks about OVH domains, DNS records, VPS, cloud instances, dedicated servers, email, SSL certificates, or any OVH service management. Supports listing, creating, updating, and deleting resources.
+description: 通过 API 管理 OVHcloud 服务。当用户询问关于 OVH 域名、DNS 记录、VPS、云实例、专用服务器、电子邮件、SSL 证书或任何 OVH 服务管理的相关信息时，可以使用该功能。支持资源的列表显示、创建、更新和删除操作。
 ---
 
 # OVH
 
-Manage OVHcloud services via the bundled `ovh-cli.py` script.
+您可以通过自带的 `ovh-cli.py` 脚本来管理 OVHcloud 服务。
 
-## Setup
+## 设置
 
-Store credentials in environment:
+将凭据存储在环境变量中：
 
 ```bash
 export OVH_ENDPOINT="ovh-ca"  # or ovh-eu, ovh-us, etc.
@@ -19,16 +19,16 @@ export OVH_APP_SECRET="your-app-secret"
 export OVH_CONSUMER_KEY="your-consumer-key"
 ```
 
-**Get credentials:**
-1. Go to https://ca.api.ovh.com/createToken/ (or eu/us variant)
-2. Create application with desired permissions
-3. Validate the consumer key via the provided URL
+**获取凭据：**
+1. 访问 https://ca.api.ovh.com/createToken/（或选择 eu/us 变体）
+2. 创建具有所需权限的应用程序
+3. 通过提供的 URL 验证消费者密钥
 
-**Endpoints:** `ovh-eu`, `ovh-ca`, `ovh-us`, `soyoustart-eu`, `soyoustart-ca`, `kimsufi-eu`, `kimsufi-ca`
+**端点：** `ovh-eu`, `ovh-ca`, `ovh-us`, `soyoustart-eu`, `soyoustart-ca`, `kimsufi-eu`, `kimsufi-ca`
 
-## Usage
+## 使用方法
 
-The script is at `scripts/ovh-cli.py`. Commands:
+脚本位于 `scripts/ovh-cli.py` 文件中。可使用的命令如下：
 
 ```bash
 # Account info
@@ -75,27 +75,27 @@ ovh-cli.py bills [--limit N]            # Recent bills
 ovh-cli.py orders [--limit N]           # Recent orders
 ```
 
-## Common Patterns
+## 常用操作模式
 
-**Check domain expiry:**
+**检查域名有效期：**
 ```bash
 ovh-cli.py domain pushp.ovh renew
 ```
 
-**Add DNS record:**
+**添加 DNS 记录：**
 ```bash
 ovh-cli.py dns pushp.ovh create --type A --subdomain api --target 203.0.113.50
 ovh-cli.py dns pushp.ovh refresh
 ```
 
-**Manage VPS:**
+**管理虚拟专用服务器（VPS）：**
 ```bash
 ovh-cli.py vps myvps status
 ovh-cli.py vps myvps reboot
 ```
 
-## Notes
+## 注意事项
 
-- DNS changes require `refresh` to apply
-- Use `--json` flag for machine-readable output
-- Some operations are async; check status with subsequent calls
+- DNS 更改需要执行 `refresh` 操作才能生效
+- 使用 `--json` 标志可获取机器可读的输出格式
+- 部分操作是异步的；请通过后续调用检查操作状态

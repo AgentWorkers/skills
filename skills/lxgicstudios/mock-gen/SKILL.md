@@ -1,29 +1,29 @@
 ---
 name: mock-gen
-description: Generate realistic mock data from descriptions, types, or schemas. Use when you need test data fast.
+description: 根据描述、类型或数据结构生成逼真的模拟数据。当需要快速获取测试数据时，可以使用这种方法。
 ---
 
 # Mock Gen
 
-Every developer has been there. You need test data and you end up writing the same boring JSON by hand or copying from some random Stack Overflow answer. This tool generates realistic mock data from plain English descriptions, TypeScript types, or JSON schemas. Tell it what you want, how many records, and what format. Done.
+每个开发者都遇到过这样的问题：需要测试数据，但最终却不得不手动编写重复的 JSON 数据，或者从 Stack Overflow 上的答案中复制数据。这款工具可以根据简单的英文描述、TypeScript 类型或 JSON 模式生成逼真的模拟数据。只需告诉它你需要什么数据、记录的数量以及数据格式，即可完成生成。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-mock-data "e-commerce users with name, email, address, and order history"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates realistic mock data from plain English descriptions
-- Supports TypeScript types and JSON schemas as input
-- Outputs in JSON, CSV, or SQL insert format
-- Configurable record count (default 10)
-- Can write directly to a file with the --output flag
+- 根据简单的英文描述生成逼真的模拟数据
+- 支持使用 TypeScript 类型和 JSON 模式作为输入
+- 输出格式可选：JSON、CSV 或 SQL 插入语句
+- 记录数量可配置（默认为 10 条）
+- 可使用 `--output` 标志直接将数据写入文件
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Generate 10 user records as JSON
@@ -36,42 +36,42 @@ npx ai-mock-data "products with SKU, name, price, and category" -c 50 -f csv
 npx ai-mock-data "fill this schema" -s ./types/User.ts -o mock-users.json
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Be specific in descriptions** - "users with realistic US addresses" gets better results than just "users"
-- **Use schemas for consistency** - If you have TypeScript types, pass them with --schema for exact field matching
-- **Start small then scale** - Generate 5 records first to check quality, then bump to 100+
-- **Pick the right format** - Use CSV for spreadsheets, SQL for database seeding, JSON for API mocking
+- **描述要具体**：例如“具有真实美国地址的用户”比“用户”这样的描述更能生成准确的数据
+- **使用数据模式确保一致性**：如果有 TypeScript 类型，请通过 `--schema` 参数传递，以实现字段的精确匹配
+- **从小规模开始，逐步扩展**：先生成 5 条记录检查质量，再逐步增加数量
+- **选择合适的格式**：CSV 适用于电子表格，SQL 适用于数据库初始化，JSON 适用于 API 模拟
 
-## When to Use This
+## 适用场景
 
-- Setting up a dev database and need seed data
-- Building a frontend prototype and need realistic API responses
-- Writing tests that need varied, realistic input data
-- Demoing a product and need good-looking sample data
+- 设置开发数据库时需要初始数据
+- 构建前端原型时需要真实的 API 响应
+- 编写测试用例时需要多样化的模拟数据
+- 产品演示时需要美观的示例数据
 
-## Part of the LXGIC Dev Toolkit
+## 属于 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是 LXGIC Studios 开发的 110 多款免费开发者工具之一。免费版本完全开放，无需支付费用或注册账号，也不需要 API 密钥。这些工具都能正常使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。
 
 ```bash
 npx ai-mock-data --help
 ```
 
-## How It Works
+## 工作原理
 
-The tool takes your description or schema file and sends it to an AI model that understands data structures. It generates realistic, varied records that match your spec. The output gets formatted as JSON, CSV, or SQL inserts depending on what you pick.
+该工具会接收你的描述或数据模式文件，并将其传递给一个能够理解数据结构的 AI 模型。模型会根据你的要求生成真实且多样的数据记录。输出格式会根据你的选择设置为 JSON、CSV 或 SQL 插入语句。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+MIT 许可证。永久免费使用，你可以随意使用这款工具。

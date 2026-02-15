@@ -1,29 +1,29 @@
 ---
 name: vpn-rotate-skill
-description: Bypass API rate limits by rotating VPN servers. Works with any OpenVPN-compatible VPN (ProtonVPN, NordVPN, Mullvad, etc.). Automatically rotates to new server every N requests for fresh IPs. Use for high-volume scraping, government APIs, geo-restricted data.
+description: 通过轮换 VPN 服务器来绕过 API 的速率限制。该方法适用于任何与 OpenVPN 兼容的 VPN（如 ProtonVPN、NordVPN、Mullvad 等）。每当有 N 次请求时，系统会自动切换到新的服务器以获取新的 IP 地址。适用于高流量数据抓取、访问政府 API 或获取受地理限制的数据。
 ---
 
-# VPN Rotate Skill
+# VPN 服务器轮换技巧
 
-Rotate VPN servers to bypass API rate limits. Works with any OpenVPN-compatible VPN.
+通过轮换 VPN 服务器来规避 API 的速率限制。适用于所有兼容 OpenVPN 的 VPN 服务。
 
-## Setup
+## 设置
 
-### 1. Run Setup Wizard
+### 1. 运行设置向导
 
 ```bash
 ./scripts/setup.sh
 ```
 
-This will:
-- Check OpenVPN is installed
-- Help you configure your VPN provider
-- Set up passwordless sudo
-- Test the connection
+设置向导将完成以下操作：
+- 检查 OpenVPN 是否已安装
+- 帮助您配置 VPN 提供商
+- 设置无需输入密码即可使用 `sudo` 的权限
+- 测试连接是否正常
 
-### 2. Manual Setup
+### 2. 手动设置
 
-If you prefer manual setup:
+如果您更喜欢手动配置，请按照以下步骤操作：
 
 ```bash
 # Install OpenVPN
@@ -44,9 +44,9 @@ chmod 600 ~/.vpn/creds.txt
 echo "$USER ALL=(ALL) NOPASSWD: /usr/sbin/openvpn, /usr/bin/killall" | sudo tee /etc/sudoers.d/openvpn
 ```
 
-## Usage
+## 使用方法
 
-### Decorator (Recommended)
+### 推荐的装饰器（Decorator）用法
 
 ```python
 from scripts.decorator import with_vpn_rotation
@@ -60,7 +60,7 @@ for url in urls:
     data = scrape(url)
 ```
 
-### VPN Class
+### VPN 类（VPN Class）实现
 
 ```python
 from scripts.vpn import VPN
@@ -79,7 +79,7 @@ print(vpn.get_ip())  # Different IP
 vpn.disconnect()
 ```
 
-### Context Manager
+### 上下文管理器（Context Manager）实现
 
 ```python
 from scripts.vpn import VPN
@@ -94,7 +94,7 @@ with vpn.session():
 # VPN disconnected
 ```
 
-### CLI
+### 命令行接口（CLI）实现
 
 ```bash
 python scripts/vpn.py connect
@@ -104,9 +104,9 @@ python scripts/vpn.py disconnect
 python scripts/vpn.py ip
 ```
 
-## Configuration
+## 配置选项
 
-### Decorator Options
+### 装饰器相关配置
 
 ```python
 @with_vpn_rotation(
@@ -119,7 +119,7 @@ python scripts/vpn.py ip
 )
 ```
 
-### VPN Class Options
+### VPN 类相关配置
 
 ```python
 VPN(
@@ -131,15 +131,15 @@ VPN(
 )
 ```
 
-## Recommended Settings
+## 推荐的配置参数
 
-| API Aggressiveness | rotate_every | delay |
-|-------------------|--------------|-------|
-| Aggressive (Catastro, LinkedIn) | 5 | 2.0s |
-| Standard | 10 | 1.0s |
-| Lenient | 20-50 | 0.5s |
+| API 使用频率 | 服务器轮换间隔（秒） | 轮换延迟（秒） |
+|-------------------|------------------|-------------------|
+| 高频率（适用于需要快速切换的 API，如 Catastro、LinkedIn） | 5             | 2.0                |
+| 标准频率             | 10             | 1.0                |
+| 低频率             | 20–50             | 0.5                |
 
-## Files
+## 需要使用的文件
 
 ```
 vpn-rotate-skill/
@@ -157,30 +157,31 @@ vpn-rotate-skill/
     └── mullvad.md        # Mullvad setup
 ```
 
-## Troubleshooting
+## 故障排除
 
-### "sudo: a password is required"
+### 出现 “sudo: 需要密码” 错误
 
-Run the setup script or manually add sudoers entry:
+请运行设置脚本，或手动添加允许使用 `sudo` 的用户：
+
 ```bash
 echo "$USER ALL=(ALL) NOPASSWD: /usr/sbin/openvpn, /usr/bin/killall" | sudo tee /etc/sudoers.d/openvpn
 ```
 
-### Connection fails
+### 连接失败
 
-1. Check credentials are correct
-2. Test manually: `sudo openvpn --config ~/.vpn/servers/server.ovpn --auth-user-pass ~/.vpn/creds.txt`
-3. Check VPN provider account is active
+1. 确认用户名和密码是否正确
+2. 手动测试连接：`sudo openvpn --config ~/.vpn/servers/server.ovpn --auth-user-pass ~/.vpn/creds.txt`
+3. 确认您的 VPN 提供商账户是否处于活跃状态
 
-### Still getting blocked
+### 仍然被限制访问
 
-1. Lower `rotate_every` (try 5 instead of 10)
-2. Increase `delay` (try 2-3 seconds)
-3. Check if API blocks VPN IPs entirely
+1. 减小 `rotate_every` 的值（例如从 10 秒改为 5 秒）
+2. 增加 `delay` 的值（例如从 1.0 秒增加到 2–3 秒）
+3. 检查 API 是否完全阻止了 VPN 用户的访问
 
-### No .ovpn files
+### 无法找到 `.ovpn` 文件
 
-Download from your VPN provider:
-- ProtonVPN: https://protonvpn.com/support/vpn-config-download/
-- NordVPN: https://nordvpn.com/ovpn/
-- Mullvad: https://mullvad.net/en/account/#/openvpn-config
+请从您的 VPN 提供商处下载相应的配置文件：
+- ProtonVPN：https://protonvpn.com/support/vpn-config-download/
+- NordVPN：https://nordvpn.com/ovpn/
+- Mullvad：https://mullvad.net/en/account/#/openvpn-config

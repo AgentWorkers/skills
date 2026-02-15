@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-subcontractor"
 display_name: "CWICR Subcontractor"
-description: "Analyze and compare subcontractor bids against CWICR benchmarks. Evaluate pricing, identify outliers, and support negotiation."
+description: "分析和比较分包商的投标价格与 CWICR 的基准标准。评估价格，识别异常值，并为谈判提供支持。"
 ---
 
-# CWICR Subcontractor Analyzer
+# CWICR分包商分析工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Evaluating subcontractor bids requires:
-- Fair price benchmarks
-- Bid comparison
-- Outlier identification
-- Negotiation support
+### 问题描述
+评估分包商的报价需要：
+- 公平的价格基准
+- 报价比较
+- 异常值的识别
+- 谈判支持
 
-### Solution
-Compare subcontractor bids against CWICR cost data to identify fair pricing, outliers, and negotiation opportunities.
+### 解决方案
+将分包商的报价与CWICR的成本数据进行对比，以确定合理的定价、识别异常值，并为谈判提供依据。
 
-### Business Value
-- **Fair evaluation** - Objective benchmarks
-- **Cost savings** - Identify overpriced bids
-- **Risk detection** - Flag unrealistic low bids
-- **Negotiation support** - Data-driven discussions
+### 商业价值
+- **公平评估**：提供客观的基准数据
+- **成本节约**：识别出价格过高的报价
+- **风险检测**：标记出不切实际的低报价
+- **谈判支持**：基于数据的讨论
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 import numpy as np
@@ -306,8 +305,7 @@ class CWICRSubcontractor:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -340,9 +338,9 @@ print(f"Variance: {evaluation.variance_percent}%")
 print(f"Recommendation: {evaluation.recommendation}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Compare Multiple Bids
+### 1. 比较多个报价
 ```python
 bids = [
     SubcontractorBid("ABC Electric", "Electrical", 75000, scope, True, True, True, 30),
@@ -354,18 +352,18 @@ comparison = analyzer.compare_bids(bids)
 print(f"Best Value: {comparison['best_value']['name']}")
 ```
 
-### 2. Negotiation Support
+### 2. 谈判支持
 ```python
 points = analyzer.generate_negotiation_points(evaluation)
 for point in points:
     print(f"{point['topic']}: Target ${point.get('target', 'N/A')}")
 ```
 
-### 3. Export Report
+### 3. 导出报告
 ```python
 analyzer.export_bid_comparison(comparison, "bid_comparison.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.2 - Subcontractor Management
+- **DDC手册**：第3.2章 - 分包商管理

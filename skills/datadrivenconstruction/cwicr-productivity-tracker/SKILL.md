@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-productivity-tracker"
 display_name: "CWICR Productivity Tracker"
-description: "Track actual vs planned productivity using CWICR norms. Calculate productivity rates, identify variances, and generate performance reports."
+description: "使用 CWICR 标准来追踪实际生产力与计划生产力的差异。计算生产力指标，识别生产力的偏差，并生成绩效报告。"
 ---
 
-# CWICR Productivity Tracker
+# CWICR 项目生产力追踪器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Project performance tracking requires:
-- Comparing actual vs planned productivity
-- Identifying underperforming activities
-- Forecasting completion dates
-- Learning from historical data
+### 问题陈述
+项目绩效追踪需要：
+- 比较实际生产力与计划生产力
+- 识别表现不佳的活动
+- 预测完成日期
+- 从历史数据中学习
 
-### Solution
-Track productivity by comparing actual hours/quantities against CWICR norms, generating variance analysis and forecasts.
+### 解决方案
+通过将实际工作小时数/数量与 CWICR 标准进行比较，生成差异分析并预测结果，从而追踪生产力。
 
-### Business Value
-- **Performance visibility** - Real-time productivity metrics
-- **Early warning** - Identify issues before escalation
-- **Continuous improvement** - Learn from variances
-- **Accurate forecasting** - Data-driven predictions
+### 商业价值
+- **绩效透明度**：实时生产力指标
+- **早期预警**：在问题恶化之前发现并解决
+- **持续改进**：从差异中学习
+- **准确预测**：基于数据的预测
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -369,7 +369,7 @@ class ProductivityDashboard:
         return pd.DataFrame(data)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load CWICR data
@@ -392,16 +392,16 @@ print(f"Hours Variance: {summary.hours_variance}")
 print(f"Cost Variance: ${summary.cost_variance:,.2f}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Variance Analysis
+### 1. 差异分析
 ```python
 analysis = tracker.analyze_variance(summary)
 for rec in analysis['recommendations']:
     print(rec)
 ```
 
-### 2. Completion Forecast
+### 2. 完成日期预测
 ```python
 remaining = [
     {'work_item_code': 'CONC-001', 'quantity': 100},
@@ -411,11 +411,11 @@ forecast = tracker.forecast_completion(remaining, current_productivity=85.0)
 print(f"Days to Complete: {forecast['days_to_complete']}")
 ```
 
-### 3. Export Report
+### 3. 报告导出
 ```python
 tracker.export_report(summary, "productivity_report.xlsx")
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Productivity Management
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 - 生产力管理

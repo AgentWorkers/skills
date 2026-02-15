@@ -1,35 +1,34 @@
 ---
 name: zoom-unofficial-community-skill
-description: Zoom API integration for meetings, calendar, chat, and user management. Use when the user asks to schedule meetings, check Zoom calendar, list recordings, send Zoom chat messages, manage contacts, or interact with any Zoom Workplace feature. Supports Server-to-Server OAuth and OAuth apps.
+description: Zoom API集成支持会议、日历、聊天和用户管理功能。当用户需要安排会议、查看Zoom日历、列出会议录像、发送Zoom聊天消息、管理联系人或使用Zoom Workplace的任何功能时，均可使用该API。该API支持服务器到服务器（Server-to-Server）的OAuth认证机制，同时也兼容OAuth应用程序（OAuth apps）。
 ---
 
 # Zoom
 
-Use `scripts/zoom.py` to interact with Zoom's REST API.
+使用 `scripts/zoom.py` 脚本与 Zoom 的 REST API 进行交互。
 
-## Prerequisites
+## 先决条件
 
 ```bash
 pip3 install requests PyJWT --break-system-packages
 ```
 
-## Authentication
+## 认证
 
-Set these in the skill's `.env` file (copy from `.env.example`):
+请在技能的 `.env` 文件中设置以下参数（复制自 `.env.example`）：
 
-- `ZOOM_ACCOUNT_ID` — Account ID (from Zoom Marketplace app)
-- `ZOOM_CLIENT_ID` — OAuth Client ID
-- `ZOOM_CLIENT_SECRET` — OAuth Client Secret
-- `ZOOM_USER_EMAIL` — Email of the Zoom user to act as (required for S2S apps; defaults to `me` if unset)
-- `ZOOM_RTMS_CLIENT_ID` — Client ID of the RTMS Marketplace app (required for `rtms-start`/`rtms-stop`; this is a separate app from the S2S OAuth app)
+- `ZOOM_ACCOUNT_ID` — Zoom 帐户 ID（来自 Zoom Marketplace 应用）
+- `ZOOM_CLIENT_ID` — OAuth 客户端 ID
+- `ZOOM_CLIENT_SECRET` — OAuth 客户端密钥
+- `ZOOM_USER_EMAIL` — 用于身份验证的 Zoom 用户邮箱（对于 S2S 应用是必需的；如果未设置，默认为 `me`）
+- `ZOOM_RTMS_CLIENT_ID` — RTMS Marketplace 应用的客户端 ID（用于 `rtms-start`/`rtms-stop` 操作；此应用与 S2S OAuth 应用是分开的）
 
-Create a **Server-to-Server OAuth** app at https://marketplace.zoom.us/ for full API access.
-See [references/AUTH.md](references/AUTH.md) for detailed setup guide.
+请在 https://marketplace.zoom.us/ 上创建一个 **服务器到服务器的 OAuth** 应用以获得完整的 API 访问权限。
+有关详细设置指南，请参阅 [references/AUTH.md](references/AUTH.md)。
 
-## Commands
+## 命令
 
-### Meetings
-
+### 会议
 ```bash
 # List upcoming meetings
 python3 scripts/zoom.py meetings list
@@ -59,8 +58,7 @@ python3 scripts/zoom.py meetings delete <meeting_id>
 python3 scripts/zoom.py meetings update <meeting_id> --topic "New Title" --start "2026-01-29T10:00:00"
 ```
 
-### Calendar (upcoming schedule)
-
+### 日历（即将举行的会议）
 ```bash
 # Today's meetings
 python3 scripts/zoom.py meetings list --from today --to today
@@ -69,8 +67,7 @@ python3 scripts/zoom.py meetings list --from today --to today
 python3 scripts/zoom.py meetings list --from today --days 7
 ```
 
-### Recordings
-
+### 录制
 ```bash
 # List cloud recordings
 python3 scripts/zoom.py recordings list
@@ -97,8 +94,7 @@ python3 scripts/zoom.py recordings download-summary <meeting_uuid> --output ~/Do
 python3 scripts/zoom.py recordings delete <meeting_id>
 ```
 
-### AI Meeting Summary (AI Companion)
-
+### AI 会议总结（AI 功能）
 ```bash
 # List meeting summaries
 python3 scripts/zoom.py summary list
@@ -108,8 +104,7 @@ python3 scripts/zoom.py summary list --from "2026-01-01" --to "2026-01-31"
 python3 scripts/zoom.py summary get <meeting_id>
 ```
 
-### Users
-
+### 用户
 ```bash
 # Get my profile
 python3 scripts/zoom.py users me
@@ -118,8 +113,7 @@ python3 scripts/zoom.py users me
 python3 scripts/zoom.py users list
 ```
 
-### Team Chat
-
+### 团队聊天
 ```bash
 # List chat channels
 python3 scripts/zoom.py chat channels
@@ -137,19 +131,18 @@ python3 scripts/zoom.py chat dm <email> "Hey, are you free?"
 python3 scripts/zoom.py chat contacts
 ```
 
-### Phone (Zoom Phone)
-
+### 电话（Zoom Phone）
 ```bash
 # List call logs
 python3 scripts/zoom.py phone calls --from "2026-01-01" --to "2026-01-31"
 ```
 
-## Scopes Required
+## 所需的权限范围
 
-For Server-to-Server OAuth, enable these scopes in your Zoom Marketplace app.
-Only add the scopes you need — each command group requires specific scopes:
+对于服务器到服务器的 OAuth 认证，需要在您的 Zoom Marketplace 应用中启用以下权限范围：
+请仅添加所需的权限范围——每个命令组都需要特定的权限范围：
 
-| Command Group | Scopes Needed |
+| 命令组 | 所需权限范围 |
 |---|---|
 | `users me` / `users list` | `user:read:admin` |
 | `meetings list/get/create/update/delete` | `meeting:read:admin`, `meeting:write:admin` |
@@ -157,10 +150,10 @@ Only add the scopes you need — each command group requires specific scopes:
 | `chat channels/messages/send/dm` | `chat_channel:read:admin`, `chat_message:read:admin`, `chat_message:write:admin` |
 | `chat contacts` | `contact:read:admin` |
 | `summary list/get` | `meeting_summary:read:admin` |
-| `phone calls` | `phone:read:admin` (requires Zoom Phone enabled on account) |
+| `phone calls` | `phone:read:admin`（需要您的账户启用了 Zoom Phone 功能）
 
-**If you get a scope error**, go to https://marketplace.zoom.us/ → your app → Scopes, and add the missing scope listed in the error message.
+**如果您收到权限范围错误**，请访问 https://marketplace.zoom.us/ → 您的应用 → 权限范围（Scopes），然后添加错误消息中列出的缺失权限范围。
 
-## Rate Limits
+## 速率限制
 
-Zoom API has rate limits (varies by endpoint, typically 30-100 req/sec). The script handles 429 responses with automatic retry.
+Zoom API 有速率限制（因端点而异，通常为每秒 30-100 次请求）。该脚本会自动重试处理 429 错误（表示请求次数超过限制）。

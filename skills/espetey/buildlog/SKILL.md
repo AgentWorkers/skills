@@ -1,58 +1,58 @@
 ---
 name: buildlog
-description: Record, export, and share your AI coding sessions as replayable buildlogs
+description: 记录、导出并分享您的人工智能编程会话，将其转换为可回放的构建日志（buildlogs）。
 version: 1.0.0
 author: buildlog.ai
 repository: https://github.com/buildlog/openclaw-skill
 homepage: https://buildlog.ai
 ---
 
-# Buildlog Skill
+# Buildlog 技能
 
-Record your OpenClaw coding sessions and share them on buildlog.ai.
+使用该技能可以记录您的 OpenClaw 编码会话，并将它们分享到 buildlog.ai 上。
 
-## Overview
+## 概述
 
-The buildlog skill captures your AI-assisted coding sessions in real-time, creating replayable recordings that can be shared with others. Perfect for:
+Buildlog 技能能够实时捕获您在 OpenClaw 中的 AI 辅助编码会话，生成可复制的录制文件，便于与他人分享。非常适合以下场景：
 
-- **Tutorials**: Share how you built something step-by-step
-- **Documentation**: Create living documentation of complex implementations
-- **Debugging**: Review sessions to understand what went wrong
-- **Learning**: Study how others approach problems
+- **教程**：逐步展示您的开发过程
+- **文档编写**：为复杂的实现创建动态文档
+- **调试**：回顾会话以了解问题所在
+- **学习**：研究他人解决问题的方法
 
-## Commands
+## 命令
 
-### Recording
+### 录制
 
-- **"Start a buildlog [title]"** — Begin recording a new session
-- **"Stop the buildlog"** — End recording and optionally upload
-- **"Pause the buildlog"** — Temporarily pause recording
-- **"Resume the buildlog"** — Continue a paused recording
+- **"Start a buildlog [title]"** — 开始录制新的会话
+- **"Stop the buildlog"** — 停止录制（可选择上传）
+- **"Pause the buildlog"** — 暂时暂停录制
+- **"Resume the buildlog"** — 继续暂停的录制
 
-### Exporting
+### 导出
 
-- **"Export this session as a buildlog"** — Convert current session to buildlog format
-- **"Export the last [N] messages"** — Export a portion of the session
+- **"Export this session as a buildlog"** — 将当前会话导出为 buildlog 格式
+- **"Export the last [N] messages"** — 导出会话中的部分内容
 
-### Uploading
+### 上传
 
-- **"Upload the buildlog"** — Push to buildlog.ai
-- **"Share the buildlog"** — Upload and get a shareable link
+- **"Upload the buildlog"** — 将录制文件上传到 buildlog.ai
+- **"Share the buildlog"** — 上传并获取可共享的链接
 
-### Annotations
+### 注释
 
-- **"Add a note: [text]"** — Add commentary to the current point
-- **"Mark this as important"** — Flag the current exchange
-- **"Add chapter: [title]"** — Create a chapter marker
+- **"Add a note: [text]"** — 为当前内容添加注释
+- **"Mark this as important"** — 标记重要内容
+- **"Add chapter: [title]"** — 创建章节标记
 
-### Status
+### 状态
 
-- **"Buildlog status"** — Check recording state
-- **"Show buildlog info"** — Display current recording details
+- **"Buildlog status"** — 查看录制状态
+- **"Show buildlog info"** — 显示当前录制详情
 
-## Configuration
+## 配置
 
-Add to your OpenClaw configuration:
+请将以下配置添加到您的 OpenClaw 配置文件中：
 
 ```json
 {
@@ -68,30 +68,30 @@ Add to your OpenClaw configuration:
 }
 ```
 
-### Options
+### 选项
 
-| Option | Type | Default | Description |
+| 选项 | 类型 | 默认值 | 描述 |
 |--------|------|---------|-------------|
-| `apiKey` | string | — | Your buildlog.ai API key (optional for public uploads) |
-| `autoUpload` | boolean | `false` | Automatically upload when recording stops |
-| `defaultPublic` | boolean | `true` | Make buildlogs public by default |
-| `includeFileContents` | boolean | `true` | Include file content snapshots |
-| `maxFileSizeKb` | number | `100` | Maximum file size to include |
+| `apiKey` | 字符串 | — | 您的 buildlog.ai API 密钥（公开上传时可选） |
+| `autoUpload` | 布尔值 | `false` | 录制停止时自动上传 |
+| `defaultPublic` | 布尔值 | `true` | 默认情况下使 buildlog 公开 |
+| `includeFileContents` | 布尔值 | `true` | 包含文件内容快照 |
+| `maxFileSizeKb` | 数字 | `100` | 允许的最大文件大小（以 KB 为单位） |
 
-## Events
+## 事件
 
-The skill emits the following events:
+该技能会触发以下事件：
 
-- `buildlog:started` — Recording began
-- `buildlog:stopped` — Recording ended
-- `buildlog:paused` — Recording paused
-- `buildlog:resumed` — Recording resumed
-- `buildlog:uploaded` — Buildlog uploaded successfully
-- `buildlog:error` — An error occurred
+- `buildlog:started` — 录制开始
+- `buildlog:stopped` — 录制结束
+- `buildlog:paused` — 录制暂停
+- `buildlog:resumed` — 录制继续
+- `buildlog:uploaded` — 录制文件成功上传
+- `buildlog:error` — 发生错误
 
-## Examples
+## 示例
 
-### Basic Recording
+### 基本录制
 
 ```
 You: Start a buildlog "Building a REST API"
@@ -105,7 +105,7 @@ Assistant: Recording stopped. 12 exchanges captured.
          Would you like to upload to buildlog.ai?
 ```
 
-### Retroactive Export
+### 回溯性导出
 
 ```
 You: Export this session as a buildlog
@@ -114,9 +114,9 @@ Assistant: Exported 24 exchanges as buildlog.
          Ready to upload?
 ```
 
-## Privacy
+## 隐私设置
 
-- Buildlogs can be public or private
-- API keys are never included in exports
-- You control what gets shared
-- Delete buildlogs anytime at buildlog.ai
+- Buildlog 可以设置为公开或私密
+- API 密钥不会包含在导出的文件中
+- 您可以控制哪些内容被共享
+- 您可以在 buildlog.ai 上随时删除 buildlog 文件

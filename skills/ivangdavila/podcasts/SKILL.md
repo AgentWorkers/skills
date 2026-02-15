@@ -1,20 +1,58 @@
 ---
 name: Podcasts
-description: Track and synthesize podcasts with subscriptions, briefings, progress tracking, and smart alerts for new episodes and guests.
+description: **功能概述：**  
+该系统能够跟踪并整合播客内容，包括订阅管理、简报发布、进度跟踪以及针对新剧集和嘉宾的智能提醒功能。  
+
+**具体功能：**  
+1. **播客跟踪与整合：**  
+   - 自动收集并整理所有播客的音频文件。  
+   - 提供统一的播客管理界面，便于用户查看和搜索。  
+
+2. **订阅管理：**  
+   - 允许用户轻松订阅感兴趣的播客。  
+   - 通过电子邮件或推送通知提醒用户新剧集的发布。  
+
+3. **进度跟踪：**  
+   - 记录用户已收听的剧集进度，方便用户了解自己的收听习惯。  
+   - 提供统计报告，帮助用户了解自己的收听历史。  
+
+4. **智能提醒：**  
+   - 当有新剧集或嘉宾加入时，通过电子邮件、推送通知或应用程序内通知用户。  
+   - 根据用户偏好定制提醒频率和内容。  
+
+**附加功能：**  
+- **简报发布：**  
+   - 为重要播客或特别节目发布简报，提供额外背景信息和内容概要。  
+- **数据分析：**  
+   - 分析用户收听数据，提供个性化推荐和建议。  
+
+**技术架构：**  
+- 使用云存储服务存储音频文件和数据。  
+- 集成订阅服务（如RSS订阅、电子邮件服务）以实现自动通知。  
+- 利用推送通知服务（如Firebase Cloud Messaging、Amazon SNS）发送提醒。  
+- 采用实时数据更新机制确保用户及时获取最新信息。  
+
+**用户界面：**  
+- 简洁直观的用户界面，支持多语言切换。  
+- 提供搜索功能，帮助用户快速找到所需内容。  
+- 提供详细的信息展示，包括剧集列表、播放进度等。  
+
+**适用场景：**  
+- 适用于个人播客听众、媒体机构、教育机构等需要管理大量播客内容的环境。
 ---
 
-## Core Behavior
+## 核心功能
 
-- User mentions a podcast → add to subscriptions, track new episodes
-- User asks "what's new?" → summarize recent episodes from subscribed shows
-- User asks for briefing → generate summary without them listening
-- User mentions time constraints → prioritize and recommend what to skip
+- 当用户提到某个播客时，系统会将其添加到用户的订阅列表中，并跟踪新发布的剧集。
+- 当用户询问“有什么新内容？”时，系统会总结用户已订阅的播客的最新剧集。
+- 当用户请求获取播客概要时，系统可以在用户未实际收听的情况下生成概要。
+- 当用户表示时间有限时，系统会优先推荐可以跳过的剧集。
 
 ---
 
-## Workspace
+## 工作区
 
-Store podcast data in `~/podcasts/`:
+播客数据存储在 `~/podcasts/` 目录下：
 ```
 ~/podcasts/
 ├── subscriptions.md   # Shows I follow
@@ -26,24 +64,24 @@ Store podcast data in `~/podcasts/`:
 
 ---
 
-## Quick Commands
+## 快速命令
 
-| User Says | Agent Does |
+| 用户输入 | 系统操作 |
 |-----------|------------|
-| "I follow Lex Fridman" | Add to subscriptions |
-| "Summarize latest Huberman" | Generate episode briefing |
-| "What should I listen to?" | Prioritize queue by time available |
-| "Did Naval appear anywhere?" | Check guest across all podcasts |
-| "I finished episode X" | Mark complete, update progress |
-| "Too many episodes" | Suggest what to skip, create catch-up plan |
+| “我关注 Lex Fridman” | 将 Lex Fridman 的播客添加到订阅列表中 |
+| “总结 Huberman 的最新剧集” | 生成 Huberman 最新剧集的概要 |
+| “我应该听什么？” | 根据用户可用的时间优先推荐适合收听的剧集 |
+| “Naval 出现在哪些播客中了吗？” | 在所有播客中查找 Naval 作为嘉宾出现的剧集 |
+| “我听完了第 X 集” | 标记该剧集为已听完，并更新收听进度 |
+| “剧集太多了” | 建议可以跳过的剧集，并制定补听计划 |
 
 ---
 
-## Load Reference
+## 参考资料
 
-| Situation | File |
+| 功能需求 | 对应文件 |
 |-----------|------|
-| Generating briefings, summaries | `briefings.md` |
-| YouTube video podcasts, clips | `youtube.md` |
-| Learning mode, knowledge extraction | `learning.md` |
-| Discovery and recommendations | `discovery.md` |
+| 生成播客概要 | `briefings.md` |
+| YouTube 视频播客及片段 | `youtube.md` |
+| 学习模式与知识提取 | `learning.md` |
+| 播客发现与推荐 | `discovery.md` |

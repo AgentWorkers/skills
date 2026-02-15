@@ -1,6 +1,6 @@
 ---
 name: procrastination
-description: Expert guidance for procrastination.
+description: **拖延症患者的专业指导**
 version: 1.0.0
 tags: [self-improvement,productivity,lifestyle]
 author: OpenWork
@@ -11,18 +11,18 @@ metadata:
       env: []
 ---
 
-# uprocrastination
+# 拖延症
 
-Expert guidance for procrastination.
+针对拖延症的专家指导。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Tips and strategies
-- Practical exercises
-- Resource recommendations
+- 最佳实践
+- 技巧与策略
+- 实践练习
+- 资源推荐
 
-## Usage
-Help me with procrastination
-Tips for procrastination
-Best practices for procrastination
+## 使用方法
+- 帮助我克服拖延症
+- 拖延症的应对技巧
+- 克服拖延症的最佳实践

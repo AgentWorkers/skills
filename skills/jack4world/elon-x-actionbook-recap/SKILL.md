@@ -1,16 +1,16 @@
 ---
 name: elon-x-actionbook-recap
-description: (DEPRECATED) Use x-actionbook-recap instead. This slug is kept for backward compatibility. Collect, scroll, extract, and summarize X posts using actionbook-rs.
+description: （已弃用）请改用 `x-actionbook-recap`。此命名仅保留用于向后兼容性。您可以使用 `actionbook-rs` 来收集、滚动浏览、提取并总结 X 平台上的帖子内容。
 ---
 
-# DEPRECATED
+# 已弃用
 
-This skill has been superseded by **x-actionbook-recap** (generic: any handle + optional keyword search).
+此技能已被 **x-actionbook-recap** 取代（通用功能：支持任意操作 + 可选关键词搜索）。
 
-Install the new one:
+请安装新版本：
 
 ```bash
 clawhub install x-actionbook-recap
 ```
 
-If you previously installed this skill, migrate by uninstalling/removing the old folder and installing the new slug.
+如果您之前已安装了此技能，请先卸载/删除旧版本，然后再安装新版本。

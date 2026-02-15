@@ -1,191 +1,191 @@
 ---
 name: nomad
 version: 1.0.0
-description: Query HashiCorp Nomad clusters. List jobs, nodes, allocations, evaluations, and services. Read-only operations for monitoring and troubleshooting.
+description: 查询 HashiCorp Nomad 集群的信息。可以列出作业（jobs）、节点（nodes）、资源分配情况（allocations）、评估结果（evaluations）以及所提供的服务（services）。这些操作仅限读取，主要用于监控和故障排查。
 homepage: https://github.com/danfedick/nomad-skill
 metadata: {"clawdbot":{"emoji":"📦","requires":{"bins":["nomad"]}}}
 ---
 
-# Nomad Skill
+# Nomad 技能
 
-Query HashiCorp Nomad clusters using the `nomad` CLI. Read-only operations for monitoring and troubleshooting.
+使用 `nomad` CLI 查询 HashiCorp Nomad 集群。支持仅用于监控和故障排查的读操作。
 
-## Requirements
+## 前提条件
 
-- `nomad` CLI installed
-- `NOMAD_ADDR` environment variable set (or defaults to http://127.0.0.1:4646)
-- `NOMAD_TOKEN` if ACLs are enabled
+- 已安装 `nomad` CLI
+- 设置了 `NOMAD_ADDR` 环境变量（默认值为 http://127.0.0.1:4646）
+- 如果启用了 ACL（访问控制列表），则需要 `NOMAD_TOKEN`
 
-## Commands
+## 命令
 
-### Jobs
+### 作业（Jobs）
 
-List all jobs:
-```bash
+- 列出所有作业：
+    ```bash
 nomad job status
 ```
 
-Get job details:
-```bash
+- 获取作业详情：
+    ```bash
 nomad job status <job-id>
 ```
 
-Job history:
-```bash
+- 作业历史记录：
+    ```bash
 nomad job history <job-id>
 ```
 
-Job deployments:
-```bash
+- 作业部署信息：
+    ```bash
 nomad job deployments <job-id>
 ```
 
-### Allocations
+### 分配（Allocations）
 
-List allocations for a job:
-```bash
+- 列出某个作业的分配信息：
+    ```bash
 nomad job allocs <job-id>
 ```
 
-Allocation details:
-```bash
+- 分配详情：
+    ```bash
 nomad alloc status <alloc-id>
 ```
 
-Allocation logs (stdout):
-```bash
+- 分配日志（标准输出）：
+    ```bash
 nomad alloc logs <alloc-id>
 ```
 
-Allocation logs (stderr):
-```bash
+- 分配日志（标准错误输出）：
+    ```bash
 nomad alloc logs -stderr <alloc-id>
 ```
 
-Follow logs:
-```bash
+- 跟踪分配日志：
+    ```bash
 nomad alloc logs -f <alloc-id>
 ```
 
-### Nodes
+### 节点（Nodes）
 
-List all nodes:
-```bash
+- 列出所有节点：
+    ```bash
 nomad node status
 ```
 
-Node details:
-```bash
+- 节点详情：
+    ```bash
 nomad node status <node-id>
 ```
 
-Node allocations:
-```bash
+- 节点分配信息：
+    ```bash
 nomad node status -allocs <node-id>
 ```
 
-### Evaluations
+### 评估（Evaluations）
 
-List recent evaluations:
-```bash
+- 列出最近的评估结果：
+    ```bash
 nomad eval list
 ```
 
-Evaluation details:
-```bash
+- 评估详情：
+    ```bash
 nomad eval status <eval-id>
 ```
 
-### Services
+### 服务（Services）
 
-List services (Nomad native service discovery):
-```bash
+- 列出 Nomad 自带的服務发现功能：
+    ```bash
 nomad service list
 ```
 
-Service info:
-```bash
+- 服务信息：
+    ```bash
 nomad service info <service-name>
 ```
 
-### Namespaces
+### 命名空间（Namespaces）
 
-List namespaces:
-```bash
+- 列出所有命名空间：
+    ```bash
 nomad namespace list
 ```
 
-### Variables
+### 变量（Variables）
 
-List variables:
-```bash
+- 列出所有变量：
+    ```bash
 nomad var list
 ```
 
-Get variable:
-```bash
+- 获取变量值：
+    ```bash
 nomad var get <path>
 ```
 
-### Cluster
+### 集群（Cluster）
 
-Server members:
-```bash
+- 集群成员信息：
+    ```bash
 nomad server members
 ```
 
-Agent info:
-```bash
+- 代理信息：
+    ```bash
 nomad agent-info
 ```
 
-## JSON Output
+## JSON 输出
 
-Add `-json` to most commands for JSON output:
-```bash
+- 在大多数命令后添加 `-json` 选项可获取 JSON 格式输出：
+    ```bash
 nomad job status -json
 nomad node status -json
 nomad alloc status -json <alloc-id>
 ```
 
-## Filtering
+## 过滤
 
-Use `-filter` for expression-based filtering:
-```bash
+- 使用 `-filter` 选项根据表达式进行过滤：
+    ```bash
 nomad job status -filter='Status == "running"'
 nomad node status -filter='Status == "ready"'
 ```
 
-## Common Patterns
+## 常用操作模式
 
-### Find failed allocations
-```bash
+- **查找失败的分配（Find failed allocations）**
+    ```bash
 nomad job allocs <job-id> | grep -i failed
 ```
 
-### Get logs from latest allocation
-```bash
+- **获取最新分配的日志（Get logs from latest allocation）**
+    ```bash
 nomad alloc logs $(nomad job allocs -json <job-id> | jq -r '.[0].ID')
 ```
 
-### Check cluster health
-```bash
+- **检查集群健康状况（Check cluster health）**
+    ```bash
 nomad server members
 nomad node status
 ```
 
-## Environment Variables
+## 环境变量
 
-- `NOMAD_ADDR` — Nomad API address (default: http://127.0.0.1:4646)
-- `NOMAD_TOKEN` — ACL token for authentication
-- `NOMAD_NAMESPACE` — Default namespace
-- `NOMAD_REGION` — Default region
-- `NOMAD_CACERT` — Path to CA cert for TLS
-- `NOMAD_CLIENT_CERT` — Path to client cert for TLS
-- `NOMAD_CLIENT_KEY` — Path to client key for TLS
+- `NOMAD_ADDR` — Nomad API 地址（默认：http://127.0.0.1:4646）
+- `NOMAD_TOKEN` — 用于身份验证的 ACL 令牌
+- `NOMAD_NAMESPACE` — 默认命名空间
+- `NOMAD_REGION` — 默认区域
+- `NOMAD_CACERT` — TLS 证书的路径
+- `NOMAD_CLIENT_CERT` — TLS 客户端证书的路径
+- `NOMAD_CLIENT_KEY` — TLS 客户端密钥的路径
 
-## Notes
+## 注意事项
 
-- This skill is read-only. No job submissions, stops, or modifications.
-- Use `nomad-tui` for interactive cluster management.
-- For job deployment, use `nomad job run <file.nomad.hcl>` directly.
+- 该技能仅支持读操作，无法提交、停止或修改作业。
+- 使用 `nomad-tui` 进行交互式集群管理。
+- 要部署作业，直接使用 `nomad job run <file.nomad.hcl>` 命令。

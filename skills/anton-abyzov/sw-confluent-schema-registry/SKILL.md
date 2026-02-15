@@ -1,54 +1,54 @@
 ---
 name: confluent-schema-registry
-description: Schema Registry expert for Avro, Protobuf, and JSON Schema management. Covers schema evolution strategies, compatibility modes, validation, and best practices for managing schemas in Confluent Cloud and self-hosted Schema Registry. Activates for schema registry, avro, protobuf, json schema, schema evolution, compatibility modes, schema validation.
+description: Avro、Protobuf 和 JSON Schema 的 Schema Registry 专家，专注于这些格式的 Schema 管理工作。涵盖 Schema 进化策略、兼容性模式、验证方法，以及在 Confluent Cloud 和自托管 Schema Registry 中管理 Schema 的最佳实践。支持 Schema Registry 的激活功能，以及 Avro、Protobuf 和 JSON Schema 的相关操作（包括 Schema 进化、兼容性模式设置和 Schema 验证等）。
 ---
 
-# Confluent Schema Registry Skill
+# Confluent Schema Registry 技能
 
-Expert knowledge of Confluent Schema Registry for managing Avro, Protobuf, and JSON Schema schemas in Kafka ecosystems.
+具备丰富的 Confluent Schema Registry 知识，能够有效管理 Kafka 生态系统中的 Avro、Protobuf 和 JSON Schema。
 
-## What I Know
+## 我所掌握的内容
 
-### Schema Formats
+### Schema 格式
 
-**Avro** (Most Popular):
-- Binary serialization format
-- Schema evolution support
-- Smaller message size vs JSON
-- Self-describing with schema ID in header
-- Best for: High-throughput applications, data warehousing
+**Avro**（最受欢迎）：
+- 二进制序列化格式
+- 支持 Schema 的演化
+- 比 JSON 更小的消息大小
+- 通过头部中的 Schema ID 自描述
+- 适用于：高吞吐量应用、数据仓库
 
-**Protobuf** (Google Protocol Buffers):
-- Binary serialization
-- Strong typing with .proto files
-- Language-agnostic (Java, Python, Go, C++, etc.)
-- Efficient encoding
-- Best for: Polyglot environments, gRPC integration
+**Protobuf**（Google Protocol Buffers）：
+- 二进制序列化
+- 使用 `.proto` 文件实现强类型
+- 语言无关（Java、Python、Go、C++ 等）
+- 高效的编码方式
+- 适用于：多语言环境、gRPC 集成
 
-**JSON Schema**:
-- Human-readable text format
-- Easy debugging
-- Widely supported
-- Larger message size
-- Best for: Development, debugging, REST APIs
+**JSON Schema**：
+- 人类可读的文本格式
+- 易于调试
+- 被广泛支持
+- 消息大小较大
+- 适用于：开发、调试、REST API
 
-### Compatibility Modes
+### 兼容性模式
 
-| Mode | Producer Can | Consumer Can | Use Case |
+| 模式 | 生产者可以 | 消费者可以 | 使用场景 |
 |------|-------------|-------------|----------|
-| **BACKWARD** | Remove fields, add optional fields | Read old data with new schema | Most common, safe for consumers |
-| **FORWARD** | Add fields, remove optional fields | Read new data with old schema | Safe for producers |
-| **FULL** | Add/remove optional fields only | Bi-directional compatibility | Both producers and consumers upgrade independently |
-| **NONE** | Any change | Must coordinate upgrades | Development only, NOT production |
-| **BACKWARD_TRANSITIVE** | BACKWARD across all versions | Read any old data | Strictest backward compatibility |
-| **FORWARD_TRANSITIVE** | FORWARD across all versions | Read any new data | Strictest forward compatibility |
-| **FULL_TRANSITIVE** | FULL across all versions | Complete bi-directional | Strictest overall |
+| **BACKWARD** | 删除字段、添加可选字段 | 使用新 Schema 读取旧数据 | 最常见，对消费者安全 |
+| **FORWARD** | 添加字段、删除可选字段 | 使用旧 Schema 读取新数据 | 对生产者安全 |
+| **FULL** | 仅允许添加/删除可选字段 | 双向兼容 | 生产者和消费者可以独立升级 |
+| **NONE** | 任何更改 | 必须协调升级 | 仅限开发环境，不适合生产环境 |
+| **BACKWARD_TRANSITIVE** | 在所有版本间保持 backward 兼容性 | 可以读取任何旧数据 | 最严格的 backward 兼容性 |
+| **FORWARD_TRANSITIVE** | 在所有版本间保持 forward 兼容性 | 可以读取任何新数据 | 最严格的 forward 兼容性 |
+| **FULL_TRANSITIVE** | 在所有版本间保持双向兼容性 | 最严格的兼容性 |
 
-**Default**: `BACKWARD` (recommended for production)
+**默认值**：`BACKWARD`（推荐用于生产环境）
 
-### Schema Evolution Strategies
+### Schema 演化策略
 
-**Adding Fields**:
+**添加字段**：
 ```avro
 // V1
 {
@@ -72,7 +72,7 @@ Expert knowledge of Confluent Schema Registry for managing Avro, Protobuf, and J
 }
 ```
 
-**Removing Fields** (BACKWARD compatible):
+**删除字段**（保持 backward 兼容性）：
 ```avro
 // V1
 {"name": "address", "type": "string"}
@@ -81,7 +81,7 @@ Expert knowledge of Confluent Schema Registry for managing Avro, Protobuf, and J
 // Field removed from schema
 ```
 
-**Changing Field Types** (Breaking Change!):
+**更改字段类型**（会破坏兼容性！）：
 ```avro
 // ❌ BREAKING - Cannot change string to int
 {"name": "age", "type": "string"} → {"name": "age", "type": "int"}
@@ -90,50 +90,50 @@ Expert knowledge of Confluent Schema Registry for managing Avro, Protobuf, and J
 {"name": "age", "type": ["string", "int"], "default": "unknown"}
 ```
 
-## When to Use This Skill
+## 何时使用此技能
 
-Activate me when you need help with:
-- Schema evolution strategies ("How do I evolve my Avro schema?")
-- Compatibility mode selection ("Which compatibility mode for production?")
-- Schema validation ("Validate my Avro schema")
-- Best practices ("Schema Registry best practices")
-- Schema registration ("Register Avro schema with Schema Registry")
-- Debugging schema issues ("Schema compatibility error")
-- Format comparison ("Avro vs Protobuf vs JSON Schema")
+当您需要以下帮助时，请激活我：
+- Schema 演化策略（“如何演化我的 Avro Schema？”）
+- 兼容性模式选择（“生产环境应使用哪种兼容性模式？”）
+- Schema 验证（“验证我的 Avro Schema”）
+- 最佳实践（“Schema Registry 的最佳实践”）
+- Schema 注册（“将 Avro Schema 注册到 Schema Registry”）
+- 调试 Schema 问题（“Schema 兼容性错误”）
+- 格式比较（“Avro 与 Protobuf 与 JSON Schema 的比较”）
 
-## Best Practices
+## 最佳实践
 
-### 1. Always Use Compatible Evolution
+### 1. 始终使用兼容的演化策略
 
-✅ **DO**:
-- Add optional fields with defaults
-- Remove optional fields
-- Use union types for flexibility
-- Test schema changes in staging first
+✅ **应该**：
+- 添加带有默认值的可选字段
+- 删除可选字段
+- 使用联合类型（union types）以提高灵活性
+- 首先在测试环境中测试 Schema 的变化
 
-❌ **DON'T**:
-- Change field types
-- Remove required fields
-- Rename fields (add new + deprecate old)
-- Use `NONE` compatibility in production
+❌ **不应该**：
+- 更改字段类型
+- 删除必填字段
+- 重命名字段（同时添加新字段并弃用旧字段）
+- 在生产环境中使用 `NONE` 兼容性模式
 
-### 2. Schema Naming Conventions
+### 2. Schema 命名规范
 
-**Hierarchical Namespaces**:
+**分层命名空间**：
 ```
 com.company.domain.EntityName
 com.acme.ecommerce.Order
 com.acme.ecommerce.OrderLineItem
 ```
 
-**Subject Naming** (Kafka topics):
-- `<topic-name>-value` - For record values
-- `<topic-name>-key` - For record keys
-- Example: `orders-value`, `orders-key`
+**Kafka 主题命名**：
+- `<topic-name>-value` - 用于记录值
+- `<topic-name>-key` - 用于记录键
+- 例如：`orders-value`、`orders-key`
 
-### 3. Schema Registry Configuration
+### 3. Schema Registry 配置
 
-**Producer** (with Avro):
+**生产者（使用 Avro）**：
 ```javascript
 const { Kafka } = require('kafkajs');
 const { SchemaRegistry } = require('@kafkajs/confluent-schema-registry');
@@ -175,7 +175,7 @@ await producer.send({
 });
 ```
 
-**Consumer** (with Avro):
+**消费者（使用 Avro）**：
 ```javascript
 const consumer = kafka.consumer({ groupId: 'user-processor' });
 
@@ -190,16 +190,16 @@ await consumer.run({
 });
 ```
 
-### 4. Schema Validation Workflow
+### 4. Schema 验证流程
 
-**Before Registering**:
-1. Validate schema syntax (Avro JSON, .proto, JSON Schema)
-2. Check compatibility with existing versions
-3. Test with sample data
-4. Register in dev/staging first
-5. Deploy to production after validation
+**注册前**：
+1. 验证 Schema 语法（Avro、JSON、.proto、JSON Schema）
+2. 检查与现有版本的兼容性
+3. 使用样本数据进行测试
+4. 首先在开发/测试环境中注册
+5. 验证通过后部署到生产环境
 
-**CLI Validation**:
+**CLI 验证**：
 ```bash
 # Check compatibility (before registering)
 curl -X POST http://localhost:8081/compatibility/subjects/users-value/versions/latest \
@@ -212,61 +212,61 @@ curl -X POST http://localhost:8081/subjects/users-value/versions \
   -d '{"schema": "{...}"}'
 ```
 
-## Common Issues & Solutions
+## 常见问题及解决方案
 
-### Issue 1: Schema Compatibility Error
+### 问题 1：Schema 兼容性错误
 
-**Error**:
+**错误**：
 ```
 Schema being registered is incompatible with an earlier schema
 ```
 
-**Root Cause**: Violates compatibility mode (e.g., removed required field with BACKWARD mode)
+**根本原因**：违反了兼容性模式（例如，在 BACKWARD 模式下删除了必填字段）
 
-**Solution**:
-1. Check current compatibility mode:
+**解决方案**：
+1. 检查当前的兼容性模式：
    ```bash
    curl http://localhost:8081/config/users-value
    ```
-2. Fix schema to be compatible OR change mode (carefully!)
-3. Validate before registering:
+2. 修复 Schema 以使其兼容，或更改模式（请谨慎操作！）
+3. 在注册前进行验证：
    ```bash
    curl -X POST http://localhost:8081/compatibility/subjects/users-value/versions/latest \
      -d '{"schema": "{...}"}'
    ```
 
-### Issue 2: Schema Not Found
+### 问题 2：找不到 Schema
 
-**Error**:
+**错误**：
 ```
 Subject 'users-value' not found
 ```
 
-**Root Cause**: Schema not registered yet OR wrong subject name
+**根本原因**：Schema 尚未注册，或主题命名错误
 
-**Solution**:
-1. List all subjects:
+**解决方案**：
+1. 列出所有主题：
    ```bash
    curl http://localhost:8081/subjects
    ```
-2. Register schema if missing
-3. Check subject naming convention (`<topic>-key` or `<topic>-value`)
+2. 如果缺失则注册 Schema
+3. 检查主题命名规范（`<topic>-key` 或 `<topic>-value`）
 
-### Issue 3: Message Deserialization Failed
+### 问题 3：消息反序列化失败
 
-**Error**:
+**错误**：
 ```
 Unknown magic byte!
 ```
 
-**Root Cause**: Message not encoded with Schema Registry (missing magic byte + schema ID)
+**根本原因**：消息未使用 Schema Registry 进行编码（缺少魔数字节和 Schema ID）
 
-**Solution**:
-1. Ensure producer uses Schema Registry encoder
-2. Check message format: [magic_byte(1) + schema_id(4) + payload]
-3. Use `@kafkajs/confluent-schema-registry` library
+**解决方案**：
+1. 确保生产者使用了 Schema Registry 编码器
+2. 检查消息格式：[魔数字节（1）+ Schema ID（4）+ 数据负载]
+3. 使用 `@kafkajs/confluent-schema-registry` 库
 
-## Schema Evolution Decision Tree
+## Schema 演化决策树
 
 ```
 Need to change schema?
@@ -286,31 +286,31 @@ Need to change schema?
    └─ ❌ BREAKING CHANGE → Add new field + mark old as deprecated
 ```
 
-## Avro vs Protobuf vs JSON Schema Comparison
+## Avro、Protobuf 与 JSON Schema 的比较
 
-| Feature | Avro | Protobuf | JSON Schema |
+| 特性 | Avro | Protobuf | JSON Schema |
 |---------|------|----------|-------------|
-| **Encoding** | Binary | Binary | Text (JSON) |
-| **Message Size** | Small (90% smaller) | Small (80% smaller) | Large (baseline) |
-| **Human Readable** | No | No | Yes |
-| **Schema Evolution** | Excellent | Good | Fair |
-| **Language Support** | Java, Python, C++ | 20+ languages | Universal |
-| **Performance** | Very Fast | Very Fast | Slower |
-| **Debugging** | Harder | Harder | Easy |
-| **Best For** | Data warehousing, ETL | Polyglot, gRPC | REST APIs, dev |
+| **编码方式** | 二进制 | 二进制 | 文本（JSON） |
+| **消息大小** | 较小（比 JSON 小 90%） | 较小（比 JSON 小 80%） | 较大（基准） |
+| **人类可读性** | 不支持 | 不支持 | 支持 |
+| **Schema 演化** | 非常出色 | 良好 | 一般 |
+| **语言支持** | Java、Python、C++ | 支持 20 多种语言 | 支持多种语言 |
+| **性能** | 非常快 | 非常快 | 较慢 |
+| **调试难度** | 较难 | 较难 | 较容易 |
+| **适用场景** | 数据仓库、ETL | 多语言环境、gRPC | REST API、开发 |
 
-**Recommendation**:
-- **Production**: Avro (best balance)
-- **Polyglot teams**: Protobuf
-- **Development/Debugging**: JSON Schema
+**建议**：
+- **生产环境**：Avro（最佳平衡）
+- **多语言团队**：Protobuf
+- **开发/调试**：JSON Schema
 
-## References
+## 参考资料
 
-- Schema Registry REST API: https://docs.confluent.io/platform/current/schema-registry/develop/api.html
-- Avro Specification: https://avro.apache.org/docs/current/spec.html
-- Protobuf Guide: https://developers.google.com/protocol-buffers
-- JSON Schema Spec: https://json-schema.org/
+- Schema Registry REST API：https://docs.confluent.io/platform/current/schema-registry/develop/api.html
+- Avro 规范：https://avro.apache.org/docs/current/spec.html
+- Protobuf 文档：https://developers.google.com/protocol-buffers
+- JSON Schema 规范：https://json-schema.org/
 
 ---
 
-**Invoke me when you need schema management, evolution strategies, or compatibility guidance!**
+**当您需要 Schema 管理、演化策略或兼容性指导时，请调用我！**

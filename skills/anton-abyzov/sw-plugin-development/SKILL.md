@@ -1,15 +1,15 @@
 ---
 name: plugin-development
-description: Claude Code plugin development - plugin structure, slash commands, skills, sub-agents, YAML frontmatter. Use when creating plugins.
+description: Claude Code 插件开发：插件结构、斜杠命令（slash commands）、技能（skills）、子代理（sub-agents）以及 YAML 标头文件（YAML frontmatter）。这些内容用于指导插件开发过程。
 ---
 
-# Plugin Development Expert
+# 插件开发专家
 
-Expert guidance for creating production-ready Claude Code plugins.
+为您提供创建可用于生产环境的 Claude Code 插件的专业指导。
 
-## Critical Structure Rules
+## 关键结构规则
 
-**Directory Hierarchy**:
+**目录层次结构**：
 ```
 ~/.claude/plugins/my-plugin/    ← Plugin root
 ├── .claude-plugin/
@@ -24,7 +24,7 @@ Expert guidance for creating production-ready Claude Code plugins.
         └── AGENT.md
 ```
 
-**Common Mistakes**:
+**常见错误**：
 ```
 # ❌ WRONG
 skills/SKILL.md                # Missing subdirectory
@@ -35,9 +35,9 @@ skills/My-Skill/SKILL.md       # CamelCase not allowed
 skills/my-skill/SKILL.md       # kebab-case subdirectory + SKILL.md
 ```
 
-## plugin.json Format
+## plugin.json 格式
 
-**Minimum Required**:
+**最低要求**：
 ```json
 {
   "name": "my-plugin",
@@ -46,7 +46,7 @@ skills/my-skill/SKILL.md       # kebab-case subdirectory + SKILL.md
 }
 ```
 
-**Full Example**:
+**完整示例**：
 ```json
 {
   "name": "my-awesome-plugin",
@@ -63,20 +63,19 @@ skills/my-skill/SKILL.md       # kebab-case subdirectory + SKILL.md
 }
 ```
 
-## Command Format (Slash Commands)
+## 命令格式（斜杠命令）
 
-**Header Format** (CRITICAL):
+**头部格式**（非常重要）：
 ```markdown
 # /my-plugin:command-name
 ```
 
-**Rules**:
-- MUST start with `# /`
-- Plugin name: `kebab-case`
-- Command name: `kebab-case`
-- NO YAML frontmatter (only skills use YAML)
+**规则**：
+- 必须以 `# /` 开头
+- 插件名称：使用“kebab-case”命名规则（即所有单词均小写且用连字符连接）
+- 不允许使用 YAML 作为前置内容（仅技能相关文档可以使用 YAML）
 
-**Full Template**:
+**完整模板**：
 ```markdown
 # /my-plugin:analyze-costs
 
@@ -113,9 +112,9 @@ aws ce get-cost-and-usage --time-period...
 - Pre-purchase planning
 ```
 
-## Skill Format (Auto-Activating)
+## 技能格式（自动激活）
 
-**YAML Frontmatter** (REQUIRED):
+**YAML 前置内容**（必需）：
 ```yaml
 ---
 name: cost-optimization
@@ -123,7 +122,7 @@ description: Expert cloud cost optimization for AWS, Azure, GCP. Covers FinOps, 
 ---
 ```
 
-**Activation Keywords**:
+**激活关键词**：
 ```yaml
 # ✅ GOOD: Specific, varied keywords
 description: Expert Python optimization. Activates for python performance, optimize python code, speed up python, profiling, cProfile, pypy, numba.
@@ -135,7 +134,7 @@ description: Python expert.
 description: Expert Python optimization covering performance tuning.
 ```
 
-**Full Template**:
+**完整模板**：
 ```markdown
 ---
 name: my-skill
@@ -155,7 +154,7 @@ Content here...
 ### 2. Code Examples
 
 \```typescript
-// Working examples
+// 工作示例
 \```
 
 ## Best Practices
@@ -166,14 +165,14 @@ Content here...
 You are ready to help with [domain]!
 ```
 
-## Agent Format (Sub-Agents)
+## 代理格式（子代理）
 
-**File Location**:
+**文件位置**：
 ```
 agents/agent-name/AGENT.md
 ```
 
-**Template**:
+**模板**：
 ```markdown
 ---
 name: specialist-agent
@@ -196,7 +195,7 @@ You are a specialized agent for [purpose].
 3. Return results
 ```
 
-**Invocation**:
+**调用方式**：
 ```typescript
 Task({
   subagent_type: "plugin-name:folder-name:yaml-name",
@@ -210,16 +209,16 @@ Task({
 });
 ```
 
-## Testing Workflow
+## 测试工作流程
 
-**1. Install Plugin**:
+**1. 安装插件**：
 ```bash
 cp -r my-plugin ~/.claude/plugins/
 # OR
 claude plugin add github:username/my-plugin
 ```
 
-**2. Restart Claude Code**:
+**2. 重启 Claude Code**：
 ```bash
 # Required after:
 - Adding new plugin
@@ -228,7 +227,7 @@ claude plugin add github:username/my-plugin
 - Changing YAML frontmatter
 ```
 
-**3. Test Commands**:
+**3. 测试命令**：
 ```bash
 # Type "/" in Claude Code
 # Verify command appears: /my-plugin:command-name
@@ -236,14 +235,14 @@ claude plugin add github:username/my-plugin
 # Verify behavior
 ```
 
-**4. Test Skills**:
+**4. 测试技能**：
 ```bash
 # Ask trigger question: "How do I reduce costs?"
 # Verify skill activates
 # Check response uses skill knowledge
 ```
 
-**5. Check Logs**:
+**5. 检查日志**：
 ```bash
 tail -f ~/.claude/logs/claude.log | grep my-plugin
 
@@ -258,9 +257,9 @@ tail -f ~/.claude/logs/claude.log | grep my-plugin
 # ❌ "Command header malformed"
 ```
 
-## Common Issues
+## 常见问题
 
-**Issue: Skill not activating**
+**问题：技能无法激活**：
 ```
 Checklist:
 1. ✅ YAML frontmatter present? (---...---)
@@ -270,7 +269,7 @@ Checklist:
 5. ✅ Claude Code restarted?
 ```
 
-**Issue: Command not found**
+**问题：命令未找到**：
 ```
 Checklist:
 1. ✅ Header format: # /plugin-name:command-name
@@ -279,7 +278,7 @@ Checklist:
 4. ✅ Claude Code restarted?
 ```
 
-**Issue: YAML parsing error**
+**问题：YAML 解析错误**：
 ```
 Common causes:
 - Unclosed quotes: description: "Missing end
@@ -288,29 +287,29 @@ Common causes:
 - Incorrect indentation
 ```
 
-## Best Practices
+## 最佳实践
 
-**Naming**:
-- Plugin: `my-awesome-plugin` (kebab-case)
-- Commands: `analyze-costs` (kebab-case)
-- Skills: `cost-optimization` (kebab-case)
-- NO underscores, NO CamelCase
+**命名规范**：
+- 插件名称：`my-awesome-plugin`（使用“kebab-case”命名规则）
+- 命令名称：`analyze-costs`（使用“kebab-case”命名规则）
+- 技能名称：`cost-optimization`（使用“kebab-case”命名规则）
+- 避免使用下划线或驼峰式命名法
 
-**Activation Keywords**:
-- Include 5-10 trigger keywords
-- Mix specific terms and common phrases
-- Think about what users will ask
-- Test with real questions
+**激活关键词**：
+- 包含 5-10 个触发关键词
+- 结合具体术语和常用短语
+- 考虑用户可能提出的问题
+- 用实际问题进行测试
 
-**Documentation**:
-- Clear "Your Task" section
-- Code examples with syntax highlighting
-- "Example Usage" section
-- "When to Use" section
+**文档编写**：
+- 明确的“您的任务”部分
+- 带有语法高亮的代码示例
+- “示例用法”部分
+- “使用场景”部分
 
-**Performance**:
-- Keep SKILL.md under 50KB
-- Optimize command prompts
-- Avoid expensive operations
+**性能优化**：
+- 保持 SKILL.md 文件大小在 50KB 以内
+- 优化命令提示语
+- 避免执行耗时的操作
 
-Create production-ready Claude Code plugins!
+快来创建可用于生产环境的 Claude Code 插件吧！

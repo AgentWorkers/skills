@@ -1,100 +1,100 @@
 ---
 name: sponge-wallet
-description: Manages crypto wallets, transfers tokens, swaps on DEXes, checks balances, and accesses paid APIs (search, image gen, prediction markets, web scraping, document parsing, sales prospecting) via x402 micropayments. Use when the user asks about wallet balances, token transfers, swaps, blockchain payments, or paid API services.
+description: 管理加密钱包、转账代币、在去中心化交易所（DEX）上进行交易、查询账户余额，并通过 x402 微支付功能访问付费 API（如搜索、图像生成、预测市场、网络爬虫、文档解析、销售线索挖掘等）。当用户询问钱包余额、代币转账、交易详情、区块链支付或付费 API 服务时，可使用该功能。
 ---
 
-# Sponge Wallet Skill
+# Sponge 钱包技能
 
-Multi-chain crypto wallet with transfers, swaps, and paid API access.
+这是一个支持多链加密货币的钱包，提供转账、交换以及付费 API 访问功能。
 
-## Authentication
+## 认证
 
-**IMPORTANT**: If any tool returns `"Not authenticated"` or `"Invalid API key"`, run the login flow.
+**重要提示**：如果任何工具返回 “Not authenticated” 或 “Invalid API key”，请执行登录流程。
 
-Login is two-phase (because Claude Code runs commands non-interactively):
+登录分为两个阶段（因为 Claude Code 是非交互式地执行命令的）：
 
-**Phase 1** — Start the device flow (returns a URL and code as JSON):
+**第1阶段** — 启动设备登录流程（返回一个 URL 和代码，格式为 JSON）：
 ```bash
 node <skill-path>/scripts/wallet.mjs login
 ```
-Show the `verification_url` and `user_code` to the user. Tell them to open the URL in their browser and enter the code.
+将 `verification_url` 和 `user_code` 显示给用户，告诉他们在浏览器中打开该 URL 并输入代码。
 
-**Phase 2** — After the user confirms they have approved, poll for the token:
+**第2阶段** — 用户确认批准后，请求令牌：
 ```bash
 node <skill-path>/scripts/wallet.mjs login --poll <device_code> <interval> <expires_in>
 ```
-Use the `device_code`, `interval`, and `expires_in` values from Phase 1 output.
+使用第1阶段输出中的 `device_code`、`interval` 和 `expires_in` 值。
 
-Credentials are saved to `~/.spongewallet/credentials.json` automatically.
+凭据会自动保存到 `~/.spongewallet/credentials.json` 文件中。
 
-Credential resolution order:
-1. `SPONGE_API_KEY` environment variable (if set, skips stored credentials)
-2. `~/.spongewallet/credentials.json` (saved by login)
+凭据的解析顺序如下：
+1. `SPONGE_API_KEY` 环境变量（如果已设置，则跳过已保存的凭据）
+2. `~/.spongewallet/credentials.json`（通过登录保存的凭据）
 
-Other auth commands:
-- `node wallet.mjs whoami` — show current auth status
-- `node wallet.mjs logout` — remove stored credentials
+其他认证命令：
+- `node wallet.mjs whoami` — 显示当前的认证状态
+- `node wallet.mjs logout` — 删除已保存的凭据
 
-## How to Execute
+## 执行方式
 
 ```bash
 node <skill-path>/scripts/wallet.mjs <tool_name> '<json_args>'
 ```
 
-Output is JSON with `status: "success"` or `status: "error"`.
+输出结果为 JSON 格式，其中 `status` 可能为 “success” 或 “error”。
 
-## Available Tools
+## 可用工具
 
-### Wallet & Balance
+### 钱包与余额
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `get_balance` | Check balances across chains | — | `chain` |
-| `get_solana_tokens` | Discover all SPL tokens in wallet | `chain` | — |
-| `search_solana_tokens` | Search Jupiter token database | `query` | `limit` |
+| `get_balance` | 查看各链路的余额 | — | `chain` |
+| `get_solana_tokens` | 查找钱包中的所有 SPL 代币 | `chain` | — |
+| `search_solana_tokens` | 在 Jupiter 代币数据库中搜索 | `query` | `limit` |
 
-### Transfers
+### 转账
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `evm_transfer` | Transfer ETH/USDC on Ethereum/Base | `chain`, `to`, `amount`, `currency` | — |
-| `solana_transfer` | Transfer SOL/USDC on Solana | `chain`, `to`, `amount`, `currency` | — |
+| `evm_transfer` | 在 Ethereum 或 Base 上转账 ETH/USDC | `chain`, `to`, `amount`, `currency` | — |
+| `solana_transfer` | 在 Solana 上转账 SOL/USDC | `chain`, `to`, `amount`, `currency` | — |
 
-### Swaps
+### 交换
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `solana_swap` | Swap tokens via Jupiter | `chain`, `input_token`, `output_token`, `amount` | `slippage_bps` |
+| `solana_swap` | 通过 Jupiter 进行代币交换 | `chain`, `input_token`, `output_token`, `amount` | `slippage_bps` |
 
-### Transactions
+### 交易
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `get_transaction_status` | Check tx status | `transaction_hash`, `chain` | — |
-| `get_transaction_history` | View past transactions | — | `limit`, `chain` |
+| `get_transaction_status` | 查查交易状态 | `transaction_hash`, `chain` | — |
+| `get_transaction_history` | 查看历史交易 | — | `limit`, `chain` |
 
-### Funding & Withdrawals
+### 资金注入与提取
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `request_funding` | Request funds from owner | `amount`, `chain`, `currency` | — |
-| `withdraw_to_main_wallet` | Return funds to owner | `chain`, `amount` | `currency` |
+| `request_funding` | 从所有者处请求资金 | `amount`, `chain`, `currency` | — |
+| `withdraw_to_main_wallet` | 将资金退还给所有者 | `chain`, `amount` | `currency` |
 
-### Paid APIs (Sponge x402)
+### 付费 API（Sponge x402）
 
-| Tool | Description | Required | Optional |
+| 工具 | 描述 | 必需参数 | 可选参数 |
 |------|-------------|----------|----------|
-| `sponge` | Unified paid API interface | `task` | See [REFERENCE.md](REFERENCE.md) |
-| `create_x402_payment` | Create x402 payment payload | `chain`, `to`, `amount` | `token`, `decimals` |
+| `sponge` | 统一的付费 API 接口 | `task` | 详见 [REFERENCE.md](REFERENCE.md) |
+| `create_x402_payment` | 创建 x402 支付请求 | `chain`, `to`, `amount` | `token`, `decimals` |
 
-## Chain Reference
+## 链路参考
 
-**Test keys** (`sponge_test_*`): `sepolia`, `base-sepolia`, `solana-devnet`, `tempo`
-**Live keys** (`sponge_live_*`): `ethereum`, `base`, `solana`
+**测试地址** (`sponge_test_*`): `sepolia`, `base-sepolia`, `solana-devnet`, `tempo`
+**生产地址** (`sponge_live_*`): `ethereum`, `base`, `solana`
 
-## Common Workflows
+## 常见工作流程
 
-### Check Balance → Transfer → Verify
+### 检查余额 → 转账 → 验证
 
 ```bash
 node wallet.mjs get_balance '{"chain":"base"}'
@@ -102,14 +102,14 @@ node wallet.mjs evm_transfer '{"chain":"base","to":"0x...","amount":"10","curren
 node wallet.mjs get_transaction_status '{"transaction_hash":"0x...","chain":"base"}'
 ```
 
-### Swap Tokens on Solana
+### 在 Solana 上交换代币
 
 ```bash
 node wallet.mjs search_solana_tokens '{"query":"BONK"}'
 node wallet.mjs solana_swap '{"chain":"solana","input_token":"SOL","output_token":"BONK","amount":"0.5"}'
 ```
 
-### Sponge Paid APIs
+### Sponge 付费 API
 
 ```bash
 node wallet.mjs sponge '{"task":"search","query":"AI research papers"}'
@@ -120,14 +120,14 @@ node wallet.mjs sponge '{"task":"parse","document_url":"https://example.com/doc.
 node wallet.mjs sponge '{"task":"prospect","apollo_query":"Stripe","apollo_endpoint":"companies"}'
 ```
 
-## Error Handling
+## 错误处理
 
-| Error | Resolution |
+| 错误类型 | 处理方法 |
 |-------|------------|
-| `Not authenticated` | Run `node wallet.mjs login` |
-| `Invalid API key` | Run `node wallet.mjs login` to re-authenticate |
-| `Chain 'X' is not allowed` | Use correct key type (test vs live) for the chain |
-| `Insufficient balance` | Use `request_funding` |
-| `Address not in allowlist` | Add recipient in the dashboard |
+| `Not authenticated` | 执行 `node wallet.mjs login` 进行登录 |
+| `Invalid API key` | 执行 `node wallet.mjs login` 重新认证 |
+| `Chain 'X' is not allowed` | 使用正确的链路类型（测试地址或生产地址） |
+| `Insufficient balance` | 使用 `request_funding` 请求资金 |
+| `Address not in allowlist` | 将接收者添加到允许列表中 |
 
-See [REFERENCE.md](REFERENCE.md) for detailed parameter docs.
+详细参数说明请参阅 [REFERENCE.md](REFERENCE.md)。

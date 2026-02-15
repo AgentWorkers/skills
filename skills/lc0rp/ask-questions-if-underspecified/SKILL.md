@@ -1,68 +1,63 @@
 ---
 name: ask-questions-if-underspecified
-description: Clarify requirements before implementing. Do not use automatically, only when invoked explicitly.
+description: 在实施之前，请先明确各项需求。请勿自动使用相关功能，仅当明确请求时才进行调用。
 ---
 
-# Ask Questions If Underspecified
+# 如需求描述不明确，请提出问题
 
-## Goal
+## 目标
 
-Ask the minimum set of clarifying questions needed to avoid wrong work; do not start implementing until the must-have questions are answered (or the user explicitly approves proceeding with stated assumptions).
+提出最少数量的澄清性问题，以避免工作出错；在所有必要的问题得到解答（或用户明确同意继续基于现有假设进行工作）之前，切勿开始实施。
 
-## Workflow
+## 工作流程
 
-### 1) Decide whether the request is underspecified
+### 1) 判断需求是否描述不明确
 
-Treat a request as underspecified if after exploring how to perform the work, some or all of the following are not clear:
+如果在尝试了解工作内容后，发现以下一个或多个方面不明确，可认为需求描述不明确：
+- 未明确工作目标（哪些部分需要改变，哪些部分保持不变）
+- 未明确“完成”的标准（验收标准、示例、边缘情况）
+- 未明确工作范围（涉及哪些文件/组件/用户）
+- 未明确约束条件（兼容性、性能、代码风格、依赖关系、时间限制）
+- 未明确工作环境（使用的语言/运行时版本、操作系统、构建/测试工具）
+- 未明确数据安全性和可逆性（数据迁移、部署/回滚策略、潜在风险）
 
-- Define the objective (what should change vs stay the same)
-- Define "done" (acceptance criteria, examples, edge cases)
-- Define scope (which files/components/users are in/out)
-- Define constraints (compatibility, performance, style, deps, time)
-- Identify environment (language/runtime versions, OS, build/test runner)
-- Clarify safety/reversibility (data migration, rollout/rollback, risk)
+如果存在多种合理的解释方式，应假设需求描述不明确。
 
-If multiple plausible interpretations exist, assume it is underspecified.
+### 2) 首先提出必要的问题（问题数量要少）
 
-### 2) Ask must-have questions first (keep it small)
+首次询问时，提出1-5个问题。优先选择那些能够排除某些工作方向的问题。
 
-Ask 1-5 questions in the first pass. Prefer questions that eliminate whole branches of work.
+使问题易于回答：
+- 问题表述简洁明了（简短、编号）
+- 尽可能提供多项选择
+- 在适当的情况下提供合理的默认选项（明确标注为默认/推荐选项；如果以代码块的形式展示选项，应在代码块上方加粗标注“推荐”字样，并在代码块内标注默认选项）
+- 提供快速响应的选项（例如，回复“defaults”表示接受所有推荐/默认选项）
+- 在必要时提供“不确定”的选项（例如，“不确定——使用默认设置”）
+- 如果有助于减少沟通障碍，将“必须了解的信息”与“了解即可的信息”分开
+- 将选项结构化，以便用户能够快速做出选择（例如，“1b 2a 3c”）；用简单的语言重新表述用户的选择以确认其选择
 
-Make questions easy to answer:
+### 3) 在采取行动前暂停
 
-- Optimize for scannability (short, numbered questions; avoid paragraphs)
-- Offer multiple-choice options when possible
-- Suggest reasonable defaults when appropriate (mark them clearly as the default/recommended choice; bold the recommended choice in the list, or if you present options in a code block, put a bold "Recommended" line immediately above the block and also tag defaults inside the block)
-- Include a fast-path response (e.g., reply `defaults` to accept all recommended/default choices)
-- Include a low-friction "not sure" option when helpful (e.g., "Not sure - use default")
-- Separate "Need to know" from "Nice to know" if that reduces friction
-- Structure options so the user can respond with compact decisions (e.g., `1b 2a 3c`); restate the chosen options in plain language to confirm
+在获得必要问题的答案之前：
+- 不要运行任何命令、编辑文件，或制定依赖于未知信息的详细计划
+- 仅执行那些不会让你陷入固定方向的低风险探索性操作（例如，检查仓库结构、阅读相关配置文件）
 
-### 3) Pause before acting
+如果用户明确要求你在没有得到答案的情况下继续工作：
+- 将你的假设以简短的编号列表形式列出
+- 征求用户的确认；只有在用户确认或纠正这些假设后，再继续工作
 
-Until must-have answers arrive:
+### 4) 确认理解后继续
 
-- Do not run commands, edit files, or produce a detailed plan that depends on unknowns
-- Do perform a clearly labeled, low-risk discovery step only if it does not commit you to a direction (e.g., inspect repo structure, read relevant config files)
+在得到答案后，用1-3句话重新阐述需求（包括关键约束条件和成功标准），然后开始工作。
 
-If the user explicitly asks you to proceed without answers:
+## 问题模板：
+- “在开始之前，我需要：(1) ……，(2) ……，(3) ……。如果你不关心(2)，我将假设……”
+- “这些选项中应该选择哪一个？A) …… B) …… C) ……（请选择一个）”
+- “你认为‘完成’的标准是什么？例如：……”
+- “有哪些必须遵守的约束条件（版本、性能、代码风格、依赖关系）？如果没有，我将参考现有项目的默认设置。”
+- 使用编号问题，并提供带字母标记的选项及清晰的回答格式
 
-- State your assumptions as a short numbered list
-- Ask for confirmation; proceed only after they confirm or correct them
-
-### 4) Confirm interpretation, then proceed
-
-Once you have answers, restate the requirements in 1-3 sentences (including key constraints and what success looks like), then start work.
-
-## Question templates
-
-- "Before I start, I need: (1) ..., (2) ..., (3) .... If you don't care about (2), I will assume ...."
-- "Which of these should it be? A) ... B) ... C) ... (pick one)"
-- "What would you consider 'done'? For example: ..."
-- "Any constraints I must follow (versions, performance, style, deps)? If none, I will target the existing project defaults."
-- Use numbered questions with lettered options and a clear reply format
-
-**Recommended**
+**推荐做法**
 ```text
 1) Scope?
    a) Minimal change (default)
@@ -77,11 +72,10 @@ Once you have answers, restate the requirements in 1-3 sentences (including key 
 Reply with: defaults (or 1a 2a)
 ```
 
-## Anti-patterns
+## 避免的错误做法：
+- 不要提出可以通过快速、低风险的探索来解答的问题（例如，通过查看配置文件、现有代码模式或文档即可得知的信息）。
+- 如果通过多项选择或简单的“是/否”问题可以更快消除歧义，就不要提出开放式问题。
 
-- Don't ask questions you can answer with a quick, low-risk discovery read (e.g., configs, existing patterns, docs).
-- Don't ask open-ended questions if a tight multiple-choice or yes/no would eliminate ambiguity faster.
+## 出处
 
-## Credit
-
-Adapted from Tibo’s post (@thsottiaux): https://x.com/thsottiaux/status/2006624792531923266
+改编自Tibo的帖子：https://x.com/thsottiaux/status/2006624792531923266

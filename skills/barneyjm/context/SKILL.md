@@ -1,12 +1,12 @@
 ---
 name: context
-description: "Get comprehensive context about a location including nearby places, area description, and optional weather. Use when you need to understand what's around a location or provide location-aware recommendations."
+description: "获取关于某个地点的全面信息，包括附近的场所、区域描述以及可选的天气情况。当您需要了解某个地点周围的设施或提供与地点相关的建议时，可以使用此功能。"
 metadata: {"clawdbot":{"emoji":"📍","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：该技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅程、房地产、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill context
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install context
 # or: pnpm dlx clawhub@latest install context
 # or: bunx clawhub@latest install context
 ```
 
-# Context - Location Analysis
+# 上下文 - 位置分析
 
-Get comprehensive context about a location including nearby places, area description, and optional weather.
+获取关于某个位置的详细上下文信息，包括附近的地点、区域描述以及可选的天气信息。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）**：您可以获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月获得 1,000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,11 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+重启 Claude Code 后即可使用该技能。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Get context about a location
@@ -81,7 +81,7 @@ Restart Claude Code.
 }'
 ```
 
-### Via curl
+### 通过 curl 命令使用
 
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
@@ -90,18 +90,18 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/context"
 ```
 
-## Parameters
+## 参数
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| location | object | Yes | - | Coordinate with lat/lon |
-| radius | int | No | 500 | Search radius in meters |
-| context | string | No | - | Context for tailored insights (e.g., "outdoor dining") |
-| time | string | No | - | Temporal query format |
-| include_weather | bool | No | false | Include weather data |
-| weather_forecast | string | No | "daily" | "daily" or "hourly" |
+| 参数名 | 参数类型 | 是否必填 | 默认值 | 描述 |
+|---------|-----------|---------|-------------|
+| location | object | 是 | - | 包含经纬度的坐标 |
+| radius | int | 否 | 500 | 搜索半径（单位：米） |
+| context | string | 否 | - | 用于定制化查询的上下文信息（例如：“户外用餐”） |
+| time | string | 否 | - | 时间查询格式 |
+| include_weather | bool | 否 | false | 是否包含天气数据 |
+| weather_forecast | string | 否 | "daily" | 可选值："daily" 或 "hourly"（表示天气预报的频率） |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -118,9 +118,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Tourist context
+### 旅游场景
 ```bash
 ./scripts/context.sh '{
   "location": {"lat": 48.8584, "lon": 2.2945},
@@ -129,7 +129,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Business meeting location
+### 商务会议地点查询
 ```bash
 ./scripts/context.sh '{
   "location": {"lat": 40.7589, "lon": -73.9851},
@@ -139,7 +139,7 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-### Outdoor activity planning
+### 户外活动规划
 ```bash
 ./scripts/context.sh '{
   "location": {"lat": 37.7749, "lon": -122.4194},
@@ -149,9 +149,9 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Trip planning**: Understand what's around a destination before visiting
-- **Meeting locations**: Find suitable venues for different types of meetings
-- **Local recommendations**: Provide context-aware suggestions based on user needs
-- **Weather-aware planning**: Include weather data for outdoor activity planning
+- **行程规划**：在前往目的地之前了解周边环境。
+- **会议场地选择**：为不同类型的会议寻找合适的场所。
+- **本地推荐**：根据用户需求提供基于上下文的建议。
+- **考虑天气的规划**：在规划户外活动时包含天气数据。

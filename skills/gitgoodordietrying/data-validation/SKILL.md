@@ -1,25 +1,25 @@
 ---
 name: data-validation
-description: Validate data with schemas across languages and formats. Use when defining JSON Schema, using Zod (TypeScript) or Pydantic (Python), validating API request/response shapes, checking CSV/JSON data integrity, or setting up data contracts between services.
+description: 使用各种语言和格式的规范来验证数据。适用于定义 JSON Schema（如使用 Zod（TypeScript）或 Pydantic（Python））、验证 API 请求/响应的结构、检查 CSV/JSON 数据的完整性，或在服务之间建立数据契约等场景。
 metadata: {"clawdbot":{"emoji":"✅","requires":{"anyBins":["node","python3","jq"]},"os":["linux","darwin","win32"]}}
 ---
 
-# Data Validation
+# 数据验证
 
-Schema-based data validation across languages and formats. Covers JSON Schema, Zod (TypeScript), Pydantic (Python), API boundary validation, data contracts, and integrity checking.
+支持跨语言和格式的基于模式的数据验证。涵盖 JSON Schema、Zod（TypeScript）、Pydantic（Python）、API 边界验证、数据契约以及数据完整性检查。
 
-## When to Use
+## 使用场景
 
-- Defining the shape of API request/response bodies
-- Validating user input before processing
-- Setting up data contracts between services
-- Checking CSV/JSON file integrity before import
-- Migrating data (did the ETL preserve everything?)
-- Generating types or documentation from schemas
+- 定义 API 请求/响应体的结构
+- 在处理用户输入之前对其进行验证
+- 在服务之间建立数据契约
+- 在导入 CSV/JSON 文件之前检查其完整性
+- 在数据迁移过程中确保所有数据都被正确处理
+- 从数据模式生成类型或文档
 
 ## JSON Schema
 
-### Basic schema
+### 基本模式
 
 ```json
 {
@@ -66,7 +66,7 @@ Schema-based data validation across languages and formats. Covers JSON Schema, Z
 }
 ```
 
-### Common patterns
+### 常见模式
 
 ```json
 // Nullable field
@@ -107,7 +107,7 @@ Schema-based data validation across languages and formats. Covers JSON Schema, Z
 }
 ```
 
-### Validate with command line
+### 通过命令行进行验证
 
 ```bash
 # Using ajv-cli (Node.js)
@@ -129,9 +129,9 @@ for f in data/*.json; do
 done
 ```
 
-## Zod (TypeScript)
+## Zod（TypeScript）
 
-### Basic schemas
+### 基本模式
 
 ```typescript
 import { z } from 'zod';
@@ -168,7 +168,7 @@ if (result.success) {
 const user = userSchema.parse(data);
 ```
 
-### Advanced patterns
+### 高级模式
 
 ```typescript
 // Optional and nullable
@@ -219,7 +219,7 @@ const flexible = userSchema.passthrough();
 const strict = userSchema.strict(); // Error on extra fields
 ```
 
-### API validation with Zod
+### 使用 Zod 进行 API 验证
 
 ```typescript
 // Express middleware
@@ -254,9 +254,9 @@ app.get('/api/users', (req, res) => {
 });
 ```
 
-## Pydantic (Python)
+## Pydantic（Python）
 
-### Basic models
+### 基本模型
 
 ```python
 from pydantic import BaseModel, Field, EmailStr, field_validator
@@ -302,7 +302,7 @@ except Exception as e:
     print(e)  # Detailed validation errors
 ```
 
-### Advanced patterns
+### 高级模式
 
 ```python
 from pydantic import BaseModel, model_validator, ConfigDict
@@ -360,7 +360,7 @@ class Order(BaseModel):
 print(User.model_json_schema())
 ```
 
-### FastAPI integration
+### 与 FastAPI 的集成
 
 ```python
 from fastapi import FastAPI, Query
@@ -393,9 +393,9 @@ async def list_users(
     pass
 ```
 
-## Data Integrity Checks
+## 数据完整性检查
 
-### CSV validation
+### CSV 验证
 
 ```bash
 #!/bin/bash
@@ -431,7 +431,7 @@ echo "Duplicate rows: $DUPES"
 echo "=== Done ==="
 ```
 
-### JSON validation
+### JSON 验证
 
 ```bash
 # Check if file is valid JSON
@@ -461,7 +461,7 @@ TGT=$(jq length target.json)
 echo "Source: $SRC, Target: $TGT, Match: $([ "$SRC" = "$TGT" ] && echo yes || echo NO)"
 ```
 
-### Migration validation
+### 数据迁移验证
 
 ```python
 #!/usr/bin/env python3
@@ -510,12 +510,12 @@ if __name__ == "__main__":
     sys.exit(0 if ok else 1)
 ```
 
-## Tips
+## 提示
 
-- Validate at system boundaries (API endpoints, file imports, message queues), not deep inside business logic. Trust internal data.
-- Zod and Pydantic both generate JSON Schema from their definitions. Use this for documentation, OpenAPI specs, and cross-language contracts.
-- `additionalProperties: false` in JSON Schema catches typos in field names. Use it for strict APIs.
-- Pydantic v2 is significantly faster than v1. Use `model_config = ConfigDict(strict=True)` when you want no implicit type coercion.
-- Zod's `.safeParse()` returns a result object; `.parse()` throws. Use `safeParse` in API handlers to return structured errors.
-- For CSV validation, always check column count consistency first — most downstream errors trace back to misaligned columns.
-- Data migration validation should compare record counts, check for missing/extra records, and sample-check field values. Counting alone isn't enough.
+- 在系统边界（API 端点、文件导入、消息队列等）进行验证，而不是深入到业务逻辑内部。对于内部数据可以适当放宽验证要求。
+- Zod 和 Pydantic 都能根据定义自动生成 JSON Schema，可用于文档编写、OpenAPI 规范以及跨语言的数据契约。
+- 在 JSON Schema 中设置 `additionalProperties: false` 可以避免字段名称的拼写错误，适用于对数据要求严格的 API。
+- Pydantic v2 的性能明显优于 v1；如果不需要隐式类型转换，请使用 `model_config = ConfigDict(strict=True)`。
+- Zod 的 `.safeParse()` 方法会返回验证结果对象，而 `.parse()` 方法会抛出异常。在 API 处理函数中应使用 `.safeParse()` 以返回结构化的错误信息。
+- 对于 CSV 验证，首先检查列数是否一致——大多数下游问题都源于列对齐错误。
+- 数据迁移验证应包括记录数量的对比、检查是否存在缺失或多余的记录，以及对字段值的抽样检查。仅通过计数是不够的。

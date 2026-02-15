@@ -1,6 +1,6 @@
 ---
 name: powerdrill-data-analysis
-description: This skill should be used when the user wants to analyze, explore, visualize, or query data using Powerdrill. Covers listing, creating, and deleting datasets; uploading local files as data sources; creating analysis sessions; running natural-language data analysis queries; and retrieving charts, tables, and insights. Triggers on requests like "analyze my data", "query my dataset", "upload this file for analysis", "list my datasets", "create a dataset", "visualize sales trends", "continue my previous analysis", "delete this dataset", or any data exploration task mentioning Powerdrill.
+description: 此技能适用于用户希望使用 Powerdrill 进行数据分析、数据探索、数据可视化或数据查询的场景。它涵盖了数据集的列表、创建和删除操作；将本地文件作为数据源上传；创建分析会话；运行基于自然语言的数据分析查询；以及检索图表、表格和分析结果等功能。相关操作请求包括但不限于：“分析我的数据”、“查询我的数据集”、“上传此文件以供分析”、“列出我的数据集”、“创建数据集”、“可视化销售趋势”、“继续之前的分析”以及任何涉及 Powerdrill 的数据探索任务。
 license: MIT
 compatibility: claude
 metadata:
@@ -8,31 +8,31 @@ metadata:
   workflow: powerdrill
 ---
 
-# Powerdrill Data Analysis Skill
+# Powerdrill 数据分析技能
 
-Analyze data using the Powerdrill API via the Python client at `scripts/powerdrill_client.py`. All operations use the Powerdrill REST API v2 (`https://ai.data.cloud/api`).
+使用 `scripts/powerdrill_client.py` 中的 Python 客户端通过 Powerdrill API 分析数据。所有操作均基于 Powerdrill REST API v2（`https://ai.data.cloud/api`）进行。
 
-## Prerequisites & Setup
+## 先决条件与设置
 
-Before using any Powerdrill functions, the user must have:
+在使用任何 Powerdrill 功能之前，用户必须具备以下条件：
 
-1. **A Powerdrill Teamspace** - Created by following: https://www.youtube.com/watch?v=I-0yGD9HeDw
-2. **API Credentials** - Obtained by following: https://www.youtube.com/watch?v=qs-GsUgjb1g
+1. **Powerdrill Teamspace**：按照以下链接创建：https://www.youtube.com/watch?v=I-0yGD9HeDw
+2. **API 凭据**：按照以下链接获取：https://www.youtube.com/watch?v=qs-GsUgjb1g
 
-Set these environment variables before running any script:
+在运行任何脚本之前，请设置以下环境变量：
 
 ```bash
 export POWERDRILL_USER_ID="your_user_id"
 export POWERDRILL_PROJECT_API_KEY="your_project_api_key"
 ```
 
-The only Python dependency is `requests`. Install with: `pip install requests`
+唯一的 Python 依赖库是 `requests`。可以使用以下命令安装：`pip install requests`
 
-If a call fails with an authentication error, verify the two environment variables are set and the API key is valid.
+如果调用失败并出现身份验证错误，请确认这两个环境变量已设置且 API 密钥有效。
 
-## How to Use
+## 使用方法
 
-Import the client module and call functions directly. All functions read credentials from the environment automatically.
+导入客户端模块并直接调用相关函数。所有函数会自动从环境中读取凭据。
 
 ```python
 import sys
@@ -40,18 +40,18 @@ sys.path.insert(0, "/absolute/path/to/scripts")  # adjust to actual location
 from powerdrill_client import *
 ```
 
-Or run via CLI:
+或者通过命令行（CLI）进行操作：
 
 ```bash
 python scripts/powerdrill_client.py <command> [args]
 ```
 
-## Available Functions
+## 可用函数
 
-### Datasets
+### 数据集
 
 #### `list_datasets(page_number=1, page_size=10, search=None) -> dict`
-List datasets in the user's account. Typically the first step in any workflow.
+列出用户账户中的数据集。这通常是任何工作流程的第一步。
 
 ```python
 result = list_datasets(search="sales")
@@ -60,7 +60,7 @@ for ds in result["data"]["records"]:
 ```
 
 #### `create_dataset(name, description="") -> dict`
-Create a new empty dataset. Returns `{"data": {"id": "dset-..."}}`.
+创建一个新的空数据集。返回 `{"data": {"id": "dset-...}}`。
 
 ```python
 ds = create_dataset("Q4 Sales Data", "Quarterly sales analysis")
@@ -68,7 +68,7 @@ dataset_id = ds["data"]["id"]
 ```
 
 #### `get_dataset_overview(dataset_id) -> dict`
-Get dataset summary, exploration questions, and keywords. Use after data sources are synced.
+获取数据集的概览信息、探索性问题以及关键词。在数据源同步完成后使用此函数。
 
 ```python
 overview = get_dataset_overview(dataset_id)
@@ -78,7 +78,7 @@ for q in overview["data"]["exploration_questions"]:
 ```
 
 #### `get_dataset_status(dataset_id) -> dict`
-Check how many data sources are synced/syncing/invalid.
+检查有多少数据源已同步、正在同步或无效。
 
 ```python
 status = get_dataset_status(dataset_id)
@@ -86,19 +86,19 @@ status = get_dataset_status(dataset_id)
 ```
 
 #### `delete_dataset(dataset_id) -> dict`
-Permanently delete a dataset and all its data sources. **Irreversible** - always confirm with the user first.
+永久删除数据集及其所有数据源。此操作不可逆——请务必先征得用户同意。
 
-### Data Sources
+### 数据源
 
 #### `list_data_sources(dataset_id, page_number=1, page_size=10, status=None) -> dict`
-List files within a dataset. Filter by status: `synched`, `synching`, `invalid`.
+列出数据集内的文件。可以根据状态（`synched`、`synching`、`invalid`）进行筛选。
 
 ```python
 sources = list_data_sources(dataset_id, status="synched")
 ```
 
 #### `create_data_source(dataset_id, name, *, url=None, file_object_key=None) -> dict`
-Create a data source from a public URL or an uploaded file key. Provide exactly one of `url` or `file_object_key`.
+从公共 URL 或上传的文件键创建数据源。必须提供 `url` 或 `file_object_key` 中的一个。
 
 ```python
 # From public URL
@@ -109,12 +109,12 @@ ds = create_data_source(dataset_id, "data.csv", file_object_key=key)
 ```
 
 #### `upload_local_file(file_path) -> str`
-Upload a local file via multipart upload. Returns `file_object_key` for use with `create_data_source()`.
+通过多部分上传（multipart upload）上传本地文件。返回 `file_object_key`，以便后续使用 `create_data_source()`。
 
-Supported formats: `.csv`, `.tsv`, `.md`, `.mdx`, `.json`, `.txt`, `.pdf`, `.pptx`, `.docx`, `.xls`, `.xlsx`
+支持的文件格式：`.csv`、`.tsv`、`.md`、`.mdx`、`.json`、`.txt`、`.pdf`、`.pptx`、`.docx`、`.xls`、`.xlsx`
 
 #### `upload_and_create_data_source(dataset_id, file_path) -> dict`
-Convenience function: uploads a local file then creates the data source in one call.
+便捷函数：一次性上传文件并创建数据源。
 
 ```python
 result = upload_and_create_data_source(dataset_id, "/path/to/sales.csv")
@@ -122,17 +122,17 @@ datasource_id = result["data"]["id"]
 ```
 
 #### `wait_for_dataset_sync(dataset_id, max_attempts=30, delay_seconds=3.0) -> dict`
-Poll until all data sources in the dataset are synced. Raises `RuntimeError` on timeout or if invalid sources are detected.
+轮询直到数据集中的所有数据源都同步完成。如果超时或检测到无效的数据源，将抛出 `RuntimeError`。
 
 ```python
 upload_and_create_data_source(dataset_id, "data.csv")
 wait_for_dataset_sync(dataset_id)  # blocks until synced
 ```
 
-### Sessions
+### 会话
 
 #### `create_session(name, output_language="AUTO", job_mode="AUTO", max_contextual_job_history=10) -> dict`
-Create an analysis session. Required before running jobs.
+创建一个分析会话。运行分析任务前必须先创建会话。
 
 ```python
 session = create_session("Sales Analysis Session")
@@ -140,17 +140,17 @@ session_id = session["data"]["id"]
 ```
 
 #### `list_sessions(page_number=1, page_size=10, search=None) -> dict`
-List existing sessions. Use to find a previous session for resumption.
+列出现有的会话。可用于查找之前的会话以继续分析。
 
 #### `delete_session(session_id) -> dict`
-Delete a session. Use during cleanup after analysis is complete.
+删除会话。分析完成后用于清理。
 
-### Jobs (Data Analysis)
+### 分析任务（数据分析）
 
 #### `create_job(session_id, question, dataset_id=None, datasource_ids=None, stream=False, output_language="AUTO", job_mode="AUTO") -> dict`
-Run a natural-language analysis query. This is the core analysis function.
+运行自然语言分析查询。这是核心的分析功能。
 
-**Non-streaming** (default): returns full response with all blocks.
+**非流式**（默认）：返回包含所有分析结果的完整响应。
 
 ```python
 result = create_job(session_id, "What are the top 5 products by revenue?", dataset_id=dataset_id)
@@ -163,39 +163,32 @@ for block in result["data"]["blocks"]:
         print(f"Chart: {block['content']['url']}")
 ```
 
-**Streaming**: returns parsed result with accumulated text and separate blocks.
+**流式**：返回解析后的结果，其中包含累积的文本和各个分析块。
 
-```python
-result = create_job(session_id, "Summarize trends", dataset_id=dataset_id, stream=True)
-print(result["text"])        # accumulated MESSAGE text
-for b in result["blocks"]:   # TABLE, IMAGE, etc.
-    print(b["type"], b["content"])
-```
+### 响应块类型：
+- `MESSAGE` - 分析文本
+- `CODE` - 代码片段（Markdown 格式）
+- `TABLE` - `{name, url, expires_at}` - 在过期前可下载
+- `IMAGE` - `{name, url, expires_at}` - 在过期前可下载
+- `SOURCES` - 引用来源
+- `QUESTIONS` - 建议的后续问题
+- `CHART_INFO` - 图表配置和数据
 
-**Response block types:**
-- `MESSAGE` - Analytical text
-- `CODE` - Code snippets (Markdown)
-- `TABLE` - `{name, url, expires_at}` - download before expiration
-- `IMAGE` - `{name, url, expires_at}` - download before expiration
-- `SOURCES` - Citation references
-- `QUESTIONS` - Suggested follow-up questions
-- `CHART_INFO` - Chart configuration and data
-
-### Cleanup
+### 清理
 
 #### `cleanup(session_id=None, dataset_id=None) -> None`
-Delete session and/or dataset after analysis. Always call this when done.
+分析完成后删除会话和/或数据集。分析完成后务必调用此函数。
 
 ```python
 cleanup(session_id=session_id, dataset_id=dataset_id)
 ```
 
 #### `cleanup_session(session_id) -> None` / `cleanup_dataset(dataset_id) -> None`
-Delete individual resources. Errors are logged but not raised.
+删除单个资源。虽然会记录错误，但不会抛出异常。
 
-## Recommended Workflows
+## 推荐的工作流程
 
-### Full analysis workflow (upload, analyze, cleanup)
+### 完整的分析流程（上传、分析、清理）
 
 ```python
 from powerdrill_client import *
@@ -223,7 +216,7 @@ result = create_job(session_id, "Break this down by region", dataset_id=dataset_
 cleanup(session_id=session_id, dataset_id=dataset_id)
 ```
 
-### Analyze existing dataset
+### 分析现有数据集
 
 ```python
 from powerdrill_client import *
@@ -246,7 +239,7 @@ result = create_job(session_id, overview["data"]["exploration_questions"][0], da
 cleanup_session(session_id)
 ```
 
-### CLI usage
+### 命令行（CLI）使用方法
 
 ```bash
 # List datasets
@@ -265,21 +258,21 @@ python scripts/powerdrill_client.py create-job SESSION_ID "Summarize the data" -
 python scripts/powerdrill_client.py cleanup --session-id SESSION_ID --dataset-id dset-xxx
 ```
 
-## Error Handling
+## 错误处理
 
-- **Authentication errors:** Verify `POWERDRILL_USER_ID` and `POWERDRILL_PROJECT_API_KEY`. Direct the user to the setup videos above.
-- **Dataset not found:** Re-run `list_datasets()` to verify the ID. The dataset may have been deleted.
-- **Job execution failure:** Ensure the dataset has at least one synced data source (`wait_for_dataset_sync()`). Retry with a rephrased question.
-- **Upload timeout:** `wait_for_dataset_sync()` polls up to 30 attempts (90s). Use `get_dataset_status()` to check manually.
-- **Invalid data sources:** Check file format is supported. Re-upload with correct file type.
-- **Rate limiting:** Wait before retrying. Space out rapid sequential API calls.
+- **身份验证错误**：检查 `POWERDRILL_USER_ID` 和 `POWERDRILL_PROJECT_API_KEY` 是否正确。请用户参考上述设置视频进行配置。
+- **数据集未找到**：重新运行 `list_datasets()` 以确认数据集是否存在。数据集可能已被删除。
+- **任务执行失败**：确保数据集至少有一个已同步的数据源（使用 `wait_for_dataset_sync()`）。尝试重新提交问题。
+- **上传超时**：`wait_for_dataset_sync()` 会尝试最多 30 次（每次间隔 90 秒）。可以使用 `get_dataset_status()` 手动检查。
+- **数据源无效**：检查文件格式是否受支持。请使用正确的文件类型重新上传。
+- **速率限制**：在尝试重新上传之前请稍作等待，避免连续快速调用 API。
 
-## Important Notes
+## 重要注意事项
 
-- Always create a session before running analysis jobs
-- Always call `cleanup()` to delete sessions and datasets after analysis is complete
-- Sessions maintain conversational context - reuse the same session for related follow-up questions
-- TABLE and IMAGE URLs in job responses expire - download or present results promptly
-- Call `wait_for_dataset_sync()` after uploading files, before running analysis
-- Dataset and session names are limited to 128 characters
-- Supported file formats: `.csv`, `.tsv`, `.md`, `.mdx`, `.json`, `.txt`, `.pdf`, `.pptx`, `.docx`, `.xls`, `.xlsx`
+- 运行分析任务前务必创建会话。
+- 分析完成后务必调用 `cleanup()` 删除会话和数据集。
+- 会话会保留分析的上下文——对于相关的后续问题，请使用相同的会话。
+- 任务响应中的 `TABLE` 和 `IMAGE` 链接会在过期前失效——请及时下载结果。
+- 上传文件后请调用 `wait_for_dataset_sync()`，然后再进行分析。
+- 数据集和会话的名称长度限制为 128 个字符。
+- 支持的文件格式：`.csv`、`.tsv`、`.md`、`.mdx`、`.json`、`.txt`、`.pdf`、`.pptx`、`.docx`、`.xls`、`.xlsx`

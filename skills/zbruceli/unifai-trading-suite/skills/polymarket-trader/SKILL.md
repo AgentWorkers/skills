@@ -1,6 +1,6 @@
 ---
 name: polymarket-trader
-description: Query Polymarket prediction markets - trending events, crypto, politics, sports, and search
+description: 查询 Polymarket 预测市场的相关内容——包括热门事件、加密货币、政治、体育等方面的信息，以及支持搜索功能。
 homepage: https://polymarket.com
 user-invocable: true
 metadata: {"moltbot":{"emoji":"🔮","requires":{"env":["UNIFAI_AGENT_API_KEY","GOOGLE_API_KEY"]},"primaryEnv":"UNIFAI_AGENT_API_KEY"}}
@@ -8,100 +8,98 @@ metadata: {"moltbot":{"emoji":"🔮","requires":{"env":["UNIFAI_AGENT_API_KEY","
 
 # Polymarket Trader
 
-Query Polymarket, the leading decentralized prediction market on Polygon blockchain.
+用于查询Polymarket——Polygon区块链上领先的去中心化预测市场。
 
-## About Polymarket
+## 关于Polymarket
 
-Polymarket is a decentralized prediction market platform where users can trade on the outcomes of real-world events. It operates on the Polygon blockchain using USDC.e for settlements.
+Polymarket是一个去中心化的预测市场平台，用户可以在此平台上对现实世界事件的结局进行预测和交易。该平台基于Polygon区块链运行，交易结算使用USDC.e作为货币。
 
-## Commands
+## 命令
 
-### Trending Events
+### 热门事件
 ```bash
 python3 {baseDir}/scripts/polymarket.py trending
 ```
-Get currently trending prediction events.
+获取当前热门的预测事件。
 
-### Crypto Markets
+### 加密货币市场
 ```bash
 python3 {baseDir}/scripts/polymarket.py crypto
 ```
-Get cryptocurrency-related prediction markets.
+获取与加密货币相关的预测市场。
 
-### Politics Markets
+### 政治市场
 ```bash
 python3 {baseDir}/scripts/polymarket.py politics
 ```
-Get political prediction markets.
+获取政治相关的预测市场。
 
-### Search Markets
+### 搜索市场
 ```bash
 python3 {baseDir}/scripts/polymarket.py search "<query>"
 ```
-Search markets by keyword.
+按关键词搜索市场。
 
-### Category Markets
+### 分类市场
 ```bash
 python3 {baseDir}/scripts/polymarket.py category <name>
 ```
-Get markets by category (trending, new, politics, crypto, tech, culture, sports, world, economy).
+按类别获取市场（热门、新市场、政治、加密货币、科技、文化、体育、世界、经济）。
 
-## Output Format
+## 输出格式
 
-Results include:
-- Event/market title
-- YES/NO prices (probability)
-- Trading volume
-- Liquidity
-- End date
+结果包括：
+- 事件/市场名称
+- 是/否的价格（概率）
+- 交易量
+- 流动性
+- 结束日期
 
-## Categories
+## 分类
 
-| Category | Description |
+| 分类 | 描述 |
 |----------|-------------|
-| trending | Most popular markets |
-| new | Recently created markets |
-| politics | Political events and elections |
-| crypto | Cryptocurrency predictions |
-| tech | Technology sector events |
-| culture | Entertainment and culture |
-| sports | Sports outcomes |
-| world | Global events |
-| economy | Economic indicators |
+| 热门 | 最受欢迎的市场 |
+| 新市场 | 最近创建的市场 |
+| 政治 | 政治事件和选举 |
+| 加密货币 | 加密货币预测 |
+| 科技 | 科技行业事件 |
+| 文化 | 娱乐和文化 |
+| 体育 | 体育赛事结果 |
+| 世界 | 全球事件 |
+| 经济 | 经济指标 |
 
-## Example Usage
+## 使用示例
 
-**User**: "What's trending on Polymarket?"
-
-**Assistant**: I'll fetch the trending events from Polymarket.
+**用户**：“Polymarket上有什么热门事件？”
+**助手**：我将从Polymarket获取热门事件的信息。
 
 ```bash
 python3 {baseDir}/scripts/polymarket.py trending
 ```
 
-**User**: "Search for Bitcoin markets"
-
-**Assistant**: Let me search Polymarket for Bitcoin-related markets.
+**用户**：“搜索与比特币相关的市场”
+**助手**：我正在Polymarket中搜索与比特币相关的市场。
 
 ```bash
 python3 {baseDir}/scripts/polymarket.py search "bitcoin"
 ```
 
-## Requirements
+## 所需权限
 
-- `UNIFAI_AGENT_API_KEY` - UnifAI SDK key for Polymarket tools
-- `GOOGLE_API_KEY` - Gemini API key for LLM processing
+- `UNIFAI_AGENT_API_KEY` - 用于Polymarket工具的UnifAI SDK密钥
+- `GOOGLE_API_KEY` - 用于LLM处理的Gemini API密钥
 
-## API Information
+## API信息
 
-- **Data Source**: UnifAI Polymarket tools (toolkit ID: 127)
-- **Available Tools**: search, getEventsByCategory, getPrices, getOrderBooks
-- **Rate Limits**: UnifAI API rate limits apply
+- **数据来源**：UnifAI Polymarket工具（工具包ID：127）
+- **可用功能**：search、getEventsByCategory、getPrices、 getOrderBooks
+- **速率限制**：遵循UnifAI API的速率限制
 
-## Notes
+## 注意事项
 
-- This tool is read-only (trading requires wallet authentication)
-- Prices shown as decimals (0.75 = 75% probability)
-- Markets settle on Polygon blockchain
-- USDC.e used for trading
-- Not available in restricted jurisdictions
+- 该工具仅支持读取数据（交易需要钱包认证）
+- 价格以小数形式显示（0.75表示75%的概率）
+- 市场在Polygon区块链上结算
+- 交易使用USDC.e作为货币
+- 该工具不适用于受限制的地区

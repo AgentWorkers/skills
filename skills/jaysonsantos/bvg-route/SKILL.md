@@ -1,52 +1,54 @@
 ---
 name: bvg-route
-description: "Route planning for Berlin public transport (BVG) using the v6.bvg.transport.rest API. Use when the user asks for: (1) route suggestions between two addresses or stops, (2) live next-departure info for a stop, (3) arrival-time–based journey planning (arrive-by or depart-at). Supports outputting 2–3 options ranked by travel time, transfers, and walking, and returning step-by-step directions and refresh tokens for live updates."
+description: "使用 v6.bvg.transport.rest API 进行柏林公共交通（BVG）的路线规划。该 API 适用于以下场景：  
+1. 用户查询两个地址或车站之间的路线建议；  
+2. 获取某个车站的实时下一班次信息；  
+3. 根据到达时间进行行程规划（例如“预计到达时间”或“出发时间”）。  
+该 API 支持输出按行驶时间、换乘次数和步行距离排序的 2–3 条路线选项，并提供详细的步行路线指引以及用于实时更新的刷新令牌。"
 ---
 
-# BVG Route Planner Skill
+# BVG路线规划技能
 
-Purpose
-- Provide concise, actionable public-transport directions in Berlin using the v6.bvg.transport.rest API.
+**用途**  
+使用v6.bvg.transport/rest API为柏林的用户提供简洁、实用的公共交通路线指引。
 
-When to use
-- User asks for directions between two places in Berlin (addresses, stop names, or coordinates).
-- User asks for next departures from a stop/station.
-- User requests to arrive by a specific time (arrive-by) or depart at a specific time.
+**使用场景**  
+- 用户询问柏林内两个地点之间的交通路线（地址、站点名称或坐标）。  
+- 用户查询某个站点/车站的下一班次信息。  
+- 用户要求在指定时间前到达或从某个站点出发。
 
-Core behavior
-1. Resolve `from` and `to` into either stop IDs (preferred) or address/POI objects using GET /locations or /locations/nearby.
-2. Call GET /journeys with arrival or departure parameter as requested, request results=3 and stopovers=true to construct step-by-step legs.
-3. Format 2–3 options: show total travel time, number of transfers, walking time, and estimated departure/arrival times.
-4. Provide step-by-step instructions for the selected journey: walk to stop A (distance/time), take line X toward Y, get off at stop B (platform if available), final walk to destination.
-5. When appropriate, include the journey refreshToken and a GET /journeys/:ref refresh step to update realtime delays.
-6. For simple next-departure queries, use GET /stops/:id/departures with duration=20 (or configurable) and return the nearest 3 departures.
+**核心功能**  
+1. 使用`GET /locations`或`/locations/nearby`接口将“起点”和“终点”信息转换为站点ID（优先）或地址/兴趣点（POI）对象。  
+2. 根据用户需求调用`GET /journeys`接口，设置`arrival`或`departure`参数，同时设置`results=3`和`stopovers=true`以获取详细的出行步骤。  
+3. 以易于理解的格式展示出行信息：总行驶时间、换乘次数、步行距离以及预计的出发/到达时间。  
+4. 提供详细的出行指南：先步行至A站（显示距离和时间），然后乘坐X号线前往Y站，在B站下车（如果有的话），最后步行至目的地。  
+5. 在适当的情况下，提供`jourourney refreshToken`以及`GET /journeys/:ref`接口，以便用户随时查看实时交通延误情况。  
+6. 对于简单的下一班次查询，使用`GET /stops/:id/departures`接口（可配置查询时长），返回最近的3个班次信息。
 
-Outputs
-- Human-readable routes with departure times, transfers, walking distances, estimated arrival, and concise step list.
-- Machine-friendly JSON (optional) containing journey id, refreshToken, legs, and stop IDs for programmatic refreshes.
+**输出结果**  
+- 以人类可读的形式展示出行路线，包括出发时间、换乘信息、步行距离、预计到达时间以及详细的出行步骤。  
+- （可选）以机器可读的JSON格式输出结果，包含行程ID、`refresh_token`、各段行程的详细信息以及站点ID，便于程序进行后续查询。
 
-References
-- The skill expects to use the v6.bvg.transport.rest API (https://v6.bvg.transport.rest/api.html). See references/API.md for summary and examples.
+**参考资料**  
+该技能依赖于v6.bvg.transport/rest API（https://v6.bvg.transport/rest/api.html）。具体使用方法及示例请参阅`references/API.md`。
 
-Examples (triggers)
-- "How do I get from Invalidenstraße 43 10115 to Leibnizstraße 62 by public transport?"
-- "When is the next U-Bahn from U Rosenthaler Platz?"
-- "Find journeys that arrive at Deutsche Oper by 17:50 tonight, fastest option first."
+**示例**  
+- “如何从Invalidenstraße 43（邮编10115）乘坐公共交通前往Leibnizstraße 62？”  
+- “U Rosenthaler Platz站下一班地铁是什么时候？”  
+- “查找今晚17:50前能到达Deutsche Oper的出行路线，优先选择最快的选项。”
 
-Notes for implementers
-- **IBNR format (CRITICAL):** The `/journeys` endpoint requires **base IBNR codes only** (6 digits), not the full ID with `::` suffixes.
-  - ❌ Wrong: `de:11000:900110001::3` or `de:11000:900110001`
-  - ✅ Correct: `900110001` (extract base 6-digit code from `/stops` results)
-  - Process: Call `/stops?query=...` first, extract the 6-digit `id` from results, use that for `/journeys`.
-- **URL encoding (CRITICAL):** All query string parameters must be properly URL-encoded using `urllib.parse.quote()` or equivalent. Examples:
-  - Space → `%20`
-  - `ö` → `%C3%B6`
-  - `ü` → `%C3%BC`
-  - `Ä` → `%C3%84`
-  - Special chars like `&`, `?`, `#` → their percent-encoded equivalents
-  - Example: `Schönhauser Allee` → `Sch%C3%B6nhauser%20Allee`
-  - Every API call with address/stop name strings in query params must encode before building the URL.
-- Prefer stop/station IDs when calling /journeys (more reliable than fuzzy names): Use `/stops?query=...` to resolve names → base IBNR.
-- Use `stopovers=true` to build readable step lists; include `entrances=true` when walking-to-entrance accuracy is important.
-- Request `results=3` then offer the top 2–3 to the user.
-- Handle timezone-aware ISO datetimes; default to Europe/Berlin if none provided.
+**开发者注意事项**  
+- **IBNR编码规范（至关重要）**：`/journeys`接口仅接受6位数的基础IBNR代码，不允许使用带有`::`后缀的完整ID。  
+  - 错误示例：`de:11000:900110001::3` 或 `de:11000:900110001`  
+  - 正确示例：`900110001`（从`/stops`接口的结果中提取6位基础代码）  
+- **URL编码规则（至关重要）**：所有查询参数都必须使用`urllib.parse.quote()`或其他方法进行正确的URL编码：  
+  - 空格 → `%20`  
+  - `ö` → `%C3%B6`  
+  - `ü` → `%C3%BC`  
+  - `Ä` → `%C3%84`  
+  - 特殊字符（如`&`、`?`、`#`）需使用其百分号编码形式  
+  - 例如：`Schönhauser Allee` 应编码为 `Sch%C3%B6nhauser%20Allee`  
+- 在调用`/journeys`接口时，建议优先使用站点ID（比模糊名称更可靠）。  
+- 设置`stopovers=true`可生成更清晰的出行步骤；若需要精确显示步行至入口的路径，请设置`entrances=true`。  
+- 请求`results=3`后，向用户展示前2–3条最合适的出行方案。  
+- 该技能支持时区信息，若未提供时区参数，则默认使用Europe/Berlin时区。

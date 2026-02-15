@@ -1,6 +1,6 @@
 ---
 name: notebooklm
-description: Use this skill to analyze your local files with Google NotebookLM's AI. Upload business documents, reports, and strategies to get source-grounded insights, risk analysis, and actionable recommendations. Perfect for business intelligence, document analysis, and decision support.
+description: 使用此技能，您可以通过 Google NotebookLM 的 AI 功能分析您的本地文件。上传业务文档、报告和策略，以获得基于数据的洞察、风险分析以及可操作的建议。该工具非常适合用于商业智能、文档分析和决策支持。
 license: Complete terms in LICENSE.txt
 allowed-tools:
   - Bash
@@ -11,47 +11,47 @@ allowed-tools:
   - Grep
 ---
 
-# NotebookLM Local File Analyzer
+# NotebookLM 本地文件分析工具
 
-Analyze your local documents with Google NotebookLM's AI to get source-grounded insights, risk assessments, and actionable recommendations. Upload your files once, then query them repeatedly for different perspectives.
+使用 Google NotebookLM 的人工智能功能分析您的本地文档，以获取基于数据的洞察、风险评估和可操作的建议。只需上传一次文件，之后便可多次从不同角度进行查询。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when user:
-- Has local business documents (strategy plans, financial reports, proposals)
-- Wants AI analysis of specific documents with source grounding
-- Needs risk assessment, competitive analysis, or business insights
-- Wants to analyze multiple related documents together
-- Needs to extract actionable insights from business documentation
+当用户需要以下情况时，可以使用此工具：
+- 拥有本地业务文档（如战略计划、财务报告、提案等）
+- 希望对特定文档进行带有数据支持的 AI 分析
+- 需要风险评估、竞争分析或业务洞察
+- 希望同时分析多个相关文档
+- 需要从业务文档中提取可操作的见解
 
-## Quick Start
+## 快速入门
 
-### Step 1: One-Time Setup
+### 第一步：一次性设置
 ```bash
 python scripts/setup_notebooklm.py
 ```
 
-### Step 2: Analyze Your Files
+### 第二步：分析文件
 
-**Batch Analysis (recommended):**
+**批量分析（推荐）：**
 ```bash
 python scripts/batch_analyzer.py "your/folder" --pattern "*.md"
 ```
 
-**Single File Analysis:**
+**单文件分析：**
 ```bash
 python scripts/local_analyzer.py "file.md" --upload
 ```
 
-**Query Uploaded Documents:**
+**查询已上传的文档：**
 ```bash
 python scripts/quick_query.py "What are the key risks in this business plan?" --notebook-url "notebook-url"
 ```
 
-## Core Workflows
+## 核心工作流程
 
-### Workflow 1: Business Document Analysis
-Upload business documents and get strategic insights:
+### 工作流程 1：业务文档分析
+上传业务文档以获取战略洞察：
 ```bash
 # Analyze business strategy files
 python scripts/batch_analyzer.py "Business/Strategy" --pattern "*.md"
@@ -63,8 +63,8 @@ python scripts/local_analyzer.py "strategy_plan.md" --upload
 python scripts/quick_query.py "Identify 3 competitive advantages and implementation challenges" --notebook-url "url"
 ```
 
-### Workflow 2: Financial Analysis
-Analyze financial documents for risks and opportunities:
+### 工作流程 2：财务分析
+分析财务文档以识别风险和机会：
 ```bash
 # Find financial documents
 python scripts/batch_analyzer.py "Finance" --pattern "*.md"
@@ -73,53 +73,53 @@ python scripts/batch_analyzer.py "Finance" --pattern "*.md"
 python scripts/quick_query.py "What are the key financial risks and ROI projections?" --notebook-url "url"
 ```
 
-### Workflow 3: Risk & Compliance Analysis
-Get risk assessments and compliance insights:
+### 工作流程 3：风险与合规性分析
+获取风险评估和合规性洞察：
 ```bash
 python scripts/quick_query.py "What compliance or regulatory issues should be addressed?" --notebook-url "url"
 python scripts/quick_query.py "Identify top 5 risks and mitigation strategies" --notebook-url "url"
 ```
 
-## Helper Scripts (Black Box Usage)
+## 辅助脚本（黑盒使用）
 
 ### `scripts/batch_analyzer.py`
-Analyze entire directories and identify high-value files:
+分析整个目录并识别高价值文件：
 ```bash
 python scripts/batch_analyzer.py "directory" --pattern "*.md" --output "analysis_report.md"
 ```
 
-Features:
-- **File categorization**: Business Strategy, Financial, Technical, Legal, Marketing
-- **Priority identification**: Highlights high-value files for upload
-- **Workflow guidance**: Provides step-by-step analysis recommendations
-- **Report generation**: Creates structured analysis reports
+**功能：**
+- **文件分类**：业务策略、财务、技术、法律、营销
+- **优先级识别**：突出显示需要上传的高价值文件
+- **工作流程指导**：提供分步分析建议
+- **报告生成**：创建结构化的分析报告
 
 ### `scripts/local_analyzer.py`
-Upload and analyze individual files:
+上传并分析单个文件：
 ```bash
 python scripts/local_analyzer.py "file.md" --upload
 python scripts/local_analyzer.py "file.md" --notebook-url "url" --question "Custom question"
 ```
 
-Features:
-- **Upload guidance**: Step-by-step NotebookLM upload instructions
-- **File analysis**: Provides metadata and size information
-- **Custom queries**: Supports targeted analysis questions
+**功能：**
+- **上传指南**：提供逐步的 NotebookLM 上传说明
+- **文件分析**：提供元数据和文件大小信息
+- **自定义查询**：支持针对性的分析问题
 
 ### `scripts/quick_query.py`
-Query uploaded documents:
+查询已上传的文档：
 ```bash
 python scripts/quick_query.py "question" --notebook-url "url"
 ```
 
-Features:
-- **Direct querying**: Ask specific questions about uploaded documents
-- **Source grounding**: Get citation-backed answers from your files
-- **Unicode handling**: Works across different operating systems
+**功能：**
+- **直接查询**：针对已上传的文档提出具体问题
+- **数据支持**：从文件中获取有依据的答案
+- **Unicode 处理**：支持多种操作系统
 
-## Powerful Use Cases
+## 强大的应用场景
 
-### Business Strategy Analysis
+### 业务策略分析
 ```bash
 # Upload strategy documents
 python scripts/local_analyzer.py "strategy_document.md" --upload
@@ -129,7 +129,7 @@ python scripts/quick_query.py "What competitive advantages does this strategy es
 python scripts/quick_query.py "Identify 3-5 actionable insights and implementation timeline" --notebook-url "url"
 ```
 
-### Financial Risk Assessment
+### 财务风险评估
 ```bash
 # Upload financial documents
 python scripts/local_analyzer.py "financial_report.md" --upload
@@ -139,7 +139,7 @@ python scripts/quick_query.py "Summarize financial implications and ROI projecti
 python scripts/quick_query.py "What are the top financial risks and mitigation strategies?" --notebook-url "url"
 ```
 
-### Proposal & Contract Analysis
+### 提案与合同分析
 ```bash
 # Upload legal/business documents
 python scripts/local_analyzer.py "proposal_document.md" --upload
@@ -149,105 +149,105 @@ python scripts/quick_query.py "What compliance or regulatory issues should be ad
 python scripts/quick_query.py "Identify potential legal risks and recommended safeguards" --notebook-url "url"
 ```
 
-## Standard Operating Procedure (SOP)
+## 标准操作流程 (SOP)
 
-### Phase 1: Document Discovery
-1. **Run batch analysis** on your document directory:
+### 第一步：文档发现
+1. 对文档目录执行批量分析：
    ```bash
    python scripts/batch_analyzer.py "your/document/folder" --pattern "*.md"
    ```
-2. **Review categorization** - identify high-value files by category
-3. **Select priority documents** - focus on strategy, financial, and legal documents
+2. 查看文件分类——按类别识别高价值文件
+3. 选择优先级文档——重点关注战略、财务和法律文档
 
-### Phase 2: Document Upload
-1. **Go to NotebookLM** (https://notebooklm.google.com)
-2. **Create new notebook** with descriptive name (e.g., "Business Analysis Q4")
-3. **Upload priority documents** identified in Phase 1
-4. **Group related documents** (strategy + financial + legal) for better context
-5. **Copy notebook URL** for querying
+### 第二步：文档上传
+1. 访问 NotebookLM（https://notebooklm.google.com）
+2. 创建一个描述性强的新笔记本（例如：“Q4 业务分析”）
+3. 上传第一步中识别出的优先级文档
+4. 将相关文档分组（战略、财务、法律）以获得更好的分析背景
+5. 复制笔记本 URL 以供后续查询
 
-### Phase 3: Intelligence Extraction
-Ask targeted questions based on document type:
+### 第三步：提取洞察
+根据文档类型提出具体问题：
 
-**Strategy Documents:**
-- "What are the key competitive advantages and market opportunities?"
-- "Identify implementation challenges and recommended solutions"
-- "What are the success metrics and milestones?"
+**战略文档：**
+- “主要的竞争优势和市场机会是什么？”
+- “识别实施挑战及建议的解决方案”
+- “成功的衡量标准和里程碑是什么？”
 
-**Financial Documents:**
-- "Summarize key financial metrics and projections"
-- "What are the primary financial risks and mitigation strategies?"
-- "What ROI and growth opportunities are identified?"
+**财务文档：**
+- “总结关键财务指标和预测”
+- “主要财务风险及应对策略是什么？”
+- “投资回报率（ROI）和增长机会有哪些？”
 
-**Legal/Compliance Documents:**
-- "What compliance requirements and deadlines must be met?"
-- "Identify potential legal risks and recommended safeguards"
-- "What regulatory issues need immediate attention?"
+**法律/合规文档：**
+- “必须满足哪些合规要求和截止日期？”
+- “识别潜在的法律风险及建议的防范措施”
+- “哪些监管问题需要立即关注？”
 
-**Proposals/Contracts:**
-- "What are the key obligations and deliverables?"
-- "Identify potential risks and negotiation points"
-- "What success criteria and performance metrics are defined?"
+**提案/合同：**
+- “主要的责任和义务是什么？”
+- “识别潜在风险和谈判要点”
+- “成功的标准和绩效指标是什么？”
 
-### Phase 4: Action Planning
-1. **Synthesize insights** across related documents
-2. **Create action item lists** from identified recommendations
-3. **Develop mitigation strategies** for identified risks
-4. **Establish monitoring** for key metrics and milestones
+### 第四步：行动计划制定
+1. 综合相关文档的洞察
+2. 根据分析结果制定行动事项清单
+3. 为识别出的风险制定应对策略
+4. 对关键指标和里程碑进行监控
 
-## Common Pitfalls
+## 常见误区
 
-❌ **Don't use for simple document reading** - just use Read tool
-❌ **Don't upload sensitive personal data** - NotebookLM is a Google service
-❌ **Don't expect real-time data** - analysis based on uploaded documents
-❌ **Don't ignore file size limits** - check NotebookLM upload limits
-❌ **Don't forget to organize documents** - group related files for better analysis
+❌ **不要仅用于简单阅读文档**——请使用专门的阅读工具
+❌ **不要上传敏感的个人信息**——NotebookLM 是 Google 服务
+❌ **不要期望实时结果**——分析基于上传的文档
+❌ **不要忽略文件大小限制**——请检查 NotebookLM 的上传限制
+❌ **不要忘记整理文档**——将相关文件分组以便更好地进行分析
 
-✅ **Always upload related documents together** - better context for analysis
-✅ **Use specific, targeted questions** - better than general queries
-✅ **Batch analyze first** - identify high-value files before uploading
-✅ **Create separate notebooks** - organize by project or document type
-✅ **Follow up with specific questions** - dig deeper into insights
+✅ **始终将相关文档一起上传**——以便更好地进行分析
+✅ **提出具体、有针对性的问题**——比泛化查询更有效
+✅ **先进行批量分析**——在上传前识别高价值文件
+✅ **创建单独的笔记本**——按项目或文档类型进行分类
+✅ **通过后续问题深入挖掘洞察**
 
-## Best Practices
+## 最佳实践
 
-1. **Batch analyze first** - identify which documents deserve AI analysis
-2. **Group related documents** - upload strategy + financial + legal docs together
-3. **Ask specific questions** - "What are the risks?" vs "Analyze this"
-4. **Create focused notebooks** - one per project or business area
-5. **Use follow-up questions** - each query can build on previous context
-6. **Extract actionable insights** - focus on what you can act on
-7. **Document findings** - save key insights for future reference
+1. **先进行批量分析**——确定哪些文档适合进行 AI 分析
+2. **将相关文档分组**——将战略、财务和法律文档一起上传
+3. **提出具体问题**——例如“有哪些风险？”而不是“分析这个文件”
+4. **创建专注的笔记本**——每个项目或业务领域一个笔记本
+5. **使用后续问题**——每次查询都基于之前的分析结果
+6. **提取可操作的见解**——关注可采取的行动
+7. **记录分析结果**——保存关键见解以供将来参考
 
-## File Type Support
+## 文件类型支持
 
-**Recommended formats:**
-- Markdown (.md) - Best for structured documents
-- PDF - Reports, contracts, formal documents
-- Word (.docx) - Business documents and proposals
-- Plain text (.txt) - Notes and documentation
+**推荐格式：**
+- Markdown (.md)——最适合结构化文档
+- PDF——报告、合同、正式文件
+- Word (.docx)——业务文档和提案
+- 普通文本 (.txt)——笔记和文档
 
-**Optimal for analysis:**
-- Business plans and strategy documents
-- Financial reports and budgets
-- Legal agreements and contracts
-- Project proposals and specifications
-- Market research and analysis
+**最适合分析的文档类型：**
+- 业务计划和战略文档
+- 财务报告和预算
+- 法律协议和合同
+- 项目提案和规范
+- 市场研究和分析报告
 
-## Troubleshooting
+## 故障排除
 
-| Problem | Solution |
+| 问题 | 解决方案 |
 |---------|----------|
-| Too many files found | Use specific patterns: `--pattern "*strategy*.md"` |
-| Upload failed | Check file size limits and format compatibility |
-| Generic answers | Ask more specific questions about business impact |
-| Analysis too broad | Focus on specific aspects: risks, opportunities, compliance |
-| Missing context | Upload related documents together for better analysis |
-| Encoding errors | Scripts automatically handle Unicode issues |
+| 找到太多文件 | 使用特定模式：`--pattern "*strategy*.md"` |
+| 上传失败 | 检查文件大小限制和格式兼容性 |
+| 回答过于笼统 | 提出更具体的关于业务影响的问题 |
+| 分析范围太广 | 专注于特定方面（风险、机会、合规性） |
+| 缺少背景信息 | 将相关文档一起上传以获得更好的分析结果 |
+| 编码错误 | 脚本会自动处理 Unicode 问题 |
 
-## Integration Notes
+## 集成说明
 
-- **Claude Code**: Use for analyzing local document repositories
-- **Claude API**: Automate document analysis workflows
-- **Claude.ai**: Manual document upload and analysis interface
-- **Enterprise**: Integrate with document management systems for automated analysis
+- **Claude Code**：用于分析本地文档库
+- **Claude API**：自动化文档分析工作流程
+- **Claude.ai**：手动文档上传和分析界面
+- **企业版**：与文档管理系统集成以实现自动化分析

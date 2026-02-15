@@ -1,6 +1,6 @@
 ---
 name: clawmail
-description: Email service for AI agents with wallet authentication and crypto payments
+description: 专为AI代理设计的电子邮件服务，支持钱包认证和加密货币支付功能。
 metadata:
   openclaw:
     emoji: "📧"
@@ -23,37 +23,37 @@ metadata:
 
 # ClawMail
 
-Email infrastructure for AI agents at **clawmail.xyz**.
+**clawmail.xyz** 为 AI 代理提供的电子邮件基础设施。
 
-## What it does
+## 功能概述
 
-ClawMail provides email addresses for LLMs and AI agents with:
+ClawMail 为大型语言模型（LLMs）和 AI 代理提供以下电子邮件服务：
 
-- **Wallet-based authentication** - No passwords, use Ethereum wallet signatures (EIP-191)
-- **x402 crypto payments** - Pay with USDC on Base mainnet
-- **MCP integration** - Direct tool access via Model Context Protocol
-- **Free tier available** - Random email addresses with 1000 message limit
+- **基于钱包的认证**：无需密码，使用以太坊钱包签名（EIP-191）进行身份验证。
+- **x402 加密支付**：支持使用 USDC 在 Base 主网上进行支付。
+- **MCP 集成**：可通过 Model Context Protocol 直接访问相关工具。
+- **免费 tier**：提供随机生成的电子邮件地址，支持发送 1000 条消息。
 
-## Pricing
+## 价格方案
 
-| Tier | Cost | Features |
+| 计费等级 | 费用 | 功能 |
 |------|------|----------|
-| Free | $0 | Random email address, 1000 messages |
-| Paid | $1 USDC | Custom email address, unlimited messages |
+| 免费 | $0 | 随机生成的电子邮件地址，1000 条消息 |
+| 付费 | $1 USDC | 自定义电子邮件地址，无限消息发送量 |
 
-## MCP Tools
+## MCP 工具
 
-This skill provides 5 tools for email management:
+该技能提供了 5 个用于电子邮件管理的工具：
 
-### `check_mailbox_availability`
-Check if an email address is available for registration.
+### `check_mailbox_availability`  
+检查指定的电子邮件地址是否可用于注册。
 
 ```json
 { "address": "myagent" }
 ```
 
-### `login`
-Authenticate using wallet signature. Returns a session token.
+### `login`  
+使用钱包签名进行身份验证，并返回会话令牌。
 
 ```json
 {
@@ -64,8 +64,8 @@ Authenticate using wallet signature. Returns a session token.
 }
 ```
 
-### `list_messages`
-List messages in your inbox.
+### `list_messages`  
+列出收件箱中的所有消息。
 
 ```json
 {
@@ -76,8 +76,8 @@ List messages in your inbox.
 }
 ```
 
-### `read_message`
-Read a specific message by ID. Marks it as read.
+### `read_message`  
+根据消息 ID 读取特定消息，并将其标记为已读。
 
 ```json
 {
@@ -87,8 +87,8 @@ Read a specific message by ID. Marks it as read.
 }
 ```
 
-### `delete_message`
-Delete a message from your inbox.
+### `delete_message`  
+从收件箱中删除指定消息。
 
 ```json
 {
@@ -98,59 +98,42 @@ Delete a message from your inbox.
 }
 ```
 
-## Usage
+## 使用方法
 
-### Via npx (recommended)
-
-```bash
+- **推荐使用 npx 命令行工具**：[使用方法](```bash
 npx clawmail
-```
+```)
 
-### Install globally
-
-```bash
+- **全局安装**：[安装步骤](```bash
 npm install -g clawmail
 clawmail
 ```
 
-### Configure in Claude Desktop
+- **在 Claude Desktop 中配置**：将相关配置添加到 `claude_desktop_config.json` 文件中。
 
-Add to your `claude_desktop_config.json`:
+## API 接口
 
-```json
-{
-  "mcpServers": {
-    "clawmail": {
-      "command": "npx",
-      "args": ["clawmail"]
-    }
-  }
-}
-```
+REST API 的地址为 `https://clawmail.xyz`，提供以下接口：
 
-## API Endpoints
-
-The REST API is available at `https://clawmail.xyz`:
-
-| Endpoint | Method | Description |
+| 接口 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/api/mailbox/available/:address` | GET | Check availability |
-| `/api/mailbox` | POST | Create mailbox (x402 protected) |
-| `/api/auth/challenge` | GET | Get login challenge |
-| `/api/auth/login` | POST | Authenticate with wallet |
-| `/api/messages` | GET | List messages |
-| `/api/messages/:id` | GET | Read message |
-| `/api/messages/:id` | DELETE | Delete message |
+| `/health` | GET | 系统健康检查 |
+| `/api/mailbox/available/:address` | GET | 检查电子邮件地址的可用性 |
+| `/api/mailbox` | POST | 创建新的邮箱账户（需要 x402 加密验证） |
+| `/api/auth/challenge` | GET | 获取登录挑战信息 |
+| `/api/auth/login` | POST | 使用钱包进行身份验证 |
+| `/api/messages` | GET | 列出所有消息 |
+| `/api/messages/:id` | GET | 读取指定消息 |
+| `/api/messages/:id` | DELETE | 删除指定消息 |
 
-## Authentication Flow
+## 认证流程
 
-1. Get a challenge: `GET /api/auth/challenge`
-2. Sign the challenge with your Ethereum wallet (EIP-191 personal_sign)
-3. Submit signature: `POST /api/auth/login`
-4. Use the returned JWT token for subsequent requests
+1. 获取登录挑战信息：`GET /api/auth/challenge`
+2. 使用以太坊钱包的签名（EIP-191）完成挑战验证。
+3. 提交签名结果：`POST /api/auth/login`
+4. 使用返回的 JWT 令牌进行后续请求。
 
-## Links
+## 相关链接
 
-- Website: https://clawmail.xyz
-- Source: https://github.com/patrickshuff/clawmail
+- **官方网站**：https://clawmail.xyz
+- **项目源代码**：https://github.com/patrickshuff/clawmail

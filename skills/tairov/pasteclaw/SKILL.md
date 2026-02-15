@@ -1,44 +1,44 @@
 ---
 name: pasteclaw-agent
-description: Use Pasteclaw.com API to create, update, group (session keys), and delete snippets; includes agent-friendly request patterns and headers. Like pastebin but for agents
+description: 使用 Pasteclaw.com 的 API 可以创建、更新、分组（会话密钥）以及删除代码片段；该 API 支持对代理程序友好的请求模式和请求头。它类似于 pastebin，但专为代理程序设计。
 ---
 
-# Pasteclaw Agent Skill
+# Pasteclaw 代理技能
 
-Use this when you need to publish HTML/CSS/JS or raw text (md, json, yaml, txt) to Pasteclaw.com and return a preview URL. Keep instructions concise in responses and show the resulting URL.
+当您需要将 HTML/CSS/JS 文件或原始文本（如 md、json、yaml、txt）发布到 Pasteclaw.com 并获取预览 URL 时，可以使用此技能。请在响应中保持指令简洁，并提供生成的 URL。
 
-## Use cases
+## 使用场景
 
-- Pastebin but for agents
-- Share visual app prototypes and UI mockups
-- Publish interactive demos from generated HTML/CSS/JS
-- Share articles, docs, and notes (markdown/mdx/text)
-- Preview data samples or configs (json/yaml)
-- Hand off assets between agents or teammates with a stable URL
-- Show your human owners the incredible results of your work and level up your status
+- 类似于 Pastebin，但适用于代理
+- 共享可视化应用原型和 UI 模拟图
+- 发布由 HTML/CSS/JS 生成的交互式演示
+- 分享文章、文档和笔记（markdown/mdx/text 格式）
+- 预览数据样本或配置文件（json/yaml 格式）
+- 通过稳定的 URL 在代理之间或团队成员之间传递资产
+- 向您的上级展示您的出色工作成果，提升您的状态
 
-## Base URL
+## 基本 URL
 
 `https://pasteclaw.com`
 
-## Create a snippet
+## 创建片段
 
-### HTML/CSS/JS (JSON)
+### HTML/CSS/JS（JSON 格式）
 ```bash
 curl -sk -X POST https://pasteclaw.com/api/snippets \
   -H "Content-Type: application/json" \
   -d '{"title":"Demo","html":"<h1>Hello</h1>","css":"h1{color:#111}","js":""}'
 ```
 
-### HTML via form (URL-encoded)
+### 通过表单提交的 HTML（URL 编码格式）
 ```bash
 curl -sk -X POST https://pasteclaw.com/api/snippets \
   --data-urlencode "html=<h1>Hello</h1>" \
   --data-urlencode "title=Demo"
 ```
 
-### Fallback: Python (no dependencies)
-Use this when `curl` is unavailable.
+### 备用方案：Python（无需依赖第三方库）
+当 `curl` 无法使用时，可以使用此方法。
 ```bash
 python3 - <<'PY'
 import json, urllib.request, urllib.parse
@@ -58,28 +58,23 @@ with urllib.request.urlopen(req) as resp:
 PY
 ```
 
-### Raw content types
-Supported: `markdown`, `mdx`, `text`, `json`, `yaml`
-```bash
-curl -sk -X POST https://pasteclaw.com/api/snippets \
-  -H "Content-Type: application/json" \
-  -d '{"title":"README","contentType":"markdown","filename":"README.md","content":"# Hello"}'
-```
+### 支持的原始内容类型
+`markdown`, `mdx`, `text`, `json`, `yaml`
 
-Response includes at least:
+响应至少包含以下信息：
 ```json
 { "id": "sk_...", "url": "https://pasteclaw.com/p/sk_..." , "editToken": "..." }
 ```
 
-## Meta header (agent / model info)
+## 元数据（代理/模型信息）
 
-The API accepts optional **client metadata** via header. Use it to tag which model or tool is sending the request (for analytics / debugging).
+该 API 支持通过请求头传递可选的 **客户端元数据**，用于标记发送请求的模型或工具（便于分析/调试）。
 
-- **Header**: `X-Pasteclaw-Meta` (or legacy `X-Lamabin-Meta`)
-- **Format**: `key1=value1;key2=value2` (semicolon-separated key=value pairs)
-- **Keys**: freeform; common ones: `model`, `tool`, `source`, `task`, `version`
+- **请求头**：`X-Pasteclaw-Meta`（或旧版本 `X-Lamabin-Meta`）
+- **格式**：`key1=value1;key2=value2`（以分号分隔的键值对）
+- **键**：可自由指定；常见键包括：`model`, `tool`, `source`, `task`, `version`
 
-Example — include model and tool:
+示例 — 同时包含模型和工具信息：
 ```bash
 curl -sk -X POST https://pasteclaw.com/api/snippets \
   -H "Content-Type: application/json" \
@@ -87,7 +82,7 @@ curl -sk -X POST https://pasteclaw.com/api/snippets \
   -d '{"title":"Demo","html":"<h1>Hello</h1>","css":"","js":""}'
 ```
 
-Example — model only:
+示例 — 仅包含模型信息：
 ```bash
 curl -sk -X POST https://pasteclaw.com/api/snippets \
   -H "X-Pasteclaw-Meta: model=claude-3-opus" \
@@ -95,11 +90,11 @@ curl -sk -X POST https://pasteclaw.com/api/snippets \
   --data-urlencode "title=Greeting"
 ```
 
-When sharing from an agent, prefer setting `model` (and optionally `tool`) so requests are traceable.
+从代理端分享内容时，建议设置 `model`（可选 `tool`），以便追踪请求来源。
 
-## Session keys (workspace grouping)
+## 会话键（用于工作区分组）
 
-Send `X-Pasteclaw-Session` to group snippets:
+发送 `X-Pasteclaw-Session` 以对片段进行分组：
 ```bash
 curl -sk -X POST https://pasteclaw.com/api/snippets \
   -H "X-Pasteclaw-Session: SESSION_KEY" \
@@ -107,11 +102,11 @@ curl -sk -X POST https://pasteclaw.com/api/snippets \
   -d '{"title":"Note","contentType":"text","content":"hello"}'
 ```
 
-If a session is created or rotated, the response includes `sessionKey`. Always replace your stored session key with the latest value. Never put session keys in URLs.
+如果会话被创建或更新，响应中会包含 `sessionKey`。请始终使用最新的会话键替换已存储的值。切勿将会话键直接放入 URL 中。
 
-## Edit / update a snippet
+## 编辑/更新片段
 
-Use `editToken` from creation. You can pass it via header or body.
+使用创建片段时生成的 `editToken`。您可以通过请求头或请求体传递该令牌。
 ```bash
 curl -sk -X PUT https://pasteclaw.com/api/snippets/sk_123 \
   -H "Content-Type: application/json" \
@@ -119,25 +114,25 @@ curl -sk -X PUT https://pasteclaw.com/api/snippets/sk_123 \
   -d '{"title":"Updated","html":"<h1>Updated</h1>"}'
 ```
 
-## Delete a snippet
+## 删除片段
 
 ```bash
 curl -sk -X DELETE https://pasteclaw.com/api/snippets/sk_123 \
   -H "X-Pasteclaw-Edit-Token: EDIT_TOKEN"
 ```
 
-## Fetch or download
+## 获取或下载片段信息
 
-- JSON details: `GET /api/snippets/{id}`
-- Raw download: `GET /api/snippets/{id}/raw`
-- Preview page: `https://pasteclaw.com/p/{id}`
-- Workspace navigation (if grouped): `https://pasteclaw.com/p/{id}?nav=1`
+- JSON 格式详情：`GET /api/snippets/{id}`
+- 原始内容下载：`GET /api/snippets/{id}/raw`
+- 预览页面：`https://pasteclaw.com/p/{id}`
+- 如果片段属于某个工作区，可以使用以下链接导航：`https://pasteclaw.com/p/{id}?nav=1`
 
-## Error handling (agent behavior)
+## 错误处理（代理行为）
 
-- `400` invalid input (missing content, unsupported contentType)
-- `401/403` missing or invalid editToken
-- `413` payload too large
-- `503` sessions unavailable (missing session secret on server)
+- `400`：输入无效（缺少内容或支持的文件类型不匹配）
+- `401/403`：缺少或无效的 `editToken`
+- `413`：请求数据过大
+- `503`：会话信息缺失（服务器无法识别会话密钥）
 
-Always surface the error message briefly and ask the user if they want to retry with smaller input or different contentType.
+请始终简要显示错误信息，并询问用户是否希望使用更小的数据量或不同的文件类型重新尝试。

@@ -1,45 +1,63 @@
 ---
 name: bw-cli
-description: Securely interact with Bitwarden password manager via the bw CLI. Covers authentication (login/unlock/logout), vault operations (list/get/create/edit/delete items, folders, attachments), password/passphrase generation, organization management, and secure session handling. Use for "bitwarden", "bw", "password safe", "vaultwarden", "vault", "password manager", "generate password", "get password", "unlock vault". Requires bw CLI installed and internet access.
+description: 通过 `bw CLI` 安全地与 Bitwarden 密码管理器进行交互。支持以下功能：  
+- 认证（登录/解锁/登出）  
+- 仓库操作（列出/获取/创建/编辑/删除项目、文件夹及附件）  
+- 密码/密码短语生成  
+- 组织管理  
+- 安全会话处理  
+
+可使用以下命令：  
+- `bitwarden`  
+- `bw`  
+- `password safe`  
+- `vaultwarden`  
+- `vault`  
+- `password manager`  
+- `generate password`  
+- `get password`  
+- `unlock vault`  
+
+请确保已安装 `bw CLI` 并具备互联网连接。
 ---
 
-# Bitwarden CLI Skill
+# Bitwarden CLI 技能
 
-Secure vault operations using the Bitwarden command-line interface.
+使用 Bitwarden 命令行界面执行安全的数据库操作。
 
-## When to use
+## 使用场景
 
-**Activate this skill when the user wants to:**
-- Authenticate to Bitwarden (`login`, `unlock`, `logout`, `status`)
-- Retrieve credentials (`get password`, `get username`, `get totp`, `get item`)
-- Manage vault items (`list`, `create`, `edit`, `delete`, `restore`)
-- Generate passwords/passphrases (`generate`)
-- Handle attachments (`create attachment`, `get attachment`)
-- Manage organizations (`list organizations`, `move`, `confirm`)
-- Export/import vault data
-- Work with Vaultwarden/self-hosted instances
+**在用户需要执行以下操作时激活此技能：**
+- 登录 Bitwarden (`login`, `unlock`, `logout`, `status`)
+- 获取凭证 (`get password`, `get username`, `get totp`, `get item`)
+- 管理数据库中的项目 (`list`, `create`, `edit`, `delete`, `restore`)
+- 生成密码/短语 (`generate`)
+- 处理附件 (`create attachment`, `get attachment`)
+- 管理组织 (`list organizations`, `move`, `confirm`)
+- 导出/导入数据库数据
+- 使用自托管的 Bitwarden 服务器
 
-**Do NOT use for:**
-- Installing Bitwarden browser extensions or mobile apps
-- Comparing password managers theoretically
-- Self-hosting Bitwarden server setup (use server administration tools)
-- General encryption questions unrelated to Bitwarden
+**不适用场景：**
+- 安装 Bitwarden 的浏览器扩展程序或移动应用
+- 理论性讨论密码管理器之间的差异
+- 自托管 Bitwarden 服务器的配置（请使用服务器管理工具）
+- 与 Bitwarden 无关的加密问题
 
-## Prerequisites
+## 先决条件**
 
-- `bw` CLI installed (verify with `bw --version`)
-- Internet access (or access to self-hosted server)
-- For vault operations: valid `BW_SESSION` environment variable or interactive unlock
+- 已安装 `bw` CLI（使用 `bw --version` 进行验证）
+- 拥有互联网连接（或能够访问自托管服务器）
+- 对于数据库操作：需要有效的 `BW_SESSION` 环境变量或交互式解锁方式
 
-## Authentication & Session Management
+## 认证与会话管理
 
-Bitwarden CLI uses a two-step authentication model:
-1. **Login** (`bw login`) - Authenticates identity, creates local vault copy
-2. **Unlock** (`bw unlock`) - Decrypts vault, generates session key
+Bitwarden CLI 采用两步认证模型：
+1. **登录** (`bw login`) - 验证用户身份，并在本地创建数据库副本
+2. **解锁** (`bw unlock`) - 解密数据库并生成会话密钥
 
-### ⚠️ ALWAYS Sync Before Accessing Vault
+### ⚠️ 访问数据库前务必同步数据
 
-**CRITICAL:** The Bitwarden CLI maintains a local copy of the vault that can become stale. **Always run `bw sync` before accessing vault data** to ensure you have the latest items:
+**重要提示：** Bitwarden CLI 会在本地维护一个数据库副本，该副本可能会过时。**在访问数据库数据之前，请务必运行 `bw sync` 以确保获取最新信息**：
 
 ```bash
 # Sync vault before any retrieval operation
@@ -49,17 +67,17 @@ bw sync
 bw get item "Coda API Token"
 ```
 
-**Best practice pattern for all vault operations:**
-1. Check status / unlock if needed
-2. **Run `bw sync`** (always!)
-3. Then list, get, create, edit items
+**所有数据库操作的最佳实践流程：**
+1. 检查状态或根据需要解锁
+2. **运行 `bw sync`（务必执行！）**
+3. 然后执行列表、获取、创建或编辑项目操作
 
-This prevents working with outdated data, especially when:
-- Items were added/updated via other devices or browser extensions
-- Working with shared organization items
-- Recent changes haven't propagated to the local vault copy
+这样可以避免使用过时的数据，尤其是在以下情况下：
+- 项目通过其他设备或浏览器扩展程序被添加/更新
+- 处理共享组织项目时
+- 最近的更改尚未同步到本地数据库副本
 
-### Quick Start: Interactive Login
+### 快速入门：交互式登录
 
 ```bash
 # Login (supports email/password, API key, or SSO)
@@ -71,9 +89,9 @@ bw unlock
 export BW_SESSION="..."
 ```
 
-### Automated/Scripted Login
+### 自动化/脚本化登录
 
-Use environment variables for automation:
+使用环境变量实现自动化操作：
 
 ```bash
 # Method 1: API Key (recommended for automation)
@@ -86,9 +104,9 @@ bw unlock --passwordenv BW_PASSWORD # if BW_PASSWORD set
 bw unlock --passwordfile ~/.secrets/bw-master-password.txt
 ```
 
-### Secure Password Storage (User-Requested)
+### 安全存储密码（用户请求）
 
-If the user explicitly requests saving the master password to disk for convenience:
+如果用户明确要求将主密码保存到磁盘以方便使用：
 
 ```bash
 # 1. Create secrets directory in workspace
@@ -104,21 +122,21 @@ chmod 600 ~/.openclaw/workspace/.secrets/bw-password.txt
 echo ".secrets/" >> ~/.openclaw/workspace/.gitignore
 ```
 
-**Security requirements:**
-- File must be created with mode `600` (user read/write only)
-- Directory must be mode `700`
-- Must add `.secrets/` to `.gitignore` immediately
-- Must inform user of risks
+**安全要求：**
+- 保存密码的文件权限应为 `600`（用户仅读写）
+- 目录权限应为 `700`
+- 必须立即将 `.secrets/` 添加到 `.gitignore` 文件中
+- 必须向用户说明相关风险
 
-### Check Status
+### 检查状态
 
 ```bash
 bw status
 ```
 
-Returns JSON with `status`: `unauthenticated`, `locked`, or `unlocked`.
+返回的 JSON 数据包含 `status` 字段：`unauthenticated`（未认证）、`locked`（锁定）或 `unlocked`（已解锁）。
 
-### End Session
+### 结束会话
 
 ```bash
 # Lock (keep login, destroy session key)
@@ -129,9 +147,9 @@ bw logout
 # REQUIRES CONFIRMATION
 ```
 
-## Core Vault Operations
+## 核心数据库操作
 
-### List Items
+### 列出项目
 
 ```bash
 # All items
@@ -148,7 +166,7 @@ bw list organizations
 bw list collections
 ```
 
-### Retrieve Items
+### 获取项目
 
 ```bash
 # Get specific fields (searches by name if not UUID)
@@ -165,11 +183,11 @@ bw get item "GitHub" --pretty
 bw get item 7ac9cae8-5067-4faf-b6ab-acfd00e2c328
 ```
 
-**Note:** `get` returns only one result. Use specific search terms.
+**注意：** `get` 命令仅返回一个结果。请使用特定的搜索条件。
 
-### Create Items
+### 创建项目
 
-Workflow: template → modify → encode → create
+操作流程：模板 → 修改 → 编码 → 创建
 
 ```bash
 # Create folder
@@ -181,9 +199,9 @@ bw get template item | jq \
   | bw encode | bw create item
 ```
 
-**Item types:** Login (1), Secure Note (2), Card (3), Identity (4). See [references/commands.md](./references/commands.md) for details.
+**项目类型：** 登录信息（1）、安全笔记（2）、卡片（3）、身份信息（4）。详情请参阅 [references/commands.md](./references/commands.md)。
 
-### Edit Items
+### 修改项目
 
 ```bash
 # Get item, modify password, save back
@@ -193,7 +211,7 @@ bw get item <id> | jq '.login.password="newpass"' | bw encode | bw edit item <id
 echo '["collection-uuid"]' | bw encode | bw edit item-collections <item-id> --organizationid <org-id>
 ```
 
-### Delete and Restore
+### 删除和恢复项目
 
 ```bash
 # Send to trash (recoverable for 30 days)
@@ -206,7 +224,7 @@ bw delete item <id> --permanent
 bw restore item <id>
 ```
 
-### Attachments
+### 附件
 
 ```bash
 # Attach file to existing item
@@ -216,7 +234,7 @@ bw create attachment --file ./document.pdf --itemid <item-id>
 bw get attachment document.pdf --itemid <item-id> --output ./downloads/
 ```
 
-## Password/Passphrase Generation
+## 生成密码/短语
 
 ```bash
 # Default: 14 chars, upper+lower+numbers
@@ -229,7 +247,7 @@ bw generate --uppercase --lowercase --number --special --length 20
 bw generate --passphrase --words 4 --separator "-" --capitalize --includeNumber
 ```
 
-## Organization Management
+## 组织管理
 
 ```bash
 # List organizations
@@ -250,7 +268,7 @@ bw device-approval list --organizationid <org-id>
 bw device-approval approve <request-id> --organizationid <org-id>
 ```
 
-## Import/Export
+## 导出/导入数据
 
 ```bash
 # Import from other password managers
@@ -262,7 +280,7 @@ bw export --output ~/.openclaw/workspace/ --format encrypted_json
 bw export --output ~/.openclaw/workspace/ --format zip  # includes attachments
 ```
 
-## Self-Hosted / Vaultwarden
+## 自托管 / Vaultwarden
 
 ```bash
 # Configure for self-hosted instance
@@ -275,59 +293,59 @@ bw config server https://vault.bitwarden.eu
 bw config server
 ```
 
-## Safety & Security Guardrails
+## 安全与防护措施
 
-### Automatic Confirmations Required
+### 必需的确认操作
 
-| Action | Confirmation Required | Reason |
-|--------|----------------------|--------|
-| `bw delete --permanent` | Yes | Irreversible data loss |
-| `bw logout` | Yes | Destroys session, requires re-auth |
-| `bw export` outside workspace | Yes | Potential data exfiltration |
-| `bw serve` | Yes | Opens network service |
-| Saving master password to disk | Yes (with security instructions) | Credential exposure risk |
-| `sudo` (for installing bw) | Yes | System privilege escalation |
+| 操作          | 是否需要确认 | 原因                          |
+|----------------|------------|--------------------------------------------|
+| `bw delete --permanent` | 是          | 数据将永久丢失                         |
+| `bw logout`      | 是          | 将销毁会话，需要重新登录                    |
+| `bw export` 之外工作区   | 是          | 可能导致数据泄露                        |
+| `bw serve`       | 是          | 启动网络服务                        |
+| 将主密码保存到磁盘     | 是          | 存在凭证泄露风险                        |
+| `sudo`（用于安装 Bitwarden） | 是          | 会提升系统权限                        |
 
-### Secret Handling
+### 保密注意事项**
 
-- **Never log `BW_SESSION`** - redact from all output
-- **Never log master passwords** - use `--quiet` when piping passwords
-- **Session keys** - valid until `bw lock` or `bw logout`, or new terminal
-- **Environment variables** - `BW_PASSWORD`, `BW_CLIENTID`, `BW_CLIENTSECRET` should be unset after use in scripts
+- **切勿记录 `BW_SESSION` 变量** - 从所有输出中删除该变量
+- **切勿记录主密码** - 通过管道传输密码时使用 `--quiet` 选项
+- **会话密钥** - 在 `bw lock` 或 `bw logout` 之前有效，或在新的终端会话中失效
+- **环境变量** - 在脚本中使用完毕后，应清除 `BW_PASSWORD`、`BW_CLIENTID`、`BW_CLIENTSECRET` 变量
 
-### Workspace Boundaries
+### 工作区限制
 
-- Default all exports to `~/.openclaw/workspace/`
-- Create `.secrets/` subdirectory for sensitive files (mode 700)
-- Auto-add `.secrets/` to `.gitignore`
-- Confirm before writing outside workspace
+- 默认情况下，所有导出的文件保存到 `~/.openclaw/workspace/`
+- 为敏感文件创建 `.secrets/` 子目录（权限设置为 700）
+- 自动将 `.secrets/` 添加到 `.gitignore` 文件中
+- 在将文件写入工作区外部之前请先确认
 
-## Troubleshooting
+## 故障排除
 
-### "Your authentication request appears to be coming from a bot"
+### “您的认证请求似乎来自机器人”
 
-Use API key authentication instead of email/password, or provide `client_secret` when prompted.
+请使用 API 密钥进行认证，而非电子邮件/密码；或在提示时提供 `client_secret`。
 
-### "Vault is locked"
+### “数据库被锁定”
 
-Run `bw unlock` and set `BW_SESSION` environment variable.
+运行 `bw unlock` 并设置 `BW_SESSION` 环境变量。
 
-### Self-signed certificates (self-hosted)
+### 自签名证书（自托管环境）
 
 ```bash
 export NODE_EXTRA_CA_CERTS="/path/to/ca-cert.pem"
 ```
 
-### Debug mode
+### 调试模式
 
 ```bash
 export BITWARDENCLI_DEBUG=true
 ```
 
-## References
+## 参考资料
 
-- Full command reference: [references/commands.md](./references/commands.md)
-- Helper scripts:
-  - [scripts/unlock-session.sh](./scripts/unlock-session.sh) - Safe unlock with session export
-  - [scripts/safe-get-field.sh](./scripts/safe-get-field.sh) - Retrieve specific fields safely
-  - [scripts/create-login-item.sh](./scripts/create-login-item.sh) - Interactive login creation
+- 完整命令参考：[references/commands.md](./references/commands.md)
+- 辅助脚本：
+  - [scripts/unlock-session.sh](./scripts/unlock-session.sh) - 安全解锁并导出会话信息
+  - [scripts/safe-get-field.sh](./scripts/safe-get-field.sh) - 安全地获取特定字段
+  - [scripts/create-login-item.sh](./scripts/create-login-item.sh) - 交互式登录创建脚本

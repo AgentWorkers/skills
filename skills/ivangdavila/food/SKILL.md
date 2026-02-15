@@ -1,46 +1,52 @@
 ---
 name: "Food Tracker"
-description: "Your intelligent food system. Absorbs, analyzes, and organizes everything you eat."
+description: "您的智能食物管理系统：能够吸收、分析并整理您摄入的所有食物成分。"
 ---
 
-## Intelligent Food Absorption
+## 智能食物吸收功能
 
-This skill absorbs ANY food input, auto-classifies it, and organizes for insights.
+该功能能够吸收用户输入的任何食物信息，自动对其进行分类，并整理成有用的数据以供分析。
 
-**Rules:**
-- Auto-detect input type: meal photo, nutrition label, recipe, menu, text
-- Extract and structure: items, portions, context, nutrition when visible
-- Tag everything: #meal, #recipe, #product, #restaurant, #inventory
-- Offer analysis: "Want nutrition estimate?" — don't force it
-- Build personal database: scanned labels, frequent meals, saved recipes
-- Provide insights: patterns, variety, timing, correlations
-- Remember restrictions permanently, flag conflicts proactively
-- For detailed macro tracking → complement with `calories` skill
-- Check `processing.md` for how each input type is handled
+**规则：**
+- 自动检测输入类型：餐食照片、营养标签、食谱、菜单或文本
+- 提取并整理相关信息：食物种类、份量、食用环境以及可见的营养成分
+- 为所有信息添加标签：#meal、#recipe、#product、#restaurant、#inventory
+- 提供分析选项：“需要营养估算吗？”（用户可自行选择是否使用该功能）
+- 建立个人食物数据库：记录扫描到的营养标签、经常食用的食物以及保存的食谱
+- 分析用户的食物摄入习惯：识别饮食模式、食物种类多样性、用餐时间规律等
+- 永久记录用户的饮食限制，并主动提醒可能存在的冲突（如过敏源）
+- 如需详细的热量追踪，请结合使用 `calories` 功能
+- 有关每种输入类型的处理方式，请参阅 `processing.md` 文件。
+
+---
+
+### 食物偏好与限制
+<!-- 用户的食物偏好及饮食限制，格式为：`item: type` -->
+<!-- 例如：nuts: 过敏；gluten: 不耐受；vegetarian: 素食者`
+
+### 保存的产品信息
+<!-- 扫描或保存的产品信息，格式为：`product: cal/serving` -->
+<!-- 例如：Hacendado 酸奶：120/170克；Oatly 燕麦奶：45/100毫升）
+
+### 饮食模式
+<!-- 用户的饮食习惯，格式为：`pattern` -->
+<!-- 例如：早餐通常在早上 8 点左右；晚上 10 点后吃零食；每周五外出就餐**
+
+### 常去的地方
+<!-- 用户常去的餐厅或场所，格式为：`place: notes` -->
+<!-- 例如：Noma（餐厅）：喜欢他们的发酵梅子料理；Local Thai（餐厅）：常去的外卖店）
+
+### 保存的食谱
+<!-- 保存的食谱信息，格式为：`dish: 关键信息` -->
+<!-- 例如：快速制作鹰嘴豆泥的食谱：鹰嘴豆 + 太古里酱 + 柠檬（耗时 5 分钟）；周日烤肉（耗时 2 小时）**
 
 ---
 
-### Preferences
-<!-- Their food preferences and restrictions. Format: "item: type" -->
-<!-- Examples: nuts: allergy, gluten: intolerance, vegetarian: choice -->
+*某些部分为空，表示尚未收集到相关数据。系统会持续收集、分类并整理这些信息。*
 
-### Products
-<!-- Scanned/saved products for quick-log. Format: "product: cal/serving" -->
-<!-- Examples: Hacendado yogurt: 120/170g, Oatly oat milk: 45/100ml -->
-
-### Patterns
-<!-- Detected eating patterns. Format: "pattern" -->
-<!-- Examples: breakfast ~8am, snacks after 10pm, eats out Fridays -->
-
-### Places
-<!-- Restaurants and spots. Format: "place: notes" -->
-<!-- Examples: Noma: loved fermented plum, Local Thai: go-to takeout -->
-
-### Recipes
-<!-- Saved recipes. Format: "dish: key info" -->
-<!-- Examples: quick hummus: chickpeas+tahini+lemon 5min, Sunday roast: 2h -->
-
----
-*Empty sections = no data yet. Absorb, classify, organize.*
-
-**Insights provided:** Weekly variety score, meal timing patterns, frequent foods, eating out ratio, nutrition estimates when asked. Not medical advice.
+**提供的分析结果：**
+- 每周食物多样性评分
+- 餐食时间规律
+- 经常食用的食物种类
+- 外出就餐的比例
+- 根据用户需求提供营养估算（非医疗建议）

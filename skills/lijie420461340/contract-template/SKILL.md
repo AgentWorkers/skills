@@ -1,6 +1,6 @@
 ---
 name: contract-template
-description: Generate smart contract templates using Accord Project - legally enforceable, machine-readable
+description: 使用 Accord Project 生成智能合约模板——这些模板具有法律约束力且可被机器读取。
 author: claude-office-skills
 version: "1.0"
 tags: [contract, legal, template, accord, smart-contracts]
@@ -12,27 +12,27 @@ library:
   stars: 322
 ---
 
-# Contract Template Skill
+# 合同模板技能
 
-## Overview
+## 概述
 
-This skill enables creation of smart contract templates using **Accord Project** - an open-source framework for legally enforceable, machine-readable contracts. Create templates with embedded logic that can automate contract execution.
+该技能允许使用 **Accord Project**（一个开源框架）来创建智能合约模板。Accord Project 支持创建具有法律约束力且可被机器读取的合约，并支持在模板中嵌入逻辑以实现合约执行的自动化。
 
-## How to Use
+## 使用方法
 
-1. Describe the contract type and terms
-2. Specify variables and logic rules
-3. I'll generate Accord Project template
+1. 描述合约的类型和条款；
+2. 指定变量和逻辑规则；
+3. Accord Project 会自动生成相应的合约模板。
 
-**Example prompts:**
-- "Create an NDA template with variable terms"
-- "Build a service agreement with payment milestones"
-- "Generate a rental agreement template"
-- "Design a consulting contract with termination clauses"
+**示例提示：**
+- “创建一个包含可变条款的保密协议（NDA）模板”；
+- “制定包含付款节点的服务协议模板”；
+- “生成租赁协议模板”；
+- “设计包含终止条款的咨询合同模板”。
 
-## Domain Knowledge
+## 相关领域知识
 
-### Template Structure
+### 模板结构
 
 ```
 contract-template/
@@ -47,7 +47,7 @@ contract-template/
     └── sample.md          # Sample contract
 ```
 
-### Template Syntax (TemplateMark)
+### 模板语法（TemplateMark）
 
 ```markdown
 # Service Agreement
@@ -72,7 +72,7 @@ A penalty of [{penaltyPercent}]% applies to late payments.
 {{/if}}
 ```
 
-### Data Model (Concerto)
+### 数据模型（Concerto）
 
 ```cto
 namespace org.example.service
@@ -103,7 +103,7 @@ transaction PaymentResponse {
 }
 ```
 
-### Business Logic (Ergo)
+### 业务逻辑（Ergo）
 
 ```ergo
 namespace org.example.service
@@ -130,7 +130,7 @@ contract ServiceContract over ServiceAgreement {
 }
 ```
 
-### Using Cicero CLI
+### 使用 Cicero CLI
 
 ```bash
 # Install
@@ -148,7 +148,7 @@ cicero trigger --template ./contract-template \
 cicero draft --template ./contract-template --data ./data.json
 ```
 
-## Example: NDA Template
+## 示例：保密协议（NDA）模板
 
 ### template.tem.md
 ```markdown
@@ -223,8 +223,8 @@ Date: ____________________
 }
 ```
 
-## Resources
+## 资源
 
 - [Accord Project](https://accordproject.org/)
-- [GitHub Organization](https://github.com/accordproject)
-- [Template Library](https://templates.accordproject.org/)
+- [GitHub 组织页面](https://github.com/accordproject)
+- [模板库](https://templates.accordproject.org/)

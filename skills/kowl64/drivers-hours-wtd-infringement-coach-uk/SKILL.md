@@ -1,107 +1,90 @@
 ---
 name: drivers-hours-wtd-infringement-coach-uk
-description: Creates a 1-page driver-facing tacho/WTD infringement note plus corrective actions and review date. USE WHEN you need to explain infringements and schedule follow-up.
+description: **创建一份面向驱动程序的1页速控/转速违规通知单，其中包含相应的纠正措施及审核日期。**  
+**使用场景：** 当您需要说明违规情况并安排后续处理时。
 ---
 
-# Drivers’ Hours & WTD Infringement Coach (UK)
+# 驾驶员工作时间与违规行为处理指南（英国）
 
-## PURPOSE
-Turn tacho/WTD infringement evidence into a friendly, professional 1-page driver note plus corrective actions and a review date, applying the company RAG escalation rule.
+## 目的  
+将转速计/工作时间违规的证据转化为一份简洁、专业的驾驶员通知单，同时提出纠正措施和复查日期，遵循公司的RAG升级规则。
 
-## WHEN TO USE
-- “Explain this tacho infringement to the driver and draft the message.”
-- “Check this shift pattern for EU Drivers’ Hours and WTD risk.”
-- “Do a weekly tacho and WTD compliance review for these drivers.” (driver-facing outputs needed)
-- “Draft a coaching note for repeated breaks/rest issues.”
-- “Summarise these infringements into actions and review dates.”
+## 使用场景  
+- “向驾驶员解释这些转速计违规行为，并起草相应的通知。”  
+- “检查欧盟地区驾驶员的工作时间与违规风险。”  
+- “对这些驾驶员进行每周的工作时间与违规合规性审查。”（需要面向驾驶员的输出结果）  
+- “针对频繁的休息/休息时间问题起草指导性通知。”  
+- “将这些违规行为汇总为具体的纠正措施和复查日期。”  
 
-DO NOT USE WHEN…
-- Generic questions like “What are the drivers’ hours rules?” with no driver context or artefact needed.
-- Generic HR/disciplinary process requests not tied to a specific compliance case.
-- Fuel-saving/defensive driving tips unrelated to compliance deliverables.
+**不适用场景**  
+- 无关具体驾驶员信息或违规细节的通用性咨询（如“驾驶员工作时间规定是什么？”）  
+- 与具体合规案例无关的通用人力资源/纪律处理请求  
+- 与合规性无关的节油/驾驶技巧建议  
 
-## INPUTS
-- REQUIRED:
-  - Driver identifier (name/ID) and role (e.g., HGV/PCV), and period covered (start/end dates)
-  - Infringement list (from .ddd/CSV/PDF summary) including dates/times and type
-  - Working time context (duty/shift length, POA if recorded, breaks) if WTD-relevant
-- OPTIONAL:
-  - Prior RAG history (count of ambers/reds in last X weeks/months per your policy)
-  - Any driver explanation already given
-  - Relevant internal SOP excerpt (paste text) for local rules
-- EXAMPLES:
-  - “Driver A, week 2026-01-05 to 2026-01-11: 2x insufficient break, 1x daily rest short by 45 mins…”
+## 输入内容  
+**必填项**：  
+- 驾驶员身份（姓名/ID）及职位（例如：重型货车司机/轻型货车司机），以及时间范围（开始/结束日期）  
+- 违规行为列表（来自.ddd/CSV/PDF格式的汇总文件），包括日期、时间及违规类型  
+- 工作时间相关信息（工作时长、授权人信息、休息时间，如涉及违规行为）  
 
-## OUTPUTS
-- `driver-infringement-note.md` (max ~1 page): explanation + expectations + support
-- `corrective-action-plan.md`: actions, owner, due dates, review date
-- Success criteria:
-  - Tone: friendly & professional (UK spelling)
-  - No assumptions: facts are attributed to provided records
-  - Includes a clear review date and next steps
+**可选项**：  
+- 过往的违规记录（根据公司政策统计的过去X周/月的违规次数）  
+- 驾驶员已提供的解释  
+- 与公司内部规定相关的操作流程摘要  
 
-## WORKFLOW
-1. **Validate inputs**
-   - Confirm: driver ID, date range, infringement types, and source (PDF/CSV notes).
-   - IF any are missing → **STOP AND ASK THE USER** for the missing items.
-2. **Summarise facts only**
-   - List infringements in plain English (what happened + when), without blame.
-   - IF records conflict (e.g., two sources disagree) → **STOP AND ASK THE USER** which source is authoritative.
-3. **Classify severity for RAG**
-   - Apply the company rule in `references/rag-escalation-rule.md`.
-   - IF RAG status depends on missing prior history → **STOP AND ASK THE USER** for counts/previous outcomes.
-4. **Draft the driver-facing note (max 1 page)**
-   - Use `assets/driver-note-template.md`.
-   - Include: what the rule expects, what the record shows, why it matters, and what to do next time.
-5. **Propose corrective actions**
-   - Use `assets/corrective-action-plan-template.md`.
-   - Actions must be specific, practical, and measurable (e.g., break planning, reminder prompts, route/shift adjustments).
-6. **Schedule review**
-   - Choose a review date proportional to risk:
-     - Green/Amber: typically next weekly review window
-     - Red: sooner review + manager check-in (and potential investigation trigger per your policy)
-7. **Output pack**
-   - Produce the two .md artefacts with consistent filenames.
-   - IF the user asks to edit existing files → **ASK FIRST** before making edits.
+**示例**：  
+- “驾驶员A，2026-01-05至2026-01-11期间：两次休息时间不足，一次每日休息时间短45分钟……”  
 
-## OUTPUT FORMAT
-```text
-# driver-infringement-note.md
-Driver:
-Period covered:
-Source records:
+## 输出内容  
+- `driver-infringement-note.md`（最多1页）：违规情况说明、处理建议及后续注意事项  
+- `corrective-action-plan.md`：具体的纠正措施、负责人、截止日期及复查日期  
 
-## What we saw in the record (facts)
-- [date/time] — [plain English infringement]
-- …
+**成功标准**：  
+- 语气友好且专业（遵循英国英语规范）  
+- 仅基于提供的记录进行事实陈述  
+- 明确标注复查日期及下一步行动  
 
-## What the rules require (plain English)
-- …
+## 工作流程  
+1. **验证输入信息**  
+   - 确认驾驶员身份、时间范围、违规类型及信息来源（PDF/CSV文件）。  
+   - 如有任何信息缺失，**立即询问用户**以获取完整数据。  
 
-## What to do next time (practical steps)
-- …
-- …
+2. **仅总结事实**  
+   - 用简单明了的语言列出违规行为（具体发生的情况及时间），避免指责。  
+   - 如果记录之间存在矛盾（例如不同来源的数据不一致），**立即询问用户**以确定权威信息来源。  
 
-## Support we can offer
-- …
+3. **根据公司规则评估违规严重程度**  
+   - 参考`references/rag-escalation-rule.md`中的公司规定进行分类。  
+   - 如果违规程度的判定依赖于过往记录，**立即询问用户**以获取相关数据。  
 
-## Status and next review
-RAG status:
-Next review date:
-Manager/Compliance follow-up:
-```
+4. **起草驾驶员通知单**  
+   - 使用`assets/driver-note-template.md`模板。  
+   - 包括公司规定的要求、记录中的事实、违规行为的后果以及下次应采取的措施。  
 
-## DEPENDENCIES
-- None required beyond the provided extracts/summaries.
-- If the user provides files (.ddd/CSV/PDF), rely on the user’s summary unless your environment includes a trusted parser.
+5. **制定纠正措施**  
+   - 使用`assets/corrective-action-plan-template.md`模板。  
+   - 确保措施具体、可行且可衡量（例如：调整休息时间、设置提醒提示、优化路线或班次安排）。  
 
-## SAFETY & EDGE CASES
-- Never accuse or assume intent; stick to evidence.
-- If there is any possibility of an employment action (discipline), recommend using the investigation skill pack and keep this note factual/coaching-focused.
-- Don’t invent legal thresholds; only explain what’s in the provided evidence + internal policy text.
+6. **安排复查**  
+   - 根据违规风险程度选择合适的复查时间：  
+     - 轻微违规：通常在下周的复查周期内  
+     - 严重违规：需提前复查，并由经理介入（可能触发进一步调查）。  
 
-## EXAMPLES
-- Input: “Explain insufficient break x2 and rest shortage x1 for Driver A”
-  - Output: `driver-infringement-note.md` + `corrective-action-plan.md` with review date next week
-- Input: “Repeated break issues; prior 3 ambers”
-  - Output: Note + actions; status indicates escalation path per RAG rule; recommends investigation workflow if needed
+7. **生成输出文件**  
+   - 生成两份格式统一的.md文件。  
+   - 如用户要求修改现有文件，请**先征得用户同意**后再进行编辑。  
+
+## 所需依赖项**  
+- 无需额外依赖任何工具或资源（仅依赖提供的文件和摘要）。  
+- 若用户提供了.ddd/CSV/PDF文件，以用户的总结为准（除非系统具备可靠的文件解析功能）。  
+
+**注意事项**  
+- 严禁无根据地指责或推测驾驶员的意图；始终基于证据进行判断。  
+- 如存在可能引发纪律处分的情况，建议使用专门的调查流程，并确保通知内容仅限于事实陈述与指导建议。  
+- 不得自行设定法律标准；仅解释文件中的事实及公司内部规定。  
+
+**示例**：  
+- 输入：**“驾驶员A存在两次休息时间不足和一次休息时间短于规定时间的情况。”**  
+  - 输出：`driver-infringement-note.md` + `corrective-action-plan.md`，其中包含下周的复查日期。  
+- 输入：**“驾驶员存在多次休息时间违规问题；过去有3次轻微违规记录。”**  
+  - 输出：包含指导性通知及根据RAG规则确定的处理流程；必要时建议启动调查程序。

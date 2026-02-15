@@ -1,18 +1,18 @@
 ---
 name: creative-toolkit
-description: Generate images from text with multi-provider routing — supports FLUX, SDXL, GPT Image, Seedream, and local ComfyUI workflows. Includes 1,300+ curated prompts and style-aware prompt enhancement. Use when users want to create images, design assets, enhance prompts, or manage AI art workflows.
+description: **使用多提供者路由从文本生成图像**——支持 FLUX、SDXL、GPT Image、Seedream 以及本地的 ComfyUI 工作流程。系统提供了 1,300 多个精心策划的提示（prompt），并具备基于风格的提示优化功能。适用于用户生成图像、设计资产、优化提示内容或管理 AI 艺术创作流程的场景。
 version: 1.0.0
 homepage: https://github.com/jau123/MeiGen-Art
 metadata: {"clawdbot":{"emoji":"🎨","requires":{"bins":["mcporter"],"env":["MEIGEN_API_TOKEN"]},"primaryEnv":"MEIGEN_API_TOKEN"}}
 ---
 
-# Creative Toolkit
+# 创意工具包
 
-Generate professional AI images through a unified interface that routes across multiple providers. Search curated prompts, enhance ideas into production-ready descriptions, and manage local ComfyUI workflows — all from a single MCP server.
+通过一个统一的接口，您可以调用多个AI提供商来生成专业的AI图像。该工具包支持搜索精心策划的提示语，将简单的创意转化为可用于实际制作的描述，并管理ComfyUI工作流程——所有这些功能都通过一个MCP服务器实现。
 
-## Quick Start
+## 快速入门
 
-Add the MCP server to your mcporter config (`~/.config/mcporter/config.json`):
+1. 将MCP服务器添加到您的`mcporter`配置文件（`~/.config/mcporter/config.json`）中：
 
 ```json
 {
@@ -28,45 +28,45 @@ Add the MCP server to your mcporter config (`~/.config/mcporter/config.json`):
 }
 ```
 
-Set your API token in `~/.clawdbot/.env` or shell environment:
+2. 在`~/.clawdbot/.env`文件或shell环境中设置您的API令牌：
 
 ```bash
 export MEIGEN_API_TOKEN="meigen_sk_..."
 ```
 
-Generate your first image:
+3. 生成您的第一张图像：
 
 ```bash
 mcporter call creative-toolkit.generate_image prompt="a minimalist perfume bottle on white marble, soft directional lighting, product photography"
 ```
 
-Or try it without any config (ad-hoc stdio mode):
+或者，您也可以在不进行任何配置的情况下直接使用标准输入模式来尝试生成图像：
 
 ```bash
 mcporter call --stdio "npx -y meigen@latest" generate_image prompt="a ceramic vase with morning light"
 ```
 
-No API key? Free tools still work:
+如果没有API密钥？免费的工具仍然可以使用：
 
 ```bash
 mcporter call creative-toolkit.search_gallery query="cyberpunk"
 mcporter call creative-toolkit.enhance_prompt brief="a cat in space" style="realistic"
 ```
 
-## Setup
+## 设置
 
-### Get an API Token
+### 获取API令牌
 
-1. Visit [meigen.ai](https://www.meigen.ai) → sign in → click avatar → **Settings** → **API Keys**
-2. Create a new key (starts with `meigen_sk_`)
-3. Set as environment variable or save to config:
+1. 访问[meigen.ai](https://www.meigen.ai) → 登录 → 点击头像 → **设置** → **API密钥**
+2. 创建一个新的API密钥（密钥名称以`meigen_sk_`开头）
+3. 将密钥设置为环境变量或保存到配置文件中：
 
 ```bash
 # Shell environment or ~/.clawdbot/.env
 export MEIGEN_API_TOKEN="meigen_sk_..."
 ```
 
-Or save to `~/.config/meigen/config.json`:
+或者，您也可以将密钥保存到`~/.config/meigen/config.json`文件中：
 
 ```json
 {
@@ -74,9 +74,9 @@ Or save to `~/.config/meigen/config.json`:
 }
 ```
 
-### Alternative Providers
+### 替代提供商
 
-You can use your own OpenAI-compatible API or a local ComfyUI instance instead of — or alongside — the default provider. Save to `~/.config/meigen/config.json`:
+您可以使用自己支持的OpenAI兼容API或本地的ComfyUI实例，作为默认提供商的替代方案。请将相关配置保存到`~/.config/meigen/config.json`文件中：
 
 **OpenAI / Together AI / Fireworks AI:**
 
@@ -88,7 +88,7 @@ You can use your own OpenAI-compatible API or a local ComfyUI instance instead o
 }
 ```
 
-**Local ComfyUI:**
+**本地ComfyUI:**
 
 ```json
 {
@@ -96,42 +96,38 @@ You can use your own OpenAI-compatible API or a local ComfyUI instance instead o
 }
 ```
 
-Import workflows with the `comfyui_workflow` tool (action: `import`). The server auto-detects key nodes (KSampler, CLIPTextEncode, EmptyLatentImage) and fills in prompt, seed, and dimensions at runtime.
+您可以使用`comfyui_workflow`工具来导入工作流程（命令：`import`）。服务器会自动检测所需的节点（如KSampler、CLIPTextEncode、EmptyLatentImage），并在运行时填充提示语、种子图像和图像尺寸等信息。
 
-Multiple providers can be configured simultaneously. Auto-detection priority: MeiGen > ComfyUI > OpenAI.
+您可以同时配置多个提供商。自动检测的优先级顺序为：MeiGen > ComfyUI > OpenAI。
 
-## Available Tools
+## 可用工具
 
-### Free — no API key required
+### 免费工具（无需API密钥）
 
-| Tool | What it does |
+| 工具 | 功能 |
 |------|-------------|
-| `search_gallery` | Search 1,300+ curated prompts by keyword, style, or category. Returns prompt text, thumbnails, and metadata. |
-| `get_inspiration` | Get the full prompt and high-res images for any gallery entry. Use after `search_gallery` to get copyable prompts. |
-| `enhance_prompt` | Expand a brief idea (e.g. "a cat in space") into a detailed, style-aware prompt with lighting, composition, and material directions. Supports three styles: realistic, anime, illustration. |
-| `list_models` | List all available models across configured providers with capabilities and supported features. |
+| `search_gallery` | 按关键词、风格或类别搜索1,300多个精心策划的提示语。返回提示语文本、缩略图和元数据。 |
+| `get_inspiration` | 获取任何图片条目的完整提示语和高分辨率图像。在`search_gallery`之后使用该工具可获取可复制的提示语。 |
+| `enhance_prompt` | 将简单的创意（例如“太空中的猫”）扩展为包含光线、构图和材质细节的详细提示语。支持三种风格：写实、动漫、插画。 |
+| `list_models` | 列出所有可用模型的详细信息，包括它们的功能和支持的特性。 |
 
-### Requires configured provider
+### 需要配置提供商的工具
 
-| Tool | What it does |
+| 工具 | 功能 |
 |------|-------------|
-| `generate_image` | Generate an image from a text prompt. Automatically routes to the best available provider. Supports aspect ratio, seed, and reference images. |
-| `upload_reference_image` | Compress and upload a local image (max 2MB, 2048px) for use as a style reference in generation. Returns a public URL. |
-| `comfyui_workflow` | List, view, import, modify, and delete ComfyUI workflow templates. Modify parameters like steps, CFG scale, sampler, and checkpoint without editing JSON. |
+| `generate_image` | 根据文本提示生成图像。系统会自动选择最适合的提供商。支持设置宽高比、种子图像和参考图像。 |
+| `upload_reference_image` | 压缩并上传本地图像（最大2MB，2048像素），作为生成图像时的风格参考。返回该图像的公共URL。 |
+| `comfyui_workflow` | 列出、查看、导入、修改和删除ComfyUI工作流程模板。无需编辑JSON文件即可调整参数（如步骤、CFG比例、采样器和检查点）。 |
 
-## Usage Patterns
+## 使用方式
 
-### Basic generation
+### 基本生成
 
-```
-Generate a product photo of a ceramic vase with morning light
-```
+服务器会自动选择最适合的提供商来生成图像，并返回图像的URL以及本地文件路径。
 
-The server picks the best provider, generates the image, and returns a URL + local file path.
+### 先增强提示语再生成图像
 
-### Prompt enhancement then generation
-
-For brief ideas, enhance first for much better results:
+对于简单的创意，先进行增强处理可以获得更好的结果：
 
 ```
 1. enhance_prompt brief="futuristic city" style="realistic"
@@ -141,9 +137,9 @@ For brief ideas, enhance first for much better results:
    → Generates with the enhanced prompt
 ```
 
-### Reference image workflow
+### 使用参考图像
 
-Use an existing image to guide style and composition:
+您可以使用现有的图像来指导图像的风格和构图：
 
 ```
 1. upload_reference_image filePath="~/Desktop/my-logo.png"
@@ -153,9 +149,9 @@ Use an existing image to guide style and composition:
    → Generates using the reference for style guidance
 ```
 
-Reference images work across all providers.
+所有提供商都支持使用参考图像。
 
-### Gallery exploration
+### 浏览图片库
 
 ```
 1. search_gallery query="product photography" category="Product"
@@ -165,7 +161,7 @@ Reference images work across all providers.
    → Get full prompt text — copy and modify for your own generation
 ```
 
-### ComfyUI workflows
+### 管理ComfyUI工作流程
 
 ```
 1. comfyui_workflow action="list"
@@ -181,40 +177,40 @@ Reference images work across all providers.
    → Generate using the custom workflow
 ```
 
-## Provider Comparison
+## 提供商对比
 
-| | MeiGen Platform | OpenAI-Compatible | ComfyUI (Local) |
+| | MeiGen平台 | OpenAI兼容提供商 | 本地ComfyUI |
 |---|---|---|---|
-| **Models** | Nanobanana Pro, GPT Image 1.5, Seedream 4.5, etc. | Any model at the endpoint | Any checkpoint on your machine |
-| **Reference images** | Native support | gpt-image-1.5 only | Requires LoadImage node |
-| **Concurrency** | Up to 4 parallel | Up to 4 parallel | 1 at a time (GPU constraint) |
-| **Latency** | 10-30s typical | Varies by provider | Depends on hardware |
-| **Cost** | Token-based credits | Provider billing | Free (your hardware) |
-| **Offline** | No | No | Yes |
+| **模型** | Nanobanana Pro、GPT Image 1.5、Seedream 4.5等 | 终端支持的任何模型 | 您机器上可用的任何模型 |
+| **参考图像** | 支持直接使用参考图像 | 仅支持gpt-image-1.5模型 | 需要使用LoadImage节点 |
+| **并发处理** | 最多支持4个任务同时运行 | 最多支持4个任务同时运行 | 由于GPU限制，一次只能运行1个任务 |
+| **响应时间** | 通常为10-30秒 | 因提供商而异 | 取决于硬件性能 |
+| **费用** | 需支付API令牌费用 | 根据提供商收费 | 免费（使用您的硬件） |
+| **离线使用** | 不支持 | 不支持 | 支持离线使用 |
 
-## Prompt Enhancement Styles
+## 提示语增强样式
 
-`enhance_prompt` supports three style modes, each producing different types of detail:
+`enhance_prompt`支持三种风格模式，每种模式会产生不同的细节表现：
 
-| Style | Focus | Best For |
+| 风格 | 关注点 | 适用场景 |
 |-------|-------|----------|
-| `realistic` | Camera lens, aperture, focal length, lighting direction, material textures | Product photos, portraits, architecture |
-| `anime` | Key visual composition, character details (eyes, hair, costume), trigger words | Anime illustrations, character design |
-| `illustration` | Art medium, color palette, composition direction, brush texture | Concept art, digital painting, watercolor |
+| **写实** | 相机镜头、光圈、焦距、光线方向、材质纹理 | 产品照片、肖像、建筑场景 |
+| **动漫** | 关键视觉元素（眼睛、头发、服装等细节）、触发词 | 动漫插画、角色设计 |
+| **插画** | 艺术媒介、色彩搭配、构图方向、笔触风格 | 概念艺术、数字绘画、水彩画 |
 
-## Troubleshooting
+## 常见问题解决方法
 
-**"No image generation providers configured"**
-→ Set `MEIGEN_API_TOKEN` or configure an alternative provider in `~/.config/meigen/config.json`
+**“未配置图像生成提供商”**
+→ 设置`MEIGEN_API_TOKEN`或在`~/.config/meigen/config.json`中配置其他提供商。
 
-**Timeout during generation**
-→ Image generation typically takes 10-30 seconds. During high demand, it may take longer. The server polls with a 5-minute timeout.
+**生成图像时超时**
+→ 图像生成通常需要10-30秒。在高需求时段，可能需要更长时间。服务器的请求间隔为5分钟。
 
-**ComfyUI connection refused**
-→ Ensure ComfyUI is running and accessible at the configured URL. Test with: `curl <url>/system_stats`
+**无法连接到ComfyUI**
+→ 确保ComfyUI正在运行，并且可以通过配置的URL访问。可以使用`curl <url>/system_stats`进行测试。
 
-**"Model not found"**
-→ Run `list_models` to see available models for your configured providers.
+**“找不到模型”**
+→ 运行`list_models`查看您所配置的提供商支持的模型列表。
 
-**Reference image rejected**
-→ Images must be public URLs (not local paths). Use `upload_reference_image` to convert local files to URLs first.
+**参考图像无法使用**
+→ 参考图像必须是公共URL（不能是本地文件路径）。请使用`upload_reference_image`将本地文件转换为公共URL后再使用。

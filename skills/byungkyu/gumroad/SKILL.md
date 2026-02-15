@@ -17,9 +17,9 @@ metadata:
 
 # Gumroad
 
-Access the Gumroad API with managed OAuth authentication. Manage products, view sales, verify licenses, and set up webhooks for your digital storefront.
+您可以使用托管的 OAuth 认证来访问 Gumroad API。通过该 API，您可以管理产品、查看销售数据、验证许可证，并为您的数字商店设置 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user info
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/gumroad/v2/{resource}
 ```
 
-The gateway proxies requests to `api.gumroad.com/v2` and automatically injects your OAuth token.
+Gumroad 的网关会将请求代理到 `api.gumroad.com/v2`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Gumroad OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Gumroad OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Gumroad connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Gumroad 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Info
+### 用户信息
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /gumroad/v2/user
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -171,15 +171,15 @@ GET /gumroad/v2/user
 }
 ```
 
-### Product Operations
+### 产品操作
 
-#### List Products
+#### 列出产品
 
 ```bash
 GET /gumroad/v2/products
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -197,13 +197,13 @@ GET /gumroad/v2/products
 }
 ```
 
-#### Get Product
+#### 获取产品信息
 
 ```bash
 GET /gumroad/v2/products/{product_id}
 ```
 
-#### Update Product
+#### 更新产品信息
 
 ```bash
 PUT /gumroad/v2/products/{product_id}
@@ -212,7 +212,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Updated%20Name&price=1000
 ```
 
-#### Enable/Disable Product
+#### 启用/禁用产品
 
 ```bash
 PUT /gumroad/v2/products/{product_id}/disable
@@ -221,29 +221,29 @@ Content-Type: application/x-www-form-urlencoded
 disabled=true
 ```
 
-#### Delete Product
+#### 删除产品
 
 ```bash
 DELETE /gumroad/v2/products/{product_id}
 ```
 
-**Note:** Creating new products via API is not supported. Products must be created through the Gumroad website.
+**注意：** 无法通过 API 创建新产品。产品必须通过 Gumroad 网站进行创建。
 
-### Offer Code Operations
+### 优惠码操作
 
-#### List Offer Codes
+#### 列出优惠码
 
 ```bash
 GET /gumroad/v2/products/{product_id}/offer_codes
 ```
 
-#### Get Offer Code
+#### 获取优惠码信息
 
 ```bash
 GET /gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}
 ```
 
-#### Create Offer Code
+#### 创建优惠码
 
 ```bash
 POST /gumroad/v2/products/{product_id}/offer_codes
@@ -252,13 +252,13 @@ Content-Type: application/x-www-form-urlencoded
 name=SUMMER20&amount_off=20
 ```
 
-Parameters:
-- `name` - The code customers enter (required)
-- `amount_off` - Cents or percentage off (required)
-- `offer_type` - "cents" or "percent" (default: "cents")
-- `max_purchase_count` - Maximum uses (optional)
+参数：
+- `name` - 客户输入的优惠码（必填）
+- `amount_off` - 优惠金额（以分或百分比表示）（必填）
+- `offer_type` - "cents" 或 "percent"（默认值："cents"）
+- `max_purchase_count` - 最大使用次数（可选）
 
-#### Update Offer Code
+#### 更新优惠码信息
 
 ```bash
 PUT /gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}
@@ -267,31 +267,31 @@ Content-Type: application/x-www-form-urlencoded
 max_purchase_count=100
 ```
 
-#### Delete Offer Code
+#### 删除优惠码
 
 ```bash
 DELETE /gumroad/v2/products/{product_id}/offer_codes/{offer_code_id}
 ```
 
-### Sales Operations
+### 销售操作
 
-#### List Sales
+#### 列出销售记录
 
 ```bash
 GET /gumroad/v2/sales
 ```
 
-Query parameters:
-- `after` - Only sales after this date (YYYY-MM-DD)
-- `before` - Only sales before this date (YYYY-MM-DD)
-- `page` - Page number for pagination
+查询参数：
+- `after` - 仅显示此日期之后的销售记录（格式：YYYY-MM-DD）
+- `before` - 仅显示此日期之前的销售记录（格式：YYYY-MM-DD）
+- `page` - 分页页码
 
-**Example with filters:**
+**带过滤条件的示例：**
 ```bash
 GET /gumroad/v2/sales?after=2026-01-01&before=2026-12-31
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -310,27 +310,27 @@ GET /gumroad/v2/sales?after=2026-01-01&before=2026-12-31
 }
 ```
 
-#### Get Sale
+#### 获取单笔销售记录
 
 ```bash
 GET /gumroad/v2/sales/{sale_id}
 ```
 
-### Subscriber Operations
+### 订阅者操作
 
-#### List Subscribers
+#### 列出订阅者
 
 ```bash
 GET /gumroad/v2/products/{product_id}/subscribers
 ```
 
-#### Get Subscriber
+#### 获取订阅者信息
 
 ```bash
 GET /gumroad/v2/subscribers/{subscriber_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -346,9 +346,9 @@ GET /gumroad/v2/subscribers/{subscriber_id}
 }
 ```
 
-### License Operations
+### 许可证操作
 
-#### Verify License
+#### 验证许可证
 
 ```bash
 POST /gumroad/v2/licenses/verify
@@ -357,12 +357,12 @@ Content-Type: application/x-www-form-urlencoded
 product_id={product_id}&license_key={license_key}
 ```
 
-Parameters:
-- `product_id` - The product ID (required)
-- `license_key` - The license key to verify (required)
-- `increment_uses_count` - Increment the use count (default: true)
+参数：
+- `product_id` - 产品 ID（必填）
+- `license_key` - 需要验证的许可证密钥（必填）
+- `increment_uses_count` - 增加许可证的使用次数（默认值：true）
 
-**Response (success):**
+**成功响应：**
 ```json
 {
   "success": true,
@@ -380,7 +380,7 @@ Parameters:
 }
 ```
 
-**Response (failure):**
+**失败响应：**
 ```json
 {
   "success": false,
@@ -388,7 +388,7 @@ Parameters:
 }
 ```
 
-#### Enable License
+#### 启用许可证
 
 ```bash
 PUT /gumroad/v2/licenses/enable
@@ -397,7 +397,7 @@ Content-Type: application/x-www-form-urlencoded
 product_id={product_id}&license_key={license_key}
 ```
 
-#### Disable License
+#### 禁用许可证
 
 ```bash
 PUT /gumroad/v2/licenses/disable
@@ -406,7 +406,7 @@ Content-Type: application/x-www-form-urlencoded
 product_id={product_id}&license_key={license_key}
 ```
 
-#### Decrement License Uses
+#### 减少许可证的使用次数
 
 ```bash
 PUT /gumroad/v2/licenses/decrement_uses_count
@@ -415,20 +415,20 @@ Content-Type: application/x-www-form-urlencoded
 product_id={product_id}&license_key={license_key}
 ```
 
-### Resource Subscriptions (Webhooks)
+### 资源订阅（Webhook）
 
-Subscribe to notifications for sales and other events.
+您可以订阅销售事件和其他事件的通知。
 
-#### List Resource Subscriptions
+#### 列出资源订阅信息
 
 ```bash
 GET /gumroad/v2/resource_subscriptions?resource_name=sale
 ```
 
-Parameters:
-- `resource_name` - Required. One of: `sale`, `refund`, `dispute`, `dispute_won`, `cancellation`, `subscription_updated`, `subscription_ended`, `subscription_restarted`
+参数：
+- `resource_name` - 必填值。可选值：`sale`、`refund`、`dispute`、`dispute_won`、`cancellation`、`subscription_updated`、`subscription_ended`、`subscription_restarted`
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -442,13 +442,13 @@ Parameters:
 }
 ```
 
-#### Delete Resource Subscription
+#### 删除资源订阅
 
 ```bash
 DELETE /gumroad/v2/resource_subscriptions/{resource_subscription_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "success": true,
@@ -456,21 +456,21 @@ DELETE /gumroad/v2/resource_subscriptions/{resource_subscription_id}
 }
 ```
 
-### Variant Categories
+### 变体类别
 
-#### List Variant Categories
+#### 列出变量类别
 
 ```bash
 GET /gumroad/v2/products/{product_id}/variant_categories
 ```
 
-#### Get Variant Category
+#### 获取变量类别信息
 
 ```bash
 GET /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}
 ```
 
-#### Create Variant Category
+#### 创建变量类别
 
 ```bash
 POST /gumroad/v2/products/{product_id}/variant_categories
@@ -479,21 +479,21 @@ Content-Type: application/x-www-form-urlencoded
 title=Size
 ```
 
-#### Delete Variant Category
+#### 删除变量类别
 
 ```bash
 DELETE /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}
 ```
 
-### Variants
+### 变体
 
-#### List Variants
+#### 列出变量信息
 
 ```bash
 GET /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants
 ```
 
-#### Create Variant
+#### 创建变量
 
 ```bash
 POST /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants
@@ -502,7 +502,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Large&price_difference=200
 ```
 
-#### Update Variant
+#### 更新变量信息
 
 ```bash
 PUT /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}
@@ -511,21 +511,21 @@ Content-Type: application/x-www-form-urlencoded
 name=Extra%20Large
 ```
 
-#### Delete Variant
+#### 删除变量
 
 ```bash
 DELETE /gumroad/v2/products/{product_id}/variant_categories/{variant_category_id}/variants/{variant_id}
 ```
 
-### Custom Fields
+### 自定义字段
 
-#### List Custom Fields
+#### 列出自定义字段
 
 ```bash
 GET /gumroad/v2/products/{product_id}/custom_fields
 ```
 
-#### Create Custom Field
+#### 创建自定义字段
 
 ```bash
 POST /gumroad/v2/products/{product_id}/custom_fields
@@ -534,7 +534,7 @@ Content-Type: application/x-www-form-urlencoded
 name=Company%20Name&required=true
 ```
 
-#### Update Custom Field
+#### 更新自定义字段
 
 ```bash
 PUT /gumroad/v2/products/{product_id}/custom_fields/{name}
@@ -543,24 +543,24 @@ Content-Type: application/x-www-form-urlencoded
 required=false
 ```
 
-#### Delete Custom Field
+#### 删除自定义字段
 
 ```bash
 DELETE /gumroad/v2/products/{product_id}/custom_fields/{name}
 ```
 
-## Pagination
+## 分页
 
-Gumroad uses page-based pagination for endpoints that return lists:
+Gumroad 对返回列表的 API 端点使用基于页码的分页机制：
 
 ```bash
 GET /gumroad/v2/sales?page=1
 GET /gumroad/v2/sales?page=2
 ```
 
-Continue incrementing the page number until you receive an empty list.
+继续增加页码，直到收到空列表为止。
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -589,7 +589,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Python (Verify License)
+### Python（验证许可证）
 
 ```python
 import os
@@ -610,27 +610,27 @@ else:
     print(f"Invalid: {result['message']}")
 ```
 
-## Notes
+## 注意事项
 
-- All responses include a `success` boolean field
-- Product creation is not available via API - products must be created through the Gumroad website
-- POST/PUT requests use `application/x-www-form-urlencoded` content type (not JSON)
-- Prices are in cents (e.g., 500 = $5.00)
-- License keys are case-insensitive
-- Resource subscription webhooks send POST requests to your specified URL
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 所有响应都包含一个 `success` 布尔字段，用于表示操作是否成功。
+- 无法通过 API 创建新产品——产品必须通过 Gumroad 网站进行创建。
+- POST/PUT 请求使用 `application/x-www-form-urlencoded` 的内容类型（而非 JSON）。
+- 价格以分为单位（例如：500 表示 $5.00）。
+- 许可证密钥不区分大小写。
+- 资源订阅的 Webhook 会向您指定的 URL 发送 POST 请求。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Gumroad connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found (returned with `success: false`) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Gumroad API |
+| 400 | 缺少 Gumroad 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到（响应中包含 `success: false`） |
+| 429 | 请求频率受限 |
+| 4xx/5xx | 来自 Gumroad API 的传递错误 |
 
-Gumroad errors typically return HTTP 404 with a JSON body:
+Gumroad 的错误通常会返回 HTTP 404 错误，并附带 JSON 格式的错误信息：
 ```json
 {
   "success": false,
@@ -638,15 +638,15 @@ Gumroad errors typically return HTTP 404 with a JSON body:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量。
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出所有连接来验证 API 密钥是否有效。
 
 ```bash
 python <<'EOF'
@@ -657,17 +657,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称错误
 
-1. Ensure your URL path starts with `gumroad`. For example:
+1. 确保您的 URL 路径以 `gumroad` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/gumroad/v2/user`
+- 错误的路径：`https://gateway.maton.ai/v2/user`
 
-- Correct: `https://gateway.maton.ai/gumroad/v2/user`
-- Incorrect: `https://gateway.maton.ai/v2/user`
+## 资源
 
-## Resources
-
-- [Gumroad API Overview](https://gumroad.com/api)
-- [Create API Application](https://help.gumroad.com/article/280-create-application-api)
-- [License Keys Help](https://help.gumroad.com/article/76-license-keys)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Gumroad API 概述](https://gumroad.com/api)
+- [创建 API 应用程序](https://help.gumroad.com/article/280-create-application-api)
+- [许可证密钥帮助](https://help.gumroad.com/article/76-license-keys)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

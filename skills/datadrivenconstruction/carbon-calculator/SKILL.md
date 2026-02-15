@@ -1,25 +1,24 @@
 ---
 slug: "carbon-calculator"
 display_name: "Carbon Calculator"
-description: "Calculate embodied carbon in construction materials. Track CO2 emissions, compare alternatives, and generate sustainability reports."
+description: "计算建筑材料中的固有碳含量。跟踪二氧化碳排放量，比较不同替代方案，并生成可持续性报告。"
 ---
 
-# Carbon Calculator
+# 碳计算器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Sustainability requirements demand:
-- Tracking embodied carbon
-- Comparing material options
-- Meeting carbon targets
-- Reporting emissions
+### 问题陈述
+可持续性要求包括：
+- 跟踪产品中的碳含量
+- 比较不同的材料选项
+- 达到碳减排目标
+- 报告碳排放情况
 
-### Solution
-Calculate and track embodied carbon for construction materials using standard emission factors.
+### 解决方案
+使用标准的排放系数来计算和跟踪建筑材料的碳含量。
 
-## Technical Implementation
-
+## 技术实现
 ```python
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -368,8 +367,7 @@ class CarbonCalculator:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize calculator
 calc = CarbonCalculator("Office Building A")
@@ -388,9 +386,9 @@ report = calc.generate_report()
 print(f"Total: {report['total_tCO2e']} tCO2e")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Compare Alternatives
+### 1. 比较不同材料选项
 ```python
 comparison = calc.compare_alternatives(
     "steel_section", 100000,
@@ -399,20 +397,20 @@ comparison = calc.compare_alternatives(
 print(f"Savings: {comparison['savings_percent']}%")
 ```
 
-### 2. Get Suggestions
+### 2. 获取建议
 ```python
 suggestions = calc.suggest_reductions()
 for s in suggestions:
     print(f"{s['material']}: {s['suggestion']}")
 ```
 
-### 3. Category Breakdown
+### 3. 材料分类统计
 ```python
 by_category = calc.get_carbon_by_category()
 for cat, carbon in by_category.items():
     print(f"{cat}: {carbon:,.0f} kgCO2e")
 ```
 
-## Resources
-- **ICE Database**: Inventory of Carbon & Energy
-- **DDC Book**: Chapter 5.1 - Sustainability Reporting
+## 资源参考
+- **ICE数据库**：碳与能源清单
+- **DDC手册**：第5.1章 – 可持续性报告

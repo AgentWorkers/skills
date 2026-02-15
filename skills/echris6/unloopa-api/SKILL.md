@@ -1,6 +1,6 @@
 ---
 name: unloopa-api
-description: Make your agent sell websites to local businesses on autopilot. Finds leads from Google Maps, builds a custom AI website for each one, sends outreach emails, and can even call them. Use when the user wants to find leads, generate websites, send emails, or make voice calls.
+description: 让你的代理自动将网站出售给当地企业。该代理可以从 Google Maps 中寻找潜在客户，为每个潜在客户创建一个定制的 AI 网站，发送推广邮件，甚至还可以主动拨打电话联系他们。当你需要寻找潜在客户、生成网站、发送邮件或进行语音通话时，都可以使用这个工具。
 metadata:
   author: unloopa
   version: "1.3"
@@ -13,62 +13,62 @@ metadata:
 
 # Unloopa API
 
-You control the Unloopa platform through its REST API. All requests go to `https://dashboard.unloopa.com/api/v1/` with Bearer token authentication.
+您可以通过其REST API来控制Unloopa平台。所有请求均发送到`https://dashboard.unloopa.com/api/v1/`，并采用Bearer令牌进行身份验证。
 
-## Authentication
+## 身份验证
 
-Every request needs the header:
+每个请求都需要包含以下头部信息：
 ```
 Authorization: Bearer $UNLOOPA_API_KEY
 ```
-The API key is set in the `UNLOOPA_API_KEY` environment variable. Keys start with `unlpa_live_`.
+API密钥设置在`UNLOOPA_API_KEY`环境变量中。密钥以`unlpa_live_`开头。
 
-If the user hasn't configured their key yet, tell them:
-1. Go to https://dashboard.unloopa.com/settings and click the "API" tab
-2. Click "Create API Key" and copy the key (it's only shown once)
-3. Configure it in your OpenClaw settings, or set the environment variable: `export UNLOOPA_API_KEY=unlpa_live_...`
+如果用户尚未配置密钥，请告知他们：
+1. 访问`https://dashboard.unloopa.com/settings`并点击“API”选项卡
+2. 点击“Create API Key”并复制密钥（该密钥仅显示一次）
+3. 在您的OpenClaw设置中配置该密钥，或设置环境变量：`export UNLOOPA_API_KEY=unlpa_live_...`
 
-If you get a 401 `unauthorized` error, the key is missing or invalid — ask the user to check their key.
+如果收到401“未经授权”的错误，说明密钥缺失或无效——请让用户检查他们的密钥。
 
-## First Call: Always Start With GET /quota
+## 首次调用：始终从`GET /quota`开始
 
-**Before doing anything else**, call `GET /quota` to discover:
-- What **plan** the user is on (starter or pro)
-- Whether **voice** and **video** features are enabled
-- How many **leads** and **credits** remain
-- **Purchase links** if they need to upgrade or buy credits
+**在执行任何操作之前**，请先调用`GET /quota`以获取以下信息：
+- 用户使用的计划类型（入门级或专业级）
+- 是否启用了语音和视频功能
+- 剩余的潜在客户数量和信用额度
+- 如果需要升级或购买信用额度，请提供相应的链接
 
-This single call tells you everything about what the user can and can't do. Adapt your behavior based on the response:
+这个请求可以告诉您用户可以和不能做什么。根据返回的结果调整您的操作：
 
-| quota field | What it means |
+| quota字段 | 含义 |
 |---|---|
-| `voice_enabled: false` | Don't offer voice calling — they need Pro plan. Share `purchase_links.upgrade` |
-| `video_enabled: false` | Don't offer video generation — they need Pro plan |
-| `voice_credits: 0` | Can't make calls — share `purchase_links.voice_credits` |
-| `websites.remaining: 0` | Can't generate leads — quota resets at `resets_at` |
+| `voice_enabled: false` | 不提供语音通话服务——用户需要专业级计划。分享`purchase_links.upgrade`链接 |
+| `video_enabled: false` | 不提供视频生成服务——用户需要专业级计划 |
+| `voice_credits: 0` | 无法进行通话——分享`purchase_links.voice_credits`链接 |
+| `websites_remaining: 0` | 无法生成潜在客户——信用额度在`resets_at`时间重置 |
 
-## Error Format
+## 错误格式
 
-All errors return:
+所有错误都会返回以下格式：
 ```json
 { "error": { "code": "error_code", "message": "Human-readable message", "details": {} } }
 ```
 
-Error codes: `unauthorized` (401), `invalid_input` (400), `not_found` (404), `plan_required` (403), `insufficient_credits` (402), `quota_exceeded` (429), `rate_limited` (429), `setup_required` (400), `limit_reached` (400), `invalid_state` (400), `internal_error` (500).
+错误代码：`unauthorized`（401）、`invalid_input`（400）、`not_found`（404）、`plan_required`（403）、`insufficient_credits`（402）、`quota_exceeded`（429）、`rate_limited`（429）、`setup_required`（400）、`limit_reached`（400）、`invalid_state`（400）、`internal_error`（500）。
 
-When you get `plan_required` (403), share the upgrade link from quota. When you get `insufficient_credits` (402), share the credit purchase links. When rate limited, check the `Retry-After` header (seconds).
+当收到`plan_required`（403）错误时，分享升级链接；当收到`insufficient_credits`（402）错误时，分享信用额度购买链接；当遇到速率限制时，请查看`Retry-After`头部字段（以秒为单位）。
 
-## Plans
+## 计划类型
 
-- **Starter** ($47/mo): 1,000 leads/month, email outreach, templates
-- **Pro** ($97/mo): 5,000 leads/month, 200 videos/month, voice calling, AI agents, phone numbers
+- **入门级**（每月47美元）：每月1,000个潜在客户，支持电子邮件推广和模板功能
+- **专业级**（每月97美元）：每月5,000个潜在客户，支持200个视频文件、语音通话和AI代理服务
 
 ---
 
-## Workflows
+## 工作流程
 
-### 1. Full Lead Pipeline (any plan)
-The `/command` endpoint runs the **entire pipeline automatically**: scrape leads → generate websites → enrich emails → send outreach. Just describe what you want.
+### 1. 完整的潜在客户处理流程（任何计划）
+`/command`端点会自动执行整个流程：抓取潜在客户信息 → 生成网站 → 丰富电子邮件内容 → 发送推广邮件。只需描述您想要执行的操作即可。
 ```
 1. GET  /quota                    → check websites.remaining > 0
 2. POST /command                  → submit natural language command (full pipeline runs automatically)
@@ -76,19 +76,19 @@ The `/command` endpoint runs the **entire pipeline automatically**: scrape leads
 4. GET  /leads?job_id={job_id}    → view generated leads with websites, emails, etc.
 ```
 
-### 2. Email Outreach (any plan)
+### 2. 电子邮件推广（任何计划）
 ```
 1. GET  /outreach/status          → verify configured=true, remaining_today > 0
 2. GET  /leads?has_email=true     → find leads with emails
 3. GET  /outreach/templates       → pick a template
 4. POST /outreach/send            → queue emails
 ```
-If `configured=false`, tell the user to connect an email account at the `setup_url` in the response.
+如果`configured=false`，请告知用户在响应中的`setup_url`链接处连接他们的电子邮件账户。
 
-### 3. Voice Calling (Pro plan only)
-**Skip this workflow entirely if `voice_enabled=false` in /quota.** Tell the user they need Pro and share the upgrade link.
+### 3. 语音通话（仅限专业级计划）
+如果`/quota`中的`voice_enabled`设置为`false`，则完全跳过此流程。告知用户他们需要升级到专业级计划，并分享升级链接。
 
-Prerequisites: voice_enabled=true + voice_credits > 0 + at least 1 phone number + at least 1 voice agent.
+前提条件：`voice_enabled=true` + `voice_credits > 0` + 至少1个电话号码 + 至少1个语音代理。
 ```
 1. GET  /quota                    → voice_enabled? voice_credits > 0?
    If voice_credits=0 → share purchase_links.voice_credits
@@ -101,8 +101,8 @@ Prerequisites: voice_enabled=true + voice_credits > 0 + at least 1 phone number 
 6. PATCH /voice/campaigns/{id}    → action=activate, then action=trigger
 ```
 
-### 4. Full Funnel
-The `/command` endpoint now handles steps 1-3 automatically. Voice calling is the only manual step.
+### 4. 完整的营销流程
+`/command`端点现在会自动执行步骤1-3。语音通话是唯一需要手动操作的步骤。
 ```
 1. GET  /quota                    → know the plan, adapt accordingly
 2. POST /command → poll /jobs/{id} → GET /leads  (scrape + websites + emails + outreach all automatic)
@@ -111,12 +111,12 @@ The `/command` endpoint now handles steps 1-3 automatically. Voice calling is th
 
 ---
 
-## Endpoints Reference
+## 端点参考
 
 ### POST /command
-Submit a natural language lead generation command. The API automatically runs the **full pipeline**: scrape → generate websites → enrich emails/socials → send outreach. No need to mention each step in the command.
+提交一个自然语言相关的潜在客户生成命令。API会自动执行整个流程：抓取潜在客户信息 → 生成网站 → 丰富电子邮件内容 → 发送推广邮件。无需在命令中详细说明每个步骤。
 
-**Body:**
+**请求体：**
 ```json
 {
   "command": "Find 50 plumbers in Miami",
@@ -125,30 +125,65 @@ Submit a natural language lead generation command. The API automatically runs th
   "with_vsl": false
 }
 ```
-- `command` (required, string, max 1000 chars) — just describe the niche and location. **Any number mentioned in the command is ignored** — use `max_results` to control lead count.
-- `max_results` (optional, 1-100, default: **100**, or **10** when `with_video`/`with_vsl` is true)
-- `with_video` (optional, bool, Pro plan only)
-- `with_vsl` (optional, bool, Pro plan only)
+- `command`（必填，字符串，最多1000个字符）——只需描述目标市场和位置。命令中提到的任何数字都会被忽略——使用`max_results`来控制潜在客户数量。
+- `max_results`（可选，1-100，默认值为100；当`with_video`/`with_vsl`为true时，默认值为10）
+- `with_video`（可选，布尔值，仅限专业级计划）
+- `with_vsl`（可选，布尔值，仅限专业级计划）
 
-**Default behavior:** The API always overrides what's in the command text. It scrapes up to `max_results` leads (default 100), generates a website for each, finds email addresses, enriches social profiles, and sends outreach emails — all automatically. Numbers in the command like "Find 15 plumbers" are ignored; use `max_results` instead.
+**默认行为：**API会覆盖命令中的设置。它会抓取最多`max_results`个潜在客户（默认为100个），为每个潜在客户生成一个网站，查找他们的电子邮件地址，丰富他们的社交媒体资料，并自动发送推广邮件。命令中的数字（如“Find 15 plumbers”）会被忽略；请使用`max_results`来指定数量。
 
-**Response:** `{ job_id, status: "processing", defaults: { max_results, generate_websites, enrich_emails, send_outreach, with_video, with_vsl }, quota: { used, limit, remaining } }`
+**响应：`
+```json
+{
+  "job_id": "...", 
+  "status": "processing",
+  "defaults": {
+    "max_results": ..., 
+    "generate_websites": ..., 
+    "enrich_emails": ..., 
+    "send_outreach": ..., 
+    "with_video": ..., 
+    "with_vsl": ...
+  },
+  "quota": {
+    "used": ..., 
+    "limit": ..., 
+    "remaining": ...
+  }
+}
+```
 
 ---
 
 ### GET /jobs
-List submitted commands.
+列出已提交的命令。
 
-**Query:** `?limit=20&offset=0` (limit max 100)
+**查询参数：`?limit=20&offset=0`（限制结果数量为100）
 
-**Response:** `{ jobs: [{ job_id, command, intent, status, error, created_at, updated_at }], total, limit, offset }`
-
----
+**响应：**
+```json
+{
+  "jobs": [
+    { "job_id": "...", 
+      "command": "...", 
+      "intent": "...", 
+      "status": "...", 
+      "error": "...", 
+      "created_at": "...", 
+      "updated_at": "..." 
+    ],
+    "total": ..., 
+    "limit": ..., 
+    "offset": ...
+  ],
+  "total": ...
+}
+```
 
 ### GET /jobs/{id}
-Poll a job for progress and results.
+查询任务的进度和结果。
 
-**Response:**
+**响应：**
 ```json
 {
   "job_id": "uuid",
@@ -164,30 +199,30 @@ Poll a job for progress and results.
   "error": null
 }
 ```
-Poll every 5-10 seconds. Jobs take 30s to 5 minutes depending on count and video.
+每5-10秒查询一次任务进度。根据潜在客户数量和视频生成情况，任务处理时间可能为30秒到5分钟不等。
 
 ---
 
 ### GET /leads
-List and filter leads.
+列出并过滤潜在客户信息。
 
-**Query params (all optional):**
-- `limit` (1-100, default 50), `offset` (default 0)
-- `city` — partial match (e.g. "miami")
-- `industry` — partial match (e.g. "plumber")
-- `has_phone=true` — only leads with phone numbers
-- `has_email=true` — only leads with email addresses
-- `min_rating` — minimum Google rating (e.g. 4.0)
-- `min_reviews` — minimum review count
-- `job_id` — leads from a specific command
-- `search` — free text search across name, city, industry
-- `created_after` — ISO date (e.g. "2025-01-15")
-- `created_before` — ISO date
-- `has_website=true` — only leads with generated website URLs
-- `has_video=true` — only leads with video
-- `video_status` — pending|generating|completed|failed
+**查询参数（全部为可选）：**
+- `limit`（1-100，默认值50），`offset`（默认值0）
+- `city`（部分匹配，例如“miami”）
+- `industry`（部分匹配，例如“plumber”）
+- `has_phone=true`（仅显示有电话号码的潜在客户）
+- `has_email=true`（仅显示有电子邮件地址的潜在客户）
+- `min_rating`（最低Google评分，例如4.0）
+- `min_reviews`（最低评论数量）
+- `job_id`（从特定命令生成的潜在客户）
+- `search`（在名称、城市和行业中进行自由文本搜索）
+- `created_after`（ISO格式日期，例如“2025-01-15”）
+- `created_before`（ISO格式日期）
+- `has_website=true`（仅显示有生成网站的潜在客户）
+- `has_video=true`（仅显示有视频文件的潜在客户）
+- `video_status`（待处理|生成中|已完成|失败）
 
-**Response:**
+**响应：**
 ```json
 {
   "leads": [{
@@ -212,30 +247,49 @@ List and filter leads.
 }
 ```
 
----
-
 ### GET /leads/{id}
-Full lead detail including existing website analysis.
+显示潜在客户的详细信息，包括现有网站的信息。
 
-**Response:** Same fields as list plus:
-- `slug` — URL slug
-- `existing_website: { url, pagespeed_score, load_time, mobile_optimized }` or null
+**响应：**
+与列表字段相同，另外还包括：
+- `slug`（URL路径）
+- `existing_website`：`{ url, pagespeed_score, load_time, mobile_optimized }` 或 `null`
 
 ---
 
 ### GET /websites
-Simpler list of generated websites.
+列出生成的网站列表。
 
-**Query:** `?limit=20&offset=0`
+**查询参数：`?limit=20&offset=0`
 
-**Response:** `{ websites: [{ id, url, slug, business_name, city, industry, phone, email, language, video_url, vsl_url, created_at }], total, limit, offset }`
-
----
+**响应：**
+```json
+{
+  "websites": [
+    { "id": "...", 
+      "url": "...", 
+      "slug": "...", 
+      "business_name": "...", 
+      "city": "...", 
+      "industry": "...", 
+      "phone": "...", 
+      "email": "...", 
+      "language": "...", 
+      "video_url": "...", 
+      "vsl_url": "...", 
+      "created_at": "..." 
+    ],
+    "total": ..., 
+    "limit": ..., 
+    "offset": ...
+  ]
+}
+```
 
 ### GET /quota
-Check plan, usage, credits, and purchase links.
+检查计划类型、使用情况、信用额度和购买链接。
 
-**Response:**
+**响应：**
 ```json
 {
   "plan": "pro",
@@ -257,12 +311,10 @@ Check plan, usage, credits, and purchase links.
 }
 ```
 
----
-
 ### GET /outreach/status
-Check email configuration, daily capacity, DNS health.
+检查电子邮件配置、每日发送量以及DNS服务器的运行状态。
 
-**Response:**
+**响应：**
 ```json
 {
   "configured": true,
@@ -289,23 +341,46 @@ Check email configuration, daily capacity, DNS health.
   "setup_url": "https://dashboard.unloopa.com/settings?tab=email"
 }
 ```
-New SMTP accounts warm up over 4 weeks: 5/day -> 10/day -> 15/day -> 25/day.
+新SMTP账户的启用数量按时间逐步增加：每天5个 → 10个 → 15个 → 25个。
 
 ---
 
 ### GET /outreach/templates
-List prebuilt and custom email templates.
+列出预构建和自定义的电子邮件模板。
 
-**Response:** `{ templates: [{ id, name, subject, body, is_custom: false, is_default: true, language }], custom_templates: [{ id, name, subject, body, is_custom: true, is_default, language }] }`
+**响应：**
+```json
+{
+  "templates": [
+    { "id": "...", 
+      "name": "...", 
+      "subject": "...", 
+      "body": "...", 
+      "is_custom": "...", 
+      "is_default": "...", 
+      "language": "..." 
+    ],
+    "custom_templates": [
+      { "id": "...", 
+      "name": "...", 
+      "subject": "...", 
+      "body": "...", 
+      "is_custom": "...", 
+      "is_default": "...", 
+      "language": "..." 
+    ]
+  ]
+}
+```
 
-Templates support placeholders: `{{business_name}}`, `{{city}}`, `{{industry}}`, `{{website_url}}`, `{{video_url}}` (Pro only).
+模板支持以下占位符：`{{business_name}}`、`{{city}}`、`{{industry}}`、`{{website_url}}`、`{{video_url}}`（仅限专业级计划）。
 
 ---
 
 ### POST /outreach/templates
-Create custom email template.
+创建自定义电子邮件模板。
 
-**Body:**
+**请求体：**
 ```json
 {
   "name": "Miami Pitch",
@@ -315,26 +390,34 @@ Create custom email template.
   "is_default": true
 }
 ```
-Required: name, subject, body.
+必填字段：名称和主题。
 
 ---
 
 ### PATCH /outreach/templates/{id}
-Update a custom template. Only custom templates can be edited.
+更新自定义模板。
 
-**Body:** `{ name?, subject?, body?, language?, is_default? }`
+**请求体：**
+```json
+{
+  "name?:...", 
+  "subject?:...", 
+  "body?:...", 
+  "language?:..."
+}
+```
 
 ---
 
 ### DELETE /outreach/templates/{id}
-Delete a custom template.
+删除自定义模板。
 
 ---
 
 ### POST /outreach/send
-Send emails to leads.
+向潜在客户发送电子邮件。
 
-**Body:**
+**请求体：**
 ```json
 {
   "lead_ids": ["uuid1", "uuid2"],
@@ -343,65 +426,150 @@ Send emails to leads.
   "custom_body": "Optional override"
 }
 ```
-- `lead_ids` (required, 1-100 UUIDs)
-- `template_id` (optional if custom_subject + custom_body provided)
+- `lead_ids`（必填，1-100个UUID）
+- `template_id`（如果提供了`custom_subject`和`custom_body`，则为可选字段）
 
-**Response:** `{ emails_queued, emails_waiting_for_video, skipped_duplicates, failed, manual_outreach: [] }`
-
-Requires SMTP configured (check `/outreach/status` first). Duplicate detection prevents re-sending.
+**响应：**
+```json
+{
+  "emails_queued":..., 
+  "emails_waiting_for_video":..., 
+  "skipped_duplicates":..., 
+  "failed":..., 
+  "manual_outreach": []
+}
+```
+发送邮件之前，请确保SMTP已配置（请先查看`/outreach/status`）。系统会检测重复邮件，避免向同一潜在客户重复发送。
 
 ---
 
 ### GET /phone-numbers
-List active phone numbers. Pro plan required.
+列出可用的电话号码。需要专业级计划。
 
-**Response:** `{ numbers: [{ id, phone_number, area_code, locality, region, country, monthly_cost_cents, created_at }], count: 2, limit: 3 }`
-
-Max 3 phone numbers. Check `count` vs `limit` before buying.
+**响应：**
+```json
+{
+  "numbers": [
+    { "id": "...", 
+      "phone_number": "...", 
+      "area_code": "...", 
+      "locality": "...", 
+      "region": "...", 
+      "country": "...", 
+      "monthly_cost_cents": "..." 
+    ], 
+    "count": 2 
+  ]
+}
+```
+最多可购买3个电话号码。购买前请检查`count`参数是否在允许的范围内。
 
 ---
 
 ### POST /phone-numbers/search
-Search available numbers by area code. Pro plan required.
+按区号搜索可用电话号码。需要专业级计划。
 
-**Body:** `{ "area_code": "305", "country": "US" }`
-- `area_code` (required, 3 digits)
-- `country` (optional, default "US")
+**请求体：**
+```json
+{
+  "area_code": "...", 
+  "country": "..."
+}
+```
+**响应：**
+```json
+{
+  "numbers": [
+    { "phone_number": "+13055551234", 
+      "friendly_name": "...", 
+      "locality": "...", 
+      "region": "..." 
+    ]
+}
+```
+**注意：`area_code`必须为3位数字**
 
-**Response:** `{ numbers: [{ phone_number: "+13055551234", friendly_name, locality, region }] }`
+**响应：**
+```json
+{
+  "numbers": [
+    { "phone_number": "+13055551234", 
+      "friendly_name": "...", 
+      "locality": "...", 
+      "region": "..." 
+    ]
+}
+```
+**注意：`phone_number`必须为E.164格式**
+
+**响应：**
+```json
+{
+  "number": { "id": "...", 
+      "phone_number": "...", 
+      "area_code": "...", 
+      "monthly_cost_cents": "..." 
+    }
+}
+```
+**注意：`number`字段必须为E.164格式**
 
 ---
 
 ### POST /phone-numbers/buy
-Purchase a phone number. Pro plan required. $1/month per number.
+购买电话号码。需要专业级计划。费用为每月1美元/号码。
 
-**Body:** `{ "phone_number": "+13055551234" }`
-Must be E.164 format from search results.
+**请求体：**
+```json
+{
+  "phone_number": "+13055551234"
+}
+```
+**注意：`number`字段必须为E.164格式**
 
-**Response:** `{ number: { id, phone_number, area_code, monthly_cost_cents, created_at } }`
+**响应：**
+```json
+{
+  "number": { "id": "...", 
+      "phone_number": "...", 
+      "area_code": "...", 
+      "monthly_cost_cents": "..." 
+}
+```
+**注意：`number`字段必须为E.164格式**
 
----
-
-### DELETE /phone-numbers/{id}
-Release a phone number. Pro plan required.
-
-**Response:** `{ success: true }`
+**注意：**购买后，该号码将被释放。
 
 ---
 
 ### GET /voice/agents
-List voice agents. Pro plan required.
+列出可用的语音代理。需要专业级计划。
 
-**Response:** `{ agents: [{ id, name, voice_id, voice_name, elevenlabs_agent_id, has_script, has_first_message, created_at }], count: 1, limit: 3 }`
-
-Max 3 agents.
+**响应：**
+```json
+{
+  "agents": [
+    { "id": "...", 
+      "name": "...", 
+      "voice_id": "...", 
+      "voice_name": "...", 
+      "elevenlabs_agent_id": "...", 
+      "has_script": "...", 
+      "has_first_message": "...", 
+      "created_at": "..." 
+    ], 
+    "count": 1 
+  ]
+}
+```
+最多可购买3个语音代理。
 
 ---
 
 ### POST /voice/agents
-Create a voice agent. Pro plan required.
+创建一个新的语音代理。需要专业级计划。
 
-**Body:**
+**请求体：**
 ```json
 {
   "name": "Sales Agent",
@@ -412,28 +580,47 @@ Create a voice agent. Pro plan required.
   "agent_config": { "stability": 0.3, "similarityBoost": 0.85 }
 }
 ```
-Required: name, voice_id, script.
+**必填字段：**名称和语音ID
 
-Scripts support dynamic variables: `{{business_name}}`, `{{city}}`, `{{industry}}`, `{{website_url}}` — auto-populated from lead data during calls.
+**请求体：**
+```json
+{
+  "name?:...", 
+  "voice_id?:...", 
+  "voice_name?:...", 
+  "script?:..."
+}
+```
+**注意：**`script`字段可以使用动态变量：`{{business_name}}`、`{{city}}`、`{{industry}}`、`{{website_url}}`（这些变量会从潜在客户数据中自动填充）
 
 ---
 
 ### PATCH /voice/agents/{id}
-Update a voice agent. Syncs changes to ElevenLabs automatically.
+更新语音代理的信息。更改会自动同步到ElevenLabs系统。
 
-**Body:** `{ name?, voice_id?, voice_name?, script?, first_message?, agent_config? }`
+**请求体：**
+```json
+{
+  "name?:...", 
+  "voice_id?:...", 
+  "voice_name?:...", 
+  "script?:...", 
+  "first_message?:...", 
+  "agent_config?:..."
+}
+```
 
 ---
 
 ### DELETE /voice/agents/{id}
-Delete a voice agent. Also removes from ElevenLabs.
+删除语音代理。
 
 ---
 
 ### POST /voice/call
-Make a single outbound call. Costs 1 voice credit. Pro plan required.
+发起一次外出通话。每次通话消耗1个信用额度。需要专业级计划。
 
-**Body:**
+**请求体：**
 ```json
 {
   "agent_id": "uuid",
@@ -441,34 +628,69 @@ Make a single outbound call. Costs 1 voice credit. Pro plan required.
   "dynamic_variables": { "business_name": "Acme", "city": "Miami", "industry": "Plumbing", "website_url": "https://..." }
 }
 ```
-Required: agent_id, phone_number.
+**必填字段：**代理ID
 
-**Response:** `{ call_id, conversation_id, status: "initiated", phone_number }`
+**响应：**
+```json
+{
+  "call_id": "...", 
+  "conversation_id": "...", 
+  "status": "initiated"
+}
+```
+**注意：**每次通话都会消耗1个信用额度
+
+**响应：**
+```json
+{
+  "call_id": "...", 
+  "conversation_id": "...", 
+  "status": "initiated", 
+  "phone_number": "..."
+}
+```
 
 ---
 
 ### GET /voice/calls
-List voice calls with filters. Pro plan required.
+列出语音通话记录。需要专业级计划。
 
-**Query:** `?limit=50&offset=0&campaign_id=uuid&status=completed&outcome=interested`
-- `status`: pending, queued, in_progress, completed, failed, cancelled
-- `outcome`: interested, not_interested, voicemail, no_answer, callback
-
-**Response:** `{ calls: [{ id, campaign_id, business_name, phone_number, status, outcome, outcome_notes, duration_secs, transcript, analysis, started_at, completed_at, created_at }], total, limit, offset }`
-
----
-
-### GET /voice/calls/{id}
-Full call detail with transcript and analysis.
-
-**Response:** `{ call_id, business_name, phone_number, status, outcome, outcome_notes, duration_secs, transcript, analysis, started_at, completed_at, created_at }`
+**查询参数：**
+```json
+```
+?limit=50&offset=0&campaign_id=uuid&status=completed&outcome=interested
+```
+**响应：**
+```json
+{
+  "calls": [
+    { "id": "...", 
+      "campaign_id": "...", 
+      "business_name": "...", 
+      "phone_number": "...", 
+      "status": "...", 
+      "outcome": "...", 
+      "outcome_notes": "...", 
+      "duration_secs": "...", 
+      "transcript": "...", 
+      "analysis": "...", 
+      "started_at": "...", 
+      "completed_at": "..." 
+    ], 
+    "total": ..., 
+    "limit": ..., 
+    "offset": ...
+  ]
+}
+```
+**响应包含通话的详细信息和转录内容**
 
 ---
 
 ### GET /voice/campaigns
-List voice campaigns with stats. Pro plan required.
+列出语音通话活动的相关信息。需要专业级计划。
 
-**Response:**
+**响应：**
 ```json
 {
   "campaigns": [{
@@ -484,9 +706,9 @@ List voice campaigns with stats. Pro plan required.
 ---
 
 ### POST /voice/campaigns
-Create a calling campaign. Starts as `draft`. Pro plan + voice credits required.
+创建一个语音通话活动。需要专业级计划和信用额度。
 
-**Body:**
+**请求体：**
 ```json
 {
   "name": "Miami Plumbers Campaign",
@@ -501,44 +723,187 @@ Create a calling campaign. Starts as `draft`. Pro plan + voice credits required.
   "max_calls": 50
 }
 ```
-Required: name, phone_number_id, and either `agent_id` OR `voice_id` + `script`.
-Lead selection: provide `lead_ids` (array of UUIDs) or `lead_filter` (dynamic). Only leads with phone numbers are included.
+**必填字段：**名称和电话号码ID，或者`agent_id`和`voice_id`/`script`。
 
-**Response:** `{ campaign: { id, name, status: "draft", leads_count, callable_leads, created_at } }`
+**请求体：**
+```json
+{
+  "name": "...", 
+  "phone_number_id": "...", 
+  "agent_id": "...", 
+  "voice_id": "...", 
+  "script": "..."
+}
+```
+**注意：**可以选择提供`lead_ids`（潜在客户ID数组）或`lead_filter`（动态筛选条件）。只有拥有电话号码的潜在客户才会被纳入活动范围。
+
+**响应：**
+```json
+{
+  "campaign": {
+    "id": "...", 
+    "name": "...", 
+    "status": "draft",
+    "leads_count": "...",
+    "callable_leads": [...]
+  }
+}
+```
+**注意：**创建活动后，系统会立即发起最多10次通话，每次通话消耗1个信用额度**
 
 ---
 
 ### GET /voice/campaigns/{id}
-Campaign detail with full config and stats.
+查看语音通话活动的详细信息。
 
-**Response includes:** id, name, status, script, script_version, first_message, voice_id, voice_name, timezone, calling_window, calling_days, calls_per_hour, max_calls, stats (with pending count), timestamps.
+**响应：**
+```json
+{
+  "id": "...", 
+  "name": "...", 
+  "status": "...",
+  "script": "...",
+  "script_version": "...",
+  "first_message": "...",
+  "voice_id": "...",
+  "voice_name": "...",
+  "timezone": "...",
+  "calling_window": "...",
+  "calling_days": "...",
+  "calls_per_hour": "...",
+  "stats": {...}
+}
+```
+**响应包含活动的详细信息和统计数据**
+
+---
+
+### POST /voice/campaigns
+创建或修改语音通话活动。
+
+**请求体：**
+```json
+{
+  "name": "Miami Plumbers Campaign",
+  "phone_number_id": "uuid",
+  "agent_id": "uuid",
+  "lead_filter": { "city": "Miami", "industry": "plumber" },
+  "timezone": "America/New_York",
+  "calling_window_start": "09:00",
+  "calling_window_end": "17:00",
+  "calling_days": ["mon", "tue", "wed", "thu", "fri"],
+  "calls_per_hour": 10,
+  "max_calls": 50
+}
+```
+**必填字段：**名称和电话号码ID，或者`agent_id`和`voice_id`/`script`。
+
+**请求体：**
+```json
+{
+  "name": "...",
+  "phone_number_id": "...",
+  "voice_id": "...",
+  "script": "...",
+  "lead_ids": [...], 
+  "lead_filter": "[...]" 
+}
+```
+**注意：**只有拥有电话号码的潜在客户才会被纳入活动范围**
+
+**响应：**
+```json
+{
+  "campaign": {
+    "id": "...",
+    "name": "...",
+    "status": "draft",
+    "leads_count": "...",
+    "callable_leads": [...]
+  }
+}
+```
+**注意：**创建活动后，系统会立即发起最多10次通话，每次通话消耗1个信用额度**
+
+---
+
+### GET /voice/campaigns/{id}
+查看语音通话活动的详细信息和配置。
+
+**响应：**
+```json
+{
+  "id": "...",
+  "name": "...",
+  "status": "...",
+  "script": "...",
+  "script_version": "...",
+  "first_message": "...",
+  "voice_id": "...",
+  "voice_name": "...",
+  "timezone": "...",
+  "calling_window": "...",
+  "calling_days": "...",
+  "calls_per_hour": "...",
+  "stats": {...}
+}
+```
+**响应包含活动的详细信息和统计数据**
 
 ---
 
 ### PATCH /voice/campaigns/{id}
-Control campaign lifecycle or update fields.
+控制语音通话活动的生命周期或修改相关设置。
 
-**Lifecycle actions** (body: `{ "action": "..." }`):
-- `activate` — draft/paused -> active
-- `pause` — active -> paused
-- `cancel` — any -> completed (cancels pending calls)
-- `trigger` — active campaign: initiate up to 10 pending calls immediately. Each call costs 1 voice credit. Optional: `{ "action": "trigger", "limit": 5 }`
+**请求体：**
+```json
+{
+  "action": "..."
+}
+```
+**可选操作：**`activate`（将草稿状态的活动激活为活跃状态）/`pause`（将活跃状态的活动暂停）/`cancel`（取消任何活动）
+**注意：**每个操作都会影响活动的状态和通话次数**
 
-**Field updates** (draft/paused only, body: `{ "updates": {...} }`):
-- script, voice_id, voice_name, first_message, calling_window_start, calling_window_end, timezone, calling_days, calls_per_hour, agent_config
+**更新字段（仅适用于草稿/暂停状态）：**
+```json
+{
+  "updates": {
+    "script": "...",
+    "voice_id": "...",
+    "voice_name": "...",
+    "first_message": "...",
+    "calling_window_start": "...",
+    "calling_window_end": "...",
+    "calling_days": "...",
+    "calls_per_hour": "..."
+  }
+}
+```
+**注意：**每个操作都会更新活动的状态和通话设置**
 
-Trigger response: `{ triggered: 5, calls: [{ id, business_name, conversation_id }] }`
+**响应：**
+```json
+{
+  "trigger": 5,
+  "calls": [
+    { "id": "...", 
+      "business_name": "...", 
+      "conversation_id": "..."
+    ]
+}
+```
+**注意：**每次触发操作会立即发起最多10次通话**
 
 ---
 
-## Important Notes
+## 重要说明
 
-- Job processing takes ~8-10 minutes for a full pipeline run. Scraping is fast (~20 seconds), but website generation takes ~8 minutes for all websites. Do NOT assume the job is stuck — poll every 15-20 seconds and be patient during the website_generation step
-- Email warmup: new SMTP accounts start at 5/day, ramping to 25/day over 4 weeks
-- Voice campaigns must be: created (draft) -> activated -> triggered
-- The `trigger` action initiates up to 10 calls at a time, costing 1 credit each
-- Dynamic variables (`{{business_name}}`, etc.) are auto-populated from lead data
-- Duplicate email detection prevents re-sending to the same lead
-- Video features (`with_video`, `with_vsl`) are Pro plan only
-- Phone numbers and voice agents have a hard limit of 3 each
-- Always check preconditions before taking action (quota, credits, SMTP, plan)
+- 完整的潜在客户处理流程大约需要8-10分钟。抓取潜在客户信息的速度很快（约20秒），但生成网站的时间较长（约8分钟）。请不要假设任务卡住了——请每隔15-20秒查询一次进度，并在网站生成过程中保持耐心。
+- 新SMTP账户的启用数量会逐步增加：每天5个，4周内增加到每天25个。
+- 语音通话活动必须按照“创建（草稿）→激活→触发”的顺序进行。
+- `trigger`操作每次最多可以发起10次通话，每次通话消耗1个信用额度。
+- 动态变量（如`{{business_name}}`等）会从潜在客户数据中自动填充。
+- 系统会检测重复的电子邮件，避免向同一潜在客户重复发送邮件。
+- 视频功能（`with_video`、`with_vsl`）仅限专业级计划使用。
+- 电话号码和语音代理的数量都有上限限制（各3个）。
+- 在执行任何操作之前，请务必检查前提条件（信用额度、可用资源、SMTP配置和计划类型）。

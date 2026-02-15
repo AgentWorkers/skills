@@ -1,51 +1,51 @@
 ---
 name: Philosophy
-description: Guide philosophical inquiry from first questions to scholarly debate.
+description: 引导哲学探究，从最初的问题出发，逐步进入学术辩论的阶段。
 metadata: {"clawdbot":{"emoji":"🤔","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: terminology, thinkers mentioned, argument structure
-- When unclear, start with intuitions and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别问题的本质，灵活应对  
+- 上下文能揭示问题的核心：使用的术语、被提及的思想家、论证的结构  
+- 当理解不明确时，先依靠直觉，再根据反馈进行调整  
+- 不要居高临下对待专家，也不要让初学者感到不知所措  
 
-## For Beginners: Questions, Not Answers
-- Start with puzzles they already feel — "Is it wrong to lie to protect someone?"
-- Philosophy asks why behind the why — keep digging past first answers
-- Thought experiments over definitions — trolley problem, ship of Theseus, experience machine
-- No authority settles questions — Plato disagreed with Socrates, we can disagree with both
-- Distinguish opinion from argument — "I feel X" vs "X because Y"
-- Everyday life is philosophical — free will, identity, fairness appear constantly
-- Confusion is progress — feeling stuck means you've found something worth thinking about
+## 对于初学者：提出问题，而非给出答案  
+- 从他们已经感到困惑的问题开始：“为了保护某人而撒谎，这样做对吗？”  
+- 哲学探讨的是“为什么”的背后原因——不要满足于最初的答案，要不断深入思考  
+- 通过思想实验来理解概念（如电车难题、忒修斯之船、经验机器等）  
+- 没有任何权威能最终解决所有问题——柏拉图与苏格拉底就有分歧，我们也可以对这两种观点持有不同意见  
+- 区分“观点”和“论证”：“我觉得……”与“……是因为……”  
+- 日常生活本身就充满哲学色彩：自由意志、身份认同、公平等问题无处不在  
+- 混乱其实是进步的迹象——感到困惑意味着你发现了值得思考的问题  
 
-## For Students: Arguments and Traditions
-- Reconstruct arguments formally — premises, conclusion, identify what's doing the work
-- Name fallacies precisely — ad hominem, straw man, false dichotomy have specific meanings
-- Primary texts over summaries — Descartes' words differ from textbook versions
-- Historical context matters — problems philosophers addressed shaped their answers
-- Major traditions diverge — analytic vs continental, Western vs non-Western ask different questions
-- Thought experiments have limits — intuitions vary, cases may be underdescribed
-- Objections strengthen views — steelman before attacking, anticipate responses
+## 对于学生：理解论点与哲学传统  
+- 形式化地重构论点：明确前提和结论，分析起作用的因素  
+- 准确地指出谬误：人身攻击、稻草人谬误、虚假二分法都有其特定的含义  
+- 阅读原始文献而非摘要：笛卡尔的观点可能与教科书中的有所不同  
+- 历史背景很重要：哲学家们所面对的问题影响了他们的答案  
+- 主要哲学流派存在分歧：分析哲学与大陆哲学、西方哲学与非西方哲学关注的问题各不相同  
+- 思想实验有其局限性：人们的直觉可能不同，某些案例可能描述得不充分  
+- 反驳能强化观点——在攻击之前先做好充分的准备，预测可能的反驳  
 
-## For Researchers: Scholarly Precision
-- Literature positioning required — what's the dialectic, who are you responding to
-- Distinguish exegesis from argument — interpreting Kant vs using Kantian resources
-- Terminology is loaded — "realism," "naturalism," "knowledge" mean different things in different debates
-- Charity principle — interpret opponents at their strongest before criticizing
-- Counterexamples need construction — clear cases that actually threaten the view
-- Meta-level awareness — are we doing ethics or metaethics, epistemology or philosophy of science
-- Acknowledge live debates — don't present contested positions as settled
+## 对于研究者：追求学术上的精确性  
+- 需要明确自己的研究立场：了解当前的学术辩论背景，以及自己是在回应哪些观点  
+- 区分解释与论证：解释康德的观点与运用康德的哲学方法  
+- 术语具有多重含义：“现实主义”“自然主义”“知识”在不同语境中有不同的含义  
+- 采用“仁慈原则”：在批评之前，先从对手最有力的观点出发进行理解  
+- 需要构建反例：提供能够真正挑战某种观点的实例  
+- 具有元层面的意识：明确自己是在研究伦理学、元伦理学、认识论还是科学哲学  
+- 关注当前的学术争论：不要将有争议的观点视为定论  
 
-## For Teachers: Common Traps
-- Philosophy isn't opinion sharing — arguments need structure, evidence, response to objections
-- Avoid false balance — some positions are better defended than others
-- Historical figures had blind spots — acknowledge without anachronistic condemnation
-- Abstract examples can alienate — connect to students' actual concerns
-- Socratic method requires patience — silence after questions is productive
-- Assessment beyond essays — argument maps, dialogues, position papers
-- Non-Western traditions aren't exotic additions — they're philosophy, full stop
+## 对于教师：避免常见的教学误区  
+- 哲学讨论不是简单的观点交流——论点需要结构、证据以及对反驳的回应  
+- 避免表面的平衡——有些观点比其他观点更值得深入探讨  
+- 历史上的人物也有认知盲点——承认他们的局限性，但不要以现代的标准进行批判  
+- 抽象的例子可能会让学生感到困惑——要联系学生现实生活中的问题  
+- 苏格拉底式的教学方法需要耐心——在学生提问后保持沉默，让他们有时间思考  
+- 评估学生的表现时，除了论文之外，还可以通过讨论图、对话和立场陈述等方式进行  
+- 非西方哲学传统并非外来补充——它们同样属于哲学范畴  
 
-## Always
-- Clarify the question before answering — philosophical disputes often hide verbal disagreements
-- Distinguish descriptive from normative — what is vs what ought to be
-- Arguments matter more than conclusions — how you get there is the philosophy
+## 总结：  
+- 回答问题前先明确问题——哲学争论往往隐藏着语言上的分歧  
+- 区分描述性陈述与规范性主张：区分“事实”与“应该是什么”  
+- 论点本身比结论更重要——思考过程本身才是哲学的核心

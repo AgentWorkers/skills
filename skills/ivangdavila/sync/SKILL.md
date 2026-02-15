@@ -1,44 +1,44 @@
 ---
 name: Sync
-description: Synchronize files and directories between local, remote, and cloud storage reliably.
+description: 可靠地在本地存储、远程存储和云存储之间同步文件和目录。
 metadata: {"clawdbot":{"emoji":"🔄","requires":{"anyBins":["rsync","rclone"]},"os":["linux","darwin","win32"]}}
 ---
 
-# File Synchronization Rules
+# 文件同步规则
 
-## rsync Fundamentals
-- Trailing slash matters: `rsync src/` copies contents, `rsync src` copies the folder itself — this is the #1 cause of wrong directory structures
-- Always use `-avz` baseline: archive mode preserves permissions/timestamps, verbose shows progress, compress speeds transfers
-- Add `--delete` only when you want destination to mirror source exactly — without it, deleted source files remain on destination
-- Use `--dry-run` before any destructive sync — shows what would change without modifying anything
+## rsync 基础知识
+- 结尾的斜杠很重要：`rsync src/` 会复制文件内容，而 `rsync src` 会复制整个文件夹——这是导致目录结构错误的首要原因。
+- 始终使用 `-avz` 选项：`-a` 选项用于保留文件权限和时间戳，`-v` 选项显示同步进度，`-z` 选项可以压缩文件以加快传输速度。
+- 只有在希望目标目录与源目录完全一致时，才使用 `--delete` 选项；否则，源目录中被删除的文件仍会保留在目标目录中。
+- 在执行任何具有破坏性的同步操作之前，先使用 `--dry-run` 选项进行测试——这样可以在不修改任何数据的情况下查看同步结果。
 
-## Exclusions
-- Create an exclude file instead of multiple `--exclude` flags: `rsync -avz --exclude-from=.syncignore src/ dest/`
-- Standard excludes for code projects: `.git/`, `node_modules/`, `__pycache__/`, `.venv/`, `*.pyc`, `.DS_Store`, `Thumbs.db`
-- Exclude patterns are relative to source root — `/logs/` excludes only top-level logs, `logs/` excludes logs/ anywhere
+## 需要排除的文件或目录
+- 使用一个排除文件（`exclude` 文件）来指定不需要同步的文件或目录，而不是多个 `--exclude` 选项：`rsync -avz --exclude-from=.syncignore src/ dest/`
+- 代码项目中常见的需要排除的文件或目录包括：`.git/`、`node_modules/`、`__pycache__/`、`.venv/`、`.pyc`、`.DS_Store`、`Thumbs.db`。
+- 排除规则是相对于源目录的根目录而言的；例如，`/logs/` 仅排除源目录中的日志文件，而 `logs/` 则会排除所有位置的日志文件。
 
-## Cloud Storage (rclone)
-- `rclone sync` deletes destination files not in source; `rclone copy` only adds — use copy when unsure
-- Configure remotes interactively: `rclone config` — never hardcode cloud credentials in scripts
-- Test with `--dry-run` first, then `--progress` for visual feedback during actual sync
-- For S3-compatible storage, set `--s3-chunk-size 64M` for large files to avoid timeouts
+## 云存储（rclone）
+- `rclone sync` 会删除目标目录中不存在于源目录中的文件；`rclone copy` 只会添加文件到目标目录——如果不确定如何操作，建议使用 `copy` 选项。
+- 交互式地配置远程存储账户：使用 `rclone config` 命令；切勿在脚本中硬编码云存储的凭据。
+- 先使用 `--dry-run` 进行测试，然后使用 `--progress` 选项在实际同步过程中获取可视化反馈。
+- 对于支持 S3 协议的云存储服务，设置 `--s3-chunk-size 64M` 以避免大文件传输时出现超时问题。
 
-## Verification
-- After critical syncs, verify with checksums: `rsync -avzc` uses checksums instead of size/time (slower but certain)
-- For rclone, use `rclone check source: dest:` to compare without transferring
-- Log sync operations to file for audit: `rsync -avz src/ dest/ | tee sync.log`
+## 验证同步结果
+- 在执行关键同步操作后，使用校验和来验证数据是否正确：`rsync -avzc` 会使用校验和来验证文件内容，而不是仅依赖文件大小或传输时间（虽然校验和验证速度较慢，但更可靠）。
+- 对于 rclone，可以使用 `rclone check source: dest:` 命令来比较源目录和目标目录的内容，而无需实际传输文件。
+- 将同步操作记录到日志文件中以便审计：`rsync -avz src/ dest/ | tee sync.log`
 
-## Bidirectional Sync
-- rsync is one-way only — for true bidirectional sync, use unison: `unison dir1 dir2`
-- Unison detects conflicts when both sides change — resolve manually or set prefer rules
-- Cloud services like Dropbox/Syncthing handle bidirectional automatically — don't reinvent with rsync
+## 双向同步
+- `rsync` 只支持单向同步；如果需要实现双向同步，请使用 `unison` 工具：`unison dir1 dir2`
+- `unison` 可以检测到两侧文件发生冲突的情况——可以手动解决冲突，或者设置优先级规则来决定如何处理冲突。
+- 如 Dropbox 或 Syncthing 这样的云服务已经支持双向同步功能，无需使用 `rsync` 来实现。
 
-## Remote Sync
-- For SSH remotes, use key-based auth: `rsync -avz -e "ssh -i ~/.ssh/key" src/ user@host:dest/`
-- Specify non-standard SSH port: `-e "ssh -p 2222"`
-- Use `--partial --progress` for large files over unreliable connections — allows resume on failure
+## 远程同步
+- 对于基于 SSH 的远程服务器，使用基于密钥的身份验证：`rsync -avz -e "ssh -i ~/.ssh/key" src/ user@host:dest/`
+- 如果需要使用非标准的 SSH 端口，可以使用 `-e "ssh -p 2222"` 选项指定端口。
+- 在连接不稳定时，对于大文件使用 `--partial --progress` 选项——这样可以在传输失败时继续传输未完成的文件。
 
-## Common Pitfalls
-- Syncing to mounted drives that unmount silently creates a local folder with the mount name — verify mount before sync
-- Running sync without `--delete` repeatedly causes destination to accumulate deleted files forever
-- Time-based sync fails across machines with clock skew — use `--checksum` for accuracy or sync NTP first
+## 常见的问题和解决方法
+- 将文件同步到已挂载的驱动器上时，如果驱动器在同步过程中被卸载，系统会自动创建一个与挂载名称相同的本地文件夹——请在同步前确认驱动器是否已正确挂载。
+- 如果在同步过程中不使用 `--delete` 选项，目标目录中可能会不断累积被删除的文件。
+- 由于时钟偏差，不同机器之间的同步可能会失败——在这种情况下，可以使用 `--checksum` 选项来确保数据准确性，或者先调整机器的时钟时间（例如通过 NTP）。

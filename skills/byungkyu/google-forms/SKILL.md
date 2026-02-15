@@ -13,11 +13,11 @@ metadata:
         - MATON_API_KEY
 ---
 
-# Google Forms
+# Google 表单
 
-Access the Google Forms API with managed OAuth authentication. Create forms, add questions, and retrieve responses.
+通过管理的 OAuth 认证来访问 Google 表单 API。您可以创建表单、添加问题并检索回复。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get form
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-forms/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Google Forms API endpoint path. The gateway proxies requests to `forms.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Google 表单 API 端点路径。该网关会将请求代理到 `forms.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Google Forms connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Google 表单连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,17 +138,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Get Form
+### 获取表单信息
 
 ```bash
 GET /google-forms/v1/forms/{formId}
 ```
 
-### Create Form
+### 创建表单
 
 ```bash
 POST /google-forms/v1/forms
@@ -161,7 +161,7 @@ Content-Type: application/json
 }
 ```
 
-### Batch Update Form
+### 批量更新表单
 
 ```bash
 POST /google-forms/v1/forms/{formId}:batchUpdate
@@ -187,21 +187,21 @@ Content-Type: application/json
 }
 ```
 
-### List Responses
+### 列出回复
 
 ```bash
 GET /google-forms/v1/forms/{formId}/responses
 ```
 
-### Get Response
+### 获取单个回复
 
 ```bash
 GET /google-forms/v1/forms/{formId}/responses/{responseId}
 ```
 
-## Common batchUpdate Requests
+## 常见的批量更新请求
 
-### Create Text Question
+### 创建文本问题
 
 ```json
 {
@@ -220,7 +220,7 @@ GET /google-forms/v1/forms/{formId}/responses/{responseId}
 }
 ```
 
-### Create Multiple Choice
+### 创建多项选择题
 
 ```json
 {
@@ -244,7 +244,7 @@ GET /google-forms/v1/forms/{formId}/responses/{responseId}
 }
 ```
 
-### Create Scale Question
+### 创建评分题
 
 ```json
 {
@@ -267,15 +267,15 @@ GET /google-forms/v1/forms/{formId}/responses/{responseId}
 }
 ```
 
-## Question Types
+## 问题类型
 
-- `textQuestion` - Short or paragraph text
-- `choiceQuestion` - Radio, checkbox, or dropdown
-- `scaleQuestion` - Linear scale
-- `dateQuestion` - Date picker
-- `timeQuestion` - Time picker
+- `textQuestion` - 简短文本或段落文本
+- `choiceQuestion` - 单选、复选或下拉选项
+- `scaleQuestion` - 线性评分题
+- `dateQuestion` - 日期选择器
+- `timeQuestion` - 时间选择器
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -302,32 +302,32 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Form IDs are found in the form URL
-- Use `updateMask` to specify fields to update
-- Location index is 0-based
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 表单 ID 可以从表单 URL 中找到。
+- 使用 `updateMask` 来指定需要更新的字段。
+- 位置索引从 0 开始。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效的 API 密钥” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Google Forms connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Google Forms API |
+| 400 | 未找到 Google 表单连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
+| 4xx/5xx | 来自 Google 表单 API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -338,19 +338,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-forms`. For example:
+1. 确保您的 URL 路径以 `google-forms` 开头。例如：
 
-- Correct: `https://gateway.maton.ai/google-forms/v1/forms/{formId}`
-- Incorrect: `https://gateway.maton.ai/forms/v1/forms/{formId}`
+- 正确：`https://gateway.maton.ai/google-forms/v1/forms/{formId}`
+- 错误：`https://gateway.maton.ai/forms/v1/forms/{formId}`
 
-## Resources
+## 资源
 
-- [Forms API Overview](https://developers.google.com/workspace/forms/api/reference/rest)
-- [Get Form](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/get)
-- [Create Form](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/create)
-- [Batch Update](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/batchUpdate)
-- [List Responses](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms.responses/list)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [表单 API 概述](https://developers.google.com/workspace/forms/api/reference/rest)
+- [获取表单信息](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/get)
+- [创建表单](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/create)
+- [批量更新表单](https://developers.google.com/workspace/forms/api/reference/rest/v1/forms/batchUpdate)
+- [列出回复](https://developers.google.com/workspace/forms/api/reference/rest/v1/formsresponses/list)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

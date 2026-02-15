@@ -1,69 +1,69 @@
 ---
 name: Fine-Tuning
 slug: fine-tuning
-description: Fine-tune LLMs with data preparation, provider selection, cost estimation, evaluation, and compliance checks.
+description: 通过数据准备、提供商选择、成本估算、评估以及合规性检查来微调大型语言模型（LLMs）。
 ---
 
-## When to Use
+## 适用场景
 
-User wants to fine-tune a language model, evaluate if fine-tuning is worth it, or debug training issues.
+当用户需要微调语言模型、评估微调的必要性或排查训练问题时，可以使用本文档。
 
-## Quick Reference
+## 快速参考
 
-| Topic | File |
+| 主题 | 对应文件 |
 |-------|------|
-| Provider comparison & pricing | `providers.md` |
-| Data preparation & validation | `data-prep.md` |
-| Training configuration | `training.md` |
-| Evaluation & debugging | `evaluation.md` |
-| Cost estimation & ROI | `costs.md` |
-| Compliance & security | `compliance.md` |
+| 提供商比较与定价 | `providers.md` |
+| 数据准备与验证 | `data-prep.md` |
+| 训练配置 | `training.md` |
+| 评估与调试 | `evaluation.md` |
+| 成本估算与投资回报率（ROI） | `costs.md` |
+| 合规性与安全性 | `compliance.md` |
 
-## Core Capabilities
+## 核心功能
 
-1. **Decide fit** — Analyze if fine-tuning beats prompting for the use case
-2. **Prepare data** — Convert raw data to JSONL, deduplicate, validate format
-3. **Select provider** — Compare OpenAI, Anthropic (Bedrock), Google, open source based on constraints
-4. **Estimate costs** — Calculate training cost, inference savings, break-even point
-5. **Configure training** — Set hyperparameters (learning rate, epochs, LoRA rank)
-6. **Run evaluation** — Compare fine-tuned vs base model on task-specific metrics
-7. **Debug failures** — Diagnose loss curves, overfitting, catastrophic forgetting
-8. **Handle compliance** — Scan for PII, configure on-premise training, generate audit logs
+1. **判断是否适合微调** — 分析对于当前用例来说，微调是否比使用提示（prompting）更有效。
+2. **数据准备** — 将原始数据转换为 JSONL 格式，去除重复数据，并验证数据格式。
+3. **选择合适的提供商** — 根据具体需求比较 OpenAI、Anthropic（Bedrock）、Google 或开源选项。
+4. **成本估算** — 计算训练成本、推理成本节省情况以及盈亏平衡点。
+5. **配置训练参数** — 设置超参数（学习率、训练周期、LoRA 等级）。
+6. **进行模型评估** — 通过特定任务指标比较微调模型与基础模型的表现。
+7. **调试训练问题** — 诊断损失曲线、过拟合现象或模型“灾难性遗忘”（catastrophic forgetting）。
+8. **处理合规性问题** — 检查数据中是否包含个人身份信息（PII），配置本地化训练环境，并生成审计日志。
 
-## Decision Checklist
+## 决策检查清单
 
-Before recommending fine-tuning, ask:
-- [ ] What's the failure mode with prompting? (format, style, knowledge, cost)
-- [ ] How many training examples available? (minimum 50-100)
-- [ ] Expected inference volume? (affects ROI calculation)
-- [ ] Privacy constraints? (determines provider options)
-- [ ] Budget for training + ongoing inference?
+在推荐微调之前，请考虑以下问题：
+- [ ] 使用提示（prompting）时可能出现的故障类型是什么？（格式、风格、知识内容、成本等方面）
+- [ ] 可用的训练样本数量是多少？（至少需要 50-100 个）
+- [ ] 预计的推理量是多少？（这会影响 ROI 的计算）
+- [ ] 是否有隐私方面的限制？（这会影响到提供商的选择）
+- [ ] 训练及后续推理的预算是多少？
 
-## Fine-Tune vs Prompt Decision
+## 微调与使用提示的决策指南
 
-| Signal | Recommendation |
+| 问题 | 建议 |
 |--------|----------------|
-| Format/style inconsistency | Fine-tune ✓ |
-| Missing domain knowledge | RAG first, then fine-tune if needed |
-| High inference volume (>100K/mo) | Fine-tune for cost savings |
-| Requirements change frequently | Stick with prompting |
-| <50 quality examples | Prompting + few-shot |
+| 格式/风格不一致 | 使用微调 ✓ |
+| 缺乏领域知识 | 先使用 RAG（Retrieval-Augmented Generation）技术，必要时再进行微调 |
+| 推理量很大（每月超过 10 万次） | 为了节省成本，选择微调 |
+| 需求频繁变化 | 继续使用提示（prompting） |
+| 质量较高的样本少于 50 个 | 结合提示（prompting）和少量样本训练（few-shot learning） |
 
-## Critical Rules
+## 重要规则
 
-- **Data quality > quantity** — 100 great examples beat 1000 noisy ones
-- **LoRA first** — Never jump to full fine-tuning; LoRA is 10-100x cheaper
-- **Hold out eval set** — Always 80/10/10 split; never peek at test data
-- **Same precision** — Train and serve at identical precision (4-bit, 16-bit)
-- **Baseline first** — Run eval on base model before training to measure actual improvement
-- **Expect iteration** — First attempt rarely optimal; plan for 2-3 cycles
+- **数据质量优于数据数量** — 100 个高质量样本比 1000 个低质量的样本更有效。
+- **优先使用 LoRA** — 不要直接进行全量微调；LoRA 的成本通常低 10 到 100 倍。
+- **保留评估数据集** — 始终将数据分为 80% 的训练集、10% 的验证集和 10% 的测试集；切勿提前查看测试数据。
+- **保持精度一致** — 训练和推理时使用相同的精度（例如 4 位或 16 位）。
+- **先建立基线** — 在进行微调之前，先用基础模型进行评估，以衡量实际改进效果。
+- **做好迭代准备** — 第一次尝试往往不是最佳结果；计划进行 2-3 轮迭代。
 
-## Common Pitfalls
+## 常见误区及解决方法
 
-| Mistake | Fix |
+| 常见问题 | 解决方法 |
 |---------|-----|
-| Training on inconsistent data | Manual review of 100+ samples before training |
-| Learning rate too high | Start with 2e-4 for SFT, 5e-6 for RLHF |
-| Expecting new knowledge | Fine-tuning adjusts behavior, not knowledge — use RAG |
-| No baseline comparison | Always test base model on same eval set |
-| Ignoring forgetting | Mix 20% general data to preserve capabilities |
+| 在不一致的数据上进行训练 | 在训练前手动审核 100 个以上样本。 |
+| 学习率设置过高 | 对于 SFT（Supervised Fine-Tuning），初始学习率设为 2e-4；对于 RLHF（Reinforcement Learning from Human Feedback），初始学习率设为 5e-6。 |
+| 期望模型获得新知识 | 微调主要调整模型的行为，而非知识内容——应使用 RAG 技术。 |
+| 未进行基线对比 | 在进行微调前，务必用相同的评估数据集测试基础模型。 |
+| 忽视模型遗忘现象 | 在训练数据中加入 20% 的通用数据（general data），以保留模型的泛化能力。 |

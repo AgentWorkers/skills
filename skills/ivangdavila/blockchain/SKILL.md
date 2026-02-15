@@ -1,28 +1,28 @@
 ---
 name: "Blockchain"
-description: "Understand blockchain technology, interact with smart contracts, and evaluate when distributed ledgers solve real problems."
+description: "理解区块链技术，与智能合约进行交互，并判断分布式账本在解决实际问题时的有效性。"
 ---
 
-## What This Covers
+## 本文档涵盖的内容
 
-Blockchain fundamentals and practical interaction — the technology, not the speculation.
+本文档重点介绍区块链的基础知识及其实际应用，侧重于技术层面，而非市场投机内容。
 
-**In scope:** Distributed ledgers, consensus, transactions, smart contract interaction, wallets, token standards.
-**Out of scope:** Trading strategies, price analysis, specific DeFi protocols, Solidity development (see dedicated skills).
+**涵盖范围：** 分布式账本、共识机制、交易处理、智能合约的交互方式、钱包的使用以及代币标准。  
+**不涵盖的内容：** 交易策略、价格分析、特定的去中心化金融（DeFi）协议以及Solidity编程语言的开发（相关内容请参阅专门的技术文档）。
 
-## Core Concepts
+## 核心概念
 
-| Concept | One-liner |
+| 概念 | 简要说明 |
 |---------|-----------|
-| Distributed ledger | Shared database synchronized across nodes, no single owner |
-| Consensus | How strangers agree on truth without trusting each other |
-| Immutability | Changing history requires re-doing all subsequent work |
-| Smart contract | Code that executes automatically when conditions are met |
-| Gas | Fee paid to network for computation |
+| 分布式账本 | 一种在多个节点之间同步共享的数据库，没有单一的所有者 |
+| 共识机制 | 即使互不信任，各方也能达成对事实的共识 |
+| 不可变性 | 修改历史记录需要重新执行所有后续操作 |
+| 智能合约 | 在满足特定条件时自动执行的代码 |
+| “Gas”费用 | 用户为网络计算服务支付的费用 |
 
-For mental models and analogies, see `concepts.md`.
+有关更详细的概念解释和类比，可参考 `concepts.md` 文档。
 
-## Developer Quick Reference
+## 开发者快速参考
 
 ```typescript
 // Read contract (viem)
@@ -36,25 +36,21 @@ const hash = await walletClient.writeContract({...})
 const receipt = await client.waitForTransactionReceipt({ hash })
 ```
 
-Common traps: missing allowance checks, wrong decimals (ETH=18, USDC=6), not awaiting confirmations.
+常见错误：未进行必要的权限检查、使用错误的小数位数（例如：ETH 应使用 18 作为小数位数，USDC 应使用 6）、未等待交易确认等。  
+完整的开发规范请参阅 `dev.md` 文档。
 
-For full patterns, see `dev.md`.
+## 何时使用区块链
 
-## When to Use Blockchain
+✅ **适用场景：** 需要多方共享信息、不存在可信赖的权威机构、数据的不可变性至关重要、且结算成本较高的场景。  
+❌ **不适用场景：** 数据由单一组织控制、您信任中央权威机构、数据需要被删除（例如符合 GDPR 规则的情况），或者可以使用传统数据库来解决问题。  
 
-✅ **Use when:** Multiple parties need shared truth, no trusted authority exists, immutability is critical, settlement costs are high.
+> **数据库测试提示：** 如果使用带有审计日志的 PostgreSQL 数据库就能解决问题，那么就无需使用区块链。  
+有关决策框架和企业级应用的更多信息，请参阅 `evaluation.md` 文档。
 
-❌ **Don't use when:** Single org controls data, you trust a central authority, data needs deletion (GDPR), or a database solves it.
+## 安全注意事项
 
-> **The Database Test:** Would PostgreSQL with audit logs solve this? If yes, skip blockchain.
-
-For decision framework and enterprise platforms, see `evaluation.md`.
-
-## Security Essentials
-
-- Seed phrase = master key — never share, never screenshot
-- Hardware wallet > software wallet > exchange
-- Test transactions before large transfers
-- Verify URLs obsessively — phishing clones are sophisticated
-
-For wallet security and scam patterns, see `security.md`.
+- **种子短语（Seed Phrase）** 即“主密钥”——切勿泄露，也切勿截图保存。  
+- 硬件钱包优于软件钱包，更安全；尽量避免使用交易所钱包。  
+- 在进行大额转账前，请先测试交易是否成功。  
+- 仔细验证所有链接的真实性——网络钓鱼攻击手段非常复杂。  
+有关钱包安全性和常见诈骗手段的详细信息，请参阅 `security.md` 文档。

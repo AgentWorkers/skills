@@ -1,12 +1,12 @@
 ---
 name: query
-description: "Search for places using natural language with Camino AI's location intelligence API. Returns relevant results with coordinates, distances, and metadata. Use when you need to find real-world locations like restaurants, shops, landmarks, or any point of interest."
+description: "使用 Camino AI 的位置智能 API 通过自然语言搜索地点。该 API 会返回包含坐标、距离和元数据的相关结果。适用于查找餐厅、商店、地标或任何兴趣点等实际地点的场景。"
 metadata: {"clawdbot":{"emoji":"🔍","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅行规划、房地产信息、酒店查找、电动汽车充电站查找、学校查找、停车场查找、健身设施查找、安全检查、旅行规划器），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill query
 ```
 
-**Via clawhub:**
+**通过 clawhub 安装：**
 ```bash
 npx clawhub@latest install query
 # or: pnpm dlx clawhub@latest install query
 # or: bunx clawhub@latest install query
 ```
 
-# Query - Natural Language Place Search
+# 查询 - 使用自然语言进行地点搜索
 
-Search for places using natural language. The AI automatically generates coordinates for known locations when not provided.
+您可以使用自然语言来搜索地点。如果未提供具体位置，AI 会自动生成该位置的坐标。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）**：您可以获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月 1,000 次免费调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,12 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+之后，请重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
-
+### 通过 Shell 脚本使用
 ```bash
 # Search for coffee shops near Times Square
 ./scripts/query.sh '{"query": "coffee shops near Times Square", "limit": 5}'
@@ -70,32 +69,31 @@ Restart Claude Code.
 ./scripts/query.sh '{"query": "best pizza in Manhattan", "answer": true, "rank": true}'
 ```
 
-### Via curl
-
+### 通过 curl 命令使用
 ```bash
 curl -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/query?query=coffee+shops+near+Times+Square&limit=5"
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| query | string | Yes* | - | Natural language query (e.g., "coffee shops near Times Square") |
-| lat | float | No | - | Latitude for search center. AI generates if omitted for known locations. |
-| lon | float | No | - | Longitude for search center. AI generates if omitted for known locations. |
-| radius | int | No | 1000 | Search radius in meters (100-50000) |
-| rank | bool | No | true | Use AI to rank results by relevance |
-| limit | int | No | 20 | Maximum results (1-100) |
-| offset | int | No | 0 | Pagination offset |
-| answer | bool | No | false | Generate human-readable summary |
-| time | string | No | - | Temporal query: "2020-01-01", "2020..", or "2020..2024" |
-| osm_ids | string | No | - | Comma-separated OSM IDs (e.g., "node/123,way/456") |
-| mode | string | No | "basic" | "basic" (OSM only) or "advanced" (web enrichment) |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+|---------|------|---------|-----------|-------------------|
+| query | string | 是* | - | 使用自然语言输入的查询内容（例如：“Times Square 附近的咖啡店”） |
+| lat | float | 否 | - | 搜索中心的纬度；如果未提供，则由 AI 生成 |
+| lon | float | 否 | - | 搜索中心的经度；如果未提供，则由 AI 生成 |
+| radius | int | 否 | 1000 | 搜索半径（单位：米，范围 100-50000） |
+| rank | bool | 否 | true | 是否使用 AI 根据相关性对结果进行排序 |
+| limit | int | 否 | 20 | 最大显示结果数量（1-100） |
+| offset | int | 否 | 0 | 分页偏移量 |
+| answer | bool | 否 | false | 是否生成易于阅读的结果摘要 |
+| time | string | 否 | - | 时间范围查询格式："2020-01-01"、"2020.." 或 "2020..2024" |
+| osm_ids | string | 否 | - | 以逗号分隔的 OSM ID（例如："node/123,way/456"） |
+| mode | string | 否 | "basic" | 仅使用 OSM 数据；"advanced" | 使用网络数据增强搜索结果 |
 
-*Either `query` or `osm_ids` is required.
+*`query` 或 `osm_ids` 中至少需要填写一个参数。 |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -122,27 +120,27 @@ curl -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Find nearby restaurants
+### 查找附近的餐厅
 ```bash
 ./scripts/query.sh '{"query": "Italian restaurants", "lat": 40.7128, "lon": -74.0060, "limit": 10}'
 ```
 
-### Search with AI answer
+### 使用 AI 生成结果摘要进行搜索
 ```bash
 ./scripts/query.sh '{"query": "best brunch spots in Brooklyn", "answer": true}'
 ```
 
-### Historical data query
+### 查询历史数据
 ```bash
 ./scripts/query.sh '{"query": "restaurants", "lat": 40.7589, "lon": -73.9851, "time": "2020-01-01"}'
 ```
 
-## Best Practices
+## 最佳实践：
 
-- For known locations (cities, landmarks), you can omit lat/lon and let the AI generate coordinates
-- Use `rank: true` for more relevant results when searching by attributes (e.g., "quiet", "cheap")
-- Enable `answer: true` when you need a natural language summary of results
-- Use `mode: "advanced"` for richer place data from web sources
-- Keep queries descriptive but concise for best AI interpretation
+- 对于已知的位置（如城市、地标），可以省略 `lat` 和 `lon`，让 AI 生成坐标。
+- 如果需要根据特定属性（如“安静”或“价格便宜”）进行搜索，请设置 `rank: true` 以获得更相关的结果。
+- 如果需要结果的自然语言摘要，请设置 `answer: true`。
+- 使用 `mode: "advanced"` 可以获取来自网络资源的更详细地点信息。
+- 请确保查询语句描述性较强且简洁，以便 AI 能够准确理解您的需求。

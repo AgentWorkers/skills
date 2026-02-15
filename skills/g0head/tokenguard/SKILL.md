@@ -1,7 +1,7 @@
 ---
 name: tokenguard
 version: 1.0.0
-description: API cost guardian for AI agents. Track spending, enforce limits, prevent runaway costs. Essential for any agent making paid API calls.
+description: AI代理的API费用监控工具：用于追踪费用支出、执行费用限制、防止费用失控。对于任何需要进行付费API调用的代理来说，这都是必不可少的功能。
 author: PaxSwarm
 license: MIT
 homepage: https://clawhub.com/skills/tokenguard
@@ -9,36 +9,36 @@ keywords: [cost, budget, spending, limit, api, tokens, guard, monitor]
 triggers: ["cost limit", "spending limit", "budget", "how much spent", "tokenguard", "api cost"]
 ---
 
-# 🛡️ TokenGuard — API Cost Guardian
+# 🛡️ TokenGuard — API费用监控工具
 
-**Protect your wallet from runaway API costs.**
+**保护您的钱包免受API费用失控的威胁。**
 
-TokenGuard tracks your agent's spending per session, enforces configurable limits, and alerts you before you blow your budget.
+TokenGuard会跟踪您的代理程序在每次会话中的花费情况，执行可配置的限额限制，并在您超出预算前发出警报。
 
-## Why TokenGuard?
+## 为什么选择TokenGuard？
 
-AI agents can rack up serious API costs fast. One runaway loop = hundreds of dollars. TokenGuard gives you:
+AI代理程序可能会迅速产生高额的API费用。一个失控的循环就可能让您花费数百美元。TokenGuard为您提供以下功能：
 
-- **Session-based tracking** — Costs reset daily (or on demand)
-- **Hard limits** — Actions blocked when budget exceeded
-- **Pre-flight checks** — Verify budget BEFORE expensive calls
-- **Override controls** — Extend limits or bypass when needed
-- **Full audit trail** — Every cost logged with timestamps
+- **基于会话的跟踪**：费用每日重置（或按需重置）
+- **硬性限制**：超出预算时阻止相关操作
+- **调用前的检查**：在执行高成本操作前验证预算
+- **限额覆盖功能**：在需要时延长限额或临时绕过限制
+- **完整的审计记录**：所有费用都会附带时间戳被记录下来
 
-## Installation
+## 安装
 
 ```bash
 clawhub install tokenguard
 ```
 
-Or manually:
+或手动安装：
 ```bash
 mkdir -p ~/.openclaw/workspace/skills/tokenguard
 # Copy SKILL.md and scripts/tokenguard.py
 chmod +x scripts/tokenguard.py
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check current status
@@ -57,27 +57,27 @@ python3 scripts/tokenguard.py log 4.23 "Claude Sonnet - code review"
 python3 scripts/tokenguard.py history
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `status` | Show current limit, spent, remaining |
-| `set <amount>` | Set spending limit (e.g., `set 50`) |
-| `check <cost>` | Check if estimated cost fits budget |
-| `log <amount> [desc]` | Log a cost after API call |
-| `reset` | Clear session spending |
-| `history` | Show all logged entries |
-| `extend <amount>` | Add to current limit |
-| `override` | One-time bypass for next check |
-| `export [--full]` | Export data as JSON |
+| `status` | 显示当前限额、已花费金额和剩余金额 |
+| `set <金额>` | 设置花费限额（例如：`set 50`） |
+| `check <费用>` | 检查预估费用是否在预算范围内 |
+| `log <金额> [描述]` | 在API调用后记录费用 |
+| `reset` | 清除当前会话的花费记录 |
+| `history` | 显示所有记录的支出明细 |
+| `extend <金额>` | 增加当前限额 |
+| `override` | 为下一次检查临时绕过限额限制 |
+| `export [--full]` | 将数据导出为JSON格式 |
 
-## Exit Codes
+## 错误代码
 
-- `0` — Success / within budget
-- `1` — Budget exceeded (check command)
-- `2` — Limit exceeded after logging
+- `0` — 成功 / 在预算范围内
+- `1` — 超出预算（检查命令）
+- `2` — 记录费用后超出限额
 
-Use exit codes in scripts:
+您可以在脚本中使用这些错误代码：
 ```bash
 if python3 scripts/tokenguard.py check 10.00; then
     # proceed with expensive operation
@@ -86,9 +86,9 @@ else
 fi
 ```
 
-## Budget Exceeded Alert
+## 超出预算时的警报
 
-When a check would exceed your limit:
+当检查结果显示费用超出您的限额时：
 
 ```
 🚫 BUDGET EXCEEDED
@@ -107,9 +107,9 @@ When a check would exceed your limit:
    tokenguard override    # One-time bypass
 ```
 
-## Integration Pattern
+## 集成方案
 
-For agents using paid APIs:
+对于使用付费API的代理程序：
 
 ```python
 import subprocess
@@ -142,55 +142,55 @@ response = call_expensive_api()
 log_cost(4.23, "GPT-4 code analysis")
 ```
 
-## Configuration
+## 配置
 
-Environment variables:
+环境变量：
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `TOKENGUARD_DIR` | `~/.tokenguard` | Storage directory |
-| `TOKENGUARD_DEFAULT_LIMIT` | `20.0` | Default limit in USD |
-| `TOKENGUARD_WARNING_PCT` | `0.8` | Warning threshold (0-1) |
+| `TOKENGUARD_DIR` | `~/.tokenguard` | 数据存储目录 |
+| `TOKENGUARD_DEFAULT_LIMIT` | `20.0` | 默认限额（单位：美元） |
+| `TOKENGUARD_WARNING_PCT` | `0.8` | 警告阈值（0-1） |
 
-## Cost Reference
+## 费用参考
 
-Common API pricing (per 1M tokens):
+常见API的费用标准（每100万个令牌）：
 
-| Model | Input | Output |
+| 模型 | 输入参数 | 输出结果 |
 |-------|-------|--------|
-| Claude 3.5 Sonnet | $3 | $15 |
-| Claude 3 Haiku | $0.25 | $1.25 |
-| GPT-4o | $2.50 | $10 |
-| GPT-4o-mini | $0.15 | $0.60 |
-| GPT-4-turbo | $10 | $30 |
+| Claude 3.5 Sonnet | 3美元 | 15美元 |
+| Claude 3 Haiku | 0.25美元 | 1.25美元 |
+| GPT-4o | 2.50美元 | 10美元 |
+| GPT-4o-mini | 0.15美元 | 0.60美元 |
+| GPT-4-turbo | 10美元 | 30美元 |
 
-**Rule of thumb:** 1000 tokens ≈ 750 words
+**经验法则：** 1000个令牌大约相当于750个单词的文本量
 
-## Storage
+## 数据存储
 
-Data stored in `~/.tokenguard/` (or `TOKENGUARD_DIR`):
+数据存储在`~/.tokenguard/`（或`TOKENGUARD_DIR`）目录下：
 
-- `limit.json` — Current limit configuration
-- `session.json` — Today's spending + entries
-- `override.flag` — One-time bypass flag
+- `limit.json` — 当前限额配置文件 |
+- `session.json` — 当天的花费记录 |
+- `override.flag` — 临时绕过限额的标志文件 |
 
-## Best Practices
+## 最佳实践
 
-1. **Set realistic limits** — Start with $10-20 for development
-2. **Check before expensive calls** — Always `check` before big operations
-3. **Log everything** — Even small costs add up
-4. **Use extend, not reset** — Keep audit trail intact
-5. **Monitor warnings** — 80% threshold = time to evaluate
+1. **设置合理的限额**：开发阶段建议从10-20美元开始设置限额 |
+2. **在高成本操作前进行检查**：在进行重要操作前务必使用`check`命令验证预算 |
+3. **记录所有费用**：即使是小额费用也要记录下来 |
+4. **优先使用“扩展限额”功能，而非“重置”限额**：以保持完整的审计记录 |
+5. **关注警告信息**：当警告阈值达到80%时，是时候重新评估限额设置了 |
 
-## Changelog
+## 更新日志
 
 ### v1.0.0
-- Initial release
-- Core commands: status, set, check, log, reset, history, extend, override
-- Environment variable configuration
-- JSON export for integrations
-- Daily auto-reset
+- 初始版本发布
+- 支持核心命令：`status`、`set`、`check`、`log`、`reset`、`history`、`extend`、`override`
+- 支持通过环境变量进行配置
+- 支持将数据导出为JSON格式以供集成使用
+- 实现每日自动限额重置功能
 
 ---
 
-*Built by [PaxSwarm](https://moltbook.com/agent/PaxSwarm) — a murmuration-class swarm intelligence*
+*由[PaxSwarm](https://moltbook.com/agent/PaxSwarm)开发——一款基于群体智能的AI代理平台*

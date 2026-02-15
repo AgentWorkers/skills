@@ -1,86 +1,85 @@
 ---
 name: Personal Knowledge Base
-description: Help users build a personal knowledge base by organizing whatever they send into structured notes.
+description: 帮助用户通过将他们发送的内容整理成结构化的笔记来构建个人知识库。
 metadata: {"clawdbot":{"emoji":"🧠","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User sends anything: link, idea, quote, snippet, question, rambling thought
-- Capture first, organize second — never lose input while deciding where it goes
-- Create `~/kb/` as the workspace — flat folder of Markdown files initially
-- Inbox pattern: `inbox.md` for quick capture, process later into proper notes
+## 核心行为  
+- 用户可以发送任何内容：链接、想法、引用、代码片段、问题或随意的思考。  
+- 首先接收内容，再对其进行整理——在决定内容存放位置时绝不能丢失任何信息。  
+- 创建 `~/kb/` 作为工作区，该文件夹最初是一个包含 Markdown 文件的扁平结构。  
 
-## When User Sends Content
-- Link → fetch title and summary, save with source URL and capture date
-- Idea/thought → save as atomic note with descriptive filename
-- Quote → save with attribution, link to source if available
-- Question → save as note, mark for future research
-- Long rambling → extract key points, save as separate atomic notes
+## 用户发送内容时的处理方式：  
+- **链接**：获取链接的标题和摘要，保存链接来源及捕获日期。  
+- **想法/思考**：以描述性强的文件名保存为独立笔记。  
+- **引用**：保存引用内容，并在可能的情况下附上来源链接。  
+- **问题**：保存为笔记，并标记为未来需要研究的主题。  
+- **长篇杂思**：提取关键点，分别保存为独立的笔记。  
 
-## File Naming Convention
-- Lowercase with hyphens: `how-to-negotiate-salary.md`
-- Descriptive over date-based — findable by topic, not when captured
-- No rigid hierarchy initially — flat folder with good names beats complex structure
-- Date prefix optional for journals: `2024-01-15-weekly-review.md`
+## 文件命名规则：  
+- 使用小写字母和连字符来命名文件，例如 `how-to-negotiate-salary.md`。  
+- 文件名应具有描述性，而非基于日期——这样用户可以根据主题快速找到文件，而无需依赖捕获时间。  
+- 初始阶段无需严格的文件结构层次；使用清晰、易于理解的文件名比复杂的结构更实用。  
+- 日志文件可选择添加日期前缀，例如 `2024-01-15-weekly-review.md`。  
 
-## Note Structure
-- Title as H1 — matches filename concept
-- Tags at top or bottom — `#productivity #career` for filtering
-- Source/reference if applicable — where it came from
-- Related notes section — manual links build knowledge graph
-- Keep notes atomic — one concept per note, link between them
+## 笔记结构：  
+- 标题使用 H1 标签，与文件名保持一致。  
+- 在笔记顶部或底部添加标签（如 `#productivity`、`#career`）以便过滤。  
+- 如有来源或参考资料，请一并记录。  
+- 设置“相关笔记”部分，通过手动链接构建知识图谱。  
+- 每条笔记应专注于一个主题，笔记之间应保持相互关联。  
 
-## Inbox Processing
-- Periodically ask: "Want to process your inbox?"
-- For each item: create proper note, add tags, link to related notes
-- Delete from inbox once processed — inbox should trend toward empty
-- Don't force immediate organization — capture friction kills usage
+## 收件箱处理流程：  
+- 定期提醒用户：“是否需要处理收件箱中的内容？”  
+- 对每条内容创建相应的笔记，添加相关标签，并链接到相关笔记。  
+- 处理完成后从收件箱中删除该内容——收件箱应逐渐变为空。  
+- 不要强迫用户立即对内容进行整理，否则会降低使用的效率。  
 
-## When To Add Structure
-- 20+ notes: suggest consistent tagging system
-- 50+ notes: suggest index.md or MOC (Map of Content) for key topics
-- 100+ notes: suggest folder structure by domain if patterns emerge
-- Only add structure when navigation becomes painful
+## 何时需要建立结构：  
+- 当笔记数量超过 20 条时，建议使用统一的标签系统。  
+- 当笔记数量超过 50 条时，建议创建索引文件（`index.md`）或内容地图（`MOC`）来整理关键主题。  
+- 当笔记数量超过 100 条时，可根据内容类型创建文件夹结构。  
+- 仅在导航变得困难时才添加额外的结构。  
 
-## Tagging Strategy
-- Start with 5-10 broad tags maximum — too many defeats purpose
-- Tags are for retrieval, not categorization — "when would I search for this?"
-- Multi-tag allowed — note about salary negotiation: #career #communication
-- Review and consolidate tags periodically — synonyms fragment knowledge
+## 标签使用策略：  
+- 最初建议使用 5–10 个通用标签——过多的标签反而会降低搜索效率。  
+- 标签主要用于方便检索，而非分类（例如：“我什么时候会需要查找这个信息？”）  
+- 允许使用多个标签（例如：关于薪资谈判的笔记可以使用 `#career` 和 `#communication`）。  
+- 定期审查和整理标签，避免标签重复或含义模糊。  
 
-## Linking Between Notes
-- [[wiki-style]] links when supported, otherwise relative Markdown links
-- Link liberally — connections are the value of knowledge base
-- Backlinks show where note is referenced — surface hidden connections
-- Don't force links — some notes are standalone
+## 笔记之间的链接：  
+- 在支持的情况下使用 [[wiki-style]] 标签进行链接；否则使用相对的 Markdown 链接。  
+- 尽量多创建链接——链接是知识库的价值所在。  
+- 反向链接可以显示笔记被引用的地方，帮助发现隐藏的关联。  
+- 不要强制创建不必要的链接——有些笔记本身就是独立的。  
 
-## What User Might Send
-- "Just learned that..." → atomic note with insight
-- "Interesting article: [URL]" → fetch, summarize, save with source
-- "Reminder: X" → capture with context, might become action or reference
-- "I keep forgetting how to..." → create or update how-to note
-- Random thought → inbox immediately, process later
+## 用户可能发送的内容类型：  
+- “刚学到……” → 创建包含详细信息的独立笔记。  
+- “有趣的文章：[URL]” → 下载文章、总结内容并保存来源链接。  
+- “提醒：X” → 记录相关信息，可能后续需要执行某个操作或作为参考。  
+- “总是忘记……” → 创建或更新操作指南笔记。  
+- 随意的想法 → 直接放入收件箱，稍后处理。  
 
-## Searching and Retrieval
-- Full-text search with grep or specialized tool — must be fast
-- Search by tag: find all notes with specific tag
-- Recent notes list — often want "that thing I saved last week"
-- Offer to search when user asks a question — might already have the answer
+## 搜索与检索：  
+- 支持使用 `grep` 或专用工具进行全文搜索，搜索速度必须快。  
+- 可以按标签搜索（例如：查找所有包含特定标签的笔记）。  
+- 提供最近添加的笔记列表——用户可能经常需要查找“上周保存的内容”。  
+- 当用户提问时，可以提供搜索功能——也许答案已经在笔记中。  
 
-## Progressive Enhancement
-- Week 1: inbox.md only, dump everything
-- Week 2: process inbox into atomic notes with tags
-- Week 3: start linking related notes
-- Month 2: create index/MOC for main topics
-- Month 3: folder structure if needed
+## 逐步改进计划：  
+- 第 1 周：仅使用 `inbox.md` 文件，将所有内容直接保存其中。  
+- 第 2 周：将收件箱中的内容整理成带有标签的独立笔记。  
+- 第 3 周：开始建立笔记之间的链接。  
+- 第 2 个月：为常见主题创建索引或内容地图。  
+- 第 3 个月：根据需要建立文件夹结构。  
 
-## What NOT To Suggest Early
-- Complex folder hierarchies — flat with good names first
-- Database or app — Markdown files work until they don't
-- Daily notes system — unless they specifically want journaling
-- Templates — organic structure emerges, then standardize
+## 不建议过早采用的方法：  
+- 复杂的文件夹层次结构——先使用简单、易于理解的扁平结构。  
+- 使用数据库或应用程序来存储笔记——除非用户有特定的需求。  
+- 每日记录笔记的系统——除非用户明确需要写日记。  
+- 使用模板来规范笔记结构——让结构自然形成后再进行标准化。  
 
-## Sync and Backup
-- Cloud folder (Dropbox/iCloud) for multi-device access
-- Git repo for version history — see how thinking evolved
-- Plain Markdown ensures portability — not locked to any tool
+## 同步与备份：  
+- 使用云文件夹（如 Dropbox 或 iCloud）实现多设备访问。  
+- 通过 Git 仓库记录文件版本历史，以便追踪思考过程的变化。  
+- 选择纯 Markdown 格式以确保文件的可移植性——避免受特定工具限制。

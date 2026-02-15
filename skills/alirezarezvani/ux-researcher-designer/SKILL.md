@@ -1,59 +1,57 @@
 ---
 name: ux-researcher-designer
-description: UX research and design toolkit for Senior UX Designer/Researcher including data-driven persona generation, journey mapping, usability testing frameworks, and research synthesis. Use for user research, persona creation, journey mapping, and design validation.
+description: 面向高级用户体验设计师/研究员的UX研究与设计工具包，包含数据驱动的角色创建方法、用户旅程映射工具、可用性测试框架以及研究结果整合功能。适用于用户研究、角色建模、用户旅程分析以及设计验证等工作。
 ---
 
-# UX Researcher & Designer
+# 用户体验研究员与设计师
 
-Generate user personas from research data, create journey maps, plan usability tests, and synthesize research findings into actionable design recommendations.
-
----
-
-## Table of Contents
-
-- [Trigger Terms](#trigger-terms)
-- [Workflows](#workflows)
-  - [Workflow 1: Generate User Persona](#workflow-1-generate-user-persona)
-  - [Workflow 2: Create Journey Map](#workflow-2-create-journey-map)
-  - [Workflow 3: Plan Usability Test](#workflow-3-plan-usability-test)
-  - [Workflow 4: Synthesize Research](#workflow-4-synthesize-research)
-- [Tool Reference](#tool-reference)
-- [Quick Reference Tables](#quick-reference-tables)
-- [Knowledge Base](#knowledge-base)
+根据研究数据生成用户角色模型（user personas），创建用户旅程图（journey maps），规划可用性测试（usability tests），并将研究结果整合为可操作的设计建议。
 
 ---
 
-## Trigger Terms
+## 目录
 
-Use this skill when you need to:
-
-- "create user persona"
-- "generate persona from data"
-- "build customer journey map"
-- "map user journey"
-- "plan usability test"
-- "design usability study"
-- "analyze user research"
-- "synthesize interview findings"
-- "identify user pain points"
-- "define user archetypes"
-- "calculate research sample size"
-- "create empathy map"
-- "identify user needs"
+- [相关术语](#trigger-terms)
+- [工作流程](#workflows)
+  - [工作流程1：生成用户角色模型](#workflow-1-generate-user-persona)
+  - [工作流程2：创建用户旅程图](#workflow-2-create-journey-map)
+  - [工作流程3：规划可用性测试](#workflow-3-plan-usability-test)
+  - [工作流程4：整合研究结果](#workflow-4-synthesize-research)
+- [工具参考](#tool-reference)
+- [快速参考表](#quick-reference-tables)
+- [知识库](#knowledge-base)
 
 ---
 
-## Workflows
+## 相关术语
 
-### Workflow 1: Generate User Persona
+当您需要执行以下操作时，请使用此技能：
+- “创建用户角色模型”
+- “根据数据生成角色模型”
+- “构建客户旅程图”
+- “绘制用户旅程”
+- “规划可用性测试”
+- “设计可用性研究”
+- “分析用户研究”
+- “整合访谈结果”
+- “识别用户痛点”
+- “定义用户原型”
+- “计算研究样本量”
+- “创建同理心地图”
+- “识别用户需求”
 
-**Situation:** You have user data (analytics, surveys, interviews) and need to create a research-backed persona.
+---
 
-**Steps:**
+## 工作流程
 
-1. **Prepare user data**
+### 工作流程1：生成用户角色模型
 
-   Required format (JSON):
+**情境：** 您拥有用户数据（分析数据、调查结果、访谈记录），需要基于这些数据创建一个有依据的角色模型。
+
+**步骤：**
+
+1. **准备用户数据**
+   所需格式（JSON）：
    ```json
    [
      {
@@ -69,7 +67,7 @@ Use this skill when you need to:
    ]
    ```
 
-2. **Run persona generator**
+2. **运行角色模型生成工具**
    ```bash
    # Human-readable output
    python scripts/persona_generator.py
@@ -78,59 +76,53 @@ Use this skill when you need to:
    python scripts/persona_generator.py json
    ```
 
-3. **Review generated components**
+3. **审查生成的内容**
+   | 组件 | 需要检查的内容 |
+|-----------|---------------|
+| 原型 | 是否与数据模式相符？ |
+| 人口统计信息 | 是否基于实际数据？ |
+| 目标 | 是否具体且可操作？ |
+| 挫折点 | 是否包含出现频率？ |
+| 设计影响 | 设计师能否据此采取行动？ |
 
-   | Component | What to Check |
-   |-----------|---------------|
-   | Archetype | Does it match the data patterns? |
-   | Demographics | Are they derived from actual data? |
-   | Goals | Are they specific and actionable? |
-   | Frustrations | Do they include frequency counts? |
-   | Design implications | Can designers act on these? |
+4. **验证角色模型**
+   - 向3-5位真实用户展示： “这听起来像你的情况吗？”
+   - 与支持工单进行交叉核对
+   - 根据分析数据进行验证
 
-4. **Validate persona**
-
-   - Show to 3-5 real users: "Does this sound like you?"
-   - Cross-check with support tickets
-   - Verify against analytics data
-
-5. **Reference:** See `references/persona-methodology.md` for validity criteria
+5. **参考资料：** 请参阅 `references/persona-methodology.md` 以了解验证标准
 
 ---
 
-### Workflow 2: Create Journey Map
+### 工作流程2：创建用户旅程图
 
-**Situation:** You need to visualize the end-to-end user experience for a specific goal.
+**情境：** 您需要为特定目标可视化用户的完整使用体验。
 
-**Steps:**
+**步骤：**
 
-1. **Define scope**
+1. **明确范围**
+   | 元素 | 描述 |
+|---------|-------------|
+| 角色类型 | 使用该产品的用户类型 |
+| 目标 | 用户试图实现的目标 |
+| 起点 | 触发旅程的起始事件 |
+| 结点 | 成功的标准 |
+| 时间框架 | 时长（小时/天/周） |
 
-   | Element | Description |
-   |---------|-------------|
-   | Persona | Which user type |
-   | Goal | What they're trying to achieve |
-   | Start | Trigger that begins journey |
-   | End | Success criteria |
-   | Timeframe | Hours/days/weeks |
+2. **收集旅程数据**
+   数据来源：
+   - 用户访谈（询问“请跟我演示一下...”）
+   - 会话记录
+   - 分析数据（用户流失情况）
+   - 支持工单
 
-2. **Gather journey data**
-
-   Sources:
-   - User interviews (ask "walk me through...")
-   - Session recordings
-   - Analytics (funnel, drop-offs)
-   - Support tickets
-
-3. **Map the stages**
-
-   Typical B2B SaaS stages:
+3. **绘制各阶段**
+   典型的B2B SaaS产品使用阶段：
    ```
    Awareness → Evaluation → Onboarding → Adoption → Advocacy
    ```
 
-4. **Fill in layers for each stage**
-
+4. **填充各阶段的细节**
    ```
    Stage: [Name]
    ├── Actions: What does user do?
@@ -140,85 +132,76 @@ Use this skill when you need to:
    └── Opportunities: Where can we improve?
    ```
 
-5. **Identify opportunities**
+5. **识别改进机会**
+   优先级评分 = 出现频率 × 严重程度 × 可解决程度
 
-   Priority Score = Frequency × Severity × Solvability
-
-6. **Reference:** See `references/journey-mapping-guide.md` for templates
+6. **参考资料：** 请参阅 `references/journey-mapping-guide.md` 以获取模板
 
 ---
 
-### Workflow 3: Plan Usability Test
+### 工作流程3：规划可用性测试
 
-**Situation:** You need to validate a design with real users.
+**情境：** 您需要通过真实用户来验证产品设计。
 
-**Steps:**
+**步骤：**
 
-1. **Define research questions**
+1. **定义研究问题**
+   将模糊的目标转化为可测试的问题：
+   | 模糊问题 | 可测试问题 |
+|-------|----------|
+| “它容易使用吗？” | “用户能在3分钟内完成结账吗？” |
+| “用户喜欢这个设计吗？” | “用户会选择设计A还是设计B？” |
+| “这个设计合理吗？” | “用户能在没有提示的情况下找到设置吗？” |
 
-   Transform vague goals into testable questions:
+2. **选择测试方法**
+   | 方法 | 参与者 | 测试时长 | 适用场景 |
+|--------|--------------|----------|----------|
+| 有指导的远程测试 | 5-8人 | 45-60分钟 | 深入了解用户需求 |
+| 无指导的远程测试 | 10-20人 | 15-20分钟 | 快速验证 |
+| 游击式测试 | 3-5人 | 5-10分钟 | 快速获取反馈 |
 
-   | Vague | Testable |
-   |-------|----------|
-   | "Is it easy to use?" | "Can users complete checkout in <3 min?" |
-   | "Do users like it?" | "Will users choose Design A or B?" |
-   | "Does it make sense?" | "Can users find settings without hints?" |
-
-2. **Select method**
-
-   | Method | Participants | Duration | Best For |
-   |--------|--------------|----------|----------|
-   | Moderated remote | 5-8 | 45-60 min | Deep insights |
-   | Unmoderated remote | 10-20 | 15-20 min | Quick validation |
-   | Guerrilla | 3-5 | 5-10 min | Rapid feedback |
-
-3. **Design tasks**
-
-   Good task format:
+3. **设计测试任务**
+   优秀的任务设计格式：
    ```
    SCENARIO: "Imagine you're planning a trip to Paris..."
    GOAL: "Book a hotel for 3 nights in your budget."
    SUCCESS: "You see the confirmation page."
    ```
 
-   Task progression: Warm-up → Core → Secondary → Edge case → Free exploration
+   任务流程：热身 → 核心任务 → 辅助任务 → 边缘情况 → 自由探索
 
-4. **Define success metrics**
+4. **定义评估指标**
+   | 指标 | 目标 |
+|--------|--------|
+| 完成率 | >80% |
+| 任务耗时 | <预期时间的2倍 |
+| 错误率 | <15% |
+| 满意度 | >4/5 |
 
-   | Metric | Target |
-   |--------|--------|
-   | Completion rate | >80% |
-   | Time on task | <2× expected |
-   | Error rate | <15% |
-   | Satisfaction | >4/5 |
+5. **准备测试引导材料**
+   - 思维导语
+   - 中立性的引导问题
+   - 测试后的问题
 
-5. **Prepare moderator guide**
-
-   - Think-aloud instructions
-   - Non-leading prompts
-   - Post-task questions
-
-6. **Reference:** See `references/usability-testing-frameworks.md` for full guide
+6. **参考资料：** 请参阅 `references/usability-testing-frameworks.md` 以获取完整指南
 
 ---
 
-### Workflow 4: Synthesize Research
+### 工作流程4：整合研究结果
 
-**Situation:** You have raw research data (interviews, surveys, observations) and need actionable insights.
+**情境：** 您拥有原始的研究数据（访谈记录、调查结果、观察记录），需要从中提取可操作的见解。
 
-**Steps:**
+**步骤：**
 
-1. **Code the data**
+1. **对数据进行编码**
+   为每个数据点添加标签：
+   - `[目标]`：用户想要实现的目标
+   - `[痛点]`：用户遇到的困难
+   - `[行为]`：用户的实际操作
+   - `[使用场景]`：用户使用产品的时间和地点
+   - `[用户原话]`：用户的直接表述
 
-   Tag each data point:
-   - `[GOAL]` - What they want to achieve
-   - `[PAIN]` - What frustrates them
-   - `[BEHAVIOR]` - What they actually do
-   - `[CONTEXT]` - When/where they use product
-   - `[QUOTE]` - Direct user words
-
-2. **Cluster similar patterns**
-
+2. **归纳相似的模式**
    ```
    User A: Uses daily, advanced features, shortcuts
    User B: Uses daily, complex workflows, automation
@@ -228,47 +211,44 @@ Use this skill when you need to:
    Cluster 2: C (Casual User)
    ```
 
-3. **Calculate segment sizes**
+3. **计算各用户群体的占比**
+   | 用户群体 | 用户数量 | 占比 | 可操作性 |
+|---------|-------|---|-----------|
+| 高频使用者 | 18人 | 36% | 主要用户角色 |
+| 商业用户 | 15人 | 30% | 主要用户角色 |
+| 休闲用户 | 12人 | 24% | 辅助用户角色 |
 
-   | Cluster | Users | % | Viability |
-   |---------|-------|---|-----------|
-   | Power Users | 18 | 36% | Primary persona |
-   | Business Users | 15 | 30% | Primary persona |
-   | Casual Users | 12 | 24% | Secondary persona |
+4. **提取关键发现**
+   对于每个主题：
+   - 发现内容
+   - 支持证据（用户原话、数据）
+   - 出现频率（X/Y用户）
+   - 对业务的影响
+   - 建议
 
-4. **Extract key findings**
+5. **确定改进优先级**
+   | 评估因素 | 评分（1-5分） |
+|--------|-----------|
+| 出现频率 | 这种情况发生的频率？ |
+| 严重程度 | 造成的困扰程度？ |
+| 影响范围 | 受影响的用户数量？ |
+| 可解决程度 | 我们能解决这个问题吗？ |
 
-   For each theme:
-   - Finding statement
-   - Supporting evidence (quotes, data)
-   - Frequency (X/Y participants)
-   - Business impact
-   - Recommendation
-
-5. **Prioritize opportunities**
-
-   | Factor | Score 1-5 |
-   |--------|-----------|
-   | Frequency | How often does this occur? |
-   | Severity | How much does it hurt? |
-   | Breadth | How many users affected? |
-   | Solvability | Can we fix this? |
-
-6. **Reference:** See `references/persona-methodology.md` for analysis framework
+6. **参考资料：** 请参阅 `references/persona-methodology.md` 以了解分析框架
 
 ---
 
-## Tool Reference
+## 工具参考
 
 ### persona_generator.py
 
-Generates data-driven personas from user research data.
+该工具可根据用户研究数据生成基于数据驱动的角色模型。
 
-| Argument | Values | Default | Description |
+| 参数 | 默认值 | 描述 |
 |----------|--------|---------|-------------|
-| format | (none), json | (none) | Output format |
+| 输出格式 | （无） | JSON格式 |
 
-**Sample Output:**
+**示例输出：**
 
 ```
 ============================================================
@@ -304,111 +284,116 @@ Quote: "I need tools that can keep up with my workflow"
     Confidence: High
 ```
 
-**Archetypes Generated:**
+**生成的角色模型：**
 
-| Archetype | Signals | Design Focus |
+| 角色类型 | 特征 | 设计重点 |
 |-----------|---------|--------------|
-| power_user | Daily use, 10+ features | Efficiency, customization |
-| casual_user | Weekly use, 3-5 features | Simplicity, guidance |
-| business_user | Work context, team use | Collaboration, reporting |
-| mobile_first | Mobile primary | Touch, offline, speed |
+| 高频使用者 | 每日使用，使用10个以上功能 | 高效率、个性化需求 |
+| 休闲用户 | 每周使用3-5次，使用3-5个功能 | 简洁性、需要指导 |
+| 商业用户 | 在工作环境中使用，团队协作 | 协作、报告功能 |
+| 以移动设备为主的使用者 | 主要使用移动设备 | 需要支持移动操作、离线使用、快速响应 |
 
-**Output Components:**
-
-| Component | Description |
+**输出内容：**
+| 组件 | 描述 |
 |-----------|-------------|
-| demographics | Age range, location, occupation, tech level |
-| psychographics | Motivations, values, attitudes, lifestyle |
-| behaviors | Usage patterns, feature preferences |
-| needs_and_goals | Primary, secondary, functional, emotional |
-| frustrations | Pain points with evidence |
-| scenarios | Contextual usage stories |
-| design_implications | Actionable recommendations |
-| data_points | Sample size, confidence level |
+| 人口统计信息 | 年龄范围、地理位置、职业、技术水平 |
+| 心理特征 | 动机、价值观、态度、生活方式 |
+| 行为特征 | 使用习惯、功能偏好 |
+| 需求与目标 | 主要需求、次要需求、功能需求、情感需求 |
+| 挫折点 | 遇到的困难及具体表现 |
+| 使用场景 | 具体的使用场景 |
+| 设计建议 | 基于角色模型的设计建议 |
+| 数据信息 | 样本数量、数据可信度 |
 
 ---
 
-## Quick Reference Tables
+## 快速参考表
 
-### Research Method Selection
+### 研究方法选择
 
-| Question Type | Best Method | Sample Size |
+| 问题类型 | 最适合的方法 | 样本数量 |
 |---------------|-------------|-------------|
-| "What do users do?" | Analytics, observation | 100+ events |
-| "Why do they do it?" | Interviews | 8-15 users |
-| "How well can they do it?" | Usability test | 5-8 users |
-| "What do they prefer?" | Survey, A/B test | 50+ users |
-| "What do they feel?" | Diary study, interviews | 10-15 users |
+| “用户会做什么？” | 分析数据、观察法 | 100次以上用户行为 |
+| “他们为什么这样做？” | 访谈法 | 8-15名用户 |
+| “他们的表现如何？” | 可用性测试 | 5-8名用户 |
+| “他们更喜欢什么？” | 调查问卷、A/B测试 | 50名以上用户 |
+| “他们的感受如何？” | 日记记录、访谈法 | 10-15名用户 |
 
-### Persona Confidence Levels
+### 角色模型的可信度
 
-| Sample Size | Confidence | Use Case |
+| 样本数量 | 可信度 | 适用场景 |
 |-------------|------------|----------|
-| 5-10 users | Low | Exploratory |
-| 11-30 users | Medium | Directional |
-| 31+ users | High | Production |
+| 5-10名用户 | 低可信度 | 探索性研究 |
+| 11-30名用户 | 中等可信度 | 定向研究 |
+| 31名以上用户 | 高可信度 | 用于正式研究 |
 
-### Usability Issue Severity
+### 可用性问题严重程度
 
-| Severity | Definition | Action |
+| 严重程度 | 定义 | 应对措施 |
 |----------|------------|--------|
-| 4 - Critical | Prevents task completion | Fix immediately |
-| 3 - Major | Significant difficulty | Fix before release |
-| 2 - Minor | Causes hesitation | Fix when possible |
-| 1 - Cosmetic | Noticed but not problematic | Low priority |
+| 4 - 致命性 | 阻碍任务完成 | 立即修复 |
+| 3 - 严重 | 显著的困难 | 在发布前修复 |
+| 2 - 轻微 | 造成犹豫 | 尽可能修复 |
+| 1 - 装饰性 | 注意到但问题不大 | 优先级较低 |
 
-### Interview Question Types
+### 访谈问题类型
 
-| Type | Example | Use For |
+| 问题类型 | 例子 | 适用场景 |
 |------|---------|---------|
-| Context | "Walk me through your typical day" | Understanding environment |
-| Behavior | "Show me how you do X" | Observing actual actions |
-| Goals | "What are you trying to achieve?" | Uncovering motivations |
-| Pain | "What's the hardest part?" | Identifying frustrations |
-| Reflection | "What would you change?" | Generating ideas |
+| 使用场景 | “请描述你的一天” | 了解用户的使用环境 |
+| 行为 | “请演示一下你是如何做某事的” | 观察用户的实际操作 |
+| 目标 | “你想要实现什么？” | 探究用户的动机 |
+| 挫折点 | “最困难的部分是什么？” | 识别用户遇到的困难 |
+| 反思 | “你会做出哪些改变？” | 生成改进建议 |
 
 ---
 
-## Knowledge Base
+## 知识库
 
-Detailed reference guides in `references/`:
+详细参考指南请参阅 `references/` 目录下的文件：
 
-| File | Content |
+| 文件名 | 内容 |
 |------|---------|
-| `persona-methodology.md` | Validity criteria, data collection, analysis framework |
-| `journey-mapping-guide.md` | Mapping process, templates, opportunity identification |
-| `example-personas.md` | 3 complete persona examples with data |
-| `usability-testing-frameworks.md` | Test planning, task design, analysis |
+| `persona-methodology.md` | 角色模型的有效性标准、数据收集方法、分析框架 |
+| `journey-mapping-guide.md | 旅程图绘制流程、模板、机会识别方法 |
+| `example-personas.md | 3个包含数据的具体角色模型示例 |
+| `usability-testing-frameworks.md | 测试计划、任务设计、数据分析方法 |
 
 ---
 
-## Validation Checklist
+## 验证检查清单
 
-### Persona Quality
-- [ ] Based on 20+ users (minimum)
-- [ ] At least 2 data sources (quant + qual)
-- [ ] Specific, actionable goals
-- [ ] Frustrations include frequency counts
-- [ ] Design implications are specific
-- [ ] Confidence level stated
+### 角色模型的质量
+- [ ] 基于20名以上用户的数据（最低要求）
+- [ ] 至少使用两种数据来源（定量数据 + 定性数据）
+- [ ] 目标具体且可操作 |
+- [ ] 挫折点包含出现频率 |
+- [ ] 设计建议具体明确 |
+- [ ] 明确指出可信度水平
 
-### Journey Map Quality
-- [ ] Scope clearly defined (persona, goal, timeframe)
-- [ ] Based on real user data, not assumptions
-- [ ] All layers filled (actions, touchpoints, emotions)
-- [ ] Pain points identified per stage
-- [ ] Opportunities prioritized
+### 用户旅程图的质量
+- [ ] 范围明确（角色类型、目标、时间框架）
+- [ ] 基于真实用户数据，而非假设 |
+- [ ] 所有环节都填写完整（包括操作步骤、关键节点、用户情感）
+- [ ] 每个阶段都识别出用户的痛点 |
+- [ ] 优先级明确的改进机会
 
-### Usability Test Quality
-- [ ] Research questions are testable
-- [ ] Tasks are realistic scenarios, not instructions
-- [ ] 5+ participants per design
-- [ ] Success metrics defined
-- [ ] Findings include severity ratings
+### 可用性测试的质量
+- [ ] 研究问题具有可测试性 |
+- [] 测试任务符合实际使用场景 |
+- [] 每个设计方向至少有5名参与者 |
+- [ ] 明确了评估指标 |
+- [] 测试结果包含问题严重程度的评估 |
 
-### Research Synthesis Quality
-- [ ] Data coded consistently
-- [ ] Patterns based on 3+ data points
-- [ ] Findings include evidence
-- [ ] Recommendations are actionable
-- [ ] Priorities justified
+### 研究结果整合的质量
+- [ ] 数据编码一致 |
+- [ | 基于多个数据点归纳出模式 |
+- [ ] 发现的内容有依据 |
+- [ ] 建议具有可操作性 |
+- [ | 优先级合理 |
+
+---
+
+---
+
+（注：由于Markdown格式的限制，部分代码块和长文本在翻译后可能无法完全保留原有的排版效果。在实际应用中，建议将这些代码块直接复制到支持Markdown编辑器的文档中。）

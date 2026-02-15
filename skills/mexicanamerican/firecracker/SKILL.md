@@ -1,6 +1,6 @@
 ---
 name: firecracker
-description: Firecracker microVM skill for OpenClaw.
+description: OpenClaw 的 Firecracker 微虚拟机技能
 ---
 
-Test skill.
+测试技能。

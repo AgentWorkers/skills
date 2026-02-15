@@ -1,24 +1,24 @@
 ---
 name: aliyun-mail
-description: A skill to send emails via Aliyun enterprise email service with support for markdown, HTML text, attachments, and syntax highlighting for code blocks.
+description: 一种通过阿里云企业邮箱服务发送电子邮件的技能，支持使用 Markdown 格式、HTML 文本、附件，以及对代码块进行语法高亮显示的功能。
 ---
 
-# Aliyun Mail Skill
+# 阿里云邮件技能（Aliyun Mail Skill）
 
-This skill enables sending emails through Aliyun enterprise email service with advanced features including Markdown conversion, HTML styling, file attachments, and syntax highlighting for code blocks.
+该技能支持通过阿里云企业邮件服务发送电子邮件，具备多种高级功能，包括Markdown格式转换、HTML样式渲染、文件附件支持以及对代码块的语法高亮显示。
 
-## Features
-- **Aliyun Enterprise Email Support**: Optimized for Aliyun's SMTP service (smtp.mxhichina.com)
-- **Multiple Content Types**: Send plain text, Markdown, or HTML emails
-- **Markdown with Syntax Highlighting**: Automatic syntax highlighting for code blocks in Markdown
-- **File Attachments**: Include one or more files as attachments
-- **Configuration-based**: Uses a secure configuration file for SMTP credentials
-- **Error Handling**: Includes retry logic and detailed error reporting
+## 主要功能
+- **阿里云企业邮件服务支持**：专为阿里云的SMTP服务（smtp.mxhichina.com）优化设计
+- **多种内容类型**：支持发送纯文本邮件、Markdown格式邮件或HTML格式邮件
+- **带语法高亮的Markdown邮件**：能够自动对Markdown中的代码块进行语法高亮显示
+- **文件附件**：可以附加一个或多个文件
+- **基于配置文件的安全认证**：使用加密的配置文件来存储SMTP凭据
+- **错误处理**：具备重试机制和详细的错误报告功能
 
-## Prerequisites
-- **SMTP Configuration File**: Create `aliyun-mail-config.json` in your OpenClaw config directory (`/root/.openclaw/`)
+## 使用前提
+- **需要创建SMTP配置文件**：在OpenClaw的配置目录（`/root/.openclaw/`）下创建`aliyun-mail-config.json`文件
 
-Example configuration file:
+**配置文件示例：**
 ```json
 {
   "server": "smtp.mxhichina.com",
@@ -30,66 +30,74 @@ Example configuration file:
 }
 ```
 
-Ensure the configuration file has secure permissions:
-```bash
-chmod 600 /root/.openclaw/aliyun-mail-config.json
-```
+**配置文件的安全性注意事项：**
+确保配置文件具有适当的权限设置，以防止未经授权的访问。
 
-## Usage
+## 使用方法
 
-### Basic Text Email
+### 发送纯文本邮件
 ```bash
 aliyun-mail send --to "recipient@example.com" --subject "Hello" --body "This is a plain text email"
 ```
 
-### Markdown Email with Syntax Highlighting
+### 发送带语法高亮的Markdown邮件
 ```bash
 aliyun-mail send \
   --to "recipient@example.com" \
   --subject "Code Report" \
-  --body "**Check out this Python code:**\n\n```python\nprint('Hello World')\n```" \
-  --markdown
+  --body "**Check out this Python code:**\n\n```
+python
+print('Hello World')
+```
+```
+--markdown
+```
+
 ```
 
 ### HTML Email with Attachment
-```bash
+```
+bash
 aliyun-mail send \
   --to "recipient@example.com" \
-  --subject "Weekly Report" \
-  --body "<h1>Weekly Report</h1><p>See attached file.</p>" \
+  --subject "每周报告" \
+  --body "<h1>每周报告</h1><p>请查看附件。</p>" \
   --html \
   --attachments "/path/to/report.pdf"
 ```
 
+```
+
 ### Using Body from File
-```bash
+```
+bash
 aliyun-mail send \
   --to "recipient@example.com" \
-  --subject "Report from File" \
+  --subject "来自文件的报告" \
   --body-file "/path/to/report.md" \
   --markdown \
   --attachments "/path/to/data.csv"
 ```
 
-## Command Line Options
-- `--to`: Recipient email address (required)
-- `--subject`: Email subject (required)
-- `--body`: Email body content (required if --body-file not provided)
-- `--body-file`: Path to file containing email body
-- `--html`: Send as HTML email (default: plain text)
-- `--markdown`: Send as Markdown email with syntax highlighting
-- `--attachments`: Space-separated list of file paths to attach
+## 命令行参数
+- `--to`：收件人电子邮件地址（必填）
+- `--subject`：邮件主题（必填）
+- `--body`：邮件正文内容（如果未指定`--body-file`参数，则必须提供）
+- `--body-file`：包含邮件正文的文件路径
+- `--html`：以HTML格式发送邮件（默认为纯文本）
+- `--markdown`：以Markdown格式发送邮件，并对代码块进行语法高亮显示
+- `--attachments`：以空格分隔的文件路径列表，用于附加文件
 
-## Error Handling
-The tool includes robust error handling with up to 3 retry attempts on failure. Network issues, authentication errors, and invalid email addresses are reported with detailed error messages.
+## 错误处理
+该工具具备强大的错误处理机制，失败时会尝试最多3次重试。对于网络问题、认证错误或无效的电子邮件地址，系统会生成详细的错误报告。
 
-## Security Notes
-- Always use app-specific passwords rather than your main email password
-- Keep the configuration file secure with proper file permissions
-- Never commit configuration files to version control
+## 安全提示
+- 请使用专门为该工具设置的密码，而非您的个人邮箱密码
+- 确保配置文件的安全性，设置适当的文件权限
+- 绝不要将配置文件提交到版本控制系统中
 
-## Future Enhancements
-- Support for CC/BCC recipients
-- Email templates system
-- Scheduled email sending
-- Rich text editor integration
+## 未来改进计划
+- 支持抄送/密送（CC/BCC）功能
+- 邮件模板系统
+- 定时发送邮件功能
+- 集成丰富的文本编辑器功能

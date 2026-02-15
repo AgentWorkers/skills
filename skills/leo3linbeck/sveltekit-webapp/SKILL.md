@@ -15,83 +15,83 @@ safety_notes: |
   No commands are executed without user confirmation of the PRD.
 ---
 
-# SvelteKit Webapp Skill
+# SvelteKit Webapp 服务
 
-Scaffold production-ready SvelteKit PWAs with opinionated defaults and guided execution.
+本服务提供基于 SvelteKit 的生产就绪型 PWA（Progressive Web App）搭建方案，采用预设的配置选项，并引导用户完成整个开发流程。
 
-## Quick Start
+## 快速入门
 
-1. **Describe your app** — Tell me what you want to build
-2. **Review the PRD** — I'll generate a plan with user stories
-3. **Approve** — I build, test, and deploy with your oversight
-4. **Done** — Get a live URL + admin documentation
+1. **描述您的应用需求** — 告诉我您想要构建什么类型的应用。
+2. **审查项目需求文档 (PRD)** — 我将根据您的需求生成详细的开发计划。
+3. **审核并批准** — 在您的监督下，我会进行开发、测试和部署。
+4. **完成** — 您将获得应用的实时访问地址以及相应的管理文档。
 
-> "Build me a task tracker with due dates and priority labels"
+例如：“为我构建一个带有截止日期和优先级标签的任务跟踪器。”
 
-That's all I need to start. I'll ask follow-up questions if needed.
+只需提供这些信息，我就可以开始为您服务。如有需要，我会进一步询问详细信息。
 
-## Prerequisites
+## 先决条件
 
-These CLIs must be available (the skill will verify during preflight):
+以下命令行工具（CLI）必须可用（服务会在启动前进行验证）：
 
-| CLI | Purpose | Install |
+| CLI | 功能 | 安装方式 |
 |-----|---------|---------|
-| `sv` | SvelteKit scaffolding | `npm i -g sv` (or use via `pnpx`) |
-| `pnpm` | Package manager | `npm i -g pnpm` |
-| `gh` | GitHub repo creation | [cli.github.com](https://cli.github.com) |
-| `vercel` | Deployment | `npm i -g vercel` |
+| `sv` | SvelteKit 搭建工具 | `npm i -g sv`（或通过 `pnpx` 使用） |
+| `pnpm` | 包管理器 | `npm i -g pnpm` |
+| `gh` | GitHub 仓库创建工具 | [cli.github.com](https://cli.github.com) |
+| `vercel` | 部署工具 | `npm i -g vercel` |
 
-Optional (if features require):
-- `turso` — Turso database CLI
+（可选，如果某些功能需要额外工具：）
+- `turso` — Turso 数据库管理工具
 
-## Opinionated Defaults
+## 预设的配置选项
 
-This skill ships with sensible defaults that work well together. **All defaults can be overridden** via `SKILL-CONFIG.json`:
+本服务提供了一些经过优化的默认配置选项，这些选项相互配合使用效果最佳。您可以通过 `SKILL-CONFIG.json` 文件自定义所有默认设置：
 
-- **Component library:** Skeleton (Svelte 5 native) + Bits UI fallback
-- **Package manager:** pnpm
-- **Deployment:** Vercel
-- **Add-ons:** ESLint, Prettier, Vitest, Playwright, mdsvex, MCP
-- **State:** Svelte 5 runes ($state, $derived, $effect)
+- **组件库**：使用 Skeleton（Svelte 5 的原生组件库）或作为备用方案的 Bits UI。
+- **包管理器**：使用 pnpm。
+- **部署平台**：使用 Vercel。
+- **附加工具**：ESLint、Prettier、Vitest、Playwright、mdsvex、MCP。
+- **状态管理**：使用 Svelte 5 的 `$state`、`$derived`、`$effect` 等函数。
 
-See [User Configuration](#user-configuration) for override details.
-
----
-
-## User Configuration
-
-Check `~/.openclaw/workspace/SKILL-CONFIG.json` for user-specific defaults before using skill defaults. User config overrides skill defaults for:
-- Deployment provider (e.g., vercel, cloudflare, netlify)
-- Package manager (pnpm, npm, yarn)
-- Add-ons to always include
-- MCP IDE configuration
-- Component library preferences
-
-## Workflow Overview
-
-1. **Gather**: Freeform description + design references + targeted follow-ups
-2. **Plan**: Generate complete PRD (scaffold, configure, features, tests as stories)
-3. **Iterate**: Refine PRD with user until confirmed
-4. **Preflight**: Verify all required auths and credentials
-5. **Execute**: Guided build-deploy-verify cycle with user checkpoints (development → staging → production)
+有关自定义配置的详细信息，请参阅 [用户配置](#user-configuration)。
 
 ---
 
-## Phase 1: Gather Project Description
+## 用户配置
 
-A conversational, iterative approach to understanding what the user wants.
+在使用服务提供的默认配置之前，请查看 `~/.openclaw/workspace/SKILL-CONFIG.json` 文件。用户配置可以覆盖以下设置：
+- **部署平台**（例如：vercel、cloudflare、netlify）。
+- **包管理器**（pnpm、npm、yarn）。
+- **必须包含的附加工具**。
+- **MCP 集成开发环境（MCP IDE）的配置**。
+- **组件库的偏好设置**。
 
-### 1a. Freeform Opening
+## 工作流程概述
 
-Start with an open question:
-- "What do you want to build?"
-- "Describe the webapp you have in mind"
+1. **收集信息**：收集用户的需求描述、设计参考资料以及相关问题。
+2. **制定计划**：生成包含技术栈、用户故事和模拟数据策略的完整项目需求文档（PRD）。
+3. **迭代优化**：与用户共同完善项目需求文档，直到达成一致。
+4. **预检**：验证所有必要的认证信息和凭据。
+5. **执行开发**：在用户的监督下，按照既定的流程进行构建、部署和测试。
 
-Let the user lead with what matters to them.
+---
 
-### 1b. Design References
+## 第 1 阶段：收集项目描述
 
-Ask for inspiration:
+通过对话和迭代的方式了解用户的具体需求。
+
+### 1a. 开场问题
+
+首先提出一个开放性的问题：
+- “您想要构建什么类型的应用？”
+- “请描述一下您心目中的 Web 应用。”
+
+让用户根据自己的需求来主导讨论。
+
+### 1b. 设计参考资料
+
+询问用户的设计灵感：
 ```
 Share 1-3 sites you'd like this to feel like 
 (design, functionality, or both).
@@ -102,34 +102,32 @@ Examples:
 - "Linear's clean aesthetic"
 ```
 
-"Show me what you like" communicates more than paragraphs of description.
+“展示您喜欢的设计元素”比冗长的文字描述更有效。
 
-### 1c. Visual Identity (Optional)
+### 1c. 视觉识别（可选）
 
-If design references suggest custom branding, ask:
+如果用户的设计参考资料中包含自定义品牌元素，请进一步询问：
 ```
 Any specific colors, fonts, or logos you want to use?
 (I can pre-configure the Tailwind theme)
 ```
 
-### 1d. Targeted Follow-ups
+### 1d. 针对性询问
 
-Based on gaps in the description, ask specifically:
-
-| Gap | Question |
+根据用户描述中的空白部分，提出具体问题：
+| 缺失的内容 | 需要了解的信息 |
 |-----|----------|
-| Users unclear | "Who's the primary user? (role, context)" |
-| Core action unclear | "What's the ONE thing they must be able to do?" |
-| Content unknown | "Any existing content/assets to incorporate?" |
-| Scale unknown | "How many users do you expect? (ballpark)" |
-| Timeline | "Any deadline driving this?" |
+| 用户群体不明确 | “主要用户是谁？（角色、使用场景）” |
+| 核心功能不明确 | “用户必须能够完成的最基本操作是什么？” |
+| 内容未知 | “是否有现有的内容或资源可以整合？” |
+| 应用规模未知 | “预计会有多少用户使用？” |
+| 时间表是否明确 | “是否有紧迫的截止日期？” |
 
-Only ask what's missing—don't interrogate.
+只询问缺失的信息，避免过度追问。
 
-### 1e. Structured Summary
+### 1e. 确认理解
 
-Before proceeding, confirm understanding:
-
+在继续之前，确认您已经准确理解了用户的需求：
 ```
 📝 PROJECT SUMMARY: [Name]
 
@@ -151,17 +149,17 @@ Technical signals detected:
 Does this capture it? [Yes / Adjust]
 ```
 
-Iterate until the user confirms.
+反复沟通，直到用户确认所有信息。
 
 ---
 
-## Phase 2: Plan (Generate PRD)
+## 第 2 阶段：制定计划（生成项目需求文档 PRD）
 
-Generate a complete PRD with technical stack, user stories, and mock data strategy.
+生成包含技术栈、用户故事和模拟数据策略的完整项目需求文档（PRD）。
 
-### Technical Stack
+### 技术栈
 
-**Always Included:**
+**必选组件：**
 ```
 CLI:              pnpx sv (fallback: npx sv)
 Template:         minimal
@@ -185,40 +183,38 @@ Post-scaffold:
   ✓ adapter-auto (auto-detects deployment target)
 ```
 
-**Why Skeleton + Bits UI?**
-- Skeleton: Full-featured component library built for Svelte 5, accessible by default
-- Bits UI: Headless primitives when you need more control or custom styling
-- Both play well together — Skeleton for speed, Bits for flexibility
+**为什么选择 Skeleton 和 Bits UI？**
+- Skeleton：专为 Svelte 5 设计的完整组件库，易于使用。
+- Bits UI：在需要更多控制或自定义样式时提供灵活的组件。
+- 这两个工具配合使用，既能保证开发效率，又能满足设计需求。
 
-**Inferred from Description:**
+**根据用户描述推断的其他组件：**
 ```
 drizzle     → if needs database (ask: postgres/sqlite/turso)
 lucia       → if needs auth
 paraglide   → if needs i18n (ask: which languages)
 ```
 
-### State Management
+### 状态管理
 
-Follow Svelte 5 best practices (see https://svelte.dev/docs/kit/state-management):
+遵循 Svelte 5 的最佳实践（详见 [https://svelte.dev/docs/kit/state-management]）：
+- 使用 `$state()` 管理响应式状态。
+- 使用 `$derived()` 计算派生值。
+- 使用 Svelte 的上下文 API (`setContext`/`getContext`) 在组件间传递状态。
+- 服务器状态通过 `load` 函数传递到 `data` 属性。
+- **切勿** 将用户特定的状态存储在模块级别的变量中（这些变量会在多次请求间共享）。
 
-- Use `$state()` runes for reactive state
-- Use `$derived()` for computed values
-- Use Svelte's context API (`setContext`/`getContext`) for cross-component state
-- Server state flows through `load` functions → `data` prop
-- **Never** store user-specific state in module-level variables (shared across requests)
+### 代码风格偏好
 
-### Code Style Preferences
+请查看 `SKILL-CONFIG.json` 文件以了解用户的代码风格偏好。常见推荐：
+- **优先使用 `bind:` 而不是回调**：在父组件向子组件传递数据时，使用 `bind:value` 而不是 `onchange` 回调。这样代码更简洁、易于维护。
+- **避免使用 `onMount`**：使用 `$effect()` 来处理副作用。这种方式更符合 Svelte 的响应式设计原则。
+- **尽可能使用 `$state()`、`$derived()`、`$effect()` 等函数**，而不是传统的状态管理方式。
+- **组件大小控制**：每个组件的代码行数建议控制在 200 行左右（可通过 `SKILL-CONFIG.json` 配置调整）。如果组件变得复杂，可以考虑拆分组件。简洁的代码更易于维护。
 
-Check `SKILL-CONFIG.json` for user preferences. Common patterns:
+### 目录结构
 
-- **Prefer `bind:` over callbacks** — For child→parent data flow, use `bind:value` instead of `onchange` callback props. More declarative, less boilerplate.
-- **Avoid `onMount`** — Use `$effect()` for side effects. It's reactive and works with SSR.
-- **Runes everywhere** — `$state()`, `$derived()`, `$effect()` over legacy stores and lifecycle hooks.
-- **Small components** — Default soft limit of ~200 lines per component (configurable in SKILL-CONFIG.json). If growing larger, extract sub-components. Small is beautiful. 🤩
-
-### Directory Structure
-
-`sv create` generates:
+使用 `sv create` 命令生成初始目录结构：
 ```
 src/
 ├── routes/          # SvelteKit routes
@@ -228,7 +224,7 @@ src/
 static/              # Static assets
 ```
 
-We add:
+我们还会添加以下内容：
 ```
 src/
 ├── lib/
@@ -241,9 +237,9 @@ static/
 └── icons/           # PWA icons
 ```
 
-### User Stories (prd.json)
+### 用户故事（prd.json）
 
-**Story structure:**
+**故事结构：**
 ```json
 {
   "project": "ProjectName",
@@ -264,27 +260,25 @@ static/
 }
 ```
 
-**Story sizing rule:** Each story must fit in one context window. If it feels big, split it.
+**故事编写规则**：每个故事的内容应适合在一个浏览器窗口中显示。如果内容过多，可以拆分成多个故事。
 
-**Standard story sequence:**
+**标准的故事编写顺序：**
+1. **搭建基础**：使用 `pnpx sv create` 命令搭建应用框架，并安装核心组件。
+2. **配置环境**：设置组件库（Skeleton 和 Bits UI）、PWA 配置、目录结构、VSCode 工作区设置以及 Tailwind 主题。
+3. **准备模拟数据**：为开发环境创建模拟数据库数据。
+4. **构建基础结构**：设置页面布局、设计元素以及首页内容。
+5. **实现核心功能**：根据用户需求实现核心功能。
+6. **搭建基础设施**：配置数据库模式、数据迁移以及身份验证（如需要）。
+7. **优化应用**：设置 PWA 相关的配置文件（如 manifest 文件和图标）。
+8. **编写测试**：为关键功能编写端到端（E2E）测试。
 
-1. **Scaffold** — `pnpx sv create`, add core add-ons
-2. **Configure** — Skeleton + Bits UI, PWA, directory structure, VSCode workspace, Tailwind theme
-3. **Mock Data** — Set up mock database/fixtures for development
-4. **Foundation** — Root layout, design tokens, home page (INDEX PAGE CHECKPOINT)
-5. **Features** — Core features from gathered requirements
-6. **Infrastructure** — Database schema, migrations, auth (if needed)
-7. **Polish** — PWA manifest, icons
-8. **Tests** — E2E tests for critical flows
+**首页检查点**：在完成首页开发后，暂停开发流程并请求用户审核。首页是整个应用的外观基础，提前获取用户反馈可以避免后续开发工作的重复。
 
-**Index Page Checkpoint:** After the index/home page is built (but before other pages), PAUSE execution and request user review. The index page establishes the visual direction—getting early feedback here avoids wasted work on subsequent pages.
+有关故事模板的详细信息，请参阅 [references/scaffold-stories.md](references/scaffold-stories.md)。
 
-See [references/scaffold-stories.md](references/scaffold-stories.md) for story templates.
+### 模拟数据策略
 
-### Mock Data Strategy
-
-Development uses mock data; production uses real database.
-
+开发环境使用模拟数据；生产环境使用真实的数据库数据。
 ```
 Mock data approach:
 - Generate mock data per-story as needed
@@ -293,33 +287,32 @@ Mock data approach:
 - Stage 2+ switches to real database
 ```
 
-When `drizzle` is selected, include stories for:
-- Initial schema creation
-- Drizzle Kit configuration  
-- First migration
+如果选择使用 `drizzle` 工具，需要编写以下相关故事：
+- 初始化数据库模式。
+- 配置 `drizzle` 工具。
+- 执行首次数据库迁移。
 
-### External Dependencies
+### 外部依赖项
 
-Identify required credentials:
-
-| Feature | Dependency | Required |
+确认以下依赖项的凭据是否已准备好：
+| 功能 | 所需依赖项 | 是否必须准备 |
 |---------|------------|----------|
-| Any project | GitHub CLI | Yes |
-| Deployment | Vercel CLI or adapter-auto | Yes |
-| Database (postgres) | DATABASE_URL | For staging |
-| Database (turso) | Turso CLI | For staging |
-| OAuth providers | Client ID/Secret | For staging |
-| Payments | Stripe API keys | For staging |
+| 任何项目 | GitHub CLI | 是 |
+| 部署工具 | Vercel CLI 或相关适配器 | 是 |
+| 数据库（PostgreSQL） | DATABASE_URL | 需要用于测试环境 |
+| 数据库（Turso） | Turso CLI | 需要用于测试环境 |
+| OAuth 服务 | 客户端 ID/密钥 | 需要用于测试环境 |
+- 支付服务 | Stripe API 密钥 | 需要用于测试环境 |
 
-**Dev uses mocks; staging/production need real credentials.**
+**开发环境使用模拟数据；测试/生产环境需要真实凭据。**
 
 ---
 
-## Phase 3: Iterate Until Confirmed
+## 第 3 阶段：迭代优化，直至用户批准
 
-Present the PRD and refine until the user approves.
+向用户展示项目需求文档（PRD），并根据用户的反馈进行优化。
 
-### Present the PRD
+### 展示项目需求文档
 
 ```
 📋 PRD: [Project Name]
@@ -352,38 +345,33 @@ US-XXX: Add E2E tests (Tests)
 [Approve / See full stories / Edit stories / Change stack]
 ```
 
-### Iteration Loop
+### 迭代流程
 
-Expect refinement. Common adjustments:
-- Add/remove/modify user stories
-- Change technical stack choices
-- Adjust story priorities
-- Split stories that are too large
-- Add acceptance criteria
+预计过程中会进行多次调整：
+- 添加/删除/修改用户故事。
+- 更改技术栈的选择。
+- 调整故事优先级。
+- 将过大的故事拆分成更小的部分。
+- 明确每个故事的验收标准。
 
-**Continue iterating until user explicitly approves.**
+**持续迭代，直到用户明确表示批准。**
 
-### Confirmation
+### 用户批准
 
-When user approves:
-```
-✅ PRD CONFIRMED
-
-[N] user stories ready for execution.
-Proceeding to preflight checks...
-```
+当用户批准项目需求文档后，进入下一阶段。
 
 ---
 
-## Phase 4: Preflight
+## 第 4 阶段：预检
 
-Verify all dependencies. Development can start with mocks; staging needs real credentials.
+验证所有依赖项是否准备就绪。开发环境可以使用模拟数据；测试环境需要真实的凭据。
 
-### Run Checks
+### 验证依赖项
 
-Verify authentication for required CLIs (GitHub, pnpm, Vercel, and optionally Turso). See [references/cli-commands.md](references/cli-commands.md#preflight-checks) for specific commands.
+验证以下命令行工具的认证信息是否正确：
+- GitHub、pnpm、Vercel（以及可选的 Turso）。具体操作步骤请参阅 [references/cli-commands.md](references/cli-commands.md#preflight-checks)。
 
-### Present Status
+### 展示当前进度
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -406,31 +394,21 @@ Verify authentication for required CLIs (GitHub, pnpm, Vercel, and optionally Tu
 └─────────────────────────────────────────────┘
 ```
 
-### Resolution
+### 下一步行动
 
-- Development can proceed with mock data
-- Staging credentials can be resolved during Stage 1
-- Production credentials verified before Stage 3
+- 开发环境可以使用模拟数据继续开发。
+- 测试环境需要准备真实的数据库凭据。
+- 生产环境需要在第 3 阶段之前完成凭据的配置。
 
 ---
 
-## Phase 5: Execute
+## 第 5 阶段：执行开发
 
-Guided build-deploy-verify cycle with user checkpoints and live progress updates.
+在用户的监督下，按照既定的流程进行构建、部署和测试。
 
-```
-EXECUTE
-├── Stage 1: Development (local, dev branch, mock data)
-│   └── Build all features, tests pass locally
-│
-├── Stage 2: Staging (main branch, preview URL, real data)
-│   └── Deploy, fix environment issues, tests pass on preview
-│
-└── Stage 3: Production (permanent URL)
-    └── Connect domain, final verification, handoff
-```
+### 构建过程
 
-**Live progress updates:** Report each completed story:
+**实时进度更新：** 每完成一个功能，都会及时更新进度：
 ```
 ✅ US-001: Scaffold project
 ✅ US-002: Configure Skeleton + Bits UI
@@ -440,26 +418,26 @@ EXECUTE
 
 ---
 
-### Stage 1: Development
+### 第 1 阶段：开发环境
 
-Build everything locally with mock data.
+使用模拟数据在本地完成所有开发工作。
 
-#### Setup
+#### 设置开发环境
 
-Initialize a git repository on a `dev` branch and create a `progress.txt` tracking file. See [references/cli-commands.md](references/cli-commands.md#initialize-repository) for commands.
+在 `dev` 分支上创建一个新的 Git 仓库，并生成一个 `progress.txt` 文件来记录开发进度。具体操作步骤请参阅 [references/cli-commands.md](references/cli-commands.md#initialize-repository)。
 
-#### Execute Stories via Sub-Agents
+#### 并行执行任务
 
-Use `sessions_spawn` to execute stories in parallel where dependencies allow.
+使用 `sessions_spawn` 命令并行执行多个任务（前提是这些任务之间没有依赖关系）。
 
-**Wave structure:**
-- **Wave 1:** Scaffold (must complete first)
-- **Wave 2:** Configure (shadcn, PWA, directories) — parallel
-- **Wave 3:** Mock data setup
-- **Wave 4+:** Feature stories — parallel where independent
-- **Final wave:** E2E test stories
+**任务执行顺序：**
+- **第 1 波段**：搭建应用框架。
+- **第 2 波段**：配置应用环境（包括组件库、PWA 设置、目录结构等）。
+- **第 3 波段**：设置模拟数据。
+- **第 4 波段及以后**：并行执行核心功能的开发。
+- **最后一波**：执行端到端测试。
 
-**Sub-agent task template:**
+**任务执行模板：**
 ```
 Implement user story [US-XXX] for SvelteKit project at [project_path].
 
@@ -482,120 +460,93 @@ Instructions:
 8. Append learnings to progress.txt
 ```
 
-#### Handling Blocked Stories
+#### 处理无法完成的任务
 
-If a story cannot be completed:
-1. Mark as `blocked: true` in prd.json
-2. Add explanation to `notes` field
-3. Continue with other parallelizable stories
-4. Report blocked stories in final summary
+如果某个任务无法完成，请在 `prd.json` 文件中将其标记为 `blocked: true`，并在备注字段中说明原因。然后继续执行其他可以并行执行的任务。在最终总结中报告这些无法完成的任务。
 
-#### Stage 1 Exit Criteria
+#### 第 1 阶段的完成条件
 
-All checks must pass before proceeding: TypeScript verification, unit tests, and E2E tests against the local dev server with mocks. See [references/cli-commands.md](references/cli-commands.md#verify-build) for commands.
+在继续下一步之前，必须通过以下检查：
+- TypeScript 代码格式正确。
+- 单元测试通过。
+- 使用模拟数据在本地开发服务器上通过了端到端测试。
 
 ---
 
-### Stage 2: Staging
+### 第 2 阶段：测试环境
 
-Push to main, deploy to preview, switch from mocks to real data.
+将代码推送到主分支（`main`），然后部署到测试环境，并将模拟数据替换为真实数据。
 
-#### Verify Staging Credentials
+#### 验证测试环境配置
 
-Before proceeding, ensure all staging credentials are set:
-- DATABASE_URL (if using database)
-- OAuth client ID/secret (if using auth)
-- Other API keys
+在继续之前，请确保所有测试环境的凭据都已设置：
+- 如果使用数据库，请设置 `DATABASE_URL`。
+- 如果使用 OAuth 服务，请设置客户端 ID 和密钥。
+- 其他必要的 API 凭据也要确保已配置。
 
-If missing, pause and request from user.
+如果缺少任何凭据，请暂停开发流程并请求用户提供。
 
-#### Deploy via GitHub-Vercel Integration
+#### 通过 GitHub-Vercel 进行部署
 
-**One-time setup (recommended over CLI deploys):**
+**推荐使用这种方式**：
+- 创建一个私有的 GitHub 仓库，并将其关联到 Vercel 项目。
+- 在 Vercel 的控制台（Settings → Git → Connect Git Repository）中配置仓库链接。
+- 将 `dev` 分支设置为 `main` 分支。
 
-Create a private GitHub repository, link to a Vercel project, and connect GitHub in the Vercel dashboard (Settings → Git → Connect Git Repository). Set the production branch to `main`. See [references/cli-commands.md](references/cli-commands.md#create-github-repo-and-push) for commands.
+**GitHub 集成的优势：**
+- 无需额外使用 CLI 即可完成部署。
+- 所有分支都能自动生成预览地址。
+- 生成的部署地址格式为：`[project]-git-dev-[team].vercel.app`。
+- 有助于更好地管理持续集成和持续部署（CI/CD）流程。
 
-**Benefits of GitHub integration:**
-- Push to deploy (no CLI needed after setup)
-- Automatic preview URLs for all branches
-- Persistent branch URLs: `[project]-git-dev-[team].vercel.app`
-- Better CI/CD visibility in both dashboards
+**部署到测试环境：**
 
-**Deploy to staging:**
+将 `dev` 分支合并到 `main` 分支，然后推送代码。Vercel 会自动完成构建和部署。具体操作步骤请参阅 [references/cli-commands.md](references/cli-commands.md#merge-and-deploy-to-staging)。
 
-Merge the `dev` branch into `main` and push. The push triggers Vercel to build and deploy automatically. See [references/cli-commands.md](references/cli-commands.md#merge-and-deploy-to-staging) for commands.
-
-**Dev branch preview URL:**
-After connecting GitHub, the `dev` branch gets a persistent preview URL:
+**开发分支的预览地址：**
+连接 GitHub 后，`dev` 分支会生成一个固定的预览地址：
 `https://[project]-git-dev-[team].vercel.app`
+这个地址在每次提交后都会保持不变，便于与团队成员分享项目进度。
 
-This URL stays the same across commits—great for sharing with stakeholders.
+#### 解决环境问题
 
-#### Fix Environment Issues
+在部署环境中可能会遇到的一些常见问题包括：
+- OAuth 回调地址不正确。
+- CORS 配置问题。
+- Vercel 中的环境变量未正确设置。
+- 数据库连接字符串错误。
+- API 端点设置错误（例如使用了 `localhost`）。
 
-Common issues in deployed environments:
-- OAuth callback URLs (must match deployed domain)
-- CORS configuration
-- Environment variables not set in Vercel
-- Database connection strings
-- API endpoints using localhost
+**故障处理策略：**
+- 根据错误日志（stdout/stderr）诊断问题类型。
+- 根据错误类型采取相应的修复措施：
+  - 如果是依赖项问题，使用 `pnpm install` 安装缺失的依赖。
+  - 如果是类型错误，分析 `pnpm check` 的输出。
+  - 如果是测试失败，重新运行测试并记录详细日志。
+  - 如果是网络问题或超时问题，等待 30 秒后重试。
+- 如果尝试三次仍然无法解决问题，需要寻求进一步帮助。
 
-**Smart retry logic:**
-1. **Diagnose** error type from stdout/stderr
-2. **Attempt fix** based on error:
-   - Dependency error → `pnpm install`
-   - Type error → analyze `pnpm check` output
-   - Test failure → re-run with verbose logging
-   - Network/timeout → wait 30s, retry
-3. **Escalate** after 3 failed attempts
+#### 第 2 阶段的完成条件
 
-#### Stage 2 Exit Criteria
-
-E2E tests must pass against the Vercel preview URL. See [references/cli-commands.md](references/cli-commands.md#run-e2e-against-preview) for commands.
-
----
-
-### Stage 3: Production
-
-Deploy to production URL and hand off to user.
-
-#### Deploy Production
-
-With GitHub-Vercel integration, production deploys automatically when you push to `main`. Custom domains can be configured via the Vercel dashboard (Settings → Domains) or CLI. See [references/cli-commands.md](references/cli-commands.md#deploy-to-production) for commands.
-
-#### Final Verification
-
-Run E2E tests against the production URL to confirm everything works. See [references/cli-commands.md](references/cli-commands.md#final-verification) for commands.
-
-#### Completion Report
-
-```
-🚀 DEPLOYED
-
-Repository: github.com/[user]/[project-name]
-Live URL: https://[production-url]
-
-Build Summary:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Stories completed: [N]/[N]
-Blocked stories: [list if any]
-Tests passing: [X] unit, [Y] E2E
-Deployment: Vercel production
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The app is live and ready for users.
-```
+所有测试（包括端到端测试）都必须通过。
 
 ---
 
-## Phase 6: Handoff
+### 第 3 阶段：生产环境
 
-Provide lifecycle management documentation.
+将应用部署到生产环境，并将应用移交给用户。
 
-### Generate Admin Manual
+#### 部署到生产环境
 
-Create `ADMIN.md` in project root:
+使用 GitHub-Vercel 集成，当您将代码推送到 `main` 分支时，应用会自动部署到生产环境。可以通过 Vercel 的控制台（Settings → Domains）或 CLI 配置自定义域名。具体操作步骤请参阅 [references/cli-commands.md](references/cli-commands.md#deploy-to-production)。
 
+#### 最终验证
+
+在部署到生产环境后，再次运行端到端测试，确保所有功能都能正常工作。具体操作步骤请参阅 [references/cli-commands.md](references/cli-commands.md#final-verification)。
+
+#### 完成报告
+
+生成项目管理的文档，包括管理员使用手册（`ADMIN.md`）。
 ```markdown
 # [Project Name] — Administration Guide
 
@@ -648,8 +599,9 @@ Push to `main` branch → auto-deploys to Vercel.
 - **Build issues**: Check Vercel deployment logs
 ```
 
-### Report Handoff
+### 提交项目
 
+生成管理员使用的文档，并向用户提交项目完成报告。
 ```
 📖 HANDOFF COMPLETE
 
@@ -667,40 +619,36 @@ The project is ready for ongoing development.
 
 ---
 
-## Error Handling
+## 错误处理
 
-If any stage fails and cannot be automatically resolved:
+如果某个阶段出现故障且无法自动解决，请按照以下步骤处理：
+1. **诊断问题**：分析错误日志。
+2. **分类问题类型**：
+   - 如果是依赖项问题，使用 `pnpm install` 安装缺失的依赖。
+   - 如果是代码错误，显示具体的错误信息。
+   - 如果是测试失败，显示失败的测试用例。
+   - 如果是网络问题，尝试重新运行测试。
+3. **尝试修复**：最多尝试三次，并记录修复过程。
+4. **上报问题**：向用户报告问题详情、尝试的修复方法以及具体的错误信息。
 
-1. **Diagnose**: Analyze error output
-2. **Categorize**: 
-   - Dependency → `pnpm install`
-   - Type error → show specific errors
-   - Test failure → show failing tests
-   - Network → retry with backoff
-3. **Retry**: Up to 3 attempts with appropriate fix
-4. **Escalate**: Report to user with:
-   - What failed
-   - What was tried
-   - Specific error messages
-   - Suggested manual resolution
-
-**Never leave the project broken.** If Stage 2/3 fails, dev branch still works.
+**请确保项目始终能够正常运行。** 即使第 2 或第 3 阶段出现问题，开发环境仍然可以继续使用。
 
 ---
 
-## Quick Reference
+## 快速参考
 
-For all CLI commands and auth checks, see [references/cli-commands.md](references/cli-commands.md#quick-reference).
+有关所有命令行工具和认证验证的详细信息，请参阅 [references/cli-commands.md](references/cli-commands.md#quick-reference)。
 
-### Default Adapter
+### 默认的依赖项适配器
 
-Use `adapter-auto` — automatically detects:
-- Vercel → adapter-vercel
-- Cloudflare → adapter-cloudflare
-- Netlify → adapter-netlify
-- Otherwise → adapter-node
+系统会自动选择合适的适配器：
+- 如果使用 Vercel，选择 `adapter-vercel`。
+- 如果使用 Cloudflare，选择 `adapter-cloudflare`。
+- 如果使用 Netlify，选择 `adapter-netlify`。
+- 其他情况，选择 `adapter-node`。
 
-### Database Options (drizzle)
-- `postgresql` + `postgres.js` or `neon`
-- `sqlite` + `better-sqlite3` or `libsql`
-- `turso` + `@libsql/client`
+### 数据库配置（使用 `drizzle` 时）：
+
+- 可以选择 `postgresql` 和 `postgres.js` 或 `neon`。
+- 或者 `sqlite` 和 `better-sqlite3` 或 `libsql`。
+- 如果使用 Turso，选择 `@libsql/client`。

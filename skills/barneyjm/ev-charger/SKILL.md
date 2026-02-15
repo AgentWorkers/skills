@@ -1,12 +1,12 @@
 ---
 name: ev-charger
-description: "Find EV charging stations along a route or near a destination using Camino AI's location intelligence with OpenStreetMap data."
+description: "使用 Camino AI 的位置智能功能，结合 OpenStreetMap 数据，在路线沿线或目的地附近查找电动汽车充电站。"
 metadata: {"clawdbot":{"emoji":"⚡","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅程、房地产、酒店查找器、电动汽车充电站查找器、学校查找器、停车查找器、健身设施查找器、安全检查器、旅行规划器），以实现全面的功能覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill ev-charger
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install ev-charger
 # or: pnpm dlx clawhub@latest install ev-charger
 # or: bunx clawhub@latest install ev-charger
 ```
 
-# EV Charger Finder
+# 电动汽车充电站查找器
 
-Find EV charging stations along a route or near a destination. Uses OpenStreetMap data to locate charging infrastructure with AI-powered ranking.
+该技能可沿指定路线或目的地附近查找电动汽车充电站，并利用 OpenStreetMap 数据，结合人工智能技术对充电设施进行排序和推荐。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回格式：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月免费使用 1,000 次调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+请将以下代码添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,11 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+然后重启 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Find EV chargers near coordinates
@@ -70,24 +70,24 @@ Restart Claude Code.
 ./scripts/ev-charger.sh '{"query": "EV charging stations in Austin Texas", "limit": 20}'
 ```
 
-### Via curl
+### 通过 curl 命令使用
 
 ```bash
 curl -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/query?query=EV+charging+stations&lat=34.0522&lon=-118.2437&radius=5000&rank=true"
 ```
 
-## Parameters
+## 参数说明
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| query | string | No | "EV charging stations" | Search query (override for specific charger types) |
-| lat | float | No | - | Latitude for search center. AI generates if omitted for known locations. |
-| lon | float | No | - | Longitude for search center. AI generates if omitted for known locations. |
-| radius | int | No | 5000 | Search radius in meters (larger default for EV chargers) |
-| limit | int | No | 20 | Maximum results (1-100) |
+| 参数          | 类型       | 是否必填 | 默认值       | 说明                        |
+|---------------|-----------|---------|-----------------------------|
+| query        | string     | 否       | "EV charging stations"    | 搜索查询（可指定特定类型的充电站）         |
+| lat           | float      | 否       | -                           | 搜索中心的纬度（若未提供，则由系统自动计算）         |
+| lon           | float      | 否       | -                           | 搜索中心的经度（若未提供，则由系统自动计算）         |
+| radius        | int        | 否       | 5000          | 搜索半径（单位：米，电动汽车充电站的默认值较大）         |
+| limit         | int        | 否       | 20           | 最大返回结果数量（1-100）                 |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -113,27 +113,27 @@ curl -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Find chargers near a highway exit
+### 查找高速公路出口附近的充电站
 ```bash
 ./scripts/ev-charger.sh '{"query": "EV charging near Interstate 5", "lat": 34.0522, "lon": -118.2437, "radius": 10000}'
 ```
 
-### Find Tesla Superchargers
+### 查找特斯拉超级充电站
 ```bash
 ./scripts/ev-charger.sh '{"query": "Tesla Supercharger", "lat": 37.3861, "lon": -122.0839}'
 ```
 
-### Find chargers near a hotel
+### 查找酒店附近的充电站
 ```bash
 ./scripts/ev-charger.sh '{"query": "EV charging stations near downtown Denver", "radius": 3000}'
 ```
 
-## Best Practices
+## 使用建议：
 
-- Use a larger radius (5000-10000m) since EV chargers are less densely distributed than other amenities
-- Include the charger network name in the query if you need a specific one (e.g., "Tesla Supercharger", "ChargePoint")
-- Combine with the `route` skill to plan charging stops along a driving route
-- Combine with the `relationship` skill to check distances from chargers to your destination
-- For road trip planning, use the `travel-planner` skill with charging waypoints
+- 由于电动汽车充电站的分布较为稀疏，建议设置较大的搜索半径（5000-10000 米）。
+- 如需查找特定类型的充电站，请在查询中注明（例如：“Tesla Supercharger”或“ChargePoint”）。
+- 可结合 `route` 技能规划行驶路线中的充电站停靠点。
+- 可结合 `relationship` 技能查看充电站与目的地的距离。
+- 在公路旅行规划中，可结合 `travel-planner` 技能设置充电站作为导航节点。

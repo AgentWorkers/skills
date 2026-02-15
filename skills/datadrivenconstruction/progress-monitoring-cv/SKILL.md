@@ -1,23 +1,23 @@
 ---
 slug: "progress-monitoring-cv"
 display_name: "Progress Monitoring Cv"
-description: "Monitor construction progress using computer vision. Analyze site photos and drone imagery to track work completion, detect safety issues, and compare against BIM models."
+description: "使用计算机视觉技术监控施工进度。分析现场照片和无人机拍摄的图像，以跟踪工程完成情况、检测安全隐患，并与建筑信息模型（BIM）进行对比。"
 ---
 
-# Progress Monitoring with Computer Vision
+# 利用计算机视觉进行进度监控
 
-## Overview
+## 概述
 
-This skill implements computer vision for construction progress monitoring. Analyze site images automatically to track completion, detect hazards, and compare physical progress against planned work.
+本技能利用计算机视觉技术来实现建筑进度的监控。系统能够自动分析现场图像，以跟踪施工进度、检测安全隐患，并将实际施工情况与计划进度进行对比。
 
-**Applications:**
-- Progress percentage estimation
-- Safety compliance detection (PPE, barriers)
-- As-built vs BIM comparison
-- Material and equipment tracking
-- Quality defect detection
+**应用场景：**
+- 进度百分比估算
+- 安全合规性检测（个人防护装备、安全屏障的佩戴情况）
+- 实际施工情况与BIM模型的对比
+- 材料和设备的追踪
+- 质量缺陷检测
 
-## Quick Start
+## 快速入门
 
 ```python
 import cv2
@@ -50,9 +50,9 @@ with torch.no_grad():
 print("Image analyzed successfully")
 ```
 
-## Progress Detection System
+## 进度检测系统
 
-### Core Progress Analyzer
+### 核心进度分析器
 
 ```python
 import cv2
@@ -301,7 +301,7 @@ class ConstructionProgressAnalyzer:
         return [self.analyze_image(path) for path in image_paths]
 ```
 
-## Time-Lapse Analysis
+## 延时分析
 
 ```python
 class TimeLapseAnalyzer:
@@ -376,25 +376,25 @@ class TimeLapseAnalyzer:
         return output_path
 ```
 
-## Quick Reference
+## 快速参考
 
-| Analysis Type | Method | Output |
+| 分析类型 | 方法 | 输出结果 |
 |--------------|--------|--------|
-| Phase Detection | Color analysis + Object detection | Construction phase |
-| Progress % | Element counting + Phase base | Completion percentage |
-| Safety Check | Color detection (PPE) + Worker count | Safety observations |
-| Quality Check | Edge detection + Anomaly detection | Quality issues |
-| BIM Comparison | Structural similarity | Similarity score |
+| 阶段检测 | 色彩分析 + 对象检测 | 施工阶段 |
+| 进度百分比 | 构件数量统计 + 阶段占比 | 完成百分比 |
+| 安全检查 | 色彩检测（个人防护装备）+ 工人数量 | 安全状况观察 |
+| 质量检查 | 边缘检测 + 异常检测 | 质量问题 |
+| BIM对比 | 结构相似性 | 相似性评分 |
 
-## Resources
+## 资源推荐
 
 - **OpenCV**: https://opencv.org
 - **PyTorch**: https://pytorch.org
 - **YOLO**: https://ultralytics.com/yolov8
-- **DDC Website**: https://datadrivenconstruction.io
+- **DDC网站**: https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- See `4d-simulation` for schedule comparison
-- See `data-visualization` for progress dashboards
-- See `risk-assessment-ml` for delay prediction
+- 如需进行进度对比，请参考`4d-simulation`模块
+- 如需查看进度仪表板，请参考`data-visualization`模块
+- 如需进行延误预测，请参考`risk-assessment-ml`模块

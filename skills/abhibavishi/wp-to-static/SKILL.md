@@ -1,69 +1,69 @@
 ---
 name: wp-to-static
-description: Convert a WordPress website to a static site and deploy to Cloudflare Pages. Mirrors the rendered HTML via SSH, extracts only referenced assets (shrinks 1.5GB+ to ~25MB), fixes URLs, self-hosts fonts, strips WordPress cruft, and deploys. Use when migrating a WordPress site to static hosting.
+description: 将一个 WordPress 网站转换为静态网站，并部署到 Cloudflare Pages。通过 SSH 镜像渲染后的 HTML 内容，仅提取被引用的资源（将文件大小从 1.5GB 以上压缩到约 25MB），修复 URL，自托管字体文件，移除 WordPress 中不必要的代码，最后完成部署。此方法适用于将 WordPress 网站迁移到静态托管环境的情况。
 disable-model-invocation: true
 argument-hint: "[site-url]"
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob, Task, WebFetch
 metadata: {"openclaw":{"requires":{"bins":["ssh","ssh-agent","rsync","curl","git","gh","wrangler"],"env":["WP_SSH_HOST","WP_SSH_USER","WP_SSH_PORT","WP_SSH_KEY","WP_SITE_URL","WP_SITE_NAME"]},"emoji":"🔄","os":["darwin","linux"]}}
 ---
 
-# WordPress to Static Site (Cloudflare Pages)
+# 将 WordPress 网站转换为静态网站（使用 Cloudflare Pages）
 
-Convert a WordPress website to a pixel-perfect static site and deploy it to Cloudflare Pages. Zero attack surface, zero hosting cost, instant load times.
+将 WordPress 网站转换为像素完美的静态网站，并部署到 Cloudflare Pages。零攻击面、零托管成本、即时加载时间。
 
-## Prerequisites
+## 先决条件
 
-Before running this skill, the user MUST have:
+在运行此操作之前，用户必须满足以下条件：
 
-1. **GitHub CLI authenticated:** Run `gh auth status` to verify. If not logged in, run `gh auth login` first.
-2. **Cloudflare Wrangler authenticated:** Run `wrangler whoami` to verify. If not logged in, run `wrangler login` first.
-3. **SSH key added to ssh-agent:** The recommended way to handle SSH keys. Run:
+1. **已通过 GitHub CLI 进行身份验证：** 运行 `gh auth status` 进行验证。如果未登录，请先运行 `gh auth login`。
+2. **已通过 Cloudflare Wrangler 进行身份验证：** 运行 `wrangler whoami` 进行验证。如果未登录，请先运行 `wrangler login`。
+3. **SSH 密钥已添加到 ssh-agent：** 这是处理 SSH 密钥的推荐方式。运行以下命令：
    ```bash
    eval "$(ssh-agent -s)"
    ssh-add ~/.ssh/your_wp_key
    ```
-4. **Server host key verified:** The user should have connected to the server at least once and accepted the host key, so it exists in `~/.ssh/known_hosts`.
+4. **已验证服务器主机密钥：** 用户应至少连接过服务器一次并接受过主机密钥，因此该密钥应存在于 `~/.ssh/known_hosts` 文件中。
 
-## Environment Variables
+## 环境变量
 
-**Required** (stop and ask if any are missing):
-- `WP_SSH_HOST` — SSH hostname (e.g., `ssh.example.com`)
-- `WP_SSH_USER` — SSH username
-- `WP_SSH_PORT` — SSH port (e.g., `18765`)
-- `WP_SSH_KEY` — Path to SSH private key file (e.g., `~/.ssh/wp_key`). Key must have `chmod 600` permissions.
-- `WP_SITE_URL` — WordPress site URL (e.g., `https://example.com`)
-- `WP_SITE_NAME` — Short project name (e.g., `mysite`)
+**必需的环境变量（缺少任何变量时请停止操作并告知用户）：**
+- `WP_SSH_HOST` — SSH 主机名（例如：`ssh.example.com`）
+- `WP_SSH_USER` — SSH 用户名
+- `WP_SSH_PORT` — SSH 端口（例如：`18765`）
+- `WP_SSH_KEY` — SSH 私钥文件的路径（例如：`~/.ssh/wp_key`）。密钥必须具有 `chmod 600` 权限。
+- `WP_SITE_URL` — WordPress 网站地址（例如：`https://example.com`）
+- `WP_SITE_NAME` — 项目简称（例如：`mysite`）
 
-**Optional:**
-- `CF_ACCOUNT_ID` — Cloudflare account ID for Pages deployment
-- `GH_REPO_VISIBILITY` — `private` (default) or `public`
+**可选的环境变量：**
+- `CF_ACCOUNT_ID` — 用于部署到 Cloudflare Pages 的 Cloudflare 账户 ID
+- `GH_REPO_VISIBILITY` — `private`（默认值）或 `public`
 
-## Security Model
+## 安全模型
 
-- SSH authentication uses `ssh-agent` — keys are loaded into the agent before running, so no passphrase is passed via environment variables or command arguments
-- SSH host key verification is ENABLED (no `StrictHostKeyChecking=no`) — the server must already be in `~/.ssh/known_hosts`
-- Credentials are NEVER logged, echoed, or displayed
-- Credentials are NEVER committed to git
-- GitHub repos are created as private by default
+- SSH 验证使用 `ssh-agent` — 在运行之前，密钥会被加载到代理中，因此不会通过环境变量或命令参数传递密码。
+- SSH 主机密钥验证是启用的（不使用 `StrictHostKeyChecking=no`）—— 服务器必须已经添加到 `~/.ssh/known_hosts` 文件中。
+- 凭据永远不会被记录、回显或显示。
+- 凭据永远不会被提交到 Git 中。
+- GitHub 仓库默认设置为私有的。
 
-## Step 0: Validate
+## 第 0 步：验证
 
-1. Check all required env vars are set. If any are missing, stop and tell the user.
-2. Verify required binaries exist: `ssh`, `ssh-agent`, `rsync`, `curl`, `git`, `gh`, `wrangler`.
-3. Verify `gh auth status` succeeds. If not, tell user to run `gh auth login`.
-4. Verify `wrangler whoami` succeeds (if `CF_ACCOUNT_ID` is set). If not, tell user to run `wrangler login`.
-5. Verify SSH key file exists and has correct permissions (`chmod 600`).
-6. Stop if anything is missing.
+1. 检查所有必需的环境变量是否已设置。如果缺少任何变量，请停止操作并告知用户。
+2. 确认所需的二进制文件存在：`ssh`、`ssh-agent`、`rsync`、`curl`、`git`、`gh`、`wrangler`。
+3. 确认 `gh auth status` 的执行成功。如果未成功，请告知用户运行 `gh auth login`。
+4. 如果设置了 `CF_ACCOUNT_ID`，确认 `wrangler whoami` 的执行成功。如果未成功，请告知用户运行 `wrangler login`。
+5. 确认 SSH 密钥文件存在且权限正确（`chmod 600`）。
+6. 如果有任何缺失，请停止操作。
 
-## Step 1: Test SSH Connection
+## 第 1 步：测试 SSH 连接
 
-Test the connection using the key from ssh-agent:
+使用 ssh-agent 中的密钥测试连接：
 
 ```bash
 ssh -i $WP_SSH_KEY -p $WP_SSH_PORT $WP_SSH_USER@$WP_SSH_HOST "echo connected"
 ```
 
-If the key requires a passphrase and ssh-agent is not loaded, tell the user:
+如果密钥需要密码且 ssh-agent 未加载，请告知用户：
 ```
 Please add your SSH key to ssh-agent first:
   eval "$(ssh-agent -s)"
@@ -71,28 +71,28 @@ Please add your SSH key to ssh-agent first:
 Then re-run /wp-to-static
 ```
 
-If the host key is not recognized, tell the user to connect manually once first to verify and accept the host key:
+如果主机密钥未被识别，请告知用户先手动连接一次以验证并接受主机密钥：
 ```
 Please connect to the server once manually to verify the host key:
   ssh -i $WP_SSH_KEY -p $WP_SSH_PORT $WP_SSH_USER@$WP_SSH_HOST
 Accept the host key, then re-run /wp-to-static
 ```
 
-Do NOT use `StrictHostKeyChecking=no`. Do NOT bypass host key verification.
+**请勿使用 `StrictHostKeyChecking=no`。** 也请勿绕过主机密钥验证。
 
-## Step 2: Locate WordPress Installation
+## 第 2 步：定位 WordPress 安装位置
 
-SSH in and find the WordPress `public_html` directory. Common locations:
+通过 SSH 连接到服务器并找到 WordPress 的 `public_html` 目录。常见位置包括：
 - `~/www/DOMAIN/public_html/`
 - `~/public_html/`
 - `~/htdocs/`
 - `/var/www/html/`
 
-Confirm by finding `wp-config.php`. Store path as `WP_ROOT`.
+通过找到 `wp-config.php` 来确认目录位置。将此路径存储为 `WP_ROOT`。
 
-## Step 3: Mirror with wget (ON THE SERVER)
+## 第 3 步：在服务器上使用 wget 进行镜像复制
 
-Run `wget --mirror` **on the server** (not locally):
+在服务器上运行 `wget --mirror` 命令（不要在本地执行）：
 
 ```bash
 cd /tmp && rm -rf static_mirror && mkdir -p static_mirror && cd static_mirror && \
@@ -102,13 +102,13 @@ wget --mirror --convert-links --adjust-extension --page-requisites --no-parent \
   $WP_SITE_URL/ 2>&1 | tail -30
 ```
 
-If `wget` is not available on the server, fall back to `curl` locally for rendered HTML.
+如果服务器上没有 `wget`，则可以在本地使用 `curl` 来获取渲染后的 HTML 文件。
 
-## Step 4: Rsync to Local
+## 第 4 步：将文件同步到本地
 
-Create `./build/site` (NEVER use the project root as temp dir).
+创建 `./build/site` 文件夹（切勿使用项目根目录作为临时目录）。
 
-**Exclude server-side code and sensitive files.** Only static assets (images, CSS, JS, fonts) are needed. PHP files, config files, and other server-side code must NEVER be downloaded.
+**排除服务器端的代码和敏感文件。** 只需要静态资源（图片、CSS、JS、字体）。PHP 文件、配置文件和其他服务器端代码严禁下载。
 
 ```bash
 RSYNC_EXCLUDE="--exclude='*.php' --exclude='wp-config*' --exclude='.htaccess' --exclude='*.sql' --exclude='*.log' --exclude='debug.log' --exclude='error_log' --exclude='.env' --exclude='*.bak' --exclude='*.backup'"
@@ -120,96 +120,96 @@ rsync -avz $RSYNC_EXCLUDE server:$WP_ROOT/wp-content/plugins/ ./build/site/wp-co
 rsync -avz $RSYNC_EXCLUDE server:$WP_ROOT/wp-includes/ ./build/site/wp-includes/
 ```
 
-After rsync, verify no PHP or config files were downloaded:
+同步完成后，确认没有下载到任何 PHP 或配置文件：
 ```bash
 find ./build/site -name '*.php' -o -name 'wp-config*' -o -name '.htaccess' -o -name '.env' | head -20
 ```
-If any are found, delete them before proceeding.
+如果发现了这些文件，请在继续之前删除它们。
 
-## Step 5: Extract Only Referenced Assets
+## 第 5 步：提取引用的资源
 
-**This is the key step.** Parse all HTML and CSS files to find every referenced local file:
+**这是关键步骤。** 遍历所有 HTML 和 CSS 文件，找出所有引用的本地文件：
 
-**From HTML:** `src=`, `href=`, `data-src=`, `data-srcset=`, `srcset=`, inline `background-image: url()`
+**从 HTML 文件中提取：** `src=`, `href=`, `data-src=`, `data-srcset=`, `srcset=`, 内联的 `background-image: url()`。
 
-**From CSS:** All `url()` references — resolve relative paths from CSS file location to site root.
+**从 CSS 文件中提取：** 所有的 `url()` 引用—— 将相对路径解析为站点根目录的路径。
 
-Write the list to `./build/referenced-files.txt`, then copy only those files to `./public/` preserving directory structure. This typically shrinks 1.5GB+ down to ~25MB.
+将提取到的文件列表写入 `./build/referenced-files.txt`，然后仅将这些文件复制到 `./public/` 目录中，同时保持目录结构。这样通常可以将文件大小从 1.5GB 以上压缩到约 25MB。
 
-## Step 6: Fix Absolute URLs
+## 第 6 步：修复绝对 URL
 
-In `index.html` and ALL CSS files:
+在 `index.html` 和所有 CSS 文件中：
 
-1. Replace `$WP_SITE_URL/` → empty string (relative paths)
-2. Replace any staging/dev domain URLs → local paths
-3. Self-host Google Fonts:
-   - Download each `.ttf` to `./public/fonts/`
-   - Update `@font-face src:` to `fonts/filename.ttf`
-4. Remove `<link rel="preconnect">` for Google Fonts domains
+1. 将 `$WP_SITE_URL/` 替换为空字符串（使用相对路径）。
+2. 将所有 staging/dev 域名的 URL 替换为本地路径。
+3. 自动加载 Google 字体：
+   - 将每个 `.ttf` 文件下载到 `./public/fonts/`。
+   - 更新 `@font-face src:` 为 `fonts/filename.ttf`。
+4. 删除 `<link rel="preconnect">` 标签（用于加载 Google 字体）。
 
-**CSS path resolution is critical.** If CSS is at `wp-content/uploads/cache/file.css`:
+**CSS 路径的解析非常重要。** 如果 CSS 文件位于 `wp-content/uploads/cache/file.css`，则需要进行以下修改：
 - `wp-content/uploads/` → `../../`
 - `wp-content/themes/` → `../../themes/`
 - `wp-includes/` → `../../../wp-includes/`
 
-## Step 7: Strip WordPress Cruft
+## 第 7 步：删除 WordPress 中不必要的内容
 
-**Remove:**
-- `<meta name="generator" ...>` (WordPress, WPBakery, Slider Revolution)
-- `<link rel="EditURI"...>`, `<link rel="alternate"...>` (RSS, oEmbed)
-- `<link rel="https://api.w.org/"...>`, `<link rel="shortlink"...>`
+**删除以下内容：**
+- `<meta name="generator" ...>`（WordPress、WPBakery、Slider Revolution 生成的元数据）
+- `<link rel="EditURI"...>`, `<link rel="alternate"...>`（用于 RSS 和 oEmbed 的链接）
+- `<link rel="https://api.w.org/"...>`, `<link rel="shortlink"...>`（用于外部链接）
 - `<link rel="profile" href="gmpg.org/xfn/11">`
-- `<link rel="dns-prefetch"...>` for fonts.googleapis.com
-- W3 Total Cache HTML comments
-- `wp-json` root references in inline JSON
+- `<link rel="dns-prefetch"...>`（用于加载 fonts.googleapis.com 的链接）
+- W3 Total Cache 相关的 HTML 注释
+- 内联 JSON 中的 `wp-json` 引用
 
-**Keep:** Email addresses, `<link rel="canonical">` (update to `/`)
+**保留以下内容：** 电子邮件地址、`<link rel="canonical">`（更新为 `/`）
 
-## Step 8: Cloudflare Pages Config
+## 第 8 步：配置 Cloudflare Pages**
 
-Create `./public/_headers` with aggressive caching for `/fonts/*`, `/wp-content/*`, `/wp-includes/*`.
+创建 `./public/_headers` 文件，为 `/fonts/*`, `/wp-content/*`, `/wp-includes/*` 设置强制缓存。
 
-Create `./public/_redirects` redirecting `/wp-admin/*`, `/wp-login.php`, `/xmlrpc.php`, `/feed/*` → `/` (302).
+创建 `./public/_redirects` 文件，将 `/wp-admin/*`, `/wp-login.php`, `/xmlrpc.php`, `/feed/*` 重定向到 `/`（状态码 302）。
 
-## Step 9: Verify Locally
+## 第 9 步：在本地进行验证
 
-1. Start `python3 -m http.server` from `./public/`
-2. Test key assets return HTTP 200 (CSS, JS, logo, fonts, images)
-3. Tell user to open the URL and visually verify
-4. **Wait for user confirmation before deploying**
+1. 从 `./public/` 目录中运行 `python3 -m http.server`。
+2. 测试关键资源（CSS、JS、Logo、字体、图片）是否能返回 HTTP 200 状态码。
+3. 告知用户打开网站并进行视觉检查。
+4. **在部署前等待用户的确认**。
 
-## Step 10: Scrub Temporary Files and Deploy
+## 第 10 步：清理临时文件并部署
 
-**Before any git operations**, remove the `./build/` directory to ensure no server-side code, PHP files, or sensitive data can accidentally be committed:
+**在执行任何 Git 操作之前**，删除 `./build/` 目录，以确保不会意外提交服务器端的代码、PHP 文件或敏感数据：
 
 ```bash
 rm -rf ./build
 ```
 
-Verify only `./public/` remains and contains no PHP or config files:
+确认 `./public/` 目录中仅包含文件，且不包含 PHP 或配置文件：
 ```bash
 find ./public -name '*.php' -o -name 'wp-config*' -o -name '.htaccess' -o -name '.env'
 ```
-This must return empty. If not, delete those files before proceeding.
+如果发现这些文件，请在继续之前删除它们。
 
-Then deploy:
-1. `git init`, commit ONLY `./public/` and `.gitignore`
-2. `git config http.postBuffer 524288000` (for binary assets)
-3. `gh repo create $WP_SITE_NAME --private --source=. --push`
-4. `CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT_ID wrangler pages project create $WP_SITE_NAME --production-branch main`
-5. `CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT_ID wrangler pages deploy ./public --project-name $WP_SITE_NAME`
-6. Verify deployment, report live URL, remind about custom domain setup
+然后执行以下操作：
+1. `git init`，仅提交 `./public/` 和 `.gitignore`。
+2. `git config http.postBuffer 524288000`（针对二进制资源）。
+3. `gh repo create $WP_SITE_NAME --private --source=. --push`。
+4. `CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT_ID wrangler pages project create $WP_SITE_NAME --production-branch main`。
+5. `CLOUDFLARE_ACCOUNT_ID=$CF_ACCOUNT_ID wrangler pages deploy ./public --project-name $WP_SITE_NAME`。
+6. 验证部署结果，提供实时 URL，并提醒用户设置自定义域名。
 
-## Safety Rules
+## 安全规则
 
-- NEVER display or log credentials (SSH keys, passphrases, tokens)
-- NEVER commit credentials to git (.gitignore must exclude .env, *.key, *.pem)
-- NEVER use `StrictHostKeyChecking=no` or bypass SSH host verification
-- NEVER pass passphrases as command-line arguments or environment variables at runtime
-- NEVER delete the current working directory (breaks the shell CWD)
-- NEVER force-push or use destructive git commands
-- NEVER rsync PHP files, wp-config, .htaccess, .env, or SQL dumps from the server
-- Use `./build/` for temp files, `./public/` for output — only `./public/` is committed
-- ALWAYS delete `./build/` BEFORE any git operations to prevent accidental commits of server-side files
-- Verify `./public/` contains no PHP or config files before committing
-- Stop and report on any failure — do NOT retry blindly
+- **严禁显示或记录任何凭据（SSH 密钥、密码、令牌）**。
+- **严禁将凭据提交到 Git 中（.gitignore 文件中必须排除 `.env`, *.key`, *.pem` 文件）。
+- **严禁使用 `StrictHostKeyChecking=no` 或绕过 SSH 主机密钥验证**。
+- **严禁在运行时通过命令行参数或环境变量传递密码**。
+- **严禁删除当前的工作目录（这会导致 shell 的工作目录（CWD）发生变化）**。
+- **严禁强制推送或使用可能破坏数据的 Git 命令**。
+- **严禁从服务器同步 PHP 文件、wp-config、.htaccess、.env 或 SQL 数据库转储文件**。
+- **使用 `./build/` 作为临时目录，`./public/` 作为输出目录—— 仅提交 `./public/` 中的文件**。
+- **在执行任何 Git 操作之前，务必删除 `./build/` 目录，以防止意外提交服务器端文件**。
+- **在提交之前确认 `./public/` 中不包含 PHP 或配置文件**。
+- **如果遇到任何错误，请停止操作并报告——切勿盲目重试**。

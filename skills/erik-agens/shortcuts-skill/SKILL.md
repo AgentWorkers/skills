@@ -1,16 +1,16 @@
 ---
 name: shortcuts-generator
-description: Generate macOS/iOS Shortcuts by creating plist files. Use when asked to create shortcuts, automate workflows, build .shortcut files, or generate Shortcuts plists. Covers 1,155 actions (427 WF*Actions + 728 AppIntents), variable references, and control flow.
+description: 通过创建 `.plist` 文件来生成 macOS/iOS 快捷方式。适用于需要创建快捷方式、自动化工作流程、构建 `.shortcut` 文件或生成快捷方式 `.plist` 的场景。涵盖了 1,155 个操作（427 个 WF*Actions + 728 个 AppIntents）、变量引用以及控制流。
 allowed-tools: Write, Bash
 ---
 
-# macOS Shortcuts Generator
+# macOS 快捷方式生成器
 
-Generate valid `.shortcut` files that can be signed and imported into Apple's Shortcuts app.
+生成可签名并导入到 Apple 的 Shortcuts 应用程序中的有效 `.shortcut` 文件。
 
-## Quick Start
+## 快速入门
 
-A shortcut is a binary plist with this structure:
+快捷方式是一种具有以下结构的二进制 plist 文件：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -48,7 +48,7 @@ A shortcut is a binary plist with this structure:
 </plist>
 ```
 
-### Minimal Hello World
+### 最简单的“Hello World”示例
 
 ```xml
 <dict>
@@ -93,69 +93,69 @@ A shortcut is a binary plist with this structure:
 </dict>
 ```
 
-## Core Concepts
+## 核心概念
 
-### 1. Actions
-Every action has:
-- **Identifier**: `is.workflow.actions.<name>` (e.g., `is.workflow.actions.showresult`)
-- **Parameters**: Action-specific configuration in `WFWorkflowActionParameters`
-- **UUID**: Unique identifier for referencing this action's output
+### 1. 动作（Actions）
+每个动作都包含以下内容：
+- **标识符（Identifier）**：`isworkflow.actions.<name>`（例如，`isworkflow.actions.showresult`）
+- **参数（Parameters）**：在 `WFWorkflowActionParameters` 中定义的特定于动作的配置
+- **UUID（UUID）**：用于引用此动作输出的唯一标识符
 
-### 2. Variable References
-To use output from a previous action:
-1. The source action needs a `UUID` parameter
-2. Reference it using `OutputUUID` in an `attachmentsByRange` dictionary
-3. Use `￼` (U+FFFC) as placeholder in the string where the variable goes
-4. Set `WFSerializationType` to `WFTextTokenString`
+### 2. 变量引用（Variable References）
+要使用上一个动作的输出：
+1. 源动作需要一个 `UUID` 参数
+2. 在 `attachmentsByRange` 字典中使用 `OutputUUID` 来引用该输出
+3. 在需要插入变量的字符串中使用 `￼`（U+FFFC）作为占位符
+4. 将 `WFSerializationType` 设置为 `WFTextTokenString`
 
-### 3. Control Flow
-Control flow actions (repeat, conditional, menu) use:
-- `GroupingIdentifier`: UUID linking start/middle/end actions
-- `WFControlFlowMode`: 0=start, 1=middle (else/case), 2=end
+### 3. 控制流（Control Flow）
+控制流动作（如重复、条件判断、菜单操作）使用以下内容：
+- **分组标识符（GroupingIdentifier）**：用于链接开始/中间/结束动作的 UUID
+- **WFControlFlowMode**：0=开始，1=中间（其他/分支），2=结束
 
-## Common Actions Quick Reference
+## 常见动作快速参考
 
-| Action | Identifier | Key Parameters |
+| 动作 | 标识符 | 关键参数 |
 |--------|------------|----------------|
-| Text | `is.workflow.actions.gettext` | `WFTextActionText` |
-| Show Result | `is.workflow.actions.showresult` | `Text` |
-| Ask for Input | `is.workflow.actions.ask` | `WFAskActionPrompt`, `WFInputType` |
-| Use AI Model | `is.workflow.actions.askllm` | `WFLLMPrompt`, `WFLLMModel`, `WFGenerativeResultType` |
-| Comment | `is.workflow.actions.comment` | `WFCommentActionText` |
-| URL | `is.workflow.actions.url` | `WFURLActionURL` |
-| Get Contents of URL | `is.workflow.actions.downloadurl` | `WFURL`, `WFHTTPMethod` |
-| Get Weather | `is.workflow.actions.weather.currentconditions` | (none required) |
-| Open App | `is.workflow.actions.openapp` | `WFAppIdentifier` |
-| Open URL | `is.workflow.actions.openurl` | `WFInput` |
-| Alert | `is.workflow.actions.alert` | `WFAlertActionTitle`, `WFAlertActionMessage` |
-| Notification | `is.workflow.actions.notification` | `WFNotificationActionTitle`, `WFNotificationActionBody` |
-| Set Variable | `is.workflow.actions.setvariable` | `WFVariableName`, `WFInput` |
-| Get Variable | `is.workflow.actions.getvariable` | `WFVariable` |
-| Number | `is.workflow.actions.number` | `WFNumberActionNumber` |
-| List | `is.workflow.actions.list` | `WFItems` |
-| Dictionary | `is.workflow.actions.dictionary` | `WFItems` |
-| Repeat (count) | `is.workflow.actions.repeat.count` | `WFRepeatCount`, `GroupingIdentifier`, `WFControlFlowMode` |
-| Repeat (each) | `is.workflow.actions.repeat.each` | `WFInput`, `GroupingIdentifier`, `WFControlFlowMode` |
-| If/Otherwise | `is.workflow.actions.conditional` | `WFInput`, `WFCondition`, `GroupingIdentifier`, `WFControlFlowMode` |
-| Choose from Menu | `is.workflow.actions.choosefrommenu` | `WFMenuPrompt`, `WFMenuItems`, `GroupingIdentifier`, `WFControlFlowMode` |
-| Find Photos | `is.workflow.actions.filter.photos` | `WFContentItemFilter` (see FILTERS.md) |
-| Delete Photos | `is.workflow.actions.deletephotos` | `photos` (**NOT** `WFInput`!) |
+| 显示文本 | `isworkflow.actions.gettext` | `WFTextActionText` |
+| 显示结果 | `isworkflow.actions.showresult` | `Text` |
+| 请求输入 | `isworkflow.actions.ask` | `WFAskActionPrompt`, `WFInputType` |
+| 使用 AI 模型 | `isworkflow.actions.askllm` | `WFLLMPrompt`, `WFLLMModel`, `WFGenerativeResultType` |
+| 评论 | `isworkflow.actions.comment` | `WFCommentActionText` |
+| URL | `isworkflow.actions.url` | `WFURLActionURL` |
+| 下载 URL 内容 | `isworkflow.actions.downloadurl` | `WFURL`, `WFHTTPMethod` |
+| 获取天气信息 | `isworkflow.actions.weather.currentconditions` | （无需参数） |
+| 打开应用程序 | `isworkflow.actions.openapp` | `WFAppIdentifier` |
+| 打开 URL | `isworkflow.actions.openurl` | `WFInput` |
+| 弹出警告 | `isworkflow.actions.alert` | `WFAlertActionTitle`, `WFAlertActionMessage` |
+| 发送通知 | `isworkflow.actionsnotification` | `WFNotificationActionTitle`, `WFNotificationActionBody` |
+| 设置变量 | `isworkflow.actions.setvariable` | `WFVariableName`, `WFInput` |
+| 获取变量值 | `isworkflow.actions.getvariable` | `WFVariable` |
+| 输入数字 | `isworkflow.actions.number` | `WFNumberActionNumber` |
+| 列出项目 | `isworkflow.actions.list` | `WFItems` |
+| 创建字典 | `isworkflow.actions.dictionary` | `WFItems` |
+| 重复执行（指定次数） | `isworkflow.actions.repeat.count` | `WFRepeatCount`, `GroupingIdentifier`, `WFControlFlowMode` |
+| 逐个重复执行 | `isworkflow.actions.repeat.each` | `WFInput`, `GroupingIdentifier`, `WFControlFlowMode` |
+| 条件判断 | `isworkflow.actions.conditional` | `WFInput`, `WFCondition`, `GroupingIdentifier`, `WFControlFlowMode` |
+| 从菜单中选择 | `isworkflow.actions.choosefrommenu` | `WFMenuPrompt`, `WFMenuItems`, `GroupingIdentifier`, `WFControlFlowMode` |
+| 查找照片 | `isworkflow.actions.filter.photos` | `WFContentItemFilter`（详见 FILTERS.md） |
+| 删除照片 | `isworkflow.actions.deletephotos` | `photos`（**注意**：此处不需要 `WFInput` 参数！）
 
-## Detailed Reference Files
+## 详细参考文档
 
-For complete documentation, see:
-- [PLIST_FORMAT.md](PLIST_FORMAT.md) - Complete plist structure
-- [ACTIONS.md](ACTIONS.md) - All 427 WF*Action identifiers and parameters
-- [APPINTENTS.md](APPINTENTS.md) - All 728 AppIntent actions
-- [PARAMETER_TYPES.md](PARAMETER_TYPES.md) - All parameter value types and serialization formats
-- [VARIABLES.md](VARIABLES.md) - Variable reference system
-- [CONTROL_FLOW.md](CONTROL_FLOW.md) - Repeat, Conditional, Menu patterns
-- [FILTERS.md](FILTERS.md) - Content filters for Find/Filter actions (photos, files, etc.)
-- [EXAMPLES.md](EXAMPLES.md) - Complete working examples
+有关完整文档，请参阅：
+- [PLIST_FORMAT.md](PLIST_FORMAT.md) - 完整的 plist 结构
+- [ACTIONS.md](ACTIONS.md) - 所有 427 个 WF*Action 的标识符和参数
+- [APPINTENTS.md](APPINTENTS.md) - 所有 728 个 AppIntent 动作
+- [PARAMETER_TYPES.md](PARAMETER_TYPES.md) - 所有参数类型和序列化格式
+- [VARIABLES.md](VARIABLES.md) - 变量引用系统
+- [CONTROL_FLOW.md](CONTROL_FLOW.md) - 重复、条件判断、菜单操作的模式
+- [FILTERS.md](FILTERS.md) - 用于查找/过滤动作的内容过滤器（照片、文件等）
+- [EXAMPLES.md](EXAMPLES.md) - 完整的示例代码
 
-## Signing Shortcuts
+## 快捷方式的签名
 
-Shortcuts MUST be signed before they can be imported. Use the macOS `shortcuts` CLI:
+在导入之前，必须对快捷方式文件进行签名。可以使用 macOS 的 `shortcuts` 命令行工具来完成签名：
 
 ```bash
 # Sign for anyone to use
@@ -165,25 +165,23 @@ shortcuts sign --mode anyone --input MyShortcut.shortcut --output MyShortcut_sig
 shortcuts sign --mode people-who-know-me --input MyShortcut.shortcut --output MyShortcut_signed.shortcut
 ```
 
-The signing process:
-1. Write your plist as XML to a `.shortcut` file
-2. Run `shortcuts sign` to add cryptographic signature (~19KB added)
-3. The signed file can be opened/imported into Shortcuts.app
+签名流程如下：
+1. 将 plist 文件以 XML 格式写入 `.shortcut` 文件中
+2. 运行 `shortcuts sign` 命令添加加密签名（签名文件大小会增加约 19KB）
+3. 签名后的文件即可导入到 Shortcuts.app 中
 
-## Workflow for Creating Shortcuts
+## 创建快捷方式的步骤：
+1. **定义动作**：指定快捷方式的功能
+2. **生成 UUID**：每个产生输出的动作都需要一个唯一的 UUID
+3. **构建动作数组**：为每个动作创建包含标识符和参数的字典
+4. **建立变量引用**：使用 `OutputUUID` 将输出与输入关联起来
+5. **封装成 plist 文件**：添加包含图标、名称和版本的根结构
+6. **保存文件**：将文件保存为 `.shortcut` 格式（XML 或其他格式均可）
+7. **签名**：运行 `shortcuts sign` 命令使文件可导入
 
-1. **Define actions** - List what the shortcut should do
-2. **Generate UUIDs** - Each action that produces output needs a unique UUID
-3. **Build action array** - Create each action dictionary with identifier and parameters
-4. **Wire variable references** - Connect outputs to inputs using `OutputUUID`
-5. **Wrap in plist** - Add the root structure with icon, name, version
-6. **Write to file** - Save as `.shortcut` (XML plist format is fine)
-7. **Sign** - Run `shortcuts sign` to make it importable
-
-## Key Rules
-
-1. **UUIDs must be uppercase**: `A1B2C3D4-E5F6-7890-ABCD-EF1234567890`
-2. **WFControlFlowMode is an integer**: Use `<integer>0</integer>` not `<string>0</string>`
-3. **Range keys use format**: `{position, length}` - e.g., `{0, 1}` for first character
-4. **The placeholder character**: `￼` (U+FFFC) marks where variables are inserted
-5. **Control flow needs matching ends**: Every repeat/if/menu start needs an end action with same `GroupingIdentifier`
+## 重要规则：
+1. **UUID 必须为大写**：格式为 `A1B2C3D4-E5F6-7890-ABCD-EF1234567890`
+2. **WFControlFlowMode 必须是整数**：使用 `<integer>0</integer>` 而不是 `<string>0</string>`
+3. **范围键的格式**：使用 `{position, length}`，例如 `{0, 1}` 表示获取第一个字符
+4. **占位符字符**：使用 `￼`（U+FFFC）来标记变量插入的位置
+5. **控制流需要匹配的结束动作**：每个重复/条件判断/菜单操作都需要一个具有相同 `GroupingIdentifier` 的结束动作

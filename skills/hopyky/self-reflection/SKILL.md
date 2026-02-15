@@ -1,15 +1,15 @@
 ---
 name: self-reflection
-description: Continuous self-improvement through structured reflection and memory
+description: 通过结构化的反思和总结，实现持续自我提升
 version: 1.1.1
 metadata: {"openclaw":{"emoji":"🪞","requires":{"bins":["jq","date"]}}}
 ---
 
-# 🪞 Self-Reflection
+# 🪞 自我反思
 
-A skill for continuous self-improvement. The agent tracks mistakes, lessons learned, and improvements over time through regular heartbeat-triggered reflections.
+这是一种促进持续自我提升的技能。该工具通过定期触发的心跳检测机制，记录错误、经验教训以及随时间取得的进步。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Check if reflection is needed
@@ -25,7 +25,7 @@ self-reflection read
 self-reflection stats
 ```
 
-## How It Works
+## 工作原理
 
 ```
 Heartbeat (60m) → Agent reads HEARTBEAT.md → Runs self-reflection check
@@ -42,19 +42,19 @@ Heartbeat (60m) → Agent reads HEARTBEAT.md → Runs self-reflection check
                                               (past lessons)     (new insights)
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `check [--quiet]` | Check if reflection is due (OK or ALERT) |
-| `log <tag> <miss> <fix>` | Log a new reflection |
-| `read [n]` | Read last n reflections (default: 5) |
-| `stats` | Show reflection statistics |
-| `reset` | Reset the timer |
+| `check [--quiet]` | 检查是否需要进行自我反思（状态：OK 或 ALERT） |
+| `log <tag> <miss> <fix>` | 记录新的反思内容 |
+| `read [n]` | 读取最近 n 条反思记录（默认值：5） |
+| `stats` | 显示反思记录的统计信息 |
+| `reset` | 重置计时器 |
 
-## OpenClaw Integration
+## 与 OpenClaw 的集成
 
-Enable heartbeat in `~/.openclaw/openclaw.json`:
+在 `~/.openclaw/openclaw.json` 文件中启用心跳检测功能：
 
 ```json
 {
@@ -69,7 +69,7 @@ Enable heartbeat in `~/.openclaw/openclaw.json`:
 }
 ```
 
-Add to your workspace `HEARTBEAT.md`:
+将 `HEARTBEAT.md` 文件添加到您的工作区中：
 
 ```markdown
 ## Self-Reflection Check (required)
@@ -77,9 +77,9 @@ Run `self-reflection check` at each heartbeat.
 If ALERT: read past lessons, reflect, then log insights.
 ```
 
-## Configuration
+## 配置
 
-Create `~/.openclaw/self-reflection.json`:
+创建 `~/.openclaw/self-reflection.json` 文件：
 
 ```json
 {
@@ -90,10 +90,10 @@ Create `~/.openclaw/self-reflection.json`:
 }
 ```
 
-## Author
+## 作者
 
-Created by [hopyky](https://github.com/hopyky)
+由 [hopyky](https://github.com/hopyky) 创建
 
-## License
+## 许可证
 
-MIT
+MIT 许可证

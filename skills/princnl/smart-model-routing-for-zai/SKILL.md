@@ -28,131 +28,126 @@ metadata:
   provider: "z.ai (GLM)"
 ---
 
-# Smart Model Switching
+# 智能模型切换
 
-**Three-tier z.ai (GLM) routing: Flash → Standard → Plus / 32B**
+**z.ai（GLM）的三层路由系统：Flash → Standard → Plus / 32B**
 
-Start with the cheapest model. Escalate only when needed. Designed to minimize API cost without sacrificing correctness.
-
----
-
-## The Golden Rule
-
-> If a human would need more than 30 seconds of focused thinking, escalate from Flash to Standard.  
-> If the task involves architecture, complex tradeoffs, or deep reasoning, escalate to Plus / 32B.
+建议从最便宜的模型开始使用，仅在必要时升级。该系统旨在在保证准确性的同时，将API成本降至最低。
 
 ---
 
-## Model Reality (Relative)
+## 使用原则
 
-| Tier | Example Models | Purpose |
-|-----|----------------|---------|
-| Flash | GLM-4.5-Flash, GLM-4.7-Flash | Fastest & cheapest |
-| Standard | GLM-4.6, GLM-4.7 | Strong reasoning & code |
-| Plus / 32B | GLM-4-Plus, GLM-4-32B-128K | Heavy reasoning & architecture |
-
-**Bottom line:** Wrong model selection wastes money OR time. Flash for simple, Standard for normal work, Plus/32B for complex decisions.
+> 如果人类需要超过30秒的专注思考时间，应从Flash模型升级到Standard模型。
+> 如果任务涉及架构设计、复杂的权衡或深度推理，应升级到Plus / 32B模型。
 
 ---
 
-## 💚 FLASH — Default for Simple Tasks
+## 模型适用场景（相对划分）
 
-**Stay on Flash for:**
-- Factual Q&A — “what is X”, “who is Y”, “when did Z”
-- Quick lookups — definitions, unit conversions, short translations
-- Status checks — monitoring, file reads, session state
-- Heartbeats — periodic checks, OK responses
-- Memory & reminders
-- Casual conversation — greetings, acknowledgments
-- Simple file ops — read, list, basic writes
-- One-liner tasks — anything answerable in 1–2 sentences
-- Cron jobs (always Flash by default)
+| 模型层级 | 适用模型 | 用途 |
+|---------|---------|-------|
+| Flash    | GLM-4.5-Flash, GLM-4.7-Flash | 最快且最便宜 |
+| Standard | GLM-4.6, GLM-4.7   | 强大的推理能力与代码处理能力 |
+| Plus / 32B | GLM-4-Plus, GLM-4-32B-128K | 需要深度推理和复杂架构设计的任务 |
 
-### NEVER do these on Flash
-- ❌ Write code longer than 10 lines
-- ❌ Create comparison tables
-- ❌ Write more than 3 paragraphs
-- ❌ Do multi-step analysis
-- ❌ Write reports or proposals
+**总结：** 选择错误的模型会浪费金钱或时间。简单任务使用Flash模型，常规工作使用Standard模型，复杂决策使用Plus/32B模型。
 
 ---
 
-## 💛 STANDARD — Core Workhorse
+## 💚 FLASH — 简单任务的默认选择
 
-**Escalate to Standard for:**
+**适用于以下场景：**
+- 事实性问答（例如：“X是什么？”、“Y是谁？”、“Z发生在什么时候？”）
+- 快速查询（定义、单位转换、简短翻译）
+- 状态检查（监控、文件读取、会话状态）
+- 周期性检查（心跳请求、确认回复）
+- 记忆功能与提醒
+- 轻松的对话（问候语、确认信息）
+- 简单的文件操作（读取、列出、基本写入）
+- 仅需1-2句话就能回答的任务
+- Cron作业（默认使用Flash模型）
 
-### Code & Technical
-- Code generation — functions, scripts, features
-- Debugging — normal bug investigation
-- Code review — PRs, refactors
-- Documentation — README, comments, guides
-
-### Analysis & Planning
-- Comparisons and evaluations
-- Planning — roadmaps, task breakdowns
-- Research synthesis
-- Multi-step reasoning
-
-### Writing & Content
-- Long-form writing (>3 paragraphs)
-- Summaries of long documents
-- Structured output — tables, outlines
-
-**Most real user conversations belong here.**
+### **禁止在Flash模型上执行以下操作：**
+- ❌ 编写超过10行的代码
+- ❌ 创建比较表格
+- ❌ 写作超过3段的文字
+- ❌ 进行多步骤分析
+- ❌ 编写报告或提案
 
 ---
 
-## ❤️ PLUS / 32B — Complex Reasoning Only
+## 💛 STANDARD — 核心工作模型
 
-**Escalate to Plus / 32B for:**
+**在以下情况下升级到Standard模型：**
 
-### Architecture & Design
-- System and service architecture
-- Database schema design
-- Distributed or multi-tenant systems
-- Major refactors across multiple files
+### **代码与技术相关：**
+- 代码生成（函数、脚本、功能开发）
+- 调试（常规错误排查）
+- 代码审查（代码提交、重构）
+- 文档编写（README文件、注释、使用指南）
 
-### Deep Analysis
-- Complex debugging (race conditions, subtle bugs)
-- Security reviews
-- Performance optimization strategy
-- Root cause analysis
+### **分析与规划：**
+- 数据分析与评估
+- 任务规划（路线图、任务分解）
+- 研究成果的整理与总结
 
-### Strategic & Judgment-Based Work
-- Strategic planning
-- Nuanced judgment and ambiguity
-- Deep or multi-source research
-- Critical production decisions
+### **写作与内容相关：**
+- 长篇写作（超过3段）
+- 长文档的摘要
+- 结构化输出（表格、大纲）
+
+**大多数实际用户交互场景都属于这一层级。**
 
 ---
 
-## 🔄 Implementation
+## ❤️ PLUS / 32B — 仅适用于复杂推理任务**
 
-### For Subagents
+**在以下情况下升级到Plus / 32B模型：**
+
+### **架构与设计：**
+- 系统与服务架构设计
+- 数据库模式设计
+- 分布式或多租户系统
+- 涉及多个文件的重大代码重构
+
+### **深度分析：**
+- 复杂的调试（如竞态条件、隐蔽性错误）
+- 安全性评估
+- 性能优化策略
+- 根本原因分析
+
+### **战略性与判断性工作：**
+- 战略性规划
+- 需要细致判断或处理模糊性问题的场景
+- 深度研究或跨多个来源的信息整合
+- 关键的生产决策
+
+---
+
+## 🔄 实施指南
+
+### 对于子代理（Subagents）：
+
 ```javascript
-// Routine monitoring
-sessions_spawn(task="Check backup status", model="GLM-4.5-Flash")
+// 常规监控
+sessions_spawn(task="Check backup status", model="GLM-4.5-Flash");
 
-// Standard code work
-sessions_spawn(task="Build the REST API endpoint", model="GLM-4.7")
+// 标准代码任务
+sessions_spawn(task="Build the REST API endpoint", model="GLM-4.7");
 
-// Architecture decisions
-sessions_spawn(task="Design the database schema for multi-tenancy", model="GLM-4-Plus")
-For Cron Jobs
-json
-Copy code
-{
-  "payload": {
-    "kind": "agentTurn",
-    "model": "GLM-4.5-Flash"
-  }
-}
-Always use Flash for cron unless the task genuinely needs reasoning.
+// 架构设计任务
+sessions_spawn(task="Design the database schema for multi-tenancy", model="GLM-4-Plus");
+```
 
-📊 Quick Decision Tree
-pgsql
-Copy code
-Is it a greeting, lookup, status check, or 1–2 sentence answer?
+**对于Cron作业：** 除非任务确实需要复杂的推理能力，否则始终使用Flash模型。
+
+---
+
+**快速决策树：**
+
+```plaintext
+Is it a greeting, lookup, status check, or a 1–2 sentence answer?
   YES → FLASH
   NO ↓
 
@@ -162,30 +157,34 @@ Is it code, analysis, planning, writing, or multi-step?
 
 Is it architecture, deep reasoning, or a critical decision?
   YES → PLUS / 32B
-  NO → Default to STANDARD, escalate if struggling
-📋 Quick Reference Card
-less
-Copy code
+  NO → Default to STANDARD; escalate if necessary
+```
+
+**快速参考卡：**
+
+```plaintext
 ┌─────────────────────────────────────────────────────────────┐
-│                  SMART MODEL SWITCHING                      │
+│                  智能模型切换                        │
 │              Flash → Standard → Plus / 32B                  │
 ├─────────────────────────────────────────────────────────────┤
-│  💚 FLASH (cheapest)                                        │
-│  • Greetings, status checks, quick lookups                  │
-│  • Factual Q&A, reminders                                   │
-│  • Simple file ops, 1–2 sentence answers                    │
+│  💚 FLASH（最便宜）                                        │
+│  • 适用于问候、状态查询、快速查询                  │
+│  • 适用于事实性问答、提醒功能                  │
+│  • 简单文件操作、1-2句话的回答                  │
 ├─────────────────────────────────────────────────────────────┤
-│  💛 STANDARD (workhorse)                                    │
-│  • Code > 10 lines, debugging                               │
-│  • Analysis, comparisons, planning                          │
-│  • Reports, long writing                                    │
+│  💛 STANDARD（核心工作模型）                                    │
+│  • 适用于编写超过10行的代码、调试                  │
+│  • 适用于分析、比较、规划                  │
+│  • 适用于编写报告、长篇写作                  │
 ├─────────────────────────────────────────────────────────────┤
-│  ❤️ PLUS / 32B (complex)                                    │
-│  • Architecture decisions                                   │
-│  • Complex debugging, multi-file refactoring                │
-│  • Strategic planning, deep research                        │
+│  ❤️ PLUS / 32B（高级模型）                                    │
+│  • 适用于架构设计、复杂调试                  │
+│  • 适用于复杂代码重构、战略规划                  │
+│  • 适用于深度研究                      │
 ├─────────────────────────────────────────────────────────────┤
-│  💡 RULE: >30 sec human thinking → escalate                 │
-│  💰 START CHEAP → SCALE ONLY WHEN NEEDED                    │
+│  💡 规则：若需要超过30秒的人类思考时间，则升级模型          │
+│  💰 仅在必要时升级模型                        │
 └─────────────────────────────────────────────────────────────┘
-Built for z.ai (GLM) setups.
+```
+
+**适用于z.ai（GLM）系统环境。**

@@ -1,53 +1,52 @@
 ---
 slug: "dgn-to-excel"
 display_name: "DGN To Excel"
-description: "Convert DGN files (v7-v8) to Excel databases. Extract elements, levels, and properties from infrastructure CAD files."
+description: "将 DGN 文件（版本 7-8）转换为 Excel 数据库。从基础设施 CAD 文件中提取元素、层级和属性信息。"
 ---
 
-# DGN to Excel Conversion
+# DGN 文件转换为 Excel 文件
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-DGN files are common in infrastructure and civil engineering:
-- Transportation and highway design
-- Bridge and tunnel projects
-- Utility networks
-- Rail infrastructure
+### 问题描述
+DGN 文件在基础设施和土木工程领域非常常见，应用于以下场景：
+- 交通和公路设计
+- 桥梁和隧道项目
+- 公用设施网络
+- 铁路基础设施
 
-Extracting structured data from DGN files for analysis and reporting can be challenging.
+从 DGN 文件中提取结构化数据以用于分析和报告工作可能会遇到挑战。
 
-### Solution
-Convert DGN files to structured Excel databases, supporting both v7 and v8 formats.
+### 解决方案
+将 DGN 文件转换为结构化的 Excel 数据库，支持 v7 和 v8 格式。
 
-### Business Value
-- **Infrastructure support** - Civil engineering focused
-- **Legacy format support** - V7 and V8 DGN files
-- **Data extraction** - Levels, cells, text, geometry
-- **Batch processing** - Process multiple files
-- **Structured output** - Excel format for analysis
+### 商业价值
+- **基础设施支持**：专注于土木工程领域
+- **旧格式支持**：支持 v7 和 v8 格式的 DGN 文件
+- **数据提取**：可以提取层次信息、单元格内容、文本以及几何图形数据
+- **批量处理**：能够处理多个文件
+- **结构化输出**：输出为 Excel 格式，便于进一步分析
 
-## Technical Implementation
+## 技术实现
 
-### CLI Syntax
+### 命令行界面（CLI）语法
 ```bash
 DgnExporter.exe <input_dgn>
 ```
 
-### Supported Versions
-| Version | Description |
+### 支持的版本
+| 版本 | 描述 |
 |---------|-------------|
-| V7 DGN | Legacy MicroStation format (pre-V8) |
-| V8 DGN | Modern MicroStation format |
-| V8i DGN | MicroStation V8i format |
+| V7 DGN | MicroStation 的旧格式（v8 之前的版本） |
+| V8 DGN | MicroStation 的新格式 |
+| V8i DGN | MicroStation V8i 格式 |
 
-### Output Format
-| Output | Description |
+### 输出格式
+| 输出格式 | 描述 |
 |--------|-------------|
-| `.xlsx` | Excel database with all elements |
+| `.xlsx` | 包含所有元素的 Excel 数据库 |
 
-### Examples
-
+### 示例
 ```bash
 # Basic conversion
 DgnExporter.exe "C:\Projects\Bridge.dgn"
@@ -61,8 +60,7 @@ Get-ChildItem "C:\Projects\*.dgn" -Recurse | ForEach-Object {
 }
 ```
 
-### Python Integration
-
+### Python 集成
 ```python
 import subprocess
 import pandas as pd
@@ -380,31 +378,30 @@ def analyze_dgn(dgn_file: str,
     return analyzer.analyze_infrastructure(dgn_file)
 ```
 
-## Output Structure
+## 输出结构
 
-### Excel Sheets
-| Sheet | Content |
+### Excel 工作表
+| 工作表 | 内容 |
 |-------|---------|
-| Elements | All DGN elements with properties |
-| Levels | Level definitions |
-| Cells | Cell library |
+| 元素 | 所有带有属性的 DGN 元素 |
+| 层次信息 | 各层的定义 |
+| 单元格 | 单元格信息 |
 
-### Element Columns
-| Column | Type | Description |
+### 元素列
+| 列名 | 类型 | 描述 |
 |--------|------|-------------|
-| ElementId | int | Unique element ID |
-| ElementType | int | Type code (3=Line, 17=Text, etc.) |
-| Level | int | Level number |
-| Color | int | Color index |
-| Weight | int | Line weight |
-| Style | int | Line style |
-| RangeLowX/Y/Z | float | Bounding box minimum |
-| RangeHighX/Y/Z | float | Bounding box maximum |
-| CellName | string | Cell name (for cell elements) |
-| TextContent | string | Text content (for text elements) |
+| ElementId | int | 元素的唯一标识符 |
+| ElementType | int | 元素类型代码（例如：3=线条，17=文本等） |
+| Level | int | 元素所在的层次编号 |
+| Color | int | 元素的颜色索引 |
+| Weight | int | 线条的粗细 |
+| Style | int | 线条的样式 |
+| RangeLowX/Y/Z | float | 元素的边界框最小值 |
+| RangeHighX/Y/Z | float | 元素的边界框最大值 |
+| CellName | string | 文本元素的名称 |
+| TextContent | string | 文本元素的内容 |
 
-## Quick Start
-
+## 快速入门
 ```python
 # Initialize exporter
 exporter = DGNExporter("C:/DDC/DgnExporter.exe")
@@ -426,49 +423,13 @@ types = exporter.get_element_types(str(xlsx))
 print(types)
 ```
 
-## Common Use Cases
+## 常见应用场景
+- **基础设施分析**  
+- **层次信息审核**  
+- **GIS 数据集成**  
+- **版本对比**  
 
-### 1. Infrastructure Analysis
-```python
-exporter = DGNExporter()
-analyzer = DGNAnalyzer(exporter)
-
-analysis = analyzer.analyze_infrastructure("highway.dgn")
-print(f"Total elements: {analysis['statistics']['total_elements']}")
-print(f"Linear elements: {analysis['linear_elements']}")
-print(f"Annotations: {analysis['annotations']}")
-```
-
-### 2. Level Audit
-```python
-exporter = DGNExporter()
-xlsx = exporter.convert("bridge.dgn")
-levels = exporter.get_levels(str(xlsx))
-
-# Check for unused standard levels
-for idx, row in levels.iterrows():
-    print(f"Level {row['Level']}: {row['Element_Count']} elements")
-```
-
-### 3. GIS Integration
-```python
-analyzer = DGNAnalyzer(exporter)
-xlsx = exporter.convert("utilities.dgn")
-coords = analyzer.extract_coordinates(str(xlsx))
-
-# Export for GIS
-coords.to_csv("coordinates.csv", index=False)
-```
-
-### 4. Revision Comparison
-```python
-analyzer = DGNAnalyzer(exporter)
-diff = analyzer.compare_revisions("rev1.dgn", "rev2.dgn")
-print(f"Elements changed: {diff['element_count_diff']}")
-```
-
-## Integration with DDC Pipeline
-
+## 与 DDC Pipeline 的集成
 ```python
 # Infrastructure pipeline: DGN → Excel → Analysis
 from dgn_exporter import DGNExporter, DGNAnalyzer
@@ -488,16 +449,14 @@ coords = analyzer.extract_coordinates(str(xlsx))
 coords.to_csv("for_gis.csv", index=False)
 ```
 
-## Best Practices
+## 最佳实践
+1. **检查文件版本**：v7 和 v8 格式的功能有所不同，需根据需求选择合适的版本。
+2. **单独处理参考文件**：确保所有参考文件都被正确处理。
+3. **明确层次标准**：为组织内部制定统一的层次信息标注标准。
+4. **验证坐标系统**：确保所有数据的坐标系统和单位一致。
+5. **灵活处理单元格数据**：根据需要单独导出单元格信息。
 
-1. **Check version** - V7 and V8 have different capabilities
-2. **Reference files** - Process all reference files separately
-3. **Level mapping** - Document level standards for your organization
-4. **Coordinate systems** - Verify units and coordinate systems
-5. **Cell libraries** - Export cells separately if needed
-
-## Resources
-
+## 资源
 - **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
-- **DDC Book**: Chapter 2.4 - CAD Data Extraction
-- **MicroStation**: Infrastructure-focused CAD software
+- **DDC 手册**：第 2.4 章 – CAD 数据提取
+- **MicroStation**: 一款专注于基础设施设计的 CAD 软件

@@ -1,6 +1,6 @@
 ---
 name: proto-cog
-description: "Build prototypes you can click. UI/UX wireframes, app mockups, and fully interactive HTML prototypes — from napkin sketch to clickable experience in one prompt. Landing pages, mobile app screens, SaaS dashboards, design systems, and user flows — prototyped and playable, not just pretty."
+description: "您可以构建可点击的原型。无论是 UI/UX 线框图、应用程序的模拟图，还是完全交互式的 HTML 原型，只需一个命令即可从简单的草图实现到可点击的实际体验。包括登录页面、移动应用界面、SaaS 仪表板、设计系统以及用户流程等——这些原型不仅外观美观，而且具备实际的可操作性。"
 metadata:
   openclaw:
     emoji: "✏️"
@@ -8,251 +8,217 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Proto Cog - Build Prototypes You Can Click
+# Proto Cog – 构建可点击的原型
 
-**Build prototypes you can click.** UI/UX wireframes, app mockups, and fully interactive HTML prototypes — from napkin sketch to clickable experience in one prompt.
+**构建可点击的原型。** 无论是 UI/UX 线框图、应用程序的模拟图，还是完全交互式的 HTML 原型，只需一个指令，即可从简单的草图快速转换为可点击的实际体验。
 
-Every other AI design tool gives you static images. CellCog builds working prototypes — real HTML, real interactions, real user flows you can click through and share with stakeholders. Landing pages, mobile app screens, SaaS dashboards, design systems — prototyped and playable, not just pretty.
-
----
-
-## Prerequisites
-
-This skill requires the `cellcog` skill for SDK setup and API calls.
-
-```bash
-clawhub install cellcog
-```
-
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
-
-**Quick pattern (v1.0+):**
-```python
-# Fire-and-forget - returns immediately
-result = client.create_chat(
-    prompt="[your prototype request]",
-    notify_session_key="agent:main:main",
-    task_label="prototype-task",
-    chat_mode="agent"  # Agent mode for most prototypes
-)
-# Daemon notifies you when complete - do NOT poll
-```
+大多数 AI 设计工具只能生成静态图片，而 CellCog 则能帮助你创建真正可用的原型：真实的 HTML 代码、真实的交互效果以及真实的用户流程，让你能够直接点击并与其他利益相关者分享。这些原型包括登录页面、移动应用界面、SaaS 仪表盘等，而不仅仅是外观上的美观。
 
 ---
 
-## Why Interactive Prototypes Matter
+## 先决条件
 
-Static mockups create a fundamental gap: stakeholders see pictures, not experiences. The difference matters:
+使用该技能需要先掌握 `cellcog` 技能，以便进行 SDK 的设置和 API 调用。
 
-| Static Mockup | Interactive Prototype |
+**请先阅读 `cellcog` 技能文档** 以了解 SDK 的安装方法。该文档会向你展示该工具的强大功能。
+
+**快速使用指南（v1.0 及以上版本）：**
+
+---
+
+## 为什么交互式原型如此重要
+
+静态的模拟图存在一个根本性的缺陷：利益相关者看到的只是图片，而非实际的使用体验。两者的区别至关重要：
+
+| 静态模拟图 | 交互式原型 |
 |--------------|---------------------|
-| "Imagine clicking this button" | Click the button, see what happens |
-| "This would scroll to..." | Scroll and see the content load |
-| "The hover state looks like..." | Hover and watch the animation |
-| "Trust me, the flow makes sense" | Walk through the flow yourself |
+| “想象一下点击这个按钮” | 点击按钮，查看实际会发生什么 |
+| “内容会滚动到……” | 实际滚动并查看内容加载情况 |
+| “悬停时的效果是……” | 悬停时观察动画效果 |
+| “相信我，这个流程是合理的” | 自己亲自体验整个流程 |
 
-CellCog generates **real HTML/CSS/JS prototypes** hosted on live URLs. Share a link, get feedback on the actual experience — not on someone's imagination of the experience.
-
----
-
-## What You Can Prototype
-
-### Landing Pages
-
-Validate your messaging and design:
-
-- **SaaS Landing Pages**: "Create a landing page for an AI writing assistant — hero, features, pricing, testimonials, CTA"
-- **Product Launch Pages**: "Build a launch page for a new fitness app with countdown and email signup"
-- **Event Pages**: "Create a conference landing page with schedule, speakers, and registration"
-- **Portfolio Sites**: "Build a personal portfolio landing page for a UX designer"
-
-**Example prompt:**
-> "Create an interactive landing page prototype for 'FlowState' — a productivity app for developers:
-> 
-> Sections:
-> - Hero: 'Code in the zone. Stay in the zone.' with app screenshot and CTA
-> - Problem: Distractions kill developer flow (statistics)
-> - Solution: How FlowState blocks distractions intelligently
-> - Features: 3-4 key features with icons
-> - Pricing: Free, Pro ($12/mo), Team ($8/user/mo)
-> - Testimonials: 3 developer quotes
-> - Final CTA
-> 
-> Style: Dark theme, developer-friendly, monospace accents
-> Make all buttons and navigation interactive."
-
-### Mobile App Screens
-
-Design full app experiences:
-
-- **Onboarding Flows**: "Create a 5-screen onboarding flow for a meditation app"
-- **Core Features**: "Prototype the main dashboard and navigation for a fitness tracking app"
-- **E-commerce**: "Build a product browse → detail → cart → checkout flow for a fashion app"
-- **Social Features**: "Prototype a profile page, feed, and messaging interface"
-
-**Example prompt:**
-> "Prototype a mobile food delivery app (phone-sized viewport):
-> 
-> Screens:
-> 1. Home — restaurant grid with search and category filters
-> 2. Restaurant — menu with items, ratings, delivery time
-> 3. Item detail — customization options, add to cart
-> 4. Cart — order summary, delivery address, payment
-> 5. Order tracking — live status with map placeholder
-> 
-> Make navigation between screens work with smooth transitions.
-> Style: Clean, modern, Uber Eats / DoorDash inspired."
-
-### SaaS Dashboards
-
-Prototype complex business tools:
-
-- **Analytics Dashboards**: "Create a marketing analytics dashboard with real chart interactions"
-- **Admin Panels**: "Build a user management panel with tables, filters, and modals"
-- **CRM Interfaces**: "Prototype a sales pipeline view with drag-and-drop kanban board"
-- **Settings Pages**: "Create a comprehensive settings page with tabs, forms, and toggles"
-
-**Example prompt:**
-> "Prototype a SaaS project management dashboard:
-> 
-> Left sidebar: Navigation (Projects, Tasks, Team, Reports, Settings)
-> Main area:
-> - Overview: KPI cards (tasks completed, overdue, in progress)
-> - Kanban board: Columns for To Do, In Progress, Review, Done
-> - Task cards with assignee avatars, priority tags, due dates
-> 
-> Interactions:
-> - Sidebar navigation switches views
-> - Clicking a task card opens a detail modal
-> - Filter dropdown for project/team member
-> 
-> Style: Clean, professional, Notion/Linear inspired."
-
-### Design Systems & Components
-
-Build reusable design foundations:
-
-- **Component Libraries**: "Create a UI component library: buttons, inputs, cards, modals, navigation"
-- **Style Guides**: "Build an interactive style guide showing typography, colors, spacing, and components"
-- **Form Patterns**: "Prototype common form patterns: login, signup, multi-step wizard, settings"
-- **Navigation Patterns**: "Create examples of sidebar nav, top nav, bottom tab bar, and hamburger menu"
-
-### Wireframes
-
-Quick structural explorations:
-
-- **Low-Fidelity Wireframes**: "Create grayscale wireframes for a blog platform — home, article, author pages"
-- **User Flows**: "Wireframe the complete signup → onboarding → first action flow for a project management tool"
-- **Layout Explorations**: "Show 3 different layout approaches for a real estate listing page"
-- **Information Architecture**: "Wireframe the navigation structure for an e-learning platform with courses, lessons, and progress tracking"
+CellCog 生成的原型是基于真实的 HTML、CSS 和 JS 代码，并托管在可访问的 URL 上。你可以分享链接，从而获得关于实际使用效果的反馈，而不仅仅是基于他人想象的反馈。
 
 ---
 
-## Prototype Features
+## 可以制作的原型类型
 
-CellCog prototypes can include:
+### 登录页面
 
-| Feature | Description |
+验证你的信息和设计是否合理：
+
+- **SaaS 登录页面**：为 AI 编码辅助工具创建一个登录页面，包括首页展示、功能介绍、价格信息、用户评价以及购买链接。
+- **产品发布页面**：为新的健身应用创建一个发布页面，包含倒计时和电子邮件注册功能。
+- **活动页面**：为会议创建一个登录页面，展示活动安排、演讲者信息以及注册方式。
+- **个人作品集页面**：为 UX 设计师创建一个个人作品集页面。
+
+**示例指令：**
+> “为‘FlowState’这款开发者生产力应用创建一个交互式登录页面原型：
+> 
+> 页面内容：
+> - 主页：展示应用截图和购买链接，强调“专注编码，保持高效”。
+- 问题描述：干扰因素会打断开发者的工作流程（附统计数据）。
+- 解决方案：介绍 FlowState 如何智能地屏蔽干扰。
+- 功能介绍：展示 3-4 个核心功能，并配有图标。
+- 价格信息：提供免费、专业版（每月 12 美元）和团队版（每人每月 8 美元）选项。
+- 用户评价：展示 3 条开发者使用反馈。
+- 最终购买链接。
+- 页面风格：采用深色主题，注重用户体验，文字使用等宽字体。
+- 确保所有按钮和导航元素都具有交互性。”
+
+### 移动应用界面
+
+设计完整的应用流程：
+
+- **入职引导流程**：为冥想应用创建一个包含 5 个页面的入职引导流程。
+- **核心功能**：为健身追踪应用原型化主界面和导航系统。
+- **电子商务**：为时尚应用创建产品浏览、详情查看、购物车和结账的完整流程。
+- **社交功能**：为个人资料页面、动态信息流和消息界面创建原型。
+
+**示例指令：**
+> “为移动端的食品配送应用创建一个原型（屏幕尺寸为手机屏幕）：
+> 
+> 页面结构：
+> 1. 首页：显示餐厅列表，提供搜索和分类筛选功能。
+> 2. 餐厅页面：列出餐厅信息、菜品详情和配送时间。
+> 3. 物品详情页面：提供自定义选项和加入购物车的功能。
+> 4. 购物车页面：显示订单摘要、配送地址和支付选项。
+> 5. 订单追踪页面：显示订单状态，并提供地图预览。
+- 确保页面间的切换流畅且过渡自然。
+- 页面风格：简洁现代，设计灵感来自 Uber Eats 或 DoorDash。
+
+### SaaS 仪表盘
+
+原型化复杂的业务工具：
+
+- **分析仪表盘**：创建一个带有交互式图表的营销分析仪表盘。
+- **管理员面板**：构建一个包含表格、筛选器和模态框的用户管理面板。
+- **CRM 界面**：使用拖拽式看板原型化销售流程。
+- **设置页面**：创建一个包含多个标签页、表单和开关选项的设置页面。
+
+**示例指令：**
+> “为 SaaS 项目管理工具创建一个仪表盘原型：
+> 
+> 左侧导航栏：包含项目、任务、团队、报告和设置等选项。
+- 主显示区域：
+  - 概览：显示已完成的任务、逾期任务和进行中的任务。
+  - 看板：区分待办、进行中、已完成的任务状态。
+- 任务卡片：显示任务分配者、优先级标签和截止日期。
+- 交互功能：
+  - 通过左侧导航栏切换视图。
+  - 点击任务卡片可打开详细信息模态框。
+  - 提供项目或团队成员的筛选功能。
+- 页面风格：简洁专业，设计灵感来自 Notion 或 Linear。
+
+### 设计系统和组件
+
+构建可复用的设计基础：
+
+- **组件库**：创建一个 UI 组件库，包括按钮、输入框、卡片和导航元素。
+- **样式指南**：制作一个交互式的样式指南，涵盖字体、颜色、间距和组件样式。
+- **表单模板**：原型化常见的表单形式，如登录表单、注册表单、多步骤向导和设置表单。
+- **导航模板**：展示侧边栏导航、顶部导航栏、底部标签栏和汉堡菜单等设计示例。
+
+### 线框图
+
+快速探索页面结构：
+
+- **低保真线框图**：为博客平台创建灰度线框图，包括首页、文章页面和作者页面。
+- **用户流程**：为项目管理工具原型化从注册到入职引导的完整流程。
+- **布局设计**：展示房地产列表页面的 3 种不同布局方案。
+- **信息架构**：为在线学习平台原型化导航结构，包括课程、课程内容和进度跟踪功能。
+
+---
+
+## 原型功能
+
+CellCog 支持以下原型特性：
+
+| 功能 | 描述 |
 |---------|-------------|
-| **Navigation** | Working links, page transitions, tab switching |
-| **Interactions** | Hover states, click actions, toggles, accordions |
-| **Forms** | Input fields, validation states, dropdowns, checkboxes |
-| **Modals & Overlays** | Popup dialogs, slide-out panels, tooltips |
-| **Responsive Design** | Adapts to desktop, tablet, and mobile viewports |
-| **Animations** | Smooth transitions, loading states, micro-interactions |
-| **Data Display** | Charts, tables, cards with realistic sample data |
-| **Dark/Light Themes** | Theme switching support |
+| **导航** | 可点击的链接、页面切换和标签页切换。 |
+| **交互效果**：提供悬停效果、点击动作、开关按钮和折叠式面板。 |
+| **表单**：包含输入字段、验证状态、下拉菜单和复选框。 |
+| **模态框和覆盖层**：提供弹出对话框、滑出式面板和工具提示。 |
+| **响应式设计**：适应桌面、平板和手机屏幕。 |
+| **动画效果**：实现平滑的过渡效果、加载提示和微交互效果。 |
+| **数据展示**：使用图表、表格和带有真实数据的卡片展示信息。 |
+| **主题切换**：支持深色和浅色两种主题风格。 |
 
 ---
 
-## Output Formats
+## 输出格式
 
-| Format | Best For |
+| 格式 | 适用场景 |
 |--------|----------|
-| **Interactive HTML** (Default) | Clickable prototypes hosted on live URL — share with anyone |
-| **Static Images** | Screenshots for documentation or comparison |
-| **PDF** | Wireframe documentation for handoff |
+| **交互式 HTML**（默认） | 可点击的原型，托管在可访问的 URL 上，方便分享。 |
+| **静态图片** | 用于文档编写或对比的屏幕截图。 |
+| **PDF** | 用于交付的线框图文档。 |
 
-**Interactive HTML is the default.** That's the whole point — prototypes you can click.
+**默认输出格式为交互式 HTML。** 这正是该工具的核心价值——让你能够直接点击并体验原型。
 
 ---
 
-## Chat Mode for Prototyping
+## 原型制作的聊天模式
 
-| Scenario | Recommended Mode |
+| 使用场景 | 推荐的聊天模式 |
 |----------|------------------|
-| Individual pages, single components, wireframes | `"agent"` |
-| Full app prototypes with multiple interconnected screens, design systems | `"agent team"` |
+| 单个页面、单个组件或线框图** | 使用 “agent” 模式。 |
+| 包含多个相互关联页面的应用程序原型或完整的设计系统** | 使用 “agent team” 模式。 |
 
-**Use `"agent"` for most prototypes.** Landing pages, individual app screens, and component designs execute well in agent mode.
+**大多数情况下建议使用 “agent” 模式**，适用于登录页面、单个应用页面和组件设计。**
 
-**Use `"agent team"` for full application prototypes** — multi-screen apps where navigation, state, and user flows need to work together cohesively.
-
----
-
-## Example Prompts
-
-**SaaS landing page:**
-> "Create a landing page for 'CodeReview.ai' — an AI code review tool:
-> 
-> Hero: 'Ship better code. Ship it faster.' with demo video placeholder
-> Social proof: 'Trusted by 500+ engineering teams'
-> Features: AI-powered reviews, integration with GitHub/GitLab, security scanning
-> Pricing: Starter (free), Pro ($29/mo), Enterprise (custom)
-> 
-> Dark theme, developer-focused, green accent color.
-> All navigation and CTAs should be interactive."
-
-**Mobile app prototype:**
-> "Prototype a habit tracking app (mobile viewport):
-> 
-> Tab bar: Today, Habits, Stats, Profile
-> 
-> Today screen: List of today's habits with checkboxes, streak counts, and progress ring
-> Habits screen: All habits with edit/delete, add new habit button
-> Stats screen: Charts showing completion rates, longest streaks, weekly/monthly view
-> Profile screen: Settings, notification preferences, export data
-> 
-> Tab navigation should work. Checking habits should animate.
-> Style: Minimal, calming, inspired by Streaks app."
-
-**Design system:**
-> "Build an interactive design system for a fintech startup:
-> 
-> Colors: Primary (deep blue), secondary (teal), accent (amber), semantic (success/warning/error)
-> Typography: Scale from h1 to body to caption with clear hierarchy
-> Components:
-> - Buttons (primary, secondary, ghost, destructive — each with hover/active/disabled states)
-> - Input fields (default, focused, error, disabled)
-> - Cards (simple, interactive, stat card)
-> - Table with sortable headers
-> - Modal dialog
-> - Toast notifications
-> 
-> Show each component with interactive states. Professional, banking-grade aesthetic."
-
-**Wireframe exploration:**
-> "Create 3 different layout approaches for an AI chatbot interface:
-> 
-> Option A: Full-page chat (like ChatGPT)
-> Option B: Side panel chat with main content area
-> Option C: Floating chat widget
-> 
-> Each should include: message input, conversation history, suggested prompts, and settings access.
-> Grayscale wireframes, focused on layout and information hierarchy."
+**对于需要协调多个屏幕、状态和用户流程的应用程序原型**，建议使用 “agent team” 模式。
 
 ---
 
-## Tips for Better Prototypes
+## 示例指令
 
-1. **Describe the interactions**: "Button opens a modal" or "Tabs switch content" — tell CellCog what should happen, not just what should appear.
+**SaaS 登录页面示例：**
+> “为‘CodeReview.ai’这款 AI 代码审查工具创建一个登录页面：
+> 
+> 主页展示：使用示例视频强调“提交更优质的代码，更快地交付”。
+- 用户评价：展示“已获得 500 多个工程团队的信任”。
+- 功能介绍：包括 AI 助力的代码审查功能、与 GitHub/GitLab 的集成以及安全扫描功能。
+- 价格信息：提供免费试用版、专业版（每月 29 美元）和企业版（定制价格）。
+- 页面风格：采用深色主题，以开发者为中心，使用绿色作为辅助颜色。
+- 所有导航元素和购买链接都必须具有交互性。
 
-2. **Reference existing products**: "Like Notion's sidebar" or "Stripe's pricing page" communicates more than paragraphs of description.
+**移动应用原型示例：**
+> “为习惯追踪应用创建一个原型（适用于手机屏幕）：
+- 标签栏：包含“今日习惯”、“习惯记录”和“统计信息”选项。
+- **今日习惯页面**：列出当天的习惯列表，包括复选框、完成次数和进度显示。
+- **习惯页面**：允许用户编辑或删除习惯，以及添加新习惯。
+- **统计信息页面**：展示完成率、最长连续完成习惯的时间以及周/月度统计信息。
+- **个人资料页面**：提供设置选项和通知偏好设置。
+- 确保标签页之间的切换功能正常工作，习惯的显示效果需要具有动画效果。
+- 页面风格：简洁大方，设计灵感来自 Streaks 应用。
 
-3. **Specify viewport**: "Mobile phone viewport" vs "Full desktop" changes the entire design approach.
+**设计系统示例：**
+> “为一家金融科技初创公司创建一个交互式设计系统：
+- **颜色方案**：使用深蓝色作为主要颜色，浅蓝色作为次要颜色，琥珀色作为辅助颜色，不同状态使用不同的颜色表示（成功/警告/错误）。
+- **字体排版**：从标题（h1）到正文再到注释，保持清晰的层次结构。
+- **组件设计**：包括按钮（不同样式）、输入框（不同状态）、卡片（具有交互效果）等元素。
+- **表格设计**：包含可排序的标题栏。
+- **模态框**：提供弹出式对话框。
+- **通知提示**：以toast 形式显示通知信息。
+- 所有组件都应具备交互效果，设计风格符合专业金融应用的审美标准。
 
-4. **Include realistic content**: Real text, real numbers, real labels — not "Lorem ipsum". Prototypes with real content get better feedback.
+**线框图设计示例：**
+> “为 AI 聊天机器人创建 3 种不同的界面布局方案：
+- **方案 A**：全屏聊天界面（类似 ChatGPT）。
+- **方案 B**：侧边栏聊天界面，主内容区域位于右侧。
+- **方案 C**：浮动聊天窗口。
+- **所有方案都需要包含：消息输入框、对话历史记录、建议提示和设置选项。**
+- 线框图以灰度显示，重点关注页面布局和信息层次结构。
 
-5. **State the purpose**: "For user testing", "For investor demo", "For developer handoff" — context shapes fidelity level.
+---
 
-6. **Think in flows, not pages**: "Signup → Onboarding → Dashboard" is more useful than 3 disconnected page requests.
+## 提高原型质量的技巧
+
+1. **详细描述交互效果**：明确说明“点击按钮会打开模态框”或“切换标签页会显示什么内容”，而不仅仅是描述外观变化。
+2. **参考现有产品**：引用实际产品的设计元素（如 Notion 的侧边栏或 Stripe 的价格页面），比冗长的文字描述更有效。
+3. **指定屏幕尺寸**：指定“手机屏幕”或“全屏桌面”等屏幕尺寸，这会直接影响设计方向。
+4. **使用真实内容**：使用真实的文本、数字和标签，而不是“Lorem ipsum”这样的占位符。包含真实内容的原型能获得更好的反馈。
+5. **明确使用目的**：说明原型是用于用户测试、投资者演示还是开发者交接，这会影响原型的复杂程度。
+6. **从整体流程出发思考**：将“注册 → 入职引导 → 仪表盘”这样的流程作为一个整体来设计，而不是单独设计每个页面。

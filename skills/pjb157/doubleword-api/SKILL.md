@@ -1,276 +1,153 @@
 ---
 name: doubleword-batches
-description: Create and manage batch inference jobs using the Doubleword API (api.doubleword.ai). Use when users want to: (1) Process multiple AI requests in batch mode, (2) Submit JSONL batch files for async inference, (3) Monitor batch job progress and retrieve results, (4) Work with OpenAI-compatible batch endpoints, (5) Handle large-scale inference workloads that don't require immediate responses.
+description: 使用 Doubleword API (api.doubleword.ai) 创建和管理批量推理任务。适用于以下场景：  
+(1) 批量处理多个 AI 请求；  
+(2) 提交 JSONL 格式的批量文件以进行异步推理；  
+(3) 监控批量任务的进度并获取结果；  
+(4) 与 OpenAI 兼容的批量接口进行交互；  
+(5) 处理不需要立即响应的大规模推理工作负载。
 ---
 
-# Doubleword Batch Inference
+# 双词批量推理
 
-Process multiple AI inference requests asynchronously using the Doubleword batch API.
+使用 Doubleword 批量 API 异步处理多个 AI 推理请求。
 
-## When to Use Batches
+## 何时使用批量处理
 
-Batches are ideal for:
-- Multiple independent requests that can run simultaneously
-- Workloads that don't require immediate responses
-- Large volumes that would exceed rate limits if sent individually
-- Cost-sensitive workloads (24h window offers better pricing)
+批量处理适用于以下场景：
+- 可以同时运行的多个独立请求
+- 不需要立即响应的工作负载
+- 如果单独发送会超出速率限制的大量请求
+- 对成本敏感的工作负载（24 小时时间窗口提供更优惠的价格）
 
-## Quick Start
+## 快速入门
 
-Basic workflow for any batch job:
+任何批量作业的基本工作流程如下：
+1. **创建 JSONL 文件**，其中每行包含一个请求（每个请求对应一个 JSON 对象）
+2. **上传文件** 以获取文件 ID
+3. **使用文件 ID 创建批次**
+4. **轮询状态** 直到任务完成
+5. **从 `output_file_id` 下载结果**
 
-1. **Create JSONL file** with requests (one JSON object per line)
-2. **Upload file** to get file ID
-3. **Create batch** using file ID
-4. **Poll status** until complete
-5. **Download results** from output_file_id
+## 工作流程
 
-## Workflow
+### 第 1 步：创建批量请求文件
 
-### Step 1: Create Batch Request File
+创建一个 `.jsonl` 文件，每行包含一个请求：
 
-Create a `.jsonl` file where each line contains a single request:
+**每行所需的字段：**
+- `custom_id`：唯一标识符（最多 64 个字符） - 使用描述性 ID（如 `"user-123-question-5"` 以便于结果映射）
+- `method`：始终为 `"POST"`
+- `url`：始终为 `"/v1/chat/completions"`
+- `body`：包含 `model` 和 `messages` 的标准 API 请求
 
-```json
-{"custom_id": "req-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "anthropic/claude-3-5-sonnet", "messages": [{"role": "user", "content": "What is 2+2?"}]}}
-{"custom_id": "req-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "anthropic/claude-3-5-sonnet", "messages": [{"role": "user", "content": "What is the capital of France?"}]}}
-```
+**可选的请求参数：**
+- `temperature`：0-2（默认值：1.0）
+- `max_tokens`：最大响应令牌数
+- `top_p`：Nucleus 采样参数
+- `stop`：停止序列
 
-**Required fields per line:**
-- `custom_id`: Unique identifier (max 64 chars) - use descriptive IDs like `"user-123-question-5"` for easier result mapping
-- `method`: Always `"POST"`
-- `url`: Always `"/v1/chat/completions"`
-- `body`: Standard API request with `model` and `messages`
+**文件限制：**
+- 最大大小：200MB
+- 格式：仅支持 JSONL（JSON 行，以换行符分隔）
+- 如有必要，可将大型批次拆分为多个文件
 
-**Optional body parameters:**
-- `temperature`: 0-2 (default: 1.0)
-- `max_tokens`: Maximum response tokens
-- `top_p`: Nucleus sampling parameter
-- `stop`: Stop sequences
+**辅助脚本：**
+使用 `scripts/create_batch_file.py` 脚本来程序化生成 JSONL 文件：
 
-**File limits:**
-- Max size: 200MB
-- Format: JSONL only (JSON Lines - newline-delimited JSON)
-- Split large batches into multiple files if needed
+修改脚本中的 `requests` 列表以生成特定的批量请求。
 
-**Helper script:**
-Use `scripts/create_batch_file.py` to generate JSONL files programmatically:
+### 第 2 步：上传文件
 
-```bash
-python scripts/create_batch_file.py output.jsonl
-```
+上传 JSONL 文件：
 
-Modify the script's `requests` list to generate your specific batch requests.
-
-### Step 2: Upload File
-
-Upload the JSONL file:
-
-```bash
-curl https://api.doubleword.ai/v1/files \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY" \
-  -F purpose="batch" \
-  -F file="@batch_requests.jsonl"
-```
-
-Response contains `id` field - save this file ID for next step.
-
-### Step 3: Create Batch
-
-Create the batch job using the file ID:
-
-```bash
-curl https://api.doubleword.ai/v1/batches \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "input_file_id": "file-abc123",
-    "endpoint": "/v1/chat/completions",
-    "completion_window": "24h"
-  }'
-```
-
-**Parameters:**
-- `input_file_id`: File ID from upload step
-- `endpoint`: Always `"/v1/chat/completions"`
-- `completion_window`: Choose `"24h"` (better pricing) or `"1h"` (50% premium, faster results)
-
-Response contains batch `id` - save this for status polling.
-
-### Step 4: Poll Status
-
-Check batch progress:
-
-```bash
-curl https://api.doubleword.ai/v1/batches/batch-xyz789 \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY"
-```
-
-**Status progression:**
-1. `validating` - Checking input file format
-2. `in_progress` - Processing requests
-3. `completed` - All requests finished
-
-**Other statuses:**
-- `failed` - Batch failed (check `error_file_id`)
-- `expired` - Batch timed out
-- `cancelling`/`cancelled` - Batch cancelled
-
-**Response includes:**
-- `output_file_id` - Download results here
-- `error_file_id` - Failed requests (if any)
-- `request_counts` - Total/completed/failed counts
-
-**Polling frequency:** Check every 30-60 seconds during processing.
-
-**Early access:** Results available via `output_file_id` before batch fully completes - check `X-Incomplete` header.
-
-### Step 5: Download Results
-
-Download completed results:
-
-```bash
-curl https://api.doubleword.ai/v1/files/file-output123/content \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY" \
-  > results.jsonl
-```
-
-**Response headers:**
-- `X-Incomplete: true` - Batch still processing, more results coming
-- `X-Last-Line: 45` - Resume point for partial downloads
-
-**Output format (each line):**
-```json
-{
-  "id": "batch-req-abc",
-  "custom_id": "request-1",
-  "response": {
-    "status_code": 200,
-    "body": {
-      "id": "chatcmpl-xyz",
-      "choices": [{
-        "message": {
-          "role": "assistant",
-          "content": "The answer is 4."
-        }
-      }]
-    }
-  }
-}
-```
-
-**Download errors (if any):**
-```bash
-curl https://api.doubleword.ai/v1/files/file-error123/content \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY" \
-  > errors.jsonl
-```
-
-**Error format (each line):**
-```json
-{
-  "id": "batch-req-def",
-  "custom_id": "request-2",
-  "error": {
-    "code": "invalid_request",
-    "message": "Missing required parameter"
-  }
-}
-```
+响应中包含 `id` 字段 - 保存此文件 ID 以用于后续操作。
 
-## Additional Operations
+### 第 3 步：创建批次
 
-### List All Batches
+使用文件 ID 创建批次任务：
 
-```bash
-curl https://api.doubleword.ai/v1/batches?limit=10 \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY"
-```
+**参数：**
+- `input_file_id`：上传步骤中获得的文件 ID
+- `endpoint`：始终为 `"/v1/chat/completions"`
+- `completion_window`：选择 `"24h"`（更优惠的价格）或 `"1h"`（价格较高，但结果更快）
 
-### Cancel Batch
+响应中包含批次 `id` - 保存此 ID 以用于状态轮询。
 
-```bash
-curl https://api.doubleword.ai/v1/batches/batch-xyz789/cancel \
-  -X POST \
-  -H "Authorization: Bearer $DOUBLEWORD_API_KEY"
-```
+### 第 4 步：轮询状态
 
-**Notes:**
-- Unprocessed requests are cancelled
-- Already-processed results remain downloadable
-- Cannot cancel completed batches
+检查批次进度：
 
-## Common Patterns
+**状态更新：**
+1. `validating` - 检查输入文件格式
+2. `in_progress` - 正在处理请求
+3. `completed` - 所有请求已完成
 
-### Processing Results
+**其他状态：**
+- `failed` - 批次失败（请检查 `error_file_id`）
+- `expired` - 批次超时
+- `cancelling`/`cancelled` - 批次已取消
 
-Parse JSONL output line-by-line:
+**响应内容：**
+- `output_file_id`：在此处下载结果
+- `error_file_id`：失败的请求（如果有）
+- `request_counts`：总请求数/已完成请求数/失败请求数
 
-```python
-import json
+**轮询频率：** 在处理过程中每 30-60 秒检查一次。
 
-with open('results.jsonl') as f:
-    for line in f:
-        result = json.loads(line)
-        custom_id = result['custom_id']
-        content = result['response']['body']['choices'][0]['message']['content']
-        print(f"{custom_id}: {content}")
-```
+**提前访问：** 在批次完全完成之前，可以通过 `output_file_id` 获取部分结果 - 请查看 `X-Incomplete` 标头。
 
-### Handling Partial Results
+### 第 5 步：下载结果
 
-Check for incomplete batches and resume:
+下载已完成的结果：
 
-```python
-import requests
+**响应头：**
+- `X-Incomplete: true` - 批次仍在处理中，更多结果即将发送
+- `X-Last-Line: 45`：部分下载的继续点
 
-response = requests.get(
-    'https://api.doubleword.ai/v1/files/file-output123/content',
-    headers={'Authorization': f'Bearer {api_key}'}
-)
+**输出格式（每行）：**
 
-if response.headers.get('X-Incomplete') == 'true':
-    last_line = int(response.headers.get('X-Last-Line', 0))
-    print(f"Batch incomplete. Processed {last_line} requests so far.")
-    # Continue polling and download again later
-```
+**下载错误（如果有）：**
 
-### Retry Failed Requests
+**错误格式（每行）：**
 
-Extract failed requests from error file and resubmit:
+## 其他操作
 
-```python
-import json
+### 列出所有批次
 
-failed_ids = []
-with open('errors.jsonl') as f:
-    for line in f:
-        error = json.loads(line)
-        failed_ids.append(error['custom_id'])
+### 取消批次
 
-print(f"Failed requests: {failed_ids}")
-# Create new batch with only failed requests
-```
+### 注意事项：
+- 未处理的请求会被取消
+- 已经处理的结果仍然可以下载
+- 已完成的批次无法取消
 
-## Best Practices
+## 常见模式
 
-1. **Descriptive custom_ids**: Include context in IDs for easier result mapping
-   - Good: `"user-123-question-5"`
-   - Bad: `"1"`, `"req1"`
+### 处理结果
 
-2. **Validate JSONL locally**: Ensure each line is valid JSON before upload
+逐行解析 JSONL 输出：
 
-3. **Split large files**: Keep under 200MB limit
+### 处理部分结果
 
-4. **Choose appropriate window**: Use `24h` for cost savings, `1h` only when time-sensitive
+检查未完成的批次并继续处理：
 
-5. **Handle errors gracefully**: Always check `error_file_id` and retry failed requests
+### 重试失败的请求
 
-6. **Monitor request_counts**: Track progress via `completed`/`total` ratio
+从错误文件中提取失败的请求并重新提交：
 
-7. **Save file IDs**: Store batch_id, input_file_id, output_file_id for later retrieval
+## 最佳实践：
+1. **使用描述性的 `custom_id`**：在 ID 中包含上下文信息，以便于结果映射
+   - 示例：`"user-123-question-5"`
+   - 不建议的示例：`"1"`、`"req1"`
+2. **在上传前本地验证 JSONL 文件**：确保每行都是有效的 JSON 数据
+3. **分割大型文件**：保持文件大小在 200MB 以内
+4. **选择合适的处理时间窗口**：为了节省成本，选择 `24h`；仅在时间敏感的情况下选择 `1h`
+5. **优雅地处理错误**：始终检查 `error_file_id` 并重试失败的请求
+6. **监控请求进度**：通过 `completed`/`total` 的比例来跟踪进度
+7. **保存文件 ID**：存储批次 ID、输入文件 ID 和输出文件 ID 以供后续查询
 
-## Reference Documentation
+## 参考文档
 
-For complete API details including authentication, rate limits, and advanced parameters, see:
-- **API Reference**: `references/api_reference.md` - Full endpoint documentation and schemas
+有关完整的 API 详情（包括身份验证、速率限制和高级参数），请参阅：
+- **API 参考**：`references/api_reference.md` - 完整的端点文档和模式

@@ -1,26 +1,26 @@
 ---
 name: openai-image-gen
-description: Batch-generate images via OpenAI Images API. Random prompt sampler + `index.html` gallery.
+description: 通过 OpenAI Images API 批量生成图像。使用随机提示生成器（random prompt sampler）以及 `index.html` 图库来展示生成的图像。
 ---
 
-# OpenAI Image Gen
+# OpenAI 图像生成
 
-Generate a handful of “random but structured” prompts and render them via OpenAI Images API.
+生成一些“随机但结构化”的提示，并通过 OpenAI Images API 将它们渲染出来。
 
-## Setup
+## 设置
 
-- Needs env: `OPENAI_API_KEY`
+- 需要的环境变量：`OPENAI_API_KEY`
 
-## Run
+## 运行
 
-From any directory (outputs to `~/Projects/tmp/...` when present; else `./tmp/...`):
+从任意目录运行（输出文件将保存在 `~/Projects/tmp/...`；如果目录不存在，则输出到 `./tmp/...`）：
 
 ```bash
 python3 ~/Projects/agent-scripts/skills/openai-image-gen/scripts/gen.py
 open ~/Projects/tmp/openai-image-gen-*/index.html
 ```
 
-Useful flags:
+有用的参数/标志：
 
 ```bash
 python3 ~/Projects/agent-scripts/skills/openai-image-gen/scripts/gen.py --count 16 --model gpt-image-1.5
@@ -28,8 +28,8 @@ python3 ~/Projects/agent-scripts/skills/openai-image-gen/scripts/gen.py --prompt
 python3 ~/Projects/agent-scripts/skills/openai-image-gen/scripts/gen.py --size 1536x1024 --quality high --out-dir ./out/images
 ```
 
-## Output
+## 输出结果
 
-- `*.png` images
-- `prompts.json` (prompt ↔ file mapping)
-- `index.html` (thumbnail gallery)
+- `*.png` 格式的图像文件
+- `prompts.json` 文件（包含提示与对应图像的映射关系）
+- `index.html` 文件（包含缩略图画廊）

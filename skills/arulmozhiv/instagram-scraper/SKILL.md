@@ -1,6 +1,6 @@
-# Instagram Profile Scraper
+# Instagram个人资料抓取工具
 
-A browser-based Instagram profile discovery and scraping tool.
+这是一个基于浏览器的Instagram个人资料发现和抓取工具。
 
 ```yaml
 ---
@@ -32,40 +32,38 @@ metadata:
 ---
 ```
 
-## Overview
+## 概述
 
-This skill provides a two-phase Instagram scraping system:
+该工具提供了一个两阶段的Instagram抓取系统：
 
-1. **Profile Discovery**  
-2. **Browser Scraping** 
+1. **个人资料发现**  
+2. **浏览器抓取**  
 
-## Features
+## 特点
 
-- 🔍  - Discover Instagram profiles by location and category
-- 🌐  - Full browser simulation for accurate scraping
-- 🛡️  - Browser fingerprinting, human behavior simulation, and stealth scripts
-- 📊  - Profile info, stats, images, and engagement data
-- 💾  - JSON/CSV export with downloaded thumbnails
-- 🔄  - Resume interrupted scraping sessions
-- ⚡  - Auto-skip private accounts, low followers, empty profiles
+- 🔍  - 根据地理位置和类别发现Instagram个人资料  
+- 🌐  - 全面模拟浏览器环境，确保抓取数据的准确性  
+- 🛡️  - 通过浏览器指纹识别、模拟人类行为以及使用隐蔽脚本进行抓取  
+- 📊  - 提供个人资料信息、统计数据、图片以及互动数据  
+- 💾  - 可以将数据导出为JSON或CSV格式，并包含下载的缩略图  
+- 🔄  - 可以恢复中断的抓取会话  
+- ⚡  - 自动跳过私密账户、粉丝数量较少的账户以及空个人资料  
 
+#### 获取Google API凭证（可选）
 
+1. 访问[Google Cloud Console](https://console.cloud.google.com/)  
+2. 创建一个新的项目或选择现有项目  
+3. 启用“自定义搜索API”  
+4. 创建API凭证（API密钥）  
+5. 访问[Programmable Search Engine](https://programmablesearchengine.google.com/)  
+6. 创建一个以`instagram.com`为搜索目标的搜索引擎  
+7. 复制搜索引擎ID  
 
-#### Getting Google API Credentials (Optional)
+## 使用方法
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Enable "Custom Search API"
-4. Create API credentials → API Key
-5. Go to [Programmable Search Engine](https://programmablesearchengine.google.com/)
-6. Create a search engine with `instagram.com` as the site to search
-7. Copy the Search Engine ID
+### 代理工具接口
 
-## Usage
-
-### Agent Tool Interface
-
-For OpenClaw agent integration, the skill provides JSON output:
+对于OpenClaw代理的集成，该工具提供JSON格式的输出数据：
 
 ```bash
 # Discover profiles (returns JSON)
@@ -75,9 +73,9 @@ discover --location "Miami" --category "fitness" --output json
 scrape --username influencer123 --output json
 ```
 
-## Output Data
+## 输出数据
 
-### Profile Data Structure
+### 个人资料数据结构
 
 ```json
 {
@@ -104,26 +102,26 @@ scrape --username influencer123 --output json
 }
 ```
 
-### Influencer Tiers
+### 影响力等级
 
-| Tier  | Follower Range    |
+| 等级 | 粉丝数量范围    |
 |-------|-------------------|
 | nano  | < 1,000           |
 | micro | 1,000 - 10,000    |
 | mid   | 10,000 - 100,000  |
-| macro | 100,000 - 1M      |
-| mega  | > 1,000,000       |
+| macro | 100,000 - 100万      |
+| mega  | > 100万       |
 
-### File Outputs
+### 文件输出
 
-- **Queue files**: `data/queue/{location}_{category}_{timestamp}.json`
-- **Scraped data**: `data/output/{username}.json`
-- **Thumbnails**: `thumbnails/{username}/profile_*.jpg`, `thumbnails/{username}/content_*.jpg`
-- **Export files**: `data/export_{timestamp}.json`, `data/export_{timestamp}.csv`
+- **队列文件**：`data/queue/{location}_{category}_{timestamp}.json`  
+- **抓取数据**：`data/output/{username}.json`  
+- **缩略图**：`thumbnails/{username}/profile_*.jpg`, `thumbnails/{username}/content_*.jpg`  
+- **导出文件**：`data/export_{timestamp}.json`, `data/export_{timestamp}.csv`  
 
-## Configuration
+## 配置
 
-Edit `config/scraper_config.json`:
+编辑`config/scraper_config.json`文件以进行配置：
 
 ```json
 {
@@ -146,34 +144,32 @@ Edit `config/scraper_config.json`:
 
 
 
-## Filters Applied
+## 应用的过滤规则
 
-The scraper automatically filters out:
+该工具会自动过滤以下类型的账户：
 
-- ❌ Private accounts
-- ❌ Accounts with < 1,000 followers (configurable)
-- ❌ Accounts with no posts
-- ❌ Non-existent/removed accounts
-- ❌ Already scraped accounts (deduplication)
+- ❌ 私密账户  
+- ❌ 粉丝数量少于1,000的账户（可配置）  
+- ❌ 没有发布内容的账户  
+- ❌ 不存在或已被删除的账户  
+- ❌ 已经被抓取过的账户（避免重复抓取）  
 
-## Troubleshooting
+## 故障排除
 
-### Login Issues
+### 登录问题
 
-- Ensure credentials are correct
-- Handle verification codes when prompted
-- Wait if rate limited (the script will auto-retry)
+- 确保凭证正确  
+- 在提示时处理验证码  
+- 如果遇到速率限制，请等待一段时间，脚本会自动重试  
 
-### No Profiles Discovered
+### 未发现个人资料
 
-- Check Google API key and quota
-- Verify Search Engine ID is configured for instagram.com
-- Try different location/category combinations
+- 检查Google API密钥和配额  
+- 确认搜索引擎ID已正确配置为`instagram.com`  
+- 尝试不同的地理位置或类别组合  
 
-### Rate Limiting
+### 速率限制
 
-- Reduce scraping speed (increase delays)
-- Use multiple Instagram accounts
-- Run during off-peak hours
-
-
+- 减慢抓取速度（增加延迟时间）  
+- 使用多个Instagram账户  
+- 在非高峰时段运行脚本

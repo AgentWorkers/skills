@@ -7,25 +7,27 @@ description: |
 user-invocable: true
 ---
 
-# Claude Agent SDK - Structured Outputs & Error Prevention Guide
+# Claude Agent SDK - 结构化输出与错误预防指南
 
-**Package**: @anthropic-ai/claude-agent-sdk@0.2.12
-**Breaking Changes**: v0.1.45 - Structured outputs (Nov 2025), v0.1.0 - No default system prompt, settingSources required
+**包**: @anthropic-ai/claude-agent-sdk@0.2.12  
+**重大变更**:  
+- v0.1.45：引入结构化输出功能（2025年11月）  
+- v0.1.0：移除默认系统提示，强制设置数据来源  
 
 ---
 
-## What's New in v0.1.45+ (Nov 2025)
+## v0.1.45及更高版本（2025年11月）的新特性  
 
-**Major Features:**
+**主要功能：**  
 
-### 1. Structured Outputs (v0.1.45, Nov 14, 2025)
-- **JSON schema validation** - Guarantees responses match exact schemas
-- **`outputFormat` parameter** - Define output structure with JSON schema or Zod
-- **Access validated results** - Via `message.structured_output`
-- **Beta header required**: `structured-outputs-2025-11-13`
-- **Type safety** - Full TypeScript inference with Zod schemas
+### 1. 结构化输出（v0.1.45，2025年11月14日）  
+- **JSON模式验证**：确保响应数据符合预设模式。  
+- **`outputFormat`参数**：允许使用JSON模式或Zod模式定义输出格式。  
+- **访问验证后的结果**：通过`message.structured_output`获取。  
+- **必需的Beta头部信息**：`structured-outputs-2025-11-13`。  
+- **类型安全**：支持Zod模式的类型推断。  
 
-**Example:**
+**示例：**  
 ```typescript
 import { query } from "@anthropic-ai/claude-agent-sdk";
 import { z } from "zod";
@@ -59,34 +61,33 @@ for await (const message of response) {
     console.log(`Sentiment: ${validated.sentiment}`);
   }
 }
-```
+```  
 
-**Zod Compatibility (v0.1.71+):** SDK supports both Zod v3.24.1+ and Zod v4.0.0+ as peer dependencies. Import remains `import { z } from "zod"` for either version.
+**Zod兼容性（v0.1.71及更高版本）：**  
+SDK同时支持Zod v3.24.1及以上版本和Zod v4.0.0及以上版本。无论使用哪个版本，导入方式均为`import { z } from "zod"`。  
 
-### 2. Plugins System (v0.1.27)
-- **`plugins` array** - Load local plugin paths
-- **Custom plugin support** - Extend agent capabilities
+### 2. 插件系统（v0.1.27）  
+- **`plugins`数组**：用于加载本地插件路径。  
+- **支持自定义插件**：扩展代理的功能。  
 
-### 3. Hooks System (v0.1.0+)
+### 3. 钩子系统（v0.1.0及更高版本）  
+**所有12个钩子事件：**  
+| 钩子 | 触发时机 | 用途 |  
+|------|------------|----------|  
+| `PreToolUse` | 工具执行前 | 验证、修改或阻止工具调用。  
+| `PostToolUse` | 工具执行后 | 记录结果、触发副作用。  
+| `Notification` | 代理通知 | 显示状态更新。  
+| `UserPromptSubmit` | 收到用户提示时 | 预处理或验证输入。  
+| `SubagentStart` | 子代理启动时 | 跟踪代理分配情况、记录上下文。  
+| `SubagentStop` | 子代理停止时 | 整合结果、进行清理。  
+| `PreCompact` | 数据压缩前 | 在数据截断前保存状态。  
+| `PermissionRequest` | 需要权限时 | 实现自定义审批流程。  
+| `Stop` | 代理停止时 | 进行清理、最终日志记录。  
+| `SessionStart` | 会话开始时 | 初始化状态。  
+| `SessionEnd` | 会话结束时 | 保存状态、进行清理。  
+| `Error` | 发生错误时 | 实现自定义错误处理。  
 
-**All 12 Hook Events:**
-
-| Hook | When Fired | Use Case |
-|------|------------|----------|
-| `PreToolUse` | Before tool execution | Validate, modify, or block tool calls |
-| `PostToolUse` | After tool execution | Log results, trigger side effects |
-| `Notification` | Agent notifications | Display status updates |
-| `UserPromptSubmit` | User prompt received | Pre-process or validate input |
-| `SubagentStart` | Subagent spawned | Track delegation, log context |
-| `SubagentStop` | Subagent completed | Aggregate results, cleanup |
-| `PreCompact` | Before context compaction | Save state before truncation |
-| `PermissionRequest` | Permission needed | Custom approval workflows |
-| `Stop` | Agent stopping | Cleanup, final logging |
-| `SessionStart` | Session begins | Initialize state |
-| `SessionEnd` | Session ends | Persist state, cleanup |
-| `Error` | Error occurred | Custom error handling |
-
-**Hook Configuration:**
+**钩子配置：**  
 ```typescript
 const response = query({
   prompt: "...",
@@ -102,63 +103,60 @@ const response = query({
     }
   }
 });
-```
+```  
 
-### 4. Additional Options
-- **`fallbackModel`** - Automatic model fallback on failures
-- **`maxThinkingTokens`** - Control extended thinking budget
-- **`strictMcpConfig`** - Strict MCP configuration validation
-- **`continue`** - Resume with new prompt (differs from `resume`)
-- **`permissionMode: 'plan'`** - New permission mode for planning workflows
+### 4. 其他选项  
+- **`fallbackModel`**：在失败时自动切换备用模型。  
+- **`maxThinkingTokens`**：控制代理的思考次数。  
+- **`strictMcpConfig`**：严格验证MCP配置。  
+- **`continue`**：使用新提示继续会话（与`resume`不同）。  
+- **`permissionMode: 'plan'`**：用于规划工作流程的新权限模式。  
 
-📚 **Docs**: https://platform.claude.com/docs/en/agent-sdk/structured-outputs
-
----
-
-## The Complete Claude Agent SDK Reference
-
-## Table of Contents
-
-1. [Core Query API](#core-query-api)
-2. [Tool Integration](#tool-integration-built-in--custom)
-3. [MCP Servers](#mcp-servers-model-context-protocol)
-4. [Subagent Orchestration](#subagent-orchestration)
-5. [Session Management](#session-management)
-6. [Permission Control](#permission-control)
-7. [Sandbox Settings](#sandbox-settings-security-critical)
-8. [File Checkpointing](#file-checkpointing)
-9. [Filesystem Settings](#filesystem-settings)
-10. [Query Object Methods](#query-object-methods)
-11. [Message Types & Streaming](#message-types--streaming)
-12. [Error Handling](#error-handling)
-13. [Known Issues](#known-issues-prevention)
+**更多文档：**  
+https://platform.claude.com/docs/en/agent-sdk/structured-outputs  
 
 ---
 
-## Core Query API
+## 完整的Claude Agent SDK参考文档  
 
-**Key signature:**
+## 目录  
+1. [核心查询API](#core-query-api)  
+2. [工具集成（内置/自定义）](#tool-integration-built-in--custom)  
+3. [MCP服务器（模型上下文协议）](#mcp-servers-model-context-protocol)  
+4. [子代理编排](#subagent-orchestration)  
+5. [会话管理](#session-management)  
+6. [权限控制](#permission-control)  
+7. [沙箱设置（安全关键）](#sandbox-settings-security-critical)  
+8. [文件检查点](#file-checkpointing)  
+9. [文件系统设置](#filesystem-settings)  
+10. [查询对象方法](#query-object-methods)  
+11. [消息类型与流式传输](#message-types--streaming)  
+12. [错误处理](#error-handling)  
+13. **已知问题与预防措施**（#known-issues-prevention）  
+
+---
+
+## 核心查询API  
+**关键签名：**  
 ```typescript
 query(prompt: string | AsyncIterable<SDKUserMessage>, options?: Options)
   -> AsyncGenerator<SDKMessage>
-```
+```  
 
-**Critical Options:**
-- `outputFormat` - Structured JSON schema validation (v0.1.45+)
-- `settingSources` - Filesystem settings loading ('user'|'project'|'local')
-- `canUseTool` - Custom permission logic callback
-- `agents` - Programmatic subagent definitions
-- `mcpServers` - MCP server configuration
-- `permissionMode` - 'default'|'acceptEdits'|'bypassPermissions'|'plan'
-- `betas` - Enable beta features (e.g., 1M context window)
-- `sandbox` - Sandbox settings for secure execution
-- `enableFileCheckpointing` - Enable file state snapshots
-- `systemPrompt` - System prompt (string or preset object)
+**重要选项：**  
+- `outputFormat`：支持结构化JSON模式验证（v0.1.45及以上版本）。  
+- `settingSources`：指定文件系统数据来源（`user`/`project`/`local`）。  
+- `canUseTool`：自定义权限逻辑回调函数。  
+- `agents`：用于定义子代理的程序化配置。  
+- `mcpServers`：MCP服务器配置。  
+- `permissionMode`：权限模式（`default`/`acceptEdits`/`bypassPermissions`/`plan`）。  
+- `betas`：启用测试功能（如100万令牌的上下文窗口）。  
+- `sandbox`：用于安全执行的沙箱设置。  
+- `enableFileCheckpointing`：启用文件状态快照功能。  
+- `systemPrompt`：系统提示（字符串或预设对象）。  
 
-### Extended Context (1M Tokens)
-
-Enable 1 million token context window:
-
+### 扩展上下文（100万令牌）  
+启用100万令牌的上下文窗口：  
 ```typescript
 const response = query({
   prompt: "Analyze this large codebase",
@@ -167,12 +165,10 @@ const response = query({
     model: "claude-sonnet-4-5"
   }
 });
-```
+```  
 
-### System Prompt Configuration
-
-Two forms of systemPrompt:
-
+### 系统提示配置  
+系统提示有两种形式：  
 ```typescript
 // 1. Simple string
 systemPrompt: "You are a helpful coding assistant."
@@ -183,25 +179,22 @@ systemPrompt: {
   preset: 'claude_code',
   append: "\n\nAdditional context: Focus on security."
 }
-```
-
-**Use preset form** when you want Claude Code's default behaviors plus custom additions.
+```  
+**使用预设形式**：可获取Claude Code的默认行为及自定义内容。  
 
 ---
 
-## Tool Integration (Built-in + Custom)
+## 工具集成（内置/自定义）  
+**工具控制：**  
+- `allowedTools`：允许使用的工具列表（优先级最高）。  
+- `disallowedTools`：禁止使用的工具列表。  
+- `canUseTool`：自定义权限回调函数（详见权限控制部分）。  
 
-**Tool Control:**
-- `allowedTools` - Whitelist (takes precedence)
-- `disallowedTools` - Blacklist
-- `canUseTool` - Custom permission callback (see Permission Control section)
+**内置工具：**  
+读取、写入、编辑、Bash、Grep、Glob、WebSearch、WebFetch、Task、NotebookEdit、BashOutput、KillBash、ListMcpResources、ReadMcpResource、AskUserQuestion  
 
-**Built-in Tools:** Read, Write, Edit, Bash, Grep, Glob, WebSearch, WebFetch, Task, NotebookEdit, BashOutput, KillBash, ListMcpResources, ReadMcpResource, AskUserQuestion
-
-### AskUserQuestion Tool (v0.1.71+)
-
-Enable user interaction during agent execution:
-
+### AskUserQuestion工具（v0.1.71及更高版本）  
+在代理执行过程中支持用户交互：  
 ```typescript
 const response = query({
   prompt: "Review and refactor the codebase",
@@ -212,17 +205,14 @@ const response = query({
 
 // Agent can now ask clarifying questions
 // Questions appear in message stream as tool_call with name "AskUserQuestion"
-```
+```  
+**用途：**  
+- 在任务执行过程中澄清模糊要求。  
+- 在执行破坏性操作前获取用户批准。  
+- 显示选项并获取用户选择。  
 
-**Use cases:**
-- Clarify ambiguous requirements mid-task
-- Get user approval before destructive operations
-- Present options and get selection
-
-### Tools Configuration (v0.1.57+)
-
-**Three forms of tool configuration:**
-
+**工具配置（v0.1.57及更高版本）**  
+**三种工具配置方式：**  
 ```typescript
 // 1. Exact allowlist (string array)
 tools: ["Read", "Write", "Grep"]
@@ -232,30 +222,26 @@ tools: []
 
 // 3. Preset with defaults (object form)
 tools: { type: 'preset', preset: 'claude_code' }
-```
-
-**Note:** `allowedTools` and `disallowedTools` still work but `tools` provides more flexibility.
+```  
+**注意：**`allowedTools`和`disallowedTools`仍然有效，但`tools`提供了更多灵活性。  
 
 ---
 
-## MCP Servers (Model Context Protocol)
+## MCP服务器（模型上下文协议）  
+**服务器类型：**  
+- **进程内**：使用`createSdkMcpServer()`和`tool()`定义服务器。  
+- **外部**：支持stdio、HTTP、SSE传输方式。  
 
-**Server Types:**
-- **In-process** - `createSdkMcpServer()` with `tool()` definitions
-- **External** - stdio, HTTP, SSE transport
-
-**Tool Definition:**
+**工具定义：**  
 ```typescript
 tool(name: string, description: string, zodSchema, handler)
-```
-
-**Handler Return:**
+```  
+**处理器返回值：**  
 ```typescript
 { content: [{ type: "text", text: "..." }], isError?: boolean }
-```
+```  
 
-### External MCP Servers (stdio)
-
+### 外部MCP服务器（stdio）  
 ```typescript
 const response = query({
   prompt: "List files and analyze Git history",
@@ -286,10 +272,8 @@ const response = query({
     ]
   }
 });
-```
-
-### External MCP Servers (HTTP/SSE)
-
+```  
+### 外部MCP服务器（HTTP/SSE）  
 ```typescript
 const response = query({
   prompt: "Analyze data from remote service",
@@ -306,25 +290,20 @@ const response = query({
     allowedTools: ["mcp__remote-service__analyze"]
   }
 });
-```
+```  
 
-### MCP Tool Naming Convention
-
-**Format**: `mcp__<server-name>__<tool-name>`
-
-**CRITICAL:**
-- Server name and tool name MUST match configuration
-- Use double underscores (`__`) as separators
-- Include in `allowedTools` array
-
-**Examples:** `mcp__weather-service__get_weather`, `mcp__filesystem__read_file`
+### MCP工具命名规范  
+**格式：**`mcp__<服务器名称>__<工具名称>`  
+**重要提示：**  
+- 服务器名称和工具名称必须与配置一致。  
+- 使用双下划线（`__`）作为分隔符。  
+- 必须将服务器添加到`allowedTools`列表中。  
+**示例：**`mcp__weather-service__get_weather`、`mcp__filesystem__read_file`  
 
 ---
 
-## Subagent Orchestration
-
-### AgentDefinition Type
-
+## 子代理编排  
+**AgentDefinition类型：**  
 ```typescript
 type AgentDefinition = {
   description: string;        // When to use this agent
@@ -334,18 +313,15 @@ type AgentDefinition = {
   skills?: string[];          // Skills to load (v0.2.10+)
   maxTurns?: number;          // Maximum turns before stopping (v0.2.10+)
 }
-```
-
-**Field Details:**
-
-- **description**: When to use agent (used by main agent for delegation)
-- **prompt**: System prompt (defines role, inherits main context)
-- **tools**: Allowed tools (if omitted, inherits from main agent)
-- **model**: Model override (`haiku`/`sonnet`/`opus`/`inherit`)
-- **skills**: Skills to load for agent (v0.2.10+)
-- **maxTurns**: Limit agent to N turns before returning control (v0.2.10+)
-
-**Usage:**
+```  
+**字段详情：**  
+- **description**：指定何时使用该子代理（由主代理调用）。  
+- **prompt**：系统提示（定义子代理的角色，继承主代理的上下文）。  
+- **tools**：允许使用的工具（省略时继承主代理的工具列表）。  
+- **model**：子代理使用的模型（`haiku`/`sonnet`/`opus`/`inherit`）。  
+- **skills**：子代理需要加载的技能（v0.2.10及更高版本）。  
+- **maxTurns**：限制子代理的思考次数（v0.2.10及更高版本）。  
+**使用方式：**  
 ```typescript
 agents: {
   "security-checker": {
@@ -357,19 +333,16 @@ agents: {
     maxTurns: 10  // Limit to 10 turns
   }
 }
-```
+```  
 
-### ⚠️ Subagent Cleanup Warning
-
-**Known Issue**: Subagents don't stop when parent agent stops ([Issue #132](https://github.com/anthropics/claude-agent-sdk-typescript/issues/132))
-
-When a parent agent is stopped (via cancellation or error), spawned subagents continue running as orphaned processes. This can lead to:
-- Resource leaks
-- Continued tool execution after parent stopped
-- RAM out-of-memory in recursive scenarios ([Claude Code Issue #4850](https://github.com/anthropics/claude-code/issues/4850))
-
-**Workaround**: Implement cleanup in Stop hooks:
-
+### ⚠️ 子代理清理警告  
+**已知问题：**  
+当父代理停止时（无论是取消还是出现错误），子代理会作为孤儿进程继续运行。这可能导致：  
+- 资源泄漏。  
+- 父代理停止后工具仍继续执行。  
+- 在递归场景中导致内存不足（[Claude Code问题#4850](https://github.com/anthropics/claude-code/issues/4850)。  
+**解决方法：**  
+在`Stop`钩子中实现清理逻辑：  
 ```typescript
 const response = query({
   prompt: "Deploy to production",
@@ -390,21 +363,17 @@ const response = query({
     }
   }
 });
-```
-
-**Enhancement Tracking**: [Issue #142](https://github.com/anthropics/claude-agent-sdk-typescript/issues/142) proposes auto-termination
+```  
+**改进计划：**[问题#142](https://github.com/anthropics/claude-agent-sdk-typescript/issues/142)建议实现自动终止机制。  
 
 ---
 
-## Session Management
-
-**Options:**
-- `resume: sessionId` - Continue previous session
-- `forkSession: true` - Create new branch from session
-- `continue: prompt` - Resume with new prompt (differs from `resume`)
-
-**Session Forking Pattern (Unique Capability):**
-
+## 会话管理  
+**选项：**  
+- `resume:sessionId`：继续之前的会话。  
+- `forkSession: true`：从现有会话创建新会话。  
+- `continue: prompt`：使用新提示继续会话（与`resume`不同）。  
+**会话分叉模式（独特功能）：**  
 ```typescript
 // Explore alternative without modifying original
 const forked = query({
@@ -414,21 +383,18 @@ const forked = query({
     forkSession: true  // Creates new branch, original session unchanged
   }
 });
-```
-
-**Capture Session ID:**
+```  
+**捕获会话ID：**  
 ```typescript
 for await (const message of response) {
   if (message.type === 'system' && message.subtype === 'init') {
     sessionId = message.session_id;  // Save for later resume/fork
   }
 }
-```
+```  
 
-### V2 Session APIs (Preview - v0.1.54+)
-
-**Simpler multi-turn conversation pattern:**
-
+### V2会话API（预览版，v0.1.54及更高版本）  
+**更简单的多轮对话模式：**  
 ```typescript
 import {
   unstable_v2_createSession,
@@ -457,26 +423,22 @@ for await (const message of stream2) {
 
 // Resume a previous session
 const resumedSession = await unstable_v2_resumeSession(session.sessionId);
-```
-
-**Note:** V2 APIs are in preview (`unstable_` prefix). The `.receive()` method was renamed to `.stream()` in v0.1.72.
+```  
+**注意：**V2 API仍处于预览阶段（前缀为`unstable_`）。`.receive()`方法在v0.1.72版本中被重命名为`.stream()`。  
 
 ---
 
-## Permission Control
-
-**Permission Modes:**
+## 权限控制  
+**权限模式：**  
 ```typescript
 type PermissionMode = "default" | "acceptEdits" | "bypassPermissions" | "plan";
-```
+```  
+- `default`：标准权限检查。  
+- `acceptEdits`：自动批准文件编辑。  
+- `bypassPermissions`：跳过所有权限检查（仅用于持续集成/持续部署）。  
+- `plan`：规划模式（v0.1.45及更高版本）。  
 
-- `default` - Standard permission checks
-- `acceptEdits` - Auto-approve file edits
-- `bypassPermissions` - Skip ALL checks (use in CI/CD only)
-- `plan` - Planning mode (v0.1.45+)
-
-### Custom Permission Logic
-
+### 自定义权限逻辑  
 ```typescript
 const response = query({
   prompt: "Deploy application to production",
@@ -512,10 +474,8 @@ const response = query({
     }
   }
 });
-```
-
-### canUseTool Callback
-
+```  
+**示例：**  
 ```typescript
 type CanUseToolCallback = (
   toolName: string,
@@ -526,10 +486,8 @@ type PermissionDecision =
   | { behavior: "allow" }
   | { behavior: "deny"; message?: string }
   | { behavior: "ask"; message?: string };
-```
-
-**Examples:**
-
+```  
+**示例用法：**  
 ```typescript
 // Block all file writes
 canUseTool: async (toolName, input) => {
@@ -558,14 +516,12 @@ canUseTool: async (toolName, input) => {
   await logToDatabase(toolName, input);
   return { behavior: "allow" };
 }
-```
+```  
 
 ---
 
-## Sandbox Settings (Security-Critical)
-
-**Enable sandboxed execution for Bash commands:**
-
+## 沙箱设置（安全关键）  
+**为Bash命令启用沙箱执行：**  
 ```typescript
 const response = query({
   prompt: "Run system diagnostics",
@@ -578,10 +534,8 @@ const response = query({
     }
   }
 });
-```
-
-### SandboxSettings Type
-
+```  
+**沙箱设置类型：**  
 ```typescript
 type SandboxSettings = {
   enabled: boolean;
@@ -596,23 +550,18 @@ type NetworkSandboxSettings = {
   enabled: boolean;
   proxyUrl?: string;  // HTTP proxy for network requests
 };
-```
+```  
+**关键选项：**  
+- `enabled`：启用沙箱隔离。  
+- `autoAllowBashIfSandboxed`：对安全的Bash命令跳过权限提示。  
+- `excludedCommands`：始终需要权限的命令。  
+- `allowUnsandboxedCommands`：允许在沙箱外执行的命令（风险较高）。  
+- `network.proxyUrl`：通过代理路由网络请求（用于监控）。  
+**最佳实践：**  
+在生产环境中处理不可信输入时，始终使用沙箱。  
 
-**Key Options:**
-- `enabled` - Activate sandbox isolation
-- `autoAllowBashIfSandboxed` - Skip permission prompts for safe bash commands
-- `excludedCommands` - Commands that always require permission
-- `allowUnsandboxedCommands` - Allow commands that can't be sandboxed (risky)
-- `network.proxyUrl` - Route network through proxy for monitoring
-
-**Best Practice:** Always use sandbox in production agents handling untrusted input.
-
----
-
-## File Checkpointing
-
-**Enable file state snapshots for rollback capability:**
-
+## 文件检查点  
+**启用文件状态快照功能：**  
 ```typescript
 const response = query({
   prompt: "Refactor the authentication module",
@@ -631,39 +580,29 @@ for await (const message of response) {
     await response.rewindFiles(userMessageUuid);
   }
 }
-```
+```  
+**用途：**  
+- 撤销失败的重构操作。  
+- 进行A/B测试。  
+- 安全地探索替代方案。  
 
-**Use cases:**
-- Undo failed refactoring attempts
-- A/B test code changes
-- Safe exploration of alternatives
-
----
-
-## Filesystem Settings
-
-**Setting Sources:**
+## 文件系统设置  
+**数据来源设置：**  
 ```typescript
 type SettingSource = 'user' | 'project' | 'local';
-```
+```  
+- `user`：`~/.claude/settings.json`（全局设置）。  
+- `project`：`.claude/settings.json`（团队共享设置）。  
+- `local`：`.claude/settings.local.json`（Git忽略的本地设置）。  
+**默认设置：**不加载任何设置（`settingSources: []`）。  
 
-- `user` - `~/.claude/settings.json` (global)
-- `project` - `.claude/settings.json` (team-shared)
-- `local` - `.claude/settings.local.json` (gitignored overrides)
-
-**Default:** NO settings loaded (`settingSources: []`)
-
-### Settings Priority
-
-When multiple sources loaded, settings merge in this order (highest priority first):
-
-1. **Programmatic options** (passed to `query()`) - Always win
-2. **Local settings** (`.claude/settings.local.json`)
-3. **Project settings** (`.claude/settings.json`)
-4. **User settings** (`~/.claude/settings.json`)
-
-**Example:**
-
+**设置优先级：**  
+当加载多个数据来源时，设置按以下顺序合并：  
+1. **程序化选项**（通过`query()`传递）。  
+2. **本地设置`(.claude/settings.local.json)`。  
+3. **项目设置`(.claude/settings.json)`。  
+4. **用户设置`(~/.claude/settings.json)`。  
+**示例：**  
 ```typescript
 // .claude/settings.json
 {
@@ -684,16 +623,11 @@ const response = query({
 });
 
 // Actual allowedTools: ["Read", "Grep"]
-```
+```  
+**最佳实践：**在持续集成/持续部署环境中使用`settingSources: ["project"]`以确保一致性。  
 
-**Best Practice:** Use `settingSources: ["project"]` in CI/CD for consistent behavior.
-
----
-
-## Query Object Methods
-
-The `query()` function returns a `Query` object with these methods:
-
+## 查询对象方法  
+`query()`函数返回一个`Query`对象，其中包含以下方法：  
 ```typescript
 const q = query({ prompt: "..." });
 
@@ -715,26 +649,21 @@ const status = await q.mcpServerStatus();     // Check MCP server status
 
 // File operations (requires enableFileCheckpointing)
 await q.rewindFiles(userMessageUuid);         // Rewind to checkpoint
-```
+```  
+**用途：**  
+- 根据任务复杂性动态切换模型。  
+- 监控MCP服务器状态。  
+- 调整代理的思考次数。  
 
-**Use cases:**
-- Dynamic model switching based on task complexity
-- Monitoring MCP server health
-- Adjusting thinking budget for reasoning tasks
-
----
-
-## Message Types & Streaming
-
-**Message Types:**
-- `system` - Session init/completion (includes `session_id`)
-- `assistant` - Agent responses
-- `tool_call` - Tool execution requests
-- `tool_result` - Tool execution results
-- `error` - Error messages
-- `result` - Final result (includes `structured_output` for v0.1.45+)
-
-**Streaming Pattern:**
+## 消息类型与流式传输  
+**消息类型：**  
+- `system`：会话初始化/结束（包含`session_id`）。  
+- `assistant`：代理响应。  
+- `tool_call`：工具执行请求。  
+- `tool_result`：工具执行结果。  
+- `error`：错误信息。  
+- `result`：最终结果（v0.1.45及更高版本包含结构化输出）。  
+**流式传输方式：**  
 ```typescript
 for await (const message of response) {
   if (message.type === 'system' && message.subtype === 'init') {
@@ -745,61 +674,49 @@ for await (const message of response) {
     const validated = schema.parse(message.structured_output);
   }
 }
-```
+```  
 
----
+## 错误处理  
+**错误代码：**  
+| 错误代码 | 原因 | 解决方案 |  
+|------------|-------|----------|  
+| `CLI_NOT_FOUND` | 未安装Claude Code CLI | 安装：`npm install -g @anthropic-ai/claude-code`。  
+| `AUTHENTICATION_FAILED` | API密钥无效 | 确保`ANTROPIC_API_KEY`环境变量已设置。  
+| `RATE_LIMIT_EXCEEDED`：请求过多 | 实现重试机制。  
+| `CONTEXT_LENGTH_EXCEEDED`：提示信息过长 | 使用会话压缩功能减少上下文长度。  
+| `PERMISSION_DENIED`：工具被阻止 | 检查`permissionMode`和`canUseTool`设置。  
+| `TOOL_EXECUTION_FAILED`：工具执行失败 | 检查工具实现。  
+| `SESSION_NOT_FOUND`：会话ID无效 | 验证会话ID。  
+| `MCP_SERVER_FAILED`：服务器错误 | 检查服务器配置。  
 
-## Error Handling
+## 已知问题与预防措施  
+本文档介绍了14个常见问题的预防方法：  
 
-**Error Codes:**
+### 问题#1：CLI未找到  
+**错误**：`Claude Code CLI未安装`  
+**原因**：SDK需要Claude Code CLI。  
+**预防措施**：在使用SDK之前先安装：`npm install -g @anthropic-ai/claude-code`。  
 
-| Error Code | Cause | Solution |
-|------------|-------|----------|
-| `CLI_NOT_FOUND` | Claude Code not installed | Install: `npm install -g @anthropic-ai/claude-code` |
-| `AUTHENTICATION_FAILED` | Invalid API key | Check ANTHROPIC_API_KEY env var |
-| `RATE_LIMIT_EXCEEDED` | Too many requests | Implement retry with backoff |
-| `CONTEXT_LENGTH_EXCEEDED` | Prompt too long | Use session compaction, reduce context |
-| `PERMISSION_DENIED` | Tool blocked | Check permissionMode, canUseTool |
-| `TOOL_EXECUTION_FAILED` | Tool error | Check tool implementation |
-| `SESSION_NOT_FOUND` | Invalid session ID | Verify session ID |
-| `MCP_SERVER_FAILED` | Server error | Check server configuration |
+### 问题#2：身份验证失败  
+**错误**：`API密钥无效`  
+**原因**：`ANTROPIC_API_KEY`环境变量未设置。  
+**预防措施**：务必设置`export ANTHROPIC_API_KEY="sk-ant-..."`。  
 
----
+### 问题#3：权限被拒绝  
+**错误**：工具执行被阻止  
+**原因**：工具被权限限制。  
+**预防措施**：使用`allowedTools`或自定义`canUseTool`回调函数。  
 
-## Known Issues Prevention
+### 问题#4：上下文长度超出限制  
+**错误**：提示信息过长**  
+**原因**：输入内容超过了模型的上下文限制（[问题#138](https://github.com/anthropics/claude-agent-sdk-typescript/issues/138)）。  
+**注意事项：**  
+- 一旦达到上下文限制：  
+  - 该会话的所有后续请求都会返回“提示信息过长”的错误。  
+  - `/compact`命令会失败。  
+  - 会话将永久中断，必须终止。  
 
-This skill prevents **14** documented issues:
-
-### Issue #1: CLI Not Found Error
-**Error**: `"Claude Code CLI not installed"`
-**Source**: SDK requires Claude Code CLI
-**Why It Happens**: CLI not installed globally
-**Prevention**: Install before using SDK: `npm install -g @anthropic-ai/claude-code`
-
-### Issue #2: Authentication Failed
-**Error**: `"Invalid API key"`
-**Source**: Missing or incorrect ANTHROPIC_API_KEY
-**Why It Happens**: Environment variable not set
-**Prevention**: Always set `export ANTHROPIC_API_KEY="sk-ant-..."`
-
-### Issue #3: Permission Denied Errors
-**Error**: Tool execution blocked
-**Source**: `permissionMode` restrictions
-**Why It Happens**: Tool not allowed by permissions
-**Prevention**: Use `allowedTools` or custom `canUseTool` callback
-
-### Issue #4: Context Length Exceeded (Session-Breaking)
-**Error**: `"Prompt too long"`
-**Source**: Input exceeds model context window ([Issue #138](https://github.com/anthropics/claude-agent-sdk-typescript/issues/138))
-**Why It Happens**: Large codebase, long conversations
-
-**⚠️ Critical Behavior**: Once a session hits context limit:
-1. All subsequent requests to that session return "Prompt too long"
-2. `/compact` command fails with same error
-3. **Session is permanently broken and must be abandoned**
-
-**Prevention Strategies**:
-
+**预防策略：**  
 ```typescript
 // 1. Proactive session forking (create checkpoints before hitting limit)
 const checkpoint = query({
@@ -826,129 +743,79 @@ if (shouldRotateSession()) {
   });
   sessionStartTime = Date.now();
 }
-```
+```  
+**注意：**SDK会自动压缩数据，但达到限制后会话将无法恢复。  
 
-**Note**: SDK auto-compacts, but if limit is reached, session becomes unrecoverable
+### 问题#5：工具执行超时  
+**错误**：工具执行时间过长（默认超时为5分钟）。  
+**预防措施**：在工具实现中加入超时处理逻辑。  
 
-### Issue #5: Tool Execution Timeout
-**Error**: Tool doesn't respond
-**Source**: Long-running tool execution
-**Why It Happens**: Tool takes too long (>5 minutes default)
-**Prevention**: Implement timeout handling in tool implementations
+### 问题#6：会话未找到  
+**错误**：会话ID无效。  
+**原因**：会话已过期或无效。  
+**预防措施**：从`system`初始化消息中捕获`session_id`。  
 
-### Issue #6: Session Not Found
-**Error**: `"Invalid session ID"`
-**Source**: Session expired or invalid
-**Why It Happens**: Session ID incorrect or too old
-**Prevention**: Capture `session_id` from `system` init message
+### 问题#7：MCP服务器连接失败  
+**错误**：服务器未响应。  
+**原因**：服务器未运行或配置错误。  
+**预防措施**：独立测试MCP服务器，检查命令/URL是否正确。  
 
-### Issue #7: MCP Server Connection Failed
-**Error**: Server not responding
-**Source**: Server not running or misconfigured
-**Why It Happens**: Command/URL incorrect, server crashed
-**Prevention**: Test MCP server independently, verify command/URL
+### 问题#8：子代理定义错误  
+**错误**：`AgentDefinition`无效。  
+**原因**：缺少必要字段。  
+**预防措施**：务必包含`description`和`prompt`字段。  
 
-### Issue #8: Subagent Definition Errors
-**Error**: Invalid AgentDefinition
-**Source**: Missing required fields
-**Why It Happens**: `description` or `prompt` missing
-**Prevention**: Always include `description` and `prompt` fields
+### 问题#9：设置文件未找到  
+**错误**：无法读取设置文件。  
+**原因**：设置的文件不存在。  
+**预防措施**：在包含设置文件之前先检查文件是否存在。  
 
-### Issue #9: Settings File Not Found
-**Error**: `"Cannot read settings"`
-**Source**: Settings file doesn't exist
-**Why It Happens**: `settingSources` includes non-existent file
-**Prevention**: Check file exists before including in sources
+### 问题#10：工具名称重复  
+**错误**：存在同名工具。  
+**原因**：多个MCP服务器定义了相同的工具名称。  
+**预防措施**：使用唯一的工具名称，并在名称前加上服务器名称前缀。  
 
-### Issue #10: Tool Name Collision
-**Error**: Duplicate tool name
-**Source**: Multiple tools with same name
-**Why It Happens**: Two MCP servers define same tool name
-**Prevention**: Use unique tool names, prefix with server name
+### 问题#11：Zod模式验证错误  
+**错误**：输入数据不符合Zod模式。  
+**原因**：提供的数据类型不正确。  
+**预防措施**：使用带有`describe()`方法的描述性Zod模式。  
 
-### Issue #11: Zod Schema Validation Error
-**Error**: Invalid tool input
-**Source**: Input doesn't match Zod schema
-**Why It Happens**: Agent provided wrong data type
-**Prevention**: Use descriptive Zod schemas with `.describe()`
+### 问题#12：文件系统权限问题  
+**错误**：无法访问指定路径。  
+**原因**：访问路径超出允许范围或权限不足。  
+**预防措施**：设置正确的`workingDirectory`，检查文件权限。  
 
-### Issue #12: Filesystem Permission Denied
-**Error**: Cannot access path
-**Source**: Restricted filesystem access
-**Why It Happens**: Path outside `workingDirectory` or no permissions
-**Prevention**: Set correct `workingDirectory`, check file permissions
+### 问题#13：MCP服务器配置缺失`type`字段  
+**错误**：`Claude Code进程以代码1退出`（含义不明确）。  
+**原因**：基于URL的MCP服务器需要指定`type: "http"`或`type: "sse"`字段。  
+**预防措施**：为基于URL的MCP服务器指定传输类型。  
+**诊断提示：**如果看到“进程以代码1退出”且没有其他错误信息，请检查MCP服务器配置中是否缺少`type`字段。  
 
-### Issue #13: MCP Server Config Missing `type` Field
-**Error**: `"Claude Code process exited with code 1"` (cryptic, no context)
-**Source**: [GitHub Issue #131](https://github.com/anthropics/claude-agent-sdk-typescript/issues/131)
-**Why It Happens**: URL-based MCP servers require explicit `type: "http"` or `type: "sse"` field
-**Prevention**: Always specify transport type for URL-based MCP servers
-
-```typescript
-// ❌ Wrong - missing type field (causes cryptic exit code 1)
-mcpServers: {
-  "my-server": {
-    url: "https://api.example.com/mcp"
-  }
-}
-
-// ✅ Correct - type field required for URL-based servers
-mcpServers: {
-  "my-server": {
-    url: "https://api.example.com/mcp",
-    type: "http"  // or "sse" for Server-Sent Events
-  }
-}
-```
-
-**Diagnostic Clue**: If you see "process exited with code 1" with no other context, check your MCP server configuration for missing `type` fields.
-
-### Issue #14: MCP Tool Result with Unicode Line Separators
-**Error**: JSON parse error, agent hangs
-**Source**: [GitHub Issue #137](https://github.com/anthropics/claude-agent-sdk-typescript/issues/137)
-**Why It Happens**: Unicode U+2028 (line separator) and U+2029 (paragraph separator) are valid in JSON but break JavaScript parsing
-**Prevention**: Escape these characters in MCP tool results
-
-```typescript
-// MCP tool handler - sanitize external data
-tool("fetch_content", "Fetch text content", {}, async (args) => {
-  const content = await fetchExternalData();
-
-  // ✅ Sanitize Unicode line/paragraph separators
-  const sanitized = content
-    .replace(/\u2028/g, '\\u2028')
-    .replace(/\u2029/g, '\\u2029');
-
-  return {
-    content: [{ type: "text", text: sanitized }]
-  };
-});
-```
-
-**When This Matters**: External data sources (APIs, web scraping, user input) that may contain these characters
-
-**Related**: [MCP Python SDK Issue #1356](https://github.com/modelcontextprotocol/python-sdk/issues/1356)
+### 问题#14：MCP工具结果中的Unicode分隔符  
+**错误**：JSON解析错误，代理卡顿。  
+**原因**：JSON中允许使用Unicode字符U+2028（换行符）和U+2029（段落分隔符），但这会导致JavaScript解析错误。  
+**预防措施：**在MCP工具结果中转义这些字符。  
+**相关问题：**[MCP Python SDK问题#1356](https://github.com/modelcontextprotocol/python-sdk/issues/1356)  
 
 ---
 
-## Official Documentation
+## 官方文档：  
+- **Agent SDK概述**：https://platform.claude.com/docs/en/api/agent-sdk/overview  
+- **TypeScript API**：https://platform.claude.com/docs/en/api/agent-sdk/typescript  
+- **结构化输出**：https://platform.claude.com/docs/en/agent-sdk/structured-outputs  
+- **GitHub（TypeScript版本）**：https://github.com/anthropics/claude-agent-sdk-typescript  
+- **变更日志**：https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md  
 
-- **Agent SDK Overview**: https://platform.claude.com/docs/en/api/agent-sdk/overview
-- **TypeScript API**: https://platform.claude.com/docs/en/api/agent-sdk/typescript
-- **Structured Outputs**: https://platform.claude.com/docs/en/agent-sdk/structured-outputs
-- **GitHub (TypeScript)**: https://github.com/anthropics/claude-agent-sdk-typescript
-- **CHANGELOG**: https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md
+## 令牌效率：**  
+- **未使用技能时**：约15,000个令牌（包括MCP设置、权限模式、会话API、沙箱配置、钩子、结构化输出、错误处理）。  
+- **使用技能时**：约4,500个令牌（涵盖v0.2.12的所有功能及错误预防机制）。  
+- **节省效果**：约70%（节省约10,500个令牌）。  
 
----
+**预防的错误：**  
+14个已知问题及其对应的解决方案（包括2个社区反馈的常见问题）。  
+**关键特性：**  
+- V2会话API、沙箱设置、文件检查点、查询方法、AskUserQuestion工具、结构化输出（v.1.45及更高版本）、会话分叉功能、`canUseTool`回调、完整的钩子系统（12个事件）、Zod v4支持、子代理清理机制。  
 
-**Token Efficiency**:
-- **Without skill**: ~15,000 tokens (MCP setup, permission patterns, session APIs, sandbox config, hooks, structured outputs, error handling)
-- **With skill**: ~4,500 tokens (comprehensive v0.2.12 coverage + error prevention + advanced patterns)
-- **Savings**: ~70% (~10,500 tokens)
-
-**Errors prevented**: 14 documented issues with exact solutions (including 2 community-sourced gotchas)
-**Key value**: V2 Session APIs, Sandbox Settings, File Checkpointing, Query methods, AskUserQuestion tool, structured outputs (v0.1.45+), session forking, canUseTool patterns, complete hooks system (12 events), Zod v4 support, subagent cleanup patterns
-
----
-
-**Last verified**: 2026-01-20 | **Skill version**: 3.1.0 | **Changes**: Added Issue #13 (MCP type field), Issue #14 (Unicode U+2028/U+2029), expanded Issue #4 (session-breaking), added subagent cleanup warning with Stop hook pattern
+**最后验证日期**：2026-01-20  
+**技能版本**：3.1.0  
+**更新内容**：新增问题#13（MCP类型字段）、问题#14（Unicode字符问题）、问题#4的详细说明、添加了通过`Stop`钩子进行子代理清理的提示。

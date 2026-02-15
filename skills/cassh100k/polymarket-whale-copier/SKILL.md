@@ -1,27 +1,27 @@
 ---
 name: polymarket-whale-copier
 version: 1.0.0
-description: Copy trade winning Polymarket wallets automatically. Track whale wallets, mirror their bets at configurable percentages, with built-in risk management. No API keys needed.
+description: **自动复制Polymarket中盈利的交易钱包**：系统能够自动追踪那些“大资金”（即持有大量资产的用户）的交易行为，并按照可配置的百分比复制他们的投注策略。同时，系统内置了风险管理功能，确保交易的安全性。**无需使用API密钥**。
 author: nix
 tags: [polymarket, trading, copy-trading, whale, prediction-markets, automation]
 ---
 
-# 🐋 Polymarket Whale Copier
+# 🐋 Polymarket 大额投资者交易复制工具
 
-**Automatically copy trade winning Polymarket wallets.**
+**自动复制在 Polymarket 上盈利的交易记录。**
 
-Track any wallet, mirror their bets, profit from their alpha.
+您可以跟踪任何钱包的交易情况，复制他们的投注策略，并从中获利。
 
-## Features
+## 主要功能
 
-- 🎯 **Copy Any Wallet** — Just paste their address
-- 📊 **Configurable Size** — Copy 1-100% of their position
-- 🛡️ **Risk Controls** — Min/max trade limits, BUY-only mode
-- 📝 **Full Logging** — Every trade documented
-- 🔄 **Auto-Redemption** — Claims winning positions automatically
-- 💰 **No API Keys** — Uses public Polymarket APIs
+- 🎯 **复制任意钱包** — 只需粘贴钱包地址即可
+- 📊 **可配置的复制比例** — 复制 1% 至 100% 的交易量
+- 🛡️ **风险控制** — 设置交易金额的最低/最高限制，支持仅买入模式
+- 📝 **详细日志记录** — 每笔交易都会被记录下来
+- 🔄 **自动结算** — 自动领取盈利的交易结果
+- 💰 **无需 API 密钥** — 该工具使用 Polymarket 的公开 API
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Set your Polymarket private key
@@ -31,9 +31,9 @@ export POLYMARKET_KEY="0xYourPrivateKey"
 python3 scripts/copy_trader.py --target 0xWhaleWallet --percent 10
 ```
 
-## Configuration
+## 配置
 
-Edit `config.json`:
+请编辑 `config.json` 文件：
 
 ```json
 {
@@ -47,7 +47,7 @@ Edit `config.json`:
 }
 ```
 
-## Commands
+## 命令
 
 ```bash
 # Start copy trading (background)
@@ -66,31 +66,31 @@ Edit `config.json`:
 python3 scripts/auto_redeem.py
 ```
 
-## Finding Whale Wallets
+## 查找大额投资者钱包
 
-1. Go to [Polymarket Leaderboard](https://polymarket.com/leaderboard)
-2. Click on top traders
-3. Copy their wallet address from the URL
-4. Paste into config or `--target` flag
+1. 访问 [Polymarket 排行榜](https://polymarket.com/leaderboard)
+2. 点击排名靠前的交易者
+3. 从页面中复制他们的钱包地址
+4. 将地址粘贴到配置文件或 `--target` 参数中
 
-## Risk Management
+## 风险管理
 
-| Setting | Default | Description |
+| 设置 | 默认值 | 说明 |
 |---------|---------|-------------|
-| `copy_percent` | 10% | % of whale's position to copy |
-| `min_trade_usd` | $5 | Skip trades smaller than this |
-| `max_trade_usd` | $50 | Cap maximum trade size |
-| `buy_only` | true | Only copy BUYs (safer) |
+| `copy_percent` | 10% | 复制的交易量占大额投资者总交易量的百分比 |
+| `min_trade_usd` | $5 | 跳过金额低于此限制的交易 |
+| `max_trade_usd` | $50 | 设置最大交易金额上限 |
+| `buy_only` | true | 仅复制买入交易（更安全） |
 
-## How It Works
+## 工作原理
 
-1. **Monitor** — Polls target wallet every 60 seconds
-2. **Detect** — Identifies new trades via Polymarket API
-3. **Filter** — Applies your risk settings
-4. **Execute** — Places matching orders on your account
-5. **Log** — Records everything for analysis
+1. **监控**：每 60 秒检查一次目标钱包的交易情况
+2. **检测**：通过 Polymarket API 识别新的交易
+3. **过滤**：根据您的风险设置筛选交易
+4. **执行**：在您的账户中下达相应的交易指令
+5. **记录**：所有交易都会被详细记录下来，便于后续分析
 
-## Example Output
+## 示例输出
 
 ```
 🚀 POLYMARKET COPY TRADER STARTING
@@ -104,23 +104,22 @@ python3 scripts/auto_redeem.py
 ✅ Order placed: #123456789
 ```
 
-## Requirements
+## 系统要求
 
-- Python 3.8+
-- Polymarket account with USDC
-- Private key (for signing trades)
+- Python 3.8 及更高版本
+- 拥有 Polymarket 账户（账户中需有 USDC 货币）
+- 需要私钥（用于签署交易指令）
 
-## Safety Notes
+## 安全提示
 
-⚠️ **Never share your private key**
-⚠️ **Start with small amounts**
-⚠️ **Use dry_run mode first**
-⚠️ **Past performance ≠ future results**
+⚠️ **切勿共享您的私钥**
+⚠️ **建议先在模拟模式下测试**
+⚠️ **过去的表现不代表未来的结果**
 
-## Support
+## 技术支持
 
-Issues? Questions? Open a GitHub issue or find us on Discord.
+遇到问题或需要帮助？请在 GitHub 上提交问题，或在我们的 Discord 频道与我们联系。
 
 ---
 
-*Built by Nix 🔥 | Not financial advice*
+*由 Nix 开发 🔥 | 本工具不提供任何财务建议*

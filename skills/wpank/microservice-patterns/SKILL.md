@@ -3,41 +3,46 @@ name: microservices-patterns
 model: reasoning
 ---
 
-# Microservices Patterns
+# 微服务模式
 
-## WHAT
-Patterns for building distributed systems: service decomposition, inter-service communication, data management, and resilience. Helps you avoid the "distributed monolith" anti-pattern.
+## 定义
+微服务模式是一系列用于构建分布式系统的设计原则，包括服务拆分、服务间通信、数据管理以及系统弹性等方面的解决方案。这些模式有助于避免“分布式单体”（即一个庞大的、难以维护的分布式系统）这一反模式。
 
-## WHEN
-- Decomposing a monolith into microservices
-- Designing service boundaries and contracts
-- Implementing inter-service communication
-- Managing distributed transactions
-- Building resilient distributed systems
+## 适用场景
+- 当你需要将一个庞大的单体应用拆分为多个微服务时
+- 在设计服务边界和服务契约时
+- 在实现服务间通信时
+- 在构建具有弹性的分布式系统时
 
-## KEYWORDS
-microservices, service mesh, event-driven, saga, circuit breaker, API gateway, service discovery, distributed transactions, eventual consistency, CQRS
-
----
-
-## Decision Framework: When to Use Microservices
-
-| If you have... | Then... |
-|----------------|---------|
-| Small team (<5 devs), simple domain | Start with monolith |
-| Need independent deployment/scaling | Consider microservices |
-| Multiple teams, clear domain boundaries | Microservices work well |
-| Tight deadlines, unknown requirements | Monolith first, extract later |
-
-**Rule of thumb**: If you can't define clear service boundaries, you're not ready for microservices.
+## 关键术语
+- 微服务（Microservices）
+- 服务网格（Service Mesh）
+- 基于事件的架构（Event-Driven Architecture）
+- 事务编排（Saga）
+- 电路断路器（Circuit Breaker）
+- API网关（API Gateway）
+- 服务发现（Service Discovery）
+- 分布式事务（Distributed Transactions）
+- 最终一致性（Eventual Consistency）
+- CQRS（Command-Query-Response-Support）
 
 ---
 
-## Service Decomposition Patterns
+## 使用微服务的决策框架
+| 如果你遇到以下情况 | 那么你应该考虑使用微服务 |
+|----------------|-------------------------|
+| 团队规模较小（<5名开发人员），业务领域简单 | 先从单体应用开始开发 |
+| 需要独立部署或扩展服务 | 考虑使用微服务 |
+| 团队较多，业务边界清晰 | 微服务是一个很好的选择 |
+| 时间紧迫，需求不明确 | 先开发单体应用，之后再逐步拆分服务 |
 
-### Pattern 1: By Business Capability
+**经验法则**：如果你无法明确定义服务之间的边界，那么你还没有准备好使用微服务。
 
-Organize services around business functions, not technical layers.
+---
+
+## 服务拆分模式
+### 模式1：按业务功能拆分
+根据业务功能来组织服务，而不是根据技术层次结构。
 
 ```
 E-commerce Example:
@@ -48,9 +53,8 @@ E-commerce Example:
 └── notification-service # Emails, SMS
 ```
 
-### Pattern 2: Strangler Fig (Monolith Migration)
-
-Gradually extract from monolith without big-bang rewrites.
+### 模式2：逐步迁移（Strangler Fig）
+通过逐步添加新功能来从单体应用中拆分服务，避免大规模的重构。
 
 ```
 1. Identify bounded context to extract
@@ -71,11 +75,9 @@ async def route_orders(request):
 
 ---
 
-## Communication Patterns
-
-### Pattern 1: Synchronous (REST/gRPC)
-
-Use for: Queries, when you need immediate response.
+## 服务间通信模式
+### 模式1：同步通信（REST/gRPC）
+适用于需要立即响应的查询操作。
 
 ```python
 import httpx
@@ -98,9 +100,8 @@ payment_client = ServiceClient("http://payment-service:8001")
 result = await payment_client.get(f"/payments/{payment_id}")
 ```
 
-### Pattern 2: Asynchronous (Events)
-
-Use for: Commands, when eventual consistency is acceptable.
+### 模式2：异步通信（基于事件）
+适用于可以接受最终一致性的命令操作。
 
 ```python
 from aiokafka import AIOKafkaProducer
@@ -144,22 +145,17 @@ async def handle_order_created(event_data: dict):
     await reserve_inventory(order_id, items)
 ```
 
-### When to Use Each
-
-| Synchronous | Asynchronous |
-|-------------|--------------|
-| Need immediate response | Fire-and-forget |
-| Simple query/response | Long-running operations |
-| Low latency required | Decoupling is priority |
-| Tight coupling acceptable | Eventual consistency OK |
+## 各种通信方式的适用场景
+| 通信方式 | 适用场景 |
+|---------|-------------------------|
+| 同步通信 | 需要立即响应的操作 |
+| 异步通信 | 需要长时间运行的操作，或者可以接受最终一致性的场景 |
 
 ---
 
-## Data Patterns
-
-### Database Per Service
-
-Each service owns its data. **No shared databases.**
+## 数据管理模式
+### 每个服务拥有自己的数据库
+每个服务都独立管理自己的数据，避免使用共享数据库。
 
 ```
 order-service     → orders_db (PostgreSQL)
@@ -168,9 +164,8 @@ product-service   → products_db (MongoDB)
 analytics-service → analytics_db (ClickHouse)
 ```
 
-### Saga Pattern (Distributed Transactions)
-
-For operations spanning multiple services that need rollback capability.
+### 事务编排模式（Saga）
+适用于涉及多个服务且需要回滚能力的操作。
 
 ```python
 class SagaStep:
@@ -218,11 +213,9 @@ class OrderFulfillmentSaga:
 
 ---
 
-## Resilience Patterns
-
-### Circuit Breaker
-
-Fail fast when a service is down. Prevents cascade failures.
+## 系统弹性模式
+### 电路断路器（Circuit Breaker）
+当某个服务出现故障时，迅速将其从系统中隔离，防止故障扩散。
 
 ```python
 from enum import Enum
@@ -287,9 +280,8 @@ async def call_payment_service(data: dict):
     return await breaker.call(payment_client.post, "/payments", json=data)
 ```
 
-### Retry with Exponential Backoff
-
-For transient failures.
+### 带指数退避机制的重试策略
+用于处理暂时性的故障。
 
 ```python
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
@@ -305,9 +297,8 @@ async def fetch_user(user_id: str):
     return response.json()
 ```
 
-### Bulkhead
-
-Isolate resources to limit impact of failures.
+### 隔离资源（Bulkhead）
+通过隔离资源来限制故障对整个系统的影响。
 
 ```python
 import asyncio
@@ -327,11 +318,8 @@ inventory_bulkhead = Bulkhead(max_concurrent=20)
 result = await payment_bulkhead.call(payment_service.charge, amount)
 ```
 
----
-
-## API Gateway Pattern
-
-Single entry point for all clients.
+## API网关模式
+为所有客户端提供统一的访问入口。
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException
@@ -376,11 +364,8 @@ async def get_order_aggregate(order_id: str):
     return await gateway.aggregate(order_id)
 ```
 
----
-
-## Health Checks
-
-Every service needs liveness and readiness probes.
+## 服务健康检查
+每个服务都需要进行活跃性和可用性检查。
 
 ```python
 @app.get("/health/live")
@@ -404,13 +389,12 @@ async def readiness():
 
 ---
 
-## NEVER
-
-- **Shared Databases**: Creates tight coupling, defeats the purpose
-- **Synchronous Chains**: A → B → C → D = fragile, slow
-- **No Circuit Breakers**: One service down takes everything down
-- **Distributed Monolith**: Services that must deploy together
-- **Ignoring Network Failures**: Assume the network WILL fail
-- **No Compensation Logic**: Can't undo failed distributed transactions
-- **Starting with Microservices**: Always start with a well-structured monolith
-- **Chatty Services**: Too many inter-service calls = latency death
+**绝对禁止的做法**
+- **使用共享数据库**：这会导致服务之间的紧密耦合，违背微服务的设计原则。
+- **使用同步通信链式调用**：A → B → C → D 的结构容易出错且效率低下。
+- **不使用电路断路器**：如果一个服务失败，可能会导致整个系统崩溃。
+- **采用分布式单体架构**：微服务应该能够独立部署。
+- **忽略网络故障**：网络故障是不可避免的，必须做好应对措施。
+- **不使用补偿机制**：无法撤销失败的分布式事务。
+- **直接从微服务开始开发**：在没有合理设计的基础上直接使用微服务可能会导致系统不稳定。
+- **服务间频繁调用**：过多的服务间交互会增加系统延迟。

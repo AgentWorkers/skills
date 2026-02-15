@@ -1,31 +1,31 @@
-# PCO CLI - Planning Center Services
+# PCO CLI - 规划中心服务
 
-CLI for the Planning Center Services API. Used for Shadow's church work (FBC Gulfport).
+这是一个用于规划中心服务 API 的命令行工具（CLI），专为 Shadow 教堂的工作（FBC Gulfport）设计。
 
-## Repository
+## 仓库地址
 
 https://github.com/rubysworld/pco-cli
 
-## Location
+## 安装方式
 
 ```
 /Users/ruby/Projects/pco-cli/pco.ts
 ```
 
-## Running
+## 运行方式
 
 ```bash
 tsx /Users/ruby/Projects/pco-cli/pco.ts <command>
 ```
 
-Or create an alias:
+或者，你可以创建一个别名来简化使用：
 ```bash
 alias pco="tsx /Users/ruby/Projects/pco-cli/pco.ts"
 ```
 
-## Authentication
+## 认证
 
-Credentials stored in `~/.config/pco-cli/config.json`
+认证信息存储在 `~/.config/pco-cli/config.json` 文件中。
 
 ```bash
 # Check auth status
@@ -38,31 +38,31 @@ pco auth setup
 pco auth logout
 ```
 
-## Global Options
+## 全局选项
 
-All list commands support:
-- `--json` - Output as JSON (default)
-- `--table` - Output as table
-- `--quiet` - Output only IDs
-- `--limit <n>` - Limit results (default: 25)
-- `--offset <n>` - Offset results
-- `--all` - Fetch all pages
+所有列表相关的命令都支持以下选项：
+- `--json`：以 JSON 格式输出（默认）
+- `--table`：以表格格式输出
+- `--quiet`：仅输出项目 ID
+- `--limit <n>`：限制输出结果的数量（默认值：25）
+- `--offset <n>`：设置结果输出的偏移量
+- `--all`：获取所有页面的数据
 
-## Commands
+## 命令列表
 
-### Organization
+### 组织结构相关命令
 ```bash
 pco org get                    # Get org info
 ```
 
-### Service Types
+### 服务类型相关命令
 ```bash
 pco service-types list         # List all service types
 pco st list                    # Alias
 pco service-types get <id>     # Get specific service type
 ```
 
-### Plans
+### 计划相关命令
 ```bash
 # List plans (service-type required)
 pco plans list --service-type <id>
@@ -74,33 +74,33 @@ pco plans get <planId> --service-type <id>
 pco plans get <planId> --service-type <id> --include items,team_members
 ```
 
-Filters: `future`, `past`, `after`, `before`, `no_dates`
+过滤条件：`future`（未来的）、`past`（过去的）、`after`（之后的）、`before`（之前的）、`no_dates`（无日期限制）
 
-### Plan Items
+### 计划详情相关命令
 ```bash
 pco items list --service-type <id> --plan <planId>
 pco items get <itemId> --service-type <id> --plan <planId>
 ```
 
-### Scheduled People (Team Members)
+### 已安排的人员（团队成员）相关命令
 ```bash
 pco scheduled list --service-type <id> --plan <planId>
 ```
 
-### People
+### 人员相关命令
 ```bash
 pco people list
 pco people list --search "John Doe"
 pco people get <id>
 ```
 
-### Teams
+### 团队相关命令
 ```bash
 pco teams list --service-type <id>
 pco teams get <teamId> --service-type <id>
 ```
 
-### Songs
+### 歌曲相关命令
 ```bash
 pco songs list
 pco songs list --search "Amazing Grace"
@@ -108,46 +108,46 @@ pco songs get <id>
 pco songs arrangements <songId>
 ```
 
-### Media
+### 媒体相关命令
 ```bash
 pco media list
 pco media get <id>
 ```
 
-### Folders
+### 文件夹相关命令
 ```bash
 pco folders list
 pco folders get <id>
 ```
 
-### Series
+### 系列相关命令
 ```bash
 pco series list
 pco series get <id>
 ```
 
-### Tag Groups
+### 标签组相关命令
 ```bash
 pco tag-groups list
 pco tag-groups tags <groupId>
 ```
 
-### Email Templates
+### 电子邮件模板相关命令
 ```bash
 pco email-templates list
 ```
 
-### Attachment Types
+### 附件类型相关命令
 ```bash
 pco attachment-types list
 ```
 
-### Report Templates
+### 报告模板相关命令
 ```bash
 pco report-templates list
 ```
 
-### Raw API
+### 原始 API 相关命令
 ```bash
 # Direct API access
 pco api GET /service_types
@@ -156,9 +156,9 @@ pco api PATCH /endpoint --file data.json
 pco api DELETE /endpoint
 ```
 
-## Common Workflows
+## 常用工作流程
 
-### Get This Sunday's Service Plan
+### 获取本周日的服务计划
 ```bash
 # 1. Find service type ID
 pco st list --table
@@ -170,22 +170,22 @@ pco plans list --service-type <id> --filter future --limit 1
 pco plans get <planId> --service-type <id> --include items,team_members
 ```
 
-### Who's Scheduled This Week?
+### 本周有哪些人被安排参与服务？
 ```bash
 pco scheduled list --service-type <id> --plan <planId> --table
 ```
 
-### Search for a Song
+### 搜索歌曲
 ```bash
 pco songs list --search "Great Are You Lord"
 ```
 
-## Notes
+## 注意事项
 
-- This is for **PCO Services** only (not People, Giving, etc.)
-- API docs: https://developer.planning.center/docs/#/apps/services
-- Context: Church work only — don't mix with Buape stuff
+- 本工具仅用于 **PCO 服务**（不包括人员管理、捐赠等相关功能）。
+- API 文档请参考：https://developer.planning.center/docs/#/apps/services
+- 仅适用于教堂工作，请勿与 Buape 相关的内容混淆。
 
 ---
 
-*Updated: 2026-01-08*
+*更新时间：2026-01-08*

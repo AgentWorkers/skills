@@ -1,6 +1,6 @@
 ---
 name: stress-relief
-description: Manage stress with quick techniques, stress logging, and recovery tools
+description: 通过快速缓解压力的方法、压力记录工具以及恢复工具来管理压力。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,79 +11,76 @@ triggers:
   - "too much stress"
 ---
 
-# Stress Relief
+# 缓解压力
 
-Reclaim calm in minutes, not hours. Quick techniques, stress insights, and recovery tools built right into your workflow.
+几分钟内就能恢复平静，而不是几小时。这些快速技巧、压力分析工具以及恢复方法已直接融入您的工作流程中。
 
-## What it does
+## 功能介绍
 
-- **Quick relief**: Breathing exercises, progressive muscle relaxation, immediate grounding techniques
-- **Stress logging**: Automatic tracking of stress events with context and intensity
-- **Pattern recognition**: Identify triggers, peak stress times, and recurring stressors
-- **Recovery tools**: Guided decompression, breaks, and boundary-setting prompts
-- **Trend analysis**: Weekly summaries of stress levels and improvement areas
+- **快速缓解**：提供呼吸练习、渐进式肌肉放松法以及即时安抚技巧，帮助您迅速平复情绪。
+- **压力记录**：自动追踪压力事件，包括具体情境和压力强度。
+- **压力源识别**：帮助您识别引发压力的因素、压力高峰期以及反复出现的压力源。
+- **恢复工具**：提供引导性的减压方法、休息建议以及设定个人边界的提示。
+- **趋势分析**：每周总结您的压力水平及需要改进的地方。
 
-## Usage
+## 使用方法
 
-### Quick Relief
-Trigger immediate stress-busting techniques when you need it fast.
-- 60-second breathing exercise (4-7-8 technique)
-- 2-minute progressive muscle relaxation
-- 5-minute grounding (5 senses method)
+### 快速缓解
+在需要时立即使用这些技巧来缓解压力：
+- 60秒呼吸练习（4-7-8呼吸法）
+- 2分钟渐进式肌肉放松
+- 5分钟“五感放松法”
 
-### Log Stress
-Record stress events as they happen or reflect at the end of your day.
-- Intensity level (1-10)
-- What triggered it
-- Physical symptoms
-- Context (work, personal, health, etc)
+### 记录压力
+在压力事件发生时立即记录，或在一天结束时回顾：
+- 压力强度（1-10级）
+- 引发压力的原因
+- 身体症状
+- 具体情境（工作、个人生活、健康等方面）
 
-### Identify Triggers
-Find patterns in what's causing stress without judgment.
-- Most common triggers this week
-- Time-of-day patterns
-- Situations that escalate stress most
-- Recurring vs. one-time stressors
+### 识别压力源
+客观地分析导致压力的因素：
+- 本周最常见的压力源
+- 不同时间段的压力变化规律
+- 最容易加剧压力的情境
+- 反复出现的压力源与一次性压力源
 
-### Decompress
-Guided recovery after high-stress periods.
-- Progressive wind-down sequences
-- Boundary-setting reminders
-- Post-stress reflection prompts
-- Recovery mode activation
+### 减压
+在高压力时段后进行引导性恢复：
+- 逐步放松的身体活动
+- 设定个人边界的提醒
+- 压力后的反思提示
+- 激活恢复模式
 
-### Review Patterns
-Weekly insights on your stress landscape.
-- Stress trend (up/down/stable)
-- Top 3 triggers this week
-- Improvement areas to focus on
-- Recovery success rate
+### 分析压力模式
+每周了解您的压力状况：
+- 压力趋势（上升/下降/稳定）
+- 本周最主要的压力源
+- 需要重点关注的改进领域
+- 恢复效果
 
-## Techniques
+## 技巧介绍
 
-**Breathing** - 4-7-8 technique: Inhale for 4 counts, hold for 7, exhale for 8. Signals your nervous system to calm down.
+**呼吸练习（4-7-8呼吸法）**：吸气4秒，屏住呼吸7秒，然后呼气8秒。这有助于让神经系统平静下来。
 
-**Progressive Muscle Relaxation** - Tense and release muscle groups from toes to head. Takes 2 minutes, breaks the stress cycle physically.
+**渐进式肌肉放松**：从脚趾开始，逐个紧张并放松身体的各个肌肉群。这个过程需要2分钟，能有效打破压力循环。
 
-**Quick Walks** - 5 minutes outside or around your space. Movement + fresh air reset cortisol levels fast.
+**短暂散步**：在户外或工作空间内散步5分钟。运动和新鲜空气能快速降低皮质醇水平。
 
-**Brain Dump** - Write everything on your mind without filtering. Gets it out of your head and onto a page where you can process it.
+**倾诉压力**：不加筛选地将脑海中的所有想法写下来，将它们从脑海中转移到纸上以便处理。
 
-**Boundaries** - Say no to non-essential tasks during high-stress periods. Protect your capacity before it's gone.
+**设定个人边界**：在高压力时段拒绝处理非必要的任务，保护自己的精力。
 
-## Tips
+## 使用建议
 
-- **Start small** - One technique is better than none. Master breathing first, add others later.
-- **Log consistently** - Even 30 seconds of note-taking reveals patterns you can't see in real time.
-- **Use triggers as alerts** - If you notice escalating stress, shift to quick relief before it compounds.
-- **Recovery is active** - Don't wait to feel better; use decompression tools to actively lower stress.
-- **All data stays local on your machine** - No cloud syncing, no external servers. Your stress patterns are yours alone.
+- **从小处开始**：掌握一种技巧总比什么都不做好。先熟练掌握呼吸练习，再逐步学习其他技巧。
+- **坚持记录**：即使每天只记录30秒，也能发现实时难以察觉的压力模式。
+- **利用压力源作为警报**：如果发现压力正在加剧，请立即采取快速缓解措施。
+- **主动恢复**：不要等到感觉好转才采取行动；主动使用减压工具来降低压力。
+- **所有数据仅保存在您的设备上**：不通过云同步或外部服务器存储，确保您的压力数据只属于您自己。
 
-## If You're in Crisis
+## 如遇危机
 
-This skill is not a substitute for professional help.
-
-- **988** (Suicide & Crisis Lifeline)
-- **Text HOME to 741741** (Crisis Text Line)
-
-If you're in immediate danger, call emergency services (911 in the US).
+本工具不能替代专业帮助：
+- 如遇到紧急情况，请拨打 **988**（自杀与危机热线）或发送短信至 **741741**（危机短信热线）。
+- 如果您处于生命危险中，请立即拨打紧急服务电话（美国为911）。

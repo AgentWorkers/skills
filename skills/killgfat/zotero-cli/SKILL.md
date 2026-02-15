@@ -1,7 +1,7 @@
 ---
 name: zotero-cli
 version: 1.0.0
-description: Command-line interface for Zotero - search your Zotero library, add/edit notes, read attachments, and manage bibliographic references from the terminal.
+description: Zotero 的命令行界面：您可以通过终端搜索 Zotero 图书馆中的内容、添加/编辑笔记、阅读附件以及管理参考文献。
 homepage: https://github.com/jbaiter/zotero-cli
 metadata:
   {
@@ -31,9 +31,9 @@ metadata:
 
 # Zotero CLI
 
-Command-line interface for the Zotero reference manager, providing terminal-based access to your Zotero library through the Zotero API.
+Zotero CLI（命令行接口）是专为Zotero参考管理器设计的工具，通过Zotero API提供终端访问您的Zotero图书馆的功能。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install (PEP 668 systems)
@@ -48,41 +48,41 @@ zotcli add-note "\"deep learning\""
 zotcli read "\"attention mechanism\""
 ```
 
-📖 **Detailed guide:** [QUICKSTART.md](QUICKSTART.md)
+📖 **详细指南：** [QUICKSTART.md](QUICKSTART.md)
 
-## Installation
+## 安装
 
-### pipx (Recommended for PEP 668 systems)
+### pipx（推荐用于符合PEP 668标准的系统）
 ```bash
 pipx install zotero-cli
 ```
 
-### pip (Generic)
+### pip（通用安装方式）
 ```bash
 pip install --user zotero-cli
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
-### Virtual Environment
+### 虚拟环境
 ```bash
 python3 -m venv ~/.venvs/zotero-cli
 source ~/.venvs/zotero-cli/bin/activate
 pip install zotero-cli
 ```
 
-📖 **Complete installation guide:** [INSTALL.md](INSTALL.md)
+📖 **完整安装指南：** [INSTALL.md](INSTALL.md)
 
-## Core Commands
+## 核心命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `zotcli query "topic"` | Search library |
-| `zotcli add-note "paper"` | Add a note |
-| `zotcli edit-note "paper"` | Edit a note |
-| `zotcli read "paper"` | Read first PDF attachment |
-| `zotcli configure` | Configure API credentials |
+| `zotcli query "topic"` | 在图书馆中搜索指定主题的文献 |
+| `zotcli add-note "paper"` | 添加新笔记 |
+| `zotcli edit-note "paper"` | 编辑现有笔记 |
+| `zotcli read "paper"` | 读取笔记中的第一份PDF附件 |
+| `zotcli configure` | 配置API凭据 |
 
-## Configuration
+## 配置
 
 ```bash
 # Set default editor
@@ -95,18 +95,18 @@ zotcli configure
 ./scripts/setup_and_check.sh
 ```
 
-## Helper Scripts
+## 辅助脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `setup_and_check.sh` | Automated setup and verification |
-| `backup_restore.sh` | Backup and restore configuration |
-| `update_check.sh` | Check for updates |
-| `quick_search.py` | Formatted search output |
-| `export_citations.py` | Export citations (BibTeX, RIS) |
-| `batch_process.sh` | Process multiple queries |
+| `setup_and_check.sh` | 自动化设置与验证 |
+| `backup_restore.sh` | 备份和恢复配置 |
+| `update_check.sh` | 检查是否有更新 |
+| `quick_search.py` | 格式化搜索结果 |
+| `export_citations.py` | 导出引用（BibTeX、RIS格式） |
+| `batch_process.sh` | 批量处理多个查询 |
 
-**Usage examples:**
+**使用示例：**
 
 ```bash
 # Quick search
@@ -122,9 +122,9 @@ python scripts/export_citations.py "topic" --format bib > refs.bib
 ./scripts/update_check.sh check
 ```
 
-📖 **Scripts documentation:** [scripts/README.md](scripts/README.md)
+📖 **脚本文档：** [scripts/README.md](scripts/README.md)
 
-## Query Syntax
+## 查询语法
 
 ```bash
 "neural AND networks"        # Boolean AND
@@ -134,54 +134,54 @@ python scripts/export_citations.py "topic" --format bib > refs.bib
 "transform*"                 # Prefix search
 ```
 
-## Workflows
+## 工作流程
 
-### Literature Review
+### 文献综述
 ```bash
 zotcli query "topic"
 zotcli add-note "paper"
 python scripts/export_citations.py "topic" --format bib > refs.bib
 ```
 
-### Daily Research
+### 日常研究
 ```bash
 python scripts/quick_search.py "\"recent\"" --format table
 zotcli add-note "\"interesting paper\""
 ./scripts/backup_restore.sh backup
 ```
 
-📖 **More examples:** [EXAMPLES.md](EXAMPLES.md)
+📖 **更多示例：** [EXAMPLES.md](EXAMPLES.md)
 
-## Documentation
+## 文档资源
 
-| Document | Description |
+| 文档 | 描述 |
 |----------|-------------|
-| [QUICKSTART.md](QUICKSTART.md) | 5-minute quick start guide |
-| [INSTALL.md](INSTALL.md) | Comprehensive installation guide |
-| [EXAMPLES.md](EXAMPLES.md) | Practical usage examples |
-| [scripts/README.md](scripts/README.md) | Helper scripts guide |
+| [QUICKSTART.md](QUICKSTART.md) | 5分钟快速入门指南 |
+| [INSTALL.md](INSTALL.md) | 安装详细步骤 |
+| [EXAMPLES.md](EXAMPLES.md) | 实用使用示例 |
+| [scripts/README.md](scripts/README.md) | 辅助脚本说明 |
 
-## Troubleshooting
+## 故障排除
 
-**Command not found:**
+**命令未找到：**
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 pipx ensurepath
 ```
 
-**Permission denied (PEP 668 systems):**
+**权限被拒绝（PEP 668系统）：**
 ```bash
 pipx install zotero-cli
 ```
 
-**Configuration errors:**
+**配置错误：**
 ```bash
 zotcli configure
 ```
 
-📖 **Detailed troubleshooting:** [INSTALL.md](INSTALL.md)
+📖 **详细故障排除指南：** [INSTALL.md](INSTALL.md)
 
-## Quick Reference
+## 快速参考
 
 ```bash
 # Essential commands
@@ -199,8 +199,8 @@ zotcli read "paper"               # Read PDF
 
 ---
 
-**For complete documentation:**
-- [QUICKSTART.md](QUICKSTART.md) - Get started
-- [INSTALL.md](INSTALL.md) - Installation details
-- [EXAMPLES.md](EXAMPLES.md) - Usage examples
-- [SKILL_SUMMARY.md](SKILL_SUMMARY.md) - Full overview
+**如需完整文档，请参阅：**
+- [QUICKSTART.md](QUICKSTART.md) - 快速入门
+- [INSTALL.md](INSTALL.md) - 安装指南
+- [EXAMPLES.md](EXAMPLES.md) - 使用示例
+- [SKILL_SUMMARY.md](SKILL_SUMMARY.md) - 全面概述

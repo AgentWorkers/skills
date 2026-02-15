@@ -1,21 +1,21 @@
 ---
 name: agentledger
-description: Expense tracking and accounting for AI agents. Log purchases, set budgets, generate spending reports, and manage multi-currency finances — all stored locally. Privacy.com card import, natural language queries, CSV/JSON export. Use when agents make purchases and need a financial audit trail.
+description: **AI代理的费用追踪与会计管理功能**  
+支持记录购买信息、设定预算、生成支出报告以及管理多币种财务数据——所有数据均存储在本地。支持导入Privacy.com卡的交易记录，支持自然语言查询，支持CSV/JSON格式的数据导出。适用于需要为代理的购买行为生成财务审计追踪的情况。
 metadata: {"openclaw": {"requires": {"bins": ["node"]}}}
 ---
 
-# AgentLedger - AI Agent Expense Tracking
+# AgentLedger - 人工智能代理费用追踪系统
 
-## Overview
-AgentLedger is an accounting skill that logs every transaction you make, tracks spending across multiple accounts, and provides detailed reports. Use this to maintain a complete financial record of your purchases.
+## 概述
+AgentLedger 是一款会计工具，它可以记录您的每一笔交易，跟踪多个账户的支出情况，并提供详细的报告。使用该工具可以帮助您维护完整的财务记录。
 
-**Important**: Always log transactions immediately after making purchases. This skill is designed for AI agents to track their own expenses (API costs, tool subscriptions, etc.).
+**重要提示**：请在购买后立即记录交易。该工具专为人工智能代理设计，用于追踪其自身的费用（如 API 使用费用、工具订阅费用等）。
 
-## Core Functions
+## 核心功能
 
-### 1. Log a Transaction
-When you make any purchase, immediately log it:
-
+### 1. 记录交易
+每当您进行任何购买时，请立即记录该交易：
 ```javascript
 // In Node.js context, require the ledger
 const AgentLedger = require('./src/ledger.js');
@@ -35,7 +35,7 @@ await ledger.logTransaction({
 });
 ```
 
-**CLI Usage** (supports both positional and named parameters):
+**命令行接口（CLI）用法**（支持位置参数和命名参数）：
 ```bash
 # Positional style
 node src/cli.js log 29.99 "OpenAI" "GPT-4 API credits" --category="API/Services"
@@ -44,7 +44,7 @@ node src/cli.js log 29.99 "OpenAI" "GPT-4 API credits" --category="API/Services"
 node src/cli.js log --amount=29.99 --vendor="OpenAI" --description="GPT-4 API credits" --category="API/Services" --context="Monthly API refill"
 ```
 
-### 2. Check Current Spending
+### 2. 查看当前支出
 ```javascript
 // Get spending summary
 const summary = await ledger.getSummary('this-month');
@@ -54,7 +54,7 @@ console.log(`Total spent this month: $${summary.total}`);
 const apiSpending = await ledger.getCategorySpending('API/Services', 'this-month');
 ```
 
-### 3. Generate Reports
+### 3. 生成报告
 ```javascript
 // Monthly report
 const report = await ledger.generateReport('monthly', { month: '2024-01' });
@@ -66,7 +66,7 @@ const customReport = await ledger.generateReport('custom', {
 });
 ```
 
-### 4. Budget Management
+### 4. 预算管理
 ```javascript
 // Set monthly budget for API services
 await ledger.setBudget('API/Services', 500, 'monthly');
@@ -78,25 +78,23 @@ if (budgetStatus.isNearLimit) {
 }
 ```
 
-## Categories
-Use these predefined categories for consistent tracking:
-- **API/Services** - API credits, SaaS subscriptions
-- **Infrastructure** - Hosting, domains, CDN
-- **Marketing** - Ads, social media tools
-- **Tools** - Software licenses, utilities
-- **Subscriptions** - Recurring monthly/yearly services
-- **Other** - Miscellaneous expenses
+## 分类
+请使用以下预定义的分类来进行一致的支出记录：
+- **API/服务**：API 使用费用、SaaS 订阅费用
+- **基础设施**：托管服务、域名费用、CDN 费用
+- **营销**：广告费用、社交媒体工具费用
+- **工具**：软件许可证费用、实用工具费用
+- **订阅服务**：按月/每年自动续费的订阅服务
+- **其他**：其他杂项费用
 
-## Account Integration
-
-### Privacy.com Cards
-The ledger automatically detects Privacy.com card data if available:
+## 账户集成
+如果您的账户使用了 Privacy.com 卡，该系统会自动检测相关交易数据：
 ```javascript
 // If you have Privacy.com JSON exports in workspace/privacy/
 await ledger.importPrivacyTransactions('./privacy/card-1.json');
 ```
 
-### Manual Account Setup
+### 手动账户设置
 ```javascript
 // Register a new payment method
 await ledger.addAccount({
@@ -107,30 +105,35 @@ await ledger.addAccount({
 });
 ```
 
-## Natural Language Queries
+## 自然语言查询
+您可以提出如下问题：
+- “我这个月花了多少钱在 API 密钥上？”
+- “昨天那笔 20 美元的费用是什么？”
+- “显示上个季度的所有基础设施费用”
+- “我的营销支出是否超出了预算？”
 
-Ask questions like:
-- "How much did I spend on API keys this month?"
-- "What was that $20 charge from yesterday?"
-- "Show me all infrastructure costs from last quarter"
-- "Am I over budget on marketing spend?"
-
-The CLI handles these queries:
+CLI 可以处理这些查询：
 ```bash
 node src/cli.js query "API spending this month"
 node src/cli.js find "OpenAI" --last-week
 ```
 
-## Time Periods
-Supported natural language time periods:
-- `today`, `yesterday`
-- `this-week`, `last-week`
-- `this-month`, `last-month`
-- `this-quarter`, `last-quarter`
-- `this-year`, `last-year`
-- `last-30-days`, `last-90-days`
+## 时间范围
+支持以下自然语言时间范围：
+- `today`（今天）
+- `yesterday`（昨天）
+- `this-week`（本周）
+- `last-week`（上周）
+- `this-month`（本月）
+- `last-month`（上个月）
+- `this-quarter`（本季度）
+- `last-quarter`（上季度）
+- `this-year`（今年）
+- `last-year`（去年）
+- `last-30-days`（过去 30 天）
+- `last-90-days`（过去 90 天）
 
-## Data Export
+## 数据导出
 ```javascript
 // Export to CSV
 await ledger.exportTransactions('csv', './exports/transactions.csv');
@@ -139,10 +142,8 @@ await ledger.exportTransactions('csv', './exports/transactions.csv');
 await ledger.exportTransactions('json', './exports/transactions.json');
 ```
 
-## CLI Quick Reference
-
-### Essential Commands for AI Agents
-
+## CLI 快速参考
+以下是人工智能代理需要掌握的基本命令：
 ```bash
 # Initialize (run once)
 node src/cli.js init
@@ -182,37 +183,36 @@ node src/cli.js query "What was that $25 charge?"
 node src/cli.js import privacy ./privacy-export.json
 ```
 
-## File Storage
-- Transactions: `workspace/ledger/transactions.json`
-- Accounts: `workspace/ledger/accounts.json`
-- Budgets: `workspace/ledger/budgets.json`
-- Settings: `workspace/ledger/settings.json`
+## 文件存储
+- 交易记录：`workspace/ledger/transactions.json`
+- 账户信息：`workspace/ledger/accounts.json`
+- 预算信息：`workspace/ledger/budgets.json`
+- 设置信息：`workspace/ledger/settings.json`
 
-## Best Practices
-1. **Log immediately** - Don't wait, log every purchase as it happens
-2. **Add context** - Explain why the purchase was necessary
-3. **Use consistent categories** - Stick to the predefined categories
-4. **Include receipts** - Store confirmation numbers and receipt URLs
-5. **Set budgets** - Establish spending limits for each category
-6. **Review regularly** - Generate monthly reports to track spending patterns
+## 最佳实践
+1. **立即记录**：不要拖延，购买发生时立即记录交易。
+2. **提供背景信息**：说明购买的原因。
+3. **使用统一的分类**：遵循预定义的分类标准。
+4. **保存收据**：存储交易确认编号和收据链接。
+5. **设置预算**：为每个类别设定支出上限。
+6. **定期审查**：定期生成报告以监控支出情况。
 
-## Error Handling & Edge Cases
+## 错误处理与特殊情况
+该系统能够优雅地处理常见错误：
 
-The ledger handles common errors gracefully:
+### 输入验证
+- **负数金额**：会被拒绝（仅接受正数金额）。
+- **缺少必填字段**：会显示带有使用示例的错误信息。
+- **无效货币**：会被接受（不进行验证，假设用户知道自己在做什么）。
+- **过长的描述**：会完整显示而不会被截断。
 
-### Input Validation
-- **Negative amounts**: Rejected (use positive amounts only)
-- **Missing required fields**: Clear error messages with usage examples
-- **Invalid currency**: Accepted (no validation - assumes user knows what they're doing)
-- **Very long descriptions**: Handled without truncation
+### 数据安全
+- **自动备份**：每次保存数据前都会进行备份。
+- **数据恢复**：可以从备份文件中自动恢复数据。
+- **空时间段**：会显示 $0.00 的总额。
+- **多货币支持**：在汇总和报告中会正确区分不同货币。
 
-### Data Safety
-- **Automatic backups**: Created before each save operation
-- **Corrupted data recovery**: Automatic recovery from `.backup` files
-- **Empty periods**: Gracefully shows $0.00 totals
-- **Multi-currency**: Properly separated in summaries and reports
-
-### Example Error Recovery
+### 错误恢复示例
 ```bash
 # If you see "Could not load transactions" message:
 # The system automatically tries to recover from backup
@@ -222,9 +222,9 @@ The ledger handles common errors gracefully:
 ls workspace/ledger/*.backup  # Check if backups exist
 ```
 
-## Security & Privacy
-- **Local storage only**: All data stays in `workspace/ledger/` JSON files
-- **No external API calls**: Core functionality works offline
-- **No sensitive data**: Never store actual card numbers or passwords
-- **Account aliases**: Use descriptive IDs like `privacy-card-1` or `company-amex`
-- **Receipt URLs**: Store links to receipts, not receipt content itself
+## 安全性与隐私
+- **仅存储在本地**：所有数据都保存在 `workspace/ledger/` 目录下的 JSON 文件中。
+- **不使用外部 API**：核心功能可离线使用。
+- **不存储敏感信息**：不会存储实际的卡号或密码。
+- **账户别名**：使用描述性名称（如 `privacy-card-1` 或 `company-amex`）。
+- **收据链接**：仅存储收据的链接，而不是收据内容本身。

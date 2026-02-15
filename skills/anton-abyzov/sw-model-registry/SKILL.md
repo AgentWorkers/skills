@@ -4,32 +4,32 @@ description: |
   Centralized model versioning, staging, and lifecycle management. Activates for "model registry", "model versioning", "model staging", "deploy to production", "rollback model", "model metadata", "model lineage", "promote model", "model catalog". Manages ML model lifecycle from development through production with SpecWeave increment integration.
 ---
 
-# Model Registry
+# 模型注册中心（Model Registry）
 
-## Overview
+## 概述
 
-Centralized system for managing ML model lifecycle: versioning, staging (dev/staging/prod), metadata tracking, lineage, and rollback. Ensures production models are tracked, reproducible, and can be safely deployed or rolled back—all integrated with SpecWeave's increment workflow.
+模型注册中心是一个集中式的系统，用于管理机器学习（ML）模型的整个生命周期，包括版本控制、模型部署阶段（开发/测试/生产环境）、元数据跟踪、模型版本追溯以及模型回滚等功能。该系统确保生产环境中的模型可以被准确追踪、复现，并能够安全地部署或回滚，所有这些功能都与 SpecWeave 的增量工作流程（incremental workflow）无缝集成。
 
-## Why Model Registry Matters
+## 模型注册中心的重要性
 
-**Without Model Registry**:
-- ❌ "Which model is in production?"
-- ❌ "Can't reproduce model from 3 months ago"
-- ❌ "Breaking change deployed, how to rollback?"
-- ❌ "Model metadata scattered across notebooks"
-- ❌ "No audit trail for model changes"
+**没有模型注册中心时：**
+- ❌ “哪个模型正在生产环境中使用？”
+- ❌ “无法复现三个月前的模型”
+- ❌ “如果发布了破坏性变更，该如何回滚？”
+- ❌ “模型元数据分散在各个代码文件中”
+- ❌ “没有模型变更的审计记录”
 
-**With Model Registry**:
-- ✅ Single source of truth for all models
-- ✅ Full version history with metadata
-- ✅ Safe staging pipeline (dev → staging → prod)
-- ✅ One-command rollback
-- ✅ Complete model lineage
-- ✅ Audit trail for compliance
+**拥有模型注册中心后：**
+- ✅ 所有模型的统一信息来源
+- ✅ 包含元数据的完整版本历史记录
+- ✅ 安全的模型部署流程（从开发环境到测试环境再到生产环境）
+- ✅ 一键式模型回滚功能
+- ✅ 完整的模型版本追溯机制
+- ✅ 符合监管要求的审计记录
 
-## Model Registry Structure
+## 模型注册中心的架构
 
-### Model Lifecycle Stages
+### 模型生命周期阶段
 
 ```
 Development → Staging → Production → Archived
@@ -40,9 +40,9 @@ Prod:     Production deployment (100% traffic)
 Archived: Decommissioned, kept for audit
 ```
 
-## Core Operations
+## 核心操作
 
-### 1. Model Registration
+### 1. 模型注册（Model Registration）
 
 ```python
 from specweave import ModelRegistry
@@ -83,7 +83,7 @@ model_version = registry.register_model(
 # - Feature schema (features.yaml)
 ```
 
-### 2. Model Versioning
+### 2. 模型版本控制（Model Versioning）
 
 ```python
 # Semantic versioning: major.minor.patch
@@ -98,9 +98,9 @@ registry.version_model(
 # - patch: Bugfixes, retraining (same features, slight changes)
 ```
 
-### 3. Model Promotion
+### 3. 模型升级（Model Promotion）
 
-**Stage Progression**:
+**阶段进展**：
 ```python
 # Promote from dev to staging
 registry.promote_model(
@@ -129,7 +129,7 @@ if ab_test_results['treatment_is_better']:
     )
 ```
 
-### 4. Model Rollback
+### 4. 模型回滚（Model Rollback）
 
 ```python
 # Rollback to previous version
@@ -147,7 +147,7 @@ registry.set_auto_rollback_triggers(
 )
 ```
 
-### 5. Model Retrieval
+### 5. 模型检索（Model Retrieval）
 
 ```python
 # Get latest production model
@@ -169,9 +169,9 @@ model_jan = registry.get_model_by_date(
 )
 ```
 
-## Model Metadata
+## 模型元数据（Model Metadata）
 
-### Tracked Metadata
+### 被跟踪的元数据（Tracked Metadata）
 
 ```python
 model_metadata = {
@@ -226,9 +226,9 @@ model_metadata = {
 }
 ```
 
-## Model Lineage
+## 模型版本追溯（Model Lineage）
 
-### Tracking Model Lineage
+### 模型版本追溯机制（Tracking Model Version History）
 
 ```python
 # Full lineage: data → features → training → model
@@ -253,7 +253,7 @@ data:v2024-01
 # - "Impact of changing feature X?"
 ```
 
-### Model Comparison
+### 模型比较（Model Comparison）
 
 ```python
 # Compare two model versions
@@ -285,9 +285,9 @@ Recommendation: ✅ v3.1.0 is better (improvement in all metrics)
 """
 ```
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-### Automatic Registration
+### 自动模型注册（Automatic Model Registration）
 
 ```python
 # Models automatically registered during increment completion
@@ -302,7 +302,7 @@ with track_experiment("xgboost-v1", increment="0042") as exp:
     )
 ```
 
-### Increment-Model Mapping
+### 增量模型映射（Incremental Model Mapping）
 
 ```
 .specweave/increments/0042-fraud-detection/
@@ -323,13 +323,14 @@ with track_experiment("xgboost-v1", increment="0042") as exp:
     └── deployment_history.md
 ```
 
-### Living Docs Integration
+### 活动文档集成（Integration with Living Docs）
 
 ```bash
 /sw:sync-docs update
 ```
 
-Updates:
+## 更新内容（Updates）
+
 ```markdown
 <!-- .specweave/docs/internal/architecture/model-registry.md -->
 
@@ -355,9 +356,9 @@ If v3.1.0 issues detected:
 3. Deploy fix as v3.1.1
 ```
 
-## Model Registry Providers
+## 模型注册中心提供商（Model Registry Providers）
 
-### MLflow Model Registry
+### MLflow 模型注册中心（MLflow Model Registry）
 
 ```python
 from specweave import MLflowRegistry
@@ -373,7 +374,7 @@ registry.register_model(...)
 registry.promote_model(...)
 ```
 
-### Custom Registry
+### 自定义模型注册中心（Custom Model Registry）
 
 ```python
 from specweave import CustomRegistry
@@ -385,9 +386,9 @@ registry = CustomRegistry(
 )
 ```
 
-## Best Practices
+## 最佳实践（Best Practices）
 
-### 1. Semantic Versioning
+### 1. 语义版本控制（Semantic Versioning）
 
 ```python
 # Breaking change (different features)
@@ -400,7 +401,7 @@ registry.version_model(version_type="minor")  # v3.0.0 → v3.1.0
 registry.version_model(version_type="patch")  # v3.0.0 → v3.0.1
 ```
 
-### 2. Model Signatures
+### 2. 模型签名（Model Signatures）
 
 ```python
 # Document input/output schema
@@ -421,7 +422,7 @@ registry.set_model_signature(
 # Prevents breaking changes (validate on registration)
 ```
 
-### 3. Model Approval Workflow
+### 3. 模型审批流程（Model Approval Workflow）
 
 ```python
 # Require approval before production
@@ -439,7 +440,7 @@ registry.approve_model(
 )
 ```
 
-### 4. Model Deprecation
+### 4. 模型淘汰机制（Model Deprecation）
 
 ```python
 # Mark old models as deprecated
@@ -451,7 +452,7 @@ registry.deprecate_model(
 )
 ```
 
-## Commands
+## 命令操作（Commands）
 
 ```bash
 # List all models
@@ -470,9 +471,9 @@ registry.deprecate_model(
 /ml:registry-compare fraud-detection-model v3.0.0 v3.1.0
 ```
 
-## Advanced Features
+## 高级功能（Advanced Features）
 
-### 1. Model Monitoring Integration
+### 1. 模型监控集成（Model Monitoring Integration）
 
 ```python
 # Automatically track production model performance
@@ -492,7 +493,7 @@ monitor.set_auto_rollback(
 )
 ```
 
-### 2. Model Governance
+### 2. 模型治理（Model Governance）
 
 ```python
 # Compliance and audit trail
@@ -513,7 +514,7 @@ audit_report = governance.generate_audit_report(
 # - Compliance checkpoints
 ```
 
-### 3. Multi-Environment Registry
+### 多环境模型注册支持（Multi-Environment Registry）
 
 ```python
 # Separate registries for dev, staging, prod
@@ -528,14 +529,14 @@ registry_dev.promote_to(
 )
 ```
 
-## Summary
+## 总结
 
-Model Registry is essential for:
-- ✅ Model versioning (track all model versions)
-- ✅ Safe deployment (dev → staging → prod pipeline)
-- ✅ Fast rollback (one-command revert to stable version)
-- ✅ Audit trail (who deployed what, when, why)
-- ✅ Model lineage (data → features → model → deployment)
-- ✅ Compliance (regulatory requirements, governance)
+模型注册中心的重要性体现在以下几个方面：
+- ✅ 模型版本管理（跟踪所有模型的版本信息）
+- ✅ 安全的模型部署流程（从开发到测试再到生产环境）
+- ✅ 快速的模型回滚功能（一键恢复到稳定版本）
+- ✅ 详细的审计记录（记录谁在何时为何进行了操作）
+- ✅ 完整的模型版本追溯机制（数据 → 特性 → 模型 → 部署过程）
+- ✅ 符合监管要求（满足合规性需求）
 
-This skill brings enterprise-grade model lifecycle management to SpecWeave, ensuring all models are tracked, reproducible, and safely deployed.
+模型注册中心为 SpecWeave 提供了企业级的全生命周期模型管理功能，确保所有模型都能被有效追踪、复现，并安全地部署。

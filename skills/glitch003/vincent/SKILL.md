@@ -1,82 +1,67 @@
 ---
 name: Vincent - A wallet for agents
-description: Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction.  Also supports raw signing and polymarket betting.
+description: 使用此技能可以安全地创建一个钱包，该钱包可供代理用于转账、交换以及任何基于以太坊虚拟机（EVM）的链上交易。此外，该钱包还支持原始签名（raw signing）和Polymarket赌博（Polymarket betting）功能。
 ---
 
-# Vincent - A wallet for agents
+# Vincent – 为代理设计的钱包
 
-Use this skill to safely create a wallet the agent can use for transfers, swaps, and any EVM chain transaction without ever exposing private keys to the agent. Create a wallet, set spending policies, and your agent can transfer tokens, do swaps, and interact with smart contracts within the boundaries you define.
+使用此功能，您可以安全地为代理创建一个钱包，用于转账、交易以及任何基于EVM区块链的操作，而无需向代理暴露私钥。创建钱包后，您可以设置支出策略，代理便可以在您设定的范围内进行代币转账、交易和智能合约交互。
 
-**The agent never sees the private key.** All transactions are executed server-side through a smart account. The wallet owner controls what the agent can do via configurable policies.
+**代理永远看不到私钥。**所有交易都在服务器端通过智能账户执行。钱包所有者可以通过可配置的策略来控制代理的权限。
 
-## Which Wallet Type to Use
+## 选择哪种钱包类型
 
-| Type                | Use Case                                  | Network                 | Gas              |
+| 类型                | 使用场景                                      | 区块链                | 执行费用（Gas）         |
 | ------------------- | ----------------------------------------- | ----------------------- | ---------------- |
-| `EVM_WALLET`        | Transfers, swaps, DeFi, contract calls    | Any EVM chain           | Sponsored (free) |
-| `RAW_SIGNER`        | Raw message signing for special protocols | Any (Ethereum + Solana) | You pay          |
-| `POLYMARKET_WALLET` | Prediction market trading                 | Polygon only            | Sponsored (free) |
+| `EVM_WALLET`        | 转账、交易、去中心化金融（DeFi）操作、调用智能合约           | 任意EVM区块链           | 免费（由OpenClaw赞助） |
+| `RAW_SIGNER`        | 为特定协议生成原始签名                         | 以太坊（Ethereum）和Solana区块链 | 需用户自行支付      |
+| `POLYMARKET_WALLET` | 在Polymarket预测市场中进行交易                   | 仅限Polygon区块链       | 免费（由OpenClaw赞助） |
 
-**Choose `EVM_WALLET`** (default) for:
+**建议选择 `EVM_WALLET`（默认设置）**，适用于：**
+- 转账ETH或代币
+- 在去中心化交易所（DEX）中交易代币
+- 与智能合约交互
+- 执行任何标准的EVM区块链交易
 
-- Sending ETH or tokens
-- Swapping tokens on DEXs
-- Interacting with smart contracts
-- Any standard EVM transaction
+**仅在以下情况下选择 `RAW_SIGNER`：**
+- 需要为不支持智能账户的协议生成ECDSA/Ed25519签名
+- 需要为自己要广播的交易哈希签名
+- 需要在Solana区块链上进行签名
 
-**Choose `RAW_SIGNER`** only when you need:
+**仅在以下情况下选择 `POLYMARKET_WALLET`：**
+- 在Polymarket预测市场中下注
+- 需要在Polygon区块链上使用USDC.e作为交易资金
 
-- Raw ECDSA/Ed25519 signatures for protocols that don't work with smart accounts
-- To sign transaction hashes you'll broadcast yourself
-- Solana signatures
+## 配置
 
-**Choose `POLYMARKET_WALLET`** only for:
-
-- Betting on Polymarket prediction markets
-- Requires USDC.e on Polygon for funding
-
-## Configuration
-
-All API requests require a Bearer token (the API key returned when creating a wallet). If you're an openclaw instance, store and retrieve it from `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, you can store it in your current working directory at `agentwallet/<API_KEY_ID>.json`.
+所有API请求都需要一个Bearer令牌（创建钱包时返回的API密钥）。如果您是OpenClaw实例，请将其存储在`~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`文件中；否则，请将其存储在当前工作目录下的`agentwallet/<API_KEY_ID>.json`文件中。
 
 ```
 Authorization: Bearer <API_KEY>
 ```
 
-## Quick Start
+## 快速入门
 
-### 1. Create a Wallet
+### 1. 创建钱包
 
-Create a new smart account wallet for your agent. This generates a private key server-side (you never see it), creates a ZeroDev smart account, and returns an API key for the agent plus a claim URL for the wallet owner.
+为您的代理创建一个新的智能账户钱包。该操作会在服务器端生成私钥（您永远看不到私钥），同时创建一个ZeroDev智能账户，并返回一个API密钥以及钱包所有者的声明URL。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "EVM_WALLET",
-    "memo": "My agent wallet",
-    "chainId": 84532
-  }'
-```
+**响应内容包括：**
+- `apiKey`：请妥善保管此密钥，用作所有后续请求的Bearer令牌。
+- `claimUrl`：请将此链接分享给用户，以便他们可以声明钱包所有权并设置策略。
+- `address`：智能账户的地址。
 
-Response includes:
+创建完成后，告诉用户：
+> “这是您的钱包声明URL：`<claimUrl>`。请使用此链接来声明所有权、设置支出策略，并监控代理的钱包活动。”
 
-- `apiKey` -- store this securely; use it as the Bearer token for all future requests
-- `claimUrl` -- share this with the user so they can claim the wallet and set policies
-- `address` -- the smart account address
-
-After creating, tell the user:
-
-> "Here is your wallet claim URL: `<claimUrl>`. Use this to claim ownership, set spending policies, and monitor your agent's wallet activity."
-
-### 2. Get Wallet Address
+### 2. 获取钱包地址
 
 ```bash
 curl -X GET "https://heyvincent.ai/api/skills/evm-wallet/address" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### 3. Check Balances
+### 3. 检查余额
 
 ```bash
 # Get all token balances across all supported chains (ETH, WETH, USDC, etc.)
@@ -88,9 +73,9 @@ curl -X GET "https://heyvincent.ai/api/skills/evm-wallet/balances?chainIds=1,137
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-Returns all ERC-20 tokens and native balances with symbols, decimals, logos, and USD values.
+该操作会返回所有ERC-20代币的余额，包括代币的符号、小数位数、图标以及对应的USD价值。
 
-### 4. Transfer ETH or Tokens
+### 4. 转账ETH或代币
 
 ```bash
 # Transfer native ETH
@@ -113,45 +98,21 @@ curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/transfer" \
   }'
 ```
 
-### 5. Swap Tokens
+### 5. 交易代币
 
-Swap one token for another using DEX liquidity (powered by 0x).
+使用DEX的流动性（由0x平台提供支持）来交易代币。
 
-```bash
-# Preview a swap (no execution, just pricing)
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/swap/preview" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sellToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    "buyToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    "sellAmount": "0.1",
-    "chainId": 1
-  }'
+**参数说明：**
+- `sellToken` / `buyToken`：代币合约的地址。使用`0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE`表示ETH。
+- `sellAmount`：要出售的代币数量（例如，`"0.1"`表示0.1 ETH）。
+- `chainId`：进行交易的区块链（1 = 以太坊，137 = Polygon，42161 = Arbitrum，10 = Optimism，8453 = Base等）。
+- `slippageBps`：可选的滑点容忍度（以基点为单位，100表示1%）。默认值为100。
 
-# Execute a swap
-curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/swap/execute" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "sellToken": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    "buyToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    "sellAmount": "0.1",
-    "chainId": 1,
-    "slippageBps": 100
-  }'
-```
+预览端点会返回预期的购买金额、路由信息及费用，但不会实际执行交易。执行端点会通过智能账户完成交易，并自动处理ERC20合约的批准流程。
 
-- `sellToken` / `buyToken`: Token contract addresses. Use `0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE` for native ETH.
-- `sellAmount`: Human-readable amount to sell (e.g. `"0.1"` for 0.1 ETH).
-- `chainId`: The chain to swap on (1 = Ethereum, 137 = Polygon, 42161 = Arbitrum, 10 = Optimism, 8453 = Base, etc.).
-- `slippageBps`: Optional slippage tolerance in basis points (100 = 1%). Defaults to 100.
+### 6. 发送任意交易
 
-The preview endpoint returns expected buy amount, route info, and fees without executing. The execute endpoint performs the actual swap through the smart account, handling ERC20 approvals automatically.
-
-### 6. Send Arbitrary Transaction
-
-Interact with any smart contract by sending custom calldata.
+通过发送自定义的calldata与任何智能合约进行交互。
 
 ```bash
 curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/send-transaction" \
@@ -164,68 +125,52 @@ curl -X POST "https://heyvincent.ai/api/skills/evm-wallet/send-transaction" \
   }'
 ```
 
-## Policies
+## 策略设置
 
-The wallet owner controls what the agent can do by setting policies via the claim URL. If a transaction violates a policy, the API will reject it or require human approval via Telegram.
+钱包所有者可以通过声明URL来设置代理的权限。如果交易违反策略设置，API会拒绝该交易或要求用户通过Telegram进行人工批准。
 
-| Policy                      | What it does                                                        |
+| 策略                        | 功能说明                                      |
 | --------------------------- | ------------------------------------------------------------------- |
-| **Address allowlist**       | Only allow transfers/calls to specific addresses                    |
-| **Token allowlist**         | Only allow transfers of specific ERC-20 tokens                      |
-| **Function allowlist**      | Only allow calling specific contract functions (by 4-byte selector) |
-| **Spending limit (per tx)** | Max USD value per transaction                                       |
-| **Spending limit (daily)**  | Max USD value per rolling 24 hours                                  |
-| **Spending limit (weekly)** | Max USD value per rolling 7 days                                    |
-| **Require approval**        | Every transaction needs human approval via Telegram                 |
-| **Approval threshold**      | Transactions above a USD amount need human approval                 |
+| **Address allowlist**       | 仅允许向指定地址进行转账/调用                         |
+| **Token allowlist**         | 仅允许转移特定的ERC-20代币                         |
+| **Function allowlist**      | 仅允许调用特定的智能合约函数                         |
+| **Spending limit (per tx)** | 每次交易的最高USD金额限制                         |
+| **Spending limit (daily)**  | 每24小时内的最高USD金额限制                         |
+| **Spending limit (weekly)** | 每7天内的最高USD金额限制                         |
+| **Require approval**        | 所有交易都需要通过Telegram进行人工批准                         |
+| **Approval threshold**      | 金额超过指定阈值的交易需要人工批准                         |
 
-If no policies are set, all actions are allowed by default. Once the owner claims the wallet and adds policies, the agent operates within those boundaries.
+如果没有设置任何策略，代理将可以执行所有操作。所有者声明钱包并设置策略后，代理将严格遵循这些规则。
 
-## Re-linking (Recovering API Access)
+## 重新链接（恢复API访问权限）
 
-If the agent loses its API key, the wallet owner can generate a **re-link token** from the frontend. The agent then exchanges this token for a new API key.
+如果代理丢失了API密钥，钱包所有者可以通过前端生成一个**重新链接令牌**。代理可以使用此令牌获取新的API密钥。
 
-**How it works:**
+**操作步骤：**
+1. 用户从前端的钱包详情页面生成重新链接令牌。
+2. 用户将令牌提供给代理（例如，通过聊天发送）。
+3. 代理调用重新链接端点，将令牌兑换成新的API密钥。
 
-1. The user generates a re-link token from the wallet detail page in the frontend
-2. The user gives the token to the agent (e.g. by pasting it in chat)
-3. The agent calls the re-link endpoint to exchange the token for a new API key
+**响应内容包括：**
+- `secret`：钱包的元数据（ID、类型、地址、chainId等）。
+- `apiKey.key`：新的API密钥，用作所有后续请求的Bearer令牌。
 
-```bash
-curl -X POST "https://heyvincent.ai/api/secrets/relink" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "relinkToken": "<TOKEN_FROM_USER>",
-    "apiKeyName": "Re-linked API Key"
-  }'
-```
-
-Response includes:
-
-- `secret` -- the wallet metadata (id, type, address, chainId, etc.)
-- `apiKey.key` -- the new API key to use as Bearer token for all future requests
-
-**Important:** Re-link tokens are one-time use and expire after 10 minutes. No authentication is required on this endpoint -- the token itself is the authorization.
-
-If a user tells you they have a re-link token, use this endpoint to regain access to the wallet. Store the returned API key and use it for all subsequent requests.
-
-## Important Notes
-
-- **No gas needed.** A paymaster is fully set up -- all transaction gas fees are sponsored automatically. The wallet does not need ETH for gas.
-- **Never try to access raw secret values.** The private key stays server-side -- that's the whole point.
-- Always store the API key from wallet creation. If you're an openclaw instance, store it in `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, you can store it in your current working directory at `agentwallet/<API_KEY_ID>.json`.
-- Always search for the API keys in the credentials folder before using the API. If you're an openclaw instance, search for the API key in `~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`. Otherwise, you can search for the API key in your current working directory at `agentwallet/<API_KEY_ID>.json`.
-- Always share the claim URL with the user after creating a wallet.
-- If a transaction is rejected, it may be blocked by a policy. Tell the user to check their policy settings via the frontend at `https://heyvincent.ai`.
-- If a transaction requires approval, it will return `status: "pending_approval"`. The wallet owner will receive a Telegram notification to approve or deny.
+**重要提示：**
+- **无需支付执行费用。**所有交易费用均由OpenClaw自动承担。
+- **切勿尝试访问私钥的原始值。**私钥始终存储在服务器端。
+- 请务必保存创建钱包时生成的API密钥。如果是OpenClaw实例，请将其存储在`~/.openclaw/credentials/agentwallet/<API_KEY_ID>.json`文件中；否则，请将其存储在当前工作目录下的`agentwallet/<API_KEY_ID>.json`文件中。
+- 在使用API之前，请务必在`credentials`文件夹中查找API密钥。
+- 创建钱包后，请务必将声明URL分享给用户。
+- 如果交易被拒绝，可能是由于策略设置导致的。请让用户通过`https://heyvincent.ai`查看他们的策略设置。
+- 如果交易需要批准，系统会返回`status: "pending_approval"`的状态。钱包所有者将通过Telegram收到批准或拒绝的提示。
 
 ---
 
-## Raw Signer (Advanced)
+## 原始签名器（高级功能）
 
-For raw ECDSA/Ed25519 signing when smart accounts won't work.
+适用于智能账户无法使用时所需的原始ECDSA/Ed25519签名操作。
 
-### Create a Raw Signer
+### 创建原始签名器
 
 ```bash
 curl -X POST "https://heyvincent.ai/api/secrets" \
@@ -236,18 +181,18 @@ curl -X POST "https://heyvincent.ai/api/secrets" \
   }'
 ```
 
-Response includes both Ethereum (secp256k1) and Solana (ed25519) addresses derived from the same seed.
+响应内容包含从同一种子生成的以太坊（secp256k1）和Solana（ed25519）地址。
 
-### Get Addresses
+### 获取地址
 
 ```bash
 curl -X GET "https://heyvincent.ai/api/skills/raw-signer/addresses" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-Returns `ethAddress` and `solanaAddress`.
+返回`ethAddress`和`solanaAddress`。
 
-### Sign a Message
+### 签名消息
 
 ```bash
 curl -X POST "https://heyvincent.ai/api/skills/raw-signer/sign" \
@@ -259,18 +204,18 @@ curl -X POST "https://heyvincent.ai/api/skills/raw-signer/sign" \
   }'
 ```
 
-- `message`: Hex-encoded bytes to sign (must start with `0x`)
-- `curve`: `"ethereum"` for secp256k1 ECDSA, `"solana"` for ed25519
+- `message`：需要签名的十六进制编码字节（必须以`0x`开头）。
+- `curve`：`"ethereum"`表示secp256k1签名算法，`"solana"`表示ed25519签名算法。
 
-Returns a hex-encoded signature. For Ethereum, this is `r || s || v` (65 bytes). For Solana, it's a 64-byte ed25519 signature.
+返回一个十六进制编码的签名。对于以太坊，签名格式为`r || s || v`（共65字节）；对于Solana，签名格式为64字节。
 
 ---
 
-## Polymarket Prediction Markets
+## Polymarket预测市场
 
-Polymarket wallets use Gnosis Safe wallets on Polygon with gasless trading through Polymarket's relayer.
+Polymarket钱包使用Gnosis Safe钱包，并通过Polymarket的Relayer实现无gas交易。
 
-### Create a Polymarket Wallet
+### 创建Polymarket钱包
 
 ```bash
 curl -X POST "https://heyvincent.ai/api/secrets" \
@@ -281,114 +226,80 @@ curl -X POST "https://heyvincent.ai/api/secrets" \
   }'
 ```
 
-Response includes:
+响应内容包括：
+- `apiKey`：用作所有Polymarket请求的Bearer令牌。
+- `claimUrl`：请与用户分享此链接，以便他们可以声明钱包所有权并设置策略。
+- `walletAddress`：Safe钱包的地址（首次使用时会自动部署）。
 
-- `apiKey` -- use as Bearer token for all Polymarket requests
-- `claimUrl` -- share with the user to claim ownership and set policies
-- `walletAddress` -- the EOA address (Safe is deployed lazily on first use)
+**重要提示：**创建钱包后，钱包内没有资金。用户需要在Polygon区块链上向Safe钱包地址发送**USDC.e**才能进行交易。
 
-**Important:** After creation, the wallet has no funds. The user must send **USDC.e (bridged USDC)** on Polygon to the Safe address before placing bets.
-
-### Get Balance
+### 获取余额
 
 ```bash
 curl -X GET "https://heyvincent.ai/api/skills/polymarket/balance" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-Returns:
+返回：
+- `walletAddress`：Safe钱包的地址（首次调用时会自动部署）。
+- `collateral.balance`：可用于交易的USDC.e余额。
+- `collateral.allowance`：Polymarket合约允许使用的最大金额。
 
-- `walletAddress` -- the Safe address (deployed on first call if needed)
-- `collateral.balance` -- USDC.e balance available for trading
-- `collateral.allowance` -- approved amount for Polymarket contracts
+**注意：**首次调用`getBalance`接口会触发Safe钱包的部署和资金审批（无需支付gas）。这可能需要30-60秒。
 
-**Note:** The first balance call triggers Safe deployment and collateral approval (gasless via relayer). This may take 30-60 seconds.
+### 为钱包充值
 
-### Fund the Wallet
+在下单之前，请用户向Safe钱包地址发送USDC.e：
+1. 通过`/balance`接口获取钱包地址。
+2. 向该地址发送USDC.e（使用合约`0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`）。
+- 每次下注至少需要1美元。
 
-Before placing bets, the user must send USDC.e to the Safe address:
+**注意：**请不要发送原始的USDC（`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`）。Polymarket仅接受桥接后的USDC.e。
 
-1. Get the wallet address from `/balance` endpoint
-2. Send USDC.e (bridged USDC, contract `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`) on Polygon to that address
-3. Minimum $1 required per bet (Polymarket minimum)
+### 浏览和搜索市场
 
-**Do not send native USDC** (`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`). Polymarket only accepts bridged USDC.e.
+**市场响应包含：**
+- `question`：市场问题。
+- `outcomes`：结果数组（例如`["Yes", "No"]`或`["Team A", "Team B"]`）。
+- `outcomePrices`：每个结果对应的当前价格。
+- `tokenIds`：每个结果对应的代币ID（用于下注）。
+- `acceptingOrders`：市场是否开放交易。
+- `closed`：市场是否已经结束。
 
-### Browse & Search Markets
+**重要提示：**请始终使用市场响应中的`tokenIds`数组。对于“是/否”类型的市场：
+- `tokenIds[0]`对应“是”结果的代币ID。
+- `tokenIds[1]`对应“否”结果的代币ID。
 
-```bash
-# Search markets by keyword (recommended)
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/markets?query=bitcoin&limit=20" \
-  -H "Authorization: Bearer <API_KEY>"
-
-# Get all active markets (paginated)
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/markets?active=true&limit=50" \
-  -H "Authorization: Bearer <API_KEY>"
-
-# Get specific market by condition ID
-curl -X GET "https://heyvincent.ai/api/skills/polymarket/market/<CONDITION_ID>" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-**Market response includes:**
-
-- `question`: The market question
-- `outcomes`: Array like `["Yes", "No"]` or `["Team A", "Team B"]`
-- `outcomePrices`: Current prices for each outcome
-- `tokenIds`: **Array of token IDs for each outcome** - use these for placing bets
-- `acceptingOrders`: Whether the market is open for trading
-- `closed`: Whether the market has resolved
-
-**Important:** Always use the `tokenIds` array from the market response. Each outcome has a corresponding token ID at the same index. For a "Yes/No" market:
-
-- `tokenIds[0]` = "Yes" token ID
-- `tokenIds[1]` = "No" token ID
-
-### Get Order Book
+### 获取订单簿
 
 ```bash
 curl -X GET "https://heyvincent.ai/api/skills/polymarket/orderbook/<TOKEN_ID>" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-Returns bids and asks with prices and sizes. Use this to determine current market prices before placing orders.
+返回订单的买卖价格和数量。请根据这些信息确定当前的市场价格。
 
-### Place a Bet
+### 下注
 
-```bash
-curl -X POST "https://heyvincent.ai/api/skills/polymarket/bet" \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "tokenId": "<OUTCOME_TOKEN_ID>",
-    "side": "BUY",
-    "amount": 5,
-    "price": 0.55
-  }'
-```
+**参数说明：**
+- `tokenId`：结果对应的代币ID（来自市场数据或订单簿）。
+- `side`：`BUY`或`SELL`。
+- `amount`：BUY订单的金额（以USD计）；SELL订单表示要出售的股份数量。
+- `price`：限价（0.01至0.99）。可选——对于市价订单可省略。
 
-Parameters:
+**BUY订单：**
+- `amount`表示您希望购买的金额（例如，`5`表示5美元）。
+- 您将获得`amount / price`数量的代币（例如，5美元对应10股）。
+- 最小订单金额为1美元。
 
-- `tokenId`: The outcome token ID (from market data or order book)
-- `side`: `"BUY"` or `"SELL"`
-- `amount`: For BUY orders, USD amount to spend. For SELL orders, number of shares to sell.
-- `price`: Limit price (0.01 to 0.99). Optional -- omit for market order.
+**SELL订单：**
+- `amount`表示要出售的股份数量。
+- 您将获得`amount * price`对应的USD金额。
+- 需要先持有相应的代币（通过之前的BUY操作获得）。
 
-**BUY orders:**
+**重要提示：**在完成BUY订单后，请等待几秒钟再出售股份，因为交易需要时间在链上完成确认。
 
-- `amount` is the USD you want to spend (e.g., `5` = $5)
-- You'll receive `amount / price` shares (e.g., $5 at 0.50 = 10 shares)
-- Minimum order is $1
-
-**SELL orders:**
-
-- `amount` is the number of shares to sell
-- You'll receive `amount * price` USD
-- Must own the shares first (from a previous BUY)
-
-**Important timing:** After a BUY fills, wait a few seconds before selling. Shares need time to settle on-chain.
-
-### View Positions & Orders
+### 查看持仓和订单
 
 ```bash
 # Get open orders
@@ -400,7 +311,7 @@ curl -X GET "https://heyvincent.ai/api/skills/polymarket/trades" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### Cancel Orders
+### 取消订单
 
 ```bash
 # Cancel specific order
@@ -412,73 +323,48 @@ curl -X DELETE "https://heyvincent.ai/api/skills/polymarket/orders" \
   -H "Authorization: Bearer <API_KEY>"
 ```
 
-### Polymarket Workflow Example
+### Polymarket操作流程示例：
 
-1. **Create wallet:**
-
+1. **创建钱包：**  
    ```bash
    POST /api/secrets {"type": "POLYMARKET_WALLET", "memo": "Betting wallet"}
    ```
 
-2. **Get Safe address (triggers deployment):**
-
+2. **获取Safe钱包地址：**  
    ```bash
    GET /api/skills/polymarket/balance
    # Returns walletAddress -- give this to user to fund
    ```
 
-3. **User sends USDC.e to the Safe address on Polygon**
-
-4. **Search for a market:**
-
+3. **用户向Polygon上的Safe钱包地址发送USDC.e：**  
+4. **搜索市场：**  
    ```bash
    # Search by keyword - returns only active, tradeable markets
    GET /api/skills/polymarket/markets?query=bitcoin&active=true
    ```
 
-   Response example:
-
-   ```json
-   {
-     "markets": [
-       {
-         "question": "Will Bitcoin hit $100k by end of 2025?",
-         "outcomes": ["Yes", "No"],
-         "outcomePrices": ["0.65", "0.35"],
-         "tokenIds": ["123456...", "789012..."],
-         "acceptingOrders": true
-       }
-     ]
-   }
-   ```
-
-5. **Check order book for the outcome you want:**
-
+5. **查看所需结果的订单簿：**  
    ```bash
    # Use the tokenId from the market response
    GET /api/skills/polymarket/orderbook/123456...
    # Note the bid/ask prices
    ```
 
-6. **Place BUY bet using the correct token ID:**
-
+6. **使用正确的代币ID下注：**  
    ```bash
    # tokenId must be from the tokenIds array, NOT the conditionId
    POST /api/skills/polymarket/bet
    {"tokenId": "123456...", "side": "BUY", "amount": 5, "price": 0.55}
    ```
 
-7. **Wait for settlement** (a few seconds)
-
-8. **Sell position:**
+7. **等待交易确认：**  
    ```bash
    POST /api/skills/polymarket/bet
    {"tokenId": "123456...", "side": "SELL", "amount": 9.09, "price": 0.54}
    ```
 
-**Common Errors:**
-
-- `"No orderbook exists for the requested token id"` - The market is closed or you're using the wrong ID. Make sure:
-  - The market has `acceptingOrders: true`
-  - You're using a `tokenId` from the `tokenIds` array, not the `conditionId`
-  - The market hasn't already resolved
+**常见错误：**
+- “No orderbook exists for the requested token id”：市场可能已关闭，或者您使用的代币ID错误。请确认：
+  - 市场状态为`acceptingOrders: true`。
+  - 使用的是`tokenIds`数组中的代币ID，而不是`conditionId`。
+  - 市场尚未结束交易。

@@ -1,35 +1,36 @@
 ---
 name: agentpay
-description: "Buy things from real websites on behalf of your human. Use when you need to purchase a product, complete a checkout, order something online, or propose a purchase for human approval. Handles encrypted credential storage, cryptographic purchase mandates, and headless browser checkout on any merchant site. The agent never sees the card."
+description: "**功能说明：**  
+代表您的用户从真实网站购买商品。适用于需要购买产品、完成在线结算、下单或提交购买请求以供用户审批的场景。该工具支持加密凭证的存储、加密购买指令的处理，以及在任何商家网站上进行无头浏览器（headless browser）结算功能。代理程序（agent）永远不会看到用户的信用卡信息。"
 metadata: {"openclaw":{"emoji":"💳","requires":{"anyBins":["agentpay","npx"]},"install":[{"id":"npm","kind":"node","package":"agentpay","bins":["agentpay"],"label":"Install AgentPay SDK"}]}}
 ---
 
-# AgentPay — Secure Checkout for AI Agents
+# AgentPay — 为AI代理提供的安全购物功能
 
-AgentPay lets you buy things from real merchant websites without ever seeing your human's payment credentials. Credentials stay encrypted on the human's machine. You propose purchases; your human approves cryptographically.
+AgentPay允许您从真实的商家网站购物，而无需显示您的支付信息。您的支付信息会一直被加密保存在您的设备上。您提出购买请求后，由您的人类用户进行加密方式的审批。
 
-## References
+## 参考资料
 
-- `references/cli-reference.md` — All CLI commands with examples
-- `references/workflow.md` — Step-by-step purchase workflow and error handling
+- `references/cli-reference.md` — 所有CLI命令及其示例
+- `references/workflow.md` — 详细的购物流程及错误处理机制
 
-## Setup (one-time, human does this)
+## 设置（只需完成一次，由人类用户操作）
 
 ```bash
 npx agentpay setup
 ```
 
-The human enters their card details and sets a passphrase. Takes ~2 minutes. After this, the agent can propose purchases.
+人类用户需要输入他们的银行卡信息并设置密码。这个过程大约需要2分钟。设置完成后，代理就可以提出购买请求了。
 
-To set spending limits:
+### 设置消费限额
 
 ```bash
 npx agentpay budget --set 500 --limit-per-tx 100
 ```
 
-## Core Workflow
+## 核心购物流程
 
-### 1. Propose a purchase
+### 1. 提出购买请求
 
 ```bash
 npx agentpay buy \
@@ -39,57 +40,57 @@ npx agentpay buy \
   --amount "39.99"
 ```
 
-This creates a pending purchase mandate. The human must approve it.
+系统会生成一个待处理的购买指令。人类用户必须对其进行审批。
 
-### 2. Human approves
+### 2. 人类用户批准
 
 ```bash
 npx agentpay pending     # list pending purchases
 npx agentpay approve <txId>
 ```
 
-Once approved, the headless browser handles checkout automatically. The agent never sees the card number — credentials are injected directly into the page from the encrypted vault.
+一旦获得批准，无头浏览器会自动完成购物流程。代理永远不会看到银行卡号码——支付信息会直接从加密的存储库中注入到购物页面中。
 
-### 3. Check status
+### 3. 查看购物状态
 
 ```bash
 npx agentpay status      # wallet status + recent transactions
 npx agentpay history     # full transaction log
 ```
 
-## MCP Server
+## MCP服务器
 
-AgentPay includes a built-in MCP server for direct tool integration:
+AgentPay内置了MCP服务器，支持与其他工具的直接集成：
 
 ```bash
 npx agentpay mcp         # stdio transport (default)
 npx agentpay mcp --http  # HTTP transport
 ```
 
-This exposes AgentPay operations as MCP tools that any compatible agent can call directly.
+通过MCP服务器，任何兼容的代理都可以直接调用AgentPay的相关功能。
 
-## Quick Actions
+## 快速操作
 
-| Task | Command |
+| 操作 | 命令 |
 |------|---------|
-| Buy something | `npx agentpay buy --merchant "Store" --description "Item" --url "https://..." --amount "29.99"` |
-| Check pending | `npx agentpay pending` |
-| View budget | `npx agentpay budget` |
-| Transaction history | `npx agentpay history` |
-| Open dashboard | `npx agentpay dashboard` |
+| 购物 | `npx agentpay buy --merchant "Store" --description "Item" --url "https://..." --amount "29.99"` |
+| 查看待处理订单 | `npx agentpay pending` |
+| 查看预算 | `npx agentpay budget` |
+| 查看交易记录 | `npx agentpay history` |
+| 打开控制面板 | `npx agentpay dashboard` |
 
-## Important Rules
+## 重要规则
 
-- **Never** attempt to read, extract, or log payment credentials from the vault
-- **Always** include `--merchant`, `--description`, and `--url` when proposing a purchase
-- **Always** tell your human what you want to buy and why before proposing
-- If a checkout fails, check `npx agentpay status` for error details — do not retry without telling the human
-- Respect budget limits. If a purchase exceeds the per-transaction limit, inform the human instead of splitting into multiple transactions
+- **严禁**尝试读取、提取或记录存储库中的支付信息。
+- **提出购买请求时**必须包含`--merchant`、`--description`和`--url`参数。
+- **在提出购买请求前**，务必告知人类用户您想要购买什么以及购买的原因。
+- 如果购物失败，请使用`npx agentpay status`查看错误详情；切勿在未通知人类用户的情况下重试。
+- 请遵守预算限制。如果单次购买金额超过限额，请告知人类用户，切勿分多次交易来完成购买。
 
-## Ideas to Try
+## 可尝试的操作示例：
 
-- "Order me a new phone charger under $20 from Amazon"
-- "Restock my usual coffee beans from the same store as last time"
-- "Find the cheapest flight to Madrid and book it for me"
-- "Buy the textbook I need for next semester"
-- "Subscribe me to that newsletter we were looking at"
+- “从亚马逊上为我订购一个价格低于20美元的新手机充电器。”
+- “从上次购买的同一家商店补货我常用的咖啡豆。”
+- “为我找到飞往马德里的最便宜航班并预订。”
+- “购买下学期所需的教科书。”
+- “为我订阅我们之前看过的那份新闻通讯。”

@@ -1,63 +1,58 @@
 ---
 name: smart-accounts-kit
-description: Web3 development using MetaMask Smart Accounts Kit. Use when the user wants to build dApps with ERC-4337 smart accounts, send user operations, batch transactions, configure signers (EOA, passkey, multisig), implement gas abstraction with paymasters, create delegations, or request advanced permissions (ERC-7715). Supports Viem integration, multiple signer types (Dynamic, Web3Auth, Wagmi), gasless transactions, and the Delegation Framework.
+description: 使用 MetaMask 智能账户套件进行 Web3 开发。适用于用户需要使用 ERC-4337 智能账户构建去中心化应用（dApps）、执行用户操作、批量发送交易、配置签名者（如外部托管账户（EOA）、多签名（MultiSig）、通过支付管理器实现气体费用抽象（Gas Abstraction）、创建委托关系（Delegations），或请求高级权限（如 ERC-7715）的场景。该套件支持与 Viem 的集成，支持多种签名者类型（动态签名者、Web3Auth、Wagmi），支持无气体费用的交易（Gasless Transactions），并具备委托框架（Delegation Framework）功能。
 metadata: {"openclaw":{"emoji":"🦊","homepage":"https://docs.metamask.io/smart-accounts-kit"}}
 ---
-## Quick Reference
+## 快速参考
 
-This skill file provides quick access to the MetaMask Smart Accounts Kit v0.3.0. For detailed information, refer to the specific reference files.
+本技能文件提供了对 MetaMask 智能账户套件（MetaMask Smart Accounts Kit）v0.3.0 的快速访问。如需详细信息，请参阅相应的参考文件。
 
-**📚 Detailed References:**
+**📚 详细参考文件：**
 
-- [Smart Accounts Reference](./references/smart-accounts.md) - Account creation, implementations, signers
-- [Delegations Reference](./references/delegations.md) - Delegation lifecycle, scopes, caveats
-- [Advanced Permissions Reference](./references/advanced-permissions.md) - ERC-7715 permissions via MetaMask
+- [智能账户参考](./references/smart-accounts.md) - 账户创建、实现方式、签名器
+- [委托参考](./references/delegations.md) - 委托生命周期、权限范围、注意事项
+- [高级权限参考](./references/advanced-permissions.md) - 通过 MetaMask 实现的 ERC-7715 权限
 
-## Package Installation
+## 包安装
 
 ```bash
 npm install @metamask/smart-accounts-kit@0.3.0
 ```
 
-For custom caveat enforcers:
+对于自定义的权限执行器（permission enforcers）：
 
 ```bash
 forge install metamask/delegation-framework@v1.3.0
 ```
 
-## Core Concepts Summary
+## 核心概念总结
 
-### 1. Smart Accounts (ERC-4337)
+### 1. 智能账户（ERC-4337）
 
-Three implementation types:
+- **实现类型**：
+  - **混合型** (`Implementation.Hybrid`) - 持有者操作权限（EOA, EOA）+ 密码签名器
+  - **多签名** (`Implementation.MultiSig`) - 需要达到一定签名人数的多签名机制
+  - **Stateless7702** (`Implementation.Stateless7702`) - 基于 EIP-7702 升级的 EOA（无状态智能账户）
 
-- **Hybrid** (`Implementation.Hybrid`) - EOA + passkey signers
-- **Multisig** (`Implementation.MultiSig`) - Multiple signers with threshold
-- **Stateless7702** (`Implementation.Stateless7702`) - EIP-7702 upgraded EOA
+### 2. 委托框架（ERC-7710）
 
-### 2. Delegation Framework (ERC-7710)
+- 委托人向受托人授予权限：
+  - **权限范围** - 初始授权（如交易限额、函数调用）
+  - **注意事项** - 由智能合约执行的限制条件
+  - **类型**：根委托（Root Delegation）、开放委托（Open Delegation）、重新委托（Redelegation）
+  - **生命周期**：创建 → 签名 → 存储 → 提现
 
-Grant permissions from delegator to delegate:
+### 3. 高级权限（ERC-7715）
 
-- **Scopes** - Initial authority (spending limits, function calls)
-- **Caveats** - Restrictions enforced by smart contracts
-- **Types** - Root, open root, redelegation, open redelegation
-- **Lifecycle** - Create → Sign → Store → Redeem
+- 通过 MetaMask 扩展程序请求权限：
+  - 提供人类可读的 UI 确认流程
+  - 支持 ERC-20 标准和原生代币的权限管理
+  - 需要 MetaMask Flask 13.5.0 或更高版本
+  - 用户必须拥有智能账户
 
-### 3. Advanced Permissions (ERC-7715)
+## 快速代码示例
 
-Request permissions via MetaMask extension:
-
-- Human-readable UI confirmations
-- ERC-20 and native token permissions
-- Requires MetaMask Flask 13.5.0+
-- User must have smart account
-
-## Quick Code Examples
-
-### Create Smart Account
-
-```typescript
+- **创建智能账户**：```typescript
 import { Implementation, toMetaMaskSmartAccount } from '@metamask/smart-accounts-kit'
 import { privateKeyToAccount } from 'viem/accounts'
 
@@ -71,10 +66,7 @@ const smartAccount = await toMetaMaskSmartAccount({
   signer: { account },
 })
 ```
-
-### Create Delegation
-
-```typescript
+- **创建委托**：```typescript
 import { createDelegation } from '@metamask/smart-accounts-kit'
 import { parseUnits } from 'viem'
 
@@ -93,17 +85,11 @@ const delegation = createDelegation({
   ],
 })
 ```
-
-### Sign Delegation
-
-```typescript
+- **签署委托**：```typescript
 const signature = await smartAccount.signDelegation({ delegation })
 const signedDelegation = { ...delegation, signature }
 ```
-
-### Redeem Delegation
-
-```typescript
+- **赎回委托**：```typescript
 import { createExecution, ExecutionMode } from '@metamask/smart-accounts-kit'
 import { DelegationManager } from '@metamask/smart-accounts-kit/contracts'
 import { encodeFunctionData, erc20Abi } from 'viem'
@@ -134,10 +120,7 @@ const txHash = await delegateWalletClient.sendTransaction({
   data: redeemCalldata,
 })
 ```
-
-### Request Advanced Permissions
-
-```typescript
+- **请求高级权限**：```typescript
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions'
 
 const walletClient = createWalletClient({
@@ -165,10 +148,7 @@ const grantedPermissions = await walletClient.requestExecutionPermissions([
   },
 ])
 ```
-
-### Redeem Advanced Permissions
-
-```typescript
+- **赎回高级权限**：```typescript
 // Smart account
 import { erc7710BundlerActions } from '@metamask/smart-accounts-kit/actions'
 
@@ -210,157 +190,94 @@ const txHash = await walletClient.sendTransactionWithDelegation({
 })
 ```
 
-## Key API Methods
+## 主要 API 方法
 
-### Smart Accounts
+### 智能账户相关：
+- `toMetaMaskSmartAccount()` - 创建智能账户
+- `aggregateSignature()` - 合并多签名者的签名
+- `signDelegation()` - 签署委托
+- `signUserOperation()` - 签署用户操作
+- `signMessage()` / `signTypedData()` - 标准签名操作
 
-- `toMetaMaskSmartAccount()` - Create smart account
-- `aggregateSignature()` - Combine multisig signatures
-- `signDelegation()` - Sign delegation
-- `signUserOperation()` - Sign user operation
-- `signMessage()` / `signTypedData()` - Standard signing
+### 委托相关：
+- `createDelegation()` - 创建委托关系
+- `createOpenDelegation()` - 创建开放委托
+- `createCaveatBuilder()` - 构建权限限制数组
+- `createExecution()` - 创建执行结构
+- `redeemDelegations()` - 编码赎回所需的数据
+- `signDelegation()` - 使用私钥签署委托
+- `getSmartAccountsEnvironment()` - 获取智能账户环境信息
+- `deploySmartAccountsEnvironment()` - 部署智能合约
+- `overrideDeployedEnvironment()` - 覆盖已部署的环境设置
 
-### Delegations
+### 高级权限相关：
+- `erc7715ProviderActions()` - 用于请求权限的钱包客户端扩展
+- `requestExecutionPermissions()` - 请求执行权限
+- `erc7710BundlerActions()` - 用于打包委托的扩展
+- `sendUserOperationWithDelegation()` - 使用智能账户进行交易
+- `erc7710WalletActions()` - 与钱包客户端相关的功能
+- `sendTransactionWithDelegation()` - 使用 EOA 进行交易
 
-- `createDelegation()` - Create delegation with delegate
-- `createOpenDelegation()` - Create open delegation
-- `createCaveatBuilder()` - Build caveats array
-- `createExecution()` - Create execution struct
-- `redeemDelegations()` - Encode redemption calldata
-- `signDelegation()` - Sign with private key
-- `getSmartAccountsEnvironment()` - Resolve environment
-- `deploySmartAccountsEnvironment()` - Deploy contracts
-- `overrideDeployedEnvironment()` - Override environment
+## 支持的 ERC-7715 权限类型
 
-### Advanced Permissions
+### ERC-20 标准代币权限：
+- `erc20-token-periodic` - 每个周期内的使用限额，限额会重置
+- `erc20-token-streaming` - 每秒固定流量的使用限制
 
-- `erc7715ProviderActions()` - Wallet client extension for requesting
-- `requestExecutionPermissions()` - Request permissions
-- `erc7710BundlerActions()` - Bundler client extension
-- `sendUserOperationWithDelegation()` - Redeem with smart account
-- `erc7710WalletActions()` - Wallet client extension
-- `sendTransactionWithDelegation()` - Redeem with EOA
+### 原生代币权限：
+- `native-token-periodic` - 每个周期内的使用限额，限额会重置
+- `native-token-streaming` - 每秒固定流量的使用限制
 
-## Supported ERC-7715 Permission Types
+## 常见的委托权限范围
 
-### ERC-20 Token Permissions
+### 交易限额：
+- `erc20TransferAmount` - 固定的 ERC-20 交易限额
+- `erc20PeriodTransfer` - 每个周期内的 ERC-20 交易限额
+- `erc20Streaming` - 每秒固定流量的 ERC-20 交易
+- `nativeTokenTransferAmount` - 固定的原生代币交易限额
+- `nativeTokenPeriodTransfer` - 每个周期内的原生代币交易限额
+- `nativeTokenStreaming` - 每秒固定流量的原生代币交易
 
-| Permission Type | Description |
-|----------------|-------------|
-| `erc20-token-periodic` | Per-period limit that resets at each period |
-| `erc20-token-streaming` | Linear streaming with amountPerSecond rate |
+### 常见的权限限制类型
 
-### Native Token Permissions
+- **交易限额**：指定类型的交易金额限制
+- **函数调用**：允许调用的具体函数或地址
+- **权限范围**：定义可执行的操作类型
 
-| Permission Type | Description |
-|----------------|-------------|
-| `native-token-periodic` | Per-period ETH limit that resets |
-| `native-token-streaming` | Linear ETH streaming with amountPerSecond rate |
+## 常见的权限执行器（Permission Enforcers）：
 
-## Common Delegation Scopes
+- **目标地址与方法限制**：限制可调用的目标地址和函数
+- **数据验证**：验证传递的参数是否符合要求
+- **执行细节**：确保执行操作符合预设条件
+- **价值与代币限制**：限制交易金额或代币数量
+- **时间与频率限制**：指定时间范围或交易频率
+- **安全与状态检查**：限制交易行为或账户状态
 
-### Spending Limits
+### 合同地址（v1.3.0）：
+- `EntryPoint`：合约入口地址（`0x0000000071727De22E5E9d8BAf0edAc6f37da032`）
+- `SimpleFactory`：基础委托管理合约
+- `DelegationManager`：委托管理合约
+- `MultiSigDeleGatorImpl`：多签名委托实现
+- `HybridDeleGatorImpl`：混合型委托实现
 
-| Scope                       | Description                   |
-| --------------------------- | ----------------------------- |
-| `erc20TransferAmount`       | Fixed ERC-20 limit            |
-| `erc20PeriodTransfer`       | Per-period ERC-20 limit       |
-| `erc20Streaming`            | Linear streaming ERC-20       |
-| `nativeTokenTransferAmount` | Fixed native token limit      |
-| `nativeTokenPeriodTransfer` | Per-period native token limit |
-| `nativeTokenStreaming`      | Linear streaming native       |
-| `erc721Transfer`            | ERC-721 (NFT) transfer        |
+## 重要规则：
 
-### Function Calls
+- **务必使用权限限制**：切勿创建无限制的委托关系
+- **先部署委托者合约**：在赎回前必须先部署委托者合约
+- **检查智能账户状态**：使用 ERC-7715 需要用户拥有智能账户
 
-| Scope               | Description                        |
-| ------------------- | ---------------------------------- |
-| `functionCall`      | Specific methods/addresses allowed |
-| `ownershipTransfer` | Ownership transfers only           |
+- **权限限制是累积的**：在多个委托链中，限制条件会叠加
+- **函数调用默认设置**：v0.3.0 默认不允许使用原生代币
+- **批量委托功能**：当前版本不支持兼容的批量委托执行器
 
-## Common Caveat Enforcers
+### 其他要求：
+- **系统要求**：MetaMask Flask 13.5.0 或更高版本，用户需拥有智能账户
+- **多签名机制**：至少需要达到指定的签名人数
+- **升级要求**：使用 Stateless7702 需要先完成 EIP-7702 的升级
 
-### Target & Method
+## 常见使用场景：
 
-- `allowedTargets` - Limit callable addresses
-- `allowedMethods` - Limit callable methods
-- `allowedCalldata` - Validate specific calldata
-- `exactCalldata` / `exactCalldataBatch` - Exact calldata match
-- `exactExecution` / `exactExecutionBatch` - Exact execution match
-
-### Value & Token
-
-- `valueLte` - Limit native token value
-- `erc20TransferAmount` - Limit ERC-20 amount
-- `erc20BalanceChange` - Validate ERC-20 balance change
-- `erc721Transfer` / `erc721BalanceChange` - ERC-721 restrictions
-- `erc1155BalanceChange` - ERC-1155 validation
-
-### Time & Frequency
-
-- `timestamp` - Valid time range (seconds)
-- `blockNumber` - Valid block range
-- `limitedCalls` - Limit redemption count
-- `erc20PeriodTransfer` / `erc20Streaming` - Time-based ERC-20
-- `nativeTokenPeriodTransfer` / `nativeTokenStreaming` - Time-based native
-
-### Security & State
-
-- `redeemer` - Limit redemption to specific addresses
-- `id` - One-time delegation with ID
-- `nonce` - Bulk revocation via nonce
-- `deployed` - Auto-deploy contract
-- `ownershipTransfer` - Ownership transfer only
-- `nativeTokenPayment` - Require payment
-- `nativeBalanceChange` - Validate native balance
-- `multiTokenPeriod` - Multi-token period limits
-
-## Execution Modes
-
-| Mode            | Chains   | Processing  | On Failure |
-| --------------- | -------- | ----------- | ---------- |
-| `SingleDefault` | One      | Sequential  | Revert     |
-| `SingleTry`     | One      | Sequential  | Continue   |
-| `BatchDefault`  | Multiple | Interleaved | Revert     |
-| `BatchTry`      | Multiple | Interleaved | Continue   |
-
-## Contract Addresses (v1.3.0)
-
-### Core
-
-| Contract              | Address                                      |
-| --------------------- | -------------------------------------------- |
-| EntryPoint            | `0x0000000071727De22E5E9d8BAf0edAc6f37da032` |
-| SimpleFactory         | `0x69Aa2f9fe1572F1B640E1bbc512f5c3a734fc77c` |
-| DelegationManager     | `0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3` |
-| MultiSigDeleGatorImpl | `0x56a9EdB16a0105eb5a4C54f4C062e2868844f3A7` |
-| HybridDeleGatorImpl   | `0x48dBe696A4D990079e039489bA2053B36E8FFEC4` |
-
-## Critical Rules
-
-### Always Required
-
-1. **Always use caveats** - Never create unrestricted delegations
-2. **Deploy delegator first** - Account must be deployed before redeeming
-3. **Check smart account status** - ERC-7715 requires user has smart account
-
-### Behavior
-
-4. **Caveats are cumulative** - In delegation chains, restrictions stack
-5. **Function call default** - v0.3.0 defaults to NO native token (use `valueLte`)
-6. **Batch mode caveat** - No compatible caveat enforcers available
-
-### Requirements
-
-7. **ERC-7715 requirements** - MetaMask Flask 13.5.0+, smart account
-8. **Multisig threshold** - Need at least threshold signers
-9. **7702 upgrade** - Stateless7702 requires EIP-7702 upgrade first
-
-## Common Patterns
-
-### Pattern 1: ERC-20 with Time Limit
-
-```typescript
+- **示例 1：带有时间限制的 ERC-20 交易**：```typescript
 const delegation = createDelegation({
   to: delegate,
   from: delegator,
@@ -377,10 +294,7 @@ const delegation = createDelegation({
   ],
 })
 ```
-
-### Pattern 2: Function Call with Value
-
-```typescript
+- **示例 2：带有金额限制的函数调用**：```typescript
 const delegation = createDelegation({
   to: delegate,
   from: delegator,
@@ -394,10 +308,7 @@ const delegation = createDelegation({
   caveats: [{ type: 'allowedMethods', selectors: ['transfer(address,uint256)'] }],
 })
 ```
-
-### Pattern 3: Periodic Native Token
-
-```typescript
+- **示例 3：周期性使用的原生代币**：```typescript
 const delegation = createDelegation({
   to: delegate,
   from: delegator,
@@ -410,10 +321,7 @@ const delegation = createDelegation({
   },
 })
 ```
-
-### Pattern 4: Redelegation Chain
-
-```typescript
+- **示例 4：委托链的交互流程**：```typescript
 // Alice → Bob (100 USDC)
 const aliceToBob = createDelegation({
   to: bob,
@@ -433,32 +341,26 @@ const bobToCarol = createDelegation({
 })
 ```
 
-## Troubleshooting Quick Fixes
+## 常见问题及解决方法：
 
-| Issue                    | Solution                                                     |
-| ------------------------ | ------------------------------------------------------------ |
-| Account not deployed     | Use `bundlerClient.sendUserOperation()` to deploy            |
-| Invalid signature        | Verify chain ID, delegation manager, signer permissions      |
-| Caveat enforcer reverted | Check caveat parameters match execution, verify order        |
-| Redemption failed        | Check delegator balance, calldata validity, target contracts |
-| ERC-7715 not working     | Upgrade to Flask 13.5.0+, ensure user has smart account      |
-| Permission denied        | Handle gracefully, provide manual fallback                   |
-| Threshold not met        | Add more signers for multisig                                |
-| 7702 not working         | Confirm EOA upgraded via EIP-7702 first                      |
+- **账户未部署**：使用 `bundlerClient.sendUserOperation()` 进行部署
+- **签名无效**：检查链 ID、委托管理合约和签名者的权限
+- **权限执行失败**：核实权限参数和执行顺序
+- **赎回失败**：检查委托人的余额、参数有效性及目标合约
+- **ERC-7715 功能不可用**：升级 MetaMask 到 13.5.0 或更高版本，并确保用户拥有智能账户
+- **权限被拒绝**：提供友好的错误处理机制或手动解决方案
+- **签名人数不足**：为多签名委托增加更多签名者
+- **EIP-7702 未升级**：确保已完成 EIP-7702 的升级
 
-## Resources
+## 相关资源：
+- **NPM 包**：`@metamask/smart-accounts-kit`
+- **相关合约**：`metamask/delegation-framework@v1.3.0`
+- **标准规范**：ERC-4337, ERC-7710, ERC-7715, ERC-7579
+- **MetaMask Flask**：https://metamask.io/flask
 
-- **NPM:** `@metamask/smart-accounts-kit`
-- **Contracts:** `metamask/delegation-framework@v1.3.0`
-- **ERC Standards:** ERC-4337, ERC-7710, ERC-7715, ERC-7579
-- **MetaMask Flask:** https://metamask.io/flask
+## 版本信息：
+- **技能工具包版本**：0.3.0
+- **委托框架版本**：1.3.0
+- **重要变更**：函数调用默认不允许使用原生代币
 
-## Version Info
-
-- **Toolkit:** 0.3.0
-- **Delegation Framework:** 1.3.0
-- **Breaking Change:** Function call scope defaults to no native token transfer
-
----
-
-**For detailed documentation, see the reference files in the `/references` directory.**
+**如需详细文档，请查阅 `/references` 目录下的参考文件。**

@@ -1,19 +1,19 @@
-# K-Trendz Lightstick Trading
+# K-Trendz 光棒交易
 
-Trade K-pop artist lightstick tokens on the K-Trendz bonding curve market.
+在 K-Trendz 的债券曲线市场上交易 K-pop 艺术家的光棒代币。
 
-**Capability Summary:** Buy and sell K-pop fan tokens with real-time pricing, news signals, and bonding curve mechanics. Early buyers benefit from price appreciation as artist popularity grows.
+**功能概述：** 支持买卖 K-pop 粉丝代币，提供实时价格、新闻信号以及债券曲线机制。早期买家可随着艺术家人气的提升而获得价格溢价。
 
-## Prerequisites
+## 先决条件
 
-Run `/ktrendz:setup` first to configure your API key:
+请先运行 `/ktrendz:setup` 命令来配置您的 API 密钥：
 
-- **K-Trendz API Key** (required): Contact K-Trendz team for provisioning
+- **K-Trendz API 密钥**（必需）：请联系 K-Trendz 团队获取
 
-You can also set via environment variable:
+您也可以通过环境变量设置 API 密钥：
 - `KTRENDZ_API_KEY`
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Setup (one-time)
@@ -29,19 +29,19 @@ You can also set via environment variable:
 /ktrendz:sell RIIZE
 ```
 
-## 🎯 Decision Tree
+## 🎯 决策树
 
-- **"What's the price of X?"** → `/ktrendz:price <artist>`
-- **"Should I buy X?"** → Check price + news signals first
-- **"Buy X token"** → `/ktrendz:buy <artist>`
-- **"Sell X token"** → `/ktrendz:sell <artist>`
-- **"What tokens are available?"** → See Available Tokens below
+- **“X 的价格是多少？”** → 使用 `/ktrendz:price <artist>`
+- **“我应该买 X 吗？”** → 先查看价格和新闻信号
+- **“购买 X 代币”** → 使用 `/ktrendz:buy <artist>`
+- **“出售 X 代币”** → 使用 `/ktrendz:sell <artist>`
+- **“有哪些代币可供购买？”** → 查看下方的“可用代币”列表
 
-## Main Commands
+## 主要命令
 
 ### /ktrendz:setup
 
-Collects and validates API key, stores securely.
+收集并验证 API 密钥，并安全存储。
 
 ```bash
 ./scripts/setup.sh
@@ -49,52 +49,52 @@ Collects and validates API key, stores securely.
 
 ### /ktrendz:price
 
-Get current price and trading signals for a token.
+获取代币的当前价格和交易信号。
 
 ```bash
 ./scripts/price.sh RIIZE
 ```
 
-**Output includes:**
-- Current price (USDC)
-- Buy cost / Sell refund
-- 24h price change
-- Trending score
-- Recent news signals
+**输出内容包括：**
+- 当前价格（USDC）
+- 买入成本 / 卖出退款
+- 24 小时价格变化
+- 趋势得分
+- 最新新闻信号
 
-**Decision Factors:**
+**决策因素：**
 
-| Signal | Meaning | Buy Signal |
+| 信号 | 含义 | 买入信号 |
 |--------|---------|------------|
-| `trending_score` rising | On-platform engagement up | ✅ Bullish |
-| `price_change_24h` positive | Recent momentum | ✅ Trend continuation |
-| `total_supply` low | Few holders | ✅ Early opportunity |
-| `has_recent_news` true | Media coverage | ✅ Potential catalyst |
+| `trending_score` 上升 | 平台互动增加 | ✅ 上涨趋势 |
+| `price_change_24h` 正面 | 最近的势头 | ✅ 趋势延续 |
+| `total_supply` 低 | 持有者少 | ✅ 早期投资机会 |
+| `has_recent_news` 为真 | 媒体报道 | ✅ 潜在催化剂 |
 
 ### /ktrendz:buy
 
-Purchase 1 lightstick token.
+购买 1 个光棒代币。
 
 ```bash
 ./scripts/buy.sh RIIZE
 ```
 
-**Constraints:**
-- Maximum 1 token per transaction (bonding curve protection)
-- $100/day limit per agent
-- Same-block trades blocked (MEV protection)
+**限制：**
+- 每笔交易最多购买 1 个代币（保护债券曲线）
+- 每个用户每天限购 100 美元
+- 同一区块内的交易被禁止（防止市场操纵）
 
 ### /ktrendz:sell
 
-Sell 1 lightstick token.
+出售 1 个光棒代币。
 
 ```bash
 ./scripts/sell.sh RIIZE
 ```
 
-## Available Tokens
+## 可用代币
 
-| Artist | Token ID |
+| 艺术家 | 代币 ID |
 |--------|----------|
 | K-Trendz Supporters | 12666454296509763493 |
 | RIIZE | 7963681970480434413 |
@@ -103,67 +103,67 @@ Sell 1 lightstick token.
 | BTS | 9138265216282739420 |
 | All Day Project | 18115915419890895215 |
 
-## Trading Strategy
+## 交易策略
 
-This is a **bonding curve** market, not arbitrage:
+这是一个 **债券曲线** 市场，而非套利市场：
 
-1. **Buy when trending** - Rising scores + news = growing demand
-2. **Buy early** - Lower supply = better curve position
-3. **Monitor signals** - News often precedes on-platform activity
-4. **Hold during growth** - Bonding curve rewards patient holders
+1. **在趋势上升时买入** - 趋势得分上升 + 新闻报道 = 需求增加
+2. **尽早买入** - 供应量较低 = 更有利的市场位置
+3. **监控信号** - 新闻通常会先于平台上的活动出现
+4. **在价格上涨期间持有** - 债券曲线机制会奖励耐心持有的投资者
 
-## Fee Structure
+## 费用结构
 
-| Action | Fee | Distribution |
+| 操作 | 费用 | 分配方式 |
 |--------|-----|--------------|
-| Buy | 3% | 2% Artist Fund, 1% Platform |
-| Sell | 2% | Platform |
+| 买入 | 3% | 2% 归艺术家基金，1% 归平台 |
+| 卖出 | 2% | 归平台 |
 
-**Round-trip cost:** 5%
+**往返费用：** 5%
 
-## Rate Limits
+## 交易限制
 
-- **Daily Volume:** $100 USD per agent
-- **Transaction Frequency:** Max 100 trades/day
-- **Circuit Breaker:** Pauses if price moves >20% in 10 blocks
+- **每日交易量：** 每个用户每天 100 美元
+- **交易频率：** 每天最多 100 笔交易
+- **价格波动限制：** 如果价格在 10 个区块内波动超过 20%，系统将暂停交易
 
-## Example Interactions
+## 示例交互
 
-**User:** "What's RIIZE trading at?"
+**用户：** “RIIZE 的当前交易价格是多少？”
 
-**You:**
-1. Run `./scripts/price.sh RIIZE`
-2. Report: "RIIZE is at $1.85 (+5.2% 24h). Trending score 1250 with 3 recent news articles. Buy cost: $1.91"
+**您：**
+1. 运行 `./scripts/price.sh RIIZE`
+2. 回答：”RIIZE 的当前价格为 1.85 美元（24 小时内上涨 5.2%）。趋势得分为 1250，最近有 3 条新闻报道。买入成本为 1.91 美元。”
 
-**User:** "Buy RIIZE for me"
+**用户：** “帮我购买 RIIZE。”
 
-**You:**
-1. Confirm: "Buy 1 RIIZE token for ~$1.91?"
-2. If yes, run `./scripts/buy.sh RIIZE`
-3. Report: "Purchased 1 RIIZE for $1.91. Tx: 0x..."
+**您：**
+1. 确认：”是否购买 1 个 RIIZE 代币，价格约为 1.91 美元？”
+2. 如果用户同意，运行 `./scripts/buy.sh RIIZE`
+3. 回答：”已成功购买 1 个 RIIZE 代币，价格为 1.91 美元。交易 ID：0x...”
 
-**User:** "Should I sell my IVE?"
+**用户：** “我应该出售我的 IVE 代币吗？”
 
-**You:**
-1. Run `./scripts/price.sh IVE`
-2. Check signals (price trend, news, trending score)
-3. Advise based on data
+**您：**
+1. 运行 `./scripts/price.sh IVE`
+2. 检查价格趋势、新闻信号和趋势得分
+3. 根据数据给出建议
 
-## API Reference
+## API 参考
 
-Base URL: `https://k-trendz.com/api/bot/`
+基础 URL：`https://k-trendz.com/api/bot/`
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/token-price` | POST | Get price + signals |
-| `/buy` | POST | Purchase 1 token |
-| `/sell` | POST | Sell 1 token |
+| `/token-price` | POST | 获取价格和信号 |
+| `/buy` | POST | 购买 1 个代币 |
+| `/sell` | POST | 卖出 1 个代币 |
 
-## Files
+## 相关文件
 
-- `SKILL.md` - This file
-- `package.json` - Package metadata
-- `scripts/setup.sh` - API key configuration
-- `scripts/price.sh` - Get token price
-- `scripts/buy.sh` - Buy token
-- `scripts/sell.sh` - Sell token
+- `SKILL.md` - 本文件
+- `package.json` - 项目元数据
+- `scripts/setup.sh` - API 密钥配置脚本
+- `scripts/price.sh` - 获取代币价格脚本
+- `scripts/buy.sh` - 买入代币脚本
+- `scripts/sell.sh` - 卖出代币脚本

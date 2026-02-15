@@ -1,6 +1,6 @@
 ---
 name: moss-docs
-description: Documentation and capabilities reference for Moss semantic search.
+description: Moss语义搜索的文档与功能参考。
   Use for understanding Moss APIs, SDKs, and integration patterns.
 metadata:
   author: usemoss
@@ -11,120 +11,120 @@ metadata:
 
 # Moss Agent Skills
 
-## Capabilities
+## 功能概述
 
-Moss is the real-time semantic search runtime for conversational AI. It delivers sub-10ms lookups and instant index updates that run in the browser, on-device, or in the cloud - wherever your agent lives. Agents can create indexes, embed documents, perform semantic/hybrid searches, and manage document lifecycles without managing infrastructure. The platform handles embedding generation, index persistence, and optional cloud sync - allowing agents to focus on retrieval logic rather than infrastructure.
+Moss 是一款用于对话式人工智能的实时语义搜索引擎。它支持在浏览器、设备端或云端进行搜索，查询响应时间低于 10 毫秒，并能即时更新索引——无论您的代理程序运行在何处。代理程序无需管理基础设施即可创建索引、嵌入文档、执行语义搜索或混合搜索，以及管理文档的生命周期。该平台负责处理文档的嵌入生成、索引持久化以及可选的云端同步，使代理程序能够专注于检索逻辑而非基础设施的配置。
 
-## Skills
+## 主要功能
 
-### Index Management
+### 索引管理
 
-- **Create Index**: Build a new semantic index with documents and embedding model selection
-- **Load Index**: Load an existing index from persistent storage for querying
-- **Get Index**: Retrieve metadata about a specific index (document count, model, etc.)
-- **List Indexes**: Enumerate all indexes under a project
-- **Delete Index**: Remove an index and all associated data
+- **创建索引**：使用指定的文档和嵌入模型创建新的语义索引。
+- **加载索引**：从持久化存储中加载现有索引以供查询使用。
+- **获取索引元数据**：检索特定索引的元数据（如文档数量、使用的模型等）。
+- **列出所有索引**：列出项目下的所有索引。
+- **删除索引**：删除索引及其所有关联数据。
 
-### Document Operations
+### 文档操作
 
-- **Add Documents**: Insert or upsert documents into an existing index with optional metadata
-- **Get Documents**: Retrieve stored documents by ID or fetch all documents
-- **Delete Documents**: Remove specific documents from an index by their IDs
+- **添加文档**：将文档插入或更新现有索引（可选择是否附加元数据）。
+- **获取文档**：通过 ID 检索存储的文档，或获取所有文档。
+- **删除文档**：根据 ID 从索引中删除特定文档。
 
-### Search & Retrieval
+### 搜索与检索
 
-- **Semantic Search**: Query using natural language with vector similarity matching
-- **Keyword Search**: Use BM25-based keyword matching for exact term lookups
-- **Hybrid Search**: Blend semantic and keyword search with configurable alpha weighting
-- **Metadata Filtering**: Constrain results by document metadata (category, language, tags)
-- **Top-K Results**: Return configurable number of best-matching documents with scores
+- **语义搜索**：使用自然语言进行查询，并通过向量相似度进行匹配。
+- **关键词搜索**：基于 BM25 的关键词匹配技术进行精确匹配。
+- **混合搜索**：可配置权重比例，结合语义搜索和关键词搜索结果。
+- **元数据过滤**：根据文档元数据（如类别、语言、标签）筛选搜索结果。
+- **返回最佳结果**：返回排名前 k 位的匹配文档及其得分。
 
-### Embedding Models
+### 嵌入模型
 
-- **moss-minilm**: Fast, lightweight model optimized for edge/offline use (default)
-- **moss-mediumlm**: Higher accuracy model with reasonable performance for precision-critical use cases
+- **moss-minilm**：专为边缘设备/离线环境设计的快速轻量级模型（默认模型）。
+- **moss-mediumlm**：精度更高的模型，适用于对准确性要求较高的场景。
 
-### SDK Methods
+### SDK 方法
 
-| JavaScript      | Python           | Description                 |
-| --------------- | ---------------- | --------------------------- |
-| `createIndex()` | `create_index()` | Create index with documents |
-| `loadIndex()`   | `load_index()`   | Load index from storage     |
-| `getIndex()`    | `get_index()`    | Get index metadata          |
-| `listIndexes()` | `list_indexes()` | List all indexes            |
-| `deleteIndex()` | `delete_index()` | Delete an index             |
-| `addDocs()`     | `add_docs()`     | Add/upsert documents        |
-| `getDocs()`     | `get_docs()`     | Retrieve documents          |
-| `deleteDocs()`  | `delete_docs()`  | Remove documents            |
-| `query()`       | `query()`        | Semantic search             |
+| 语言        | 语言        | 描述                                      |
+|-------------|-------------|----------------------------------------|
+| JavaScript    | Python       | 创建索引的方法                               |
+| `createIndex()`    | `create_index()`    | 创建包含文档的索引                         |
+| `loadIndex()`    | `load_index()`    | 从存储中加载索引                         |
+| `getIndex()`    | `get_index()`    | 获取索引元数据                           |
+| `listIndexes()`   | `list_indexes()`   | 列出所有索引                             |
+| `deleteIndex()`   | `delete_index()`   | 删除索引                                 |
+| `addDocs()`     | `add_docs()`     | 向索引中添加/更新文档                         |
+| `getDocs()`     | `get_docs()`     | 获取文档                                 |
+| `deleteDocs()`    | `delete_docs()`    | 从索引中删除文档                         |
+| `query()`      | `query()`      | 执行语义搜索                             |
 
-### API Actions
+### API 操作
 
-All REST API operations go through `POST /manage` with an `action` field:
+所有 REST API 操作都通过 `POST /manage` 路径进行，需要指定 `action` 参数：
 
-- `createIndex` - Create index with seed documents
-- `getIndex` - Get metadata for single index
-- `listIndexes` - List all project indexes
-- `deleteIndex` - Remove index and assets
-- `addDocs` - Upsert documents into index
-- `getDocs` - Retrieve stored documents
-- `deleteDocs` - Remove documents by ID
+- `createIndex`：使用示例文档创建索引。
+- `getIndex`：获取单个索引的元数据。
+- `listIndexes`：列出项目中的所有索引。
+- `deleteIndex`：删除索引及其相关资源。
+- `addDocs`：将文档添加到索引中。
+- `getDocs`：检索存储的文档。
+- `deleteDocs`：根据 ID 删除文档。
 
-## Workflows
+## 工作流程
 
-### Basic Semantic Search Workflow
+### 基本语义搜索流程
 
-1. Initialize MossClient with project credentials
-2. Call `createIndex()` with documents and model (`moss-minilm` or `moss-mediumlm`)
-3. Call `loadIndex()` to prepare index for queries
-4. Call `query()` with search text and top_k parameter
-5. Process returned documents with scores
+1. 使用项目凭据初始化 MossClient。
+2. 调用 `createIndex()` 方法，传入文档和模型（`moss-minilm` 或 `moss-mediumlm`）。
+3. 调用 `loadIndex()` 方法准备索引以供查询。
+4. 调用 `query()` 方法，传入搜索文本和 `top_k` 参数。
+5. 处理返回的文档及其得分结果。
 
-### Hybrid Search Workflow
+### 混合搜索流程
 
-1. Create and load index as above
-2. Call `query()` with alpha parameter to blend semantic and keyword
-3. `alpha: 1.0` = pure semantic, `alpha: 0.0` = pure keyword, `alpha: 0.6` = 60/40 blend
-4. Default is semantic-heavy (\~0.8) for conversational use cases
+1. 如上所述创建并加载索引。
+2. 调用 `query()` 方法，并设置 `alpha` 参数以平衡语义搜索和关键词搜索的结果。
+- `alpha: 1.0` 表示纯语义搜索；`alpha: 0.0` 表示纯关键词搜索；`alpha: 0.6` 表示两者各占 60% 的权重。
+- 对于对话式应用，默认设置为以语义搜索为主（权重约为 80%）。
 
-### Document Update Workflow
+### 文档更新流程
 
-1. Initialize client and ensure index exists
-2. Call `addDocs()` with new documents and `upsert: true` option
-3. Existing documents with matching IDs are updated; new IDs are inserted
-4. Call `deleteDocs()` to remove outdated documents by ID
+1. 初始化客户端并确保索引存在。
+2. 调用 `addDocs()` 方法，传入新文档并设置 `upsert: true` 选项。
+- 系统会更新具有相同 ID 的现有文档，并插入新文档。
+3. 调用 `deleteDocs()` 方法根据 ID 删除过时的文档。
 
-### Voice Agent Context Injection Workflow
+### 语音代理上下文注入流程
 
-1. Initialize MossClient and load index at agent startup
-2. On each user message, automatically query Moss for relevant context
-3. Inject search results into LLM context before generating response
-4. Respond with knowledge-grounded answer (no tool-calling latency)
+1. 在代理程序启动时初始化 MossClient 并加载索引。
+2. 对于每个用户输入的消息，自动向 Moss 发起搜索以获取相关上下文。
+3. 在生成响应前将搜索结果注入大型语言模型（LLM）的上下文中。
+4. 以基于知识的答案形式返回结果（无工具调用延迟）。
 
-### Offline-First Search Workflow
+### 离线优先搜索流程
 
-1. Create index with documents using local embedding model
-2. Load index from local storage
-3. Query runs entirely on-device with sub-10ms latency
-4. Optionally sync to cloud for backup and sharing
+1. 使用本地嵌入模型创建索引。
+2. 从本地存储中加载索引。
+3. 搜索完全在设备端完成，响应时间低于 10 毫秒。
+- 可选择将结果同步到云端以进行备份和共享。
 
-## Integration
+## 集成
 
-### Voice Agent Frameworks
+### 语音代理框架
 
-- **LiveKit**: Context injection into voice agent pipeline with `inferedge-moss` SDK
-- **Pipecat**: Pipeline processor via `pipecat-moss` package that auto-injects retrieval results
+- **LiveKit**：通过 `inferedge-moss` SDK 将搜索结果注入语音代理流程。
+- **Pipecat**：通过 `pipecat-moss` 包实现管道处理，自动将搜索结果注入代理流程。
 
-## Context
+### 认证
 
-### Authentication
+SDK 需要项目凭据：
 
-SDK requires project credentials:
+- `MOSS_PROJECT_ID`：来自 Moss Portal 的项目标识符。
+- `MOSSPROJECT_KEY`：来自 Moss Portal 的项目访问密钥。
 
-- `MOSS_PROJECT_ID`: Project identifier from Moss Portal
-- `MOSS_PROJECT_KEY`: Project access key from Moss Portal
-
-```bash theme={null}
+```bash
+theme={null}
 export MOSS_PROJECT_ID=your_project_id
 export MOSS_PROJECT_KEY=your_project_key
 ```
@@ -147,9 +147,9 @@ REST API requires headers:
 
 ```typescript theme={null}
 interface DocumentInfo {
-  id: string; // Required: unique identifier
-  text: string; // Required: content to embed and search
-  metadata?: object; // Optional: key-value pairs for filtering
+  id: string;      // 必填：唯一标识符
+  text: string;      // 必填：用于嵌入和搜索的内容
+  metadata?: object;   // 可选：用于过滤的键值对
 }
 ```
 
@@ -212,4 +212,4 @@ results = await client.query("faqs", "search text", top_k=5)
 
 ---
 
-> For additional documentation and navigation, see: [https://docs.usemoss.dev/llms.txt](https://docs.usemoss.dev/llms.txt)
+> 更多文档和导航信息，请参阅：[https://docs.usemoss.dev/llms.txt](https://docs.usemoss.dev/llms.txt)

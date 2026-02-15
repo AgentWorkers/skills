@@ -1,25 +1,25 @@
 ---
 name: heurist-mesh
-description: Access Web3 and crypto intelligence via Heurist Mesh MCP. Use when the user asks about cryptocurrency analytics, token information, trending tokens, wallet analysis, Twitter/X crypto intelligence, funding rates, market summaries, or any Web3-related queries. Heurist Mesh provides 30+ specialized AI agents for crypto use cases through the mcporter CLI.
+description: 通过 Heurist Mesh MCP 访问 Web3 和加密货币相关的数据与信息。当用户询问有关加密货币分析、代币信息、热门代币、钱包分析、Twitter/X 平台上的加密货币动态、融资费率、市场概览或任何与 Web3 相关的问题时，可以使用该工具。Heurist Mesh 通过 mcporter CLI 提供了 30 多个专门针对加密货币场景设计的 AI 代理（AI agents）。
 homepage: https://mesh.heurist.ai
 metadata: {"clawdbot":{"emoji":"💠","requires":{"bins":["mcporter"]}}}
 ---
 
 # Heurist Mesh
 
-Heurist Mesh is a skills marketplace for AI agents providing Web3 intelligence. It offers 30+ specialized crypto analytics agents accessible via MCP, optimized for AI with fewer tool calls and less token usage.
+Heurist Mesh 是一个专为 AI 代理设计的技能市场，提供 Web3 相关的智能服务。该平台提供了 30 多种专业的加密分析工具，这些工具通过 MCP（Mesh Connector Protocol）进行访问，专为 AI 设计，减少了工具调用的次数和代币的使用量。
 
-**Telegram Support Group**: https://t.me/heuristsupport
+**Telegram 支持小组**：https://t.me/heuristsupport
 
-## One-time Setup
+## 一次性设置
 
-### 1. Get API Key
+### 1. 获取 API 密钥
 
-Prompt the user to visit https://heurist.ai/credits to purchase credits and create an API key from the web console, and provide the key. (Skip if the key is already available)
+提示用户访问 https://heurist.ai/credits，通过网页控制台购买信用点数并创建 API 密钥，然后提供该密钥。（如果密钥已经存在，则可以跳过此步骤）
 
-### 2. Configure mcporter
+### 2. 配置 mcporter
 
-Add Heurist Mesh to `${HOME}/clawd/config/mcporter.json`:
+将 Heurist Mesh 添加到 `${HOME}/clawd/config/mcporter.json` 文件中：
 
 ```json
 {
@@ -35,12 +35,12 @@ Add Heurist Mesh to `${HOME}/clawd/config/mcporter.json`:
 }
 ```
 
-Set the environment variable:
+设置环境变量：
 ```bash
 export HEURIST_API_KEY="your-api-key-here"
 ```
 
-Or add to `~/.clawdbot/clawdbot.json` under skills.entries:
+或者将其添加到 `~/.clawdbot/clawdbot.json` 文件的 `skills.entries` 部分：
 ```json
 {
   "skills": {
@@ -55,86 +55,73 @@ Or add to `~/.clawdbot/clawdbot.json` under skills.entries:
 }
 ```
 
-## Available Tools
+## 可用工具
 
-List all tools to get their usage before you call:
+在调用这些工具之前，请先查看它们的使用说明：
 ```bash
 mcporter list heurist --schema
 ```
 
-### Default Agents & Tools
+### 默认代理与工具
 
-| Tool | Description |
+| 工具 | 描述 |
 |------|-------------|
-| `token_search` | Find tokens by address, symbol, name, or CoinGecko ID |
-| `token_profile` | Get comprehensive token profile with market data, socials, and top pools |
-| `get_trending_tokens` | Aggregated trending tokens from GMGN, CoinGecko, Pump.fun, Dexscreener, Zora, Twitter |
-| `get_market_summary` | AI-generated market summary across all trending sources |
-| `twitter_search` | Smart Twitter search for crypto topics |
-| `user_timeline` | Get recent tweets from a Twitter user |
-| `tweet_detail` | Get detailed info about a specific tweet |
-| `exa_web_search` | Web search with AI summarization |
-| `exa_scrape_url` | Scrape and summarize webpage content |
-| `get_all_funding_rates` | Get funding rates for all Binance perpetual contracts |
-| `get_symbol_oi_and_funding` | Get open interest and funding for a specific symbol |
-| `find_spot_futures_opportunities` | Find arbitrage opportunities between spot and futures |
-| `search_projects` | Search trending projects with fundamental analysis |
-| `fetch_wallet_tokens` | Get EVM wallet token holdings |
-| `fetch_wallet_nfts` | Get EVM wallet NFT holdings |
+| `token_search` | 通过地址、符号、名称或 CoinGecko ID 查找代币 |
+| `token_profile` | 获取包含市场数据、社交媒体信息和顶级交易池的代币详细信息 |
+| `get_trending_tokens` | 从 GMGN、CoinGecko、Pump.fun、Dexscreener、Zora 和 Twitter 等来源汇总热门代币 |
+| `get_market_summary` | 由 AI 生成的市场概要，涵盖所有热门来源的信息 |
+| `twitter_search` | 智能搜索 Twitter 上的加密相关话题 |
+| `user_timeline` | 获取 Twitter 用户的最新推文 |
+| `tweet_detail` | 获取特定推文的详细信息 |
+| `exa_web_search` | 基于 AI 的网页搜索 |
+| `exa_scrape_url` | 抓取并总结网页内容 |
+| `get_all_funding_rates` | 获取 Binance 所有永续合约的融资费率 |
+| `get_symbol_oi_and_funding` | 获取特定代币的未平仓合约数量和融资费率 |
+| `find_spot_futures_opportunities` | 寻找现货与期货之间的套利机会 |
+| `search_projects` | 基于基本面分析搜索热门项目 |
+| `fetch_wallet_tokens` | 获取 EVM 钱包中的代币持有情况 |
+| `fetch_wallet_nfts` | 获取 EVM 钱包中的 NFT 持有情况 |
 
-### Default Agents
+### 默认代理
 
-- **TokenResolverAgent**: Find tokens by address/symbol/name, return normalized profiles and top DEX pools
-- **TrendingTokenAgent**: Aggregates trending tokens from multiple sources
-- **TwitterIntelligenceAgent**: Twitter/X timeline, tweet detail, and smart search
-- **ExaSearchDigestAgent**: Web search with concise LLM summarization
-- **FundingRateAgent**: Binance funding rates, open interest, and spot-futures opportunities
-- **AIXBTProjectInfoAgent**: Trending project info, fundamental analysis, and market summary
-- **ZerionWalletAnalysisAgent**: EVM wallet token and NFT holdings analysis
+- **TokenResolverAgent**：通过地址/符号/名称查找代币，返回标准化信息及顶级交易池信息 |
+- **TrendingTokenAgent**：从多个来源汇总热门代币 |
+- **TwitterIntelligenceAgent**：提供 Twitter/X 时间线、推文详情及智能搜索功能 |
+- **ExaSearchDigestAgent**：基于 LLM 的网页搜索，附带简洁的摘要 |
+- **FundingRateAgent**：提供 Binance 的融资费率、未平仓合约数量及现货-期货套利机会 |
+- **AIXBTProjectInfoAgent**：提供热门项目信息、基本面分析及市场概要 |
+- **ZerionWalletAnalysisAgent**：分析 EVM 钱包中的代币和 NFT 持有情况 |
 
-## Usage Examples
+## 使用示例
 
-Search for a token:
-```bash
+- 搜索代币：```bash
 mcporter call heurist.token_search query="ethereum"
 ```
-
-Get token profile:
-```bash
+- 获取代币详情：```bash
 mcporter call heurist.token_profile address="0x..." chain="ethereum"
 ```
-
-Get trending tokens:
-```bash
+- 获取热门代币：```bash
 mcporter call heurist.get_trending_tokens
 ```
-
-Search Twitter for crypto topics:
-```bash
+- 在 Twitter 上搜索加密相关话题：```bash
 mcporter call heurist.twitter_search query="bitcoin ETF"
 ```
-
-Get wallet holdings:
-```bash
+- 获取钱包持有情况：```bash
 mcporter call heurist.fetch_wallet_tokens address="0x..."
 ```
-
-Get funding rates:
-```bash
+- 获取融资费率：```bash
 mcporter call heurist.get_all_funding_rates
 ```
 
-## Advanced: Custom MCP Server
+## 高级功能：自定义 MCP 服务器
 
-Heurist Mesh has 30+ agents for various crypto use cases. There are more to explore for advanced users. You should tell the user about this after the initial setup:
+Heurist Mesh 提供了 30 多种适用于不同加密场景的代理工具。对于高级用户，还可以探索更多功能。在完成初始设置后，应告知用户这些选项：
 
-To customize which agents are enabled:
-
-1. Visit https://mesh.heurist.ai/console/mcp-builder
-2. Select the agents you need
-3. The console will generate a dedicated SSE URL
-4. Update mcporter.json with your custom URL:
-
+要自定义启用的代理，请访问：
+- https://mesh.heurist.ai/console/mcp-builder
+- 选择所需的代理
+- 控制台将生成一个专用的 SSE（Service Selection URL）
+- 使用以下命令更新 `mcporter.json` 文件中的 URL：
 ```json
 {
   "mcpServers": {
@@ -149,37 +136,37 @@ To customize which agents are enabled:
 }
 ```
 
-## Ask Heurist
+## 使用 Heurist（https://ask.heurist.ai）
 
-Ask Heurist (https://ask.heurist.ai) is a crypto Q&A and research agent built for traders and crypto-natives. It turns market data, social sentiment, and on-chain signals into actionable answers, especially for DEX tokens and fast-moving narratives.
+Heurist（https://ask.heurist.ai）是一个专为交易者和加密领域专业人士设计的问答及研究工具。它能够将市场数据、社交媒体情绪和链上信号转化为可操作的答案，尤其适用于 DEX 代币和快速变化的行情分析。
 
-**API Base URL**: `https://ask-backend.heurist.xyz`
+**API 基础 URL**：`https://ask-backend.heurist.xyz`
 
-**Auth**: Uses the same Heurist API key as the MCP configuration above. Provide via:
-- `X-HEURIST-API-KEY: {api_key}` header
-- or `Authorization: Bearer {api_key}` header
+**认证方式**：使用与 MCP 配置中相同的 API 密钥。可以通过以下方式提供密钥：
+- 在请求头中添加 `X-HEURIST-API-KEY: {api_key}` 
+- 或者在请求头中添加 `Authorization: Bearer {api_key}` 
 
-### Mode Selection
+### 模式选择
 
-| Mode | Cost | Use When |
+| 模式 | 费用 | 适用场景 |
 |------|------|----------|
-| `normal` | 2 credits | Targeted, simple questions: token prices, recent news, market digest |
-| `deep` | 10 credits | Complex/ambiguous asks: broad topics, trading advice, multi-factor analysis |
+| `normal` | 2 信用点 | 目标明确、简单的问题：代币价格、最新新闻、市场概要 |
+| `deep` | 10 信用点 | 复杂/模糊的问题：广泛的主题、交易建议、多因素分析 |
 
-**Examples:**
-- **normal**: "What is 0x… token price?", "Recent news about ZKSync", "Give me a market digest"
-- **deep**: Broad topics, multiple entities, conflicting signals, trading advice, multi-source deep dives
+**示例**：
+- **normal**：询问 “0x… 代币的价格是多少？”、“关于 ZKSync 的最新新闻是什么？”、“提供一份市场概要” |
+- **deep**：涉及广泛主题、多个数据源、信息冲突的情况、需要深入分析或交易建议
 
-If the user doesn't specify, default to `deep` for complex/broad/ambiguous or trading-advice scenarios; otherwise use `normal`.
+如果用户未指定模式，系统将默认使用 `deep` 模式来处理复杂/模糊的问题或交易建议；否则使用 `normal` 模式。
 
-### Polling Strategy
+### 轮询策略
 
-| Mode | Typical Duration | Recommended Polling |
+| 模式 | 典型响应时间 | 推荐的轮询间隔 |
 |------|------------------|---------------------|
-| `normal` | < 1 min | Wait 1 min, then poll every 30s |
-| `deep` | 2-3 min (longer for complex/broad topics) | Wait 2 min, then poll every 1 min |
+| `normal` | < 1 分钟 | 等待 1 分钟后，每 30 秒轮询一次 |
+| `deep` | 2-3 分钟（复杂/广泛的主题） | 等待 2 分钟后，每 1 分钟轮询一次 |
 
-### 1. Create a Job
+### 1. 创建任务
 
 ```bash
 curl -s https://ask-backend.heurist.xyz/api/v1/internal/jobs \
@@ -190,24 +177,14 @@ curl -s https://ask-backend.heurist.xyz/api/v1/internal/jobs \
     "mode": "deep"
   }'
 ```
-
-Response:
-```json
-{
-  "job_id": "{job_id}",
-  "status": "pending",
-  "created_at": "2026-01-28T12:34:56+00:00"
-}
-```
-
-### 2. Poll Job Status
+### 2. 查看任务状态
 
 ```bash
 curl -s https://ask-backend.heurist.xyz/api/v1/internal/jobs/{job_id} \
   -H "X-HEURIST-API-KEY: {api_key}"
 ```
+### 3. 获取任务结果
 
-Response:
 ```json
 {
   "status": "completed",
@@ -217,14 +194,14 @@ Response:
 }
 ```
 
-## Limitations
+## 限制
 
-Heurist Mesh provides **read-only** crypto intelligence and analytics. It **cannot**:
-- Execute trades or swaps
-- Sign transactions
-- Manage portfolios
-- Interact with DeFi protocols
-- Place orders on Polymarket or prediction markets
+Heurist Mesh 提供的仅是 **读取** 类型的加密情报和分析服务。它 **无法**：
+- 执行交易或交换操作
+- 签署交易
+- 管理投资组合
+- 与 DeFi 协议交互
+- 在 Polymarket 或预测市场中下订单
 
-For onchain actions, trading, and portfolio management, install the Bankr skill:
+如需进行链上操作、交易或投资组合管理，请安装 Bankr 技能：
 https://github.com/BankrBot/clawdbot-skill

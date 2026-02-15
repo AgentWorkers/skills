@@ -15,9 +15,9 @@ metadata:
 
 # Gmail
 
-Access the Gmail API with managed OAuth authentication. Read, send, and manage emails, threads, labels, and drafts.
+您可以使用托管的 OAuth 认证来访问 Gmail API，从而读取、发送和管理电子邮件、邮件线程、标签以及草稿。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List messages
@@ -29,39 +29,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/google-mail/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Gmail API endpoint path. The gateway proxies requests to `gmail.googleapis.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Gmail API 端点路径。该网关会将请求代理到 `gmail.googleapis.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取您的 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Google OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Google OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -72,7 +72,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -85,7 +85,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -96,7 +96,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -111,9 +111,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -124,9 +124,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Gmail connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Gmail 连接，请使用 `Maton-Connection` 头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -138,35 +138,35 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此头，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### List Messages
+### 列出邮件
 
 ```bash
 GET /google-mail/gmail/v1/users/me/messages?maxResults=10
 ```
 
-With query filter:
+可以使用查询过滤器：
 
 ```bash
 GET /google-mail/gmail/v1/users/me/messages?q=is:unread&maxResults=10
 ```
 
-### Get Message
+### 获取邮件
 
 ```bash
 GET /google-mail/gmail/v1/users/me/messages/{messageId}
 ```
 
-With metadata only:
+仅获取邮件的元数据：
 
 ```bash
 GET /google-mail/gmail/v1/users/me/messages/{messageId}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date
 ```
 
-### Send Message
+### 发送邮件
 
 ```bash
 POST /google-mail/gmail/v1/users/me/messages/send
@@ -177,25 +177,25 @@ Content-Type: application/json
 }
 ```
 
-### List Labels
+### 列出标签
 
 ```bash
 GET /google-mail/gmail/v1/users/me/labels
 ```
 
-### List Threads
+### 列出邮件线程
 
 ```bash
 GET /google-mail/gmail/v1/users/me/threads?maxResults=10
 ```
 
-### Get Thread
+### 获取邮件线程信息
 
 ```bash
 GET /google-mail/gmail/v1/users/me/threads/{threadId}
 ```
 
-### Modify Message Labels
+### 修改邮件标签
 
 ```bash
 POST /google-mail/gmail/v1/users/me/messages/{messageId}/modify
@@ -207,13 +207,13 @@ Content-Type: application/json
 }
 ```
 
-### Trash Message
+### 将邮件移至回收站
 
 ```bash
 POST /google-mail/gmail/v1/users/me/messages/{messageId}/trash
 ```
 
-### Create Draft
+### 创建草稿
 
 ```bash
 POST /google-mail/gmail/v1/users/me/drafts
@@ -226,7 +226,7 @@ Content-Type: application/json
 }
 ```
 
-### Send Draft
+### 发送草稿
 
 ```bash
 POST /google-mail/gmail/v1/users/me/drafts/send
@@ -237,25 +237,25 @@ Content-Type: application/json
 }
 ```
 
-### Get Profile
+### 获取用户信息
 
 ```bash
 GET /google-mail/gmail/v1/users/me/profile
 ```
 
-## Query Operators
+## 查询操作符
 
-Use in the `q` parameter:
-- `is:unread` - Unread messages
-- `is:starred` - Starred messages
-- `from:email@example.com` - From specific sender
-- `to:email@example.com` - To specific recipient
-- `subject:keyword` - Subject contains keyword
-- `after:2024/01/01` - After date
-- `before:2024/12/31` - Before date
-- `has:attachment` - Has attachments
+在 `q` 参数中使用以下操作符：
+- `is:unread` - 未读邮件
+- `is:starred` - 被标记为星号的邮件
+- `from:email@example.com` - 来自特定发件人的邮件
+- `to:email@example.com` - 收件人为特定收件人的邮件
+- `subject:keyword` - 主题包含关键词的邮件
+- `after:2024/01/01` - 发送日期在 2024 年 1 月 1 日之后的邮件
+- `before:2024/12/31` - 发送日期在 2024 年 12 月 31 日之前的邮件
+- `has:attachment` - 包含附件的邮件
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -283,32 +283,32 @@ response = requests.get(
 )
 ```
 
-## Notes
+## 注意事项
 
-- Use `me` as userId for the authenticated user
-- Message body is base64url encoded in the `raw` field
-- Common labels: `INBOX`, `SENT`, `DRAFT`, `STARRED`, `UNREAD`, `TRASH`
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 使用 `me` 作为已认证用户的用户 ID。
+- 邮件正文在 `raw` 字段中以 Base64URL 格式编码。
+- 常见的标签有：`INBOX`（收件箱）、`SENT`（已发送）、`DRAFT`（草稿）、`STARRED`（被标记为星号）、`UNREAD`（未读）、`TRASH`（回收站）。
+- 重要提示：当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- 重要提示：在将 curl 输出传递给 `jq` 或其他命令时，某些 shell 环境可能无法正确解析 `$MATON_API_KEY` 环境变量，这可能导致“无效 API 密钥”的错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Gmail connection |
-| 401 | Invalid or missing Maton API key |
-| 429 | Rate limited (10 req/sec per account) |
-| 4xx/5xx | Passthrough error from Gmail API |
+| 400 | 未找到 Gmail 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 429 | 每个账户的请求速率限制（每秒 10 次请求） |
+| 4xx/5xx | 来自 Gmail API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保已设置 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -319,21 +319,20 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `google-mail`. For example:
+1. 确保您的 URL 路径以 `google-mail` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
+- 错误的路径：`https://gateway.maton.ai/gmail/v1/users/me/messages`
 
-- Correct: `https://gateway.maton.ai/google-mail/gmail/v1/users/me/messages`
-- Incorrect: `https://gateway.maton.ai/gmail/v1/users/me/messages`
+## 资源
 
-## Resources
-
-- [Gmail API Overview](https://developers.google.com/gmail/api/reference/rest)
-- [List Messages](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/list)
-- [Get Message](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/get)
-- [Send Message](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/send)
-- [List Threads](https://developers.google.com/gmail/api/reference/rest/v1/users.threads/list)
-- [List Labels](https://developers.google.com/gmail/api/reference/rest/v1/users.labels/list)
-- [Create Draft](https://developers.google.com/gmail/api/reference/rest/v1/users.drafts/create)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Gmail API 概述](https://developers.google.com/gmail/api/reference/rest)
+- [列出邮件](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/list)
+- [获取邮件](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/get)
+- [发送邮件](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/send)
+- [列出邮件线程](https://developers.google.com/gmail/api/reference/rest/v1/users.threads/list)
+- [列出标签](https://developers.google.com/gmail/api/reference/rest/v1/users.labels/list)
+- [创建草稿](https://developers.google.com/gmail/api/reference/rest/v1/users.drafts/create)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

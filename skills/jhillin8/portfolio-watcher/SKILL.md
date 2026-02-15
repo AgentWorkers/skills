@@ -1,6 +1,6 @@
 ---
 name: portfolio-watcher
-description: Monitor stock/crypto holdings, get price alerts, track portfolio performance
+description: 监控股票/加密货币持仓情况，接收价格警报，追踪投资组合表现
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,55 +11,59 @@ triggers:
   - "portfolio performance"
 ---
 
-# Portfolio Watcher
+# 投资组合监控器
 
-Monitor your investments through natural conversation. Real-time prices, alerts, and performance tracking.
+通过自然语言对话来监控您的投资情况。提供实时价格、警报和绩效跟踪功能。
 
-## What it does
+## 功能介绍
 
-Tracks your stock and crypto holdings, fetches real-time prices, sends alerts when targets are hit, and calculates portfolio performance. No brokerage connection needed—just tell Clawd what you own.
+- 跟踪您的股票和加密货币持仓；
+- 获取实时价格；
+- 在达到预设目标时发送警报；
+- 计算投资组合的绩效；
+- 无需连接任何经纪商服务——只需告诉Clawd您持有的资产即可。
 
-## Usage
+## 使用方法
 
-**Add holdings:**
+**添加持仓：**
 ```
 "I own 50 shares of AAPL at $150"
 "Add 0.5 BTC bought at $40,000"
 "Track NVDA, bought 20 shares at $280"
 ```
 
-**Check prices:**
+**查看价格：**
 ```
 "What's TSLA at?"
 "Bitcoin price"
 "Check all my stocks"
 ```
 
-**Set alerts:**
+**设置警报：**
 ```
 "Alert me if AAPL hits $200"
 "Notify when ETH drops below $2000"
 "Remove MSFT alert"
 ```
 
-**Portfolio overview:**
+**查看投资组合概览：**
 ```
 "How's my portfolio doing?"
 "Total gains/losses"
 "Best and worst performers"
 ```
 
-## Supported Assets
+## 支持的资产类型
 
-- US stocks (NYSE, NASDAQ)
-- Major cryptocurrencies
-- ETFs
-- International stocks (limited)
+- 美国股票（纽约证券交易所、纳斯达克）
+- 主要加密货币
+- ETFs（交易型开放式指数基金）
+- 国际股票（支持范围有限）
 
-## Tips
+## 使用技巧
 
-- Include purchase price for accurate gain/loss tracking
-- Say "update [ticker] to [shares] at [price]" to modify holdings
-- Ask "portfolio allocation" for pie chart breakdown
-- Prices update every few minutes (not real-time streaming)
-- This is informational only—not financial advice
+- 为准确计算收益/损失，请提供购买价格；
+- 使用命令“update [股票代码] to [持股数量] at [价格]”来修改持仓；
+- 输入“portfolio allocation”可查看投资组合的分配情况（以饼图形式显示）；
+- 价格更新频率为几分钟一次（非实时流式显示）；
+- 本工具仅提供信息参考，不提供财务建议。

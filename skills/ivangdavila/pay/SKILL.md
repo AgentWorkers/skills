@@ -1,78 +1,74 @@
 ---
 name: "Pay"
-description: "Choose the right payment method, optimize rewards, handle disputes, and manage bills safely."
+description: "选择合适的支付方式，优化奖励机制，妥善处理纠纷，并安全地管理账单。"
 ---
 
-## Triggers
+## 触发条件
 
-Activate on: "how should I pay", "which card", payment method questions, dispute help, fraud concerns, bill management.
+在以下情况下触发：用户询问“我应该如何支付？”、“应该使用哪张卡？”、支付方式相关的问题、争议处理帮助、欺诈疑虑或账单管理相关的问题。
 
-**Before acting on payments:** Never initiate or authorize payments without explicit user confirmation.
+**在处理支付之前：** 未经用户明确确认，切勿发起或授权任何支付操作。
 
-## Quick Decision: Which Card?
+## 快速决策：选择哪张卡？
 
-When user asks "which card should I use?":
+当用户询问“我应该使用哪张卡？”时，请按照以下步骤操作：
+1. **检查是否适用特定类别的卡奖励**（例如食品杂货、汽油、餐饮、旅行等）；
+2. 如果适用奖励，则使用该卡；
+3. 如果没有奖励，则使用返现率最高的卡；
+4. 如果需要国际支付，则使用不收取境外手续费的卡。
 
-1. **Check if category bonus applies** (groceries, gas, dining, travel)
-2. If yes → Use card with that bonus
-3. If no bonus → Use highest flat-rate cashback card
-4. **International?** → Use no-foreign-fee card
+有关卡类别的详细信息，请参阅 `cards.md`。
 
-For card category details, see `cards.md`.
+## 支付方式选择
 
-## Payment Method Selection
-
-| Method | Best for | Watch out |
+| 支付方式 | 适用场景 | 注意事项 |
 |--------|----------|-----------|
-| Credit card | Most purchases | Pay full balance monthly |
-| Debit card | Budget control | Less fraud protection |
-| Cash | Negotiation, privacy | No protection if lost |
-| Bank transfer | Large purchases, rent | Hard to reverse |
-| Digital wallet | Convenience | Still uses underlying card |
+| 信用卡 | 适用于大多数购物场景 | 需每月全额还清账单 |
+| 借记卡 | 有助于预算控制 | 但提供的欺诈保护较少 |
+| 现金 | 适用于需要协商价格或保护个人隐私的场景 | 但如果丢失，没有相应的保护措施 |
+| 银行转账 | 适用于大额购物或支付租金 | 一旦转账完成，很难撤销 |
+| 数字钱包 | 使用便捷 | 实际上仍然依赖于背后的银行卡 |
 
-## Fraud & Security
+## 欺诈与安全
 
-**If card stolen or suspicious charge:**
-1. Freeze card immediately (app or call)
-2. Check recent transactions
-3. Report fraud to bank
-4. Request new card number
+**如果银行卡被盗或发现可疑交易：**
+1. 立即冻结银行卡（通过应用程序或电话操作）；
+2. 查看最近的交易记录；
+3. 向银行报告欺诈行为；
+4. 请求更换新的银行卡号。
 
-**Red flags — never do this:**
-- Give full card number over phone (unsolicited call)
-- Pay via gift cards or wire for purchases
-- Click links in "fraud alert" texts
+**重要提示：** 绝不要在未经请求的情况下通过电话提供完整的银行卡号；不要使用礼品卡或电汇进行支付；不要点击来自“欺诈警告”短信中的链接。
 
-For detailed fraud handling, see `security.md`.
+有关详细的欺诈处理流程，请参阅 `security.md`。
 
-## Disputes & Chargebacks
+## 争议处理与退款
 
-**Before disputing:**
-1. Contact merchant first (often faster)
-2. Document everything (screenshots, receipts)
-3. Know time limits (usually 60-120 days)
+**在提出争议之前：**
+1. 先联系商家（通常处理速度更快）；
+2. 记录所有相关证据（截图、收据等）；
+3. 了解争议处理的时限（通常为60至120天内）。
 
-**Chargeback reasons that work:**
-- Item not received
-- Item significantly not as described  
-- Unauthorized charge
-- Merchant won't honor refund policy
+**有效的退款理由包括：**
+- 商品未收到；
+- 商品的实际情况与描述严重不符；
+- 未经授权的扣款；
+- 商家拒绝履行退款政策。
 
-For scripts and process, see `disputes.md`.
+有关争议处理的详细流程和脚本，请参阅 `disputes.md`。
 
-## Bill Management
+## 账单管理
 
-**Autopay rules:**
-- Fixed bills (rent, subscriptions) → Autopay full amount
-- Variable bills (utilities, credit cards) → Autopay minimum or manual
-- Always: Calendar reminder 3 days before due
+**自动支付规则：**
+- 固定费用（如租金、订阅费用）：自动支付全额；
+- 变动费用（如水电费、信用卡账单）：自动支付最低金额或选择手动支付；
+**务必：** 在账单到期前三天收到提醒。
 
-**Missed payment?** Call immediately — many issuers waive first late fee if you ask.
+**如果错过支付期限？** 立即联系发卡机构——许多发卡机构会在您主动联系后免除首次逾期费用。
 
-## Rewards Basics
+## 奖励机制基础
 
-- **Statement credit / cashback:** Simplest, automatic value
-- **Points:** Can be worth more if transferred to travel partners
-- **When in doubt:** Cashback is never wrong
+- **账单信用额度/返现**：最简单、最直接的奖励方式；
+- **积分**：如果积分可以兑换旅行优惠，可能会带来更多价值；
+**遇到疑问时：** 反现总是最可靠的选择。
 
-For optimization strategies, see `rewards.md`.
+有关优化奖励策略的信息，请参阅 `rewards.md`。

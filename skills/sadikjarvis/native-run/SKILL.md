@@ -1,27 +1,21 @@
-# Native Run
+# **Native Run**
 
-## Overview
-Native Run is an OpenClaw skill that allows executing native commands on the
-local machine where the OpenClaw gateway is running.
+## **概述**
+Native Run 是 OpenClaw 的一项功能，它允许在运行 OpenClaw 网关的本地机器上执行原生命令。  
+该功能适用于自动化、测试以及本地工具的开发与使用。
 
-This skill is useful for automation, testing and local tooling.
+## **功能说明**  
+- 执行原生命令  
+- 将执行结果返回给 OpenClaw  
+- 仅在运行 OpenClaw 网关的本地机器上执行命令  
 
-## What this skill does
-- Executes native commands
-- Returns output back to OpenClaw
-- Runs only on the local gateway machine
+## **使用方法**  
+发送符合预设模式的消息即可触发该功能。  
+**示例：**  
+`Run native: whoami`  
 
-## Usage
+## **支持平台**  
+Windows  
 
-Send a message that matches the configured pattern.
-
-Example:
-
-Run native: whoami
-
-## Platform
-Windows
-
-## Security notice
-This skill can execute local commands.
-Use only in a trusted environment.
+## **安全提示**  
+该功能会执行本地命令，请仅在受信任的环境中使用。

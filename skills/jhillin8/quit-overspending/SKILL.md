@@ -1,6 +1,6 @@
 ---
 name: quit-overspending
-description: Break impulse buying habits with spending streaks, urge tracking, and savings milestones
+description: 通过“消费连贯性”（即连续一段时间进行消费）、“消费冲动追踪”以及“储蓄里程碑”（设定储蓄目标）来改掉冲动购物的习惯。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,48 +11,47 @@ triggers:
   - "shopping urge"
 ---
 
-# Quit Overspending
+# 戒除过度消费的习惯
 
-Break impulse buying habits with spending streaks, urge tracking, and savings milestones
+通过记录连续不消费的天数、追踪购物冲动以及设定储蓄目标来帮助你改掉冲动购物的习惯。
 
-## What it does
+## 功能介绍：
 
-- **No-spend tracking**: Maintains your active streak of days without making purchases, celebrating milestones along the way
-- **Impulse urge logging**: Captures the moment you feel the urge to buy—what triggered it, how strong the urge was, whether you resisted
-- **Savings accumulation**: Automatically tracks money saved by not spending, letting you watch your fund grow
-- **Behavioral insights**: Identifies patterns in your spending triggers to help you understand and break the cycle
+- **连续不消费记录**：记录你连续不进行任何消费的天数，并在达到相应天数时庆祝这一里程碑。
+- **购物冲动记录**：当你感到购物冲动时，记录下这一瞬间：是什么触发了这种冲动、冲动的强度以及你是否成功抵制了它。
+- **储蓄累计**：自动统计因不消费而节省下来的金额，让你能够看到自己的储蓄正在逐渐增加。
+- **行为分析**：分析你的消费触发因素，帮助你了解自己的消费习惯并打破这种循环。
 
-## Usage
+## 使用方法：
 
-**Start no-spend**
-Ask to begin a no-spend streak. The skill logs your start date and establishes your baseline.
+**开始不消费**
+请求开始连续不消费的状态。该功能会记录你的开始日期，并为你设定一个基准。
 
-**Log urges**
-When you feel the impulse to buy, tell the skill. Include what you wanted to buy and how strong the urge was (1-10 scale). Every logged urge is a win—you're building awareness.
+**记录购物冲动**：
+当你感到购物冲动时，向该功能报告这一情况。请说明你原本想购买什么以及冲动的强度（1-10分）。每一次记录下来的冲动都是一次小小的胜利——这有助于提高你的自我意识。
 
-**Track savings**
-Check your running total of money saved by not making those impulse purchases. Watch the number grow as your discipline compounds.
+**查看储蓄情况**：
+查看因没有冲动购物而节省下来的总金额。随着自律力的增强，你的储蓄金额会不断增长。
 
-**Set goals**
-Define what you're saving toward: an experience, paying down debt, building an emergency fund, or simply breaking the cycle. Goals make the abstract concrete.
+**设定目标**：
+明确你的储蓄目的：是用于体验某种消费、偿还债务、建立应急资金，还是仅仅是为了打破过度消费的循环。目标能让抽象的愿望变得具体可及。
 
-**Review wins**
-Look back on your urges you resisted and streaks you maintained. Celebrate the compound effect of small decisions.
+**回顾自己的成就**：
+回顾那些你成功抑制的购物冲动以及你坚持下来的连续不消费的日子。庆祝这些小决策带来的累积效应。
 
-## Milestones
+## 主要里程碑：
 
-- **1-day no-spend**: You made it through a full day without buying
-- **7-day streak**: One week of conscious spending control
-- **30-day streak**: A full month of intentional choices
-- **$100 saved**: Triple-digit victory—your resisted urges add up fast
-- **$500 saved**: Halfway to a serious fund; momentum is real
-- **$1,000 saved**: A thousand dollars redirected from impulse to intention
+- **连续不消费1天**：你成功度过了一整天而没有进行任何消费。
+- **连续不消费7天**：一周的有意识消费控制。
+- **连续不消费30天**：整整一个月的理性消费。
+- **节省100美元**：小小的胜利——你成功抑制的购物冲动累积起来很快。
+- **节省500美元**：已经接近目标金额的一半；你的储蓄势头正在显现。
+- **节省1000美元**：一千美元的资金被从冲动消费中重新引导到了有意义的用途。
 
-## Tips
+## 使用技巧：
 
-- **Sit with the urge**: Don't suppress it—log it and let it pass. Most impulses fade within 10 minutes
-- **Identify your triggers**: Track the pattern (stress, boredom, social media, specific times of day). Recognition is the first step to change
-- **Redirect the energy**: When you feel the urge, move your body, call someone, or work on a project instead
-- **Make friction work for you**: Delete saved payment methods, unsubscribe from marketing emails, mute shopping apps from notifications
-- **All data stays local on your machine**: Your spending habits, urges, and savings goals never leave your device—complete privacy, complete control
-
+- **直面购物冲动**：不要压抑它，而是记录下来，让它自然消退。大多数购物冲动在10分钟内就会消失。
+- **识别触发因素**：记录下导致冲动消费的常见原因（压力、无聊、社交媒体、一天中的特定时间等）。认识到问题所在是改变的第一步。
+- **转移注意力**：当你感到冲动时，可以活动身体、给朋友打电话或开始做其他事情。
+- **创造阻碍**：删除可能导致冲动消费的支付方式、取消营销邮件的订阅、将购物应用的提醒功能关闭。
+- **所有数据都保存在你的设备上**：你的消费习惯、购物冲动和储蓄目标都只保存在你的设备上——确保你的隐私得到充分保护，同时也能让你随时掌控自己的消费情况。

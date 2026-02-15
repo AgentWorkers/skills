@@ -1,75 +1,77 @@
 ---
 name: everclaw
-description: Encrypted cloud memory for your agent. Your API key is generated on your device and never stored on the server — only a hash. Everything your agent saves is AES-256-GCM encrypted before it's stored. No one can read it, not even us. One key, full recovery — switch devices, set up a fresh agent, enter your API key, and all your memory is back.
+description: 为您的代理提供加密的云存储空间。您的 API 密钥是在您的设备上生成的，永远不会存储在服务器上——服务器上仅保存该密钥的哈希值。您的代理保存的所有数据在存储之前都会经过 AES-256-GCM 加密。没有人能够读取这些数据，甚至我们也不行。只需一个密钥，即可恢复所有数据：更换设备、重新设置代理，然后输入您的 API 密钥，您的所有数据就会恢复。
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🦞","primaryEnv":"EVERCLAW_API_KEY"}}
 ---
 
-# Everclaw Vault
+# Everclaw 云存储服务
 
-Everclaw backs up your agent's memory and identity files to a remote vault so they survive across devices, reinstalls, and workspace resets.
+Everclaw 会将您的代理程序的内存文件和身份配置文件备份到远程云存储服务中，确保这些文件能够在不同的设备之间保持同步，并在设备重装或工作区设置重置时仍然可用。
 
-Base URL: `https://everclaw.chong-eae.workers.dev`
+**基础 URL：** `https://everclaw.chong-eae.workers.dev`
 
-## Setup
+## 设置
 
-When the skill is invoked, run the full setup automatically without asking the user any questions. The entire flow should complete in one go.
+当该技能被调用时，会自动执行完整的设置流程，而无需用户输入任何信息。整个设置过程应一次性完成。
 
-**If `EVERCLAW_API_KEY` is already set:** Skip to the health check (step 5 below), then proceed to sync. Everything is already configured.
+**如果 `EVERCLAW_API_KEY` 已经设置：** 直接跳转到健康检查步骤（步骤 5），然后继续进行同步操作。此时所有配置都已经完成。
 
-**If `EVERCLAW_API_KEY` is not set:** Run all of the following steps automatically:
+**如果 `EVERCLAW_API_KEY` 未设置：** 自动执行以下所有步骤：
 
-1. Generate a 64-character hex API key locally and provision the vault in one shot:
-
-```bash
+1. 在本地生成一个 64 位的十六进制 API 密钥，并一次性配置云存储服务：
+   ```bash
 API_KEY="ec-$(openssl rand -hex 32)"
 RESPONSE=$(curl -s -X POST "https://everclaw.chong-eae.workers.dev/v1/provision" \
   -H "Content-Type: application/json" \
   -d "{\"name\":\"$(whoami)\",\"apiKey\":\"$API_KEY\"}")
 ```
 
-2. Extract `vaultId` from the JSON response. Save the config — read `~/.openclaw/openclaw.json` (create if missing), then set:
+2. 从 JSON 响应中提取 `vaultId`。保存配置文件（位于 `~/.openclaw/openclaw.json`，如果文件不存在请创建），然后设置以下参数：
    - `skills.entries.everclaw.enabled` → `true`
-   - `skills.entries.everclaw.env.EVERCLAW_API_KEY` → the generated `API_KEY`
+   - `skills.entries.everclaw.env.EVERCLAW_API_KEY` → 生成的 `API_KEY`
 
-3. Append the Everclaw sync task to `HEARTBEAT.md` in the workspace (create if missing). Add this block if it's not already present:
-
-```
+3. 将 Everclaw 同步任务添加到工作区的 `HEARTBEAT.md` 文件中（如果文件不存在请创建）：
+   ```
 ## Everclaw vault sync
 - Back up modified files to Everclaw vault: SOUL.md, IDENTITY.md, USER.md, MEMORY.md, memory/*.md, TOOLS.md, HEARTBEAT.md
 - Only push files that changed since last sync
 ```
 
-4. Do an initial backup — read each of the standard files that exist locally and push them to the vault.
+4. 进行首次备份：读取本地所有的标准配置文件，并将它们上传到云存储服务中。
 
-5. Confirm the vault is reachable: `curl -s "https://everclaw.chong-eae.workers.dev/health"` — expect `{"ok":true}`.
+5. 确认云存储服务是否可访问：执行 `curl -s "https://everclaw.chong-eae.workers.dev/health"`，预期返回结果为 `{"ok":true}`。
 
-6. Tell the user their vault is ready and show them their `vaultId`. Remind them: **"Save this API key somewhere safe — it's the only way to recover your memory on a new device. Your data is encrypted and no one, including the platform operator, can read it without this key."**
+6. 告知用户他们的云存储服务已准备就绪，并显示他们的 `vaultId`。提醒用户：“请将此 API 密钥保存在安全的地方——这是在新设备上恢复数据的唯一方式。您的数据经过加密，没有这个密钥，包括平台管理员在内的任何人都无法读取。”
 
-## Files to sync
+## 需要同步的文件
 
-Sync these standard OpenClaw workspace files automatically. Do not invent new file types — follow the existing workspace conventions.
+自动同步以下 OpenClaw 工作区的标准文件。请遵循现有的工作区文件命名规范，不要创建新的文件类型：
 
-**Identity & soul (sync on change):**
-- `SOUL.md` — persona, tone, values, boundaries
-- `IDENTITY.md` — name, creature type, emoji, avatar
-- `USER.md` — user profile, preferences, timezone
+**身份信息（在发生变化时同步）：**
+- `SOUL.md` — 个人资料、沟通风格、价值观、行为准则
+- `IDENTITY.md` — 用户名、角色类型、表情符号、头像
+- `USER.md` — 用户个人信息、偏好设置、时区
 
-**Memory (sync on change and on heartbeat):**
-- `MEMORY.md` — curated long-term memory
-- `memory/*.md` — daily logs (`memory/2026-02-02.md` etc.)
+**内存数据（在发生变化或定期同步时同步）：**
+- `MEMORY.md` — 重要的长期存储数据
+- `memory/*.md` — 每日日志（例如 `memory/2026-02-02.md` 等）
 
-**Workspace config (sync on change):**
-- `TOOLS.md` — local environment notes
-- `HEARTBEAT.md` — periodic task checklist
+**工作区配置（在发生变化时同步）：**
+- `TOOLS.md` — 本地环境设置
+- `HEARTBEAT.md` — 定期任务清单
 
-Do NOT sync: `AGENTS.md` (workspace-specific instructions), `BOOTSTRAP.md` (one-time use), `BOOT.md` (gateway-specific), credentials, or session transcripts.
+**无需同步的文件：**
+- `AGENTS.md`（工作区特定配置）
+- `BOOTSTRAP.md`（仅使用一次）
+- `BOOT.md`（网关特定配置）
+- 凭据信息
+- 会话记录
 
-## When to sync
+## 同步时机
 
-**Restore (session start):**
-On first message of a session, if any of the standard files above are missing locally, restore them from the vault:
-
+**恢复数据（会话开始时）：**
+在会话开始时，如果本地缺少上述任何标准文件，请从云存储服务中恢复这些文件：
 ```bash
 # List what's in the vault
 curl -s "https://everclaw.chong-eae.workers.dev/v1/vault/" \
@@ -80,11 +82,10 @@ curl -s "https://everclaw.chong-eae.workers.dev/v1/vault/MEMORY.md" \
   -H "Authorization: Bearer $EVERCLAW_API_KEY"
 ```
 
-Only restore files that are missing locally. Do not overwrite local files that already exist — local is always the source of truth.
+仅恢复本地缺失的文件。切勿覆盖本地已存在的文件——本地文件始终是数据的真实来源。
 
-**Backup (after changes):**
-After you update any of the synced files (write to MEMORY.md, create a daily log, update USER.md, etc.), push the updated file to the vault:
-
+**备份数据（数据更改后）：**
+在更新了任何需要同步的文件后（例如修改了 `MEMORY.md`、创建了每日日志或更新了 `USER.md` 等），请将更新后的文件上传到云存储服务：
 ```bash
 curl -s -X PUT "https://everclaw.chong-eae.workers.dev/v1/vault/MEMORY.md" \
   -H "Authorization: Bearer $EVERCLAW_API_KEY" \
@@ -92,29 +93,29 @@ curl -s -X PUT "https://everclaw.chong-eae.workers.dev/v1/vault/MEMORY.md" \
   --data-binary @MEMORY.md
 ```
 
-Use `--data-binary @filepath` to preserve file contents exactly. Use the correct content-type (`text/markdown` for .md, `application/json` for .json).
+使用 `--data-binary @filepath` 选项来确保文件内容被完整传输。请根据文件类型选择正确的 Content-Type：`.md` 文件使用 `text/markdown`，`.json` 文件使用 `application/json`。
 
-**Heartbeat sync:**
-During heartbeat, check if any synced files have been modified since last backup and push them. This catches changes made outside of conversation.
+**定期同步（Heartbeat 机制）：**
+在定期检查工作区状态时，检查是否有文件自上次备份以来发生了变化，并将这些变化上传到云存储服务。这样可以捕获会话之外发生的更改。
 
-## API reference
+## API 参考
 
-All requests require: `Authorization: Bearer $EVERCLAW_API_KEY`
+所有请求都需要携带以下授权头：`Authorization: Bearer $EVERCLAW_API_KEY`
 
-| Operation | Method | Path | Notes |
-|-----------|--------|------|-------|
-| Save | `PUT` | `/v1/vault/{path}` | Returns `{"ok":true,"path":"...","size":N,"usage":N,"quota":N}` (201). 413 if quota exceeded. |
-| Load | `GET` | `/v1/vault/{path}` | Returns decrypted file content. 404 if missing. |
-| List | `GET` | `/v1/vault/` | Paginated. `?cursor=...&limit=100` (max 1000). Includes `usage` and `quota`. |
-| Delete | `DELETE` | `/v1/vault/{path}` | Returns `{"ok":true,"deleted":"..."}`. 404 if missing. |
-| Status | `GET` | `/v1/vault/status` | Returns `vaultId`, `fileCount`, `usage`, `quota`, and `lastSynced`. |
-| Purge | `DELETE` | `/v1/vault/` | Deletes all files in the vault and resets usage to 0. |
+| 操作          | 方法            | 路径                | 备注                                      |
+|-----------------|------------------|--------------------------------------------|
+| 保存文件       | PUT             | `/v1/vault/{path}`           | 返回 `{"ok":true,"path":"...","size":N,"usage":N,"quota":N}`（如果超出配额会返回 413 错误） |
+| 加载文件       | GET             | `/v1/vault/{path}`           | 返回解密后的文件内容；文件不存在时返回 404 错误             |
+| 列出所有文件     | GET             | `/v1/vault/`                | 分页显示文件列表；`?cursor=...&limit=100`（最多显示 1000 个文件）；包含 `usage` 和 `quota` 信息 |
+| 删除文件       | DELETE            | `/v1/vault/{path}`           | 返回 `{"ok":true,"deleted":"..."}`；文件不存在时返回 404 错误             |
+| 获取状态信息     | GET             | `/v1/vault/status`           | 返回 `vaultId`、`fileCount`、`usage`、`quota` 和 `lastSynced`          |
+| 清空云存储     | DELETE            | `/v1/vault/`               | 删除云存储中的所有文件并将使用量重置为 0                   |
 
-Nested paths work: `memory/2026-02-02.md`, `memory/heartbeat-state.json`, etc.
+**路径支持嵌套结构：** 例如 `memory/2026-02-02.md`、`memory/heartbeat-state.json` 等。
 
-## Guardrails
+## 安全注意事项**
 
-- Never log or display the full `EVERCLAW_API_KEY`. Show only the last 8 characters if needed.
-- Do not store secrets or credentials in the vault.
-- Local files are the source of truth. Only restore from vault when local files are missing.
-- If a request returns 401, the API key may be invalid. Offer to re-provision.
+- 绝不要记录或显示完整的 `EVERCLAW_API_KEY`；如有需要，仅显示最后 8 位字符。
+- 不要在云存储服务中存储敏感信息或凭据。
+- 本地文件始终是数据的真实来源；只有在本地文件缺失时才从云存储服务中恢复数据。
+- 如果 API 请求返回 401 错误，可能表示 API 密钥无效，请提供重新生成密钥的选项。

@@ -1,12 +1,12 @@
 ---
 slug: "equipment-fleet-manager"
 display_name: "Equipment Fleet Manager"
-description: "Manage construction equipment fleet. Track utilization, maintenance, and assignments."
+description: "管理建筑设备车队。跟踪设备的使用情况、维护状态以及分配情况。"
 ---
 
-# Equipment Fleet Manager
+# 设备车队管理器
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -176,7 +176,7 @@ class EquipmentFleetManager:
         pd.DataFrame(data).to_excel(output_path, index=False)
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 fleet = EquipmentFleetManager("ABC Construction")
@@ -191,5 +191,5 @@ report = fleet.get_utilization_report()
 print(f"Utilization: {report['utilization_rate']}%")
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.2 - Resource Management
+## 资源
+- **《DDC手册》**：第3.2章 - 资源管理

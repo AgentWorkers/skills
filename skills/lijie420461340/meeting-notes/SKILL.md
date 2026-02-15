@@ -1,41 +1,41 @@
 ---
 name: meeting-notes
-description: Transform raw meeting notes, transcripts, or recordings into structured, actionable summaries
+description: 将原始的会议记录、文字记录或录音文件转换为结构化、可操作的摘要。
 version: 1.0.0
 author: Claude Office Skills Contributors
 license: MIT
 tags: [productivity, meetings, documentation]
 ---
 
-# Meeting Notes
+# 会议记录
 
-## Overview
+## 概述
 
-This skill transforms raw meeting notes, transcripts, or audio summaries into clear, structured documentation with action items, decisions, and key takeaways.
+该工具能够将原始的会议记录、会议记录文本或音频摘要转化为结构清晰、条理分明的文档，其中包含待办事项、决策结果以及关键要点。
 
-**Use Cases:**
-- Converting messy handwritten notes to clean summaries
-- Processing meeting transcripts
-- Extracting action items and owners
-- Creating meeting minutes for distribution
-- Summarizing long discussions into key points
+**使用场景：**
+- 将杂乱的手写笔记整理成简洁的摘要
+- 处理会议记录文本
+- 提取待办事项及其负责人
+- 创建会议纪要以供分发
+- 将长时间的讨论内容总结为关键要点
 
-## How to Use
+## 使用方法
 
-1. Paste your raw meeting notes, transcript, or description
-2. Tell me the meeting type (standup, project review, client call, etc.)
-3. Specify any required format or template
-4. I'll create structured notes with action items
+1. 粘贴您的会议记录、会议记录文本或描述内容
+2. 告诉我会议的类型（如站立会议、项目评审、客户电话会议等）
+3. 指定所需的格式或模板
+4. 我会为您生成包含待办事项的结构化文档
 
-**Example prompts:**
-- "Organize these meeting notes and extract action items"
-- "Create formal meeting minutes from this transcript"
-- "Summarize the key decisions from our project review"
-- "Turn this brainstorm session into a structured document"
+**示例提示：**
+- “整理这些会议记录并提取待办事项”
+- “根据这份会议记录文本创建正式的会议纪要”
+- “总结我们项目评审中的关键决策”
+- “将这次头脑风暴会议的内容整理成结构化的文档”
 
-## Meeting Note Templates
+## 会议记录模板
 
-### Standard Meeting Summary
+### 标准会议总结
 
 ```markdown
 # Meeting Summary
@@ -73,7 +73,7 @@ This skill transforms raw meeting notes, transcripts, or audio summaries into cl
 [Any additional context or parking lot items]
 ```
 
-### Quick Standup Notes
+### 快速站立会议记录
 
 ```markdown
 # Daily Standup - [Date]
@@ -93,7 +93,7 @@ This skill transforms raw meeting notes, transcripts, or audio summaries into cl
 - [Team-wide updates]
 ```
 
-### Client Meeting Notes
+### 客户会议记录
 
 ```markdown
 # Client Meeting Notes
@@ -127,7 +127,7 @@ This skill transforms raw meeting notes, transcripts, or audio summaries into cl
 [Date/Time/Agenda preview]
 ```
 
-### Project Review Notes
+### 项目评审记录
 
 ```markdown
 # Project Review: [Project Name]
@@ -158,33 +158,32 @@ This skill transforms raw meeting notes, transcripts, or audio summaries into cl
 - [ ] [Task] - @[Owner] - Due: [Date]
 ```
 
-## Processing Guidelines
+## 处理指南
 
-### Extracting Action Items
+### 提取待办事项
 
-Look for phrases indicating tasks:
-- "We need to..." / "Someone should..."
-- "Can you..." / "Will you..."
-- "Let's..." / "Action:"
-- Names + verbs (e.g., "John will prepare...")
-- Deadlines mentioned with tasks
+寻找表示任务的短语：
+- “我们需要...” / “有人应该...” / “你能...” / “你会...”
+- “让我们...” / “行动：”
+- 名字 + 动词（例如：“John 将负责准备...”）
+- 提及任务的截止日期
 
-### Identifying Decisions
+### 识别决策结果
 
-Look for:
-- "We've decided..." / "The decision is..."
-- "Going forward, we will..."
-- "Agreed:" / "Confirmed:"
-- Consensus language ("everyone agreed...")
+寻找以下内容：
+- “我们决定...” / “决策结果是...”
+- “今后，我们将...”
+- “同意：” / “确认：”
+- 表示共识的表述（“大家都同意...”）
 
-### Determining Owners
+### 确定负责人
 
-- Explicitly named: "Sarah will handle..."
-- Role-based: "The design team will..."
-- Default to meeting organizer if unclear
-- Flag unassigned items for follow-up
+- 明确指定的负责人：“Sarah 将负责...”  
+- 基于角色的负责人：“设计团队将...”  
+- 如果不明确，则默认为会议组织者  
+- 标记未分配的待办事项以供后续处理
 
-## Output Format
+## 输出格式
 
 ```markdown
 ## Meeting Summary: [Title]
@@ -216,26 +215,26 @@ Look for:
 - [Items to address later]
 ```
 
-## Customization Options
+## 自定义选项
 
-Tell me your preferences:
-- **Format:** Bullet points, table, prose, or formal minutes
-- **Detail level:** Executive summary, standard, or detailed
-- **Focus:** Action items only, decisions only, or comprehensive
-- **Style:** Casual team notes or formal documentation
+请告知您的需求：
+- **格式：** 列表形式、表格、散文或正式的会议纪要  
+- **详细程度：** 执行摘要、标准格式或详细格式  
+- **关注点：** 仅包含待办事项、仅包含决策结果，或包含全部内容  
+- **风格：** 随意的团队记录或正式的文档  
 
-## Limitations
+## 限制
 
-- Cannot attend or record meetings
-- Accuracy depends on quality of input notes
-- May need clarification on ambiguous pronouns or acronyms
-- Cannot verify commitments or deadlines - review before distributing
+- 无法参加会议或录制会议  
+- 准确性取决于输入笔记的质量  
+- 对于含义模糊的代词或缩写可能需要进一步澄清  
+- 无法验证承诺或截止日期——在分发前请自行核实  
 
-## Examples
+## 示例
 
-### Example: Raw Notes to Structured Summary
+### 示例：将原始笔记转换为结构化摘要
 
-**Input:**
+**输入：**
 ```
 product meeting 3/15
 talked about launch timeline, sarah thinks we need 2 more weeks
@@ -247,34 +246,34 @@ also discussed new feature requests from customers - will prioritize next sprint
 john to send customer feedback summary
 ```
 
-**Output:**
+**输出：**
 
-## Meeting Summary: Product Launch Review
+## 会议总结：产品发布评审
 
-📅 **Date:** March 15, 2024
-👥 **Attendees:** Sarah, John, Maria
+📅 **日期：** 2024年3月15日  
+👥 **参会人员：** Sarah、John、Maria  
 
-### 📋 Summary
-Reviewed launch timeline and decided to postpone launch by 2 weeks to April 1 due to critical checkout bug. Discussed customer feature requests for future prioritization.
+### 📋 总结  
+审查了产品发布的时间表，由于发现了一个关键的检查问题，决定将发布日期推迟两周至4月1日。同时讨论了客户的功能需求，以便后续进行优先级排序。  
 
-### 💡 Key Points
-1. Original launch timeline insufficient - need 2 more weeks
-2. Critical checkout bug discovered - must fix before launch
-3. Customer feature requests collected for next sprint prioritization
+### 💡 关键要点  
+1. 原定的发布时间表不够充分——还需要额外2周时间  
+2. 发现了一个关键的检查问题——必须在发布前修复  
+3. 收集了客户的功能需求，以便在下一个冲刺中优先处理  
 
-### ✅ Decisions
-- Launch date moved from mid-March to **April 1**
-- Checkout bug is **highest priority**
-- Feature requests to be prioritized in next sprint planning
+### ✅ 决策结果  
+- 发布日期从3月中旬推迟至 **4月1日**  
+- 检查问题是 **最高优先级**  
+- 客户的功能需求将在下一个冲刺计划中优先处理  
 
-### 📌 Action Items
-| # | Action | Owner | Due | Priority |
-|---|--------|-------|-----|----------|
-| 1 | Fix checkout bug | Maria | Friday (3/17) | 🔴 High |
-| 2 | Update stakeholders on new launch date | [Unassigned] | ASAP | 🔴 High |
-| 3 | Send customer feedback summary | John | [TBD] | 🟡 Medium |
+### 📌 待办事项  
+| 编号 | 任务 | 负责人 | 截止日期 | 优先级 |  
+|---|--------|-------|-----|----------|  
+| 1 | 修复检查问题 | Maria | 3月17日（周五） | 🔴 高优先级 |  
+| 2 | 向利益相关者更新新的发布日期 | [未分配] | 尽快 | 🔴 高优先级 |  
+| 3 | 发送客户反馈摘要 | John | [待定] | 🟡 中等优先级 |  
 
-### 🔜 Next Steps
-- Follow-up on bug fix progress
-- Stakeholder communication about timeline change
-- Sprint planning to prioritize customer requests
+### 🔜 下一步行动  
+- 跟进修复问题的进度  
+- 与利益相关者沟通时间表变更情况  
+- 在冲刺计划中优先处理客户的需求

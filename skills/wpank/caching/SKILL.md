@@ -1,22 +1,22 @@
 ---
 name: caching
 model: standard
-description: Caching strategies, invalidation, eviction policies, HTTP caching, distributed caching, and anti-patterns. Use when designing cache layers, choosing eviction policies, debugging stale data, or optimizing read-heavy workloads.
+description: 缓存策略、失效机制、淘汰策略、HTTP缓存、分布式缓存以及相关反模式（anti-patterns）。这些内容在设计缓存层、选择淘汰策略、调试过期数据或优化以读取操作为主的工作负载时非常有用。
 ---
 
-# Caching Patterns
+# 缓存模式
 
-> A well-placed cache is the cheapest way to buy speed. A misplaced cache is the most expensive way to buy bugs.
+> 正确放置的缓存是提升系统速度最经济的方式；而错误放置的缓存则可能导致大量错误（即“bug”）的产生。
 
-## Cache Strategies
+## 缓存策略
 
-| Strategy | How It Works | When to Use |
+| 策略 | 工作原理 | 使用场景 |
 |----------|-------------|-------------|
-| **Cache-Aside (Lazy)** | App checks cache → miss → reads DB → writes to cache | **Default choice** — general purpose |
-| **Read-Through** | Cache fetches from DB on miss automatically | ORM-integrated caching, CDN origin fetch |
-| **Write-Through** | Writes go to cache AND DB synchronously | Read-heavy with strong consistency |
-| **Write-Behind** | Writes go to cache, async flush to DB | High write throughput, eventual consistency OK |
-| **Refresh-Ahead** | Cache proactively refreshes before expiry | Predictable access patterns, low-latency critical |
+| **缓存旁路（惰性缓存）** | 应用程序首先检查缓存，如果缓存不存在，则从数据库读取数据并写入缓存 | **默认选择**——通用场景 |
+| **直接读取** | 当缓存不存在时，自动从数据库读取数据 | 集成ORM的缓存系统、CDN源服务器的数据获取 |
+| **直接写入** | 数据同时写入缓存和数据库 | 以读取为主的应用场景，要求数据强一致性 |
+| **延迟写入** | 数据先写入缓存，再异步刷新到数据库 | 需要高写入吞吐量的场景，可接受数据最终一致性 |
+| **提前刷新** | 在缓存过期前主动刷新缓存 | 访问模式可预测，对低延迟有严格要求的应用场景 |
 
 ```
 Cache-Aside Flow:
@@ -29,44 +29,44 @@ Cache-Aside Flow:
 
 ---
 
-## Cache Invalidation
+## 缓存失效机制
 
-| Method | Consistency | When to Use |
+| 方法 | 一致性 | 使用场景 |
 |--------|-------------|-------------|
-| **TTL-based** | Eventual (up to TTL) | Simple data, acceptable staleness |
-| **Event-based** | Strong (near real-time) | Inventory, profile updates |
-| **Version-based** | Strong | Static assets, API responses, config |
-| **Tag-based** | Strong | CMS content, category-based purging |
+| **基于TTL** | 数据最终会失效（直到TTL时间） | 适用于简单数据，可接受数据短暂失效 |
+| **基于事件** | 数据几乎实时更新 | 例如库存信息、用户资料更新 |
+| **基于版本** | 数据版本固定 | 适用于静态资源、API响应、配置信息 |
+| **基于标签** | 数据具有唯一标签 | 适用于内容管理系统（CMS）中的内容、按类别清理缓存 |
 
-### TTL Guidelines
+### TTL（时间到期）指南
 
-| Data Type | TTL | Rationale |
+| 数据类型 | TTL（时间到期值） | 选择理由 |
 |-----------|-----|-----------|
-| Static assets (CSS/JS/images) | 1 year + cache-busting hash | Immutable by filename |
-| API config / feature flags | 30–60 seconds | Fast propagation needed |
-| User profile data | 5–15 minutes | Tolerable staleness |
-| Product catalog | 1–5 minutes | Balance freshness vs load |
-| Session data | Match session timeout | Security requirement |
+| 静态资源（CSS/JS/图片） | 1年 + 使用缓存破坏哈希值 | 文件名决定了数据的唯一性 |
+| API配置/功能开关 | 30–60秒 | 需要快速传播更新 |
+| 用户资料数据 | 5–15分钟 | 可接受数据短暂失效 |
+| 产品目录信息 | 1–5分钟 | 在数据新鲜度和系统负载之间取得平衡 |
+| 会话数据 | 与会话超时时间一致 | 为了安全考虑 |
 
 ---
 
-## HTTP Caching
+## HTTP缓存
 
-### Cache-Control Directives
+### Cache-Control指令
 
-| Directive | Meaning |
+| 指令 | 含义 |
 |-----------|---------|
-| `max-age=N` | Cache for N seconds |
-| `s-maxage=N` | CDN/shared cache max age (overrides max-age) |
-| `no-cache` | Must revalidate before using cached copy |
-| `no-store` | Never cache anywhere |
-| `must-revalidate` | Once stale, must revalidate |
-| `private` | Only browser can cache, not CDN |
-| `public` | Any cache can store |
-| `immutable` | Content will never change (within max-age) |
-| `stale-while-revalidate=N` | Serve stale for N seconds while fetching fresh |
+| `max-age=N` | 缓存有效期为N秒 |
+| `s-maxage=N` | CDN或共享缓存的最大有效期（覆盖`max-age`指令） |
+| `no-cache` | 使用缓存副本前必须重新验证数据 |
+| `no-store` | 绝不在任何地方缓存数据 |
+| `must-revalidate` | 数据失效后必须重新验证 |
+| `private` | 仅允许浏览器缓存，不允许CDN缓存 |
+| `public` | 允许任何缓存服务器缓存数据 |
+| `immutable` | 内容在有效期内永远不会改变 |
+| `stale-while-revalidate=N` | 在获取新数据前，继续提供失效的缓存内容N秒 |
 
-### Common Recipes
+### 常见缓存策略
 
 ```
 # Immutable static assets (hashed filenames)
@@ -83,121 +83,121 @@ ETag: "abc123"
 Cache-Control: no-store
 ```
 
-### Conditional Requests
+### 条件请求
 
-| Mechanism | Request Header | Response Header | How It Works |
+| 机制 | 请求头 | 响应头 | 工作原理 |
 |-----------|---------------|-----------------|-------------|
-| **ETag** | `If-None-Match: "abc"` | `ETag: "abc"` | Hash-based — 304 if match |
-| **Last-Modified** | `If-Modified-Since: <date>` | `Last-Modified: <date>` | Date-based — 304 if unchanged |
+| **ETag** | `If-None-Match: "abc"` | `ETag: "abc"` | 基于哈希值判断；如果匹配则返回404状态码 |
+| **Last-Modified** | `If-Modified-Since: <date>` | `Last-Modified: <date>` | 基于修改时间判断；如果数据未更改则返回404状态码 |
 
-Prefer ETag over Last-Modified — ETags detect content changes regardless of timestamp granularity.
+建议优先使用ETag而非`Last-Modified`——ETag能更准确地检测数据是否发生变化，不受时间戳粒度的影响。
 
 ---
 
-## Application Caching
+## 应用程序缓存
 
-| Solution | Speed | Shared Across Processes | When to Use |
+| 解决方案 | 提升速度效果 | 是否可在多个进程间共享 | 使用场景 |
 |----------|-------|------------------------|-------------|
-| **In-memory LRU** | Fastest | No | Single-process, bounded memory, hot data |
-| **Redis** | Sub-ms (network) | Yes | **Production default** — TTL, pub/sub, persistence |
-| **Memcached** | Sub-ms (network) | Yes | Simple key-value at extreme scale |
-| **SQLite** | Fast (disk) | No | Embedded apps, edge caching |
+| **内存LRU缓存** | 最快 | 不能 | 单进程环境，内存有限，适用于热点数据 |
+| **Redis** | 几毫秒（网络传输时间） | 可 | **生产环境默认选择**——支持TTL、发布/订阅（Pub/Sub）机制，支持数据持久化 |
+| **Memcached** | 几毫秒（网络传输时间） | 可 | 适用于大规模的简单键值存储场景 |
+| **SQLite** | 快速（磁盘存储） | 不支持 | 适用于嵌入式应用、边缘缓存场景 |
 
-### Redis vs Memcached
+### Redis与Memcached的比较
 
-| Feature | Redis | Memcached |
+| 特性 | Redis | Memcached |
 |---------|-------|-----------|
-| Data structures | Strings, hashes, lists, sets, sorted sets | Strings only |
-| Persistence | AOF, RDB snapshots | None |
-| Pub/Sub | Yes | No |
-| Max value size | 512 MB | 1 MB |
-| **Verdict** | **Default choice** | Pure cache at extreme scale |
+| 数据结构 | 字符串、哈希值、列表、集合、有序集合 | 仅支持字符串 |
+| 数据持久化 | AOF（追加文件）/RDB快照 | 不支持持久化 |
+| 发布/订阅（Pub/Sub） | 支持 | 不支持 |
+| 最大值大小 | 512 MB | 1 MB |
+| **推荐选择** | 大规模场景下的纯缓存解决方案 |
 
 ---
 
-## Distributed Caching
+## 分布式缓存
 
-| Concern | Solution |
+| 需要考虑的问题 | 解决方案 |
 |---------|----------|
-| **Partitioning** | Consistent hashing — minimal reshuffling on node changes |
-| **Replication** | Primary-replica — writes to primary, reads from replicas |
-| **Failover** | Redis Sentinel or Cluster auto-failover |
+| **分区** | 使用一致性哈希算法，减少节点变化时的数据重新分配 |
+| **复制** | 主从复制机制——数据写入主节点，从节点读取数据 |
+| **故障转移** | 使用Redis Sentinel或集群自动故障转移机制 |
 
-**Rule of thumb:** 3 primaries + 3 replicas minimum for production Redis Cluster.
+**经验法则：** 生产环境的Redis集群至少需要3个主节点和3个从节点。
 
 ---
 
-## Cache Eviction Policies
+## 缓存淘汰策略
 
-| Policy | How It Works | When to Use |
+| 策略 | 工作原理 | 使用场景 |
 |--------|-------------|-------------|
-| **LRU** | Evicts least recently accessed | **Default** — general purpose |
-| **LFU** | Evicts least frequently accessed | Skewed popularity distributions |
-| **FIFO** | Evicts oldest entry | Simple, time-ordered data |
-| **TTL** | Evicts after fixed duration | Data with known freshness window |
+| **LRU（最近最少使用）** | 淘汰最近最少被访问的数据 | **默认策略**——通用场景 |
+| **LFU（最少使用频率）** | 淘汰使用频率最低的数据 | 适用于数据访问分布不均匀的情况 |
+| **FIFO（先进先出）** | 淘汰最旧的数据 | 适用于数据按时间顺序存储的场景 |
+| **基于TTL** | 在指定时间后淘汰数据 | 适用于数据有明确有效期的情况 |
 
-> Redis default is `noeviction`. Set `maxmemory-policy` to `allkeys-lru` or `volatile-lru` for production.
+> Redis的默认缓存淘汰策略是`noeviction`。在生产环境中，建议将`maxmemory-policy`设置为`allkeys-lru`或`volatile-lru`。
 
 ---
 
-## Caching Layers
+## 缓存层次结构
 
 ```
 Browser Cache → CDN → Load Balancer → App Cache → DB Cache → Database
 ```
 
-| Layer | What to Cache | Invalidation |
+| 缓存层次 | 缓存内容 | 失效判断方式 |
 |-------|--------------|--------------|
-| **Browser** | Static assets, API responses | Versioned URLs, Cache-Control |
-| **CDN** | Static files, public API responses | Purge API, surrogate keys |
-| **Application** | Computed results, DB queries, external API | Event-driven, TTL |
-| **Database** | Query plans, buffer pool, materialized views | `ANALYZE`, manual refresh |
+| **浏览器缓存** | 静态资源、API响应 | 使用版本号和`Cache-Control`头进行缓存控制 |
+| **CDN缓存** | 静态文件、公共API响应 | 定期清理缓存，使用代理键（surrogate keys） |
+| **应用程序缓存** | 计算结果、数据库查询结果、外部API调用 | 基于事件触发，使用TTL机制 |
+| **数据库缓存** | 查询计划、缓冲池、物化视图 | 使用`ANALYZE`命令手动刷新缓存 |
 
 ---
 
-## Cache Stampede Prevention
+## 防止缓存雪崩
 
-When a hot key expires, hundreds of requests simultaneously hit the database.
+当一个热点数据的关键字过期时，大量请求会同时访问数据库，可能导致系统崩溃。
 
-| Technique | How It Works |
+| 技术手段 | 工作原理 |
 |-----------|-------------|
-| **Mutex / Lock** | First request locks, fetches, populates; others wait |
-| **Probabilistic early expiration** | Random chance of refreshing before TTL |
-| **Request coalescing** | Deduplicate in-flight requests for same key |
-| **Stale-while-revalidate** | Serve stale, refresh asynchronously |
+| **互斥锁/锁定** | 首个请求获取锁，读取数据后更新缓存；其他请求等待 |
+| **随机提前失效** | 在缓存过期前随机触发数据更新 |
+| **请求合并** | 合并针对同一关键字的所有请求 |
+| **失效时继续提供旧缓存** | 在更新新数据前继续提供失效的缓存内容 |
 
 ---
 
-## Cache Warming
+## 缓存预热
 
-| Strategy | When to Use |
+| 策略 | 使用场景 |
 |----------|-------------|
-| **On-deploy warm-up** | Predictable key set, latency-sensitive |
-| **Background job** | Reports, dashboards, catalog data |
-| **Shadow traffic** | Cache migration, new infrastructure |
-| **Priority-based** | Limited warm-up time budget |
+| **部署时预热** | 需要预热的缓存键集，对延迟敏感 |
+| **后台任务** | 数据报告、仪表盘展示、产品目录数据更新 |
+| **新基础设施部署** | 在新系统上线时进行缓存迁移 |
+| **基于优先级的预热** | 预热时间有限 |
 
-> **Cold start impact:** A full cache flush can increase DB load 10–100x. Always warm gradually or use stale-while-revalidate.
+> **注意：** 完全清除缓存可能会导致数据库负载增加10–100倍。建议逐步预热缓存，或使用`stale-while-revalidate`策略。
 
----
+## 监控
 
-## Monitoring
-
-| Metric | Healthy Range | Action if Unhealthy |
+| 监控指标 | 正常范围 | 异常情况时的处理措施 |
 |--------|--------------|---------------------|
-| **Hit rate** | > 90% | Low → cache too small, wrong TTL, bad key design |
-| **Eviction rate** | Near 0 steady state | High → increase memory or tune policy |
-| **Latency (p99)** | < 1ms (Redis) | High → network issue, large values, hot key |
-| **Memory usage** | < 80% of max | Approaching max → scale up or tune eviction |
+| **命中率** | > 90% | 缓存容量太小、TTL设置不当或缓存键设计不合理 |
+| **淘汰率** | 接近0% | 内存使用率过高，需要增加缓存容量或调整缓存策略 |
+| **延迟（99百分位）** | < 1ms（对于Redis） | 延迟过高可能是网络问题或缓存数据量过大 |
+| **内存使用率** | < 最大内存容量的80% | 内存使用率接近上限时，需要扩展缓存容量或调整缓存策略 |
+
+## 绝对不能做的事情：
+
+1. **绝不要在没有设置TTL或失效机制的情况下使用缓存**——否则数据会永久失效 |
+2. **绝不要将缓存视为持久化存储**——缓存数据可能会丢失或损坏，遇到问题时必须回退到原始数据源 |
+3. **绝不要对敏感数据（如令牌、个人身份信息）使用不加密的缓存**——缓存泄露会导致数据泄露 |
+4. **绝不要忽视热点数据的缓存雪崩问题**——一个过期的热点数据可能导致整个系统崩溃 |
+5. **绝不要在生产环境中使用无限制的内存缓存**——否则内存使用量可能会无限增长，导致系统崩溃 |
+6. **绝不要使用`immutable`的`Cache-Control`头来缓存可变数据**——浏览器不会重新请求这些数据 |
+7. **绝不要忽略对缓存命中率和失败率的监控**——只有通过监控才能了解缓存是否发挥了作用 |
 
 ---
 
-## NEVER Do
-
-1. **NEVER cache without a TTL or invalidation plan** — data rots; every entry needs an expiry path
-2. **NEVER treat cache as durable storage** — caches evict, crash, and restart; always fall back to source of truth
-3. **NEVER cache sensitive data (tokens, PII) without encryption** — cache breaches expose everything in plaintext
-4. **NEVER ignore cache stampede on hot keys** — one expired popular key can take down your database
-5. **NEVER use unbounded in-memory caches in production** — memory grows until OOM-killed
-6. **NEVER cache mutable data with `immutable` Cache-Control** — browsers will never re-fetch
-7. **NEVER skip monitoring hit/miss rates** — you won't know if your cache is helping or hurting
+（注：由于文档内容较长，部分翻译采用了分段处理的方式，以确保翻译的连贯性和可读性。）

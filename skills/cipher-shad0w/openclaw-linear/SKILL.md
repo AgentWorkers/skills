@@ -1,34 +1,34 @@
 ---
 name: linear
-description: Manage Linear issues, projects, teams, and documents from the command line using the linear CLI. Create, update, list, and track issues; manage projects and milestones; interact with the Linear GraphQL API.
+description: 使用 `linear CLI` 通过命令行来管理 Linear 的问题、项目、团队和文档。可以创建、更新、列出和跟踪问题；管理项目和里程碑；并与 Linear 的 GraphQL API 进行交互。
 homepage: https://github.com/cipher-shad0w/openclaw-linear
 metadata: {"openclaw": {"emoji": "🖇️", "os": ["darwin", "linux", "win32"], "requires": {"bins": ["linear"]}, "install": [{"id": "brew", "kind": "brew", "formula": "schpet/tap/linear", "bins": ["linear"], "label": "Install linear CLI (brew)", "os": ["darwin", "linux"]}]}}
 ---
 
 # Linear
 
-A CLI to manage Linear issues from the command line, with git and jj integration.
+这是一个用于通过命令行管理 Linear 项目问题的 CLI 工具，支持与 Git 和 jj 的集成。
 
-## Prerequisites
+## 前提条件
 
-The `linear` command must be available on PATH. To check:
+`linear` 命令必须在系统的 PATH 环境变量中可用。您可以通过以下命令进行检查：
 
 ```bash
 linear --version
 ```
 
-If not installed:
-- **Homebrew**: `brew install schpet/tap/linear`
-- **Deno**: `deno install -A --reload -f -g -n linear jsr:@schpet/linear-cli`
-- **Binaries**: https://github.com/schpet/linear-cli/releases/latest
+如果尚未安装 `linear`：
+- **使用 Homebrew**：`brew install schpet/tap/linear`
+- **使用 Deno**：`deno install -A --reload -f -g -n linear jsr:@schpet/linear-cli`
+- **二进制文件**：[下载地址](https://github.com/schpet/linear-cli/releases/latest)
 
-## Setup
+## 设置
 
-1. Create an API key at https://linear.app/settings/account/security
-2. Authenticate: `linear auth login`
-3. Configure your project: `cd my-project-repo && linear config`
+1. 在 [https://linear.app/settings/account/security](https://linear.app/settings/account/security) 创建一个 API 密钥。
+2. 登录：`linear auth login`
+3. 配置您的项目：`cd my-project-repo && linear config`
 
-## Available Commands
+## 可用的命令
 
 ```text
 linear auth               # Manage Linear authentication
@@ -46,9 +46,9 @@ linear schema             # Print the GraphQL schema to stdout
 linear api                # Make a raw GraphQL API request
 ```
 
-## Common Workflows
+## 常见的工作流程
 
-### List and view issues
+### 列出和查看问题
 
 ```bash
 # List your unstarted issues
@@ -68,7 +68,7 @@ linear issue view
 linear issue view ABC-123
 ```
 
-### Create and manage issues
+### 创建和管理问题
 
 ```bash
 # Create an issue interactively
@@ -87,7 +87,7 @@ linear issue comment add ABC-123 -b "This is fixed in the latest build"
 linear issue delete ABC-123 -y
 ```
 
-### Start working on an issue
+### 开始处理问题
 
 ```bash
 # Pick an issue interactively, creates a git branch and marks it as started
@@ -100,7 +100,7 @@ linear issue start ABC-123
 linear issue pr
 ```
 
-### Projects and milestones
+### 项目与里程碑
 
 ```bash
 # List projects
@@ -113,7 +113,7 @@ linear project create -n "Q1 Launch" -t ENG -s started --target-date 2026-03-31
 linear milestone list --project <projectId>
 ```
 
-### Documents
+### 文档
 
 ```bash
 # List documents
@@ -126,7 +126,7 @@ linear document create --title "Design Spec" --content-file ./spec.md --project 
 linear document view <slug>
 ```
 
-### Teams
+### 团队
 
 ```bash
 # List teams
@@ -136,9 +136,9 @@ linear team list
 linear team members
 ```
 
-## Discovering Options
+## 查看帮助信息
 
-Run `--help` on any command for flags and options:
+在任意命令后加上 `--help` 可以查看该命令的参数和选项：
 
 ```bash
 linear --help
@@ -147,11 +147,11 @@ linear issue list --help
 linear issue create --help
 ```
 
-## Using the Linear GraphQL API Directly
+## 直接使用 Linear 的 GraphQL API
 
-**Prefer the CLI for all supported operations.** The `api` command is a fallback for queries not covered by the CLI.
+**建议使用 CLI 进行所有操作；`api` 命令仅用于处理 CLI 未覆盖的查询。**
 
-### Check the schema
+### 查看 GraphQL 数据结构
 
 ```bash
 linear schema -o "${TMPDIR:-/tmp}/linear-schema.graphql"
@@ -159,7 +159,7 @@ grep -i "cycle" "${TMPDIR:-/tmp}/linear-schema.graphql"
 grep -A 30 "^type Issue " "${TMPDIR:-/tmp}/linear-schema.graphql"
 ```
 
-### Make a GraphQL request
+### 发起 GraphQL 请求
 
 ```bash
 # Simple query
@@ -176,7 +176,7 @@ linear api 'query($filter: IssueFilter!) { issues(filter: $filter) { nodes { tit
 linear api '{ issues(first: 5) { nodes { identifier title } } }' | jq '.data.issues.nodes[].title'
 ```
 
-### Using curl directly
+### 直接使用 curl
 
 ```bash
 curl -s -X POST https://api.linear.app/graphql \
@@ -185,29 +185,29 @@ curl -s -X POST https://api.linear.app/graphql \
   -d '{"query": "{ viewer { id } }"}'
 ```
 
-## Reference Documentation
+## 参考文档
 
-For detailed subcommand documentation with all flags and options:
+有关各个子命令的详细文档（包括所有参数和选项）：
 
-- [issue](references/issue.md) - Manage Linear issues (list, create, update, start, view, comment, PR, delete)
-- [team](references/team.md) - Manage Linear teams (list, create, delete, members, autolinks)
-- [project](references/project.md) - Manage Linear projects (list, view, create)
-- [document](references/document.md) - Manage Linear documents (list, view, create, update, delete)
-- [api](references/api.md) - Make raw GraphQL API requests
+- [issue](references/issue.md) - 管理 Linear 项目中的问题（列出、创建、更新、开始处理、查看、评论、提交 Pull Request、删除）
+- [team](references/team.md) - 管理 Linear 团队（列出、创建、删除、查看团队成员、自动生成团队链接）
+- [project](references/project.md) - 管理 Linear 项目（列出、查看、创建）
+- [document](references/document.md) - 管理 Linear 文档（列出、查看、创建、更新、删除）
+- [api](references/api.md) - 发起原始的 GraphQL API 请求
 
-## Configuration
+## 配置
 
-The CLI supports environment variables or a `.linear.toml` config file:
+CLI 支持使用环境变量或 `.linear.toml` 配置文件进行配置：
 
-| Option | Env Var | TOML Key | Example |
+| 参数 | 环境变量 | TOML 键 | 示例 |
 |---|---|---|---|
-| Team ID | `LINEAR_TEAM_ID` | `team_id` | `"ENG"` |
-| Workspace | `LINEAR_WORKSPACE` | `workspace` | `"mycompany"` |
-| Issue sort | `LINEAR_ISSUE_SORT` | `issue_sort` | `"priority"` or `"manual"` |
-| VCS | `LINEAR_VCS` | `vcs` | `"git"` or `"jj"` |
+| 团队 ID | `LINEAR_TEAM_ID` | `team_id` | `"ENG"` |
+| 工作空间 | `LINEAR_WORKSPACE` | `workspace` | `"mycompany"` |
+| 问题排序方式 | `LINEAR_ISSUE_sort` | `issue_sort` | `"priority"` 或 `"manual"` |
+| 版本控制系统 | `LINEAR_VCS` | `vcs` | `"git"` 或 `"jj"` |
 
-Config file locations (checked in order):
-1. `./linear.toml` or `./.linear.toml` (current directory)
-2. `<repo-root>/linear.toml` or `<repo-root>/.linear.toml`
+配置文件的位置（按优先级查找）：
+1. `./linear.toml` 或 `./.linear.toml`（当前目录）
+2. `<repo-root>/linear.toml` 或 `<repo-root>/.linear.toml`
 3. `<repo-root>/.config/linear.toml`
 4. `~/.config/linear/linear.toml`

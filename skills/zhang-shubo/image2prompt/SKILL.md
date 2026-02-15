@@ -1,110 +1,108 @@
 ---
 name: image2prompt
-description: Analyze images and generate detailed prompts for image generation. Supports portrait, landscape, product, animal, illustration categories with structured or natural output.
+description: 分析图像并生成用于图像生成的详细提示。支持肖像、风景、产品、动物、插画等类别，输出形式可以是结构化的或自然的。
 homepage: https://docs.openclaw.ai/tools/image2prompt
 user-invocable: true
 metadata: {"openclaw":{"emoji":"🖼️","primaryEnv":"OPENAI_API_KEY","requires":{"anyBins":["openclaw"]}}}
 ---
 
-# Image to Prompt
+# 图像到提示（Image to Prompt）
 
-Analyze images and generate detailed, reproduction-quality prompts for AI image generation.
+该功能可分析图像，并为 AI 图像生成提供详细、高质量的提示。
 
-## Workflow
+## 工作流程
 
-**Step 1: Category Detection**
-First, classify the image into one of these categories:
-- `portrait` — People as main subject (photos, artwork, digital art)
-- `landscape` — Natural scenery, cityscapes, architecture, outdoor environments
-- `product` — Commercial product photos, merchandise
-- `animal` — Animals as main subject
-- `illustration` — Diagrams, infographics, UI mockups, technical drawings
-- `other` — Images that don't fit above categories
+**步骤 1：类别检测**
+首先，将图像分类为以下类别之一：
+- **肖像（Portrait）**：人物为主要对象（照片、艺术作品、数字艺术）
+- **风景（Landscape）**：自然风光、城市景观、建筑、户外环境
+- **产品（Product）**：商品照片
+- **动物（Animal）**：动物为主要对象
+- **插图（Illustration）**：图表、信息图、用户界面原型、技术图纸
+- **其他（Other）**：不符合上述类别的图像
 
-**Step 2: Category-Specific Analysis**
-Generate a detailed prompt based on the detected category.
+**步骤 2：针对类别的详细分析**
+根据检测到的类别生成相应的详细提示。
 
-## Usage
+## 使用方法
 
-### Basic Analysis
-
+### 基本分析
 ```bash
 # Analyze an image (auto-detect category)
 openclaw message send --image /path/to/image.jpg "Analyze this image and generate a detailed prompt for reproduction"
 ```
 
-### Specify Output Format
+### 指定输出格式
 
-**Natural Language (default):**
+- **自然语言（默认）：**
 ```
 Analyze this image and write a detailed, flowing prompt description (600-1000 words for portraits, 400-600 for others).
 ```
 
-**Structured JSON:**
+- **结构化 JSON：**
 ```
 Analyze this image and output a structured JSON description with all visual elements categorized.
 ```
 
-### With Dimensions Extraction
-
-Request dimension highlights to get tagged phrases for each visual aspect:
+### 提取图像尺寸信息
+请求提取图像的尺寸信息，以便为每个视觉元素生成标签：
 ```
 Analyze this image with dimension extraction. Tag phrases for: backgrounds, objects, characters, styles, actions, colors, moods, lighting, compositions, themes.
 ```
 
-## Category-Specific Elements
+## 各类别的详细分析内容
 
-### Portrait Analysis Covers:
-- **Model/Style**: Photography type, quality level, visual style
-- **Subject**: Gender, age, ethnicity, skin tone, body type
-- **Facial Features**: Eyes, lips, face shape, expression
-- **Hair**: Color, length, style, part
-- **Pose**: Body position, orientation, leg/hand positions, gaze
-- **Clothing**: Type, color, pattern, fit, material, style
-- **Accessories**: Jewelry, bags, hats, etc.
-- **Environment**: Location, ground, background, atmosphere
-- **Lighting**: Type, time of day, shadows, contrast, color temperature
-- **Camera**: Angle, height, shot type, lens, depth of field, perspective
-- **Technical**: Realism, post-processing, resolution
+### 肖像分析涵盖的要素：
+- **类型/风格（Model/Style）**：摄影类型、质量水平、视觉风格
+- **主体（Subject）**：性别、年龄、种族、肤色、体型
+- **面部特征（Facial Features）**：眼睛、嘴唇、脸型、表情
+- **头发（Hair）**：颜色、长度、发型、分区
+- **姿势（Pose）**：身体姿势、朝向、手臂/腿部的位置、视线方向
+- **服装（Clothing）**：类型、颜色、图案、版型、材质、风格
+- **配饰（Accessories）**：珠宝、包包、帽子等
+- **环境（Environment）**：地点、地面、背景、氛围
+- **光线（Lighting）**：类型、时间、阴影、对比度、色温
+- **相机（Camera）**：拍摄角度、高度、拍摄类型、镜头、景深、透视效果
+- **技术细节（Technical）**：图像的真实性、后期处理效果、分辨率
 
-### Landscape Analysis Covers:
-- Terrain and water features
-- Sky and atmospheric elements
-- Foreground/background composition
-- Natural lighting and atmosphere
-- Color palette and photography style
+### 风景分析涵盖的要素：
+- 地形和水体特征
+- 天空和大气元素
+- 前景/背景的构图
+- 自然光线和氛围
+- 色彩搭配和摄影风格
 
-### Product Analysis Covers:
-- Product features and materials
-- Design elements and shape
-- Staging and background
-- Studio lighting setup
-- Commercial photography style
+### 产品分析涵盖的要素：
+- 产品特征和材质
+- 设计元素和形状
+- 拍摄场景和背景
+- 摄影棚的灯光设置
+- 商业摄影风格
 
-### Animal Analysis Covers:
-- Species identification and markings
-- Pose and behavior
-- Expression and character
-- Habitat and setting
-- Wildlife/pet photography style
+### 动物分析涵盖的要素：
+- 动物种类和特征
+- 姿势和行为
+- 动物的表情和特征
+- 生境和拍摄环境
+- 野生动物/宠物的拍摄风格
 
-### Illustration Analysis Covers:
-- Diagram type (flowchart, infographic, UI, etc.)
-- Visual elements (icons, shapes, connectors)
-- Layout and hierarchy
-- Design style (flat, isometric, etc.)
-- Color scheme and meaning
+### 插图分析涵盖的要素：
+- 图表类型（流程图、信息图、用户界面等）
+- 可视元素（图标、形状、连接线）
+- 布局和层次结构
+- 设计风格（平面图、等轴测图等）
+- 色彩方案和意义
 
-## Output Examples
+## 输出示例
 
-### Natural Language Output (Portrait)
+### 自然语言输出（肖像）
 ```json
 {
   "prompt": "A stunning photorealistic portrait of a young woman in her mid-20s with fair porcelain skin and warm pink undertones. She has striking emerald green almond-shaped eyes with long dark lashes, full rose-colored lips curved in a subtle confident smile, and an oval face with high cheekbones..."
 }
 ```
 
-### Structured Output (Portrait)
+### 结构化输出（肖像）
 ```json
 {
   "structured": {
@@ -178,7 +176,7 @@ Analyze this image with dimension extraction. Tag phrases for: backgrounds, obje
 }
 ```
 
-### With Dimensions
+### 带有尺寸信息的输出
 ```json
 {
   "prompt": "...",
@@ -197,17 +195,17 @@ Analyze this image with dimension extraction. Tag phrases for: backgrounds, obje
 }
 ```
 
-## Tips for Best Results
+## 优化建议
 
-1. **High-resolution images** produce more detailed prompts
-2. **Clear, well-lit images** yield better category detection
-3. **Request structured output** when you need programmatic access to individual elements
-4. **Use dimensions extraction** when building prompt databases or training data
-5. **Specify word count expectations** for natural language output if needed
+1. **高分辨率图像** 有助于生成更详细的提示。
+2. **清晰、光线充足的图像** 有助于提高类别检测的准确性。
+3. 当需要程序化访问图像元素时，请选择结构化输出格式。
+4. 在构建提示数据库或训练数据时，可以使用尺寸提取功能。
+5. 如有需要，可指定自然语言输出的字数要求。
 
-## Integration
+## 集成方式
 
-This skill works with any vision-capable model. For best results, use:
+该功能适用于任何具有视觉处理能力的模型。为了获得最佳效果，建议使用以下模型：
 - GPT-4 Vision
 - Claude 3 (Opus/Sonnet)
 - Gemini Pro Vision

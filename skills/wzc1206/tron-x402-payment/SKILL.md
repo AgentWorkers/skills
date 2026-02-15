@@ -1,6 +1,6 @@
 ---
 name: tron-x402-payment
-description: "Pay for x402-enabled Agent endpoints using TRC20 tokens (USDT/USDD) on TRON"
+description: "使用 TRON 上的 TRC20 代币（USDT/USDD）为启用了 x402 功能的代理端点支付费用。"
 version: 1.1.0
 author: open-aibank
 homepage: https://x402.org
@@ -20,138 +20,123 @@ arguments:
     required: false
 ---
 
-# x402 Payment Protocol for TRON Agents
+# TRON代理的x402支付协议
 
-Invoke x402-enabled AI agent endpoints with automatic TRC20 token payments on TRON.
-Currently recommended tokens: **USDT**, **USDD**.
+使用支持x402协议的AI代理端点进行调用，并自动进行TRC20代币支付。  
+目前推荐的代币为：**USDT** 和 **USDD**。
 
-## Quick Start
+## 快速入门  
 
-The tool `x402_tron_invoke` is implemented by the compiled script `dist/x402_tron_invoke.js`.
-
-The script is pre-built and ready to run. You can execute it directly from the command line:
-
+`x402_tron_invoke` 工具由编译后的脚本 `dist/x402_tron_invoke.js` 实现。  
+该脚本已预先构建完毕，可以直接从命令行执行：  
 ```bash
 # v2 Invoke
 node dist/x402_tron_invoke.js --url https://api.example.com --entrypoint chat --input '{"prompt": "hi"}'
 
 # Direct/Discovery
 node dist/x402_tron_invoke.js --url https://api.example.com/.well-known/agent.json
-```
+```  
 
 ---
 
-## How It Works
+## 工作原理  
 
-The `x402_tron_invoke` tool:
+`x402_tron_invoke` 工具的操作步骤如下：  
+1. 构建端点URL：  
+   - 如果提供了 `entrypoint`，则使用 `{url}/entrypoints/{entrypoint}/invoke`（版本2）；  
+   - 否则，直接使用 `{url}`（版本1/发现模式）。  
+2. 发送请求（版本2使用POST方法，版本1默认使用GET方法）。  
+3. 如果收到“402 Payment Required”的响应：  
+   - 解析支付要求；  
+   - 检查钱包余额和权限；  
+   - 如果权限不足，执行**无限次批准**操作；  
+   - 签署支付许可（EIP-712 / TRON类型化数据）；  
+   - 重新发送请求，并添加 `X-PAYMENT` 标头。  
+4. 返回响应。  
 
-1. Constructs the endpoint URL:
-   - If `entrypoint` is provided: `{url}/entrypoints/{entrypoint}/invoke` (v2)
-   - Otherwise: Uses `{url}` as-is (v1 / Discovery)
-2. Makes a request (POST for v2, GET default for v1)
-3. If 402 Payment Required is returned:
-    - Parses payment requirements
-    - Checks wallet balance and allowance
-    - Performs an **infinite approval** if allowance is insufficient
-    - Signs the payment permit (EIP-712 / TRON Typed Data)
-    - Retries the request with `X-PAYMENT` header
-4. Returns the response
-
-## Prerequisites
-
-- **Wallet**: A TRON private key must be available. The skill automatically looks for it in:
-  1. `TRON_PRIVATE_KEY` environment variable.
-  2. `~/.mcporter/mcporter.json` (AIBank standard).
-  3. `x402-config.json` in the current/home directory.
-- **Tokens**: Wallet needs USDT/USDD and some TRX for gas.
-- **TronGrid API Key**: Required for **Mainnet** to avoid rate limits (`TRON_GRID_API_KEY`).
+## 先决条件：  
+- **钱包**：必须拥有TRON私钥。该工具会从以下位置自动查找私钥：  
+  1. `TRON_PRIVATE_KEY` 环境变量；  
+  2. `~/.mcporter/mcporter.json`（AIBank标准格式）；  
+  3. 当前目录下的 `x402-config.json` 文件。  
+- **代币**：钱包中需要包含USDT/USDD代币以及用于支付gas的TRX代币。  
+- **TronGrid API密钥**：在主网环境中使用此密钥以避免速率限制（`TRON_GRID_API_KEY`）。  
 
 ---
 
-## Tool Reference
+## 工具参考  
 
-### x402_tron_invoke
+### `x402_tron_invoke`  
+该工具用于调用HTTP端点，并自动处理支付流程。  
 
-Invokes an HTTP endpoint with automatic payment handling.
+**模式：**  
+1. **v2代理调用**（推荐）：提供 `url`（基础URL）和 `entrypoint`：  
+   - 构建URL：`{url}/entrypoints/{entrypoint}/invoke`  
+   - 将输入数据包装为 `{"input": <input>}`  
+   - 使用POST方法。  
+2. **v1/直接/发现模式**：直接提供 `url`（完整URL），不指定 `entrypoint`：  
+   - 使用URL本身；  
+   - 使用GET方法（默认）或通过 `method` 参数指定其他方法；  
+   - **建议**：此模式用于发现可用代理。如果 `url` 返回404错误，可以尝试在URL后添加 `/.well-known/agent.json` 或 `/entrypoints`。  
+3. **状态检查**：提供 `--check` 或 `--status` 参数：  
+   - 验证 `TRON_PRIVATE_KEY` 的配置是否正确，并输出对应的钱包地址；  
+   - 检查 `TRON_GRID_API_KEY` 是否存在（主网环境必备）。  
 
-**Modes:**
-1.  **v2 Agent Invoke** (Recommended): Provide `url` (Base URL) + `entrypoint`.
-    *   Constructs: `{url}/entrypoints/{entrypoint}/invoke`
-    *   Wraps input: `{"input": <input>}`
-    *   Method: `POST`
-2.  **v1 / Direct / Discovery**: Provide `url` (Full URL) without `entrypoint`.
-    *   Uses the URL as-is.
-    *   Method: `GET` (default) or specified via `method`.
-    *   **Agent Advice**: Use this mode for discovery. If `url` returns 404, try appending `/.well-known/agent.json` or `/entrypoints`.
-3.  **Status Check**: Provide `--check` or `--status`.
-    *   Verifies if `TRON_PRIVATE_KEY` is correctly configured and outputs the associated wallet address.
-    *   Checks if `TRON_GRID_API_KEY` is present (Required for Mainnet).
-    *   **Agent Advice**: ALWAYS use this instead of `env` or `echo $TRON_PRIVATE_KEY`.
+| 参数 | 类型 | 是否必填 | 说明 |  
+|---------|------|---------|-----------------|  
+| `url` | string | 是* | 基础URL（版本2）或完整URL（版本1/发现模式）；**--check` 选项除外**。  
+| `entrypoint` | string | 否 | 代理端点名称（版本2调用必需）。  
+| `input` | object | 否 | 输入数据。  
+| `method` | string | 否 | HTTP方法（默认为POST，版本2）；版本1为GET。  
+| `network` | string | 否 | 网络类型（`mainnet`、`nile`、`shasta`，默认为`nile`）。  
+| `check` | boolean | 否 | 验证钱包配置并输出地址。 |  
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `url` | string | Yes* | Base URL (v2) or Full URL (v1/Discovery). *Not required for `--check`. |
-| `entrypoint` | string | No | Entrypoint name. Required for v2 Invoke. |
-| `input` | object | No | Input data. |
-| `method` | string | No | HTTP method. Default: `POST` (v2), `GET` (Direct). |
-| `network` | string | No | `mainnet`, `nile`, `shasta` (Default: `nile`). |
-| `check` | boolean | No | Verify wallet configuration and output address. |
-
-### Example: Chat with Agent (v2 Invoke)
-
+### 示例：与代理通信（v2调用）  
 ```bash
 node dist/x402_tron_invoke.js --url https://api.example.com --entrypoint chat --input '{"prompt": "Tell me a joke"}'
-```
-*(Sends `POST https://api.example.com/entrypoints/chat/invoke`)*
+```  
+（示例代码：发送 `POST https://api.example.com/entrypoints/chat/invoke` 请求）  
 
-### Example: Agent Discovery (Direct)
-
-1. **Manifest**: Fetch agent metadata.
+### 代理发现（直接模式）  
+1. **获取代理元数据**：  
    ```bash
    node dist/x402_tron_invoke.js --url https://api.example.com/.well-known/agent.json
-   ```
-
-2. **List Entrypoints**: List available functions.
+   ```  
+2. **列出可用代理端点**：  
    ```bash
    node dist/x402_tron_invoke.js --url https://api.example.com/entrypoints
-   ```
-   Each entrypoint typically returns:
-   - **Path**: `/entrypoints/{name}/invoke`
-   - **Pricing**: Cost in tokens (e.g., 1000 units)
-   - **Network**: Usually `nile` or `mainnet`
-   - **Input Schema**: Expected JSON format for the `input` parameter
+   ```  
+   每个代理端点通常会返回以下信息：  
+   - **路径**：`/entrypoints/{name}/invoke`  
+   - **费用**：以代币计价的费用（例如：1000单位）  
+   - **网络**：`nile` 或 `mainnet`  
+   - **输入格式**：`input` 参数的预期JSON格式  
 
-### Example: Raw URL (Legacy)
-
+### 旧版URL格式  
 ```bash
 node dist/x402_tron_invoke.js --url https://api.example.com/chat --method POST --input '{"prompt": "Tell me a joke"}'
-```
+```  
 
 ---
 
-## Cost Reference (USDT/USDD)
-
-| Token | Network | Contract Address | Decimals |
-|-------|---------|------------------|----------|
-| USDT  | Mainnet | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | 6 |
-| USDT  | Nile    | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | 6 |
-| USDT  | Shasta  | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` | 6 |
-| USDD  | Mainnet | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` | 18 |
-| USDD  | Nile    | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` | 18 |
-
-| Amount (raw) | Value (USDT, 6 dec) | Typical Use |
-|--------------|---------------------|-------------|
-| 1000 | $0.001 | Single API call |
-| 5000 | $0.005 | Multiple results |
-| 10000 | $0.01 | Premium request |
-| 1000000 | $1.00 | Large batch |
+## 费用参考（USDT/USDD）  
+| 代币 | 网络 | 合同地址 | 小数位数 |  
+|-------|---------|------------------|----------|  
+| USDT | 主网 | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | 6 |  
+| USDT | Nile | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | 6 |  
+| USDT | Shasta | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` | 6 |  
+| USDD | 主网 | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` | 18 |  
+| USDD | Nile | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` | 18 |  
+| **费用（USDT）** | **单位** | **典型用途** |  
+| 1000 | 0.001美元 | 单次API调用 |  
+| 5000 | 0.005美元 | 多次请求 |  
+| 10000 | 0.01美元 | 高级请求 |  
+| 1000000 | 1.00美元 | 大批量请求 |  
 
 ---
 
-## Understanding 402 Responses
-
-When payment is required, agents return:
-
+## 理解402响应  
+当系统要求支付时，代理会返回相应的响应。  
 ```json
 {
   "error": "X-PAYMENT header is required",
@@ -164,69 +149,58 @@ When payment is required, agents return:
   }],
   "x402Version": 1
 }
-```
-
-The tool handles this automatically.
-
----
-
-## Supported Tokens
-
-This tool supports TRC20 tokens compatible with the x402 protocol.
-**Recommended:**
-- **USDT** (Tether)
-- **USDD** (Decentralized USD)
-
-## Security Rules for Agents
-
-- **No Private Key Output**: The Agent MUST NOT print, echo, or output the `TRON_PRIVATE_KEY` or any other signing secret to the dialogue context.
-- **Internal Loading Only**: The Agent should rely on the skill or underlying scripts to load the key internally.
-- **No Export Commands**: The Agent MUST NOT execute shell commands that contain the private key as a literal string.
-- **Sanitized Logs**: Ensure that logs or error messages do not leak the key.
-- **Silent Environment Checks**: If you need to verify if an environment variable is set, use a "Silent Check".
-    - **Correct**: `[[ -n $TRON_PRIVATE_KEY ]] && echo "Configured" || echo "Missing"`
-    - **Forbidden**: `echo $TRON_PRIVATE_KEY`, `env`, `printenv`, `set`, `export`.
-- **Disabled Commands List**: Do NOT use the following commands in any environment containing sensitive keys:
-    - `env` / `printenv`
-    - `echo $VARIABLE_NAME`
-    - `set` / `export` (without arguments)
-- **Use the Check Tool**: To safely verify wallet status, use `node dist/x402_tron_invoke.js --check`.
-
-### ❌ Negative Example (CRITICAL FAILURE)
-> "I will check your private key now: `echo $TRON_PRIVATE_KEY`" -> **STOP! This leaks the secret to the logs and UI.**
-
-### ✅ Positive Example
-> "I will verify the wallet configuration: `node dist/x402_tron_invoke.js --check`" -> **SAFE. Only the public address is shown.**
-
-## Troubleshooting
-
-### "Private key not found"
-Ensure the `TRON_PRIVATE_KEY` environment variable is set or a valid `x402-config.json` exists in the expected locations. 
-
-### "Insufficient Allowance"
-The tool will attempt to broadcast an **infinite approve** transaction. This requires TRX for gas. Ensure your wallet has TRX.
-
-### "Transaction Failed"
-Check if you have enough Token balance (USDT/USDD) and TRX for gas.
+```  
+该工具会自动处理这些响应。  
 
 ---
 
-## Binary and Image Handling
+## 支持的代币  
+该工具支持符合x402协议的TRC20代币。  
+**推荐使用**：  
+- **USDT**（Tether）  
+- **USDD**（去中心化美元）  
 
-If the endpoint returns an image (Content-Type: `image/*`) or binary data (`application/octet-stream`):
-1. The data is automatically saved to a temporary file (e.g., `/tmp/x402_image_...`).
-2. The tool returns a JSON object with:
-    - `file_path`: Path to the temporary file.
-    - `content_type`: The MIME type of the content.
-    - `bytes`: File size in bytes.
-3. **Important**: The Agent is responsible for deleting the temporary file after it has been used.
+## 代理的安全规则：  
+- **禁止输出私钥**：代理严禁在日志或用户界面中显示`TRON_PRIVATE_KEY`或其他签名密钥。  
+- **仅内部加载**：代理应通过内部脚本加载私钥。  
+- **禁止执行相关命令**：代理严禁执行包含私钥的shell命令。  
+- **日志安全**：确保日志或错误信息不会泄露私钥。  
+- **静默检查**：若需验证环境变量是否设置，使用以下格式：  
+  - **正确方式**：`[[ -n $TRON_PRIVATE_KEY ]] && echo "配置成功" || echo "配置缺失"`  
+  - **禁止方式**：`echo $TRON_PRIVATE_KEY`、`env`、`printenv`、`set`、`export`。  
+- **禁止使用的命令**：在包含敏感密钥的环境中，严禁使用以下命令：  
+  - `env` / `printenv`  
+  - `echo $VARIABLE_NAME`  
+  - `set` / `export`（无参数使用时）  
+- **使用检查工具**：使用 `node dist/x402_tron_invoke.js --check` 安全地验证钱包状态。  
+
+### ❌ 错误示例（严重风险）  
+> “现在我将显示您的私钥：`echo $TRON_PRIVATE_KEY`” → **禁止！这会导致私钥泄露！**  
+
+### ✅ 正确示例  
+> “我将验证钱包配置：`node dist/x402_tron_invoke.js --check`” → **安全。仅显示钱包地址。**  
+
+## 故障排除：  
+- **“未找到私钥”**：确保`TRON_PRIVATE_KEY`环境变量已设置，且`x402-config.json`文件存在于指定位置。  
+- **权限不足**：工具会尝试执行无限次批准操作（需要TRX作为gas）。请确保钱包中有足够的TRX。  
+- **交易失败**：检查钱包中的USDT/USDD余额及TRX数量是否足够。  
 
 ---
 
-## Network Reference
+## 二进制数据与图片处理  
+如果端点返回图片（`Content-Type: image/*`）或二进制数据（`application/octet-stream`）：  
+1. 数据会自动保存到临时文件（例如：`/tmp/x402_image_...`）。  
+2. 工具会返回一个JSON对象，包含：  
+  - `file_path`：临时文件的路径。  
+  - `content_type`：内容的MIME类型。  
+  - `bytes`：文件大小（以字节为单位）。  
+3. **注意**：代理负责在数据使用后删除临时文件。  
 
-| Network | Chain ID | CAIP-2 | USDT Contract | USDD Contract |
-|---------|----------|--------|---------------|---------------|
-| TRON Mainnet | 0x2b6653dc | `eip155:728126428`, `tron:mainnet` | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` |
-| TRON Nile | 0xcd8690dc | `eip155:3448148188`, `tron:nile` | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` |
-| TRON Shasta | 0x94a9059e | `eip155:2494104990`, `tron:shasta` | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` | - |
+---
+
+## 网络信息  
+| 网络 | 链路ID | CAIP-2 | USDT合约地址 | USDD合约地址 |  
+|---------|----------|--------|---------------|---------------|  
+| TRON主网 | 0x2b6653dc | `eip155:728126428`, `tron:mainnet` | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` |  
+| TRON Nile | 0xcd8690dc | `eip155:3448148188`, `tron:nile` | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` |  
+| TRON Shasta | 0x94a9059e | `eip155:2494104990`, `tron:shasta` | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` |

@@ -9,33 +9,30 @@ description: >
   AI agents.
 ---
 
-# Describe Design
+# 设计描述
 
-Research a codebase and produce an architectural document describing how features or
-systems work. The output is a markdown file organized for both human readers and
-future AI agents.
+研究代码库，并生成一份架构文档，说明各个功能或系统的工作原理。该文档采用Markdown格式编写，既适合人类读者阅读，也便于未来的AI代理理解。
 
-## Workflow
+## 工作流程
 
-### Stage 1: Scope Definition
+### 第1阶段：范围定义
 
-Understand what to document before exploring:
+在开始详细探索之前，先明确需要记录的内容：
 
-1. Ask what feature, system, or component to document.
-2. Clarify the target audience (developers, AI agents, or both).
-3. Confirm the codebase location if not obvious from context.
+1. 询问需要记录的功能、系统或组件是什么。
+2. 明确目标受众（开发者、AI代理，或两者皆是）。
+3. 如果从上下文中无法确定代码库的位置，请确认其具体位置。
 
-### Stage 2: Initial Exploration
+### 第2阶段：初步探索
 
-Explore the codebase broadly to build a mental model. Use lightweight, fast exploration
-methods when available (in Claude Code, for example, use a Haiku Explore subagent):
+全面浏览代码库，建立对其结构的初步理解。可以使用高效的探索工具（例如，在Claude Code中可以使用Haiku Explore子代理）：
 
-1. Scan directory structure and identify key entry points.
-2. Read README, config files, and existing documentation.
-3. Identify the main files and modules related to the feature.
-4. Build a mental model of codebase organization.
+1. 扫描目录结构，找出主要的入口点。
+2. 阅读README文件、配置文件以及现有的文档。
+3. 确定与所需功能相关的主要文件和模块。
+4. 在脑海中构建代码库的整体结构。
 
-Present a high-level outline to the user:
+向用户展示一个高层次的文档大纲：
 
 ```
 ## Proposed Outline
@@ -48,63 +45,53 @@ Present a high-level outline to the user:
 * Otherwise, please let me know what I've misunderstood.
 ```
 
-When the user confirms the scope, move on to deep research.
+当用户确认了文档范围后，即可进入深入研究阶段。
 
-### Stage 3: Deep Research
+### 第3阶段：深入研究
 
-For each component in the approved outline:
+对于大纲中列出的每个组件，执行以下操作：
 
-1. Trace code paths from entry points.
-2. Identify dependencies and interactions between components.
-3. Note configuration options and where they're defined.
-4. Find where data is stored or persisted.
-5. Build a code reference index (file paths + key function/class names).
+1. 从入口点开始追踪代码的执行路径。
+2. 识别组件之间的依赖关系和交互方式。
+3. 记录配置选项及其定义位置。
+4. 查明数据的存储或持久化方式。
+5. 编制一个代码参考索引（包括文件路径和关键函数/类名）。
 
-Try to rely on the initial code exploration for much of this information. Read
-additional files as needed. If the scope changed considerably in Stage 2, you
-can engage a second code exploration subagent.
+尽量利用初步的代码探索结果来获取大部分信息；如有需要，再阅读相关文件。如果在第2阶段文档范围发生了较大变化，可以重新使用代码探索工具。
 
-#### When to Stop Exploring
+#### 何时停止探索
 
-**You're ready to draft when you can:**
+**当满足以下条件时，可以开始起草文档：**
 
-- **Trace the happy path** — Follow a typical request/action from entry point to
-  completion without gaps.
-- **Name the boundaries** — Clearly state what's in scope and what's external.
-- **Draw the diagram** — Sketch the architecture without placeholder boxes.
-- **Answer "what talks to what?"** — For each component, you know its inputs and outputs.
+- **能够完整追踪代码执行流程**：能够从入口点开始，不遗漏任何步骤地追踪整个请求/操作的执行过程。
+- **明确文档范围**：清楚界定哪些内容属于文档范围，哪些属于外部依赖。
+- **完成架构图绘制**：能够绘制出组件之间的连接关系。
+- **理解组件间的交互**：对于每个组件，都能明确其输入和输出。
 
-**Signs you're not done:**
+**表示尚未完成的情况：**
 
-- Uncertainty: "I think this connects to..." or "probably calls..."
-- Unresolved references: Found imports/calls to modules you haven't examined.
-- Missing edges: Can't explain how data gets from component A to B.
+- 存在不确定性：“我认为这个组件与……有关联”或“可能调用了……”。
+- 有未解决的引用：发现了尚未检查的模块导入或调用。
+- 缺少信息：无法解释数据是如何在组件A和组件B之间传递的。
 
-**Signs you've gone too far:**
+**表示探索过度的情况：**
 
-- Reading every file in a directory instead of representative samples.
-- Tracing into external libraries or framework internals.
-- Exploring implementation details that don't affect architecture.
+- 阅读了目录中的所有文件，而不仅仅是代表性样本。
+- 进入了外部库或框架的内部实现细节。
+- 探索了与架构无关的实现细节。
 
-### Stage 4: Document Draft
+### 第4阶段：文档起草
 
-Generate the document following the template below. Present the draft to the user
-for review and iterate based on feedback. If available, use the AskUserQuestion
-tool to request user input on key decisions.
+根据以下模板生成文档，并将草稿呈现给用户审阅，根据反馈进行修改。如果条件允许，可以使用AskUserQuestion工具征求用户对关键决策的意见。
 
-### Stage 5: Finalize
+### 第5阶段：最终定稿
 
-1. **Confirm the file location before writing.** You may propose a path based on repository
-   conventions (e.g., `docs/architecture/`, `ARCHITECTURE.md`), but NEVER write the file
-   without explicit user confirmation of the location. If the user provided a path upfront,
-   that counts as confirmation.
-2. Write the final document to the confirmed location.
+1. **在编写文档前确认文件存放位置**。可以根据仓库的规范建议文件路径（例如`docs/architecture/`、`ARCHITECTURE.md`），但在用户明确确认位置之前，切勿直接编写文件。如果用户事先提供了文件路径，即视为确认。
+2. 将最终文档写入确认的位置。
 
-## Document Template
+## 文档模板
 
-The following template provides a starting point. Adapt it to fit the feature being
-documented — omit sections that don't apply, add sections for unique aspects, and
-adjust the structure to best serve the target audience.
+以下模板提供了一个基本的框架。根据需要记录的功能进行调整：省略不适用的部分，添加特定于该功能的章节，并调整结构以更好地满足目标受众的需求。
 
 ````markdown
 # [Feature/System Name] Architecture
@@ -117,8 +104,8 @@ adjust the structure to best serve the target audience.
 
 ```mermaid
 flowchart TD
-    A[Entry Point] --> B[Component]
-    B --> C[Data Store]
+    A[入口点] --> B[组件]
+    B --> C[数据存储]
 ```
 
 ## Components
@@ -160,52 +147,37 @@ environment variables.]
 | [Term] | [Project-specific definition] |
 ````
 
-## Code Reference Conventions
+## 代码引用规范
 
-Use stable references that survive refactoring:
+使用在重构后仍保持有效的引用格式：
 
-- **Paths**: Use relative paths from repository root (`src/auth/login.ts`)
-- **Symbols**: Reference function and class names, not line numbers
-- **Format**: `path/to/file.ext` with key symbols listed separately
-- **Anchors**: Use search patterns when helpful (`handleAuth function in auth/`)
+- **路径**：使用从仓库根目录开始的相对路径（例如`src/auth/login.ts`）。
+- **符号**：引用函数和类名，而非行号。
+- **格式**：使用`path/to/file.ext`的格式，并单独列出关键符号。
+- **锚点**：在需要时使用搜索模式（例如`handleAuth function in auth/`）。
 
-Avoid:
+**注意事项：**
 
-- **Copying code**: Never paste code into the document. Code goes stale immediately;
-  the document should be a guide that points readers to the source. Describe what
-  code does, then reference where to find it.
-- **Line numbers**: They change with every edit.
-- **Absolute paths**: Use repository-relative paths only.
+- **避免复制代码**：切勿将代码直接粘贴到文档中。代码会随时间更新；文档应作为指引，引导读者找到原始代码。只需描述代码的功能和位置即可。
+- **避免使用行号**：行号会随代码修改而变化。
+- **使用相对路径**：始终使用仓库内的相对路径。
 
-## Mermaid Diagrams
+## Mermaid图表
 
-Use Mermaid for architecture visualizations:
+使用Mermaid工具进行架构可视化：
 
-**Flowcharts** for component relationships:
-```mermaid
-flowchart TD
-    A[Client] --> B[API Gateway]
-    B --> C[Service]
-    C --> D[(Database)]
-```
+- **流程图**：用于展示组件之间的关系。
+- **序列图**：用于展示请求的处理流程。
 
-**Sequence diagrams** for request flows:
-```mermaid
-sequenceDiagram
-    Client->>API: Request
-    API->>Service: Process
-    Service-->>API: Response
-    API-->>Client: Result
-```
+**注意事项：**
 
-Keep diagrams focused on the specific feature being documented. Avoid overcrowding
-with unrelated components.
+- 图表应仅关注正在记录的具体功能，避免包含无关的组件。
+- 保持图表简洁，避免信息过于复杂。
 
-## Writing Guidelines
+## 编写指南
 
-- **Describe, never copy**: Explain what code does and where to find it. Readers who
-  need implementation details will read the actual source — which is always current.
-- **Structure for scanning**: Use headers, tables, and lists for quick navigation.
-- **Be specific**: Include actual file paths, function names, and config keys.
-- **Serve two audiences**: Write clearly for humans; use consistent structure for AI.
-- **Stay current**: Note any assumptions about code state or version.
+- **描述而非复制**：解释代码的功能及其位置。需要了解实现细节的读者可以直接阅读源代码（源代码始终是最新的）。
+- **便于阅读**：使用标题、表格和列表来帮助读者快速查找信息。
+- **提供详细信息**：包括实际的文件路径、函数名和配置参数。
+- **兼顾两种受众**：为人类读者提供清晰易懂的描述；同时为AI代理提供结构化的文档。
+- **保持信息时效性**：注明对代码状态或版本的任何假设。

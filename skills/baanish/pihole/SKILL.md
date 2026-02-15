@@ -1,10 +1,10 @@
-# Pi-hole Skill
+# Pi-hole 技能
 
-Control your Pi-hole DNS ad blocker via the Pi-hole v6 API.
+通过 Pi-hole v6 API 来控制您的 Pi-hole DNS 广告拦截器。
 
-## Setup
+## 设置
 
-Set your Pi-hole API configuration in Clawdbot config:
+在 Clawdbot 的配置文件中设置 Pi-hole 的 API 配置：
 
 ```yaml
 skills:
@@ -15,37 +15,38 @@ skills:
       insecure: false                          # Set to true for self-signed certs
 ```
 
-Alternatively, set environment variables:
+或者，您也可以通过设置环境变量来配置：
+
 ```bash
 export PIHOLE_API_URL="https://pi-hole.local/api"
 export PIHOLE_API_TOKEN="your-app-password-here"
 export PIHOLE_INSECURE="false"
 ```
 
-### Getting API Credentials
+### 获取 API 凭据
 
-1. Open Pi-hole Admin at `http://pi-hole.local/admin`
-2. Navigate to **Settings** > **API**
-3. Generate an app password
-4. Use that password as `apiToken`
+1. 打开 Pi-hole 的管理界面：`http://pi-hole.local/admin`
+2. 转到 **设置** > **API**
+3. 生成一个应用密码
+4. 将该密码用作 `apiToken`
 
-## Capabilities
+## 功能
 
-### Status
-- Get current Pi-hole status (enabled/disabled)
-- View stats: queries blocked, queries today, domains being blocked, active clients
-- See recent query activity
+### 状态
+- 获取 Pi-hole 的当前状态（启用/禁用）
+- 查看统计信息：被拦截的请求数量、今日的请求数量、被拦截的域名、活跃的客户端数量
+- 查看最近的请求活动
 
-### Controls
-- **Enable/Disable**: Turn Pi-hole on or off
-- **Disable for 5 minutes**: Temporarily disable ad blocking for a short period
-- **Disable for custom duration**: Set specific disable time (in minutes)
+### 控制功能
+- **启用/禁用**：开启或关闭 Pi-hole
+- **禁用 5 分钟**：暂时禁用广告拦截功能
+- **自定义禁用时长**：设置特定的禁用时间（以分钟为单位）
 
-### Block Analysis
-- **Check blocked domains**: See what domains were blocked in a time window
-- **Show top blocked**: Most frequently blocked domains
+### 块拦截分析
+- **查看被拦截的域名**：查看在指定时间范围内被拦截的域名
+- **显示最常被拦截的域名**：查看最常被拦截的域名
 
-## Usage Examples
+## 使用示例
 
 ```
 # Check Pi-hole status
@@ -73,9 +74,9 @@ export PIHOLE_INSECURE="false"
 "pihole stats"
 ```
 
-## API Endpoints (Pi-hole v6)
+## API 端点（Pi-hole v6）
 
-### Authentication
+### 认证
 ```
 POST /api/auth
 Content-Type: application/json
@@ -90,7 +91,7 @@ Response:
 }
 ```
 
-### Status
+### 状态
 ```
 GET /api/dns/blocking
 Headers: sid: <session-token>
@@ -102,7 +103,7 @@ Response:
 }
 ```
 
-### Enable/Disable
+### 启用/禁用
 ```
 POST /api/dns/blocking
 Headers: sid: <session-token>
@@ -118,7 +119,7 @@ Disable with timer (seconds):
 {"blocking":false,"timer":300}
 ```
 
-### Stats
+### 统计信息
 ```
 GET /api/stats/summary
 Headers: sid: <session-token>
@@ -139,7 +140,7 @@ Response:
 }
 ```
 
-### Queries
+### 请求信息
 ```
 GET /api/queries?start=-<seconds>
 Headers: sid: <session-token>
@@ -157,24 +158,24 @@ Response:
 }
 ```
 
-## v5 vs v6 API Changes
+## v5 与 v6 API 的变化
 
-Pi-hole v6 introduced significant API changes:
+Pi-hole v6 引入了一些重要的 API 变更：
 
-| Feature | v5 API | v6 API |
+| 功能 | v5 API | v6 API |
 |---------|----------|----------|
-| Base URL | `/admin/api.php` | `/api` |
-| Auth | Token in URL/headers | Session-based |
-| Status | `?status` | `/api/dns/blocking` |
-| Stats | `?summaryRaw` | `/api/stats/summary` |
-| Queries | `?recentBlocked` | `/api/queries` |
-| Whitelist | Supported via API | **Not available via API** |
+| 基本 URL | `/admin/api.php` | `/api` |
+| 认证方式 | URL/头部中的令牌 | 基于会话的认证 |
+| 状态查询 | `?status` | `/api/dns/blocking` |
+| 统计信息 | `?summaryRaw` | `/api/stats/summary` |
+| 请求信息 | `?recentBlocked` | `/api/queries` |
+| 白名单 | 可通过 API 设置 | **v6 API 不支持** |
 
-**Important:** Domain whitelisting is no longer available via the v6 API. You must whitelist domains through the Pi-hole Admin UI.
+**重要提示：** v6 API 不再支持域名白名单功能。您必须通过 Pi-hole 的管理界面来设置域名白名单。
 
-## SSL Certificates
+## SSL 证书
 
-### Production (Valid Cert)
+### 生产环境（有效证书）
 ```yaml
 {
   "apiUrl": "https://pi-hole.example.com/api",
@@ -183,7 +184,7 @@ Pi-hole v6 introduced significant API changes:
 }
 ```
 
-### Self-Signed/Local Cert
+### 自签名/本地证书
 ```yaml
 {
   "apiUrl": "https://pi-hole.local/api",
@@ -192,35 +193,35 @@ Pi-hole v6 introduced significant API changes:
 }
 ```
 
-The `insecure` flag adds the `-k` option to curl to bypass certificate validation.
+在 `curl` 命令中添加 `--insecure` 选项可以绕过证书验证。
 
-## Security Notes
+## 安全注意事项
 
-- Session tokens expire after 30 minutes (1800 seconds)
-- API password is sent in JSON body, not URL
-- All requests have a 30-second timeout
-- Token is not visible in process list (passed via environment)
+- 会话令牌在 30 分钟（1800 秒）后失效
+- API 密码以 JSON 格式在请求体中发送，而不是通过 URL 传递
+- 所有请求都有 30 秒的超时限制
+- 令牌不会显示在进程列表中（通过环境变量传递）
 
-## Troubleshooting
+## 故障排除
 
-### "Failed to authenticate"
-- Check that `apiToken` matches your Pi-hole app password
-- Verify `apiUrl` is correct (must end in `/api`)
-- Ensure Pi-hole is accessible from your network
+### “无法认证”
+- 确认 `apiToken` 与您的 Pi-hole 应用密码一致
+- 检查 `apiUrl` 是否正确（必须以 `/api` 结尾）
+- 确保可以从您的网络访问 Pi-hole
 
-### "Could not determine status"
-- Check API URL is reachable
-- If using HTTPS with self-signed cert, set `insecure: true`
-- Verify API password is correct
+### “无法确定状态”
+- 检查 API URL 是否可访问
+- 如果使用自签名证书，请设置 `insecure: true`
+- 确认 API 密码正确
 
-### Network Errors
-- Ensure clawdbot's machine can reach the Pi-hole
-- Check firewall rules allow API access
-- Verify URL scheme (http vs https)
+### 网络问题
+- 确保 Clawdbot 可以访问 Pi-hole
+- 检查防火墙规则是否允许 API 访问
+- 确认 URL 协议（http 或 https）
 
-## Requirements
+## 其他要求
 
-- Pi-hole v6 or later
-- App password generated in Pi-hole Admin
-- Network access to Pi-hole API
-- `curl`, `jq` (installed on most Unix systems)
+- 需要使用 Pi-hole v6 或更高版本
+- 在 Pi-hole 管理界面生成应用密码
+- 确保可以从网络访问 Pi-hole 的 API
+- 需要安装 `curl` 和 `jq`（大多数 Unix 系统都已安装）

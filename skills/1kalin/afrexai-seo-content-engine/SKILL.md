@@ -1,6 +1,6 @@
 ---
 name: afrexai-seo-content-engine
-description: Complete SEO content creation system for AI agents. Research keywords, analyze competitors, write optimized articles, and track rankings — all through natural conversation. No APIs required.
+description: 这是一个专为AI代理设计的完整SEO内容创作系统。该系统能够通过自然对话的方式帮助用户研究关键词、分析竞争对手、撰写优化过的文章，并跟踪文章的排名情况。整个过程无需使用任何API。
 metadata:
   openclaw:
     version: "1.0.0"
@@ -10,39 +10,38 @@ metadata:
     category: "marketing"
 ---
 
-# SEO Content Engine
+# SEO内容引擎
 
-Turn your AI agent into a full SEO content team. Research → Plan → Write → Optimize → Publish — all in natural language.
+将您的人工智能代理转变为一个完整的SEO内容团队。从研究到规划、写作、优化再到发布——所有步骤都通过自然语言完成。
 
-No APIs. No subscriptions. Just smart agent workflows using web search and structured frameworks.
+无需API，也无需订阅。只需利用网络搜索和结构化框架，就能实现智能的工作流程。
 
 ---
 
-## 1. Keyword Research Framework
+## 1. 关键词研究框架
 
-### Seed Expansion
-When given a topic, expand it systematically:
+### 关键词扩展
+给定一个主题时，系统地对其进行扩展：
 
-1. **Core keyword**: The main term (e.g., "project management software")
-2. **Long-tail variants**: Add modifiers — best, top, free, for [audience], vs, alternative, review, how to, guide
-3. **Question keywords**: How/What/Why/When/Where + core keyword
-4. **Problem keywords**: What pain does this solve? ("team missing deadlines", "project overruns")
-5. **Comparison keywords**: "[Product A] vs [Product B]", "[Product] alternatives"
+1. **核心关键词**：主要术语（例如：“项目管理软件”）
+2. **长尾关键词变体**：添加修饰词——如“最佳”、“顶级”、“免费”、“适用于[目标受众]”、“对比”、“替代方案”、“如何使用”、“指南”等
+3. **问题关键词**：如何/什么/为什么/何时/在哪里 + 核心关键词
+4. **问题导向关键词**：该内容能解决什么问题？（例如：“团队错过截止日期”、“项目超期”
+5. **对比关键词**：“[产品A] vs [产品B]”、“[产品]的替代品”
 
-### Search Intent Classification
+### 搜索意图分类
+对每个关键词进行意图分类：
 
-For each keyword, classify intent:
-
-| Intent | Signal Words | Content Type |
+| 意图 | 信号词 | 内容类型 |
 |--------|-------------|--------------|
-| **Informational** | how to, what is, guide, tutorial, why | How-to guide, explainer, tutorial |
-| **Commercial** | best, top, review, comparison, vs | Listicle, comparison, review |
-| **Transactional** | buy, pricing, discount, free trial, download | Product page, landing page |
-| **Navigational** | [brand name], login, support, docs | Brand page (skip — low value) |
+| **信息型** | 如何使用、什么是、指南、教程、为什么 | 教程、解释性文章 |
+| **商业型** | 最佳、顶级、评测、对比 | 列表文章、对比文章、评测 |
+| **交易型** | 购买、价格、折扣、免费试用、下载 | 产品页面、登录页面 |
+| **导航型** | [品牌名称]、登录、支持、文档 | 品牌页面（价值较低，可忽略） |
 
-### Competition Analysis (Using Web Search)
+### 竞争分析（使用网络搜索）
 
-For each target keyword:
+对于每个目标关键词：
 
 ```
 Step 1: Search the exact keyword
@@ -58,27 +57,25 @@ Step 3: Score opportunity:
   - Mix of niche sites = MEDIUM opportunity (winnable with better content)
 ```
 
-### Keyword Prioritization Matrix
+### 关键词优先级矩阵
+为每个关键词打分（每个维度1-5分）：
 
-Score each keyword (1-5 per dimension):
-
-| Dimension | 1 (Low) | 5 (High) |
+| 维度 | 1（低） | 5（高） |
 |-----------|---------|----------|
-| **Relevance** | Tangentially related | Core topic |
-| **Intent match** | Informational only | Commercial/transactional |
-| **Competition gap** | All big brands | Forums, thin content |
-| **Business value** | No conversion path | Direct product tie-in |
-| **Content feasibility** | Need proprietary data | Can write from expertise |
+| **相关性** | 间接相关 | 核心主题 |
+| **意图匹配** | 仅信息型 | 商业/交易型 |
+| **竞争差距** | 所有大型品牌 | 论坛、内容匮乏 |
+| **商业价值** | 无转化路径 | 与产品直接相关 |
+| **内容可行性** | 需要专有数据 | 可以基于专业知识撰写 |
 
-**Priority**: Score ≥ 18 = write immediately. 13-17 = queue. < 13 = skip.
+**优先级**：得分 ≥ 18 = 立即撰写。13-17 = 排队。< 13 = 忽略。
 
 ---
 
-## 2. Content Planning
+## 2. 内容规划
 
-### Content Brief Template
-
-Before writing ANY article, create this brief:
+### 内容大纲模板
+在撰写任何文章之前，先创建这个大纲：
 
 ```markdown
 # Content Brief: [Title]
@@ -113,9 +110,8 @@ Before writing ANY article, create this brief:
 - Secondary: [email signup, related article, tool]
 ```
 
-### Content Calendar Structure
-
-Organize articles into clusters:
+### 内容日历结构
+将文章组织成不同的主题群组：
 
 ```
 PILLAR PAGE: "Complete Guide to [Topic]" (3,000-5,000 words)
@@ -126,60 +122,57 @@ PILLAR PAGE: "Complete Guide to [Topic]" (3,000-5,000 words)
 └── CLUSTER: "Common [Topic] Mistakes" (1,500-2,000 words)
 ```
 
-Each cluster article links back to the pillar. The pillar links to all clusters. This builds topical authority.
+每个主题群组中的文章都会链接到相应的主题支柱，而每个主题支柱又会链接到所有群组。这样可以建立主题权威性。
 
 ---
 
-## 3. Writing Framework
+## 3. 写作框架
 
-### Article Structure (The HBCFC Formula)
+### 文章结构（HBCFC公式）
+每篇文章都遵循以下结构：
 
-Every article follows this skeleton:
+#### H — 引入（前100字）
+- 以一个具体的数据、问题或引人注目的陈述开头
+- 避免使用通用的开头语（如“在当今快节奏的世界里...”）
+- 说明读者将获得什么以及为什么这很重要
+- 在第一段中自然地包含主要关键词
 
-#### H — Hook (first 100 words)
-- Open with a specific stat, question, or bold claim
-- NO generic intros ("In today's fast-paced world...")
-- State what the reader will get and why it matters
-- Include primary keyword naturally in first paragraph
+#### B — 问题阐述
+- 承认读者的困扰或目标
+- 表明你理解他们的处境
+- 创造紧张感：“大多数关于X的建议都忽略了Y”
+- 过渡到你的解决方案
 
-#### B — Bridge (setup the problem)
-- Acknowledge the reader's pain or goal
-- Show you understand their situation
-- Create tension: "Most advice on X misses Y"
-- Transition to your solution
+#### C — 核心内容（占文章字数的80%）
+- 使用H2标题来划分主要部分，H3标题来划分小节
+- 每个H2标题都应该能够独立回答一个问题
+- 至少包括：
+  - **每个部分的一个数据点或统计信息**（查找最新数据）
+  - **每个主要部分的一个实际示例或模板**
+  - 每500字中有一个“实用技巧”提示
+  - 使用项目符号列表来提高可读性（便于读者快速浏览）
+- 关键词的自然分布：主要关键词出现在2-3个H2标题中，次要关键词出现在H3标题和正文中
 
-#### C — Core Content (the meat — 80% of word count)
-- Use H2s for major sections, H3s for subsections
-- Every H2 should work as a standalone answer to a question
-- Include at minimum:
-  - **One data point or stat per section** (search for current data)
-  - **One practical example or template** per major section
-  - **One "pro tip" callout** per 500 words
-  - **Bullet lists** for scannable items (readers skim)
-- Natural keyword placement: primary keyword in 2-3 H2s, secondary keywords in H3s and body
+#### F — 常见问题（FAQ）部分（5-7个问题）
+- 从搜索结果中的“人们也问”部分提取问题
+- 简洁回答（每个问题40-60字）
+- 自然地包含主要/次要关键词
+- 这个部分有助于在Google中生成丰富的FAQ片段
 
-#### F — FAQ Section (5-7 questions)
-- Pull from "People Also Ask" in search results
-- Answer concisely (40-60 words each)
-- Include primary/secondary keywords naturally
-- This section generates FAQ rich snippets in Google
+#### C — 结论 + 行动号召（最后150-200字）
+- 总结3个关键要点
+- 再次自然地提及主要关键词
+- 明确的行动号召（仅一个行动号召，避免分散注意力）
 
-#### C — Conclusion + CTA (final 150-200 words)
-- Summarize 3 key takeaways (bullet points)
-- Restate the primary keyword naturally
-- Clear call to action (one CTA only — don't dilute)
+### 写作规则
+1. **句子多样性**：混合使用短句（5-8个词）、中等长度的句子（12-18个词）和长句（20-25个词）。避免连续使用三个长句。
+2. **段落长度**：每段最多2-4句。强调时可以使用单句段落。
+3. **主动语态**：使用“该工具分析数据”，而不是“数据被工具分析”。
+4. **具体化 > 模糊化**：使用“转化率提高了34%”而不是“效果显著提升”。
+5. **避免填充语**：删除“需要注意的是”、“为了”、“总之”等短语。
+6. **朗读测试**：如果读出来听起来像机器人说话，就重写。
 
-### Writing Rules
-
-1. **Sentence variety**: Mix short (5-8 words) with medium (12-18) and occasional long (20-25). Never three long sentences in a row.
-2. **Paragraph length**: 2-4 sentences max. One-sentence paragraphs are fine for emphasis.
-3. **Active voice**: "The tool analyzes data" not "Data is analyzed by the tool"
-4. **Specific > vague**: "Increased conversions by 34%" not "significantly improved results"
-5. **No filler phrases**: Cut "it's important to note that", "in order to", "at the end of the day"
-6. **Transition words**: Use sparingly and vary them. Not every paragraph needs "However" or "Additionally".
-7. **Read-aloud test**: If it sounds robotic when read aloud, rewrite it.
-
-### Keyword Integration (Natural Placement)
+### 关键词整合（自然分布）
 
 ```
 ✅ DO:
@@ -199,54 +192,53 @@ Every article follows this skeleton:
 
 ---
 
-## 4. On-Page SEO Checklist
+## 4. 页面SEO检查清单
+在发布前对每篇文章执行以下检查：
 
-Run this checklist on every article before publishing:
+### 标题标签（H1）
+- 包含主要关键词（最好放在开头）
+- 不超过60个字符（以免在搜索结果中被截断）
+- 有吸引力——你会在搜索结果中点击它吗？
+- 包含一个强有力的词汇（如“终极的”、“完整的”、“经过验证的”、“必不可少的”）
+- 如果相关，包含年份（例如：“2026年最佳X工具”）
 
-### Title Tag (H1)
-- [ ] Contains primary keyword (preferably near the beginning)
-- [ ] Under 60 characters (won't get truncated in search)
-- [ ] Compelling — would YOU click this in search results?
-- [ ] Includes a power word (ultimate, complete, proven, essential)
-- [ ] Includes current year if relevant (e.g., "Best X in 2026")
+### 元描述
+- 150-160个字符
+- 包含主要关键词
+- 包含好处或结果
+- 包含行动号召（如“学习如何...”、“发现...”、“了解...”）
+- 独特（不要与其他页面重复）
 
-### Meta Description
-- [ ] 150-160 characters
-- [ ] Contains primary keyword
-- [ ] Includes a benefit or outcome
-- [ ] Has a call to action ("Learn how", "Discover", "Find out")
-- [ ] Unique (not duplicated from another page)
+### URL路径
+- 简短（3-5个词）
+- 包含主要关键词
+- 不使用停用词（如“the”、“and”等）
+- 词与词之间使用连字符
+- 例如：`/best-project-management-tools`
 
-### URL Slug
-- [ ] Short (3-5 words)
-- [ ] Contains primary keyword
-- [ ] No stop words (the, and, of, etc.)
-- [ ] Hyphens between words
-- [ ] Example: `/best-project-management-tools`
+### 标题
+- 只有一个H1标题
+- 每个主要部分使用H2标题（每篇文章5-8个）
+- H2标题下的小节使用H3标题
+- 至少有两个H2标题包含主要或次要关键词
+- 标题具有描述性（不要使用“第1部分”、“A节”等）
 
-### Headings
-- [ ] Only ONE H1 (the title)
-- [ ] H2s for major sections (5-8 per article)
-- [ ] H3s for subsections within H2s
-- [ ] At least 2 H2s contain primary or secondary keywords
-- [ ] Headings are descriptive (not "Part 1", "Section A")
+### 内容
+- 至少1500个单词（对于竞争性关键词，建议2000字以上）
+- 主要关键词自然出现4-8次
+- 每个次要关键词出现1-3次
+- 每500字至少有一个内部链接
+- 至少2-3个外部链接指向权威来源
+- 每300-500字添加一张图片（使用库存图片、图表或截图）
+- 所有图片都有描述性alt文本
 
-### Content
-- [ ] Minimum 1,500 words (2,000+ for competitive keywords)
-- [ ] Primary keyword appears 4-8 times naturally
-- [ ] Secondary keywords appear 1-3 times each
-- [ ] At least one internal link per 500 words
-- [ ] At least 2-3 external links to authoritative sources
-- [ ] Images every 300-500 words (stock photos, diagrams, screenshots)
-- [ ] All images have descriptive alt text
+### 技术要求
+- 定义Schema标记（至少包含文章类型）
+- 超过2000字的文章需要提供目录
+- 适应移动设备（避免使用过宽的表格，图片大小适中）
+- 无损坏的链接
 
-### Technical
-- [ ] Schema markup defined (Article type at minimum)
-- [ ] Table of contents for articles over 2,000 words
-- [ ] Mobile-friendly formatting (no wide tables, reasonable image sizes)
-- [ ] No broken links
-
-### Schema Markup Template (Article)
+### Schema标记模板（文章）
 
 ```json
 {
@@ -267,7 +259,7 @@ Run this checklist on every article before publishing:
 }
 ```
 
-### FAQ Schema Template
+### FAQ Schema模板
 
 ```json
 {
@@ -288,9 +280,9 @@ Run this checklist on every article before publishing:
 
 ---
 
-## 5. Content Types — Templates
+## 5. 内容类型 — 模板
 
-### Template A: "Best [X] for [Y]" Listicle
+### 模板A：“[X]的最佳选择”列表文章
 
 ```markdown
 # Best [X] for [Y] in [Year]
@@ -318,7 +310,7 @@ Run this checklist on every article before publishing:
 ## Final Verdict
 ```
 
-### Template B: "How to [X]" Guide
+### 模板B：“如何[X]”指南
 
 ```markdown
 # How to [X]: Step-by-Step Guide ([Year])
@@ -342,7 +334,7 @@ Run this checklist on every article before publishing:
 ## Next Steps
 ```
 
-### Template C: "[X] vs [Y]" Comparison
+### 模板C：“[X] vs [Y]”对比文章
 
 ```markdown
 # [X] vs [Y]: Which Is Better in [Year]?
@@ -371,7 +363,7 @@ Run this checklist on every article before publishing:
 ## Our Recommendation
 ```
 
-### Template D: Ultimate Guide (Pillar Page)
+### 模板D：终极指南（主题支柱页面）
 
 ```markdown
 # The Ultimate Guide to [Topic] ([Year])
@@ -405,9 +397,9 @@ Run this checklist on every article before publishing:
 
 ---
 
-## 6. Content Optimization Workflow
+## 6. 内容优化工作流程
 
-### Pre-Publish Optimization
+### 发布前的优化
 
 ```
 1. READABILITY CHECK
@@ -438,7 +430,7 @@ Run this checklist on every article before publishing:
    - CTA is specific ("Download the template" not "Learn more")
 ```
 
-### Post-Publish Actions
+### 发布后的操作
 
 ```
 1. INDEX REQUEST
@@ -463,80 +455,78 @@ Run this checklist on every article before publishing:
 
 ---
 
-## 7. Content Scoring Rubric
+## 7. 内容评分标准
+在发布前对每篇文章进行评分（目标分数为85分以上）：
 
-Score every article before publishing (aim for 85+):
-
-| Criteria | Points | How to Score |
+| 标准 | 分数 | 评分方法 |
 |----------|--------|-------------|
-| **Keyword optimization** | /15 | Title + H2s + natural body placement |
-| **Content depth** | /20 | Covers all subtopics competitors cover + unique angles |
-| **Readability** | /15 | Short paragraphs, varied sentences, scannable |
-| **Practical value** | /15 | Templates, examples, actionable steps (not just theory) |
-| **Structure** | /10 | Clear H2/H3 hierarchy, logical flow, TOC for long articles |
-| **Internal links** | /5 | 3+ contextual internal links |
-| **External links** | /5 | 2+ authoritative external references |
-| **Media** | /5 | Images, tables, or diagrams present |
-| **Meta tags** | /5 | Title < 60 chars, description 150-160 chars, both include keyword |
-| **CTA clarity** | /5 | Single clear CTA with specific action |
-| **TOTAL** | /100 | |
+| **关键词优化** | 15分 | 标题 + H2标题 + 关键词的自然分布 |
+| **内容深度** | 20分 | 覆盖所有竞争对手涵盖的子主题，并提供独特视角 |
+| **可读性** | 15分 | 段落简短、句子多样、易于阅读 |
+| **实用性** | 15分 | 使用模板、示例和可操作的步骤（而不仅仅是理论） |
+| **结构** | 10分 | H2/H3标题层次清晰、逻辑流畅、长篇文章有目录 |
+| **内部链接** | 5分 | 3个以上与内容相关的内部链接 |
+| **外部链接** | 5分 | 2个以上权威外部参考链接 |
+| **媒体元素** | 5分 | 包含图片、表格或图表 |
+| **元标签** | 5分 | 标题不超过60个字符，描述不超过150个字符，两者都包含关键词 |
+| **行动号召的清晰度** | 5分 | 单一明确的行动号召 |
+| **总分** | 100分 |
 
-**Score guide:**
-- 90-100: Publish immediately — strong ranking potential
-- 80-89: Publish with minor tweaks noted
-- 70-79: Needs revision — likely missing depth or optimization
-- Below 70: Rewrite — significant gaps
+**评分指南**：
+- 90-100分：立即发布——具有很强的排名潜力
+- 80-89分：发布后进行少量修改
+- 70-79分：需要修改——可能缺乏深度或优化
+- 低于70分：需要重写——存在重大问题
 
 ---
 
-## 8. SEO Agent Commands
+## 8. SEO代理命令
+使用自然语言触发这些工作流程：
 
-Use natural language to trigger these workflows:
-
-| Command | What It Does |
+| 命令 | 功能 |
 |---------|-------------|
-| "Research keywords for [topic]" | Full keyword expansion + prioritization matrix |
-| "Analyze competitors for [keyword]" | Top 5 SERP analysis with content gaps |
-| "Create a content brief for [keyword]" | Full brief using the template above |
-| "Write an article about [topic]" | Full article using HBCFC framework + on-page checklist |
-| "Optimize this article for [keyword]" | Run the optimization workflow on existing content |
-| "Score this article" | Apply the 100-point scoring rubric |
-| "Plan a content cluster for [topic]" | Pillar + 5-6 cluster articles with internal linking map |
-| "Generate schema for this article" | Article + FAQ JSON-LD markup |
-| "Create a [listicle/guide/comparison]" | Use the specific template for that content type |
-| "Audit my SEO" | Full on-page checklist against provided content |
+| “研究[主题]的关键词” | 完整的关键词扩展和优先级矩阵 |
+| “分析[关键词]的竞争对手” | 分析排名前5的SERP结果及内容差距 |
+| “为[关键词]创建内容大纲” | 使用上述模板创建完整的大纲 |
+| “撰写关于[主题]的文章” | 使用HBCFC框架和页面SEO检查清单撰写完整文章 |
+| “优化这篇文章” | 对现有内容执行优化流程 |
+| “评估这篇文章” | 应用100分评分标准 |
+| “为[主题]规划内容群组” | 创建主题支柱及5-6篇内部链接的文章 |
+| “为这篇文章生成Schema标记” | 为文章添加Schema标记和FAQ JSON-LD |
+| “创建[列表文章/指南/对比文章]” | 使用相应的模板 |
+| “审核我的SEO” | 根据提供的内容执行全面的页面SEO检查 |
 
 ---
 
-## 9. Advanced Techniques
+## 9. 高级技巧
 
-### Semantic SEO (Topic Authority)
-Don't just target one keyword — own the entire topic:
-1. Map ALL subtopics in your niche using keyword research
-2. Create content for each subtopic (content cluster model)
-3. Interlink everything with contextual anchor text
-4. Google rewards sites that comprehensively cover a topic
+### 语义SEO（主题权威性）
+不要只针对一个关键词——要掌握整个主题：
+1. 通过关键词研究映射你所在领域的所有子主题
+2. 为每个子主题创建内容（采用内容群组模型）
+3. 使用上下文相关的锚文本相互链接
+4. Google更倾向于全面覆盖某个主题的网站
 
-### Featured Snippet Optimization
-To win featured snippets (position 0):
-- **Paragraph snippets**: Answer the question in 40-60 words directly under an H2 that IS the question
-- **List snippets**: Use ordered/unordered lists with clear H2
-- **Table snippets**: Use HTML tables with clear headers
-- Target keywords where current snippets are weak or missing
+### 优化特色片段
+要获得特色片段（排名第一）：
+- **段落片段**：在直接对应问题的H2标题下用40-60个字回答问题
+- **列表片段**：使用有序/无序列表，并加上明确的H2标题
+- **表格片段**：使用带有清晰标题的HTML表格
+- 针对当前片段较弱或缺失的关键词进行优化
 
-### Content Freshness Signals
-Google favors fresh content for time-sensitive queries:
-- Include the current year in titles where relevant
-- Update stats and data annually
-- Add "Last updated: [date]" to articles
-- Republish with new publish date after major updates
+### 内容更新信号
+Google更喜欢针对时效性强的查询提供新鲜内容：
+- 在标题中包含当前年份（如果相关）
+- 每年更新数据和统计信息
+- 在文章中添加“最后更新：[日期]”
+- 在重大更新后重新发布文章并更新日期
 
-### E-E-A-T Signals (Experience, Expertise, Authority, Trust)
-- **Experience**: Include first-hand examples ("When I tested this...")
-- **Expertise**: Cite specific data, reference methodology
-- **Authority**: Link to/from authoritative sources, get cited by others
-- **Trust**: Clear author bios, about page, contact info, HTTPS, privacy policy
+### E-E-A-T信号（经验、专业性、权威性、可信度）
+- **经验**：提供第一手示例（如“当我测试这个时...”）
+- **专业性**：引用具体数据，说明方法论
+- **权威性**：链接到权威来源，并被其他来源引用
+- **可信度**：提供作者简介、关于页面、联系方式、HTTPS协议和隐私政策
 
 ---
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) — AI agent infrastructure for businesses that ship.*
+*由[AfrexAI](https://afrexai-cto.github.io/context-packs/)构建——为企业提供AI代理基础设施。*

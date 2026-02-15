@@ -1,87 +1,78 @@
 ---
 name: Legal
-description: "Think through any legal situation like a lawyer. Issue spotting, jurisdiction, risk assessment, actionable conclusions."
+description: "像律师一样思考任何法律问题：识别潜在的法律风险、确定管辖权、进行风险评估，并得出可行的结论。"
 ---
 
-## Pattern
+## 模式（Pattern）
 
 ```
 Jurisdiction → Facts → Issues → Law → Application → Risk → Action
 ```
 
-Before answering anything legal: Identify where. Establish facts. Spot all issues. Find applicable law. Apply to facts. Assess risk. Recommend action.
+在回答任何法律问题之前，首先要确定事件发生的地点，查明事实，识别所有潜在问题，找到适用的法律，并根据事实来评估风险，最后提出相应的行动建议。
 
-## Before
+## 准备阶段（Before）
+- **确定管辖权**：首先明确“事件发生在哪里？”——不同地区的法律规定可能存在巨大差异。
+- **明确角色**：我需要为谁提供咨询？他们的目标是什么？
+- **声明免责**：所提供的信息仅为法律参考，并非针对您具体情况的法律建议。
 
-- **Jurisdiction first**: "Where did this happen?" — laws vary dramatically
-- **Role clarity**: Who am I advising? What's their goal?
-- **Disclaimer ready**: "Legal information, not legal advice for your specific situation"
+## 实施阶段（During）
+### 1. 事实收集（Fact Gathering）
+- 将事实与个人解读区分开来。
+- 要求对方提供书面文件，而不仅仅是摘要。
+- 完整记录事件的时间线——时间顺序在法律判断中至关重要。
+- 注意遗漏的信息——这些遗漏可能会影响分析结果。
 
-## During
+### 2. 问题识别（Issue Spotting）
+- 列出所有可能的法律问题，而不仅仅是显而易见的问题。
+- 全面考虑双方的观点——对方可能会提出哪些主张？
+- 检查是否存在程序性问题（如截止日期、通知要求等）。
+- 注意是否存在法律适用的交叉领域（例如合同问题与侵权行为、民事纠纷与刑事纠纷）。
 
-### 1. Fact Gathering
-- Separate facts from interpretations
-- Ask for documents, not summaries
-- Timeline everything — sequence matters legally
-- Note what's missing — gaps change analysis
+### 3. 法律应用（Law Application）
+- 在应用法律之前先明确相关法律规定。
+- 区分法律条文、判例法以及规章制度的区别。
+- 注意该法律在该地区的适用情况（是否已经明确或仍有争议）。
+- 标明哪些法律具有约束力，哪些仅具有参考意义。
 
-### 2. Issue Spotting
-- List ALL potential legal issues, not just the obvious one
-- Consider both sides — what could the other party claim?
-- Check for procedural issues (deadlines, notice requirements, standing)
-- Look for overlapping areas (contract AND tort, civil AND criminal)
+### 4. 风险评估（Risk Assessment）
+- 量化自己的立场：是处于有利地位还是不利地位（强/中/弱）。
+- 考虑错误带来的成本与采取行动的成本。
+- 除了合法性之外，还要考虑法律的可执行性，以及可能对声誉和关系造成的影响。
 
-### 3. Law Application
-- State the rule before applying it
-- Distinguish: statute vs case law vs regulation
-- Note if law is settled or unsettled in this jurisdiction
-- Mark binding vs persuasive authority
+## 结束阶段（After）
+- **简洁的结论**：根据具体情况，明确“您很可能有/没有可行的索赔权”。
+- **识别关键风险点**：哪些因素可能会削弱您的立场。
+- **制定行动计划及截止日期**：明确需要在什么时间之前完成哪些行动。
+- **确定升级处理的标准**：何时需要聘请专业律师介入。
 
-### 4. Risk Assessment
-- Quantify: strong / moderate / weak position
-- Consider: cost of being wrong vs cost of action
-- Factor: enforceability, not just legality
-- Include: reputational and relationship costs
+## 常见陷阱（Traps）
+- **错误假设管辖权**：美国法律≠英国法律≠欧盟法律。
+- **仅关注单一问题**：可能会忽略程序性或次要的法律问题。
+- **过度自信**：认为“一定会胜诉”——但法律结果具有不确定性。
+- **越界提供建议**：在没有授权的情况下给出具体操作建议。
+- **法律信息过时**：法规会更新，法律条文会被修改，判例也可能被推翻。
+- **口头约定而非书面记录**：未书面化的内容更难作为证据。
 
-## After
-
-- **One-line position**: "You likely [have/don't have] a viable claim because ___"
-- **Key vulnerabilities**: What could defeat this position?
-- **Action with deadline**: What to do by when
-- **Escalation trigger**: When this needs a licensed attorney
-
-## Traps
-
-- **Jurisdiction assumption**: US law ≠ UK law ≠ EU law
-- **Single issue focus**: Missing the procedural or secondary claims
-- **Certainty theater**: "You will win" — law is probabilistic
-- **Advice vs information**: Crossing into specific recommendations without license
-- **Outdated law**: Regulations change; statutes get amended; cases get overruled
-- **Verbal over written**: If it's not documented, it's harder to prove
-
-## Framework: IRAC
-
-The standard legal reasoning structure:
-
-| Step | Question | Output |
+## IRAC 法律推理框架（IRAC Framework）
+标准的法律推理结构如下：
+| 步骤 | 问题 | 结论 |
 |------|----------|--------|
-| **Issue** | What's the legal question? | One sentence framing |
-| **Rule** | What law applies? | Statute, case, or regulation |
-| **Application** | How does law apply to these facts? | Fact-by-fact analysis |
-| **Conclusion** | What's the answer? | Position + confidence level |
+| **问题识别** | 需要解决的法律问题是什么？ | 用一句话概括问题 |
+| **法律适用** | 应适用哪条法律？ | 法律条文、判例还是规章制度 |
+| **法律适用** | 如何将法律应用于这些事实？ | 逐条分析事实 |
+| **结论** | 最终的结论是什么？ | 包括具体立场及信心程度 |
 
-## Risk Matrix
-
-| Factor | Lower Risk | Higher Risk |
+## 风险矩阵（Risk Matrix）
+| 因素 | 低风险 | 高风险 |
 |--------|------------|-------------|
-| Documentation | Written, signed, dated | Verbal, informal |
-| Timeline | Within limits | Near or past deadlines |
-| Other party | No lawyer | Has representation |
-| Amount | Under small claims | Significant sum |
-| Complexity | Single issue, clear facts | Multiple parties, disputed facts |
+| 文件形式** | 书面文件、已签名、有日期 | 口头约定、非正式文件 |
+| 时间线** | 在规定时间内完成 | 接近或超过截止日期 |
+| 对方情况** | 对方没有律师 | 对方有律师代表 |
+| 争议金额** | 低于小额索赔标准 | 争议金额较大 |
+| 问题复杂性** | 问题简单、事实清楚 | 问题复杂、事实存在争议 |
 
-## Output
-
+## 输出（Output）
 ```
 ⚖️ JURISDICTION: [Location + applicable law]
 📋 ISSUES: [All spotted, prioritized]
@@ -94,4 +85,4 @@ The standard legal reasoning structure:
 
 ---
 
-*Channels legal thinking. Works for basic questions through complex analysis.*
+*该框架有助于引导法律思考过程，适用于从简单问题到复杂案例的分析。*

@@ -1,53 +1,47 @@
 ---
 name: Deepdub TTS
 version: 0.1.0
-description: Generate speech audio using Deepdub and attach it as a MEDIA file (Telegram-compatible).
+description: 使用 Deepdub 生成语音音频，并将其作为 MEDIA 文件附加（兼容 Telegram）。
 tags: [tts, deepdub, audio, telegram]
 metadata: {"clawdbot":{"requires":{"bins":["python3"],"env":["DEEPDUB_API_KEY","DEEPDUB_VOICE_PROMPT_ID"]},"primaryEnv":"DEEPDUB_API_KEY"}}
 ---
 
-## What this skill does
-This skill converts text into speech using Deepdub and returns an audio file
-as a `MEDIA:` attachment that OpenClaw can send to channels like Telegram.
+## 该技能的功能  
+该技能使用 Deepdub 将文本转换为语音，并生成音频文件。生成的音频文件会以 `MEDIA:` 附件的形式返回，可供 OpenClaw 发送到 Telegram 等渠道。  
 
-## Requirements
-- Python 3.9+
-- Deepdub API access
+## 所需环境  
+- Python 3.9 或更高版本  
+- 对 Deepdub API 的访问权限  
 
-### Permissions
-This skill requires permission to:
-- Execute `deepdub_tts.py` (the bundled script)
-- Write audio files to `OPENCLAW_MEDIA_DIR` only (output path cannot be overridden via CLI arguments)
+### 权限要求  
+该技能需要以下权限：  
+- 执行 `deepdub_tts.py` 脚本  
+- 将音频文件写入 `OPENCLAW_MEDIA_DIR` 目录（输出路径无法通过 CLI 参数进行修改）  
 
-## Setup
-Set the following environment variables where OpenClaw runs:
+## 设置环境变量  
+在运行 OpenClaw 的系统中设置以下环境变量：  
+- `DEEPDUB_API_KEY`：您的 Deepdub API 密钥  
+- `DEEPDUB_VOICE_PROMPT_ID`：默认使用的语音提示  
 
-Required:
-- `DEEPDUB_API_KEY` – your Deepdub API key
-- `DEEPDUB_VOICE_PROMPT_ID` – default voice prompt to use
+### 可选参数  
+- `DEEPDUB_LOCALE`（默认值：`en-US`）  
+- `DEEPDUB_MODEL`  
+- `OPENCLAW_MEDIA_DIR`（默认值：`/tmp/openclaw_media`）  
 
-Optional:
-- `DEEPDUB_LOCALE` (default: `en-US`)
-- `DEEPDUB_MODEL`
-- `OPENCLAW_MEDIA_DIR` (default: `/tmp/openclaw_media`)
-
-### Free Trial Credentials
-For testing only, you can use these free trial credentials:
+### 免费试用凭证  
+仅用于测试：  
 ```
 DEEPDUB_API_KEY=dd-00000000000000000000000065c9cbfe
 DEEPDUB_VOICE_PROMPT_ID=11f3403d-35b9-4817-8d55-f41694ea6227
-```
-> **Note:** These are rate-limited trial credentials for evaluation purposes only. Do not use for production. Obtain your own API key and voice prompts from Deepdub for production use.
+```  
+> **注意：** 这些是限流的试用凭证，仅适用于评估目的。请勿在生产环境中使用。请为您的生产环境获取自己的 API 密钥和语音提示。  
 
-## Install dependency
-
-Install the official Deepdub Python SDK:
-
+## 安装依赖项  
+请安装官方的 Deepdub Python SDK：  
 ```bash
 pip install deepdub
-```
-
-Or using [uv](https://github.com/astral-sh/uv) (faster alternative):
+```  
+或者使用 [uv](https://github.com/astral-sh/uv)（更快的方式）：  
 ```bash
 uv pip install deepdub
 ```

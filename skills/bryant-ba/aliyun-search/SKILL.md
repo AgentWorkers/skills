@@ -1,28 +1,28 @@
 ---
 name: aliyun-search
-description: Perform web searches using Alibaba Cloud UnifiedSearch API. Provides advanced search capabilities with configurable parameters.
+description: 使用 Alibaba Cloud UnifiedSearch API 进行网络搜索。该 API 提供了高级搜索功能，并支持配置各种参数。
 ---
 
-# Alibaba Cloud UnifiedSearch Skill
+# 阿里云 UnifiedSearch 技能
 
-This skill provides the ability to perform web searches using Alibaba Cloud UnifiedSearch API.
+该技能提供了使用阿里云 UnifiedSearch API 进行网络搜索的功能。
 
-## Features
+## 特点
 
-- Support multiple search engine types (Generic, GenericAdvanced, LiteAdvanced)
-- Configurable time range filtering
-- Category-specific search (finance, law, medical, etc.)
-- Location-based search (city/IP)
-- Rich result formatting
+- 支持多种搜索引擎类型（Generic、GenericAdvanced、LiteAdvanced）
+- 可配置时间范围过滤
+- 针对特定类别的搜索（金融、法律、医疗等）
+- 基于位置的搜索（城市/IP）
+- 丰富的结果格式化
 
-## Usage
+## 使用方法
 
-### Basic Usage
+### 基本使用方法
 ```bash
 python search.py "云栖大会"
 ```
 
-### Advanced Usage
+### 高级使用方法
 ```bash
 python search.py "北京天气" --engine-type "Generic" --city "北京市"
 ```
@@ -31,18 +31,18 @@ python search.py "北京天气" --engine-type "Generic" --city "北京市"
 python search.py "金融新闻" --category "finance" --time-range "OneWeek" --engine-type "GenericAdvanced"
 ```
 
-## Scripts
+## 脚本
 
-- `search.py`: Python implementation of Alibaba Cloud UnifiedSearch API
+- `search.py`：阿里云 UnifiedSearch API 的 Python 实现
 
-## Configuration
+## 配置
 
-Before using, you need to:
-1. Obtain Alibaba Cloud AccessKey and Secret
-2. Set environment variables:
+在使用之前，您需要完成以下步骤：
+1. 获取阿里云 AccessKey 和 Secret
+2. 设置环境变量：
    ```bash
    export ALIBABA_CLOUD_ACCESS_KEY_ID="your_access_key_id"
    export ALIBABA_CLOUD_ACCESS_KEY_SECRET="your_access_key_secret"
    ```
-3. Ensure the required permissions are granted
-4. Install dependencies: `pip install aliyun-python-sdk-core requests`
+3. 确保已获得所需的权限
+4. 安装依赖项：`pip install aliyun-python-sdk-core requests`

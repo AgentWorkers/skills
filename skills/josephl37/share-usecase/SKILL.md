@@ -1,31 +1,31 @@
 ---
 name: share_usecase
-description: "Share your OpenClaw use case to clawusecase.com. Analyzes your recent work and creates a submission for the community."
+description: "将您的 OpenClaw 使用案例分享到 clawusecase.com。该平台会分析您最近的工作，并为您在社区中创建一个相应的提交记录。"
 author: "Rex 🐧"
 version: "2.0.1"
 ---
 
-# Share Use Case Skill
+# 共享用例技能
 
-This skill helps you share your OpenClaw use cases to [clawusecase.com](https://clawusecase.com).
+此技能可帮助您将使用 OpenClaw 构建的用例分享到 [clawusecase.com](https://clawusecase.com)。
 
-## When to Use
+## 使用场景
 
-Trigger this skill when the user wants to share a use case they've built with OpenClaw. They might say:
-- "/share_usecase"
-- "I want to share this use case"
-- "Let me submit this to clawusecase"
-- "Share what I just built"
+当用户希望分享使用 OpenClaw 构建的用例时，可以触发此技能。他们可能会说：
+- “/share_usecase”
+- “我想分享这个用例”
+- “让我把这个提交到 clawusecase”
+- “分享我刚刚完成的工作”
 
-**Important:** When users choose to get credit via OAuth, automatically poll for their connection completion. Don't make them tell you they've connected - detect it automatically and proceed with submission.
+**重要提示：** 当用户选择通过 OAuth 获得署名权时，系统会自动检测他们的连接状态。无需用户主动告知您他们已连接——系统会自动检测并开始提交流程。
 
-**Implementation requirement:** You MUST actively monitor the polling loop and send an immediate message when connection is detected. Do not run polling silently in the background - check results frequently and respond the moment you see a successful credential. The user should see "✅ Connected as @username!" within seconds of completing OAuth, without having to ask.
+**实现要求：** 您必须主动监控连接状态，并在检测到连接成功后立即发送通知。切勿在后台默默运行轮询任务——要频繁检查结果，并在检测到有效凭证时立即响应。用户应在完成 OAuth 验证后的几秒钟内看到 “✅ 已连接为 @username!” 的提示，而无需主动询问。
 
-## How It Works
+## 工作原理
 
-### 1. Greet and Explain
+### 1. 问候并解释
 
-When the user triggers `/share_usecase`, start with a friendly greeting:
+当用户触发 `/share_usecase` 时，首先向用户发送友好的问候语：
 
 ```
 🐧 Share Your Use Case
@@ -35,42 +35,41 @@ Hey! clawusecase.com is a community showcase where OpenClaw users share what the
 Let me look at what you've been working on and draft a use case for you...
 ```
 
-### 2. Analyze Recent Context
+### 2. 分析近期交流记录
 
-Look back at the conversation history (last 50-100 messages or past few hours) to understand what the user built. Look for:
-- What problem they were trying to solve
-- What tools/integrations they used (GitHub, Stripe, Resend, etc.)
-- How they solved it
-- Any requirements or setup needed
+回顾最近的对话记录（过去 50-100 条消息或几小时内的内容），了解用户所完成的工作：
+- 他们试图解决什么问题
+- 他们使用了哪些工具或集成服务（如 GitHub、Stripe 等）
+- 他们是如何解决问题的
+- 是否需要任何额外的设置或资源
 
-### 3. Generate Use Case Structure
+### 3. 生成用例结构
 
-Create a well-structured use case with these fields:
+创建一个结构清晰的用例文档，包含以下字段：
+- **必填字段：**
+  - `title`（50-100 个字符）：简洁明了的用例标题
+  - `hook`（100-200 个字符）：吸引注意力的简短摘要
+  - `problem`（200-500 个字符）：该用例解决的问题
+  - `solution`（300-800 个字符）：解决问题的方法及具体实现
+  - `category`（可选）：例如 “Productivity”（生产力）、“Development”（开发）、“Business/SaaS”（商业/软件即服务）、“Home Automation”（家庭自动化）等
+  - `skills`（数组）：使用的工具或技术（例如 ["GitHub", "Stripe", "Resend"]）
 
-**Required:**
-- `title` (50-100 chars) - Clear, descriptive title of what was built
-- `hook` (100-200 chars) - One-sentence summary that grabs attention
-- `problem` (200-500 chars) - What problem this solves
-- `solution` (300-800 chars) - How it works, what was built
-- `category` - One of: "Productivity", "Development", "Business/SaaS", "Home Automation", "Social/Content", "Data & Analytics", "Fun"
-- `skills` (array) - Tools/technologies used (e.g., ["GitHub", "Stripe", "Resend"])
+**可选字段：**
+  - `requirements`：使用该用例所需的资源（如 API 密钥、账户信息等）
 
-**Optional:**
-- `requirements` - What you need to use this (API keys, accounts, etc.)
+### 4. 规范化工具名称
 
-### 4. Normalize Tools/Skills
-
-Before finalizing, normalize tool names using `normalize-tools.js`:
+在最终提交前，使用 `normalize-tools.js` 脚本对工具名称进行规范化处理：
 
 ```bash
 node normalize-tools.js "github,stripe api,resend email"
 ```
 
-This ensures consistent naming (e.g., "github" → "GitHub", "stripe api" → "Stripe").
+这可以确保所有工具名称的一致性（例如：“github” → “GitHub”，“stripe api” → “Stripe”）。
 
-### 5. Show Preview and Get Approval
+### 5. 显示预览并获取用户确认
 
-Present the generated use case to the user in a clean format:
+以清晰的格式向用户展示生成的用例文档：
 
 ```
 📋 Use Case Draft
@@ -91,11 +90,11 @@ Would you like to:
 - Cancel
 ```
 
-If they want to edit, iterate until they're happy.
+如果用户需要修改内容，可允许他们进行编辑，直到满意为止。
 
-### 6. Ask About Attribution
+### 6. 询问署名权
 
-Once they approve the content, ask about attribution:
+用户确认内容后，询问他们是否希望获得署名权：
 
 ```
 Would you like to be credited for this submission?
@@ -107,9 +106,9 @@ Options:
 If you choose credit, you'll get a link on the live use case and build your profile in the community!
 ```
 
-**If they choose credit:**
+**如果用户选择署名：**
 
-Generate OAuth links and send them:
+生成 OAuth 链接并发送给用户：
 
 ```
 Great! Connect your account to get credit:
@@ -120,13 +119,12 @@ Great! Connect your account to get credit:
 Click one of the links above to authenticate. I'll detect when you're connected and submit automatically!
 ```
 
-**Auto-detect connection:**
+**自动检测连接状态：**
 
-**⚠️ CRITICAL: You MUST actively monitor and respond to polling results in real-time. Do NOT run polling in the background and wait for system messages. Check the process output directly and respond immediately.**
+**⚠️ 重要提示：** 您必须实时监控连接状态并立即响应。切勿在后台等待系统通知——直接检查处理结果并立即响应。
 
-Immediately after sending OAuth links, start polling and watch for completion:
-
-**Recommended approach:**
+在发送 OAuth 链接后，立即开始轮询连接状态：
+**推荐的做法：**
 ```bash
 cd /path/to/skill
 for i in {1..24}; do
@@ -159,69 +157,42 @@ if [ -z "$CREDENTIAL" ]; then
 fi
 ```
 
-**Critical implementation notes:**
+**关键实现注意事项：**
+1. **切勿** 使用 `exec(..., background: true)` 来进行轮询——否则无法及时获取结果。
+2. **必须** 同步执行轮询操作或立即检查处理结果。
+3. 一旦检测到连接成功，**立即** 发送 “✅ 已连接为 @username!” 的提示。
+4. **切勿** 等待系统通知或后台任务完成。
+5. 直接从命令输出中解析凭证 JSON 数据。
 
-1. **DO NOT** use `exec(..., background: true)` for polling - you won't see results in time
-2. **DO** run polling synchronously or check process output immediately
-3. **IMMEDIATELY** send "✅ Connected as @username!" message when detected
-4. **DO NOT** wait for system messages or background process completion
-5. Parse the credential JSON directly from the command output
+**示例流程：**
+1. 向用户发送 OAuth 链接。
+2. **立即开始轮询**（每 5 秒检查一次连接状态）。
+3. **每次检查时**：确认凭证是否有效。
+4. **一旦发现有效凭证**：立即发送 “✅ 已连接为 @username！现在开始提交您的用例...” 的提示。
+5. 从凭证 JSON 中提取用户名和平台信息。
+6. 继续完成提交流程。
 
-**Example flow:**
-1. Send OAuth links to user
-2. **Immediately start polling** (synchronous checks every 5 seconds)
-3. **Each iteration:** Check if credential exists
-4. **The INSTANT it's found:** Send message "✅ Connected as @username! Submitting your use case now..."
-5. Extract username/platform from credential JSON
-6. Proceed with submission
-
-**If timeout (2 minutes):**
+**如果轮询超时（2 分钟）：**
 ```
 ⏰ Still waiting for your connection. Take your time - I'll keep checking for another 2 minutes!
 ```
 
-Then continue polling for another 24 attempts.
+则继续尝试提交，最多尝试 24 次。
 
-**If they choose anonymous:**
+**如果用户选择匿名提交：**
 
-Proceed with anonymous submission (no author info).
+则以匿名方式提交用例（不显示作者信息）。
 
-### 7. Submit to API
+### 7. 提交到 API
 
-Use `submit.js` to POST to the API:
+使用 `submit.js` 脚本通过 API 发送用例文档：
+- **如果用户选择署名：** 使用正确的认证信息提交。
+- **如果用户选择匿名：** 以匿名方式提交。
 
-**With attribution:**
-```bash
-node submit.js \
-  --title "Email notifications for Pro subscriptions" \
-  --hook "Sends welcome emails automatically when users upgrade" \
-  --problem "No email notifications when users subscribe to Pro plan" \
-  --solution "Built Resend integration with React Email templates..." \
-  --category "Business/SaaS" \
-  --skills "GitHub,Stripe,Resend" \
-  --requirements "Resend account, Stripe webhooks configured" \
-  --author-username "josephliow" \
-  --author-handle "josephliow" \
-  --author-platform "twitter" \
-  --author-link "https://twitter.com/josephliow"
-```
+### 8. 确认提交成功
 
-**Anonymous:**
-```bash
-node submit.js \
-  --title "Email notifications for Pro subscriptions" \
-  --hook "Sends welcome emails automatically when users upgrade" \
-  --problem "No email notifications when users subscribe to Pro plan" \
-  --solution "Built Resend integration with React Email templates..." \
-  --category "Business/SaaS" \
-  --skills "GitHub,Stripe,Resend" \
-  --requirements "Resend account, Stripe webhooks configured" \
-  --anonymous
-```
+如果提交成功，将链接分享给用户：
 
-### 8. Confirm Submission
-
-If successful, share the link with the user:
 ```
 ✅ Use case submitted successfully!
 
@@ -230,80 +201,78 @@ View it here: https://clawusecase.com/cases/email-notifications-for-pro-subscrip
 Thanks for sharing with the community! 🎉
 ```
 
-## Error Handling
+## 错误处理
 
-### Rate Limiting
-If you get a 429 error:
+### 速率限制
+如果收到 429 错误：
 ```
 ⏰ You've hit the submission limit (10 per day).
 Try again tomorrow or contact support if you need to submit more.
 ```
 
-### Validation Errors
-If fields are invalid (title too short, solution too brief):
+### 验证错误
+如果某些字段无效（例如标题太短或解决方案描述过于简略）：
 ```
 ❌ Submission failed: Title must be at least 20 characters
 
 Let's fix that. What would you like the title to be?
 ```
 
-### API Errors
-For other errors, show the error message and offer to retry.
+### API 错误
+对于其他错误，显示错误信息并提供重试选项。
 
-## Tips for Good Use Cases
+## 提高用例质量的建议
 
-Help users create high-quality submissions:
+帮助用户创建高质量的提交内容：
+- **好的标题示例：**
+  - ✅ “为 Pro 订阅用户发送电子邮件通知”
+  - ❌ “我构建了一个发送电子邮件的功能”
 
-**Good Title:**
-- ✅ "Email notifications for Pro subscriptions"
-- ❌ "Email thing I built"
+- **好的摘要示例：**
+  - ✅ “用户升级后自动发送欢迎邮件”
+  - ❌ “仅说明“发送邮件”这样的功能”
 
-**Good Hook:**
-- ✅ "Sends welcome emails automatically when users upgrade"
-- ❌ "Sends emails"
+- **好的问题描述示例：**
+  - ✅ “Pro 订阅用户未收到确认邮件，导致困惑和需要支持”
+  - ❌ “没有发送任何邮件”
 
-**Good Problem:**
-- ✅ "Users who upgraded to Pro weren't getting confirmation emails, causing confusion and support tickets"
-- ❌ "No emails"
+- **好的解决方案示例：**
+  - ✅ “使用 React Email 模板实现了邮件发送功能，并通过 Stripe Webhook 在订阅创建时触发邮件发送。邮件包含升级详情和后续步骤”
+  - ❌ “仅说明“实现了邮件发送”这样的功能”
 
-**Good Solution:**
-- ✅ "Built a Resend integration with React Email templates. Set up Stripe webhooks to trigger on subscription.created events. Template includes upgrade details and next steps."
-- ❌ "Made it send emails with Stripe"
+## 分类指南
 
-## Category Guidelines
+帮助用户选择合适的分类：
+- **生产力**：任务管理、日程安排、提醒、自动化
+- **开发**：持续集成/持续部署、代码审查、部署、测试
+- **商业/软件即服务**：客户管理、计费、数据分析
+- **家庭自动化**：智能家居、物联网设备、传感器
+- **社交/内容**：社交媒体、内容创作与发布
+- **数据与分析**：报告生成、仪表盘、数据处理
+- **娱乐**：游戏、实验项目、创意项目
 
-Help users pick the right category:
+## 速率限制
 
-- **Productivity** - Task management, scheduling, reminders, automation
-- **Development** - CI/CD, code review, deployment, testing
-- **Business/SaaS** - Customer management, billing, analytics, marketing
-- **Home Automation** - Smart home, IoT, cameras, sensors
-- **Social/Content** - Social media, content creation, publishing
-- **Data & Analytics** - Reports, dashboards, data processing
-- **Fun** - Games, experiments, creative projects, humor
+用户每天最多可提交 **10 个用例**。API 会按 `authorUsername`（匿名用户按 IP 地址）进行记录。
 
-## Rate Limiting
+如果用户达到提交限制，可以建议他们：
+- 等待明天再尝试
+- 确保每次提交的用例都是独特且有价值的
+- 如需提高提交次数，请联系技术支持
 
-Users can submit up to **10 use cases per day**. The API tracks by `authorUsername` (or IP for anonymous).
+## 质量要求
 
-If they hit the limit, suggest:
-- Wait until tomorrow
-- Make sure each submission is unique and valuable
-- Contact support if they need a higher limit
+API 会自动过滤不符合要求的提交内容：
+- 标题长度：20-200 个字符
+- 摘要长度：50-500 个字符
+- 问题描述长度：100-2000 个字符
+- 解决方案长度：200-5000 个字符
+- 至少使用一种工具或技术
+- 分类信息必须准确
 
-## Quality Guidelines
+在用户提交前，请帮助他们满足这些要求。
 
-The API has automatic quality filtering. Submissions must:
-- Title: 20-200 characters
-- Hook: 50-500 characters  
-- Problem: 100-2000 characters
-- Solution: 200-5000 characters
-- At least 1 skill/tool
-- Valid category
-
-Help users meet these requirements before submitting.
-
-## Example Interaction
+## 示例交互流程
 
 ```
 User: I just built email notifications for when users subscribe
@@ -363,23 +332,17 @@ View it here: https://clawusecase.com/cases/email-notifications-for-pro-subscrip
 Your use case is now live for the community to see. Thanks for sharing! 🎉
 ```
 
-## Files in This Skill
+## 本技能涉及的文件：
+- `SKILL.md`：本技能的说明文件
+- `submit.js`：用于将用例提交到 clawusecase.com API 的脚本
+- `get-credential.js`：用于在认证后获取 OAuth 令牌的脚本
+- `poll-credential.sh`：用于检测 OAuth 令牌状态的辅助脚本
+- `normalize-tools.js`：用于规范化工具名称的脚本
+- `README.md`：用户使用指南
+- `config.json`：技能配置文件
 
-- `SKILL.md` - This file (instructions)
-- `submit.js` - Submits use case to clawusecase.com API
-- `get-credential.js` - Retrieves OAuth credential from Convex after auth
-- `poll-credential.sh` - Helper script that polls for credential completion
-- `normalize-tools.js` - Normalizes tool/skill names
-- `README.md` - User documentation
-- `config.json` - Skill configuration
+## 常见问题解决方法
 
-## Troubleshooting
-
-**"Command not found: node"**
-Node.js is required. Install it: `brew install node` (macOS) or from nodejs.org
-
-**"Failed to connect to API"**
-Check internet connection and that clawusecase.com is accessible.
-
-**"OAuth token not found"**
-The token might have expired (10 min timeout). Generate a fresh OAuth link.
+- **“命令未找到：node”**：需要安装 Node.js。在 macOS 上使用 `brew install node`，或在 nodejs.org 网站下载。
+- **“无法连接到 API”**：请检查网络连接，并确认 clawusecase.com 可访问。
+- **“OAuth 令牌未找到”**：可能是令牌已过期（有效期为 10 分钟）。请生成新的 OAuth 链接。

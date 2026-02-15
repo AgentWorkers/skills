@@ -1,23 +1,23 @@
 ---
 name: better-notion
-description: Full CRUD for Notion pages, databases, and blocks. Create, read, update, delete, search, and query.
+description: Notion页面、数据库和区块支持完整的CRUD（创建、读取、更新、删除）操作。用户可以执行创建、读取、更新、删除、搜索和查询等操作。
 metadata: {"clawdbot":{"emoji":"📝"}}
 ---
 
 # Notion
 
-Use the Notion API for pages, data sources (databases), and blocks.
+您可以使用 Notion API 来创建页面、数据源（数据库）以及各种内容块。
 
-## Setup
+## 设置
 
 ```bash
 mkdir -p ~/.config/notion
 echo "ntn_your_key_here" > ~/.config/notion/api_key
 ```
 
-Share target pages/databases with your integration in Notion UI.
+在 Notion 用户界面中，将目标页面或数据库共享给您的集成系统。
 
-## API Basics
+## API 基础知识
 
 ```bash
 NOTION_KEY=$(cat ~/.config/notion/api_key)
@@ -27,7 +27,7 @@ curl -X POST "https://api.notion.com/v1/..." \
   -H "Content-Type: application/json"
 ```
 
-## Common Operations
+## 常见操作
 
 ```bash
 # Search
@@ -67,22 +67,22 @@ curl -X DELETE "https://api.notion.com/v1/blocks/{block_id}"
 curl -X PATCH "https://api.notion.com/v1/blocks/{block_id}" -d '{"archived": false}'
 ```
 
-## Property Types
+## 属性类型
 
-| Type | Format |
+| 类型 | 格式 |
 |------|--------|
-| Title | `{"title": [{"text": {"content": "..."}}]}` |
-| Text | `{"rich_text": [{"text": {"content": "..."}}]}` |
-| Select | `{"select": {"name": "Option"}}` |
-| Multi-select | `{"multi_select": [{"name": "A"}]}` |
-| Date | `{"date": {"start": "2024-01-15"}}` |
-| Checkbox | `{"checkbox": true}` |
-| Number | `{"number": 42}` |
+| 标题 | `{"title": [{"text": {"content": "..."}}]}` |
+| 文本 | `{"rich_text": [{"text": {"content": "..."}}]}` |
+| 单选 | `{"select": {"name": "选项"}}` |
+| 多选 | `{"multi_select": [{"name": "选项A"}]}` |
+| 日期 | `{"date": {"start": "2024-01-15"}}` |
+| 复选框 | `{"checkbox": true}` |
+| 数字 | `{"number": 42}` |
 | URL | `{"url": "https://..."}` |
 
-## 2025-09-03 API Notes
+## 2025-09-03 的 API 更新说明
 
-- Databases = "data sources" in API
-- Use `data_source_id` for both creating pages and querying
-- Get `data_source_id` from search results (the `id` field)
-- Rate limit: ~3 req/sec
+- 在 API 中，`Databases` 现在被称为“数据源”（data sources）。
+- 创建页面或查询数据源时，都需要使用 `data_source_id`。
+- 可以从搜索结果中获取 `data_source_id`（该字段名为 `id`）。
+- API 的请求速率限制为：约 3 次请求/秒。

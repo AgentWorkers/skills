@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Services - JavaScript
+# Telnyx 数字服务 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## List dynamic emergency addresses
+## 列出动态紧急地址
 
-Returns the dynamic emergency addresses according to filters
+根据筛选条件返回动态紧急地址
 
 `GET /dynamic_emergency_addresses`
 
@@ -45,11 +45,11 @@ for await (const dynamicEmergencyAddress of client.dynamicEmergencyAddresses.lis
 }
 ```
 
-## Create a dynamic emergency address.
+## 创建动态紧急地址
 
-Creates a dynamic emergency address.
+创建一个动态紧急地址。
 
-`POST /dynamic_emergency_addresses` — Required: `house_number`, `street_name`, `locality`, `administrative_area`, `postal_code`, `country_code`
+`POST /dynamic_emergency_addresses` — 必需参数：`house_number`、`street_name`、`locality`、`administrative_area`、`postal_code`、`country_code`
 
 ```javascript
 const dynamicEmergencyAddress = await client.dynamicEmergencyAddresses.create({
@@ -64,9 +64,9 @@ const dynamicEmergencyAddress = await client.dynamicEmergencyAddresses.create({
 console.log(dynamicEmergencyAddress.data);
 ```
 
-## Get a dynamic emergency address
+## 获取动态紧急地址
 
-Returns the dynamic emergency address based on the ID provided
+根据提供的 ID 返回动态紧急地址
 
 `GET /dynamic_emergency_addresses/{id}`
 
@@ -78,9 +78,9 @@ const dynamicEmergencyAddress = await client.dynamicEmergencyAddresses.retrieve(
 console.log(dynamicEmergencyAddress.data);
 ```
 
-## Delete a dynamic emergency address
+## 删除动态紧急地址
 
-Deletes the dynamic emergency address based on the ID provided
+根据提供的 ID 删除动态紧急地址
 
 `DELETE /dynamic_emergency_addresses/{id}`
 
@@ -92,9 +92,9 @@ const dynamicEmergencyAddress = await client.dynamicEmergencyAddresses.delete(
 console.log(dynamicEmergencyAddress.data);
 ```
 
-## List dynamic emergency endpoints
+## 列出动态紧急终端点
 
-Returns the dynamic emergency endpoints according to filters
+根据筛选条件返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints`
 
@@ -105,11 +105,11 @@ for await (const dynamicEmergencyEndpoint of client.dynamicEmergencyEndpoints.li
 }
 ```
 
-## Create a dynamic emergency endpoint.
+## 创建动态紧急终端点
 
-Creates a dynamic emergency endpoints.
+创建一个动态紧急终端点。
 
-`POST /dynamic_emergency_endpoints` — Required: `dynamic_emergency_address_id`, `callback_number`, `caller_name`
+`POST /dynamic_emergency_endpoints` — 必需参数：`dynamic_emergency_address_id`、`callback_number`、`caller_name`
 
 ```javascript
 const dynamicEmergencyEndpoint = await client.dynamicEmergencyEndpoints.create({
@@ -121,9 +121,9 @@ const dynamicEmergencyEndpoint = await client.dynamicEmergencyEndpoints.create({
 console.log(dynamicEmergencyEndpoint.data);
 ```
 
-## Get a dynamic emergency endpoint
+## 获取动态紧急终端点
 
-Returns the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 返回动态紧急终端点
 
 `GET /dynamic_emergency_endpoints/{id}`
 
@@ -135,9 +135,9 @@ const dynamicEmergencyEndpoint = await client.dynamicEmergencyEndpoints.retrieve
 console.log(dynamicEmergencyEndpoint.data);
 ```
 
-## Delete a dynamic emergency endpoint
+## 删除动态紧急终端点
 
-Deletes the dynamic emergency endpoint based on the ID provided
+根据提供的 ID 删除动态紧急终端点
 
 `DELETE /dynamic_emergency_endpoints/{id}`
 
@@ -149,9 +149,9 @@ const dynamicEmergencyEndpoint = await client.dynamicEmergencyEndpoints.delete(
 console.log(dynamicEmergencyEndpoint.data);
 ```
 
-## List your voice channels for non-US zones
+## 列出非美国地区的语音通道
 
-Returns the non-US voice channels for your account.
+列出您账户中的非美国地区语音通道。
 
 `GET /channel_zones`
 
@@ -162,11 +162,11 @@ for await (const channelZoneListResponse of client.channelZones.list()) {
 }
 ```
 
-## Update voice channels for non-US Zones
+## 更新非美国地区的语音通道
 
-Update the number of Voice Channels for the Non-US Zones.
+更新非美国地区的语音通道数量。
 
-`PUT /channel_zones/{channel_zone_id}` — Required: `channels`
+`PUT /channel_zones/{channel_zone_id}` — 必需参数：`channels`
 
 ```javascript
 const channelZone = await client.channelZones.update('channel_zone_id', { channels: 0 });
@@ -174,9 +174,9 @@ const channelZone = await client.channelZones.update('channel_zone_id', { channe
 console.log(channelZone.id);
 ```
 
-## List your voice channels for US Zone
+## 列出美国地区的语音通道
 
-Returns the US Zone voice channels for your account.
+列出您账户中的美国地区语音通道。
 
 `GET /inbound_channels`
 
@@ -186,11 +186,11 @@ const inboundChannels = await client.inboundChannels.list();
 console.log(inboundChannels.data);
 ```
 
-## Update voice channels for US Zone
+## 更新美国地区的语音通道
 
-Update the number of Voice Channels for the US Zone.
+更新美国地区的语音通道数量。
 
-`PATCH /inbound_channels` — Required: `channels`
+`PATCH /inbound_channels` — 必需参数：`channels`
 
 ```javascript
 const inboundChannel = await client.inboundChannels.update({ channels: 7 });
@@ -198,9 +198,9 @@ const inboundChannel = await client.inboundChannels.update({ channels: 7 });
 console.log(inboundChannel.data);
 ```
 
-## List All Numbers using Channel Billing
+## 列出使用渠道计费的所有电话号码
 
-Retrieve a list of all phone numbers using Channel Billing, grouped by Zone.
+按地区分组，检索所有使用渠道计费的电话号码。
 
 `GET /list`
 
@@ -210,9 +210,9 @@ const response = await client.list.retrieveAll();
 console.log(response.data);
 ```
 
-## List Numbers using Channel Billing for a specific Zone
+## 列出特定地区的使用渠道计费的电话号码
 
-Retrieve a list of phone numbers using Channel Billing for a specific Zone.
+检索特定地区使用渠道计费的电话号码列表。
 
 `GET /list/{channel_zone_id}`
 
@@ -222,9 +222,9 @@ const response = await client.list.retrieveByZone('channel_zone_id');
 console.log(response.data);
 ```
 
-## Get voicemail
+## 获取语音信箱
 
-Returns the voicemail settings for a phone number
+获取电话号码的语音信箱设置
 
 `GET /phone_numbers/{phone_number_id}/voicemail`
 
@@ -234,9 +234,9 @@ const voicemail = await client.phoneNumbers.voicemail.retrieve('123455678900');
 console.log(voicemail.data);
 ```
 
-## Create voicemail
+## 创建语音信箱
 
-Create voicemail settings for a phone number
+为电话号码创建语音信箱设置
 
 `POST /phone_numbers/{phone_number_id}/voicemail`
 
@@ -246,9 +246,9 @@ const voicemail = await client.phoneNumbers.voicemail.create('123455678900');
 console.log(voicemail.data);
 ```
 
-## Update voicemail
+## 更新语音信箱
 
-Update voicemail settings for a phone number
+更新电话号码的语音信箱设置
 
 `PATCH /phone_numbers/{phone_number_id}/voicemail`
 

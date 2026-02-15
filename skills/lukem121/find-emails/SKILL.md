@@ -1,6 +1,6 @@
 ---
 name: find-emails
-description: Crawl websites locally with crawl4ai to extract contact emails. Accepts multiple URLs and outputs domain-grouped results for clear attribution. Uses deep crawling with URL filters (contact, about, support) to find emails on relevant pages. Use when extracting emails from websites, finding contact information, or crawling for email addresses.
+description: 使用 crawl4ai在本地爬取网站以提取联系邮箱地址。该工具支持处理多个URL，并以域名分组的形式输出结果，以便于明确来源。通过使用URL过滤器（如“contact”、“about”、“support”等）进行深度爬取，从而在相关页面中找到邮箱地址。适用于从网站中提取邮箱、查找联系信息或批量爬取邮箱地址的场景。
 allowed-tools:
   - Read
   - Write
@@ -9,20 +9,20 @@ allowed-tools:
   - Glob
 ---
 
-# Find Emails
+# 查找电子邮件
 
-CLI for crawling websites locally via crawl4ai and extracting contact emails from pages likely to contain them (contact, about, support, team, etc.).
+这是一个命令行工具（CLI），通过 `crawl4ai` 在本地爬取网站，并从可能包含电子邮件的页面（如“联系我们”、“关于我们”、“支持”等部分）中提取电子邮件地址。
 
-## Setup
+## 设置
 
-1. Install dependencies: `pip install crawl4ai`
-2. Run the script:
+1. 安装依赖项：`pip install crawl4ai`
+2. 运行脚本：
 
 ```bash
 python scripts/find_emails.py https://example.com
 ```
 
-## Quick Start
+## 快速入门
 t
 ```bash
 # Crawl a site
@@ -40,9 +40,9 @@ python scripts/find_emails.py https://example.com -o emails.txt
 
 ---
 
-## Script
+## 脚本
 
-### find_emails.py — Crawl and Extract Emails
+### find_emails.py — 爬取并提取电子邮件
 
 ```bash
 python scripts/find_emails.py <url> [url ...]
@@ -51,22 +51,22 @@ python scripts/find_emails.py https://example.com -j -o results.json
 python scripts/find_emails.py --from-file page.md
 ```
 
-**Arguments:**
+**参数：**
 
-| Argument          | Description                                          |
+| 参数          | 描述                                          |
 | ----------------- | ---------------------------------------------------- |
-| `urls`            | One or more URLs to crawl (positional)               |
-| `-o`, `--output`  | Write results to file                                |
-| `-j`, `--json`    | JSON output (`{"emails": {"email": ["path", ...]}}`) |
-| `-q`, `--quiet`   | Minimal output (no header, just email lines)         |
-| `--max-depth`     | Max crawl depth (default: 2)                         |
-| `--max-pages`     | Max pages to crawl (default: 25)                     |
-| `--from-file`     | Extract from local markdown file (skip crawl)        |
-| `-v`, `--verbose` | Verbose crawl output                                 |
+| `urls`            | 一个或多个要爬取的 URL                          |
+| `-o`, `--output`  | 将结果写入文件                                |
+| `-j`, `--json`    | 以 JSON 格式输出（格式示例：`{"emails": {"email": ["path", ...]}}`） |
+| `-q`, `--quiet`   | 最小化输出（不显示头部信息，仅显示电子邮件地址）         |
+| `--max-depth`     | 最大爬取深度（默认值：2）                         |
+| `--max-pages`     | 最大爬取页数（默认值：25）                     |
+| `--from-file`     | 从本地 Markdown 文件中提取数据（跳过爬取）        |
+| `-v`, `--verbose` | 详细显示爬取过程                                 |
 
-**Output format (human-readable):**
+**输出格式（便于阅读）：**
 
-Emails are grouped by domain. Clear structure for multi-URL runs:
+电子邮件按域名分组显示。对于多次爬取同一网站的情况，输出结构会更加清晰：
 
 ```
 Found 3 unique email(s) across 2 domain(s)
@@ -84,9 +84,9 @@ Found 3 unique email(s) across 2 domain(s)
     Found on: /contact-us
 ```
 
-**Output format (JSON):**
+**输出格式（JSON）：**
 
-LLM-friendly structure with summary and per-domain breakdown:
+适合大型语言模型（LLM）使用的格式，包含汇总信息及每个域名的详细数据：
 
 ```json
 {
@@ -114,9 +114,9 @@ LLM-friendly structure with summary and per-domain breakdown:
 
 ---
 
-## Configuration
+## 配置
 
-Edit `scripts/url_patterns.json` to customize which URLs the crawler follows. Only links matching these glob-style patterns are included:
+编辑 `scripts/url_patterns.json` 以自定义爬取的 URL。只有匹配这些通配符模式的链接才会被包含在爬取范围内：
 
 ```json
 {
@@ -137,40 +137,38 @@ Edit `scripts/url_patterns.json` to customize which URLs the crawler follows. On
 }
 ```
 
-If the file is missing or invalid, default patterns are used.
+如果该文件缺失或无效，系统将使用默认的爬取规则。
 
 ---
 
-## Workflow
+## 工作流程
 
-1. **Crawl** a site:
-
+1. **爬取网站**：
    ```bash
    python scripts/find_emails.py https://example.com -o emails.json
    ```
 
-2. **Extract from local file** (e.g., cached markdown):
-
+2. **从本地文件中提取数据**（例如，从缓存的 Markdown 文件中提取）：
    ```bash
    python scripts/find_emails.py --from-file crawled.md -j
    ```
 
-3. **Customize** URL filters by editing `scripts/url_patterns.json`.
+3. **通过编辑 `scripts/url_patterns.json` 来自定义 URL 过滤规则**：
 
 ---
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install crawl4ai
 playwright install
 ```
 
-Requires a browser (Playwright) for local crawling.
+本地爬取需要浏览器（Playwright）的支持。
 
 ---
 
-## Batch Processing
+## 批量处理
 
 ```bash
 # Crawl multiple sites – results grouped by domain for clear attribution
@@ -183,4 +181,4 @@ for f in crawled/*.md; do
 done
 ```
 
-Multiple URLs are fully supported; output clearly associates each email with its source domain. Domains are normalized (e.g. `www.techbullion.com` and `techbullion.com` merge into one) so duplicate sites are not listed separately.
+支持处理多个 URL；输出会明确显示每个电子邮件的来源域名。所有域名都会被统一处理（例如，`www.techbullion.com` 和 `techbullion.com` 会被视为同一个域名），因此不会重复列出。

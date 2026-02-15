@@ -1,28 +1,28 @@
 ---
 name: redis-schema-gen
-description: Generate Redis key patterns and data structures. Use when designing Redis architecture.
+description: 生成 Redis 键模式和数据结构。在设计 Redis 架构时可以使用这些信息。
 ---
 
-# Redis Schema Generator
+# Redis模式生成器
 
-Redis is flexible but that means you need to design your key patterns and data structures carefully. Describe your use case and get a proper schema.
+Redis具有很高的灵活性，但这同时也意味着你需要仔细设计键的命名规则和数据结构。请描述你的使用场景，以便获得合适的Redis模式。
 
-**One command. Zero config. Just works.**
+**仅需一条命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-redis-schema "user sessions and rate limiting"
 ```
 
-## What It Does
+## 功能介绍
 
-- Generates Redis key naming conventions
-- Designs appropriate data structures (strings, hashes, sets, etc.)
-- Includes TTL recommendations
-- Documents access patterns
+- 生成Redis键的命名规范
+- 设计合适的数据结构（字符串、哈希表、集合等）
+- 提供TTL（生存时间）设置建议
+- 文档化数据的访问模式
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Session storage
@@ -35,49 +35,49 @@ npx ai-redis-schema "cache API responses with invalidation"
 npx ai-redis-schema "game leaderboard with real-time updates"
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Use namespaced keys** - prefix:type:id pattern
-- **Set TTLs** - Redis isn't infinite storage
-- **Choose right data type** - hashes for objects, sorted sets for rankings
-- **Plan for expiration** - how long should data live
+- **使用命名空间化的键**：采用“前缀：类型：ID”的格式
+- **设置TTL**：Redis的存储空间是有限的
+- **选择合适的数据类型**：使用哈希表存储对象，使用有序集合进行排名
+- **规划数据的过期时间**：确定数据应保留多久
 
-## When to Use This
+## 适用场景
 
-- Adding Redis to your architecture
-- Designing caching strategies
-- Building real-time features
-- Learning Redis patterns
+- 将Redis集成到你的应用程序架构中
+- 设计缓存策略
+- 开发实时功能
+- 学习Redis的相关模式
 
-## Part of the LXGIC Dev Toolkit
+## 本工具属于LXGIC开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发工具之一。完全免费，无需注册或支付API密钥，即可直接使用这些工具。
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgicstudios.com
+**了解更多：**
+- GitHub：https://github.com/LXGIC-Studios
+- Twitter：https://x.com/lxgicstudios
+- Substack：https://lxgicstudios.substack.com
+- 官网：https://lxgicstudios.com
 
-## Requirements
+## 系统要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Needs OPENAI_API_KEY environment variable.
+无需安装，只需使用`npx`命令即可运行。建议使用Node.js 18及以上版本。运行时需要设置`OPENAI_API_KEY`环境变量。
 
 ```bash
 npx ai-redis-schema --help
 ```
 
-## How It Works
+## 工作原理
 
-Takes your use case description and designs appropriate Redis key patterns and data structures. The AI knows which Redis types work best for different access patterns.
+该工具会根据你的使用场景描述，自动生成合适的Redis键命名规则和数据结构。AI会判断哪种Redis数据类型最适合特定的访问模式。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具。
 
 ---
 
-**Built by LXGIC Studios**
+**由LXGIC Studios开发**
 
-- GitHub: [github.com/lxgicstudios/redis-schema-gen](https://github.com/lxgicstudios/redis-schema-gen)
-- Twitter: [@lxgicstudios](https://x.com/lxgicstudios)
+- GitHub：[github.com/lxgicstudios/redis-schema-gen](https://github.com/lxgicstudios/redis-schema-gen)
+- Twitter：[@lxgicstudios](https://x.com/lxgicstudios)

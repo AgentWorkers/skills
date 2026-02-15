@@ -1,12 +1,12 @@
 ---
 name: agent-browser
-description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+description: 该工具可自动化浏览器操作，用于网页测试、表单填写、截图以及数据提取。适用于用户需要浏览网站、与网页交互、填写表单、截图、测试Web应用程序或从网页中提取信息的情况。
 allowed-tools: Bash(agent-browser:*)
 ---
 
-# Browser Automation with agent-browser
+# 使用 agent-browser 进行浏览器自动化操作
 
-## Quick start
+## 快速入门
 
 ```bash
 agent-browser open <url>        # Navigate to page
@@ -16,16 +16,16 @@ agent-browser fill @e2 "text"   # Fill input by ref
 agent-browser close             # Close browser
 ```
 
-## Core workflow
+## 核心工作流程
 
-1. Navigate: `agent-browser open <url>`
-2. Snapshot: `agent-browser snapshot -i` (returns elements with refs like `@e1`, `@e2`)
-3. Interact using refs from the snapshot
-4. Re-snapshot after navigation or significant DOM changes
+1. 导航：`agent-browser open <url>`
+2. 截取页面快照：`agent-browser snapshot -i`（返回带有引用（如 `@e1`、`@e2`）的元素）
+3. 使用快照中的引用进行交互
+4. 在导航或 DOM 发生显著变化后重新获取快照
 
-## Commands
+## 命令
 
-### Navigation
+### 导航
 
 ```bash
 agent-browser open <url>      # Navigate to URL (aliases: goto, navigate)
@@ -38,7 +38,7 @@ agent-browser close           # Close browser (aliases: quit, exit)
 agent-browser connect 9222    # Connect to browser via CDP port
 ```
 
-### Snapshot (page analysis)
+### 截取页面快照（页面分析）
 
 ```bash
 agent-browser snapshot            # Full accessibility tree
@@ -48,7 +48,7 @@ agent-browser snapshot -d 3       # Limit depth to 3
 agent-browser snapshot -s "#main" # Scope to CSS selector
 ```
 
-### Interactions (use @refs from snapshot)
+### 交互（使用快照中的引用）
 
 ```bash
 agent-browser click @e1           # Click
@@ -71,7 +71,7 @@ agent-browser drag @e1 @e2        # Drag and drop
 agent-browser upload @e1 file.pdf # Upload files
 ```
 
-### Get information
+### 获取信息
 
 ```bash
 agent-browser get text @e1        # Get element text
@@ -85,7 +85,7 @@ agent-browser get box @e1         # Get bounding box
 agent-browser get styles @e1      # Get computed styles (font, color, bg, etc.)
 ```
 
-### Check state
+### 检查页面状态
 
 ```bash
 agent-browser is visible @e1      # Check if visible
@@ -93,7 +93,7 @@ agent-browser is enabled @e1      # Check if enabled
 agent-browser is checked @e1      # Check if checked
 ```
 
-### Screenshots & PDF
+### 截取屏幕截图和生成 PDF
 
 ```bash
 agent-browser screenshot          # Save to a temporary directory
@@ -102,7 +102,7 @@ agent-browser screenshot --full   # Full page
 agent-browser pdf output.pdf      # Save as PDF
 ```
 
-### Video recording
+### 视频录制
 
 ```bash
 agent-browser record start ./demo.webm    # Start recording (uses current URL + state)
@@ -111,10 +111,9 @@ agent-browser record stop                 # Stop and save video
 agent-browser record restart ./take2.webm # Stop current + start new recording
 ```
 
-Recording creates a fresh context but preserves cookies/storage from your session. If no URL is provided, it
-automatically returns to your current page. For smooth demos, explore first, then start recording.
+录制会创建一个新的会话环境，但会保留您当前的 cookies 和存储数据。如果未提供 URL，系统会自动返回到当前页面。为了获得流畅的演示效果，请先浏览页面，然后再开始录制。
 
-### Wait
+### 等待
 
 ```bash
 agent-browser wait @e1                     # Wait for element
@@ -125,7 +124,7 @@ agent-browser wait --load networkidle      # Wait for network idle (or -l)
 agent-browser wait --fn "window.ready"     # Wait for JS condition (or -f)
 ```
 
-### Mouse control
+### 鼠标控制
 
 ```bash
 agent-browser mouse move 100 200      # Move mouse
@@ -134,7 +133,7 @@ agent-browser mouse up left           # Release button
 agent-browser mouse wheel 100         # Scroll wheel
 ```
 
-### Semantic locators (alternative to refs)
+### 语义化定位器（替代引用）
 
 ```bash
 agent-browser find role button click --name "Submit"
@@ -150,7 +149,7 @@ agent-browser find last ".item" click
 agent-browser find nth 2 "a" hover
 ```
 
-### Browser settings
+### 浏览器设置
 
 ```bash
 agent-browser set viewport 1920 1080          # Set viewport size
@@ -163,7 +162,7 @@ agent-browser set media dark                  # Emulate color scheme
 agent-browser set media light reduced-motion  # Light mode + reduced motion
 ```
 
-### Cookies & Storage
+### Cookies 和存储数据
 
 ```bash
 agent-browser cookies                     # Get all cookies
@@ -175,7 +174,7 @@ agent-browser storage local set k v       # Set value
 agent-browser storage local clear         # Clear all
 ```
 
-### Network
+### 网络请求
 
 ```bash
 agent-browser network route <url>              # Intercept requests
@@ -186,7 +185,7 @@ agent-browser network requests                 # View tracked requests
 agent-browser network requests --filter api    # Filter requests
 ```
 
-### Tabs & Windows
+### 标签页和窗口操作
 
 ```bash
 agent-browser tab                 # List tabs
@@ -197,27 +196,27 @@ agent-browser tab close 2         # Close tab by index
 agent-browser window new          # New window
 ```
 
-### Frames
+### 帧（iframe）操作
 
 ```bash
 agent-browser frame "#iframe"     # Switch to iframe
 agent-browser frame main          # Back to main frame
 ```
 
-### Dialogs
+### 对话框操作
 
 ```bash
 agent-browser dialog accept [text]  # Accept dialog
 agent-browser dialog dismiss        # Dismiss dialog
 ```
 
-### JavaScript
+### JavaScript 操作
 
 ```bash
 agent-browser eval "document.title"   # Run JavaScript
 ```
 
-## Global options
+## 全局配置选项
 
 ```bash
 agent-browser --session <name> ...    # Isolated browser session
@@ -235,7 +234,7 @@ agent-browser --version               # Show version (-V)
 agent-browser <command> --help        # Show detailed help for a command
 ```
 
-### Proxy support
+### 代理支持
 
 ```bash
 agent-browser --proxy http://proxy.com:8080 open example.com
@@ -243,7 +242,7 @@ agent-browser --proxy http://user:pass@proxy.com:8080 open example.com
 agent-browser --proxy socks5://proxy.com:1080 open example.com
 ```
 
-## Environment variables
+## 环境变量
 
 ```bash
 AGENT_BROWSER_SESSION="mysession"            # Default session name
@@ -254,7 +253,7 @@ AGENT_BROWSER_STREAM_PORT="9223"             # WebSocket streaming port
 AGENT_BROWSER_HOME="/path/to/agent-browser"  # Custom install location (for daemon.js)
 ```
 
-## Example: Form submission
+## 示例：表单提交
 
 ```bash
 agent-browser open https://example.com/form
@@ -268,7 +267,7 @@ agent-browser wait --load networkidle
 agent-browser snapshot -i  # Check result
 ```
 
-## Example: Authentication with saved state
+## 示例：使用保存的状态进行身份验证
 
 ```bash
 # Login once
@@ -285,7 +284,7 @@ agent-browser state load auth.json
 agent-browser open https://app.example.com/dashboard
 ```
 
-## Sessions (parallel browsers)
+## 多个浏览器会话
 
 ```bash
 agent-browser --session test1 open site-a.com
@@ -293,16 +292,16 @@ agent-browser --session test2 open site-b.com
 agent-browser session list
 ```
 
-## JSON output (for parsing)
+## JSON 输出（便于解析）
 
-Add `--json` for machine-readable output:
+添加 `--json` 参数可获取机器可读的输出格式：
 
 ```bash
 agent-browser snapshot -i --json
 agent-browser get text @e1 --json
 ```
 
-## Debugging
+## 调试
 
 ```bash
 agent-browser --headed open example.com   # Show browser window
@@ -319,38 +318,38 @@ agent-browser record start ./debug.webm   # Record video from current page
 agent-browser record stop                 # Save recording
 ```
 
-## Deep-dive documentation
+## 深入文档说明
 
-For detailed patterns and best practices, see:
+有关详细的使用模式和最佳实践，请参阅：
 
-| Reference | Description |
+| 文档链接 | 说明 |
 |-----------|-------------|
-| [references/snapshot-refs.md](references/snapshot-refs.md) | Ref lifecycle, invalidation rules, troubleshooting |
-| [references/session-management.md](references/session-management.md) | Parallel sessions, state persistence, concurrent scraping |
-| [references/authentication.md](references/authentication.md) | Login flows, OAuth, 2FA handling, state reuse |
-| [references/video-recording.md](references/video-recording.md) | Recording workflows for debugging and documentation |
-| [references/proxy-support.md](references/proxy-support.md) | Proxy configuration, geo-testing, rotating proxies |
+| [references/snapshot-refs.md](references/snapshot-refs.md) | 快照引用生命周期、失效规则、故障排除 |
+| [references/session-management.md](references/session-management.md) | 多个会话管理、状态持久化、并发爬取 |
+| [references/authentication.md](references/authentication.md) | 登录流程、OAuth、双因素认证、状态重用 |
+| [references/video-recording.md](references/video-recording.md) | 用于调试和文档制作的视频录制流程 |
+| [references/proxy-support.md](references/proxy-support.md) | 代理配置、地理测试、代理轮换 |
 
-## Ready-to-use templates
+## 可直接使用的模板
 
-Executable workflow scripts for common patterns:
+针对常见操作模式的脚本模板：
 
-| Template | Description |
+| 模板名称 | 说明 |
 |----------|-------------|
-| [templates/form-automation.sh](templates/form-automation.sh) | Form filling with validation |
-| [templates/authenticated-session.sh](templates/authenticated-session.sh) | Login once, reuse state |
-| [templates/capture-workflow.sh](templates/capture-workflow.sh) | Content extraction with screenshots |
+| [templates/form-automation.sh](templates/form-automation.sh) | 带有验证功能的表单填写 |
+| [templates/authenticated-session.sh](templates/authenticated-session.sh) | 登录一次后重复使用会话状态 |
+| [templates/capture-workflow.sh](templates/capture-workflow.sh) | 带有截图的内容提取 |
 
-Usage:
+使用方法：
 ```bash
 ./templates/form-automation.sh https://example.com/form
 ./templates/authenticated-session.sh https://app.example.com/login
 ./templates/capture-workflow.sh https://example.com ./output
 ```
 
-## HTTPS Certificate Errors
+## HTTPS 证书错误
 
-For sites with self-signed or invalid certificates:
+对于使用自签名证书或无效证书的网站：
 ```bash
 agent-browser open https://localhost:8443 --ignore-https-errors
 ```

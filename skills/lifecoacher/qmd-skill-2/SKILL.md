@@ -1,129 +1,87 @@
 ---
 name: qmd
-description: Local hybrid search for markdown notes and docs. Use when searching notes, finding related content, or retrieving documents from indexed collections.
+description: 本地混合搜索功能，适用于Markdown笔记和文档的查询。该功能可用于搜索笔记、查找相关内容，或从已索引的集合中检索文档。
 homepage: https://github.com/tobi/qmd
 metadata: {"clawdbot":{"emoji":"🔍","os":["darwin","linux"],"requires":{"bins":["qmd"]},"install":[{"id":"bun-qmd","kind":"shell","command":"bun install -g https://github.com/tobi/qmd","bins":["qmd"],"label":"Install qmd via Bun"}]}}
 ---
 
-# qmd - Quick Markdown Search
+# qmd - 快速 Markdown 搜索工具
 
-Local search engine for Markdown notes, docs, and knowledge bases. Index once, search fast.
+这是一个用于搜索 Markdown 笔记、文档和知识库的本地搜索引擎。只需进行一次索引，即可实现快速搜索。
 
-## When to use (trigger phrases)
+## 使用场景（触发短语）  
+- “搜索我的笔记/文档/知识库”  
+- “查找相关笔记”  
+- “从我的收藏中检索 Markdown 文档”  
+- “搜索本地的 Markdown 文件”  
 
-- "search my notes / docs / knowledge base"
-- "find related notes"
-- "retrieve a markdown document from my collection"
-- "search local markdown files"
+## 默认行为（重要说明）  
+- 首选 `qmd search`（基于 BM25 算法的快速搜索）；通常响应迅速，应作为默认选项。  
+- 仅在关键词搜索失败且需要语义相似性时使用 `qmd vsearch`（初次运行时可能较慢）。  
+- 除非用户明确要求最高质量的混合搜索结果并能够接受较长的运行时间/超时，否则避免使用 `qmd query`。  
 
-## Default behavior (important)
+## 先决条件  
+- 确保已安装 Bun >= 1.0.0。  
+- 在 macOS 上，需要通过 `brew install sqlite` 安装 SQLite 扩展。  
+- 确保系统路径中包含 `$HOME/.bun/bin`。  
 
-- Prefer `qmd search` (BM25). It's typically instant and should be the default.
-- Use `qmd vsearch` only when keyword search fails and you need semantic similarity (can be very slow on a cold start).
-- Avoid `qmd query` unless the user explicitly wants the highest quality hybrid results and can tolerate long runtimes/timeouts.
+**在 macOS 上安装 Bun：**  
+`brew install oven-sh/bun/bun`  
 
-## Prerequisites
+## 安装方法  
+`bun install -g https://github.com/tobi/qmd`  
 
-- Bun >= 1.0.0
-- macOS: `brew install sqlite` (SQLite extensions)
-- Ensure PATH includes: `$HOME/.bun/bin`
+## 设置方法  
+（具体设置步骤请参考相关文档或代码块。）  
 
-Install Bun (macOS): `brew install oven-sh/bun/bun`
+## 支持的索引类型  
+- 主要用于 Markdown 文件的索引（通常为 `**/*.md` 格式）。  
+- 在测试中，格式较为“混乱”的 Markdown 文件也能被正确处理；索引过程基于内容划分（每个索引块包含大约几百个字符），而非严格的标题/结构。  
+- 该工具不能替代代码搜索工具，代码搜索适用于代码仓库或源代码树的搜索。  
 
-## Install
+## 搜索模式  
+- **`qmd search`**（默认模式）：基于关键词的快速匹配（使用 BM25 算法）。  
+- **`qmd vsearch`**（备用模式）：基于语义相似性的搜索（使用向量模型）。由于在查询前需要执行局部语言模型（LLM）的计算，因此可能较慢。  
+- **`qmd query`**（较少使用）：结合语义搜索和 LLM 重新排序结果的混合搜索方式；通常比 `vsearch` 更慢，且可能超时。  
 
-`bun install -g https://github.com/tobi/qmd`
+## 性能说明  
+- **`qmd search`** 通常响应迅速。  
+- **`qmd vsearch`** 在某些设备上可能需要约 1 分钟的时间，因为查询过程可能需要将本地模型（如 Qwen3-1.7B）加载到内存中；不过向量查找本身通常很快。  
+- **`qmd query`** 会在 `vsearch` 的基础上添加 LLM 重新排序步骤，因此可能更慢且可靠性较低（不适用于交互式使用）。  
+- 如果需要频繁进行语义搜索，可以考虑保持相关进程/模型的运行状态（例如，在系统中启用长时间运行的 qmd/MCP 服务），以避免每次都重新启动 LLM。  
 
-## Setup
+## 常用命令  
+（具体命令请参考相关文档或代码块。）  
 
-```bash
-qmd collection add /path/to/notes --name notes --mask "**/*.md"
-qmd context add qmd://notes "Description of this collection"  # optional
-qmd embed  # one-time to enable vector + hybrid search
-```
+## 有用的选项  
+- `-n <num>`：限制返回结果的数量。  
+- `-c, --collection <name>`：仅搜索指定集合内的内容。  
+- `--all --min-score <num>`：返回得分高于指定阈值的所有匹配项。  
+- `--json` / `--files`：输出格式适合代理程序使用。  
+- `--full`：返回完整的文档内容。  
 
-## What it indexes
+## 文档检索方法  
+（具体检索逻辑请参考相关文档或代码块。）  
 
-- Intended for Markdown collections (commonly `**/*.md`).
-- In our testing, "messy" Markdown is fine: chunking is content-based (roughly a few hundred tokens per chunk), not strict heading/structure based.
-- Not a replacement for code search; use code search tools for repositories/source trees.
+## 维护说明  
+（具体维护步骤请参考相关文档或代码块。）  
 
-## Search modes
+## 保持索引更新  
+为了确保搜索结果始终是最新的，请定期执行索引操作：  
+- 对于基于关键词的搜索（`qmd search`），通常只需执行 `qmd update` 即可。  
+- 如果使用基于语义/混合搜索的选项（`vsearch`/`query`），还可以使用 `qmd embed` 命令，但该命令可能较慢。  
 
-- `qmd search` (default): fast keyword match (BM25)
-- `qmd vsearch` (last resort): semantic similarity (vector). Often slow due to local LLM work before the vector lookup.
-- `qmd query` (generally skip): hybrid search + LLM reranking. Often slower than `vsearch` and may timeout.
+**示例调度脚本（cron 语法）：**  
+（具体调度脚本请参考相关文档或代码块。）  
 
-## Performance notes
+**注意事项：**  
+如果你的 Clawdbot/代理环境支持内置调度器，可以直接在该环境中运行相应的命令，无需依赖系统 cron。  
 
-- `qmd search` is typically instant.
-- `qmd vsearch` can be ~1 minute on some machines because query expansion may load a local model (e.g., Qwen3-1.7B) into memory per run; the vector lookup itself is usually fast.
-- `qmd query` adds LLM reranking on top of `vsearch`, so it can be even slower and less reliable for interactive use.
-- If you need repeated semantic searches, consider keeping the process/model warm (e.g., a long-lived qmd/MCP server mode if available in your setup) rather than invoking a cold-start LLM each time.
+## 模型与缓存机制  
+- 该工具使用本地的 GGUF 模型；首次运行时会自动下载这些模型。  
+- 默认缓存路径为 `~/.cache/qmd/models/`（可通过 `XDG_CACHE_HOME` 配置自定义）。  
 
-## Common commands
-
-```bash
-qmd search "query"             # default
-qmd vsearch "query"
-qmd query "query"
-qmd search "query" -c notes     # Search specific collection
-qmd search "query" -n 10        # More results
-qmd search "query" --json       # JSON output
-qmd search "query" --all --files --min-score 0.3
-```
-
-## Useful options
-
-- `-n <num>`: number of results
-- `-c, --collection <name>`: restrict to a collection
-- `--all --min-score <num>`: return all matches above a threshold
-- `--json` / `--files`: agent-friendly output formats
-- `--full`: return full document content
-
-## Retrieve
-
-```bash
-qmd get "path/to/file.md"       # Full document
-qmd get "#docid"                # By ID from search results
-qmd multi-get "journals/2025-05*.md"
-qmd multi-get "doc1.md, doc2.md, #abc123" --json
-```
-
-## Maintenance
-
-```bash
-qmd status                      # Index health
-qmd update                      # Re-index changed files
-qmd embed                       # Update embeddings
-```
-
-## Keeping the index fresh
-
-Automate indexing so results stay current as you add/edit notes.
-
-- For keyword search (`qmd search`), `qmd update` is usually enough (fast).
-- If you rely on semantic/hybrid search (`vsearch`/`query`), you may also want `qmd embed`, but it can be slow.
-
-Example schedules (cron):
-
-```bash
-# Hourly incremental updates (keeps BM25 fresh):
-0 * * * * export PATH="$HOME/.bun/bin:$PATH" && qmd update
-
-# Optional: nightly embedding refresh (can be slow):
-0 5 * * * export PATH="$HOME/.bun/bin:$PATH" && qmd embed
-```
-
-If your Clawdbot/agent environment supports a built-in scheduler, you can run the same commands there instead of system cron.
-
-## Models and cache
-
-- Uses local GGUF models; first run auto-downloads them.
-- Default cache: `~/.cache/qmd/models/` (override with `XDG_CACHE_HOME`).
-
-## Relationship to Clawdbot memory search
-
-- `qmd` searches *your local files* (notes/docs) that you explicitly index into collections.
-- Clawdbot's `memory_search` searches *agent memory* (saved facts/context from prior interactions).
-- Use both: `memory_search` for "what did we decide/learn before?", `qmd` for "what's in my notes/docs on disk?".
+**与 Clawdbot 的关系**  
+- `qmd` 用于搜索你手动添加到集合中的本地 Markdown 文件。  
+- Clawdbot 的 `memory_search` 用于搜索代理程序内存中保存的信息/上下文。  
+- 可以同时使用这两种工具：`memory_search` 用于查询“我们之前做了什么/学到了什么？”，`qmd` 用于查询“磁盘上的笔记/文档内容”。

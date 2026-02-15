@@ -1,129 +1,127 @@
 ---
 name: linux-patcher
-description: Automated Linux server patching and Docker container updates. Use when the user asks to update, patch, or upgrade Linux servers, apply security updates, update Docker containers, check for system updates, or manage server maintenance across multiple hosts. Supports Ubuntu, Debian, RHEL, AlmaLinux, Rocky Linux, CentOS, Amazon Linux, and SUSE. Includes PatchMon integration for automatic host detection and intelligent Docker handling.
+description: 自动化Linux服务器补丁管理和Docker容器更新功能。适用于用户需要更新、修补或升级Linux服务器、应用安全补丁、更新Docker容器、检查系统更新或管理多台主机维护的场景。支持Ubuntu、Debian、RHEL、AlmaLinux、Rocky Linux、CentOS、Amazon Linux和SUSE等操作系统。该工具集成了PatchMon模块，可实现自动主机检测和智能化的Docker容器管理功能。
 ---
 
-# Linux Patcher
+# Linux 服务器补丁管理工具
 
-Automate Linux server patching and Docker container updates across multiple hosts via SSH.
+该工具可通过 SSH 自动化地管理多台 Linux 服务器的补丁安装以及 Docker 容器的更新。
 
-## ⚠️ Important Disclaimers
+## ⚠️ 重要免责声明
 
-### Distribution Support Status
+### 分布版支持情况
 
-**Fully Tested:**
-- ✅ **Ubuntu** - Tested end-to-end with real infrastructure
+**已全面测试的版本：**
+- ✅ **Ubuntu** - 在真实环境中进行了端到端的测试
 
-**Supported but Untested:**
-- ⚠️ **Debian GNU/Linux** - Commands based on official documentation
-- ⚠️ **Amazon Linux** - Supports both AL2 (yum) and AL2023 (dnf)
-- ⚠️ **RHEL (Red Hat Enterprise Linux)** - Supports RHEL 7 (yum) and 8+ (dnf)
-- ⚠️ **AlmaLinux** - RHEL-compatible, uses dnf
-- ⚠️ **Rocky Linux** - RHEL-compatible, uses dnf
-- ⚠️ **CentOS** - Supports CentOS 7 (yum) and 8+ (dnf)
-- ⚠️ **SUSE/OpenSUSE** - Uses zypper package manager
+**支持但未测试的版本：**
+- ⚠️ **Debian GNU/Linux** - 基于官方文档编写了相应的命令
+- ⚠️ **Amazon Linux** - 支持 AL2 (yum) 和 AL2023 (dnf) 版本
+- ⚠️ **RHEL (Red Hat Enterprise Linux)** - 支持 RHEL 7 (yum) 和 8+ (dnf) 版本
+- ⚠️ **AlmaLinux** - 与 RHEL 兼容，使用 dnf 作为包管理器
+- ⚠️ **Rocky Linux** - 与 RHEL 兼容，使用 dnf 作为包管理器
+- ⚠️ **CentOS** - 支持 CentOS 7 (yum) 和 8+ (dnf) 版本
+- ⚠️ **SUSE/OpenSUSE** - 使用 zypper 作为包管理器
 
-**Testing Recommendation:**
-Always test untested distributions in a non-production environment first. The script will warn you when running on untested distributions.
+**测试建议：**
+请在非生产环境中先对未测试的版本进行测试。脚本在运行于未测试的版本时会发出警告。
 
-### Security Notice
+### 安全注意事项
 
-This skill requires:
-- **Passwordless sudo access** - Configured with restricted permissions
-- **SSH key authentication** - No passwords stored or transmitted
-- **PatchMon credentials** - Stored securely in user's home directory
+使用本工具需要满足以下条件：
+- **无密码的 sudo 访问权限** - 通过配置限制了 sudo 的使用权限
+- **SSH 密钥认证** - 不会存储或传输任何密码
+- **PatchMon 的认证信息** - 安全地存储在用户的 home 目录中
 
-**Read `SETUP.md` for complete security configuration guide.**
+请阅读 `SETUP.md` 以获取完整的安全配置指南。
 
-## Quick Start
+## 快速入门
 
-### Automated (Recommended)
+### 自动化操作（推荐）
 
-**Patch all hosts from PatchMon** (automatic detection):
+**通过 PatchMon 自动检测并更新所有主机：**
 ```bash
 scripts/patch-auto.sh
 ```
 
-**Skip Docker updates** (packages only):
+**仅更新软件包（不更新 Docker）：**
 ```bash
 scripts/patch-auto.sh --skip-docker
 ```
 
-**Preview changes** (dry-run):
+**预览更新内容（模拟执行）：**
 ```bash
 scripts/patch-auto.sh --dry-run
 ```
 
-### Manual (Alternative)
+### 手动操作（备用方案）
 
-**Single host - packages only**:
+**单台主机 - 仅更新软件包：**
 ```bash
 scripts/patch-host-only.sh user@hostname
 ```
 
-**Single host - full update**:
+**单台主机 - 全面更新：**
 ```bash
 scripts/patch-host-full.sh user@hostname /path/to/docker/compose
 ```
 
-**Multiple hosts from config**:
+**根据配置文件更新多台主机：**
 ```bash
 scripts/patch-multiple.sh config-file.conf
 ```
 
-## Features
+## 主要功能
 
-- **PatchMon integration** - Automatically detects hosts needing updates
-- **Smart Docker detection** - Auto-detects Docker and Compose paths
-- **Selective updates** - Skip Docker updates with `--skip-docker` flag
-- **Passwordless sudo required** - Configure with `visudo` or `/etc/sudoers.d/` files
-- **SSH key authentication** - No password prompts
-- **Parallel execution** - Update multiple hosts simultaneously
-- **Dry-run mode** - Preview changes without applying
-- **Manual override** - Run updates on specific hosts without PatchMon
+- **与 PatchMon 集成** - 自动检测需要更新的主机
+- **智能检测 Docker** - 自动识别 Docker 和 Docker Compose 的路径
+- **选择性更新** - 可使用 `--skip-docker` 标志跳过 Docker 的更新
+- **需要无密码的 sudo 访问权限** - 通过 `visudo` 或 `/etc/sudoers.d/` 文件进行配置
+- **SSH 密钥认证** - 不需要输入密码
+- **并行执行** - 同时更新多台主机
+- **模拟执行模式** - 先预览更新内容，再实际应用
+- **手动覆盖设置** - 可在特定主机上手动执行更新，无需依赖 PatchMon
 
-## Configuration
+## 配置方法
 
-### Option 1: Automatic via PatchMon (Recommended)
+### 方案 1：通过 PatchMon 自动化（推荐）
 
-Configure PatchMon credentials for automatic host detection:
-
+配置 PatchMon 的认证信息以自动检测主机：
 ```bash
 cp scripts/patchmon-credentials.example.conf ~/.patchmon-credentials.conf
 nano ~/.patchmon-credentials.conf
 ```
 
-Set your credentials:
+设置你的认证信息：
 ```bash
 PATCHMON_URL=https://patchmon.example.com
 PATCHMON_USERNAME=your-username
 PATCHMON_PASSWORD=your-password
 ```
 
-Then simply run:
+然后只需运行以下命令：
 ```bash
 scripts/patch-auto.sh
 ```
 
-The script will:
-1. Query PatchMon for hosts needing updates
-2. Auto-detect Docker on each host
-3. Apply appropriate updates (host-only or full)
+脚本将：
+1. 从 PatchMon 获取需要更新的主机列表
+2. 自动检测每台主机上的 Docker 环境
+3. 根据情况执行相应的更新（仅更新主机或进行全面更新）
 
-### Option 2: Single Host (Quick Manual)
+### 方案 2：单台主机（快速手动操作）
 
-Run scripts directly with command-line arguments (no config file needed).
+直接使用命令行参数运行脚本（无需配置文件）
 
-### Option 3: Multiple Hosts (Manual Config)
+### 方案 3：多台主机（手动配置）
 
-Create a config file based on `scripts/patch-hosts-config.example.sh`:
-
+根据 `scripts/patch-hosts-config.example.sh` 创建配置文件：
 ```bash
 cp scripts/patch-hosts-config.example.sh my-servers.conf
 nano my-servers.conf
 ```
 
-Example config:
+配置文件示例：
 ```bash
 # Host definitions: hostname,ssh_user,docker_path
 HOSTS=(
@@ -139,26 +137,26 @@ UPDATE_MODE="full"
 DRY_RUN="true"
 ```
 
-Then run:
+然后运行脚本：
 ```bash
 scripts/patch-multiple.sh my-servers.conf
 ```
 
-## Prerequisites
+## 先决条件
 
-### Required on Control Machine (where OpenClaw runs)
+### 控制主机（运行 OpenClaw 的主机）上的要求：
 
-- [ ] **OpenClaw** installed and running
-- [ ] **SSH client** installed (`ssh` command available)
-- [ ] **Bash** 4.0 or higher
-- [ ] **curl** installed (for PatchMon API)
-- [ ] **jq** installed (for JSON parsing)
-- [ ] **PatchMon** installed (required to check which hosts need updating)
-  - Does NOT need to be on the OpenClaw host
-  - Can be installed on any server accessible via HTTPS
-  - Download: https://github.com/PatchMon/PatchMon
+- [ ] 安装并运行了 OpenClaw
+- [ ] 安装了 SSH 客户端（可执行 `ssh` 命令）
+- [ ] 使用 Bash 4.0 或更高版本
+- [ ] 安装了 curl（用于访问 PatchMon 的 API）
+- [ ] 安装了 jq（用于解析 JSON 数据）
+- [ ] 安装了 PatchMon（用于检测需要更新的主机）
+  - 无需安装在 OpenClaw 主机上
+  - 可以安装在任何可通过 HTTPS 访问的服务器上
+  - 下载地址：https://github.com/PatchMon/PatchMon
 
-**Install missing tools:**
+**安装缺失的工具：**
 ```bash
 # Ubuntu/Debian
 sudo apt install curl jq
@@ -170,32 +168,30 @@ sudo dnf install curl jq
 brew install curl jq
 ```
 
-### Required on Target Hosts
+### 目标主机上的要求：
 
-- [ ] **SSH server** running and accessible
-- [ ] **SSH key authentication** configured (passwordless login)
-- [ ] **Passwordless sudo** configured for patching commands (see SETUP.md)
-- [ ] **Docker** installed (optional, only for full updates)
-- [ ] **Docker Compose** installed (optional, only for full updates)
-- [ ] **PatchMon agent** installed and reporting (optional but recommended)
+- [ ] SSH 服务器正在运行且可访问
+- [ ] 配置了 SSH 密钥认证（支持无密码登录）
+- [ ] 为补丁命令配置了无密码的 sudo 访问权限（详见 SETUP.md）
+- [ ] 安装了 Docker（可选，仅用于全面更新）
+- [ ] 安装了 Docker Compose（可选，仅用于全面更新）
+- [ ] 安装了 PatchMon 代理（可选，但推荐）
 
-### PatchMon Setup (Required for Automatic Mode)
+### PatchMon 的安装（自动模式必备）
 
-**PatchMon is required to automatically detect which hosts need patching.**
+**注意：** PatchMon 不需要安装在与 OpenClaw 同一的服务器上。只需在网络中的任意服务器上安装 PatchMon，OpenClaw 会通过 API 与其通信。
 
-**Important:** PatchMon does NOT need to be installed on the same server as OpenClaw. Install PatchMon on a separate server (can be any server on your network), and OpenClaw will query it via API.
+**下载 PatchMon：**
+- **GitHub：** https://github.com/PatchMon/PatchMon
+- **文档：** https://docs.patchmon.net
 
-**Download PatchMon:**
-- **GitHub:** https://github.com/PatchMon/PatchMon
-- **Documentation:** https://docs.patchmon.net
+**所需配置：**
+- [ ] 在任意可访问的服务器上安装 PatchMon 服务器
+- [ ] 在所有需要更新的主机上安装 PatchMon 代理
+- [ ] 提供 PatchMon 的认证信息（用户名/密码）
+- [ ] 确保 OpenClaw 服务器能与 PatchMon 服务器之间建立 HTTPS 连接
 
-**What you need:**
-- [ ] PatchMon server installed on ANY accessible server (not necessarily the OpenClaw host)
-- [ ] PatchMon agents installed on all target hosts you want to patch
-- [ ] PatchMon API credentials (username/password)
-- [ ] Network connectivity from OpenClaw host to PatchMon server (HTTPS)
-
-**Architecture:**
+**系统架构：**
 ```
 ┌─────────────────┐      HTTPS API      ┌─────────────────┐
 │ OpenClaw Host   │ ──────────────────> │ PatchMon Server │
@@ -210,38 +206,35 @@ brew install curl jq
                                          └─────────────────┘
 ```
 
-**Quick Start:**
-1. Install PatchMon server on a separate server (see GitHub repo)
-2. Install PatchMon agents on all hosts you want to patch
-3. Configure OpenClaw to access PatchMon API:
-
+**快速入门步骤：**
+1. 在单独的服务器上安装 PatchMon 服务器（详见 GitHub 仓库的文档）
+2. 在所有需要更新的主机上安装 PatchMon 代理
+3. 配置 OpenClaw 以访问 PatchMon 的 API：
 ```bash
 cp scripts/patchmon-credentials.example.conf ~/.patchmon-credentials.conf
 nano ~/.patchmon-credentials.conf  # Set PatchMon server URL
 chmod 600 ~/.patchmon-credentials.conf
 ```
 
-**Detailed setup:**
-See `references/patchmon-setup.md` for complete installation guide.
+**详细安装指南：**
+请参阅 `references/patchmon-setup.md`。
 
-**Can I use this skill without PatchMon?**
-Yes! You can use manual mode to target specific hosts without PatchMon. However, automatic detection of hosts needing updates requires PatchMon.
+**不安装 PatchMon 也可以使用该工具吗？**
+可以！你可以选择手动模式来针对特定主机进行更新，但自动检测主机更新功能依赖于 PatchMon。
 
-### On Target Hosts
+### 在目标主机上的操作
 
-**Required:**
-- SSH server running
-- Passwordless sudo for the SSH user (for `apt` and `docker` commands)
-- PatchMon agent installed and reporting (for automatic mode)
+**必备条件：**
+- SSH 服务器正在运行
+- SSH 用户具有无密码的 sudo 权限（用于执行 `apt` 和 `docker` 命令）
+- 安装了 PatchMon 代理（用于自动更新模式）
 
-**For full updates:**
-- Docker and Docker Compose installed
-- Docker Compose files exist at specified paths
+**进行全面更新时：**
+- 需要安装 Docker 和 Docker Compose
 
-### Configure Passwordless Sudo
+### 配置无密码的 sudo 访问权限
 
-On each target host, create `/etc/sudoers.d/patches`:
-
+在每台目标主机上创建 `/etc/sudoers.d/patches` 文件：
 ```bash
 # For Ubuntu/Debian systems
 username ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/docker
@@ -250,93 +243,77 @@ username ALL=(ALL) NOPASSWD: /usr/bin/apt, /usr/bin/docker
 username ALL=(ALL) NOPASSWD: /usr/bin/yum, /usr/bin/docker, /usr/bin/dnf
 ```
 
-Replace `username` with your SSH user. Test with `sudo -l` to verify.
+将 `username` 替换为你的 SSH 用户名。使用 `sudo -l` 命令验证配置是否正确。
 
-## Update Modes
+## 更新模式
 
-### Host-Only Updates
+### 仅更新主机软件包
 
-Updates system packages only:
-- Run `apt update && apt upgrade` (or `yum update` on RHEL)
-- Remove unused packages (`apt autoremove`)
-- **Does NOT** touch Docker containers
+- 运行 `apt update && apt upgrade`（或在 RHEL 上运行 `yum update`）
+- 删除不再使用的软件包（`apt autoremove`）
+- **不会** 更新 Docker 容器
 
-**When to use:**
-- Hosts without Docker
-- Security patches only
-- Minimal downtime required
+**适用场景：**
+- 未安装 Docker 的主机
+- 仅需要更新系统软件包
 
-### Full Updates
+### 全面更新
 
-Complete update cycle:
-- Update system packages
-- Clean Docker cache (`docker system prune`)
-- Pull latest Docker images
-- Recreate containers with new images
-- **Causes brief service interruption**
+- 更新系统软件包
+- 清理 Docker 缓存（`docker system prune`）
+- 下载最新的 Docker 镜像
+- 重新创建容器
 
-**When to use:**
-- Docker-based infrastructure
-- Regular maintenance windows
-- Application updates available
+**适用场景：**
+- 使用 Docker 的基础设施
+- 在维护窗口期间进行更新
 
-## Workflow
+## 工作流程
 
-### Automatic Workflow (patch-auto.sh)
+### 自动化工作流程（使用 patch-auto.sh）
 
-1. **Query PatchMon** - Fetch hosts needing updates via API
-2. **For each host:**
-   - SSH into host
-   - Check if Docker is installed
-   - Auto-detect Docker Compose path (if not specified)
-   - Apply host-only OR full update based on Docker detection
-3. **Report results** - Summary of successful/failed updates
+1. **查询 PatchMon** - 通过 API 获取需要更新的主机列表
+2. **针对每台主机：**
+   - 连接到主机
+   - 检查是否安装了 Docker
+   - 自动检测 Docker Compose 的路径（如果未指定）
+   - 根据检测结果执行仅更新主机软件包或全面更新的操作
 
-### Host-Only Update Process
+### 仅更新主机软件包的流程
 
-1. SSH into target host
-2. Run `sudo apt update`
-3. Run `sudo apt -y upgrade`
-4. Run `sudo apt -y autoremove`
-5. Report results
+1. 连接到目标主机
+2. 运行 `sudo apt update`
+3. 运行 `sudo apt -y upgrade`
+4. 运行 `sudo apt -y autoremove`
+5. 显示更新结果
 
-### Full Update Process
+### 全面更新的流程
 
-1. SSH into target host
-2. Run `sudo apt update && upgrade && autoremove`
-3. Navigate to Docker Compose directory
-4. Run `sudo docker system prune -af` (cleanup)
-5. Pull all Docker images listed in compose file
-6. Run `sudo docker compose pull`
-7. Run `sudo docker compose up -d` (recreate containers)
-8. Report results
+1. 连接到目标主机
+2. 运行 `sudo apt update && upgrade && autoremove`
+3. 进入 Docker Compose 目录
+4. 运行 `sudo docker system prune -af`（清理缓存）
+5. 下载并重新创建所有容器
+6. 运行 `sudo docker compose pull`
+7. 运行 `sudo docker compose up -d`（重新创建容器）
 
-### Docker Detection Logic
+### Docker 路径的自动检测逻辑
 
-When using automatic mode:
-- **Docker installed + compose file found** → Full update
-- **Docker installed + no compose file** → Host-only update
-- **Docker not installed** → Host-only update
-- **--skip-docker flag set** → Host-only update (ignores Docker)
+当未指定 Docker 的路径时，脚本会搜索以下位置：
+- `/home/$USER/Docker/docker-compose.yml`
+- `/opt/docker/docker-compose.yml`
+- `/srv/docker/docker-compose.yml`
+- `$HOME/Docker/docker-compose.yml`
+- 当前目录
 
-## Docker Path Auto-Detection
-
-When Docker path is not specified, the script checks these locations:
-
-1. `/home/$USER/Docker/docker-compose.yml`
-2. `/opt/docker/docker-compose.yml`
-3. `/srv/docker/docker-compose.yml`
-4. `$HOME/Docker/docker-compose.yml`
-5. Current directory
-
-**Override auto-detection:**
+**自定义自动检测设置：**
 ```bash
 scripts/patch-host-full.sh user@host /custom/path
 ```
 
-## Examples
+## 示例
 
-### Example 1: Automatic update via PatchMon (recommended)
+### 示例 1：通过 PatchMon 自动更新（推荐方案）
 ```bash
 # First time: configure credentials
 cp scripts/patchmon-credentials.example.conf ~/.patchmon-credentials.conf
@@ -346,7 +323,7 @@ nano ~/.patchmon-credentials.conf
 scripts/patch-auto.sh
 ```
 
-### Example 2: Automatic with dry-run
+### 示例 2：模拟执行更新过程**
 ```bash
 # Preview what would be updated
 scripts/patch-auto.sh --dry-run
@@ -355,210 +332,202 @@ scripts/patch-auto.sh --dry-run
 scripts/patch-auto.sh
 ```
 
-### Example 3: Skip Docker updates
+### 示例 3：跳过 Docker 更新**
 ```bash
 # Update packages only, even if Docker is detected
 scripts/patch-auto.sh --skip-docker
 ```
 
-### Example 4: Manual single host, packages only
+### 示例 4：手动更新单台主机（仅更新软件包）
 ```bash
 scripts/patch-host-only.sh admin@webserver.example.com
 ```
 
-### Example 5: Manual single host, full update with custom Docker path
+### 示例 5：手动更新单台主机（包括 Docker 容器）
 ```bash
 scripts/patch-host-full.sh docker@app.example.com /home/docker/production
 ```
 
-### Example 6: Manual multiple hosts from config
+### 示例 6：根据配置文件更新多台主机**
 ```bash
 scripts/patch-multiple.sh production-servers.conf
 ```
 
-### Example 7: Via OpenClaw chat
-Simply ask OpenClaw:
-- "Update my servers"
-- "Patch all hosts that need updates"
-- "Update packages only, skip Docker"
+### 示例 7：通过 OpenClaw 进行操作
 
-OpenClaw will use the automatic mode and report results.
+只需向 OpenClaw 发送指令：
+- “更新我的服务器”
+- “更新所有需要更新的主机”
+- “仅更新软件包，跳过 Docker”
 
-## Troubleshooting
+OpenClaw 会自动执行更新并显示结果。
 
-### PatchMon Integration Issues
+## 故障排除
 
-#### "PatchMon credentials not found"
-- Create credentials file: `cp scripts/patchmon-credentials.example.conf ~/.patchmon-credentials.conf`
-- Edit with your PatchMon URL and credentials
-- Or set `PATCHMON_CONFIG` environment variable to custom location
+### PatchMon 集成相关问题
 
-#### "Failed to authenticate with PatchMon"
-- Verify PatchMon URL is correct (without trailing slash)
-- Check username and password
-- Ensure PatchMon server is accessible: `curl -k https://patchmon.example.com/api/health`
-- Check firewall rules
+#### “找不到 PatchMon 的认证信息”
+- 创建认证文件：`cp scripts/patchmon-credentials.example.conf ~/.patchmon-credentials.conf`
+- 根据实际情况修改文件中的 URL 和认证信息
+- 或者将 `PATCHMON_CONFIG` 环境变量设置为其他路径
 
-#### "No hosts need updates" but PatchMon shows updates available
-- Verify PatchMon agents are running on target hosts: `systemctl status patchmon-agent`
-- Check agent reporting intervals: `/etc/patchmon/config.yml`
-- Force agent update: `patchmon-agent report`
+#### “无法与 PatchMon 进行认证”
+- 确认 PatchMon 的 URL 是否正确（路径末尾不应包含斜杠）
+- 检查用户名和密码是否正确
+- 确保可以访问 PatchMon 服务器：`curl -k https://patchmon.example.com/api/health`
+- 检查防火墙设置
 
-### System Update Issues
+#### “显示需要更新，但实际上不需要更新”
+- 确认目标主机上的 PatchMon 代理是否正在运行：`systemctl status patchmon-agent`
+- 检查代理的更新间隔设置：`/etc/patchmon/config.yml`
+- 强制更新代理：`patchmon-agent report`
 
-#### "Permission denied" on apt/docker commands
-- Configure passwordless sudo (see Prerequisites section)
-- Test with: `ssh user@host sudo apt update`
+### 系统更新相关问题
 
-#### "Connection refused"
-- Verify SSH access: `ssh user@host echo OK`
-- Check SSH keys are configured
-- Verify hostname resolution
+#### 执行 `apt` 或 `docker` 命令时出现权限问题
+- 配置无密码的 sudo 访问权限（详见先决条件）
+- 使用 `ssh user@host sudo apt update` 进行测试
 
-#### Docker Compose not found
-- Specify full path: `scripts/patch-host-full.sh user@host /full/path`
-- Or install Docker Compose on target host
-- Auto-detection searches: `/home/user/Docker`, `/opt/docker`, `/srv/docker`
+#### 连接失败
+- 检查 SSH 连接是否正常：`ssh user@host echo OK`
+- 确保 SSH 密钥配置正确
+- 检查主机名解析是否正常
 
-#### Containers fail to start after update
-- Check logs: `ssh user@host "docker logs container-name"`
-- Manually inspect: `ssh user@host "cd /docker/path && docker compose logs"`
-- Rollback if needed: `ssh user@host "cd /docker/path && docker compose down && docker compose up -d"`
+#### 无法找到 Docker Compose 文件
+- 指定完整的路径：`scripts/patch-host-full.sh user@host /full/path`
+- 或者在目标主机上安装 Docker Compose
+- 自动检测时会搜索以下路径：`/home/user/Docker`, `/opt/docker`, `/srv/docker`
 
-## PatchMon Integration (Optional)
+#### 更新后容器无法启动
+- 查看日志：`ssh user@host "docker logs container-name"`
+- 手动检查容器状态：`ssh user@host "cd /docker/path && docker compose logs"`
+- 如需回滚：`ssh user@host "cd /docker/path && docker compose down && docker compose up -d`
 
-For dashboard monitoring and scheduled patching, see `references/patchmon-setup.md`.
+## PatchMon 的集成（可选）
 
-PatchMon provides:
-- Web dashboard for update status
-- Per-host package tracking
-- Security update highlighting
-- Update history
+有关监控和定时更新的功能，请参阅 `references/patchmon-setup.md`。
 
-## Security Considerations
+PatchMon 提供以下功能：
+- 提供 Web 界面显示更新状态
+- 跟踪每台主机的更新情况
+- 强调安全更新内容
+- 记录更新历史
 
-- **Passwordless sudo** is required for automation
-  - Limit to specific commands (`apt`, `docker` only)
-  - Use `/etc/sudoers.d/` files (easier to manage)
-- **SSH keys** should be protected
-  - Use passphrase-protected keys when possible
-  - Restrict key permissions: `chmod 600 ~/.ssh/id_rsa`
-- **Review updates** before applying in production
-  - Use dry-run mode first
-  - Test on staging environment
-- **Schedule updates** during maintenance windows
-  - Use OpenClaw cron jobs for automation
-  - Coordinate with team for Docker updates (brief downtime)
+## 安全注意事项
 
-## Best Practices
+- **自动化操作需要无密码的 sudo 访问权限**
+  - 仅限于执行 `apt` 和 `docker` 命令
+  - 使用 `/etc/sudoers.d/` 文件来管理权限
+- **保护 SSH 密钥**：建议使用带密码保护的密钥
+  - 限制密钥的权限：`chmod 600 ~/.ssh/id_rsa`
+- **在正式环境中应用更新前请仔细检查**  
+  - 先使用模拟执行模式
+  - 在测试环境中进行测试
+- **在维护窗口期间安排更新**  
+  - 使用 OpenClaw 的 cron 作业来自动化更新
+- 与团队协调以确定 Docker 更新的时间
 
-1. **Test first** - Run dry-run mode before applying changes
-2. **Stagger updates** - Don't update all hosts simultaneously (avoid full outage)
-3. **Monitor logs** - Check output for errors after updates
-4. **Backup configs** - Keep Docker Compose files in version control
-5. **Schedule wisely** - Update during low-traffic windows
-6. **Document paths** - Maintain config files for infrastructure
-7. **Reboot when needed** - Kernel updates require reboots (not automated)
+## 最佳实践
 
-## Reboot Management
+- **先进行测试**：在实际应用更新前先运行模拟执行模式
+- **分批更新**：避免同时更新所有主机（以防系统崩溃）
+- **检查日志**：更新后查看是否有错误
+- **备份配置文件**：将 Docker Compose 文件放入版本控制系统中
+- **合理安排更新时间**：选择流量较低的时间进行更新
+- **记录配置信息**：妥善保存配置文件
+- **必要时重启服务器**：某些内核更新需要重启服务器（此步骤不是自动执行的）
 
-The scripts do NOT automatically reboot hosts. After updates:
+## 重启管理
 
-1. Check if reboot required: `ssh user@host "[ -f /var/run/reboot-required ] && echo YES || echo NO"`
-2. Schedule manual reboots during maintenance windows
-3. Use PatchMon dashboard to track reboot requirements
+脚本不会自动重启主机。更新完成后，请检查是否需要重启：
+1. 运行 `ssh user@host "[ -f /var/run/reboot-required ] && echo YES || echo NO"`
+2. 在维护窗口期间安排手动重启
+- 使用 PatchMon 的界面来查看是否需要重启
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-### Run Updates on Schedule
+### 定时执行更新
 
-Create a cron job for automatic nightly patching:
-
+创建 cron 作业以实现自动化的 nightly 更新：
 ```bash
 cron add --name "Nightly Server Patching" \
   --schedule "0 2 * * *" \
   --task "cd ~/.openclaw/workspace/skills/linux-patcher && scripts/patch-auto.sh"
 ```
 
-Or packages-only mode:
-
+或者仅更新软件包：
 ```bash
 cron add --name "Nightly Package Updates" \
   --schedule "0 2 * * *" \
   --task "cd ~/.openclaw/workspace/skills/linux-patcher && scripts/patch-auto.sh --skip-docker"
 ```
 
-### Run Updates via Chat
+### 通过聊天命令执行更新
 
-Simply ask OpenClaw natural language commands:
+只需向 OpenClaw 发送以下命令：
+- **全面更新（包括 Docker 容器）：**
+  - “更新我的服务器” → 默认会包含 Docker 的更新
+- “更新所有需要更新的主机”
+- “仅更新软件包，跳过 Docker”
 
-**Full updates (packages + Docker containers):**
-- "Update my servers" ← **Includes Docker by default**
-- "Patch all hosts that need updates"
-- "Update all my infrastructure"
+- **仅更新软件包（排除 Docker）：**
+  - “更新我的服务器，排除 Docker”
+- “仅更新软件包，跳过 Docker”
 
-**Packages only (exclude Docker):**
-- "Update my servers, excluding docker"
-- "Update packages only, skip Docker"
-- "Patch hosts without touching containers"
+- **查询更新状态：**
+  - “哪些主机需要更新？”
+- “显示需要更新的主机列表”
 
-**Query status:**
-- "What servers need patching?"
-- "Show me hosts that need updates"
+**自动执行流程：**
 
-**What happens automatically:**
+- 当你输入 “更新我的服务器” 时：
+  - 通过 API 查询需要更新的主机
+  - 检测每台主机上的 Docker 环境
+  - 更新系统软件包
+  - 下载并重新创建 Docker 容器（如果检测到 Docker）
 
-When you say **"Update my servers"**:
-1. ✅ Queries PatchMon for hosts needing updates
-2. ✅ Detects Docker on each host
-3. ✅ Updates system packages
-4. ✅ **Pulls Docker images and recreates containers** (if Docker detected)
-5. ✅ Reports results with success/failure count
+- 当你输入 “更新我的服务器，排除 Docker” 时：
+  - 仅更新系统软件包
+  - 跳过所有与 Docker 相关的操作
+  - 显示更新结果
 
-When you say **"Update my servers, excluding docker"**:
-1. ✅ Queries PatchMon for hosts needing updates
-2. ✅ Updates system packages only
-3. ❌ Skips all Docker operations (containers keep running)
-4. ✅ Reports results
+**注意：** 默认情况下会包含 Docker 的更新。如果需要排除 Docker 的更新，请使用相应的命令。
 
-**Important:** Docker updates are **included by default** for maximum automation. Use "excluding docker" to skip container updates.
+### 手动覆盖设置（针对特定主机）
 
-### Manual Override (Specific Hosts)
+可以直接指定需要更新的主机：
+- “更新 webserver.example.com”
+- “仅更新 database.example.com 的软件包”
+- “更新 app.example.com，包括 Docker”
 
-Target individual hosts without querying PatchMon:
-- "Update webserver.example.com"
-- "Patch database.example.com packages only"
-- "Update app.example.com with Docker"
+OpenClaw 会使用相应的手动脚本来执行更新。
 
-OpenClaw will use the manual scripts for targeted updates.
+## 文档资料
 
-## Documentation Files
+该工具附带详细的文档：
+- **SKILL.md**：概述和使用指南
+- **SETUP.md**：完整的配置指南及安全最佳实践
+- **WORKFLOWS.md**：所有操作模式的可视化工作流程图
+- **references/patchmon-setup.md**：PatchMon 的安装和集成指南
 
-This skill includes comprehensive documentation:
+**首次使用？** 请先阅读 `SETUP.md`，其中包含安全的配置步骤。
 
-- **SKILL.md** (this file) - Overview and usage guide
-- **SETUP.md** - Complete setup instructions with security best practices
-- **WORKFLOWS.md** - Visual workflow diagrams for all modes
-- **references/patchmon-setup.md** - PatchMon installation and integration
+**想了解整个流程吗？** 查看 `WORKFLOWS.md`，其中包含操作流程的可视化图解。
 
-**First time setup?** Read `SETUP.md` first - it provides step-by-step instructions for secure configuration.
+## 支持的 Linux 发行版
 
-**Want to understand the flow?** Check `WORKFLOWS.md` for visual diagrams of how the skill operates.
-
-## Supported Linux Distributions
-
-| Distribution | Package Manager | Tested | Status |
+| 发行版 | 包管理器 | 是否已测试 | 支持情况 |
 |--------------|-----------------|--------|--------|
-| Ubuntu | apt | ✅ Yes | Fully supported |
-| Debian | apt | ⚠️ No | Supported (untested) |
-| Amazon Linux 2 | yum | ⚠️ No | Supported (untested) |
-| Amazon Linux 2023 | dnf | ⚠️ No | Supported (untested) |
-| RHEL 7 | yum | ⚠️ No | Supported (untested) |
-| RHEL 8+ | dnf | ⚠️ No | Supported (untested) |
-| AlmaLinux | dnf | ⚠️ No | Supported (untested) |
-| Rocky Linux | dnf | ⚠️ No | Supported (untested) |
-| CentOS 7 | yum | ⚠️ No | Supported (untested) |
-| CentOS 8+ | dnf | ⚠️ No | Supported (untested) |
-| SUSE/OpenSUSE | zypper | ⚠️ No | Supported (untested) |
+| Ubuntu | apt | ✅ 是 | 完全支持 |
+| Debian | apt | ⚠️ 否 | 支持（未测试） |
+| Amazon Linux 2 | yum | ⚠️ 否 | 支持（未测试） |
+| Amazon Linux 2023 | dnf | ⚠️ 否 | 支持（未测试） |
+| RHEL 7 | yum | ⚠️ 否 | 支持（未测试） |
+| RHEL 8+ | dnf | ⚠️ 否 | 支持（未测试） |
+| AlmaLinux | dnf | ⚠️ 否 | 支持（未测试） |
+| Rocky Linux | dnf | ⚠️ 否 | 支持（未测试） |
+| CentOS 7 | yum | ⚠️ 否 | 支持（未测试） |
+| CentOS 8+ | dnf | ⚠️ 否 | 支持（未测试） |
+| SUSE/OpenSUSE | zypper | ⚠️ 否 | 支持（未测试） |
 
-The skill automatically detects the distribution and selects the appropriate package manager.
+该工具会自动识别操作系统版本并选择相应的包管理器。

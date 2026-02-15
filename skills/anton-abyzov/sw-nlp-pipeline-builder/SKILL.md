@@ -6,13 +6,13 @@ description: |
 
 # NLP Pipeline Builder
 
-## Overview
+## 概述
 
-Specialized ML pipelines for natural language processing. Handles text preprocessing, tokenization, transformer models (BERT, RoBERTa, GPT), fine-tuning, and deployment for production NLP systems.
+专为自然语言处理（NLP）设计的机器学习（ML）管道工具。支持文本预处理、分词、Transformer模型（如BERT、RoBERTa、GPT）的训练以及模型的部署，适用于生产环境中的NLP系统。
 
-## NLP Tasks Supported
+## 支持的NLP任务
 
-### 1. Text Classification
+### 1. 文本分类
 
 ```python
 from specweave import NLPPipeline
@@ -34,7 +34,7 @@ pipeline = NLPPipeline(
 pipeline.fit(train_texts, train_labels)
 ```
 
-### 2. Named Entity Recognition (NER)
+### 2. 命名实体识别（NER）
 
 ```python
 # Extract entities from text
@@ -47,7 +47,7 @@ pipeline = NLPPipeline(
 # Returns: [(entity_text, entity_type, start_pos, end_pos), ...]
 ```
 
-### 3. Sentiment Analysis
+### 3. 情感分析
 
 ```python
 # Sentiment classification (specialized)
@@ -59,7 +59,7 @@ pipeline = NLPPipeline(
 # Fine-tuned for sentiment (positive/negative/neutral)
 ```
 
-### 4. Text Generation
+### 4. 文本生成
 
 ```python
 # Generate text continuations
@@ -72,9 +72,9 @@ pipeline = NLPPipeline(
 # Fine-tune on your domain-specific text
 ```
 
-## Best Practices for NLP
+## NLP最佳实践
 
-### Text Preprocessing
+### 文本预处理
 
 ```python
 from specweave import TextPreprocessor
@@ -99,22 +99,22 @@ preprocessor.add_advanced([
 ])
 ```
 
-### Model Selection
+### 模型选择
 
-**Text Classification**:
-- Small datasets (<10K): DistilBERT (6x faster than BERT)
-- Medium datasets (10K-100K): BERT-base
-- Large datasets (>100K): RoBERTa-large
+**文本分类**：
+- 小型数据集（<10K条数据）：DistilBERT（训练速度比BERT快6倍）
+- 中型数据集（10K-100K条数据）：BERT-base
+- 大型数据集（>100K条数据）：RoBERTa-large
 
-**NER**:
-- General: BERT + CRF layer
-- Domain-specific: Fine-tune BERT on domain corpus
+**命名实体识别（NER）**：
+- 通用任务：使用BERT并结合CRF（Conditional Random Field）层
+- 领域特定任务：在特定领域的语料库上对BERT进行微调
 
-**Sentiment**:
-- Product reviews: DistilBERT fine-tuned on Amazon reviews
-- Social media: RoBERTa fine-tuned on Twitter
+**情感分析**：
+- 产品评论：使用在亚马逊评论数据上微调的DistilBERT模型
+- 社交媒体文本：使用在Twitter数据上微调的RoBERTa模型
 
-### Transfer Learning
+### 迁移学习
 
 ```python
 # Start from pre-trained language models
@@ -131,7 +131,7 @@ pipeline.use_pretrained_and_finetune(
 )
 ```
 
-### Handling Long Text
+### 处理长文本
 
 ```python
 # For text longer than 512 tokens
@@ -145,7 +145,7 @@ pipeline = NLPPipeline(
 pipeline.use_model("longformer")  # Handles 4096 tokens
 ```
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
 ```python
 # NLP increment structure
@@ -169,7 +169,7 @@ pipeline.use_model("longformer")  # Handles 4096 tokens
     └── inference.py
 ```
 
-## Commands
+## 命令行工具
 
 ```bash
 /ml:nlp-pipeline --task classification --model bert-base
@@ -177,4 +177,4 @@ pipeline.use_model("longformer")  # Handles 4096 tokens
 /ml:nlp-deploy 0042    # Export for production
 ```
 
-Quick setup for NLP projects with state-of-the-art transformer models.
+提供快速设置功能，帮助您使用最先进的Transformer模型构建NLP项目。

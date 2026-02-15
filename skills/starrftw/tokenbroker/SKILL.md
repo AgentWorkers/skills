@@ -1,64 +1,62 @@
 ---
 name: tokenbroker
-description: AI Agent Skill for GitHub project analysis and nad.fun token launch. Analyzes repos, generates token identity/promo, and launches on nad.fun.
+description: AI代理技能：用于GitHub项目分析及nad.fun代币的发布。该技能可分析代码仓库，生成代币的相关信息（如标识符、宣传材料），并最终在nad.fun平台上发布这些代币。
 version: 1.01
 metadata:
   tags: monad, nadfun, token, launch, github, memecoin, autonomous
 ---
 
-# SKILL.md - TokenBroker Skillset
+# SKILL.md – TokenBroker 技能集
 
-## Security & Data Privacy
+## 安全性与数据隐私
 
-### Local Storage Only
-- All credentials (GitHub token, private keys, API keys) are stored **locally** in a `.env` file
-- No credentials are transmitted to external servers beyond their intended endpoints (GitHub API, nad.fun API, Monad RPC)
-- The skill operates entirely within your local environment
+### 仅限本地存储
+- 所有凭据（GitHub 令牌、私钥、API 密钥）均存储在 `.env` 文件中（仅限本地）
+- 任何凭据都不会被传输到外部服务器（除非是前往预定的端点，如 GitHub API、nad.fun API 或 Monad RPC）
+- 该技能完全在您的本地环境中运行
 
-### .env File Generation
-- The Install Wizard generates a `.env` file on your local machine
-- This file is **never committed** to version control (gitignored)
-- You can review and edit it at any time
+### `.env` 文件的生成
+- 安装向导会在您的本地机器上生成一个 `.env` 文件
+- 该文件**永远不会被提交到版本控制系统中**（被 Git 忽略）
+- 您可以随时查看和编辑该文件
 
-### Credential Scope
-- `GITHUB_TOKEN`: Used only for GitHub API calls to read public repository data
-- `PRIVATE_KEY`: Used only for EVM transaction signing (never exposed in plain text)
-- `BUILDER_ID`: Local identifier for A2A protocol
-- `NAD_FUN_API_KEY`: Used only for nad.fun token creation API
+### 凭据的使用范围
+- `GITHUB_TOKEN`：仅用于通过 GitHub API 获取公共仓库数据
+- `PRIVATE_KEY`：仅用于 EVM 交易签名（绝不会以明文形式暴露）
+- `BUILDER_ID`：用于 A2A 协议的本地标识符
+- `NAD_FUN_API_KEY`：仅用于 nad.fun 的令牌创建 API
 
-### Testnet Mode
-- Default operation is on **testnet** for safety
-- Mainnet requires explicit configuration
-- Always review transactions before signing
+### 测试网模式
+- 为确保安全，默认情况下该技能运行在**测试网**上
+- 主网模式需要手动配置
+- 签署交易前请务必仔细检查交易内容
 
 ---
 
-**The AI agent skill for memecoin launches on nad.fun.** Analyze GitHub projects, generate token metadata, and launch directly on nad.fun bonding curves.
+**这款 AI 代理技能专为 memecoin 设计，可在 nad.fun 上运行。** 它能够分析 GitHub 项目，生成令牌元数据，并直接在 nad.fun 的绑定曲线上进行令牌发行。
 
-## What is TokenBroker?
+## 什么是 TokenBroker？
 
-TokenBroker is a **complete memecoin launch solution** for AI agents:
+TokenBroker 是一款专为 AI 代理设计的**完整的 memecoin 发行解决方案**：
+1. **分析** GitHub 项目，筛选出适合制作模因的项目
+2. **生成** 令牌名称、代码标识符、描述以及营销内容
+3. **在 nad.fun 上发行** 令牌（包括图像、元数据等）
+4. **利用 X、Telegram 和 Discord 等平台进行推广**
 
-1. **Analyzes** GitHub projects to identify meme-worthy projects
-2. **Generates** token names, tickers, descriptions, and marketing content
-3. **Launches** tokens on nad.fun (image, metadata, salt, deploy)
-4. **Promotes** launches with X/Telegram/Discord content
+## 何时使用该技能
 
-## When to Use This Skill
+### TokenBroker 的功能包括：
+- 分析 GitHub 仓库并进行评分
+- 生成令牌的名称、代码标识符和描述
+- 生成适合模因风格的图像
+- 集成 nad.fun API（用于上传文件、生成令牌盐值）
+- 创建营销内容（通过 X、Telegram 和 Discord 等平台发布）
 
-### TokenBroker Handles
-- GitHub repository analysis and scoring
-- Token identity generation (name, ticker, description)
-- Meme-style image generation
-- Nad.fun API integration (upload, salt mining)
-- Marketing content creation (X threads, Telegram, Discord)
-- Full launch orchestration
+### 不包含的功能
+- 钱包私钥管理（由宿主负责）
+- 超出 nad.fun 绑定曲线的链上交易
 
-### Not Included
-- Wallet private key management (handled by host)
-- On-chain transactions beyond nad.fun bonding curves
-
-## Architecture (tokenbroker/src/generators/)
+## 架构（tokenbroker/src/generators/）
 
 ```
 generators/
@@ -69,7 +67,7 @@ generators/
 └── index.ts        # Pipeline orchestrator (generateAll)
 ```
 
-## Quick Start for Agents
+## 代理的快速入门指南
 
 ```typescript
 import { generateAll, prepareLaunch } from './generators/index.js';
@@ -91,10 +89,10 @@ const prepared = await prepareLaunch(assets.identity, 'mainnet');
 // Use deploy.ts module with wallet for on-chain execution
 ```
 
-## Generator Functions
+## 生成器函数
 
 ### generateIdentity(input)
-Analyzes repo and generates token identity:
+分析仓库信息并生成令牌的标识信息：
 ```typescript
 {
   name: "SWAPPRO",
@@ -106,7 +104,7 @@ Analyzes repo and generates token identity:
 ```
 
 ### generateReasoning(input)
-Creates investment thesis and narrative:
+创建投资分析报告和叙述内容：
 ```typescript
 {
   investmentThesis: "Why this token should exist...",
@@ -120,7 +118,7 @@ Creates investment thesis and narrative:
 ```
 
 ### generatePromo(input)
-Generates marketing content:
+生成营销内容：
 ```typescript
 {
   xThread: { title, tweets: [...], hashtags, mentions },
@@ -132,7 +130,7 @@ Generates marketing content:
 ```
 
 ### prepareLaunch(identity, network)
-Prepares token for nad.fun launch (API calls):
+为在 nad.fun 上发行令牌做准备（包括 API 调用）：
 ```typescript
 {
   imageUri: "ipfs://...",
@@ -142,30 +140,30 @@ Prepares token for nad.fun launch (API calls):
 }
 ```
 
-## Nad.fun Integration
+## 与 nad.fun 的集成
 
-TokenBroker integrates directly with nad.fun API:
+TokenBroker 直接与 nad.fun API 集成：
 
-| Step | API Endpoint | Function |
+| 步骤 | API 端点 | 功能 |
 |------|-------------|----------|
-| 1 | POST /agent/token/image | `uploadImage()` |
-| 2 | POST /agent/token/metadata | `uploadMetadata()` |
-| 3 | POST /agent/salt | `mineSalt()` |
-| 4 | BondingCurveRouter.create() | On-chain deployment |
+| 1 | POST /agent/token/image | 上传令牌图像 |
+| 2 | POST /agent/token/metadata | 上传令牌元数据 |
+| 3 | POST /agent/salt | 生成令牌盐值 |
+| 4 | BondingCurveRouter.create() | 在链上部署令牌 |
 
-### Network Configuration
-| Network | API | RPC |
+### 网络配置
+| 网络 | API | RPC |
 |---------|-----|-----|
-| Testnet | https://dev-api.nad.fun | https://testnet-rpc.monad.xyz |
-| Mainnet | https://api.nadapp.net | https://rpc.monad.xyz |
+| 测试网 | https://dev-api.nad.fun | https://testnet-rpc.monad.xyz |
+| 主网 | https://api.nadapp.net | https://rpc.monad.xyz |
 
-## Install
+## 安装
 
 ```bash
 npm install
 ```
 
-## Configuration
+## 配置
 
 ```bash
 # Network (testnet | mainnet)
@@ -175,27 +173,12 @@ NETWORK=mainnet
 GITHUB_TOKEN=ghp_...
 ```
 
-## For On-Chain Deployment
+## 链上部署
 
-TokenBroker prepares all launch data. For actual on-chain deployment:
+TokenBroker 会准备所有发行所需的数据。若需进行实际的链上部署，请按照以下步骤操作：
 
 ```bash
 npm install ethers
 ```
 
-Then use with a wallet:
-```typescript
-import { prepareLaunch } from './generators/nadfun.js';
-import { ethers } from 'ethers';
-
-const prepared = await prepareLaunch(identity, 'mainnet');
-
-// Deploy with wallet
-const wallet = new ethers.Wallet(privateKey, provider);
-const router = new ethers.Contract(BONDING_CURVE_ROUTER, abi, wallet);
-await router.create(tokenParams, fee, toll, tradingAmt, { value: deployFee });
-```
-
----
-
-*Built for the agentic future.* 🦞
+**专为智能代理的未来而设计。** 🦞

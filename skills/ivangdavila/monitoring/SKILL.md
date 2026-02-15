@@ -1,80 +1,79 @@
 ---
 name: Monitoring
-description: "Set up observability for applications and infrastructure with metrics, logs, traces, and alerts."
+description: "通过指标（metrics）、日志（logs）、跟踪数据（traces）和警报（alerts）为应用程序和基础设施建立可观测性（observability）机制。"
 ---
 
-## Complexity Levels
+## 复杂性级别
 
-| Level | Tools | Setup Time | Best For |
+| 级别 | 工具 | 设置时间 | 适用场景 |
 |-------|-------|------------|----------|
-| **Minimal** | UptimeRobot, Healthchecks.io | 15 min | Side projects, MVPs |
-| **Standard** | Uptime Kuma, Sentry, basic Grafana | 1-2 hours | Small teams, startups |
-| **Professional** | Prometheus, Grafana, Loki, Alertmanager | 1-2 days | Production systems |
-| **Enterprise** | Datadog, New Relic, or full OSS stack | Ongoing | Large-scale operations |
+| **基础级** | UptimeRobot, Healthchecks.io | 15分钟 | 侧项目、最小可行产品（MVP） |
+| **标准级** | Uptime Kuma, Sentry, 基础版Grafana | 1-2小时 | 小型团队、初创公司 |
+| **专业级** | Prometheus, Grafana, Loki, Alertmanager | 1-2天 | 生产环境系统 |
+| **企业级** | Datadog, New Relic 或完整的开源软件栈（OSS） | 持续监控 | 大规模运营 |
 
-## The Three Pillars
+## 三大核心组件
 
-| Pillar | What It Answers | Tools |
+| 组件 | 功能 | 使用工具 |
 |--------|-----------------|-------|
-| **Metrics** | "How is the system performing?" | Prometheus, Grafana, Datadog |
-| **Logs** | "What happened?" | Loki, ELK, CloudWatch |
-| **Traces** | "Why is this request slow?" | Jaeger, Tempo, Sentry |
+| **指标（Metrics）** | “系统运行状况如何？” | Prometheus, Grafana, Datadog |
+| **日志（Logs）** | “发生了什么？” | Loki, ELK, CloudWatch |
+| **追踪（Traces）** | “为什么这个请求会变慢？” | Jaeger, Tempo, Sentry |
 
-## Quick Start by Use Case
+## 按使用场景快速入门
 
-**"I just want to know if it's down"**
-→ UptimeRobot (free) or Uptime Kuma (self-hosted). See `simple.md`.
+**“我只是想知道系统是否正常运行”**  
+→ 使用 UptimeRobot（免费）或 Uptime Kuma（自托管）。详见 `simple.md`。
 
-**"I need to debug production errors"**
-→ Sentry with your framework SDK. 5-minute setup. See `apm.md`.
+**“我需要调试生产环境中的错误”**  
+→ 使用 Sentry 和你的框架 SDK，设置时间约5分钟。详见 `apm.md`。
 
-**"I want real observability"**
-→ Prometheus + Grafana + Loki. See `prometheus.md`.
+**“我需要实现真正的可观测性”**  
+→ 使用 Prometheus + Grafana + Loki。详见 `prometheus.md`。
 
-**"I need to centralize logs"**
-→ Loki for simple, ELK for complex queries. See `logs.md`.
+**“我需要集中管理日志”**  
+→ 使用 Loki 进行简单日志管理；对于复杂查询，可以使用 ELK。详见 `logs.md`。
 
-## What to Monitor
+## 需要监控的指标
 
-### Applications (RED Method)
-- **R**ate — requests per second
-- **E**rrors — error rate by endpoint
-- **D**uration — latency (p50, p95, p99)
+### 应用程序（RED 方法）  
+- **R**（Rate）：每秒请求数  
+- **E**（Error）：端点的错误率  
+- **D**（Duration）：延迟时间（p50、p95、p99 分位数）
 
-### Infrastructure (USE Method)
-- **U**tilization — CPU, memory, disk usage
-- **S**aturation — queue depth, load average
-- **E**rrors — hardware/system errors
+### 基础设施（USE 方法）  
+- **U**（Utilization）：CPU、内存、磁盘使用率  
+- **S**（Saturation）：队列深度、负载平均值  
+- **E**（Error）：硬件/系统错误  
 
-## Alerting Principles
+## 警报原则
 
-| Do | Don't |
+| 应该做 | 不应该做 |
 |----|-------|
-| Alert on symptoms (user impact) | Alert on causes (CPU high) |
-| Include runbook link | Require investigation to understand |
-| Set appropriate severity | Make everything P1 |
-| Require action | Alert on "interesting" metrics |
+| 根据用户影响发出警报 | 根据系统故障原因发出警报（例如 CPU 使用率过高） |
+| 提供运行手册链接 | 需要进一步调查才能理解问题 |
+| 设置合适的警报严重级别 | 将所有警报都设置为最高级别（P1） |
+| 强制要求用户采取行动 | 只对“异常”指标发出警报 |
 
-**Alert fatigue kills monitoring.** If alerts are ignored, you have no monitoring.
+**警报过多会导致监控失效。** 如果警报被忽视，监控就失去了意义。  
+有关警报配置、严重级别和值班安排，请参阅 `alerting.md`。
 
-For alert configuration, severities, and on-call setup, see `alerting.md`.
+## 成本对比
 
-## Cost Comparison
-
-| Solution | Monthly Cost (small) | Monthly Cost (medium) |
+| 解决方案 | 月成本（小型团队） | 月成本（中型团队） |
 |----------|---------------------|----------------------|
-| UptimeRobot | Free | $7 |
-| Uptime Kuma | $5 (VPS) | $5 (VPS) |
-| Sentry | Free / $26 | $80 |
-| Grafana Cloud | Free tier | $50+ |
-| Datadog | $15/host | $23/host + features |
-| Self-hosted stack | $10-20 (VPS) | $50-100 (VPS) |
+| UptimeRobot | 免费 | 7美元 |
+| Uptime Kuma | 5美元（VPS） | 5美元（VPS） |
+| Sentry | 免费 / 26美元 | 80美元 |
+| Grafana Cloud | 免费 tier | 50美元以上 |
+| Datadog | 每台主机15美元 | 每台主机23美元（含额外功能） |
+| 自托管解决方案 | 10-20美元（VPS） | 50-100美元（VPS） |
 
-## Common Mistakes
+## 常见错误  
 
-- Starting with Prometheus/Grafana when Uptime Kuma would suffice
-- No alerting (dashboards nobody watches)
-- Too many alerts (alert fatigue → ignored)
-- Missing runbooks (alert fires, nobody knows what to do)
-- Not monitoring from outside (only internal checks)
-- Storing logs forever (cost explodes)
+- 在本应使用 Uptime Kuma 的情况下却直接使用 Prometheus/Grafana  
+- 没有设置警报机制（仪表盘无人查看）  
+- 警报过多（导致警报被忽视）  
+- 缺少运行手册（警报触发后无人知道该如何处理）  
+- 仅进行内部监控（未涵盖外部系统）  
+- 无限期存储日志（导致成本激增）

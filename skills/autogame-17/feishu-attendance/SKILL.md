@@ -1,21 +1,21 @@
 ---
 name: feishu-attendance
-description: Monitor Feishu (Lark) attendance records. Check for late, early leave, or absent employees and report to admin.
+description: 监控飞书（Lark）的考勤记录，检查是否有员工迟到、早退或缺勤的情况，并向管理员报告。
 tags: [feishu, lark, attendance, monitor, report]
 ---
 
-# Feishu Attendance Skill
+# Feishu考勤系统
 
-Monitor daily attendance, notify employees of abnormalities, and report summary to admin.
+该系统用于监控员工的每日出勤情况，及时通知异常情况，并向管理员报告考勤汇总数据。
 
-## Features
-- **Smart Checks**: Detects Late, Early Leave, and Absence.
-- **Holiday Aware**: Auto-detects holidays/weekends via `timor.tech` API.
-- **Safe Mode**: Disables user notifications if holiday API fails (prevents spam).
-- **Caching**: Caches user list (24h TTL) and holiday data for performance.
-- **Reporting**: Sends rich interactive cards to Admin.
+## 主要功能
+- **智能检测**：能够自动识别员工迟到、早退或缺席的情况。
+- **节假日识别**：通过 `timor.tech` API 自动识别节假日和周末。
+- **安全模式**：在节假日 API 发生故障时，系统会关闭用户通知功能（防止垃圾信息发送）。
+- **缓存机制**：为了提升系统性能，系统会缓存用户列表（缓存有效期为24小时）和节假日信息。
+- **报表生成**：能够向管理员发送格式丰富的交互式报表。
 
-## Usage
+## 使用方法
 
 ```bash
 # Check today's attendance (Default)
@@ -28,7 +28,7 @@ node index.js check --date 2023-10-27
 node index.js check --dry-run
 ```
 
-## Permissions Required
-- `attendance:report:readonly`
-- `contact:user.employee:readonly`
-- `im:message:send_as_bot`
+## 所需权限
+- `attendance:report:readonly`：仅用于读取考勤报告数据。
+- `contact:user.employee:readonly`：仅用于读取员工联系方式信息。
+- `im:message:send_as_bot`：仅用于以机器人身份发送消息。

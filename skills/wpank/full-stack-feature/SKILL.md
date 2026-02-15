@@ -1,15 +1,15 @@
 ---
 name: full-stack-feature
 model: reasoning
-description: Meta-skill for orchestrating end-to-end feature development from persona research through deployed, tested code — coordinating skills, commands, and agents across every stage. Use when building a new feature end-to-end, coordinating frontend + backend work, or needing a structured approach from research to production.
+description: **元技能：端到端特性开发的统筹管理**  
+该元技能用于协调从用户角色研究到代码部署、测试的整个开发流程，涵盖各个阶段所需的技能、命令及工具。适用于新特性的端到端开发、前端与后端工作的协同，以及在从研究到生产过程中需要结构化方法的情况。
 ---
 
-# Full-Stack Feature Orchestration (Meta-Skill)
+# 全栈特性协调（元技能）
 
-Coordinate the entire lifecycle of a feature — from understanding who it's for, through design, implementation, testing, and documentation. This meta-skill routes to the right skill, command, or agent at each stage and enforces stage gates so nothing ships half-baked.
+该技能负责协调特性的整个生命周期，包括明确特性目标用户、设计、实现、测试和文档编写等环节。在每个阶段，该元技能会引导使用正确的技能、命令或工具，并确保每个阶段都按照既定流程完成，避免半成品的上线。
 
-
-## Installation
+## 安装
 
 ### OpenClaw / Moltbot / Clawbot
 
@@ -20,20 +20,20 @@ npx clawhub@latest install full-stack-feature
 
 ---
 
-## When to Use
+## 使用场景
 
-- Building a new feature end-to-end — you need the full pipeline from research to production
-- Frontend + backend work together — the feature spans UI, API, and data layers
-- User research should inform implementation — you want personas and specs before writing code
-- Coordinating multiple skills — you're unsure which skill or command to invoke at each step
-- Onboarding a new feature area — you need a structured approach, not ad hoc implementation
-- Teaching a junior developer — walk through the complete feature development process
+- **端到端开发新特性**：需要从研究到生产的完整开发流程。
+- **前端与后端协同工作**：特性涉及用户界面（UI）、应用程序编程接口（API）和数据层。
+- **用户研究指导开发**：在编写代码前需要了解用户需求和规格。
+- **协调多个开发环节**：不确定在每个步骤应使用哪种技能或命令。
+- **新特性领域的引入**：需要结构化的方法，而非临时性的开发方式。
+- **指导初级开发者**：引导他们完成整个特性开发流程。
 
 ---
 
-## Orchestration Flow
+## 协调流程
 
-Every feature moves through eight stages. Small features skip stages (see Complexity Assessment below); large features complete all of them.
+每个特性会经历八个阶段。小型特性可以跳过某些阶段（详见“复杂性评估”部分）；大型特性则需要完成所有阶段。
 
 ```
  1. Persona Research
@@ -55,111 +55,109 @@ Every feature moves through eight stages. Small features skip stages (see Comple
 
 ---
 
-## Stage Details
+## 各阶段详细信息
 
-### Stage 1 — Persona Research
+### 第1阶段 — 用户角色研究
 
-Understand who the feature is for before designing anything. Define the target user, their goals, pain points, and the journey this feature supports.
+在开始设计之前，首先要明确该特性面向的目标用户，包括他们的需求、痛点以及该特性能够解决的问题。
 
-**Invoke:** `/create-persona` command → `ai/commands/docs/create-persona.md`
-**Skill:** `persona-docs` → `ai/skills/writing/persona-docs/SKILL.md`
+**使用的命令：** `/create-persona`  
+**对应的技能：** `persona-docs` → `ai/skills/writing/persona-docs/SKILL.md`  
+**输出结果：** 描述目标用户、使用场景及特性成功标准的文档。
 
-**Output:** Persona document describing the target user, their context, and success criteria for this feature.
+### 第2阶段 — 特性规格制定
 
-### Stage 2 — Feature Specification
+将用户研究的结果转化为具体的特性规格，包括功能范围、验收标准、边界情况和技术限制。
 
-Translate persona insights into a concrete feature spec — scope, acceptance criteria, edge cases, and technical constraints.
+**使用的命令：** `feature-specification`  
+**对应的技能：** `ai/skills/meta/feature-specification/SKILL.md`  
+**输出结果：** 包含用户故事、验收标准、超出范围的内容及技术说明的特性规格文档。
 
-**Invoke:** `feature-specification` skill → `ai/skills/meta/feature-specification/SKILL.md`
+### 第3阶段 — 用户界面/用户体验（UX/UI）设计
 
-**Output:** Feature spec with user stories, acceptance criteria, out-of-scope items, and technical notes.
+根据用户角色和特性规格来设计界面，选择合适的视觉风格、布局和交互方式。
 
-### Stage 3 — UX/UI Design
+**输出结果：** 组件层次结构、布局方案、样式选择以及响应式设计规划。
 
-Design the interface informed by the persona and spec. Choose the right visual style, layout, and interaction patterns.
+### 第4阶段 — API设计
 
-**Output:** Component hierarchy, layout decisions, style selections, and responsive behavior plan.
+定义前端与后端之间的接口规范，包括端点、请求/响应格式、错误代码和认证要求。
 
-### Stage 4 — API Design
+**使用的命令：** `/create-api-route`  
+**对应的技能：** `ai/commands/development/create-api-route.md`  
+**输出结果：** 包含验证规则和错误处理的API接口规范（OpenAPI格式或类型化的路由定义）。
 
-Define the contract between frontend and backend. Design endpoints, request/response shapes, error codes, and authentication requirements.
+### 第5阶段 — 前端实现
 
-**Command:** `/create-api-route` → `ai/commands/development/create-api-route.md`
+构建用户界面组件、页面和客户端逻辑，使用适合项目技术栈的框架。
 
-**Output:** API contract (OpenAPI spec or typed route definitions) with validation rules and error handling.
+**使用的命令：** `/create-component`  
+**对应的技能：** `ai/commands/development/create-component.md`  
+**输出结果：** 与API接口规范对接的UI组件，包含加载/错误状态处理及响应式布局。
 
-### Stage 5 — Frontend Implementation
+### 第6阶段 — 后端实现
 
-Build the UI components, pages, and client-side logic. Use the appropriate framework skill for the project's stack.
+构建API路由、业务逻辑、数据访问层和后台任务。
 
-**Command:** `/create-component` → `ai/commands/development/create-component.md`
+**使用的命令：** `/new-feature`  
+**对应的技能：** `ai/commands/development/new-feature.md`  
+**输出结果：** 实现的API路由、数据模型、数据迁移以及通过单元测试的业务逻辑。
 
-**Output:** Working UI components wired to the API contract, with loading/error states and responsive layout.
+### 第7阶段 — 测试
 
-### Stage 6 — Backend Implementation
+从单元测试、集成测试到端到端测试多个层面验证特性的正确性，确保符合第2阶段的验收标准。
 
-Build the API routes, business logic, data access layer, and background jobs.
+**使用的命令：** `/test-feature`  
+**对应的技能：** `ai/commands/development/test-feature.md`  
+**输出结果：** 包含正常流程、边界情况以及错误场景的测试用例集。
 
-**Command:** `/new-feature` → `ai/commands/development/new-feature.md`
+### 第8阶段 — 文档编写
 
-**Output:** Implemented API routes, data models, migrations, and business logic passing unit tests.
+生成面向用户的文档、API参考文档和内部技术文档。
 
-### Stage 7 — Testing
-
-Validate the feature across unit, integration, and end-to-end layers. Verify acceptance criteria from Stage 2.
-
-**Command:** `/test-feature` → `ai/commands/development/test-feature.md`
-
-**Output:** Passing test suite covering happy paths, edge cases, and error scenarios from the spec.
-
-### Stage 8 — Documentation
-
-Generate user-facing docs, API references, and internal technical documentation.
-
-**Command:** `/generate-docs` → `ai/commands/documentation/generate-docs.md`
-
-**Output:** Updated README, API docs, component storybook entries, and changelog.
+**使用的命令：** `/generate-docs`  
+**对应的技能：** `ai/commands/documentation/generate-docs.md`  
+**输出结果：** 更新后的README文件、API文档、组件文档以及变更日志。
 
 ---
 
-## Skill Routing Table
+## 技能映射表
 
-| Stage | Primary Skill | Command | Agent |
+| 阶段 | 主要技能 | 命令 | 执行工具 |
 |-------|--------------|---------|-------|
-| 1. Persona Research | `persona-docs` | `/create-persona` | — |
-| 2. Feature Spec | `feature-specification` | — | — |
-| 3. UX/UI Design | UI/UX skill | — | — |
-| 4. API Design | `api-design-principles` | `/create-api-route` | `ai/agents/api/` |
-| 5. Frontend | Framework skill (Next.js, React, etc.) | `/create-component` | — |
-| 6. Backend | `api-development`, `database-migration-patterns` | `/new-feature` | `ai/agents/migration/` |
-| 7. Testing | `testing-workflow`, `e2e-testing-patterns` | `/test-feature` | `ai/agents/testing/` |
-| 8. Documentation | — | `/generate-docs` | — |
+| 1. 用户角色研究 | `persona-docs` | `/create-persona` | — |
+| 2. 特性规格制定 | `feature-specification` | — | — |
+| 3. 用户界面/用户体验设计 | UI/UX相关技能 | — | — |
+| 4. API设计 | `api-design-principles` | `/create-api-route` | `ai/agents/api/` |
+| 5. 前端开发 | 适用的前端框架技能（如Next.js、React等） | `/create-component` | — |
+| 6. 后端开发 | `api-development`、`database-migration-patterns` | `/new-feature` | `ai/agents/migration/` |
+| 7. 测试 | `testing-workflow`、`e2e-testing-patterns` | `/test-feature` | `ai/agents/testing/` |
+| 8. 文档编写 | — | `/generate-docs` | — |
 
 ---
 
-## Stage Gate Checks
+## 阶段检查机制
 
-Each stage must pass its gate before proceeding. Gates prevent wasted work by catching gaps early.
+每个阶段都必须通过相应的检查才能进入下一阶段。这些检查机制有助于及早发现并避免无效的工作。
 
-| Gate | Required Before | Criteria | Blocking? |
+| 检查项 | 必须完成的条件 | 检查标准 | 是否会阻碍进展？ |
 |------|----------------|----------|-----------|
-| Persona defined | Stage 2 | Target user identified with goals and pain points | Yes |
-| Spec approved | Stage 3 | Acceptance criteria written, scope defined, edge cases listed | Yes |
-| Design reviewed | Stage 4 | Component hierarchy defined, responsive plan in place | Yes |
-| API contract locked | Stage 5 + 6 | Endpoints defined, request/response types agreed, error codes set | Yes |
-| Frontend renders | Stage 6 | UI components display with mock data, loading/error states work | No (parallel OK) |
-| Backend passes tests | Stage 7 | All API routes return expected responses, validations enforced | Yes |
-| Tests pass | Stage 8 | Unit + integration + E2E tests green, acceptance criteria verified | Yes |
-| Docs complete | Deploy | API documented, user-facing docs updated, changelog entry added | Yes |
+| 用户角色明确 | 第2阶段 | 确定了目标用户及其需求和痛点 | 是 |
+| 规格获得批准 | 第3阶段 | 编写了验收标准，明确了功能范围和边界情况 | 是 |
+| 设计方案审核通过 | 第4阶段 | 定义了组件层次结构，制定了响应式设计方案 | 是 |
+| API接口规范确定 | 第5/6阶段 | 定义了端点，明确了请求/响应类型和错误代码 | 是 |
+| 前端界面可展示 | 第6阶段 | UI组件能使用模拟数据正确显示，加载/错误状态功能正常 | 否（可以并行进行） |
+| 后端测试通过 | 第7阶段 | 所有API路由返回预期响应，验证规则得到执行 | 是 |
+| 测试通过 | 第8阶段 | 单元测试、集成测试和端到端测试均通过，验收标准得到验证 | 是 |
+| 文档完成 | 部署前 | API文档齐全，用户文档更新，变更日志记录完整 | 是 |
 
 ---
 
-## Vertical Slice Strategy
+## 垂直开发策略
 
-Start with the thinnest possible end-to-end slice, then widen.
+**步骤1：** 从最简单的端到端流程开始，逐步扩展。
 
-**Phase 1 — Thin Slice**
-Build one happy path through all layers: a single user action from UI click to database write and back. This proves the architecture works and gives stakeholders something to demo.
+**步骤1：** 构建一个完整的用户交互流程（从UI点击到数据库操作）。这可以验证架构的可行性，并为利益相关者提供可展示的成果。
 
 ```
 Example: "User can create a new project"
@@ -169,64 +167,62 @@ Example: "User can create a new project"
   Test:    E2E test: fill form → submit → see project in list
 ```
 
-**Phase 2 — Widen**
-Add validation, error handling, edge cases, and secondary flows. Each addition follows the same vertical path — never build an entire layer in isolation.
+**步骤2：** 添加验证逻辑、错误处理、边界情况处理以及备用流程。每次扩展都遵循相同的垂直开发路径，避免孤立地开发某个部分。
 
-**Phase 3 — Polish**
-Loading states, optimistic updates, animations, accessibility, performance optimization, and comprehensive error messages.
+**步骤3：** 优化界面加载状态、实现乐观更新、添加动画效果、提升可访问性、优化性能，并编写详细的错误信息。
 
 ---
 
-## Complexity Assessment
+## 复杂性评估
 
-Not every feature needs all eight stages. Use this table to determine which stages to include.
+并非所有特性都需要经历所有八个阶段。根据以下表格判断需要包含哪些阶段：
 
-| Feature Size | Examples | Stages to Include | Estimated Time |
+| 特性规模 | 例子 | 需要包含的阶段 | 预计耗时 |
 |-------------|----------|-------------------|----------------|
-| **Trivial** | Rename a label, fix copy, adjust spacing | 5 only | < 1 hour |
-| **Small** | Add a filter, new form field, simple toggle | 4 → 5 → 6 → 7 | 2-4 hours |
-| **Medium** | New CRUD entity, dashboard widget, search feature | 2 → 3 → 4 → 5 → 6 → 7 | 1-3 days |
-| **Large** | New user-facing feature area, multi-page flow | All 8 stages | 1-2 weeks |
-| **Epic** | New product vertical, major redesign, platform migration | All 8 + ADR + phased rollout | 2-6 weeks |
+| **简单** | 更改标签、修正文本、调整间距 | 只需第1和第5阶段 | <1小时 |
+| **小型** | 添加筛选器、新的表单字段、简单的切换功能 | 第2-6阶段 | 2-4小时 |
+| **中型** | 新的CRUD操作、仪表盘组件、搜索功能 | 第2-7阶段 | 1-3天 |
+| **大型** | 新的用户界面功能、多页面流程 | 所有8个阶段 | 1-2周 |
+| **大型项目** | 新的产品模块、重大设计变更、平台迁移 | 所有8个阶段，加上适配性调整和分阶段部署 | 2-6周 |
 
-### How to Assess Complexity
+### 复杂性评估方法：
 
-1. **Count the layers touched** — UI only (trivial), UI + API (small), UI + API + DB (medium+)
-2. **Count the user flows** — one path (small), 2-3 paths (medium), many paths with branching (large)
-3. **Check for unknowns** — known patterns (smaller), new integrations or unfamiliar tech (bump up one size)
-4. **Consider blast radius** — isolated change (smaller), cross-cutting concern (bump up one size)
-
----
-
-## Coordination Patterns
-
-### Frontend and Backend in Parallel
-
-Once the API contract is locked (Stage 4 gate), frontend and backend can proceed simultaneously:
-
-- **Frontend** uses mock data matching the API contract types
-- **Backend** implements against the same contract with unit tests
-- **Integration** happens when both sides are ready — contract guarantees compatibility
-
-### Handoff Points
-
-Use the `/handoff-and-resume` command when:
-
-- Switching between frontend and backend work
-- Pausing mid-feature and resuming later
-- Passing work to another developer or agent
-
-### Progress Tracking
-
-Use the `/progress` command to check which stage you're in and what remains.
+1. **统计涉及的组件/技术层**：仅涉及UI（简单）、UI+API（小型）、UI+API+DB（中型）。
+2. **分析用户交互流程**：单一路径（小型）、2-3条路径（中型）、多路径且具有分支（大型）。
+3. **考虑未知因素**：使用已知的设计模式（降低复杂性）；遇到新的集成或不熟悉的技术（提高复杂性等级）。
+4. **评估影响范围**：局部修改（降低复杂性）；涉及多个模块的变更（提高复杂性）。
 
 ---
 
-## NEVER Do
+## 协调模式
 
-1. **NEVER skip persona research for user-facing features** — building without understanding the user leads to features nobody wants
-2. **NEVER start coding before the API contract is defined** — frontend and backend will diverge, causing costly rework at integration
-3. **NEVER build an entire layer before connecting it end-to-end** — always use vertical slices to prove the architecture first
-4. **NEVER skip stage gates to move faster** — gates exist to catch problems when they're cheap to fix, not after they've compounded
-5. **NEVER treat testing as a separate phase you can cut** — tests are part of implementation, not an afterthought bolted on at the end
-6. **NEVER ship without documentation** — undocumented features become maintenance burdens that slow down every future change
+### 前端与后端并行开发
+
+当API接口规范确定后（第4阶段），前端和后端可以同时进行开发：
+
+- **前端** 使用与API接口规范匹配的模拟数据进行开发。
+- **后端** 根据接口规范实现功能，并进行单元测试。
+- **集成** 在双方都准备好时进行——接口规范确保了两者之间的兼容性。
+
+### 任务交接方式
+
+使用 `/handoff-and-resume` 命令进行任务交接：
+
+- 在前后端之间切换时。
+- 在特性开发过程中暂停后重新开始时。
+- 将任务交给其他开发者或团队成员时。
+
+### 进度追踪
+
+使用 `/progress` 命令查看当前所处的阶段及剩余的工作内容。
+
+---
+
+**严禁的行为**
+
+1. **严禁跳过用户角色研究**：不了解用户需求就直接开始开发，否则可能会开发出没人需要的功能。
+2. **严禁在API接口规范未确定前就开始编码**：否则前端和后端可能会产生不兼容的问题，导致后期需要大量的返工。
+3. **严禁在各个组件/模块独立完成后再进行集成**：应先通过垂直开发的方式验证整个系统的架构。
+4. **严禁为了加快进度而跳过检查环节**：检查环节的存在是为了在问题还容易解决时及时发现并处理。
+5. **严禁将测试视为可省略的独立步骤**：测试是开发过程的一部分，不能事后才添加。
+6. **严禁在没有文档的情况下发布产品**：缺乏文档的特性会成为后续维护的负担，阻碍任何修改。

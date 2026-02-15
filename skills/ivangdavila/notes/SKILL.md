@@ -1,44 +1,44 @@
 ---
 name: Notes
-description: Take structured, searchable notes — capture decisions, actions, and context that last.
+description: **记录结构化、可搜索的笔记——捕捉决策、行动及相关背景信息，确保信息长期有效。**
 metadata:
   emoji: 📝
   os: all
 ---
 
-# Notes
+# 备注
 
-## Structure & Hierarchy
-- Use clear hierarchy: title → context → key points → action items
-- Front-load most important information (inverted pyramid style)
-- Use bullet points for scanability, avoid walls of text
-- Keep notes atomic — one topic per note, not everything in one file
+## 结构与层次
+- 使用清晰的层次结构：标题 → 背景 → 关键点 → 行动事项
+- 将最重要的信息放在前面（采用倒金字塔式结构）
+- 使用项目符号提高可读性，避免长篇大论的文字
+- 每条备注只讨论一个主题，不要将所有内容放在一个文件中
 
-## Facts vs Interpretations
-- Separate facts from interpretations clearly
-- Mark opinions and assumptions with "likely", "suggests", "appears to"
-- Include timestamps and source attribution for all information
-- Distinguish between what was said vs what you inferred
+## 事实与解读
+- 清晰区分事实与个人解读
+- 对观点和假设使用“可能”、“建议”或“看起来”等词语进行标注
+- 为所有信息添加时间戳和来源出处
+- 区分他人所说的内容与你的推断
 
-## Meeting & Call Notes
-- Capture decisions, action items (with owners), and open questions separately
-- Use consistent sections: ## Decisions, ## Action Items, ## Open Questions
-- Record who said what, not just what was discussed
-- Include next steps and follow-up dates
+## 会议与通话记录
+- 分别记录决策、行动事项（以及负责人员）和未解决的问题
+- 使用统一的章节结构：## 决策 ## 行动事项 ## 未解决的问题
+- 记录发言者及其发言内容，而不仅仅是讨论的内容
+- 包括下一步行动和跟进日期
 
-## Organization & Retrieval
-- Tag or categorize notes for retrieval (project, topic, person)
-- Link related notes to each other — build a knowledge graph
-- Use consistent formatting across all notes (same heading levels, date format)
-- Include searchable keywords in content
+## 组织与管理
+- 为备注添加标签或分类以便查找（按项目、主题或人员）
+- 将相关备注相互链接，构建知识图谱
+- 在所有备注中保持一致的格式（相同的标题层级、日期格式）
+- 在内容中添加可搜索的关键词
 
-## Maintenance
-- Review and consolidate regularly — merge duplicates, archive stale notes
-- When humans ask "what did we discuss about X" — search existing notes first
-- Update old notes with new information rather than creating duplicates
-- Maintain an index or table of contents for large note collections
+## 维护
+- 定期审查和整理备注——合并重复的内容，归档过时的备注
+- 当有人询问“我们讨论了X的哪些内容”时，先搜索现有备注
+- 用新信息更新旧备注，而不是创建重复的记录
+- 对于大量的备注集合，维护一个索引或目录
 
-## Format Template
+## 格式模板
 ```
 # [Topic] - [Date]
 **Context:** Brief background

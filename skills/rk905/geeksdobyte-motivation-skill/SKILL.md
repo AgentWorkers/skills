@@ -4,28 +4,27 @@ summary: Provide a daily motivational quote.
 tags: ["motivation","quotes","fun"]
 ---
 
-# Motivation Skill
+# 动力激励技能
 
-## Description
-This skill lets the agent respond with a daily motivational quote when asked.
+## 描述
+此技能允许代理在用户请求时提供每日一句励志名言作为回应。
 
-## Usage
-When the user asks the agent for a motivational quote, this skill should provide a friendly response.
+## 使用方法
+当用户向代理请求一句励志名言时，该技能应提供友好的回复。
 
-Example:
-User: Give me a motivational quote for today.
-Assistant: "Success is not final; failure is not fatal: it is the courage to continue that counts." — Winston Churchill
+示例：
+用户：给我一句今天的励志名言。
+助手：“成功并非终点，失败也并非致命；重要的是继续前进的勇气。”——温斯顿·丘吉尔
 
+## 行为规则
+如果用户的请求中包含以下关键词：
+- 励志名言
+- 今天的名言
+- 灵感
 
-## Behavior
-If the user’s request mentions:
-- motivational quote
-- quote for today
-- inspiration
+则应回复一条预先准备好的励志名言。
 
-then reply with a relevant prewritten motivational quote.
-
-## Quotes List
-- "The only way to do great work is to love what you do." — Steve Jobs  
-- "Success usually comes to those who are too busy to be looking for it." — Henry David Thoreau  
-- "It does not matter how slowly you go as long as you do not stop." — Confucius  
+## 名言列表：
+- “唯一能做出伟大工作的方法，就是热爱你所做的事情。”——史蒂夫·乔布斯  
+- “成功通常会降临到那些忙得无暇去寻找它的人身上。”——亨利·戴维·梭罗  
+- “无论你前进的速度有多慢，只要你不放弃，就一切皆有可能。”——孔子

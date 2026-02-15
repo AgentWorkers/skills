@@ -1,6 +1,6 @@
 ---
 name: gratitude-journal
-description: Build gratitude practice with daily entries, streaks, and reflection prompts
+description: 通过每日记录、连续完成任务（“streaks”）以及反思提示来培养感恩的习惯。
 author: clawd-team
 version: 1.0.0
 triggers:
@@ -11,61 +11,40 @@ triggers:
   - "gratitude practice"
 ---
 
-# Gratitude Journal
+# 感恩日记
 
-Cultivate gratitude daily through intentional reflection, streak tracking, and personalized prompts.
+通过有意识的反思、连续记录的习惯以及个性化的提示，每天培养感恩的心态。
 
-## What it does
+## 功能介绍
 
-**Daily Gratitude Logging**: Record what you're grateful for each day with optional context and emotions. Entries are timestamped and searchable.
+- **每日感恩记录**：记录你每天感激的事物，可附加相关背景和感受。每条记录都会带有时间戳，并支持搜索。
+- **连续记录追踪**：通过自动计数功能，帮助你保持感恩的习惯。你可以看到自己连续感恩的天数，并庆祝达成的里程碑。
+- **反思提示**：提供多样化的反思问题，涵盖不同主题（如他人、经历、生活中的小确幸、个人成长等），激发更深入的思考。
+- **模式分析**：分析你的感恩模式，了解哪些主题最常出现，以及你的感恩情绪随时间的变化。
 
-**Streak Tracking**: Build momentum with automatic streak counting. See consecutive days of gratitude practice and celebrate milestones.
+## 使用方法
 
-**Reflection Prompts**: Get variety with rotating prompts—specific categories like people, experiences, simple pleasures, personal growth, and blessings in disguise.
+- **记录感恩**：输入“记录感恩：我很感激早晨的咖啡和晴朗的天空”，系统会立即记录下你的感受，并在本地保存数据。如果今天是新的一天，还会更新连续记录的天数。
+- **获取每日提示**：输入“给我今天的感恩提示”，系统会给出一个具体的问题，帮助你进行更深入的反思。
+- **查看连续记录情况**：输入“我的感恩记录连续多少天了？”，系统会显示当前的连续天数、最后一条记录的日期，以及你距离达成常见目标（7天、30天、100天）的进度。
+- **回顾记录**：输入“显示我上周的感恩记录”，系统会显示最近几天的记录，包括日期、感受和背景信息。你可以按日期范围筛选或通过关键词搜索。
+- **分析感恩模式**：输入“我的感恩模式是什么？”，系统会分析记录中的主题、最常提到的内容、情感倾向以及你的感恩趋势。
 
-**Pattern Insights**: Discover what matters most. Review themes across entries, see which topics appear most, and understand your gratitude patterns over weeks and months.
+## 提示示例：
 
-## Usage
+- **他人**：最近生活中，谁以善意让你感到惊喜？
+- **经历**：今天有什么瞬间让你不自觉地露出了微笑？
+- **小确幸**：今天你享受了哪些小小的舒适时刻？
+- **个人成长**：你感激自己面对了哪些挑战？
+- **看似困难但最终带来好结果的事情**：最初看起来困难的事情，最终是如何变得美好的？
+- **感官体验**：今天你看到了什么、听到了什么、感受到了什么美好的事物？
+- **人际关系**：谁仅仅因为做自己，就让你的日子变得更加美好？
+- **健康**：你的身体有哪些表现值得你感激？
 
-**Log Gratitude**
-Say: "Log gratitude: I'm grateful for morning coffee and a clear sky."
-Records your entry instantly with timestamp, stores locally, increments streak if new day.
+## 使用建议：
 
-**Daily Prompt**
-Say: "Give me today's gratitude prompt."
-Receive a targeted reflection question to spark deeper thinking beyond surface-level appreciation.
-
-**Check Streak**
-Say: "What's my gratitude streak?"
-Returns current streak count, last entry date, and milestone progress toward common targets (7, 30, 100 days).
-
-**Review Entries**
-Say: "Show me my gratitude entries from last week."
-Displays recent entries with dates, emotions, and context. Filter by date range or search by keyword.
-
-**Insights**
-Say: "What's my gratitude pattern?"
-Analyzes entries for themes, most-mentioned topics, emotional tone, and growth trends. Shows what you appreciate most.
-
-## Prompts Examples
-
-- **People**: Who in your life surprised you with kindness recently?
-- **Experiences**: What moment today made you smile without thinking?
-- **Simple Pleasures**: What small comfort did you enjoy today?
-- **Personal Growth**: What challenge are you grateful you faced?
-- **Blessings in Disguise**: What initially seemed difficult but turned out well?
-- **Sensory**: What did you see, hear, or feel today that was beautiful?
-- **Relationships**: Who made your day better just by being themselves?
-- **Health**: What does your body do that you don't always appreciate?
-
-## Tips
-
-1. **Log daily at the same time** — Creates habit and keeps streaks alive. Morning coffee or bedtime reflection works well.
-
-2. **Go deep, not broad** — One thoughtful entry beats five generic ones. Use prompts to explore *why* you're grateful.
-
-3. **Mix specifics with big-picture** — Balance gratitude for people/relationships with gratitude for health, freedom, and opportunities.
-
-4. **Review your pattern monthly** — Insights compound. Monthly reviews show growth, shift in perspective, and what truly matters to you.
-
-5. **All data stays local on your machine** — Your gratitude entries never leave your device. You own your data completely.
+1. **每天在同一时间记录**：养成习惯，保持连续记录的势头。早晨喝咖啡或睡前反思都是不错的选择。
+2. **深入思考，而非泛泛而谈**：一条有深度的记录比五条泛泛的记录更有意义。利用提示来探索你感恩的具体原因。
+3. **结合具体与宏观**：在感恩他人/人际关系的同时，也要感恩健康、自由和机会。
+4. **每月进行一次回顾**：定期回顾能帮助你发现自己的成长和视角的变化，了解真正重要的事物。
+5. **所有数据都保存在本地**：你的感恩记录永远不会离开你的设备，你完全拥有自己的数据。

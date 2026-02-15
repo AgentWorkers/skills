@@ -1,14 +1,14 @@
 # Stable Layer SDK
 
-A TypeScript SDK for interacting with the Stable Layer protocol on the Sui blockchain. It supports minting and burning stablecoins, and claiming yield farming rewards.
+这是一个TypeScript SDK，用于与Sui区块链上的Stable Layer协议进行交互。它支持铸造和销毁稳定币（stablecoins），以及领取收益 farming的奖励。
 
-## Installation
+## 安装
 
 ```bash
 npm install stable-layer-sdk @mysten/sui @mysten/bcs
 ```
 
-## API Reference
+## API参考
 
 ### StableLayerClient
 
@@ -21,53 +21,53 @@ const client = new StableLayerClient({
 });
 ```
 
-### Transaction Methods
+### 交易方法
 
 #### `buildMintTx(options)`
 
-Mint stablecoins by depositing USDC. Automatically deposits into vault farm.
+通过存入USDC来铸造稳定币。铸造后的稳定币会自动存入保险库（vault）进行收益 farming。
 
-| Parameter       | Type          | Description                                      |
-| --------------- | ------------- | ------------------------------------------------ |
-| `tx`            | `Transaction` | Sui transaction object                           |
-| `stableCoinType`| `string`      | Target stablecoin type (e.g. `0x...::btc_usdc::BtcUSDC`) |
-| `usdcCoin`      | `Coin`        | Input USDC coin reference                        |
-| `amount`        | `bigint`      | Amount to mint                                   |
-| `autoTransfer`  | `boolean?`    | If `false`, returns the resulting Coin object     |
+| 参数               | 类型           | 描述                                      |
+| ------------------- | ------------ | ------------------------------------------------ |
+| `tx`            | `Transaction`     | Sui交易对象                             |
+| `stableCoinType`     | `string`       | 目标稳定币类型（例如：`0x...::btc_usdc::BtcUSDC`）         |
+| `usdcCoin`        | `Coin`         | 输入的USDC币种参考                         |
+| `amount`         | `bigint`        | 铸造的数量                               |
+| `autoTransfer`      | `boolean?`     | 如果设置为`false`，则返回铸造后的Coin对象         |
 
 #### `buildBurnTx(options)`
 
-Burn stablecoins to redeem USDC.
+销毁稳定币以兑换USDC。
 
-| Parameter       | Type          | Description                          |
-| --------------- | ------------- | ------------------------------------ |
-| `tx`            | `Transaction` | Sui transaction object               |
-| `stableCoinType`| `string`      | Stablecoin type to burn              |
-| `amount`        | `bigint?`     | Specific amount to burn              |
-| `all`           | `boolean?`    | If `true`, burn entire balance       |
+| 参数               | 类型           | 描述                                      |
+| ------------------- | ------------ | ------------------------------------ |
+| `tx`            | `Transaction`     | Sui交易对象                             |
+| `stableCoinType`     | `string`       | 需要销毁的稳定币类型                         |
+| `amount`         | `bigint?`      | 需要销毁的具体数量                         |
+| `all`            | `boolean?`     | 如果设置为`true`，则销毁所有余额                     |
 
 #### `buildClaimTx(options)`
 
-Claim accumulated yield farming rewards.
+领取累积的收益 farming奖励。
 
-| Parameter       | Type          | Description                          |
-| --------------- | ------------- | ------------------------------------ |
-| `tx`            | `Transaction` | Sui transaction object               |
-| `stableCoinType`| `string`      | Stablecoin type to claim rewards for |
+| 参数               | 类型           | 描述                                      |
+| ------------------- | ------------ | ------------------------------------ |
+| `tx`            | `Transaction`     | Sui交易对象                             |
+| `stableCoinType`     | `string`       | 需要领取奖励的稳定币类型                         |
 
-### Query Methods
+### 查询方法
 
 #### `getTotalSupply()`
 
-Returns the total stablecoin supply across all coin types.
+返回所有稳定币类型的总供应量。
 
 #### `getTotalSupplyByCoinType(type: string)`
 
-Returns the supply for a specific stablecoin type.
+返回特定稳定币类型的供应量。
 
-## Usage Examples
+## 使用示例
 
-### Mint Stablecoins
+### 铸造稳定币
 
 ```typescript
 import { Transaction, coinWithBalance } from "@mysten/sui/transactions";
@@ -100,7 +100,7 @@ const result = await suiClient.signAndExecuteTransaction({
 });
 ```
 
-### Burn Stablecoins
+### 销毁稳定币
 
 ```typescript
 const tx = new Transaction();
@@ -113,7 +113,7 @@ await client.buildBurnTx({
 await suiClient.signAndExecuteTransaction({ transaction: tx, signer: keypair });
 ```
 
-### Claim Rewards
+### 领取奖励
 
 ```typescript
 const tx = new Transaction();
@@ -125,7 +125,7 @@ await client.buildClaimTx({
 await suiClient.signAndExecuteTransaction({ transaction: tx, signer: keypair });
 ```
 
-### Query Supply
+### 查询供应量
 
 ```typescript
 const totalSupply = await client.getTotalSupply();

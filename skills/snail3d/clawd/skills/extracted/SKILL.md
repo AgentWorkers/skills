@@ -1,31 +1,31 @@
 ---
 name: skill-defender
-description: Scans installed OpenClaw skills for malicious patterns including prompt injection, credential theft, data exfiltration, obfuscated payloads, and backdoors. Use when installing new skills, after skill updates, or for periodic security scans. Runs deterministic pattern matching — fast, offline, no API cost.
+description: 扫描已安装的 OpenClaw 技能，以检测恶意行为模式，包括提示注入（prompt injection）、凭证窃取（credential theft）、数据泄露（data exfiltration）、混淆后的有效载荷（obfuscated payloads）以及后门（backdoors）。建议在新技能安装后、技能更新后或进行定期安全扫描时使用该功能。该工具采用确定性模式匹配（deterministic pattern matching）技术，运行速度快、无需联网，且不产生任何 API 费用。
 ---
 
-# Skill Defender — Malicious Pattern Scanner
+# Skill Defender — 恶意模式扫描器
 
-## When to Run
+## 何时运行
 
-### Automatic Triggers
-1. **New skill installed** — Immediately run `scan_skill.py` against it before allowing use
-2. **Skill updated** — Re-scan after any file changes in a skill directory
-3. **Periodic audit** — Run batch scan on all installed skills when requested
+### 自动触发
+1. **新技能安装** — 在允许使用新技能之前，立即运行 `scan_skill.py` 进行扫描。
+2. **技能更新** — 当技能目录中的任何文件发生变化时，重新扫描该技能。
+3. **定期审计** — 根据需求，对所有已安装的技能进行批量扫描。
 
-### Manual Triggers
-- User says "scan skill X" → scan that specific skill
-- User says "scan all skills" → batch scan all skills
-- User says "security check" or "audit skills" → same as above
+### 手动触发
+- 用户输入 “扫描技能 X” → 扫描指定的技能。
+- 用户输入 “扫描所有技能” → 批量扫描所有技能。
+- 用户输入 “安全检查” 或 “审计技能” → 执行与上述相同的操作。
 
-## Scripts
+## 脚本
 
-### `scripts/scan_skill.py` — Single Skill Scanner
-Scans one skill directory for malicious patterns. Produces JSON or human-readable output.
+### `scripts/scan_skill.py` — 单个技能扫描器
+扫描单个技能目录中的恶意模式，并生成 JSON 或人类可读的输出结果。
 
-### `scripts/aggregate_scan.py` — Batch Scanner
-Scans ALL installed skills and produces a single JSON report. Includes a built-in allowlist to reduce false positives from security-related skills, API skills, and other known-safe patterns.
+### `scripts/aggregate_scan.py` — 批量扫描器
+扫描所有已安装的技能，并生成一份统一的 JSON 报告。该脚本包含一个内置的允许列表，用于减少来自安全相关技能、API 技能以及其他已知安全模式的误报。
 
-## How to Run
+## 运行方式
 
 ```bash
 # Scan a single skill (human-readable)
@@ -47,13 +47,13 @@ python3 scripts/scan_skill.py /path/to/skill-dir --verbose
 python3 scripts/scan_skill.py /path/to/skill-dir --exclude "pattern1" "pattern2"
 ```
 
-### Exit Codes (scan_skill.py)
-- `0` = clean or informational only
-- `1` = suspicious (medium/high findings)
-- `2` = dangerous (critical findings)
-- `3` = error
+### 错误代码（scan_skill.py）
+- `0` = 无问题或仅提供信息性输出
+- `1` = 可疑（发现中等/高级风险）
+- `2` = 危险（发现严重风险）
+- `3` = 错误
 
-### Output Format (aggregate_scan.py)
+### 输出格式（aggregate_scan.py）
 
 ```json
 {
@@ -75,42 +75,40 @@ python3 scripts/scan_skill.py /path/to/skill-dir --exclude "pattern1" "pattern2"
 }
 ```
 
-## Auto-Detection
+## 自动检测
 
-Both scripts auto-detect paths:
-- **Skills directory**: Detected from script location (walks up to find `skills/` parent), falls back to `~/clawd/skills`, `~/skills`, `~/.openclaw/skills`
-- **Scanner script**: `aggregate_scan.py` finds `scan_skill.py` co-located in the same directory
+两个脚本都会自动检测以下路径：
+- **技能目录**：从脚本所在位置开始查找 `skills/` 目录；如果找不到，则依次查找 `~/clawd/skills`、`~/skills`、`~/.openclaw/skills`。
+- **扫描脚本**：`aggregate_scan.py` 会在与自身位于同一目录下找到 `scan_skill.py`。
 
-## Handling Results
+## 结果处理
 
-### ✅ Clean (`verdict: "clean"`)
-- No action needed — skill is safe
+### ✅ 无问题（`verdict: "clean"`）
+- 无需采取任何行动 — 该技能是安全的。
 
-### ⚠️ Suspicious (`verdict: "suspicious"`)
-- Warn the user with a summary of findings
-- Show the category and severity of each finding
+### ⚠️ 可疑（`verdict: "suspicious"`）
+- 向用户显示检测结果的摘要，并告知每个风险的类别和严重程度。
 
-### 🚨 Dangerous (`verdict: "dangerous"`)
-- Block the skill — do not proceed with installation or use
-- Show the full detailed findings to the user
-- Require explicit user override to proceed
+### 🚨 危险（`verdict: "dangerous"`）
+- 禁用该技能，禁止其安装或使用。
+- 向用户显示详细的检测结果。
+- 需要用户明确授权后才能继续使用该技能。
 
-## Built-in Allowlist
+## 内置允许列表
 
-The aggregate scanner includes an allowlist for known false positives:
-- **Security scanners** (skill-defender, clawdbot-security-check) — their docs/scripts contain the very patterns they detect
-- **Auth-dependent skills** (tailscale, reddit, n8n, event-planner) — legitimately reference credential paths and API keys
-- **Config-aware skills** (memory-setup, eightctl, summarize) — reference config paths in documentation
-- **Agent-writing skills** (self-improving-agent) — designed to modify agent files
+批量扫描器包含一个允许列表，用于排除以下类型的误报：
+- **安全扫描工具**（如 skill-defender、clawdbot-security-check）——它们的文档/脚本中包含它们所检测的恶意模式。
+- **依赖认证信息的技能**（如 tailscale、reddit、n8n、event-planner）——这些技能会合法地引用凭证路径和 API 密钥。
+- **需要配置信息的技能**（如 memory-setup、eightctl、summarize）——它们的文档中会引用配置文件路径。
+- **用于编写代理的技能**（如 self-improving-agent）——这些技能旨在修改代理文件。
 
-## Pattern Reference
+## 模式参考
 
-See `references/threat-patterns.md` for full documentation of all detected patterns, organized by category with explanations of why each is dangerous.
+有关所有检测到的恶意模式的完整文档，请参阅 `references/threat-patterns.md`。文档按类别对模式进行了分类，并解释了每种模式的危险性。
 
-## Important Notes
-
-- **No external dependencies** — standard library only (Python 3.9+)
-- **Fast** — under 1 second per skill, ~30 seconds for a full batch of 30+ skills
-- This is **deterministic pattern matching** (Layer 2 defense). Not LLM-based.
-- False positives are possible — the allowlist and `--exclude` flag help
-- The scanner **will flag itself** if scanned without the allowlist — this is expected
+## 重要说明
+- **无外部依赖** — 仅使用标准库（Python 3.9 及以上版本）。
+- **运行速度快** — 每个技能的扫描时间少于 1 秒，30 多个技能的批量扫描时间约为 30 秒。
+- 该工具采用 **确定性模式匹配**（第二层防御机制），不依赖于大型语言模型（LLM）。
+- 可能会出现误报——允许列表和 `--exclude` 标志有助于减少误报。
+- 如果在没有允许列表的情况下运行扫描器，该工具会自动标记自身为错误状态——这是正常现象。

@@ -1,6 +1,6 @@
 ---
 name: podcast-editing
-description: Expert guidance for this skill.
+description: 关于这项技能的专家指导。
 version: 1.0.0
 tags: [hobby,lifestyle]
 author: OpenWork
@@ -11,16 +11,16 @@ metadata:
       env: []
 ---
 
-# upodcast editing
+# upodcast 编辑
 
-Expert guidance and training.
+专家指导与培训。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Tips and strategies
-- Practice exercises
+- 最佳实践
+- 技巧与策略
+- 练习题
 
-## Usage
-Help with this skill
-Tips and guidance
+## 使用方法
+帮助您掌握这项技能
+提供相关技巧与指导

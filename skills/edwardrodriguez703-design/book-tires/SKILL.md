@@ -1,23 +1,23 @@
 ---
 name: book-tires
-description: Book tires services through Lokuli MCP. Use when user needs to find and book tires. Triggers on requests like "book a tires", "find tires near me", or any tires service request.
+description: 通过 Lokuli MCP 预订轮胎服务。当用户需要查找和预订轮胎时，可以使用此功能。该功能会在用户发起“预订轮胎”、“查找附近的轮胎”或任何与轮胎服务相关的请求时被触发。
 ---
 
-# uook tires
+# 更换轮胎服务
 
-Book tires services through Lokuli's MCP server.
+您可以通过 Lokuli 的 MCP 服务器来预订轮胎更换服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索轮胎（search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看轮胎可用性（check_availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 预订轮胎更换服务（create_booking）
 ```json
 {
   "method": "tools/call",

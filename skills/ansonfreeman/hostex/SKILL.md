@@ -1,69 +1,68 @@
 ---
 name: hostex
-description: "Hostex (hostex.io) OpenAPI v3.0 skill for querying and managing vacation rental properties, room types, reservations, availability, listing calendars, guest messaging, reviews, and webhooks via the Hostex API. Use when you need to integrate with Hostex API using a Hostex PAT (Hostex-Access-Token / HostexAccessToken) or when you need safe, intent-level API calls (read-only by default, optional write operations with explicit confirmation)."
+description: "Hostex (hostex.io) OpenAPI v3.0 提供了一套用于查询和管理度假租赁房产、房间类型、预订信息、房源可用性、房源列表日历、访客消息、评论以及通过 Hostex API 发送 Webhook 的功能。当您需要使用 Hostex PAT（Hostex-Access-Token / HostexAccessToken）与 Hostex API 进行集成，或者需要进行安全的、基于业务逻辑的 API 调用时（默认为只读模式，支持通过明确确认进行可选的写入操作），请使用此 API。"
 ---
 
-# Hostex API Skill (Node)
+# Hostex API 技能（Node.js）
 
-## Auth (PAT)
+## 认证（PAT）
 
-- Set env var: `HOSTEX_ACCESS_TOKEN`
-- Requests use header: `Hostex-Access-Token: <PAT>`
-- OpenAPI security scheme name: `HostexAccessToken`
+- 设置环境变量：`HOSTEX_ACCESS_TOKEN`
+- 请求时需要添加头部信息：`Hostex-Access-Token: <PAT>`
+- OpenAPI 的安全方案名称：`HostexAccessToken`
 
-**Default recommendation:** use a **read-only** PAT.
+**默认建议**：使用只读权限的 PAT（`read-only`）。
 
-## Dates / timezone
+## 日期/时区
 
-- All date params are `YYYY-MM-DD`
-- Interpret dates in **property timezone** (no UTC timestamps)
+- 所有日期参数均采用格式 `YYYY-MM-DD`
+- 日期按照设置的时区进行解析（不使用 UTC 时间戳）
 
-## OpenAPI source of truth
+## OpenAPI 的官方文档来源
 
-Stable OpenAPI JSON:
+稳定的 OpenAPI JSON 文档：
 - https://hostex.io/open_api/v3/config.json
 
-Use `scripts/openapi-sync.mjs` to cache a local copy into `references/openapi.json`.
+可以使用 `scripts/openapi-sync.mjs` 脚本将官方文档内容缓存到本地文件 `references/openapi.json` 中。
 
-## Quick commands (scripts)
+## 快速命令（scripts）
 
-All scripts expect `HOSTEX_ACCESS_TOKEN`.
+所有脚本都需要 `HOSTEX_ACCESS_TOKEN` 作为参数。
 
-### Read-only (safe)
+### 只读操作（安全）
 
-List properties:
+- 列出属性信息：
 ```bash
 node skills/hostex/scripts/hostex-read.mjs list-properties --limit 20
 ```
 
-List reservations (by check-in range):
+- 按入住时间范围列出预订信息：
 ```bash
 node skills/hostex/scripts/hostex-read.mjs list-reservations --start-check-in-date 2026-02-01 --end-check-in-date 2026-02-28 --limit 20
 ```
 
-List reservations (by reservation code):
+- 按预订代码列出预订信息：
 ```bash
 node skills/hostex/scripts/hostex-read.mjs list-reservations --reservation-code 0-1234567-abcdef
 ```
 
-Get availability:
+- 查询房源可用性：
 ```bash
 node skills/hostex/scripts/hostex-read.mjs get-availabilities --start 2026-02-10 --end 2026-02-20 --property-id 123
 ```
 
-### Writes (guarded)
+### 写入操作（受限制）
 
-Writes are disabled unless:
+除非满足以下条件，否则禁止写入操作：
 - `HOSTEX_ALLOW_WRITES=true`
+- 并且传递参数 `--confirm`
 
-and you pass `--confirm`.
-
-Send message:
+- 发送消息：
 ```bash
 HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs send-message --conversation-id 123 --text "Hello!" --confirm
 ```
 
-Update listing prices (single range example):
+- 更新房源价格（单个时间范围示例）：
 ```bash
 HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-listing-prices \
   --channel-type airbnb \
@@ -74,7 +73,7 @@ HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-list
   --confirm
 ```
 
-Update listing prices (multi-range in one request):
+- 一次性更新多个时间范围的房源价格：
 ```bash
 HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-listing-prices \
   --channel-type booking_site \
@@ -83,7 +82,7 @@ HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-list
   --confirm
 ```
 
-Create reservation (Direct Booking) (example):
+- 创建预订（直接预订）示例：
 ```bash
 HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs create-reservation \
   --property-id 123 \
@@ -99,7 +98,7 @@ HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs create-rese
   --confirm
 ```
 
-Update property availabilities (close/open) (example):
+- 更新房源的可用性状态（例如：关闭/开放）示例：
 ```bash
 # Close a property for a date range
 HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-availabilities \
@@ -110,14 +109,14 @@ HOSTEX_ALLOW_WRITES=true node skills/hostex/scripts/hostex-write.mjs update-avai
   --confirm
 ```
 
-## Operational guardrails (mandatory)
+## 操作规范（强制要求）
 
-When doing any write operation:
-1) **Summarize the change** (who/what/when/how much).
-2) Require the user to explicitly confirm (e.g. `CONFIRM`).
-3) Prefer `--dry-run` first if available.
+在执行任何写入操作时：
+1. **详细说明变更内容**（包括变更者、变更内容、变更时间以及变更幅度）。
+2. 要求用户明确确认操作（例如通过输入 `CONFIRM`）。
+3. 如果可能的话，建议先执行 `--dry-run`（模拟测试）操作。
 
-## Notes
+## 注意事项
 
-- Pagination: endpoints commonly accept `offset` + `limit` (limit max 100).
-- Never print tokens in logs; scripts redact secrets automatically.
+- 分页请求通常支持 `offset` 和 `limit` 参数（`limit` 最大为 100）。
+- 绝不要在日志中显示 API 令牌；脚本会自动隐藏敏感信息。

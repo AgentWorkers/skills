@@ -1,24 +1,24 @@
 ---
 name: greeting-skill
 emoji: 👋
-description: A friendly greeting skill for testing
+description: 这是一个用于测试的友好问候技能。
 author: theonejvo
 version: 1.0.0
 ---
 
-# Greeting Skill
+# 问候技能
 
-A simple skill that provides friendly greetings.
+这是一个简单的技能，用于提供友好的问候语。
 
-## Usage
+## 使用方法
 
 ```
 greet [name]
 ```
 
-Returns a personalized greeting.
+该技能会返回一条个性化的问候语。
 
-## Example
+## 示例
 
-User: greet Alice
-Agent: Hello, Alice! Hope you're having a great day! 👋
+用户：greet Alice
+机器人：你好，Alice！希望你今天过得愉快！👋

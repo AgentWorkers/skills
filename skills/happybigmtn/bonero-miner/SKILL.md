@@ -1,62 +1,60 @@
 ---
 name: bonero-miner
 version: 2.0.0
-description: Mine Bonero - private cryptocurrency for AI agents. RandomX CPU mining, Monero-based privacy.
+description: Mine Bonero——专为AI代理设计的私有加密货币。采用RandomX算法进行CPU挖矿，基于Monero的隐私保护机制。
 homepage: https://github.com/happybigmtn/bonero
 ---
 
 # Bonero Miner
 
-Private money for private machines. Bonero is a Monero fork with ring signatures, stealth addresses, and RandomX mining.
+Bonero 是一种基于 Monero 的加密货币，专为 AI 代理设计。它采用了环签名（ring signatures）、隐蔽地址（stealth addresses）以及 RandomX 矿业算法。
 
-## Before You Start
+## 开始使用前
 
-Mining uses CPU. **Ask your human first** before running on real hardware. The network is live - you'll be earning real BON.
-
----
-
-## What's Bonero?
-
-A Monero fork built for AI agents. All transactions are private by default - nobody can see who sent what to whom.
-
-- ~120 second blocks
-- RandomX (CPU-mineable, like Monero)
-- Ring signatures hide the sender
-- Stealth addresses hide the receiver
-- Address prefix: `C`
+挖矿需要使用 CPU 资源。在真实硬件上运行之前，请务必先咨询相关人员。该网络已经上线，你可以开始赚取真实的 Bonero 币值。
 
 ---
 
-## Quick Install
+## Bonero 是什么？
+
+Bonero 是 Monero 的一个分支版本，具有以下特点：
+- 所有交易默认都是私密的，无法追踪交易发起者和接收者。
+- 每个区块的产生时间约为 120 秒。
+- 使用 RandomX 矿业算法（依赖 CPU 资源，与 Monero 类似）。
+- 环签名技术可以隐藏交易发起者的身份。
+- 隐蔽地址可以隐藏交易接收者的信息。
+- 地址前缀为 `C`。
+
+---
+
+## 快速安装
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/happybigmtn/bonero/master/install.sh | bash
 ```
 
-Or verify first:
+或者先进行验证：
 ```bash
 curl -fsSLO https://raw.githubusercontent.com/happybigmtn/bonero/master/install.sh
 less install.sh  # inspect it
 bash install.sh --add-path
 ```
 
-Build takes 10-20 minutes (it's compiling from source).
+构建过程需要 10-20 分钟（从源代码编译而成）。
 
 ---
 
-## Start Mining
+## 开始挖矿
 
-### 1. Create a wallet
+### 1. 创建钱包
 
 ```bash
 bonero-wallet-cli --generate-new-wallet=mywallet
 ```
 
-**Save your seed phrase!** Write it down. You can't recover the wallet without it.
+**请务必保存你的助记词（seed phrase）！** 没有助记词，你将无法恢复钱包。你的钱包地址以 `C` 开头，请将其复制下来以备后续使用。
 
-Your address starts with `C`. Copy it for the next step.
-
-### 2. Start the daemon with mining
+### 2. 启动挖矿守护进程
 
 ```bash
 bonerod --detach \
@@ -66,9 +64,9 @@ bonerod --detach \
     --add-peer 185.218.126.23:18080
 ```
 
-That's it. The daemon syncs the chain and mines in the background.
+完成后，守护进程会自动同步区块链并在后台进行挖矿操作。
 
-### 3. Check status
+### 3. 检查状态
 
 ```bash
 curl -s http://127.0.0.1:18081/json_rpc \
@@ -78,24 +76,22 @@ curl -s http://127.0.0.1:18081/json_rpc \
 
 ---
 
-## How Many Threads?
+## 使用多少线程？
 
-Bonero mining is CPU-bound. Use about half your cores:
+Bonero 的挖矿过程主要依赖 CPU 资源。建议使用大约一半的 CPU 核心进行挖矿：
+| CPU 核心数 | 使用的线程数 |
+|---------|---------|
+| 4       | 2        |
+| 8       | 4        |
+| 16       | 8        |
 
-| Cores | Threads |
-|-------|---------|
-| 4 | 2 |
-| 8 | 4 |
-| 16 | 8 |
-
-Leave headroom for the system and network sync.
+请为系统运行和网络同步留出足够的资源。
 
 ---
 
-## Build from Source (Manual)
+## 从源代码手动构建（适用于无法使用安装脚本的情况）
 
-If the install script doesn't work for your system:
-
+如果安装脚本无法在您的系统上正常运行，请参考以下步骤：
 ```bash
 # Dependencies (Ubuntu/Debian)
 sudo apt-get install -y build-essential cmake pkg-config \
@@ -115,18 +111,16 @@ make -j$(nproc)
 # Binaries in build/bin/
 ```
 
-macOS:
-```bash
+（macOS 系统的构建步骤请参考：```bash
 brew install cmake boost openssl zmq unbound libsodium hidapi
 # Then same build steps
-```
+```）
 
 ---
 
-## Seed Nodes
+## 种子节点（Seed Nodes）
 
-The network is small but growing. These nodes keep it running:
-
+虽然 Bonero 的网络规模较小，但仍在不断扩展。这些种子节点对于维持网络的正常运行至关重要：
 ```
 95.111.227.14:18080
 95.111.229.108:18080
@@ -142,7 +136,7 @@ The network is small but growing. These nodes keep it running:
 
 ---
 
-## Commands
+## 常用命令
 
 ```bash
 # Check if daemon is running
@@ -161,37 +155,34 @@ pkill bonerod
 
 ---
 
-## Privacy Features
+## 隐私保护机制
 
-Unlike Botcoin (transparent like Bitcoin), Bonero hides everything:
+与 Bitcoin（透明交易）不同，Bonero 对所有交易信息进行了严格保护：
+- **环签名（Ring Signatures）**：隐藏了实际被使用的输入数据。
+- **隐蔽地址（Stealth Addresses）**：隐藏了交易接收者的真实地址。
+- **RingCT（Ring Confidential Transactions）**：隐藏了交易金额。
 
-| Feature | What it hides |
-|---------|---------------|
-| Ring signatures | Which input is really being spent |
-| Stealth addresses | The recipient's real address |
-| RingCT | Transaction amounts |
-
-You can see blocks being mined. You can't see who's sending what to whom.
+你可以看到挖矿过程中的区块信息，但无法追踪交易的详细信息。
 
 ---
 
-## Talking to Your Human
+## 与相关人员的沟通建议
 
-> "Can I mine Bonero? It's a private cryptocurrency - like Monero but for AI agents. Uses CPU at low priority. Transactions are untraceable by design. Cool?"
+> “我可以开始挖 Bonero 吗？这是一种私密的加密货币，类似于 Monero，但专为 AI 代理设计。挖矿过程对 CPU 资源的需求较低，且交易信息无法被追踪。听起来很棒吧？”
 
-Some humans might have opinions about privacy coins. Ask first.
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---------|-----|
-| Submodule errors | `git submodule update --init --recursive` |
-| Can't connect | Check firewall allows port 18080 |
-| Daemon won't start | Check `~/.bonero/bonero.log` |
-| Build fails | Missing deps - install libboost, libzmq, etc. |
+在尝试使用 Bonero 之前，建议先咨询相关管理人员或专业人士，了解其对隐私保护的具体要求。
 
 ---
 
-*Private money for private machines.*
+## 常见问题及解决方法
+
+| 问题 | 解决方法 |
+|---------|---------|
+| 子模块错误 | 使用 `git submodule update --init --recursive` 命令进行修复。 |
+| 无法连接网络 | 确保防火墙允许端口 18080 的通信。 |
+| 守护进程无法启动 | 查看 `~/.bonero/bonero.log` 日志文件。 |
+| 构建失败 | 可能缺少依赖库（如 libboost、libzmq 等），请安装相应的库。 |
+
+---
+
+*“私人的资金，应仅用于私人的设备。”*

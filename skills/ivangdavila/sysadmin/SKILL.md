@@ -1,78 +1,78 @@
 ---
 name: Sysadmin
-description: Manage Linux servers with user administration, process control, storage, and system maintenance.
+description: 管理 Linux 服务器，包括用户管理、进程控制、存储系统以及系统维护。
 metadata: {"clawdbot":{"emoji":"🖥️","os":["linux","darwin"]}}
 ---
 
-# System Administration Rules
+# 系统管理规则
 
-## User Management
-- Create service accounts with `--system` flag — no home directory, no login shell
-- `sudo` with specific commands, not blanket ALL — principle of least privilege
-- Lock accounts instead of deleting: `usermod -L` — preserves audit trail and file ownership
-- SSH keys in `~/.ssh/authorized_keys` with restrictive permissions — 600 for file, 700 for directory
-- `visudo` to edit sudoers — catches syntax errors before saving, prevents lockout
+## 用户管理
+- 使用 `--system` 标志创建服务账户：这些账户没有主目录，也无法使用登录 shell。
+- 对特定命令使用 `sudo` 权限，而不是全局授予所有命令 `sudo` 权限——遵循最小权限原则。
+- 选择锁定账户而非直接删除：使用 `usermod -L` 命令锁定账户，这样可以保留审计记录和文件所有权。
+- 将 SSH 密钥保存在 `~/.ssh/authorized_keys` 文件中，并设置严格的权限（文件权限为 600，目录权限为 700）。
+- 使用 `visudo` 工具编辑 `sudoers` 文件：该工具会在保存前检查语法错误，从而避免系统被锁定。
 
-## Process Management
-- `systemctl` for services, not `service` — systemd is standard on modern distros
-- `journalctl -u service -f` for live logs — more powerful than tail on log files
-- `nice` and `ionice` for background tasks — don't compete with production workloads
-- Kill signals: SIGTERM (15) first, SIGKILL (9) last resort — SIGKILL doesn't allow cleanup
-- `nohup` or `screen`/`tmux` for long-running commands — SSH disconnect kills regular processes
+## 进程管理
+- 使用 `systemctl` 管理服务，而不是 `service` 命令——`systemctl` 是现代发行版的标准工具。
+- 使用 `journalctl -u service -f` 查看实时日志——这比直接查看日志文件更高效。
+- 使用 `nice` 和 `ionice` 命令来控制后台任务的优先级，避免它们干扰正常的工作负载。
+- 首先发送 SIGTERM（15）信号终止进程，只有在必要时才使用 SIGKILL（9）信号——因为 SIGKILL 信号会阻止进程进行清理操作。
+- 对于长时间运行的命令，使用 `nohup`、`screen` 或 `tmux` 来保持进程的运行状态——否则 SSH 连接断开会导致进程终止。
 
-## File Systems and Storage
-- `df -h` for disk usage, `du -sh *` to find culprits — check before disk fills completely
-- `lsof +D /path` finds processes using a directory — needed before unmounting
-- `ncdu` for interactive disk usage — faster than repeated du commands
-- Mount options matter: `noexec`, `nosuid` for security on data partitions
-- Resize filesystems with care: grow is safe, shrink risks data loss — always backup first
+## 文件系统和存储管理
+- 使用 `df -h` 查看磁盘使用情况，使用 `du -sh *` 查找占用大量空间的文件或目录——在磁盘空间完全耗尽之前进行处理。
+- 使用 `lsof +D /path` 查找正在使用某个目录的进程——在卸载目录之前需要先确认这些进程。
+- 使用 `ncdu` 工具进行交互式磁盘使用情况检查——比反复执行 `du` 命令更快。
+- 调整文件系统的挂载选项非常重要：在数据分区上启用 `noexec` 和 `nosuid` 选项可以增强安全性。
+- 调整文件系统大小时要谨慎：扩展文件系统通常比较安全，但缩小文件系统可能会导致数据丢失——务必先备份数据。
 
-## Logs and Monitoring
-- `logrotate` prevents disk fill — configure size limits and retention
-- Centralize logs to external system — local logs lost if server dies
-- `/var/log/auth.log` or `/var/log/secure` for login attempts — watch for brute force
-- `dmesg` for kernel messages — hardware errors, OOM kills appear here
-- Monitor inode usage, not just disk space — many small files exhaust inodes
+## 日志和监控
+- 使用 `logrotate` 命令定期旋转日志文件，防止磁盘空间被填满——配置合适的日志文件大小和保留策略。
+- 将日志集中存储到外部系统——如果服务器故障，本地日志可能会丢失。
+- 监控 `/var/log/auth.log` 或 `/var/log/secure` 文件中的登录尝试记录——及时发现暴力破解尝试。
+- 使用 `dmesg` 查看内核日志——硬件故障和内存不足导致的系统崩溃信息会记录在这里。
+- 不要只关注磁盘空间使用情况，还要关注 inode 使用情况——许多小文件也会消耗大量的 inode 资源。
 
-## Permissions and Security
-- `chmod 600` for secrets, `640` for configs, `644` for public — world-writable is almost never correct
-- Sticky bit on shared directories (`chmod +t`) — users can only delete their own files
-- `setfacl` for complex permissions — when traditional owner/group/other isn't enough
-- `chattr +i` makes files immutable — even root can't modify without removing flag
-- SELinux/AppArmor in enforcing mode — permissive logs but doesn't protect
+## 权限和安全设置
+- 对敏感文件设置权限为 `600`，对配置文件设置权限为 `640`，对公共文件设置权限为 `644`——将文件设置为世界可写权限几乎是不正确的做法。
+- 在共享目录上设置粘性位（`chmod +t`），用户只能删除自己创建的文件。
+- 使用 `setfacl` 命令设置更复杂的权限——当传统的所有者/组/其他用户权限不足以满足需求时使用该命令。
+- 使用 `chattr +i` 命令将文件设置为不可修改状态——即使 root 用户也无法修改这些文件。
+- 在系统上启用 SELinux 或 AppArmor 安全机制——虽然它们会生成日志，但并不能提供全面的保护。
 
-## Package Management
-- `apt update` before `apt upgrade` — upgrade without update uses stale package lists
-- Unattended security updates: `unattended-upgrades` — critical patches shouldn't wait
-- Pin package versions in production — unexpected upgrades cause unexpected outages
-- Remove unused packages: `apt autoremove` — reduces attack surface and disk usage
-- Know your package manager: apt/yum/dnf/pacman — commands differ, concepts similar
+## 包管理
+- 在执行 `apt upgrade` 之前先执行 `apt update`——不先更新包列表可能会导致使用过时的包版本。
+- 使用 `unattended-upgrades` 自动执行安全更新——关键补丁不能等待用户手动处理。
+- 在生产环境中固定软件包的版本——意外的升级可能会导致系统故障。
+- 使用 `apt autoremove` 命令删除不再使用的软件包——这样可以减少攻击面和磁盘空间占用。
+- 了解你所使用的包管理工具（如 apt、yum、dnf、pacman）——它们的命令可能有所不同，但基本概念是相似的。
 
-## Backups
-- Test restores regularly — backups that can't restore are worthless
-- Include package lists and configs, not just data — recreating environment is painful
-- Offsite backups mandatory — local backups don't survive disk failure or ransomware
-- Backup before any risky change — "I'll just quickly edit" famous last words
-- Document restore procedure — 3am disaster is wrong time to figure it out
+## 备份
+- 定期测试备份恢复功能——无法恢复的备份毫无意义。
+- 备份时不仅要包括数据，还要包括包列表和配置文件——重新配置整个系统非常麻烦。
+- 必须进行异地备份——本地备份在磁盘故障或遭遇勒索软件攻击时可能会丢失数据。
+- 在进行任何可能带来风险的更改之前先进行备份——千万不要想着“快速修改一下就完事了”。
+- 文档化备份恢复流程——在凌晨 3 点遇到问题时，再想恢复数据就太晚了。
 
-## Performance
-- `top`/`htop` for live view, `vmstat` for trends — understand baseline before diagnosing
-- `iotop` for disk I/O bottlenecks — slow disk often blamed on CPU
-- Load average: 1.0 per core is healthy — consistently higher means queuing
-- Swap usage isn't inherently bad — but consistent swapping indicates memory shortage
-- `sar` for historical data — retroactively diagnose what happened during incident
+## 性能优化
+- 使用 `top` 或 `htop` 查看实时系统资源使用情况，使用 `vmstat` 分析系统性能趋势——在诊断问题之前先了解系统的基准状态。
+- 使用 `iotop` 工具查找磁盘 I/O 瓶颈——磁盘读写速度慢往往被误认为是 CPU 资源不足导致的。
+- 每个核心的平均负载负载（load average）为 1.0 是正常的——如果负载持续偏高，说明系统有任务在排队等待执行。
+- 磁盘交换空间的使用并不一定是坏事——但如果交换空间频繁被使用，可能表明系统内存不足。
+- 使用 `sar` 命令查看系统历史数据——事后可以分析系统在发生问题时的运行情况。
 
-## Networking Basics
-- `ss -tulpn` shows listening ports — `netstat` is deprecated
-- `ip addr` and `ip route` replace `ifconfig` and `route` — learn the new tools
-- Check both host firewall and cloud security groups — traffic blocked at either level fails
-- `/etc/hosts` for local overrides — quick testing without DNS changes
-- `curl -v` shows full connection details — headers, timing, TLS handshake
+## 网络基础
+- 使用 `ss -tulpn` 查看系统正在监听的端口——`netstat` 命令已经过时了。
+- 使用 `ip addr` 和 `ip route` 替代 `ifconfig` 和 `route` 命令——学习新的网络管理工具。
+- 同时检查主机防火墙和云安全组——如果任一层面出现故障，都会导致网络通信中断。
+- 使用 `/etc/hosts` 文件进行本地地址配置——无需修改 DNS 设置即可快速测试网络连接。
+- 使用 `curl -v` 命令查看完整的连接详细信息——包括请求头、传输时间和 TLS 握手过程。
 
-## Common Mistakes
-- Running services as root — one exploit owns the system
-- No monitoring until something breaks — reactive is expensive
-- Editing config without backup — `cp file file.bak` takes two seconds
-- Rebooting to "fix" issues — masks the problem, it'll return
-- Ignoring disk space warnings — 100% full causes cascading failures
-- Forgetting timezone configuration — logs from different servers don't correlate
+## 常见错误
+- 以 root 用户权限运行服务——一旦系统被攻击，整个系统都会受到威胁。
+- 不进行监控，直到问题发生才采取行动——这种被动应对的方式代价高昂。
+- 在不备份的情况下修改系统配置——只需执行 `cp file file.bak` 就可以轻松备份配置文件。
+- 通过重启来“解决问题”——这只会掩盖问题，问题还会再次出现。
+- 忽视磁盘空间使用警告——磁盘空间完全耗尽会导致一系列连锁故障。
+- 忘记配置时区——不同服务器的日志信息将无法正确匹配。

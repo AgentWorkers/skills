@@ -1,47 +1,47 @@
 ---
 name: Cycle
-description: Design custom workflow cycles for any domain. Create structured, repeatable processes that become persistent skills.
+description: 为任何领域设计自定义的工作流程循环。创建结构化、可重复的过程，将这些过程转化为持久的技能。
 ---
 
-## What is a Cycle?
+## 什么是“循环”（Cycle）？
 
-A structured workflow optimized for a specific goal. Examples:
-- **code** — Request → Plan → Execute → Verify → Deliver
-- **research** — Question → Search → Synthesize → Report
-- **content** — Idea → Draft → Critique → Refine → Publish
+“循环”是一种为特定目标而优化的结构化工作流程。例如：
+- **开发流程**：请求（Request）→ 计划（Plan）→ 执行（Execute）→ 验证（Verify）→ 交付（Deliver）
+- **研究流程**：提出问题（Question）→ 搜索信息（Search）→ 综合分析（Synthesize）→ 撰写报告（Report）
+- **内容创作流程**：产生想法（Idea）→ 起草初稿（Draft）→ 评审（Critique）→ 优化完善（Refine）→ 发布（Publish）
 
-## When to Propose
+## 何时建议使用“循环”？
 
-- User repeats similar multi-step processes
-- Current workflow has inefficiencies or skipped steps
-- User asks "how should I approach X every time?"
+- 当用户需要重复执行类似的多步骤流程时；
+- 当当前的工作流程存在效率低下或某些步骤被跳过的情况时；
+- 当用户经常询问“面对某个问题我应该怎么做？”时。
 
-## Design Process
+## 设计“循环”的步骤：
 
-1. **Goal** — What does this cycle produce? Be specific.
-2. **Map** — How does user currently do it? Where do they get stuck?
-3. **Phases** — 3-6 sequential steps with clear input/output each
-4. **Handoffs** — Automatic, gated (needs user), or conditional
-5. **Memory** — Preferences, patterns, things to avoid
+1. **明确目标**：这个循环最终要实现什么？请具体说明。
+2. **分析现状**：用户目前是如何完成这个流程的？他们在哪些环节遇到困难？
+3. **划分阶段**：将整个流程划分为3到6个连续的步骤，每个步骤都有明确的输入和输出要求。
+4. **确定交接方式**：交接可以是自动完成的，也可以需要用户手动操作，或者根据特定条件来决定。
+5. **总结经验**：记录用户的偏好、常用的工作模式以及需要避免的错误。
 
-Check `discovery.md` for questions to ask users when designing.
+在设计“循环”时，请参考 `discovery.md` 中列出的问题。
 
-## Phase Structure
+## 阶段结构
 
-Each phase needs: clear input → output, validation before proceeding, can delegate to sub-agent.
+每个阶段都需要明确的输入、输出以及在执行前的验证机制；部分任务还可以委托给其他协作者来完成。
 
-Check `implementation.md` for how to structure cycle skills.
+关于如何构建“循环”中的各个阶段，请参考 `implementation.md`。
 
-## Cycle vs Loop
+## “循环”与“循环结构”（Loop）的区别：
 
-| Cycle | Loop |
-|-------|------|
-| Different phases in sequence | Same action repeated |
-| Produces complete output | Refines until criteria |
-| Design once, use many times | Created per task |
+| “循环”（Cycle） | “循环结构”（Loop） |
+|-------------|-------------------|
+| 由多个连续的阶段组成 | 重复相同的操作 |
+| 最终产生完整的成果 | 不断优化，直到达到预设标准 |
+| 设计一次，多次使用 | 为每个具体任务单独创建 |
 
-They combine: cycles can use loops within phases. Check `examples.md` for cycle patterns.
+**注意**：“循环”可以在其内部包含“循环结构”。有关“循环”与“循环结构”的更多示例，请参考 `examples.md`。
 
 ---
 
-**Related:** For iterating until success criteria are met (same action repeated), see the `loop` skill.
+**相关内容**：对于需要反复执行某个操作直到满足成功标准的场景，请参考 “循环结构”（Loop）的相关内容。

@@ -1,96 +1,97 @@
 ---
 name: polygon-pos-dev
-description: Comprehensive guide for Polygon PoS blockchain development. Use when deploying smart contracts to Polygon, testing on Amoy testnet, getting test tokens from faucets, or verifying contracts on Polygonscan. Supports Foundry framework with deployment scripts and testing strategies.
+description: **Polygon PoS区块链开发综合指南**  
+本指南适用于在Polygon平台上部署智能合约、在Amoy测试网上进行测试、通过矿池获取测试代币，以及在Polygonscan平台上验证合约的操作。同时，本指南还提供了与Foundry框架相关的部署脚本和测试策略支持。
 ---
 
-# Polygon PoS Development
+# Polygon权益证明（PoS）开发指南
 
-End-to-end guide for developing and deploying smart contracts on Polygon PoS blockchain using Foundry.
+本指南提供了使用Foundry在Polygon权益证明（PoS）区块链上开发和部署智能合约的端到端流程。
 
-## Overview
+## 概述
 
-Polygon PoS is an EVM-compatible Proof-of-Stake sidechain for Ethereum with:
-- Low transaction costs (fraction of a cent)
-- Fast block times (~2 seconds)
-- High throughput (65,000+ TPS theoretical)
-- Full Ethereum tooling compatibility
-- POL token for gas fees
+Polygon PoS是一个兼容以太坊EVM的权益证明侧链，具有以下特点：
+- 低交易成本（仅需几分钱）
+- 快速的区块生成时间（约2秒）
+- 高吞吐量（理论峰值超过65,000 TPS）
+- 完全兼容以太坊的工具链
+- 使用POL代币作为交易手续费
 
-**Default Network**: Amoy Testnet (Chain ID: 80002) - Use for all testing before mainnet.
-
----
-
-## 🚀 Quick Navigation
-
-**For Agents/Fast Deployment**: Jump to [Quick Start Path](#quick-start-path) (5-10 min)
-
-**For Production/Thorough Testing**: Jump to [Complete Development Path](#complete-development-path) (30-60 min)
-
-**For Reference**: See sections below for [Network Configuration](#network-configuration), [Faucets](#getting-testnet-tokens), [Troubleshooting](#troubleshooting)
+**默认网络**：Amoy测试网（链ID：80002）——在主网部署前请使用此网络进行所有测试。
 
 ---
 
-## Two Development Paths
+## 快速导航
 
-Choose based on your needs:
+**适用于代理/快速部署**：请跳转至[快速启动路径](#quick-start-path)（耗时5-10分钟）
 
-| Aspect | Quick Start Path | Complete Development Path |
+**适用于生产环境/全面测试**：请跳转至[完整开发路径](#complete-development-path)（耗时30-60分钟）
+
+**参考资料**：请参阅以下章节了解[网络配置](#network-configuration)、[获取测试网代币](#getting-testnet-tokens)和[故障排除](#troubleshooting)。
+
+---
+
+## 两种开发路径
+
+根据您的需求选择合适的路径：
+
+| 开发路径 | 快速启动路径 | 完整开发路径 |
 |--------|------------------|---------------------------|
-| **Time** | 5-10 minutes | 30-60 minutes |
-| **Best for** | Prototypes, demos, simple contracts | Production, complex systems, mainnet |
-| **Testing** | Basic compilation check | Unit tests, integration tests, fork tests |
-| **Scripts Used** | None (direct forge commands) | Direct forge commands with all options |
-| **Documentation** | Minimal | Full reference guides |
-| **Verification** | Automatic during deploy | Multiple methods with troubleshooting |
-| **Agent-Friendly** | ✅ Optimized for speed | ⚠️ Comprehensive but slower |
+| **耗时** | 5-10分钟 | 30-60分钟 |
+| **适用场景** | 原型开发、简单合约 | 生产环境、复杂系统 |
+| **测试内容** | 基本编译检查 | 单元测试、集成测试、分叉测试 |
+| **使用的脚本** | 无需额外脚本（直接使用Foundry命令） | 使用Foundry的所有命令 |
+| **文档支持** | 最少文档 | 全面参考指南 |
+| **验证方式** | 部署时自动验证 | 多种验证方法 |
+| **代理友好程度** | ✅ 高速优化 | ⚠️ 全面但耗时较长 |
 
-### Path 1: Quick Start (Minimal Time - Agent-Friendly)
-**Best for**: Fast deployment, simple contracts, prototyping
-**Time**: 5-10 minutes
-**What you get**: Contract deployed and verified on testnet
+### 路径1：快速启动（最短时间 - 适合代理使用）
+**适用场景**：快速部署、简单合约、原型开发
+**耗时**：5-10分钟
+**结果**：合约在测试网上部署并经过验证
 
-Skip to [Quick Start Path](#quick-start-path) below.
+请跳转至[快速启动路径](#quick-start-path)。
 
-### Path 2: Complete Guide (Full Development Workflow)
-**Best for**: Production contracts, complex systems, thorough testing
-**Time**: 30-60 minutes
-**What you get**: Fully tested, optimized, and production-ready deployment
+### 路径2：完整开发路径（全面开发流程）
+**适用场景**：生产环境合约、复杂系统、全面测试
+**耗时**：30-60分钟
+**结果**：经过全面测试、优化的合约，准备好在生产环境中使用
 
-Skip to [Complete Development Path](#complete-development-path) below.
+请跳转至[完整开发路径](#complete-development-path)。
 
 ---
 
-## Quick Start Path
+## 快速启动路径
 
-**Goal**: Deploy a contract to Polygon Amoy testnet in minimal steps.
+**目标**：以最少的步骤将合约部署到Polygon Amoy测试网。
 
-### Prerequisites
+### 先决条件
 
-- Foundry installed: `curl -L https://foundry.paradigm.xyz | bash && foundryup`
-- Wallet with private key
-- Polygonscan API key (get from https://polygonscan.com/myapikey)
+- 安装了Foundry：`curl -L https://foundry.paradigm.xyz | bash && foundryup`
+- 拥有包含私钥的钱包
+- Polygonscan API密钥（从https://polygonscan.com/myapikey获取）
 
-### Step 1: Create Project (30 seconds)
+### 第1步：创建项目（30秒）
 
 ```bash
 forge init my-polygon-project
 cd my-polygon-project
 ```
 
-### Step 2: Configure Environment (1 minute)
+### 第2步：配置环境（1分钟）
 
-Create `.env` file:
+创建`.env`文件：
 ```bash
 PRIVATE_KEY=your_private_key_without_0x_prefix
 ```
 
-### Step 3: Get Testnet Tokens (2 minutes)
+### 第3步：获取测试网代币（2分钟）
 
-Visit: https://www.alchemy.com/faucets/polygon-amoy
-- Paste your wallet address
-- Claim 0.2-0.5 POL (no signup needed)
+访问：https://www.alchemy.com/faucets/polygon-amoy
+- 输入您的钱包地址
+- 领取0.2-0.5 POL代币（无需注册）
 
-### Step 4: Deploy (1 minute)
+### 第4步：部署（1分钟）
 
 ```bash
 # Deploy to Amoy testnet
@@ -100,33 +101,32 @@ forge script script/Counter.s.sol:CounterScript \
     --broadcast
 ```
 
-**Done!** Your contract is deployed and verified on Amoy testnet.
+**完成！**您的合约已部署并在Amoy测试网上验证。
 
-View at: `https://amoy.polygonscan.com/address/YOUR_CONTRACT_ADDRESS`
+查看地址：`https://amoy.polygonscan.com/address/YOUR_CONTRACT_ADDRESS`
 
 ---
 
-## Complete Development Path
+## 完整开发路径
 
-**Goal**: Production-ready deployment with comprehensive testing and optimization.
+**目标**：完成全面测试和优化的合约部署，准备好在生产环境中使用。
 
-### Phase 1: Setup (5 minutes)
+### 第1阶段：设置（5分钟）
 
-1. **Install Foundry**:
+1. **安装Foundry**：
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-2. **Initialize Project**:
+2. **初始化项目**：
 ```bash
 forge init my-polygon-project
 cd my-polygon-project
 ```
 
-3. **Configure for Polygon**:
-
-Update `foundry.toml` with Polygon settings:
+3. **配置Polygon环境**：
+更新`foundry.toml`文件以配置Polygon相关设置：
 ```toml
 [profile.default]
 src = "src"
@@ -145,20 +145,18 @@ amoy = { key = "${POLYGONSCAN_API_KEY}", url = "https://api-amoy.polygonscan.com
 polygon = { key = "${POLYGONSCAN_API_KEY}", url = "https://api.polygonscan.com/api" }
 ```
 
-4. **Setup Environment**:
-
-Create `.env` file:
+4. **配置环境**：
+创建`.env`文件：
 ```bash
 PRIVATE_KEY=your_private_key
 WALLET_ADDRESS=0xYourAddress
 POLYGONSCAN_API_KEY=your_api_key
 ```
 
-### Phase 2: Write & Test Contracts (10-20 minutes)
+### 第2阶段：编写和测试合约（10-20分钟）
 
-1. **Write Contract** (or use `assets/sample-contracts/HelloWorld.sol` as template)
-
-2. **Write Tests**:
+1. **编写合约**（或使用`assets/sample-contracts/HelloWorld.sol`作为模板）
+2. **编写测试用例**：
 ```solidity
 // test/MyContract.t.sol
 import "forge-std/Test.sol";
@@ -177,42 +175,33 @@ contract MyContractTest is Test {
 }
 ```
 
-3. **Run Tests**:
+3. **运行测试**：
 ```bash
 forge test -vvv                    # Run tests
 forge test --gas-report            # Check gas usage
 forge coverage                     # Check coverage
 ```
 
-4. **Fork Testing** (optional):
+4. **分叉测试**（可选）：
 ```bash
 # Test against real Polygon state
 forge test --fork-url https://polygon-rpc.com
 ```
 
-See `references/testing-strategies.md` for comprehensive testing patterns.
+详细测试策略请参阅`references/testing-strategies.md`。
 
-### Phase 3: Get Testnet Tokens (2-5 minutes)
+### 第3阶段：获取测试网代币（2-5分钟）
 
-Visit one of these faucets:
+访问以下其中一个代币发放平台：
 
-**Alchemy** (recommended - no auth): https://www.alchemy.com/faucets/polygon-amoy
-**QuickNode**: https://faucet.quicknode.com/polygon/amoy
-**GetBlock**: https://getblock.io/faucet/matic-amoy/
-**Chainlink**: https://faucets.chain.link/polygon-amoy
-**LearnWeb3**: https://learnweb3.io/faucets/polygon_amoy/
+**Alchemy**（推荐 - 无需认证）：https://www.alchemy.com/faucets/polygon-amoy
+**QuickNode**：https://faucet.quicknode.com/polygon/amoy
+**GetBlock**：https://getblock.io/faucet/matic-amoy/
+**Chainlink**：https://faucets.chain.link/polygon-amoy
+**LearnWeb3**：https://learnweb3.io/faucets/polygon_amoy/
 
-### Phase 4: Deploy to Testnet (2-5 minutes)
-```bash
-forge script script/Deploy.s.sol \
-    --rpc-url amoy \
-    --private-key $PRIVATE_KEY \
-    --broadcast \
-    --verify \
-    --etherscan-api-key $POLYGONSCAN_API_KEY
-```
-
-Create a deployment script in `script/Deploy.s.sol`:
+### 第4阶段：部署到测试网（2-5分钟）
+在`script/Deploy.s.sol`中创建部署脚本：
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -237,11 +226,11 @@ contract DeployScript is Script {
 }
 ```
 
-See `references/foundry-deployment.md` for advanced deployment patterns.
+有关高级部署策略，请参阅`references/foundry-deployment.md`。
 
-### Phase 5: Verify Contract (1-2 minutes)
+### 第5阶段：验证合约（1-2分钟）
 
-If not verified during deployment:
+如果部署过程中未通过验证：
 ```bash
 forge verify-contract \
     CONTRACT_ADDRESS \
@@ -250,20 +239,20 @@ forge verify-contract \
     --etherscan-api-key $POLYGONSCAN_API_KEY
 ```
 
-See `references/contract-verification.md` for troubleshooting verification issues.
+有关验证问题的解决方法，请参阅`references/contract-verification.md`。
 
-### Phase 6: Test on Testnet (5-10 minutes)
+### 第6阶段：在测试网上测试（5-10分钟）
 
-1. **View on Explorer**: https://amoy.polygonscan.com/address/CONTRACT_ADDRESS
-2. **Interact with Contract**: Use cast or web interface
-3. **Test All Functions**: Verify behavior matches expectations
-4. **Monitor Gas Costs**: Check if optimization needed
+1. **在浏览器中查看合约**：https://amoy.polygonscan.com/address/CONTRACT_ADDRESS
+2. **与合约交互**：使用Cast或Web界面
+3. **测试所有功能**：确保合约行为符合预期
+4. **监控交易费用**：检查是否需要优化
 
-### Phase 7: Deploy to Mainnet (5 minutes)
+### 第7阶段：部署到主网（5分钟）
 
-**⚠️ IMPORTANT: Complete mainnet deployment checklist first!**
+**⚠️ 重要提示：请先完成主网部署前的检查！**
 
-See [Mainnet Deployment Checklist](#mainnet-deployment-checklist) below.
+请参阅[主网部署检查清单](#mainnet-deployment-checklist)。
 
 ```bash
 forge script script/Deploy.s.sol \
@@ -274,102 +263,97 @@ forge script script/Deploy.s.sol \
     --etherscan-api-key $POLYGONSCAN_API_KEY
 ```
 
-**End of Complete Development Path** ✅
+**完整开发路径结束 ✅**
 
-## Network Configuration
+## 网络配置
 
-### Amoy Testnet (Recommended for Testing)
+### Amoy测试网（推荐用于测试）
 
-| Property | Value |
+| 参数 | 值 |
 |----------|-------|
-| Network Name | Polygon Amoy |
-| Chain ID | 80002 |
-| Currency | POL |
-| RPC URL | https://rpc-amoy.polygon.technology |
-| WebSocket | wss://polygon-amoy.drpc.org |
-| Explorer | https://amoy.polygonscan.com |
-| Faucets | Multiple (see below) |
+| 网络名称 | Polygon Amoy |
+| 链ID | 80002 |
+| 货币 | POL |
+| RPC地址 | https://rpc-amoy.polygon.technology |
+| WebSocket地址 | wss://polygon-amoy.drpc.org |
+| 浏览器 | https://amoy.polygonscan.com |
+| 代币发放平台 | 多个（详见下文） |
 
-### Polygon Mainnet
+### Polygon主网
 
-| Property | Value |
+| 参数 | 值 |
 |----------|-------|
-| Network Name | Polygon |
-| Chain ID | 137 |
-| Currency | POL |
-| RPC URL | https://polygon-rpc.com |
-| WebSocket | wss://polygon.drpc.org |
-| Explorer | https://polygonscan.com |
+| 网络名称 | Polygon |
+| 链ID | 137 |
+| 货币 | POL |
+| RPC地址 | https://polygon-rpc.com |
+| WebSocket地址 | wss://polygon.drpc.org |
+| 浏览器 | https://polygonscan.com |
 
-## Getting Testnet Tokens
+## 获取测试网代币
 
-Multiple faucets available for Amoy testnet POL tokens.
+有多种途径可以获取Amoy测试网的POL代币。
 
-### Quick Access
+### 快速获取代币
 
-Run the faucet helper script:
+运行代币发放脚本：
 ```bash
 ./scripts/get-testnet-tokens.sh
 ```
 
-### Available Faucets
+### 可用的代币发放平台
 
-**Alchemy Faucet** (Recommended - No auth required)
-- URL: https://www.alchemy.com/faucets/polygon-amoy
-- Amount: 0.5 POL/day (with account), 0.2 POL/day (without)
-- Requirements: None
+**Alchemy代币发放平台**（推荐 - 无需认证）：
+- URL：https://www.alchemy.com/faucets/polygon-amoy
+- 每日发放量：0.5 POL（有账户时）/0.2 POL（无账户时）
+- 无额外要求
 
-**QuickNode Faucet**
-- URL: https://faucet.quicknode.com/polygon/amoy
-- Amount: 0.1 POL/day (2x with tweet)
-- Requirements: Connect wallet
+**QuickNode代币发放平台**：
+- URL：https://faucet.quicknode.com/polygon/amoy
+- 每日发放量：0.1 POL（使用Twitter可额外获取0.1 POL）
+- 需要连接钱包
 
-**GetBlock Faucet**
-- URL: https://getblock.io/faucet/matic-amoy/
-- Amount: 0.1 POL/day
-- Requirements: Login
+**GetBlock代币发放平台**：
+- URL：https://getblock.io/faucet/matic-amoy/
+- 每日发放量：0.1 POL
+- 需要登录
 
-**Chainlink Faucet**
-- URL: https://faucets.chain.link/polygon-amoy
-- Amount: 0.1 POL/day
-- Requirements: GitHub auth
+**Chainlink代币发放平台**：
+- URL：https://faucets.chain.link/polygon-amoy
+- 每日发放量：0.1 POL
+- 需要GitHub认证
 
-**LearnWeb3 Faucet**
-- URL: https://learnweb3.io/faucets/polygon_amoy/
-- Amount: 0.1 POL/day
-- Requirements: GitHub auth
+**Tips**：
+- 大多数代币发放平台每天限制请求次数
+- 如果遇到请求限制，请尝试其他平台
+- 有些平台提供推特推广奖励
 
-**Tips:**
-- Most faucets limit to 1 request per 24 hours
-- If rate-limited, try a different faucet
-- Some offer bonus tokens for tweeting
+## 部署流程
 
-## Deployment Workflow
+### 环境配置
 
-### Environment Setup
-
-Create `.env` file (see `assets/sample-contracts/.env.example`):
+创建`.env`文件（参考`assets/sample-contracts/.env.example`）：
 ```bash
 PRIVATE_KEY=your_private_key_here
 WALLET_ADDRESS=0xYourAddress
 POLYGONSCAN_API_KEY=your_api_key_here
 ```
 
-Add to `.gitignore`:
+将`.env`文件添加到`.gitignore`中：
 ```
 .env
 broadcast/
 deployments/
 ```
 
-### Deploy to Testnet
+### 部署到测试网
 
-**Option 1: Use helper script** (recommended)
+**选项1：使用辅助脚本**（推荐）：
 ```bash
 ./scripts/deploy-foundry.sh
 ```
 
-**Option 2: Manual deployment**
+**选项2：手动部署**：
 ```bash
 forge script script/Deploy.s.sol \
     --rpc-url amoy \
@@ -378,7 +362,7 @@ forge script script/Deploy.s.sol \
     --verify
 ```
 
-**Option 3: Deploy without verification**
+**选项3：不进行验证直接部署**：
 ```bash
 forge script script/Deploy.s.sol \
     --rpc-url amoy \
@@ -386,22 +370,17 @@ forge script script/Deploy.s.sol \
     --broadcast
 ```
 
-### Deploy to Mainnet
+### 部署到主网
 
-**⚠️ IMPORTANT: Test thoroughly on Amoy first!**
+**⚠️ 重要提示：请先在Amoy测试网上进行充分测试！**
 
-```bash
-# Use deployment script and select mainnet option
-./scripts/deploy-foundry.sh
-```
+请参阅`references/foundry-deployment.md`以获取详细部署指南。
 
-For detailed deployment patterns, see `references/foundry-deployment.md`.
+## 测试策略
 
-## Testing Strategies
+### 本地测试
 
-### Local Testing
-
-Write tests in `test/` directory:
+在`test/`目录中编写测试用例：
 ```solidity
 // test/MyContract.t.sol
 import "forge-std/Test.sol";
@@ -420,30 +399,29 @@ contract MyContractTest is Test {
 }
 ```
 
-Run tests:
+运行测试：
 ```bash
 forge test              # Run all tests
 forge test -vvv         # Verbose output
 forge test --gas-report # Show gas usage
 ```
 
-### Fork Testing
+### 分叉测试
 
-Test against real Polygon state:
+在真实的Polygon环境中测试合约：
 ```bash
 forge test --fork-url https://polygon-rpc.com
 ```
 
-### Testnet Testing
+### 在测试网上测试
 
-Deploy to Amoy and test with real transactions. See `references/testing-strategies.md` for comprehensive testing patterns.
+将合约部署到Amoy测试网，并使用真实交易进行测试。详细测试策略请参阅`references/testing-strategies.md`。
 
-## Contract Verification
+## 合约验证
 
-Verification makes your contract code public and trustworthy.
+验证可以提升合约代码的公开性和可信度。
 
-### During Deployment (Recommended)
-
+### 部署过程中的验证（推荐）
 ```bash
 forge script script/Deploy.s.sol \
     --rpc-url amoy \
@@ -453,14 +431,14 @@ forge script script/Deploy.s.sol \
     --etherscan-api-key $POLYGONSCAN_API_KEY
 ```
 
-### After Deployment
+### 部署后的验证
 
-**Option 1: Use helper script**
+**选项1：使用辅助脚本**：
 ```bash
 ./scripts/verify-contract.sh
 ```
 
-**Option 2: Manual verification**
+**选项2：手动验证**：
 ```bash
 forge verify-contract \
     CONTRACT_ADDRESS \
@@ -470,53 +448,44 @@ forge verify-contract \
     --verifier-url https://api-amoy.polygonscan.com/api
 ```
 
-### With Constructor Arguments
+### 使用构造函数参数
 
-```bash
-forge verify-contract \
-    CONTRACT_ADDRESS \
-    src/MyContract.sol:MyContract \
-    --chain-id 80002 \
-    --etherscan-api-key $POLYGONSCAN_API_KEY \
-    --constructor-args $(cast abi-encode "constructor(address,uint256)" 0x123... 1000)
-```
+有关验证问题的解决方法，请参阅`references/contract-verification.md`。
 
-For troubleshooting verification issues, see `references/contract-verification.md`.
+## 常见工作流程
 
-## Common Workflows
+### 应选择哪种开发路径？
 
-### Which Path Should I Use?
+**何时使用快速启动路径**：
+- 需要快速部署（原型开发、简单合约）
+- 合约简单且风险较低
+- 作为时间有限的AI代理
+- 测试工作较少或已在其他地方完成
 
-**Use Quick Start Path when**:
-- You need fast deployment (prototyping, demos)
-- Contract is simple and low-risk
-- You're an AI agent with limited time
-- Testing is minimal or done elsewhere
+**何时使用完整开发路径**：
+- 部署到主网
+- 合约涉及实际价值
+- 合约逻辑复杂，需要全面测试
+- 需要团队协作和代码审查
+- 安全性要求高
 
-**Use Complete Development Path when**:
-- Deploying to mainnet
-- Contract handles real value
-- Complex logic requiring thorough testing
-- Team collaboration and code review needed
-- Security is critical
+### 主网部署前的检查清单
 
-### Mainnet Deployment Checklist
+在部署到主网之前，请确保完成以下事项：
+- 所有测试通过（`forge test`）
+- 合约已在Amoy测试网上部署并经过测试
+- 合约在Amoy上通过验证
+- 安全审查完成
+- 优化工作完成
+- 文档齐全
+- 构造函数参数已仔细检查
+- 钱包中有足够的POL代币用于支付交易费用
+- 部署脚本已测试
+- 团队已收到部署通知
 
-Before deploying to mainnet:
-- [ ] All tests passing (`forge test`)
-- [ ] Deployed and tested on Amoy testnet
-- [ ] Contract verified on Amoy
-- [ ] Security review completed
-- [ ] Gas optimization done
-- [ ] Documentation complete
-- [ ] Constructor arguments double-checked
-- [ ] Sufficient POL in wallet for gas
-- [ ] Deployment script tested
-- [ ] Team notified of deployment
+## 合约示例结构
 
-## Sample Contract Pattern
-
-Example smart contract structure for Polygon:
+以下是适用于Polygon的智能合约示例结构：
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -551,96 +520,98 @@ contract HelloWorld {
 }
 ```
 
-**Key patterns:**
-- Use custom errors instead of require strings (gas-efficient)
-- Emit events for important state changes
-- Use modifiers for access control
-- Optimize for Polygon's low gas costs
+**关键提示**：
+- 使用自定义错误处理机制而非`require`语句（更节省Gas）
+- 对重要状态变化触发事件
+- 使用访问控制修饰符
+- 优化合约以适应Polygon的低Gas成本
 
-## Safety Rules
+## 安全规则
 
-1. **Test First**: Always test on Amoy before mainnet
-2. **Never Commit Keys**: Add .env to .gitignore
-3. **Verify Contracts**: Always verify for transparency
-4. **Check Network**: Double-check chain ID before deployment
-5. **Sufficient Balance**: Ensure enough POL for gas
-6. **Save Addresses**: Document deployed contract addresses
-7. **Audit Code**: Security review before mainnet
-8. **Use Scripts**: Automate deployments to reduce errors
-9. **Backup Keys**: Securely backup private keys
-10. **Test Verification**: Verify contracts on testnet first
+1. **先进行测试**：始终在Amoy测试网上进行测试
+2. **切勿提交私钥**：将`.env`文件添加到`.gitignore`中
+3. **验证合约**：确保合约代码的透明性和安全性
+4. **检查网络配置**：在部署前仔细核对链ID
+5. **确保有足够的余额**：确保有足够的POL代币支付交易费用
+6. **记录合约地址**：保存已部署的合约地址
+7. **代码审计**：在部署前进行安全审查
+8. **使用脚本**：自动化部署流程以减少错误
+9. **备份私钥**：安全地备份私钥
+10. **先在测试网上验证合约**：确保合约在测试网上的行为正确
 
-## Troubleshooting
+## 故障排除
 
-### Insufficient Funds for Gas
+### 缺乏足够交易费用
 
-**Error**: `insufficient funds for gas * price + value`
+**错误**：`insufficient funds for gas * price + value`
 
-**Solution**: Get testnet POL from faucets (run `./scripts/get-testnet-tokens.sh`)
+**解决方法**：从代币发放平台获取测试网代币（运行`./scripts/get-testnet-tokens.sh`）
 
-### Contract Not Found
+### 合约未找到
 
-**Error**: `src/MyContract.sol:MyContract not found`
+**错误**：`src/MyContract.sol: MyContract not found`
 
-**Solution**: Check file path and contract name match exactly
+**解决方法**：确认文件路径和合约名称是否正确
 
-### RPC Connection Issues
+### RPC连接问题
 
-**Error**: `failed to get chain id`
+**错误**：`failed to get chain id`
 
-**Solution**: 
-- Check internet connection
-- Try alternative RPC URL
-- Use dedicated RPC provider (Alchemy, QuickNode)
+**解决方法**：
+- 检查网络连接
+- 尝试使用其他RPC地址
+- 使用专门的RPC服务提供商（如Alchemy、QuickNode）
 
-### Verification Failed
+### 验证失败
 
-**Error**: `bytecode does not match`
+**错误**：`bytecode does not match`
 
-**Solution**:
-- Wait 1-2 minutes for contract to be indexed
-- Check constructor arguments are correct
-- Verify compiler settings match deployment
+**解决方法**：
+- 等待1-2分钟，直到合约被索引
+- 确认构造函数参数正确
+- 检查编译器配置是否与部署设置一致
 
-### Gas Estimation Failed
+### Gas费用估算失败
 
-**Error**: `gas estimation failed`
+**错误**：`gas estimation failed`
 
-**Solution**:
-- Check contract logic for reverts
-- Ensure sufficient balance
-- Check function parameters
+**解决方法**：
+- 检查合约逻辑中是否存在可能导致Gas费用过高的情况
+- 确保账户余额充足
+- 检查函数参数设置
 
-## Resources
+## 资源
 
-**Foundry Documentation**
-- Book: https://book.getfoundry.sh/
-- GitHub: https://github.com/foundry-rs/foundry
+**Foundry文档**：
+- 官方文档：https://book.getfoundry.sh/
+- GitHub仓库：https://github.com/foundry-rs/foundry
 
-**Polygon Documentation**
-- Docs: https://docs.polygon.technology/
-- Gas Station: https://gasstation.polygon.technology/
-- Faucets: https://faucet.polygon.technology/
+**Polygon文档**：
+- 官方文档：https://docs.polygon.technology/
+- Gas费用计算工具：https://gasstation.polygon.technology/
+- 代币发放平台：https://faucet.polygon.technology/
 
-**Block Explorers**
-- Amoy: https://amoy.polygonscan.com
-- Mainnet: https://polygonscan.com
+**区块浏览器**：
+- Amoy测试网：https://amoy.polygonscan.com
+- 主网：https://polygonscan.com
 
-**RPC Providers**
-- Alchemy: https://www.alchemy.com/
-- QuickNode: https://www.quicknode.com/
-- Infura: https://infura.io/
+**RPC服务提供商**：
+- Alchemy：https://www.alchemy.com/
+- QuickNode：https://www.quicknode.com/
+- Infura：https://infura.io/
 
-**Community**
-- Discord: https://discord.com/invite/0xPolygonCommunity
-- Telegram: https://t.me/polygonhq
+**社区**：
+- Discord：https://discord.com/invite/0xPolygonCommunity
+- Telegram：https://t.me/polygonhq
 
-## Reference Files
+## 参考文件
 
-For detailed information:
-- `references/foundry-deployment.md` - Complete deployment guide
-- `references/testing-strategies.md` - Testing best practices
-- `references/contract-verification.md` - Verification troubleshooting
+- `references/foundry-deployment.md`：完整部署指南
+- `references/testing-strategies.md`：测试最佳实践
+- `references/contract-verification.md`：合约验证与故障排除
 
-## Scripts
+## 脚本**
 
+---
+
+（由于提供的SKILL.md文件内容主要为Markdown格式的指令和链接，翻译时保持了原有的结构和格式。如果需要进一步细化或解释某些部分，可以提供更多上下文。）

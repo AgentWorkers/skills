@@ -1,20 +1,21 @@
 ---
 name: tradr
-description: Onchain trade execution engine. Feed a CA + score, get full trade lifecycle — sized entry, mode-based exits, on-chain verification, and trade logging. Requires Bankr skill.
+description: **On-chain Trade Execution Engine**  
+该引擎支持基于证书（CA）的验证机制，并能够处理交易的完整生命周期：包括交易规模的确定、根据交易模式选择退出策略、在链上进行交易验证以及记录交易详情。使用该引擎需要具备 Bankr 技能。
 dependencies:
   - bankr
 ---
 
 # tradr
 
-Full onchain trade execution engine. You bring the signal, tradr handles everything else.
+这是一个完全基于链上的交易执行引擎。您提供交易信号，tradr负责处理其余的所有事务。
 
-**Input:** Contract address + score
-**Output:** Buy → monitor → exit (mechanical)
+**输入：** 合同地址 + 评分（score）
+**输出：** 买入 → 监控 → 退出（自动化执行）
 
-No signal generation. No opinion on *what* to buy. All opinion on *how to manage it once you're in*.
+tradr不生成交易信号，也不对“买入什么”提供任何建议；它只负责“买入后如何管理交易”的策略。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Install
@@ -30,54 +31,53 @@ sudo systemctl start tradr-exit-manager
 python3 scripts/tradr-enter.py <CA> --score <N> [--chain base] [--mode snipe]
 ```
 
-## Getting Started from Zero
+## 从零开始
 
-### Prerequisites
-- **OpenClaw** running (the agent runtime)
-- **Bankr skill** installed (`~/.openclaw/skills/bankr/`) with a valid API key — this is what executes on-chain trades. Sign up at [bankr.bot](https://bankr.bot) to get your API key, then add it to `~/.openclaw/skills/bankr/config.json`
-- **Python 3.8+** and **jq**
-- A funded wallet (Solana and/or EVM) — Bankr creates wallets for you on supported chains (Base, Solana, ETH, Polygon, Unichain). Fund them before trading.
+### 先决条件
+- **OpenClaw** 已经运行（作为代理运行时环境）
+- **Bankr 技能** 已安装（位于 `~/.openclaw/skills/bankr/`），并拥有有效的 API 密钥——该技能负责执行链上交易。请在 [bankr_bot](https://bankr.bot) 注册以获取 API 密钥，然后将其添加到 `~/.openclaw/skills/bankr/config.json` 中。
+- **Python 3.8+** 和 `jq` 工具已安装。
+- 拥有一个已充值的钱包（支持 Solana 和/或 EVM 链路）——Bankr 会在支持的链路上为您创建钱包。在交易前请确保钱包已充值。
 
-### Step-by-Step
-
-1. **Install tradr:**
+### 分步操作
+1. **安装 tradr：**
    ```bash
    cd ~/.openclaw/skills/tradr   # or wherever you unpacked the skill
    ./scripts/setup.sh            # creates config, installs systemd service
    ```
 
-2. **Configure your wallets:**
-   Edit `config.json` and add your wallet addresses under `wallets`. These are used for on-chain balance verification (read-only — tradr never touches your private keys).
+2. **配置您的钱包：**
+   修改 `config.json` 文件，在 `wallets` 部分添加您的钱包地址。这些地址仅用于链上余额验证（tradr 从不访问您的私钥）。
 
-3. **Tune your strategy:**
-   - `score_to_size` — how much USD to spend at each confidence level
-   - `modes` — exit behavior profiles (stop loss, take profit, trailing stop)
-   - `mcap_ceiling_usd` — maximum market cap for entries
+3. **调整您的交易策略：**
+   - `score_to_size`：在每个置信度水平下应投入的 USD 金额。
+   - `modes`：退出行为配置（止损、止盈、跟踪止损）。
+   - `mcap_ceiling_usd`：允许进入交易的最大市值。
 
-4. **Start the exit manager:**
+4. **启动退出管理器：**
    ```bash
    sudo systemctl start tradr-exit-manager
    sudo systemctl status tradr-exit-manager  # verify it's running
    ```
 
-5. **Connect a signal source:**
-   tradr doesn't generate signals — you bring your own. See `adapters/README.md` for the interface spec and `adapters/example-adapter.py` for a working template.
+5. **连接交易信号源：**
+   tradr 不生成交易信号——您需要自己提供信号。请参阅 `adapters/README.md` 以了解接口规范，以及 `adapters/example-adapter.py` 作为示例模板。
 
-   Or feed trades manually:
+   或者您可以手动输入交易指令：
    ```bash
    python3 scripts/tradr-enter.py 0xABC... --score 5 --chain base --token PEPE
    ```
 
-6. **Monitor via dashboard:**
-   The `dashboard/index.html` file provides a real-time dashboard. It expects four API endpoints:
-   - `GET /api/positions` — returns positions.json contents
-   - `GET /api/trades` — returns trade-log.jsonl as JSON array
-   - `GET /api/tradr-config` — returns config.json contents
-   - `GET /api/health` — returns system health (optional)
+6. **通过仪表板进行监控：**
+   `dashboard/index.html` 文件提供了实时监控界面。它需要四个 API 端点：
+   - `GET /api/positions` — 返回 `positions.json` 的内容。
+   - `GET /api/trades` — 以 JSON 数组形式返回交易日志（`trade-log.jsonl`）。
+   - `GET /api/tradr-config` — 返回 `config.json` 的内容。
+   - `GET /api/health` — 返回系统状态（可选）。
 
-   You can serve these from any HTTP server that reads the flat files, or embed the dashboard in your existing server.
+   您可以从任何能够读取这些 JSON 文件的 HTTP 服务器提供这些接口，或者将仪表板嵌入到您的现有服务器中。
 
-### File Layout
+### 文件结构
 ```
 tradr/
 ├── config.json              # Your live config (created from template)
@@ -95,41 +95,40 @@ tradr/
     └── index.html           # Real-time monitoring dashboard
 ```
 
-## Signal Adapters
+## 信号适配器
 
-tradr is execution-only — it doesn't have opinions about *what* to buy. You bring the signal, tradr handles the trade lifecycle.
+tradr 仅负责执行交易，不对“买入什么”提供任何建议。您提供交易信号，tradr 负责整个交易流程的管理。
 
-The interface is one command:
+信号适配器的接口是一个简单的命令：
 ```bash
 python3 scripts/tradr-enter.py <ca> --score <N> [--chain <chain>] [--token <name>]
 ```
 
-A signal adapter is any script or service that watches a source, detects signals, scores them, and calls that command. See `adapters/README.md` for the full spec and `adapters/example-adapter.py` for a working template.
+信号适配器可以是任何监控数据源、检测信号并调用相应命令的脚本或服务。请参阅 `adapters/README.md` 以获取完整规范，以及 `adapters/example-adapter.py` 作为示例模板。
 
-**Signal source ideas:** Twitter KOL tracking, on-chain whale monitoring, Telegram alpha groups, DEX volume spikes, copy-trading apps, custom aggregators.
+**信号源示例：** Twitter 上的 KOL 跟踪、链上大额交易者的行为监控、Telegram 群组活动、DEX 交易量激增、跟单交易应用、自定义数据聚合工具等。
 
-## Scripts
+## 脚本
+- **`scripts/tradr-enter.py`**：用于执行买入操作的脚本。接收合约地址（CA）和评分（score），确定交易规模，并通过 Bankr 进行买入操作，同时记录交易模式。
+- **`scripts/exit-manager.py**：用于管理退出操作的脚本。定期查询价格，应用相应的退出规则，通过 Bankr 进行卖出操作，并记录所有交易细节。该脚本以 systemd 服务的形式运行。
+- **`scripts/setup.sh`：用于安装 tradr 的脚本。根据模板创建配置文件，并设置 systemd 服务。
 
-- **`scripts/tradr-enter.py`** — Entry engine. Takes CA + score, sizes position, buys via Bankr, writes position with mode attached.
-- **`scripts/exit-manager.py`** — Exit daemon. Polls prices, applies mode-specific exit rules, sells via Bankr, verifies on-chain, logs everything. Runs as systemd service.
-- **`scripts/setup.sh`** — Installer. Creates config from template, sets up systemd service.
+## 退出模式
 
-## Exit Modes
+每个交易都有相应的退出模式。系统默认提供了四种模式，您也可以自定义新的模式。
 
-Each position carries a mode that determines its exit behavior. Four built-in modes ship as defaults — you can customize them or create your own.
-
-| Mode | Stop At | Take Profit | Trailing | Use Case |
+| 模式 | 停止条件 | 止盈条件 | 跟踪止损条件 | 适用场景 |
 |------|---------|-------------|----------|----------|
-| **snipe** | 0.85x | 1.3x (sell 30%) | 10% from peak | Quick in/out. Low-conviction plays. |
-| **swing** | 0.70x | 1.3x (sell 30%) | Tiered: 15% tight / 25% wide | Standard hold. The default. |
-| **gamble** | 0.50x | none | 30% from peak | High risk, let it ride or die. |
-| **diamond** | none | none | none | Pure conviction. Manual exit only. |
+| **snipe** | 0.85 倍 | 1.3 倍（卖出 30%） | 达到峰值后卖出 10% | 适用于快速买入/卖出的交易，信心较低的情况。 |
+| **swing** | 0.70 倍 | 1.3 倍（卖出 30%） | 分层止损：低风险时 15%，高风险时 25% | 标准持有策略，默认模式。 |
+| **gamble** | 0.50 倍 | 无 | 达到峰值后卖出 30% | 高风险策略，要么持有到底，要么全部卖出。 |
+| **diamond** | 无 | 无 | 无 | 仅允许手动退出。 |
 
-Swing mode has **tiered trailing**: tight trail (15%) when peak is below 2x, wide trail (25%) when peak is above 2x. Protects modest gains while letting big winners run.
+**swing 模式** 具有分层跟踪止损机制：当价格低于 2 倍时使用紧密止损（15%），当价格高于 2 倍时使用宽松止损（25%）。这种模式既能保护小额收益，又能让大额盈利继续增长。
 
-### Custom Modes
+### 自定义模式
 
-Add your own modes by adding a key to `modes` in config.json. Any name works — the exit manager reads mode params dynamically. No code changes needed.
+您可以通过在 `config.json` 的 `modes` 部分添加新的模式来自定义退出策略。模式名称可以任意设定——退出管理器会动态读取这些配置参数，无需修改代码。
 
 ```json
 "modes": {
@@ -144,42 +143,35 @@ Add your own modes by adding a key to `modes` in config.json. Any name works —
 }
 ```
 
-Then use it: `tradr-enter.py <CA> --score 5 --mode my-custom-mode`
+使用方法：`tradr-enter.py <合约地址> --评分 5 --模式 my-custom-mode`
 
-### Mode Selection
+## 模式选择
 
-Modes are selected per-trade in order of priority:
-1. **Explicit `--mode` flag** on entry (always wins)
-2. **Score-based auto-selection** via `score_to_mode` config map
-3. **`default_mode`** fallback (default: swing)
+每次交易都会根据以下优先级选择退出模式：
+1. **在买入时明确指定的 `--mode` 参数**。
+2. **根据 `score_to_mode` 配置映射自动选择的模式**。
+3. **`default_mode`（默认值）：swing 模式。
 
-## Entry Guards
+## 交易筛选规则
+tradr 会拒绝不符合以下条件的交易：
+- **市值上限**：代币的市值超过 `mcap_ceiling_usd`（默认值为 1000 万美元）。
+- **冷却时间**：同一代币在 `cooldown_minutes` 内已被卖出。
+- **最大持仓规模**：评分确定的交易规模超过 `max_position_size_usd`。
+- **已持有该合约的仓位**：如果该合约已有持仓，则不允许再次买入。
 
-tradr rejects entries that fail any of these checks:
+## 部分卖出跟踪
 
-- **Mcap ceiling -- token mcap exceeds `mcap_ceiling_usd` default: $10M)
-- **Cooldown** — same token was closed less than `cooldown_minutes` ago (default: 30)
-- **Max position size** — scored size exceeds `max_position_size_usd`
-- **Already in position** — open position exists for this CA
+当触发止盈条件时，tradr 会跟踪当前仓位的剩余 USD 金额。这意味着：
+- 盈亏计算会考虑在止盈时已经卖出的部分以及最终卖出时的剩余部分。
+- 交易日志会记录实际卖出的金额，而非原始持仓的全部金额。
+- 您可以随时查看当前仍在交易中的 USD 金额。
 
-## Partial Sell Tracking
+## 通知机制
 
-When a take-profit triggers, tradr tracks `remaining_usd` on the position. This means:
-- P&L calculations account for what was already sold at TP vs what's left at final exit
-- The trade log records actual sold amounts, not the full original position
-- You can see how much USD value is still in play at any time
+通知脚本接收三个参数：`level`（信息、交易、警告、错误），`type`（买入、卖出、信号确认、错误），`message`（人类可读的文本）。
+这使得您可以根据需要定向发送通知——例如，仅将买入通知发送到私信，或将卖出通知同时发送到私信和广播频道。
 
-## Notification Hook
-
-The notification script receives three arguments: `level`, `type`, `message`.
-
-- **level**: `info`, `trade`, `warning`, `error`
-- **type**: `buy`, `sell`, `confluence`, `error`, `info`
-- **message**: human-readable text
-
-This lets your hook route notifications — e.g., buys to DM only, sells to DM + broadcast channel.
-
-Example hook:
+示例通知脚本：
 ```bash
 #!/bin/bash
 LEVEL="$1"  TYPE="$2"  MSG="$3"
@@ -193,10 +185,9 @@ else
 fi
 ```
 
-## Config Reference
+## 配置参考
 
-`config.json` (created from `config-template.json` on first setup):
-
+`config.json` 文件是在首次设置时根据 `config-template.json` 生成的：
 ```
 positions_file       — path to positions.json
 trade_log            — path to trade-log.jsonl
@@ -231,24 +222,23 @@ notifications.enabled — enable/disable notifications
 notifications.script  — path to notification hook script (receives: level, type, message)
 ```
 
-## Dashboard
+## 仪表板
 
-tradr ships with a real-time monitoring dashboard (`dashboard/index.html`) that shows:
+tradr 配备了一个实时监控仪表板（`dashboard/index.html`），显示以下信息：
+- **当前持仓**：实时盈亏情况、买入价格/当前价格/峰值市值、退出模式、持仓时长。
+- **性能统计**：总盈亏、胜率、平均峰值、最佳交易记录。
+- **交易历史**：可搜索的交易记录，包含买入/卖出详情和交易链接。
+- **配置设置**：可折叠的退出模式、交易规模设置等界面。
 
-- **Open positions** — live P&L, entry/current/peak market cap, exit mode, time held
-- **Performance stats** — total P&L, win rate, avg peak, best trade
-- **Trade history** — searchable table with entry/exit details, tx links
-- **Configuration** — collapsible view of exit modes, sizing tiers, limits
+仪表板是一个独立的 HTML 文件，它从四个 JSON API 端点获取数据，并每 15 秒自动更新。支持深色主题，兼容移动设备。
 
-The dashboard is a standalone HTML file that fetches data from four JSON API endpoints. It auto-refreshes every 15 seconds. Dark theme, mobile responsive.
+要使用该仪表板，请从您的 HTTP 服务器提供以下接口：
+- `GET /api/positions` — 返回 `positions.json` 的内容。
+- `GET /api/trades` — 返回解析后的交易日志（格式为 `{ "trades": [...] }`）。
+- `GET /api/tradr-config` — 返回 `config.json` 的内容。
+- `GET /api/health` — 返回系统状态（可选）。
 
-To use it, serve these endpoints from your HTTP server:
-- `GET /api/positions` — contents of positions.json
-- `GET /api/trades` — trade-log.jsonl parsed as `{ "trades": [...] }`
-- `GET /api/tradr-config` — contents of config.json
-- `GET /api/health` — system health (optional)
-
-## Architecture
+## 架构
 
 ```
 Signal Source (your adapter)
@@ -283,10 +273,9 @@ exit-manager.py (daemon, 10s poll)
     |-- Every N cycles: reconcile (close stale positions where wallet is empty)
 ```
 
-## Position Schema
+## 交易持仓结构
 
-Each position in `positions.json` (keyed by contract address):
-
+`positions.json` 文件中的每个持仓记录都包含以下信息（按合约地址进行索引）：
 ```json
 {
   "token": "EXAMPLE",
@@ -312,17 +301,15 @@ Each position in `positions.json` (keyed by contract address):
 }
 ```
 
-## Requirements
+## 系统要求
+- Python 3.8+ 版本。
+- 已安装 `Bankr` 技能（位于 `~/.openclaw/skills/bankr/`）。
+- 需要 `jq` 工具（由 `bankr.sh` 脚本使用）。
+- 需要 `systemd` 服务来运行退出管理器。
+- 无需支付任何 API 使用费用，也不涉及大型语言模型（LLM）的成本。整个系统完全基于 Python 实现。
 
-- Python 3.8+
-- Bankr skill installed (`~/.openclaw/skills/bankr/`)
-- jq (used by bankr.sh)
-- systemd (for exit manager daemon)
-- No paid APIs. No LLM cost. Pure Python.
-
-## What tradr Is Not
-
-- **Not a signal generator.** It doesn't tell you what to buy. You bring the alpha.
-- **Not an LLM.** Zero AI cost at runtime. Pure Python, pure math.
-- **Not a wallet.** It never holds or accesses private keys. Execution goes through Bankr.
-- **Not opinionated about chains.** Works on Solana, Base, Ethereum, Polygon, Unichain — anywhere Bankr supports.
+## tradr 的功能限制
+- **不是信号生成器**：它不会告诉您应该买入什么交易信号，您需要自己提供交易信号。
+- **不是大型语言模型（LLM）**：运行时无需任何 AI 资源，完全基于 Python 和数学算法。
+- **不是钱包**：它不持有或访问用户的私钥，所有交易操作都通过 Bankr 完成。
+- **不针对特定链路有偏好**：支持 Solana、Base、Ethereum、Polygon、Unichain 等 Bankr 支持的链路。

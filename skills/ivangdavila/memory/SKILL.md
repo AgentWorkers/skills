@@ -1,63 +1,63 @@
 ---
 name: Memory
-description: Manage agent long-term memory with effective storage, retrieval, and maintenance patterns.
+description: 通过有效的存储、检索和维护策略来管理代理的长期内存。
 metadata: {"clawdbot":{"emoji":"🧠","os":["linux","darwin","win32"]}}
 ---
 
-# Agent Memory Rules
+# 代理内存管理规则
 
-## What to Remember
-- Decisions and their reasoning — "we chose X because Y" helps avoid re-debating
-- User preferences explicitly stated — don't infer, record what they actually said
-- Project context that survives sessions — locations, credentials references, architecture decisions
-- Lessons learned from mistakes — what went wrong and how to avoid it next time
-- Recurring patterns in user requests — anticipate needs without being asked
+## 需要记住的内容：
+- 决策及其理由（例如：“我们选择X是因为Y”）有助于避免重复讨论。
+- 明确记录用户的偏好，不要猜测用户的真实意图。
+- 项目相关的上下文信息（如位置、凭证信息、架构决策等）应在会话结束后仍能被保留。
+- 从错误中吸取的经验教训（即哪些地方出了问题以及如何避免再次发生）。
+- 用户请求中的重复模式（以便在用户提出请求之前就能预测他们的需求）。
 
-## What NOT to Remember
-- Temporary context that expires — "current task" status belongs in session, not long-term memory
-- Sensitive data (passwords, tokens, keys) — memory files are less protected than secret storage
-- Obvious facts the model already knows — don't store "Python is a programming language"
-- Duplicate information — one source of truth, not scattered copies
-- Raw conversation logs — distill insights, don't copy transcripts
+## 不需要记住的内容：
+- 临时性的上下文信息（例如“当前任务”的状态）应仅保存在会话中，而非长期内存中。
+- 敏感数据（如密码、令牌、密钥等）应使用更安全的存储方式，而非内存文件。
+- 模型已经掌握的显而易见的事实（例如“Python是一种编程语言”）无需再存储。
+- 重复的信息应只保存在一个权威来源中，避免分散存储。
+- 原始的对话记录应经过提炼，提取有用的信息，而不是直接复制整个对话内容。
 
-## Memory Structure
-- One master file (MEMORY.md) for critical, frequently-accessed context — keep it scannable
-- Topic-specific files in memory/ directory for detailed reference — index them in master file
-- Date-based files (YYYY-MM-DD.md) for daily logs — archive, not primary reference
-- Keep master file under 500 lines — if larger, split into topic files and summarize in master
-- Use headers and bullet points — walls of text are unsearchable
+## 内存结构：
+- 一个主文件（MEMORY.md）用于存储关键且频繁访问的上下文信息，确保文件易于阅读。
+- 为特定主题创建单独的文件或目录，以便详细查阅，并在主文件中建立索引。
+- 按日期命名的文件（格式为YYYY-MM-DD.md）用于存储每日日志，这些文件用于归档，而非主要参考资料。
+- 主文件的内容应控制在500行以内；如果文件过长，应将其拆分为多个主题文件，并在主文件中对其进行总结。
+- 使用标题和项目符号来组织内容，因为纯文本格式不利于搜索。
 
-## Writing Style
-- Concise, factual statements — "User prefers dark mode" not "The user mentioned they like dark mode"
-- Include dates for time-sensitive information — preferences evolve, decisions get revisited
-- Add source context — "Per 2024-01-15 discussion" helps verify later
-- Imperative for rules — "Always ask before deleting files" not "The user wants us to ask"
-- Group related information — scattered facts are harder to retrieve
+## 编写风格：
+- 语句应简洁明了，基于事实（例如：“用户偏好暗色模式”，而不是“用户提到他们喜欢暗色模式”）。
+- 对于时间敏感的信息，应标注日期，因为用户的偏好可能会随时间变化。
+- 提供信息的来源上下文（例如：“根据2024-01-15日的讨论结果”），以便后续验证。
+- 规则性内容应使用祈使句表达（例如：“删除文件前务必询问用户”，而不是“用户希望我们询问”）。
+- 相关信息应归类在一起，以便于查找。
 
-## Retrieval Patterns
-- Search before asking — user already told you, check memory first
-- Query with keywords, not full sentences — semantic search works better with key terms
-- Check recent daily logs for current project context — they have freshest information
-- Cross-reference master file with topic files — master has summary, topic files have details
-- Admit uncertainty — "I checked memory but didn't find this" is better than guessing
+## 信息检索方法：
+- 在提问之前先进行搜索，因为用户可能已经提供了所需的信息。
+- 使用关键词进行查询，而非完整的句子；语义搜索能更有效地找到所需内容。
+- 查看最近的每日日志以获取当前项目的上下文信息，因为这些日志包含最新的数据。
+- 在主文件和主题文件之间进行交叉引用：主文件包含总结，主题文件包含详细信息。
+- 如无法找到所需信息，应承认不确定性（例如：“我检查了内存，但没有找到相关内容”），而不是随意猜测。
 
-## Maintenance
-- Review and prune periodically — outdated information pollutes retrieval
-- Consolidate daily logs into master file weekly — distill lessons, archive raw logs
-- Update, don't append contradictions — "User now prefers X" should replace old preference, not sit alongside it
-- Remove completed todos — memory is state, not history
-- Version decisions — "v1: chose X, v2: switched to Y because Z" tracks evolution
+## 维护策略：
+- 定期审查和清理过时的信息，以避免影响信息检索效率。
+- 每周将每日日志合并到主文件中，提炼经验教训并归档原始日志。
+- 更新信息时，应替换旧的内容，而不是简单地添加新的内容（例如：“用户现在的偏好是X”，而不是将新旧偏好并存）。
+- 删除已完成的任务项，因为内存主要用于存储当前的状态，而非历史记录。
+- 对版本变更进行记录（例如：“v1：选择X；v2：由于Z的原因切换到了Y”），以便追踪信息的变化过程。
 
-## Anti-Patterns
-- Hoarding everything — more memory ≠ better, noise drowns signal
-- Forgetting to check — asking questions already answered wastes user time
-- Stale preferences — user said "I like X" a year ago, might have changed
-- Memory as todo list — use dedicated task systems, memory is for context
-- Duplicate sources of truth — pick one location for each type of information
+## 应避免的做法：
+- 无节制地存储所有信息（更多的内存并不等于更好的性能，反而可能降低信息检索效率）。
+- 忘记检查内存中的信息，这会浪费用户的宝贵时间。
+- 依赖过时的偏好设置（例如，用户一年前说过“我喜欢X”，但他们的偏好可能已经改变）。
+- 将内存用作待办事项列表；内存的主要用途是存储上下文信息。
+- 对同一类型的信息使用多个来源进行存储（这会导致信息混乱）。
 
-## Context Window Management
-- Memory competes with conversation for context — keep files lean
-- Load only relevant memory per task — don't dump entire memory every turn
-- Summarize long files before loading — key points, not full content
-- Archive old information — accessible if needed, not always loaded
-- Track what's loaded — avoid redundant memory reads in same session
+## 上下文窗口管理：
+- 内存中的信息可能会与对话内容竞争相同的存储空间，因此应保持文件内容的精简。
+- 每次任务只需加载与任务相关的内存内容，避免一次性加载所有内存数据。
+- 在加载文件之前先对其进行总结，只保留关键内容。
+- 将旧信息归档，仅在需要时才进行访问，避免不必要的重复读取。
+- 记录每次加载了哪些内容，以避免在同一会话中重复读取相同的信息。

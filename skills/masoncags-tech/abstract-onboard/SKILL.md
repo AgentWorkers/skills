@@ -1,15 +1,13 @@
 ---
 name: abstract-onboard
 version: 1.6.0
-description: Deploy smart contracts and bridge assets to Abstract (ZK Stack L2). Use when an agent needs to deploy contracts on Abstract, bridge ETH/tokens to Abstract, trade/swap tokens, place predictions on Myriad Markets, check balances, transfer assets, or interact with Abstract mainnet. Covers zksolc compilation, Hardhat deployment, Relay bridging, DEX trading (Kona, Aborean), Myriad prediction markets, and key contract addresses.
+description: 部署智能合约并将资产桥接到 Abstract（ZK Stack 的第二层网络）。当代理需要将合约部署到 Abstract 上、将 ETH/代币桥接到 Abstract 上、在 Myriad Markets 上进行交易/兑换代币、查看余额、转移资产或与 Abstract 主网交互时，可以使用此方法。内容包括 zksolc 编译、Hardhat 部署、Relay 桥接、DEX 交易（Kona、Aborean）、Myriad 预测市场以及相关合约地址的信息。
 author: Big Hoss (@BigHossbot)
 ---
 
-# Abstract Onboard
+# 在Abstract上部署AI代理所需的一切
 
-Everything an AI agent needs to operate on Abstract (ZK Stack L2).
-
-## 🚀 New Agent? Start Here
+## 🚀 新代理？从这里开始
 
 ```bash
 # Check if you're ready to operate
@@ -19,17 +17,17 @@ node scripts/quick-start.js check <your-wallet-address>
 node scripts/quick-start.js
 ```
 
-## Quick Start
+## 快速入门
 
-### Create Abstract Global Wallet (AGW)
-AGW is a smart contract wallet that earns XP on Abstract. Essential for agents!
+### 创建Abstract全局钱包（AGW）
+AGW是一个智能合约钱包，在Abstract平台上可以赚取XP（经验值）。对代理来说非常重要！
 
-**⚠️ CRITICAL: Understand the 3 layers first:**
+**⚠️ 重要提示：** 首先需要理解以下三个层次的结构：**
 ```
 Private Key → EOA (signer) → AGW (smart contract wallet)
 ```
 
-**The correct funding flow:**
+**正确的资金流动流程：**
 ```
 1. Fund EOA with small ETH (for gas)
 2. Create/deploy AGW (EOA pays gas for first tx)
@@ -42,45 +40,43 @@ export WALLET_PRIVATE_KEY=0x...
 node scripts/create-agw.js
 ```
 
-Your EOA becomes the signer, AGW is a separate smart contract address.
+你的外部账户（EOA）将成为钱包的签名者，而AGW是一个独立的智能合约地址。
 
-**⚠️ Version Warning:** Different `agw-client` versions may compute different AGW addresses! Always pin your version. See `references/agw.md` for details.
+**⚠️ 版本警告：** 不同版本的`agw-client`可能会生成不同的AGW地址！请务必记录你的使用版本。详情请参阅`references/agw.md`。
 
-### Check Balances
+### 查看余额
 ```bash
 node scripts/check-balances.js <wallet> all
 ```
 
-### Bridge ETH to Abstract
+### 将ETH桥接到Abstract
 ```bash
 export WALLET_PRIVATE_KEY=0x...
 node scripts/relay-bridge.js --from base --amount 0.01
 ```
 
-### Deploy a Contract
+### 部署合约
 ```bash
 export WALLET_PRIVATE_KEY=0x...
 node scripts/deploy-abstract.js ./artifacts/MyContract.json "constructor-arg"
 ```
 
-### Transfer Tokens
+### 转移代币
 ```bash
 export WALLET_PRIVATE_KEY=0x...
 node scripts/transfer.js --to 0x... --amount 0.01           # ETH
 node scripts/transfer.js --to 0x... --amount 100 --token USDC  # Token
 ```
 
-### Swap Tokens
+### 交换代币
 ```bash
 export WALLET_PRIVATE_KEY=0x...
 export DEX_ROUTER=0x...  # Set DEX router address
 node scripts/swap-tokens.js --from ETH --to USDC --amount 0.01
 ```
 
-### DEX Trading (Kona & Aborean)
-
-Abstract has multiple DEXs. Use the protocol-specific scripts for best results:
-
+### 在DEX上进行交易（Kona & Aborean）
+Abstract平台支持多个DEX。为了获得最佳交易效果，请使用相应的协议脚本：
 ```bash
 # Kona Finance (V2) - USDC → ETH
 export WALLET_PRIVATE_KEY=0x...
@@ -93,12 +89,10 @@ node scripts/swap-aborean.js
 node scripts/swap-uniswap-v2.js
 ```
 
-See `references/dex.md` for contract addresses and supported pools.
+合约地址和支持的交易所信息请参阅`references/dex.md`。
 
-### Myriad Prediction Markets
-
-Trade on Myriad Markets — the largest prediction market on Abstract (415K+ users, $100M+ volume).
-
+### Myriad预测市场
+在Myriad预测市场上进行交易——这是Abstract平台上最大的预测市场，拥有超过41.5万用户和超过1亿美元的日交易量。
 ```bash
 # List open markets
 node scripts/myriad-trade.js list
@@ -114,9 +108,9 @@ node scripts/myriad-buy-direct.js <marketId> <outcomeId> <amount>
 node scripts/myriad-buy-direct.js 765 0 1
 ```
 
-See `references/myriad.md` for contract addresses, ABI details, and token info.
+合约地址、ABI详细信息及代币详情请参阅`references/myriad.md`。
 
-### Call Any Contract
+### 调用任何合约
 ```bash
 # Read
 node scripts/call-contract.js --address 0x... --abi ./abi.json --function balanceOf --args 0x1234
@@ -126,7 +120,7 @@ export WALLET_PRIVATE_KEY=0x...
 node scripts/call-contract.js --address 0x... --abi ./abi.json --function transfer --args 0x1234,100 --write
 ```
 
-### Mint NFT
+### 创造NFT
 ```bash
 # Deploy SimpleNFT.sol first, then mint
 export WALLET_PRIVATE_KEY=0x...
@@ -135,9 +129,9 @@ export WALLET_PRIVATE_KEY=0x...
 node scripts/mint-nft.js --contract 0x... --image QmIPFShash --to 0xRecipient --name "My NFT"
 ```
 
-See `references/SimpleNFT.sol` for a basic NFT contract template.
+基本NFT合约模板请参阅`references/SimpleNFT.sol`。
 
-### USDC Operations
+### USDC操作
 ```bash
 # Check USDC balance
 node scripts/usdc-ops.js balance <wallet>
@@ -153,7 +147,7 @@ node scripts/usdc-ops.js approve <spender> <amount>
 node scripts/usdc-ops.js allowance <owner> <spender>
 ```
 
-### Estimate Gas
+### 估算Gas费用
 ```bash
 # Get current gas prices
 node scripts/estimate-gas.js
@@ -165,7 +159,7 @@ node scripts/estimate-gas.js transfer <to> <amount>
 node scripts/estimate-gas.js deploy <bytecodeSize>
 ```
 
-### Watch Events
+### 监控事件
 ```bash
 # Watch new blocks
 node scripts/watch-events.js blocks
@@ -180,7 +174,7 @@ node scripts/watch-events.js erc20 <token> <wallet>
 node scripts/watch-events.js contract <address>
 ```
 
-### Testnet Setup
+### 设置测试网
 ```bash
 # Get faucet instructions
 node scripts/testnet-setup.js faucet
@@ -192,64 +186,63 @@ node scripts/testnet-setup.js check <wallet>
 node scripts/testnet-setup.js verify <wallet>
 ```
 
-## Key Information
+## 关键信息
 
-| Item | Value |
+| 项目 | 值 |
 |------|-------|
-| Chain ID | 2741 |
-| RPC | https://api.mainnet.abs.xyz |
-| Explorer | https://abscan.org |
-| Bridge | https://relay.link/bridge/abstract |
-| USDC | `0x84A71ccD554Cc1b02749b35d22F684CC8ec987e1` |
-| WETH | `0x3439153EB7AF838Ad19d56E1571FBD09333C2809` |
-| Kona Router | `0x441E0627Db5173Da098De86b734d136b27925250` |
-| Uniswap V2 Router | `0xad1eCa41E6F772bE3cb5A48A6141f9bcc1AF9F7c` |
-| Myriad PM Contract | `0x3e0F5F8F5Fb043aBFA475C0308417Bf72c463289` |
-| Myriad PTS Token | `0x0b07cf011B6e2b7E0803b892d97f751659940F23` |
+| 链路ID | 2741 |
+| RPC接口 | https://api.mainnet.abs.xyz |
+| 探索器 | https://abscan.org |
+| 桥接器 | https://relay.link/bridge/abstract |
+| USDC地址 | `0x84A71ccD554Cc1b02749b35d22F684CC8ec987e1` |
+| WETH地址 | `0x3439153EB7AF838Ad19d56E1571FBD09333C2809` |
+| Kona路由器地址 | `0x441E0627Db5173Da098De86b734d136b27925250` |
+| Uniswap V2路由器地址 | `0xad1eCa41E6F772bE3cb5A48A6141f9bcc1AF9F7c` |
+| Myriad预测市场合约地址 | `0x3e0F5F8F5Fb043aBFA475C0308417Bf72c463289` |
+| Myriad PTS代币地址 | `0x0b07cf011B6e2b7E0803b892d97f751659940F23` |
 | Myriad API | `https://api-v2.myriadprotocol.com` |
 
-## Scripts
+## 脚本
 
-| Script | Purpose |
+| 脚本 | 用途 |
 |--------|---------|
-| `quick-start.js` | **START HERE** - Setup guide & health check |
-| `create-agw.js` | Create Abstract Global Wallet (earns XP!) |
-| `check-balances.js` | Check ETH and token balances |
-| `relay-bridge.js` | Bridge ETH from other chains |
-| `bridge-usdc-relay.js` | Bridge USDC via Relay API |
-| `deploy-abstract.js` | Deploy contracts to Abstract (with verification!) |
-| `verify-contract.js` | Verify contract has bytecode (SAFETY CHECK) |
-| `transfer.js` | Send ETH or tokens |
-| `usdc-ops.js` | USDC transfers, approvals, allowances |
-| `swap-tokens.js` | Trade tokens via DEX (generic) |
-| `swap-kona.js` | Swap on Kona Finance (V2) ✅ |
-| `swap-aborean.js` | Swap on Aborean (Velodrome-style) |
-| `swap-uniswap-v2.js` | Swap on Uniswap V2 |
-| `myriad-trade.js` | List markets, get info (Myriad API) |
-| `myriad-buy-direct.js` | Place predictions on Myriad (on-chain) ✅ |
-| `call-contract.js` | Call any contract function |
-| `mint-nft.js` | Mint NFTs to existing contract |
-| `estimate-gas.js` | Estimate gas costs before transactions |
-| `watch-events.js` | Monitor on-chain events in real-time |
-| `testnet-setup.js` | Setup and verify testnet access |
+| `quick-start.js` | **从这里开始**——部署指南及健康检查 |
+| `create-agw.js` | 创建Abstract全局钱包（可赚取XP） |
+| `check-balances.js` | 查看ETH和代币余额 |
+| `relay-bridge.js` | 从其他链桥接ETH到Abstract |
+| `bridge-usdc-relay.js` | 通过Relay API桥接USDC |
+| `deploy-abstract.js` | 在Abstract上部署合约（包含验证步骤） |
+| `verify-contract.js | 验证合约的字节码（安全检查） |
+| `transfer.js` | 发送ETH或代币 |
+| `usdc-ops.js | USDC转账、授权等操作 |
+| `swap-tokens.js` | 通过DEX交换代币 |
+| `swap-kona.js` | 在Kona Finance上进行代币交换（V2版本） |
+| `swap-aborean.js` | 在Aborean平台上进行代币交换（Velodrome风格） |
+| `swap-uniswap-v2.js` | 在Uniswap V2上进行代币交换 |
+| `myriad-trade.js` | 列出市场信息（通过Myriad API） |
+| `myriad-buy-direct.js` | 在Myriad平台上直接下注（链上交易） |
+| `call-contract.js | 调用任何合约函数 |
+| `mint-nft.js` | 向现有合约创建NFT |
+| `estimate-gas.js | 交易前估算Gas费用 |
+| `watch-events.js` | 实时监控链上事件 |
+| `testnet-setup.js | 设置并验证测试网访问权限 |
 
-## References
+## 参考资料
 
-| File | Contents |
+| 文件 | 内容 |
 |------|----------|
-| `agw.md` | Abstract Global Wallet guide (XP, activation) |
-| `dex.md` | DEX contracts & swap patterns (Kona, Aborean) |
-| `myriad.md` | Myriad prediction market contracts, ABI & trading |
-| `hardhat.config.js` | Working Hardhat config for Abstract |
-| `addresses.md` | Key contract addresses |
-| `troubleshooting.md` | Common errors and fixes |
-| `SimpleNFT.sol` | Basic NFT contract template |
+| `agw.md` | Abstract全局钱包使用指南（包括XP获取方法） |
+| `dex.md` | DEX合约及交换规则（Kona、Aborean平台） |
+| `myriad.md` | Myriad预测市场相关合约、ABI及交易信息 |
+| `hardhat.config.js` | 适用于Abstract的Hardhat配置文件 |
+| `addresses.md` | 重要合约地址列表 |
+| `troubleshooting.md | 常见问题及解决方法 |
+| `SimpleNFT.sol` | 基本NFT合约模板 |
 
-## ⚠️ CRITICAL: Contract Deployment
+## ⚠️ 重要提示：合约部署
+Abstract基于zkSync技术，因此标准的EVM部署方法不适用。
 
-Abstract is a zkSync-based chain. Standard EVM deployment methods DON'T WORK.
-
-### What WORKS ✅
+### 可以使用的部署方法 ✅
 ```javascript
 // Use zksync-ethers (NOT viem, NOT standard ethers)
 const { ContractFactory } = require("zksync-ethers");
@@ -261,7 +254,7 @@ const code = await provider.getCode(address);
 if (code === '0x') throw new Error("Deploy failed!");
 ```
 
-### What DOESN'T WORK ❌
+### 不推荐的方法 ❌
 ```javascript
 // DON'T use viem's deployContract
 await walletClient.deployContract({...}); // Returns success but NO BYTECODE
@@ -270,24 +263,23 @@ await walletClient.deployContract({...}); // Returns success but NO BYTECODE
 // DON'T trust transaction success alone
 ```
 
-### Deployment Checklist
-- [ ] Compiled with zksolc (not standard solc)
-- [ ] Using `zksync-ethers` ContractFactory
-- [ ] Verify `eth_getCode != 0x` after deploy
-- [ ] Test contract functions before sending tokens
+### 部署检查清单：
+- [ ] 使用`zksolc`编译合约（而非标准版本的solc）
+- [ ] 使用`zksync-ethers`作为合约工厂
+- [ ] 部署后验证`eth_getCode`的值是否为`0x`
+- [ ] 在发送代币前测试合约功能
 
-## Common Issues
+## 常见问题及解决方法
 
-1. **Gas estimation fails** → Use Hardhat, not foundry-zksync
-2. **Compiler errors** → Use Solidity 0.8.x with zksolc
-3. **TX stuck** → Check gas price, verify on abscan.org
-4. **Deploy succeeds but no bytecode** → Use zksync-ethers, not viem
-5. **Tokens sent to empty address** → Always verify bytecode first!
+1. **Gas费用估算失败** → 使用Hardhat工具，而非foundry-zksync
+2. **编译错误** → 使用Solidity 0.8.x版本并配合zksolc编译
+3. **交易失败** → 检查Gas费用，并在abscan.org上验证交易结果
+4. **合约部署成功但无字节码** → 使用`zksync-ethers`进行部署
+5. **代币被发送到空地址** → 请务必先验证合约的字节码！
 
-See `references/troubleshooting.md` for detailed solutions.
+详细解决方案请参阅`references/troubleshooting.md`。
 
-## Dependencies
-
+## 依赖项
 ```bash
 # Core dependencies
 npm install ethers zksync-ethers viem
@@ -300,4 +292,4 @@ npm install @matterlabs/hardhat-zksync
 npm install @abstract-foundation/agw-client@1.10.0
 ```
 
-**⚠️ agw-client version warning:** Newer versions may use different factory contracts, computing different AGW addresses for the same EOA. If you change versions, verify your AGW address hasn't changed before sending funds!
+**⚠️ agw-client版本警告：** 新版本可能使用不同的合约工厂，导致相同的EOA生成不同的AGW地址。如果更换版本，请在转账前确认AGW地址是否发生变化！

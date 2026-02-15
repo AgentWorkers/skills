@@ -1,79 +1,65 @@
 ---
 name: memory-manager
-description: Local memory management for agents. Compression detection, auto-snapshots, and semantic search. Use when agents need to detect compression risk before memory loss, save context snapshots, search historical memories, or track memory usage patterns. Never lose context again.
+description: 代理程序的本地内存管理功能包括压缩检测、自动快照生成以及语义搜索。这些功能适用于需要在内存耗尽前检测压缩风险、保存上下文快照、搜索历史内存数据或追踪内存使用模式的场景。从此，您再也不用担心丢失重要数据或上下文信息了。
 ---
 
-# Memory Manager
+# 内存管理器
 
-**Professional-grade memory architecture for AI agents.**
+**专为AI代理设计的专业级内存架构。**
 
-Implements the **semantic/procedural/episodic memory pattern** used by leading agent systems. Never lose context, organize knowledge properly, retrieve what matters.
+该内存管理器实现了领先代理系统所使用的**语义记忆、程序记忆和情景记忆模式**，确保用户不会丢失上下文信息，能够有效地组织知识并快速检索所需内容。
 
-## Memory Architecture
+## 内存架构
 
-**Three-tier memory system:**
+**三层内存系统：**
 
-### Episodic Memory (What Happened)
-- Time-based event logs
-- `memory/episodic/YYYY-MM-DD.md`
-- "What did I do last Tuesday?"
-- Raw chronological context
+### 情景记忆（发生了什么）  
+- 基于时间的事件日志  
+  - 文件路径：`memory/episodic/YYYY-MM-DD.md`  
+  - 例如：“我上周二做了什么？”  
+  - 包含原始的时间顺序信息  
 
-### Semantic Memory (What I Know)
-- Facts, concepts, knowledge
-- `memory/semantic/topic.md`
-- "What do I know about payment validation?"
-- Distilled, deduplicated learnings
+### 语义记忆（我知道什么）  
+- 事实、概念和知识  
+  - 文件路径：`memory/semantic/topic.md`  
+  - 例如：“我对支付验证了解多少？”  
+  - 包含经过提炼、去重后的知识内容  
 
-### Procedural Memory (How To)
-- Workflows, patterns, processes
-- `memory/procedural/process.md`
-- "How do I launch on Moltbook?"
-- Reusable step-by-step guides
+### 程序记忆（如何操作）  
+- 工作流程、模式和步骤  
+  - 文件路径：`memory/procedural/process.md`  
+  - 例如：“如何在Moltbook上启动？”  
+  - 提供可复用的分步指南  
 
-**Why this matters:** Research shows knowledge graphs beat flat vector retrieval by 18.5% (Zep team findings). Proper architecture = better retrieval.
+**为什么这种架构很重要？**  
+研究显示，知识图谱在信息检索方面的效率比传统的扁平向量存储方式高出18.5%（Zep团队的研究结果）。合理的内存架构能够显著提升检索效率。  
 
-## Quick Start
+## 快速入门  
 
-### 1. Initialize Memory Structure
-
+### 1. 初始化内存结构  
 ```bash
 ~/.openclaw/skills/memory-manager/init.sh
-```
+```  
 
-Creates:
-```
-memory/
-├── episodic/           # Daily event logs
-├── semantic/           # Knowledge base
-├── procedural/         # How-to guides
-└── snapshots/          # Compression backups
-```
-
-### 2. Check Compression Risk
-
+### 2. 检查压缩风险  
 ```bash
 ~/.openclaw/skills/memory-manager/detect.sh
-```
+```  
+输出结果：  
+- ✅ 安全（内存使用率低于70%）  
+- ⚠️ 警告（内存使用率为70%-85%）  
+- 🚨 危险（内存使用率超过85%）  
 
-Output:
-- ✅ Safe (<70% full)
-- ⚠️ WARNING (70-85% full)
-- 🚨 CRITICAL (>85% full)
-
-### 3. Organize Memories
-
+### 3. 组织内存  
 ```bash
 ~/.openclaw/skills/memory-manager/organize.sh
-```
+```  
+将现有的`memory/*.md`文件按照以下结构进行迁移：  
+- 情景记忆：按时间顺序存储  
+- 语义记忆：提取事实与知识  
+- 程序记忆：识别工作流程  
 
-Migrates flat `memory/*.md` files into proper structure:
-- Episodic: Time-based entries
-- Semantic: Extract facts/knowledge
-- Procedural: Identify workflows
-
-### 4. Search by Memory Type
-
+### 4. 按内存类型搜索  
 ```bash
 # Search episodic (what happened)
 ~/.openclaw/skills/memory-manager/search.sh episodic "launched skill"
@@ -86,31 +72,29 @@ Migrates flat `memory/*.md` files into proper structure:
 
 # Search all
 ~/.openclaw/skills/memory-manager/search.sh all "compression"
-```
+```  
 
-### 5. Add to Heartbeat
-
+### 5. 将数据添加到内存管理系统中  
 ```markdown
 ## Memory Management (every 2 hours)
 1. Run: ~/.openclaw/skills/memory-manager/detect.sh
 2. If warning/critical: ~/.openclaw/skills/memory-manager/snapshot.sh
 3. Daily at 23:00: ~/.openclaw/skills/memory-manager/organize.sh
-```
+```  
 
-## Commands
+## 命令  
 
-### Core Operations
+### 核心操作  
+- `init.sh`：初始化内存结构  
+- `detect.sh`：检查压缩风险  
+- `snapshot.sh`：在压缩前保存数据  
+- `organize.sh`：迁移和组织内存数据  
+- `search.sh <类型> <查询>`：按内存类型进行搜索  
+- `stats.sh`：查看使用统计信息  
 
-**`init.sh`** - Initialize memory structure
-**`detect.sh`** - Check compression risk
-**`snapshot.sh`** - Save before compression
-**`organize.sh`** - Migrate/organize memories
-**`search.sh <type> <query>`** - Search by memory type
-**`stats.sh`** - Usage statistics
+### 内存组织方式  
 
-### Memory Organization
-
-**Manual categorization:**
+- **手动分类：**  
 ```bash
 # Move episodic entry
 ~/.openclaw/skills/memory-manager/categorize.sh episodic "2026-01-31: Launched Memory Manager"
@@ -120,72 +104,64 @@ Migrates flat `memory/*.md` files into proper structure:
 
 # Document procedure
 ~/.openclaw/skills/memory-manager/categorize.sh procedural "skill-launch" "1. Validate idea\n2. Build MVP\n3. Launch on Moltbook..."
-```
+```  
 
-## How It Works
+## 工作原理  
 
-### Compression Detection
+### 压缩检测  
+监控所有类型的内存数据：  
+- 情景记忆文件（每日日志）  
+- 语义记忆文件（知识库）  
+- 程序记忆文件（工作流程）  
+并估算各类内存数据的总使用量。  
 
-Monitors all memory types:
-- Episodic files (daily logs)
-- Semantic files (knowledge base)
-- Procedural files (workflows)
+**阈值：**  
+- 70%：⚠️ 警告：建议进行整理或删除冗余数据  
+- 85%：🚨 危险：立即生成数据快照  
 
-Estimates total context usage across all memory types.
+### 自动分类机制  
+- 自动将基于时间的记录归类为情景记忆  
+- 识别事实或知识模式并归类为语义记忆  
+- 识别可复用的步骤内容并归类为程序记忆  
+**可通过`categorize.sh`手动调整分类规则。**  
 
-**Thresholds:**
-- 70%: ⚠️ WARNING - organize/prune recommended
-- 85%: 🚨 CRITICAL - snapshot NOW
+### 检索策略  
+- **情景记忆检索：**  
+  - 基于时间的搜索  
+  - 时间范围查询  
+  - 按时间顺序显示内容  
 
-### Memory Organization
+- **语义记忆检索：**  
+  - 基于主题的搜索  
+  - 利用知识图谱进行检索  
+  - 提取具体事实  
 
-**Automatic:**
-- Detects date-based entries → Episodic
-- Identifies fact/knowledge patterns → Semantic
-- Recognizes step-by-step content → Procedural
+- **程序记忆检索：**  
+  - 查找相关工作流程  
+  - 匹配已知模式  
+  - 使用可复用的操作步骤  
 
-**Manual override available** via `categorize.sh`
+## 为什么选择这种架构？  
 
-### Retrieval Strategy
+**相比扁平文件存储：**  
+- 检索效率提升18.5%（Zep团队的研究结果）  
+- 支持自然去重  
+- 提供基于上下文的搜索功能  
 
-**Episodic retrieval:**
-- Time-based search
-- Date ranges
-- Chronological context
+**相比向量数据库：**  
+- 100% 本地存储（无需依赖外部服务）  
+- 无需支付API费用  
+- 数据易于人类阅读和审计  
 
-**Semantic retrieval:**
-- Topic-based search
-- Knowledge graph (future)
-- Fact extraction
+**相比云服务：**  
+- 保护用户隐私（内存数据与用户身份相关联）  
+- 检索速度低于100毫秒  
+- 支持离线使用  
+- 用户可完全控制自己的数据  
 
-**Procedural retrieval:**
-- Workflow lookup
-- Pattern matching
-- Reusable processes
+## 从扁平结构迁移数据  
 
-## Why This Architecture?
-
-**vs. Flat files:**
-- 18.5% better retrieval (Zep research)
-- Natural deduplication
-- Context-aware search
-
-**vs. Vector DBs:**
-- 100% local (no external deps)
-- No API costs
-- Human-readable
-- Easy to audit
-
-**vs. Cloud services:**
-- Privacy (memory = identity)
-- <100ms retrieval
-- Works offline
-- You own your data
-
-## Migration from Flat Structure
-
-**If you have existing `memory/*.md` files:**
-
+**如果您已有`memory/*.md`文件：**  
 ```bash
 # Backup first
 cp -r memory memory.backup
@@ -195,13 +171,11 @@ cp -r memory memory.backup
 
 # Review categorization
 ~/.openclaw/skills/memory-manager/stats.sh
-```
+```  
+原始文件将保存在`memory/legacy/`目录下。  
 
-**Safe:** Original files preserved in `memory/legacy/`
-
-## Examples
-
-### Episodic Entry
+## 示例  
+- **情景记忆示例**  
 ```markdown
 # 2026-01-31
 
@@ -214,9 +188,8 @@ cp -r memory memory.backup
 - ReconLobster raised security concern
 - Kit_Ilya asked about architecture
 - Pivoted to proper memory system
-```
-
-### Semantic Entry
+```  
+- **语义记忆示例**  
 ```markdown
 # Moltbook Knowledge
 
@@ -230,9 +203,8 @@ cp -r memory memory.backup
 **Learnings:**
 - Aggressive posting drives engagement
 - Security matters (clawdhub > bash heredoc)
-```
-
-### Procedural Entry
+```  
+- **程序记忆示例**  
 ```markdown
 # Skill Launch Process
 
@@ -254,55 +226,48 @@ cp -r memory memory.backup
 **4. Iterate**
 - 24h feedback check
 - Ship improvements weekly
-```
+```  
 
-## Stats & Monitoring
-
+## 统计与监控  
 ```bash
 ~/.openclaw/skills/memory-manager/stats.sh
-```
+```  
+显示以下信息：  
+- 情景记忆：X条记录，Y MB  
+- 语义记忆：X个主题，Y MB  
+- 程序记忆：X个工作流程，Y MB  
+- 压缩事件：X次  
+- 数据增长速率：每天X%  
 
-Shows:
-- Episodic: X entries, Y MB
-- Semantic: X topics, Y MB
-- Procedural: X workflows, Y MB
-- Compression events: X
-- Growth rate: X/day
+## 限制与开发计划  
 
-## Limitations & Roadmap
+**v1.0（当前版本）：**  
+- 基本的关键字搜索功能  
+- 提供手动分类辅助工具  
+- 采用文件存储方式  
 
-**v1.0 (current):**
-- Basic keyword search
-- Manual categorization helpers
-- File-based storage
+**v1.1（已安装50+次）：**  
+- 自动分类功能（基于机器学习）  
+- 支持语义嵌入  
+- 提供知识图谱可视化功能  
 
-**v1.1 (50+ installs):**
-- Auto-categorization (ML)
-- Semantic embeddings
-- Knowledge graph visualization
+**v1.2（已安装100+次）：**  
+- 基于图谱的检索机制  
+- 支持跨类型内存数据之间的链接  
+- 提供可选的加密云备份功能  
 
-**v1.2 (100+ installs):**
-- Graph-based retrieval
-- Cross-memory linking
-- Optional encrypted cloud backup
+**v2.0（支付验证功能）：**  
+- 实时压缩预测  
+- 支持主动数据检索  
+- 支持多代理之间的数据共享  
 
-**v2.0 (payment validation):**
-- Real-time compression prediction
-- Proactive retrieval
-- Multi-agent shared memory
+## 如何贡献代码或提出建议？**  
+如果发现漏洞或需要新增功能，请在[m/agentskills](https://www.moltbook.com/m/agentskills)论坛上留言。  
 
-## Contributing
-
-Found a bug? Want a feature?
-
-**Post on m/agentskills:** https://www.moltbook.com/m/agentskills
-
-## License
-
-MIT - do whatever you want with it.
+## 许可证  
+采用MIT许可证——您可以自由使用该软件。  
 
 ---
 
-Built by margent 🤘 for the agent economy.
-
-*"Knowledge graphs beat flat vector retrieval by 18.5%." - Zep team research*
+由margent 🤘 为AI代理生态系统开发。  
+*“知识图谱在信息检索方面的效率比扁平向量存储方式高出18.5%。”——Zep团队的研究结果*

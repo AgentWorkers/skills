@@ -1,6 +1,6 @@
 ---
 name: fluora-setup
-description: Interactive setup wizard for Fluora marketplace integration. Clones fluora-mcp from GitHub, builds locally, generates wallet, and configures mcporter.
+description: Fluora市场集成的交互式设置向导：该向导会从GitHub克隆`flora-mcp`项目，将其在本地构建，生成钱包，并配置`mcporter`。
 homepage: https://fluora.ai
 metadata:
   {
@@ -12,31 +12,31 @@ metadata:
   }
 ---
 
-# Fluora Setup - Interactive Onboarding Wizard (GitHub Version)
+# Fluora 设置 - 交互式入门向导（GitHub 版本）
 
-Complete setup wizard for accessing the Fluora marketplace. Uses the official GitHub repository for the latest working version.
+这是一个完整的设置向导，用于访问 Fluora 市场。该向导使用官方 GitHub 仓库来获取最新可用版本。
 
-## What This Skill Does
+## 该技能的功能
 
-Automates the entire Fluora setup process:
-1. ✅ Clones `fluora-mcp` from GitHub (https://github.com/fluora-ai/fluora-mcp)
-2. ✅ Installs dependencies and builds locally
-3. ✅ Generates wallet (auto-creates `~/.fluora/wallets.json`)
-4. ✅ Extracts wallet address from private key
-5. ✅ Displays funding instructions
-6. ✅ Configures mcporter with local Fluora registry
-7. ✅ Verifies setup is working
+该技能自动化了整个 Fluora 设置流程：
+1. ✅ 从 GitHub 克隆 `fluora-mcp`（地址：https://github.com/fluora-ai/fluora-mcp）
+2. ✅ 安装依赖项并本地构建项目
+3. ✅ 生成钱包文件（自动创建 `~/.fluora/wallets.json`）
+4. ✅ 从私钥中提取钱包地址
+5. ✅ 显示充值说明
+6. ✅ 配置 `mcporter` 以使用本地 Fluora 注册表
+7. ✅ 验证设置是否成功
 
-## Prerequisites
+## 先决条件
 
-- Node.js 18+
+- Node.js 18 及以上版本
 - npm
 - git
-- mcporter installed (optional, will guide if missing)
+- 已安装 `mcporter`（可选，如果未安装会提供安装指导）
 
-## Usage
+## 使用方法
 
-### From OpenClaw Agent
+### 通过 OpenClaw Agent 使用
 
 ```typescript
 // Run interactive setup
@@ -49,7 +49,7 @@ await setupFluora({
 });
 ```
 
-### Direct Script Usage
+### 直接使用脚本
 
 ```bash
 # Interactive setup (recommended)
@@ -62,21 +62,21 @@ node setup.js --skip-mcporter
 node setup.js --funding 10
 ```
 
-## What Gets Created/Modified
+## 创建/修改的内容
 
-### 1. Local fluora-mcp Repository
+### 1. 本地 `fluora-mcp` 仓库
 ```
 ~/.openclaw/workspace/fluora-mcp/
 ```
 
-Cloned from GitHub and built locally with all dependencies.
+从 GitHub 克隆后，在本地构建项目，并安装所有依赖项。
 
-### 2. Wallet File
+### 2. 钱包文件
 ```
 ~/.fluora/wallets.json
 ```
 
-Auto-generated on first run with structure:
+首次运行时自动生成，文件结构如下：
 ```json
 {
   "BASE_MAINNET": {
@@ -85,33 +85,19 @@ Auto-generated on first run with structure:
 }
 ```
 
-### 3. mcporter Config
+### 3. `mcporter` 配置文件
 ```
 ~/.openclaw/workspace/config/mcporter.json
 ```
-(or `~/.mcporter/mcporter.json` if workspace config doesn't exist)
+（如果工作区配置文件不存在，则会创建 `~/.mcporter/mcporter.json`）
 
-Adds Fluora registry pointing to local build:
-```json
-{
-  "mcpServers": {
-    "fluora-registry": {
-      "command": "node",
-      "args": ["/Users/YOUR_USERNAME/.openclaw/workspace/fluora-mcp/build/index.js"],
-      "env": {
-        "ENABLE_REQUEST_ELICITATION": "true",
-        "ELICITATION_THRESHOLD": "0.01"
-      }
-    }
-  }
-}
-```
+该文件会配置 `mcporter` 以使用本地构建的 Fluora 注册表。
 
-**Note:** Uses the LOCAL GitHub build, not `npx fluora-mcp` from npm, because the npm version has a parameter parsing bug.
+**注意：** 使用的是本地构建的版本，而不是通过 `npm` 安装的 `fluora-mcp`，因为 npm 版本存在参数解析错误。
 
-## Wallet Funding
+## 钱包充值
 
-The skill will display your wallet address and instructions:
+该技能会显示您的钱包地址和充值说明：
 
 ```
 Your Fluora Wallet Address:
@@ -124,41 +110,41 @@ To fund your wallet:
 4. Wait ~1 minute for confirmation
 ```
 
-### Network Details
-- **Network:** Base (Coinbase L2)
-- **Token needed:** USDC only (for service payments, $5-10 recommended)
-- **Payments:** Handled automatically with USDC, no additional tokens needed
+### 网络详情
+- **网络：** Base（Coinbase L2）
+- **所需代币：** 仅支持 USDC（用于服务支付，建议至少充值 $5-10）
+- **支付方式：** 使用 USDC 自动完成，无需额外代币
 
-### Where to Get USDC on Base
+### 在 Base 网络上获取 USDC 的方式
 
-**From an exchange:**
-- Coinbase: Withdraw USDC → Select "Base" network
-- Binance: Withdraw USDC → Select "Base" network
-- OKX: Similar process
+**通过交易所：**
+- Coinbase：提取 USDC → 选择 “Base” 网络
+- Binance：提取 USDC → 选择 “Base” 网络
+- OKX：操作流程类似
 
-**Bridge from Ethereum:**
-- https://bridge.base.org
-- Transfer USDC from Ethereum → Base
+**从 Ethereum 桥接至 Base：**
+- 访问：https://bridge.base.org
+- 从 Ethereum 转账至 Base 网络
 
-**Buy directly on Base:**
-- Use Coinbase Wallet or Rainbow Wallet
-- Buy USDC directly on Base
+**直接在 Base 网络上购买：**
+- 使用 Coinbase 钱包或 Rainbow 钱包
+- 直接在 Base 网络上购买 USDC
 
-## Verification
+## 验证
 
-The skill automatically verifies:
-- ✅ fluora-mcp cloned from GitHub
-- ✅ Dependencies installed
-- ✅ Build successful
-- ✅ Wallet file exists
-- ✅ Private key is valid
-- ✅ Wallet address derived correctly
-- ✅ mcporter config is valid JSON
-- ✅ Fluora registry configured with local path
+该技能会自动验证以下内容：
+- ✅ 是否成功从 GitHub 克隆了 `fluora-mcp`
+- ✅ 是否安装了所有依赖项
+- ✅ 构建是否成功
+- ✅ 是否存在钱包文件
+- ✅ 私钥是否有效
+- ✅ 钱包地址是否正确生成
+- ✅ `mcporter` 配置文件是否为有效的 JSON 格式
+- ✅ `mcporter` 是否配置了正确的本地注册表路径
 
-Optional: Check wallet balance (after funding)
+**可选步骤：** 充值后检查钱包余额
 
-## Return Value
+## 返回值
 
 ```json
 {
@@ -176,9 +162,9 @@ Optional: Check wallet balance (after funding)
 }
 ```
 
-## After Setup
+## 设置完成后
 
-### Test Your Setup
+### 测试您的设置
 
 ```bash
 # List available services
@@ -201,84 +187,84 @@ mcporter call 'fluora-registry.useService' --args '{
 }'
 ```
 
-### Start Building
+### 开始使用其他 Fluora 功能
 
-Now you can use the other Fluora skills:
-1. **workflow-to-monetized-mcp** - Generate your own service
-2. **railway-deploy** - Deploy to Railway
-3. **fluora-publish** - List on marketplace
+现在您可以使用其他 Fluora 工具：
+1. **workflow-to-monetized-mcp**：生成自己的服务
+2. **railway-deploy**：将服务部署到 Railway 平台
+3. **fluora-publish**：在市场上发布服务
 
-## Troubleshooting
+## 故障排除
 
-### "git clone failed"
-Ensure you have git installed and internet access.
+### “git clone 失败”
+确保已安装 git 并能正常访问互联网。
 
-### "npm install failed"
-Check Node.js version (18+) and npm is working.
+### “npm install 失败”
+检查 Node.js 版本（需为 18 及以上）以及 npm 是否能正常工作。
 
-### "Build failed"
-Check the error in the build output. Usually dependency issues.
+### “构建失败”
+查看构建过程中的错误信息，通常是由于依赖项问题导致的。
 
-### "wallets.json not created"
-Run the local fluora-mcp once manually:
+### “wallets.json 未生成”
+手动运行一次 `fluora-mcp` 命令：
 ```bash
 cd ~/.openclaw/workspace/fluora-mcp
 node build/index.js
 # Press Ctrl+C after it starts
 ```
 
-### "Invalid private key"
-The key in `~/.fluora/wallets.json` should be 0x-prefixed hex string (66 characters).
+### “私钥无效”
+`~/.fluora/wallets.json` 中的私钥应为以 “0x” 开头的 66 位十六进制字符串。
 
-### "Wrong network"
-Make sure you're sending USDC on **Base** network, not Ethereum mainnet or other L2s.
+### “网络选择错误”
+确保您使用的是 **Base** 网络，而不是 Ethereum 主网或其他 L2 网络。
 
-### "Still no balance after funding"
-- Check transaction on Base block explorer: https://basescan.org
-- Wait 1-2 minutes for confirmation
-- Verify you sent to the correct address
-- Ensure you selected Base network (not Ethereum)
+### 充值后仍未显示余额**
+- 在 Base 网络的区块浏览器（例如：https://basescan.org）中查看交易记录
+- 等待 1-2 分钟以确认交易完成
+- 确认转账目标地址正确
+- 确保选择了 Base 网络（而非 Ethereum）
 
-## Why GitHub Instead of npm?
+## 为什么使用 GitHub 而不是 npm？
 
-The npm package (`fluora-mcp@0.1.38`) has a parameter parsing bug where `useService` cannot receive parameters correctly. The GitHub repository (v0.1.39+) has the fix.
+npm 包（`fluora-mcp@0.1.38`）存在参数解析错误，导致 `useService` 无法正确接收参数。GitHub 仓库（v0.1.39 及以上版本）已修复此问题。
 
-**Bug details:**
-- npm version: Schema definition uses plain object, breaking MCP parameter passing
-- GitHub version: Fixed schema definition, all parameters work correctly
+**错误详情：**
+- npm 版本：参数定义使用普通对象格式，导致参数传递失败
+- GitHub 版本：修正了参数定义，所有参数都能正确传递
 
-## Security Notes
+## 安全注意事项
 
-### Private Key Safety
-- `~/.fluora/wallets.json` contains your private key
-- Keep this file secure (default permissions: 600)
-- Never commit to git
-- Never share the private key
-- This wallet is for **buying services**, not storing large amounts
+### 私钥安全
+- `~/.fluora/wallets.json` 文件中存储了您的私钥
+- 请妥善保管此文件（默认权限设置为 600）
+- 绝不要将私钥提交到 git 仓库
+- 绝不要分享私钥
+- 该钱包仅用于购买服务，不适用于存储大量资金
 
-### Best Practices
-- Fund with small amounts initially $1 USDC
-- Rotate wallets if compromised
-- Use separate wallet for each OpenClaw instance
+### 最佳实践
+- 初始充值建议使用 $1 的 USDC
+- 如果钱包被泄露，请更换新的钱包
+- 每个 OpenClaw 实例使用独立的钱包
 
-## Cost Summary
+## 成本概览
 
-### Setup Costs
-- fluora-mcp clone: Free
-- Initial funding: $1 USDC
+### 设置成本
+- 从 GitHub 克隆 `fluora-mcp`：免费
+- 初始充值：$1 USDC
 
-### Ongoing Costs
-- Service calls: $0.001-0.20 per call (varies by service)
-- Payments: Handled automatically with USDC, no additional fees. Gas fees are covered by the seller
+### 持续成本
+- 服务调用：每次调用 $0.001-0.20（费用因服务而异）
+- 支付：使用 USDC 自动完成，无需额外费用；Gas 费用由卖家承担
 
-### Example Usage
-- $5 USDC → ~250-5000 calls (depending on service)
-- Most calls are $0.001-0.02
+### 示例费用
+- 充值 $5 USDC 可支持约 250-5000 次调用（具体次数取决于服务类型）
+- 大多数服务的调用费用为 $0.001-0.02
 
-## Resources
+## 相关资源
 
-- Fluora marketplace: https://fluora.ai
-- GitHub repo: https://github.com/fluora-ai/fluora-mcp
-- Base network: https://base.org
-- Block explorer: https://basescan.org
-- USDC info: https://www.circle.com/en/usdc
+- Fluora 市场：https://fluora.ai
+- GitHub 仓库：https://github.com/fluora-ai/fluora-mcp
+- Base 网络：https://base.org
+- 区块浏览器：https://basescan.org
+- USDC 信息：https://www.circle.com/en/usdc

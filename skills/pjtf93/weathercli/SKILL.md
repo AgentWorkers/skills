@@ -1,223 +1,119 @@
 ---
 name: weathercli
-description: Get current weather conditions and forecasts for any location worldwide. Returns structured data with temperature, humidity, wind, precipitation, and more. No API key required.
+description: 获取全球任何地点的当前天气状况和预报。返回包含温度、湿度、风速、降水量等信息的结构化数据。无需使用API密钥。
 ---
 
 # Weather CLI
 
-Use the `weathercli` command to retrieve weather information for any location worldwide.
+使用 `weathercli` 命令可以获取全球任何地点的天气信息。
 
-## Commands
+## 命令
 
-### Current Weather
-Get real-time weather conditions including temperature, humidity, wind, and precipitation.
+### 当前天气
+获取实时天气状况，包括温度、湿度、风速和降水量。
 
-```bash
-weathercli current "<location>"
-weathercli current "<location>" --json
-```
+**返回值：** 当前温度、体感温度、湿度百分比、风速/风向、气压、云量、紫外线指数、降水量、天气状况描述以及本地时区的时间戳。
 
-**Returns:** Current temperature, "feels like" temperature, humidity %, wind speed/direction, pressure, cloud cover, UV index, precipitation, weather condition description, and timestamp in local timezone.
+### 天气预报
+获取每日或每小时的天气预报。
 
-### Forecast
-Get daily or hourly weather forecasts.
+**返回值：** 每天/每小时的信息包括：温度（最高/最低或当前温度）、天气状况、降水概率和降水量、风速/风向、紫外线指数、日出/日落时间（仅限每日）。
 
-```bash
-# Daily forecast (default: 7 days, max: 16)
-weathercli forecast "<location>" --days <N>
+### 地点搜索
+查找某个地点的坐标和时区信息。
 
-# Hourly forecast (max: 384 hours)
-weathercli forecast "<location>" --hourly --hours <N>
+**返回值：** 地点名称、坐标（纬度/经度）、国家、地区/州、时区。
 
-# JSON output for parsing
-weathercli forecast "<location>" --json
-```
+## 地点格式
 
-**Returns:** For each day/hour: temperature (high/low or current), weather condition, precipitation probability and amount, wind speed/direction, UV index, sunrise/sunset times (daily only).
+地点名称可以灵活输入，并会自动进行地理编码：
+- 单个城市名称：`"London"`、`"Tokyo"`、`"New York"`
+- 城市 + 国家：`"Paris, France"`、`"Berlin, Germany"`
+- 城市 + 州/地区：`"Portland, Oregon"`、`"Barcelona, Catalonia"`
+- 如果地点名称不明确，需要提供国家或地区信息以增加准确性。
 
-### Location Search
-Find coordinates and timezone information for a location.
+## 选项
 
-```bash
-weathercli search "<location>"
-weathercli search "<location>" --json
-```
+- `--json` - 以结构化 JSON 格式输出（推荐用于编程解析）
+- `--no-color` - 禁用颜色显示（适用于纯文本解析）
+- `--days N` - 预报的天数（1-16 天，默认值：7 天）
+- `--hourly` - 显示每小时天气预报
+- `--hours N` - 每小时预报的时间段（1-384 小时）
+- `--verbose` - 显示详细的请求信息
 
-**Returns:** Location name, coordinates (lat/lon), country, region/state, timezone.
+## 输出格式
 
-## Location Format
+### 人类可读格式（默认）
+温度以颜色编码显示，并使用表情符号和单位表示。时间以地点的本地时区显示。
 
-Locations are flexible and geocoded automatically:
-- City names: `"London"`, `"Tokyo"`, `"New York"`
-- City + country: `"Paris, France"`, `"Berlin, Germany"`
-- City + state/region: `"Portland, Oregon"`, `"Barcelona, Catalonia"`
-- Ambiguous names: Add country/region for precision
+### JSON 结构
 
-## Options
+**当前天气：**
+**天气预报：**
 
-- `--json` - Output structured JSON (recommended for parsing)
-- `--no-color` - Disable color output (for plain text parsing)
-- `--days N` - Number of days for forecast (1-16, default: 7)
-- `--hourly` - Show hourly instead of daily forecast
-- `--hours N` - Number of hours for hourly forecast (1-384)
-- `--verbose` - Show detailed request information
+## 使用指南
 
-## Output Format
+### 适用场景
 
-### Human-Readable (default)
-Color-coded temperatures, formatted with emojis and units. Times shown in location's local timezone.
+- 当用户询问天气、温度、预报或天气状况时
+- 在规划活动时需要天气数据
+- 检查是否会下雨、下雪或天气晴朗
+- 为旅行计划获取气候信息
+- 需要日出/日落时间
+- 比较不同地点的天气情况
 
-### JSON Structure
+### 地点处理
 
-**Current weather:**
-```json
-{
-  "location": {
-    "name": "Tokyo",
-    "latitude": 35.6895,
-    "longitude": 139.6917,
-    "country": "Japan",
-    "timezone": "Asia/Tokyo"
-  },
-  "time": "2026-01-12T18:45:00+09:00",
-  "temperature": 4.7,
-  "apparent": 1.8,
-  "humidity": 66,
-  "wind_speed": 3.6,
-  "wind_direction": 135,
-  "condition": "Clear sky",
-  "weather_code": 0,
-  "precipitation": 0,
-  "cloud_cover": 0,
-  "pressure": 1015.2,
-  "uv_index": 0
-}
-```
+1. 如果用户提供了明确的地点名称，直接使用该名称
+2. 如果地点名称不明确（例如 `Portland`），请请求用户确认或提供更多信息
+3. 如果找不到该地点，建议用户检查拼写或添加国家/地区信息
+4. 对于坐标，建议先使用 `search` 命令进行验证
 
-**Forecast:**
-```json
-{
-  "location": { ... },
-  "daily": [
-    {
-      "date": "2026-01-12",
-      "temp_max": 12.1,
-      "temp_min": 4.3,
-      "condition": "Slight rain",
-      "precip_prob": 75,
-      "precipitation": 1.5,
-      "sunrise": "2026-01-12T08:04:00+09:00",
-      "sunset": "2026-01-12T16:45:00+09:00",
-      "wind_speed_max": 15.3,
-      "wind_direction": 202,
-      "uv_index_max": 2.4
-    }
-  ]
-}
-```
+### 输出解析
 
-## Usage Guidelines
+- **始终使用 `--json` 进行程序化解析**
+- 提取 `temperature`（温度）、`condition`（天气状况）、`wind_speed`（风速）等关键信息
+- 查看 `precip_prob`（降水概率）以判断是否会有降雨
+- 使用 `sunrise`（日出时间）/ `sunset`（日落时间）来安排活动
+- `weather_code` 遵循 WMO 标准（0-99）
 
-### When to Use
+### 最佳实践
 
-- User asks for weather, temperature, forecast, or conditions
-- Planning activities and need weather data
-- Checking if it will rain, snow, or be sunny
-- Getting climate information for travel planning
-- Need sunrise/sunset times
-- Comparing weather across locations
+- 为旅行计划请求 3-5 天的天气预报（而非全部 16 天）
+- 使用每小时预报来详细规划一天内的活动
+- 查看 `apparent_temperature`（实际感受温度）以判断是否舒适
+- 当紫外线指数大于 3 时，建议采取防晒措施
+- 当风速超过 20 公里/小时时，需提醒用户注意风大
 
-### Location Handling
+## 示例
 
-1. If user provides clear location, use it directly
-2. If ambiguous (e.g., "Portland"), ask for clarification or add context
-3. If location not found, suggest checking spelling or adding country
-4. For coordinates, use `search` command first to validate
+**快速查询天气：**
+**获取旅行期间的天气预报：**
+**查看今天的每小时天气情况：**
+**同时查询多个城市的天气：**
+**查找具体地点的坐标：**
 
-### Parsing Output
+## 注意事项
 
-- **Always use `--json`** for programmatic parsing
-- Extract `temperature`, `condition`, `wind_speed` for quick summaries
-- Check `precip_prob` for rain likelihood
-- Use `sunrise`/`sunset` for daylight planning
-- `weather_code` follows WMO standard (0-99)
+- **无需 API 密钥** – 该工具使用免费的 Open-Meteo API
+- **全球覆盖** – 支持全球任何地点
+- **温度单位为摄氏度**（如需转换，可用公式：°F = °C × 9/5 + 32）
+- **风速单位为公里/小时**（如需转换，可用公式：km/h × 0.621）
+- **时间自动转换为本地时区**
+- **使用限制** – 个人或代理使用较为合理，避免频繁请求
+- **数据准确性** – 数据来自多个气象来源
+- **更新频率**：当前天气信息每 15 分钟更新一次
+- **离线使用** – 需要互联网连接
 
-### Best Practices
+## 错误处理
 
-- Request 3-5 days for travel planning (not full 16)
-- Use hourly forecast for detailed day planning
-- Check `apparent` temperature for "feels like" comfort
-- UV index >3 = recommend sun protection
-- Wind speed >20 km/h = mention it's windy
+- **地点未找到：**
+  → 请检查拼写或添加国家/地区信息
+- **网络错误：**
+  → 稍后重试
+- **输入无效：**
+  → 请确保 `--days` 的值在 1-16 之间
 
-## Examples
+## 安装
 
-**Quick weather check:**
-```bash
-weathercli current "London" --json | jq '.temperature, .condition'
-```
-
-**Week forecast for trip:**
-```bash
-weathercli forecast "Barcelona" --days 5 --json
-```
-
-**Detailed today's hourly:**
-```bash
-weathercli forecast "Seattle" --hourly --hours 24
-```
-
-**Check multiple cities:**
-```bash
-for city in "Tokyo" "London" "New York"; do
-  weathercli current "$city" --json | jq -r '"\(.location.name): \(.temperature)°C, \(.condition)"'
-done
-```
-
-**Find exact location:**
-```bash
-weathercli search "Springfield" --json
-```
-
-## Notes
-
-- **No API key required** - Uses free Open-Meteo API
-- **Worldwide coverage** - Works for any location globally
-- **Temperatures in Celsius** - Convert if needed (°F = °C × 9/5 + 32)
-- **Wind speed in km/h** - Convert to mph if needed (×0.621)
-- **Local timezone** - All times automatically converted
-- **Rate limits** - Reasonable for personal/agent use; avoid hammering
-- **Accuracy** - Data from multiple meteorological sources
-- **Updates** - Current weather updates every 15 minutes
-- **Offline** - Requires internet connection
-
-## Error Handling
-
-**Location not found:**
-```
-Error: location not found: Atlantis
-```
-→ Check spelling, try adding country/region
-
-**Network error:**
-```
-Error: weather API error: network timeout
-```
-→ Retry after brief delay
-
-**Invalid input:**
-```
-Error: invalid days value
-```
-→ Check `--days` is between 1-16
-
-## Installation
-
-If `weathercli` is not available:
-```bash
-# Via Go
-go install github.com/pjtf93/weathercli/cmd/weathercli@latest
-
-# Or download binary from releases
-# https://github.com/pjtf93/weathercli/releases
-```
+如果 `weathercli` 未安装，可以按照以下步骤进行安装：

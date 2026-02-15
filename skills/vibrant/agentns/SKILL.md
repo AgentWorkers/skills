@@ -1,15 +1,15 @@
 ---
 name: agentns
-description: Register and manage ICANN domains for AI agents. Wallet authentication (SIWE/SIWS), USDC payments on Base or Solana, full DNS management.
+description: 为AI代理注册和管理ICANN域名；支持钱包认证（SIWE/SIWS）；支持在Base或Solana网络上使用USDC进行支付；提供全面的DNS管理功能。
 homepage: https://agentns.xyz
 user-invocable: true
 ---
 
-# AgentNS - Domain Registration for AI Agents
+# AgentNS - 用于AI代理的域名注册服务
 
-Use this skill when you need to register domains, check domain availability, or manage DNS records for an agent or project.
+当您需要为代理或项目注册域名、检查域名可用性或管理DNS记录时，请使用此功能。
 
-## Installation
+## 安装
 
 ```bash
 pip install agentns-client
@@ -18,7 +18,7 @@ pip install agentns-client
 pip install agentns-client[solana]
 ```
 
-## Complete Workflow
+## 完整工作流程
 
 ```python
 from agentns_client import AgentNSClient, load_or_create_wallet
@@ -63,9 +63,9 @@ client.add_dns("myagent.xyz", type="CNAME", host="www", value="myagent.xyz")
 client.add_dns("myagent.xyz", type="TXT", host="@", value="v=spf1 -all")
 ```
 
-## Wallet Setup
+## 钱包设置
 
-**EVM (Base network - default):**
+**EVM（基础网络 - 默认）：**
 ```python
 from agentns_client import load_or_create_wallet
 account = load_or_create_wallet("wallet.json")  # Creates if missing
@@ -73,7 +73,7 @@ print(f"Address: {account.address}")
 # Fund with USDC on Base network before registering
 ```
 
-**Solana:**
+**Solana：**
 ```python
 from agentns_client import load_or_create_solana_wallet
 keypair = load_or_create_solana_wallet("solana_wallet.json")
@@ -81,9 +81,9 @@ print(f"Address: {keypair.pubkey()}")
 # Fund with USDC on Solana before registering
 ```
 
-## Client Methods
+## 客户端方法
 
-### Domain Operations
+### 域名操作
 
 ```python
 # Check single domain (no auth)
@@ -103,7 +103,7 @@ domain = client.register_domain("example.xyz", years=1)
 domains = client.list_domains()
 ```
 
-### DNS Management
+### DNS管理
 
 ```python
 # List DNS records
@@ -126,7 +126,7 @@ client.update_dns("example.xyz", record_id="12345", value="192.0.2.2")
 client.delete_dns("example.xyz", record_id="12345")
 ```
 
-### Nameservers
+### 名称服务器
 
 ```python
 # Get current nameservers
@@ -140,7 +140,7 @@ client.set_nameservers("example.xyz", [
 ])
 ```
 
-### Registrant Profile
+### 注册人信息
 
 ```python
 # Get profile
@@ -167,7 +167,7 @@ client.update_registrant({"email": "new@example.com"})
 profile = client.ensure_registrant({...})
 ```
 
-## Error Handling
+## 错误处理
 
 ```python
 from agentns_client.exceptions import (
@@ -191,17 +191,17 @@ except AuthenticationError:
     client.login()  # Re-authenticate
 ```
 
-## Important Notes
+## 重要说明
 
-- **USDC required**: Fund your wallet with USDC on Base (EVM) or Solana before registering
-- **Registrant profile**: ICANN requires contact info - create once, reused for all domains
-- **WHOIS privacy**: Free on all domains, enabled by default
-- **400+ TLDs**: Check any TLD with `check_domain()`, search 20 popular ones with `search_domains()`
-- **Pricing**: Domain cost + 20% markup (minimum $4), paid in USDC
+- **必须使用USDC**：在注册之前，请使用USDC为钱包充值（EVM或Solana网络）。
+- **注册人信息**：ICANN要求提供联系信息——只需创建一次，即可用于所有域名。
+- **WHOIS隐私设置**：所有域名均默认开启隐私保护。
+- **支持的顶级域名（TLD）**：可以使用`check_domain()`函数查询所有TLD的可用性；使用`search_domains()`函数查询20个热门TLD。
+- **定价**：域名费用 + 20%的附加费用（最低4美元），以USDC支付。
 
-## Resources
+## 资源
 
-- **PyPI**: https://pypi.org/project/agentns-client/
-- **GitHub**: https://github.com/vibrant/agentns_client
-- **API Docs**: https://agentns.xyz/docs
-- **Support**: [@AgentNSxyz](https://x.com/AgentNSxyz)
+- **PyPI**：https://pypi.org/project/agentns-client/
+- **GitHub**：https://github.com/vibrant/agentns_client
+- **API文档**：https://agentns.xyz/docs
+- **支持**：[@AgentNSxyz](https://x.com/AgentNSxyz)

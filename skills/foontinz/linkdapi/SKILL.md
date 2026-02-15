@@ -1,17 +1,17 @@
 ---
 name: linkdapi
-description: Work with LinkdAPI Python SDK for accessing LinkedIn professional profile and company data. Use when you need to fetch profile information, company data, job listings, or search for people/jobs on LinkedIn. The skill uses uv script pattern for ephemeral Python scripts with inline dependencies.
+description: 使用 LinkdAPI Python SDK 来访问 LinkedIn 的个人资料和公司数据。当您需要获取个人资料信息、公司数据、职位列表，或在 LinkedIn 上搜索人员/职位时，可以使用该工具。该技能采用了 uv 脚本模式（uv script pattern），用于编写具有内联依赖关系的临时性 Python 脚本。
 ---
 
 # LinkdAPI Python SDK
 
-Python SDK for LinkdAPI — professional profile and company data from LinkedIn with enterprise-grade reliability.
+LinkdAPI 的 Python SDK — 用于获取 LinkedIn 上的专业人士资料和公司信息，具备企业级可靠性。
 
-> **Get your API key:** https://linkdapi.com/signup?ref=K_CZJSWF
+> **获取您的 API 密钥：** https://linkdapi.com/signup?ref=K_CZJSWF
 
-## Quick Start Pattern
+## 快速入门模式
 
-Use the **uv script pattern** for ephemeral Python scripts with inline dependencies:
+使用 **uv 脚本模式** 来编写具有内联依赖关系的临时 Python 脚本：
 
 ```python
 # /// script
@@ -27,25 +27,25 @@ profile = client.get_profile_overview("ryanroslansky")
 print(profile)
 ```
 
-Run with:
+运行方式：
 ```bash
 uv run script.py
 ```
 
-This installs dependencies automatically, runs the script, and cleans up — perfect for one-off tasks.
+该模式会自动安装依赖关系、运行脚本并清理残留文件，非常适合一次性任务。
 
-## Why This Pattern
+## 为什么选择这种模式
 
-- **No global installs**: Dependencies are managed per-script
-- **Ephemeral by design**: Write, run, delete — no cleanup needed
-- **Reproducible**: Everything needed is in one file
-- **Fast**: uv handles dependency resolution and caching
+- **无需全局安装依赖关系**：依赖关系按脚本单独管理
+- **临时性设计**：编写、运行、删除脚本后无需额外清理
+- **可复现性**：所有所需内容都在一个文件中
+- **高效**：uv 负责处理依赖关系的解析和缓存
 
-## Writing Scripts
+## 编写脚本
 
-### Script Header Format
+### 脚本头部格式
 
-Always start with the uv script block:
+务必以 `uv` 脚本块开头：
 
 ```python
 # /// script
@@ -56,9 +56,9 @@ Always start with the uv script block:
 # ///
 ```
 
-### Common Tasks
+### 常见操作
 
-**Get profile overview:**
+- **获取个人资料概览：**
 ```python
 # /// script
 # dependencies = ["linkdapi"]
@@ -75,7 +75,7 @@ if profile.get('success'):
     print(f"Location: {data.get('location')}")
 ```
 
-**Get company info:**
+- **获取公司信息：**
 ```python
 # /// script
 # dependencies = ["linkdapi"]
@@ -93,7 +93,7 @@ if company.get('success'):
     print(f"Employees: {data.get('employeeCount', 'N/A')}")
 ```
 
-**Search jobs:**
+- **搜索职位：**
 ```python
 # /// script
 # dependencies = ["linkdapi"]
@@ -113,7 +113,7 @@ if result.get('success'):
         print(f"{job['title']} at {job['company']}")
 ```
 
-**Batch profile enrichment (async):**
+- **批量处理个人资料（异步）：**
 ```python
 # /// script
 # dependencies = ["linkdapi"]
@@ -136,24 +136,23 @@ async def enrich():
 asyncio.run(enrich())
 ```
 
-## Agent Workflow
+## 代理工作流程
 
-When a user requests LinkedIn data:
+当用户请求 LinkedIn 数据时：
 
-1. **Identify the task** (profile lookup, company data, job search, etc.)
-2. **Write a temporary script** in workspace with the uv script header
-3. **Add dependencies** (usually just `"linkdapi"`, add others if needed)
-4. **Import and use** LinkdAPI classes
-5. **Run with `uv run`**
-6. **Capture output** and report to user
-7. **Delete the script** after use (optional)
+1. **确定任务类型**（查找个人资料、公司信息、搜索职位等）
+2. **在工作区中使用 `uv` 脚本编写临时脚本**
+3. **添加依赖关系**（通常只需 `"linkdapi"`，必要时可添加其他依赖）
+4. **导入并使用 LinkdAPI 类**
+5. **使用 `uv run` 运行脚本**
+6. **捕获输出结果并反馈给用户**
+7. **使用后删除脚本**（可选）
 
-### Example Workflow
+### 示例工作流程
 
-User: *"Get the profile for jeffweiner08"*
+用户：*"获取 jeffweiner08 的个人资料"*
 
-Agent:
-```bash
+代理：```bash
 cat > /tmp/linkdapi_query.py << 'EOF'
 # /// script
 # dependencies = ["linkdapi"]
@@ -179,23 +178,23 @@ uv run /tmp/linkdapi_query.py
 rm /tmp/linkdapi_query.py
 ```
 
-## Getting an API Key
+## 获取 API 密钥
 
-To use LinkdAPI, you'll need an API key. Sign up at:
+要使用 LinkdAPI，您需要一个 API 密钥。请在以下链接注册：
 
 🔗 **https://linkdapi.com/signup?ref=K_CZJSWF**
 
-Once registered, you'll get an API key that you can use to authenticate your requests.
+注册完成后，您将获得一个 API 密钥，可用于验证您的请求。
 
-## Authentication
+## 认证
 
-Set the API key as an environment variable:
+将 API 密钥设置为环境变量：
 
 ```bash
 export LINKDAPI_API_KEY="your_api_key_here"
 ```
 
-Use it in scripts:
+在脚本中使用该密钥：
 ```python
 import os
 from linkdapi import LinkdAPI
@@ -203,41 +202,41 @@ from linkdapi import LinkdAPI
 client = LinkdAPI(os.getenv("LINKDAPI_API_KEY"))
 ```
 
-## Key API Methods
+## 主要 API 方法
 
-### Profiles
-- `get_profile_overview(username)` — Basic profile info
-- `get_profile_details(urn)` — Detailed profile data
-- `get_contact_info(username)` — Email, phone, websites
-- `get_full_profile(username=None, urn=None)` — Complete profile
-- `get_full_experience(urn)` — Work history
-- `get_education(urn)` — Education history
-- `get_skills(urn)` — Skills & endorsements
+### 个人资料
+- `get_profile_overview(username)` — 基本个人资料信息
+- `get_profile_details(urn)` — 详细个人资料数据
+- `get_contact_info(username)` — 电子邮件、电话、网站信息
+- `get_full_profile(username=None, urn=None)` — 完整个人资料
+- `get_full_experience(urn)` — 工作经历
+- `get_education(urn)` — 教育背景
+- `get_skills(urn)` — 技能和认可信息
 
-### Companies
-- `get_company_info(company_id=None, name=None)` — Company details
-- `company_name_lookup(query)` — Search by name
-- `get_company_employees_data(company_id)` — Employee stats
-- `get_company_jobs(company_ids)` — Job listings
+### 公司
+- `get_company_info.company_id=None, name=None)` — 公司详细信息
+- `company_name_lookup(query)` — 按名称搜索公司
+- `get_company_employees_data/company_id)` — 公司员工信息
+- `get_company_jobs(company_ids)` — 公司职位信息
 
-### Jobs
-- `search_jobs(keyword, location, ...)` — Search job postings
-- `get_job_details(job_id)` — Detailed job info
+### 职位
+- `search_jobs(keyword, location, ...)` — 搜索职位信息
+- `get_job_details(job_id)` — 详细职位信息
 
-### Search
-- `search_people(keyword, title, company, ...)` — Find people
-- `search_companies(keyword, industry, ...)` — Find companies
-- `search_posts(keyword, ...)` — Find posts
+### 搜索功能
+- `search_people(keyword, title, company, ...)` — 搜索人员信息
+- `search_companies(keyword, industry, ...)` — 搜索公司信息
+- `search_posts(keyword, ...)` — 搜索帖子
 
-## Performance Tips
+## 性能优化建议
 
-- Use `AsyncLinkdAPI` for batch operations (40x faster)
-- Add `return_exceptions=True` in `asyncio.gather()` for graceful error handling
-- Use context managers (`async with`) for proper resource cleanup
+- 对于批量操作，请使用 `AsyncLinkdAPI`（速度提升 40 倍）
+- 在 `asyncio.gather()` 中添加 `return_exceptions=True` 以实现优雅的错误处理
+- 使用上下文管理器（`async with`）确保资源得到正确清理
 
-## Error Handling
+## 错误处理
 
-Check responses and handle errors:
+检查响应并处理错误：
 
 ```python
 result = client.get_profile_overview("username")
@@ -249,6 +248,6 @@ else:
     print(f"API Error: {result.get('message')}")
 ```
 
-## References
+## 参考资料
 
-Full API documentation: https://linkdapi.com/docs
+完整的 API 文档：https://linkdapi.com/docs

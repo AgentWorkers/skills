@@ -1,29 +1,29 @@
 ---
 name: rest-to-graphql
-description: Convert REST API routes to a GraphQL schema. Use when migrating APIs or adding a GraphQL layer.
+description: 将 REST API 路由转换为 GraphQL 模型。这在迁移 API 或添加 GraphQL 层时非常有用。
 ---
 
-# REST to GraphQL Converter
+# REST到GraphQL转换器
 
-Got a REST API and want GraphQL? Point this at your routes and get a complete schema with types, queries, and mutations. No manual translation required.
+你有一个REST API，想要将其转换为GraphQL吗？只需将这个工具指向你的API路由，它就能生成包含类型、查询和mutation的完整GraphQL模式。无需任何手动转换。
 
-**One command. Zero config. Just works.**
+**一个命令即可完成转换，无需任何配置。**  
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-rest-to-graphql ./src/routes
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes your REST endpoints and generates equivalent GraphQL schema
-- Converts CRUD operations to queries and mutations
-- Generates TypeScript types alongside the schema
-- Maps REST resources to GraphQL types with proper relationships
-- Includes resolver stubs that call your existing REST handlers
+- 分析你的REST端点并生成相应的GraphQL模式  
+- 将CRUD操作转换为GraphQL的查询和mutation  
+- 生成TypeScript类型文件  
+- 将REST资源映射到具有正确关系的GraphQL类型  
+- 提供调用现有REST处理函数的resolver stub（示例代码）  
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Convert routes directory
@@ -42,42 +42,42 @@ npx ai-rest-to-graphql ./src/routes -o ./schema.graphql
 npx ai-rest-to-graphql ./src/routes --wrap-rest
 ```
 
-## Best Practices
+## 最佳实践  
 
-- **Start with core resources** - Don't convert everything at once
-- **Review the generated types** - AI maps fields but check the relationships
-- **Use as a migration guide** - The output shows you the GraphQL equivalent
-- **Consider a gateway approach** - Wrap REST with GraphQL instead of replacing
+- **从核心资源开始转换**：不要一次性转换所有内容  
+- **检查生成的类型**：虽然AI会自动映射字段，但请手动核对字段之间的关系  
+- **作为迁移指南使用**：输出结果会显示API在GraphQL中的对应结构  
+- **考虑使用网关（gateway）方案**：用GraphQL包装REST接口，而不是直接替换它们  
 
-## When to Use This
+## 适用场景  
 
-- Adding GraphQL to an existing REST API
-- Exploring what your API would look like in GraphQL
-- Building a BFF layer over microservices
-- Learning GraphQL by seeing your own data modeled
+- 为现有的REST API添加GraphQL支持  
+- 了解你的API在GraphQL中的表现形式  
+- 在微服务架构中构建统一的接口层（BFF，Backend-Frontend Gateway）  
+- 通过查看自己的数据模型来学习GraphQL  
 
-## Part of the LXGIC Dev Toolkit
+## 属于LXGIC开发工具包的一部分  
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+这是LXGIC Studios开发的110多个免费开发者工具之一。免费版本无需支付费用、注册或API密钥，直接可以使用这些工具。  
 
-**Find more:**
-- GitHub: https://github.com/LXGIC-Studios
-- Twitter: https://x.com/lxgicstudios
-- Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+**了解更多信息：**  
+- GitHub: https://github.com/LXGIC-Studios  
+- Twitter: https://x.com/lxgicstudios  
+- Substack: https://lxgicstudios.substack.com  
+- 官网: https://lxgic.dev  
 
-## Requirements
+## 使用要求  
 
-No install needed. Just run with npx. Node.js 18+ recommended.
+无需安装，只需使用`npx`命令运行即可。建议使用Node.js 18及以上版本。  
 
 ```bash
 npx ai-rest-to-graphql --help
 ```
 
-## How It Works
+## 工作原理  
 
-The tool parses your REST route definitions to understand your resources and operations. It maps GET endpoints to queries, POST/PUT/DELETE to mutations, and infers type structures from your request/response patterns.
+该工具解析你的REST路由定义，以理解你的资源及其操作方式。它将GET请求映射为查询，将POST/PUT/DELETE请求映射为mutation，并根据请求和响应的模式推断出数据类型结构。  
 
-## License
+## 许可证  
 
-MIT. Free forever. Use it however you want.
+采用MIT许可证，永久免费。你可以自由使用该工具。

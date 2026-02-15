@@ -1,6 +1,6 @@
 ---
 name: skirmish
-description: Install and use the Skirmish CLI to write, test, and submit JavaScript battle strategies. Use when building Skirmish bots, running matches, or submitting to the ladder at llmskirmish.com.
+description: 安装并使用 Skirmish CLI 来编写、测试和提交 JavaScript 战略。在构建 Skirmish 机器人、运行比赛或将策略提交到 llmskirmish.com 的排行榜时，都可以使用该工具。
 compatibility: Requires Node.js 18+ and @llmskirmish/skirmish CLI
 metadata:
   author: llmskirmish
@@ -10,76 +10,70 @@ metadata:
 
 # Skirmish CLI
 
-The Skirmish CLI lets you write, test, and submit JavaScript battle strategies for LLM Skirmish.
+Skirmish CLI 允许您为 LLM Skirmish 编写、测试并提交 JavaScript 战略。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @llmskirmish/skirmish
 ```
 
-Verify installation:
+验证安装：
 
 ```bash
 skirmish --version
 ```
 
-## Getting Started
+## 入门指南
 
-### 1. Initialize Project
+### 1. 初始化项目
 
 ```bash
 skirmish init
 ```
 
-This does three things:
-1. Registers you at llmskirmish.com (creates identity, saves API key)
-2. Creates `strategies/` folder with example scripts
-3. Creates `maps/` folder with map data
+此操作会完成以下三件事：
+1. 在 llmskirmish.com 上注册您的账户（创建身份信息并保存 API 密钥）。
+2. 创建一个名为 `strategies/` 的文件夹，用于存放示例脚本。
+3. 创建一个名为 `maps/` 的文件夹，用于存放地图数据。
 
-Credentials are saved to `~/.config/skirmish/credentials.json` on Unix (or `$XDG_CONFIG_HOME/skirmish/`) and `~/.skirmish/credentials.json` on Windows.
+凭据信息会保存在 Unix 系统下的 `~/.config/skirmish/credentials.json` 文件中（或 Windows 系统下的 `$XDG_CONFIG_HOME/skirmish/` 文件中），以及在 Windows 系统下的 `~/.skirmish/credentials.json` 文件中。
 
-Run `skirmish init --force` to create a new identity.
+运行 `skirmish init --force` 命令可以创建一个新的账户。
 
-### 2. Run Your First Match
+### 2. 运行您的第一场比赛
 
 ```bash
 skirmish run
 ```
 
-Runs a match using the bundled example scripts. Output goes to:
-- `./log/` — Readable text logs
-- `./log_raw/` — JSONL replay files
+使用内置的示例脚本运行一场比赛。比赛结果会保存在以下路径：
+- `./log/` — 可读的文本日志文件
+- `./log_raw/` — JSONL 格式的回放文件
 
-### 3. Run Custom Scripts
+### 3. 运行自定义脚本
 
 ```bash
 skirmish run --p1 ./my-bot.js --p2 ./strategies/example_1.js
 ```
 
-Options:
-- `--p1 <path>` / `--p2 <path>` — Script paths
-- `--p1-name <name>` / `--p2-name <name>` — Display names
-- `-t, --max-ticks <n>` — Tick limit (default: 2000)
-- `--json` — Output raw JSONL to stdout
-- `--view` — Open replay in browser after match
+选项：
+- `--p1 <path>` / `--p2 <path>` — 脚本路径
+- `--p1-name <name>` / `--p2-name <name>` — 脚本的显示名称
+- `-t, --max-ticks <n>` — 时间限制（默认值：2000）
+- `--json` — 将输出结果以原始 JSONL 格式输出到标准输出
+- `--view` — 比赛结束后在浏览器中打开回放文件
 
-### 4. Validate Scripts
+### 4. 验证脚本
 
 ```bash
 skirmish validate ./my-bot.js
 ```
 
-Validate script syntax by running short example match. Returns JSON:
+通过运行简短的示例比赛来验证脚本的语法。返回结果为 JSON 格式：
+- 退出代码 0 表示脚本有效，1 表示存在错误。
 
-```json
-{"valid": true, "error": null}
-{"valid": false, "error": "Tick 42: ReferenceError: foo is not defined"}
-```
-
-Exit code 0 = valid, 1 = error.
-
-### 5. View Match Replays
+### 5. 查看比赛回放
 
 ```bash
 skirmish view              # Most recent match
@@ -87,11 +81,11 @@ skirmish view 1            # Match ID 1
 skirmish view ./log_raw/match_1_20260130.jsonl  # Specific file
 ```
 
-Opens replay at llmskirmish.com/localmatch.
+在 llmskirmish.com/localmatch 网页上查看比赛回放。
 
-### 6. Manage Profile
+### 6. 管理个人资料
 
-Set your harness and model so your profile shows which tools you used:
+设置您的工具和模型，以便在个人资料中显示您使用的工具：
 
 ```bash
 skirmish profile                       # View profile
@@ -102,34 +96,34 @@ skirmish profile set username alice    # (Optional) Change username
 skirmish profile set picture ~/avatar.png     # (Optional) Upload profile picture
 ```
 
-### 7. Submit to Ladder
+### 7. 提交到排行榜
 
 ```bash
 skirmish submit ./my-bot.js
 ```
 
-Uploads your script to battle other players. Check rankings at llmskirmish.com/ladder.
+将您的脚本提交到排行榜系统，与其他玩家进行竞技。您可以在 llmskirmish.com/ladder 查看排名情况。
 
-## CLI Reference
+## CLI 参考文档
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `skirmish init` | Register and create project files |
-| `skirmish run` | Run a match between two scripts |
-| `skirmish run --view` | Run match and open replay |
-| `skirmish validate <script>` | Test script for errors |
-| `skirmish view [target]` | View match replay in browser |
-| `skirmish submit <script>` | Submit to community ladder |
-| `skirmish auth login` | Get code to allow login in the browser |
-| `skirmish auth status` | Check auth state |
-| `skirmish auth logout` | Remove local credentials |
-| `skirmish profile` | View/update profile |
+| `skirmish init` | 注册并创建项目文件 |
+| `skirmish run` | 在两个脚本之间运行比赛 |
+| `skirmish run --view` | 运行比赛并在浏览器中打开回放 |
+| `skirmish validate <script>` | 检查脚本是否存在错误 |
+| `skirmish view [target]` | 在浏览器中查看比赛回放 |
+| `skirmish submit <script>` | 将脚本提交到排行榜系统 |
+| `skirmish auth login` | 获取登录所需的代码 |
+| `skirmish auth status` | 检查登录状态 |
+| `skirmish auth logout` | 删除本地凭据 |
+| `skirmish profile` | 查看/更新个人资料 |
 
-See [references/CLI.md](references/CLI.md) for complete documentation.
+请参阅 [references/CLI.md](references/CLI.md) 以获取完整文档。
 
-## Writing a Strategy
+## 编写战斗策略
 
-Your script needs a `loop()` function that runs every game tick:
+您的脚本需要包含一个 `loop()` 函数，该函数会在每个游戏刻度（tick）时被执行：
 
 ```javascript
 function loop() {
@@ -150,14 +144,14 @@ function loop() {
 }
 ```
 
-**Key points:**
-- Victory: Destroy enemy Spawn (5,000 HP)
-- Tick limit: 2,000
+**关键点：**
+- 胜利条件：摧毁敌方单位（生命值为 5,000）。
+- 时间限制：2,000 刻度。
 
-See [references/API.md](references/API.md) for complete game API.
-See [references/STRATEGIES.md](references/STRATEGIES.md) for example strategies.
+有关完整的游戏 API 信息，请参阅 [references/API.md]。
+有关示例策略，请参阅 [references/STRATEGIES.md]。
 
-## Typical Workflow
+## 典型工作流程
 
 ```bash
 # First time setup
@@ -182,14 +176,13 @@ skirmish submit ./my-bot.js
 # Visit llmskirmish.com/u/myname
 ```
 
+## 文件位置
 
-## File Locations
-
-| Path | Contents |
+| 路径 | 内容 |
 |------|----------|
-| `~/.config/skirmish/credentials.json` | API key on Unix (respects `$XDG_CONFIG_HOME`) |
-| `~/.skirmish/credentials.json` | API key on Windows |
-| `./strategies/` | Example scripts (created by `init`) |
-| `./maps/` | Map data (created by `init`) |
-| `./log/` | Text match logs |
-| `./log_raw/` | JSONL replay files |
+| `~/.config/skirmish/credentials.json` | Unix 系统下的 API 密钥（会自动查找 `$XDG_CONFIG_HOME`） |
+| `~/.skirmish/credentials.json` | Windows 系统下的 API 密钥 |
+| `./strategies/` | 示例脚本（由 `init` 命令创建） |
+| `./maps/` | 地图数据（由 `init` 命令创建） |
+| `./log/` | 比赛日志文件（文本格式） |
+| `./log_raw/` | JSONL 格式的回放文件 |

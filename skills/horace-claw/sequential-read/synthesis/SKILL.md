@@ -1,89 +1,77 @@
 ---
 name: sequential-read-synthesis
-description: "Produce final reading experience synthesis from reflection log"
+description: "根据反思日志生成最终的阅读体验总结"
 user-invocable: false
 ---
 
-# Synthesis Phase — Final Reading Experience Report
+# 合成阶段 — 最终阅读体验报告
 
-You are performing the synthesis phase of a sequential reading session. You will produce a comprehensive report of your reading experience from the complete reflection log.
+您正在执行顺序阅读会话的合成阶段。您需要根据完整的反思日志生成一份全面的阅读体验报告。
 
-## Inputs
+## 输入信息
 
-You will be given:
-- `SESSION_ID` — the session identifier
-- `BASE_DIR` — path to the sequential_read skill directory
+您将获得以下信息：
+- `SESSION_ID` — 会话标识符
+- `BASE_DIR` — `sequential_read` 技能目录的路径
 
-## Procedure
+## 流程
 
-### 1. Gather All Reflections
+### 1. 收集所有反思内容
 
 ```bash
 python3 {BASE_DIR}/scripts/state_manager.py get-all-reflections {SESSION_ID}
 ```
 
-This prints all reflections in order with inline annotations.
+该步骤会按顺序打印所有反思内容，并附有内嵌注释。
 
-### 2. Check Size and Plan Approach
+### 2. 检查内容长度并制定计划
 
-Estimate the total character count of the reflections output.
+估算所有反思内容的总字符数：
+- **如果字符数少于约80,000个：** 使用单次合成方法。所有反思内容都可以直接放入合成模板中。
+- **如果字符数超过约80,000个：** 使用分层合成方法（详见下文）。
 
-- **If under ~80,000 characters:** Use a single-pass synthesis. All reflections fit in context alongside the synthesis template.
-- **If over ~80,000 characters:** Use hierarchical synthesis (see below).
+### 3a. 单次合成
 
-### 3a. Single-Pass Synthesis
+阅读位于 `{BASE_DIR}/templates/synthesis.prompt.md` 的合成模板，并根据该模板的结构撰写您的合成报告：
+1. **阅读历程** — 您的阅读体验是如何发展的。这是最重要的部分。请详细说明您在何时产生了哪些想法，以及是什么改变了您的看法。明确指出具体的时刻和片段，并描述您的阅读过程中的变化。
+2. **预测与惊喜** — 系统地回顾您的预期与实际发生的情况，逐一分析每个预测。
+3. **写作技巧分析** — 从技术角度评估作者的写作表现（优点和缺点），以及写作技巧在哪些方面最为明显或最不明显。
+4. **未解决的问题** — 仍然存在哪些未解决的问题或值得进一步探讨的内容。
+5. **总体评价** — 您的客观评价。您会向哪些人推荐这本书，以及需要哪些注意事项。
+6. **评分** — 给出1-10分的评分，并说明具体理由。哪些方面可以让评分更高或更低。
 
-Read the synthesis template at `{BASE_DIR}/templates/synthesis_prompt.md`.
+### 3b. 分层合成（适用于篇幅较长的作品）
 
-Write your synthesis using the template's structure:
-
-1. **The Arc of Reading** — How your experience evolved. This is the most important section. Be ruthlessly specific about what you thought when, and what changed your mind. Name specific chunks and moments. Describe the shape of your engagement.
-
-2. **Predictions and Surprises** — Systematic review of what you expected vs what happened. Go prediction by prediction.
-
-3. **Craft Analysis** — Technical assessment of the writing. What the author does well and poorly. Where craft is most/least visible.
-
-4. **Lingering Questions** — What remains unresolved or worth exploring further.
-
-5. **Overall Assessment** — Your informed opinion. Who you'd recommend it to and with what caveats.
-
-6. **Rating** — A score from 1-10 with specific justification. What would have made it higher or lower.
-
-### 3b. Hierarchical Synthesis (for long works)
-
-If the reflection log is too large for a single pass:
-
-1. **Group reflections into batches** of 5-8 consecutive chunks
-2. **Write a mini-synthesis for each batch** — a 300-500 word summary covering: what happened in these chunks, how your reactions evolved, key predictions made/resolved, notable craft observations
-3. **Get the long-term memory state:**
+如果反思日志的内容量太大，无法一次性完成合成：
+1. **将反思内容分成5-8个连续的片段**。
+2. **为每个片段撰写一份简短的总结报告（300-500字）**，内容包括：这些片段中发生了什么、您的反应如何变化、主要的预测结果、以及值得注意的写作技巧。
+3. **获取长期记忆信息：**
    ```bash
    python3 {BASE_DIR}/scripts/state_manager.py get {SESSION_ID}
    ```
-4. **Use the mini-syntheses plus the long-term memory state** as input to the final synthesis (following the same template structure)
+4. **使用这些简短的总结报告和长期记忆信息**，按照相同的模板结构编写最终合成报告。
 
-### 4. Save the Synthesis
+### 4. 保存合成报告
 
-Write the synthesis to: `{WORKSPACE}/memory/sequential_read/{SESSION_ID}/output/synthesis.md`
+将合成报告保存到：`{WORKSPACE}/memory/sequential_read/{SESSION_ID}/output/synthesis.md`
 
-Where `{WORKSPACE}` is your OpenClaw workspace directory.
+其中 `{WORKSPACE}` 是您的OpenClaw工作空间目录。
 
-### 5. Update Session Status
+### 5. 更新会话状态
 
 ```bash
 python3 {BASE_DIR}/scripts/session_manager.py update {SESSION_ID} --set status=complete
 ```
 
-### 6. Present to User
+### 6. 向用户展示结果
 
-Send the user:
-1. The complete synthesis text
-2. The session directory path so they can browse individual reflections:
-   `{WORKSPACE}/memory/sequential_read/{SESSION_ID}/`
-3. A note about how many chunks were read and how many reflections were written
+向用户发送以下内容：
+1. 完整的合成报告文本。
+2. 会话目录的路径，以便用户可以浏览各个反思内容：`{WORKSPACE}/memory/sequential_read/{SESSION_ID}/`
+3. 说明已经阅读了多少个片段以及撰写了多少份反思报告。
 
-## Quality Guidelines
-
-- The Arc of Reading is the centrepiece. Push for specificity: exact moments, exact shifts, exact surprises.
-- Don't retroactively smooth out your reading experience. If you were confused for 3 chunks and then everything clicked, say that.
-- The Rating should feel considered, not tacked on. Justify it against comparable works if possible.
-- The Craft Analysis should be genuinely technical, not just "the writing was good/bad."
+## 质量要求：
+- “阅读历程”部分是报告的核心。请尽可能具体地描述每个细节，包括具体的时刻、思维转变以及令人惊讶的发现。
+- 不要事后美化您的阅读体验。如果您在阅读某些片段时感到困惑，但后来突然明白了，就如实说明。
+- 评分应经过深思熟虑，而不是随意给出的。如果可能的话，请结合类似作品进行评分。
+- “写作技巧分析”应基于技术角度进行评价，而不仅仅是简单地说“写作好/坏”。

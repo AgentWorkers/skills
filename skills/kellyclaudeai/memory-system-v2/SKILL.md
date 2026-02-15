@@ -1,39 +1,38 @@
 ---
 name: memory-system-v2
-description: Fast semantic memory system with JSON indexing, auto-consolidation, and <20ms search. Capture learnings, decisions, insights, events. Use when you need persistent memory across sessions or want to recall prior work/decisions.
+description: 这款快速语义记忆系统采用 JSON 索引技术，具备自动数据整合功能，搜索响应时间仅需不到 20 毫秒。它可以记录学习内容、决策过程、重要见解以及发生的事件。当您需要在不同会话之间保持数据持久性，或者希望回顾之前的工作或决策时，这款系统非常实用。
 homepage: https://github.com/austenallred/memory-system-v2
 metadata: {"clawdbot":{"emoji":"🧠","requires":{"bins":["jq"]},"install":[{"id":"brew-jq","kind":"brew","formula":"jq","bins":["jq"],"label":"Install jq via Homebrew"}]}}
 ---
 
 # Memory System v2.0
 
-**Fast semantic memory for AI agents with JSON indexing and sub-20ms search.**
+**专为AI代理设计的快速语义记忆系统，支持JSON索引和低于20毫秒的搜索速度。**
 
-## Overview
+## 概述
 
-Memory System v2.0 is a lightweight, file-based memory system designed for AI agents that need to:
-- Remember learnings, decisions, insights, events, and interactions across sessions
-- Search memories semantically in <20ms
-- Auto-consolidate daily memories into weekly summaries
-- Track importance and context for better recall
+Memory System v2.0是一个轻量级的、基于文件的记忆系统，专为需要满足以下需求的AI代理而设计：
+- 跨会话记录学习内容、决策、见解、事件和交互信息
+- 在<20毫秒内进行语义搜索
+- 自动将每日记忆整合为每周摘要
+- 通过追踪记忆的重要性和上下文来提升回忆能力
 
-Built in pure bash + jq. No databases required.
+该系统完全由bash和jq构建，无需使用数据库。
 
-## Features
+## 特点
 
-- ⚡ **Fast Search:** <20ms average search time (36 tests passed)
-- 🧠 **Semantic Memory:** Capture 5 types of memories (learning, decision, insight, event, interaction)
-- 📊 **Importance Scoring:** 1-10 scale for memory prioritization
-- 🏷️ **Tagging System:** Organize memories with tags
-- 📝 **Context Tracking:** Remember what you were doing when memory was created
-- 📅 **Auto-Consolidation:** Weekly summaries generated automatically
-- 🔍 **Smart Search:** Multi-word search with importance weighting
-- 📈 **Stats & Analytics:** Track memory counts, types, importance distribution
+- ⚡ **快速搜索：** 平均搜索时间<20毫秒（通过36项测试）
+- 🧠 **语义记忆：** 支持五种类型的记忆记录（学习、决策、见解、事件、交互）
+- 📊 **重要性评分：** 采用1-10的评分系统对记忆进行优先级排序
+- 🏷️ **标签系统：** 通过标签来组织记忆内容
+- 📝 **上下文追踪：** 记录创建记忆时的具体操作
+- 📅 **自动整合：** 自动生成每周摘要
+- 🔍 **智能搜索：** 支持多词搜索，并根据重要性进行权重排序
+- 📈 **统计与分析：** 跟踪记忆的数量、类型和重要性分布
 
-## Quick Start
+## 快速入门
 
-### Installation
-
+### 安装
 ```bash
 # Install jq (required dependency)
 brew install jq
@@ -42,9 +41,9 @@ brew install jq
 # Already installed if you're using Clawdbot
 ```
 
-### Basic Usage
+### 基本用法
 
-**Capture a memory:**
+**记录记忆：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type learning \
@@ -54,34 +53,34 @@ brew install jq
   --context "Building Life Game app"
 ```
 
-**Search memories:**
+**搜索记忆：**
 ```bash
 ./memory/memory-cli.sh search "swiftui ios"
 ./memory/memory-cli.sh search "build app" --min-importance 7
 ```
 
-**Recent memories:**
+**查看最近记忆：**
 ```bash
 ./memory/memory-cli.sh recent learning 7 10
 ./memory/memory-cli.sh recent all 1 5
 ```
 
-**View stats:**
+**查看统计信息：**
 ```bash
 ./memory/memory-cli.sh stats
 ```
 
-**Auto-consolidate:**
+**自动整合：**
 ```bash
 ./memory/memory-cli.sh consolidate
 ```
 
-## Memory Types
+## 记忆类型
 
-### 1. Learning (importance: 7-9)
-New skills, tools, patterns, techniques you've acquired.
+### 1. 学习（重要性：7-9）
+你新掌握的技能、工具、模式或技术。
 
-**Example:**
+**示例：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type learning \
@@ -90,10 +89,10 @@ New skills, tools, patterns, techniques you've acquired.
   --tags "design,tron,aesthetic"
 ```
 
-### 2. Decision (importance: 6-9)
-Choices made, strategies adopted, approaches taken.
+### 2. 决策（重要性：6-9）
+你做出的选择、采用的策略或采取的方法。
 
-**Example:**
+**示例：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type decision \
@@ -102,10 +101,10 @@ Choices made, strategies adopted, approaches taken.
   --tags "life-game,game-design,leveling"
 ```
 
-### 3. Insight (importance: 8-10)
-Breakthroughs, realizations, aha moments.
+### 3. 见解（重要性：8-10）
+重大突破、领悟或灵光一现的时刻。
 
-**Example:**
+**示例：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type insight \
@@ -114,10 +113,10 @@ Breakthroughs, realizations, aha moments.
   --tags "ux,simplicity,habit-tracking"
 ```
 
-### 4. Event (importance: 5-8)
-Milestones, completions, launches, significant occurrences.
+### 4. 事件（重要性：5-8）
+重要的里程碑、完成的任务或发生的重大事件。
 
-**Example:**
+**示例：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type event \
@@ -126,10 +125,10 @@ Milestones, completions, launches, significant occurrences.
   --tags "shipped,life-game,milestone"
 ```
 
-### 5. Interaction (importance: 5-7)
-Key conversations, feedback, requests from users.
+### 5. 交互（重要性：5-7）
+关键对话、用户反馈或请求。
 
-**Example:**
+**示例：**
 ```bash
 ./memory/memory-cli.sh capture \
   --type interaction \
@@ -138,10 +137,9 @@ Key conversations, feedback, requests from users.
   --tags "feedback,user-request,simplification"
 ```
 
-## Architecture
+## 架构
 
-### File Structure
-
+### 文件结构
 ```
 memory/
 ├── memory-cli.sh              # Main CLI tool
@@ -153,8 +151,7 @@ memory/
     └── YYYY-WW.md             # Weekly consolidated summaries
 ```
 
-### JSON Index Format
-
+### JSON索引格式
 ```json
 {
   "version": 1,
@@ -176,18 +173,18 @@ memory/
 }
 ```
 
-### Performance Benchmarks
+### 性能基准
 
-**All 36 tests passed:**
-- Search: <20ms average (fastest: 8ms, slowest: 18ms)
-- Capture: <50ms average
-- Stats: <10ms
-- Recent: <15ms
-- All operations: <100ms target ✅
+**所有36项测试均通过：**
+- 搜索：平均时间<20毫秒（最快8毫秒，最慢18毫秒）
+- 记录：平均时间<50毫秒
+- 统计信息：<10毫秒
+- 查看最近记忆：<15毫秒
+- 所有操作：目标时间<100毫秒 ✅
 
-## Commands Reference
+## 命令参考
 
-### capture
+### record
 ```bash
 ./memory-cli.sh capture \
   --type <learning|decision|insight|event|interaction> \
@@ -217,25 +214,25 @@ memory/
 ./memory-cli.sh consolidate [--week YYYY-WW]
 ```
 
-## Integration with Clawdbot
+## 与Clawdbot的集成
 
-Memory System v2.0 is designed to work seamlessly with Clawdbot:
+Memory System v2.0可与Clawdbot无缝配合使用：
 
-**Auto-capture in AGENTS.md:**
+**在AGENTS.md中自动记录记忆：**
 ```markdown
 ## Memory Recall
 Before answering anything about prior work, decisions, dates, people, preferences, or todos: run memory_search on MEMORY.md + memory/*.md
 ```
 
-**Example workflow:**
-1. Agent learns something new → `memory-cli.sh capture`
-2. User asks "What did we build yesterday?" → `memory-cli.sh search "build yesterday"`
-3. Agent recalls exact details with file + line references
+**示例工作流程：**
+1. 代理学习新内容 → `memory-cli.sh capture`
+2. 用户询问“我们昨天完成了什么？” → `memory-cli.sh search "build yesterday"`
+3. 代理可依据文件和行号精确回忆细节
 
-## Use Cases
+## 使用场景
 
-### 1. Learning Tracking
-Capture every new skill, tool, or technique you learn:
+### 1. 学习跟踪
+记录你学到的每一项新技能、工具或技术：
 ```bash
 ./memory-cli.sh capture \
   --type learning \
@@ -244,8 +241,8 @@ Capture every new skill, tool, or technique you learn:
   --tags "clawdhub,publishing,packaging"
 ```
 
-### 2. Decision History
-Record why you made specific choices:
+### 2. 决策历史
+记录你做出特定选择的原因：
 ```bash
 ./memory-cli.sh capture \
   --type decision \
@@ -254,8 +251,8 @@ Record why you made specific choices:
   --tags "ux,simplicity,design-decision"
 ```
 
-### 3. Milestone Tracking
-Log major achievements:
+### 3. 里程碑跟踪
+记录重要的成就：
 ```bash
 ./memory-cli.sh capture \
   --type event \
@@ -264,15 +261,15 @@ Log major achievements:
   --tags "milestone,memory-system,shipped"
 ```
 
-### 4. Weekly Reviews
-Auto-generate weekly summaries:
+### 4. 周度回顾
+自动生成每周摘要：
 ```bash
 ./memory-cli.sh consolidate --week 2026-05
 ```
 
-## Advanced Usage
+## 高级用法
 
-### Search with Importance Filter
+### 带有重要性过滤的搜索
 ```bash
 # Only high-importance learnings
 ./memory-cli.sh search "swiftui" --min-importance 8
@@ -281,13 +278,13 @@ Auto-generate weekly summaries:
 ./memory-cli.sh search "API" --min-importance 1
 ```
 
-### Recent High-Priority Decisions
+### 查看最近的高优先级决策
 ```bash
 # Decisions from last 7 days with importance ≥ 8
 ./memory-cli.sh recent decision 7 8
 ```
 
-### Bulk Analysis
+### 批量分析
 ```bash
 # See memory distribution
 ./memory-cli.sh stats
@@ -298,75 +295,74 @@ Auto-generate weekly summaries:
 # By importance: 10=45, 9=78, 8=63, 7=39, 6=15, 5=7
 ```
 
-## Limitations
+## 限制
 
-- **Text-only search:** No semantic embeddings (yet)
-- **Single-user:** Not designed for multi-user scenarios
-- **File-based:** Scales to ~10K memories before slowdown
-- **Bash dependency:** Requires bash + jq (works on macOS/Linux)
+- **仅支持文本搜索：** 目前不支持语义嵌入
+- **单用户使用：** 不适用于多用户场景
+- **基于文件：** 当记忆数量超过约10,000条时性能会下降
+- **依赖bash和jq：** 需要bash和jq环境（适用于macOS/Linux）
 
-## Future Enhancements
+## 未来改进计划
 
-- [ ] Semantic embeddings for better search
-- [ ] Auto-tagging with AI
-- [ ] Memory graphs (connections between memories)
-- [ ] Export to Notion/Obsidian
-- [ ] Multi-language support
-- [ ] Cloud sync (optional)
+- [ ] 添加语义嵌入以提升搜索效果
+- [ ] 通过AI实现自动标签功能
+- [ ] 创建记忆之间的关联图谱
+- [ ] 支持导出到Notion/Obsidian等工具
+- [ ] 支持多语言
+- [ ] 提供云同步功能（可选）
 
-## Testing
+## 测试
 
-Full test suite with 36 tests covering:
-- Capture operations (10 tests)
-- Search functionality (12 tests)
-- Recent queries (6 tests)
-- Stats generation (4 tests)
-- Consolidation (4 tests)
+包含36项测试的完整测试套件，涵盖：
+- 记录操作（10项测试）
+- 搜索功能（12项测试）
+- 查看最近记忆（6项测试）
+- 统计信息生成（4项测试）
+- 整合操作（4项测试）
 
-**Run tests:**
+**运行测试：**
 ```bash
 ./memory-cli.sh test  # If test suite is included
 ```
 
-**All tests passed ✅** - See `memory-system-v2-test-results.md` for details.
+**所有测试均通过 ✅** - 详情请参阅`memory-system-v2-test-results.md`。
 
-## Performance
+## 性能
 
-**Design goals:**
-- Search: <20ms ✅
-- Capture: <50ms ✅
-- Stats: <10ms ✅
-- All operations: <100ms ✅
+**设计目标：**
+- 搜索：<20毫秒 ✅
+- 记录：<50毫秒 ✅
+- 统计信息：<10毫秒 ✅
+- 所有操作：<100毫秒 ✅
 
-**Tested on:** M1 Mac, 247 memories in index
+**测试环境：** M1 Mac，索引中包含247条记忆记录
 
-## Why Memory System v2.0?
+## 为什么选择Memory System v2.0？
 
-**Problem:** AI agents forget everything between sessions. Context is lost.
+**问题：** AI代理在会话之间会忘记所有内容，导致上下文丢失。
 
-**Solution:** Fast, searchable memory that persists across sessions.
+**解决方案：** 提供快速、可搜索的记忆系统，确保信息在会话间持续保存。
 
-**Benefits:**
-- Agent can recall prior work, decisions, learnings
-- User doesn't repeat themselves
-- Context builds over time
-- Agent gets smarter with use
+**优势：**
+- 代理可以回忆之前的工作、决策和学习内容
+- 用户无需重复讲解相同的内容
+- 随着使用时间的增加，代理的智能水平不断提高
 
-## Credits
+## 致谢
 
-Built by Kelly Claude (AI Executive Assistant) as a self-improvement project.
+由Kelly Claude（AI执行助理）作为个人提升项目开发。
 
-**Design philosophy:** Fast, simple, file-based. No complex dependencies.
+**设计理念：** 快速、简单、基于文件，无复杂依赖。
 
-## License
+## 许可证
 
-MIT License - Use freely, modify as needed.
+MIT许可证 - 可自由使用，根据需要修改。
 
-## Support
+## 支持
 
-Issues: https://github.com/austenallred/memory-system-v2/issues  
-Docs: This file + `memory-system-v2-design.md`
+问题反馈：https://github.com/austenallred/memory-system-v2/issues  
+文档：本文件及`memory-system-v2-design.md`
 
 ---
 
-**Memory System v2.0 - Remember everything. Search in milliseconds.**
+**Memory System v2.0 - 记住一切，搜索只需几毫秒。**

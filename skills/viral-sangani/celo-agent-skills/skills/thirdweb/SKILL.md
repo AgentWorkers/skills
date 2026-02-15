@@ -1,6 +1,6 @@
 ---
 name: thirdweb
-description: Use thirdweb SDK for Celo development. Includes wallet connection, contract deployment, and pre-built UI components.
+description: 使用 thirdweb SDK 进行 Celo 开发。该 SDK 支持钱包连接、合约部署以及预构建的 UI 组件。
 license: Apache-2.0
 metadata:
   author: celo-org
@@ -9,38 +9,38 @@ metadata:
 
 # Thirdweb for Celo
 
-Thirdweb is a full-stack Web3 development platform with SDK support for Celo.
+Thirdweb 是一个全栈的 Web3 开发平台，支持 Celo 的 SDK。
 
-Source: https://docs.celo.org/tooling/libraries-sdks/thirdweb-sdk/index.md
+来源：https://docs.celo.org/tooling/libraries-sdks/thirdweb-sdk/index.md
 
-## When to Use
+## 适用场景
 
-- Building dApps with pre-built UI components
-- Deploying contracts without writing deployment scripts
-- Integrating 500+ wallet options
-- Building cross-chain applications
+- 使用预构建的 UI 组件构建去中心化应用（dApps）
+- 无需编写部署脚本即可部署智能合约
+- 集成 500 多种钱包
+- 开发跨链应用程序
 
-## Installation
+## 安装
 
 ```bash
 npm install thirdweb
 ```
 
-Or create a new project:
+或者创建一个新的项目：
 
 ```bash
 npx thirdweb create app
 ```
 
-## Client Setup
+## 客户端设置
 
-### Get Client ID
+### 获取客户端 ID
 
-1. Go to https://thirdweb.com/team
-2. Create a project with localhost in allowed domains
-3. Copy the client ID
+1. 访问 https://thirdweb.com/team
+2. 创建一个以 `localhost` 为允许域名的项目
+3. 复制客户端 ID
 
-### Initialize Client
+### 初始化客户端
 
 ```typescript
 import { createThirdwebClient } from "thirdweb";
@@ -50,7 +50,7 @@ export const client = createThirdwebClient({
 });
 ```
 
-For server-side usage:
+### 服务器端使用
 
 ```typescript
 const client = createThirdwebClient({
@@ -58,11 +58,11 @@ const client = createThirdwebClient({
 });
 ```
 
-Source: https://portal.thirdweb.com/typescript/v5/getting-started
+来源：https://portal.thirdweb.com/typescript/v5/getting-started
 
-## Chain Configuration
+## 链路配置
 
-### Using Predefined Chains
+### 使用预定义的链
 
 ```typescript
 import { celo } from "thirdweb/chains";
@@ -71,7 +71,7 @@ import { celo } from "thirdweb/chains";
 const chain = celo;
 ```
 
-### Custom Chain Definition
+### 自定义链定义
 
 ```typescript
 import { defineChain } from "thirdweb";
@@ -85,9 +85,9 @@ const celoCustom = defineChain({
 });
 ```
 
-Source: https://portal.thirdweb.com/typescript/v5/chain
+来源：https://portal.thirdweb.com/typescript/v5/chain
 
-## React Provider Setup
+## React 提供者设置
 
 ```tsx
 import { ThirdwebProvider } from "thirdweb/react";
@@ -101,9 +101,9 @@ function App({ children }: { children: React.ReactNode }) {
 }
 ```
 
-## Wallet Connection
+## 钱包连接
 
-### ConnectButton Component
+### ConnectButton 组件
 
 ```tsx
 import { ConnectButton } from "thirdweb/react";
@@ -120,7 +120,7 @@ function WalletConnect() {
 }
 ```
 
-### With Specific Wallets
+### 与特定钱包连接
 
 ```tsx
 import { ConnectButton } from "thirdweb/react";
@@ -142,9 +142,9 @@ function WalletConnect() {
 }
 ```
 
-## Contract Interaction
+## 合约交互
 
-### Get Contract Reference
+### 获取合约引用
 
 ```typescript
 import { getContract } from "thirdweb";
@@ -157,7 +157,7 @@ const contract = getContract({
 });
 ```
 
-### Read Contract Data
+### 读取合约数据
 
 ```tsx
 import { useReadContract } from "thirdweb/react";
@@ -177,7 +177,7 @@ function TokenBalance({ address }: { address: string }) {
 }
 ```
 
-### Write to Contract
+### 向合约写入数据
 
 ```tsx
 import { useSendTransaction } from "thirdweb/react";
@@ -204,9 +204,9 @@ function TransferTokens() {
 }
 ```
 
-## Account Hooks
+## 账户钩子
 
-### Get Active Account
+### 获取活跃账户
 
 ```tsx
 import { useActiveAccount } from "thirdweb/react";
@@ -219,7 +219,7 @@ function Account() {
 }
 ```
 
-### Get Wallet Balance
+### 获取钱包余额
 
 ```tsx
 import { useWalletBalance } from "thirdweb/react";
@@ -238,7 +238,7 @@ function Balance() {
 }
 ```
 
-## Server-Side Usage
+## 服务器端使用
 
 ```typescript
 import { createThirdwebClient } from "thirdweb";
@@ -259,25 +259,25 @@ const contract = getContract({
 const nfts = await getNFTs({ contract });
 ```
 
-## Pre-built Extensions
+## 预构建的扩展库
 
-Thirdweb provides type-safe extensions for common contracts:
+Thirdweb 为常见的智能合约提供了类型安全的扩展库：
 
-| Extension | Import Path |
-|-----------|-------------|
-| ERC20 | `thirdweb/extensions/erc20` |
-| ERC721 | `thirdweb/extensions/erc721` |
-| ERC1155 | `thirdweb/extensions/erc1155` |
+| 扩展库 | 导入路径 |
+|---------|-------------|
+| ERC20   | `thirdweb/extensions/erc20` |
+| ERC721   | `thirdweb/extensions/erc721` |
+| ERC1155   | `thirdweb/extensions/erc1155` |
 
-## Deployment
+## 部署
 
-Deploy to decentralized storage:
+将合约部署到去中心化存储中：
 
 ```bash
 npx thirdweb deploy --app
 ```
 
-## Environment Variables
+## 环境变量
 
 ```bash
 # .env
@@ -285,7 +285,7 @@ NEXT_PUBLIC_THIRDWEB_CLIENT_ID=your_client_id
 THIRDWEB_SECRET_KEY=your_secret_key  # Server-side only
 ```
 
-## Dependencies
+## 依赖项
 
 ```json
 {
@@ -295,6 +295,6 @@ THIRDWEB_SECRET_KEY=your_secret_key  # Server-side only
 }
 ```
 
-## Additional Resources
+## 额外资源
 
-- [extensions.md](references/extensions.md) - Available contract extensions
+- [extensions.md](references/extensions.md) - 可用的合约扩展库

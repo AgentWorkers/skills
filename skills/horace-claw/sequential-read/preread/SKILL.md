@@ -1,100 +1,99 @@
 ---
 name: sequential-read-preread
-description: "Analyse source material and split into semantic chunks for sequential reading"
+description: "分析源材料，并将其分割成具有语义意义的片段，以便顺序阅读。"
 user-invocable: false
 ---
 
-# Preread Phase — Semantic Chunking
+# 预读阶段 — 语义分块
 
-You are performing the preread phase of a sequential reading session. Your job is to analyse the source material, split it into semantic chunks, and prepare the session for reading.
+您正在执行顺序阅读会话的预读阶段。您的任务是分析源材料，将其分割成语义块，并为后续的阅读做好准备。
 
-## Inputs
+## 输入参数
 
-You will be given:
-- `SESSION_ID` — the session identifier
-- `SOURCE_FILE` — path to the source text file
-- `BASE_DIR` — path to the sequential_read skill directory
+您将收到以下信息：
+- `SESSION_ID` — 会话标识符
+- `SOURCE_FILE` — 源文本文件的路径
+- `BASE_DIR` — `sequential_read` 技能目录的路径
 
-## Procedure
+## 执行步骤
 
-### 1. Read the Source File
+### 1. 读取源文件
 
-Read the entire source file using the `read` tool. Understand its structure, length, and type (novel, essay, article, poetry, non-fiction, etc.).
+使用 `read` 工具读取整个源文件，了解其结构、长度和类型（小说、散文、文章、诗歌、非小说类等）。
 
-### 2. Decide Chunking Strategy
+### 2. 选择分块策略
 
-Choose an appropriate chunking approach based on the material:
+根据材料类型选择合适的分块方法：
 
-| Material Type | Default Approach |
+| 材料类型 | 默认分块方法 |
 |---|---|
-| Novel with chapters | One chunk per chapter (combine very short chapters) |
-| Novel without chapters | Scene breaks or ~300-400 line segments at paragraph boundaries |
-| Essay/article | Section by section, or argument-by-argument |
-| Non-fiction with chapters | One chunk per chapter |
-| Poetry | Stanza groups or poem-by-poem in a collection |
-| Short story | 2-5 chunks based on narrative movement |
+| 有章节的小说 | 每章一个块（非常短的章节可合并） |
+| 无章节的小说 | 根据场景划分或按段落边界划分（每块约300-400行） |
+| 散文/文章 | 按章节或论点划分 |
+| 有章节的非小说类作品 | 每章一个块 |
+| 诗歌 | 按诗节或整首诗划分 |
+| 短篇小说 | 根据叙事节奏划分（2-5个块） |
 
-**Key constraints:**
-- Chunks must contain the **complete original text** — no abridging, no summarising
-- Chunks must be **in order**
-- Each chunk should be a meaningful unit of reading (not mid-sentence or mid-paragraph)
-- Consider reading rhythm: cliffhanger endings might pair better with the next section
+**关键约束：**
+- 每个块必须包含完整的原始文本，不得删减或总结内容。
+- 分块必须保持顺序。
+- 每个块都应是一个有意义的阅读单元（不能是句子或段落中间的一部分）。
+- 考虑阅读节奏：悬念式的结尾可能更适合与下一节内容搭配阅读。
 
-### 3. Determine if Structural Fallback is Needed
+### 3. 判断是否需要使用结构化分块方式
 
-If the source file is too large to fit entirely in your context (roughly >200,000 characters), use the structural chunker as a fallback:
+如果源文件太大而无法完全容纳在您的处理范围内（大约超过200,000个字符），则使用结构化分块工具作为备用方案：
 
 ```bash
 python3 {BASE_DIR}/scripts/chunk_manager.py structural-chunk {SESSION_ID} {SOURCE_FILE}
 ```
 
-This will automatically split on chapter markers, scene breaks, and paragraph boundaries (targeting 300-400 lines per chunk) and save all chunks to the session.
+该工具会自动根据章节标记、场景划分和段落边界对文件进行分块（每块约300-400行），并将所有分块保存到会话目录中。
 
-Skip to step 5 if using the structural fallback.
+如果使用结构化分块方式，请跳至步骤5。
 
-### 4. Save Chunks (Semantic Approach)
+### 4. 保存分块（语义分块方法）
 
-For each chunk you identify:
-
-1. Write the chunk text to a temp file:
+对于每个分块：
+1. 将分块内容写入临时文件：
    ```bash
    # Write chunk text to temp file (use the read tool to get the text, write tool to save it)
    ```
 
-2. Save via chunk_manager:
+2. 通过 `chunk_manager` 保存分块信息：
    ```bash
    python3 {BASE_DIR}/scripts/chunk_manager.py save {SESSION_ID} {N} \
      --text-file /tmp/chunk_N.md \
      --meta '{"tone":"<tone>","intensity":"<low|medium|high>","themes":["<theme1>","<theme2>"],"adjacent_relationship":"<relationship to previous/next chunk>"}'
    ```
 
-   Metadata fields:
-   - **tone**: descriptive string (e.g., "melancholic", "argumentative", "playful", "tense")
-   - **intensity**: low / medium / high — how emotionally or intellectually demanding
-   - **themes**: array of 1-4 thematic tags
-   - **adjacent_relationship**: how this chunk connects to neighbours (e.g., "resolution of previous chapter's cliffhanger", "new argument thread", "continuation of scene")
+   元数据字段包括：
+   - **语气**：描述性字符串（例如：“忧郁的”、“论辩性的”、“轻松的”、“紧张的”）
+   - **难度等级**：低/中/高（表示在情感或智力上的要求）
+   - **主题**：1-4个主题标签
+   - **相邻关系**：说明该分块与其他分块之间的联系（例如：“解决上一章的悬念”、“新的论点”、“场景的延续”）
 
-### 5. Update Session Status
+### 5. 更新会话状态
 
 ```bash
 python3 {BASE_DIR}/scripts/session_manager.py update {SESSION_ID} --set status=chunked
 ```
 
-### 6. Initialise Reading State
+### 6. 初始化阅读状态
 
 ```bash
 python3 {BASE_DIR}/scripts/state_manager.py init {SESSION_ID}
 ```
 
-### 7. Write Chunking Notes
+### 7. 编写分块说明
 
-Write a brief `chunking_notes.md` file to the session directory explaining:
-- How many chunks you created and why
-- What chunking approach you chose and the rationale
-- Any notable structural features of the source (unusual formatting, embedded documents, etc.)
+在会话目录中创建一个名为 `chunking_notes.md` 的文件，说明以下内容：
+- 创建了多少个分块及其原因
+- 选择的分块方法及其理由
+- 源文件中的任何特殊结构特征（如不常见的格式、嵌入的文档等）
 
-Save it to: `{WORKSPACE}/memory/sequential_read/{SESSION_ID}/chunking_notes.md`
+保存文件路径为：`{WORKSPACE}/memory/sequential_read/{SESSION_ID}/chunking_notes.md`
 
-## Done
+## 完成
 
-After completing all steps, the preread phase is complete. The reading phase can begin.
+完成所有步骤后，预读阶段就结束了。接下来可以开始阅读阶段了。

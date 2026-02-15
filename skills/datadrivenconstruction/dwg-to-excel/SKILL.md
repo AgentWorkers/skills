@@ -1,60 +1,59 @@
 ---
 slug: "dwg-to-excel"
 display_name: "DWG To Excel"
-description: "Convert AutoCAD DWG files (1983-2026) to Excel databases using DwgExporter CLI. Extract layers, blocks, attributes, and geometry data without Autodesk licenses."
+description: "使用 DwgExporter CLI 将 AutoCAD DWG 文件（版本 1983–2026）转换为 Excel 数据库。无需 Autodesk 许可证即可提取图层、块、属性和几何数据。"
 ---
 
-# DWG to Excel Conversion
+# DWG 到 Excel 的转换
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-AutoCAD DWG files contain valuable project data locked in proprietary format:
-- Layer structures with drawing organization
-- Block references with attribute data
-- Text annotations and dimensions
-- Geometric entities (lines, polylines, arcs)
-- External references (xrefs)
+### 问题描述
+AutoCAD 的 DWG 文件包含了以专有格式存储的宝贵项目数据：
+- 具有绘图组织结构的图层
+- 带有属性数据的块引用
+- 文本注释和尺寸标注
+- 几何实体（直线、多段线、弧线）
+- 外部引用（xref）
 
-Extracting this data typically requires AutoCAD licenses or complex programming.
+提取这些数据通常需要 AutoCAD 许可证或复杂的编程技术。
 
-### Solution
-DwgExporter.exe converts DWG files to structured Excel databases offline, without Autodesk licenses.
+### 解决方案
+DwgExporter.exe 可以在离线环境下将 DWG 文件转换为结构化的 Excel 数据库，且无需 Autodesk 许可证。
 
-### Business Value
-- **Zero license cost** - No AutoCAD license required
-- **Legacy support** - Reads DWG files from 1983 to 2026
-- **Data extraction** - Layers, blocks, attributes, text, geometry
-- **PDF export** - Generate drawings from DWG layouts
-- **Batch processing** - Convert thousands of DWG files
+### 商业价值
+- **零许可成本**：无需 AutoCAD 许可证
+- **对旧版本的兼容性**：支持 1983 至 2026 年发布的所有 DWG 文件格式
+- **数据提取功能**：可以提取图层、块、属性、文本和几何图形等信息
+- **PDF 导出**：可以将 DWG 文件中的内容导出为 PDF 格式的图纸
+- **批量处理**：能够同时处理数千个 DWG 文件
 
-## Technical Implementation
+## 技术实现
 
-### CLI Syntax
+### 命令行接口（CLI）语法
 ```bash
 DwgExporter.exe <input_dwg> [options]
 ```
 
-### Output Formats
-| Output | Description |
+### 输出格式
+| 输出格式 | 描述 |
 |--------|-------------|
-| `.xlsx` | Excel database with all entities |
-| `.pdf` | PDF drawings from layouts |
+| `.xlsx` | 包含所有几何实体的 Excel 数据库 |
+| `.pdf` | 从 DWG 文件布局生成的 PDF 图纸 |
 
-### Supported Versions
-| Version Range | Description |
+### 支持的 DWG 版本
+| 版本范围 | 描述 |
 |---------------|-------------|
-| R12 (1992) | Legacy DWG |
+| R12 (1992) | 旧版本的 DWG 文件格式 |
 | R14 (1997) | AutoCAD 14 |
-| 2000-2002 | DWG 2000 format |
-| 2004-2006 | DWG 2004 format |
-| 2007-2009 | DWG 2007 format |
-| 2010-2012 | DWG 2010 format |
-| 2013-2017 | DWG 2013 format |
-| 2018-2026 | DWG 2018 format |
+| 2000-2002 | DWG 2000 格式 |
+| 2004-2006 | DWG 2004 格式 |
+| 2007-2009 | DWG 2007 格式 |
+| 2010-2012 | DWG 2010 格式 |
+| 2013-2017 | DWG 2013 格式 |
+| 2018-2026 | DWG 2018 格式 |
 
-### Examples
-
+### 示例
 ```bash
 # Basic conversion
 DwgExporter.exe "C:\Projects\FloorPlan.dwg"
@@ -71,8 +70,7 @@ Get-ChildItem "C:\Projects\*.dwg" -Recurse | ForEach-Object {
 }
 ```
 
-### Python Integration
-
+### Python 集成
 ```python
 import subprocess
 import pandas as pd
@@ -387,31 +385,30 @@ def batch_convert_dwg(folder: str,
     return [r['output'] for r in results if r['status'] == 'success']
 ```
 
-## Output Structure
+## 输出数据结构
 
-### Excel Sheets
-| Sheet | Content |
+### Excel 工作表
+| 工作表 | 内容 |
 |-------|---------|
-| Elements | All DWG entities with properties |
-| Layers | Layer definitions |
-| Blocks | Block definitions |
-| Layouts | Drawing layouts/sheets |
+| 实体信息 | 所有 DWG 实体及其属性 |
+| 图层信息 | 图层定义 |
+| 块信息 | 块的定义 |
+| 绘图布局 | 绘图布局/图纸 |
 
-### Entity Columns
-| Column | Type | Description |
+### 实体属性列
+| 列名 | 类型 | 描述 |
 |--------|------|-------------|
-| Handle | string | Unique entity handle |
-| EntityType | string | LINE, CIRCLE, INSERT, etc. |
-| Layer | string | Layer name |
-| Color | int | Color index (0-256) |
-| Linetype | string | Linetype name |
-| Lineweight | float | Line weight in mm |
-| X, Y, Z | float | Entity coordinates |
-| BlockName | string | For INSERT entities |
-| TextContent | string | For TEXT/MTEXT |
+| Handle | 字符串 | 实体的唯一标识符 |
+| EntityType | 字符串 | 实体类型（如直线、圆等） |
+| Layer | 字符串 | 所属图层名称 |
+| Color | 整数 | 图层颜色索引（0-256） |
+| Linetype | 字符串 | 线型名称 |
+| Lineweight | 浮点数 | 线宽（单位：毫米） |
+| X, Y, Z | 浮点数 | 实体的坐标 |
+| BlockName | 字符串 | 对于 INSERT 类型的实体，包含块名称 |
+| TextContent | 字符串 | 对于 TEXT/MTEXT 类型的实体，包含文本内容 |
 
-## Quick Start
-
+## 快速入门指南
 ```python
 # Initialize exporter
 exporter = DWGExporter("C:/DDC/DwgExporter.exe")
@@ -438,66 +435,20 @@ for _, row in texts.iterrows():
     print(f"{row['Layer']}: {row.get('TextContent', 'N/A')}")
 ```
 
-## Common Use Cases
+## 常见使用场景
+- **图层审核**：检查 DWG 文件中的图层结构
+- **块管理**：管理 DWG 文件中的块引用
+- **图纸对比**：将 DWG 文件与现有图纸进行对比
+- **与 DDC 流程集成**：将转换结果整合到数据管道中
 
-### 1. Layer Audit
-```python
-exporter = DWGExporter()
-xlsx = exporter.convert("drawing.dwg")
-layers = exporter.get_layers(str(xlsx))
+## 最佳实践
+1. **检查 DWG 文件版本**：较旧的文件可能包含有限的数据
+2. **验证图层结构**：在处理前清理图层信息
+3. **处理外部引用**：根据需要绑定外部引用（xref）
+4. **批量处理**：对于大型文件，建议分批处理以节省时间
+5. **核对实体数量**：如有必要，可以将转换结果与 AutoCAD 中的实体数量进行核对
 
-# Check for non-standard layers
-standard_layers = ['0', 'WALLS', 'DOORS', 'WINDOWS', 'DIMENSIONS']
-non_standard = layers[~layers['Layer'].isin(standard_layers)]
-print("Non-standard layers:", non_standard['Layer'].tolist())
-```
-
-### 2. Block Schedule
-```python
-# Extract all door blocks with attributes
-doors = exporter.extract_block_attributes(str(xlsx), "DOOR")
-print(doors[['Block_Handle', 'Attr_DOOR_TYPE', 'Attr_DOOR_SIZE']])
-```
-
-### 3. Drawing Comparison
-```python
-analyzer = DWGAnalyzer(exporter)
-diff = analyzer.compare_drawings("rev1.dwg", "rev2.dwg")
-print(f"Entities added: {diff['entity_count_diff']}")
-print(f"New layers: {diff['layers_added']}")
-```
-
-## Integration with DDC Pipeline
-
-```python
-# Full pipeline: DWG → Excel → Analysis → Report
-from dwg_exporter import DWGExporter, DWGAnalyzer
-
-# 1. Convert DWG
-exporter = DWGExporter("C:/DDC/DwgExporter.exe")
-xlsx = exporter.convert("project.dwg")
-
-# 2. Analyze structure
-analyzer = DWGAnalyzer(exporter)
-analysis = analyzer.analyze_drawing_structure("project.dwg")
-
-# 3. Generate report
-print(f"Drawing: {analysis['file']}")
-print(f"Entities: {analysis['total_entities']}")
-print(f"Layers: {len(analysis['layers'])}")
-print(f"Blocks: {len(analysis['blocks'])}")
-```
-
-## Best Practices
-
-1. **Check DWG version** - Older files may have limited data
-2. **Validate layer structure** - Clean up before processing
-3. **Handle external references** - Bind xrefs if needed
-4. **Batch overnight** - Large files take time
-5. **Verify entity counts** - Compare with AutoCAD if possible
-
-## Resources
-
-- **GitHub**: [cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
-- **Video Tutorial**: [DWG to Excel Pipeline](https://www.youtube.com/watch?v=jVU7vlMNTO0)
-- **DDC Book**: Chapter 2.4 - CAD Data Extraction
+## 资源
+- **GitHub 项目**：[cad2data Pipeline](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto)
+- **视频教程**：[DWG 到 Excel 的转换流程](https://www.youtube.com/watch?v=jVU7vlMNTO0)
+- **相关书籍**：第 2.4 章 – CAD 数据提取技术

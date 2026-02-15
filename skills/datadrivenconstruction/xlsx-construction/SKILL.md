@@ -1,18 +1,18 @@
 ---
 slug: "xlsx-construction"
 display_name: "Xlsx Construction"
-description: "Excel/spreadsheet processing for construction: estimates, schedules, tracking logs, quantity takeoffs. Formulas, formatting, analysis."
+description: "用于建筑行业的 Excel/电子表格处理功能：包括估算、进度安排、跟踪日志以及数量统计等。支持公式计算、格式设置和数据分析。"
 ---
 
-# Excel Processing for Construction
+# 用于建筑行业的 Excel 处理工具
 
-## Overview
+## 概述
 
-Adapted from Anthropic's XLSX skill for construction spreadsheet workflows.
+本工具基于 Anthropic 提供的 XLSX 技能开发，专为建筑行业的电子表格工作流程设计。
 
-## Construction Use Cases
+## 建筑行业应用场景
 
-### 1. Cost Estimate Template
+### 1. 成本估算模板
 
 ```python
 from openpyxl import Workbook
@@ -89,7 +89,7 @@ def create_estimate_template(output_path: str, project_name: str):
     return output_path
 ```
 
-### 2. Schedule Tracker
+### 2. 进度跟踪器
 
 ```python
 def create_schedule_tracker(output_path: str, tasks: list):
@@ -138,7 +138,7 @@ def create_schedule_tracker(output_path: str, tasks: list):
     return output_path
 ```
 
-### 3. RFI Log Template
+### 3. 需求反馈（RFI）日志模板
 
 ```python
 def create_rfi_log(output_path: str):
@@ -175,7 +175,7 @@ def create_rfi_log(output_path: str):
     return output_path
 ```
 
-### 4. Quantity Takeoff Processing
+### 4. 数量统计与处理
 
 ```python
 import pandas as pd
@@ -213,27 +213,27 @@ def process_qto_from_bim(bim_xlsx: str, output_path: str):
     return output_path
 ```
 
-## Best Practices for Construction Spreadsheets
+## 建筑行业电子表格的最佳实践
 
-### Color Coding (Industry Standard)
-- **Blue text**: Input values (quantities, rates)
-- **Black text**: Formulas and calculations
-- **Green text**: Links from other sheets
-- **Yellow highlight**: Assumptions to verify
+### 颜色编码（行业标准）
+- **蓝色文本**：输入数据（数量、费率）
+- **黑色文本**：公式和计算结果
+- **绿色文本**：指向其他工作表的链接
+- **黄色高亮显示**：需要核实的假设条件
 
-### Formula Guidelines
-1. Never hardcode values in formulas
-2. Create separate assumption cells
-3. Use named ranges for clarity
-4. Include unit checks
+### 公式编写指南
+1. 不要在公式中直接硬编码数值
+2. 为假设条件创建单独的单元格
+3. 使用命名范围以提高公式清晰度
+4. 添加单位检查功能
 
-### Error Prevention
+### 错误预防措施
 ```python
 # Add error handling to formulas
 formula_with_error_check = "=IFERROR(B5/C5, 0)"
 ```
 
-## Integration with DDC
+## 与 DDC（数据定义代码）的集成
 
 ```python
 # Convert BIM export to estimate
@@ -253,13 +253,12 @@ for category in bim_data['Category'].unique():
     # Apply prices to QTO...
 ```
 
-## Dependencies
+## 依赖项
 
 ```bash
 pip install openpyxl pandas xlrd
 ```
 
-## Resources
-
-- **Original**: Anthropic XLSX Skill
-- **OpenPyXL Docs**: https://openpyxl.readthedocs.io/
+## 参考资源
+- **原始来源**：Anthropic XLSX 技能
+- **OpenPyXL 文档**：https://openpyxl.readthedocs.io/

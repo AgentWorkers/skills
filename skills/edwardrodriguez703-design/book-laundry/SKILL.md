@@ -1,23 +1,23 @@
 ---
 name: book-laundry
-description: Book laundry services through Lokuli MCP. Use when user needs to find and book laundry. Triggers on requests like "book a laundry", "find laundry near me", or any laundry service request.
+description: 通过 Lokuli MCP 预订洗衣服务。当用户需要查找或预订洗衣服务时，可以使用该功能。该功能会在用户输入“预订洗衣服务”、“查找附近的洗衣店”或任何与洗衣服务相关的请求时被触发。
 ---
 
-# uook laundry
+# 使用Lokuli的MCP服务器预订洗衣服务
 
-Book laundry services through Lokuli's MCP server.
+通过Lokuli的MCP服务器来预订洗衣服务。
 
-## MCP Endpoint
+## MCP端点（MCP Endpoint）
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+**传输协议（Transport Protocol）：** SSE | JSON-RPC 2.0 | 使用POST请求
 
-## Tools
+## 工具（Tools）
 
-### search
+### 搜索（Search）  
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 查看可用性（Check Availability）  
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）  
 ```json
 {
   "method": "tools/call",

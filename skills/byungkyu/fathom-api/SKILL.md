@@ -16,9 +16,9 @@ metadata:
 
 # Fathom
 
-Access the Fathom API with managed OAuth authentication. Retrieve meeting recordings, transcripts, summaries, action items, and manage webhooks for notifications.
+您可以使用托管的 OAuth 认证来访问 Fathom API。该 API 允许您检索会议记录、会议转录文本、会议摘要、待办事项，并管理用于通知的 Webhook。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List recent meetings
@@ -30,39 +30,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/fathom/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Fathom API endpoint path. The gateway proxies requests to `api.fathom.ai` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Fathom API 端点路径。该网关会将请求代理到 `api.fathom.ai`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都必须在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Fathom OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Fathom OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -73,7 +73,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -86,7 +86,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -97,7 +97,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -112,9 +112,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -125,9 +125,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Fathom connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Fathom 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -139,30 +139,30 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### Meetings
+### 会议
 
-#### List Meetings
+#### 列出会议
 
 ```bash
 GET /fathom/external/v1/meetings
 ```
 
-Query parameters:
-- `cursor` - Cursor for pagination
-- `created_after` - Filter to meetings created after this timestamp (e.g., `2025-01-01T00:00:00Z`)
-- `created_before` - Filter to meetings created before this timestamp
-- `calendar_invitees_domains[]` - Filter by company domains (pass once per value)
-- `calendar_invitees_domains_type` - Filter by invitee type: `all`, `only_internal`, `one_or_more_external`
-- `recorded_by[]` - Filter by email addresses of users who recorded meetings
-- `teams[]` - Filter by team names
+查询参数：
+- `cursor` - 用于分页的游标
+- `created_after` - 筛选在此时间戳之后创建的会议（例如：`2025-01-01T00:00:00Z`）
+- `created_before` - 筛选在此时间戳之前创建的会议
+- `calendarInviteesDomains[]` - 按公司域名筛选（每个值传递一次）
+- `calendarInviteesDomainsType` - 按受邀者类型筛选：`all`、`only_internal`、`one_or_more_external`
+- `recorded_by[]` - 按录制会议的用户的电子邮件地址筛选
+- `teams[]` - 按团队名称筛选
 
-**Note:** OAuth users cannot use `include_transcript`, `include_summary`, `include_action_items`, or `include_crm_matches` parameters on this endpoint. Use the `/recordings/{recording_id}/summary` and `/recordings/{recording_id}/transcript` endpoints instead.
+**注意：** 使用 OAuth 认证的用户无法在此端点使用 `include_transcript`、`include_summary`、`include_action_items` 或 `include_crm_matches` 参数。请使用 `/recordings/{recording_id}/summary` 和 `/recordings/{recording_id}/transcript` 端点。
 
-**Example with filters:**
+**带筛选条件的示例：**
 
 ```bash
 python <<'EOF'
@@ -173,7 +173,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "limit": 10,
@@ -216,18 +216,18 @@ EOF
 }
 ```
 
-### Recordings
+### 会议记录
 
-#### Get Summary
+#### 获取会议摘要
 
 ```bash
 GET /fathom/external/v1/recordings/{recording_id}/summary
 ```
 
-Query parameters:
-- `destination_url` - Optional URL for async callback. If provided, the summary will be POSTed to this URL.
+查询参数：
+- `destination_url` - 可选的异步回调 URL。如果提供了此 URL，摘要将被发送到该地址。
 
-**Synchronous example:**
+**同步示例：**
 
 ```bash
 python <<'EOF'
@@ -238,7 +238,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "summary": {
@@ -248,7 +248,7 @@ EOF
 }
 ```
 
-**Async example:**
+**异步示例：**
 
 ```bash
 python <<'EOF'
@@ -259,16 +259,16 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-#### Get Transcript
+#### 获取会议转录文本
 
 ```bash
 GET /fathom/external/v1/recordings/{recording_id}/transcript
 ```
 
-Query parameters:
-- `destination_url` - Optional URL for async callback. If provided, the transcript will be POSTed to this URL.
+查询参数：
+- `destination_url` - 可选的异步回调 URL。如果提供了此 URL，转录文本将被发送到该地址。
 
-**Synchronous example:**
+**同步示例：**
 
 ```bash
 python <<'EOF'
@@ -279,7 +279,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "transcript": [
@@ -295,18 +295,18 @@ EOF
 }
 ```
 
-### Teams
+### 团队
 
-#### List Teams
+#### 列出团队
 
 ```bash
 GET /fathom/external/v1/teams
 ```
 
-Query parameters:
-- `cursor` - Cursor for pagination
+查询参数：
+- `cursor` - 用于分页的游标
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -317,7 +317,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "limit": 25,
@@ -331,19 +331,19 @@ EOF
 }
 ```
 
-### Team Members
+### 团队成员
 
-#### List Team Members
+#### 列出团队成员
 
 ```bash
 GET /fathom/external/v1/team_members
 ```
 
-Query parameters:
-- `cursor` - Cursor for pagination
-- `team` - Team name to filter by
+查询参数：
+- `cursor` - 用于分页的游标
+- `team` - 要筛选的团队名称
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -354,7 +354,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "limit": 25,
@@ -369,9 +369,9 @@ EOF
 }
 ```
 
-### Webhooks
+### Webhook
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /fathom/external/v1/webhooks
@@ -387,15 +387,15 @@ Content-Type: application/json
 }
 ```
 
-**triggered_for options:**
-- `my_recordings` - Your private recordings (excludes those shared with teams on Team Plans)
-- `shared_external_recordings` - Recordings shared with you by other users
-- `my_shared_with_team_recordings` - (Team Plans) Recordings you've shared with teams
-- `shared_team_recordings` - (Team Plans) Recordings from other users on your Team Plan
+**triggered_for** 选项：
+- `my_recordings` - 您私有的会议记录（不包括通过 Team Plans 与团队共享的记录）
+- `shared_external_recordings` - 其他用户与您共享的会议记录
+- `my_shared_with_team_recordings` - 您与团队共享的会议记录
+- `shared_team_recordings` - （Team Plans）来自您团队计划的其他用户的会议记录
 
-At least one of `include_transcript`, `include_summary`, `include_action_items`, or `include_crm_matches` must be true.
+必须至少选择 `include_transcript`、`include_summary`、`include_action_items` 或 `include_crm_matches` 中的一个选项。
 
-**Example:**
+**示例：**
 
 ```bash
 python <<'EOF'
@@ -408,7 +408,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "ikEoQ4bVoq4JYUmc",
@@ -423,14 +423,15 @@ EOF
 }
 ```
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /fathom/external/v1/webhooks/{id}
 ```
 
-**Example:**
+**示例：**
 
+**响应：**
 ```bash
 python <<'EOF'
 import urllib.request, os, json
@@ -440,11 +441,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-Returns `204 No Content` on success.
+成功时返回 `204 No Content`。
 
-## Pagination
+## 分页
 
-Use `cursor` for pagination. Response includes `next_cursor` when more results exist:
+使用 `cursor` 进行分页。如果存在更多结果，响应中会包含 `next_cursor`：
 
 ```bash
 python <<'EOF'
@@ -455,7 +456,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -485,35 +486,35 @@ response = requests.get(
 data = response.json()
 ```
 
-## Notes
+## 注意事项
 
-- Recording IDs are integers
-- Timestamps are in ISO 8601 format
-- Transcripts and summaries are in English
-- Webhook secrets are used to verify webhook signatures
-- CRM matches only return data from your or your team's linked CRM
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain brackets (`fields[]`, `sort[]`, `records[]`) to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments. You may get "Invalid API key" errors when piping.
+- 会议记录的 ID 是整数。
+- 时间戳采用 ISO 8601 格式。
+- 转录文本和会议摘要为英文。
+- Webhook 密钥用于验证 Webhook 签名。
+- CRM 匹配仅返回来自您或您团队关联的 CRM 的数据。
+- **重要提示：** 当 URL 包含方括号（如 `fields[]`、`sort[]`、`records[]`）时，使用 `curl -g` 可以避免全局解析问题。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开，这可能导致 “Invalid API key” 错误。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态 | 含义 |
 |--------|---------|
-| 400 | Bad request or missing Fathom connection |
-| 401 | Invalid or missing Maton API key |
-| 404 | Resource not found |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Fathom API |
+| 400 | 请求错误或未建立 Fathom 连接 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 资源未找到 |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Fathom API 的传递错误 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -524,16 +525,15 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `fathom`. For example:
+1. 确保您的 URL 路径以 `fathom` 开头。例如：
+- 正确：`https://gateway.maton.ai/fathom/external/v1/meetings`
+- 错误：`https://gateway.maton.ai/external/v1/meetings`
 
-- Correct: `https://gateway.maton.ai/fathom/external/v1/meetings`
-- Incorrect: `https://gateway.maton.ai/external/v1/meetings`
+## 资源
 
-## Resources
-
-- [Fathom API Documentation](https://developers.fathom.ai)
-- [LLM Reference](https://developers.fathom.ai/llms.txt)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Fathom API 文档](https://developers.fathom.ai)
+- [LLM 参考](https://developers.fathom.ai/llms.txt)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

@@ -1,17 +1,16 @@
 ---
 name: project-documentation
 model: standard
-description: Complete workflow for project documentation including ADRs, PRDs, personas, and docs organization. Use when setting up documentation for a new project or improving existing docs. Triggers on project documentation, ADR, PRD, personas, docs structure, documentation setup.
+description: 项目文档的完整工作流程，包括需求文档（ADRs）、产品需求文档（PRDs）、角色定义（personas）以及文档的组织结构。适用于为新项目设置文档或改进现有文档时使用。该流程会在项目文档、需求文档、产品需求文档、角色定义或文档结构发生变化时被触发。
 ---
 
-# Project Documentation (Meta-Skill)
+# 项目文档（元技能）
 
-Complete workflow for setting up and maintaining project documentation.
+## 项目文档的设置与维护完整工作流程
 
+### 安装
 
-## Installation
-
-### OpenClaw / Moltbot / Clawbot
+#### OpenClaw / Moltbot / Clawbot
 
 ```bash
 npx clawhub@latest install project-documentation
@@ -20,18 +19,18 @@ npx clawhub@latest install project-documentation
 
 ---
 
-## When to Use
+## 使用场景
 
-- Starting a new project and need docs structure
-- Improving documentation on existing project
-- Setting up ADRs, PRDs, or persona docs
-- Want consistent documentation across projects
+- 开始新项目时需要文档结构
+- 改进现有项目的文档
+- 设置项目需求文档（Product Requirements Documents, PRDs）或角色文档（Persona Documents）
+- 希望在不同项目中保持文档的一致性
 
 ---
 
-## Docs-First Philosophy
+## “文档先行”的原则
 
-Start every project with documentation, not code:
+每个项目都应该从编写文档开始，而不是从编写代码开始：
 
 ```
 1. Define the idea      → What is this? What problem does it solve?
@@ -43,7 +42,7 @@ Start every project with documentation, not code:
 
 ---
 
-## Directory Structure
+## 目录结构
 
 ```
 docs/
@@ -71,24 +70,24 @@ docs/
 
 ---
 
-## Critical Separation: Current vs Future
+## 关键区分：当前状态与未来规划
 
-| Category | Purpose | Goes on Docs Site? |
+| 类别 | 目的 | 是否应放在文档网站上？ |
 |----------|---------|-------------------|
-| **Current State** | How things work now | Yes |
-| **Planning** | Future specs, designs | No |
-| **Architecture** | Living docs of code | Yes |
-| **Roadmap/Todos** | What we're working on | No |
-| **Runbooks** | How to operate | Yes |
-| **Proposed Runbooks** | Future plans | No |
+| **当前状态** | 项目当前的运作方式 | 是 |
+| **规划** | 未来的规格和设计 | 否 |
+| **架构** | 代码的实时文档 | 是 |
+| **路线图/待办事项** | 我们正在做的事情 | 否 |
+| **操作手册** | 操作指南 | 是 |
+| **拟议的操作手册** | 未来的计划 | 否 |
 
 ---
 
-## Documentation Types
+## 文档类型
 
-### Architecture Decision Records (ADRs)
+### 架构决策记录（Architecture Decision Records, ADRs）
 
-Template:
+模板：
 ```markdown
 # ADR-001: [Title]
 
@@ -108,9 +107,9 @@ Template:
 [What other options did we evaluate?]
 ```
 
-### Product Requirements Document (PRD)
+### 产品需求文档（Product Requirements Document, PRD）
 
-Template:
+模板：
 ```markdown
 # PRD: [Feature Name]
 
@@ -131,9 +130,9 @@ Template:
 [How do we know this worked?]
 ```
 
-### Persona Documentation
+### 角色文档（Persona Documents）
 
-Template:
+模板：
 ```markdown
 # Persona: [Name]
 
@@ -157,9 +156,9 @@ Template:
 - Format preferences
 ```
 
-### Runbooks
+### 操作手册（Runbooks）
 
-Template:
+模板：
 ```markdown
 # Runbook: [Task Name]
 
@@ -182,7 +181,7 @@ Template:
 
 ---
 
-## Roadmap Format
+## 路线图格式
 
 ```markdown
 ## Roadmap
@@ -200,41 +199,40 @@ Template:
 
 ---
 
-## Quality Gates
+## 文档质量检查标准
 
-Before shipping docs:
-
-- [ ] Separates current state from planning
-- [ ] Uses appropriate template for doc type
-- [ ] Written for the right audience
-- [ ] Actionable (runbooks) or explanatory (guides)
-- [ ] No stale/outdated information
-
----
-
-## Anti-Patterns
-
-- **Mixing future plans with current state** — Confuses what's real
-- **Planning docs on docs site** — Users expect reality
-- **One-size-fits-all docs** — Different audiences need different depth
-- **Building features before personas** — No context for decisions
-- **Documentation written once and forgotten** — Keep it current
+在发布文档之前，需要满足以下要求：
+- [ ] 将当前状态与未来规划区分开来
+- [ ] 使用适合文档类型的模板
+- [ ] 为目标读者群编写文档
+- [ ] 文档内容具有可操作性（操作手册）或解释性（指南）
+- [ ] 文档内容不陈旧/过时
 
 ---
 
-## Checklist for New Projects
+## 应避免的错误做法
 
-- [ ] Create docs/ directory structure
-- [ ] Write initial PRD/overview
-- [ ] Document 2-3 personas
-- [ ] Create ADR-001 for tech stack
-- [ ] Set up roadmap format
-- [ ] Create essential runbooks (local-dev, deploy)
-- [ ] Separate planning/ from current-state docs
+- **将未来规划与当前状态混在一起** — 会导致信息混淆
+- **在文档网站上编写规划文档** — 用户期望看到的是实际运行情况
+- **一刀切的文档格式** — 不同的读者需要不同深度的文档
+- **在创建角色文档之前先开发功能** — 这会缺乏决策所需的上下文
+- **编写一次后就不再更新的文档** — 需要持续维护文档的时效性
 
 ---
 
-## Related Skills
+## 新项目的检查清单
 
-- **Commands:** [/bootstrap-docs](../../../commands/bootstrap/bootstrap-docs.md), [/new-feature](../../../commands/development/new-feature.md)
-- **Agent:** [development](../../../agents/development/)
+- [ ] 创建文档和目录结构
+- [ ] 编写初始的产品需求文档/项目概述
+- [ ] 描述2-3个关键角色
+- [ ] 为技术栈创建架构决策记录（ADR-001）
+- [ ] 设定路线图格式
+- [ ] 创建必要的操作手册（本地开发、部署等）
+- [ ] 将规划文档与当前状态文档分开
+
+---
+
+## 相关技能
+
+- **命令：** [/bootstrap-docs](../../../commands/bootstrap/bootstrap-docs.md), [/new-feature](../../../commands/development/new-feature.md)
+- **工具：** [development](../../../agents/development/)

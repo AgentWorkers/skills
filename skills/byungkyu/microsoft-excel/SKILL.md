@@ -17,9 +17,9 @@ metadata:
 
 # Microsoft Excel
 
-Access the Microsoft Excel API (via Microsoft Graph) with managed OAuth authentication. Read and write workbooks, worksheets, ranges, tables, and charts stored in OneDrive or SharePoint.
+您可以使用托管的 OAuth 认证来访问 Microsoft Excel API（通过 Microsoft Graph）。您可以读取和写入存储在 OneDrive 或 SharePoint 中的工作簿、工作表、单元格范围、表格和图表。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # List worksheets in a workbook
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/microsoft-excel/{native-api-path}
 ```
 
-Replace `{native-api-path}` with the actual Microsoft Graph API endpoint path. The gateway proxies requests to `graph.microsoft.com` and automatically injects your OAuth token.
+请将 `{native-api-path}` 替换为实际的 Microsoft Graph API 端点路径。该网关会将请求代理到 `graph.microsoft.com` 并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 标头中包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Microsoft Excel OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Microsoft Excel OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Microsoft Excel connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Microsoft Excel 连接，请使用 `Maton-Connection` 标头来指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,45 +140,45 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
-## Workbook Access Patterns
+## 工作簿访问方式
 
-You can access workbooks using either ID-based or path-based patterns:
+您可以使用基于 ID 或基于路径的方式访问工作簿：
 
-**By File ID:**
+**通过文件 ID：**
 ```
 /microsoft-excel/v1.0/me/drive/items/{file-id}/workbook/...
 ```
 
-**By File Path:**
+**通过文件路径：**
 ```
 /microsoft-excel/v1.0/me/drive/root:/{path-to-file}:/workbook/...
 ```
 
-## API Reference
+## API 参考
 
-### Drive Operations
+### 驱动器操作
 
-#### Get Drive Info
+#### 获取驱动器信息
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive
 ```
 
-#### List Root Files
+#### 列出根目录下的文件
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root/children
 ```
 
-#### Search for Excel Files
+#### 搜索 Excel 文件
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root/search(q='.xlsx')
 ```
 
-#### Upload Excel File
+#### 上传 Excel 文件
 
 ```bash
 PUT /microsoft-excel/v1.0/me/drive/root:/{filename}.xlsx:/content
@@ -187,11 +187,11 @@ Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 {binary xlsx content}
 ```
 
-### Session Management
+### 会话管理
 
-Sessions improve performance for multiple operations. Recommended for batch operations.
+会话可以提高多次操作的性能。建议用于批量操作。
 
-#### Create Session
+#### 创建会话
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/{path}:/workbook/createSession
@@ -202,7 +202,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "persistChanges": true,
@@ -210,27 +210,27 @@ Content-Type: application/json
 }
 ```
 
-Use the session ID in subsequent requests:
+在后续请求中使用会话 ID：
 ```
 workbook-session-id: {session-id}
 ```
 
-#### Close Session
+#### 关闭会话
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/{path}:/workbook/closeSession
 workbook-session-id: {session-id}
 ```
 
-### Worksheet Operations
+### 工作表操作
 
-#### List Worksheets
+#### 列出工作表
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -244,13 +244,13 @@ GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets
 }
 ```
 
-#### Get Worksheet
+#### 获取工作表信息
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')
 ```
 
-#### Create Worksheet
+#### 创建工作表
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets
@@ -261,7 +261,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Worksheet
+#### 更新工作表
 
 ```bash
 PATCH /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')
@@ -273,23 +273,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Worksheet
+#### 删除工作表
 
 ```bash
 DELETE /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('{worksheet-id}')
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### Range Operations
+### 单元格范围操作
 
-#### Get Range
+#### 获取单元格范围
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "address": "Sheet1!A1:B2",
@@ -314,13 +314,13 @@ GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('She
 }
 ```
 
-#### Get Used Range
+#### 获取已使用的单元格范围
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/usedRange
 ```
 
-#### Update Range
+#### 更新单元格范围
 
 ```bash
 PATCH /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')
@@ -334,7 +334,7 @@ Content-Type: application/json
 }
 ```
 
-#### Clear Range
+#### 清空单元格范围
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/range(address='A1:B2')/clear
@@ -345,17 +345,17 @@ Content-Type: application/json
 }
 ```
 
-Options: `All`, `Formats`, `Contents`
+可选参数：`All`、`Formats`、`Contents`
 
-### Table Operations
+### 表格操作
 
-#### List Tables
+#### 列出表格
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables
 ```
 
-#### Create Table from Range
+#### 从单元格范围创建表格
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/tables/add
@@ -367,7 +367,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "{6D182180-5F5F-448B-9E9C-377A5251CFC5}",
@@ -378,13 +378,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Table
+#### 获取表格信息
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')
 ```
 
-#### Update Table
+#### 更新表格
 
 ```bash
 PATCH /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')
@@ -396,13 +396,13 @@ Content-Type: application/json
 }
 ```
 
-#### Get Table Rows
+#### 获取表格行
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "value": [
@@ -418,7 +418,7 @@ GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1'
 }
 ```
 
-#### Add Table Row
+#### 添加表格行
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows
@@ -429,21 +429,21 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Table Row
+#### 删除表格行
 
 ```bash
 DELETE /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/rows/itemAt(index=0)
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Get Table Columns
+#### 获取表格列
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/columns
 ```
 
-#### Add Table Column
+#### 添加表格列
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/tables('Table1')/columns
@@ -454,23 +454,23 @@ Content-Type: application/json
 }
 ```
 
-### Named Items
+### 命名项目
 
-#### List Named Items
+#### 列出命名项目
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/names
 ```
 
-### Charts
+### 图表
 
-#### List Charts
+#### 列出图表
 
 ```bash
 GET /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts
 ```
 
-#### Add Chart
+#### 添加图表
 
 ```bash
 POST /microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets('Sheet1')/charts/add
@@ -483,7 +483,7 @@ Content-Type: application/json
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -516,46 +516,46 @@ response = requests.patch(
 print(response.json())
 ```
 
-## Notes
+## 注意事项
 
-- Only `.xlsx` files are supported (not legacy `.xls`)
-- Worksheet names with special characters need URL encoding
-- Table and worksheet IDs containing `{` and `}` must be URL-encoded (`%7B` and `%7D`)
-- Sessions expire after ~5 minutes of inactivity (persistent) or ~7 minutes (non-persistent)
-- Use `null` in value arrays to skip updating specific cells
-- Blank cells should use `""` (empty string)
-- Range addresses use A1 notation (e.g., `A1:C10`, `Sheet1!A1:B5`)
-- IMPORTANT: When using curl commands, use `curl -g` when URLs contain parentheses to disable glob parsing
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 仅支持 `.xlsx` 格式的工作簿（不支持旧的 `.xls` 格式）。
+- 包含特殊字符的工作表名称需要进行 URL 编码。
+- 包含 `{` 和 `}` 的表格和工作表 ID 必须进行 URL 编码（使用 `%7B` 和 `%7D`）。
+- 会话在大约 5 分钟无活动（持久会话）或 7 分钟后过期（非持久会话）。
+- 在值数组中使用 `null` 可以跳过更新特定单元格。
+- 空单元格应使用 `""`（空字符串）表示。
+- 单元格范围地址使用 A1 标记法（例如：`A1:C10`、`Sheet1!A1:B5`）。
+- 重要提示：当 URL 中包含括号时，使用 `curl -g` 可以防止全局解析。
+- 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，环境变量（如 `$MATON_API_KEY`）在某些 shell 环境中可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Microsoft Excel connection or invalid request |
-| 401 | Invalid or missing Maton API key |
-| 404 | Item not found or session expired |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Microsoft Graph API |
+| 400 | 未找到 Microsoft Excel 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 404 | 项目未找到或会话已过期 |
+| 429 | 请求频率受限 |
+| 4xx/5xx | 来自 Microsoft Graph API 的传递错误 |
 
-### Common Error Codes
+### 常见错误代码
 
-| Code | Description |
+| 代码 | 描述 |
 |------|-------------|
-| `ItemNotFound` | File or resource doesn't exist |
-| `ItemAlreadyExists` | Worksheet or table with that name already exists |
-| `InvalidArgument` | Invalid parameter or missing required field |
-| `SessionNotFound` | Session expired or doesn't exist |
+| `ItemNotFound` | 文件或资源不存在 |
+| `ItemAlreadyExists` | 已存在同名的工作表或表格 |
+| `InvalidArgument` | 参数无效或缺少必需字段 |
+| `SessionNotFound` | 会话已过期或不存在 |
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -566,20 +566,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用名称无效
 
-1. Ensure your URL path starts with `microsoft-excel`. For example:
+1. 确保您的 URL 路径以 `microsoft-excel` 开头。例如：
+- 正确的格式：`https://gateway.maton.ai/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets`
+- 错误的格式：`https://gateway.maton.ai/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets`
 
-- Correct: `https://gateway.maton.ai/microsoft-excel/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets`
-- Incorrect: `https://gateway.maton.ai/v1.0/me/drive/root:/workbook.xlsx:/workbook/worksheets`
+## 资源
 
-## Resources
-
-- [Microsoft Graph Excel API Overview](https://learn.microsoft.com/en-us/graph/api/resources/excel)
-- [Working with Excel in Microsoft Graph](https://learn.microsoft.com/en-us/graph/excel-concept-overview)
-- [Excel Workbook Resource](https://learn.microsoft.com/en-us/graph/api/resources/workbook)
-- [Excel Worksheet Resource](https://learn.microsoft.com/en-us/graph/api/resources/worksheet)
-- [Excel Range Resource](https://learn.microsoft.com/en-us/graph/api/resources/range)
-- [Excel Table Resource](https://learn.microsoft.com/en-us/graph/api/resources/table)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Microsoft Graph Excel API 概述](https://learn.microsoft.com/en-us/graph/api/resources/excel)
+- [在 Microsoft Graph 中使用 Excel](https://learn.microsoft.com/en-us/graph/excel-concept-overview)
+- [Excel 工作簿资源](https://learn.microsoft.com/en-us/graph/api/resources/workbook)
+- [Excel 工作表资源](https://learn.microsoft.com/en-us/graph/api/resources/worksheet)
+- [Excel 单元格范围资源](https://learn.microsoft.com/en-us/graph/api/resources/range)
+- [Excel 表格资源](https://learn.microsoft.com/en-us/graph/api/resources/table)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

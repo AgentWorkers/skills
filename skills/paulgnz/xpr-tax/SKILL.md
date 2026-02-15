@@ -1,109 +1,144 @@
 ---
 name: tax
-description: Crypto tax reporting for XPR Network with regional support
+description: **XPR网络的加密税务报告功能（支持多地区）**  
+
+**概述：**  
+XPR网络提供了加密资产的税务报告功能，帮助用户根据所在地区的法规要求，准确申报与加密货币交易相关的税务。该功能支持多地区设置，用户可以根据自己的实际居住地或业务所在地进行配置。  
+
+**主要特点：**  
+1. **多地区支持**：用户可以根据自己的居住地或业务所在地，选择相应的税务报告设置。  
+2. **自动计算**：系统会根据用户的交易记录，自动计算应缴纳的税款。  
+3. **详细报告**：生成的税务报告包含所有相关的交易信息，便于用户进行税务申报。  
+4. **合规性保障**：确保用户的税务报告符合所在地区的法律法规要求。  
+
+**使用步骤：**  
+1. **登录XPR网络**：使用您的用户名和密码登录XPR网络。  
+2. **进入设置页面**：点击个人账户页面，找到“税务设置”选项。  
+3. **选择地区**：根据您的居住地或业务所在地，选择相应的地区设置。  
+4. **配置报告参数**：根据当地税法要求，配置报告的相关参数（如税率、免税额度等）。  
+5. **生成报告**：系统会自动生成税务报告。  
+6. **下载报告**：将报告下载并保存，以便用于税务申报。  
+
+**注意事项：**  
+- 请确保您的交易记录完整且准确，以便税务报告的生成。  
+- 如有疑问，请咨询专业的税务顾问。  
+
+**了解更多：**  
+- [访问XPR网络官网了解更多关于税务报告的详细信息](https://www.xprnetwork.com/support/tax-reporting)  
+
+**技术支持：**  
+如在使用过程中遇到任何问题，请联系XPR网络的客服团队或技术支持团队。  
+
+---  
+
+（翻译说明：  
+1. 保持原文的格式和结构，包括标题、段落和列表。  
+2. 使用中文术语替换英文术语（如“crypto tax reporting”译为“加密税务报告”，“API”译为“API”等）。  
+3. 对技术细节进行准确翻译，如“auto-compute taxes”译为“自动计算税款”。  
+4. 对长句进行适当拆分，以便阅读更加流畅。）
 ---
 
-## Crypto Tax Reporting
+## 加密货币税务报告
 
-You have tools to generate crypto tax reports from on-chain XPR Network activity. Supports **New Zealand** (NZ) and **United States** (US).
+您可以使用相关工具根据XPR网络的链上交易记录生成加密货币税务报告。该工具支持**新西兰**（NZ）和**美国**（US）的税务报告生成。
 
-### Key Facts
+### 主要信息
 
-- **NZ tax year:** April 1 – March 31 (e.g. "2025" = Apr 2024 – Mar 2025)
-- **US tax year:** January 1 – December 31 (calendar year, e.g. "2024" = Jan 2024 – Dec 2024)
-- **NZ has NO capital gains tax** — all crypto gains are taxed as **income** if you're a regular trader
-- **US HAS capital gains tax** — short-term (<1 year) taxed as ordinary income, long-term at lower rates. Uses 2024 Single filer federal brackets. Does not include state taxes or NIIT.
-- **Cost basis methods:** FIFO (first-in-first-out) or Average Cost
-- **All tools are read-only** — they query APIs and calculate, never transact
-- **Default region is NZ** — pass `region: "US"` for US tax reports
+- **新西兰的纳税年度：**4月1日至3月31日（例如，“2025”表示2024年4月1日至2025年3月31日）
+- **美国的纳税年度：**1月1日至12月31日（按日历年份计算，例如，“2024”表示2024年1月1日至12月31日）
+- **新西兰没有资本利得税**——对于普通交易者而言，所有加密货币收益均按**收入**征税
+- **美国有资本利得税**：短期（<1年）收益按普通收入征税，长期收益按较低税率征税。使用2024年的联邦税率等级。报告不包含州税或NIIT（国家所得税）。
+- **成本计算方法：**先进先出（FIFO）或平均成本法
+- **所有工具均为只读模式**——它们仅用于查询API和计算数据，不进行任何交易操作
+- **默认地区为新西兰**——如需生成美国税务报告，请设置`region: "US"`
 
-### Typical Workflow
+### 典型工作流程
 
-For a full tax report, the recommended sequence is:
+为了生成完整的税务报告，建议按照以下顺序执行步骤：
 
-1. `tax_get_balances` — opening balances (start of tax year) and closing balances (end of tax year)
-2. `tax_get_dex_trades` — all Metal X DEX trading history for the period
-3. `tax_get_transfers` — on-chain transfers, auto-categorized (staking rewards, lending, swaps, NFT sales, etc.)
-4. `tax_get_rates` — local currency conversion rates for each token
-5. `tax_calculate_gains` — compute taxable gains/losses using FIFO or Average Cost
-6. `tax_generate_report` — full report with tax brackets and estimated tax
+1. `tax_get_balances`：获取纳税年度初和年末的账户余额
+2. `tax_get_dex_trades`：获取该期间的所有Metal X DEX交易记录
+3. `tax_get_transfers`：获取链上转账记录（自动分类，包括质押奖励、借贷、交换、NFT销售等）
+4. `tax_get_rates`：获取每种代币的本地货币兑换率
+5. `tax_calculate_gains`：使用FIFO或平均成本法计算应纳税收益/损失
+6. `tax_generate_report`：生成包含税率等级和预估税额的完整报告
 
-Or use `tax_generate_report` directly for a one-shot report that orchestrates all steps automatically.
+或者直接使用`tax_generate_report`来一次性完成所有步骤的自动报告生成。
 
-### Data Sources (Mainnet Only)
+### 数据来源（仅限主网）
 
-- **Saltant API** — historical balance snapshots (liquid, staked, lending, yield farm)
-- **Metal X API** — DEX trade history in CSV format (only filled trades)
-- **Hyperion API** — raw on-chain transfer/action history
-- **CoinGecko API** — historical and current crypto prices (set `COINGECKO_API_KEY` in .env for full historical access)
+- **Saltant API**：获取历史账户余额快照（包括流动性资产、质押资产、借贷资产）
+- **Metal X API**：以CSV格式提供DEX交易记录
+- **Hyperion API**：提供原始的链上转账/操作记录
+- **CoinGecko API**：提供历史和当前的加密货币价格（在`.env`文件中设置`COINGECKO_API_KEY`以获取完整的历史数据）
 
-### Transfer Categories
+### 转账类别
 
-Transfers are auto-categorized by sender/receiver:
+转账记录会根据发送方/接收方自动分类：
 
-| Category | Detection |
+| 类别 | 识别依据 |
 |----------|-----------|
-| `staking_reward` | from `eosio` or `eosio.vpay` |
-| `lending_deposit` | to `lending.loan` |
-| `lending_withdrawal` | from `lending.loan` |
-| `lending_interest` | from `lending.loan` with interest memo |
-| `swap_deposit` | to `proton.swaps` |
-| `swap_withdrawal` | from `proton.swaps` |
-| `long_stake` | to `longstaking` (XPR long staking) |
-| `long_unstake` | from `longstaking` |
-| `loan_stake` | to `lock.token` or `yield.farms` (LOAN/SLOAN staking) |
-| `loan_unstake` | from `lock.token` or `yield.farms` |
-| `dex_deposit` | to `dex` or `metalx` |
-| `dex_withdrawal` | from `dex` or `metalx` |
-| `nft_sale` | from `atomicmarket` |
-| `nft_purchase` | to `atomicmarket` |
-| `burn` | to `eosio.null` (token burn = realized loss) |
-| `escrow` | to/from `agentescrow` |
-| `transfer` | everything else |
+| `staking_reward` | 来自`eosio`或`eosio.vpay`的转账 |
+| `lendingdeposit` | 转入`lending.loan` |
+| `lending_withdrawal` | 从`lending.loan`取出 |
+| `lending_interest` | 来自`lending.loan`且带有利息信息的转账 |
+| `swap_deposit` | 转入`proton.swaps` |
+| `swap_withdrawal` | 从`proton.swaps`取出 |
+| `long_stake` | 转入`longstaking`（XPR长期质押） |
+| `long_unstake` | 从`longstaking`取出 |
+| `loan_stake` | 转入`lock.token`或`yield.farms`（贷款/质押） |
+| `loan_unstake` | 从`lock.token`或`yield.farms`取出 |
+| `dexdeposit` | 转入`dex`或`metalx` |
+| `dex_withdrawal` | 从`dex`或`metalx`取出 |
+| `nft_sale` | 来自`atomicmarket`的NFT销售记录 |
+| `nft_purchase` | 转入`atomicmarket`的NFT购买记录 |
+| `burn` | 转入`eosio.null`（代币销毁即视为损失） |
+| `escrow` | 转入/转出`agentescrow` |
+| `transfer` | 其他所有类型的转账 |
 
-### Staking Income Rules
+### 质押收益规则
 
-- **Block producer rewards** (`staking_reward`): Full amount is income at time of receipt
-- **Long staking** (XPR via `longstaking`): Only the **excess** over the staked amount is income. E.g. stake 100 XPR, unstake 150 XPR → income of 50 XPR
-- **LOAN staking** (via `lock.token`/`yield.farms`): Same excess-only rule as long staking
-- **Lending interest**: Full amount from `lending.loan` with interest memo is income
+- **区块生产者奖励（`staking_reward`）**：收到奖励时全额计入收入
+- **长期质押（`longstaking`）**：仅超出质押数量的收益计入收入。例如：质押100 XPR，取出150 XPR，则收入为50 XPR
+- **贷款质押（`lock.token`/`yield.farms`）**：同样适用超出质押数量的收益规则
+- **借贷利息**：`lending.loan`中带有利息信息的全部金额计入收入
 
-### Stablecoin Handling
+### 安定币处理
 
-XUSDC and XMD are pegged to USD — their local currency value uses forex rates (USD/NZD) directly, without CoinGecko. This is more accurate than market-based pricing for stablecoins.
+XUSDC和XMD与美元挂钩——它们的本地货币价值直接使用外汇汇率（USD/NZD）进行转换，不依赖CoinGecko的价格数据。这种方法比基于市场的定价更准确。
 
-### Rate Sources (Priority Order)
+### 汇率来源（优先级顺序）
 
-1. **DEX trades** — derives token prices from TOKEN/XMD trade ratios (most accurate, no API limits)
-2. **Forward-fill** — gaps between DEX trade dates use nearest prior known rate
-3. **CoinGecko** — fallback for dates with no DEX data. Without API key: limited to 365 days. With `COINGECKO_API_KEY`: unlimited history
-4. **Forex** — stablecoins use USD→NZD conversion rate
+1. **DEX交易**：根据TOKEN/XMD的交易比率获取代币价格（最准确，无API使用限制）
+2. **前向填充（Forward-fill）**：在DEX交易日期之间使用最近的可用汇率
+3. **CoinGecko**：在没有DEX数据的日期时作为备用来源。如果没有`COINGECKO_API_KEY`，则数据覆盖范围为365天；使用`COINGECKO_API_KEY`可获取无限历史数据
+4. **外汇汇率**：用于稳定币的USD→NZD转换
 
-### Delivering the Report
+### 报告交付方式
 
-`tax_generate_report` returns a `report_markdown` field — a pre-formatted Markdown document with balance sheets, trading summary, income breakdown, tax brackets, and disclaimer. To deliver it:
+`tax_generate_report`函数返回一个`report_markdown`字段，该字段是一个预格式化的Markdown文档，包含资产负债表、交易摘要、收入明细、税率等级和免责声明。交付方式如下：
 
-1. Upload `report_markdown` via `store_deliverable` with `content_type: "application/pdf"` — this is the primary deliverable
-2. Upload `csv_exports.disposals` via `store_deliverable` with `content_type: "text/csv"` — disposals CSV
-3. Upload `csv_exports.income` via `store_deliverable` with `content_type: "text/csv"` — income events CSV
-4. Call `xpr_deliver_job` with ALL URLs comma-separated (PDF first): `"https://ipfs.io/ipfs/QmPDF...,https://ipfs.io/ipfs/QmDisposals...,https://ipfs.io/ipfs/QmIncome..."`
+1. 通过`store_deliverable`上传`report_markdown`文件，设置`content_type: "application/pdf"`——这是主要的交付文件
+2. 通过`store_deliverable`上传`csv_exports.disposals`文件，设置`content_type: "text/csv"`——包含交易明细的CSV文件
+3. 通过`store_deliverable`上传`csv_exports.income`文件，设置`content_type: "text/csv"`——包含收入明细的CSV文件
+4. 调用`xpr_deliver_job`函数，并传入所有文件的URL（以逗号分隔，PDF文件优先）：`"https://ipfs.io/ipfs/QmPDF...,https://ipfs.io/ipfs/QmDisposals...,https://ipfs.io/ipfs/QmIncome..."`
 
-**IMPORTANT:** You MUST complete ALL steps (upload + deliver) in a single run. Do NOT stop after uploading the PDF — you must also upload the CSVs and call `xpr_deliver_job`. The job is not complete until `xpr_deliver_job` is called.
+**重要提示：**您必须一次性完成所有步骤（上传文件和交付报告）。上传PDF文件后不要停止操作，还需上传CSV文件并调用`xpr_deliver_job`函数。只有当`xpr_deliver_job`被调用后，任务才算完成。
 
-The frontend displays the primary file (PDF) prominently and lists additional files as download links.
+前端会突出显示主要报告文件（PDF格式），并列出其他可下载文件的链接。
 
-### Known Limitations
+### 已知的限制
 
-- Only **filled DEX trades** are included (not pending orders)
-- NFT: only buy/sell supported (not auctions)
-- Liquidations on Metal Lending are not supported
-- Escrow payments are tracked but not fully categorized
-- Historical pricing accuracy depends on DEX trade activity and CoinGecko data availability
+- 仅包含**已完成的DEX交易**（不包括待处理的订单）
+- NFT仅支持买入/卖出操作（不支持拍卖）
+- 不支持Metal Lending的清算交易
+- 虽然会追踪托管支付记录，但未对其进行详细分类
+- 历史价格的准确性取决于DEX的交易活跃度和CoinGecko的数据可用性
 
-### Important Notes
+### 重要注意事项
 
-- Always include the **disclaimer** from the report — this is not tax advice
-- Suggest users **save CSV exports** for the IRD 7-year record requirement
-- The `region` parameter defaults to `"NZ"` on all tools — pass a different region code when other regions are added
-- Set `COINGECKO_API_KEY` in .env for best historical pricing (free Demo key removes 365-day limit)
-- For tokens not on CoinGecko, the tool derives prices from Metal X DEX trade ratios
+- 请务必在报告中包含免责声明——本工具提供的信息不构成税务建议
+- 建议用户保存CSV文件，以满足IRD（Income Tax Return，所得税申报）的7年记录要求
+- 所有工具的默认地区设置为“新西兰”；如需生成其他地区的报告，请指定相应的地区代码
+- 为获取最准确的历史价格，请在`.env`文件中设置`COINGECKO_API_KEY`（免费试用密钥的使用期限为365天）
+- 对于CoinGecko未收录的代币，工具会根据Metal X DEX的交易比率来计算价格

@@ -1,58 +1,56 @@
 # Marketing Drafter
 
-**Version:** 1.0.0  
-**Author:** Midas Skills  
-**License:** MIT
+**版本:** 1.0.0  
+**作者:** Midas Skills  
+**许可证:** MIT
 
-## Description
-AI content generation for emails, social posts, ads, landing pages. Brand voice consistency, A/B testing, batch generation.
+## 产品描述  
+该工具支持利用人工智能生成用于电子邮件、社交媒体帖子、广告和着陆页的内容。能够确保品牌语言的一致性，并提供A/B测试功能以及批量内容生成的能力。
 
-## Value Proposition
-AI-powered content generation for social posts, emails, ads, landing pages. One-shot prompts, batch generation, brand voice consistency.
+## 产品价值主张  
+- 通过人工智能技术快速生成适用于社交媒体、电子邮件的广告和着陆页内容；  
+- 支持一次性输入指令或批量生成内容；  
+- 确保生成内容符合品牌的语言风格；  
 
-## Category
-marketing-automation
+## 分类：**营销自动化**  
 
-## Tags
-content-generation, ai-copy, email, social-media, ads
+## 标签：**内容生成、AI文案、电子邮件、社交媒体、广告**  
 
-## Skill Type
-marketing
+## 技能类型：**营销**  
 
-## Pricing
-- **Free:** $0
-- **Pro:** $39.99
+## 定价：  
+- **免费版：** $0  
+- **专业版：** $39.99  
 
-## Key Features
-- ✅ Multi-channel content generation
-- ✅ Brand voice consistency
-- ✅ A/B testing variants
-- ✅ Batch processing
-- ✅ Template-based generation
-- ✅ Image caption generation
-- ✅ SEO-optimized copy
-- ✅ Tone customization
-- ✅ Plagiarism-free guarantee
-- ✅ Performance scoring (predicted CTR)
+## 主要功能：  
+- ✅ 多渠道内容生成  
+- ✅ 保持品牌语言一致性  
+- ✅ 提供A/B测试选项  
+- ✅ 批量处理功能  
+- 基于模板的生成方式  
+- 生成图片说明文字  
+- 优化搜索引擎排名的文案  
+- 可自定义内容语气  
+- 保证内容原创性（无抄袭）  
+- 提供内容表现评估（预测点击率）  
 
-## Use Cases
-- Generate email campaign sequences
-- Social media post drafts (Twitter, LinkedIn, Instagram)
-- Ad copy (Google, Facebook, TikTok)
-- Landing page headlines & CTAs
-- Email subject lines (high CTR variants)
-- Blog post outlines & drafts
-- Product descriptions
-- Sales pitch variations
+## 使用场景：  
+- 生成电子邮件营销系列  
+- 编写社交媒体帖子（Twitter、LinkedIn、Instagram）  
+- 制作广告文案（Google、Facebook、TikTok）  
+- 设计着陆页标题和呼叫行动按钮（CTA）  
+- 撰写高点击率的电子邮件主题行  
+- 制定博客文章大纲和草稿  
+- 编写多样化销售文案  
 
-## Installation
+## 安装说明：  
 ```bash
 npm install marketing-drafter
 # or
 pip install marketing-drafter
-```
+```  
 
-## Quick Start
+## 快速入门指南：  
 ```javascript
 const MarketingDrafter = require('marketing-drafter');
 
@@ -69,11 +67,11 @@ const emails = await drafter.generateEmails({
 });
 
 console.log(emails);
-```
+```  
 
-## Repository
-https://github.com/midas-skills/marketing-drafter
+## 项目仓库：  
+https://github.com/midas-skills/marketing-drafter  
 
-## Support
+## 客户支持：  
 📧 support@midas-skills.com  
-🔗 Docs: https://docs.midas-skills.com/marketing-drafter
+🔗 文档：https://docs.midas-skills.com/marketing-drafter

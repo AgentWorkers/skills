@@ -1,12 +1,12 @@
-# SKILL.md - Daily Report
+# SKILL.md - 日报
 
-## Purpose
-Track progress, report metrics, manage memory.
+## 目的
+跟踪进度、报告各项指标、管理内存使用情况。
 
-## Model to Use
-**local** (ollama) - simple aggregation, FREE
+## 使用的模型
+**本地模型（ollama）** – 简单的数据聚合功能，免费使用。
 
-## Morning Report (Send at 9:30 AM Spain)
+## 早晨报告（西班牙时间上午9:30发送）
 
 ```
 🤖 SKYNET MORNING BRIEFING - {{date}}
@@ -33,7 +33,7 @@ Track progress, report metrics, manage memory.
 ├─ Monthly remaining: $X.XX
 ```
 
-## End of Day Report (Send at 9 PM Spain)
+## 日终报告（西班牙时间晚上9:00发送）
 
 ```
 🤖 SKYNET EOD - {{date}}
@@ -61,7 +61,7 @@ Track progress, report metrics, manage memory.
 💾 Saved to memory/{{date}}.md
 ```
 
-## Weekly Report (Sunday 8 PM)
+## 周报（每周日晚上8:00发送）
 
 ```
 🤖 SKYNET WEEKLY - Week of {{date}}
@@ -89,9 +89,8 @@ Track progress, report metrics, manage memory.
 ├─ Needed per day: $X
 ```
 
-## Memory File Format
-
-Save to memory/YYYY-MM-DD.md:
+## 内存文件格式
+将报告文件保存为 `memory/YYYY-MM-DD.md` 格式：
 
 ```markdown
 # {{date}} - Daily Log
@@ -118,11 +117,10 @@ Save to memory/YYYY-MM-DD.md:
 - [ ] Task 2
 ```
 
-## Alerts (Send Immediately)
-
-Trigger immediate Telegram alert for:
-- Any reply detected
-- Budget 75% depleted
-- API error / rate limit
-- Overnight run complete
-- Task blocked / needs input
+## 警报机制（立即发送）
+在以下情况下立即通过 Telegram 发送警报：
+- 检测到任何回复
+- 预算使用量达到75%
+- 发生 API 错误或达到请求速率限制
+- 运行任务完成（跨夜执行）
+- 任务被阻塞或需要用户输入

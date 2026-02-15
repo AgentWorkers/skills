@@ -1,16 +1,16 @@
-# Teneo SDK Skill
+# Teneo SDK 技能
 
-## Overview
+## 概述
 
-The Teneo SDK (`@teneo-protocol/sdk`) enables connection to AI agents on the Teneo Protocol platform. It provides:
+Teneo SDK（`@teneo-protocol/sdk`）允许连接到 Teneo Protocol 平台上的 AI 代理。它提供了以下功能：
 
-- WebSocket-based real-time communication with AI agents
-- Wallet-based authentication using Ethereum private keys
-- Room management (private/public rooms, agent invitations)
-- x402 micropayment protocol for paid agent interactions
-- Multi-chain payment support (Base, Peaq, Avalanche)
+- 基于 WebSocket 的实时通信，用于与 AI 代理进行交互
+- 使用以太坊私钥进行基于钱包的身份验证
+- 房间管理（私有/公共房间、代理邀请）
+- x402 微支付协议，用于支持付费的代理交互
+- 多链支付支持（Base、Peaq、Avalanche）
 
-## Installation
+## 安装
 
 ```bash
 npm install @teneo-protocol/sdk
@@ -18,29 +18,29 @@ npm install @teneo-protocol/sdk
 pnpm add @teneo-protocol/sdk
 ```
 
-## Core Concepts
+## 核心概念
 
-### Rooms
-Rooms are communication channels where users interact with AI agents:
-- **Private rooms**: Auto-available after authentication, no subscription needed
-- **Public rooms**: Require explicit subscription via `subscribeToRoom()`
-- Room ownership determines ability to invite agents
+### 房间
+房间是用户与 AI 代理进行交互的通信渠道：
+- **私有房间**：认证后自动可用，无需订阅
+- **公共房间**：需要通过 `subscribeToRoom()` 显式订阅
+- 房间所有者可以决定是否允许邀请代理进入房间
 
-### Agents
-AI agents are identified by their `@handle` (e.g., `@x-agent-enterprise-v2`). Agents can be:
-- Discovered via `listAgents()` or `searchAgents()`
-- Invited to private rooms by room owners
-- Some require x402 payments for each interaction
+### 代理
+AI 代理通过其 `@handle` 标识（例如 `@x-agent-enterprise-v2`）。代理可以通过以下方式找到：
+- 使用 `listAgents()` 或 `searchAgents()` 查询
+- 由房间所有者邀请进入私有房间
+- 某些代理在每次交互时需要支付 x402 费用
 
-### x402 Payment Protocol
-Micropayments for agent interactions using USDC on supported chains:
-- **Base** (chain ID: 8453) - Recommended for low fees
-- **Peaq** (chain ID: 3338)
-- **Avalanche** (chain ID: 43114)
+### x402 支付协议
+使用 USDC 在支持的链上进行代理交互的微支付：
+- **Base**（链 ID：8453） - 推荐使用，因为费用较低
+- **Peaq**（链 ID：3338）
+- **Avalanche**（链 ID：43114）
 
-Payment amounts are typically $0.01 - $0.10 per request.
+每次请求的支付金额通常在 $0.01 到 $0.10 之间。
 
-## Authentication & Connection
+## 身份验证与连接
 
 ```typescript
 import { TeneoSDK } from "@teneo-protocol/sdk";
@@ -72,19 +72,19 @@ if (sdk.isConnected) {
 sdk.disconnect();
 ```
 
-### Payment Network Configuration
+### 支付网络配置
 
-Use CAIP-2 format for `paymentNetwork`:
+使用 CAIP-2 格式配置 `paymentNetwork`：
 
-| Network | CAIP-2 ID | Chain ID | USDC Contract |
+| 网络 | CAIP-2 ID | 链 ID | USDC 合约地址 |
 |---------|-----------|----------|---------------|
 | Base | `eip155:8453` | 8453 | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 | Peaq | `eip155:3338` | 3338 | `0xbbA60da06c2c5424f03f7434542280FCAd453d10` |
 | Avalanche | `eip155:43114` | 43114 | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` |
 
-## Room Management
+## 房间管理
 
-### Discovering Rooms
+### 发现房间
 
 ```typescript
 // Get all rooms available to this wallet (sync - cached after connect)
@@ -97,7 +97,7 @@ for (const room of rooms) {
 }
 ```
 
-### Subscribing to Rooms
+### 订阅房间
 
 ```typescript
 // Private rooms: auto-available after auth, no subscription needed
@@ -113,9 +113,9 @@ const subscribedRooms = sdk.getSubscribedRooms();
 console.log(`Subscribed to: ${subscribedRooms.join(", ")}`);
 ```
 
-## Agent Discovery & Invitation
+## 代理发现与邀请
 
-### Finding Available Agents
+### 查找可用代理
 
 ```typescript
 // List all available agents on the platform
@@ -133,7 +133,7 @@ const results = await sdk.searchAgents("twitter");
 console.log(`Found ${results.length} agents matching "twitter"`);
 ```
 
-### Listing Agents in a Room
+### 在房间中列出代理
 
 ```typescript
 // Get agents currently in a specific room
@@ -144,9 +144,9 @@ for (const agent of roomAgents) {
 }
 ```
 
-### Inviting Agents to Rooms
+### 邀请代理进入房间
 
-Only room owners can invite agents:
+只有房间所有者才能邀请代理：
 
 ```typescript
 // First, find the agent you want to invite
@@ -163,7 +163,7 @@ if (xAgent) {
 await sdk.addAgentToRoom(roomId, "x-agent-enterprise-v2");
 ```
 
-### Ensuring Required Agents Are in Room
+### 确保所需代理在房间内
 
 ```typescript
 async function ensureAgentsInRoom(
@@ -198,9 +198,9 @@ await ensureAgentsInRoom(sdk, roomId, [
 ]);
 ```
 
-## Sending Messages to Agents
+## 向代理发送消息
 
-### Basic Message
+### 基本消息
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 user @elonmusk", {
@@ -212,7 +212,7 @@ const response = await sdk.sendMessage("@x-agent-enterprise-v2 user @elonmusk", 
 console.log(response.humanized || response.content);
 ```
 
-### Message with Room Context
+### 带有房间上下文的消息
 
 ```typescript
 const response = await sdk.sendMessage("@x-agent-enterprise-v2 post_stats 123456", {
@@ -223,7 +223,7 @@ const response = await sdk.sendMessage("@x-agent-enterprise-v2 post_stats 123456
 });
 ```
 
-### Common Agent Commands
+### 常见代理命令
 
 ```typescript
 // X/Twitter agent - Get user profile stats
@@ -233,9 +233,9 @@ const response = await sdk.sendMessage("@x-agent-enterprise-v2 post_stats 123456
 "@x-agent-enterprise-v2 post_stats 1234567890123456789"
 ```
 
-## Event Handling
+## 事件处理
 
-### Agent Responses
+### 代理响应
 
 ```typescript
 sdk.on("agent:response", (data) => {
@@ -249,9 +249,9 @@ sdk.on("agent:response", (data) => {
 });
 ```
 
-### Payment Detection
+### 支付检测
 
-x402 payments are reflected in agent responses. Parse the response to detect payment amounts:
+x402 支付信息会反映在代理的响应中。解析响应以获取支付金额：
 
 ```typescript
 sdk.on("agent:response", (data) => {
@@ -276,7 +276,7 @@ sdk.on("agent:response", (data) => {
 });
 ```
 
-### Connection Events
+### 连接事件
 
 ```typescript
 sdk.on("connection:open", () => {
@@ -311,7 +311,7 @@ sdk.on("error", (err) => {
 });
 ```
 
-## Complete Example: Base Network Agent Interaction
+## 完整示例：Base 网络上的代理交互
 
 ```typescript
 import "dotenv/config";
@@ -427,9 +427,9 @@ function sleep(ms: number): Promise<void> {
 main().catch(console.error);
 ```
 
-## Error Handling Best Practices
+## 错误处理最佳实践
 
-### Connection Errors
+### 连接错误
 
 ```typescript
 async function connectWithRetry(sdk: TeneoSDK, maxAttempts = 10): Promise<void> {
@@ -468,7 +468,7 @@ async function connectWithRetry(sdk: TeneoSDK, maxAttempts = 10): Promise<void> 
 }
 ```
 
-### Payment Errors
+### 支付错误
 
 ```typescript
 try {
@@ -485,9 +485,9 @@ try {
 }
 ```
 
-## Multi-Network Support
+## 多网络支持
 
-Switch between networks by creating SDK instances with different payment configs:
+通过创建具有不同支付配置的 SDK 实例来切换网络：
 
 ```typescript
 const NETWORKS = {
@@ -516,9 +516,9 @@ function createSDK(network: keyof typeof NETWORKS, privateKey: string): TeneoSDK
 }
 ```
 
-## Environment Variables
+## 环境变量
 
-Typical `.env` configuration:
+典型的 `.env` 配置文件内容：
 
 ```bash
 # Required
@@ -534,7 +534,7 @@ PEAQ_RPC_URL=https://peaq.api.onfinality.io/public
 AVAX_RPC_URL=https://api.avax.network/ext/bc/C/rpc
 ```
 
-## TypeScript Types
+## TypeScript 类型
 
 ```typescript
 interface SDKConfig {
@@ -583,12 +583,12 @@ interface AuthState {
 }
 ```
 
-## Tips
+## 提示
 
-1. **Always check USDC balance** before sending paid requests
-2. **Use private rooms** when possible - no subscription needed
-3. **Handle rate limits gracefully** - the SDK enforces connection limits
-4. **Set appropriate timeouts** - agent responses can take 30-60 seconds
-5. **Prefer Base network** for lowest transaction fees
-6. **Disconnect cleanly** to avoid orphaned WebSocket connections
-7. **Discover agents first** - use `listAgents()` to find available agents before inviting
+1. **在发送付费请求之前，请始终检查 USDC 账户余额**
+2. **尽可能使用私有房间**——无需订阅
+3. **优雅地处理速率限制**——SDK 会强制执行连接限制
+4. **设置适当的超时时间**——代理响应可能需要 30-60 秒
+5. **优先选择 Base 网络**——因为交易费用最低
+6. **干净地断开连接**——以避免 WebSocket 连接被遗留
+7. **先发现代理**——在邀请之前使用 `listAgents()` 查找可用代理

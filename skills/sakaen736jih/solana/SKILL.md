@@ -1,73 +1,73 @@
 ---
 name: solana
-description: Interact with Solana blockchain - check balances, view transactions, monitor NFTs, and explore account data. Works with Phantom and Solflare addresses.
+description: 与 Solana 区块链交互：查询账户余额、查看交易记录、监控非同质化代币（NFT）的状态，并浏览账户信息。支持使用 Phantom 和 Solflare 地址进行操作。
 metadata: {"openclaw":{"requires":{"bins":["solana"]},"install":[{"id":"solana","kind":"shell","command":"sh -c \"$(curl -sSfL https://release.solana.com/stable/install)\"","bins":["solana"],"label":"Install Solana CLI"}]}}
 ---
 
-# Solana Wallet CLI
+# Solana 钱包 CLI
 
-## Setup
+## 设置
 
-Install Solana CLI:
+安装 Solana CLI：
 ```bash
 sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
 ```
 
-Set mainnet RPC:
+设置主网 RPC（Mainnet RPC）：
 ```bash
 solana config set --url https://api.mainnet-beta.solana.com
 ```
 
-## Check Balance
+## 检查余额
 
-SOL balance:
+SOL 的余额：
 ```bash
 solana balance <ADDRESS>
 ```
 
-In lamports:
+以 lamports 为单位表示的余额：
 ```bash
 solana balance <ADDRESS> --lamports
 ```
 
-## View Account Info
+## 查看账户信息
 
 ```bash
 solana account <ADDRESS>
 ```
 
-Detailed JSON output:
+详细的 JSON 输出：
 ```bash
 solana account <ADDRESS> --output json
 ```
 
-## Transaction History
+## 交易历史
 
-Recent transactions:
+最近的交易记录：
 ```bash
 solana transaction-history <ADDRESS> --limit 10
 ```
 
-Transaction details:
+交易详情：
 ```bash
 solana confirm <SIGNATURE> -v
 ```
 
-## Token Balances (SPL Tokens)
+## 代币余额（SPL 代币）
 
-List all tokens:
+列出所有代币：
 ```bash
 spl-token accounts --owner <ADDRESS>
 ```
 
-Specific token balance:
+特定代币的余额：
 ```bash
 spl-token balance <TOKEN_MINT> --owner <ADDRESS>
 ```
 
-## NFT & Token Info
+## NFT 与代币信息
 
-Using Metaboss (NFT tool):
+使用 Metaboss（NFT 工具）：
 ```bash
 # Install
 cargo install metaboss
@@ -76,14 +76,14 @@ cargo install metaboss
 metaboss decode mint -a <NFT_MINT_ADDRESS>
 ```
 
-## Stake Accounts
+## 持股账户
 
-View stake:
+查看持股情况：
 ```bash
 solana stakes <ADDRESS>
 ```
 
-## Using Public RPC Endpoints
+## 使用公共 RPC 端点
 
 ```bash
 # Mainnet
@@ -96,7 +96,7 @@ solana config set --url https://api.devnet.solana.com
 solana config set --url https://your-rpc-provider.com
 ```
 
-## Quick Balance Check (curl)
+## 快速余额查询（使用 curl）
 
 ```bash
 curl -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/json" -d '{
@@ -107,7 +107,7 @@ curl -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/j
 }' | python3 -c "import sys,json; d=json.load(sys.stdin); print(f\"{d['result']['value']/1e9:.4f} SOL\")"
 ```
 
-## Get Token Accounts (curl)
+## 获取代币账户信息（使用 curl）
 
 ```bash
 curl -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/json" -d '{
@@ -122,24 +122,24 @@ curl -X POST https://api.mainnet-beta.solana.com -H "Content-Type: application/j
 }'
 ```
 
-## Monitor Address
+## 监控地址
 
-Watch for changes:
+实时监控地址的变化：
 ```bash
 watch -n 5 "solana balance <ADDRESS>"
 ```
 
-## Common Addresses
+## 常见地址
 
-| Name | Address |
-|------|---------|
-| SOL Mint | So11111111111111111111111111111111111111112 |
-| USDC | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v |
-| USDT | Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB |
+| 名称 | 地址                |
+|------|-------------------|
+| SOL 钱包 | So11111111111111111111111111111111111111112 |
+| USDC   | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v |
+| USDT   | Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB |
 
-## Notes
+## 注意事项：
 
-- Addresses are base58 encoded public keys
+- 地址为经过 base58 编码的公钥
 - 1 SOL = 1,000,000,000 lamports
-- RPC rate limits apply on public endpoints
-- For heavy usage, consider paid RPC providers (Helius, QuickNode, Alchemy)
+- 公共 RPC 端点存在请求速率限制
+- 在高频率使用的情况下，可以考虑使用付费的 RPC 服务提供商（如 Helius、QuickNode、Alchemy）

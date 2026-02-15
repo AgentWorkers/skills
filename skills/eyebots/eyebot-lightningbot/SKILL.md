@@ -1,6 +1,6 @@
 ---
 name: eyebot-lightningbot
-description: Lightning Network payment specialist for instant BTC transfers
+description: 闪电网络支付专家，专注于实现即时比特币转账服务
 version: 1.2.0
 author: ILL4NE
 metadata:
@@ -10,44 +10,44 @@ metadata:
 
 # LightningBot ⚡
 
-**Bitcoin Lightning Network Specialist**
+**比特币闪电网络专家**
 
-Instant, low-fee Bitcoin payments via the Lightning Network. Send, receive, and manage LN channels.
+通过闪电网络实现即时、低费用的比特币支付。您可以发送、接收和管理闪电网络（LN）通道。
 
-## Features
+## 主要功能
 
-- **Instant Payments**: Sub-second BTC transfers
-- **Micro-Transactions**: Send satoshis economically
-- **Invoice Generation**: Create payment requests
-- **Channel Management**: Open/close LN channels
-- **Routing**: Find optimal payment paths
+- **即时支付**：不到一秒的比特币转账时间
+- **微支付**：经济高效地发送少量比特币（satoshis）
+- **发票生成**：创建支付请求
+- **通道管理**：打开/关闭闪电网络通道
+- **路由选择**：寻找最优的支付路径
 
-## Capabilities
+## 功能概述
 
-| Function | Description |
-|----------|-------------|
-| Send | Pay Lightning invoices |
-| Receive | Generate invoices |
-| Channels | Manage channel liquidity |
-| Balance | Check LN balance |
-| History | Payment history |
+| 功能        | 描述                                      |
+|------------|-----------------------------------------|
+| 发送        | 支付闪电网络发票                             |
+| 接收        | 生成支付请求                               |
+| 通道管理     | 管理闪电网络通道的流动性                     |
+| 余额        | 查看闪电网络余额                           |
+| 历史记录     | 查看所有支付记录                           |
 
-## Use Cases
+## 应用场景
 
-- Instant BTC payments
-- Micropayments and tips
-- Cross-border transfers
-- Streaming payments
-- Pay-per-use services
+- 即时比特币支付
+- 微支付与小费
+- 跨境转账
+- 流式支付
+- 按使用次数计费的服务
 
-## Lightning Benefits
+## 闪电网络的优点
 
-- ⚡ Instant settlement
-- 💰 Near-zero fees
-- 🔒 Bitcoin security
-- 🌍 Global reach
+- ⚡ 即时结算
+- 💰 几乎零费用
+- 🔒 比特币的安全性保障
+- 🌍 全球范围内的覆盖
 
-## Usage
+## 使用说明
 
 ```bash
 # Pay an invoice
@@ -60,5 +60,6 @@ eyebot lightningbot invoice 1000 --memo "Payment for X"
 eyebot lightningbot balance
 ```
 
-## Support
+## 帮助支持
+
 Telegram: @ILL4NE

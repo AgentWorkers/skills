@@ -1,50 +1,50 @@
 ---
 name: plane
-description: "Manage Plane.so projects and work items using the `plane` CLI. List projects, create/update/search issues, manage cycles and modules, add comments, and assign members."
+description: "使用 `plane` CLI 管理 Plane.so 项目和工作项。可以列出项目、创建/更新/搜索问题、管理周期和模块、添加评论以及分配成员。"
 metadata: {"moltbot":{"requires":{"bins":["plane"],"env":["PLANE_API_KEY","PLANE_WORKSPACE"]},"primaryEnv":"PLANE_API_KEY","emoji":"✈️","homepage":"https://github.com/JinkoLLC/plane-skill","install":[{"id":"github","kind":"download","url":"https://raw.githubusercontent.com/JinkoLLC/plane-skill/main/scripts/plane","targetDir":"~/.local/bin/","bins":["plane"],"label":"Download plane CLI from GitHub"}]}}
 ---
 
 # Plane Skill
 
-Interact with [Plane.so](https://plane.so) project management via the `plane` CLI.
+通过 `plane` 命令行界面（CLI）与 [Plane.so](https://plane.so) 项目管理工具进行交互。
 
-## Installation
+## 安装
 
-Download the CLI script and make it executable:
+下载 CLI 脚本并将其设置为可执行文件：
 
 ```bash
 curl -o ~/.local/bin/plane https://raw.githubusercontent.com/JinkoLLC/plane-skill/main/scripts/plane
 chmod +x ~/.local/bin/plane
 ```
 
-Make sure `~/.local/bin` is in your PATH.
+确保 `~/.local/bin` 被添加到系统的 PATH 环境变量中。
 
-## Setup
+## 设置
 
 ```bash
 export PLANE_API_KEY="your-api-key"
 export PLANE_WORKSPACE="your-workspace-slug"
 ```
 
-Get your API key from: **Plane → Profile Settings → Personal Access Tokens**
+从 **Plane → 个人设置 → 个人访问令牌** 获取您的 API 密钥。
 
-The workspace slug is the URL path segment (e.g., for `https://app.plane.so/my-team/` the slug is `my-team`).
+工作区的路径段称为“slug”（例如，对于 `https://app.plane.so/my-team/`，slug 为 `my-team`）。
 
-## Commands
+## 命令
 
-### Current User
+### 当前用户
 
 ```bash
 plane me                      # Show authenticated user info
 ```
 
-### Workspace Members
+### 工作区成员
 
 ```bash
 plane members                 # List all workspace members (name, email, role, ID)
 ```
 
-### Projects
+### 项目
 
 ```bash
 plane projects list                                      # List all projects
@@ -52,7 +52,7 @@ plane projects get PROJECT_ID                            # Get project details
 plane projects create --name "My Project" --identifier "PROJ"  # Create project
 ```
 
-### Work Items (Issues)
+### 工作项（问题）
 
 ```bash
 # List work items
@@ -79,7 +79,7 @@ plane issues delete -p PROJECT_ID ISSUE_ID
 plane issues search "login bug"
 ```
 
-### Comments
+### 评论
 
 ```bash
 plane comments list -p PROJECT_ID -i ISSUE_ID            # List comments on a work item
@@ -87,7 +87,7 @@ plane comments list -p PROJECT_ID -i ISSUE_ID --all      # Show all activity (no
 plane comments add -p PROJECT_ID -i ISSUE_ID "Looks good, merging now"  # Add a comment
 ```
 
-### Cycles (Sprints)
+### 循环（冲刺）
 
 ```bash
 plane cycles list -p PROJECT_ID
@@ -95,7 +95,7 @@ plane cycles get -p PROJECT_ID CYCLE_ID
 plane cycles create -p PROJECT_ID --name "Sprint 1" --start 2026-01-27 --end 2026-02-10
 ```
 
-### Modules
+### 模块
 
 ```bash
 plane modules list -p PROJECT_ID
@@ -103,26 +103,26 @@ plane modules get -p PROJECT_ID MODULE_ID
 plane modules create -p PROJECT_ID --name "Auth Module" --description "Authentication features"
 ```
 
-### States & Labels
+### 状态与标签
 
 ```bash
 plane states -p PROJECT_ID    # List workflow states (useful for getting state IDs)
 plane labels -p PROJECT_ID    # List labels (useful for getting label IDs)
 ```
 
-## Output Formats
+## 输出格式
 
-Default output is a formatted table. Add `-f json` for raw JSON:
+默认输出为格式化的表格。若需获取原始 JSON 数据，可使用 `-f json` 标志：
 
 ```bash
 plane projects list -f json
 plane issues list -p PROJECT_ID -f json
 ```
 
-## Typical Workflow
+## 典型工作流程
 
-1. `plane projects list` — find your project ID
-2. `plane states -p PROJECT_ID` — see available states
-3. `plane members` — find member IDs for assignment
-4. `plane issues create -p PROJECT_ID --name "Task" --priority high --assignee USER_ID`
-5. `plane comments add -p PROJECT_ID -i ISSUE_ID "Started working on this"`
+1. `plane projects list` — 查找项目 ID
+2. `plane states -p PROJECT_ID` — 查看可用的项目状态
+3. `plane members` — 查找成员 ID 以分配任务
+4. `plane issues create -p PROJECT_ID --name "Task" --priority high --assignee USER_ID` — 创建新问题
+5. `plane comments add -p PROJECT_ID -i ISSUE_ID "Started working on this"` — 为问题添加评论

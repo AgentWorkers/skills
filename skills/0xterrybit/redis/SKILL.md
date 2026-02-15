@@ -1,28 +1,28 @@
 ---
 name: redis
-description: Redis database management. Key-value operations, caching, pub/sub, and data structure commands.
+description: Redis数据库管理：键值操作、缓存、发布/订阅（pub/sub）以及数据结构相关命令。
 metadata: {"clawdbot":{"emoji":"🔴","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
 # Redis 🔴
 
-Redis in-memory database management.
+Redis 是一个基于内存的数据库管理系统。
 
-## Setup
+## 安装
 
 ```bash
 export REDIS_URL="redis://localhost:6379"
 ```
 
-## Features
+## 主要特性
 
-- Key-value operations
-- Data structures (lists, sets, hashes)
-- Pub/Sub messaging
-- Cache management
-- TTL management
+- 支持键值操作
+- 提供多种数据结构（列表、集合、哈希表）
+- 支持发布/订阅（Pub/Sub）消息机制
+- 具备缓存管理功能
+- 支持时间戳（TTL）控制
 
-## Usage Examples
+## 使用示例
 
 ```
 "Get key user:123"
@@ -31,7 +31,7 @@ export REDIS_URL="redis://localhost:6379"
 "Flush cache"
 ```
 
-## Commands
+## 命令集
 
 ```bash
 redis-cli GET key

@@ -1,17 +1,17 @@
 ---
 name: mcp-atlassian
-description: Run the Model Context Protocol (MCP) Atlassian server in Docker, enabling integration with Jira, Confluence, and other Atlassian products. Use when you need to query Jira issues, search Confluence, or interact with Atlassian services programmatically. Requires Docker and valid Jira API credentials.
+description: 在 Docker 中运行 Model Context Protocol (MCP) Atlassian 服务器，以实现与 Jira、Confluence 及其他 Atlassian 产品的集成。当您需要查询 Jira 问题、搜索 Confluence 内容或以编程方式与 Atlassian 服务交互时，请使用该功能。此操作需要 Docker 以及有效的 Jira API 凭据。
 ---
 
 # MCP Atlassian
 
-## Overview
+## 概述
 
-The MCP Atlassian server provides programmatic access to Jira and other Atlassian services through the Model Context Protocol. Run it in Docker with your Jira credentials to query issues, manage projects, and interact with Atlassian tools.
+MCP Atlassian 服务器通过 Model Context Protocol 提供对 Jira 及其他 Atlassian 服务的程序化访问。您可以使用 Docker 运行该服务器，并使用您的 Jira 凭据来查询问题、管理项目以及与 Atlassian 工具进行交互。
 
-## Quick Start
+## 快速入门
 
-Pull and run the container with your Jira credentials:
+使用您的 Jira 凭据拉取并运行容器：
 
 ```bash
 docker pull ghcr.io/sooperset/mcp-atlassian:latest
@@ -23,25 +23,25 @@ docker run --rm -i \
   ghcr.io/sooperset/mcp-atlassian:latest
 ```
 
-**With script (faster):**
+**使用脚本（更快）：**
 
-Run the bundled script with your API token:
+使用您的 API 令牌运行捆绑的脚本：
 
 ```bash
 JIRA_API_TOKEN=your_token bash scripts/run_mcp_atlassian.sh
 ```
 
-## Environment Variables
+## 环境变量
 
-- **JIRA_URL**: Your Atlassian instance URL (e.g., `https://company.atlassian.net`)
-- **JIRA_USERNAME**: Your Jira email address
-- **JIRA_API_TOKEN**: Your Jira API token (create in [Account Settings → Security](https://id.atlassian.com/manage-profile/security/api-tokens))
+- **JIRA_URL**：您的 Atlassian 实例 URL（例如：`https://company.atlassian.net`）
+- **JIRA_USERNAME**：您的 Jira 电子邮件地址
+- **JIRA_API_TOKEN**：您的 Jira API 令牌（在 [账户设置 → 安全](https://id.atlassian.com/manage-profile/security/api-tokens) 中创建）
 
-## Using MCP Atlassian with Clawdbot
+## 将 MCP Atlassian 与 Clawdbot 配合使用
 
-Once running, the MCP server exposes Jira tools for use. Reference the container as an MCP source in your Clawdbot config to query issues, create tasks, or manage Jira directly from your agent.
+运行完成后，MCP 服务器将提供对 Jira 工具的访问权限。您可以在 Clawdbot 的配置中将此容器作为 MCP 源来查询问题、创建任务或直接管理 Jira。
 
-## Resources
+## 资源
 
-### scripts/
-- **run_mcp_atlassian.sh** - Simplified runner script with credential handling
+### 脚本
+- **run_mcp_atlassian.sh**：一个简化版的运行脚本，用于处理凭据

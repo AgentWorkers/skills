@@ -1,6 +1,6 @@
 ---
 name: vps-setup
-description: Setup completo de VPS Ubuntu/Debian para produção com Docker Swarm, Traefik v3 (SSL/HTTPS automático), Portainer CE e rede overlay. Baseado no SetupOrion v2.8.0. Executa todos os comandos automaticamente.
+description: 完整的 Ubuntu/Debian VPS 配置方案，适用于生产环境，支持 Docker Swarm、Traefik v3（自动处理 SSL/HTTPS）、Portainer CE 以及 overlay 网络。该方案基于 SetupOrion v2.8.0 构建，能够自动执行所有相关命令。
 metadata:
   openclaw:
     requires:
@@ -17,21 +17,21 @@ metadata:
       VPS_EVOLUTION_API_KEY: "Global API Key da Evolution (auto-gerada se vazia). Use openssl rand -hex 16"
 ---
 
-# VPS Setup - Docker Swarm + Traefik + Portainer
+# VPS 配置 - Docker Swarm + Traefik + Portainer
 
-Setup automatizado de VPS para produção. Instala Docker, inicia Swarm, cria rede overlay, deploya Traefik v3 com SSL automático e Portainer CE.
+这是一个用于生产环境的 VPS 自动化配置方案。该方案包括安装 Docker、启动 Docker Swarm、创建 overlay 网络、部署带有自动 SSL 的 Traefik v3 以及 Portainer CE。
 
-**Requisitos:** Ubuntu 20.04+ ou Debian 11+ com acesso root/sudo.
-
----
-
-## Execução Completa (todos os passos em ordem)
-
-Execute cada etapa na ordem. Todas as etapas são idempotentes (seguro re-executar).
+**系统要求：** Ubuntu 20.04+ 或 Debian 11+，并具有 root/sudo 权限。
 
 ---
 
-### Etapa 1 - Atualizar Sistema e Configurar Servidor
+## 完整执行流程（按顺序执行所有步骤）
+
+请按照以下顺序执行每个步骤。所有步骤都是幂等的（可以安全地重新执行）。
+
+---
+
+### 第 1 步 - 更新系统并配置服务器
 
 ```bash
 # Atualizar sistema
@@ -48,7 +48,7 @@ sudo hostnamectl set-hostname $VPS_HOSTNAME
 sudo sed -i "s/127.0.0.1[[:space:]]localhost/127.0.0.1 $VPS_HOSTNAME/g" /etc/hosts
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 timedatectl | grep "Time zone"
 # Esperado: America/Sao_Paulo
@@ -59,7 +59,7 @@ hostname
 
 ---
 
-### Etapa 2 - Instalar Docker
+### 第 2 步 - 安装 Docker
 
 ```bash
 # Instalar Docker via script oficial
@@ -81,7 +81,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-**Se falhar**, instalar manualmente:
+**如果安装失败，请手动安装：**
 ```bash
 sudo install -m 0755 -d /etc/apt/keyrings
 OS_ID=$(source /etc/os-release && echo "$ID")
@@ -98,7 +98,7 @@ sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker --version
 # Esperado: Docker version 2X.x.x
@@ -109,7 +109,7 @@ docker info --format '{{.Swarm.LocalNodeState}}'
 
 ---
 
-### Etapa 3 - Iniciar Docker Swarm
+### 第 3 步 - 启动 Docker Swarm
 
 ```bash
 # Obter IP público da VPS (ignora loopback e IPs internos)
@@ -119,7 +119,7 @@ IP=$(hostname -I | tr ' ' '\n' | grep -v '^127\.' | grep -v '^10\.0\.0\.' | head
 docker swarm init --advertise-addr $IP
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker info --format '{{.Swarm.LocalNodeState}}'
 # Esperado: active
@@ -130,7 +130,7 @@ docker node ls
 
 ---
 
-### Etapa 4 - Criar Rede Overlay e Volumes
+### 第 4 步 - 创建 overlay 网络和卷
 
 ```bash
 # Criar rede overlay para comunicação entre containers
@@ -145,7 +145,7 @@ docker volume create evolution_instances
 docker volume create evolution_redis
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker network ls | grep $VPS_NETWORK
 # Esperado: linha com $VPS_NETWORK, DRIVER=overlay, SCOPE=swarm
@@ -156,9 +156,9 @@ docker volume ls | grep -E "shared|certificates|portainer|postgres|evolution"
 
 ---
 
-### Etapa 5 - Deploy do Traefik v3 (Proxy Reverso + SSL)
+### 第 5 步 - 部署 Traefik v3（反向代理 + SSL）
 
-Criar o arquivo `traefik.yaml` e fazer deploy:
+创建 `traefik.yaml` 文件并执行部署：
 
 ```bash
 cat > /root/traefik.yaml << 'TRAEFIKEOF'
@@ -239,7 +239,7 @@ sed -i "s/EMAIL_PLACEHOLDER/$VPS_EMAIL_SSL/g" /root/traefik.yaml
 docker stack deploy --prune --resolve-image always -c /root/traefik.yaml traefik
 ```
 
-**Aguardar Traefik ficar online:**
+**等待 Traefik 上线：**
 ```bash
 # Verificar a cada 10s até o serviço mostrar 1/1
 while ! docker service ls --filter name='traefik_traefik' --format '{{.Replicas}}' | grep -q '1/1'; do
@@ -249,7 +249,7 @@ done
 echo "Traefik online!"
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker service ls --filter name=traefik
 # Esperado: traefik_traefik   1/1
@@ -260,9 +260,9 @@ curl -sI http://localhost:80 | head -3
 
 ---
 
-### Etapa 6 - Deploy do Portainer CE (Gerenciador Docker)
+### 第 6 步 - 部署 Portainer CE（Docker 管理器）
 
-Criar o arquivo `portainer.yaml` e fazer deploy:
+创建 `portainer.yaml` 文件并执行部署：
 
 ```bash
 cat > /root/portainer.yaml << 'PORTAINEREOF'
@@ -322,7 +322,7 @@ sed -i "s/PORTAINER_DOMAIN_PLACEHOLDER/$VPS_PORTAINER_DOMAIN/g" /root/portainer.
 docker stack deploy --prune --resolve-image always -c /root/portainer.yaml portainer
 ```
 
-**Aguardar Portainer ficar online:**
+**等待 Portainer 上线：**
 ```bash
 # Aguardar agent + portainer
 while ! docker service ls --filter name='portainer_portainer' --format '{{.Replicas}}' | grep -q '1/1'; do
@@ -332,7 +332,7 @@ done
 echo "Portainer online!"
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker service ls --filter name=portainer
 # Esperado: portainer_agent 1/1 (global), portainer_portainer 1/1
@@ -340,7 +340,7 @@ docker service ls --filter name=portainer
 
 ---
 
-### Etapa 7 - Criar Conta Admin no Portainer
+### 第 7 步 - 在 Portainer 中创建管理员账户
 
 ```bash
 # Aguardar API do Portainer estar pronta (30s após container online)
@@ -369,7 +369,7 @@ TOKEN=$(curl -k -s -X POST "https://$VPS_PORTAINER_DOMAIN/api/auth" \
 echo "Token: $TOKEN"
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 curl -k -s "https://$VPS_PORTAINER_DOMAIN/api/status" | jq .
 # Esperado: JSON com Version e InstanceID
@@ -380,9 +380,9 @@ echo "Usuário: $VPS_PORTAINER_USER"
 
 ---
 
-### Etapa 8 - Deploy do PostgreSQL 14 (Banco de Dados)
+### 第 8 步 - 部署 PostgreSQL 14（数据库）
 
-O PostgreSQL é necessário para a Evolution API e outros serviços.
+PostgreSQL 是 Evolution API 及其他服务所必需的。
 
 ```bash
 # Gerar senha do Postgres (ou usar VPS_POSTGRES_PASS se definida)
@@ -443,7 +443,7 @@ sed -i "s/NETWORK_PLACEHOLDER/$VPS_NETWORK/g" /root/postgres.yaml
 docker stack deploy --prune --resolve-image always -c /root/postgres.yaml postgres
 ```
 
-**Aguardar PostgreSQL ficar online:**
+**等待 PostgreSQL 上线：**
 ```bash
 while ! docker service ls --filter name='postgres_postgres' --format '{{.Replicas}}' | grep -q '1/1'; do
   echo "Aguardando PostgreSQL..."
@@ -452,7 +452,7 @@ done
 echo "PostgreSQL online!"
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker service ls --filter name=postgres
 # Esperado: postgres_postgres 1/1
@@ -472,9 +472,9 @@ echo "Senha: $POSTGRES_PASS"
 
 ---
 
-### Etapa 9 - Deploy da Evolution API v2 (WhatsApp)
+### 第 9 步 - 部署 Evolution API v2（基于 WhatsApp 的服务）
 
-Instala a Evolution API com Redis para cache e PostgreSQL como banco de dados.
+安装 Evolution API，使用 Redis 作为缓存，PostgreSQL 作为数据库。
 
 ```bash
 # Obter senha do Postgres (já deve estar definida na Etapa 8)
@@ -640,7 +640,7 @@ sed -i "s/NETWORK_PLACEHOLDER/$VPS_NETWORK/g" /root/evolution.yaml
 docker stack deploy --prune --resolve-image always -c /root/evolution.yaml evolution
 ```
 
-**Aguardar Evolution API ficar online:**
+**等待 Evolution API 上线：**
 ```bash
 # Aguardar Redis + Evolution API
 while ! docker service ls --filter name='evolution_evolution_redis' --format '{{.Replicas}}' | grep -q '1/1'; do
@@ -659,7 +659,7 @@ echo "Evolution API online!"
 sleep 30
 ```
 
-**Verificação:**
+**验证：**
 ```bash
 docker service ls --filter name=evolution
 # Esperado: evolution_evolution_api 1/1, evolution_evolution_redis 1/1
@@ -677,25 +677,25 @@ echo "Global API Key: $EVOLUTION_API_KEY"
 
 ---
 
-## Operações de Manutenção
+## 维护操作
 
-### Reiniciar Traefik
+### 重启 Traefik
 ```bash
 docker service update --force $(docker service ls --filter name='traefik_traefik' -q)
 ```
 
-### Reiniciar Portainer
+### 重启 Portainer
 ```bash
 docker service update --force $(docker service ls --filter name='portainer_agent' -q)
 docker service update --force $(docker service ls --filter name='portainer_portainer' -q)
 ```
 
-### Atualizar Portainer
+### 更新 Portainer
 ```bash
 docker stack deploy --prune --resolve-image always -c /root/portainer.yaml portainer
 ```
 
-### Reset Senha Portainer
+### 重置 Portainer 密码
 ```bash
 # Parar Portainer
 docker service scale portainer_portainer=0
@@ -708,54 +708,54 @@ docker run --rm -v /var/lib/docker/volumes/portainer_data/_data:/data portainer/
 docker stack deploy --prune --resolve-image always -c /root/portainer.yaml portainer
 ```
 
-### Atualizar Traefik
+### 更新 Traefik 配置
 ```bash
 docker stack deploy --prune --resolve-image always -c /root/traefik.yaml traefik
 ```
 
-### Ver Logs do Traefik
+### 查看 Traefik 日志
 ```bash
 docker service logs traefik_traefik --tail 100 -f
 ```
 
-### Ver Logs do Portainer
+### 查看 Portainer 日志
 ```bash
 docker service logs portainer_portainer --tail 100 -f
 ```
 
-### Reiniciar PostgreSQL
+### 重启 PostgreSQL
 ```bash
 docker service update --force $(docker service ls --filter name='postgres_postgres' -q)
 ```
 
-### Reiniciar Evolution API
+### 重启 Evolution API
 ```bash
 docker service update --force $(docker service ls --filter name='evolution_evolution_api' -q)
 docker service update --force $(docker service ls --filter name='evolution_evolution_redis' -q)
 ```
 
-### Atualizar Evolution API
+### 更新 Evolution API 配置
 ```bash
 docker stack deploy --prune --resolve-image always -c /root/evolution.yaml evolution
 ```
 
-### Ver Logs da Evolution API
+### 查看 Evolution API 日志
 ```bash
 docker service logs evolution_evolution_api --tail 100 -f
 ```
 
-### Ver Logs do Redis (Evolution)
+### 查看 Redis 日志（Evolution 服务）
 ```bash
 docker service logs evolution_evolution_redis --tail 50 -f
 ```
 
-### Criar Banco Adicional no PostgreSQL
+### 在 PostgreSQL 中创建新数据库
 ```bash
 CONTAINER_ID=$(docker ps -q --filter "name=^postgres_postgres")
 docker exec "$CONTAINER_ID" psql -U postgres -c "CREATE DATABASE nome_do_banco;"
 ```
 
-### Listar Bancos no PostgreSQL
+### 列出 PostgreSQL 中的所有数据库
 ```bash
 CONTAINER_ID=$(docker ps -q --filter "name=^postgres_postgres")
 docker exec "$CONTAINER_ID" psql -U postgres -lqt
@@ -763,9 +763,9 @@ docker exec "$CONTAINER_ID" psql -U postgres -lqt
 
 ---
 
-## Deploy de Novos Serviços via Portainer API
+## 通过 Portainer API 自动部署新服务
 
-Use a API do Portainer para deploy automatizado:
+使用 Portainer 的 API 进行自动化部署：
 
 ```bash
 # 1. Obter token
@@ -789,9 +789,9 @@ curl -k -s -X POST "https://$VPS_PORTAINER_DOMAIN/api/stacks/create/swarm/string
 
 ---
 
-## Habilitar Dashboard do Traefik (Opcional)
+## 启用 Traefik 仪表盘（可选）
 
-Para acessar o painel do Traefik com autenticação:
+若需通过身份验证访问 Traefik 仪表盘，请执行以下操作：
 
 ```bash
 # Gerar credenciais BasicAuth
@@ -817,9 +817,9 @@ docker stack deploy --prune --resolve-image always -c /root/traefik.yaml traefik
 
 ---
 
-## Checklist Final
+## 最终检查
 
-Após completar todas as etapas, verifique:
+完成所有步骤后，请检查以下内容：
 
 ```bash
 echo "=== Status dos Serviços ==="
@@ -842,22 +842,22 @@ echo "=== Portas em uso ==="
 ss -tlnp | grep -E ':80|:443|:9000|:8080|:5432|:6379'
 ```
 
-**Resultado esperado:**
-| Serviço | Status | URL |
+**预期结果：**
+| 服务 | 状态 | URL |
 |---------|--------|-----|
-| Traefik | 1/1 | (interno, gerencia SSL) |
-| Portainer Agent | 1/1 (global) | (interno) |
-| Portainer CE | 1/1 | `https://$VPS_PORTAINER_DOMAIN` |
-| PostgreSQL 14 | 1/1 | `postgres:5432` (interno) |
-| Evolution API | 1/1 | `https://$VPS_EVOLUTION_DOMAIN` |
-| Evolution Redis | 1/1 | `redis:6379` (interno) |
-| Rede overlay | ativa | `$VPS_NETWORK` |
+| Traefik | 已启动 | （内部服务，支持 SSL） |
+| Portainer Agent | 已启动（全局服务） | （内部服务） |
+| Portainer CE | 已启动 | `https://$VPS_PORTAINER_DOMAIN` |
+| PostgreSQL 14 | 已启动 | `postgres:5432`（内部服务） |
+| Evolution API | 已启动 | `https://$VPS_EVOLUTION_DOMAIN` |
+| Evolution Redis | 已启动 | `redis:6379`（内部服务） |
+| Overlay 网络 | 已启用 | `$VPS_NETWORK` |
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Docker Swarm não inicia
+### Docker Swarm 无法启动
 ```bash
 # Verificar IP usado
 hostname -I
@@ -866,7 +866,7 @@ hostname -I
 docker swarm init --advertise-addr SEU_IP_AQUI
 ```
 
-### Certificado SSL não gerado
+### SSL 证书未生成
 ```bash
 # Verificar logs do Traefik
 docker service logs traefik_traefik 2>&1 | grep -i "acme\|certificate\|error"
@@ -875,7 +875,7 @@ docker service logs traefik_traefik 2>&1 | grep -i "acme\|certificate\|error"
 curl -sI http://SEU_DOMINIO
 ```
 
-### Portainer API não responde
+### Portainer API 无响应
 ```bash
 # Verificar se o container está rodando
 docker service ps portainer_portainer
@@ -884,7 +884,7 @@ docker service ps portainer_portainer
 curl -k -s https://$VPS_PORTAINER_DOMAIN/api/status
 ```
 
-### Container não conecta à rede
+### 容器无法连接到网络
 ```bash
 # Listar redes do container
 docker inspect CONTAINER_ID | jq '.[].NetworkSettings.Networks'
@@ -893,7 +893,7 @@ docker inspect CONTAINER_ID | jq '.[].NetworkSettings.Networks'
 docker network connect $VPS_NETWORK CONTAINER_ID
 ```
 
-### PostgreSQL não inicia
+### PostgreSQL 无法启动
 ```bash
 # Verificar logs
 docker service logs postgres_postgres --tail 50
@@ -906,7 +906,7 @@ docker volume inspect postgres_data
 # docker stack deploy --prune --resolve-image always -c /root/postgres.yaml postgres
 ```
 
-### Evolution API não conecta ao banco
+### Evolution API 无法连接到数据库
 ```bash
 # Verificar se o banco existe
 CONTAINER_ID=$(docker ps -q --filter "name=^postgres_postgres")
@@ -918,7 +918,7 @@ docker exec "$CONTAINER_ID" psql -U postgres -c "CREATE DATABASE evolution;"
 docker service logs evolution_evolution_api --tail 50 2>&1 | grep -i "database\|error\|postgres"
 ```
 
-### Evolution API retorna 401/403
+### Evolution API 返回 401/403 错误
 ```bash
 # Verificar API Key configurada no YAML
 grep "AUTHENTICATION_API_KEY" /root/evolution.yaml
@@ -927,7 +927,7 @@ grep "AUTHENTICATION_API_KEY" /root/evolution.yaml
 curl -sk -H "apikey: SUA_API_KEY" "https://$VPS_EVOLUTION_DOMAIN/instance/fetchInstances"
 ```
 
-### Redis da Evolution não inicia
+### Redis 服务无法启动
 ```bash
 docker service logs evolution_evolution_redis --tail 30
 # Verificar volume
@@ -936,11 +936,11 @@ docker volume inspect evolution_redis
 
 ---
 
-## Dicas
+## 提示：
 
-1. **Sempre use `docker stack deploy`** em vez de `docker compose up` — Swarm gerencia réplicas, restart e rolling updates
-2. **Todo serviço** precisa estar na rede overlay `$VPS_NETWORK` para o Traefik fazer proxy
-3. **Labels Traefik** obrigatórias para cada serviço: `traefik.enable=true`, `Host()`, `server.port`, `certresolver`, `entrypoints=websecure`
-4. **Nunca exponha portas** diretamente — use Traefik como proxy reverso
-5. **Salve os YAMLs** em `/root/` para facilitar redeploys futuros
-6. **Portainer API** permite deploy automatizado sem acessar o painel web
+1. **始终使用 `docker stack deploy` 而不是 `docker compose up`——Docker Swarm 负责管理容器副本、重启以及滚动更新。**
+2. **所有服务都必须加入 `$VPS_NETWORK` 这个 overlay 网络，以便 Traefik 能够作为反向代理。**
+3. **每个服务都必须添加以下 Traefik 标签：`traefik.enable=true`、`Host()`、`server.port`、`certResolver`、`entrypoints=websecure`。**
+4. **切勿直接暴露服务端口——请使用 Traefik 作为反向代理。**
+5. **将所有 YAML 配置文件保存在 `/root/` 目录下，以便将来方便重新部署。**
+6. **Portainer API 支持无需访问 Web 界面即可自动部署服务。**

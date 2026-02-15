@@ -1,6 +1,6 @@
 ---
 name: markitdown-skill
-description: OpenClaw agent skill for converting documents to Markdown. Documentation and utilities for Microsoft's MarkItDown library. Supports PDF, Word, PowerPoint, Excel, images (OCR), audio (transcription), HTML, YouTube.
+description: OpenClaw代理技能：用于将文档转换为Markdown格式。该工具提供了与Microsoft的MarkItDown库相关的文档和实用程序，支持转换PDF、Word、PowerPoint、Excel文件，以及图像（通过OCR技术进行识别）、音频文件（转换为文本）、HTML文档和YouTube视频。
 metadata:
   openclaw:
     emoji: "📄"
@@ -15,23 +15,23 @@ metadata:
         label: "Install MarkItDown CLI (pip)"
 ---
 
-# MarkItDown Skill
+# MarkItDown 技能
 
-Documentation and utilities for converting documents to Markdown using Microsoft's [MarkItDown](https://github.com/microsoft/markitdown) library.
+本技能提供了使用微软的 [MarkItDown](https://github.com/microsoft/markitdown) 库将文档转换为 Markdown 格式的工具和文档。
 
-> **Note:** This skill provides documentation and a batch script. The actual conversion is done by the `markitdown` CLI/library installed via pip.
+> **注意：** 本技能仅提供相关文档和批处理脚本；实际的转换工作由通过 `pip` 安装的 `markitdown` 命令行工具或库完成。
 
-## When to Use
+## 使用场景
 
-**Use markitdown for:**
-- 📄 Fetching documentation (README, API docs)
-- 🌐 Converting web pages to markdown
-- 📝 Document analysis (PDFs, Word, PowerPoint)
-- 🎬 YouTube transcripts
-- 🖼️ Image text extraction (OCR)
-- 🎤 Audio transcription
+**MarkItDown 可用于：**
+- 📄 获取文档（如 README 文件、API 文档）
+- 🌐 将网页转换为 Markdown 格式
+- 📝 文档分析（PDF、Word、PowerPoint 文件）
+- 🎬 YouTube 视频的字幕提取
+- 🖼️ 图片中的文字提取（OCR 技术）
+- 🎤 音频内容的转录
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Convert file to markdown
@@ -41,45 +41,46 @@ markitdown document.pdf -o output.md
 markitdown https://example.com/docs -o docs.md
 ```
 
-## Supported Formats
+## 支持的格式
 
-| Format | Features |
+| 格式 | 支持的功能 |
 |--------|----------|
-| PDF | Text extraction, structure |
-| Word (.docx) | Headings, lists, tables |
-| PowerPoint | Slides, text |
-| Excel | Tables, sheets |
-| Images | OCR + EXIF metadata |
-| Audio | Speech transcription |
-| HTML | Structure preservation |
-| YouTube | Video transcription |
+| PDF | 文本提取、结构保留 |
+| Word (.docx) | 标题、列表、表格 |
+| PowerPoint | 幻灯片、文本内容 |
+| Excel | 表格、单元格内容 |
+| 图片 | 图片中的文字提取（OCR 技术）及 EXIF 元数据 |
+| 音频 | 音频内容的转录 |
+| HTML | 保留文档结构 |
+| YouTube | 视频的字幕提取 |
 
-## Installation
+## 安装
 
-The skill requires Microsoft's `markitdown` CLI:
+本技能需要安装微软提供的 `markitdown` 命令行工具：
 
 ```bash
 pip install 'markitdown[all]'
 ```
 
-Or install specific formats only:
+或者仅安装特定格式的转换工具：
+
 ```bash
 pip install 'markitdown[pdf,docx,pptx]'
 ```
 
-## Common Patterns
+## 常用操作模式
 
-### Fetch Documentation
+### 获取文档
 ```bash
 markitdown https://github.com/user/repo/blob/main/README.md -o readme.md
 ```
 
-### Convert PDF
+### 转换 PDF 文件
 ```bash
 markitdown document.pdf -o document.md
 ```
 
-### Batch Convert
+### 批量转换
 ```bash
 # Using included script
 python ~/.openclaw/skills/markitdown/scripts/batch_convert.py docs/*.pdf -o markdown/ -v
@@ -100,14 +101,14 @@ result = md.convert("document.pdf")
 print(result.text_content)
 ```
 
-## Troubleshooting
+## 常见问题解答
 
-### "markitdown not found"
+### “markitdown 未找到”
 ```bash
 pip install 'markitdown[all]'
 ```
 
-### OCR Not Working
+### OCR 功能无法使用
 ```bash
 # Ubuntu/Debian
 sudo apt-get install tesseract-ocr
@@ -116,17 +117,17 @@ sudo apt-get install tesseract-ocr
 brew install tesseract
 ```
 
-## What This Skill Provides
+## 本技能提供的内容
 
-| Component | Source |
+| 组件 | 来源 |
 |-----------|--------|
-| `markitdown` CLI | Microsoft's pip package |
-| `markitdown` Python API | Microsoft's pip package |
-| `scripts/batch_convert.py` | This skill (utility) |
-| Documentation | This skill |
+| `markitdown` 命令行工具 | 微软提供的 Python 包 |
+| `markitdown` Python API | 微软提供的 Python 包 |
+| `scripts/batch_convert.py` | 本技能对应的批处理脚本 |
+| 文档 | 本技能的详细使用说明 |
 
-## See Also
+## 相关资源
 
-- [USAGE-GUIDE.md](USAGE-GUIDE.md) - Detailed examples
-- [reference.md](reference.md) - Full API reference
-- [Microsoft MarkItDown](https://github.com/microsoft/markitdown) - Upstream library
+- [USAGE-GUIDE.md](USAGE-GUIDE.md) - 详细使用示例
+- [reference.md](reference.md) - 完整的 API 参考文档
+- [Microsoft MarkItDown](https://github.com/microsoft/markitdown) - 原始库的链接

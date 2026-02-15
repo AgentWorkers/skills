@@ -1,24 +1,24 @@
 ---
 slug: "ids-checker"
 display_name: "Ids Checker"
-description: "Check BIM data against IDS (Information Delivery Specification). Validate model information requirements and compliance."
+description: "将 BIM 数据与 IDS（信息交付规范）进行比对，验证模型信息是否符合规范要求及合规性。"
 ---
 
-# IDS Checker
+# IDS检查器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-BIM data validation challenges:
-- Inconsistent model information
-- Missing required properties
-- Non-compliant data deliveries
-- Manual validation is time-consuming
+### 问题陈述
+BIM数据验证面临的挑战：
+- 模型信息不一致
+- 缺少必要的属性
+- 数据交付不符合标准
+- 手动验证耗时较长
 
-### Solution
-Automated IDS (Information Delivery Specification) checking system to validate BIM models against defined requirements.
+### 解决方案
+开发自动化的IDS（信息交付规范）检查系统，以根据定义的要求验证BIM模型。
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -446,7 +446,7 @@ class IDSChecker:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Create IDS checker
@@ -480,15 +480,15 @@ print(f"Compliance: {results['compliance_rate']}%")
 print(f"Status: {results['status']}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. LOD Validation
+### 1. LOD验证
 ```python
 lod_spec = checker.create_standard_lod_spec(350)
 results = checker.check_model(elements, lod_spec)
 ```
 
-### 2. Custom Requirement
+### 2. 定制需求
 ```python
 checker.add_property_requirement(
     "COBIE_BASIC", "CB-CUSTOM-01", "Fire Rating Required",
@@ -497,14 +497,14 @@ checker.add_property_requirement(
 )
 ```
 
-### 3. Get Failed Items
+### 3. 获取失败项
 ```python
 failed = checker.get_failed_checks()
 for item in failed:
     print(f"{item['element_id']}: {item['message']}")
 ```
 
-## Resources
-- **DDC Book**: Chapter 4.3 - Automated ETL Pipeline for Data Validation
-- **buildingSMART IDS**: https://technical.buildingsmart.org/projects/information-delivery-specification-ids/
-- **Website**: https://datadrivenconstruction.io
+## 资源
+- **DDC手册**：第4.3章 - 自动化ETL数据验证流程
+- **buildingSMART IDS**：https://technical.buildingsmart.org/projects/information-delivery-specification-ids/
+- **网站**：https://datadrivenconstruction.io

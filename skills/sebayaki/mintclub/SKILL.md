@@ -1,22 +1,22 @@
-# Mint Club V2 — Agent Skill
+# Mint Club V2 — 代理技能
 
-Interact with Mint Club V2 bonding curve tokens on Base using the `mc` CLI.
+使用 `mc` CLI 与 Mint Club V2 的债券曲线代币进行交互。
 
-## Setup
+## 设置
 
 ```bash
 npm install -g mint.club-cli
 ```
 
-Set your private key:
+设置您的私钥：
 ```bash
 mc wallet --set-private-key 0x...
 # Or export PRIVATE_KEY=0x...
 ```
 
-## Commands
+## 命令
 
-### Read Operations (no key needed)
+### 读取操作（无需输入密钥）
 
 ```bash
 mc info <token>          # Token info (supply, reserve, price, curve)
@@ -24,7 +24,7 @@ mc price <token>         # Price in reserve + USD
 mc wallet                # Wallet address and balances
 ```
 
-### Trading
+### 交易
 
 ```bash
 # Buy/sell via bonding curve (reserve token)
@@ -40,36 +40,36 @@ mc swap -i ETH -o HUNT -a 0.001              # Swap tokens
 mc swap -i HUNT -o USDC -a 100 -s 0.5        # Custom slippage
 ```
 
-### Create Token
+### 创建代币
 
 ```bash
 mc create -n "My Token" -s MYT -r HUNT -x 1000000 \
   --curve exponential --initial-price 0.01 --final-price 100
 ```
 
-Curve presets: `linear`, `exponential`, `logarithmic`, `flat`
+曲线预设：`linear`（线性）、`exponential`（指数）、`logarithmic`（对数）、`flat`（平坦）
 
-### Transfer
+### 转移
 
 ```bash
 mc send <address> -a 0.01                     # Send ETH
 mc send <address> -a 100 -t HUNT              # Send ERC-20
 ```
 
-## Token Resolution
+## 代币解析
 
-Use addresses or known symbols: `ETH`, `WETH`, `USDC`, `HUNT`, `MT`
+使用地址或已知符号：`ETH`、`WETH`、`USDC`、`HUNT`、`MT`
 
-## Environment
+## 环境变量
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `PRIVATE_KEY` | Wallet private key (or use `~/.mintclub/.env`) |
+| `PRIVATE_KEY` | 钱包私钥（或使用 `~/.mintclub/.env`） |
 
-## Notes
+## 注意事项
 
-- All operations are on **Base** (chain 8453)
-- Default slippage: 1%
-- Default royalty on create: 1% mint + 1% burn
-- Token addresses are auto-saved to `~/.mintclub/tokens.json`
-- Community: https://onchat.sebayaki.com/mintclub
+- 所有操作都在 **Base**（链号 8453）上进行
+- 默认滑点：1%
+- 创建代币时的默认费用：1% 的铸造费用 + 1% 的销毁费用
+- 代币地址会自动保存到 `~/.mintclub/tokens.json` 文件中
+- 社区网站：https://onchat.sebayaki.com/mintclub

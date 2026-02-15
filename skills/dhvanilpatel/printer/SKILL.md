@@ -1,14 +1,14 @@
 ---
 name: printer
-description: Manage printers via CUPS on macOS (discover, add, print, queue, status, wake).
+description: 在 macOS 上通过 CUPS 管理打印机（发现、添加、打印、排队、查看状态、唤醒打印机）。
 metadata: {"clawdbot":{"emoji":"🖨️","os":["darwin"],"requires":{"bins":["lp","lpstat","lpadmin"]}}}
 ---
 
-# Printer (CUPS)
+# 打印机（CUPS）
 
-Control printers on macOS using built-in CUPS commands. No external CLI needed.
+在 macOS 上，可以使用内置的 CUPS 命令来控制打印机，无需额外的命令行工具（CLI）。
 
-## Discover printers
+## 发现打印机
 
 ```bash
 # Network printers (Bonjour/AirPrint)
@@ -25,7 +25,7 @@ lpinfo --include-schemes dnssd -v # dnssd backends
 ippfind --timeout 5
 ```
 
-## Add a printer (driverless IPP Everywhere)
+## 添加打印机（无驱动程序的 IPP Everywhere）
 
 ```bash
 # Recommended: driverless queue
@@ -38,7 +38,7 @@ lpadmin -d MyPrinter
 sudo lpadmin -p MyPrinter -o cupsSNMPSupplies=true
 ```
 
-## Print files
+## 打印文件
 
 ```bash
 lp filename.pdf                      # to default printer
@@ -52,7 +52,7 @@ lp -d MyPrinter -o ColorModel=Gray file.pdf  # grayscale
 echo "Hello World" | lp -d MyPrinter
 ```
 
-## Queue management
+## 队列管理
 
 ```bash
 # Check status
@@ -72,7 +72,7 @@ cupsaccept MyPrinter       # accept new jobs
 cupsreject MyPrinter       # reject new jobs
 ```
 
-## Printer options
+## 打印机选项
 
 ```bash
 # List available options for a printer
@@ -85,7 +85,7 @@ lpoptions -p MyPrinter -o sides=two-sided-long-edge
 sudo lpadmin -p MyPrinter -o sides-default=two-sided-long-edge
 ```
 
-## Status and diagnostics
+## 状态与诊断
 
 ```bash
 # IPP status query (detailed)
@@ -96,7 +96,7 @@ ipptool -t ipp://PRINTER_IP/ipp/print get-printer-attributes.test \
   | grep -iE 'printer-state|marker|supply|media|error'
 ```
 
-## Wake printer from sleep
+## 唤醒处于睡眠状态的打印机
 
 ```bash
 # IPP poke (usually wakes the printer)
@@ -109,33 +109,33 @@ curl -s -m 5 http://PRINTER_IP/ >/dev/null
 nc -zw2 PRINTER_IP 631
 ```
 
-## Keep-alive (prevent deep sleep)
+## 防止打印机进入深度睡眠状态
 
 ```bash
 # Poll every 5 minutes (runs in foreground)
 ipptool -q -T 3 -i 300 ipp://PRINTER_IP/ipp/print get-printer-attributes.test
 ```
 
-For persistent keep-alive, create a launchd agent.
+若需持续保持打印机处于活跃状态，可以创建一个 launchd 代理程序。
 
-## Toner levels via SNMP
+## 通过 SNMP 查看墨盒剩余量
 
-Requires `brew install net-snmp`:
+需要先安装 `brew install net-snmp`：
 
 ```bash
 snmpwalk -v2c -c public PRINTER_IP 1.3.6.1.2.1.43.11.1.1
 ```
 
-Note: SNMP may be disabled on the printer. Check Remote UI settings.
+注意：打印机可能已禁用了 SNMP 功能，请检查打印机的远程用户界面（Remote UI）设置。
 
-## Remote UI (web interface)
+## 远程用户界面（Web 界面）
 
-Most network printers expose a web UI at `http://PRINTER_IP/` for:
-- Sleep/timer settings (Settings > Timer Settings > Auto Sleep Time)
-- Network protocol config (enable/disable IPP, SNMP, raw 9100)
-- Consumables status
+大多数网络打印机都提供了一个 Web 界面，地址为 `http://PRINTER_IP/`，可以用于：
+- 设置睡眠/定时功能（Settings > Timer Settings > Auto Sleep Time）
+- 配置网络协议（启用/禁用 IPP、SNMP、原始的 9100 端口）
+- 查看耗材状态
 
-## Troubleshooting
+## 故障排除
 
 ```bash
 # Printer stuck/disabled? Re-enable it
@@ -152,11 +152,10 @@ lpadmin -p MyPrinter -E -v "ipp://..." -m everywhere
 tail -f /var/log/cups/error_log
 ```
 
-## Notes
-
-- Prefer `ipp://` or `ipps://` URIs over raw 9100 or LPD
-- `-m everywhere` auto-configures from printer's IPP capabilities
-- Option names vary by printer; use `lpoptions -l` to discover
-- Sleep settings are best configured via printer's Remote UI
-- Auto-sleep (1 min) keeps services alive - print jobs wake the printer automatically
-- **If the printer is completely unresponsive** (IPP port closed, HTTP timeout), it's likely in deep sleep or powered off. Message the user to check/wake the printer physically.
+## 注意事项：
+- 建议使用 `ipp://` 或 `ipps://` 作为 URI，而不是原始的 9100 或 LPD 协议。
+- 参数 `-m everywhere` 会根据打印机的 IPP 功能自动进行配置。
+- 不同打印机的选项名称可能有所不同，可以使用 `lpoptions -l` 命令来查看详细信息。
+- 最佳的睡眠设置方式是通过打印机的远程用户界面进行配置。
+- 自动睡眠功能（1 分钟）有助于保持打印服务的活跃状态，打印任务会自动唤醒打印机。
+- **如果打印机完全无响应**（IPP 端口关闭或 HTTP 请求超时），则可能是打印机进入了深度睡眠状态或已关闭。请通知用户手动检查或唤醒打印机。

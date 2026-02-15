@@ -1,36 +1,36 @@
 ---
 name: alert-manager
-description: Sets up and manages alerts for critical SEO and GEO metrics including ranking drops, traffic changes, technical issues, and competitor movements. Enables proactive monitoring and quick response to issues.
+description: 设置并管理针对关键SEO和地理位置（GEO）指标的警报，这些指标包括排名下降、流量变化、技术问题以及竞争对手的动态。该功能支持主动监控，并能快速响应各种问题。
 geo-relevance: "low"
 ---
 
-# Alert Manager
+# 警报管理器
 
-This skill helps you set up proactive monitoring alerts for critical SEO and GEO metrics. Get notified when rankings drop, traffic changes significantly, technical issues occur, or competitors make moves.
+此功能可帮助您为关键的SEO和地理位置（GEO）指标设置主动监控警报。当排名下降、流量发生显著变化、出现技术问题或竞争对手采取行动时，系统会向您发送通知。
 
-## When to Use This Skill
+## 适用场景
 
-- Setting up SEO monitoring systems
-- Creating ranking drop alerts
-- Monitoring technical SEO health
-- Tracking competitor movements
-- Alerting on content performance changes
-- Monitoring GEO/AI visibility changes
-- Setting up brand mention alerts
+- 设置SEO监控系统
+- 创建排名下降警报
+- 监控技术SEO的健康状况
+- 跟踪竞争对手的动态
+- 对内容表现变化进行警报提醒
+- 监控地理位置/AI可见性的变化
+- 设置品牌提及警报
 
-## What This Skill Does
+## 功能概述
 
-1. **Alert Configuration**: Sets up custom alert thresholds
-2. **Multi-Metric Monitoring**: Tracks rankings, traffic, technical issues
-3. **Threshold Management**: Defines when alerts trigger
-4. **Priority Classification**: Categorizes alerts by severity
-5. **Notification Setup**: Configures how alerts are delivered
-6. **Alert Response Plans**: Creates action plans for each alert type
-7. **Alert History**: Tracks alert patterns over time
+1. **警报配置**：设置自定义的警报阈值
+2. **多指标监控**：跟踪排名、流量和技术问题
+3. **阈值管理**：定义警报触发条件
+4. **优先级分类**：根据严重程度对警报进行分类
+5. **通知设置**：配置警报的传递方式
+6. **警报响应计划**：为每种警报类型制定行动计划
+7. **警报历史记录**：记录警报的演变过程
 
-## How to Use
+## 使用方法
 
-### Set Up Alerts
+### 设置警报
 
 ```
 Set up SEO monitoring alerts for [domain]
@@ -40,7 +40,7 @@ Set up SEO monitoring alerts for [domain]
 Create ranking drop alerts for my top 20 keywords
 ```
 
-### Configure Specific Alerts
+### 配置特定警报
 
 ```
 Alert me when [specific condition]
@@ -50,34 +50,34 @@ Alert me when [specific condition]
 Set up competitor monitoring for [competitor domains]
 ```
 
-### Review Alert System
+### 查看警报系统
 
 ```
 Review and optimize my current SEO alerts
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的占位符，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~SEO tool + ~~search console + ~~web crawler connected:**
-Automatically monitor real-time metric feeds for ranking changes via ~~SEO tool API, indexing and coverage alerts from ~~search console, and technical health alerts from ~~web crawler. Set up automated threshold-based alerts with notification delivery.
+**当连接了 ~~SEO工具 + ~~搜索控制台 + ~~网络爬虫** 时：**
+- 通过 ~~SEO工具API** 自动监控实时指标数据，通过 ~~搜索控制台** 获取索引和覆盖率警报，以及通过 ~~网络爬虫** 获取技术健康状况警报。设置基于阈值的自动化警报，并配置通知方式。
 
-**With manual data only:**
-Ask the user to provide:
-1. Current baseline metrics for alert thresholds (rankings, traffic, backlinks)
-2. Critical keywords or pages to monitor
-3. Alert priority levels and notification preferences
-4. Historical data to understand normal fluctuation ranges
-5. Manual reporting on metric changes when they check their tools
+**仅使用手动数据时：**
+- 要求用户提供：
+  - 用于设置警报阈值的当前基准指标（排名、流量、反向链接）
+  - 需要监控的关键关键词或页面
+  - 警报的优先级和通知偏好
+  - 历史数据以了解正常波动范围
+  - 用户在检查工具时手动报告指标变化
 
-Proceed with the alert configuration using provided parameters. User will need to manually check metrics and report changes for alert triggers.
+根据提供的参数进行警报配置。用户需要手动检查指标并报告变化情况以触发警报。
 
-## Instructions
+## 操作步骤
 
-When a user requests alert setup:
+当用户请求设置警报时：
 
-1. **Define Alert Categories**
+1. **定义警报类别**
 
    ```markdown
    ## SEO Alert System Configuration
@@ -98,7 +98,7 @@ When a user requests alert setup:
    | Brand Alerts | Brand mentions and reputation | Medium |
    ```
 
-2. **Configure Ranking Alerts**
+2. **配置排名警报**
 
    ```markdown
    ## Ranking Alerts
@@ -137,7 +137,7 @@ When a user requests alert setup:
    | [keyword 3] | [X] | Drop ≥10 | 🟡 Medium |
    ```
 
-3. **Configure Traffic Alerts**
+3. **配置流量警报**
 
    ```markdown
    ## Traffic Alerts
@@ -176,7 +176,7 @@ When a user requests alert setup:
    | CVR Decline | Conversion rate drops 20%+ | 🔴 High |
    ```
 
-4. **Configure Technical SEO Alerts**
+4. **配置技术SEO警报**
 
    ```markdown
    ## Technical SEO Alerts
@@ -217,7 +217,7 @@ When a user requests alert setup:
    | Malware Detected | Site flagged for malware | 🔴 Critical |
    ```
 
-5. **Configure Backlink Alerts**
+5. **配置反向链接警报**
 
    ```markdown
    ## Backlink Alerts
@@ -246,7 +246,7 @@ When a user requests alert setup:
    | Anchor Over-Optimization | Exact match anchors >30% | 🟡 Medium |
    ```
 
-6. **Configure Competitor Alerts**
+6. **配置竞争对手警报**
 
    ```markdown
    ## Competitor Monitoring Alerts
@@ -276,7 +276,7 @@ When a user requests alert setup:
    | [Competitor 3] | [domain] | [X] keywords | Low |
    ```
 
-7. **Configure GEO/AI Alerts**
+7. **配置地理位置/AI警报**
 
    ```markdown
    ## GEO (AI Visibility) Alerts
@@ -298,7 +298,7 @@ When a user requests alert setup:
    | GEO Competitor | Competitor cited where you're not | 🟡 Medium |
    ```
 
-8. **Configure Brand Alerts**
+8. **配置品牌警报**
 
    ```markdown
    ## Brand Monitoring Alerts
@@ -321,7 +321,7 @@ When a user requests alert setup:
    | Competitor Comparison | Named in competitor comparison | 🟡 Medium |
    ```
 
-9. **Define Alert Response Plans**
+9. **定义警报响应计划**
 
    ```markdown
    ## Alert Response Plans
@@ -368,7 +368,7 @@ When a user requests alert setup:
    | Info Alerts | Log for trend analysis |
    ```
 
-10. **Set Up Alert Delivery**
+10. **设置警报传递方式**
 
     ```markdown
     ## Alert Notification Setup
@@ -406,7 +406,7 @@ When a user requests alert setup:
     | 24 hours (Medium) | Team → Lead |
     ```
 
-11. **Create Alert Summary**
+11. **创建警报摘要**
 
     ```markdown
     # SEO Alert System Summary
@@ -446,25 +446,25 @@ When a user requests alert setup:
     - [ ] Clean up false positives
     ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Alert thresholds are based on realistic baseline data
-- [ ] Critical keywords and pages clearly identified
-- [ ] Response plans defined for each alert priority level
-- [ ] Notification channels configured with appropriate recipients
+### 输入验证
+- [ ] 警报阈值基于合理的基准数据
+- [ ] 关键关键词和页面已明确识别
+- [ ] 为每个警报优先级定义了响应计划
+- [ ] 通知渠道已配置正确的接收者
 
-### Output Validation
-- [ ] Every metric cites its data source and collection date
-- [ ] Alert thresholds account for normal metric fluctuations
-- [ ] Response plans are specific and time-bound
-- [ ] Source of each alert trigger clearly stated (~~SEO tool API alert, ~~search console notification, ~~web crawler alert, or manual user check)
+### 输出验证
+- [ ] 每个指标都标明了数据来源和收集日期
+- [ ] 警报阈值考虑了指标的正常波动范围
+- [ ] 响应计划具体且具有时间限制
+- [ ] 每个警报触发的来源已明确说明（~~SEO工具API警报、~~搜索控制台通知、~~网络爬虫警报或手动用户检查）
 
-## Example
+## 示例
 
-**User**: "Set up ranking drop alerts for my top keywords"
+**用户**：“为我的热门关键词设置排名下降警报”
 
-**Output**:
+**输出**：
 
 ```markdown
 ## Ranking Alert Configuration
@@ -497,57 +497,55 @@ When a user requests alert setup:
 **Notification**: Email + Slack to SEO team immediately
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Start simple** - Don't create too many alerts initially
-2. **Tune thresholds** - Adjust based on normal fluctuations
-3. **Avoid alert fatigue** - Too many alerts = ignored alerts
-4. **Document response plans** - Know what to do when alerts fire
-5. **Review regularly** - Alerts need maintenance as your SEO matures
-6. **Include positive alerts** - Track wins, not just problems
+1. **从简单开始**——最初不要设置过多的警报
+2. **调整阈值**——根据正常波动情况进行调整
+3. **避免警报疲劳**——过多的警报可能导致用户忽略它们
+4. **记录响应计划**——明确知道收到警报时应采取的措施
+5. **定期审查**——随着SEO策略的成熟，需要不断维护警报系统
+6. **包括正面警报**——不仅要关注问题，也要跟踪成功的情况
 
-## Alert Threshold Recommendations
+## 警报阈值建议
 
-### Recommended Alert Thresholds by Metric
+### 按指标推荐的警报阈值
 
-| Metric | Warning Threshold | Critical Threshold | Check Frequency |
+| 指标 | 警告阈值 | 临界阈值 | 检查频率 |
 |--------|------------------|-------------------|-----------------|
-| Organic traffic | -15% WoW | -30% WoW | Daily |
-| Average position (tracked KWs) | >3 position drop | >5 position drop | Daily |
-| Pages indexed | -5% change | -20% change | Weekly |
-| Crawl errors | >10 new errors | >50 new errors | Daily |
-| Core Web Vitals | Any metric moves to "Needs Improvement" | Any metric moves to "Poor" | Weekly |
-| Backlinks lost | >5% of total in 1 week | >15% in 1 week | Weekly |
-| AI citation loss | Any key query loses citation | >20% queries lose citation | Weekly |
-| Server errors (5xx) | >1% of pages | >5% of pages | Daily |
-| Security issues | Any detected | Any detected | Daily |
-| Manual penalty | N/A | Any notification | Daily |
+| 自然流量 | -15%（每周一次） | -30%（每周一次） | 每日 |
+| 平均排名位置（关注的关键词） | 排名下降超过3位 | 排名下降超过5位 | 每日 |
+| 被索引的页面数量 | 变化超过5% | 变化超过20% | 每周 |
+| 爬取错误 | 新错误超过10个 | 新错误超过50个 | 每日 |
+| 核心网站健康指标 | 任何指标降至“需要改进” | 任何指标降至“较差” | 每周 |
+| 失去的反向链接 | 一周内超过总链接的5% | 一周内超过15% | 每周 |
+| AI引用损失 | 任何关键查询的引用丢失 | 超过20%的查询引用丢失 | 每周 |
+| 服务器错误（5xx状态码） | 超过1%的页面出现此类错误 | 超过5%的页面出现此类错误 | 每日 |
+| 安全问题 | 任何问题被检测到 | 任何问题被检测到 | 每日 |
+| 手动处罚 | 无 | 任何通知 | 每日 |
 
-## Alert Fatigue Prevention
+## 避免警报疲劳的最佳实践
 
-### Alert Management Best Practices
-
-| Practice | Why | How |
+| 实践 | 原因 | 方法 |
 |----------|-----|-----|
-| **Tiered severity** | Not all alerts need immediate action | Critical: Immediate; Warning: Review daily; Info: Weekly digest |
-| **Threshold tuning** | Reduce false positives | Start conservative, tighten after 1 month of baseline data |
-| **Grouping** | Prevent alert storms | Group related alerts (e.g., multiple rank drops = "ranking alert") |
-| **Cooldown periods** | Avoid repeated alerts for same issue | Do not re-alert on same metric for 24-48 hours |
-| **Scheduled digests** | Reduce notification volume | Batch non-urgent alerts into daily or weekly email |
-| **Auto-resolution** | Close alerts when metric recovers | Track recovery and auto-close if threshold restored |
+| **分级严重性** | 并非所有警报都需要立即处理 | 严重问题：立即处理；警告：每日查看；信息性警报：每周汇总 |
+| **阈值调整** | 减少误报 | 初始时设置保守的阈值，一个月后根据数据进行调整 |
+| **分组警报** | 避免同一问题的重复警报 | 将相关警报分组（例如，多次排名下降归为“排名警报” |
+| **冷却期** | 避免同一指标的重复警报 | 同一指标在24-48小时内不重复发送警报 |
+| **定期汇总** | 减少通知量 | 将非紧急警报批量发送到每日或每周邮件 |
+| **自动解决** | 当指标恢复时关闭警报 | 监测指标恢复情况，并在阈值恢复后自动关闭警报 |
 
-### Alert Priority Classification
+## 警报优先级分类
 
-| Priority | Response Time | Notification Channel | Example |
+| 优先级 | 响应时间 | 通知渠道 | 示例 |
 |----------|-------------|---------------------|---------|
-| P0 — Emergency | Within 1 hour | SMS + Slack + Email | Site down, manual penalty, security breach |
-| P1 — Urgent | Same day | Slack + Email | Major traffic drop, crawl blocked, indexing issues |
-| P2 — Important | Within 48 hours | Email + Weekly digest | Rank drops, CWV degradation, backlink loss |
-| P3 — Monitor | Next weekly review | Weekly digest only | Minor fluctuations, new competitor content |
+| P0 — 紧急 | 1小时内 | SMS + Slack + 电子邮件 | 网站瘫痪、手动处罚、安全漏洞 |
+| P1 — 紧急 | 当天 | Slack + 电子邮件 | 流量大幅下降、爬虫受阻、索引问题 |
+| P2 — 重要 | 48小时内 | 电子邮件 + 每周汇总 | 排名下降、网站健康指标下降、反向链接丢失 |
+| P3 — 监控 | 下周审查 | 仅每周汇总 | 轻微波动、竞争对手发布新内容 |
 
-## Escalation Path Templates
+## 升级流程模板
 
-### Standard Escalation Flow
+### 标准升级流程
 
 ```
 Alert Triggers -> Automated Classification -> Route by Priority
@@ -567,48 +565,47 @@ P3: Add to weekly digest
     -> If persists >1 month -> Escalate to P2
 ```
 
-## Alert Response Playbooks
+## 警报响应方案
 
-### Traffic Drop Alert
+### 流量下降警报
 
-| Step | Action | If True | If False |
+| 步骤 | 操作 | 如果情况属实 | 如果情况不属实 |
 |------|--------|---------|----------|
-| 1 | Check if site-wide or page-specific | Go to Step 2a | Go to Step 2b |
-| 2a | Check Google Search Status Dashboard for algorithm update | Document and wait | Go to Step 3 |
-| 2b | Check specific page for technical issues (404, noindex, slow) | Fix technical issue | Go to Step 3 |
-| 3 | Check Search Console for crawl errors or index drops | Fix crawl/index issues | Go to Step 4 |
-| 4 | Check if competitors published new content | Analyze and plan content response | Go to Step 5 |
-| 5 | Check backlink profile for lost links | Outreach for link recovery | Escalate for deeper analysis |
+| 1 | 检查是整个网站还是特定页面的问题 | 进入步骤2a | 进入步骤2b |
+| 2a | 查看Google搜索状态仪表板，确认是否有算法更新 | 记录情况并等待 | 进入步骤3 |
+| 2b | 检查特定页面是否存在技术问题（如404错误、页面无法被索引、页面加载缓慢） | 解决技术问题 | 进入步骤3 |
+| 3 | 查看搜索控制台，确认是否有爬取错误或索引问题 | 解决爬取/索引问题 | 进入步骤4 |
+| 4 | 检查竞争对手是否发布了新内容 | 分析并制定内容应对策略 | 进入步骤5 |
+| 5 | 检查排名页面的反向链接情况 | 寻求恢复丢失链接的方法 | 如需进一步分析，则升级处理 |
 
-### Ranking Drop Alert
+### 排名下降警报
 
-| Step | Action | If True | If False |
+| 步骤 | 操作 | 如果情况属实 | 如果情况不属实 |
 |------|--------|---------|----------|
-| 1 | Verify the drop is real (check multiple tools, wait 24-48h) | Confirmed drop, go to Step 2 | False alarm, close alert |
-| 2 | Check if algorithm update occurred | Document, monitor, improve content quality | Go to Step 3 |
-| 3 | Check if your page changed recently | Revert or fix the change | Go to Step 4 |
-| 4 | Analyze the SERP — did a new competitor appear? | Study competitor, plan response | Go to Step 5 |
-| 5 | Check for lost backlinks to the ranking page | Recover links or build new ones | Escalate for full audit |
+| 1 | 确认排名下降是否真实（通过多个工具验证，等待24-48小时） | 确认下降情况，进入步骤2 | 警报误报，关闭警报 |
+| 2 | 检查是否有算法更新 | 记录情况，监控网站表现，提升内容质量 | 进入步骤3 |
+| 3 | 检查页面是否最近发生了变化 | 恢复或修复页面变化 | 进入步骤4 |
+| 4 | 分析搜索引擎结果页（SERP）——是否有新竞争对手出现 | 分析竞争对手情况，制定应对策略 | 进入步骤5 |
+| 5 | 检查排名页面的反向链接情况 | 恢复丢失的链接或建立新的链接 | 如需进一步分析，则升级处理 |
 
-### Technical Alert (Site Down / 5xx Errors)
+### 技术警报（网站瘫痪/5xx错误）
 
-| Step | Action | If True | If False |
+| 步骤 | 操作 | 如果情况属实 | 如果情况不属实 |
 |------|--------|---------|----------|
-| 1 | Confirm site is actually down (check from multiple locations) | Go to Step 2 | Close alert as false positive |
-| 2 | Check server/hosting status page | Provider issue — contact support, wait | Go to Step 3 |
-| 3 | Check recent deployments or configuration changes | Rollback the change | Go to Step 4 |
-| 4 | Check server resource usage (CPU, memory, disk) | Scale resources or optimize | Escalate to engineering |
+| 1 | 确认网站确实瘫痪（从多个位置验证） | 关闭误报警报 | |
+| 2 | 检查服务器/托管服务状态 | 如果是服务提供商的问题，请联系支持团队并等待 | 进入步骤3 |
+| 3 | 检查最近的部署或配置更改 | 撤销更改 | 进入步骤4 |
+| 4 | 检查服务器资源使用情况（CPU、内存、磁盘） | 调整资源或优化配置 | 升级处理 |
 
-## Reference Materials
+## 参考资料
 
-- [Alert Threshold Guide](./references/alert-threshold-guide.md) — Recommended thresholds by metric, fatigue prevention strategies, and escalation path templates
+- [警报阈值指南](./references/alert-threshold-guide.md) — 按指标推荐的阈值、避免警报疲劳的策略以及升级流程模板
 
-## Related Skills
+## 相关功能
 
-- [rank-tracker](../rank-tracker/) — Ranking data for alerts
-- [backlink-analyzer](../backlink-analyzer/) — Backlink monitoring
-- [technical-seo-checker](../../optimize/technical-seo-checker/) — Technical monitoring
-- [performance-reporter](../performance-reporter/) — Alert summaries in reports
-- [memory-management](../../cross-cutting/memory-management/) — Store alert history and thresholds in project memory
-- [content-refresher](../../optimize/content-refresher/) — Content decay alerts trigger refresh workflows
-
+- [rank-tracker](../rank-tracker/) — 用于生成排名数据的工具
+- [backlink-analyzer](../backlink-analyzer/) — 用于监控反向链接的工具
+- [technical-seo-checker](../../optimize/technical-seo-checker/) — 用于技术监控的工具
+- [performance-reporter](../performance-reporter/) — 用于在报告中生成警报摘要的工具
+- [memory-management](../../cross-cutting/memory-management/) — 用于存储警报历史记录和阈值的工具
+- [content-refresher](../../optimize/content-refresher/) — 用于触发内容更新警报的工具

@@ -1,80 +1,80 @@
 ---
 name: Regex
-description: Write correct, efficient regular expressions across different engines.
+description: 在不同引擎中编写正确且高效的正则表达式。
 metadata: {"clawdbot":{"emoji":"🔍","os":["linux","darwin","win32"]}}
 ---
 
-## Greedy vs Lazy
+## 贪婪匹配（Greedy Matching）与懒惰匹配（Lazy Matching）
 
-- `.*` is greedy—matches as much as possible; `.*?` is lazy—matches minimum
-- Greedy often overshoots: `<.*>` on `<a>b</a>` matches entire string, not `<a>`
-- Default quantifiers `+ * {n,}` are greedy—add `?` for lazy: `+?` `*?` `{n,}?`
+- `.*` 表示贪婪匹配：会匹配尽可能多的字符；`.*?` 表示懒惰匹配：只匹配最少的字符。
+- 贪婪匹配常常会过度匹配：例如，`<.*>` 会匹配整个字符串 `<a>b`，而不仅仅是 `<a>`。
+- 默认的量词（`+`、`*`、`{n,}`）都是贪婪匹配的；要使用懒惰匹配，需要在量词后加上 `?`：`+?`、`*?`、`{n,}?`。
 
-## Escaping
+## 转义（Escaping）
 
-- Metacharacters need escape: `\. \* \+ \? \[ \] \( \) \{ \} \| \\ \^ \$`
-- Inside character class `[]`: only `]`, `\`, `^`, `-` need escape (and `^` only at start, `-` only mid)
-- Literal backslash: `\\` in regex, but in strings often need `\\\\` (double escape)
+- 特殊字符需要转义：`.\`、`\*`、`\+`、`\?`、`\[`、`]`、`(`、`)`、`{`、`}`、`|`、`\\`、`^`、`$`。
+- 在字符类 `[...]` 中，只有 `]`、`\`、`^`、`-` 需要转义（`^` 仅在开头需要转义，`-` 仅在中间需要转义）。
+- 字符串中的反斜杠 `\\` 需要使用双反斜杠 `\\\\` 来表示。
 
-## Anchors
+## 锚点（ Anchors ）
 
-- `^` start, `$` end—but behavior changes with multiline flag
-- Multiline mode: `^` `$` match line starts/ends; without, only string start/end
-- `\A` always string start, `\Z` always string end (not all engines)
-- Word boundary `\b` matches position, not character—`\bword\b` for whole words
+- `^` 表示字符串的开始，`$` 表示字符串的结束；但是当使用多行模式时，它们的含义会发生变化。
+- 在多行模式下，`^` 和 `$` 会匹配整行的开始和结束；如果不使用多行模式，它们只匹配字符串的开始和结束。
+- `\A` 总是表示字符串的开始，`\Z` 总是表示字符串的结束（但并非所有正则表达式引擎都支持）。
+- 字符边界 `\b` 匹配字符的位置，而不是字符本身；例如 `\bword\b` 可以匹配整个单词。
 
-## Character Classes
+## 字符类（Character Classes）
 
-- `[abc]` matches one of a, b, c; `[^abc]` matches anything except a, b, c
-- Ranges: `[a-z]` `[0-9]`—but `[a-Z]` is invalid (ASCII order matters)
-- Shorthand: `\d` digit, `\w` word char, `\s` whitespace; uppercase negates: `\D` `\W` `\S`
-- `.` matches any char except newline—use `[\s\S]` for truly any, or `s` flag if available
+- `[abc]` 匹配 `a`、`b`、`c` 中的任意一个字符；`[^abc]` 匹配除了 `a`、`b`、`c` 之外的所有字符。
+- 范围：`[a-z]`、`[0-9]`；但是 `[a-Z]` 是无效的（因为 ASCII 字母是有序的）。
+- 简写形式：`\d` 表示数字，`\w` 表示单词字符，`\s` 表示空白字符；大写形式表示否定：`\D`、`\W`、`\S`。
+- `.` 匹配除换行符之外的所有字符；如果需要匹配所有字符，可以使用 `[\s\S]`；如果支持的话，也可以使用 `s` 标志。
 
-## Groups
+## 组（Groups）
 
-- Capturing `()` vs non-capturing `(?:)`—use `(?:)` when you don't need backreference
-- Named groups: `(?<name>...)` or `(?P<name>...)` depending on engine
-- Backreferences: `\1` `\2` refer to captured groups in same pattern
-- Groups also establish scope for alternation: `cat|dog` vs `ca(t|d)og`
+- 捕获组 `()` 和非捕获组 `(?:)`：当不需要回引用时，使用 `(?:)`。
+- 命名组：根据正则表达式引擎的不同，可以使用 `(?<name>...)` 或 `(?P<name>...)`。
+- 回引用：`\1`、`\2` 分别引用同一个模式中的捕获组。
+- 组还可以用于定义字符组的范围：例如 `cat|dog` 和 `ca(t|d)og` 的区别。
 
-## Lookahead & Lookbehind
+## 前瞻（Lookahead）与后瞻（Lookbehind）
 
-- Positive lookahead `(?=...)`: assert what follows, don't consume
-- Negative lookahead `(?!...)`: assert what doesn't follow
-- Positive lookbehind `(?<=...)`: assert what precedes
-- Negative lookbehind `(?<!...)`: assert what doesn't precede
-- Lookbehinds must be fixed-width in most engines—no `*` or `+` inside
+- 正向前瞻 `(?=...)`：用于验证后面的内容，但不会消耗字符。
+- 负向前瞻 `(?!=...)`：用于验证前面的内容。
+- 正向后瞻 `(?<=...)`：用于验证前面的内容。
+- 负向后瞻 `(?<!...)`：用于验证前面的内容。
+- 在大多数正则表达式引擎中，后瞻操作必须具有固定的长度；不能在后面使用 `*` 或 `+`。
 
-## Flags
+## 标志（Flags）
 
-- `i` case-insensitive, `m` multiline (^$ match lines), `g` global (find all)
-- `s` (dotall): `.` matches newline—not supported everywhere
-- `u` unicode: enables `\p{}` properties, proper surrogate handling
-- Flags syntax varies: `/pattern/flags` (JS), `(?flags)` inline, or function arg (Python `re.I`)
+- `i` 表示不区分大小写，`m` 表示多行模式（`^` 和 `$` 会匹配整行），`g` 表示全局匹配（查找所有匹配项）。
+- `s`（dotall）：`.` 会匹配换行符；但并非所有引擎都支持这个功能。
+- `u` 表示使用 Unicode 编码；启用 `\p{}` 等属性，正确处理代理字符。
+- 标志的语法因引擎而异：例如 JavaScript 中使用 `/pattern/flags`，Python 中使用 `(?flags)`，Python 的 `re.I` 参数也可以设置标志。
 
-## Engine Differences
+## 正则表达式引擎的差异
 
-- JavaScript: no lookbehind until ES2018; no `\A` `\Z`; no possessive quantifiers
-- Python `re`: uses `(?P<name>)` for named groups; no `\p{}` without `regex` module
-- PCRE (PHP, grep -P): full features; possessive `++` `*+`; recursive patterns
-- Go: RE2 engine, no backreferences, no lookahead—guaranteed linear time
+- JavaScript：在 ES2018 之前不支持后瞻操作；没有 `\A` 和 `\Z`；没有所谓的“占有性量词”（如 `++`、`*+`）。
+- Python 的 `re` 模块使用 `(?P<name>)` 来定义命名组；没有 `regex` 模块时不能使用 `\p{}`。
+- PCRE（PHP、grep -P）：支持所有正则表达式的功能；有“占有性量词”（如 `++`、`*+`）；支持递归模式。
+- Go 使用 RE2 正则表达式引擎：没有回引用功能，也不支持前瞻操作；保证算法的时间复杂度为线性。
 
-## Performance
+## 性能（Performance）
 
-- Catastrophic backtracking: `(a+)+` against `aaaaaaaaaab` is exponential—avoid nested quantifiers
-- Possessive quantifiers `++` `*+` prevent backtracking—use when backtracking pointless
-- Atomic groups `(?>...)` don't give back chars—similar to possessive
-- Anchor patterns when possible—`^prefix` is O(1), unanchored `prefix` is O(n)
+- 深度回溯（Catastrophic Backtracking）会导致性能急剧下降：例如 `(a+)+` 在处理 `aaaaaaaaaab` 时会导致指数级的性能问题；应避免使用嵌套的量词。
+- “占有性量词”（如 `++`、`*+`）可以防止深度回溯；在不需要回溯时可以使用它们。
+- 原子组 `(??>...)` 不会返回捕获的字符；它们的行为类似于“占有性量词”。
+- 尽可能使用锚点模式：`^prefix` 的时间复杂度为 O(1)，未使用的锚点模式的时间复杂度为 O(n)。
 
-## Common Mistakes
+## 常见错误
 
-- Email validation: RFC-compliant regex is 6000+ chars—use simple check or library
-- URL matching: edge cases are endless—use URL parser, regex for quick extraction only
-- Don't use regex for HTML/XML—use a parser; regex can't handle nesting
-- Forgetting to escape user input—regex injection is real; use literal escaping functions
+- 邮箱地址验证：符合 RFC 标准的正则表达式可能非常长（通常超过 6000 个字符）；建议使用简单的验证方法或第三方库。
+- URL 匹配：边缘情况非常多；建议使用 URL 解析器，仅用正则表达式进行快速提取。
+- 不要使用正则表达式处理 HTML 或 XML 数据：正则表达式无法处理嵌套结构。
+- 忘记转义用户输入：这可能导致正则表达式注入攻击；必须对用户输入进行转义处理。
 
-## Testing
+## 测试（Testing）
 
-- Test edge cases: empty string, special chars, unicode, very long input
-- Visualize with tools: regex101.com shows matches and explains
-- Check which engine documentation you're reading—features vary significantly
+- 测试边缘情况：空字符串、特殊字符、Unicode 字符、非常长的输入字符串。
+- 使用工具进行可视化展示：例如 regex101.com 可以帮助你查看匹配结果并理解正则表达式的行为。
+- 确认你正在阅读的是哪个正则表达式引擎的文档：不同引擎的功能可能存在显著差异。

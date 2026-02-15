@@ -1,45 +1,45 @@
 ---
 name: pathe-movie
-description: Lookup Pathé Netherlands movies, posters, descriptions, cinemas, and showtimes via the Pathé JSON APIs. Trigger when the user mentions a Pathé movie/show, wants a poster, asks about a description/rating, or requests showtimes for a specific cinema.
+description: 通过 Pathé 的 JSON API 查找 Pathé Netherlands 的电影、海报、剧情描述、影院信息以及放映时间。当用户提到某部 Pathé 电影或节目、请求获取海报、询问剧情描述或评分，或者查询特定影院的放映时间时，系统应自动触发相应的操作。
 ---
 
-# Pathé Movie Skill
+# Pathé 电影查询技能
 
-## Summary
-- Always talk to the `https://www.pathe.nl/api` endpoints with the required browserlike headers (see `scripts/pathe_movie.py`).
-- Use the config at `config/pathe_movie_config.json` to know which cinemas to assume unless the user explicitly names a different cinema.
-- Rely on `scripts/pathe_movie.py` for reusable helpers (sanitizing queries, fuzzy matching, best-match selection, and fetching downstream endpoints).
-- When uncertain, reference `references/api.md` for payload shape, field names, and expected response structures.
+## 概述
+- 在与 `https://www.pathe.nl/api` 进行通信时，务必使用正确的浏览器请求头（详见 `scripts/pathe_movie.py`）。
+- 请使用 `config/pathe_movie_config.json` 中的配置来确定默认查询的影院，除非用户指定了其他影院。
+- 所有可重用的辅助功能（如查询数据清洗、模糊匹配、最佳匹配结果选择以及后续请求的发起）都依赖于 `scripts/pathe_movie.py`。
+- 在不确定如何操作时，请参考 `references/api.md` 以获取数据格式、字段名称和预期响应结构的信息。
 
-## Search flow
-1. Clean the user’s movie name by removing filler words (`the`, `a`, `an`, `of`, `in`, `on`, `for`, `and`).
-2. Call `/api/search/full?q=...` with the sanitized query.
-3. If multiple entries return, run a fuzzy title match (difflib) to pick the closest `title`. Keep the `slug`, `poster` (use `poster.lg`), and `contentRating` fields for later requests.
-4. If a poster is required, return the `poster.lg` URL (fall back to `poster.md`/`posterPath` when necessary).
+## 搜索流程
+1. 去除用户输入的电影名称中的填充词（如 `the`、`a`、`an`、`of`、`in`、`on`、`for`、`and` 等）。
+2. 使用清洗后的查询参数调用 `/api/search/full?q=...`。
+3. 如果返回多个结果，通过 `difflib` 进行模糊匹配以选择最匹配的电影名称。保留 `slug`、`poster`（使用 `poster.lg`）和 `contentRating` 字段以供后续请求使用。
+4. 如果需要获取海报图片，请返回 `poster.lg` 的 URL；必要时可回退到 `poster.md` 或 `posterPath`。
 
-## Movie detail flow
-- Given a slug, call `/api/show/{slug}?language=nl`.
-- Pull `contentRating.description` and `synopsis` (some entries have `null`; handle gracefully) plus any extras such as `genres`, `directors`, `actors`, and `trailers` as context.
-- Poster references now live under `posterPath` before falling back to the search response’s `poster`.
+## 电影详情流程
+- 给定一个电影 slug，调用 `/api/show/{slug}?language=nl`。
+- 获取 `contentRating.description` 和 `synopsis`（部分数据可能为空，需妥善处理），以及相关的额外信息（如 `genres`、`directors`、`actors` 和 `trailers`）。
+- 海报图片的路径现在存储在 `posterPath` 中，只有在无法从搜索结果中获取海报时才会使用搜索结果中的 `poster` 字段。
 
-## Cinema flow
-- Query `/api/show/{slug}/cinemas?language=nl`. Filter the returned cinema keys against `approvedCinemas` in the config unless the user asks for others.
-- For each cinema we need more detail about, call `/api/cinema/{cinema}?language=nl` to fetch the official `name`, `citySlug`, and `services`/`alerts` metadata.
+## 电影院信息流程
+- 调用 `/api/show/{slug}/cinemas?language=nl`。根据配置中的 `approvedCinemas` 过滤返回的电影院列表；除非用户另有要求。
+- 对于需要详细信息的每家电影院，调用 `/api/cinema/{cinema}?language=nl` 来获取其官方名称、所在城市名称（`citySlug`）以及相关服务信息（`services`/`alerts`）。
 
-## Showtimes
-- Use `/api/show/{slug}/showtimes/{cinema}?language=en` to get schedules. Responses are dictionaries keyed by date (`YYYY-MM-DD`). Each value is an array of showtimes; every entry contains at least a `time` string (plus `screen`, optional `language`, `format`, etc.).
-- If the array is empty, return a note that there are currently no scheduled showings.
+## 上映时间查询
+- 使用 `/api/show/{slug}/showtimes/{cinema}?language=en` 来获取上映时间信息。响应结果是一个按日期（`YYYY-MM-DD`）排序的字典，每个日期对应多个放映时间；每个放映时间条目至少包含 `time` 字符串（以及可选的 `screen`、`language`、`format` 等字段）。
+- 如果返回的空数组表示当前没有安排放映，应返回相应的提示信息。
 
-## Testing notes
-- Ran `/api/search/full?q=matrix` to confirm the payload includes `slug`, `title`, `poster`, `contentRating`, and `genres`.
-- Called `/api/show/the-matrix-41119` to verify `contentRating.description`, `synopsis`, and `posterPath` fields; the synopsis can be null and the posterPath may be missing, so always null-check.
-- Queried `/api/cinema/pathe-zaandam` to inspect the returned `name`, `citySlug`, and service metadata (there is no `shows` list, so the cinema object is mostly static info).
-- Hit `/api/show/iron-lung-51335/showtimes/pathe-zaandam` to confirm the endpoint returns a list; it was empty for that slug, showing you must handle zero-showtime responses.
-- Pulled `/api/shows?language=nl` to understand the bulk structure: dozens of entries with `slug`, `posterPath`, `contentRating`, `genres`, and `next24ShowtimesCount`.
+## 测试说明
+- 执行 `/api/search/full?q=matrix` 以确认响应数据中包含 `slug`、`title`、`poster`、`contentRating` 和 `genres` 字段。
+- 调用 `/api/show/the-matrix-41119` 以验证 `contentRating.description`、`synopsis` 和 `posterPath` 字段；注意 `synopsis` 可能为空，`posterPath` 也可能缺失，因此需要对其进行空值检查。
+- 查询 `/api/cinema/pathe-zaandam` 以获取影院的名称、所在城市名称和服务信息（该影院没有放映时间信息，因此返回的数据主要为静态信息）。
+- 调用 `/api/show/iron-lung-51335/showtimes/pathe-zaandam` 以确认该电影的上映时间列表；如果列表为空，需正确处理这种情况。
+- 调用 `/api/shows?language=nl` 以了解数据结构：响应中包含多个电影条目，每个条目包含 `slug`、`posterPath`、`contentRating` 和 `next24ShowtimesCount`。
 
-## Media delivery notes
-- Always download poster images (and extra stills) locally before sending them through WhatsApp. Save them under `/tmp` or another temporary location so the gateway can read the file.
-- When the user explicitly requests a poster via WhatsApp, attach the local path in the `message` tool `media` field (e.g., `/tmp/bluey_poster.jpg`). The WhatsApp docs describe that outbound media accepts local paths, so this ensures the actual image is delivered instead of a URL.
-- Keep the text part of the `message` tool call descriptive (e.g., "Here’s the Bluey poster you asked for"), and rely on the downloaded file for the visual.
+## 媒体文件传输说明
+- 在通过 WhatsApp 发送海报图片之前，务必先将它们下载到本地（例如保存到 `/tmp` 目录）。这样 gateway 才能正确读取文件。
+- 当用户通过 WhatsApp 明确请求海报图片时，需要在消息中的 `media` 字段提供本地文件的路径（例如 `/tmp/bluey_poster.jpg`）。WhatsApp 的文档说明指出，出站媒体文件可以接受本地路径，这样可以确保实际发送的是图片文件而非 URL。
+- 在消息中提供的文本描述应简洁明了（例如：“这是您请求的 Bluey 海报图片”），并确保使用下载后的图片文件进行展示。
 
-Follow these instructions whenever the user asks about search, posters, descriptions, cinema availability, or showtimes so the skill always produces accurate Pathé Netherlands results.
+请始终按照这些说明操作，以确保用户查询电影信息、查看海报、获取电影描述、查询电影院信息或上映时间时，该技能能够准确返回 Pathé Netherlands 的相关结果。

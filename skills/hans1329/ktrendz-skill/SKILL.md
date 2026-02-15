@@ -1,19 +1,19 @@
-# K-Trendz Lightstick Trading
+# K-Trendz光棒交易
 
-Trade K-pop artist lightstick tokens on the K-Trendz bonding curve market.
+在K-Trendz的债券曲线市场上交易K-pop艺术家的光棒代币。
 
-**Capability Summary:** Buy and sell K-pop fan tokens with real-time pricing, news signals, and bonding curve mechanics. Early buyers benefit from price appreciation as artist popularity grows. All transactions are gas-sponsored via Paymaster — no ETH needed.
+**功能概述：**支持买卖K-pop粉丝代币，提供实时价格、新闻信号以及债券曲线机制。早期买家可随着艺术家人气的提升而获得价格增值。所有交易均通过Paymaster平台进行，无需使用ETH作为交易费用。
 
-## Prerequisites
+## 先决条件
 
-Run `/ktrendz:setup` first to configure your credentials:
+请先运行`/ktrendz:setup`来配置您的凭证：
 
-- **K-Trendz API Key** (required): Contact K-Trendz team for provisioning
+- **K-Trendz API密钥**（必需）：请联系K-Trendz团队获取
 
-You can also set via environment variables:
-- `KTRENDZ_API_KEY` - Required for all trading operations
+您也可以通过环境变量进行设置：
+- `KTRENDZ_API_KEY` - 所有交易操作均需此密钥
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Setup (one-time)
@@ -32,19 +32,19 @@ You can also set via environment variables:
 /ktrendz:sell RIIZE
 ```
 
-## 🎯 Decision Tree
+## 🎯 决策树
 
-- **"What tokens are available?"** → `/ktrendz:tokens`
-- **"What's the price of X?"** → `/ktrendz:price <artist>`
-- **"Should I buy X?"** → Check price + news signals first
-- **"Buy X token"** → `/ktrendz:buy <artist>`
-- **"Sell X token"** → `/ktrendz:sell <artist>`
+- **“有哪些代币可以交易？”** → `/ktrendz:tokens`
+- **“X的价格是多少？”** → `/ktrendz:price <艺术家名称>`
+- **“我应该购买X吗？”** → 先查看价格和新闻信号
+- **“购买X代币”** → `/ktrendz:buy <艺术家名称>`
+- **“出售X代币”** → `/ktrendz:sell <艺术家名称>`
 
-## Main Commands
+## 主要命令
 
 ### /ktrendz:setup
 
-Collects and validates API key, stores securely.
+收集并验证API密钥，并安全存储。
 
 ```bash
 ./scripts/setup.sh
@@ -52,165 +52,157 @@ Collects and validates API key, stores securely.
 
 ### /ktrendz:tokens
 
-List all available tokens with current supply and trending scores.
+列出所有可用的代币及其当前供应量和趋势得分。
 
 ```bash
 ./scripts/tokens.sh
 ```
 
-**Output includes:**
-- Token ID
-- Artist name
-- Total supply
-- Trending score
+**输出内容包括：**
+- 代币ID
+- 艺术家名称
+- 总供应量
+- 趋势得分
 
 ### /ktrendz:price
 
-Get current price and trading signals for a token.
+获取代币的当前价格和交易信号。
 
 ```bash
 ./scripts/price.sh RIIZE
 ```
 
-**Output includes:**
-- Current price (USDC)
-- Buy cost / Sell refund
-- 24h price change
-- Trending score
-- Recent news signals
+**输出内容包括：**
+- 当前价格（USDC）
+- 买入成本 / 卖出退款
+- 24小时价格变化
+- 趋势得分
+- 最新新闻信号
 
-**Decision Factors:**
+**决策因素：**
 
-| Signal | Meaning | Buy Signal |
+| 信号 | 含义 | 买入信号 |
 |--------|---------|------------|
-| `trending_score` rising | On-platform engagement up | ✅ Bullish |
-| `price_change_24h` positive | Recent momentum | ✅ Trend continuation |
-| `total_supply` low | Few holders | ✅ Early opportunity |
-| `has_recent_news` true | Media coverage | ✅ Potential catalyst |
+| `trending_score` 上升 | 平台互动增加 | ✅ 上涨趋势 |
+| `price_change_24h` 正面 | 最近的上涨势头 | ✅ 趋势延续 |
+| `total_supply` 低 | 持有者少 | ✅ 早期买入机会 |
+| `has_recent_news` 为真 | 媒体报道 | ✅ 潜在催化剂 |
 
 ### /ktrendz:buy
 
-Purchase 1 lightstick token.
+购买1个光棒代币。
 
-```bash
-./scripts/buy.sh RIIZE [slippage_percent]
-```
+**参数：**
+- `artist_name`：艺术家名称（例如：RIIZE、IVE、BTS）
+- `slippage_percent`：最大滑点容忍度（默认：5%）
 
-**Parameters:**
-- `artist_name`: Artist name (e.g., RIIZE, IVE, BTS)
-- `slippage_percent`: Maximum slippage tolerance (default: 5%)
-
-**Constraints:**
-- Maximum 1 token per transaction (bonding curve protection)
-- $100/day limit per agent
-- Same-block trades blocked (MEV protection)
-- Gas fees are automatically sponsored (Paymaster)
+**限制：**
+- 每次交易最多购买1个代币（为了保护债券曲线）
+- 每个代理每天交易限额为100美元
+- 同一区块内的交易被禁止（为了防止市场操纵）
+- 交易费用由Paymaster自动支付
 
 ### /ktrendz:sell
 
-Sell 1 lightstick token.
+出售1个光棒代币。
 
-```bash
-./scripts/sell.sh RIIZE [slippage_percent]
-```
+**参数：**
+- `artist_name`：艺术家名称
+- `slippage_percent`：最大滑点容忍度（默认：5%）
 
-**Parameters:**
-- `artist_name`: Artist name
-- `slippage_percent`: Maximum slippage tolerance (default: 5%)
+## 架构
 
-## Architecture
+### V2合约
 
-### V2 Contract
+所有机器人交易均通过Base Mainnet上的**FanzTokenBotV2**执行：
 
-All bot trading is executed through **FanzTokenBotV2** on Base Mainnet:
-
-| Property | Value |
+| 属性 | 值 |
 |----------|-------|
-| **Contract** | `0x28bE702CC3A611A1EB875E277510a74fD20CDD9C` |
-| **Network** | Base Mainnet (Chain ID: 8453) |
-| **Standard** | ERC-1155 |
-| **Currency** | USDC (6 decimals) |
+| **合约** | `0x28bE702CC3A611A1EB875E277510a74fD20CDD9C` |
+| **网络** | Base Mainnet（链ID：8453） |
+| **标准** | ERC-1155 |
+| **货币** | USDC（6位小数） |
 
-### Agent Identification
+### 代理识别
 
-Each registered agent receives a unique on-chain identifier. When the platform executes a trade on your behalf:
+每个注册的代理都会获得一个唯一的链上标识符。当平台代表您执行交易时：
 
-1. The platform's Admin Wallet signs and submits the transaction
-2. Your unique agent address is passed as the `agent` parameter
-3. On-chain events (`Buy` / `Sell`) log both the executor and your agent address
-4. This enables per-agent DAU tracking on Dune Analytics
+1. 平台的管理员钱包会签署并提交交易
+2. 您的代理地址会被作为`agent`参数传递
+3. 链上事件（买入/卖出）会记录执行者和您的代理地址
+4. 这使得可以在Dune Analytics上追踪每个代理的日活跃用户（DAU）
 
-### Gas Sponsorship
+### 交易费用支付
 
-All transactions are gas-sponsored via Coinbase Paymaster:
-- **No ETH required** — the platform covers gas fees
-- Agents only need sufficient USDC balance for trading
-- Gas sponsorship is included for all verified agents
+所有交易费用均由Coinbase Paymaster平台支付：
+- **无需ETH**——平台承担所有交易费用
+- 代理只需拥有足够的USDC余额即可进行交易
+- 所有经过验证的代理均可享受交易费用减免
 
-## Trading Strategy
+## 交易策略
 
-This is a **bonding curve** market, not arbitrage:
+这是一个**债券曲线**市场，而非套利市场：
 
-1. **Buy when trending** - Rising scores + news = growing demand
-2. **Buy early** - Lower supply = better curve position
-3. **Monitor signals** - News often precedes on-platform activity
-4. **Hold during growth** - Bonding curve rewards patient holders
+1. **在趋势上升时买入**——得分上升 + 新闻报道 = 需求增加
+2. **尽早买入**——供应量较少 = 在债券曲线上的位置更好
+3. **监控市场信号**——新闻通常会先于平台上的活动出现
+4. **在价格上涨期间持有**——债券曲线机制会奖励耐心持有的投资者
 
-## Fee Structure
+## 费用结构
 
-| Action | Fee | Distribution |
+| 操作 | 费用 | 分配方式 |
 |--------|-----|--------------|
-| Buy | 3% | 2% Artist Fund, 1% Platform |
-| Sell | 2% | Platform |
+| 买入 | 3% | 2%归艺术家基金，1%归平台 |
+| 卖出 | 2% | 归平台 |
 
-**Round-trip cost:** 5%
+**往返费用：**5%
 
-## Rate Limits
+## 交易限制
 
-- **Daily Volume:** $100 USD per agent
-- **Transaction Frequency:** Max 100 trades/day per agent
-- **Circuit Breaker:** Pauses if price moves >20% in 10 blocks
+- **每日交易量：**每个代理每天最多100美元
+- **交易频率：**每个代理每天最多100笔交易
+- **价格限制**：如果价格在10个区块内上涨超过20%，系统会暂停交易
 
-## Example Interactions
+## 示例交互
 
-**User:** "What tokens can I trade?"
+**用户：**“我可以交易哪些代币？”
 
-**You:**
-1. Run `./scripts/tokens.sh`
-2. Report: "There are 6 tokens available: RIIZE, IVE, BTS, Cortis, K-Trendz Supporters, All Day Project"
+**您：**
+1. 运行`./scripts/tokens.sh`
+2. 回答：`目前有6个代币可供交易：RIIZE、IVE、BTS、Cortis、K-Trendz Supporters、All Day Project`
 
-**User:** "What's RIIZE trading at?"
+**用户：**“RIIZE的价格是多少？”
 
-**You:**
-1. Run `./scripts/price.sh RIIZE`
-2. Report: "RIIZE is at $1.85 (+5.2% 24h). Trending score 1250 with 3 recent news articles. Buy cost: $1.91"
+**您：**
+1. 运行`./scripts/price.sh RIIZE`
+2. 回答：`RIIZE的价格是1.85美元（24小时内上涨5.2%）。趋势得分为1250，有3篇最新新闻报道。买入成本为1.91美元`
 
-**User:** "Buy RIIZE for me"
+**用户：**“帮我购买RIIZE代币。”
 
-**You:**
-1. Confirm: "Buy 1 RIIZE token for ~$1.91?"
-2. If yes, run `./scripts/buy.sh RIIZE`
-3. Report: "Purchased 1 RIIZE for $1.91. Tx: 0x..."
+**您：**
+1. 确认：`是否要以1.91美元购买1个RIIZE代币？`
+2. 如果同意，运行`./scripts/buy.sh RIIZE`
+3. 回答：`已成功购买1个RIIZE代币，价格为1.91美元。交易ID：0x...`
 
-**User:** "Should I sell my IVE?"
+**用户：**“我应该出售我的IVE代币吗？**
 
-**You:**
-1. Run `./scripts/price.sh IVE`
-2. Check signals (price trend, news, trending score)
-3. Advise based on data
+**您：**
+1. 运行`./scripts/price.sh IVE`
+2. 检查价格趋势、新闻和趋势得分
+3. 根据数据提供购买建议
 
-## API Reference
+## API参考
 
-Base URL: `https://k-trendz.com/api/bot/`
+基础URL：`https://k-trendz.com/api/bot/`
 
-| Endpoint | Method | Description |
+| 端点 | 方法 | 描述 |
 |----------|--------|-------------|
-| `/tokens` | GET | List all available tokens |
-| `/token-price` | POST | Get price + signals |
-| `/buy` | POST | Purchase 1 token |
-| `/sell` | POST | Sell 1 token |
+| `/tokens` | GET | 列出所有可用代币 |
+| `/token-price` | POST | 获取代币价格和信号 |
+| `/buy` | POST | 购买1个代币 |
+| `/sell` | POST | 卖出1个代币 |
 
-### Request/Response Examples
+### 请求/响应示例
 
 **GET /tokens**
 ```json
@@ -306,12 +298,12 @@ Base URL: `https://k-trendz.com/api/bot/`
 }
 ```
 
-## Files
+## 文件
 
-- `SKILL.md` - This documentation
-- `package.json` - Package metadata
-- `scripts/setup.sh` - API key configuration
-- `scripts/tokens.sh` - List available tokens
-- `scripts/price.sh` - Get token price
-- `scripts/buy.sh` - Buy token
-- `scripts/sell.sh` - Sell token
+- `SKILL.md` - 本文档
+- `package.json` - 包元数据
+- `scripts/setup.sh` - API密钥配置
+- `scripts/tokens.sh` - 列出可用代币
+- `scripts/price.sh` - 获取代币价格
+- `scripts/buy.sh` - 买入代币
+- `scripts/sell.sh` - 卖出代币

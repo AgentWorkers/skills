@@ -17,9 +17,9 @@ metadata:
 
 # Box
 
-Access the Box API with managed OAuth authentication. Manage files, folders, collaborations, shared links, and cloud storage.
+使用托管的 OAuth 认证来访问 Box API。您可以管理文件、文件夹、协作内容、共享链接以及云存储资源。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Get current user info
@@ -31,39 +31,39 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-## Base URL
+## 基本 URL
 
 ```
 https://gateway.maton.ai/box/2.0/{resource}
 ```
 
-The gateway proxies requests to `api.box.com/2.0` and automatically injects your OAuth token.
+网关会将请求代理到 `api.box.com/2.0`，并自动插入您的 OAuth 令牌。
 
-## Authentication
+## 认证
 
-All requests require the Maton API key in the Authorization header:
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
 ```
 
-**Environment Variable:** Set your API key as `MATON_API_KEY`:
+**环境变量：** 将您的 API 密钥设置为 `MATON_API_KEY`：
 
 ```bash
 export MATON_API_KEY="YOUR_API_KEY"
 ```
 
-### Getting Your API Key
+### 获取 API 密钥
 
-1. Sign in or create an account at [maton.ai](https://maton.ai)
-2. Go to [maton.ai/settings](https://maton.ai/settings)
-3. Copy your API key
+1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
+2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+3. 复制您的 API 密钥。
 
-## Connection Management
+## 连接管理
 
-Manage your Box OAuth connections at `https://ctrl.maton.ai`.
+您可以在 `https://ctrl.maton.ai` 上管理您的 Box OAuth 连接。
 
-### List Connections
+### 列出连接
 
 ```bash
 python <<'EOF'
@@ -74,7 +74,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Create Connection
+### 创建连接
 
 ```bash
 python <<'EOF'
@@ -87,7 +87,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Get Connection
+### 获取连接信息
 
 ```bash
 python <<'EOF'
@@ -98,7 +98,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "connection": {
@@ -113,9 +113,9 @@ EOF
 }
 ```
 
-Open the returned `url` in a browser to complete OAuth authorization.
+在浏览器中打开返回的 `url` 以完成 OAuth 认证。
 
-### Delete Connection
+### 删除连接
 
 ```bash
 python <<'EOF'
@@ -126,9 +126,9 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Specifying Connection
+### 指定连接
 
-If you have multiple Box connections, specify which one to use with the `Maton-Connection` header:
+如果您有多个 Box 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,19 +140,19 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-If omitted, the gateway uses the default (oldest) active connection.
+如果省略此参数，网关将使用默认的（最旧的）活动连接。
 
-## API Reference
+## API 参考
 
-### User Info
+### 用户信息
 
-#### Get Current User
+#### 获取当前用户
 
 ```bash
 GET /box/2.0/users/me
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "type": "user",
@@ -171,29 +171,29 @@ GET /box/2.0/users/me
 }
 ```
 
-#### Get User
+#### 获取用户信息
 
 ```bash
 GET /box/2.0/users/{user_id}
 ```
 
-### Folder Operations
+### 文件夹操作
 
-#### Get Root Folder
+#### 获取根文件夹
 
-The root folder has ID `0`:
+根文件夹的 ID 为 `0`：
 
 ```bash
 GET /box/2.0/folders/0
 ```
 
-#### Get Folder
+#### 获取文件夹信息
 
 ```bash
 GET /box/2.0/folders/{folder_id}
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "type": "folder",
@@ -213,18 +213,18 @@ GET /box/2.0/folders/{folder_id}
 }
 ```
 
-#### List Folder Items
+#### 列出文件夹内容
 
 ```bash
 GET /box/2.0/folders/{folder_id}/items
 ```
 
-Query parameters:
-- `limit` - Maximum items to return (default 100, max 1000)
-- `offset` - Offset for pagination
-- `fields` - Comma-separated list of fields to include
+查询参数：
+- `limit` - 返回的最大项目数量（默认为 100，最大值为 1000）
+- `offset` - 分页偏移量
+- `fields` - 需要包含的字段列表（用逗号分隔）
 
-**Response:**
+**响应：**
 ```json
 {
   "total_count": 1,
@@ -240,7 +240,7 @@ Query parameters:
 }
 ```
 
-#### Create Folder
+#### 创建文件夹
 
 ```bash
 POST /box/2.0/folders
@@ -252,7 +252,7 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "type": "folder",
@@ -262,7 +262,7 @@ Content-Type: application/json
 }
 ```
 
-#### Update Folder
+#### 更新文件夹信息
 
 ```bash
 PUT /box/2.0/folders/{folder_id}
@@ -274,7 +274,7 @@ Content-Type: application/json
 }
 ```
 
-#### Copy Folder
+#### 复制文件夹
 
 ```bash
 POST /box/2.0/folders/{folder_id}/copy
@@ -286,34 +286,34 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Folder
+#### 删除文件夹
 
 ```bash
 DELETE /box/2.0/folders/{folder_id}
 ```
 
-Query parameters:
-- `recursive` - Set to `true` to delete non-empty folders
+查询参数：
+- `recursive` - 设置为 `true` 以删除非空文件夹
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-### File Operations
+### 文件操作
 
-#### Get File Info
+#### 获取文件信息
 
 ```bash
 GET /box/2.0/files/{file_id}
 ```
 
-#### Download File
+#### 下载文件
 
 ```bash
 GET /box/2.0/files/{file_id}/content
 ```
 
-Returns a redirect to the download URL.
+返回文件的下载 URL。
 
-#### Upload File
+#### 上传文件
 
 ```bash
 POST https://upload.box.com/api/2.0/files/content
@@ -323,9 +323,9 @@ attributes={"name":"file.txt","parent":{"id":"0"}}
 file=<binary data>
 ```
 
-**Note:** File uploads use a different base URL: `upload.box.com`
+**注意：** 文件上传使用不同的基础 URL：`upload.box.com`。
 
-#### Update File Info
+#### 更新文件信息
 
 ```bash
 PUT /box/2.0/files/{file_id}
@@ -337,7 +337,7 @@ Content-Type: application/json
 }
 ```
 
-#### Copy File
+#### 复制文件
 
 ```bash
 POST /box/2.0/files/{file_id}/copy
@@ -349,23 +349,23 @@ Content-Type: application/json
 }
 ```
 
-#### Delete File
+#### 删除文件
 
 ```bash
 DELETE /box/2.0/files/{file_id}
 ```
 
-Returns 204 No Content on success.
+成功时返回 204（表示“无内容”）。
 
-#### Get File Versions
+#### 获取文件版本
 
 ```bash
 GET /box/2.0/files/{file_id}/versions
 ```
 
-### Shared Links
+### 共享链接
 
-Create a shared link by updating a file or folder:
+通过更新文件或文件夹来创建共享链接：
 
 ```bash
 PUT /box/2.0/folders/{folder_id}
@@ -378,12 +378,12 @@ Content-Type: application/json
 }
 ```
 
-Access levels:
-- `open` - Anyone with the link
-- `company` - Only users in the enterprise
-- `collaborators` - Only collaborators
+访问权限级别：
+- `open` - 任何拥有链接的人都可以访问
+- `company` - 仅企业内的用户可以访问
+- `collaborators` - 仅协作用户可以访问
 
-**Response includes:**
+**响应包含：**
 ```json
 {
   "shared_link": {
@@ -400,15 +400,15 @@ Access levels:
 }
 ```
 
-### Collaborations
+### 协作内容
 
-#### List Folder Collaborations
+#### 列出文件夹的协作关系
 
 ```bash
 GET /box/2.0/folders/{folder_id}/collaborations
 ```
 
-#### Create Collaboration
+#### 创建协作关系
 
 ```bash
 POST /box/2.0/collaborations
@@ -421,9 +421,9 @@ Content-Type: application/json
 }
 ```
 
-Roles: `editor`, `viewer`, `previewer`, `uploader`, `previewer_uploader`, `viewer_uploader`, `co-owner`
+角色：`editor`（编辑者）、`viewer`（查看者）、`previewer`（预览者）、`uploader`（上传者）、`previewer_uploader`（预览者上传者）、`viewer_uploader`（查看者上传者）、`co-owner`（共同所有者）
 
-#### Update Collaboration
+#### 更新协作关系
 
 ```bash
 PUT /box/2.0/collaborations/{collaboration_id}
@@ -434,27 +434,27 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Collaboration
+#### 删除协作关系
 
 ```bash
 DELETE /box/2.0/collaborations/{collaboration_id}
 ```
 
-### Search
+### 搜索
 
 ```bash
 GET /box/2.0/search?query=document
 ```
 
-Query parameters:
-- `query` - Search query (required)
-- `type` - Filter by type: `file`, `folder`, `web_link`
-- `file_extensions` - Comma-separated extensions
-- `ancestor_folder_ids` - Limit to specific folders
-- `limit` - Max results (default 30)
-- `offset` - Pagination offset
+查询参数：
+- `query` - 搜索查询
+- `type` - 按类型过滤：`file`（文件）、`folder`（文件夹）、`web_link`（共享链接）
+- `file_extensions` - 用逗号分隔的文件扩展名
+- `ancestor_folder_ids` - 限制在特定文件夹内搜索
+- `limit` - 最大结果数量（默认为 30）
+- `offset` - 分页偏移量
 
-**Response:**
+**响应：**
 ```json
 {
   "total_count": 5,
@@ -465,18 +465,18 @@ Query parameters:
 }
 ```
 
-### Events
+### 事件
 
 ```bash
 GET /box/2.0/events
 ```
 
-Query parameters:
-- `stream_type` - `all`, `changes`, `sync`, `admin_logs`
-- `stream_position` - Position to start from
-- `limit` - Max events to return
+查询参数：
+- `stream_type` - `all`（所有事件）、`changes`（变更事件）、`sync`（同步事件）、`admin_logs`（管理员日志）
+- `stream_position` - 开始搜索的位置
+- `limit` - 返回的最大事件数量
 
-**Response:**
+**响应：**
 ```json
 {
   "chunk_size": 4,
@@ -485,44 +485,44 @@ Query parameters:
 }
 ```
 
-### Trash
+### 回收站
 
-#### List Trashed Items
+#### 列出回收站中的项目
 
 ```bash
 GET /box/2.0/folders/trash/items
 ```
 
-#### Get Trashed Item
+#### 获取回收站中的项目
 
 ```bash
 GET /box/2.0/files/{file_id}/trash
 GET /box/2.0/folders/{folder_id}/trash
 ```
 
-#### Restore Trashed Item
+#### 恢复回收站中的项目
 
 ```bash
 POST /box/2.0/files/{file_id}
 POST /box/2.0/folders/{folder_id}
 ```
 
-#### Permanently Delete
+#### 永久删除项目
 
 ```bash
 DELETE /box/2.0/files/{file_id}/trash
 DELETE /box/2.0/folders/{folder_id}/trash
 ```
 
-### Collections (Favorites)
+### 收藏夹（收藏项目）
 
-#### List Collections
+#### 列出收藏夹
 
 ```bash
 GET /box/2.0/collections
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "total_count": 1,
@@ -537,27 +537,27 @@ GET /box/2.0/collections
 }
 ```
 
-#### Get Collection Items
+#### 获取收藏夹中的项目
 
 ```bash
 GET /box/2.0/collections/{collection_id}/items
 ```
 
-### Recent Items
+### 最新项目
 
 ```bash
 GET /box/2.0/recent_items
 ```
 
-### Webhooks
+### Webhook
 
-#### List Webhooks
+#### 列出 Webhook
 
 ```bash
 GET /box/2.0/webhooks
 ```
 
-#### Create Webhook
+#### 创建 Webhook
 
 ```bash
 POST /box/2.0/webhooks
@@ -570,26 +570,26 @@ Content-Type: application/json
 }
 ```
 
-**Note:** Webhook creation may require enterprise permissions.
+**注意：** 创建 Webhook 可能需要企业管理员权限。
 
-#### Delete Webhook
+#### 删除 Webhook
 
 ```bash
 DELETE /box/2.0/webhooks/{webhook_id}
 ```
 
-## Pagination
+## 分页
 
-Box uses offset-based pagination:
+Box 使用基于偏移量的分页机制：
 
 ```bash
 GET /box/2.0/folders/0/items?limit=100&offset=0
 GET /box/2.0/folders/0/items?limit=100&offset=100
 ```
 
-Some endpoints use marker-based pagination with `marker` parameter.
+某些端点使用基于标记的分页机制，需要 `marker` 参数。
 
-**Response:**
+**响应：**
 ```json
 {
   "total_count": 250,
@@ -599,7 +599,7 @@ Some endpoints use marker-based pagination with `marker` parameter.
 }
 ```
 
-## Code Examples
+## 代码示例
 
 ### JavaScript
 
@@ -628,7 +628,7 @@ response = requests.get(
 data = response.json()
 ```
 
-### Python (Create Folder)
+### Python（创建文件夹）
 
 ```python
 import os
@@ -649,30 +649,30 @@ folder = response.json()
 print(f"Created folder: {folder['id']}")
 ```
 
-## Notes
+## 注意事项
 
-- Root folder ID is `0`
-- File uploads use `upload.box.com` instead of `api.box.com`
-- Delete operations return 204 No Content on success
-- Use `fields` parameter to request specific fields and reduce response size
-- Shared links can have password protection and expiration dates
-- Some operations (list users, create webhooks) require enterprise admin permissions
-- ETags can be used for conditional updates with `If-Match` header
-- IMPORTANT: When piping curl output to `jq` or other commands, environment variables like `$MATON_API_KEY` may not expand correctly in some shell environments
+- 根文件夹的 ID 为 `0`。
+- 文件上传使用 `upload.box.com`，而不是 `api.box.com`。
+- 删除操作成功时返回 204（表示“无内容”）。
+- 使用 `fields` 参数可以请求特定的字段，从而减少响应大小。
+- 共享链接可以设置密码保护和过期日期。
+- 某些操作（如列出用户、创建 Webhook）需要企业管理员权限。
+- 可以使用 ETags 通过 `If-Match` 头部进行条件性更新。
+- **重要提示：** 当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确展开。
 
-## Error Handling
+## 错误处理
 
-| Status | Meaning |
+| 状态码 | 含义 |
 |--------|---------|
-| 400 | Missing Box connection or bad request |
-| 401 | Invalid or missing Maton API key |
-| 403 | Insufficient permissions for the operation |
-| 404 | Resource not found |
-| 409 | Conflict (e.g., item with same name exists) |
-| 429 | Rate limited |
-| 4xx/5xx | Passthrough error from Box API |
+| 400 | 未建立 Box 连接或请求无效 |
+| 401 | Maton API 密钥无效或缺失 |
+| 403 | 操作权限不足 |
+| 404 | 资源未找到 |
+| 409 | 冲突（例如，存在同名项目） |
+| 429 | 请求频率限制 |
+| 4xx/5xx | 来自 Box API 的传递错误 |
 
-Box errors include detailed messages:
+Box 的错误会包含详细的错误信息：
 ```json
 {
   "type": "error",
@@ -682,15 +682,15 @@ Box errors include detailed messages:
 }
 ```
 
-### Troubleshooting: API Key Issues
+### 故障排除：API 密钥问题
 
-1. Check that the `MATON_API_KEY` environment variable is set:
+1. 确保设置了 `MATON_API_KEY` 环境变量：
 
 ```bash
 echo $MATON_API_KEY
 ```
 
-2. Verify the API key is valid by listing connections:
+2. 通过列出连接来验证 API 密钥是否有效：
 
 ```bash
 python <<'EOF'
@@ -701,18 +701,17 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### Troubleshooting: Invalid App Name
+### 故障排除：应用程序名称无效
 
-1. Ensure your URL path starts with `box`. For example:
+1. 确保您的 URL 路径以 `box` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/box/2.0/users/me`
+- 错误的路径：`https://gateway.maton.ai/2.0/users/me`
 
-- Correct: `https://gateway.maton.ai/box/2.0/users/me`
-- Incorrect: `https://gateway.maton.ai/2.0/users/me`
+## 资源
 
-## Resources
-
-- [Box API Reference](https://developer.box.com/reference)
-- [Box Developer Documentation](https://developer.box.com/guides)
-- [Authentication Guide](https://developer.box.com/guides/authentication)
+- [Box API 参考](https://developer.box.com/reference)
+- [Box 开发者文档](https://developer.box.com/guides)
+- [认证指南](https://developer.box.com/guides/authentication)
 - [Box SDKs](https://developer.box.com/sdks-and-tools)
-- [Maton Community](https://discord.com/invite/dBfFAcefs2)
-- [Maton Support](mailto:support@maton.ai)
+- [Maton 社区](https://discord.com/invite/dBfFAcefs2)
+- [Maton 支持](mailto:support@maton.ai)

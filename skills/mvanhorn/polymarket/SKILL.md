@@ -1,6 +1,6 @@
 ---
 name: polymarket
-description: Query Polymarket prediction markets - check odds, trending markets, search events, track prices and momentum. Includes watchlist alerts, resolution calendar, momentum scanner, and paper trading (simulated, no real money).
+description: 查询 Polymarket 的预测市场功能：查看赔率、热门市场、搜索相关事件、跟踪价格及市场走势。该功能还包括 watchlist（关注列表）提醒、事件日历、市场趋势分析工具以及模拟交易功能（仅用于练习，不涉及真实资金交易）。
 homepage: https://polymarket.com
 user-invocable: true
 disable-model-invocation: true
@@ -13,9 +13,9 @@ metadata:
 
 # Polymarket
 
-Query [Polymarket](https://polymarket.com) prediction markets. Check odds, find trending markets, search events, track price movements.
+查询 [Polymarket](https://polymarket.com) 的预测市场信息。查看赔率、查找热门市场、搜索事件、追踪价格走势。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Trending markets
@@ -33,15 +33,15 @@ python3 {baseDir}/scripts/polymarket.py calendar
 
 ---
 
-## After Install — Suggested Setup
+## 安装完成后——建议的设置流程
 
-### 1. Add to Morning Briefing
-Add Polymarket to your daily cron:
+### 1. 添加到每日晨报中
+将 Polymarket 的数据添加到您的每日定时任务（cron）中：
 ```
 polymarket featured + polymarket movers --timeframe 24h
 ```
 
-### 2. Watch Markets You Care About
+### 2. 关注您关心的市场
 ```bash
 # Watch with price target alert
 python3 {baseDir}/scripts/polymarket.py watch add trump-2028 --alert-at 60
@@ -50,19 +50,19 @@ python3 {baseDir}/scripts/polymarket.py watch add trump-2028 --alert-at 60
 python3 {baseDir}/scripts/polymarket.py watch add bitcoin-100k --alert-change 10
 ```
 
-### 3. Set Up Hourly Alerts (Cron)
+### 3. 设置每小时提醒（定时任务）
 ```bash
 # Check watchlist every hour, only notify on alerts
 python3 {baseDir}/scripts/polymarket.py alerts --quiet
 ```
 
-### 4. Weekly Category Digests
+### 4. 每周市场类别摘要
 ```bash
 # Every Sunday: politics digest
 python3 {baseDir}/scripts/polymarket.py digest politics
 ```
 
-### 5. Paper Trade to Track Predictions
+### 5. 使用模拟交易来验证预测结果
 ```bash
 python3 {baseDir}/scripts/polymarket.py buy trump-2028 100  # $100 on Trump
 python3 {baseDir}/scripts/polymarket.py portfolio           # Check P&L
@@ -70,10 +70,9 @@ python3 {baseDir}/scripts/polymarket.py portfolio           # Check P&L
 
 ---
 
-## Commands
+## 命令
 
-### Core
-
+### 核心功能
 ```bash
 # Trending markets (by 24h volume)
 python3 {baseDir}/scripts/polymarket.py trending
@@ -91,8 +90,7 @@ python3 {baseDir}/scripts/polymarket.py event trump-2028
 python3 {baseDir}/scripts/polymarket.py category politics
 ```
 
-### Watchlist + Alerts (NEW)
-
+### 关注列表 + 提醒功能（新增）
 ```bash
 # Add to watchlist
 python3 {baseDir}/scripts/polymarket.py watch add trump-2028
@@ -113,8 +111,7 @@ python3 {baseDir}/scripts/polymarket.py alerts
 python3 {baseDir}/scripts/polymarket.py alerts --quiet  # Only output if triggered
 ```
 
-### Resolution Calendar (NEW)
-
+### 解决方案日历（新增）
 ```bash
 # Markets resolving in next 7 days
 python3 {baseDir}/scripts/polymarket.py calendar
@@ -126,8 +123,7 @@ python3 {baseDir}/scripts/polymarket.py calendar --days 3
 python3 {baseDir}/scripts/polymarket.py calendar --days 14 --limit 20
 ```
 
-### Momentum Scanner (NEW)
-
+### 动量扫描器（新增）
 ```bash
 # Biggest movers (24h)
 python3 {baseDir}/scripts/polymarket.py movers
@@ -139,8 +135,7 @@ python3 {baseDir}/scripts/polymarket.py movers --timeframe 1w
 python3 {baseDir}/scripts/polymarket.py movers --timeframe 1m --min-volume 50
 ```
 
-### Category Digests (NEW)
-
+### 市场类别摘要（新增）
 ```bash
 # Politics digest
 python3 {baseDir}/scripts/polymarket.py digest politics
@@ -152,10 +147,9 @@ python3 {baseDir}/scripts/polymarket.py digest crypto
 python3 {baseDir}/scripts/polymarket.py digest sports
 ```
 
-Categories: `politics`, `crypto`, `sports`, `tech`, `business`
+支持的市场类别：`政治`、`加密货币`、`体育`、`科技`、`商业`
 
-### Paper Trading (NEW)
-
+### 模拟交易功能（新增）
 ```bash
 # Buy $100 of a market
 python3 {baseDir}/scripts/polymarket.py buy trump-2028 100
@@ -170,31 +164,31 @@ python3 {baseDir}/scripts/polymarket.py portfolio
 python3 {baseDir}/scripts/polymarket.py sell trump-2028
 ```
 
-Starts with $10,000 paper cash. Track your predictions without real money.
+初始模拟资金为 10,000 美元。您可以无需使用真实资金来测试您的预测结果。
 
 ---
 
-## Data Storage
+## 数据存储
 
-Watchlist and portfolio stored in `~/.polymarket/`:
-- `watchlist.json` — Watched markets and alert thresholds
-- `portfolio.json` — Paper positions and trade history
+关注列表和交易记录存储在 `~/.polymarket/` 目录下：
+- `watchlist.json` — 关注的市场及提醒阈值
+- `portfolio.json` — 模拟交易位置和交易历史
 
 ---
 
-## Cron Examples
+## 定时任务示例
 
-### Hourly Alert Check
+### 每小时检查提醒
 ```
 0 * * * * python3 ~/.../polymarket.py alerts --quiet
 ```
 
-### Daily Morning Brief
+### 每日晨报
 ```
 0 7 * * * python3 ~/.../polymarket.py movers && python3 ~/.../polymarket.py calendar --days 1
 ```
 
-### Weekly Digests
+### 每周市场摘要
 ```
 0 10 * * 0 python3 ~/.../polymarket.py digest politics
 0 10 * * 0 python3 ~/.../polymarket.py digest crypto
@@ -202,46 +196,46 @@ Watchlist and portfolio stored in `~/.polymarket/`:
 
 ---
 
-## Output Features
+## 输出信息
 
-Markets show:
-- **Current odds** (Yes/No prices)
-- **Price momentum** (24h/1wk/1mo changes with arrows)
-- **Volume** (total + 24h activity)
-- **Time remaining**
-- **Bid/ask spread**
+市场信息包括：
+- **当前赔率**（Yes/No 表示是否提供价格）
+- **价格走势**（24 小时/1 周/1 个月的价格变化情况，用箭头表示）
+- **交易量**（总交易量及 24 小时的活跃度）
+- **剩余时间**
+- **买卖价差**
 
 ---
 
 ## API
 
-Uses the public Gamma API (no auth required for reading):
-- Base URL: `https://gamma-api.polymarket.com`
-- Docs: https://docs.polymarket.com
+使用 Polymarket 的公开 Gamma API（无需认证）：
+- 基本 URL：`https://gamma-api.polymarket.com`
+- 文档：https://docs.polymarket.com
 
 ---
 
-## Security & Permissions
+## 安全性与权限
 
-**No API key or authentication required.** This skill uses Polymarket's public Gamma API.
+**无需 API 密钥或认证。** 该功能仅使用 Polymarket 的公开 Gamma API。
 
-**What this skill does:**
-- Makes HTTPS GET requests to `gamma-api.polymarket.com` (public, unauthenticated)
-- Reads market data: odds, volumes, event details, price history
-- Paper trading is **local simulation only** — stored in `~/.polymarket/` as JSON files
-- No real money, no wallet, no blockchain transactions
+**该功能的作用：**
+- 向 `gamma-api.polymarket.com` 发送 HTTPS GET 请求（公开接口，无需认证）
+- 读取市场数据：赔率、交易量、事件详情、价格历史
+- 模拟交易仅用于测试目的，数据存储在 `~/.polymarket/` 目录下的 JSON 文件中
+- 不涉及真实资金、钱包或区块链交易
 
-**What this skill does NOT do:**
-- Does not connect to any wallet or financial account
-- Does not execute real trades or transactions
-- Does not require or handle any credentials or API keys
-- Does not send any personal data externally
-- Cannot be invoked autonomously by the agent (`disable-model-invocation: true`)
+**该功能不执行以下操作：**
+- 不连接任何钱包或金融账户
+- 不执行任何实际交易
+- 不需要处理任何凭证或 API 密钥
+- 不会对外发送任何个人数据
+- 该功能不能被代理程序自动调用（`disable-model-invocation: true`）
 
-**Data stored locally:** `~/.polymarket/watchlist.json`, `~/.polymarket/portfolio.json`
+**本地存储的数据：`~/.polymarket/watchlist.json`、`~/.polymarket/portfolio.json`
 
-Review `scripts/polymarket.py` before first use to verify behavior.
+首次使用前，请查看 `scripts/polymarket.py` 以确认功能行为。
 
-## Note
+## 注意
 
-This is read-only + paper trading. Real trading requires wallet authentication (not implemented).
+该功能仅支持读取数据及模拟交易。实际交易需要钱包认证（目前未实现）。

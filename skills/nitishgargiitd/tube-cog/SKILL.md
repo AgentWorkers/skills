@@ -1,6 +1,6 @@
 ---
 name: tube-cog
-description: YouTube content creation powered by CellCog. Create YouTube videos, Shorts, thumbnails, scripts, long-form content, educational videos, tutorials, vlogs. AI-powered YouTube creator tools.
+description: 由 CellCog 提供支持的 YouTube 内容创作工具。您可以利用这些工具来制作 YouTube 视频、短视频（ Shorts）、视频缩略图、脚本、长篇内容、教育视频以及教程。这是一款基于人工智能的 YouTube 创作者辅助工具。
 metadata:
   openclaw:
     emoji: "📺"
@@ -8,23 +8,23 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Tube Cog - YouTube Content Powered by CellCog
+# Tube Cog - 由 CellCog 提供支持的 YouTube 内容制作工具
 
-Create YouTube videos that get views - from Shorts to long-form tutorials to eye-catching thumbnails.
+使用 Tube Cog，您可以创建各种类型的 YouTube 内容，从短片到长篇教程，再到引人注目的缩略图，从而吸引更多观众观看。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能文档**，以了解 SDK 的安装和配置方法。该文档将向您展示所有可用的功能。
 
-**Quick pattern (v1.0+):**
+**快速操作指南（v1.0+）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -38,169 +38,155 @@ result = client.create_chat(
 
 ---
 
-## What Content You Can Create
+## 可创建的内容类型
 
-### YouTube Shorts
+### YouTube 短片
 
-Vertical, snackable content for discovery:
+适合快速浏览的垂直式内容：
 
-- **Quick Tips**: "Create a 45-second Short explaining one JavaScript trick"
-- **Reactions/Commentary**: "Make a Short reacting to a viral tech moment"
-- **Teasers**: "Create a Short teasing my upcoming full video on AI"
-- **Trending Formats**: "Make a 'Things that just make sense' Short for programmers"
-- **Behind-the-Scenes**: "Create a BTS Short of my content creation process"
+- **快速技巧**：制作一段 45 秒的短片，介绍一个 JavaScript 技巧。
+- **即时反应**：制作一段短片，对热门科技事件进行评论或反应。
+- **预告片**：制作预告片，介绍即将发布的关于人工智能的完整视频。
+- **热门话题**：制作关于编程相关主题的短片。
+- **幕后花絮**：制作关于内容制作过程的视频。
 
-**Example prompt:**
-> "Create a 50-second YouTube Short: 'The VS Code shortcut that changed my life'
+**示例提示：**
+> “制作一段 50 秒的 YouTube 短片：‘改变我生活的 VS Code 快捷键’”
 > 
-> Hook: 'Stop coding like it's 2010'
-> Demo: Show the multi-cursor feature
-> Reaction: Mind-blown moment
-> CTA: 'Full tutorial on my channel'
+> 开场白：“别再用老一套的编程方式了！”
+> 正文：展示多光标功能。
+> 反应部分：展示使用该快捷键后的惊喜效果。
+> 呼吁行动：“点击我的频道观看完整教程。”
+
+### 长篇视频
+
+深入讲解的内容，有助于建立观众粘性：
+
+- **教程**：制作一段 15 分钟的教程，教授如何使用 Python 构建 REST API。
+- **解释类视频**：制作一段 10 分钟的视频，解释区块链的工作原理。
+- **评测**：制作一篇关于新款 MacBook Pro 的全面评测。
+- **纪录片**：制作一段关于视频游戏历史的迷你纪录片。
+- **文章类视频**：制作一段视频，探讨极简主义为何越来越受欢迎。
+
+**示例提示：**
+> “制作一段 12 分钟的 YouTube 视频：‘2026 年，如何开发你的第一个 AI 应用’”
 > 
-> Fast-paced, screen recording style with facecam energy."
+> 结构：
+  - 开场白（30 秒）：展示最终成品。
+  - 介绍（1 分钟）：讲解内容及其目的。
+  - 设置环境（2 分钟）：介绍所需工具和依赖库。
+  - 核心教程（7 分钟）：逐步讲解开发过程。
+  - 测试（1 分钟）：运行并演示功能。
+  - 结尾（30 秒）：提醒观众订阅频道并鼓励继续学习。
 
-### Long-Form Videos
+### 缩略图
 
-In-depth content that builds audience:
+吸引点击的图片，提升视频曝光率：
 
-- **Tutorials**: "Create a 15-minute tutorial on building a REST API with Python"
-- **Explainers**: "Make a 10-minute video explaining how blockchain works"
-- **Reviews**: "Create a comprehensive review of the new MacBook Pro"
-- **Documentaries**: "Make a mini-documentary about the history of video games"
-- **Essays**: "Create a video essay on why minimalism is becoming popular"
+- **反应类缩略图**：使用令人惊讶的表情和醒目的文字制作缩略图。
+- **教程类缩略图**：为编程教程制作简洁明了的缩略图。
+- **对比类缩略图**：制作对比两种产品的缩略图。
+- **列表类缩略图**：使用“10 个要点”格式制作缩略图。
+- **故事类缩略图**：制作引人入胜的缩略图，暗示视频内容中的戏剧性情节。
 
-**Example prompt:**
-> "Create a 12-minute YouTube video: 'Build Your First AI App in 2026'
+**示例提示：**
+> “为视频‘我在 24 小时内开发了一个应用’制作缩略图”
 > 
-> Structure:
-> - Hook (30 sec): Show the finished app
-> - Intro (1 min): What we're building and why
-> - Setup (2 min): Environment and dependencies
-> - Core tutorial (7 min): Step-by-step coding
-> - Testing (1 min): Run and demo
-> - Outro (30 sec): Next steps and subscribe CTA
+> 元素包括：
+  - 看起来压力很大但决心坚定的人物。
+  - 显示 24:00:00 的计时器。
+  - 背景中有代码显示。
+  - 醒目的文字：“24 小时”。
 > 
-> Style: Educational, friendly, clear explanations. Code on screen with voiceover."
+> 颜色搭配：深色背景，搭配黄色或橙色文字。
+  - 风格：高对比度，便于在较小尺寸下阅读。
 
-### Thumbnails
+### 脚本与大纲
 
-Click-worthy images that drive views:
+制作前的内容规划：
 
-- **Reaction Thumbnails**: "Create a thumbnail with shocked face and bold text"
-- **Tutorial Thumbnails**: "Make a clean thumbnail for a coding tutorial"
-- **Versus Thumbnails**: "Create an X vs Y comparison thumbnail"
-- **Listicle Thumbnails**: "Make a '10 Things' style thumbnail"
-- **Story Thumbnails**: "Create an intriguing thumbnail that hints at drama"
-
-**Example prompt:**
-> "Create a YouTube thumbnail for: 'I Built an App in 24 Hours'
-> 
-> Elements:
-> - Person looking stressed/determined
-> - Timer showing 24:00:00
-> - Code on screen in background
-> - Bold text: '24 HOURS'
-> 
-> Colors: Dark background, yellow/orange accents
-> Style: High contrast, readable at small size"
-
-### Scripts & Outlines
-
-Content planning before production:
-
-- **Full Scripts**: "Write a complete script for a 10-minute video on productivity"
-- **Video Outlines**: "Create a detailed outline for a product review"
-- **Hook Variations**: "Give me 5 different hooks for my video about investing"
-- **CTA Scripts**: "Write compelling end-screen call-to-action scripts"
+- **完整脚本**：为一段关于提高工作效率的 10 分钟视频编写完整脚本。
+- **视频大纲**：为产品评测制作详细的大纲。
+- **开场白创意**：为关于投资的视频提供 5 个不同的开场白方案。
+- **呼吁行动脚本**：编写吸引人的结尾呼吁行动语句。
 
 ---
 
-## YouTube Specs
+## YouTube 视频规格
 
-| Format | Dimensions | Duration |
+| 格式 | 尺寸 | 时长 |
 |--------|------------|----------|
-| Standard Video | 1920×1080 (16:9) | Any length |
-| Shorts | 1080×1920 (9:16) | Up to 60 seconds |
-| Thumbnail | 1280×720 | - |
+| 标准视频 | 1920×1080（16:9） | 任意时长 |
+| 短片 | 1080×1920（9:16） | 最长 60 秒 |
+| 缩略图 | 1280×720 | - |
 
 ---
 
-## Video Styles
+## 视频风格
 
-| Style | Best For | Characteristics |
+| 风格 | 适合类型 | 特点 |
 |-------|----------|-----------------|
-| **Educational** | Tutorials, explainers | Clear, structured, helpful |
-| **Entertainment** | Vlogs, reactions | Personality-driven, dynamic |
-| **Professional** | B2B, corporate | Polished, trustworthy |
-| **Documentary** | Essays, deep dives | Cinematic, researched |
-| **Fast-Paced** | Shorts, compilations | Quick cuts, high energy |
+| **教育类** | 教程、解释类视频 | 结构清晰，易于理解。 |
+| **娱乐类**：Vlog、即时反应视频 | 个人风格鲜明，节奏明快。 |
+| **专业类**：企业宣传视频 | 视频风格专业，值得信赖。 |
+| **纪录片**：深度分析类视频 | 电影质感，经过精心制作。 |
+| **快节奏类**：短片、合集 | 切换迅速，充满活力。 |
 
 ---
 
-## Chat Mode for YouTube Content
+## YouTube 内容的协作模式
 
-| Scenario | Recommended Mode |
+| 内容类型 | 推荐协作模式 |
 |----------|------------------|
-| Shorts, thumbnails, scripts, standard tutorials | `"agent"` |
-| Documentary-style content, complex video essays, multi-part series planning | `"agent team"` |
+| 短片、缩略图、脚本、标准教程 | 使用“agent”模式。 |
+| 纪录片类内容、复杂视频文章、多部分系列 | 使用“agent team”模式。 |
 
-**Use `"agent"` for most YouTube content.** Shorts, thumbnails, and standard videos execute well in agent mode.
+**大多数 YouTube 内容适合使用“agent”模式**。短片、缩略图和标准教程在“agent”模式下效果最佳。
 
-**Use `"agent team"` for complex narratives** - documentaries, video essays, or content requiring deep research and storytelling craft.
-
----
-
-## Example Prompts
-
-**Educational tutorial:**
-> "Create a YouTube tutorial: 'Docker for Beginners - Full Course'
-> 
-> Length: 20 minutes
-> Audience: Developers who've never used Docker
-> 
-> Chapters:
-> 1. What is Docker and why use it? (3 min)
-> 2. Installing Docker (2 min)
-> 3. Your first container (4 min)
-> 4. Dockerfile basics (4 min)
-> 5. Docker Compose (4 min)
-> 6. Real-world example (3 min)
-> 
-> Style: Screen recording with clear voiceover. Beginner-friendly, no jargon."
-
-**Engaging Short:**
-> "Create a YouTube Short: 'AI wrote my entire codebase'
-> 
-> Hook: 'I let AI write 100% of my code for a week'
-> Content: Quick montage of AI coding, my reactions, the chaos
-> Twist: 'And it actually... worked?'
-> CTA: 'Full video on my channel'
-> 
-> Fast cuts, meme energy, relatable programmer humor."
-
-**Click-worthy thumbnail:**
-> "Create a thumbnail for: 'Why I Quit My $300K Job'
-> 
-> Show: Professional person walking away from office building
-> Expression: Confident, peaceful
-> Text: '$300K → QUIT' in bold
-> Style: Cinematic, slightly desaturated, text pops
-> 
-> Must be readable at small sizes."
+**对于需要深入研究和叙事技巧的内容（如纪录片或文章类视频），建议使用“agent team”模式。**
 
 ---
 
-## Tips for Better YouTube Content
+## 示例提示
 
-1. **Hook in 5 seconds**: YouTube viewers decide instantly. Front-load the value or intrigue.
+**教育类教程：**
+> “制作一段 YouTube 教程：‘Docker 入门教程’**
+> 
+> 时长：20 分钟
+> 目标观众：从未使用过 Docker 的开发者。
+> 
+> 教程结构：
+  1. 什么是 Docker 及其用途（3 分钟）。
+  2. 安装 Docker（2 分钟）。
+  3. 创建第一个容器（4 分钟）。
+  4. Dockerfile 基础（4 分钟）。
+  5. Docker Compose（4 分钟）。
+  6. 实际应用示例（3 分钟）。
+> 
+> 风格：使用屏幕录制，配有清晰的语音解说。适合初学者，避免使用专业术语。
 
-2. **Thumbnails matter more than titles**: A great video with bad thumbnail won't get clicked. Invest in thumbnail quality.
+**互动类短片：**
+> “制作一段 YouTube 短片：‘AI 编写了我的全部代码’**
+> 
+> 开场白：“我让 AI 编写了整整一周的代码！”
+> 正文：展示 AI 编码的过程以及我的反应。
+> 情节转折：“结果……真的有效吗？”
+> 呼吁行动：“点击我的频道观看完整视频。”
+> 
+> 切换迅速，加入幽默元素，让观众产生共鸣。
 
-3. **Retention > Length**: A tight 8-minute video beats a padded 20-minute video. Respect viewer time.
+**吸引点击的缩略图：**
+> “为视频‘我辞去了年薪 30 万美元的工作’制作缩略图”
+> 
+> 图片中：一个人自信地离开办公楼。
+> 文字：“30 万美元 → 辞职”用粗体显示。
+> 风格：电影质感，色彩对比鲜明，文字易于阅读。
 
-4. **Chapters improve watch time**: Structure long videos with clear chapters. Helps SEO too.
+## 提高 YouTube 内容质量的建议
 
-5. **End screens work**: Ask for subscribes when viewers are most engaged (after delivering value).
-
-6. **Shorts feed long-form**: Use Shorts to drive traffic to your main channel content.
+1. **在前 5 秒内吸引观众**：在开头迅速展示内容的价值或悬念。
+2. **缩略图比标题更重要**：即使视频内容很棒，如果缩略图不佳，也很难被点击。请重视缩略图的质量。
+3. **内容质量比时长更重要**：8 分钟的精炼视频往往比冗长的 20 分钟视频更受欢迎。尊重观众的观看时间。
+4. **分章节结构有助于提升观看时长**：将长视频分成多个章节，有助于提升用户体验和搜索引擎排名。
+5. **在关键时刻展示呼吁行动**：在观众最感兴趣的时候（即提供价值之后），提醒他们订阅你的频道。
+6. **利用短片吸引流量**：利用短片为你的主要频道内容吸引更多观众。

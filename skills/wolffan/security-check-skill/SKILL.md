@@ -1,31 +1,32 @@
 ---
 name: security-check
-description: Security audit and inspection skill for Clawdbot skills. Use this when you need to check skills for security vulnerabilities before installation, perform regular security audits on installed skills, verify skill description matches actual behavior, scan for prompt injection attempts, check for hardcoded secrets or credentials, verify no malicious intent in skill code or documentation, review file access patterns for potential configuration or secrets exposure, or audit dependencies for known vulnerabilities. This skill provides automated scanning tools and manual security checklists for comprehensive skill security assessment.
+description: **Clawdbot技能的安全审计与检查功能**  
+当您需要在安装技能之前检查其中是否存在安全漏洞、对已安装的技能进行定期安全审计、验证技能描述与实际行为是否一致、扫描潜在的命令注入尝试、检查是否存在硬编码的秘密或凭据、确认技能代码或文档中不存在恶意意图、审查文件访问模式以防止配置信息或秘密被泄露，或者审计依赖项中是否存在已知的安全漏洞时，可以使用此功能。该功能提供了自动化扫描工具以及手动安全检查清单，以实现对技能安全性的全面评估。
 license: Complete terms in LICENSE.txt
 ---
 
-# Security Check Skill
+# 安全检查技能
 
-Comprehensive security auditing for Clawdbot skills to detect malicious intent, prompt injection, secrets exposure, and misaligned behavior.
+针对Clawdbot技能进行全面的安全审计，以检测恶意意图、提示注入（prompt injection）、秘密泄露以及行为异常。
 
-## Quick Start
+## 快速入门
 
-### Pre-Installation Security Check
+### 安装前的安全检查
 
-Before installing a new skill from ClawdHub or any source:
+在从ClawdHub或其他来源安装新技能之前，请执行以下步骤：
 
-1. **Download and inspect the skill files**
-2. **Run the automated security scanner**:
+1. **下载并检查技能文件**
+2. **运行自动化安全扫描工具**：
    ```bash
    python3 scripts/scan_skill.py /path/to/skill
    ```
-3. **Review the scanner output** - Block any skill with HIGH severity issues
-4. **Manual review** for MEDIUM severity issues
-5. **Verify behavior matches description** before installation
+3. **查看扫描结果** - 阻止存在高严重性问题的技能
+4. **对中等严重性问题进行手动审查**
+5. **确认技能的实际行为与描述一致**，然后再进行安装
 
-### Daily Security Audit
+### 每日安全审计
 
-Run daily to ensure installed skills remain secure:
+每天运行安全审计，以确保已安装的技能保持安全状态：
 
 ```bash
 # Scan all skills in the skills directory
@@ -34,23 +35,23 @@ python3 scripts/scan_skill.py /path/to/skills/skill-2
 # ... repeat for each installed skill
 ```
 
-## Security Scanner
+## 安全扫描工具
 
-### Running the Scanner
+### 运行扫描工具
 
-The `scripts/scan_skill.py` tool provides automated security analysis:
+`scripts/scan_skill.py`工具可提供自动化的安全分析：
 
 ```bash
 python3 scripts/scan_skill.py <skill-path>
 ```
 
-**Output includes:**
-- HIGH severity issues (immediate action required)
-- MEDIUM severity warnings (review recommended)
-- LOW severity notes (informational)
-- Summary of checks performed
+**扫描结果包括：**
+- 高严重性问题（需要立即处理）
+- 中等严重性警告（建议进行审查）
+- 低严重性提示（仅供参考）
+- 执行的检查摘要
 
-**Example output:**
+**示例扫描结果：**
 ```json
 {
   "skill_name": "example-skill",
@@ -77,79 +78,78 @@ python3 scripts/scan_skill.py <skill-path>
 }
 ```
 
-### What the Scanner Checks
+### 扫描内容
 
-1. **SKILL.md Analysis**
-   - Prompt injection patterns
-   - External network calls
-   - Suspicious instructions
+1. **SKILL.md文件分析**
+   - 检查是否存在提示注入的代码模式
+   - 检查是否有对外部网络的调用
+   - 检查是否存在可疑的指令
 
-2. **Scripts Directory Scan**
-   - Dangerous command patterns (rm -rf, eval, exec)
-   - Hardcoded secrets and credentials
-   - Unsafe subprocess usage
-   - File system operations outside skill directory
+2. **脚本目录扫描**
+   - 检查是否存在危险的命令（如`rm -rf`、`eval`、`exec`）
+   - 检查是否存在硬编码的秘密和凭证
+   - 检查是否存在不安全的子进程使用
+   - 检查是否存在超出技能目录范围的文件系统操作
 
-3. **References Directory Scan**
-   - Hardcoded secrets (passwords, API keys, tokens)
-   - Suspicious URLs (pastebin, raw GitHub links)
-   - Sensitive information exposure
+3. **参考资料目录扫描**
+   - 检查是否存在硬编码的秘密（密码、API密钥、令牌）
+   - 检查是否存在可疑的URL（如pastebin、未经验证的GitHub链接）
+   - 检查是否存在敏感信息的泄露
 
-## Manual Security Checklist
+## 手动安全检查清单
 
-Use the comprehensive checklist in `references/security-checklist.md` for manual reviews.
+请使用`references/security-checklist.md`中的综合检查清单进行手动审查。
 
-### Critical Checks (Before Installation)
+### 安装前的关键检查
 
-#### 1. Documentation Integrity (SKILL.md)
-- ✅ Description accurately reflects skill functionality
-- ❌ No prompt injection patterns (see `references/prompt-injection-patterns.md`)
-- ❌ No instructions to ignore/discard context
-- ❌ No system override commands
-- ✅ No hidden capabilities beyond description
+#### 1. 文档完整性（SKILL.md）
+- ✅ 描述准确反映了技能的功能
+- ❌ 不存在提示注入的代码模式（参见`references/prompt-injection-patterns.md`）
+- ❌ 不存在忽略或丢弃上下文的指令
+- ❌ 不存在系统覆盖命令
+- ✅ 不存在超出描述范围的隐藏功能
 
-#### 2. Code Review (scripts/)
-- ❌ No hardcoded credentials or secrets
-- ❌ No dangerous file operations (rm -rf outside skill dir)
-- ❌ No eval() or exec() with user input
-- ❌ No unauthorized network requests
-- ✅ All operations within skill directory
-- ✅ Proper input validation
+#### 2. 代码审查（scripts/）
+- ❌ 不存在硬编码的凭证或秘密
+- ❌ 不存在危险的文件操作（如`rm -rf`）
+- ❌ 不存在使用用户输入执行`eval()`或`exec()`的情况
+- ❌ 不存在未经授权的网络请求
+- ✅ 所有操作都在技能目录范围内进行
+- ✅ 输入经过了适当的验证
 
-#### 3. Reference Materials (references/)
-- ❌ No hardcoded passwords, API keys, or tokens
-- ❌ No production credentials in documentation
-- ✅ Links only to legitimate, trusted sources
-- ✅ No documentation of security bypasses
+#### 3. 参考资料（references/）
+- ❌ 不存在硬编码的密码、API密钥或令牌
+- ❌ 文档中不存在生产环境所需的凭证
+- ✅ 链接仅指向合法、可信的来源
+- ✅ 文档中不存在绕过安全机制的描述
 
-#### 4. Behavior Alignment
-- ✅ Every command matches stated purpose
-- ✅ No hidden capabilities
-- ✅ No unnecessary file system access
-- ✅ Network access only when explicitly required
+#### 4. 行为一致性
+- ✅ 所有命令都与描述相符
+- ✅ 不存在隐藏的功能
+- ✅ 不存在不必要的文件系统访问
+- ✅ 网络访问仅在明确需要的情况下进行
 
-### Daily Audit Checks
+### 每日审计检查
 
-1. **Scan all installed skills** with the automated scanner
-2. **Review any new HIGH severity issues**
-3. **Check for modified files** in skill directories
-4. **Verify skill descriptions still match behavior**
-5. **Audit new dependencies** if added
+1. **使用自动化扫描工具扫描所有已安装的技能**
+2. **审查任何新的高严重性问题**
+3. **检查技能目录中是否有被修改的文件**
+4. **确认技能描述与实际行为一致**
+5. **如果添加了新的依赖项，需进行安全审计**
 
-## Specific Security Concerns
+## 特定的安全问题
 
-### Prompt Injection Detection
+### 提示注入检测
 
-Read `references/prompt-injection-patterns.md` for comprehensive patterns.
+请参阅`references/prompt-injection-patterns.md`以了解全面的检测模式。
 
-**Key indicators:**
-- Instructions to ignore/discard context
-- System override or bypass commands
-- Authority impersonation (act as administrator, etc.)
-- Jailbreak attempts (unrestricted mode, etc.)
-- Instruction replacement patterns
+**关键指标：**
+- 存在忽略或丢弃上下文的指令
+- 存在系统覆盖或绕过安全机制的命令
+- 存在冒充权限的行为（如模拟管理员操作）
+- 存在越狱尝试（如开启不受限制的模式）
 
-**Detection:**
+**检测方法：**
 ```python
 # Automated pattern matching
 import re
@@ -160,16 +160,16 @@ dangerous_patterns = [
 ]
 ```
 
-### Secrets and Credentials Exposure
+### 秘密和凭证泄露
 
-**What to scan for:**
-- Hardcoded passwords, API keys, tokens
-- AWS access keys and secret keys
-- SSH private keys
-- Database connection strings
-- Other sensitive credentials
+**需要检查的内容：**
+- 硬编码的密码、API密钥、令牌
+- AWS访问密钥和秘密密钥
+- SSH私钥
+- 数据库连接字符串
+- 其他敏感的凭证
 
-**Patterns to detect:**
+**检测模式：**
 ```
 password="..."
 secret='...'
@@ -178,101 +178,100 @@ api_key="..."
 aws_access_key_id="..."
 ```
 
-### Local Configuration Access
+### 本地配置访问控制
 
-**Block access to:**
+**禁止访问的目录：**
 - `~/.clawdbot/credentials/`
 - `~/.aws/credentials`
-- `~/.ssh/` directory
-- `~/.npmrc` and other config files
-- Shell history files
-- System keychain
+- `~/.ssh/`
+- `~/.npmrc`及其他配置文件
+- Shell历史记录文件
+- 系统密钥链
 
-**Allow only:**
-- Skill-specific configuration files
-- User-provided file paths
-- Designated workspace directories
-- Approved environment variables
+**允许访问的目录：**
+- 仅限于技能特定的配置文件
+- 用户提供的文件路径
+- 经批准的工作区目录
+- 经授权的环境变量
 
-### Command-Behavior Alignment
+### 命令与行为的一致性
 
-**Verification process:**
-1. Extract all commands/operations from skill code
-2. Compare against description in SKILL.md
-3. Identify any operations not documented
-4. Flag suspicious or hidden capabilities
+**验证流程：**
+1. 从技能代码中提取所有命令/操作
+2. 与SKILL.md中的描述进行比对
+3. 识别任何未在文档中记录的操作
+4. 标记出可疑或隐藏的功能
 
-**Example misalignment:**
+**示例：**
+❌ **禁止安装的技能：**
+- 描述：**格式化文本文档**
+- 实际行为：扫描文件系统并向外部服务器发送数据
 
-❌ **BLOCK:**
-- Description: "Format text documents"
-- Actual: Scans filesystem, sends data to external server
+✅ **安全的技能：**
+- 描述：**使用模板将Markdown转换为PDF**
+- 实际行为：读取Markdown内容，应用模板并生成PDF文件
 
-✅ **SAFE:**
-- Description: "Convert Markdown to PDF with templates"
-- Actual: Reads Markdown, applies template, generates PDF
+## 安全严重性等级
 
-## Security Severity Levels
+### 高严重性（立即禁止安装）
+- 检测到提示注入的代码模式
+- 存在硬编码的秘密或凭证
+- 存在数据泄露风险
+- 存在未经授权的文件系统访问
+- 存在危险的操作（如`rm -rf`、`dd`等）
+- 使用不可信的用户输入执行`eval()`或`exec()`
 
-### HIGH (Immediate Block)
-- Prompt injection patterns detected
-- Hardcoded secrets or credentials
-- Data exfiltration capabilities
-- Unauthorized file system access
-- Dangerous file operations (rm -rf, dd, etc.)
-- eval() or exec() with untrusted input
+**处理方式：** 不要安装该技能，并向技能作者报告问题。
 
-**Action:** Do not install. Report to skill author.
+### 中等严重性（需要审查）
+- 行为可疑但尚未明确具有恶意性
+- 某些操作需要用户批准
+- 对未经验证的端点存在有限的网络访问权限
+- 存在不安全的子进程使用（如`shell=True`）
+- 存在环境变量泄露的风险
 
-### MEDIUM (Review Required)
-- Suspicious but not clearly malicious
-- Requires user approval for specific operations
-- Limited network access to unverified endpoints
-- Unsafe subprocess usage (shell=True)
-- Environment variable exposure risks
+**处理方式：** 进行手动审查。只有在确认安全问题得到妥善处理后才能安装。
 
-**Action:** Manual review. Install only if justified and understood.
+### 低严重性（仅供参考）
+- 存在可疑的URL（可能是合法的）
+- 文档中存在过时的安全实践
+- 存在轻微的代码质量问题
+- 可能需要改进以提高安全性
 
-### LOW (Informational)
-- Suspicious URLs (may be legitimate)
-- Documentation of deprecated practices
-- Minor code quality issues
-- Potential improvements for security
+**处理方式：** 记录下来以供将来审查。通常情况下可以安全安装。
 
-**Action:** Note for future review. Generally safe to install.
+## 安装决策框架
 
-## Installation Decision Framework
+### 何时禁止安装（不要安装）
+- 存在任何高严重性问题
+- 明显存在提示注入的尝试
+- 存在硬编码的秘密
+- 存在数据泄露风险
+- 存在未经授权的访问行为
 
-### When to BLOCK (Do Not Install)
-- Any HIGH severity issues present
-- Clear prompt injection attempts
-- Hardcoded secrets
-- Data exfiltration
-- Unauthorized access patterns
+### 何时警告（谨慎安装）
+- 存在中等严重性问题
+- 存在需要验证的可疑行为
+- 需要用户的特别批准
+- 存在对未知端点的网络访问
 
-### When to WARN (Install with Caution)
-- MEDIUM severity issues present
-- Suspicious patterns requiring verification
-- Needs specific user approvals
-- Network access to unknown endpoints
+**在警告情况下安装前：**
+1. 了解相关风险
+2. 核实技能作者的信誉
+3. 先在隔离环境中进行测试
+4. 密切监控技能的行为
+5. 做好卸载的准备
 
-**Before installing with WARN:**
-1. Understand the risk
-2. Verify the skill author's reputation
-3. Test in isolated environment first
-4. Monitor behavior closely
-5. Be prepared to uninstall
+### 何时批准安装（安全可安装）
+- 未检测到安全问题
+- 文档齐全且透明
+- 技能的功能与描述完全一致
+- 来自可信的来源
+- 定期接受安全审计
 
-### When to APPROVE (Safe to Install)
-- No security issues detected
-- Well-documented and transparent
-- Matches description perfectly
-- From trusted source
-- Regularly audited
+## 依赖项安全检查
 
-## Dependency Security
-
-Check skill dependencies for vulnerabilities:
+检查技能的依赖项是否存在安全漏洞：
 
 ```bash
 # For Node.js skills
@@ -284,15 +283,15 @@ pip-audit
 safety check
 ```
 
-**What to check:**
-- Known CVEs in dependencies
-- Outdated packages with security updates
-- Transitive dependency vulnerabilities
-- Untrusted or unmaintained packages
+**需要检查的内容：**
+- 依赖项中是否存在已知的CVE（安全漏洞）
+- 是否存在过时的、未更新的安全补丁的包
+- 是否存在传递性依赖项的安全漏洞
+- 是否存在不可信或未维护的包
 
-## Security Reporting
+## 安全报告
 
-### Report Template
+### 报告模板
 
 ```markdown
 # Security Audit Report
@@ -319,59 +318,58 @@ safety check
 [Final verdict: Install/Block/Requires Changes]
 ```
 
-### Escalation Process
+### 升级流程
 
-1. **Detect issue** during scan or review
-2. **Document findings** using report template
-3. **Assess severity** (HIGH/MEDIUM/LOW)
-4. **Take action:**
-   - HIGH: Block skill, report to author
-   - MEDIUM: Review, install with caution or wait for fix
-   - LOW: Note, monitor
-5. **Follow up** on resolved issues
+1. **在扫描或审查过程中发现问题**
+2. **使用报告模板记录问题**
+3. **评估问题的严重性（高/中/低）**
+4. **采取相应的措施：**
+   - 高严重性：禁止安装该技能，并向作者报告
+   - 中等严重性：审查后谨慎安装或等待修复
+   - 低严重性：记录问题并继续监控
 
-## Reference Materials
+## 参考资料
 
-### Essential Reading
+### 必读材料
 
-1. **Security Checklist** (`references/security-checklist.md`)
-   - Comprehensive security criteria
-   - Command alignment verification
-   - Secrets exposure checks
-   - Installation guidelines
-   - Daily audit procedures
+1. **安全检查清单**（`references/security-checklist.md`）
+   - 全面的安全标准
+   - 命令与描述的匹配性检查
+   - 秘密泄露检查
+   - 安装指南
+   - 每日审计流程
 
-2. **Prompt Injection Patterns** (`references/prompt-injection-patterns.md`)
-   - Detection categories and patterns
-   - Automated detection strategies
-   - Red flag indicators
-   - Mitigation techniques
-   - Reporting templates
+2. **提示注入模式**（`references/prompt-injection-patterns.md`）
+   - 检测类别和模式
+   - 自动化检测策略
+   - 警示标志
+   - 缓解措施
+   - 报告模板
 
-### Internal Security Docs
+### 内部安全文档
 
-Refer to workspace security documents:
-- `SECURITY_AUDIT_REPORT.md` - Overall Clawdbot security posture
-- Any additional security policies or guidelines
+请参考工作区的安全文档：
+- `SECURITY_AUDIT_REPORT.md` - Clawdbot的整体安全状况
+- 任何其他安全政策或指南
 
-## Workflow Examples
+## 工作流程示例
 
-### Example 1: New Skill from ClawdHub
+### 示例1：从ClawdHub下载新技能
 
-**User request:** "Check if skill 'xyz' is safe to install"
+**用户请求：**“检查‘xyz’技能是否安全可安装”
 
-**Response:**
-1. Download skill to temporary location
-2. Run scanner: `python3 scripts/scan_skill.py /tmp/xyz-skill`
-3. Review output:
-   - If HIGH issues: "❌ BLOCKED: [list issues] - Do not install"
-   - If MEDIUM issues: "⚠️ WARNING: [list issues] - Requires manual review"
-   - If clean: "✅ SAFE: No security issues detected - Can install"
-4. If MEDIUM issues: Provide detailed manual review using checklist
+**处理流程：**
+1. 将技能文件下载到临时位置
+2. 运行扫描工具：`python3 scripts/scan_skill.py /tmp/xyz-skill`
+3. 查看扫描结果：
+   - 如果存在高严重性问题：**❌ 禁止安装：[问题列表]**
+   - 如果存在中等严重性问题：**⚠️ 警告：[问题列表] - 需要手动审查**
+   - 如果没有问题：**✅ 安全：未检测到安全问题 - 可以安装**
+4. 如果存在中等严重性问题：使用检查清单进行详细的手动审查
 
-### Example 2: Daily Security Audit
+### 示例2：每日安全审计
 
-**Daily routine:**
+**日常流程：**
 ```bash
 # Scan all installed skills
 for skill in /Users/rlapuente/clawd/skills/*/; do
@@ -382,47 +380,47 @@ done
 # Monitor MEDIUM issues for trends
 ```
 
-### Example 3: Verification of Skill Update
+### 示例3：技能更新后的验证
 
-**After skill update:**
-1. Compare new version with previous
-2. Scan new version with security scanner
-3. Check for new issues introduced
-4. Verify changes match update notes
-5. Re-approve only if security posture maintained
+**技能更新后：**
+1. 将新版本与旧版本进行比较
+2. 使用安全扫描工具扫描新版本
+3. 检查是否有新的安全问题
+4. 确认更改内容与更新说明一致
+5. 仅在确认安全状况未受影响的情况下重新批准安装
 
-## Best Practices
+## 最佳实践
 
-1. **Always scan before installing** - Never skip security check
-2. **Review HIGH issues immediately** - Don't ignore critical problems
-3. **Document all security findings** - Maintain audit trail
-4. **Report issues to skill authors** - Help improve ecosystem
-5. **Stay updated on threats** - Monitor security research
-6. **Regular audits** - Daily automated scans, weekly manual reviews
-7. **Isolate testing** - Test new skills in sandbox environment
-8. **Monitor behavior** - Watch for unexpected actions during use
+1. **安装前务必进行扫描** - 绝不要跳过安全检查
+2. **立即处理高严重性问题** - 不要忽视任何关键问题
+3. **记录所有安全问题** - 保持审计痕迹
+4. **向技能作者报告问题** - 帮助改进技能生态
+5. **关注安全威胁** - 定期关注安全研究动态
+6. **定期进行审计** - 每日自动扫描，每周进行手动审查
+7. **在隔离环境中测试新技能**  
+8. **监控技能使用过程中的行为** - 注意是否存在异常行为
 
-## Maintenance
+## 维护
 
-### Regular Updates
+### 定期更新
 
-- Update detection patterns for new threats
-- Add new security indicators to checklist
-- Improve scanner accuracy based on false positives/negatives
-- Update reference materials with latest security research
+- 更新检测规则以应对新的安全威胁
+- 在检查清单中添加新的安全指标
+- 根据误报或漏报的情况优化扫描工具的准确性
+- 根据最新的安全研究更新参考资料
 
-### Feedback Loop
+### 反馈循环
 
-When security issues are found:
-1. Document the pattern
-2. Add to detection rules
-3. Share with community
-4. Improve security posture overall
+当发现安全问题时：
+1. 记录问题的具体模式
+2. 将问题添加到检测规则中
+3. 与社区分享
+4. 全面提升系统的安全性
 
-## Tools
+## 使用的工具
 
-- **`scripts/scan_skill.py`** - Automated security scanner
-- **`references/security-checklist.md`** - Manual security checklist
-- **`references/prompt-injection-patterns.md`** - Prompt injection detection guide
+- **`scripts/scan_skill.py`** - 自动化安全扫描工具
+- **`references/security-checklist.md`** - 手动安全检查清单
+- **`references/prompt-injection-patterns.md`** - 提示注入检测指南
 
-Remember: Security is an ongoing process, not a one-time check. Regular audits and vigilance are essential to maintaining a secure Clawdbot environment.
+**记住：** 安全是一个持续的过程，而不仅仅是一次性的检查。定期审计和保持警惕对于维护安全的Clawdbot环境至关重要。

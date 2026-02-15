@@ -6,42 +6,42 @@ description: >
   Use when the user wants to work with voice agents, list their agents, create new ones, or manage agent configurations.
 ---
 
-# Voice.ai Agents
+# Voice.ai 语音助手
 
-Build the best conversational AI voice agents with Voice.ai's Agent API.
+使用 Voice.ai 的 Agent API 构建最佳的对话式 AI 语音助手。
 
-## ✨ Features
+## ✨ 主要功能
 
-- **Agent Management** - Create, update, and delete voice agents
-- **One-Click Deploy** - Deploy agents for phone calls instantly
-- **Knowledge Base** - RAG-powered agents with custom knowledge
-- **MCP Integration** - Connect agents to external tools via MCP
-- **Phone Numbers** - Manage inbound/outbound phone numbers
-- **Analytics** - Track call history and agent performance
+- **语音助手管理**：创建、更新和删除语音助手
+- **一键部署**：立即将助手部署用于电话通话
+- **知识库**：基于 RAG（Retrieval, Augmentation, and Generation）技术的助手，支持自定义知识
+- **MCP 集成**：通过 MCP 将助手连接到外部工具
+- **电话号码**：管理来电/去电号码
+- **分析**：跟踪通话记录和助手性能
 
-## ⚙️ Configuration
+## ⚙️ 配置
 
-### Get Your API Key
+### 获取 API 密钥
 
-1. Go to [Voice.ai Developer Dashboard](https://voice.ai/app/dashboard/developers)
-2. Sign in or create an account
-3. Generate a new API key
-4. Copy and save it securely
+1. 访问 [Voice.ai 开发者控制台](https://voice.ai/app/dashboard/developers)
+2. 登录或创建账户
+3. 生成新的 API 密钥
+4. 仔细复制并保存密钥
 
-### Set Up Authentication (3 Methods)
+### 设置身份验证（三种方法）
 
-**Method 1: Environment Variable (Recommended)**
+**方法 1：环境变量（推荐）**
 ```bash
 export VOICE_AI_API_KEY="your-api-key-here"
 ```
 
-**Method 2: .env File**
+**方法 2：.env 文件**
 ```bash
 # Create .env file in project root
 echo 'VOICE_AI_API_KEY=your-api-key-here' >> .env
 ```
 
-**Method 3: OpenClaw Config**
+**方法 3：OpenClaw 配置**
 ```json
 {
   "skills": {
@@ -52,9 +52,9 @@ echo 'VOICE_AI_API_KEY=your-api-key-here' >> .env
 }
 ```
 
-## 🔐 Before Any Operation
+## 🔐 在执行任何操作之前
 
-> **Important:** Always verify authentication before running any commands.
+> **重要提示：** 在运行任何命令之前，请务必验证身份验证。
 
 ```bash
 # 1. Check if API key is set
@@ -67,10 +67,11 @@ node scripts/agent.js list
 export VOICE_AI_API_KEY="your-api-key-here"
 ```
 
-### Silent Initialization
-The SDK automatically initializes when you run any command. No manual setup required after setting the API key.
+### 自动初始化
 
-## 🚀 Quick Start
+设置 API 密钥后，SDK 会自动初始化。无需手动设置。
+
+## 🚀 快速入门
 
 ```bash
 export VOICE_AI_API_KEY="your-api-key"
@@ -85,31 +86,31 @@ node scripts/agent.js list
 node scripts/agent.js deploy --id <agent_id>
 ```
 
-## 🤖 Agent Configuration
+## 🤖 助手配置
 
-| Parameter              | Default | Description                          |
+| 参数              | 默认值 | 描述                          |
 |------------------------|---------|--------------------------------------|
-| llm_model              | gemini-2.5-flash-lite | LLM model for responses |
-| llm_temperature        | 0.7     | Response creativity (0-2)            |
-| max_call_duration      | 900     | Max call length in seconds           |
-| allow_interruptions    | true    | Let users interrupt agent            |
-| auto_noise_reduction   | true    | Filter background noise              |
+| llm_model              | gemini-2.5-flash-lite | 用于生成回答的 LLM 模型 |
+| llm_temperature        | 0.7     | 回答的创造性（0-2）            |
+| max_call_duration      | 900     | 最大通话时长（秒）           |
+| allow_interruptions    | true    | 允许用户打断助手            |
+| auto_noise_reduction   | true    | 过滤背景噪音              |
 
-## 🎙️ TTS Voice Settings
+## 🎙️ 文本转语音（TTS）设置
 
-| Parameter   | Default | Description                    |
+| 参数   | 默认值 | 描述                    |
 |-------------|---------|--------------------------------|
-| voice_id    | -       | Voice ID for agent speech      |
-| model       | auto    | TTS model (auto-selected)      |
-| language    | en      | Language code                  |
-| temperature | 1.0     | Voice expressiveness (0-2)     |
-| top_p       | 0.8     | Sampling parameter (0-1)       |
+| voice_id    | -       | 助手的语音 ID              |
+| model       | auto    | 选择的 TTS 模型              |
+| language    | en      | 语言代码                  |
+| temperature | 1.0     | 语音表达力（0-2）             |
+| top_p       | 0.8     | 采样参数（0-1）               |
 
-## 🌍 Supported Languages
+## 🌍 支持的语言
 
 `auto`, `en`, `ca`, `sv`, `es`, `fr`, `de`, `it`, `pt`, `pl`, `ru`, `nl`
 
-## 💻 CLI Usage
+## 💻 命令行接口（CLI）用法
 
 ```bash
 # Create a new agent
@@ -134,9 +135,9 @@ node scripts/agent.js pause --id <agent_id>
 node scripts/agent.js delete --id <agent_id>
 ```
 
-## 🤖 OpenClaw Integration
+## 🤖 OpenClaw 集成
 
-### JSON Configuration
+### JSON 配置
 
 ```json
 {
@@ -150,59 +151,54 @@ node scripts/agent.js delete --id <agent_id>
 }
 ```
 
-### Chat Triggers
+### 聊天触发词
 
-OpenClaw automatically activates this skill when you mention:
-- "voice agent", "voice bot", "phone agent"
-- "create agent", "deploy agent", "list agents"
-- "Voice.ai", "voice ai"
+当您提到以下内容时，OpenClaw 会自动激活此技能：
+- “voice agent”（语音助手）
+- “voice bot”（语音机器人）
+- “create agent”（创建助手）
+- “deploy agent”（部署助手）
+- “list agents”（列出助手）
+- “Voice.ai”（Voice.ai）
+- “voice ai”（语音 AI）
 
-## 🗣️ User-Friendly Language
+## 🗣️ 用户友好语言
 
-| When User Says... | Skill Does... |
-|-------------------|---------------|
-| "Create a support agent" | Creates agent with support-focused prompt |
-| "Show my agents" | Lists all agents with status |
-| "Deploy the agent" | Deploys agent for phone calls |
-| "Update the greeting" | Updates agent greeting message |
-| "Delete the test agent" | Deletes specified agent |
-| "What agents do I have?" | Lists agents in friendly format |
-| "Make an FAQ bot" | Creates agent with FAQ template |
-| "Connect to my MCP server" | Configures MCP integration |
+| 用户输入       | 助手响应                         |
+|-------------------|--------------------------------------|
+| “Create a support agent” | 创建以支持为主题的助手           |
+| “Show my agents” | 显示所有助手的状态                   |
+| “Deploy the agent” | 部署助手用于电话通话                   |
+| “Update the greeting” | 更新助手的问候语                   |
+| “Delete the test agent” | 删除指定的助手                   |
+| “What agents do I have?” | 以友好的格式列出所有助手                   |
+| “Make an FAQ bot” | 创建基于 FAQ 模板的助手                   |
+| “Connect to my MCP server” | 配置 MCP 集成                         |
 
-## 📁 Project Files
+## 📁 项目文件
 
-```
-voice-ai-agents/
-├── SKILL.md                    # This documentation
-├── voice-ai-agents.yaml        # Skill configuration
-├── voice-ai-agents-sdk.js      # JavaScript SDK
-└── scripts/
-    └── agent.js                # CLI tool
-```
+| 文件          | 用途                         |
+|------------|--------------------------------------|
+| `SKILL.md`     | 文档和 OpenClaw 技能定义                   |
+| `voice-ai-agents.yaml` | API 配置、模型和默认值                   |
+| `voice-ai-agents-sdk.js` | 包含所有 API 方法的完整 SDK                   |
+| `scripts/agent.js`   | 命令行接口                         |
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | Documentation and OpenClaw skill definition |
-| `voice-ai-agents.yaml` | API config, models, defaults |
-| `voice-ai-agents-sdk.js` | Full SDK with all API methods |
-| `scripts/agent.js` | Command-line interface |
+## ❌ 错误处理
 
-## ❌ Error Handling
+| 错误代码 | 原因 | 解决方案                         |
+|------------|-------------------|-----------------------------------------|
+| `401 Unauthorized` | API 密钥无效或缺失 | 确保 `VOICE.AI_API_KEY` 设置正确                   |
+| `403 Forbidden` | API 密钥权限不足 | 生成具有适当权限的新密钥                   |
+| `404 Not Found` | 助手 ID 不存在 | 运行 `list` 命令获取有效的助手 ID                   |
+| `429 Too Many Requests` | 超过请求限制 | 等待 60 秒后重试                   |
+| `500 Server Error` | Voice.ai API 故障 | 查看 [状态页面](https://status.voice.ai)                   |
+| `ENOTFOUND` | 网络错误 | 检查网络连接                     |
+| `Agent not deployed` | 助手存在但未激活 | 运行 `deploy --id <agent_id>`                   |
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `401 Unauthorized` | Invalid or missing API key | Check `VOICE_AI_API_KEY` is set correctly |
-| `403 Forbidden` | API key lacks permissions | Generate new key with proper scopes |
-| `404 Not Found` | Agent ID doesn't exist | Run `list` to get valid agent IDs |
-| `429 Too Many Requests` | Rate limit exceeded | Wait 60 seconds and retry |
-| `500 Server Error` | Voice.ai API issue | Check [status page](https://status.voice.ai) |
-| `ENOTFOUND` | Network error | Check internet connection |
-| `Agent not deployed` | Agent exists but not active | Run `deploy --id <agent_id>` |
+### 优雅的错误信息
 
-### Graceful Error Messages
-
-The SDK provides user-friendly error messages:
+SDK 提供用户友好的错误信息：
 ```
 ❌ Authentication failed. Please check your API key.
    Get one at: https://voice.ai/app/dashboard/developers
@@ -213,22 +209,22 @@ The SDK provides user-friendly error messages:
 ❌ Rate limit reached. Please wait 60 seconds before retrying.
 ```
 
-## 📝 Triggers
+## 📝 触发词
 
-These phrases activate the Voice.ai Agents skill in OpenClaw:
+以下短语可在 OpenClaw 中激活 Voice.ai 语音助手技能：
 
-| Category | Trigger Phrases |
-|----------|-----------------|
-| **Create** | "create voice agent", "make a phone bot", "new agent" |
-| **List** | "show agents", "list my agents", "what agents exist" |
-| **Deploy** | "deploy agent", "activate agent", "start the bot" |
-| **Update** | "update agent", "change prompt", "edit greeting" |
-| **Delete** | "delete agent", "remove bot", "destroy agent" |
-| **Info** | "agent details", "show agent", "get agent info" |
+| 类别            | 触发词                          |
+|-----------------|-----------------------------------------|
+| **创建**       | “create voice agent”                | 创建语音助手                         |
+| **列出**       | “show agents”                    | 显示所有助手                         |
+| **部署**       | “deploy agent”                    | 部署助手                         |
+| **更新**       | “update agent”                    | 更新助手配置                         |
+| **删除**       | “delete agent”                    | 删除助手                         |
+| **信息**       | “agent details”                  | 查看助手详细信息                         |
 
-## 🔗 MCP Server Integration
+## 🔗 MCP 服务器集成
 
-Connect your agent to external tools:
+将您的助手连接到外部工具：
 
 ```javascript
 const agent = await client.createAgent({
@@ -245,28 +241,28 @@ const agent = await client.createAgent({
 });
 ```
 
-## 📚 Knowledge Base (RAG)
+## 📚 知识库（RAG）
 
-Add custom knowledge to your agent:
+向您的助手添加自定义知识：
 
 ```bash
 # Create agent with knowledge base
 node scripts/agent.js create --name "FAQ Bot" --kb-id 123
 ```
 
-## 🔗 Links
+## 🔗 链接
 
-- [Get API Key](https://voice.ai/app/dashboard/developers) ← Start here!
-- [Voice Agents Guide](https://voice.ai/docs/guides/voice-agents/quickstart)
-- [Agent API Reference](https://voice.ai/docs/api-reference/agent-management/create-agent)
-- [Status Page](https://status.voice.ai)
+- [获取 API 密钥](https://voice.ai/app/dashboard/developers) | 从这里开始！
+- [Voice Assistant 使用指南](https://voice.ai/docs/guides/voice-agents/quickstart)
+- [助手 API 参考](https://voice.ai/docs/api-reference/agent-management/create-agent)
+- [状态页面](https://status.voice.ai)
 
-## 📋 Changelog
+## 📋 更新日志
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-01-31 | Initial release with full agent management |
+| 版本 | 日期 | 更改内容                         |
+|---------|-------------------------|-----------------------------------------|
+| 1.0.0 | 2026-01-31 | 首次发布，包含完整的助手管理功能           |
 
 ---
 
-Made with ❤️ by [Nick Gill](https://github.com/gizmoGremlin)
+由 [Nick Gill](https://github.com/gizmoGremlin) 用 ❤️ 制作

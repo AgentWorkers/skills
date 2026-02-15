@@ -1,30 +1,30 @@
 ---
 name: Meals
-description: Build a personal meal planning system with weekly plans, shopping lists, and dietary tracking.
+description: 构建一个个人 meal planning system（餐食规划系统），该系统应包括每周的餐食计划、购物清单以及饮食记录功能。
 metadata: {"clawdbot":{"emoji":"🍽️","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User plans their week → help organize meals
-- Generate shopping lists → from planned meals
-- Track what works → build personal meal database
-- Create `~/meals/` as workspace
+## 核心功能  
+- 用户规划一周的饮食安排 → 帮助整理所需食材  
+- 根据规划好的餐食生成购物清单  
+- 记录哪些食材使用效果良好 → 建立个人饮食数据库  
+- 创建 `~/meals/` 作为工作目录  
 
-## When User Plans Meals
-- Ask about the week: how many dinners, lunches to plan
-- Consider constraints: busy nights need quick meals
-- Balance variety: not pasta three nights in a row
-- Note who's eating: family size, guests
+## 用户规划餐食时  
+- 询问一周的饮食需求：需要准备多少顿晚餐和午餐  
+- 考虑实际情况：忙碌的夜晚需要快速准备的餐食  
+- 保持饮食多样性：避免连续三晚都吃意大利面  
+- 记录用餐人数：家庭成员数量、客人数量  
 
-## Meal Database
-Build personal collection over time:
-- Meals you actually make (not aspirational)
-- Prep time and cook time
-- Serves how many
-- Dietary tags: vegetarian, gluten-free, dairy-free
-- Difficulty: quick weeknight vs weekend project
+## 饮食数据库  
+- 随时间积累个人饮食数据：  
+  - 实际制作的餐食  
+  - 准备时间和烹饪时间  
+  - 适合的人数  
+  - 饮食标签：素食、无麸质、无乳制品  
+  - 食材难度：适合工作日晚餐的简单餐食或适合周末的复杂餐食  
 
-## Weekly Plan Structure
+## 周饮食计划结构  
 ```
 ~/meals/
 ├── plans/
@@ -34,95 +34,97 @@ Build personal collection over time:
 │   └── pasta-carbonara.md
 ├── shopping/
 └── preferences.md
-```
+```  
 
-## Weekly Plan Format
-Simple table or list:
-- Monday: Chicken stir-fry
-- Tuesday: Leftovers
-- Wednesday: Pasta carbonara
-- Thursday: Takeout (busy night)
-- Friday: Pizza night
-- Weekend: Flexible
+## 周饮食计划格式  
+简单的表格或列表：  
+- 星期一：鸡肉炒菜  
+- 星期二：剩菜  
+- 星期三：意大利面碳ara  
+- 星期四：外卖（忙碌的夜晚）  
+- 星期五：披萨之夜  
+- 周末：灵活安排  
 
-## Shopping List Generation
-- Aggregate ingredients from planned meals
-- Combine quantities: 2 onions + 1 onion = 3 onions
-- Group by store section: produce, dairy, meat, pantry
-- Exclude pantry staples user always has
+## 购物清单生成  
+- 从规划好的餐食中汇总所需食材  
+- 合并相同食材的用量（例如：2个洋葱 + 1个洋葱 = 3个洋葱）  
+- 按食材类别分类：蔬菜、乳制品、肉类、厨房储备  
 
-## Pantry Staples
-Track what user always has:
-- Salt, pepper, olive oil, garlic
-- Rice, pasta, common spices
-- Subtract from shopping lists automatically
-- Update when they run out
+## 厨房储备食材  
+- 记录用户常备的食材：  
+  - 盐、胡椒粉、橄榄油、大蒜  
+  - 米饭、意大利面、常见香料  
+- 自动从购物清单中扣除这些常备食材  
+- 当食材用完时及时更新  
 
-## Meal Preferences
-- Dietary restrictions: allergies, intolerances, choices
-- Dislikes: "no mushrooms"
-- Favorites: quick go-to meals
-- Cuisine preferences: Mexican Mondays, etc.
+## 饮食偏好  
+- 饮食限制：过敏情况、不耐受食材  
+- 不喜欢的食材：“不吃蘑菇”  
+- 喜欢的餐食：简单易做的餐食  
+- 厨菜偏好：例如每周一吃墨西哥菜  
 
-## Progressive Enhancement
-- Week 1: plan a few dinners, make shopping list
-- Week 2: save meals that worked to database
-- Month 2: use past meals to speed planning
-- Month 3: pattern-based suggestions
+## 功能升级  
+- 第一周：规划几顿晚餐并生成购物清单  
+- 第二周：将效果良好的餐食保存到数据库中  
+- 第三个月：利用以往的餐食数据快速制定计划  
+- 根据用餐模式提供个性化建议  
 
-## Quick Weeknight Filters
-Tag meals by time:
-- Under 30 minutes
-- One-pot/sheet pan
-- No-cook
-- Make ahead
-- Freezer-friendly
+## 快速准备工作日晚餐的筛选条件  
+- 根据烹饪时间对餐食进行分类：  
+  - 烹饪时间少于30分钟  
+  - 用一个锅或平底锅就能完成的餐食  
+- 无需烹饪的餐食  
+- 可以提前准备的餐食  
+- 适合放入冰箱冷冻的餐食  
 
-## Batch Cooking Support
-- Sunday prep suggestions
-- Meals that share ingredients
-- Components that work multiple ways
-- Proteins: cook once, use twice
+## 批量烹饪支持  
+- 提供周日的烹饪建议  
+- 选择可共用食材的餐食  
+- 提供多种烹饪方法的食材组合  
+- 蛋白质丰富的餐食（一次烹饪可重复使用）  
 
-## What To Surface
-- "Last week you made tacos on Tuesday — repeat or vary?"
-- "You have chicken planned twice — intentional?"
-- "Haven't made salmon in 3 weeks"
-- "That pasta dish was rated 5 stars last time"
+## 提供的提示信息  
+- “上周你周二做了墨西哥卷饼——想重复吗？还是想尝试其他做法？”  
+- “你计划了两顿鸡肉餐——是有意为之吗？”  
+- “你已经三周没吃三文鱼了……”  
+- “上次你做的那道意大利面得到了5星评价！”  
 
-## Leftovers Planning
-- Big batch Sunday → leftovers Monday lunch
-- Transform leftovers: roast chicken → chicken salad
-- Note which meals keep well
-- Freeze portions for future lazy nights
+## 剩菜处理  
+- 周日批量准备食材 → 晚上用剩菜做午餐  
+- 将剩菜转化为其他菜品（例如：烤鸡改成鸡肉沙拉）  
+- 记录哪些餐食容易保存  
+- 将剩余的食材冷冻起来，方便以后使用  
 
-## Meal Ratings
-After cooking:
-- Quick rating: made again? yes/no/maybe
-- What to adjust next time
-- Family feedback
-- Builds data for future suggestions
+## 餐食评价  
+- 烹饪完成后进行快速评价：是否想再做一次？  
+- 下次需要调整的地方  
+- 家庭成员的反馈  
+- 为未来的饮食计划提供数据支持  
 
-## Dietary Tracking (Optional)
-- Not calorie counting — that's separate
-- Balance across week: enough vegetables?
-- Variety: different proteins, cuisines
-- Special needs: iron-rich meals, high-protein days
+## 饮食记录（可选）  
+- 不进行卡路里计算（这是单独的功能）  
+- 确保每周摄入足够的蔬菜  
+- 保持饮食多样性：不同种类的蛋白质和不同的烹饪方式  
+- 特殊需求：补充铁元素的餐食、高蛋白餐食  
 
-## What NOT To Suggest
-- Complex meal prep before simple planning works
-- Calorie tracking in meal planner — different concern
-- Ambitious recipes on busy nights
-- New recipes every night — repeats are fine
+## 不建议的做法  
+- 在尚未掌握简单烹饪方法之前，不建议准备复杂的餐食  
+- 饮食计划工具中不支持卡路里追踪（这是另一个功能）  
+- 在忙碌的夜晚推荐复杂的食谱  
+- 不建议每晚都尝试新食谱——重复使用熟悉的餐食也是不错的选择  
 
-## Integration Points
-- Recipes: link to full recipe files
-- Shopping: export list to preferred format
-- Calendar: note dinner guests, events
-- Budget: track spending if wanted
+## 系统集成点  
+- 食谱：提供完整食谱文件的链接  
+- 购物清单：可导出为用户喜欢的格式  
+- 日历：记录晚餐的客人安排和活动  
+- 预算：如需可追踪饮食开销  
 
-## Seasonal Awareness
-- Summer: grilling, salads, no-cook
-- Winter: soups, stews, comfort food
-- Seasonal produce: what's good now
-- Holiday meal planning
+## 季节性饮食建议  
+- 夏季：适合烧烤、沙拉等无需烹饪的餐食  
+- 冬季：适合炖菜、暖胃的餐食  
+- 根据季节选择当季食材  
+- 节日饮食规划  
+
+---
+
+（注：由于原文中的某些部分（如代码块、链接等）没有提供具体的技术细节或上下文，因此在翻译时保留了原文的格式和结构，仅对文本内容进行了中文翻译。）

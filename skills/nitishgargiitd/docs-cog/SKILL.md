@@ -1,6 +1,6 @@
 ---
 name: docs-cog
-description: "Deep reasoning. Accurate data. Beautiful design. The three things every great document needs — and most AI gets wrong. #1 on DeepResearch Bench (Feb 2026), powered by SOTA search models, and state-of-the-art PDF generation. Create resumes, contracts, reports, proposals, invoices, certificates, and any professional document."
+description: "深度推理、准确的数据、精美的设计——这些都是每一份优秀文档所必备的要素，然而大多数人工智能系统在这些方面都存在不足。本工具在 DeepResearch Bench 评估中排名第一（2026 年 2 月），其核心技术基于最新的搜索模型和先进的 PDF 生成技术。您可以利用它来创建简历、合同、报告、提案、发票、证书以及任何类型的正式文档。"
 metadata:
   openclaw:
     emoji: "📄"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Docs Cog - Professional Documents Powered by CellCog
+# Docs Cog - 由 CellCog 提供支持的专业文档服务
 
-**Deep reasoning. Accurate data. Beautiful design.** The three things every great document needs — and most AI gets wrong.
+**深度推理、准确的数据、精美的设计**——这些都是优秀文档所必备的要素，然而大多数人工智能工具在这些方面都存在不足。
 
-CellCog gets them right: **#1 on DeepResearch Bench (Feb 2026)** for deep reasoning, **SOTA search models** for factually grounded content, and **state-of-the-art PDF generation** that rivals professional design studios. Resumes, contracts, reports, proposals — delivered in minutes, looking like they took days.
+CellCog 则能够完美地满足这些要求：在 **DeepResearch Bench** 评估中排名第一（2026年2月），在深度推理能力上表现出色；拥有最先进的搜索模型，确保内容基于事实；其 PDF 生成技术可与专业设计工作室相媲美。无论是简历、合同、报告还是提案，都能在几分钟内完成，且看起来仿佛花费了大量时间精心制作。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用该功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**请先阅读 `cellcog` 技能的相关说明**，以了解如何进行 SDK 设置。该技能将向您展示该工具的强大功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,183 +40,184 @@ result = client.create_chat(
 
 ---
 
-## PDF is the Default
+## PDF 是默认格式
 
-**All documents are generated as PDF.** No questions asked.
+**所有文档均以 PDF 格式生成。**无需额外设置。
 
-CellCog excels at creating beautiful, professionally formatted documents. PDF captures AI's full creative capability—perfect typography, layouts, and design. If you need DOCX for editing, explicitly request it in your prompt (quality will be lower).
-
----
-
-## What Documents You Can Create
-
-### Resume & Career Documents
-
-Build your professional story:
-
-- **Resume/CV**: "Create a modern resume for a software engineer with 5 years of experience"
-- **Cover Letter**: "Write a compelling cover letter for a product manager position at Google"
-- **LinkedIn Summary**: "Create a professional LinkedIn summary that highlights my transition from finance to tech"
-- **Portfolio**: "Build a portfolio document showcasing my UX design projects"
-
-**Example prompt:**
-> "Create a modern, ATS-friendly resume for:
-> 
-> Name: Sarah Chen
-> Title: Senior Product Manager
-> Experience: 7 years in B2B SaaS
-> 
-> Work history:
-> - Stripe (2021-present): Led payments platform, grew revenue 40%
-> - Slack (2018-2021): Launched enterprise features
-> - Microsoft (2016-2018): Associate PM on Azure
-> 
-> Education: Stanford MBA, UC Berkeley CS
-> 
-> Clean, professional design with blue accents."
-
-### Business Documents
-
-Professional business materials:
-
-- **Proposals**: "Create a consulting proposal for a digital transformation project"
-- **Invoices**: "Generate an invoice template for my freelance design business"
-- **Business Letters**: "Write a formal partnership inquiry letter"
-- **Quotes & Estimates**: "Create a detailed quote for website development services"
-- **Meeting Minutes**: "Format these meeting notes into professional minutes"
-
-**Example prompt:**
-> "Create a business proposal for 'CloudMigrate' consulting services:
-> 
-> Client: Acme Corp
-> Project: AWS cloud migration
-> Timeline: 6 months
-> Budget: $150,000
-> 
-> Include: Executive summary, scope of work, timeline, team bios, pricing breakdown, terms.
-> 
-> Professional, corporate design."
-
-### Reports & Analysis
-
-Data-driven documents:
-
-- **Business Reports**: "Create a quarterly business review report"
-- **Research Reports**: "Format my research findings into a professional report"
-- **Analysis Documents**: "Create a competitive analysis document"
-- **White Papers**: "Build a white paper on AI in healthcare"
-- **Case Studies**: "Create a customer case study showcasing ROI"
-
-**Example prompt:**
-> "Create a Q4 2025 business report:
-> 
-> Title: Quarterly Performance Review
-> Company: TechStart Inc.
-> 
-> Key metrics:
-> - Revenue: $2.1M (up 35% YoY)
-> - Customers: 150 (up from 98)
-> - Churn: 5% (down from 8%)
-> 
-> Include charts and executive summary. Corporate professional style."
-
-### Legal & Finance Documents
-
-Formal agreements and contracts:
-
-- **Contracts**: "Create a freelance services agreement"
-- **NDAs**: "Generate a mutual non-disclosure agreement"
-- **Terms of Service**: "Draft terms of service for my SaaS app"
-- **Privacy Policies**: "Create a GDPR-compliant privacy policy"
-- **MOUs**: "Create a memorandum of understanding between two companies"
-
-**Example prompt:**
-> "Create a freelance contractor agreement:
-> 
-> Client: Acme Corp
-> Contractor: Jane Smith (Web Developer)
-> Project: E-commerce website redesign
-> Duration: 3 months
-> Payment: $15,000 (50% upfront, 50% on completion)
-> 
-> Include: Scope, deliverables, payment terms, IP ownership, confidentiality, termination clauses.
-> 
-> Professional legal formatting."
-
-### Creative & Marketing Documents
-
-Eye-catching marketing materials:
-
-- **Brochures**: "Create a tri-fold brochure for our fitness studio"
-- **Flyers**: "Design a promotional flyer for our summer sale"
-- **One-Pagers**: "Create a product one-pager for sales team"
-- **Media Kits**: "Build a media kit for our startup"
-- **Catalogs**: "Create a product catalog with 20 items"
-
-**Example prompt:**
-> "Create a product one-pager for 'TaskFlow' project management software:
-> 
-> Headline: Finally, a PM tool that doesn't suck
-> Key features: AI task prioritization, Slack integration, real-time collaboration
-> Pricing: $12/user/month
-> Call to action: Start free trial
-> 
-> Modern, bold design. Blue and white color scheme."
-
-### Education & Training Documents
-
-Learning materials:
-
-- **Lesson Plans**: "Create a lesson plan for teaching Python basics"
-- **Training Manuals**: "Build an employee onboarding manual"
-- **Worksheets**: "Create practice worksheets for algebra"
-- **Course Outlines**: "Design a 12-week data science curriculum"
-- **Study Guides**: "Create a study guide for AWS certification"
-
-### Events & Planning Documents
-
-Event materials:
-
-- **Invitations**: "Create elegant wedding invitations"
-- **Event Programs**: "Design a conference program booklet"
-- **Agendas**: "Create a workshop agenda document"
-- **Itineraries**: "Build a detailed travel itinerary"
-- **Certificates**: "Create achievement certificates for our hackathon"
-
-### Forms & Certificates
-
-Official documents:
-
-- **Certificates**: "Create a course completion certificate"
-- **Awards**: "Design employee of the month award"
-- **Badges**: "Create digital badges for our training program"
-- **Forms**: "Design a customer feedback form"
+CellCog 在创建美观、格式专业的文档方面表现出色。PDF 充分展现了人工智能的创造力——完美的排版、布局和设计。如果您需要 DOCX 格式的文档以便后续编辑，请在请求时明确说明（不过文档质量可能会稍低）。
 
 ---
 
-## Chat Mode for Documents
+## 可创建的文档类型
 
-| Scenario | Recommended Mode |
+### 简历与职业相关文档
+
+构建您的职业档案：
+
+- **简历/CV**：为一名拥有 5 年经验的软件工程师创建一份现代风格的简历。
+- **求职信**：为谷歌的产品经理职位撰写一封有吸引力的求职信。
+- **领英个人简介**：创建一份专业的领英个人简介，突出您从金融行业转行到科技行业的经历。
+- **作品集**：制作一份作品集，展示您的用户体验设计项目。
+
+**示例请求：**
+> “为以下人员创建一份适合 ATS 系统的现代简历：”
+> 
+> 姓名：Sarah Chen
+> 职位：高级产品经理
+> 经验：7 年 B2B SaaS 行业工作经验
+> 
+> 工作经历：
+> - Stripe（2021年至今）：负责支付平台的管理工作，实现收入增长 40%
+- Slack（2018-2021年）：推出企业级功能
+- Microsoft（2016-2018年）：担任 Azure 项目的副项目经理
+> 
+> 教育背景：斯坦福大学 MBA 学位，加州大学伯克利分校计算机科学专业
+> 
+> 文档设计风格：简洁、专业，采用蓝色作为主色调。”
+
+### 商业文档
+
+专业商业文件：
+
+- **提案**：为数字化转型项目创建一份咨询提案。
+- **发票**：为我的自由职业设计业务生成发票模板。
+- **商务信函**：撰写正式的合作伙伴关系咨询函。
+- **报价单与估算**：为网站开发服务创建详细的报价单。
+- **会议记录**：将会议纪要格式化为专业的文档。
+
+**示例请求：**
+> “为‘CloudMigrate’咨询服务创建一份商业提案：”
+> 
+> 客户：Acme Corp
+> 项目：AWS 云平台迁移
+> 时间安排：6 个月
+> 预算：150,000 美元
+> 
+> 包含内容：执行摘要、工作范围、时间表、团队成员介绍、费用明细及服务条款。
+> 
+> 文档设计要求：专业、符合企业风格。”
+
+### 报告与分析文档
+
+数据驱动的文档：
+
+- **商业报告**：生成季度业务回顾报告。
+- **研究报告**：将我的研究成果整理成专业的报告格式。
+- **分析文档**：创建竞争分析报告。
+- **白皮书**：撰写关于人工智能在医疗领域的白皮书。
+- **案例研究**：创建客户案例研究，展示投资回报率。
+
+**示例请求：**
+> “生成 2025 年第四季度的业务报告：”
+> 
+> 标题：季度业绩回顾
+> 公司：TechStart Inc.
+> 
+> 关键指标：
+- 收入：210 万美元（同比增长 35%）
+- 客户数量：150 家（同比增长 98%）
+- 客户流失率：5%（同比下降 8%）
+> 
+> 包含图表和执行摘要。文档设计需符合企业专业标准。”
+
+### 法律与财务文档
+
+正式协议与合同：
+
+- **合同**：创建一份自由职业服务协议。
+- **保密协议**：生成一份双方签署的保密协议。
+- **服务条款**：为我的 SaaS 应用程序起草服务条款。
+- **隐私政策**：制定符合 GDPR 规范的隐私政策。
+- **谅解备忘录**：为两家公司之间创建一份谅解备忘录。
+
+**示例请求：**
+> “为以下项目创建一份自由职业合同：”
+> 
+> 客户：Acme Corp
+> 承包商：Jane Smith（网页开发者）
+- 项目：电子商务网站重新设计
+- 项目周期：3 个月
+- 费用：15,000 美元（50% 预付，50% 完成后支付）
+> 
+> 包含内容：项目范围、交付物、付款条款、知识产权归属、保密条款及终止条件。
+> 
+> 文档需采用专业的法律格式。
+
+### 创意与营销文档
+
+吸引人的营销材料：
+
+- **宣传册**：为我们的健身工作室制作三折宣传册。
+- **传单**：为夏季促销活动设计宣传单。
+- **产品介绍页**：为销售团队制作产品介绍页。
+- **媒体资料包**：为我们的初创公司制作媒体资料包。
+- **产品目录**：创建包含 20 个产品的产品目录。
+
+**示例请求：**
+> “为‘TaskFlow’项目管理软件创建一份产品介绍页：”
+> 
+> 标题：终于有款不那么糟糕的项目管理工具了！
+- 主要特点：人工智能任务优先排序、Slack 集成、实时协作功能
+- 价格：12 美元/用户/月
+- 行动号召：立即开始免费试用
+> 
+> 文档设计要求：现代感强、色彩鲜明（使用蓝色和白色）。
+
+### 教育与培训文档
+
+学习材料：
+
+- **教学计划**：为 Python 基础课程制定教学计划。
+- **培训手册**：编写员工入职手册。
+- **练习题**：创建代数练习题。
+- **课程大纲**：设计为期 12 周的数据科学课程大纲。
+- **学习指南**：为 AWS 认证考试编写学习指南。
+
+### 活动与策划文档
+
+活动相关文档：
+
+- **邀请函**：设计精美的婚礼邀请函。
+- **活动日程**：制作会议程序手册。
+- **议程**：编写研讨会议程文档。
+- **旅行计划**：制定详细的旅行行程安排。
+- **证书**：为我们的黑客马拉松活动制作成绩证书。
+
+### 表单与证书
+
+官方文件：
+
+- **证书**：创建课程结业证书。
+- **奖项**：设计“每月优秀员工”奖项的证书。
+- **徽章**：为我们的培训项目设计数字徽章。
+- **表格**：设计客户反馈表格。
+
+---
+
+## 文档创建模式推荐
+
+| 文档类型 | 推荐使用模式 |
 |----------|------------------|
-| Standard documents - resumes, invoices, reports, certificates | `"agent"` |
-| Complex documents requiring narrative craft - proposals, white papers, case studies | `"agent team"` |
+| 标准文档（如简历、发票、报告、证书） | `"agent"` |
+| 需要详细叙述的复杂文档（如提案、白皮书、案例研究） | `"agent team"` |
 
-**Use `"agent"` for most documents.** Resumes, contracts, reports, and standard business documents execute well in agent mode.
+**大多数文档建议使用 `"agent"` 模式**。简历、合同、报告和标准商业文档使用 `"agent"` 模式即可完成。**
 
-**Use `"agent team"` for high-stakes documents** where persuasion and narrative flow matter—investor proposals, detailed white papers, compelling case studies.
+**对于需要说服力强、叙述逻辑复杂的文档（如投资提案、详细白皮书、引人入胜的案例研究）**，建议使用 `"agent team"` 模式。
 
 ---
 
-## Tips for Better Documents
+## 创建高质量文档的技巧
 
-1. **Provide the content**: Don't say "write about my experience" - provide actual details, numbers, and facts.
+1. **提供具体内容**：不要只是说“描述我的经验”，请提供实际的数据、数字和事实。
+2. **明确文档结构**：在请求时说明文档应包含哪些部分（如执行摘要、问题描述、解决方案、时间安排、费用等），以便系统有明确的创作方向。
+3. **指定设计风格**：选择“现代简约”、“企业专业”或“色彩鲜明”等设计风格。
+4. **体现品牌特色**：提及品牌使用的颜色和标志（如有的话），或参考现有的品牌设计指南。
+5. **明确目标受众**：根据受众类型（如投资者、企业客户或学生）调整文档的风格和细节程度。
+6. **优先选择 PDF 格式**：PDF 是默认格式，除非您确实需要后续编辑文档。
 
-2. **Specify structure**: "Include: Executive summary, problem, solution, timeline, pricing" gives clear direction.
+---
 
-3. **Design preferences**: "Modern and minimal", "Corporate professional", "Bold and colorful" - describe what you want.
+---
 
-4. **Brand elements**: Mention colors, logos (upload them), or reference existing brand guidelines.
-
-5. **Audience context**: "For investors", "For enterprise clients", "For students" changes tone and detail level.
-
-6. **Trust PDF**: It's the default for a reason. Only request DOCX if you truly need to edit the file afterward.
+（翻译完成。）

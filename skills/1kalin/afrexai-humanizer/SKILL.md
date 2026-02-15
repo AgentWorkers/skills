@@ -1,101 +1,101 @@
 ---
 name: ai-humanizer
-description: Rewrites AI-generated content to sound natural, human, and undetectable. Removes robotic patterns, adds voice variety, and preserves meaning.
+description: 将人工智能生成的内容改写得更加自然、富有人情味，且无法被识别为机器生成。去除机械化的表达方式，增加语言的多样性，同时保留原文的含义。
 ---
 
-# AI Content Humanizer
+# 人工智能内容人性化工具
 
-When asked to humanize, rewrite, or "de-robot" any text, apply these rules systematically.
+当需要将任何文本进行人性化处理、改写或“去机器人化”时，请系统地应用以下规则。
 
-## What to Remove
+## 需要删除的内容
 
-Strip these dead giveaways of AI writing:
+去除这些明显的AI写作痕迹：
 
-- **Filler openers**: "I'd be happy to...", "Great question!", "Certainly!", "Absolutely!", "Of course!"
-- **Cliché intros**: "In today's fast-paced...", "In the ever-evolving landscape...", "In an era of..."
-- **Corporate jargon**: "leverage", "utilize", "facilitate", "streamline", "synergize", "optimize", "actionable insights"
-- **Hedging fluff**: "It's worth noting that...", "It's important to remember...", "It should be noted..."
-- **Forced transitions**: "Furthermore", "Moreover", "Additionally" at the start of every paragraph
-- **Perfect symmetry**: Lists where every item is the same length, paragraphs of identical size, parallel structure everywhere
+- **填充性开场白**：例如 “我很乐意...”，“好问题！”，“当然！”，“绝对可以！”，“当然！”
+- **陈词滥调的开篇**：如 “在当今快节奏的...”，“在不断变化的领域中...”，“在...的时代里...”
+- **企业术语**：如 “利用”，“促进”，“简化”，“协同”，“优化”，“可操作的见解”
+- **冗长的过渡性语句**：每个段落开头都使用 “此外”，“而且”，“另外”
+- **刻意追求的对称性**：列表中每个项目的长度相同，段落大小一致，结构完全平行
 
-## What to Add
+## 需要添加的内容
 
-Replace robotic patterns with human writing traits:
+用人类写作的方式替换机器人的写作模式：
 
-- **Vary sentence length.** Short ones hit hard. Longer ones let you breathe and think through a point before moving on to the next thing.
-- **Use contractions** — don't, won't, can't, it's, we're, they've. Nobody writes "do not" in casual prose.
-- **Start sentences with "And" or "But"** occasionally. Grammar teachers hate it. Real writers do it constantly.
-- **Use specific numbers and examples** instead of vague claims. "Reduced load time by 40%" beats "significantly improved performance."
-- **Include one slightly unexpected word choice per piece.** Not forced — just something a template wouldn't generate.
-- **Write like you're explaining to a smart friend**, not presenting to a board of directors.
-- **Let some sentences be incomplete thoughts.** Like this one.
-- **Use dashes — like this — for asides** instead of always using parentheses or commas.
+- **变化句子长度**。简短的句子更具冲击力；较长的句子则有助于读者在继续阅读之前仔细思考每个观点。
+- **使用缩写** —— 如 “don't”，“won't”，“can't”，“it's”，“we're”，“they've”。在日常写作中，没人会写 “do not”。
+- **偶尔用 “And” 或 “But” 开头**。虽然语法老师不喜欢这样，但真正的作家经常这样做。
+- **使用具体的数字和例子**，而不是模糊的表述。例如 “加载时间减少了40%” 比 “性能显著提升” 更具体。
+- **在每段文字中加入一个稍显意外的词汇**。不必刻意为之，只是让内容不那么千篇一律。
+- **像在向聪明的朋友解释一样写作**，而不是向董事会汇报。
+- **让某些句子保持未完成的状态**。
+- **使用破折号** 来表达旁白，而不是总是使用括号或逗号。
 
-## Voice Calibration
+## 语气调整
 
-Match the voice to the context:
+根据上下文调整语气：
 
-- **Blog post / LinkedIn**: Conversational but informed. First person OK. Opinions encouraged.
-- **Email**: Direct and warm. Get to the point fast. End with a clear ask or next step.
-- **Sales copy**: Punchy. Benefits over features. Address the reader as "you."
-- **Technical docs**: Clear and precise, but still human. Analogies help.
-- **Social media**: Casual. Fragments OK. Personality over polish.
+- **博客文章 / LinkedIn**：语气亲切且信息丰富。第一人称表达也可以。
+- **电子邮件**：直接且温暖，快速切入主题，并在结尾明确提出请求或下一步行动。
+- **销售文案**：简洁有力，强调好处而非功能。用 “你” 来称呼读者。
+- **技术文档**：清晰准确，但依然保持人性化。适当的类比会有帮助。
+- **社交媒体**：语气随意，允许使用片段化的语言，个性比完美的语法更重要。
 
-## The Acid Test
+## 最终检验
 
-After rewriting, check:
+改写完成后，请进行以下检查：
 
-1. **Read it out loud.** If it sounds like a robot wrote it, rewrite it.
-2. **Check sentence starts.** If every sentence begins with "This" or "The", rewrite it.
-3. **Swap the company name.** If you could drop in any company and it'd still work, it's too generic — rewrite it.
-4. **The friend test.** Would you actually say this to someone? If not, simplify.
+1. **大声朗读**。如果读起来像机器人写的，那就重新改写。
+2. **检查句子开头**。如果每个句子都以 “This” 或 “The” 开头，那就重新改写。
+3. **替换公司名称**。如果可以换成任何公司名称，内容仍然适用，那就说明它太通用了——需要重新改写。
+4. **朋友测试**：你会真的对别人说这些话吗？如果不会，那就简化内容。
 
-## Process
+## 使用流程
 
-1. Read the input text carefully — understand the core message and intent
-2. Identify AI patterns (use the removal list above)
-3. Rewrite preserving all factual content and meaning
-4. Apply human writing traits from the "What to Add" list
-5. Calibrate voice to match the stated or inferred context
-6. Run the acid test
-7. Output the humanized version
+1. 仔细阅读输入文本，理解核心信息和意图。
+2. 识别出AI写作的痕迹（参考上述需要删除的内容列表）。
+3. 保留所有事实内容和意义进行改写。
+4. 应用 “需要添加的内容” 列表中的写作技巧。
+5. 根据指定的或推断出的上下文调整语气。
+6. 进行最终检验。
+7. 输出人性化后的版本。
 
-If the user provides context about audience or platform, weight that heavily when calibrating voice.
+如果用户提供了关于目标受众或平台的详细信息，在调整语气时请予以充分考虑。
 
-For industry-specific context packs that fine-tune voice calibration for sectors like SaaS, fintech, healthcare, and more, visit https://afrexai-cto.github.io/context-packs
-
+如需针对SaaS、金融科技、医疗保健等行业的特定语境包，以进一步优化语气，请访问：  
+https://afrexai-cto.github.io/context-packs/
 
 ---
 
-## 🔗 More AfrexAI Skills (Free on ClawHub)
+## 🔗 更多AfrexAI工具（在ClawHub上免费提供）
 
-| Skill | Install |
+| 工具 | 安装方式 |
 |-------|---------|
-| AI Humanizer | `clawhub install afrexai-humanizer` |
-| SEO Writer | `clawhub install afrexai-seo-writer` |
-| Email Crafter | `clawhub install afrexai-email-crafter` |
-| Proposal Generator | `clawhub install afrexai-proposal-gen` |
-| Invoice Generator | `clawhub install afrexai-invoice-gen` |
-| Lead Scorer | `clawhub install afrexai-lead-scorer` |
-| Client Onboarding | `clawhub install afrexai-onboarding` |
-| Meeting Prep | `clawhub install afrexai-meeting-prep` |
-| Social Repurposer | `clawhub install afrexai-social-repurposer` |
-| FAQ Builder | `clawhub install afrexai-faq-builder` |
-| Review Responder | `clawhub install afrexai-review-responder` |
-| Report Builder | `clawhub install afrexai-report-builder` |
-| CRM Updater | `clawhub install afrexai-crm-updater` |
-| Pitch Deck Reviewer | `clawhub install afrexai-pitch-deck-reviewer` |
-| Contract Analyzer | `clawhub install afrexai-contract-analyzer` |
-| Pricing Optimizer | `clawhub install afrexai-pricing-optimizer` |
-| Testimonial Collector | `clawhub install afrexai-testimonial-collector` |
-| Competitor Monitor | `clawhub install afrexai-competitor-monitor` |
+| AI内容人性化工具 | `clawhub install afrexai-humanizer` |
+| SEO写作工具 | `clawhub install afrexai-seo-writer` |
+| 电子邮件生成工具 | `clawhub install afrexai-email-crafter` |
+| 提案生成工具 | `clawhub install afrexai-proposal-gen` |
+| 发票生成工具 | `clawhub install afrexai-invoice-gen` |
+| 潜在客户评分工具 | `clawhub install afrexai-lead-scorer` |
+| 客户入职指导工具 | `clawhub install afrexai-onboarding` |
+| 会议准备工具 | `clawhub install afrexai-meeting-prep` |
+| 社交媒体内容重用工具 | `clawhub install afrexai-social-repurposer` |
+| 常见问题解答生成工具 | `clawhub install afrexai-faq-builder` |
+| 评论回复工具 | `clawhub install afrexai-review-responder` |
+| 报告生成工具 | `clawhub install afrexai-report-builder` |
+| 客户关系管理更新工具 | `clawhub install afrexai-crm-updater` |
+| 演示文稿审核工具 | `clawhub install afrexai-pitch-deck-reviewer` |
+| 合同分析工具 | `clawhub install afrexai-contract-analyzer` |
+| 价格优化工具 | `clawhub install afrexai-pricing-optimizer` |
+| 客户评价收集工具 | `clawhub install afrexai-testimonial-collector` |
+| 竞争对手监控工具 | `clawhub install afrexai-competitor-monitor` |
 
-## 🚀 Go Pro: Industry Context Packs ($47/pack)
+## 🚀 升级至专业版：行业特定语境包（每包47美元）
 
-Make your AI agent a true industry expert with deep domain knowledge.
+通过行业特定语境包，让你的AI助手具备深厚的领域知识。
 
-→ **[Browse Context Packs](https://afrexai-cto.github.io/context-packs/)**
+→ **[浏览所有语境包](https://afrexai-cto.github.io/context-packs/)**
 
-**Free tools:** [AI Revenue Calculator](https://afrexai-cto.github.io/ai-revenue-calculator/) | [Agent Setup Wizard](https://afrexai-cto.github.io/agent-setup/)
+**免费工具：**  
+[AI收入计算器](https://afrexai-cto.github.io/ai-revenue-calculator/) | [代理设置向导](https://afrexai-cto.github.io/agent-setup/)  
 
-*Built by [AfrexAI](https://afrexai-cto.github.io/context-packs/) 🖤💛*
+*由 [AfrexAI](https://afrexai-cto.github.io/context-packs/) 开发 🖤💛*

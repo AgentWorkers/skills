@@ -1,18 +1,18 @@
-# Terminal Screenshots & Recordings with VHS
+# 使用 [VHS](https://github.com/charmbracelet/vhs) 生成终端截图和动画 GIF/视频
 
-Generate terminal screenshots and animated GIFs/videos using [VHS](https://github.com/charmbracelet/vhs) from Charmbracelet.
+**VHS** 是一个基于 Charmbracelet 的工具，可以用来生成终端截图和动画 GIF/视频。
 
-## When to Use This Skill
+## 适用场景
 
-- Creating terminal screenshots for documentation
-- Recording animated GIFs of CLI demos
-- Generating video tutorials for command-line tools
-- Producing consistent, reproducible terminal visuals
-- Integration testing with golden file comparisons
+- 为文档生成终端截图
+- 录制命令行工具的动画 GIF
+- 制作命令行工具的教学视频
+- 生成一致且可复制的终端操作可视化效果
+- 通过黄金文件（golden files）进行集成测试
 
-## Prerequisites
+## 先决条件
 
-### Check Installation
+### 安装检查
 
 ```bash
 # Check if vhs is installed
@@ -22,17 +22,17 @@ which vhs && vhs --version
 which ttyd && which ffmpeg
 ```
 
-### Installation
+### 安装方法
 
-**Recommended: Homebrew (macOS/Linux)**
+**推荐使用：Homebrew（macOS/Linux）**
 
 ```bash
 brew install vhs
 ```
 
-This installs VHS with all required dependencies (ttyd, ffmpeg).
+使用 Homebrew 可以同时安装 VHS 及其所有依赖项（ttyd、ffmpeg）。
 
-**Other methods:**
+**其他安装方法：**
 
 ```bash
 # Fedora/RHEL
@@ -52,27 +52,27 @@ pacman -S vhs
 docker run --rm -v $PWD:/vhs ghcr.io/charmbracelet/vhs <cassette>.tape
 ```
 
-## Basic Usage
+## 基本用法
 
-### 1. Create a Tape File
+### 1. 创建一个 `tape` 文件
 
 ```bash
 vhs new demo.tape
 ```
 
-### 2. Edit the Tape File
+### 2. 编辑 `tape` 文件
 
-Tape files are simple scripts that describe what to type and capture.
+`tape` 文件是一种简单的脚本，用于指定需要输入的内容和捕获的操作。
 
-### 3. Run VHS
+### 3. 运行 VHS
 
 ```bash
 vhs demo.tape
 ```
 
-## Tape File Syntax
+## `tape` 文件的语法
 
-### Output Formats
+### 输出格式
 
 ```tape
 Output demo.gif          # Animated GIF
@@ -81,9 +81,9 @@ Output demo.webm         # WebM video
 Output frames/           # PNG sequence (directory)
 ```
 
-You can specify multiple outputs in one tape file.
+你可以在一个 `tape` 文件中指定多个输出格式。
 
-### Settings (Must Be at Top)
+### 设置（必须放在文件开头）
 
 ```tape
 # Terminal dimensions
@@ -109,49 +109,50 @@ Set Framerate 30
 Set CursorBlink false
 ```
 
-### Common Themes
+### 可用的主题
 
-Run `vhs themes` to see all available themes. Popular ones:
-- `Catppuccin Mocha`, `Catppuccin Frappe`
+运行 `vhs themes` 可以查看所有可用的主题：
+- `Catppuccin Mocha`
+- `Catppuccin Frappe`
 - `Dracula`
 - `Tokyo Night`
 - `Nord`
 - `One Dark`
 
-### Commands
+### 常用命令
 
-| Command | Description | Example |
+| 命令 | 描述 | 示例 |
 |---------|-------------|---------|
-| `Type "text"` | Type characters | `Type "echo hello"` |
-| `Type@500ms "text"` | Type slowly | `Type@500ms "important"` |
-| `Enter` | Press Enter | `Enter` |
-| `Enter 2` | Press Enter twice | `Enter 2` |
-| `Sleep 1s` | Wait duration | `Sleep 500ms` |
-| `Backspace` | Delete character | `Backspace 5` |
-| `Tab` | Press Tab | `Tab` |
-| `Space` | Press Space | `Space` |
-| `Ctrl+C` | Control sequences | `Ctrl+L` |
-| `Up/Down/Left/Right` | Arrow keys | `Up 3` |
-| `Hide` | Stop recording frames | `Hide` |
-| `Show` | Resume recording | `Show` |
-| `Screenshot file.png` | Capture current frame | `Screenshot out.png` |
-| `Wait /regex/` | Wait for text to appear | `Wait /\$\s*$/` |
-| `Env KEY "value"` | Set environment variable | `Env PS1 "$ "` |
-| `Require program` | Fail if program missing | `Require git` |
-| `Source file.tape` | Include another tape | `Source setup.tape` |
+| `Type "text"` | 输入文本 | `Type "echo hello"` |
+| `Type@500ms "text"` | 慢速输入文本 | `Type@500ms "important"` |
+| `Enter` | 按回车键 | `Enter` |
+| `Enter 2` | 按两次回车键 | `Enter 2` |
+| `Sleep 1s` | 等待 1 秒 | `Sleep 500ms` |
+| `Backspace` | 删除一个字符 | `Backspace 5` |
+| `Tab` | 按 Tab 键 | `Tab` |
+| `Space` | 按空格键 | `Space` |
+| `Ctrl+C` | 执行控制序列 | `Ctrl+L` |
+| `Up/Down/Left/Right` | 方向键 | `Up 3` |
+| `Hide` | 停止录制帧 | `Hide` |
+| `Show` | 恢复录制 | `Show` |
+| `Screenshot file.png` | 保存当前帧为图片 | `Screenshot out.png` |
+| `Wait /regex/` | 等待特定文本出现 | `Wait /\$\s*$/` |
+| `Env KEY "value"` | 设置环境变量 | `Env PS1 "$ "` |
+| `Require program` | 如果程序缺失则失败 | `Require git` |
+| `Source file.tape` | 引用另一个 `tape` 文件 | `Source setup.tape` |
 
-### Escaping Quotes
+### 引用引号
 
-Use backticks to escape quotes:
+使用反引号（``）来转义引号：
 
 ```tape
 Type `echo "hello world"`
 Type `VAR='value'`
 ```
 
-## Examples
+## 示例
 
-### Static Screenshot
+### 静态截图
 
 ```tape
 Output screenshot.png
@@ -176,7 +177,7 @@ Sleep 500ms
 Screenshot screenshot.png
 ```
 
-### Animated Demo GIF
+### 动画演示 GIF
 
 ```tape
 Output demo.gif
@@ -210,7 +211,7 @@ Enter
 Sleep 2s
 ```
 
-### MP4 Video with Clean Prompt
+### 带有简洁提示信息的 MP4 视频
 
 ```tape
 Output tutorial.mp4
@@ -242,9 +243,9 @@ Enter
 Sleep 3s
 ```
 
-## Tips for Clean Output
+## 优化输出效果的技巧
 
-### 1. Hide Setup/Cleanup
+### 1. 隐藏初始化和清理操作
 
 ```tape
 # Setup (hidden)
@@ -261,7 +262,7 @@ Type "cd - && rm temp-files"
 Enter
 ```
 
-### 2. Use a Simple Prompt
+### 2. 使用简洁的提示信息
 
 ```tape
 Hide
@@ -271,14 +272,14 @@ Enter
 Show
 ```
 
-### 3. Control Timing
+### 3. 控制时间间隔
 
-- Use `Sleep` liberally for readability
-- `Sleep 500ms` after typing, before Enter
-- `Sleep 1s` to `2s` after command output
-- End with `Sleep 2s` or more for the final frame
+- 为了提高可读性，可以频繁使用 `Sleep` 命令来控制操作之间的延迟：
+  - 输入后等待 `Sleep 500ms` 再按回车
+  - 命令输出后等待 `Sleep 1s` 到 `2s`
+  - 最后一帧等待 `Sleep 2s` 或更长时间
 
-### 4. Typing Speed
+### 4. 输入速度
 
 ```tape
 # Default speed for setup
@@ -288,7 +289,7 @@ Set TypingSpeed 10ms
 Type@100ms "Important command here"
 ```
 
-### 5. Wait for Output
+### 5. 等待输出结果
 
 ```tape
 Type "npm install"
@@ -297,7 +298,7 @@ Wait /added \d+ packages/  # Wait for completion message
 Sleep 1s
 ```
 
-### 6. Screenshot at Key Moments
+### 6. 在关键时刻截取屏幕截图
 
 ```tape
 Type "make build"
@@ -306,32 +307,31 @@ Wait /Build complete/
 Screenshot build-success.png
 ```
 
-## Workflow for Documentation
+## 文档制作的工作流程
 
-1. **Plan** your demo sequence
-2. **Create** a `.tape` file with settings
-3. **Test** with `vhs demo.tape` (generates output)
-4. **Iterate** - adjust timing, dimensions, theme
-5. **Commit** both the `.tape` file and output to your repo
+1. **规划** 演示的顺序
+2. **创建** 一个包含设置信息的 `.tape` 文件
+3. **使用 `vhs demo.tape` 进行测试（生成输出结果）
+4. **迭代**：调整操作的时间间隔、显示尺寸和主题样式
+5. **将 `.tape` 文件和输出结果提交到代码仓库**
 
-## Recording Real Sessions
+## 录制实际操作过程
 
-You can record your terminal and generate a tape file:
+你可以录制终端操作并生成 `tape` 文件：
 
 ```bash
 vhs record > session.tape
 ```
 
-Then edit the generated tape file to clean it up.
+之后可以对生成的 `tape` 文件进行编辑，以优化显示效果。
 
-## File Reference
+## 文件参考
 
-See example tape files in this skill directory:
-- `basic-screenshot.tape` - Simple static screenshot
-- `demo-recording.tape` - Animated GIF demo
+- `basic-screenshot.tape`：简单的静态截图示例
+- `demo-recording.tape`：动画 GIF 演示示例
 
-## Resources
+## 资源链接
 
-- [VHS GitHub](https://github.com/charmbracelet/vhs)
-- [VHS Themes](https://github.com/charmbracelet/vhs/blob/main/THEMES.md)
-- [Example Tapes](https://github.com/charmbracelet/vhs/tree/main/examples)
+- [VHS 官方 GitHub 仓库](https://github.com/charmbracelet/vhs)
+- [VHS 主题样式](https://github.com/charmbracelet/vhs/blob/main/THEMES.md)
+- [示例 `tape` 文件](https://github.com/charmbracelet/vhs/tree/main/examples)

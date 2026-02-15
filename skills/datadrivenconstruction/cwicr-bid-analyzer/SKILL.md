@@ -1,30 +1,30 @@
 ---
 slug: "cwicr-bid-analyzer"
 display_name: "CWICR Bid Analyzer"
-description: "Analyze contractor bids against CWICR benchmarks. Identify pricing anomalies, compare bid components, and support bid evaluation decisions."
+description: "分析承包商的投标报价，并与 CWICR 基准进行对比。识别价格异常情况，比较各投标组成部分，并为投标评估决策提供支持。"
 ---
 
-# CWICR Bid Analyzer
+# CWICR 投标分析工具
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Evaluating contractor bids requires:
-- Comparing against market benchmarks
-- Identifying unusual pricing
-- Understanding cost composition
-- Documenting evaluation rationale
+### 问题描述
+评估承包商的投标需要：
+- 与市场基准进行比较
+- 识别异常的定价情况
+- 了解成本构成
+- 记录评估的理由
 
-### Solution
-Analyze contractor bids against CWICR-based benchmarks to identify anomalies, compare components, and support objective bid evaluation.
+### 解决方案
+使用基于 CWICR 的基准数据来分析承包商的投标，以发现异常情况、比较各项费用，并支持客观的投标评估。
 
-### Business Value
-- **Objective evaluation** - Data-driven bid analysis
-- **Risk identification** - Spot unrealistic pricing
-- **Fair comparison** - Normalized bid analysis
-- **Documentation** - Audit trail for decisions
+### 商业价值
+- **客观评估**：基于数据的投标分析
+- **风险识别**：及时发现不合理的定价
+- **公平比较**：标准化的投标分析结果
+- **文档记录**：为决策提供审计跟踪
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -373,7 +373,7 @@ class CWICRBidAnalyzer:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Load CWICR benchmarks
@@ -394,16 +394,16 @@ print(f"Variance: {analysis.variance_pct}%")
 print(f"Flagged Items: {len(analysis.flagged_items)}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Detect Front-Loading
+### 1. 检测前期费用过高（Front-Loading）的情况
 ```python
 front_loading = analyzer.detect_front_loading(analysis)
 if front_loading['potential_front_loading']:
     print(f"Warning: Potential front-loading detected (score: {front_loading['front_loading_score']})")
 ```
 
-### 2. Compare Multiple Bids
+### 2. 比较多个投标方案
 ```python
 bids = [
     ("Contractor A", bid_a),
@@ -414,19 +414,19 @@ comparison = analyzer.compare_bids(bids, "Building Project")
 print(f"Recommended: {comparison.recommended_bidder}")
 ```
 
-### 3. Unbalanced Bid Detection
+### 3. 识别投标金额不平衡的情况
 ```python
 unbalanced = analyzer.detect_unbalanced_bid(analysis)
 if unbalanced['is_unbalanced']:
     print(f"Warning: Unbalanced bid detected (variance spread: {unbalanced['variance_spread']})")
 ```
 
-### 4. Export Report
+### 4. 导出报告
 ```python
 analyzer.export_analysis(analysis, "bid_analysis.xlsx")
 analyzer.export_comparison(comparison, "bid_comparison.xlsx")
 ```
 
-## Resources
+## 资源
 - **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Bid Analysis and Evaluation
+- **DDC 手册**: 第 3.1 章 - 投标分析与评估

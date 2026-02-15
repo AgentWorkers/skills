@@ -1,6 +1,6 @@
 ---
 name: skill-scaffold
-description: AI agent skill scaffolding CLI. Create skills for OpenClaw, Moltbot, Claude, Cursor, ChatGPT, Copilot instantly. Vibe-coding ready. MCP compatible.
+description: AI代理技能搭建命令行工具（CLI）。可快速为OpenClaw、Moltbot、Claude、Cursor、ChatGPT、Copilot等平台创建新技能。支持Vibe-coding编程方式，兼容MCP（Machine Learning Platform）。
 author: NextFrontierBuilds
 version: 1.0.4
 keywords:
@@ -30,21 +30,21 @@ keywords:
   - automation
 ---
 
-# Skill Scaffold
+# 技能模板生成器（Skill Scaffold）
 
-Create AI agent skills in seconds. Supports OpenClaw/Moltbot, MCP servers, and generic skill structures.
+该工具可快速创建 AI 代理技能模板，支持 OpenClaw/Moltbot、MCP 服务器以及通用的技能结构。
 
-## Trigger Words
+## 触发词
 
-Use this skill when the user mentions:
-- "create a skill"
-- "scaffold a skill"
-- "new skill template"
-- "skill generator"
-- "make a openclaw skill"
-- "mcp server template"
+当用户输入以下命令时，将使用此工具：
+- `create a skill`（创建技能）
+- `scaffold a skill`（生成技能模板）
+- `new skill template`（新建技能模板）
+- `skill generator`（技能生成器）
+- `make a openclaw skill`（创建 OpenClaw 技能）
+- `mcp server template`（创建 MCP 服务器模板）
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Install globally
@@ -60,47 +60,50 @@ skill-scaffold my-api --template mcp
 skill-scaffold weather-bot --template openclaw --cli --description "Weather alerts for agents"
 ```
 
-## Commands
+## 命令
 
-| Command | Description |
-|---------|-------------|
-| `skill-scaffold <name>` | Create skill with default (openclaw) template |
-| `skill-scaffold <name> --template mcp` | Create MCP server scaffold |
-| `skill-scaffold <name> --template generic` | Create minimal skill |
-| `skill-scaffold <name> --cli` | Include CLI binary scaffold |
-| `skill-scaffold --help` | Show help |
+| 命令          | 描述                                      |
+|-----------------|-----------------------------------------|
+| `skill-scaffold <名称>`    | 使用默认（OpenClaw）模板创建技能                  |
+| `skill-scaffold <名称> --template mcp` | 使用 MCP 服务器模板创建技能                  |
+| `skill-scaffold <名称> --template generic` | 使用通用模板创建技能                  |
+| `skill-scaffold <名称> --cli`    | 包含 CLI 可执行文件模板                         |
+| `skill-scaffold --help`    | 显示帮助信息                               |
 
-## Templates
+## 模板类型
 
-### OpenClaw (default)
-Full skill structure for OpenClaw/Moltbot agents:
-- SKILL.md with YAML frontmatter, trigger words, commands table
-- README.md with badges, installation, features
-- scripts/ folder for helpers
+### OpenClaw（默认模板）
 
-### MCP
-Model Context Protocol server scaffold:
-- SKILL.md with MCP config examples
-- Tools and resources documentation
-- Ready for Claude Desktop/Cursor integration
+适用于 OpenClaw/Moltbot 代理的完整技能结构：
+- `SKILL.md` 文件（包含 YAML 标头、触发词、命令列表等）
+- `README.md` 文件（包含徽章、安装说明、功能介绍等）
+- `scripts/` 文件夹（存放辅助脚本）
 
-### Generic
-Minimal structure:
-- Basic SKILL.md
-- Simple README.md
+### MCP 模板
 
-## Options
+适用于 Model Context Protocol（MCP）服务器的技能模板：
+- `SKILL.md` 文件（包含 MCP 配置示例）
+- 工具和资源文档
+- 适用于 Claude Desktop/Cursor 等平台的集成
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--template <type>` | Template: openclaw, mcp, generic | openclaw |
-| `--author <name>` | Author name | NextFrontierBuilds |
-| `--description <text>` | Skill description | Auto-generated |
-| `--dir <path>` | Output directory | Current directory |
-| `--cli` | Include CLI binary scaffold | false |
-| `--no-scripts` | Skip scripts folder | false |
+### 通用模板
 
-## Usage Examples
+最基本的技能结构：
+- `SKILL.md` 文件
+- `README.md` 文件
+
+## 选项
+
+| 选项            | 描述                                      | 默认值                         |
+|-----------------|-----------------------------------------|
+| `--template <类型>`     | 模板类型（openclaw/mcp/generic）                   | openclaw                         |
+| `--author <名称>`     | 技能作者名称                             | NextFrontierBuilds                         |
+| `--description <文本>` | 技能描述                                  | 自动生成                         |
+| `--dir <路径>`     | 输出目录                                   | 当前目录                         |
+| `--cli`         | 是否包含 CLI 可执行文件                         | false                         |
+| `--no-scripts`     | 是否跳过辅助脚本文件夹                         | false                         |
+
+## 使用示例
 
 ```bash
 # Create in current directory
@@ -116,7 +119,7 @@ skill-scaffold github-mcp --template mcp --author "YourName"
 skill-scaffold awesome-cli --cli --description "Does awesome things"
 ```
 
-## Output Structure
+## 输出结构
 
 ```
 my-skill/
@@ -127,16 +130,16 @@ my-skill/
     └── my-skill.js
 ```
 
-## After Creating
+## 使用步骤
 
-1. `cd my-skill`
-2. Edit SKILL.md with your actual documentation
-3. Add implementation (scripts or bin/)
-4. Test locally
-5. Publish: `clawdhub publish .` or `npm publish`
+1. 进入技能目录（例如：`cd my-skill`）
+2. 使用文本编辑器编辑 `SKILL.md` 文件，添加实际的内容和文档。
+3. 添加实现代码（脚本或可执行文件）。
+4. 在本地进行测试。
+5. 发布技能：`clawdhub publish .` 或 `npm publish`。
 
-## Notes
+## 注意事项
 
-- Skill names must be lowercase with hyphens only
-- SEO keywords are auto-included in generated files
-- Works with OpenClaw, Moltbot, and any agent that reads SKILL.md
+- 技能名称必须使用小写字母，并仅包含连字符（-）。
+- 生成的文件会自动包含相关的 SEO 关键词。
+- 该工具支持 OpenClaw、Moltbot 以及任何能够读取 `SKILL.md` 文件的代理平台。

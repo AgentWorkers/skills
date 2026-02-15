@@ -1,37 +1,36 @@
 ---
 slug: "excel-to-bim"
 display_name: "Excel To BIM"
-description: "Push Excel data back to BIM models. Update parameters, properties, and attributes from structured spreadsheets."
+description: "将 Excel 数据推回 BIM 模型中。从结构化的电子表格中更新参数、属性和特性。"
 ---
 
-# Excel to BIM Update
+# Excel 到 BIM 的数据更新
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-After extracting BIM data to Excel and enriching it (cost codes, classifications, custom data):
-- Changes need to flow back to the BIM model
-- Manual re-entry is error-prone
-- Updates must match by element ID
+### 问题描述
+在将 BIM 数据提取到 Excel 并对其进行丰富处理（添加成本代码、分类信息、自定义数据）之后：
+- 需要将这些更改重新应用到 BIM 模型中；
+- 手动重新输入数据容易出错；
+- 更新内容必须根据元素 ID 进行精确匹配。
 
-### Solution
-Push Excel data back to BIM models, updating element parameters and properties from spreadsheet changes.
+### 解决方案
+将 Excel 数据推回 BIM 模型，根据电子表格中的更改更新元素的参数和属性。
 
-### Business Value
-- **Bi-directional workflow** - BIM → Excel → BIM
-- **Bulk updates** - Change thousands of parameters
-- **Data enrichment** - Add classifications, codes, costs
-- **Consistency** - Spreadsheet as single source of truth
+### 商业价值
+- **双向工作流程**：BIM → Excel → BIM
+- **批量更新**：可以同时更新数千个参数；
+- **数据丰富化**：能够添加分类信息、代码和成本数据；
+- **数据一致性**：电子表格成为所有数据的唯一权威来源。
 
-## Technical Implementation
+## 技术实现
 
-### Workflow
+### 工作流程
 ```
 BIM Model (Revit/IFC) → Excel Export → Data Enrichment → Excel Update → BIM Model
 ```
 
-### Python Implementation
-
+### Python 实现方式
 ```python
 import pandas as pd
 from pathlib import Path
@@ -329,8 +328,7 @@ class DataEnrichmentWorkflow:
         return merged
 ```
 
-## Quick Start
-
+## 快速入门指南
 ```python
 # Initialize updater
 updater = ExcelToBIMUpdater()
@@ -350,9 +348,9 @@ print(f"Prepared {len(updates)} updates")
 updater.generate_dynamo_script(updates, "update_parameters.py")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Add Classification Codes
+### 1. 添加分类代码
 ```python
 updater = ExcelToBIMUpdater()
 updater.add_mapping('Omniclass', 'OmniClass_Number', UpdateType.TEXT)
@@ -362,19 +360,18 @@ df = updater.load_excel("classified_elements.xlsx")
 updates = updater.prepare_updates(df)
 ```
 
-### 2. Cost Data Integration
+### 2. 成本数据集成
 ```python
 updater.add_mapping('Material_Cost', 'Pset_MaterialCost', UpdateType.NUMBER)
 updater.add_mapping('Labor_Cost', 'Pset_LaborCost', UpdateType.NUMBER)
 ```
 
-### 3. Generate Update Report
+### 3. 生成更新报告
 ```python
 report = updater.generate_update_report(df, updates, "planned_updates.xlsx")
 ```
 
-## Integration with DDC Pipeline
-
+## 与 DDC 流程的集成
 ```python
 # Full round-trip: Revit → Excel → Enrich → Update → Revit
 
@@ -396,6 +393,6 @@ updater.generate_dynamo_script(updates, "apply_updates.py")
 # 4. Run in Dynamo to update Revit
 ```
 
-## Resources
-- **GitHub**: [DDC Update Revit from Excel](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto/tree/main/DDC_Update_Revit_from_Excel)
-- **DDC Book**: Chapter 2.4 - Bidirectional Data Flow
+## 资源
+- **GitHub**：[从 Excel 更新 Revit 数据的 DDC 工具](https://github.com/datadrivenconstruction/cad2data-Revit-IFC-DWG-DGN-pipeline-with-conversion-validation-qto/tree/main/DDC_Update_Revit_from_Excel)
+- **DDC 手册**：第 2.4 章 – 双向数据流

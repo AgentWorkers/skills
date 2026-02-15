@@ -1,49 +1,50 @@
 ---
 name: publisher
-description: Make your skills easy to understand and impossible to ignore
+description: 让你的技能易于理解，同时让人无法忽视。
 ---
 
-# publisher
+# 发布者
 
-**Professional documentation and publishing for Clawdbot skills**
+**为Clawdbot技能提供专业的文档和发布服务**
 
-Generate adoption-optimized READMEs and publish to GitHub + ClawdHub with one command.
+通过一个命令，即可生成适用于推广的README文件，并将其发布到GitHub和ClawdHub。
 
 ---
 
-## ⚠️ Requirements
+## ⚠️ 必备条件
 
-- bash
-- `jq` (for JSON parsing)
-- `gh` CLI (GitHub operations)
-- `clawdhub` CLI (publishing)
+- bash命令行环境
+- `jq`（用于JSON解析）
+- `gh` CLI（用于GitHub操作）
+- `clawdhub` CLI（用于发布）
 - git
 
 ---
 
-## 📋 What It Does
+## 📋 功能介绍
 
-Automates the complete publishing workflow:
+该工具自动化了整个发布流程：
 
-### Documentation Generation
-1. Reads your SKILL.md to understand what the skill does
-2. Generates 3 one-liner options using proven patterns
-3. Creates a README following GitHub best practices:
-   - Problem/solution upfront
-   - Inverted pyramid structure
-   - Emoji headers for scannability
-   - Bold outcomes
-   - Under 15% text highlighting
-4. Updates SKILL.md frontmatter with chosen description
+### 文档生成
+1. 读取您的SKILL.md文件，了解该技能的功能。
+2. 根据既定的模板生成3个简洁明了的选项。
+3. 按照GitHub的最佳实践生成README文件：
+   - 首先介绍问题或解决方案。
+   - 采用倒金字塔结构。
+   - 使用表情符号提高可读性。
+   - 突出显示关键成果。
+   - 文本高亮部分不超过15%。
 
-### Publishing
-5. Creates GitHub repository (if doesn't exist)
-6. Pushes code to GitHub
-7. Publishes to ClawdHub with auto-detected version
+4. 使用生成的描述更新SKILL.md文件的前言部分。
+
+### 发布流程
+5. 如果不存在GitHub仓库，则创建一个新的仓库。
+6. 将代码推送到GitHub。
+7. 根据检测到的版本号，将文档发布到ClawdHub。
 
 ---
 
-## 🚀 Installation
+## 🚀 安装
 
 ```bash
 clawdhub install skill-publisher
@@ -51,99 +52,98 @@ clawdhub install skill-publisher
 
 ---
 
-## 💡 Usage
+## 💡 使用方法
 
 ```bash
 cd ~/clawd/skills/your-skill
 skill-publisher
 ```
 
-The script will:
-1. Show 3 one-liner options (choose or write your own)
-2. Generate README preview
-3. Ask for approval
-4. Publish to GitHub + ClawdHub
+使用方法如下：
+1. 工具会显示3个简洁的选项（您可以选择其中一个，或者自行编写新的选项）。
+2. 生成README文件的预览版本。
+3. 请求您的确认。
+4. 将文件发布到GitHub和ClawdHub。
 
 ---
 
-## 🎯 One-Liner Generation Patterns
+## 🎯 简洁选项的生成规则
 
-The tool generates options using three proven patterns:
+该工具使用以下三种模板生成简洁的选项：
 
-### Pattern A: Continuous Benefit
+### 模板A：持续优化（Continuous Optimization）
 ```
 Keep [thing] [desired state] [timeframe]
 ```
-Example: "Keep your Claude access token fresh 24/7"
+示例：**“确保您的Claude访问令牌24/7保持有效”**
 
-### Pattern B: Elimination
+### 模板B：问题解决（Problem Solving）
 ```
 [Do thing] without [pain point]
 ```
-Example: "Build cross-device tools without hardcoding paths"
+示例：**“无需手动编写路径即可构建跨设备工具”**
 
-### Pattern C: Automation
+### 模板C：自动化（Automation）
 ```
 Automatically [action] [thing] [when]
 ```
-Example: "Automatically refresh tokens before they expire"
+示例：**“令牌过期前会自动刷新”**
 
 ---
 
-## 📚 README Structure Generated
+## 📚 README文件结构
 
-Follows the framework from GitHub's documentation best practices:
+生成的README文件遵循GitHub文档的最佳实践：
 
-### Essential Sections (above the fold)
-- Title + subtitle
-- **The problem:** (1 sentence)
-- **This tool:** (1 sentence)
-- 📋 Requirements
-- ⚡ What It Does (outcome first, then features)
-- 🚀 Installation
-- 🔧 How It Works (result first, then process)
+### 必需部分（位于页面顶部）
+- 标题和副标题
+- **问题描述：**（1句话）
+- **该工具的作用：**（1句话）
+- 📋 必备条件
+- ⚡ 功能介绍（先介绍成果，再说明具体功能）
+- 🚀 安装方法
+- 🔧 工作原理（先说明结果，再描述具体过程）
 
-### Optional Sections (collapsible)
-- Configuration options
-- Troubleshooting
-- For Developers
-- Implementation details
-
----
-
-## 🔧 How It Works
-
-### Phase 1: Analysis
-- Reads SKILL.md frontmatter (if exists)
-- Extracts key information: name, description, requirements
-- Parses scripts for dependencies
-
-### Phase 2: One-Liner Generation
-Analyzes your SKILL.md description and generates 3 options:
-- Pattern A: Continuous benefit format
-- Pattern B: Pain point elimination format
-- Pattern C: Automation format
-
-Shows you all 3, lets you choose or write custom.
-
-### Phase 3: README Generation
-Uses the template from `~/clawd/templates/README-template.md`:
-- Fills in title, problem, solution
-- Extracts requirements from SKILL.md
-- Generates "What It Does" from description
-- Creates installation steps
-- Builds "How It Works" with examples
-
-### Phase 4: Publishing
-1. Checks for `gh` CLI (guides setup if missing)
-2. Reads VERSION file for version number
-3. Creates GitHub repo (using `gh repo create`)
-4. Commits and pushes all files
-5. Publishes to ClawdHub with `clawdhub publish`
+### 可选部分（可折叠）
+- 配置选项
+- 故障排除指南
+- 开发者参考
+- 实现细节
 
 ---
 
-## 📁 File Structure Expected
+## 🔧 工作原理
+
+### 第1阶段：分析
+- 读取SKILL.md文件的前言部分（如果存在）。
+- 提取关键信息：技能名称、描述和必备条件。
+- 解析代码以确定依赖关系。
+
+### 第2阶段：生成简洁选项
+- 分析SKILL.md中的描述内容，生成3个简洁的选项：
+  - 模板A：持续优化格式
+  - 模板B：问题解决格式
+  - 模板C：自动化格式
+- 展示所有选项供您选择或自行编写新的选项。
+
+### 第3阶段：生成README文件
+- 使用`~/clawd/templates/README-template.md`模板：
+  - 填写标题和问题描述。
+  - 从SKILL.md中提取必备条件。
+  - 根据描述生成功能介绍。
+  - 编写安装步骤。
+  - 生成详细的操作说明。
+
+### 第4阶段：发布
+- 检查是否安装了`gh` CLI；如果未安装，则提供安装指南。
+- 从`VERSION`文件中获取版本号。
+- 使用`gh repo create`命令创建GitHub仓库。
+- 提交所有文件并推送至GitHub。
+- 使用`clawdhub publish`命令将文件发布到ClawdHub。
+
+---
+
+## 📁 文件结构示例
 
 ```
 your-skill/
@@ -157,28 +157,26 @@ your-skill/
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ 配置说明
 
-No configuration needed. The tool auto-detects everything from:
-- `SKILL.md` (name, description, requirements)
-- `VERSION` (version number)
-- `scripts/` (code examples, dependencies)
+无需手动配置。工具会自动从以下文件中获取所需信息：
+- `SKILL.md`（技能名称、描述和必备条件）
+- `VERSION`（版本号）
+- `scripts/`（代码示例和依赖关系文件）
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛 常见问题及解决方法
 
-### "gh: command not found"
-
-Install GitHub CLI:
+### “gh: command not found”
+请安装GitHub CLI：
 ```bash
 brew install gh
 gh auth login
 ```
 
-### "SKILL.md not found"
-
-Create a minimal SKILL.md:
+### “SKILL.md not found”
+请创建一个基本的SKILL.md文件：
 ```markdown
 ---
 name: your-skill
@@ -190,23 +188,21 @@ description: Brief description of what it does
 More details about your skill here.
 ```
 
-### "VERSION file not found"
-
-Create a VERSION file:
+### “VERSION file not found”
+请创建一个`VERSION`文件：
 ```bash
 echo "1.0.0" > VERSION
 ```
 
 ---
 
-## 📖 References
-
-- GitHub documentation best practices: https://docs.github.com/en/contributing/writing-for-github-docs/best-practices-for-github-docs
-- README template: `~/clawd/templates/README-template.md`
-- One-liner formulas: See "One-Liner Generation Patterns" section above
+## 参考资料
+- GitHub文档最佳实践：https://docs.github.com/en/contributing/writing-for-github-docs/best-practices-for-github-docs
+- README模板：`~/clawd/templates/README-template.md`
+- 简洁选项的生成规则：参见上述“简洁选项的生成规则”部分
 
 ---
 
-## License
+## 许可协议
 
-MIT
+MIT许可证

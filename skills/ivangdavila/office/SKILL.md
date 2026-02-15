@@ -1,94 +1,92 @@
 ---
 name: Office
-description: "Master Excel, Word, PowerPoint, and Google Workspace with formulas, formatting, and automation."
+description: "精通 Excel、Word、PowerPoint 和 Google Workspace，掌握公式、格式设置以及自动化功能。"
 ---
 
-## What "Office" Means Here
+## “Office”在此处的含义
 
-Productivity software: Microsoft 365, Google Workspace, and office administration.
+**生产力软件：** Microsoft 365、Google Workspace 以及办公管理工具。
 
-| Signal | Context | Load |
-|--------|---------|------|
-| Formulas, pivot tables, VLOOKUP, macros | Spreadsheets | `tools/spreadsheets.md` |
-| Formatting, headers, mail merge, TOC | Documents | `tools/documents.md` |
-| Slides, animations, presenter view | Presentations | `tools/presentations.md` |
-| Supplies, vendors, facilities, space | Office admin | `admin/facilities.md` |
-
----
-
-## Spreadsheets (Excel / Google Sheets)
-
-**Formulas people actually need:**
-- `VLOOKUP` / `XLOOKUP` — lookup value in table, return another column
-- `SUMIF` / `COUNTIF` — sum/count with conditions
-- `INDEX/MATCH` — more flexible than VLOOKUP
-- `IF` with `AND`/`OR` — conditional logic
-
-**Common problems:**
-- VLOOKUP returns #N/A → check for spaces, data types, exact match setting
-- Formula works in one cell, breaks when copied → missing `$` for absolute references
-- Dates sorting wrong → format as actual dates, not text
-
-**Pivot tables:** Right-click data → Create Pivot Table → drag fields to rows/columns/values.
+| 功能 | 应用场景 | 详细说明 |
+|--------|---------|-------------------|
+| 公式、数据透视表、VLOOKUP、宏 | 电子表格 | 详见 `tools/spreadsheets.md` |
+| 格式设置、页眉、邮件合并、目录生成 | 文档处理 | 详见 `tools/documents.md` |
+| 幻灯片、动画、演示视图 | 演示文稿 | 详见 `tools/presentations.md` |
+| 办公用品、供应商管理、办公设施 | 办公管理 | 详见 `admin/facilities.md` |
 
 ---
 
-## Documents (Word / Google Docs)
+## 电子表格（Excel / Google Sheets）
 
-**Formatting essentials:**
-- Use Styles (Heading 1, 2, 3) for structure — enables automatic TOC
-- Page numbers starting on page 3: Insert break → Different First Page → start numbering
-- Different headers per section: Section breaks, unlink from previous
+**人们实际需要的公式：**
+- `VLOOKUP` / `XLOOKUP`：在表格中查找值，并返回另一列的数据
+- `SUMIF` / `COUNTIF`：根据条件求和/计数
+- `INDEX/MATCH`：比 `VLOOKUP` 更灵活
+- `IF` 语句结合 `AND`/`OR`：实现条件逻辑
 
-**Mail Merge:**
-1. Prepare data source (Excel with columns: Name, Address, etc.)
-2. Word → Mailings → Start Mail Merge → Letters
-3. Insert Merge Fields where dynamic content goes
-4. Preview Results → Finish & Merge
+**常见问题：**
+- `VLOOKUP` 返回 #N/A 错误？检查数据中是否存在空格、数据类型是否正确，以及是否设置了精确匹配选项
+- 公式仅在一个单元格中有效，复制后失效？确保使用了绝对引用符号 `$`
+- 日期排序错误？将日期格式设置为实际日期格式（而非文本格式）
 
----
-
-## Presentations (PowerPoint / Google Slides)
-
-**Professional basics:**
-- Slide Master for consistent styling (View → Slide Master)
-- 6x6 rule: max 6 bullets, 6 words per bullet
-- One idea per slide
-
-**Animations:**
-- Entrance animations for bullet reveal (Appear > Fade > Fly In)
-- Timing: On Click vs After Previous
-- Keep it subtle — animation should aid, not distract
-
-**Presenter View:** F5 to present, use Presenter View to see notes while audience sees slides.
+**数据透视表：** 右键点击数据区域 → 选择 “创建数据透视表” → 将字段拖动到行/列/值区域中。
 
 ---
 
-## Office Administration
+## 文档处理（Word / Google Docs）
 
-For those managing physical office operations:
+**格式设置要点：**
+- 使用样式（如标题 1、2、3）来构建文档结构，这有助于自动生成目录
+- 如果文档从第 3 页开始，需要插入分页符并设置不同的首页格式
+- 不同章节使用不同的页眉：使用分页符并将当前页眉与前一章节的页眉断开关联
 
-**Supplies & Inventory:**
-- Track with simple spreadsheet: Item, Quantity, Reorder Point, Supplier
-- Set calendar reminders for regular orders
-- Bulk ordering usually 15-30% cheaper
-
-**Vendor Management:**
-- Cleaning, maintenance, IT support contracts
-- Document SLAs and contact info in shared location
-- Review contracts annually for renegotiation
-
-**Space Planning:**
-- Hot-desking: Use booking system (even a shared calendar works)
-- Meeting room: Clear naming, visible displays, 15-min buffers
+**邮件合并：**
+1. 准备数据源（Excel 文件，包含姓名、地址等字段）
+2. 在 Word 中选择 “邮件” → 开始邮件合并操作
+3. 将动态内容插入到相应的位置
+4. 预览合并结果后完成合并操作
 
 ---
 
-## Quick Reference
+## 演示文稿（PowerPoint / Google Slides）
 
-| Task | Excel/Sheets | Word/Docs | PowerPoint/Slides |
+**专业制作技巧：**
+- 使用 “幻灯片母版” 保持整体样式的一致性（点击 “视图” → “幻灯片母版”）
+- 每个幻灯片最多包含 6 个项目符号，每个项目符号不超过 6 个单词
+- 每张幻灯片只表达一个主要观点
+
+**动画效果：**
+- 为项目符号的显示设置入场动画（例如：出现、淡入、飞入）
+- 定义动画的触发时机（点击时触发或在前一张幻灯片结束后触发）
+- 动画效果要简洁明了，避免分散观众的注意力
+
+**演示视图：** 使用 F5 键开始演示，通过 “演示视图” 查看自己的备注内容，同时让观众看到当前的幻灯片。
+
+---
+
+## 办公管理
+
+**办公用品与库存管理：**
+- 使用简单的电子表格记录物品名称、数量、补货周期和供应商信息
+- 为定期采购设置日历提醒
+- 批量采购通常能节省 15-30% 的费用
+
+**供应商管理：**
+- 管理清洁服务、维护服务及 IT 支持相关的合同
+- 将服务级别协议（SLA）和供应商联系方式保存在共享文档中
+- 每年审查合同内容以决定是否需要重新协商
+
+**空间规划：**
+- 对于灵活办公环境（如共享办公空间），使用预约系统进行座位安排（简单的日历也能满足需求）
+- 会议室需设置清晰的标识、便于查看的座位信息，并预留 15 分钟的休息时间
+
+---
+
+## 快速参考
+
+| 功能 | Excel/Google Sheets | Word/Google Docs | PowerPoint/Google Slides |
 |------|-------------|-----------|-------------------|
-| Find value | VLOOKUP/XLOOKUP | Find & Replace | Find & Replace |
-| Conditional format | Home → Conditional | N/A | N/A |
-| Auto-update content | Formulas | Fields | Links |
-| Export to PDF | File → Save As | File → Save As | File → Save As |
+| 查找数据 | VLOOKUP/XLOOKUP | 查找与替换 | 查找与替换 |
+| 条件格式设置 | “开始” → “条件格式” | 不支持 | 不支持 |
+| 自动更新内容 | 公式 | 文档中的字段 | 链接 |
+| 导出为 PDF | “文件” → “另存为” | “文件” → “另存为” | “文件” → “另存为” |

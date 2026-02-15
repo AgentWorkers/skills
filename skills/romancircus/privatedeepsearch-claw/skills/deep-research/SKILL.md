@@ -1,33 +1,33 @@
 ---
 name: deep-research
-description: Perform comprehensive web research using local SearXNG. Iteratively searches, fetches content, and synthesizes a report with citations. Use for complex research questions requiring multiple sources.
+description: 使用本地的 SearXNG 进行全面的网页研究。通过迭代搜索的方式获取内容，并生成包含引用信息的报告。适用于需要多个信息来源的复杂研究问题。
 homepage: https://github.com/romancircus/searxng-deep-research
 metadata: {"clawdbot":{"emoji":"🔬","requires":{"bins":["python3"],"python":["aiohttp","beautifulsoup4"]},"install":[{"id":"python-deps","kind":"pip","packages":["aiohttp","beautifulsoup4"],"label":"Install Python dependencies"}]}}
 ---
 
-# Deep Research
+# 深度研究（Deep Research）
 
-Performs iterative web research via local SearXNG (Google-free, VPN-routed).
+通过本地的 SearXNG（非 Google 提供的服务，通过 VPN 路由）进行迭代式网络搜索。
 
-## Quick Usage
+## 快速使用方法
 
 ```bash
 python3 ~/.clawdbot/skills/deep-research/deep_research.py "your research question"
 ```
 
-Or use the CLI wrapper:
+或者使用 CLI 包装器：
 ```bash
 deep-research "what are the best practices for kubernetes security in 2026"
 ```
 
-## How It Works
+## 工作原理
 
-1. **Iterative Search** - Up to 5 iterations with query refinement
-2. **Content Fetching** - Scrapes full page content from valid URLs
-3. **Deduplication** - Tracks seen URLs to avoid duplicates
-4. **Report Generation** - Produces markdown with citations
+1. **迭代搜索**：最多进行 5 次迭代，并逐步细化查询内容。
+2. **内容抓取**：从有效的 URL 中提取完整页面内容。
+3. **去重**：记录已访问过的 URL 以避免重复结果。
+4. **报告生成**：生成包含引用信息的 Markdown 报告。
 
-## Algorithm
+## 算法原理
 
 ```
 for iteration in 1..5:
@@ -45,18 +45,18 @@ for iteration in 1..5:
 generate_markdown_report(findings, citations)
 ```
 
-## Query Refinement
+## 查询细化规则
 
-Each iteration adds context terms:
-- Iteration 1: Original query
-- Iteration 2: + "detailed analysis"
-- Iteration 3: + "comprehensive guide"
-- Iteration 4: + "in-depth review"
-- Iteration 5: + "research findings"
+每次迭代都会添加相关的上下文关键词：
+- 第一次迭代：原始查询
+- 第二次迭代：+ “详细分析”
+- 第三次迭代：+ “全面指南”
+- 第四次迭代：+ “深入研究”
+- 第五次迭代：+ “研究结果”
 
-## Configuration
+## 配置方法
 
-Edit `~/.clawdbot/skills/deep-research/deep_research.py`:
+编辑 `~/.clawdbot/skills/deep-research/deep_research.py` 文件：
 
 ```python
 SEARXNG_URL = "http://localhost:8888"  # Your SearXNG instance
@@ -66,15 +66,15 @@ PAGE_CONTENT_LIMIT = 2000               # Max words per source
 REQUEST_TIMEOUT = 20                    # Fetch timeout (seconds)
 ```
 
-## Ignored Domains
+## 被排除的域名
 
-Social media and low-value domains are excluded:
+社交媒体和低价值域名会被自动排除：
 - youtube.com, facebook.com, twitter.com
 - instagram.com, tiktok.com, pinterest.com, linkedin.com
 
-Edit `IGNORED_DOMAINS` list to customize.
+您可以通过修改 `IGNORED_DOMAINS` 列表来自定义排除的域名。
 
-## Output Format
+## 输出格式
 
 ```markdown
 # Deep Research Report
@@ -103,54 +103,54 @@ Content preview from the article...
 2. [Another Source](https://example.com/other)
 ```
 
-## Privacy Features
+## 隐私保护特性
 
-- **No Google/Bing** - Uses privacy-respecting engines only
-- **VPN Routed** - Traffic goes through Tailscale/Mullvad
-- **Local Processing** - All synthesis happens locally
-- **No API Keys** - Self-hosted SearXNG, no external dependencies
+- **不使用 Google/Bing**：仅使用尊重用户隐私的搜索引擎。
+- **通过 VPN 路由**：所有网络流量均通过 Tailscale/Mullvad 进行传输。
+- **本地处理**：所有数据处理都在本地完成。
+- **无需 API 密钥**：SearXNG 为自托管服务，无外部依赖。
 
-## Requirements
+## 系统要求
 
-- Python 3.8+
-- Local SearXNG instance at port 8888
-- Python packages: `aiohttp`, `beautifulsoup4`
+- Python 3.8 及以上版本。
+- 需要在本地运行 SearXNG 服务（端口 8888）。
+- 需要安装以下 Python 包：`aiohttp`、`beautifulsoup4`。
 
-Install dependencies:
+安装相关依赖包：
 ```bash
 pip install aiohttp beautifulsoup4
 ```
 
-## Examples
+## 使用示例
 
-Research a technical topic:
+- 研究一个技术主题：
 ```bash
 python3 ~/.clawdbot/skills/deep-research/deep_research.py "rust async runtime comparison tokio vs async-std 2026"
 ```
 
-Investigate a concept:
+- 调查某个概念：
 ```bash
 python3 ~/.clawdbot/skills/deep-research/deep_research.py "zero knowledge proofs practical applications"
 ```
 
-Compare technologies:
+- 比较不同技术：
 ```bash
 python3 ~/.clawdbot/skills/deep-research/deep_research.py "comparing vector databases pinecone vs milvus vs qdrant"
 ```
 
-## Troubleshooting
+## 常见问题解决方法
 
-**No results found:**
-- Check SearXNG is running: `curl http://localhost:8888`
-- Verify query isn't too specific
-- Try broader search terms
+**未找到结果：**
+- 检查 SearXNG 是否正在运行：`curl http://localhost:8888`
+- 确保查询语句不是过于具体。
+- 尝试使用更宽泛的搜索词。
 
-**Slow performance:**
-- Reduce MAX_ITERATIONS
-- Decrease RESULTS_PER_PAGE
-- Some sites have rate limiting
+**搜索速度慢：**
+- 降低 `MAX_ITERATIONS` 的值。
+- 减少 `RESULTS_PER_PAGE` 的数量。
+- 部分网站可能设置了访问限制。
 
-**Content not extracted:**
-- Site may require JavaScript (not supported)
-- Try the URL directly in browser
-- Content may be behind paywall
+**内容无法提取：**
+- 可能该网站需要 JavaScript 支持（但 SearXNG 不支持）。
+- 尝试直接在浏览器中访问该 URL。
+- 内容可能受到付费墙的保护。

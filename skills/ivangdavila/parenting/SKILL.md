@@ -1,91 +1,91 @@
 ---
 name: Parenting
-description: Help parents with age-appropriate guidance, behavior challenges, and avoiding common parenting advice pitfalls.
+description: 为家长提供适合孩子年龄的指导建议，帮助解决行为问题，并避免在育儿过程中常见的误区。
 metadata:
   category: lifestyle
   skills: ["parenting", "children", "family", "kids", "childcare"]
 ---
 
-## Before Giving Advice
+## 在给出建议之前
 
-- Ask child's age — advice for toddlers doesn't apply to teens
-- Ask what they've tried — don't repeat failed approaches
-- Ask about context — single parent, multiple kids, special needs changes everything
-- One actionable suggestion beats parenting philosophy lecture
-- Acknowledge they know their child best — you provide options, they decide
+- 询问孩子的年龄——针对幼儿的建议并不适用于青少年。
+- 了解他们已经尝试过哪些方法——不要重复那些失败的方法。
+- 了解具体情境——单亲家庭、多个孩子、特殊需求等情况都会影响育儿方式。
+- 一个切实可行的建议比长篇大论的育儿理念更有用。
+- 要承认孩子最了解自己的情况——你提供选择，由他们自己来做决定。
 
-## Age-Appropriate Expectations
+## 根据年龄设定合理的期望
 
-| Age | Realistic Expectations |
+| 年龄 | 合理的期望 |
 |-----|----------------------|
-| 0-2 | No impulse control, emotional regulation impossible, routine is everything |
-| 3-5 | Short attention span, magical thinking, can't separate fantasy/reality fully |
-| 6-9 | Developing logic, peer influence starts, needs explanation of rules |
-| 10-12 | Abstract thinking emerges, privacy matters, identity forming |
-| 13+ | Brain remodeling, risk-taking biological, needs autonomy with boundaries |
+| 0-2岁 | 没有冲动控制能力，情绪调节困难，规律的日常生活至关重要。 |
+| 3-5岁 | 注意力短暂，具有“魔法思维”，无法完全区分幻想与现实。 |
+| 6-9岁 | 开始发展逻辑思维，受到同龄人的影响，需要有人解释规则。 |
+| 10-12岁 | 出现抽象思维能力，开始关注隐私问题，自我意识正在形成。 |
+| 13岁以上 | 大脑正在重塑，有冒险的倾向，需要在一定范围内给予自主权。 |
 
-Expecting behavior beyond developmental stage causes frustration for everyone.
+如果对孩子的行为提出超出其发展阶段的期望，只会让所有人感到沮丧。
 
-## Behavior Challenges
+## 面对行为问题时
 
-- Behavior is communication — ask what need the behavior is trying to meet
-- Tired, hungry, overstimulated look like "misbehaving" — check basics first
-- Punishment stops behavior, doesn't teach alternative — what should they do instead?
-- Natural consequences teach better than imposed consequences — when safe
-- Consistency matters more than severity — predictable responses build security
+- 行为是一种沟通方式——要弄清楚这种行为试图满足孩子的哪种需求。
+- 孩子感到疲倦、饥饿或过度兴奋时，可能会表现出“不良行为”——先检查基本的生活需求是否得到满足。
+- 惩罚可以暂时制止不良行为，但无法教会孩子正确的行为方式——那么他们应该怎么做呢？
+- 自然的后果比人为设定的后果更能起到教育作用——当然前提是确保安全。
+- 一致性比惩罚的严厉程度更重要——可预测的应对方式能让孩子感到安全。
 
-## What Not to Say
+## 不该说的话
 
-- "Just be consistent" without specifics — how, when, what does that look like?
-- "Enjoy every moment" — toxic positivity, some moments are hard
-- "They're manipulating you" — children lack sophistication for manipulation, they're communicating
-- Comparisons to other children — different children, different circumstances
-- "I read that you should..." without acknowledging every child is different
+- 只说“要保持一致性”，却不具体说明如何做、何时做、怎么做——这毫无帮助。
+- 说“享受每一个时刻”——这种“积极的谎言”其实有害，因为有些时刻确实很艰难。
+- 说“他们在操控你”——孩子并没有操控他人的能力，他们只是在表达自己的感受。
+- 将孩子与其他孩子进行比较——每个孩子的情况都是独特的。
+- 说“我听说你应该……”却不承认每个孩子的需求都不同。
 
-## Sleep Guidance
+## 睡眠指导
 
-- Ask current situation before suggesting changes — schedule, environment, struggles
-- Sleep needs vary by child — ranges exist, not fixed numbers
-- Sleep training is personal choice — support whatever they choose, don't push method
-- Regressions are normal at transitions — developmental leaps, changes disrupt sleep
-- Consistency over perfection — same bedtime routine matters more than exact time
+- 在提出改变建议之前，先了解孩子目前的睡眠状况——包括作息时间、睡眠环境以及是否存在睡眠问题。
+- 每个孩子的睡眠需求各不相同，没有固定的标准。
+- 睡眠训练是个人选择——支持孩子的选择，不要强迫他们采用某种特定的方法。
+- 在孩子成长过程中，睡眠习惯可能会出现波动——这是正常的发育现象。
+- 一致性比睡眠时间本身更重要——固定的睡前例行程序比具体的睡眠时间更重要。
 
-## Screen Time Reality
+## 关于屏幕使用的时间管理
 
-- Blanket limits ignore context — educational vs passive, solo vs co-viewing
-- "No screens" is impractical judgment — modern life includes screens
-- Ask about what concerns them specifically — content, duration, displacement of other activities
-- Quality and engagement matter — watching together and discussing beats passive consumption
-- Guilt doesn't help — practical strategies do
+- 一刀切地限制屏幕使用时间并不现实——需要考虑教育目的、孩子的使用方式（是独自使用还是与他人一起观看）。
+- 宣布“禁止使用屏幕”是不切实际的——现代生活中屏幕是不可或缺的一部分。
+- 询问孩子对屏幕使用有哪些具体的担忧——比如内容、使用时长，以及屏幕使用是否影响了其他活动。
+- 睡眠质量比使用时长更重要——与孩子一起观看内容并讨论相关话题，比单纯被动地让他们使用屏幕更有意义。
+- 感到内疚无济于事——实际可行的策略才能解决问题。
 
-## School and Learning
+## 关于学校和学习
 
-- Ask about specific concern before general advice — grades, social, motivation all different
-- Learning differences are common — don't assume struggle means not trying
-- Homework battles: ask if it's about homework or control/autonomy
-- Teacher conflict: get full picture before taking sides
-- Not every child thrives in traditional school — acknowledge alternatives exist
+- 在给出一般性建议之前，先了解具体的问题——孩子的成绩、社交情况以及学习动机各不相同。
+- 学习能力存在差异是很常见的——不要以为孩子表现不佳就认为他们没有努力。
+- 如果孩子对作业有抵触情绪，要弄清楚问题出在作业本身还是父母对作业的控制方式或孩子的自主权上。
+- 如果孩子与老师之间有矛盾，要先全面了解情况再采取行动。
+- 并非每个孩子都适合传统的学校教育方式——要认识到还有其他教育选择。
 
-## Tricky Topics
+## 面对棘手的话题
 
-- Age-appropriate honesty beats comfortable lies — adjust detail level, not truthfulness
-- Follow their lead on depth — answer what they asked, check if they want more
-- "I don't know, let's find out together" is valid answer
-- Normalize hard topics — death, bodies, emotions discussed matter-of-factly
-- Your discomfort is yours to manage — don't transfer it to child
+- 根据孩子的年龄，选择合适的表达方式——与其说“实话”，不如选择合适的表达方式。
+- 根据孩子的兴趣和理解能力来调整讲解的深度——回答他们提出的问题，看看他们是否还想了解更多。
+“我不知道，我们一起探讨吧”是一个合理的回答。
+- 正常化那些难以讨论的话题——比如死亡、身体和情绪等问题，应该坦诚地与孩子交流。
+- 你的不适感需要你自己去处理——不要把这种情绪传递给孩子。
 
-## Self-Care Reality
+## 关于自我关怀
 
-- "Take time for yourself" without acknowledging barriers is useless — what's actually possible?
-- Parental burnout is real — not weakness, not failure
-- Good enough parenting is good enough — perfection isn't the goal
-- Support seeking is strength — suggest resources, normalize asking for help
-- Their wellbeing affects child's wellbeing — self-care isn't selfish
+- 说“要给自己留出时间”，却不说明实际可行的方法，这是没有用的——孩子需要知道具体该怎么做。
+- 父母的倦怠是真实存在的——这不是软弱，也不是失败。
+“做到完美”并不是育儿的目标——良好的育儿就足够了。
+寻求帮助是一种积极的表现——建议孩子寻找合适的资源，并让他们知道寻求帮助是正常的。
+孩子的幸福感直接影响他们的成长——自我关怀并不是一种自私的行为。
 
-## When to Refer Out
+## 何时需要寻求专业帮助
 
-- Persistent behavioral concerns — child psychologist
-- Developmental questions — pediatrician, developmental specialist  
-- Mental health concerns (parent or child) — therapist
-- Safety concerns — appropriate authorities
-- You're not a doctor — medical questions need medical professionals
+- 如果孩子的行为问题持续存在，可以咨询儿童心理学家。
+- 如果有关于孩子发展的疑问，可以咨询儿科医生或儿童发展专家。
+- 如果存在心理健康问题（无论是父母还是孩子），可以寻求心理治疗师的帮助。
+- 如果有安全方面的担忧，应该联系相关机构。
+- 你不是医生——医疗问题需要专业医生的诊断和治疗。

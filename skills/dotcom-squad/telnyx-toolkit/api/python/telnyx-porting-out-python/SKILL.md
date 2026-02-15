@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Porting Out - Python
 
-## Installation
+## 安装
 
 ```bash
 pip install telnyx
 ```
 
-## Setup
+## 设置
 
 ```python
 import os
@@ -31,11 +31,11 @@ client = Telnyx(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List portout requests
+## 列出 portout 请求
 
-Returns the portout requests according to filters
+根据过滤器返回 portout 请求
 
 `GET /portouts`
 
@@ -45,9 +45,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Get a portout request
+## 获取 portout 请求
 
-Returns the portout request based on the ID provided
+根据提供的 ID 返回 portout 请求
 
 `GET /portouts/{id}`
 
@@ -58,9 +58,9 @@ portout = client.portouts.retrieve(
 print(portout.data)
 ```
 
-## List all comments for a portout request
+## 获取 portout 请求的所有评论
 
-Returns a list of comments for a portout request.
+返回 portout 请求的所有评论。
 
 `GET /portouts/{id}/comments`
 
@@ -71,9 +71,9 @@ comments = client.portouts.comments.list(
 print(comments.data)
 ```
 
-## Create a comment on a portout request
+## 为 portout 请求创建评论
 
-Creates a comment on a portout request.
+为 portout 请求创建评论。
 
 `POST /portouts/{id}/comments`
 
@@ -84,9 +84,9 @@ comment = client.portouts.comments.create(
 print(comment.data)
 ```
 
-## List supporting documents on a portout request
+## 获取 portout 请求的相关支持文档
 
-List every supporting documents for a portout request.
+列出 portout 请求的所有支持文档。
 
 `GET /portouts/{id}/supporting_documents`
 
@@ -97,9 +97,9 @@ supporting_documents = client.portouts.supporting_documents.list(
 print(supporting_documents.data)
 ```
 
-## Create a list of supporting documents on a portout request
+## 创建 portout 请求的支持文档列表
 
-Creates a list of supporting documents on a portout request.
+创建 portout 请求的支持文档列表。
 
 `POST /portouts/{id}/supporting_documents`
 
@@ -110,11 +110,11 @@ supporting_document = client.portouts.supporting_documents.create(
 print(supporting_document.data)
 ```
 
-## Update Status
+## 更新状态
 
-Authorize or reject portout request
+授权或拒绝 portout 请求
 
-`PATCH /portouts/{id}/{status}` — Required: `reason`
+`PATCH /portouts/{id}/{status}` — 必需参数：`reason`
 
 ```python
 response = client.portouts.update_status(
@@ -125,9 +125,9 @@ response = client.portouts.update_status(
 print(response.data)
 ```
 
-## List all port-out events
+## 列出所有 port-out 事件
 
-Returns a list of all port-out events.
+返回所有 port-out 事件的列表。
 
 `GET /portouts/events`
 
@@ -137,9 +137,9 @@ page = page.data[0]
 print(page)
 ```
 
-## Show a port-out event
+## 显示 port-out 事件
 
-Show a specific port-out event.
+显示特定的 port-out 事件。
 
 `GET /portouts/events/{id}`
 
@@ -150,9 +150,9 @@ event = client.portouts.events.retrieve(
 print(event.data)
 ```
 
-## Republish a port-out event
+## 重新发布 port-out 事件
 
-Republish a specific port-out event.
+重新发布特定的 port-out 事件。
 
 `POST /portouts/events/{id}/republish`
 
@@ -162,9 +162,9 @@ client.portouts.events.republish(
 )
 ```
 
-## List eligible port-out rejection codes for a specific order
+## 列出特定订单的 eligible port-out 拒绝代码
 
-Given a port-out ID, list rejection codes that are eligible for that port-out
+给定一个 port-out ID，列出适用于该 port-out 的拒绝代码
 
 `GET /portouts/rejections/{portout_id}`
 
@@ -175,9 +175,9 @@ response = client.portouts.list_rejection_codes(
 print(response.data)
 ```
 
-## List port-out related reports
+## 列出与 port-out 相关的报告
 
-List the reports generated about port-out operations.
+列出关于 port-out 操作生成的报告。
 
 `GET /portouts/reports`
 
@@ -187,9 +187,9 @@ page = page.data[0]
 print(page.id)
 ```
 
-## Create a port-out related report
+## 创建与 port-out 相关的报告
 
-Generate reports about port-out operations.
+生成关于 port-out 操作的报告。
 
 `POST /portouts/reports`
 
@@ -203,9 +203,9 @@ report = client.portouts.reports.create(
 print(report.data)
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+检索生成的特定报告。
 
 `GET /portouts/reports/{id}`
 

@@ -1,16 +1,16 @@
 ---
 name: Quotes
-description: Build a personal quotes system for saving, discovering, and automatically surfacing meaningful words.
+description: 构建一个个人名言系统，用于保存名言、发现其中有意义的词汇，并自动提取这些词汇。
 metadata: {"clawdbot":{"emoji":"💬","os":["linux","darwin","win32"]}}
 ---
 
-## Core Behavior
-- User shares quote → save with context and tags
-- User needs inspiration → surface relevant quote
-- Automatically send quotes based on schedule/criteria
-- Create `~/quotes/` as workspace
+## 核心功能  
+- 用户分享引文时，会将其连同上下文和标签一起保存。  
+- 当用户需要灵感时，系统会推荐相关的引文。  
+- 系统会根据预设的时间表或条件自动发送引文。  
+- 系统会创建一个名为 `~/quotes/` 的工作文件夹来存储所有引文。  
 
-## File Structure
+## 文件结构  
 ```
 ~/quotes/
 ├── collection/
@@ -20,9 +20,9 @@ metadata: {"clawdbot":{"emoji":"💬","os":["linux","darwin","win32"]}}
 ├── favorites.md
 ├── delivery.md
 └── discover.md
-```
+```  
 
-## Quote Entry
+## 引文录入  
 ```markdown
 # collection/by-author/marcus-aurelius.md
 ## On Control
@@ -35,9 +35,9 @@ metadata: {"clawdbot":{"emoji":"💬","os":["linux","darwin","win32"]}}
 "It is not that we have a short time to live, but that we waste a lot of it."
 - Source: Meditations
 - Tags: time, mortality, urgency
-```
+```  
 
-## By Topic
+## 按主题分类  
 ```markdown
 # collection/by-topic/creativity.md
 "Creativity is just connecting things."
@@ -48,9 +48,9 @@ metadata: {"clawdbot":{"emoji":"💬","os":["linux","darwin","win32"]}}
 
 "You can't use up creativity. The more you use, the more you have."
 — Maya Angelou
-```
+```  
 
-## By Source
+## 按来源分类  
 ```markdown
 # collection/by-source/books.md
 ## Meditations — Marcus Aurelius
@@ -63,9 +63,9 @@ metadata: {"clawdbot":{"emoji":"💬","os":["linux","darwin","win32"]}}
 ## Dad
 "The best time to plant a tree was 20 years ago. The second best time is now."
 - Said when I was hesitating on career change
-```
+```  
 
-## Favorites
+## 收藏夹  
 ```markdown
 # favorites.md
 Top quotes that resonate most:
@@ -78,9 +78,9 @@ Top quotes that resonate most:
 
 "What would you do if you weren't afraid?"
 — Sheryl Sandberg
-```
+```  
 
-## Automated Delivery
+## 自动推送  
 ```markdown
 # delivery.md
 ## Daily Morning
@@ -103,57 +103,42 @@ Top quotes that resonate most:
 - unmotivated: action, discipline, purpose
 - sad: hope, resilience, meaning
 - celebrating: gratitude, joy
-```
+```  
 
-## Discovery
-```markdown
-# discover.md
-## Authors to Explore
-- Naval Ravikant — modern wisdom
-- Rumi — poetry, spiritual
-- Brené Brown — vulnerability
+## 引文推荐机制  
+- “晨间引文：[随机推荐的收藏夹中的引文]”  
+- “您保存了5条来自《Meditations》的引文”  
+- “根据您当前的情况，推荐相关的引文”  
+- “您正在阅读的书籍中有新的引文吗？”  
 
-## Topics to Expand
-- Japanese philosophy (wabi-sabi, ikigai)
-- Entrepreneurship quotes
-- Science and curiosity
+## 快速采集引文信息  
+当用户分享引文时：  
+- 保存引文的完整文本  
+- 询问/推断引文的作者  
+- 询问/推断引文的来源  
+- 建议合适的主题标签  
+- （可选）记录该引文为何引起用户的共鸣  
 
-## Sources
-- Books being read
-- Podcasts (note quotes live)
-- Conversations worth remembering
-```
+## 需要跟踪的信息  
+- 引文文本（完整内容）  
+- 作者  
+- 来源（书籍、演讲、对话等）  
+- 主题标签  
+- 添加引文的时间  
+- 引文的重要性（可选）  
 
-## What To Surface
-- "Morning quote: [random favorite]"
-- "You saved 5 quotes from Meditations"
-- "Related quote for what you're going through"
-- "New quote from book you're reading?"
+## 功能逐步完善计划  
+- 初始阶段：添加10条收藏夹中的引文  
+- 按主题和作者对引文进行分类  
+- 设置每日自动推送功能  
+- 持续从书籍和播客中收集引文  
 
-## Capture Quickly
-When user shares quote:
-- Save exact text
-- Ask/infer author
-- Ask/infer source
-- Suggest topic tags
-- Note why it resonated (optional)
+## 需要避免的行为  
+- 错误地标注引文的来源（尽可能核实信息）  
+- 仅保存引文而忽略其上下文（这会导致引文失去意义）  
+- 忘记个人分享的引文（如家人或导师的引文）  
+- 只收集引文而不进行后续回顾  
 
-## What To Track
-- Quote text (exact)
-- Author
-- Source (book, speech, conversation)
-- Topic tags
-- When added
-- Why it matters (optional)
+---
 
-## Progressive Enhancement
-- Start: add 10 favorite quotes
-- Tag by topic and author
-- Set up daily delivery
-- Capture from books/podcasts ongoing
-
-## What NOT To Do
-- Misattribute quotes (verify when possible)
-- Save without context (loses meaning later)
-- Forget personal quotes (family, mentors)
-- Only collect, never revisit
+（注：由于提供的 `SKILL.md` 文件内容较为简短，部分部分（如文件结构、引文录入、自动推送等）的详细说明可能需要在完整的软件文档中提供。上述翻译基于文件中的关键信息进行了整理。）

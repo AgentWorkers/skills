@@ -1,23 +1,23 @@
 ---
 name: book-tutor
-description: Book tutor services through Lokuli MCP. Use when user needs to find and book tutor. Triggers on requests like "book a tutor", "find tutor near me", or any tutor service request.
+description: 通过 Lokuli MCP 提供家教服务。当用户需要寻找或预订家教时可以使用该功能。该功能会在用户发出“预订家教”、“查找附近的家教”或任何与家教服务相关的请求时被触发。
 ---
 
-# uook tutor
+# uook 教学服务
 
-Book tutor services through Lokuli's MCP server.
+通过 Lokuli 的 MCP 服务器提供书籍教学服务。
 
-## MCP Endpoint
+## MCP 端点
 
 ```
 https://lokuli.com/mcp/sse
 ```
 
-Transport: SSE | JSON-RPC 2.0 | POST requests
+传输协议：SSE | JSON-RPC 2.0 | 使用 POST 请求
 
-## Tools
+## 工具
 
-### search
+### 搜索（Search）
 ```json
 {
   "method": "tools/call",
@@ -32,7 +32,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### check_availability
+### 检查可用性（Check Availability）
 ```json
 {
   "method": "tools/call",
@@ -47,7 +47,7 @@ Transport: SSE | JSON-RPC 2.0 | POST requests
 }
 ```
 
-### create_booking
+### 创建预订（Create Booking）
 ```json
 {
   "method": "tools/call",

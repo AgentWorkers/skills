@@ -2,45 +2,45 @@
 name: videogames
 slug: videogames
 display_name: Video Games
-description: A skill to lookup video game information and compare prices across multiple stores.
+description: 一种用于查询电子游戏信息并比较多个商店价格的技能。
 author: ivanheral
 version: 1.0.0
 license: MIT
 ---
 
-# Video Game Skill 🎮
+# 视频游戏技能 🎮
 
-This skill allows OpenClaw to search for games, view Steam details, and find the best prices using CheapShark.
+此技能允许 OpenClaw 搜索游戏、查看 Steam 上的游戏详情，并通过 CheapShark 找到最优惠的价格。
 
-## Tools
+## 工具
 
 ### `scripts/game_tool.py`
 
-This Python script interacts with Steam and CheapShark.
+这是一个 Python 脚本，用于与 Steam 和 CheapShark 进行交互。
 
-**Usage:**
+**使用方法：**
 
-1.  **Search for deals (CheapShark):**
+1. **搜索优惠（CheapShark）：**
     ```bash
     python3 scripts/game_tool.py deals "Game Name"
     ```
-    *Example:* `python3 scripts/game_tool.py deals "Batman"`
+    *示例：* `python3 scripts/game_tool.py deals "Batman"`
 
-2.  **Search on Steam:**
+2. **在 Steam 上搜索：**
     ```bash
     python3 scripts/game_tool.py search "Game Name"
     ```
-    *Example:* `python3 scripts/game_tool.py search "Elden Ring"`
+    *示例：* `python3 scripts/game_tool.py search "Elden Ring"`
 
-3.  **View details (Steam):**
+3. **查看游戏详情（Steam）：**
     ```bash
     python3 scripts/game_tool.py details <APPID>
     ```
-    *Example:* `python3 scripts/game_tool.py details 1245620`
+    *示例：* `python3 scripts/game_tool.py details 1245620`
 
-## Notes
-- The script requires Python 3.
-- No external library installation required (uses standard `urllib`).
+## 注意事项：
+- 该脚本需要 Python 3 环境。
+- 不需要安装任何外部库（使用标准的 `urllib` 库）。
 
 ---
-*Created with love by Cachitos for Ivan.*
+*由 Cachitos 为 Ivan 热情制作。*

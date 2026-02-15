@@ -1,40 +1,40 @@
 ---
 name: ad-creative-generator
-description: Generate diverse, engaging ad prompts for any product or brand across 20+ creative styles and 10 categories. Use when user needs advertisement concepts, marketing prompts, or creative marketing content generation.
+description: 生成多样化的、引人入胜的广告创意，适用于任何产品或品牌，涵盖20多种创意风格和10个类别。这些创意可用于用户需要广告概念、营销提示或创意营销内容生成的场景。
 ---
 
-# Ad Creative Generator
+# 广告创意生成器
 
-## Overview
-A comprehensive advertising creative generator that creates diverse, engaging ad prompts for any product or brand. Generate 20+ different styles of advertisement concepts organized into 10 categories.
+## 概述
+这是一个功能全面的广告创意生成工具，能够为任何产品或品牌创建多样且引人入胜的广告创意。它支持生成20多种不同风格的广告概念，并将这些概念分为10个类别。
 
-## Description
-This skill helps marketers, designers, and content creators generate creative advertisement concepts and prompts. It provides:
-- 20+ unique creative styles across 10 categories
-- Interactive CLI menu for easy selection
-- Multiple export formats (JSON, text, markdown)
-- Customizable prompts with product/brand input
-- Production-ready error handling
+## 说明
+该工具帮助营销人员、设计师和内容创作者生成创新的广告创意和提示。它具备以下特点：
+- 提供10个类别中的20多种独特创意风格
+- 提供交互式的命令行界面（CLI）以便轻松选择
+- 支持多种导出格式（JSON、文本、Markdown）
+- 可根据产品/品牌信息自定义创意提示
+- 具备完善的错误处理机制，确保生成的内容可用于实际发布
 
-## Installation
-No additional dependencies required beyond Node.js (v14+).
+## 安装
+除了Node.js（版本14及以上）之外，无需额外依赖。
 
-## Usage
+## 使用方法
 
-### Basic Usage
+### 基本使用方法
 ```bash
 node generate.js
 ```
 
-### Interactive Mode
-Run the script and follow the prompts:
-1. Enter your product/brand name
-2. Select creative categories (multiple selection supported)
-3. Choose specific styles within categories
-4. Select export format
-5. View or export generated prompts
+### 交互式模式
+运行脚本并按照提示操作：
+1. 输入您的产品/品牌名称
+2. 选择创意类别（支持多选）
+3. 在所选类别中挑选具体风格
+4. 选择导出格式
+5. 查看或导出生成的创意提示
 
-### Command Line Options
+### 命令行选项
 ```bash
 # Generate prompts for a specific product
 node generate.js --product "Luxury Perfume"
@@ -49,42 +49,42 @@ node generate.js --product "Organic Tea" --categories minimalist,eco
 node generate.js --product "New App" --all
 ```
 
-## Categories
+## 类别
 
-### 1. Minimalist
-Clean, simple designs with focus on essential elements. Perfect for modern brands.
+### 1. 极简风格
+设计简洁明了，注重核心元素，非常适合现代品牌。
 
-### 2. Product Transformation
-Creative transformations of products into different materials, contexts, or dimensions.
+### 2. 产品转换
+将产品以不同的材料、场景或形式进行创意转换。
 
-### 3. Cultural/Exotic
-Incorporates cultural elements, exotic locations, and diverse aesthetic influences.
+### 3. 文化/异国情调
+融入文化元素、异国风情和多种美学风格。
 
-### 4. Lifestyle
-Shows product integration into aspirational lifestyles and everyday moments.
+### 4. 生活方式
+展示产品如何融入理想的生活方式或日常场景中。
 
-### 5. Technology
-Futuristic, tech-forward concepts with digital elements and innovation themes.
+### 5. 科技风格
+具有未来感、科技感的创意设计，强调数字元素和创新主题。
 
-### 6. Luxury
-Premium, elegant aesthetics with sophistication and exclusivity.
+### 6. 豪华风格
+优雅、高档的设计，体现精致与独特性。
 
-### 7. Eco/Green
-Sustainability-focused, natural, and environmentally conscious designs.
+### 7. 环保风格
+注重可持续性，采用自然、环保的设计理念。
 
-### 8. Seasonal
-Timely concepts tied to seasons, holidays, and special occasions.
+### 8. 季节性风格
+根据季节、节日或特殊场合设计合适的广告创意。
 
-### 9. Emotional
-Evocative designs that connect on an emotional level with audiences.
+### 9. 情感风格
+能够触动观众情感的创意设计。
 
-### 10. Playful
-Fun, whimsical, and creative concepts that entertain and engage.
+### 10. 轻松幽默风格
+有趣、富有想象力的设计，旨在娱乐和吸引观众。
 
-## Output Formats
+## 输出格式
 
 ### JSON
-Structured data format perfect for integration with other tools:
+结构化数据格式，便于与其他工具集成：
 ```json
 {
   "product": "Example Product",
@@ -99,15 +99,15 @@ Structured data format perfect for integration with other tools:
 }
 ```
 
-### Text
-Plain text format for easy reading and copying.
+### 文本
+纯文本格式，易于阅读和复制。
 
 ### Markdown
-Formatted markdown with headers and structure for documentation.
+带有标题和结构的Markdown格式，适合文档编写。
 
-## Examples
+## 示例
 
-### Example 1: Minimalist Beauty Product
+### 示例1：极简风格的美妆产品广告
 ```
 Product: "Rose Glow Serum"
 Style: Hand-drawn Minimalist
@@ -117,7 +117,7 @@ negative space emphasizing the product, botanical sketches of rose
 ingredients, elegant typography, white background
 ```
 
-### Example 2: Product Transformation
+### 示例2：产品转换广告
 ```
 Product: "Crystal Water Bottle"
 Style: Translucent Material
@@ -126,7 +126,7 @@ material, soft light filtering through, visible water layers, delicate
 paper-like texture, ethereal lighting, pastel color gradient background
 ```
 
-### Example 3: Cultural Exotic
+### 示例3：异国情调广告
 ```
 Product: "Spice Blend Collection"
 Style: Moroccan Market
@@ -136,16 +136,16 @@ patterns as background, cultural textiles, authenticity, warm color
 palette, cinematic composition
 ```
 
-## Features
-- **20+ Creative Styles**: Diverse prompts across multiple categories
-- **Interactive CLI**: User-friendly menu system
-- **Batch Generation**: Generate multiple prompts at once
-- **Export Options**: JSON, text, and markdown formats
-- **Error Handling**: Comprehensive validation and error messages
-- **Customizable**: Easy to modify templates and add new styles
-- **Production Ready**: Robust code with logging and debugging support
+## 功能特点
+- **20多种创意风格**：涵盖多个类别的多样化创意
+- **交互式CLI**：用户友好的菜单系统
+- **批量生成**：一次生成多个广告创意
+- **导出选项**：支持JSON、文本和Markdown格式
+- **错误处理**：全面的验证机制和错误提示
+- **可定制**：易于修改模板和添加新风格
+- **适合实际使用**：代码稳定，支持日志记录和调试
 
-## File Structure
+## 文件结构
 ```
 ad-creative-generator/
 ├── SKILL.md           # This file
@@ -154,23 +154,23 @@ ad-creative-generator/
 └── README.md          # Additional usage documentation
 ```
 
-## Error Handling
-The script includes comprehensive error handling for:
-- Invalid product names
-- File system errors during export
-- Invalid command line arguments
-- Template rendering errors
-- JSON parsing errors
+## 错误处理
+该脚本包含以下方面的全面错误处理：
+- 无效的产品名称
+- 导出过程中的文件系统错误
+- 无效的命令行参数
+- 模板渲染错误
+- JSON解析错误
 
-## Contributing
-To add new creative styles:
-1. Edit `templates.js`
-2. Add new category or style object
-3. Follow the existing structure
-4. Test with `node generate.js`
+## 贡献方式
+如需添加新的创意风格：
+1. 修改 `templates.js` 文件
+2. 添加新的类别或风格信息
+3. 遵循现有的代码结构
+4. 使用 `node generate.js` 测试新功能
 
-## License
-Part of the Clawdbot skills ecosystem.
+## 许可证
+本工具属于Clawdbot技能生态系统的一部分。
 
-## Version
+## 版本
 1.0.0

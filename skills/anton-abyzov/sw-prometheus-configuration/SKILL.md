@@ -1,25 +1,25 @@
 ---
 name: prometheus-configuration
-description: Set up Prometheus for comprehensive metric collection, storage, and monitoring of infrastructure and applications. Use when implementing metrics collection, setting up monitoring infrastructure, or configuring alerting systems.
+description: 配置 Prometheus 以实现基础设施和应用程序的全面指标收集、存储及监控。适用于实施指标收集、搭建监控基础设施或配置警报系统时使用。
 ---
 
-# Prometheus Configuration
+# Prometheus 配置
 
-Complete guide to Prometheus setup, metric collection, scrape configuration, and recording rules.
+本指南详细介绍了 Prometheus 的安装、指标收集、数据抓取配置以及记录规则的设置方法。
 
-## Purpose
+## 目的
 
-Configure Prometheus for comprehensive metric collection, alerting, and monitoring of infrastructure and applications.
+配置 Prometheus 以实现全面的指标收集、警报通知以及对基础设施和应用程序的监控。
 
-## When to Use
+## 使用场景
 
-- Set up Prometheus monitoring
-- Configure metric scraping
-- Create recording rules
-- Design alert rules
-- Implement service discovery
+- 设置 Prometheus 监控系统
+- 配置指标抓取机制
+- 创建记录规则
+- 设计警报规则
+- 实现服务发现功能
 
-## Prometheus Architecture
+## Prometheus 架构
 
 ```
 ┌──────────────┐
@@ -37,9 +37,9 @@ Configure Prometheus for comprehensive metric collection, alerting, and monitori
        └─→ Long-term storage (Thanos/Cortex)
 ```
 
-## Installation
+## 安装
 
-### Kubernetes with Helm
+### 使用 Helm 在 Kubernetes 中部署 Prometheus
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -52,7 +52,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
   --set prometheus.prometheusSpec.storageVolumeSize=50Gi
 ```
 
-### Docker Compose
+### 使用 Docker Compose 部署 Prometheus
 
 ```yaml
 version: '3.8'
@@ -73,7 +73,7 @@ volumes:
   prometheus-data:
 ```
 
-## Configuration File
+## 配置文件
 
 **prometheus.yml:**
 ```yaml
@@ -153,11 +153,11 @@ scrape_configs:
       key_file: /etc/prometheus/client.key
 ```
 
-**Reference:** See `assets/prometheus.yml.template`
+**参考:** 查看 `assets/prometheus.yml.template`
 
-## Scrape Configurations
+## 数据抓取配置
 
-### Static Targets
+### 静态目标（Static Targets）
 
 ```yaml
 scrape_configs:
@@ -169,7 +169,7 @@ scrape_configs:
           region: 'us-west-2'
 ```
 
-### File-based Service Discovery
+### 基于文件的服务发现（File-based Service Discovery）
 
 ```yaml
 scrape_configs:
@@ -194,7 +194,7 @@ scrape_configs:
 ]
 ```
 
-### Kubernetes Service Discovery
+### 使用 Kubernetes 实现服务发现
 
 ```yaml
 scrape_configs:
@@ -215,9 +215,9 @@ scrape_configs:
         regex: (.+)
 ```
 
-## Recording Rules
+## 记录规则（Recording Rules）
 
-Create pre-computed metrics for frequently queried expressions:
+为经常被查询的指标创建预计算的结果，以提升查询效率。
 
 ```yaml
 # /etc/prometheus/rules/recording_rules.yml
@@ -263,7 +263,9 @@ groups:
           100 - ((node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100)
 ```
 
-## Alert Rules
+## 警报规则（Alert Rules）
+
+设置警报规则，以便在指标异常时及时通知相关人员。
 
 ```yaml
 # /etc/prometheus/rules/alert_rules.yml
@@ -329,7 +331,9 @@ groups:
           description: "Disk usage is {{ $value }}%"
 ```
 
-## Validation
+## 验证配置（Validation）
+
+确保所有配置项的正确性。
 
 ```bash
 # Validate configuration
@@ -342,38 +346,27 @@ promtool check rules /etc/prometheus/rules/*.yml
 promtool query instant http://localhost:9090 'up'
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use consistent naming** for metrics (prefix_name_unit)
-2. **Set appropriate scrape intervals** (15-60s typical)
-3. **Use recording rules** for expensive queries
-4. **Implement high availability** (multiple Prometheus instances)
-5. **Configure retention** based on storage capacity
-6. **Use relabeling** for metric cleanup
-7. **Monitor Prometheus itself**
-8. **Implement federation** for large deployments
-9. **Use Thanos/Cortex** for long-term storage
-10. **Document custom metrics**
+1. **为指标使用一致的命名规范**（例如：`prefix_name_unit`）
+2. **设置合适的抓取间隔**（通常为 15-60 秒）
+3. **对复杂查询使用记录规则**以优化性能
+4. **实现高可用性**（部署多个 Prometheus 实例）
+5. **根据存储容量配置数据保留策略**
+6. **使用重标记功能（relabeling）来清理旧的指标数据**
+7. **定期监控 Prometheus 本身的运行状态**
+8. **在大型部署环境中使用 Prometheus 联盟（federation）机制**
+9. **使用 Thanos/Cortex 等工具进行长期数据存储**
+10. **为自定义指标编写详细的文档**
 
-## Troubleshooting
+## 故障排除
 
-**Check scrape targets:**
-```bash
-curl http://localhost:9090/api/v1/targets
-```
+- **检查数据抓取目标**：确保所有目标都能被正确访问
+- **验证配置文件**：确保所有配置项都符合预期
+- **测试查询功能**：验证 Prometheus 能够正确处理各种查询请求
 
-**Check configuration:**
-```bash
-curl http://localhost:9090/api/v1/status/config
-```
+## 相关技能
 
-**Test query:**
-```bash
-curl 'http://localhost:9090/api/v1/query?query=up'
-```
-
-## Related Skills
-
-- `grafana-dashboards` - For visualization
-- `slo-implementation` - For SLO monitoring
-- `distributed-tracing` - For request tracing
+- **grafana-dashboards**：用于数据可视化
+- **slo-implementation**：用于服务水平目标（Service Level Objectives）的监控
+- **distributed-tracing**：用于请求追踪和分析

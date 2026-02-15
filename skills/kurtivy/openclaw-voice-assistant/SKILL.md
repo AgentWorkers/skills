@@ -30,17 +30,15 @@ metadata:
   }
 ---
 
-# Voice Assistant for OpenClaw
+# OpenClaw语音助手
 
-A Python companion app that gives OpenClaw a voice. Say a wake word (or press a
-hotkey), speak naturally, and hear the AI respond — then keep talking for
-multi-turn conversation.
+这是一个基于Python的辅助应用程序，它为OpenClaw添加了语音功能。您只需说出唤醒词（或按下热键），然后自然地说话，就能听到AI的回应——接着您可以继续进行多轮对话。
 
 ```
 Mic → Porcupine wake word → faster-whisper STT → OpenClaw Gateway → ElevenLabs TTS → Speaker
 ```
 
-## Quick Start
+## 快速入门
 
 ```bash
 # 1. Navigate to the skill scripts
@@ -57,17 +55,17 @@ copy .env.example .env
 venv\Scripts\python src\assistant.py
 ```
 
-## Requirements
+## 所需条件
 
-| Service | What you need | Cost |
+| 服务 | 所需内容 | 费用 |
 |---------|--------------|------|
-| **OpenClaw gateway** | Running locally on `ws://127.0.0.1:18789` with a gateway token | — |
-| **ElevenLabs** | API key + voice ID (free tier works with default voices) | Free+ |
-| **Picovoice** | Access key from [picovoice.ai](https://picovoice.ai) (free tier works) | Free |
-| **Python** | 3.10+ (tested on 3.14) | — |
-| **Microphone** | Any input device | — |
+| **OpenClaw网关** | 需要在本地运行于 `ws://127.0.0.1:18789` 并使用网关令牌 | — |
+| **ElevenLabs** | API密钥 + 语音ID（免费 tier 支持默认语音） | 免费 |
+| **Picovoice** | 从 [picovoice.ai](https://picovoice.ai) 获取访问密钥（免费 tier 可使用） | 免费 |
+| **Python** | 3.10及以上版本（测试版本为3.14） | — |
+| **麦克风** | 任意输入设备 | — |
 
-## Configuration (.env)
+## 配置文件（.env）
 
 ```ini
 # OpenClaw Gateway
@@ -92,19 +90,17 @@ SILENCE_TIMEOUT=1.5                # seconds of silence to stop recording
 HOTKEY=ctrl+shift+k                # global keyboard shortcut
 ```
 
-## Custom Wake Word
+## 自定义唤醒词
 
-1. Go to [Picovoice Console](https://console.picovoice.ai/)
-2. Create a custom wake word (e.g. "Hey Claudia", "Hey OpenClaw")
-3. Download the `.ppn` file for your platform
-4. Set `PORCUPINE_MODEL_PATH` in `.env` to the file path
-5. Without a custom model, falls back to built-in "hey google"
+1. 访问 [Picovoice控制台](https://console.picovoice.ai/)  
+2. 创建一个自定义唤醒词（例如：“Hey Claudia”或“Hey OpenClaw”）  
+3. 下载适用于您操作系统的`.ppn`文件  
+4. 在`.env`文件中设置`PORCUPINE_MODEL_PATH`为该文件的路径  
+5. 如果未使用自定义模型，系统将使用内置的“hey google”作为唤醒词  
 
-## Personalized Voice Sounds
+## 个性化语音效果
 
-The assistant plays short audio clips when activated ("Yep!", "Hi!") and while
-thinking ("Hmm...", "Let me think..."). Generate these in your chosen ElevenLabs
-voice:
+当助手被激活时（例如说“Yep!”、“Hi!”），或者思考时（例如说“Hmm...”、“Let me think...”），会播放相应的音频片段。这些音频片段可以使用您选择的ElevenLabs语音库生成。
 
 ```bash
 cd {baseDir}/scripts
@@ -112,36 +108,32 @@ venv\Scripts\python generate_chime_sounds.py
 venv\Scripts\python generate_thinking_sounds.py
 ```
 
-Re-run these after changing `ELEVENLABS_VOICE_ID`.
+在修改`ELEVENLABS_VOICE_ID`后，请重新运行相关配置。
 
-## Running in Background
+## 在后台运行
 
-Use `start.bat` to launch without a console window (runs via `pythonw.exe`).
-The assistant appears as a system tray icon with Pause/Resume/Quit controls.
+使用`start.bat`命令以无控制台窗口的方式启动应用程序（通过`pythonw.exe`执行）。助手会以系统托盘图标的形式显示，并提供暂停/恢复/退出的功能。
 
-For auto-start on Windows, create a shortcut to `start.bat` in `shell:startup`.
+若要在Windows系统中实现自动启动，请将`start.bat`创建为“shell:startup”快捷方式。
 
-## How It Works
+## 工作原理
 
-1. **Wake** — Porcupine detects the wake word (or user presses hotkey)
-2. **Chime** — Plays a random activation sound ("Yep!", "Hi!")
-3. **Record** — Records speech until 1.5s of silence (2s grace period for initial silence)
-4. **Thinking** — Plays a filler sound ("Hmm...", "Let me think...")
-5. **Transcribe** — faster-whisper converts audio to text locally (CPU, int8)
-6. **Gateway** — Sends text to OpenClaw gateway via WebSocket, streams response
-7. **Speak** — ElevenLabs converts response to speech, plays through speakers
-8. **Follow-up** — Automatically listens for 5s after speaking for conversation continuity
-9. **Idle** — Returns to wake word listening after 5s of silence
+1. **唤醒**：Porcupine语音识别模块检测到唤醒词或用户按下热键。  
+2. **提示音**：播放随机生成的激活提示音（例如“Yep!”、“Hi!”）。  
+3. **录音**：开始录制语音，直到检测到1.5秒的静默（初始静默时间为2秒）。  
+4. **思考音**：在处理语音时播放提示音（例如“Hmm...”、“Let me think...”）。  
+5. **转录**：使用`fast-whisper`技术将音频实时转换为文本（使用CPU和int8格式）。  
+6. **网关传输**：通过WebSocket将文本发送到OpenClaw网关，并接收AI的响应。  
+7. **语音播放**：ElevenLabs将AI的回复转换为语音并通过扬声器播放。  
+8. **后续交互**：在用户说完话后，系统会自动等待5秒以保持对话的连贯性。  
+9. **待机状态**：如果5秒内没有新的语音输入，系统会重新进入唤醒词监听状态。  
 
-Mic suppression keeps the microphone muted during all speaker output to prevent
-feedback loops.
+为了防止反馈循环，系统会在扬声器播放声音期间自动关闭麦克风。
 
-## Detailed Architecture
+## 详细架构
 
-See [references/architecture.md](references/architecture.md) for source file
-breakdown, WebSocket protocol details, and audio pipeline internals.
+有关源文件结构、WebSocket协议细节以及音频处理流程的详细信息，请参阅 [references/architecture.md](references/architecture.md)。
 
-## Troubleshooting
+## 故障排除
 
-See [references/troubleshooting.md](references/troubleshooting.md) for common
-issues with mic detection, gateway connection, TTS errors, and wake word tuning.
+如遇到麦克风检测问题、网关连接故障、TTS转换错误或唤醒词设置问题，请参考 [references/troubleshooting.md](references/troubleshooting.md) 中的解决方案。

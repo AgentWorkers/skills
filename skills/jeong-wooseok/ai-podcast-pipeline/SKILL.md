@@ -1,57 +1,56 @@
 ---
 name: ai-podcast-pipeline
 version: 0.1.5
-description: Create Korean AI podcast packages from QuickView trend notes. Use for dual-host script writing (Callie × Nick), Gemini multi-speaker TTS audio generation, subtitle timing/render fixes, thumbnail+MP4 packaging, and YouTube title/description output. Supports both full (15~20 min) and compressed (5~7 min) editions.
+description: 根据 QuickView 的趋势分析结果，生成适用于韩国市场的 AI 播客包。这些播客包可用于编写双主持人脚本（Callie × Nick）、生成 Gemini 多声道 TTS 音频、调整字幕的显示时机与渲染效果、制作包含缩略图和 MP4 文件的播客包，以及生成 YouTube 的标题和描述信息。该系统支持制作时长为 15~20 分钟的完整版播客包，也支持压缩后的 5~7 分钟版本。
 ---
 
-# AI Podcast Pipeline
+# 人工智能播客制作流程
 
-## ⚠️ Security Notice
+## ⚠️ 安全提示
 
-This skill may trigger antivirus false positives due to legitimate use of:
-- **base64 decoding**: Used ONLY to decode audio data from Gemini TTS API responses (standard practice for binary data in JSON)
-- **subprocess calls**: Used ONLY to invoke ffmpeg for audio/video processing
-- **Environment variables**: Reads API keys from user-configured environment (`GEMINI_API_KEY`)
-- **Network requests**: Calls Google Gemini API for text-to-speech generation
+由于以下合法操作，本技能可能会触发防病毒软件的误报：
+- **base64解码**：仅用于从Gemini TTS API响应中解码音频数据（这是处理JSON中的二进制数据的标准做法）。
+- **子进程调用**：仅用于调用ffmpeg进行音频/视频处理。
+- **环境变量**：从用户配置的环境变量`GEMINI_API_KEY`中读取API密钥。
+- **网络请求**：向Google Gemini API发起请求以生成文本转语音。
 
-All code is open source and auditable in this repository. No malicious behavior.
+所有代码均为开源，可在本仓库中审核。不存在任何恶意行为。
 
-Build end-to-end podcast assets from `Trend/QuickView-*` content.
+本流程用于从`Trend/QuickView-*`内容中生成端到端的播客资源。
 
-## Core Workflow
+## 核心工作流程
 
-1. Select source QuickView file.
-2. Generate script (full or compressed mode).
-3. Build dual-voice MP3 (Gemini multi-speaker, chunked for reliability).
-4. Generate full-text Korean subtitles (no ellipsis truncation).
-5. Render subtitle MP4 with tuned font/size/timing shift.
-6. Build thumbnail + YouTube metadata.
-7. Deliver final package.
+1. 选择源QuickView文件。
+2. 生成脚本（全模式或压缩模式）。
+3. 制作双声道MP3文件（使用Gemini的多语音功能，并分块处理以确保可靠性）。
+4. 生成完整的韩文字幕（不进行省略处理）。
+5. 渲染带有自定义字体、字号和字幕时间延迟的MP4文件。
+6. 生成缩略图及YouTube元数据。
+7. 提供最终成品。
 
-## Step 1) Select Source
+## 第1步）选择源文件
 
-Prefer weekly QuickView file from your configured Quartz root.
+优先选择来自配置好的Quartz根目录的每周更新一次的QuickView文件。
 
-If user gives `wk.aiee.app` URL, map to local Quartz markdown first.
+如果用户提供了`wk.aiee.app`这样的URL，请先将其映射到本地的Quartz Markdown文件。
 
-## Step 2) Generate Script
+## 第2步）生成脚本
 
-Read and apply:
-- `references/podcast_prompt_template_ko.md`
+读取并应用`references/podcast_prompt_template_ko.md`中的模板。
 
-Modes:
-- **Full mode**: 15~20 minutes
-- **Compressed mode**: 5~7 minutes (core tips only)
+**模式**：
+- **全模式**：时长15~20分钟
+- **压缩模式**：时长5~7分钟（仅包含核心提示）
 
-Rules:
-- no system/meta text in spoken lines
-- host intro once at opening only
-- conversational Korean, short sentences, actionable
-- save script in `archive/`
+**规则**：
+- 语音台词中不得包含系统或元数据信息。
+- 开场时仅播放一次主持人介绍语。
+- 使用简洁的韩语对话句式，内容具有实用性。
+- 将生成的脚本保存到`archive/`目录中。
 
-## Step 3) Build Audio (Gemini Multi-Speaker, Reliable)
+## 第3步）制作音频（使用Gemini的多语音功能，确保可靠性）
 
-### Preferred: chunked builder (timeout-safe)
+### 推荐使用的分块处理方式（可防止超时）
 ```bash
 # Set API key via environment (required)
 export GEMINI_API_KEY="<YOUR_KEY>"
@@ -64,7 +63,7 @@ python3 scripts/build_dualvoice_audio.py \
   --chunk-lines 6
 ```
 
-### Single-pass (short scripts)
+### 单次处理方式（适用于简短脚本）
 ```bash
 python3 scripts/gemini_multispeaker_tts.py \
   --input-file <dialogue.txt> \
@@ -74,15 +73,15 @@ python3 scripts/gemini_multispeaker_tts.py \
   --timeout-seconds 120
 ```
 
-Default voice mapping (2026-02-10 fixed):
-- Callie (female) → `Kore`
-- Nick (male) → `Puck`
+**默认语音配置（2026-02-10更新）**：
+- Callie（女性角色） → 使用语音“Kore”
+- Nick（男性角色） → 使用语音“Puck”
 
-Output: MP3 (default delivery format)
+**输出格式**：MP3（默认交付格式）
 
-## Step 4) Build Korean Subtitles (Full Text)
+## 第4步）生成韩文字幕（包含完整文本内容）
 
-Use full-text subtitle builder (no `...` truncation):
+使用支持完整文本的字幕生成工具（不进行省略处理）：
 ```bash
 python3 scripts/build_korean_srt.py \
   --script <script.txt> \
@@ -91,9 +90,9 @@ python3 scripts/build_korean_srt.py \
   --max-chars 22
 ```
 
-## Step 5) Render Subtitled MP4 (Font + Timing)
+## 第5步）渲染带字幕的MP4文件（调整字体和字幕时间）
 
-Use renderer with adjustable font and timing shift:
+使用支持字体和字幕时间延迟的渲染工具：
 ```bash
 python3 scripts/render_subtitled_video.py \
   --image <thumbnail.png> \
@@ -105,49 +104,40 @@ python3 scripts/render_subtitled_video.py \
   --shift-ms -250
 ```
 
-Notes:
-- `shift-ms` negative = subtitle earlier (for lag fixes)
-- If text clipping occurs, lower `font-size` (e.g., 25~27)
-- keep text inside safe area; avoid overlap with character/object
+**注意事项**：
+- `shift-ms`参数为负值时，字幕会提前显示（用于解决显示延迟问题）。
+- 如果出现文本裁剪现象，可减小字体大小（例如25~27像素）。
+- 确保文本显示在安全区域内，避免与字符或对象重叠。
 
-## Step 6) Build Thumbnail + YouTube Metadata
+## 第6步）生成缩略图及YouTube元数据
 
-```bash
-# Set API key via environment (required)
-export GEMINI_API_KEY="<YOUR_KEY>"
+**参考指南**：`references/thumbnail_guidelines_ko.md`
 
-python3 scripts/build_podcast_assets.py \
-  --source "<QuickView path or URL>"
-```
+## 第7步）最终交付检查清单
 
-Reference (layout/copy guardrails):
-- `references/thumbnail_guidelines_ko.md`
+务必包含以下信息：
+1. 使用的源文件。
+2. 最终生成的MP3文件路径。
+3. 带字幕的MP4文件路径及文件大小。
+4. 缩略图路径。
+5. YouTube标题选项（3种可选格式）。
+6. YouTube描述内容。
 
-## Step 7) Final Delivery Checklist
+## 可靠性保障措施
 
-Always include:
-1. source used
-2. final MP3 path
-3. subtitle MP4 path + size
-4. thumbnail path
-5. YouTube title options (3)
-6. YouTube description
+- 对于较长的输入内容，Gemini API可能会超时，此时请使用分块处理方式（`build_dualvoice_audio.py`）。
+- 如果字幕出现裁剪现象，可减小字体大小并增加字幕下方的空白距离。
+- 如果字幕显示有延迟，可调整`--shift-ms`参数（通常范围为-150至-300）。
+- 确保生成的文件大小在Telegram允许的范围内。
 
-## Reliability Rules
+## 安全注意事项
 
-- Gemini timeout on long input: use chunked builder (`build_dualvoice_audio.py`)
-- Subtitle clipping: reduce font size and increase bottom margin
-- Subtitle lag: adjust `--shift-ms` (usually `-150` to `-300`)
-- Keep generated assets under Telegram practical limits
+- API密钥必须通过环境变量`GEMINI_API_KEY`传递，切勿硬编码。
+- 绝不要将密钥粘贴到提示信息、日志文件、截图或公开内容中。
+- 最近的改进措施：缩略图生成过程已通过环境变量传递密钥，而非命令行参数。
 
-## Security Notes
+## 参考资料
 
-- API keys must be passed via environment variables (`GEMINI_API_KEY`), not hardcoded.
-- Never paste raw keys into prompts, logs, screenshots, or public posts.
-- Recent hardening: thumbnail generation now passes keys via env (not CLI args).
-
-## References
-
-- `references/podcast_prompt_template_ko.md`
+- `references/podcast.prompt_template_ko.md`
 - `references/workflow_runbook.md`
 - `references/thumbnail_guidelines_ko.md`

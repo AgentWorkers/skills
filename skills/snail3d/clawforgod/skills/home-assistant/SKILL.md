@@ -1,18 +1,18 @@
 ---
 name: home-assistant
-description: Control Home Assistant smart home devices, run automations, and receive webhook events. Use when controlling lights, switches, climate, scenes, scripts, or any HA entity. Supports bidirectional communication via REST API (outbound) and webhooks (inbound triggers from HA automations).
+description: 控制 Home Assistant 智能家居设备，运行自动化任务，并接收 Webhook 事件。适用于控制灯光、开关、空调系统、场景设置、脚本以及任何 Home Assistant 实体。支持通过 REST API（出站通信）和 Webhook（来自 Home Assistant 自动化任务的入站触发）进行双向通信。
 metadata: {"clawdbot":{"emoji":"🏠","requires":{"bins":["jq","curl"]}}}
 ---
 
 # Home Assistant
 
-Control your smart home via Home Assistant's REST API and webhooks.
+通过 Home Assistant 的 REST API 和 Webhook 来控制您的智能家居。
 
-## Setup
+## 设置
 
-### Option 1: Config File (Recommended)
+### 选项 1：配置文件（推荐）
 
-Create `~/.config/home-assistant/config.json`:
+创建 `~/.config/home-assistant/config.json`：
 ```json
 {
   "url": "https://your-ha-instance.duckdns.org",
@@ -20,35 +20,35 @@ Create `~/.config/home-assistant/config.json`:
 }
 ```
 
-### Option 2: Environment Variables
+### 选项 2：环境变量
 
 ```bash
 export HA_URL="http://homeassistant.local:8123"
 export HA_TOKEN="your-long-lived-access-token"
 ```
 
-### Getting a Long-Lived Access Token
+### 获取长期有效的访问令牌
 
-1. Open Home Assistant → Profile (bottom left)
-2. Scroll to "Long-Lived Access Tokens"
-3. Click "Create Token", name it (e.g., "Clawdbot")
-4. Copy the token immediately (shown only once)
+1. 打开 Home Assistant → 个人资料（左下角）
+2. 滚动到“长期有效访问令牌”（Long-Lived Access Tokens）
+3. 点击“创建令牌”（Create Token），并为其命名（例如：“Clawdbot”）
+4. 立即复制令牌（该令牌仅显示一次）
 
-## Quick Reference
+## 快速参考
 
-### List Entities
+### 列出设备/实体
 
 ```bash
 curl -s -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/states" | jq '.[].entity_id'
 ```
 
-### Get Entity State
+### 获取设备/实体状态
 
 ```bash
 curl -s -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/states/light.living_room"
 ```
 
-### Control Devices
+### 控制设备
 
 ```bash
 # Turn on
@@ -64,7 +64,7 @@ curl -X POST -H "Authorization: Bearer $HA_TOKEN" -H "Content-Type: application/
   "$HA_URL/api/services/light/turn_on" -d '{"entity_id": "light.living_room", "brightness": 128}'
 ```
 
-### Run Scripts & Automations
+### 运行脚本和自动化任务
 
 ```bash
 # Trigger script
@@ -76,31 +76,31 @@ curl -X POST -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/services/automati
   -H "Content-Type: application/json" -d '{"entity_id": "automation.motion_lights"}'
 ```
 
-### Activate Scenes
+### 激活场景
 
 ```bash
 curl -X POST -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/services/scene/turn_on" \
   -H "Content-Type: application/json" -d '{"entity_id": "scene.movie_night"}'
 ```
 
-## Common Services
+## 常用服务
 
-| Domain | Service | Example entity_id |
+| 服务领域 | 服务名称 | 示例设备/实体 ID |
 |--------|---------|-------------------|
-| `light` | `turn_on`, `turn_off`, `toggle` | `light.kitchen` |
-| `switch` | `turn_on`, `turn_off`, `toggle` | `switch.fan` |
+| `light`   | `turn_on`, `turn_off`, `toggle` | `light.kitchen`   |
+| `switch`  | `turn_on`, `turn_off`, `toggle` | `switch.fan`   |
 | `climate` | `set_temperature`, `set_hvac_mode` | `climate.thermostat` |
-| `cover` | `open_cover`, `close_cover`, `stop_cover` | `cover.garage` |
-| `media_player` | `play_media`, `media_pause`, `volume_set` | `media_player.tv` |
-| `scene` | `turn_on` | `scene.relax` |
-| `script` | `turn_on` | `script.welcome_home` |
+| `cover`  | `open_cover`, `close_cover`, `stop_cover` | `cover.garage`   |
+| `media_player` | `play_media`, `media.pause`, `volume_set` | `media_player.tv`   |
+| `scene`  | `turn_on`   | `scene.relax`   |
+| `script`  | `turn_on`   | `script.welcome_home`   |
 | `automation` | `trigger`, `turn_on`, `turn_off` | `automation.sunrise` |
 
-## Inbound Webhooks (HA → Clawdbot)
+## 入站 Webhook（Home Assistant → Clawdbot）
 
-To receive events from Home Assistant automations:
+要接收来自 Home Assistant 自动化任务的事件：
 
-### 1. Create HA Automation with Webhook Action
+### 1. 创建带有 Webhook 动作的自动化任务
 
 ```yaml
 # In HA automation
@@ -111,7 +111,7 @@ action:
       area: living_room
 ```
 
-### 2. Define REST Command in HA
+### 2. 在 Home Assistant 中定义 REST 命令
 
 ```yaml
 # configuration.yaml
@@ -125,13 +125,13 @@ rest_command:
     payload: '{"event": "{{ event }}", "area": "{{ area }}"}'
 ```
 
-### 3. Handle in Clawdbot
+### 3. 在 Clawdbot 中处理事件
 
-Clawdbot receives the webhook and can notify you or take action based on the event.
+Clawdbot 会接收 Webhook 并根据事件内容通知您或执行相应操作。
 
-## CLI Wrapper
+## 命令行工具（CLI）
 
-The `scripts/ha.sh` CLI provides easy access to all HA functions:
+`scripts/ha.sh` 命令行工具可方便地访问 Home Assistant 的所有功能：
 
 ```bash
 # Test connection
@@ -164,12 +164,12 @@ ha.sh climate climate.thermostat 22
 ha.sh call light turn_on '{"entity_id":"light.room","brightness":200}'
 ```
 
-## Troubleshooting
+## 故障排除
 
-- **401 Unauthorized**: Token expired or invalid. Generate a new one.
-- **Connection refused**: Check HA_URL, ensure HA is running and accessible.
-- **Entity not found**: List entities to find the correct entity_id.
+- **401 Unauthorized**：令牌过期或无效。请生成新的令牌。
+- **连接被拒绝**：检查 HA_URL，确保 Home Assistant 正在运行且可访问。
+- **设备/实体未找到**：列出所有设备/实体以找到正确的 ID。
 
-## API Reference
+## API 参考
 
-For advanced usage, see [references/api.md](references/api.md).
+有关高级用法，请参阅 [references/api.md](references/api.md)。

@@ -1,18 +1,18 @@
 ---
 name: nex
-description: Access your Nex CRM - manage records, lists, query your context graph, and receive real-time insights
+description: 访问您的 Nex CRM——管理记录、列表，查询您的上下文图谱，并获取实时洞察。
 emoji: "\U0001F4CA"
 metadata: {"openclaw": {"requires": {"env": ["NEX_API_KEY"]}, "primaryEnv": "NEX_API_KEY"}}
 ---
 
-# Nex - CRM & Context Graph for OpenClaw
+# Nex – OpenClaw 的客户关系管理（CRM）与上下文图谱工具
 
-Nex gives your AI agent full CRM access: create and manage records, query your context graph, process conversations, and receive real-time insights.
+Nex 为您的 AI 代理提供了全面的 CRM 功能：可以创建和管理记录、查询上下文图谱、处理对话内容，并实时获取洞察信息。
 
-## Setup
+## 设置
 
-1. Get your API key from https://app.nex.ai/settings/developer
-2. Add to `~/.openclaw/openclaw.json`:
+1. 从 [https://app.nex.ai/settings/developer](https://app.nex.ai/settings/developer) 获取您的 API 密钥。
+2. 将 API 密钥添加到 `~/.openclaw/openclaw.json` 文件中：
    ```json
    {
      "skills": {
@@ -28,11 +28,11 @@ Nex gives your AI agent full CRM access: create and manage records, query your c
    }
    ```
 
-## How to Make API Calls
+## 如何进行 API 调用
 
-**CRITICAL**: The Nex API can take 10-60 seconds to respond. You MUST set `timeout: 120` on the exec tool call.
+**重要提示**：Nex API 的响应时间可能为 10 至 60 秒。您必须在执行 API 调用时设置 `timeout: 120` 参数。
 
-When using the `exec` tool, always include:
+使用 `exec` 工具时，务必包含以下内容：
 ```json
 {
   "tool": "exec",
@@ -41,35 +41,35 @@ When using the `exec` tool, always include:
 }
 ```
 
-## API Scopes
+## API 权限范围
 
-Each API key has scopes that control access. Request the scopes you need when creating your key at https://app.nex.ai/settings/developer
+每个 API 密钥都有一定的权限范围。在 [https://app.nex.ai/settings/developer](https://app.nex.ai/settings/developer) 创建密钥时，请申请所需的权限范围。
 
-| Scope | Grants Access To |
-|-------|-----------------|
-| `object.read` | List objects, view schema |
-| `record.read` | Get and list records |
-| `record.write` | Create, update, upsert records |
-| `list.read` | View lists |
-| `list.member.read` | View list members |
-| `list.member.write` | Add, update list members |
-| `insight.stream` | Insights REST + SSE stream |
+| 权限范围 | 授权访问的内容 |
+|---------|-----------------|
+| `object.read` | 列出对象、查看对象结构 |
+| `record.read` | 获取和列出记录 |
+| `record.write` | 创建、更新或插入记录 |
+| `list.read` | 查看列表 |
+| `list.member.read` | 查看列表成员 |
+| `list.member.write` | 添加或更新列表成员 |
+| `insight.stream` | 获取洞察信息（REST + SSE 流式传输） |
 
-## Capabilities
+## 功能介绍
 
-### Objects & Schema Discovery
+### 对象与结构查询
 
-#### List Objects
+#### 列出对象
 
-Discover available object types (person, company, etc.) and their attribute schemas. **Call this first** to learn what fields are available before creating or querying records.
+查询可用的对象类型（如人员、公司等）及其属性结构。在创建或查询记录之前，请先调用此接口以了解可用的字段。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/objects`
-**Scope**: `object.read`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/objects`
+**权限范围**：`object.read`
 
-**Query Parameters**:
-- `include_attributes` (boolean, optional) — Set `true` to include attribute definitions
+**查询参数**：
+- `include_attributes`（布尔值，可选）——设置为 `true` 以包含属性定义
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -78,7 +78,7 @@ Discover available object types (person, company, etc.) and their attribute sche
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "data": [
@@ -117,18 +117,18 @@ Discover available object types (person, company, etc.) and their attribute sche
 }
 ```
 
-#### List Object Lists
+#### 列出对象所属的列表
 
-Get all lists associated with an object type.
+获取与特定对象类型关联的所有列表。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/objects/{slug}/lists`
-**Scope**: `list.read`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/objects/{slug}/lists`
+**权限范围**：`list.read`
 
-**Parameters**:
-- `slug` (path) — Object type slug (e.g., `person`, `company`)
-- `include_attributes` (query, optional) — Include attribute definitions
+**参数**：
+- `slug`（路径）——对象类型的标识符（例如 `person`、`company`）
+- `include_attributes`（查询参数，可选）——是否包含属性定义
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -137,7 +137,7 @@ Get all lists associated with an object type.
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "data": [
@@ -154,22 +154,22 @@ Get all lists associated with an object type.
 
 ---
 
-### Records
+### 记录操作
 
-#### Create Record
+#### 创建记录
 
-Create a new record for an object type.
+为特定对象类型创建新记录。
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/objects/{slug}`
-**Scope**: `record.write`
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/objects/{slug}`
+**权限范围**：`record.write`
 
-**Parameters**:
-- `slug` (path) — Object type slug (e.g., `person`, `company`)
+**请求参数**：
+- `slug`（路径）——对象类型的标识符（例如 `person`、`company`）
 
-**Request body**:
-- `attributes` (required) — Must include `name` (string or object). Additional fields depend on the object schema.
+**请求体**：
+- `attributes`（必填）——必须包含 `name`（字符串或对象）。其他字段取决于对象的结构。
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -178,7 +178,7 @@ Create a new record for an object type.
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "id": "789",
@@ -195,18 +195,18 @@ Create a new record for an object type.
 }
 ```
 
-#### Upsert Record
+#### 插入/更新记录
 
-Create a record if it doesn't exist, or update it if a match is found on the specified attribute.
+如果记录不存在，则创建新记录；如果找到匹配项，则更新现有记录。
 
-**Endpoint**: `PUT https://app.nex.ai/api/developers/v1/objects/{slug}`
-**Scope**: `record.write`
+**接口地址**：`PUT https://app.nex.ai/api/developers/v1/objects/{slug}`
+**权限范围**：`record.write`
 
-**Request body**:
-- `attributes` (required) — Must include `name` when creating
-- `matching_attribute` (required) — Slug or ID of the attribute to match on (e.g., `email`)
+**请求体**：
+- `attributes`（必填）——创建记录时必须提供 `name`
+- `matching_attribute`（必填）——用于匹配的属性的标识符或 ID（例如 `email`）
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -215,14 +215,14 @@ Create a record if it doesn't exist, or update it if a match is found on the spe
 }
 ```
 
-#### Get Record
+#### 获取记录
 
-Retrieve a specific record by its ID.
+通过记录 ID 获取特定记录。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/records/{record_id}`
-**Scope**: `record.read`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/records/{record_id}`
+**权限范围**：`record.read`
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -231,17 +231,17 @@ Retrieve a specific record by its ID.
 }
 ```
 
-#### Update Record
+#### 更新记录
 
-Update specific attributes on an existing record. Only the provided attributes are changed.
+更新现有记录的特定属性。仅修改提供的属性。
 
-**Endpoint**: `PATCH https://app.nex.ai/api/developers/v1/records/{record_id}`
-**Scope**: `record.write`
+**接口地址**：`PATCH https://app.nex.ai/api/developers/v1/records/{record_id}`
+**权限范围**：`record.write`
 
-**Request body**:
-- `attributes` — Object with the fields to update
+**请求体**：
+- `attributes`——需要更新的属性
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -250,20 +250,20 @@ Update specific attributes on an existing record. Only the provided attributes a
 }
 ```
 
-#### List Records
+#### 列出记录
 
-List records for an object type with optional filtering, sorting, and pagination.
+列出特定对象类型的记录，支持过滤、排序和分页。
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/objects/{slug}/records`
-**Scope**: `record.read`
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/objects/{slug}/records`
+**权限范围**：`record.read`
 
-**Request body**:
-- `attributes` — Which attributes to return: `"all"`, `"primary"`, `"none"`, or a custom object
-- `limit` (integer) — Number of records to return
-- `offset` (integer) — Pagination offset
-- `sort` — Object with `attribute` (slug) and `direction` (`"asc"` or `"desc"`)
+**请求参数**：
+- `attributes`——返回哪些属性：`"all"`、`"primary"`、`"none"` 或自定义对象
+- `limit`（整数）——返回的记录数量
+- `offset`（整数）——分页偏移量
+- `sort`——包含 `attribute`（属性名称）和 `direction`（`"asc"` 或 `desc`）的对象
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -272,43 +272,18 @@ List records for an object type with optional filtering, sorting, and pagination
 }
 ```
 
-**Response**:
-```json
-{
-  "data": [
-    {
-      "id": "789",
-      "type": "person",
-      "attributes": {"name": "Jane Doe", "email": "jane@example.com"},
-      "created_at": "2026-02-11T10:00:00Z",
-      "updated_at": "2026-02-11T10:00:00Z"
-    }
-  ],
-  "total": 42,
-  "limit": 10,
-  "offset": 0
-}
-```
+#### 向列表中添加成员
 
----
+向列表中添加现有记录。
 
-### Lists
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/lists/{id}`
+**权限范围**：`list.member.write`
 
-#### Add List Member
+**请求参数**：
+- `id`（路径）——列表的 ID
+- `attributes`（可选）——要添加的记录的属性值
 
-Add an existing record to a list.
-
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/lists/{id}`
-**Scope**: `list.member.write`
-
-**Parameters**:
-- `id` (path) — List ID
-
-**Request body**:
-- `parent_id` (required) — ID of the existing record to add
-- `attributes` (optional) — List-specific attribute values
-
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -317,14 +292,14 @@ Add an existing record to a list.
 }
 ```
 
-#### Upsert List Member
+#### 更新列表成员
 
-Add a record to a list, or update its list-specific attributes if already a member.
+向列表中添加记录，或更新已存在的成员的列表特定属性。
 
-**Endpoint**: `PUT https://app.nex.ai/api/developers/v1/lists/{id}`
-**Scope**: `list.member.write`
+**接口地址**：`PUT https://app.nex.ai/api/developers/v1/lists/{id}`
+**权限范围**：`list.member.write`
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -333,16 +308,18 @@ Add a record to a list, or update its list-specific attributes if already a memb
 }
 ```
 
-#### List Records in a List
+#### 获取列表中的记录
 
-Get paginated records from a specific list.
+从特定列表中获取分页记录。
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/lists/{id}/records`
-**Scope**: `list.member.read`
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/lists/{id}/records`
+**权限范围**：`list.member.read`
 
-**Request body**: Same as List Records (`attributes`, `limit`, `offset`, `sort`)
+**请求参数**：
+- `attributes`——与 `List Records` 相同
+- `limit`、`offset`、`sort` 参数也相同
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -351,14 +328,14 @@ Get paginated records from a specific list.
 }
 ```
 
-#### Update List Record
+#### 更新列表记录
 
-Update list-specific attributes for a record within a list.
+更新列表中记录的列表特定属性。
 
-**Endpoint**: `PATCH https://app.nex.ai/api/developers/v1/lists/{id}/records/{record_id}`
-**Scope**: `list.member.write`
+**接口地址**：`PATCH https://app.nex.ai/api/developers/v1/lists/{id}/records/{record_id}`
+**权限范围**：`list.member.write`
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -367,18 +344,16 @@ Update list-specific attributes for a record within a list.
 }
 ```
 
----
+### 上下文与 AI 功能
 
-### Context & AI
+#### 查询上下文（使用 Ask API）
 
-#### Query Context (Ask API)
+当需要检索关于联系人、公司或关系的信息时，使用此接口。
 
-Use this when you need to recall information about contacts, companies, or relationships.
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/context/ask`
+**权限范围**：`record.read`
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/context/ask`
-**Scope**: `record.read`
-
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -387,7 +362,7 @@ Use this when you need to recall information about contacts, companies, or relat
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "answer": "John Smith is a VP of Sales at Acme Corp...",
@@ -403,23 +378,23 @@ Use this when you need to recall information about contacts, companies, or relat
 }
 ```
 
-**Example queries**:
-- "Who are my most engaged contacts this week?"
-- "What companies are we working with in the healthcare sector?"
-- "What was discussed in my last meeting with Sarah?"
+**示例查询**：
+- “这周与我联系最频繁的联系人是谁？”
+- “我们在医疗行业与哪些公司合作？”
+- “我上次与 Sarah 的会议中讨论了什么？”
 
-#### Add Context (ProcessText API)
+#### 添加上下文（使用 ProcessText API）
 
-Use this to ingest new information from conversations, meeting notes, or other text.
+使用此接口将新信息（来自对话、会议记录或其他文本）导入系统。
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/context/text`
-**Scope**: `record.write`
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/context/text`
+**权限范围**：`record.write`
 
-**Request body**:
-- `content` (required) — The text to process
-- `context` (optional) — Additional context about the text (e.g., "Sales call notes")
+**请求参数**：
+- `content`（必填）——需要处理的文本
+- `context`（可选）——关于文本的额外上下文信息（例如：“销售电话记录”）
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -428,23 +403,23 @@ Use this to ingest new information from conversations, meeting notes, or other t
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "artifact_id": "abc123"
 }
 ```
 
-After calling ProcessText, use Get Artifact Status to check processing results.
+调用 ProcessText 后，使用 `GetArtifactStatus` 接口检查处理结果。
 
-#### Get Artifact Status
+#### 获取处理结果状态
 
-Check the processing status and results after calling ProcessText.
+调用 ProcessText 后，使用此接口检查处理状态和结果。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/context/artifacts/{artifact_id}`
-**Scope**: `record.read`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/context/artifacts/{artifact_id}`
+**权限范围**：`record.read`
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -453,7 +428,7 @@ Check the processing status and results after calling ProcessText.
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "operation_id": 48066188026052610,
@@ -476,28 +451,28 @@ Check the processing status and results after calling ProcessText.
 }
 ```
 
-**Status values**: `pending`, `processing`, `completed`, `failed`
+**状态值**：`pending`、`processing`、`completed`、`failed`
 
-**Typical workflow**:
-1. Call ProcessText -> get `artifact_id`
-2. Poll Get Artifact Status every 2-5 seconds
-3. Stop when `status` is `completed` or `failed`
-4. Report the extracted entities and insights to the user
+**典型工作流程**：
+1. 调用 ProcessText -> 获取 `artifact_id`
+2. 每 2-5 秒轮询一次 `GetArtifactStatus`
+3. 当状态变为 `completed` 或 `failed` 时停止轮询
+4. 将提取的实体和洞察信息报告给用户
 
-#### Create AI List Job
+#### 创建 AI 列表任务
 
-Use natural language to search your context graph and generate a curated list of contacts or companies.
+使用自然语言查询上下文图谱，生成联系人或公司的列表。
 
-**Endpoint**: `POST https://app.nex.ai/api/developers/v1/context/list/jobs`
-**Scope**: `record.read`
+**接口地址**：`POST https://app.nex.ai/api/developers/v1/context/list/jobs`
+**权限范围**：`record.read`
 
-**Request body**:
-- `query` (required) — Natural language search query (e.g., "all companies who have asked for a contract")
-- `object_type` (optional) — `"contact"` or `"company"` (default: `"contact"`)
-- `limit` (optional) — Number of results (default: 50, max: 100)
-- `include_attributes` (optional) — Include all entity attribute values (default: false)
+**请求参数**：
+- `query`（必填）——自然语言查询（例如：“所有要求签订合同的公司”）
+- `object_type`（可选）——`"contact"` 或 `"company"`（默认值：`"contact"`）
+- `limit`（可选）——结果数量（默认值：50，最大值：100）
+- `include_attributes`（可选）——是否包含所有实体属性（默认值：false）
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -506,7 +481,7 @@ Use natural language to search your context graph and generate a curated list of
 }
 ```
 
-**Response**:
+**响应内容**：
 ```json
 {
   "message": {
@@ -516,17 +491,17 @@ Use natural language to search your context graph and generate a curated list of
 }
 ```
 
-#### Get AI List Job Status
+#### 检查 AI 列表任务状态
 
-Check status and results of an AI list generation job. Poll until `status` is `completed` or `failed`.
+检查 AI 列表生成任务的进度和结果。持续轮询直到状态变为 `completed` 或 `failed`。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/context/list/jobs/{job_id}`
-**Scope**: `record.read`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/context/list/jobs/{job_id}`
+**权限范围**：`record.read`
 
-**Query Parameters**:
-- `include_attributes` (boolean, optional) — Include full attributes for each entity
+**查询参数**：
+- `include_attributes`（布尔值，可选）——是否包含每个实体的完整属性
 
-**How to call**:
+**调用方式**：
 ```json
 {
   "tool": "exec",
@@ -535,7 +510,7 @@ Check status and results of an AI list generation job. Poll until `status` is `c
 }
 ```
 
-**Response** (completed):
+**响应内容**：
 ```json
 {
   "message": {
@@ -562,35 +537,32 @@ Check status and results of an AI list generation job. Poll until `status` is `c
 }
 ```
 
-**Status values**: `pending`, `processing`, `completed`, `failed`
+**状态值**：`pending`、`processing`、`completed`、`failed`
 
-**Typical workflow**:
-1. Create job with natural language query -> get `job_id`
-2. Poll Get AI List Job Status every 2-5 seconds
-3. Stop when `status` is `completed` or `failed`
-4. Present the matched entities with reasons and highlights
+**典型工作流程**：
+1. 使用自然语言查询创建任务 -> 获取 `job_id`
+2. 每 2-5 秒轮询一次 `GetAIListJobStatus`
+3. 当状态变为 `completed` 或 `failed` 时停止轮询
+4. 向用户展示匹配的实体及其相关信息
 
----
+### 获取洞察信息
 
-### Insights
+#### 获取洞察信息（REST 方式）
 
-#### Get Insights (REST)
+按时间窗口查询洞察信息。支持两种模式。
 
-Query insights by time window. Supports two modes.
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/insights`
+**权限范围**：`insight.stream`
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/insights`
-**Scope**: `insight.stream`
+**查询参数**：
+- `last`——时间窗口（例如 `30m`、`2h`、`1h30m`
+- `from` + `to`——UTC 时间范围（RFC3339 格式）
+- `limit`（可选）——最大结果数量（默认值：20，最大值：100）
 
-**Query Parameters**:
-- `last` — Duration window, e.g., `30m`, `2h`, `1h30m`
-- `from` + `to` — UTC time range in RFC3339 format
-- `limit` (optional) — Max results (default: 20, max: 100)
+如果未指定 `last` 或 `from`/`to`，则返回最近的 20 条洞察信息。
 
-If neither `last` nor `from`/`to` is specified, returns the most recent insights (default 20).
-
-**How to call**:
-
-Last 30 minutes:
+**调用方式**：
+- 获取过去 30 分钟的洞察信息：
 ```json
 {
   "tool": "exec",
@@ -599,7 +571,7 @@ Last 30 minutes:
 }
 ```
 
-Between two dates:
+- 在两个日期之间查询：
 ```json
 {
   "tool": "exec",
@@ -608,33 +580,26 @@ Between two dates:
 }
 ```
 
-**When to use**:
-- When polling periodically instead of maintaining SSE connection
-- To get current insight state on startup
-- As fallback when SSE connection drops
-- To review insights from a specific time period
+**使用场景**：
+- 在需要定期轮询时（无需维持 SSE 连接）
+- 启动时获取当前的洞察状态
+- 当 SSE 连接中断时作为备用方案
+- 查看特定时间段的洞察信息
 
-#### Real-time Insight Stream (SSE)
+#### 实时洞察流（SSE）
 
-Receive insights as they are discovered in real time.
+实时接收新生成的洞察信息。
 
-**Endpoint**: `GET https://app.nex.ai/api/developers/v1/insights/stream`
-**Scope**: `insight.stream`
+**接口地址**：`GET https://app.nex.ai/api/developers/v1/insights/stream`
+**权限范围**：`insight.stream`
 
-**How to connect**:
-```bash
-curl -N -s "https://app.nex.ai/api/developers/v1/insights/stream" \
-  -H "Authorization: Bearer $NEX_API_KEY" \
-  -H "Accept: text/event-stream"
-```
+**连接方式**：
+- 服务器在连接时发送 `: connected workspace_id=... token_id=...` 的信息
+- 最新的洞察信息会通过 `insight.replay` 事件立即重播（最多 20 条）
+- 每 30 秒发送一次保持连接的请求（`: keepalive`）
+- 实时事件格式为：`event: insight.batch.created\ndata: {...}\n\n`
 
-**Connection behavior**:
-- Server sends `: connected workspace_id=... token_id=...` on connection
-- **Recent insights are replayed** immediately via `insight.replay` events (up to 20)
-- Keepalive comments (`: keepalive`) sent every 30 seconds
-- Real-time events arrive as: `event: insight.batch.created\ndata: {...}\n\n`
-
-**Event payload structure**:
+**事件数据结构**：
 ```json
 {
   "workspace": {
@@ -664,32 +629,32 @@ curl -N -s "https://app.nex.ai/api/developers/v1/insights/stream" \
 }
 ```
 
-**Insight types**: `opportunity`, `risk`, `relationship`, `preference`, `milestone`, `activity`, `characteristic`, `role_detail`
+**洞察类型**：`opportunity`、`risk`、`relationship`、`preference`、`milestone`、`activity`、`characteristic`、`role_detail`
 
-**When to use**: Keep the SSE connection open in the background during active conversations. For one-off queries, use the Ask API instead.
+**使用建议**：在活跃的对话过程中保持 SSE 连接处于开启状态。对于一次性查询，建议使用 Ask API。
 
-## Error Handling
+## 错误处理
 
-| Status Code | Meaning | Action |
+| 状态码 | 含义 | 应对措施 |
 |-------------|---------|--------|
-| 400 | Invalid request | Check request body and parameters |
-| 401 | Invalid API key | Check NEX_API_KEY is set correctly |
-| 403 | Missing scope | Verify API key has the required scope |
-| 404 | Not found | Check the record/object/list ID exists |
-| 429 | Rate limited | Wait and retry with exponential backoff |
-| 500 | Server error | Retry after a brief delay |
+| 400 | 请求无效 | 检查请求体和参数 |
+| 401 | API 密钥无效 | 确保 NEX_API_KEY 设置正确 |
+| 403 | 缺少必要的权限范围 | 确保 API 密钥具有所需的权限范围 |
+| 404 | 未找到记录/对象/列表 | 检查记录/对象/列表 ID 是否存在 |
+| 429 | 请求频率限制 | 等待一段时间后重试（采用指数级退避策略） |
+| 500 | 服务器错误 | 稍后重试 |
 
-## When to Use Nex
+## Nex 的适用场景
 
-**Good use cases**:
-- Before responding to a message, query for context about the person
-- After a conversation, process the transcript to update the context graph
-- When asked about relationships or history with contacts/companies
-- Creating or updating CRM records from conversation context
-- Building targeted lists from your contact database
-- Looking up record details before a meeting
+**适用场景**：
+- 在回复消息前，查询有关联系人的上下文信息
+- 对话结束后，处理对话记录以更新上下文图谱
+- 当被询问联系人或公司的关系或历史记录时
+- 根据对话内容创建或更新 CRM 记录
+- 从联系人数据库中构建目标列表
+- 在会议前查询记录详情
 
-**Not for**:
-- General knowledge questions (use web search)
-- Real-time calendar/scheduling (use calendar tools)
-- Direct CRM data entry that requires the full Nex UI
+**不适用场景**：
+- 一般性知识查询（使用网页搜索）
+- 实时日历/调度（使用日历工具）
+- 需要完整 Nex 用户界面的直接 CRM 数据录入

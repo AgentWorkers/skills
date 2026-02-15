@@ -1,50 +1,50 @@
 ---
 name: discord-watcher
-description: Use this skill to keep up to date with specific Discord channels by fetching recent messages. Requires DISCORD_TOKEN.
+description: 使用此技能可以通过获取最近的消息来实时关注特定的 Discord 频道。需要 DISCORD_TOKEN。
 ---
 
-# Discord Watcher
+# Discord 监控工具
 
-This skill uses `DiscordChatExporter` to fetch recent messages from **ALL** accessible Discord channels.
+该工具使用 `DiscordChatExporter` 从所有可访问的 Discord 频道中获取最新消息。
 
-## Prerequisites
+## 先决条件
 
-- **DISCORD_TOKEN**: Must be set in the environment or passed to the script.
-- **DiscordChatExporter (CLI)**: Must be installed in a `dce` subdirectory.
+- **DISCORD_TOKEN**：必须在环境中设置或传递给脚本。
+- **DiscordChatExporter (CLI)**：必须安装在 `dce` 子目录中。
 
-## Installation
+## 安装
 
-1. Download the **CLI version** of DiscordChatExporter from GitHub:
+1. 从 GitHub 下载 DiscordChatExporter 的 **CLI 版本**：
    [https://github.com/Tyrrrz/DiscordChatExporter/releases](https://github.com/Tyrrrz/DiscordChatExporter/releases)
-   *(Look for `DiscordChatExporter.Cli.linux-x64.zip` or your OS equivalent)*
+   （请下载 `DiscordChatExporter.Cli.linux-x64.zip` 或适用于您操作系统的版本）
 
-2. Extract it to a `dce` folder inside this skill's directory:
+2. 将其解压到该工具目录下的 `dce` 文件夹中：
    ```bash
    mkdir -p skills/discord-watcher/dce
    unzip DiscordChatExporter.Cli.linux-x64.zip -d skills/discord-watcher/dce
    chmod +x skills/discord-watcher/dce/DiscordChatExporter.Cli
    ```
 
-## Usage
+## 使用方法
 
-Run the update script to fetch messages from the last 24 hours across all channels:
+运行更新脚本，以获取过去 24 小时内所有频道的消息：
 
 ```bash
 ./skills/discord-watcher/update.sh [TOKEN]
 ```
 
-The script can be run from any directory (it auto-detects its location).
+该脚本可以从任何目录运行（它会自动检测自身的位置）。
 
-This will:
-1. Create a timestamped directory in `exports/updates/`.
-2. Export all new messages (last 24h) from every channel you can see.
-3. Save them as plain text files organized by server and category.
+执行此操作后：
+1. 会在 `exports/updates/` 目录下创建一个带有时间戳的文件夹。
+2. 从所有可访问的频道中导出过去 24 小时内的所有新消息。
+3. 将这些消息按服务器和类别分类保存为纯文本文件。
 
-## Token retrieval (browser method)
+## 获取 DISCORD_TOKEN（浏览器方法）
 
-If you need help obtaining DISCORD_TOKEN from a logged-in browser session, the following in-page technique (run from a page context where script evaluation is allowed) reliably extracts the token from localStorage using an injected iframe. Treat the token as a secret once retrieved.
+如果您需要帮助从已登录的浏览器会话中获取 DISCORD_TOKEN，可以使用以下页面内技术（在允许脚本执行的页面环境中运行）通过注入的 iframe 从 `localStorage` 中可靠地提取该令牌。获取令牌后，请将其视为机密信息。
 
-JavaScript snippet (run in the page context via an automation tool that can evaluate page scripts):
+JavaScript 代码片段（通过能够执行页面脚本的自动化工具在页面环境中运行）：
 
 ```js
 // Inject a hidden iframe and read its localStorage 'token' key
@@ -62,35 +62,33 @@ JavaScript snippet (run in the page context via an automation tool that can eval
 })();
 ```
 
-Notes and alternatives:
-- Some automation contexts cannot access page localStorage directly; the iframe technique often bypasses that limitation.
-- An alternative is the "webpack chunk" method to locate Discord's internal token getter; use with care.
-- Never commit tokens to source control. Store them in a .env file or environment variable instead.
+**注意事项与替代方案**：
+- 某些自动化环境无法直接访问页面的 `localStorage`；使用 iframe 技巧通常可以绕过这一限制。
+- 另一种方法是使用 “webpack chunk” 方法来获取 Discord 的内部令牌获取器，但请谨慎使用。
+- **切勿将令牌提交到源代码控制系统中**，应将其存储在 `.env` 文件或环境变量中。
 
-## Automation
+## 自动更新
 
-To keep updated automatically, you can add a `HEARTBEAT.md` entry:
+要实现自动更新，您可以添加一个 `HEARTBEAT.md` 文件：
 
 ```markdown
 - [ ] Every 6 hours: Run `skills/discord-watcher/update.sh` and summarize any new important discussions in `memory/discord-news.md`.
 ```
 
-## Search & Indexing (Recommended)
+## 搜索与索引（推荐）
 
-The exported text files are perfect for indexing with `qmd`.
+导出的文本文件非常适合使用 `qmd` 进行索引：
 
-1. **Create a collection:**
+1. **创建索引集合：**
    ```bash
    qmd collection add exports/updates --name discord-logs --mask "**/*.txt"
    ```
-   *Note: Ensure you use the `--mask "**/*.txt"` flag as the exporter saves plain text files.*
-
-2. **Update index:**
+   *注意：请使用 `--mask "**/*.txt"` 标志，因为导出器会保存纯文本文件。*
+2. **更新索引：**
    ```bash
    qmd update
    ```
-
-3. **Search:**
+3. **搜索：**
    ```bash
    qmd search "query"
    ```

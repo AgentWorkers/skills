@@ -1,21 +1,22 @@
 ---
 name: openclaw-server-secure-skill
-description: Comprehensive security hardening and installation guide for OpenClaw (formerly Clawdbot/Moltbot). Use this skill when the user wants to secure a server, install the OpenClaw agent, or configure Tailscale/Firewall for the agent.
+description: **OpenClaw（原名Clawdbot/Moltbot）全面安全加固与安装指南**  
+当用户需要保护服务器、安装OpenClaw代理，或配置Tailscale/Firewall以支持该代理时，请参考本指南。
 ---
 
-# OpenClaw Server Security & Installation
+# OpenClaw 服务器安全与安装指南
 
-## Overview
-This skill guides the setup of a secure, self-hosted OpenClaw instance. It covers SSH hardening, Firewall configuration, Tailscale VPN setup, and the OpenClaw installation itself.
+## 概述
+本指南将指导您如何设置一个安全、自托管的 OpenClaw 实例。内容包括 SSH 安全加固、防火墙配置、Tailscale VPN 的搭建以及 OpenClaw 本身的安装过程。
 
-## Workflow
+## 工作流程
 
-### Phase 1: System Hardening
+### 第一阶段：系统安全加固
 
-1. **Lock down SSH**
-    - Goal: Keys only, no passwords, no root login.
-    - Action: Modify `/etc/ssh/sshd_config`.
-    - Commands:
+1. **SSH 安全设置**
+    - 目标：仅允许使用 SSH 密钥登录，禁止使用密码，同时禁止 root 用户登录。
+    - 操作：修改 `/etc/ssh/sshd_config` 文件。
+    - 命令：
       ```bash
       # Backup config
       sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
@@ -27,41 +28,41 @@ This skill guides the setup of a secure, self-hosted OpenClaw instance. It cover
       sudo sshd -t && sudo systemctl reload ssh
       ```
 
-2. **Default-deny Firewall**
-    - Goal: Block everything incoming by default.
-    - Action: Install and enable UFW.
-    - Commands:
+2. **默认拒绝策略防火墙（Default-Deny Firewall）**
+    - 目标：默认拒绝所有传入的连接请求。
+    - 操作：安装并启用 UFW 防火墙。
+    - 命令：
       ```bash
       sudo apt update && sudo apt install ufw -y
       sudo ufw default deny incoming
       sudo ufw default allow outgoing
       sudo ufw enable
       ```
-      *Note: Ensure you have console access or a fallback before enabling if SSH is not yet allowed on another interface, though we configure Tailscale next.*
+    *注意：在启用 UFW 之前，请确保您能够访问控制台，或者准备好备用登录方式（以防 SSH 无法在其他接口上使用）。接下来我们将配置 Tailscale。*
 
-3. **Brute-force Protection**
-    - Goal: Auto-ban IPs after failed login attempts.
-    - Action: Install Fail2ban.
-    - Commands:
+3. **暴力登录防护**
+    - 目标：在登录尝试失败后自动封禁相关 IP 地址。
+    - 操作：安装 Fail2ban 工具。
+    - 命令：
       ```bash
       sudo apt install fail2ban -y
       sudo systemctl enable --now fail2ban
       ```
 
-### Phase 2: Network Privacy (Tailscale)
+### 第二阶段：网络隐私保护（使用 Tailscale）
 
-4. **Install Tailscale**
-    - Goal: Create a private VPN mesh network.
-    - Commands:
+4. **安装 Tailscale**
+    - 目标：创建一个私有的 VPN 网络。
+    - 命令：
       ```bash
       curl -fsSL https://tailscale.com/install.sh | sh
       sudo tailscale up
       ```
-    - *Wait for user to authenticate the Tailscale link.*
+    *等待用户完成 Tailscale 的身份验证。*
 
-5. **Configure SSH & Web via Tailscale**
-    - Goal: Allow traffic only from the Tailscale subnet (100.64.0.0/10) and remove public access.
-    - Commands:
+5. **通过 Tailscale 配置 SSH 和 Web 访问**
+    - 目标：仅允许来自 Tailscale 子网（100.64.0.0/10）的流量通过，并禁止公共访问。
+    - 命令：
       ```bash
       # Allow SSH over Tailscale
       sudo ufw allow from 100.64.0.0/10 to any port 22 proto tcp
@@ -72,9 +73,9 @@ This skill guides the setup of a secure, self-hosted OpenClaw instance. It cover
       sudo ufw allow from 100.64.0.0/10 to any port 80 proto tcp
       ```
 
-6. **Disable IPv6 (Optional)**
-    - Goal: Reduce attack surface.
-    - Commands:
+6. **禁用 IPv6（可选）**
+    - 目标：减少攻击面。
+    - 命令：
       ```bash
       sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
       if ! grep -q "net.ipv6.conf.all.disable_ipv6 = 1" /etc/sysctl.conf; then
@@ -83,18 +84,18 @@ This skill guides the setup of a secure, self-hosted OpenClaw instance. It cover
       sudo sysctl -p && sudo ufw reload
       ```
 
-### Phase 3: OpenClaw Installation
+### 第三阶段：OpenClaw 安装
 
-7. **Install OpenClaw**
-    - Commands:
+7. **安装 OpenClaw**
+    - 命令：
       ```bash
       npm install -g openclaw && openclaw doctor
       ```
 
-8. **Configure Owner Access**
-    - **Required Input:** Ask the user for their **Telegram ID**.
-    - Action: Update the config to allowlist only that ID.
-    - JSON Config Target (verify location via `openclaw doctor`):
+8. **配置用户访问权限**
+    - **必填信息**：要求用户提供他们的 Telegram ID。
+    - 操作：更新配置文件，仅允许该用户登录。
+    - JSON 配置文件示例（使用 `openclaw doctor` 工具验证配置）：
       ```json
       { 
         "dmPolicy": "allowlist", 
@@ -103,23 +104,23 @@ This skill guides the setup of a secure, self-hosted OpenClaw instance. It cover
       }
       ```
 
-9. **Secure Credentials**
-    - Goal: Restrict file permissions.
-    - Commands:
+9. **保护用户凭证**
+    - 目标：限制文件的访问权限。
+    - 命令：
       ```bash
       chmod 700 ~/.openclaw/credentials 2>/dev/null || true
       chmod 600 .env 2>/dev/null || true
       ```
 
-10. **Final Audit**
-    - Action: Run the built-in security audit.
-    - Command:
+10. **最终安全审计**
+    - 操作：运行内置的安全审计工具。
+    - 命令：
       ```bash
       openclaw security audit --deep
       ```
 
-## Verification Status
-Run to confirm:
+## 验证状态
+运行以下命令以确认配置是否正确：
 ```bash
 sudo ufw status verbose
 ss -tulnp

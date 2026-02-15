@@ -1,11 +1,11 @@
 ---
 name: glab-stack
-description: Manage stacked merge requests for complex multi-part changes. Use when creating dependent MRs, managing MR stacks, or working with multi-layer changes. Triggers on stack, stacked MRs, dependent MRs, MR stack, stacked changes.
+description: 用于管理复杂的、多部分的合并请求（Merge Requests, MRs）。适用于创建相互依赖的合并请求、管理合并请求堆栈（MR stacks），或处理具有多层变更的代码库。该功能会在合并请求堆栈、相互依赖的合并请求、以及涉及多层变更的情况下被触发。
 ---
 
 # glab stack
 
-## Overview
+## 概述
 
 ```
 
@@ -50,12 +50,12 @@ description: Manage stacked merge requests for complex multi-part changes. Use w
     -R --repo            Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab stack --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关所有 `--help` 命令的详细信息，请参阅 [references/commands.md](references/commands.md)。

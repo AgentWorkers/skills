@@ -1,48 +1,49 @@
 ---
 name: hire
-description: Interactive hiring wizard to set up a new AI team member. Guides the user through role design via conversation, generates agent identity files, and optionally sets up performance reviews. Use when the user wants to hire, add, or set up a new AI agent, team member, or assistant. Triggers on phrases like "hire", "add an agent", "I need help with X" (implying a new role), or "/hire".
+description: **交互式招聘向导：用于组建新的AI团队成员**  
+该向导通过对话引导用户完成角色设计，生成代理身份文件，并可选择性设置绩效评估机制。适用于用户需要招聘、添加新的AI代理或团队成员的情况。  
+触发关键词包括：“hire”（招聘）、“add an agent”（添加代理）、“I need help with X”（需要协助处理某事项，暗示需要创建新角色），或 “/hire”（执行招聘操作）。
 ---
 
-# hire
+# 招聘新成员
 
-Set up a new AI team member through a guided conversation. Not a config generator - a hiring process.
+通过引导式对话来设置一个新的AI团队成员。这是一个招聘流程，而不是配置生成工具。
 
-## When to Use
+## 适用场景
 
-User says something like:
-- "I want to hire a new agent"
-- "I need help with X" (where X implies a new agent role)
-- "Let's add someone to the team"
-- `/hire`
+当用户说出以下内容时，可以使用此流程：
+- “我想招聘一名新的成员”
+- “我需要帮助处理X问题”（其中X指的是一个新的职位或任务）
+- “让我们为团队添加一个人”
+- 输入 `/hire`
 
-## The Interview
+## 面试流程
 
-### 3 core questions, asked one at a time:
+### 三个核心问题（依次提问）：
 
-**Q1: "What do you need help with?"**
-Let them describe the problem, not a job title. "I'm drowning in code reviews" beats "I need a code reviewer."
-- Listen for: scope, implied autonomy level, implied tools needed
+**问题1：“你需要什么帮助？”**
+让用户描述他们遇到的问题，而不是具体的职位名称。例如：“我被代码审查工作压得喘不过气来”，而不是“我需要一个代码审查员”。
+- 注意要点：问题的范围、用户期望的自主程度以及所需的工具。
 
-**Q2: "What's their personality? Formal, casual, blunt, cautious, creative?"**
-Or frame it as: "If this were a human colleague, what would they be like?"
-- Listen for: communication style, vibe, how they interact
+**问题2：“他们的性格如何？是正式的、随意的、直率的还是谨慎的、有创造力的？”**
+或者可以这样问：“如果这是一个人类同事，他们会是什么样的？”
+- 注意要点：他们的沟通方式、工作氛围以及他们与他人互动的方式。
 
-**Q3: "What should they never do?"**
-The red lines. This is where trust gets defined.
-- Listen for: boundaries, safety constraints, access limits
+**问题3：“他们绝对不能做什么？”**
+这涉及到一些重要的界限和行为准则，也是建立信任的关键。
+- 注意要点：用户对于哪些行为有明确的限制，以及对系统安全的考量。
 
-### Q4: Dynamic (optional)
-After Q1-Q3, assess whether anything is ambiguous or needs clarification. If so, ask ONE follow-up question tailored to what's unclear. Examples:
-- "You mentioned monitoring - should they alert you immediately or batch updates?"
-- "They'll need access to your codebase - any repos that are off-limits?"
-- "You said 'casual' - are we talking friendly-professional or meme-level casual?"
+### 问题4（可选）
+在完成前三个问题后，判断是否有任何不清楚的地方需要进一步澄清。如果有，可以针对具体情况提出一个跟进问题。例如：
+- “你提到了监控功能——他们是应该立即通知你，还是批量发送更新？”
+- “他们需要访问你的代码库——有哪些仓库是禁止他们访问的？”
+- “你说的‘随意’是指友好的专业态度，还是那种非常随意的风格？”
 
-If Q1-Q3 were clear enough, skip Q4 entirely.
+如果前三个问题已经回答得很清楚，就可以跳过问题4。
 
-## Summary Card
+## 总结卡片
 
-After the interview, present a summary:
-
+面试结束后，生成一份总结报告：
 ```
 🎯 Role: [one-line description]
 🧠 Name: [suggested name from naming taxonomy]
@@ -53,108 +54,109 @@ After the interview, present a summary:
 🤝 Autonomy: [inferred level: high/medium/low]
 ```
 
-Then ask: **"Want to tweak anything, or are we good?"**
+然后询问用户：“有什么需要调整的吗？还是我们可以直接开始了吗？”
 
-## Model Selection
+## 模型选择
 
-Before finalizing, select an appropriate model for the agent.
+在最终确定之前，需要为新成员选择合适的AI模型。
 
-### Step 1: Discover available models
-Run `openclaw models list` or check the gateway config to see what's configured.
+### 第一步：查找可用模型
+运行 `openclaw models list` 命令或查看配置文件，了解有哪些模型可用。
 
-### Step 2: Categorize by tier
-Map discovered models to capability tiers:
+### 第二步：根据模型能力进行分类
+将找到的模型按照能力等级进行分类：
 
-| Tier | Models (examples) | Best for |
+| 等级 | 模型示例 | 适合的任务类型 |
 |------|-------------------|----------|
-| **reasoning** | claude-opus-*, gpt-5*, gpt-4o, deepseek-r1 | Strategy, advisory, complex analysis, architecture |
-| **balanced** | claude-sonnet-*, gpt-4-turbo, gpt-4o-mini | Research, writing, general tasks |
-| **fast** | claude-haiku-*, gpt-3.5*, local/ollama | High volume, simple tasks, drafts |
-| **code** | codex-*, claude-sonnet-*, deepseek-coder | Coding, refactoring, tests |
+| **推理型** | claude-opus-*, gpt-5*, gpt-4o, deepseek-r1 | 战略规划、咨询、复杂分析、架构设计 |
+| **平衡型** | claude-sonnet-*, gpt-4-turbo, gpt-4o-mini | 研究、写作、一般性任务 |
+| **快速型** | claude-haiku-*, gpt-3.5*, local/ollama | 大量数据处理、简单任务、草稿编写 |
+| **代码型** | codex-*, claude-sonnet-*, deepseek-coder | 编码、代码重构、测试 |
 
-Use pattern matching on model names - don't hardcode specific versions.
+使用模式匹配来选择模型，不要硬编码具体的版本。
 
-### Step 3: Match role to tier
-Based on the interview:
-- Heavy reasoning/advisory/strategy → reasoning tier
-- Research/writing/creative → balanced tier
-- Code-focused → code tier (or balanced if not available)
-- High-volume/monitoring → fast tier
+### 第三步：根据角色匹配模型
+根据面试内容选择合适的模型：
+- 需要大量推理或提供咨询建议的角色 → 选择推理型模型
+- 需要研究、写作或创造力的角色 → 选择平衡型模型
+- 以代码工作为主的角色 → 选择代码型模型（如果没有平衡型模型，则选择代码型模型）
+- 需要处理大量数据或监控任务的角色 → 选择快速型模型
 
-### Step 4: Select and confirm
-Pick the best available model for the role. In the summary card, add:
+### 第四步：确定并确认模型
+从可选模型中挑选最适合该角色的模型。在总结卡片中记录下所选模型的名称：
 ```
 🤖 Model: [selected model] ([tier] - [brief reason])
 ```
 
-If multiple good options exist or you're unsure, ask:
-"For a [role type] role, I'd suggest [model] (good balance of capability and cost). Or [alternative] if you want [deeper reasoning / faster responses / lower cost]. Preference?"
+如果有多个合适的模型，或者用户犹豫不决，可以询问：
+“对于[角色类型]，我建议使用[模型名称]（它在能力和成本上都有很好的平衡）。或者如果你需要[更强的推理能力/更快的响应速度/更低的成本]，也可以选择[其他模型]。你有什么偏好吗？”
 
-### Notes
-- Don't assume any specific provider - work with what's available
-- Cheaper is better when capability is sufficient
-- The user's default model isn't always right for every agent
-- If only one model is available, use it and note it in the summary
+### 注意事项
+- 不要预先假设使用某个特定的模型提供商——使用系统内可用的模型即可。
+- 当模型能力足够时，价格越低越好。
+- 用户默认选择的模型并不一定适合所有角色。
+- 如果只有唯一一个模型可用，就直接使用它，并在总结中注明。
 
-## Optional Extras
+## 可选附加步骤
 
-After the summary is confirmed, offer:
+在确认总结内容后，可以提供以下服务：
 
-1. **"Want to set up periodic performance reviews?"**
-   - If yes: ask preferred frequency (weekly, biweekly, monthly)
-   - Create a cron job that triggers a review conversation
-   - Review covers: what went well, what's not working, scope/permission adjustments
-   - At the end of each review, ask: "Want to keep this schedule, change frequency, or stop reviews?"
+1. **“是否需要定期进行绩效评估？”**
+   - 如果用户同意，询问他们希望评估的频率（每周、每两周还是每月）。
+   - 创建一个定时任务来触发评估对话。
+   - 评估内容包括：哪些方面做得好，哪些方面需要改进，以及工作范围的调整或权限的变更。
+   - 在每次评估结束后，询问用户：“是否希望保持这个评估频率，还是希望改变频率，或者停止评估？”
 
-2. **Onboarding assignment** (if relevant to the role)
-   - Suggest a small first task to test the new agent
-   - Something real but low-stakes, so the user can see them in action
+2. **入职任务**（如果角色相关）
+   - 建议一个简单的初始任务来测试新成员的表现。
+   - 选择难度适中且风险较低的任务，以便用户能够看到新成员的实际工作能力。
 
-## What to Generate
+## 需要生成的文件
 
-Create an agent directory at `agents/<name>/` with:
+在 `agents/<成员名称>/` 目录下创建以下文件：
 
-### Always unique (generated fresh):
-- **AGENTS.md** - Role definition, responsibilities, operational rules, what they do freely vs ask first
-- **IDENTITY.md** - Name, emoji, creature type, vibe, core principles
+### 文件内容必须唯一且实时生成：
+- **AGENTS.md**：包含角色定义、职责、操作规则以及新成员可以自由执行的任务和需要请求协助的任务。
+- **IDENTITY.md**：包含新成员的名称、头像、角色类型、工作风格以及核心原则。
 
-### Start from template, customize based on interview:
-- **SOUL.md** - Base from workspace SOUL.md template, customize vibe/boundaries sections
-- **TOOLS.md** - Populated with inferred tools and access notes
-- **HEARTBEAT.md** - Empty or with initial periodic tasks if relevant to role
+### 基于面试内容自定义文件内容：
+- **SOUL.md**：基于工作空间的 `SOUL.md` 模板进行定制，调整工作氛围和行为准则相关的内容。
+- **TOOLS.md**：记录新成员可以使用的工具及其使用权限。
+- **HEARTBEAT.md**：根据角色需求，记录初始的定期任务或空置。
 
-### Symlink to shared (default, opinionated):
-- **USER.md** → `../../USER.md` (they need to know who they work for)
-- **MEMORY.md** → `../../MEMORY.md` (shared team context)
+### 创建链接到共享文件（默认设置）
+- 创建链接 `USER.md`（指向 `../../USER.md`），让用户了解自己的上级是谁以及团队的基本信息。
+- 创建链接 `MEMORY.md`（指向 `../../MEMORY.md`），分享团队背景信息。
 
-Mention to the user: "I've linked USER.md and MEMORY.md so they know who you are and share team context. You can change this later if you want them more isolated."
+**提醒用户**：
+“我已经链接了 `USER.md` 和 `MEMORY.md`，这样他们就能了解自己的工作环境和团队背景。如果你希望新成员更加独立，也可以随时更改这些文件。”
 
-## Naming
+## 命名规则
 
-Use craft/role-based names. Check TOOLS.md for the full naming taxonomy:
-- Research: Scout, Observer, Surveyor
-- Writing: Scribe, Editor, Chronicler
-- Code: Smith, Artisan, Engineer
-- Analysis: Analyst, Assessor, Arbiter
-- Creative: Muse, Artisan
-- Oversight: Auditor, Reviewer, Warden
+使用与角色相关的名称。具体命名规则请参考 `TOOLS.md` 文件：
+- 研究类角色：Scout（侦察员）、Observer（观察员）、Surveyor（调查员）
+- 写作类角色：Scribe（书记员）、Editor（编辑者）、Chronicler（记录者）
+- 编码类角色：Smith（工匠）、Artisan（工匠）、Engineer（工程师）
+- 分析类角色：Analyst（分析师）、Assessor（评估员）、Arbiter（仲裁者）
+- 创造类角色：Muse（缪斯）、Artisan（工匠）
+- 监督类角色：Auditor（审计员）、Reviewer（审核员）、Warden（管理员）
 
-Check existing agents to avoid name conflicts. Suggest a name that fits the role, but let the user override.
+在命名新成员时，避免与现有成员的名称重复。建议一个符合角色特点的名称，但最终决定权在用户手中。
 
-## Team Awareness
+## 团队信息确认
 
-Before generating, check `agents/` for existing team members. Note:
-- Potential overlaps with existing roles
-- Gaps this new hire fills
-- How they'll interact with existing agents
+在生成新成员的配置文件之前，先查看 `agents/` 目录中已有的团队成员信息：
+- 注意新成员的职责是否与现有成员有重叠。
+- 新成员将填补哪些团队空白。
+- 新成员将如何与现有成员协作。
 
-Mention any relevant observations: "You already have Scout for research - this new role would focus specifically on..."
+**相关说明**：
+“你已经有负责研究的 Scout 了，这个新成员将专注于……”
 
-## After Setup
-
-1. Tell the user what was created and where
-2. **Automatically update the OpenClaw config via gateway `config.patch`** (do not ask the user to run a manual command). You must:
-   - Add the new agent entry to `agents.list` using this format:
+## 安装完成后
+1. 告诉用户新成员的相关信息及其文件的位置。
+2. **通过 `config.patch` 命令自动更新 OpenClaw 的配置文件**（不要让用户手动操作）。具体步骤如下：
+   - 使用以下格式将新成员的信息添加到 `agents.list` 文件中：
      ```json
      {
        "id": "<name>",
@@ -162,16 +164,16 @@ Mention any relevant observations: "You already have Scout for research - this n
        "model": "<selected-model>"
      }
      ```
-   - Add the new agent ID to the **main agent's** `subagents.allowAgents` array
-   - Preserve all existing agents and fields (arrays replace on patch)
+   - 将新成员的 ID 添加到 **主要成员** 的 `subagents.allowAgents` 数组中。
+   - 保留所有现有成员的信息和字段（更新时数组会被替换）。
 
-   **Required flow:**
-   1) Fetch config + hash
+**所需步骤**：
+   1) 获取配置文件并计算其哈希值：
       ```bash
       openclaw gateway call config.get --params '{}'
       ```
-   2) Build the updated `agents.list` array (existing entries + new agent) and update the `main` agent's `subagents.allowAgents` (existing list + new id).
-   3) Apply with `config.patch`:
+   2) 构建更新后的 `agents.list` 数组（包含现有成员和新成员的信息），并更新主要成员的 `subagents.allowAgents` 数组。
+   3) 使用 `config.patch` 命令应用更新：
       ```bash
       openclaw gateway call config.patch --params '{
         "raw": "{\n agents: {\n  list: [ /* full list with new agent + updated main allowAgents */ ]\n }\n}\n",
@@ -179,12 +181,11 @@ Mention any relevant observations: "You already have Scout for research - this n
         "restartDelayMs": 1000
       }'
       ```
-3. If monthly reviews were requested, confirm the cron schedule
-4. Update any team roster if one exists
+3. 如果用户要求进行定期评估，确认评估的日程安排。
+4. 如果有团队名单，更新相应的名单。
 
-## Important
-
-- This is a CONVERSATION, not a form. Be natural.
-- Infer as much as possible from context. Don't ask what you can figure out.
-- The user might not know what they want exactly. Help them figure it out.
-- Keep the whole process under 5 minutes for the simple case.
+**重要提示**：
+- 这是一个引导式对话过程，不要使用正式的表格形式。
+- 尽量从用户的对话中获取更多信息，避免重复提问。
+- 用户可能并不完全清楚自己的需求，要帮助他们明确自己的目标。
+- 对于简单的情况，整个流程应在5分钟内完成。

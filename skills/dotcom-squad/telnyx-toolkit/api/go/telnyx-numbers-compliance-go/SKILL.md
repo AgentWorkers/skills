@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Numbers Compliance - Go
+# Telnyx 数字合规性 - Go
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/team-telnyx/telnyx-go
 ```
 
-## Setup
+## 设置
 
 ```go
 import (
@@ -37,11 +37,11 @@ client := telnyx.NewClient(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按上述方式初始化。
 
-## Retrieve Bundles
+## 获取套餐信息
 
-Get all allowed bundles.
+获取所有允许使用的套餐信息。
 
 `GET /bundle_pricing/billing_bundles`
 
@@ -53,9 +53,9 @@ Get all allowed bundles.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Get Bundle By Id
+## 根据 ID 获取套餐
 
-Get a single bundle by ID.
+根据 ID 获取单个套餐。
 
 `GET /bundle_pricing/billing_bundles/{bundle_id}`
 
@@ -71,9 +71,9 @@ Get a single bundle by ID.
 	fmt.Printf("%+v\n", billingBundle.Data)
 ```
 
-## Get User Bundles
+## 获取用户套餐
 
-Get a paginated list of user bundles.
+获取用户套餐的分页列表。
 
 `GET /bundle_pricing/user_bundles`
 
@@ -85,9 +85,9 @@ Get a paginated list of user bundles.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Create User Bundles
+## 创建用户套餐
 
-Creates multiple user bundles for the user.
+为用户创建多个套餐。
 
 `POST /bundle_pricing/user_bundles/bulk`
 
@@ -99,9 +99,9 @@ Creates multiple user bundles for the user.
 	fmt.Printf("%+v\n", userBundle.Data)
 ```
 
-## Get Unused User Bundles
+## 获取未使用的用户套餐
 
-Returns all user bundles that aren't in use.
+返回所有未使用的用户套餐。
 
 `GET /bundle_pricing/user_bundles/unused`
 
@@ -113,9 +113,9 @@ Returns all user bundles that aren't in use.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Get User Bundle by Id
+## 根据 ID 获取用户套餐
 
-Retrieves a user bundle by its ID.
+根据 ID 获取用户套餐。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -131,9 +131,9 @@ Retrieves a user bundle by its ID.
 	fmt.Printf("%+v\n", userBundle.Data)
 ```
 
-## Deactivate User Bundle
+## 取消激活用户套餐
 
-Deactivates a user bundle by its ID.
+根据 ID 取消激活用户套餐。
 
 `DELETE /bundle_pricing/user_bundles/{user_bundle_id}`
 
@@ -149,9 +149,9 @@ Deactivates a user bundle by its ID.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Get User Bundle Resources
+## 获取用户套餐资源
 
-Retrieves the resources of a user bundle by its ID.
+根据 ID 获取用户套餐的资源信息。
 
 `GET /bundle_pricing/user_bundles/{user_bundle_id}/resources`
 
@@ -167,9 +167,9 @@ Retrieves the resources of a user bundle by its ID.
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all document links
+## 列出所有文档链接
 
-List all documents links ordered by created_at descending.
+按创建时间降序列出所有文档链接。
 
 `GET /document_links`
 
@@ -181,9 +181,9 @@ List all documents links ordered by created_at descending.
 	fmt.Printf("%+v\n", page)
 ```
 
-## List all documents
+## 列出所有文档
 
-List all documents ordered by created_at descending.
+按创建时间降序列出所有文档。
 
 `GET /documents`
 
@@ -195,9 +195,9 @@ List all documents ordered by created_at descending.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Upload a document
+## 上传文档
 
-Upload a document.<br /><br />Uploaded files must be linked to a service within 30 minutes or they will be automatically deleted.
+上传文档。<br /><br />上传的文件必须在 30 分钟内关联到某个服务，否则将被自动删除。
 
 `POST /documents`
 
@@ -211,9 +211,9 @@ Upload a document.<br /><br />Uploaded files must be linked to a service within 
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## Retrieve a document
+## 获取文档
 
-Retrieve a document.
+获取文档内容。
 
 `GET /documents/{id}`
 
@@ -225,9 +225,9 @@ Retrieve a document.
 	fmt.Printf("%+v\n", document.Data)
 ```
 
-## Update a document
+## 更新文档
 
-Update a document.
+更新文档内容。
 
 `PATCH /documents/{id}`
 
@@ -245,9 +245,9 @@ Update a document.
 	fmt.Printf("%+v\n", document.Data)
 ```
 
-## Delete a document
+## 删除文档
 
-Delete a document.<br /><br />A document can only be deleted if it's not linked to a service.
+删除文档。<br /><br />只有未关联到服务的文档才能被删除。
 
 `DELETE /documents/{id}`
 
@@ -259,9 +259,9 @@ Delete a document.<br /><br />A document can only be deleted if it's not linked 
 	fmt.Printf("%+v\n", document.Data)
 ```
 
-## Download a document
+## 下载文档
 
-Download a document.
+下载文档内容。
 
 `GET /documents/{id}/download`
 
@@ -273,9 +273,9 @@ Download a document.
 	fmt.Printf("%+v\n", response)
 ```
 
-## Generate a temporary download link for a document
+## 生成文档的临时下载链接
 
-Generates a temporary pre-signed URL that can be used to download the document directly from the storage backend without authentication.
+生成一个临时预签名链接，可以直接从存储后端下载文档，无需身份验证。
 
 `GET /documents/{id}/download_link`
 
@@ -287,9 +287,9 @@ Generates a temporary pre-signed URL that can be used to download the document d
 	fmt.Printf("%+v\n", response.Data)
 ```
 
-## List all requirements
+## 列出所有需求
 
-List all requirements with filtering, sorting, and pagination
+支持过滤、排序和分页功能，列出所有需求。
 
 `GET /requirements`
 
@@ -301,9 +301,9 @@ List all requirements with filtering, sorting, and pagination
 	fmt.Printf("%+v\n", page)
 ```
 
-## Retrieve a document requirement
+## 获取需求记录
 
-Retrieve a document requirement record
+获取单个需求记录。
 
 `GET /requirements/{id}`
 
@@ -315,9 +315,9 @@ Retrieve a document requirement record
 	fmt.Printf("%+v\n", requirement.Data)
 ```
 
-## List all requirement types
+## 列出所有需求类型
 
-List all requirement types ordered by created_at descending
+按创建时间降序列出所有需求类型。
 
 `GET /requirement_types`
 
@@ -329,9 +329,9 @@ List all requirement types ordered by created_at descending
 	fmt.Printf("%+v\n", requirementTypes.Data)
 ```
 
-## Retrieve a requirement types
+## 根据 ID 获取需求类型
 
-Retrieve a requirement type by id
+根据 ID 获取特定需求类型。
 
 `GET /requirement_types/{id}`
 
@@ -343,7 +343,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementType.Data)
 ```
 
-## Retrieve regulatory requirements
+## 获取监管要求
+
+获取所有监管要求信息。
 
 `GET /regulatory_requirements`
 
@@ -355,7 +357,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", regulatoryRequirement.Data)
 ```
 
-## List requirement groups
+## 列出需求组
+
+列出所有需求组。
 
 `GET /requirement_groups`
 
@@ -367,9 +371,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroups)
 ```
 
-## Create a new requirement group
+## 创建新的需求组
 
-`POST /requirement_groups` — Required: `country_code`, `phone_number_type`, `action`
+创建新的需求组。<br />必填参数：`country_code`、`phone_number_type`、`action`
 
 ```go
 	requirementGroup, err := client.RequirementGroups.New(context.TODO(), telnyx.RequirementGroupNewParams{
@@ -383,7 +387,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroup.ID)
 ```
 
-## Get a single requirement group by ID
+## 根据 ID 获取需求组
+
+根据 ID 获取单个需求组。
 
 `GET /requirement_groups/{id}`
 
@@ -395,7 +401,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroup.ID)
 ```
 
-## Update requirement values in requirement group
+## 更新需求组中的需求值
+
+更新需求组中的需求值。
 
 `PATCH /requirement_groups/{id}`
 
@@ -411,7 +419,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroup.ID)
 ```
 
-## Delete a requirement group by ID
+## 根据 ID 删除需求组
+
+根据 ID 删除需求组。
 
 `DELETE /requirement_groups/{id}`
 
@@ -423,7 +433,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroup.ID)
 ```
 
-## Submit a Requirement Group for Approval
+## 提交需求组以供审批
+
+提交需求组以供审批。
 
 `POST /requirement_groups/{id}/submit_for_approval`
 
@@ -435,9 +447,9 @@ Retrieve a requirement type by id
 	fmt.Printf("%+v\n", requirementGroup.ID)
 ```
 
-## List all Verified Numbers
+## 列出所有已验证的号码
 
-Gets a paginated list of Verified Numbers.
+获取已验证号码的分页列表。
 
 `GET /verified_numbers`
 
@@ -449,11 +461,11 @@ Gets a paginated list of Verified Numbers.
 	fmt.Printf("%+v\n", page)
 ```
 
-## Request phone number verification
+## 请求电话号码验证
 
-Initiates phone number verification procedure.
+启动电话号码验证流程。
 
-`POST /verified_numbers` — Required: `phone_number`, `verification_method`
+`POST /verified_numbers` — 必填参数：`phone_number`、`verification_method`
 
 ```go
 	verifiedNumber, err := client.VerifiedNumbers.New(context.TODO(), telnyx.VerifiedNumberNewParams{
@@ -466,7 +478,9 @@ Initiates phone number verification procedure.
 	fmt.Printf("%+v\n", verifiedNumber.PhoneNumber)
 ```
 
-## Retrieve a verified number
+## 获取已验证的号码
+
+获取已验证的号码信息。
 
 `GET /verified_numbers/{phone_number}`
 
@@ -478,7 +492,9 @@ Initiates phone number verification procedure.
 	fmt.Printf("%+v\n", verifiedNumberDataWrapper.Data)
 ```
 
-## Delete a verified number
+## 删除已验证的号码
+
+删除已验证的号码。
 
 `DELETE /verified_numbers/{phone_number}`
 
@@ -490,9 +506,11 @@ Initiates phone number verification procedure.
 	fmt.Printf("%+v\n", verifiedNumberDataWrapper.Data)
 ```
 
-## Submit verification code
+## 提交验证码
 
-`POST /verified_numbers/{phone_number}/actions/verify` — Required: `verification_code`
+提交验证码。
+
+`POST /verified_numbers/{phone_number}/actions/verify` — 必填参数：`verification_code`
 
 ```go
 	verifiedNumberDataWrapper, err := client.VerifiedNumbers.Actions.SubmitVerificationCode(

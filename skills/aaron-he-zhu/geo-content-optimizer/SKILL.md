@@ -1,80 +1,72 @@
 ---
 name: geo-content-optimizer
-description: Optimizes content for Generative Engine Optimization (GEO) to increase chances of being cited by AI systems like ChatGPT, Claude, Perplexity, and Google AI Overviews. Makes content AI-friendly while maintaining SEO value.
+description: 优化内容以适应生成式引擎优化（Generative Engine Optimization, GEO）的要求，从而提高内容被 ChatGPT、Claude、Perplexity 和 Google AI Overviews 等 AI 系统引用的可能性。在保持内容对 AI 系统友好的同时，也确保其具有较高的 SEO（搜索引擎优化）价值。
 geo-relevance: "high"
 ---
 
-# GEO Content Optimizer
+# GEO内容优化器
 
-This skill optimizes content to appear in AI-generated responses. As AI systems increasingly answer user queries directly, getting cited by these systems becomes crucial for visibility.
+该技能用于优化内容，使其更易于被AI生成的系统引用。随着AI系统越来越多地直接回答用户查询，获得这些系统的引用对于提高内容的可见性至关重要。
 
-## When to Use This Skill
+## 适用场景
 
-- Optimizing existing content for AI citations
-- Creating new content designed for both SEO and GEO
-- Improving chances of appearing in AI Overviews
-- Making content more quotable by AI systems
-- Adding authority signals that AI systems trust
-- Structuring content for AI comprehension
-- Competing for visibility in the AI-first search era
+- 优化现有内容以增加被AI引用的机会
+- 创建同时符合SEO和GEO标准的新内容
+- 提高内容在AI概览中的展示几率
+- 使内容更易于被AI系统引用
+- 添加AI系统信任的权威性信号
+- 优化内容结构以提升AI的理解能力
+- 在以AI为主导的搜索时代提升内容的可见性
 
-## What This Skill Does
+## 功能介绍
 
-1. **Citation Optimization**: Makes content more likely to be quoted by AI
-2. **Structure Enhancement**: Formats content for AI comprehension
-3. **Authority Building**: Adds signals that AI systems trust
-4. **Factual Enhancement**: Improves accuracy and verifiability
-5. **Quote Creation**: Creates memorable, citeable statements
-6. **Source Attribution**: Adds proper citations that AI can verify
-7. **GEO Scoring**: Evaluates content's AI-friendliness
+1. **引用优化**：提高内容被AI引用的可能性
+2. **结构优化**：调整内容格式以利于AI理解
+3. **权威性构建**：添加AI系统信任的权威性信号
+4. **事实准确性提升**：提高内容的准确性和可验证性
+5. **引用生成**：创建易于记忆且可引用的表述
+6. **来源标注**：添加AI可验证的引用信息
+7. **GEO评分**：评估内容对AI的友好程度
 
-## How to Use
+## 使用方法
 
-### Optimize Existing Content
+### 优化现有内容
 
 ```
 Optimize this content for GEO/AI citations: [content or URL]
 ```
 
-```
-Make this article more likely to be cited by AI systems
-```
-
-### Create GEO-Optimized Content
+### 创建符合GEO标准的内容
 
 ```
 Write content about [topic] optimized for both SEO and GEO
 ```
 
-### GEO Audit
+### 进行GEO审计
 
 ```
 Audit this content for GEO readiness and suggest improvements
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 有关工具类别的详细信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
-**With ~~AI monitor + ~~SEO tool connected:**
-Automatically pull AI citation patterns (which content is being cited by ChatGPT, Claude, Perplexity), current AI visibility scores, competitor citation frequency, and AI Overview appearance tracking.
+**当连接到 ~~AI监控工具 + ~~SEO工具时：**
+- 自动获取AI引用模式（哪些内容被ChatGPT、Claude、Perplexity等系统引用）、当前的AI可见性评分、竞争对手的引用频率以及内容在AI概览中的展示情况。
+**仅使用手动数据时：**
+- 请用户提供以下信息：
+  - 希望被AI引用的目标查询词
+  - 当前内容的URL或完整文本
+  - 竞争对手被AI引用的实例
+- 根据提供的数据执行完整的工作流程。在输出中明确标注哪些数据来自自动化收集，哪些来自用户提供。
 
-**With manual data only:**
-Ask the user to provide:
-1. Target queries where they want AI citations
-2. Current content URL or full content text
-3. Any known instances where competitors are being cited by AI
+## 使用说明
 
-Proceed with the full workflow using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+当用户请求GEO优化时，请按照以下步骤操作：
 
-## Instructions
-
-When a user requests GEO optimization:
-
-1. **Load CORE-EEAT GEO-First Optimization Targets**
-
-   Before optimizing, load GEO-critical items from the [CORE-EEAT Benchmark](../../references/core-eeat-benchmark.md):
-
+1. **加载CORE-EEAT GEO优先优化目标**
+   在优化之前，从 [CORE-EEAT基准](../../references/core-eeat-benchmark.md) 中加载与GEO相关的关键信息：
    ```markdown
    ### CORE-EEAT GEO-First Targets
 
@@ -106,8 +98,7 @@ When a user requests GEO optimization:
    _Full benchmark: [references/core-eeat-benchmark.md](../../references/core-eeat-benchmark.md)_
    ```
 
-2. **Understand GEO Fundamentals**
-
+2. **了解GEO基础知识**
    ```markdown
    ### How AI Systems Select Content to Cite
    
@@ -134,8 +125,7 @@ When a user requests GEO optimization:
    - Includes memorable, concise explanations
    ```
 
-3. **Analyze Current Content**
-
+3. **分析现有内容**
    ```markdown
    ## GEO Analysis: [Content Title]
    
@@ -163,10 +153,8 @@ When a user requests GEO optimization:
    2. [Quick improvement 2]
    ```
 
-4. **Optimize for Clear Definitions**
-
-   AI systems love clear, quotable definitions.
-
+4. **优化定义的清晰度**
+   AI系统喜欢清晰、易于引用的定义。
    ```markdown
    ### Definition Optimization
    
@@ -192,8 +180,7 @@ When a user requests GEO optimization:
    - [ ] Is 25-50 words for optimal citation length
    ```
 
-5. **Create Quotable Statements**
-
+5. **创建易于引用的表述**
    ```markdown
    ### Quotable Statement Optimization
    
@@ -238,8 +225,7 @@ When a user requests GEO optimization:
       Example: "To [achieve goal], [step 1], then [step 2], and finally [step 3]."
    ```
 
-6. **Add Authority Signals**
-
+6. **添加权威性信号**
    ```markdown
    ### Authority Signal Enhancement
    
@@ -271,8 +257,7 @@ When a user requests GEO optimization:
    - [ ] Industry statistics with sources
    ```
 
-7. **Optimize Content Structure**
-
+7. **优化内容结构**
    ```markdown
    ### Structure Optimization for GEO
    
@@ -283,14 +268,14 @@ When a user requests GEO optimization:
    Transform content into question-answer pairs:
    
    ```html
-   <h2>What is [Topic]?</h2>
-   <p>[Direct answer in 40-60 words]</p>
+   <h2>[主题]是什么？</h2>
+   <p>[40-60字的直接回答]</p>
    
-   <h2>How does [Topic] work?</h2>
-   <p>[Clear explanation with steps if applicable]</p>
+   <h2>[主题]是如何运作的？</h2>
+   <p>[如有必要，提供分步骤的清晰解释]</p>
    
-   <h2>Why is [Topic] important?</h2>
-   <p>[Specific reasons with evidence]</p>
+   <h2>[主题]为什么重要？</h2>
+   <p>[提供具体理由及证据]</p>
    ```
    
    **Comparison Tables**
@@ -318,8 +303,7 @@ When a user requests GEO optimization:
    > **Key Definition**: [Term] refers to [clear definition].
    ```
 
-8. **Enhance Factual Density**
-
+8. **提升事实的准确性**
    ```markdown
    ### Factual Density Improvement
    
@@ -347,8 +331,7 @@ When a user requests GEO optimization:
    - [ ] Cross-reference with authoritative sources
    ```
 
-9. **Implement FAQ Schema**
-
+9. **实现FAQ结构**
    ```markdown
    ### FAQ Optimization for GEO
    
@@ -377,20 +360,21 @@ When a user requests GEO optimization:
    {
      "@context": "https://schema.org",
      "@type": "FAQPage",
-     "mainEntity": [{
-       "@type": "Question",
-       "name": "[Question text]",
-       "acceptedAnswer": {
-         "@type": "Answer",
-         "text": "[Answer text]"
+     "mainEntity": [
+       {
+         "@type": "Question",
+         "name": "[问题文本]",
+         "acceptedAnswer": {
+           "@type": "Answer",
+           "text": "[答案文本]"
+         }
        }
-     }]
+     ]
    }
    ```
    ```
 
-10. **Generate GEO-Optimized Output**
-
+10. **生成优化后的GEO内容**
    ```markdown
    ## GEO Optimization Report
 
@@ -434,11 +418,9 @@ When a user requests GEO optimization:
    - "Best [topic] for [use case]" ✅
    ```
 
-11. **CORE-EEAT GEO Self-Check**
-
-    After optimization, verify GEO-First items:
-
-    ```markdown
+11. **进行CORE-EEAT GEO自检**
+   优化完成后，验证相关内容的GEO优化效果：
+   ```markdown
     ### CORE-EEAT GEO Post-Optimization Check
 
     | ID | Standard | Status | Notes |
@@ -463,27 +445,26 @@ When a user requests GEO optimization:
     _For full 80-item audit, use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
     ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Content source identified (URL, full text, or content draft)
-- [ ] Target AI queries or topics clearly defined
-- [ ] Current GEO baseline assessed (if optimizing existing content)
+### 输入验证
+- [ ] 已确定内容来源（URL、完整文本或内容草稿）
+- [ ] 明确了目标AI查询词或主题
+- [ ] （如果优化现有内容）已评估当前的GEO基础情况
 
-### Output Validation
-- [ ] At least 3 clear, quotable definitions added
-- [ ] Factual density improved with at least 5 verifiable statistics
-- [ ] All claims have source citations from authoritative sources
-- [ ] Q&A format sections cover top 5 user queries
-- [ ] GEO score improvement of at least 50% from baseline
-- [ ] Source of each data point clearly stated (~~AI monitor data, user-provided, or estimated)
+### 输出验证
+- [ ] 至少添加了3个清晰、易于引用的定义
+- [ ] 提高了事实的准确性，包含至少5个可验证的数据点
+- [ ] 所有陈述都引用了权威来源
+- [ ] Q&A格式部分涵盖了用户最常查询的5个问题
+- [ ] GEO评分相比基准提高了至少50%
+- [ ] 每个数据点的来源均明确标注（来自AI监控数据、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Optimize this paragraph for GEO: 'Email marketing is a good way to reach customers. It's been around for a while and many businesses use it. You can send newsletters, promotions, and other messages.'"
+**用户请求：**“优化这段内容，使其更符合GEO标准：‘电子邮件营销是一种有效的客户触达方式。它已经存在很长时间了，许多企业都在使用。你可以发送新闻通讯、促销信息等。’”
 
-**Output**:
-
+**优化后的内容：**
 ```markdown
 ## GEO-Optimized Version
 
@@ -522,10 +503,9 @@ marketing channel.
 **GEO Score**: Improved from 1/10 to 8/10
 ```
 
-## GEO Optimization Checklist
+## GEO优化检查清单
 
-Use this checklist for any content:
-
+使用此清单对任何内容进行优化：
 ```markdown
 ### GEO Readiness Checklist
 
@@ -556,27 +536,26 @@ Use this checklist for any content:
 - [ ] Sources are verifiable
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Answer the question first** - Put the answer in the first sentence
-2. **Be specific** - Vague content doesn't get cited
-3. **Cite sources** - AI systems trust verifiable information
-4. **Stay current** - Update statistics and facts regularly
-5. **Match query format** - Questions deserve direct answers
-6. **Build authority** - Expert credentials increase citation likelihood
+1. **先回答问题** - 将答案放在第一句
+2. **具体明确** - 模糊的内容不易被引用
+3. **标注来源** - AI系统信任可验证的信息
+4. **保持内容更新** - 定期更新数据和事实
+5. **匹配查询格式** - 问题应得到直接的回答
+6. **建立权威性** - 专家资质能增加被引用的可能性
 
-## Reference Materials
+## 参考资料
 
-- [AI Citation Patterns](./references/ai-citation-patterns.md) - How Google AI Overviews, ChatGPT, Perplexity, and Claude select and cite sources
-- [Quotable Content Examples](./references/quotable-content-examples.md) - Before/after examples of content optimized for AI citation
+- [AI引用模式](./references/ai-citation-patterns.md) - Google AI概览、ChatGPT、Perplexity和Claude等系统如何选择和引用来源
+- [易于引用的内容示例](./references/quotable-content-examples.md) - 优化前后的内容对比示例
 
-## Related Skills
+## 相关技能
 
-- [seo-content-writer](../seo-content-writer/) — Create SEO content to optimize
-- [schema-markup-generator](../schema-markup-generator/) — Add structured data
-- [keyword-research](../../research/keyword-research/) — Identify keyword targets for GEO optimization
-- [content-refresher](../../optimize/content-refresher/) — Update content for freshness
-- [serp-analysis](../../research/serp-analysis/) — Analyze AI Overview patterns
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — Full 80-item CORE-EEAT audit
-- [domain-authority-auditor](../../cross-cutting/domain-authority-auditor/) — Domain-level AI citation signals (CITE C05-C08) complement page-level GEO optimization
-
+- [seo-content-writer](../seo-content-writer/) — 创建符合SEO标准的内容
+- [schema-markup-generator](../schema-markup-generator/) — 添加结构化数据
+- [keyword-research](../../research/keyword-research/) — 识别用于GEO优化的关键词
+- [content-refresher](../../optimize/content-refresher/) — 更新内容以保持新鲜度
+- [serp-analysis](../../research/serp-analysis/) — 分析AI概览的展示模式
+- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 进行全面的80项CORE-EEAT审计
+- [domain-authority-auditor](../../cross-cutting/domain-authority-auditor/) — 域名层面的AI引用信号（CITE C05-C08），补充页面层面的GEO优化

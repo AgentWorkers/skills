@@ -1,6 +1,6 @@
 ---
 name: compost-tracker
-description: Track compost piles, monitor temperature, record turns, and manage your organic waste decomposition. Perfect for home gardeners and small farms.
+description: 跟踪堆肥堆的状态，监测温度，记录翻动次数，并管理有机废物的分解过程。非常适合家庭园艺爱好者和小农场使用。
 author: johstracke
 version: 1.0.0
 license: MIT
@@ -125,4 +125,4 @@ compost_tracker.py export ~/compost-backup.md
 
 ---
 
-*Part of IOU's Gardening Suite* 🌱
+*IOU园艺套件的一部分* 🌱

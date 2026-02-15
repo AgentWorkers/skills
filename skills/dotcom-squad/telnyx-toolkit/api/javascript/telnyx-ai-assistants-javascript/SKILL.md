@@ -10,17 +10,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Ai Assistants - JavaScript
+# Telnyx AI 助手 - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +31,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List assistants
+## 列出助手
 
-Retrieve a list of all AI Assistants configured by the user.
+检索用户配置的所有 AI 助手。
 
 `GET /ai/assistants`
 
@@ -44,11 +45,11 @@ const assistantsList = await client.ai.assistants.list();
 console.log(assistantsList.data);
 ```
 
-## Create an assistant
+## 创建助手
 
-Create a new AI Assistant.
+创建一个新的 AI 助手。
 
-`POST /ai/assistants` — Required: `name`, `model`, `instructions`
+`POST /ai/assistants` — 必需参数：`name`、`model`、`instructions`
 
 ```javascript
 const assistant = await client.ai.assistants.create({
@@ -60,9 +61,9 @@ const assistant = await client.ai.assistants.create({
 console.log(assistant.id);
 ```
 
-## Get an assistant
+## 获取助手信息
 
-Retrieve an AI Assistant configuration by `assistant_id`.
+通过 `assistant_id` 检索 AI 助手的配置信息。
 
 `GET /ai/assistants/{assistant_id}`
 
@@ -72,9 +73,9 @@ const assistant = await client.ai.assistants.retrieve('assistant_id');
 console.log(assistant.id);
 ```
 
-## Update an assistant
+## 更新助手信息
 
-Update an AI Assistant's attributes.
+更新 AI 助手的属性。
 
 `POST /ai/assistants/{assistant_id}`
 
@@ -84,9 +85,9 @@ const assistant = await client.ai.assistants.update('assistant_id');
 console.log(assistant.id);
 ```
 
-## Delete an assistant
+## 删除助手
 
-Delete an AI Assistant by `assistant_id`.
+通过 `assistant_id` 删除 AI 助手。
 
 `DELETE /ai/assistants/{assistant_id}`
 
@@ -96,11 +97,11 @@ const assistant = await client.ai.assistants.delete('assistant_id');
 console.log(assistant.id);
 ```
 
-## Assistant Chat (BETA)
+## 助手聊天（测试版）
 
-This endpoint allows a client to send a chat message to a specific AI Assistant.
+此端点允许客户端向特定的 AI 助手发送聊天消息。
 
-`POST /ai/assistants/{assistant_id}/chat` — Required: `content`, `conversation_id`
+`POST /ai/assistants/{assistant_id}/chat` — 必需参数：`content`、`conversation_id`
 
 ```javascript
 const response = await client.ai.assistants.chat('assistant_id', {
@@ -111,11 +112,11 @@ const response = await client.ai.assistants.chat('assistant_id', {
 console.log(response.content);
 ```
 
-## Assistant Sms Chat
+## 助手短信聊天
 
-Send an SMS message for an assistant.
+为助手发送短信。
 
-`POST /ai/assistants/{assistant_id}/chat/sms` — Required: `from`, `to`
+`POST /ai/assistants/{assistant_id}/chat/sms` — 必需参数：`from`、`to`
 
 ```javascript
 const response = await client.ai.assistants.sendSMS('assistant_id', { from: 'from', to: 'to' });
@@ -123,9 +124,9 @@ const response = await client.ai.assistants.sendSMS('assistant_id', { from: 'fro
 console.log(response.conversation_id);
 ```
 
-## Clone Assistant
+## 复制助手
 
-Clone an existing assistant, excluding telephony and messaging settings.
+复制现有的助手（不包括电话和消息设置）。
 
 `POST /ai/assistants/{assistant_id}/clone`
 
@@ -135,11 +136,11 @@ const assistant = await client.ai.assistants.clone('assistant_id');
 console.log(assistant.id);
 ```
 
-## Import assistants from external provider
+## 从外部提供商导入助手
 
-Import assistants from external providers.
+从外部提供商导入助手。
 
-`POST /ai/assistants/import` — Required: `provider`, `api_key_ref`
+`POST /ai/assistants/import` — 必需参数：`provider`、`api_key_ref`
 
 ```javascript
 const assistantsList = await client.ai.assistants.imports({
@@ -150,9 +151,9 @@ const assistantsList = await client.ai.assistants.imports({
 console.log(assistantsList.data);
 ```
 
-## List scheduled events
+## 列出计划事件
 
-Get scheduled events for an assistant with pagination and filtering
+获取助手的计划事件（支持分页和过滤）
 
 `GET /ai/assistants/{assistant_id}/scheduled_events`
 
@@ -165,11 +166,11 @@ for await (const scheduledEventListResponse of client.ai.assistants.scheduledEve
 }
 ```
 
-## Create a scheduled event
+## 创建计划事件
 
-Create a scheduled event for an assistant
+为助手创建计划事件。
 
-`POST /ai/assistants/{assistant_id}/scheduled_events` — Required: `telnyx_conversation_channel`, `telnyx_end_user_target`, `telnyx_agent_target`, `scheduled_at_fixed_datetime`
+`POST /ai/assistants/{assistant_id}/scheduled_events` — 必需参数：`telnyx_conversation_channel`、`telnyx_end_user_target`、`telnyx_agent_target`、`scheduled_at_fixed_datetime`
 
 ```javascript
 const scheduledEventResponse = await client.ai.assistants.scheduledEvents.create('assistant_id', {
@@ -182,9 +183,9 @@ const scheduledEventResponse = await client.ai.assistants.scheduledEvents.create
 console.log(scheduledEventResponse);
 ```
 
-## Get a scheduled event
+## 获取计划事件信息
 
-Retrieve a scheduled event by event ID
+通过事件 ID 检索计划事件信息。
 
 `GET /ai/assistants/{assistant_id}/scheduled_events/{event_id}`
 
@@ -196,9 +197,9 @@ const scheduledEventResponse = await client.ai.assistants.scheduledEvents.retrie
 console.log(scheduledEventResponse);
 ```
 
-## Delete a scheduled event
+## 删除计划事件
 
-If the event is pending, this will cancel the event.
+如果事件尚未执行，此操作将取消该事件。
 
 `DELETE /ai/assistants/{assistant_id}/scheduled_events/{event_id}`
 
@@ -206,9 +207,9 @@ If the event is pending, this will cancel the event.
 await client.ai.assistants.scheduledEvents.delete('event_id', { assistant_id: 'assistant_id' });
 ```
 
-## List assistant tests with pagination
+## 列出助手测试（支持分页）
 
-Retrieves a paginated list of assistant tests with optional filtering capabilities
+检索助手测试的列表（支持可选的过滤条件）
 
 `GET /ai/assistants/tests`
 
@@ -219,11 +220,11 @@ for await (const assistantTest of client.ai.assistants.tests.list()) {
 }
 ```
 
-## Create a new assistant test
+## 创建新的助手测试
 
-Creates a comprehensive test configuration for evaluating AI assistant performance
+创建用于评估 AI 助手性能的测试配置。
 
-`POST /ai/assistants/tests` — Required: `name`, `destination`, `instructions`, `rubric`
+`POST /ai/assistants/tests` — 必需参数：`name`、`destination`、`instructions`、`rubric`
 
 ```javascript
 const assistantTest = await client.ai.assistants.tests.create({
@@ -240,9 +241,9 @@ const assistantTest = await client.ai.assistants.tests.create({
 console.log(assistantTest.test_id);
 ```
 
-## Get all test suite names
+## 获取所有测试套件名称
 
-Retrieves a list of all distinct test suite names available to the current user
+检索当前用户可用的所有测试套件名称。
 
 `GET /ai/assistants/tests/test-suites`
 
@@ -252,9 +253,9 @@ const testSuites = await client.ai.assistants.tests.testSuites.list();
 console.log(testSuites.data);
 ```
 
-## Get test suite run history
+## 获取测试套件运行历史
 
-Retrieves paginated history of test runs for a specific test suite with filtering options
+检索特定测试套件的运行历史（支持分页和过滤选项）。
 
 `GET /ai/assistants/tests/test-suites/{suite_name}/runs`
 
@@ -265,9 +266,9 @@ for await (const testRunResponse of client.ai.assistants.tests.testSuites.runs.l
 }
 ```
 
-## Trigger test suite execution
+## 触发测试套件执行
 
-Executes all tests within a specific test suite as a batch operation
+批量执行特定测试套件中的所有测试。
 
 `POST /ai/assistants/tests/test-suites/{suite_name}/runs`
 
@@ -277,9 +278,9 @@ const testRunResponses = await client.ai.assistants.tests.testSuites.runs.trigge
 console.log(testRunResponses);
 ```
 
-## Get assistant test by ID
+## 获取助手测试信息
 
-Retrieves detailed information about a specific assistant test
+检索特定助手测试的详细信息。
 
 `GET /ai/assistants/tests/{test_id}`
 
@@ -289,9 +290,9 @@ const assistantTest = await client.ai.assistants.tests.retrieve('test_id');
 console.log(assistantTest.test_id);
 ```
 
-## Update an assistant test
+## 更新助手测试配置
 
-Updates an existing assistant test configuration with new settings
+更新现有助手测试的配置。
 
 `PUT /ai/assistants/tests/{test_id}`
 
@@ -301,9 +302,9 @@ const assistantTest = await client.ai.assistants.tests.update('test_id');
 console.log(assistantTest.test_id);
 ```
 
-## Delete an assistant test
+## 删除助手测试
 
-Permanently removes an assistant test and all associated data
+永久删除助手测试及其所有相关数据。
 
 `DELETE /ai/assistants/tests/{test_id}`
 
@@ -311,9 +312,9 @@ Permanently removes an assistant test and all associated data
 await client.ai.assistants.tests.delete('test_id');
 ```
 
-## Get test run history for a specific test
+## 获取特定测试的运行历史
 
-Retrieves paginated execution history for a specific assistant test with filtering options
+检索特定助手测试的运行历史（支持过滤选项）。
 
 `GET /ai/assistants/tests/{test_id}/runs`
 
@@ -324,9 +325,9 @@ for await (const testRunResponse of client.ai.assistants.tests.runs.list('test_i
 }
 ```
 
-## Trigger a manual test run
+## 触发手动测试运行
 
-Initiates immediate execution of a specific assistant test
+立即执行特定的助手测试。
 
 `POST /ai/assistants/tests/{test_id}/runs`
 
@@ -336,9 +337,9 @@ const testRunResponse = await client.ai.assistants.tests.runs.trigger('test_id')
 console.log(testRunResponse.run_id);
 ```
 
-## Get specific test run details
+## 获取特定测试运行的详细信息
 
-Retrieves detailed information about a specific test run execution
+检索特定测试运行的详细信息。
 
 `GET /ai/assistants/tests/{test_id}/runs/{run_id}`
 
@@ -350,9 +351,9 @@ const testRunResponse = await client.ai.assistants.tests.runs.retrieve('run_id',
 console.log(testRunResponse.run_id);
 ```
 
-## Get all versions of an assistant
+## 获取助手的所有版本
 
-Retrieves all versions of a specific assistant with complete configuration and metadata
+检索特定助手的所有版本及其完整配置和元数据。
 
 `GET /ai/assistants/{assistant_id}/versions`
 
@@ -362,9 +363,9 @@ const assistantsList = await client.ai.assistants.versions.list('assistant_id');
 console.log(assistantsList.data);
 ```
 
-## Get a specific assistant version
+## 获取特定助手版本
 
-Retrieves a specific version of an assistant by assistant_id and version_id
+通过 `assistant_id` 和 `version_id` 获取特定版本的助手信息。
 
 `GET /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -376,9 +377,9 @@ const assistant = await client.ai.assistants.versions.retrieve('version_id', {
 console.log(assistant.id);
 ```
 
-## Update a specific assistant version
+## 更新特定助手版本
 
-Updates the configuration of a specific assistant version.
+更新特定助手版本的配置。
 
 `POST /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -390,9 +391,9 @@ const assistant = await client.ai.assistants.versions.update('version_id', {
 console.log(assistant.id);
 ```
 
-## Delete a specific assistant version
+## 删除特定助手版本
 
-Permanently removes a specific version of an assistant.
+永久删除特定版本的助手。
 
 `DELETE /ai/assistants/{assistant_id}/versions/{version_id}`
 
@@ -400,9 +401,9 @@ Permanently removes a specific version of an assistant.
 await client.ai.assistants.versions.delete('version_id', { assistant_id: 'assistant_id' });
 ```
 
-## Promote an assistant version to main
+## 将特定版本提升为主版本
 
-Promotes a specific version to be the main/current version of the assistant.
+将特定版本提升为助手的主/当前版本。
 
 `POST /ai/assistants/{assistant_id}/versions/{version_id}/promote`
 
@@ -414,9 +415,9 @@ const assistant = await client.ai.assistants.versions.promote('version_id', {
 console.log(assistant.id);
 ```
 
-## Get Canary Deploy
+## 获取 Canary 部署配置
 
-Endpoint to get a canary deploy configuration for an assistant.
+获取助手的 Canary 部署配置。
 
 `GET /ai/assistants/{assistant_id}/canary-deploys`
 
@@ -426,11 +427,11 @@ const canaryDeployResponse = await client.ai.assistants.canaryDeploys.retrieve('
 console.log(canaryDeployResponse.assistant_id);
 ```
 
-## Create Canary Deploy
+## 创建 Canary 部署
 
-Endpoint to create a canary deploy configuration for an assistant.
+为助手创建 Canary 部署配置。
 
-`POST /ai/assistants/{assistant_id}/canary-deploys` — Required: `versions`
+`POST /ai/assistants/{assistant_id}/canary-deploys` — 必需参数：`versions`
 
 ```javascript
 const canaryDeployResponse = await client.ai.assistants.canaryDeploys.create('assistant_id', {
@@ -440,11 +441,11 @@ const canaryDeployResponse = await client.ai.assistants.canaryDeploys.create('as
 console.log(canaryDeployResponse.assistant_id);
 ```
 
-## Update Canary Deploy
+## 更新 Canary 部署配置
 
-Endpoint to update a canary deploy configuration for an assistant.
+更新助手的 Canary 部署配置。
 
-`PUT /ai/assistants/{assistant_id}/canary-deploys` — Required: `versions`
+`PUT /ai/assistants/{assistant_id}/canary-deploys` — 必需参数：`versions`
 
 ```javascript
 const canaryDeployResponse = await client.ai.assistants.canaryDeploys.update('assistant_id', {
@@ -454,9 +455,9 @@ const canaryDeployResponse = await client.ai.assistants.canaryDeploys.update('as
 console.log(canaryDeployResponse.assistant_id);
 ```
 
-## Delete Canary Deploy
+## 删除 Canary 部署配置
 
-Endpoint to delete a canary deploy configuration for an assistant.
+删除助手的 Canary 部署配置。
 
 `DELETE /ai/assistants/{assistant_id}/canary-deploys`
 
@@ -464,9 +465,9 @@ Endpoint to delete a canary deploy configuration for an assistant.
 await client.ai.assistants.canaryDeploys.delete('assistant_id');
 ```
 
-## Get assistant texml
+## 获取助手的 Texml 文件
 
-Get an assistant texml by `assistant_id`.
+通过 `assistant_id` 获取助手的 Texml 文件。
 
 `GET /ai/assistants/{assistant_id}/texml`
 
@@ -476,9 +477,9 @@ const response = await client.ai.assistants.getTexml('assistant_id');
 console.log(response);
 ```
 
-## Test Assistant Tool
+## 测试助手工具
 
-Test a webhook tool for an assistant
+测试助手的 Webhook 工具。
 
 `POST /ai/assistants/{assistant_id}/tools/{tool_id}/test`
 
@@ -488,9 +489,9 @@ const response = await client.ai.assistants.tools.test('tool_id', { assistant_id
 console.log(response.data);
 ```
 
-## List Integrations
+## 列出集成
 
-List all available integrations.
+列出所有可用的集成。
 
 `GET /ai/integrations`
 
@@ -500,9 +501,9 @@ const integrations = await client.ai.integrations.list();
 console.log(integrations.data);
 ```
 
-## List User Integrations
+## 列出用户集成
 
-List user setup integrations
+列出用户的集成设置。
 
 `GET /ai/integrations/connections`
 
@@ -512,9 +513,9 @@ const connections = await client.ai.integrations.connections.list();
 console.log(connections.data);
 ```
 
-## Get User Integration connection By Id
+## 根据 ID 获取用户集成连接信息
 
-Get user setup integrations
+获取用户的集成连接信息。
 
 `GET /ai/integrations/connections/{user_connection_id}`
 
@@ -524,9 +525,9 @@ const connection = await client.ai.integrations.connections.retrieve('user_conne
 console.log(connection.data);
 ```
 
-## Delete Integration Connection
+## 删除集成连接
 
-Delete a specific integration connection.
+删除特定的集成连接。
 
 `DELETE /ai/integrations/connections/{user_connection_id}`
 
@@ -534,9 +535,9 @@ Delete a specific integration connection.
 await client.ai.integrations.connections.delete('user_connection_id');
 ```
 
-## List Integration By Id
+## 根据 ID 获取集成详情
 
-Retrieve integration details
+检索集成的详细信息。
 
 `GET /ai/integrations/{integration_id}`
 
@@ -546,9 +547,9 @@ const integration = await client.ai.integrations.retrieve('integration_id');
 console.log(integration.id);
 ```
 
-## List MCP Servers
+## 列出 MCP 服务器
 
-Retrieve a list of MCP servers.
+列出所有的 MCP 服务器。
 
 `GET /ai/mcp_servers`
 
@@ -559,11 +560,11 @@ for await (const mcpServerListResponse of client.ai.mcpServers.list()) {
 }
 ```
 
-## Create MCP Server
+## 创建 MCP 服务器
 
-Create a new MCP server.
+创建一个新的 MCP 服务器。
 
-`POST /ai/mcp_servers` — Required: `name`, `type`, `url`
+`POST /ai/mcp_servers` — 必需参数：`name`、`type`、`url`
 
 ```javascript
 const mcpServer = await client.ai.mcpServers.create({
@@ -575,9 +576,9 @@ const mcpServer = await client.ai.mcpServers.create({
 console.log(mcpServer.id);
 ```
 
-## Get MCP Server
+## 获取 MCP 服务器信息
 
-Retrieve details for a specific MCP server.
+检索特定 MCP 服务器的详细信息。
 
 `GET /ai/mcp_servers/{mcp_server_id}`
 
@@ -587,9 +588,9 @@ const mcpServer = await client.ai.mcpServers.retrieve('mcp_server_id');
 console.log(mcpServer.id);
 ```
 
-## Update MCP Server
+## 更新 MCP 服务器
 
-Update an existing MCP server.
+更新现有的 MCP 服务器。
 
 `PUT /ai/mcp_servers/{mcp_server_id}`
 
@@ -599,12 +600,13 @@ const mcpServer = await client.ai.mcpServers.update('mcp_server_id');
 console.log(mcpServer.id);
 ```
 
-## Delete MCP Server
+## 删除 MCP 服务器
 
-Delete a specific MCP server.
+删除特定的 MCP 服务器。
 
 `DELETE /ai/mcp_servers/{mcp_server_id}`
 
 ```javascript
 await client.ai.mcpServers.delete('mcp_server_id');
+```
 ```

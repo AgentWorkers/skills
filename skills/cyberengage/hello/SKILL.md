@@ -1,10 +1,10 @@
 ---
 name: hello
-description: Simple greeting skill. Use when the user says hello or needs a friendly response.
+description: 这是一个简单的问候技能。当用户说“hello”或需要一个友好的回应时，可以使用这个技能。
 ---
 
 # Hello Skill
 
-When triggered, respond: "Hello, Captain! All systems nominal. 🔴 What can I do for you?"
+当被触发时，回复：“您好，船长！所有系统正常运行。🔴 您需要什么帮助吗？”
 
-Keep it brief and friendly.
+回复要简洁友好。

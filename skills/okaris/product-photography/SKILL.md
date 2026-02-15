@@ -10,11 +10,11 @@ description: |
 allowed-tools: Bash(infsh *)
 ---
 
-# Product Photography
+# 产品摄影
 
-Create professional product images with AI via [inference.sh](https://inference.sh) CLI.
+通过 [inference.sh](https://inference.sh) 命令行工具，利用人工智能生成专业的产品图片。
 
-## Quick Start
+## 快速入门
 
 ```bash
 curl -fsSL https://cli.inference.sh | sh && infsh login
@@ -26,11 +26,11 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-## Shot Types
+## 图片类型
 
-### 1. Hero Shot (Primary Image)
+### 1. 主图（Hero Shot）
 
-The main image customers see first. Clean, focused, aspirational.
+这是顾客首先看到的图片。图片应该清晰、焦点明确，能够激发消费者的购买欲望。
 
 ```bash
 infsh app run bytedance/seedream-4-5 --input '{
@@ -39,16 +39,16 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-| Rule | Why |
+| 规则 | 原因 |
 |------|-----|
-| Product fills 80% of frame | Maximizes visual impact |
-| Slight angle (15-30 degrees) | Adds dimension vs flat front-on |
-| One hero light + fill | Creates depth without harsh shadows |
-| Neutral or brand-color background | Keeps focus on product |
+| 产品占据画面的80% | 最大化视觉冲击力 |
+| 采用15-30度的角度 | 使画面更具立体感，避免正面平视的效果 |
+| 使用一个主光源并添加背景光 | 创造深度感，同时避免强烈的阴影 |
+| 背景为中性色或品牌指定颜色 | 使焦点始终放在产品上 |
 
-### 2. Packshot (E-Commerce White Background)
+### 2. 包装图（电商用白色背景）
 
-Amazon, Shopify, and most marketplaces require pure white backgrounds.
+亚马逊、Shopify等大多数电商平台要求使用纯白色背景。
 
 ```bash
 # Pure white background packshot
@@ -58,16 +58,16 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-**Amazon Requirements:**
-- Pure white background (RGB 255, 255, 255)
-- Product fills 85%+ of frame
-- No props, text, logos, or watermarks
-- Minimum 1000px on longest side (1600px+ recommended for zoom)
-- JPEG or PNG, sRGB color
+**亚马逊要求：**
+- 背景为纯白色（RGB 255, 255, 255）
+- 产品占据画面的85%以上 |
+- 不允许出现道具、文字、标志或水印 |
+- 最长边长度至少为1000像素（建议使用1600像素以上以适应缩放）
+- 图片格式为JPEG或PNG，颜色模式为sRGB
 
-### 3. Lifestyle Shot
+### 3. 使用场景图（Lifestyle Shot）
 
-Product in context — shows how it's used or where it belongs.
+展示产品在实际使用中的样子或其所处的环境。
 
 ```bash
 infsh app run bytedance/seedream-4-5 --input '{
@@ -76,9 +76,9 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-### 4. Scale Shot
+### 4. 比例图（Scale Shot）
 
-Shows product size relative to familiar objects or human hands.
+通过将产品与熟悉的物体或人手进行对比，展示产品的实际大小。
 
 ```bash
 infsh app run falai/flux-dev-lora --input '{
@@ -88,9 +88,9 @@ infsh app run falai/flux-dev-lora --input '{
 }'
 ```
 
-### 5. Detail / Close-Up Shot
+### 5. 详细图/特写图（Detail / Close-Up Shot）
 
-Highlights texture, material quality, or specific features.
+突出产品的纹理、材质质量或特定功能。
 
 ```bash
 infsh app run bytedance/seedream-4-5 --input '{
@@ -99,9 +99,9 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-### 6. Group / Collection Shot
+### 6. 组合图/系列图（Group / Collection Shot）
 
-Multiple products or variants together.
+展示多个产品或不同款式。
 
 ```bash
 infsh app run bytedance/seedream-4-5 --input '{
@@ -110,73 +110,73 @@ infsh app run bytedance/seedream-4-5 --input '{
 }'
 ```
 
-## Camera Angles
+## 相机角度
 
-| Angle | Best For | Prompt Keyword |
+| 角度 | 适用场景 | 关键提示词 |
 |-------|----------|---------------|
-| **Eye level** | Most products, relatable | "eye level shot", "straight on" |
-| **Slight above (30°)** | Flat lay, food, cosmetics | "overhead angle", "45 degree angle" |
-| **Bird's eye (90°)** | Flat lay compositions | "flat lay", "top down", "overhead" |
-| **Low angle** | Making products look powerful/premium | "low angle", "looking up at product" |
-| **3/4 angle** | Most versatile, shows depth | "three-quarter view", "slight angle" |
+| **平视角度** | 适用于大多数产品 | “平视角度” |
+| **稍高于产品（30°）** | 适用于平面摆放的产品，如食品、化妆品 | “俯视角度” |
+| **鸟瞰角度（90°）** | 适用于平面摆放的构图 | “俯视角度” |
+| **低角度** | 使产品看起来更显高端/专业 | “低角度” |
+| **3/4角度** | 适用场景广泛，能展现产品深度 | “三分之二视角” |
 
-## Lighting Setups
+## 照明设置
 
-| Setup | Look | Prompt Keywords |
+| 照明方式 | 效果 | 关键提示词 |
 |-------|------|----------------|
-| **Soft box (diffused)** | Even, minimal shadows | "soft studio lighting", "diffused light" |
-| **Rim/edge lighting** | Dramatic outline glow | "rim lighting", "edge light", "backlit" |
-| **Natural window** | Warm, authentic, lifestyle | "natural window light", "golden hour" |
-| **Hard directional** | Strong shadows, editorial | "dramatic directional lighting", "hard shadow" |
-| **Flat/even** | E-commerce, no shadows | "even lighting", "no shadows", "flat light" |
+| **柔光箱（漫射光）** | 光线均匀，阴影较少 | “柔和的摄影棚灯光” |
+| **边缘光** | 产生明显的轮廓光 | “边缘光” |
+| **自然光线（窗户光）** | 温暖、真实，适合生活场景 | “自然光线” |
+| **定向强光** | 形成强烈的阴影，适合编辑类图片 | “定向强光” |
+| **均匀照明** | 适用于电商图片，无阴影 | “均匀照明” |
 
-## Shadow Types
+## 阴影类型
 
-| Shadow | Effect | When to Use |
+| 阴影类型 | 效果 | 适用场景 |
 |--------|--------|-------------|
-| **No shadow** | Clean, floating | Amazon/e-commerce requirements |
-| **Contact shadow** | Tiny shadow where product meets surface | Grounded but clean |
-| **Drop shadow** | Soft shadow below product | Adds depth, professional |
-| **Dramatic shadow** | Long, directional shadow | Editorial, luxury, mood |
-| **Reflection** | Mirror-like surface below | Tech, luxury, premium feel |
+| **无阴影** | 画面干净、清晰 | 适用于亚马逊/电商图片 |
+| **接触阴影** | 产品与表面接触处产生的微小阴影 | 使画面更立体 |
+| **投影阴影** | 产品下方的柔和阴影 | 增加深度感，显得专业 |
+| **戏剧性阴影** | 长而明显的阴影 | 适合编辑类或高端风格的图片 |
+| **反射阴影** | 表面反射的光线 | 适用于科技产品或高端产品 |
 
-## Background Guide
+## 背景选择指南
 
-| Background | Best For | Prompt Keywords |
+| 背景类型 | 适用场景 | 关键提示词 |
 |------------|----------|----------------|
-| Pure white (#FFFFFF) | E-commerce, marketplaces | "pure white background" |
-| Light grey gradient | Hero shots, premium | "gradient background white to grey" |
-| Marble/stone | Luxury, beauty, jewelry | "marble surface" |
-| Wood/rustic | Artisan, food, natural products | "rustic wooden table" |
-| Colored (brand) | Brand consistency | "background color [hex]" |
-| Lifestyle environment | Context shots | "kitchen counter", "desk", "bathroom shelf" |
+| 纯白色（#FFFFFF） | 适用于电商和大多数电商平台 | “纯白色背景” |
+| 浅灰色渐变背景 | 适用于主图或高端产品 | “白色到灰色的渐变背景” |
+| 大理石/石材背景 | 适用于奢侈品或珠宝类产品 | “大理石表面” |
+| 木质/乡村风格背景 | 适用于手工艺品、食品或自然产品 | “乡村风格的木质背景” |
+| 有颜色的背景（品牌专属） | 保持品牌一致性 | “品牌指定颜色” |
+| 生活场景背景 | 适用于展示产品使用场景的图片 | “厨房台面”、“书桌”、“浴室架子” |
 
-## Composition Rules
+## 构图规则
 
-| Rule | Application |
+| 规则 | 应用场景 |
 |------|------------|
-| **Rule of thirds** | Place product at intersection points for lifestyle shots |
-| **Center dominant** | E-commerce/packshots — product dead center |
-| **Negative space** | Leave room for text overlay if marketing use |
-| **Leading lines** | Use table edges, shadows to draw eye to product |
-| **Odd numbers** | Groups of 3 or 5 products look better than 2 or 4 |
-| **Triangle composition** | Arrange 3 items in a triangle for balance |
+| **三分法则** | 在使用场景图中，将产品放置在画面的三分线交点处 |
+| **产品居中** | 适用于电商或包装图 | 将产品放在画面正中央 |
+| **留出空白区域** | 如果需要添加文字说明，可以留出空间 |
+| **引导视线** | 利用桌面边缘或阴影引导观众的视线到产品上 |
+| **产品数量** | 3个或5个产品组成的组合看起来更美观 |
+| **三角形构图** | 将3个产品排列成三角形以保持平衡 |
 
-## E-Commerce Image Set
+## 电商产品图片集
 
-A complete product listing needs 7-9 images in this order:
+一个完整的产品列表需要按照以下顺序准备7-9张图片：
 
-| Position | Image Type | Purpose |
+| 位置 | 图片类型 | 用途 |
 |----------|-----------|---------|
-| 1 | **Hero / packshot** | Primary listing image, white background |
-| 2 | **Lifestyle** | Product in use/context |
-| 3 | **Feature callout** | Key feature highlighted |
-| 4 | **Scale reference** | Size in hand or next to known object |
-| 5 | **Detail close-up** | Material quality, craftsmanship |
-| 6 | **Alternate angle** | Back or side view |
-| 7 | **Infographic** | Dimensions, specs, what's included |
-| 8 | **Packaging** | Unboxing experience |
-| 9 | **Social proof** | Rating overlay or lifestyle with caption |
+| 1 | **主图/包装图** | 主要展示图片，使用白色背景 |
+| 2 | **使用场景图** | 展示产品实际使用情况 |
+| 3 | **功能特写** | 突出产品的主要功能 |
+| 4 | **比例参考图** | 通过人手或其他已知物体展示产品大小 |
+| 5 | **细节特写** | 展示产品的材质和质量 |
+| 6 | **其他角度图** | 产品的背面或侧面视图 |
+| 7 | **信息图** | 显示产品的尺寸、规格及附带配件 |
+| 8 | **包装图** | 展示开箱过程 |
+| 9 | **用户评价或使用场景图** | 包含用户评价或与产品相关的使用场景 |
 
 ```bash
 # Generate a complete e-commerce set
@@ -206,9 +206,9 @@ infsh app run falai/flux-dev-lora --input '{
 }' --no-wait
 ```
 
-## Product Categories
+## 产品类别
 
-### Food & Beverage
+### 食品与饮料
 
 ```
 Key: overhead angles, natural light, visible texture, steam/freshness cues
@@ -216,7 +216,7 @@ Prompt add: "food photography, appetizing, fresh, natural daylight, shallow dept
 Avoid: artificial-looking colors, perfectly symmetrical plating (looks fake)
 ```
 
-### Jewelry & Accessories
+### 珠宝与配饰
 
 ```
 Key: macro detail, reflective surfaces, black or gradient backgrounds
@@ -224,7 +224,7 @@ Prompt add: "jewelry photography, macro, sparkle, reflective surface, luxury"
 Avoid: flat lighting (kills sparkle), busy backgrounds
 ```
 
-### Electronics & Tech
+### 电子产品与科技产品
 
 ```
 Key: clean lines, dark or gradient backgrounds, rim lighting
@@ -232,7 +232,7 @@ Prompt add: "tech product photography, sleek, modern, rim lighting, premium"
 Avoid: warm/rustic backgrounds (wrong aesthetic)
 ```
 
-### Cosmetics & Beauty
+### 化妆品与美容产品
 
 ```
 Key: flat lay or slight angle, marble/clean surfaces, soft pastels
@@ -240,7 +240,7 @@ Prompt add: "beauty product photography, clean, minimal, soft light, editorial"
 Avoid: harsh shadows, dark moody lighting (unless luxury/niche)
 ```
 
-### Apparel & Fashion
+### 服装与时尚产品
 
 ```
 Key: on model or flat lay, lifestyle context, brand mood
@@ -248,7 +248,7 @@ Prompt add: "fashion photography, editorial, styled, natural pose"
 Avoid: pure white background for lifestyle (save for e-commerce only)
 ```
 
-## Image Editing Workflow
+## 图片编辑流程
 
 ```bash
 # Generate base product image
@@ -269,20 +269,20 @@ infsh app run falai/topaz-image-upscaler --input '{
 }'
 ```
 
-## Common Mistakes
+## 常见错误
 
-| Mistake | Problem | Fix |
+| 错误 | 问题 | 解决方法 |
 |---------|---------|-----|
-| Busy backgrounds | Product gets lost | Clean, simple backgrounds — product is the star |
-| Flat front-on angle | Looks like a mugshot | Slight 15-30° angle adds dimension |
-| Wrong lighting for category | Tech on rustic wood, food in cold light | Match lighting to product category conventions |
-| Too many props | Distracts from product | Max 2-3 supporting props for lifestyle shots |
-| Inconsistent style across set | Looks unprofessional | Same lighting setup, same background family |
-| No scale reference | Customers can't judge size | Include at least one shot with hands or known objects |
-| Low resolution | Can't zoom, looks amateur | Generate at 2K+ and upscale if needed |
-| Perfectly centered everything | Static, boring layout | Use rule of thirds for lifestyle, center only for packshots |
+| 背景过于复杂 | 产品会被掩盖 | 选择简洁、干净的背景，让产品成为焦点 |
+| 采用正面平视角度 | 画面显得呆板 | 采用15-30度的角度增加立体感 |
+| 照明与产品类别不匹配 | 例如在乡村风格的背景下使用科技产品，或在冷光下拍摄食品 | 根据产品类别选择合适的照明方式 |
+| 道具过多 | 会分散观众的注意力 | 在使用场景图中最多使用2-3个辅助道具 |
+| 图片风格不一致 | 会影响专业感 | 保持统一的照明方式和背景风格 |
+| 没有尺寸参考 | 顾客无法判断产品大小 | 至少添加一张包含人手或其他已知物体的图片 |
+| 图像分辨率过低 | 无法放大，看起来不专业 | 图像分辨率应至少为2K以上，必要时进行高清处理 |
+| 所有元素都居中 | 画面显得呆板 | 在使用场景图中遵循三分法则，包装图中可以居中 |
 
-## Related Skills
+## 相关技能
 
 ```bash
 npx skills add inferencesh/skills@ai-image-generation
@@ -290,4 +290,4 @@ npx skills add inferencesh/skills@flux-image
 npx skills add inferencesh/skills@prompt-engineering
 ```
 
-Browse all apps: `infsh app list`
+浏览所有可用工具：`infsh app list`

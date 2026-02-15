@@ -1,15 +1,15 @@
 ---
 name: Pocket Alert – Push Notifications for iOS and Android
-description: The Pocket Alert (pocketalert.app) skill for OpenClaw enables OpenClaw agents and workflows to send push notifications to iOS and Android devices. It is used to deliver alerts and updates from automated tasks, workflows, and background processes.
+description: OpenClaw 的 Pocket Alert (pocketalert.app) 技能允许 OpenClaw 代理和工作流程向 iOS 和 Android 设备发送推送通知。该功能用于从自动化任务、工作流程以及后台进程中传递警报和更新信息。
 ---
 
 # Pocket Alert
 
-This skill enables interaction with the [Pocket Alert](https://pocketalert.app) service through its CLI tool.
+该技能允许通过其命令行工具（CLI）与 [Pocket Alert](https://pocketalert.app) 服务进行交互。
 
-## Prerequisites
+## 先决条件
 
-The `pocketalert` CLI must be installed and authenticated:
+必须安装并完成 `pocketalert` CLI 的身份验证：
 
 ```bash
 # Install (if not already installed)
@@ -19,9 +19,9 @@ The `pocketalert` CLI must be installed and authenticated:
 pocketalert auth <your-api-key>
 ```
 
-## Quick Reference
+## 快速参考
 
-### Send Push Notifications
+### 发送推送通知
 
 ```bash
 # Basic notification
@@ -40,7 +40,7 @@ pocketalert messages send -t "Alert" -m "Check server" -d <device-tid>
 pocketalert messages send -t "Alert" -m "System update" -d all
 ```
 
-### List Resources
+### 列出资源
 
 ```bash
 # List last messages
@@ -61,7 +61,7 @@ pocketalert webhooks list
 pocketalert apikeys list
 ```
 
-### Manage Applications
+### 管理应用程序
 
 ```bash
 # Create application
@@ -75,7 +75,7 @@ pocketalert apps get <tid>
 pocketalert apps delete <tid>
 ```
 
-### Manage Devices
+### 管理设备
 
 ```bash
 # List devices
@@ -88,7 +88,7 @@ pocketalert devices get <tid>
 pocketalert devices delete <tid>
 ```
 
-### Manage Webhooks
+### 管理 Webhook
 
 ```bash
 # Create webhook
@@ -106,9 +106,9 @@ pocketalert webhooks get <tid>
 pocketalert webhooks delete <tid>
 ```
 
-## Message Template Variables
+## 消息模板变量
 
-When creating webhooks, you can use template variables from the incoming payload:
+在创建 Webhook 时，可以使用来自传入数据的模板变量：
 
 ```bash
 pocketalert webhooks create \
@@ -116,9 +116,9 @@ pocketalert webhooks create \
   --message "Push to %repository.name%: %head_commit.message%"
 ```
 
-## Configuration
+## 配置
 
-View or modify configuration:
+查看或修改配置：
 
 ```bash
 # View config
@@ -131,9 +131,9 @@ pocketalert config set api_key <new-api-key>
 pocketalert config set base_url https://your-api.example.com
 ```
 
-Configuration is stored at `~/.pocketalert/config.json`.
+配置文件存储在 `~/.pocketalert/config.json` 中。
 
-## CI/CD Integration Examples
+## CI/CD 集成示例
 
 ```bash
 # GitHub Actions / GitLab CI
@@ -148,11 +148,11 @@ if ! systemctl is-active --quiet nginx; then
 fi
 ```
 
-## Error Handling
+## 错误处理
 
-The CLI returns appropriate exit codes:
-- `0` - Success
-- `1` - Authentication or API error
-- `2` - Invalid arguments
+CLI 会返回相应的退出代码：
+- `0` - 成功
+- `1` - 身份验证或 API 错误
+- `2` - 参数无效
 
-Always check command output for error details.
+请始终检查命令输出以获取错误详细信息。

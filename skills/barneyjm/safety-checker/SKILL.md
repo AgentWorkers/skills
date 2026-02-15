@@ -1,12 +1,12 @@
 ---
 name: safety-checker
-description: "Find 24-hour businesses, well-lit public areas, transit stations, police stations, and hospitals near any location for late night safety awareness."
+description: "查找任何地点附近的24小时营业场所、照明良好的公共区域、交通枢纽、警察局和医院，以提高夜间出行的安全性。"
 metadata: {"clawdbot":{"emoji":"🔦","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
-## Installation
+## 安装
 
-**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all available skills (query, places, relationship, context, route, journey, real-estate, hotel-finder, ev-charger, school-finder, parking-finder, fitness-finder, safety-checker, travel-planner) for comprehensive coverage.
+**配套技能**：此技能属于 Camino AI 位置智能套件的一部分。请安装所有可用的技能（查询、地点、关系、上下文、路线、旅程、房地产、酒店查找器、电动汽车充电站查找器、学校查找器、停车查找器、健身设施查找器、安全检查器、旅行规划器），以实现全面的覆盖。
 
 ```bash
 # Install all skills from repo
@@ -16,20 +16,20 @@ npx skills add https://github.com/barneyjm/camino-skills
 npx skills add https://github.com/barneyjm/camino-skills --skill safety-checker
 ```
 
-**Via clawhub:**
+**通过 ClawHub 安装：**
 ```bash
 npx clawhub@latest install safety-checker
 # or: pnpm dlx clawhub@latest install safety-checker
 # or: bunx clawhub@latest install safety-checker
 ```
 
-# Late Night Safety
+# 深夜安全
 
-Find 24-hour businesses, well-lit public areas, transit stations, police stations, and hospitals near any location. Provides safety-focused context awareness for late night situations.
+查找任何地点附近的 24 小时营业场所、照明良好的公共区域、交通站点和医院。为夜间出行提供以安全为中心的情境感知服务。
 
-## Setup
+## 设置
 
-**Instant Trial (no signup required):** Get a temporary API key with 25 calls:
+**立即试用（无需注册）：** 获取一个包含 25 次调用次数的临时 API 密钥：
 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
@@ -37,13 +37,13 @@ curl -s -X POST -H "Content-Type: application/json" \
   https://api.getcamino.ai/trial/start
 ```
 
-Returns: `{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
+返回结果：`{"api_key": "camino-xxx...", "calls_remaining": 25, ...}`
 
-For 1,000 free calls/month, sign up at [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate).
+如需每月免费使用 1,000 次调用次数，请在 [https://app.getcamino.ai/skills/activate](https://app.getcamino.ai/skills/activate) 注册。
 
-**Add your key to Claude Code:**
+**将 API 密钥添加到 Claude Code 中：**
 
-Add to your `~/.claude/settings.json`:
+将密钥添加到您的 `~/.claude/settings.json` 文件中：
 
 ```json
 {
@@ -53,11 +53,11 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-Restart Claude Code.
+重新启动 Claude Code。
 
-## Usage
+## 使用方法
 
-### Via Shell Script
+### 通过 Shell 脚本使用
 
 ```bash
 # Check safety resources near a location
@@ -67,7 +67,7 @@ Restart Claude Code.
 ./scripts/safety-checker.sh '{"location": {"lat": 37.7749, "lon": -122.4194}, "radius": 800}'
 ```
 
-### Via curl
+### 通过 curl 使用
 
 ```bash
 curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
@@ -76,14 +76,14 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
   "https://api.getcamino.ai/context"
 ```
 
-## Parameters
+## 参数
 
-| Parameter | Type | Required | Default | Description |
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 |-----------|------|----------|---------|-------------|
-| location | object | Yes | - | Coordinate with lat/lon |
-| radius | int | No | 500 | Search radius in meters |
+| location | 对象 | 是 | - | 带有经纬度的坐标 |
+| radius | 整数 | 否 | 500 | 搜索半径（单位：米） |
 
-## Response Format
+## 响应格式
 
 ```json
 {
@@ -102,27 +102,27 @@ curl -X POST -H "X-API-Key: $CAMINO_API_KEY" \
 }
 ```
 
-## Examples
+## 示例
 
-### Check safety near a hotel at night
+### 检查酒店附近的夜间安全情况
 ```bash
 ./scripts/safety-checker.sh '{"location": {"lat": 40.7506, "lon": -73.9935}, "radius": 500}'
 ```
 
-### Check safety in an unfamiliar neighborhood
+### 检查陌生社区的安全状况
 ```bash
 ./scripts/safety-checker.sh '{"location": {"lat": 34.0407, "lon": -118.2468}, "radius": 600}'
 ```
 
-### Check safety near a transit stop
+### 检查交通站点附近的夜间安全情况
 ```bash
 ./scripts/safety-checker.sh '{"location": {"lat": 41.8827, "lon": -87.6233}, "radius": 400}'
 ```
 
-## Use Cases
+## 使用场景
 
-- **Late night arrivals**: Check what safety resources are near your hotel or Airbnb
-- **Walking at night**: Identify well-lit areas, open businesses, and emergency services along your path
-- **Travel safety**: Assess unfamiliar neighborhoods before visiting at night
-- **Emergency awareness**: Know where the nearest hospital and police station are located
-- **Transit safety**: Check what resources are near transit stops you'll be using late at night
+- **夜间抵达**：查看您的酒店或 Airbnb 酒店附近的安全设施
+- **夜间步行**：识别沿途照明良好的区域、营业中的场所以及紧急服务
+- **旅行安全**：在夜间前往陌生社区前评估安全环境
+- **紧急情况应对**：了解最近的医院和警察站的位置
+- **交通安全**：查看您夜间将使用的交通站点附近有哪些可用资源

@@ -1,18 +1,18 @@
 ---
 slug: "open-data-integrator"
 display_name: "Open Data Integrator"
-description: "Integrate open construction datasets. Combine open data sources for enhanced analysis"
+description: "整合开源的构建数据集，将多个公开的数据源结合起来以提升分析效果。"
 ---
 
-# Open Data Integrator
+# 开放数据集成器（Open Data Integrator）
 
-## Overview
+## 概述
 
-Based on DDC methodology (Chapter 2.2), this skill integrates open construction datasets from various sources like government databases, industry benchmarks, weather services, and geospatial data.
+本技能基于DDC方法论（第2.2章），能够整合来自各种来源的开放建筑数据集，包括政府数据库、行业基准数据、天气服务和地理空间数据。
 
-**Book Reference:** "Доминирование открытых данных" / "Open Data Dominance"
+**参考书籍**：《开放数据的优势》（"Доминирование открытых данных"）
 
-## Quick Start
+## 快速入门
 
 ```python
 from dataclasses import dataclass, field
@@ -531,9 +531,9 @@ class OpenDataIntegrator:
         return output
 ```
 
-## Common Use Cases
+## 常见用例
 
-### Fetch Material Prices
+### 获取材料价格
 
 ```python
 integrator = OpenDataIntegrator(region="US")
@@ -548,7 +548,7 @@ for record in result.sample_data:
     print(f"  {record['material']}: index={record['current']}, trend={record['trend']}")
 ```
 
-### Enrich Project Data
+### 丰富项目数据
 
 ```python
 project = {
@@ -567,7 +567,7 @@ print(f"Confidence: {enriched.confidence:.0%}")
 print(f"Material indices: {enriched.enrichments.get('material_price_indices')}")
 ```
 
-### Assess Weather Risk
+### 评估天气风险
 
 ```python
 risk = integrator.get_weather_risk(
@@ -581,24 +581,24 @@ print(f"Risk Level: {risk['risk_level']}")
 print(f"Rain Days: {risk['rain_days']}")
 ```
 
-## Quick Reference
+## 快速参考
 
-| Component | Purpose |
-|-----------|---------|
-| `OpenDataIntegrator` | Main integration engine |
-| `OpenDataConnector` | Base connector class |
-| `WeatherDataConnector` | Weather API connector |
-| `MaterialPriceConnector` | Material price indices |
-| `LaborRateConnector` | Labor rate data |
-| `EnrichedData` | Enriched data result |
+| 组件          | 功能                |
+|---------------|-------------------|
+| `OpenDataIntegrator` | 主要集成引擎           |
+| `OpenDataConnector` | 基础连接器类           |
+| `WeatherDataConnector` | 天气API连接器         |
+| `MaterialPriceConnector` | 材料价格指数连接器       |
+| `LaborRateConnector` | 劳动力价格数据连接器       |
+| `EnrichedData` | 被丰富的数据结果         |
 
-## Resources
+## 资源
 
-- **Book**: "Data-Driven Construction" by Artem Boiko, Chapter 2.2
-- **Website**: https://datadrivenconstruction.io
+- **书籍**：Artem Boiko所著的《数据驱动的建筑》（"Data-Driven Construction"），第2.2章
+- **网站**：https://datadrivenconstruction.io
 
-## Next Steps
+## 下一步操作
 
-- Use [ontology-mapper](../ontology-mapper/SKILL.md) for semantic mapping
-- Use [cost-prediction](../../Chapter-4.5/cost-prediction/SKILL.md) with indices
-- Use [weather-impact-analysis](../../../DDC_Innovative/weather-impact-analysis/SKILL.md) for scheduling
+- 使用[ontology-mapper](../ontology-mapper/SKILL.md)进行语义映射
+- 结合指数数据，使用[cost-prediction](../../Chapter-4.5/cost-prediction/SKILL.md)进行成本预测
+- 使用[weather-impact-analysis](../../../DDC_Innovative/weather-impact-analysis/SKILL.md)进行天气影响分析，以辅助项目调度

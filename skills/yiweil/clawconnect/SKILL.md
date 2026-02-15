@@ -1,47 +1,47 @@
 ---
 name: clawconnect
-description: "ClawConnect - Universal account connector for AI agents. Send tweets, read/send Gmail, manage calendar, send Slack messages, and more through one API."
+description: "**ClawConnect** – 适用于 AI 代理的通用账户连接器。通过一个统一的 API，您可以发送推文、收发 Gmail 邮件、管理日历、发送 Slack 消息等操作。"
 ---
 
 # ClawConnect
 
-Universal account connector for AI agents. One API to access Gmail, Calendar, Twitter, Slack, and Discord.
+这是一个通用的账户连接器，用于连接各种AI代理。通过一个API即可访问Gmail、Calendar、Twitter和Discord。
 
-## Setup
+## 设置
 
-1. Go to https://clawconnect.dev and sign up
-2. Connect your accounts (Twitter, Gmail, Calendar, Slack, Discord)
-3. Get your API key from the dashboard
-4. All requests require `Authorization: Bearer <API_KEY>`
+1. 访问 https://clawconnect.dev 并注册账户。
+2. 将您的账户（Twitter、Gmail、Calendar、Slack、Discord）连接到该服务。
+3. 从控制面板中获取您的API密钥。
+4. 所有请求都需要添加 `Authorization: Bearer <API_KEY>` 标头。
 
-Base URL: `https://clawconnect.dev`
+基础URL：`https://clawconnect.dev`
 
-## API Endpoints
+## API接口
 
-### Connections
+### 连接管理
 
-List connected accounts:
-```bash
+- 列出已连接的账户：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/connections
 ```
 
 ### Twitter
 
-Get your Twitter profile:
-```bash
+- 获取您的Twitter个人资料：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/twitter/me
 ```
 
-Get timeline:
-```bash
+- 获取您的Twitter时间线：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/twitter/timeline
 ```
 
-Post a tweet:
-```bash
+- 发布推文：
+  ```bash
 curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"text": "Hello from ClawConnect!"}' \
@@ -50,20 +50,20 @@ curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
 
 ### Gmail
 
-List emails (with optional search query and max results):
-```bash
+- 列出电子邮件（支持可选搜索查询和结果数量限制）：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   "https://clawconnect.dev/api/v1/gmail/messages?q=is:unread&maxResults=10"
 ```
 
-Get email by ID:
-```bash
+- 根据ID获取电子邮件：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/gmail/messages/MESSAGE_ID
 ```
 
-Send email:
-```bash
+- 发送电子邮件：
+  ```bash
 curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"to": "recipient@example.com", "subject": "Hello", "body": "Email body here"}' \
@@ -72,34 +72,34 @@ curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
 
 ### Calendar
 
-List events (with optional time range and max results):
-```bash
+- 列出事件（支持可选时间范围和结果数量限制）：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   "https://clawconnect.dev/api/v1/calendar/events?timeMin=2025-01-01T00:00:00Z&timeMax=2025-01-31T23:59:59Z&maxResults=20"
 ```
 
 ### Slack
 
-List workspace users:
-```bash
+- 列出工作空间中的用户：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/slack/users
 ```
 
-List channels:
-```bash
+- 列出频道：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/slack/channels
 ```
 
-Get your Slack profile:
-```bash
+- 获取您的Slack个人资料：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/slack/profile
 ```
 
-Send a message (channel can be a channel ID or user ID):
-```bash
+- 发送消息（频道可以是频道ID或用户ID）：
+  ```bash
 curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"channel": "C01234ABCDE", "text": "Hello!"}' \
@@ -108,22 +108,22 @@ curl -X POST -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
 
 ### Discord
 
-Get your Discord profile:
-```bash
+- 获取您的Discord个人资料：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/discord/me
 ```
 
-List guilds (servers):
-```bash
+- 列出您所属的服务器（Discord中的公会）：
+  ```bash
 curl -H "Authorization: Bearer $CLAWCONNECT_API_KEY" \
   https://clawconnect.dev/api/v1/discord/guilds
 ```
 
-## Notes
+## 注意事项
 
-- Confirm before sending tweets or emails.
-- Use `q` parameter on Gmail to filter (same syntax as Gmail search).
-- Calendar `timeMin`/`timeMax` accept ISO 8601 timestamps.
-- Discord send is currently disabled (user OAuth limitation). Read-only for now.
-- For Slack with multiple workspaces, pass `connection_id` to target a specific connection.
+- 在发送推文或电子邮件之前，请务必确认内容。
+- 在Gmail中，可以使用 `q` 参数进行过滤（语法与Gmail的搜索功能相同）。
+- Calendar的 `timeMin`/`timeMax` 参数支持ISO 8601时间戳格式。
+- 目前Discord的发送功能被禁用（受用户OAuth权限限制），目前仅支持读取操作。
+- 如果您使用多个Slack工作空间，请通过 `connection_id` 参数指定目标工作空间。

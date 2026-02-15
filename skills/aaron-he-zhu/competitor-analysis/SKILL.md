@@ -1,36 +1,36 @@
 ---
 name: competitor-analysis
-description: Analyzes competitor SEO and GEO strategies including their ranking keywords, content approaches, backlink profiles, and AI citation patterns. Reveals opportunities to outperform competition.
+description: 分析竞争对手的SEO和GEO策略，包括他们的排名关键词、内容创作方式、外部链接情况以及AI引用的模式。揭示超越竞争对手的机会。
 geo-relevance: "medium"
 ---
 
-# Competitor Analysis
+# 竞争对手分析
 
-This skill provides comprehensive analysis of competitor SEO and GEO strategies, revealing what's working in your market and identifying opportunities to outperform the competition.
+该技能提供对竞争对手搜索引擎优化（SEO）和地理位置（GEO）策略的全面分析，揭示在您的市场中哪些策略有效，并识别超越竞争对手的机会。
 
-## When to Use This Skill
+## 适用场景
 
-- Entering a new market or niche
-- Planning content strategy based on competitor success
-- Understanding why competitors rank higher
-- Finding backlink and partnership opportunities
-- Identifying content gaps competitors are missing
-- Analyzing competitor AI citation strategies
-- Benchmarking your SEO performance
+- 进入新市场或细分市场时
+- 根据竞争对手的成功情况制定内容策略时
+- 了解竞争对手为何排名更高时
+- 寻找反向链接和合作机会时
+- 识别竞争对手在内容上的不足之处时
+- 分析竞争对手的人工智能（AI）引用策略时
+- 对比自己的SEO表现时
 
-## What This Skill Does
+## 功能介绍
 
-1. **Keyword Analysis**: Identifies keywords competitors rank for
-2. **Content Audit**: Analyzes competitor content strategies and formats
-3. **Backlink Profiling**: Reviews competitor link-building approaches
-4. **Technical Assessment**: Evaluates competitor site health
-5. **GEO Analysis**: Identifies how competitors appear in AI responses
-6. **Gap Identification**: Finds opportunities competitors miss
-7. **Strategy Extraction**: Reveals actionable insights from competitor success
+1. **关键词分析**：识别竞争对手所排名的关键词
+2. **内容审计**：分析竞争对手的内容策略和格式
+3. **反向链接分析**：评估竞争对手的链接构建方法
+4. **技术评估**：评估竞争对手网站的健康状况
+5. **地理位置分析**：分析竞争对手在AI搜索结果中的表现
+6. **差距识别**：发现竞争对手未注意到的机会
+7. **策略提取**：从竞争对手的成功中提取可操作的洞察
 
-## How to Use
+## 使用方法
 
-### Basic Competitor Analysis
+### 基础竞争对手分析
 
 ```
 Analyze SEO strategy for [competitor URL]
@@ -40,7 +40,7 @@ Analyze SEO strategy for [competitor URL]
 Compare my site [URL] against [competitor 1], [competitor 2], [competitor 3]
 ```
 
-### Specific Analysis
+### 专项分析
 
 ```
 What content is driving the most traffic for [competitor]?
@@ -50,36 +50,35 @@ What content is driving the most traffic for [competitor]?
 Analyze why [competitor] ranks #1 for [keyword]
 ```
 
-### GEO-Focused Analysis
+### 地理位置聚焦分析
 
 ```
 How is [competitor] getting cited in AI responses? What can I learn?
 ```
 
-## Data Sources
+## 数据来源
 
-> See [CONNECTORS.md](../../CONNECTORS.md) for tool category placeholders.
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。
 
-**With ~~SEO tool + ~~analytics + ~~AI monitor connected:**
-Automatically pull competitor keyword rankings, backlink profiles, top performing content, domain authority metrics from ~~SEO tool. Compare against your site's metrics from ~~analytics and ~~search console. Check AI citation patterns for both your site and competitors using ~~AI monitor.
+**当连接了 ~~SEO工具 + ~~分析工具 + ~~AI监控工具时：**
+自动获取竞争对手的关键词排名、反向链接信息、表现最佳的内容以及域名权威度数据（来自 ~~SEO工具）。将这些数据与您的网站指标（来自 ~~分析工具和 ~~搜索控制台）进行对比。使用 ~~AI监控工具** 检查您自己和竞争对手的AI引用模式。
 
-**With manual data only:**
-Ask the user to provide:
-1. Competitor URLs to analyze (2-5 recommended)
-2. Your own site URL and current metrics (traffic, rankings if known)
-3. Industry or niche context
-4. Specific aspects to focus on (keywords, content, backlinks, etc.)
-5. Any known competitor strengths or weaknesses
+**仅使用手动数据时：**
+请用户提供以下信息：
+1. 需要分析的竞争对手网址（建议2-5个）
+2. 您自己的网站网址及当前指标（流量、排名等）
+3. 行业或细分市场背景
+4. 需要关注的具体方面（关键词、内容、反向链接等）
+5. 竞争对手的已知优势或劣势
 
-Proceed with the full analysis using provided data. Note in the output which metrics are from automated collection vs. user-provided data.
+根据提供的数据开始全面分析。在输出结果中明确标注哪些数据来自自动化收集，哪些数据来自用户提供。
 
-## Instructions
+## 操作步骤
 
-When a user requests competitor analysis:
+当用户请求竞争对手分析时：
 
-1. **Identify Competitors**
-
-   If not specified, help identify competitors:
+1. **确定竞争对手**
+   如果未指定，协助确定竞争对手：
    
    ```markdown
    ### Competitor Identification Framework
@@ -99,9 +98,8 @@ When a user requests competitor analysis:
    - Include media sites, blogs, aggregators
    ```
 
-2. **Gather Competitor Data**
-
-   For each competitor, collect:
+2. **收集竞争对手数据**
+   为每个竞争对手收集以下数据：
    
    ```markdown
    ## Competitor Profile: [Name]
@@ -118,8 +116,7 @@ When a user requests competitor analysis:
    - Key Offerings: [products/services]
    ```
 
-3. **Analyze Keyword Rankings**
-
+3. **分析关键词排名**
    ```markdown
    ### Keyword Analysis: [Competitor]
    
@@ -148,8 +145,7 @@ When a user requests competitor analysis:
    | [kw 1] | [pos] | [vol] | [analysis] |
    ```
 
-4. **Audit Content Strategy**
-
+4. **审计内容策略**
    ```markdown
    ### Content Analysis: [Competitor]
    
@@ -192,8 +188,7 @@ When a user requests competitor analysis:
    3. [Success factor 3 with example]
    ```
 
-5. **Analyze Backlink Profile**
-
+5. **分析反向链接情况**
    ```markdown
    ### Backlink Analysis: [Competitor]
    
@@ -228,8 +223,7 @@ When a user requests competitor analysis:
    | [asset 1] | [type] | [X] | [reason] |
    ```
 
-6. **Technical SEO Assessment**
-
+6. **进行技术SEO评估**
    ```markdown
    ### Technical Analysis: [Competitor]
    
@@ -255,8 +249,7 @@ When a user requests competitor analysis:
    2. [Weakness 2]
    ```
 
-7. **GEO/AI Citation Analysis**
-
+7. **地理位置/AI引用分析**
    ```markdown
    ### GEO Analysis: [Competitor]
    
@@ -295,8 +288,7 @@ When a user requests competitor analysis:
    | [topic 1] | [reason] | [action] |
    ```
 
-8. **Synthesize Competitive Intelligence**
-
+8. **整合竞争情报**
    ```markdown
    # Competitive Analysis Report
    
@@ -383,27 +375,26 @@ When a user requests competitor analysis:
    2. [Action item]
    ```
 
-## Validation Checkpoints
+## 验证要点
 
-### Input Validation
-- [ ] Competitor URLs verified as relevant to your niche
-- [ ] Analysis scope defined (comprehensive or specific focus area)
-- [ ] Your own site metrics available for comparison
-- [ ] Minimum 2-3 competitors identified for meaningful patterns
+### 输入验证
+- [ ] 确认竞争对手的网址与您的细分市场相关
+- [ ] 明确分析范围（全面分析或聚焦特定领域）
+- [ ] 您自己的网站指标可供对比
+- [ ] 至少识别2-3个竞争对手以发现有意义的趋势
 
-### Output Validation
-- [ ] Every recommendation cites specific data points (not generic advice)
-- [ ] Competitor strengths backed by measurable evidence (metrics, rankings)
-- [ ] Opportunities based on identifiable gaps, not assumptions
-- [ ] Action plan items are specific and actionable (not vague strategies)
-- [ ] Source of each data point clearly stated (~~SEO tool data, ~~analytics data, ~~AI monitor data, user-provided, or estimated)
+### 输出验证
+- [ ] 每条建议都基于具体的数据点（而非泛泛而谈）
+- [ ] 竞争对手的优势有可量化的证据支持（如指标、排名等）
+- [ ] 识别出的机会基于可确认的差距，而非假设
+- [ ] 行动计划具体且可执行（而非模糊的策略）
+- [ ] 每个数据点的来源均明确标注（来自 ~~SEO工具、~~分析工具、~~AI监控工具、用户提供的数据或估算值）
 
-## Example
+## 示例
 
-**User**: "Analyze why HubSpot ranks so well for marketing-related keywords"
+**用户**：“分析HubSpot为何在营销相关关键词上排名如此靠前”
 
-**Output**:
-
+**输出结果：**
 ```markdown
 # Competitive Analysis: HubSpot
 
@@ -470,72 +461,72 @@ HubSpot appears in AI responses frequently because:
 5. Focus on GEO-optimized definitions in your niche
 ```
 
-## Advanced Analysis Types
+## 高级分析类型
 
-### Content Gap Analysis
+### 内容差距分析
 
 ```
 Show me content [competitor] has that I don't, sorted by traffic potential
 ```
 
-### Link Intersection
+### 链接交叉分析
 
 ```
 Find sites linking to [competitor 1] AND [competitor 2] but not me
 ```
 
-### SERP Feature Analysis
+### 搜索结果页面（SERP）特征分析
 
 ```
 What SERP features do competitors win? (Featured snippets, PAA, etc.)
 ```
 
-### Historical Tracking
+### 历史数据跟踪
 
 ```
 How has [competitor]'s SEO strategy evolved over the past year?
 ```
 
-## Tips for Success
+## 成功技巧
 
-1. **Analyze 3-5 competitors** for comprehensive view
-2. **Include indirect competitors** - they often have innovative approaches
-3. **Look beyond rankings** - analyze content quality, user experience
-4. **Study their failures** - avoid their mistakes
-5. **Monitor regularly** - competitor strategies evolve
-6. **Focus on actionable insights** - what can you actually implement?
+1. **分析3-5个竞争对手** 以获得全面视图
+2. **包括间接竞争对手**——他们通常具有创新的方法
+3. **关注内容质量而非仅仅排名**  
+4. **研究他们的失败之处**——避免重蹈他们的覆辙
+5. **定期监控**——竞争对手的策略会不断演变
+6. **关注可操作的洞察**——哪些措施您可以实际实施？
 
-## Messaging Comparison Framework
+## 消息传递对比框架
 
-### Messaging Matrix
+### 消息传递矩阵
 
-Compare competitor messaging across key dimensions:
+从关键维度对比竞争对手的信息传递方式：
 
-| Dimension | Your Site | Competitor A | Competitor B | Competitor C |
+| 维度 | 您的网站 | 竞争对手A | 竞争对手B | 竞争对手C |
 |-----------|-----------|-------------|-------------|-------------|
-| Core value proposition | | | | |
-| Primary CTA | | | | |
-| Hero headline | | | | |
-| Tone/Voice | | | | |
-| Key differentiator claim | | | | |
-| Social proof type | | | | |
-| Category framing | | | | |
-| Target audience signal | | | | |
+| 核心价值主张 | | | | |
+| 主要行动号召（CTA） | | | | |
+| 标题设计 | | | | |
+| 语气/风格 | | | | |
+| 关键差异化点 | | | | |
+| 社交证明方式 | | | | |
+| 类别定位 | | | | |
+| 目标受众特征 | | | | |
 
-### Narrative Analysis Framework
+### 叙事分析框架
 
-For each competitor, identify their story arc:
+针对每个竞争对手，分析他们的故事框架：
 
-| Element | Description | How to Identify |
+| 元素 | 描述 | 如何识别 |
 |---------|------------|----------------|
-| **Villain** | Problem or enemy they position against | Homepage hero, "why us" page — what status quo do they attack? |
-| **Hero** | Who is the hero in their story | Customer stories, case studies — is the hero the customer or the product? |
-| **Transformation** | What before/after do they promise | Results pages, testimonials — what measurable change? |
-| **Stakes** | What happens if you don't act | Risk messaging, urgency signals — FOMO or loss framing? |
+| **“反派”** | 他们所针对的问题或对手 | 首页的“为什么选择我们”页面——他们抨击的现状是什么？ |
+| **“英雄”** | 故事中的“英雄”是谁 | 客户故事、案例研究——故事中的“英雄”是客户还是产品？ |
+| **变革过程** | 他们承诺带来的改变 | 结果页面、用户评价——可衡量的变化是什么？ |
+| **风险** | 不采取行动会带来什么后果 | 危机感信息、紧迫感表达——是否使用了“错失机会”（FOMO）的表述？ |
 
-### Value Proposition Comparison
+### 价值主张对比
 
-For each competitor, extract:
+针对每个竞争对手，提取他们的价值主张：
 
 ```
 **[Competitor Name]**
@@ -545,53 +536,52 @@ For each competitor, extract:
 - Uniqueness: what they claim only they can do
 ```
 
-## Positioning Strategy Frameworks
+## 定位策略框架
 
-### Positioning Map (2x2 Matrix)
+### 定位图（2x2矩阵）
 
-Plot competitors on key dimension pairs:
+在关键维度对上绘制竞争对手的位置：
 
-| Axis Pair | Best For |
+| 维度对 | 最适合的对象 |
 |-----------|---------|
-| Price vs. Capability | Understanding market tiers |
-| Ease of Use vs. Power | Evaluating UX tradeoffs |
-| SMB vs. Enterprise Focus | Identifying segment gaps |
-| Point Solution vs. Platform | Finding positioning space |
-| Established vs. Innovative | Timing market entry |
+| 价格 vs. 功能 | 了解市场层级 |
+| 易用性 vs. 功能强度 | 评估用户体验的权衡 |
+| 面向中小企业（SMB） vs. 企业级 | 识别目标市场差距 |
+| 单点解决方案 vs. 平台型产品 | 确定定位方向 |
+| 市场成熟度 vs. 创新性 | 判断进入市场的时机 |
 
-### Positioning Statement Reverse-Engineering
+### 定位策略反向工程
 
-For each competitor, reconstruct their implicit positioning:
+针对每个竞争对手，重构他们的隐含定位：
 
-> For **[target audience]**, **[product]** is the **[category]** that **[key benefit]** because **[reason to believe]**.
+> 对于 **[目标受众]**，**[产品]** 是 **[类别]**，因为它具有 **[关键优势]**，原因在于 **[相信的理由]**。
 
-## Competitive Battlecard Template
+## 竞争对手分析卡片模板
 
-### Quick Reference Card Structure
+### 快速参考卡片结构
 
-| Section | Content |
+| 部分 | 内容 |
 |---------|---------|
-| **Overview** | One-sentence description + target customer + pricing model |
-| **Their Pitch** | Tagline + top 3 claimed differentiators |
-| **Strengths** | Where they genuinely compete well (be honest) |
-| **Weaknesses** | Consistent complaints from reviews, technical limitations |
-| **Your Differentiators** | 3-5 specific ways you're different, with proof |
-| **Objection Handling** | "If they say X → respond with Y" table |
-| **Landmines to Set** | Questions that highlight your advantages |
-| **Win/Loss Themes** | Common reasons deals are won/lost against them |
+| **概述** | 一句话描述 + 目标客户 + 定价模式 |
+| **他们的卖点** | 标语 + 他们声称的三大差异化点 |
+| **优势** | 他们真正擅长的方面（如实说明） |
+| **劣势** | 评论中反复提到的问题、技术限制 |
+| **我们的差异化优势** | 3-5个具体的差异化点，并提供证据 |
+| **应对质疑** | “如果他们提到X，你该如何回应” |
+| **需要注意的陷阱** | 可突出您优势的问题 |
+| **胜负关键点** | 与他们竞争时常见的胜负原因 |
 
-## Reference Materials
+## 参考资料
 
-- [Battlecard Template](./references/battlecard-template.md) — Quick-reference competitive battlecard for sales and marketing teams
-- [Positioning Frameworks](./references/positioning-frameworks.md) — Positioning maps, strategy matrices, and differentiation frameworks
+- [竞争对手分析卡片模板](./references/battlecard-template.md) — 适用于销售和营销团队的快速参考卡片
+- [定位框架](./references/positioning-frameworks.md) — 定位图、策略矩阵和差异化分析工具
 
-## Related Skills
+## 相关技能
 
-- [domain-authority-auditor](../../cross-cutting/domain-authority-auditor/) — Compare CITE domain authority scores across competitors for domain-level benchmarking
-- [keyword-research](../keyword-research/) — Research keywords competitors rank for
-- [content-gap-analysis](../content-gap-analysis/) — Find content opportunities
-- [backlink-analyzer](../../monitor/backlink-analyzer/) — Deep-dive into backlinks
-- [serp-analysis](../serp-analysis/) — Understand search result composition
-- [memory-management](../../cross-cutting/memory-management/) — Store competitor data in project memory
-- [entity-optimizer](../../cross-cutting/entity-optimizer/) — Compare entity presence against competitors
-
+- [域名权威度审计](../../cross-cutting/domain-authority-auditor/) — 比较竞争对手的域名权威度得分以进行基准评估
+- [关键词研究](../keyword-research/) — 研究竞争对手所排名的关键词
+- [内容差距分析](../content-gap-analysis/) — 发现内容上的机会
+- [反向链接分析](../../monitor/backlink-analyzer/) — 深入分析反向链接
+- [搜索结果页面分析](../serp-analysis/) — 了解搜索结果的构成
+- [数据管理](../../cross-cutting/memory-management/) — 将竞争对手数据存储在项目中
+- [实体优化工具](../../cross-cutting/entity-optimizer/) — 比较不同竞争对手的实体存在情况

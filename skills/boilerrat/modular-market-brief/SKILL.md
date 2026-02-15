@@ -1,67 +1,67 @@
 ---
 name: modular-market-brief
-description: Generate modular, data-backed market reports (AM/PM) across global assets. Use for daily market briefs, premarket/aftermarket summaries, cross-asset dashboards, sector/asset trend tables, top movers (gainers/losers) blocks, and a single best-idea wrap-up. Designed to be region-agnostic and configurable (tickers/regions/assets).
+description: 生成基于数据的模块化市场报告（涵盖上午和下午的市场情况），涵盖全球各类资产。这些报告可用于每日市场简报、上市前/上市后总结、跨资产仪表盘、行业/资产趋势表、表现最突出的资产（涨幅/跌幅）展示，以及最佳投资策略的汇总。该系统设计为不受地区限制，且具备高度可配置性（支持自定义股票代码、地区和资产范围）。
 ---
 
-# Modular Market Brief
+# 模块化市场简报
 
-Create a concise but information-dense market report that is **modular** (can include/exclude sections) and **data-backed** (prices/returns/trend state when possible).
+生成一份简洁但信息丰富的市场报告，该报告具有模块化结构（可以根据需要包含或排除某些部分），并且基于数据（尽可能提供价格、回报和趋势信息）。
 
-## Inputs to ask for (or assume defaults)
-- **Time window:** AM (since prior close) vs PM (what changed since AM)
-- **Regions:** e.g., US, Canada, EU, Asia (user chooses)
-- **Asset blocks:** equities, rates, FX, commodities, crypto
-- **Core tickers:** indices + user’s preferred ETFs/tickers
-- **Movers source:** which exchange/market and where to get movers
-- **Risk appetite:** conservative vs aggressive framing
+## 需要输入的信息（或默认值）
+- **时间范围**：上午（自前收盘价起） vs 下午（自上午以来发生的变化）
+- **地区**：例如，美国、加拿大、欧盟、亚洲（由用户选择）
+- **资产类别**：股票、利率、外汇、商品、加密货币
+- **核心股票代码**：指数 + 用户偏好的ETF/股票代码
+- **价格变动来源**：具体交易所/市场以及数据来源
+- **风险偏好**：保守型 vs 进取型
 
-If the user doesn’t specify, default to a broad global dashboard with US indices, USD, oil, gold, BTC/ETH.
+如果用户未指定，报告将默认显示全球市场概览，包括美国指数、美元、石油、黄金、比特币/以太坊的价格。
 
-## Report structure (recommended)
-1) **TL;DR** (3–6 bullets)
-2) **Equities** (by region)
-3) **Rates** (2Y/10Y + key central bank watch)
-4) **FX** (DXY or major pairs; local pair for user)
-5) **Commodities** (WTI/Brent, gold, copper; add relevant)
-6) **Crypto** (BTC/ETH + anything user cares about)
-7) **Top movers** (top gainers/losers for a chosen exchange)
-8) **Patterns / trend box** (BUY/SELL/WAIT labels for selected instruments)
-9) **One best idea** (cross-asset; include invalidation)
+## 报告结构（推荐）
+1) **总结**（3–6条要点）
+2) **股票市场**（按地区划分）
+3) **利率**（2年期/10年期利率 + 主要央行的货币政策动向）
+4) **外汇市场**（美元指数（DXY）或主要货币对；用户可自定义本地货币对）
+5) **商品市场**（WTI/布伦特原油、黄金、铜；根据需要添加其他商品）
+6) **加密货币市场**（比特币/以太坊 + 用户关注的其他品种）
+7) **市场热点**（选定交易所中表现最佳的涨跌品种）
+8) **趋势分析**（为选定的资产标明“买入/卖出/观望”标签）
+9) **最佳投资建议**（跨资产的投资策略；包括策略失效的条件）
 
-## Data guidance
-Prefer programmatic price tape when available:
-- Use **yfinance** for tickers/ETFs/crypto/commodity futures (optional dependency).
-- If a market needs a dedicated movers list, use a web source (exchange site / finance portal) and then enrich tickers via yfinance.
+## 数据来源建议
+优先使用程序化方式获取价格数据：
+- 对于股票代码/ETF/加密货币/商品期货，可以使用 `yfinance` 库（可选依赖项）。
+- 如果需要专门的市场变动列表，可以参考交易所网站或金融门户网站的数据，然后通过 `yfinance` 库进一步处理这些数据。
 
-### Installing yfinance (recommended, but not required)
-If yfinance isn’t available, the skill can still produce a narrative brief from public sources.
+### 安装 yfinance（推荐，但非强制）
+如果无法使用 `yfinance`，也可以通过公开来源手动生成报告内容。
 
-For reliable installs on modern Linux distros (PEP 668), prefer a venv:
+在现代 Linux 发行版上（遵循 PEP 668 标准），建议使用虚拟环境（venv）进行安装：
 ```bash
 python3 -m venv ~/.venvs/market-brief
 ~/.venvs/market-brief/bin/pip install -U pip
 ~/.venvs/market-brief/bin/pip install yfinance pandas numpy
 ```
-Then run scripts using `~/.venvs/market-brief/bin/python`.
+之后，使用 `~/.venvs/market-brief/bin/python` 运行相关脚本。
 
-### Trend labeling (simple + explainable)
-Use MA/RSI-based state labels:
-- **BUY:** close > MA20 > MA50 and RSI(14) >= 50
-- **SELL:** close < MA20 < MA50 and RSI(14) <= 50
-- **WAIT:** everything else
+### 趋势判断标准（简单易懂）
+使用移动平均线（MA）和相对强弱指数（RSI）来判断市场趋势：
+- **买入**：收盘价 > MA20 > MA50 且 RSI(14) >= 50
+- **卖出**：收盘价 < MA20 < MA50 且 RSI(14) <= 50
+- **观望**：其他所有情况
 
-Always present it as a **pattern** (not a guarantee) and include a one-line rationale.
+始终将市场趋势判断视为参考建议（不构成投资决策的绝对依据），并附上简要的理由说明。
 
-## Bundled scripts (optional helpers)
-- `scripts/price_tape.py`: pull prices + returns + MA/RSI for a ticker list (yfinance)
-- `scripts/movers_yahoo.py`: free Yahoo Finance screeners for top gainers/losers/actives (best-effort)
-- `scripts/tmx_movers.py`: example movers scraper (TMX Money) you can adapt or swap
-- `scripts/render_example.md`: a template you can reuse
+## 配套脚本（可选辅助工具）
+- `scripts/price_tape.py`：用于获取指定股票代码的价格、回报以及移动平均线和相对强弱指数数据（基于 yfinance 库）
+- `scripts/movers_yahoo.py`：从 Yahoo Finance 网站抓取市场热点数据（尽力完成）
+- `scripts/tmx_movers.py`：示例代码，用于抓取 TMX Money 交易所的市场变动数据（可自行修改或替换）
+- `scripts/render_example.md`：可复用的报告模板
 
-Only run scripts if you actually need structured output; otherwise write the report directly.
+仅在实际需要结构化输出时才运行这些脚本；否则可以直接手动编写报告。
 
-## Safety / finance guardrails
-- Don’t place trades.
-- Avoid certainty language. Use “pattern / bias / invalidation.”
-- If the user asks for explicit buy/sell instructions, provide a **conceptual** plan + risks.
-- Remind about tax/fees only when relevant.
+## 安全与财务注意事项
+- 请勿自行进行交易操作。
+- 避免使用绝对肯定的表述，使用“市场趋势/投资偏见/策略失效”等描述性语言。
+- 如果用户要求提供具体的买卖建议，请提供概念性的方案及潜在风险。
+- 仅在相关情况下提醒用户关于税收/费用的问题。

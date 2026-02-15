@@ -4,26 +4,26 @@ description: |
   Model interpretability and explainability using SHAP, LIME, feature importance, and partial dependence plots. Activates for "explain model", "model interpretability", "SHAP", "LIME", "feature importance", "why prediction", "model explanation". Generates human-readable explanations for model predictions, critical for trust, debugging, and regulatory compliance.
 ---
 
-# Model Explainer
+# 模型可解释性（Model Explainer）
 
-## Overview
+## 概述
 
-Makes black-box models interpretable. Explains why models make specific predictions, which features matter most, and how features interact. Critical for trust, debugging, and regulatory compliance.
+该工具能够将“黑箱”模型转化为可解释的模型，帮助理解模型为何会做出特定预测、哪些特征最为关键，以及这些特征之间是如何相互作用的。这对于建立信任、进行故障排查以及满足监管要求至关重要。
 
-## Why Explainability Matters
+## 可解释性的重要性
 
-- **Trust**: Stakeholders trust models they understand
-- **Debugging**: Find model weaknesses and biases
-- **Compliance**: GDPR, fair lending laws require explanations
-- **Improvement**: Understand what to improve
-- **Safety**: Detect when model might fail
+- **信任**：利益相关者更愿意信任他们能够理解的模型。
+- **故障排查**：有助于发现模型的薄弱环节和潜在偏见。
+- **合规性**：根据GDPR（通用数据保护条例）和公平贷款法规，模型需要提供解释性信息。
+- **模型改进**：明确需要优化的方面。
+- **安全性**：能够及时发现模型可能出现的故障。
 
-## Explanation Types
+## 可解释性的类型
 
-### 1. Global Explanations (Model-Level)
+### 1. 全局解释（模型层面）
 
-**Feature Importance**:
-```python
+- **特征重要性**：
+    ```python
 from specweave import explain_model
 
 explainer = explain_model(
@@ -36,8 +36,8 @@ explainer = explain_model(
 importance = explainer.feature_importance()
 ```
 
-Output:
-```
+    输出：
+    ```
 Top Features (Global):
 1. transaction_amount (importance: 0.35)
 2. user_history_days (importance: 0.22)
@@ -46,22 +46,22 @@ Top Features (Global):
 5. device_type (importance: 0.10)
 ```
 
-**Partial Dependence Plots**:
-```python
+- **部分依赖关系图**：
+    ```python
 # How does feature affect prediction?
 explainer.partial_dependence(feature="transaction_amount")
 ```
 
-### 2. Local Explanations (Prediction-Level)
+### 2. 局部解释（预测层面）
 
-**SHAP Values**:
-```python
+- **SHAP值**：
+    ```python
 # Explain single prediction
 explanation = explainer.explain_prediction(X_sample)
 ```
 
-Output:
-```
+    输出：
+    ```
 Prediction: FRAUD (probability: 0.92)
 
 Why?
@@ -74,13 +74,13 @@ Base prediction: 0.10
 Final prediction: 0.92
 ```
 
-**LIME Explanations**:
-```python
+- **LIME解释**：
+    ```python
 # Local interpretable model
 lime_exp = explainer.lime_explanation(X_sample)
 ```
 
-## Usage in SpecWeave
+## 在SpecWeave中的使用
 
 ```python
 from specweave import ModelExplainer
@@ -104,9 +104,9 @@ explainer.generate_all_reports()
 # - explainability-report.md
 ```
 
-## Real-World Examples
+## 实际应用案例
 
-### Example 1: Fraud Detection
+### 案例1：欺诈检测
 
 ```python
 # Explain why transaction flagged as fraud
@@ -120,8 +120,8 @@ explanation = explainer.explain(transaction)
 print(explanation.to_text())
 ```
 
-Output:
-```
+    输出：
+    ```
 FRAUD ALERT (92% confidence)
 
 Main factors:
@@ -134,7 +134,7 @@ If this is legitimate:
 - Merchant should be manually reviewed
 ```
 
-### Example 2: Loan Approval
+### 案例2：贷款审批
 
 ```python
 # Explain loan rejection
@@ -148,8 +148,8 @@ explanation = explainer.explain(applicant)
 print(explanation.to_text())
 ```
 
-Output:
-```
+    输出：
+    ```
 LOAN DENIED
 
 Main reasons:
@@ -162,11 +162,10 @@ To improve approval chances:
 - Reduce debt-to-income ratio below 40%
 ```
 
-## Regulatory Compliance
+## 监管合规性
 
-### GDPR "Right to Explanation"
-
-```python
+- **GDPR中的“解释权”**：
+    ```python
 # Generate GDPR-compliant explanation
 gdpr_explanation = explainer.gdpr_explanation(prediction)
 
@@ -177,9 +176,8 @@ gdpr_explanation = explainer.gdpr_explanation(prediction)
 # - Impact of features
 ```
 
-### Fair Lending Act
-
-```python
+- **公平贷款法案**：
+    ```python
 # Check for bias in protected attributes
 bias_report = explainer.fairness_report(
     sensitive_features=["gender", "race", "age"]
@@ -191,17 +189,17 @@ bias_report = explainer.fairness_report(
 # - Recommendations for fairness
 ```
 
-## Visualization Types
+## 可视化方式
 
-1. **Feature Importance Bar Chart**
-2. **SHAP Summary Plot** (beeswarm)
-3. **SHAP Waterfall** (single prediction)
-4. **Partial Dependence Plots**
-5. **Individual Conditional Expectation** (ICE)
-6. **Force Plots** (interactive)
-7. **Decision Trees** (surrogate models)
+1. **特征重要性条形图**
+2. **SHAP摘要图**（蜂群图形式）
+3. **SHAP瀑布图**（针对单个预测结果）
+4. **部分依赖关系图**
+5. **个体条件期望值**（ICE）
+6. **交互式力图**
+7. **决策树**（作为替代模型使用）
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
 ```bash
 # Generate all explainability artifacts
@@ -214,14 +212,14 @@ bias_report = explainer.fairness_report(
 /ml:fairness-check 0042
 ```
 
-Explainability artifacts automatically included in increment documentation and COMPLETION-SUMMARY.
+模型可解释性的相关成果会自动包含在增量文档和项目总结中。
 
-## Best Practices
+## 最佳实践
 
-1. **Generate explanations for all production models** - No "black boxes" in production
-2. **Check for bias** - Test sensitive attributes
-3. **Document limitations** - What model can't explain
-4. **Validate explanations** - Do they make domain sense?
-5. **Make explanations accessible** - Non-technical stakeholders should understand
+1. **为所有生产环境中的模型生成解释性信息**：确保生产环境中不存在“黑箱”模型。
+2. **检测模型中的偏见**：对敏感属性进行测试。
+3. **记录模型的局限性**：明确模型无法解释的内容。
+4. **验证解释结果的合理性**：确保解释结果符合领域常识。
+5. **确保解释结果的易读性**：让非技术领域的利益相关者也能理解模型工作原理。
 
-Model explainability is non-negotiable for responsible AI deployment.
+对于负责任的人工智能部署而言，模型的可解释性是不可或缺的。

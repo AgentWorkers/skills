@@ -1,4 +1,4 @@
-name: Groq Completion
-description: Use Groq's API for fast AI inference.
+名称：Groq 完成功能  
+描述：使用 Groq 的 API 进行快速的人工智能推理。  
 
-To use this skill, say `Groq: <your prompt>`
+要使用此功能，请输入 `Groq: <你的提示>`

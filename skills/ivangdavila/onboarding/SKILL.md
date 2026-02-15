@@ -1,106 +1,102 @@
 ---
 name: Onboarding
-description: Design user onboarding flows that maximize activation and time-to-value.
+description: 设计用户入职流程，以最大化用户的激活率（即用户开始使用产品的比例）和他们的“价值实现时间”（即用户从产品中获取实际收益所需的时间）。
 metadata: {"clawdbot":{"emoji":"🚀","os":["linux","darwin","win32"]}}
 ---
 
-## Define Activation First
+## 先定义“激活”流程
 
-Answer before designing anything:
-- What specific action = user got value?
-- What % of signups currently reach it?
-- What's the minimum path to get there?
+在开始设计任何内容之前，先回答以下问题：
+- 用户通过哪些具体操作获得了价值？
+- 目前有多少新注册用户能够完成激活流程？
+- 完成激活流程的最短路径是什么？
 
-If you can't answer these, onboarding will optimize the wrong thing.
+如果你无法回答这些问题，那么你的引导流程（onboarding process）很可能会偏离正确的方向。
 
-## Measure the Funnel
+## 测量用户转化路径
 
-Create this table for current state:
-| Step | Users | Drop-off |
-|------|-------|----------|
-| Signed up | 100% | - |
-| Step 2 | ?% | ?% |
-| Step 3 | ?% | ?% |
-| Activated | ?% | ?% |
+创建以下表格来记录当前的用户转化情况：
+| 流程步骤 | 用户数量 | 转化率（%） |
+|--------|---------|---------|
+| 注册完成 | 100% | -       |
+| 第二步    | ?%      | ?%      |
+| 第三步    | ?%      | ?%      |
+| 激活完成 | ?%      | ?%      |
 
-Biggest drop-off = focus there first. Everything else is distraction.
+转化率最低的步骤应该成为优先优化对象；其他步骤都只是干扰用户完成流程的因素。
 
-## Signup Form
+## 注册表单
 
-At signup, require ONLY: email + password.
-Everything else: defer until after first value delivered.
+在注册时，仅要求用户提供电子邮件地址和密码。其他信息可以推迟到用户首次获得产品价值之后再收集。
 
-For each additional field, calculate: how many users lost × LTV = cost of that field.
+对于每个额外的注册字段，计算以下数据：因该字段而流失的用户数量 × 该用户的生命周期价值（LTV） = 该字段的收集成本。
 
-## Segmentation Question
+## 用户细分问题
 
-One question only, immediately after signup:
-"What's your main goal?" with 3-4 options.
+在用户注册后，立即向他们提出一个问题：“你的主要目标是什么？”并提供3-4个选项供选择。
 
-Route to different:
-- First action to complete
-- Empty state messaging
-- Email sequence
+根据用户的不同目标，为他们提供不同的引导路径：
+- 需要完成的首个操作
+- 适用于未完成任何操作的提示信息
+- 邮件通知序列
 
-More than 4 paths = complexity without benefit.
+如果引导路径超过4个步骤，只会增加复杂性而没有任何实际好处。
 
-## Checklist Pattern
+## 检查清单模式
 
-Structure:
-- 4-6 items maximum
-- First item already complete when shown (quick win psychology)
-- Items ordered by value delivered, not logical sequence
-- Persists across sessions
-- Completion reward visible
+检查清单应遵循以下原则：
+- 最多包含4-6个项目；
+- 首个项目在显示时就已经完成（利用“快速成功”的心理效应）；
+- 项目的顺序应基于用户获得的价值，而非逻辑顺序；
+- 检查清单会在用户会话之间保持不变；
+- 完成每个项目后应给予相应的奖励。
 
-Format: action verb + outcome
-✓ "Create your first project" 
-✗ "Projects"
+示例格式：**操作动词 + 结果**
+✓ “创建你的第一个项目”
+✗ “项目列表”
 
-## Empty State Formula
+## 未完成操作时的提示信息
 
-Every empty screen needs:
-1. What will appear here (1 sentence)
-2. Visual of populated state or example
-3. ONE action button (primary style)
+每个未完成操作的页面都应包含以下内容：
+1. 该页面会显示什么内容（一句话说明）；
+2. 已完成操作时的界面或示例图片；
+3. 一个主要的操作按钮。
 
-Pre-populated templates > blank slate.
+使用预填充的模板，而不是让用户从空白界面开始填写。
 
-## Email Sequence
+## 邮件通知序列
 
-| Day | Trigger | Content |
-|-----|---------|---------|
-| 0 | Signup | Welcome + single quick win CTA |
-| 1 | Not activated | Reminder + "here's how" |
-| 3 | Not activated | Social proof / success story |
-| 7 | Not activated | Feature highlight |
-| 14 | Inactive | "We miss you" + incentive |
+| 时间点 | 触发条件 | 通知内容 |
+|--------|---------|---------|
+| 注册完成 | 欢迎信息 + 提供一个快速完成操作的链接 |
+| 3天后 | 用户仍未激活 | 提醒用户激活方法 |
+| 7天后 | 展示其他用户的成功案例或社交证明 |
+| 14天后 | 用户仍未激活 | 表示“我们很想念你”并提供激励措施 |
 
-Stop sequence immediately when user activates.
+一旦用户完成激活，立即停止发送后续邮件。
 
-## Tooltips vs Modals
+## 工具提示（Tooltip）与模态框（Modal）的使用
 
-- **Tooltip**: single UI element explanation, non-blocking
-- **Modal**: requires decision, blocks everything
-- **Tour**: max 3-5 steps or users skip
+- **工具提示（Tooltip）**：用于解释单个UI元素的功能，不会阻塞用户界面；
+- **模态框（Modal）**：需要用户做出决策，会完全阻塞用户界面；
+- **引导流程（Tour）**：最多包含3-5个步骤，用户可以选择跳过。
 
-Never repeat to returning users.
-Trigger contextually, not on every login.
+对于已经使用过产品的用户，不要再重复发送这些提示。
 
-## Metrics
+## 监控指标
 
-Track weekly:
-- Signup → Activation rate
-- Time to activate (median)
-- Drop-off by step
-- Day 1, Day 7 retention: activated vs non-activated
+每周跟踪以下数据：
+- 注册量与激活量的比率；
+- 用户完成激活所需的时间（中位数）；
+- 各流程步骤的转化率；
+- 注册后第1天和第7天的用户留存率（激活用户与未激活用户的比例）。
 
-Activated users should retain 2-3x better. If not, activation definition is wrong.
+激活用户的留存率应该是不激活用户的2-3倍；如果达不到这个比例，说明你对“激活”的定义有误。
 
-## Common Failures
+## 常见的问题和解决方法：
 
-- Asking for info before showing value—user hasn't bought in
-- Tour showing everything—overwhelms, skip rate high
-- Same onboarding for all segments—relevance drives completion
-- No follow-up emails—user closes tab and forgets
-- Blocking features behind upgrade before value demonstrated
+- 在展示产品价值之前就要求用户提供信息——用户可能还没有购买产品的意愿；
+- 引导流程中展示了所有功能——用户会感到不知所措，导致跳过流程的比例很高；
+- 对所有用户使用相同的引导流程——用户完成流程的意愿取决于内容的相关性；
+- 没有后续的邮件通知——用户可能会关闭页面并忘记后续操作；
+- 在未展示产品价值之前就要求用户升级——用户可能会放弃使用产品。

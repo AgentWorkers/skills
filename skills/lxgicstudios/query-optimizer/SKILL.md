@@ -1,29 +1,29 @@
 ---
 name: query-optimizer
-description: Optimize SQL and Prisma queries using AI. Use when your queries are slow and you need performance help.
+description: 使用人工智能优化 SQL 和 Prisma 查询。当你的查询执行速度较慢且需要提升性能时，可以尝试这种方法。
 ---
 
-# Query Optimizer
+# 查询优化器
 
-Slow queries killing your app? Paste your SQL or Prisma code and get optimization suggestions. Index recommendations, query rewrites, N+1 detection. The stuff that takes hours to figure out manually.
+查询速度过慢，导致应用程序性能下降？只需粘贴您的 SQL 语句或 Prisma 代码，即可获得优化建议。包括索引创建建议、查询重写方案以及 N+1 错误的检测结果。这些优化工作通常需要花费数小时才能手动完成。
 
-**One command. Zero config. Just works.**
+**只需一个命令，无需任何配置，即可立即使用。**
 
-## Quick Start
+## 快速入门
 
 ```bash
 npx ai-query-optimize "SELECT * FROM users WHERE email LIKE '%@gmail.com'"
 ```
 
-## What It Does
+## 功能介绍
 
-- Analyzes SQL and Prisma queries for performance issues
-- Suggests missing indexes with CREATE INDEX statements
-- Rewrites queries to avoid common antipatterns
-- Detects N+1 problems in ORM code
-- Explains why changes improve performance
+- 分析 SQL 和 Prisma 查询中的性能问题
+- 建议添加缺失的索引（使用 `CREATE INDEX` 语句）
+- 重写查询语句，以避免常见的性能瓶颈
+- 检测 ORM 代码中的 N+1 错误
+- 解释优化措施为何能提升查询性能
 
-## Usage Examples
+## 使用示例
 
 ```bash
 # Optimize a SQL query
@@ -39,43 +39,43 @@ npx ai-query-optimize src/api/users.ts --check-n-plus-one
 npx ai-query-optimize schema.sql --suggest-indexes
 ```
 
-## Best Practices
+## 最佳实践
 
-- **Include your schema** - Context about tables and existing indexes helps a lot
-- **Measure before and after** - EXPLAIN ANALYZE doesn't lie
-- **Test with real data** - Optimizations that work on 100 rows might fail on 1M
-- **Don't optimize prematurely** - Fix actual slow queries, not theoretical ones
+- **提供数据库模式信息**：了解表格结构和现有索引有助于优化过程
+- **进行前后性能对比**：`EXPLAIN ANALYZE` 命令能提供准确的性能数据
+- **使用真实数据测试优化效果**：在少量数据上有效的优化方案可能在大量数据下失效
+- **避免过早进行优化**：先修复实际存在的性能问题，而非假设性的问题
 
-## When to Use This
+## 适用场景
 
-- Database queries are showing up in your APM as slow
-- Users are complaining about loading times
-- You inherited a codebase with questionable query patterns
-- Learning SQL optimization and want to understand the patterns
+- 数据库查询在 APM（应用性能监控工具）中被标记为“慢”
+- 用户对应用程序的加载时间表示不满
+- 继承了包含不良查询模式的代码库
+- 希望学习 SQL 优化技巧并理解其背后的原理
 
-## Part of the LXGIC Dev Toolkit
+## 作为 LXGIC 开发工具包的一部分
 
-This is one of 110+ free developer tools built by LXGIC Studios. No paywalls, no sign-ups, no API keys on free tiers. Just tools that work.
+LXGIC Studios 开发了 110 多款免费开发者工具，这款工具便是其中之一。免费版本无需支付费用、无需注册账号，也无需使用 API 密钥。这些工具都能直接使用。
 
-**Find more:**
+**了解更多：**
 - GitHub: https://github.com/LXGIC-Studios
 - Twitter: https://x.com/lxgicstudios
 - Substack: https://lxgicstudios.substack.com
-- Website: https://lxgic.dev
+- 官网: https://lxgic.dev
 
-## Requirements
+## 使用要求
 
-No install needed. Just run with npx. Node.js 18+ recommended. Requires OPENAI_API_KEY environment variable.
+无需安装，只需使用 `npx` 命令即可运行。建议使用 Node.js 18 及更高版本。运行该工具需要设置 `OPENAI_API_KEY` 环境变量。
 
 ```bash
 export OPENAI_API_KEY=sk-...
 npx ai-query-optimize --help
 ```
 
-## How It Works
+## 工作原理
 
-Parses your query or code file to understand the data access patterns. Applies database optimization knowledge to identify issues like missing indexes, expensive operations (LIKE with leading wildcards), and ORM antipatterns. Provides specific, actionable fixes.
+该工具会解析您的查询语句或代码文件，以了解数据访问模式。然后运用数据库优化知识，识别诸如缺失索引、效率低下的操作（如使用通配符的 `LIKE` 操作）以及 ORM 中的常见性能问题，并提供具体的优化建议。
 
-## License
+## 许可证
 
-MIT. Free forever. Use it however you want.
+采用 MIT 许可协议，永久免费。您可以随意使用该工具。

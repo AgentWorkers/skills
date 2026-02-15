@@ -1,92 +1,93 @@
 ---
 name: gog-calendar
-description: Google Calendar via gogcli: reliable cross-calendar agenda (today/week/range) and best-effort keyword search across calendars (iterate + aggregate). Token-efficient output (`--plain` default, `--json` only when needed). Post-filters unwanted calendars (e.g., holidays) and confirms before writes.
+description: 通过 `gogcli` 使用 Google 日历：实现可靠的跨日历日程管理（支持今日、本周或指定时间范围），并支持高效的关键字搜索功能（可遍历多个日历并汇总结果）。输出格式简洁高效（默认为 `--plain`，仅在需要时使用 `--json`）。支持在写入数据前过滤掉不需要的日历（如节假日），并在执行写入操作前进行确认。
 metadata: {"openclaw":{"emoji":"📅","requires":{"bins":["gog"]},"install":[{"id":"brew","kind":"brew","formula":"steipete/tap/gogcli","bins":["gog"],"label":"Install gogcli (brew)"}]}}
 ---
 
 # gog-calendar
 
-Use `gog` (gogcli) for Google Calendar: agenda (events list) and keyword search across calendars.
+使用 `gog`（gogcli）来管理 Google 日历：可以查看日程安排（事件列表）以及在不同日历中进行关键词搜索。
 
-## Output rule (tokens vs reliability)
+## 输出格式（输出方式与可靠性）
 
-gogcli stdout should stay parseable; prefer `--plain` / `--json` and put hints to stderr.  [oai_citation:0‡GitHub](https://github.com/steipete/gogcli/blob/main/AGENTS.md?utm_source=chatgpt.com)
+`gogcli` 的标准输出（stdout）应保持可解析的状态；建议使用 `--plain` 或 `--json` 格式，并将详细信息输出到标准错误流（stderr）中。 [参考来源：0‡GitHub](https://github.com/steipete/gogcli/blob/main/AGENTS.md?utm_source=chatgpt.com)
 
-- Default to **`--plain`** for read-only listing you only summarize (cheaper tokens):
-  - agenda listing (today / next days / range)
-  - calendars list
-- Use **`--json`** only when structure is required:
-  - aggregating results across calendars (cross-calendar keyword search)
-  - deduping / sorting / extracting IDs for follow-up calls
-  - any write workflow where exact fields matter
-- In automation runs, add **`--no-input`** (fail instead of prompting).  [oai_citation:1‡GitHub](https://github.com/steipete/gogcli/blob/main/README.md?utm_source=chatgpt.com)
+- **默认使用 `--plain` 格式**，适用于仅用于读取的查询：
+  - 显示日程安排（当天、次日或指定时间范围内的事件）
+  - 显示所有可用的日历列表
+- **仅在需要结构化输出时使用 `--json` 格式**：
+  - 在多个日历中聚合搜索结果
+  - 删除重复条目、对结果进行排序或提取事件 ID 以备后续处理
+  - 在需要精确字段信息的写入操作中
 
-## Calendar exclusions (post-processing)
+- 在自动化脚本中，建议使用 `--no-input` 选项（遇到问题时直接退出程序，而不是提示用户输入）。 [参考来源：1‡GitHub](https://github.com/steipete/gogcli/blob/main/README.md?utm_source=chatgpt.com)
 
-Users may explicitly exclude certain calendars from searches/agenda (e.g., “National holidays”).  
-When answering, you MUST:
-1) Query broadly (e.g., `events --all` or iterate all calendars for search),
-2) Then **filter out excluded calendars in post-processing**.
+## 日历排除规则（后续处理）
 
-How to determine excluded calendars:
-- First, check the user’s preferences/memory for an explicit “exclude calendars” list.
-- If none is provided, apply a conservative default filter for obvious noise calendars:
-  - calendars whose name/summary contains: `holiday`, `holidays`, `national holidays` (and localized equivalents)
-- Never filter out user-owned calendars unless explicitly excluded.
+用户可以明确指定某些日历不参与搜索或日程显示（例如，国家法定假日）。
+在提供答案时，必须：
+1. 先进行全面的查询（例如，使用 `events --all` 命令或遍历所有日历进行搜索）；
+2. 然后在后续处理中过滤掉这些被排除的日历。
 
-Filtering rule:
-- If you have calendar metadata (from `gog calendar calendars`), filter by **calendar name/summary**.
-- If you only have events output, filter by matching event’s calendarId to the excluded calendarIds resolved from the calendars list.
+**如何判断哪些日历被排除**：
+- 首先，查看用户的偏好设置或提供的排除日历列表；
+- 如果没有排除日历的明确说明，使用以下默认规则进行过滤：
+  - 日历名称或描述中包含 “holiday”、“holidays” 或 “national holidays”（及其本地化版本）的日历
+- 除非用户明确要求排除，否则不要过滤用户自己的日历。
 
-Always mention filtering briefly if it materially changes the answer:
-- “(Filtered out: National holidays)”
+**过滤规则**：
+- 如果你有日历的元数据（通过 `gog calendar calendars` 命令获取），则根据日历名称或描述进行过滤；
+- 如果只有事件信息，需根据事件对应的 `calendarId` 与排除日历列表中的 ID 进行匹配。
 
-## Agenda (always cross-calendar, then filter)
+如果过滤操作对最终结果有显著影响，务必在答案中简要说明：
+- “（已过滤掉：国家法定假日）”
 
-For “what’s on my calendar today / tomorrow / this week / between X and Y”:
-- MUST query all calendars:
-  - `gog calendar events --all --from <date_or_iso> --to <date_or_iso> --plain`
-- Then apply calendar exclusions (above).
-- Do not answer “nothing scheduled” unless you ran the command for the correct window and applied filtering.
+## 日程安排查询（始终跨日历查询后再进行过滤）
 
-Examples:
-- Today: `gog calendar events --all --from 2026-02-04 --to 2026-02-05 --plain`
-- Next 7 days: `gog calendar events --all --from 2026-02-04 --to 2026-02-11 --plain`
+对于 “我今天的日程安排是什么？/ 明天的日程安排是什么？/ 本周的日程安排是什么？/ 在 X 和 Y 之间的日程安排是什么？” 这类问题：
+- 必须查询所有日历：
+  - `gog calendar events --all --from <开始日期> --to <结束日期> --plain`
+- 然后根据上述规则过滤掉被排除的日历。
+- 除非在正确的时间范围内进行了查询并应用了过滤规则，否则不要回答 “没有安排的事件”。
 
-Output formatting:
-- sort by start time
-- group by day
-- show: time range, summary, location (calendar name only if it helps)
+**示例**：
+- 今天的日程：`gog calendar events --all --from 2026-02-04 --to 2026-02-05 --plain`
+- 下周的日程：`gog calendar events --all --from 2026-02-04 --to 2026-02-11 --plain`
 
-## Keyword search across calendars (best-effort, aggregate, then filter)
+**输出格式**：
+- 按事件开始时间排序
+- 按日期分组显示
+- 显示事件的时间范围、描述以及事件发生的日历名称（如日历名称有助于理解事件内容）
 
-Calendar event queries are scoped to a `calendarId` (API is `/calendars/{calendarId}/events`), so keyword search must iterate calendars and aggregate results.  [oai_citation:2‡Google for Developers](https://developers.google.com/workspace/calendar/api/v3/reference/events/list?utm_source=chatgpt.com)
+## 跨日历关键词搜索（尽力搜索所有相关事件，然后进行过滤）
 
-Default window:
-- if user didn’t specify a range: **next 6 months from today** (inclusive)
-- if user specified date/range: use it
+日历事件的查询是基于 `calendarId` 进行的（API 接口为 `/calendars/{calendarId}/events`），因此关键词搜索需要遍历所有日历并汇总结果。 [参考来源：2‡Google for Developers](https://developers.google.com/workspace/calendar/api/v3/reference/events/list?utm_source=chatgpt.com)
 
-Workflow (do not skip):
-1) List calendars (need IDs + names for filtering):
+**默认查询时间范围**：
+- 如果用户没有指定时间范围：**从今天起接下来的 6 个月**（包含当天）
+- 如果用户指定了具体日期或时间范围：使用用户指定的范围
+
+**操作流程**（请务必执行以下步骤）：
+1. 列出所有可用的日历（需要获取日历的 ID 和名称以便后续过滤）：
    - `gog calendar calendars --json`
-2) Build the set of excluded calendarIds from the exclusions rule.
-3) For EACH non-excluded `calendarId`, search (JSON required for merge/dedupe):
-   - `gog calendar search "<query>" --calendar <calendarId> --from <from> --to <to> --max 50 --json --no-input`
-4) Aggregate all matches across calendars (do NOT stop on first match unless user asked).
-5) Deduplicate by `(calendarId, eventId)`, sort by start time.
-6) Report results and explicitly mention the searched window (and any filters applied).
+2. 根据排除规则生成被排除的日历 ID 列表。
+3. 对于每个未被排除的日历，执行搜索操作（搜索结果需要以 JSON 格式返回）：
+   - `gog calendar search "<查询内容>" --calendar <日历 ID> --from <开始日期> --to <结束日期> --max 50 --json --no-input`
+4. 将所有搜索结果汇总到一起（除非用户要求立即停止，否则继续搜索所有日历）；
+5. 根据 `calendarId` 和 `eventId` 去重结果，并按事件开始时间排序。
+6. 显示搜索结果，并明确说明查询的时间范围及所应用的过滤条件。
 
-If nothing found in default window:
-- say: “No events found in the next 6 months (<from> → <to>). Want me to search further (e.g., 12 months) or within specific dates?”
+**如果在默认时间范围内没有找到结果**：
+- 说明：“在接下来的 6 个月内没有找到相关事件（<开始日期> 至 <结束日期>）。是否需要进一步扩大搜索范围（例如，搜索 12 个月内的事件）或仅在特定日期范围内搜索？”
 
-Fallback if user is sure it exists:
-- ask/derive an approximate date and list around it (then filter):
-  - `gog calendar events --all --from <date-7d> --to <date+7d> --plain`
-- then match by title tokens locally (casefold + token overlap)
+**如果用户确定某个事件确实存在**：
+- 询问用户大致的日期范围，并在该范围内进行搜索：
+  - `gog calendar events --all --from <开始日期-7天> --to <结束日期+7天> --plain`
+- 然后根据事件标题进行匹配（忽略大小写差异和重复项）。
 
-## Writes (create/update/delete/RSVP)
+## 日历的写入操作（创建、更新、删除或回复邀请）
 
-Before any write action:
-- summarize exact intent (calendar, title, start/end, timezone, attendees, location)
-- ask for explicit “yes”
-- then run the command
+在执行任何写入操作之前：
+- 明确用户的具体需求（要创建/更新/删除哪个日历事件、事件的标题、开始/结束时间、时区、参与者以及事件地点）；
+- 确认用户是否同意执行该操作；
+- 最后执行相应的命令。

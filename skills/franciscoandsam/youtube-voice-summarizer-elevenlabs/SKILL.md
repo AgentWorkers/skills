@@ -1,7 +1,7 @@
 ---
 name: youtube-voice-summarizer
 version: 1.0.0
-description: Transform YouTube videos into podcast-style voice summaries using ElevenLabs TTS
+description: 使用 ElevenLabs 的 TTS（文本到语音）功能，将 YouTube 视频转换为播客风格的音频摘要。
 author: Francisco Cordoba
 homepage: https://github.com/Franciscomoney/elevenlabs-moltbot
 license: MIT
@@ -9,21 +9,21 @@ user-invocable: true
 metadata: {"openclaw":{"emoji":"🎙️","autoTrigger":{"patterns":["youtube.com/watch","youtu.be/","youtube.com/shorts"]}}}
 ---
 
-# YouTube Voice Summarizer
+# YouTube语音摘要生成器
 
-Transform any YouTube video into a professional voice summary delivered in under 60 seconds.
+将任何YouTube视频转换为专业的语音摘要，生成时间不超过60秒。
 
-## What It Does
+## 功能概述
 
-When a user sends a YouTube URL, this skill:
-1. Extracts the video transcript via Supadata
-2. Generates a concise AI summary via OpenRouter/Cerebras
-3. Converts the summary to natural speech via ElevenLabs
-4. Returns an audio file the user can listen to
+当用户提供YouTube视频链接时，该服务会：
+1. 通过Supadata提取视频的字幕内容。
+2. 使用OpenRouter/Cerebras生成简洁的人工智能摘要。
+3. 通过ElevenLabs将摘要转换为自然语言的音频。
+4. 最后返回一个可供用户收听的音频文件。
 
-## Requirements
+## 使用要求
 
-This skill requires a running backend server. Deploy the summarizer service:
+该服务需要一个运行中的后端服务器。请按照以下步骤部署摘要生成服务：
 
 ```bash
 git clone https://github.com/Franciscomoney/elevenlabs-moltbot.git
@@ -34,19 +34,19 @@ cp .env.example .env
 npm start
 ```
 
-### Required API Keys
+### 所需API密钥
 
-| Service | Purpose | Get Key |
+| 服务 | 用途 | 获取密钥的链接 |
 |---------|---------|---------|
-| ElevenLabs | Text-to-speech | https://elevenlabs.io |
-| Supadata | YouTube transcripts | https://supadata.ai |
-| OpenRouter | AI summarization | https://openrouter.ai |
+| ElevenLabs | 文本转语音 | https://elevenlabs.io |
+| Supadata | YouTube字幕数据 | https://supadata.ai |
+| OpenRouter | 人工智能摘要生成 | https://openrouter.ai |
 
-## How to Use
+## 使用方法
 
-When user sends a YouTube URL:
+用户提供YouTube视频链接后，请按照以下步骤操作：
 
-### Step 1: Start the voice summary job
+### 第1步：启动语音摘要生成任务
 
 ```bash
 curl -s -X POST http://127.0.0.1:3050/api/summarize \
@@ -54,62 +54,58 @@ curl -s -X POST http://127.0.0.1:3050/api/summarize \
   -d '{"url":"YOUTUBE_URL","length":"short","voice":"podcast"}'
 ```
 
-Returns: `{"jobId": "job_xxx", "status": "processing"}`
+系统返回响应：`{"jobId": "job_xxx", "status": "processing"}`
 
-### Step 2: Poll for completion (wait 3-5 seconds between checks)
+### 第2步：等待任务完成（每次检查间隔3-5秒）
 
-```bash
-curl -s http://127.0.0.1:3050/api/status/JOB_ID
-```
+持续检查任务状态，直到状态变为“completed”。
 
-Keep polling until status is "completed".
+### 第3步：将音频文件发送给用户
 
-### Step 3: Return the audio to user
+任务完成后，系统会返回以下信息：
+- `result.audioUrl`：MP3音频文件的URL（请将此链接发送给用户）
+- `result.teaser`：关于视频内容的简短介绍文本
+- `result.summary`：完整的文本摘要
+- `result.keyPoints`：视频的要点总结
 
-When complete, the response includes:
-- `result.audioUrl` - The MP3 audio URL (send this to the user!)
-- `result.teaser` - Short hook text about the content
-- `result.summary` - Full text summary
-- `result.keyPoints` - Array of key takeaways
+请将以下内容发送给用户：
+1. `result.teaser`：视频内容的简短介绍文本
+2. `result.audioUrl`：音频文件的URL
 
-Send the user:
-1. The teaser text as a message
-2. The audio URL so they can listen
+## 语音选项
 
-## Voice Options
-
-| Voice | Style |
+| 语音类型 | 语音风格 |
 |-------|-------|
-| `podcast` | Deep male narrator (default) |
-| `news` | British authoritative |
-| `casual` | Friendly conversational |
-| `female_warm` | Warm female voice |
+| `podcast` | 深沉的男性旁白（默认） |
+| `news` | 英国权威风格的播报 |
+| `casual` | 友好的对话式语音 |
+| `female_warm` | 温柔的女性语音 |
 
-## Summary Lengths
+## 摘要长度
 
-| Length | Duration | Best For |
+| 长度 | 时长 | 适用场景 |
 |--------|----------|----------|
-| `short` | 1-2 min | Quick overview |
-| `medium` | 3-5 min | Balanced detail |
-| `detailed` | 5-10 min | Comprehensive |
+| `short` | 1-2分钟 | 快速概览 |
+| `medium` | 3-5分钟 | 平衡的详细内容 |
+| `detailed` | 5-10分钟 | 全面的内容总结 |
 
-## Example Flow
+## 示例流程
 
-User: "Summarize this: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+用户：`请为这个视频生成摘要：https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
-1. Start job:
+1. 启动摘要生成任务：
 ```bash
 curl -s -X POST http://127.0.0.1:3050/api/summarize \
   -H "Content-Type: application/json" \
   -d '{"url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","length":"short","voice":"podcast"}'
 ```
 
-2. Poll status with the returned jobId
-3. When complete, send the audioUrl to the user
+2. 使用返回的`jobId`查询任务状态。
+3. 任务完成后，将`result.audioUrl`发送给用户。
 
-## Text-Only Summary (No Audio)
+## 仅提供文本摘要（无音频）
 
-For faster, cheaper text-only summaries:
+如需更快、更经济的文本摘要服务，请使用以下方式：
 
 ```bash
 curl -s -X POST http://127.0.0.1:3050/api/quick-summary \
@@ -117,21 +113,21 @@ curl -s -X POST http://127.0.0.1:3050/api/quick-summary \
   -d '{"url":"YOUTUBE_URL","length":"short"}'
 ```
 
-## Troubleshooting
+## 常见问题及解决方法
 
-**"Video may not have captions"**
-- The video needs subtitles enabled on YouTube
-- Auto-generated captions may take time on new videos
+**“视频可能没有字幕”**
+- 请确保YouTube视频已启用字幕功能。
+- 新视频的字幕可能需要一些时间才能自动生成。
 
-**Audio URL not working**
-- Ensure BASE_URL in .env is publicly accessible
-- Check firewall allows traffic on port 3050
+**音频文件无法播放**
+- 请确认`.env`文件中的`BASE_URL`配置是可公开访问的。
+- 检查防火墙是否允许3050端口的流量通过。
 
-## Cost Per Summary
+## 每个摘要的费用
 
-| Service | Cost |
+| 服务 | 费用 |
 |---------|------|
-| Supadata | ~$0.001 |
-| OpenRouter | ~$0.005-0.02 |
-| ElevenLabs | ~$0.05-0.15 |
-| **Total** | **~$0.06-0.17** |
+| Supadata | 约0.001美元 |
+| OpenRouter | 约0.005-0.02美元 |
+| ElevenLabs | 约0.05-0.15美元 |
+| **总计** | 约0.06-0.17美元 |

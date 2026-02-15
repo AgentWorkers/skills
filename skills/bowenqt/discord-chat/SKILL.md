@@ -1,116 +1,115 @@
 ---
 name: discord-chat
-description: Send messages, reply to messages, and search message history in Discord channels using the message tool. Use when the user wants to communicate with Discord (send/reply/search messages), check Discord activity, or interact with Discord channels.
+description: 使用消息工具在 Discord 频道中发送消息、回复消息以及搜索消息历史记录。当用户需要与 Discord 通信（发送/回复消息或搜索消息）、查看 Discord 活动或与 Discord 频道互动时，可以使用该工具。
 ---
 
-# Discord Chat
+# Discord 聊天
 
-Interact with Discord channels using Clawdbot's `message` tool.
+您可以使用 Clawdbot 的 `message` 工具与 Discord 频道进行交互。
 
-## Core Actions
+## 核心操作
 
-### Send Messages
+### 发送消息
 
-Send a message to a Discord channel:
+向 Discord 频道发送消息：
 
 ```bash
 message action=send channel=discord target="#channel-name" message="Your message here"
 ```
 
-Or by channel ID:
+或通过频道 ID 发送消息：
 
 ```bash
 message action=send channel=discord target="1234567890" message="Your message here"
 ```
 
-**Tips:**
-- Use channel names with `#` prefix or channel IDs
-- For multiple links, wrap in `<>` to suppress embeds: `<https://example.com>`
-- No markdown tables! Use bullet lists instead
-- Support effects with `effect=balloons` or `effectId=invisible-ink`
+**提示：**
+- 使用带有 `#` 前缀的频道名称或频道 ID
+- 对于多个链接，请使用 `<>` 将其括起来以抑制嵌入内容：`<https://example.com>`
+- 不要使用 Markdown 表格！请使用项目符号列表
+- 可以使用 `effect=balloons` 或 `effectId=invisible-ink` 来添加效果
 
-### Reply to Messages
+### 回复消息
 
-Reply to a specific message:
+回复特定消息：
 
 ```bash
 message action=send channel=discord target="#channel-name" message="Reply text" replyTo="message-id"
 ```
 
-The `replyTo` parameter creates a threaded reply to the specified message ID.
+`replyTo` 参数用于创建对指定消息 ID 的回复。
 
-### Search Messages
+### 搜索消息
 
-Search for messages in a channel:
+在频道中搜索消息：
 
 ```bash
 message action=search channel=discord channelId="1234567890" query="search terms" limit=50
 ```
 
-**Search options:**
-- `query`: Search terms
-- `authorId`: Filter by author
-- `before`/`after`/`around`: Message ID for pagination
-- `limit`: Max results (default 25)
+**搜索选项：**
+- `query`：搜索关键词
+- `authorId`：按作者过滤
+- `before`/`after`/`around`：消息 ID 用于分页
+- `limit`：最大结果数量（默认为 25）
 
-See [SEARCH.md](references/SEARCH.md) for advanced search patterns.
+有关高级搜索模式的详细信息，请参阅 [SEARCH.md](references/SEARCH.md)。
 
-### Other Actions
+### 其他操作
 
-**Read messages:**
+**读取消息：**
 ```bash
 message action=read channel=discord target="#channel-name" limit=20
 ```
 
-**React to messages:**
+**响应消息：**
 ```bash
 message action=react channel=discord messageId="1234567890" emoji="👍"
 ```
 
-**Edit messages:**
+**编辑消息：**
 ```bash
 message action=edit channel=discord messageId="1234567890" message="Updated text"
 ```
 
-**Delete messages:**
+**删除消息：**
 ```bash
 message action=delete channel=discord messageId="1234567890"
 ```
 
-## Quick Reference
+## 快速参考
 
-Common patterns:
+常用操作模式：
+- **向频道发布公告**：`action=send target="#announcements"`
+- **在帖子中回复**：`action=send replyTo="msg-id"`
+- **查看最近的活动**：`action=read limit=10`
+- **查找提及**：`action=search query="@username"`
+- **确认收到**：`action=react emoji="✅"`
 
-- **Announce to channel**: `action=send target="#announcements"`
-- **Reply in thread**: `action=send replyTo="msg-id"`
-- **Recent activity**: `action=read limit=10`
-- **Find mentions**: `action=search query="@username"`
-- **Acknowledge**: `action=react emoji="✅"`
+## 频道管理
 
-## Channel Management
-
-**List channels:**
+**列出频道：**
 ```bash
 message action=channel-list channel=discord guildId="server-id"
 ```
 
-**Get channel info:**
+**获取频道信息：**
 ```bash
 message action=channel-info channel=discord channelId="1234567890"
 ```
 
-For creating/editing channels, see [CHANNELS.md](references/CHANNELS.md).
+有关创建/编辑频道的详细信息，请参阅 [CHANNELS.md](references/CHANNELS.md)。
 
-## Best Practices
+## 最佳实践
 
-1. **Use target names when possible** - `target="#general"` is clearer than IDs
-2. **Batch reactions** - One emoji per message, pick the best fit
-3. **Format for Discord** - Bullets not tables, `<link>` to suppress embeds
-4. **Search before asking** - Check history before requesting info
-5. **React > Reply** - Use reactions for simple acknowledgments
+1. **尽可能使用频道名称** - `target="#general"` 比使用频道 ID 更清晰
+2. **批量响应**：每条消息使用一个表情符号，选择最合适的表情
+3. **遵循 Discord 的格式规范** - 使用项目符号列表而非表格，使用 `<link>` 来抑制嵌入内容
+4. **先搜索再请求** - 在请求信息之前先查看聊天记录
+5. **使用反应而不是回复** - 对于简单的确认，使用表情符号
 
-## Configuration
+## 配置
 
-Your Discord bot configuration should be in the gateway config. The `message` tool routes to the configured Discord plugin automatically when `channel=discord` is specified.
+您的 Discord 机器人配置应位于网关配置文件中。当指定 `channel=discord` 时，`message` 工具会自动路由到已配置的 Discord 插件。
 
-For setup help, see [CONFIG.md](references/CONFIG.md).
+有关设置帮助，请参阅 [CONFIG.md](references/CONFIG.md)。

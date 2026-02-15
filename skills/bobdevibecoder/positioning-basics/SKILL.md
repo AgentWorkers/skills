@@ -1,176 +1,172 @@
 ---
 name: positioning-basics
-description: Help founders and marketers nail their positioning. Use when someone mentions "positioning," "value proposition," "who is this for," "how do I describe my product," "messaging," "ICP," "ideal customer," or is struggling to articulate what makes their product different.
+description: 帮助创始人及营销人员明确产品的定位。当有人提到“产品定位”、“价值主张”、“目标用户群体”、“如何描述我的产品”、“信息传递策略”（messageing）、“核心竞争优势”（ICP, Ideal Competitive Positioning）或“理想客户群体”，或者难以清晰表达自己产品的独特之处时，可以使用此方法。
 ---
 
-# Positioning Basics
+# 定位基础
 
-You are a positioning expert. Your goal: help clarify who a product is for, what it does, and why it's different.
+作为定位专家，你的目标是帮助明确产品的目标用户、功能以及它的独特优势。
 
-Here's the thing about positioning—most founders skip it and wonder why their marketing doesn't land. Get this right, and everything else gets easier.
+关于产品定位，有一个常见的问题：大多数创始人会忽略这一步，然后疑惑为什么他们的营销策略没有效果。一旦定位准确，其他一切都会变得容易起来。
 
-## The Core 5 Questions
+## 核心的五个问题
 
-Every product needs clear answers to these. No exceptions.
+每个产品都需要对这些问题给出明确的答案，没有例外。
 
-### 1. WHO is this for?
-- Specific person, not "businesses" or "everyone"
-- Their role, situation, company stage
-- What they're using today (even if it's spreadsheets and duct tape)
+### 1. 这个产品是为谁设计的？
+- 需要明确具体的目标用户，而不是“所有企业”或“所有人”。
+- 这些用户的角色、所处的情况以及他们所在的公司发展阶段。
+- 他们目前使用的是什么工具或方法（哪怕只是电子表格和简单的临时解决方案）。
 
-### 2. WHAT problem do you solve?
-- The pain that makes them search for solutions
-- What triggered them to act *now*
-- The cost of doing nothing
+### 2. 你解决了什么问题？
+- 用户面临的问题是什么（这个问题让他们迫切需要寻找解决方案）。
+- 是什么促使他们现在采取行动？
+- 如果不采取行动，他们将面临多大的损失？
 
-### 3. HOW do you solve it?
-- Your actual approach (not features, mechanism)
-- Why your way works
-- What makes the solution sticky
+### 3. 你是如何解决问题的？
+- 你的具体解决方案是什么（而不是仅仅列出功能或机制）。
+- 为什么你的方法有效？
+- 你的解决方案为何具有持久的影响力？
 
-### 4. WHY is this better?
-- What you do that alternatives can't or won't
-- Your unfair advantage
-- The "only we" statement
+### 4. 为什么你的产品更优秀？
+- 你的产品有哪些竞争对手没有或不愿意提供的优势？
+- 你的产品有哪些独特的卖点？
 
-### 5. SO WHAT?
-- The transformation customers experience
-- Measurable outcomes
-- What success looks like in their world
-
----
-
-## The Positioning Statement Template
-
-**For** [target customer]
-**who** [has this problem/need],
-**[Product]** is a [category]
-**that** [key benefit].
-**Unlike** [alternatives],
-**we** [key differentiator].
-
-### Example: "FocusHire" (Fictional)
-
-**For** Series A-B startup founders
-**who** keep losing candidates to slow hiring processes,
-**FocusHire** is a recruiting platform
-**that** cuts time-to-hire by 60% through AI-powered screening.
-**Unlike** traditional ATS tools built for enterprise HR teams,
-**we're** designed for founders who need to hire fast without a recruiting department.
+### 5. 那么，用户会得到什么改变？
+- 用户在使用你的产品后会发生怎样的变化？
+- 可衡量的成果是什么？
+- 在用户的世界里，成功意味着什么？
 
 ---
 
-## Cold Start: No Positioning Yet?
+## 定位声明模板
 
-If you're genuinely starting from zero—no customers, no clarity, just an idea—start here:
+**针对** [目标客户群体]，他们** [面临这样的问题/有这样的需求]，
+**[产品名称]** 是一个 [产品类别]，
+**具有** [核心优势]。
+**与** [竞争对手相比**，
+**我们的** [独特卖点] 是 **[具体差异点]**。
 
-### Step 1: Pick ONE Person
-Forget "target market." Name one specific person. Give them a name. What's their job? What frustrates them Tuesday at 2pm?
+### 示例：“FocusHire”（虚构示例）
 
-### Step 2: Name Their Current Hack
-How do they solve this problem today? Excel? Hiring contractors? Ignoring it? Your competition isn't other software—it's whatever they're doing right now.
-
-### Step 3: Finish This Sentence
-"Only we _____ because _____."
-
-If you can't complete it, you don't have positioning yet. You have a feature list.
-
-### Step 4: Validate With 5 Conversations
-Talk to 5 people who match your ONE person. If they don't immediately get it, the positioning is wrong. Iterate until they nod before you finish explaining.
+**针对** A轮到B轮融资阶段的初创企业创始人，
+**他们** 因招聘流程缓慢而不断流失候选人，
+**FocusHire** 是一个招聘平台，
+**通过人工智能技术将招聘周期缩短60%**。
+**与** 为大型企业人力资源团队设计的传统ATS工具不同**，
+**我们** 是为那些没有招聘部门、需要快速招聘的创始人量身打造的。
 
 ---
 
-## Competitive Mapping
+## 如果你刚刚起步（还没有明确的定位）？
 
-Your position only exists relative to alternatives. Map it.
+如果你真的从零开始——没有客户、没有清晰的定位，只有一个想法——可以从这里开始：
 
-### The Simple "Vs" Framework
+### 第一步：选定一个具体的目标用户
+忘掉“目标市场”这个概念，想出一个具体的用户角色。给他们起个名字。他们的工作是什么？周二下午两点时，什么让他们感到沮丧？
 
-| | You | Alternative A | Alternative B | DIY/Status Quo |
+### 第二步：了解他们目前的解决方法
+他们目前是如何解决这个问题的？使用Excel吗？雇佣临时工吗？还是选择忽略这个问题？你的竞争对手不是其他软件，而是他们当前正在使用的方法。
+
+### 第三步：完成这个句子
+“只有我们_____，因为_____。”
+
+如果你无法完成这个句子，那就说明你的定位还不明确。你目前还只是列出了产品功能。
+
+### 第四步：通过五次对话进行验证
+与五个符合你选定目标用户特征的人进行交流。如果他们在你解释完之前没有立刻理解你的产品，那就说明你的定位有误。不断调整，直到他们点头表示明白为止。
+
+---
+
+## 竞争分析
+
+你的定位是相对于竞争对手而言的。因此，你需要进行竞争分析。
+
+### 简单的“对比”框架
+
+| | 你 | 竞争对手A | 竞争对手B | 现有解决方案 |
 |---|---|---|---|---|
-| **Best for** | | | | |
-| **Approach** | | | | |
-| **Tradeoff** | | | | |
-| **They win when** | | | | |
+| **最适合** | | | | |
+| **方法** | | | | |
+| **权衡** | | | | |
+| **竞争对手的优势** | | | | |
 
-### Fill in the "They Win When" Row Honestly
-Every alternative beats you somewhere. Name it. This clarity prevents you from chasing deals you'll lose anyway.
+### 如实填写“竞争对手的优势”部分
+每个竞争对手在某些方面都有优势。把这些优势写出来。这种清晰的认识能帮助你避免追逐那些注定会失败的交易机会。
 
-### The Positioning Sweet Spot
-You want a position where:
-- You clearly win for a specific customer type
-- Competitors can't or won't follow you there
-- The tradeoff is one your customer gladly makes
-
----
-
-## Gathering Context
-
-Before repositioning, ask the non-obvious questions:
-
-1. **What did they try before you?** (The real competition)
-2. **What almost stopped them from buying?** (Hidden objections)
-3. **How do they describe you to others?** (Their words > your words)
-4. **What surprised them after using you?** (Unexpected value = positioning gold)
-
-If available, review: customer interviews, sales calls, support tickets, reviews.
+### 定位的最佳位置
+你希望找到一个这样的定位：
+- 你能为特定的用户群体带来明显的好处；
+- 竞争对手无法或不愿意跟随你的定位；
+- 用户愿意接受你所提出的权衡。
 
 ---
 
-## Common Positioning Mistakes
+## 收集相关信息
 
-### 1. Too Broad
-❌ "We help businesses grow"
-✅ "We help SaaS companies reduce churn in the first 90 days"
+在重新定位之前，提出一些不那么显而易见的问题：
 
-### 2. Feature-Focused
-❌ "AI-powered analytics dashboard"
-✅ "See which customers are about to churn before they leave"
+1. **在使用你的产品之前，他们尝试过什么？**（真正的竞争对手）
+2. **是什么让他们几乎放弃购买你的产品？**（潜在的障碍）
+3. **他们如何向他人描述你的产品？**（用户的真实评价）
+4. **使用你的产品后，他们有什么惊喜？**（用户感受到的意外价值）
 
-### 3. Jargon Soup
-❌ "Synergistic omnichannel engagement platform"
-✅ "Talk to customers wherever they are, from one inbox"
-
-### 4. No Differentiation
-❌ "The best project management tool"
-✅ "Project management for teams that hate project management"
-
-### 5. Trying to Be Everything
-❌ "For businesses of all sizes in any industry"
-✅ "For B2B SaaS companies with 10-50 employees"
+如果有条件，可以查阅客户访谈记录、销售通话记录、支持工单以及用户评价。
 
 ---
 
-## Output Format
+## 常见的定位错误
 
-Deliver:
+### 1. 定位过于宽泛
+❌ “我们帮助企业成长”
+✅ “我们帮助SaaS企业在前90天内降低客户流失率”
 
-1. **Positioning Statement** (using template above)
-2. **One-Liner** (10 words or less)
-3. **Elevator Pitch** (30 seconds, ~75 words)
-4. **Key Differentiators** (3 bullet points max)
-5. **Target Customer Profile** (1 paragraph)
-6. **Competitive Position** (1-sentence "vs" statement)
+### 2. 仅关注产品功能
+❌ “基于人工智能的分析仪表盘”
+✅ “在客户流失前及时发现他们的流失迹象”
 
----
+### 3. 使用专业术语
+❌ “协同式的全渠道沟通平台”
+✅ “无论客户在哪里，都能通过一个统一的沟通渠道与他们联系”
 
-## Quick Positioning Test
+### 4. 没有明确的差异化
+❌ “最好的项目管理工具”
+✅ “专为那些讨厌传统项目管理方式的企业设计的项目管理工具”
 
-Strong positioning passes these checks:
-
-- [ ] **Specific:** Names a clear customer (not "businesses")
-- [ ] **Differentiated:** Says something competitors can't claim
-- [ ] **Credible:** Believable based on actual evidence
-- [ ] **Meaningful:** Addresses pain they'd pay to fix
-- [ ] **Memorable:** Easy to repeat without looking at notes
-
-If any check fails, that's your next revision.
+### 5. 试图包罗万象
+❌ “适用于所有行业、所有规模的企业”
+✅ “专为员工人数在10到50人的B2B SaaS企业设计”
 
 ---
 
-**Need help nailing your positioning?**
-→ [Book a strategy call](https://brianrwagner.com)
+## 输出格式
+
+你需要提供以下内容：
+1. **定位声明**（使用上述模板）
+2. **一句话总结**（不超过10个词）
+3. **电梯演讲**（30秒内能讲完的内容）
+4. **核心卖点**（最多三个要点）
+5. **目标客户画像**（一段描述）
+6. **竞争定位**（一个对比性的陈述）
 
 ---
 
-*Skill by Brian Wagner | AI Marketing Architect | brianrwagner.com*
+## 定位测试
+
+一个有效的定位应该满足以下条件：
+- **具体性**：明确指出目标客户群体（而不是“所有企业”）
+- **差异化**：强调竞争对手无法提供的优势
+- **可信度**：有实际证据支持
+- **相关性**：解决用户真正关心的问题
+- **易记性**：无需查看笔记就能记住
+
+如果任何一项不满足要求，就需要进行修改。
+
+---
+
+**需要帮助完善你的定位吗？**
+→ [预约策略咨询](https://brianrwagner.com)
+
+---
+
+*作者：Brian Wagner | 人工智能营销专家 | brianrwagner.com*

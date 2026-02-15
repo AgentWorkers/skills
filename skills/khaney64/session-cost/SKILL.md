@@ -1,16 +1,16 @@
 ---
 name: session-cost
-description: Analyze OpenClaw session logs to report token usage, costs, and performance metrics grouped by model. Use when the user asks about API spending, token usage, session costs, or wants a usage summary.
+description: 分析 OpenClaw 会话日志，以报告按模型分组的令牌使用情况、成本和性能指标。当用户询问 API 使用情况、令牌使用量、会话成本或需要使用情况摘要时，可以使用此功能。
 metadata: {"openclaw":{"emoji":"📊","requires":{"bins":["node"]}}}
 ---
 
-# Session Cost
+# 会话成本分析
 
-Analyze OpenClaw session logs for token usage, costs, and performance metrics grouped by model.
+该工具用于分析 OpenClaw 会话日志，统计每个模型的令牌使用情况、成本及性能指标。
 
-**Note:** Currently limited to the `main` agent (default path: `~/.openclaw/agents/main/sessions/`). If other agents are added in the future, this could be modified to accept an `--agent` parameter to specify which agent's sessions to analyze.
+**注意：** 目前仅支持 `main` 代理（默认路径：`~/.openclaw/agents/main/sessions/`）。如果未来添加了其他代理，可以通过添加 `--agent` 参数来指定需要分析的代理的会话。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Summary of all sessions (default path: ~/.openclaw/agents/main/sessions/)
@@ -23,18 +23,18 @@ node scripts/session-cost.js --details
 node scripts/session-cost.js --details abc123
 ```
 
-## Options
+## 命令选项
 
-- `--path <dir>` — Directory to scan for `.jsonl` files (default: `~/.openclaw/agents/main/sessions/`)
-- `--offset <time>` — Only include sessions from the last N units (`30m`, `2h`, `7d`)
-- `--provider <name>` — Filter by model provider (`anthropic`, `openai`, `ollama`, etc.)
-- `--details [session-id]` — Show per-session details. Optionally pass a session ID to show just that session (looks for `<id>.jsonl`)
-- `--table` — Show details in compact table format (use with `--details`)
-- `--format <type>` — Output format: `text` (default), `json`, or `discord`
-- `--json` — Shorthand for `--format json` (backwards compat)
-- `--help`, `-h` — Show help message
+- `--path <dir>` — 需要扫描的 `.jsonl` 文件目录（默认路径：`~/.openclaw/agents/main/sessions/`）
+- `--offset <time>` — 仅显示过去 N 个时间单位内的会话（例如：`30m`、`2h`、`7d`）
+- `--provider <name>` — 按模型提供者进行过滤（`anthropic`、`openai`、`ollama` 等）
+- `--details [session-id]` — 显示单个会话的详细信息。可以传入会话 ID 来仅显示该会话的详细信息（文件格式为 `<id>.jsonl`）
+- `--table` — 以紧凑的表格格式显示详细信息（需配合 `--details` 使用）
+- `--format <type>` — 输出格式：`text`（默认）、`json` 或 `discord`
+- `--json` — `--format json` 的简写形式（为了兼容旧版本）
+- `--help`, `-h` — 显示帮助信息
 
-## Examples
+## 使用示例
 
 ```bash
 # Last 24 hours summary
@@ -65,9 +65,9 @@ node scripts/session-cost.js --details 9df7a399-8254-411b-a875-e7337df73d29
 node scripts/session-cost.js --provider anthropic --offset 24h --details --table
 ```
 
-## Output Format
+## 输出格式
 
-### Text Summary (Default)
+### 文本摘要（默认格式）
 
 ```
 Found 42 .jsonl files, 42 matched
@@ -88,13 +88,13 @@ anthropic/claude-sonnet-4-5-20250929
     Cache write: $0.4271  (included in total)
 ```
 
-### Text Details (`--details`)
+### 详细信息（使用 `--details`）
 
-Shows per-session breakdown (session ID, model, duration, timestamps, tokens, cache, cost) followed by the model summary.
+以文本形式显示每个会话的详细信息，包括会话 ID、模型名称、持续时间、时间戳、令牌使用情况、缓存操作及成本，并附有模型汇总。
 
-### Table Format (`--details --table`)
+### 表格格式（使用 `--details --table`）
 
-Compact table view with columns: Session, Model, Duration, Tokens, Cache (read/write), Cost.
+以表格形式显示详细信息，列包括：会话 ID、模型名称、持续时间、令牌使用量（读取/写入）、缓存操作及成本。
 
 ```
 SESSION DETAILS
@@ -105,7 +105,7 @@ anthropic/claude-sonnet-4.5     45 min    128.5K        15.2K / 8.1K   $0.3245  
 anthropic/claude-opus-4         12 min    45.3K         2.1K / 1.5K    $0.8921     xyz789abc012
 ```
 
-### JSON (`--format json`)
+### JSON 格式（使用 `--format json`）
 
 ```json
 {
@@ -121,9 +121,9 @@ anthropic/claude-opus-4         12 min    45.3K         2.1K / 1.5K    $0.8921  
 }
 ```
 
-### Discord (`--format discord`)
+### Discord 格式（使用 `--format discord`）
 
-Optimized for chat platforms (Discord, Slack, etc.) - concise, markdown-friendly, no tables:
+专为聊天平台（如 Discord、Slack 等）优化，格式简洁，易于阅读（不包含表格）：
 
 ```
 💰 **Usage Summary**
@@ -143,11 +143,11 @@ Optimized for chat platforms (Discord, Slack, etc.) - concise, markdown-friendly
 • anthropic/claude-opus-4: $2.30 (150K tokens)
 ```
 
-## Output Fields
+## 输出字段
 
-- **Sessions** — Number of session files analyzed
-- **Tokens** — Total, input, and output token counts
-- **Cache** — Cache read and write token counts
-- **Cost** — Total cost broken down by input, output, cache read, and cache write
-- **Duration** — Session duration in minutes (details mode)
-- **Timestamps** — First and last activity timestamps (details mode)
+- **Sessions** — 分析的会话文件数量
+- **Tokens** — 总令牌数、输入令牌数和输出令牌数
+- **Cache** — 缓存操作的令牌数（读取/写入）
+- **Cost** — 总成本（按输入令牌数、输出令牌数、缓存读取令牌数和缓存写入令牌数细分）
+- **Duration** — 会话持续时间（以分钟为单位，仅限详细信息模式）
+- **Timestamps** — 会话的开始和结束时间戳（仅限详细信息模式）

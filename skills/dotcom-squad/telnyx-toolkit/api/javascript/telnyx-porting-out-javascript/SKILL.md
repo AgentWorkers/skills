@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Porting Out - JavaScript
 
-## Installation
+## 安装
 
 ```bash
 npm install telnyx
 ```
 
-## Setup
+## 设置
 
 ```javascript
 import Telnyx from 'telnyx';
@@ -30,11 +30,11 @@ const client = new Telnyx({
 });
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List portout requests
+## 列出 portout 请求
 
-Returns the portout requests according to filters
+根据筛选条件返回 portout 请求
 
 `GET /portouts`
 
@@ -45,9 +45,9 @@ for await (const portoutDetails of client.portouts.list()) {
 }
 ```
 
-## Get a portout request
+## 获取 portout 请求
 
-Returns the portout request based on the ID provided
+根据提供的 ID 返回 portout 请求
 
 `GET /portouts/{id}`
 
@@ -57,9 +57,9 @@ const portout = await client.portouts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6a
 console.log(portout.data);
 ```
 
-## List all comments for a portout request
+## 查看 portout 请求的评论
 
-Returns a list of comments for a portout request.
+返回 portout 请求的所有评论
 
 `GET /portouts/{id}/comments`
 
@@ -69,9 +69,9 @@ const comments = await client.portouts.comments.list('182bd5e5-6e1a-4fe4-a799-aa
 console.log(comments.data);
 ```
 
-## Create a comment on a portout request
+## 为 portout 请求添加评论
 
-Creates a comment on a portout request.
+为 portout 请求创建评论
 
 `POST /portouts/{id}/comments`
 
@@ -81,9 +81,9 @@ const comment = await client.portouts.comments.create('182bd5e5-6e1a-4fe4-a799-a
 console.log(comment.data);
 ```
 
-## List supporting documents on a portout request
+## 查看 portout 请求的辅助文档
 
-List every supporting documents for a portout request.
+列出 portout 请求的所有辅助文档
 
 `GET /portouts/{id}/supporting_documents`
 
@@ -95,9 +95,9 @@ const supportingDocuments = await client.portouts.supportingDocuments.list(
 console.log(supportingDocuments.data);
 ```
 
-## Create a list of supporting documents on a portout request
+## 为 portout 请求创建辅助文档列表
 
-Creates a list of supporting documents on a portout request.
+为 portout 请求创建辅助文档列表
 
 `POST /portouts/{id}/supporting_documents`
 
@@ -109,11 +109,11 @@ const supportingDocument = await client.portouts.supportingDocuments.create(
 console.log(supportingDocument.data);
 ```
 
-## Update Status
+## 更新状态
 
-Authorize or reject portout request
+授权或拒绝 portout 请求
 
-`PATCH /portouts/{id}/{status}` — Required: `reason`
+`PATCH /portouts/{id}/{status}` — 必需参数：`reason`
 
 ```javascript
 const response = await client.portouts.updateStatus('authorized', {
@@ -124,9 +124,9 @@ const response = await client.portouts.updateStatus('authorized', {
 console.log(response.data);
 ```
 
-## List all port-out events
+## 列出所有 port-out 事件
 
-Returns a list of all port-out events.
+返回所有 port-out 事件的列表
 
 `GET /portouts/events`
 
@@ -137,9 +137,9 @@ for await (const eventListResponse of client.portouts.events.list()) {
 }
 ```
 
-## Show a port-out event
+## 查看特定的 port-out 事件
 
-Show a specific port-out event.
+显示特定的 port-out 事件
 
 `GET /portouts/events/{id}`
 
@@ -149,9 +149,9 @@ const event = await client.portouts.events.retrieve('182bd5e5-6e1a-4fe4-a799-aa6
 console.log(event.data);
 ```
 
-## Republish a port-out event
+## 重新发布 port-out 事件
 
-Republish a specific port-out event.
+重新发布特定的 port-out 事件
 
 `POST /portouts/events/{id}/republish`
 
@@ -159,9 +159,9 @@ Republish a specific port-out event.
 await client.portouts.events.republish('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 ```
 
-## List eligible port-out rejection codes for a specific order
+## 列出特定订单的 eligible port-out 拒绝代码
 
-Given a port-out ID, list rejection codes that are eligible for that port-out
+根据给定的 port-out ID，列出适用于该订单的拒绝代码
 
 `GET /portouts/rejections/{portout_id}`
 
@@ -171,9 +171,9 @@ const response = await client.portouts.listRejectionCodes('329d6658-8f93-405d-86
 console.log(response.data);
 ```
 
-## List port-out related reports
+## 查看 port-out 相关报告
 
-List the reports generated about port-out operations.
+列出关于 port-out 操作生成的报告
 
 `GET /portouts/reports`
 
@@ -184,9 +184,9 @@ for await (const portoutReport of client.portouts.reports.list()) {
 }
 ```
 
-## Create a port-out related report
+## 创建 port-out 相关报告
 
-Generate reports about port-out operations.
+生成关于 port-out 操作的报告
 
 `POST /portouts/reports`
 
@@ -199,9 +199,9 @@ const report = await client.portouts.reports.create({
 console.log(report.data);
 ```
 
-## Retrieve a report
+## 获取报告
 
-Retrieve a specific report generated.
+检索生成的特定报告
 
 `GET /portouts/reports/{id}`
 

@@ -1,30 +1,30 @@
 ---
 slug: "payment-application-generator"
 display_name: "Payment Application Generator"
-description: "Generate AIA-style payment applications. Track schedule of values, calculate retention, and produce payment documentation."
+description: "生成符合AIA标准的支付应用程序。跟踪资金流动的进度，计算应保留的金额，并生成支付相关的文档。"
 ---
 
-# Payment Application Generator
+# 支付申请生成器
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Payment applications are error-prone:
-- Manual calculations cause mistakes
-- Retention tracking is complex
-- Inconsistent documentation
-- Delayed submissions affect cash flow
+### 问题描述
+支付申请容易出现错误：
+- 手动计算容易出错
+- 保留金跟踪复杂
+- 文档不一致
+- 提交延迟会影响现金流
 
-### Solution
-Automated payment application generation with schedule of values tracking, retention calculations, and standard format output.
+### 解决方案
+自动化生成支付申请，包括价值分期跟踪、保留金计算以及标准格式的输出。
 
-### Business Value
-- **Accuracy** - Eliminate calculation errors
-- **Speed** - Faster billing cycle
-- **Cash flow** - Timely payments
-- **Compliance** - Standard documentation
+### 商业价值
+- **准确性**：消除计算错误
+- **速度**：加快 billing（计费）周期
+- **现金流**：确保及时付款
+- **合规性**：提供标准化的文档
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -328,7 +328,7 @@ class PaymentApplicationGenerator:
         return output_path
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 from datetime import date
@@ -365,24 +365,24 @@ payment = generator.calculate_payment_due(app)
 print(f"Current Payment Due: ${payment['current_payment_due']:,.2f}")
 ```
 
-## Common Use Cases
+## 常见用例
 
-### 1. Generate G702/G703
+### 1. 生成 G702/G703 报告
 ```python
 g702 = generator.generate_g702(app)
 g703 = generator.generate_g703(app)
 ```
 
-### 2. Export Application
+### 2. 导出申请文件
 ```python
 generator.export_application(app, "pay_app_001.xlsx")
 ```
 
-### 3. Add Change Order
+### 3. 添加变更订单
 ```python
 generator.add_change_order(150000, "Additional MEP work", item_number='03')
 ```
 
-## Resources
-- **DDC Book**: Chapter 3.1 - Cost Management
-- **Reference**: AIA Documents G702, G703
+## 参考资源
+- **DDC 手册**：第 3.1 章 - 成本管理
+- **参考文档**：AIA 文档 G702、G703

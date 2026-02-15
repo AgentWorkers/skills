@@ -1,15 +1,15 @@
 ---
 name: cloud-pricing
-description: Expert knowledge of cloud provider pricing models for AWS, Azure, GCP covering compute, storage, database, networking, and serverless services. Includes 2025 pricing data, regional differences, free tiers, pricing calculators, and cost comparison across providers. Activates for cloud pricing, how much does it cost, price comparison, AWS vs Azure vs GCP pricing, pricing calculator, estimate costs, regional pricing, free tier, what's cheaper.
+description: 具备对 AWS、Azure 和 GCP 等云服务提供商定价模式的深入理解，涵盖计算、存储、数据库、网络以及无服务器（serverless）服务等方面。内容包括 2025 年的定价数据、地区差异、免费 tier（免费使用额度）、定价计算器，以及各服务提供商之间的成本对比。该专家知识可用于评估云服务的成本、进行价格比较（例如 AWS 与 Azure、GCP 的对比）、使用定价计算器估算费用、了解地区性定价政策，以及判断哪种云服务更经济实惠。
 ---
 
-# Cloud Pricing Expert
+# 云服务定价专家
 
-Expert knowledge of cloud provider pricing models across AWS, Azure, and GCP with current 2025 pricing data.
+具备对 AWS、Azure 和 GCP 等云服务提供商定价模式的深入理解，掌握 2025 年的最新定价信息。
 
-## Compute Pricing (2025)
+## 计算服务定价（2025 年）
 
-### AWS EC2 (us-east-1)
+### AWS EC2（us-east-1）
 ```yaml
 t3.micro:   $0.0104/hour  (2 vCPU, 1GB)
 t3.small:   $0.0208/hour  (2 vCPU, 2GB)
@@ -25,7 +25,7 @@ Reserved (3yr): 60-65% discount
 Savings Plans: 30-70% discount (flexible)
 ```
 
-### Azure VMs (East US)
+### Azure 虚拟机（东美）
 ```yaml
 B1s:     $0.0104/hour  (1 vCPU, 1GB) - burstable
 B2s:     $0.0416/hour  (2 vCPU, 4GB)
@@ -38,7 +38,7 @@ Reserved (1yr): 40% discount
 Reserved (3yr): 62% discount
 ```
 
-### GCP Compute Engine (us-central1)
+### GCP Compute Engine（us-central1）
 ```yaml
 e2-micro:   $0.0084/hour  (0.25-2 vCPU, 1GB)
 e2-small:   $0.0168/hour  (0.5-2 vCPU, 2GB)
@@ -51,7 +51,7 @@ Committed (1yr): 37% discount
 Committed (3yr): 55% discount
 ```
 
-## Serverless Pricing
+## 无服务器架构（Serverless）定价
 
 ### AWS Lambda
 ```yaml
@@ -90,9 +90,9 @@ Networking: $0.12/GB egress
 Free tier: 2M invocations, 400K GB-seconds
 ```
 
-## Storage Pricing
+## 存储服务定价
 
-### AWS S3 (us-east-1)
+### AWS S3（us-east-1）
 ```yaml
 Standard:           $0.023/GB/month
 Standard-IA:        $0.0125/GB  (54% cheaper, min 128KB, 30 days)
@@ -129,9 +129,9 @@ Operations: $0.05 per 10K Class A (write)
             $0.004 per 10K Class B (read)
 ```
 
-## Database Pricing
+## 数据库服务定价
 
-### AWS RDS PostgreSQL (db.t3.medium)
+### AWS RDS PostgreSQL（db.t3.medium）
 ```yaml
 On-demand:      $0.068/hour ($49.64/month)
 Reserved 1yr:   $0.043/hour (37% savings)
@@ -178,9 +178,9 @@ Firestore:
   - Storage: $0.18/GB
 ```
 
-## Networking Pricing
+## 网络服务定价
 
-### Data Transfer (AWS, per GB)
+### 数据传输费用（AWS，按 GB 计算）
 ```yaml
 Internet egress (us-east-1):
   - First 10TB:    $0.09/GB
@@ -196,7 +196,7 @@ NAT Gateway:
   - $0.045/GB processed
 ```
 
-### CDN Pricing
+### CDN 服务定价
 ```yaml
 CloudFront (per GB):
   - First 10TB:  $0.085/GB
@@ -209,9 +209,9 @@ Cloud CDN:
   - First 10TB:  $0.085/GB
 ```
 
-## Price Comparison Examples
+## 定价比较示例
 
-### Example 1: Simple Web Application
+### 示例 1：简单 Web 应用程序
 ```typescript
 const requirements = {
   compute: '2 x t3.medium (24/7)',
@@ -248,7 +248,7 @@ const costs = {
 // With Reserved Instances (1yr): $140/month (34% savings)
 ```
 
-### Example 2: Serverless API
+### 示例 2：无服务器架构 API
 ```typescript
 const requirements = {
   requests: '50M/month',
@@ -278,7 +278,7 @@ const cloudFunctions = {
 // Winner: Azure Functions ($90/month)
 ```
 
-## Free Tiers (Always Free, 2025)
+## 免费 tier（2025 年）
 
 ### AWS
 ```yaml
@@ -308,18 +308,18 @@ Cloud Run: 2M requests, 360K GB-seconds
 Firestore: 1GB storage, 50K reads, 20K writes
 ```
 
-## Pricing Calculators
+## 定价计算器
 
-**AWS Pricing Calculator**: https://calculator.aws
-**Azure Pricing Calculator**: https://azure.microsoft.com/pricing/calculator
-**GCP Pricing Calculator**: https://cloud.google.com/products/calculator
+**AWS 定价计算器**：https://calculator.aws
+**Azure 定价计算器**：https://azure.microsoft.com/pricing/calculator
+**GCP 定价计算器**：https://cloud.google.com/products/calculator
 
-## Regional Pricing Differences
+## 地区定价差异
 
-**Most Expensive**: Asia Pacific (Tokyo, Sydney)
-**Cheapest**: US regions (us-east-1, us-west-2)
-**Middle**: Europe (eu-west-1, eu-central-1)
+**价格最高的地区**：亚太地区（东京、悉尼）
+**价格最低的地区**：美国地区（us-east-1、us-west-2）
+**中等价格水平的地区**：欧洲地区（eu-west-1、eu-central-1）
 
-Difference: 10-30% higher in APAC vs US East
+亚太地区的定价通常比美国东部高出 10% 至 30%。
 
-Make informed pricing decisions with up-to-date cost data!
+利用最新的成本数据，做出明智的定价决策！

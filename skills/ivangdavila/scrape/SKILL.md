@@ -1,38 +1,38 @@
 ---
 name: Scrape
-description: Legal web scraping with robots.txt compliance, rate limiting, and GDPR/CCPA-aware data handling.
+description: 合法的网络爬虫技术：遵循robots.txt文件的规定，实施速率限制，并确保数据处理的合规性（符合GDPR/CCPA等数据保护法规）。
 ---
 
-## Pre-Scrape Compliance Checklist
+## 数据抓取前的合规性检查清单
 
-Before writing any scraping code:
+在编写任何抓取代码之前，请务必遵循以下规则：
 
-1. **robots.txt** — Fetch `{domain}/robots.txt`, check if target path is disallowed. If yes, stop.
-2. **Terms of Service** — Check `/terms`, `/tos`, `/legal`. Explicit scraping prohibition = need permission.
-3. **Data type** — Public factual data (prices, listings) is safer. Personal data triggers GDPR/CCPA.
-4. **Authentication** — Data behind login is off-limits without authorization. Never scrape protected content.
-5. **API available?** — If site offers an API, use it. Always. Scraping when API exists often violates ToS.
+1. **robots.txt 文件**：请求 `{domain}/robots.txt`，检查目标路径是否被禁止。如果被禁止，则立即停止抓取。
+2. **服务条款**：查阅 `/terms`、`/tos` 或 `/legal` 等页面。如果明确禁止抓取数据，则需要获得许可。
+3. **数据类型**：公开的事实性数据（如价格、列表信息）相对更安全；个人数据可能违反 GDPR/CCPA 等法规。
+4. **身份验证**：未经授权，禁止抓取需要登录才能访问的数据。切勿抓取受保护的内容。
+5. **API 的使用**：如果网站提供了 API，请务必使用它。使用 API 进行数据抓取通常不会违反服务条款。
 
-## Legal Boundaries
+## 法律界限
 
-- **Public data, no login** — Generally legal (hiQ v. LinkedIn 2022)
-- **Bypassing barriers** — CFAA violation risk (Van Buren v. US 2021)
-- **Ignoring robots.txt** — Gray area, often breaches ToS (Meta v. Bright Data 2024)
-- **Personal data without consent** — GDPR/CCPA violation
-- **Republishing copyrighted content** — Copyright infringement
+- **公开数据（无需登录）**：通常属于合法行为（例如 hiQ 诉 LinkedIn 案，2022 年）。
+- **绕过访问限制**：可能违反《加州公平竞争法》（CFAA）（例如 Van Buren 诉美国案，2021 年）。
+- **忽略 robots.txt 文件**：属于灰色地带，通常会违反服务条款（例如 Meta 诉 Bright Data 案，2024 年）。
+- **未经同意抓取个人数据**：违反 GDPR/CCPA 等法规。
+- **重新发布受版权保护的内容**：属于侵犯版权的行为。
 
-## Request Discipline
+## 请求规范
 
-- **Rate limit**: Minimum 2-3 seconds between requests. Faster = server strain = legal exposure.
-- **User-Agent**: Real browser string + contact email: `Mozilla/5.0 ... (contact: you@email.com)`
-- **Respect 429**: Exponential backoff. Ignoring 429s shows intent to harm.
-- **Session reuse**: Keep connections open to reduce server load.
+- **请求间隔**：每次请求之间至少间隔 2-3 秒。频繁请求会增加服务器负担，可能导致法律风险。
+- **User-Agent**：使用真实的浏览器字符串，并附上联系邮箱，例如：`Mozilla/5.0 ... (contact: you@email.com)`。
+- **遵守 429 错误响应**：遇到 429 错误时，应采用指数级延迟策略（即逐渐增加请求间隔时间）。忽略 429 错误可能被视为恶意行为。
+- **会话复用**：保持连接开放以减少服务器负载。
 
-## Data Handling
+## 数据处理
 
-- **Strip PII immediately** — Don't collect names, emails, phones unless legally justified.
-- **No fingerprinting** — Don't combine data to identify individuals indirectly.
-- **Minimize storage** — Cache only what you need, delete what you don't.
-- **Audit trail** — Log what, when, where. Evidence of good faith if challenged.
+- **立即删除敏感信息**：除非有合法理由，否则不要收集姓名、电子邮件或电话号码等个人身份信息。
+- **禁止数据关联**：不要通过组合数据来间接识别个人身份。
+- **最小化数据存储**：仅缓存所需的数据，并及时删除不再需要的数据。
+- **保留审计记录**：详细记录抓取的内容、时间和地点。这可以在发生争议时作为证明你行为正当性的证据。
 
-For code patterns and robots.txt parser, see `code.md`
+有关代码模式和 robots.txt 文件解析器的更多信息，请参阅 `code.md` 文件。

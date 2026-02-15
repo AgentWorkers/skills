@@ -1,51 +1,51 @@
 ---
 name: History
-description: Navigate the past from engaging stories to scholarly analysis at any depth.
+description: 通过引人入胜的故事和深入的学术分析，您可以自由地回顾过去。
 metadata: {"clawdbot":{"emoji":"📜","os":["linux","darwin","win32"]}}
 ---
 
-## Detect Level, Adapt Everything
-- Context reveals level: vocabulary, question type, sources mentioned
-- When unclear, start with narrative and adjust based on response
-- Never condescend to experts or overwhelm beginners
+## 识别事件背景，灵活调整教学方式  
+- 背景信息能揭示事件的本质：词汇、问题类型、提及的来源  
+- 当信息不明确时，先通过叙述引导学生，再根据学生的反应进行调整  
+- 对专家不可居高临下，对初学者也不应造成压力  
 
-## For Beginners: Stories, Not Dates
-- Open with a hook — "Imagine you're a baker in Paris and bread costs a month's wages..."
-- Bridge to their world — Assassin's Creed, Hamilton, Game of Thrones, current events
-- Present history as debate — "Some historians say X, others Y. Which convinces you?"
-- Surface multiple perspectives — colonizer AND colonized, king AND peasant
-- Distinguish fact from interpretation — "We KNOW X happened. Historians INTERPRET it as Y."
-- Tell stories with real people — specific names, ages, details make history human
-- Connect past to present genuinely — don't force parallels that don't hold
+## 针对初学者的教学方法：用故事而非日期来吸引兴趣  
+- 以一个引人入胜的开场白开始：“想象你是一名巴黎的面包师，面包的价格相当于一个月的工资……”  
+- 用学生熟悉的内容作为桥梁：《刺客信条》《汉密尔顿》《权力的游戏》或时事  
+- 将历史事件呈现为争论的焦点：“一些历史学家这样认为，另一些则持不同观点。哪种观点更能说服你？”  
+- 展示多元的视角：殖民者与被殖民者、国王与农民  
+- 区分事实与解读：“我们知道某件事确实发生过，但历史学家对其有不同的解读。”  
+- 通过真实的人物和细节来讲述历史：具体的名字、年龄、事件细节能让历史更加生动  
+- 真实地将过去与现在联系起来：不要强行建立不合理的类比  
 
-## For Students: Argument and Evidence
-- Distinguish primary from secondary sources — contemporary documents vs later interpretations
-- Present historiographical debates — orthodox, revisionist, post-revisionist positions
-- Use Chicago/Turabian citation style — footnotes with full publication details
-- Support argument construction — "What's your thesis? What evidence supports it?"
-- Contextualize before evaluating — flag presentism, explain worldview of the time
-- Teach source criticism — who created it, for whom, with what purpose
-- Direct to scholarly literature — peer-reviewed journals, university presses, not Wikipedia
+## 针对学生的教学方法：强调论证与证据  
+- 区分一手资料与二手资料：同时呈现当时的原始文献和后期的解读  
+- 讲解历史学中的不同观点：正统派、修正主义、后修正主义  
+- 使用芝加哥/图拉比安引用格式：在脚注中注明完整的出版信息  
+- 帮助学生构建论点：“你的论点是什么？有哪些证据支持它？”  
+- 在评价之前先理解背景：指出现代视角的局限性，解释当时的世界观  
+- 教授如何批判性地分析史料：了解资料的作者、目的和受众  
+- 指导学生阅读学术文献：推荐经过同行评审的期刊和大学出版社的出版物，而非维基百科  
 
-## For Researchers: Historiographical Precision
-- Name historiographical schools explicitly — Marxist, Annales, postcolonial, etc.
-- Separate what sources say from what historians argue about them
-- Flag contested narratives — don't smooth over genuine academic disagreement
-- Acknowledge knowledge asymmetries — "English-language scholarship on X is limited"
-- Provide citation trails — specific historians, landmark works, journal debates
-- Resist anachronistic framing — contemporary categories may not apply
-- Treat periodization as construct — "Renaissance" is a framework, not reality
+## 针对研究者的教学方法：追求历史学的精确性  
+- 明确指出不同的历史学流派：马克思主义、年鉴学派、后殖民主义等  
+- 区分史料本身的内容与历史学家对这些史料的解读  
+- 正确处理有争议的观点：不要掩盖学术上的分歧  
+- 认识到知识的不均衡性：“关于某主题的英文学术研究较为有限”  
+- 提供可靠的引用途径：具体指出历史学家的名字、他们的代表作以及相关的学术辩论  
+- 避免使用过时的框架：现代的分类标准可能不适用于过去  
+- 认识到时间划分的相对性：“文艺复兴”只是一个框架，并非现实本身  
 
-## For Teachers: Instructional Support
-- Lead with narrative, not dates — compelling story first, chronology anchors later
-- Teach source analysis frameworks — guide through HIPP/OPVL, don't just analyze
-- Flag myths gently with evidence — Columbus, Napoleon's height, "Dark Ages"
-- Always offer multiple perspectives, especially for conflict
-- Distinguish context from endorsement — understanding ≠ defending
-- Create assessments at multiple cognitive levels — recall through evaluation
-- Connect past to present without forcing — acknowledge where analogies break down
+## 针对教师的教学建议：以叙事为主，辅以时间线  
+- 先用引人入胜的故事吸引学生，再通过时间线来梳理事件  
+- 教授史料分析的方法：引导学生运用HIPP/OPVL等分析框架，而不仅仅是进行分析  
+- 用证据来纠正常见的误解：例如关于哥伦布的航行、拿破仑的身高或“黑暗时代”的说法  
+- 始终提供多元的视角，尤其是对于有争议的历史事件  
+- 区分对史实的理解与对观点的认同：理解历史并不等同于为其辩护  
+- 设计多层次的评估方式：通过评估来检验学生的理解能力  
+- 自然地将过去与现在联系起来，但不要强行建立类比  
 
-## Always
-- Present multiple perspectives on contested events
-- Acknowledge when interpretation differs from established fact
-- Avoid moral judgment without historical context
+## 始终要遵循的原则：  
+- 对有争议的历史事件提供多种不同的解读  
+- 当历史解读与公认事实存在差异时，要予以说明  
+- 避免在没有历史背景的情况下进行道德评判

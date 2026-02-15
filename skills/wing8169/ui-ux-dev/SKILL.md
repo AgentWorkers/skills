@@ -1,20 +1,20 @@
 ---
 name: ui-designer
-description: Generate and serve live HTML/CSS/JS UI designs from natural language prompts. Use when the user asks to design, create, build, or prototype a website, landing page, UI, dashboard, web page, or frontend mockup. Also triggers on requests to update, tweak, or iterate on a previously generated design. Replaces traditional UI design + frontend dev workflow.
+description: 根据自然语言输入生成并实时呈现 HTML/CSS/JS 用户界面（UI）设计。适用于用户需要设计、创建或原型化网站、登录页面、用户界面（UI）、仪表板、网页或前端界面的场景。同时，该功能也支持对已生成的设计进行更新、调整或迭代操作。它替代了传统的 UI 设计与前端开发工作流程。
 ---
 
-# UI Designer
+# UI设计师
 
-Generate production-quality React pages from natural language, serve live, iterate until satisfied.
+能够将自然语言内容转换为高质量的React页面，并实时呈现给用户，不断迭代直至用户满意。
 
-## Setup
+## 设置
 
-Check TOOLS.md for `### UI Designer` config. If missing, run first-time setup:
-1. Ask user which port (default: 5174)
-2. Run: `bash scripts/setup.sh <port>`
-3. Save config to TOOLS.md
+请查看 `TOOLS.md` 文件中的 `### UI Designer` 配置。如果配置缺失，请执行首次设置：
+1. 询问用户希望使用的端口（默认为5174）。
+2. 运行命令：`bash scripts/setup.sh <port>`
+3. 将配置保存到 `TOOLS.md` 文件中。
 
-## Project Structure
+## 项目结构
 
 ```
 <serve_dir>/
@@ -25,7 +25,7 @@ Check TOOLS.md for `### UI Designer` config. If missing, run first-time setup:
 │   └── about/index.html
 ```
 
-### React Page Template (CDN, no build step)
+### React页面模板（使用CDN，无需构建步骤）
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -48,132 +48,127 @@ Check TOOLS.md for `### UI Designer` config. If missing, run first-time setup:
 </html>
 ```
 
-## Workflow
+## 工作流程
 
-**Critical: Message the user at EVERY action — not just milestones. If you're reading a file, say "Reading project config...". If you're writing HTML, say "Writing bounty page...". If you're taking a screenshot, say "Taking screenshot...". The user should never wonder what you're doing. Treat it like a live build log.**
+**重要提示：** 在用户执行任何操作时都要及时通知他们——而不仅仅是达到关键里程碑时。例如，当您正在读取项目配置时，应告知用户“正在读取项目配置...”；当您正在编写HTML代码时，应告知用户“正在编写奖励页面...”；当您正在截图时，也应告知用户“正在截图...”。用户应该随时清楚您正在做什么。可以将这个过程视为一个实时的构建日志。
 
-### Step 1: Project Name
-Ask: "What's the project name?"
-- If `<serve_dir>/<project>/` exists: read `project.json`, show current setup and existing pages, ask if amending or adding
-- If new: create directory + `project.json`
-- **→ Message user: "Project created / loaded ✓"**
+### 第1步：项目名称
+询问用户：“项目的名称是什么？”
+- 如果 `<serve_dir>/<project>/` 目录已经存在：读取 `project.json` 文件，显示当前的设置和已有的页面，询问用户是否需要修改或添加新页面。
+- 如果是新项目：创建相应的目录并生成 `project.json` 文件。
+- **→ 通知用户：“项目已创建/加载完成 ✓”**
 
-### Step 2: Preferences (new or amending)
-Ask about design preferences (style, font, colors, brand assets).
-Save to `project.json`.
-- **→ Message user: "Preferences saved ✓"**
+### 第2步：偏好设置（新项目或修改现有项目）
+询问用户的界面设计偏好（样式、字体、颜色、品牌素材等），并将这些设置保存到 `project.json` 文件中。
+- **→ 通知用户：“偏好设置已保存 ✓”**
 
-### Step 3: Page Slug
-Ask: "What slug for this page?"
-- Check if exists → ask to overwrite or new
-- **→ Message user: "Slug confirmed: /<slug> ✓"**
+### 第3步：页面 slug
+询问用户：“这个页面的 slug 应该是什么？”
+- 检查该 slug 是否已经存在，如果存在则询问用户是否需要覆盖现有 slug；如果不存在，则让用户选择一个新的 slug。
+- **→ 通知用户：“slug 已确认：/<slug> ✓”**
 
-### Step 4: Design Details & Design System
-Ask about page content + design system (see Design Principles below).
-Update `project.json` with design system details.
-- **→ Message user: "Got it, generating now..."**
+### 第4步：设计细节与设计系统
+询问用户关于页面内容和设计系统的具体要求（详见下面的“设计原则”）。根据用户的反馈更新 `project.json` 文件中的设计系统相关信息。
+- **→ 通知用户：“已了解，现在开始生成页面内容...”**
 
-### Step 5: Generate
-Generate the React page. Apply Design Principles strictly.
-- **→ Message user: "HTML generated, running visual review..."**
+### 第5步：生成页面
+严格按照设计原则生成React页面。
+- **→ 通知用户：“HTML代码已生成，正在进行视觉审核...”**
 
-### Step 6: Screenshot Review Loop
+### 第6步：截图审核循环
 ```bash
 bash scripts/screenshot.sh "http://localhost:<port>/<project>/<slug>/" /tmp/<slug>-review.png 1400 900
 ```
-Analyze with `image` tool. Fix issues. Re-screenshot. Also check mobile (width=390).
-- **→ Message user: "Review done, sending preview..."**
+使用 `image` 工具分析生成的页面，修复存在的问题后重新截图，并检查移动设备的显示效果（屏幕宽度为390像素）。
+- **→ 通知用户：“审核完成，正在发送预览链接...”**
+**在分享之前，至少进行一次桌面设备和移动设备的审核。**
 
-**Do at least one desktop + one mobile review pass before sharing.**
+### 第7步：分享与迭代
+将生成的页面的实时URL和截图发送给用户，征求他们的反馈。根据反馈进行修改，然后重新截图并再次分享。在整个迭代过程中都要持续通知用户进度。
 
-### Step 7: Share and Iterate
-Send live URL + screenshot to user.
-Ask for feedback. Apply changes → re-screenshot → share. Repeat.
-- **→ Keep user informed at every iteration step**
+### 第8步：媒体素材
+如果用户提供了图片：
+1. 将图片保存到 `<project>/assets/` 目录中。
+2. 使用 `bash scripts/convert-image.sh` 命令将图片转换为 `.webp` 格式（例如：`bash scripts/convert-image.sh <input> <output.webp> [quality]`）。
+3. 在HTML代码中引用这些图片，格式为 `../assets/filename.webp`。
+- **→ 通知用户：“图片已转换：从1.2MB压缩到340KB（节省了72%的文件大小） ✓**”
 
-### Step 8: Media Assets
-If user provides images:
-1. Save to `<project>/assets/`
-2. Convert to .webp: `bash scripts/convert-image.sh <input> <output.webp> [quality]`
-3. Reference in HTML as `../assets/filename.webp`
-- **→ Message user: "Image converted: 1.2MB → 340KB (72% smaller) ✓"**
-
-### Step 9: Export
-Zip the project folder and send:
+### 第9步：导出项目
+将整个项目文件夹压缩成ZIP文件并发送给用户：
 ```bash
 cd <serve_dir> && zip -r /tmp/<project>.zip <project>/
 ```
-Send zip via message tool with `filePath`. The CDN-based React pages work standalone — just open `index.html` or serve with any static server.
+使用消息工具将压缩后的文件发送给用户。基于CDN的React页面可以独立运行——用户只需打开 `index.html` 文件，或者使用任何静态服务器来加载这些页面。
 
-## Image Handling
+## 图片处理
 
-Convert all user-provided images to `.webp` for performance:
+为了提升页面性能，将用户提供的所有图片转换为 `.webp` 格式：
 ```bash
 bash scripts/convert-image.sh input.png output.webp 80
 ```
-- Default quality: 80 (good balance of quality/size)
-- For hero/banner images: quality 85
-- For thumbnails/icons: quality 70
-- Always report compression savings to user
+- 默认压缩质量设置为80（在画质和文件大小之间取得了良好的平衡）。
+- 对于首页/横幅图片，压缩质量可设置为85。
+- 对于缩略图/图标，压缩质量可设置为70。
+- 始终向用户报告图片压缩后的文件大小变化。
 
-For placeholder images during prototyping:
-- Photos: `https://picsum.photos/seed/<name>/<width>/<height>`
-- Solid placeholders: `https://placehold.co/<width>x<height>/<bg>/<text>`
+**在原型设计阶段使用的占位图片：**
+- 照片：`https://picsum.photos/seed/<name>/<width>/<height>`
+- 固定背景的占位图片：`https://placehold.co/<width>x<height>/<bg>/<text>`
 
-## Design Principles
+## 设计原则
 
-Apply these consistently to every generated page. These are non-negotiable quality standards.
+这些设计原则适用于所有生成的页面，是不可更改的质量标准。
 
-### Layout & Spacing
-- **Use consistent spacing scale** — stick to Tailwind's scale (4, 6, 8, 12, 16, 20, 24). Don't mix random values.
-- **Max content width** — always constrain content (max-w-5xl or max-w-6xl). Never let text run full-width.
-- **Vertical rhythm** — consistent gaps between sections (py-16 for sections, py-8 for subsections).
-- **Padding on mobile** — minimum px-4 on all containers. Text must never touch screen edges.
+### 布局与间距
+- **使用统一的间距比例**——遵循Tailwind CSS中的比例规范（4、6、8、12、16、20、24）。避免使用随机数值。
+- **限制内容宽度**——始终为内容设置最大宽度限制（例如 `max-w-5xl` 或 `max-w-6xl`），防止文本占据整个屏幕宽度。
+- **垂直布局的一致性**——各部分之间的间距要保持一致（例如使用 `py-16`）。
+- **移动设备上的内边距**——所有容器至少要有4像素的内边距，以确保文本不会碰到屏幕边缘。
 
-### Typography
-- **Clear hierarchy** — h1 largest, then h2, h3. Max 3-4 font sizes per page.
-- **Line length** — max 65-75 characters per line for readability. Use max-w-prose or max-w-2xl on text blocks.
-- **Font weight contrast** — bold for headings (font-bold/font-semibold), regular for body.
-- **Text color hierarchy** — white for headings, gray-300 for body, gray-500 for muted/secondary.
+### 字体排版
+- **清晰的层次结构**——标题使用最大的字体大小（`h1`），其次是 `h2`、`h3`。每页最多使用3-4种不同的字体大小。
+- **行长度**——为了便于阅读，每行的字符数控制在65-75个左右。对于较长的文本内容，可以使用 `max-w-prose` 或 `max-w-2xl` 的字体大小。
+- **字体粗细对比**——标题使用粗体（`font-bold` 或 `font-semibold`），正文使用普通字体。
+- **文本颜色对比**——标题使用白色，正文使用灰色（`gray-300`），次要元素使用灰色（`gray-500`）。
 
-### Color & Contrast
-- **WCAG AA minimum** — text must have 4.5:1 contrast against background.
-- **Limit palette** — max 1 primary color + 1 accent + neutrals. Don't rainbow.
-- **Consistent accent usage** — primary color for CTAs, links, active states only. Don't overuse.
-- **Dark backgrounds** — use layered darkness (bg-900 → bg-800 → bg-700) for depth, not flat black.
+### 颜色与对比度
+- **符合WCAG AA标准**——文本与背景的对比度至少为4.5:1。
+- **限制颜色使用**——最多使用1种主要颜色、1种强调色和几种中性色，避免使用过多的颜色。
+- **统一强调色的使用**——主要颜色仅用于点击按钮、链接和处于活动状态的元素，避免过度使用。
+- **深色背景**——使用渐变效果（例如 `bg-900` → `bg-800` → `bg-700`）来增加层次感，而不是纯黑色背景。
 
-### Responsive Design
-- **Mobile-first** — design for 390px first, enhance for larger screens.
-- **Breakpoints** — use sm: (640px), md: (768px), lg: (1024px). Test all three.
-- **Touch targets** — buttons/links min 44x44px on mobile.
-- **Stack on mobile** — grids collapse to single column. Never horizontal scroll for content.
-- **Navigation** — hamburger menu on mobile with slide-down panel. Always include.
+### 响应式设计
+- **以移动设备优先**——首先为390像素的屏幕设计页面，然后再针对更大的屏幕进行优化。
+- **设置断点**——定义三个屏幕尺寸的样式：`sm`（640px）、`md`（768px）和 `lg`（1024px），并针对所有这些尺寸进行测试。
+- **触控交互元素**——移动设备上的按钮/链接最小尺寸应为44x44像素。
+- **移动设备上的布局**——网格布局在屏幕宽度较小时应折叠为单列显示，避免水平滚动。
+- **导航**——移动设备上使用汉堡菜单，并提供下拉面板，确保导航功能的可用性。
 
-### Components & Interactions
-- **Icons** — always use SVG, never emoji (emoji break in headless browsers and render inconsistently).
-- **Buttons** — clear hover states (color shift + slight scale or shadow). Consistent border-radius.
-- **Cards** — subtle border (border-white/5 or border-dark-600), slight bg difference from page bg.
-- **Transitions** — add `transition` class to all interactive elements. Duration 150-200ms.
-- **Focus states** — all interactive elements must have visible focus rings for accessibility.
+### 组件与交互效果
+- **图标**——始终使用SVG格式，避免使用表情符号（因为表情符号在某些浏览器中无法正确显示）。
+- **按钮**——设置明显的悬停效果（颜色变化或轻微的尺寸变化、阴影效果），并保持边框圆角的一致性。
+- **卡片**——使用淡淡的边框（例如 `border-white/5` 或 `border-dark-600`），背景颜色与页面背景略有不同。
+- **过渡效果**——为所有可交互元素添加 `transition` 类，过渡时间为150-200毫秒。
+- **可访问性**——所有可交互元素都必须有明显的焦点提示（例如高亮显示）。
 
-### Images & Performance
-- **All images in .webp** — convert user images with scripts/convert-image.sh.
-- **Lazy loading** — add `loading="lazy"` to images below the fold.
-- **Aspect ratios** — use `aspect-video` or `aspect-square` classes to prevent layout shift.
-- **Alt text** — every image needs descriptive alt text.
+### 图片与性能
+- **所有图片都转换为 `.webp` 格式**——使用 `scripts/convert-image.sh` 命令处理用户提供的图片。
+- **懒加载**——对于页面下方的图片，添加 `loading="lazy"` 属性以实现懒加载效果。
+- **保持图片的宽高比**——使用 `aspect-video` 或 `aspect-square` 类来避免布局错位。
+- **图片的alt文本**——每张图片都需要有描述性的 `alt` 文本。
 
-### Code Quality
-- **Semantic HTML** — use header, main, section, footer, nav. Not div soup.
-- **No Lorem ipsum** — always use contextually relevant placeholder text.
-- **React components** — break UI into logical components (Navbar, Hero, Features, etc.).
-- **State management** — use useState for interactive elements (tabs, modals, dropdowns).
+### 代码质量
+- **语义化的HTML结构**——使用 `header`、`main`、`section`、`footer`、`nav` 等标签，避免使用不必要的 `div` 标签。
+- **避免使用无意义的占位文本（如 “Lorem ipsum”）**——始终使用与内容相关的占位文本。
+- **组件化设计**——将用户界面拆分为逻辑清晰的组件（如 `Navbar`、`Hero`、`Features` 等）。
+- **状态管理**——对于可交互的元素（如标签页、模态框、下拉菜单等），使用 `useState` 等状态管理工具。
 
-### Common Mistakes to Avoid
-- ❌ Text touching screen edges on mobile
-- ❌ Emoji for icons (use SVG)
-- ❌ Flat black backgrounds (use layered darks)
-- ❌ No hover states on clickable elements
-- ❌ Inconsistent border-radius across elements
-- ❌ Giant font sizes that overflow on mobile
-- ❌ Missing meta viewport tag
-- ❌ Forgetting hamburger menu on mobile
+### 需避免的常见错误：
+- ❌ 移动设备上文本超出屏幕边缘
+- ❌ 使用表情符号作为图标（使用SVG格式）
+- ❌ 使用纯黑色背景
+- ❌ 可点击元素没有悬停效果
+- ❌ 不同元素之间的边框圆角不一致
+- ❌ 字体过大导致在移动设备上显示不完整
+- ❌ 忘记添加 `meta viewport` 标签
+- ❌ 移动设备上忘记添加汉堡菜单

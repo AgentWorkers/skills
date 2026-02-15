@@ -1,26 +1,26 @@
 ---
 name: simmer-ai-divergence
 displayName: Polymarket AI Divergence
-description: Surface markets where Simmer's AI price diverges from Polymarket. High divergence = potential alpha. Use when user wants to find AI vs market disagreements, scan for trading opportunities, or understand where the AI is bullish/bearish relative to external prices.
+description: 在某些公开市场上，Simmer 的 AI 价格与 Polymarket 上的价格存在显著差异。这种价格差异可能意味着存在投资机会（即所谓的 “alpha 机会”）。当用户希望发现 AI 技术与市场观点之间的分歧、寻找交易机会，或者了解 AI 对外部价格的看法（是看涨还是看跌）时，可以使用这一信息。
 metadata: {"clawdbot":{"emoji":"🔮","requires":{"env":["SIMMER_API_KEY"]},"cron":null,"autostart":false}}
 authors:
   - Simmer (@simmer_markets)
 version: "1.0.2"
 ---
 
-# Polymarket AI Divergence Scanner
+# Polymarket AI价格分歧扫描器
 
-Surface markets where Simmer's AI-driven price diverges from Polymarket.
+该工具用于识别Simmer的AI预测价格与Polymarket实际价格之间存在分歧的表面市场。
 
-## When to Use This Skill
+## 适用场景
 
-Use this skill when the user wants to:
-- Find trading opportunities based on AI vs market disagreement
-- Scan for high-divergence plays
-- See where Simmer's AI is bullish/bearish vs Polymarket
-- Understand AI pricing differences
+当用户希望：
+- 基于AI预测与市场实际表现的差异寻找交易机会
+- 扫描价格分歧较大的市场
+- 了解Simmer的AI预测是看涨还是看跌
+- 分析AI预测与市场价格的差异时，可以使用此工具。
 
-## Quick Commands
+## 快速命令
 
 ```bash
 # Show all divergences (>5% default)
@@ -45,37 +45,37 @@ python ai_divergence.py --opportunities
 python ai_divergence.py --json
 ```
 
-**API Reference:**
-- Base URL: `https://api.simmer.markets`
-- Auth: `Authorization: Bearer $SIMMER_API_KEY`
-- Markets: `GET /api/sdk/markets`
+**API参考：**
+- 基础URL：`https://api.simmer.markets`
+- 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
+- 市场数据请求：`GET /api/sdk/markets`
 
-## Configuration
+## 配置参数
 
-| Setting | Environment Variable | Default | Description |
+| 参数 | 环境变量 | 默认值 | 说明 |
 |---------|---------------------|---------|-------------|
-| API Key | `SIMMER_API_KEY` | (required) | Your Simmer SDK key |
-| API URL | `SIMMER_API_URL` | `https://api.simmer.markets` | API base URL |
+| API密钥 | `SIMMER_API_KEY` | （必填） | 你的Simmer SDK密钥 |
+| API地址 | `SIMMER_API_URL` | `https://api.simmer.markets` | API基础URL |
 
-## How It Works
+## 工作原理
 
-Each market has:
-- `current_probability` — Simmer's AI-influenced price
-- `external_price_yes` — Polymarket's price
-- `divergence` — The difference (Simmer - Polymarket)
+每个市场的数据包括：
+- `current_probability`：受Simmer AI影响的价格
+- `external_price_yes`：Polymarket的实际价格
+- `divergence`：Simmer预测价格与Polymarket实际价格之间的差异
 
-High divergence = potential alpha if the AI is right.
+当AI预测的价格与实际价格之间的差异较大时，可能存在较高的投资机会（即“alpha收益”）。
 
-## Interpreting Signals
+## 信号解读
 
-| Divergence | Meaning | Action |
+| 分歧程度 | 含义 | 应对策略 |
 |------------|---------|--------|
-| > +10% | AI more bullish | Consider BUY YES |
-| < -10% | AI more bearish | Consider BUY NO |
-| ±5-10% | Mild divergence | Monitor |
-| < ±5% | Aligned | No signal |
+| > +10% | AI预测看涨 | 考虑买入 |
+| < -10% | AI预测看跌 | 考虑卖出 |
+| ±5-10% | 分歧较小 | 继续观察 |
+| < ±5% | 预测与市场一致 | 无交易信号 |
 
-## Example Output
+## 示例输出
 
 ```
 🔮 AI Divergence Scanner
@@ -92,21 +92,21 @@ What will be the top AI model this mon     17.9%    1.0%  +16.9%    🟢 BUY
    Divergence: -34.3% | Resolves: 2026-07-31
 ```
 
-## Example Conversations
+## 示例用法
 
-**"Where does the AI disagree with Polymarket?"**
+**“AI在哪些市场与Polymarket的预测存在分歧？”**
 → `python ai_divergence.py`
 
-**"Any bullish opportunities?"**
+**“有哪些看涨的投资机会？”**
 → `python ai_divergence.py --bullish --min 10`
 
-**"What's the AI's highest conviction play?"**
+**“AI预测中最有信心的投资策略是什么？”**
 → `python ai_divergence.py --opportunities`
 
-## Troubleshooting
+## 常见问题及解决方法
 
-**"SIMMER_API_KEY not set"**
-→ Get key from simmer.markets/dashboard → SDK tab
+**“SIMMER_API_KEY未设置”**
+→ 请从simmer.markets/dashboard的SDK设置中获取API密钥。
 
-**"No markets match filters"**
-→ Lower `--min` threshold or remove directional filters
+**“没有符合筛选条件的市场”**
+→ 降低`--min`阈值或取消方向性筛选条件。

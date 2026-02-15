@@ -1,68 +1,69 @@
 ---
 name: incident-pcn-evidence-appeal-corrective-actions-uk
-description: Builds incident/PCN evidence packs with timelines, appeal drafts, corrective actions, and follow-up monitoring. USE WHEN handling PCNs or incidents needing documentation.
+description: 构建包含时间线、申诉草案、纠正措施以及后续监控信息的事件/产品缺陷通知（PCN）证据包。适用于处理需要记录的产品缺陷通知或事件时使用。
 ---
 
-# Incident & PCN Handling Pack (UK)
+# 事故与违规通知（PCN）处理包（英国）
 
-## PURPOSE
-Turn incident/PCN inputs into an evidence pack: clean manager brief, timeline, appeal cover draft, corrective actions, and follow-up monitoring.
+## 目的  
+将事故/违规通知（PCN）的相关信息整理成一套完整的证据包，包括简洁的管理层汇报材料、事件时间线、上诉申请模板、纠正措施以及后续监控计划。
 
-## WHEN TO USE
-- “Build a PCN appeal pack using CCTV and timeline notes.”
-- “Summarise these incident notes into a clean manager brief.”
-- “Create corrective actions and follow-up monitoring for this incident.”
+## 使用场景  
+- 使用监控录像（CCTV）和时间线记录来制作违规通知（PCN）的上诉材料。  
+- 将事故相关记录汇总成一份简洁的管理层汇报文件。  
+- 为该事故制定纠正措施并安排后续监控工作。  
 
-DO NOT USE WHEN…
-- The request is general driving advice or admin tasks (invoice chasing, calendar, IT support).
-- No artefact is requested and details are too vague.
+**不适用场景**  
+- 该请求与一般性指导建议或行政任务无关（如发票催收、日程安排、IT支持等）。  
+- 如果没有需要收集的具体证据，或者信息过于模糊时，也不适用此流程。  
 
-## INPUTS
-- REQUIRED:
-  - Incident/PCN basics: date/time, location, vehicle reg, driver, allegation/contravention
-  - Evidence list (CCTV, photos, telematics, delivery notes, correspondence, portal screenshots)
-  - Any deadlines (appeal window)
-- OPTIONAL:
-  - Existing timeline notes, witness statements, customer communications
-  - Internal policy/SOP excerpts for corrective actions (paste text)
-- EXAMPLES:
-  - “PCN: bus lane; CCTV link notes; delivery timestamp proof; need appeal pack.”
+## 输入内容  
+**必填项**：  
+- 事故/违规通知的基本信息：日期/时间、地点、车辆信息、驾驶员信息、违规行为。  
+- 证据清单（监控录像、照片、车辆行驶数据、交付记录、通信记录、系统界面截图等）。  
+- 任何相关的截止日期（如上诉期限）。  
 
-## OUTPUTS
-- `incident-manager-brief.md`
-- `timeline.md`
-- `appeal-pack-cover.md` (Word-ready)
-- `corrective-actions.md`
-- `follow-up-monitoring.md` (Excel-ready)
-- Success criteria:
-  - Clear chronology and evidence references
-  - Appeal pack is factual and consistent with evidence
-  - Corrective actions have owners and review dates
+**可选项**：  
+- 现有的时间线记录、目击者陈述、与客户的沟通记录。  
+- 与纠正措施相关的内部政策或操作流程（SOP）摘录（可粘贴文本）。  
 
-## WORKFLOW
-1. Confirm whether this is a **PCN appeal**, an **internal incident**, or both.
-   - IF unclear → **STOP AND ASK THE USER**.
-2. Build manager brief using `assets/incident-manager-brief-template.md`.
-3. Construct a timeline using `assets/timeline-template.md`.
-   - IF key dates/times are missing → **STOP AND ASK THE USER** for them.
-4. Evidence capture standard:
-   - Apply `references/evidence-capture-standard.md` (label, store location, integrity notes).
-5. Draft appeal cover using `assets/appeal-pack-cover-template.docx-ready.md`.
-   - Keep factual; cite evidence refs; avoid speculative claims.
-6. Propose corrective actions and monitoring using `assets/follow-up-monitoring-template.md`.
-7. If asked to edit existing packs → **ASK FIRST**.
+**示例**：  
+- “违规通知（PCN）：涉及公交车道；监控录像链接；交付时间戳证明；需要制作上诉材料。”  
 
-## OUTPUT FORMAT
+## 输出文件**  
+- `incident-manager-brief.md`（事故管理层汇报文件）  
+- `timeline.md`（事件时间线文件）  
+- `appeal-pack-cover.md`（适用于Word格式的上诉申请封面文件）  
+- `corrective-actions.md`（纠正措施文件）  
+- `follow-up-monitoring.md`（适用于Excel格式的后续监控计划文件）  
+
+**成功标准**：  
+- 时间线和证据引用清晰准确。  
+- 上诉材料内容基于事实且与证据一致。  
+- 纠正措施明确责任人及审查日期。  
+
+## 工作流程**  
+1. 确认这属于**违规通知（PCN）**申请、**内部事故**，还是两者兼有。  
+   - 如果不明确，请**立即询问用户**以获取更多信息。  
+2. 使用 `assets/incident-manager-brief-template.md` 模板制作管理层汇报文件。  
+3. 使用 `assets/timeline-template.md` 模板构建事件时间线。  
+   - 如果关键日期/时间缺失，请**立即询问用户**以补充完整。  
+4. 证据收集需遵循 `references/evidence-capture-standard.md` 中的规定（标注证据来源、存储位置及完整性说明）。  
+5. 使用 `assets/appeal-pack-cover-template.docx-ready.md` 模板起草上诉申请封面文件，确保内容基于事实、引用证据，并避免主观猜测。  
+6. 根据 `assets/follow-up-monitoring-template.md` 提出纠正措施和后续监控计划。  
+7. 如需修改现有文件，请**先征得用户同意**。  
+
+## 输出格式**  
 ```text
 # timeline.md
 | Date/time | Event | Source/evidence ref | Notes |
 |----------|-------|----------------------|------|
-```
+```  
 
-## SAFETY & EDGE CASES
-- Don’t fabricate evidence or outcomes.
-- If evidence is weak or contradictory, present it as “unconfirmed” and list gaps.
+## 安全与注意事项**  
+- 禁止伪造证据或结果。  
+- 如果证据不足或存在矛盾，应如实标注为“未确认”并说明证据缺失的情况。  
 
-## EXAMPLES
-- Input: “PCN appeal with CCTV and notes”
-  - Output: brief + timeline + appeal cover + actions + monitoring tracker
+## 示例**  
+- 输入：**违规通知（PCN）申请，附带监控录像和时间线记录**  
+- 输出：事故管理层汇报文件、事件时间线、上诉申请封面文件、纠正措施文件以及后续监控计划文件。

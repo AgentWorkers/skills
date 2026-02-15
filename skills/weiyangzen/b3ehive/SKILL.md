@@ -1,26 +1,24 @@
-# b3ehive Skill Specification
-## PCTF-Compliant Multi-Agent Competition System
+# b3ehive 技能规范  
+## 符合 PCTF 标准的多智能体竞赛系统  
 
 ---
 
-## 1. Purpose (PCTF: Purpose)
-
-Enable competitive code generation where three isolated AI agents implement the same functionality, evaluate each other objectively, and deliver the optimal solution through data-driven selection.
+## 1. 目的（PCTF: Purpose）  
+该系统旨在实现一个竞争性的代码生成环境，其中三个独立的 AI 智能体各自实现相同的功能，通过客观评估相互竞争，并最终通过数据驱动的方式选出最优解。  
 
 ---
 
-## 2. Task Definition (PCTF: Task)
+## 2. 任务定义（PCTF: Task）  
+### 输入  
+- **task_description**：描述编码任务的字符串  
+- **constraints**：可选的约束条件（如时间复杂度、空间复杂度、编程语言等）  
 
-### Input
-- **task_description**: String describing the coding task
-- **constraints**: Optional constraints (time/space complexity, language, etc.)
+### 输出  
+- **final_solution**：包含获胜者实现的代码目录  
+- **comparison_report**：关于所有三种实现方式的 Markdown 分析报告  
+- **decision_rationale**：选择获胜者的理由说明  
 
-### Output
-- **final_solution**: Directory containing the winning implementation
-- **comparison_report**: Markdown analysis of all three approaches
-- **decision_rationale**: Explanation of why the winner was selected
-
-### Success Criteria
+### 成功标准  
 ```yaml
 assertions:
   - final_solution/implementation exists and is runnable
@@ -28,12 +26,11 @@ assertions:
   - decision_rationale.md explains selection logic
   - all three agent implementations are documented
   - evaluation scores are numeric and justified
-```
+```  
 
 ---
 
-## 3. Chain Flow (PCTF: Chain)
-
+## 3. 任务流程（PCTF: Chain）  
 ```mermaid
 graph TD
     A[User Task] --> B[Phase 1: Parallel Spawn]
@@ -48,10 +45,10 @@ graph TD
     H --> I[3 Scorecards]
     I --> J[Phase 4: Final Delivery]
     J --> K[Best Solution]
-```
+```  
 
-### Phase 1: Parallel Implementation
-**Agent Prompt Template**:
+### 第一阶段：并行实现  
+**智能体提示模板**：  
 ```yaml
 role: "Expert Software Engineer"
 focus: "{{agent_focus}}"  # Simplicity / Speed / Robustness
@@ -73,10 +70,10 @@ assertions:
   - tests exist and pass
   - Checklist.md is complete
   - SUMMARY.md explains unique approach
-```
+```  
 
-### Phase 2: Cross-Evaluation
-**Evaluation Prompt Template**:
+### 第二阶段：交叉评估  
+**评估提示模板**：  
 ```yaml
 evaluator: "Agent {{from}}"
 target: "Agent {{to}}"
@@ -123,10 +120,10 @@ assertions:
   - specific code snippets cited
   - numeric scores provided
   - persuasion argument is data-driven
-```
+```  
 
-### Phase 3: Objective Scoring
-**Scoring Prompt Template**:
+### 第三阶段：客观评分  
+**评分提示模板**：  
 ```yaml
 agent: "Agent {{name}}"
 task: "Fairly score yourself and competitors"
@@ -172,10 +169,10 @@ assertions:
   - justifications are specific
   - no inflation or bias
   - conclusion is evidence-based
-```
+```  
 
-### Phase 4: Final Delivery
-**Decision Logic**:
+### 第四阶段：最终交付  
+**决策逻辑**：  
 ```python
 def select_winner(scores):
     """
@@ -198,13 +195,12 @@ assertions:
   - comparison_report explains all approaches
   - decision_rationale is transparent
   - attribution is given to winning agent
-```
+```  
 
 ---
 
-## 4. Format Specifications (PCTF: Format)
-
-### Directory Structure
+## 4. 格式规范（PCTF: Format）  
+### 目录结构  
 ```
 workspace/
 ├── run_a/
@@ -218,20 +214,19 @@ workspace/
 ├── final/                   # Winning solution
 ├── COMPARISON_REPORT.md     # Full analysis
 └── DECISION_RATIONALE.md    # Why winner selected
-```
+```  
 
-### File Formats
-- **Checklist.md**: Markdown with `- [x]` checkboxes
-- **SUMMARY.md**: Markdown with sections
-- **EVALUATION_*.md**: Markdown with tables
-- **SCORECARD.md**: Markdown with score tables
-- **Implementation**: Runnable code files
+### 文件格式  
+- **Checklist.md**：包含复选框的 Markdown 文件  
+- **SUMMARY.md**：分节的 Markdown 文件  
+- **EVALUATION_*.md**：包含表格的 Markdown 文件  
+- **SCORECARD.md**：包含评分表的 Markdown 文件  
+- **Implementation**：可执行的代码文件  
 
 ---
 
-## 5. Linter & Validation
-
-### Pre-commit Checks
+## 5. 代码检查与验证  
+### 提交前的检查（Pre-commit Checks）  
 ```bash
 #!/bin/bash
 # scripts/lint.sh
@@ -264,9 +259,9 @@ lint_agent_output() {
 for agent in a b c; do
     lint_agent_output "workspace/run_${agent}" || exit 1
 done
-```
+```  
 
-### Runtime Assertions
+### 运行时断言（Runtime Assertions）  
 ```python
 def assert_phase_complete(phase_name):
     """Assert that a phase has completed successfully"""
@@ -295,12 +290,11 @@ def assert_phase_complete(phase_name):
     
     for assertion in assertions[phase_name]:
         assert evaluate(assertion), f"Assertion failed: {assertion}"
-```
+```  
 
 ---
 
-## 6. Configuration
-
+## 6. 配置（Configuration）  
 ```yaml
 b3ehive:
   # Agent configuration
@@ -332,12 +326,11 @@ b3ehive:
     lint: true
     test: true
     coverage_threshold: 80
-```
+```  
 
 ---
 
-## 7. Usage
-
+## 7. 使用方法（Usage）  
 ```bash
 # Basic usage
 b3ehive "Implement a thread-safe rate limiter"
@@ -347,10 +340,9 @@ b3ehive "Implement quicksort" --lang python --max-lines 50
 
 # Using OpenClaw CLI
 openclaw skills run b3ehive --task "Your task"
-```
+```  
 
 ---
 
-## 8. License
-
+## 8. 许可证  
 MIT © Weiyang ([@weiyangzen](https://github.com/weiyangzen))

@@ -1,20 +1,20 @@
 ---
 name: godaddy
-description: GoDaddy API for managing DNS records. Use for listing, adding, updating, or deleting DNS records on GoDaddy-managed domains.
+description: GoDaddy API 用于管理 DNS 记录。可用于列出、添加、更新或删除由 GoDaddy 管理的域名上的 DNS 记录。
 ---
 
 # GoDaddy DNS
 
-Manage DNS records for domains hosted on GoDaddy.
+用于管理托管在 GoDaddy 上的域名的 DNS 记录。
 
-## Setup
+## 设置
 
-Get your API credentials from GoDaddy:
-1. Go to https://developer.godaddy.com/keys
-2. Create a new API Key (Production)
-3. Note down the Key and Secret
+从 GoDaddy 获取 API 凭据：
+1. 访问 https://developer.godaddy.com/keys
+2. 创建一个新的 API 密钥（生产环境）
+3. 记下 API 密钥（Key）和 API 密码（Secret）
 
-Store in `~/.clawdbot/clawdbot.json`:
+将凭据保存到 `~/.clawdbot/clawdbot.json` 文件中：
 ```json
 {
   "skills": {
@@ -28,16 +28,16 @@ Store in `~/.clawdbot/clawdbot.json`:
 }
 ```
 
-Or set env: `GODADDY_API_KEY=xxx` and `GODADDY_API_SECRET=xxx`
+或者通过环境变量设置：`GODADDY_API_KEY=xxx` 和 `GODADDY_API_SECRET=xxx`
 
-## Quick Reference
+## 快速参考
 
-### List Domains
+### 列出域名
 ```bash
 {baseDir}/scripts/godaddy.sh domains list
 ```
 
-### DNS Records
+### DNS 记录
 ```bash
 # List all DNS records for a domain
 {baseDir}/scripts/godaddy.sh dns list <domain>
@@ -63,44 +63,44 @@ Or set env: `GODADDY_API_KEY=xxx` and `GODADDY_API_SECRET=xxx`
 {baseDir}/scripts/godaddy.sh dns delete <domain> --type A --name www
 ```
 
-## Common DNS Record Types
+## 常见 DNS 记录类型
 
-| Type | Usage |
+| 类型 | 用途 |
 |------|-------|
-| A | IPv4 address |
-| AAAA | IPv6 address |
-| CNAME | Alias to another domain |
-| MX | Mail server |
-| TXT | Text records (SPF, DKIM, verification) |
-| NS | Nameserver |
-| SRV | Service records |
+| A     | IPv4 地址 |
+| AAAA   | IPv6 地址 |
+| CNAME  | 别名（指向另一个域名） |
+| MX     | 邮件服务器 |
+| TXT    | 文本记录（用于 SPF、DKIM 验证等） |
+| NS     | 名称服务器 |
+| SRV    | 服务记录 |
 
-## Examples
+## 示例
 
-### Add subdomain pointing to IP
+### 添加指向 IP 的子域名
 ```bash
 godaddy.sh dns add example.com --type A --name app --data 192.168.1.1 --ttl 600
 ```
 
-### Add CNAME for www
+### 为 www 添加 CNAME 别名
 ```bash
 godaddy.sh dns add example.com --type CNAME --name www --data example.com --ttl 3600
 ```
 
-### Add TXT for domain verification
+### 为域名添加 TXT 记录以进行验证
 ```bash
 godaddy.sh dns add example.com --type TXT --name @ --data "google-site-verification=xxx" --ttl 3600
 ```
 
-### Add MX record
+### 添加 MX 记录
 ```bash
 godaddy.sh dns add example.com --type MX --name @ --data "mail.example.com" --ttl 3600 --priority 10
 ```
 
-## Notes
+## 注意事项
 
-- API Base: `https://api.godaddy.com`
-- Auth: `Authorization: sso-key {key}:{secret}`
-- The `@` symbol represents the root domain
-- TTL is in seconds (minimum 600 for most record types)
-- Rate limits apply - don't spam the API
+- API 基础地址：`https://api.godaddy.com`
+- 认证方式：`Authorization: sso-key {key}:{secret}`
+- 符号 `@` 代表根域名
+- TTL（生存时间）以秒为单位（大多数记录类型的最低值为 600 秒）
+- 请遵守 API 使用限制，避免频繁调用 API

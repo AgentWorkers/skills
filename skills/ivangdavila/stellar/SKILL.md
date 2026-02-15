@@ -1,86 +1,86 @@
 ---
 name: Stellar
-description: Assist with Stellar XLM transactions, anchors, memo requirements, and cross-border payments.
+description: 协助处理Stellar XLM交易、锚定（anchor）机制、备忘录（memo）要求以及跨境支付相关事宜。
 metadata: {"clawdbot":{"emoji":"🚀","os":["linux","darwin","win32"]}}
 ---
 
-## Memo Field (Critical)
-- Exchanges require memo for deposits — sending without memo loses funds
-- Memo can be text, ID, or hash — use exactly what exchange provides
-- Memo is NOT optional for exchanges — different from self-custody wallets
-- Personal wallets don't need memo — only centralized services
-- Verify memo type matches — text memo vs ID memo are different
+## 备注字段（重要提示）  
+- 在进行交易时，存款操作需要提供备注信息（memo）——若未提供备注信息，资金将会丢失。  
+- 备注信息可以是文本、ID或哈希值——请严格按照交易所的要求使用相应格式。  
+- 对于交易所而言，备注信息是必填项；这与自托管钱包（self-custody wallets）的规则不同。  
+- 个人钱包无需提供备注信息——仅集中式服务需要备注信息。  
+- 请确保备注信息的类型与交易所的要求一致（例如：文本格式的备注与ID格式的备注是不同的）。  
 
-## Account Requirements
-- Minimum balance: 1 XLM base reserve — required to activate account
-- Each trustline adds 0.5 XLM reserve — locked, not spendable
-- Sending to new account must include 1+ XLM — creates the account
-- Merging account recovers reserve — must remove all trustlines first
+## 账户要求  
+- 最低余额：1个XLM——这是激活账户的必要条件。  
+- 每增加一条信任线（trustline），需要额外储备0.5个XLM——这些储备资金是锁定的，无法直接使用。  
+- 向新账户转账时，必须至少支付1个XLM——这样才能创建新账户。  
+- 合并账户时可以恢复储备资金——但必须先删除所有现有的信任线。  
 
-## XLM Token
-- Native asset of Stellar network — used for fees and reserves
-- Extremely low fees — 0.00001 XLM per operation (~$0.000001)
-- Fast finality — 3-5 seconds
-- No mining — Stellar Consensus Protocol (SCP)
+## XLM代币  
+- XLM是Stellar网络的原生资产，用于支付交易手续费和作为储备资金。  
+- 手续费极低：每次操作仅需0.00001个XLM（约合0.000001美元）。  
+- 交易确认速度快：仅需3-5秒。  
+- Stellar采用共识协议（Stellar Consensus Protocol, SCP），无需进行挖矿。  
 
-## Trustlines
-- Must trust an issuer before receiving their tokens — explicit opt-in
-- Trustline costs 0.5 XLM reserve — locked until removed
-- Remove trustlines to recover reserve — must have zero balance first
-- Scam tokens can't be forced on you — trustlines required
+## 信任线（Trustlines）  
+- 在接收代币之前，必须先信任相应的发行方（issuer）。  
+- 每条信任线的建立需要支付0.5个XLM作为储备资金——这笔资金会被锁定，直到信任线被解除。  
+- 若要恢复储备资金，必须先确保账户余额为零。  
+- 避免接收来自可疑发行方的代币——建立信任线是必要的安全措施。  
 
-## Anchors and Assets
-- Anchors issue fiat-backed tokens — USDC, yXLM (yield), various fiats
-- Stellar has native USDC — issued by Circle directly
-- Verify anchor reputation — not all are trustworthy
-- Path payments convert automatically — send USD, receive EUR
+## 锚定资产（Anchors and Assets）  
+- 锚定资产（Anchors）可以发行由法定货币支持的代币（如USDC、yXLM等）。  
+- Stellar本身也支持USDC代币，由Circle公司直接发行。  
+- 请核实锚定资产的信誉——并非所有锚定资产都值得信赖。  
+- 路径支付（Path Payments）功能可实现自动货币转换：发送USD可接收EUR。  
 
-## Addresses
-- Public keys start with "G" — 56 characters
-- Secret keys start with "S" — never share
-- Federated addresses: user*domain.com — human-readable, resolves to G address
-- Muxed addresses encode account + memo — M prefix, newer format
+## 地址（Addresses）  
+- 公钥以“G”开头，长度为56个字符。  
+- 秘钥以“S”开头，切勿泄露。  
+- 联盟地址（Federated Addresses）格式为user*domain.com，便于人类阅读，可解析为对应的G地址。  
+- Muxed地址是一种新的地址格式，包含账户信息和备注信息（以“M”前缀标识）。  
 
-## Transaction Features
-- Multiple operations per transaction — batch actions
-- Sequence number like Ethereum nonce — must be sequential
-- Time bounds optional — transactions can expire
-- Fee bumping available — increase fee on pending transaction
+## 交易特性  
+- 一次交易可以包含多个操作（批量处理）。  
+- 交易需要按顺序执行（类似于以太坊的nonce机制）。  
+- 可设置交易时间限制——交易可能会在超时后失效。  
+- 支持调整交易手续费——可以在交易提交前增加手续费。  
 
-## DEX and Trading
-- Built-in decentralized exchange — native to protocol
-- Order book model — limit orders, not AMM
-- Path payments find best route — automatic conversion
-- Swap aggregators exist — StellarX, Lobstr markets
+## 分散式交易所（DEXs）与交易功能  
+- Stellar原生支持去中心化交易所（DEXs）。  
+- 采用订单簿模型（Order Book Model），支持限价单交易，而非自动做市机制（AMM）。  
+- 路径支付（Path Payments）功能可自动选择最佳转账路径。  
+- 存在交易聚合服务，例如StellarX和Lobstr市场。  
 
-## Wallets
-- Lobstr — most popular, mobile and web
-- StellarTerm — web-based trading
-- Solar Wallet — Keybase team, desktop
-- Ledger support — hardware wallet via compatible apps
-- Freighter — browser extension for dApps
+## 钱包（Wallets）  
+- Lobstr：最受欢迎的钱包，支持移动端和网页端使用。  
+- StellarTerm：基于网页的交易平台。  
+- Solar Wallet：由Keybase团队开发，适用于桌面端。  
+- Ledger：支持硬件钱包，可通过兼容应用程序使用。  
+- Freighter：适用于dApp的浏览器扩展工具。  
 
-## Common Issues
-- "Destination account does not exist" — account not created, needs 1+ XLM
-- "Missing memo" — exchange requires memo, transaction may be lost
-- "Insufficient balance" — must keep minimum reserve
-- "Trustline not established" — must add trustline before receiving token
-- Transaction stuck — rare on Stellar, usually instant
+## 常见问题  
+- “目标账户不存在”：可能是因为账户尚未创建，需要至少支付1个XLM才能创建账户。  
+- “缺少备注信息”：交易所要求提供备注信息，否则交易可能失败。  
+- “余额不足”：必须保持最低余额要求。  
+- “信任线未建立”：在接收代币前必须先建立信任线。  
+- 交易卡住：在Stellar网络中较为罕见，通常交易会立即完成。  
 
-## Cross-Border Payments
-- Designed for remittances — fast and cheap
-- Anchor network for fiat on/off ramps — varies by country
-- MoneyGram partnership — cash pickup locations
-- USDC corridors — stablecoin transfers between countries
+## 跨境支付（Cross-Border Payments）  
+- Stellar专为跨境汇款设计，转账速度快且成本低廉。  
+- 提供多种法定货币的接入方式（如通过Anchor网络）。  
+- 与MoneyGram合作，支持现金取款服务。  
+- 提供USDC跨境转账通道，实现稳定币的跨国转移。  
 
-## Soroban (Smart Contracts)
-- Smart contract platform on Stellar — newer addition
-- Different from traditional Stellar operations — Rust-based contracts
-- Expanding Stellar capabilities — DeFi, NFTs becoming possible
-- Still maturing — ecosystem growing
+## Soroban（智能合约）  
+- Soroban是Stellar网络上的智能合约平台，属于较新的功能。  
+- 与传统的Stellar交易方式不同，Soroban基于Rust语言编写。  
+- 该平台扩展了Stellar的功能，支持DeFi（去中心化金融）和NFT（非同质化代币）等应用。  
+- 目前该生态系统仍在发展中。  
 
-## Security
-- Seed phrase standard — 24 words
-- Multisig available — require multiple signatures
-- Sep-10 authentication — standard for web auth
-- Verify transaction details — XDR can be decoded before signing
+## 安全性措施  
+- 推荐使用24个单词组成的助记词（seed phrase）进行账户加密。  
+- 支持多重签名（multisig）机制，提高安全性。  
+- 采用Sep-10认证标准进行用户身份验证。  
+- 交易前可查看详细信息——XDR格式的数据可以在签名前被解码。

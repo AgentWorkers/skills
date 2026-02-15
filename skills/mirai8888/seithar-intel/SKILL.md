@@ -1,51 +1,49 @@
-# seithar-intel — Threat Intelligence & Cognitive Security Feed
+# seithar-intel — 威胁情报与认知安全工具
 
-## Seithar Group — Intelligence Division
-## 認知作戦 | seithar.com
+## Seithar Group — 情报部门  
+## 认知作战 | seithar.com  
 
-A personal cyber threat intelligence and cognitive security analyst for OpenClaw. Monitors RSS feeds for security news, vulnerability disclosures, exploit drops, and influence operation reports. Scores items against your interests, delivers daily briefings, and provides on-demand deep-dive analysis of any threat — technical or cognitive.
+这是一个专为 OpenClaw 设计的个人级网络威胁情报与认知安全分析工具。它通过监控 RSS 源来收集安全新闻、漏洞披露、漏洞利用工具以及影响力操作相关的信息，并根据用户设定的兴趣偏好对信息进行评分，每日提供简报，并可针对任何威胁（无论是技术性的还是认知层面的）进行深度分析。  
 
-This is ThreatMouth in your pocket. Cyber + cognitive security awareness from any chat app.
-
----
-
-## Description
-
-This skill turns your OpenClaw into a threat intelligence analyst that:
-
-- Monitors cybersecurity RSS feeds (BleepingComputer, The Hacker News, Krebs on Security, CISA, Full Disclosure, Exploit-DB, SANS ISC, oss-security, Schneier, PacketStorm, DarkReading, and more)
-- Monitors cognitive security feeds (EUvsDisinfo, DFRLab, Bellingcat, RAND, Seithar Research)
-- Scores each item against your configured interest profile
-- Delivers morning/evening briefings via your preferred chat app
-- Provides on-demand deep-dive analysis of any CVE, vulnerability, exploit, influence operation, or campaign
-- Tracks MITRE ATT&CK and DISARM framework technique mappings
-- Discovers public proof-of-concept code for disclosed vulnerabilities
-- Maintains a running threat landscape summary that evolves with the feed
+这就像是你口袋里的“ThreatMouth”一样，让你在任何聊天应用中都能随时了解网络与认知安全领域的最新动态。  
 
 ---
 
-## Triggers
+## 功能描述  
 
-- "threat briefing" / "security briefing" / "morning briefing" / "what's new in security"
-- "check threats" / "check feeds" / "any new vulns"
-- "explain CVE-XXXX-XXXXX" / "deep dive on [topic]" / "analyze this threat"
-- "cogdef briefing" / "cognitive security update" / "any new psyops"
-- "what should I study today" / "learning recommendations"
-- "threat landscape" / "what's trending in security"
-- "poc for CVE-XXXX-XXXXX" / "any exploits for [software]"
-- "seithar brief"
+该工具可让你的 OpenClaw 变成一个威胁情报分析师：  
+- 监控多个网络安全相关的 RSS 源（如 BleepingComputer、The Hacker News、Krebs on Security 等）；  
+- 监控认知安全相关的资讯源（如 EUvsDisinfo、DFRLab 等）；  
+- 根据用户设定的兴趣偏好对信息进行评分；  
+- 通过你喜欢的聊天应用在早晨或傍晚发送简报；  
+- 提供对任何漏洞（CVE）、漏洞利用工具、影响力操作或相关活动的深度分析；  
+- 跟踪 MITRE ATT&CK 和 DISARM 框架中的技术映射关系；  
+- 发现已公开发布的漏洞相关代码（PoC）；  
+- 动态更新威胁态势概览。  
 
 ---
 
-## Configuration
+## 触发指令  
 
-The operator should configure the following in their OpenClaw settings or by telling the agent directly:
+- “threat briefing” / “security briefing” / “morning briefing” / “security updates”  
+- “check threats” / “check feeds” / “new vulnerabilities”  
+- “explain CVE-XXXX-XXXXX” / “deep dive on [topic]” / “analyze this threat”  
+- “cogdef briefing” / “cognitive security update” / “new psyops”  
+- “what should I study today” / “learning recommendations”  
+- “threat landscape” / “latest security trends”  
+- “CVE-XXXX-XXXXX PoC” / “exploits for [software]”  
+- “seithar brief”  
 
-### Interest Profile
+---
 
-Tell your OpenClaw your security interests and it will calibrate scoring. Example:
+## 配置方法  
 
-```
+用户需在 OpenClaw 的设置中或直接通过命令配置以下内容：  
+
+### 兴趣偏好  
+
+告诉 OpenClaw 你的安全关注点，系统会据此调整信息评分标准。  
+（示例配置代码：```
 My security interests are:
 - Malware analysis and reverse engineering
 - Social engineering and cognitive security
@@ -67,62 +65,57 @@ Deprioritize:
 - Cloud IAM and AWS security
 - Vendor marketing announcements
 - Corporate breach notifications unless technically interesting
-```
+```）  
 
-The skill stores this profile in memory and uses it to score every feed item for relevance.
+该工具会将这些偏好存储在内存中，并据此对所有信息进行相关性评分。  
 
-### Feed Schedule
+### 源信息更新频率  
 
-Default schedule (configurable):
-- **Morning briefing**: 8:00 AM local — top 5 items from overnight, any critical alerts
-- **Evening briefing**: 6:00 PM local — day summary, items scored > 0.7, study recommendations
-- **Critical alerts**: Immediate — items scored > 0.9 pushed as soon as detected
+- **早晨简报**：当地时间上午 8:00 — 昨晚发布的重点信息及所有严重警报；  
+- **傍晚简报**：当地时间下午 6:00 — 当日总结及评分高于 0.7 的信息；  
+- **严重警报**：评分高于 0.9 的信息会立即推送。  
+（示例命令：`Set my briefing time to 9 AM and 7 PM` 或 `Only send critical alerts`）  
 
-Tell your OpenClaw: "Change my briefing time to 9 AM and 7 PM" or "Only send critical alerts, no scheduled briefings"
+### 源信息检查间隔  
 
-### Feed Check Interval
-
-Default: every 2 hours. The skill uses OpenClaw's cron/heartbeat system to periodically fetch and process feeds.
+默认为每 2 小时一次。该工具会利用 OpenClaw 的 cron/heartbeat 系统定期获取并处理信息。  
 
 ---
 
-## How It Works
+## 工作原理  
 
-### Feed Collection
+### 源信息收集  
 
-On each check interval, the skill instructs the agent to:
+每次检查时，该工具会指令 OpenClaw：  
+1. 使用 `web_fetch` 工具从配置的来源列表中获取 RSS 源信息；  
+2. 解析信息内容（标题、链接、发布日期、摘要/描述）；  
+3. 通过 URL 哈希值排除重复内容；  
+4. 对新信息根据用户设定的偏好进行评分。  
 
-1. Fetch RSS feeds from the configured source list using the `web_fetch` tool
-2. Parse feed entries (title, link, published date, summary/description)
-3. Deduplicate against previously seen items (tracked in memory by URL hash)
-4. For each new item, score it against the operator's interest profile
+### 评分标准  
 
-### Scoring
+新信息的评分范围为 0.0 到 1.0：  
+- **0.9 - 1.0**：高度相关，紧急程度高（如正在被利用的漏洞、0-day 漏洞、重大安全事件）；  
+- **0.7 - 0.9**：相关性强，值得阅读；  
+- **0.5 - 0.7**：相关性一般，可纳入每日摘要；  
+- **低于 0.5**：相关性较低，除非用户特别要求，否则忽略。  
 
-Each new item is scored 0.0 to 1.0 against the operator's profile:
+评分依据包括信息标题、摘要、来源以及相关的 CVE/技术信息。无需外部 API，该工具会自行完成评分。  
 
-- **0.9 - 1.0**: Critical — matches core interests directly, high urgency (active exploitation, 0-day, major campaign)
-- **0.7 - 0.9**: High — relevant to interests, worth reading today
-- **0.5 - 0.7**: Medium — tangentially relevant, include in digest
-- **Below 0.5**: Low — skip unless specifically requested
+### 信息分类  
 
-The agent scores by examining the item's title, summary, source, and any CVE/technique references against the stored interest profile. No external API needed — the LLM does the scoring inline.
+信息分为以下几类：  
+- **CRITICAL ALERT**：正在被利用的漏洞、0-day 漏洞、关键基础设施相关；  
+- **EXPLOIT DROP**：新发布的 CVE、漏洞利用工具；  
+- **MALWARE**：恶意软件分析、相关研究报告；  
+- **INFLUENCE OP**：虚假信息传播活动、认知安全相关事件；  
+- **TECHNIQUE**：MITRE ATT&CK 或 DISARM 框架中的技术相关内容；  
+- **LEARNING**：教程、CTF 活动记录、教育性内容；  
+- **GENERAL**：行业新闻、政策动态、评论文章。  
 
-### Categorization
+### 简报格式  
 
-Items are categorized into:
-
-- **CRITICAL ALERT** — Active exploitation, 0-day, critical infrastructure
-- **EXPLOIT DROP** — New CVE, PoC release, vulnerability disclosure
-- **MALWARE** — Malware analysis, RE findings, campaign reports
-- **INFLUENCE OP** — Disinformation campaigns, cognitive security, DISARM-mapped operations
-- **TECHNIQUE** — ATT&CK or DISARM technique deep-dives, methodology
-- **LEARNING** — Tutorials, CTF writeups, educational content
-- **GENERAL** — Industry news, policy, commentary
-
-### Briefing Format
-
-```
+（简报格式代码：```
 ╔══════════════════════════════════════════════════╗
 ║  SEITHAR INTELLIGENCE BRIEFING                   ║
 ║  2026-02-11 08:00 EST                            ║
@@ -164,310 +157,120 @@ STUDY RECOMMENDATION:
 Seithar Intelligence Division v1.0
 認知作戦 | seithar.com/research
 ──────────────────────────────────────────────────
-```
+```）  
 
-### Deep Dive
+### 深度分析  
 
-When the operator says "deep dive [topic]" or "explain [CVE]", the skill:
-
-1. Fetches the full article content via `web_fetch`
-2. If a CVE is mentioned, queries the NVD API for structured vuln data
-3. Searches GitHub for public PoC repositories (`https://api.github.com/search/repositories?q=CVE-XXXX-XXXXX&sort=stars`)
-4. Generates a structured educational breakdown:
-
-```
-╔══════════════════════════════════════════════════╗
-║  SEITHAR DEEP DIVE                               ║
-║  CVE-2026-XXXXX — OpenSSH Pre-Auth RCE           ║
-╚══════════════════════════════════════════════════╝
-
-WHAT HAPPENED:
-  A memory corruption vulnerability in OpenSSH's key exchange
-  handler allows unauthenticated attackers to achieve remote
-  code execution as root. No credentials required.
-
-HOW THE EXPLOIT WORKS:
-  1. Attacker connects to SSH port 22
-  2. During key exchange (before authentication), sends
-     oversized payload in the KEX_INIT message
-  3. Buffer overflow overwrites return address on stack
-  4. Execution redirected to attacker's shellcode
-  5. Root shell achieved — no credentials needed
-
-  Pseudocode:
-    connect(target, 22)
-    send(kex_init_with_overflow_payload)
-    # Stack is now corrupted
-    # Return address points to shellcode
-    # Root shell spawns
-
-MITRE ATT&CK:
-  T1190 — Exploit Public-Facing Application
-  T1068 — Exploitation for Privilege Escalation
-
-PROOF OF CONCEPT:
-  ⭐ 234  github.com/researcher/CVE-2026-XXXXX (Python)
-  ⭐  45  github.com/other/openssh-rce-poc (C)
-  Key file to study: exploit.py lines 40-80 (payload construction)
-
-CONCEPTS TO UNDERSTAND:
-  → Stack-based buffer overflow (study: OverTheWire Narnia)
-  → SSH key exchange protocol (RFC 4253)
-  → ASLR bypass techniques
-  → Return-oriented programming (ROP)
-
-LAB EXERCISE:
-  docker pull vulhub/openssh:9.x
-  Practice in isolated environment. Never test against
-  production systems.
-
-DEFENSIVE PERSPECTIVE:
-  Detection: Anomalous packet sizes during SSH handshake
-  Prevention: Upgrade to OpenSSH 9.x.x, restrict SSH access
-  Log analysis: Look for connection resets during KEX phase
-
-──────────────────────────────────────────────────
-Seithar Intelligence Division v1.0
-認知作戦 | seithar.com/research
-──────────────────────────────────────────────────
-```
-
-For influence operations, the deep dive maps to DISARM instead:
-
-```
-╔══════════════════════════════════════════════════╗
-║  SEITHAR DEEP DIVE — COGNITIVE                   ║
-║  Russian NATO Narrative Operation                 ║
-╚══════════════════════════════════════════════════╝
-
-WHAT HAPPENED:
-  Coordinated inauthentic behavior detected across Twitter/X,
-  Telegram, and Facebook targeting NATO unity narratives in
-  Baltic states. ~200 accounts activated within 48h window.
-
-DISARM MAPPING:
-  Plan:
-    T0073 — Determine Target Audiences (Baltic publics)
-    T0047 — Develop Content (localized memes, fake news articles)
-  Prepare:
-    T0048 — Develop Online Personas (aged accounts reactivated)
-    T0046 — Use Existing Narratives (energy costs, immigration)
-  Execute:
-    T0049 — Flood Information Space
-    T0056 — Amplify Existing Content (cross-platform coordination)
-
-TECHNIQUES DETECTED:
-  ▸ Narrative Piggybacking — latched onto real energy cost
-    concerns, added fabricated escalation claims
-  ▸ Coordinated Amplification — same framing appeared across
-    platforms within 2-hour window, suggesting central dispatch
-  ▸ Emotional Anchoring — content led with fear/anger triggers
-    before introducing anti-NATO framing
-
-SEITHAR TAXONOMY:
-  SCT-003 (Substrate Priming) — Initial wave didn't carry
-    explicit anti-NATO messaging. It primed emotional state
-    (anxiety about energy costs) so subsequent waves could
-    introduce the geopolitical framing.
-  SCT-005 (Amplification Embedding) — Content designed so
-    that debunking it still spreads the core claim.
-  SCT-007 (Wetiko Pattern) — Target audiences began
-    reproducing the framing as "their own analysis" within
-    48h of initial exposure.
-
-DEFENSIVE PERSPECTIVE:
-  Inoculation: Pre-bunking energy cost narratives with
-  accurate data before the operation gains traction.
-  Detection: Monitor for coordinated posting patterns
-  (same framing, multiple accounts, tight time window).
-  Counter: Highlight the coordination pattern itself rather
-  than debunking individual claims.
-
-──────────────────────────────────────────────────
-Seithar Intelligence Division v1.0
-認知作戦 | seithar.com/research
-──────────────────────────────────────────────────
-```
+当用户请求“deep dive [topic]”或“explain [CVE]”时，该工具会：  
+1. 通过 `web_fetch` 获取完整文章内容；  
+2. 如果涉及 CVE，会查询 NVD API 获取详细漏洞信息；  
+3. 在 GitHub 上搜索相关 PoC 代码库；  
+4. 生成结构化的分析报告。  
 
 ---
 
-## RSS Feed Sources
+## RSS 源信息列表  
 
-### Cyber Threat Intelligence (Tier 1 — checked every 2h)
+### 网络威胁情报（每 2 小时更新一次）  
 
-| Source | Feed URL | Category |
-|--------|----------|----------|
-| The Hacker News | https://feeds.feedburner.com/TheHackersNews | general, malware, exploit |
-| BleepingComputer | https://www.bleepingcomputer.com/feed/ | general, malware |
-| Krebs on Security | https://krebsonsecurity.com/feed/ | general, cybercrime |
-| CISA Alerts | https://www.cisa.gov/cybersecurity-advisories/all.xml | critical, advisory |
-| Full Disclosure | https://seclists.org/rss/fulldisclosure.rss | exploit, disclosure |
-| oss-security | https://seclists.org/rss/oss-sec.rss | exploit, disclosure |
-| Exploit-DB | https://www.exploit-db.com/rss.xml | exploit, poc |
-| SANS ISC | https://isc.sans.edu/rssfeed.xml | general, technique |
-| PacketStorm | https://packetstormsecurity.com/feeds/headlines.xml | exploit, tools |
-| Schneier on Security | https://www.schneier.com/feed/ | commentary, crypto |
-| Dark Reading | https://www.darkreading.com/rss.xml | general, enterprise |
+| 来源 | RSS 地址 | 分类 |  
+|--------|----------|----------|  
+| The Hacker News | https://feeds.feedburner.com/TheHackersNews | 通用、恶意软件、漏洞利用 |  
+| BleepingComputer | https://www.bleepingcomputer.com/feed/ | 通用、恶意软件 |  
+| Krebs on Security | https://krebsonsecurity.com/feed/ | 通用、网络安全事件 |  
+| CISA Alerts | https://www.cisa.gov/cybersecurity-advisories/all.xml | 重要警报 |  
+| Full Disclosure | https://seclists.org/rss/fulldisclosure.rss | 漏洞利用、披露信息 |  
+| oss-security | https://seclists.org/rss/oss-sec.rss | 漏洞利用、披露信息 |  
+| Exploit-DB | https://www.exploit-db.com/rss.xml | 漏洞利用工具、PoC 代码 |  
+| SANS ISC | https://isc.sans.edu/rssfeed.xml | 通用技术信息 |  
+| PacketStorm | https://packetstormsecurity.com/feeds/headlines.xml | 漏洞利用工具、安全工具 |  
+| Schneier on Security | https://www.schneier.com/feed/ | 安全评论 |  
+| DarkReading | https://www.darkreading.com/rss.xml | 企业级安全资讯 |  
 
-### Cognitive Security (Tier 1 — checked every 4h)
+### 认知安全（每 4 小时更新一次）  
 
-| Source | Feed URL | Category |
-|--------|----------|----------|
-| EUvsDisinfo | https://euvsdisinfo.eu/feed/ | influence_op, disinfo |
-| Bellingcat | https://www.bellingcat.com/feed/ | osint, investigation |
-| DFRLab (Atlantic Council) | https://www.atlanticcouncil.org/category/digital-forensic-research-lab/feed/ | influence_op, analysis |
-| RAND Cyber/Info | https://www.rand.org/topics/cyber-and-data-sciences.xml | research, policy |
-| Recorded Future (Insikt) | https://www.recordedfuture.com/feed | threat_intel, apt |
+| 来源 | RSS 地址 | 分类 |  
+|--------|----------|----------|  
+| EUvsDisinfo | https://euvsdisinfo.eu/feed/ | 虚假信息传播分析 |  
+| Bellingcat | https://www.bellingcat.com/feed/ | 情报收集、调查报告 |  
+| DFRLab (Atlantic Council) | https://www.atlanticcouncil.org/category/digital-forensic-research-lab/feed/ | 影响力分析 |  
+| RAND Cyber/Info | https://www.rand.org/topics/cyber-and-data-sciences.xml | 研究报告、政策动态 |  
+| Recorded Future (Insikt) | https://www.recordedfuture.com/feed | 威胁情报 |  
 
-### Niche / Learning (Tier 2 — checked every 6h)
+### 专题/学习资源（每 6 小时更新一次）  
 
-| Source | Feed URL | Category |
-|--------|----------|----------|
-| r/netsec | https://www.reddit.com/r/netsec/.rss | community, technique |
-| r/ReverseEngineering | https://www.reddit.com/r/ReverseEngineering/.rss | re, technique |
-| Project Zero | https://googleprojectzero.blogspot.com/feeds/posts/default | research, exploit |
-| Malwarebytes Labs | https://www.malwarebytes.com/blog/feed | malware, consumer |
-| Troy Hunt | https://www.troyhunt.com/rss/ | general, web_security |
-| Graham Cluley | https://grahamcluley.com/feed/ | general, commentary |
-| Risky Business | https://risky.biz/feeds/risky-business/ | podcast, commentary |
+| 来源 | RSS 地址 | 分类 |  
+|--------|----------|----------|  
+| r/netsec | https://www.reddit.com/r/netsec/.rss | 行业讨论、技术交流 |  
+| r/ReverseEngineering | https://www.reddit.com/r/ReverseEngineering/.rss | 技术研究 |  
+| Project Zero | https://googleprojectzero.blogspot.com/feeds/posts/default | 研究报告、漏洞利用工具 |  
+| Malwarebytes Labs | https://www.malwarebytes.com/blog/feed | 恶意软件分析 |  
+| Troy Hunt | https://www.troyhunt.com/rss/ | 网络安全资讯 |  
+| Graham Cluley | https://grahamcluley.com/feed/ | 安全评论 |  
+| Risky Business | https://risky.biz/feeds/risky-business/ | 博客、安全评论 |  
 
-The operator can add or remove sources by telling the agent: "Add this RSS feed to my threat sources: [url]" or "Remove Dark Reading from my feeds."
-
----
-
-## Memory Structure
-
-The skill uses OpenClaw's persistent memory to track:
-
-```json
-{
-  "seithar_intel": {
-    "profile": {
-      "interests": ["malware analysis", "social engineering", "network exploitation"],
-      "skill_level": "intermediate",
-      "currently_studying": ["MITRE ATT&CK", "DISARM", "OverTheWire"],
-      "deprioritize": ["enterprise compliance", "cloud IAM"]
-    },
-    "feeds": {
-      "sources": ["list of active RSS URLs"],
-      "custom_sources": ["user-added URLs"],
-      "check_interval_hours": 2,
-      "briefing_times": ["08:00", "18:00"]
-    },
-    "seen_items": {
-      "url_hashes": ["hash1", "hash2"],
-      "last_check": "2026-02-11T14:00:00Z",
-      "items_today": 24,
-      "high_relevance_today": 4
-    },
-    "stats": {
-      "total_items_processed": 1847,
-      "deep_dives_requested": 23,
-      "top_sources_by_relevance": {
-        "fulldisclosure": 0.82,
-        "exploit_db": 0.79,
-        "euvsdisinfo": 0.76
-      },
-      "most_seen_techniques": {
-        "T1566.001": 12,
-        "T0049": 8,
-        "T1190": 7
-      }
-    },
-    "study_log": {
-      "deep_dives_completed": ["CVE-2026-XXXXX", "lazarus_social_engineering"],
-      "techniques_studied": ["T1190", "T0049", "SCT-003"],
-      "recommended_next": "SSH key exchange internals"
-    }
-  }
-}
-```
+用户可通过命令添加或删除来源：  
+`Add this RSS feed to my threat sources: [url]` 或 `Remove Dark Reading from my feeds`.  
 
 ---
 
-## Proactive Behavior
+## 内存管理  
 
-Using OpenClaw's heartbeat/cron system, the skill proactively:
-
-1. **Checks feeds** on the configured interval without being asked
-2. **Pushes critical alerts** immediately when items score > 0.9
-3. **Sends scheduled briefings** at configured times
-4. **Tracks study progress** — if the operator does a deep dive on a topic, related items in future feeds are boosted in scoring
-5. **Notices patterns** — if multiple sources report on the same CVE or campaign within 24h, it flags convergence: "Multiple sources reporting on CVE-XXXX-XXXXX. This is gaining traction — consider prioritizing."
-6. **Weekly summary** — every Sunday, a summary of the week's threat landscape: top CVEs, active campaigns, technique trends, and study recommendations for the coming week
+该工具利用 OpenClaw 的持久化内存来存储信息。  
 
 ---
 
-## Skill Files
+## 主动行为  
 
-### SKILL.md (this file)
-
-The agent reads this and knows how to operate. No external code needed — OpenClaw's built-in `web_fetch`, `web_search`, memory, and cron tools handle everything.
-
-### sources.md
-
-List of RSS feed URLs with categories and check intervals. The agent reads this file when performing feed checks.
-
-### frameworks/disarm-techniques.md
-
-Reference list of DISARM techniques with IDs, names, and one-line descriptions. The agent uses this to map influence operations to framework codes.
-
-### frameworks/attack-techniques.md
-
-Reference list of MITRE ATT&CK techniques (top 50 most relevant). Used for technique mapping in deep dives.
-
-### frameworks/seithar-taxonomy.md
-
-SCT-001 through SCT-007 Seithar Cognitive Defense Taxonomy. Used in cognitive security analysis.
+该工具会自动执行以下操作：  
+- 按设定间隔主动检查信息源；  
+- 当信息评分高于 0.9 时立即推送严重警报；  
+- 在指定时间发送简报；  
+- 如果用户对某个主题进行了深入分析，未来相关信息的评分会提高；  
+- 如果多个来源在 24 小时内报告同一漏洞或事件，会标记为“关注点”；  
+- 每周汇总一周的威胁态势，包括重点漏洞、活跃事件和技术趋势。  
 
 ---
 
-## Installation
+## 相关文件  
 
-```bash
+- **SKILL.md**：该文件包含工具的使用说明；  
+- **sources.md**：包含 RSS 源信息及其分类、更新频率的列表；  
+- **frameworks/disarm-techniques.md**：DISARM 框架的技术列表；  
+- **frameworks/attack-techniques.md**：MITRE ATT&CK 技术列表；  
+- **frameworks/seithar-taxonomy.md**：Seithar 的认知安全分类体系。  
+
+---
+
+## 安装方法  
+
+（安装步骤代码：```bash
 clawhub install seithar-intel
-```
-
-Or manually:
-```bash
+```）  
+或手动配置：```bash
 git clone https://github.com/Mirai8888/seithar-intel
 # Copy to your OpenClaw skills directory
 cp -r seithar-intel ~/clawd/skills/
-```
-
-Then tell your OpenClaw: "Set up my security interest profile" and describe your interests.
-
----
-
-## Attribution
-
-Every output carries:
-
-```
-──────────────────────────────────────────────────
-Seithar Intelligence Division v1.0
-認知作戦 | seithar.com/research
-──────────────────────────────────────────────────
-```
-
-When users screenshot briefings and share them, the brand travels. When they say "my Seithar feed flagged this," the terminology propagates. The skill is the distribution channel.
+```  
+之后告诉 OpenClaw：“Set up my security interest profile”并描述你的安全关注点。  
 
 ---
 
-## Relationship to Seithar Ecosystem
+## 信息传播  
 
-**seithar-intel** is the lightweight personal version of ThreatMouth (the full Discord bot). It uses the same scoring methodology, the same source list, and the same educational deep-dive format, but runs entirely within OpenClaw on the operator's machine.
+所有输出内容都会带有品牌标识。当用户分享简报时，该工具的品牌信息也会随之传播。用户可以说：“我的 Seithar 工具发现了这个威胁。”  
 
-**seithar-cogdef** (separate skill) handles analysis of specific content for manipulation. **seithar-intel** handles the ongoing feed of threats and cognitive security events.
-
-Together they provide: continuous awareness (intel) + on-demand analysis (cogdef).
-
-Install both:
-```bash
+**seithar-intel** 是 ThreatMouth 的轻量级个人版本，它使用相同的评分机制、相同的来源列表和格式，但完全运行在用户的 OpenClaw 系统内。  
+**seithar-cogdef** 专注于特定内容的分析，而 **seithar-intel** 则持续监控威胁与认知安全事件。  
+同时安装这两个工具，可获得全面的威胁感知与深度分析能力。  
+（安装命令：```bash
 clawhub install seithar-intel
 clawhub install seithar-cogdef
-```
+```）  
 
----
+## 关于 Seithar 生态系统  
 
-認知作戦 | seithar.com
+**seithar-intel** 是 ThreatMouth 的个人化版本，它与 Seithar 生态系统紧密集成：  
+- **seithar-cogdef** 负责特定内容的分析；  
+- **seithar-intel** 负责持续监控威胁与认知安全事件。  
+两者共同提供持续的安全意识与即时分析服务。

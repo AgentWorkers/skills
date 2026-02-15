@@ -1,13 +1,13 @@
 ---
 name: tiktok-scraping-yt-dlp
-description: Use for TikTok crawling, content retrieval, and analysis
+description: 用于TikTok的爬取、内容检索和分析。
 ---
 
-# TikTok Scraping with yt-dlp
+# 使用 yt-dlp 抓取 TikTok 视频
 
-yt-dlp is a CLI for downloading video/audio from TikTok and [many other sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
+yt-dlp 是一个命令行工具（CLI），用于从 TikTok 以及 [许多其他网站](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) 下载视频和音频。
 
-## Setup
+## 设置
 
 ```bash
 # macOS
@@ -20,15 +20,15 @@ pip install yt-dlp
 
 ---
 
-## Download Patterns
+## 下载模式
 
-### Single Video
+### 单个视频
 
 ```bash
 yt-dlp "https://www.tiktok.com/@handle/video/1234567890"
 ```
 
-### Entire Profile
+### 整个用户资料
 
 ```bash
 yt-dlp "https://www.tiktok.com/@handle" \
@@ -37,17 +37,7 @@ yt-dlp "https://www.tiktok.com/@handle" \
   --write-info-json
 ```
 
-Creates:
-
-```
-tiktok/data/
-  handle/
-    20260220-7331234567890/
-      video.mp4
-      video.info.json
-```
-
-### Multiple Profiles
+### 多个用户资料
 
 ```bash
 for handle in handle1 handle2 handle3; do
@@ -59,7 +49,7 @@ for handle in handle1 handle2 handle3; do
 done
 ```
 
-### Search, Hashtags & Sounds
+### 搜索、标签和音频
 
 ```bash
 # Search by keyword
@@ -72,7 +62,7 @@ yt-dlp "https://www.tiktok.com/tag/booktok" --playlist-end 50
 yt-dlp "https://www.tiktok.com/music/original-sound-1234567890" --playlist-end 30
 ```
 
-### Format Selection
+### 格式选择
 
 ```bash
 # List available formats
@@ -84,9 +74,9 @@ yt-dlp -f "best" "https://www.tiktok.com/@handle/video/1234567890"
 
 ---
 
-## Filtering
+## 过滤
 
-### By Date
+### 按日期
 
 ```bash
 # On or after a date
@@ -106,7 +96,7 @@ yt-dlp -f "best" "https://www.tiktok.com/@handle/video/1234567890"
 --dateafter "$(date -u -d '7 days ago' +%Y%m%d)" # Linux: last 7 days
 ```
 
-### By Metrics & Content
+### 按指标和内容
 
 ```bash
 # 100k+ views
@@ -126,9 +116,9 @@ yt-dlp "https://www.tiktok.com/@handle" \
 
 ---
 
-## Metadata Only (No Download)
+## 仅获取元数据（不下载）
 
-### Preview What Would Download
+### 预览要下载的内容
 
 ```bash
 yt-dlp "https://www.tiktok.com/@handle" \
@@ -136,7 +126,7 @@ yt-dlp "https://www.tiktok.com/@handle" \
   --print "%(upload_date)s | %(view_count)s views | %(title)s"
 ```
 
-### Export to JSON
+### 导出为 JSON
 
 ```bash
 # Single JSON array
@@ -146,7 +136,7 @@ yt-dlp "https://www.tiktok.com/@handle" --simulate --dump-json > handle_videos.j
 yt-dlp "https://www.tiktok.com/@handle" --simulate -j > handle_videos.jsonl
 ```
 
-### Export to CSV
+### 导出为 CSV
 
 ```bash
 yt-dlp "https://www.tiktok.com/@handle" \
@@ -155,7 +145,7 @@ yt-dlp "https://www.tiktok.com/@handle" \
   "./tiktok/analysis/metadata.csv"
 ```
 
-### Analyze with jq
+### 使用 jq 进行分析
 
 ```bash
 # Top 10 videos by views from downloaded .info.json files
@@ -170,15 +160,15 @@ jq -s 'group_by(.upload_date) | map({date: .[0].upload_date, count: length})' \
   tiktok/data/*/*.info.json
 ```
 
-> **Tip:** For deeper analysis and visualization, load JSONL/CSV exports into Python with `pandas`. Useful for engagement scatter plots, posting frequency charts, or comparing metrics across creators.
+> **提示：** 为了进行更深入的分析和可视化，可以使用 `pandas` 将 JSONL/CSV 文件导入 Python。这有助于生成互动图表、发布频率图或比较不同创作者的指标。
 
 ---
 
-## Ongoing Scraping
+## 持续抓取
 
-### Archive (Skip Already Downloaded)
+### 归档（跳过已下载的内容）
 
-The `--download-archive` flag tracks downloaded videos, enabling incremental updates:
+`--download-archive` 标志用于跟踪已下载的视频，从而实现增量更新：
 
 ```bash
 yt-dlp "https://www.tiktok.com/@handle" \
@@ -188,9 +178,9 @@ yt-dlp "https://www.tiktok.com/@handle" \
   --download-archive "./tiktok/downloaded.txt"
 ```
 
-Run the same command later—it skips videos already in `downloaded.txt`.
+稍后再次运行相同的命令时，它会跳过 `downloaded.txt` 文件中已存在的视频。
 
-### Authentication (Private/Restricted Content)
+### 认证（私密/受限内容）
 
 ```bash
 # Use cookies from browser (recommended)
@@ -200,7 +190,7 @@ yt-dlp --cookies-from-browser chrome "https://www.tiktok.com/@handle"
 yt-dlp --cookies tiktok_cookies.txt "https://www.tiktok.com/@handle"
 ```
 
-### Scheduled Scraping (Cron)
+### 定时抓取（Cron 任务）
 
 ```bash
 # crontab -e
@@ -208,7 +198,7 @@ yt-dlp --cookies tiktok_cookies.txt "https://www.tiktok.com/@handle"
 0 2 * * * cd /path/to/project && ./scripts/scrape-tiktok.sh >> ./tiktok/logs/cron.log 2>&1
 ```
 
-Example `scripts/scrape-tiktok.sh`:
+示例脚本 `scripts/scrape-tiktok.sh`：
 
 ```bash
 #!/bin/bash
@@ -235,18 +225,18 @@ echo "[$(date)] Done"
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-| Problem                                  | Solution                                                                    |
+| 问题                                      | 解决方案                                      |
 | ---------------------------------------- | --------------------------------------------------------------------------- |
-| Empty results / no videos found          | Add `--cookies-from-browser chrome` — TikTok rate-limits anonymous requests |
-| 403 Forbidden errors                     | Rate limited. Wait 10-15 min, or use cookies/different IP                   |
-| "Video unavailable"                      | Region-locked. Try `--geo-bypass` or a VPN                                  |
-| Watermarked videos                       | Check `-F` for alternative formats; some may lack watermark                 |
-| Slow downloads                           | Add `--concurrent-fragments 4` for faster downloads                         |
-| Profile shows fewer videos than expected | TikTok API limits. Use `--playlist-end N` explicitly, try with cookies      |
+| 没有找到结果/没有视频                         | 添加 `--cookies-from-browser chrome` — 解决 TikTok 对匿名请求的速率限制问题 |
+| 403 禁止访问错误                         | 视频被限制访问。等待 10-15 分钟，或使用 cookies 或不同的 IP 地址           |
+| “视频不可用”                             | 视频可能因地区限制而无法访问。尝试使用 `--geo-bypass` 或 VPN            |
+| 视频带有水印                             | 使用 `-F` 选项查看其他格式；某些视频可能没有水印                   |
+| 下载速度慢                                  | 添加 `--concurrent-fragments 4` 以加快下载速度                   |
+| 用户资料中的视频数量少于预期                         | TikTok API 有下载限制。使用 `--playlist-end N` 显式指定下载范围，或尝试使用 cookies     |
 
-### Debug Mode
+### 调试模式
 
 ```bash
 # Verbose output to diagnose issues
@@ -255,35 +245,35 @@ yt-dlp -v "https://www.tiktok.com/@handle" 2>&1 | tee debug.log
 
 ---
 
-## Reference
+## 参考
 
-### Key Options
+### 关键选项
 
-| Option                        | Description                                 |
+| 选项                        | 描述                                      |
 | ----------------------------- | ------------------------------------------- |
-| `-o TEMPLATE`                 | Output filename template                    |
-| `-P PATH`                     | Base download directory                     |
-| `--dateafter DATE`            | Videos on/after date (YYYYMMDD)             |
-| `--datebefore DATE`           | Videos on/before date                       |
-| `--playlist-end N`            | Stop after N videos                         |
-| `--match-filters EXPR`        | Filter by metadata (views, duration, title) |
-| `--write-info-json`           | Save metadata JSON per video                |
-| `--download-archive FILE`     | Track downloads, skip duplicates            |
-| `--simulate` / `-s`           | Dry run, no download                        |
-| `-j` / `--dump-json`          | Output metadata as JSON                     |
-| `--cookies-from-browser NAME` | Use cookies from browser                    |
-| `--sleep-interval SEC`        | Wait between downloads (avoid rate limits)  |
+| `-o TEMPLATE`                 | 输出文件模板                                  |
+| `-P PATH`                     | 基本下载目录                                  |
+| `--dateafter DATE`            | 仅在指定日期之后的视频下载                         |
+| `--datebefore DATE`           | 仅在指定日期之前的视频下载                         |
+| `--playlist-end N`            | 在下载 N 个视频后停止                             |
+| `--match-filters EXPR`        | 根据元数据（观看次数、时长、标题等）进行过滤             |
+| `--write-info-json`           | 为每个视频保存元数据 JSON 文件                         |
+| `--download-archive FILE`     | 记录下载信息，跳过重复文件                         |
+| `--simulate` / `-s`           | 进行模拟测试，不实际下载                             |
+| `-j` / `--dump-json`          | 以 JSON 格式输出元数据                             |
+| `--cookies-from-browser NAME`     | 使用浏览器中的 cookies                             |
+| `--sleep-interval SEC`        | 在下载之间等待指定时间（避免速率限制）                         |
 
-### Output Template Variables
+### 输出模板变量
 
-| Variable          | Example Output          |
-| ----------------- | ----------------------- |
-| `%(id)s`          | `7331234567890`         |
-| `%(uploader)s`    | `handle`                |
-| `%(upload_date)s` | `20260215`              |
-| `%(title).50s`    | First 50 chars of title |
-| `%(view_count)s`  | `1500000`               |
-| `%(like_count)s`  | `250000`                |
-| `%(ext)s`         | `mp4`                   |
+| 变量                          | 示例输出                                        |
+| ----------------------------- | --------------------------------------------------- |
+| `%(id)s`          | `7331234567890`                                   |
+| `%(uploader)s`    | 视频上传者名称                                   |
+| `%(upload_date)s`    | 视频上传日期                                   |
+| `%(title).50s`    | 标题的前 50 个字符                               |
+| `%(view_count)s`    | 视频观看次数                                   |
+| `%(like_count)s`    | 视频点赞次数                                   |
+| `%(ext)s`         | 视频文件扩展名                                   |
 
-[Full template reference →](https://github.com/yt-dlp/yt-dlp#output-template)
+[完整模板参考 →](https://github.com/yt-dlp/yt-dlp#output-template)

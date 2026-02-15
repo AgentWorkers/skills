@@ -1,15 +1,15 @@
 ---
 name: jb-docs
-description: Query Juicebox V5 documentation via REST API or MCP server. Search docs, get contract addresses, and find implementation guides.
+description: 您可以通过 REST API 或 MCP 服务器查询 Juicebox V5 的文档。可以搜索文档、获取合约地址以及查找实现指南。
 ---
 
-# Juicebox V5 Documentation Lookup
+# Juicebox V5 文档查询
 
-Query Juicebox documentation via the REST API or MCP server.
+您可以通过 REST API 或 MCP 服务器来查询 Juicebox 的文档。
 
-## MCP Server (Recommended)
+## MCP 服务器（推荐使用）
 
-Add to your Claude Code or MCP client configuration:
+请将以下代码添加到您的 Claude Code 或 MCP 客户端配置中：
 
 ```json
 {
@@ -22,22 +22,22 @@ Add to your Claude Code or MCP client configuration:
 }
 ```
 
-### MCP Tools Available
-- `search_docs` - Search documentation by keyword
-- `get_doc` - Get full document content by path
-- `list_docs_by_category` - List docs in a category
-- `get_doc_structure` - Get documentation structure
+### MCP 提供的工具
+- `search_docs` - 按关键词搜索文档
+- `get_doc` - 根据路径获取完整文档内容
+- `list_docs_by_category` - 列出某个类别下的文档
+- `get_doc_structure` - 获取文档结构
 
-### Direct MCP Call Example
+### 直接调用 MCP 的示例
 ```bash
 curl -X POST https://docs.juicebox.money/api/mcp-sse \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_docs","arguments":{"query":"pay hook"}}}'
 ```
 
-## REST API Endpoints
+## REST API 端点
 
-### Search Documentation
+### 搜索文档
 ```bash
 POST https://docs.juicebox.money/api/mcp/search
 Content-Type: application/json
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 ```
 
-### Get Specific Document
+### 获取特定文档
 ```bash
 POST https://docs.juicebox.money/api/mcp/get-doc
 Content-Type: application/json
@@ -60,34 +60,33 @@ Content-Type: application/json
 }
 ```
 
-### List Documents by Category
+### 按类别列出文档
 ```bash
 GET https://docs.juicebox.money/api/mcp/list-docs?category=developer&version=v5
 ```
 
-### Get Documentation Structure
+### 获取文档结构
 ```bash
 GET https://docs.juicebox.money/api/mcp/structure
 ```
 
-## Using WebFetch
+## 使用 WebFetch
 
-Use WebFetch to query the API or fetch documentation pages directly:
+您可以使用 WebFetch 直接查询 API 或获取文档页面：
 
-### Search for documentation
+### 搜索文档
 ```
 WebFetch https://docs.juicebox.money/dev/v5/build/pay-hook/
 "Extract how to implement a pay hook"
 ```
 
-### Fetch specific pages
+### 获取特定页面
 ```
 WebFetch https://docs.juicebox.money/dev/v5/learn/overview/
 "Summarize the V5 protocol overview"
 ```
 
-## Documentation Structure
-
+## 文档结构
 ```
 /dev/                    # Developer documentation root
 /dev/v5/learn/           # Conceptual documentation
@@ -96,59 +95,58 @@ WebFetch https://docs.juicebox.money/dev/v5/learn/overview/
 /dev/v5/api/core/        # Core contract docs
 ```
 
-## Available Documentation
+## 可用的文档
 
-### Protocol Documentation
-- **Learn**: Conceptual guides and protocol overview
-- **Build**: Implementation guides and tutorials
-- **API**: Technical specifications and contract interfaces
+### 协议文档
+- **学习**：概念指南和协议概述
+- **构建**：实现指南和教程
+- **API**：技术规范和接口契约
 
-### Contract Addresses
-- Deployed addresses for all networks (Ethereum, Optimism, Arbitrum, Base)
-- Latest V5 contract addresses
-- Hook deployer addresses
+### 合约地址
+- 所有网络的部署地址（Ethereum、Optimism、Arbitrum、Base）
+- 最新的 V5 合约地址
+- Hook 部署器的地址
 
-### Code References
-- Interface definitions
-- Struct documentation
-- Event signatures
+### 代码参考
+- 接口定义
+- 结构文档
+- 事件签名
 
-## Common Documentation Queries
+## 常见文档查询
 
-### "What's the JBController address on mainnet?"
-Use the /references folder for offline contract addresses, or fetch from docs.
+### “主网上的 JBController 地址是多少？”
+请使用 `/references` 文件夹获取离线合约地址，或从文档中查询。
 
-### "How do I implement a pay hook?"
+### “如何实现支付 Hook？”
 ```
 WebFetch https://docs.juicebox.money/dev/v5/build/pay-hook/
 "Extract implementation steps for pay hooks"
 ```
 
-### "What events does JBMultiTerminal emit?"
+### “JBMultiTerminal 发出了哪些事件？”
 ```
 WebFetch https://docs.juicebox.money/dev/v5/api/core/jbmultiterminal/
 "List all events emitted by JBMultiTerminal"
 ```
 
-## Official Resources
+## 官方资源
+- **文档**：https://docs.juicebox.money
+- **GitHub**：https://github.com/jbx-protocol
+- **V5 Core**：https://github.com/Bananapus/nana-core-v5
+- **回购 Hook**：https://github.com/Bananapus/nana-buyback-hook-v5
+- **721 Hook**：https://github.com/Bananapus/nana-721-hook-v5
+- **Revnet**：https://github.com/rev-net/revnet-core-v5
 
-- **Docs**: https://docs.juicebox.money
-- **GitHub**: https://github.com/jbx-protocol
-- **V5 Core**: https://github.com/Bananapus/nana-core-v5
-- **Buyback Hook**: https://github.com/Bananapus/nana-buyback-hook-v5
-- **721 Hook**: https://github.com/Bananapus/nana-721-hook-v5
-- **Revnet**: https://github.com/rev-net/revnet-core-v5
+## 文档生成指南
 
-## Generation Guidelines
+1. **使用 WebFetch** 直接查询文档页面。
+2. **参考 `/references` 文件夹** 以获取离线接口/结构定义。
+3. **提供相关文档的直接链接**。
+4. **默认使用 V5 版本**，除非用户明确要求查看旧版本。
 
-1. **Use WebFetch** to query documentation pages directly
-2. **Reference the /references folder** for offline interface/struct definitions
-3. **Provide direct links** to relevant documentation
-4. **Default to V5** unless user explicitly asks about older versions
+## 示例提示
 
-## Example Prompts
-
-- "What's the JBController address on Optimism?"
-- "Show me the documentation for pay hooks"
-- "What events does the terminal emit?"
-- "Get the latest V5 contract addresses"
+- “Optimism 主网上的 JBController 地址是多少？”
+- “显示支付 Hook 的文档。”
+- “Terminal 发出了哪些事件？”
+- “获取最新的 V5 合约地址。”

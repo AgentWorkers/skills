@@ -1,549 +1,337 @@
 ---
 name: browserwing
 homepage: https://github.com/browserwing/browserwing
-description: Control browser automation through HTTP API. Supports page navigation, element interaction (click, type, select), data extraction, accessibility snapshot analysis, screenshot, JavaScript execution, and batch operations.
+description: 通过 HTTP API 控制浏览器自动化操作。支持页面导航、元素交互（点击、输入、选择）、数据提取、无障碍功能分析、截图、JavaScript 执行以及批量操作。
 metadata: {"moltbot":{"emoji":"🌐","requires":{"bins":"env":["BROWSERWING_EXECUTOR_URL"]},"primaryEnv":"BROWSERWING_EXECUTOR_URL"}}
 ---
 
-# BrowserWing Executor API
+# BrowserWing 执行器 API
 
-## Overview
+## 概述
 
-BrowserWing Executor provides comprehensive browser automation capabilities through HTTP APIs. You can control browser navigation, interact with page elements, extract data, and analyze page structure.
+BrowserWing 执行器通过 HTTP API 提供全面的浏览器自动化功能。您可以控制浏览器导航、与页面元素交互、提取数据以及分析页面结构。
 
-## Configuration
+## 配置
 
-**API Base URL:** The BrowserWing Executor API address is configurable via environment variable.
-
-- **Environment Variable:** `BROWSERWING_EXECUTOR_URL`
-- **Default Value:** `http://127.0.0.1:8080`
-- **How to get the URL:** Read from environment variable `$BROWSERWING_EXECUTOR_URL`, if not set, use default `http://127.0.0.1:8080`
-
-**Base URL Format:** `${BROWSERWING_EXECUTOR_URL}/api/v1/executor` or `http://127.0.0.1:8080/api/v1/executor` (if env var not set)
-
-**Authentication:** Use `X-BrowserWing-Key: <api-key>` header or `Authorization: Bearer <token>` if required.
-
-**Important:** Always construct the API URL by reading the environment variable first. In shell commands, use: `${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}`
-
-## Core Capabilities
-
-- **Page Navigation:** Navigate to URLs, go back/forward, reload
-- **Element Interaction:** Click, type, select, hover on page elements
-- **Data Extraction:** Extract text, attributes, values from elements
-- **Accessibility Analysis:** Get accessibility snapshot to understand page structure
-- **Advanced Operations:** Screenshot, JavaScript execution, keyboard input
-- **Batch Processing:** Execute multiple operations in sequence
-
-## API Endpoints
-
-### 1. Discover Available Commands
-
-**IMPORTANT:** Always call this endpoint first to see all available commands and their parameters.
-
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/help"
-```
-
-**Response:** Returns complete list of all commands with parameters, examples, and usage guidelines.
-
-**Query specific command:**
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/help?command=extract"
-```
-
-### 2. Get Accessibility Snapshot
-
-**CRITICAL:** Always call this after navigation to understand page structure and get element RefIDs.
-
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/snapshot"
-```
-
-**Response Example:**
-```json
-{
-  "success": true,
-  "snapshot_text": "Clickable Elements:\n  @e1 Login (role: button)\n  @e2 Sign Up (role: link)\n\nInput Elements:\n  @e3 Email (role: textbox) [placeholder: your@email.com]\n  @e4 Password (role: textbox)"
-}
-```
-
-**Use Cases:**
-- Understand what interactive elements are on the page
-- Get element RefIDs (@e1, @e2, etc.) for precise identification
-- See element labels, roles, and attributes
-- The accessibility tree is cleaner than raw DOM and better for LLMs
-- RefIDs are stable references that work reliably across page changes
-
-### 3. Common Operations
-
-**Note:** All examples below use `EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"` to read the API address from environment variable, with `http://127.0.0.1:8080` as fallback default.
-
-#### Navigate to URL
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/navigate" \
-  -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com"}'
-```
-
-#### Click Element
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/click" \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": "@e1"}'
-```
-**Identifier formats:**
-- **RefID (Recommended):** `@e1`, `@e2` (from snapshot)
-- **CSS Selector:** `#button-id`, `.class-name`
-- **XPath:** `//button[@type='submit']`
-- **Text:** `Login` (text content)
-
-#### Type Text
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/type" \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": "@e3", "text": "user@example.com"}'
-```
-
-#### Extract Data
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/extract" \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "selector": ".product-item",
-    "fields": ["text", "href"],
-    "multiple": true
-  }'
-```
-
-#### Wait for Element
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/wait" \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": ".loading", "state": "hidden", "timeout": 10}'
-```
-
-#### Batch Operations
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/batch" \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "operations": [
-      {"type": "navigate", "params": {"url": "https://example.com"}, "stop_on_error": true},
-      {"type": "click", "params": {"identifier": "@e1"}, "stop_on_error": true},
-      {"type": "type", "params": {"identifier": "@e3", "text": "query"}, "stop_on_error": true}
-    ]
-  }'
-```
-
-## Instructions
-
-**Step-by-step workflow:**
-
-0. **Get API URL:** First, read the API base URL from environment variable `$BROWSERWING_EXECUTOR_URL`. If not set, use default `http://127.0.0.1:8080`. In shell commands, use: `EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"`
-
-1. **Discover commands:** Call `GET /help` to see all available operations and their parameters (do this first if unsure).
-
-2. **Navigate:** Use `POST /navigate` to open the target webpage.
-
-3. **Analyze page:** Call `GET /snapshot` to understand page structure and get element RefIDs.
-
-4. **Interact:** Use element RefIDs (like `@e1`, `@e2`) or CSS selectors to:
-   - Click elements: `POST /click`
-   - Input text: `POST /type`
-   - Select options: `POST /select`
-   - Wait for elements: `POST /wait`
-
-5. **Extract data:** Use `POST /extract` to get information from the page.
-
-6. **Present results:** Format and show extracted data to the user.
-
-## Complete Example
-
-**User Request:** "Search for 'laptop' on example.com and get the first 5 results"
-
-**Your Actions:**
-
-1. Navigate to search page:
-```bash
-curl -X POST 'http://127.0.0.1:18085/api/v1/executor/navigate' \
-  -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com/search"}'
-```
-
-2. Get page structure to find search input:
-```bash
-curl -X GET 'http://127.0.0.1:18085/api/v1/executor/snapshot'
-```
-Response shows: `@e3 Search (role: textbox) [placeholder: Search...]`
-
-3. Type search query:
-```bash
-curl -X POST 'http://127.0.0.1:18085/api/v1/executor/type' \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": "@e3", "text": "laptop"}'
-```
-
-4. Press Enter to submit:
-```bash
-curl -X POST 'http://127.0.0.1:18085/api/v1/executor/press-key' \
-  -H 'Content-Type: application/json' \
-  -d '{"key": "Enter"}'
-```
-
-5. Wait for results to load:
-```bash
-curl -X POST 'http://127.0.0.1:18085/api/v1/executor/wait' \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": ".search-results", "state": "visible", "timeout": 10}'
-```
-
-6. Extract search results:
-```bash
-curl -X POST 'http://127.0.0.1:18085/api/v1/executor/extract' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "selector": ".result-item",
-    "fields": ["text", "href"],
-    "multiple": true
-  }'
-```
-
-7. Present the extracted data:
-```
-Found 15 results for 'laptop':
-1. Gaming Laptop - $1299 (https://...)
-2. Business Laptop - $899 (https://...)
-...
-```
-
-## Key Commands Reference
-
-### Navigation
-- `POST /navigate` - Navigate to URL
-- `POST /go-back` - Go back in history
-- `POST /go-forward` - Go forward in history
-- `POST /reload` - Reload current page
-
-### Element Interaction
-- `POST /click` - Click element (supports: RefID `@e1`, CSS selector, XPath, text content)
-- `POST /type` - Type text into input (supports: RefID `@e3`, CSS selector, XPath)
-- `POST /select` - Select dropdown option
-- `POST /hover` - Hover over element
-- `POST /wait` - Wait for element state (visible, hidden, enabled)
-- `POST /press-key` - Press keyboard key (Enter, Tab, Ctrl+S, etc.)
-
-### Data Extraction
-- `POST /extract` - Extract data from elements (supports multiple elements, custom fields)
-- `POST /get-text` - Get element text content
-- `POST /get-value` - Get input element value
-- `GET /page-info` - Get page URL and title
-- `GET /page-text` - Get all page text
-- `GET /page-content` - Get full HTML
-
-### Page Analysis
-- `GET /snapshot` - Get accessibility snapshot (⭐ **ALWAYS call after navigation**)
-- `GET /clickable-elements` - Get all clickable elements
-- `GET /input-elements` - Get all input elements
-
-### Advanced
-- `POST /screenshot` - Take page screenshot (base64 encoded)
-- `POST /evaluate` - Execute JavaScript code
-- `POST /batch` - Execute multiple operations in sequence
-- `POST /scroll-to-bottom` - Scroll to page bottom
-- `POST /resize` - Resize browser window
-- `POST /tabs` - Manage browser tabs (list, new, switch, close)
-- `POST /fill-form` - Intelligently fill multiple form fields at once
-
-### Debug & Monitoring
-- `GET /console-messages` - Get browser console messages (logs, warnings, errors)
-- `GET /network-requests` - Get network requests made by the page
-- `POST /handle-dialog` - Configure JavaScript dialog (alert, confirm, prompt) handling
-- `POST /file-upload` - Upload files to input elements
-- `POST /drag` - Drag and drop elements
-- `POST /close-page` - Close the current page/tab
-
-## Element Identification
-
-You can identify elements using:
-
-1. **RefID (Recommended):** `@e1`, `@e2`, `@e3`
-   - Most reliable method - stable across page changes
-   - Get RefIDs from `/snapshot` endpoint
-   - Valid for 5 minutes after snapshot
-   - Example: `"identifier": "@e1"`
-   - Works with multi-strategy fallback for robustness
-
-2. **CSS Selector:** `#id`, `.class`, `button[type="submit"]`
-   - Standard CSS selectors
-   - Example: `"identifier": "#login-button"`
-
-3. **XPath:** `//button[@id='login']`, `//a[contains(text(), 'Submit')]`
-   - XPath expressions for complex queries
-   - Example: `"identifier": "//button[@id='login']"`
-
-4. **Text Content:** `Login`, `Sign Up`, `Submit`
-   - Searches buttons and links with matching text
-   - Example: `"identifier": "Login"`
-
-5. **ARIA Label:** Elements with `aria-label` attribute
-   - Automatically searched
-
-## Guidelines
-
-**Before starting:**
-- **Get API URL first:** Read from `$BROWSERWING_EXECUTOR_URL` environment variable, or use `http://127.0.0.1:8080` as default
-- Call `GET /help` if you're unsure about available commands or their parameters
-- Ensure browser is started (if not, it will auto-start on first operation)
-
-**During automation:**
-- **Always call `/snapshot` after navigation** to get page structure and RefIDs
-- **Prefer RefIDs** (like `@e1`) over CSS selectors for reliability and stability
-- **Re-snapshot after page changes** to get updated RefIDs
-- **Use `/wait`** for dynamic content that loads asynchronously
-- **Check element states** before interaction (visible, enabled)
-- **Use `/batch`** for multiple sequential operations to improve efficiency
-
-**Error handling:**
-- If operation fails, check element identifier and try different format
-- For timeout errors, increase timeout value
-- If element not found, call `/snapshot` again to refresh page structure
-- Explain errors clearly to user with suggested solutions
-
-**Data extraction:**
-- Use `fields` parameter to specify what to extract: `["text", "href", "src"]`
-- Set `multiple: true` to extract from multiple elements
-- Format extracted data in a readable way for user
-
-## Complete Workflow Example
-
-**Scenario:** User wants to login to a website
-
-```
-User: "Please log in to example.com with username 'john' and password 'secret123'"
-```
-
-**Your Actions:**
-
-**Step 1:** Navigate to login page
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/navigate" \
-  -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com/login"}'
-```
-
-**Step 2:** Get page structure
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/snapshot"
-```
-Response:
-```
-Clickable Elements:
-  @e1 Login (role: button)
-
-Input Elements:
-  @e2 Username (role: textbox)
-  @e3 Password (role: textbox)
-```
-
-**Step 3:** Enter username
-```bash
-POST http://127.0.0.1:18085/api/v1/executor/type
-{"identifier": "@e2", "text": "john"}
-```
-
-**Step 4:** Enter password
-```bash
-POST http://127.0.0.1:18085/api/v1/executor/type
-{"identifier": "@e3", "text": "secret123"}
-```
-
-**Step 5:** Click login button
-```bash
-POST http://127.0.0.1:18085/api/v1/executor/click
-{"identifier": "@e1"}
-```
-
-**Step 6:** Wait for login success (optional)
-```bash
-POST http://127.0.0.1:18085/api/v1/executor/wait
-{"identifier": ".welcome-message", "state": "visible", "timeout": 10}
-```
-
-**Step 7:** Inform user
-```
-"Successfully logged in to example.com!"
-```
-
-## Batch Operation Example
-
-**Scenario:** Fill out a form with multiple fields
-
-Instead of making 5 separate API calls, use one batch operation:
-
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/batch" \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "operations": [
-      {
-        "type": "navigate",
-        "params": {"url": "https://example.com/form"},
-        "stop_on_error": true
-      },
-      {
-        "type": "type",
-        "params": {"identifier": "#name", "text": "John Doe"},
-        "stop_on_error": true
-      },
-      {
-        "type": "type",
-        "params": {"identifier": "#email", "text": "john@example.com"},
-        "stop_on_error": true
-      },
-      {
-        "type": "select",
-        "params": {"identifier": "#country", "value": "United States"},
-        "stop_on_error": true
-      },
-      {
-        "type": "click",
-        "params": {"identifier": "#submit"},
-        "stop_on_error": true
-      }
-    ]
-  }'
-```
-
-## Best Practices
-
-1. **Discovery first:** If unsure, call `/help` or `/help?command=<name>` to learn about commands
-2. **Structure first:** Always call `/snapshot` after navigation to understand the page
-3. **Use accessibility indices:** They're more reliable than CSS selectors (elements might have dynamic classes)
-4. **Wait for dynamic content:** Use `/wait` before interacting with elements that load asynchronously
-5. **Batch when possible:** Use `/batch` for multiple sequential operations
-6. **Handle errors gracefully:** Provide clear explanations and suggestions when operations fail
-7. **Verify results:** After operations, check if desired outcome was achieved
-
-## Common Scenarios
-
-### Form Filling
-1. Navigate to form page
-2. Get accessibility snapshot to find input elements and their RefIDs
-3. Use `/type` for each field: `@e1`, `@e2`, etc.
-4. Use `/select` for dropdowns
-5. Click submit button using its RefID
-
-### Data Scraping
-1. Navigate to target page
-2. Wait for content to load with `/wait`
-3. Use `/extract` with CSS selector and `multiple: true`
-4. Specify fields to extract: `["text", "href", "src"]`
-
-### Search Operations
-1. Navigate to search page
-2. Get accessibility snapshot to locate search input
-3. Type search query into input
-4. Press Enter or click search button
-5. Wait for results
-6. Extract results data
-
-### Login Automation
-1. Navigate to login page
-2. Get accessibility snapshot to find RefIDs
-3. Type username: `@e2`
-4. Type password: `@e3`
-5. Click login button: `@e1`
-6. Wait for success indicator
-
-## Important Notes
-
-- Browser must be running (it will auto-start on first operation if needed)
-- Operations are executed on the **currently active browser tab**
-- Accessibility snapshot updates after each navigation and click operation
-- All timeouts are in seconds
-- Use `wait_visible: true` (default) for reliable element interaction
-- **API address:** Always read from `$BROWSERWING_EXECUTOR_URL` environment variable, fallback to `http://127.0.0.1:8080` if not set
-- Authentication required: use `X-BrowserWing-Key` header or JWT token if configured
-
-## Troubleshooting
-
-**Element not found:**
-- Call `/snapshot` to see available elements
-- Try different identifier format (accessibility index, CSS selector, text)
-- Check if page has finished loading
-
-**Timeout errors:**
-- Increase timeout value in request
-- Check if element actually appears on page
-- Use `/wait` with appropriate state before interaction
-
-**Extraction returns empty:**
-- Verify CSS selector matches target elements
-- Check if content has loaded (use `/wait` first)
-- Try different extraction fields or type
-
-## Quick Reference
-
-```bash
-EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"
-
-# Discover commands
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/help"
-
-# Navigate
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/navigate" \
-  -H 'Content-Type: application/json' \
-  -d '{"url": "..."}'
-
-# Get page structure
-curl -X GET "${EXECUTOR_URL}/api/v1/executor/snapshot"
-
-# Click element
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/click" \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": "@e1"}'
-
-# Type text
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/type" \
-  -H 'Content-Type: application/json' \
-  -d '{"identifier": "@e3", "text": "..."}'
-
-# Extract data
-curl -X POST "${EXECUTOR_URL}/api/v1/executor/extract" \
-  -H 'Content-Type: application/json' \
-  -d '{"selector": "...", "fields": [...], "multiple": true}'
-```
-
-## Response Format
-
-All operations return:
-```json
-{
-  "success": true,
-  "message": "Operation description",
-  "timestamp": "2026-01-15T10:30:00Z",
-  "data": {
-    // Operation-specific data
-  }
-}
-```
-
-**Error response:**
-```json
-{
-  "error": "error.operationFailed",
-  "detail": "Detailed error message"
-}
-```
+**API 基本地址：** BrowserWing 执行器 API 的地址可以通过环境变量进行配置。
+
+- **环境变量：** `BROWSERWING_EXECUTOR_URL`
+- **默认值：** `http://127.0.0.1:8080`
+- **获取地址的方法：** 从环境变量 `$BROWSERWING_EXECUTOR_URL` 中读取地址；如果未设置，则使用默认值 `http://127.0.0.1:8080`。
+
+**基本地址格式：** `${BROWSERWING_EXECUTOR_URL}/api/v1/executor` 或 `http://127.0.0.1:8080/api/v1/executor`（如果环境变量未设置）
+
+**身份验证：** 如有需要，可以使用 `X-BrowserWing-Key: <api-key>` 标头或 `Authorization: Bearer <token>`。
+
+**重要提示：** 请始终先从环境变量中获取 API 地址。在 shell 命令中，使用：`${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}`
+
+## 核心功能
+
+- **页面导航：** 导航到指定 URL、后退/前进、重新加载页面。
+- **元素交互：** 点击、输入文本、选择元素、将鼠标悬停在元素上。
+- **数据提取：** 从元素中提取文本、属性和值。
+- **可访问性分析：** 获取可访问性快照以了解页面结构。
+- **高级操作：** 截取屏幕截图、执行 JavaScript 代码、模拟键盘输入。
+- **批量处理：** 顺序执行多个操作。
+
+## API 端点
+
+### 1. 查看可用命令
+
+**重要提示：** 在执行任何操作之前，请务必先调用此端点以查看所有可用命令及其参数。
+
+**响应：** 返回所有命令的完整列表，包括参数、示例和使用说明。
+
+**查询特定命令：**
+（具体代码块在此处）
+
+### 2. 获取可访问性快照
+
+**关键操作：** 在导航后务必调用此端点，以了解页面结构并获取元素引用 ID（RefID）。
+
+**响应示例：**
+（具体代码块在此处）
+
+**使用场景：**
+- 了解页面上有哪些可交互的元素。
+- 获取元素引用 ID（如 @e1、@e2 等），以便精确识别元素。
+- 查看元素的标签、角色和属性。
+- 可访问性快照比原始 DOM 更清晰，更适合大型语言模型（LLM）使用。
+- 引用 ID 是稳定的引用，在页面更改后仍然有效。
+
+### 3. 常见操作
+
+**注意：** 以下所有示例都使用 `EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"` 来从环境变量中读取 API 地址，`http://127.0.0.1:8080` 作为备用默认值。
+
+#### 导航到 URL
+（具体代码块在此处）
+
+#### 点击元素
+（具体代码块在此处）
+- **标识符格式：**
+  - **推荐使用：** `@e1`、`@e2`（来自快照）
+  - **CSS 选择器：** `#button-id`、`.class-name`
+  - **XPath：** `//button[@type='submit']`
+  - **文本：** `Login`（文本内容）
+
+#### 输入文本
+（具体代码块在此处）
+
+#### 提取数据
+（具体代码块在此处）
+
+#### 等待元素状态变化
+（具体代码块在此处）
+
+#### 批量操作
+（具体代码块在此处）
+
+## 操作步骤
+
+1. **获取 API 地址：** 首先从环境变量 `$BROWSERWING_EXECUTOR_URL` 中读取 API 基本地址。如果未设置，则使用默认值 `http://127.0.0.1:8080`。在 shell 命令中，使用：`EXECUTOR_URL="${BROWSERWING_EXECUTOR_URL:-http://127.0.0.1:8080}"`。
+
+2. **查看命令：** 调用 `GET /help` 以查看所有可用操作及其参数（如果不确定，请先执行此操作）。
+
+3. **导航：** 使用 `POST /navigate` 打开目标网页。
+
+4. **分析页面：** 调用 `GET /snapshot` 以了解页面结构并获取元素引用 ID。
+
+5. **交互：** 使用元素引用 ID（如 @e1、@e2）或 CSS 选择器来：
+  - 点击元素：`POST /click`
+  - 输入文本：`POST /type`
+  - 选择选项：`POST /select`
+  - 等待元素状态变化：`POST /wait`
+
+6. **提取数据：** 使用 `POST /extract` 从页面中提取信息。
+
+7. **展示结果：** 将提取的数据格式化并展示给用户。
+
+## 完整示例
+
+**用户请求：** “在 example.com 上搜索 ‘laptop’ 并获取前 5 个结果”
+
+**操作步骤：**
+
+1. 导航到搜索页面：
+（具体代码块在此处）
+
+2. 获取页面结构以找到搜索输入框：
+（具体代码块在此处）
+响应示例：`@e3 Search (role: textbox) [placeholder: Search...]`
+
+3. 输入搜索查询：
+（具体代码块在此处）
+
+4. 按下 Enter 键提交：
+（具体代码块在此处）
+
+5. 等待结果加载：
+（具体代码块在此处）
+
+6. 提取搜索结果：
+（具体代码块在此处）
+
+7. 展示提取的数据：
+（具体代码块在此处）
+
+## 关键命令参考
+
+### 导航
+- `POST /navigate` - 导航到指定 URL
+- `POST /go-back` - 在历史记录中后退
+- `POST /go-forward` - 在历史记录中前进
+- `POST /reload` - 重新加载当前页面
+
+### 元素交互
+- `POST /click` - 点击元素（支持引用 ID @e1、CSS 选择器、XPath、文本内容）
+- `POST /type` - 在输入框中输入文本（支持引用 ID @e3、CSS 选择器、XPath）
+- `POST /select` - 选择下拉选项
+- `POST /hover` - 将鼠标悬停在元素上
+- `POST /wait` - 等待元素状态变化（可见、隐藏、启用）
+- `POST /press-key` - 模拟按下键盘键（Enter、Tab、Ctrl+S 等）
+
+### 数据提取
+- `POST /extract` - 从元素中提取数据（支持多个元素）
+- `POST /get-text` - 获取元素文本内容
+- `POST /get-value` - 获取输入框的值
+- `GET /page-info` - 获取页面 URL 和标题
+- `GET /page-text` - 获取页面所有文本
+- `GET /page-content` - 获取完整的 HTML 内容
+
+### 页面分析
+- `GET /snapshot` - 获取可访问性快照（**导航后务必调用**）
+- `GET /clickable-elements` - 获取所有可点击元素
+- `GET /input-elements` - 获取所有输入元素
+
+### 高级功能
+- `POST /screenshot` - 截取页面截图（以 Base64 编码格式）
+- `POST /evaluate` - 执行 JavaScript 代码
+- `POST /batch` - 顺序执行多个操作
+- `POST /scroll-to-bottom` - 滚动到页面底部
+- `POST /resize` - 调整浏览器窗口大小
+- `POST /tabs` - 管理浏览器标签页（列出、新建、切换、关闭）
+- `POST /fill-form` - 智能地同时填充多个表单字段
+
+### 调试与监控
+- `GET /console-messages` - 获取浏览器控制台消息（日志、警告、错误）
+- `GET /network-requests` - 获取页面发起的网络请求
+- `POST /handle-dialog` - 配置 JavaScript 对话框（警告框、确认框、提示框）的处理
+- `POST /file-upload` - 向输入框上传文件
+- `POST /drag` - 拖放元素
+- `POST /close-page` - 关闭当前页面/标签页
+
+## 元素识别
+
+您可以使用以下方法识别元素：
+
+1. **推荐使用：** `@e1`、`@e2`、`@e3`——这些方法在页面更改后仍然稳定有效。
+   - 从 `/snapshot` 端点获取引用 ID。
+   - 引用 ID 在快照生成后 5 分钟内有效。
+   - 示例：`"identifier": "@e1"`。
+   - 支持多种识别策略以确保识别准确性。
+
+2. **CSS 选择器：** `#id`、`.class`、`button[type="submit"]`——标准的 CSS 选择器。
+   - 示例：`"identifier": "#login-button"`。
+
+3. **XPath：** `//button[@id='login']`、`//a[contains(text(), 'Submit')]`——用于复杂查询的 XPath 表达式。
+   - 示例：`"identifier": "//button[@id='login']"`。
+
+4. **文本内容：** `Login`、`Sign Up`、`Submit`——根据文本内容识别按钮和链接。
+   - 示例：`"identifier": "Login"`。
+
+## 使用指南
+
+**开始前：**
+- **先获取 API 地址：** 从 `$BROWSERWING_EXECUTOR_URL` 环境变量中读取地址，或使用默认值 `http://127.0.0.1:8080`。
+- 如果不确定命令及其参数，请调用 `GET /help`。
+- 确保浏览器已启动（如果未启动，首次操作时会自动启动）。
+
+**自动化过程中：**
+- **导航后务必调用 `/snapshot` 以获取页面结构和元素引用 ID**。
+- 为了可靠性和稳定性，优先使用引用 ID（如 @e1）而非 CSS 选择器。
+- 在页面内容更改后重新生成快照以获取最新的引用 ID。
+- 对于异步加载的动态内容，请使用 `/wait`。
+- 在交互前检查元素的状态（是否可见、是否启用）。
+- 使用 `/batch` 顺序执行多个操作以提高效率。
+
+**错误处理：**
+- 如果操作失败，请检查元素引用 ID 并尝试其他识别方式。
+- 如果出现超时错误，请增加超时时间。
+- 如果元素未找到，请再次调用 `/snapshot` 以更新页面结构。
+- 向用户清晰地解释错误并提供解决方案。
+
+**数据提取：**
+- 使用 `fields` 参数指定要提取的内容（例如 `["text", "href", "src"]`）。
+- 设置 `multiple: true` 以从多个元素中提取数据。
+- 以用户易于理解的方式格式化提取的数据。
+
+## 完整工作流程示例
+
+**场景：** 用户希望登录网站
+
+**操作步骤：**
+
+1. 导航到登录页面：
+（具体代码块在此处）
+
+2. 获取页面结构：
+（具体代码块在此处）
+响应示例：`@e3 Search (role: textbox) [placeholder: Search...]`
+
+3. 输入搜索内容：
+（具体代码块在此处）
+
+4. 按下 Enter 键提交：
+（具体代码块在此处）
+
+5. 等待登录结果：
+（具体代码块在此处）
+
+6. 展示提取的结果：
+（具体代码块在此处）
+
+## 批量操作示例
+
+**场景：** 填写包含多个字段的表单
+
+**操作步骤：**
+
+- 而不是分别发送 5 个 API 请求，可以使用一个批量操作来完成所有操作：
+（具体代码块在此处）
+
+## 最佳实践**
+
+1. **先了解可用命令：** 如果不确定，请调用 `/help` 或 `/help?command=<name>` 以获取命令信息。
+2. **先分析页面结构：** 导航后务必调用 `/snapshot` 以了解页面内容。
+3. **优先使用引用 ID**——它们比 CSS 选择器更可靠。
+4. **等待动态内容加载：** 在与异步加载的元素交互前使用 `/wait`。
+5. **尽可能使用批量操作**——通过 `/batch` 顺序执行多个操作。
+6. **优雅地处理错误：** 在操作失败时提供清晰的说明和建议。
+7. **验证结果：** 操作完成后检查是否达到了预期效果。
+
+## 常见场景
+
+### 表单填写
+1. 导航到表单页面。
+2. 获取页面结构以找到输入元素及其引用 ID。
+3. 使用 `/type` 为每个字段输入内容（例如 @e1、@e2 等）。
+4. 使用 `/select` 选择下拉选项。
+5. 使用引用 ID 点击提交按钮。
+
+### 数据抓取
+1. 导航到目标页面。
+2. 使用 `/wait` 等待内容加载。
+3. 使用 CSS 选择器和 `multiple: true` 提取数据（例如 `["text", "href", "src"]`）。
+
+### 搜索操作
+1. 导航到搜索页面。
+2. 获取页面结构以找到搜索输入框。
+3. 在输入框中输入搜索内容。
+4. 按下 Enter 键或点击搜索按钮。
+5. 等待结果显示。
+
+### 登录自动化
+1. 导航到登录页面。
+2. 获取页面结构以获取元素引用 ID。
+3. 输入用户名：`@e2`。
+4. 输入密码：`@e3`。
+5. 点击登录按钮：`@e1`。
+6. 等待登录成功提示。
+
+## 重要注意事项
+
+- 浏览器必须处于运行状态（如果需要，首次操作时会自动启动）。
+- 操作将在当前活动的浏览器标签页中执行。
+- 每次导航和点击操作后，可访问性快照都会更新。
+- 所有超时时间以秒为单位。
+- 使用 `wait_visible: true`（默认值）以确保元素交互的准确性。
+- **API 地址：** 始终从 `$BROWSERWING_EXECUTOR_URL` 环境变量中获取地址，如果未设置则使用 `http://127.0.0.1:8080`。
+- 如需身份验证，请使用 `X-BrowserWing-Key` 标头或 JWT 令牌。
+
+## 故障排除**
+
+- **元素未找到：** 调用 `/snapshot` 以查看可用的元素。
+- 尝试不同的识别方式（引用 ID、CSS 选择器、文本）。
+- 检查页面是否已完全加载。
+
+**超时错误：**
+- 增加请求的超时时间。
+- 检查元素是否确实存在于页面上。
+- 在交互前使用 `wait` 确保元素处于正确的状态。
+
+**提取结果为空：**
+- 确保使用的 CSS 选择器与目标元素匹配。
+- 检查内容是否已加载（使用 `/wait` 确保内容已加载）。
+- 尝试其他提取字段或输入方式。
+
+## 快速参考
+
+（具体代码块在此处）
+
+## 响应格式
+
+所有操作都会返回相应的响应数据：
+（具体代码块在此处）
+
+**错误响应：**
+（具体代码块在此处）

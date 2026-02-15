@@ -1,347 +1,98 @@
 ---
 name: amazon-competitor-analyzer
-description: Scrapes Amazon product data from ASINs using browseract.com automation API and performs surgical competitive analysis. Compares specifications, pricing, review quality, and visual strategies to identify competitor moats and vulnerabilities.
+description: 使用 browseract.com 的自动化 API 从 ASIN（Amazon 商品编号）中抓取 Amazon 产品数据，并进行深入的竞争分析。通过比较产品规格、价格、用户评价以及产品展示策略，来识别竞争对手的优势和潜在弱点。
 ---
 
-# Amazon Competitor Analyzer
+# 亚马逊竞争对手分析工具
 
-This skill scrapes Amazon product data from user-provided ASINs using browseract.com's browser automation API and performs deep competitive analysis. It compares specifications, pricing, review quality, and visual strategies to identify competitor moats and vulnerabilities.
+该工具利用 browseract.com 的浏览器自动化 API 从用户提供的 ASIN（Amazon 商品唯一标识符）中抓取产品数据，并进行深入的竞争分析。它比较产品的规格、价格、评论质量以及视觉策略，以识别竞争对手的优势和劣势。
 
-## When to Use This Skill
+## 适用场景
 
-- Competitive research: Input multiple ASINs to understand market landscape
-- Pricing strategy analysis: Compare price bands across similar products
-- Specification benchmarking: Deep dive into technical specs and feature differences
-- Review insights: Analyze review quality, quantity, and sentiment patterns
-- Visual strategy research: Evaluate main images, A+ content, and brand visuals
-- Market opportunity discovery: Identify gaps and potential threats
-- Product optimization: Develop optimization strategies based on competitor analysis
-- New product research: Support new product development with market data
+- **竞争研究**：输入多个 ASIN 以了解市场格局
+- **定价策略分析**：比较类似产品的价格区间
+- **规格基准测试**：深入分析技术规格和功能差异
+- **评论分析**：分析评论的质量、数量和情感倾向
+- **视觉策略研究**：评估产品的主图片、A+ 评价内容以及品牌视觉效果
+- **市场机会发现**：识别市场空白和潜在威胁
+- **产品优化**：基于竞争分析制定优化策略
+- **新产品研究**：利用市场数据支持新产品开发
 
-## What This Skill Does
+## 功能概述
 
-1. **ASIN Data Collection**: Automatically extract product title, price, rating, review count, images, and core data using BrowserAct workflow templates
-2. **Specification Extraction**: Deep extraction of technical specs, features, and materials
-3. **Review Quality Analysis**: Analyze review patterns, keywords, and sentiment
-4. **Visual Strategy Assessment**: Evaluate main images, A+ page design, and brand consistency
-5. **Multi-Dimensional Comparison**: Side-by-side comparison of key metrics across products
-6. **Moat Identification**: Identify core competitive advantages and barriers
-7. **Vulnerability Discovery**: Find competitor weaknesses and market opportunities
-8. **Structured Output**: Generate JSON and Markdown analysis reports
+1. **ASIN 数据收集**：使用 BrowserAct 的工作流程模板自动提取产品标题、价格、评分、评论数量、图片等核心信息
+2. **规格提取**：深入提取技术规格、功能和材料信息
+3. **评论质量分析**：分析评论模式、关键词和情感倾向
+4. **视觉策略评估**：评估主图片、A+ 评价页面的设计以及品牌一致性
+5. **多维度比较**：并列展示产品的关键指标
+6. **竞争优势识别**：找出核心竞争优势和劣势
+7. **市场机会发现**：发现竞争对手的弱点和市场机会
+8. **结构化输出**：生成 JSON 或 Markdown 格式的分析报告
 
-## Features
-1. **No hallucinations, ensuring stable and accurate data extraction**: Pre-set workflows eliminate AI-generated hallucinations.
-2.
-**No CAPTCHA challenges**: Built-in bypass mechanisms eliminate the need to handle reCAPTCHA or other verification challenges.
-3.
-**No IP Access Restrictions or Geofencing**: Overcomes geographic IP limitations for stable global access.
-4.
-**Faster Execution Speed**: Tasks complete more rapidly than purely AI-driven browser automation solutions.
-5. **Exceptional Cost Efficiency**: Significantly reduces data acquisition costs compared to token-intensive AI solutions.
+## 特点
 
+- **数据准确性**：预设置的工作流程确保数据提取的稳定性和准确性，避免 AI 生成的不准确信息
+- **无需验证码**：内置绕过机制，无需处理 reCAPTCHA 等验证问题
+- **无地理限制**：克服 IP 地理限制，实现全球稳定访问
+- **执行速度快**：比纯 AI 驱动的浏览器自动化解决方案执行速度更快
+- **成本效益高**：相比依赖令牌的 AI 解决方案，显著降低数据采集成本
 
+## 先决条件
 
-## Prerequisites
+### 1. 注册 BrowserAct.com 账户并获取 API 密钥
 
-### 1. BrowserAct.com Account Setup
+- 访问 [browseract.com](https://browseract.com)
+- 注册账户
+- 进入 API 设置
+- 生成 API 密钥
+- 将 API 密钥安全存储（建议使用环境变量）
 
-You need a BrowserAct.com account and API key:
+### 2. 配置环境变量
 
-1. Visit [browseract.com](https://browseract.com)
-2. Sign up for an account
-3. Navigate to API settings
-4. Generate an API key
-5. Store your API key securely (environment variables recommended)
-
-### 2. Environment Configuration
-
-Set your API key as an environment variable:
+将 API 密钥设置为环境变量：
 
 ```bash
 export BROWSERACT_API_KEY="your-api-key-here"
 ```
 
-Or create a `.env` file:
+或创建一个 `.env` 文件：
 
 ```
 BROWSERACT_API_KEY=your-api-key-here
 ```
 
-## How to Use
+## 使用方法
 
-### Basic Competitor Analysis
+- **基本竞争分析**
+- [具体步骤]
 
-```
-Analyze the following Amazon ASIN: B09XYZ12345
-```
+- **深入规格比较**
+- [具体步骤]
 
-```
-Compare these three products: B07ABC11111, B07DEF22222, B07GHI33333
-```
+- **评论质量分析**
+- [具体步骤]
 
-### Deep Specification Comparison
+- **视觉策略研究**
+- [具体步骤]
 
-```
-Analyze the technical specification differences: B09XYZ12345, B09ABC11111
-```
+- **完整竞争分析**
+- [具体步骤]
 
-### Review Quality Analysis
+## 操作说明
 
-```
-Analyze review quality and feedback: B09XYZ12345, B07DEF22222
-```
+当用户请求亚马逊竞争对手分析时：
 
-### Visual Strategy Research
+1. **ASIN 识别与验证**：
+   - 从用户输入中识别 ASIN
+   - 确认 ASIN 格式符合亚马逊标准
+   - 从亚马逊产品链接中提取 ASIN
+   - 处理无效 ASIN 并提示用户修正
 
-```
-Research main image and visual presentation strategies: B09XYZ12345, B09ABC11111
-```
+2. **调用 BrowserAct API**
 
-### Complete Competitive Analysis
+3. **任务输出数据结构**
 
-```
-Analyze competitor landscape: B09XYZ12345, B07DEF22222, B07GHI33333, B09JKL44444
-```
-
-## Instructions
-
-When a user requests Amazon competitor analysis:
-
-### 1. ASIN Identification and Validation
-
-Identify ASINs from user input:
-
-- **ASIN Format**: 10-character alphanumeric (e.g., B09XYZ12345)
-- **Validation**: Check format compliance with Amazon ASIN standards
-- **URL Parsing**: Extract ASIN from Amazon product URLs
-- **Error Handling**: Prompt user to correct invalid ASINs
-
-### 2. BrowserAct API Implementation
-
-```python
-"""
-BrowserAct API - Run Template Task and Wait for Completion
-Scenarios for beginners - Synchronous task execution with official templates
-"""
-import os
-import time
-import traceback
-import json
-import requests
-
-# ============ Configuration Area ============
-# API Key - Get from: https://www.browseract.com/reception/integrations
-API_KEY = os.getenv("BROWSERACT_API_KEY", "your-api-key-here")
-
-# Workflow Template ID for Amazon product scraping
-# You can get it from:
-# - Run: python Workflow-Python/11.list_official_workflow_templates.py
-# - Or visit: https://www.browseract.com/template?platformType=0
-WORKFLOW_TEMPLATE_ID = "77814333389670716"
-
-# Polling configuration
-POLL_INTERVAL = 5  # Check task status every 5 seconds
-MAX_WAIT_TIME = 1800  # Maximum wait time: 30 minutes (1800 seconds)
-
-API_BASE_URL = "https://api.browseract.com/v2/workflow"
-
-
-def create_input_parameters(asins):
-    """Create input parameters for the workflow template"""
-    return [
-        {
-            "name": "ASIN",
-            "value": asin.strip()
-        }
-        for asin in asins if asin.strip()
-    ]
-
-
-def run_task_by_template(workflow_template_id, input_parameters):
-    """Start a task using template"""
-    headers = {
-        "Authorization": f"Bearer {API_KEY}"
-    }
-    
-    data = {
-        "workflow_template_id": workflow_template_id,
-        "input_parameters": input_parameters,
-    }
-    
-    api_url = f"{API_BASE_URL}/run-task-by-template"
-    response = requests.post(api_url, json=data, headers=headers)
-    
-    if response.status_code == 200:
-        result = response.json()
-        task_id = result["id"]
-        print(f"Task started successfully, Task ID: {task_id}")
-        if "profileId" in result:
-            print(f"   Profile ID: {result['profileId']}")
-        return task_id
-    else:
-        print(f"Failed to start task: {response.json()}")
-        return None
-
-
-def get_task_status(task_id):
-    """Get task status"""
-    headers = {
-        "Authorization": f"Bearer {API_KEY}"
-    }
-    
-    api_url = f"{API_BASE_URL}/get-task-status?task_id={task_id}"
-    try:
-        response = requests.get(api_url, headers=headers, timeout=30)
-        
-        if response.status_code == 200:
-            return response.json().get("status")
-        else:
-            print(f"Failed to get task status: {response.json()}")
-            return None
-    except (requests.exceptions.SSLError, requests.exceptions.ConnectionError, 
-            requests.exceptions.Timeout, requests.exceptions.RequestException) as e:
-        # Network error, will retry in next polling cycle
-        return None
-
-
-def get_task(task_id):
-    """Get detailed task information and results"""
-    headers = {
-        "Authorization": f"Bearer {API_KEY}"
-    }
-    
-    api_url = f"{API_BASE_URL}/get-task?task_id={task_id}"
-    try:
-        response = requests.get(api_url, headers=headers, timeout=30)
-        
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"Failed to get task details: {response.json()}")
-            return None
-    except (requests.exceptions.SSLError, requests.exceptions.ConnectionError, 
-            requests.exceptions.Timeout, requests.exceptions.RequestException) as e:
-        print(f"Network error while getting task details: {type(e).__name__}")
-        return None
-
-
-def wait_for_task_completion(task_id):
-    """Wait for task completion with progress updates"""
-    start_time = time.time()
-    previous_status = None
-    
-    print(f"Waiting for task completion (max wait time: {MAX_WAIT_TIME // 60} minutes)...")
-    
-    while True:
-        # Check if timeout
-        elapsed_time = time.time() - start_time
-        if elapsed_time > MAX_WAIT_TIME:
-            print(f"Wait timeout (waited {elapsed_time:.0f} seconds)")
-            return None
-        
-        # Get task status
-        status = get_task_status(task_id)
-        
-        if status is None:
-            # Network error or API error, continue waiting
-            elapsed = int(elapsed_time)
-            print(f"   Network error, retrying... (waited {elapsed} seconds)", end="\r")
-        elif status == "finished":
-            print(f"Task completed successfully!")
-            return "finished"
-        elif status == "failed":
-            print(f"Task execution failed")
-            return "failed"
-        elif status == "canceled":
-            print(f"Task canceled")
-            return "canceled"
-        else:
-            # running, created, paused, etc.
-            elapsed = int(elapsed_time)
-            if status != previous_status:
-                print(f"   Status: {status} (waited {elapsed} seconds)", end="\r")
-                previous_status = status
-            else:
-                print(f"   Status: {status} (waited {elapsed} seconds)", end="\r")
-        
-        # Wait before checking again
-        time.sleep(POLL_INTERVAL)
-
-
-def scrape_amazon_products(asins):
-    """
-    Main function to scrape Amazon product data
-    
-    Args:
-        asins: List of Amazon ASINs to scrape
-        
-    Returns:
-        dict: Task result containing product data
-    """
-    if not asins:
-        raise ValueError("No ASINs provided for scraping")
-    
-    # Create input parameters
-    input_parameters = create_input_parameters(asins)
-    
-    print(f"Starting Amazon product scraping for {len(asins)} ASIN(s)...")
-    print(f"ASINs: {[p['value'] for p in input_parameters]}")
-    
-    # Step 1: Start task using template
-    task_id = run_task_by_template(WORKFLOW_TEMPLATE_ID, input_parameters)
-    
-    if task_id is None:
-        raise Exception("Unable to start scraping task")
-    
-    # Step 2: Wait for task completion
-    final_status = wait_for_task_completion(task_id)
-    
-    if final_status != "finished":
-        raise Exception(f"Task did not complete successfully. Status: {final_status}")
-    
-    # Step 3: Get task results
-    task_info = get_task(task_id)
-    
-    if task_info is None:
-        raise Exception("Unable to retrieve task results")
-    
-    return task_info
-
-
-def main():
-    """Main execution function for testing"""
-    print("=" * 60)
-    print("Amazon Product Scraper - BrowserAct Integration")
-    print("=" * 60)
-    
-    try:
-        # Example: Scrape multiple ASINs
-        test_asins = ["B09XYZ12345", "B07ABC11111"]
-        
-        print(f"\nScraping Amazon products: {test_asins}")
-        results = scrape_amazon_products(test_asins)
-        
-        print("\n" + "=" * 60)
-        print("Scraping Results (JSON):")
-        print("=" * 60)
-        print(json.dumps(results, indent=2, ensure_ascii=False))
-        
-        return results
-        
-    except Exception as e:
-        error = traceback.format_exc()
-        print(f"Error occurred: {error}")
-        raise
-
-
-# Example usage
-if __name__ == "__main__":
-    main()
-```
-
-### 3. Task Output Data Structure
-
-The BrowserAct API returns structured data in the following format:
+BrowserAct API 以以下格式返回结构化数据：
 
 ```json
 {
@@ -400,17 +151,17 @@ The BrowserAct API returns structured data in the following format:
 }
 ```
 
-### 4. Workflow Template Parameters
+### 参数配置
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| ASIN | string | Yes | Amazon Standard Identification Number (10 characters) |
-| output_format | string | No | Output format: "json" or "markdown" (default: "json") |
-| include_reviews | boolean | No | Include review analysis (default: true) |
-| include_images | boolean | No | Include image URLs (default: true) |
-| include_specs | boolean | No | Include specifications (default: true) |
+| 参数 | 类型 | 是否必填 | 说明 |
+|---------|------|----------|-------------|
+| ASIN | 字符串 | 是 | 亚马逊标准商品标识符（10 位） |
+| output_format | 字符串 | 否 | 输出格式：json 或 markdown（默认：json） |
+| include_reviews | 布尔值 | 否 | 是否包含评论分析（默认：true） |
+| include_images | 布尔值 | 否 | 是否包含图片链接（默认：true） |
+| include_specs | 布尔值 | 否 | 是否包含产品规格（默认：true） |
 
-### 5. Error Handling
+### 错误处理
 
 ```python
 import requests
@@ -453,125 +204,11 @@ def handle_api_error(response):
     }
 ```
 
-### 6. Rate Limiting Best Practices
+### 避免请求频率过高
 
-```python
-import time
-from datetime import datetime, timedelta
+#### 设置请求频率限制
 
-
-class RateLimiter:
-    """Rate limiter for API calls"""
-    
-    def __init__(self, max_requests=10, time_window=60):
-        self.max_requests = max_requests
-        self.time_window = time_window
-        self.requests = []
-    
-    def wait_if_needed(self):
-        """Wait if rate limit would be exceeded"""
-        now = datetime.now()
-        
-        # Remove requests outside the time window
-        self.requests = [req_time for req_time in self.requests 
-                        if now - req_time < timedelta(seconds=self.time_window)]
-        
-        if len(self.requests) >= self.max_requests:
-            # Wait until oldest request expires
-            oldest = min(self.requests)
-            wait_time = self.time_window - (now - oldest).seconds
-            if wait_time > 0:
-                print(f"Rate limit reached, waiting {wait_time} seconds...")
-                time.sleep(wait_time)
-        
-        self.requests.append(now)
-
-
-# Usage
-rate_limiter = RateLimiter(max_requests=10, time_window=60)
-
-def scrape_with_rate_limiting(asins):
-    """Scrape products with rate limiting"""
-    results = []
-    
-    for asin in asins:
-        rate_limiter.wait_if_needed()
-        result = scrape_single_asin(asin)
-        results.append(result)
-    
-    return results
-```
-
-## Data Extraction and Structuring
-
-```markdown
-## Product Information
-
-### ASIN: B09XYZ12345
-
-**Product Title**: [Complete product title]
-**Status**: Success / Failed
-**Scraped At**: [Timestamp]
-
----
-
-#### Pricing Information
-
-| Item | Value |
-|------|-------|
-| Current Price | $XX.XX |
-| Original Price | $XX.XX |
-| Discount | XX% OFF |
-| Price Range | $XX.XX - $XX.XX (variants) |
-
----
-
-#### Rating and Reviews
-
-| Item | Value |
-|------|-------|
-| Average Rating | X.X / 5.0 |
-| Total Reviews | X,XXX |
-| Rating Distribution | 5-star XX% / 4-star XX% / 3-star XX% / 2-star XX% / 1-star XX% |
-
----
-
-#### Visual Assets
-
-| Item | Count/Status |
-|------|--------------|
-| Main Image | [URL / N/A] |
-| Thumbnail Count | X images |
-| Video Count | X videos |
-| 360° View | Available / N/A |
-| A+ Page | Available / N/A |
-| Brand Story | Available / N/A |
-
----
-
-#### Specification Parameters
-
-| Parameter | Value |
-|-----------|-------|
-| Brand | [Brand name] |
-| Model | [Model info] |
-| Weight | [Weight] |
-| Dimensions | [Dimensions] |
-| Material | [Material] |
-| Country of Origin | [Country] |
-
----
-
-#### Seller Information
-
-| Item | Information |
-|------|-------------|
-| Seller Type | Amazon / Third-Party |
-| Seller Name | [Name] |
-| Fulfillment | FBA / Self |
-| Availability | In Stock / Out of Stock / Pre-order |
-
-### JSON Output Format
+#### 数据提取与结构化
 
 ```json
 {
@@ -580,10 +217,10 @@ def scrape_with_rate_limiting(asins):
   "scraped_at": "2026-02-06T10:00:00Z",
   "status": "success",
   "product_info": {
-    "title": "[Complete product title]",
-    "brand": "[Brand name]",
-    "manufacturer": "[Manufacturer]",
-    "model": "[Model]"
+    "title": "[产品标题]",
+    "brand": "[品牌名称]",
+    "manufacturer": "[制造商]",
+    "model": "[型号]"
   },
   "pricing": {
     "current_price": XX.XX,
@@ -607,326 +244,111 @@ def scrape_with_rate_limiting(asins):
     }
   },
   "specifications": {
-    "weight": "[Weight]",
-    "dimensions": "[Dimensions]",
-    "material": "[Material]",
-    "country_of_origin": "[Country]",
-    "features": ["[Feature1]", "[Feature2]"]
+    "weight": "[重量]",
+    "dimensions": "[尺寸]",
+    "material": "[材料]",
+    "country_of_origin": "[原产地]"
   },
   "media": {
-    "main_image": "[URL]",
-    "thumbnails": ["[URL1]", "[URL2]"],
+    "main_image": "[图片链接]",
+    "thumbnails": ["[图片1链接]", "[图片2链接]",
     "has_video": true,
     "has_a_plus": true
   },
   "seller": {
-    "type": "[Amazon/Third-Party]",
-    "name": "[Seller name]",
-    "fulfillment": "[FBA/Self]",
-    "availability": "[InStock/OutOfStock]"
+    "type": "[亚马逊/第三方]",
+    "name": "[卖家名称]",
+    "fulfillment": "[FBA/自发货]",
+    "availability": "[有货/缺货]"
   },
   "bestseller_rank": [
     {
-      "category": "[Category]",
+      "category": "[类别]",
       "rank": XXX
     }
   ]
 }
 ```
 
-## LLM Deep Analysis
+## 竞争分析示例
 
-After collecting data from multiple products, perform surgical competitive analysis:
+### 1. 价格维度分析
 
-```markdown
-## Competitive Deep Analysis
-
-### 1. Price Dimension Analysis
-
-#### Price Band Positioning
-
-| Product | ASIN | Price | Position | Price Advantage |
+| 产品 | ASIN | 价格 | 定位 | 价格优势 |
 |---------|------|-------|----------|----------------|
-| [Product A] | B09XXX | $XX.XX | Premium/Mid-range/Economy | High/Medium/Low |
-| [Product B] | B09YYY | $XX.XX | Premium/Mid-range/Economy | High/Medium/Low |
-| [Product C] | B09ZZZ | $XX.XX | Premium/Mid-range/Economy | High/Medium/Low |
+| [产品 A] | B09XXX | $XX.XX | 高端/中端/经济型 | 高/中/低 |
+| [产品 B] | B09YYY | $XX.XX | 高端/中端/经济型 | 高/中/低 |
+| [产品 C] | B09ZZZ | $XX.XX | 高端/中端/经济型 | 高/中/低 |
 
-**Price Range Analysis**:
-- Lowest Price: $XX.XX ([Product Name])
-- Highest Price: $XX.XX ([Product Name])
-- Median Price: $XX.XX
-- Price Spread: XX%
+**价格策略分析**：
+- 最低价：$XX.XX（[产品名称]）
+- 最高价：$XX.XX（[产品名称]）
+- 中位数价格：$XX.XX
+- 价格差距：XX%
 
-**Pricing Strategy Insights**:
-- [Analyze pricing strategies across products]
-- [Identify price gaps]
-- [Discover pricing opportunities]
+### 2. 规格比较
 
-#### Value Assessment
+#### 核心参数对比
 
-| Product | Feature Count | Cost per Feature | Feature Density | Value Index |
-|---------|---------------|------------------|-----------------|-------------|
-| [A] | XX | $X.XX | High/Medium/Low | X.X |
-| [B] | XX | $X.XX | High/Medium/Low | X.X |
-| [C] | XX | $X.XX | High/Medium/Low | X.X |
+| 参数 | [产品 A] | [产品 B] | [产品 C] | 行业基准 |
+|---------|-------------|-------------|-------------|-------------------|
+| [参数 1] | [值] | [值] | [值] | [值] |
+| [参数 2] | [值] | [值] | [值] | [值] |
+| [参数 3] | [值] | [值] | [值] | [值] |
 
-### 2. Specification Comparison
+### 3. 评论分析
 
-#### Core Parameter Matrix
+#### 评论质量评估
 
-| Parameter | [Product A] | [Product B] | [Product C] | Industry Benchmark |
-|-----------|-------------|-------------|-------------|-------------------|
-| [Param 1] | [Value] | [Value] | [Value] | [Value] |
-| [Param 2] | [Value] | [Value] | [Value] | [Value] |
-| [Param 3] | [Value] | [Value] | [Value] | [Value] |
-| [Param 4] | [Value] | [Value] | [Value] | [Value] |
-| [Param 5] | [Value] | [Value] | [Value] | [Value] |
-
-#### Differentiation Analysis
-
-**Exclusive Advantages**:
-- [Product A Exclusive]: Description + User Value + Market Rarity
-- [Product B Exclusive]: Description + User Value + Market Rarity
-- [Product C Exclusive]: Description + User Value + Market Rarity
-
-**Weakness Comparison**:
-- [Product A Weakness]: Missing Feature + User Impact + Alternative
-- [Product B Weakness]: Missing Feature + User Impact + Alternative
-- [Product C Weakness]: Missing Feature + User Impact + Alternative
-
-### 3. Review Weight Analysis
-
-#### Review Quality Assessment
-
-| Product | Total Reviews | Avg Rating | Positive % | Negative % | Quality Index |
+| 产品 | 总评论数 | 平均评分 | 正面评论百分比 | 负面评论百分比 | 评分指数 |
 |---------|---------------|------------|------------|------------|---------------|
-| [A] | X,XXX | X.X | XX% | XX% | X.X |
-| [B] | X,XXX | X.X | XX% | XX% | X.X |
-| [C] | X,XXX | X.X | XX% | XX% | X.X |
+| [产品 A] | X,XXX | X.X | XX% | XX% | X.X |
+| [产品 B] | X,XXX | X.X | XX% | XX% | X.X |
+| [产品 C] | X,XXX | X.X | XX% | XX% | X.X |
 
-#### Review Keyword Analysis
+#### 4. 视觉策略分析
 
-**Positive Keywords**:
-- [Keyword 1] (XX occurrences)
-- [Keyword 2] (XX occurrences)
-- [Keyword 3] (XX occurrences)
+#### 主图片评估
 
-**Negative Keywords**:
-- [Keyword 1] (XX occurrences)
-- [Keyword 2] (XX occurrences)
-- [Keyword 3] (XX occurrences)
-
-#### Sentiment Analysis
-
-| Sentiment Dimension | [Product A] | [Product B] | [Product C] |
-|--------------------|-------------|-------------|-------------|
-| Positive Sentiment | XX% | XX% | XX% |
-| Neutral Sentiment | XX% | XX% | XX% |
-| Negative Sentiment | XX% | XX% | XX% |
-
-**Review Insights**:
-- [Product A Key Praise Points]
-- [Product A Main Complaints]
-- [Product B Key Praise Points]
-- [Product B Main Complaints]
-
-#### Credibility Analysis
-
-| Product | Verified Purchase Rate | Avg Review Length | Image/Video Review % | Credibility Score |
-|---------|----------------------|-------------------|---------------------|-------------------|
-| [A] | XX% | XX words | XX% | X.X |
-| [B] | XX% | XX words | XX% | X.X |
-| [C] | XX% | XX words | XX% | X.X |
-
-### 4. Visual Strategy Analysis
-
-#### Main Image Assessment
-
-| Product | Style | Background | Information Density | Visual Appeal | Conversion Potential |
+| 产品 | 图片风格 | 背景 | 信息密度 | 视觉吸引力 | 转化潜力 |
 |---------|-------|------------|---------------------|---------------|---------------------|
-| [A] | [Description] | Solid/Scene/Transparent | High/Medium/Low | Score | High/Medium/Low |
-| [B] | [Description] | Solid/Scene/Transparent | High/Medium/Low | Score | High/Medium/Low |
-| [C] | [Description] | Solid/Scene/Transparent | High/Medium/Low | Score | High/Medium/Low |
+| [产品 A] | [描述] | 固定/场景/透明 | 高/中/低 | 分数 | 高/中/低 |
+| [产品 B] | [描述] | 固定/场景/透明 | 高/中/低 | 分数 | 高/中/低 |
+| [产品 C] | [描述] | 固定/场景/透明 | 高/中/低 | 分数 | 高/中/低 |
 
-**Image Strategy Insights**:
-- [Analyze visual strategies across products]
-- [Identify effective visual elements]
-- [Discover visual optimization opportunities]
+### 5. 竞争格局总结
 
-#### A+ Page Analysis
+#### 市场定位
 
-| Product | A+ Type | Module Count | Information Architecture | Brand Presentation | UX Score |
-|---------|---------|-------------|-------------------------|-------------------|----------|
-| [A] | Standard/Premium | XX | Excellent/Good/Poor | Strong/Medium/Weak | Score |
-| [B] | Standard/Premium | XX | Excellent/Good/Poor | Strong/Medium/Weak | Score |
-| [C] | Standard/Premium | XX | Excellent/Good/Poor | Strong/Medium/Weak | Score |
+| 维度 | 领先者 | 挑战者 | 跟随者 | 小众市场 |
+|---------|--------|------------|----------|-------|
+| 销量 | [产品] | [产品] | [产品] | [产品] |
+| 价格 | [产品] | [产品] | [产品] | [产品] |
+| 评分 | [产品] | [产品] | [产品] | [产品] |
+| 功能 | [产品] | [产品] | [产品] | [产品] |
 
-**A+ Page Highlights**:
-- [Product A A+ Highlights]
-- [Product B A+ Highlights]
-- [Product C A+ Highlights]
+#### 竞争优势与劣势
 
-### 5. Competitive Landscape Summary
+#### 竞争策略建议
 
-#### Market Position Matrix
+- [产品 A] 的竞争优势
+- [产品 B] 的竞争优势
+- [产品 C] 的竞争优势
 
-| Dimension | Leader | Challenger | Follower | Niche |
-|----------|--------|------------|----------|-------|
-| Volume | [Product] | [Product] | [Product] | [Product] |
-| Price | [Product] | [Product] | [Product] | [Product] |
-| Rating | [Product] | [Product] | [Product] | [Product] |
-| Features | [Product] | [Product] | [Product] | [Product] |
+#### 潜在机会与风险
 
-#### Competitive Differentiation Map
+- [机会 1]：[描述]
+- [机会 2]：[描述]
+- [机会 3]：[描述]
 
-```
-                    Feature Richness
-                          ↑
-                          |
-         [Product B]      |          [Product A]
-         (High Feature)    |         (High Brand)
-                          |
-   ◄──────────────────────┼──────────────────────►
-                          |
-         [Product C]      |          [Product D]
-         (Low Feature)    |         (Low Brand)
-                          |
-                          ↓
-                    Simplified Features
+### 报告示例
 
-   Price Band: Left Low Right High | Brand: Bottom Low Top High
-```
+#### 分析完成时间**
 
-### 6. Moat Identification
+**分析的产品数量**: X
+**数据来源**: Amazon.com
+**分析方法**: LLM 深度语义分析
 
-#### Competitor Core Moats
-
-**Patent/Technology Barriers**:
-- [Specific patent or tech advantage]
-- [Imitation Difficulty]: High/Medium/Low
-- [Defense Duration]: Long-term/Medium-term/Short-term
-
-**Economies of Scale**:
-- [Cost advantage source]
-- [Pricing flexibility]
-- [Competitor catch-up difficulty]
-
-**Brand Equity**:
-- [Brand awareness level]
-- [Customer loyalty metrics]
-- [Brand premium capability]
-
-**Channel Advantages**:
-- [Amazon ranking strength]
-- [Buy Box share]
-- [Review accumulation advantage]
-
-**Supply Chain Barriers**:
-- [Exclusive supplier relationships]
-- [Cost structure advantage]
-- [Capacity constraints]
-
-#### Moat Strength Assessment
-
-| Moat Type | [Product A] | [Product B] | [Product C] |
-|-----------|-------------|-------------|-------------|
-| Patents/Tech | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| Economies of Scale | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| Brand Assets | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| Channel Advantage | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| Customer Lock-in | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| **Overall Score** | **X.X/5.0** | **X.X/5.0** | **X.X/5.0** |
-
-### 7. Vulnerabilities and Opportunities
-
-#### Strategic Weaknesses
-
-**Product-Level**:
-- [Weakness 1]: Description + User Impact + Market Share Effect
-- [Weakness 2]: Description + User Impact + Market Share Effect
-
-**Pricing-Level**:
-- [Price Disadvantage]: Analysis + Cause + Adjustment Recommendation
-
-**Review-Level**:
-- [Negative Review Pattern]: Issue + Difficulty + Exploitation Value
-
-**Visual-Level**:
-- [Visual Defect]: Issue + User Impact + Optimization Space
-
-**Operational-Level**:
-- [Operational Shortcoming]: Performance + Impact + Improvement Direction
-
-#### Opportunity Matrix
-
-| Opportunity Type | Description | Size | Difficulty | Priority |
-|-----------------|-------------|------|------------|----------|
-| [Opportunity 1] | [Description] | Large/Medium/Small | High/Medium/Low | Immediate/Planned/Watch |
-| [Opportunity 2] | [Description] | Large/Medium/Small | High/Medium/Low | Immediate/Planned/Watch |
-| [Opportunity 3] | [Description] | Large/Medium/Small | High/Medium/Low | Immediate/Planned/Watch |
-
-#### Differentiation Entry Points
-
-**Best Differentiation Directions**:
-1. [Direction 1]: Recommendation + Expected Effect + Implementation Difficulty
-2. [Direction 2]: Recommendation + Expected Effect + Implementation Difficulty
-3. [Direction 3]: Recommendation + Expected Effect + Implementation Difficulty
-
-**Competitive Traps to Avoid**:
-- [Trap 1]: Cause + Alternative Approach
-- [Trap 2]: Cause + Alternative Approach
-
-### 8. Recommendations
-
-#### Strategic Positioning
-
-**Competition Strategy for [Target Product]**:
-- [Core Strategy]: Actionable recommendations
-- [Differentiation Focus]: Key differentiators
-- [Pricing Strategy]: Pricing recommendations
-- [Marketing Focus]: Promotion direction
-
-#### Product Optimization Priority
-
-| Optimization Item | Urgency | Impact | Difficulty | Recommendation |
-|------------------|---------|--------|------------|---------------|
-| [Item 1] | High/Medium/Low | High/Medium/Low | High/Medium/Low | Implement Now |
-| [Item 2] | High/Medium/Low | High/Medium/Low | High/Medium/Low | Plan for Later |
-| [Item 3] | High/Medium/Low | High/Medium/Low | High/Medium/Low | Long-term |
-
-#### Risk Warnings
-
-| Risk Type | Description | Likelihood | Impact | Mitigation |
-|-----------|-------------|------------|--------|-----------|
-| [Risk 1] | [Description] | High/Medium/Low | High/Medium/Low | [Measure] |
-| [Risk 2] | [Description] | High/Medium/Low | High/Medium/Low | [Measure] |
-
-### 9. Executive Summary
-
-#### Key Findings
-
-1. **[Finding 1]**: One-sentence summary
-2. **[Finding 2]**: One-sentence summary
-3. **[Finding 3]**: One-sentence summary
-
-#### Critical Actions
-
-1. **[Action 1]**: Specific recommendation
-2. **[Action 2]**: Specific recommendation
-3. **[Action 3]**: Specific recommendation
-
-#### Competitive Position
-
-- **Your Product vs [Competitor A]**: Advantage/Disadvantage/Tie
-- **Your Product vs [Competitor B]**: Advantage/Disadvantage/Tie
-- **Your Product vs [Competitor C]**: Advantage/Disadvantage/Tie
-
----
-
-**Analysis Completion Time**: [Timestamp]
-**Products Analyzed**: X
-**Data Source**: Amazon.com
-**Analysis Method**: LLM Deep Semantic Analysis
 ```
 
 ## Best Practices
@@ -963,143 +385,72 @@ After collecting data from multiple products, perform surgical competitive analy
 
 **User Request**:
 ```
-Analyze Amazon competitors, compare market landscape:
+分析竞争对手，比较市场格局：
 B09XYZ12345, B07ABC11111, B07DEF22222, B09JKL44444
+
 ```
 
 **Output**:
 ```
-## Competitive Analysis Report
+## 竞争分析报告
 
-### Analysis Overview
+### 分析概览
 
-| Product | ASIN | Price | Rating | Reviews | Brand |
+| 产品 | ASIN | 价格 | 评分 | 评论数 | 品牌 |
 |---------|------|-------|--------|---------|-------|
-| [Product A] | B09XYZ12345 | $XX.XX | X.X | X,XXX | [Brand] |
-| [Product B] | B07ABC11111 | $XX.XX | X.X | X,XXX | [Brand] |
-| [Product C] | B07DEF22222 | $XX.XX | X.X | X,XXX | [Brand] |
-| [Product D] | B09JKL44444 | $XX.XX | X.X | X,XXX | [Brand] |
+| [产品 A] | B09XYZ12345 | $XX.XX | X.X | X,XXX | [品牌] |
+| [产品 B] | B07ABC11111 | $XX.XX | X.X | X,XXX | [品牌] |
+| [产品 C] | B07DEF22222 | $XX.XX | X.X | X,XXX | [品牌] |
+| [产品 D] | B09JKL44444 | $XX.XX | X.X | X,XXX | [品牌] |
 
-[... Complete deep analysis report ...]
-```
-
----
-
-**User Request**:
-```
-Analyze technical specification differences: B09XYZ12345, B09ABC11111
-```
-
-**Output**:
-```
-## Technical Specification Deep Comparison
-
-### Core Parameter Matrix
-
-| Parameter | [Product A] | [Product B] | [Product C] | Assessment |
-|-----------|-------------|-------------|-------------|------------|
-| [Param 1] | [Value] | [Value] | [Value] | [Analysis] |
-| [Param 2] | [Value] | [Value] | [Value] | [Analysis] |
-
-[... More analysis ...]
-```
+[... 完整的分析报告 ...]
 
 ---
 
-**User Request**:
-```
-Research visual presentation strategies: B09XYZ12345, B09ABC11111
-```
-
-**Output**:
-```
-## Visual Strategy Comparison
-
-### Main Image Assessment
-
-| Dimension | [Product A] | [Product B] |
-|-----------|-------------|-------------|
-| Main Image Style | [Description] | [Description] |
-| Background Type | Solid/Scene | Solid/Scene |
-| Visual Appeal | XX/10 | XX/10 |
-
-[... Complete visual analysis ...]
-```
-
-## Limitations
-
-1. **Data Timeliness**: Amazon page data changes in real-time; analysis results have limited shelf life
-2. **Anti-Scraping**: May trigger Amazon's anti-bot measures
-3. **Page Structure Changes**: Amazon layout updates may invalidate selectors
-4. **Regional Limitations**: Data based on specific Amazon site (e.g., US)
-5. **Review Sampling**: Review analysis based on samples; may have bias
-6. **A+ Page Access**: Some A+ content may require special permissions
-7. **Buy Box Data**: Real-time Buy Box information may be restricted
-8. **Historical Data**: Cannot directly access historical price and ranking data
-
-## Troubleshooting
-
-### Issue: API Call Failed
-
-**Solution**:
-- Verify API key is correctly configured
-- Confirm account has sufficient API quota
-- Validate ASIN format is correct
-- Check network connectivity
-
-### Issue: Task Timeout
-
-**Solution**:
-- Check MAX_WAIT_TIME setting (default 30 minutes)
-- Verify BrowserAct service status
-- Reduce number of ASINs per batch
-- Check template availability
-
-### Issue: Incomplete Data Extraction
-
-**Solution**:
-- Increase wait time for page load
-- Check if template needs updating
-- Verify target page is accessible
-- Review API response for errors
-
-### Issue: Abnormal Analysis Results
-
-**Solution**:
-- Confirm data collection completeness
-- Check for anomalous data points
-- Validate comparison dimensions are reasonable
-- Re-run analysis process
-
-### Issue: Amazon Anti-Scraping Triggered
-
-**Solution**:
-- Reduce request frequency
-- Increase delay between requests
-- Use smaller batches
-- Contact BrowserAct support for rate limit adjustment
-
-## Related Skills
-
-- `browseract-integration` - BrowserAct API integration
-- `web-scraper` - General web scraping
-- `data-analyzer` - Data analysis tools
-- `competitor-research` - Competitor research
-- `market-researcher` - Market research tools
-- `amazon-rank-tracker` - Amazon ranking tracking
-
-## Resources
-
-- [BrowserAct Documentation](https://browseract.com/docs)
-- [BrowserAct Workflow Templates](https://www.browseract.com/template?platformType=0)
-- [Amazon Product Page Best Practices](https://developer.amazon.com/docs)
-- [Amazon Seller Central](https://sellercentral.amazon.com)
-- [Competitive Analysis Frameworks](https://www.business.com/articles/competitive-analysis/)
-- [E-commerce Data Analysis Methods](https://www.ecommerceted.com/guides/competitive-analysis/)
+**技能版本**: 1.0.0
+**最后更新**: 2026-02-06
+**兼容性**: BrowserAct API v2+
+**支持网站**: Amazon.com（美国站）
 
 ---
 
-**Skill Version**: 1.0.0
-**Last Updated**: 2026-02-06
-**Compatibility**: BrowserAct API v2+
-**Supported Site**: Amazon.com (US)
+**注意事项**
+
+1. **数据时效性**: 亚马逊页面数据实时更新，分析结果的有效期有限
+2. 可能触发亚马逊的反爬虫机制
+3. 亚马逊页面布局变更可能导致数据采集失败
+4. 仅支持美国站的数据
+5. 评论分析基于样本，可能存在偏差
+6. 部分 A+ 评价内容可能需要特殊权限
+7. 实时购买框信息可能受限制
+8. 无法直接获取历史价格和排名数据
+
+## 常见问题及解决方法
+
+- **API 调用失败**：检查 API 密钥配置和账户权限
+- **任务超时**：调整 MAX_WAIT_TIME 设置
+- **数据提取不完整**：延长页面加载时间或更新模板
+- **分析结果异常**：检查数据完整性和比较维度合理性
+
+## 相关技能
+
+- `browseract-integration`：BrowserAct API 集成
+- `web-scraper`：通用网页抓取工具
+- `data-analyzer`：数据分析工具
+- `competitor-research`：竞争对手研究工具
+- `market-researcher`：市场研究工具
+- `amazon-rank-tracker`：亚马逊排名跟踪工具
+
+## 资源链接
+
+- [BrowserAct 文档](https://browseract.com/docs)
+- [BrowserAct 工作流程模板](https://www.browseract.com/template?platformType=0)
+- [亚马逊产品页面最佳实践](https://developer.amazon.com/docs)
+- [亚马逊卖家中心](https://sellercentral.amazon.com)
+- [竞争分析框架](https://www.business.com/articles/competitive-analysis/)
+- [电子商务数据分析方法](https://www.ecommerceted.com/guides/competitive-analysis/)
+
+---
+
+**技能版本**: 1.0.0
+**最后更新**: 2026-02-06

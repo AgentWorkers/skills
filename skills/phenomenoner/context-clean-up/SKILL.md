@@ -3,7 +3,7 @@ name: context-clean-up
 slug: context-clean-up
 version: 1.0.2
 license: MIT
-description: Audit OpenClaw context bloat sources and produce an actionable clean-up plan (no automatic changes).
+description: 审计 OpenClaw 代码中的冗余部分，并制定一个可执行的清理计划（不进行自动修改）。
 disable-model-invocation: true
 allowed-tools:
   - read
@@ -14,75 +14,74 @@ allowed-tools:
 metadata: { "openclaw": { "emoji": "🧹", "requires": { "bins": ["python3"] } } }
 ---
 
-# Context Clean Up (audit-only)
+# 上下文清理（仅用于审计）
 
-This skill is a **runbook** to quickly identify *what is bloating your OpenClaw prompt context* and produce a **safe, reversible plan**.
+此技能是一份**运行手册**，用于快速识别导致 OpenClaw 提示界面内容膨胀的原因，并制定一个**安全、可逆的修复计划**。
 
-**Important:** This version is intentionally **audit-only** (it does not auto-apply changes). If you want me to apply fixes, I will propose an exact patch + rollback plan and wait for explicit approval.
+**重要提示：** 此版本仅用于审计（不会自动应用任何更改）。如果您希望我执行修复操作，我会提出具体的修复方案及回滚计划，并等待您的明确批准。
 
-## Quick start
+## 快速入门
 
-- `/context-clean-up` → audit + actionable plan (no changes)
+- 使用命令 `/context-clean-up` 进行审计并获取可执行的修复计划（不会自动进行任何更改）。
 
-## Workflow (audit → plan)
+## 工作流程（审计 → 制定修复计划）
 
-### Step 0 — Determine scope
+### 第 0 步 — 确定审计范围
 
-Find:
-- Workspace dir (your project files; usually the OpenClaw workspace)
-- State dir (OpenClaw runtime state; usually `~/.openclaw`)
+查找以下文件：
+- 工作区目录（您的项目文件，通常位于 OpenClaw 工作区）
+- 状态目录（OpenClaw 的运行时状态信息，通常位于 `~/.openclaw`）
 
-If unsure:
+如果不确定如何查找，请参考以下代码示例：
 
 ```bash
 bash -lc 'echo "WORKDIR=$PWD"; echo "HOME=$HOME"; ls -ld ~/.openclaw'
 ```
 
-### Step 1 — Run the audit script
+### 第 1 步 — 运行审计脚本
 
-This script prints a short summary and can write a full JSON report.
+该脚本会生成一个简短的总结报告，也可以生成完整的 JSON 报告。
 
 ```bash
 bash -lc 'cd "${WORKDIR:-.}" && python3 {baseDir}/scripts/context_cleanup_audit.py --out memory/context-cleanup-audit.json'
 ```
 
-Interpretation cheatsheet:
-- Huge `toolResult` entries (exec/read/web_fetch): **transcript bloat**
-- Many `System:` / `Cron:` lines: **automation bloat**
-- Large bootstrap docs (AGENTS/MEMORY/SOUL/USER): **reinjected rules bloat**
+**解读指南：**
+- 如果 `toolResult` 条目过多（涉及执行、读取或网络请求操作），则可能是**转录内容过多导致的膨胀**。
+- 如果出现大量 `System:` 或 `Cron:` 类的记录，可能是**自动化脚本导致的膨胀**。
+- 如果 `AGENT`、`MEMORY`、`SOUL` 或 `USER` 目录中的文件过大，可能是**注入的规则导致的膨胀**。
 
-### Step 2 — Produce a fix plan (lowest-risk first)
+### 第 2 步 — 制定修复计划（优先处理风险较低的问题）
 
-Create a short plan with:
-- Top offenders (largest transcript entries)
-- Noisiest recurring jobs (cron/heartbeat)
-- Quick wins (reversible)
+制定一个包含以下内容的修复计划：
+- 造成最大问题的关键因素（尤其是那些导致转录内容过长的条目）
+- 重复出现的、产生大量日志的自动化任务（如定时任务/心跳检测）
+- 可以快速修复的问题（并且修复后不会对系统造成永久性影响）
 
-Use these standard levers:
+可以使用以下几种常见的修复方法：
 
-#### Lever A — Make no-op automation truly silent
-Goal: maintenance loops should output exactly `NO_REPLY` unless there is an anomaly.
+#### 方法 A — 使无操作的自动化脚本真正静默
+**目标：** 维护脚本在正常情况下应仅输出 `NO_REPLY`。
 
-Pattern: update prompts so the last line forces:
-- `Finally output ONLY: NO_REPLY`
+**实现方式：** 更新提示信息，确保脚本的最后一行始终输出 `NO_REPLY`。
 
-#### Lever B — Keep notifications, avoid transcript injection
-If you want alerts but want the *interactive* session lean:
-- Send out-of-band (Telegram/Slack/etc.)
-- Then output `NO_REPLY`
+#### 方法 B — 保留通知功能，同时减少转录内容的生成
+**如果仍需要发送通知，但希望保持交互式会话的简洁性：**
+- 通过外部渠道（如 Telegram、Slack 等）发送通知，
+- 然后仍然输出 `NO_REPLY`。
 
-See: `references/out-of-band-delivery.md`
+**详情请参阅：`references/out-of-band-delivery.md`**
 
-#### Lever C — Keep injected bootstrap files small
-- Keep only restart-critical rules in `MEMORY.md`
-- Move bulky notes into `references/*.md` or `memory/*.md`
+#### 方法 C — 减少注入的引导文件的大小
+- 仅将重启时必需的规则保存在 `MEMORY.md` 文件中，
+- 将冗长的注释或配置文件移至 `references/*.md` 或 `memory/*.md` 文件中。
 
-### Step 3 — Verify
+### 第 3 步 — 验证修复效果
 
-After you apply any changes:
-- Confirm the next cron/heartbeat runs are silent on success.
-- Watch context growth rate (it should flatten).
+在应用任何更改后，请确认：
+- 定时任务或心跳检测脚本在下次运行时是否不再产生多余的日志。
+- 监控上下文内容的增长速度（应趋于稳定）。
 
-## References
+## 参考资料
 - `references/out-of-band-delivery.md`
 - `references/cron-noise-checklist.md`

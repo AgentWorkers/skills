@@ -1,36 +1,36 @@
 ---
 name: flowfi-openclaw
-description: Interact with FlowFi API from OpenClaw agents using Bearer token authentication; create/read/update workflows, deploy, and lifecycle actions. Use when the agent must call FlowFi backend for workflows or automation.
+description: 通过使用Bearer令牌认证，可以从OpenClaw代理与FlowFi API进行交互；执行创建/读取/更新工作流（workflows）的操作，以及部署和管理工作流的生命周期相关动作。当代理需要调用FlowFi后端来处理工作流或自动化任务时，应使用此方法。
 ---
 
-# FlowFi – OpenClaw skill
+# FlowFi – OpenClaw 技能
 
-Use this skill when an OpenClaw agent needs to call the FlowFi backend: create workflows, list/update/deploy them, or manage comments.
+当 OpenClaw 代理需要调用 FlowFi 后端时，请使用此技能：创建工作流、列出/更新/部署工作流或管理相关评论。
 
-## When to use
+## 使用场景
 
-- The user or a FlowFi node invokes an OpenClaw agent that must talk to FlowFi (workflows, deployments, comments).
-- The agent needs to use FlowFi’s REST API with Bearer token authentication.
+- 用户或 FlowFi 节点触发 OpenClaw 代理，该代理需要与 FlowFi 进行交互（如创建、更新或部署工作流，或管理评论）。
+- 代理需要使用 FlowFi 的 REST API，并进行承载令牌（Bearer token）身份验证。
 
-## Instructions
+## 使用说明
 
-1. **Authentication**  
-   Use the FlowFi Bearer token (from FlowFi secrets or environment). Send it in the `Authorization` header as `Bearer <token>`.
+1. **身份验证**  
+   使用 FlowFi 提供的承载令牌（从 FlowFi 的配置文件或环境变量中获取），并将其以 `Bearer <token>` 的格式添加到 `Authorization` 头部中。
 
-2. **Base URL**  
-   Use the FlowFi backend base URL (e.g. from FlowFi config or `FLOWFI_API_URL`). Append the path from the reference (e.g. `/api/workflows`, `/api/workflows/:id/deploy`).
+2. **基础 URL**  
+   使用 FlowFi 后端的基础 URL（例如，从 FlowFi 的配置文件或 `FLOWFI_API_URL` 中获取），然后根据需要添加路径（如 `/api/workflows`、`/api/workflows/:id/deploy`）。
 
-3. **Workflows**  
-   - Create: `POST /api/workflows` with the workflow payload.
-   - Read: `GET /api/workflows` or `GET /api/workflows/:id`.
-   - Update: `PATCH` or `PUT` on the workflow resource as documented.
+3. **工作流操作**  
+   - 创建工作流：使用 `POST /api/workflows` 方法，并传递工作流的相关数据。
+   - 读取工作流信息：使用 `GET /api/workflows` 或 `GET /api/workflows/:id` 方法。
+   - 更新工作流：使用 `PATCH` 或 `PUT` 方法对工作流资源进行更新（具体操作方式请参考相关文档）。
 
-4. **Deploy / lifecycle**  
-   Use the endpoints described in `reference.md` for deploy, run, or other lifecycle actions.
+4. **部署与工作流生命周期管理**  
+   使用 `reference.md` 中描述的端点来执行部署、运行或其他与工作流生命周期相关的操作。
 
-5. **Errors**  
-   On non-2xx responses, read the response body and surface a short error message to the user or to the FlowFi node (e.g. in `error` or logs).
+5. **错误处理**  
+   如果收到非 2xx 状态码的响应，请读取响应内容，并向用户或 FlowFi 节点显示简短的错误信息（例如，记录在 `error` 文件或日志中）。
 
-## Reference
+## 参考文档
 
-See **reference.md** in this folder for endpoint details, request/response shapes, and examples. See **nodes.md** for the FlowFi OpenClaw node (inputs/outputs and config).
+有关端点详情、请求/响应格式及示例，请参阅本文件夹中的 **reference.md** 文件。有关 FlowFi OpenClaw 节点的输入/输出参数及配置信息，请参阅 **nodes.md** 文件。

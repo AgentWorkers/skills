@@ -1,7 +1,8 @@
 ---
 name: test-skill
-description: A minimal test skill
+description: **最小化测试技能**  
+（A Minimal Testing Skill）
 ---
 
-# Test Skill
-This is a test.
+# 测试技能
+这是一个测试。

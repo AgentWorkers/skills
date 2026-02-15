@@ -1,34 +1,34 @@
 ---
 name: clawguard
-description: Install and configure the ClawGuard security plugin - an LLM-as-a-Judge guardrail that detects and blocks risky tool calls
+description: 安装并配置 ClawGuard 安全插件：这是一个基于大型语言模型（LLM）的“安全护栏”，能够检测并阻止潜在危险的操作（如调用不安全的工具）。
 metadata: {"openclaw":{"emoji":"🛡️","homepage":"https://github.com/capsulesecurity/clawguard"}}
 ---
 
-# ClawGuard Plugin Installation Guide
+# ClawGuard 插件安装指南
 
-ClawGuard is a security plugin that uses an LLM-as-a-Judge to evaluate tool calls before execution, detecting and optionally blocking risky operations.
+ClawGuard 是一个安全插件，它使用大型语言模型（LLM）作为“裁判”，在工具调用执行前对其进行评估，从而检测并（可选地）阻止高风险操作。
 
-## Prerequisites
+## 先决条件
 
-Before installing ClawGuard, ensure the gateway's chat completions endpoint is enabled:
+在安装 ClawGuard 之前，请确保已启用网关的聊天完成（chat completions）端点：
 
 ```bash
 openclaw config set gateway.http.endpoints.chatCompletions.enabled true
 ```
 
-## Installation
+## 安装
 
-Install the plugin from npm:
+通过 npm 安装该插件：
 
 ```bash
 openclaw plugins install @capsulesecurity/clawguard
 ```
 
-After installation, restart the gateway to load the plugin.
+安装完成后，重启网关以加载插件。
 
-## Docker Installation
+## Docker 安装
 
-If running OpenClaw in Docker:
+如果是在 Docker 中运行 OpenClaw，请按照以下步骤操作：
 
 ```bash
 # Install the plugin
@@ -38,33 +38,33 @@ docker compose run --rm openclaw-cli plugins install @capsulesecurity/clawguard
 docker compose up -d --force-recreate openclaw-gateway
 ```
 
-**Important:** Always use `--force-recreate` when restarting. Plain `docker compose restart` does NOT reload environment variables.
+**重要提示：** 重启时务必使用 `--force-recreate` 参数。普通的 `docker compose restart` 命令不会重新加载环境变量。
 
-## Verify Installation
+## 验证安装
 
-Check the gateway logs for the initialization message:
+检查网关日志中是否有初始化成功的消息：
 
 ```
 [clawguard] Initialized (logging: true, security: true, block: true, metrics: enabled)
 ```
 
-## Configuration
+## 配置
 
-Configure ClawGuard via `openclaw config set plugins.clawguard.<option> <value>`:
+使用 `openclaw config set plugins.clawguard.<option> <value>` 命令来配置 ClawGuard：
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| enabled | true | Enable/disable the plugin |
-| logToolCalls | true | Log tool call JSON to gateway logs |
-| securityCheckEnabled | true | Run LLM security evaluation |
-| blockOnRisk | true | Block high/critical risk tool calls |
-| maxContextWords | 2000 | Session context word limit for evaluation |
-| timeoutMs | 15000 | Security check timeout in milliseconds |
-| gatewayHost | 127.0.0.1 | Gateway host for LLM calls |
-| gatewayPort | 18789 | Gateway port for LLM calls |
-| metricsEnabled | true | Enable anonymous usage metrics |
+| 选项          | 默认值       | 说明                          |
+|----------------|------------|--------------------------------------------|
+| enabled         | true        | 启用/禁用该插件                        |
+| logToolCalls      | true        | 将工具调用信息以 JSON 格式记录到网关日志中             |
+| securityCheckEnabled | true        | 运行大型语言模型的安全评估                 |
+| blockOnRisk       | true        | 阻止高风险或关键风险的工具调用                   |
+| maxContextWords    | 2000        | 用于评估的会话上下文字符限制                 |
+| timeoutMs       | 15000        | 安全评估的超时时间（以毫秒为单位）                |
+| gatewayHost      | 127.0.0.1      | 用于调用大型语言模型的网关主机                 |
+| gatewayPort     | 18789      | 用于调用大型语言模型的网关端口                 |
+| metricsEnabled     | true        | 启用匿名使用数据统计                        |
 
-### Example Configuration
+### 配置示例
 
 ```bash
 # Disable blocking (log-only mode)
@@ -77,11 +77,11 @@ openclaw config set plugins.clawguard.timeoutMs 30000
 openclaw config set plugins.clawguard.metricsEnabled false
 ```
 
-## Gateway Authentication
+## 网关认证
 
-ClawGuard calls the gateway's `/v1/chat/completions` endpoint internally. If you see 401 Unauthorized errors:
+ClawGuard 会内部调用网关的 `/v1/chat/completions` 端点。如果遇到 401 Unauthorized 错误，请检查：
 
-1. Check the gateway token in your environment matches the config:
+1. 确保您的环境中的网关令牌与配置文件中的令牌一致：
    ```bash
    # Check env var
    printenv OPENCLAW_GATEWAY_TOKEN
@@ -90,38 +90,34 @@ ClawGuard calls the gateway's `/v1/chat/completions` endpoint internally. If you
    cat ~/.openclaw/openclaw.json | grep -A2 '"token"'
    ```
 
-2. If tokens don't match, update your environment and restart the gateway.
+2. 如果令牌不匹配，请更新环境配置并重启网关。
 
-For Docker, ensure `.env` contains the correct `OPENCLAW_GATEWAY_TOKEN` and use `--force-recreate` when restarting.
+对于 Docker 环境，请确保 `.env` 文件中包含正确的 `OPENCLAW_GATEWAY_TOKEN`，并在重启时使用 `--force-recreate` 参数。
 
-## Troubleshooting
+## 故障排除
 
-### 405 Method Not Allowed
-The chat completions endpoint is not enabled. Run:
-```bash
-openclaw config set gateway.http.endpoints.chatCompletions.enabled true
-```
+### 错误代码 405：方法不允许（405 Method Not Allowed）
+- 检查聊天完成端点是否已启用。如果未启用，请运行相应命令进行配置。
 
-### 401 Unauthorized
-Token mismatch between environment and config. See Gateway Authentication section above.
+### 错误代码 401：未经授权（401 Unauthorized）
+- 确保环境中的令牌与配置文件中的令牌一致。请参考上述“网关认证”部分进行排查。
 
-### Plugin Not Loading
-1. Check `openclaw plugins list` shows clawguard
-2. Restart the gateway
-3. Check gateway logs for errors
+### 插件未加载
+- 检查 `openclaw plugins list` 命令是否显示了 `clawguard` 插件。
+- 重启网关。
+- 查看网关日志以获取可能的错误信息。
 
-## How It Works
+## 工作原理
 
-ClawGuard registers a `before_tool_call` hook that:
+ClawGuard 会注册一个 `before_tool_call` 回调钩子，该钩子会：
+1. （如果 `logToolCalls` 选项被启用）记录工具调用详情。
+2. 将工具的上下文信息发送给大型语言模型进行安全评估。
+3. 返回风险评估结果（无风险/低风险/中等风险/高风险/关键风险）。
+4. 如果风险评估结果为高风险或关键风险，并且 `blockOnRisk` 选项被启用，则阻止工具的执行。
 
-1. Logs tool call details (if `logToolCalls` is enabled)
-2. Sends tool context to an LLM for security evaluation
-3. Returns a risk assessment (none/low/medium/high/critical)
-4. Blocks execution if risk is high/critical (if `blockOnRisk` is enabled)
+安全评估使用您配置的大型语言模型提供者，因此它可以与您在 OpenClaw 中设置的任何模型配合使用。
 
-The security evaluation uses your configured LLM provider, so it works with any model you have set up in OpenClaw.
+## 链接
 
-## Links
-
-- GitHub: https://github.com/capsulesecurity/clawguard
-- npm: https://www.npmjs.com/package/@capsulesecurity/clawguard
+- GitHub：https://github.com/capsulesecurity/clawguard
+- npm：https://www.npmjs.com/package/@capsulesecurity/clawguard

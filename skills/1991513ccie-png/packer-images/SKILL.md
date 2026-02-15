@@ -1,6 +1,6 @@
 ---
 name: packer-images
-description: Expert guidance for this DevOps skill.
+description: 关于这项DevOps技能的专家指导。
 version: 1.0.0
 tags: [devops,cloud,engineering]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# upacker images
+# 解压镜像文件（Upacking Images）
 
-Expert guidance for DevOps.
+专为 DevOps 团队提供的专业指导。
 
-## Capabilities
+## 功能
 
-- Best practices
-- Configuration guides
-- Troubleshooting tips
-- Resource recommendations
+- 最佳实践指南  
+- 配置指南  
+- 故障排除技巧  
+- 资源推荐  
 
-## Usage
-Help with this skill
-Configuration guidance
+## 使用方法  
+本技能可帮助您：  
+- 获取配置指导

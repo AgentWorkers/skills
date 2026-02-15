@@ -1,37 +1,37 @@
 ---
 name: telegram-smart-launcher
-description: Enhance Telegram replies with context-aware dynamic CTA buttons (Smart Launcher UI). Use when replying to users on Telegram to provide relevant, time-sensitive, and task-oriented options for better interaction.
+description: 通过上下文感知的动态CTA按钮（Smart Launcher UI）来增强Telegram回复功能。在回复用户时使用这些按钮，可以提供相关、时效性强且针对具体任务的选项，从而提升互动效果。
 ---
 
-# Telegram Smart Launcher (Smart Launcher UI)
+# Telegram 智能启动器（Smart Launcher UI）
 
-This skill enables the agent to provide an interactive and efficient user experience on Telegram by appending context-aware CTA (Call to Action) buttons to replies.
+该功能使代理能够在 Telegram 上提供交互式且高效的用户体验，通过在回复中添加基于上下文的 CTA（Call to Action，即行动号召）按钮来实现。
 
-## Usage Guidelines
+## 使用指南
 
-When responding to a user on Telegram, always consider if providing quick-action buttons would improve efficiency.
+在回复 Telegram 用户时，始终考虑提供快速操作按钮是否能够提升效率。
 
-### Button Selection Logic
+### 按钮选择逻辑
 
-1.  **Time of Day Awareness**:
-    - **Morning (07:00 - 10:00)**: Focus on daily briefings, commute status, and agenda checks.
-    - **Work Hours (10:00 - 16:00)**: Focus on task progress, deep research, and project-specific actions.
-    - **Wrap-up (16:00 - 18:00)**: Focus on daily recaps, route home status, and tomorrow's preparation.
-    - **Night (20:00 - 23:00)**: Focus on reflection, mood checks, and planning for the next day.
+1. **时间感知**：
+   - **早晨（07:00 - 10:00）**：重点提供每日简报、通勤状态和日程安排相关的按钮。
+   - **工作时间（10:00 - 16:00）**：重点提供任务进度、深入研究和项目相关操作的按钮。
+   - **总结阶段（16:00 - 18:00）**：重点提供每日总结、回家路线安排和次日准备相关的按钮。
+   - **晚上（20:00 - 23:00）**：重点提供反思、情绪检查以及次日计划相关的按钮。
 
-2.  **Context Awareness**:
-    - If the user is working on administrative or planning tasks, offer buttons for document drafting or data lookup.
-    - If the user is working on creative or design tasks, offer buttons for tool links or asset management.
-    - If a task just finished, offer "Next Steps" or "Recap" buttons.
+2. **上下文感知**：
+   - 如果用户正在处理行政或规划任务，提供文档起草或数据查询的按钮。
+   - 如果用户正在处理创意或设计任务，提供工具链接或资产管理的按钮。
+   - 如果任务刚刚完成，提供“下一步操作”或“总结”按钮。
 
-3.  **The "Free Text" Fallback**:
-    - Always include an option for free text input (e.g., "⌨️ Manual Input") to ensure the user feels in control.
+3. **自由文本输入选项**：
+   - 始终提供自由文本输入的选项（例如 “⌨️ 手动输入”），以确保用户感到自己能够掌控整个过程。
 
-## Implementation Pattern
+## 实现方式
 
-Use the `message` tool with the `buttons` parameter. The `buttons` array is an array of arrays (rows) of button objects `[{text, callback_data}]`.
+使用 `message` 工具，并设置 `buttons` 参数。`buttons` 参数是一个二维数组，每个元素是一个包含按钮信息的对象（格式为 `[{text, callback_data}]`）。
 
-### Example (Wrap-up Phase)
+### 示例（总结阶段）
 
 ```javascript
 message({
@@ -51,6 +51,6 @@ message({
 })
 ```
 
-## References
+## 参考资料
 
-- See [references/time_logic.md](references/time_logic.md) for detailed time-based button presets.
+- 有关基于时间的按钮预设的详细信息，请参阅 [references/time_logic.md](references/time_logic.md)。

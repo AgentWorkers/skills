@@ -1,6 +1,6 @@
 ---
 name: the-flip
-description: "$1 USDC entry. Pick 20 predictions. All 20 coins flip at once each round. Match the first 14 to win the entire jackpot. Live on Solana devnet."
+description: "$1 USDC的投注。需要选择20个预测对象。每一轮中，所有20种加密货币都会同时被随机生成（即“翻转”）。如果你的预测与实际生成的14种加密货币相匹配，你就能赢得全部奖金。该活动在Solana的开发者网络（devnet）上实时进行。"
 metadata:
   openclaw:
     emoji: "🎰"
@@ -11,57 +11,57 @@ metadata:
 
 # 🎰 THE FLIP
 
-**$1 USDC. Pick 20. 20 coins flip at once. Match 14 to win the jackpot.**
+**费用：1 美元（USDC）。选择 20 个结果，同时掷硬币。若前 14 个结果与你的预测相同，即可赢得头奖。**
 
-No entry windows. The game never stops. Enter anytime with 20 predictions. Each round flips all 20 coins at once. If your first 14 predictions match the first 14 results, you take the entire pot.
+游戏无报名窗口，且持续进行中。你可以在任何时候输入 20 个预测结果参与游戏。每轮都会同时掷出所有 20 个硬币。如果你的前 14 个预测与实际结果完全一致，你就能赢得全部奖金。
 
 ---
 
-## Commands
+## 命令
 
-### 1. Check game status
+### 1. 查看游戏状态
 ```bash
 node app/demo.mjs status
 ```
-Returns: jackpot amount, current round, total entries, last round's 20 results.
+返回：头奖金额、当前轮次、总参与人数以及上一轮的 20 个结果。
 
-### 2. Enter the game
+### 2. 参与游戏
 ```bash
 node app/demo.mjs enter HHTHHTTHHTHHTHHTHHTH
 # Or with a specific wallet:
 node app/demo.mjs enter HHTHHTTHHTHHTHHTHHTH ~/.config/solana/id.json
 ```
-- Predictions: exactly 20 characters, each H (heads) or T (tails)
-- All 20 coins flip at once when the next round is triggered
-- First 14 of your predictions must match the first 14 results to win
-- Cost: 1 USDC
-- Your ticket is for the current round
+- 预测结果：需要输入 20 个字符，每个字符只能是 “H”（正面）或 “T”（反面）。
+- 触发下一轮时，所有 20 个硬币会同时被掷出。
+- 你必须正确预测前 14 个结果才能获胜。
+- 费用：1 美元（USDC）。
+- 你的门票仅适用于当前轮次。
 
-### 3. Check your ticket
+### 3. 查看你的预测结果
 ```bash
 node app/demo.mjs ticket YOUR_WALLET_ADDRESS
 # Or with a specific round:
 node app/demo.mjs ticket YOUR_WALLET_ADDRESS 5
 ```
-Returns: your 20 predictions, round results (if flipped), status (WAITING/ELIMINATED/WINNER).
+返回：你的 20 个预测结果、当前轮次的实际结果以及你的游戏状态（等待中/已被淘汰/获胜者）。
 
-### 4. Claim jackpot (if first 14 match)
+### 4. 索赔头奖（前提是前 14 个预测正确）
 ```bash
 node app/demo.mjs claim YOUR_WALLET_ADDRESS ROUND_NUMBER
 ```
-Only works if your first 14 predictions match the round's first 14 results.
+仅在你前 14 个预测与当前轮次的结果完全一致时生效。
 
-### 5. Flip the round (anyone can do this)
+### 5. 启动当前轮次
 ```bash
 node app/demo.mjs flip
 ```
-Flips all 20 coins at once for the current round. Permissionless — anyone can call. 12-hour cooldown between rounds (on-chain enforced).
+任何人都可以触发当前轮次，所有 20 个硬币会同时被掷出。轮次之间有 12 小时的冷却时间（由区块链强制执行）。
 
 ---
 
-## API (for agents)
+## API（供代理使用）
 
-Base URL: `https://the-flip.vercel.app`
+基础 URL：`https://the-flip.vercel.app`
 
 ### GET /api/game
 ```json
@@ -95,7 +95,7 @@ Base URL: `https://the-flip.vercel.app`
 
 ---
 
-## Setup (first time only)
+## 设置（仅首次使用时需要）
 
 ```bash
 # Install skill
@@ -116,27 +116,27 @@ solana airdrop 1 --url devnet
 
 ---
 
-## Quick Reference
+## 快速参考
 
 | | |
 |---|---|
-| **Entry fee** | 1 USDC (devnet) |
-| **Predictions** | 20 characters — H or T |
-| **How it works** | All 20 coins flip at once per round |
-| **Survival** | First 14 predictions must match the first 14 results |
-| **Jackpot** | 99% of all entries. Winner takes all. Pool resets after win. |
-| **Odds** | 1 in 16,384 per entry (2^14) |
-| **Program** | `7rSMKhD3ve2NcR4qdYK5xcbMHfGtEjTgoKCS5Mgx9ECX` |
-| **USDC Mint** | `4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU` |
-| **Network** | Solana devnet |
-| **Flip cooldown** | 12 hours between rounds (on-chain enforced) |
-| **Vault** | PDA — no private key, can't be rugged |
-| **Dashboard** | [the-flip.vercel.app](https://the-flip.vercel.app) |
+| **报名费用** | 1 美元（USDC，仅限开发网络） |
+| **预测要求** | 需要输入 20 个字符，每个字符只能是 “H” 或 “T” |
+| **游戏规则** | 每轮所有硬币会同时被掷出 |
+| **获胜条件** | 你的前 14 个预测必须与实际结果完全一致 |
+| **头奖机制** | 头奖由所有参与者的奖金总和组成，获胜者独占。获胜后奖金池会重置。 |
+| **获胜几率** | 每次参与的获胜几率为 1/16,384（2^14） |
+| **项目地址** | `7rSMKhD3ve2NcR4qdYK5xcbMHfGtEjTgoKCS5Mgx9ECX` |
+| **USDC 钱包地址** | `4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU` |
+**运行网络**：Solana 开发网络（devnet） |
+| **轮次间隔** | 轮次之间有 12 小时的冷却时间（由区块链强制执行） |
+| **资金存储**：使用 PDA 存储资金——无需私钥 |
+| **游戏界面**：[the-flip.vercel.app](https://the-flip.vercel.app) |
 
 ---
 
-## Source
+## 来源
 
 https://github.com/maurodelazeri/the-flip-publish
 
-All game logic is on-chain. The vault is a PDA — no private key holds funds. Claim is atomic (verify + pay in one tx).
+所有游戏逻辑都存储在区块链上。资金通过 PDA（便携式设备）进行存储，无需私钥管理。奖金的领取过程是原子的（验证和支付在同一笔交易中完成）。

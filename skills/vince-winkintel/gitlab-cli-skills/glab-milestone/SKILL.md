@@ -1,11 +1,11 @@
 ---
 name: glab-milestone
-description: Manage project milestones including create, list, update, view, and close operations. Use when planning releases, tracking milestone progress, or organizing issues/MRs by milestone. Triggers on milestone, release planning, milestone progress, version milestone.
+description: 管理项目里程碑，包括创建、列出、更新、查看和关闭等操作。适用于规划发布、跟踪里程碑进度，或按里程碑组织问题/任务（Issues/Requirements）。该功能会在里程碑达成、发布计划制定、里程碑进度更新或版本更新时触发。
 ---
 
-# glab milestone
+# glab 里程碑
 
-## Overview
+## 概述
 
 ```
 
@@ -29,12 +29,12 @@ description: Manage project milestones including create, list, update, view, and
     -R --repo         Select another repository. Can use either `OWNER/REPO` or `GROUP/NAMESPACE/REPO` format. Also accepts full URL or Git URL.
 ```
 
-## Quick start
+## 快速入门
 
 ```bash
 glab milestone --help
 ```
 
-## Subcommands
+## 子命令
 
-See [references/commands.md](references/commands.md) for full `--help` output.
+有关 `--help` 命令的完整输出，请参阅 [references/commands.md](references/commands.md)。

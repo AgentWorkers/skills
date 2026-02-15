@@ -1,63 +1,63 @@
 ---
 name: plvr-event-discovery
-description: Discover and recommend live events matched to user preferences, then assist with ticket checkout on plvr.io using the web flow (no public API), including ticket selection, reservation-window handling, x402 wallet payment handoff, and post-purchase confirmation capture. Use when a user asks what events are happening, wants interesting events this weekend/tonight, asks for things to do, requests event ideas by location/date/genre/budget, asks to compare ticket options, or wants help getting access to an event.
+description: 发现并推荐符合用户偏好的现场活动，然后通过 web 流程协助用户在 plvr.io 上完成购票流程（不使用公共 API）。具体步骤包括：选择门票、处理预订窗口、将用户引导至 x402 支付平台完成支付，以及收集购买后的确认信息。该功能适用于以下场景：用户询问当前有哪些活动正在举行、希望了解本周末/今晚的有趣活动、寻求活动建议（按地点、日期、类型或预算筛选）、请求比较不同的门票选项，或需要帮助获取活动门票。
 ---
 
-# PLVR Event Discovery
+# PLVR 事件发现
 
-## Overview
+## 概述
 
-Use browser automation against the PLVR website. Treat this as a web-only workflow: discover events, open event pages, select ticket types, then guide payment via x402 (wallet flow through Coinbase Commerce).
+通过浏览器自动化工具访问 PLVR 网站。整个流程仅支持网页操作：发现事件、打开事件页面、选择票务类型，然后通过 x402 协议（Coinbase Commerce 支付网关）完成支付。
 
-## Ground Rules
+## 基本规则
 
-- Use browser actions; do not assume a PLVR REST API exists.
-- Treat purchase actions as high-risk; ask for explicit confirmation immediately before final payment submission.
-- Track reservation timing. Ticket selection reserves inventory for ~10 minutes.
-- Require an email for guest checkout when the user is not logged in.
-- Capture and report evidence after checkout (order summary, confirmation state, any reference IDs).
+- 仅使用浏览器操作，不要假设 PLVR 提供了 REST API。
+- 将购买操作视为高风险操作，在最终支付前必须获得用户的明确确认。
+- 记录预订时间：选择票务后，库存会被预留约 10 分钟。
+- 如果用户未登录，则需要提供电子邮件地址才能完成支付。
+- 在支付完成后，收集并记录相关证据（订单摘要、确认状态、任何参考 ID）。
 
-## Workflow
+## 工作流程
 
-1. Open `https://plvr.io` and discover relevant events (date, city, artist, venue, price tier when visible).
-2. Present short options to the user and ask which event/ticket type they want.
-3. Open the chosen event and select the requested ticket type.
-4. Confirm reservation window and countdown (if shown).
-5. Move to checkout and gather/confirm required fields:
-   - email address (required for ticket delivery if guest)
-   - any attendee metadata requested by PLVR
-6. Confirm payment method is wallet-based via the `Crypto` option (Coinbase Commerce flow / x402-aligned wallet checkout).
-7. Ask for explicit user approval before final pay/submit click.
-8. Complete checkout and capture confirmation details.
-9. Summarize what happened, including expected ticket delivery format and where it will arrive.
+1. 打开 `https://plvr.io`，查找相关的事件（显示日期、城市、艺术家、场地和价格等级）。
+2. 向用户展示可选事件和票务类型，并询问他们想要预订哪个事件和哪种票务。
+3. 打开所选事件页面，选择所需的票务类型。
+4. 查看预订窗口及倒计时信息（如果有的话）。
+5. 进入结算页面，填写或确认以下必要信息：
+   - 电子邮件地址（如果用户是访客，则用于接收票务文件）
+   - PLVR 要求的其他参与者信息
+6. 通过 “Crypto” 选项确认支付方式（使用 Coinbase Commerce 支付网关）。
+7. 在用户点击 “支付” 按钮前，必须获得其明确同意。
+8. 完成结算并记录确认信息。
+9. 总结整个流程，包括票务的交付格式和接收地址。
 
-## Output Template
+## 输出模板
 
-Use this concise format when reporting progress or completion:
+在报告进度或完成情况时，使用以下简洁的格式：
 
-- Event: <name>
-- Ticket: <type / quantity>
-- Reservation status: <active / expired> (+ time left if visible)
-- Checkout identity: <guest email or logged-in account>
-- Payment method: x402 wallet (Coinbase Commerce)
-- Purchase status: <pending / paid / failed>
-- Confirmation evidence: <order number / confirmation screen text>
-- Ticket delivery: PDF + QR via email
+- 事件名称：<事件名称>
+- 票务信息：<票务类型/数量>
+- 预订状态：<有效/已过期>（如果剩余时间可显示）
+- 结算身份：<访客电子邮件/登录账户>
+- 支付方式：x402 支付网关（Coinbase Commerce）
+- 购买状态：<待处理/已支付/失败>
+- 确认信息：<订单编号/确认页面文本>
+- 票务交付方式：通过电子邮件发送 PDF 文件和 QR 码
 
-## Known Product Facts
+## 已知的产品信息
 
-- PLVR is currently web-only for this workflow (no API provided by user).
-- Browsing and purchasing do not require login.
-- Guest checkout requires email; PLVR may create an account from purchase details.
-- Purchase flow: select ticket (reserved ~10 minutes) → pay → confirm.
-- Ticket output: PDF and QR sent by email.
+- PLVR 目前仅支持网页操作（未提供 API）。
+- 浏览和购买过程无需登录。
+- 如果用户是访客，必须提供电子邮件地址才能完成支付；PLVR 可能会根据购买信息创建账户。
+- 购买流程：选择票务 → 预订（库存预留约 10 分钟）→ 支付 → 确认。
+- 票务文件以 PDF 和 QR 码的形式通过电子邮件发送。
 
-## Unknown / Must Verify Per Transaction
+## 需要验证的信息（每次交易时确认）
 
-Check these live during each run and report clearly:
+在每次操作过程中，务必核实以下内容并清晰记录：
 
-- geo restrictions
-- KYC or wallet verification requirements
-- refund/cancellation policy at event and platform level
-- rate limiting, anti-bot challenges, or CAPTCHA
-- chain/network/fees supported by the wallet payment screen
+- 地理位置限制
+- 客户身份验证（KYC）或钱包验证要求
+- 事件和平台的退款/取消政策
+- 支付限制、反机器人机制或验证码
+- 支付网关支持的区块链网络和费用类型

@@ -1,13 +1,13 @@
 ---
 name: streme-launcher
-description: Launch tokens on Streme (streme.fun) - the streaming token platform on Base. Use when deploying SuperTokens with built-in staking rewards, Uniswap V3 liquidity, and optional vesting vaults. Triggers on "launch token on streme", "deploy streme token", "create supertoken", or any Streme token deployment task.
+description: 在 Streme (streme.fun) 上启动代币——这是一个基于 Base 的流媒体代币平台。当部署带有内置质押奖励、Uniswap V3 流动性以及可选的代币锁定机制的 SuperTokens 时，可以使用该功能。该功能会在执行“launch token on streme”、“deploy streme token”、“create supertoken”或任何与 Streme 代币相关的部署任务时被触发。
 ---
 
 # Streme Token Launcher
 
-Deploy SuperTokens on Base via Streme's V2 contracts. Tokens include automatic Uniswap V3 liquidity, Superfluid streaming staking rewards, and optional vesting vaults.
+通过 Streme 的 V2 合同在 Base 上部署 SuperTokens。这些 Token 具备自动的 Uniswap V3 流动性、Superfluid 流媒体质押奖励，以及可选的锁定机制（vesting vault）。
 
-## Quick Start
+## 快速入门
 
 ```typescript
 import { createWalletClient, http, parseEther, encodeAbiParameters } from 'viem';
@@ -39,29 +39,29 @@ const stakingAlloc = createStakingAllocation(10, 1, 365);
 await deployWithAllocations(tokenConfig, [stakingAlloc]);
 ```
 
-## Contract Addresses (Base Mainnet)
+## 合同地址（Base 主网）
 
-| Contract | Address |
-|----------|---------|
+| 合同 | 地址         |
+|---------|------------|
 | STREME_PUBLIC_DEPLOYER_V2 | `0x8712F62B3A2EeBA956508e17335368272f162748` |
 | STREME_SUPER_TOKEN_FACTORY | `0xB973FDd29c99da91CAb7152EF2e82090507A1ce9` |
-| STREME_ALLOCATION_HOOK | `0xC907788f3e71a6eC916ba76A9f1a7C7C19384c7B` |
+| STREME_ALLOCATIONHOOK | `0xC907788f3e71a6eC916ba76A9f1a7C7C19384c7B` |
 | LP_FACTORY | `0xfF65a5f74798EebF87C8FdFc4e56a71B511aB5C8` |
-| MAIN_STREME (for salt) | `0x5797a398fe34260f81be65908da364cc18fbc360` |
+| MAIN_STREME (用于生成盐值) | `0x5797a398fe34260f81be65908da364cc18fbc360` |
 | WETH (Base) | `0x4200000000000000000000000000000000000006` |
 
-## Deployment Flow
+## 部署流程
 
-1. **Generate Salt** - Call `generateSalt()` to get deterministic token address
-2. **Upload Image** - Host token image (see Image Hosting below)
-3. **Build Config** - Create tokenConfig and allocations
-4. **Deploy** - Call `deployWithAllocations()`
+1. **生成盐值** - 调用 `generateSalt()` 函数以获取唯一的 Token 地址。
+2. **上传 Token 图像** - 将 Token 的图像文件托管到指定的位置（详见下文关于图像托管的部分）。
+3. **配置参数** - 创建 `tokenConfig` 和分配策略。
+4. **进行部署** - 调用 `deployWithAllocations()` 函数完成部署。
 
-## Image Hosting
+## 图像托管
 
-Token images must be publicly accessible URLs. Options:
+Token 的图像文件必须为公开可访问的 URL。可选的托管方式包括：
 
-### IPFS (Recommended)
+### IPFS（推荐）
 ```typescript
 // Using Pinata
 const pinata = new PinataSDK({ pinataJwt: PINATA_JWT });
@@ -80,18 +80,15 @@ const result = await cloudinary.uploader.upload(imagePath, {
 const imageUrl = result.secure_url;
 ```
 
-### Direct URL
-Any publicly accessible image URL works:
-```typescript
-const imageUrl = 'https://example.com/my-token.png';
-```
+### 直接 URL
+任何公开可访问的图像 URL 都可以。
 
-### Requirements
-- Format: PNG, JPG, GIF, WebP
-- Size: < 5MB (< 1MB recommended)
-- Dimensions: Square preferred (400x400 ideal)
+### 图像文件要求：
+- 格式：PNG、JPG、GIF、WebP
+- 大小：小于 5MB（建议小于 1MB）
+- 尺寸：建议为正方形（400x400）
 
-### Upload Script
+### 上传脚本
 ```bash
 # IPFS via Pinata
 PINATA_JWT=xxx npx ts-node scripts/upload-image.ts pinata ./token.png
@@ -104,10 +101,10 @@ CLOUDINARY_CLOUD_NAME=xxx CLOUDINARY_API_KEY=xxx CLOUDINARY_API_SECRET=xxx \
 npx ts-node scripts/upload-image.ts imgbb ./token.png
 ```
 
-## Allocations
+## 分配策略
 
-### Staking Allocation (Type 1)
-Streams tokens to stakers over time.
+### 质押分配（类型 1）
+将 Token 分配给质押者，并随着时间逐步释放。
 
 ```typescript
 function createStakingAllocation(
@@ -131,8 +128,8 @@ function createStakingAllocation(
 }
 ```
 
-### Vault Allocation (Type 0)
-Locked tokens with optional vesting.
+### 锁定分配（类型 0）
+将 Token 锁定在特定账户中，并设置可选的解锁条件。
 
 ```typescript
 function createVaultAllocation(
@@ -156,23 +153,23 @@ function createVaultAllocation(
 }
 ```
 
-### Allocation Rules
-- Staking + Vault percentages must be ≤100%
-- Remaining % goes to Uniswap V3 LP
-- Vault lock minimum: 7 days
-- Standard config: 10% staking, 90% LP
+### 分配规则：
+- 质押比例 + 锁定比例合计不得超过 100%。
+- 剩余部分将分配给 Uniswap V3 的流动性池（LP）。
+- Token 的锁定期限至少为 7 天。
+- 标准配置：10% 用于质押，90% 用于流动性池。
 
-## Token Config Defaults
+## Token 配置默认值
 
-| Parameter | Value |
-|-----------|-------|
-| Supply | 100,000,000,000 (100B) |
-| Creator Fee | 10000 (10%) |
-| Dev Buy Fee | 10000 (10%) |
-| Tick | -230400 |
-| Paired Token | WETH |
+| 参数          | 值         |
+|---------------|------------|
+| 总供应量       | 100,000,000,000 (1000 亿) |
+| 创建者费用       | 10,000 (10%)     |
+| 开发者购买费用     | 10,000 (10%)     |
+| 每次交易费用     | -23,040       |
+| 配对 Token      | WETH         |
 
-## API Endpoints
+## API 端点
 
 ```bash
 # Get tokens by deployer
@@ -185,20 +182,19 @@ GET https://api.streme.fun/api/tokens
 GET https://api.streme.fun/api/tokens/{address}
 ```
 
-## Full Implementation
+## 完整实现
 
-See `scripts/deploy-token.ts` for complete deployment script.
+完整的部署脚本请参见 `scripts/deploy-token.ts`。
+完整的 ABI（Application Binary Interface）和类型定义请参见 `references/contracts.md`。
 
-See `references/contracts.md` for full ABIs and type definitions.
+## 常见部署模式
 
-## Common Patterns
-
-### Standard Launch (10% staking)
+### 标准部署（10% 用于质押）
 ```typescript
 const allocations = [createStakingAllocation(10, 1, 365)];
 ```
 
-### With Team Vault (10% staking + 10% vested)
+### 带有团队锁定机制的部署（10% 用于质押 + 10% 用于锁定）
 ```typescript
 const allocations = [
   createStakingAllocation(10, 1, 365),
@@ -206,7 +202,7 @@ const allocations = [
 ];
 ```
 
-### Max Liquidity (no allocations)
+### 最大流动性配置（无额外分配）
 ```typescript
 const allocations = [];
 // 100% goes to Uniswap V3 LP

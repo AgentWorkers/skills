@@ -1,13 +1,17 @@
-# claw-rag
-Simple RAG over local text/markdown.
+# claw-rag  
+一个用于处理本地文本/Markdown的简单工具。  
 
-## Inputs
-- query (string): question to answer.
-- docsPath (string, optional): folder of docs (default ./docs relative to CWD).
-- k (number, optional): number of top matches (default 3).
+## 输入参数  
+- `query` (string): 需要回答的问题。  
+- `docsPath` (string, 可选): 文档所在的文件夹（默认为当前工作目录下的 `./docs`）。  
+- `k` (number, 可选): 返回的匹配结果数量（默认为3）。  
 
-## Output
-- answer: synthesized answer from matches.
-- matches: [{path, score, snippet}...]
+## 输出结果  
+- `answer`: 从匹配结果中生成的合成答案。  
+- `matches`: 一个包含匹配结果的对象数组，每个结果包含以下字段：  
+  - `path`: 匹配到的文档路径。  
+  - `score`: 匹配结果的得分（用于排序）。  
+  - `snippet`: 文档中的片段。  
 
-Requires: OPENAI_API_KEY in env.
+**运行要求**：  
+环境变量中必须设置 `OPENAI_API_KEY`。

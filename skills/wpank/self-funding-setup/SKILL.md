@@ -23,51 +23,54 @@ allowed-tools:
   - mcp__uniswap__check_safety_status
 ---
 
-# Self-Funding Setup
+# 自筹资金设置
 
-## Overview
+## 概述
 
-The most complex composite skill in the system. Orchestrates 5 specialized agents in sequence to take an agent from zero infrastructure to a fully self-sustaining economic entity -- wallet, optional token, treasury management, on-chain identity, and payment acceptance -- in a single command.
+这是系统中最为复杂的复合技能。它通过依次协调5个专用代理，将一个代理从无基础设施的状态转变为一个完全自给自足的经济实体——包括钱包、可选的代币、资金管理、链上身份验证以及支付功能——所有这些操作都通过一个命令完成。
 
-**Why this is 10x better than setting up each component manually:**
+**为什么这比手动设置每个组件要好10倍：**
 
-1. **5 domains compressed into 1 command**: Wallet provisioning, token deployment, treasury management, identity registration, and payment configuration each require different expertise and tooling. Manually coordinating these takes hours and requires deep knowledge of Privy/Turnkey APIs, Uniswap V4 pool creation, DCA strategies, ERC-8004 registries, and x402 protocol. This skill handles all five.
-2. **Context flows between stages**: Each agent receives the output of all prior agents. The treasury-manager knows the wallet address from Step 1 and the token address from Step 2. The identity-verifier registers the wallet from Step 1 with the capabilities demonstrated by Steps 2-3. Without this skill, you'd manually copy-paste addresses and configuration between five separate tools.
-3. **Conditional pipeline**: Token deployment (Step 2) is optional -- skip it for agents that earn through services rather than token economics. The skill adapts the remaining steps based on which revenue model is selected.
-4. **Rollback awareness**: If Step 3 fails, Steps 1 and 2 are still valid and preserved. The skill reports exactly which steps succeeded and which failed, so you can fix the issue and re-run from the failure point rather than starting over.
-5. **Progressive output**: You see each stage complete in real-time with a running summary. By the end, you have a complete "agent identity card" showing every component of the self-funding infrastructure.
+1. **5个功能整合到一个命令中**：钱包配置、代币部署、资金管理、身份注册和支付配置每个都需要不同的专业知识和工具。手动协调这些步骤需要花费数小时，并且需要对Privy/Turnkey API、Uniswap V4池创建、DCA策略、ERC-8004注册以及x402协议有深入的了解。而这个技能可以同时处理所有这些功能。
+2. **阶段间的信息传递**：每个代理都会接收到前一个代理的输出结果。资金管理者会知道第一步创建的钱包地址，以及第二步生成的代币地址。身份验证器会使用第二步和第三步提供的信息来注册钱包。如果没有这个技能，你就需要手动在五个不同的工具之间复制和粘贴地址及配置信息。
+3. **条件化的流程**：代币部署（第二步）是可选的——对于通过服务而非代币经济模式盈利的代理，可以跳过这一步。该技能会根据所选择的收入模型自动调整后续步骤。
+4. **容错机制**：如果第三步失败，第一步和第二步仍然有效且会被保留。该技能会准确报告哪些步骤成功了，哪些步骤失败了，这样你就可以修复问题并从失败点重新开始。
+5. **实时反馈**：你可以实时看到每个阶段的完成情况，并获得详细的总结。最终，你会得到一个完整的“代理身份卡”，显示出自筹资金基础设施的各个组成部分。
 
-## When to Use
+## 适用场景
 
-Activate when the user says anything like:
+当用户有以下需求时，请激活此技能：
 
-- "Set up my agent to be self-funding"
-- "Make my agent earn and manage its own revenue"
-- "Configure autonomous agent operations end-to-end"
-- "I want my agent to be self-sustaining"
-- "Set up the full agent economy stack"
-- "Bootstrap my agent's financial infrastructure"
-- "Create a self-funding agent from scratch"
-- "Full agent setup: wallet, token, treasury, identity, payments"
+- “设置我的代理以实现自筹资金”
+- “让我的代理能够自主盈利并管理自己的收入”
+- “端到端配置代理的自主运营”
+- “我希望我的代理能够实现自我维持”
+- “设置完整的代理经济体系”
+- “启动我的代理的财务基础设施”
+- “从零开始创建一个能够自筹资金的代理”
+- “完成代理的全方位设置：钱包、代币、资金管理、身份验证、支付功能”
 
-**Do NOT use** when the user only wants one component (use the individual skills: `setup-agent-wallet`, `deploy-agent-token`, `manage-treasury`, `verify-agent`, or `configure-x402` respectively), or when the agent is already partially set up and only needs one missing piece.
+**不适用场景**
 
-## Parameters
+- 当用户只需要其中一个组件时（请分别使用以下技能：`setup-agent-wallet`、`deploy-agent-token`、`manage-treasury`、`verify-agent` 或 `configure-x402`）；
+- 当代理已经部分设置完成，只需要补充缺失的部分时。
 
-| Parameter        | Required | Default | How to Extract                                                          |
-| ---------------- | -------- | ------- | ----------------------------------------------------------------------- |
-| walletProvider   | No       | privy   | "privy" (dev), "turnkey" (production), or "safe" (max security)         |
-| deployToken      | No       | false   | Whether to deploy an agent token: "yes", "with token", "launch token"   |
-| tokenName        | If token | --      | Token name if deploying: "AgentCoin", "MyBot Token"                     |
-| tokenSymbol      | If token | --      | Token symbol if deploying: "AGENT", "BOT"                               |
-| chains           | No       | base    | Operating chains: "base", "ethereum", "base,ethereum"                   |
-| revenueModel     | No       | x402    | "x402" (micropayments), "token-fees" (swap fees), "lp-fees", or "all"  |
-| environment      | No       | dev     | "dev" (development), "staging", or "production"                         |
-| initialFunding   | No       | --      | Initial funding amount: "$100", "0.1 ETH"                              |
+## 参数
 
-If the user says "with token" or "launch a token", set `deployToken=true` and ask for `tokenName` and `tokenSymbol` if not provided.
+| 参数                | 是否必填 | 默认值 | 获取方式                                      |
+|-------------------|--------|-------|------------------------------------------------------|
+| walletProvider    | 否      | privy    | "privy"（开发环境）、"turnkey"（生产环境）或 "safe"（最高安全级别）         |
+| deployToken       | 否      | false    | 是否部署代理代币："yes"、"with token"、"launch token"           |
+| tokenName         | 如果使用代币 | --      | 部署代币时的名称："AgentCoin"、"MyBot Token"                     |
+| tokenSymbol       | 如果使用代币 | --      | 部署代币时的符号："AGENT"、"BOT"                               |
+| chains            | 否      | base     | 运行链："base"、"ethereum"、"base,ethereum"                   |
+| revenueModel       | 否      | x402    | 收入模式："x402"（微支付）、"token-fees"（交易手续费）、"lp-fees" 或 "all"  |
+| environment       | 否      | dev     | 环境："dev"（开发环境）、"staging" 或 "production"                         |
+| initialFunding     | 否      | --      | 初始资金金额："$100"、"0.1 ETH"                              |
 
-## Workflow
+如果用户选择了“with token”或“launch a token”，则将`deployToken`设置为`true`，并询问`tokenName`和`tokenSymbol`（如果未提供的话）。
+
+## 工作流程
 
 ```
                      SELF-FUNDING SETUP PIPELINE
@@ -123,9 +126,9 @@ If the user says "with token" or "launch a token", set `deployToken=true` and as
   └──────────────────────────────────────────────────────────────────────┘
 ```
 
-### Step 1: Wallet Provisioning
+### 第一步：钱包配置
 
-Delegate to `Task(subagent_type:wallet-provisioner)`:
+将任务委托给`Task(subagent_type:wallet-provisioner)`：
 
 ```
 Provision an agent wallet for self-funding operations:
@@ -144,7 +147,7 @@ This wallet will be used for:
 Configure appropriate spending policies for a self-funding agent.
 ```
 
-**Present to user after completion:**
+**配置完成后向用户展示：**
 
 ```text
 Step 1/5: Wallet Provisioned
@@ -158,7 +161,7 @@ Step 1/5: Wallet Provisioned
   Proceeding to token deployment...
 ```
 
-**If wallet already exists**, detect it via `mcp__uniswap__get_agent_balance` and skip to Step 2:
+**如果钱包已经存在**，通过`mcp__uniswap__get_agent_balance`检测到钱包的存在，直接跳到第二步：
 
 ```text
 Step 1/5: Wallet Already Configured (skipped)
@@ -170,11 +173,11 @@ Step 1/5: Wallet Already Configured (skipped)
   Skipping to next step...
 ```
 
-### Step 2: Token Deployment (Optional)
+### 第二步：代币部署（可选）
 
-**Only execute if `deployToken=true`.** Otherwise, skip to Step 3.
+**仅当`deployToken=true`时执行。否则跳到第三步。**
 
-Delegate to `Task(subagent_type:token-deployer)`:
+将任务委托给`Task(subagent_type:token-deployer)`：
 
 ```
 Deploy an agent token for self-funding:
@@ -191,7 +194,7 @@ This token is part of a self-funding agent setup. The revenue-share hook
 directs 5% of swap fees to the agent wallet for treasury management.
 ```
 
-**Present to user after completion:**
+**配置完成后向用户展示：**
 
 ```text
 Step 2/5: Token Deployed
@@ -206,7 +209,7 @@ Step 2/5: Token Deployed
   Proceeding to treasury management...
 ```
 
-**If `deployToken=false`:**
+**如果`deployToken=false`：**
 
 ```text
 Step 2/5: Token Deployment (skipped)
@@ -217,9 +220,9 @@ Step 2/5: Token Deployment (skipped)
   Proceeding to treasury management...
 ```
 
-### Step 3: Treasury Management
+### 第三步：资金管理
 
-Delegate to `Task(subagent_type:treasury-manager)`:
+将任务委托给`Task(subagent_type:treasury-manager)`：
 
 ```
 Configure treasury management for a self-funding agent:
@@ -240,7 +243,7 @@ Configure:
 - Operating reserve: 30 days of estimated burn rate
 ```
 
-**Present to user after completion:**
+**配置完成后向用户展示：**
 
 ```text
 Step 3/5: Treasury Configured
@@ -255,9 +258,9 @@ Step 3/5: Treasury Configured
   Proceeding to identity registration...
 ```
 
-### Step 4: Identity Registration
+### 第四步：身份注册
 
-Delegate to `Task(subagent_type:identity-verifier)`:
+将任务委托给`Task(subagent_type:identity-verifier)`：
 
 ```
 Register this agent on ERC-8004:
@@ -273,7 +276,7 @@ Capabilities to register:
 After registration, query the trust tier to confirm.
 ```
 
-**Present to user after completion:**
+**配置完成后向用户展示：**
 
 ```text
 Step 4/5: Identity Registered
@@ -287,13 +290,13 @@ Step 4/5: Identity Registered
   Proceeding to payment configuration...
 ```
 
-### Step 5: Payment Configuration
+### 第五步：支付配置
 
-Configure x402 micropayment acceptance directly (no agent needed):
+直接配置x402微支付功能（无需额外代理）：
 
-1. Verify the wallet has USDC on the settlement chain (Base recommended).
-2. Write `.uniswap/x402-config.json` with payment configuration.
-3. Write `.well-known/x402-manifest.json` for service discovery.
+1. 确认钱包在结算链（推荐使用Base链）上持有USDC。
+2. 编写`.uniswap/x402-config.json`文件以配置支付信息。
+3. 编写`.well-known/x402-manifest.json`文件以进行服务发现。
 
 ```text
 Step 5/5: Payments Configured
@@ -315,9 +318,9 @@ Step 5/5: Payments Configured
     .well-known/x402-manifest.json
 ```
 
-## Output Format
+## 输出格式
 
-### Full Setup (with token)
+### 完整设置（包含代币）
 
 ```text
 Self-Funding Agent Setup Complete
@@ -367,7 +370,7 @@ Self-Funding Agent Setup Complete
     4. Monitor treasury health with /manage-treasury
 ```
 
-### Setup Without Token
+### 未使用代币的设置
 
 ```text
 Self-Funding Agent Setup Complete
@@ -403,7 +406,7 @@ Self-Funding Agent Setup Complete
   Status:   ALL STEPS COMPLETE (4/5, token skipped)
 ```
 
-### Partial Failure
+### 部分失败情况
 
 ```text
 Self-Funding Agent Setup -- Partial
@@ -425,29 +428,29 @@ Self-Funding Agent Setup -- Partial
     2. Re-run: "Set up self-funding" (will detect existing wallet + token)
 ```
 
-## Important Notes
+## 重要说明
 
-- **This is the most complex composite skill.** It orchestrates 5 agents sequentially, each feeding context to the next. Expect the full pipeline to take 2-5 minutes depending on chain conditions and whether token deployment is included.
-- **Token deployment is irreversible.** Once a token is deployed and the pool is created, it cannot be undone. The skill simulates everything via safety-guardian before execution, but make sure the token name, symbol, and parameters are correct before confirming.
-- **The pipeline is resumable.** If a step fails, prior steps are preserved. Re-running the skill detects existing wallet and token, skipping completed steps automatically.
-- **ERC-8004 registration is on Ethereum mainnet.** Even if your agent operates on Base, the identity registry is on Ethereum. This requires a small amount of ETH on mainnet for the registration transaction.
-- **Reputation starts at 0.** The initial trust tier is BASIC. Building reputation requires completing trades, providing liquidity, and receiving positive feedback from counterparties. Use the agent actively to progress from basic -> verified -> trusted.
-- **x402 payments settle on Base by default.** Base has ~200ms settlement and low gas costs, making it ideal for micropayments. The wallet must hold USDC on Base to accept payments.
-- **Revenue model affects treasury configuration.** "x402" mode configures for micropayment income. "token-fees" mode configures for swap fee revenue. "lp-fees" mode configures for LP earnings. "all" enables all three.
-- **Development vs production providers.** Privy is recommended for development (fast setup, easy testing). Turnkey or Safe is recommended for production (TEE-backed signing, hardware security). The skill selects based on the `environment` parameter.
+- **这是最复杂的复合技能**：它依次协调5个代理，每个代理都会将结果传递给下一个代理。根据链的条件以及是否包含代币部署，整个流程可能需要2到5分钟。
+- **代币部署是不可逆的**：一旦代币被部署并且池被创建，就无法撤销。在执行前，该技能会通过安全守护程序模拟所有操作，但在确认之前请确保代币名称、符号和参数正确无误。
+- **流程可以中断后重新开始**：如果某个步骤失败，之前的步骤都会被保留。重新运行该技能时，系统会自动识别已存在的钱包和代币，并跳过已完成的步骤。
+- **ERC-8004注册在Ethereum主网上进行**：即使你的代理在Base链上运行，身份注册也在Ethereum上进行。这需要在主网上支付少量ETH以完成注册交易。
+- **初始信任等级为0**：初始信任等级为BASIC。提升信任等级需要完成交易、提供流动性，并获得交易对手的正面反馈。通过积极使用代理，信任等级可以从BASIC提升到VERIFIED，最终达到TRUSTED。
+- **x402支付默认在Base链上结算**：Base链的结算速度快（约200毫秒），且Gas费用较低，非常适合微支付。钱包必须持有USDC才能接受支付。
+- **收入模式影响资金配置**："x402"模式用于配置微支付收入；"token-fees"模式用于配置交易手续费收入；"lp-fees"模式用于配置LP收益；"all"模式同时支持这三种收入方式。
+- **开发环境与生产环境的区别**：建议在开发环境中使用Privy（设置快速、易于测试）；在生产环境中使用Turnkey或Safe（提供TEE支持的安全签名和硬件安全保障）。该技能会根据`environment`参数自动选择合适的提供者。
 
-## Error Handling
+## 错误处理
 
-| Error                         | User-Facing Message                                                            | Suggested Action                                  |
-| ----------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------- |
-| Wallet provisioning failed    | "Could not provision wallet: {reason}."                                        | Check provider credentials and retry              |
-| Wallet already exists         | "Agent wallet already configured. Skipping to next step."                      | Proceeds automatically with existing wallet       |
-| Token deployment failed       | "Token deployment failed at step: {reason}. Wallet is preserved."              | Fix the issue and re-run (wallet will be reused)  |
-| Token already deployed        | "Token {symbol} already deployed. Skipping to treasury."                       | Proceeds automatically with existing token        |
-| Treasury config failed        | "Treasury configuration failed: {reason}. Wallet and token preserved."         | Fund wallet and re-run                            |
-| ERC-8004 registration failed  | "Could not register on ERC-8004: {reason}. Prior steps preserved."             | Check ETH balance on mainnet and retry            |
-| x402 config failed            | "Could not write x402 configuration: {reason}."                               | Check file permissions and retry                  |
-| Insufficient funding          | "Wallet needs at least {X} ETH for gas. Current: {Y} ETH."                    | Fund the wallet before proceeding                 |
-| Chain not supported           | "{chain} does not support all required features."                              | Use Base or Ethereum for full feature support     |
-| Partial pipeline failure      | "Setup completed partially. Failed at step {N}: {reason}."                     | Fix the failed step and re-run from that point    |
-| Provider not configured       | "Wallet provider '{provider}' requires credentials not found in environment."  | Set required env vars (PRIVY_APP_ID, etc.)        |
+| 错误类型                         | 向用户显示的提示信息                                      | 建议的操作                                      |
+|-----------------------------|--------------------------------------------------|-------------------------------------------|
+| 钱包配置失败                    | “无法配置钱包：{原因}。”                                      | 检查提供者的凭据并重试                              |
+| 钱包已存在                      | “代理钱包已配置完成。跳到下一步。”                                      | 使用现有的钱包继续执行                              |
+| 代币部署失败                    | “代币部署失败：{原因}。钱包信息保留。”                                | 解决问题后重新运行（钱包信息将被保留）                         |
+| 代币已部署                      | “代币{符号}已部署。跳到资金管理步骤。”                                   | 使用现有的代币继续执行                              |
+| 资金管理配置失败                    | “资金管理配置失败：{原因}。钱包和代币信息保留。”                              | 资金补充后重新运行                                |
+| ERC-8004注册失败                    | “无法在ERC-8004上完成注册：{原因}。之前的步骤保留。”                          | 检查主网上的ETH余额并重试                          |
+| x402配置失败                    | “无法写入x402配置文件：{原因}。”                                  | 检查文件权限并重试                              |
+| 资金不足                        | “钱包至少需要{X} ETH才能完成操作。当前余额：{Y} ETH。”                          | 补充资金后再尝试                              |
+| 链路不支持                      | “{链路}不支持所有所需的功能。”                                      | 使用Base链或Ethereum链以实现完整功能                      |
+| 部分步骤失败                      | “部分设置已完成。步骤{N}失败：{原因}。”                                | 修复失败步骤并从该步骤重新开始                          |
+| 提供者未配置                    | “钱包提供者‘{provider}’所需的凭据在环境中未找到。”                          | 设置必要的环境变量（如PRIVY_APP_ID等）                        |

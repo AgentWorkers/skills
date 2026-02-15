@@ -1,138 +1,138 @@
 ---
 name: react-native-setup
-description: React Native 0.83+ and Expo SDK 54+ environment setup. Xcode, Android Studio, CocoaPods, EAS Build troubleshooting.
+description: React Native 0.83 及更高版本与 Expo SDK 5.4 及更高版本的环境搭建。Xcode、Android Studio、CocoaPods 的使用，以及 EAS Build 过程中可能遇到的问题排查与解决方案。
 ---
 
-# React Native Setup Expert (2025)
+# React Native 配置专家（2025）
 
-Expert in React Native 0.83+ and Expo SDK 54+ environment configuration across macOS, Windows, and Linux. Specializes in New Architecture setup, EAS Build configuration, and development environment optimization.
+我擅长在 macOS、Windows 和 Linux 系统上配置 React Native 0.83 及更高版本以及 Expo SDK 54 及更高版本的环境。我的专业领域包括新架构的搭建、EAS 构建配置以及开发环境的优化。
 
-## What I Know
+## 我的技能
 
-### Prerequisites & Installation (2025 Requirements)
+### 先决条件与安装（2025 年的要求）
 
 **Node.js & npm**
-- **Node.js 20.x or later required** (Node 18 EOL April 2025)
-- Node.js 22 LTS recommended for best performance
-- Version verification: `node --version && npm --version`
-- Package managers: npm, yarn, pnpm, bun all supported
-- Corepack for yarn: `corepack enable && corepack prepare yarn@stable --activate`
+- **需要 Node.js 20.x 或更高版本**（Node 18 的支持已于 2025 年 4 月结束）
+- 建议使用 Node.js 22 LTS 以获得最佳性能
+- 验证版本：`node --version && npm --version`
+- 支持的包管理器：npm、yarn、pnpm、bun
+- 为 yarn 配置 corepack：`corepack enable && corepack prepare yarn@stable --activate`
 
-**Xcode (macOS - iOS Development)**
-- **Xcode 16.1 or later required** (minimum for RN 0.83)
-- **Xcode 26 recommended** for iOS Liquid Glass support
-- Command line tools: `xcode-select --install`
-- License acceptance: `sudo xcodebuild -license accept`
-- iOS 15.1+ deployment target (minimum supported)
-- iOS 18+ for latest features, iOS 26 for Liquid Glass
+**Xcode（macOS - iOS 开发）**
+- **需要 Xcode 16.1 或更高版本**（React Native 0.83 的最低要求）
+- 建议使用 Xcode 26 以支持 iOS Liquid Glass 功能
+- 命令行工具：`xcode-select --install`
+- 接受许可证：`sudo xcodebuild -license accept`
+- 部署目标至少需要 iOS 15.1
+- 为了使用最新功能，建议使用 iOS 18；为了支持 Liquid Glass，建议使用 iOS 26
 
-**Android Studio (Android Development)**
-- **Android Studio Ladybug or later** (2024.2.1+)
-- Required SDK components:
-  - **Android SDK Platform 35** (API level 35)
+**Android Studio（Android 开发）**
+- **需要 Android Studio Ladybug 或更高版本**（2024.2.1 或更高）
+- 必需的 SDK 组件：
+  - **Android SDK Platform 35**（API 级别 35）
   - Android SDK Build-Tools 35.0.0
   - Android Emulator
   - Android SDK Platform-Tools
-  - **NDK 27.1.12297006** (for native modules)
-  - CMake 3.22.1+ (for Turbo Modules)
-- **compileSdkVersion 35, targetSdkVersion 35, minSdkVersion 24**
-- ANDROID_HOME environment variable setup
-- Edge-to-edge display support (Android 15+)
+  - **NDK 27.1.12297006**（用于原生模块）
+  - CMake 3.22.1 或更高版本（用于 Turbo Modules）
+- **配置编译版本（compileSdkVersion）为 35，目标版本（targetSdkVersion）为 35，最小版本（minSdkVersion）为 24**
+- 设置 ANDROID_HOME 环境变量
+- 支持 Android 15 及更高版本的边缘到边缘显示（edge-to-edge display）
 
 **Watchman**
-- Installation via Homebrew (macOS): `brew install watchman`
-- Purpose: File watching for fast refresh with Metro
-- Critical for large codebases
-- Cache clearing: `watchman watch-del-all`
+- 通过 Homebrew 在 macOS 上安装：`brew install watchman`
+- 用于快速刷新代码库文件
+- 对于大型代码库来说非常重要
+- 清除缓存：`watchman watch-del-all`
 
-### Environment Configuration
+### 环境配置
 
-**iOS Setup**
-- CocoaPods 1.15+ installation: `sudo gem install cocoapods`
-- Pod install with New Architecture: `RCT_NEW_ARCH_ENABLED=1 pod install`
-- Xcode project configuration for Fabric
-- Provisioning profiles and certificates
-- iOS Simulator management
-- Device selection: `xcrun simctl list devices`
-- Liquid Glass testing requires iOS 26 simulator
+**iOS 设置**
+- 安装 CocoaPods 1.15 或更高版本：`sudo gem install cocoapods`
+- 使用新架构进行 Pod 安装：`RCT_NEW_ARCH_ENABLED=1 pod install`
+- 配置 Xcode 项目以使用 Fabric
+- 设置 Provisioning Profiles 和证书
+- 管理 iOS 模拟器
+- 选择设备：`xcrun simctl list devices`
+- 测试 Liquid Glass 需要 iOS 26 模拟器
 
-**Android Setup**
-- Gradle 8.10+ (bundled with Android Studio Ladybug)
-- Android SDK path configuration
-- Environment variables (ANDROID_HOME, PATH)
-- AVD creation with API 35 images
-- Emulator with edge-to-edge support
-- ADB troubleshooting
-- New Architecture: `newArchEnabled=true` in gradle.properties
+**Android 设置**
+- 安装 Gradle 8.10 或更高版本（随 Android Studio Ladybug 自带）
+- 配置 Android SDK 路径
+- 设置环境变量（ANDROID_HOME, PATH）
+- 使用 API 35 图像创建 AVD
+- 确保模拟器支持边缘到边缘显示
+- 使用 ADB 进行故障排除
+- 在 `gradle.properties` 中设置 `newArchEnabled=true`
 
 **Metro Bundler**
-- Port 8081 configuration
-- Cache clearing: `npx react-native start --reset-cache`
-- Metro config for New Architecture
-- Symlink support for monorepos
-- Custom resolver configuration
+- 配置端口 8081
+- 清除缓存：`npx react-native start --reset-cache`
+- 为新架构配置 Metro
+- 支持单仓库（monorepo）的符号链接
+- 自定义解析器配置
 
-**EAS Build Setup (Expo)**
-- Install EAS CLI: `npm install -g eas-cli`
-- Login: `eas login`
-- Configure: `eas build:configure`
-- Development builds for custom native code
-- EAS Update for OTA updates
+**EAS 构建设置（Expo）**
+- 安装 EAS CLI：`npm install -g eas-cli`
+- 登录：`eas login`
+- 配置：`eas build:configure`
+- 为自定义原生代码生成开发构建
+- 使用 EAS 进行 OTA 更新
 
-### Common Setup Issues
+### 常见问题
 
-**"Command not found" Errors**
-- PATH configuration for Node, Android SDK, Xcode tools
-- Shell profile updates (.zshrc, .bash_profile)
-- Symlink issues with nvm/fnm
+**“命令未找到”错误**
+- Node.js、Android SDK 和 Xcode 工具的 PATH 配置问题
+- Shell 配置文件（.zshrc, .bash_profile）问题
+- nvm/fnm 的符号链接问题
 
-**SDK Not Found**
-- SDK path verification: `echo $ANDROID_HOME`
-- Environment variable troubleshooting
-- SDK Manager reinstallation
-- NDK path for native modules
+**SDK 未找到**
+- 验证 SDK 路径：`echo $ANDROID_HOME`
+- 检查环境变量
+- 重新安装 SDK Manager
+- 为原生模块设置 NDK 路径
 
-**Pod Install Failures**
-- CocoaPods version issues (requires 1.15+)
-- Ffi gem compilation errors on Apple Silicon
-- Ruby version compatibility (use system Ruby or rbenv)
-- New Architecture pod failures: clean and rebuild
-- `pod deintegrate && pod install` strategy
+**Pod 安装失败**
+- CocoaPods 版本问题（需要 1.15 或更高版本）
+- 在 Apple Silicon 上的 Ffi 包编译错误
+- Ruby 版本兼容性问题（使用系统 Ruby 或 rbenv）
+- 新架构相关 Pod 安装失败：需要清除并重新构建
+- 使用 `pod deintegrate && pod install` 方法
 
-**Build Failures**
-- Clean build strategies (see Pro Tips)
-- Dependency conflicts with New Architecture
-- Native module compilation errors
-- Xcode derived data clearing
-- Gradle cache corruption
+**构建失败**
+- 清除构建缓存（参考专业提示）
+- 新架构导致的依赖冲突
+- 原生模块编译错误
+- Xcode 生成的临时文件损坏
+- Gradle 缓存损坏
 
-**New Architecture Issues**
-- Turbo Module not found: check codegen ran
-- Fabric component not rendering: verify native setup
-- Bridge module compatibility: use interop layer
+**新架构相关问题**
+- Turbo Module 未找到：检查是否运行了 codegen
+- Fabric 组件无法渲染：验证原生设置
+- Bridge 模块兼容性问题：使用互操作层（interop layer）
 
-## When to Use This Skill
+## 何时需要我的帮助
 
-Ask me when you need help with:
-- Initial React Native 0.83+ environment setup
-- Installing and configuring Xcode 16.1+ or Android Studio Ladybug
-- Setting up iOS simulators or Android emulators
-- Troubleshooting "Command not found" errors
-- Resolving SDK path or ANDROID_HOME issues
-- Fixing CocoaPods installation problems
-- Clearing Metro bundler cache
-- Configuring development environment variables
-- Troubleshooting build failures
-- Setting up watchman for file watching
-- Verifying development environment prerequisites
-- **EAS Build configuration and troubleshooting**
-- **New Architecture setup and migration**
-- **Development build creation for custom native code**
-- **Hermes V1 experimental setup**
+当您遇到以下问题时，请联系我：
+- 首次配置 React Native 0.83 及更高版本的环境
+- 安装和配置 Xcode 16.1 或 Android Studio Ladybug
+- 设置 iOS 模拟器或 Android Emulator
+- 解决“命令未找到”错误
+- 解决 SDK 路径或 ANDROID_HOME 相关问题
+- 解决 CocoaPods 安装问题
+- 清除 Metro Bundler 缓存
+- 配置开发环境变量
+- 解决构建失败问题
+- 设置 Watchman 以进行文件监控
+- 验证开发环境的先决条件
+- 配置和排查 EAS 构建问题
+- 新架构的搭建和迁移
+- 为自定义原生代码生成开发构建
+- 设置 Hermes V1 实验性功能
 
-## Quick Setup Commands
+## 快速配置命令
 
-### iOS (macOS)
+### iOS（macOS）
 ```bash
 # Install Xcode command line tools
 xcode-select --install
@@ -152,7 +152,7 @@ pod --version        # Should be 1.15+
 watchman version
 ```
 
-### Android (All Platforms)
+### Android（所有平台）
 ```bash
 # Verify Android setup
 echo $ANDROID_HOME
@@ -169,7 +169,7 @@ emulator -list-avds
 adb devices
 ```
 
-### React Native CLI Project
+### React Native CLI 项目
 ```bash
 # Create new React Native project (New Architecture enabled by default)
 npx @react-native-community/cli init MyProject
@@ -190,7 +190,7 @@ npm run ios
 npm run android
 ```
 
-### Expo Project (Recommended)
+### Expo 项目（推荐）
 ```bash
 # Create new Expo project
 npx create-expo-app@latest MyProject
@@ -207,9 +207,9 @@ eas build --profile development --platform ios
 eas build --profile development --platform android
 ```
 
-## Pro Tips
+## 专业提示
 
-1. **Clean Builds**: When in doubt, clean everything
+1. **清除构建缓存**：遇到问题时，先清除所有构建结果
    ```bash
    # iOS (nuclear option)
    cd ios && rm -rf build Pods Podfile.lock && pod install && cd ..
@@ -225,7 +225,7 @@ eas build --profile development --platform android
    npx expo start --clear
    ```
 
-2. **Environment Variables**: Always verify environment variables after changes
+2. **检查环境变量**：更改环境变量后务必进行验证
    ```bash
    # Add to ~/.zshrc or ~/.bash_profile
    export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -237,7 +237,7 @@ eas build --profile development --platform android
    source ~/.zshrc
    ```
 
-3. **Simulator Management**: List and boot specific devices
+3. **管理模拟器**：列出并启动特定设备
    ```bash
    # iOS
    xcrun simctl list devices
@@ -248,7 +248,7 @@ eas build --profile development --platform android
    emulator -avd Pixel_8_API_35
    ```
 
-4. **Quick Health Check**: Verify entire environment
+4. **快速检查环境状态**：验证整个开发环境
    ```bash
    node --version      # Should be 20+
    npm --version       # npm
@@ -259,7 +259,7 @@ eas build --profile development --platform android
    eas --version       # EAS CLI (Expo)
    ```
 
-5. **EAS Build Configuration**: Essential eas.json
+5. **配置 EAS 构建**：eas.json 文件非常重要
    ```json
    {
      "build": {
@@ -275,7 +275,7 @@ eas build --profile development --platform android
    }
    ```
 
-6. **Hermes V1 (Experimental)**: Enable next-gen engine
+6. **Hermes V1（实验性）**：启用下一代引擎
    ```javascript
    // metro.config.js
    module.exports = {
@@ -290,24 +290,24 @@ eas build --profile development --platform android
    # In app: global.HermesInternal !== undefined
    ```
 
-## Version Compatibility Matrix (2025)
+## 版本兼容性矩阵（2025）
 
-| Component | Minimum | Recommended | Notes |
+| 组件 | 最低要求 | 推荐版本 | 备注 |
 |-----------|---------|-------------|-------|
-| Node.js | 20.x | 22 LTS | Node 18 EOL April 2025 |
-| React Native | 0.76+ | 0.83 | New Arch default since 0.76 |
-| React | 18.3+ | 19.2 | Activity, useEffectEvent |
-| Expo SDK | 52+ | 54 | Native tabs, Liquid Glass |
-| Xcode | 16.1 | 26 | iOS 26 for Liquid Glass |
-| Android SDK | 34 | 35 | Edge-to-edge support |
-| CocoaPods | 1.14 | 1.15+ | New Arch compatibility |
-| Gradle | 8.6 | 8.10+ | K2 compiler support |
+| Node.js | 20.x | 22 LTS | Node 18 的支持已于 2025 年 4 月结束 |
+| React Native | 0.76+ | 0.83 | 自 0.76 版本起默认支持新架构 |
+| React | 18.3+ | 19.2 | 新特性（如 Activity, useEffectEvent） |
+| Expo SDK | 52+ | 54 | 新功能（如 Native tabs, Liquid Glass） |
+| Xcode | 16.1 | 26 | 支持 iOS 26 的 Liquid Glass 功能 |
+| Android SDK | 34 | 35 | 支持边缘到边缘显示 |
+| CocoaPods | 1.14 | 1.15+ | 新架构兼容性 |
+| Gradle | 8.6 | 8.10+ | 支持 K2 编译器 |
 
-## Integration with SpecWeave
+## 与 SpecWeave 的集成
 
-This skill integrates with SpecWeave's increment workflow:
-- Use during `/sw:increment` planning for environment setup tasks
-- Reference in `tasks.md` for setup-related acceptance criteria
-- Include in `spec.md` for mobile-specific prerequisites
-- Document setup issues in increment `reports/` folder
-- Use mobile-architect agent for architecture decisions
+我的技能可以与 SpecWeave 的增量工作流程集成：
+- 在 `/sw:increment` 计划阶段用于环境配置任务
+- 在 `tasks.md` 文件中引用相关的配置标准
+- 在 `spec.md` 文件中记录移动开发相关的先决条件
+- 在 `reports/` 文件夹中记录配置问题
+- 使用 mobile-architect 代理进行架构决策

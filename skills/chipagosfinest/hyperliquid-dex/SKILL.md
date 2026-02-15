@@ -1,7 +1,7 @@
 ---
 name: hyperliquid
 version: 1.1.0
-description: Query Hyperliquid DEX for account balances, positions, PnL, and margin data via ClawdBot API
+description: 通过 ClawdBot API 查询 Hyperliquid DEX 的账户余额、持仓、盈亏（PnL）和保证金数据
 author: ClawdBot
 category: finance
 tags:
@@ -35,52 +35,52 @@ triggers:
   - show positions on hyperliquid
 ---
 
-# Hyperliquid DEX Integration
+# Hyperliquid DEX 集成
 
-Query your Hyperliquid perpetuals account for real-time balances, open positions, unrealized PnL, and margin data.
+您可以查询 Hyperliquid 永续合约账户的实时余额、未平仓头寸、未实现盈亏（PnL）以及保证金数据。
 
-## ClawdBot Integration
+## ClawdBot 集成
 
-This skill is designed for **ClawdBot** - it calls ClawdBot's internal API server which proxies requests to the official Hyperliquid API at `https://api.hyperliquid.xyz`.
+此功能专为 **ClawdBot** 设计，它通过调用 ClawdBot 的内部 API 服务器来向官方 Hyperliquid API（地址：`https://api.hyperliquid.xyz`）发送请求。
 
-**Architecture:**
+**架构：**
 ```
 User → ClawdBot Gateway → ClawdBot API Server → Hyperliquid Public API
                          (Railway)              (api.hyperliquid.xyz)
 ```
 
-The ClawdBot API server handles:
-- Timeout protection (15s)
-- Response parsing and formatting
-- Default wallet address from env vars
+ClawdBot API 服务器负责以下任务：
+- 超时保护（15 秒）
+- 响应解析与格式化
+- 从环境变量中获取默认钱包地址
 
-## Capabilities
+## 功能特性
 
-- **Account Overview**: Get total account value, free collateral, and margin usage
-- **Position Tracking**: View all open perpetual positions with size, direction, entry price
-- **PnL Monitoring**: Real-time unrealized PnL and return on equity per position
-- **Risk Management**: Liquidation prices and leverage info for each position
-- **Multi-Wallet**: Query any wallet address or use configured trading wallet
+- **账户概览**：获取账户总价值、可用抵押品以及保证金使用情况
+- **头寸跟踪**：查看所有未平仓的永久合约头寸，包括合约规模、方向和入场价格
+- **盈亏监控**：实时显示每个头寸的未实现盈亏及资产回报率
+- **风险管理**：提供每个头寸的清算价格和杠杆信息
+- **多钱包支持**：可以查询任意钱包地址，或使用配置的交易钱包
 
-## Environment Variables
+## 环境变量
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `TRADING_WALLET_ADDRESS` | No | Default wallet address (0x format) to query when none provided |
+| 变量          | 是否必填 | 说明                          |
+|---------------|---------|-------------------------------------------|
+| `TRADING_WALLET_ADDRESS` | 否      | 未提供时使用的默认钱包地址（0x 格式）               |
 
-## API Endpoint
+## API 端点
 
-**ClawdBot Internal API:**
+**ClawdBot 内部 API：**
 ```
 POST {CLAWDBOT_API_URL}/api/hyperliquid/account
 ```
 
-**Upstream API (called by ClawdBot):**
+**上游 API（由 ClawdBot 调用）：**
 ```
 POST https://api.hyperliquid.xyz/info
 ```
 
-### Request (Optional Body)
+### 请求（可选请求体）
 
 ```json
 {
@@ -88,9 +88,9 @@ POST https://api.hyperliquid.xyz/info
 }
 ```
 
-If no wallet address provided, uses `TRADING_WALLET_ADDRESS` env var.
+如果未提供钱包地址，系统将使用环境变量 `TRADING_WALLET_ADDRESS`。
 
-### Response
+### 响应
 
 ```json
 {
@@ -120,38 +120,38 @@ If no wallet address provided, uses `TRADING_WALLET_ADDRESS` env var.
 }
 ```
 
-## Security Notes
+## 安全注意事项
 
-- **Read-only**: This skill only reads account data, no trading/signing capabilities
-- **Public API**: Uses Hyperliquid's public info API (no authentication required)
-- **No private keys**: Only wallet addresses (public) are used
-- **Timeout protected**: 15-second timeout prevents hanging requests
+- **仅读权限**：此功能仅用于读取账户数据，不支持交易或签名操作
+- **公共 API**：使用 Hyperliquid 的公共信息 API，无需身份验证
+- **不涉及私钥**：仅使用钱包地址（公开信息）
+- **超时保护**：设置 15 秒的超时机制以防止请求挂起
 
-## Example Usage
+## 使用示例
 
-### Check Account Balance
+### 检查账户余额
 ```
 "What's my Hyperliquid balance?"
 "Show my HL account value"
 ```
 
-### View Positions
+### 查看头寸
 ```
 "What positions do I have open on Hyperliquid?"
 "Am I in profit on my perps?"
 "What's my unrealized PnL?"
 ```
 
-### Risk Check
+### 风险评估
 ```
 "What are my liquidation prices on Hyperliquid?"
 "How much margin am I using?"
 "What leverage am I running?"
 ```
 
-## Related
+## 相关资源
 
-- [Hyperliquid Docs](https://hyperliquid.gitbook.io/hyperliquid-docs)
-- `ichimoku` - Ichimoku Cloud trading signals
-- `wallet-tracker` - Monitor wallet balances across chains
-- `crypto-tracker` - Track crypto prices and portfolios
+- [Hyperliquid 文档](https://hyperliquid.gitbook.io/hyperliquid-docs)
+- `ichimoku`：Ichimoku 云交易信号工具
+- `wallet-tracker`：跨链监控钱包余额的工具
+- `crypto-tracker`：跟踪加密货币价格和投资组合的工具

@@ -14,20 +14,20 @@ metadata:
       bins: ["curl", "jq"]
 ---
 
-# DWLF — Market Analysis Platform
+# DWLF — 市场分析平台
 
-API base: `https://api.dwlf.co.uk/v2`
+API 基础地址：`https://api.dwlf.co.uk/v2`
 
-## Auth
+## 认证
 
-Use API key auth. Check `TOOLS.md` for the key. Header:
+使用 API 密钥进行认证。请参阅 `TOOLS.md` 以获取密钥。请求头中的密钥格式如下：
 ```
 Authorization: ApiKey dwlf_sk_...
 ```
 
-Helper script: `scripts/dwlf-api.sh`
+辅助脚本：`scripts/dwlf-api.sh`
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Generic GET request
@@ -40,148 +40,144 @@ Helper script: `scripts/dwlf-api.sh`
 ./scripts/dwlf-api.sh POST /visual-backtests '{"strategyId":"...","symbol":"BTC-USD"}'
 ```
 
-## Symbol Format
+## 符号格式
 
-- Crypto: `BTC-USD`, `ETH-USD`, `SOL-USD` (always with `-USD` suffix)
-- Stocks/ETFs: `TSLA`, `NVDA`, `META`, `MARA`, `RIOT`
-- Forex: `GBP-USD`, `EUR-USD`
+- 加密货币：`BTC-USD`、`ETH-USD`、`SOL-USD`（始终带有 `-USD` 后缀）
+- 股票/ETF：`TSLA`、`NVDA`、`META`、`MARA`、`RIOT`
+- 外汇：`GBP-USD`、`EUR-USD`
 
-If user says "BTC" → use `BTC-USD`. If "TSLA" → use `TSLA`.
+如果用户输入 “BTC”，则使用 `BTC-USD`；如果输入 “TSLA”，则使用 `TSLA`。
 
-## Core Endpoints
+## 核心端点
 
-### Market Data
-| Method | Path | Description |
+### 市场数据
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/market-data/{symbol}?interval=1d&limit=50` | OHLCV candles |
-| GET | `/market-data/symbols` | List all tracked symbols |
-| GET | `/support-resistance/{symbol}` | S/R levels with scores |
-| GET | `/chart-indicators/{symbol}?interval=1d` | All indicators (RSI, EMA, MACD, etc.) |
-| GET | `/trendlines/{symbol}` | Auto-detected trendlines |
-| GET | `/events?symbol={symbol}&limit=20` | System events (breakouts) |
-| GET | `/events?type=custom_event&scope=user&symbol={symbol}&days=30` | User's custom events (wcl, dss, reversals etc.) |
+| GET | `/market-data/{symbol}?interval=1d&limit=50` | 获取 OHLCV 图表数据 |
+| GET | `/market-data/symbols` | 列出所有跟踪的符号 |
+| GET | `/support-resistance/{symbol}` | 获取带有评分的支持/阻力水平 |
+| GET | `/chart-indicators/{symbol}?interval=1d` | 获取所有指标（RSI、EMA、MACD 等） |
+| GET | `/trendlines/{symbol}` | 自动检测的趋势线 |
+| GET | `/events?symbol={symbol}&limit=20` | 系统事件（价格突破等） |
+| GET | `/events?type=custom_event&scope=user&symbol={symbol}&days=30` | 用户自定义事件（如价格波动、趋势反转等） |
 
-### Strategies & Signals
-| Method | Path | Description |
+### 策略与信号
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/visual-strategies` | List user's strategies |
-| GET | `/visual-strategies/{id}` | Strategy details |
-| POST | `/visual-strategies` | Create strategy |
-| PUT | `/visual-strategies/{id}` | Update strategy |
-| GET | `/user/trade-signals/active` | Active trade signals |
-| GET | `/user/trade-signals/recent?limit=20` | Recent signals |
-| GET | `/user/trade-signals/stats` | Signal performance stats |
-| GET | `/user/trade-signals/symbol/{symbol}` | Signals for a symbol |
+| GET | `/visual-strategies` | 列出用户的策略 |
+| GET | `/visual-strategies/{id}` | 查看策略详情 |
+| POST | `/visual-strategies` | 创建策略 |
+| PUT | `/visual-strategies/{id}` | 更新策略 |
+| GET | `/user/trade-signals/active` | 查看活跃的交易信号 |
+| GET | `/user/trade-signals/recent?limit=20` | 查看最近的信号 |
+| GET | `/user/trade-signals/stats` | 查看信号性能统计 |
+| GET | `/user/trade-signals/symbol/{symbol}` | 获取特定符号的信号 |
 
-### Backtesting
-| Method | Path | Description |
+### 回测
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| POST | `/visual-backtests` | Trigger backtest (async) |
-| GET | `/visual-backtests/{id}` | Get backtest results |
+| POST | `/visual-backtests` | 触发回测（异步进行） |
+| GET | `/visual-backtests/{id}` | 获取回测结果 |
 
-Backtests are async — POST triggers, then poll GET until complete.
+回测是异步的——先发送 POST 请求触发回测，然后通过 GET 请求获取结果。
 
-### Portfolio & Trades
-| Method | Path | Description |
+### 投资组合与交易
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/portfolios` | List portfolios |
-| GET | `/portfolios/{id}` | Portfolio details + holdings |
-| GET | `/trades?status=open` | List trades |
-| POST | `/trades` | Log a new trade |
-| PUT | `/trades/{id}` | Update trade |
-| GET | `/trade-plans` | List trade plans |
+| GET | `/portfolios` | 列出投资组合 |
+| GET | `/portfolios/{id}` | 查看投资组合详情及持仓 |
+| GET | `/trades?status=open` | 查看未平仓的交易 |
+| POST | `/trades` | 记录新的交易 |
+| PUT | `/trades/{id}` | 更新交易信息 |
+| GET | `/trade-plans` | 查看交易计划 |
 
-### Watchlist
-| Method | Path | Description |
+### 关注列表
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/watchlist` | Get watchlist |
-| POST | `/watchlist` | Add symbol (`{"symbol":"BTC-USD"}`) |
-| DELETE | `/watchlist/{symbol}` | Remove symbol |
+| GET | `/watchlist` | 查看关注列表 |
+| POST | `/watchlist` | 添加符号（例如：`{"symbol":"BTC-USD"}`） |
+| DELETE | `/watchlist/{symbol}` | 删除符号 |
 
-### Custom Events
-| Method | Path | Description |
+### 自定义事件
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| GET | `/custom-events` | List custom events |
-| POST | `/custom-events` | Create custom event |
-| GET | `/custom-events/{id}` | Event details |
+| GET | `/custom-events` | 列出所有自定义事件 |
+| POST | `/custom-events` | 创建自定义事件 |
+| GET | `/custom-events/{id}` | 查看事件详情 |
 
-### Custom Event Symbol Activation
-| Method | Path | Description |
+### 自定义事件符号的激活
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| POST | `/custom-event-symbols/:eventId/enable-all` | Bulk activate symbols for an event |
-| POST | `/custom-event-symbols/:eventId/disable-all` | Bulk deactivate symbols for an event |
-| GET | `/custom-event-symbols/event/:eventId` | Get active symbols for an event |
-| GET | `/custom-event-symbols` | List all event-symbol associations |
+| POST | `/custom-event-symbols/:eventId/enable-all` | 为某个事件批量激活符号 |
+| POST | `/custom-event-symbols/:eventId/disable-all` | 为某个事件批量停用符号 |
+| GET | `/custom-event-symbols/event/:eventId` | 查看某个事件下的活跃符号 |
+| GET | `/custom-event-symbols` | 查看所有事件与符号的关联关系 |
 
-### Strategy Symbol Activation
-| Method | Path | Description |
+### 策略符号的激活
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| POST | `/strategy-symbols/:strategyId/enable-all` | Bulk activate symbols for a strategy |
-| POST | `/strategy-symbols/:strategyId/disable-all` | Bulk deactivate symbols for a strategy |
-| GET | `/strategy-symbols/strategy/:strategyId` | Get active symbols for a strategy |
-| GET | `/strategy-symbols` | List all strategy-symbol associations |
+| POST | `/strategy-symbols/:strategyId/enable-all` | 为某个策略批量激活符号 |
+| POST | `/strategy-symbols/:strategyId/disable-all` | 为某个策略批量停用符号 |
+| GET | `/strategy-symbols/strategy/:strategyId` | 查看某个策略下的活跃符号 |
+| GET | `/strategy-symbols` | 查看所有策略与符号的关联关系 |
 
-### Evaluations
-| Method | Path | Description |
+### 评估
+| 方法 | 路径 | 描述 |
 |--------|------|-------------|
-| POST | `/evaluations` | Trigger evaluation run |
-| GET | `/evaluations/{id}` | Get evaluation results |
+| POST | `/evaluations` | 触发评估流程 |
+| GET | `/evaluations/{id}` | 查看评估结果 |
 
-## Symbol Activation (Required After Creation)
+## 符号激活（创建后必须执行）
 
-> ⚠️ **IMPORTANT:** Creating a custom event or strategy does **NOT** automatically activate it for any symbols. After creation, you **MUST** ask the user which symbols to activate it for, then call the enable endpoint. Without this step, the event/strategy will **not fire or generate signals**.
+> ⚠️ **重要提示：** 创建自定义事件或策略后，**不会自动**激活任何符号。创建后，**必须**询问用户要为哪些符号激活该事件或策略，然后调用相应的激活端点。否则，该事件/策略将不会触发或生成信号。
 
-### Workflow: Custom Events
-1. Create the event → `POST /custom-events`
-2. Compile the event → `POST /custom-events/{id}/compile`
-3. **Ask the user** which symbols to activate for
-4. **Activate symbols** → `POST /custom-event-symbols/{eventId}/enable-all` with `{ "symbols": ["BTC-USD", "ETH-USD"] }`
+### 工作流程：
 
-### Workflow: Strategies
-1. Create the strategy → `POST /visual-strategies`
-2. Compile the strategy → `POST /visual-strategies/{id}/compile`
-3. **Ask the user** which symbols to activate for
-4. **Activate symbols** → `POST /strategy-symbols/{strategyId}/enable-all` with `{ "symbols": ["BTC-USD", "ETH-USD"] }`
+**自定义事件：**
+1. 创建事件 → `POST /custom-events`
+2. 编译事件 → `POST /custom-events/{id}/compile`
+3. **询问用户**要为哪些符号激活该事件
+4. **激活符号** → `POST /custom-event-symbols/{eventId}/enable-all`，参数示例：`{"symbols": ["BTC-USD", "ETH-USD"]`
 
-### Checking Active Symbols
-- Event symbols: `GET /custom-event-symbols/event/{eventId}`
-- Strategy symbols: `GET /strategy-symbols/strategy/{strategyId}`
-- All activations: `GET /custom-event-symbols` and `GET /strategy-symbols` (query: `?activeOnly=true`)
+**策略：**
+1. 创建策略 → `POST /visual-strategies`
+2. 编译策略 → `POST /visual-strategies/{id}/compile`
+3. **询问用户**要为哪些符号激活该策略
+4. **激活符号** → `POST /strategy-symbols/{strategyId}/enable-all`，参数示例：`{"symbols": ["BTC-USD", "ETH-USD"]`
 
-### Deactivating Symbols
-- Event: `POST /custom-event-symbols/{eventId}/disable-all` with `{ "symbols": [...] }`
-- Strategy: `POST /strategy-symbols/{strategyId}/disable-all` with `{ "symbols": [...] }`
+### 检查活跃符号
+- 事件相关的符号：`GET /custom-event-symbols/event/{eventId}`
+- 策略相关的符号：`GET /strategy-symbols/strategy/{strategyId}`
+- 所有激活的符号：`GET /custom-event-symbols` 和 `GET /strategy-symbols`（查询参数：`?activeOnly=true`）
 
-## Response Formatting
+### 停用符号
+- 事件相关的符号：`POST /custom-event-symbols/{eventId}/disable-all`，参数示例：`{"symbols": [...] }`
+- 策略相关的符号：`POST /strategy-symbols/{strategyId}/disable-all`，参数示例：`{"symbols": [...] }`
 
-When presenting data to users:
+## 响应格式
 
-**Market overview:** Show price, % change, key S/R levels, and any recent events.
+向用户展示数据时：
+- **市场概览**：显示价格、百分比变化、关键的支持/阻力水平以及最近的事件。
+- **信号**：显示符号、方向、入场价、止损价、置信度评分以及策略名称。
+- **支持/阻力水平**：按评分排序（评分最高的在前），显示具体水平和触碰次数。
+- **回测结果**：显示交易数量、胜率、总回报、夏普比率以及最佳/最差的交易记录。
 
-**Signals:** Show symbol, direction, entry, stop loss, confidence score, strategy name.
+## 可用的指标
 
-**S/R levels:** Sort by score (strongest first), show level and touch count.
+EMA（多个周期）、SMA、RSI、MACD、Bollinger Bands、DSS（双平滑随机指标）、Stochastic RSI、ATR、ADX、OBV、成交量分布图、Ichimoku Cloud、Fibonacci 回撤线、支持/阻力线、趋势线、K线形态、SMC（订单块、FVGs、BOS/ChoCH）。
 
-**Backtests:** Show trade count, win rate, total return, Sharpe ratio, best/worst trades.
+## 学院
 
-## Available Indicators
+DWLF 学院是一个通过 CDN 提供的教育资源集合（包含 15 个主题、60 多节课），涵盖指标、事件、策略、图表分析等内容。无需认证即可使用。
 
-EMA (multiple periods), SMA, RSI, MACD, Bollinger Bands, DSS (Double Smoothed Stochastic),
-Stochastic RSI, ATR, ADX, OBV, Volume Profile, Ichimoku Cloud, Fibonacci Retracement,
-Support/Resistance, Trendlines, Candlestick Patterns, SMC (Order Blocks, FVGs, BOS/ChoCH).
+使用学院工具来阅读课程内容并理解 DWLF 的概念：
+- `dwlf_list_academy_tracks` — 浏览所有主题和课程
+- `dwlf_search_academy` — 按关键词搜索课程
+- `dwlf_get_academy_lesson` — 阅读特定课程（格式为 Markdown）
 
-## Academy
+当用户询问 “X 在 DWLF 中是如何工作的？” 或 “DSS 是什么？” 时，建议先查看学院的相关课程——很可能会有相关解释。
 
-DWLF Academy is a CDN-hosted collection of educational content (15 tracks, 60+ lessons) covering indicators, events, strategies, charting, and more. No auth required.
+## 详细参考资料
 
-Use academy tools to read lesson content and understand DWLF concepts:
-- `dwlf_list_academy_tracks` — browse all tracks and lessons
-- `dwlf_search_academy` — search by keyword
-- `dwlf_get_academy_lesson` — read a specific lesson (markdown)
-
-When a user asks "how does X work in DWLF?" or "what is DSS?", check the academy first — it likely has a lesson explaining it.
-
-## Detailed Reference
-
-- **API endpoints** (params, response shapes): read `references/api-endpoints.md`
-- **Strategy builder** (node types, edge wiring, examples): read `references/strategy-builder.md`
+- **API 端点**（参数、响应格式）：请参阅 `references/api-endpoints.md`
+- **策略构建器**（节点类型、连接方式、示例）：请参阅 `references/strategy-builder.md`

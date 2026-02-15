@@ -1,50 +1,50 @@
 ---
 name: n8n
-description: Manage n8n workflows and automations via API. Use when working with n8n workflows, executions, or automation tasks - listing workflows, activating/deactivating, checking execution status, manually triggering workflows, or debugging automation issues.
+description: 通过 API 管理 n8n 工作流和自动化任务。在处理 n8n 工作流、执行过程或自动化任务时可以使用该功能，包括列出工作流、激活/停用工作流、检查执行状态、手动触发工作流以及调试自动化问题。
 metadata: {"openclaw":{"emoji":"\u2699\ufe0f","requires":{"env":["N8N_API_KEY","N8N_BASE_URL"]},"primaryEnv":"N8N_API_KEY"}}
 ---
 
-# n8n Workflow Management
+# n8n 工作流管理
 
-Comprehensive workflow automation management for n8n platform with creation, testing, execution monitoring, and performance optimization capabilities.
+n8n 平台提供全面的工作流自动化管理功能，包括工作流的创建、测试、执行监控以及性能优化。
 
-## ⚠️ CRITICAL: Workflow Creation Rules
+## ⚠️ 重要提示：工作流创建规则
 
-**When creating n8n workflows, ALWAYS:**
+**在创建 n8n 工作流时，务必：**
 
-1. ✅ **Generate COMPLETE workflows** with all functional nodes
-2. ✅ **Include actual HTTP Request nodes** for API calls (ImageFX, Gemini, Veo, Suno, etc.)
-3. ✅ **Add Code nodes** for data transformation and logic
-4. ✅ **Create proper connections** between all nodes
-5. ✅ **Use real node types** (n8n-nodes-base.httpRequest, n8n-nodes-base.code, n8n-nodes-base.set)
+1. ✅ **生成完整的工作流**，包含所有功能节点。
+2. ✅ **添加实际的 HTTP 请求节点** 以进行 API 调用（例如 ImageFX、Gemini、Veo、Suno 等）。
+3. ✅ **添加代码节点** 以处理数据转换和逻辑操作。
+4. ✅ **正确连接所有节点**。
+5. ✅ **使用真实的节点类型**（如 n8n-nodes-base.httpRequest、n8n-nodes-base.code、n8n-nodes-base.set）。
 
-**NEVER:**
-- ❌ Create "Setup Instructions" placeholder nodes
-- ❌ Generate workflows with only TODO comments
-- ❌ Make incomplete workflows requiring manual node addition
-- ❌ Use text-only nodes as substitutes for real functionality
+**严禁：**
+- ❌ 创建仅包含“设置说明”的占位符节点。
+- ❌ 仅使用 TODO 注释来生成工作流。
+- ❌ 创建需要手动添加节点的不完整工作流。
+- ❌ 用纯文本节点替代实际的功能节点。
 
-**Example GOOD workflow:**
+**示例（正确的工作流）：**
 ```
 Manual Trigger → Set Config → HTTP Request (API call) → Code (parse) → Response
 ```
 
-**Example BAD workflow:**
+**示例（错误的工作流）：**
 ```
 Manual Trigger → Code ("Add HTTP nodes here, configure APIs...")
 ```
 
-Always build the complete, functional workflow with all necessary nodes configured and connected.
+务必构建完整且功能齐全的工作流，确保所有必要的节点都已配置并正确连接。
 
-## Setup
+## 设置
 
-**Required environment variables:**
-- `N8N_API_KEY` — Your n8n API key (Settings → API in the n8n UI)
-- `N8N_BASE_URL` — Your n8n instance URL
+**所需环境变量：**
+- `N8N_API_KEY` — 你的 n8n API 密钥（在 n8n 用户界面中的“设置” → “API”中设置）。
+- `N8N_BASE_URL` — 你的 n8n 实例 URL。
 
-**Configure credentials via OpenClaw settings:**
+**通过 OpenClaw 设置配置凭据：**
 
-Add to `~/.config/openclaw/settings.json`:
+将以下内容添加到 `~/.config/openclaw/settings.json` 文件中：
 ```json
 {
   "skills": {
@@ -58,49 +58,49 @@ Add to `~/.config/openclaw/settings.json`:
 }
 ```
 
-Or set per-session (do **not** persist secrets in shell rc files):
+或者设置为会话级凭据（**不要** 将敏感信息保存在 shell 配置文件中）：
 ```bash
 export N8N_API_KEY="your-api-key-here"
 export N8N_BASE_URL="your-n8n-url-here"
 ```
 
-**Verify connection:**
+**验证连接：**
 ```bash
 python3 scripts/n8n_api.py list-workflows --pretty
 ```
 
-> **Security note:** Never store API keys in plaintext shell config files (`~/.bashrc`, `~/.zshrc`). Use the OpenClaw settings file or a secure secret manager.
+> **安全提示：** **切勿** 将 API 密钥以明文形式保存在 shell 配置文件（如 `~/.bashrc`、`~/.zshrc`）中。请使用 OpenClaw 设置文件或安全的密钥管理工具。
 
-## Quick Reference
+## 快速参考
 
-### Workflow Management
+### 工作流管理
 
-#### List Workflows
+#### 列出工作流
 ```bash
 python3 scripts/n8n_api.py list-workflows --pretty
 python3 scripts/n8n_api.py list-workflows --active true --pretty
 ```
 
-#### Get Workflow Details
+#### 获取工作流详情
 ```bash
 python3 scripts/n8n_api.py get-workflow --id <workflow-id> --pretty
 ```
 
-#### Create Workflows
+#### 创建工作流
 ```bash
 # From JSON file
 python3 scripts/n8n_api.py create --from-file workflow.json
 ```
 
-#### Activate/Deactivate
+#### 激活/停用工作流
 ```bash
 python3 scripts/n8n_api.py activate --id <workflow-id>
 python3 scripts/n8n_api.py deactivate --id <workflow-id>
 ```
 
-### Testing & Validation
+### 测试与验证
 
-#### Validate Workflow Structure
+#### 验证工作流结构
 ```bash
 # Validate existing workflow
 python3 scripts/n8n_tester.py validate --id <workflow-id>
@@ -112,7 +112,7 @@ python3 scripts/n8n_tester.py validate --file workflow.json --pretty
 python3 scripts/n8n_tester.py report --id <workflow-id>
 ```
 
-#### Dry Run Testing
+#### 干运行测试
 ```bash
 # Test with data
 python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data '{"email": "test@example.com"}'
@@ -124,15 +124,15 @@ python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data-file test-data.j
 python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data-file test.json --report
 ```
 
-#### Test Suite
+#### 测试套件
 ```bash
 # Run multiple test cases
 python3 scripts/n8n_tester.py test-suite --id <workflow-id> --test-suite test-cases.json
 ```
 
-### Execution Monitoring
+### 执行监控
 
-#### List Executions
+#### 列出执行记录
 ```bash
 # Recent executions (all workflows)
 python3 scripts/n8n_api.py list-executions --limit 10 --pretty
@@ -141,12 +141,12 @@ python3 scripts/n8n_api.py list-executions --limit 10 --pretty
 python3 scripts/n8n_api.py list-executions --id <workflow-id> --limit 20 --pretty
 ```
 
-#### Get Execution Details
+#### 获取执行详情
 ```bash
 python3 scripts/n8n_api.py get-execution --id <execution-id> --pretty
 ```
 
-#### Manual Execution
+#### 手动执行
 ```bash
 # Trigger workflow
 python3 scripts/n8n_api.py execute --id <workflow-id>
@@ -155,9 +155,9 @@ python3 scripts/n8n_api.py execute --id <workflow-id>
 python3 scripts/n8n_api.py execute --id <workflow-id> --data '{"key": "value"}'
 ```
 
-### Performance Optimization
+### 性能优化
 
-#### Analyze Performance
+#### 分析性能
 ```bash
 # Full performance analysis
 python3 scripts/n8n_optimizer.py analyze --id <workflow-id> --pretty
@@ -166,19 +166,19 @@ python3 scripts/n8n_optimizer.py analyze --id <workflow-id> --pretty
 python3 scripts/n8n_optimizer.py analyze --id <workflow-id> --days 30 --pretty
 ```
 
-#### Get Optimization Suggestions
+#### 获取优化建议
 ```bash
 # Priority-ranked suggestions
 python3 scripts/n8n_optimizer.py suggest --id <workflow-id> --pretty
 ```
 
-#### Generate Optimization Report
+#### 生成优化报告
 ```bash
 # Human-readable report with metrics, bottlenecks, and suggestions
 python3 scripts/n8n_optimizer.py report --id <workflow-id>
 ```
 
-#### Get Workflow Statistics
+#### 获取工作流统计信息
 ```bash
 # Execution statistics
 python3 scripts/n8n_api.py stats --id <workflow-id> --days 7 --pretty
@@ -186,8 +186,7 @@ python3 scripts/n8n_api.py stats --id <workflow-id> --days 7 --pretty
 
 ## Python API
 
-### Basic Usage
-
+### 基本用法
 ```python
 from scripts.n8n_api import N8nClient
 
@@ -218,8 +217,7 @@ execution = client.get_execution('execution-id')
 result = client.execute_workflow('workflow-id', data={'key': 'value'})
 ```
 
-### Validation & Testing
-
+### 验证与测试
 ```python
 from scripts.n8n_api import N8nClient
 from scripts.n8n_tester import WorkflowTester
@@ -253,8 +251,7 @@ report = tester.generate_test_report(validation, result)
 print(report)
 ```
 
-### Performance Optimization
-
+### 性能优化
 ```python
 from scripts.n8n_optimizer import WorkflowOptimizer
 
@@ -275,10 +272,9 @@ report = optimizer.generate_optimization_report(analysis)
 print(report)
 ```
 
-## Common Workflows
+## 常见工作流
 
-### 1. Validate and Test Workflow
-
+### 1. 验证和测试工作流
 ```bash
 # Validate workflow structure
 python3 scripts/n8n_tester.py validate --id <workflow-id> --pretty
@@ -291,8 +287,7 @@ python3 scripts/n8n_tester.py dry-run --id <workflow-id> \
 python3 scripts/n8n_api.py activate --id <workflow-id>
 ```
 
-### 2. Debug Failed Workflow
-
+### 2. 调试失败的工作流
 ```bash
 # Check recent executions
 python3 scripts/n8n_api.py list-executions --id <workflow-id> --limit 10 --pretty
@@ -310,8 +305,7 @@ python3 scripts/n8n_tester.py report --id <workflow-id>
 python3 scripts/n8n_optimizer.py report --id <workflow-id>
 ```
 
-### 3. Optimize Workflow Performance
-
+### 3. 优化工作流性能
 ```bash
 # Analyze current performance
 python3 scripts/n8n_optimizer.py analyze --id <workflow-id> --days 30 --pretty
@@ -329,8 +323,7 @@ python3 scripts/n8n_api.py stats --id <workflow-id> --days 30 --pretty
 python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data-file test-data.json
 ```
 
-### 4. Monitor Workflow Health
-
+### 4. 监控工作流运行状态
 ```bash
 # Check active workflows
 python3 scripts/n8n_api.py list-workflows --active true --pretty
@@ -345,168 +338,167 @@ python3 scripts/n8n_api.py stats --id <workflow-id> --pretty
 python3 scripts/n8n_optimizer.py report --id <workflow-id>
 ```
 
-## Validation Checks
+## 验证检查
 
-The testing module performs comprehensive validation:
+测试模块执行全面的验证：
 
-### Structure Validation
-- ✓ Required fields present (nodes, connections)
-- ✓ All nodes have names and types
-- ✓ Connection targets exist
-- ✓ No disconnected nodes (warning)
+### 结构验证
+- ✓ 必需字段齐全（节点、连接）
+- ✓ 所有节点都有名称和类型
+- ✓ 连接目标存在
+- ✓ 无断开的节点（警告）
 
-### Configuration Validation
-- ✓ Nodes requiring credentials are configured
-- ✓ Required parameters are set
-- ✓ HTTP nodes have URLs
-- ✓ Webhook nodes have paths
-- ✓ Email nodes have content
+### 配置验证
+- ✓ 需要凭据的节点已配置
+- ✓ 必需的参数已设置
+- ✓ HTTP 节点有 URL
+- ✓ Webhook 节点有路径
+- ✓ Email 节点有内容
 
-### Flow Validation
-- ✓ Workflow has trigger nodes
-- ✓ Proper execution flow
-- ✓ No circular dependencies
-- ✓ End nodes identified
+### 流程验证
+- ✓ 工作流包含触发节点
+- ✓ 执行流程正确
+- ✓ 无循环依赖
+- ✓ 有结束节点
 
-## Optimization Analysis
+## 优化分析
 
-The optimizer analyzes multiple dimensions:
+优化器从多个维度进行分析：
 
-### Execution Metrics
-- Total executions
-- Success/failure rates
-- Health status (excellent/good/fair/poor)
-- Error patterns
+### 执行指标
+- 总执行次数
+- 成功/失败率
+- 运行状态（优秀/良好/一般/较差）
+- 错误模式
 
-### Performance Metrics
-- Node count and complexity
-- Connection patterns
-- Expensive operations (API calls, database queries)
-- Parallel execution opportunities
+### 性能指标
+- 节点数量和复杂性
+- 连接方式
+- 耗时操作（API 调用、数据库查询）
+- 并行执行机会
 
-### Bottleneck Detection
-- Sequential expensive operations
-- High failure rates
-- Missing error handling
-- Rate limit issues
+### 瓶颈检测
+- 顺序执行的耗时操作
+- 高失败率
+- 缺乏错误处理
+- 速率限制问题
 
-### Optimization Opportunities
-- **Parallel Execution:** Identify nodes that can run concurrently
-- **Caching:** Suggest caching for repeated API calls
-- **Batch Processing:** Recommend batching for large datasets
-- **Error Handling:** Add error recovery mechanisms
-- **Complexity Reduction:** Split complex workflows
-- **Timeout Settings:** Configure execution limits
+### 优化建议
+- **并行执行：** 确定可以同时运行的节点。
+- **缓存：** 建议对重复的 API 调用进行缓存。
+- **批量处理：** 对于大型数据集建议使用批量处理。
+- **错误处理：** 添加错误恢复机制。
+- **降低复杂性：** 分解复杂的工作流。
+- **设置超时：** 配置执行时间限制。
 
-## Performance Scoring
+## 性能评分
 
-Workflows receive a performance score (0-100) based on:
+工作流会根据以下指标获得性能评分（0-100 分）：
 
-- **Success Rate:** Higher is better (50% weight)
-- **Complexity:** Lower is better (30% weight)
-- **Bottlenecks:** Fewer is better (critical: -20, high: -10, medium: -5)
-- **Optimizations:** Implemented best practices (+5 each)
+- **成功率：** 成功率越高越好（权重 50%）。
+- **复杂性：** 复杂度越低越好（权重 30%）。
+- **瓶颈：** 瓶颈越少越好（严重问题扣 20 分，高问题扣 10 分，一般问题扣 5 分）。
+- **优化措施：** 实施了最佳实践（每项加 5 分）。
 
-Score interpretation:
-- **90-100:** Excellent - Well-optimized
-- **70-89:** Good - Minor improvements possible
-- **50-69:** Fair - Optimization recommended
-- **0-49:** Poor - Significant issues
+评分解读：
+- **90-100 分：** 优秀 - 优化得很好。
+- **70-89 分：** 良好 - 需要进一步改进。
+- **50-69 分：** 一般 - 建议进行优化。
+- **0-49 分：** 较差 - 存在重大问题。
 
-## Best Practices
+## 最佳实践
 
-### Development
-1. **Plan Structure:** Design workflow nodes and connections before building
-2. **Validate First:** Always validate before deployment
-3. **Test Thoroughly:** Use dry-run with multiple test cases
-4. **Error Handling:** Add error nodes for reliability
-5. **Documentation:** Comment complex logic in Code nodes
+### 开发
+1. **规划结构：** 在构建之前设计工作流节点和连接。
+2. **先进行验证：** 部署前务必进行验证。
+3. **彻底测试：** 使用多个测试用例进行干运行测试。
+4. **错误处理：** 添加错误处理节点以确保可靠性。
+5. **文档说明：** 在代码节点中注释复杂逻辑。
 
-### Testing
-1. **Sample Data:** Create realistic test data files
-2. **Edge Cases:** Test boundary conditions and errors
-3. **Incremental:** Test each node addition
-4. **Regression:** Retest after changes
-5. **Production-like:** Use staging environment that mirrors production
+### 测试
+1. **创建真实的数据文件：** 生成符合实际的测试数据。
+2. **测试边界条件：** 测试边界情况和错误情况。
+3. **逐步测试：** 每添加一个节点都进行测试。
+4. **回归测试：** 修改后重新测试。
+5. **模拟生产环境：** 使用与生产环境相似的测试环境。
 
-### Deployment
-1. **Inactive First:** Deploy workflows in inactive state
-2. **Gradual Rollout:** Test with limited traffic initially
-3. **Monitor Closely:** Watch first executions carefully
-4. **Quick Rollback:** Be ready to deactivate if issues arise
-5. **Document Changes:** Keep changelog of modifications
+### 部署
+1. **先进行非生产环境测试：** 先在非生产环境中部署工作流。
+2. **逐步推广：** 初始阶段使用有限的流量进行测试。
+3. **密切监控：** 仔细观察首次执行情况。
+4. **快速回滚：** 准备好在出现问题时立即停用工作流。
+5. **记录变更：** 保留修改日志。
 
-### Optimization
-1. **Baseline Metrics:** Capture performance before changes
-2. **One Change at a Time:** Isolate optimization impacts
-3. **Measure Results:** Compare before/after metrics
-4. **Regular Reviews:** Schedule monthly optimization reviews
-5. **Cost Awareness:** Monitor API usage and execution costs
+### 优化
+1. **基准测试：** 在修改前记录性能数据。
+2. **一次只进行一项优化：** 分析每次优化的效果。
+3. **测量结果：** 比较修改前后的指标。
+4. **定期审查：** 定期进行性能优化审查。
+5. **成本意识：** 监控 API 使用情况和执行成本。
 
-### Maintenance
-1. **Health Checks:** Weekly execution statistics review
-2. **Error Analysis:** Investigate failure patterns
-3. **Performance Monitoring:** Track execution times
-4. **Credential Rotation:** Update credentials regularly
-5. **Cleanup:** Archive or delete unused workflows
+### 维护
+1. **定期检查：** 每周查看执行统计信息。
+2. **错误分析：** 调查失败原因。
+3. **性能监控：** 跟踪执行时间。
+4. **定期更新凭据：** 定期更新凭据。
+5. **清理：** 存档或删除不再使用的工作流。
 
-## Troubleshooting
+## 故障排除
 
-### Authentication Error
+### 认证错误
 ```
 Error: N8N_API_KEY not found in environment
 ```
-**Solution:** Set environment variable:
+**解决方法：** 设置环境变量：
 ```bash
 export N8N_API_KEY="your-api-key"
 ```
 
-### Connection Error
+### 连接错误
 ```
 Error: HTTP 401: Unauthorized
 ```
-**Solution:** 
-1. Verify API key is correct
-2. Check N8N_BASE_URL is set correctly
-3. Confirm API access is enabled in n8n
+**解决方法：**
+1. 确认 API 密钥正确。
+2. 检查 `N8N_BASE_URL` 是否设置正确。
+3. 确保 n8n 已启用 API 访问功能。
 
-### Validation Errors
+### 验证错误
 ```
 Validation failed: Node missing 'name' field
 ```
-**Solution:** Check workflow JSON structure, ensure all required fields present
+**解决方法：** 检查工作流的 JSON 结构，确保所有必需字段都存在。
 
-### Execution Timeout
+### 执行超时
 ```
 Status: timeout - Execution did not complete
 ```
-**Solution:** 
-1. Check workflow for infinite loops
-2. Reduce dataset size for testing
-3. Optimize expensive operations
-4. Set execution timeout in workflow settings
+**解决方法：**
+1. 检查工作流中是否存在无限循环。
+2. 减小测试数据集的大小。
+3. 优化耗时操作。
+4. 在工作流设置中设置执行超时。
 
-### Rate Limiting
+### 速率限制
 ```
 Error: HTTP 429: Too Many Requests
 ```
-**Solution:**
-1. Add Wait nodes between API calls
-2. Implement exponential backoff
-3. Use batch processing
-4. Check API rate limits
+**解决方法：**
+1. 在 API 调用之间添加等待节点。
+2. 实现指数级退避策略。
+3. 使用批量处理。
+4. 检查 API 的速率限制。
 
-### Missing Credentials
+### 凭据丢失
 ```
 Warning: Node 'HTTP_Request' may require credentials
 ```
-**Solution:**
-1. Configure credentials in n8n UI
-2. Assign credentials to node
-3. Test connection before activating
+**解决方法：**
+1. 在 n8n 用户界面中配置凭据。
+2. 为节点分配凭据。
+3. 在激活前测试连接是否正常。
 
-## File Structure
-
+## 文件结构
 ```
 ~/clawd/skills/n8n/
 ├── SKILL.md                    # This file
@@ -518,20 +510,20 @@ Warning: Node 'HTTP_Request' may require credentials
     └── api.md                 # n8n API reference
 ```
 
-## API Reference
+## API 参考
 
-For detailed n8n REST API documentation, see [references/api.md](references/api.md) or visit:
+有关 n8n REST API 的详细文档，请参阅 [references/api.md](references/api.md) 或访问：
 https://docs.n8n.io/api/
 
-## Support
+## 支持
 
-**Documentation:**
-- n8n Official Docs: https://docs.n8n.io
-- n8n Community Forum: https://community.n8n.io
-- n8n API Reference: https://docs.n8n.io/api/
+**文档：**
+- n8n 官方文档：https://docs.n8n.io
+- n8n 社区论坛：https://community.n8n.io
+- n8n API 参考：https://docs.n8n.io/api/
 
-**Debugging:**
-1. Use validation: `python3 scripts/n8n_tester.py validate --id <workflow-id>`
-2. Check execution logs: `python3 scripts/n8n_api.py get-execution --id <execution-id>`
-3. Review optimization report: `python3 scripts/n8n_optimizer.py report --id <workflow-id>`
-4. Test with dry-run: `python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data-file test.json`
+**调试：**
+1. 使用验证工具：`python3 scripts/n8n_tester.py validate --id <workflow-id>`
+2. 查看执行日志：`python3 scripts/n8n_api.py get-execution --id <execution-id>`
+3. 查看优化报告：`python3 scripts/n8n_optimizer.py report --id <workflow-id>`
+4. 进行干运行测试：`python3 scripts/n8n_tester.py dry-run --id <workflow-id> --data-file test.json`

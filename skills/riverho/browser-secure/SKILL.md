@@ -1,18 +1,18 @@
 ---
 name: browser-secure
-description: Secure browser automation with Chrome profile support, vault integration, approval gates, and comprehensive audit logging. Use for authenticated sites, sensitive operations, or compliance requirements.
+description: 使用 Chrome 配置文件支持、安全存储库集成、审批机制以及全面的审计日志记录功能，实现安全的浏览器自动化操作。适用于需要身份验证的网站、敏感操作或符合合规性要求的场景。
 allowed-tools: Bash
 ---
 
-# Browser Secure
+# 浏览器安全（Browser Secure）
 
-Secure browser automation with vault-backed credentials, approval gates, and audit trails.
+通过基于加密库（vault）的凭证管理、审批流程和审计日志，实现安全的浏览器自动化。
 
-## Philosophy
+## 哲学理念
 
-> **"Never trust, always verify, encrypt everything, audit all actions"**
+> **“永远不要轻信，始终验证；对所有数据进行加密；记录所有操作。”**
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Open the welcome page (default when no URL provided)
@@ -38,18 +38,18 @@ browser-secure navigate https://bank.com --interactive
 browser-secure close
 ```
 
-## Auto-Vault Credential Discovery
+## 自动发现凭证
 
-The `--auto-vault` flag enables interactive credential discovery from your password manager:
+`--auto-vault` 标志允许从您的密码管理器中交互式地发现凭证：
 
 ```bash
 browser-secure navigate https://app.neilpatel.com/ --auto-vault
 ```
 
-This will:
-1. Extract the domain from the URL (`app.neilpatel.com` → `neilpatel`)
-2. **Search Bitwarden first** (free, default), then 1Password if available
-3. Present matching items interactively:
+该功能将：
+1. 从 URL 中提取域名（例如 `app.neilpatel.com` → 提取 `neilpatel`）
+2. **首先在 Bitwarden 中搜索**（免费，默认选项），如果可用的话，也会在 1Password 中搜索
+3. 以交互方式显示匹配的凭证：
 
 ```
 🔍 Auto-discovering credentials for app.neilpatel.com...
@@ -71,14 +71,15 @@ Save this credential mapping for future use? (y/n): y
    Default vault provider set to: Bitwarden
 ```
 
-After saving, you can use the simpler command next time:
+保存设置后，下次您可以使用更简洁的命令：
+
 ```bash
 browser-secure navigate https://app.neilpatel.com/ --site=neilpatel
 ```
 
-## Profile Management
+## 配置个人资料
 
-Create isolated Chrome profiles for secure automation with automatic welcome page setup:
+创建独立的 Chrome 个人资料以进行安全自动化，并自动设置欢迎页面：
 
 ```bash
 # Create a new profile with welcome page
@@ -91,50 +92,36 @@ browser-secure profile --create "The Crustacean Station 🦞" --launch
 browser-secure profile --list
 ```
 
-### What the Welcome Page Includes
+### 欢迎页面的内容
 
-When you create a new profile, it opens with a custom welcome page that guides you through:
+创建新个人资料时，系统会打开一个自定义的欢迎页面，引导您完成以下步骤：
+1. **📖 个人资料的作用** - 解释独立自动化系统的目的
+2. **🔌 必需安装的扩展程序** - 提供直接链接以安装：
+   - Bitwarden 密码管理器
+   - OpenClaw 浏览器中继（Browser Relay）
+3. **🗝️ 加密库设置** - 逐步指导您完成 Bitwarden 或 1Password 的配置
+4. **✅ 设置检查表** - 交互式检查表，用于跟踪设置进度
+5. **🛡️ 安全信息** - 显示“您的加密库是安全的”信息，并介绍其主要功能
 
-1. **📖 Why This Profile Exists** - Explains the isolated automation concept
-2. **🔌 Required Extensions** - Direct links to install:
-   - Bitwarden password manager
-   - OpenClaw Browser Relay
-3. **🗝️ Vault Setup** - Step-by-step for Bitwarden or 1Password
-4. **✅ Setup Checklist** - Interactive checklist to track progress
-5. **🛡️ Security Info** - "Your vault is secure" messaging with key features
+### 为什么需要单独的个人资料？
 
-### Why Separate Profiles?
-
-| Aspect | Personal Profile | Automation Profile |
+| 特性 | 个人资料 | 自动化个人资料 |
 |--------|------------------|-------------------|
-| Extensions | Your personal ones | Only automation extensions |
-| Cookies | Personal logins | Isolated session state |
-| Security | Shared with daily browsing | Locked down, audited |
-| Cleanup | Manual | Automatic session timeout |
+| 扩展程序 | 个人使用的扩展程序 | 仅包含自动化相关的扩展程序 |
+| Cookies | 个人登录信息 | 会话状态被隔离 |
+| 安全性 | 与日常浏览共享 | 会话状态受到严格保护 |
+| 清理 | 需手动操作 | 会话会自动定时清除 |
 
-## Chrome Profile Support
+## 对 Chrome 个人资料的支持
 
-Browser Secure can use your existing Chrome profiles, giving you access to saved cookies, session state, and existing website logins.
+Browser Secure 可以使用您现有的 Chrome 个人资料，让您能够访问已保存的 Cookies、会话状态以及现有的网站登录信息。
 
-### List Available Profiles
+### 查看可用的个人资料
 ```bash
 browser-secure navigate https://example.com --list-profiles
 ```
 
-Output:
-```
-📋 Available Chrome profiles:
-
-  1. Person 1 ★
-     ID: Default
-     Path: /Users/river/Library/Application Support/Google/Chrome/Default
-
-  2. Work
-     ID: Profile 1
-     Path: /Users/river/Library/Application Support/Google/Chrome/Profile 1
-```
-
-### Use a Specific Profile
+### 使用特定的个人资料
 ```bash
 # By profile ID
 browser-secure navigate https://gmail.com --profile "Default"
@@ -144,37 +131,37 @@ browser-secure navigate https://gmail.com --profile "Profile 1"
 browser-secure navigate https://gmail.com --profile select
 ```
 
-### Profile vs Incognito Mode
+### 个人资料与无痕模式（Incognito Mode）的比较
 
-| Mode | Cookies | Logins | Extensions | Use Case |
+| 模式 | Cookies | 登录信息 | 扩展程序 | 使用场景 |
 |------|---------|--------|------------|----------|
-| **Incognito (default)** | ❌ None | ❌ None | ❌ None | Secure, isolated testing |
-| **Chrome Profile** | ✅ Yes | ✅ Yes | ✅ Yes | Access existing sessions |
+| **无痕模式（默认）** | ❌ 无 | ❌ 无 | ❌ 无 | 适用于安全的隔离测试 |
+| **Chrome 个人资料** | ✅ 有 | ✅ 有 | ✅ 有 | 可访问现有的会话 |
 
-**Security Note**: Browser Secure creates isolated profiles for automation without modifying your existing Chrome profiles. When using `--profile`, it reads from (but does not write to) existing profiles.
+**安全提示**：Browser Secure 会为自动化创建独立的个人资料，而不会修改您现有的 Chrome 个人资料。当使用 `--profile` 选项时，它只会读取现有资料，而不会写入新数据。
 
-## Setup
+## 设置
 
-### Option 1: Install via Clawdbot (Recommended)
+### 方式 1：通过 Clawdbot 安装（推荐）
 
-The easiest way—just ask Clawdbot:
+最简单的方法是使用 Clawdbot：
 
 ```
 Hey Clawdbot, install browser-secure for me
 ```
 
-Clawdbot will handle everything: check prerequisites, auto-install dependencies, build, and configure.
+Clawdbot 会处理所有步骤：检查先决条件、自动安装依赖项、构建并配置工具。
 
-### Option 2: Install from GitHub
+### 方式 2：从 GitHub 安装
 
 ```bash
 # Clone and install
 curl -fsSL https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install-browser-secure.sh | bash
 ```
 
-### Option 3: Manual Setup (Advanced)
+### 方式 3：手动设置（高级）
 
-If you prefer full control or are developing on the tool:
+如果您希望完全控制工具的开发过程，可以选择这种方式：
 
 ```bash
 # Clone the repository
@@ -185,26 +172,26 @@ cd openclaw/skills/browser-secure
 npm run setup
 ```
 
-This will:
-1. ✅ Check prerequisites (Node.js 18+, Chrome)
-2. 📦 **Auto-install missing dependencies** (Playwright browsers, optional vault CLIs)
-3. 🔨 Build and link the CLI globally
-4. 📝 Create default configuration
+该过程将：
+1. ✅ 检查所需的系统要求（Node.js 18.0 及更高版本、Chrome 浏览器）
+2. 📦 **自动安装缺失的依赖项**（如 Playwright 浏览器插件或可选的加密库 CLI）
+3. 🔨 全局安装并链接 CLI 工具
+4. 📝 创建默认配置文件
 
-### What Gets Auto-Installed
+### 自动安装的内容
 
-The setup automatically handles:
-- **Playwright Chromium** - Required browser binary (~50MB)
-- **Bitwarden CLI** - If `brew` is available (recommended vault)
-- **1Password CLI** - If `brew` is available (optional)
+设置过程中会自动安装以下内容：
+- **Playwright Chromium** - 必需的浏览器二进制文件（约 50MB）
+- **Bitwarden CLI**（如果系统支持 `brew`，推荐使用）
+- **1Password CLI**（如果系统支持 `brew`，可选）
 
-### Configure Vault (Optional)
+### 配置加密库（可选）
 
-After setup, configure your preferred vault using **environment variables** (recommended) or direct CLI login:
+设置完成后，您可以使用 **环境变量**（推荐）或直接通过 CLI 登录来配置您喜欢的加密库：
 
-#### Option A: .env File (Convenience for Automation)
+#### 方式 A：.env 文件（便于自动化）
 
-> ⚠️ **Security Note:** `.env` files store credentials in plaintext. Only use this on trusted, private machines. Vault integration (Bitwarden/1Password) is the recommended secure approach.
+> ⚠️ **安全提示**：.env 文件以明文形式存储凭证。请仅在可信赖的私有机器上使用此方法。建议使用 Bitwarden 或 1Password 这样的加密库进行安全存储。
 
 ```bash
 cd ~/.openclaw/workspace/skills/browser-secure
@@ -212,7 +199,7 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
-**Full Automation (API Key + Password):**
+**完全自动化（API 密钥 + 密码）：**
 ```bash
 # .env - For fully automated vault access
 BW_CLIENTID=user.xxx-xxx
@@ -220,11 +207,11 @@ BW_CLIENTSECRET=your-secret-here
 BW_PASSWORD=your-master-password
 ```
 
-**How it works:**
-1. `BW_CLIENTID/BW_CLIENTSECRET` → Authenticates with Bitwarden (replaces username/password)
-2. `BW_PASSWORD` → Decrypts your vault (required for automated access)
+**工作原理：**
+1. `BW_CLIENTID/BW_CLIENTSECRET` — 用于通过 Bitwarden 进行身份验证（替代用户名/密码）
+2. `BW_PASSWORD` — 用于解密您的加密库中的凭证（自动化访问时必需）
 
-**Alternative: Session Token**
+**替代方案：会话令牌（Session Token）**
 ```bash
 # If you prefer not to store your master password:
 export BW_SESSION=$(bw unlock --raw)
@@ -232,7 +219,7 @@ export BW_SESSION=$(bw unlock --raw)
 # BW_SESSION=xxx...
 ```
 
-#### Option B: Direct CLI Login
+#### 方式 B：直接通过 CLI 登录
 
 ```bash
 # Bitwarden (recommended - free)
@@ -248,7 +235,7 @@ op signin
 browser-secure vault --list
 ```
 
-### Verify Installation
+### 验证安装是否成功
 
 ```bash
 browser-secure --version
@@ -257,11 +244,11 @@ browser-secure screenshot
 browser-secure close
 ```
 
-## Vault Providers
+## 加密库提供商
 
-### Bitwarden (Default, Free) ⭐
+### Bitwarden（默认，免费）⭐
 
-**Recommended** — free for personal use, open source, cross-platform.
+**推荐** — 适用于个人免费使用，开源且跨平台支持。
 
 ```bash
 # Install
@@ -279,16 +266,16 @@ cp .env.example .env
 browser-secure navigate https://app.neilpatel.com/ --auto-vault
 ```
 
-**Authentication vs Unlock:**
-- **API Key** (`BW_CLIENTID/BW_CLIENTSECRET`) → Logs you into Bitwarden
-- **Master Password** (`BW_PASSWORD`) → Decrypts your vault contents
-- Both are needed for fully automated workflows
+**身份验证与解密方式：**
+- **API 密钥** (`BW_CLIENTID/BW_CLIENTSECRET`) — 用于登录 Bitwarden
+- **主密码** (`BW_PASSWORD`) — 用于解密加密库中的数据
+- 两种方式都是实现完全自动化工作流程的必要条件
 
-**Get API Key:** https://vault.bitwarden.com/#/settings/security/keys
+**获取 API 密钥：** https://vault.bitwarden.com/#/settings/security/keys
 
-### 1Password (Paid)
+### 1Password（付费服务）
 
-**Alternative** — if you already have a 1Password subscription.
+**替代方案** — 如果您已经订阅了 1Password 服务。
 
 ```bash
 # Install
@@ -302,13 +289,13 @@ eval $(op signin)
 browser-secure navigate https://app.neilpatel.com/ --auto-vault
 ```
 
-### macOS Keychain (Local)
+### macOS Keychain（本地存储）
 
-**Fallback** — store credentials in macOS Keychain (no cloud sync).
+**备用方案** — 将凭证存储在 macOS 的 Keychain 中（不进行云同步）。
 
-### Environment Variables
+### 环境变量
 
-**Emergency fallback** — set credentials via env vars:
+**紧急情况下的备用方案** — 通过环境变量设置凭证：
 
 ```bash
 export BROWSER_SECURE_NEILPATEL_USERNAME="user@example.com"
@@ -316,43 +303,44 @@ export BROWSER_SECURE_NEILPATEL_PASSWORD="secret"
 browser-secure navigate https://app.neilpatel.com/
 ```
 
-## Commands
+## 常用命令
 
-| Command | Description |
+| 命令 | 功能 |
 |---------|-------------|
-| `navigate` | **Open welcome page** (default when no URL provided) |
-| `navigate <url>` | Navigate to a URL |
-| `navigate <url> --profile <id>` | Use specific Chrome profile |
-| `navigate <url> --profile select` | Interactively choose Chrome profile |
-| `navigate <url> --list-profiles` | List available Chrome profiles |
-| `navigate <url> --auto-vault` | Auto-discover credentials (Bitwarden → 1Password → manual) |
-| `navigate <url> --site=<name>` | Use pre-configured site credentials |
-| `profile --create <name>` | Create new Chrome profile with welcome page |
-| `profile --create <name> --launch` | Create profile and launch Chrome |
-| `profile --list` | List all Chrome profiles |
-| `act "<instruction>"` | Natural language action |
-| `extract "<instruction>"` | Extract data from page |
-| `screenshot` | Take screenshot |
-| `close` | Close browser and cleanup |
-| `status` | Show session status |
-| `audit` | View audit logs |
+| `navigate` | **打开欢迎页面**（未提供 URL 时默认操作） |
+| `navigate <url>` | 导航到指定 URL |
+| `navigate <url> --profile <id>` | 使用特定的 Chrome 个人资料 |
+| `navigate <url> --profile select` | 交互式选择 Chrome 个人资料 |
+| `navigate <url> --list-profiles` | 列出所有可用的 Chrome 个人资料 |
+| `navigate <url> --auto-vault` | 自动发现凭证（依次尝试 Bitwarden、1Password，最后手动输入） |
+| `navigate <url> --site=<name>` | 使用预配置的站点凭证 |
+| `profile --create <name>` | 创建新的 Chrome 个人资料并启动浏览器 |
+| `profile --create <name> --launch` | 创建个人资料并立即打开浏览器 |
+| `profile --list` | 列出所有 Chrome 个人资料 |
+| `act "<instruction>"` | 执行特定操作 |
+| `extract "<instruction>"` | 从页面中提取数据 |
+| `screenshot` | 截取屏幕截图 |
+| `close` | 关闭浏览器并清理临时文件 |
+| `status` | 显示当前会话状态 |
+| `audit` | 查看审计日志 |
 
-## Welcome Page (Default)
+## 欢迎页面（默认设置）
 
-When you run `browser-secure navigate` without a URL, it opens the **welcome page** located at:
+当您运行 `browser-secure navigate` 且未提供 URL 时，系统会打开位于以下地址的欢迎页面：
 
 ```
 ~/.openclaw/workspace/skills/browser-secure/assets/welcome.html
 ```
 
-The welcome page provides:
-- 📖 **Onboarding guide** — Why browser-secure exists and how it works
-- 🔌 **Extension links** — Direct install for Bitwarden and OpenClaw Browser Relay
-- 🗝️ **Vault setup** — Step-by-step for Bitwarden or 1Password
-- ✅ **Setup checklist** — Interactive checklist to track progress
-- 🛡️ **Security info** — "Your vault is secure" messaging with key features
+欢迎页面包含：
+- 📖 **入门指南** — 介绍 browser-secure 的用途和工作原理
+- 🔌 **扩展程序安装链接** — 提供 Bitwarden 和 OpenClaw Browser Relay 的安装指南
+- 🗝️ **加密库设置** — 逐步指导您完成 Bitwarden 或 1Password 的配置
+- ✅ **设置检查表** | 交互式检查表，帮助您完成设置
+- 🛡️ **安全信息** | 显示“您的加密库是安全的”信息，并介绍其主要功能
 
-**Pro tip:** Use the welcome page as your starting point for new profiles:
+**小贴士**：新用户可以从欢迎页面开始使用该工具：
+
 ```bash
 # Create a profile, then immediately open welcome page
 browser-secure profile --create "Work Automation" --launch
@@ -360,11 +348,11 @@ browser-secure profile --create "Work Automation" --launch
 browser-secure navigate  # Opens welcome page in the active session
 ```
 
-## Approval Modes (Hybrid Design)
+## 审批流程（混合设计）
 
-browser-secure operates in **unattended mode by default**, making it ideal for agent automation while preserving safety guardrails.
+Browser Secure 默认以 **无人值守模式** 运行，非常适合自动化任务，同时保留了必要的安全防护措施。
 
-### Default Mode: Unattended (Automation-First)
+### 默认模式：无人值守（自动化优先）
 
 ```bash
 # All commands run unattended by default - no interactive prompts
@@ -373,15 +361,15 @@ browser-secure act "fill the search form"
 browser-secure extract "get all links"
 ```
 
-In this mode:
-- ✅ All non-destructive actions execute immediately
-- ✅ Credentials auto-injected from vault
-- ✅ Audit trail written automatically
-- ⚠️ Destructive actions (delete, purchase) require `--skip-approval` or `--interactive`
+在该模式下：
+- ✅ 所有非破坏性操作会立即执行
+- ✅ 凭证会自动从加密库中获取
+- ✅ 所有操作都会自动记录审计日志
+- ⚠️ 破坏性操作（如删除、购买等）需要使用 `--skip-approval` 或 `--interactive` 选项
 
-### Interactive Mode (Human-in-the-Loop)
+### 交互模式（人工干预）
 
-For sensitive operations, use `--interactive` to enable approval prompts:
+对于敏感操作，可以使用 `--interactive` 选项来启用审批流程：
 
 ```bash
 # Enable tiered approval gates
@@ -391,33 +379,33 @@ browser-secure navigate https://bank.com --interactive
 browser-secure act "transfer $1000" --interactive
 ```
 
-Approval tiers in interactive mode:
+**交互模式下的审批层级：**
 
-| Tier | Actions | Approval |
+| 功能 | 执行操作 | 是否需要审批 |
 |------|---------|----------|
-| Read-only | navigate, screenshot, extract | None |
-| Form fill | type, select, click | Prompt |
-| Authentication | fill_password, submit_login | Always |
-| Destructive | delete, purchase | 2FA required |
+| 仅读取数据 | 导航、截图、提取数据 | 无需审批 |
+| 填写表单 | 输入信息、选择选项、点击按钮 | 需要审批 |
+| 身份验证 | 输入密码、提交登录信息 | 必须审批 |
+| 破坏性操作 | 删除数据、执行购买等操作 | 需要双重身份验证（2FA） |
 
-### Force Override (Emergency)
+### 强制覆盖设置（紧急情况下使用）
 
 ```bash
 # Skip ALL approvals including destructive (DANGEROUS)
 browser-secure act "delete account" --skip-approval
 ```
 
-⚠️ **Warning:** `--skip-approval` bypasses all safety checks. Use only in fully automated, sandboxed environments.
+**警告**：`--skip-approval` 选项会绕过所有安全检查。请仅在完全自动化的、隔离的环境中使用此选项。
 
-### Session Security
-- Time-bounded (30 min default, auto-expiry)
-- Isolated work directories (UUID-based)
-- **Incognito mode** (no persistent profile) — default
-- **Chrome profile support** (your cookies, logins, extensions) — opt-in via `--profile`
-- Secure cleanup (overwrite + delete)
-- Network restrictions (block localhost/private IPs)
+### 会话安全设置
+- 会话具有时间限制（默认为 30 分钟，过期后自动清除）
+- 使用基于 UUID 的隔离工作目录
+- **无痕模式**（无持久化的个人资料数据）
+- **支持使用 Chrome 个人资料**（可选项，需通过 `--profile` 参数启用）
+- 安全清理机制（会自动覆盖和删除临时文件）
+- 对网络访问有限制（禁止访问本地主机和私有 IP 地址）
 
-### Audit Trail
+### 审计日志
 
 ```json
 {
@@ -429,50 +417,50 @@ browser-secure act "delete account" --skip-approval
 }
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Purpose |
+| 变量 | 用途 |
 |----------|---------|
-| `BROWSER_SECURE_CONFIG` | Config file path |
-| `BW_CLIENTID` | Bitwarden API key ID (for automation) |
-| `BW_CLIENTSECRET` | Bitwarden API key secret (for automation) |
-| `BW_PASSWORD` | Bitwarden master password (alternative) |
-| `BW_SESSION` | Bitwarden session token (legacy) |
-| `OP_SERVICE_ACCOUNT_TOKEN` | 1Password service account |
-| `BROWSER_SECURE_{SITE}_PASSWORD` | Env-based credentials |
+| `BROWSERSecure_CONFIG` | 配置文件的路径 |
+| `BW_CLIENTID` | 用于自动化的 Bitwarden API 密钥 ID |
+| `BW_CLIENTSECRET` | 用于自动化的 Bitwarden API 密钥密钥 |
+| `BW_PASSWORD` | 用于自动化的 Bitwarden 主密码 |
+| `BW_SESSION` | 旧版本的 Bitwarden 会话令牌 |
+| `OP_SERVICE_ACCOUNT_TOKEN` | 1Password 服务账户的访问令牌 |
+| `BROWSERSecure_{SITE}_PASSWORD` | 基于环境变量的凭证信息 |
 
-## Comparison with browser-automation
+## 与普通浏览器自动化工具的比较
 
-| Feature | browser-automation | browser-secure |
+| 特性 | 普通浏览器自动化工具 | Browser Secure |
 |---------|-------------------|----------------|
-| Credentials | CLI (exposed) | Vault-backed |
-| Chrome Profiles | ❌ No | ✅ Yes (with cookies/logins) |
-| Approval | None | Tiered gates |
-| Audit | None | Full trail |
-| Session timeout | None | 30 min default |
-| Network | Unrestricted | Allow-list |
-| Best for | Quick tasks | Sensitive/authenticated |
+| 凭证管理 | 通过 CLI 进行管理（凭证可能暴露） | 基于加密库进行管理 |
+| Chrome 个人资料 | 不支持 | 支持使用 Chrome 个人资料（包括 Cookies 和登录信息） |
+| 审批流程 | 无审批机制 | 提供多层次的审批流程 |
+| 审计记录 | 无审计功能 | 提供完整的操作记录 |
+| 会话超时设置 | 无默认超时设置 | 默认超时为 30 分钟 |
+| 网络访问限制 | 无限制 | 只允许访问指定网站 |
+| 适用场景 | 适合简单任务 | 适用于需要身份验证的敏感操作 |
 
-## Troubleshooting
+## 常见问题解决方法
 
-**Chrome keychain prompt on first run**: This is normal! When Playwright launches Chrome for the first time, macOS asks if Chrome can access your keychain. You can click "Deny" since browser-secure manages credentials through your vault, not Chrome's built-in storage.
+**首次运行时出现 Chrome Keychain 提示**：这是正常现象！当 Playwright 首次启动 Chrome 时，macOS 会询问是否允许 Chrome 访问 Keychain。您可以点击“拒绝”，因为 Browser Secure 实际上是通过加密库来管理凭证的，而非使用 Chrome 的内置存储机制。
 
-**Vault not found**: Install the CLI for your preferred vault:
-- Bitwarden: `brew install bitwarden-cli`
-- 1Password: `brew install 1password-cli`
+**无法找到加密库**：请为您选择的加密库安装相应的 CLI 工具：
+- Bitwarden：`brew install bitwarden-cli`
+- 1Password：`brew install 1password-cli`
 
-**Bitwarden "Vault is locked"**: 
-- If using .env file: Check that `BW_CLIENTID` and `BW_CLIENTSECRET` are set correctly
-- Or run: `export BW_SESSION=$(bw unlock --raw)`
+**Bitwarden 显示“加密库被锁定”**：
+- 如果使用了 `.env` 文件，请确认 `BW_CLIENTID` 和 `BW_CLIENTSECRET` 的值是否设置正确
+- 或者运行命令：`export BW_SESSION=$(bw unlock --raw)`
 
-**Bitwarden API key not working**: Ensure your API key has access to the vault items you need. API keys are created at: https://vault.bitwarden.com/#/settings/security/keys
+**Bitwarden API 密钥无法使用**：请确保您的 API 密钥具有访问所需加密库数据的权限。API 密钥可以在以下链接获取：https://vault.bitwarden.com/#/settings/security/keys
 
-**Site not configured**: Use `--auto-vault` for interactive setup, or add manually to `~/.browser-secure/config.yaml`
+**站点配置问题**：使用 `--auto-vault` 选项进行交互式设置，或手动将站点配置信息添加到 `~/.browser-secure/config.yaml` 文件中
 
-**Session expired**: Default 30-minute TTL, restart with `--timeout`
+**会话过期**：会话默认在 30 分钟后过期，可以使用 `--timeout` 参数重新启动程序
 
-**Approval required**: Use `-y` for non-interactive (careful!)
+**需要审批**：对于非交互式操作，请使用 `-y` 参数来忽略审批流程（请谨慎使用）
 
-**Profile not found**: Run `browser-secure navigate https://example.com --list-profiles` to see available profiles
+**找不到个人资料**：运行 `browser-secure navigate https://example.com --list-profiles` 命令查看可用的个人资料列表
 
-**Chrome profile in use**: Close Chrome before using `--profile` option (Chrome locks profile when running)
+**使用 Chrome 个人资料时出现问题**：在使用 `--profile` 选项之前，请先关闭 Chrome 浏览器（Chrome 会在使用该选项时锁定相关个人资料）

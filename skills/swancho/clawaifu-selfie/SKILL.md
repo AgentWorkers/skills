@@ -1,35 +1,35 @@
 ---
 name: clawaifu - OpenClaw Waifu
 title: clawaifu - OpenClaw Waifu
-description: Your AI waifu companion that sends anime-style selfies
+description: 你的AI虚拟女友伴侣，会发送动漫风格的自拍照。
 allowed-tools: Bash(grok-selfie.sh:*) Read
 homepage: https://github.com/swancho/clawaifu
 metadata: {"openclaw":{"requires":{"env":["FAL_KEY","BOT_TOKEN","TELEGRAM_CHAT_ID"]},"primaryEnv":"FAL_KEY"}}
 ---
 
-# clawaifu - OpenClaw Waifu
+# clawaifu - OpenClaw 的虚拟形象生成工具
 
 **GitHub:** https://github.com/swancho/clawaifu
 
-Edit a fixed reference image using xAI's Grok Imagine model and send to Telegram.
+该工具使用 xAI 的 Grok Imagine 模型来编辑指定的参考图片，并将编辑后的图片发送到 Telegram。
 
-## Reference Image
+## 参考图片
 
-The skill uses a fixed reference image:
+该功能使用一张固定的参考图片作为生成图片的基准：
 
 ```
 https://i.redd.it/g4uf70te81uf1.jpeg
 ```
 
-## When to Use
+## 使用场景
 
-- User says "send a pic", "send me a pic", "send a photo", "send a selfie"
-- User asks "what are you doing?", "how are you doing?", "where are you?"
-- User describes a context: "send a pic wearing...", "send a pic at..."
+- 当用户请求发送图片（如 “发送一张照片” 或 “给我发张自拍”）时。
+- 当用户询问用户的当前状态或位置时。
+- 当用户提供具体场景描述时（例如 “请发送一张穿着……的照片”）。
 
-## Required Environment Variables
+## 必需的环境变量
 
-All credentials must be provided via environment variables. **Never hardcode credentials.**
+所有敏感信息（如 API 密钥）都必须通过环境变量传递。**切勿将敏感信息硬编码到代码中！**
 
 ```bash
 FAL_KEY=your_fal_api_key          # Required - Get from https://fal.ai/dashboard/keys
@@ -37,26 +37,26 @@ BOT_TOKEN=your_telegram_bot_token  # Required - Get from @BotFather
 TELEGRAM_CHAT_ID=your_chat_id      # Required - Your Telegram chat ID
 ```
 
-## Usage
+## 使用方法
 
 ```bash
 ./grok-selfie.sh "<context>" [mirror|direct] "<caption>"
 ```
 
-### Arguments
+### 参数说明
 
-1. `<context>` (required): Scene/situation description
-2. `[mode]` (optional): `mirror` (default) or `direct`
-3. `<caption>` (optional): Message to send with the image
+1. `<context>`（必填）：场景或情境的描述。
+2. `[mode]`（可选）：`mirror`（默认值）或 `direct`。
+3. `<caption>`（可选）：随图片一起发送的文字信息。
 
-### Mode Selection
+### 模式说明
 
-| Mode | Best For | Keywords |
-|------|----------|----------|
-| `mirror` | Outfit showcases, full-body shots | wearing, outfit, fashion, dress |
-| `direct` | Location shots, close-ups | cafe, beach, restaurant, portrait |
+| 模式        | 适用场景                | 关键词                          |
+|------------|------------------|--------------------------------------|
+| `mirror`     | 服装展示、全身照片           | 穿着、服装、时尚、连衣裙                |
+| `direct`     | 地点照片、特写照片           | 咖啡馆、海滩、餐厅、肖像                   |
 
-### Examples
+### 使用示例
 
 ```bash
 # Mirror selfie (outfit focus)
@@ -69,45 +69,32 @@ TELEGRAM_CHAT_ID=your_chat_id      # Required - Your Telegram chat ID
 ./grok-selfie.sh "casual outfit at home"
 ```
 
-## Character Style
+## 角色风格
 
-The script generates images of Reze from Chainsaw Man with:
-- Anime style, 2D animation, cel shading
-- Green eyes, thin line mouth, subtle smile
-- Black choker always visible
-- Outfit appropriate for the situation
+该脚本生成的图片基于《电锯人》中的 Reze 角色，具有以下特点：
+- 动画风格：2D 动画、赛璐璐阴影效果。
+- 角色特征：绿色眼睛、细线嘴型、微微微笑。
+- 常见配饰：始终佩戴黑色项圈。
+- 服装选择：根据场景自动调整。
 
-## Security Notes
+## 安全注意事项
 
-- All credentials are passed via environment variables
-- The script uses `jq` for safe JSON construction (prevents injection)
-- The script uses `curl -F` for safe form data transmission
-- Never commit credentials to version control
+- 所有敏感信息均通过环境变量传递。
+- 脚本使用 `jq` 来安全地处理 JSON 数据（防止注入攻击）。
+- 脚本使用 `curl -F` 来安全地发送表单数据。
+- 请勿将敏感信息提交到版本控制系统中。
 
-## Dependencies
+## 依赖库
 
-- `curl` - HTTP requests
-- `jq` - JSON processing
-- Environment variables: `FAL_KEY`, `BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+- `curl`：用于发送 HTTP 请求。
+- `jq`：用于处理 JSON 数据。
+- 必需的环境变量：`FAL_KEY`、`BOT_TOKEN`、`TELEGRAM_chat_ID`。
 
-## API Reference
+## API 参考
 
-### Grok Imagine Edit (fal.ai)
+- **Grok Imagine 编辑接口**：[fal.ai](https://fal.ai)
 
-```
-POST https://fal.run/xai/grok-imagine-image/edit
-Authorization: Key $FAL_KEY
-Content-Type: application/json
-
-{
-  "image_url": "reference_image_url",
-  "prompt": "edit instruction",
-  "num_images": 1,
-  "output_format": "jpeg"
-}
-```
-
-### Telegram Bot API
+### Telegram 聊天机器人 API
 
 ```
 POST https://api.telegram.org/bot$BOT_TOKEN/sendPhoto

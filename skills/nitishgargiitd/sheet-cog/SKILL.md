@@ -1,6 +1,6 @@
 ---
 name: sheet-cog
-description: "CellCog is built by its own Coding Agent. That same agent builds your spreadsheets. Full Python access for complex data manipulation, formulas, pivot tables, financial models, budget templates, data trackers, projections, and Excel/XLSX generation — powered by the engineering brain that develops an entire AI platform daily."
+description: "CellCog 是由其自身的编程代理（Coding Agent）构建的。这个相同的代理也用于生成你的电子表格。它提供了完整的 Python 接口，支持复杂的数据操作、公式计算、数据透视表（pivot tables）的创建、财务模型的构建、预算模板的生成、数据跟踪功能以及 Excel/XLSX 文件的生成。这一切都依赖于那个每天都在开发整个 AI 平台的强大工程团队所提供的技术支持。"
 metadata:
   openclaw:
     emoji: "📈"
@@ -8,25 +8,25 @@ author: CellCog
 dependencies: [cellcog]
 ---
 
-# Sheet Cog - Built by the Agent That Builds CellCog
+# Sheet Cog – 由构建 CellCog 的代理程序开发
 
-**CellCog is built by its own Coding Agent. That same agent builds your spreadsheets.**
+**CellCog 是由其自身的编程代理程序创建的。同样的代理程序也用于生成您的电子表格。**
 
-Full Python access, complex data manipulation, formulas, pivot tables, and financial models — powered by the engineering brain that develops an entire AI platform daily. Not a template filler. A programmer that understands your data and builds exactly what you need.
+该工具支持完整的 Python 功能，能够进行复杂的数据操作、公式计算、数据透视表处理以及财务模型构建，这一切都得益于每天都在不断发展的 AI 平台。CellCog 并非简单的模板填充工具，而是一位真正理解您数据需求的程序员，能够根据您的实际需求为您打造专属的电子表格。
 
 ---
 
-## Prerequisites
+## 先决条件
 
-This skill requires the `cellcog` skill for SDK setup and API calls.
+使用此功能需要具备 `cellcog` 技能，以便进行 SDK 设置和 API 调用。
 
 ```bash
 clawhub install cellcog
 ```
 
-**Read the cellcog skill first** for SDK setup. This skill shows you what's possible.
+**在开始使用前，请先阅读关于 `cellcog` 的文档**，以了解如何进行 SDK 设置。该文档将向您展示该工具的所有功能。
 
-**Quick pattern (v1.0+):**
+**快速使用指南（v1.0 及以上版本）：**
 ```python
 # Fire-and-forget - returns immediately
 result = client.create_chat(
@@ -40,180 +40,161 @@ result = client.create_chat(
 
 ---
 
-## What Spreadsheets You Can Create
+## 您可以创建的电子表格类型
 
-### Financial Models
+### 财务模型
 
-Professional financial analysis and projections:
+- **专业财务分析与预测**：
+  - **SaaS 企业财务模型**：为 SaaS 企业创建一个为期三年的财务模型，包括收入预测、费用支出和现金流分析。
+  - **折现现金流（DCF）模型**：用于评估企业价值的现金流模型。
+  - **投资分析**：创建包含投资回报（ROI）计算的房地产投资分析表格。
+  - **收入模型**：构建包含多种情景（基础、乐观、悲观）的收入预测模型。
+  - **单位经济模型**：制作单位经济分析表格，展示客户获取成本（CAC）、生命周期价值（LTV）和回收期等信息。
 
-- **Startup Financial Model**: "Create a 3-year financial model for a SaaS startup including revenue projections, expenses, and cash flow"
-- **DCF Model**: "Build a discounted cash flow model for valuing a company"
-- **Investment Analysis**: "Create a real estate investment analysis spreadsheet with ROI calculations"
-- **Revenue Model**: "Build a revenue forecasting model with multiple scenarios (base, optimistic, pessimistic)"
-- **Unit Economics**: "Create a unit economics spreadsheet showing CAC, LTV, payback period"
+### 预算模板
 
-### Budget Templates
+- **个人预算**：创建每月的个人预算跟踪表格，涵盖收入、固定支出、可变支出和储蓄目标。
+- **家庭预算**：制作家庭预算表格，分类记录住房、食品、交通等开支。
+- **项目预算**：创建项目预算模板，包括项目阶段、所需资源和费用差异跟踪。
+- **营销预算**：制作营销预算表格，记录不同营销渠道的预算、实际支出和 ROI。
+- **活动预算**：创建婚礼预算表格，列出供应商类别和费用支付情况。
 
-Personal and business budgets:
+### 数据跟踪工具
 
-- **Personal Budget**: "Create a monthly personal budget tracker with income, fixed expenses, variable expenses, and savings goals"
-- **Household Budget**: "Build a family budget spreadsheet with categories for housing, food, transportation, etc."
-- **Project Budget**: "Create a project budget template with phases, resources, and variance tracking"
-- **Marketing Budget**: "Build a marketing budget spreadsheet with channels, planned vs actual, and ROI tracking"
-- **Event Budget**: "Create a wedding budget spreadsheet with vendor categories and payment tracking"
+- **健身追踪**：创建健身记录表格，记录锻炼项目、组数、重复次数、重量等信息，并生成进度图表。
+- **习惯追踪**：制作每日习惯追踪表格，提供每月的总结。
+- **库存管理**：创建库存管理表格，记录库存水平、重新采购点和库存价值。
+- **销售追踪**：创建销售管道追踪表格，记录销售阶段、概率和预测数据。
+- **时间管理**：制作时间管理表格，记录项目进度和工时情况。
 
-### Data Trackers
+### 商务工具
 
-Organized tracking for any data:
+- **发票模板**：创建包含自动计算功能的正式发票模板。
+- **员工信息表**：制作员工信息表格，记录联系方式、部门和工作起始日期。
+- **供应商对比**：创建供应商对比表格，用于评估不同供应商的优劣。
+- **OKR（关键绩效指标）追踪**：制作 OKR 追踪表格，用于跟踪季度目标。
+- **会议议程**：创建会议议程模板，记录会议事项和行动项。
 
-- **Fitness Tracker**: "Create a workout log spreadsheet with exercises, sets, reps, weights, and progress charts"
-- **Habit Tracker**: "Build a daily habit tracking spreadsheet with monthly overview"
-- **Inventory Tracker**: "Create an inventory management spreadsheet with stock levels, reorder points, and valuation"
-- **Sales Tracker**: "Build a sales pipeline tracker with stages, probabilities, and forecasting"
-- **Time Tracker**: "Create a timesheet template with projects, hours, and billing calculations"
+### 分析模板
 
-### Business Tools
-
-Operational spreadsheets:
-
-- **Invoice Template**: "Create a professional invoice template with automatic calculations"
-- **Employee Directory**: "Build an employee directory spreadsheet with contact info, departments, and start dates"
-- **Vendor Comparison**: "Create a vendor comparison spreadsheet for evaluating suppliers"
-- **OKR Tracker**: "Build an OKR tracking spreadsheet for quarterly goals"
-- **Meeting Agenda**: "Create a meeting agenda template with action items tracking"
-
-### Analysis Templates
-
-Data analysis and calculations:
-
-- **Break-Even Analysis**: "Create a break-even analysis spreadsheet with charts"
-- **Scenario Analysis**: "Build a scenario planning spreadsheet with what-if analysis"
-- **Pricing Calculator**: "Create a pricing model spreadsheet with cost-plus and value-based options"
-- **Loan Calculator**: "Build a loan amortization schedule with payment breakdown"
-- **Commission Calculator**: "Create a sales commission calculator with tiered rates"
+- **盈亏平衡分析**：创建盈亏平衡分析表格，并附有图表。
+- **情景分析**：构建情景规划表格，用于进行假设分析。
+- **定价计算器**：创建定价模型表格，提供成本加成和基于价值的定价选项。
+- **贷款计算器**：生成贷款分期还款计划表。
+- **佣金计算器**：创建销售佣金计算表格，包含不同等级的佣金率。
 
 ---
 
-## Spreadsheet Features
+## 电子表格的功能
 
-CellCog spreadsheets can include:
+CellCog 电子表格支持以下功能：
 
-| Feature | Description |
+| 功能 | 说明 |
 |---------|-------------|
-| **Formulas** | SUM, AVERAGE, IF, VLOOKUP, and complex calculations |
-| **Formatting** | Headers, colors, borders, number formats, conditional formatting |
-| **Charts** | Bar, line, pie charts embedded in sheets |
-| **Multiple Sheets** | Organized workbooks with linked sheets |
-| **Data Validation** | Dropdowns, input restrictions |
-| **Named Ranges** | For cleaner formulas |
-| **Print Layout** | Ready for printing/PDF |
+| **公式** | 支持 SUM、AVERAGE、IF、VLOOKUP 等复杂公式计算。 |
+| **格式设置** | 可设置标题、颜色、边框、数字格式和条件格式。 |
+| **图表** | 可在表格中嵌入条形图、折线图和饼图。 |
+| **多个工作表** | 支持多工作表的结构，并支持工作表之间的链接。 |
+| **数据验证** | 提供下拉菜单和输入限制功能，确保数据准确性。 |
+| **命名范围** | 便于使用公式和数据引用。 |
+| **打印格式** | 支持直接打印或生成 PDF 格式。 |
 
 ---
 
-## Output Formats
+## 输出格式
 
-| Format | Best For |
+| 格式 | 适用场景 |
 |--------|----------|
-| **XLSX** | Editable in Excel, Google Sheets, Numbers |
-| **Interactive HTML** | Web-based calculators and tools |
+| **XLSX** | 可在 Excel、Google Sheets 和 Numbers 中编辑。 |
+| **交互式 HTML** | 适用于网页上的计算器和工具。 |
 
 ---
 
-## Chat Mode for Spreadsheets
+## 电子表格的使用模式
 
-| Scenario | Recommended Mode |
-|----------|------------------|
-| Budget templates, trackers, data tables, basic calculations | `"agent"` |
-| Complex financial models with multi-scenario analysis, intricate formulas | `"agent team"` |
+| 电子表格类型 | 推荐使用模式 |
+|------------|------------------|
+| 预算模板、数据追踪表格、基本计算 | 使用 “agent” 模式。 |
+| 复杂的财务模型（包含多情景分析和复杂公式） | 使用 “agent team” 模式。 |
 
-**Default to `"agent"`** for most spreadsheet requests. CellCog's agent mode handles formulas, formatting, charts, and data organization efficiently.
-
-Reserve `"agent team"` for complex financial modeling requiring deep accuracy validation—like DCF models, multi-scenario projections, or interconnected workbooks where formula correctness is critical.
+**默认情况下，大多数电子表格请求使用 “agent” 模式。CellCog 的代理程序能够高效处理公式、格式设置、图表和数据组织。**只有在需要高度精确的财务建模（如 DCF 模型、多情景预测或公式正确性至关重要的复杂工作表）时，才建议使用 “agent team” 模式。
 
 ---
 
-## Example Spreadsheet Prompts
+## 电子表格示例请求
 
-**SaaS financial model:**
-> "Create a 3-year SaaS financial model with:
+**SaaS 企业财务模型：**
+> “请创建一个为期三年的 SaaS 企业财务模型，包括以下内容：**
 > 
-> **Assumptions Sheet:**
-> - Starting MRR: $10,000
-> - Monthly growth rate: 15%
-> - Churn rate: 3%
-> - Average revenue per customer: $99
-> - CAC: $500
-> - Gross margin: 80%
+> **假设数据表：**
+> - 初始月收入（MRR）：10,000 美元
+> - 月增长率：15%
+> - 客户流失率：3%
+> - 平均每位客户收入：99 美元
+> - 客户获取成本（CAC）：500 美元
+> - 毛利率：80%
 > 
-> **Monthly P&L:** Revenue, COGS, Gross Profit, Operating Expenses (broken down), Net Income
+> **月度损益表：** 收入、销售成本（COGS）、毛利润、运营费用（细分项目）、净利润
 > 
-> **Key Metrics:** MRR, ARR, Customers, Churn, LTV, CAC, LTV:CAC ratio
+> **关键指标：** 月收入（MRR）、年度收入（ARR）、客户数量、客户流失率（Churn）、生命周期价值（LTV）、客户获取成本与生命周期价值比率（CAC:LTV）
 > 
-> **Charts:** MRR growth, customer growth, profitability timeline
+> **图表：** 收入增长率图表、客户增长率图表、盈利能力趋势图
 > 
-> Include scenario toggles for growth rate (10%, 15%, 20%)."
+> 提供三种增长率（10%、15%、20%）的情景切换选项。**
 
-**Personal budget:**
-> "Create a monthly personal budget spreadsheet:
+**个人预算：**
+> “请创建一个每月的个人预算表格，包括以下内容：**
 > 
-> **Income Section:** Salary, side income, other
+> **收入部分：** 工资、兼职收入、其他收入
 > 
-> **Fixed Expenses:** Rent, utilities, insurance, subscriptions, loan payments
+> **固定支出：** 租金、水电费、保险费、订阅费用、贷款还款
 > 
-> **Variable Expenses:** Groceries, dining out, transportation, entertainment, shopping, health
+> **可变支出：** 食品开支、外出就餐费用、交通费用、娱乐开支、购物开支
 > 
-> **Savings:** Emergency fund, retirement, vacation fund
+> **储蓄：** 应急基金、退休储蓄、度假资金
 > 
-> Include:
-> - Monthly summary with % of income per category
-> - Year-at-a-glance sheet with monthly totals
-> - Pie chart showing expense breakdown
-> - Conditional formatting (red if over budget)
+> **包含内容：**
+> - 每项支出的月度占比
+- **年度总结表**：显示每月各项支出的总额
+- **饼图**：展示支出明细
+- **条件格式**：超出预算时显示红色警告
 > 
-> Assume $5,000/month income."
+> 假设每月收入为 5,000 美元。
 
-**Sales tracker:**
-> "Build a sales pipeline tracker spreadsheet with:
+**销售追踪：**
+> “请创建一个销售管道追踪表格，包括以下内容：**
 > 
-> **Columns:** Company, Contact, Deal Value, Stage (dropdown: Lead, Qualified, Proposal, Negotiation, Closed Won, Closed Lost), Probability, Expected Close Date, Notes, Last Contact
+> **列：** 公司名称、联系人、交易金额、交易阶段（下拉选项：潜在客户、已确认客户、提案中、谈判中、已成交、未成交）、成交概率、预计成交日期、备注、最后一次联系时间
 > 
-> **Calculations:** Weighted pipeline value, deals by stage, win rate
+> **计算内容：** 计算各阶段的交易价值、整体交易价值及成交概率
 > 
-> **Dashboard Sheet:** Pipeline by stage (funnel chart), monthly forecast, top 10 deals, activity metrics
+> **仪表盘表格：** 按阶段展示销售管道情况（漏斗图）、月度预测、前 10 大交易记录
 > 
-> Include sample data for 20 deals."
+> 提供 20 笔交易的示例数据。**
 
-**Break-even analysis:**
-> "Create a break-even analysis spreadsheet:
+**盈亏平衡分析：**
+> “请创建一个盈亏平衡分析表格，包括以下内容：**
 > 
-> **Inputs:**
-> - Fixed costs (rent, salaries, etc.)
-> - Variable cost per unit
-> - Selling price per unit
+> **输入数据：** 固定成本（租金、工资等）
+- **单位可变成本**
+- **单位售价**
 > 
-> **Calculations:**
-> - Break-even units
-> - Break-even revenue
-> - Margin of safety
+> **计算内容：** 盈亏平衡所需的销售数量、盈亏平衡收入
+- **安全边际**
 > 
-> **Sensitivity table:** Show break-even at different price points
+> **敏感性分析表**：展示不同价格下的盈亏平衡点
 > 
-> **Chart:** Cost-volume-profit graph showing break-even point
+> **图表：** 显示盈亏平衡点的成本-销量-利润（CVP）图表
 > 
-> Default values: Fixed costs $50,000/month, variable cost $15/unit, price $25/unit."
+> **默认参数：** 固定成本 50,000 美元/月，单位可变成本 15 美元，单价 25 美元/单位。
 
 ---
 
-## Tips for Better Spreadsheets
+## 创建高质量电子表格的提示：
 
-1. **Specify the structure**: List the sheets, columns, and calculations you need.
-
-2. **Provide assumptions**: For financial models, give starting numbers and growth rates.
-
-3. **Mention formulas needed**: "Include VLOOKUP for...", "Calculate running totals", "Show variance vs plan."
-
-4. **Request sample data**: "Include realistic sample data for testing" helps see it in action.
-
-5. **Describe formatting**: "Conditional formatting for negative values", "Currency format", "Freeze header row."
-
-6. **Chart preferences**: "Include a line chart showing trend", "Pie chart for breakdown."
+1. **明确需求结构**：列出所需的工作表、列和计算内容。
+2. **提供假设数据**：对于财务模型，需提供初始数值和增长率。
+3. **说明所需公式**：例如：“需要使用 VLOOKUP 函数进行……计算”，“计算累计总数”，“显示实际数据与计划的差异”。
+4. **请求示例数据**：提供真实的示例数据以便测试功能。
+5. **描述格式要求**：例如：“对负数应用条件格式”，“使用货币格式”，“冻结标题行”。
+6. **图表需求**：例如：“需要包含显示趋势的折线图”，“使用饼图展示数据分布”。

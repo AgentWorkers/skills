@@ -1,45 +1,44 @@
 ---
 name: kafka-architecture
-description: Apache Kafka architecture expert for cluster design, capacity planning, and high availability. Use when designing Kafka clusters, choosing partition strategies, or sizing brokers for production workloads.
+description: Apache Kafka 架构专家，专注于集群设计、容量规划以及高可用性的实现。在设计和构建 Kafka 集群时，我能够提供专业的建议，包括选择合适的分区策略以及为生产环境中的工作负载确定合适的 broker 规格。
 ---
 
-# Kafka Architecture & Design Expert
+# Kafka架构与设计专家
 
-Comprehensive knowledge of Apache Kafka architecture patterns, cluster design principles, and production best practices for building resilient, scalable event streaming platforms.
+具备对Apache Kafka架构模式、集群设计原则以及构建弹性、可扩展事件流处理平台的最佳实践的全面了解。
 
-## Core Architecture Concepts
+## 核心架构概念
 
-### Kafka Cluster Components
+### Kafka集群组件
 
-**Brokers**:
-- Individual Kafka servers that store and serve data
-- Each broker handles thousands of partitions
-- Typical: 3-10 brokers per cluster (small), 10-100+ (large enterprises)
+**Broker**：
+- 单个Kafka服务器，用于存储和提供数据服务
+- 每个Broker可以处理数千个分区
+- 通常情况下：小型集群包含3-10个Broker；大型企业则使用10-100个或更多Broker
 
-**Controller**:
-- One broker elected as controller (via KRaft or ZooKeeper)
-- Manages partition leaders and replica assignments
-- Failure triggers automatic re-election
+**Controller**：
+- 通过KRaft或ZooKeeper选举产生的一个Broker
+- 负责管理分区的领导者和副本分配
+- 当发生故障时，会触发自动重新选举
 
-**Topics**:
-- Logical channels for message streams
-- Divided into partitions for parallelism
-- Can have different retention policies per topic
+**Topic**：
+- 消息流的逻辑通道
+- 被划分为多个分区以实现并行处理
+- 每个Topic可以有不同的保留策略
 
-**Partitions**:
-- Ordered, immutable sequence of records
-- Unit of parallelism (1 partition = 1 consumer in a group)
-- Distributed across brokers for load balancing
+**Partition**：
+- 记录的有序、不可变的序列
+- 是并行处理的单位（一个Group中的消费者只能处理一个Partition）
 
-**Replicas**:
-- Copies of partitions across multiple brokers
-- 1 leader replica (serves reads/writes)
-- N-1 follower replicas (replication only)
-- In-Sync Replicas (ISR): Followers caught up with leader
+**Replica**：
+- 分布在多个Broker上的分区副本
+- 1个Leader Replica（负责读写操作）
+- N-1个Follower Replica（仅负责复制）
+- In-Sync Replicas（ISR）：与Leader保持同步的副本
 
-### KRaft vs ZooKeeper Mode
+### KRaft模式与ZooKeeper模式
 
-**KRaft Mode** (Recommended, Kafka 3.3+):
+**KRaft模式**（推荐使用，Kafka 3.3及以上版本）：
 ```yaml
 Cluster Metadata:
   - Stored in Kafka itself (no external ZooKeeper)
@@ -49,7 +48,7 @@ Cluster Metadata:
   - Simplified operations
 ```
 
-**ZooKeeper Mode** (Legacy, deprecated in 4.0):
+**ZooKeeper模式**（旧模式，已在Kafka 4.0中被弃用）：
 ```yaml
 External Coordination:
   - Requires separate ZooKeeper ensemble (3-5 nodes)
@@ -58,11 +57,11 @@ External Coordination:
   - More complex to operate
 ```
 
-**Migration**: ZooKeeper → KRaft migration supported in Kafka 3.6+
+**迁移**：Kafka 3.6及以上版本支持从ZooKeeper模式迁移到KRaft模式
 
-## Cluster Sizing Guidelines
+## 集群规模规划指南
 
-### Small Cluster (Development/Testing)
+### 小型集群（开发/测试环境）
 
 ```yaml
 Configuration:
@@ -89,7 +88,7 @@ Example Workload:
   - 7-day retention
 ```
 
-### Medium Cluster (Standard Production)
+### 中型集群（标准生产环境）
 
 ```yaml
 Configuration:
@@ -116,7 +115,7 @@ Example Workload:
   - 30-day retention
 ```
 
-### Large Cluster (High-Scale Production)
+### 大型集群（大规模生产环境）
 
 ```yaml
 Configuration:
@@ -143,7 +142,7 @@ Example Workload:
   - 90-365 day retention
 ```
 
-### Kafka Streams / Exactly-Once Semantics (EOS) Clusters
+### Kafka Streams / Exactly-Once语义（EOS）集群
 
 ```yaml
 Configuration:
@@ -171,11 +170,11 @@ Use Cases:
   - Multi-step workflows requiring atomicity
 ```
 
-## Partitioning Strategy
+## 分区策略
 
-### How Many Partitions?
+### 分区数量如何确定？
 
-**Formula**:
+**计算公式**：
 ```
 Partitions = max(
   Target Throughput / Single Partition Throughput,
@@ -189,9 +188,9 @@ Single Partition Limits:
   - Message rate: ~10K-100K msg/s
 ```
 
-**Examples**:
+**示例**：
 
-**High Throughput Topic** (Logs, Events):
+- **高吞吐量Topic**（日志、事件）：
 ```yaml
 Requirements:
   - Write: 200 MB/s
@@ -206,7 +205,7 @@ Calculation:
 Recommendation: 40-50 partitions
 ```
 
-**Low-Latency Topic** (Commands, Requests):
+- **低延迟Topic**（命令、请求）：
 ```yaml
 Requirements:
   - Write: 5 MB/s
@@ -221,15 +220,15 @@ Calculation:
 Recommendation: 4-6 partitions (keyed by user ID)
 ```
 
-**Dead Letter Queue**:
+- **死信队列**：
 ```yaml
 Recommendation: 1-3 partitions
 Reason: Low volume, order less important
 ```
 
-### Partition Key Selection
+### 分区键的选择
 
-**Good Keys** (High Cardinality, Even Distribution):
+**理想的分区键**（高基数、均匀分布）：
 ```yaml
 ✅ User ID (UUIDs):
   - Millions of unique values
@@ -247,7 +246,7 @@ Reason: Low volume, order less important
   - Example: "order-2024-11-15-abc123"
 ```
 
-**Bad Keys** (Low Cardinality, Hotspots):
+**不理想的分区键**（低基数、数据热点）：
 ```yaml
 ❌ Country Code:
   - Only ~200 values
@@ -263,7 +262,7 @@ Reason: Low volume, order less important
   - Temporal hotspot
 ```
 
-**Compound Keys** (Best of Both):
+**复合分区键**（结合两种优点）：
 ```yaml
 ✅ Country + User ID:
   - Partition by country for locality
@@ -276,9 +275,9 @@ Reason: Low volume, order less important
   - Temporal ordering
 ```
 
-## Replication & High Availability
+## 复制与高可用性
 
-### Replication Factor Guidelines
+### 复制因子指南
 
 ```yaml
 Development:
@@ -302,9 +301,7 @@ Multi-Datacenter:
   Requires: MirrorMaker 2 or Confluent Replicator
 ```
 
-### min.insync.replicas
-
-**Configuration**:
+### `min.insync.replicas`配置参数：
 ```yaml
 min.insync.replicas=2:
   - At least 2 replicas must acknowledge writes
@@ -320,9 +317,9 @@ min.insync.replicas=3:
   - For replication.factor=5 (critical systems)
 ```
 
-**Rule**: `min.insync.replicas ≤ replication.factor - 1` (to allow 1 replica failure)
+**规则**：`min.insync.replicas ≤ replication.factor - 1`（允许最多1个副本发生故障）
 
-### Rack Awareness
+### Rack Awareness（机架感知）
 
 ```yaml
 Configuration:
@@ -341,10 +338,9 @@ Placement:
   Follower 2: rack3
 ```
 
-## Retention Strategies
+## 保留策略
 
-### Time-Based Retention
-
+### 基于时间的保留策略
 ```yaml
 Short-Term (Events, Logs):
   retention.ms: 86400000  # 1 day
@@ -364,8 +360,7 @@ Infinite (Event Sourcing):
   Use Cases: Source of truth, state rebuilding
 ```
 
-### Size-Based Retention
-
+### 基于大小的保留策略
 ```yaml
 retention.bytes: 10737418240  # 10 GB per partition
 
@@ -375,7 +370,7 @@ Combined (Time OR Size):
   # Whichever limit is reached first
 ```
 
-### Compaction (Log Compaction)
+### 数据压缩（日志压缩）
 
 ```yaml
 cleanup.policy: compact
@@ -401,10 +396,9 @@ Example:
     user:123 → {name: "Alice A.", v:3}  # Latest only
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Broker Configuration
-
+### Broker配置优化
 ```yaml
 # Network threads (handle client connections)
 num.network.threads: 8  # Increase for high connection count
@@ -424,8 +418,7 @@ log.flush.interval.messages: 10000  # Flush every 10K messages
 log.flush.interval.ms: 1000         # Or every 1 second
 ```
 
-### Producer Optimization
-
+### 生产者端优化
 ```yaml
 High Throughput:
   batch.size: 65536            # 64 KB
@@ -448,8 +441,7 @@ Durability (Exactly-Once):
   transactional.id: "producer-1"
 ```
 
-### Consumer Optimization
-
+### 消费者端优化
 ```yaml
 High Throughput:
   fetch.min.bytes: 1048576     # 1 MB
@@ -464,10 +456,9 @@ Max Parallelism:
   # More consumers than partitions = idle consumers
 ```
 
-## Multi-Datacenter Patterns
+## 多数据中心架构模式
 
-### Active-Passive (Disaster Recovery)
-
+### 主从架构（灾难恢复）
 ```yaml
 Architecture:
   Primary DC: Full Kafka cluster
@@ -487,8 +478,7 @@ Recovery Time: 5-30 minutes (manual)
 Data Loss: Potential (async replication lag)
 ```
 
-### Active-Active (Geo-Replication)
-
+### 主主架构（地理复制）
 ```yaml
 Architecture:
   DC1: Kafka cluster (region A)
@@ -511,8 +501,7 @@ Use Cases:
   - Load distribution
 ```
 
-### Stretch Cluster (Synchronous Replication)
-
+### 扩展集群（同步复制）
 ```yaml
 Architecture:
   Single Kafka cluster spanning 2 DCs
@@ -533,11 +522,11 @@ Trade-offs:
   Cons: Latency penalty, network dependency
 ```
 
-## Monitoring & Observability
+## 监控与可观测性
 
-### Key Metrics
+### 关键指标
 
-**Broker Metrics**:
+- **Broker指标**：
 ```yaml
 UnderReplicatedPartitions:
   Alert: > 0 for > 5 minutes
@@ -556,7 +545,7 @@ RequestHandlerAvgIdlePercent:
   Indicates: Broker CPU saturation
 ```
 
-**Topic Metrics**:
+- **Topic指标**：
 ```yaml
 MessagesInPerSec:
   Monitor: Throughput trends
@@ -571,7 +560,7 @@ RecordsLagMax (Consumer):
   Indicates: Consumer can't keep up
 ```
 
-**Disk Metrics**:
+- **磁盘指标**：
 ```yaml
 LogSegmentSize:
   Monitor: Disk usage trends
@@ -582,10 +571,9 @@ LogFlushRateAndTimeMs:
   Alert: > 100ms p99 (slow disk)
 ```
 
-## Security Patterns
+## 安全策略
 
-### Authentication & Authorization
-
+### 认证与授权
 ```yaml
 SASL/SCRAM-SHA-512:
   - Industry standard
@@ -607,9 +595,9 @@ mTLS (Mutual TLS):
   - Best for service-to-service
 ```
 
-## Integration with SpecWeave
+## 与SpecWeave的集成
 
-**Automatic Architecture Detection**:
+- **自动架构检测**：
 ```typescript
 import { ClusterSizingCalculator } from './lib/utils/sizing';
 
@@ -630,18 +618,18 @@ console.log(recommendation);
 // }
 ```
 
-**SpecWeave Commands**:
-- `/sw-kafka:deploy` - Validates cluster sizing before deployment
-- `/sw-kafka:monitor-setup` - Configures metrics for key indicators
+- **SpecWeave命令**：
+  - `/sw-kafka:deploy`：部署前验证集群规模
+  - `/sw-kafka:monitor-setup`：配置关键指标的监控设置
 
-## Related Skills
+## 相关技能
 
-- `/sw-kafka:kafka-mcp-integration` - MCP server setup
-- `/sw-kafka:kafka-cli-tools` - CLI operations
+- `/sw-kafka:kafka-mcp-integration`：MCP服务器的配置与管理
+- `/sw-kafka:kafka-cli-tools`：Kafka的命令行工具
 
-## External Links
+## 外部链接
 
-- [Kafka Documentation - Architecture](https://kafka.apache.org/documentation/#design)
-- [Confluent - Kafka Sizing](https://www.confluent.io/blog/how-to-choose-the-number-of-topics-partitions-in-a-kafka-cluster/)
-- [KRaft Mode Overview](https://kafka.apache.org/documentation/#kraft)
-- [LinkedIn Engineering - Kafka at Scale](https://engineering.linkedin.com/kafka/running-kafka-scale)
+- [Kafka官方文档 - 架构部分](https://kafka.apache.org/documentation/#design)
+- [Confluent - 如何选择Kafka集群中的Topic数量与分区数量](https://www.confluent.io/blog/how-to-choose-the-number-of-topics-partitions-in-a-kafka-cluster/)
+- [KRaft模式概述](https://kafka.apache.org/documentation/#kraft)
+- [LinkedIn Engineering - Kafka的大规模部署实践](https://engineering.linkedin.com/kafka/running-kafka-scale)

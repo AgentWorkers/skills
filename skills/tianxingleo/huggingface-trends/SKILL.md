@@ -1,23 +1,24 @@
 ---
 name: huggingface-trends
-description: Monitor and fetch trending models from Hugging Face with support for filtering by task, library, and popularity metrics. Use when users want to check trending AI models, compare model popularity, or explore popular models by task or library. Supports export to JSON and formatted output.
+description: **从 Hugging Face 监控并获取热门模型**  
+支持按任务、库以及流行度指标进行筛选。适用于用户想要查看热门 AI 模型、比较模型受欢迎程度，或按任务/库探索热门模型的场景。支持导出为 JSON 格式以及格式化输出。
 ---
 
-# Hugging Face Trending Models
+# Hugging Face 流行模型
 
-## Quick Start
+## 快速入门
 
-Fetch the top trending models:
+获取最流行的模型：
 
 ```bash
 scripts/hf_trends.py -n 10 -p http://172.28.96.1:10808
 ```
 
-## Core Features
+## 核心功能
 
-### Fetch Trending Models
+### 获取流行模型
 
-Basic usage:
+基本用法：
 
 ```bash
 # Get top 10 trending models
@@ -30,9 +31,9 @@ scripts/hf_trends.py -n 5 -s likes -p http://172.28.96.1:10808
 scripts/hf_trends.py -n 10 -s downloads -p http://172.28.96.1:10808
 ```
 
-### Filter by Task
+### 按任务筛选模型
 
-Filter models by specific AI tasks:
+根据特定的 AI 任务筛选模型：
 
 ```bash
 # Text generation models
@@ -45,17 +46,17 @@ scripts/hf_trends.py -n 10 -t image-classification -p http://172.28.96.1:10808
 scripts/hf_trends.py -n 10 -t translation -p http://172.28.96.1:10808
 ```
 
-Common task filters:
-- `text-generation` - Large language models
-- `image-classification` - Vision models
-- `image-to-text` - Multimodal models
-- `translation` - Machine translation
-- `summarization` - Text summarization
-- `question-answering` - QA models
+常见任务筛选选项：
+- `text-generation` - 大语言模型
+- `image-classification` - 视觉模型
+- `image-to-text` - 多模态模型
+- `translation` - 机器翻译
+- `summarization` - 文本摘要
+- `question-answering` - 问答模型
 
-### Filter by Library
+### 按库筛选模型
 
-Filter by ML framework:
+根据机器学习框架筛选模型：
 
 ```bash
 # PyTorch models only
@@ -68,9 +69,9 @@ scripts/hf_trends.py -n 10 -l tensorflow -p http://172.28.96.1:10808
 scripts/hf_trends.py -n 10 -l jax -p http://172.28.96.1:10808
 ```
 
-### Export to JSON
+### 导出到 JSON
 
-Save results for further analysis:
+将结果保存以供进一步分析：
 
 ```bash
 # Export to JSON file
@@ -80,34 +81,34 @@ scripts/hf_trends.py -n 10 -j trending_models.json -p http://172.28.96.1:10808
 scripts/hf_trends.py -n 20 -t text-generation -j text_models.json -p http://172.28.96.1:10808
 ```
 
-### Proxy Configuration
+### 代理配置
 
-The script requires an HTTP proxy to access Hugging Face API (network restrictions).
+该脚本需要一个 HTTP 代理来访问 Hugging Face API（因网络限制）。
 
-Use the `-p` flag:
+使用 `-p` 标志：
 
 ```bash
 scripts/hf_trends.py -p http://172.28.96.1:10808
 ```
 
-For most WSL2 environments with v2rayN:
-- Proxy URL: `http://172.28.96.1:10808`
-- Or use dynamic IP: `http://$(ip route show | grep default | awk '{print $3}'):10808`
+对于大多数使用 v2rayN 的 WSL2 环境：
+- 代理 URL：`http://172.28.96.1:10808`
+- 或使用动态 IP：`http://$(ip route show | grep default | awk '{print $3}'):10808`
 
-## Command-Line Options
+## 命令行选项
 
-| Flag | Long Form | Description | Default |
+| 标志 | 长格式 | 描述 | 默认值 |
 |------|-----------|-------------|---------|
-| `-n` | `--limit` | Number of models to fetch | 10 |
-| `-s` | `--sort` | Sort by: trending, likes, downloads, created | trending |
-| `-t` | `--task` | Filter by task/pipeline | None |
-| `-l` | `--library` | Filter by library (pytorch, tensorflow, jax) | None |
-| `-j` | `--json` | Export results to JSON file | None |
-| `-p` | `--proxy` | Proxy URL for HTTP requests | None |
+| `-n` | `--limit` | 获取的模型数量 | 10 |
+| `-s` | `--sort` | 排序方式：按流行度、点赞数、下载次数、创建时间 | 按流行度排序 |
+| `-t` | `--task` | 按任务/流程筛选 | 无 |
+| `-l` | `--library` | 按库筛选（pytorch、tensorflow、jax） | 无 |
+| `-j` | `--json` | 将结果导出到 JSON 文件 | 无 |
+| `-p` | `--proxy` | HTTP 请求的代理 URL | 无 |
 
-## Output Format
+## 输出格式
 
-The script displays models in a structured format:
+脚本以结构化格式显示模型信息：
 
 ```
 🤖 Hugging Face 热门模型 (5 个)
@@ -119,21 +120,21 @@ The script displays models in a structured format:
 ...
 ```
 
-### Model Information
+### 模型信息
 
-Each model entry includes:
-- **Model ID**: Full Hugging Face model name
-- **Likes**: Number of likes (popularity metric)
-- **Downloads**: Total download count
-- **Task**: Primary task/pipeline (e.g., text-generation)
-- **Library**: ML framework (transformers, pytorch, tensorflow)
-- **Created/Updated**: Date information
+每个模型条目包括：
+- **模型 ID**：完整的 Hugging Face 模型名称
+- **点赞数**：模型的受欢迎程度（指标）
+- **下载次数**：总下载量
+- **任务**：主要任务/流程（例如：文本生成）
+- **库**：使用的机器学习框架（transformers、pytorch、tensorflow）
+- **创建/更新时间**：模型的创建或更新日期
 
-## Use Cases
+## 使用场景
 
-### Daily Monitoring
+### 日常监控
 
-Check trending models daily for new releases:
+每天检查流行模型，了解新发布的模型：
 
 ```bash
 # Create cron job for daily monitoring
@@ -142,9 +143,9 @@ Check trending models daily for new releases:
   -n 20 -p http://172.28.96.1:10808 >> /tmp/hf-trends.log 2>&1
 ```
 
-### Task-Specific Research
+### 任务特定研究
 
-Explore popular models for specific AI tasks:
+探索特定 AI 任务的流行模型：
 
 ```bash
 # Research trending text generation models
@@ -154,9 +155,9 @@ scripts/hf_trends.py -n 15 -t text-generation -s likes -p http://172.28.96.1:108
 scripts/hf_trends.py -n 15 -t image-to-text -s downloads -p http://172.28.96.1:10808
 ```
 
-### Framework-Specific Analysis
+### 框架特定分析
 
-Compare models by ML framework:
+按机器学习框架比较模型：
 
 ```bash
 # Compare PyTorch vs TensorFlow popularity
@@ -164,9 +165,9 @@ scripts/hf_trends.py -n 20 -l pytorch -j pytorch_models.json -p http://172.28.96
 scripts/hf_trends.py -n 20 -l tensorflow -j tensorflow_models.json -p http://172.28.96.1:10808
 ```
 
-## Integration with OpenClaw
+## 与 OpenClaw 的集成
 
-Use within OpenClaw sessions:
+在 OpenClaw 会话中使用该脚本：
 
 ```python
 # Fetch trending models programmatically
@@ -180,44 +181,44 @@ output = fetcher.format_models(models)
 print(output)
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Network Errors
+### 网络错误
 
-**Problem:** "Network is unreachable" or connection errors
+**问题**：“网络无法到达”或连接错误
 
-**Solution:** Ensure proxy is specified with `-p` flag:
+**解决方案**：确保使用 `-p` 标志指定代理：
 ```bash
 scripts/hf_trends.py -p http://172.28.96.1:10808
 ```
 
-Check if v2rayN proxy is running on Windows.
+检查 Windows 上是否正在运行 v2rayN 代理。
 
-### Empty Results
+### 结果为空
 
-**Problem:** "No models found"
+**问题**：“未找到模型”
 
-**Solution:** Try different filters or increase limit:
+**解决方案**：尝试不同的筛选条件或增加获取数量：
 ```bash
 scripts/hf_trends.py -n 50 -p http://172.28.96.1:10808
 ```
 
-### Dependencies Missing
+### 依赖项缺失
 
-**Problem:** "requests package not installed"
+**问题**：“requests 包未安装”
 
-**Solution:** Install required dependencies:
+**解决方案**：安装所需的依赖项：
 ```bash
 pip install requests
 ```
 
-## Technical Notes
+## 技术说明
 
-- **API Limitation:** Hugging Face's public API doesn't provide a dedicated trending endpoint without authentication. The script fetches recent models and sorts by popularity metrics.
-- **Proxy Requirement:** Due to network restrictions, all requests must go through a proxy. The script supports HTTP proxy configuration.
-- **Rate Limits:** The public API has rate limits. Avoid making too many requests in quick succession.
-- **Data Freshness:** Models are fetched from the Hugging Face API. Recent changes may take time to reflect.
+- **API 限制**：Hugging Face 的公共 API 没有提供专门的流行模型查询端点，因此脚本会获取最近的模型并按受欢迎程度进行排序。
+- **代理要求**：由于网络限制，所有请求都必须通过代理进行。脚本支持 HTTP 代理配置。
+- **速率限制**：公共 API 有速率限制，请避免连续发送过多请求。
+- **数据更新**：模型数据来自 Hugging Face API，最新更改可能需要一段时间才能反映在结果中。
 
-## Reference
+## 参考资料
 
-See [Hugging Face API Documentation](https://huggingface.co/docs/huggingface_hub/guides/models) for more details on model metadata and available filters.
+有关模型元数据和可用筛选条件的更多详细信息，请参阅 [Hugging Face API 文档](https://huggingface.co/docs/huggingface_hub/guides/models)。

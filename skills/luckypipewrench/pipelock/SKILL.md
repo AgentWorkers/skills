@@ -1,6 +1,6 @@
 ---
 name: pipelock
-description: Secure agent HTTP requests through a scanning proxy that catches credential leaks, SSRF, and prompt injection
+description: 通过扫描代理来保护代理的 HTTP 请求，该代理能够捕获凭证泄露（credential leaks）、跨站请求伪造（SSRF）以及脚本注入（prompt injection）攻击。
 homepage: https://github.com/luckyPipewrench/pipelock
 user-invocable: true
 metadata:
@@ -11,11 +11,11 @@ metadata:
       os: ["darwin", "linux"]
 ---
 
-# Pipelock Security Harness
+# Pipelock 安全防护工具
 
-Pipelock is a fetch proxy that sits between you and the internet. Every outbound HTTP request passes through a 7-layer scanner pipeline that catches API key leaks, SSRF attempts, prompt injection, and data exfiltration.
+Pipelock 是一个位于您与互联网之间的代理服务器。所有出站 HTTP 请求都会经过一个七层扫描流程，该流程能够检测 API 密钥泄露、SSRF（跨站请求伪造）攻击、提示注入（prompt injection）以及数据窃取行为。
 
-## Installation
+## 安装
 
 ```bash
 # Homebrew (macOS/Linux)
@@ -25,68 +25,67 @@ brew install luckyPipewrench/tap/pipelock
 go install github.com/luckyPipewrench/pipelock/cmd/pipelock@latest
 ```
 
-## Quick Start
+## 快速入门
 
-Generate a config and start the proxy:
+生成配置文件并启动代理服务：
 
 ```bash
 pipelock generate config --preset balanced -o pipelock.yaml
 pipelock run --config pipelock.yaml
 ```
 
-The proxy listens on `http://localhost:8888`. Route your HTTP requests through it:
+代理服务器监听地址为 `http://localhost:8888`。您需要将所有 HTTP 请求路由通过该代理服务器：
 
 ```bash
 curl "http://localhost:8888/fetch?url=https://example.com/api/data"
 ```
 
-## Using with MCP Servers
+## 与 MCP 服务器配合使用
 
-Wrap any MCP server to scan its responses for prompt injection:
+将任何 MCP 服务器的响应数据传递给 Pipelock，以便检测提示注入攻击：
 
 ```bash
 pipelock mcp proxy -- npx @modelcontextprotocol/server-filesystem /path/to/dir
 ```
 
-## What It Catches
+## 支持的防护功能：
 
-1. **SSRF** - blocks requests to internal IPs, catches DNS rebinding
-2. **Domain blocklist** - blocks exfiltration targets (pastebin, transfer.sh)
-3. **Rate limiting** - detects unusual request bursts
-4. **DLP patterns** - detects API keys (Anthropic, OpenAI, AWS, GitHub) in URLs and bodies
-5. **Env var leaks** - detects your actual env var values in outbound traffic
-6. **Entropy analysis** - flags high-entropy strings that look like secrets
-7. **URL length limits** - flags unusually long URLs suggesting exfiltration
+1. **SSRF 防御**：阻止对内部 IP 地址的请求，检测 DNS 重绑（DNS rebinding）行为。
+2. **域名黑名单**：阻止数据窃取目标（如 pastebin、transfer.sh 等网站）的访问。
+3. **速率限制**：检测异常的请求流量峰值。
+4. **数据泄露防护（DLP）**：检测 URL 和请求体中的 API 密钥（如 Anthropic、OpenAI、AWS、GitHub 等服务的密钥）。
+5. **环境变量泄露检测**：检测出站流量中是否包含实际的环境变量值。
+6. **熵分析**：标记那些看似敏感信息的高熵字符串。
+7. **URL 长度限制**：检测过长的 URL，以防止数据窃取行为。
 
-## Actions
+## 威胁处理方式：
 
-Configure what happens when a threat is detected:
+当检测到威胁时，您可以配置以下几种处理方式：
+- `block`：拒绝请求。
+- `strip`：删除相关内容后继续转发请求。
+- `warn`：记录日志并允许请求通过。
+- `ask`：在终端提示用户进行人工确认（y/N/s）。
 
-- `block` - reject the request
-- `strip` - redact the match and forward
-- `warn` - log and pass through
-- `ask` - terminal prompt for human approval (y/N/s)
+## 预设配置选项：
 
-## Presets
+- `balanced`：默认配置，适用于大多数场景。
+- `strict`：严格防护，设置较低的触发阈值。
+- `audit`：仅检测并记录日志，不阻止请求。
+- `claude-code`：专为 Claude Code 代理框架优化。
+- `cursor`：专为 Cursor IDE 优化。
+- `generic-agent`：适用于任何代理框架。
 
-- `balanced` - default, good for most setups
-- `strict` - blocks aggressively, tight thresholds
-- `audit` - detect and log only, never blocks
-- `claude-code` - tuned for Claude Code agent workflows
-- `cursor` - tuned for Cursor IDE
-- `generic-agent` - works with any agent framework
+## 工作区完整性检测：
 
-## Workspace Integrity
-
-Detect unauthorized changes to your workspace files:
+检测工作区文件是否被未经授权的修改：
 
 ```bash
 pipelock integrity init ./workspace
 pipelock integrity check ./workspace
 ```
 
-## More Info
+## 更多信息：
 
-- [OWASP Agentic Top 10 mapping](https://github.com/luckyPipewrench/pipelock/blob/main/docs/owasp-mapping.md)
-- [Claude Code integration guide](https://github.com/luckyPipewrench/pipelock/blob/main/docs/guides/claude-code.md)
-- Apache 2.0 license, single binary, zero dependencies
+- [OWASP 安全漏洞映射](https://github.com/luckyPipewrench/pipelock/blob/main/docs/owasp-mapping.md)
+- [Claude Code 集成指南](https://github.com/luckyPipewrench/pipelock/blob/main/docs/guides/claude-code.md)
+- 使用 Apache 2.0 许可证，仅包含一个可执行文件，无依赖项。

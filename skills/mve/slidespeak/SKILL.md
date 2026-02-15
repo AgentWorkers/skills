@@ -1,6 +1,6 @@
 ---
 name: slidespeak
-description: Generate, edit, and manage PowerPoint presentations via the SlideSpeak API. Use this skill when users want to create presentations from text or documents, edit existing presentations, or work with presentation templates.
+description: 通过 SlideSpeak API 生成、编辑和管理 PowerPoint 演示文稿。当用户需要从文本或文档创建演示文稿、编辑现有演示文稿或使用演示文稿模板时，可以使用此技能。
 allowed-tools: Bash Read Write
 metadata:
   {
@@ -14,28 +14,28 @@ metadata:
   }
 ---
 
-# SlideSpeak Presentation Skill
+# SlideSpeak 演示文稿制作技能
 
-This skill enables you to create and edit PowerPoint presentations using the SlideSpeak API.
+该技能允许您使用 SlideSpeak API 创建和编辑 PowerPoint 演示文稿。
 
-## IMPORTANT: Timing Behavior
+## 重要提示：执行时间
 
-**Presentation generation takes 30-60 seconds.**
+**生成演示文稿需要 30-60 秒。**
 
-### Option 1: Wait for completion (default)
-Run the command and wait. The script polls internally until complete:
+### 选项 1：等待完成（默认设置）
+运行命令后等待脚本完成。脚本会自动进行内部检查：
 ```bash
 node scripts/slidespeak.mjs generate --text "Topic"
 ```
-- Blocks until the task finishes (typically 30-60 seconds)
-- Returns the complete result with download URL
+- 等待任务完成（通常需要 30-60 秒）
+- 返回包含下载链接的完整结果
 
-### Option 2: Return immediately with `--no-wait`
-If you cannot wait for the command to complete, use `--no-wait`:
+### 选项 2：使用 `--no-wait` 选项立即获取结果
+如果您无法等待命令完成，可以使用 `--no-wait` 选项：
 ```bash
 node scripts/slidespeak.mjs generate --text "Topic" --no-wait
 ```
-Returns immediately with:
+立即返回结果：
 ```json
 {
   "success": true,
@@ -46,14 +46,14 @@ Returns immediately with:
 }
 ```
 
-Then poll the status until complete:
+之后继续检查任务状态，直到任务完成：
 ```bash
 node scripts/slidespeak.mjs status <task_id>
 ```
-When `task_status` is `SUCCESS`, use the `request_id` to download.
+当 `task_status` 为 `SUCCESS` 时，使用 `request_id` 下载演示文稿。
 
-### Timeout behavior
-If the script times out while waiting, it returns the task_id so you can continue polling:
+### 超时处理
+如果脚本在等待过程中超时，它会返回 `task_id`，以便您继续检查任务状态：
 ```json
 {
   "success": true,
@@ -66,35 +66,34 @@ If the script times out while waiting, it returns the task_id so you can continu
 }
 ```
 
-## Setup
+## 设置要求
 
-The `SLIDESPEAK_API_KEY` environment variable must be set. Get your API key from https://app.slidespeak.co/settings/developer
+必须设置 `SLIDESPEAK_API_KEY` 环境变量。您可以从 [https://app.slidespeak.co/settings/developer](https://app.slidespeak.co/settings/developer) 获取 API 密钥。
 
-## Quick Reference
+## 快速参考
 
-All commands use the helper script at `scripts/slidespeak.mjs`. The script handles API authentication and waits for async tasks to complete automatically (no manual polling needed).
+所有命令都使用 `scripts/slidespeak.mjs` 这个辅助脚本。该脚本负责处理 API 认证，并自动等待异步任务的完成（无需手动检查）。
 
-### Generate a Presentation from Text
+### 从文本生成演示文稿
 
 ```bash
 node scripts/slidespeak.mjs generate --text "Your topic or content" --length 6
 ```
 
-Options:
-- `--text` (required): Topic or content for the presentation
-- `--length`: Number of slides (default: 10)
-- `--template`: Template name or ID (default: "default")
-- `--language`: Output language (default: "ORIGINAL")
-- `--tone`: casual, professional, funny, educational, sales_pitch
-- `--verbosity`: concise, standard, text-heavy
-- `--no-images`: Disable stock image fetching
-- `--no-cover`: Exclude cover slide
-- `--no-toc`: Exclude table of contents
+参数选项：
+- `--text`（必填）：演示文稿的主题或内容
+- `--length`：幻灯片数量（默认：10 张）
+- `--template`：模板名称或 ID（默认：“default”）
+- `--language`：输出语言（默认：“ORIGINAL”）
+- `--tone`：风格选项（随意、专业、幽默、教育性、销售型）
+- `--verbosity`：表达风格（简洁、标准、内容丰富）
+- `--no-images`：禁用图片自动加载
+- `--no-cover`：不包含封面幻灯片
+- `--no-toc`：不包含目录
 
-### Generate from an Uploaded Document
+### 从上传的文档生成演示文稿
 
-First upload the document, then generate:
-
+首先上传文档，然后生成演示文稿：
 ```bash
 # Upload a document (PDF, DOCX, PPTX, etc.)
 node scripts/slidespeak.mjs upload /path/to/document.pdf
@@ -103,9 +102,9 @@ node scripts/slidespeak.mjs upload /path/to/document.pdf
 node scripts/slidespeak.mjs generate --document <document_uuid> --length 10
 ```
 
-Supported formats: `.pdf`, `.docx`, `.doc`, `.pptx`, `.ppt`, `.xlsx`, `.txt`, `.md`
+支持的文件格式：`.pdf`、`.docx`、`.doc`、`.pptx`、`.ppt`、`.xlsx`、`.txt`、`.md`
 
-### List Available Templates
+### 查看可用模板
 
 ```bash
 # Default templates
@@ -115,20 +114,18 @@ node scripts/slidespeak.mjs templates
 node scripts/slidespeak.mjs templates --branded
 ```
 
-### Download a Presentation
+### 下载演示文稿
 
-After generation completes, use the `request_id` to download:
-
+生成完成后，使用 `request_id` 下载演示文稿：
 ```bash
 node scripts/slidespeak.mjs download <request_id>
 ```
 
-Returns a JSON object with a short-lived download URL.
+返回一个包含临时下载链接的 JSON 对象。
 
-### Edit an Existing Presentation
+### 编辑现有演示文稿
 
-Edit slides in an existing presentation:
-
+编辑现有演示文稿中的幻灯片：
 ```bash
 # Insert a new slide at position 2
 node scripts/slidespeak.mjs edit-slide \
@@ -151,34 +148,32 @@ node scripts/slidespeak.mjs edit-slide \
   --position 4
 ```
 
-Edit types:
-- `INSERT`: Add a new slide at the position
-- `REGENERATE`: Replace existing slide content
-- `REMOVE`: Delete the slide (no prompt needed)
+编辑操作类型：
+- `INSERT`：在指定位置添加新幻灯片
+- `REGENERATE`：替换现有幻灯片的内容
+- `REMOVE`：删除幻灯片（无需提示）
 
-### Check Task Status
+### 检查任务状态
 
-For debugging or manual polling:
-
+用于调试或手动检查任务进度：
 ```bash
 node scripts/slidespeak.mjs status <task_id>
 ```
 
-### Get Account Info
+### 获取账户信息
 
 ```bash
 node scripts/slidespeak.mjs me
 ```
 
-## Slide-by-Slide Generation
+## 单个幻灯片的生成
 
-For precise control over each slide, use the slide-by-slide endpoint. See `references/API.md` for the full schema.
-
+如需对每个幻灯片进行精确控制，请使用单张幻灯片的生成接口。详细信息请参阅 `references/API.md`。
 ```bash
 node scripts/slidespeak.mjs generate-slides --config slides.json
 ```
 
-Where `slides.json` contains:
+其中 `slides.json` 文件包含所有幻灯片的详细信息：
 ```json
 {
   "slides": [
@@ -189,10 +184,9 @@ Where `slides.json` contains:
 }
 ```
 
-## Webhooks
+## Webhook
 
-Subscribe to receive notifications when tasks complete:
-
+订阅以在任务完成后接收通知：
 ```bash
 # Subscribe
 node scripts/slidespeak.mjs webhook-subscribe --url "https://your-webhook.com/endpoint"
@@ -201,21 +195,18 @@ node scripts/slidespeak.mjs webhook-subscribe --url "https://your-webhook.com/en
 node scripts/slidespeak.mjs webhook-unsubscribe --url "https://your-webhook.com/endpoint"
 ```
 
-## Error Handling
+## 错误处理
 
-The script outputs JSON with either:
-- Success: `{"success": true, "data": {...}}`
-- Error: `{"success": false, "error": "message"}`
+脚本会返回以下格式的 JSON 数据：
+- 成功：`{"success": true, "data": {...}}`
+- 错误：`{"success": false, "error": "message"}`
 
-## Common Workflows
+## 常见工作流程
 
-### Create a presentation about a topic
-```bash
+- **根据主题创建演示文稿**：```bash
 node scripts/slidespeak.mjs generate --text "Introduction to Machine Learning" --length 8 --tone educational
 ```
-
-### Create a presentation from a PDF report
-```bash
+- **从 PDF 报告生成演示文稿**：```bash
 # Upload the PDF
 RESULT=$(node scripts/slidespeak.mjs upload report.pdf)
 DOC_ID=$(echo $RESULT | jq -r '.data.document_uuid')
@@ -223,9 +214,7 @@ DOC_ID=$(echo $RESULT | jq -r '.data.document_uuid')
 # Generate presentation
 node scripts/slidespeak.mjs generate --document "$DOC_ID" --length 12
 ```
-
-### Edit a presentation to add a new slide
-```bash
+- **编辑演示文稿以添加新幻灯片**：```bash
 node scripts/slidespeak.mjs edit-slide \
   --presentation-id "abc123" \
   --type INSERT \
@@ -233,6 +222,6 @@ node scripts/slidespeak.mjs edit-slide \
   --prompt "Add a slide about quarterly revenue growth with charts"
 ```
 
-## Additional Resources
+## 额外资源
 
-For detailed API documentation including all parameters, layout types, and constraints, read `references/API.md`.
+有关 API 的详细文档（包括所有参数、布局类型和限制），请参阅 `references/API.md`。

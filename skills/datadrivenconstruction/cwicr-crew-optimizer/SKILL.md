@@ -1,31 +1,30 @@
 ---
 slug: "cwicr-crew-optimizer"
 display_name: "CWICR Crew Optimizer"
-description: "Optimize crew composition using CWICR labor norms. Balance productivity, cost, and skill requirements for construction crews."
+description: "根据CWICR劳动规范优化团队构成，平衡施工团队的生产力、成本和技能要求。"
 ---
 
-# CWICR Crew Optimizer
+# CWICR 人员优化器（Crew Optimizer）
 
-## Business Case
+## 商业案例（Business Case）
 
-### Problem Statement
-Crew planning challenges:
-- Right mix of workers?
-- Optimal crew size?
-- Balance cost vs productivity?
-- Match skills to work?
+### 问题陈述（Problem Statement）
+人员规划面临的挑战：
+- 如何选择合适的员工组合？
+- 什么才是最佳的团队规模？
+- 如何在成本与生产力之间取得平衡？
+- 如何确保员工技能与工作需求相匹配？
 
-### Solution
-Optimize crew composition using CWICR labor productivity data to balance cost, output, and skill requirements.
+### 解决方案（Solution）
+利用 CWICR 提供的劳动力生产力数据来优化团队构成，以实现成本、产出和技能要求的平衡。
 
-### Business Value
-- **Optimal productivity** - Right-sized crews
-- **Cost efficiency** - No overstaffing
-- **Skill matching** - Proper worker mix
-- **Schedule support** - Meet deadlines
+### 商业价值（Business Value）
+- **最佳生产力**：组建规模合适的团队
+- **成本效率**：避免人员过剩
+- **技能匹配**：确保员工具备所需技能
+- **日程支持**：帮助团队按时完成任务
 
-## Technical Implementation
-
+## 技术实现（Technical Implementation）
 ```python
 import pandas as pd
 import numpy as np
@@ -387,8 +386,7 @@ class CWICRCrewOptimizer:
         return output_path
 ```
 
-## Quick Start
-
+## 快速入门（Quick Start）
 ```python
 # Load CWICR data
 cwicr = pd.read_parquet("ddc_cwicr_en.parquet")
@@ -408,22 +406,21 @@ print(f"Duration: {result.duration_days} days")
 print(f"Labor Cost: ${result.total_labor_cost:,.2f}")
 ```
 
-## Common Use Cases
-
-### 1. Meet Schedule with Overtime
+## 常见使用场景（Common Use Cases）
+### 1. 通过加班来确保项目按时完成（Meet Schedule with Overtime）
 ```python
 overtime = optimizer.analyze_overtime(result, available_days=8)
 print(f"Overtime needed: {overtime['overtime_needed']}")
 print(f"Total cost: ${overtime['total_cost']:,.2f}")
 ```
 
-### 2. Compare Crews
+### 2. 比较不同团队的表现（Compare Crews）
 ```python
 for crew in [result.recommended_crew] + result.alternative_crews:
     print(f"{crew.name}: ${crew.hourly_cost}/hr")
 ```
 
-### 3. Custom Crew
+### 3. 定制团队配置（Custom Crew）
 ```python
 custom = optimizer.build_crew(
     name="Custom Concrete",
@@ -437,6 +434,6 @@ custom = optimizer.build_crew(
 )
 ```
 
-## Resources
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **DDC Book**: Chapter 3.1 - Crew Productivity Analysis
+## 资源（Resources）
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **DDC 书籍**：第 3.1 章 – 人员生产力分析（DDC Book: Chapter 3.1 – Crew Productivity Analysis）

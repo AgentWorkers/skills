@@ -1,36 +1,36 @@
 ---
 name: x402
-description: "Internet-native payments using the HTTP 402 Payment Required standard. Set up as a buyer to pay for API access, or as a seller to monetize your APIs."
+description: "基于HTTP 402 “Payment Required”标准的互联网原生支付方式。您可以设置为买家以支付API访问费用，或者设置为卖家来通过API实现盈利。"
 metadata: {"openclaw":{"emoji":"💸"}}
 ---
 
-# x402 Payment Protocol
+# x402 支付协议
 
-x402 is an open, internet-native payment standard built around the HTTP `402 Payment Required` status code. It enables programmatic payments between clients and servers without accounts, sessions, or credential management.
+x402 是一种基于 HTTP `402 Payment Required` 状态码构建的开源、互联网原生的支付标准。它支持客户端与服务器之间的程序化支付，无需账户、会话或凭证管理。
 
-**Key Benefits:**
-- Zero protocol fees (only blockchain network fees)
-- Zero friction (no accounts or KYC required)
-- Instant settlement via stablecoins
-- Works with AI agents and automated systems
+**主要优势：**
+- 无协议费用（仅收取区块链网络费用）
+- 无摩擦（无需账户或进行 KYC 验证）
+- 通过稳定币实现即时结算
+- 适用于 AI 代理和自动化系统
 
-**Documentation:** https://docs.x402.org | **GitHub:** https://github.com/coinbase/x402
-
----
-
-## How x402 Works
-
-1. Client requests a resource from a server
-2. Server responds with `402 Payment Required` + payment instructions
-3. Client signs and submits a payment payload
-4. Server verifies payment, optionally via a facilitator
-5. Server returns the requested resource
+**文档：** https://docs.x402.org | **GitHub：** https://github.com/coinbase/x402
 
 ---
 
-## Environment Variables
+## x402 的工作原理
 
-### For Buyers (Clients)
+1. 客户端向服务器请求资源。
+2. 服务器返回 `402 Payment Required` 响应，并附带支付指令。
+3. 客户端签名并提交支付数据。
+4. 服务器验证支付（可选地通过第三方机构进行验证）。
+5. 服务器返回请求的资源。
+
+---
+
+## 环境变量
+
+### 对于买家（客户端）
 ```bash
 # EVM wallet private key (Ethereum/Base/Polygon)
 EVM_PRIVATE_KEY=0x...
@@ -43,7 +43,7 @@ RESOURCE_SERVER_URL=http://localhost:4021
 ENDPOINT_PATH=/weather
 ```
 
-### For Sellers (Servers)
+### 对于卖家（服务器）
 ```bash
 # Your EVM wallet address to receive payments
 EVM_ADDRESS=0x...
@@ -57,68 +57,66 @@ FACILITATOR_URL=https://x402.org/facilitator
 
 ---
 
-## Network Identifiers (CAIP-2)
+## 网络标识符（CAIP-2）
 
-| Network | CAIP-2 ID | Description |
+| 网络 | CAIP-2 ID | 描述 |
 |---------|-----------|-------------|
 | **Base** | | |
-| Base Mainnet | `eip155:8453` | Base L2 mainnet |
-| Base Sepolia | `eip155:84532` | Base L2 testnet |
+| Base 主网 | `eip155:8453` | Base L2 主网 |
+| Base Sepolia | `eip155:84532` | Base L2 测试网 |
 | **Solana** | | |
-| Solana Mainnet | `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp` | Solana mainnet |
-| Solana Devnet | `solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1` | Solana testnet |
+| Solana 主网 | `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp` | Solana 主网 |
+| Solana 开发网 | `solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1` | Solana 测试网 |
 | **Polygon** | | |
-| Polygon Mainnet | `eip155:137` | Polygon PoS mainnet |
-| Polygon Amoy | `eip155:80002` | Polygon testnet |
+| Polygon 主网 | `eip155:137` | Polygon PoS 主网 |
+| Polygon Amoy | `eip155:80002` | Polygon 测试网 |
 | **Avalanche** | | |
-| Avalanche C-Chain | `eip155:43114` | Avalanche mainnet |
-| Avalanche Fuji | `eip155:43113` | Avalanche testnet |
+| Avalanche C-Chain | `eip155:43114` | Avalanche 主网 |
+| Avalanche Fuji | `eip155:43113` | Avalanche 测试网 |
 | **Sei** | | |
-| Sei Mainnet | `eip155:1329` | Sei EVM mainnet |
-| Sei Testnet | `eip155:713715` | Sei EVM testnet |
+| Sei 主网 | `eip155:1329` | Sei EVM 主网 |
+| Sei 测试网 | `eip155:713715` | Sei EVM 测试网 |
 | **X Layer** | | |
-| X Layer Mainnet | `eip155:196` | OKX L2 mainnet |
-| X Layer Testnet | `eip155:1952` | OKX L2 testnet |
+| X Layer 主网 | `eip155:196` | OKX L2 主网 |
+| X Layer 测试网 | `eip155:1952` | OKX L2 测试网 |
 | **SKALE** | | |
-| SKALE Base | `eip155:1187947933` | SKALE mainnet |
-| SKALE Base Sepolia | `eip155:324705682` | SKALE testnet |
+| SKALE Base | `eip155:1187947933` | SKALE 主网 |
+| SKALE Base Sepolia | `eip155:324705682` | SKALE 测试网 |
 
 
 ---
 
-## Facilitators
+## 第三方机构（支付验证与区块链结算）
 
-Facilitators handle payment verification and blockchain settlement. Choose one:
+第三方机构负责处理支付验证和区块链结算。以下是可选的机构：
 
-| Name | URL | Notes |
+| 名称 | URL | 说明 |
 |------|-----|-------|
-| x402.org | `https://x402.org/facilitator` | Default, testnet only |
-| Coinbase | `https://api.cdp.coinbase.com/platform/v2/x402` | Production |
-| PayAI | `https://facilitator.payai.network` | Production |
-| Corbits | `https://facilitator.corbits.dev` | Production |
-| x402rs | `https://facilitator.x402.rs` | Production |
-| Dexter | `https://x402.dexter.cash` | Production |
-| Heurist | `https://facilitator.heurist.xyz` | Production |
-| Kobaru | `https://gateway.kobaru.io` | Production |
-| Mogami | `https://facilitator.mogami.tech` | Production |
-| Nevermined | `https://api.live.nevermined.app/api/v1/` | Production |
-| Openfacilitator | `https://pay.openfacilitator.io` | Production |
-| Solpay | `https://x402.solpay.cash` | Production |
-| Primer | `https://x402.primer.systems` | Production |
-| xEcho | `https://facilitator.xechoai.xyz` | Production |
+| x402.org | `https://x402.org/facilitator` | 默认机构，仅支持测试网 |
+| Coinbase | `https://api.cdp.coinbase.com/platform/v2/x402` | 生产环境 |
+| PayAI | `https://facilitator.payai.network` | 生产环境 |
+| Corbits | `https://facilitator.corbits.dev` | 生产环境 |
+| x402rs | `https://facilitator.x402.rs` | 生产环境 |
+| Dexter | `https://x402.dexter.cash` | 生产环境 |
+| Heurist | `https://facilitator.heurist.xyz` | 生产环境 |
+| Kobaru | `https://gateway.kobaru.io` | 生产环境 |
+| Mogami | `https://facilitator.mogami.tech` | 生产环境 |
+| Nevermined | `https://api.live.nevermined.app/api/v1/` | 生产环境 |
+| Openfacilitator | `https://pay.openfacilitator.io` | 生产环境 |
+| Solpay | `https://x402.solpay.cash` | 生产环境 |
+| Primer | `https://x402.primer.systems` | 生产环境 |
+| xEcho | `https://facilitator.xechoai.xyz` | 生产环境 |
 
 ---
 
-# Buyer Examples (Client)
+## 客户端示例（TypeScript 使用 fetch）
 
-## TypeScript with fetch
-
-Install dependencies:
+安装依赖项：
 ```bash
 npm install @x402/fetch @x402/evm @x402/svm viem @solana/kit @scure/base dotenv
 ```
 
-Code:
+代码：
 ```typescript
 import { config } from "dotenv";
 import { x402Client, wrapFetchWithPayment, x402HTTPClient } from "@x402/fetch";
@@ -159,14 +157,14 @@ async function main(): Promise<void> {
 main().catch(console.error);
 ```
 
-## TypeScript with axios
+## 客户端示例（TypeScript 使用 axios）
 
-Install dependencies:
+安装依赖项：
 ```bash
 npm install @x402/axios @x402/evm @x402/svm axios viem @solana/kit @scure/base dotenv
 ```
 
-Code:
+代码：
 ```typescript
 import { config } from "dotenv";
 import { x402Client, wrapAxiosWithPayment, x402HTTPClient } from "@x402/axios";
@@ -207,14 +205,14 @@ async function main(): Promise<void> {
 main().catch(console.error);
 ```
 
-## Python with httpx (async)
+## 客户端示例（Python 使用 httpx（异步）**
 
-Install dependencies:
+安装依赖项：
 ```bash
 pip install "x402[httpx,evm,svm]" python-dotenv
 ```
 
-Code:
+代码：
 ```python
 import asyncio
 import os
@@ -268,14 +266,14 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Python with requests (sync)
+## 客户端示例（Python 使用 requests（同步）**
 
-Install dependencies:
+安装依赖项：
 ```bash
 pip install "x402[requests,evm,svm]" python-dotenv
 ```
 
-Code:
+代码：
 ```python
 import os
 from dotenv import load_dotenv
@@ -327,15 +325,15 @@ if __name__ == "__main__":
     main()
 ```
 
-## Go with net/http
+## 客户端示例（Python 使用 Go 和 net/http）
 
-Install dependencies:
+安装依赖项：
 ```bash
 go get github.com/coinbase/x402/go
 go get github.com/joho/godotenv
 ```
 
-Code:
+代码：
 ```go
 package main
 
@@ -392,16 +390,16 @@ func main() {
 
 ---
 
-# Seller Examples (Server)
+## 卖家示例（服务器端）
 
-## TypeScript with Express
+## 客户端示例（TypeScript 使用 Express）
 
-Install dependencies:
+安装依赖项：
 ```bash
 npm install express @x402/express @x402/core @x402/evm @x402/svm dotenv
 ```
 
-Code:
+代码：
 ```typescript
 import { config } from "dotenv";
 import express from "express";
@@ -444,14 +442,14 @@ app.get("/weather", (req, res) => {
 app.listen(4021, () => console.log("Server listening at http://localhost:4021"));
 ```
 
-## TypeScript with Hono
+## 客户端示例（TypeScript 使用 Hono）
 
-Install dependencies:
+安装依赖项：
 ```bash
 npm install hono @hono/node-server @x402/hono @x402/core @x402/evm @x402/svm dotenv
 ```
 
-Code:
+代码：
 ```typescript
 import { config } from "dotenv";
 import { paymentMiddleware, x402ResourceServer } from "@x402/hono";
@@ -494,14 +492,14 @@ serve({ fetch: app.fetch, port: 4021 });
 console.log("Server listening at http://localhost:4021");
 ```
 
-## Python with FastAPI
+## 客户端示例（Python 使用 FastAPI）
 
-Install dependencies:
+安装依赖项：
 ```bash
 pip install "x402[fastapi,evm,svm]" python-dotenv uvicorn
 ```
 
-Code:
+代码：
 ```python
 import os
 from dotenv import load_dotenv
@@ -556,14 +554,14 @@ if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=4021)
 ```
 
-## Python with Flask
+## 客户端示例（Python 使用 Flask）
 
-Install dependencies:
+安装依赖项：
 ```bash
 pip install "x402[flask,evm,svm]" python-dotenv
 ```
 
-Code:
+代码：
 ```python
 import os
 from dotenv import load_dotenv
@@ -617,16 +615,16 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=4021)
 ```
 
-## Go with Gin
+## 客户端示例（Python 使用 Gin）
 
-Install dependencies:
+安装依赖项：
 ```bash
 go get github.com/coinbase/x402/go
 go get github.com/gin-gonic/gin
 go get github.com/joho/godotenv
 ```
 
-Code:
+代码：
 ```go
 package main
 
@@ -696,37 +694,37 @@ func main() {
 
 ---
 
-# Paywall UI (Server Middleware)
+# 支付墙 UI（服务器中间件）
 
-The `@x402/paywall` package provides a pre-built paywall UI that displays when users hit a 402 Payment Required response. It handles wallet connection (MetaMask, Coinbase Wallet, Phantom, etc.), USDC balance checking, and payment submission.
+`@x402/paywall` 包提供了一个预构建的支付墙 UI，当用户收到 `402 Payment Required` 响应时会显示该界面。该 UI 负责处理钱包连接（如 MetaMask、Coinbase Wallet、Phantom 等）、检查 USDC 余额以及提交支付信息。
 
-**Important:** This package is designed for **server-side use only**. It generates a complete, self-contained HTML page (~1.9MB) with embedded React, wagmi, and wallet adapters that the server returns when a 402 response is triggered. It is **not** a standalone React component library and **cannot** be imported into an existing React application.
+**注意：** 该包仅适用于 **服务器端**。当服务器返回 `402` 响应时，它会生成一个完整的、自包含的 HTML 页面（约 1.9MB），其中包含 React、wagmi 和钱包适配器。它不是一个独立的 React 组件库，**不能** 直接导入到现有的 React 应用程序中。
 
-**Looking for React components instead?**
-- **For Solana React apps:** Use `@payai/x402-solana-react` - drop-in paywall components with themes
-- **For custom EVM/Solana React:** Build with `wagmi` + `viem` (EVM) or `@solana/wallet-adapter-react` (Solana)
-- **Multi-chain SDKs:** `@dexterai/x402`, `x402-solana`
+**需要 React 组件吗？**
+- **对于 Solana React 应用程序：** 使用 `@payai/x402-solana-react`——提供可定制的主题的支付墙组件。
+- **对于自定义的 EVM/Solana React 应用程序：** 可以使用 `wagmi` + `viem`（EVM）或 `@solana/wallet-adapter-react`（Solana）进行开发。
+- **多链 SDK：** 可以使用 `@dexterai/x402`、`x402-solana`。
 
-See the [Custom React Frontend Integration](#custom-react-frontend-integration) section below for details.
+有关详细信息，请参阅 [自定义 React 前端集成](#custom-react-frontend-integration) 部分。
 
 ---
 
-## Installation (Server-Side)
+## 安装（服务器端）
 
 ```bash
 npm install @x402/paywall
 ```
 
-**Bundle sizes by import:**
-| Import | Size | Networks |
+**按导入方式划分的包大小：**
+| 导入方式 | 大小 | 支持的网络 |
 |--------|------|----------|
 | `@x402/paywall` | 3.5MB | EVM + Solana |
-| `@x402/paywall/evm` | 3.4MB | EVM only |
-| `@x402/paywall/svm` | 1.0MB | Solana only |
+| `@x402/paywall/evm` | 3.4MB | 仅支持 EVM |
+| `@x402/paywall/svm` | 1.0MB | 仅支持 Solana |
 
-## Usage (Server Middleware)
+## 使用方法（服务器中间件）
 
-### EVM Only
+### 仅支持 EVM
 
 ```typescript
 import { createPaywall } from "@x402/paywall";
@@ -742,7 +740,7 @@ const paywall = createPaywall()
   .build();
 ```
 
-### Solana Only
+### 仅支持 Solana
 
 ```typescript
 import { createPaywall } from "@x402/paywall";
@@ -757,7 +755,7 @@ const paywall = createPaywall()
   .build();
 ```
 
-### Multi-Network
+### 支持多网络
 
 ```typescript
 import { createPaywall } from "@x402/paywall";
@@ -774,7 +772,7 @@ const paywall = createPaywall()
   .build();
 ```
 
-## Configuration Options
+## 配置选项
 
 ```typescript
 interface PaywallConfig {
@@ -785,7 +783,7 @@ interface PaywallConfig {
 }
 ```
 
-## Integration with Express
+## 与 Express 的集成
 
 ```typescript
 import express from "express";
@@ -823,9 +821,9 @@ app.get("/premium", (req, res) => res.json({ content: "Premium data" }));
 app.listen(4021);
 ```
 
-## Auto-Detection (Simple Usage)
+## 自动检测（简单用法）
 
-If you pass a `paywallConfig` object instead of a custom paywall, the middleware will automatically use `@x402/paywall` if installed:
+如果您传递的是 `paywallConfig` 对象而非自定义支付墙配置，中间件会自动使用已安装的 `@x402/paywall`：
 
 ```typescript
 app.use(
@@ -837,9 +835,9 @@ app.use(
 );
 ```
 
-## How First-Match Selection Works
+## 首选支付方式的确定机制
 
-When the server returns multiple payment options, the paywall selects the first one that has a registered handler:
+当服务器返回多个支付选项时，支付墙会自动选择已注册处理程序的第一个选项：
 
 ```typescript
 // Server returns:
@@ -857,14 +855,16 @@ const paywall = createPaywall()
 
 ---
 
-## Pricing Configuration
+## 定价配置
 
-### Simple USD Pricing
+### 简单的 USD 定价
+
 ```typescript
 { scheme: "exact", price: "$0.001", network: "eip155:84532", payTo: evmAddress }
 ```
 
-### Custom Token Amount (ERC-20)
+### 自定义代币金额（ERC-20）
+
 ```typescript
 {
   scheme: "exact",
@@ -880,11 +880,11 @@ const paywall = createPaywall()
 
 ---
 
-## Testing
+## 测试
 
-For testing, use:
-- **Network:** `eip155:84532` (Base Sepolia) or `solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1` (Solana Devnet)
-- **Facilitator:** `https://x402.org/facilitator` (testnet only)
-- **Faucets:** Get testnet USDC from Base Sepolia faucet
+测试时，请使用：
+- **网络：** `eip155:84532`（Base Sepolia）或 `solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1`（Solana 开发网）
+- **第三方机构：** `https://x402.org/facilitator`（仅支持测试网）
+- **资金获取：** 从 Base Sepolia 测试网获取 USDC。
 
-For production, switch to mainnet networks and a production facilitator.
+生产环境请切换到主网并使用生产环境的第三方机构。

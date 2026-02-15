@@ -10,17 +10,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
 # Telnyx Oauth - Ruby
 
-## Installation
+## 安装
 
 ```bash
 gem install telnyx
 ```
 
-## Setup
+## 设置
 
 ```ruby
 require "telnyx"
@@ -30,11 +30,11 @@ client = Telnyx::Client.new(
 )
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## Authorization server metadata
+## 授权服务器元数据
 
-OAuth 2.0 Authorization Server Metadata (RFC 8414)
+OAuth 2.0 授权服务器元数据（RFC 8414）
 
 `GET /.well-known/oauth-authorization-server`
 
@@ -44,9 +44,9 @@ response = client.well_known.retrieve_authorization_server_metadata
 puts(response)
 ```
 
-## Protected resource metadata
+## 受保护资源元数据
 
-OAuth 2.0 Protected Resource Metadata for resource discovery
+用于资源发现的 OAuth 2.0 受保护资源元数据
 
 `GET /.well-known/oauth-protected-resource`
 
@@ -56,9 +56,9 @@ response = client.well_known.retrieve_protected_resource_metadata
 puts(response)
 ```
 
-## OAuth authorization endpoint
+## OAuth 授权端点
 
-OAuth 2.0 authorization endpoint for the authorization code flow
+用于授权代码流程的 OAuth 2.0 授权端点
 
 `GET /oauth/authorize`
 
@@ -72,9 +72,9 @@ result = client.oauth.retrieve_authorize(
 puts(result)
 ```
 
-## List OAuth clients
+## 列出 OAuth 客户端
 
-Retrieve a paginated list of OAuth clients for the authenticated user
+检索已认证用户的 OAuth 客户端列表（分页显示）
 
 `GET /oauth/clients`
 
@@ -84,11 +84,11 @@ page = client.oauth_clients.list
 puts(page)
 ```
 
-## Create OAuth client
+## 创建 OAuth 客户端
 
-Create a new OAuth client
+创建一个新的 OAuth 客户端
 
-`POST /oauth/clients` — Required: `name`, `allowed_scopes`, `client_type`, `allowed_grant_types`
+`POST /oauth/clients` — 必需参数：`name`、`allowed_scopes`、`client_type`、`allowed_grant_types`
 
 ```ruby
 oauth_client = client.oauth_clients.create(
@@ -101,9 +101,9 @@ oauth_client = client.oauth_clients.create(
 puts(oauth_client)
 ```
 
-## Get OAuth client
+## 获取 OAuth 客户端信息
 
-Retrieve a single OAuth client by ID
+通过 ID 检索单个 OAuth 客户端的信息
 
 `GET /oauth/clients/{id}`
 
@@ -113,9 +113,9 @@ oauth_client = client.oauth_clients.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab2
 puts(oauth_client)
 ```
 
-## Update OAuth client
+## 更新 OAuth 客户端
 
-Update an existing OAuth client
+更新现有的 OAuth 客户端
 
 `PUT /oauth/clients/{id}`
 
@@ -125,9 +125,9 @@ oauth_client = client.oauth_clients.update("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e
 puts(oauth_client)
 ```
 
-## Delete OAuth client
+## 删除 OAuth 客户端
 
-Delete an OAuth client
+删除一个 OAuth 客户端
 
 `DELETE /oauth/clients/{id}`
 
@@ -137,9 +137,9 @@ result = client.oauth_clients.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 puts(result)
 ```
 
-## Get OAuth consent token
+## 获取 OAuth 同意令牌
 
-Retrieve details about an OAuth consent token
+检索 OAuth 同意令牌的详细信息
 
 `GET /oauth/consent/{consent_token}`
 
@@ -149,9 +149,9 @@ oauth = client.oauth.retrieve("consent_token")
 puts(oauth)
 ```
 
-## List OAuth grants
+## 列出 OAuth 授权令牌
 
-Retrieve a paginated list of OAuth grants for the authenticated user
+检索已认证用户的 OAuth 授权令牌列表（分页显示）
 
 `GET /oauth/grants`
 
@@ -161,9 +161,9 @@ page = client.oauth_grants.list
 puts(page)
 ```
 
-## Get OAuth grant
+## 获取 OAuth 授权令牌
 
-Retrieve a single OAuth grant by ID
+通过 ID 检索单个 OAuth 授权令牌
 
 `GET /oauth/grants/{id}`
 
@@ -173,9 +173,9 @@ oauth_grant = client.oauth_grants.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e
 puts(oauth_grant)
 ```
 
-## Revoke OAuth grant
+## 撤销 OAuth 授权令牌
 
-Revoke an OAuth grant
+撤销一个 OAuth 授权令牌
 
 `DELETE /oauth/grants/{id}`
 
@@ -185,11 +185,11 @@ oauth_grant = client.oauth_grants.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 puts(oauth_grant)
 ```
 
-## Token introspection
+## 令牌验证
 
-Introspect an OAuth access token to check its validity and metadata
+验证 OAuth 访问令牌的有效性及元数据
 
-`POST /oauth/introspect` — Required: `token`
+`POST /oauth/introspect` — 必需参数：`token`
 
 ```ruby
 response = client.oauth.introspect(token: "token")
@@ -199,7 +199,7 @@ puts(response)
 
 ## JSON Web Key Set
 
-Retrieve the JSON Web Key Set for token verification
+检索用于令牌验证的 JSON Web Key Set
 
 `GET /oauth/jwks`
 
@@ -209,9 +209,9 @@ response = client.oauth.retrieve_jwks
 puts(response)
 ```
 
-## Dynamic client registration
+## 动态客户端注册
 
-Register a new OAuth client dynamically (RFC 7591)
+动态注册一个新的 OAuth 客户端（RFC 7591）
 
 `POST /oauth/register`
 
@@ -221,11 +221,11 @@ response = client.oauth.register
 puts(response)
 ```
 
-## OAuth token endpoint
+## OAuth 令牌端点
 
-Exchange authorization code, client credentials, or refresh token for access token
+用于交换授权代码、客户端凭证或刷新访问令牌
 
-`POST /oauth/token` — Required: `grant_type`
+`POST /oauth/token` — 必需参数：`grant_type`
 
 ```ruby
 response = client.oauth.token(grant_type: :client_credentials)

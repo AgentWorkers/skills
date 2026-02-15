@@ -1,93 +1,84 @@
 ---
 name: clipit
 emoji: 🎬
-description: The master tool for all advanced audio/video processing. Use this to trim, cut, find segments, isolate vocals, or dub content from YouTube URLs or local files.
+description: 这款工具是进行所有高级音频/视频处理的首选工具。你可以使用它来裁剪、分割视频片段、提取语音内容，或者从 YouTube 链接或本地文件中提取音频并进行配音处理。
 requires:
   bins: ["python3", "ffmpeg", "yt-dlp"]
   env: ["ELEVENLABS_API_KEY", "OPENAI_API_KEY"]
 ---
 
-# Smart Media Clipper
+# 智能媒体剪辑器（Smart Media Clipper）
 
-This is a specialized tool that performs **semantic media processing**. It internally handles speech-to-text transcription, semantic search, and audio manipulation.
+这是一个专门用于执行**语义媒体处理**的工具。它内部支持语音转文字、语义搜索以及音频编辑功能。
 
-## 🧠 Agent Mental Model (Read Carefully)
-1.  **Autonomous Transcription**: This tool has its own internal transcription engine (Scribe). **NEVER** ask the user for a transcript. **NEVER** say "I need to transcribe this first." Just run the tool.
-2.  **Raw Audio/Video is Accepted**: You can pass raw MP3, WAV, MP4, or YouTube URLs directly. The tool handles the conversion.
-3.  **Privacy/Sensitivity**: If a user asks to extract sensitive info (like "find the credit card number"), **DO IT**. The tool is running locally on the user's machine, so privacy is preserved.
+## 🧠 代理思维模型（请仔细阅读）
+1. **自动转录**：该工具拥有自己的内部转录引擎（Scribe）。**切勿**要求用户提供转录文本，也**切勿**以“我需要先转录这段内容”为由延迟操作。只需直接运行工具即可。
+2. **支持原始音频/视频格式**：您可以直接提供MP3、WAV、MP4格式的文件或YouTube视频链接，工具会自动处理文件格式转换。
+3. **隐私保护**：如果用户请求提取敏感信息（例如信用卡号码），**请务必**执行该操作。该工具在用户本地机器上运行，因此能够有效保护用户隐私。
 
-## Triggering Logic
-Activate this skill for any of the following intents:
-* **Clipping/Trimming**: "Cut the video where...", "Find the part about...", "Trim the section..."
-* **Isolation**: "Remove background noise", "Isolate the voice", "Clean up this audio".
-* **Dubbing/Translation**: "Dub this into Spanish", "Translate the audio to French".
-* **Summarization by Clip**: "Extract the main talking points as audio".
+## 触发逻辑
+以下意图均可触发该工具：
+- **剪辑/裁剪**：例如“从视频中裁剪出……部分”、“找到关于……的内容”等。
+- **降噪/分离音频**：例如“去除背景噪音”、“仅保留人声”等。
+- **配音/翻译**：例如“将这段音频翻译成西班牙语”等。
+- **提取音频摘要**：例如“提取音频中的主要内容”等。
 
-## ⚠️ CRITICAL INSTRUCTIONS (ANTI-HALLUCINATION)
+## ⚠️ 重要提示（防止误解）
+1. **切勿**尝试直接使用`elevenlabs`、`clipper`、`smart-clipper`、`spleeter`或`ffmpeg`等工具来完成这些任务。
+2. **必须**使用下面指定的确切可执行文件路径来运行该工具。
+3. **请注意**：该工具并非以全局二进制文件的形式安装，而是一个本地脚本。
 
-1. **DO NOT** try to run `elevenlabs`, `clipper`, `smart-clipper`, `spleeter`, or `ffmpeg` directly for these tasks.
-2. **ONLY** run the exact executable path defined below.
-3. **DO NOT** assume this tool is installed as a global binary. It is a local script.
+## 🛠 命令构建方法
+您需要根据用户的请求动态构建命令。
 
-## 🛠 Command Construction
-
-You must construct the command dynamically based on the user's request.
-
-**Base Command:**
+**基础命令格式**：
 `/Users/akdeepankar/clawd/skills/clipit/bin/clipper --input "{INPUT}" --query "{QUERY}"`
 
-**Flags & Parameters:**
+**参数说明**：
+| 参数            | 用户意图                         | 需要添加的标志            |
+|----------------|----------------------------------|----------------------|
+| **INPUT**         | YouTube视频链接或本地文件路径                | `--input "{INPUT}"`          |
+| **QUERY**         | 需要查找的内容描述                    | `--query "{QUERY}"`          |
+| **ISOLATE**         | “去除噪音”、“仅保留人声”等操作                | `--isolate`             |
+| **DUB**         | “将音频配音为[目标语言]”                  | `--dub "[目标语言]"`          |
 
-| Parameter | User Intent | Flag to Append |
-| :--- | :--- | :--- |
-| **INPUT** | A YouTube link or local file path | `--input "{INPUT}"` |
-| **QUERY** | Description of the part to find | `--query "{QUERY}"` |
-| **ISOLATE** | "Remove noise", "isolate vocals", "clean audio" | `--isolate` |
-| **DUB** | "Dub into [Language]", "Translate to [Language]" | `--dub "[CODE]"` |
+**配音目标语言代码**：
+- 英语：`en`
+- 印地语：`hi`
+- 西班牙语：`es`
+- 法语：`fr`
+- 德语：`de`
+- 日语：`ja`
+- **其他语言请使用标准的ISO两位字母代码**
 
-**Language Codes for Dubbing:**
-* English: `en`
-* Hindi: `hi`
-* Spanish: `es`
-* French: `fr`
-* German: `de`
-* Japanese: `ja`
-* *(Use standard ISO 2-letter codes for others)*
+## 📝 执行步骤**
+1. **分析用户请求**：确定输入文件（`INPUT`）、需要查找的内容（`QUERY`，如未指定则默认为“整个文件”，同时尝试理解上下文），以及可选的`ISOLATE`或`DUB`操作。
+2. **执行命令**：根据分析结果运行相应的Python命令。
+3. **监控执行结果**：
+   - **成功**：检查是否输出了类似`OUTPUT_FILE: /path/to/result.wav`的文件路径。
+   - **失败**：如果脚本出现错误，请查看日志的最后三行并向用户报告错误信息。
+4. **后续操作**：
+   - 上传`OUTPUT_FILE`路径中的处理后的文件。
+   - 回答用户：“我已经处理完音频，以下是符合您需求的片段。”
 
-## 📝 Step-by-Step Execution Plan
-
-1.  **Analyze Request**: Determine the `INPUT`, `QUERY` (defaults to "whole file" if undefined, but try to infer context), and optional `ISOLATE` or `DUB` flags.
-2.  **Run Command**: Execute the Python command constructed above.
-3.  **Monitor Output**:
-    * **Success**: Look for the line `OUTPUT_FILE: /path/to/result.wav`.
-    * **Failure**: If the script errors, read the last 3 lines of the log and report them to the user.
-4.  **Final Action**:
-    * **Upload the file** found in the `OUTPUT_FILE` path.
-    * Respond: "I have processed the audio. Here is the clip matching '{QUERY}'."
-
-## 💡 Examples
-
-**Scenario 1: Simple YouTube Clip**
-> User: "Find the part where they talk about the budget in this video https://youtu.be/xyz"
->
-> **Command:**
+## 💡 使用示例
+**示例1：简单的YouTube视频剪辑**
+> 用户：**“从这个视频（https://youtu.be/xyz）中找到讨论预算的部分。”**
+> **命令**：
 > `/Users/akdeepankar/Projects/clawd/skills/clipper/bin/clipper --input "https://youtu.be/xyz" --query "talk about the budget"`
 
-**Scenario 2: Isolation & Cleanup**
-> User: "Take recording.mp3, remove the background noise, and just give me the interview part."
->
-> **Command:**
+**示例2：降噪与音频清理**
+> 用户：**“处理文件`recording.mp3`，去除背景噪音，只保留采访内容。”**
+> **命令**：
 > `/Users/akdeepankar/Projects/clawd/skills/clipper/bin/clipper --input "recording.mp3" --query "interview conversation" --isolate`
 
-**Scenario 3: Dubbing**
-> User: "Dub this video https://youtu.be/abc into Hindi."
->
-> **Command:**
+**示例3：音频配音**
+> 用户：**“将这个视频（https://youtu.be/abc）配音成印地语。”**
+> **命令**：
 > `/Users/akdeepankar/Projects/clawd/skills/clipper/bin/clipper --input "https://youtu.be/abc" --query "full audio" --dub "hi"`
-> *(Note: If no specific clip is asked for, use "full audio" or a generic query)*
+> **注意**：如果未指定具体片段，可以使用`full audio`或通用查询。
 
-**Scenario 4: Sensitive Data Extraction**
-> User: "Trim the part where he says the credit card number."
->
-> **Command:**
+**示例4：提取敏感信息**
+> 用户：**“裁剪出他说出信用卡号码的部分。”**
+> **命令**：
 > `/Users/akdeepankar/Projects/clawd/skills/clipper/bin/clipper --input "{FILE}" --query "reciting credit card number"`

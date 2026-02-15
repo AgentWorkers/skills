@@ -1,88 +1,83 @@
 ---
 name: Turkish
-description: Write Turkish that sounds human. Not formal, not robotic, not AI-generated.
+description: 请用自然、富有感情的方式写出土耳其语。不要过于正式，也不要像机器人或人工智能生成的一样。
 ---
 
-## The Real Problem
+## 真正的问题
 
-AI Turkish is technically correct but sounds off. Too formal. Too textbook. Natives write more warmly, with particles and casual flow. Match that.
+虽然AI生成的土耳其语在语法上是正确的，但听起来很正式、很刻板。母语者通常会使用更自然、更口语化的表达方式，会加入一些助词和短语来使语言更加流畅。
 
-## Formality Default
+## 语言的正式程度
 
-Default register is too high. Casual Turkish is warm. Unless explicitly formal: lean casual. "Selam" not "Merhaba". "Tamam" not "Peki". "Evet" can be just "hı hı".
+土耳其语的默认表达方式较为正式。在非正式场合，应该使用更口语化的语言。例如：“Selam”而不是“Merhaba”，“Tamam”而不是“Peki”，“Evet”也可以简单地用“hı hı”来表示。
 
-## Sen vs Siz
+## “Sen”与“Siz”的使用
 
-Critical distinction:
-- Siz: elders, professional, strangers initially
-- Sen: friends, peers, once relationship established
-- Turkish internet mostly uses sen
-- Overusing siz = cold, distant
+在土耳其语中，“Sen”用于对朋友、同龄人或已经建立关系的人使用，而“Siz”则用于对长辈、专业人士或初次见面的人表示尊敬。在网络交流中，人们更倾向于使用“Sen”。
 
-## Particles & Suffixes
+## 助词与后缀
 
-These make Turkish natural:
-- Ya: softening ("Gel ya", "Ne ya?")
-- Ki: emphasis ("Çok güzel ki")
-- İşte: "well", "you see"
-- Ha: confirmation seeking
-- -DIr is often dropped in casual speech
+一些助词和后缀可以使土耳其语表达更加自然：
+- “Ya”：用于缓和语气（例如：“Gel ya”或“Ne ya?”）
+- “Ki”：用于强调（例如：“Çok güzel ki”）
+- “İşte”：表示“嗯，你看”或“就是这样”
+- “Ha”：用于寻求确认
+- 在非正式对话中，“-DIr”这个后缀通常会被省略
 
-## Fillers & Flow
+## 语言的填充词与连贯性
 
-Real Turkish has fillers:
-- Yani, hani, şey
-- İşte, aslında, mesela
-- Falan, filan (etc., whatever)
-- Şimdi (as filler, not just "now")
+土耳其语中有很多填充词，用于使表达更加流畅：
+- “Yani, hani, şey”等
+- “İşte, aslında, mesela”等
+- “Falan, filan”等（表示“各种事情”）
+- “Şimdi”不仅表示“现在”，也用于填充语境
 
-## Casual Shortcuts
+## 口语中的缩略表达
 
-Spoken patterns:
-- Değil mi? → Di mi?
-- Nasılsın? → Naber?
-- Bir şey → Bişey/Bişi
-- Ne yapıyorsun → Napıyon?
+常见的口语表达方式：
+- “Değil mi?” → “Di mi?”
+- “Nasılsın?” → “Naber?”
+- “Bir şey” → “Bişey/Bişi”
+- “Ne yapıyorsun?” → “Napıyon?”
 
-## Expressiveness
+## 表达方式
 
-Don't pick the safe word:
-- İyi → Süper, Harika, Efsane, Müthiş
-- Kötü → Berbat, Rezalet, Bok gibi
-- Çok → Aşırı, Mega, Acayip
+不要总是使用过于正式的词汇：
+- “İyi”可以表达为“Süper”、“Harika”、“Efsane”、“Müthiş”
+- “Kötü”可以表达为“Berbat”、“Rezalet”、“Bok gibi”
+- “Çok”可以表达为“Aşırı”、“Mega”、“Acayip”
 
-## Common Expressions
+## 常见表达
 
-Natural expressions:
-- Aynen, Aynen öyle
-- Yok artık!, Hadi ya!
-- Boşver, Takma kafana
-- Kolay gelsin, Afiyet olsun
+自然的土耳其语表达：
+- “Aynen, Aynen öyle”
+- “Yok artık!”（表示“别这样了！”）
+- “Boşver, Takma kafana”（别太在意）
+- “Kolay gelsin, Afiyet olsun”（祝你好运）
 
-## Reactions
+## 反应方式
 
-React naturally:
-- Cidden?, Ciddi misin?, Yok artık!
-- Vay be!, Oha!, Eyvah!
-- Süper!, Harika!, Efsane!
-- Hahaha, random in text
+在交流时，反应要自然：
+- “Cidden?” → “你是认真的吗？”
+- “Vay be!” → “哇！”
+- “Süper!” → “太棒了！”
+- “Hahaha”（用于表达笑声）
 
-## Doubling for Emphasis
+## 强调时的重复用法
 
-Turkish doubles for emphasis:
-- Çok çok güzel
-- Hemen hemen
-- Ufak tefek
-- Very natural pattern
+土耳其语中经常通过重复词语来加强语气：
+- “Çok çok güzel”（非常非常漂亮）
+- “Hemen hemen”（几乎）
+- “Ufak tefek”（小小的）
 
-## Religious/Cultural Expressions
+## 宗教/文化表达
 
-Natural in daily speech:
-- İnşallah, Maşallah
-- Allah korusun, Allah Allah
-- Çok şükür
-- Use naturally, not excessively
+在日常对话中，这些表达很自然：
+- “İnşallah”（但愿）
+- “Maşallah”（真主保佑）
+- “Allah korusun”（愿上帝保佑）
+- 这些表达要自然使用，不要过度使用
 
-## The "Native Test"
+## “母语者测试”
 
-Before sending: would a Turk screenshot this as "AI-generated"? If yes—too formal, missing "yani", too stiff. Add warmth.
+在发送内容之前，可以想象一下：如果一个土耳其人看到这段文字，他会认为这是AI生成的吗？如果是的话，那么这段文字就太正式了，缺少了口语化的表达，显得很生硬。需要添加一些更自然的、更温暖的元素。

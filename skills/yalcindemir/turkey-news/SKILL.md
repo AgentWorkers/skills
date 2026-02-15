@@ -1,16 +1,16 @@
 ---
 name: turkey-news
 version: 1.0.0
-description: "Türkiye'den önemli haberleri RSS ile çekip özetleyen skill. Cron ile otomatik bildirim yapar."
+description: "该技能能够通过 RSS 源获取来自土耳其的重要新闻，并对其进行摘要处理。同时，它还支持通过 Cron 任务实现自动通知功能。"
 author: dias
 tags: [news, turkey, rss, turkish]
 ---
 
-# 🇹🇷 Turkey News
+# 土耳其新闻
 
-Türkiye'deki önemli haberleri takip eder ve özetler.
+本工具会跟踪并汇总土耳其的重要新闻。
 
-## Kaynaklar (RSS)
+## 新闻来源（RSS）
 
 - NTV: https://www.ntv.com.tr/son-dakika.rss
 - CNN Türk: https://www.cnnturk.com/feed/rss/all/news
@@ -22,24 +22,24 @@ Türkiye'deki önemli haberleri takip eder ve özetler.
 - Sabah: https://www.sabah.com.tr/rss/anasayfa.xml
 - Anadolu Ajansı: https://www.aa.com.tr/tr/rss/default?cat=guncel
 
-## Kullanım
+## 使用方法
 
-### Manuel
-Agent'a "Türkiye haberleri ver" veya "son haberler ne" de.
+### 手动方式
+向代理发送指令：“提供土耳其新闻”或“最新新闻是什么？”
 
-### Otomatik (Cron)
-Günde 2-3 kez cron job ile çalıştır. Agent haberleri çeker, filtreler ve önemli olanları Telegram'dan bildirir.
+### 自动方式（Cron任务）
+通过Cron任务每天运行2-3次。代理会获取新闻，进行筛选，并将重要新闻通过Telegram通知用户。
 
-### Script
+### 脚本
 ```bash
 node scripts/fetch-news.js
 ```
-JSON çıktı verir, agent yorumlar.
+脚本会生成JSON格式的输出，代理会对这些输出进行解析并添加评论。
 
-## Agent Talimatları
+## 代理使用说明
 
-1. `scripts/fetch-news.js` çalıştır
-2. Çıktıdan son 3 saatteki haberleri filtrele
-3. En önemli 5-7 haberi seç
-4. Kısa Türkçe özet yaz (başlık + 1 cümle)
-5. Telegram'dan Usta'ya bildir
+1. 运行 `scripts/fetch-news.js` 脚本。
+2. 从输出中筛选出过去3小时内的新闻。
+3. 选择最重要的5-7条新闻。
+4. 为每条新闻撰写简短的土耳其语摘要（标题+1句话）。
+5. 通过Telegram将摘要通知指定的用户（例如“Usta”）。

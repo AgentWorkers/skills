@@ -1,6 +1,6 @@
 ---
 name: eyebot-elite
-description: All 15 Elite AI Agents - Complete crypto automation suite
+description: 全部15个精英AI代理——完整的加密自动化套件
 version: 1.0.0
 author: ILL4NE
 metadata:
@@ -11,44 +11,43 @@ metadata:
   chains: [base, ethereum, polygon, arbitrum, bitcoin-lightning]
 ---
 
-# Eyebot Elite 👁️‍🗨️ Complete Suite
+# Eyebot Elite 👁️‍🗨️ 全套服务
 
-**One skill to rule them all.** Get access to all 15 Elite AI Agents for comprehensive crypto automation.
+**一技通吃，掌控一切。** 随时使用全部15个Elite AI代理，实现全面的加密货币自动化操作。
 
-## API Endpoint
+## API端点  
 `http://93.186.255.184:8001`
 
-## The 15 Elite Agents
-
-| Agent | Description | Per-Use |
+## 15个Elite代理  
+| 代理名称 | 功能描述 | 每次使用费用 |
 |-------|-------------|---------|
-| 🔨 **TokenForge** | Token deployment specialist | $2 |
-| 💧 **LiquidBot** | LP management specialist | $2 |
-| 📈 **TradeBot** | Trading and swap execution | $1 |
-| 🔍 **AuditBot** | Smart contract security scanner | $3 |
-| 🚀 **LaunchBot** | Full token launch coordinator | $5 |
-| 🎯 **AlphaBot** | Market intelligence and alpha finder | $2 |
-| 📱 **SocialBot** | Social media automation | $1 |
-| 🔐 **VaultBot** | Wallet management and vaults | $2 |
-| 🌉 **BridgeBot** | Cross-chain bridge specialist | $1 |
-| 🌾 **YieldBot** | Yield farming optimizer | $2 |
-| ⏰ **CronBot** | Task scheduler and automation | $1 |
-| 🛡️ **GuardBot** | Security monitoring and alerts | $2 |
-| 🔮 **PredictionBot** | AI-powered predictions | $3 |
-| 👛 **WalletBot** | Wallet operations | $1 |
-| ⚡ **LightningBot** | Lightning Network payments | $1 |
+| 🔨 **TokenForge** | 代币部署专家 | $2 |
+| 💧 **LiquidBot** | 液态资产管理专家 | $2 |
+| 📈 **TradeBot** | 交易与交换执行 | $1 |
+| 🔍 **AuditBot** | 智能合约安全扫描器 | $3 |
+| 🚀 **LaunchBot** | 全面代币发行协调器 | $5 |
+| 🎯 **AlphaBot** | 市场情报与潜在投资机会发现 | $2 |
+| 📱 **SocialBot** | 社交媒体自动化工具 | $1 |
+| 🔐 **VaultBot** | 钱包管理与安全存储 | $2 |
+| 🌉 **BridgeBot** | 跨链桥接服务 | $1 |
+| 🌾 **YieldBot** | 收益 farming优化工具 | $2 |
+| ⏰ **CronBot** | 任务调度与自动化工具 | $1 |
+| 🛡️ **GuardBot** | 安全监控与警报系统 | $2 |
+| 🔮 **PredictionBot** | 基于AI的预测服务 | $3 |
+| 👛 **WalletBot** | 钱包操作与管理 | $1 |
+| ⚡ **LightningBot** | Lightning Network支付服务 | $1 |
 
-## Pricing
+## 价格  
 
-### Bundle Deal (BEST VALUE)
-- **All 15 Agents - Lifetime Access: $200**
-- Save $175 vs buying individually!
+### 组合套餐（最划算）  
+- **全部15个代理 - 终身使用权：$200**  
+- 比单独购买节省$175！
 
-### Individual Pricing
-- Per-use: $1-5 depending on agent
-- Single agent lifetime: $25 each
+### 单个代理价格  
+- 每次使用费用：$1–$5（根据代理功能不同而异）  
+- 单个代理的终身使用权：$25/个  
 
-## Usage
+## 使用说明  
 ```bash
 # Request payment for any agent
 curl -X POST "http://93.186.255.184:8001/a2a/request-payment?agent_id={agent}&caller_wallet=YOUR_WALLET"
@@ -60,15 +59,13 @@ curl -X POST "http://93.186.255.184:8001/a2a/verify-payment?request_id=...&tx_ha
 curl "http://93.186.255.184:8001/a2a/agents"
 ```
 
-## Why Eyebot Elite?
+## 为什么选择Eyebot Elite？  
+- 🤖 **AI驱动**：每个代理均采用先进的人工智能技术进行决策  
+- ⛓️ **支持多链**：兼容Base、Ethereum、Polygon、Arbitrum等区块链  
+- 🔒 **安全可靠**：采用非托管模式，您的私钥始终由您掌控  
+- 🔄 **A2A协议**：代理之间可协同工作，支持复杂业务流程  
+- 💰 **按需付费**：仅支付实际使用的服务费用，或选择无限使用权限  
 
-- 🤖 **AI-Powered**: Each agent uses advanced AI for decision-making
-- ⛓️ **Multi-Chain**: Supports Base, Ethereum, Polygon, Arbitrum
-- 🔒 **Secure**: Non-custodial, your keys stay yours
-- 🔄 **A2A Protocol**: Agent-to-agent communication for complex workflows
-- 💰 **Pay-per-use**: Only pay for what you use, or go unlimited
-
-## Support
-
-- Telegram: @ILL4NE
-- API Docs: http://93.186.255.184:8001/docs
+## 技术支持  
+- Telegram：@ILL4NE  
+- API文档：http://93.186.255.184:8001/docs

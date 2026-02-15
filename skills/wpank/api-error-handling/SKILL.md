@@ -1,31 +1,31 @@
 ---
 name: error-handling
 model: standard
-description: Error handling patterns across languages and layers — operational vs programmer errors, retry strategies, circuit breakers, error boundaries, HTTP responses, graceful degradation, and structured logging. Use when designing error strategies, building resilient APIs, or reviewing error management.
+description: 跨语言和层次的错误处理模式——包括操作错误与程序错误、重试策略、断路器机制、错误边界处理、HTTP响应、优雅降级以及结构化日志记录。这些内容在设计错误处理策略、构建具有弹性的API或审查错误管理机制时非常有用。
 ---
 
-# Error Handling Patterns
+# 错误处理模式
 
-> Ship resilient software. Handle errors at boundaries, fail fast and loud, never swallow exceptions silently.
+> 提供具备弹性的软件。在系统边界处处理错误，快速且明确地报告错误，绝不要默默地吞咽异常。
 
-## Error Handling Philosophy
+## 错误处理原则
 
-| Principle | Description |
+| 原则 | 描述 |
 |-----------|-------------|
-| **Fail Fast** | Detect errors early — validate inputs at the boundary, not deep in business logic |
-| **Fail Loud** | Errors must be visible — log them, surface them, alert on them |
-| **Handle at Boundaries** | Catch and translate errors at layer boundaries (controller, middleware, gateway) |
-| **Let It Crash** | For unrecoverable state, crash and restart (Erlang/OTP philosophy) |
-| **Be Specific** | Catch specific error types, never bare `catch` or `except` |
-| **Provide Context** | Every error carries enough context to diagnose without reproducing |
+| **快速失败** | 尽早发现错误——在系统边界处验证输入，而不在业务逻辑深处 |
+| **明确显示错误** | 错误必须被记录、呈现出来，并触发警报 |
+| **在边界处处理错误** | 在各层边界（控制器、中间件、网关）捕获并处理错误 |
+| **允许系统崩溃** | 对于无法恢复的状态，直接崩溃并重启（Erlang/OTP的设计理念） |
+| **具体处理错误类型** | 只捕获特定的错误类型，避免使用通用的 `catch` 或 `except` |
+| **提供足够上下文** | 每个错误都应包含足够的上下文，以便在不重现错误的情况下进行诊断 |
 
 ---
 
-## Error Types
+## 错误类型
 
-**Operational errors** — network timeouts, invalid user input, file not found, DB connection lost. Handle gracefully.
+**操作错误** — 网络超时、无效的用户输入、文件未找到、数据库连接丢失。应优雅地处理这些错误。
 
-**Programmer errors** — `TypeError`, null dereference, assertion failures. Fix the code — don't catch and suppress.
+**程序错误** — `TypeError`、空指针引用、断言失败。应修复代码，而不是简单地捕获并忽略这些错误。
 
 ```javascript
 // Operational — handle gracefully
@@ -43,16 +43,16 @@ user.name; // TypeError — don't try/catch this
 
 ---
 
-## Language Patterns
+## 各编程语言的错误处理模式
 
-| Language | Mechanism | Anti-Pattern |
+| 编程语言 | 处理机制 | 应避免的做法 |
 |----------|-----------|-------------|
-| **JavaScript** | `try/catch`, `Promise.catch`, Error subclasses | `.catch(() => {})` swallowing errors |
-| **Python** | Exceptions, context managers (`with`) | Bare `except:` catching everything |
-| **Go** | `error` returns, `errors.Is/As`, `fmt.Errorf` wrapping | `_ = riskyFunction()` ignoring error |
-| **Rust** | `Result<T, E>`, `Option<T>`, `?` operator | `.unwrap()` in production code |
+| **JavaScript** | `try/catch`、`Promise.catch`、错误子类 | 使用 `.catch()` 来吞咽错误 |
+| **Python** | 异常处理、上下文管理器（`with`） | 使用通用的 `except:` 来捕获所有错误 |
+| **Go** | 使用 `error` 返回值、`errors.Is/As`、`fmt.Errorf` 来包装错误 | 直接调用 `riskyFunction()` 而忽略错误 |
+| **Rust** | 使用 `Result<T, E>`、`Option<T>`、`?` 操作符 | 在生产代码中直接使用 `.unwrap()` 来处理错误 |
 
-### JavaScript — Error Subclasses
+### JavaScript — 错误子类
 
 ```javascript
 class AppError extends Error {
@@ -79,7 +79,7 @@ class ValidationError extends AppError {
 }
 ```
 
-### Go — Error Wrapping
+### Go — 错误包装
 
 ```go
 func GetUser(id string) (*User, error) {
@@ -97,9 +97,9 @@ func GetUser(id string) (*User, error) {
 
 ---
 
-## Error Boundaries
+## 错误处理边界
 
-### Express Error Middleware
+### Express 错误中间件
 
 ```javascript
 app.use((err, req, res, next) => {
@@ -121,7 +121,7 @@ app.use((err, req, res, next) => {
 });
 ```
 
-### React Error Boundary
+### React 错误处理边界
 
 ```tsx
 import { ErrorBoundary } from 'react-error-boundary';
@@ -143,17 +143,17 @@ function ErrorFallback({ error, resetErrorBoundary }) {
 
 ---
 
-## Retry Patterns
+## 重试策略
 
-| Pattern | When to Use | Config |
+| 策略 | 使用场景 | 配置参数 |
 |---------|-------------|--------|
-| **Exponential Backoff** | Transient failures (network, 503) | Base 1s, max 30s, factor 2x |
-| **Backoff + Jitter** | Multiple clients retrying | Random ±30% on each delay |
-| **Circuit Breaker** | Downstream service failing repeatedly | Open after 5 failures, half-open after 30s |
-| **Bulkhead** | Isolate failures to prevent cascade | Limit concurrent calls per service |
-| **Timeout** | Prevent indefinite hangs | Connect 5s, read 30s, total 60s |
+| **指数级退避** | 临时性故障（如网络问题、503错误） | 基础退避时间1秒，最大30秒，每次退避时间翻倍 |
+| **退避加抖动** | 多个客户端同时尝试请求 | 每次延迟时间随机增加30% |
+| **断路器** | 下游服务频繁失败 | 失败5次后关闭连接，30秒后部分恢复连接 |
+| **隔离故障** | 防止故障扩散 | 限制每个服务的并发请求数量 |
+| **超时机制** | 防止系统无限期挂起 | 连接尝试5秒，读取数据30秒，总时间不超过60秒 |
 
-### Exponential Backoff with Jitter
+### 带有抖动的指数级退避策略
 
 ```javascript
 async function withRetry(fn, { maxRetries = 3, baseDelay = 1000, maxDelay = 30000 } = {}) {
@@ -174,7 +174,7 @@ function isRetryable(err) {
 }
 ```
 
-### Circuit Breaker
+### 断路器机制
 
 ```javascript
 class CircuitBreaker {
@@ -214,22 +214,22 @@ class CircuitBreaker {
 
 ---
 
-## HTTP Error Responses
+## HTTP 错误响应
 
-| Status | Name | When to Use |
+| 状态码 | 名称 | 使用场景 |
 |--------|------|-------------|
-| **400** | Bad Request | Malformed syntax, invalid JSON |
-| **401** | Unauthorized | Missing or invalid authentication |
-| **403** | Forbidden | Authenticated but insufficient permissions |
-| **404** | Not Found | Resource does not exist |
-| **409** | Conflict | Request conflicts with current state |
-| **422** | Unprocessable Entity | Valid syntax but semantic errors |
-| **429** | Too Many Requests | Rate limit exceeded (include `Retry-After`) |
-| **500** | Internal Server Error | Unexpected server failure |
-| **502** | Bad Gateway | Upstream returned invalid response |
-| **503** | Service Unavailable | Temporarily overloaded or maintenance |
+| **400** | 错误请求 | 请求语法错误或JSON格式无效 |
+| **401** | 未经授权 | 未提供有效的认证信息 |
+| **403** | 禁止访问 | 虽已认证但权限不足 |
+| **404** | 资源未找到 | 请求的资源不存在 |
+| **409** | 冲突 | 请求与当前系统状态冲突 |
+| **422** | 实体无法处理 | 请求语法正确但存在语义错误 |
+| **429** | 请求过多 | 超过请求速率限制（可附加 `Retry-After` 头信息） |
+| **500** | 服务器内部错误 | 服务器出现意外故障 |
+| **502** | 网关错误 | 上游服务返回了无效响应 |
+| **503** | 服务暂时不可用 | 服务正在维护或过载 |
 
-### Standard Error Envelope
+### 标准错误响应格式
 
 ```json
 {
@@ -246,14 +246,14 @@ class CircuitBreaker {
 
 ---
 
-## Graceful Degradation
+## 优雅降级策略
 
-| Strategy | Example |
+| 策略 | 示例 |
 |----------|---------|
-| **Fallback values** | Show cached avatar when image service is down |
-| **Feature flags** | Disable unstable recommendation engine |
-| **Cached responses** | Serve stale data with `X-Cache: STALE` header |
-| **Partial response** | Return available data with `warnings` array |
+| **备用方案** | 当图片服务不可用时，显示缓存中的头像 |
+| **功能开关** | 关闭不稳定的推荐系统 |
+| **缓存响应** | 使用 `X-Cache: STALE` 头部字段返回过时的数据 |
+| **部分响应** | 返回可用数据，并附带 `warnings` 数组 |
 
 ```javascript
 async function getProductPage(productId) {
@@ -275,42 +275,40 @@ async function getProductPage(productId) {
 }
 ```
 
----
+## 日志记录与监控
 
-## Logging & Monitoring
-
-| Practice | Implementation |
+| 实践方法 | 实现方式 |
 |----------|---------------|
-| **Structured logging** | JSON: `level`, `message`, `error`, `requestId`, `userId`, `timestamp` |
-| **Error tracking** | Sentry, Datadog, Bugsnag — automatic capture with source maps |
-| **Alert thresholds** | Error rate > 1%, P99 latency > 2s, 5xx spike |
-| **Correlation IDs** | Pass `requestId` through all service calls |
-| **Log levels** | `error` = needs attention, `warn` = degraded, `info` = normal, `debug` = dev |
+| **结构化日志记录** | 使用 JSON 格式记录日志：`level`、`message`、`error`、`requestId`、`userId`、`timestamp` |
+| **错误跟踪** | 使用 Sentry、Datadog、Bugsnag 等工具自动捕获错误，并关联源代码信息 |
+| **设置警报阈值** | 当错误率超过1%、99百分位延迟超过2秒或出现5xx错误时触发警报 |
+| **关联请求ID** | 在所有服务调用中传递 `requestId` 以追踪错误来源 |
+| **日志级别** | `error` 表示需要关注，`warn` 表示系统降级，`info` 表示正常运行，`debug` 表示开发调试阶段 |
 
 ---
 
-## Anti-Patterns
+## 应避免的错误处理实践
 
-| Anti-Pattern | Fix |
+| 应避免的做法 | 应采取的修复措施 |
 |-------------|-----|
-| **Swallowing errors** `catch (e) {}` | Log and re-throw, or handle explicitly |
-| **Generic catch-all** at every level | Catch specific types, let unexpected errors bubble |
-| **Error as control flow** | Use conditionals, return values, or option types |
-| **Stringly-typed errors** `throw "wrong"` | Throw `Error` objects with codes and context |
-| **Logging and throwing** | Log at the boundary only, or wrap and re-throw |
-| **Catch-and-return-null** | Return `Result` type, throw, or return error object |
-| **Ignoring Promise rejections** | Always `await` or attach `.catch()` |
-| **Exposing internals** | Sanitize responses; log details server-side only |
+| **默默吞咽错误** | 使用 `catch (e) {}` 来隐藏错误，这会导致数据损坏 |
+| **在所有层级使用通用的错误处理机制** | 应捕获特定类型的错误，避免意外错误被忽略 |
+| **将错误作为控制流程的一部分** | 应使用条件判断、返回具体值或使用选项类型来处理错误 |
+| **使用字符串类型的错误对象** | 应使用包含错误代码和上下文的 `Error` 对象来抛出错误 |
+| **仅在边界处记录日志** | 应在系统边界处记录错误，或对错误进行包装后再抛出 |
+| **捕获错误后直接返回 `null` | 应返回 `Result` 类型，或者抛出错误对象 |
+| **忽略 Promise 的拒绝** | 必须使用 `await` 或添加 `.catch()` 来处理 Promise 的拒绝 |
+| **暴露系统内部细节** | 应对响应进行清洗处理，仅在服务器端记录错误细节 |
 
 ---
 
-## NEVER Do
+## 绝对禁止的行为
 
-1. **NEVER swallow errors silently** — `catch (e) {}` hides bugs and causes silent data corruption
-2. **NEVER expose stack traces, SQL errors, or file paths in API responses** — log details server-side only
-3. **NEVER use string throws** — `throw 'error'` has no stack trace, no type, no context
-4. **NEVER catch and return null without explanation** — callers have no idea why the operation failed
-5. **NEVER ignore unhandled Promise rejections** — always `await` or attach `.catch()`
-6. **NEVER cache error responses** — 5xx and transient errors must not be cached and re-served
-7. **NEVER use exceptions for normal control flow** — exceptions are for exceptional conditions
-8. **NEVER return generic "Something went wrong" without logging the real error** — always log the full error server-side with request context
+1. **绝不要默默地吞咽错误** — 使用 `catch (e) {}` 会隐藏错误并导致数据损坏。
+2. **绝不要在 API 响应中暴露堆栈跟踪信息、SQL 错误或文件路径** — 应仅在服务器端记录错误细节。
+3. **绝不要使用字符串类型的错误对象进行错误抛出** — 使用 `throw 'error'` 会导致无法获取堆栈跟踪、错误类型和上下文信息。
+4. **绝不要在没有任何说明的情况下捕获错误后直接返回 `null` — 调用者将无法了解操作失败的原因。
+5. **绝不要忽略未处理的 Promise 拒绝** — 必须使用 `await` 或添加 `.catch()` 来处理 Promise 的拒绝。
+6. **绝不要缓存错误响应** — 5xx 错误和临时性错误不应被缓存并重新提供。
+7. **绝不要将异常用于正常的控制流程** — 异常用于处理异常情况。
+8. **绝不要仅返回“出了问题”这样的模糊信息而不记录具体的错误原因** — 必须在服务器端记录完整的错误信息及请求上下文。

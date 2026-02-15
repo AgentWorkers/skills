@@ -1,85 +1,40 @@
 ---
 name: lista-sms
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: [待办事项：完整且详细地说明该技能的功能及其使用场景。需要明确说明在什么情况下（特定场景、文件类型或任务触发时）应使用该技能。]
 ---
 
-# Lista Sms
+# 短信列表功能
 
-## Overview
+## 概述
 
-[TODO: 1-2 sentences explaining what this skill enables]
+[TODO: 添加1-2句话，解释该功能的作用或用途]
 
-## Structuring This Skill
+## 功能结构
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+[TODO: 根据实际需求选择最合适的结构。常见的结构模式如下：]
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
-- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
+**1. 基于工作流程的结构**（适用于顺序性操作）
+- 适用于有明确步骤的流程
+- 例如：DOCX处理技能的结构可能为 “## 概述 → ## 工作流程 → ## 第一步 → ## 第二步……”
+- 优点：易于理解和使用
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
-- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
+**2. 基于任务的结构**（适用于包含多种操作的技能）
+- 适用于提供多种功能的技能
+- 例如：PDF处理技能的结构可能为 “## 快速入门 → ## 合并PDF → ## 分割PDF → ## 提取文本”
+- 优点：便于分类和管理不同任务
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
-- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
+**3. 参考/指南结构**（适用于标准或规范）
+- 适用于品牌指南、编码规范或技术要求
+- 例如：品牌设计技能的结构可能为 “## 品牌指南 → ## 颜色 → ## 字体 → ## 特性”
+- 优点：提供统一的信息来源
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" -> numbered capability list
-- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
+**4. 基于功能的结构**（适用于集成系统）
+- 适用于提供多个相关功能的技能
+- 例如：产品管理技能的结构可能为 “## 核心功能 → ### 功能1 → ### 功能2……”
+- 优点：突出主要功能
 
-Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
+可以根据需要混合使用这些结构。大多数技能会结合多种结构（例如，以任务结构为基础，再添加工作流程说明）。
 
-Delete this entire "Structuring This Skill" section when done - it's just guidance.]
+**注：** 当结构确定后，请删除此部分内容。
 
-## [TODO: Replace with the first main section based on chosen structure]
-
-[TODO: Add content here. See examples in existing skills:
-- Code samples for technical skills
-- Decision trees for complex workflows
-- Concrete examples with realistic user requests
-- References to scripts/templates/references as needed]
-
-## Resources (optional)
-
-Create only the resource directories this skill actually needs. Delete this section if no resources are required.
-
-### scripts/
-Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
-
-**Examples from other skills:**
-- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
-- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
-
-**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
-
-**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
-
-### references/
-Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
-
-**Examples from other skills:**
-- Product management: `communication.md`, `context_building.md` - detailed workflow guides
-- BigQuery: API reference documentation and query examples
-- Finance: Schema documentation, company policies
-
-**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
-
-### assets/
-Files not intended to be loaded into context, but rather used within the output Codex produces.
-
-**Examples from other skills:**
-- Brand styling: PowerPoint template files (.pptx), logo files
-- Frontend builder: HTML/React boilerplate project directories
-- Typography: Font files (.ttf, .woff2)
-
-**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
-
----
-
-**Not every skill requires all three types of resources.**
+## [TODO: 根据选定的结构替换此处内容]

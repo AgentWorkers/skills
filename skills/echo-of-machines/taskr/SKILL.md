@@ -1,56 +1,56 @@
 ---
 name: taskr
-description: "Cloud Task Planning & Execution for OpenClaw. Makes your agent's work transparent and trackable. Structure all actions into persistent tasks with context notes. Watch progress unfold in real-time via web or mobile — no more \"what are you working on?\" interruptions."
+description: "OpenClaw的云任务规划与执行功能：让您的代理的工作过程变得透明且可追踪。所有操作都被结构化为带有上下文说明的持久性任务。您可以通过网页或移动设备实时监控任务进度，再也不用担心“你正在做什么？”这样的干扰问题了。"
 homepage: https://taskr.one
 metadata: {"openclaw":{"emoji":"📋","requires":{"env":["MCP_API_URL","MCP_USER_API_KEY","MCP_PROJECT_ID"]},"primaryEnv":"MCP_USER_API_KEY"}}
 ---
 
-# Taskr — Observable Task & Memory System
+# Taskr — 可观察的任务与记忆管理系统
 
-Taskr is an agent-first task management system. Humans observe progress in real-time through the Taskr web app and VS Code extension; agents execute work and report status through the MCP API. Use Taskr to organize any kind of work — not just coding.
+Taskr 是一个以代理（agent）为中心的任务管理系统。用户可以通过 Taskr 的网页应用和 VS Code 扩展程序实时查看任务进度；代理则通过 MCP API 执行任务并报告状态。Taskr 可以用于管理各种类型的工作，而不仅仅是编程任务。
 
-## Why Use Taskr?
+## 为什么使用 Taskr？
 
-**Transparency:** Every task, status update, and note appears instantly in the user's dashboard (web at https://taskr.one, VS Code extension, or mobile). Users can monitor progress remotely without asking "what are you working on?" Making your work visible builds trust and prevents workflow interruptions.
+**透明度：** 每个任务、状态更新和备注都会立即显示在用户的仪表板上（无论是通过网页 https://taskr.one、VS Code 扩展程序还是移动应用）。用户可以远程监控进度，而无需询问“你正在做什么？”。让工作过程透明化有助于建立信任，并避免工作流程的中断。
 
-## When to Use Taskr
+## 何时使用 Taskr？
 
-**Proactive transparency:** For any substantial work (3+ steps or >5 minutes), **offer to use Taskr** so the user can monitor progress remotely. Don't wait to be asked - suggest it!
+**主动提供透明度：** 对于任何需要多个步骤或耗时超过 5 分钟的工作，**建议使用 Taskr**，以便用户能够远程监控进度。不要等到用户主动询问才提出建议！
 
-✅ **Use Taskr for:**
-- Multi-step work that will take time (coding, research, analysis, builds)
-- Tasks spanning multiple sessions
-- Complex projects that benefit from structured breakdown
-- Any work where the user might want to check progress remotely
-- Background/long-running tasks
+✅ **适合使用 Taskr 的场景：**
+- 需要多个步骤且耗时的工作（如编程、研究、分析、构建）
+- 跨多个会话进行的工作
+- 需要结构化分解的复杂项目
+- 用户希望远程查看进度的任何工作
+- 后台或长时间运行的任务
 
-**Suggest it like:** "I'll track this work in Taskr so you can monitor progress from the web/mobile. Sound good?"
+**建议方式：** “我会用 Taskr 来记录这项工作，这样你就可以通过网页或移动应用查看进度了。听起来怎么样？”
 
-❌ **Skip Taskr for:**
-- Single quick actions (<3 steps, <2 minutes)
-- Simple questions or information retrieval
-- Exploratory research without defined deliverables
-- User explicitly declines tracking
+❌ **不适合使用 Taskr 的场景：**
+- 单次快速操作（少于 3 个步骤、耗时少于 2 分钟）
+- 简单的查询或信息检索
+- 没有明确交付成果的探索性研究
+- 用户明确表示不需要跟踪任务进度
 
-**Critical: Once Taskr tracking starts, continue using it for that entire workflow** unless the user explicitly says to stop. Don't abandon tasks mid-workflow - this breaks the tracking system and leaves work incomplete in the user's dashboard.
+**重要提示：** 一旦开始使用 Taskr 进行任务跟踪，**在整个工作流程中都应持续使用它**，除非用户明确要求停止。不要在工作进行到一半时放弃使用 Taskr——否则会导致跟踪系统失效，用户仪表板上的任务也会显示为未完成状态。
 
-**Default:** When starting substantial work, **proactively suggest Taskr**. Most users appreciate the transparency once they try it.
+**默认建议：** 在开始重要的工作时，**主动建议使用 Taskr**。大多数用户在使用后都会发现这种透明度的便利性。
 
-## Important Context
+## 重要背景信息
 
-Taskr was originally built for coding workflows. Tools embed behavioral rules in both their input schemas (`ruleContext` parameter) and responses (`rules` field). **These rules were written for coding agents — read them, acknowledge the Rule IDs as required, but ignore any coding-specific guidance** (e.g., references to compilation, test coverage, LOC limits, file paths). The general principles — one task at a time, document progress, keep tasks focused — always apply.
+Taskr 最初是为编程工作流程设计的。其工具在输入模式（`ruleContext` 参数）和响应数据（`rules` 字段）中嵌入了行为规则。**这些规则是为编程代理设计的——请阅读它们，并根据需要确认规则 ID，但可以忽略与编程相关的具体指导**（例如关于编译、测试覆盖率、代码行数限制、文件路径等内容）。不过一些通用原则始终适用：一次只处理一个任务、记录进度、保持任务专注。
 
-**Do NOT use the `generate_tasks` tool.** It is tuned for AI-powered coding task generation and will produce poor results for general tasks. Instead, create task hierarchies manually with `create_task`.
+**请勿使用 `generate_tasks` 工具。** 该工具专为 AI 驱动的编程任务生成设计，对于一般任务来说效果不佳。建议使用 `create_task` 手动创建任务层次结构。
 
-## Setup
+## 设置
 
-When credentials are missing:
+如果缺少凭据：
 
-1. **Get credentials from user:**
-   - Project ID: Found on Projects page at https://taskr.one (format: `PR00000000...`)
-   - API Key: User avatar → API Keys menu (click eye icon or copy button)
+1. **从用户处获取凭据：**
+   - 项目 ID：可以在 https://taskr.one 的项目页面找到（格式：`PR00000000...`）
+   - API 密钥：在用户头像旁边的 API 密钥菜单中获取（点击眼睛图标或复制按钮）
 
-2. **Configure via gateway.config.patch:**
+2. **通过 `gateway.config.patch` 进行配置：**
    ```json
    {
      "skills": {
@@ -67,59 +67,59 @@ When credentials are missing:
    }
    ```
 
-3. **Verify:** Test with `tools/list` and confirm connection.
+3. **验证：** 使用 `tools/list` 命令测试并确认连接是否正常。
 
-Users can create multiple projects for different work contexts.
+用户可以为不同的工作场景创建多个项目。
 
-**Advanced:** For mcporter/other MCP clients, sync via:
+**高级功能：** 对于 mcporter 或其他 MCP 客户端，可以通过以下方式同步数据：
 ```bash
 mcporter config add taskr "$MCP_API_URL" \
   --header "x-project-id=$MCP_PROJECT_ID" \
   --header "x-user-api-key=$MCP_USER_API_KEY"
 ```
 
-## Authentication & Protocol
+## 认证与协议
 
-Taskr uses JSON-RPC 2.0 over HTTPS with headers `x-project-id` and `x-user-api-key`. Tool responses contain:
-- `data` — results (tasks, notes, metadata)
-- `rules` — behavioral guidance (coding-oriented; apply general principles only)
-- `actions` — mandatory directives and workflow hints
+Taskr 使用基于 HTTPS 的 JSON-RPC 2.0 协议，请求头包含 `x-project-id` 和 `x-user-api-key`。工具的响应内容包括：
+- `data` — 结果（任务、备注、元数据）
+- `rules` — 行为指导（以编程为中心；仅适用通用原则）
+- `actions` — 强制性指令和工作流程提示
 
-## Rate Limits
+## 速率限制
 
-- Free tier: 200 tool calls/hour
-- Pro tier: 1,000 tool calls/hour
-- Only `tools/call` counts; `initialize` and `tools/list` are free
+- 免费 tier：每小时 200 次工具调用
+- Pro tier：每小时 1,000 次工具调用
+- 只计算 `tools/call` 的调用次数；`initialize` 和 `tools/list` 是免费的
 
-## Core Workflow
+## 核心工作流程
 
-1. **Plan** — Break user request into a task hierarchy
-2. **Create** — Use `create_task` to build the hierarchy in Taskr
-3. **Execute** — Call `get_task` to get next task, do the work, then `update_task` to mark done
-4. **Document** — Use notes to record progress, context, findings, and file changes
-5. **Repeat** — `get_task` again until all tasks complete
+1. **规划** — 将用户请求分解为任务层次结构
+2. **创建** — 使用 `create_task` 在 Taskr 中构建任务层次结构
+3. **执行** — 调用 `get_task` 获取下一个任务，完成任务后调用 `update_task` 标记为已完成
+4. **记录** — 使用备注记录进度、背景信息、发现的内容以及文件变更
+5. **重复** — 重复上述步骤，直到所有任务都完成
 
-**Single-task rule:** Work on exactly one task at a time. Complete or skip it before getting the next.
+**单任务规则：** 每次只处理一个任务。完成一个任务后再进行下一个。
 
-## Quick Reference
+## 快速参考
 
-**Workflow:** `get_task` (auto-sets status to `wip`) → do work → `update_task` with `status=done` → repeat.
+**工作流程：** `get_task`（自动将任务状态设置为 `wip`）→ 执行任务 → 使用 `update_task` 将状态设置为 `done` → 重复上述步骤。
 
-**Key features:**
-- `get_task` with `include_context=true` includes parent/sibling info and notes in `contextual_notes`
-- Notes created with `taskId` automatically appear in future `get_task` calls
-- Completing the last child task auto-marks parent as `done`
+**主要特性：**
+- `get_task` 选项 `include_context=true` 会包含父任务和同级任务的信息及备注
+- 使用 `taskId` 创建的备注会自动出现在后续的 `get_task` 调用中
+- 完成最后一个子任务后，父任务会自动标记为 `done`
 
-## Notes as Memory
+## 备注作为“记忆”工具
 
-Notes persist across sessions. Use them as durable memory:
-- **CONTEXT** notes for user preferences, decisions, background info, recurring patterns
-- **FINDING** notes for discoveries and insights encountered during work
-- **PROGRESS** notes for milestones when completing major phases (top-level tasks), not every leaf task
-- **FILE_LIST** notes when you create, modify, or delete files on the user's system
-- Before starting work, `search_notes` for relevant prior context
-- Update existing notes rather than creating duplicates
+备注会在会话之间保持持久化。可以将它们用作可靠的记忆工具：
+- **CONTEXT** 类型的备注用于记录用户偏好、决策、背景信息以及重复出现的模式
+- **FINDING** 类型的备注用于记录工作过程中发现的要点和见解
+- **PROGRESS** 类型的备注用于标记完成重要阶段的里程碑（即顶层任务），而不是每个子任务
+- **FILE_LIST** 类型的备注用于记录用户在系统上创建、修改或删除文件的操作
+- 在开始工作之前，可以使用 `search_notes` 查找相关的背景信息
+- 更新现有备注，而不是创建重复的备注
 
-## Task Types for General Use
+## 常用任务类型
 
-Prefer `setup`, `analysis`, and `implementation`. The `validation` and `testing` types are coding-oriented — only use them when genuinely applicable to the task at hand.
+建议使用 `setup`、`analysis` 和 `implementation` 类型的任务。`validation` 和 `testing` 类型的任务更适用于编程场景——只有在确实适用于当前任务时才使用它们。

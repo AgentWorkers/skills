@@ -1,108 +1,108 @@
 ---
 name: steamcommunity
-description: Retrieves Steam inventory data for a user from steamcommunity.com
+description: 从 steamcommunity.com 获取用户的 Steam 购物清单数据
 homepage: https://steamcommunity.com/dev
 metadata: {"clawdbot":{"emoji":"\u2694","requires":{"bins":["jq","curl"],"env":["STEAM_ID","STEAM_COOKIES"]}}}
 ---
 
 
-# Steam Community Inventory Skill
+# Steam社区库存技能
 
-Retrieve and browse a Steam user's inventory from steamcommunity.com.
+从 `steamcommunity.com` 获取并浏览Steam用户的库存信息。
 
-## Setup
+## 准备工作
 
-1. Find your **Steam ID (SteamID64)**:
-   - Go to your Steam profile page
-   - If your URL is `https://steamcommunity.com/profiles/76561198012345678`, your Steam ID is `76561198012345678`
-   - If your URL uses a vanity name like `https://steamcommunity.com/id/myname`, visit [steamid.io](https://steamid.io) and paste your profile URL to get your SteamID64
+1. **获取您的Steam ID (SteamID64)**：
+   - 访问您的Steam个人资料页面。
+   - 如果您的URL是 `https://steamcommunity.com/profiles/76561198012345678`，那么您的Steam ID就是 `76561198012345678`。
+   - 如果您的URL使用了一个自定义名称（如 `https://steamcommunity.com/id/myname`），请访问 [steamid.io](https://steamid.io) 并粘贴您的个人资料URL以获取Steam ID。
 
-2. Get your **Steam session cookies** (required to bypass rate limits when fetching your own inventory):
-   - Log in to [steamcommunity.com](https://steamcommunity.com) in your browser
-   - Open Developer Tools (F12) > Application tab > Cookies > `https://steamcommunity.com`
-   - Copy the value of the `steamLoginSecure` cookie
+2. **获取Steam会话cookie**（在获取自己的库存信息时需要绕过速率限制）：
+   - 在浏览器中登录 [steamcommunity.com](https://steamcommunity.com)。
+   - 打开开发者工具（F12）> “应用程序”选项卡 > “Cookies” > `https://steamcommunity.com`。
+   - 复制 `steamLoginSecure` cookie的值。
 
-3. Set environment variables:
+3. 设置环境变量：
    ```bash
    export STEAM_ID="your-steamid64"
    export STEAM_COOKIES="steamLoginSecure=your-cookie-value"
    ```
 
-## Usage
+## 使用方法
 
-All commands use curl to hit the Steam Community inventory endpoint. The context ID is `2` for all standard game inventories.
+所有命令都使用 `curl` 来调用Steam社区的库存接口。对于所有标准游戏的库存，上下文ID（Context ID）为 `2`。
 
-### Common App IDs
+### 常见游戏的应用ID
 
-| Game | App ID |
+| 游戏 | 应用ID（App ID） |
 |------|--------|
 | CS2 / CS:GO | 730 |
 | Team Fortress 2 | 440 |
 | Dota 2 | 570 |
 | Rust | 252490 |
 | PUBG | 578080 |
-| Steam Community (trading cards, etc.) | 753 |
+| Steam社区（交易卡片等） | 753 |
 
-### Get inventory for a game
+### 获取游戏的库存信息
 
-Replace `$APP_ID` with the game's App ID (see table above). Context ID is `2` for all standard game inventories.
+将 `$APP_ID` 替换为相应的游戏应用ID（参见上表）。对于所有标准游戏的库存，上下文ID为 `2`。
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/$APP_ID/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-### Get CS2 inventory
+### 获取CS2游戏的库存信息
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-### Get a summary of items (names and quantities)
+### 获取物品详情（包括名称和数量）
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '[.descriptions[] | {market_hash_name, type}]'
 ```
 
-### Get item details (asset IDs mapped to descriptions)
+### 获取物品详细信息（将资产ID映射到对应的描述）
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000" \
   -H "Cookie: $STEAM_COOKIES" | jq '{assets: [.assets[] | {assetid, classid, instanceid, amount}], total: .total_inventory_count}'
 ```
 
-### Paginated fetch (for inventories over 2000 items)
+### 分页获取（当库存物品超过2000件时）
 
-The API returns a `last_assetid` field when there are more items. Pass it as `start_assetid` to get the next page:
+当库存物品数量超过2000件时，API会返回一个 `last_assetid` 字段。您可以使用这个值作为 `start_assetid` 来获取下一页的数据：
 
 ```bash
 curl -s "https://steamcommunity.com/inventory/$STEAM_ID/730/2?l=english&count=2000&start_assetid=$LAST_ASSET_ID" \
   -H "Cookie: $STEAM_COOKIES" | jq '.'
 ```
 
-Check for more pages by looking at the `more_items` field in the response (equals `1` if there are more).
+通过检查响应中的 `more_items` 字段来判断是否还有更多页面（如果值为 `1`，则表示还有更多页面）。
 
-## Response Format
+## 响应格式
 
-The inventory endpoint returns JSON with these key fields:
+库存接口返回的JSON数据包含以下字段：
 
-| Field | Description |
+| 字段 | 说明 |
 |-------|-------------|
-| `assets` | Array of items with `appid`, `contextid`, `assetid`, `classid`, `instanceid`, `amount` |
-| `descriptions` | Array of item metadata: `market_hash_name`, `name`, `type`, `icon_url`, `tradable`, `marketable`, tags, etc. |
-| `total_inventory_count` | Total number of items in the inventory |
-| `more_items` | `1` if more pages available (absent otherwise) |
-| `last_assetid` | Last asset ID returned; use as `start_assetid` for next page |
-| `success` | `1` if the request succeeded |
+| `assets` | 物品数组，包含 `appid`、`contextid`、`assetid`、`classid`、`instanceid`、`amount` 等信息 |
+| `descriptions` | 物品元数据数组，包括 `market_hash_name`、`name`、`type`、`icon_url`、`tradable`、`marketable`、`tags` 等信息 |
+| `total_inventory_count` | 库存中的物品总数 |
+| `more_items` | 如果还有更多页面，则值为 `1`（否则为 `null`） |
+| `last_assetid` | 返回的最后一个物品的ID；用作获取下一页的 `start_assetid` |
+| `success` | 如果请求成功，则值为 `1` |
 
-Assets are linked to descriptions via `classid` + `instanceid`.
+物品通过 `classid` 和 `instanceid` 与对应的描述信息关联。
 
-## Notes
+## 注意事项
 
-- **Rate limits**: The community endpoint is heavily rate-limited by IP. Using your own cookies bypasses this for your own inventory. Without cookies, expect IP bans after a few requests (cooldown ~6 hours).
-- **Spacing**: If fetching multiple inventories or pages, wait at least 4 seconds between requests.
-- **count parameter**: Max value is 5000, but 2000 is recommended to avoid issues.
-- **Context ID**: Use `2` for all standard game inventories. Steam Community items (appid 753) also use context ID `6` for some item types.
-- **Private profiles**: Inventory must be set to public, or you must be authenticated as the owner.
+- **速率限制**：Steam社区的接口受到严格的IP地址速率限制。使用自己的cookie可以绕过这一限制。如果没有cookie，多次请求后可能会导致IP被封禁（冷却时间约为6小时）。
+- **请求间隔**：如果同时获取多个用户的库存或页面数据，请在每次请求之间至少等待4秒。
+- **`count` 参数**：最大值为5000，但建议设置为2000以避免问题。
+- **上下文ID**：对于所有标准游戏的库存，使用 `2`；Steam社区中的物品（应用ID为753）在某些物品类型下会使用上下文ID `6`。
+- **私人资料**：库存信息必须设置为公开状态，或者您需要以物品所有者的身份进行身份验证。

@@ -1,6 +1,6 @@
 ---
 name: car-restoration
-description: Expert guidance for car-restoration.
+description: 汽车修复的专业指导。
 version: 1.0.0
 tags: [hobbies,collecting,crafts]
 author: OpenWork
@@ -11,17 +11,17 @@ metadata:
       env: []
 ---
 
-# ucar restoration
+# ucar 恢复指南
 
-Hobby and collection guidance.
+关于 ucar 的爱好与收藏指导。
 
-## Capabilities
+## 功能
 
-- Hobby techniques
-- Collection tips
-- Maintenance guidance
-- Resource recommendations
+- 爱好相关技巧
+- 收藏建议
+- 维护指南
+- 资源推荐
 
-## Usage
-Help with this hobby
-Collection tips
+## 使用方法
+- 提供与 ucar 相关的爱好帮助
+- 提供收藏方面的实用建议

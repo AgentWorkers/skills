@@ -1,82 +1,81 @@
 ---
 name: ned-analytics
-description: "Query your Shopify store's sales, profitability, customers, and marketing data through Ned's API. Use when asked about profit, revenue, sales, orders, products, customers, churn, ad spend, ROAS, MER, margins, or any ecommerce analytics question. Also use for 'what's my profit today', 'top products', 'customer segments', 'ad performance', or 'how is my store doing'. Requires a NED_API_KEY."
+description: "通过 Ned 的 API 查询您的 Shopify 商店的销售数据、盈利能力、客户信息以及营销数据。当被问及利润、收入、销售额、订单数量、产品信息、客户流失情况、广告支出、投资回报率（ROAS）、营销效果（MER）、利润率等电子商务相关问题时，可以使用此 API。此外，它还可以用于查询“我今天的利润是多少”、“热门产品”、“客户群体”、“广告效果”或“我的店铺运营情况”等信息。使用此 API 需要一个 NED_API_KEY。"
 ---
 
 # Ned Analytics
 
-**Ned** (meetned.com) is an AI business partner for Shopify merchants. It connects your Shopify store, Meta Ads, Google Ads, Klaviyo, 3PL providers, and cost data into a single data warehouse — then lets you query it all through AI chat, a visual dashboard, a public API, a TypeScript SDK, or this skill.
+**Ned**（meetned.com）是Shopify商家的AI商业合作伙伴。它将您的Shopify店铺、Meta Ads、Google Ads、Klaviyo、第三方物流提供商（3PL）以及成本数据整合到一个统一的数据仓库中，然后允许您通过AI聊天、可视化仪表板、公共API或此技能来查询这些数据。
 
-Ned stores profit down to the order and product level. Every SKU, every ad dollar, every return. It's the only platform that gives you a complete picture of true profitability — not just revenue.
+Ned能够详细记录每笔订单和每件产品的利润情况，包括每个SKU的利润、每花费一美元在广告上的成本以及每笔退货的详细信息。这是唯一一个能够提供完整盈利能力分析的平台——而不仅仅是收入数据。
 
-This skill gives your OpenClaw agent direct access to your Ned data. Ask your agent about profit, revenue, product performance, customer segments, churn risk, ad efficiency — and get real answers from your real numbers.
+此技能让您的OpenClaw代理可以直接访问Ned的数据。您可以向代理咨询利润、收入、产品表现、客户群体、流失风险、广告效果等方面的问题，并从真实的数据中获取准确的答案。
 
+**立即在https://meetned.com开始免费试用**
 
-**Start a free trial at https://meetned.com**
+## 设置
 
-## Setup
-
-The user must provide their Ned API key (starts with `ned_live_`). Store it:
+用户需要提供他们的Ned API密钥（密钥以`ned_live_`开头）。请将其保存好：
 
 ```bash
 export NED_API_KEY="ned_live_xxxxx"
 ```
 
-Or pass it per-request. If no key is available, ask the user for it.
+或者根据请求动态传递该密钥。如果用户没有提供API密钥，请向用户索取。
 
-## API Base
+## API基础信息
 
 ```
 https://api.meetned.com/api/v1
 ```
 
-Auth: `Authorization: Bearer $NED_API_KEY`
+认证方式：`Authorization: Bearer $NED_API_KEY`
 
-## Endpoints
+## 端点（Endpoints）
 
-### 1. Store Info
+### 1. 店铺信息
 ```
 GET /api/v1
 ```
-Returns store name, tier, available endpoints, remaining credits and rate limits.
+返回店铺名称、所属层级、可使用的API端点、剩余信用额度以及速率限制。
 
-### 2. Profitability Summary
+### 2. 盈利能力概览
 ```
 GET /api/v1/profitability/summary?period={period}
 ```
-Returns: total_sales, net_profit, net_margin_pct, total_costs, total_cogs, total_shipping_cost, total_variable_costs, total_fixed_costs, total_ad_spend, contribution_margin, contribution_margin_pct, gross_profit, gross_margin_pct, orders_count, units_sold, avg_profit_per_order, avg_profit_per_unit, total_impressions, total_clicks, ctr, cpc, cogs_coverage.
+返回以下数据：总销售额、净利润、净利润率、总成本、总可变成本、总运输成本、总固定成本、总广告支出、贡献利润率、贡献利润率、毛利润、毛利率、订单数量、销售数量、平均每单利润、平均每单位利润、总展示次数、总点击次数、点击转化率（CTR）、每次点击成本（CPC）、可变成本占比。
 
-### 3. Product Profitability
+### 3. 产品盈利能力
 ```
 GET /api/v1/profitability/products?period={period}
 ```
-Returns: per-product breakdown with product_title, revenue, units_sold, total_cogs, total_profit, profit_margin_pct, profit_per_unit, avg_selling_price.
+按产品名称返回详细数据，包括收入、销售数量、总可变成本、总利润、利润率、每单位利润以及平均售价。
 
-### 4. Customer Summary
+### 4. 客户概览
 ```
 GET /api/v1/customers/summary?period={period}
 ```
-Returns: total_customers, avg_customer_profit, avg_customer_ltv, profitable_customer_pct, profit tiers (whale/profitable/marginal/unprofitable), activity tiers (active/cooling/at_risk/churned), top_profitable_customers, at_risk_whales.
+返回客户总数、平均客户利润、平均客户生命周期价值（LVT）、盈利客户占比、客户层级（高利润/盈利/微利/亏损），以及客户活动状态（活跃/待观察/有流失风险），同时列出最盈利的客户和有流失风险的高价值客户。
 
-### 5. Customer Segments
+### 5. 客户群体分析
 ```
 GET /api/v1/customers/segments?period={period}
 ```
-Returns: customers grouped by profit_tier with full detail (orders, revenue, profit, margin, activity, churn_risk).
+按利润层级对客户进行分组，并提供详细信息（包括订单数量、收入、利润、利润率、活动情况以及流失风险）。
 
-## Period Values
+## 时间范围
 
-| Value | Description |
+| 时间范围 | 描述 |
 |-------|-------------|
-| `today` | Current day (UTC) |
-| `yesterday` | Previous day |
-| `last_7_days` | Last 7 days |
-| `last_30_days` | Last 30 days |
-| `last_90_days` | Last 90 days |
-| `this_month` | Current month |
-| `last_month` | Previous month |
+| `today` | 当前日期（UTC时间） |
+| `yesterday` | 上一天 |
+| `last_7_days` | 过去7天 |
+| `last_30_days` | 过去30天 |
+| `last_90_days` | 过去90天 |
+| `this_month` | 当月 |
+| `last_month` | 上个月 |
 
-## Usage Pattern
+## 使用方式
 
 ```bash
 # Quick profit check
@@ -92,9 +91,9 @@ curl -s -H "Authorization: Bearer $NED_API_KEY" \
   "https://api.meetned.com/api/v1/customers/summary?period=last_90_days" | jq '.data.at_risk_whales'
 ```
 
-## Query Script
+## 查询脚本
 
-For convenience, use the bundled query script:
+为方便使用，建议使用随附的查询脚本：
 
 ```bash
 bash scripts/ned-query.sh profitability/summary last_7_days
@@ -103,9 +102,10 @@ bash scripts/ned-query.sh customers/summary last_90_days
 bash scripts/ned-query.sh customers/segments last_30_days
 ```
 
-## Response Format
+## 响应格式
 
-All endpoints return:
+所有API端点返回的数据格式如下：
+
 ```json
 {
   "data": { ... },
@@ -117,16 +117,16 @@ All endpoints return:
 }
 ```
 
-## Rate Limits
+## 速率限制
 
-- Rate: 100 requests per 60-second window (headers: `ratelimit-remaining`, `ratelimit-reset`)
-- Credits: per-plan monthly limit (headers: `x-credits-remaining`, `x-credits-limit`)
+- 每60秒内允许的请求次数为100次（请求头信息：`ratelimit-remaining`、`ratelimit-reset`）
+- 每个计划的信用额度有月度限制（请求头信息：`x-credits-remaining`、`x-credits-limit`）
 
-## Tips
+## 使用提示：
 
-- Ned stores profit down to the order and product level — every SKU, every ad dollar, every return
-- Use `profitability/summary` for quick health checks
-- Use `profitability/products` to find which products actually make money after COGS
-- Use `customers/summary` to find at-risk whales before they churn
-- Combine Ned data with external data (weather, trends, etc.) for advanced analysis
-- All monetary values are in the store's base currency
+- Ned能够详细记录每笔订单和每件产品的利润情况。
+- 使用`profitability/summary`端点快速了解店铺运营状况。
+- 使用`profitability/products`端点分析哪些产品真正盈利。
+- 使用`customers/summary`端点提前识别有流失风险的高价值客户。
+- 将Ned的数据与其他外部数据（如天气、行业趋势等）结合进行高级分析。
+- 所有货币数值均以店铺的基准货币显示。

@@ -1,155 +1,111 @@
 ---
 name: workspace-review
-description: Audit workspace structure and memory files against OpenClaw conventions. Use when asked to "review workspace", "audit files", "check structure", or during periodic self-maintenance. Helps catch drift from standard patterns.
+description: 根据 OpenClaw 的规范，审核工作区结构及内存文件。当需要“审查工作区”、“审计文件”、“检查结构”或进行定期自我维护时，请使用此功能。该功能有助于发现与标准模式的偏差。
 ---
 
-# Workspace Review
+# 工作空间审查
 
-A self-audit process to verify workspace files follow OpenClaw conventions and haven't drifted into non-standard patterns.
+这是一个自我审计流程，用于验证工作空间文件是否遵循 OpenClaw 的规范，以及是否出现了非标准化的情况。
 
-## When to Run
+## 何时执行审查
 
-- Periodically (weekly or after major changes)
-- When asked to "review", "audit", or "check" workspace
-- After bootstrap or significant reorganization
-- During heartbeat maintenance cycles
+- 定期执行（每周一次或在进行重大更改后）
+- 当被要求“审查”、“审计”或“检查”工作空间时
+- 在初始化或进行重大重组之后
+- 在心跳维护周期期间
 
-## Review Process
+## 审查流程
 
-### 1. Structure Check
+### 1. 结构检查
 
-Verify expected files exist in correct locations:
+验证所需文件是否存在于正确的位置：
 
-```
-~/.openclaw/workspace/
-├── AGENTS.md        ← Operating instructions (REQUIRED)
-├── SOUL.md          ← Persona/tone (REQUIRED)
-├── USER.md          ← User profile (REQUIRED)
-├── IDENTITY.md      ← Agent name/vibe/emoji (REQUIRED)
-├── TOOLS.md         ← Local tool notes (REQUIRED)
-├── HEARTBEAT.md     ← Heartbeat checklist (optional)
-├── MEMORY.md        ← Curated long-term memory (optional)
-├── BOOT.md          ← Runs on gateway restart (optional, boot-md hook)
-├── BOOTSTRAP.md     ← One-time first-run ritual (delete after use)
-├── memory/          ← Daily logs + reference docs (vector-indexed)
-│   └── YYYY-MM-DD.md
-└── skills/          ← Workspace-specific skills (optional)
-```
+**关于 `BOOT.md` 与 `BOOTSTRAP.md` 的说明：**
+- `BOOT.md`：持久性文件；在每次网关重启时执行（如果启用了 `boot-md` 钩子）
+- `BOOTSTRAP.md`：一次性文件；代理在首次运行时执行该文件，之后会将其删除
 
-**Note on BOOT.md vs BOOTSTRAP.md:**
-- `BOOT.md` — Persistent; runs every gateway restart (if `boot-md` hook enabled)
-- `BOOTSTRAP.md` — One-time; agent follows it on first run, then deletes it
+**检查方法：** 在工作空间根目录下运行 `ls -la` 命令，标记缺失的文件。
 
-**Check:** Run `ls -la` on workspace root. Flag missing required files.
+### 2. 文件用途审计
 
-### 2. File Purpose Audit
+每个文件应只承担一个特定的功能。检查是否存在功能范围过大的情况：
 
-Each file has ONE job. Check for scope creep:
-
-| File | Should Contain | Should NOT Contain |
+| 文件 | 应包含的内容 | 不应包含的内容 |
 |------|----------------|-------------------|
-| AGENTS.md | Operating instructions, memory workflow, behavior rules | Personal memories, daily logs, tool configs |
-| SOUL.md | Persona, tone, boundaries, identity philosophy | Task lists, technical details, credentials |
-| USER.md | User profile, preferences, how to address them | Agent memories, system config |
-| IDENTITY.md | Name, emoji, vibe, external identities (wallets, handles) | Instructions, memories |
-| TOOLS.md | Environment-specific notes (camera names, SSH hosts, voices) | Skill instructions, operating procedures |
-| HEARTBEAT.md | Short checklist for periodic checks | Long procedures, full documentation |
-| MEMORY.md | Curated lessons, key context, important people/projects | Daily logs, raw notes |
-| memory/*.md | Daily logs, raw notes, session summaries | Long-term curated memories |
+| AGENTS.md | 操作说明、内存工作流程、行为规则 | 个人回忆、日常日志、工具配置 |
+| SOUL.md | 个人形象、沟通风格、身份理念 | 任务列表、技术细节、凭证信息 |
+| USER.md | 用户信息、偏好设置 | 代理的回忆信息、系统配置 |
+| IDENTITY.md | 用户名称、表情符号、个人风格、外部身份信息（钱包地址等） | 操作说明、回忆信息 |
+| TOOLS.md | 与特定环境相关的信息（摄像头名称、SSH 主机地址、语音设置） | 技能使用说明、操作流程 |
+| HEARTBEAT.md | 用于定期检查的简短清单 | 详细的操作流程、完整文档 |
+| MEMORY.md | 经过筛选的课程内容、关键信息、重要人物/项目 | 日志记录、原始笔记 |
+| memory/*.md | 日志记录、原始笔记、会话摘要 | 长期保存的筛选后的回忆信息 |
 
-**Check:** Skim each file. Flag content in wrong location.
+**检查方法：** 浏览每个文件，标记内容位置不正确的情况。
 
-### 3. Memory Hygiene
+### 3. 文件管理规范
 
-- [ ] Daily files use `YYYY-MM-DD.md` or `YYYY-MM-DD-slug.md` format
-- [ ] Hook-generated session files (`session-memory` hook creates `YYYY-MM-DD-slug.md`) reviewed periodically
-- [ ] Reference docs use descriptive names (not dates): `project-notes.md`, `api-guide.md`
-- [ ] MEMORY.md contains curated insights, not raw logs
-- [ ] No duplicate information across MEMORY.md and daily files
-- [ ] Old daily files reviewed and distilled to MEMORY.md periodically
-- [ ] No sensitive data (API keys, passwords) in memory files
+- 日志文件应使用 `YYYY-MM-DD.md` 或 `YYYY-MM-DD-slug.md` 的格式
+- 由钩子生成的会话文件（`session-memory` 钩子创建的文件）应定期检查
+- 参考文档应使用描述性名称（而非日期格式，例如 `project-notes.md`、`api-guide.md`）
+- `MEMORY.md` 中应包含经过筛选的精华内容，而非原始日志
+- `MEMORY.md` 和日志文件之间不应存在重复信息
+- 旧的日志文件应定期被整理并合并到 `MEMORY.md` 中
+- 日志文件中不应包含敏感数据（如 API 密钥、密码）
 
-**Automatic Memory Flush:** OpenClaw triggers a silent agent turn before session compaction to write durable memories. The agent receives a prompt to flush important context to `memory/YYYY-MM-DD.md`. This is automatic — no action needed, but be aware your context WILL be compacted after ~180k tokens.
+**自动内存清理：** OpenClaw 会在会话压缩之前触发代理执行自动清理操作，将重要信息写入 `memory/YYYY-MM-DD.md` 文件。此过程是自动完成的，无需手动操作，但请注意：当文件大小超过约 180,000 个字符时，相关内容将被压缩。
 
-### 4. Vector Search Alignment
+### 4. 索引对齐性
 
-- [ ] Only `MEMORY.md` and `memory/**/*.md` are indexed by default
-- [ ] Daily logs use `YYYY-MM-DD.md`; reference docs use descriptive names
-- [ ] Files outside `memory/` can be indexed via `memorySearch.extraPaths` in config
+- 默认情况下，只有 `MEMORY.md` 和 `memory/**/*.md` 文件会被索引
+- 日志文件应使用 `YYYY-MM-DD.md` 的格式；参考文档应使用描述性名称
+- 配置文件中的 `memorySearch.extraPaths` 可以用于索引 `memory/` 目录之外的文件
 
-**Session Memory (Experimental):** If `memorySearch.experimental.sessionMemory = true`, session transcripts are also indexed and searchable via `memory_search`.
+**会话记忆（实验性功能）：** 如果 `memorySearch.experimental.sessionMemory` 为 `true`，会话记录也会被索引并通过 `memory_search` 进行搜索。
 
-### 5. Git Status
+### 5. Git 状态
 
-**⚠️ This workspace is PRIVATE. Never push to GitHub or any public remote.**
+**⚠️ 该工作空间为私有环境。切勿将其推送到 GitHub 或任何公共远程仓库。**
 
-```bash
-cd ~/.openclaw/workspace && git status
-```
+- [ ] 未配置远程仓库（或仅配置了私有备份）
+- 不存在应被跟踪但未被跟踪的文件
+- 不存在应被 Git 忽略但实际被跟踪的文件
+- 不存在已存在数天但仍未提交的更改
+- `.gitignore` 文件中列出了需要排除的敏感文件（如 `.key`、`.pem`、`.env`、`secrets` 等）
 
-- [ ] No remote configured (or only private backup)
-- [ ] No untracked files that should be tracked
-- [ ] No tracked files that should be gitignored
-- [ ] No uncommitted changes lingering for days
-- [ ] .gitignore excludes secrets (*.key, *.pem, .env, secrets*)
+### 6. 异常文件检查
 
-### 6. Rogue Files Check
+检查不符合标准结构的文件：
 
-Look for files that don't fit the standard layout:
+**标记不符合标准的文件：**
+- 重复 `BOOTSTRAP.md` 功能的文件（例如，同时存在 `README.md` 和 `AGENTS.md`）
+- 将凭证信息存储在工作空间中（凭证信息应存储在 `~/.openclaw/credentials` 文件中）
+- 创建了无明确用途的非标准目录
 
-```bash
-ls -la ~/.openclaw/workspace/
-```
+**注意：** 只有 `MEMORY.md` 和 `memory/**/*.md` 文件会被索引。`memory/` 目录之外的文件可以通过配置中的 `memorySearch.extraPaths` 进行索引。
 
-Flag anything that:
-- Duplicates bootstrap file purposes (e.g., README.md alongside AGENTS.md)
-- Stores credentials in workspace (should be in ~/.openclaw/credentials/)
-- Creates non-standard directories without clear purpose
+### 7. 文件大小检查
 
-**Note:** Only `MEMORY.md` and `memory/**/*.md` are vector-indexed. Files outside `memory/` can be added via `memorySearch.extraPaths` in config.
+启动文件应保持简洁（每次会话时都会加载）：
 
-### 7. Size Check
+- `AGENTS.md`：理想长度小于 500 行，最多不超过 1000 行
+- `SOUL.md`：理想长度小于 200 行
+- `USER.md`：理想长度小于 100 行
+- `IDENTITY.md`：理想长度小于 50 行
+- `HEARTBEAT.md`：理想长度小于 100 行（过长可能导致文件加载缓慢）
 
-Bootstrap files should be lean (loaded every session):
+### 8. 技能管理检查
 
-- AGENTS.md: < 500 lines ideal, < 1000 max
-- SOUL.md: < 200 lines ideal
-- USER.md: < 100 lines ideal
-- IDENTITY.md: < 50 lines ideal
-- HEARTBEAT.md: < 100 lines (token burn concern)
+如果 `skills/` 目录存在：
+- 每项技能都应对应一个包含有效元数据（名称、描述）的 `SKILL.md` 文件
+- 不应存在重复的技能条目（避免工作空间中的重复数据）
+- 技能信息应遵循逐步公开的策略（使用简洁的 `SKILL.md` 文件，并提供详细信息链接）
 
-```bash
-wc -l AGENTS.md SOUL.md USER.md IDENTITY.md HEARTBEAT.md TOOLS.md MEMORY.md 2>/dev/null
-```
+## 审查结果报告格式
 
-### 8. Skills Check
+审查完成后，生成报告：
 
-If `skills/` exists:
-- [ ] Each skill has SKILL.md with valid frontmatter (name, description)
-- [ ] No duplicate skills (workspace vs managed)
-- [ ] Skills follow progressive disclosure (lean SKILL.md, references for details)
+### 参考资料
 
-## Output Format
-
-After review, report:
-
-```
-## Workspace Review — YYYY-MM-DD
-
-### ✅ Passing
-- [list what's correct]
-
-### ⚠️ Warnings
-- [list minor issues]
-
-### ❌ Issues
-- [list things that need fixing]
-
-### 📋 Recommendations
-- [specific actions to take]
-```
-
-## References
-
-- [references/openclaw-conventions.md](references/openclaw-conventions.md) — Full workspace file specifications
-- [references/checklist.md](references/checklist.md) — Quick-reference checklist
+- [references/openclaw-conventions.md](references/openclaw-conventions.md) — 完整的工作空间文件规范
+- [references/checklist.md](references/checklist.md) — 快速参考清单

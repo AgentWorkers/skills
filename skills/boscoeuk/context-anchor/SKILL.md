@@ -1,26 +1,26 @@
 ---
 name: context-anchor
 version: 1.0.0
-description: Recover from context compaction by scanning memory files and surfacing where you left off. Use when waking up fresh, after compaction, or when you feel lost about what you were doing.
+description: 通过扫描内存文件来恢复从上下文压缩中丢失的信息，并从你上次停止的地方继续执行。适用于在系统重新启动后、压缩操作完成后，或者当你不清楚自己之前在做什么的时候使用。
 ---
 
-# Context Anchor Skill
+# **上下文恢复技能（Context Recovery Skill）**
 
-Helps agents recover context after compaction by scanning memory files and generating a "here's where you are" briefing.
+该技能通过扫描内存文件并生成一份“当前工作状态”简报，帮助代理在系统压缩后快速恢复工作上下文。
 
-## Why This Exists
+## **技能存在的必要性**
 
-Context compaction loses memory. Files survive. But after waking up fresh, you need to:
-1. Know what you were working on
-2. See decisions that were made
-3. Find open loops that need closing
-4. Get oriented fast
+虽然系统压缩可以节省内存空间，但文件本身仍然保留。然而，在系统恢复后，代理需要：
+1. 了解自己之前正在处理的任务；
+2. 查看之前所做的决策；
+3. 找出尚未完成或存在问题的任务；
+4. 快速熟悉当前的工作环境。
 
-This skill automates that recovery.
+该技能能够自动化完成这些恢复工作。
 
 ---
 
-## Quick Start
+## **快速入门**
 
 ```bash
 # Full briefing (default)
@@ -44,21 +44,21 @@ This skill automates that recovery.
 
 ---
 
-## What It Scans
+## **扫描范围**
 
-| Source | What It Extracts |
-|--------|------------------|
-| `memory/current-task.md` | Current task status, blockers, next steps |
-| `memory/YYYY-MM-DD.md` | Recent daily logs (last 2 days by default) |
-| `context/active/*.md` | In-progress task files |
-| Daily logs | Decisions (lines with "Decision:", "Decided:", "✅") |
-| Daily logs | Open loops (lines with "?", "TODO:", "Blocker:", "Need to") |
+| 扫描路径        | 扫描内容                          |
+|---------------|-----------------------------------|
+| `memory/current-task.md` | 当前任务的状态、阻碍因素及后续步骤         |
+| `memory/YYYY-MM-DD.md` | 最近的每日日志（默认为过去2天的日志）         |
+| `context/active/*.md` | 正在进行的任务文件                     |
+| 日志文件        | 包含决策内容的日志行（如 "Decision:", "Decided:", "✅"）       |
+| 日志文件        | 存在问题的日志行（如 "?", "TODO:", "Blocker:", "Need to"）       |
 
 ---
 
-## Output Format
+## **输出格式**
 
-The script outputs a structured briefing:
+脚本会生成一份结构化的简报，内容如下：
 
 ```
 ═══════════════════════════════════════════════════════════
@@ -90,10 +90,9 @@ The script outputs a structured briefing:
 
 ---
 
-## Integration with AGENTS.md
+## **与 AGENTS.md 的集成**
 
-Add to your "Every Session" routine:
-
+您可以将该技能添加到您的“每次会话”（Every Session）自动化流程中：
 ```markdown
 ## Every Session
 
@@ -104,19 +103,19 @@ Before doing anything else:
 ...
 ```
 
-Or use it manually when you feel lost about context.
+或者，在您对工作内容感到困惑时手动使用该技能。
 
 ---
 
-## Customization
+## **自定义设置**
 
-### Change workspace root
+### 更改工作区根目录
 
 ```bash
 WORKSPACE=/path/to/workspace ./scripts/anchor.sh
 ```
 
-### Change days to scan
+### 更改扫描日志的日期范围
 
 ```bash
 ./scripts/anchor.sh --days 5  # Scan 5 days back
@@ -124,19 +123,19 @@ WORKSPACE=/path/to/workspace ./scripts/anchor.sh
 
 ---
 
-## No Dependencies
+## **无依赖项**
 
-Pure bash. Uses only:
+该技能完全基于 Bash 脚本实现，仅依赖以下工具：
 - `find`, `grep`, `head`, `tail`, `date`, `stat`
-- Works on macOS and Linux
-- No external tools required
+- 适用于 macOS 和 Linux 系统
+- 不需要任何外部工具
 
 ---
 
-## When to Use
+## **使用场景**
 
-- **Session start**: Quick orientation on what's happening
-- **After compaction**: Recover lost context
-- **Feeling lost**: "Wait, what was I doing?"
-- **Handoff**: Show another agent where things stand
-- **Daily review**: See what decisions were made
+- **会话开始时**：快速了解当前的工作进度；
+- **系统压缩后**：恢复丢失的工作上下文；
+- **感到困惑时**：帮助您回忆之前在做什么；
+- **任务交接时**：向其他代理展示工作进展；
+- **日常回顾**：查看之前所做的决策。

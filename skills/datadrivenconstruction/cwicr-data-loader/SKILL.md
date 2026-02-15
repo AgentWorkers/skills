@@ -1,40 +1,39 @@
 ---
 slug: "cwicr-data-loader"
 display_name: "CWICR Data Loader"
-description: "Load and parse DDC CWICR construction cost database from multiple formats: Parquet, Excel, CSV, Qdrant snapshots. Foundation for all CWICR operations."
+description: "从多种格式（Parquet、Excel、CSV、Qdrant 快照）加载并解析 DDC CWICR 建设成本数据库。这是所有 CWICR 操作的基础。"
 ---
 
-# CWICR Data Loader
+# CWICR 数据加载器
 
-## Business Case
+## 商业场景
 
-### Problem Statement
-DDC CWICR database is distributed in multiple formats:
-- Apache Parquet (optimized for analytics)
-- Excel workbooks (human-readable)
-- CSV files (universal exchange)
-- Qdrant snapshots (vector search)
+### 问题描述
+DDC CWICR 数据库以多种格式存在：
+- Apache Parquet（专为数据分析优化）
+- Excel 工作簿（人类可读）
+- CSV 文件（通用交换格式）
+- Qdrant 快照（支持向量搜索）
 
-Applications need unified data access regardless of source format.
+应用程序需要能够统一访问这些数据，而无需关心数据的来源格式。
 
-### Solution
-Universal data loader supporting all CWICR formats with automatic schema detection, validation, and pandas DataFrame conversion.
+### 解决方案
+一个通用的数据加载器，支持所有 CWICR 格式，具备自动模式检测、数据验证以及将数据转换为 pandas DataFrame 的功能。
 
-### Business Value
-- **Format agnostic** - Load from any CWICR distribution
-- **Validated data** - Automatic schema validation
-- **Memory efficient** - Lazy loading for large datasets
-- **Type-safe** - Proper data types preserved
+### 商业价值
+- **格式无关性**：可以从任何 CWICR 数据源加载数据
+- **数据验证**：自动进行数据模式验证
+- **内存效率**：针对大型数据集采用延迟加载机制
+- **类型安全性**：确保数据类型得到正确处理
 
-## Technical Implementation
+## 技术实现
 
-### Prerequisites
+### 先决条件
 ```bash
 pip install pandas pyarrow openpyxl qdrant-client
 ```
 
-### Python Implementation
-
+### Python 实现
 ```python
 import pandas as pd
 import pyarrow.parquet as pq
@@ -408,8 +407,7 @@ def get_cwicr_statistics(source: str) -> Dict[str, Any]:
     return loader.get_statistics(df)
 ```
 
-## Quick Start
-
+## 快速入门
 ```python
 # Load from Parquet (fastest)
 loader = CWICRDataLoader()
@@ -428,16 +426,16 @@ categories = loader.get_categories(df)
 print(f"Categories: {categories}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. Multi-Language Loading
+### 1. 多语言加载
 ```python
 batch = CWICRBatchLoader()
 all_languages = batch.load_all_languages("C:/CWICR/")
 print(f"Total items across all languages: {len(all_languages)}")
 ```
 
-### 2. Category Filtering
+### 2. 类别过滤
 ```python
 loader = CWICRDataLoader()
 df = loader.load("cwicr.parquet")
@@ -447,15 +445,14 @@ concrete = loader.filter_by_category(df, "Concrete")
 print(f"Concrete items: {len(concrete)}")
 ```
 
-### 3. Keyword Search
+### 3. 关键词搜索
 ```python
 # Find all masonry-related items
 masonry = loader.search_by_description(df, "masonry")
 print(masonry[['work_item_code', 'description', 'unit_price']])
 ```
 
-## Database Statistics
-
+## 数据库统计信息
 ```python
 stats = loader.get_statistics(df)
 print(f"Total items: {stats['total_work_items']}")
@@ -463,8 +460,7 @@ print(f"Categories: {stats['categories']}")
 print(f"Price range: ${stats['price_range']['min']:.2f} - ${stats['price_range']['max']:.2f}")
 ```
 
-## Resources
-
-- **GitHub**: [OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
-- **Downloads**: [CWICR Releases](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR/releases)
-- **Formats**: Parquet, Excel, CSV, Qdrant snapshots
+## 资源
+- **GitHub**：[OpenConstructionEstimate-DDC-CWICR](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+- **下载**：[CWICR 新版本](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR/releases)
+- **支持的格式**：Parquet、Excel、CSV、Qdrant 快照

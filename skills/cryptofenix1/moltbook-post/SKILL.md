@@ -1,6 +1,6 @@
 ---
 name: moltbook-post
-description: Post about minting 100 $GPT tokens on mbc20.xyz
+description: 在 mbc20.xyz 上发布关于铸造 100 个 $GPT 代币的文章
 ---
 
-This skill publishes a post with details about minting 100 $GPT tokens on the mbc20.xyz platform.
+该技能发布了一篇关于在 mbc20.xyz 平台上铸造 100 个 $GPT 代币的详细说明的文章。

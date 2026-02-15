@@ -1,43 +1,42 @@
 ---
 name: safe-exec
-description: Safe command execution for OpenClaw Agents with automatic danger pattern detection, risk assessment, user approval workflow, and audit logging. Use when agents need to execute shell commands that may be dangerous (rm -rf, dd, fork bombs, system directory modifications) or require human oversight. Provides multi-level risk assessment (CRITICAL/HIGH/MEDIUM/LOW), in-session notifications, pending request management, and non-interactive environment support for agent automation.
+description: OpenClaw代理的安全命令执行功能包括自动危险模式检测、风险评估、用户审批流程以及审计日志记录。当代理需要执行可能具有危险性的shell命令（如`rm -rf`、`dd`、`fork bomb`或系统目录修改操作）时，或这些操作需要人工监督时，该功能可确保命令的安全性。系统支持多级风险评估（CRITICAL/HIGH/MEDIUM/LOW），提供会话中的实时通知、待处理请求的管理功能，并支持非交互式环境下的代理自动化操作。
 
 Quick Install: Say "Help me install SafeExec skill from ClawdHub" in your OpenClaw chat to automatically install and enable this safety layer.
 
 Report Issues: https://github.com/OTTTTTO/safe-exec/issues - Community feedback and bug reports welcome!
 ---
 
-# SafeExec - Safe Command Execution
+# SafeExec - 安全命令执行工具
 
-Provides secure command execution capabilities for OpenClaw Agents with automatic interception of dangerous operations and approval workflow.
+为 OpenClaw 代理提供安全的命令执行功能，能够自动拦截危险操作并支持审批工作流程。
 
-## Features
+## 主要特性
 
-- 🔍 **Automatic danger pattern detection** - Identifies risky commands before execution
-- 🚨 **Risk-based interception** - Multi-level assessment (CRITICAL/HIGH/MEDIUM/LOW)
-- 💬 **In-session notifications** - Real-time alerts in your current terminal/session
-- ✅ **User approval workflow** - Commands wait for explicit confirmation
-- 📊 **Complete audit logging** - Full traceability of all operations
-- 🤖 **Agent-friendly** - Non-interactive mode support for automated workflows
-- 🔧 **Platform-agnostic** - Works independently of communication tools (Feishu, Telegram, etc.)
+- 🔍 **自动危险模式检测**：在执行前识别高风险命令
+- 🚨 **基于风险的拦截**：多级风险评估（CRITICAL/HIGH/MEDIUM/LOW）
+- 💬 **会话内通知**：在当前终端/会话中实时显示警告
+- ✅ **用户审批流程**：命令需要用户明确确认
+- 📊 **完整审计日志**：所有操作均有完整记录
+- 🤖 **适用于代理**：支持非交互式模式，适用于自动化工作流程
+- 🔧 **平台无关性**：独立于通信工具（如 Feishu、Telegram 等）运行
 
-## Quick Start
+## 快速入门
 
-### Installation (One Command)
+### 安装（一个命令）
 
-**The easiest way to install SafeExec:**
+**安装 SafeExec 的最简单方法：**
 
-Just say in your OpenClaw chat:
+在 OpenClaw 聊天框中输入：
 ```
 Help me install SafeExec skill from ClawdHub
 ```
 
-OpenClaw will automatically download, install, and configure SafeExec for you!
+OpenClaw 会自动下载、安装并配置 SafeExec！
 
-### Alternative: Manual Installation
+### 手动安装（可选）
 
-If you prefer manual installation:
-
+如果您希望手动安装，请执行：
 ```bash
 # Using ClawdHub CLI
 export CLAWDHUB_REGISTRY=https://www.clawhub.ai
@@ -48,27 +47,27 @@ git clone https://github.com/OTTTTTO/safe-exec.git ~/.openclaw/skills/safe-exec
 chmod +x ~/.openclaw/skills/safe-exec/safe-exec*.sh
 ```
 
-### Enable SafeExec
+### 启用 SafeExec
 
-After installation, simply say:
+安装完成后，只需输入：
 ```
 Enable SafeExec
 ```
 
-SafeExec will start monitoring all shell commands automatically!
+SafeExec 将开始自动监控所有 shell 命令！
 
-## How It Works
+## 工作原理
 
-Once enabled, SafeExec automatically monitors all shell command executions. When a potentially dangerous command is detected, it intercepts the execution and requests your approval through **in-session terminal notifications**.
+启用后，SafeExec 会自动监控所有 shell 命令的执行。当检测到潜在危险命令时，它会拦截该命令并通过 **会话内终端通知** 请求您的批准。
 
-**Architecture:**
-- Requests stored in: `~/.openclaw/safe-exec/pending/`
-- Audit log: `~/.openclaw/safe-exec-audit.log`
-- Rules config: `~/.openclaw/safe-exec-rules.json`
+**架构：**
+- 请求存储路径：`~/.openclaw/safe-exec/pending/`
+- 审计日志：`~/.openclaw/safe-exec-audit.log`
+- 规则配置文件：`~/.openclaw/safe-exec-rules.json`
 
-## Usage
+## 使用方法
 
-**Enable SafeExec:**
+**启用 SafeExec：**
 ```
 Enable SafeExec
 ```
@@ -81,7 +80,7 @@ Turn on SafeExec
 Start SafeExec
 ```
 
-Once enabled, SafeExec runs transparently in the background. Agents can execute commands normally, and SafeExec will automatically intercept dangerous operations:
+启用后，SafeExec 会在后台透明运行。代理可以正常执行命令，SafeExec 会自动拦截危险操作：
 
 ```
 Delete all files in /tmp/test
@@ -91,27 +90,27 @@ Delete all files in /tmp/test
 Format the USB drive
 ```
 
-SafeExec detects the risk level and displays an in-session prompt for approval.
+SafeExec 会判断风险等级，并在会话中显示审批提示。
 
-## Risk Levels
+## 风险等级
 
-**CRITICAL**: System-destructive commands (rm -rf /, dd, mkfs, etc.)
-**HIGH**: User data deletion or significant system changes
-**MEDIUM**: Service operations or configuration changes
-**LOW**: Read operations and safe file manipulations
+- **CRITICAL**：可能破坏系统的命令（如 `rm -rf /`、`dd`、`mkfs` 等）
+- **HIGH**：可能删除用户数据或导致系统重大变更的命令
+- **MEDIUM**：与服务操作或配置更改相关的命令
+- **LOW**：仅涉及文件读取或安全操作的命令
 
-## Approval Workflow
+## 审批流程
 
-1. Agent executes a command
-2. SafeExec analyzes the risk level
-3. **In-session notification displayed** in your terminal
-4. Approve or reject via:
-   - Terminal: `safe-exec-approve <request_id>`
-   - List pending: `safe-exec-list`
-   - Reject: `safe-exec-reject <request_id>`
-5. Command executes or is cancelled
+1. 代理执行命令
+2. SafeExec 分析风险等级
+3. 在终端中显示 **会话内通知**
+4. 通过以下方式批准或拒绝：
+   - 终端：`safe-exec-approve <request_id>`
+   - 查看待审批请求：`safe-exec-list`
+   - 拒绝：`safe-exec-reject <request_id>`
+5. 命令执行或取消
 
-**Example notification:**
+**示例通知：**
 ```
 🚨 **Dangerous Operation Detected - Command Intercepted**
 
@@ -131,100 +130,99 @@ SafeExec detects the risk level and displays an in-session prompt for approval.
  `safe-exec-reject req_1769938492_9730`
 ```
 
-## Configuration
+## 配置
 
-Environment variables for customization:
+可自定义的环境变量：
 
-- `SAFE_EXEC_DISABLE` - Set to '1' to globally disable safe-exec
-- `OPENCLAW_AGENT_CALL` - Automatically enabled in agent mode (non-interactive)
-- `SAFE_EXEC_AUTO_CONFIRM` - Auto-approve LOW/MEDIUM risk commands
+- `SAFE_EXEC_DISABLE`：设置为 '1' 以全局禁用 SafeExec
+- `OPENCLAW_AGENT_CALL`：在代理模式下自动启用（非交互式）
+- `SAFE_EXEC_AUTO_CONFIRM`：自动批准低/中等风险命令
 
-## Examples
+## 使用示例
 
-**Enable SafeExec:**
+**启用 SafeExec：**
 ```
 Enable SafeExec
 ```
 
-**After enabling, agents work normally:**
+**启用后，代理正常工作：**
 ```
 Delete old log files from /var/log
 ```
 
-SafeExec automatically detects this is HIGH risk (deletion) and displays an in-session approval prompt.
+SafeExec 识别到此命令为高风险操作（删除操作），并在会话中显示审批提示。
 
-**Safe operations pass through without interruption:**
+**低风险操作可无需审批直接执行：**
 ```
 List files in /home/user/documents
 ```
 
-This is LOW risk and executes without approval.
+## 全局控制
 
-## Global Control
-
-**Check status:**
+**检查状态：**
 ```
 safe-exec-list
 ```
 
-**View audit log:**
+**查看审计日志：**
 ```bash
 cat ~/.openclaw/safe-exec-audit.log
 ```
 
-**Disable SafeExec globally:**
+**全局禁用 SafeExec：**
 ```
 Disable SafeExec
 ```
 
-Or set environment variable:
+或者通过设置环境变量来禁用：
+
 ```bash
 export SAFE_EXEC_DISABLE=1
 ```
 
-## Reporting Issues
+## 报告问题
 
-**Found a bug? Have a feature request?**
+**发现漏洞？有功能需求？**
 
-Please report issues at:
+请在以下链接报告问题：
 🔗 **https://github.com/OTTTTTO/safe-exec/issues**
 
-We welcome community feedback, bug reports, and feature suggestions!
+我们欢迎社区反馈、漏洞报告和功能建议！
 
-When reporting issues, please include:
-- SafeExec version (run: `grep "VERSION" ~/.openclaw/skills/safe-exec/safe-exec.sh`)
-- OpenClaw version
-- Steps to reproduce
-- Expected vs actual behavior
-- Relevant logs from `~/.openclaw/safe-exec-audit.log`
+报告问题时，请提供以下信息：
+- SafeExec 版本（运行 `grep "VERSION" ~/.openclaw/skills/safe-exec/safe-exec.sh` 获取）
+- OpenClaw 版本
+- 问题重现步骤
+- 预期行为与实际行为对比
+- 相关日志（来自 `~/.openclaw/safe-exec-audit.log`）
 
-## Audit Log
+## 审计日志
 
-All command executions are logged with:
-- Timestamp
-- Command executed
-- Risk level
-- Approval status
-- Execution result
-- Request ID for traceability
+所有命令执行记录包括：
+- 时间戳
+- 执行的命令
+- 风险等级
+- 审批状态
+- 执行结果
+- 用于追踪的请求 ID
 
-Log location: `~/.openclaw/safe-exec-audit.log`
+日志存储位置：`~/.openclaw/safe-exec-audit.log`
 
-## Integration
+## 集成
 
-SafeExec integrates seamlessly with OpenClaw agents. Once enabled, it works transparently without requiring changes to agent behavior or command structure. The approval workflow is entirely local and independent of any external communication platform.
+SafeExec 可与 OpenClaw 代理无缝集成。启用后，它会在后台透明运行，无需修改代理的行为或命令结构。审批流程完全在本地完成，不依赖于任何外部通信平台。
 
-## Platform Independence
+## 平台独立性
 
-SafeExec operates at the **session level**, working with any communication channel your OpenClaw instance supports (webchat, Feishu, Telegram, Discord, etc.). The approval workflow happens through your terminal, ensuring you maintain control regardless of how you're interacting with your agent.
+SafeExec 在 **会话级别** 运行，支持 OpenClaw 实例支持的任何通信渠道（Webchat、Feishu、Telegram、Discord 等）。审批流程通过终端完成，确保您无论通过何种方式与代理交互都能保持控制权。
 
-## Support & Community
+## 支持与社区
 
-- **GitHub Repository:** https://github.com/OTTTTTO/safe-exec
-- **Issue Tracker:** https://github.com/OTTTTTO/safe-exec/issues
-- **Documentation:** [README.md](https://github.com/OTTTTTO/safe-exec/blob/master/README.md)
-- **ClawdHub:** https://www.clawhub.ai/skills/safe-exec
+- **GitHub 仓库：** https://github.com/OTTTTTO/safe-exec
+- **问题跟踪器：** https://github.com/OTTTTTO/safe-exec/issues
+- **文档：** [README.md](https://github.com/OTTTTTO/safe-exec/blob/master/README.md)
+- **ClawdHub：** https://www.clawhub.ai/skills/safe-exec
 
-## License
+## 许可证
 
-MIT License - See [LICENSE](https://github.com/OTTTTTO/safe-exec/blob/master/LICENSE) for details.
+MIT 许可证 - 详细信息请参阅 [LICENSE](https://github.com/OTTTTTO/safe-exec/blob/master/LICENSE)

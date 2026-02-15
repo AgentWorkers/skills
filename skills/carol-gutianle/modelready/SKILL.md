@@ -1,69 +1,55 @@
 ---
 name: modelready
-description: Start using a local or Hugging Face model instantly, directly from chat.
+description: 您可以立即通过聊天直接开始使用本地模型或 Hugging Face 提供的模型。
 metadata: {"openclaw":{"requires":{"bins":["bash", "curl"]}, "env": ["URL"]}}
 ---  
 
 # ModelReady
 
-ModelReady lets you **start using a local or Hugging Face model immediately**, without leaving clawdbot.
+ModelReady 允许您 **无需离开 clawdbot 即可立即开始使用本地模型或 Hugging Face 模型**。它可将模型转换为可运行的、兼容 OpenAI 的端点，让您能够直接通过对话与模型进行交流。
 
-It turns a model into a running, OpenAI-compatible endpoint and allows you to chat with it directly from a conversation.
+## 使用场景
 
-
-## When to use
-
-Use this skill when you want to:
-- Quickly start using a local or Hugging Face model
-- Chat with a locally running model
-- Test or interact with a model directly from chat
+当您需要以下操作时，请使用此功能：
+- 快速开始使用本地模型或 Hugging Face 模型
+- 与正在运行的本地模型进行对话
+- 直接通过对话测试或与模型交互
 
 
-## Commands
+## 命令
 
-### Start a model server
+### 启动模型服务器
 
 ```text
 /modelready start repo=<path-or-hf-repo> port=<port> [tp=<n>] [dtype=<dtype>]
-````
-
-Examples:
-
-```text
-/modelready start repo=Qwen/Qwen2.5-7B-Instruct port=19001
-/modelready start repo=/home/user/models/Qwen-2.5 port=8010 tp=4 dtype=bfloat16
 ```
 
 
-### Chat with a running model
+### 与正在运行的模型进行对话
 
 ```text
 /modelready chat port=<port> text="<message>"
 ```
 
-Example:
 
-```text
-/modelready chat port=8010 text="hello"
-```
-
-
-### Check status or stop the server
+### 检查服务器状态或停止服务器
 
 ```text
 /modelready status port=<port>
 /modelready stop port=<port>
 ```
 
-### Set default host or port
+
+### 设置默认主机或端口
+
 ```text
 /modelready set_ip   ip=<host>
 /modelready set_port port=<port>
 ```
 
 
-## Notes
+## 注意事项
 
-* The model is served locally using vLLM.
-* The exposed endpoint follows the OpenAI API format.
-* The server must be started before sending chat requests.
+* 模型通过 vLLM 在本地提供服务。
+* 暴露的端点遵循 OpenAI API 格式。
+* 在发送对话请求之前，必须先启动服务器。

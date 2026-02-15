@@ -1,98 +1,96 @@
 ---
 name: social-signals
-description: Analyze crypto social signals - KOL mentions, sentiment, trending tokens, and news
+description: 分析加密货币领域的社交信号：KOL（关键意见领袖）的提及、市场情绪、热门代币以及相关新闻
 homepage: https://github.com/your-repo/trading
 user-invocable: true
 metadata: {"moltbot":{"emoji":"📡","requires":{"env":["UNIFAI_AGENT_API_KEY","GOOGLE_API_KEY"]},"primaryEnv":"UNIFAI_AGENT_API_KEY"}}
 ---
 
-# Social Signals
+# 社交信号
 
-Analyze cryptocurrency social signals from Twitter/X, news sources, and KOL (Key Opinion Leader) discussions.
+分析来自Twitter/X、新闻来源以及KOL（关键意见领袖）讨论的加密货币社交信号。
 
-## Data Sources
+## 数据来源
 
-- **Elfa**: Trending tokens from web3 KOLs on X/Twitter
-- **TokenAnalysis**: Comprehensive token analysis with social metrics
-- **SerpAPI**: Google News search for crypto topics
-- **Twitter**: Direct tweet search and user timelines
+- **Elfa**：来自X/Twitter上的Web3 KOLs的热门代币
+- **TokenAnalysis**：包含社交指标的代币综合分析工具
+- **SerpAPI**：用于搜索加密货币相关新闻的Google News接口
+- **Twitter**：直接搜索推文和用户时间线
 
-## Commands
+## 命令
 
-### Get Trending Tokens
+### 获取热门代币
 ```bash
 python3 {baseDir}/scripts/signals.py trending
 ```
-Get tokens currently trending among crypto KOLs.
+获取当前在加密货币KOL中热门的代币。
 
-### Token Sentiment
+### 代币情绪分析
 ```bash
 python3 {baseDir}/scripts/signals.py sentiment "<token>"
 ```
-Get social sentiment analysis for a specific token (e.g., BTC, ETH, SOL).
+获取特定代币（例如BTC、ETH、SOL）的社交情绪分析结果。
 
-### Search News
+### 搜索新闻
 ```bash
 python3 {baseDir}/scripts/signals.py news "<query>"
 ```
-Search recent crypto news for a topic.
+搜索与某个主题相关的最新加密货币新闻。
 
-### Event Summary
+### 事件摘要
 ```bash
 python3 {baseDir}/scripts/signals.py events "<keyword>"
 ```
-Get event summary from social mentions for a keyword.
+根据关键词从社交提及中获取事件摘要。
 
-### Full Analysis
+### 全面分析
 ```bash
 python3 {baseDir}/scripts/signals.py analyze "<token>"
 ```
-Comprehensive analysis combining price, social, and news signals.
+结合价格、社交和新闻信号进行综合分析。
 
-## Output Format
+## 输出格式
 
-Results include:
-- Token symbol and current metrics
-- Sentiment score (-1 to 1) and label (bullish/bearish/neutral)
-- Mention counts and social volume
-- Key discussion topics
-- Recent news headlines
+结果包括：
+- 代币符号及当前指标
+- 情绪得分（-1至1）和标签（看涨/看跌/中性）
+- 被提及次数和社交互动量
+- 主要讨论话题
+- 最新新闻标题
 
-## Requirements
+## 需要的参数
 
-- `UNIFAI_AGENT_API_KEY` - UnifAI SDK key for social signal tools
-- `GOOGLE_API_KEY` - Gemini API key for analysis
+- `UNIFAI_AGENT_API_KEY`：用于社交信号工具的UnifAI SDK密钥
+- `GOOGLE_API_KEY`：用于分析的Gemini API密钥
 
-## Example Usage
+## 使用示例
 
-**User**: "What's the social sentiment on Solana?"
-
-**Assistant**: I'll analyze the social signals for SOL.
+**用户**：“Solana的社交情绪如何？”
+**助手**：我将分析SOL的社交信号。
 
 ```bash
 python3 {baseDir}/scripts/signals.py sentiment "SOL"
 ```
 
-**User**: "What tokens are KOLs talking about?"
-
-**Assistant**: Let me check what's trending among crypto KOLs.
+**用户**：“KOL们正在讨论哪些代币？”
+**助手**：让我看看加密货币KOL们正在关注哪些热门代币。
 
 ```bash
 python3 {baseDir}/scripts/signals.py trending
 ```
 
-## Signal Types
+## 信号类型
 
-| Signal | Source | Description |
+| 信号类型 | 来源 | 描述 |
 |--------|--------|-------------|
-| Sentiment | TokenAnalysis | Overall social sentiment score |
-| Trending | Elfa | KOL-driven trending tokens |
-| News | SerpAPI | Recent news articles |
-| Mentions | Twitter | Tweet volume and engagement |
+| 情绪分析 | TokenAnalysis | 代币的总体社交情绪得分 |
+| 热门代币 | Elfa | KOL推荐的热门代币 |
+| 新闻 | SerpAPI | 最新的加密货币新闻文章 |
+| 被提及次数 | Twitter | 推文的传播量和互动量 |
 
-## Notes
+## 注意事项
 
-- Social signals are lagging indicators - use with caution
-- KOL sentiment can shift rapidly
-- News sentiment may not reflect market direction
-- Best used in combination with market data
+- 社交信号属于滞后指标，请谨慎使用
+- KOL的情绪可能会迅速变化
+- 新闻情绪可能无法反映市场趋势
+- 最佳用法是结合市场数据一起使用

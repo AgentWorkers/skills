@@ -1,294 +1,288 @@
 ---
 name: us-stock-analysis
-description: Comprehensive US stock analysis including fundamental analysis (financial metrics, business quality, valuation), technical analysis (indicators, chart patterns, support/resistance), stock comparisons, and investment report generation. Use when user requests analysis of US stock tickers (e.g., "analyze AAPL", "compare TSLA vs NVDA", "give me a report on Microsoft"), evaluation of financial metrics, technical chart analysis, or investment recommendations for American stocks.
+description: 全面的美国股票分析服务，涵盖基本面分析（财务指标、企业质量、估值）、技术分析（技术指标、图表形态、支撑/阻力位）、股票对比以及投资报告的生成。适用于用户需要对特定美国股票代码（如“分析AAPL”、“对比TSLA与NVDA”、“提供微软的股票报告”）进行评估、分析财务指标、进行技术图表分析或获取美国股票的投资建议的场景。
 ---
 
-# US Stock Analysis
+# 美国股票分析
 
-## Overview
+## 概述
 
-Perform comprehensive analysis of US stocks covering fundamental analysis (financials, business quality, valuation), technical analysis (indicators, trends, patterns), peer comparisons, and generate detailed investment reports. Fetch real-time market data via web search tools and apply structured analytical frameworks.
+本技能提供对美国股票的全面分析，涵盖基本面分析（财务状况、企业质量、估值）、技术分析（指标、趋势、形态）、同行比较，并生成详细的投资报告。通过网络搜索工具获取实时市场数据，并应用结构化的分析框架。
 
-## Data Sources
+## 数据来源
 
-Always use web search tools to gather current market data:
+始终使用网络搜索工具来收集当前市场数据：
 
-**Primary Data to Fetch:**
-1. **Current stock price and trading data** (price, volume, 52-week range)
-2. **Financial statements** (income statement, balance sheet, cash flow)
-3. **Key metrics** (P/E, EPS, revenue, margins, debt ratios)
-4. **Analyst ratings and price targets**
-5. **Recent news and developments**
-6. **Peer/competitor data** (for comparisons)
-7. **Technical data** (moving averages, RSI, MACD when available)
+**需要获取的主要数据：**
+1. **当前股价和交易数据**（价格、成交量、52周价格范围）
+2. **财务报表**（损益表、资产负债表、现金流量）
+3. **关键指标**（市盈率（P/E）、每股收益（EPS）、收入、利润率、债务比率）
+4. **分析师评级和目标价格**
+5. **最新新闻和动态**
+6. **同行/竞争对手数据**（用于比较）
+7. **技术数据**（移动平均线、相对强弱指数（RSI）、MACD）
 
-**Search Strategy:**
-- Use ticker symbol + specific data needed (e.g., "AAPL financial metrics 2024")
-- For comprehensive data: Search for earnings reports, investor presentations, or SEC filings
-- For technical data: Search for "AAPL technical analysis" or use financial data sites
-- Always verify data recency (prefer data from last quarter)
+**搜索策略：**
+- 使用股票代码 + 所需的具体数据（例如：“AAPL 2024年财务指标”）
+- 为了获取全面数据：搜索收益报告、投资者演示文稿或SEC文件
+- 为了获取技术数据：搜索“AAPL技术分析”或使用财务数据网站
+- 始终验证数据的时效性（优先选择上一季度的数据）
 
-**Quality Sources:**
-- Yahoo Finance, Google Finance, MarketWatch, Seeking Alpha, Bloomberg, CNBC
-- Company investor relations pages
-- SEC filings (10-K, 10-Q) for detailed financials
-- TradingView, StockCharts for technical data
+**优质数据来源：**
+- Yahoo Finance、Google Finance、MarketWatch、Seeking Alpha、Bloomberg、CNBC
+- 公司投资者关系页面
+- SEC文件（10-K、10-Q）以获取详细财务信息
+- TradingView、StockCharts以获取技术数据
 
-## Analysis Types
+## 分析类型
 
-This skill supports four types of analysis. Determine which type(s) the user needs:
+本技能支持四种类型的分析。确定用户需要哪种类型的分析：
 
-1. **Basic Stock Info** - Quick overview with key metrics
-2. **Fundamental Analysis** - Deep dive into business, financials, valuation
-3. **Technical Analysis** - Chart patterns, indicators, trend analysis
-4. **Comprehensive Report** - Complete analysis combining all approaches
+1. **基本股票信息** - 提供关键指标的快速概览
+2. **基本面分析** - 深入研究企业状况、财务状况和估值
+3. **技术分析** - 图表形态、指标、趋势分析
+4. **综合报告** - 结合所有方法的全面分析
 
-## Analysis Workflows
+## 分析工作流程
 
-### 1. Basic Stock Information
+### 1. 基本股票信息
 
-**When to Use:** User asks for quick overview or basic info
+**使用场景：** 用户请求快速概览或基本信息时
 
-**Steps:**
-1. Search for current stock data (price, volume, market cap)
-2. Gather key metrics (P/E, EPS, revenue growth, margins)
-3. Get 52-week range and year-to-date performance
-4. Find recent news or major developments
-5. Present in concise summary format
+**步骤：**
+1. 搜索当前股票数据（价格、成交量、市值）
+2. 收集关键指标（市盈率、每股收益、收入增长率、利润率）
+3. 获取52周价格范围和年初至今的表现
+4. 查找最新新闻或重大事件
+5. 以简洁的摘要格式呈现
 
-**Output Format:**
-- Company description (1-2 sentences)
-- Current price and trading metrics
-- Key valuation metrics (table)
-- Recent performance
-- Notable recent news (if any)
+**输出格式：**
+- 公司简介（1-2句话）
+- 当前价格和交易指标
+- 关键估值指标（表格）
+- 最近的表现
+- 最新重要新闻（如有）
 
-### 2. Fundamental Analysis
+### 2. 基本面分析
 
-**When to Use:** User wants financial analysis, valuation assessment, or business evaluation
+**使用场景：** 用户需要财务分析、估值评估或企业评估时
 
-**Steps:**
-1. **Gather comprehensive financial data:**
-   - Revenue, earnings, cash flow (3-5 year trends)
-   - Balance sheet metrics (debt, cash, working capital)
-   - Profitability metrics (margins, ROE, ROIC)
-   
-2. **Read references/fundamental-analysis.md** for analytical framework
+**步骤：**
+1. **收集全面的财务数据：**
+   - 收入、收益、现金流量（3-5年趋势）
+   - 资产负债表指标（债务、现金、营运资金）
+   - 盈利能力指标（利润率、净资产收益率（ROE）、投资回报率（ROIC）
 
-3. **Read references/financial-metrics.md** for metric definitions and calculations
+2. **阅读参考资料/financial-analysis.md** 以了解分析框架
+3. **阅读参考资料/financial-metrics.md** 以了解指标的定义和计算方法
 
-4. **Analyze business quality:**
-   - Competitive advantages
-   - Management track record
-   - Industry position
-   
-5. **Perform valuation analysis:**
-   - Calculate key ratios (P/E, PEG, P/B, EV/EBITDA)
-   - Compare to historical averages
-   - Compare to peer group
-   - Estimate fair value range
-   
-6. **Identify risks:**
-   - Company-specific risks
-   - Market/macro risks
-   - Red flags from financial data
+4. **分析企业质量：**
+   - 竞争优势
+   - 管理层业绩
+   - 行业地位
 
-7. **Generate output** following references/report-template.md structure
+5. **进行估值分析：**
+   - 计算关键比率（市盈率、PEG比率、市净率（P/B）、企业价值与息税折旧摊销前利润（EV/EBITDA）
+   - 与历史平均水平进行比较
+   - 与同行进行比较
+   - 估计公允价值范围
 
-**Critical Analyses:**
-- Profitability trends (improving/declining margins)
-- Cash flow quality (FCF vs earnings)
-- Balance sheet strength (debt levels, liquidity)
-- Growth sustainability
-- Valuation vs peers and historical average
+6. **识别风险：**
+   - 公司特定风险
+   - 市场/宏观经济风险
+   - 财务数据中的警示信号
 
-### 3. Technical Analysis
+7. **按照参考资料/report-template.md的格式生成输出**
 
-**When to Use:** User asks for technical analysis, chart patterns, or trading signals
+**关键分析点：**
+- 盈利能力趋势（利润率上升/下降）
+- 现金流质量（自由现金流与收益）
+- 资产负债表的稳健性（债务水平、流动性）
+- 增长可持续性
+- 估值与同行和历史平均水平的比较
 
-**Steps:**
-1. **Gather technical data:**
-   - Current price and recent price action
-   - Volume trends
-   - Moving averages (20-day, 50-day, 200-day)
-   - Technical indicators (RSI, MACD, Bollinger Bands)
-   
-2. **Read references/technical-analysis.md** for indicator definitions and patterns
+### 3. 技术分析
 
-3. **Identify trend:**
-   - Uptrend, downtrend, or sideways
-   - Strength of trend
-   
-4. **Locate support and resistance levels:**
-   - Recent highs and lows
-   - Moving average levels
-   - Round numbers
-   
-5. **Analyze indicators:**
-   - RSI: Overbought (>70) or oversold (<30)
-   - MACD: Crossovers and divergences
-   - Volume: Confirmation or divergence
-   - Bollinger Bands: Squeeze or expansion
-   
-6. **Identify chart patterns:**
-   - Reversal patterns (head and shoulders, double top/bottom)
-   - Continuation patterns (flags, triangles)
-   
-7. **Generate technical outlook:**
-   - Current trend assessment
-   - Key levels to watch
-   - Risk/reward analysis
-   - Short and medium-term outlook
+**使用场景：** 用户请求技术分析、图表形态或交易信号时
 
-**Interpretation Guidelines:**
-- Confirm signals with multiple indicators
-- Consider volume for validation
-- Note divergences between price and indicators
-- Always identify risk levels (stop-loss)
+**步骤：**
+1. **收集技术数据：**
+   - 当前价格和近期价格走势
+   - 成交量趋势
+   - 移动平均线（20日、50日、200日）
+   - 技术指标（RSI、MACD）
 
-### 4. Comprehensive Investment Report
+2. **阅读参考资料/technical-analysis.md** 以了解指标的定义和形态
 
-**When to Use:** User asks for detailed report, investment recommendation, or complete analysis
+3. **确定趋势：**
+   - 上升趋势、下降趋势或盘整趋势
+   - 趋势的强度
 
-**Steps:**
-1. **Perform data gathering** (as in Basic Info)
+4. **定位支撑和阻力水平：**
+   - 最近的高点和低点
+   - 移动平均线水平
+   - 整数价格
 
-2. **Execute fundamental analysis** (follow workflow above)
+5. **分析指标：**
+   - RSI：超买（>70）或超卖（<30）
+   - MACD：交叉和背离
+   - 成交量：确认或背离信号
+   - Bollinger Bands：收窄或扩张
 
-3. **Execute technical analysis** (follow workflow above)
+6. **识别图表形态：**
+   - 反转形态（头肩顶/底、双顶/底）
+   - 继续形态（旗形、三角形）
 
-4. **Read references/report-template.md** for complete report structure
+7. **生成技术展望：**
+   - 当前趋势评估
+   - 需要关注的关键水平
+   - 风险/回报分析
+   - 短期和中期展望
 
-5. **Synthesize findings:**
-   - Integrate fundamental and technical insights
-   - Develop bull and bear cases
-   - Assess risk/reward
-   
-6. **Generate recommendation:**
-   - Buy/Hold/Sell rating
-   - Target price with timeframe
-   - Conviction level
-   - Entry strategy
-   
-7. **Create formatted report** following template structure
+**解读指南：**
+- 用多个指标确认信号
+- 考虑成交量进行验证
+- 注意价格与指标之间的背离
+- 始终识别风险水平（止损点）
 
-**Report Must Include:**
-- Executive summary with recommendation
-- Company overview
-- Investment thesis (bull and bear cases)
-- Fundamental analysis section
-- Technical analysis section
-- Valuation analysis
-- Risk assessment
-- Catalysts and timeline
-- Conclusion
+### 4. 综合投资报告
 
-## Stock Comparison Analysis
+**使用场景：** 用户请求详细报告、投资建议或全面分析时
 
-**When to Use:** User asks to compare two or more stocks (e.g., "compare AAPL vs MSFT")
+**步骤：**
+1. **收集数据**（如基本信息部分所述）
+2. **执行基本面分析**（按照上述工作流程）
+3. **执行技术分析**（按照上述工作流程）
+4. **阅读参考资料/report-template.md** 以了解完整报告的结构
 
-**Steps:**
-1. **Gather data for all stocks:**
-   - Follow data gathering steps for each ticker
-   - Ensure comparable timeframes
-   
-2. **Read references/fundamental-analysis.md** and references/financial-metrics.md
+5. **综合分析结果：**
+   - 整合基本面和技术分析的见解
+   - 制定买入/持有/卖出建议
+   - 评估风险/回报
 
-3. **Create side-by-side comparison:**
-   - Business models comparison
-   - Financial metrics table (all key ratios)
-   - Valuation metrics table
-   - Growth rates comparison
-   - Profitability comparison
-   - Balance sheet strength
-   
-4. **Identify relative strengths:**
-   - Where each company excels
-   - Quantified advantages
-   
-5. **Technical comparison:**
-   - Relative strength
-   - Momentum comparison
-   - Which is in better technical position
-   
-6. **Generate recommendation:**
-   - Which stock is more attractive and why
-   - Consider both fundamental and technical factors
-   - Portfolio allocation suggestion
-   - Risk-adjusted return assessment
+6. **生成建议：**
+   - 买入/持有/卖出评级
+   - 目标价格及时间框架
+   - 投资信心程度
+   - 入场策略
 
-**Output Format:** Follow "Comparison Report Structure" in references/report-template.md
+**报告必须包括：**
+- 包含建议的执行摘要
+- 公司概述
+- 投资论点（买入/持有/卖出理由）
+- 基本面分析部分
+- 技术分析部分
+- 估值分析
+- 风险评估
+- 有利因素和时间表
+- 结论
 
-## Output Guidelines
+## 股票比较分析
 
-**General Principles:**
-- Use tables for financial data and comparisons (easy to scan)
-- Bold key metrics and findings
-- Include data sources and dates
-- Quantify whenever possible
-- Present both bull and bear perspectives
-- Be clear about assumptions and uncertainties
+**使用场景：** 用户请求比较两只或更多股票时（例如：“比较AAPL和MSFT”）
 
-**Formatting:**
-- **Headers** for clear section separation
-- **Tables** for metrics, comparisons, historical data
-- **Bullet points** for lists, factors, risks
-- **Bold text** for key findings, important metrics
-- **Percentages** for growth rates, returns, margins
-- **Currency** formatted consistently ($B for billions, $M for millions)
+**步骤：**
+1. **收集所有股票的数据：**
+   - 对每个股票执行数据收集步骤
+   - 确保时间范围一致
 
-**Tone:**
-- Objective and balanced
-- Acknowledge uncertainty
-- Support claims with data
-- Avoid hyperbole
-- Present risks clearly
+2. **阅读参考资料/fundamental-analysis.md** 和 references/financial-metrics.md
 
-## Reference Files
+3. **创建并列比较：**
+   - 业务模式比较
+   - 财务指标表（所有关键比率）
+   - 估值指标表
+   - 增长率比较
+   - 盈利能力比较
+   - 资产负债表稳健性
 
-Load these references as needed during analysis:
+4. **识别相对优势：**
+   - 每家公司的优势
+   - 定量化的优势
+
+5. **技术比较：**
+   - 相对强度
+   - 动量比较
+   - 哪只股票的技术状况更好
+
+6. **生成建议：**
+   - 哪只股票更具吸引力及原因
+   - 考虑基本面和技术因素
+   - 投资组合配置建议
+   - 风险调整后的回报评估
+
+**输出格式：** 遵循参考资料/report-template.md中的“比较报告结构”
+
+## 输出指南
+
+**通用原则：**
+- 使用表格展示财务数据和比较结果（便于阅读）
+- 突出显示关键指标和发现
+- 包括数据来源和日期
+- 尽可能量化数据
+- 提供买入和卖出的观点
+- 明确假设和不确定性
+
+**格式要求：**
+- **标题** 用于清晰区分不同部分
+- **表格** 用于展示指标、比较结果和历史数据
+- **项目符号** 用于列出要点、因素和风险
+- **加粗文本** 用于关键发现和重要指标
+- **百分比** 用于增长率、回报率和利润率
+- **货币单位** 保持一致（$B表示十亿，$M表示百万）
+
+**语气：**
+- 客观和中立
+- 承认不确定性
+- 用数据支持观点
+- 避免夸张表述
+- 清晰说明风险
+
+## 参考文件
+
+在分析过程中根据需要加载以下参考文件：
 
 **references/technical-analysis.md**
-- When: Performing technical analysis or interpreting indicators
-- Contains: Indicator definitions, chart patterns, support/resistance concepts, analysis workflow
+- 用于进行技术分析或解读指标时
+- 包含：指标定义、图表形态、支撑/阻力概念、分析工作流程
 
 **references/fundamental-analysis.md**
-- When: Performing fundamental analysis or business evaluation
-- Contains: Business quality assessment, financial health analysis, valuation frameworks, risk assessment, red flags
+- 用于进行基本面分析或企业评估时
+- 包含：企业质量评估、财务健康状况分析、估值框架、风险评估、警示信号
 
 **references/financial-metrics.md**
-- When: Need definitions or calculation methods for financial ratios
-- Contains: All key metrics with formulas (profitability, valuation, growth, liquidity, leverage, efficiency, cash flow)
+- 用于需要财务比率的定义或计算方法时
+- 包含：所有关键指标及其计算公式（盈利能力、估值、增长、流动性、杠杆率、效率、现金流量）
 
 **references/report-template.md**
-- When: Creating comprehensive report or comparison
-- Contains: Complete report structure, formatting guidelines, section templates, comparison format
+- 用于创建综合报告或进行比较时
+- 包含：完整报告结构、格式指南、部分模板、比较格式
 
-## Example Queries
+## 示例查询
 
-**Basic Info:**
-- "What's the current price of AAPL?"
-- "Give me key metrics for Tesla"
-- "Quick overview of Microsoft stock"
+**基本信息：**
+- “AAPL的当前价格是多少？”
+- “提供特斯拉的关键指标”
+- “微软股票的快速概览”
 
-**Fundamental:**
-- "Analyze NVDA's financials"
-- "Is Amazon overvalued?"
-- "Evaluate Apple's business quality"
-- "What's Google's debt situation?"
+**基本面分析：**
+- “分析NVDA的财务状况”
+- “亚马逊是否被高估了？”
+- “评估苹果的企业质量”
+- “谷歌的债务状况如何？”
 
-**Technical:**
-- "Technical analysis of TSLA"
-- "Is Netflix oversold?"
-- "Show me support levels for AAPL"
-- "What's the trend for AMD?"
+**技术分析：**
+- “TSLA的技术分析”
+- “Netflix是否被超卖了？”
+- “显示AAPL的支撑水平”
+- “AMD的趋势如何？”
 
-**Comprehensive:**
-- "Complete analysis of Microsoft"
-- "Give me a full report on AAPL"
-- "Should I invest in Tesla? Give me detailed analysis"
+**综合分析：**
+- “对微软进行全面分析”
+- “提供关于AAPL的完整报告”
+- “我应该投资特斯拉吗？请给出详细分析”
 
-**Comparison:**
-- "Compare AAPL vs MSFT"
-- "Tesla vs Nvidia - which is better?"
-- "Analyze Meta vs Google"
+**比较：**
+- “比较AAPL和MSFT”
+- “特斯拉和Nvidia哪个更好？”
+- “分析Meta和Google”

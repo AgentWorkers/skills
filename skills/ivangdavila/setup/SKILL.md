@@ -1,63 +1,63 @@
 ---
 name: Setup
-description: Configure OpenClaw installations with optimized settings, channel setup, security hardening, and production recommendations.
+description: 配置 OpenClaw 安装，包括优化设置、频道设置、安全加固以及生产环境下的使用建议。
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Load |
+| 任务 | 对应文件 |
 |------|------|
-| Messaging channels (Telegram, WhatsApp, Discord, etc.) | `channels.md` |
-| Agent settings, models, workspaces | `agents.md` |
-| Security, auth, DM policies, allowlists | `security.md` |
-| Tools: exec, browser, web, media | `tools.md` |
-| Cron, hooks, heartbeats, automation | `automation.md` |
-| Recommendations by use case | `recommendations.md` |
-| Memory search, embeddings, QMD | `memory.md` |
-| Gateway: port, TLS, Tailscale, remote | `gateway.md` |
+| 消息通道（Telegram、WhatsApp、Discord等） | `channels.md` |
+| 代理设置、模型、工作区 | `agents.md` |
+| 安全性、认证、私信策略、白名单 | `security.md` |
+| 工具：执行命令、浏览器、网页界面、媒体处理 | `tools.md` |
+| 定时任务（Cron）、钩子（hooks）、心跳检测（heartbeats）、自动化 | `automation.md` |
+| 基于使用场景的建议 | `recommendations.md` |
+| 内存搜索、嵌入技术（embeddings）、QMD | `memory.md` |
+| 网关配置：端口、TLS协议、Tailscale连接、远程访问 | `gateway.md` |
 
 ---
 
-## First Setup Checklist
+## 首次设置检查清单
 
-Before any config, run:
+在进行任何配置之前，请运行以下命令：
 ```bash
 openclaw onboard --install-daemon  # Full wizard
 openclaw doctor                    # Check issues
 ```
 
-**Minimum viable config:**
-- [ ] At least one channel connected (Telegram recommended for testing)
-- [ ] Model configured (Anthropic Claude or OpenAI)
-- [ ] Workspace path set (`agents.defaults.workspace`)
-- [ ] Owner allowlist configured (your user ID in `channels.*.allowFrom`)
+**最低限度的可用配置：**
+- [ ] 至少连接了一个消息通道（建议使用Telegram进行测试）
+- [ ] 配置了模型（Anthropic Claude或OpenAI）
+- [ ] 设置了工作区路径（`agents.defaults_workspace`）
+- [ ] 配置了所有者白名单（在`channels.*.allowFrom`文件中指定您的用户ID）
 
 ---
 
-## Config Locations
+## 配置文件的位置
 
-| File | Purpose |
+| 文件名 | 用途 |
 |------|---------|
-| `~/.openclaw/openclaw.json` | Main config |
-| `~/.openclaw/.env` | Environment variables |
-| `~/.openclaw/workspace/` | Default workspace |
-| `~/.openclaw/sessions/` | Session storage |
+| `~/.openclaw/openclaw.json` | 主配置文件 |
+| `~/.openclaw/.env` | 环境变量 |
+| `~/.openclaw/workspace/` | 默认工作区 |
+| `~/.openclaw/sessions/` | 会话存储目录 |
 
-**Hot reload:** Most settings apply instantly. Gateway settings (port, TLS) require restart.
-
----
-
-## Common Mistakes to Avoid
-
-1. **Open DM policy without allowlist** → Anyone can message your bot
-2. **No auth token on remote gateway** → Exposed to internet
-3. **Model without fallbacks** → Single point of failure
-4. **Heartbeat without delivery target** → Lost proactive messages
-5. **exec.security: "full" in groups** → Dangerous command access
+**热重启：** 大多数配置更改会立即生效。但网关配置（如端口、TLS设置）需要重启后才能生效。
 
 ---
 
-## When You're Done
+## 常见错误及避免方法
+
+1. **未设置白名单就启用私信功能** → 任何人都可能向您的机器人发送消息
+2. **远程网关未配置认证令牌** → 会导致系统暴露在互联网上
+3. **模型未设置备用方案** → 会导致系统出现单点故障
+4. **心跳检测未指定发送目标** → 会导致主动发送的消息丢失
+5. **在群组中设置`exec.security: "full"` | 会允许用户执行危险命令
+
+---
+
+## 完成设置后
 
 ```bash
 openclaw doctor       # Verify config

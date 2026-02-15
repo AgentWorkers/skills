@@ -1,69 +1,69 @@
 ---
 name: ai-picture-book
-description: Generate static or dynamic picture book videos using Baidu AI
+description: 使用百度AI生成静态或动态的图画书视频
 metadata: { "openclaw": { "emoji": "📔", "requires": { "bins": ["python3"], "env":["BAIDU_API_KEY"]},"primaryEnv":"BAIDU_API_KEY" } }
 ---
 
-# AI Picture Book
+# 人工智能图画书
 
-Generate picture book videos from stories or descriptions.
+根据故事或描述生成图画书视频。
 
-## Workflow
+## 工作流程
 
-1. **Create Task**: Submit story + type → get task ID
-2. **Poll Status**: Query every 5-10s until completion
-3. **Get Results**: Retrieve video URLs when status = 2
+1. **创建任务**：提交故事内容 → 获取任务ID
+2. **查询任务状态**：每隔5-10秒查询一次任务状态，直到任务完成
+3. **获取结果**：当任务状态变为“2”时，获取视频链接
 
-## Book Types
+## 图画书类型
 
-| Type | Method | Description |
+| 类型 | 方法 | 描述 |
 |------|--------|-------------|
-| Static | 9 | Static picture book |
-| Dynamic | 10 | Dynamic picture book |
+| 静态 | 9 | 静态图画书 |
+| 动态 | 10 | 动态图画书 |
 
-**Required**: User must specify type (static/9 or dynamic/10). If not provided, ask them to choose.
+**要求**：用户必须指定图画书类型（静态/9 或 动态/10）。如果未指定，系统会提示用户进行选择。
 
-## Status Codes
+## 状态代码
 
-| Code | Status | Action |
+| 代码 | 状态 | 处理方式 |
 |-------|---------|---------|
-| 0, 1, 3 | In Progress | Continue polling |
-| 2 | Completed | Return results |
-| Other | Failed | Show error |
+| 0, 1, 3 | 进行中 | 继续查询任务状态 |
+| 2 | 完成 | 返回结果 |
+| 其他 | 失败 | 显示错误信息 |
 
-## APIs
+## API
 
-### Create Task
+### 创建任务
 
-**Endpoint**: `POST /v2/tools/ai_picture_book/task_create`
+**接口地址**：`POST /v2/tools/ai_picture_book/task_create`
 
-**Parameters**:
-- `method` (required): `9` for static, `10` for dynamic
-- `content` (required): Story or description
+**参数**：
+- `method`（必填）：`9` 表示静态图画书；`10` 表示动态图画书
+- `content`（必填）：故事内容或描述
 
-**Example**:
+**示例**：
 ```bash
 python3 scripts/ai_picture_book_task_create.py 9 "A brave cat explores the world."
 ```
 
-**Response**:
+**响应**：
 ```json
 { "task_id": "uuid-string" }
 ```
 
-### Query Task
+### 查询任务状态
 
-**Endpoint**: `GET /v2/tools/ai_picture_book/query`
+**接口地址**：`GET /v2/tools/ai_picture_book/query`
 
-**Parameters**:
-- `task_id` (required): Task ID from create endpoint
+**参数**：
+- `task_id`（必填）：通过创建任务接口获得的任务ID
 
-**Example**:
+**示例**：
 ```bash
 python3 scripts/ai_picture_book_task_query.py "task-id-here"
 ```
 
-**Response** (Completed):
+**响应**（任务已完成）：
 ```json
 {
   "status": 2,
@@ -71,30 +71,21 @@ python3 scripts/ai_picture_book_task_query.py "task-id-here"
 }
 ```
 
-## Polling Strategy
+## 自动查询策略（推荐）
 
-### Auto Polling (Recommended)
+### 自动查询示例：
 ```bash
 python3 scripts/ai_picture_book_poll.py <task_id> [max_attempts] [interval_seconds]
 ```
 
-**Examples**:
-```bash
-# Default: 20 attempts, 5s intervals
-python3 scripts/ai_picture_book_poll.py "task-id-here"
+### 手动查询
+1. 创建任务 → 存储任务ID
+2. 每隔5-10秒查询一次任务状态，直到状态变为“2”
+3. 如果超过2-3分钟仍未完成，则视为超时，建议稍后再试
 
-# Custom: 30 attempts, 10s intervals
-python3 scripts/ai_picture_book_poll.py "task-id-here" 30 10
-```
+## 错误处理
 
-### Manual Polling
-1. Create task → store `task_id`
-2. Query every 5-10s until status = 2
-3. Timeout after 2-3 minutes
-
-## Error Handling
-
-- Invalid content: "Content cannot be empty"
-- Invalid type: "Invalid type. Use 9 (static) or 10 (dynamic)"
-- Processing error: "Failed to generate picture book"
-- Timeout: "Task timed out. Try again later"
+- 内容无效：`内容不能为空`
+- 类型错误：`输入的类型无效。请使用 9（静态图画书）或 10（动态图画书）`
+- 处理错误：`生成图画书时出现错误`
+- 超时：`任务超时，请稍后再试`

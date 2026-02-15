@@ -11,17 +11,18 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+```markdown
+<!-- 本文档由 Telnyx OpenAPI 规范自动生成，请勿修改。 |
 
 # Telnyx Texml - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,11 +31,11 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已经按照上述方式初始化。
 
-## List all TeXML Applications
+## 列出所有 TeXML 应用程序
 
-Returns a list of your TeXML Applications.
+返回您的所有 TeXML 应用程序列表。
 
 `GET /texml_applications`
 
@@ -45,11 +46,11 @@ import com.telnyx.sdk.models.texmlapplications.TexmlApplicationListParams;
 TexmlApplicationListPage page = client.texmlApplications().list();
 ```
 
-## Creates a TeXML Application
+## 创建一个 TeXML 应用程序
 
-Creates a TeXML Application.
+创建一个新的 TeXML 应用程序。
 
-`POST /texml_applications` — Required: `friendly_name`, `voice_url`
+`POST /texml_applications` — 必需参数：`friendly_name`, `voice_url`
 
 ```java
 import com.telnyx.sdk.models.texmlapplications.TexmlApplicationCreateParams;
@@ -62,9 +63,9 @@ TexmlApplicationCreateParams params = TexmlApplicationCreateParams.builder()
 TexmlApplicationCreateResponse texmlApplication = client.texmlApplications().create(params);
 ```
 
-## Retrieve a TeXML Application
+## 获取 TeXML 应用程序的详细信息
 
-Retrieves the details of an existing TeXML Application.
+检索现有 TeXML 应用程序的详细信息。
 
 `GET /texml_applications/{id}`
 
@@ -75,11 +76,11 @@ import com.telnyx.sdk.models.texmlapplications.TexmlApplicationRetrieveResponse;
 TexmlApplicationRetrieveResponse texmlApplication = client.texmlApplications().retrieve("1293384261075731499");
 ```
 
-## Update a TeXML Application
+## 更新 TeXML 应用程序
 
-Updates settings of an existing TeXML Application.
+更新现有 TeXML 应用程序的设置。
 
-`PATCH /texml_applications/{id}` — Required: `friendly_name`, `voice_url`
+`PATCH /texml_applications/{id}` — 必需参数：`friendly_name`, `voice_url`
 
 ```java
 import com.telnyx.sdk.models.texmlapplications.TexmlApplicationUpdateParams;
@@ -93,9 +94,9 @@ TexmlApplicationUpdateParams params = TexmlApplicationUpdateParams.builder()
 TexmlApplicationUpdateResponse texmlApplication = client.texmlApplications().update(params);
 ```
 
-## Deletes a TeXML Application
+## 删除 TeXML 应用程序
 
-Deletes a TeXML Application.
+删除一个 TeXML 应用程序。
 
 `DELETE /texml_applications/{id}`
 
@@ -106,9 +107,9 @@ import com.telnyx.sdk.models.texmlapplications.TexmlApplicationDeleteResponse;
 TexmlApplicationDeleteResponse texmlApplication = client.texmlApplications().delete("1293384261075731499");
 ```
 
-## Fetch multiple call resources
+## 获取账户的所有通话记录
 
-Returns multiple call resources for an account.
+返回账户的所有通话记录。
 
 `GET /texml/Accounts/{account_sid}/Calls`
 
@@ -119,11 +120,11 @@ import com.telnyx.sdk.models.texml.accounts.calls.CallRetrieveCallsResponse;
 CallRetrieveCallsResponse response = client.texml().accounts().calls().retrieveCalls("account_sid");
 ```
 
-## Initiate an outbound call
+## 发起一个出站通话
 
-Initiate an outbound TeXML call.
+发起一个出站 TeXML 通话。
 
-`POST /texml/Accounts/{account_sid}/Calls` — Required: `To`, `From`, `ApplicationSid`
+`POST /texml/Accounts/{account_sid}/Calls` — 必需参数：`To`, `From`, `ApplicationSid`
 
 ```java
 import com.telnyx.sdk.models.texml.accounts.calls.CallCallsParams;
@@ -138,9 +139,9 @@ CallCallsParams params = CallCallsParams.builder()
 CallCallsResponse response = client.texml().accounts().calls().calls(params);
 ```
 
-## Fetch a call
+## 获取特定通话的详细信息
 
-Returns an individual call identified by its CallSid.
+根据通话 ID 获取该通话的详细信息。
 
 `GET /texml/Accounts/{account_sid}/Calls/{call_sid}`
 
@@ -155,9 +156,9 @@ CallRetrieveParams params = CallRetrieveParams.builder()
 CallRetrieveResponse call = client.texml().accounts().calls().retrieve(params);
 ```
 
-## Update call
+## 更新通话信息
 
-Update TeXML call.
+更新特定通话的详细信息。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}`
 
@@ -174,9 +175,9 @@ CallUpdateParams params = CallUpdateParams.builder()
 CallUpdateResponse call = client.texml().accounts().calls().update(params);
 ```
 
-## List conference participants
+## 列出会议参与者
 
-Lists conference participants
+列出会议参与者。
 
 `GET /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Participants`
 
@@ -191,9 +192,9 @@ ParticipantRetrieveParticipantsParams params = ParticipantRetrieveParticipantsPa
 ParticipantRetrieveParticipantsResponse response = client.texml().accounts().conferences().participants().retrieveParticipants(params);
 ```
 
-## Dial a new conference participant
+## 添加新的会议参与者
 
-Dials a new conference participant
+添加一个新的会议参与者。
 
 `POST /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Participants`
 
@@ -208,9 +209,9 @@ ParticipantParticipantsParams params = ParticipantParticipantsParams.builder()
 ParticipantParticipantsResponse response = client.texml().accounts().conferences().participants().participants(params);
 ```
 
-## Get conference participant resource
+## 获取会议参与者信息
 
-Gets conference participant resource
+获取特定会议参与者的信息。
 
 `GET /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Participants/{call_sid_or_participant_label}`
 
@@ -226,9 +227,9 @@ ParticipantRetrieveParams params = ParticipantRetrieveParams.builder()
 ParticipantRetrieveResponse participant = client.texml().accounts().conferences().participants().retrieve(params);
 ```
 
-## Update a conference participant
+## 更新会议参与者信息
 
-Updates a conference participant
+更新特定会议参与者的信息。
 
 `POST /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Participants/{call_sid_or_participant_label}`
 
@@ -244,9 +245,9 @@ ParticipantUpdateParams params = ParticipantUpdateParams.builder()
 ParticipantUpdateResponse participant = client.texml().accounts().conferences().participants().update(params);
 ```
 
-## Delete a conference participant
+## 删除会议参与者
 
-Deletes a conference participant
+删除一个会议参与者。
 
 `DELETE /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Participants/{call_sid_or_participant_label}`
 
@@ -261,9 +262,9 @@ ParticipantDeleteParams params = ParticipantDeleteParams.builder()
 client.texml().accounts().conferences().participants().delete(params);
 ```
 
-## List conference resources
+## 列出会议资源
 
-Lists conference resources.
+列出所有会议资源。
 
 `GET /texml/Accounts/{account_sid}/Conferences`
 
@@ -274,9 +275,9 @@ import com.telnyx.sdk.models.texml.accounts.conferences.ConferenceRetrieveConfer
 ConferenceRetrieveConferencesResponse response = client.texml().accounts().conferences().retrieveConferences("account_sid");
 ```
 
-## Fetch a conference resource
+## 获取会议资源信息
 
-Returns a conference resource.
+获取特定会议资源的详细信息。
 
 `GET /texml/Accounts/{account_sid}/Conferences/{conference_sid}`
 
@@ -291,9 +292,9 @@ ConferenceRetrieveParams params = ConferenceRetrieveParams.builder()
 ConferenceRetrieveResponse conference = client.texml().accounts().conferences().retrieve(params);
 ```
 
-## Update a conference resource
+## 更新会议资源信息
 
-Updates a conference resource.
+更新特定会议资源的详细信息。
 
 `POST /texml/Accounts/{account_sid}/Conferences/{conference_sid}`
 
@@ -308,9 +309,9 @@ ConferenceUpdateParams params = ConferenceUpdateParams.builder()
 ConferenceUpdateResponse conference = client.texml().accounts().conferences().update(params);
 ```
 
-## List queue resources
+## 列出队列资源
 
-Lists queue resources.
+列出所有队列资源。
 
 `GET /texml/Accounts/{account_sid}/Queues`
 
@@ -321,9 +322,9 @@ import com.telnyx.sdk.models.texml.accounts.queues.QueueListParams;
 QueueListPage page = client.texml().accounts().queues().list("account_sid");
 ```
 
-## Create a new queue
+## 创建新的队列资源
 
-Creates a new queue resource.
+创建一个新的队列资源。
 
 `POST /texml/Accounts/{account_sid}/Queues`
 
@@ -334,9 +335,9 @@ import com.telnyx.sdk.models.texml.accounts.queues.QueueCreateResponse;
 QueueCreateResponse queue = client.texml().accounts().queues().create("account_sid");
 ```
 
-## Fetch a queue resource
+## 获取队列资源信息
 
-Returns a queue resource.
+获取特定队列资源的详细信息。
 
 `GET /texml/Accounts/{account_sid}/Queues/{queue_sid}`
 
@@ -351,9 +352,9 @@ QueueRetrieveParams params = QueueRetrieveParams.builder()
 QueueRetrieveResponse queue = client.texml().accounts().queues().retrieve(params);
 ```
 
-## Update a queue resource
+## 更新队列资源信息
 
-Updates a queue resource.
+更新特定队列资源的详细信息。
 
 `POST /texml/Accounts/{account_sid}/Queues/{queue_sid}`
 
@@ -368,9 +369,9 @@ QueueUpdateParams params = QueueUpdateParams.builder()
 QueueUpdateResponse queue = client.texml().accounts().queues().update(params);
 ```
 
-## Delete a queue resource
+## 删除队列资源
 
-Delete a queue resource.
+删除一个队列资源。
 
 `DELETE /texml/Accounts/{account_sid}/Queues/{queue_sid}`
 
@@ -384,9 +385,9 @@ QueueDeleteParams params = QueueDeleteParams.builder()
 client.texml().accounts().queues().delete(params);
 ```
 
-## Fetch multiple recording resources
+## 获取账户的所有录制资源
 
-Returns multiple recording resources for an account.
+返回账户的所有录制资源。
 
 `GET /texml/Accounts/{account_sid}/Recordings.json`
 
@@ -397,9 +398,9 @@ import com.telnyx.sdk.models.texml.accounts.AccountRetrieveRecordingsJsonRespons
 AccountRetrieveRecordingsJsonResponse response = client.texml().accounts().retrieveRecordingsJson("account_sid");
 ```
 
-## Fetch recording resource
+## 获取特定录制的详细信息
 
-Returns recording resource identified by recording id.
+根据录制 ID 获取该录制的详细信息。
 
 `GET /texml/Accounts/{account_sid}/Recordings/{recording_sid}.json`
 
@@ -414,9 +415,9 @@ JsonRetrieveRecordingSidJsonParams params = JsonRetrieveRecordingSidJsonParams.b
 TexmlGetCallRecordingResponseBody texmlGetCallRecordingResponseBody = client.texml().accounts().recordings().json().retrieveRecordingSidJson(params);
 ```
 
-## Delete recording resource
+## 删除特定录制
 
-Deletes recording resource identified by recording id.
+删除根据录制 ID 标识的录制资源。
 
 `DELETE /texml/Accounts/{account_sid}/Recordings/{recording_sid}.json`
 
@@ -430,9 +431,9 @@ JsonDeleteRecordingSidJsonParams params = JsonDeleteRecordingSidJsonParams.build
 client.texml().accounts().recordings().json().deleteRecordingSidJson(params);
 ```
 
-## Fetch recordings for a call
+## 获取特定通话的录制记录
 
-Returns recordings for a call identified by call_sid.
+根据通话 ID 获取该通话的录制记录。
 
 `GET /texml/Accounts/{account_sid}/Calls/{call_sid}/Recordings.json`
 
@@ -447,9 +448,9 @@ RecordingsJsonRetrieveRecordingsJsonParams params = RecordingsJsonRetrieveRecord
 RecordingsJsonRetrieveRecordingsJsonResponse response = client.texml().accounts().calls().recordingsJson().retrieveRecordingsJson(params);
 ```
 
-## Request recording for a call
+## 为特定通话请求开始录制
 
-Starts recording with specified parameters for call idientified by call_sid.
+根据通话 ID 启动录制功能。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Recordings.json`
 
@@ -464,9 +465,9 @@ RecordingsJsonRecordingsJsonParams params = RecordingsJsonRecordingsJsonParams.b
 RecordingsJsonRecordingsJsonResponse response = client.texml().accounts().calls().recordingsJson().recordingsJson(params);
 ```
 
-## Update recording on a call
+## 更新特定通话的录制记录
 
-Updates recording resource for particular call.
+更新特定通话的录制资源。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Recordings/{recording_sid}.json`
 
@@ -482,9 +483,9 @@ RecordingRecordingSidJsonParams params = RecordingRecordingSidJsonParams.builder
 RecordingRecordingSidJsonResponse response = client.texml().accounts().calls().recordings().recordingSidJson(params);
 ```
 
-## List conference recordings
+## 列出会议录制记录
 
-Lists conference recordings
+列出所有会议录制记录。
 
 `GET /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Recordings`
 
@@ -499,9 +500,9 @@ ConferenceRetrieveRecordingsParams params = ConferenceRetrieveRecordingsParams.b
 ConferenceRetrieveRecordingsResponse response = client.texml().accounts().conferences().retrieveRecordings(params);
 ```
 
-## Fetch recordings for a conference
+## 获取特定会议的录制记录
 
-Returns recordings for a conference identified by conference_sid.
+根据会议 ID 获取该会议的录制记录。
 
 `GET /texml/Accounts/{account_sid}/Conferences/{conference_sid}/Recordings.json`
 
@@ -516,11 +517,11 @@ ConferenceRetrieveRecordingsJsonParams params = ConferenceRetrieveRecordingsJson
 ConferenceRetrieveRecordingsJsonResponse response = client.texml().accounts().conferences().retrieveRecordingsJson(params);
 ```
 
-## Create a TeXML secret
+## 创建 TeXML 密钥
 
-Create a TeXML secret which can be later used as a Dynamic Parameter for TeXML when using Mustache Templates in your TeXML.
+创建一个 TeXML 密钥，该密钥可在使用 Mustache 模板时作为动态参数使用。
 
-`POST /texml/secrets` — Required: `name`, `value`
+`POST /texml/secrets` — 必需参数：`name`, `value`
 
 ```java
 import com.telnyx.sdk.models.texml.TexmlSecretsParams;
@@ -533,9 +534,9 @@ TexmlSecretsParams params = TexmlSecretsParams.builder()
 TexmlSecretsResponse response = client.texml().secrets(params);
 ```
 
-## Request siprec session for a call
+## 为特定通话请求启动 SIPREC 会话
 
-Starts siprec session with specified parameters for call idientified by call_sid.
+根据通话 ID 启动 SIPREC 会话。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Siprec.json`
 
@@ -550,9 +551,9 @@ CallSiprecJsonParams params = CallSiprecJsonParams.builder()
 CallSiprecJsonResponse response = client.texml().accounts().calls().siprecJson(params);
 ```
 
-## Updates siprec session for a call
+## 更新特定通话的 SIPREC 会话
 
-Updates siprec session identified by siprec_sid.
+更新特定通话的 SIPREC 会话信息。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Siprec/{siprec_sid}.json`
 
@@ -568,9 +569,9 @@ SiprecSiprecSidJsonParams params = SiprecSiprecSidJsonParams.builder()
 SiprecSiprecSidJsonResponse response = client.texml().accounts().calls().siprec().siprecSidJson(params);
 ```
 
-## Start streaming media from a call.
+## 为特定通话启动媒体流
 
-Starts streaming media from a call to a specific WebSocket address.
+为特定通话启动媒体流。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Streams.json`
 
@@ -585,9 +586,9 @@ CallStreamsJsonParams params = CallStreamsJsonParams.builder()
 CallStreamsJsonResponse response = client.texml().accounts().calls().streamsJson(params);
 ```
 
-## Update streaming on a call
+## 更新特定通话的媒体流信息
 
-Updates streaming resource for particular call.
+更新特定通话的媒体流资源。
 
 `POST /texml/Accounts/{account_sid}/Calls/{call_sid}/Streams/{streaming_sid}.json`
 
@@ -603,9 +604,9 @@ StreamStreamingSidJsonParams params = StreamStreamingSidJsonParams.builder()
 StreamStreamingSidJsonResponse response = client.texml().accounts().calls().streams().streamingSidJson(params);
 ```
 
-## List recording transcriptions
+## 获取所有录制资源的转录文本
 
-Returns multiple recording transcription resources for an account.
+返回账户的所有录制资源的转录文本。
 
 `GET /texml/Accounts/{account_sid}/Transcriptions.json`
 
@@ -616,9 +617,9 @@ import com.telnyx.sdk.models.texml.accounts.AccountRetrieveTranscriptionsJsonRes
 AccountRetrieveTranscriptionsJsonResponse response = client.texml().accounts().retrieveTranscriptionsJson("account_sid");
 ```
 
-## Fetch a recording transcription resource
+## 获取特定录制的转录文本
 
-Returns the recording transcription resource identified by its ID.
+根据转录文本 ID 获取该录制的转录文本。
 
 `GET /texml/Accounts/{account_sid}/Transcriptions/{recording_transcription_sid}.json`
 
@@ -633,48 +634,40 @@ JsonRetrieveRecordingTranscriptionSidJsonParams params = JsonRetrieveRecordingTr
 JsonRetrieveRecordingTranscriptionSidJsonResponse response = client.texml().accounts().transcriptions().json().retrieveRecordingTranscriptionSidJson(params);
 ```
 
-## Delete a recording transcription
+## 删除录制转录文本
 
-Permanently deletes a recording transcription.
+永久删除特定录制的转录文本。
 
 `DELETE /texml/Accounts/{account_sid}/Transcriptions/{recording_transcription_sid}.json`
 
-```java
-import com.telnyx.sdk.models.texml.accounts.transcriptions.json.JsonDeleteRecordingTranscriptionSidJsonParams;
-
-JsonDeleteRecordingTranscriptionSidJsonParams params = JsonDeleteRecordingTranscriptionSidJsonParams.builder()
-    .accountSid("account_sid")
-    .recordingTranscriptionSid("6a09cdc3-8948-47f0-aa62-74ac943d6c58")
-    .build();
-client.texml().accounts().transcriptions().json().deleteRecordingTranscriptionSidJson(params);
-```
-
 ---
 
-## Webhooks
+## Webhook
 
-The following webhook events are sent to your configured webhook URL.
-All webhooks include `telnyx-timestamp` and `telnyx-signature-ed25519` headers for verification (Standard Webhooks compatible).
+以下 Webhook 事件会被发送到您配置的 Webhook URL：
+所有 Webhook 都包含 `telnyx-timestamp` 和 `telnyx-signature-ed25519` 标头以进行验证（兼容标准 Webhook）。
 
-| Event | Description |
+| 事件 | 描述 |
 |-------|-------------|
-| `TexmlCallAnsweredWebhook` | TeXML Call Answered. Webhook sent when a TeXML call is answered |
-| `TexmlCallCompletedWebhook` | TeXML Call Completed. Webhook sent when a TeXML call is completed |
-| `TexmlCallInitiatedWebhook` | TeXML Call Initiated. Webhook sent when a TeXML call is initiated |
-| `TexmlCallRingingWebhook` | TeXML Call Ringing. Webhook sent when a TeXML call is ringing |
-| `TexmlCallAmdWebhook` | TeXML Call AMD. Webhook sent when Answering Machine Detection (AMD) completes during a TeXML call |
-| `TexmlCallDtmfWebhook` | TeXML Call DTMF. Webhook sent when a DTMF digit is received during a TeXML call |
-| `TexmlGatherWebhook` | TeXML Gather. Webhook sent when a Gather command completes (sent to the action URL) |
-| `TexmlHttpRequestWebhook` | TeXML HTTP Request. Webhook sent as response to an HTTP Request instruction |
-| `TexmlAiGatherWebhook` | TeXML AI Gather. Webhook sent when AI Gather completes with transcription results |
-| `TexmlConferenceJoinWebhook` | TeXML Conference Join. Webhook sent when a participant joins a TeXML conference |
-| `TexmlConferenceLeaveWebhook` | TeXML Conference Leave. Webhook sent when a participant leaves a TeXML conference |
-| `TexmlConferenceSpeakerWebhook` | TeXML Conference Speaker. Webhook sent when a participant starts or stops speaking in a TeXML conference |
-| `TexmlConferenceEndWebhook` | TeXML Conference End. Webhook sent when a TeXML conference ends |
-| `TexmlConferenceStartWebhook` | TeXML Conference Start. Webhook sent when a TeXML conference starts |
-| `TexmlQueueWebhook` | TeXML Queue. Webhook sent for queue status events (triggered by Enqueue command waitUrl) |
-| `TexmlRecordingCompletedWebhook` | TeXML Recording Completed. Webhook sent when a recording is completed during a TeXML call (triggered by recordingStatusCallbackEvent) |
-| `TexmlRecordingInProgressWebhook` | TeXML Recording In-Progress. Webhook sent when a recording starts during a TeXML call (triggered by recordingStatusCallbackEvent) |
-| `TexmlSiprecWebhook` | TeXML SIPREC. Webhook sent for SIPREC session status updates |
-| `TexmlStreamWebhook` | TeXML Stream. Webhook sent for media streaming status updates |
-| `TexmlTranscriptionWebhook` | TeXML Transcription. Webhook sent when a recording transcription is completed |
+| `TexmlCallAnsweredWebhook` | TeXML 通话已接听。当 TeXML 通话被接听时发送此 Webhook |
+| `TexmlCallCompletedWebhook` | TeXML 通话已完成。当 TeXML 通话完成后发送此 Webhook |
+| `TexmlCallInitiatedWebhook` | TeXML 通话已发起。当 TeXML 通话开始时发送此 Webhook |
+| `TexmlCallRingingWebhook` | TeXML 通话正在振铃。当 TeXML 通话正在振铃时发送此 Webhook |
+| `TexmlCallAmdWebhook` | TeXML 通话中的自动应答机检测（AMD）完成时发送此 Webhook |
+| `TexmlCallDtmfWebhook` | TeXML 通话中接收到 DTMF 数字时发送此 Webhook |
+| `TexmlGatherWebhook` | TeXML 收集操作完成时发送此 Webhook（发送到指定的动作 URL） |
+| `TexmlHttpRequestWebhook` | TeXML HTTP 请求响应时发送此 Webhook |
+| `TexmlAiGatherWebhook` | AI 收集操作完成并生成转录结果时发送此 Webhook |
+| `TexmlConferenceJoinWebhook` | 参与者加入会议时发送此 Webhook |
+| `TexmlConferenceLeaveWebhook` | 参与者离开会议时发送此 Webhook |
+| `TexmlConferenceSpeakerWebhook` | 参与者在会议中开始或停止发言时发送此 Webhook |
+| `TexmlConferenceEndWebhook` | 会议结束时发送此 Webhook |
+| `TexmlConferenceStartWebhook` | 会议开始时发送此 Webhook |
+| `TexmlQueueWebhook` | 队列状态事件发生时发送此 Webhook（由 `enqueue` 命令触发） |
+| `TexmlRecordingCompletedWebhook` | 通话中的录制完成时发送此 Webhook（由 `recordingStatusCallbackEvent` 触发） |
+| `TexmlRecordingInProgressWebhook` | 通话中的录制开始时发送此 Webhook（由 `recordingStatusCallbackEvent` 触发） |
+| `TexmlSiprecWebhook` | SIPREC 会话状态更新时发送此 Webhook |
+| `TexmlStreamWebhook` | 媒体流状态更新时发送此 Webhook |
+| `TexmlTranscriptionWebhook` | 录制转录完成时发送此 Webhook |
+```
+```

@@ -1,6 +1,6 @@
 ---
 name: system-info
-description: "Quick system diagnostics: CPU, memory, disk, uptime"
+description: "快速系统诊断：CPU、内存、磁盘以及系统运行时间"
 metadata:
   {
     "openclaw":
@@ -12,11 +12,11 @@ metadata:
   }
 ---
 
-# System Info
+# 系统信息
 
-Quick system diagnostics covering CPU, memory, disk, and uptime. Uses standard Linux utilities that are always available.
+提供关于CPU、内存、磁盘和运行时间的快速系统诊断。使用的是标准Linux工具，这些工具在系统中始终可用。
 
-## Commands
+## 命令
 
 ```bash
 # Show all system info (CPU, memory, disk, uptime)
@@ -35,6 +35,6 @@ system-info disk
 system-info uptime
 ```
 
-## Install
+## 安装
 
-No installation needed. `free` and related utilities are always present on the system.
+无需安装。`free`及相关工具在系统中已经存在。

@@ -1,66 +1,66 @@
 ---
 name: senior-data-engineer
-description: Data engineering skill for building scalable data pipelines, ETL/ELT systems, and data infrastructure. Expertise in Python, SQL, Spark, Airflow, dbt, Kafka, and modern data stack. Includes data modeling, pipeline orchestration, data quality, and DataOps. Use when designing data architectures, building data pipelines, optimizing data workflows, implementing data governance, or troubleshooting data issues.
+description: 数据工程技能：专注于构建可扩展的数据管道、ETL/ELT系统以及数据基础设施。具备Python、SQL、Spark、Airflow、dbt、Kafka等现代数据工具的深厚经验，熟悉数据建模、管道编排、数据质量管理和DataOps（数据运营）流程。这些技能在设计数据架构、构建数据管道、优化数据工作流程、实施数据治理以及解决数据相关问题时至关重要。
 ---
 
-# Senior Data Engineer
+# 高级数据工程师
 
-Production-grade data engineering skill for building scalable, reliable data systems.
+具备生产级的数据工程技能，能够构建可扩展、可靠的数据系统。
 
-## Table of Contents
+## 目录
 
-1. [Trigger Phrases](#trigger-phrases)
-2. [Quick Start](#quick-start)
-3. [Workflows](#workflows)
-   - [Building a Batch ETL Pipeline](#workflow-1-building-a-batch-etl-pipeline)
-   - [Implementing Real-Time Streaming](#workflow-2-implementing-real-time-streaming)
-   - [Data Quality Framework Setup](#workflow-3-data-quality-framework-setup)
-4. [Architecture Decision Framework](#architecture-decision-framework)
-5. [Tech Stack](#tech-stack)
-6. [Reference Documentation](#reference-documentation)
-7. [Troubleshooting](#troubleshooting)
-
----
-
-## Trigger Phrases
-
-Activate this skill when you see:
-
-**Pipeline Design:**
-- "Design a data pipeline for..."
-- "Build an ETL/ELT process..."
-- "How should I ingest data from..."
-- "Set up data extraction from..."
-
-**Architecture:**
-- "Should I use batch or streaming?"
-- "Lambda vs Kappa architecture"
-- "How to handle late-arriving data"
-- "Design a data lakehouse"
-
-**Data Modeling:**
-- "Create a dimensional model..."
-- "Star schema vs snowflake"
-- "Implement slowly changing dimensions"
-- "Design a data vault"
-
-**Data Quality:**
-- "Add data validation to..."
-- "Set up data quality checks"
-- "Monitor data freshness"
-- "Implement data contracts"
-
-**Performance:**
-- "Optimize this Spark job"
-- "Query is running slow"
-- "Reduce pipeline execution time"
-- "Tune Airflow DAG"
+1. [常用术语](#trigger-phrases)
+2. [快速入门](#quick-start)
+3. [工作流程](#workflows)
+   - [构建批处理ETL管道](#workflow-1-building-a-batch-etl-pipeline)
+   - [实现实时流处理](#workflow-2-implementing-real-time-streaming)
+   - [数据质量框架设置](#workflow-3-data-quality-framework-setup)
+4. [架构决策框架](#architecture-decision-framework)
+5. [技术栈](#tech-stack)
+6. [参考文档](#reference-documentation)
+7. [故障排除](#troubleshooting)
 
 ---
 
-## Quick Start
+## 常用术语
 
-### Core Tools
+在遇到以下情况时，请使用此技能：
+
+**管道设计：**
+- “为……设计数据管道”
+- “构建ETL/ELT流程”
+- “如何从……导入数据”
+- “设置数据提取”
+
+**架构：**
+- “应该使用批处理还是流处理？”
+- “Lambda架构与Kappa架构”
+- “如何处理延迟到达的数据”
+- “设计数据湖仓”
+
+**数据建模：**
+- “创建维度模型”
+- “星型模式与雪花模式”
+- “实现缓慢变化的数据维度”
+- “设计数据保险库”
+
+**数据质量：**
+- “为……添加数据验证”
+- “设置数据质量检查”
+- “监控数据新鲜度”
+- “实现数据契约”
+
+**性能：**
+- “优化这个Spark作业”
+- “查询运行缓慢”
+- “减少管道执行时间”
+- “调整Airflow有向无环图（DAG）”
+
+---
+
+## 快速入门
+
+### 核心工具
 
 ```bash
 # Generate pipeline orchestration config
@@ -85,13 +85,13 @@ python scripts/etl_performance_optimizer.py analyze \
 
 ---
 
-## Workflows
+## 工作流程
 
-### Workflow 1: Building a Batch ETL Pipeline
+### 工作流程1：构建批处理ETL管道
 
-**Scenario:** Extract data from PostgreSQL, transform with dbt, load to Snowflake.
+**场景：** 从PostgreSQL提取数据，使用dbt进行转换，然后加载到Snowflake。
 
-#### Step 1: Define Source Schema
+#### 第1步：定义源数据结构
 
 ```sql
 -- Document source tables
@@ -105,7 +105,7 @@ WHERE table_schema = 'source_schema'
 ORDER BY table_name, ordinal_position;
 ```
 
-#### Step 2: Generate Extraction Config
+#### 第2步：生成提取配置
 
 ```bash
 python scripts/pipeline_orchestrator.py generate \
@@ -117,7 +117,7 @@ python scripts/pipeline_orchestrator.py generate \
   --output dags/extract_source.py
 ```
 
-#### Step 3: Create dbt Models
+#### 第3步：创建dbt模型
 
 ```sql
 -- models/staging/stg_orders.sql
@@ -140,33 +140,7 @@ renamed AS (
 SELECT * FROM renamed
 ```
 
-```sql
--- models/marts/fct_orders.sql
-{{
-    config(
-        materialized='incremental',
-        unique_key='order_id',
-        cluster_by=['order_date']
-    )
-}}
-
-SELECT
-    o.order_id,
-    o.customer_id,
-    c.customer_segment,
-    o.order_date,
-    o.total_amount,
-    o.status
-FROM {{ ref('stg_orders') }} o
-LEFT JOIN {{ ref('dim_customers') }} c
-    ON o.customer_id = c.customer_id
-
-{% if is_incremental() %}
-WHERE o._extracted_at > (SELECT MAX(_extracted_at) FROM {{ this }})
-{% endif %}
-```
-
-#### Step 4: Configure Data Quality Tests
+#### 第4步：配置数据质量测试
 
 ```yaml
 # models/marts/schema.yml
@@ -195,7 +169,7 @@ models:
               interval: 1
 ```
 
-#### Step 5: Create Airflow DAG
+#### 第5步：创建Airflow有向无环图（DAG）
 
 ```python
 # dags/daily_etl.py
@@ -248,7 +222,7 @@ with DAG(
     extract >> transform >> test >> notify
 ```
 
-#### Step 6: Validate Pipeline
+#### 第6步：验证管道
 
 ```bash
 # Test locally
@@ -264,11 +238,11 @@ python scripts/data_quality_validator.py validate \
 
 ---
 
-### Workflow 2: Implementing Real-Time Streaming
+### 工作流程2：实现实时流处理
 
-**Scenario:** Stream events from Kafka, process with Flink/Spark Streaming, sink to data lake.
+**场景：** 从Kafka接收事件流，使用Flink/Spark Streaming进行处理，然后存储到数据湖中。
 
-#### Step 1: Define Event Schema
+#### 第1步：定义事件结构
 
 ```json
 {
@@ -286,7 +260,7 @@ python scripts/data_quality_validator.py validate \
 }
 ```
 
-#### Step 2: Create Kafka Topic
+#### 第2步：创建Kafka主题
 
 ```bash
 # Create topic with appropriate partitions
@@ -304,7 +278,7 @@ kafka-topics.sh --describe \
   --topic user-events
 ```
 
-#### Step 3: Implement Spark Streaming Job
+#### 第3步：实现Spark Streaming作业
 
 ```python
 # streaming/user_events_processor.py
@@ -373,7 +347,7 @@ query = aggregated_df.writeStream \
 query.awaitTermination()
 ```
 
-#### Step 4: Handle Late Data and Errors
+#### 第4步：处理延迟到达的数据和错误
 
 ```python
 # Dead letter queue for failed records
@@ -413,7 +387,7 @@ query = parsed_df.writeStream \
     .start()
 ```
 
-#### Step 5: Monitor Stream Health
+#### 第5步：监控流处理状态
 
 ```python
 # monitoring/stream_metrics.py
@@ -456,11 +430,11 @@ def emit_metrics(query):
 
 ---
 
-### Workflow 3: Data Quality Framework Setup
+### 工作流程3：数据质量框架设置
 
-**Scenario:** Implement comprehensive data quality monitoring with Great Expectations.
+**场景：** 使用Great Expectations实现全面的数据质量监控。
 
-#### Step 1: Initialize Great Expectations
+#### 第1步：初始化Great Expectations
 
 ```bash
 # Install and initialize
@@ -472,7 +446,7 @@ great_expectations init
 great_expectations datasource new
 ```
 
-#### Step 2: Create Expectation Suite
+#### 第2步：创建预期检查集
 
 ```python
 # expectations/orders_suite.py
@@ -537,7 +511,7 @@ validator.expect_column_values_to_be_in_set(
 validator.save_expectation_suite(discard_failed_expectations=False)
 ```
 
-#### Step 3: Create Data Quality Checks with dbt
+#### 第3步：使用dbt创建数据质量检查
 
 ```yaml
 # models/marts/schema.yml
@@ -588,7 +562,7 @@ models:
               severity: warn
 ```
 
-#### Step 4: Implement Data Contracts
+#### 第4步：实现数据契约
 
 ```yaml
 # contracts/orders_contract.yaml
@@ -634,7 +608,7 @@ consumers:
     usage: "Churn prediction model"
 ```
 
-#### Step 5: Set Up Quality Monitoring Dashboard
+#### 第5步：设置质量监控仪表板
 
 ```python
 # monitoring/quality_dashboard.py
@@ -708,21 +682,21 @@ def generate_quality_report(connection, table_name: str) -> dict:
 
 ---
 
-## Architecture Decision Framework
+## 架构决策框架
 
-Use this framework to choose the right approach for your data pipeline.
+使用此框架来选择适合您的数据管道方案。
 
-### Batch vs Streaming
+### 批处理与流处理
 
-| Criteria | Batch | Streaming |
-|----------|-------|-----------|
-| **Latency requirement** | Hours to days | Seconds to minutes |
-| **Data volume** | Large historical datasets | Continuous event streams |
-| **Processing complexity** | Complex transformations, ML | Simple aggregations, filtering |
-| **Cost sensitivity** | More cost-effective | Higher infrastructure cost |
-| **Error handling** | Easier to reprocess | Requires careful design |
+| 标准 | 批处理 | 流处理 |
+|--------|--------|-----------|
+| **延迟要求** | 数小时至数天 | 几秒至几分钟 |
+| **数据量** | 大型历史数据集 | 持续的事件流 |
+| **处理复杂性** | 复杂的转换、机器学习 | 简单的聚合、过滤 |
+| **成本敏感性** | 更具成本效益 | 更高的基础设施成本 |
+| **错误处理** | 更容易重新处理 | 需要仔细设计 |
 
-**Decision Tree:**
+**决策树：**
 ```
 Is real-time insight required?
 ├── Yes → Use streaming
@@ -735,93 +709,89 @@ Is real-time insight required?
         └── No → dbt + warehouse compute
 ```
 
-### Lambda vs Kappa Architecture
+### Lambda架构与Kappa架构
 
-| Aspect | Lambda | Kappa |
+| 特点 | Lambda | Kappa |
 |--------|--------|-------|
-| **Complexity** | Two codebases (batch + stream) | Single codebase |
-| **Maintenance** | Higher (sync batch/stream logic) | Lower |
-| **Reprocessing** | Native batch layer | Replay from source |
-| **Use case** | ML training + real-time serving | Pure event-driven |
+| **复杂性** | 两个代码库（批处理+流处理） | 单一代码库 |
+| **维护成本** | 较高（需要同步批处理/流处理逻辑） | 较低 |
+| **重新处理** | 内置的批处理层 | 从源重新处理 |
+| **适用场景** | 机器学习训练+实时服务 | 纯事件驱动 |
 
-**When to choose Lambda:**
-- Need to train ML models on historical data
-- Complex batch transformations not feasible in streaming
-- Existing batch infrastructure
+**何时选择Lambda：**
+- 需要对历史数据训练机器学习模型
+- 流处理无法实现复杂的批处理转换
+- 已有的批处理基础设施
 
-**When to choose Kappa:**
-- Event-sourced architecture
-- All processing can be expressed as stream operations
-- Starting fresh without legacy systems
+**何时选择Kappa：**
+- 基于事件的架构
+- 所有处理都可以表示为流处理操作
+- 从零开始构建，无需使用旧系统
 
-### Data Warehouse vs Data Lakehouse
+### 数据仓库与数据湖仓
 
-| Feature | Warehouse (Snowflake/BigQuery) | Lakehouse (Delta/Iceberg) |
+| 特性 | 数据仓库（Snowflake/BigQuery） | 数据湖仓（Delta/Iceberg） |
 |---------|-------------------------------|---------------------------|
-| **Best for** | BI, SQL analytics | ML, unstructured data |
-| **Storage cost** | Higher (proprietary format) | Lower (open formats) |
-| **Flexibility** | Schema-on-write | Schema-on-read |
-| **Performance** | Excellent for SQL | Good, improving |
-| **Ecosystem** | Mature BI tools | Growing ML tooling |
+| **最适合** | 商业智能（BI）、SQL分析 | 机器学习、非结构化数据 |
+| **存储成本** | 较高（专有格式） | 较低（开放格式） |
+| **灵活性** | 写时定义模式 | 读时定义模式 |
+| **性能** | 非常适合SQL查询 | 性能良好，可逐步提升 |
+| **生态系统** | 成熟的商业智能工具 | 不断发展的机器学习工具 |
 
 ---
 
-## Tech Stack
+## 技术栈
 
-| Category | Technologies |
+| 类别 | 技术 |
 |----------|--------------|
-| **Languages** | Python, SQL, Scala |
-| **Orchestration** | Airflow, Prefect, Dagster |
-| **Transformation** | dbt, Spark, Flink |
-| **Streaming** | Kafka, Kinesis, Pub/Sub |
-| **Storage** | S3, GCS, Delta Lake, Iceberg |
-| **Warehouses** | Snowflake, BigQuery, Redshift, Databricks |
-| **Quality** | Great Expectations, dbt tests, Monte Carlo |
-| **Monitoring** | Prometheus, Grafana, Datadog |
+| **编程语言** | Python、SQL、Scala |
+| **任务调度** | Airflow、Prefect、Dagster |
+| **数据转换** | dbt、Spark、Flink |
+| **流处理** | Kafka、Kinesis、Pub/Sub |
+| **存储** | S3、GCS、Delta Lake、Iceberg |
+| **数据仓库** | Snowflake、BigQuery、Redshift、Databricks |
+| **数据质量** | Great Expectations、dbt测试、蒙特卡洛方法 |
+| **监控** | Prometheus、Grafana、Datadog |
 
 ---
 
-## Reference Documentation
+## 参考文档
 
-### 1. Data Pipeline Architecture
-See `references/data_pipeline_architecture.md` for:
-- Lambda vs Kappa architecture patterns
-- Batch processing with Spark and Airflow
-- Stream processing with Kafka and Flink
-- Exactly-once semantics implementation
-- Error handling and dead letter queues
+### 1. 数据管道架构
+请参阅`references/data_pipeline_architecture.md`，了解：
+- Lambda架构与Kappa架构模式
+- 使用Spark和Airflow进行批处理
+- 使用Kafka和Flink进行流处理
+- 实现“恰好一次”语义
+- 错误处理和死信队列
 
-### 2. Data Modeling Patterns
-See `references/data_modeling_patterns.md` for:
-- Dimensional modeling (Star/Snowflake)
-- Slowly Changing Dimensions (SCD Types 1-6)
-- Data Vault modeling
-- dbt best practices
-- Partitioning and clustering
+### 2. 数据建模模式
+请参阅`references/data_modeling_patterns.md`，了解：
+- 维度建模（星型模式/雪花模式）
+- 慢速变化的数据维度（SCD类型1-6）
+- 数据保险库建模
+- dbt最佳实践
+- 分区和聚类
 
-### 3. DataOps Best Practices
-See `references/dataops_best_practices.md` for:
-- Data testing frameworks
-- Data contracts and schema validation
-- CI/CD for data pipelines
-- Observability and lineage
-- Incident response
+### 3. 数据运维最佳实践
+请参阅`references/dataops_best_practices.md`，了解：
+- 数据测试框架
+- 数据契约和模式验证
+- 数据管道的持续集成/持续交付（CI/CD）
+- 可观测性和数据来源追踪
+- 事件响应
 
 ---
 
-## Troubleshooting
+## 故障排除
 
-### Pipeline Failures
+### 管道故障
 
-**Symptom:** Airflow DAG fails with timeout
-```
-Task exceeded max execution time
-```
-
-**Solution:**
-1. Check resource allocation
-2. Profile slow operations
-3. Add incremental processing
+**症状：** Airflow有向无环图（DAG）因超时失败
+**解决方案：**
+1. 检查资源分配
+2. 分析运行缓慢的操作
+3. 添加增量处理逻辑
 ```python
 # Increase timeout
 default_args = {
@@ -834,32 +804,22 @@ WHERE updated_at > '{{ prev_ds }}'
 
 ---
 
-**Symptom:** Spark job OOM
-```
-java.lang.OutOfMemoryError: Java heap space
-```
-
-**Solution:**
-1. Increase executor memory
-2. Reduce partition size
-3. Use disk spill
+**症状：** Spark作业内存不足（OOM）
+**解决方案：**
+1. 增加执行器内存
+2. 减小分区大小
+3. 使用磁盘溢出机制
 ```python
 spark.conf.set("spark.executor.memory", "8g")
 spark.conf.set("spark.sql.shuffle.partitions", "200")
 spark.conf.set("spark.memory.fraction", "0.8")
 ```
 
----
-
-**Symptom:** Kafka consumer lag increasing
-```
-Consumer lag: 1000000 messages
-```
-
-**Solution:**
-1. Increase consumer parallelism
-2. Optimize processing logic
-3. Scale consumer group
+**症状：** Kafka消费者延迟增加
+**解决方案：**
+1. 增加消费者并行度
+2. 优化处理逻辑
+3. 扩展消费者组
 ```bash
 # Add more partitions
 kafka-topics.sh --alter \
@@ -868,18 +828,12 @@ kafka-topics.sh --alter \
   --partitions 24
 ```
 
----
+### 数据质量问题
 
-### Data Quality Issues
-
-**Symptom:** Duplicate records appearing
-```
-Expected unique, found 150 duplicates
-```
-
-**Solution:**
-1. Add deduplication logic
-2. Use merge/upsert operations
+**症状：** 出现重复记录
+**解决方案：**
+1. 添加去重逻辑
+2. 使用合并/插入操作
 ```sql
 -- dbt incremental with dedup
 {{
@@ -900,17 +854,11 @@ SELECT * FROM (
 ) WHERE rn = 1
 ```
 
----
-
-**Symptom:** Stale data in tables
-```
-Last update: 3 days ago
-```
-
-**Solution:**
-1. Check upstream pipeline status
-2. Verify source availability
-3. Add freshness monitoring
+**症状：** 表格中的数据过时
+**解决方案：**
+1. 检查上游管道的状态
+2. 验证数据源的可用性
+3. 添加数据新鲜度监控
 ```yaml
 # dbt freshness check
 sources:
@@ -921,17 +869,11 @@ sources:
     loaded_at_field: _loaded_at
 ```
 
----
-
-**Symptom:** Schema drift detected
-```
-Column 'new_field' not in expected schema
-```
-
-**Solution:**
-1. Update data contract
-2. Modify transformations
-3. Communicate with producers
+**症状：** 检测到模式漂移
+**解决方案：**
+1. 更新数据契约
+2. 修改数据转换逻辑
+3. 与数据生产者沟通
 ```python
 # Handle schema evolution
 df = spark.read.format("delta") \
@@ -939,19 +881,13 @@ df = spark.read.format("delta") \
     .load("/data/orders")
 ```
 
----
+### 性能问题
 
-### Performance Issues
-
-**Symptom:** Query takes hours
-```
-Query runtime: 4 hours (expected: 30 minutes)
-```
-
-**Solution:**
-1. Check query plan
-2. Add proper partitioning
-3. Optimize joins
+**症状：** 查询耗时过长
+**解决方案：**
+1. 检查查询计划
+2. 添加适当的分区
+3. 优化连接操作
 ```sql
 -- Before: Full table scan
 SELECT * FROM orders WHERE order_date = '2024-01-15';
@@ -964,17 +900,11 @@ SELECT * FROM orders WHERE order_date = '2024-01-15';
 ALTER TABLE orders CLUSTER BY (customer_id);
 ```
 
----
-
-**Symptom:** dbt model takes too long
-```
-Model fct_orders completed in 45 minutes
-```
-
-**Solution:**
-1. Use incremental materialization
-2. Reduce upstream dependencies
-3. Pre-aggregate where possible
+**症状：** dbt模型运行时间过长
+**解决方案：**
+1. 使用增量式数据生成机制
+2. 减少对上游数据的依赖
+3. 在可能的情况下进行预聚合
 ```sql
 -- Convert to incremental
 {{

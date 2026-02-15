@@ -1,158 +1,145 @@
 ---
 name: cursor-agent
 version: 2.1.0
-description: A comprehensive skill for using the Cursor CLI agent for various software engineering tasks (updated for 2026 features, includes tmux automation guide).
+description: 这是一项关于如何使用 Cursor CLI 工具来执行各种软件工程任务的全面技能指南（已更新至 2026 年的新功能，包含 tmux 自动化使用方法）。
 author: Pushpinder Pal Singh
 ---
 
-# Cursor CLI Agent Skill
+# Cursor CLI Agent 技能
 
-This skill provides a comprehensive guide and set of workflows for utilizing the Cursor CLI tool, including all features from the January 2026 update.
+本技能提供了关于如何使用 Cursor CLI 工具的全面指南和工作流程，涵盖了 2026 年 1 月更新后的所有功能。
 
-## Installation
+## 安装
 
-### Standard Installation (macOS, Linux, Windows WSL)
+### 标准安装（macOS、Linux、Windows WSL）
 
 ```bash
 curl https://cursor.com/install -fsS | bash
 ```
 
-### Homebrew (macOS only)
+### 使用 Homebrew（仅限 macOS）
 
 ```bash
 brew install --cask cursor-cli
 ```
 
-### Post-Installation Setup
+### 安装后的配置
 
 **macOS:**
-- Add to PATH in `~/.zshrc` (zsh) or `~/.bashrc` (bash):
+- 将 Cursor CLI 添加到 `~/.zshrc`（zsh）或 `~/.bashrc`（bash）中的 PATH 环境变量中：
   ```bash
   export PATH="$HOME/.local/bin:$PATH"
   ```
-- Restart terminal or run `source ~/.zshrc` (or `~/.bashrc`)
-- Requires macOS 10.15 or later
-- Works on both Intel and Apple Silicon Macs
+- 重新启动终端或执行 `source ~/.zshrc`（或 `~/.bashrc`）
+- 需要 macOS 10.15 或更高版本
+- 支持 Intel 和 Apple Silicon Mac
 
 **Linux/Ubuntu:**
-- Restart your terminal or source your shell config
-- Verify with `agent --version`
+- 重新启动终端或加载 shell 配置文件
+- 通过 `agent --version` 命令验证安装是否成功
 
-**Both platforms:**
-- Commands: `agent` (primary) and `cursor-agent` (backward compatible)
-- Verify installation: `agent --version` or `cursor-agent --version`
+**两个平台通用:**
+- 主要命令：`agent` 和 `cursor-agent`（`cursor-agent` 为向后兼容的旧命令）
+- 通过 `agent --version` 或 `cursor-agent --version` 命令验证安装情况
 
-## Authentication
+## 认证
 
-Authenticate via browser:
-
-```bash
+- 通过浏览器进行认证：
+  ```bash
 agent login
 ```
 
-Or use API key:
-
-```bash
+- 或使用 API 密钥进行认证：
+  ```bash
 export CURSOR_API_KEY=your_api_key_here
 ```
 
-## Update
+## 更新
 
-Keep your CLI up to date:
-
+确保您的 CLI 工具始终保持最新状态：
 ```bash
 agent update
 # or
 agent upgrade
 ```
 
-## Commands
+## 命令
 
-### Interactive Mode
+### 交互式模式
 
-Start an interactive session with the agent:
-
-```bash
+- 启动与代理的交互式会话：
+  ```bash
 agent
 ```
 
-Start with an initial prompt:
-
-```bash
+- 进入初始提示界面：
+  ```bash
 agent "Add error handling to this API"
 ```
 
-**Backward compatibility:** `cursor-agent` still works but `agent` is now the primary command.
+**向后兼容性说明：** `cursor-agent` 仍然可用，但 `agent` 是当前推荐的主要命令。
 
-### Model Switching
+### 模型切换
 
-List all available models:
-
-```bash
+- 列出所有可用模型：
+  ```bash
 agent models
 # or
 agent --list-models
 ```
 
-Use a specific model:
-
-```bash
+- 使用特定模型：
+  ```bash
 agent --model gpt-5
 ```
 
-Switch models during a session:
-
-```
+- 在会话中切换模型：
+  ```
 /models
 ```
 
-### Session Management
+### 会话管理
 
-Manage your agent sessions:
+- 管理代理会话：
+  - **列出所有会话：`agent ls`
+  - **恢复最近会话：`agent resume`
+  - **恢复特定会话：`agent --resume="[chat-id]"`
 
-- **List sessions:** `agent ls`
-- **Resume most recent:** `agent resume`
-- **Resume specific session:** `agent --resume="[chat-id]"`
+### 上下文选择
 
-### Context Selection
-
-Include specific files or folders in the conversation:
-
-```
+- 在对话中包含特定的文件或文件夹：
+  ```
 @filename.ts
 @src/components/
 ```
 
-### Slash Commands
+### 命令行操作
 
-Available during interactive sessions:
+- 在交互式会话中可使用的命令：
+  - `/models` - 交互式切换 AI 模型
+  - `/compress` - 总结对话内容并释放上下文窗口空间
+  - `/rules` - 直接通过 CLI 创建和编辑规则
+  - `/commands` - 创建和修改自定义命令
+  - `/mcp enable [server-name]` - 启用 MCP 服务器
+  - `/mcp disable [server-name]` - 禁用 MCP 服务器
 
-- **`/models`** - Switch between AI models interactively
-- **`/compress`** - Summarize conversation and free up context window
-- **`/rules`** - Create and edit rules directly from CLI
-- **`/commands`** - Create and modify custom commands
-- **`/mcp enable [server-name]`** - Enable an MCP server
-- **`/mcp disable [server-name]`** - Disable an MCP server
+### 键盘快捷键
 
-### Keyboard Shortcuts
+- **`Shift+Enter`** - 为多行提示添加换行符
+- **`Ctrl+D`** - 退出 CLI（为安全起见，需按两次）
+- **`Ctrl+R`** - 查看更改内容（按 `i` 查看说明，使用箭头键导航）
+- **`ArrowUp`** - 查看上一条消息
 
-- **`Shift+Enter`** - Add newlines for multi-line prompts
-- **`Ctrl+D`** - Exit CLI (requires double-press for safety)
-- **`Ctrl+R`** - Review changes (press `i` for instructions, navigate with arrow keys)
-- **`ArrowUp`** - Cycle through previous messages
+### 非交互式模式 / CI 模式
 
-### Non-interactive / CI Mode
-
-Run the agent in a non-interactive mode, suitable for CI/CD pipelines:
-
-```bash
+- 以非交互式模式运行代理，适用于 CI/CD 流程：
+  ```bash
 agent -p 'Run tests and report coverage'
 # or
 agent --print 'Refactor this file to use async/await'
 ```
 
-**Output formats:**
-
+**输出格式:**
 ```bash
 # Plain text (default)
 agent -p 'Analyze code' --output-format text
@@ -164,24 +151,21 @@ agent -p 'Find bugs' --output-format json
 agent -p 'Run tests' --output-format stream-json --stream-partial-output
 ```
 
-**Force mode (auto-apply changes without confirmation):**
-
+**强制模式（自动应用更改，无需确认）:**
 ```bash
 agent -p 'Fix all linting errors' --force
 ```
 
-**Media support:**
-
+**媒体支持:**
 ```bash
 agent -p 'Analyze this screenshot: screenshot.png'
 ```
 
-### ⚠️ Using with AI Agents / Automation (tmux required)
+### ⚠️ 与 AI 代理/自动化工具配合使用（需要 tmux）
 
-**CRITICAL:** When running Cursor CLI from automated environments (AI agents, scripts, subprocess calls), the CLI requires a real TTY. Direct execution will hang indefinitely.
+**重要提示：** 当从自动化环境（如 AI 代理、脚本或子进程调用）中运行 Cursor CLI 时，必须使用真实的 TTY（终端）。直接执行会导致程序无限挂起。
 
-**The Solution: Use tmux**
-
+**解决方案：使用 tmux:**
 ```bash
 # 1. Install tmux if not available
 sudo apt install tmux  # Ubuntu/Debian
@@ -212,12 +196,12 @@ tmux capture-pane -t cursor -p -S -100
 ls -la /path/to/project/
 ```
 
-**Why this works:**
-- tmux provides a persistent pseudo-terminal (PTY)
-- Cursor's TUI requires interactive terminal capabilities
-- Direct `agent` calls from subprocess/exec hang without TTY
+**原因：**
+- tmux 提供了一个持久的伪终端（PTY）
+- Cursor 的图形用户界面（TUI）需要交互式终端的支持
+- 从子进程或执行命令中直接调用 `agent` 时，如果没有 TTY 会导致程序挂起
 
-**What does NOT work:**
+**注意事项：**  
 ```bash
 # ❌ These will hang indefinitely:
 agent "task"                    # No TTY
@@ -226,67 +210,61 @@ subprocess.run(["agent", ...])  # No TTY
 script -c "agent ..." /dev/null # May crash Cursor
 ```
 
-## Rules & Configuration
+## 规则与配置
 
-The agent automatically loads rules from:
+代理会自动从以下文件加载规则：
 - `.cursor/rules`
 - `AGENTS.md`
 - `CLAUDE.md`
 
-Use `/rules` command to create and edit rules directly from the CLI.
+- 可通过 `/rules` 命令直接在 CLI 中创建和编辑规则。
 
-## MCP Integration
+## MCP 集成
 
-MCP servers are automatically loaded from `mcp.json` configuration.
+MCP 服务器会从 `mcp.json` 配置文件中自动加载。
 
-Enable/disable servers on the fly:
-
-```
+- 可实时启用或禁用 MCP 服务器：
+  ```
 /mcp enable server-name
 /mcp disable server-name
 ```
 
-**Note:** Server names with spaces are fully supported.
+**注意：** 支持包含空格的服务器名称。
 
-## Workflows
+## 工作流程
 
-### Code Review
+### 代码审查
 
-Perform a code review on the current changes or a specific branch:
-
-```bash
+- 对当前更改或特定分支进行代码审查：
+  ```bash
 agent -p 'Review the changes in the current branch against main. Focus on security and performance.'
 ```
 
-### Refactoring
+### 代码重构
 
-Refactor code for better readability or performance:
-
-```bash
+- 重构代码以提高可读性或性能：
+  ```bash
 agent -p 'Refactor src/utils.ts to reduce complexity and improve type safety.'
 ```
 
-### Debugging
+### 调试
 
-Analyze logs or error messages to find the root cause:
-
-```bash
+- 分析日志或错误信息以找出问题根源：
+  ```bash
 agent -p 'Analyze the following error log and suggest a fix: [paste log here]'
 ```
 
-### Git Integration
+### Git 集成
 
-Automate git operations with context awareness:
-
-```bash
+- 结合上下文信息自动化 Git 操作：
+  ```bash
 agent -p 'Generate a commit message for the staged changes adhering to conventional commits.'
 ```
 
-### Batch Processing (CI/CD)
+### 批量处理（CI/CD）
 
-Run automated checks in CI pipelines:
-
-```bash
+- 在 CI/CD 流程中自动执行检查：
+  ```bash
 # Set API key in CI environment
 export CURSOR_API_KEY=$CURSOR_API_KEY
 
@@ -297,11 +275,10 @@ agent -p 'Audit this codebase for security vulnerabilities' --output-format json
 agent -p 'Run tests and generate coverage report' --output-format text
 ```
 
-### Multi-file Analysis
+### 多文件分析
 
-Use context selection to analyze multiple files:
-
-```bash
+- 使用上下文选择功能分析多个文件：
+  ```bash
 agent
 # Then in interactive mode:
 @src/api/

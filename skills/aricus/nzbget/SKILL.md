@@ -1,46 +1,46 @@
 ---
 name: nzbget
-description: Check NZBGet download status and queue information. Use when the user asks about NZBGet downloads, wants to know how many things are downloading, check download speed, view the queue, or get a full status report of their Usenet downloads.
+description: 检查 NZBGet 的下载状态和队列信息。当用户询问 NZBGet 的下载情况、想知道正在下载的文件数量、查看下载速度、查看下载队列，或获取他们的 Usenet 下载的完整状态报告时，可以使用此功能。
 ---
 
-# NZBGet Status Checker
+# NZBGet 状态检查工具
 
-This skill provides quick access to NZBGet download status and queue information.  Required env vars: NZBGET_USER, NZBGET_PASS, NZBGET_HOST
+该工具可快速查询 NZBGet 的下载状态和队列信息。所需环境变量：NZBGET_USER、NZBGET_PASS、NZBGET_HOST
 
-## Usage
+## 使用方法
 
-### Quick Count
-Get a simple count of active downloads:
+### 快速统计
+获取正在下载的文件数量：
 ```bash
 bash scripts/check_nzbget.sh count
 ```
-Returns: `3` (number of items downloading)
+返回值：`3`（正在下载的文件数量）
 
-### Full Status Report
-Get complete status with speed, queue, and remaining size:
+### 完整状态报告
+获取包括下载速度、队列列表及剩余文件大小在内的完整状态信息：
 ```bash
 bash scripts/check_nzbget.sh
 ```
 
-### Specific Queries
+### 具体查询
 
-| Query | Command | Output |
-|-------|---------|--------|
-| How many downloading? | `count` | Number only |
-| Current speed? | `speed` | Speed in MB/s |
-| What's in queue? | `queue` | First 10 items only |
-| Full status | (no args) | Complete report (max 10 items shown) |
+| 查询内容 | 命令        | 输出结果       |
+|---------|------------|-------------|
+| 正在下载的文件有多少？ | `count`      | 仅返回文件数量 |
+| 当前下载速度是多少？ | `speed`      | 以 MB/s 为单位的速度 |
+| 队列中有哪些文件？ | `queue`      | 只显示前 10 个文件 |
+| 完整状态信息 | （无参数）     | 显示完整报告（最多显示 10 个文件） |
 
-**Note:** Queue listings are capped at 10 items to avoid flooding with large queues (400+ items). The script shows "Next 10 of X items" when there are more.
+**注意：** 为避免因队列文件过多（超过 400 个）导致页面显示混乱，队列列表最多显示 10 个文件。当队列中文件数量超过 10 个时，系统会显示“当前队列中有 X 个文件”。
 
-## Examples
+## 示例
 
-**User:** "NZBGet count"
+**用户：** “NZBGet count”
 ```
 3
 ```
 
-**User:** "What's downloading?"
+**用户：** “正在下载哪些文件？”
 ```
 📥 NZBGet Status: Downloading
 
@@ -54,15 +54,15 @@ Current Queue:
   • Documentary.4K.mkv - 89%
 ```
 
-**User:** "NZBGet speed"
+**用户：** “NZBGet speed”
 ```
 12.5 MB/s
 ```
 
-## Response Guidelines
+## 响应指南
 
-- For "count" or "how many": Use the number directly in a conversational response
-- For "speed": Report the current download speed
-- For full status: Summarize the key info (count, speed, remaining) and list active items
-- If NZBGet is unreachable or no items downloading, say so clearly
-- Keep responses concise unless user asks for full details
+- 对于“count”或“正在下载的文件有多少？”的查询，直接以数字形式回答。
+- 对于“当前下载速度是多少？”的查询，报告当前的下载速度。
+- 对于完整状态信息的查询，总结关键信息（文件数量、下载速度、剩余文件数量），并列出正在下载的文件。
+- 如果 NZBGet 无法访问或没有文件正在下载，应明确告知用户。
+- 除非用户要求详细信息，否则保持响应简洁。

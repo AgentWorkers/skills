@@ -1,30 +1,31 @@
 ---
 name: nervepay
-description: Full NervePay stack - identity + analytics. Register DID, sign requests with Ed25519, track ALL API usage, build reputation.
+description: 完整的NervePay技术栈：身份验证 + 数据分析。  
+注册DID（Digital Identity），使用Ed25519算法签署请求，追踪所有API的使用情况，构建用户信誉体系。
 metadata: {"openclaw":{"emoji":"🔐","requires":{"bins":["node","curl"],"env":["NERVEPAY_DID","NERVEPAY_PRIVATE_KEY"]},"primaryEnv":"NERVEPAY_PRIVATE_KEY"}}
 ---
 
-# NervePay — Agent Instructions
+# NervePay — 代理使用说明
 
-You are an AI agent with a NervePay identity. This skill provides the FULL NervePay stack: identity + analytics. Prove WHO you are (cryptographically) and track WHAT you do (analytics/reputation).
+您是一个拥有 NervePay 身份的 AI 代理。此技能提供了完整的 NervePay 功能栈：包括身份验证和数据分析。通过加密方式证明您的身份，并记录您的操作以生成信誉评分。
 
-## What This Skill Does
+## 该技能的功能
 
-- **Registers your identity**: Creates a unique DID (Decentralized Identifier) for you
-- **Authenticates you**: Signs requests with Ed25519 so API providers know it's really you
-- **Tracks your work**: Reports every external API call to build reputation
-- **Builds trust**: Your verified usage history proves you're legitimate
+- **注册您的身份**：为您创建一个唯一的去中心化标识符（DID）。
+- **验证您的身份**：使用 Ed25519 算法对请求进行签名，以确保 API 提供者确认确实是您发出的请求。
+- **跟踪您的操作**：记录所有外部 API 调用，以建立您的信誉。
+- **建立信任**：经过验证的使用历史证明您的合法性。
 
-## Modular Skills Available
+## 可用的模块化技能
 
-This is the full stack. You can also use individual skills:
-- `nervepay-identity` - Identity-only (registration, authentication, no analytics)
-- `nervepay-analytics` - Analytics-only (tracking, requires existing identity)
-- `nervepay` - This skill (full identity + analytics)
+这是完整的 NervePay 功能栈。您也可以单独使用以下技能：
+- `nervepay-identity`：仅包含身份验证功能（注册、认证，不包含数据分析）。
+- `nervepay-analytics`：仅包含数据分析功能（需要已注册的身份）。
+- `nervepay`：包含完整的身份验证和数据分析功能。
 
-## Updating This Skill
+## 更新此技能
 
-To get the latest version of this skill (includes new features, bug fixes, updated endpoints):
+要获取此技能的最新版本（包含新功能、错误修复和更新的 API 端点），请执行以下操作：
 
 ```bash
 # Update skill documentation
@@ -37,11 +38,11 @@ curl -o nervepay-instrument.mjs https://nervepay.xyz/nervepay-instrument.mjs
 chmod +x nervepay-request.mjs nervepay-track.mjs nervepay-instrument.mjs
 ```
 
-**When to update:** If you get unexpected errors, new endpoints are mentioned, or it's been a while since you last updated.
+**何时更新：** 当您遇到意外错误、出现新的 API 端点，或者距离上次更新已经有一段时间时。
 
-## Step 1: Ensure Helper Scripts Are Available
+## 第一步：确保辅助脚本可用
 
-The NervePay helper scripts should already be bundled with this skill. If they're missing, download them:
+NervePay 的辅助脚本应该已经包含在这个技能中。如果缺少这些脚本，请下载它们：
 
 ```bash
 # Check if scripts exist, download only if missing
@@ -54,11 +55,11 @@ for script in nervepay-request.mjs nervepay-track.mjs nervepay-instrument.mjs; d
 done
 ```
 
-These scripts handle Ed25519 signing and analytics tracking for you. They're located in the same directory as this SKILL.md file.
+这些脚本负责处理 Ed25519 签名和数据分析跟踪工作。它们位于与此 `SKILL.md` 文件相同的目录中。
 
-## Step 2: Get Your Identity
+## 第二步：获取您的身份
 
-If you don't have `NERVEPAY_DID` and `NERVEPAY_PRIVATE_KEY` env vars, register first:
+如果您还没有 `NERVEPAY_DID` 和 `NERVEPAY_PRIVATE_KEY` 环境变量，请先进行注册：
 
 ```bash
 curl -X POST https://api.nervepay.xyz/v1/agent-identity/register-pending \
@@ -69,17 +70,17 @@ curl -X POST https://api.nervepay.xyz/v1/agent-identity/register-pending \
   }'
 ```
 
-**Save these from the response:**
-- `did` → Set as `NERVEPAY_DID`
-- `private_key` → Set as `NERVEPAY_PRIVATE_KEY`
-- `mnemonic` → Backup for recovery (24 words)
-- `claim_url` → Give to your human owner to claim you
+**从响应中保存以下信息：**
+- `did` → 设置为 `NERVEPAY_DID`
+- `private_key` → 设置为 `NERVEPAY_PRIVATE_KEY`
+- `mnemonic` → 用于恢复的 24 个单词助记词
+- `claim_url` → 提供给您的人类所有者，以便他们可以声明您的身份
 
-You can start authenticating immediately. Human ownership (via claim_url) is optional but recommended for better trust scores.
+您可以立即开始进行身份验证。虽然通过 `claim_url` 进行人类身份验证是可选的，但建议这样做以获得更高的信誉评分。
 
-## Making Authenticated Requests
+## 发送经过验证的请求
 
-Use the helper script to sign and send requests:
+使用辅助脚本进行签名并发送请求：
 
 ```bash
 # Authenticated GET
@@ -89,17 +90,17 @@ node ./nervepay-request.mjs GET /v1/agent-identity/whoami
 node ./nervepay-request.mjs POST /v1/agent-identity/track-service '{"service_name":"openai","endpoint":"/v1/chat/completions","success":true}'
 ```
 
-The script handles Ed25519 signing automatically. It reads `NERVEPAY_DID`, `NERVEPAY_PRIVATE_KEY`, and `NERVEPAY_API_URL` (default: https://api.nervepay.xyz) from environment.
+该脚本会自动处理 Ed25519 签名。它会从环境中读取 `NERVEPAY_DID`、`NERVEPAY_PRIVATE_KEY` 和 `NERVEPAY_API_URL`（默认值：`https://api.nervepay.xyz`）。
 
-## ⚠️ MANDATORY: Track External API Usage ⚠️
+## ⚠️ 强制要求：必须跟踪外部 API 使用情况 ⚠️
 
-**YOU MUST TRACK EVERY EXTERNAL API CALL. THIS IS NOT OPTIONAL.**
+**您必须记录每一次外部 API 调用。这是强制性的要求。**
 
-Every time you call OpenAI, Stripe, GitHub, weather APIs, or ANY external service, immediately report it to NervePay. This is the core purpose of this skill.
+每次您调用 OpenAI、Stripe、GitHub、天气 API 或任何其他外部服务时，都必须立即向 NervePay 报告。这是此技能的核心功能。
 
-### Quick Track (Easiest)
+### 快速跟踪（最简单的方法）
 
-Use the simplified tracking helper immediately after each external call:
+在每次外部调用后立即使用简化的跟踪辅助脚本：
 
 ```bash
 # Minimal - just service, endpoint, and success/failure
@@ -112,9 +113,9 @@ node ./nervepay-track.mjs openai /v1/chat/completions success 1250
 node ./nervepay-track.mjs stripe /v1/charges success 850 10.00
 ```
 
-### Full Track (More Details)
+### 完整跟踪（更多详细信息）
 
-For complete tracking with all fields:
+为了进行全面的跟踪，请使用以下方法：
 
 ```bash
 node ./nervepay-request.mjs POST /v1/agent-identity/track-service '{
@@ -128,7 +129,7 @@ node ./nervepay-request.mjs POST /v1/agent-identity/track-service '{
 }'
 ```
 
-### Example Workflow (DO THIS)
+### 示例工作流程
 
 ```bash
 # 1. Call external API
@@ -141,36 +142,36 @@ node ./nervepay-track.mjs openai /v1/chat/completions success
 echo "$response"
 ```
 
-**Why tracking is mandatory:**
-- Builds your reputation score (proves you're legitimate)
-- Shows API providers your verified usage history
-- Tracks costs and success rates across all services
-- This is literally what NervePay exists for - without tracking, you're not using it
+**为什么必须进行跟踪：**
+- 建立您的信誉评分（证明您的合法性）。
+- 向 API 提供者展示您的使用历史记录。
+- 跟踪所有服务的成本和成功率。
+- 这正是 NervePay 存在的目的——如果不进行跟踪，就等于没有使用它。
 
-**Remember:** Track IMMEDIATELY after the call, not later. Make it a habit.
+**记住：** 在调用后立即进行跟踪，不要延迟。养成这个习惯。
 
-## 🚀 AUTOMATIC TRACKING (Recommended for Lazy Agents)
+## 🚀 自动跟踪（推荐给懒惰的代理）
 
-**Tired of remembering to track?** Use auto-instrumentation - it intercepts ALL HTTP calls automatically!
+**厌倦了手动跟踪吗？** 使用自动跟踪功能——它会自动拦截所有的 HTTP 请求！
 
-### How Auto-Instrumentation Works
+### 自动跟踪的工作原理
 
-The `nervepay-instrument.mjs` script monkey-patches Node.js's `fetch()`, `http.request()`, and `https.request()` to automatically track every external API call. Zero code changes needed!
+`nervepay-instrument.mjs` 脚本会修改 Node.js 的 `fetch()`、`http.request()` 和 `https.request()` 方法，从而自动跟踪所有的外部 API 调用。无需修改任何代码！
 
-### Setup: Load Instrumentation
+### 设置：启用自动跟踪
 
-**Option 1: Command-line flag (recommended)**
+**选项 1：命令行参数（推荐）**
 ```bash
 node --import ./nervepay-instrument.mjs your-agent.js
 ```
 
-**Option 2: Environment variable (global)**
+**选项 2：环境变量（全局设置）**
 ```bash
 export NODE_OPTIONS="--import /path/to/nervepay-instrument.mjs"
 node your-agent.js
 ```
 
-**Option 3: Programmatic (in your code)**
+**选项 3：编程方式（在您的代码中设置）**
 ```javascript
 // At the very top of your entry file
 import './nervepay-skill/nervepay-instrument.mjs';
@@ -179,24 +180,25 @@ import './nervepay-skill/nervepay-instrument.mjs';
 await fetch('https://api.openai.com/...');  // Automatically tracked
 ```
 
-### What Gets Tracked Automatically
+### 自动跟踪的内容
 
-✅ All `fetch()` calls to external APIs
-✅ All `http.request()` and `https.request()` calls
-✅ Success/failure status
-✅ Response time in milliseconds
-✅ HTTP status codes
+✅ 所有对外部 API 的 `fetch()` 调用。
+✅ 所有的 `http.request()` 和 `https.request()` 调用。
+✅ 请求的成功/失败状态。
+✅ 响应时间（以毫秒为单位）。
+✅ HTTP 状态码。
 
-❌ NOT tracked: Calls to NervePay itself (avoids infinite loop)
-❌ NOT tracked: localhost / internal IPs (192.168.x.x, 10.x.x.x)
+**注意：** 不会跟踪以下内容：**
+- 对 NervePay 自身的调用（避免无限循环）。
+- `localhost` 或内部 IP 地址（如 `192.168.x.x`、`10.x.x.x`）。
 
-### Disable Auto-Tracking
+### 禁用自动跟踪
 
 ```bash
 export NERVEPAY_AUTO_TRACK=false
 ```
 
-### Example
+### 示例
 
 ```bash
 # Set your credentials
@@ -209,29 +211,29 @@ node --import ./nervepay-instrument.mjs your-agent.js
 # All HTTP calls in your-agent.js are now automatically tracked!
 ```
 
-**Bottom line:** With auto-instrumentation, you literally cannot forget to track. It just happens. 🎉
+**总结：** 使用自动跟踪功能后，您根本不需要忘记进行跟踪。这一切都会自动完成。🎉
 
-## Pairing with OpenClaw Gateways (ClawBot Auto-Configuration)
+## 与 OpenClaw 网关配对（ClawBot 的自动配置）
 
-If you're an agent like ClawBot that manages OpenClaw gateway instances, you can auto-configure gateways using NervePay's pairing flow.
+如果您是管理 OpenClaw 网关实例的代理（如 ClawBot），可以使用 NervePay 的配对流程进行自动配置。
 
-### Prerequisites
+### 先决条件
 
-**You MUST have a NervePay identity first!** Complete the "Setup: Get Your Identity" section above to register and get your `NERVEPAY_DID` and `NERVEPAY_PRIVATE_KEY` before pairing.
+**您必须先拥有 NervePay 身份！** 请完成上面的“设置：获取您的身份”部分，注册并获取 `NERVEPAY_DID` 和 `NERVEPAY_PRIVATE_KEY`，然后再进行配对。
 
-**Recommended:** Have your human owner claim you via the `claim_url` for better trust scores before pairing gateways.
+**建议：** 在配对网关之前，让您的人类所有者通过 `claim_url` 声明您的身份，以获得更高的信誉评分。
 
-### How Pairing Works
+### 配对流程
 
-1. **First time:** Register your agent identity and optionally get claimed by human owner
-2. **User generates pairing code** in NervePay dashboard (10-minute expiry)
-3. **You authenticate** with your agent DID (Ed25519 signature) and send gateway details
-4. **NervePay stores** the encrypted gateway token and links it to your DID
-5. **Only you** can refresh the token later (verified by your DID)
+1. **首次配对：** 注册您的代理身份，并可选地让人类所有者进行身份验证。
+2. **用户在 NervePay 仪表板上生成配对代码**（代码有效期为 10 分钟）。
+3. **您使用代理的 DID（Ed25519 签名）进行身份验证，并发送网关详细信息。**
+4. **NervePay 会存储** 加密的网关令牌，并将其与您的 DID 关联起来。
+5. **只有您** 可以之后刷新该令牌（需要通过您的 DID 进行验证）。
 
-### Step 1: Get Gateway Token
+## 第一步：获取网关令牌
 
-Before pairing, you need the gateway's token. OpenClaw gateways expose this via their config API:
+在配对之前，您需要网关的令牌。OpenClaw 网关会通过其配置 API 提供该令牌：
 
 ```bash
 # Query the gateway for its token (use whatever URL reaches the gateway)
@@ -239,23 +241,23 @@ GATEWAY_CONFIG=$(curl -s http://localhost:18789/v1/config)
 GATEWAY_TOKEN=$(echo "$GATEWAY_CONFIG" | jq -r '.gateway_token')
 ```
 
-### Step 2: Determine Public Gateway URL
+### 第二步：确定公共网关 URL
 
-**CRITICAL:** The `gateway_url` you send to NervePay MUST be publicly reachable by NervePay's servers. Do NOT use `localhost`, `127.0.0.1`, or internal IPs.
+**重要提示：** 您发送给 NervePay 的 `gateway_url` 必须能够被 NervePay 的服务器访问。请不要使用 `localhost`、`127.0.0.1` 或内部 IP 地址。
 
-Ask your human: **"What is the public URL for this gateway?"**
+询问您的人类所有者：**“这个网关的公共 URL 是什么？”
 
-Common options:
-- **Reverse proxy:** `https://gateway.yourdomain.com`
-- **Tailscale:** `https://hostname.tailnet-name.ts.net:18789`
-- **Public IP:** `https://your-public-ip:18789`
-- **Ngrok/tunnel:** `https://abc123.ngrok.io`
+常见的选项包括：
+- **反向代理：`https://gateway.yourdomain.com`
+- **Tailscale：`https://hostname.tailnet-name.ts.net:18789`
+- **公共 IP：`https://your-public-ip:18789`
+- **Ngrok/tunnel：`https://abc123.ngrok.io`
 
-Once your human provides the public URL, store it as `GATEWAY_URL`.
+一旦您获得了公共 URL，请将其保存为 `GATEWAY_URL`。
 
-### Step 3: Complete Pairing
+### 第三步：完成配对
 
-When your human tells you to "connect to nervepay [CODE]":
+当您的人类所有者告诉您“连接到 nervepay [CODE]”时，请按照以下步骤操作：
 
 ```bash
 # 1. Set from user input
@@ -275,7 +277,7 @@ node ./nervepay-request.mjs POST /v1/integrations/openclaw/pairing/complete "{
 }"
 ```
 
-**Response on success:**
+**成功后的响应：**
 ```json
 {
   "gateway_id": "uuid-here",
@@ -285,9 +287,9 @@ node ./nervepay-request.mjs POST /v1/integrations/openclaw/pairing/complete "{
 }
 ```
 
-### Refresh Gateway Token
+### 刷新网关令牌
 
-When your OpenClaw gateway token rotates, push the new token:
+当您的 OpenClaw 网关令牌过期时，请更新令牌：
 
 ```bash
 GATEWAY_ID="gateway-uuid-from-pairing"
@@ -298,30 +300,30 @@ node ./nervepay-request.mjs POST /v1/integrations/openclaw/gateways/$GATEWAY_ID/
 }'
 ```
 
-**Security:** NervePay verifies you're the agent that originally paired the gateway (checks `linked_agent_did`). Only you can refresh this gateway's token.
+**安全性：** NervePay 会验证您是最初配置该网关的代理（通过 `linked_agent_did` 进行验证）。只有您才能刷新该网关令牌。
 
-### Why Pairing?
+### 为什么需要配对？
 
-- **Zero manual setup** for users (just give them a code)
-- **Cryptographic auth** proves you control the gateway
-- **Token encryption** keeps gateway credentials secure (AES-256-GCM)
-- **Auto-expiration detection** if gateway returns 401, NervePay marks token as expired
-- **Trust**: Your verified DID proves the gateway is managed by you
+- **用户无需进行任何手动设置**（只需提供配对代码）。
+- **加密认证** 确保您控制着网关。
+- **令牌加密** 保护网关凭据的安全性（使用 AES-256-GCM 加密）。
+- **自动过期检测**：如果网关返回 401 错误，NervePay 会认为令牌已过期。
+- **信任机制**：经过验证的 DID 证明您是网关的管理者。
 
-## Managing Agent Secrets (Secure Vault)
+## 管理代理秘钥（安全保管）
 
-Your human owner can configure secrets for you in the NervePay dashboard (like API keys, credentials, tokens). You can then securely retrieve these secrets when you need them - perfect for storing OpenAI keys, database passwords, or any sensitive credentials.
+您的人类所有者可以在 NervePay 仪表板上为您配置秘钥（如 API 密钥、凭证等）。您可以在需要时安全地获取这些秘钥——非常适合存储 OpenAI 密钥、数据库密码或任何敏感信息。
 
-### How the Vault Works
+### 保管机制的工作原理
 
-- **Per-agent isolation**: Each agent only sees its own secrets (verified by your DID signature)
-- **Envelope encryption**: Secrets are encrypted at rest using AES-256-GCM
-- **Audit logging**: Every secret access is logged for security
-- **Environment support**: Secrets can be scoped to production, development, or staging
+- **每个代理的秘钥都是独立的**：每个代理只能看到自己的秘钥（通过您的 DID 签名进行验证）。
+- **秘钥加密**：秘钥在存储时使用 AES-256-GCM 进行加密。
+- **审计日志**：每次秘钥访问都会被记录下来以确保安全。
+- **环境支持**：秘钥可以设置为生产环境、开发环境或测试环境。
 
-### Retrieve a Secret by Name
+### 按名称检索秘钥
 
-The most common operation - get a specific secret by its name:
+最常见的操作是按名称检索特定的秘钥：
 
 ```bash
 # Get your OpenAI API key
@@ -331,7 +333,7 @@ node ./nervepay-request.mjs GET /v1/vault/secrets/OPENAI_API_KEY
 node ./nervepay-request.mjs GET /v1/vault/secrets/DATABASE_PASSWORD
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -346,7 +348,7 @@ node ./nervepay-request.mjs GET /v1/vault/secrets/DATABASE_PASSWORD
 }
 ```
 
-**Usage in your workflow:**
+**在工作流程中的使用：**
 ```bash
 # 1. Retrieve your OpenAI key
 response=$(node ./nervepay-request.mjs GET /v1/vault/secrets/OPENAI_API_KEY)
@@ -361,15 +363,15 @@ curl https://api.openai.com/v1/chat/completions \
 node ./nervepay-track.mjs openai /v1/chat/completions success
 ```
 
-### List All Your Secrets
+### 查看所有秘钥
 
-See all secrets configured for you (values are NOT included in list view for security):
+您可以查看为您配置的所有秘钥（出于安全考虑，列表中不显示具体值）：
 
 ```bash
 node ./nervepay-request.mjs GET /v1/vault/secrets
 ```
 
-**Response:**
+**响应：**
 ```json
 {
   "secrets": [
@@ -397,7 +399,7 @@ node ./nervepay-request.mjs GET /v1/vault/secrets
 }
 ```
 
-### Filter by Environment
+### 按环境筛选秘钥
 
 ```bash
 # Only production secrets
@@ -407,7 +409,7 @@ node ./nervepay-request.mjs GET '/v1/vault/secrets?environment=production'
 node ./nervepay-request.mjs GET '/v1/vault/secrets?environment=development'
 ```
 
-### Filter by Provider
+### 按提供者筛选秘钥
 
 ```bash
 # Only OpenAI secrets
@@ -417,15 +419,15 @@ node ./nervepay-request.mjs GET '/v1/vault/secrets?provider=openai'
 node ./nervepay-request.mjs GET '/v1/vault/secrets?provider=stripe'
 ```
 
-### When Secrets Are Missing
+### 如果秘钥不存在
 
-If you try to access a secret that doesn't exist:
+如果您尝试访问不存在的秘钥，系统会返回以下错误：
 
 ```bash
 node ./nervepay-request.mjs GET /v1/vault/secrets/NONEXISTENT_KEY
 ```
 
-**Response (404):**
+**响应（404）：**
 ```json
 {
   "error": "Secret not found",
@@ -433,109 +435,106 @@ node ./nervepay-request.mjs GET /v1/vault/secrets/NONEXISTENT_KEY
 }
 ```
 
-**What to do:** Ask your human owner to create the secret in the NervePay dashboard at https://nervepay.xyz/dashboard/agent-identities
+**操作步骤：** 请让您的人类所有者通过 https://nervepay.xyz/dashboard/agent-identities 在 NervePay 仪表板上创建该秘钥。
 
-### Security Notes
+### 安全注意事项
 
-- **Your human configures secrets**: You cannot create/update/delete secrets yourself - only retrieve them. This prevents compromised agents from modifying credentials.
-- **Dashboard-only management**: Secrets are created and updated in the NervePay dashboard by your human owner.
-- **Signature required**: Every secret retrieval requires Ed25519 signature authentication.
-- **Audit trail**: Every access is logged with timestamp, IP, and success/failure.
-- **Expiration support**: Secrets can have expiration dates - expired secrets return 410 Gone.
+- **人类所有者负责配置秘钥**：您无法自行创建、更新或删除秘钥——只能检索它们。这可以防止被入侵的代理修改凭证。
+- **仅在仪表板上管理秘钥**：秘钥的创建和更新都在 NervePay 仪表板上由人类所有者完成。
+- **签名验证**：每次检索秘钥都需要 Ed25519 签名。
+- **审计日志**：每次访问都会记录时间戳、IP 地址以及操作结果（成功/失败）。
+- **过期设置**：秘钥可以设置过期时间——过期的秘钥会返回 410 错误代码。
 
-### Common Secret Names (Conventions)
+### 常见的秘钥名称（命名规范）
 
-Use these naming conventions for consistency:
+使用以下命名规范以确保一致性：
 
-| Secret Name | Use For |
+| 秘钥名称 | 用途 |
 |-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API authentication |
-| `ANTHROPIC_API_KEY` | Anthropic/Claude API authentication |
-| `STRIPE_SECRET_KEY` | Stripe payments |
-| `GITHUB_TOKEN` | GitHub API access |
-| `DATABASE_URL` | Database connection string |
-| `AWS_ACCESS_KEY_ID` | AWS credentials |
-| `AWS_SECRET_ACCESS_KEY` | AWS credentials |
-| `WEBHOOK_SECRET` | Webhook signature verification |
+| `OPENAI_API_KEY` | 用于 OpenAI API 认证 |
+| `ANTHROPIC_API_KEY` | 用于 Anthropic/Claude API 认证 |
+| `STRIPE_SECRET_KEY` | 用于 Stripe 支付 |
+| `GITHUB_TOKEN` | 用于 GitHub API 访问 |
+| `DATABASE_URL` | 用于数据库连接 |
+| `AWS_ACCESS_KEY_ID` | 用于 AWS 访问 |
+| `AWS_SECRET_ACCESS_KEY` | 用于 AWS 访问 |
+| `WEBHOOK_SECRET` | 用于 Webhook 签名验证 |
 
-## Common Commands
+## 常用命令
 
-### Test authentication
+### 测试身份验证
 ```bash
 node ./nervepay-request.mjs GET /v1/agent-identity/whoami
 ```
 
-Returns your DID, name, reputation score, and confirms authentication works.
+返回您的 DID、名称、信誉评分，并确认身份验证是否成功。
 
-### Check your capabilities
+### 检查您的权限
 ```bash
 node ./nervepay-request.mjs GET /v1/agent-identity/capabilities
 ```
 
-Shows your spending limits, allowed operations, and permissions.
+显示您的消费限制、允许的操作和权限。
 
-### Verify another agent
+### 验证其他代理
 ```bash
 curl "https://api.nervepay.xyz/v1/agent-identity/verify/did:nervepay:agent:abc123xyz"
 ```
 
-No auth required. Returns public profile, reputation, and transaction stats for any agent.
+无需身份验证。返回任何代理的公开信息、信誉评分和交易统计。
 
-### Poll claim status (check if human claimed you)
+### 查询声明状态（检查是否有人类所有者声明了您的身份）
 ```bash
 curl "https://api.nervepay.xyz/v1/agent-identity/register-pending/SESSION_ID/status"
 ```
 
-Returns: `pending`, `claimed`, `expired`, or `revoked`.
+返回结果：`pending`、`claimed`、`expired` 或 `revoked`。
 
-## What the Signature Proves
+## 签名的作用
 
-| Guarantee | How |
+| 保证内容 | 实现方式 |
 |-----------|-----|
-| **Authentication** (who is calling) | Server verifies Ed25519 signature against your public key |
-| **Integrity** (what was sent) | Signature covers method, path, query, body hash — tampering breaks verification |
-| **Replay protection** | Unique nonce + timestamp prevents captured requests from reuse |
-| **Portable identity** | Your DID carries reputation across all platforms that check NervePay headers |
+| **身份验证**（调用者是谁） | 服务器会使用您的公钥验证 Ed25519 签名。|
+| **数据完整性**（发送的内容） | 签名包含了方法、路径、查询参数和请求体哈希——任何篡改都会导致验证失败。|
+| **防重放** | 唯一的随机数（nonce）和时间戳防止请求被重复使用。|
+| **跨平台身份识别** | 您的 DID 可在所有支持 NervePay 标头的平台上识别您的身份。|
 
-## Required Headers (already handled by script)
+## 必需的请求头信息（脚本已自动处理）
 
-The helper script adds these automatically:
-- `Agent-DID`: Your DID
-- `X-Agent-Signature`: Base64-encoded Ed25519 signature
-- `X-Agent-Nonce`: Unique nonce (UUID)
-- `X-Signature-Timestamp`: ISO 8601 timestamp
+辅助脚本会自动添加以下请求头：
+- `Agent-DID`：您的 DID。
+- `X-Agent-Signature`：Base64 编码的 Ed25519 签名。
+- `X-Agent-Nonce`：唯一的随机数（UUID）。
+- `X-Signature-Timestamp`：ISO 8601 格式的时间戳。
 
-## Security Notes
+## 安全注意事项
 
-- **Private key**: NEVER send to any server. Only send signatures.
-- **Nonces**: Single-use. Generate new for each request (script handles this).
-- **Timestamps**: Must be within 5 minutes of server time.
-- **Mnemonic**: 24-word backup phrase. Store securely offline.
+- **切勿将私钥发送给任何服务器**。只需发送签名即可。
+- **随机数（nonce）**：每次请求都会生成新的随机数（由脚本处理）。
+- **时间戳**：时间戳必须在服务器时间的 5 分钟范围内。
+- **助记词（mnemonic）**：用于备份的 24 个单词短语。请安全地离线存储。
 
-## Modular Skills (Choose What You Need)
+## 模块化技能（根据需求选择）
 
-This skill provides the full NervePay stack. If you only need part of it:
+此技能提供了完整的 NervePay 功能栈。如果您只需要部分功能，可以选择以下技能：
+- `nervepay-identity`：仅包含身份验证功能（注册、认证，不包含跟踪）。
+  - 适用场景：仅需要加密身份验证。
+  - 下载文件：`nervepay-request.mjs`
+- `nervepay-analytics`：仅包含数据分析功能（需要已注册的身份）。
+  - 适用场景：已经拥有身份并且只需要跟踪功能。
+  - 下载文件：`nervepay-request.mjs`、`nervepay-track.mjs`、`nervepay-instrument.mjs`
+- `nervepay`：包含完整的身份验证和数据分析功能。
+  - 适用场景：需要所有功能。
+  - 下载文件：以上三个脚本。
 
-- **`nervepay-identity`** - Identity-only (registration, authentication, no tracking)
-  - Use when: You only need cryptographic authentication
-  - Downloads: nervepay-request.mjs
+## 完整的 API 文档
 
-- **`nervepay-analytics`** - Analytics-only (tracking, requires existing identity)
-  - Use when: You already have an identity and just want tracking
-  - Downloads: nervepay-request.mjs, nervepay-track.mjs, nervepay-instrument.mjs
-
-- **`nervepay`** - Full stack (this skill - identity + analytics)
-  - Use when: You want everything
-  - Downloads: All three scripts
-
-## Full API Reference
-
-For complete endpoint documentation, error codes, and advanced usage, see:
-- **Online:** https://nervepay.xyz/docs
-- **Download API reference:** `curl -o api.md https://nervepay.xyz/api.md`
+有关完整的 API 端点文档、错误代码和高级用法，请访问：
+- **在线文档：** https://nervepay.xyz/docs
+- **API 参考文档下载：** `curl -o api.md https://nervepay.xyz/api.md`
 
 ---
 
-**API Base:** https://api.nervepay.xyz/v1
-**Docs:** https://nervepay.xyz/docs
-**GitHub:** https://github.com/nervepay/nervepay
+**API 基础地址：** https://api.nervepay.xyz/v1
+**文档：** https://nervepay.xyz/docs
+**GitHub 仓库：** https://github.com/nervepay/nervepay

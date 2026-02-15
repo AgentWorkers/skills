@@ -1,17 +1,17 @@
 ---
 name: memory-setup
-description: Enable and configure Moltbot/Clawdbot memory search for persistent context. Use when setting up memory, fixing "goldfish brain," or helping users configure memorySearch in their config. Covers MEMORY.md, daily logs, and vector search setup.
+description: 启用并配置 Moltbot/Clawdbot 的内存搜索功能，以便持久保存上下文信息。该功能适用于设置内存管理策略、解决“记忆衰退”（即数据存储问题）的情况，或帮助用户在其配置文件中配置内存搜索选项。相关内容涵盖 MEMORY.md 文件、每日日志记录以及向量搜索的设置方法。
 ---
 
-# Memory Setup Skill
+# 内存设置技巧
 
-Transform your agent from goldfish to elephant. This skill helps configure persistent memory for Moltbot/Clawdbot.
+将你的代理从“金鱼”升级为“大象”——这项技巧有助于为 Moltbot/Clawdbot 配置持久化内存。
 
-## Quick Setup
+## 快速设置
 
-### 1. Enable Memory Search in Config
+### 1. 在配置文件中启用内存搜索功能
 
-Add to `~/.clawdbot/clawdbot.json` (or `moltbot.json`):
+在 `~/.clawdbot/clawdbot.json`（或 `moltbot.json`）文件中添加以下内容：
 
 ```json
 {
@@ -26,9 +26,9 @@ Add to `~/.clawdbot/clawdbot.json` (or `moltbot.json`):
 }
 ```
 
-### 2. Create Memory Structure
+### 2. 创建内存结构
 
-In your workspace, create:
+在工作区中创建相应的文件结构：
 
 ```
 workspace/
@@ -40,9 +40,9 @@ workspace/
     └── system/            # Preferences, setup notes
 ```
 
-### 3. Initialize MEMORY.md
+### 3. 创建 `MEMORY.md` 文件
 
-Create `MEMORY.md` in workspace root:
+在工作区根目录下创建 `MEMORY.md` 文件：
 
 ```markdown
 # MEMORY.md — Long-Term Memory
@@ -62,30 +62,30 @@ Create `MEMORY.md` in workspace root:
 - Tools and workflows
 ```
 
-## Config Options Explained
+## 配置选项说明
 
-| Setting | Purpose | Recommended |
+| 设置 | 作用 | 推荐值 |
 |---------|---------|-------------|
-| `enabled` | Turn on memory search | `true` |
-| `provider` | Embedding provider | `"voyage"` |
-| `sources` | What to index | `["memory", "sessions"]` |
-| `indexMode` | When to index | `"hot"` (real-time) |
-| `minScore` | Relevance threshold | `0.3` (lower = more results) |
-| `maxResults` | Max snippets returned | `20` |
+| `enabled` | 启用内存搜索功能 | `true` |
+| `provider` | 嵌入提供者 | `"voyage"` |
+| `sources` | 索引来源 | `["memory", "sessions"]` |
+| `indexMode` | 索引更新频率 | `"hot"`（实时更新） |
+| `minScore` | 相关性阈值 | `0.3`（数值越低，返回的结果越多） |
+| `maxResults` | 最多返回的片段数量 | `20` |
 
-### Provider Options
-- `voyage` — Voyage AI embeddings (recommended)
-- `openai` — OpenAI embeddings
-- `local` — Local embeddings (no API needed)
+### 提供者选项：
+- `voyage` — Voyage AI 提供的嵌入模型（推荐）
+- `openai` — OpenAI 提供的嵌入模型 |
+- `local` — 本地嵌入模型（无需使用 API）
 
-### Source Options
-- `memory` — MEMORY.md + memory/*.md files
-- `sessions` — Past conversation transcripts
-- `both` — Full context (recommended)
+### 来源选项：
+- `memory` — `MEMORY.md` 文件以及所有以 `memory` 为前缀的文件 |
+- `sessions` — 过去的对话记录 |
+- `both` — 包含所有来源的数据（推荐）
 
-## Daily Log Format
+## 日志记录格式
 
-Create `memory/logs/YYYY-MM-DD.md` daily:
+每天在 `memory/logs/YYYY-MM-DD.md` 文件中记录日志：
 
 ```markdown
 # YYYY-MM-DD — Daily Log
@@ -99,9 +99,9 @@ Create `memory/logs/YYYY-MM-DD.md` daily:
 - Details
 ```
 
-## Agent Instructions (AGENTS.md)
+## 代理行为配置（AGENTS.md）
 
-Add to your AGENTS.md for agent behavior:
+将以下内容添加到 `AGENTS.md` 文件中，以配置代理的行为：
 
 ```markdown
 ## Memory Recall
@@ -111,35 +111,35 @@ Before answering questions about prior work, decisions, dates, people, preferenc
 3. If low confidence after search, say you checked
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Memory search not working?
-1. Check `memorySearch.enabled: true` in config
-2. Verify MEMORY.md exists in workspace root
-3. Restart gateway: `clawdbot gateway restart`
+### 内存搜索功能无法使用？
+1. 确认配置文件中的 `memorySearch.enabled` 是否设置为 `true`。
+2. 检查工作区根目录下是否存在 `MEMORY.md` 文件。
+3. 重启代理服务器：`clawdbot gateway restart`。
 
-### Results not relevant?
-- Lower `minScore` to `0.2` for more results
-- Increase `maxResults` to `30`
-- Check that memory files have meaningful content
+### 搜索结果不相关？
+- 将 `minScore` 值降低到 `0.2` 以获取更多结果。
+- 将 `maxResults` 值增加到 `30`。
+- 确保内存文件包含有效的内容。
 
-### Provider errors?
-- Voyage: Set `VOYAGE_API_KEY` in environment
-- OpenAI: Set `OPENAI_API_KEY` in environment
-- Use `local` provider if no API keys available
+### 提供者相关错误？
+- 使用 Voyage 时：在环境变量中设置 `VOYAGE_API_KEY`。
+- 使用 OpenAI 时：在环境变量中设置 `OPENAI_API_KEY`。
+- 如果没有 API 密钥，可以使用 `local` 提供者。
 
-## Verification
+## 验证内存功能是否正常
 
-Test memory is working:
+测试内存功能是否正常工作：
 
 ```
 User: "What do you remember about [past topic]?"
 Agent: [Should search memory and return relevant context]
 ```
 
-If agent has no memory, config isn't applied. Restart gateway.
+如果代理无法使用内存功能，请重启代理服务器。
 
-## Full Config Example
+## 完整配置示例
 
 ```json
 {
@@ -155,17 +155,17 @@ If agent has no memory, config isn't applied. Restart gateway.
 }
 ```
 
-## Why This Matters
+## 为什么这很重要？
 
-Without memory:
-- Agent forgets everything between sessions
-- Repeats questions, loses context
-- No continuity on projects
+**没有内存功能时：**
+- 代理会忘记会话之间的信息。
+- 会重复提问，失去上下文。
+- 项目进展缺乏连贯性。
 
-With memory:
-- Recalls past conversations
-- Knows your preferences
-- Tracks project history
-- Builds relationship over time
+**使用内存功能时：**
+- 能够回忆过去的对话。
+- 了解用户的偏好。
+- 跟踪项目历史。
+- 随时间建立良好的交互关系。
 
-Goldfish → Elephant. 🐘
+从“金鱼”升级到“大象”吧！🐘

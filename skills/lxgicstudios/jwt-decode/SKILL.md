@@ -1,21 +1,21 @@
 ---
 name: JWT Decode - Token Inspector CLI
-description: Decode and inspect JWT tokens from command line. Check expiration, extract claims, debug auth. No more jwt.io tabs. Free CLI tool.
+description: 从命令行解码并检查 JWT 令牌。可以验证令牌的有效期、提取其中的声明信息，并用于调试身份验证过程。无需再使用 jwt.io 等第三方工具。这是一个免费的命令行工具。
 ---
 
-# JWT Decode
+# JWT 解码
 
-Decode JWTs from the terminal. See what's inside, check if expired.
+从终端解码 JWT（JSON Web Tokens），查看其内部内容，并检查其是否已过期。
 
-## Installation
+## 安装
 
 ```bash
 npm install -g @lxgicstudios/jwt-decode
 ```
 
-## Commands
+## 命令
 
-### Decode Token
+### 解码令牌
 
 ```bash
 npx @lxgicstudios/jwt-decode eyJhbGciOiJIUzI1NiIs...
@@ -24,32 +24,32 @@ npx @lxgicstudios/jwt-decode eyJhbGciOiJIUzI1NiIs...
 npx @lxgicstudios/jwt-decode "Bearer eyJhbGci..."
 ```
 
-### From Environment Variable
+### 从环境变量中获取
 
 ```bash
 echo $AUTH_TOKEN | npx @lxgicstudios/jwt-decode
 ```
 
-### From File
+### 从文件中获取
 
 ```bash
 npx @lxgicstudios/jwt-decode -f token.txt
 ```
 
-### Check if Expired
+### 检查是否过期
 
 ```bash
 npx @lxgicstudios/jwt-decode --check $TOKEN && echo "Valid" || echo "Expired"
 ```
 
-### Extract Specific Claim
+### 提取特定字段
 
 ```bash
 npx @lxgicstudios/jwt-decode -c sub $TOKEN
 npx @lxgicstudios/jwt-decode -c email $TOKEN
 ```
 
-## Example Output
+## 示例输出
 
 ```
 Header
@@ -70,30 +70,30 @@ Status
   Valid - expires in 23 hours
 ```
 
-## Options
+## 选项
 
-| Option | Description |
+| 选项 | 描述 |
 |--------|-------------|
-| `-f, --file` | Read from file |
-| `-c, --claim` | Extract specific claim |
-| `--header` | Show only header |
-| `--payload` | Show only payload |
-| `--json` | JSON output |
-| `--check` | Exit 1 if expired |
+| `-f, --file` | 从文件中读取数据 |
+| `-c, --claim` | 提取特定字段 |
+| `--header` | 仅显示头部信息 |
+| `--payload` | 仅显示有效载荷 |
+| `--json` | 以 JSON 格式输出 |
+| `--check` | 如果令牌过期，则退出（返回代码 1） |
 
-## Common Use Cases
+## 常见用法
 
-**Debug auth token:**
+**调试认证令牌：**
 ```bash
 npx @lxgicstudios/jwt-decode $AUTH_TOKEN
 ```
 
-**Get user ID from token:**
+**从令牌中获取用户 ID：**
 ```bash
 npx @lxgicstudios/jwt-decode -c sub $TOKEN
 ```
 
-**Use in scripts:**
+**在脚本中使用：**
 ```bash
 if npx @lxgicstudios/jwt-decode --check $TOKEN 2>/dev/null; then
   echo "Token valid"
@@ -102,17 +102,17 @@ else
 fi
 ```
 
-## Features
+## 特点
 
-- Colored, readable output
-- Automatic Bearer prefix handling
-- Human-readable expiration times
-- Timestamp conversion
-- Script-friendly exit codes
-- JSON output mode
+- 输出结果支持颜色显示，便于阅读 |
+- 自动处理令牌持有者前缀 |
+- 显示易于理解的过期时间 |
+- 支持时间戳转换 |
+- 提供适合脚本使用的退出代码 |
+- 支持 JSON 格式输出 |
 
 ---
 
-**Built by [LXGIC Studios](https://lxgicstudios.com)**
+**由 [LXGIC Studios](https://lxgicstudios.com) 开发**
 
 🔗 [GitHub](https://github.com/lxgicstudios/jwt-decode) · [Twitter](https://x.com/lxgicstudios)

@@ -1,25 +1,24 @@
 ---
 slug: "validation-rules-builder"
 display_name: "Validation Rules Builder"
-description: "Build validation rules for construction data. Create RegEx and logic-based validation for BIM elements, cost codes, and schedule data."
+description: "为建筑数据构建验证规则。为BIM元素、成本代码和进度数据创建基于正则表达式（RegEx）和逻辑的验证机制。"
 ---
 
-# Validation Rules Builder
+# 验证规则构建器（Validation Rules Builder）
 
-## Business Case
+## 商业案例（Business Case）
 
-### Problem Statement
-Construction data quality challenges:
-- Inconsistent naming conventions
-- Invalid cost codes and WBS
-- Missing or malformed data
-- Non-compliant BIM elements
+### 问题描述（Problem Statement）
+建筑数据质量面临以下挑战：
+- 命名规范不一致
+- 成本代码和WBS（工作分解结构）无效
+- 数据缺失或格式错误
+- BIM（建筑信息模型）元素不符合标准
 
-### Solution
-Rule-based validation engine using RegEx and logic rules to ensure data quality across construction systems.
+### 解决方案（Solution）
+基于规则的验证引擎，利用正则表达式（RegEx）和逻辑规则来确保各个建筑系统中的数据质量。
 
-## Technical Implementation
-
+## 技术实现（Technical Implementation）
 ```python
 import re
 from typing import Dict, Any, List, Optional, Callable
@@ -374,8 +373,7 @@ class ConstructionValidators:
         )
 ```
 
-## Quick Start
-
+## 快速入门（Quick Start）
 ```python
 # Create validator
 validator = ValidationRulesBuilder()
@@ -397,26 +395,26 @@ print(f"Valid: {results['valid_records']}/{results['total_records']}")
 print(f"Errors: {results['error_count']}, Warnings: {results['warning_count']}")
 ```
 
-## Common Use Cases
+## 常见使用场景（Common Use Cases）
 
-### 1. Cost Data Validation
+### 1. 成本数据验证（Cost Data Validation）
 ```python
 cost_validator = ConstructionValidators.cost_item_validator()
 results = cost_validator.validate_records(cost_items)
 ```
 
-### 2. Schedule Validation
+### 2. 进度计划验证（Schedule Validation）
 ```python
 schedule_validator = ConstructionValidators.schedule_activity_validator()
 results = schedule_validator.validate_records(activities)
 ```
 
-### 3. BIM Element Validation
+### 3. BIM元素验证（BIM Element Validation）
 ```python
 bim_validator = ConstructionValidators.bim_element_validator()
 results = bim_validator.validate_records(elements)
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.6 - Data Quality Requirements
-- **Website**: https://datadrivenconstruction.io
+## 参考资源（Resources）
+- **DDC手册**：第2.6章 - 数据质量要求（DDC Book: Chapter 2.6 - Data Quality Requirements）
+- **官方网站**：https://datadrivenconstruction.io

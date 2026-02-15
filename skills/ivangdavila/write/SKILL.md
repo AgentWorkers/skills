@@ -1,55 +1,55 @@
 ---
 name: Write
-description: Plan, draft, version, and refine written content with enforced versioning and quality audits.
+description: 规划、起草、编写内容，并对其进行版本控制和质量审核。
 metadata: {"clawdbot":{"emoji":"✍️","os":["linux","darwin"]}}
 ---
 
-## Setup
+## 设置
 
-On first use, create workspace:
+首次使用时，请创建工作区：
 ```bash
 ./scripts/init-workspace.sh ~/writing
 ```
 
-## Workflow
+## 工作流程
 
 ```
 Request → Plan → Draft → Audit → Refine → Deliver
 ```
 
-**Rules:**
-- Delegate all writing to sub-agents — main stays free
-- NEVER edit files directly — use `./scripts/edit.sh` (enforces versioning)
-- Run quality audit before delivering anything long (see `audit.md`)
-- Offer cleanup only after user confirms piece is final
+**规则：**
+- 将所有写作任务委托给子代理——主要负责人专注于其他工作；
+- **严禁** 直接编辑文件——请使用 `./scripts/edit.sh`（该脚本会自动维护文件版本控制）；
+- 在提交任何较长的内容之前，必须先运行质量审核（详见 `audit.md`）；
+- 只有在用户确认内容最终确定后，才进行文件清理。
 
-## Configuration
+## 配置
 
-Set in `config.json`:
-- `depth`: "quick" | "standard" | "thorough" — controls research and revision passes
-- `auto_audit`: true/false — run audits automatically after drafts
+配置信息存储在 `config.json` 中：
+- `depth`: "quick" | "standard" | "thorough" —— 控制研究深度和修订次数；
+- `auto_audit`: true/false —— 草稿完成后是否自动运行质量审核。
 
-## Scripts (Enforced)
+## 脚本（强制执行）
 
-| Script | Purpose |
+| 脚本 | 功能 |
 |--------|---------|
-| `init-workspace.sh` | Create project structure |
-| `new-piece.sh` | Start new writing piece with ID |
-| `edit.sh` | Edit with automatic version backup |
-| `audit.sh` | Run quality audit, generate report |
-| `list.sh` | Show all pieces and versions |
-| `restore.sh` | Restore previous version |
-| `cleanup.sh` | Remove old versions (with confirmation) |
+| `init-workspace.sh` | 创建项目结构 |
+| `new-piece.sh` | 以指定 ID 开始新的写作任务 |
+| `edit.sh` | 进行编辑操作，并自动备份文件版本 |
+| `audit.sh` | 运行质量审核并生成报告 |
+| `list.sh` | 显示所有写作任务及其版本信息 |
+| `restore.sh` | 恢复文件的先前版本 |
+| `cleanup.sh` | 在用户确认后删除旧版本 |
 
-References: `brief.md` for planning, `execution.md` for drafting, `verification.md` for quality checks, `state.md` for tracking, `research.md` for investigation, `versioning.md` for version rules, `audit.md` for dimensions, `criteria.md` for preferences. Scripts in `scripts/`: `scripts/init-workspace.sh`, `scripts/new-piece.sh`, `scripts/edit.sh`, `scripts/audit.sh`, `scripts/list.sh`, `scripts/restore.sh`, `scripts/cleanup.sh`.
-
----
-
-### Preferences
-<!-- User's writing preferences -->
-
-### Never
-<!-- Things that don't work for this user -->
+参考文档：`brief.md`（用于规划）、`execution.md`（用于起草）、`verification.md`（用于质量检查）、`state.md`（用于跟踪进度）、`research.md`（用于资料调研）、`versioning.md`（用于版本管理规则）、`audit.md`（用于审核标准）、`criteria.md`（用于设置偏好）。相关脚本位于 `scripts/` 目录下：`scripts/init-workspace.sh`、`scripts/new-piece.sh`、`scripts/edit.sh`、`scripts/audit.sh`、`scripts/list.sh`、`scripts/restore.sh`、`scripts/cleanup.sh`。
 
 ---
-*Empty sections = observe and fill.*
+
+### 偏好设置
+<!-- 用户的写作偏好设置 -->
+
+### 禁止的操作
+<!-- 用户不允许执行的操作 -->
+
+---
+*空白部分表示需要根据实际情况填写。*

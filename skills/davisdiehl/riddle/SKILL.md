@@ -1,6 +1,6 @@
 ---
 name: riddle
-description: "Hosted browser automation API for agents. Screenshots, Playwright scripts, workflows — no local Chrome needed."
+description: "专为代理程序设计的托管式浏览器自动化 API。支持截图、Playwright 脚本以及工作流程的编写，无需使用本地的 Chrome 浏览器。"
 version: 1.0.0
 tags:
   - browser
@@ -19,26 +19,24 @@ metadata:
         label: "Install Riddle plugin (@riddledc/openclaw-riddledc)"
 ---
 
-# Riddle — Hosted Browser for AI Agents
+# Riddle — 为AI代理提供的托管浏览器服务
 
-Riddle gives your agent a browser without running Chrome locally. One API call: navigate, click, fill forms, take screenshots, capture network traffic. All execution happens on Riddle's servers — your agent stays lean.
+Riddle为你的代理提供了一个浏览器，无需在本地运行Chrome。通过一次API调用，即可实现导航、点击、填写表单、截图以及捕获网络流量等操作。所有执行过程都在Riddle的服务器上完成，从而确保你的代理程序保持轻量级。
 
-> **Quick Start:** Sign up at [riddledc.com/register](https://riddledc.com/register) and get 5 minutes of free browser time — no credit card needed. After that, pricing is **$0.50/hour, billed per second**. A single screenshot costs roughly **$0.004**.
+> **快速入门：** 在 [riddledc.com/register](https://riddledc.com/register) 注册，即可免费使用5分钟的浏览器服务（无需信用卡）。之后，收费标准为每小时0.50美元，按秒计费。单张截图的费用大约为0.004美元。
 
-## Why Use This Instead of Local Chrome
+## 为何选择Riddle而非本地Chrome？
 
-- **No Chromium binary** — saves ~1.2 GB RAM and avoids the Lambda/container size headaches
-- **No dependency hell** — no `@sparticuz/chromium`, no Puppeteer version conflicts, no `ENOENT` / `spawn` failures
-- **Full Playwright** — not just screenshots. Run real Playwright scripts, multi-step workflows, form fills, authenticated sessions
-- **Works everywhere** — Lambda, containers, T3 Micro instances, anywhere your agent runs
+- **无需安装Chromium二进制文件**：可节省约1.2GB的内存空间，同时避免因Chromium导致的Lambda/容器大小问题。
+- **无依赖性问题**：无需依赖`@sparticuz/chromium`或Puppeteer版本冲突，也不会遇到`ENOENT`/`spawn`错误。
+- **支持Playwright**：不仅可以截图，还可以运行真实的Playwright脚本、执行多步骤工作流程、填写表单以及进行身份验证的会话操作。
+- **兼容多种环境**：适用于Lambda、容器、T3 Micro实例等任何代理程序运行的环境。
 
-## Install
+## 安装步骤
 
-**Step 1: Sign up** — Create a free account at [riddledc.com/register](https://riddledc.com/register). No credit card required. You get 5 minutes of browser time free.
-
-**Step 2: Get your API key** — After signing up, grab your API key from the [dashboard](https://riddledc.com/dashboard).
-
-**Step 3: Install and configure the plugin:**
+**步骤1：注册**：在 [riddledc.com/register](https://riddledc.com/register) 创建一个免费账户（无需信用卡）。
+**步骤2：获取API密钥**：注册完成后，从 [控制面板](https://riddledc.com/dashboard) 获取API密钥。
+**步骤3：安装并配置插件：**
 
 ```bash
 # Install the plugin
@@ -51,7 +49,7 @@ openclaw config set tools.alsoAllow --json '["openclaw-riddledc"]'
 openclaw config set plugins.entries.openclaw-riddledc.config.apiKey "YOUR_RIDDLE_API_KEY"
 ```
 
-**One gotcha:** OpenClaw requires plugins in the `plugins.allow` list. The CLI doesn't have an append flag, so check your current list and add `openclaw-riddledc`:
+**注意：** OpenClaw插件需要被添加到`plugins.allow`列表中。由于CLI工具没有追加插件的功能，因此请检查当前的插件列表，并添加`openclaw-riddledc`插件：
 
 ```bash
 # See what you have
@@ -64,80 +62,80 @@ jq '.plugins.allow += ["openclaw-riddledc"]' ~/.openclaw/openclaw.json > tmp && 
 openclaw gateway restart
 ```
 
-## Tools
+## 提供的工具
 
-After install, you have five tools:
+安装完成后，你将拥有以下五款工具：
 
-**`riddle_screenshot`** — Screenshot a URL. Simplest use case.
+- **`riddle_screenshot`**：用于截取URL的截图。最简单的使用场景。
 ```
 Take a screenshot of https://example.com
 ```
 
-**`riddle_screenshots`** — Batch screenshots of multiple URLs in one job.
+- **`riddle_screenshots`**：批量截取多个URL的截图。
 ```
 Screenshot these three pages: https://example.com, https://example.com/about, https://example.com/pricing
 ```
 
-**`riddle_steps`** — Run a step-by-step workflow (goto, click, fill, screenshot at each step).
+- **`riddle_steps`**：逐步执行工作流程（包括跳转、点击、填写表单和截图等操作）。
 ```
 Go to https://example.com/login, fill the email field with "test@example.com", fill the password field, click the submit button, then screenshot the result.
 ```
 
-**`riddle_script`** — Run full Playwright code for complex automation.
+- **`riddle_script`**：用于运行复杂的自动化脚本（基于Playwright）。
 ```
 Run a Playwright script that navigates to https://example.com, waits for the dashboard to load, extracts all table rows, and screenshots the page.
 ```
 
-**`riddle_run`** — Low-level API pass-through for custom payloads.
+- **`riddle_run`**：提供低级别的API接口，用于传递自定义数据。
 
-All tools return screenshots saved to `~/.openclaw/workspace/riddle/screenshots/` (not inline base64) with file paths in the response. Add `include: ["har"]` to also capture full network traffic.
+所有工具生成的截图都会保存在`~/.openclaw/workspace/riddle/screenshots/`目录下（文件格式为非内联的Base64编码），响应中会包含文件路径。若需同时捕获网络流量，可以在配置中添加`include: ["har"]`选项。
 
-## Authenticated Sessions
+## 身份验证会话
 
-Need to interact with a page behind login? Pass cookies, localStorage, or custom headers:
+如果需要与需要登录的页面交互，请传递cookies、localStorage数据或自定义HTTP头部信息：
 
 ```
 Screenshot https://app.example.com/dashboard with these cookies: [session=abc123]
 ```
 
-The plugin supports cookies, localStorage entries, and custom HTTP headers as auth parameters.
+该插件支持使用cookies、localStorage条目以及自定义HTTP头部作为身份验证参数。
 
-## Trust & Security
+## 安全性
 
-This plugin was built with the concerns raised by the Moltbook agent community in mind — specifically the discussion around skill provenance, capability manifests, and runtime boundaries.
+该插件的设计充分考虑了Moltbook代理社区提出的安全需求，特别是关于技能来源、能力声明以及运行时限制等方面的问题。
 
-**What this plugin declares (capability manifest in `openclaw.plugin.json`):**
-- **Network**: Only talks to `api.riddledc.com` — hardcoded allowlist enforced at runtime, not just config time
-- **Filesystem**: Only writes to `~/.openclaw/workspace/riddle/`
-- **Agent context**: Zero access to conversation history, other tools' outputs, or user profile
-- **Secrets**: Only requires `RIDDLE_API_KEY`, which is only sent to the declared endpoint
+**插件在`openclaw.plugin.json`文件中声明的能力限制：**
+- **网络访问**：仅允许与`api.riddledc.com`进行通信；这些限制在运行时严格执行，而不仅仅是配置阶段。
+- **文件系统操作**：仅允许将数据写入`~/.openclaw/workspace/riddle/`目录。
+- **代理程序权限**：无法访问对话记录、其他工具的输出内容或用户个人信息。
+- **敏感信息处理**：仅需要传递`RIDDLE_API_KEY`，且该密钥只会被发送到指定的接口。
 
-**What this means in practice:**
-- Even if the config is manipulated, your API key cannot be sent to any non-Riddle domain (hardcoded check runs on every request)
-- The plugin cannot read your conversations, memory, or other plugins' data
-- Screenshots are saved as file references, not inline base64 — prevents context overflow and accidental data leakage in logs
+**实际应用中的安全保障：**
+- 即使配置文件被篡改，API密钥也不会被发送到非Riddle相关的域名（每次请求都会进行严格检查）。
+- 该插件无法读取用户的对话记录、内存内容或其他插件的数据。
+- 截图以文件形式保存（而非内联的Base64编码），有效防止日志中的数据泄露。
 
-**Verify it yourself:**
-- Source: [github.com/riddledc/integrations](https://github.com/riddledc/integrations)
-- npm provenance: `npm audit signatures @riddledc/openclaw-riddledc`
-- Checksums: `CHECKSUMS.txt` in the package
-- Full threat model: `SECURITY.md` in the package
+**你可以自行验证其安全性：**
+- 源代码：[github.com/riddledc/integrations](https://github.com/riddledc/integrations)
+- npm审计信息：`npm audit signatures @riddledc/openclaw-riddledc`
+- 校验和文件：`CHECKSUMS.txt`（位于包文件中）
+- 安全性详细说明：`SECURITY.md`（位于包文件中）
 
-This is a **plugin** (auditable code), not a skill (prompt text). You can read every line before installing.
+请注意：这是一个**插件**（可审计的代码），而非一个独立的技能（即不需要用户输入提示信息的组件）。你可以在安装前仔细阅读所有代码内容。
 
-## Pricing
+## 价格信息
 
-Riddle uses transparent per-execution pricing. A simple screenshot costs fractions of a cent. See [riddledc.com](https://riddledc.com) for current pricing.
+Riddle采用按次计费的透明定价模式。单张截图的费用非常低廉。具体价格信息请访问 [riddledc.com](https://riddledc.com)。
 
-## Get Help
+## 帮助资源
 
-- Docs: [riddledc.com](https://riddledc.com)
-- Security issues: security@riddledc.com
-- Plugin source: [github.com/riddledc/integrations](https://github.com/riddledc/integrations)
+- **文档**：[riddledc.com](https://riddledc.com)
+- **安全问题反馈**：security@riddledc.com
+- **插件源代码**：[github.com/riddledc/integrations](https://github.com/riddledc/integrations)
 
-## Links
+## 链接
 
-- **Website:** [riddledc.com](https://riddledc.com)
-- **Docs:** [riddledc.com/docs](https://riddledc.com/docs)
-- **Pricing:** [riddledc.com/pricing](https://riddledc.com/pricing)
-- **Dashboard:** [riddledc.com/dashboard](https://riddledc.com/dashboard)
+- **官方网站**：[riddledc.com](https://riddledc.com)
+- **文档**：[riddledc.com/docs](https://riddledc.com/docs)
+- **价格信息**：[riddledc.com/pricing](https://riddledc.com/pricing)
+- **控制面板**：[riddledc.com/dashboard](https://riddledc.com/dashboard)

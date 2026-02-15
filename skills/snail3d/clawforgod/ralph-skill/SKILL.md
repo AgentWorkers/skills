@@ -1,13 +1,13 @@
 ---
 name: ralph
-description: Create PRDs and automate the RALPH BUILD LOOP workflow with Claude Code. Use when starting a new project and want Claude Code to follow structured PRD-based development with automatic task tracking, testing, and git commits.
+description: 创建项目需求文档（PRDs），并使用 Claude Code 自动化 RALPH 构建流程。适用于启动新项目时，希望 Claude Code 能遵循基于结构化项目需求文档的开发流程，实现任务跟踪、测试以及 Git 提交的自动化操作。
 ---
 
-# Ralph Skill - PRD-Driven Development
+# Ralph Skill - 基于产品需求文档（PRD）的驱动开发
 
-Automate project development using Product Requirements Documents (PRDs) and the RALPH BUILD LOOP.
+使用产品需求文档（PRD）和 RALPH 构建循环（BUILD LOOP）自动化项目开发。
 
-## Quick Start
+## 快速入门
 
 ```bash
 # Create a PRD file
@@ -23,18 +23,18 @@ ralph status
 ralph cleanup
 ```
 
-## What Ralph Does
+## Ralph 的功能
 
-1. **Initializes PRD** - Creates structured project requirements
-2. **Starts Claude Code** - With `--dangerously-skip-permissions` flag
-3. **Manages RALPH Loop** - Tracks task priority, completion, testing
-4. **Handles Commits** - Auto-commits with task IDs (e.g., "SEC-001: Add .gitignore")
-5. **Monitors Progress** - Updates PRD as tasks complete
-6. **Runs Tests** - Verifies each task works before moving on
+1. **初始化 PRD** - 创建结构化的项目需求文档
+2. **启动 Claude Code** - 使用 `--dangerously-skip-permissions` 标志
+3. **管理 RALPH 循环** - 跟踪任务优先级、完成情况以及测试进度
+4. **处理提交** - 自动提交带有任务 ID 的更改（例如：“SEC-001：添加 .gitignore 文件”）
+5. **监控进度** - 随着任务的完成更新 PRD
+6. **运行测试** - 在继续进行下一步之前验证每个任务是否正常工作
 
-## RALPH BUILD LOOP
+## RALPH 构建循环
 
-Ralph follows this 8-step workflow automatically:
+Ralph 会自动执行以下 8 个步骤的工作流程：
 
 ```
 1. START      → Create .gitignore + .env.example (security first!)
@@ -48,9 +48,9 @@ Ralph follows this 8-step workflow automatically:
 9. DONE       → Run full test suite
 ```
 
-## Monitoring
+## 监控
 
-Ralph automatically monitors Claude Code builds in the background:
+Ralph 会在后台自动监控 Claude Code 的构建过程：
 
 ```bash
 # Monitor a running build
@@ -60,14 +60,14 @@ ralph monitor --session <session_id> --dir <project_dir>
 ralph monitor --session <session_id> --dir <project_dir> --interval 60
 ```
 
-**What monitoring does:**
-- Checks session status every 30 seconds (configurable)
-- Reports file changes (what's being created/modified)
-- Shows recent activity snippets
-- Alerts if session stops unexpectedly
-- Continues for max duration (default 1 hour)
+**监控功能包括：**
+- 每 30 秒检查一次会话状态（可配置）
+- 报告文件变更情况（哪些文件被创建或修改）
+- 显示最近的活动记录
+- 如果会话意外停止会发出警报
+- 最长监控时间为 1 小时（默认设置）
 
-**Output example:**
+**输出示例：**
 ```
 📊 BUILD STATUS CHECK
 ⏱️  Session: fast-slug...
@@ -80,32 +80,32 @@ ralph monitor --session <session_id> --dir <project_dir> --interval 60
 💬 Recent activity: CORE-001: Implementing chess logic...
 ```
 
-The monitor runs continuously and reports status every interval, so you don't have to manually check!
+监控器会持续运行并定期报告状态，因此您无需手动检查！
 
-## Commands
+## 命令
 
-### ralph init
-Initialize a new PRD-based project.
+### `ralph init`
+初始化一个新的基于 PRD 的项目。
 
 ```bash
 ralph init --name "Project Name" --language python
 ralph init --name "Web App" --language javascript --github
 ```
 
-Options:
-- `--name` (required) - Project name
-- `--language` (optional) - Programming language (python, javascript, go, rust, etc.)
-- `--github` (optional) - Create GitHub repo on initialization
-- `--path` (optional) - Project directory (default: current)
+选项：
+- `--name`（必选）- 项目名称
+- `--language`（可选）- 编程语言（python、javascript、go、rust 等）
+- `--github`（可选）- 初始化时创建 GitHub 仓库
+- `--path`（可选）- 项目目录（默认为当前目录）
 
-Creates:
-- `PRD.json` - Project requirements document
-- `.gitignore` - Security baseline
-- `.env.example` - Environment template
-- `ralph.config.json` - Ralph configuration
+创建的文件：
+- `PRD.json` - 项目需求文档
+- `.gitignore` - 安全基线配置文件
+- `.env.example` - 环境配置文件
+- `ralph.config.json` - Ralph 配置文件
 
-### ralph build
-Start Claude Code with the PRD and begin the RALPH BUILD LOOP.
+### `ralph build`
+使用 PRD 启动 Claude Code 并开始 RALPH 构建循环。
 
 ```bash
 ralph build                          # Use PRD.json in current dir
@@ -113,59 +113,59 @@ ralph build --prd custom-prd.json   # Use custom PRD
 ralph build --auto-commit           # Auto-commit after each task
 ```
 
-Options:
-- `--prd` (optional) - Path to PRD file
-- `--auto-commit` (optional) - Automatically commit after each task
-- `--section` (optional) - Start from specific section (00_security, 01_setup, etc.)
+选项：
+- `--prd`（可选）- PRD 文件的路径
+- `--auto-commit`（可选）- 每个任务完成后自动提交
+- `--section`（可选）- 从特定部分开始执行（如 00_security、01_setup 等）
 
-### ralph status
-Show current project status and task progress.
+### `ralph status`
+显示当前的项目状态和任务进度。
 
 ```bash
 ralph status
 ```
 
-Shows:
-- Tasks complete / total
-- Current section
-- Next task to work on
-- Recent commits
-- Test results
+显示内容：
+- 已完成的任务 / 总任务数
+- 当前正在处理的部分
+- 下一个需要执行的任务
+- 最近的提交记录
+- 测试结果
 
-### ralph update
-Update PRD task status after manual changes.
+### `ralph update`
+在手动修改后更新 PRD 中的任务状态。
 
 ```bash
 ralph update --task SEC-001 --status complete
 ralph update --task SEC-001 --comment "Security baseline added"
 ```
 
-### ralph test
-Run project test suite (language-specific).
+### `ralph test`
+运行项目的测试套件（根据编程语言选择相应的测试命令）。
 
 ```bash
 ralph test                    # Run all tests
 ralph test --task SEC-001     # Test specific task
 ```
 
-### ralph commit
-Create a commit with task ID (called automatically by ralph build).
+### `ralph commit`
+使用任务 ID 自动创建提交记录。
 
 ```bash
 ralph commit --task SEC-001 --message "Add .gitignore"
 ```
 
-### ralph cleanup
-Clean up after project completion.
+### `ralph cleanup`
+项目完成后进行清理。
 
 ```bash
 ralph cleanup                 # Archive PRD and config
 ralph cleanup --full         # Remove entire project
 ```
 
-## PRD Structure
+## PRD 结构
 
-Ralph creates PRDs with this structure:
+Ralph 使用以下结构创建 PRD 文档：
 
 ```json
 {
@@ -200,18 +200,18 @@ Ralph creates PRDs with this structure:
 }
 ```
 
-Fields:
-- `id` - Task identifier (e.g., SEC-001)
-- `ti` - Task title
-- `d` - Task description
-- `f` - File(s) involved
-- `pr` - Priority (high, medium, low)
-- `st` - Status (pending, in_progress, complete, blocked)
-- `ac` - Acceptance criteria (checklist form)
+字段说明：
+- `id` - 任务标识符（例如：SEC-001）
+- `ti` - 任务标题
+- `d` - 任务描述
+- `f` - 涉及的文件
+- `pr` - 任务优先级（高、中、低）
+- `st` - 任务状态（待处理、进行中、已完成、受阻）
+- `ac` - 接受标准（以清单形式呈现）
 
-## Configuration
+## 配置
 
-Ralph stores config in `ralph.config.json`:
+Ralph 将配置信息存储在 `ralph.config.json` 文件中：
 
 ```json
 {
@@ -226,17 +226,16 @@ Ralph stores config in `ralph.config.json`:
 }
 ```
 
-## Task Priority Order
+## 任务优先级顺序
 
-Ralph always works in this order:
+Ralph 的执行顺序始终如下：
+1. **00_security** - `.gitignore` 文件、`.env.example` 文件的配置、秘密管理
+2. **01_setup** - Git 仓库的设置、GitHub 配置、持续集成/持续交付（CI/CD）设置、依赖项管理
+3. **02_core** - 应用程序的核心逻辑和功能开发
+4. **03_api** - API 端点开发与集成
+5. **04_test** - 全面测试套件的执行
 
-1. **00_security** - .gitignore, .env.example, secrets management
-2. **01_setup** - Git repo, GitHub, CI/CD, dependencies
-3. **02_core** - Main application logic and features
-4. **03_api** - API endpoints, integrations
-5. **04_test** - Full test suite, coverage
-
-## Usage Example
+## 使用示例
 
 ```bash
 # 1. Initialize new Python project
@@ -255,11 +254,11 @@ ralph status
 ralph cleanup
 ```
 
-## Advanced Features
+## 高级功能
 
-### Custom Test Commands
+### 自定义测试命令
 
-Ralph auto-detects test commands by language:
+Ralph 可根据编程语言自动识别测试命令：
 
 ```
 Python  → pytest
@@ -268,7 +267,7 @@ Go      → go test ./...
 Rust    → cargo test
 ```
 
-Override in `ralph.config.json`:
+您可以在 `ralph.config.json` 中进行自定义配置：
 
 ```json
 {
@@ -276,35 +275,24 @@ Override in `ralph.config.json`:
 }
 ```
 
-### GitHub Integration
+### GitHub 集成
 
-Ralph can create GitHub repos and set up CI/CD:
+Ralph 可以帮助创建 GitHub 仓库并设置持续集成/持续交付（CI/CD）流程：
 
 ```bash
 ralph init --name "Project" --github
 ```
 
-This creates:
-- Remote GitHub repository
-- `.github/workflows/test.yml` for CI/CD
-- Protected main branch rules
+创建的文件/配置包括：
+- 远程 GitHub 仓库
+- 用于 CI/CD 的 `.github/workflows/test.yml` 文件
+- 主分支的权限保护规则
 
-### Task Dependencies
+### 任务依赖关系
 
-Mark tasks that depend on others:
+Ralph 会确保依赖其他任务的步骤只有在相关任务完成之后才会开始执行（例如：CORE-005 依赖于 CORE-001 和 CORE-002 的完成）。
 
-```json
-{
-  "id": "CORE-005",
-  "ti": "Setup database",
-  "depends_on": ["CORE-001", "CORE-002"],
-  "st": "pending"
-}
-```
-
-Ralph won't start CORE-005 until CORE-001 and CORE-002 are complete.
-
-## How to Start a Build
+## 如何启动构建过程
 
 ```bash
 # Initialize a new project
@@ -320,69 +308,68 @@ claude exec "Follow the RALPH BUILD LOOP. Here's the PRD: $(cat PRD.json)"
 # Then let it work through each task
 ```
 
-**Important:** Don't use `--dangerously-skip-permissions` - it causes Claude Code to get confused. Let it ask for permission normally when needed.
+**重要提示：** 不要使用 `--dangerously-skip-permissions` 标志——这可能会导致 Claude Code 出现错误。请在需要时正常请求权限。
 
-## Permissions & Safety Philosophy
+## 权限与安全原则
 
-**I (Clawd) am in charge of granting permissions during builds.** You've indicated you're very tolerant of most operations as long as they:
-- Don't blow up the machine
-- Don't expose you to scammers
-- Don't nuke your files
+**我（Clawd）负责在构建过程中授予权限。** 您已经表示对大多数操作持宽容态度，只要这些操作：
+- 不会破坏系统运行
+- 不会让您面临安全风险
+- 不会损坏您的文件
 
-**Philosophy (from you):**
-> "I take safety seriously. I want you to have an eye out for security AND balance good UX/good UI. I don't like security to the point of making user experiences unusable. Security is mostly theater. But the security that isn't theater—like .gitignore and envelopes—that is non-negotiable."
+**您的原则：**
+> “我非常重视安全性。我希望在保证良好用户体验的同时，也能确保系统的安全性。虽然我不希望安全性影响到用户体验，但对于一些基本的安全措施（如 `.gitignore` 文件和 `.env` 文件的配置），我是坚决不会妥协的。”
 
-**Translation:** Optimize for user experience, but NEVER skip the fundamentals:
-- ✅ .gitignore is mandatory (no credentials in repos)
-- ✅ .env files are mandatory (secrets never committed)
-- ✅ No security theater (don't ask for permission on safe, standard operations)
-- ✅ UX/DX matters (make builds smooth and fast)
+**翻译说明：** 在优化用户体验的同时，务必坚守安全底线：
+- ✅ 必须配置 `.gitignore` 文件（仓库中不应包含敏感信息）
+- ✅ 必须创建 `.env` 文件（敏感信息不能被提交）
+- ✅ 对于安全相关的常规操作，无需额外请求权限
+- ✅ 用户体验和操作流程同样重要（确保构建过程顺畅快速）
 
-**I will auto-approve safe operations:**
-- ✅ npm install, npm run, package management
-- ✅ Creating/editing files in the project directory
-- ✅ Running build/test commands (npm build, cargo test, etc.)
-- ✅ Docker commands (docker build, docker compose up, etc.)
-- ✅ Git operations (git init, git add, git commit, git push)
-- ✅ Standard development tools and operations
-- ✅ Adding proper .gitignore and .env.example files
+**我会自动批准以下安全操作：**
+- ✅ 安装/运行 npm 包管理工具
+- ✅ 在项目目录中创建/编辑文件
+- ✅ 运行构建/测试命令（如 `npm build`、`cargo test` 等）
+- ✅ 使用 Docker 进行相关操作（如 `docker build`、`docker compose up` 等）
+- ✅ 执行 Git 操作（如 `git init`、`git add`、`git commit`、`git push`）
+- ✅ 使用标准的开发工具和操作流程
+- ✅ 正确配置 `.gitignore` 和 `.env.example` 文件
 
-**I will ask or refuse:**
-- ❌ Commands that delete important directories
-- ❌ Operations that modify system-level settings
-- ❌ Running unvetted third-party scripts
-- ❌ Anything accessing/exposing sensitive data or credentials
-- ❌ Network operations that seem suspicious
-- ❌ Skipping .gitignore or .env security (non-negotiable)
+**我会请求或拒绝以下操作：**
+- ❌ 删除重要目录的命令
+- ❌ 修改系统级设置的操作
+- ❌ 运行未经审核的第三方脚本
+- ❌ 访问或暴露敏感数据/凭证的操作
+- ❌ 行为可疑的网络操作
+- ❌ 忽略 `.gitignore` 或 `.env` 文件中的安全配置（这些是绝对不允许的）
 
-**During builds:** When Claude Code asks for permission, I'll handle it automatically if it's safe. You focus on the bigger picture while I manage the operational details AND ensure the fundamentals are solid.
+**在构建过程中：** 当 Claude Code 请求权限时，如果操作是安全的，我会自动处理。您可以专注于整体项目进度，而我负责处理具体的操作细节，并确保所有基本安全措施得到落实。
 
-## Bundled Resources
+## 随附资源
 
-- **scripts/init_prd.py** - Create new PRD
-- **scripts/run_ralph_loop.py** - Execute RALPH workflow
-- **scripts/monitor_build.py** - Monitor Claude Code session and report progress
-- **references/prd_templates.md** - PRD templates by language
-- **assets/prd_schema.json** - PRD JSON schema
+- **scripts/init_prd.py** - 用于创建新的 PRD 文档
+- **scripts/run_ralph_loop.py** - 用于执行 RALPH 工作流程
+- **scripts/monitor_build.py** - 用于监控 Claude Code 的构建过程并报告进度
+- **references/prd_templates.md** - 各编程语言对应的 PRD 模板文件
+- **assets/prd_schema.json** - PRD 文档的 JSON 结构规范
 
-## Common Issues
+## 常见问题
 
-**Claude Code won't start**
-- Ensure `claude` CLI is installed
-- Check `--dangerously-skip-permissions` is supported in your version
+**Claude Code 无法启动**
+- 确保已安装 `claude` 命令行工具
+- 检查您的版本是否支持 `--dangerously-skip-permissions` 选项
 
-**Tasks aren't committing**
-- Verify git is initialized: `git init`
-- Check git config: `git config user.email`
+**任务无法提交**
+- 确保已执行 `git init` 命令
+- 检查 `git config user.email` 的配置是否正确
 
-**Tests failing**
-- Ralph pauses and reports failures
-- Review test output and fix, then resume with `ralph build --section 04_test`
+**测试失败**
+- Ralph 会暂停并报告失败原因，您需要查看测试结果并修复问题后，再使用 `ralph build --section 04_test` 继续构建
 
-## Tips
+## 使用建议
 
-1. **Start with security** - Ralph always does .gitignore + .env.example first
-2. **Read the PRD carefully** - Good PRD = good project
-3. **Test often** - Ralph tests after each task
-4. **Commit messages** - Task IDs make history clear
-5. **Review PRD regularly** - Update acceptance_criteria as you learn
+1. **优先处理安全性相关任务** - Ralph 会首先执行 `.gitignore` 和 `.env.example` 的配置
+2. **仔细阅读 PRD 文档** - 优秀的 PRD 文档是项目成功的基础
+3. **频繁进行测试** - Ralph 会在每个任务完成后自动执行测试
+4. **编写清晰的提交信息** - 任务 ID 有助于记录操作历史
+5. **定期审查 PRD 文档** - 随着项目进展，及时更新接受标准（acceptance criteria）

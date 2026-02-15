@@ -1,29 +1,29 @@
 ---
 name: payment
-description: Payment processing and management. Handle invoices, transactions, and payment gateway integrations.
+description: 支付处理与管理：负责处理发票、交易以及与支付网关的集成。
 metadata: {"clawdbot":{"emoji":"💳","always":true,"requires":{"bins":["curl","jq"]}}}
 ---
 
-# Payment 💳
+# 支付 💳
 
-Payment processing and transaction management.
+处理支付和交易管理。
 
-## Features
+## 功能
 
-- Create and send invoices
-- Process payments
-- Track payment status
-- Refund management
-- Payment history
+- 创建并发送发票
+- 处理付款
+- 跟踪支付状态
+- 退款管理
+- 支付历史记录
 
-## Supported Gateways
+## 支持的支付网关
 
 - Stripe
 - PayPal
 - Square
-- Crypto payments
+- 加密货币支付
 
-## Usage Examples
+## 使用示例
 
 ```
 "Create an invoice for $100"
@@ -31,7 +31,7 @@ Payment processing and transaction management.
 "Show recent transactions"
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **ALWAYS** verify payment amounts before processing
-2. **NEVER** store sensitive payment credentials in plain text
+1. **务必** 在处理支付前核实支付金额。
+2. **绝不要** 以明文形式存储敏感的支付凭据。

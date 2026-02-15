@@ -1,3 +1,3 @@
-# auto-troubleshooter
+# 自动故障排除工具
 
-Automatically diagnose and suggest fixes for common system issues by analyzing logs and error patterns.
+通过分析日志和错误模式，自动诊断系统常见问题并推荐相应的解决方法。

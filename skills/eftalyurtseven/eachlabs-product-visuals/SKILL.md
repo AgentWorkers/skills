@@ -1,66 +1,65 @@
 ---
 name: eachlabs-product-visuals
-description: Generate professional e-commerce product photography and videos using EachLabs AI models. Product shots, background replacement, lifestyle scenes, and 360-degree views. Use when the user needs product images for e-commerce or marketing.
+description: 使用 EachLabs 的 AI 模型生成专业的电子商务产品图片和视频。这些服务包括产品拍摄、背景替换、生活场景模拟以及 360 度全景视图。适用于用户需要产品图片用于电子商务或市场营销的场景。
 metadata:
   author: eachlabs
   version: "1.0"
 ---
 
-# EachLabs Product Visuals
+# EachLabs 产品视觉效果
 
-Generate professional product photography, e-commerce visuals, and product videos using EachLabs AI models.
+使用 EachLabs 的 AI 模型生成专业的产品照片、电商视觉素材和产品视频。
 
-## Authentication
+## 认证
 
 ```
 Header: X-API-Key: <your-api-key>
 ```
 
-Set the `EACHLABS_API_KEY` environment variable. Get your key at [eachlabs.ai](https://eachlabs.ai).
+请设置 `EACHLABS_API_KEY` 环境变量。您可以在 [eachlabs.ai](https://eachlabs.ai) 获取该密钥。
 
-## Recommended Models
+## 推荐模型
 
-### E-Commerce Specific
+### 电商专用模型
 
-| Task | Model | Slug |
+| 任务 | 模型 | Slug |
 |------|-------|------|
-| Product photoshoot | Product to Photoshoot | `product-to-photoshoot` |
-| Product on model | Product Photo to Modelshoot | `product-photo-to-modelshoot` |
-| Color variations | Product Colors | `product-colors` |
-| Food photography | Food Photos | `food-photos` |
-| Background removal | Product Background Remover | `product-backround-remover` |
-| Image upscaling | Product Photo Upscaler | `product-photo-upscaler` |
-| Home scene placement | Product Home View | `product-home-view` |
-| Product shot | Bria Product Shot | `bria-product-shot` |
-| Product shoot | Product Shoot | `product-shoot` |
-| Product arc shot | Eachlabs Product Arc Shot | `eachlabs-product-arc-shot-v1` |
-| Product zoom in | Eachlabs Product Zoom In | `eachlabs-product-zoom-in-v1` |
+| 产品拍摄 | Product to Photoshoot | `product-to-photoshoot` |
+| 产品与模型的搭配 | Product Photo to Modelshoot | `product-photo-to-modelshoot` |
+| 颜色变体 | Product Colors | `product-colors` |
+| 食物摄影 | Food Photos | `food-photos` |
+| 背景去除 | Product Background Remover | `product-background-remover` |
+| 图像放大 | Product Photo Upscaler | `product-photo-upscaler` |
+| 产品展示场景 | Product Home View | `product-home-view` |
+| 产品特写 | Bria Product Shot | `bria-product-shot` |
+| 产品全景拍摄 | Eachlabs Product Arc Shot | `eachlabs-product-arc-shot-v1` |
+| 产品放大效果 | Eachlabs Product Zoom In | `eachlabs-product-zoom-in-v1` |
 
-### General Purpose
+### 通用模型
 
-| Task | Model | Slug |
+| 任务 | 模型 | Slug |
 |------|-------|------|
-| Product photography | GPT Image v1.5 | `gpt-image-v1-5-text-to-image` |
-| Background replacement | GPT Image v1.5 Edit | `gpt-image-v1-5-edit` |
-| Product editing | Flux 2 Turbo Edit | `flux-2-turbo-edit` |
-| Multi-angle views | Qwen Image Edit | `qwen-image-edit-2511-multiple-angles` |
-| Background removal | Rembg Enhance | `rembg-enhance` |
-| Background removal | Eachlabs BG Remover | `eachlabs-bg-remover-v1` |
-| Image upscaling | Eachlabs Upscaler Pro | `eachlabs-image-upscaler-pro-v1` |
-| Ad inpainting | SDXL Ad Inpaint | `sdxl-ad-inpaint` |
-| Custom product style | Z Image Trainer | `z-image-trainer` |
-| Product video | Pixverse v5.6 Image-to-Video | `pixverse-v5-6-image-to-video` |
+| 产品摄影 | GPT Image v1.5 | `gpt-image-v1-5-text-to-image` |
+| 背景替换 | GPT Image v1.5 Edit | `gpt-image-v1-5-edit` |
+| 产品编辑 | Flux 2 Turbo Edit | `flux-2-turbo-edit` |
+| 多角度视图 | Qwen Image Edit | `qwen-image-edit-2511-multiple-angles` |
+| 背景去除 | Rembg Enhance | `rembg-enhance` |
+| 背景去除 | Eachlabs BG Remover | `eachlabs-bg-remover-v1` |
+| 图像放大 | Eachlabs Upscaler Pro | `eachlabs-image-upscaler-pro-v1` |
+| 广告修复 | SDXL Ad Inpaint | `sdxl-ad-inpaint` |
+| 自定义产品风格 | Z Image Trainer | `z-image-trainer` |
+| 产品视频 | Pixverse v5.6 Image-to-Video | `pixverse-v5-6-image-to-video` |
 
-## Prediction Flow
+## 预测流程
 
-1. **Check model** `GET https://api.eachlabs.ai/v1/model?slug=<slug>` — validates the model exists and returns the `request_schema` with exact input parameters. Always do this before creating a prediction to ensure correct inputs.
-2. **POST** `https://api.eachlabs.ai/v1/prediction` with model slug, version `"0.0.1"`, and input matching the schema
-3. **Poll** `GET https://api.eachlabs.ai/v1/prediction/{id}` until status is `"success"` or `"failed"`
-4. **Extract** output URL from response
+1. **检查模型**：`GET https://api.eachlabs.ai/v1/model?slug=<slug>` — 验证模型是否存在，并返回包含确切输入参数的 `request_schema`。在创建预测之前务必执行此操作，以确保输入正确。
+2. **发送请求**：`POST https://api.eachlabs.ai/v1/prediction`，提供模型 Slug、版本 `"0.0.1"` 以及符合 schema 的输入数据。
+3. **等待结果**：`GET https://api.eachlabs.ai/v1/prediction/{id}`，直到状态变为 `"success"` 或 `"failed"`。
+4. **提取输出 URL**：从响应中获取输出 URL。
 
-## Workflows
+## 工作流程
 
-### Product on White Background
+### 产品背景为白色
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -78,7 +77,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Lifestyle Scene Generation
+### 生活场景生成
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -95,7 +94,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Multi-Angle Product Views
+### 多角度产品视图
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -113,9 +112,9 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-Generate multiple angles by running separate predictions with different `horizontal_angle` values (0, 45, 90, 135, 180, 225, 270, 315 for a full 360).
+通过使用不同的 `horizontal_angle` 值（0, 45, 90, 135, 180, 225, 270, 315，共 360 度）分别进行预测，以生成多个角度的产品视图。
 
-### Product with Transparent Background
+### 产品背景透明
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -133,7 +132,7 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-### Product Video from Image
+### 从图片生成产品视频
 
 ```bash
 curl -X POST https://api.eachlabs.ai/v1/prediction \
@@ -151,18 +150,18 @@ curl -X POST https://api.eachlabs.ai/v1/prediction \
   }'
 ```
 
-## Prompt Tips for Products
+## 产品描述提示：
 
-- Specify lighting: "soft studio lighting", "dramatic side lighting", "natural window light"
-- Mention surface: "marble surface", "wooden table", "clean white background"
-- Include shadows: "soft shadows", "reflection on surface"
-- Add context: "lifestyle setting", "in-use shot", "flat lay arrangement"
-- For batch catalog shots, maintain consistency with similar prompts
+- 指定光线效果：例如 “柔和的摄影棚灯光”、“戏剧性的侧光”、“自然的光线”
+- 提及表面材质：例如 “大理石表面”、“木质桌面”、“干净的白色背景”
+- 添加阴影效果：例如 “柔和的阴影”、“表面的反射”
+- 提供场景背景：例如 “生活场景”、“使用中的产品”、“平铺摆放”
+- 对于批量目录拍摄，请使用相似的描述提示以保持一致性
 
-## Batch Processing
+## 批量处理
 
-For catalog-scale processing, create multiple predictions in parallel by sending separate POST requests for each product. Poll each prediction independently.
+对于批量处理，可以为每个产品分别发送 POST 请求以并行生成多个预测结果。请独立检查每个预测的结果。
 
-## Parameter Reference
+## 参数参考
 
-See the [eachlabs-image-generation](../eachlabs-image-generation/references/MODELS.md) and [eachlabs-video-generation](../eachlabs-video-generation/references/MODELS.md) references for complete model parameters.
+有关完整的模型参数，请参阅 [eachlabs-image-generation](../eachlabs-image-generation/references/MODELS.md) 和 [eachlabs-video-generation](../eachlabs-video-generation/references/MODELS.md)。

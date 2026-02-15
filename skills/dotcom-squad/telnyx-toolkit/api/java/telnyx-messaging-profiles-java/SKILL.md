@@ -11,17 +11,17 @@ metadata:
   generated_by: telnyx-ext-skills-generator
 ---
 
-<!-- Auto-generated from Telnyx OpenAPI specs. Do not edit. -->
+<!-- 由 Telnyx OpenAPI 规范自动生成，请勿编辑。 -->
 
-# Telnyx Messaging Profiles - Java
+# Telnyx 消息传递配置文件 - Java
 
-## Installation
+## 安装
 
 ```text
 // See https://github.com/team-telnyx/telnyx-java for Maven/Gradle setup
 ```
 
-## Setup
+## 设置
 
 ```java
 import com.telnyx.sdk.client.TelnyxClient;
@@ -30,9 +30,9 @@ import com.telnyx.sdk.client.okhttp.TelnyxOkHttpClient;
 TelnyxClient client = TelnyxOkHttpClient.fromEnv();
 ```
 
-All examples below assume `client` is already initialized as shown above.
+以下所有示例均假设 `client` 已按照上述方式初始化。
 
-## List messaging profiles
+## 列出消息传递配置文件
 
 `GET /messaging_profiles`
 
@@ -43,9 +43,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileListParams;
 MessagingProfileListPage page = client.messagingProfiles().list();
 ```
 
-## Create a messaging profile
+## 创建消息传递配置文件
 
-`POST /messaging_profiles` — Required: `name`, `whitelisted_destinations`
+`POST /messaging_profiles` — 必需参数：`name`、`whitelisted_destinations`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileCreateParams;
@@ -58,9 +58,9 @@ MessagingProfileCreateParams params = MessagingProfileCreateParams.builder()
 MessagingProfileCreateResponse messagingProfile = client.messagingProfiles().create(params);
 ```
 
-## Retrieve a messaging profile
+## 获取消息传递配置文件
 
-`GET /messaging_profiles/{id}`
+`GET /messagingprofiles/{id}`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileRetrieveParams;
@@ -69,9 +69,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileRetrieveResponse;
 MessagingProfileRetrieveResponse messagingProfile = client.messagingProfiles().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update a messaging profile
+## 更新消息传递配置文件
 
-`PATCH /messaging_profiles/{id}`
+`PATCH /messagingprofiles/{id}`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileUpdateParams;
@@ -80,9 +80,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileUpdateResponse;
 MessagingProfileUpdateResponse messagingProfile = client.messagingProfiles().update("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Delete a messaging profile
+## 删除消息传递配置文件
 
-`DELETE /messaging_profiles/{id}`
+`DELETE /messagingprofiles/{id}`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileDeleteParams;
@@ -91,9 +91,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileDeleteResponse;
 MessagingProfileDeleteResponse messagingProfile = client.messagingProfiles().delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List phone numbers associated with a messaging profile
+## 获取与消息传递配置文件关联的电话号码
 
-`GET /messaging_profiles/{id}/phone_numbers`
+`GET /messagingprofiles/{id}/phone_numbers`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileListPhoneNumbersPage;
@@ -102,9 +102,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileListPhoneNumbersP
 MessagingProfileListPhoneNumbersPage page = client.messagingProfiles().listPhoneNumbers("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List short codes associated with a messaging profile
+## 获取与消息传递配置文件关联的短代码
 
-`GET /messaging_profiles/{id}/short_codes`
+`GET /messagingprofiles/{id}/short_codes`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.MessagingProfileListShortCodesPage;
@@ -113,9 +113,9 @@ import com.telnyx.sdk.models.messagingprofiles.MessagingProfileListShortCodesPar
 MessagingProfileListShortCodesPage page = client.messagingProfiles().listShortCodes("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## List Auto-Response Settings
+## 查看自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs`
+`GET /messagingprofiles/{profile_id}/autoresp_configs`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutorespConfigListParams;
@@ -124,9 +124,9 @@ import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutorespConfigLis
 AutorespConfigListResponse autorespConfigs = client.messagingProfiles().autorespConfigs().list("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Create auto-response setting
+## 创建自动应答设置
 
-`POST /messaging_profiles/{profile_id}/autoresp_configs` — Required: `op`, `keywords`, `country_code`
+`POST /messagingprofiles/{profile_id}/autoresp_configs` — 必需参数：`op`、`keywords`、`country_code`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutoRespConfigCreate;
@@ -145,9 +145,9 @@ AutorespConfigCreateParams params = AutorespConfigCreateParams.builder()
 AutoRespConfigResponse autoRespConfigResponse = client.messagingProfiles().autorespConfigs().create(params);
 ```
 
-## Get Auto-Response Setting
+## 获取自动应答设置
 
-`GET /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`GET /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutoRespConfigResponse;
@@ -160,9 +160,9 @@ AutorespConfigRetrieveParams params = AutorespConfigRetrieveParams.builder()
 AutoRespConfigResponse autoRespConfigResponse = client.messagingProfiles().autorespConfigs().retrieve(params);
 ```
 
-## Update Auto-Response Setting
+## 更新自动应答设置
 
-`PUT /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — Required: `op`, `keywords`, `country_code`
+`PUT /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}` — 必需参数：`op`、`keywords`、`country_code`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutoRespConfigCreate;
@@ -182,9 +182,9 @@ AutorespConfigUpdateParams params = AutorespConfigUpdateParams.builder()
 AutoRespConfigResponse autoRespConfigResponse = client.messagingProfiles().autorespConfigs().update(params);
 ```
 
-## Delete Auto-Response Setting
+## 删除自动应答设置
 
-`DELETE /messaging_profiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
+`DELETE /messagingprofiles/{profile_id}/autoresp_configs/{autoresp_cfg_id}`
 
 ```java
 import com.telnyx.sdk.models.messagingprofiles.autorespconfigs.AutorespConfigDeleteParams;
@@ -196,7 +196,7 @@ AutorespConfigDeleteParams params = AutorespConfigDeleteParams.builder()
 String autorespConfig = client.messagingProfiles().autorespConfigs().delete(params);
 ```
 
-## List short codes
+## 列出所有短代码
 
 `GET /short_codes`
 
@@ -207,7 +207,7 @@ import com.telnyx.sdk.models.shortcodes.ShortCodeListParams;
 ShortCodeListPage page = client.shortCodes().list();
 ```
 
-## Retrieve a short code
+## 获取指定短代码的信息
 
 `GET /short_codes/{id}`
 
@@ -218,11 +218,9 @@ import com.telnyx.sdk.models.shortcodes.ShortCodeRetrieveResponse;
 ShortCodeRetrieveResponse shortCode = client.shortCodes().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
 ```
 
-## Update short code
+## 更新短代码的设置
 
-Update the settings for a specific short code.
-
-`PATCH /short_codes/{id}` — Required: `messaging_profile_id`
+`PATCH /short_codes/{id}` — 必需参数：`messaging_profile_id`
 
 ```java
 import com.telnyx.sdk.models.shortcodes.ShortCodeUpdateParams;

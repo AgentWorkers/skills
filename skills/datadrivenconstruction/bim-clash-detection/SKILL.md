@@ -1,30 +1,30 @@
 ---
 slug: "bim-clash-detection"
 display_name: "BIM Clash Detection"
-description: "Detect and analyze geometric clashes in BIM models. Identify MEP, structural, and architectural conflicts before construction."
+description: "在BIM模型中检测并分析几何冲突。在施工前识别机电（MEP）、结构和建筑方面的矛盾或冲突。"
 ---
 
-# BIM Clash Detection
+# BIM碰撞检测
 
-## Business Case
+## 商业案例
 
-### Problem Statement
-Coordination issues cause significant rework:
-- MEP vs structural conflicts discovered on site
-- Late design changes increase costs
-- Manual clash review is time-consuming
-- No standardized clash categorization
+### 问题描述
+协调问题导致了大量的返工：
+- 现场发现机电（MEP）系统与结构系统之间的冲突
+- 设计变更发生在后期，增加了成本
+- 手动碰撞审查耗时较长
+- 缺乏标准化的碰撞分类体系
 
-### Solution
-Automated clash detection and analysis system that identifies conflicts between building systems and provides prioritized resolution recommendations.
+### 解决方案
+开发一个自动化的碰撞检测与分析系统，能够识别不同建筑系统之间的冲突，并提供优先级的解决建议。
 
-### Business Value
-- **Cost savings** - Detect issues before construction
-- **Time reduction** - Automated clash identification
-- **Better coordination** - Systematic conflict resolution
-- **Quality improvement** - Fewer field issues
+### 商业价值
+- **成本节约**：在施工前发现问题
+- **时间节省**：自动化碰撞识别过程
+- **协调效率提升**：系统化的冲突解决机制
+- **质量改善**：减少现场问题的发生
 
-## Technical Implementation
+## 技术实现
 
 ```python
 import pandas as pd
@@ -351,7 +351,7 @@ class BIMClashDetector:
                 break
 ```
 
-## Quick Start
+## 快速入门
 
 ```python
 # Initialize detector
@@ -373,28 +373,28 @@ summary = detector.get_summary()
 print(f"Critical: {summary['by_severity'].get('critical', 0)}")
 ```
 
-## Common Use Cases
+## 常见使用场景
 
-### 1. MEP Coordination
+### 1. 机电系统协调
 ```python
 # Focus on MEP vs Structure
 mep_clashes = [c for c in detector.clashes
                if c.element_a.discipline in [Discipline.MECHANICAL, Discipline.ELECTRICAL]]
 ```
 
-### 2. Export for Review
+### 2. 数据导出以供审查
 ```python
 df = detector.export_to_dataframe()
 df.to_excel("clash_report.xlsx", index=False)
 ```
 
-### 3. Assign to Teams
+### 3. 分配给团队处理
 ```python
 for clash in detector.clashes:
     if clash.element_a.discipline == Discipline.MECHANICAL:
         detector.assign_clash(clash.clash_id, "MEP Team")
 ```
 
-## Resources
-- **DDC Book**: Chapter 2.4 - BIM Coordination
-- **Reference**: ISO 19650 BIM Standards
+## 参考资源
+- **DDC手册**：第2.4章 - BIM协调
+- **参考标准**：ISO 19650 BIM标准
